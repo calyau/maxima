@@ -1,0 +1,1452 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/troper.lisp
+on 2002-12-17 13:33:57 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/troper.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TROPER)-2|
+(CONST 0) = TROPER
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TROPER
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TROPER)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (MUZZLED T))-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR MMINUS (FORM) ...)-5-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MMINUS (FORM) ...)-5-2-1|>
+(CONST 1) = MMINUS
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MMINUS (FORM) ...)-5-2-1|>
+1     (CONST&PUSH 1)                      ; MMINUS
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MMINUS (FORM) ...)-5-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $FIXNUM
+(CONST 2) = -
+(CONST 3) = $FLOAT
+(CONST 4) = -$
+(CONST 5) = $NUMBER
+(CONST 6) = MINUS
+(CONST 7) = $RATIONAL
+(CONST 8) = RAT
+(CONST 9) = QUOTE
+(CONST 10) = (RAT)
+(CONST 11) = RTIMES
+(CONST 12) = -1
+(CONST 13) = $ANY
+(CONST 14) = *MMINUS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+80 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CDR&PUSH)
+7     (CALLS2&JMPIF 8 L40)                ; NUMBERP
+10    (LOAD&CAR&PUSH 1)
+12    (JMPIFEQTO 1 L50)                   ; $FIXNUM
+15    (LOAD&CAR&PUSH 1)
+17    (JMPIFEQTO 3 L54)                   ; $FLOAT
+20    (LOAD&CAR&PUSH 1)
+22    (JMPIFEQTO 5 L58)                   ; $NUMBER
+25    (LOAD&CAR&PUSH 1)
+27    (JMPIFEQTO 7 L83)                   ; $RATIONAL
+30    (CONST&PUSH 13)                     ; $ANY
+31    (CONST 14)                          ; *MMINUS
+32    L32
+32    (PUSH)
+33    (LOAD 3)
+34    (CDR)
+35    L35
+35    (PUSH)
+36    (LIST 3)
+38    (SKIP&RET 2)
+40    L40
+40    (LOAD&CAR&PUSH 1)
+42    (LOAD&CDR&PUSH 2)
+44    (CALLSR 0 54)                       ; -
+47    (CONS)
+48    (SKIP&RET 2)
+50    L50
+50    (CONST&PUSH 1)                      ; $FIXNUM
+51    (CONST 2)                           ; -
+52    (JMP L32)
+54    L54
+54    (CONST&PUSH 3)                      ; $FLOAT
+55    (CONST 4)                           ; -$
+56    (JMP L32)
+58    L58
+58    (CONST&PUSH 5)                      ; $NUMBER
+59    (CONST 6)                           ; MINUS
+60    (JMP L32)
+62    L62
+62    (LOAD 1)
+63    (CDR)
+64    (CDR)
+65    (CAR)
+66    (CDR)
+67    (STORE 1)
+68    (CONST&PUSH 7)                      ; $RATIONAL
+69    (CONST&PUSH 9)                      ; QUOTE
+70    (CONST&PUSH 10)                     ; (RAT)
+71    (LOAD&CAR&PUSH 4)
+73    (CALLSR&PUSH 0 54)                  ; -
+76    (LOAD 5)
+77    (CDR)
+78    (CAR&PUSH)
+79    (LIST 3)
+81    (JMP L35)
+83    L83
+83    (LOAD 1)
+84    (CDR)
+85    (CDR)
+86    (CAR)
+87    (JMPIFATOM L98)
+89    (LOAD 1)
+90    (CDR)
+91    (CDR)
+92    (CAR)
+93    (CAR)
+94    (CAR&PUSH)
+95    (JMPIFEQTO 8 L62)                   ; RAT
+98    L98
+98    (CONST&PUSH 7)                      ; $RATIONAL
+99    (CONST&PUSH 11)                     ; RTIMES
+100   (CONST&PUSH 12)                     ; -1
+101   (LOAD&CDR&PUSH 4)
+103   (LIST 4)
+105   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (MUZZLED NIL))-6|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR MPLUS (FORM) ...)-7-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MPLUS (FORM) ...)-7-2-1|>
+(CONST 1) = MPLUS
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MPLUS (FORM) ...)-7-2-1|>
+1     (CONST&PUSH 1)                      ; MPLUS
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MPLUS (FORM) ...)-7-2-1|
+(CONST 0) = L
+(CONST 1) = TRANSLATE
+(CONST 2) = *UNION-MODE
+(CONST 3) = $FIXNUM
+(CONST 4) = F+
+(CONST 5) = CDR
+(CONST 6) = $FLOAT
+(CONST 7) = +$
+(CONST 8) = DCONV-$FLOAT
+(CONST 9) = $RATIONAL
+(CONST 10) = RPLUS
+(CONST 11) = $NUMBER
+(CONST 12) = PLUS
+(CONST 13) = $ANY
+(CONST 14) = ADD*
+(CONST 15) = DCONVX
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+62 byte-code instructions:
+0     (PUSH-NIL 2)
+2     (LOAD 3)
+3     (CDR)
+4     (BIND 0)                            ; L
+6     (GETVALUE 0)                        ; L
+8     (JMPIFNOT L32)
+10    L10
+10    (GETVALUE 0)                        ; L
+12    (CAR&PUSH)
+13    (CALL1&PUSH 1)                      ; TRANSLATE
+15    (LOAD&CONS&STORE 4)
+17    (CAR)
+18    (CAR&PUSH)
+19    (LOAD&PUSH 4)
+20    (CALL2 2)                           ; *UNION-MODE
+22    (STORE 3)
+23    (GETVALUE 0)                        ; L
+25    (CDR)
+26    (SETVALUE 0)                        ; L
+28    (GETVALUE 0)                        ; L
+30    (JMPIF L10)
+32    L32
+32    (UNBIND1)
+33    (LOAD&PUSH 1)
+34    (CALLS2&STORE 73 1)                 ; NREVERSE
+37    (LOAD&PUSH 0)
+38    (JMPIFEQTO 3 L65)                   ; $FIXNUM
+41    (LOAD&PUSH 0)
+42    (JMPIFEQTO 6 L70)                   ; $FLOAT
+45    (LOAD&PUSH 0)
+46    (JMPIFEQTO 9 L75)                   ; $RATIONAL
+49    (LOAD&PUSH 0)
+50    (JMPIFEQTO 11 L80)                  ; $NUMBER
+53    (CONST&PUSH 13)                     ; $ANY
+54    (CONST&PUSH 14)                     ; ADD*
+55    (CONST 15)                          ; DCONVX
+56    L56
+56    (PUSH)
+57    (LOAD&PUSH 4)
+58    (CALLSR 0 22)                       ; MAPCAR
+61    (LIST* 2)
+63    (SKIP&RET 4)
+65    L65
+65    (CONST&PUSH 3)                      ; $FIXNUM
+66    (CONST&PUSH 4)                      ; F+
+67    (CONST 5)                           ; CDR
+68    (JMP L56)
+70    L70
+70    (CONST&PUSH 6)                      ; $FLOAT
+71    (CONST&PUSH 7)                      ; +$
+72    (CONST 8)                           ; DCONV-$FLOAT
+73    (JMP L56)
+75    L75
+75    (CONST&PUSH 9)                      ; $RATIONAL
+76    (CONST&PUSH 10)                     ; RPLUS
+77    (CONST 5)                           ; CDR
+78    (JMP L56)
+80    L80
+80    (CONST&PUSH 11)                     ; $NUMBER
+81    (CONST&PUSH 12)                     ; PLUS
+82    (CONST 5)                           ; CDR
+83    (JMP L56)
+
+
+Disassembly of function #:|(DEFUN NESTIFY (OP L) ...)-8|
+(CONST 0) = NESTIFY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NESTIFY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NESTIFY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NESTIFY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NESTIFY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NESTIFY
+8     (SKIP&RET 1)
+
+
+Disassembly of function NESTIFY
+(CONST 0) = L
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+28 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (CDR&PUSH)
+6     (GETVALUE 0)                        ; L
+8     (CAR&PUSH)
+9     (LOAD 1)
+10    (BIND 0)                            ; L
+12    (GETVALUE 0)                        ; L
+14    (JMPIFNOT L33)
+16    L16
+16    (LOAD&PUSH 10)
+17    (LOAD&PUSH 4)
+18    (GETVALUE 0)                        ; L
+20    (CAR&PUSH)
+21    (LIST 3)
+23    (STORE 3)
+24    (GETVALUE 0)                        ; L
+26    (CDR)
+27    (SETVALUE 0)                        ; L
+29    (GETVALUE 0)                        ; L
+31    (JMPIF L16)
+33    L33
+33    (LOAD 3)
+34    (UNBIND1)
+35    (SKIP 2)
+37    (UNBIND1)
+38    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF%TR MTIMES (FORM) ...)-9-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MTIMES (FORM) ...)-9-2-1|>
+(CONST 1) = MTIMES
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MTIMES (FORM) ...)-9-2-1|>
+1     (CONST&PUSH 1)                      ; MTIMES
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MTIMES (FORM) ...)-9-2-1|
+(CONST 0) = -1
+(CONST 1) = (MMINUS)
+(CONST 2) = (MTIMES)
+(CONST 3) = TRANSLATE
+(CONST 4) = L
+(CONST 5) = *UNION-MODE
+(CONST 6) = $FIXNUM
+(CONST 7) = F*
+(CONST 8) = CDR
+(CONST 9) = $FLOAT
+(CONST 10) = *$
+(CONST 11) = DCONV-$FLOAT
+(CONST 12) = $RATIONAL
+(CONST 13) = RTIMES
+(CONST 14) = $NUMBER
+(CONST 15) = TIMES
+(CONST 16) = $ANY
+(CONST 17) = MUL*
+(CONST 18) = DCONVX
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+76 byte-code instructions:
+0     (PUSH-NIL 2)
+2     (LOAD 3)
+3     (CDR)
+4     (CAR&PUSH)
+5     (JMPIFEQTO 0 L71)                   ; -1
+8     (LOAD 3)
+9     (CDR)
+10    (BIND 4)                            ; L
+12    (GETVALUE 4)                        ; L
+14    (JMPIFNOT L38)
+16    L16
+16    (GETVALUE 4)                        ; L
+18    (CAR&PUSH)
+19    (CALL1&PUSH 3)                      ; TRANSLATE
+21    (LOAD&CONS&STORE 4)
+23    (CAR)
+24    (CAR&PUSH)
+25    (LOAD&PUSH 4)
+26    (CALL2 5)                           ; *UNION-MODE
+28    (STORE 3)
+29    (GETVALUE 4)                        ; L
+31    (CDR)
+32    (SETVALUE 4)                        ; L
+34    (GETVALUE 4)                        ; L
+36    (JMPIF L16)
+38    L38
+38    (UNBIND1)
+39    (LOAD&PUSH 1)
+40    (CALLS2&STORE 73 1)                 ; NREVERSE
+43    (LOAD&PUSH 0)
+44    (JMPIFEQTO 6 L83)                   ; $FIXNUM
+47    (LOAD&PUSH 0)
+48    (JMPIFEQTO 9 L88)                   ; $FLOAT
+51    (LOAD&PUSH 0)
+52    (JMPIFEQTO 12 L93)                  ; $RATIONAL
+55    (LOAD&PUSH 0)
+56    (JMPIFEQTO 14 L98)                  ; $NUMBER
+59    (CONST&PUSH 16)                     ; $ANY
+60    (CONST&PUSH 17)                     ; MUL*
+61    (CONST 18)                          ; DCONVX
+62    L62
+62    (PUSH)
+63    (LOAD&PUSH 4)
+64    (CALLSR 0 22)                       ; MAPCAR
+67    (LIST* 2)
+69    (SKIP&RET 4)
+71    L71
+71    (CONST&PUSH 1)                      ; (MMINUS)
+72    (CONST&PUSH 2)                      ; (MTIMES)
+73    (LOAD 5)
+74    (CDR)
+75    (CDR)
+76    (CONS&PUSH)
+77    (LIST&PUSH 2)
+79    (CALL1 3)                           ; TRANSLATE
+81    (SKIP&RET 4)
+83    L83
+83    (CONST&PUSH 6)                      ; $FIXNUM
+84    (CONST&PUSH 7)                      ; F*
+85    (CONST 8)                           ; CDR
+86    (JMP L62)
+88    L88
+88    (CONST&PUSH 9)                      ; $FLOAT
+89    (CONST&PUSH 10)                     ; *$
+90    (CONST 11)                          ; DCONV-$FLOAT
+91    (JMP L62)
+93    L93
+93    (CONST&PUSH 12)                     ; $RATIONAL
+94    (CONST&PUSH 13)                     ; RTIMES
+95    (CONST 8)                           ; CDR
+96    (JMP L62)
+98    L98
+98    (CONST&PUSH 14)                     ; $NUMBER
+99    (CONST&PUSH 15)                     ; TIMES
+100   (CONST 8)                           ; CDR
+101   (JMP L62)
+
+
+Disassembly of function #:|(DEF%TR MQUOTIENT (FORM) ...)-10-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MQUOTIENT (FORM) ...)-10-2-1|>
+(CONST 1) = MQUOTIENT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MQUOTIENT (FORM) ...)-10-2-1|>
+1     (CONST&PUSH 1)                      ; MQUOTIENT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MQUOTIENT (FORM) ...)-10-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = *UNION-MODE
+(CONST 2) = DCONV
+(CONST 3) = $FLOAT
+(CONST 4) = (1 1.0)
+(CONST 5) = ZL-MEMBER
+(CONST 6) = //$
+(CONST 7) = $FIXNUM
+(CONST 8) = $TR_NUMER
+(CONST 9) = FLOAT
+(CONST 10) = ($FIXNUM $RATIONAL)
+(CONST 11) = MEMQ
+(CONST 12) = $RATIONAL
+(CONST 13) = RREMAINDER
+(CONST 14) = $ANY
+(CONST 15) = DIV
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($TR_NUMER)
+76 byte-code instructions:
+0     (PUSH-NIL 3)
+2     (LOAD 4)
+3     (CDR)
+4     (CAR&PUSH)
+5     (CALL1 0)                           ; TRANSLATE
+7     (STORE 2)
+8     (LOAD 4)
+9     (CDR)
+10    (CDR)
+11    (CAR&PUSH)
+12    (CALL1 0)                           ; TRANSLATE
+14    (STORE 1)
+15    (LOAD&CAR&PUSH 2)
+17    (LOAD&CAR&PUSH 2)
+19    (CALL2 1)                           ; *UNION-MODE
+21    (STORE 0)
+22    (LOAD&PUSH 2)
+23    (LOAD&PUSH 1)
+24    (CALL2 2)                           ; DCONV
+26    (STORE 2)
+27    (LOAD&PUSH 1)
+28    (LOAD&PUSH 1)
+29    (CALL2 2)                           ; DCONV
+31    (STORE 1)
+32    (LOAD&PUSH 0)
+33    (JMPIFEQTO 3 L64)                   ; $FLOAT
+36    (LOAD&PUSH 0)
+37    (JMPIFNOTEQTO 7 L44)                ; $FIXNUM
+40    (GETVALUE 8)                        ; $TR_NUMER
+42    (JMPIF L81)
+44    L44
+44    (LOAD&PUSH 0)
+45    (CONST&PUSH 10)                     ; ($FIXNUM $RATIONAL)
+46    (CALL2&JMPIF 11 L93)                ; MEMQ
+49    (CONST&PUSH 14)                     ; $ANY
+50    (CONST 15)                          ; DIV
+51    L51
+51    (PUSH)
+52    (LOAD&PUSH 4)
+53    (LOAD 4)
+54    L54
+54    (PUSH)
+55    (LIST 4)
+57    (SKIP&RET 5)
+59    L59
+59    (LOAD&PUSH 1)
+60    (LIST 1)
+62    (JMP L73)
+64    L64
+64    (LOAD&PUSH 2)
+65    (CONST&PUSH 4)                      ; (1 1.0)
+66    (CALL2&JMPIF 5 L59)                 ; ZL-MEMBER
+69    (LOAD&PUSH 2)
+70    (LOAD&PUSH 2)
+71    (LIST 2)
+73    L73
+73    (STORE 2)
+74    (CONST&PUSH 3)                      ; $FLOAT
+75    (CONST&PUSH 6)                      ; //$
+76    (LOAD 4)
+77    (LIST* 2)
+79    (SKIP&RET 5)
+81    L81
+81    (CONST&PUSH 3)                      ; $FLOAT
+82    (CONST&PUSH 6)                      ; //$
+83    (CONST&PUSH 9)                      ; FLOAT
+84    (LOAD&PUSH 5)
+85    (LIST&PUSH 2)
+87    (CONST&PUSH 9)                      ; FLOAT
+88    (LOAD&PUSH 5)
+89    (LIST 2)
+91    (JMP L54)
+93    L93
+93    (CONST&PUSH 12)                     ; $RATIONAL
+94    (CONST 13)                          ; RREMAINDER
+95    (JMP L51)
+
+
+Disassembly of function #:|(DEFVAR $TR_EXPONENT NIL ...)-11|
+(CONST 0) = (SPECIAL $TR_EXPONENT)
+(CONST 1) = $TR_EXPONENT
+(CONST 2) = VARIABLE
+(CONST 3) = "If True it allows translation of x^n to generate (expt $x $n) if $n is fixnum and $x is fixnum, or number"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $TR_EXPONENT)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $TR_EXPONENT
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $TR_EXPONENT
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $TR_EXPONENT
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "If True it allows translation of x^n to generate (expt $x $n) if $n is fixnum and $x is fixnum, or number"
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $TR_EXPONENT
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR MEXPT (FORM) ...)-12-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MEXPT (FORM) ...)-12-2-1|>
+(CONST 1) = MEXPT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MEXPT (FORM) ...)-12-2-1|>
+1     (CONST&PUSH 1)                      ; MEXPT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MEXPT (FORM) ...)-12-2-1|
+(CONST 0) = $%E
+(CONST 1) = ($EXP)
+(CONST 2) = TRANSLATE
+(CONST 3) = BAS
+(CONST 4) = EXP
+(CONST 5) = $FIXNUM
+(CONST 6) = $FLOAT
+(CONST 7) = ^$
+(CONST 8) = EXPT$
+(CONST 9) = $TR_NUMER
+(CONST 10) = FLOAT
+(CONST 11) = $TR_EXPONENT
+(CONST 12) = ($FIXNUM $NUMBER)
+(CONST 13) = MEMQ
+(CONST 14) = $NUMBER
+(CONST 15) = EXPT
+(CONST 16) = $ANY
+(CONST 17) = POWER
+(CONST 18) = $RATIONAL
+(CONST 19) = 2
+(CONST 20) = 1
+(CONST 21) = SQRT
+(CONST 22) = -1
+(CONST 23) = //$
+(CONST 24) = RAT
+(CONST 25) = COVERS
+(CONST 26) = *UNION-MODE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($TR_EXPONENT $TR_NUMER EXP BAS)
+writes special variables : (EXP BAS)
+188 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (JMPIFEQTO 0 L106)                  ; $%E
+7     (NIL)
+8     (BIND 3)                            ; BAS
+10    (NIL)
+11    (BIND 4)                            ; EXP
+13    (LOAD 7)
+14    (CDR)
+15    (CAR&PUSH)
+16    (CALL1 2)                           ; TRANSLATE
+18    (SETVALUE 3)                        ; BAS
+20    (LOAD 7)
+21    (CDR)
+22    (CDR)
+23    (CAR&PUSH)
+24    (CALL1 2)                           ; TRANSLATE
+26    (SETVALUE 4)                        ; EXP
+28    (CAR&PUSH)
+29    (JMPIFEQTO 5 L140)                  ; $FIXNUM
+33    (GETVALUE 3)                        ; BAS
+35    (CAR&PUSH)
+36    (JMPIFNOTEQTO 6 L75)                ; $FLOAT
+39    (GETVALUE 4)                        ; EXP
+41    (CAR&PUSH)
+42    (JMPIFNOTEQTO 18 L75)               ; $RATIONAL
+45    (GETVALUE 4)                        ; EXP
+47    (CDR)
+48    (CDR)
+49    (CAR)
+50    (JMPIFATOM L75)
+52    (GETVALUE 4)                        ; EXP
+54    (CDR)
+55    (CDR)
+56    (CAR)
+57    (CDR)
+58    (CDR)
+59    (CAR&PUSH)
+60    (JMPIFEQTO 19 L201)                 ; 2
+64    (GETVALUE 4)                        ; EXP
+66    (CDR)
+67    (CDR)
+68    (CAR)
+69    (CAR)
+70    (CAR&PUSH)
+71    (JMPIFEQTO 24 L240)                 ; RAT
+75    L75
+75    (CONST&PUSH 14)                     ; $NUMBER
+76    (GETVALUE 3)                        ; BAS
+78    (CAR&PUSH)
+79    (CALL2&JMPIFNOT 25 L90)             ; COVERS
+82    (CONST&PUSH 14)                     ; $NUMBER
+83    (GETVALUE 4)                        ; EXP
+85    (CAR&PUSH)
+86    (CALL2&JMPIF 25 L255)               ; COVERS
+90    L90
+90    (CONST&PUSH 16)                     ; $ANY
+91    (CONST 17)                          ; POWER
+92    L92
+92    (PUSH)
+93    (GETVALUE 3)                        ; BAS
+95    (CDR&PUSH)
+96    (GETVALUE 4)                        ; EXP
+98    (CDR)
+99    L99
+99    (PUSH)
+100   (LIST 4)
+102   L102
+102   (UNBIND 2)
+104   (SKIP&RET 2)
+106   L106
+106   (CONST&PUSH 1)                      ; ($EXP)
+107   (LOAD 2)
+108   (CDR)
+109   (CDR)
+110   (CAR&PUSH)
+111   (LIST&PUSH 2)
+113   (CALL1 2)                           ; TRANSLATE
+115   (SKIP&RET 2)
+117   L117
+117   (CONST&PUSH 6)                      ; $FLOAT
+118   (CONST 7)                           ; ^$
+119   (JMP L174)
+121   L121
+121   (GETVALUE&PUSH 4)                   ; EXP
+123   (CALLS2&JMPIFNOT 12 L117)           ; INTEGERP
+126   (CONST&PUSH 6)                      ; $FLOAT
+127   (CONST 8)                           ; EXPT$
+128   (JMP L174)
+130   L130
+130   (CONST&PUSH 6)                      ; $FLOAT
+131   (CONST&PUSH 7)                      ; ^$
+132   (CONST 10)                          ; FLOAT
+133   (JMP L228)
+136   L136
+136   (CONST&PUSH 14)                     ; $NUMBER
+137   (CONST 15)                          ; EXPT
+138   (JMP L174)
+140   L140
+140   (GETVALUE 4)                        ; EXP
+142   (CDR)
+143   (SETVALUE 4)                        ; EXP
+145   (GETVALUE 3)                        ; BAS
+147   (CAR&PUSH)
+148   (JMPIFEQTO 6 L121)                  ; $FLOAT
+151   (GETVALUE 3)                        ; BAS
+153   (CAR&PUSH)
+154   (JMPIFNOTEQTO 5 L161)               ; $FIXNUM
+157   (GETVALUE 9)                        ; $TR_NUMER
+159   (JMPIF L130)
+161   L161
+161   (GETVALUE 11)                       ; $TR_EXPONENT
+163   (JMPIFNOT L172)
+165   (GETVALUE 3)                        ; BAS
+167   (CAR&PUSH)
+168   (CONST&PUSH 12)                     ; ($FIXNUM $NUMBER)
+169   (CALL2&JMPIF 13 L136)               ; MEMQ
+172   L172
+172   (CONST&PUSH 16)                     ; $ANY
+173   (CONST 17)                          ; POWER
+174   L174
+174   (PUSH)
+175   (GETVALUE 3)                        ; BAS
+177   (CDR)
+178   (JMP L234)
+180   L180
+180   (CONST&PUSH 6)                      ; $FLOAT
+181   (CONST&PUSH 21)                     ; SQRT
+182   (GETVALUE 3)                        ; BAS
+184   (CDR)
+185   (JMP L195)
+187   L187
+187   (CONST&PUSH 6)                      ; $FLOAT
+188   (CONST&PUSH 23)                     ; //$
+189   (CONST&PUSH 21)                     ; SQRT
+190   (GETVALUE 3)                        ; BAS
+192   (CDR&PUSH)
+193   (LIST 2)
+195   L195
+195   (PUSH)
+196   (LIST 3)
+198   (JMP L102)
+201   L201
+201   (GETVALUE 4)                        ; EXP
+203   (CDR)
+204   (CDR)
+205   (CAR)
+206   (CDR)
+207   (CAR)
+208   (SETVALUE 4)                        ; EXP
+210   (CONST&PUSH 20)                     ; 1
+211   (GETVALUE&PUSH 4)                   ; EXP
+213   (CALLSR&JMPIF 1 45 L180)            ; =
+217   (CONST&PUSH 22)                     ; -1
+218   (GETVALUE&PUSH 4)                   ; EXP
+220   (CALLSR&JMPIF 1 45 L187)            ; =
+224   (CONST&PUSH 6)                      ; $FLOAT
+225   (CONST&PUSH 8)                      ; EXPT$
+226   (CONST 21)                          ; SQRT
+228   L228
+228   (PUSH)
+229   (GETVALUE 3)                        ; BAS
+231   (CDR&PUSH)
+232   (LIST 2)
+234   L234
+234   (PUSH)
+235   (GETVALUE 4)                        ; EXP
+237   (JMP L99)
+240   L240
+240   (CONST&PUSH 6)                      ; $FLOAT
+241   (CONST&PUSH 15)                     ; EXPT
+242   (GETVALUE 3)                        ; BAS
+244   (CDR&PUSH)
+245   (GETVALUE 4)                        ; EXP
+247   (CDR)
+248   (CDR)
+249   (CAR&PUSH)
+250   (CALL1 6)                           ; $FLOAT
+252   (JMP L99)
+255   L255
+255   (GETVALUE 3)                        ; BAS
+257   (CAR&PUSH)
+258   (GETVALUE 4)                        ; EXP
+260   (CAR&PUSH)
+261   (CALL2&PUSH 26)                     ; *UNION-MODE
+263   (CONST 15)                          ; EXPT
+264   (JMP L92)
+
+
+Disassembly of function #:|(DEF%TR RAT (FORM) ...)-13-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR RAT (FORM) ...)-13-2-1|>
+(CONST 1) = RAT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR RAT (FORM) ...)-13-2-1|>
+1     (CONST&PUSH 1)                      ; RAT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR RAT (FORM) ...)-13-2-1|
+(CONST 0) = $RATIONAL
+(CONST 1) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $RATIONAL
+1     (CONST&PUSH 1)                      ; QUOTE
+2     (LOAD&PUSH 3)
+3     (LIST 3)
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR BIGFLOAT (FORM) ...)-14-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR BIGFLOAT (FORM) ...)-14-2-1|>
+(CONST 1) = BIGFLOAT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR BIGFLOAT (FORM) ...)-14-2-1|>
+1     (CONST&PUSH 1)                      ; BIGFLOAT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR BIGFLOAT (FORM) ...)-14-2-1|
+(CONST 0) = $ANY
+(CONST 1) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; QUOTE
+2     (LOAD&PUSH 3)
+3     (LIST 3)
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR %SQRT (FORM) ...)-15-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR %SQRT (FORM) ...)-15-2-1|>
+(CONST 1) = %SQRT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR %SQRT (FORM) ...)-15-2-1|>
+1     (CONST&PUSH 1)                      ; %SQRT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR %SQRT (FORM) ...)-15-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $FLOAT
+(CONST 2) = SQRT
+(CONST 3) = $ANY
+(CONST 4) = SIMPLIFY
+(CONST 5) = LIST
+(CONST 6) = '(%SQRT)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+23 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CAR&PUSH)
+7     (JMPIFEQTO 1 L23)                   ; $FLOAT
+10    (CONST&PUSH 3)                      ; $ANY
+11    (CONST&PUSH 4)                      ; SIMPLIFY
+12    (CONST&PUSH 5)                      ; LIST
+13    (CONST&PUSH 6)                      ; '(%SQRT)
+14    (LOAD&CDR&PUSH 5)
+16    (LIST 3)
+18    L18
+18    (PUSH)
+19    (LIST 3)
+21    (SKIP&RET 2)
+23    L23
+23    (CONST&PUSH 1)                      ; $FLOAT
+24    (CONST&PUSH 2)                      ; SQRT
+25    (LOAD 3)
+26    (CDR)
+27    (JMP L18)
+
+
+Disassembly of function #:|(DEF%TR MABS (FORM) ...)-16-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MABS (FORM) ...)-16-2-1|>
+(CONST 1) = MABS
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MABS (FORM) ...)-16-2-1|>
+1     (CONST&PUSH 1)                      ; MABS
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MABS (FORM) ...)-16-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $NUMBER
+(CONST 2) = COVERS
+(CONST 3) = ABS
+(CONST 4) = $ANY
+(CONST 5) = SIMPLIFY
+(CONST 6) = LIST
+(CONST 7) = '(MABS)
+(CONST 8) = DCONVX
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+25 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CONST&PUSH 1)                      ; $NUMBER
+7     (LOAD&CAR&PUSH 2)
+9     (CALL2&JMPIF 2 L26)                 ; COVERS
+12    (CONST&PUSH 4)                      ; $ANY
+13    (CONST&PUSH 5)                      ; SIMPLIFY
+14    (CONST&PUSH 6)                      ; LIST
+15    (CONST&PUSH 7)                      ; '(MABS)
+16    (LOAD&PUSH 5)
+17    (CALL1&PUSH 8)                      ; DCONVX
+19    (LIST 3)
+21    L21
+21    (PUSH)
+22    (LIST 3)
+24    (SKIP&RET 2)
+26    L26
+26    (LOAD&CAR&PUSH 1)
+28    (CONST&PUSH 3)                      ; ABS
+29    (LOAD 3)
+30    (CDR)
+31    (JMP L21)
+
+
+Disassembly of function #:|(DEF%TR %SIGNUM (FORM) ...)-17-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR %SIGNUM (FORM) ...)-17-2-1|>
+(CONST 1) = %SIGNUM
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR %SIGNUM (FORM) ...)-17-2-1|>
+1     (CONST&PUSH 1)                      ; %SIGNUM
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR %SIGNUM (FORM) ...)-17-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = ($FIXNUM $FLOAT)
+(CONST 2) = MEMQ
+(CONST 3) = TR-GENSYM
+(CONST 4) = $FIXNUM
+(CONST 5) = LAMBDA
+(CONST 6) = DECLARE
+(CONST 7) = $FLOAT
+(CONST 8) = FLONUM
+(CONST 9) = FIXNUM
+(CONST 10) = COND
+(CONST 11) = MINUSP
+(CONST 12) = (-1)
+(CONST 13) = PLUSP
+(CONST 14) = (1)
+(CONST 15) = ((T 0))
+(CONST 16) = $ANY
+(CONST 17) = SIMPLIFY
+(CONST 18) = LIST
+(CONST 19) = '(%SIGNUM)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+54 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD 2)
+2     (CDR)
+3     (CAR&PUSH)
+4     (CALL1&PUSH 0)                      ; TRANSLATE
+6     (LOAD&CAR&STORE 0 1)
+9     (LOAD&CDR&STORE 0)
+11    (LOAD&PUSH 1)
+12    (CONST&PUSH 1)                      ; ($FIXNUM $FLOAT)
+13    (CALL2&JMPIF 2 L30)                 ; MEMQ
+16    (CONST&PUSH 16)                     ; $ANY
+17    (CONST&PUSH 17)                     ; SIMPLIFY
+18    (CONST&PUSH 18)                     ; LIST
+19    (CONST&PUSH 19)                     ; '(%SIGNUM)
+20    (LOAD&PUSH 4)
+21    (LIST&PUSH 3)
+23    (LIST 3)
+25    (SKIP&RET 4)
+27    L27
+27    (CONST 8)                           ; FLONUM
+28    (JMP L44)
+30    L30
+30    (CALL0 3)                           ; TR-GENSYM
+32    (PUSH)
+33    (CONST&PUSH 4)                      ; $FIXNUM
+34    (CONST&PUSH 5)                      ; LAMBDA
+35    (LOAD&PUSH 2)
+36    (LIST&PUSH 1)
+38    (CONST&PUSH 6)                      ; DECLARE
+39    (LOAD&PUSH 6)
+40    (JMPIFEQTO 7 L27)                   ; $FLOAT
+43    (CONST 9)                           ; FIXNUM
+44    L44
+44    (PUSH)
+45    (LOAD&PUSH 5)
+46    (LIST&PUSH 2)
+48    (LIST&PUSH 2)
+50    (CONST&PUSH 10)                     ; COND
+51    (CONST&PUSH 11)                     ; MINUSP
+52    (LOAD&PUSH 6)
+53    (LIST&PUSH 2)
+55    (CONST 12)                          ; (-1)
+56    (CONS&PUSH)
+57    (CONST&PUSH 13)                     ; PLUSP
+58    (LOAD&PUSH 7)
+59    (LIST&PUSH 2)
+61    (CONST 14)                          ; (1)
+62    (CONS&PUSH)
+63    (CONST 15)                          ; ((T 0))
+64    (LIST*&PUSH 3)
+66    (LIST&PUSH 4)
+68    (LOAD&PUSH 3)
+69    (LIST 3)
+71    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEF%TR $ENTIER (FORM) ...)-18-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $ENTIER (FORM) ...)-18-2-1|>
+(CONST 1) = $ENTIER
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $ENTIER (FORM) ...)-18-2-1|>
+1     (CONST&PUSH 1)                      ; $ENTIER
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ENTIER (FORM) ...)-18-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $FIXNUM
+(CONST 2) = ($FLOAT $NUMBER)
+(CONST 3) = MEMQ
+(CONST 4) = SQRT
+(CONST 5) = $ISQRT
+(CONST 6) = FIX
+(CONST 7) = $RATIONAL
+(CONST 8) = $ANY
+(CONST 9) = $ENTIER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+46 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CAR&PUSH)
+7     (JMPIFEQTO 1 L32)                   ; $FIXNUM
+10    (LOAD&CAR&PUSH 1)
+12    (CONST&PUSH 2)                      ; ($FLOAT $NUMBER)
+13    (CALL2&JMPIF 3 L43)                 ; MEMQ
+16    (LOAD&CAR&PUSH 1)
+18    (JMPIFEQTO 7 L53)                   ; $RATIONAL
+21    (CONST 8)                           ; $ANY
+22    L22
+22    (PUSH)
+23    (CONST 9)                           ; $ENTIER
+24    L24
+24    (PUSH)
+25    (LOAD 3)
+26    (CDR)
+27    L27
+27    (PUSH)
+28    (LIST 3)
+30    (SKIP&RET 2)
+32    L32
+32    (LOAD 1)
+33    (SKIP&RET 2)
+35    L35
+35    (CONST&PUSH 1)                      ; $FIXNUM
+36    (CONST&PUSH 5)                      ; $ISQRT
+37    (LOAD 3)
+38    (CDR)
+39    (CDR)
+40    (CAR)
+41    (JMP L27)
+43    L43
+43    (LOAD 1)
+44    (CDR)
+45    (CAR&PUSH)
+46    (JMPIFEQTO 4 L35)                   ; SQRT
+49    (CONST&PUSH 1)                      ; $FIXNUM
+50    (CONST 6)                           ; FIX
+51    (JMP L24)
+53    L53
+53    (CONST 1)                           ; $FIXNUM
+54    (JMP L22)
+
+
+Disassembly of function #:|(DEF%TR $FLOAT (FORM) ...)-19-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $FLOAT (FORM) ...)-19-2-1|>
+(CONST 1) = $FLOAT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $FLOAT (FORM) ...)-19-2-1|>
+1     (CONST&PUSH 1)                      ; $FLOAT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $FLOAT (FORM) ...)-19-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $FLOAT
+(CONST 2) = COVERS
+(CONST 3) = DCONV-$FLOAT
+(CONST 4) = $ANY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CONST&PUSH 1)                      ; $FLOAT
+7     (LOAD&CAR&PUSH 2)
+9     (CALL2&JMPIF 2 L20)                 ; COVERS
+12    (CONST&PUSH 4)                      ; $ANY
+13    (CONST&PUSH 1)                      ; $FLOAT
+14    (LOAD&CDR&PUSH 3)
+16    (LIST 3)
+18    (SKIP&RET 2)
+20    L20
+20    (CONST&PUSH 1)                      ; $FLOAT
+21    (LOAD&PUSH 2)
+22    (CALL1 3)                           ; DCONV-$FLOAT
+24    (CONS)
+25    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $EXP (FORM) ...)-20-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $EXP (FORM) ...)-20-2-1|>
+(CONST 1) = $EXP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $EXP (FORM) ...)-20-2-1|>
+1     (CONST&PUSH 1)                      ; $EXP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $EXP (FORM) ...)-20-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $FLOAT
+(CONST 2) = EXP
+(CONST 3) = $ANY
+(CONST 4) = SIMPLIFY
+(CONST 5) = $EXP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CAR&PUSH)
+7     (JMPIFEQTO 1 L22)                   ; $FLOAT
+10    (CONST&PUSH 3)                      ; $ANY
+11    (CONST&PUSH 4)                      ; SIMPLIFY
+12    (CONST&PUSH 5)                      ; $EXP
+13    (LOAD&CDR&PUSH 4)
+15    (LIST 2)
+17    L17
+17    (PUSH)
+18    (LIST 3)
+20    (SKIP&RET 2)
+22    L22
+22    (CONST&PUSH 1)                      ; $FLOAT
+23    (CONST&PUSH 2)                      ; EXP
+24    (LOAD 3)
+25    (CDR)
+26    (JMP L17)
+
+
+Disassembly of function #:|(DEF%TR $ATAN2 (FORM) ...)-21-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $ATAN2 (FORM) ...)-21-2-1|>
+(CONST 1) = $ATAN2
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $ATAN2 (FORM) ...)-21-2-1|>
+1     (CONST&PUSH 1)                      ; $ATAN2
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ATAN2 (FORM) ...)-21-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = Y
+(CONST 2) = X
+(CONST 3) = *UNION-MODE
+(CONST 4) = $FLOAT
+(CONST 5) = ATAN2
+(CONST 6) = $ANY
+(CONST 7) = SIMPLIFY
+(CONST 8) = LIST
+(CONST 9) = '($ATAN2)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X)
+38 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CAR&PUSH)
+3     (CALL1&PUSH 0)                      ; TRANSLATE
+5     (LOAD 2)
+6     (CDR)
+7     (CAR&PUSH)
+8     (CALL1 0)                           ; TRANSLATE
+10    (BIND 1)                            ; Y
+12    (LOAD 3)
+13    (BIND 2)                            ; X
+15    (GETVALUE 2)                        ; X
+17    (CAR&PUSH)
+18    (GETVALUE 1)                        ; Y
+20    (CAR&PUSH)
+21    (CALL2&PUSH 3)                      ; *UNION-MODE
+23    (JMPIFEQTO 4 L44)                   ; $FLOAT
+26    (CONST&PUSH 6)                      ; $ANY
+27    (CONST&PUSH 7)                      ; SIMPLIFY
+28    (CONST&PUSH 8)                      ; LIST
+29    (CONST&PUSH 9)                      ; '($ATAN2)
+30    (GETVALUE 2)                        ; X
+32    (CDR&PUSH)
+33    (GETVALUE 1)                        ; Y
+35    (CDR&PUSH)
+36    (LIST&PUSH 4)
+38    (LIST 3)
+40    L40
+40    (UNBIND 2)
+42    (SKIP&RET 3)
+44    L44
+44    (CONST&PUSH 4)                      ; $FLOAT
+45    (CONST&PUSH 5)                      ; ATAN2
+46    (GETVALUE 2)                        ; X
+48    (CDR&PUSH)
+49    (GETVALUE 1)                        ; Y
+51    (CDR&PUSH)
+52    (LIST 4)
+54    (JMP L40)
+
+
+Disassembly of function #:|(DEF%TR %ATAN (FORM) ...)-22-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR %ATAN (FORM) ...)-22-2-1|>
+(CONST 1) = %ATAN
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR %ATAN (FORM) ...)-22-2-1|>
+1     (CONST&PUSH 1)                      ; %ATAN
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR %ATAN (FORM) ...)-22-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = X
+(CONST 2) = $FLOAT
+(CONST 3) = ATAN1
+(CONST 4) = $ANY
+(CONST 5) = SIMPLIFY
+(CONST 6) = LIST
+(CONST 7) = '(%ATAN)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+25 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (BIND 1)                            ; X
+7     (GETVALUE 1)                        ; X
+9     (CAR&PUSH)
+10    (JMPIFEQTO 2 L28)                   ; $FLOAT
+13    (CONST&PUSH 4)                      ; $ANY
+14    (CONST&PUSH 5)                      ; SIMPLIFY
+15    (CONST&PUSH 6)                      ; LIST
+16    (CONST&PUSH 7)                      ; '(%ATAN)
+17    (GETVALUE 1)                        ; X
+19    (CDR&PUSH)
+20    (LIST 3)
+22    L22
+22    (PUSH)
+23    (LIST 3)
+25    (UNBIND1)
+26    (SKIP&RET 2)
+28    L28
+28    (CONST&PUSH 2)                      ; $FLOAT
+29    (CONST&PUSH 3)                      ; ATAN1
+30    (GETVALUE 1)                        ; X
+32    (CDR)
+33    (JMP L22)
+
+
+Wrote file binary-clisp/troper.fas
+Wrote file /cygdrive/e/temp/maxima/src/troper.lis

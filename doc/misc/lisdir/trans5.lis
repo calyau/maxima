@@ -1,0 +1,1335 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trans5.lisp
+on 2002-12-17 13:33:56 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trans5.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRANS5)-2|
+(CONST 0) = TRANS5
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS5
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TRANS5)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DISP (FORM) ...)-4-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $DISP (FORM) ...)-4-2-1|>
+(CONST 1) = $DISP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $DISP (FORM) ...)-4-2-1|>
+1     (CONST&PUSH 1)                      ; $DISP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $DISP (FORM) ...)-4-2-1|
+(CONST 0) = $ANY
+(CONST 1) = DISPLAY-FOR-TR
+(CONST 2) = $LDISP
+(CONST 3) = TR-ARGS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; DISPLAY-FOR-TR
+2     (LOAD 3)
+3     (CAR)
+4     (CAR&PUSH)
+5     (CONST 2)                           ; $LDISP
+6     (EQ)
+7     (PUSH)
+8     (NIL&PUSH)
+9     (LOAD&CDR&PUSH 5)
+11    (CALL1 3)                           ; TR-ARGS
+13    (LIST* 4)
+15    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-SAME%TR $LDISP $DISP)-5|
+(CONST 0) = $LDISP
+(CONST 1) = $DISP
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LDISP
+1     (CONST&PUSH 1)                      ; $DISP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $DISP
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DISPLAY (FORM) ...)-6-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $DISPLAY (FORM) ...)-6-2-1|>
+(CONST 1) = $DISPLAY
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $DISPLAY (FORM) ...)-6-2-1|>
+1     (CONST&PUSH 1)                      ; $DISPLAY
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $DISPLAY (FORM) ...)-6-2-1|
+(CONST 0) = $ANY
+(CONST 1) = DISPLAY-FOR-TR
+(CONST 2) = $LDISPLAY
+(CONST 3) = TR-EXP-TO-DISPLAY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; DISPLAY-FOR-TR
+2     (LOAD 3)
+3     (CAR)
+4     (CAR&PUSH)
+5     (CONST 2)                           ; $LDISPLAY
+6     (EQ)
+7     (PUSH)
+8     (T&PUSH)
+9     (CONST&SYMBOL-FUNCTION&PUSH 3)      ; TR-EXP-TO-DISPLAY
+11    (LOAD&CDR&PUSH 6)
+13    (CALLSR 0 22)                       ; MAPCAR
+16    (LIST* 4)
+18    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-SAME%TR $LDISPLAY $DISPLAY)-7|
+(CONST 0) = $LDISPLAY
+(CONST 1) = $DISPLAY
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LDISPLAY
+1     (CONST&PUSH 1)                      ; $DISPLAY
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $DISPLAY
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR VALUE-ALIST NIL)-8|
+(CONST 0) = (SPECIAL VALUE-ALIST)
+(CONST 1) = VALUE-ALIST
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL VALUE-ALIST)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; VALUE-ALIST
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; VALUE-ALIST
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; VALUE-ALIST
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MAKE-VALUES (EXPR-ARGS) ...)-9|
+(CONST 0) = MAKE-VALUES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKE-VALUES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKE-VALUES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKE-VALUES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKE-VALUES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKE-VALUES
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKE-VALUES
+(CONST 0) = (TRD-MSYMEVAL QUOTE)
+(CONST 1) = MEMQ
+(CONST 2) = VALUE-ALIST
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VALUE-ALIST)
+writes special variable : (VALUE-ALIST)
+34 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (JMP L38)
+4     L4
+4     (LOAD 0)
+5     (JMP L31)
+7     L7
+7     (LOAD&CAR&PUSH 0)
+9     (LOAD 0)
+10    (JMPIFATOM L4)
+12    (LOAD&CAR&PUSH 0)
+14    (CONST&PUSH 0)                      ; (TRD-MSYMEVAL QUOTE)
+15    (CALL2&JMPIF 1 L4)                  ; MEMQ
+18    (PUSH-UNBOUND 1)
+20    (CALLS2&PUSH 143)                   ; GENSYM
+22    (LOAD&PUSH 1)
+23    (LOAD 1)
+24    (CONS&PUSH)
+25    (GETVALUE 2)                        ; VALUE-ALIST
+27    (CONS)
+28    (SETVALUE 2)                        ; VALUE-ALIST
+30    (POP)
+31    L31
+31    (PUSH)
+32    (LOAD&CONS&STORE 2)
+34    (SKIP 1)
+36    (LOAD&CDR&STORE 0)
+38    L38
+38    (LOAD&PUSH 0)
+39    (CALLS1&JMPIFNOT 146 L7)            ; ENDP
+42    (SKIP 1)
+44    (LOAD&PUSH 0)
+45    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+47    (SKIP&RET 3)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFSTRUCT # LEFT-OB ...))-10|
+(CONST 0) = DISP-HACK-OB
+(CONST 1) = STRUCTURE-OBJECT
+(CONST 2) = SYSTEM::DEFSTRUCT-DESCRIPTION
+(CONST 3) = 0
+(CONST 4) = MAKE-DISP-HACK-OB
+(CONST 5) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 6) = #<COMPILED-CLOSURE MAKE-DISP-HACK-OB>
+(CONST 7) = LIST
+(CONST 8) = 
+(#(LEFT-OB (:LEFT-OB) 0 (NIL) NIL T NIL)
+ #(RIGHT-OB (:RIGHT-OB) 1 (NIL) NIL T NIL))
+(CONST 9) = (INLINE COPY-DISP-HACK-OB)
+(CONST 10) = COPY-DISP-HACK-OB
+(CONST 11) = SYSTEM::INLINE-EXPANSION
+(CONST 12) = 
+((STRUCTURE) (DECLARE (SYSTEM::IN-DEFUN COPY-DISP-HACK-OB))
+ (BLOCK COPY-DISP-HACK-OB (COPY-LIST STRUCTURE)))
+(CONST 13) = #<COMPILED-CLOSURE COPY-DISP-HACK-OB>
+(CONST 14) = (FUNCTION LEFT-OB (DISP-HACK-OB) T)
+(CONST 15) = (INLINE LEFT-OB)
+(CONST 16) = LEFT-OB
+(CONST 17) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN LEFT-OB))
+ (BLOCK LEFT-OB (THE T (NTH 0 SYSTEM::OBJECT))))
+(CONST 18) = #<COMPILED-CLOSURE LEFT-OB>
+(CONST 19) = SYSTEM::DEFSTRUCT-READER
+(CONST 20) = (FUNCTION RIGHT-OB (DISP-HACK-OB) T)
+(CONST 21) = (INLINE RIGHT-OB)
+(CONST 22) = RIGHT-OB
+(CONST 23) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN RIGHT-OB))
+ (BLOCK RIGHT-OB (THE T (NTH 1 SYSTEM::OBJECT))))
+(CONST 24) = #<COMPILED-CLOSURE RIGHT-OB>
+(CONST 25) = SYSTEM::DEFSTRUCT-WRITER
+(CONST 26) = SYSTEM::SETF-EXPANDER
+(CONST 27) = -1
+(CONST 28) = 1
+(CONST 29) = #<COMPILED-CLOSURE SETF-LEFT-OB>
+(CONST 30) = SETF
+(CONST 31) = SYSTEM::%SET-DOCUMENTATION
+(CONST 32) = #<COMPILED-CLOSURE SETF-RIGHT-OB>
+(CONST 33) = STRUCTURE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+109 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISP-HACK-OB
+1     (CONST&PUSH 1)                      ; STRUCTURE-OBJECT
+2     (CONST&PUSH 2)                      ; SYSTEM::DEFSTRUCT-DESCRIPTION
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&PUSH 132)                   ; GET
+7     (CONST 3)                           ; 0
+8     (SVREF)
+9     (CONS&PUSH)
+10    (CONST&PUSH 4)                      ; MAKE-DISP-HACK-OB
+11    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+13    (CONST&PUSH 4)                      ; MAKE-DISP-HACK-OB
+14    (CONST&PUSH 6)                      ; #<COMPILED-CLOSURE MAKE-DISP-HACK-OB>
+15    (CALLS2 130)                        ; SYSTEM::%PUTD
+17    (CONST&PUSH 0)                      ; DISP-HACK-OB
+18    (CONST&PUSH 2)                      ; SYSTEM::DEFSTRUCT-DESCRIPTION
+19    (LOAD&PUSH 2)
+20    (CONST&PUSH 7)                      ; LIST
+21    (CONST&PUSH 4)                      ; MAKE-DISP-HACK-OB
+22    (CONST&PUSH 8)                      ; (# #)
+23    (CALLSR&PUSH 4 0)                   ; VECTOR
+26    (CALLS2 136)                        ; SYSTEM::%PUT
+28    (SKIP 1)
+30    (CONST&PUSH 9)                      ; (INLINE COPY-DISP-HACK-OB)
+31    (CALLS1 90)                         ; PROCLAIM
+33    (CONST&PUSH 10)                     ; COPY-DISP-HACK-OB
+34    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+36    (CONST&PUSH 10)                     ; COPY-DISP-HACK-OB
+37    (CONST&PUSH 11)                     ; SYSTEM::INLINE-EXPANSION
+38    (CONST&PUSH 12)                     ; ((STRUCTURE) (DECLARE #) ...)
+39    (CALLS2 136)                        ; SYSTEM::%PUT
+41    (CONST&PUSH 10)                     ; COPY-DISP-HACK-OB
+42    (CONST&PUSH 13)                     ; #<COMPILED-CLOSURE COPY-DISP-HACK-OB>
+43    (CALLS2 130)                        ; SYSTEM::%PUTD
+45    (CONST&PUSH 14)                     ; (FUNCTION LEFT-OB (DISP-HACK-OB) T)
+46    (CALLS1 90)                         ; PROCLAIM
+48    (CONST&PUSH 15)                     ; (INLINE LEFT-OB)
+49    (CALLS1 90)                         ; PROCLAIM
+51    (CONST&PUSH 16)                     ; LEFT-OB
+52    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+54    (CONST&PUSH 16)                     ; LEFT-OB
+55    (CONST&PUSH 11)                     ; SYSTEM::INLINE-EXPANSION
+56    (CONST&PUSH 17)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+57    (CALLS2 136)                        ; SYSTEM::%PUT
+59    (CONST&PUSH 16)                     ; LEFT-OB
+60    (CONST&PUSH 18)                     ; #<COMPILED-CLOSURE LEFT-OB>
+61    (CALLS2 130)                        ; SYSTEM::%PUTD
+63    (CONST&PUSH 16)                     ; LEFT-OB
+64    (CONST&PUSH 19)                     ; SYSTEM::DEFSTRUCT-READER
+65    (CONST&PUSH 0)                      ; DISP-HACK-OB
+66    (CALLS2 136)                        ; SYSTEM::%PUT
+68    (CONST&PUSH 20)                     ; (FUNCTION RIGHT-OB ...)
+69    (CALLS1 90)                         ; PROCLAIM
+71    (CONST&PUSH 21)                     ; (INLINE RIGHT-OB)
+72    (CALLS1 90)                         ; PROCLAIM
+74    (CONST&PUSH 22)                     ; RIGHT-OB
+75    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+77    (CONST&PUSH 22)                     ; RIGHT-OB
+78    (CONST&PUSH 11)                     ; SYSTEM::INLINE-EXPANSION
+79    (CONST&PUSH 23)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+80    (CALLS2 136)                        ; SYSTEM::%PUT
+82    (CONST&PUSH 22)                     ; RIGHT-OB
+83    (CONST&PUSH 24)                     ; #<COMPILED-CLOSURE RIGHT-OB>
+84    (CALLS2 130)                        ; SYSTEM::%PUTD
+86    (CONST&PUSH 22)                     ; RIGHT-OB
+87    (CONST&PUSH 19)                     ; SYSTEM::DEFSTRUCT-READER
+88    (CONST&PUSH 0)                      ; DISP-HACK-OB
+89    (CALLS2 136)                        ; SYSTEM::%PUT
+91    (CONST&PUSH 16)                     ; LEFT-OB
+92    (CONST&PUSH 25)                     ; SYSTEM::DEFSTRUCT-WRITER
+93    (CALLS2 137)                        ; REMPROP
+95    (CONST&PUSH 16)                     ; LEFT-OB
+96    (CONST&PUSH 26)                     ; SYSTEM::SETF-EXPANDER
+97    (CONST&PUSH 27)                     ; -1
+98    (CONST&PUSH 28)                     ; 1
+99    (CONST 29)                          ; #<COMPILED-CLOSURE SETF-LEFT-OB>
+101   (LIST*&PUSH 2)
+103   (CALLS2 136)                        ; SYSTEM::%PUT
+105   (CONST&PUSH 16)                     ; LEFT-OB
+106   (CONST&PUSH 30)                     ; SETF
+108   (NIL&PUSH)
+109   (CALL 3 31)                         ; SYSTEM::%SET-DOCUMENTATION
+112   (CONST&PUSH 16)                     ; LEFT-OB
+113   (CONST&PUSH 25)                     ; SYSTEM::DEFSTRUCT-WRITER
+114   (CONST&PUSH 0)                      ; DISP-HACK-OB
+115   (CALLS2 136)                        ; SYSTEM::%PUT
+117   (CONST&PUSH 22)                     ; RIGHT-OB
+118   (CONST&PUSH 25)                     ; SYSTEM::DEFSTRUCT-WRITER
+119   (CALLS2 137)                        ; REMPROP
+121   (CONST&PUSH 22)                     ; RIGHT-OB
+122   (CONST&PUSH 26)                     ; SYSTEM::SETF-EXPANDER
+123   (CONST&PUSH 27)                     ; -1
+124   (CONST&PUSH 28)                     ; 1
+125   (CONST 32)                          ; #<COMPILED-CLOSURE SETF-RIGHT-OB>
+127   (LIST*&PUSH 2)
+129   (CALLS2 136)                        ; SYSTEM::%PUT
+131   (CONST&PUSH 22)                     ; RIGHT-OB
+132   (CONST&PUSH 30)                     ; SETF
+134   (NIL&PUSH)
+135   (CALL 3 31)                         ; SYSTEM::%SET-DOCUMENTATION
+138   (CONST&PUSH 22)                     ; RIGHT-OB
+139   (CONST&PUSH 25)                     ; SYSTEM::DEFSTRUCT-WRITER
+140   (CONST&PUSH 0)                      ; DISP-HACK-OB
+141   (CALLS2 136)                        ; SYSTEM::%PUT
+143   (CONST&PUSH 0)                      ; DISP-HACK-OB
+144   (CONST&PUSH 33)                     ; STRUCTURE
+146   (NIL&PUSH)
+147   (CALL 3 31)                         ; SYSTEM::%SET-DOCUMENTATION
+150   (CONST 0)                           ; DISP-HACK-OB
+151   (SKIP&RET 1)
+
+
+Disassembly of function MAKE-DISP-HACK-OB
+(CONST 0) = :LEFT-OB
+(CONST 1) = :RIGHT-OB
+(CONST 2) = 2
+(CONST 3) = 0
+(CONST 4) = SYSTEM::%SETNTH
+(CONST 5) = 1
+0 required arguments
+0 optional arguments
+No rest parameter
+2 keyword parameters: :LEFT-OB, :RIGHT-OB.
+15 byte-code instructions:
+0     (UNBOUND->NIL 2)
+2     (UNBOUND->NIL 1)
+4     (CONST&PUSH 2)                      ; 2
+5     (PUSH-UNBOUND 1)
+7     (CALLS1&PUSH 157)                   ; MAKE-LIST
+9     (CONST&PUSH 3)                      ; 0
+10    (LOAD&PUSH 1)
+11    (LOAD&PUSH 5)
+12    (CALL 3 4)                          ; SYSTEM::%SETNTH
+15    (CONST&PUSH 5)                      ; 1
+16    (LOAD&PUSH 1)
+17    (LOAD&PUSH 4)
+18    (CALL 3 4)                          ; SYSTEM::%SETNTH
+21    (POP)
+22    (SKIP&RET 3)
+
+
+Disassembly of function COPY-DISP-HACK-OB
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS1 158)                        ; COPY-LIST
+3     (SKIP&RET 2)
+
+
+Disassembly of function LEFT-OB
+(CONST 0) = 0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 0
+1     (LOAD&PUSH 2)
+2     (CALLS1 148)                        ; NTH
+4     (SKIP&RET 2)
+
+
+Disassembly of function RIGHT-OB
+(CONST 0) = 1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 1
+1     (LOAD&PUSH 2)
+2     (CALLS1 148)                        ; NTH
+4     (SKIP&RET 2)
+
+
+Disassembly of function SETF-LEFT-OB
+(CONST 0) = SETF
+(CONST 1) = NTH
+(CONST 2) = 0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; NTH
+5     (CONST&PUSH 2)                      ; 0
+6     (LOAD&PUSH 3)
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function SETF-RIGHT-OB
+(CONST 0) = SETF
+(CONST 1) = NTH
+(CONST 2) = 1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; NTH
+5     (CONST&PUSH 2)                      ; 1
+6     (LOAD&PUSH 3)
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN OBJECT-FOR-DISPLAY-HACK (EXP) ...)-11|
+(CONST 0) = OBJECT-FOR-DISPLAY-HACK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE OBJECT-FOR-DISPLAY-HACK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OBJECT-FOR-DISPLAY-HACK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; OBJECT-FOR-DISPLAY-HACK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE OBJECT-FOR-DISPLAY-HACK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; OBJECT-FOR-DISPLAY-HACK
+8     (SKIP&RET 1)
+
+
+Disassembly of function OBJECT-FOR-DISPLAY-HACK
+(CONST 0) = EXP
+(CONST 1) = :LEFT-OB
+(CONST 2) = QUOTE
+(CONST 3) = :RIGHT-OB
+(CONST 4) = MAKE-DISP-HACK-OB
+(CONST 5) = 
+#S(HASH-TABLE EQ (TRD-MSYMEVAL . 177) (QUOTE . 171) (LIST . 100)
+   (MFUNCTION-CALL . 68) (MARRAYREF . 46) (SIMPLIFY . 12))
+(CONST 6) = V
+(CONST 7) = 0
+(CONST 8) = SIMPLIFY
+(CONST 9) = 1
+(CONST 10) = MAKE-VALUES
+(CONST 11) = LIST
+(CONST 12) = LIST*
+(CONST 13) = ('(ARRAY))
+(CONST 14) = MARRAYREF
+(CONST 15) = MFUNCTION-CALL
+(CONST 16) = OBJECT-FOR-DISPLAY-HACK
+(CONST 17) = (FSUBR FEXPR MACRO)
+(CONST 18) = GETL
+(CONST 19) = UNTRANS-OP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (V EXP)
+184 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE 0)                        ; EXP
+5     (JMPIFATOM L14)
+7     (GETVALUE 0)                        ; EXP
+9     (CAR)
+10    (JMPHASH 5 L200 L24 L58 L80 L112 L183 L189)
+14    L14
+14    (CONST&PUSH 1)                      ; :LEFT-OB
+15    (CONST&PUSH 2)                      ; QUOTE
+16    (GETVALUE&PUSH 0)                   ; EXP
+18    (LIST&PUSH 2)
+20    (CONST 3)                           ; :RIGHT-OB
+21    (JMP L219)
+24    L24
+24    (GETVALUE 0)                        ; EXP
+26    (CDR)
+27    (CAR&PUSH)
+28    (JSR L0)
+30    (BIND 6)                            ; V
+32    (CONST&PUSH 1)                      ; :LEFT-OB
+33    (GETVALUE&PUSH 6)                   ; V
+35    (CONST&PUSH 7)                      ; 0
+36    (LOAD&PUSH 1)
+37    (CALLS1&STORE 148 0)                ; NTH
+40    (CONST&PUSH 3)                      ; :RIGHT-OB
+41    (CONST&PUSH 8)                      ; SIMPLIFY
+42    (GETVALUE&PUSH 6)                   ; V
+44    (CONST&PUSH 9)                      ; 1
+45    (LOAD&PUSH 1)
+46    (CALLS1&STORE 148 0)                ; NTH
+49    (LIST&PUSH 2)
+51    (CALL 4 4)                          ; MAKE-DISP-HACK-OB
+54    (UNBIND1)
+55    (JMP L260)
+58    L58
+58    (GETVALUE 0)                        ; EXP
+60    (CDR&PUSH)
+61    (CALL1&PUSH 10)                     ; MAKE-VALUES
+63    (CONST&PUSH 1)                      ; :LEFT-OB
+64    (CONST&PUSH 11)                     ; LIST
+65    (CONST&PUSH 12)                     ; LIST*
+66    (LOAD&CAR&PUSH 3)
+68    (CONST 13)                          ; ('(ARRAY))
+69    (LIST*&PUSH 2)
+71    (LOAD 3)
+72    (CDR)
+73    (LIST*&PUSH 2)
+75    (CONST&PUSH 3)                      ; :RIGHT-OB
+76    (CONST 14)                          ; MARRAYREF
+77    (JMP L251)
+80    L80
+80    (GETVALUE 0)                        ; EXP
+82    (CDR)
+83    (CDR&PUSH)
+84    (CALL1&PUSH 10)                     ; MAKE-VALUES
+86    (CONST&PUSH 1)                      ; :LEFT-OB
+87    (CONST&PUSH 11)                     ; LIST
+88    (CONST&PUSH 2)                      ; QUOTE
+89    (GETVALUE 0)                        ; EXP
+91    (CDR)
+92    (CAR&PUSH)
+93    (LIST&PUSH 1)
+95    (LIST&PUSH 2)
+97    (LOAD 3)
+98    (LIST*&PUSH 2)
+100   (CONST&PUSH 3)                      ; :RIGHT-OB
+101   (CONST&PUSH 15)                     ; MFUNCTION-CALL
+102   (GETVALUE 0)                        ; EXP
+104   (CDR)
+105   (CAR&PUSH)
+106   (LOAD 5)
+107   (LIST* 2)
+109   (JMP L254)
+112   L112
+112   (CONST&SYMBOL-FUNCTION&PUSH 16)     ; OBJECT-FOR-DISPLAY-HACK
+114   (GETVALUE 0)                        ; EXP
+116   (CDR&PUSH)
+117   (CALLSR&PUSH 0 22)                  ; MAPCAR
+120   (CONST&PUSH 1)                      ; :LEFT-OB
+121   (CONST&PUSH 11)                     ; LIST
+122   (NIL&PUSH)
+123   (LOAD&PUSH 3)
+124   (JMP L138)
+126   L126
+126   (LOAD&CAR&PUSH 0)
+128   (CONST&PUSH 7)                      ; 0
+129   (LOAD&PUSH 1)
+130   (CALLS1&PUSH 148)                   ; NTH
+132   (LOAD&CONS&STORE 2)
+134   (SKIP 1)
+136   (LOAD&CDR&STORE 0)
+138   L138
+138   (LOAD&PUSH 0)
+139   (CALLS1&JMPIFNOT 146 L126)          ; ENDP
+142   (SKIP 1)
+144   (LOAD&PUSH 0)
+145   (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+147   (SKIP 1)
+149   (CONS&PUSH)
+150   (CONST&PUSH 3)                      ; :RIGHT-OB
+151   (CONST&PUSH 11)                     ; LIST
+152   (NIL&PUSH)
+153   (LOAD&PUSH 5)
+154   (JMP L168)
+156   L156
+156   (LOAD&CAR&PUSH 0)
+158   (CONST&PUSH 9)                      ; 1
+159   (LOAD&PUSH 1)
+160   (CALLS1&PUSH 148)                   ; NTH
+162   (LOAD&CONS&STORE 2)
+164   (SKIP 1)
+166   (LOAD&CDR&STORE 0)
+168   L168
+168   (LOAD&PUSH 0)
+169   (CALLS1&JMPIFNOT 146 L156)          ; ENDP
+172   (SKIP 1)
+174   (LOAD&PUSH 0)
+175   (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+177   (SKIP 1)
+179   (CONS)
+180   (JMP L254)
+183   L183
+183   (CONST&PUSH 1)                      ; :LEFT-OB
+184   (GETVALUE&PUSH 0)                   ; EXP
+186   (CONST 3)                           ; :RIGHT-OB
+187   (JMP L219)
+189   L189
+189   (CONST&PUSH 1)                      ; :LEFT-OB
+190   (CONST&PUSH 2)                      ; QUOTE
+191   (GETVALUE 0)                        ; EXP
+193   (CDR)
+194   (CAR&PUSH)
+195   (LIST&PUSH 2)
+197   (CONST 3)                           ; :RIGHT-OB
+198   (JMP L219)
+200   L200
+200   (GETVALUE 0)                        ; EXP
+202   (CAR)
+203   (JMPIFCONSP L212)
+205   (GETVALUE 0)                        ; EXP
+207   (CAR&PUSH)
+208   (CONST&PUSH 17)                     ; (FSUBR FEXPR MACRO)
+209   (CALL2&JMPIFNOT 18 L227)            ; GETL
+212   L212
+212   (CONST&PUSH 1)                      ; :LEFT-OB
+213   (CONST&PUSH 2)                      ; QUOTE
+214   (GETVALUE&PUSH 0)                   ; EXP
+216   (LIST&PUSH 2)
+218   (CONST 3)                           ; :RIGHT-OB
+219   L219
+219   (PUSH)
+220   (GETVALUE&PUSH 0)                   ; EXP
+222   (CALL 4 4)                          ; MAKE-DISP-HACK-OB
+225   (JMP L260)
+227   L227
+227   (GETVALUE 0)                        ; EXP
+229   (CDR&PUSH)
+230   (CALL1&PUSH 10)                     ; MAKE-VALUES
+232   (CONST&PUSH 1)                      ; :LEFT-OB
+233   (CONST&PUSH 11)                     ; LIST
+234   (CONST&PUSH 2)                      ; QUOTE
+235   (GETVALUE 0)                        ; EXP
+237   (CAR&PUSH)
+238   (CALL1&PUSH 19)                     ; UNTRANS-OP
+240   (LIST&PUSH 1)
+242   (LIST&PUSH 2)
+244   (LOAD 3)
+245   (LIST*&PUSH 2)
+247   (CONST&PUSH 3)                      ; :RIGHT-OB
+248   (GETVALUE 0)                        ; EXP
+250   (CAR)
+251   L251
+251   (PUSH)
+252   (LOAD 4)
+253   (CONS)
+254   L254
+254   (PUSH)
+255   (CALL 4 4)                          ; MAKE-DISP-HACK-OB
+258   (SKIP 1)
+260   L260
+260   (UNBIND1)
+261   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TR-EXP-TO-DISPLAY (EXP) ...)-12|
+(CONST 0) = TR-EXP-TO-DISPLAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-EXP-TO-DISPLAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-EXP-TO-DISPLAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-EXP-TO-DISPLAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-EXP-TO-DISPLAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-EXP-TO-DISPLAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-EXP-TO-DISPLAY
+(CONST 0) = EXP
+(CONST 1) = DTRANSLATE
+(CONST 2) = VALUE-ALIST
+(CONST 3) = OBJECT-FOR-DISPLAY-HACK
+(CONST 4) = LIST
+(CONST 5) = '(MEQUAL)
+(CONST 6) = 0
+(CONST 7) = 1
+(CONST 8) = LAMBDA
+(CONST 9) = #.#'CDR
+(CONST 10) = #.#'CAR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (VALUE-ALIST EXP)
+writes special variable : (VALUE-ALIST)
+40 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 0)                   ; EXP
+5     (CALL1&PUSH 1)                      ; DTRANSLATE
+7     (NIL)
+8     (BIND 2)                            ; VALUE-ALIST
+10    (LOAD&PUSH 3)
+11    (CALL1&PUSH 3)                      ; OBJECT-FOR-DISPLAY-HACK
+13    (CONST&PUSH 4)                      ; LIST
+14    (CONST&PUSH 5)                      ; '(MEQUAL)
+15    (CONST&PUSH 6)                      ; 0
+16    (LOAD&PUSH 3)
+17    (CALLS1&PUSH 148)                   ; NTH
+19    (CONST&PUSH 7)                      ; 1
+20    (LOAD&PUSH 4)
+21    (CALLS1&PUSH 148)                   ; NTH
+23    (LIST&PUSH 4)
+25    (GETVALUE&PUSH 2)                   ; VALUE-ALIST
+27    (CALLS2 73)                         ; NREVERSE
+29    (SETVALUE 2)                        ; VALUE-ALIST
+31    (JMPIF L42)
+33    (LOAD 0)
+34    L34
+34    (SKIP 2)
+36    (UNBIND1)
+37    (SKIP 1)
+39    (UNBIND1)
+40    (SKIP&RET 2)
+42    L42
+42    (CONST&PUSH 8)                      ; LAMBDA
+43    (CONST&PUSH 9)                      ; #.#'CDR
+44    (GETVALUE&PUSH 2)                   ; VALUE-ALIST
+46    (CALLSR&PUSH 0 22)                  ; MAPCAR
+49    (LOAD&PUSH 2)
+50    (LIST&PUSH 3)
+52    (CONST&PUSH 10)                     ; #.#'CAR
+53    (GETVALUE&PUSH 2)                   ; VALUE-ALIST
+55    (CALLSR 0 22)                       ; MAPCAR
+58    (CONS)
+59    (JMP L34)
+
+
+Disassembly of function #:|(DEFUN UNTRANS-OP (OP) ...)-13|
+(CONST 0) = UNTRANS-OP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE UNTRANS-OP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UNTRANS-OP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; UNTRANS-OP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE UNTRANS-OP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; UNTRANS-OP
+8     (SKIP&RET 1)
+
+
+Disassembly of function UNTRANS-OP
+(CONST 0) = 
+((ADD* . MPLUS) (SUB* . MMINUS) (MUL* . MTIMES) (DIV* . MQUOTIENT)
+ (POWER* . MEXPT))
+(CONST 1) = ASSQ
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; (# # # ...)
+2     (CALL2 1)                           ; ASSQ
+4     (CDR)
+5     (JMPIF1 L10)
+7     (LOAD 1)
+8     (SKIP&RET 2)
+10    L10
+10    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $CF (FORM) ...)-14-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $CF (FORM) ...)-14-2-1|>
+(CONST 1) = $CF
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $CF (FORM) ...)-14-2-1|>
+1     (CONST&PUSH 1)                      ; $CF
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $CF (FORM) ...)-14-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = $CF
+(CONST 2) = (CFEVAL)
+(CONST 3) = PUSH-AUTOLOAD-DEF
+(CONST 4) = $ANY
+(CONST 5) = LAMBDA
+(CONST 6) = (DIVOV $LISTARITH)
+(CONST 7) = (SSTATUS DIVOV T)
+(CONST 8) = UNWIND-PROTECT
+(CONST 9) = CFEVAL
+(CONST 10) = ((SSTATUS DIVOV DIVOV))
+(CONST 11) = ((STATUS DIVOV) NIL)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (LOAD&CDR&PUSH 1)
+2     (CALL1 0)                           ; TR-ARGS
+4     (CAR)
+5     (STORE 1)
+6     (CONST&PUSH 1)                      ; $CF
+7     (CONST&PUSH 2)                      ; (CFEVAL)
+8     (CALL2 3)                           ; PUSH-AUTOLOAD-DEF
+10    (CONST&PUSH 4)                      ; $ANY
+11    (CONST&PUSH 5)                      ; LAMBDA
+12    (CONST&PUSH 6)                      ; (DIVOV $LISTARITH)
+13    (CONST&PUSH 7)                      ; (SSTATUS DIVOV T)
+14    (CONST&PUSH 8)                      ; UNWIND-PROTECT
+15    (CONST&PUSH 9)                      ; CFEVAL
+16    (LOAD&PUSH 7)
+17    (LIST&PUSH 2)
+19    (CONST 10)                          ; ((SSTATUS DIVOV DIVOV))
+20    (LIST*&PUSH 2)
+22    (LIST&PUSH 4)
+24    (CONST 11)                          ; ((STATUS DIVOV) NIL)
+25    (LIST* 2)
+27    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLY1 (FORM &AUX # ...) ...)-15-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $APPLY1 (FORM &AUX # ...) ...)-15-2-1|>
+(CONST 1) = $APPLY1
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $APPLY1 (FORM &AUX # ...) ...)-15-2-1|>
+1     (CONST&PUSH 1)                      ; $APPLY1
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLY1 (FORM &AUX # ...) ...)-15-2-1|
+(CONST 0) = TR-GENSYM
+(CONST 1) = $APPLY1
+(CONST 2) = (APPLY1)
+(CONST 3) = PUSH-AUTOLOAD-DEF
+(CONST 4) = $ANY
+(CONST 5) = DO
+(CONST 6) = DTRANSLATE
+(CONST 7) = APPLY1
+(CONST 8) = CAR
+(CONST 9) = (0)
+(CONST 10) = QUOTE
+(CONST 11) = CDR
+(CONST 12) = NULL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+40 byte-code instructions:
+0     (CALL0 0)                           ; TR-GENSYM
+2     (PUSH)
+3     (CALL0 0)                           ; TR-GENSYM
+5     (PUSH)
+6     (CONST&PUSH 1)                      ; $APPLY1
+7     (CONST&PUSH 2)                      ; (APPLY1)
+8     (CALL2 3)                           ; PUSH-AUTOLOAD-DEF
+10    (CONST&PUSH 4)                      ; $ANY
+11    (CONST&PUSH 5)                      ; DO
+12    (LOAD&PUSH 3)
+13    (LOAD 6)
+14    (CDR)
+15    (CAR&PUSH)
+16    (CALL1&PUSH 6)                      ; DTRANSLATE
+18    (CONST&PUSH 7)                      ; APPLY1
+19    (LOAD&PUSH 6)
+20    (CONST&PUSH 8)                      ; CAR
+21    (LOAD&PUSH 7)
+22    (LIST&PUSH 2)
+24    (CONST 9)                           ; (0)
+25    (LIST*&PUSH 3)
+27    (LIST&PUSH 3)
+29    (LOAD&PUSH 3)
+30    (CONST&PUSH 10)                     ; QUOTE
+31    (LOAD 8)
+32    (CDR)
+33    (CDR&PUSH)
+34    (LIST&PUSH 2)
+36    (CONST&PUSH 11)                     ; CDR
+37    (LOAD&PUSH 6)
+38    (LIST&PUSH 2)
+40    (LIST&PUSH 3)
+42    (LIST&PUSH 2)
+44    (CONST&PUSH 12)                     ; NULL
+45    (LOAD&PUSH 4)
+46    (LIST&PUSH 2)
+48    (LOAD&PUSH 5)
+49    (LIST&PUSH 2)
+51    (LIST 4)
+53    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $APPLY2 (FORM) ...)-16-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $APPLY2 (FORM) ...)-16-2-1|>
+(CONST 1) = $APPLY2
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $APPLY2 (FORM) ...)-16-2-1|>
+1     (CONST&PUSH 1)                      ; $APPLY2
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLY2 (FORM) ...)-16-2-1|
+(CONST 0) = $ANY
+(CONST 1) = LAMBDA
+(CONST 2) = (*RULELIST)
+(CONST 3) = (DECLARE (SPECIAL *RULELIST))
+(CONST 4) = APPLY2
+(CONST 5) = DTRANSLATE
+(CONST 6) = (0)
+(CONST 7) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; LAMBDA
+2     (CONST&PUSH 2)                      ; (*RULELIST)
+3     (CONST&PUSH 3)                      ; (DECLARE (SPECIAL *RULELIST))
+4     (CONST&PUSH 4)                      ; APPLY2
+5     (LOAD 6)
+6     (CDR)
+7     (CAR&PUSH)
+8     (CALL1&PUSH 5)                      ; DTRANSLATE
+10    (CONST 6)                           ; (0)
+11    (LIST*&PUSH 2)
+13    (LIST&PUSH 4)
+15    (CONST&PUSH 7)                      ; QUOTE
+16    (LOAD 4)
+17    (CDR)
+18    (CDR&PUSH)
+19    (LIST&PUSH 2)
+21    (LIST 3)
+23    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLYB1 (FORM &AUX # ...) ...)-17-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $APPLYB1 (FORM &AUX # ...) ...)-17-2-1|>
+(CONST 1) = $APPLYB1
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $APPLYB1 (FORM &AUX # ...) ...)-17-2-1|>
+1     (CONST&PUSH 1)                      ; $APPLYB1
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLYB1 (FORM &AUX # ...) ...)-17-2-1|
+(CONST 0) = TR-GENSYM
+(CONST 1) = $APPLYB1
+(CONST 2) = (APPLY1HACK)
+(CONST 3) = PUSH-AUTOLOAD-DEF
+(CONST 4) = $ANY
+(CONST 5) = DO
+(CONST 6) = DTRANSLATE
+(CONST 7) = CAR
+(CONST 8) = APPLY1HACK
+(CONST 9) = QUOTE
+(CONST 10) = CDR
+(CONST 11) = NULL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+41 byte-code instructions:
+0     (CALL0 0)                           ; TR-GENSYM
+2     (PUSH)
+3     (CALL0 0)                           ; TR-GENSYM
+5     (PUSH)
+6     (CONST&PUSH 1)                      ; $APPLYB1
+7     (CONST&PUSH 2)                      ; (APPLY1HACK)
+8     (CALL2 3)                           ; PUSH-AUTOLOAD-DEF
+10    (CONST&PUSH 4)                      ; $ANY
+11    (CONST&PUSH 5)                      ; DO
+12    (LOAD&PUSH 3)
+13    (LOAD 6)
+14    (CDR)
+15    (CAR&PUSH)
+16    (CALL1&PUSH 6)                      ; DTRANSLATE
+18    (CONST&PUSH 7)                      ; CAR
+19    (CONST&PUSH 8)                      ; APPLY1HACK
+20    (LOAD&PUSH 7)
+21    (CONST&PUSH 7)                      ; CAR
+22    (LOAD&PUSH 8)
+23    (LIST&PUSH 2)
+25    (LIST&PUSH 3)
+27    (LIST&PUSH 2)
+29    (LIST&PUSH 3)
+31    (LOAD&PUSH 3)
+32    (CONST&PUSH 9)                      ; QUOTE
+33    (LOAD 8)
+34    (CDR)
+35    (CDR&PUSH)
+36    (LIST&PUSH 2)
+38    (CONST&PUSH 10)                     ; CDR
+39    (LOAD&PUSH 6)
+40    (LIST&PUSH 2)
+42    (LIST&PUSH 3)
+44    (LIST&PUSH 2)
+46    (CONST&PUSH 11)                     ; NULL
+47    (LOAD&PUSH 4)
+48    (LIST&PUSH 2)
+50    (LOAD&PUSH 5)
+51    (LIST&PUSH 2)
+53    (LIST 4)
+55    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $APPLYB2 (FORM) ...)-18-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $APPLYB2 (FORM) ...)-18-2-1|>
+(CONST 1) = $APPLYB2
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $APPLYB2 (FORM) ...)-18-2-1|>
+1     (CONST&PUSH 1)                      ; $APPLYB2
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLYB2 (FORM) ...)-18-2-1|
+(CONST 0) = $APPLYB2
+(CONST 1) = (APPLY2HACK)
+(CONST 2) = PUSH-AUTOLOAD-DEF
+(CONST 3) = $ANY
+(CONST 4) = LAMBDA
+(CONST 5) = (*RULELIST)
+(CONST 6) = (DECLARE (SPECIAL *RULELIST))
+(CONST 7) = APPLY2HACK
+(CONST 8) = DTRANSLATE
+(CONST 9) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $APPLYB2
+1     (CONST&PUSH 1)                      ; (APPLY2HACK)
+2     (CALL2 2)                           ; PUSH-AUTOLOAD-DEF
+4     (CONST&PUSH 3)                      ; $ANY
+5     (CONST&PUSH 4)                      ; LAMBDA
+6     (CONST&PUSH 5)                      ; (*RULELIST)
+7     (CONST&PUSH 6)                      ; (DECLARE (SPECIAL *RULELIST))
+8     (CONST&PUSH 7)                      ; APPLY2HACK
+9     (LOAD 6)
+10    (CDR)
+11    (CAR&PUSH)
+12    (CALL1&PUSH 8)                      ; DTRANSLATE
+14    (LIST&PUSH 2)
+16    (LIST&PUSH 4)
+18    (CONST&PUSH 9)                      ; QUOTE
+19    (LOAD 4)
+20    (CDR)
+21    (CDR&PUSH)
+22    (LIST&PUSH 2)
+24    (LIST 3)
+26    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $BUILDQ (FORM) ...)-19-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $BUILDQ (FORM) ...)-19-2-1|>
+(CONST 1) = $BUILDQ
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $BUILDQ (FORM) ...)-19-2-1|>
+1     (CONST&PUSH 1)                      ; $BUILDQ
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $BUILDQ (FORM) ...)-19-2-1|
+(CONST 0) = VAR
+(CONST 1) = CONS
+(CONST 2) = QUOTE
+(CONST 3) = DTRANSLATE
+(CONST 4) = MSETQ
+(CONST 5) = TR-ABORT
+(CONST 6) = "Illegal BUILDQ form encountered during translation"
+(CONST 7) = TR-TELL
+(CONST 8) = $ANY
+(CONST 9) = MBUILDQ-SUBST
+(CONST 10) = LIST
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+writes special variable : (TR-ABORT)
+79 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD 2)
+2     (CDR)
+3     (CAR)
+4     (CDR&PUSH)
+5     L5
+5     (LOAD&PUSH 0)
+6     (CALLS1&JMPIF 146 L85)              ; ENDP
+10    (LOAD&CAR&PUSH 0)
+12    (LOAD 0)
+13    (BIND 0)                            ; VAR
+15    (GETVALUE 0)                        ; VAR
+17    (JMPIFATOM L46)
+19    (GETVALUE 0)                        ; VAR
+21    (CAR)
+22    (CAR&PUSH)
+23    (JMPIFNOTEQTO 4 L56)                ; MSETQ
+26    (CONST&PUSH 1)                      ; CONS
+27    (CONST&PUSH 2)                      ; QUOTE
+28    (GETVALUE 0)                        ; VAR
+30    (CDR)
+31    (CAR&PUSH)
+32    (LIST&PUSH 2)
+34    (GETVALUE 0)                        ; VAR
+36    (CDR)
+37    (CDR)
+38    (CAR)
+39    L39
+39    (PUSH)
+40    (CALL1&PUSH 3)                      ; DTRANSLATE
+42    (LIST 3)
+44    (JMP L64)
+46    L46
+46    (CONST&PUSH 1)                      ; CONS
+47    (CONST&PUSH 2)                      ; QUOTE
+48    (GETVALUE&PUSH 0)                   ; VAR
+50    (LIST&PUSH 2)
+52    (GETVALUE 0)                        ; VAR
+54    (JMP L39)
+56    L56
+56    (T)
+57    (SETVALUE 5)                        ; TR-ABORT
+59    (GETVALUE&PUSH 0)                   ; VAR
+61    (CONST&PUSH 6)                      ; "Illegal BUILDQ form encountered during translation"
+62    (CALL2 7)                           ; TR-TELL
+64    L64
+64    (UNBIND1)
+65    (PUSH)
+66    (LOAD&CONS&STORE 2)
+68    (SKIP 1)
+70    (LOAD&CDR&STORE 0)
+72    (JMP L5)
+75    L75
+75    (CONST&PUSH 8)                      ; $ANY
+76    (CONST&PUSH 2)                      ; QUOTE
+77    (LOAD 4)
+78    (CDR)
+79    (CDR)
+80    (CAR&PUSH)
+81    (LIST 3)
+83    (SKIP&RET 3)
+85    L85
+85    (SKIP 1)
+87    (LOAD&PUSH 0)
+88    (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+91    (LOAD&JMPIFNOT 0 L75)
+94    (CONST&PUSH 8)                      ; $ANY
+95    (CONST&PUSH 9)                      ; MBUILDQ-SUBST
+96    (CONST&PUSH 10)                     ; LIST
+97    (LOAD 3)
+98    (CONS&PUSH)
+99    (CONST&PUSH 2)                      ; QUOTE
+100   (LOAD 6)
+101   (CDR)
+102   (CDR)
+103   (CAR&PUSH)
+104   (LIST&PUSH 2)
+106   (LIST 4)
+108   (SKIP&RET 3)
+
+
+Wrote file binary-clisp/trans5.fas
+Wrote file /cygdrive/e/temp/maxima/src/trans5.lis

@@ -1,0 +1,303 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mutils.lisp
+on 2002-12-17 13:32:07 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mutils.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MUTILS)-2|
+(CONST 0) = MUTILS
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MUTILS
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $ASSOC (KEY IELIST &OPTIONAL ...) ...)-3|
+(CONST 0) = $ASSOC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ASSOC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ASSOC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ASSOC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ASSOC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ASSOC
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ASSOC
+(CONST 0) = MARGS
+(CONST 1) = #<COMPILED-CLOSURE $ASSOC-1>
+(CONST 2) = ALIKE1
+(CONST 3) = #.#'SECOND
+(CONST 4) = "Improper form for list:~%~M"
+(CONST 5) = MERROR
+2 required arguments
+1 optional argument
+No rest parameter
+No keyword parameters
+26 byte-code instructions:
+0     (UNBOUND->NIL 1)
+2     (LOAD&PUSH 2)
+3     (CALL1&PUSH 0)                      ; MARGS
+5     (CONST&PUSH 1)                      ; #<COMPILED-CLOSURE $ASSOC-1>
+6     (LOAD&PUSH 1)
+7     (CALLSR&JMPIF 0 40 L22)             ; EVERY
+11    (CONST&PUSH 4)                      ; "Improper form for list:~%~M"
+12    (LOAD&PUSH 4)
+13    (CALL2 5)                           ; MERROR
+15    (SKIP&RET 5)
+17    L17
+17    (CDR)
+18    (CDR)
+19    (CAR)
+20    (SKIP&RET 6)
+22    L22
+22    (LOAD&PUSH 4)
+23    (LOAD&PUSH 1)
+24    (PUSH-UNBOUND 6)
+26    (CONST&SYMBOL-FUNCTION&STORE 2 1)   ; ALIKE1
+29    (CONST 3)                           ; #.#'SECOND
+30    (STORE 2)
+31    (CALLS2&PUSH 92)                    ; FIND
+33    (LOAD&JMPIF 0 L17)
+36    (LOAD 3)
+37    (SKIP&RET 6)
+
+
+Disassembly of function $ASSOC-1
+(CONST 0) = 3
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 3
+1     (LOAD&PUSH 2)
+2     (CALLS2&PUSH 71)                    ; LENGTH
+4     (CALLSR 1 45)                       ; =
+7     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN $EVERY (&REST ARGS) ...)-4|
+(CONST 0) = $EVERY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $EVERY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EVERY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $EVERY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $EVERY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $EVERY
+8     (SKIP&RET 1)
+
+
+Disassembly of function $EVERY
+(CONST 0) = 0
+(CONST 1) = "Every must have at least 1 argument"
+(CONST 2) = MERROR
+(CONST 3) = 1
+(CONST 4) = $LISTP
+(CONST 5) = $LENGTH
+(CONST 6) = #.#'NOT
+(CONST 7) = MARGS
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+43 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (LOAD&PUSH 0)
+4     (CONST&PUSH 0)                      ; 0
+5     (CALLSR&JMPIF 1 45 L22)             ; =
+9     (LOAD&PUSH 0)
+10    (CONST&PUSH 3)                      ; 1
+11    (CALLSR&JMPIF 1 45 L39)             ; =
+15    (CONST&PUSH 6)                      ; #.#'NOT
+16    (LOAD&PUSH 3)
+17    (CALLSR 0 41)                       ; NOTANY
+20    (SKIP&RET 3)
+22    L22
+22    (CONST&PUSH 1)                      ; "Every must have at least 1 argument"
+23    (CALL1 2)                           ; MERROR
+25    (SKIP&RET 3)
+27    L27
+27    (CONST&PUSH 6)                      ; #.#'NOT
+28    (LOAD&PUSH 1)
+29    (CALL1&PUSH 7)                      ; MARGS
+31    (CALLSR 0 41)                       ; NOTANY
+34    (SKIP&RET 4)
+36    L36
+36    (NIL)
+37    (SKIP&RET 4)
+39    L39
+39    (LOAD&CAR&PUSH 2)
+41    (LOAD&PUSH 0)
+42    (CALL1&JMPIFNOT 4 L53)              ; $LISTP
+45    (LOAD&PUSH 0)
+46    (CALL1&PUSH 5)                      ; $LENGTH
+48    (CONST&PUSH 0)                      ; 0
+49    (CALLSR&JMPIF 1 48 L27)             ; >
+53    L53
+53    (LOAD&PUSH 0)
+54    (CALL1&JMPIFNOT 4 L65)              ; $LISTP
+57    (LOAD&PUSH 0)
+58    (CALL1&PUSH 5)                      ; $LENGTH
+60    (CONST&PUSH 0)                      ; 0
+61    (CALLSR&JMPIF 1 45 L36)             ; =
+65    L65
+65    (POP)
+66    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN ASSOL (ITEM ALIST) ...)-5|
+(CONST 0) = ASSOL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ASSOL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ASSOL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ASSOL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ASSOL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ASSOL
+8     (SKIP&RET 1)
+
+
+Disassembly of function ASSOL
+(CONST 0) = ALIKE1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (NIL&PUSH)
+2     (JMP L18)
+4     L4
+4     (POP)
+5     (SKIP&RET 4)
+7     L7
+7     (LOAD&CAR&STORE 1 0)
+10    (LOAD&PUSH 4)
+11    (LOAD&CAR&PUSH 1)
+13    (CALL2&JMPIF 0 L4)                  ; ALIKE1
+16    (LOAD&CDR&STORE 1)
+18    L18
+18    (LOAD&PUSH 1)
+19    (CALLS1&JMPIFNOT 146 L7)            ; ENDP
+22    (NIL)
+23    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFMFUN ASSOLIKE (ITEM ALIST) ...)-6|
+(CONST 0) = ASSOLIKE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ASSOLIKE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ASSOLIKE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ASSOLIKE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ASSOLIKE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ASSOLIKE
+8     (SKIP&RET 1)
+
+
+Disassembly of function ASSOLIKE
+(CONST 0) = ASSOL
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (LOAD&PUSH 2)
+2     (CALL2 0)                           ; ASSOL
+4     (CDR)
+5     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN MEMALIKE (X L) ...)-7|
+(CONST 0) = MEMALIKE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MEMALIKE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MEMALIKE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MEMALIKE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MEMALIKE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MEMALIKE
+8     (SKIP&RET 1)
+
+
+Disassembly of function MEMALIKE
+(CONST 0) = ALIKE1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&JMPIFNOT 0 L15)
+4     L4
+4     (LOAD&PUSH 3)
+5     (LOAD&CAR&PUSH 1)
+7     (CALL2&JMPIF 0 L18)                 ; ALIKE1
+10    (LOAD&CDR&STORE 0)
+12    (LOAD&JMPIF 0 L4)
+15    L15
+15    (NIL)
+16    (SKIP&RET 4)
+18    L18
+18    (POP)
+19    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/mutils.fas
+Wrote file /cygdrive/e/temp/maxima/src/mutils.lis

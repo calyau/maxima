@@ -1,0 +1,310 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/procs.lisp
+on 2002-12-17 13:32:00 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/procs.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE PROCS MACRO)-2|
+(CONST 0) = PROCS
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (MACRO)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PROCS
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (MACRO)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN VERIFY-AS-SUBR-ARGUMENT-LIST (PROPERTY L N) ...)-3|
+(CONST 0) = VERIFY-AS-SUBR-ARGUMENT-LIST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE VERIFY-AS-SUBR-ARGUMENT-LIST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; VERIFY-AS-SUBR-ARGUMENT-LIST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; VERIFY-AS-SUBR-ARGUMENT-LIST
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE VERIFY-AS-SUBR-ARGUMENT-LIST>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; VERIFY-AS-SUBR-ARGUMENT-LIST
+8     (SKIP&RET 1)
+
+
+Disassembly of function VERIFY-AS-SUBR-ARGUMENT-LIST
+(CONST 0) = &REST
+(CONST 1) = MEMQ
+(CONST 2) = &OPTIONAL
+(CONST 3) = "without any special action"
+(CONST 4) = "bad argument list for a"
+(CONST 5) = "property."
+(CONST 6) = CERROR
+(CONST 7) = &AUX
+(CONST 8) = *
+(CONST 9) = 6
+(CONST 10) = "argument list too long for a"
+(CONST 11) = "property."
+(CONST 12) = "argument list for a"
+(CONST 13) = "property must be"
+(CONST 14) = "long."
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+53 byte-code instructions:
+0     (CONST&PUSH 0)                      ; &REST
+1     (LOAD&PUSH 3)
+2     (CALL2&JMPIF 1 L35)                 ; MEMQ
+5     (CONST&PUSH 2)                      ; &OPTIONAL
+6     (LOAD&PUSH 3)
+7     (CALL2&JMPIF 1 L35)                 ; MEMQ
+10    (LOAD&PUSH 2)
+11    (CALLS2&PUSH 71)                    ; LENGTH
+13    (CONST&PUSH 7)                      ; &AUX
+14    (LOAD&PUSH 4)
+15    (CALL2&PUSH 1)                      ; MEMQ
+17    (CALLS2&PUSH 71)                    ; LENGTH
+19    (CALLSR&PUSH 1 54)                  ; -
+22    (LOAD&PUSH 2)
+23    (JMPIFEQTO 8 L47)                   ; *
+26    (LOAD&PUSH 2)
+27    (LOAD&PUSH 1)
+28    (CALLSR&JMPIFNOT 1 45 L61)          ; =
+32    L32
+32    (POP)
+33    (SKIP&RET 4)
+35    L35
+35    (CONST&PUSH 3)                      ; "without any special action"
+36    (CONST&PUSH 4)                      ; "bad argument list for a"
+37    (LOAD&PUSH 5)
+38    (CONST&PUSH 5)                      ; "property."
+39    (LIST&PUSH 3)
+41    (LOAD&PUSH 4)
+42    (CALL 3 6)                          ; CERROR
+45    (SKIP&RET 4)
+47    L47
+47    (LOAD&PUSH 0)
+48    (CONST&PUSH 9)                      ; 6
+49    (CALLSR&JMPIF 1 47 L32)             ; <
+53    (CONST&PUSH 3)                      ; "without any special action"
+54    (CONST&PUSH 10)                     ; "argument list too long for a"
+55    (LOAD&PUSH 6)
+56    (CONST&PUSH 11)                     ; "property."
+57    (LIST 3)
+59    (JMP L69)
+61    L61
+61    (CONST&PUSH 3)                      ; "without any special action"
+62    (CONST&PUSH 12)                     ; "argument list for a"
+63    (LOAD&PUSH 6)
+64    (CONST&PUSH 13)                     ; "property must be"
+65    (LOAD&PUSH 6)
+66    (CONST&PUSH 14)                     ; "long."
+67    (LIST 5)
+69    L69
+69    (PUSH)
+70    (LOAD&PUSH 5)
+71    (CALL 3 6)                          ; CERROR
+74    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN A-DEF-PROPERTY (NAME ARGL BODY ...) ...)-4|
+(CONST 0) = A-DEF-PROPERTY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE A-DEF-PROPERTY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; A-DEF-PROPERTY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; A-DEF-PROPERTY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE A-DEF-PROPERTY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; A-DEF-PROPERTY
+8     (SKIP&RET 1)
+
+
+Disassembly of function A-DEF-PROPERTY
+(CONST 0) = NAME
+(CONST 1) = VERIFY-AS-SUBR-ARGUMENT-LIST
+(CONST 2) = DEFUN-PROP
+5 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+15 byte-code instructions:
+0     (LOAD 5)
+1     (BIND 0)                            ; NAME
+3     (LOAD&PUSH 5)
+4     (LOAD&PUSH 8)
+5     (LOAD&PUSH 6)
+6     (CALL 3 1)                          ; VERIFY-AS-SUBR-ARGUMENT-LIST
+9     (CONST&PUSH 2)                      ; DEFUN-PROP
+10    (GETVALUE&PUSH 0)                   ; NAME
+12    (LOAD&PUSH 7)
+13    (LIST&PUSH 2)
+15    (LOAD&PUSH 9)
+16    (LOAD 9)
+17    (LIST* 3)
+19    (UNBIND1)
+20    (SKIP&RET 6)
+
+
+Disassembly of function #:|(DEFMACRO DEF-DEF-PROPERTY (NAME SAMPLE-ARGLIST) ...)-5|
+(CONST 0) = DEF-DEF-PROPERTY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-DEF-PROPERTY>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-DEF-PROPERTY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-DEF-PROPERTY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-DEF-PROPERTY>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF-DEF-PROPERTY
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-DEF-PROPERTY
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = DEFMACRO
+(CONST 4) = DEF-
+(CONST 5) = -PROPERTY
+(CONST 6) = SYMBOLCONC
+(CONST 7) = (NAME ARGL . BODY)
+(CONST 8) = A-DEF-PROPERTY
+(CONST 9) = ARGL
+(CONST 10) = BODY
+(CONST 11) = QUOTE
+(CONST 12) = DEF-DEF-PROPERTY
+(CONST 13) = *
+(CONST 14) = VERIFY-AS-SUBR-ARGUMENT-LIST
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+40 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L53)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CONST&PUSH 3)                      ; DEFMACRO
+18    (CONST&PUSH 4)                      ; DEF-
+19    (GETVALUE&PUSH 2)                   ; NAME
+21    (CONST&PUSH 5)                      ; -PROPERTY
+22    (CALL&PUSH 3 6)                     ; SYMBOLCONC
+25    (CONST&PUSH 7)                      ; (NAME ARGL . BODY)
+26    (CONST&PUSH 8)                      ; A-DEF-PROPERTY
+27    (CONST&PUSH 2)                      ; NAME
+28    (CONST&PUSH 9)                      ; ARGL
+29    (CONST&PUSH 10)                     ; BODY
+30    (CONST&PUSH 11)                     ; QUOTE
+31    (GETVALUE&PUSH 2)                   ; NAME
+33    (LIST&PUSH 2)
+35    (CONST&PUSH 11)                     ; QUOTE
+36    (CONST&PUSH 12)                     ; DEF-DEF-PROPERTY
+37    (LOAD&PUSH 10)
+38    (CONST&PUSH 13)                     ; *
+39    (CALL&PUSH 3 14)                    ; VERIFY-AS-SUBR-ARGUMENT-LIST
+42    (LIST&PUSH 2)
+44    (LIST&PUSH 6)
+46    (LIST 4)
+48    (SKIP 1)
+50    (UNBIND1)
+51    (SKIP&RET 3)
+53    L53
+53    (LOAD&PUSH 2)
+54    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+56    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO SUBR-CALL (F &REST L) ...)-6|
+(CONST 0) = SUBR-CALL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SUBR-CALL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SUBR-CALL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SUBR-CALL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SUBR-CALL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; SUBR-CALL
+10    (SKIP&RET 1)
+
+
+Disassembly of function SUBR-CALL
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = FUNCALL
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L21)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (CONST&PUSH 2)                      ; FUNCALL
+15    (LOAD&PUSH 2)
+16    (LOAD 2)
+17    (LIST* 2)
+19    (SKIP&RET 5)
+21    L21
+21    (LOAD&PUSH 2)
+22    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+24    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/procs.fas
+Wrote file /cygdrive/e/temp/maxima/src/procs.lis

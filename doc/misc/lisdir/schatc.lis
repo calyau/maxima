@@ -1,0 +1,3671 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/schatc.lisp
+on 2002-12-17 13:35:16 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/schatc.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE SCHATC)-2|
+(CONST 0) = SCHATC
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SCHATC
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (EVAL COMPILE) (SETQ OLD-IBASE *READ-BASE* ...))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL SPLIST DICT ...) (*LEXPR $DIVIDE $FACTOR) ...)-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO PUSH-CONTEXT NIL ...)-5|
+(CONST 0) = PUSH-CONTEXT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-CONTEXT>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-CONTEXT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-CONTEXT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-CONTEXT>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; PUSH-CONTEXT
+10    (SKIP&RET 1)
+
+
+Disassembly of function PUSH-CONTEXT
+(CONST 0) = 1
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = (SETQ ANS (CONS NIL ANS))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 1
+4     (CALLSR&JMPIF 1 48 L11)             ; >
+8     (CONST 2)                           ; (SETQ ANS (CONS NIL ANS))
+9     (SKIP&RET 3)
+11    L11
+11    (LOAD&PUSH 2)
+12    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO PUSH-LOOP-CONTEXT NIL ...)-6|
+(CONST 0) = PUSH-LOOP-CONTEXT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-LOOP-CONTEXT>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-LOOP-CONTEXT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-LOOP-CONTEXT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-LOOP-CONTEXT>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; PUSH-LOOP-CONTEXT
+10    (SKIP&RET 1)
+
+
+Disassembly of function PUSH-LOOP-CONTEXT
+(CONST 0) = 1
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = (RPLACD ANS (CONS '*LOOP (CDR ANS)))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 1
+4     (CALLSR&JMPIF 1 48 L11)             ; >
+8     (CONST 2)                           ; (RPLACD ANS (CONS '*LOOP #))
+9     (SKIP&RET 3)
+11    L11
+11    (LOAD&PUSH 2)
+12    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO PRESERVE (Z) ...)-7|
+(CONST 0) = PRESERVE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PRESERVE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PRESERVE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PRESERVE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PRESERVE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; PRESERVE
+10    (SKIP&RET 1)
+
+
+Disassembly of function PRESERVE
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = RPLACD
+(CONST 3) = ANS
+(CONST 4) = CONS
+(CONST 5) = CDR
+(CONST 6) = ((CDR ANS))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+24 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L29)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; RPLACD
+12    (CONST&PUSH 3)                      ; ANS
+13    (CONST&PUSH 4)                      ; CONS
+14    (CONST&PUSH 4)                      ; CONS
+15    (LOAD&PUSH 4)
+16    (CONST&PUSH 5)                      ; CDR
+17    (LOAD&PUSH 6)
+18    (LIST&PUSH 2)
+20    (LIST&PUSH 3)
+22    (CONST 6)                           ; ((CDR ANS))
+23    (LIST*&PUSH 2)
+25    (LIST 3)
+27    (SKIP&RET 4)
+29    L29
+29    (LOAD&PUSH 2)
+30    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+32    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO ADD-TO (VAR VAL) ...)-8|
+(CONST 0) = ADD-TO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ADD-TO>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ADD-TO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ADD-TO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ADD-TO>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; ADD-TO
+10    (SKIP&RET 1)
+
+
+Disassembly of function ADD-TO
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = VAR
+(CONST 3) = RPLACD
+(CONST 4) = ANS
+(CONST 5) = CONS
+(CONST 6) = ((CDR ANS))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+29 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L36)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; VAR
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CONST&PUSH 3)                      ; RPLACD
+18    (CONST&PUSH 4)                      ; ANS
+19    (CONST&PUSH 5)                      ; CONS
+20    (CONST&PUSH 5)                      ; CONS
+21    (GETVALUE&PUSH 2)                   ; VAR
+23    (LOAD&PUSH 5)
+24    (LIST&PUSH 3)
+26    (CONST 6)                           ; ((CDR ANS))
+27    (LIST*&PUSH 2)
+29    (LIST 3)
+31    (SKIP 1)
+33    (UNBIND1)
+34    (SKIP&RET 3)
+36    L36
+36    (LOAD&PUSH 2)
+37    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+39    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO VAR-PAT (X) ...)-9|
+(CONST 0) = VAR-PAT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE VAR-PAT>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; VAR-PAT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; VAR-PAT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE VAR-PAT>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; VAR-PAT
+10    (SKIP&RET 1)
+
+
+Disassembly of function VAR-PAT
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = X
+(CONST 3) = ATOM
+(CONST 4) = CAR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+19 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L24)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; X
+13    (CONST&PUSH 3)                      ; ATOM
+14    (CONST&PUSH 4)                      ; CAR
+15    (GETVALUE&PUSH 2)                   ; X
+17    (LIST&PUSH 2)
+19    (LIST 2)
+21    (UNBIND1)
+22    (SKIP&RET 3)
+24    L24
+24    (LOAD&PUSH 2)
+25    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+27    (SKIP&RET 3)
+
+
+Disassembly of function #:|(SETQ *SCHATFACTOR NIL)-10|
+(CONST 0) = *SCHATFACTOR
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*SCHATFACTOR)
+3 byte-code instructions:
+0     (NIL)
+1     (SETVALUE 0)                        ; *SCHATFACTOR
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN FREE1 (A) ...)-11|
+(CONST 0) = FREE1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FREE1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FREE1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FREE1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FREE1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FREE1
+8     (SKIP&RET 1)
+
+
+Disassembly of function FREE1
+(CONST 0) = A
+(CONST 1) = X
+(CONST 2) = FIXNUMP
+(CONST 3) = VAR
+(CONST 4) = FREE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (VAR X A)
+26 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; A
+3     (GETVALUE 0)                        ; A
+5     (BIND 1)                            ; X
+7     (GETVALUE&PUSH 1)                   ; X
+9     (CALL1&JMPIF 2 L21)                 ; FIXNUMP
+12    (GETVALUE 1)                        ; X
+14    (JMPIFCONSP L38)
+16    (GETVALUE&PUSH 1)                   ; X
+18    (CALLS2&JMPIFNOT 15 L25)            ; FLOATP
+21    L21
+21    (GETVALUE&PUSH 1)                   ; X
+23    (CALLS2 145)                        ; ZEROP
+25    L25
+25    (UNBIND1)
+26    (NOT)
+27    (JMPIFNOT1 L35)
+29    (GETVALUE&PUSH 0)                   ; A
+31    (GETVALUE&PUSH 3)                   ; VAR
+33    (CALL2 4)                           ; FREE
+35    L35
+35    (UNBIND1)
+36    (SKIP&RET 2)
+38    L38
+38    (NIL)
+39    (JMP L25)
+
+
+Disassembly of function #:|(DEFUN NOT-ZERO-FREE (A VAR) ...)-12|
+(CONST 0) = NOT-ZERO-FREE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NOT-ZERO-FREE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NOT-ZERO-FREE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NOT-ZERO-FREE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NOT-ZERO-FREE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NOT-ZERO-FREE
+8     (SKIP&RET 1)
+
+
+Disassembly of function NOT-ZERO-FREE
+(CONST 0) = A
+(CONST 1) = VAR
+(CONST 2) = FREE1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (A)
+8 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; A
+3     (LOAD 4)
+4     (BIND 1)                            ; VAR
+6     (GETVALUE&PUSH 0)                   ; A
+8     (CALL1 2)                           ; FREE1
+10    (UNBIND 2)
+12    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN LINEAR* (E VAR) ...)-13|
+(CONST 0) = LINEAR*
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LINEAR*>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LINEAR*
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LINEAR*
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LINEAR*>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LINEAR*
+8     (SKIP&RET 1)
+
+
+Disassembly of function LINEAR*
+(CONST 0) = E
+(CONST 1) = VAR
+(CONST 2) = A
+(CONST 3) = N
+(CONST 4) = $RATCOEF
+(CONST 5) = FREE
+(CONST 6) = (MPLUS)
+(CONST 7) = (MTIMES)
+(CONST 8) = -1
+(CONST 9) = 1
+(CONST 10) = SIMPLUS
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (A N VAR E)
+writes special variables : (A N)
+45 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (LOAD 4)
+4     (BIND 1)                            ; VAR
+6     (NIL)
+7     (BIND 2)                            ; A
+9     (NIL)
+10    (BIND 3)                            ; N
+12    (GETVALUE&PUSH 0)                   ; E
+14    (GETVALUE&PUSH 1)                   ; VAR
+16    (CALL2 4)                           ; $RATCOEF
+18    (SETVALUE 3)                        ; N
+20    (PUSH)
+21    (GETVALUE&PUSH 1)                   ; VAR
+23    (CALL2&JMPIFNOT 5 L59)              ; FREE
+26    (CONST&PUSH 6)                      ; (MPLUS)
+27    (GETVALUE&PUSH 0)                   ; E
+29    (CONST&PUSH 7)                      ; (MTIMES)
+30    (CONST&PUSH 8)                      ; -1
+31    (GETVALUE&PUSH 3)                   ; N
+33    (GETVALUE&PUSH 1)                   ; VAR
+35    (LIST&PUSH 4)
+37    (LIST&PUSH 3)
+39    (CONST&PUSH 9)                      ; 1
+40    (NIL&PUSH)
+41    (CALL 3 10)                         ; SIMPLUS
+44    (SETVALUE 2)                        ; A
+46    (PUSH)
+47    (GETVALUE&PUSH 1)                   ; VAR
+49    (CALL2&JMPIF 5 L64)                 ; FREE
+52    (NIL)
+53    L53
+53    (UNBIND 2)
+55    L55
+55    (UNBIND 2)
+57    (SKIP&RET 3)
+59    L59
+59    (NIL)
+60    (UNBIND 2)
+62    (JMP L55)
+64    L64
+64    (GETVALUE&PUSH 2)                   ; A
+66    (GETVALUE 3)                        ; N
+68    (CONS)
+69    (JMP L53)
+
+
+Disassembly of function #:|(DEFUN DVCOE (E PAT ARGS) ...)-14|
+(CONST 0) = DVCOE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DVCOE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DVCOE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DVCOE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DVCOE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DVCOE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DVCOE
+(CONST 0) = E
+(CONST 1) = (MTIMES)
+(CONST 2) = $RATSIMP
+(CONST 3) = M1
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (E)
+11 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; E
+3     (CONST&PUSH 1)                      ; (MTIMES)
+4     (GETVALUE&PUSH 0)                   ; E
+6     (LOAD&PUSH 6)
+7     (LIST&PUSH 3)
+9     (CALL1&PUSH 2)                      ; $RATSIMP
+11    (LOAD&PUSH 6)
+12    (CALL2 3)                           ; M1
+14    (UNBIND1)
+15    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN SCHATCHEN (E P) ...)-15|
+(CONST 0) = SCHATCHEN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SCHATCHEN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SCHATCHEN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SCHATCHEN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SCHATCHEN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SCHATCHEN
+8     (SKIP&RET 1)
+
+
+Disassembly of function SCHATCHEN
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = M2
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (P E)
+10 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (LOAD 4)
+4     (BIND 1)                            ; P
+6     (GETVALUE&PUSH 0)                   ; E
+8     (GETVALUE&PUSH 1)                   ; P
+10    (NIL&PUSH)
+11    (CALL 3 2)                          ; M2
+14    (UNBIND 2)
+16    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN M2 (E P SPLIST) ...)-16|
+(CONST 0) = M2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE M2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; M2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; M2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE M2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; M2
+8     (SKIP&RET 1)
+
+
+Disassembly of function M2
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = SPLIST
+(CONST 3) = ANS
+(CONST 4) = M1
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS P E)
+29 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; E
+3     (LOAD 5)
+4     (BIND 1)                            ; P
+6     (LOAD 7)
+7     (BIND 2)                            ; SPLIST
+9     (NIL&PUSH)
+10    (LIST 1)
+12    (BIND 3)                            ; ANS
+14    (GETVALUE&PUSH 0)                   ; E
+16    (CALLS1&PUSH 161)                   ; COPY-TREE
+18    (GETVALUE&PUSH 1)                   ; P
+20    (CALL2&JMPIFNOT 4 L34)              ; M1
+23    (GETVALUE 3)                        ; ANS
+25    (CDR)
+26    (NOT)
+27    (JMPIF1 L38)
+29    (GETVALUE 3)                        ; ANS
+31    (CDR)
+32    (JMPIF1 L38)
+34    L34
+34    (NIL)
+35    (UNBIND1)
+36    (JMP L39)
+38    L38
+38    (UNBIND1)
+39    L39
+39    (UNBIND 3)
+41    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN SAV&DEL (X) ...)-17|
+(CONST 0) = SAV&DEL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SAV&DEL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SAV&DEL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SAV&DEL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SAV&DEL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SAV&DEL
+8     (SKIP&RET 1)
+
+
+Disassembly of function SAV&DEL
+(CONST 0) = X
+(CONST 1) = ANS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X ANS)
+18 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 1)                   ; ANS
+5     (GETVALUE&PUSH 0)                   ; X
+7     (GETVALUE 0)                        ; X
+9     (CDR)
+10    (CONS&PUSH)
+11    (GETVALUE 1)                        ; ANS
+13    (CDR)
+14    (CONS&PUSH)
+15    (CALLS1 170)                        ; RPLACD
+17    (GETVALUE&PUSH 0)                   ; X
+19    (GETVALUE 0)                        ; X
+21    (CDR)
+22    (CDR&PUSH)
+23    (CALLS1 170)                        ; RPLACD
+25    (UNBIND1)
+26    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN M1 (E P) ...)-18|
+(CONST 0) = M1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE M1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; M1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; M1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE M1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; M1
+8     (SKIP&RET 1)
+
+
+Disassembly of function M1
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = ANS
+(CONST 3) = TESTA
+(CONST 4) = RESTORE1
+(CONST 5) = RESTORE
+(CONST 6) = SIMP
+(CONST 7) = MEMQ
+(CONST 8) = ALIKE1
+(CONST 9) = (MPLUS MTIMES)
+(CONST 10) = LOOPP
+(CONST 11) = (MEXPT ZEPOW)
+(CONST 12) = ZEPOW
+(CONST 13) = EACHP
+(CONST 14) = COEFFT
+(CONST 15) = COEFFPT
+(CONST 16) = COEFFP
+(CONST 17) = COEFFTT
+(CONST 18) = MTIMES
+(CONST 19) = COEFFPP
+(CONST 20) = MPLUS
+(CONST 21) = (MPLUS MTIMES)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS P E)
+writes special variable : (ANS)
+207 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (LOAD 4)
+4     (BIND 1)                            ; P
+6     (GETVALUE&PUSH 0)                   ; E
+8     (GETVALUE 1)                        ; P
+10    (JMPIFEQ L128)
+13    (GETVALUE 1)                        ; P
+15    (JMPIFATOM L132)
+18    (GETVALUE 1)                        ; P
+20    (CAR)
+21    (JMPIFATOM L141)
+24    (GETVALUE 1)                        ; P
+26    (CAR)
+27    (CAR)
+28    (JMPIFCONSP L338)
+31    (CONST&PUSH 6)                      ; SIMP
+32    (GETVALUE 1)                        ; P
+34    (CAR)
+35    (CDR&PUSH)
+36    (CALL2&JMPIF 7 L166)                ; MEMQ
+40    (GETVALUE 1)                        ; P
+42    (CAR)
+43    (CAR&PUSH)
+44    (CONST&PUSH 9)                      ; (MPLUS MTIMES)
+45    (CALL2&JMPIF 7 L175)                ; MEMQ
+49    (GETVALUE 1)                        ; P
+51    (CAR)
+52    (CAR&PUSH)
+53    (CONST&PUSH 11)                     ; (MEXPT ZEPOW)
+54    (CALL2&JMPIF 7 L184)                ; MEMQ
+58    (GETVALUE 0)                        ; E
+60    (JMPIFATOM L73)
+62    (GETVALUE 0)                        ; E
+64    (CAR)
+65    (CAR&PUSH)
+66    (GETVALUE 1)                        ; P
+68    (CAR)
+69    (CAR)
+70    (JMPIFEQ L195)
+73    L73
+73    (GETVALUE 1)                        ; P
+75    (CAR)
+76    (CAR&PUSH)
+77    (JMPIFEQTO 14 L204)                 ; COEFFT
+81    (GETVALUE 1)                        ; P
+83    (CAR)
+84    (CAR&PUSH)
+85    (JMPIFEQTO 15 L215)                 ; COEFFPT
+89    (GETVALUE 1)                        ; P
+91    (CAR)
+92    (CAR&PUSH)
+93    (JMPIFEQTO 16 L226)                 ; COEFFP
+97    (GETVALUE 1)                        ; P
+99    (CAR)
+100   (CAR&PUSH)
+101   (JMPIFEQTO 17 L237)                 ; COEFFTT
+105   (GETVALUE 1)                        ; P
+107   (CAR)
+108   (CAR&PUSH)
+109   (JMPIFNOTEQTO 19 L248)              ; COEFFPP
+113   (GETVALUE&PUSH 0)                   ; E
+115   (GETVALUE 1)                        ; P
+117   (CDR)
+118   (CAR&PUSH)
+119   (T&PUSH)
+120   (CONST 20)                          ; MPLUS
+121   L121
+121   (PUSH)
+122   (CALL 4 17)                         ; COEFFTT
+125   (JMP L346)
+128   L128
+128   (T)
+129   (JMP L346)
+132   L132
+132   (NIL)
+133   (JMP L346)
+136   L136
+136   (CALL0 4)                           ; RESTORE1
+138   (JMP L346)
+141   L141
+141   (NIL&PUSH)
+142   (GETVALUE 2)                        ; ANS
+144   (CONS)
+145   (SETVALUE 2)                        ; ANS
+147   (GETVALUE&PUSH 1)                   ; P
+149   (GETVALUE&PUSH 0)                   ; E
+151   (NIL&PUSH)
+152   (CALL 3 3)                          ; TESTA
+155   (JMPIF L136)
+157   (CALL0 5)                           ; RESTORE
+159   (JMPIF1 L346)
+162   (NIL)
+163   (JMP L346)
+166   L166
+166   (GETVALUE&PUSH 0)                   ; E
+168   (GETVALUE&PUSH 1)                   ; P
+170   (CALL2 8)                           ; ALIKE1
+172   (JMP L346)
+175   L175
+175   (GETVALUE&PUSH 0)                   ; E
+177   (GETVALUE&PUSH 1)                   ; P
+179   (CALL2 10)                          ; LOOPP
+181   (JMP L346)
+184   L184
+184   (GETVALUE&PUSH 0)                   ; E
+186   (GETVALUE&PUSH 1)                   ; P
+188   (T&PUSH)
+189   (CALL 3 12)                         ; ZEPOW
+192   (JMP L346)
+195   L195
+195   (GETVALUE&PUSH 0)                   ; E
+197   (GETVALUE&PUSH 1)                   ; P
+199   (CALL2 13)                          ; EACHP
+201   (JMP L346)
+204   L204
+204   (GETVALUE&PUSH 0)                   ; E
+206   (GETVALUE&PUSH 1)                   ; P
+208   (T&PUSH)
+209   (CALL 3 14)                         ; COEFFT
+212   (JMP L346)
+215   L215
+215   (GETVALUE&PUSH 0)                   ; E
+217   (GETVALUE&PUSH 1)                   ; P
+219   (T&PUSH)
+220   (CALL 3 15)                         ; COEFFPT
+223   (JMP L346)
+226   L226
+226   (GETVALUE&PUSH 0)                   ; E
+228   (GETVALUE&PUSH 1)                   ; P
+230   (T&PUSH)
+231   (CALL 3 16)                         ; COEFFP
+234   (JMP L346)
+237   L237
+237   (GETVALUE&PUSH 0)                   ; E
+239   (GETVALUE 1)                        ; P
+241   (CDR)
+242   (CAR&PUSH)
+243   (T&PUSH)
+244   (CONST 18)                          ; MTIMES
+245   (JMP L121)
+248   L248
+248   (NIL)
+249   (JMP L346)
+252   L252
+252   (NIL)
+253   (JMP L346)
+256   L256
+256   (CALL0 4)                           ; RESTORE1
+258   (JMP L346)
+261   L261
+261   (GETVALUE&PUSH 0)                   ; E
+263   (GETVALUE 0)                        ; E
+265   (CAR&PUSH)
+266   (GETVALUE 1)                        ; P
+268   (CDR)
+269   (CONS&PUSH)
+270   (CALL2&JMPIF 10 L256)               ; LOOPP
+273   (CALL0 5)                           ; RESTORE
+275   (JMPIF1 L346)
+278   (NIL)
+279   (JMP L346)
+282   L282
+282   (CALL0 4)                           ; RESTORE1
+284   (JMP L346)
+286   L286
+286   (GETVALUE 0)                        ; E
+288   (CAR)
+289   (CAR&PUSH)
+290   (CONST&PUSH 21)                     ; (MPLUS MTIMES)
+291   (CALL2&JMPIF 7 L261)                ; MEMQ
+294   (GETVALUE&PUSH 0)                   ; E
+296   (GETVALUE&PUSH 1)                   ; P
+298   (CALL2&JMPIF 13 L282)               ; EACHP
+301   (CALL0 5)                           ; RESTORE
+303   (JMPIF1 L346)
+305   (NIL)
+306   (JMP L346)
+308   L308
+308   (GETVALUE 0)                        ; E
+310   (JMPIFATOM L252)
+312   (NIL&PUSH)
+313   (GETVALUE 2)                        ; ANS
+315   (CONS)
+316   (SETVALUE 2)                        ; ANS
+318   (GETVALUE 1)                        ; P
+320   (CAR)
+321   (CAR&PUSH)
+322   (GETVALUE 0)                        ; E
+324   (CAR&PUSH)
+325   (NIL&PUSH)
+326   (CALL 3 3)                          ; TESTA
+329   (JMPIF L286)
+331   (CALL0 5)                           ; RESTORE
+333   (JMPIF1 L346)
+335   (NIL)
+336   (JMP L346)
+338   L338
+338   (GETVALUE 1)                        ; P
+340   (CAR)
+341   (CAR)
+342   (CAR)
+343   (JMPIFATOM L308)
+345   (NIL)
+346   L346
+346   (UNBIND 2)
+348   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN LOOPP (E P) ...)-19|
+(CONST 0) = LOOPP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LOOPP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LOOPP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LOOPP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LOOPP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LOOPP
+8     (SKIP&RET 1)
+
+
+Disassembly of function LOOPP
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = X
+(CONST 3) = *SCHATFACTOR
+(CONST 4) = MPLUS
+(CONST 5) = $FACTOR
+(CONST 6) = MTIMESP
+(CONST 7) = ANS
+(CONST 8) = RESTORE1
+(CONST 9) = RESTORE
+(CONST 10) = OPIDENT
+(CONST 11) = M1
+(CONST 12) = SAV&DEL
+(CONST 13) = COEFFT
+(CONST 14) = COEFFP
+(CONST 15) = COEFFPT
+(CONST 16) = COEFFTT
+(CONST 17) = MTIMES
+(CONST 18) = COEFFPP
+(CONST 19) = (MEXPT ZEPOW)
+(CONST 20) = MEMQ
+(CONST 21) = ZEPOW
+(CONST 22) = LOOP
+(CONST 23) = SCH-LOOP
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS X *SCHATFACTOR P E)
+writes special variables : (ANS E X)
+211 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (LOAD 4)
+4     (BIND 1)                            ; P
+6     (NIL)
+7     (BIND 2)                            ; X
+9     (NIL&PUSH)
+10    (GETVALUE 0)                        ; E
+12    (JMPIFATOM L45)
+14    (GETVALUE 1)                        ; P
+16    (CAR)
+17    (CAR&PUSH)
+18    (GETVALUE 0)                        ; E
+20    (CAR)
+21    (CAR)
+22    (JMPIFEQ L58)
+24    (GETVALUE 3)                        ; *SCHATFACTOR
+26    (JMPIFNOT L45)
+28    (GETVALUE 0)                        ; E
+30    (CAR)
+31    (CAR&PUSH)
+32    (JMPIFNOTEQTO 4 L45)                ; MPLUS
+35    (GETVALUE&PUSH 0)                   ; E
+37    (CALL1 5)                           ; $FACTOR
+39    (SETVALUE 2)                        ; X
+41    (PUSH)
+42    (CALL1&JMPIF 6 L54)                 ; MTIMESP
+45    L45
+45    (GETVALUE 1)                        ; P
+47    (CAR&PUSH)
+48    (GETVALUE&PUSH 0)                   ; E
+50    (LIST 2)
+52    (JMP L63)
+54    L54
+54    (GETVALUE 2)                        ; X
+56    (JMP L63)
+58    L58
+58    (GETVALUE 0)                        ; E
+60    (JMPIF L63)
+62    (NIL)
+63    L63
+63    (SETVALUE 0)                        ; E
+65    (NIL&PUSH)
+66    (GETVALUE 7)                        ; ANS
+68    (CONS)
+69    (SETVALUE 7)                        ; ANS
+71    (GETVALUE 1)                        ; P
+73    (STORE 0)
+74    (JMP L206)
+77    L77
+77    (CALL0 8)                           ; RESTORE1
+79    (JMP L331)
+82    L82
+82    (GETVALUE 0)                        ; E
+84    (CDR)
+85    (JMPIFNOT L77)
+87    (CALL0 9)                           ; RESTORE
+89    (JMPIF1 L331)
+92    (NIL)
+93    (JMP L331)
+96    L96
+96    (CALL0 9)                           ; RESTORE
+98    (SKIP 2)
+100   (UNBIND1)
+101   (JMP L334)
+104   L104
+104   (GETVALUE&PUSH 0)                   ; E
+106   (LOAD&CAR&PUSH 1)
+108   (NIL&PUSH)
+109   (CALL 3 13)                         ; COEFFT
+112   (JMPIF L206)
+115   (CALL0 9)                           ; RESTORE
+117   (JMP L331)
+120   L120
+120   (GETVALUE&PUSH 0)                   ; E
+122   (LOAD&CAR&PUSH 1)
+124   (NIL&PUSH)
+125   (CALL 3 14)                         ; COEFFP
+128   (JMPIF L206)
+131   (CALL0 9)                           ; RESTORE
+133   (JMP L331)
+136   L136
+136   (GETVALUE&PUSH 0)                   ; E
+138   (LOAD&CAR&PUSH 1)
+140   (NIL&PUSH)
+141   (CALL 3 15)                         ; COEFFPT
+144   (JMPIF L206)
+146   (CALL0 9)                           ; RESTORE
+148   (JMP L331)
+151   L151
+151   (GETVALUE&PUSH 0)                   ; E
+153   (LOAD 1)
+154   (CAR)
+155   (CDR)
+156   (CAR&PUSH)
+157   (NIL&PUSH)
+158   (CONST&PUSH 17)                     ; MTIMES
+159   (CALL 4 16)                         ; COEFFTT
+162   (JMPIF L206)
+164   (CALL0 9)                           ; RESTORE
+166   (JMP L331)
+169   L169
+169   (GETVALUE&PUSH 0)                   ; E
+171   (LOAD 1)
+172   (CAR)
+173   (CDR)
+174   (CAR&PUSH)
+175   (NIL&PUSH)
+176   (CONST&PUSH 4)                      ; MPLUS
+177   (CALL 4 16)                         ; COEFFTT
+180   (JMPIF L206)
+182   (CALL0 9)                           ; RESTORE
+184   (JMP L331)
+187   L187
+187   (GETVALUE 1)                        ; P
+189   (CAR)
+190   (CAR&PUSH)
+191   (CALL1&PUSH 10)                     ; OPIDENT
+193   (LOAD&JMPIFNOT 0 L96)
+197   (PUSH)
+198   (LOAD&CAR&PUSH 2)
+200   (CALL2&JMPIFNOT 11 L96)             ; M1
+204   (SKIP 1)
+206   L206
+206   (LOAD&CDR&STORE 0)
+208   (JMPIFNOT L82)
+211   (GETVALUE 0)                        ; E
+213   (SETVALUE 2)                        ; X
+215   L215
+215   (GETVALUE 2)                        ; X
+217   (CDR)
+218   (JMPIFNOT L187)
+220   (LOAD 0)
+221   (CAR)
+222   (JMPIFATOM L284)
+224   (LOAD 0)
+225   (CAR)
+226   (CAR)
+227   (JMPIFATOM L284)
+229   (LOAD 0)
+230   (CAR)
+231   (CAR)
+232   (CAR&PUSH)
+233   (JMPIFEQTO 13 L104)                 ; COEFFT
+237   (LOAD 0)
+238   (CAR)
+239   (CAR)
+240   (CAR&PUSH)
+241   (JMPIFEQTO 14 L120)                 ; COEFFP
+245   (LOAD 0)
+246   (CAR)
+247   (CAR)
+248   (CAR&PUSH)
+249   (JMPIFEQTO 15 L136)                 ; COEFFPT
+253   (LOAD 0)
+254   (CAR)
+255   (CAR)
+256   (CAR&PUSH)
+257   (JMPIFEQTO 16 L151)                 ; COEFFTT
+261   (LOAD 0)
+262   (CAR)
+263   (CAR)
+264   (CAR&PUSH)
+265   (JMPIFEQTO 18 L169)                 ; COEFFPP
+269   (LOAD 0)
+270   (CAR)
+271   (CAR)
+272   (CAR&PUSH)
+273   (CONST&PUSH 19)                     ; (MEXPT ZEPOW)
+274   (CALL2&JMPIF 20 L300)               ; MEMQ
+277   (LOAD 0)
+278   (CAR)
+279   (CAR)
+280   (CAR&PUSH)
+281   (JMPIFEQTO 22 L320)                 ; LOOP
+284   L284
+284   (GETVALUE 2)                        ; X
+286   (CDR)
+287   (CAR&PUSH)
+288   (LOAD&CAR&PUSH 1)
+290   (CALL2&JMPIFNOT 11 L312)            ; M1
+293   L293
+293   (GETVALUE&PUSH 2)                   ; X
+295   (CALL1 12)                          ; SAV&DEL
+297   (JMP L206)
+300   L300
+300   (GETVALUE 2)                        ; X
+302   (CDR)
+303   (CAR&PUSH)
+304   (LOAD&CAR&PUSH 1)
+306   (T&PUSH)
+307   (CALL 3 21)                         ; ZEPOW
+310   (JMPIF L293)
+312   L312
+312   (GETVALUE 2)                        ; X
+314   (CDR)
+315   (SETVALUE 2)                        ; X
+317   (JMP L215)
+320   L320
+320   (GETVALUE&PUSH 0)                   ; E
+322   (LOAD 1)
+323   (CAR)
+324   (CDR&PUSH)
+325   (CALL2&JMPIF 23 L206)               ; SCH-LOOP
+329   (CALL0 9)                           ; RESTORE
+331   L331
+331   (SKIP 1)
+333   (UNBIND1)
+334   L334
+334   (UNBIND 2)
+336   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN COEFFP (E P IND) ...)-20|
+(CONST 0) = COEFFP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COEFFP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COEFFP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COEFFP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COEFFP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COEFFP
+8     (SKIP&RET 1)
+
+
+Disassembly of function COEFFP
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = IND
+(CONST 3) = ANS
+(CONST 4) = MPLUSP
+(CONST 5) = (MPLUS)
+(CONST 6) = 0
+(CONST 7) = COEFFPORT
+(CONST 8) = TESTA
+(CONST 9) = "(BAD ARGS TO COEFFP -- REPORT BUG TO RZ)"
+(CONST 10) = MERROR
+(CONST 11) = X
+(CONST 12) = SAV&DEL
+(CONST 13) = RESTORE2
+(CONST 14) = M1
+(CONST 15) = RESTORE
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X P IND E ANS)
+writes special variables : (X E ANS)
+116 byte-code instructions:
+0     L0
+0     (LOAD 3)
+1     (BIND 0)                            ; E
+3     (LOAD 5)
+4     (BIND 1)                            ; P
+6     (LOAD 7)
+7     (BIND 2)                            ; IND
+9     (NIL&PUSH)
+10    (GETVALUE 3)                        ; ANS
+12    (CONS)
+13    (SETVALUE 3)                        ; ANS
+15    (GETVALUE&PUSH 0)                   ; E
+17    (CALL1&JMPIFNOT 4 L51)              ; MPLUSP
+20    (GETVALUE 2)                        ; IND
+22    (JMPIF L58)
+24    (GETVALUE 0)                        ; E
+26    (CDR)
+27    (CDR)
+28    (JMPIFNOT L58)
+30    (GETVALUE 1)                        ; P
+32    (CDR)
+33    (CDR)
+34    (JMPIF L44)
+36    (GETVALUE 1)                        ; P
+38    (CDR)
+39    (CAR)
+40    (CAR)
+41    (JMPIFATOM L109)
+44    L44
+44    (GETVALUE 0)                        ; E
+46    (BIND 11)                           ; X
+48    (JMP L129)
+51    L51
+51    (CONST&PUSH 5)                      ; (MPLUS)
+52    (GETVALUE&PUSH 0)                   ; E
+54    (LIST 2)
+56    (SETVALUE 0)                        ; E
+58    L58
+58    (GETVALUE&PUSH 0)                   ; E
+60    (GETVALUE&PUSH 1)                   ; P
+62    (CONST&PUSH 6)                      ; 0
+63    (GETVALUE&PUSH 2)                   ; IND
+65    (CALL 4 7)                          ; COEFFPORT
+68    (JMP L175)
+71    L71
+71    (GETVALUE&PUSH 3)                   ; ANS
+73    (GETVALUE&PUSH 0)                   ; E
+75    (GETVALUE 0)                        ; E
+77    (CDR)
+78    (CONS&PUSH)
+79    (GETVALUE 3)                        ; ANS
+81    (CDR)
+82    (CONS&PUSH)
+83    (CALLS1 170)                        ; RPLACD
+85    (GETVALUE&PUSH 0)                   ; E
+87    (NIL&PUSH)
+88    (CALLS1 170)                        ; RPLACD
+90    (T)
+91    (JMP L175)
+94    L94
+94    (GETVALUE&PUSH 0)                   ; E
+96    (CALL1&JMPIF 4 L71)                 ; MPLUSP
+99    (CONST&PUSH 9)                      ; "(BAD ARGS TO COEFFP -- REPORT BUG TO RZ)"
+100   (CALL1 10)                          ; MERROR
+102   (JMPIF1 L175)
+105   (NIL)
+106   (JMP L175)
+109   L109
+109   (GETVALUE 1)                        ; P
+111   (CDR)
+112   (CAR&PUSH)
+113   (GETVALUE&PUSH 0)                   ; E
+115   (NIL&PUSH)
+116   (CALL 3 8)                          ; TESTA
+119   (JMPIF L94)
+121   (NIL)
+122   (JMP L175)
+124   L124
+124   (GETVALUE 11)                       ; X
+126   (CDR)
+127   (SETVALUE 11)                       ; X
+129   L129
+129   (GETVALUE 11)                       ; X
+131   (CDR)
+132   (JMPIFNOT L161)
+134   (GETVALUE 11)                       ; X
+136   (CDR)
+137   (CAR&PUSH)
+138   (GETVALUE&PUSH 1)                   ; P
+140   (T&PUSH)
+141   (JSR L0)
+144   (JMPIFNOT L124)
+146   (GETVALUE&PUSH 11)                  ; X
+148   (CALL1 12)                          ; SAV&DEL
+150   L150
+150   (CALL0 13)                          ; RESTORE2
+152   (UNBIND1)
+153   (JMPIF1 L175)
+155   (JMP L174)
+157   L157
+157   (UNBIND1)
+158   (NIL)
+159   (JMP L175)
+161   L161
+161   (CONST&PUSH 6)                      ; 0
+162   (GETVALUE&PUSH 1)                   ; P
+164   (CALL2&JMPIF 14 L150)               ; M1
+167   (CALL0 15)                          ; RESTORE
+169   (JMPIFNOT L157)
+171   (UNBIND1)
+172   (JMPIF1 L175)
+174   L174
+174   (NIL)
+175   L175
+175   (UNBIND 3)
+177   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN COEFFT (E P IND) ...)-21|
+(CONST 0) = COEFFT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COEFFT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COEFFT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COEFFT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COEFFT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COEFFT
+8     (SKIP&RET 1)
+
+
+Disassembly of function COEFFT
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = IND
+(CONST 3) = ANS
+(CONST 4) = (MPLUS MTIMES)
+(CONST 5) = MEMQ
+(CONST 6) = X
+(CONST 7) = SAV&DEL
+(CONST 8) = RESTORE2
+(CONST 9) = 1
+(CONST 10) = M1
+(CONST 11) = RESTORE
+(CONST 12) = MPLUSP
+(CONST 13) = *SCHATFACTOR
+(CONST 14) = $FACTOR
+(CONST 15) = MTIMESP
+(CONST 16) = COEFFPORT
+(CONST 17) = (MTIMES)
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*SCHATFACTOR X P E IND ANS)
+writes special variables : (E X ANS)
+102 byte-code instructions:
+0     L0
+0     (LOAD 3)
+1     (BIND 0)                            ; E
+3     (LOAD 5)
+4     (BIND 1)                            ; P
+6     (LOAD 7)
+7     (BIND 2)                            ; IND
+9     (NIL&PUSH)
+10    (GETVALUE 3)                        ; ANS
+12    (CONS)
+13    (SETVALUE 3)                        ; ANS
+15    (GETVALUE 2)                        ; IND
+17    (JMPIF L31)
+19    (GETVALUE 0)                        ; E
+21    (JMPIFATOM L31)
+23    (GETVALUE 0)                        ; E
+25    (CAR)
+26    (CAR&PUSH)
+27    (CONST&PUSH 4)                      ; (MPLUS MTIMES)
+28    (CALL2&JMPIF 5 L68)                 ; MEMQ
+31    L31
+31    (GETVALUE&PUSH 0)                   ; E
+33    (CALL1&JMPIFNOT 12 L43)             ; MPLUSP
+36    (GETVALUE 0)                        ; E
+38    (CDR)
+39    (CDR)
+40    (JMPIF L130)
+43    L43
+43    (GETVALUE&PUSH 0)                   ; E
+45    (CALL1&JMPIF 15 L153)               ; MTIMESP
+49    (CONST&PUSH 17)                     ; (MTIMES)
+50    (GETVALUE&PUSH 0)                   ; E
+52    (LIST 2)
+54    L54
+54    (PUSH)
+55    (GETVALUE&PUSH 1)                   ; P
+57    (CONST 9)                           ; 1
+58    L58
+58    (PUSH)
+59    (GETVALUE&PUSH 2)                   ; IND
+61    (CALL 4 16)                         ; COEFFPORT
+64    L64
+64    (UNBIND 3)
+66    (SKIP&RET 4)
+68    L68
+68    (GETVALUE 0)                        ; E
+70    (BIND 6)                            ; X
+72    (JMP L79)
+74    L74
+74    (GETVALUE 6)                        ; X
+76    (CDR)
+77    (SETVALUE 6)                        ; X
+79    L79
+79    (GETVALUE 6)                        ; X
+81    (CDR)
+82    (JMPIFNOT L105)
+84    (GETVALUE 6)                        ; X
+86    (CDR)
+87    (CAR&PUSH)
+88    (GETVALUE&PUSH 1)                   ; P
+90    (T&PUSH)
+91    (JSR L0)
+94    (JMPIFNOT L74)
+96    (GETVALUE&PUSH 6)                   ; X
+98    (CALL1 7)                           ; SAV&DEL
+100   L100
+100   (CALL0 8)                           ; RESTORE2
+102   (UNBIND1)
+103   (JMP L64)
+105   L105
+105   (CONST&PUSH 9)                      ; 1
+106   (GETVALUE&PUSH 1)                   ; P
+108   (CALL2&JMPIF 10 L100)               ; M1
+111   (CALL0 11)                          ; RESTORE
+113   (JMPIF1 L119)
+115   (NIL)
+116   (UNBIND1)
+117   (JMP L64)
+119   L119
+119   (UNBIND1)
+120   (JMP L64)
+122   L122
+122   (GETVALUE&PUSH 0)                   ; E
+124   (GETVALUE&PUSH 1)                   ; P
+126   (CONST 9)                           ; 1
+127   (JMP L58)
+130   L130
+130   (GETVALUE 13)                       ; *SCHATFACTOR
+132   (JMPIFNOT L144)
+134   (GETVALUE&PUSH 0)                   ; E
+136   (CALL1 14)                          ; $FACTOR
+138   (SETVALUE 0)                        ; E
+140   (PUSH)
+141   (CALL1&JMPIF 15 L122)               ; MTIMESP
+144   L144
+144   (CALL0 11)                          ; RESTORE
+146   (JMPIF1 L64)
+149   (NIL)
+150   (JMP L64)
+153   L153
+153   (GETVALUE 0)                        ; E
+155   (JMP L54)
+
+
+Disassembly of function #:|(DEFUN COEFFPORT (E P IDENT ...) ...)-22|
+(CONST 0) = COEFFPORT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COEFFPORT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COEFFPORT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COEFFPORT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COEFFPORT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COEFFPORT
+8     (SKIP&RET 1)
+
+
+Disassembly of function COEFFPORT
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = IND
+(CONST 3) = X
+(CONST 4) = M1
+(CONST 5) = RESTORE
+(CONST 6) = COEFFTT
+(CONST 7) = MTIMES
+(CONST 8) = COEFFRET
+(CONST 9) = COEFFPP
+(CONST 10) = MPLUS
+(CONST 11) = SAV&DEL
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (IND X E P)
+writes special variable : (X)
+99 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; E
+3     (LOAD 6)
+4     (BIND 1)                            ; P
+6     (LOAD 7)
+7     (BIND 2)                            ; IND
+9     (GETVALUE 1)                        ; P
+11    (CDR)
+12    (CDR&PUSH)
+13    (GETVALUE 0)                        ; E
+15    (BIND 3)                            ; X
+17    (LOAD&JMPIFNOT 3 L125)
+21    (JMP L64)
+23    L23
+23    (CALL0 5)                           ; RESTORE
+25    (JMP L138)
+28    L28
+28    (GETVALUE&PUSH 0)                   ; E
+30    (LOAD 4)
+31    (CAR)
+32    (CDR)
+33    (CAR&PUSH)
+34    (NIL&PUSH)
+35    (CONST 7)                           ; MTIMES
+36    (JMP L100)
+38    L38
+38    (LOAD&PUSH 15)
+39    (LOAD&CAR&PUSH 4)
+41    (CALL2&JMPIFNOT 4 L23)              ; M1
+44    L44
+44    (GETVALUE 3)                        ; X
+46    (CDR)
+47    (JMPIFNOT L116)
+50    (GETVALUE 3)                        ; X
+52    (CDR)
+53    (CAR&PUSH)
+54    (LOAD&CAR&PUSH 4)
+56    (CALL2&JMPIF 4 L112)                ; M1
+59    (GETVALUE 3)                        ; X
+61    (CDR)
+62    (SETVALUE 3)                        ; X
+64    L64
+64    (GETVALUE 3)                        ; X
+66    (CDR)
+67    (JMPIFNOT L38)
+69    (LOAD 3)
+70    (CAR)
+71    (JMPIFATOM L44)
+73    (LOAD 3)
+74    (CAR)
+75    (CAR)
+76    (JMPIFATOM L44)
+78    (LOAD 3)
+79    (CAR)
+80    (CAR)
+81    (CAR&PUSH)
+82    (JMPIFEQTO 6 L28)                   ; COEFFTT
+85    (LOAD 3)
+86    (CAR)
+87    (CAR)
+88    (CAR&PUSH)
+89    (JMPIFNOTEQTO 9 L44)                ; COEFFPP
+92    (GETVALUE&PUSH 0)                   ; E
+94    (LOAD 4)
+95    (CAR)
+96    (CDR)
+97    (CAR&PUSH)
+98    (NIL&PUSH)
+99    (CONST 10)                          ; MPLUS
+100   L100
+100   (PUSH)
+101   (CALL 4 6)                          ; COEFFTT
+104   (JMPIF L44)
+106   (GETVALUE&PUSH 0)                   ; E
+108   (GETVALUE 1)                        ; P
+110   (JMP L131)
+112   L112
+112   (GETVALUE&PUSH 3)                   ; X
+114   (CALL1 11)                          ; SAV&DEL
+116   L116
+116   (LOAD&CDR&STORE 3)
+118   (GETVALUE 0)                        ; E
+120   (SETVALUE 3)                        ; X
+122   (LOAD&JMPIF 3 L64)
+125   L125
+125   (GETVALUE&PUSH 0)                   ; E
+127   (GETVALUE 1)                        ; P
+129   (CDR)
+130   (CAR)
+131   L131
+131   (PUSH)
+132   (LOAD&PUSH 17)
+133   (GETVALUE&PUSH 2)                   ; IND
+135   (CALL 4 8)                          ; COEFFRET
+138   L138
+138   (UNBIND1)
+139   (SKIP 1)
+141   (UNBIND 3)
+143   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN COEFFRET (E P IDENT ...) ...)-23|
+(CONST 0) = COEFFRET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COEFFRET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COEFFRET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COEFFRET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COEFFRET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COEFFRET
+8     (SKIP&RET 1)
+
+
+Disassembly of function COEFFRET
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = IND
+(CONST 3) = TESTA
+(CONST 4) = RESTORE1
+(CONST 5) = RESTORE2
+(CONST 6) = RESTORE
+(CONST 7) = ANS
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS IND P E)
+74 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; E
+3     (LOAD 6)
+4     (BIND 1)                            ; P
+6     (LOAD 7)
+7     (BIND 2)                            ; IND
+9     (GETVALUE 0)                        ; E
+11    (CDR)
+12    (JMPIFNOT L60)
+14    (GETVALUE&PUSH 1)                   ; P
+16    (GETVALUE 0)                        ; E
+18    (CDR)
+19    (CDR)
+20    (JMPIF L76)
+22    (GETVALUE 0)                        ; E
+24    (CDR)
+25    (CAR)
+26    (JMPIF L29)
+28    (NIL)
+29    L29
+29    (PUSH)
+30    (NIL&PUSH)
+31    (CALL 3 3)                          ; TESTA
+34    (JMPIF L86)
+36    (CALL0 6)                           ; RESTORE
+38    (JMPIF1 L41)
+40    (NIL)
+41    L41
+41    (UNBIND 3)
+43    (SKIP&RET 5)
+45    L45
+45    (CALL0 4)                           ; RESTORE1
+47    (JMP L41)
+49    L49
+49    (GETVALUE 2)                        ; IND
+51    (JMPIF L45)
+53    (CALL0 5)                           ; RESTORE2
+55    (JMPIF1 L41)
+57    (NIL)
+58    (JMP L41)
+60    L60
+60    (GETVALUE&PUSH 1)                   ; P
+62    (LOAD&PUSH 12)
+63    (NIL&PUSH)
+64    (CALL 3 3)                          ; TESTA
+67    (JMPIF L49)
+69    (CALL0 6)                           ; RESTORE
+71    (JMPIF1 L41)
+73    (NIL)
+74    (JMP L41)
+76    L76
+76    (GETVALUE&PUSH 0)                   ; E
+78    (CALLS1 158)                        ; COPY-LIST
+80    (JMP L29)
+82    L82
+82    (CALL0 4)                           ; RESTORE1
+84    (JMP L41)
+86    L86
+86    (GETVALUE 2)                        ; IND
+88    (JMPIF L82)
+90    (GETVALUE&PUSH 7)                   ; ANS
+92    (GETVALUE&PUSH 0)                   ; E
+94    (GETVALUE 0)                        ; E
+96    (CDR)
+97    (CONS&PUSH)
+98    (GETVALUE 7)                        ; ANS
+100   (CDR)
+101   (CONS&PUSH)
+102   (CALLS1 170)                        ; RPLACD
+104   (GETVALUE&PUSH 0)                   ; E
+106   (NIL&PUSH)
+107   (CALLS1 170)                        ; RPLACD
+109   (CALL0 5)                           ; RESTORE2
+111   (JMP L41)
+
+
+Disassembly of function #:|(DEFUN COEFFPT (E P IND) ...)-24|
+(CONST 0) = COEFFPT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COEFFPT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COEFFPT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COEFFPT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COEFFPT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COEFFPT
+8     (SKIP&RET 1)
+
+
+Disassembly of function COEFFPT
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = IND
+(CONST 3) = ANS
+(CONST 4) = MPLUSP
+(CONST 5) = (MPLUS)
+(CONST 6) = (COEFFT)
+(CONST 7) = M1
+(CONST 8) = SAV&DEL
+(CONST 9) = VAR*
+(CONST 10) = FINDIT
+(CONST 11) = 0
+(CONST 12) = (MPLUS)
+(CONST 13) = 1
+(CONST 14) = SIMPLUS
+(CONST 15) = COEFFPT
+(CONST 16) = TESTA
+(CONST 17) = RESTORE
+(CONST 18) = RESTORE1
+(CONST 19) = RESTORE2
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (IND P E ANS)
+writes special variable : (ANS)
+117 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; E
+3     (LOAD 5)
+4     (BIND 1)                            ; P
+6     (LOAD 7)
+7     (BIND 2)                            ; IND
+9     (NIL&PUSH)
+10    (GETVALUE 3)                        ; ANS
+12    (CONS)
+13    (SETVALUE 3)                        ; ANS
+15    (GETVALUE&PUSH 0)                   ; E
+17    (CALL1&JMPIF 4 L33)                 ; MPLUSP
+20    (CONST&PUSH 5)                      ; (MPLUS)
+21    (GETVALUE&PUSH 0)                   ; E
+23    (LIST 2)
+25    L25
+25    (PUSH)
+26    (CONST&PUSH 6)                      ; (COEFFT)
+27    (GETVALUE 1)                        ; P
+29    (CDR)
+30    (CONS&PUSH)
+31    (JMP L87)
+33    L33
+33    (GETVALUE 0)                        ; E
+35    (JMP L25)
+37    L37
+37    (LOAD&CDR&STORE 1)
+39    (JMP L87)
+41    L41
+41    (GETVALUE 1)                        ; P
+43    (CDR)
+44    (CAR)
+45    (CDR)
+46    (CDR)
+47    (CAR)
+48    (JMP L107)
+50    L50
+50    (CONST 11)                          ; 0
+51    (JMP L128)
+54    L54
+54    (LOAD 1)
+55    (CAR)
+56    (JMP L128)
+59    L59
+59    (CONST 15)                          ; COEFFPT
+60    (JMP L137)
+63    L63
+63    (CALL0 17)                          ; RESTORE
+65    (SKIP 4)
+67    (JMP L160)
+70    L70
+70    (CALL0 18)                          ; RESTORE1
+72    (SKIP 4)
+74    (JMP L160)
+77    L77
+77    (LOAD 1)
+78    (CDR)
+79    (CAR&PUSH)
+80    (LOAD&PUSH 1)
+81    (CALL2&JMPIFNOT 7 L37)              ; M1
+84    (LOAD&PUSH 1)
+85    (CALL1 8)                           ; SAV&DEL
+87    L87
+87    (LOAD 1)
+88    (CDR)
+89    (JMPIF L77)
+91    (GETVALUE 1)                        ; P
+93    (CDR)
+94    (CAR)
+95    (CAR&PUSH)
+96    (JMPIFEQTO 9 L41)                   ; VAR*
+99    (GETVALUE 1)                        ; P
+101   (CDR)
+102   (CAR)
+103   (CAR)
+104   (JMPIF L107)
+106   (NIL)
+107   L107
+107   (PUSH)
+108   (CALL1 10)                          ; FINDIT
+110   (STORE 1)
+111   (JMPIFNOT L50)
+113   (LOAD 1)
+114   (CDR)
+115   (JMPIFNOT L54)
+117   (CONST&PUSH 12)                     ; (MPLUS)
+118   (LOAD 2)
+119   (CONS&PUSH)
+120   (CONST&PUSH 13)                     ; 1
+121   (NIL&PUSH)
+122   (CALL 3 14)                         ; SIMPLUS
+125   (JMPIF L128)
+127   (NIL)
+128   L128
+128   (PUSH)
+129   (LOAD&JMPIFNOT 2 L136)
+132   (CDR)
+133   (JMPIF L59)
+136   L136
+136   (NIL)
+137   L137
+137   (PUSH)
+138   (GETVALUE 1)                        ; P
+140   (CDR)
+141   (CAR&PUSH)
+142   (LOAD&PUSH 2)
+143   (LOAD&PUSH 2)
+144   (CALL 3 16)                         ; TESTA
+147   (JMPIFNOT L63)
+150   (GETVALUE 2)                        ; IND
+152   (JMPIF L70)
+155   (CALL0 19)                          ; RESTORE2
+157   (LOAD 1)
+158   (SKIP 4)
+160   L160
+160   (UNBIND 3)
+162   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN ZEPOW (E P FL) ...)-25|
+(CONST 0) = ZEPOW
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZEPOW>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZEPOW
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZEPOW
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZEPOW>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZEPOW
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZEPOW
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = ANS
+(CONST 3) = 1
+(CONST 4) = 0
+(CONST 5) = M1
+(CONST 6) = RESTORE
+(CONST 7) = RESTORE1
+(CONST 8) = *SCHATFACTOR
+(CONST 9) = MPLUSP
+(CONST 10) = $FACTOR
+(CONST 11) = MTIMES
+(CONST 12) = MEXPTP
+(CONST 13) = X
+(CONST 14) = B
+(CONST 15) = ALIKE1
+(CONST 16) = (MPLUS)
+(CONST 17) = SIMPLUS
+(CONST 18) = (MTIMES)
+(CONST 19) = SIMPTIMES
+(CONST 20) = $DIVIDE
+(CONST 21) = (MTIMES)
+(CONST 22) = (MEXPT)
+(CONST 23) = (MTIMES)
+(CONST 24) = (MPLUS)
+(CONST 25) = (MEXPT)
+(CONST 26) = SIMPLIFYA
+(CONST 27) = MEXPT
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (P X B *SCHATFACTOR E ANS)
+writes special variables : (B X E ANS)
+282 byte-code instructions:
+0     L0
+0     (LOAD 3)
+1     (BIND 0)                            ; E
+3     (LOAD 5)
+4     (BIND 1)                            ; P
+6     (LOAD&JMPIFNOT 7 L15)
+9     (NIL&PUSH)
+10    (GETVALUE 2)                        ; ANS
+12    (CONS)
+13    (SETVALUE 2)                        ; ANS
+15    L15
+15    (GETVALUE 0)                        ; E
+17    (JMPIFATOM L207)
+20    (GETVALUE 8)                        ; *SCHATFACTOR
+22    (JMPIFNOT L35)
+24    (GETVALUE&PUSH 0)                   ; E
+26    (CALL1&JMPIFNOT 9 L35)              ; MPLUSP
+29    (GETVALUE&PUSH 0)                   ; E
+31    (CALL1 10)                          ; $FACTOR
+33    (SETVALUE 0)                        ; E
+35    L35
+35    (GETVALUE 0)                        ; E
+37    (CAR)
+38    (CAR&PUSH)
+39    (JMPIFNOTEQTO 11 L374)              ; MTIMES
+43    (GETVALUE 0)                        ; E
+45    (CDR)
+46    (CAR&PUSH)
+47    (CALL1&JMPIFNOT 12 L374)            ; MEXPTP
+51    (GETVALUE 0)                        ; E
+53    (CDR)
+54    (CDR&PUSH)
+55    (GETVALUE 0)                        ; E
+57    (CDR)
+58    (CAR)
+59    (CDR)
+60    (CAR&PUSH)
+61    (GETVALUE 0)                        ; E
+63    (CDR)
+64    (CAR)
+65    (CDR)
+66    (CDR)
+67    (CAR)
+68    (BIND 13)                           ; X
+70    (NIL&PUSH)
+71    (LOAD 5)
+72    (BIND 0)                            ; E
+74    (LOAD 7)
+75    (BIND 14)                           ; B
+77    (GETVALUE 0)                        ; E
+79    (JMPIFNOT L120)
+81    L81
+81    (GETVALUE 0)                        ; E
+83    (CAR&PUSH)
+84    (CALL1&JMPIF 12 L274)               ; MEXPTP
+88    (GETVALUE&PUSH 14)                  ; B
+90    (GETVALUE 0)                        ; E
+92    (CAR&PUSH)
+93    (CALL2&JMPIFNOT 15 L365)            ; ALIKE1
+97    (CONST&PUSH 24)                     ; (MPLUS)
+98    (CONST&PUSH 3)                      ; 1
+99    (GETVALUE&PUSH 13)                  ; X
+101   (LIST&PUSH 3)
+103   (CONST&PUSH 3)                      ; 1
+104   (T)
+105   L105
+105   (PUSH)
+106   (CALL 3 17)                         ; SIMPLUS
+109   (SETVALUE 13)                       ; X
+111   L111
+111   (GETVALUE 0)                        ; E
+113   (CDR)
+114   (SETVALUE 0)                        ; E
+116   (GETVALUE 0)                        ; E
+118   (JMPIF L81)
+120   L120
+120   (CONST&PUSH 25)                     ; (MEXPT)
+121   (GETVALUE&PUSH 14)                  ; B
+123   (T&PUSH)
+124   (CALL2&PUSH 26)                     ; SIMPLIFYA
+126   (GETVALUE&PUSH 13)                  ; X
+128   (T&PUSH)
+129   (CALL2&PUSH 26)                     ; SIMPLIFYA
+131   (LIST&PUSH 3)
+133   (GETVALUE&PUSH 1)                   ; P
+135   (NIL&PUSH)
+136   (JSR L0)
+139   L139
+139   (UNBIND 2)
+141   (SKIP 1)
+143   (UNBIND1)
+144   (SKIP 2)
+146   (JMP L428)
+149   L149
+149   (CALL0 6)                           ; RESTORE
+151   (JMP L428)
+154   L154
+154   (CONST&PUSH 4)                      ; 0
+155   (GETVALUE 1)                        ; P
+157   (CDR)
+158   (CDR)
+159   (CAR&PUSH)
+160   (CALL2&JMPIF 5 L171)                ; M1
+163   (CONST&PUSH 3)                      ; 1
+164   (GETVALUE 1)                        ; P
+166   (CDR)
+167   (CAR&PUSH)
+168   (CALL2&JMPIFNOT 5 L149)             ; M1
+171   L171
+171   (CALL0 7)                           ; RESTORE1
+173   (JMPIF1 L428)
+176   (NIL)
+177   (JMP L428)
+180   L180
+180   (CALL0 6)                           ; RESTORE
+182   (JMP L428)
+185   L185
+185   (CONST&PUSH 4)                      ; 0
+186   (GETVALUE 1)                        ; P
+188   (CDR)
+189   (CAR&PUSH)
+190   (CALL2&JMPIFNOT 5 L180)             ; M1
+193   (CALL0 7)                           ; RESTORE1
+195   (JMPIF1 L428)
+198   (NIL)
+199   (JMP L428)
+202   L202
+202   (CALL0 7)                           ; RESTORE1
+204   (JMP L428)
+207   L207
+207   (GETVALUE&PUSH 0)                   ; E
+209   (JMPIFEQTO 3 L154)                  ; 1
+212   (GETVALUE&PUSH 0)                   ; E
+214   (JMPIFEQTO 4 L185)                  ; 0
+217   (GETVALUE&PUSH 0)                   ; E
+219   (GETVALUE 1)                        ; P
+221   (CDR)
+222   (CAR&PUSH)
+223   (CALL2&JMPIFNOT 5 L235)             ; M1
+226   (CONST&PUSH 3)                      ; 1
+227   (GETVALUE 1)                        ; P
+229   (CDR)
+230   (CDR)
+231   (CAR&PUSH)
+232   (CALL2&JMPIF 5 L202)                ; M1
+235   L235
+235   (CALL0 6)                           ; RESTORE
+237   (JMPIF1 L428)
+240   (NIL)
+241   (JMP L428)
+244   L244
+244   (CONST&PUSH 16)                     ; (MPLUS)
+245   (GETVALUE&PUSH 13)                  ; X
+247   (GETVALUE 0)                        ; E
+249   (CAR)
+250   (CDR)
+251   (CDR)
+252   (CAR&PUSH)
+253   (LIST&PUSH 3)
+255   (CONST&PUSH 3)                      ; 1
+256   (NIL)
+257   (JMP L105)
+260   L260
+260   (CONST&PUSH 18)                     ; (MTIMES)
+261   (GETVALUE&PUSH 14)                  ; B
+263   (GETVALUE 0)                        ; E
+265   (CAR)
+266   (CDR)
+267   (CAR&PUSH)
+268   (LIST&PUSH 3)
+270   (CONST 3)                           ; 1
+271   (JMP L343)
+274   L274
+274   (GETVALUE 0)                        ; E
+276   (CAR)
+277   (CDR)
+278   (CAR&PUSH)
+279   (GETVALUE&PUSH 14)                  ; B
+281   (CALL2&JMPIF 15 L244)               ; ALIKE1
+284   (GETVALUE 0)                        ; E
+286   (CAR)
+287   (CDR)
+288   (CDR)
+289   (CAR&PUSH)
+290   (GETVALUE&PUSH 13)                  ; X
+292   (CALL2&JMPIF 15 L260)               ; ALIKE1
+295   (GETVALUE&PUSH 13)                  ; X
+297   (GETVALUE 0)                        ; E
+299   (CAR)
+300   (CDR)
+301   (CDR)
+302   (CAR&PUSH)
+303   (CALL2 20)                          ; $DIVIDE
+305   (STORE 6)
+306   (CDR)
+307   (CDR)
+308   (CAR&PUSH)
+309   (LOAD&PUSH 0)
+310   (CALLS2&JMPIF 8 L353)               ; NUMBERP
+313   (SKIP 1)
+315   (JMPIFNOT L360)
+317   L317
+317   (CONST&PUSH 21)                     ; (MTIMES)
+318   (GETVALUE&PUSH 14)                  ; B
+320   (CONST&PUSH 22)                     ; (MEXPT)
+321   (GETVALUE 0)                        ; E
+323   (CAR)
+324   (CDR)
+325   (CAR&PUSH)
+326   (CONST&PUSH 23)                     ; (MTIMES)
+327   (GETVALUE 0)                        ; E
+329   (CAR)
+330   (CDR)
+331   (CDR)
+332   (CAR&PUSH)
+333   (LOAD 12)
+334   (CDR)
+335   (CAR&PUSH)
+336   (LIST&PUSH 3)
+338   (LIST&PUSH 3)
+340   (LIST&PUSH 3)
+342   (CONST 3)                           ; 1
+343   L343
+343   (PUSH)
+344   (NIL&PUSH)
+345   (CALL 3 19)                         ; SIMPTIMES
+348   (SETVALUE 14)                       ; B
+350   (JMP L111)
+353   L353
+353   (LOAD&PUSH 0)
+354   (CALLS2 145)                        ; ZEROP
+356   (SKIP 1)
+358   (JMPIF L317)
+360   L360
+360   (CALL0 6)                           ; RESTORE
+362   (JMP L139)
+365   L365
+365   (CALL0 6)                           ; RESTORE
+367   (JMP L139)
+370   L370
+370   (CALL0 7)                           ; RESTORE1
+372   (JMP L428)
+374   L374
+374   (GETVALUE 0)                        ; E
+376   (CAR)
+377   (CAR&PUSH)
+378   (JMPIFNOTEQTO 27 L405)              ; MEXPT
+381   (GETVALUE 0)                        ; E
+383   (CDR)
+384   (CAR&PUSH)
+385   (GETVALUE 1)                        ; P
+387   (CDR)
+388   (CAR&PUSH)
+389   (CALL2&JMPIFNOT 5 L405)             ; M1
+392   (GETVALUE 0)                        ; E
+394   (CDR)
+395   (CDR)
+396   (CAR&PUSH)
+397   (GETVALUE 1)                        ; P
+399   (CDR)
+400   (CDR)
+401   (CAR&PUSH)
+402   (CALL2&JMPIF 5 L370)                ; M1
+405   L405
+405   (GETVALUE&PUSH 0)                   ; E
+407   (GETVALUE 1)                        ; P
+409   (CDR)
+410   (CAR&PUSH)
+411   (CALL2&JMPIFNOT 5 L423)             ; M1
+414   (CONST&PUSH 3)                      ; 1
+415   (GETVALUE 1)                        ; P
+417   (CDR)
+418   (CDR)
+419   (CAR&PUSH)
+420   (CALL2&JMPIF 5 L370)                ; M1
+423   L423
+423   (CALL0 6)                           ; RESTORE
+425   (JMPIF1 L428)
+427   (NIL)
+428   L428
+428   (UNBIND 2)
+430   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN EACHP (E P) ...)-26|
+(CONST 0) = EACHP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EACHP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EACHP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EACHP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EACHP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EACHP
+8     (SKIP&RET 1)
+
+
+Disassembly of function EACHP
+(CONST 0) = E
+(CONST 1) = P
+(CONST 2) = ANS
+(CONST 3) = M1
+(CONST 4) = RESTORE
+(CONST 5) = RESTORE1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS P E)
+writes special variables : (E P ANS)
+46 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (LOAD 4)
+4     (BIND 1)                            ; P
+6     (GETVALUE&PUSH 0)                   ; E
+8     (CALLS2&PUSH 71)                    ; LENGTH
+10    (GETVALUE&PUSH 1)                   ; P
+12    (CALLS2&PUSH 71)                    ; LENGTH
+14    (CALLSR&JMPIF 1 45 L28)             ; =
+18    (NIL)
+19    L19
+19    (UNBIND 2)
+21    (SKIP&RET 3)
+23    L23
+23    (CALL0 4)                           ; RESTORE
+25    (UNBIND1)
+26    (JMP L19)
+28    L28
+28    (NIL&PUSH)
+29    (GETVALUE 2)                        ; ANS
+31    (CONS)
+32    (SETVALUE 2)                        ; ANS
+34    (GETVALUE 0)                        ; E
+36    (CDR)
+37    (BIND 0)                            ; E
+39    (GETVALUE 0)                        ; E
+41    (JMPIFNOT L67)
+43    L43
+43    (GETVALUE 0)                        ; E
+45    (CAR&PUSH)
+46    (GETVALUE 1)                        ; P
+48    (CDR)
+49    (CAR&PUSH)
+50    (CALL2&JMPIFNOT 3 L23)              ; M1
+53    (GETVALUE 1)                        ; P
+55    (CDR)
+56    (SETVALUE 1)                        ; P
+58    (GETVALUE 0)                        ; E
+60    (CDR)
+61    (SETVALUE 0)                        ; E
+63    (GETVALUE 0)                        ; E
+65    (JMPIF L43)
+67    L67
+67    (CALL0 5)                           ; RESTORE1
+69    (UNBIND1)
+70    (JMP L19)
+
+
+Disassembly of function #:|(DEFUN SCH-LOOP (E LP) ...)-27|
+(CONST 0) = SCH-LOOP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SCH-LOOP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SCH-LOOP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SCH-LOOP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SCH-LOOP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SCH-LOOP
+8     (SKIP&RET 1)
+
+
+Disassembly of function SCH-LOOP
+(CONST 0) = E
+(CONST 1) = ANS
+(CONST 2) = *LOOP
+(CONST 3) = X
+(CONST 4) = Y
+(CONST 5) = M1
+(CONST 6) = RESTORE
+(CONST 7) = POP-LOOP-CONTEXT
+(CONST 8) = SAV&DEL
+(CONST 9) = RESTORE2
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X E ANS)
+writes special variables : (Y X ANS)
+78 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (NIL&PUSH)
+4     (GETVALUE 1)                        ; ANS
+6     (CONS)
+7     (SETVALUE 1)                        ; ANS
+9     (PUSH)
+10    (CONST&PUSH 2)                      ; *LOOP
+11    (GETVALUE 1)                        ; ANS
+13    (CDR)
+14    (CONS&PUSH)
+15    (CALLS1 170)                        ; RPLACD
+17    (LOAD 4)
+18    (BIND 3)                            ; X
+20    (GETVALUE&PUSH 0)                   ; E
+22    (NIL)
+23    (BIND 4)                            ; Y
+25    (JMP L79)
+27    L27
+27    (CALL0 6)                           ; RESTORE
+29    (JMP L109)
+32    L32
+32    (LOAD&CDR&STORE 3)
+34    (CDR)
+35    (JMPIF L79)
+37    (GETVALUE&PUSH 3)                   ; X
+39    (LOAD 12)
+40    (JMPIFEQ L27)
+42    (GETVALUE 4)                        ; Y
+44    (CAR)
+45    (CAR)
+46    (SETVALUE 3)                        ; X
+48    (GETVALUE 4)                        ; Y
+50    (CAR)
+51    (CDR)
+52    (STORE 3)
+53    (GETVALUE 4)                        ; Y
+55    (CDR)
+56    (SETVALUE 4)                        ; Y
+58    (GETVALUE 1)                        ; ANS
+60    (CDR)
+61    (SETVALUE 1)                        ; ANS
+63    (CALL0 7)                           ; POP-LOOP-CONTEXT
+65    (JMP L79)
+67    L67
+67    (GETVALUE&PUSH 1)                   ; ANS
+69    (CONST&PUSH 2)                      ; *LOOP
+70    (GETVALUE 1)                        ; ANS
+72    (CDR)
+73    (CONS&PUSH)
+74    (CALLS1 170)                        ; RPLACD
+76    (GETVALUE 0)                        ; E
+78    (STORE 3)
+79    L79
+79    (LOAD 3)
+80    (CDR)
+81    (CAR&PUSH)
+82    (GETVALUE 3)                        ; X
+84    (CAR&PUSH)
+85    (CALL2&JMPIFNOT 5 L32)              ; M1
+88    (GETVALUE&PUSH 3)                   ; X
+90    (LOAD 4)
+91    (CONS&PUSH)
+92    (GETVALUE 4)                        ; Y
+94    (CONS)
+95    (SETVALUE 4)                        ; Y
+97    (LOAD&PUSH 3)
+98    (CALL1 8)                           ; SAV&DEL
+100   (GETVALUE 3)                        ; X
+102   (CDR)
+103   (SETVALUE 3)                        ; X
+105   (JMPIF L67)
+107   (CALL0 9)                           ; RESTORE2
+109   L109
+109   (UNBIND1)
+110   (SKIP 1)
+112   (UNBIND 2)
+114   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN COEFFTT (EXP PAT IND ...) ...)-28|
+(CONST 0) = COEFFTT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COEFFTT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COEFFTT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COEFFTT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COEFFTT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COEFFTT
+8     (SKIP&RET 1)
+
+
+Disassembly of function COEFFTT
+(CONST 0) = EXP
+(CONST 1) = IND
+(CONST 2) = ANS
+(CONST 3) = SPLIST
+(CONST 4) = RES
+(CONST 5) = TESTA
+(CONST 6) = SAV&DEL
+(CONST 7) = VAR*
+(CONST 8) = SET
+(CONST 9) = MEMQ
+(CONST 10) = SIMPLIFYA
+(CONST 11) = RESTORE1
+(CONST 12) = RESTORE2
+(CONST 13) = OPIDENT
+(CONST 14) = RESTORE
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (RES SPLIST IND EXP ANS)
+writes special variables : (RES SPLIST EXP ANS)
+140 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; EXP
+3     (LOAD 5)
+4     (BIND 1)                            ; IND
+6     (NIL&PUSH)
+7     (GETVALUE 2)                        ; ANS
+9     (CONS)
+10    (SETVALUE 2)                        ; ANS
+12    (GETVALUE 0)                        ; EXP
+14    (JMPIFATOM L27)
+16    (GETVALUE 1)                        ; IND
+18    (JMPIFNOT L36)
+20    (GETVALUE 0)                        ; EXP
+22    (CAR)
+23    (CAR&PUSH)
+24    (LOAD 8)
+25    (JMPIFEQ L36)
+27    L27
+27    (LOAD&PUSH 7)
+28    (LIST&PUSH 1)
+30    (GETVALUE&PUSH 0)                   ; EXP
+32    (LIST 2)
+34    (SETVALUE 0)                        ; EXP
+36    L36
+36    (LOAD&CAR&PUSH 9)
+38    (GETVALUE 3)                        ; SPLIST
+40    (CONS)
+41    (SETVALUE 3)                        ; SPLIST
+43    (GETVALUE&PUSH 0)                   ; EXP
+45    (NIL)
+46    (BIND 4)                            ; RES
+48    (JMP L108)
+50    L50
+50    (LOAD 3)
+51    (CDR)
+52    (CAR&PUSH)
+53    (GETVALUE 4)                        ; RES
+55    (CONS)
+56    (SETVALUE 4)                        ; RES
+58    (LOAD&PUSH 3)
+59    (CALL1 6)                           ; SAV&DEL
+61    (JMP L108)
+63    L63
+63    (LOAD&PUSH 11)
+64    (LIST&PUSH 1)
+66    (GETVALUE 4)                        ; RES
+68    (CONS)
+69    (JMP L130)
+71    L71
+71    (GETVALUE&PUSH 2)                   ; ANS
+73    (LOAD 14)
+74    (CDR)
+75    (CDR)
+76    (CAR&PUSH)
+77    (LOAD 15)
+79    (CDR)
+80    (CDR)
+81    (CAR&PUSH)
+82    (GETVALUE&PUSH 4)                   ; RES
+84    (NIL&PUSH)
+85    (CALL2&PUSH 10)                     ; SIMPLIFYA
+87    (CALL2 8)                           ; SET
+89    (JMP L154)
+91    L91
+91    (CALL0 11)                          ; RESTORE1
+93    (JMP L200)
+96    L96
+96    (LOAD&PUSH 13)
+97    (LOAD 4)
+98    (CDR)
+99    (CAR&PUSH)
+100   (NIL&PUSH)
+101   (CALL 3 5)                          ; TESTA
+104   (JMPIF L50)
+106   (LOAD&CDR&STORE 3)
+108   L108
+108   (LOAD 3)
+109   (CDR)
+110   (JMPIF L96)
+112   (GETVALUE 3)                        ; SPLIST
+114   (CDR)
+115   (SETVALUE 3)                        ; SPLIST
+117   (GETVALUE 4)                        ; RES
+119   (JMPIFNOT L181)
+121   (CDR)
+122   (JMPIF L63)
+124   (GETVALUE 4)                        ; RES
+126   (CAR)
+127   (JMPIF L130)
+129   (NIL)
+130   L130
+130   (SETVALUE 4)                        ; RES
+132   (LOAD&CAR&PUSH 13)
+134   (JMPIFNOTEQTO 7 L145)               ; VAR*
+137   (CONST&PUSH 8)                      ; SET
+138   (LOAD 14)
+139   (CDR)
+140   (CAR&PUSH)
+141   (CALL2&JMPIF 9 L71)                 ; MEMQ
+145   L145
+145   (GETVALUE&PUSH 2)                   ; ANS
+147   (LOAD&CAR&PUSH 14)
+149   (GETVALUE&PUSH 4)                   ; RES
+151   (NIL&PUSH)
+152   (CALL2 10)                          ; SIMPLIFYA
+154   L154
+154   (CONS&PUSH)
+155   (GETVALUE 2)                        ; ANS
+157   (CDR)
+158   (CONS&PUSH)
+159   (CALLS1 170)                        ; RPLACD
+161   (GETVALUE 1)                        ; IND
+163   (JMPIF L91)
+166   (CALL0 12)                          ; RESTORE2
+168   (JMPIF1 L200)
+170   (NIL)
+171   (JMP L200)
+173   L173
+173   (CALL0 14)                          ; RESTORE
+175   (JMP L200)
+177   L177
+177   (CALL0 11)                          ; RESTORE1
+179   (JMP L200)
+181   L181
+181   (LOAD&PUSH 13)
+182   (LOAD&PUSH 12)
+183   (CALL1&PUSH 13)                     ; OPIDENT
+185   (NIL&PUSH)
+186   (CALL 3 5)                          ; TESTA
+189   (JMPIFNOT L173)
+191   (GETVALUE 1)                        ; IND
+193   (JMPIF L177)
+195   (CALL0 12)                          ; RESTORE2
+197   (JMPIF1 L200)
+199   (NIL)
+200   L200
+200   (UNBIND1)
+201   (SKIP 1)
+203   (UNBIND 2)
+205   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN RESTORE NIL ...)-29|
+(CONST 0) = RESTORE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE RESTORE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; RESTORE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; RESTORE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE RESTORE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; RESTORE
+8     (SKIP&RET 1)
+
+
+Disassembly of function RESTORE
+(CONST 0) = ANS
+(CONST 1) = Y
+(CONST 2) = *LOOP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y ANS)
+writes special variables : (ANS Y)
+48 byte-code instructions:
+0     (GETVALUE 0)                        ; ANS
+2     (CDR)
+3     (BIND 1)                            ; Y
+5     (GETVALUE 1)                        ; Y
+7     (JMPIFNOT L66)
+9     L9
+9     (GETVALUE 1)                        ; Y
+11    (CAR&PUSH)
+12    (JMPIFEQTO 2 L47)                   ; *LOOP
+15    (GETVALUE 1)                        ; Y
+17    (CAR)
+18    (JMPIFNOT L62)
+20    (GETVALUE 1)                        ; Y
+22    (CAR)
+23    (CAR)
+24    (JMPIFATOM L36)
+26    (GETVALUE 1)                        ; Y
+28    (CAR)
+29    (CAR&PUSH)
+30    (GETVALUE 1)                        ; Y
+32    (CAR)
+33    L33
+33    (CDR&PUSH)
+34    (CALLS1 170)                        ; RPLACD
+36    L36
+36    (GETVALUE 1)                        ; Y
+38    (CDR)
+39    (SETVALUE 1)                        ; Y
+41    (GETVALUE 1)                        ; Y
+43    (JMPIFNOT L66)
+45    (JMP L9)
+47    L47
+47    (GETVALUE&PUSH 1)                   ; Y
+49    (GETVALUE 1)                        ; Y
+51    (CDR)
+52    (CAR&PUSH)
+53    (CALLS1 168)                        ; RPLACA
+55    (GETVALUE&PUSH 1)                   ; Y
+57    (GETVALUE 1)                        ; Y
+59    (CDR)
+60    (JMP L33)
+62    L62
+62    (GETVALUE 1)                        ; Y
+64    (SETVALUE 0)                        ; ANS
+66    L66
+66    (NIL)
+67    (UNBIND1)
+68    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN RESTORE1 NIL ...)-30|
+(CONST 0) = RESTORE1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE RESTORE1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; RESTORE1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; RESTORE1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE RESTORE1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; RESTORE1
+8     (SKIP&RET 1)
+
+
+Disassembly of function RESTORE1
+(CONST 0) = ANS
+(CONST 1) = Y
+(CONST 2) = L
+(CONST 3) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L Y ANS)
+writes special variables : (L Y)
+57 byte-code instructions:
+0     (GETVALUE 0)                        ; ANS
+2     (BIND 1)                            ; Y
+4     (NIL)
+5     (BIND 2)                            ; L
+7     (JMP L58)
+9     L9
+9     (GETVALUE 1)                        ; Y
+11    (CDR)
+12    (CAR)
+13    (CAR&PUSH)
+14    (GETVALUE 1)                        ; Y
+16    (CDR)
+17    (CAR)
+18    (CDR&PUSH)
+19    (CALLS1 170)                        ; RPLACD
+21    L21
+21    (GETVALUE&PUSH 1)                   ; Y
+23    (GETVALUE 1)                        ; Y
+25    (CDR)
+26    (CDR&PUSH)
+27    (CALLS1 170)                        ; RPLACD
+29    (JMP L58)
+31    L31
+31    (GETVALUE 1)                        ; Y
+33    (CDR)
+34    (CAR)
+35    (CAR)
+36    (JMPIFCONSP L9)
+38    (GETVALUE 1)                        ; Y
+40    (CAR&PUSH)
+41    (GETVALUE&PUSH 2)                   ; L
+43    (CALL2&JMPIF 3 L21)                 ; MEMQ
+46    (GETVALUE 1)                        ; Y
+48    (CDR)
+49    (SETVALUE 1)                        ; Y
+51    (CAR)
+52    (CAR&PUSH)
+53    (GETVALUE 2)                        ; L
+55    (CONS)
+56    (SETVALUE 2)                        ; L
+58    L58
+58    (GETVALUE 1)                        ; Y
+60    (CDR)
+61    (JMPIFNOT L77)
+63    (GETVALUE 1)                        ; Y
+65    (CDR)
+66    (CAR)
+67    (JMPIF L31)
+69    (GETVALUE&PUSH 1)                   ; Y
+71    (GETVALUE 1)                        ; Y
+73    (CDR)
+74    (CDR&PUSH)
+75    (CALLS1 170)                        ; RPLACD
+77    L77
+77    (T)
+78    (UNBIND 2)
+80    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN RESTORE2 NIL ...)-31|
+(CONST 0) = RESTORE2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE RESTORE2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; RESTORE2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; RESTORE2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE RESTORE2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; RESTORE2
+8     (SKIP&RET 1)
+
+
+Disassembly of function RESTORE2
+(CONST 0) = ANS
+(CONST 1) = Y
+(CONST 2) = *LOOP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y ANS)
+writes special variable : (Y)
+35 byte-code instructions:
+0     (GETVALUE 0)                        ; ANS
+2     (CDR)
+3     (BIND 1)                            ; Y
+5     (JMP L20)
+7     L7
+7     (GETVALUE&PUSH 1)                   ; Y
+9     (GETVALUE 1)                        ; Y
+11    (CDR)
+12    (CDR&PUSH)
+13    (CALLS1 170)                        ; RPLACD
+15    L15
+15    (GETVALUE 1)                        ; Y
+17    (CDR)
+18    (SETVALUE 1)                        ; Y
+20    L20
+20    (GETVALUE 1)                        ; Y
+22    (CDR)
+23    (JMPIFNOT L46)
+25    (GETVALUE 1)                        ; Y
+27    (CDR)
+28    (CAR&PUSH)
+29    (JMPIFEQTO 2 L7)                    ; *LOOP
+32    (GETVALUE 1)                        ; Y
+34    (CDR)
+35    (CAR)
+36    (JMPIF L15)
+38    (GETVALUE&PUSH 1)                   ; Y
+40    (GETVALUE 1)                        ; Y
+42    (CDR)
+43    (CDR&PUSH)
+44    (CALLS1 170)                        ; RPLACD
+46    L46
+46    (T)
+47    (UNBIND1)
+48    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN POP-LOOP-CONTEXT NIL ...)-32|
+(CONST 0) = POP-LOOP-CONTEXT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POP-LOOP-CONTEXT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POP-LOOP-CONTEXT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POP-LOOP-CONTEXT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POP-LOOP-CONTEXT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; POP-LOOP-CONTEXT
+8     (SKIP&RET 1)
+
+
+Disassembly of function POP-LOOP-CONTEXT
+(CONST 0) = ANS
+(CONST 1) = Y
+(CONST 2) = *LOOP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y ANS)
+32 byte-code instructions:
+0     (GETVALUE 0)                        ; ANS
+2     (BIND 1)                            ; Y
+4     (JMP L33)
+6     L6
+6     (GETVALUE 1)                        ; Y
+8     (CDR)
+9     (CAR)
+10    (CAR)
+11    (JMPIFATOM L25)
+13    (GETVALUE 1)                        ; Y
+15    (CDR)
+16    (CAR)
+17    (CAR&PUSH)
+18    (GETVALUE 1)                        ; Y
+20    (CDR)
+21    (CAR)
+22    (CDR&PUSH)
+23    (CALLS1 170)                        ; RPLACD
+25    L25
+25    (GETVALUE&PUSH 1)                   ; Y
+27    (GETVALUE 1)                        ; Y
+29    (CDR)
+30    (CDR&PUSH)
+31    (CALLS1 170)                        ; RPLACD
+33    L33
+33    (GETVALUE 1)                        ; Y
+35    (CDR)
+36    (CAR&PUSH)
+37    (JMPIFNOTEQTO 2 L6)                 ; *LOOP
+40    (NIL)
+41    (UNBIND1)
+42    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN TESTA (ALA EXP B) ...)-33|
+(CONST 0) = TESTA
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TESTA>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TESTA
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TESTA
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TESTA>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TESTA
+8     (SKIP&RET 1)
+
+
+Disassembly of function TESTA
+(CONST 0) = EXP
+(CONST 1) = B
+(CONST 2) = MVAR*
+(CONST 3) = TESTA*
+(CONST 4) = VAR*
+(CONST 5) = Y
+(CONST 6) = SET
+(CONST 7) = UVAR
+(CONST 8) = ANS
+(CONST 9) = ZL-ASSOC
+(CONST 10) = COEFFPT
+(CONST 11) = "(INVALID SWITCH IN PATTERN TO SCHATCHEN)"
+(CONST 12) = MERROR
+(CONST 13) = M1
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y B ANS EXP)
+writes special variable : (Y)
+106 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; EXP
+3     (LOAD 4)
+4     (BIND 1)                            ; B
+6     (LOAD&CAR&PUSH 9)
+8     (JMPIFEQTO 2 L31)                   ; MVAR*
+11    (LOAD&CAR&PUSH 9)
+13    (JMPIFEQTO 4 L108)                  ; VAR*
+17    (LOAD&PUSH 9)
+18    (GETVALUE&PUSH 0)                   ; EXP
+20    (NIL&PUSH)
+21    (CALL 3 3)                          ; TESTA*
+24    (JMPIF1 L27)
+26    (NIL)
+27    L27
+27    (UNBIND 2)
+29    (SKIP&RET 4)
+31    L31
+31    (LOAD&PUSH 9)
+32    (GETVALUE&PUSH 0)                   ; EXP
+34    (T&PUSH)
+35    (CALL 3 3)                          ; TESTA*
+38    (JMP L27)
+40    L40
+40    (T&STORE 1)
+42    (JMP L143)
+45    L45
+45    (LOAD&CAR&PUSH 5)
+47    (GETVALUE&PUSH 8)                   ; ANS
+49    (CALL2 9)                           ; ZL-ASSOC
+51    (CDR)
+52    (SETVALUE 5)                        ; Y
+54    (JMPIFNOT L143)
+57    (T&STORE 0)
+59    (JMP L143)
+62    L62
+62    (GETVALUE&PUSH 1)                   ; B
+64    (JMPIFNOTEQTO 10 L71)               ; COEFFPT
+67    (LOAD 6)
+68    (CDR)
+69    (CAR)
+70    (STORE 5)
+71    L71
+71    (LOAD&CDR&STORE 6)
+73    (JMP L143)
+76    L76
+76    (GETVALUE&PUSH 0)                   ; EXP
+78    (GETVALUE&PUSH 5)                   ; Y
+80    (CALL2 13)                          ; M1
+82    (SETVALUE 5)                        ; Y
+84    (JMPIFNOT L95)
+86    (JMP L167)
+89    L89
+89    (NIL)
+90    (SETVALUE 5)                        ; Y
+92    (JMPIF L167)
+95    L95
+95    (NIL)
+96    (JMP L176)
+99    L99
+99    (LOAD&CAR&PUSH 5)
+101   (GETVALUE&PUSH 0)                   ; EXP
+103   (CALL2 6)                           ; SET
+105   (JMP L176)
+108   L108
+108   (LOAD 9)
+109   (CDR)
+110   (CAR&PUSH)
+111   (LOAD 10)
+112   (CDR)
+113   (CDR&PUSH)
+114   (NIL)
+115   (BIND 5)                            ; Y
+117   (PUSH-NIL 2)
+119   (LOAD&JMPIFNOT 6 L148)
+122   L122
+122   (LOAD&CAR&PUSH 6)
+124   (JMPIFEQTO 6 L40)                   ; SET
+128   (LOAD&CAR&PUSH 6)
+130   (JMPIFEQTO 7 L45)                   ; UVAR
+134   (LOAD&CAR&PUSH 6)
+136   (JMPIFEQTO 10 L62)                  ; COEFFPT
+140   (CONST&PUSH 11)                     ; "(INVALID SWITCH IN PATTERN TO SCHATCHEN)"
+141   (CALL1 12)                          ; MERROR
+143   L143
+143   (LOAD&CDR&STORE 6)
+145   (LOAD&JMPIF 6 L122)
+148   L148
+148   (LOAD&JMPIF 0 L76)
+152   (LOAD&PUSH 5)
+153   (GETVALUE&PUSH 0)                   ; EXP
+155   (NIL&PUSH)
+156   (CALL 3 3)                          ; TESTA*
+159   (JMPIFNOT L89)
+162   (SETVALUE 5)                        ; Y
+164   (JMPIFNOT L95)
+167   L167
+167   (LOAD&JMPIF 1 L99)
+171   (GETVALUE 5)                        ; Y
+173   (JMPIF1 L176)
+175   (NIL)
+176   L176
+176   (SKIP 2)
+178   (UNBIND1)
+179   (SKIP 2)
+181   (JMP L27)
+
+
+Disassembly of function #:|(DEFUN TESTA* (ALA EXP LOC) ...)-34|
+(CONST 0) = TESTA*
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TESTA*>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TESTA*
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TESTA*
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TESTA*>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TESTA*
+8     (SKIP&RET 1)
+
+
+Disassembly of function TESTA*
+(CONST 0) = EXP
+(CONST 1) = FREEVAR
+(CONST 2) = VAR
+(CONST 3) = *NOVAR
+(CONST 4) = 1
+(CONST 5) = FREE
+(CONST 6) = NUMBERP
+(CONST 7) = MNUMP
+(CONST 8) = TRUE
+(CONST 9) = LINEAR*
+(CONST 10) = FINDTHEM
+(CONST 11) = MEXPR
+(CONST 12) = MGET
+(CONST 13) = MAPPLY
+(CONST 14) = (LAMBDA FUNCTION *FUNCTION QUOTE)
+(CONST 15) = MEMQ
+(CONST 16) = EVAL-PRED
+(CONST 17) = SPLIST
+(CONST 18) = ANS
+(CONST 19) = V
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (V VAR ANS SPLIST EXP)
+writes special variable : (EXP)
+174 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; EXP
+3     (LOAD 6)
+4     (CDR)
+5     (CAR&PUSH)
+6     (JMPIFEQTO 1 L101)                  ; FREEVAR
+10    (LOAD 6)
+11    (CDR)
+12    (CAR&PUSH)
+13    (JMPIFEQTO 6 L116)                  ; NUMBERP
+17    (LOAD 6)
+18    (CDR)
+19    (CAR&PUSH)
+20    (JMPIFEQTO 8 L64)                   ; TRUE
+23    (LOAD 6)
+24    (CDR)
+25    (CAR&PUSH)
+26    (JMPIFEQTO 9 L124)                  ; LINEAR*
+30    (LOAD&JMPIF 4 L187)
+34    (LOAD 6)
+35    (CDR)
+36    (CAR)
+37    (JMPIFATOM L139)
+40    (LOAD 6)
+41    (CDR)
+42    (CAR)
+43    (CAR&PUSH)
+44    (CONST&PUSH 14)                     ; (LAMBDA FUNCTION *FUNCTION QUOTE)
+45    (CALL2&JMPIFNOT 15 L174)            ; MEMQ
+49    L49
+49    (LOAD 6)
+50    (CDR)
+51    (CAR&PUSH)
+52    (GETVALUE&PUSH 0)                   ; EXP
+54    (LOAD 8)
+55    (CDR)
+56    (CDR&PUSH)
+57    (CALL2 10)                          ; FINDTHEM
+59    (APPLY 0)
+61    (JMPIFNOT L187)
+64    L64
+64    (LOAD&CAR&PUSH 6)
+66    (GETVALUE&PUSH 17)                  ; SPLIST
+68    (CALL2 15)                          ; MEMQ
+70    (JMPIF1 L274)
+73    (GETVALUE&PUSH 18)                  ; ANS
+75    (LOAD&CAR&PUSH 7)
+77    (GETVALUE 0)                        ; EXP
+79    (CONS&PUSH)
+80    (GETVALUE 18)                       ; ANS
+82    (CDR)
+83    (CONS&PUSH)
+84    (CALLS1 170)                        ; RPLACD
+86    (JMPIF1 L274)
+89    (NIL)
+90    (JMP L274)
+93    L93
+93    (GETVALUE&PUSH 0)                   ; EXP
+95    (JMPIFNOTEQTO 4 L187)               ; 1
+99    (JMP L64)
+101   L101
+101   (GETVALUE&PUSH 2)                   ; VAR
+103   (JMPIFEQTO 3 L93)                   ; *NOVAR
+106   (GETVALUE&PUSH 0)                   ; EXP
+108   (GETVALUE&PUSH 2)                   ; VAR
+110   (CALL2&JMPIFNOT 5 L187)             ; FREE
+114   (JMP L64)
+116   L116
+116   (GETVALUE&PUSH 0)                   ; EXP
+118   (CALL1&JMPIFNOT 7 L187)             ; MNUMP
+122   (JMP L64)
+124   L124
+124   (GETVALUE&PUSH 0)                   ; EXP
+126   (LOAD 7)
+127   (CDR)
+128   (CDR)
+129   (CAR&PUSH)
+130   (CALL2 9)                           ; LINEAR*
+132   (SETVALUE 0)                        ; EXP
+134   (JMPIFNOT L187)
+136   (JMP L64)
+139   L139
+139   (LOAD 6)
+140   (CDR)
+141   (CAR&PUSH)
+142   (CALLS1&JMPIF 80 L49)               ; FBOUNDP
+146   (LOAD 6)
+147   (CDR)
+148   (CAR&PUSH)
+149   (CONST&PUSH 11)                     ; MEXPR
+150   (CALL2&JMPIFNOT 12 L187)            ; MGET
+153   (LOAD 6)
+154   (CDR)
+155   (CAR&PUSH)
+156   (GETVALUE&PUSH 0)                   ; EXP
+158   (LOAD 8)
+159   (CDR)
+160   (CDR&PUSH)
+161   (CALL2&PUSH 10)                     ; FINDTHEM
+163   (LOAD 8)
+164   (CDR)
+165   (CAR&PUSH)
+166   (CALL 3 13)                         ; MAPPLY
+169   (JMPIFNOT L187)
+171   (JMP L64)
+174   L174
+174   (LOAD 6)
+175   (CDR)
+176   (CAR&PUSH)
+177   (LOAD&CAR&PUSH 7)
+179   (GETVALUE&PUSH 0)                   ; EXP
+181   (CALL 3 16)                         ; EVAL-PRED
+184   (JMPIF L64)
+187   L187
+187   (LOAD&JMPIFNOT 4 L273)
+191   (LOAD 6)
+192   (CDR)
+193   (CAR)
+194   (JMPIFCONSP L273)
+197   (LOAD 6)
+198   (CDR)
+199   (CAR&PUSH)
+200   (CALLS1&JMPIFNOT 80 L273)           ; FBOUNDP
+204   (LOAD&CAR&PUSH 6)
+206   (LOAD&PUSH 0)
+207   (LOAD 8)
+208   (CDR)
+209   (CAR&PUSH)
+210   (GETVALUE&PUSH 0)                   ; EXP
+212   (LOAD 10)
+213   (CDR)
+214   (CDR&PUSH)
+215   (CALL2 10)                          ; FINDTHEM
+217   (APPLY&PUSH 0)
+219   (JMP L258)
+221   L221
+221   (SKIP 2)
+223   (POP)
+224   (JMPIF1 L274)
+226   (JMP L273)
+228   L228
+228   (LOAD&CAR&PUSH 1)
+230   (LOAD 0)
+231   (BIND 19)                           ; V
+233   (LOAD&PUSH 4)
+234   (GETVALUE&PUSH 17)                  ; SPLIST
+236   (CALL2&JMPIF 15 L251)               ; MEMQ
+239   (GETVALUE&PUSH 18)                  ; ANS
+241   (LOAD&PUSH 5)
+242   (GETVALUE 19)                       ; V
+244   (CONS&PUSH)
+245   (GETVALUE 18)                       ; ANS
+247   (CDR)
+248   (CONS&PUSH)
+249   (CALLS1 170)                        ; RPLACD
+251   L251
+251   (UNBIND1)
+252   (SKIP 2)
+254   (LOAD&CDR&STORE 1)
+256   (LOAD&CDR&STORE 0)
+258   L258
+258   (LOAD&PUSH 1)
+259   (CALLS1&JMPIF 146 L221)             ; ENDP
+262   (LOAD&CAR&PUSH 1)
+264   (LOAD&PUSH 1)
+265   (CALLS1&JMPIFNOT 146 L228)          ; ENDP
+268   (SKIP 3)
+270   (POP)
+271   (JMPIF1 L274)
+273   L273
+273   (NIL)
+274   L274
+274   (UNBIND1)
+275   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN EVAL-PRED (EXP %VAR VALUE) ...)-35|
+(CONST 0) = EVAL-PRED
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EVAL-PRED>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EVAL-PRED
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EVAL-PRED
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EVAL-PRED>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EVAL-PRED
+8     (SKIP&RET 1)
+
+
+Disassembly of function EVAL-PRED
+(CONST 0) = EXP
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (EXP)
+13 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; EXP
+3     (LOAD&PUSH 5)
+4     (LIST&PUSH 1)
+6     (LOAD&PUSH 5)
+7     (LIST 1)
+9     (PROGV)
+10    (GETVALUE&PUSH 0)                   ; EXP
+12    (CALLS1 91)                         ; EVAL
+14    (UNBIND1)
+15    (SKIPSP 1 0)
+18    (UNBIND1)
+19    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN FINDTHEM (EXP ARGS) ...)-36|
+(CONST 0) = FINDTHEM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FINDTHEM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FINDTHEM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FINDTHEM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FINDTHEM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FINDTHEM
+8     (SKIP&RET 1)
+
+
+Disassembly of function FINDTHEM
+(CONST 0) = EXP
+(CONST 1) = ANS
+(CONST 2) = ASSQ
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS EXP)
+36 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 0)                   ; EXP
+5     (NIL&PUSH)
+6     (LOAD&PUSH 6)
+7     (JMP L38)
+9     L9
+9     (LOAD&PUSH 0)
+10    (GETVALUE&PUSH 1)                   ; ANS
+12    (CALL2 2)                           ; ASSQ
+14    (CDR)
+15    (JMPIF L31)
+17    (LOAD&PUSH 0)
+18    (CALLS1 91)                         ; EVAL
+20    (JMP L31)
+22    L22
+22    (LOAD&CAR&PUSH 0)
+24    (LOAD 0)
+25    (JMPIFATOM L9)
+27    (LOAD&JMPIF 0 L31)
+30    (NIL)
+31    L31
+31    (PUSH)
+32    (LOAD&CONS&STORE 2)
+34    (SKIP 1)
+36    (LOAD&CDR&STORE 0)
+38    L38
+38    (LOAD&PUSH 0)
+39    (CALLS1&JMPIFNOT 146 L22)           ; ENDP
+42    (SKIP 1)
+44    (LOAD&PUSH 0)
+45    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+47    (SKIP 1)
+49    (CONS)
+50    (UNBIND1)
+51    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN FINDIT (A) ...)-37|
+(CONST 0) = FINDIT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FINDIT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FINDIT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FINDIT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FINDIT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FINDIT
+8     (SKIP&RET 1)
+
+
+Disassembly of function FINDIT
+(CONST 0) = A
+(CONST 1) = ANS
+(CONST 2) = Y
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (A Y ANS)
+writes special variable : (Y)
+42 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; A
+3     (GETVALUE 1)                        ; ANS
+5     (BIND 2)                            ; Y
+7     (NIL&PUSH)
+8     (JMP L46)
+10    L10
+10    (LOAD&PUSH 0)
+11    (GETVALUE 2)                        ; Y
+13    (CDR)
+14    (CAR)
+15    (CDR&PUSH)
+16    (LIST&PUSH 1)
+18    (CALLSR&STORE 2 35 0)               ; NCONC
+22    (GETVALUE&PUSH 2)                   ; Y
+24    (GETVALUE 2)                        ; Y
+26    (CDR)
+27    (CDR&PUSH)
+28    (CALLS1 170)                        ; RPLACD
+30    (JMP L46)
+32    L32
+32    (GETVALUE 2)                        ; Y
+34    (CDR)
+35    (CAR)
+36    (CAR&PUSH)
+37    (GETVALUE 0)                        ; A
+39    (JMPIFEQ L10)
+41    (GETVALUE 2)                        ; Y
+43    (CDR)
+44    (SETVALUE 2)                        ; Y
+46    L46
+46    (GETVALUE 2)                        ; Y
+48    (CDR)
+49    (JMPIFNOT L57)
+51    (GETVALUE 2)                        ; Y
+53    (CDR)
+54    (CAR)
+55    (JMPIF L32)
+57    L57
+57    (POP)
+58    (UNBIND 2)
+60    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SCH-REPLACE (DICT EXP1) ...)-38|
+(CONST 0) = SCH-REPLACE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SCH-REPLACE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SCH-REPLACE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SCH-REPLACE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SCH-REPLACE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SCH-REPLACE
+8     (SKIP&RET 1)
+
+
+Disassembly of function SCH-REPLACE
+(CONST 0) = DICT
+(CONST 1) = EXP1
+(CONST 2) = REPLAC
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (EXP1)
+8 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; DICT
+3     (LOAD 4)
+4     (BIND 1)                            ; EXP1
+6     (GETVALUE&PUSH 1)                   ; EXP1
+8     (CALL1 2)                           ; REPLAC
+10    (UNBIND 2)
+12    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN REPLAC (EXP1) ...)-39|
+(CONST 0) = REPLAC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE REPLAC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; REPLAC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; REPLAC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE REPLAC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; REPLAC
+8     (SKIP&RET 1)
+
+
+Disassembly of function REPLAC
+(CONST 0) = EXP1
+(CONST 1) = EVAL
+(CONST 2) = SIMPLIFYA
+(CONST 3) = QUOTE
+(CONST 4) = REPLAC
+(CONST 5) = DICT
+(CONST 6) = ASSQ
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (DICT EXP1)
+76 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP1
+3     (NIL&PUSH)
+4     (GETVALUE 0)                        ; EXP1
+6     (JMPIFNOT L34)
+8     (GETVALUE 0)                        ; EXP1
+10    (JMPIFCONSP L78)
+13    (GETVALUE&PUSH 0)                   ; EXP1
+15    (CALLS2&JMPIF 8 L105)               ; NUMBERP
+19    (GETVALUE&PUSH 0)                   ; EXP1
+21    (GETVALUE&PUSH 5)                   ; DICT
+23    (CALL2 6)                           ; ASSQ
+25    (STORE 0)
+26    (JMPIF L111)
+29    (GETVALUE 0)                        ; EXP1
+31    (JMPIF1 L116)
+34    L34
+34    (NIL)
+35    (SKIP 1)
+37    (JMP L118)
+40    L40
+40    (GETVALUE 0)                        ; EXP1
+42    (CDR)
+43    (CAR&PUSH)
+44    (JSR&PUSH L0)
+46    (CALLS1&PUSH 91)                    ; EVAL
+48    (NIL&PUSH)
+49    (CALL2 2)                           ; SIMPLIFYA
+51    (SKIP 1)
+53    (JMP L118)
+55    L55
+55    (GETVALUE 0)                        ; EXP1
+57    (CDR)
+58    (CAR)
+59    (SKIP 1)
+61    (JMP L118)
+63    L63
+63    (GETVALUE 0)                        ; EXP1
+65    (CAR)
+66    (CAR&PUSH)
+67    (LIST&PUSH 1)
+69    (LOAD 1)
+70    (CONS&PUSH)
+71    (T&PUSH)
+72    (CALL2 2)                           ; SIMPLIFYA
+74    (JMPIF1 L116)
+76    (JMP L34)
+78    L78
+78    (GETVALUE 0)                        ; EXP1
+80    (CAR&PUSH)
+81    (JMPIFEQTO 1 L40)                   ; EVAL
+84    (GETVALUE 0)                        ; EXP1
+86    (CAR&PUSH)
+87    (JMPIFEQTO 3 L55)                   ; QUOTE
+90    (CONST&PUSH 4)                      ; REPLAC
+91    (GETVALUE 0)                        ; EXP1
+93    (CDR&PUSH)
+94    (CALLSR&STORE 0 22 0)               ; MAPCAR
+98    (PUSH)
+99    (GETVALUE 0)                        ; EXP1
+101   (CDR&PUSH)
+102   (CALLS2&JMPIFNOT 2 L63)             ; EQUAL
+105   L105
+105   (GETVALUE 0)                        ; EXP1
+107   (SKIP 1)
+109   (JMP L118)
+111   L111
+111   (CDR)
+112   (SKIP 1)
+114   (JMP L118)
+116   L116
+116   (SKIP 1)
+118   L118
+118   (UNBIND1)
+119   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (UNSPECIAL VAR SPLIST ...))-40|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (EVAL COMPILE) (SETQ *READ-BASE* OLD-IBASE))-41|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/schatc.fas
+Wrote file /cygdrive/e/temp/maxima/src/schatc.lis

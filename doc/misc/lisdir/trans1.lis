@@ -1,0 +1,3476 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trans1.lisp
+on 2002-12-17 13:33:53 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trans1.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRANS1)-2|
+(CONST 0) = TRANS1
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS1
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TRANS1)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN MMAPEV # ...))-4|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $APPLY FEXPR ...))-5|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN QUOTED-SYMBOLP (FORM) ...)-6|
+(CONST 0) = QUOTED-SYMBOLP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE QUOTED-SYMBOLP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; QUOTED-SYMBOLP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; QUOTED-SYMBOLP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE QUOTED-SYMBOLP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; QUOTED-SYMBOLP
+8     (SKIP&RET 1)
+
+
+Disassembly of function QUOTED-SYMBOLP
+(CONST 0) = ML-TYPEP
+(CONST 1) = LIST
+(CONST 2) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; ML-TYPEP
+3     (CONST 1)                           ; LIST
+4     (EQ)
+5     (JMPIFNOT1 L20)
+7     (LOAD&CAR&PUSH 1)
+9     (CONST 2)                           ; QUOTE
+10    (EQ)
+11    (JMPIFNOT1 L20)
+13    (LOAD 1)
+14    (CDR)
+15    (CAR&PUSH)
+16    (CALLS2 6)                          ; SYMBOLP
+18    (SKIP&RET 2)
+20    L20
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLY (FORM) ...)-7-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $APPLY (FORM) ...)-7-2-1|>
+(CONST 1) = $APPLY
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $APPLY (FORM) ...)-7-2-1|>
+1     (CONST&PUSH 1)                      ; $APPLY
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $APPLY (FORM) ...)-7-2-1|
+(CONST 0) = DTRANSLATE
+(CONST 1) = FUNCTION-MODE-@
+(CONST 2) = QUOTED-SYMBOLP
+(CONST 3) = FUNCTION-MODE
+(CONST 4) = $ANY
+(CONST 5) = $LISTP
+(CONST 6) = TR-ARGS
+(CONST 7) = MFUNCALL
+(CONST 8) = CALL-AND-SIMP
+(CONST 9) = MAPPLY-TR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+53 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1&PUSH 0)                      ; DTRANSLATE
+5     (LOAD 0)
+6     (JMPIFATOM L39)
+8     (LOAD&PUSH 0)
+9     (CALL1&JMPIF 2 L44)                 ; QUOTED-SYMBOLP
+12    (CONST 4)                           ; $ANY
+13    L13
+13    (PUSH)
+14    (LOAD 3)
+15    (CDR)
+16    (CDR)
+17    (CAR&PUSH)
+18    (CALL1&JMPIF 5 L51)                 ; $LISTP
+21    (LOAD 3)
+22    (CDR)
+23    (CDR)
+24    (CAR&PUSH)
+25    (CALL1&PUSH 0)                      ; DTRANSLATE
+27    (LOAD&PUSH 1)
+28    (CONST&PUSH 9)                      ; MAPPLY-TR
+29    (LOAD&PUSH 4)
+30    (LOAD&PUSH 3)
+31    (LIST 2)
+33    L33
+33    (PUSH)
+34    (CALL 3 8)                          ; CALL-AND-SIMP
+37    (SKIP&RET 5)
+39    L39
+39    (LOAD&PUSH 0)
+40    (CALL1 1)                           ; FUNCTION-MODE-@
+42    (JMP L13)
+44    L44
+44    (LOAD 0)
+45    (CDR)
+46    (CAR&PUSH)
+47    (CALL1 3)                           ; FUNCTION-MODE
+49    (JMP L13)
+51    L51
+51    (LOAD 3)
+52    (CDR)
+53    (CDR)
+54    (CAR)
+55    (CDR&PUSH)
+56    (CALL1&PUSH 6)                      ; TR-ARGS
+58    (LOAD&PUSH 1)
+59    (CONST&PUSH 7)                      ; MFUNCALL
+60    (LOAD&PUSH 4)
+61    (LOAD 3)
+62    (CONS)
+63    (JMP L33)
+
+
+Disassembly of function #:|(DEF%TR $MAP (FORM) ...)-8-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MAP (FORM) ...)-8-2-1|>
+(CONST 1) = $MAP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MAP (FORM) ...)-8-2-1|>
+1     (CONST&PUSH 1)                      ; $MAP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MAP (FORM) ...)-8-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = $ANY
+(CONST 2) = MAP1
+(CONST 3) = GETOPR
+(CONST 4) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (CALL1&PUSH 0)                      ; TR-ARGS
+5     (LOAD&CAR&STORE 0 1)
+8     (LOAD&CDR&STORE 0)
+10    (CONST&PUSH 1)                      ; $ANY
+11    (CONST&PUSH 2)                      ; MAP1
+12    (CONST&PUSH 3)                      ; GETOPR
+13    (LOAD&PUSH 4)
+14    (LIST&PUSH 2)
+16    (LOAD 3)
+17    (CONS&PUSH)
+18    (CALL 3 4)                          ; CALL-AND-SIMP
+21    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $MAPLIST (FORM) ...)-9-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MAPLIST (FORM) ...)-9-2-1|>
+(CONST 1) = $MAPLIST
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MAPLIST (FORM) ...)-9-2-1|>
+1     (CONST&PUSH 1)                      ; $MAPLIST
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MAPLIST (FORM) ...)-9-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = MARRAYREF
+(CONST 2) = (MAPLIST_TR)
+(CONST 3) = PUSH-AUTOLOAD-DEF
+(CONST 4) = $ANY
+(CONST 5) = MAPLIST_TR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (CALL1&PUSH 0)                      ; TR-ARGS
+5     (LOAD&CAR&STORE 0 1)
+8     (LOAD&CDR&STORE 0)
+10    (CONST&PUSH 1)                      ; MARRAYREF
+11    (CONST&PUSH 2)                      ; (MAPLIST_TR)
+12    (CALL2 3)                           ; PUSH-AUTOLOAD-DEF
+14    (CONST&PUSH 4)                      ; $ANY
+15    (CONST&PUSH 5)                      ; MAPLIST_TR
+16    (LOAD&PUSH 3)
+17    (LOAD 3)
+18    (LIST* 3)
+20    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $FULLMAP (FORM) ...)-10-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $FULLMAP (FORM) ...)-10-2-1|>
+(CONST 1) = $FULLMAP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $FULLMAP (FORM) ...)-10-2-1|>
+1     (CONST&PUSH 1)                      ; $FULLMAP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $FULLMAP (FORM) ...)-10-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = $ANY
+(CONST 2) = FMAP1
+(CONST 3) = GETOPR
+(CONST 4) = LIST
+(CONST 5) = (NIL)
+(CONST 6) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (CALL1&PUSH 0)                      ; TR-ARGS
+5     (LOAD&CAR&STORE 0 1)
+8     (LOAD&CDR&STORE 0)
+10    (CONST&PUSH 1)                      ; $ANY
+11    (CONST&PUSH 2)                      ; FMAP1
+12    (CONST&PUSH 3)                      ; GETOPR
+13    (LOAD&PUSH 4)
+14    (LIST&PUSH 2)
+16    (CONST&PUSH 4)                      ; LIST
+17    (LOAD 4)
+18    (CONS&PUSH)
+19    (CONST 5)                           ; (NIL)
+20    (LIST*&PUSH 2)
+22    (CALL 3 6)                          ; CALL-AND-SIMP
+25    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $MATRIXMAP (FORM) ...)-11-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MATRIXMAP (FORM) ...)-11-2-1|>
+(CONST 1) = $MATRIXMAP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MATRIXMAP (FORM) ...)-11-2-1|>
+1     (CONST&PUSH 1)                      ; $MATRIXMAP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MATRIXMAP (FORM) ...)-11-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = $ANY
+(CONST 2) = LAMBDA
+(CONST 3) = (FMAPLVL)
+(CONST 4) = FMAPL1
+(CONST 5) = GETOPR
+(CONST 6) = (2)
+(CONST 7) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+18 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (CALL1&PUSH 0)                      ; TR-ARGS
+5     (LOAD&CAR&STORE 0 1)
+8     (LOAD&CDR&STORE 0)
+10    (CONST&PUSH 1)                      ; $ANY
+11    (CONST&PUSH 2)                      ; LAMBDA
+12    (CONST&PUSH 3)                      ; (FMAPLVL)
+13    (CONST&PUSH 4)                      ; FMAPL1
+14    (CONST&PUSH 5)                      ; GETOPR
+15    (LOAD&PUSH 6)
+16    (LIST&PUSH 2)
+18    (LOAD 5)
+19    (LIST*&PUSH 2)
+21    (LIST&PUSH 3)
+23    (CONST&PUSH 6)                      ; (2)
+24    (CALL 3 7)                          ; CALL-AND-SIMP
+27    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $FULLMAPL (FORM) ...)-12-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $FULLMAPL (FORM) ...)-12-2-1|>
+(CONST 1) = $FULLMAPL
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $FULLMAPL (FORM) ...)-12-2-1|>
+1     (CONST&PUSH 1)                      ; $FULLMAPL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $FULLMAPL (FORM) ...)-12-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = $ANY
+(CONST 2) = FMAPL1
+(CONST 3) = GETOPR
+(CONST 4) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (CALL1&PUSH 0)                      ; TR-ARGS
+5     (LOAD&CAR&STORE 0 1)
+8     (LOAD&CDR&STORE 0)
+10    (CONST&PUSH 1)                      ; $ANY
+11    (CONST&PUSH 2)                      ; FMAPL1
+12    (CONST&PUSH 3)                      ; GETOPR
+13    (LOAD&PUSH 4)
+14    (LIST&PUSH 2)
+16    (LOAD 3)
+17    (CONS&PUSH)
+18    (CALL 3 4)                          ; CALL-AND-SIMP
+21    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $OUTERMAP (FORM) ...)-13-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $OUTERMAP (FORM) ...)-13-2-1|>
+(CONST 1) = $OUTERMAP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $OUTERMAP (FORM) ...)-13-2-1|>
+1     (CONST&PUSH 1)                      ; $OUTERMAP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $OUTERMAP (FORM) ...)-13-2-1|
+(CONST 0) = TR-ARGS
+(CONST 1) = $ANY
+(CONST 2) = 1
+(CONST 3) = FMAPL1
+(CONST 4) = OUTERMAP1
+(CONST 5) = GETOPR
+(CONST 6) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+23 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (CALL1&PUSH 0)                      ; TR-ARGS
+5     (LOAD&CAR&STORE 0 1)
+8     (LOAD&CDR&STORE 0)
+10    (CONST&PUSH 1)                      ; $ANY
+11    (LOAD&PUSH 1)
+12    (CALLS2&PUSH 71)                    ; LENGTH
+14    (CONST&PUSH 2)                      ; 1
+15    (CALLSR&JMPIF 1 45 L32)             ; =
+19    (CONST 4)                           ; OUTERMAP1
+20    L20
+20    (PUSH)
+21    (CONST&PUSH 5)                      ; GETOPR
+22    (LOAD&PUSH 4)
+23    (LIST&PUSH 2)
+25    (LOAD 3)
+26    (CONS&PUSH)
+27    (CALL 3 6)                          ; CALL-AND-SIMP
+30    (SKIP&RET 4)
+32    L32
+32    (CONST 3)                           ; FMAPL1
+33    (JMP L20)
+
+
+Disassembly of function #:|(DEF%TR $SCANMAP (FORM) ...)-14-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $SCANMAP (FORM) ...)-14-2-1|>
+(CONST 1) = $SCANMAP
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $SCANMAP (FORM) ...)-14-2-1|>
+1     (CONST&PUSH 1)                      ; $SCANMAP
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SCANMAP (FORM) ...)-14-2-1|
+(CONST 0) = $SCANMAP
+(CONST 1) = (SCANMAP1)
+(CONST 2) = PUSH-AUTOLOAD-DEF
+(CONST 3) = TR-ARGS
+(CONST 4) = $ANY
+(CONST 5) = SCANMAP1
+(CONST 6) = GETOPR
+(CONST 7) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SCANMAP
+1     (CONST&PUSH 1)                      ; (SCANMAP1)
+2     (CALL2 2)                           ; PUSH-AUTOLOAD-DEF
+4     (NIL&PUSH)
+5     (LOAD&CDR&PUSH 2)
+7     (CALL1&PUSH 3)                      ; TR-ARGS
+9     (LOAD&CAR&STORE 0 1)
+12    (LOAD&CDR&STORE 0)
+14    (CONST&PUSH 4)                      ; $ANY
+15    (CONST&PUSH 5)                      ; SCANMAP1
+16    (CONST&PUSH 6)                      ; GETOPR
+17    (LOAD&PUSH 4)
+18    (LIST&PUSH 2)
+20    (LOAD 3)
+21    (CONS&PUSH)
+22    (CALL 3 7)                          ; CALL-AND-SIMP
+25    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF%TR $QPUT (FORM) ...)-15-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $QPUT (FORM) ...)-15-2-1|>
+(CONST 1) = $QPUT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $QPUT (FORM) ...)-15-2-1|>
+1     (CONST&PUSH 1)                      ; $QPUT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $QPUT (FORM) ...)-15-2-1|
+(CONST 0) = $ANY
+(CONST 1) = $PUT
+(CONST 2) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; $PUT
+2     (CONST&PUSH 2)                      ; QUOTE
+3     (LOAD 4)
+4     (CDR)
+5     (CAR&PUSH)
+6     (LIST&PUSH 2)
+8     (CONST&PUSH 2)                      ; QUOTE
+9     (LOAD 5)
+10    (CDR)
+11    (CDR)
+12    (CAR&PUSH)
+13    (LIST&PUSH 2)
+15    (CONST&PUSH 2)                      ; QUOTE
+16    (LOAD 6)
+17    (CDR)
+18    (CDR)
+19    (CDR)
+20    (CAR&PUSH)
+21    (LIST&PUSH 2)
+23    (LIST 5)
+25    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUBVAR (FORM) ...)-16-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $SUBVAR (FORM) ...)-16-2-1|>
+(CONST 1) = $SUBVAR
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $SUBVAR (FORM) ...)-16-2-1|>
+1     (CONST&PUSH 1)                      ; $SUBVAR
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUBVAR (FORM) ...)-16-2-1|
+(CONST 0) = (MQAPPLY ARRAY)
+(CONST 1) = TRANSLATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (MQAPPLY ARRAY)
+1     (LOAD 2)
+2     (CDR)
+3     (CONS&PUSH)
+4     (CALL1 1)                           ; TRANSLATE
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUBSTPART (FORM) ...)-17-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $SUBSTPART (FORM) ...)-17-2-1|>
+(CONST 1) = $SUBSTPART
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $SUBSTPART (FORM) ...)-17-2-1|>
+1     (CONST&PUSH 1)                      ; $SUBSTPART
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUBSTPART (FORM) ...)-17-2-1|
+(CONST 0) = $INFLAG
+(CONST 1) = SUBSTPART-TRANSLATION
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (T&PUSH)
+2     (NIL&PUSH)
+3     (CONST&PUSH 0)                      ; $INFLAG
+4     (CALL 4 1)                          ; SUBSTPART-TRANSLATION
+7     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUBSTINPART (FORM) ...)-18-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $SUBSTINPART (FORM) ...)-18-2-1|>
+(CONST 1) = $SUBSTINPART
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $SUBSTINPART (FORM) ...)-18-2-1|>
+1     (CONST&PUSH 1)                      ; $SUBSTINPART
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUBSTINPART (FORM) ...)-18-2-1|
+(CONST 0) = SUBSTPART-TRANSLATION
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (T&PUSH)
+2     (NIL&PUSH)
+3     (T&PUSH)
+4     (CALL 4 0)                          ; SUBSTPART-TRANSLATION
+7     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FOR-EVAL-THEN-MQUOTE-SIMP-ARGL (L) ...)-19|
+(CONST 0) = FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FOR-EVAL-THEN-MQUOTE-SIMP-ARGL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FOR-EVAL-THEN-MQUOTE-SIMP-ARGL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+8     (SKIP&RET 1)
+
+
+Disassembly of function FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+(CONST 0) = L
+(CONST 1) = V
+(CONST 2) = LIST
+(CONST 3) = '(MQUOTE SIMP)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (V L)
+writes special variables : (V L)
+25 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (NIL)
+4     (BIND 1)                            ; V
+6     (GETVALUE 0)                        ; L
+8     (JMPIFNOT L31)
+10    L10
+10    (CONST&PUSH 2)                      ; LIST
+11    (CONST&PUSH 3)                      ; '(MQUOTE SIMP)
+12    (GETVALUE 0)                        ; L
+14    (CAR&PUSH)
+15    (GETVALUE 0)                        ; L
+17    (CDR)
+18    (SETVALUE 0)                        ; L
+20    (LIST&PUSH 3)
+22    (GETVALUE 1)                        ; V
+24    (CONS)
+25    (SETVALUE 1)                        ; V
+27    (GETVALUE 0)                        ; L
+29    (JMPIF L10)
+31    L31
+31    (GETVALUE&PUSH 1)                   ; V
+33    (CALLS2 73)                         ; NREVERSE
+35    (UNBIND 2)
+37    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SUBSTPART-TRANSLATION (FORM FLAG1 FLAG2 ...) ...)-20|
+(CONST 0) = SUBSTPART-TRANSLATION
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SUBSTPART-TRANSLATION>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SUBSTPART-TRANSLATION
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SUBSTPART-TRANSLATION
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SUBSTPART-TRANSLATION>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SUBSTPART-TRANSLATION
+8     (SKIP&RET 1)
+
+
+Disassembly of function SUBSTPART-TRANSLATION
+(CONST 0) = DTRANSLATE
+(CONST 1) = FREE-LISP-VARS
+(CONST 2) = TR-ARGS
+(CONST 3) = $PIECE
+(CONST 4) = ASSQ
+(CONST 5) = $ANY
+(CONST 6) = SIMPLIFY
+(CONST 7) = PART1
+(CONST 8) = LIST
+(CONST 9) = FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+(CONST 10) = TBOUND-FREE-VARS
+(CONST 11) = SIDE-EFFECT-FREE-CHECK
+(CONST 12) = FUNGEN&ENV-FOR-MEVAL
+(CONST 13) = ZL-DELETE
+(CONST 14) = ($PIECE)
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+55 byte-code instructions:
+0     (LOAD 4)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1&PUSH 0)                      ; DTRANSLATE
+5     (LOAD&PUSH 0)
+6     (CALL1&PUSH 1)                      ; FREE-LISP-VARS
+8     (LOAD 6)
+9     (CDR)
+10    (CDR&PUSH)
+11    (CALL1&PUSH 2)                      ; TR-ARGS
+13    (CONST&PUSH 3)                      ; $PIECE
+14    (LOAD&PUSH 2)
+15    (CALL2&JMPIFNOT 4 L58)              ; ASSQ
+18    (LOAD&PUSH 1)
+19    (CALL1 10)                          ; TBOUND-FREE-VARS
+21    (STORE 1)
+22    (CDR)
+23    (CAR&PUSH)
+24    (LOAD 8)
+25    (CDR)
+26    (CAR&PUSH)
+27    (CALL2 11)                          ; SIDE-EFFECT-FREE-CHECK
+29    (CONST&PUSH 5)                      ; $ANY
+30    (CONST&PUSH 6)                      ; SIMPLIFY
+31    (CONST&PUSH 7)                      ; PART1
+32    (CONST&PUSH 8)                      ; LIST
+33    (CONST&PUSH 12)                     ; FUNGEN&ENV-FOR-MEVAL
+34    (CONST&PUSH 3)                      ; $PIECE
+35    (LOAD&CAR&PUSH 7)
+37    (CALL2&PUSH 13)                     ; ZL-DELETE
+39    (CONST&PUSH 14)                     ; ($PIECE)
+40    (LOAD&PUSH 9)
+41    (LIST&PUSH 4)
+43    (LOAD&PUSH 5)
+44    (CALL1 9)                           ; FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+46    (LIST* 2)
+48    L48
+48    (PUSH)
+49    (LOAD&PUSH 10)
+50    (LOAD&PUSH 10)
+51    (LOAD&PUSH 10)
+52    (LIST&PUSH 5)
+54    (LIST 3)
+56    (SKIP&RET 8)
+58    L58
+58    (CONST&PUSH 5)                      ; $ANY
+59    (CONST&PUSH 6)                      ; SIMPLIFY
+60    (CONST&PUSH 7)                      ; PART1
+61    (CONST&PUSH 8)                      ; LIST
+62    (LOAD&PUSH 6)
+63    (LOAD 5)
+64    (CONS&PUSH)
+65    (CALL1 9)                           ; FOR-EVAL-THEN-MQUOTE-SIMP-ARGL
+67    (CONS)
+68    (JMP L48)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $ERRCATCH FEXPR ...))-21|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $ERRCATCH (FORM) ...)-22-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $ERRCATCH (FORM) ...)-22-2-1|>
+(CONST 1) = $ERRCATCH
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $ERRCATCH (FORM) ...)-22-2-1|>
+1     (CONST&PUSH 1)                      ; $ERRCATCH
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ERRCATCH (FORM) ...)-22-2-1|
+(CONST 0) = (MPROGN)
+(CONST 1) = TRANSLATE
+(CONST 2) = LAMBDA
+(CONST 3) = (ERRCATCH RET)
+(CONST 4) = COND
+(CONST 5) = NULL
+(CONST 6) = SETQ
+(CONST 7) = RET
+(CONST 8) = ERRSET
+(CONST 9) = (LISPERRPRINT)
+(CONST 10) = ((ERRLFUN1 ERRCATCH))
+(CONST 11) = ((CONS '(MLIST) RET))
+(CONST 12) = ((CONS BINDLIST LOCLIST) NIL)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+27 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (MPROGN)
+1     (LOAD 2)
+2     (CDR)
+3     (CONS&PUSH)
+4     (CALL1 1)                           ; TRANSLATE
+6     (STORE 1)
+7     (CAR&PUSH)
+8     (CONST&PUSH 2)                      ; LAMBDA
+9     (CONST&PUSH 3)                      ; (ERRCATCH RET)
+10    (CONST&PUSH 4)                      ; COND
+11    (CONST&PUSH 5)                      ; NULL
+12    (CONST&PUSH 6)                      ; SETQ
+13    (CONST&PUSH 7)                      ; RET
+14    (CONST&PUSH 8)                      ; ERRSET
+15    (LOAD&CDR&PUSH 9)
+17    (CONST 9)                           ; (LISPERRPRINT)
+18    (LIST*&PUSH 2)
+20    (LIST&PUSH 3)
+22    (LIST&PUSH 2)
+24    (CONST 10)                          ; ((ERRLFUN1 ERRCATCH))
+25    (CONS&PUSH)
+26    (LIST&PUSH 2)
+28    (CONST 11)                          ; ((CONS '(MLIST) RET))
+29    (LIST*&PUSH 3)
+31    (CONST 12)                          ; ((CONS BINDLIST LOCLIST) NIL)
+32    (LIST* 2)
+34    (SKIP&RET 2)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $CATCH FEXPR ...))-23|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $CATCH (FORM) ...)-24-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $CATCH (FORM) ...)-24-2-1|>
+(CONST 1) = $CATCH
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $CATCH (FORM) ...)-24-2-1|>
+1     (CONST&PUSH 1)                      ; $CATCH
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $CATCH (FORM) ...)-24-2-1|
+(CONST 0) = (MPROGN)
+(CONST 1) = TRANSLATE
+(CONST 2) = LAMBDA
+(CONST 3) = (MCATCH)
+(CONST 4) = PROG2
+(CONST 5) = CATCH
+(CONST 6) = 'MCATCH
+(CONST 7) = ((ERRLFUN1 MCATCH))
+(CONST 8) = ((CONS BINDLIST LOCLIST))
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+27 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; (MPROGN)
+2     (LOAD 3)
+3     (CDR)
+4     (CONS&PUSH)
+5     (CALL1&PUSH 1)                      ; TRANSLATE
+7     (LOAD&CAR&STORE 0 1)
+10    (LOAD&CDR&STORE 0)
+12    (LOAD&PUSH 1)
+13    (CONST&PUSH 2)                      ; LAMBDA
+14    (NIL&PUSH)
+15    (CONST&PUSH 2)                      ; LAMBDA
+16    (CONST&PUSH 3)                      ; (MCATCH)
+17    (CONST&PUSH 4)                      ; PROG2
+18    (NIL&PUSH)
+19    (CONST&PUSH 5)                      ; CATCH
+20    (CONST&PUSH 6)                      ; 'MCATCH
+21    (LOAD&PUSH 9)
+22    (LIST&PUSH 3)
+24    (CONST 7)                           ; ((ERRLFUN1 MCATCH))
+25    (LIST*&PUSH 3)
+27    (LIST&PUSH 3)
+29    (CONST 8)                           ; ((CONS BINDLIST LOCLIST))
+30    (CONS&PUSH)
+31    (LIST&PUSH 3)
+33    (LIST 2)
+35    (SKIP&RET 4)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $THROW # ...))-25|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $THROW (FORM) ...)-26-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $THROW (FORM) ...)-26-2-1|>
+(CONST 1) = $THROW
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $THROW (FORM) ...)-26-2-1|>
+1     (CONST&PUSH 1)                      ; $THROW
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $THROW (FORM) ...)-26-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = EXP
+(CONST 2) = 
+(LAMBDA (X)
+ (COND ((NULL MCATCH) (DISPLA X) (*MERROR '|THROW not within CATCH|)))
+ (THROW 'MCATCH X))
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (EXP)
+writes special variable : (EXP)
+18 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD 2)
+2     (CDR)
+3     (CAR&PUSH)
+4     (CALL1 0)                           ; TRANSLATE
+6     (BIND 1)                            ; EXP
+8     (GETVALUE 1)                        ; EXP
+10    (CAR)
+11    (STORE 3)
+12    (GETVALUE 1)                        ; EXP
+14    (CDR)
+15    (SETVALUE 1)                        ; EXP
+17    (LOAD&PUSH 3)
+18    (CONST&PUSH 2)                      ; (LAMBDA (X) (COND (# # #)) ...)
+19    (GETVALUE&PUSH 1)                   ; EXP
+21    (LIST 3)
+23    (UNBIND1)
+24    (SKIP&RET 3)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $SUM FEXPR ...))-27|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $PRODUCT FEXPR ...))-28|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN START-VAL (SUMP MODE) ...)-29|
+(CONST 0) = START-VAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE START-VAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; START-VAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; START-VAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE START-VAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; START-VAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function START-VAL
+(CONST 0) = $FLOAT
+(CONST 1) = 0.0
+(CONST 2) = 1.0
+(CONST 3) = 0
+(CONST 4) = 1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+15 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (JMPIFEQTO 0 L13)                   ; $FLOAT
+4     (LOAD&JMPIF 2 L19)
+7     (CONST 4)                           ; 1
+8     (SKIP&RET 3)
+10    L10
+10    (CONST 1)                           ; 0.0
+11    (SKIP&RET 3)
+13    L13
+13    (LOAD&JMPIF 2 L10)
+16    (CONST 2)                           ; 1.0
+17    (SKIP&RET 3)
+19    L19
+19    (CONST 3)                           ; 0
+20    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF%TR $SUM (FORM) ...)-30-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $SUM (FORM) ...)-30-2-1|>
+(CONST 1) = $SUM
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $SUM (FORM) ...)-30-2-1|>
+1     (CONST&PUSH 1)                      ; $SUM
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $SUM (FORM) ...)-30-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $SUM
+(CONST 2) = TR-GENSYM
+(CONST 3) = N
+(CONST 4) = FLAG
+(CONST 5) = VAR
+(CONST 6) = $FIXNUM
+(CONST 7) = MPLUS
+(CONST 8) = MTIMES
+(CONST 9) = TR-LOCAL-EXP
+(CONST 10) = $FLOAT
+(CONST 11) = LAMBDA
+(CONST 12) = COND
+(CONST 13) = NOT
+(CONST 14) = <
+(CONST 15) = DO
+(CONST 16) = F1+
+(CONST 17) = START-VAL
+(CONST 18) = =
+(CONST 19) = F1-
+(CONST 20) = INTERVAL-ERROR
+(CONST 21) = QUOTE
+(CONST 22) = $ANY
+(CONST 23) = FREE-LISP-VARS
+(CONST 24) = TBOUND-FREE-VARS
+(CONST 25) = SIDE-EFFECT-FREE-CHECK
+(CONST 26) = DOSUM
+(CONST 27) = FUNGEN&ENV-FOR-MEVALSUMARG
+(CONST 28) = ZL-DELETE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (FLAG VAR N)
+writes special variable : (N)
+200 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&SYMBOL-FUNCTION&PUSH 0)      ; TRANSLATE
+3     (LOAD 3)
+4     (CDR)
+5     (CDR)
+6     (CDR&PUSH)
+7     (CALLSR&PUSH 0 22)                  ; MAPCAR
+10    (LOAD 3)
+11    (CAR)
+12    (CAR&PUSH)
+13    (CONST 1)                           ; $SUM
+14    (EQ)
+15    (PUSH)
+16    (LOAD 4)
+17    (CDR)
+18    (CDR)
+19    (CAR&PUSH)
+20    (CALL0 2)                           ; TR-GENSYM
+22    (PUSH)
+23    (LOAD 3)
+24    (BIND 3)                            ; N
+26    (LOAD 5)
+27    (BIND 4)                            ; FLAG
+29    (LOAD 7)
+30    (BIND 5)                            ; VAR
+32    (GETVALUE 3)                        ; N
+34    (CAR)
+35    (STORE 13)
+37    (GETVALUE 3)                        ; N
+39    (CDR)
+40    (CAR)
+41    (SETVALUE 3)                        ; N
+43    (LOAD&CAR&PUSH 13)
+45    (JMPIFNOTEQTO 6 L55)                ; $FIXNUM
+48    (GETVALUE 3)                        ; N
+50    (CAR&PUSH)
+51    (JMPIFEQTO 6 L139)                  ; $FIXNUM
+55    L55
+55    (LOAD 15)
+57    (CDR)
+58    (CAR&PUSH)
+59    (LOAD 16)
+61    (CDR)
+62    (CDR)
+63    (CAR&PUSH)
+64    (CONST&PUSH 22)                     ; $ANY
+65    (CALL 3 9)                          ; TR-LOCAL-EXP
+68    (CDR&PUSH)
+69    (LOAD 16)
+71    (CDR)
+72    (CDR)
+73    (CAR)
+74    (BIND 5)                            ; VAR
+76    (LOAD&PUSH 3)
+77    (CALL1&PUSH 23)                     ; FREE-LISP-VARS
+79    (CALL1&PUSH 24)                     ; TBOUND-FREE-VARS
+81    (LOAD 0)
+82    (CDR)
+83    (CAR&PUSH)
+84    (LOAD 21)
+86    (CDR)
+87    (CAR&PUSH)
+88    (CALL2 25)                          ; SIDE-EFFECT-FREE-CHECK
+90    (CONST&PUSH 22)                     ; $ANY
+91    (CONST&PUSH 26)                     ; DOSUM
+92    (CONST&PUSH 27)                     ; FUNGEN&ENV-FOR-MEVALSUMARG
+93    (GETVALUE&PUSH 5)                   ; VAR
+95    (LOAD&CAR&PUSH 4)
+97    (CALL2&PUSH 28)                     ; ZL-DELETE
+99    (GETVALUE&PUSH 5)                   ; VAR
+101   (LIST&PUSH 1)
+103   (LOAD&PUSH 9)
+104   (LOAD 26)
+106   (CDR)
+107   (CAR&PUSH)
+108   (LIST&PUSH 5)
+110   (CONST&PUSH 21)                     ; QUOTE
+111   (GETVALUE&PUSH 5)                   ; VAR
+113   (LIST&PUSH 2)
+115   (LOAD&CDR&PUSH 22)
+117   (GETVALUE 3)                        ; N
+119   (CDR&PUSH)
+120   (GETVALUE&PUSH 4)                   ; FLAG
+122   (LIST 7)
+124   (SKIP 1)
+126   (UNBIND1)
+127   (SKIP 1)
+129   L129
+129   (UNBIND 3)
+131   (SKIP&RET 7)
+133   L133
+133   (CONST 7)                           ; MPLUS
+134   (JMP L144)
+136   L136
+136   (CONST 7)                           ; MPLUS
+137   (JMP L178)
+139   L139
+139   (GETVALUE 4)                        ; FLAG
+141   (JMPIF L133)
+143   (CONST 8)                           ; MTIMES
+144   L144
+144   (PUSH)
+145   (LIST&PUSH 1)
+147   (LOAD&PUSH 10)
+148   (LOAD 17)
+150   (CDR)
+151   (CAR&PUSH)
+152   (LIST&PUSH 3)
+154   (LOAD&PUSH 10)
+155   (CONST&PUSH 6)                      ; $FIXNUM
+156   (GETVALUE&PUSH 5)                   ; VAR
+158   (CONST&PUSH 6)                      ; $FIXNUM
+159   (CALL&PUSH 5 9)                     ; TR-LOCAL-EXP
+162   (CALL0 2)                           ; TR-GENSYM
+164   (PUSH)
+165   (CALL0 2)                           ; TR-GENSYM
+167   (PUSH)
+168   (LOAD&CAR&PUSH 2)
+170   (JMPIFNOTEQTO 10 L197)              ; $FLOAT
+173   (GETVALUE 4)                        ; FLAG
+175   (JMPIF L136)
+177   (CONST 8)                           ; MTIMES
+178   L178
+178   (PUSH)
+179   (LIST&PUSH 1)
+181   (LOAD&PUSH 13)
+182   (LOAD 20)
+184   (CDR)
+185   (CAR&PUSH)
+186   (LIST&PUSH 3)
+188   (LOAD&PUSH 13)
+189   (CONST&PUSH 10)                     ; $FLOAT
+190   (GETVALUE&PUSH 5)                   ; VAR
+192   (CONST&PUSH 6)                      ; $FIXNUM
+193   (CALL 5 9)                          ; TR-LOCAL-EXP
+196   (STORE 2)
+197   L197
+197   (LOAD&CAR&PUSH 2)
+199   (CONST&PUSH 11)                     ; LAMBDA
+200   (LOAD&PUSH 3)
+201   (LOAD&PUSH 3)
+202   (LIST&PUSH 2)
+204   (CONST&PUSH 12)                     ; COND
+205   (CONST&PUSH 13)                     ; NOT
+206   (CONST&PUSH 14)                     ; <
+207   (LOAD&PUSH 6)
+208   (LOAD&PUSH 8)
+209   (LIST&PUSH 3)
+211   (LIST&PUSH 2)
+213   (CONST&PUSH 15)                     ; DO
+214   (GETVALUE&PUSH 5)                   ; VAR
+216   (LOAD&PUSH 8)
+217   (CONST&PUSH 16)                     ; F1+
+218   (GETVALUE&PUSH 5)                   ; VAR
+220   (LIST&PUSH 2)
+222   (LIST&PUSH 3)
+224   (LOAD&PUSH 19)
+225   (GETVALUE&PUSH 4)                   ; FLAG
+227   (LOAD&CAR&PUSH 11)
+229   (CALL2&PUSH 17)                     ; START-VAL
+231   (LOAD&CDR&PUSH 11)
+233   (LIST&PUSH 3)
+235   (LIST&PUSH 2)
+237   (CONST&PUSH 14)                     ; <
+238   (LOAD&PUSH 8)
+239   (GETVALUE&PUSH 5)                   ; VAR
+241   (LIST&PUSH 3)
+243   (LOAD&PUSH 20)
+244   (LIST&PUSH 2)
+246   (LIST&PUSH 3)
+248   (LIST&PUSH 2)
+250   (CONST&PUSH 18)                     ; =
+251   (LOAD&PUSH 6)
+252   (CONST&PUSH 19)                     ; F1-
+253   (LOAD&PUSH 9)
+254   (LIST&PUSH 2)
+256   (LIST&PUSH 3)
+258   (GETVALUE&PUSH 4)                   ; FLAG
+260   (LOAD&CAR&PUSH 9)
+262   (CALL2&PUSH 17)                     ; START-VAL
+264   (LIST&PUSH 2)
+266   (T&PUSH)
+267   (CONST&PUSH 20)                     ; INTERVAL-ERROR
+268   (CONST&PUSH 21)                     ; QUOTE
+269   (LOAD 27)
+271   (CAR)
+272   (CAR&PUSH)
+273   (LIST&PUSH 2)
+275   (LOAD&PUSH 10)
+276   (LOAD&PUSH 10)
+277   (LIST&PUSH 4)
+279   (LIST&PUSH 2)
+281   (LIST&PUSH 4)
+283   (LIST&PUSH 3)
+285   (LOAD&CDR&PUSH 18)
+287   (GETVALUE 3)                        ; N
+289   (CDR&PUSH)
+290   (LIST 4)
+292   (SKIP 3)
+294   (JMP L129)
+
+
+Disassembly of function #:|(DEF%TR-INHERIT $SUM $PRODUCT)-31|
+(CONST 0) = $SUM
+(CONST 1) = TRANSLATE
+(CONST 2) = "without any special action"
+(CONST 3) = |No TRANSLATE property to alias.|
+(CONST 4) = CERROR
+(CONST 5) = ($PRODUCT)
+(CONST 6) = NAME
+(CONST 7) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+29 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SUM
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (PUSH-UNBOUND 1)
+4     (CALLS2&JMPIF 132 L13)              ; GET
+7     (CONST&PUSH 2)                      ; "without any special action"
+8     (CONST&PUSH 3)                      ; |No TRANSLATE property to alias.|
+9     (CONST&PUSH 0)                      ; $SUM
+10    (CALL 3 4)                          ; CERROR
+13    L13
+13    (PUSH)
+14    (CONST&PUSH 5)                      ; ($PRODUCT)
+15    (JMP L34)
+17    L17
+17    (LOAD&CAR&PUSH 0)
+19    (LOAD 0)
+20    (BIND 6)                            ; NAME
+22    (GETVALUE&PUSH 6)                   ; NAME
+24    (LOAD&PUSH 6)
+25    (CONST&PUSH 1)                      ; TRANSLATE
+26    (CALL 3 7)                          ; PUTPROP
+29    (UNBIND1)
+30    (SKIP 1)
+32    (LOAD&CDR&STORE 0)
+34    L34
+34    (LOAD&PUSH 0)
+35    (CALLS1&JMPIFNOT 146 L17)           ; ENDP
+38    (SKIP 1)
+40    (CONST 5)                           ; ($PRODUCT)
+41    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MAKELIST (FORM) ...)-32-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MAKELIST (FORM) ...)-32-2-1|>
+(CONST 1) = $MAKELIST
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MAKELIST (FORM) ...)-32-2-1|>
+1     (CONST&PUSH 1)                      ; $MAKELIST
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MAKELIST (FORM) ...)-32-2-1|
+(CONST 0) = 3
+(CONST 1) = TR-GENSYM
+(CONST 2) = EXP
+(CONST 3) = X
+(CONST 4) = $ANY
+(CONST 5) = DO
+(CONST 6) = CDR
+(CONST 7) = DTRANSLATE
+(CONST 8) = (NIL)
+(CONST 9) = NULL
+(CONST 10) = SYSTEM::BACKQUOTE
+(CONST 11) = (MLIST)
+(CONST 12) = SYSTEM::SPLICE
+(CONST 13) = SYSTEM::UNQUOTE
+(CONST 14) = NREVERSE
+(CONST 15) = CONS
+(CONST 16) = '(MLIST)
+(CONST 17) = SETQ
+(CONST 18) = CAR
+(CONST 19) = VALUE-MODE
+(CONST 20) = TR-LOCAL-EXP
+(CONST 21) = 4
+(CONST 22) = N
+(CONST 23) = LAMBDA
+(CONST 24) = COND
+(CONST 25) = NOT
+(CONST 26) = <
+(CONST 27) = F1+
+(CONST 28) = $FIXNUM
+(CONST 29) = >
+(CONST 30) = (MLIST)
+(CONST 31) = '(MLIST)
+(CONST 32) = DECLARE
+(CONST 33) = FIXNUM
+(CONST 34) = INTERVAL-ERROR
+(CONST 35) = '$MAKELIST
+(CONST 36) = *TRANSLATION-MSGS-FILES*
+(CONST 37) = "Wrong number of args to MAKELIST"
+(CONST 38) = MFORMAT
+(CONST 39) = TR-ABORT
+(CONST 40) = ($ANY QUOTE $**ERROR**)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (N EXP X *TRANSLATION-MSGS-FILES*)
+writes special variables : (N X EXP TR-ABORT)
+206 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (PUSH)
+3     (CALLS2&PUSH 71)                    ; LENGTH
+5     (CONST&PUSH 0)                      ; 3
+6     (CALLSR&JMPIF 1 45 L32)             ; =
+10    (LOAD&PUSH 1)
+11    (CALLS2&PUSH 71)                    ; LENGTH
+13    (CONST&PUSH 21)                     ; 4
+14    (CALLSR&JMPIF 1 45 L147)            ; =
+19    (GETVALUE&PUSH 36)                  ; *TRANSLATION-MSGS-FILES*
+21    (CONST&PUSH 37)                     ; "Wrong number of args to MAKELIST"
+23    (CALL2 38)                          ; MFORMAT
+25    (T)
+26    (SETVALUE 39)                       ; TR-ABORT
+28    (CONST 40)                          ; ($ANY QUOTE $**ERROR**)
+30    (SKIP&RET 2)
+32    L32
+32    (PUSH-NIL 2)
+34    (LOAD&PUSH 3)
+35    (CALL0 1)                           ; TR-GENSYM
+37    (PUSH)
+38    (CALL0 1)                           ; TR-GENSYM
+40    (PUSH)
+41    (LOAD 4)
+42    (BIND 2)                            ; EXP
+44    (LOAD 6)
+45    (BIND 3)                            ; X
+47    (LOAD 8)
+48    (CAR)
+49    (SETVALUE 2)                        ; EXP
+51    (LOAD&CDR&STORE 8)
+53    (CAR)
+54    (SETVALUE 3)                        ; X
+56    (LOAD 8)
+57    (CDR)
+58    (CAR)
+59    (STORE 8)
+61    (CONST&PUSH 4)                      ; $ANY
+62    (CONST&PUSH 5)                      ; DO
+63    (LOAD&PUSH 8)
+64    (CONST&PUSH 6)                      ; CDR
+65    (LOAD&PUSH 12)
+66    (CALL1&PUSH 7)                      ; DTRANSLATE
+68    (LIST&PUSH 2)
+70    (CONST&PUSH 6)                      ; CDR
+71    (LOAD&PUSH 11)
+72    (LIST&PUSH 2)
+74    (LIST&PUSH 3)
+76    (LOAD&PUSH 10)
+77    (CONST 8)                           ; (NIL)
+78    (CONS&PUSH)
+79    (GETVALUE&PUSH 3)                   ; X
+81    (LIST&PUSH 1)
+83    (LIST&PUSH 3)
+85    (CONST&PUSH 9)                      ; NULL
+86    (LOAD&PUSH 10)
+87    (LIST&PUSH 2)
+89    (CONST&PUSH 10)                     ; SYSTEM::BACKQUOTE
+90    (CONST&PUSH 11)                     ; (MLIST)
+91    (CONST&PUSH 12)                     ; SYSTEM::SPLICE
+92    (CONST&PUSH 13)                     ; SYSTEM::UNQUOTE
+93    (CONST&PUSH 14)                     ; NREVERSE
+94    (LOAD&PUSH 16)
+95    (LIST&PUSH 2)
+97    (LIST&PUSH 2)
+99    (LIST&PUSH 2)
+101   (LIST&PUSH 2)
+103   (CONST&PUSH 15)                     ; CONS
+104   (CONST&PUSH 16)                     ; '(MLIST)
+105   (CONST&PUSH 14)                     ; NREVERSE
+106   (LOAD&PUSH 16)
+107   (LIST&PUSH 2)
+109   (LIST&PUSH 3)
+111   (LIST&PUSH 3)
+113   (LIST&PUSH 2)
+115   (CONST&PUSH 17)                     ; SETQ
+116   (GETVALUE&PUSH 3)                   ; X
+118   (CONST&PUSH 18)                     ; CAR
+119   (LOAD&PUSH 13)
+120   (LIST&PUSH 2)
+122   (LOAD&PUSH 14)
+123   (CONST&PUSH 15)                     ; CONS
+124   (GETVALUE&PUSH 2)                   ; EXP
+126   (GETVALUE&PUSH 3)                   ; X
+128   (GETVALUE&PUSH 3)                   ; X
+130   (CALL1&PUSH 19)                     ; VALUE-MODE
+132   (CALL 3 20)                         ; TR-LOCAL-EXP
+135   (CDR&PUSH)
+136   (LOAD&PUSH 17)
+137   (LIST&PUSH 3)
+139   (LIST&PUSH 5)
+141   (LIST 5)
+143   (UNBIND 2)
+145   (SKIP&RET 7)
+147   L147
+147   (PUSH-NIL 3)
+149   (LOAD&PUSH 4)
+150   (CALL0 1)                           ; TR-GENSYM
+152   (PUSH)
+153   (CALL0 1)                           ; TR-GENSYM
+155   (PUSH)
+156   (CALL0 1)                           ; TR-GENSYM
+158   (PUSH)
+159   (LOAD 6)
+160   (BIND 2)                            ; EXP
+162   (LOAD 8)
+163   (BIND 3)                            ; X
+165   (LOAD 9)
+166   (BIND 22)                           ; N
+168   (GETVALUE 22)                       ; N
+170   (CAR)
+171   (SETVALUE 2)                        ; EXP
+173   (GETVALUE 22)                       ; N
+175   (CDR)
+176   (SETVALUE 22)                       ; N
+178   (CAR)
+179   (SETVALUE 3)                        ; X
+181   (GETVALUE 22)                       ; N
+183   (CDR)
+184   (SETVALUE 22)                       ; N
+186   (CAR)
+187   (STORE 13)
+189   (GETVALUE 22)                       ; N
+191   (CDR)
+192   (CAR)
+193   (SETVALUE 22)                       ; N
+195   (LOAD&PUSH 13)
+196   (CALL1 7)                           ; DTRANSLATE
+198   (STORE 13)
+200   (GETVALUE&PUSH 22)                  ; N
+202   (CALL1 7)                           ; DTRANSLATE
+204   (SETVALUE 22)                       ; N
+206   (CONST&PUSH 4)                      ; $ANY
+207   (CONST&PUSH 23)                     ; LAMBDA
+208   (LOAD&PUSH 13)
+209   (LOAD&PUSH 13)
+210   (LIST&PUSH 2)
+212   (CONST&PUSH 24)                     ; COND
+213   (CONST&PUSH 25)                     ; NOT
+214   (CONST&PUSH 26)                     ; <
+215   (LOAD&PUSH 16)
+216   (LOAD&PUSH 18)
+217   (LIST&PUSH 3)
+219   (LIST&PUSH 2)
+221   (CONST&PUSH 5)                      ; DO
+222   (GETVALUE&PUSH 3)                   ; X
+224   (LOAD&PUSH 18)
+225   (CONST&PUSH 27)                     ; F1+
+226   (GETVALUE&PUSH 3)                   ; X
+228   (LIST&PUSH 2)
+230   (LIST&PUSH 3)
+232   (LOAD&PUSH 16)
+233   (NIL&PUSH)
+234   (CONST&PUSH 15)                     ; CONS
+235   (GETVALUE&PUSH 2)                   ; EXP
+237   (GETVALUE&PUSH 3)                   ; X
+239   (CONST&PUSH 28)                     ; $FIXNUM
+240   (CALL 3 20)                         ; TR-LOCAL-EXP
+243   (CDR&PUSH)
+244   (LOAD&PUSH 20)
+245   (LIST&PUSH 3)
+247   (LIST&PUSH 3)
+249   (LIST&PUSH 2)
+251   (CONST&PUSH 29)                     ; >
+252   (GETVALUE&PUSH 3)                   ; X
+254   (LOAD&PUSH 19)
+255   (LIST&PUSH 3)
+257   (CONST&PUSH 10)                     ; SYSTEM::BACKQUOTE
+258   (CONST&PUSH 30)                     ; (MLIST)
+260   (CONST&PUSH 12)                     ; SYSTEM::SPLICE
+261   (CONST&PUSH 13)                     ; SYSTEM::UNQUOTE
+262   (CONST&PUSH 14)                     ; NREVERSE
+263   (LOAD&PUSH 22)
+264   (LIST&PUSH 2)
+266   (LIST&PUSH 2)
+268   (LIST&PUSH 2)
+270   (LIST&PUSH 2)
+272   (CONST&PUSH 15)                     ; CONS
+273   (CONST&PUSH 31)                     ; '(MLIST)
+275   (CONST&PUSH 14)                     ; NREVERSE
+276   (LOAD&PUSH 22)
+277   (LIST&PUSH 2)
+279   (LIST&PUSH 3)
+281   (LIST&PUSH 3)
+283   (LIST&PUSH 2)
+285   (CONST&PUSH 32)                     ; DECLARE
+287   (CONST&PUSH 33)                     ; FIXNUM
+289   (GETVALUE&PUSH 3)                   ; X
+291   (LIST&PUSH 2)
+293   (LIST&PUSH 2)
+295   (LIST&PUSH 4)
+297   (LIST&PUSH 2)
+299   (T&PUSH)
+300   (CONST&PUSH 34)                     ; INTERVAL-ERROR
+302   (CONST&PUSH 35)                     ; '$MAKELIST
+304   (LOAD&PUSH 19)
+305   (LOAD&PUSH 19)
+306   (LIST&PUSH 4)
+308   (LIST&PUSH 2)
+310   (LIST&PUSH 3)
+312   (LIST&PUSH 3)
+314   (LOAD&PUSH 15)
+315   (GETVALUE&PUSH 22)                  ; N
+317   (LIST 4)
+319   (UNBIND 3)
+321   (SKIP&RET 9)
+
+
+Disassembly of function #:|(COMMENT \|jpg;suprv >\| (DEFMFUN $KILL FEXPR ...))-33|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $KILL (FORM) ...)-34-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $KILL (FORM) ...)-34-2-1|>
+(CONST 1) = $KILL
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $KILL (FORM) ...)-34-2-1|>
+1     (CONST&PUSH 1)                      ; $KILL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $KILL (FORM) ...)-34-2-1|
+(CONST 0) = $TR_WINDY
+(CONST 1) = 
+"
+Warning:"
+(CONST 2) = 
+"Use of KILL in translated program is not recommended. See GJC for
+a replacement form. Translating anyway though."
+(CONST 3) = TR-TELL
+(CONST 4) = $ANY
+(CONST 5) = APPLY
+(CONST 6) = '$KILL
+(CONST 7) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($TR_WINDY)
+15 byte-code instructions:
+0     (GETVALUE 0)                        ; $TR_WINDY
+2     (JMPIFNOT L10)
+4     (CONST&PUSH 1)                      ; "
+Warning:"
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; "Use of KILL in translated program is not recommended. See GJC for
+a replacement form. Translating anyway though."
+7     (CALL 3 3)                          ; TR-TELL
+10    L10
+10    (CONST&PUSH 4)                      ; $ANY
+11    (CONST&PUSH 5)                      ; APPLY
+12    (CONST&PUSH 6)                      ; '$KILL
+13    (CONST&PUSH 7)                      ; QUOTE
+14    (LOAD&CDR&PUSH 5)
+16    (LIST&PUSH 2)
+18    (LIST 4)
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ARRAY (FORM) ...)-35-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $ARRAY (FORM) ...)-35-2-1|>
+(CONST 1) = $ARRAY
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $ARRAY (FORM) ...)-35-2-1|>
+1     (CONST&PUSH 1)                      ; $ARRAY
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ARRAY (FORM) ...)-35-2-1|
+(CONST 0) = 
+(($COMPLETE . T) ($INTEGER . FIXNUM) ($FIXNUM . FIXNUM) ($FLOAT . FLONUM)
+ ($FLONUM . FLONUM))
+(CONST 1) = ASSQ
+(CONST 2) = NAME
+(CONST 3) = $ANY
+(CONST 4) = APPLY
+(CONST 5) = '$ARRAY
+(CONST 6) = LIST
+(CONST 7) = QUOTE
+(CONST 8) = TR-ARGS
+(CONST 9) = '$ARRAY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+44 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CAR&PUSH)
+3     (LOAD 2)
+4     (CDR)
+5     (CAR&PUSH)
+6     (CONST&PUSH 0)                      ; (# # # ...)
+7     (CALL2&PUSH 1)                      ; ASSQ
+9     (LOAD 1)
+10    (BIND 2)                            ; NAME
+12    (LOAD&JMPIF 3 L36)
+15    (CONST&PUSH 3)                      ; $ANY
+16    (CONST&PUSH 4)                      ; APPLY
+17    (CONST&PUSH 9)                      ; '$ARRAY
+18    (CONST&PUSH 6)                      ; LIST
+19    (CONST&PUSH 7)                      ; QUOTE
+20    (GETVALUE&PUSH 2)                   ; NAME
+22    (LIST&PUSH 2)
+24    (LOAD&CDR&PUSH 11)
+26    (CALL1 8)                           ; TR-ARGS
+28    (LIST* 2)
+30    L30
+30    (PUSH)
+31    (LIST 4)
+33    (UNBIND1)
+34    (SKIP&RET 4)
+36    L36
+36    (CONST&PUSH 3)                      ; $ANY
+37    (CONST&PUSH 4)                      ; APPLY
+38    (CONST&PUSH 5)                      ; '$ARRAY
+39    (CONST&PUSH 6)                      ; LIST
+40    (CONST&PUSH 7)                      ; QUOTE
+41    (GETVALUE&PUSH 2)                   ; NAME
+43    (LIST&PUSH 2)
+45    (CONST&PUSH 7)                      ; QUOTE
+46    (LOAD 12)
+47    (CDR)
+48    (CAR&PUSH)
+49    (LIST&PUSH 2)
+51    (LOAD 12)
+52    (CDR)
+53    (CDR&PUSH)
+54    (CALL1 8)                           ; TR-ARGS
+56    (LIST* 3)
+58    (JMP L30)
+
+
+Disassembly of function #:|(COMMENT (DEFMFUN $DEFINE FEXPR ...))-36|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DEFINE (FORM) ...)-37-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $DEFINE (FORM) ...)-37-2-1|>
+(CONST 1) = $DEFINE
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $DEFINE (FORM) ...)-37-2-1|>
+1     (CONST&PUSH 1)                      ; $DEFINE
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $DEFINE (FORM) ...)-37-2-1|
+(CONST 0) = $ANY
+(CONST 1) = APPLY
+(CONST 2) = 'MDEFINE
+(CONST 3) = LIST
+(CONST 4) = QUOTE
+(CONST 5) = MQUOTEP
+(CONST 6) = DISP2
+(CONST 7) = DTRANSLATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+29 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CDR&PUSH 2)
+3     (LOAD&CAR&STORE 0 1)
+6     (LOAD 0)
+7     (CDR)
+8     (CAR)
+9     (STORE 0)
+10    (CONST&PUSH 0)                      ; $ANY
+11    (CONST&PUSH 1)                      ; APPLY
+12    (CONST&PUSH 2)                      ; 'MDEFINE
+13    (CONST&PUSH 3)                      ; LIST
+14    (CONST&PUSH 4)                      ; QUOTE
+15    (LOAD&PUSH 6)
+16    (CALL1&JMPIF 5 L34)                 ; MQUOTEP
+19    (LOAD&PUSH 6)
+20    (CALL1 6)                           ; DISP2
+22    L22
+22    (PUSH)
+23    (LIST&PUSH 2)
+25    (LOAD&PUSH 5)
+26    (CALL1&PUSH 7)                      ; DTRANSLATE
+28    (LIST&PUSH 3)
+30    (LIST 4)
+32    (SKIP&RET 4)
+34    L34
+34    (LOAD 6)
+35    (CDR)
+36    (CAR)
+37    (JMP L22)
+
+
+Disassembly of function #:|(DEF%TR MRAT (FORM) ...)-38-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MRAT (FORM) ...)-38-2-1|>
+(CONST 1) = MRAT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MRAT (FORM) ...)-38-2-1|>
+1     (CONST&PUSH 1)                      ; MRAT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MRAT (FORM) ...)-38-2-1|
+(CONST 0) = $RATDISREP
+(CONST 1) = TRANSLATE
+(CONST 2) = ($FLOAT $FIXNUM $NUMBER)
+(CONST 3) = MEMQ
+(CONST 4) = $ANY
+(CONST 5) = RATF
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; $RATDISREP
+3     (CALL1&PUSH 1)                      ; TRANSLATE
+5     (LOAD&CAR&PUSH 0)
+7     (CONST&PUSH 2)                      ; ($FLOAT $FIXNUM $NUMBER)
+8     (CALL2&JMPIF 3 L19)                 ; MEMQ
+11    (CONST&PUSH 4)                      ; $ANY
+12    (CONST&PUSH 5)                      ; RATF
+13    (LOAD&CDR&PUSH 2)
+15    (LIST 3)
+17    (SKIP&RET 3)
+19    L19
+19    (POP)
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $BATCON (FORM) ...)-39-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $BATCON (FORM) ...)-39-2-1|>
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $BATCON (FORM) ...)-39-2-1|>
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $BATCON (FORM) ...)-39-2-1|
+(CONST 0) = $ANY
+(CONST 1) = MEVAL
+(CONST 2) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; MEVAL
+2     (CONST&PUSH 2)                      ; QUOTE
+3     (LOAD&PUSH 4)
+4     (LIST&PUSH 2)
+6     (LIST 3)
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $REMARRAY $BATCON)-40|
+(CONST 0) = $REMARRAY
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REMARRAY
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $REARRAY $BATCON)-41|
+(CONST 0) = $REARRAY
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REARRAY
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $ALIAS $BATCON)-42|
+(CONST 0) = $ALIAS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ALIAS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $ALLOC $BATCON)-43|
+(CONST 0) = $ALLOC
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ALLOC
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $BATCH $BATCON)-44|
+(CONST 0) = $BATCH
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BATCH
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $BATCHLOAD $BATCON)-45|
+(CONST 0) = $BATCHLOAD
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BATCHLOAD
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $CLOSEFILE $BATCON)-46|
+(CONST 0) = $CLOSEFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $CLOSEFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $COMPFILE $BATCON)-47|
+(CONST 0) = $COMPFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $COMPFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DELFILE $BATCON)-48|
+(CONST 0) = $DELFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DELFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DEMO $BATCON)-49|
+(CONST 0) = $DEMO
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DEMO
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DEPENDENCIES $BATCON)-50|
+(CONST 0) = $DEPENDENCIES
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DEPENDENCIES
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DESCRIBE $BATCON)-51|
+(CONST 0) = $DESCRIBE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DESCRIBE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DISKFREE $BATCON)-52|
+(CONST 0) = $DISKFREE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DISKFREE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DISKUSE $BATCON)-53|
+(CONST 0) = $DISKUSE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DISKUSE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DISPFUN $BATCON)-54|
+(CONST 0) = $DISPFUN
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DISPFUN
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DISPRULE $BATCON)-55|
+(CONST 0) = $DISPRULE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DISPRULE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $FILELENGTH $BATCON)-56|
+(CONST 0) = $FILELENGTH
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILELENGTH
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $FILELIST $BATCON)-57|
+(CONST 0) = $FILELIST
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILELIST
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $FUNDEF $BATCON)-58|
+(CONST 0) = $FUNDEF
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FUNDEF
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $FULLDISKUSE $BATCON)-59|
+(CONST 0) = $FULLDISKUSE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FULLDISKUSE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $GRADEF $BATCON)-60|
+(CONST 0) = $GRADEF
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $GRADEF
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $LISTFILES $BATCON)-61|
+(CONST 0) = $LISTFILES
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTFILES
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $LOADFILE $BATCON)-62|
+(CONST 0) = $LOADFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LOADFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $LOADARRAYS $BATCON)-63|
+(CONST 0) = $LOADARRAYS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LOADARRAYS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $LOADPLOTS $BATCON)-64|
+(CONST 0) = $LOADPLOTS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LOADPLOTS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $MAKEATOMIC $BATCON)-65|
+(CONST 0) = $MAKEATOMIC
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MAKEATOMIC
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $NAMEFILE $BATCON)-66|
+(CONST 0) = $NAMEFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $NAMEFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $NUMERVAL $BATCON)-67|
+(CONST 0) = $NUMERVAL
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $NUMERVAL
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $OPTIONS $BATCON)-68|
+(CONST 0) = $OPTIONS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $OPTIONS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $ORDERGREAT $BATCON)-69|
+(CONST 0) = $ORDERGREAT
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ORDERGREAT
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $ORDERLESS $BATCON)-70|
+(CONST 0) = $ORDERLESS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ORDERLESS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PLOTMODE $BATCON)-71|
+(CONST 0) = $PLOTMODE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PLOTMODE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PRIMER $BATCON)-72|
+(CONST 0) = $PRIMER
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PRIMER
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PRINTDISKUSE $BATCON)-73|
+(CONST 0) = $PRINTDISKUSE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PRINTDISKUSE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PRINTFILE $BATCON)-74|
+(CONST 0) = $PRINTFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PRINTFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PRINTPROPS $BATCON)-75|
+(CONST 0) = $PRINTPROPS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PRINTPROPS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PROPERTIES $BATCON)-76|
+(CONST 0) = $PROPERTIES
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PROPERTIES
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $PROPVARS $BATCON)-77|
+(CONST 0) = $PROPVARS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PROPVARS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $QLISTFILES $BATCON)-78|
+(CONST 0) = $QLISTFILES
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $QLISTFILES
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $REMFILE $BATCON)-79|
+(CONST 0) = $REMFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REMFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $REMFUNCTION $BATCON)-80|
+(CONST 0) = $REMFUNCTION
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REMFUNCTION
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $REMOVE $BATCON)-81|
+(CONST 0) = $REMOVE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REMOVE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $REMVALUE $BATCON)-82|
+(CONST 0) = $REMVALUE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REMVALUE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $RENAMEFILE $BATCON)-83|
+(CONST 0) = $RENAMEFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $RENAMEFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $RESTORE $BATCON)-84|
+(CONST 0) = $RESTORE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $RESTORE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $TRANSLATE $BATCON)-85|
+(CONST 0) = $TRANSLATE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRANSLATE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $WRITEFILE $BATCON)-86|
+(CONST 0) = $WRITEFILE
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $WRITEFILE
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $HARDCOPY $BATCON)-87|
+(CONST 0) = $HARDCOPY
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HARDCOPY
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $LABELS $BATCON)-88|
+(CONST 0) = $LABELS
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LABELS
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $SETUP_AUTOLOAD $BATCON)-89|
+(CONST 0) = $SETUP_AUTOLOAD
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SETUP_AUTOLOAD
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $TOBREAK $BATCON)-90|
+(CONST 0) = $TOBREAK
+(CONST 1) = $BATCON
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TOBREAK
+1     (CONST&PUSH 1)                      ; $BATCON
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; $BATCON
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Wrote file binary-clisp/trans1.fas
+Wrote file /cygdrive/e/temp/maxima/src/trans1.lis

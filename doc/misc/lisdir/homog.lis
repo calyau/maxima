@@ -1,0 +1,1175 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/homog.lisp
+on 2002-12-17 13:35:55 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/homog.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE HOMOG)-2|
+(CONST 0) = HOMOG
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HOMOG
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS RATMAC)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *HVAR *HMAT) (*LEXPR HREDUCE HEXPAND))-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN ADDVARDEG (N L LT) ...)-5|
+(CONST 0) = ADDVARDEG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ADDVARDEG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ADDVARDEG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ADDVARDEG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ADDVARDEG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ADDVARDEG
+8     (SKIP&RET 1)
+
+
+Disassembly of function ADDVARDEG
+(CONST 0) = N
+(CONST 1) = L
+(CONST 2) = X
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X N L)
+25 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; N
+3     (LOAD 5)
+4     (BIND 1)                            ; L
+6     (GETVALUE&PUSH 1)                   ; L
+8     (LOAD&PUSH 0)
+9     (JMP L28)
+11    L11
+11    (LOAD&CAR&PUSH 0)
+13    (LOAD 0)
+14    (BIND 2)                            ; X
+16    (GETVALUE&PUSH 0)                   ; N
+18    (GETVALUE 2)                        ; X
+20    (CONS&PUSH)
+21    (LOAD&CONS&STORE 13)
+23    (UNBIND1)
+24    (SKIP 1)
+26    (LOAD&CDR&STORE 0)
+28    L28
+28    (LOAD&PUSH 0)
+29    (CALLS1&JMPIFNOT 146 L11)           ; ENDP
+32    (SKIP 2)
+34    (LOAD 7)
+35    (UNBIND 2)
+37    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN PTERMVEC (P) ...)-6|
+(CONST 0) = PTERMVEC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PTERMVEC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PTERMVEC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PTERMVEC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PTERMVEC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PTERMVEC
+8     (SKIP&RET 1)
+
+
+Disassembly of function PTERMVEC
+(CONST 0) = P
+(CONST 1) = LISTOVARS
+(CONST 2) = POINTERGP
+(CONST 3) = LTERMVEC
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+12 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (GETVALUE&PUSH 0)                   ; P
+5     (GETVALUE&PUSH 0)                   ; P
+7     (CALL1&PUSH 1)                      ; LISTOVARS
+9     (CONST&SYMBOL-FUNCTION&PUSH 2)      ; POINTERGP
+11    (PUSH-UNBOUND 3)
+13    (CALLS2&PUSH 103)                   ; SORT
+15    (NIL&PUSH)
+16    (CALL 3 3)                          ; LTERMVEC
+19    (UNBIND1)
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN LTERMVEC (P VL COEF?) ...)-7|
+(CONST 0) = LTERMVEC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LTERMVEC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LTERMVEC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LTERMVEC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LTERMVEC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LTERMVEC
+8     (SKIP&RET 1)
+
+
+Disassembly of function LTERMVEC
+(CONST 0) = P
+(CONST 1) = NZEROS
+(CONST 2) = B
+(CONST 3) = A
+(CONST 4) = 0
+(CONST 5) = ADDVARDEG
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (B A P)
+writes special variable : (P)
+76 byte-code instructions:
+0     L0
+0     (LOAD 3)
+1     (BIND 0)                            ; P
+3     (LOAD&JMPIFNOT 5 L27)
+6     (GETVALUE 0)                        ; P
+8     (JMPIFCONSP L49)
+10    (LOAD&PUSH 5)
+11    (CALLS2&PUSH 71)                    ; LENGTH
+13    (LOAD&JMPIFNOT 5 L18)
+16    (GETVALUE 0)                        ; P
+18    L18
+18    (PUSH)
+19    (CALL2 1)                           ; NZEROS
+21    L21
+21    (PUSH)
+22    (LIST 1)
+24    (JMP L117)
+27    L27
+27    (LOAD&JMPIFNOT 4 L21)
+30    (GETVALUE 0)                        ; P
+32    (JMP L21)
+34    L34
+34    (CONST&PUSH 4)                      ; 0
+35    (GETVALUE&PUSH 0)                   ; P
+37    (LOAD&CDR&PUSH 7)
+39    (LOAD&PUSH 7)
+40    (JSR&PUSH L0)
+42    (NIL&PUSH)
+43    (CALL 3 5)                          ; ADDVARDEG
+46    (JMP L117)
+49    L49
+49    (LOAD&CAR&PUSH 5)
+51    (GETVALUE 0)                        ; P
+53    (CAR)
+54    (BIND 2)                            ; B
+56    (LOAD 3)
+57    (BIND 3)                            ; A
+59    (GETVALUE&PUSH 3)                   ; A
+61    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+63    (GETVALUE&PUSH 2)                   ; B
+65    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+67    (CALLSR 1 48)                       ; >
+70    (UNBIND 2)
+72    (SKIP 1)
+74    (JMPIF L34)
+76    (GETVALUE 0)                        ; P
+78    (CDR)
+79    (BIND 0)                            ; P
+81    (NIL&PUSH)
+82    (GETVALUE 0)                        ; P
+84    (JMPIFNOT L115)
+86    L86
+86    (GETVALUE 0)                        ; P
+88    (CDR)
+89    (CDR&PUSH)
+90    (GETVALUE 0)                        ; P
+92    (CAR&PUSH)
+93    (GETVALUE 0)                        ; P
+95    (CDR)
+96    (CAR&PUSH)
+97    (LOAD&CDR&PUSH 12)
+99    (LOAD&PUSH 12)
+100   (JSR&PUSH L0)
+103   (LOAD&PUSH 3)
+104   (CALL 3 5)                          ; ADDVARDEG
+107   (STORE 1)
+108   (POP)
+109   (SETVALUE 0)                        ; P
+111   (GETVALUE 0)                        ; P
+113   (JMPIF L86)
+115   L115
+115   (POP)
+116   (UNBIND1)
+117   L117
+117   (UNBIND1)
+118   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN HLINSOLVE (MAT) ...)-8|
+(CONST 0) = HLINSOLVE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HLINSOLVE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HLINSOLVE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HLINSOLVE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HLINSOLVE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; HLINSOLVE
+8     (SKIP&RET 1)
+
+
+Disassembly of function HLINSOLVE
+(CONST 0) = X
+(CONST 1) = -
+(CONST 2) = N
+(CONST 3) = M
+(CONST 4) = 2
+(CONST 5) = *ARRAY
+(CONST 6) = 1
+(CONST 7) = L
+(CONST 8) = J
+(CONST 9) = 0
+(CONST 10) = TFGELI1
+(CONST 11) = "Inconsistent"
+(CONST 12) = MERROR
+(CONST 13) = GCD
+(CONST 14) = QUOT
+(CONST 15) = ANS
+(CONST 16) = *REARRAY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS GCD J L N M X)
+writes special variables : (ANS GCD J L)
+343 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CALLS2&PUSH 151)                   ; 1-
+5     (LOAD&CAR&PUSH 2)
+7     (CALLS2&PUSH 71)                    ; LENGTH
+9     (PUSH-NIL 3)
+11    (LOAD&CDR&PUSH 6)
+13    (JMP L36)
+15    L15
+15    (LOAD&CAR&PUSH 0)
+17    (LOAD 0)
+18    (BIND 0)                            ; X
+20    (CONST&PUSH 1)                      ; -
+21    (LOAD&CAR&PUSH 12)
+23    (GETVALUE&PUSH 0)                   ; X
+25    (CALLSR 1 22)                       ; MAPCAR
+28    (UNBIND1)
+29    (PUSH)
+30    (LOAD&CONS&STORE 2)
+32    (SKIP 1)
+34    (LOAD&CDR&STORE 0)
+36    L36
+36    (LOAD&PUSH 0)
+37    (CALLS1&JMPIFNOT 146 L15)           ; ENDP
+40    (SKIP 1)
+42    (LOAD&PUSH 0)
+43    (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+46    (LOAD 4)
+47    (BIND 2)                            ; N
+49    (LOAD 6)
+50    (BIND 3)                            ; M
+52    (NIL&PUSH)
+53    (T&PUSH)
+54    (GETVALUE&PUSH 3)                   ; M
+56    (GETVALUE&PUSH 2)                   ; N
+58    (CALLSR&PUSH 1 51)                  ; MAX
+61    (CALLS2&PUSH 150)                   ; 1+
+63    (CONST&PUSH 4)                      ; 2
+64    (GETVALUE&PUSH 3)                   ; M
+66    (CALLSR&PUSH 2 53)                  ; +
+69    (CALL 4 5)                          ; *ARRAY
+72    (STORE 8)
+74    (LOAD&PUSH 6)
+75    (CONST&PUSH 6)                      ; 1
+76    (LOAD&JMPIFNOT 1 L139)
+79    L79
+79    (LOAD 1)
+80    (CAR)
+81    (BIND 7)                            ; L
+83    (CONST 6)                           ; 1
+84    (BIND 8)                            ; J
+86    (GETVALUE 7)                        ; L
+88    (JMPIFNOT L119)
+90    L90
+90    (GETVALUE&PUSH 8)                   ; J
+92    (GETVALUE 7)                        ; L
+94    (CAR&PUSH)
+95    (LOAD&PUSH 18)
+96    (LOAD&PUSH 9)
+97    (LOAD&PUSH 3)
+98    (LOAD&PUSH 3)
+99    (CALLSR 2 2)                        ; SYSTEM::STORE
+102   (SKIP 2)
+104   (GETVALUE 7)                        ; L
+106   (CDR)
+107   (SETVALUE 7)                        ; L
+109   (GETVALUE&PUSH 8)                   ; J
+111   (CALLS2 150)                        ; 1+
+113   (SETVALUE 8)                        ; J
+115   (GETVALUE 7)                        ; L
+117   (JMPIF L90)
+119   L119
+119   (GETVALUE&PUSH 8)                   ; J
+121   (LOAD&PUSH 17)
+122   (LOAD&PUSH 8)
+123   (LOAD&PUSH 2)
+124   (CONST&PUSH 9)                      ; 0
+125   (CALLSR 2 2)                        ; SYSTEM::STORE
+128   (SKIP 1)
+130   (UNBIND 2)
+132   (LOAD&CDR&STORE 1)
+134   (LOAD&INC&STORE 0)
+136   (LOAD&JMPIF 1 L79)
+139   L139
+139   (SKIP 2)
+141   (LOAD&PUSH 8)
+142   (GETVALUE&PUSH 2)                   ; N
+144   (GETVALUE&PUSH 3)                   ; M
+146   (CALLS2&PUSH 150)                   ; 1+
+148   (CALL 3 10)                         ; TFGELI1
+151   (STORE 6)
+152   (CDR)
+153   (CAR)
+154   (JMPIFNOT L159)
+156   (CONST&PUSH 11)                     ; "Inconsistent"
+157   (CALL1 12)                          ; MERROR
+159   L159
+159   (GETVALUE&PUSH 2)                   ; N
+161   (LOAD&CAR&PUSH 7)
+163   (CALLS2&PUSH 71)                    ; LENGTH
+165   (CALLSR&STORE 1 54 7)               ; -
+169   (GETVALUE&PUSH 2)                   ; N
+171   (CALLS2&PUSH 150)                   ; 1+
+173   (JMP L210)
+175   L175
+175   (LOAD&PUSH 8)
+176   (CALLS2 150)                        ; 1+
+178   (BIND 8)                            ; J
+180   (JMP L199)
+182   L182
+182   (GETVALUE&PUSH 8)                   ; J
+184   (LOAD&PUSH 13)
+185   (LOAD&PUSH 5)
+186   (LOAD&PUSH 2)
+187   (CONST&PUSH 9)                      ; 0
+188   (CALLSR 2 2)                        ; SYSTEM::STORE
+191   (SKIP 1)
+193   (GETVALUE&PUSH 8)                   ; J
+195   (CALLS2 150)                        ; 1+
+197   (SETVALUE 8)                        ; J
+199   L199
+199   (GETVALUE&PUSH 8)                   ; J
+201   (GETVALUE&PUSH 3)                   ; M
+203   (CALLSR&JMPIFNOT 1 48 L182)         ; >
+207   (UNBIND1)
+208   (LOAD&INC&STORE 0)
+210   L210
+210   (LOAD&PUSH 0)
+211   (GETVALUE&PUSH 3)                   ; M
+213   (CALLSR&JMPIFNOT 1 48 L175)         ; >
+217   (SKIP 1)
+219   (LOAD&INC&PUSH 7)
+221   (LOAD&PUSH 9)
+222   (CONST&PUSH 6)                      ; 1
+223   (CONST&PUSH 6)                      ; 1
+224   (CALLSR&PUSH 2 1)                   ; AREF
+227   (CALLS2&PUSH 158)                   ; ABS
+229   (JMP L252)
+231   L231
+231   (LOAD&PUSH 0)
+232   (CONST&PUSH 9)                      ; 0
+233   (CALLSR 1 48)                       ; >
+236   (SKIP 1)
+238   (JMPIFNOT L331)
+241   (JMP L275)
+243   L243
+243   (LOAD&PUSH 10)
+244   (LOAD&PUSH 2)
+245   (LOAD&PUSH 3)
+246   (LOAD&PUSH 3)
+247   (CALLSR 2 2)                        ; SYSTEM::STORE
+250   (LOAD&INC&STORE 1)
+252   L252
+252   (LOAD&PUSH 1)
+253   (GETVALUE&PUSH 3)                   ; M
+255   (CALLSR&JMPIFNOT 1 48 L243)         ; >
+259   (SKIP 2)
+261   (LOAD&PUSH 8)
+262   (CONST&PUSH 6)                      ; 1
+263   (CONST&PUSH 6)                      ; 1
+264   (CALLSR&PUSH 2 1)                   ; AREF
+267   (LOAD&PUSH 0)
+268   (CALLS2&JMPIF 8 L231)               ; NUMBERP
+271   (SKIP 1)
+273   (JMPIFNOT L331)
+275   L275
+275   (CONST&PUSH 6)                      ; 1
+276   (JMP L323)
+278   L278
+278   (LOAD&PUSH 8)
+279   (CALLS2 150)                        ; 1+
+281   (BIND 8)                            ; J
+283   (JMP L312)
+285   L285
+285   (GETVALUE&PUSH 8)                   ; J
+287   (LOAD&PUSH 13)
+288   (LOAD&PUSH 5)
+289   (GETVALUE&PUSH 8)                   ; J
+291   (CALLSR&PUSH 2 1)                   ; AREF
+294   (CALLSR&PUSH 0 54)                  ; -
+297   (LOAD&PUSH 14)
+298   (LOAD&PUSH 6)
+299   (LOAD&PUSH 3)
+300   (LOAD&PUSH 3)
+301   (CALLSR 2 2)                        ; SYSTEM::STORE
+304   (SKIP 2)
+306   (GETVALUE&PUSH 8)                   ; J
+308   (CALLS2 150)                        ; 1+
+310   (SETVALUE 8)                        ; J
+312   L312
+312   (GETVALUE&PUSH 8)                   ; J
+314   (GETVALUE&PUSH 3)                   ; M
+316   (CALLSR&JMPIFNOT 1 48 L285)         ; >
+320   (UNBIND1)
+321   (LOAD&INC&STORE 0)
+323   L323
+323   (LOAD&PUSH 0)
+324   (LOAD&PUSH 9)
+325   (CALLSR&JMPIFNOT 1 48 L278)         ; >
+329   (SKIP 1)
+331   L331
+331   (LOAD 6)
+332   (CDR)
+333   (CDR)
+334   (CAR)
+335   (BIND 7)                            ; L
+337   (CONST&PUSH 6)                      ; 1
+338   (GETVALUE 7)                        ; L
+340   (JMPIFNOT L365)
+342   L342
+342   (GETVALUE 7)                        ; L
+344   (CAR&PUSH)
+345   (LOAD&PUSH 13)
+346   (CONST&PUSH 9)                      ; 0
+347   (LOAD&PUSH 2)
+348   (LOAD&PUSH 4)
+349   (CALLSR 2 2)                        ; SYSTEM::STORE
+352   (SKIP 1)
+354   (GETVALUE 7)                        ; L
+356   (CDR)
+357   (SETVALUE 7)                        ; L
+359   (LOAD&INC&STORE 0)
+361   (GETVALUE 7)                        ; L
+363   (JMPIF L342)
+365   L365
+365   (SKIP 1)
+367   (UNBIND1)
+368   (LOAD 6)
+369   (CDR)
+370   (CDR)
+371   (CAR&PUSH)
+372   (CONST&PUSH 6)                      ; 1
+373   (JMP L448)
+376   L376
+376   (CONST 9)                           ; 0
+377   (BIND 13)                           ; GCD
+379   (LOAD 3)
+380   (BIND 8)                            ; J
+382   (JMP L404)
+384   L384
+384   (GETVALUE&PUSH 13)                  ; GCD
+386   (LOAD&PUSH 17)
+387   (LOAD&PUSH 8)
+388   (GETVALUE&PUSH 8)                   ; J
+390   (CALLSR&PUSH 2 1)                   ; AREF
+393   (CALLSR 2 57)                       ; GCD
+396   (SETVALUE 13)                       ; GCD
+398   (GETVALUE&PUSH 8)                   ; J
+400   (CALLS2 150)                        ; 1+
+402   (SETVALUE 8)                        ; J
+404   L404
+404   (GETVALUE&PUSH 13)                  ; GCD
+406   (CONST&PUSH 6)                      ; 1
+407   (CALLSR&JMPIF 1 45 L419)            ; =
+411   (GETVALUE&PUSH 8)                   ; J
+413   (GETVALUE&PUSH 3)                   ; M
+415   (CALLSR&JMPIFNOT 1 48 L384)         ; >
+419   L419
+419   (LOAD&CAR&PUSH 7)
+421   (LOAD&PUSH 17)
+422   (LOAD&PUSH 8)
+423   (LOAD&PUSH 9)
+424   (CALLSR&PUSH 2 1)                   ; AREF
+427   (GETVALUE&PUSH 13)                  ; GCD
+429   (CALL2&PUSH 14)                     ; QUOT
+431   (CALLS2&PUSH 158)                   ; ABS
+433   (LOAD&PUSH 18)
+434   (LOAD&PUSH 2)
+435   (CONST&PUSH 9)                      ; 0
+436   (LOAD&PUSH 3)
+437   (CALLSR 2 2)                        ; SYSTEM::STORE
+440   (SKIP 2)
+442   (UNBIND 2)
+444   (LOAD&CDR&STORE 1)
+446   (LOAD&INC&STORE 0)
+448   L448
+448   (LOAD&PUSH 0)
+449   (LOAD&PUSH 10)
+450   (CALLSR&JMPIFNOT 1 48 L376)         ; >
+455   (LOAD&PUSH 1)
+456   (LOAD&PUSH 1)
+457   (JMP L511)
+459   L459
+459   (NIL&PUSH)
+460   (GETVALUE 3)                        ; M
+462   (BIND 8)                            ; J
+464   (JMP L486)
+466   L466
+466   (LOAD&PUSH 16)
+467   (LOAD&PUSH 17)
+468   (CONST&PUSH 9)                      ; 0
+469   (GETVALUE&PUSH 8)                   ; J
+471   (CALLSR&PUSH 2 1)                   ; AREF
+474   (LOAD&PUSH 6)
+475   (CALLSR&PUSH 2 1)                   ; AREF
+478   (LOAD&CONS&STORE 3)
+480   (GETVALUE&PUSH 8)                   ; J
+482   (CALLS2 151)                        ; 1-
+484   (SETVALUE 8)                        ; J
+486   L486
+486   (GETVALUE&PUSH 8)                   ; J
+488   (CONST&PUSH 6)                      ; 1
+489   (CALLSR&JMPIFNOT 1 47 L466)         ; <
+493   (LOAD&CAR&PUSH 5)
+495   (LOAD&PUSH 17)
+496   (LOAD&PUSH 1)
+497   (CONST&PUSH 9)                      ; 0
+498   (LOAD&PUSH 7)
+499   (CALLSR 2 2)                        ; SYSTEM::STORE
+502   (SKIP 1)
+504   (UNBIND1)
+505   (SKIP 1)
+507   (LOAD&CDR&STORE 1)
+509   (LOAD&INC&STORE 0)
+511   L511
+511   (LOAD&PUSH 0)
+512   (GETVALUE&PUSH 3)                   ; M
+514   (CALLSR&JMPIFNOT 1 48 L459)         ; >
+518   (NIL)
+519   (BIND 15)                           ; ANS
+521   (GETVALUE&PUSH 3)                   ; M
+523   (JMP L538)
+525   L525
+525   (LOAD&PUSH 16)
+526   (LOAD&PUSH 1)
+527   (CONST&PUSH 9)                      ; 0
+528   (CALLSR&PUSH 2 1)                   ; AREF
+531   (GETVALUE 15)                       ; ANS
+533   (CONS)
+534   (SETVALUE 15)                       ; ANS
+536   (LOAD&DEC&STORE 0)
+538   L538
+538   (LOAD&PUSH 0)
+539   (CONST&PUSH 6)                      ; 1
+540   (CALLSR&JMPIFNOT 1 47 L525)         ; <
+544   (LOAD&PUSH 16)
+545   (CALL1 16)                          ; *REARRAY
+547   (GETVALUE 15)                       ; ANS
+549   (SKIP 1)
+551   (UNBIND1)
+552   (SKIP 4)
+554   (UNBIND 2)
+556   (SKIP&RET 7)
+
+
+Disassembly of function #:|(DEFUN HREDUCE (P &OPTIONAL # ...) ...)-9|
+(CONST 0) = HREDUCE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HREDUCE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HREDUCE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HREDUCE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HREDUCE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; HREDUCE
+8     (SKIP&RET 1)
+
+
+Disassembly of function HREDUCE
+(CONST 0) = P
+(CONST 1) = LISTOVARS
+(CONST 2) = POINTERGP
+(CONST 3) = *HVAR
+(CONST 4) = LTERMVEC
+(CONST 5) = HLINSOLVE
+(CONST 6) = *HMAT
+(CONST 7) = B
+(CONST 8) = A
+(CONST 9) = ANS
+(CONST 10) = QUOT
+(CONST 11) = SUM
+(CONST 12) = PPLUS
+1 required argument
+2 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS SUM B A *HVAR P)
+writes special variables : (ANS P SUM *HMAT *HVAR)
+130 byte-code instructions:
+0     L0
+0     (LOAD 3)
+1     (BIND 0)                            ; P
+3     (JMPIFBOUNDP 5 L18)
+6     (GETVALUE&PUSH 0)                   ; P
+8     (CALL1&PUSH 1)                      ; LISTOVARS
+10    (CONST&PUSH 2)                      ; POINTERGP
+11    (PUSH-UNBOUND 3)
+13    (CALLS2 103)                        ; SORT
+15    (SETVALUE 3)                        ; *HVAR
+17    (STORE 5)
+18    L18
+18    (JMPIFBOUNDP 4 L34)
+21    (GETVALUE&PUSH 0)                   ; P
+23    (GETVALUE&PUSH 3)                   ; *HVAR
+25    (NIL&PUSH)
+26    (CALL&PUSH 3 4)                     ; LTERMVEC
+29    (CALL1 5)                           ; HLINSOLVE
+31    (SETVALUE 6)                        ; *HMAT
+33    (STORE 4)
+34    L34
+34    (GETVALUE 0)                        ; P
+36    (JMPIFATOM L136)
+39    (LOAD&CAR&PUSH 5)
+41    (GETVALUE 0)                        ; P
+43    (CAR)
+44    (BIND 7)                            ; B
+46    (LOAD 3)
+47    (BIND 8)                            ; A
+49    (GETVALUE&PUSH 8)                   ; A
+51    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+53    (GETVALUE&PUSH 7)                   ; B
+55    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+57    (CALLSR 1 48)                       ; >
+60    (UNBIND 2)
+62    (SKIP 1)
+64    (JMPIF L140)
+67    (LOAD&CAR&PUSH 4)
+69    (CALLS2&JMPIF 8 L151)               ; NUMBERP
+73    (GETVALUE 0)                        ; P
+75    (CDR)
+76    (CDR)
+77    (CDR&PUSH)
+78    (GETVALUE 0)                        ; P
+80    (CDR)
+81    (CDR)
+82    (CAR&PUSH)
+83    (LOAD&CDR&PUSH 7)
+85    (LOAD&CDR&PUSH 7)
+87    (JSR L0)
+90    (BIND 11)                           ; SUM
+92    (LOAD 3)
+93    (BIND 0)                            ; P
+95    (GETVALUE 0)                        ; P
+97    (JMPIFNOT L127)
+99    L99
+99    (GETVALUE 0)                        ; P
+101   (CDR)
+102   (CDR&PUSH)
+103   (GETVALUE&PUSH 11)                  ; SUM
+105   (GETVALUE 0)                        ; P
+107   (CDR)
+108   (CAR&PUSH)
+109   (LOAD&CDR&PUSH 15)
+111   (LOAD&CDR&PUSH 15)
+113   (JSR&PUSH L0)
+116   (CALL2 12)                          ; PPLUS
+118   (SETVALUE 11)                       ; SUM
+120   (POP)
+121   (SETVALUE 0)                        ; P
+123   (GETVALUE 0)                        ; P
+125   (JMPIF L99)
+127   L127
+127   (GETVALUE 11)                       ; SUM
+129   (UNBIND 2)
+131   (SKIP 1)
+133   L133
+133   (UNBIND1)
+134   (SKIP&RET 4)
+136   L136
+136   (GETVALUE 0)                        ; P
+138   (JMP L133)
+140   L140
+140   (GETVALUE&PUSH 0)                   ; P
+142   (LOAD&CDR&PUSH 6)
+144   (LOAD&CDR&PUSH 6)
+146   (JSR L0)
+149   (JMP L133)
+151   L151
+151   (GETVALUE 0)                        ; P
+153   (CAR&PUSH)
+154   (GETVALUE 0)                        ; P
+156   (CDR&PUSH)
+157   (LOAD&CAR&PUSH 6)
+159   (NIL)
+160   (BIND 9)                            ; ANS
+162   (LOAD 4)
+163   (BIND 0)                            ; P
+165   (GETVALUE 0)                        ; P
+167   (JMPIFNOT L206)
+169   L169
+169   (GETVALUE 0)                        ; P
+171   (CAR&PUSH)
+172   (LOAD&PUSH 7)
+173   (CALL2&PUSH 10)                     ; QUOT
+175   (GETVALUE 9)                        ; ANS
+177   (CONS)
+178   (SETVALUE 9)                        ; ANS
+180   (GETVALUE 0)                        ; P
+182   (CDR)
+183   (CAR&PUSH)
+184   (LOAD&CDR&PUSH 15)
+186   (LOAD&CDR&PUSH 15)
+188   (JSR&PUSH L0)
+191   (GETVALUE 9)                        ; ANS
+193   (CONS)
+194   (SETVALUE 9)                        ; ANS
+196   (GETVALUE 0)                        ; P
+198   (CDR)
+199   (CDR)
+200   (SETVALUE 0)                        ; P
+202   (GETVALUE 0)                        ; P
+204   (JMPIF L169)
+206   L206
+206   (GETVALUE&PUSH 9)                   ; ANS
+208   (CALLS2 73)                         ; NREVERSE
+210   (UNBIND 2)
+212   (SKIP 2)
+214   (CONS)
+215   (JMP L133)
+
+
+Disassembly of function #:|(DEFUN HEXPAND (P &OPTIONAL # ...) ...)-10|
+(CONST 0) = HEXPAND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HEXPAND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HEXPAND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HEXPAND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HEXPAND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; HEXPAND
+8     (SKIP&RET 1)
+
+
+Disassembly of function HEXPAND
+(CONST 0) = P
+(CONST 1) = *HMAT
+(CONST 2) = *HVAR
+(CONST 3) = ONEP
+(CONST 4) = ANDMAPC
+(CONST 5) = 1
+(CONST 6) = LTERMVEC
+(CONST 7) = J
+(CONST 8) = 0
+(CONST 9) = X
+(CONST 10) = HDOT
+(CONST 11) = MAX
+(CONST 12) = QUOT
+(CONST 13) = HSIMP
+1 required argument
+2 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X J P *HVAR *HMAT)
+writes special variables : (P J)
+145 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; P
+3     (JMPIFBOUNDP 5 L9)
+6     (GETVALUE 1)                        ; *HMAT
+8     (STORE 5)
+9     L9
+9     (JMPIFBOUNDP 4 L15)
+12    (GETVALUE 2)                        ; *HVAR
+14    (STORE 4)
+15    L15
+15    (CONST&SYMBOL-FUNCTION&PUSH 3)      ; ONEP
+17    (LOAD&PUSH 6)
+18    (CALL2&JMPIF 4 L57)                 ; ANDMAPC
+21    (LOAD&PUSH 5)
+22    (CONST&PUSH 5)                      ; 1
+23    (GETVALUE&PUSH 0)                   ; P
+25    (LOAD&PUSH 7)
+26    (T&PUSH)
+27    (CALL&PUSH 3 6)                     ; LTERMVEC
+30    (LOAD&JMPIFNOT 2 L105)
+34    L34
+34    (LOAD&CAR&PUSH 2)
+36    (CALLS2&JMPIFNOT 8 L97)             ; NUMBERP
+39    (LOAD&CAR&PUSH 2)
+41    (JMPIFEQTO 5 L97)                   ; 1
+44    (LOAD&PUSH 0)
+45    (LOAD&JMPIFNOT 0 L95)
+48    L48
+48    (LOAD&CAR&PUSH 0)
+50    (LOAD&PUSH 3)
+51    (CALLS2 151)                        ; 1-
+53    (BIND 7)                            ; J
+55    (JMP L70)
+57    L57
+57    (GETVALUE 0)                        ; P
+59    (JMP L242)
+62    L62
+62    (LOAD&CDR&STORE 3)
+64    (GETVALUE&PUSH 7)                   ; J
+66    (CALLS2 151)                        ; 1-
+68    (SETVALUE 7)                        ; J
+70    L70
+70    (GETVALUE&PUSH 7)                   ; J
+72    (CONST&PUSH 8)                      ; 0
+73    (CALLSR&JMPIFNOT 1 45 L62)          ; =
+77    (LOAD&PUSH 3)
+78    (LOAD&CAR&PUSH 4)
+80    (LOAD&CAR&PUSH 9)
+82    (CALLSR&PUSH 2 55)                  ; *
+85    (CALLS1 168)                        ; RPLACA
+87    (UNBIND1)
+88    (SKIP 1)
+90    (LOAD&CDR&STORE 0)
+92    (LOAD&JMPIF 0 L48)
+95    L95
+95    (SKIP 1)
+97    L97
+97    (LOAD&CDR&STORE 2)
+99    (LOAD&INC&STORE 1)
+101   (LOAD&JMPIF 2 L34)
+105   L105
+105   (LOAD 0)
+106   (SETVALUE 0)                        ; P
+108   (SKIP 3)
+110   (LOAD&PUSH 5)
+111   (CONST&PUSH 5)                      ; 1
+112   (PUSH-NIL 2)
+114   (LOAD&JMPIFNOT 3 L235)
+118   L118
+118   (LOAD&CAR&PUSH 3)
+120   (CALLS2&JMPIF 8 L227)               ; NUMBERP
+124   (NIL&PUSH)
+125   (GETVALUE&PUSH 0)                   ; P
+127   (JMP L148)
+129   L129
+129   (LOAD&CAR&PUSH 0)
+131   (LOAD 0)
+132   (BIND 9)                            ; X
+134   (LOAD&CAR&PUSH 9)
+136   (GETVALUE&PUSH 9)                   ; X
+138   (CALL2 10)                          ; HDOT
+140   (UNBIND1)
+141   (PUSH)
+142   (LOAD&CONS&STORE 2)
+144   (SKIP 1)
+146   (LOAD&CDR&STORE 0)
+148   L148
+148   (LOAD&PUSH 0)
+149   (CALLS1&JMPIFNOT 146 L129)          ; ENDP
+152   (SKIP 1)
+154   (LOAD&PUSH 0)
+155   (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+157   (SKIP 1)
+159   (STORE 1)
+160   (LOAD&DEC&PUSH 2)
+162   (LOAD&CAR&PUSH 4)
+164   (CALLS1&STORE 148 0)                ; NTH
+167   (CONST&PUSH 11)                     ; MAX
+168   (LOAD 2)
+169   (APPLY&PUSH 0)
+171   (GETVALUE&PUSH 0)                   ; P
+173   (LOAD&PUSH 3)
+174   (LOAD&JMPIFNOT 1 L225)
+177   L177
+177   (LOAD&CAR&PUSH 1)
+179   (LOAD&PUSH 6)
+180   (CALLS2 151)                        ; 1-
+182   (BIND 7)                            ; J
+184   (JMP L194)
+186   L186
+186   (LOAD&CDR&STORE 3)
+188   (GETVALUE&PUSH 7)                   ; J
+190   (CALLS2 151)                        ; 1-
+192   (SETVALUE 7)                        ; J
+194   L194
+194   (GETVALUE&PUSH 7)                   ; J
+196   (CONST&PUSH 8)                      ; 0
+197   (CALLSR&JMPIFNOT 1 45 L186)         ; =
+201   (LOAD&PUSH 3)
+202   (LOAD&PUSH 7)
+203   (LOAD&CAR&PUSH 6)
+205   (CALLSR&PUSH 1 54)                  ; -
+208   (LOAD&PUSH 9)
+209   (CALL2&PUSH 12)                     ; QUOT
+211   (CALLS1 168)                        ; RPLACA
+213   (UNBIND1)
+214   (SKIP 1)
+216   (LOAD&CDR&PUSH 1)
+218   (LOAD&CDR&STORE 1)
+220   (POP&STORE 1)
+222   (LOAD&JMPIF 1 L177)
+225   L225
+225   (SKIP 3)
+227   L227
+227   (LOAD&CDR&STORE 3)
+229   (LOAD&INC&STORE 2)
+231   (LOAD&JMPIF 3 L118)
+235   L235
+235   (GETVALUE&PUSH 0)                   ; P
+237   (LOAD&PUSH 9)
+238   (CALL2 13)                          ; HSIMP
+240   (SKIP 4)
+242   L242
+242   (UNBIND1)
+243   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN HDOT (HT PT) ...)-11|
+(CONST 0) = HDOT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HDOT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HDOT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HDOT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HDOT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; HDOT
+8     (SKIP&RET 1)
+
+
+Disassembly of function HDOT
+(CONST 0) = PT
+(CONST 1) = SUM
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (SUM PT)
+writes special variables : (PT SUM)
+34 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; PT
+3     (LOAD&CDR&PUSH 5)
+5     (GETVALUE 0)                        ; PT
+7     (CDR&PUSH)
+8     (LOAD&CAR&PUSH 7)
+10    (GETVALUE 0)                        ; PT
+12    (CAR&PUSH)
+13    (CALLSR 2 55)                       ; *
+16    (BIND 1)                            ; SUM
+18    (LOAD 3)
+19    (BIND 0)                            ; PT
+21    (LOAD&JMPIFNOT 7 L52)
+24    L24
+24    (LOAD&CDR&PUSH 7)
+26    (GETVALUE 0)                        ; PT
+28    (CDR&PUSH)
+29    (GETVALUE&PUSH 1)                   ; SUM
+31    (LOAD&CAR&PUSH 10)
+33    (GETVALUE 0)                        ; PT
+35    (CAR&PUSH)
+36    (CALLSR&PUSH 2 55)                  ; *
+39    (CALLSR 2 53)                       ; +
+42    (SETVALUE 1)                        ; SUM
+44    (POP)
+45    (SETVALUE 0)                        ; PT
+47    (POP&STORE 7)
+49    (LOAD&JMPIF 7 L24)
+52    L52
+52    (GETVALUE 1)                        ; SUM
+54    (UNBIND 2)
+56    (SKIP 2)
+58    (UNBIND1)
+59    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN HSIMP (PL VL) ...)-12|
+(CONST 0) = HSIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HSIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HSIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HSIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HSIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; HSIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function HSIMP
+(CONST 0) = HSIMP1
+(CONST 1) = P
+(CONST 2) = PPLUS
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+writes special variable : (P)
+20 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (LOAD&CAR&PUSH 3)
+4     (LOAD&PUSH 3)
+5     (CALL2 0)                           ; HSIMP1
+7     (BIND 1)                            ; P
+9     (LOAD&JMPIFNOT 3 L30)
+12    L12
+12    (LOAD&CDR&PUSH 3)
+14    (GETVALUE&PUSH 1)                   ; P
+16    (LOAD&CAR&PUSH 5)
+18    (LOAD&PUSH 8)
+19    (CALL2&PUSH 0)                      ; HSIMP1
+21    (CALL2 2)                           ; PPLUS
+23    (SETVALUE 1)                        ; P
+25    (POP&STORE 3)
+27    (LOAD&JMPIF 3 L12)
+30    L30
+30    (GETVALUE 1)                        ; P
+32    (UNBIND1)
+33    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN HSIMP1 (TL VL) ...)-13|
+(CONST 0) = HSIMP1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HSIMP1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HSIMP1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HSIMP1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HSIMP1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; HSIMP1
+8     (SKIP&RET 1)
+
+
+Disassembly of function HSIMP1
+(CONST 0) = 0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (LOAD&JMPIF 1 L23)
+3     L3
+3     (LOAD 2)
+4     (SKIP&RET 3)
+6     L6
+6     (LOAD&CAR&PUSH 1)
+8     (LOAD&CAR&PUSH 3)
+10    (LOAD&CDR&PUSH 4)
+12    (LOAD&CDR&PUSH 4)
+14    (JSR&PUSH L20)
+16    (LIST 3)
+18    (SKIP&RET 3)
+20    L20
+20    (LOAD&JMPIFNOT 1 L3)
+23    L23
+23    (LOAD&CAR&PUSH 2)
+25    (CONST&PUSH 0)                      ; 0
+26    (CALLSR&JMPIF 1 48 L6)              ; >
+30    (LOAD&CDR&PUSH 2)
+32    (LOAD&CDR&PUSH 2)
+34    (JMPTAIL 2 5 L20)
+
+
+Wrote file binary-clisp/homog.fas
+Wrote file /cygdrive/e/temp/maxima/src/homog.lis

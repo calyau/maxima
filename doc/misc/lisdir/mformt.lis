@@ -1,0 +1,1742 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mformt.lisp
+on 2002-12-17 13:32:06 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mformt.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MFORMT)-2|
+(CONST 0) = MFORMT
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFORMT
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS MFORMA)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (EVAL) (SETQ MACRO-EXPANSION-USE 'DISPLACE))-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT)-5-1|
+(CONST 0) = DEF-MFORMAT-OP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-MFORMAT-OP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-MFORMAT-OP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-MFORMAT-OP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-MFORMAT-OP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-MFORMAT-OP
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = +DEF-MFORMAT-OP
+(CONST 3) = ||
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L22)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (CONST&PUSH 2)                      ; +DEF-MFORMAT-OP
+15    (CONST&PUSH 3)                      ; ||
+16    (LOAD&PUSH 3)
+17    (LOAD 3)
+18    (LIST* 3)
+20    (SKIP&RET 5)
+22    L22
+22    (LOAD&PUSH 2)
+23    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+25    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF-MFORMAT)-5-2|
+(CONST 0) = DEF-MFORMAT-VAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-MFORMAT-VAR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-MFORMAT-VAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-MFORMAT-VAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-MFORMAT-VAR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-MFORMAT-VAR
+(CONST 0) = 4
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = +DEF-MFORMAT-VAR
+(CONST 3) = ||
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+27 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 4
+4     (CALLSR&JMPIF 1 46 L29)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (LOAD 4)
+16    (CDR)
+17    (CDR)
+18    (CDR)
+19    (CAR&PUSH)
+20    (CONST&PUSH 2)                      ; +DEF-MFORMAT-VAR
+21    (CONST&PUSH 3)                      ; ||
+22    (LOAD&PUSH 4)
+23    (LOAD&PUSH 4)
+24    (LOAD&PUSH 4)
+25    (LIST 5)
+27    (SKIP&RET 6)
+29    L29
+29    (LOAD&PUSH 2)
+30    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+32    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF-MFORMAT)-5-3|
+(CONST 0) = MFORMAT-LOOP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MFORMAT-LOOP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFORMAT-LOOP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MFORMAT-LOOP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MFORMAT-LOOP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; MFORMAT-LOOP
+10    (SKIP&RET 1)
+
+
+Disassembly of function MFORMAT-LOOP
+(CONST 0) = +MFORMAT-LOOP
+(CONST 1) = ||
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; +MFORMAT-LOOP
+3     (CONST&PUSH 1)                      ; ||
+4     (LOAD 2)
+5     (LIST* 2)
+7     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR \|:-FLAG\| NIL ...)-6|
+(CONST 0) = |:-FLAG|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; |:-FLAG|
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR @-FLAG NIL ...)-7|
+(CONST 0) = @-FLAG
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; @-FLAG
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR PARAMETER 0 ...)-8|
+(CONST 0) = PARAMETER
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; PARAMETER
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR PARAMETER-P NIL ...)-9|
+(CONST 0) = PARAMETER-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; PARAMETER-P
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR TEXT NIL ...)-10|
+(CONST 0) = TEXT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; TEXT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR TEXT-TEMP NIL ...)-11|
+(CONST 0) = TEXT-TEMP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; TEXT-TEMP
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR DISPLA-P NIL ...)-12|
+(CONST 0) = DISPLA-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; DISPLA-P
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR PRE-%-P NIL ...)-13|
+(CONST 0) = PRE-%-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; PRE-%-P
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-VAR POST-%-P NIL ...)-14|
+(CONST 0) = POST-%-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; POST-%-P
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN CHECK-OUT-OF-CORE-STRING (SSTRING) ...)-15|
+(CONST 0) = CHECK-OUT-OF-CORE-STRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHECK-OUT-OF-CORE-STRING>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHECK-OUT-OF-CORE-STRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHECK-OUT-OF-CORE-STRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHECK-OUT-OF-CORE-STRING>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHECK-OUT-OF-CORE-STRING
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHECK-OUT-OF-CORE-STRING
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (LOAD 1)
+1     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMACRO PUSH-TEXT-TEMP NIL ...)-16|
+(CONST 0) = PUSH-TEXT-TEMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-TEXT-TEMP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-TEXT-TEMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-TEXT-TEMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-TEXT-TEMP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; PUSH-TEXT-TEMP
+10    (SKIP&RET 1)
+
+
+Disassembly of function PUSH-TEXT-TEMP
+(CONST 0) = 1
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = 
+(IF TEXT-TEMP
+ (SETQ TEXT (CONS (CONS '(TEXT-STRING) (NREVERSE TEXT-TEMP)) TEXT) TEXT-TEMP
+  NIL))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 1
+4     (CALLSR&JMPIF 1 48 L11)             ; >
+8     (CONST 2)                           ; (IF TEXT-TEMP (SETQ TEXT # ...))
+9     (SKIP&RET 3)
+11    L11
+11    (LOAD&PUSH 2)
+12    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO OUTPUT-TEXT NIL ...)-17|
+(CONST 0) = OUTPUT-TEXT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE OUTPUT-TEXT>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OUTPUT-TEXT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; OUTPUT-TEXT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE OUTPUT-TEXT>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; OUTPUT-TEXT
+10    (SKIP&RET 1)
+
+
+Disassembly of function OUTPUT-TEXT
+(CONST 0) = 1
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = 
+(PROGN (PUSH-TEXT-TEMP) (OUTPUT-TEXT* STREAM TEXT DISPLA-P PRE-%-P POST-%-P)
+ (SETQ TEXT NIL DISPLA-P NIL PRE-%-P NIL POST-%-P NIL))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 1
+4     (CALLSR&JMPIF 1 48 L11)             ; >
+8     (CONST 2)                           ; (PROGN (PUSH-TEXT-TEMP) ...)
+9     (SKIP&RET 3)
+11    L11
+11    (LOAD&PUSH 2)
+12    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF-MFORMAT-OP (#\\% #\\&) (COND # #))-18|
+(CONST 0) = #:MFORMAT-%&
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; #:MFORMAT-%&
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-OP #\\M (PUSH-TEXT-TEMP) ...)-19|
+(CONST 0) = #:MFORMAT-M
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; #:MFORMAT-M
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-OP #\\A (PUSH-TEXT-TEMP) ...)-20|
+(CONST 0) = #:MFORMAT-A
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; #:MFORMAT-A
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-MFORMAT-OP #\\S (PUSH-TEXT-TEMP) ...)-21|
+(CONST 0) = #:MFORMAT-S
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; #:MFORMAT-S
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN MFORMAT N ...)-22|
+(CONST 0) = MFORMAT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MFORMAT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFORMAT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MFORMAT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MFORMAT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MFORMAT
+8     (SKIP&RET 1)
+
+
+Disassembly of function MFORMAT
+(CONST 0) = 1
+(CONST 1) = "without any special action"
+(CONST 2) = WRNG-NO-ARGS
+(CONST 3) = MFORMAT
+(CONST 4) = CERROR
+(CONST 5) = NARG1
+(CONST 6) = 2
+(CONST 7) = CHECK-OUT-OF-CORE-STRING
+(CONST 8) = EXPLODEN
+(CONST 9) = 0
+(CONST 10) = #\~
+(CONST 11) = "Runout of MFORMAT string"
+(CONST 12) = FAIL-ACT
+(CONST 13) = #\@
+(CONST 14) = #\:
+(CONST 15) = (#\Newline #\Return #\Space #\Tab #\Page)
+(CONST 16) = ZL-MEMBER
+(CONST 17) = "Runout of MFORMAT string"
+(CONST 18) = #\0
+(CONST 19) = #\9
+(CONST 20) = #\S
+(CONST 21) = (TEXT-STRING)
+(CONST 22) = (TEXT-STRING)
+(CONST 23) = "Ran out of mformat args"
+(CONST 24) = LISTIFY1
+(CONST 25) = EXPLODE
+(CONST 26) = GETCHARN
+(CONST 27) = #\A
+(CONST 28) = (TEXT-STRING)
+(CONST 29) = #\M
+(CONST 30) = OP
+(CONST 31) = (TEXT-STRING)
+(CONST 32) = MSTRING
+(CONST 33) = #\%
+(CONST 34) = #\&
+(CONST 35) = OUTPUT-TEXT*
+(CONST 36) = "Unknown format op."
+(CONST 37) = ASCII
+(CONST 38) = 48
+(CONST 39) = 10
+(CONST 40) = "Extra mformat args"
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+322 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (LOAD&PUSH 0)
+4     (CONST&PUSH 0)                      ; 1
+5     (CALLSR&JMPIF 1 48 L15)             ; >
+9     (CONST&PUSH 1)                      ; "without any special action"
+10    (CONST&PUSH 2)                      ; WRNG-NO-ARGS
+11    (CONST&PUSH 3)                      ; MFORMAT
+12    (CALL 3 4)                          ; CERROR
+15    L15
+15    (CONST&PUSH 0)                      ; 1
+16    (LOAD&PUSH 3)
+17    (CALL2&PUSH 5)                      ; NARG1
+19    (CONST&PUSH 6)                      ; 2
+20    (LOAD&PUSH 4)
+21    (CALL2&PUSH 5)                      ; NARG1
+23    (CALL1&PUSH 7)                      ; CHECK-OUT-OF-CORE-STRING
+25    (CALL1&PUSH 8)                      ; EXPLODEN
+27    (CONST&PUSH 6)                      ; 2
+28    (PUSH-NIL 2)
+30    (CONST&PUSH 9)                      ; 0
+31    (PUSH-NIL 6)
+33    (LOAD&JMPIFNOT 10 L486)
+37    L37
+37    (LOAD&CAR&PUSH 10)
+39    (LOAD&CDR&STORE 11)
+41    (POP&STORE 0)
+43    (PUSH)
+44    (CONST&PUSH 10)                     ; #\~
+45    (CALLSR&JMPIFNOT 1 7 L444)          ; CHAR=
+50    (LOAD&JMPIF 10 L417)
+54    L54
+54    (CONST&PUSH 1)                      ; "without any special action"
+55    (CONST&PUSH 11)                     ; "Runout of MFORMAT string"
+56    (NIL&PUSH)
+57    (CONST&PUSH 12)                     ; FAIL-ACT
+58    (CALL 4 4)                          ; CERROR
+61    (JMP L422)
+64    L64
+64    (T&STORE 7)
+66    (LOAD&JMPIFNOT 10 L54)
+69    (JMP L417)
+72    L72
+72    (T&STORE 8)
+74    (LOAD&JMPIFNOT 10 L54)
+77    (JMP L417)
+80    L80
+80    (LOAD&JMPIF 10 L475)
+84    L84
+84    (CONST&PUSH 1)                      ; "without any special action"
+85    (CONST&PUSH 17)                     ; "Runout of MFORMAT string"
+86    (NIL&PUSH)
+87    (CONST&PUSH 12)                     ; FAIL-ACT
+88    (CALL 4 4)                          ; CERROR
+91    (JMP L477)
+94    L94
+94    (CONST&PUSH 1)                      ; "without any special action"
+95    (CONST&PUSH 23)                     ; "Ran out of mformat args"
+96    (LOAD&PUSH 15)
+97    (LOAD&PUSH 18)
+98    (CALL2&PUSH 24)                     ; LISTIFY1
+100   (CONST&PUSH 12)                     ; FAIL-ACT
+101   (CALL 4 4)                          ; CERROR
+104   (JMP L131)
+106   L106
+106   (LOAD&JMPIFNOT 4 L118)
+109   (CONST&PUSH 21)                     ; (TEXT-STRING)
+110   (LOAD&PUSH 5)
+111   (CALLS2 73)                         ; NREVERSE
+113   (CONS&PUSH)
+114   (LOAD&CONS&STORE 5)
+116   (NIL&STORE 4)
+118   L118
+118   (CONST&PUSH 22)                     ; (TEXT-STRING)
+119   (LOAD&PUSH 10)
+120   (LOAD&PUSH 14)
+121   (CALLSR&JMPIF 1 45 L94)             ; =
+125   (LOAD&INC&STORE 10)
+127   (PUSH)
+128   (LOAD&PUSH 16)
+129   (CALL2 5)                           ; NARG1
+131   L131
+131   (PUSH)
+132   (CALL1&PUSH 25)                     ; EXPLODE
+134   (LOAD&PUSH 0)
+135   (JMP L147)
+137   L137
+137   (LOAD&PUSH 0)
+138   (LOAD&CAR&PUSH 1)
+140   (CONST&PUSH 0)                      ; 1
+141   (CALL2&PUSH 26)                     ; GETCHARN
+143   (CALLS1 168)                        ; RPLACA
+145   (LOAD&CDR&STORE 0)
+147   L147
+147   (LOAD&PUSH 0)
+148   (CALLS1&JMPIFNOT 146 L137)          ; ENDP
+151   (SKIP 1)
+153   (POP)
+154   (JMP L209)
+156   L156
+156   (CONST&PUSH 1)                      ; "without any special action"
+157   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+158   (LOAD&PUSH 15)
+159   (LOAD&PUSH 18)
+160   (CALL2&PUSH 24)                     ; LISTIFY1
+162   (CONST&PUSH 12)                     ; FAIL-ACT
+163   (CALL 4 4)                          ; CERROR
+166   (JMP L206)
+168   L168
+168   (LOAD&PUSH 0)
+169   (CONST&PUSH 20)                     ; #\S
+170   (CALLSR&JMPIF 1 7 L106)             ; CHAR=
+175   (LOAD&PUSH 0)
+176   (CONST&PUSH 27)                     ; #\A
+177   (CALLSR&JMPIFNOT 1 7 L227)          ; CHAR=
+181   (LOAD&JMPIFNOT 4 L193)
+184   (CONST&PUSH 21)                     ; (TEXT-STRING)
+185   (LOAD&PUSH 5)
+186   (CALLS2 73)                         ; NREVERSE
+188   (CONS&PUSH)
+189   (LOAD&CONS&STORE 5)
+191   (NIL&STORE 4)
+193   L193
+193   (CONST&PUSH 28)                     ; (TEXT-STRING)
+194   (LOAD&PUSH 10)
+195   (LOAD&PUSH 14)
+196   (CALLSR&JMPIF 1 45 L156)            ; =
+200   (LOAD&INC&STORE 10)
+202   (PUSH)
+203   (LOAD&PUSH 16)
+204   (CALL2 5)                           ; NARG1
+206   L206
+206   (PUSH)
+207   (CALL1 8)                           ; EXPLODEN
+209   L209
+209   (CONS&PUSH)
+210   (LOAD&CONS&STORE 5)
+212   (JMP L362)
+215   L215
+215   (CONST&PUSH 1)                      ; "without any special action"
+216   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+217   (LOAD&PUSH 14)
+218   (LOAD&PUSH 17)
+219   (CALL2&PUSH 24)                     ; LISTIFY1
+221   (CONST&PUSH 12)                     ; FAIL-ACT
+222   (CALL 4 4)                          ; CERROR
+225   (JMP L258)
+227   L227
+227   (LOAD&PUSH 0)
+228   (CONST&PUSH 29)                     ; #\M
+229   (CALLSR&JMPIFNOT 1 7 L338)          ; CHAR=
+234   (LOAD&JMPIFNOT 4 L246)
+237   (CONST&PUSH 21)                     ; (TEXT-STRING)
+238   (LOAD&PUSH 5)
+239   (CALLS2 73)                         ; NREVERSE
+241   (CONS&PUSH)
+242   (LOAD&CONS&STORE 5)
+244   (NIL&STORE 4)
+246   L246
+246   (LOAD&PUSH 9)
+247   (LOAD&PUSH 13)
+248   (CALLSR&JMPIF 1 45 L215)            ; =
+252   (LOAD&INC&STORE 9)
+254   (PUSH)
+255   (LOAD&PUSH 15)
+256   (CALL2 5)                           ; NARG1
+258   L258
+258   (PUSH)
+259   (LOAD&JMPIFNOT 8 L286)
+262   (LOAD 0)
+263   (JMPIFCONSP L286)
+265   (LOAD&PUSH 0)
+266   (CONST&PUSH 30)                     ; OP
+268   (PUSH-UNBOUND 1)
+270   (CALLS2&JMPIF 132 L274)             ; GET
+273   (LOAD 0)
+274   L274
+274   (STORE 0)
+275   (LOAD&JMPIFNOT 9 L289)
+278   L278
+278   (CONST&PUSH 31)                     ; (TEXT-STRING)
+280   (LOAD&PUSH 1)
+281   (CALL1 32)                          ; MSTRING
+283   (CONS)
+284   (JMP L292)
+286   L286
+286   (LOAD&JMPIF 9 L278)
+289   L289
+289   (T&STORE 4)
+291   (LOAD 0)
+292   L292
+292   (PUSH)
+293   (LOAD&CONS&STORE 6)
+295   (SKIP 1)
+297   (JMP L362)
+299   L299
+299   (T&STORE 1)
+301   (LOAD&JMPIFNOT 4 L313)
+304   (CONST&PUSH 21)                     ; (TEXT-STRING)
+305   (LOAD&PUSH 5)
+306   (CALLS2 73)                         ; NREVERSE
+308   (CONS&PUSH)
+309   (LOAD&CONS&STORE 5)
+311   (NIL&STORE 4)
+313   L313
+313   (LOAD&PUSH 11)
+314   (LOAD&PUSH 6)
+315   (LOAD&PUSH 5)
+316   (LOAD&PUSH 5)
+317   (LOAD&PUSH 5)
+318   (CALL 5 35)                         ; OUTPUT-TEXT*
+321   (NIL&STORE 5)
+323   (STORE 3)
+324   (STORE 2)
+325   (STORE 1)
+326   (JMP L362)
+328   L328
+328   (LOAD&JMPIF 5 L299)
+331   (LOAD&JMPIF 4 L299)
+334   (T&STORE 2)
+336   (JMP L362)
+338   L338
+338   (LOAD&PUSH 0)
+339   (CONST&PUSH 33)                     ; #\%
+341   (CALLSR&JMPIF 1 7 L328)             ; CHAR=
+345   (LOAD&PUSH 0)
+346   (CONST&PUSH 34)                     ; #\&
+348   (CALLSR&JMPIF 1 7 L328)             ; CHAR=
+352   (CONST&PUSH 1)                      ; "without any special action"
+353   (CONST&PUSH 36)                     ; "Unknown format op."
+355   (LOAD&PUSH 2)
+356   (CALL1&PUSH 37)                     ; ASCII
+358   (CONST&PUSH 12)                     ; FAIL-ACT
+359   (CALL 4 4)                          ; CERROR
+362   L362
+362   (CONST 9)                           ; 0
+363   (STORE 6)
+364   (NIL&STORE 7)
+366   (STORE 8)
+368   (LOAD&JMPIFNOT 10 L486)
+372   (JMP L37)
+375   L375
+375   (LOAD&PUSH 0)
+376   (CONST&PUSH 15)                     ; (#\Newline #\Return #\Space ...)
+377   (CALL2&JMPIF 16 L80)                ; ZL-MEMBER
+381   (LOAD&PUSH 0)
+382   (CONST&PUSH 18)                     ; #\0
+383   (CALLSR&JMPIF 1 9 L168)             ; CHAR<
+388   (LOAD&PUSH 0)
+389   (CONST&PUSH 19)                     ; #\9
+390   (CALLSR&JMPIF 1 10 L168)            ; CHAR>
+395   (LOAD&PUSH 0)
+396   (CALLS1&PUSH 40)                    ; CHAR-CODE
+398   (CONST&PUSH 38)                     ; 48
+400   (CALLSR&PUSH 1 54)                  ; -
+403   (CONST&PUSH 39)                     ; 10
+405   (LOAD&PUSH 8)
+406   (CALLSR&PUSH 2 55)                  ; *
+409   (CALLSR&STORE 2 53 6)               ; +
+413   (LOAD&JMPIFNOT 10 L54)
+417   L417
+417   (LOAD&CAR&PUSH 10)
+419   (LOAD&CDR&STORE 11)
+421   (POP)
+422   L422
+422   (STORE 0)
+423   (PUSH)
+424   (CONST&PUSH 13)                     ; #\@
+425   (CALLSR&JMPIF 1 7 L64)              ; CHAR=
+430   (LOAD&PUSH 0)
+431   (CONST&PUSH 14)                     ; #\:
+432   (CALLSR&JMPIF 1 7 L72)              ; CHAR=
+437   (LOAD&PUSH 0)
+438   (CONST&PUSH 10)                     ; #\~
+439   (CALLSR&JMPIFNOT 1 7 L375)          ; CHAR=
+444   L444
+444   (LOAD&PUSH 0)
+445   (LOAD&CONS&STORE 4)
+447   (LOAD&JMPIFNOT 10 L486)
+450   (JMP L37)
+453   L453
+453   (CONST&PUSH 1)                      ; "without any special action"
+454   (CONST&PUSH 40)                     ; "Extra mformat args"
+456   (LOAD&PUSH 14)
+457   (LOAD&PUSH 17)
+458   (CALL2&PUSH 24)                     ; LISTIFY1
+460   (CONST&PUSH 12)                     ; FAIL-ACT
+461   (CALL 4 4)                          ; CERROR
+464   (LOAD&JMPIFNOT 4 L504)
+467   (JMP L495)
+469   L469
+469   (LOAD&CDR&STORE 10)
+471   (LOAD&JMPIFNOT 10 L84)
+475   L475
+475   (LOAD 10)
+476   (CAR)
+477   L477
+477   (PUSH)
+478   (CONST&PUSH 15)                     ; (#\Newline #\Return #\Space ...)
+479   (CALL2&JMPIF 16 L469)               ; ZL-MEMBER
+482   (LOAD&JMPIF 10 L37)
+486   L486
+486   (LOAD&PUSH 9)
+487   (LOAD&PUSH 13)
+488   (CALLSR&JMPIFNOT 1 45 L453)         ; =
+492   (LOAD&JMPIFNOT 4 L504)
+495   L495
+495   (CONST&PUSH 21)                     ; (TEXT-STRING)
+496   (LOAD&PUSH 5)
+497   (CALLS2 73)                         ; NREVERSE
+499   (CONS&PUSH)
+500   (LOAD&CONS&STORE 5)
+502   (NIL&STORE 4)
+504   L504
+504   (LOAD&PUSH 11)
+505   (LOAD&PUSH 6)
+506   (LOAD&PUSH 5)
+507   (LOAD&PUSH 5)
+508   (LOAD&PUSH 5)
+509   (CALL 5 35)                         ; OUTPUT-TEXT*
+512   (NIL)
+513   (SKIP&RET 15)
+
+
+Disassembly of function #:|(DEFMFUN AFORMAT N ...)-23|
+(CONST 0) = AFORMAT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE AFORMAT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; AFORMAT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; AFORMAT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE AFORMAT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; AFORMAT
+8     (SKIP&RET 1)
+
+
+Disassembly of function AFORMAT
+(CONST 0) = 1
+(CONST 1) = "without any special action"
+(CONST 2) = WRNG-NO-ARGS
+(CONST 3) = MFORMAT
+(CONST 4) = CERROR
+(CONST 5) = NARG1
+(CONST 6) = 2
+(CONST 7) = CHECK-OUT-OF-CORE-STRING
+(CONST 8) = EXPLODEN
+(CONST 9) = 0
+(CONST 10) = #\~
+(CONST 11) = "Runout of MFORMAT string"
+(CONST 12) = FAIL-ACT
+(CONST 13) = #\@
+(CONST 14) = #\:
+(CONST 15) = (#\Newline #\Return #\Space #\Tab #\Page)
+(CONST 16) = ZL-MEMBER
+(CONST 17) = "Runout of MFORMAT string"
+(CONST 18) = #\0
+(CONST 19) = #\9
+(CONST 20) = #\S
+(CONST 21) = (TEXT-STRING)
+(CONST 22) = (TEXT-STRING)
+(CONST 23) = "Ran out of mformat args"
+(CONST 24) = LISTIFY1
+(CONST 25) = EXPLODE
+(CONST 26) = GETCHARN
+(CONST 27) = #\A
+(CONST 28) = (TEXT-STRING)
+(CONST 29) = #\M
+(CONST 30) = OP
+(CONST 31) = (TEXT-STRING)
+(CONST 32) = MSTRING
+(CONST 33) = #\%
+(CONST 34) = #\&
+(CONST 35) = OUTPUT-TEXT*
+(CONST 36) = "Unknown format op."
+(CONST 37) = ASCII
+(CONST 38) = 48
+(CONST 39) = 10
+(CONST 40) = "Extra mformat args"
+(CONST 41) = CLOSE
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+638 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (LOAD&PUSH 0)
+4     (CONST&PUSH 0)                      ; 1
+5     (CALLSR&JMPIF 1 48 L15)             ; >
+9     (CONST&PUSH 1)                      ; "without any special action"
+10    (CONST&PUSH 2)                      ; WRNG-NO-ARGS
+11    (CONST&PUSH 3)                      ; MFORMAT
+12    (CALL 3 4)                          ; CERROR
+15    L15
+15    (CONST&PUSH 0)                      ; 1
+16    (LOAD&PUSH 3)
+17    (CALL2&PUSH 5)                      ; NARG1
+19    (CONST&PUSH 6)                      ; 2
+20    (LOAD&PUSH 4)
+21    (CALL2&PUSH 5)                      ; NARG1
+23    (CALL1&PUSH 7)                      ; CHECK-OUT-OF-CORE-STRING
+25    (CALL1&PUSH 8)                      ; EXPLODEN
+27    (CONST&PUSH 6)                      ; 2
+28    (LOAD&JMPIFNOT 2 L67)
+31    (PUSH-NIL 2)
+33    (CONST&PUSH 9)                      ; 0
+34    (PUSH-NIL 6)
+36    (LOAD&JMPIFNOT 10 L998)
+40    L40
+40    (LOAD&CAR&PUSH 10)
+42    (LOAD&CDR&STORE 11)
+44    (POP&STORE 0)
+46    (PUSH)
+47    (CONST&PUSH 10)                     ; #\~
+48    (CALLSR&JMPIFNOT 1 7 L956)          ; CHAR=
+53    (LOAD&JMPIF 10 L929)
+57    L57
+57    (CONST&PUSH 1)                      ; "without any special action"
+58    (CONST&PUSH 11)                     ; "Runout of MFORMAT string"
+59    (NIL&PUSH)
+60    (CONST&PUSH 12)                     ; FAIL-ACT
+61    (CALL 4 4)                          ; CERROR
+64    (JMP L934)
+67    L67
+67    (NIL&PUSH)
+68    (PUSH-UNBOUND 1)
+70    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+72    (UNWIND-PROTECT-OPEN L565)
+75    (PUSH-NIL 2)
+77    (CONST&PUSH 9)                      ; 0
+78    (PUSH-NIL 6)
+80    (LOAD&JMPIFNOT 13 L533)
+84    L84
+84    (LOAD&CAR&PUSH 13)
+86    (LOAD&CDR&STORE 14)
+88    (POP&STORE 0)
+90    (PUSH)
+91    (CONST&PUSH 10)                     ; #\~
+92    (CALLSR&JMPIFNOT 1 7 L491)          ; CHAR=
+97    (LOAD&JMPIF 13 L464)
+101   L101
+101   (CONST&PUSH 1)                      ; "without any special action"
+102   (CONST&PUSH 11)                     ; "Runout of MFORMAT string"
+103   (NIL&PUSH)
+104   (CONST&PUSH 12)                     ; FAIL-ACT
+105   (CALL 4 4)                          ; CERROR
+108   (JMP L469)
+111   L111
+111   (T&STORE 7)
+113   (LOAD&JMPIFNOT 13 L101)
+116   (JMP L464)
+119   L119
+119   (T&STORE 8)
+121   (LOAD&JMPIFNOT 13 L101)
+124   (JMP L464)
+127   L127
+127   (LOAD&JMPIF 13 L522)
+131   L131
+131   (CONST&PUSH 1)                      ; "without any special action"
+132   (CONST&PUSH 17)                     ; "Runout of MFORMAT string"
+133   (NIL&PUSH)
+134   (CONST&PUSH 12)                     ; FAIL-ACT
+135   (CALL 4 4)                          ; CERROR
+138   (JMP L524)
+141   L141
+141   (CONST&PUSH 1)                      ; "without any special action"
+142   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+143   (LOAD&PUSH 18)
+144   (LOAD&PUSH 21)
+145   (CALL2&PUSH 24)                     ; LISTIFY1
+147   (CONST&PUSH 12)                     ; FAIL-ACT
+148   (CALL 4 4)                          ; CERROR
+151   (JMP L178)
+153   L153
+153   (LOAD&JMPIFNOT 4 L165)
+156   (CONST&PUSH 21)                     ; (TEXT-STRING)
+157   (LOAD&PUSH 5)
+158   (CALLS2 73)                         ; NREVERSE
+160   (CONS&PUSH)
+161   (LOAD&CONS&STORE 5)
+163   (NIL&STORE 4)
+165   L165
+165   (CONST&PUSH 22)                     ; (TEXT-STRING)
+166   (LOAD&PUSH 13)
+167   (LOAD&PUSH 17)
+168   (CALLSR&JMPIF 1 45 L141)            ; =
+172   (LOAD&INC&STORE 13)
+174   (PUSH)
+175   (LOAD&PUSH 19)
+176   (CALL2 5)                           ; NARG1
+178   L178
+178   (PUSH)
+179   (CALL1&PUSH 25)                     ; EXPLODE
+181   (LOAD&PUSH 0)
+182   (JMP L194)
+184   L184
+184   (LOAD&PUSH 0)
+185   (LOAD&CAR&PUSH 1)
+187   (CONST&PUSH 0)                      ; 1
+188   (CALL2&PUSH 26)                     ; GETCHARN
+190   (CALLS1 168)                        ; RPLACA
+192   (LOAD&CDR&STORE 0)
+194   L194
+194   (LOAD&PUSH 0)
+195   (CALLS1&JMPIFNOT 146 L184)          ; ENDP
+198   (SKIP 1)
+200   (POP)
+201   (JMP L256)
+203   L203
+203   (CONST&PUSH 1)                      ; "without any special action"
+204   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+205   (LOAD&PUSH 18)
+206   (LOAD&PUSH 21)
+207   (CALL2&PUSH 24)                     ; LISTIFY1
+209   (CONST&PUSH 12)                     ; FAIL-ACT
+210   (CALL 4 4)                          ; CERROR
+213   (JMP L253)
+215   L215
+215   (LOAD&PUSH 0)
+216   (CONST&PUSH 20)                     ; #\S
+217   (CALLSR&JMPIF 1 7 L153)             ; CHAR=
+222   (LOAD&PUSH 0)
+223   (CONST&PUSH 27)                     ; #\A
+224   (CALLSR&JMPIFNOT 1 7 L274)          ; CHAR=
+228   (LOAD&JMPIFNOT 4 L240)
+231   (CONST&PUSH 21)                     ; (TEXT-STRING)
+232   (LOAD&PUSH 5)
+233   (CALLS2 73)                         ; NREVERSE
+235   (CONS&PUSH)
+236   (LOAD&CONS&STORE 5)
+238   (NIL&STORE 4)
+240   L240
+240   (CONST&PUSH 28)                     ; (TEXT-STRING)
+241   (LOAD&PUSH 13)
+242   (LOAD&PUSH 17)
+243   (CALLSR&JMPIF 1 45 L203)            ; =
+247   (LOAD&INC&STORE 13)
+249   (PUSH)
+250   (LOAD&PUSH 19)
+251   (CALL2 5)                           ; NARG1
+253   L253
+253   (PUSH)
+254   (CALL1 8)                           ; EXPLODEN
+256   L256
+256   (CONS&PUSH)
+257   (LOAD&CONS&STORE 5)
+259   (JMP L409)
+262   L262
+262   (CONST&PUSH 1)                      ; "without any special action"
+263   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+264   (LOAD&PUSH 17)
+265   (LOAD&PUSH 20)
+266   (CALL2&PUSH 24)                     ; LISTIFY1
+268   (CONST&PUSH 12)                     ; FAIL-ACT
+269   (CALL 4 4)                          ; CERROR
+272   (JMP L305)
+274   L274
+274   (LOAD&PUSH 0)
+275   (CONST&PUSH 29)                     ; #\M
+276   (CALLSR&JMPIFNOT 1 7 L385)          ; CHAR=
+281   (LOAD&JMPIFNOT 4 L293)
+284   (CONST&PUSH 21)                     ; (TEXT-STRING)
+285   (LOAD&PUSH 5)
+286   (CALLS2 73)                         ; NREVERSE
+288   (CONS&PUSH)
+289   (LOAD&CONS&STORE 5)
+291   (NIL&STORE 4)
+293   L293
+293   (LOAD&PUSH 12)
+294   (LOAD&PUSH 16)
+295   (CALLSR&JMPIF 1 45 L262)            ; =
+299   (LOAD&INC&STORE 12)
+301   (PUSH)
+302   (LOAD&PUSH 18)
+303   (CALL2 5)                           ; NARG1
+305   L305
+305   (PUSH)
+306   (LOAD&JMPIFNOT 8 L333)
+309   (LOAD 0)
+310   (JMPIFCONSP L333)
+312   (LOAD&PUSH 0)
+313   (CONST&PUSH 30)                     ; OP
+315   (PUSH-UNBOUND 1)
+317   (CALLS2&JMPIF 132 L321)             ; GET
+320   (LOAD 0)
+321   L321
+321   (STORE 0)
+322   (LOAD&JMPIFNOT 9 L336)
+325   L325
+325   (CONST&PUSH 31)                     ; (TEXT-STRING)
+327   (LOAD&PUSH 1)
+328   (CALL1 32)                          ; MSTRING
+330   (CONS)
+331   (JMP L339)
+333   L333
+333   (LOAD&JMPIF 9 L325)
+336   L336
+336   (T&STORE 4)
+338   (LOAD 0)
+339   L339
+339   (PUSH)
+340   (LOAD&CONS&STORE 6)
+342   (SKIP 1)
+344   (JMP L409)
+346   L346
+346   (T&STORE 1)
+348   (LOAD&JMPIFNOT 4 L360)
+351   (CONST&PUSH 21)                     ; (TEXT-STRING)
+352   (LOAD&PUSH 5)
+353   (CALLS2 73)                         ; NREVERSE
+355   (CONS&PUSH)
+356   (LOAD&CONS&STORE 5)
+358   (NIL&STORE 4)
+360   L360
+360   (LOAD&PUSH 11)
+361   (LOAD&PUSH 6)
+362   (LOAD&PUSH 5)
+363   (LOAD&PUSH 5)
+364   (LOAD&PUSH 5)
+365   (CALL 5 35)                         ; OUTPUT-TEXT*
+368   (NIL&STORE 5)
+370   (STORE 3)
+371   (STORE 2)
+372   (STORE 1)
+373   (JMP L409)
+375   L375
+375   (LOAD&JMPIF 5 L346)
+378   (LOAD&JMPIF 4 L346)
+381   (T&STORE 2)
+383   (JMP L409)
+385   L385
+385   (LOAD&PUSH 0)
+386   (CONST&PUSH 33)                     ; #\%
+388   (CALLSR&JMPIF 1 7 L375)             ; CHAR=
+392   (LOAD&PUSH 0)
+393   (CONST&PUSH 34)                     ; #\&
+395   (CALLSR&JMPIF 1 7 L375)             ; CHAR=
+399   (CONST&PUSH 1)                      ; "without any special action"
+400   (CONST&PUSH 36)                     ; "Unknown format op."
+402   (LOAD&PUSH 2)
+403   (CALL1&PUSH 37)                     ; ASCII
+405   (CONST&PUSH 12)                     ; FAIL-ACT
+406   (CALL 4 4)                          ; CERROR
+409   L409
+409   (CONST 9)                           ; 0
+410   (STORE 6)
+411   (NIL&STORE 7)
+413   (STORE 8)
+415   (LOAD&JMPIFNOT 13 L533)
+419   (JMP L84)
+422   L422
+422   (LOAD&PUSH 0)
+423   (CONST&PUSH 15)                     ; (#\Newline #\Return #\Space ...)
+424   (CALL2&JMPIF 16 L127)               ; ZL-MEMBER
+428   (LOAD&PUSH 0)
+429   (CONST&PUSH 18)                     ; #\0
+430   (CALLSR&JMPIF 1 9 L215)             ; CHAR<
+435   (LOAD&PUSH 0)
+436   (CONST&PUSH 19)                     ; #\9
+437   (CALLSR&JMPIF 1 10 L215)            ; CHAR>
+442   (LOAD&PUSH 0)
+443   (CALLS1&PUSH 40)                    ; CHAR-CODE
+445   (CONST&PUSH 38)                     ; 48
+447   (CALLSR&PUSH 1 54)                  ; -
+450   (CONST&PUSH 39)                     ; 10
+452   (LOAD&PUSH 8)
+453   (CALLSR&PUSH 2 55)                  ; *
+456   (CALLSR&STORE 2 53 6)               ; +
+460   (LOAD&JMPIFNOT 13 L101)
+464   L464
+464   (LOAD&CAR&PUSH 13)
+466   (LOAD&CDR&STORE 14)
+468   (POP)
+469   L469
+469   (STORE 0)
+470   (PUSH)
+471   (CONST&PUSH 13)                     ; #\@
+472   (CALLSR&JMPIF 1 7 L111)             ; CHAR=
+477   (LOAD&PUSH 0)
+478   (CONST&PUSH 14)                     ; #\:
+479   (CALLSR&JMPIF 1 7 L119)             ; CHAR=
+484   (LOAD&PUSH 0)
+485   (CONST&PUSH 10)                     ; #\~
+486   (CALLSR&JMPIFNOT 1 7 L422)          ; CHAR=
+491   L491
+491   (LOAD&PUSH 0)
+492   (LOAD&CONS&STORE 4)
+494   (LOAD&JMPIFNOT 13 L533)
+497   (JMP L84)
+500   L500
+500   (CONST&PUSH 1)                      ; "without any special action"
+501   (CONST&PUSH 40)                     ; "Extra mformat args"
+503   (LOAD&PUSH 17)
+504   (LOAD&PUSH 20)
+505   (CALL2&PUSH 24)                     ; LISTIFY1
+507   (CONST&PUSH 12)                     ; FAIL-ACT
+508   (CALL 4 4)                          ; CERROR
+511   (LOAD&JMPIFNOT 4 L551)
+514   (JMP L542)
+516   L516
+516   (LOAD&CDR&STORE 13)
+518   (LOAD&JMPIFNOT 13 L131)
+522   L522
+522   (LOAD 13)
+523   (CAR)
+524   L524
+524   (PUSH)
+525   (CONST&PUSH 15)                     ; (#\Newline #\Return #\Space ...)
+526   (CALL2&JMPIF 16 L516)               ; ZL-MEMBER
+529   (LOAD&JMPIF 13 L84)
+533   L533
+533   (LOAD&PUSH 12)
+534   (LOAD&PUSH 16)
+535   (CALLSR&JMPIFNOT 1 45 L500)         ; =
+539   (LOAD&JMPIFNOT 4 L551)
+542   L542
+542   (CONST&PUSH 21)                     ; (TEXT-STRING)
+543   (LOAD&PUSH 5)
+544   (CALLS2 73)                         ; NREVERSE
+546   (CONS&PUSH)
+547   (LOAD&CONS&STORE 5)
+549   (NIL&STORE 4)
+551   L551
+551   (LOAD&PUSH 11)
+552   (LOAD&PUSH 6)
+553   (LOAD&PUSH 5)
+554   (LOAD&PUSH 5)
+555   (LOAD&PUSH 5)
+556   (CALL 5 35)                         ; OUTPUT-TEXT*
+559   (SKIP 9)
+561   (LOAD&PUSH 2)
+562   (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+564   (UNWIND-PROTECT-NORMAL-EXIT)
+565   L565
+565   (LOADI&PUSH 0 0 0)
+569   (CALL1 41)                          ; CLOSE
+571   (UNWIND-PROTECT-CLOSE)
+572   (SKIP&RET 7)
+574   L574
+574   (T&STORE 7)
+576   (LOAD&JMPIFNOT 10 L57)
+580   (JMP L929)
+583   L583
+583   (T&STORE 8)
+585   (LOAD&JMPIFNOT 10 L57)
+589   (JMP L929)
+592   L592
+592   (LOAD&JMPIF 10 L987)
+596   L596
+596   (CONST&PUSH 1)                      ; "without any special action"
+597   (CONST&PUSH 17)                     ; "Runout of MFORMAT string"
+598   (NIL&PUSH)
+599   (CONST&PUSH 12)                     ; FAIL-ACT
+600   (CALL 4 4)                          ; CERROR
+603   (JMP L989)
+606   L606
+606   (CONST&PUSH 1)                      ; "without any special action"
+607   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+608   (LOAD&PUSH 15)
+609   (LOAD&PUSH 18)
+610   (CALL2&PUSH 24)                     ; LISTIFY1
+612   (CONST&PUSH 12)                     ; FAIL-ACT
+613   (CALL 4 4)                          ; CERROR
+616   (JMP L643)
+618   L618
+618   (LOAD&JMPIFNOT 4 L630)
+621   (CONST&PUSH 21)                     ; (TEXT-STRING)
+622   (LOAD&PUSH 5)
+623   (CALLS2 73)                         ; NREVERSE
+625   (CONS&PUSH)
+626   (LOAD&CONS&STORE 5)
+628   (NIL&STORE 4)
+630   L630
+630   (CONST&PUSH 22)                     ; (TEXT-STRING)
+631   (LOAD&PUSH 10)
+632   (LOAD&PUSH 14)
+633   (CALLSR&JMPIF 1 45 L606)            ; =
+637   (LOAD&INC&STORE 10)
+639   (PUSH)
+640   (LOAD&PUSH 16)
+641   (CALL2 5)                           ; NARG1
+643   L643
+643   (PUSH)
+644   (CALL1&PUSH 25)                     ; EXPLODE
+646   (LOAD&PUSH 0)
+647   (JMP L659)
+649   L649
+649   (LOAD&PUSH 0)
+650   (LOAD&CAR&PUSH 1)
+652   (CONST&PUSH 0)                      ; 1
+653   (CALL2&PUSH 26)                     ; GETCHARN
+655   (CALLS1 168)                        ; RPLACA
+657   (LOAD&CDR&STORE 0)
+659   L659
+659   (LOAD&PUSH 0)
+660   (CALLS1&JMPIFNOT 146 L649)          ; ENDP
+663   (SKIP 1)
+665   (POP)
+666   (JMP L721)
+668   L668
+668   (CONST&PUSH 1)                      ; "without any special action"
+669   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+670   (LOAD&PUSH 15)
+671   (LOAD&PUSH 18)
+672   (CALL2&PUSH 24)                     ; LISTIFY1
+674   (CONST&PUSH 12)                     ; FAIL-ACT
+675   (CALL 4 4)                          ; CERROR
+678   (JMP L718)
+680   L680
+680   (LOAD&PUSH 0)
+681   (CONST&PUSH 20)                     ; #\S
+682   (CALLSR&JMPIF 1 7 L618)             ; CHAR=
+687   (LOAD&PUSH 0)
+688   (CONST&PUSH 27)                     ; #\A
+689   (CALLSR&JMPIFNOT 1 7 L739)          ; CHAR=
+693   (LOAD&JMPIFNOT 4 L705)
+696   (CONST&PUSH 21)                     ; (TEXT-STRING)
+697   (LOAD&PUSH 5)
+698   (CALLS2 73)                         ; NREVERSE
+700   (CONS&PUSH)
+701   (LOAD&CONS&STORE 5)
+703   (NIL&STORE 4)
+705   L705
+705   (CONST&PUSH 28)                     ; (TEXT-STRING)
+706   (LOAD&PUSH 10)
+707   (LOAD&PUSH 14)
+708   (CALLSR&JMPIF 1 45 L668)            ; =
+712   (LOAD&INC&STORE 10)
+714   (PUSH)
+715   (LOAD&PUSH 16)
+716   (CALL2 5)                           ; NARG1
+718   L718
+718   (PUSH)
+719   (CALL1 8)                           ; EXPLODEN
+721   L721
+721   (CONS&PUSH)
+722   (LOAD&CONS&STORE 5)
+724   (JMP L874)
+727   L727
+727   (CONST&PUSH 1)                      ; "without any special action"
+728   (CONST&PUSH 23)                     ; "Ran out of mformat args"
+729   (LOAD&PUSH 14)
+730   (LOAD&PUSH 17)
+731   (CALL2&PUSH 24)                     ; LISTIFY1
+733   (CONST&PUSH 12)                     ; FAIL-ACT
+734   (CALL 4 4)                          ; CERROR
+737   (JMP L770)
+739   L739
+739   (LOAD&PUSH 0)
+740   (CONST&PUSH 29)                     ; #\M
+741   (CALLSR&JMPIFNOT 1 7 L850)          ; CHAR=
+746   (LOAD&JMPIFNOT 4 L758)
+749   (CONST&PUSH 21)                     ; (TEXT-STRING)
+750   (LOAD&PUSH 5)
+751   (CALLS2 73)                         ; NREVERSE
+753   (CONS&PUSH)
+754   (LOAD&CONS&STORE 5)
+756   (NIL&STORE 4)
+758   L758
+758   (LOAD&PUSH 9)
+759   (LOAD&PUSH 13)
+760   (CALLSR&JMPIF 1 45 L727)            ; =
+764   (LOAD&INC&STORE 9)
+766   (PUSH)
+767   (LOAD&PUSH 15)
+768   (CALL2 5)                           ; NARG1
+770   L770
+770   (PUSH)
+771   (LOAD&JMPIFNOT 8 L798)
+774   (LOAD 0)
+775   (JMPIFCONSP L798)
+777   (LOAD&PUSH 0)
+778   (CONST&PUSH 30)                     ; OP
+780   (PUSH-UNBOUND 1)
+782   (CALLS2&JMPIF 132 L786)             ; GET
+785   (LOAD 0)
+786   L786
+786   (STORE 0)
+787   (LOAD&JMPIFNOT 9 L801)
+790   L790
+790   (CONST&PUSH 31)                     ; (TEXT-STRING)
+792   (LOAD&PUSH 1)
+793   (CALL1 32)                          ; MSTRING
+795   (CONS)
+796   (JMP L804)
+798   L798
+798   (LOAD&JMPIF 9 L790)
+801   L801
+801   (T&STORE 4)
+803   (LOAD 0)
+804   L804
+804   (PUSH)
+805   (LOAD&CONS&STORE 6)
+807   (SKIP 1)
+809   (JMP L874)
+811   L811
+811   (T&STORE 1)
+813   (LOAD&JMPIFNOT 4 L825)
+816   (CONST&PUSH 21)                     ; (TEXT-STRING)
+817   (LOAD&PUSH 5)
+818   (CALLS2 73)                         ; NREVERSE
+820   (CONS&PUSH)
+821   (LOAD&CONS&STORE 5)
+823   (NIL&STORE 4)
+825   L825
+825   (LOAD&PUSH 11)
+826   (LOAD&PUSH 6)
+827   (LOAD&PUSH 5)
+828   (LOAD&PUSH 5)
+829   (LOAD&PUSH 5)
+830   (CALL 5 35)                         ; OUTPUT-TEXT*
+833   (NIL&STORE 5)
+835   (STORE 3)
+836   (STORE 2)
+837   (STORE 1)
+838   (JMP L874)
+840   L840
+840   (LOAD&JMPIF 5 L811)
+843   (LOAD&JMPIF 4 L811)
+846   (T&STORE 2)
+848   (JMP L874)
+850   L850
+850   (LOAD&PUSH 0)
+851   (CONST&PUSH 33)                     ; #\%
+853   (CALLSR&JMPIF 1 7 L840)             ; CHAR=
+857   (LOAD&PUSH 0)
+858   (CONST&PUSH 34)                     ; #\&
+860   (CALLSR&JMPIF 1 7 L840)             ; CHAR=
+864   (CONST&PUSH 1)                      ; "without any special action"
+865   (CONST&PUSH 36)                     ; "Unknown format op."
+867   (LOAD&PUSH 2)
+868   (CALL1&PUSH 37)                     ; ASCII
+870   (CONST&PUSH 12)                     ; FAIL-ACT
+871   (CALL 4 4)                          ; CERROR
+874   L874
+874   (CONST 9)                           ; 0
+875   (STORE 6)
+876   (NIL&STORE 7)
+878   (STORE 8)
+880   (LOAD&JMPIFNOT 10 L998)
+884   (JMP L40)
+887   L887
+887   (LOAD&PUSH 0)
+888   (CONST&PUSH 15)                     ; (#\Newline #\Return #\Space ...)
+889   (CALL2&JMPIF 16 L592)               ; ZL-MEMBER
+893   (LOAD&PUSH 0)
+894   (CONST&PUSH 18)                     ; #\0
+895   (CALLSR&JMPIF 1 9 L680)             ; CHAR<
+900   (LOAD&PUSH 0)
+901   (CONST&PUSH 19)                     ; #\9
+902   (CALLSR&JMPIF 1 10 L680)            ; CHAR>
+907   (LOAD&PUSH 0)
+908   (CALLS1&PUSH 40)                    ; CHAR-CODE
+910   (CONST&PUSH 38)                     ; 48
+912   (CALLSR&PUSH 1 54)                  ; -
+915   (CONST&PUSH 39)                     ; 10
+917   (LOAD&PUSH 8)
+918   (CALLSR&PUSH 2 55)                  ; *
+921   (CALLSR&STORE 2 53 6)               ; +
+925   (LOAD&JMPIFNOT 10 L57)
+929   L929
+929   (LOAD&CAR&PUSH 10)
+931   (LOAD&CDR&STORE 11)
+933   (POP)
+934   L934
+934   (STORE 0)
+935   (PUSH)
+936   (CONST&PUSH 13)                     ; #\@
+937   (CALLSR&JMPIF 1 7 L574)             ; CHAR=
+942   (LOAD&PUSH 0)
+943   (CONST&PUSH 14)                     ; #\:
+944   (CALLSR&JMPIF 1 7 L583)             ; CHAR=
+949   (LOAD&PUSH 0)
+950   (CONST&PUSH 10)                     ; #\~
+951   (CALLSR&JMPIFNOT 1 7 L887)          ; CHAR=
+956   L956
+956   (LOAD&PUSH 0)
+957   (LOAD&CONS&STORE 4)
+959   (LOAD&JMPIFNOT 10 L998)
+962   (JMP L40)
+965   L965
+965   (CONST&PUSH 1)                      ; "without any special action"
+966   (CONST&PUSH 40)                     ; "Extra mformat args"
+968   (LOAD&PUSH 14)
+969   (LOAD&PUSH 17)
+970   (CALL2&PUSH 24)                     ; LISTIFY1
+972   (CONST&PUSH 12)                     ; FAIL-ACT
+973   (CALL 4 4)                          ; CERROR
+976   (LOAD&JMPIFNOT 4 L1016)
+979   (JMP L1007)
+981   L981
+981   (LOAD&CDR&STORE 10)
+983   (LOAD&JMPIFNOT 10 L596)
+987   L987
+987   (LOAD 10)
+988   (CAR)
+989   L989
+989   (PUSH)
+990   (CONST&PUSH 15)                     ; (#\Newline #\Return #\Space ...)
+991   (CALL2&JMPIF 16 L981)               ; ZL-MEMBER
+994   (LOAD&JMPIF 10 L40)
+998   L998
+998   (LOAD&PUSH 9)
+999   (LOAD&PUSH 13)
+1000  (CALLSR&JMPIFNOT 1 45 L965)         ; =
+1004  (LOAD&JMPIFNOT 4 L1016)
+1007  L1007
+1007  (CONST&PUSH 21)                     ; (TEXT-STRING)
+1008  (LOAD&PUSH 5)
+1009  (CALLS2 73)                         ; NREVERSE
+1011  (CONS&PUSH)
+1012  (LOAD&CONS&STORE 5)
+1014  (NIL&STORE 4)
+1016  L1016
+1016  (LOAD&PUSH 11)
+1017  (LOAD&PUSH 6)
+1018  (LOAD&PUSH 5)
+1019  (LOAD&PUSH 5)
+1020  (LOAD&PUSH 5)
+1021  (CALL 5 35)                         ; OUTPUT-TEXT*
+1024  (NIL)
+1025  (SKIP&RET 15)
+
+
+Disassembly of function #:|(DEFUN OUTPUT-TEXT* (STREAM TEXT DISPLA-P ...) ...)-24|
+(CONST 0) = OUTPUT-TEXT*
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE OUTPUT-TEXT*>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OUTPUT-TEXT*
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; OUTPUT-TEXT*
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE OUTPUT-TEXT*>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; OUTPUT-TEXT*
+8     (SKIP&RET 1)
+
+
+Disassembly of function OUTPUT-TEXT*
+(CONST 0) = (MTEXT)
+(CONST 1) = DISPLAF
+(CONST 2) = TYO
+5 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+40 byte-code instructions:
+0     (LOAD&PUSH 4)
+1     (CALLS2&STORE 73 4)                 ; NREVERSE
+4     (LOAD&JMPIF 3 L45)
+7     (LOAD&JMPIF 2 L53)
+10    (LOAD&JMPIFNOT 4 L37)
+13    L13
+13    (LOAD&CAR&PUSH 4)
+15    (LOAD&CDR&STORE 5)
+17    (POP)
+18    (CDR&PUSH)
+19    (LOAD&JMPIFNOT 0 L32)
+22    L22
+22    (LOAD&CAR&PUSH 0)
+24    (LOAD&PUSH 7)
+25    (CALL2 2)                           ; TYO
+27    (LOAD&CDR&STORE 0)
+29    (LOAD&JMPIF 0 L22)
+32    L32
+32    (SKIP 1)
+34    (LOAD&JMPIF 4 L13)
+37    L37
+37    (LOAD 1)
+38    (JMPIFNOT1 L61)
+40    (LOAD&PUSH 5)
+41    (CALLS1 139)                        ; TERPRI
+43    (SKIP&RET 6)
+45    L45
+45    (CONST&PUSH 0)                      ; (MTEXT)
+46    (LOAD 5)
+47    (CONS&PUSH)
+48    (LOAD&PUSH 6)
+49    (CALL2 1)                           ; DISPLAF
+51    (SKIP&RET 6)
+53    L53
+53    (LOAD&PUSH 5)
+54    (CALLS1 139)                        ; TERPRI
+56    (LOAD&JMPIFNOT 4 L37)
+59    (JMP L13)
+61    L61
+61    (SKIP&RET 6)
+
+
+Disassembly of function #:|(DEFUN-PROP (TEXT-STRING DIMENSION) (FORM RESULT) ...)-25-2|
+(CONST 0) = 
+#<COMPILED-CLOSURE
+  #:|(DEFUN-PROP (TEXT-STRING DIMENSION) (FORM RESULT) ...)-25-2-1|>
+(CONST 1) = TEXT-STRING
+(CONST 2) = DIMENSION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE
+  #:|(DEFUN-PROP (TEXT-STRING DIMENSION) (FORM RESULT) ...)-25-2-1|>
+1     (CONST&PUSH 1)                      ; TEXT-STRING
+2     (CONST&PUSH 2)                      ; DIMENSION
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN-PROP (TEXT-STRING DIMENSION) (FORM RESULT) ...)-25-2-1|
+(CONST 0) = MAKNAM
+(CONST 1) = DIMENSION-ATOM
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CALL1&PUSH 0)                      ; MAKNAM
+4     (LOAD&PUSH 2)
+5     (CALL2 1)                           ; DIMENSION-ATOM
+7     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN DISPLAF (OBJECT STREAM) ...)-26|
+(CONST 0) = DISPLAF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DISPLAF>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISPLAF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DISPLAF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DISPLAF>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DISPLAF
+8     (SKIP&RET 1)
+
+
+Disassembly of function DISPLAF
+(CONST 0) = *STANDARD-OUTPUT*
+(CONST 1) = DISPLA
+(CONST 2) = ^R
+(CONST 3) = ^W
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*STANDARD-OUTPUT*)
+18 byte-code instructions:
+0     (LOAD&JMPIFNOT 1 L24)
+3     (LOAD&PUSH 1)
+4     (GETVALUE 0)                        ; *STANDARD-OUTPUT*
+6     (JMPIFEQ L24)
+8     (LOAD 1)
+9     (BIND 0)                            ; *STANDARD-OUTPUT*
+11    (T)
+12    (BIND 2)                            ; ^R
+14    (T)
+15    (BIND 3)                            ; ^W
+17    (LOAD&PUSH 11)
+18    (CALL1 1)                           ; DISPLA
+20    (UNBIND 3)
+22    (SKIP&RET 3)
+24    L24
+24    (LOAD&PUSH 2)
+25    (CALL1 1)                           ; DISPLA
+27    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN MTELL (&REST L) ...)-27|
+(CONST 0) = MTELL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MTELL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MTELL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MTELL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MTELL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MTELL
+8     (SKIP&RET 1)
+
+
+Disassembly of function MTELL
+(CONST 0) = MFORMAT
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&SYMBOL-FUNCTION&PUSH 0)      ; MFORMAT
+2     (NIL&PUSH)
+3     (LOAD 3)
+4     (APPLY&SKIP&RET 1 2)
+
+
+Wrote file binary-clisp/mformt.fas
+Wrote file /cygdrive/e/temp/maxima/src/mformt.lis

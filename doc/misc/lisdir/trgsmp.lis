@@ -1,0 +1,3455 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trgsmp.lisp
+on 2002-12-17 13:36:07 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trgsmp.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:NIL-2
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-3-1|
+(CONST 0) = (($MODEDECLARE) $BESTLENGTH $FIXNUM)
+(CONST 1) = MEVAL*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (($MODEDECLARE) $BESTLENGTH ...)
+1     (CALL1 1)                           ; MEVAL*
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-3-2|
+(CONST 0) = (($DECLARE) $BESTLENGTH $SPECIAL)
+(CONST 1) = MEVAL*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (($DECLARE) $BESTLENGTH $SPECIAL)
+1     (CALL1 1)                           ; MEVAL*
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-3-3|
+(CONST 0) = $BESTLENGTH
+(CONST 1) = ASSIGN
+(CONST 2) = ASSIGN-MODE-CHECK
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BESTLENGTH
+1     (CONST&PUSH 1)                      ; ASSIGN
+2     (CONST&PUSH 2)                      ; ASSIGN-MODE-CHECK
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-3-4-2|
+(CONST 0) = $BESTLENGTH
+(CONST 1) = 0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($BESTLENGTH)
+writes special variable : ($BESTLENGTH)
+12 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BESTLENGTH
+1     (CALLS1&JMPIFNOT 79 L10)            ; BOUNDP
+4     (GETVALUE&PUSH 0)                   ; $BESTLENGTH
+6     (CONST 0)                           ; $BESTLENGTH
+7     (EQ)
+8     (JMPIFNOT1 L15)
+10    L10
+10    (CONST 1)                           ; 0
+11    (SETVALUE 0)                        ; $BESTLENGTH
+13    (SKIP&RET 1)
+15    L15
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-4-1|
+(CONST 0) = (($MODEDECLARE) $TRYLENGTH $FIXNUM)
+(CONST 1) = MEVAL*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (($MODEDECLARE) $TRYLENGTH $FIXNUM)
+1     (CALL1 1)                           ; MEVAL*
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-4-2|
+(CONST 0) = (($DECLARE) $TRYLENGTH $SPECIAL)
+(CONST 1) = MEVAL*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (($DECLARE) $TRYLENGTH $SPECIAL)
+1     (CALL1 1)                           ; MEVAL*
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-4-3|
+(CONST 0) = $TRYLENGTH
+(CONST 1) = ASSIGN
+(CONST 2) = ASSIGN-MODE-CHECK
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRYLENGTH
+1     (CONST&PUSH 1)                      ; ASSIGN
+2     (CONST&PUSH 2)                      ; ASSIGN-MODE-CHECK
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (MEVAL* '#) ...)-4-4-2|
+(CONST 0) = $TRYLENGTH
+(CONST 1) = 0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($TRYLENGTH)
+writes special variable : ($TRYLENGTH)
+12 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRYLENGTH
+1     (CALLS1&JMPIFNOT 79 L10)            ; BOUNDP
+4     (GETVALUE&PUSH 0)                   ; $TRYLENGTH
+6     (CONST 0)                           ; $TRYLENGTH
+7     (EQ)
+8     (JMPIFNOT1 L15)
+10    L10
+10    (CONST 1)                           ; 0
+11    (SETVALUE 0)                        ; $TRYLENGTH
+13    (SKIP&RET 1)
+15    L15
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-1|
+(CONST 0) = (SPECIAL $ANS)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $ANS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-2|
+(CONST 0) = %SIN
+(CONST 1) = %COS
+(CONST 2) = $COMPLEMENT_FUNCTION
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SIN
+1     (CONST&PUSH 1)                      ; %COS
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_FUNCTION
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-3|
+(CONST 0) = %COS
+(CONST 1) = %SIN
+(CONST 2) = $COMPLEMENT_FUNCTION
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COS
+1     (CONST&PUSH 1)                      ; %SIN
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_FUNCTION
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-4|
+(CONST 0) = %SINH
+(CONST 1) = %COSH
+(CONST 2) = $COMPLEMENT_FUNCTION
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SINH
+1     (CONST&PUSH 1)                      ; %COSH
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_FUNCTION
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-5|
+(CONST 0) = %COSH
+(CONST 1) = %SINH
+(CONST 2) = $COMPLEMENT_FUNCTION
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COSH
+1     (CONST&PUSH 1)                      ; %SINH
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_FUNCTION
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-6|
+(CONST 0) = %COS
+(CONST 1) = 1
+(CONST 2) = $UNITCOF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COS
+1     (CONST&PUSH 1)                      ; 1
+2     (CONST&PUSH 2)                      ; $UNITCOF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-7|
+(CONST 0) = %SIN
+(CONST 1) = 1
+(CONST 2) = $UNITCOF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SIN
+1     (CONST&PUSH 1)                      ; 1
+2     (CONST&PUSH 2)                      ; $UNITCOF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-8|
+(CONST 0) = %COSH
+(CONST 1) = 1
+(CONST 2) = $UNITCOF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COSH
+1     (CONST&PUSH 1)                      ; 1
+2     (CONST&PUSH 2)                      ; $UNITCOF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-9|
+(CONST 0) = %SINH
+(CONST 1) = -1
+(CONST 2) = $UNITCOF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SINH
+1     (CONST&PUSH 1)                      ; -1
+2     (CONST&PUSH 2)                      ; $UNITCOF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-10|
+(CONST 0) = %COS
+(CONST 1) = -1
+(CONST 2) = $COMPLEMENT_COF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COS
+1     (CONST&PUSH 1)                      ; -1
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_COF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-11|
+(CONST 0) = %SIN
+(CONST 1) = -1
+(CONST 2) = $COMPLEMENT_COF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SIN
+1     (CONST&PUSH 1)                      ; -1
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_COF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-12|
+(CONST 0) = %COSH
+(CONST 1) = 1
+(CONST 2) = $COMPLEMENT_COF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COSH
+1     (CONST&PUSH 1)                      ; 1
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_COF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-13|
+(CONST 0) = %SINH
+(CONST 1) = 1
+(CONST 2) = $COMPLEMENT_COF
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SINH
+1     (CONST&PUSH 1)                      ; 1
+2     (CONST&PUSH 2)                      ; $COMPLEMENT_COF
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-14|
+(CONST 0) = %SIN
+(CONST 1) = $TRIGONOMETRIC
+(CONST 2) = $TYPE
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SIN
+1     (CONST&PUSH 1)                      ; $TRIGONOMETRIC
+2     (CONST&PUSH 2)                      ; $TYPE
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-15|
+(CONST 0) = %COS
+(CONST 1) = $TRIGONOMETRIC
+(CONST 2) = $TYPE
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COS
+1     (CONST&PUSH 1)                      ; $TRIGONOMETRIC
+2     (CONST&PUSH 2)                      ; $TYPE
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-16|
+(CONST 0) = %SINH
+(CONST 1) = $HYPER_TRIGONOMETRIC
+(CONST 2) = $TYPE
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %SINH
+1     (CONST&PUSH 1)                      ; $HYPER_TRIGONOMETRIC
+2     (CONST&PUSH 2)                      ; $TYPE
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (VALUES0)
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#) ...)-5-17|
+(CONST 0) = %COSH
+(CONST 1) = $HYPER_TRIGONOMETRIC
+(CONST 2) = $TYPE
+(CONST 3) = $PUT
+(CONST 4) = SIMPLIFY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %COSH
+1     (CONST&PUSH 1)                      ; $HYPER_TRIGONOMETRIC
+2     (CONST&PUSH 2)                      ; $TYPE
+3     (CALL&PUSH 3 3)                     ; $PUT
+6     (CALL1 4)                           ; SIMPLIFY
+8     (SKIP&RET 1)
+
+
+Disassembly of function #:NIL-6
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE LOAD EVAL) (MEVAL* '#))-7|
+(CONST 0) = (($DECLARE) $LIST2 $SPECIAL)
+(CONST 1) = MEVAL*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (($DECLARE) $LIST2 $SPECIAL)
+1     (CALL1 1)                           ; MEVAL*
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGONOMETRICP T ...) ...)-8-1|
+(CONST 0) = $TRIGONOMETRICP
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGONOMETRICP
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGONOMETRICP T ...) ...)-8-2|
+(CONST 0) = $TRIGONOMETRICP
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGONOMETRICP
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGONOMETRICP T ...) ...)-8-3-1|
+(CONST 0) = $TRIGONOMETRICP
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGONOMETRICP
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGONOMETRICP T ...) ...)-8-3-2|
+(CONST 0) = $TRIGONOMETRICP
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $BOOLEAN
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGONOMETRICP
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $BOOLEAN
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGONOMETRICP T ...) ...)-8-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $TRIGONOMETRICP
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $TRIGONOMETRICP
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGONOMETRICP T ...) ...)-8-3-5|
+(CONST 0) = $TRIGONOMETRICP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGONOMETRICP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGONOMETRICP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGONOMETRICP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGONOMETRICP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TRIGONOMETRICP
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGONOMETRICP
+(CONST 0) = 0
+(CONST 1) = $INPART
+(CONST 2) = SIMPLIFY
+(CONST 3) = $TYPE
+(CONST 4) = $GET
+(CONST 5) = $TRIGONOMETRIC
+(CONST 6) = LIKE
+(CONST 7) = ($PIECE '$PIECE)
+(CONST 8) = |TRD-MSYMEVAL-aux|
+(CONST 9) = $HYPER_TRIGONOMETRIC
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; 0
+2     (CALL2&PUSH 1)                      ; $INPART
+4     (CALL1&PUSH 2)                      ; SIMPLIFY
+6     (CONST&PUSH 3)                      ; $TYPE
+7     (CALL2&PUSH 4)                      ; $GET
+9     (CALL1&PUSH 2)                      ; SIMPLIFY
+11    (CONST&PUSH 5)                      ; $TRIGONOMETRIC
+12    (CALL2 6)                           ; LIKE
+14    (JMPIF1 L29)
+16    (CONST&PUSH 7)                      ; ($PIECE '$PIECE)
+17    (CALL1&PUSH 8)                      ; |TRD-MSYMEVAL-aux|
+19    (CONST&PUSH 3)                      ; $TYPE
+20    (CALL2&PUSH 4)                      ; $GET
+22    (CALL1&PUSH 2)                      ; SIMPLIFY
+24    (CONST&PUSH 9)                      ; $HYPER_TRIGONOMETRIC
+25    (CALL2 6)                           ; LIKE
+27    (SKIP&RET 2)
+29    L29
+29    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE0 # ...) ...)-9-1|
+(CONST 0) = $TRIGRULE0
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGRULE0>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE0
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGRULE0
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGRULE0>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGRULE0
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~1|
+(CONST 3) = |tr-gensym~2|
+(CONST 4) = KAR
+(CONST 5) = %TAN
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COS)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+(CONST 14) = (%SIN)
+(CONST 15) = MUL*
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~1|)
+writes special variables : ($A |tr-gensym~2| |tr-gensym~1|)
+42 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L66)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~1|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~2|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %TAN
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~1|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~2|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~1|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COS)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2&PUSH 13)                     ; POWER
+52    (CONST&PUSH 14)                     ; (%SIN)
+53    (GETVALUE&PUSH 1)                   ; $A
+55    (LIST&PUSH 2)
+57    (CALL1&PUSH 11)                     ; SIMPLIFY
+59    (CALL2 15)                          ; MUL*
+61    (UNBIND 3)
+63    (CATCH-CLOSE)
+64    (SKIP&RET 2)
+66    L66
+66    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE0 # ...) ...)-9-2|
+(CONST 0) = $TRIGRULE0
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE0
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE0 # ...) ...)-9-3|
+(CONST 0) = $TRIGRULE0
+(CONST 1) = 
+((MEQUAL) ((%TAN SIMP) $A)
+ ((MTIMES SIMP) ((MEXPT SIMP) ((%COS SIMP) $A) -1) ((%SIN SIMP) $A)))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE0
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # #))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE0 # ...) ...)-9-4|
+(CONST 0) = $TRIGRULE0
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE0
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE1 # ...) ...)-10-1|
+(CONST 0) = $TRIGRULE1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGRULE1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGRULE1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGRULE1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGRULE1
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~4|
+(CONST 3) = |tr-gensym~5|
+(CONST 4) = KAR
+(CONST 5) = %TAN
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COS)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+(CONST 14) = (%SIN)
+(CONST 15) = MUL*
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~4|)
+writes special variables : ($A |tr-gensym~5| |tr-gensym~4|)
+42 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L66)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~4|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~5|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %TAN
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~4|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~5|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~4|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COS)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2&PUSH 13)                     ; POWER
+52    (CONST&PUSH 14)                     ; (%SIN)
+53    (GETVALUE&PUSH 1)                   ; $A
+55    (LIST&PUSH 2)
+57    (CALL1&PUSH 11)                     ; SIMPLIFY
+59    (CALL2 15)                          ; MUL*
+61    (UNBIND 3)
+63    (CATCH-CLOSE)
+64    (SKIP&RET 2)
+66    L66
+66    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE1 # ...) ...)-10-2|
+(CONST 0) = $TRIGRULE1
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE1
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE1 # ...) ...)-10-3|
+(CONST 0) = $TRIGRULE1
+(CONST 1) = 
+((MEQUAL) ((%TAN SIMP) $A)
+ ((MTIMES SIMP) ((MEXPT SIMP) ((%COS SIMP) $A) -1) ((%SIN SIMP) $A)))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE1
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # #))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE1 # ...) ...)-10-4|
+(CONST 0) = $TRIGRULE1
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE1
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE2 # ...) ...)-11-1|
+(CONST 0) = $TRIGRULE2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGRULE2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGRULE2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGRULE2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGRULE2
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~7|
+(CONST 3) = |tr-gensym~8|
+(CONST 4) = KAR
+(CONST 5) = %SEC
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COS)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~7|)
+writes special variables : ($A |tr-gensym~8| |tr-gensym~7|)
+37 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L57)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~7|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~8|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %SEC
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~7|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~8|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~7|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COS)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2 13)                          ; POWER
+52    (UNBIND 3)
+54    (CATCH-CLOSE)
+55    (SKIP&RET 2)
+57    L57
+57    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE2 # ...) ...)-11-2|
+(CONST 0) = $TRIGRULE2
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE2
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE2 # ...) ...)-11-3|
+(CONST 0) = $TRIGRULE2
+(CONST 1) = ((MEQUAL) ((%SEC SIMP) $A) ((MEXPT SIMP) ((%COS SIMP) $A) -1))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE2
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # -1))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE2 # ...) ...)-11-4|
+(CONST 0) = $TRIGRULE2
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE2
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE3 # ...) ...)-12-1|
+(CONST 0) = $TRIGRULE3
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGRULE3>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE3
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGRULE3
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGRULE3>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGRULE3
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~10|
+(CONST 3) = |tr-gensym~11|
+(CONST 4) = KAR
+(CONST 5) = %CSC
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%SIN)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~10|)
+writes special variables : ($A |tr-gensym~11| |tr-gensym~10|)
+37 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L57)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~10|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~11|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %CSC
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~10|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~11|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~10|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%SIN)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2 13)                          ; POWER
+52    (UNBIND 3)
+54    (CATCH-CLOSE)
+55    (SKIP&RET 2)
+57    L57
+57    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE3 # ...) ...)-12-2|
+(CONST 0) = $TRIGRULE3
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE3
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE3 # ...) ...)-12-3|
+(CONST 0) = $TRIGRULE3
+(CONST 1) = ((MEQUAL) ((%CSC SIMP) $A) ((MEXPT SIMP) ((%SIN SIMP) $A) -1))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE3
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # -1))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE3 # ...) ...)-12-4|
+(CONST 0) = $TRIGRULE3
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE3
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE4 # ...) ...)-13-1|
+(CONST 0) = $TRIGRULE4
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGRULE4>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE4
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGRULE4
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGRULE4>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGRULE4
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~13|
+(CONST 3) = |tr-gensym~14|
+(CONST 4) = KAR
+(CONST 5) = %COT
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COS)
+(CONST 11) = SIMPLIFY
+(CONST 12) = (%SIN)
+(CONST 13) = -1
+(CONST 14) = POWER
+(CONST 15) = MUL*
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~13|)
+writes special variables : ($A |tr-gensym~14| |tr-gensym~13|)
+42 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L66)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~13|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~14|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %COT
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~13|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~14|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~13|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COS)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; (%SIN)
+50    (GETVALUE&PUSH 1)                   ; $A
+52    (LIST&PUSH 2)
+54    (CALL1&PUSH 11)                     ; SIMPLIFY
+56    (CONST&PUSH 13)                     ; -1
+57    (CALL2&PUSH 14)                     ; POWER
+59    (CALL2 15)                          ; MUL*
+61    (UNBIND 3)
+63    (CATCH-CLOSE)
+64    (SKIP&RET 2)
+66    L66
+66    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE4 # ...) ...)-13-2|
+(CONST 0) = $TRIGRULE4
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE4
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE4 # ...) ...)-13-3|
+(CONST 0) = $TRIGRULE4
+(CONST 1) = 
+((MEQUAL) ((%COT SIMP) $A)
+ ((MTIMES SIMP) ((%COS SIMP) $A) ((MEXPT SIMP) ((%SIN SIMP) $A) -1)))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE4
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # #))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $TRIGRULE4 # ...) ...)-13-4|
+(CONST 0) = $TRIGRULE4
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGRULE4
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE1 # ...) ...)-14-1|
+(CONST 0) = $HTRIGRULE1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $HTRIGRULE1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $HTRIGRULE1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $HTRIGRULE1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $HTRIGRULE1
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~16|
+(CONST 3) = |tr-gensym~17|
+(CONST 4) = KAR
+(CONST 5) = %TANH
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COSH)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+(CONST 14) = (%SINH)
+(CONST 15) = MUL*
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~16|)
+writes special variables : ($A |tr-gensym~17| |tr-gensym~16|)
+42 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L66)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~16|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~17|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %TANH
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~16|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~17|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~16|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COSH)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2&PUSH 13)                     ; POWER
+52    (CONST&PUSH 14)                     ; (%SINH)
+53    (GETVALUE&PUSH 1)                   ; $A
+55    (LIST&PUSH 2)
+57    (CALL1&PUSH 11)                     ; SIMPLIFY
+59    (CALL2 15)                          ; MUL*
+61    (UNBIND 3)
+63    (CATCH-CLOSE)
+64    (SKIP&RET 2)
+66    L66
+66    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE1 # ...) ...)-14-2|
+(CONST 0) = $HTRIGRULE1
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE1
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE1 # ...) ...)-14-3|
+(CONST 0) = $HTRIGRULE1
+(CONST 1) = 
+((MEQUAL) ((%TANH SIMP) $A)
+ ((MTIMES SIMP) ((MEXPT SIMP) ((%COSH SIMP) $A) -1) ((%SINH SIMP) $A)))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE1
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # #))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE1 # ...) ...)-14-4|
+(CONST 0) = $HTRIGRULE1
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE1
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE2 # ...) ...)-15-1|
+(CONST 0) = $HTRIGRULE2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $HTRIGRULE2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $HTRIGRULE2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $HTRIGRULE2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $HTRIGRULE2
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~19|
+(CONST 3) = |tr-gensym~20|
+(CONST 4) = KAR
+(CONST 5) = %SECH
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COSH)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~19|)
+writes special variables : ($A |tr-gensym~20| |tr-gensym~19|)
+37 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L57)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~19|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~20|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %SECH
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~19|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~20|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~19|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COSH)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2 13)                          ; POWER
+52    (UNBIND 3)
+54    (CATCH-CLOSE)
+55    (SKIP&RET 2)
+57    L57
+57    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE2 # ...) ...)-15-2|
+(CONST 0) = $HTRIGRULE2
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE2
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE2 # ...) ...)-15-3|
+(CONST 0) = $HTRIGRULE2
+(CONST 1) = ((MEQUAL) ((%SECH SIMP) $A) ((MEXPT SIMP) ((%COSH SIMP) $A) -1))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE2
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # -1))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE2 # ...) ...)-15-4|
+(CONST 0) = $HTRIGRULE2
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE2
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE3 # ...) ...)-16-1|
+(CONST 0) = $HTRIGRULE3
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $HTRIGRULE3>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE3
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $HTRIGRULE3
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $HTRIGRULE3>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $HTRIGRULE3
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~22|
+(CONST 3) = |tr-gensym~23|
+(CONST 4) = KAR
+(CONST 5) = %CSCH
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%SINH)
+(CONST 11) = SIMPLIFY
+(CONST 12) = -1
+(CONST 13) = POWER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~22|)
+writes special variables : ($A |tr-gensym~23| |tr-gensym~22|)
+37 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L57)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~22|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~23|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %CSCH
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~22|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~23|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~22|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%SINH)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; -1
+50    (CALL2 13)                          ; POWER
+52    (UNBIND 3)
+54    (CATCH-CLOSE)
+55    (SKIP&RET 2)
+57    L57
+57    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE3 # ...) ...)-16-2|
+(CONST 0) = $HTRIGRULE3
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE3
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE3 # ...) ...)-16-3|
+(CONST 0) = $HTRIGRULE3
+(CONST 1) = ((MEQUAL) ((%CSCH SIMP) $A) ((MEXPT SIMP) ((%SINH SIMP) $A) -1))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE3
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # -1))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE3 # ...) ...)-16-4|
+(CONST 0) = $HTRIGRULE3
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE3
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE4 # ...) ...)-17-1|
+(CONST 0) = $HTRIGRULE4
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $HTRIGRULE4>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE4
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $HTRIGRULE4
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $HTRIGRULE4>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function $HTRIGRULE4
+(CONST 0) = MATCH
+(CONST 1) = $A
+(CONST 2) = |tr-gensym~25|
+(CONST 3) = |tr-gensym~26|
+(CONST 4) = KAR
+(CONST 5) = %COTH
+(CONST 6) = MATCHERR
+(CONST 7) = KDR
+(CONST 8) = 1
+(CONST 9) = NTHKDR
+(CONST 10) = (%COSH)
+(CONST 11) = SIMPLIFY
+(CONST 12) = (%SINH)
+(CONST 13) = -1
+(CONST 14) = POWER
+(CONST 15) = MUL*
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($A |tr-gensym~25|)
+writes special variables : ($A |tr-gensym~26| |tr-gensym~25|)
+42 byte-code instructions:
+0     (CONST 0)                           ; MATCH
+1     (CATCH-OPEN L66)
+3     (NIL)
+4     (BIND 1)                            ; $A
+6     (NIL)
+7     (BIND 2)                            ; |tr-gensym~25|
+9     (NIL)
+10    (BIND 3)                            ; |tr-gensym~26|
+12    (LOAD&PUSH 13)
+13    (CALL1&PUSH 4)                      ; KAR
+15    (CALL1&PUSH 4)                      ; KAR
+17    (JMPIFEQTO 5 L22)                   ; %COTH
+20    (CALL0 6)                           ; MATCHERR
+22    L22
+22    (LOAD&PUSH 13)
+23    (CALL1 7)                           ; KDR
+25    (SETVALUE 2)                        ; |tr-gensym~25|
+27    (PUSH)
+28    (CALL1 4)                           ; KAR
+30    (SETVALUE 3)                        ; |tr-gensym~26|
+32    (SETVALUE 1)                        ; $A
+34    (GETVALUE&PUSH 2)                   ; |tr-gensym~25|
+36    (CONST&PUSH 8)                      ; 1
+37    (CALL2&JMPIFNOT 9 L42)              ; NTHKDR
+40    (CALL0 6)                           ; MATCHERR
+42    L42
+42    (CONST&PUSH 10)                     ; (%COSH)
+43    (GETVALUE&PUSH 1)                   ; $A
+45    (LIST&PUSH 2)
+47    (CALL1&PUSH 11)                     ; SIMPLIFY
+49    (CONST&PUSH 12)                     ; (%SINH)
+50    (GETVALUE&PUSH 1)                   ; $A
+52    (LIST&PUSH 2)
+54    (CALL1&PUSH 11)                     ; SIMPLIFY
+56    (CONST&PUSH 13)                     ; -1
+57    (CALL2&PUSH 14)                     ; POWER
+59    (CALL2 15)                          ; MUL*
+61    (UNBIND 3)
+63    (CATCH-CLOSE)
+64    (SKIP&RET 2)
+66    L66
+66    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE4 # ...) ...)-17-2|
+(CONST 0) = $HTRIGRULE4
+(CONST 1) = $RULES
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($RULES)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE4
+1     (GETVALUE&PUSH 1)                   ; $RULES
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE4 # ...) ...)-17-3|
+(CONST 0) = $HTRIGRULE4
+(CONST 1) = 
+((MEQUAL) ((%COTH SIMP) $A)
+ ((MTIMES SIMP) ((%COSH SIMP) $A) ((MEXPT SIMP) ((%SINH SIMP) $A) -1)))
+(CONST 2) = $RULE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE4
+1     (CONST&PUSH 1)                      ; ((MEQUAL) (# $A) (# # #))
+2     (CONST&PUSH 2)                      ; $RULE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFUN $HTRIGRULE4 # ...) ...)-17-4|
+(CONST 0) = $HTRIGRULE4
+(CONST 1) = $DEFRULE
+(CONST 2) = $RULETYPE
+(CONST 3) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $HTRIGRULE4
+1     (CONST&PUSH 1)                      ; $DEFRULE
+2     (CONST&PUSH 2)                      ; $RULETYPE
+3     (CALL 3 3)                          ; MPUTPROP
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP T ...) ...)-18-1|
+(CONST 0) = $TRIGSIMP
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP T ...) ...)-18-2|
+(CONST 0) = $TRIGSIMP
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP T ...) ...)-18-3-1|
+(CONST 0) = $TRIGSIMP
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP T ...) ...)-18-3-2|
+(CONST 0) = $TRIGSIMP
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP T ...) ...)-18-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $TRIGSIMP
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $TRIGSIMP
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP T ...) ...)-18-3-5|
+(CONST 0) = $TRIGSIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGSIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGSIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGSIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TRIGSIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGSIMP
+(CONST 0) = $X
+(CONST 1) = 
+($TRIGRULE1 $TRIGRULE2 $TRIGRULE3 $TRIGRULE4 $HTRIGRULE1 $HTRIGRULE2
+ $HTRIGRULE3 $HTRIGRULE4)
+(CONST 2) = 0
+(CONST 3) = APPLY1
+(CONST 4) = $RADCAN
+(CONST 5) = SIMPLIFY
+(CONST 6) = $TRIGSIMP3
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($X)
+23 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; $X
+3     (GETVALUE&PUSH 0)                   ; $X
+5     (CONST&PUSH 1)                      ; ($TRIGRULE1 $TRIGRULE2 ...)
+6     (LOAD&JMPIFNOT 0 L23)
+9     L9
+9     (LOAD&PUSH 1)
+10    (LOAD&CAR&PUSH 1)
+12    (CONST&PUSH 2)                      ; 0
+13    (CALL&PUSH 3 3)                     ; APPLY1
+16    (LOAD&CDR&STORE 1)
+18    (POP&STORE 1)
+20    (LOAD&JMPIF 0 L9)
+23    L23
+23    (LOAD 1)
+24    (SKIP 1)
+26    (STORE 0)
+27    (CALL1&PUSH 4)                      ; $RADCAN
+29    (CALL1&PUSH 5)                      ; SIMPLIFY
+31    (CALL1&PUSH 6)                      ; $TRIGSIMP3
+33    (CALL1 5)                           ; SIMPLIFY
+35    (UNBIND1)
+36    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP3 T ...) ...)-19-1|
+(CONST 0) = $TRIGSIMP3
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP3
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP3 T ...) ...)-19-2|
+(CONST 0) = $TRIGSIMP3
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP3
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP3 T ...) ...)-19-3-1|
+(CONST 0) = $TRIGSIMP3
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP3
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP3 T ...) ...)-19-3-2|
+(CONST 0) = $TRIGSIMP3
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP3
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP3 T ...) ...)-19-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $TRIGSIMP3
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $TRIGSIMP3
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP3 T ...) ...)-19-3-5|
+(CONST 0) = $TRIGSIMP3
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGSIMP3>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP3
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGSIMP3
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGSIMP3>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TRIGSIMP3
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGSIMP3
+(CONST 0) = $TOTALDISREP
+(CONST 1) = SIMPLIFY
+(CONST 2) = $NUM
+(CONST 3) = $TRIGSIMP1
+(CONST 4) = $DENOM
+(CONST 5) = DIV
+(CONST 6) = $RATSIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; $TOTALDISREP
+3     (CALL1 1)                           ; SIMPLIFY
+5     (STORE 1)
+6     (PUSH)
+7     (CALL1&PUSH 2)                      ; $NUM
+9     (CALL1&PUSH 3)                      ; $TRIGSIMP1
+11    (CALL1&PUSH 1)                      ; SIMPLIFY
+13    (LOAD&PUSH 2)
+14    (CALL1&PUSH 4)                      ; $DENOM
+16    (CALL1&PUSH 3)                      ; $TRIGSIMP1
+18    (CALL1&PUSH 1)                      ; SIMPLIFY
+20    (CALL2&PUSH 5)                      ; DIV
+22    (CALL1&PUSH 6)                      ; $RATSIMP
+24    (CALL1 1)                           ; SIMPLIFY
+26    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP1 T ...) ...)-20-1|
+(CONST 0) = $TRIGSIMP1
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP1
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP1 T ...) ...)-20-2|
+(CONST 0) = $TRIGSIMP1
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP1
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP1 T ...) ...)-20-3-1|
+(CONST 0) = $TRIGSIMP1
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP1
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP1 T ...) ...)-20-3-2|
+(CONST 0) = $TRIGSIMP1
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP1
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP1 T ...) ...)-20-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $TRIGSIMP1
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $TRIGSIMP1
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $TRIGSIMP1 T ...) ...)-20-3-5|
+(CONST 0) = $TRIGSIMP1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TRIGSIMP1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TRIGSIMP1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TRIGSIMP1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TRIGSIMP1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TRIGSIMP1
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TRIGSIMP1
+(CONST 0) = $LISTOFTRIGSQ
+(CONST 1) = 0
+(CONST 2) = $BESTLENGTH
+(CONST 3) = $TRYLENGTH
+(CONST 4) = ASSIGN-MODE-CHECK
+(CONST 5) = SIMPLIFY
+(CONST 6) = 999999
+(CONST 7) = ((MLIST))
+(CONST 8) = LIKE
+(CONST 9) = $IMPROVE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($BESTLENGTH $TRYLENGTH)
+writes special variable : ($BESTLENGTH)
+34 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+1     (CONST 1)                           ; 0
+2     (BIND 2)                            ; $BESTLENGTH
+4     (CONST 1)                           ; 0
+5     (BIND 3)                            ; $TRYLENGTH
+7     (CONST&PUSH 3)                      ; $TRYLENGTH
+8     (GETVALUE&PUSH 3)                   ; $TRYLENGTH
+10    (CALL2 4)                           ; ASSIGN-MODE-CHECK
+12    (CONST&PUSH 2)                      ; $BESTLENGTH
+13    (GETVALUE&PUSH 2)                   ; $BESTLENGTH
+15    (CALL2 4)                           ; ASSIGN-MODE-CHECK
+17    (LOAD&PUSH 8)
+18    (CALL1&PUSH 0)                      ; $LISTOFTRIGSQ
+20    (CALL1 5)                           ; SIMPLIFY
+22    (STORE 6)
+23    (CONST&PUSH 2)                      ; $BESTLENGTH
+24    (CONST&PUSH 6)                      ; 999999
+25    (CALL2 4)                           ; ASSIGN-MODE-CHECK
+27    (CONST 6)                           ; 999999
+28    (SETVALUE 2)                        ; $BESTLENGTH
+30    (LOAD&PUSH 6)
+31    (CONST&PUSH 7)                      ; ((MLIST))
+32    (CALL2&JMPIFNOT 8 L40)              ; LIKE
+35    (LOAD 8)
+36    L36
+36    (UNBIND 2)
+38    (SKIP&RET 3)
+40    L40
+40    (LOAD&PUSH 8)
+41    (LOAD&PUSH 9)
+42    (LOAD&PUSH 8)
+43    (CALL&PUSH 3 9)                     ; $IMPROVE
+46    (CALL1 5)                           ; SIMPLIFY
+48    (JMP L36)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $IMPROVE T ...) ...)-21-1|
+(CONST 0) = $IMPROVE
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $IMPROVE
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $IMPROVE T ...) ...)-21-2|
+(CONST 0) = $IMPROVE
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $IMPROVE
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $IMPROVE T ...) ...)-21-3-1|
+(CONST 0) = $IMPROVE
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $IMPROVE
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $IMPROVE T ...) ...)-21-3-2|
+(CONST 0) = $IMPROVE
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $IMPROVE
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $IMPROVE T ...) ...)-21-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $IMPROVE
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $IMPROVE
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $IMPROVE T ...) ...)-21-3-5|
+(CONST 0) = $IMPROVE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $IMPROVE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $IMPROVE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $IMPROVE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $IMPROVE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $IMPROVE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $IMPROVE
+(CONST 0) = ((MLIST))
+(CONST 1) = LIKE
+(CONST 2) = $EXPNLENGTH
+(CONST 3) = $TRYLENGTH
+(CONST 4) = ASSIGN-MODE-CHECK
+(CONST 5) = ($BESTLENGTH 0)
+(CONST 6) = |TRD-MSYMEVAL-aux|
+(CONST 7) = ($TRYLENGTH 0)
+(CONST 8) = $BESTLENGTH
+(CONST 9) = $REST
+(CONST 10) = SIMPLIFY
+(CONST 11) = $FIRST
+(CONST 12) = 0
+(CONST 13) = $INPART
+(CONST 14) = $UNITCOF
+(CONST 15) = $GET
+(CONST 16) = ($PIECE '$PIECE)
+(CONST 17) = $COMPLEMENT_COF
+(CONST 18) = ($PIECE '$PIECE)
+(CONST 19) = $COMPLEMENT_FUNCTION
+(CONST 20) = (($GET) $PIECE ((MQUOTE) $COMPLEMENT_FUNCTION))
+(CONST 21) = MAPPLY
+(CONST 22) = 2
+(CONST 23) = POWER
+(CONST 24) = MUL*
+(CONST 25) = ADD*
+(CONST 26) = $RATSUBST
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variables : ($TRYLENGTH $BESTLENGTH)
+92 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; ((MLIST))
+2     (CALL2&JMPIF 1 L126)                ; LIKE
+6     (LOAD&PUSH 3)
+7     (LOAD&PUSH 3)
+8     (LOAD&PUSH 3)
+9     (CALL1&PUSH 9)                      ; $REST
+11    (CALL1&PUSH 10)                     ; SIMPLIFY
+13    (JSR&PUSH L0)
+15    (CALL1 10)                          ; SIMPLIFY
+17    (STORE 2)
+18    (NIL&PUSH)
+19    (LOAD&PUSH 2)
+20    (CALL1&PUSH 11)                     ; $FIRST
+22    (CALL1 10)                          ; SIMPLIFY
+24    (CDR&PUSH)
+25    (LOAD&JMPIFNOT 0 L107)
+29    L29
+29    (LOAD&CAR&STORE 0 1)
+32    (LOAD&PUSH 4)
+33    (LOAD&PUSH 2)
+34    (CONST&PUSH 12)                     ; 0
+35    (CALL2&PUSH 13)                     ; $INPART
+37    (CALL1&PUSH 10)                     ; SIMPLIFY
+39    (CONST&PUSH 14)                     ; $UNITCOF
+40    (CALL2&PUSH 15)                     ; $GET
+42    (CALL1&PUSH 10)                     ; SIMPLIFY
+44    (CONST&PUSH 16)                     ; ($PIECE '$PIECE)
+45    (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+47    (CONST&PUSH 17)                     ; $COMPLEMENT_COF
+48    (CALL2&PUSH 15)                     ; $GET
+50    (CALL1&PUSH 10)                     ; SIMPLIFY
+52    (CONST&PUSH 18)                     ; ($PIECE '$PIECE)
+53    (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+55    (CONST&PUSH 19)                     ; $COMPLEMENT_FUNCTION
+56    (CALL2&PUSH 15)                     ; $GET
+58    (CALL1&PUSH 10)                     ; SIMPLIFY
+60    (LOAD&PUSH 5)
+61    (CALL1&PUSH 11)                     ; $FIRST
+63    (CALL1&PUSH 10)                     ; SIMPLIFY
+65    (LIST&PUSH 1)
+67    (CONST&PUSH 20)                     ; (($GET) $PIECE ...)
+68    (CALL&PUSH 3 21)                    ; MAPPLY
+71    (CALL1&PUSH 10)                     ; SIMPLIFY
+73    (CONST&PUSH 22)                     ; 2
+74    (CALL2&PUSH 23)                     ; POWER
+76    (CALL2&PUSH 24)                     ; MUL*
+78    (CALL2&PUSH 25)                     ; ADD*
+80    (LOAD&PUSH 3)
+81    (CONST&PUSH 22)                     ; 2
+82    (CALL2&PUSH 23)                     ; POWER
+84    (LOAD&PUSH 7)
+85    (CALL&PUSH 3 26)                    ; $RATSUBST
+88    (CALL1&PUSH 10)                     ; SIMPLIFY
+90    (LOAD&PUSH 5)
+91    (CALL1&PUSH 9)                      ; $REST
+93    (CALL1&PUSH 10)                     ; SIMPLIFY
+95    (JSR&PUSH L0)
+98    (CALL1 10)                          ; SIMPLIFY
+100   (STORE 4)
+101   (LOAD&CDR&STORE 0)
+103   (LOAD&JMPIF 0 L29)
+107   L107
+107   (SKIP 2)
+109   L109
+109   (LOAD 2)
+110   (SKIP&RET 4)
+112   L112
+112   (CONST&PUSH 7)                      ; ($TRYLENGTH 0)
+113   (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+115   (CONST&PUSH 8)                      ; $BESTLENGTH
+116   (LOAD&PUSH 1)
+117   (CALL2 4)                           ; ASSIGN-MODE-CHECK
+119   (LOAD 0)
+120   (SETVALUE 8)                        ; $BESTLENGTH
+122   (SKIP 1)
+124   (JMP L109)
+126   L126
+126   (LOAD&PUSH 2)
+127   (CALL1&PUSH 2)                      ; $EXPNLENGTH
+129   (CONST&PUSH 3)                      ; $TRYLENGTH
+130   (LOAD&PUSH 1)
+131   (CALL2 4)                           ; ASSIGN-MODE-CHECK
+133   (LOAD 0)
+134   (SETVALUE 3)                        ; $TRYLENGTH
+136   (STORE 0)
+137   (CONST&PUSH 5)                      ; ($BESTLENGTH 0)
+138   (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+140   (CALLSR&JMPIF 1 47 L112)            ; <
+144   (LOAD 3)
+145   (SKIP&RET 4)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $LISTOFTRIGSQ T ...) ...)-22-1|
+(CONST 0) = $LISTOFTRIGSQ
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $LISTOFTRIGSQ T ...) ...)-22-2|
+(CONST 0) = $LISTOFTRIGSQ
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $LISTOFTRIGSQ T ...) ...)-22-3-1|
+(CONST 0) = $LISTOFTRIGSQ
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $LISTOFTRIGSQ T ...) ...)-22-3-2|
+(CONST 0) = $LISTOFTRIGSQ
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $LISTOFTRIGSQ T ...) ...)-22-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $LISTOFTRIGSQ
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $LISTOFTRIGSQ
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $LISTOFTRIGSQ T ...) ...)-22-3-5|
+(CONST 0) = $LISTOFTRIGSQ
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $LISTOFTRIGSQ>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $LISTOFTRIGSQ
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $LISTOFTRIGSQ>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $LISTOFTRIGSQ
+8     (SKIP&RET 1)
+
+
+Disassembly of function $LISTOFTRIGSQ
+(CONST 0) = $ATOM
+(CONST 1) = ((MLIST))
+(CONST 2) = $INFLAG
+(CONST 3) = ((MLIST))
+(CONST 4) = $ANS
+(CONST 5) = 0
+(CONST 6) = $INPART
+(CONST 7) = SIMPLIFY
+(CONST 8) = &^
+(CONST 9) = LIKE
+(CONST 10) = 2
+(CONST 11) = $INTEGERP
+(CONST 12) = ($PIECE '$PIECE)
+(CONST 13) = |TRD-MSYMEVAL-aux|
+(CONST 14) = MLSP
+(CONST 15) = IS-BOOLE-CHECK
+(CONST 16) = 1
+(CONST 17) = ((MLIST))
+(CONST 18) = $TRIGONOMETRICP
+(CONST 19) = (MLIST)
+(CONST 20) = (MLIST)
+(CONST 21) = ($ANS '$ANS)
+(CONST 22) = $SPECIALUNION
+(CONST 23) = ($ANS '$ANS)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variables : ($ANS $INFLAG)
+70 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 1)
+1     (CALL1&JMPIF 0 L95)                 ; $ATOM
+5     (CONST 2)                           ; $INFLAG
+6     (BIND 2)                            ; $INFLAG
+8     (CONST 3)                           ; ((MLIST))
+9     (BIND 4)                            ; $ANS
+11    (LOAD&PUSH 7)
+12    (CONST&PUSH 5)                      ; 0
+13    (CALL2&PUSH 6)                      ; $INPART
+15    (CALL1&PUSH 7)                      ; SIMPLIFY
+17    (CONST&PUSH 8)                      ; &^
+18    (CALL2&JMPIFNOT 9 L54)              ; LIKE
+21    (LOAD&PUSH 7)
+22    (CONST&PUSH 10)                     ; 2
+23    (CALL2&PUSH 6)                      ; $INPART
+25    (CALL1&PUSH 7)                      ; SIMPLIFY
+27    (CALL1&JMPIFNOT 11 L54)             ; $INTEGERP
+30    (CONST&PUSH 12)                     ; ($PIECE '$PIECE)
+31    (CALL1&PUSH 13)                     ; |TRD-MSYMEVAL-aux|
+33    (CONST&PUSH 10)                     ; 2
+34    (CALL2&PUSH 14)                     ; MLSP
+36    (CALL1&JMPIF 15 L54)                ; IS-BOOLE-CHECK
+39    (LOAD&PUSH 7)
+40    (CONST&PUSH 16)                     ; 1
+41    (CALL2&PUSH 6)                      ; $INPART
+43    (CALL1 7)                           ; SIMPLIFY
+45    (STORE 7)
+46    (PUSH)
+47    (CALL1&JMPIF 0 L98)                 ; $ATOM
+50    (LOAD&PUSH 7)
+51    (CALL1&JMPIF 18 L101)               ; $TRIGONOMETRICP
+54    L54
+54    (T)
+55    (SETVALUE 2)                        ; $INFLAG
+57    (NIL&PUSH)
+58    (LOAD&CDR&PUSH 8)
+60    (LOAD&JMPIFNOT 0 L86)
+63    L63
+63    (LOAD&CAR&STORE 0 1)
+66    (PUSH)
+67    (JSR&PUSH L0)
+70    (CALL1&PUSH 7)                      ; SIMPLIFY
+72    (CONST&PUSH 21)                     ; ($ANS '$ANS)
+73    (CALL1&PUSH 13)                     ; |TRD-MSYMEVAL-aux|
+75    (CALL2&PUSH 22)                     ; $SPECIALUNION
+77    (CALL1 7)                           ; SIMPLIFY
+79    (SETVALUE 4)                        ; $ANS
+81    (LOAD&CDR&STORE 0)
+83    (LOAD&JMPIF 0 L63)
+86    L86
+86    (SKIP 2)
+88    (CONST&PUSH 23)                     ; ($ANS '$ANS)
+89    (CALL1 13)                          ; |TRD-MSYMEVAL-aux|
+91    L91
+91    (UNBIND 2)
+93    (SKIP&RET 2)
+95    L95
+95    (CONST 1)                           ; ((MLIST))
+96    (SKIP&RET 2)
+98    L98
+98    (CONST 17)                          ; ((MLIST))
+99    (JMP L91)
+101   L101
+101   (CONST&PUSH 19)                     ; (MLIST)
+102   (CONST&PUSH 20)                     ; (MLIST)
+103   (LOAD&PUSH 9)
+104   (LIST&PUSH 2)
+106   (LIST 2)
+108   (JMP L91)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $SPECIALUNION T ...) ...)-23-1|
+(CONST 0) = $SPECIALUNION
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SPECIALUNION
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $SPECIALUNION T ...) ...)-23-2|
+(CONST 0) = $SPECIALUNION
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SPECIALUNION
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $SPECIALUNION T ...) ...)-23-3-1|
+(CONST 0) = $SPECIALUNION
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SPECIALUNION
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $SPECIALUNION T ...) ...)-23-3-2|
+(CONST 0) = $SPECIALUNION
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SPECIALUNION
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $SPECIALUNION T ...) ...)-23-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $SPECIALUNION
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $SPECIALUNION
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $SPECIALUNION T ...) ...)-23-3-5|
+(CONST 0) = $SPECIALUNION
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $SPECIALUNION>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SPECIALUNION
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $SPECIALUNION
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $SPECIALUNION>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $SPECIALUNION
+8     (SKIP&RET 1)
+
+
+Disassembly of function $SPECIALUNION
+(CONST 0) = $LIST2
+(CONST 1) = ((MLIST))
+(CONST 2) = LIKE
+(CONST 3) = ($LIST2 '$LIST2)
+(CONST 4) = |TRD-MSYMEVAL-aux|
+(CONST 5) = ($LIST2 '$LIST2)
+(CONST 6) = ((MLIST))
+(CONST 7) = $FIRST
+(CONST 8) = SIMPLIFY
+(CONST 9) = 0
+(CONST 10) = $INPART
+(CONST 11) = $COMPLEMENT_FUNCTION
+(CONST 12) = $GET
+(CONST 13) = $UPDATE
+(CONST 14) = $REST
+(CONST 15) = ($LIST2 '$LIST2)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : ($LIST2)
+51 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; $LIST2
+3     (LOAD&PUSH 5)
+4     (CONST&PUSH 1)                      ; ((MLIST))
+5     (CALL2&JMPIF 2 L71)                 ; LIKE
+8     (CONST&PUSH 5)                      ; ($LIST2 '$LIST2)
+9     (CALL1&PUSH 4)                      ; |TRD-MSYMEVAL-aux|
+11    (CONST&PUSH 6)                      ; ((MLIST))
+12    (CALL2&JMPIF 2 L76)                 ; LIKE
+15    (LOAD&PUSH 5)
+16    (CALL1&PUSH 7)                      ; $FIRST
+18    (CALL1&PUSH 8)                      ; SIMPLIFY
+20    (NIL&PUSH)
+21    (LOAD&CDR&PUSH 1)
+23    (LOAD&JMPIFNOT 0 L52)
+26    L26
+26    (LOAD&CAR&STORE 0 1)
+29    (PUSH)
+30    (LOAD&PUSH 2)
+31    (CONST&PUSH 9)                      ; 0
+32    (CALL2&PUSH 10)                     ; $INPART
+34    (CALL1&PUSH 8)                      ; SIMPLIFY
+36    (CONST&PUSH 11)                     ; $COMPLEMENT_FUNCTION
+37    (CALL2&PUSH 12)                     ; $GET
+39    (CALL1&PUSH 8)                      ; SIMPLIFY
+41    (CALL2&PUSH 13)                     ; $UPDATE
+43    (CALL1 8)                           ; SIMPLIFY
+45    (SETVALUE 0)                        ; $LIST2
+47    (LOAD&CDR&STORE 0)
+49    (LOAD&JMPIF 0 L26)
+52    L52
+52    (SKIP 2)
+54    (LOAD&PUSH 6)
+55    (CALL1&PUSH 14)                     ; $REST
+57    (CALL1&PUSH 8)                      ; SIMPLIFY
+59    (CONST&PUSH 15)                     ; ($LIST2 '$LIST2)
+60    (CALL1&PUSH 4)                      ; |TRD-MSYMEVAL-aux|
+62    (JSR&PUSH L0)
+64    (CALL1 8)                           ; SIMPLIFY
+66    (SKIP 1)
+68    L68
+68    (UNBIND1)
+69    (SKIP&RET 3)
+71    L71
+71    (CONST&PUSH 3)                      ; ($LIST2 '$LIST2)
+72    (CALL1 4)                           ; |TRD-MSYMEVAL-aux|
+74    (JMP L68)
+76    L76
+76    (LOAD 5)
+77    (JMP L68)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $UPDATE T ...) ...)-24-1|
+(CONST 0) = $UPDATE
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $UPDATE
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $UPDATE T ...) ...)-24-2|
+(CONST 0) = $UPDATE
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $UPDATE
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $UPDATE T ...) ...)-24-3-1|
+(CONST 0) = $UPDATE
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $UPDATE
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $UPDATE T ...) ...)-24-3-2|
+(CONST 0) = $UPDATE
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $UPDATE
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $UPDATE T ...) ...)-24-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $UPDATE
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $UPDATE
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $UPDATE T ...) ...)-24-3-5|
+(CONST 0) = $UPDATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $UPDATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $UPDATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $UPDATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $UPDATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $UPDATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $UPDATE
+(CONST 0) = $ANS
+(CONST 1) = 1
+(CONST 2) = $INPART
+(CONST 3) = SIMPLIFY
+(CONST 4) = MFUNCALL
+(CONST 5) = ($LIST2 '$LIST2)
+(CONST 6) = |TRD-MSYMEVAL-aux|
+(CONST 7) = $MEMBER
+(CONST 8) = $FOUND
+(CONST 9) = (MLIST)
+(CONST 10) = ($LIST2 '$LIST2)
+(CONST 11) = $DELETE
+(CONST 12) = $CONS
+(CONST 13) = $DONE
+(CONST 14) = ($ANS '$ANS)
+(CONST 15) = LIKE
+(CONST 16) = ($LIST2 '$LIST2)
+(CONST 17) = ($ANS '$ANS)
+(CONST 18) = (MLIST)
+(CONST 19) = ($LIST2 '$LIST2)
+(CONST 20) = ($ANS '$ANS)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : ($ANS)
+73 byte-code instructions:
+0     (CONST 0)                           ; $ANS
+1     (BIND 0)                            ; $ANS
+3     (LOAD&PUSH 4)
+4     (LOAD&PUSH 6)
+5     (CONST&PUSH 1)                      ; 1
+6     (CALL2&PUSH 2)                      ; $INPART
+8     (CALL1&PUSH 3)                      ; SIMPLIFY
+10    (CALL2&PUSH 4)                      ; MFUNCALL
+12    (CALL1 3)                           ; SIMPLIFY
+14    (STORE 4)
+15    (NIL&PUSH)
+16    (CONST&PUSH 5)                      ; ($LIST2 '$LIST2)
+17    (CALL1 6)                           ; |TRD-MSYMEVAL-aux|
+19    (CDR&PUSH)
+20    (LOAD&JMPIFNOT 0 L41)
+23    L23
+23    (LOAD&CAR&STORE 0 1)
+26    (LOAD&PUSH 7)
+27    (LOAD&PUSH 2)
+28    (CALL2&JMPIF 7 L67)                 ; $MEMBER
+31    (LOAD&PUSH 6)
+32    (LOAD&PUSH 2)
+33    (CALL2&JMPIF 7 L72)                 ; $MEMBER
+36    (LOAD&CDR&STORE 0)
+38    (LOAD&JMPIF 0 L23)
+41    L41
+41    (CONST 13)                          ; $DONE
+42    (SKIP 2)
+44    L44
+44    (SETVALUE 0)                        ; $ANS
+46    (CONST&PUSH 14)                     ; ($ANS '$ANS)
+47    (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+49    (CONST&PUSH 8)                      ; $FOUND
+50    (CALL2&JMPIF 15 L91)                ; LIKE
+53    (CONST&PUSH 17)                     ; ($ANS '$ANS)
+54    (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+56    (CONST&PUSH 13)                     ; $DONE
+57    (CALL2&JMPIF 15 L94)                ; LIKE
+60    (CONST 20)                          ; ($ANS '$ANS)
+61    L61
+61    (PUSH)
+62    (CALL1 6)                           ; |TRD-MSYMEVAL-aux|
+64    L64
+64    (UNBIND1)
+65    (SKIP&RET 3)
+67    L67
+67    (CONST 8)                           ; $FOUND
+68    (SKIP 2)
+70    (JMP L44)
+72    L72
+72    (CONST&PUSH 9)                      ; (MLIST)
+73    (LOAD&PUSH 8)
+74    (LOAD&PUSH 8)
+75    (LIST&PUSH 3)
+77    (LOAD&PUSH 2)
+78    (CONST&PUSH 10)                     ; ($LIST2 '$LIST2)
+79    (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+81    (CALL2&PUSH 11)                     ; $DELETE
+83    (CALL1&PUSH 3)                      ; SIMPLIFY
+85    (CALL2 12)                          ; $CONS
+87    (SKIP 2)
+89    (JMP L44)
+91    L91
+91    (CONST 16)                          ; ($LIST2 '$LIST2)
+92    (JMP L61)
+94    L94
+94    (CONST&PUSH 18)                     ; (MLIST)
+95    (LOAD&PUSH 6)
+96    (LIST&PUSH 2)
+98    (CONST&PUSH 19)                     ; ($LIST2 '$LIST2)
+99    (CALL1&PUSH 6)                      ; |TRD-MSYMEVAL-aux|
+101   (CALL2 12)                          ; $CONS
+103   (JMP L64)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $EXPNLENGTH T ...) ...)-25-1|
+(CONST 0) = $EXPNLENGTH
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EXPNLENGTH
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $EXPNLENGTH T ...) ...)-25-2|
+(CONST 0) = $EXPNLENGTH
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EXPNLENGTH
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $EXPNLENGTH T ...) ...)-25-3-1|
+(CONST 0) = $EXPNLENGTH
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EXPNLENGTH
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $EXPNLENGTH T ...) ...)-25-3-2|
+(CONST 0) = $EXPNLENGTH
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $FIXNUM
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EXPNLENGTH
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $FIXNUM
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $EXPNLENGTH T ...) ...)-25-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $EXPNLENGTH
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $EXPNLENGTH
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $EXPNLENGTH T ...) ...)-25-3-5|
+(CONST 0) = $EXPNLENGTH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $EXPNLENGTH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EXPNLENGTH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $EXPNLENGTH
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $EXPNLENGTH>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $EXPNLENGTH
+8     (SKIP&RET 1)
+
+
+Disassembly of function $EXPNLENGTH
+(CONST 0) = $INFLAG
+(CONST 1) = $ATOM
+(CONST 2) = 1
+(CONST 3) = $ARGS
+(CONST 4) = SIMPLIFY
+(CONST 5) = $ARGSLENGTH
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (T)
+1     (BIND 0)                            ; $INFLAG
+3     (LOAD&PUSH 4)
+4     (CALL1&JMPIF 1 L21)                 ; $ATOM
+7     (CONST&PUSH 2)                      ; 1
+8     (LOAD&PUSH 5)
+9     (CALL1&PUSH 3)                      ; $ARGS
+11    (CALL1&PUSH 4)                      ; SIMPLIFY
+13    (CALL1&PUSH 5)                      ; $ARGSLENGTH
+15    (CALLSR 2 53)                       ; +
+18    L18
+18    (UNBIND1)
+19    (SKIP&RET 2)
+21    L21
+21    (CONST 2)                           ; 1
+22    (JMP L18)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ARGSLENGTH T ...) ...)-26-1|
+(CONST 0) = $ARGSLENGTH
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARGSLENGTH
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ARGSLENGTH T ...) ...)-26-2|
+(CONST 0) = $ARGSLENGTH
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARGSLENGTH
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ARGSLENGTH T ...) ...)-26-3-1|
+(CONST 0) = $ARGSLENGTH
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARGSLENGTH
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ARGSLENGTH T ...) ...)-26-3-2|
+(CONST 0) = $ARGSLENGTH
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARGSLENGTH
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ARGSLENGTH T ...) ...)-26-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $ARGSLENGTH
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $ARGSLENGTH
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ARGSLENGTH T ...) ...)-26-3-5|
+(CONST 0) = $ARGSLENGTH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ARGSLENGTH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARGSLENGTH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ARGSLENGTH
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ARGSLENGTH>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ARGSLENGTH
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ARGSLENGTH
+(CONST 0) = &+
+(CONST 1) = $EXPNLENGTH
+(CONST 2) = GETOPR
+(CONST 3) = MAP1
+(CONST 4) = SIMPLIFY
+(CONST 5) = MAPPLY-TR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; &+
+1     (CONST&PUSH 1)                      ; $EXPNLENGTH
+2     (CALL1&PUSH 2)                      ; GETOPR
+4     (LOAD&PUSH 3)
+5     (CALL2&PUSH 3)                      ; MAP1
+7     (CALL1&PUSH 4)                      ; SIMPLIFY
+9     (CALL2&PUSH 5)                      ; MAPPLY-TR
+11    (CALL1 4)                           ; SIMPLIFY
+13    (SKIP&RET 2)
+
+
+Wrote file binary-clisp/trgsmp.fas
+Wrote file /cygdrive/e/temp/maxima/src/trgsmp.lis

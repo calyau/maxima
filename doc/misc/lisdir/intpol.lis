@@ -1,0 +1,669 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/intpol.lisp
+on 2002-12-17 13:34:12 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/intpol.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE INTPOL)-2|
+(CONST 0) = INTPOL
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INTPOL
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS TRANSM NUMERM)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $INTPOLREL $INTPOLABS ...) (FLONUM $INTPOLREL $INTPOLABS ...) ...)-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(COMMENT \|  For historical information ONLY.  \| (DEFUN FMEVAL2 # ...) ...)-5|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(OR (BOUNDP '$INTPOLABS) (SETQ $INTPOLABS 0.0))-6|
+(CONST 0) = $INTPOLABS
+(CONST 1) = 0.0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : ($INTPOLABS)
+9 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; $INTPOLABS
+2     (CALLS1&STORE 79 0)                 ; BOUNDP
+5     (JMPIFNOT L9)
+7     (SKIP&RET 2)
+9     L9
+9     (CONST 1)                           ; 0.0
+10    (SETVALUE 0)                        ; $INTPOLABS
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(OR (BOUNDP '$INTPOLREL) (SETQ $INTPOLREL 0.0))-7|
+(CONST 0) = $INTPOLREL
+(CONST 1) = 0.0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : ($INTPOLREL)
+9 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; $INTPOLREL
+2     (CALLS1&STORE 79 0)                 ; BOUNDP
+5     (JMPIFNOT L9)
+7     (SKIP&RET 2)
+9     L9
+9     (CONST 1)                           ; 0.0
+10    (SETVALUE 0)                        ; $INTPOLREL
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(OR (BOUNDP '$INTPOLERROR) (SETQ $INTPOLERROR T))-8|
+(CONST 0) = $INTPOLERROR
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : ($INTPOLERROR)
+9 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; $INTPOLERROR
+2     (CALLS1&STORE 79 0)                 ; BOUNDP
+5     (JMPIFNOT L9)
+7     (SKIP&RET 2)
+9     L9
+9     (T)
+10    (SETVALUE 0)                        ; $INTPOLERROR
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN $INTERPOLATE_SUBR (F LEFT RIGHT) ...)-9|
+(CONST 0) = $INTERPOLATE_SUBR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $INTERPOLATE_SUBR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $INTERPOLATE_SUBR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $INTERPOLATE_SUBR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $INTERPOLATE_SUBR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $INTERPOLATE_SUBR
+8     (SKIP&RET 1)
+
+
+Disassembly of function $INTERPOLATE_SUBR
+(CONST 0) = F
+(CONST 1) = RIGHT
+(CONST 2) = TRAMP1$
+(CONST 3) = 1
+(CONST 4) = MAKE-TRAMP$
+(CONST 5) = B
+(CONST 6) = 0
+(CONST 7) = 1.0
+(CONST 8) = $INTPOLABS
+(CONST 9) = 0.0
+(CONST 10) = $INTPOLERROR
+(CONST 11) = "function has same sign at endpoints~%~M"
+(CONST 12) = (MLIST)
+(CONST 13) = (MEQUAL)
+(CONST 14) = (F)
+(CONST 15) = (MEQUAL)
+(CONST 16) = (F)
+(CONST 17) = MERROR
+(CONST 18) = 2.0
+(CONST 19) = QUOT
+(CONST 20) = INTERPOLATE-CHECK
+(CONST 21) = 0.1
+(CONST 22) = 3
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($INTPOLERROR $INTPOLABS B RIGHT F)
+writes special variable : (B)
+211 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; F
+3     (LOAD 4)
+4     (BIND 1)                            ; RIGHT
+6     (NIL)
+7     (BIND 2)                            ; TRAMP1$
+9     (GETVALUE&PUSH 0)                   ; F
+11    (CONST&PUSH 3)                      ; 1
+12    (CALL2 4)                           ; MAKE-TRAMP$
+14    (BIND 0)                            ; F
+16    (NIL&PUSH)
+17    (NIL)
+18    (BIND 5)                            ; B
+20    (PUSH-NIL 4)
+22    (CONST&PUSH 6)                      ; 0
+23    (LOAD&PUSH 23)
+24    (CONST&PUSH 7)                      ; 1.0
+25    (CALLS2&STORE 174 8)                ; COMMON-LISP:FLOAT
+28    (GETVALUE&PUSH 1)                   ; RIGHT
+30    (CONST&PUSH 7)                      ; 1.0
+31    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+33    (SETVALUE 5)                        ; B
+35    (PUSH)
+36    (LOAD&PUSH 9)
+37    (CALLSR&JMPIF 1 48 L48)             ; >
+41    (GETVALUE&PUSH 5)                   ; B
+43    (LOAD 9)
+44    (SETVALUE 5)                        ; B
+46    (POP&STORE 8)
+48    L48
+48    (GETVALUE&PUSH 0)                   ; F
+50    (LOAD&PUSH 9)
+51    (FUNCALL 1)
+53    (STORE 3)
+54    (GETVALUE&PUSH 0)                   ; F
+56    (GETVALUE&PUSH 5)                   ; B
+58    (FUNCALL 1)
+60    (STORE 2)
+61    (LOAD&PUSH 3)
+62    (CALLS2&PUSH 158)                   ; ABS
+64    (GETVALUE&PUSH 8)                   ; $INTPOLABS
+66    (CALLSR&JMPIFNOT 1 48 L215)         ; >
+71    (LOAD&PUSH 2)
+72    (CALLS2&PUSH 158)                   ; ABS
+74    (GETVALUE&PUSH 8)                   ; $INTPOLABS
+76    (CALLSR&JMPIFNOT 1 48 L219)         ; >
+81    (LOAD&PUSH 3)
+82    (LOAD&PUSH 3)
+83    (CALLSR&PUSH 2 55)                  ; *
+86    (CONST&PUSH 9)                      ; 0.0
+87    (CALLSR&JMPIFNOT 1 48 L120)         ; >
+91    (GETVALUE&PUSH 10)                  ; $INTPOLERROR
+93    (T)
+94    (JMPIFNOTEQ L224)
+97    (CONST&PUSH 11)                     ; "function has same sign at endpoints~%~M"
+98    (CONST&PUSH 12)                     ; (MLIST)
+99    (CONST&PUSH 13)                     ; (MEQUAL)
+100   (CONST&PUSH 14)                     ; (F)
+101   (LOAD&PUSH 12)
+102   (LIST&PUSH 2)
+104   (LOAD&PUSH 7)
+105   (LIST&PUSH 3)
+107   (CONST&PUSH 15)                     ; (MEQUAL)
+108   (CONST&PUSH 16)                     ; (F)
+109   (GETVALUE&PUSH 5)                   ; B
+111   (LIST&PUSH 2)
+113   (LOAD&PUSH 7)
+114   (LIST&PUSH 3)
+116   (LIST&PUSH 3)
+118   (CALL2 17)                          ; MERROR
+120   L120
+120   (LOAD&PUSH 3)
+121   (CONST&PUSH 9)                      ; 0.0
+122   (CALLSR&JMPIFNOT 1 48 L138)         ; >
+126   (LOAD&PUSH 2)
+127   (LOAD 4)
+128   (STORE 3)
+129   (POP&STORE 3)
+131   (GETVALUE&PUSH 5)                   ; B
+133   (LOAD 9)
+134   (SETVALUE 5)                        ; B
+136   (POP&STORE 8)
+138   L138
+138   (CONST 6)                           ; 0
+139   (STORE 0)
+140   L140
+140   (LOAD&PUSH 8)
+141   (GETVALUE&PUSH 5)                   ; B
+143   (CALLSR&PUSH 2 53)                  ; +
+146   (CONST&PUSH 18)                     ; 2.0
+147   (CALL2 19)                          ; QUOT
+149   (STORE 4)
+150   (GETVALUE&PUSH 0)                   ; F
+152   (LOAD&PUSH 5)
+153   (FUNCALL 1)
+155   (STORE 1)
+156   (LOAD&PUSH 8)
+157   (LOAD&PUSH 5)
+158   (GETVALUE&PUSH 5)                   ; B
+160   (LOAD&PUSH 4)
+161   (CALL 4 20)                         ; INTERPOLATE-CHECK
+164   (JMPIF L229)
+166   (LOAD&PUSH 1)
+167   (LOAD&PUSH 4)
+168   (LOAD&PUSH 4)
+169   (CALLSR&PUSH 2 53)                  ; +
+172   (CONST&PUSH 18)                     ; 2.0
+173   (CALL2&PUSH 19)                     ; QUOT
+175   (CALLSR&PUSH 1 54)                  ; -
+178   (CALLS2&PUSH 158)                   ; ABS
+180   (CONST&PUSH 21)                     ; 0.1
+181   (LOAD&PUSH 4)
+182   (LOAD&PUSH 6)
+183   (CALLSR&PUSH 1 54)                  ; -
+186   (CALLSR&PUSH 2 55)                  ; *
+189   (CALLSR&JMPIF 1 47 L233)            ; <
+193   (CONST 6)                           ; 0
+194   (STORE 0)
+195   L195
+195   (LOAD&PUSH 1)
+196   (CONST&PUSH 9)                      ; 0.0
+197   (CALLSR&JMPIF 1 48 L237)            ; >
+201   (LOAD 1)
+202   (STORE 3)
+203   (LOAD 4)
+204   (STORE 8)
+206   L206
+206   (LOAD&PUSH 0)
+207   (CONST&PUSH 22)                     ; 3
+208   (CALLSR&JMPIFNOT 1 45 L140)         ; =
+213   (JMP L274)
+215   L215
+215   (LOAD 8)
+216   (JMP L325)
+219   L219
+219   (GETVALUE 5)                        ; B
+221   (JMP L325)
+224   L224
+224   (GETVALUE 10)                       ; $INTPOLERROR
+226   (JMP L325)
+229   L229
+229   (LOAD 4)
+230   (JMP L325)
+233   L233
+233   (LOAD&INC&STORE 0)
+235   (JMP L195)
+237   L237
+237   (LOAD 1)
+238   (STORE 2)
+239   (LOAD 4)
+240   (SETVALUE 5)                        ; B
+242   (JMP L206)
+244   L244
+244   (LOAD&PUSH 8)
+245   (GETVALUE&PUSH 5)                   ; B
+247   (LOAD&PUSH 10)
+248   (CALLSR&PUSH 1 54)                  ; -
+251   (LOAD&PUSH 5)
+252   (LOAD&PUSH 6)
+253   (LOAD 6)
+254   (JMP L295)
+256   L256
+256   (LOAD 1)
+257   (STORE 2)
+258   (LOAD 4)
+259   (SETVALUE 5)                        ; B
+261   (JMP L274)
+263   L263
+263   (LOAD&PUSH 1)
+264   (CONST&PUSH 9)                      ; 0.0
+265   (CALLSR&JMPIF 1 48 L256)            ; >
+269   (LOAD 1)
+270   (STORE 3)
+271   (LOAD 4)
+272   (STORE 8)
+274   L274
+274   (LOAD&PUSH 2)
+275   (LOAD&PUSH 4)
+276   (CALLSR&PUSH 2 53)                  ; +
+279   (CONST&PUSH 9)                      ; 0.0
+280   (CALLSR&JMPIF 1 48 L244)            ; >
+284   (GETVALUE&PUSH 5)                   ; B
+286   (LOAD&PUSH 9)
+287   (GETVALUE&PUSH 5)                   ; B
+289   (CALLSR&PUSH 1 54)                  ; -
+292   (LOAD&PUSH 4)
+293   (LOAD&PUSH 5)
+294   (LOAD 7)
+295   L295
+295   (PUSH)
+296   (CALLSR&PUSH 1 54)                  ; -
+299   (CALL2&PUSH 19)                     ; QUOT
+301   (CALLSR&PUSH 2 55)                  ; *
+304   (CALLSR&STORE 2 53 4)               ; +
+308   (GETVALUE&PUSH 0)                   ; F
+310   (LOAD&PUSH 5)
+311   (FUNCALL 1)
+313   (STORE 1)
+314   (LOAD&PUSH 8)
+315   (LOAD&PUSH 5)
+316   (GETVALUE&PUSH 5)                   ; B
+318   (LOAD&PUSH 4)
+319   (CALL 4 20)                         ; INTERPOLATE-CHECK
+322   (JMPIFNOT L263)
+324   (LOAD 4)
+325   L325
+325   (SKIP 5)
+327   (UNBIND1)
+328   (SKIP 1)
+330   (UNBIND 4)
+332   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN INTERPOLATE-CHECK (A C B ...) ...)-10|
+(CONST 0) = INTERPOLATE-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INTERPOLATE-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INTERPOLATE-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INTERPOLATE-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INTERPOLATE-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INTERPOLATE-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function INTERPOLATE-CHECK
+(CONST 0) = B
+(CONST 1) = $INTPOLABS
+(CONST 2) = $INTPOLREL
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($INTPOLREL B $INTPOLABS)
+37 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; B
+3     (LOAD&PUSH 4)
+4     (CALLS2&PUSH 158)                   ; ABS
+6     (GETVALUE&PUSH 1)                   ; $INTPOLABS
+8     (CALLSR&PUSH 1 48)                  ; >
+11    (LOAD&PUSH 8)
+12    (CALLS2&PUSH 158)                   ; ABS
+14    (GETVALUE&PUSH 0)                   ; B
+16    (CALLS2&PUSH 158)                   ; ABS
+18    (CALLSR&STORE 1 51 5)               ; MAX
+22    (POP)
+23    (JMPIFNOT L43)
+25    (GETVALUE&PUSH 0)                   ; B
+27    (LOAD&PUSH 7)
+28    (CALLSR&PUSH 1 54)                  ; -
+31    (CALLS2&PUSH 158)                   ; ABS
+33    (GETVALUE&PUSH 2)                   ; $INTPOLREL
+35    (LOAD&PUSH 6)
+36    (CALLSR&PUSH 2 55)                  ; *
+39    (CALLSR&JMPIF 1 48 L47)             ; >
+43    L43
+43    (NOT)
+44    L44
+44    (UNBIND1)
+45    (SKIP&RET 5)
+47    L47
+47    (LOAD&PUSH 6)
+48    (LOAD&PUSH 8)
+49    (CALLSR&PUSH 1 54)                  ; -
+52    (CALLS2&PUSH 158)                   ; ABS
+54    (GETVALUE&PUSH 2)                   ; $INTPOLREL
+56    (LOAD&PUSH 6)
+57    (CALLSR&PUSH 2 55)                  ; *
+60    (CALLSR 1 48)                       ; >
+63    (NOT)
+64    (JMP L44)
+
+
+Disassembly of function #:|(DEFUN INTERPOLATE-MACRO (FORM TRANSLP) ...)-11|
+(CONST 0) = INTERPOLATE-MACRO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INTERPOLATE-MACRO>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INTERPOLATE-MACRO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INTERPOLATE-MACRO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INTERPOLATE-MACRO>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INTERPOLATE-MACRO
+8     (SKIP&RET 1)
+
+
+Disassembly of function INTERPOLATE-MACRO
+(CONST 0) = FORM
+(CONST 1) = 3
+(CONST 2) = ($INTERPOLATE_SUBR)
+(CONST 3) = (MPROG)
+(CONST 4) = ((MLIST) ((MSETQ) $NUMER T))
+(CONST 5) = ($INTERPOLATE_SUBR)
+(CONST 6) = 4
+(CONST 7) = EXP
+(CONST 8) = VAR
+(CONST 9) = $LHS
+(CONST 10) = $RHS
+(CONST 11) = SUB
+(CONST 12) = ($INTERPOLATE_SUBR)
+(CONST 13) = (LAMBDA-I)
+(CONST 14) = (MLIST)
+(CONST 15) = ($MODEDECLARE)
+(CONST 16) = ($FLOAT)
+(CONST 17) = (MPROG)
+(CONST 18) = ((MLIST) ((MSETQ) $NUMER T))
+(CONST 19) = ($INTERPOLATE_SUBR)
+(CONST 20) = (LAMBDA)
+(CONST 21) = (MLIST)
+(CONST 22) = "wrong number of args to INTERPOLATE"
+(CONST 23) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (EXP VAR FORM)
+writes special variables : (VAR EXP FORM)
+83 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; FORM
+3     (GETVALUE 0)                        ; FORM
+5     (CDR)
+6     (SETVALUE 0)                        ; FORM
+8     (PUSH)
+9     (CALLS2&PUSH 71)                    ; LENGTH
+11    (CONST&PUSH 1)                      ; 3
+12    (CALLSR&JMPIF 1 45 L37)             ; =
+16    (GETVALUE&PUSH 0)                   ; FORM
+18    (CALLS2&PUSH 71)                    ; LENGTH
+20    (CONST&PUSH 6)                      ; 4
+21    (CALLSR&JMPIF 1 45 L72)             ; =
+25    (CONST&PUSH 22)                     ; "wrong number of args to INTERPOLATE"
+26    (CALL1 23)                          ; MERROR
+28    L28
+28    (UNBIND1)
+29    (SKIP&RET 3)
+31    L31
+31    (CONST&PUSH 2)                      ; ($INTERPOLATE_SUBR)
+32    (GETVALUE 0)                        ; FORM
+34    (CONS)
+35    (JMP L28)
+37    L37
+37    (LOAD&JMPIF 4 L31)
+40    (CONST&PUSH 3)                      ; (MPROG)
+41    (CONST&PUSH 4)                      ; ((MLIST) ((MSETQ) $NUMER T))
+42    (CONST&PUSH 5)                      ; ($INTERPOLATE_SUBR)
+43    (GETVALUE 0)                        ; FORM
+45    (CONS&PUSH)
+46    (LIST 3)
+48    (JMP L28)
+50    L50
+50    (CONST&PUSH 12)                     ; ($INTERPOLATE_SUBR)
+51    (CONST&PUSH 13)                     ; (LAMBDA-I)
+52    (CONST&PUSH 14)                     ; (MLIST)
+53    (GETVALUE&PUSH 8)                   ; VAR
+55    (LIST&PUSH 2)
+57    (CONST&PUSH 15)                     ; ($MODEDECLARE)
+58    (GETVALUE&PUSH 8)                   ; VAR
+60    (CONST 16)                          ; ($FLOAT)
+61    (LIST*&PUSH 2)
+63    (GETVALUE&PUSH 7)                   ; EXP
+65    (LIST&PUSH 4)
+67    (LOAD 2)
+68    (LIST* 2)
+70    (JMP L124)
+72    L72
+72    (NIL)
+73    (BIND 7)                            ; EXP
+75    (NIL)
+76    (BIND 8)                            ; VAR
+78    (GETVALUE&PUSH 0)                   ; FORM
+80    (LOAD 0)
+81    (CAR)
+82    (SETVALUE 7)                        ; EXP
+84    (LOAD&CDR&STORE 0)
+86    (CAR)
+87    (SETVALUE 8)                        ; VAR
+89    (LOAD&CDR&STORE 0)
+91    (GETVALUE&PUSH 7)                   ; EXP
+93    (CALL1&PUSH 9)                      ; $LHS
+95    (GETVALUE&PUSH 7)                   ; EXP
+97    (CALL1&PUSH 10)                     ; $RHS
+99    (CALL2 11)                          ; SUB
+101   (SETVALUE 7)                        ; EXP
+103   (LOAD&JMPIF 11 L50)
+106   (CONST&PUSH 17)                     ; (MPROG)
+107   (CONST&PUSH 18)                     ; ((MLIST) ((MSETQ) $NUMER T))
+108   (CONST&PUSH 19)                     ; ($INTERPOLATE_SUBR)
+109   (CONST&PUSH 20)                     ; (LAMBDA)
+110   (CONST&PUSH 21)                     ; (MLIST)
+111   (GETVALUE&PUSH 8)                   ; VAR
+113   (LIST&PUSH 2)
+115   (GETVALUE&PUSH 7)                   ; EXP
+117   (LIST&PUSH 3)
+119   (LOAD 4)
+120   (LIST*&PUSH 2)
+122   (LIST 3)
+124   L124
+124   (SKIP 1)
+126   (UNBIND 2)
+128   (JMP L28)
+
+
+Disassembly of function #:|(DEFMSPEC $INTERPOLATE (FORM) ...)-12-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $INTERPOLATE (FORM) ...)-12-2-1|>
+(CONST 1) = $INTERPOLATE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $INTERPOLATE (FORM) ...)-12-2-1|>
+1     (CONST&PUSH 1)                      ; $INTERPOLATE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $INTERPOLATE (FORM) ...)-12-2-1|
+(CONST 0) = FORM
+(CONST 1) = INTERPOLATE-MACRO
+(CONST 2) = MEVAL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (GETVALUE&PUSH 0)                   ; FORM
+5     (NIL&PUSH)
+6     (CALL2&PUSH 1)                      ; INTERPOLATE-MACRO
+8     (CALL1 2)                           ; MEVAL
+10    (UNBIND1)
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-TRANSLATE-PROPERTY $INTERPOLATE (FORM) ...)-13-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF-TRANSLATE-PROPERTY $INTERPOLATE (FORM) ...)-13-2-1|>
+(CONST 1) = $INTERPOLATE
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF-TRANSLATE-PROPERTY $INTERPOLATE (FORM) ...)-13-2-1|>
+1     (CONST&PUSH 1)                      ; $INTERPOLATE
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-TRANSLATE-PROPERTY $INTERPOLATE (FORM) ...)-13-2-1|
+(CONST 0) = FORM
+(CONST 1) = $TR_NUMER
+(CONST 2) = INTERPOLATE-MACRO
+(CONST 3) = TRANSLATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+10 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (T)
+4     (BIND 1)                            ; $TR_NUMER
+6     (GETVALUE&PUSH 0)                   ; FORM
+8     (T&PUSH)
+9     (CALL2&PUSH 2)                      ; INTERPOLATE-MACRO
+11    (CALL1 3)                           ; TRANSLATE
+13    (UNBIND 2)
+15    (SKIP&RET 2)
+
+
+Wrote file binary-clisp/intpol.fas
+Wrote file /cygdrive/e/temp/maxima/src/intpol.lis

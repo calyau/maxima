@@ -1,0 +1,1661 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trpred.lisp
+on 2002-12-17 13:34:00 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trpred.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRPRED)-2|
+(CONST 0) = TRPRED
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRPRED
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TRPRED)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR WRAP-AN-IS 'IS-BOOLE-CHECK ...)-4|
+(CONST 0) = (SPECIAL WRAP-AN-IS)
+(CONST 1) = WRAP-AN-IS
+(CONST 2) = IS-BOOLE-CHECK
+(CONST 3) = VARIABLE
+(CONST 4) = "How to verify booleans"
+(CONST 5) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL WRAP-AN-IS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; WRAP-AN-IS
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; WRAP-AN-IS
+8     (CONST&PUSH 2)                      ; IS-BOOLE-CHECK
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; WRAP-AN-IS
+12    (CONST&PUSH 3)                      ; VARIABLE
+13    (CONST&PUSH 4)                      ; "How to verify booleans"
+14    (CALL 3 5)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; WRAP-AN-IS
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $IS (FORM) ...)-5-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $IS (FORM) ...)-5-2-1|>
+(CONST 1) = $IS
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $IS (FORM) ...)-5-2-1|>
+1     (CONST&PUSH 1)                      ; $IS
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $IS (FORM) ...)-5-2-1|
+(CONST 0) = FORM
+(CONST 1) = IS-BOOLE-CHECK
+(CONST 2) = WRAP-AN-IS
+(CONST 3) = $BOOLEAN
+(CONST 4) = TRANSLATE-PREDICATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+12 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST 1)                           ; IS-BOOLE-CHECK
+4     (BIND 2)                            ; WRAP-AN-IS
+6     (CONST&PUSH 3)                      ; $BOOLEAN
+7     (GETVALUE 0)                        ; FORM
+9     (CDR)
+10    (CAR&PUSH)
+11    (CALL1 4)                           ; TRANSLATE-PREDICATE
+13    (CONS)
+14    (UNBIND 2)
+16    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MAYBE (FORM) ...)-6-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MAYBE (FORM) ...)-6-2-1|>
+(CONST 1) = $MAYBE
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MAYBE (FORM) ...)-6-2-1|>
+1     (CONST&PUSH 1)                      ; $MAYBE
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MAYBE (FORM) ...)-6-2-1|
+(CONST 0) = FORM
+(CONST 1) = MAYBE-BOOLE-CHECK
+(CONST 2) = WRAP-AN-IS
+(CONST 3) = $ANY
+(CONST 4) = TRANSLATE-PREDICATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+12 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST 1)                           ; MAYBE-BOOLE-CHECK
+4     (BIND 2)                            ; WRAP-AN-IS
+6     (CONST&PUSH 3)                      ; $ANY
+7     (GETVALUE 0)                        ; FORM
+9     (CDR)
+10    (CAR&PUSH)
+11    (CALL1 4)                           ; TRANSLATE-PREDICATE
+13    (CONS)
+14    (UNBIND 2)
+16    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MNOT (FORM) ...)-7-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MNOT (FORM) ...)-7-2-1|>
+(CONST 1) = MNOT
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MNOT (FORM) ...)-7-2-1|>
+1     (CONST&PUSH 1)                      ; MNOT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MNOT (FORM) ...)-7-2-1|
+(CONST 0) = FORM
+(CONST 1) = $BOOLEAN
+(CONST 2) = TRANSLATE-PREDICATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; $BOOLEAN
+4     (GETVALUE&PUSH 0)                   ; FORM
+6     (CALL1 2)                           ; TRANSLATE-PREDICATE
+8     (CONS)
+9     (UNBIND1)
+10    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-SAME%TR MAND MNOT)-8|
+(CONST 0) = MAND
+(CONST 1) = MNOT
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAND
+1     (CONST&PUSH 1)                      ; MNOT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOT
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-SAME%TR MOR MNOT)-9|
+(CONST 0) = MOR
+(CONST 1) = MNOT
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MOR
+1     (CONST&PUSH 1)                      ; MNOT
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOT
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR MNOTEQUAL (FORM) ...)-10-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MNOTEQUAL (FORM) ...)-10-2-1|>
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MNOTEQUAL (FORM) ...)-10-2-1|>
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MNOTEQUAL (FORM) ...)-10-2-1|
+(CONST 0) = FORM
+(CONST 1) = $ANY
+(CONST 2) = SIMPLIFY
+(CONST 3) = LIST
+(CONST 4) = QUOTE
+(CONST 5) = TR-ARGS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+18 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; $ANY
+4     (CONST&PUSH 2)                      ; SIMPLIFY
+5     (CONST&PUSH 3)                      ; LIST
+6     (CONST&PUSH 4)                      ; QUOTE
+7     (GETVALUE 0)                        ; FORM
+9     (CAR)
+10    (CAR&PUSH)
+11    (LIST&PUSH 1)
+13    (LIST&PUSH 2)
+15    (GETVALUE 0)                        ; FORM
+17    (CDR&PUSH)
+18    (CALL1 5)                           ; TR-ARGS
+20    (LIST*&PUSH 2)
+22    (LIST 3)
+24    (UNBIND1)
+25    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-SAME%TR MEQUAL MNOTEQUAL)-11|
+(CONST 0) = MEQUAL
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MEQUAL
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOTEQUAL
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-SAME%TR $EQUAL MNOTEQUAL)-12|
+(CONST 0) = $EQUAL
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EQUAL
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOTEQUAL
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-SAME%TR MGREATERP MNOTEQUAL)-13|
+(CONST 0) = MGREATERP
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MGREATERP
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOTEQUAL
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-SAME%TR MGEQP MNOTEQUAL)-14|
+(CONST 0) = MGEQP
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MGEQP
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOTEQUAL
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-SAME%TR MLESSP MNOTEQUAL)-15|
+(CONST 0) = MLESSP
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MLESSP
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOTEQUAL
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-SAME%TR MLEQP MNOTEQUAL)-16|
+(CONST 0) = MLEQP
+(CONST 1) = MNOTEQUAL
+(CONST 2) = TRANSLATE
+(CONST 3) = "without any special action"
+(CONST 4) = |No TRANSLATE property to alias.|
+(CONST 5) = CERROR
+(CONST 6) = PUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MLEQP
+1     (CONST&PUSH 1)                      ; MNOTEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&JMPIF 132 L14)              ; GET
+8     (CONST&PUSH 3)                      ; "without any special action"
+9     (CONST&PUSH 4)                      ; |No TRANSLATE property to alias.|
+10    (CONST&PUSH 1)                      ; MNOTEQUAL
+11    (CALL 3 5)                          ; CERROR
+14    L14
+14    (PUSH)
+15    (CONST&PUSH 2)                      ; TRANSLATE
+16    (CALL 3 6)                          ; PUTPROP
+19    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRFUN TRANSLATE-PREDICATE (FORM) ...)-17|
+(CONST 0) = TRANSLATE-PREDICATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRANSLATE-PREDICATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSLATE-PREDICATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRANSLATE-PREDICATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRANSLATE-PREDICATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRANSLATE-PREDICATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRANSLATE-PREDICATE
+(CONST 0) = FORM
+(CONST 1) = TRANSLATE
+(CONST 2) = $BOOLEAN
+(CONST 3) = WRAP-AN-IS
+(CONST 4) = MNOT
+(CONST 5) = TRP-MNOT
+(CONST 6) = MAND
+(CONST 7) = TRP-MAND
+(CONST 8) = MOR
+(CONST 9) = TRP-MOR
+(CONST 10) = MNOTEQUAL
+(CONST 11) = TRP-MNOTEQUAL
+(CONST 12) = MEQUAL
+(CONST 13) = TRP-MEQUAL
+(CONST 14) = $EQUAL
+(CONST 15) = TRP-$EQUAL
+(CONST 16) = MGREATERP
+(CONST 17) = TRP-MGREATERP
+(CONST 18) = MGEQP
+(CONST 19) = TRP-MGEQP
+(CONST 20) = MLESSP
+(CONST 21) = TRP-MLESSP
+(CONST 22) = MLEQP
+(CONST 23) = TRP-MLEQP
+(CONST 24) = MPROGN
+(CONST 25) = PROGN
+(CONST 26) = TR-ARGS
+(CONST 27) = MODE
+(CONST 28) = BOOLEAN-CONVERT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE FORM)
+writes special variable : (MODE)
+140 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (GETVALUE 0)                        ; FORM
+5     (JMPIFATOM L130)
+8     (GETVALUE 0)                        ; FORM
+10    (CAR)
+11    (CAR&PUSH)
+12    (JMPIFEQTO 4 L149)                  ; MNOT
+16    (GETVALUE 0)                        ; FORM
+18    (CAR)
+19    (CAR&PUSH)
+20    (JMPIFEQTO 6 L155)                  ; MAND
+24    (GETVALUE 0)                        ; FORM
+26    (CAR)
+27    (CAR&PUSH)
+28    (JMPIFEQTO 8 L161)                  ; MOR
+32    (GETVALUE 0)                        ; FORM
+34    (CAR)
+35    (CAR&PUSH)
+36    (JMPIFEQTO 10 L167)                 ; MNOTEQUAL
+40    (GETVALUE 0)                        ; FORM
+42    (CAR)
+43    (CAR&PUSH)
+44    (JMPIFEQTO 12 L173)                 ; MEQUAL
+48    (GETVALUE 0)                        ; FORM
+50    (CAR)
+51    (CAR&PUSH)
+52    (JMPIFEQTO 14 L179)                 ; $EQUAL
+56    (GETVALUE 0)                        ; FORM
+58    (CAR)
+59    (CAR&PUSH)
+60    (JMPIFEQTO 16 L185)                 ; MGREATERP
+64    (GETVALUE 0)                        ; FORM
+66    (CAR)
+67    (CAR&PUSH)
+68    (JMPIFEQTO 18 L192)                 ; MGEQP
+72    (GETVALUE 0)                        ; FORM
+74    (CAR)
+75    (CAR&PUSH)
+76    (JMPIFEQTO 20 L199)                 ; MLESSP
+80    (GETVALUE 0)                        ; FORM
+82    (CAR)
+83    (CAR&PUSH)
+84    (JMPIFEQTO 22 L206)                 ; MLEQP
+88    (GETVALUE 0)                        ; FORM
+90    (CAR)
+91    (CAR&PUSH)
+92    (JMPIFEQTO 24 L213)                 ; MPROGN
+96    (NIL&PUSH)
+97    (GETVALUE&PUSH 0)                   ; FORM
+99    (CALL1&PUSH 1)                      ; TRANSLATE
+101   (LOAD 1)
+102   (BIND 27)                           ; MODE
+104   (LOAD 3)
+105   (CAR)
+106   (SETVALUE 27)                       ; MODE
+108   (LOAD&CDR&STORE 3)
+110   (GETVALUE&PUSH 27)                  ; MODE
+112   (LOAD&PUSH 4)
+113   (GETVALUE&PUSH 0)                   ; FORM
+115   (CALL 3 28)                         ; BOOLEAN-CONVERT
+118   (UNBIND1)
+119   (SKIP 2)
+121   L121
+121   (UNBIND1)
+122   (SKIP&RET 2)
+124   L124
+124   (LOAD 0)
+125   (CDR)
+126   (SKIP 1)
+128   (JMP L121)
+130   L130
+130   (GETVALUE&PUSH 0)                   ; FORM
+132   (CALL1&PUSH 1)                      ; TRANSLATE
+134   (LOAD&CAR&PUSH 0)
+136   (JMPIFEQTO 2 L124)                  ; $BOOLEAN
+139   (LOAD&CDR&PUSH 0)
+141   (GETVALUE&PUSH 0)                   ; FORM
+143   (CALL2 3)                           ; WRAP-AN-IS
+145   (SKIP 1)
+147   (JMP L121)
+149   L149
+149   (GETVALUE&PUSH 0)                   ; FORM
+151   (CALL1 5)                           ; TRP-MNOT
+153   (JMP L121)
+155   L155
+155   (GETVALUE&PUSH 0)                   ; FORM
+157   (CALL1 7)                           ; TRP-MAND
+159   (JMP L121)
+161   L161
+161   (GETVALUE&PUSH 0)                   ; FORM
+163   (CALL1 9)                           ; TRP-MOR
+165   (JMP L121)
+167   L167
+167   (GETVALUE&PUSH 0)                   ; FORM
+169   (CALL1 11)                          ; TRP-MNOTEQUAL
+171   (JMP L121)
+173   L173
+173   (GETVALUE&PUSH 0)                   ; FORM
+175   (CALL1 13)                          ; TRP-MEQUAL
+177   (JMP L121)
+179   L179
+179   (GETVALUE&PUSH 0)                   ; FORM
+181   (CALL1 15)                          ; TRP-$EQUAL
+183   (JMP L121)
+185   L185
+185   (GETVALUE&PUSH 0)                   ; FORM
+187   (CALL1 17)                          ; TRP-MGREATERP
+189   (JMP L121)
+192   L192
+192   (GETVALUE&PUSH 0)                   ; FORM
+194   (CALL1 19)                          ; TRP-MGEQP
+196   (JMP L121)
+199   L199
+199   (GETVALUE&PUSH 0)                   ; FORM
+201   (CALL1 21)                          ; TRP-MLESSP
+203   (JMP L121)
+206   L206
+206   (GETVALUE&PUSH 0)                   ; FORM
+208   (CALL1 23)                          ; TRP-MLEQP
+210   (JMP L121)
+213   L213
+213   (CONST&PUSH 25)                     ; PROGN
+214   (GETVALUE 0)                        ; FORM
+216   (CDR&PUSH)
+217   (CALLS2 72)                         ; REVERSE
+219   (CDR&PUSH)
+220   (CALLS2&PUSH 73)                    ; NREVERSE
+222   (CALL1&PUSH 26)                     ; TR-ARGS
+224   (GETVALUE 0)                        ; FORM
+226   (CDR&PUSH)
+227   (PUSH-UNBOUND 1)
+229   (CALLS1 156)                        ; LAST
+231   (CAR&PUSH)
+232   (JSR&PUSH L0)
+235   (LIST&PUSH 1)
+237   (CALLSR 2 34)                       ; APPEND
+240   (CONS)
+241   (JMP L121)
+
+
+Disassembly of function #:|(DEFUN BOOLEAN-CONVERT (MODE EXP FORM) ...)-18|
+(CONST 0) = BOOLEAN-CONVERT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE BOOLEAN-CONVERT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; BOOLEAN-CONVERT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; BOOLEAN-CONVERT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE BOOLEAN-CONVERT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; BOOLEAN-CONVERT
+8     (SKIP&RET 1)
+
+
+Disassembly of function BOOLEAN-CONVERT
+(CONST 0) = MODE
+(CONST 1) = EXP
+(CONST 2) = FORM
+(CONST 3) = $BOOLEAN
+(CONST 4) = WRAP-AN-IS
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (FORM EXP MODE)
+17 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; MODE
+3     (LOAD 5)
+4     (BIND 1)                            ; EXP
+6     (LOAD 7)
+7     (BIND 2)                            ; FORM
+9     (GETVALUE&PUSH 0)                   ; MODE
+11    (JMPIFEQTO 3 L24)                   ; $BOOLEAN
+14    (GETVALUE&PUSH 1)                   ; EXP
+16    (GETVALUE&PUSH 2)                   ; FORM
+18    (CALL2 4)                           ; WRAP-AN-IS
+20    L20
+20    (UNBIND 3)
+22    (SKIP&RET 4)
+24    L24
+24    (GETVALUE 1)                        ; EXP
+26    (JMP L20)
+
+
+Disassembly of function #:|(DEFUN TRP-MNOT (FORM) ...)-19|
+(CONST 0) = TRP-MNOT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MNOT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MNOT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MNOT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MNOT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MNOT
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MNOT
+(CONST 0) = FORM
+(CONST 1) = TRANSLATE-PREDICATE
+(CONST 2) = NOT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+writes special variable : (FORM)
+34 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (GETVALUE 0)                        ; FORM
+5     (CDR)
+6     (CAR&PUSH)
+7     (CALL1 1)                           ; TRANSLATE-PREDICATE
+9     (SETVALUE 0)                        ; FORM
+11    (JMPIFNOT L36)
+13    (GETVALUE&PUSH 0)                   ; FORM
+15    (T)
+16    (JMPIFEQ L39)
+18    (GETVALUE 0)                        ; FORM
+20    (JMPIFATOM L28)
+22    (GETVALUE 0)                        ; FORM
+24    (CAR&PUSH)
+25    (JMPIFEQTO 2 L42)                   ; NOT
+28    L28
+28    (CONST&PUSH 2)                      ; NOT
+29    (GETVALUE&PUSH 0)                   ; FORM
+31    (LIST 2)
+33    L33
+33    (UNBIND1)
+34    (SKIP&RET 2)
+36    L36
+36    (T)
+37    (JMP L33)
+39    L39
+39    (NIL)
+40    (JMP L33)
+42    L42
+42    (GETVALUE 0)                        ; FORM
+44    (CDR)
+45    (CAR)
+46    (JMP L33)
+
+
+Disassembly of function #:|(DEFUN TRP-MAND (FORM) ...)-20|
+(CONST 0) = TRP-MAND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MAND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MAND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MAND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MAND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MAND
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MAND
+(CONST 0) = FORM
+(CONST 1) = TRANSLATE-PREDICATE
+(CONST 2) = L
+(CONST 3) = AND
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L FORM)
+writes special variables : (L FORM)
+39 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; TRANSLATE-PREDICATE
+4     (GETVALUE 0)                        ; FORM
+6     (CDR&PUSH)
+7     (CALLSR 0 22)                       ; MAPCAR
+10    (SETVALUE 0)                        ; FORM
+12    (BIND 2)                            ; L
+14    (NIL&PUSH)
+15    (GETVALUE 2)                        ; L
+17    (JMPIFNOT L38)
+19    L19
+19    (GETVALUE 2)                        ; L
+21    (CAR)
+22    (JMPIFNOT L50)
+24    (GETVALUE 2)                        ; L
+26    (CAR&PUSH)
+27    (LOAD&CONS&STORE 0)
+29    (GETVALUE 2)                        ; L
+31    (CDR)
+32    (SETVALUE 2)                        ; L
+34    (GETVALUE 2)                        ; L
+36    (JMPIF L19)
+38    L38
+38    (CONST&PUSH 3)                      ; AND
+39    (LOAD 1)
+40    L40
+40    (PUSH)
+41    (CALLS2 73)                         ; NREVERSE
+43    (CONS)
+44    (SKIP 1)
+46    (UNBIND 2)
+48    (SKIP&RET 2)
+50    L50
+50    (CONST&PUSH 3)                      ; AND
+51    (NIL&PUSH)
+52    (LOAD 2)
+53    (CONS)
+54    (JMP L40)
+
+
+Disassembly of function #:|(DEFUN TRP-MOR (FORM) ...)-21|
+(CONST 0) = TRP-MOR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MOR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MOR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MOR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MOR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MOR
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MOR
+(CONST 0) = FORM
+(CONST 1) = TRANSLATE-PREDICATE
+(CONST 2) = L
+(CONST 3) = OR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L FORM)
+writes special variables : (L FORM)
+43 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; TRANSLATE-PREDICATE
+4     (GETVALUE 0)                        ; FORM
+6     (CDR&PUSH)
+7     (CALLSR 0 22)                       ; MAPCAR
+10    (SETVALUE 0)                        ; FORM
+12    (BIND 2)                            ; L
+14    (NIL&PUSH)
+15    (GETVALUE 2)                        ; L
+17    (JMPIFNOT L38)
+19    L19
+19    (GETVALUE 2)                        ; L
+21    (CAR)
+22    (JMPIFNOT L29)
+24    (GETVALUE 2)                        ; L
+26    (CAR&PUSH)
+27    (LOAD&CONS&STORE 0)
+29    L29
+29    (GETVALUE 2)                        ; L
+31    (CDR)
+32    (SETVALUE 2)                        ; L
+34    (GETVALUE 2)                        ; L
+36    (JMPIF L19)
+38    L38
+38    (LOAD&JMPIF 0 L52)
+41    (NIL)
+42    L42
+42    (SKIP 1)
+44    (UNBIND 2)
+46    (SKIP&RET 2)
+48    L48
+48    (LOAD 0)
+49    (CAR)
+50    (JMP L42)
+52    L52
+52    (CDR)
+53    (JMPIFNOT L48)
+55    (CONST&PUSH 3)                      ; OR
+56    (LOAD&PUSH 1)
+57    (CALLS2 73)                         ; NREVERSE
+59    (CONS)
+60    (JMP L42)
+
+
+Disassembly of function #:|(DEFUN WRAP-AN-IS (EXP IGNORE-FORM) ...)-22|
+(CONST 0) = WRAP-AN-IS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE WRAP-AN-IS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; WRAP-AN-IS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; WRAP-AN-IS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE WRAP-AN-IS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; WRAP-AN-IS
+8     (SKIP&RET 1)
+
+
+Disassembly of function WRAP-AN-IS
+(CONST 0) = EXP
+(CONST 1) = WRAP-AN-IS
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (EXP WRAP-AN-IS)
+7 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 1)                   ; WRAP-AN-IS
+5     (GETVALUE&PUSH 0)                   ; EXP
+7     (LIST 2)
+9     (UNBIND1)
+10    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFVAR *NUMBER-TYPES* '($FLOAT $NUMBER $FIXNUM))-23|
+(CONST 0) = (SPECIAL *NUMBER-TYPES*)
+(CONST 1) = *NUMBER-TYPES*
+(CONST 2) = ($FLOAT $NUMBER $FIXNUM)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *NUMBER-TYPES*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *NUMBER-TYPES*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *NUMBER-TYPES*
+8     (CONST&PUSH 2)                      ; ($FLOAT $NUMBER $FIXNUM)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *NUMBER-TYPES*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN TRP-MGREATERP (FORM) ...)-24|
+(CONST 0) = TRP-MGREATERP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MGREATERP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MGREATERP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MGREATERP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MGREATERP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MGREATERP
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MGREATERP
+(CONST 0) = FORM
+(CONST 1) = MODE
+(CONST 2) = TRANSLATE
+(CONST 3) = *UNION-MODE
+(CONST 4) = $FIXNUM
+(CONST 5) = $FLOAT
+(CONST 6) = *NUMBER-TYPES*
+(CONST 7) = MEMQ
+(CONST 8) = >
+(CONST 9) = DCONV
+(CONST 10) = $NUMBER
+(CONST 11) = GREATERP
+(CONST 12) = MGRP
+(CONST 13) = DCONVX
+(CONST 14) = WRAP-AN-IS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*NUMBER-TYPES* MODE FORM)
+writes special variable : (MODE)
+63 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (NIL)
+4     (BIND 1)                            ; MODE
+6     (PUSH-NIL 2)
+8     (GETVALUE 0)                        ; FORM
+10    (CDR)
+11    (CAR&PUSH)
+12    (CALL1 2)                           ; TRANSLATE
+14    (STORE 1)
+15    (GETVALUE 0)                        ; FORM
+17    (CDR)
+18    (CDR)
+19    (CAR&PUSH)
+20    (CALL1 2)                           ; TRANSLATE
+22    (STORE 0)
+23    (LOAD&CAR&PUSH 1)
+25    (LOAD&CAR&PUSH 1)
+27    (CALL2 3)                           ; *UNION-MODE
+29    (SETVALUE 1)                        ; MODE
+31    (PUSH)
+32    (JMPIFEQTO 4 L69)                   ; $FIXNUM
+35    (GETVALUE&PUSH 1)                   ; MODE
+37    (JMPIFEQTO 5 L69)                   ; $FLOAT
+40    (LOAD&CAR&PUSH 1)
+42    (GETVALUE&PUSH 6)                   ; *NUMBER-TYPES*
+44    (CALL2&JMPIFNOT 7 L54)              ; MEMQ
+47    (LOAD&CAR&PUSH 0)
+49    (GETVALUE&PUSH 6)                   ; *NUMBER-TYPES*
+51    (CALL2&JMPIF 7 L69)                 ; MEMQ
+54    L54
+54    (GETVALUE&PUSH 1)                   ; MODE
+56    (JMPIFNOTEQTO 10 L82)               ; $NUMBER
+59    (CONST&PUSH 11)                     ; GREATERP
+60    (LOAD&CDR&PUSH 2)
+62    (LOAD 2)
+63    (CDR)
+64    L64
+64    (PUSH)
+65    (LIST 3)
+67    (JMP L95)
+69    L69
+69    (CONST&PUSH 8)                      ; >
+70    (LOAD&PUSH 2)
+71    (GETVALUE&PUSH 1)                   ; MODE
+73    (CALL2&PUSH 9)                      ; DCONV
+75    (LOAD&PUSH 2)
+76    (GETVALUE&PUSH 1)                   ; MODE
+78    (CALL2 9)                           ; DCONV
+80    (JMP L64)
+82    L82
+82    (CONST&PUSH 12)                     ; MGRP
+83    (LOAD&PUSH 2)
+84    (CALL1&PUSH 13)                     ; DCONVX
+86    (LOAD&PUSH 2)
+87    (CALL1&PUSH 13)                     ; DCONVX
+89    (LIST&PUSH 3)
+91    (GETVALUE&PUSH 0)                   ; FORM
+93    (CALL2 14)                          ; WRAP-AN-IS
+95    L95
+95    (SKIP 2)
+97    (UNBIND 2)
+99    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TRP-MLESSP (FORM) ...)-25|
+(CONST 0) = TRP-MLESSP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MLESSP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MLESSP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MLESSP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MLESSP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MLESSP
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MLESSP
+(CONST 0) = FORM
+(CONST 1) = MODE
+(CONST 2) = TRANSLATE
+(CONST 3) = *UNION-MODE
+(CONST 4) = $FIXNUM
+(CONST 5) = $FLOAT
+(CONST 6) = *NUMBER-TYPES*
+(CONST 7) = MEMQ
+(CONST 8) = <
+(CONST 9) = DCONV
+(CONST 10) = $NUMBER
+(CONST 11) = LESSP
+(CONST 12) = MLSP
+(CONST 13) = DCONVX
+(CONST 14) = WRAP-AN-IS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*NUMBER-TYPES* MODE FORM)
+writes special variable : (MODE)
+63 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (NIL)
+4     (BIND 1)                            ; MODE
+6     (PUSH-NIL 2)
+8     (GETVALUE 0)                        ; FORM
+10    (CDR)
+11    (CAR&PUSH)
+12    (CALL1 2)                           ; TRANSLATE
+14    (STORE 1)
+15    (GETVALUE 0)                        ; FORM
+17    (CDR)
+18    (CDR)
+19    (CAR&PUSH)
+20    (CALL1 2)                           ; TRANSLATE
+22    (STORE 0)
+23    (LOAD&CAR&PUSH 1)
+25    (LOAD&CAR&PUSH 1)
+27    (CALL2 3)                           ; *UNION-MODE
+29    (SETVALUE 1)                        ; MODE
+31    (PUSH)
+32    (JMPIFEQTO 4 L69)                   ; $FIXNUM
+35    (GETVALUE&PUSH 1)                   ; MODE
+37    (JMPIFEQTO 5 L69)                   ; $FLOAT
+40    (LOAD&CAR&PUSH 1)
+42    (GETVALUE&PUSH 6)                   ; *NUMBER-TYPES*
+44    (CALL2&JMPIFNOT 7 L54)              ; MEMQ
+47    (LOAD&CAR&PUSH 0)
+49    (GETVALUE&PUSH 6)                   ; *NUMBER-TYPES*
+51    (CALL2&JMPIF 7 L69)                 ; MEMQ
+54    L54
+54    (GETVALUE&PUSH 1)                   ; MODE
+56    (JMPIFNOTEQTO 10 L82)               ; $NUMBER
+59    (CONST&PUSH 11)                     ; LESSP
+60    (LOAD&CDR&PUSH 2)
+62    (LOAD 2)
+63    (CDR)
+64    L64
+64    (PUSH)
+65    (LIST 3)
+67    (JMP L95)
+69    L69
+69    (CONST&PUSH 8)                      ; <
+70    (LOAD&PUSH 2)
+71    (GETVALUE&PUSH 1)                   ; MODE
+73    (CALL2&PUSH 9)                      ; DCONV
+75    (LOAD&PUSH 2)
+76    (GETVALUE&PUSH 1)                   ; MODE
+78    (CALL2 9)                           ; DCONV
+80    (JMP L64)
+82    L82
+82    (CONST&PUSH 12)                     ; MLSP
+83    (LOAD&PUSH 2)
+84    (CALL1&PUSH 13)                     ; DCONVX
+86    (LOAD&PUSH 2)
+87    (CALL1&PUSH 13)                     ; DCONVX
+89    (LIST&PUSH 3)
+91    (GETVALUE&PUSH 0)                   ; FORM
+93    (CALL2 14)                          ; WRAP-AN-IS
+95    L95
+95    (SKIP 2)
+97    (UNBIND 2)
+99    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TRP-MEQUAL (FORM) ...)-26|
+(CONST 0) = TRP-MEQUAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MEQUAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MEQUAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MEQUAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MEQUAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MEQUAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MEQUAL
+(CONST 0) = FORM
+(CONST 1) = MODE
+(CONST 2) = TRANSLATE
+(CONST 3) = *UNION-MODE
+(CONST 4) = $FIXNUM
+(CONST 5) = $FLOAT
+(CONST 6) = EQL
+(CONST 7) = DCONV
+(CONST 8) = $NUMBER
+(CONST 9) = EQUAL
+(CONST 10) = LIKE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE FORM)
+writes special variable : (MODE)
+50 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (NIL)
+4     (BIND 1)                            ; MODE
+6     (PUSH-NIL 2)
+8     (GETVALUE 0)                        ; FORM
+10    (CDR)
+11    (CAR&PUSH)
+12    (CALL1 2)                           ; TRANSLATE
+14    (STORE 1)
+15    (GETVALUE 0)                        ; FORM
+17    (CDR)
+18    (CDR)
+19    (CAR&PUSH)
+20    (CALL1 2)                           ; TRANSLATE
+22    (STORE 0)
+23    (LOAD&CAR&PUSH 1)
+25    (LOAD&CAR&PUSH 1)
+27    (CALL2 3)                           ; *UNION-MODE
+29    (SETVALUE 1)                        ; MODE
+31    (PUSH)
+32    (JMPIFEQTO 4 L66)                   ; $FIXNUM
+35    (GETVALUE&PUSH 1)                   ; MODE
+37    (JMPIFEQTO 5 L66)                   ; $FLOAT
+40    (GETVALUE&PUSH 1)                   ; MODE
+42    (JMPIFEQTO 8 L69)                   ; $NUMBER
+45    (CONST 10)                          ; LIKE
+46    L46
+46    (PUSH)
+47    (LOAD&PUSH 2)
+48    (GETVALUE&PUSH 1)                   ; MODE
+50    (CALL2&PUSH 7)                      ; DCONV
+52    (LOAD&PUSH 2)
+53    (GETVALUE&PUSH 1)                   ; MODE
+55    (CALL2 7)                           ; DCONV
+57    L57
+57    (PUSH)
+58    (LIST 3)
+60    (SKIP 2)
+62    (UNBIND 2)
+64    (SKIP&RET 2)
+66    L66
+66    (CONST 6)                           ; EQL
+67    (JMP L46)
+69    L69
+69    (CONST&PUSH 9)                      ; EQUAL
+70    (LOAD&CDR&PUSH 2)
+72    (LOAD 2)
+73    (CDR)
+74    (JMP L57)
+
+
+Disassembly of function #:|(DEFUN TRP-$EQUAL (FORM) ...)-27|
+(CONST 0) = TRP-$EQUAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-$EQUAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-$EQUAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-$EQUAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-$EQUAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-$EQUAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-$EQUAL
+(CONST 0) = FORM
+(CONST 1) = MODE
+(CONST 2) = TRANSLATE
+(CONST 3) = *UNION-MODE
+(CONST 4) = $FIXNUM
+(CONST 5) = $FLOAT
+(CONST 6) = =
+(CONST 7) = DCONV
+(CONST 8) = $NUMBER
+(CONST 9) = MEQP
+(CONST 10) = DCONVX
+(CONST 11) = WRAP-AN-IS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE FORM)
+writes special variable : (MODE)
+56 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (NIL)
+4     (BIND 1)                            ; MODE
+6     (PUSH-NIL 2)
+8     (GETVALUE 0)                        ; FORM
+10    (CDR)
+11    (CAR&PUSH)
+12    (CALL1 2)                           ; TRANSLATE
+14    (STORE 1)
+15    (GETVALUE 0)                        ; FORM
+17    (CDR)
+18    (CDR)
+19    (CAR&PUSH)
+20    (CALL1 2)                           ; TRANSLATE
+22    (STORE 0)
+23    (LOAD&CAR&PUSH 1)
+25    (LOAD&CAR&PUSH 1)
+27    (CALL2 3)                           ; *UNION-MODE
+29    (SETVALUE 1)                        ; MODE
+31    (PUSH)
+32    (JMPIFEQTO 4 L55)                   ; $FIXNUM
+35    (GETVALUE&PUSH 1)                   ; MODE
+37    (JMPIFEQTO 5 L55)                   ; $FLOAT
+40    (GETVALUE&PUSH 1)                   ; MODE
+42    (JMPIFNOTEQTO 8 L68)                ; $NUMBER
+45    (CONST&PUSH 9)                      ; MEQP
+46    (LOAD&CDR&PUSH 2)
+48    (LOAD 2)
+49    (CDR)
+50    L50
+50    (PUSH)
+51    (LIST 3)
+53    (JMP L81)
+55    L55
+55    (CONST&PUSH 6)                      ; =
+56    (LOAD&PUSH 2)
+57    (GETVALUE&PUSH 1)                   ; MODE
+59    (CALL2&PUSH 7)                      ; DCONV
+61    (LOAD&PUSH 2)
+62    (GETVALUE&PUSH 1)                   ; MODE
+64    (CALL2 7)                           ; DCONV
+66    (JMP L50)
+68    L68
+68    (CONST&PUSH 9)                      ; MEQP
+69    (LOAD&PUSH 2)
+70    (CALL1&PUSH 10)                     ; DCONVX
+72    (LOAD&PUSH 2)
+73    (CALL1&PUSH 10)                     ; DCONVX
+75    (LIST&PUSH 3)
+77    (GETVALUE&PUSH 0)                   ; FORM
+79    (CALL2 11)                          ; WRAP-AN-IS
+81    L81
+81    (SKIP 2)
+83    (UNBIND 2)
+85    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TRP-MNOTEQUAL (FORM) ...)-28|
+(CONST 0) = TRP-MNOTEQUAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MNOTEQUAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MNOTEQUAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MNOTEQUAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MNOTEQUAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MNOTEQUAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MNOTEQUAL
+(CONST 0) = FORM
+(CONST 1) = NOT
+(CONST 2) = TRP-MEQUAL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; NOT
+4     (GETVALUE&PUSH 0)                   ; FORM
+6     (CALL1&PUSH 2)                      ; TRP-MEQUAL
+8     (LIST 2)
+10    (UNBIND1)
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TRP-MGEQP (FORM) ...)-29|
+(CONST 0) = TRP-MGEQP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MGEQP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MGEQP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MGEQP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MGEQP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MGEQP
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MGEQP
+(CONST 0) = FORM
+(CONST 1) = NOT
+(CONST 2) = TRP-MLESSP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; NOT
+4     (GETVALUE&PUSH 0)                   ; FORM
+6     (CALL1&PUSH 2)                      ; TRP-MLESSP
+8     (LIST 2)
+10    (UNBIND1)
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TRP-MLEQP (FORM) ...)-30|
+(CONST 0) = TRP-MLEQP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRP-MLEQP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRP-MLEQP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRP-MLEQP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRP-MLEQP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRP-MLEQP
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRP-MLEQP
+(CONST 0) = FORM
+(CONST 1) = NOT
+(CONST 2) = TRP-MGREATERP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (CONST&PUSH 1)                      ; NOT
+4     (GETVALUE&PUSH 0)                   ; FORM
+6     (CALL1&PUSH 2)                      ; TRP-MGREATERP
+8     (LIST 2)
+10    (UNBIND1)
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ASSUME (FORM) ...)-31-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $ASSUME (FORM) ...)-31-2-1|>
+(CONST 1) = $ASSUME
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $ASSUME (FORM) ...)-31-2-1|>
+1     (CONST&PUSH 1)                      ; $ASSUME
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $ASSUME (FORM) ...)-31-2-1|
+(CONST 0) = FORM
+(CONST 1) = X
+(CONST 2) = MAND
+(CONST 3) = L
+(CONST 4) = ASSUME
+(CONST 5) = DTRANSLATE
+(CONST 6) = MNOT
+(CONST 7) = PRED-REVERSE
+(CONST 8) = MOR
+(CONST 9) = "ASSUME: Macsyma is unable to handle assertions involving 'OR'."
+(CONST 10) = MERROR
+(CONST 11) = MEQUAL
+(CONST 12) = 
+"ASSUME: = means syntactic equality in Macsyma. ~
+		     Maybe you want to use EQUAL."
+(CONST 13) = MNOTEQUAL
+(CONST 14) = 
+"ASSUME: # means syntactic unequality in Macsyma. ~
+		     Maybe you want to use NOT EQUAL."
+(CONST 15) = $ANY
+(CONST 16) = SIMPLIFY
+(CONST 17) = LIST
+(CONST 18) = '(MLIST)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L X FORM)
+writes special variable : (X)
+103 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (GETVALUE 0)                        ; FORM
+5     (CDR)
+6     (BIND 1)                            ; X
+8     (NIL&PUSH)
+9     (GETVALUE 1)                        ; X
+11    (JMPIFNOT L80)
+14    L14
+14    (GETVALUE 1)                        ; X
+16    (CAR)
+17    (CAR)
+18    (CAR&PUSH)
+19    (JMPIFEQTO 2 L97)                   ; MAND
+23    (GETVALUE 1)                        ; X
+25    (CAR)
+26    (CAR)
+27    (CAR&PUSH)
+28    (JMPIFEQTO 6 L131)                  ; MNOT
+32    (GETVALUE 1)                        ; X
+34    (CAR)
+35    (CAR)
+36    (CAR&PUSH)
+37    (JMPIFEQTO 8 L142)                  ; MOR
+41    (GETVALUE 1)                        ; X
+43    (CAR)
+44    (CAR)
+45    (CAR&PUSH)
+46    (JMPIFEQTO 11 L145)                 ; MEQUAL
+50    (GETVALUE 1)                        ; X
+52    (CAR)
+53    (CAR)
+54    (CAR&PUSH)
+55    (JMPIFEQTO 13 L148)                 ; MNOTEQUAL
+59    (CONST&PUSH 4)                      ; ASSUME
+60    (GETVALUE 1)                        ; X
+62    (CAR)
+63    L63
+63    (PUSH)
+64    (CALL1&PUSH 5)                      ; DTRANSLATE
+66    (LIST&PUSH 2)
+68    (LOAD&CONS&STORE 0)
+70    L70
+70    (GETVALUE 1)                        ; X
+72    (CDR)
+73    (SETVALUE 1)                        ; X
+75    (GETVALUE 1)                        ; X
+77    (JMPIF L14)
+80    L80
+80    (CONST&PUSH 15)                     ; $ANY
+81    (CONST&PUSH 16)                     ; SIMPLIFY
+82    (CONST&PUSH 17)                     ; LIST
+83    (CONST&PUSH 18)                     ; '(MLIST)
+84    (LOAD&PUSH 4)
+85    (CALLS2 73)                         ; NREVERSE
+87    (LIST*&PUSH 2)
+89    (LIST 3)
+91    (SKIP 1)
+93    (UNBIND 2)
+95    (SKIP&RET 2)
+97    L97
+97    (GETVALUE 1)                        ; X
+99    (CAR)
+100   (CDR&PUSH)
+101   (LOAD&PUSH 0)
+102   (JMP L123)
+104   L104
+104   (LOAD&CAR&PUSH 0)
+106   (LOAD 0)
+107   (BIND 3)                            ; L
+109   (CONST&PUSH 4)                      ; ASSUME
+110   (GETVALUE&PUSH 3)                   ; L
+112   (CALL1&PUSH 5)                      ; DTRANSLATE
+114   (LIST&PUSH 2)
+116   (LOAD&CONS&STORE 6)
+118   (UNBIND1)
+119   (SKIP 1)
+121   (LOAD&CDR&STORE 0)
+123   L123
+123   (LOAD&PUSH 0)
+124   (CALLS1&JMPIFNOT 146 L104)          ; ENDP
+127   (SKIP 2)
+129   (JMP L70)
+131   L131
+131   (CONST&PUSH 4)                      ; ASSUME
+132   (GETVALUE 1)                        ; X
+134   (CAR)
+135   (CDR)
+136   (CAR&PUSH)
+137   (CALL1 7)                           ; PRED-REVERSE
+139   (JMP L63)
+142   L142
+142   (CONST 9)                           ; "ASSUME: Macsyma is unable to handle assertions involving 'OR'."
+143   (JMP L149)
+145   L145
+145   (CONST 12)                          ; "ASSUME: = means syntactic equality in Macsyma. ~
+		     Maybe you want to use EQUAL."
+146   (JMP L149)
+148   L148
+148   (CONST 14)                          ; "ASSUME: # means syntactic unequality in Macsyma. ~
+		     Maybe you want to use NOT EQUAL."
+149   L149
+149   (PUSH)
+150   (CALL1 10)                          ; MERROR
+152   (JMP L70)
+
+
+Wrote file binary-clisp/trpred.fas
+Wrote file /cygdrive/e/temp/maxima/src/trpred.lis

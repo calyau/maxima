@@ -1,0 +1,2214 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trmode.lisp
+on 2002-12-17 13:33:58 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trmode.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRMODE)-2|
+(CONST 0) = TRMODE
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRMODE
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TRMODE)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MODE_CHECKP T ...)-4-1|
+(CONST 0) = $MODE_CHECKP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MODE_CHECKP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $MODE_CHECKP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MODE_CHECKP T ...)-4-2|
+(CONST 0) = (SPECIAL $MODE_CHECKP)
+(CONST 1) = $MODE_CHECKP
+(CONST 2) = VARIABLE
+(CONST 3) = "if true, modedeclare checks the modes of bound variables."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $MODE_CHECKP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $MODE_CHECKP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $MODE_CHECKP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $MODE_CHECKP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "if true, modedeclare checks the modes of bound variables."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $MODE_CHECKP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MODE_CHECK_WARNP T ...)-5-1|
+(CONST 0) = $MODE_CHECK_WARNP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MODE_CHECK_WARNP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $MODE_CHECK_WARNP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MODE_CHECK_WARNP T ...)-5-2|
+(CONST 0) = (SPECIAL $MODE_CHECK_WARNP)
+(CONST 1) = $MODE_CHECK_WARNP
+(CONST 2) = VARIABLE
+(CONST 3) = "if true, mode errors are described."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $MODE_CHECK_WARNP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $MODE_CHECK_WARNP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $MODE_CHECK_WARNP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $MODE_CHECK_WARNP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "if true, mode errors are described."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $MODE_CHECK_WARNP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MODE_CHECK_ERRORP NIL ...)-6-1|
+(CONST 0) = $MODE_CHECK_ERRORP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MODE_CHECK_ERRORP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $MODE_CHECK_ERRORP
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MODE_CHECK_ERRORP NIL ...)-6-2|
+(CONST 0) = (SPECIAL $MODE_CHECK_ERRORP)
+(CONST 1) = $MODE_CHECK_ERRORP
+(CONST 2) = VARIABLE
+(CONST 3) = "if true, modedeclare calls error."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $MODE_CHECK_ERRORP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $MODE_CHECK_ERRORP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $MODE_CHECK_ERRORP
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $MODE_CHECK_ERRORP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "if true, modedeclare calls error."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $MODE_CHECK_ERRORP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MACSYMA_EXTEND_WARNP T ...)-7-1|
+(CONST 0) = $MACSYMA_EXTEND_WARNP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MACSYMA_EXTEND_WARNP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $MACSYMA_EXTEND_WARNP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MACSYMA_EXTEND_WARNP T ...)-7-2|
+(CONST 0) = (SPECIAL $MACSYMA_EXTEND_WARNP)
+(CONST 1) = $MACSYMA_EXTEND_WARNP
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"if true,
+warning given about not-built-in modes being taken for MACSYMA EXTEND types."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $MACSYMA_EXTEND_WARNP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $MACSYMA_EXTEND_WARNP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $MACSYMA_EXTEND_WARNP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $MACSYMA_EXTEND_WARNP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "if true,
+warning given about not-built-in modes being taken for MACSYMA EXTEND types."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $MACSYMA_EXTEND_WARNP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MSEEMINGLY-UNBOUND (X) ...)-8|
+(CONST 0) = MSEEMINGLY-UNBOUND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MSEEMINGLY-UNBOUND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MSEEMINGLY-UNBOUND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MSEEMINGLY-UNBOUND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MSEEMINGLY-UNBOUND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MSEEMINGLY-UNBOUND
+8     (SKIP&RET 1)
+
+
+Disassembly of function MSEEMINGLY-UNBOUND
+(CONST 0) = X
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+13 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALLS1 79)                         ; BOUNDP
+7     (NOT)
+8     (JMPIF1 L17)
+10    (GETVALUE&PUSH 0)                   ; X
+12    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+14    (GETVALUE 0)                        ; X
+16    (EQ)
+17    L17
+17    (UNBIND1)
+18    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN ASSIGN-MODE-CHECK (VAR VALUE) ...)-9|
+(CONST 0) = ASSIGN-MODE-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ASSIGN-MODE-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ASSIGN-MODE-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ASSIGN-MODE-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ASSIGN-MODE-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ASSIGN-MODE-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function ASSIGN-MODE-CHECK
+(CONST 0) = VAR
+(CONST 1) = MODE
+(CONST 2) = $VALUE_CHECK
+(CONST 3) = $GET
+(CONST 4) = $MODE_CHECK_WARNP
+(CONST 5) = $MODE_CHECK_ERRORP
+(CONST 6) = CHEKVALUE
+(CONST 7) = MCALL
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+32 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; VAR
+3     (GETVALUE&PUSH 0)                   ; VAR
+5     (CONST&PUSH 1)                      ; MODE
+6     (PUSH-UNBOUND 1)
+8     (CALLS2&PUSH 132)                   ; GET
+10    (GETVALUE&PUSH 0)                   ; VAR
+12    (CONST&PUSH 2)                      ; $VALUE_CHECK
+13    (CALL2&PUSH 3)                      ; $GET
+15    (LOAD&JMPIF 1 L31)
+18    (LOAD&JMPIFNOT 0 L25)
+21    L21
+21    (PUSH)
+22    (LOAD&PUSH 7)
+23    (CALL2 7)                           ; MCALL
+25    L25
+25    (SKIP 2)
+27    (LOAD 4)
+28    (UNBIND1)
+29    (SKIP&RET 3)
+31    L31
+31    (T)
+32    (BIND 4)                            ; $MODE_CHECK_WARNP
+34    (T)
+35    (BIND 5)                            ; $MODE_CHECK_ERRORP
+37    (GETVALUE&PUSH 0)                   ; VAR
+39    (LOAD&PUSH 8)
+40    (LOAD&PUSH 14)
+41    (CALL 3 6)                          ; CHEKVALUE
+44    (UNBIND 2)
+46    (LOAD&JMPIFNOT 0 L25)
+49    (JMP L21)
+
+
+Disassembly of function #:|(DEFTRVAR DEFINED_VARIABLES NIL)-10|
+(CONST 0) = (SPECIAL DEFINED_VARIABLES)
+(CONST 1) = DEFINED_VARIABLES
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL DEFINED_VARIABLES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; DEFINED_VARIABLES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; DEFINED_VARIABLES
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; DEFINED_VARIABLES
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRVAR $DEFINE_VARIABLE NIL)-11|
+(CONST 0) = (SPECIAL $DEFINE_VARIABLE)
+(CONST 1) = $DEFINE_VARIABLE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DEFINE_VARIABLE)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DEFINE_VARIABLE
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DEFINE_VARIABLE
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $DEFINE_VARIABLE
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $DEFINE_VARIABLE (FORM) ...)-12-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $DEFINE_VARIABLE (FORM) ...)-12-2-1|>
+(CONST 1) = $DEFINE_VARIABLE
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $DEFINE_VARIABLE (FORM) ...)-12-2-1|>
+1     (CONST&PUSH 1)                      ; $DEFINE_VARIABLE
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $DEFINE_VARIABLE (FORM) ...)-12-2-1|
+(CONST 0) = 3
+(CONST 1) = VAR
+(CONST 2) = ($DECLARE)
+(CONST 3) = ($SPECIAL)
+(CONST 4) = ($MODEDECLARE)
+(CONST 5) = TRANSLATE
+(CONST 6) = DECLARE
+(CONST 7) = SPECIAL
+(CONST 8) = PUSH-PRE-TRANSL-FORM
+(CONST 9) = DEFINED_VARIABLES
+(CONST 10) = *PRE-TRANSL-FORMS*
+(CONST 11) = L
+(CONST 12) = DEF-MTRVAR
+(CONST 13) = DELQ
+(CONST 14) = $ANY
+(CONST 15) = ASSIGN-MODE-CHECK
+(CONST 16) = ASSIGN
+(CONST 17) = PUTPROP
+(CONST 18) = EVAL-WHEN
+(CONST 19) = (COMPILE EVAL LOAD)
+(CONST 20) = MEVAL*
+(CONST 21) = QUOTE
+(CONST 22) = DEFPROP
+(CONST 23) = (ASSIGN-MODE-CHECK ASSIGN)
+(CONST 24) = DTRANSLATE
+(CONST 25) = "Wrong number of arguments"
+(CONST 26) = TR-TELL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L *PRE-TRANSL-FORMS* DEFINED_VARIABLES VAR)
+writes special variables : (L *PRE-TRANSL-FORMS* DEFINED_VARIABLES VAR)
+116 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 48 L15)             ; >
+8     (CONST&PUSH 25)                     ; "Wrong number of arguments"
+9     (LOAD&PUSH 2)
+10    (CALL2 26)                          ; TR-TELL
+12    (NIL)
+13    (SKIP&RET 2)
+15    L15
+15    (NIL&PUSH)
+16    (LOAD&CDR&PUSH 2)
+18    (LOAD 1)
+19    (BIND 1)                            ; VAR
+21    (LOAD 3)
+22    (CAR)
+23    (SETVALUE 1)                        ; VAR
+25    (LOAD&CDR&STORE 3)
+27    (CDR)
+28    (CAR)
+29    (STORE 3)
+30    (CONST&PUSH 2)                      ; ($DECLARE)
+31    (GETVALUE&PUSH 1)                   ; VAR
+33    (CONST 3)                           ; ($SPECIAL)
+34    (LIST*&PUSH 2)
+36    (CONST&PUSH 4)                      ; ($MODEDECLARE)
+37    (GETVALUE&PUSH 1)                   ; VAR
+39    (LOAD&PUSH 6)
+40    (LIST&PUSH 3)
+42    (LOAD&PUSH 1)
+43    (CALL1 5)                           ; TRANSLATE
+45    (LOAD&PUSH 0)
+46    (CALL1 5)                           ; TRANSLATE
+48    (CONST&PUSH 6)                      ; DECLARE
+49    (CONST&PUSH 7)                      ; SPECIAL
+50    (GETVALUE&PUSH 1)                   ; VAR
+52    (LIST&PUSH 2)
+54    (LIST&PUSH 2)
+56    (CALL1 8)                           ; PUSH-PRE-TRANSL-FORM
+58    (GETVALUE&PUSH 1)                   ; VAR
+60    (GETVALUE 9)                        ; DEFINED_VARIABLES
+62    (CONS)
+63    (SETVALUE 9)                        ; DEFINED_VARIABLES
+65    (GETVALUE 10)                       ; *PRE-TRANSL-FORMS*
+67    (BIND 11)                           ; L
+69    (GETVALUE 11)                       ; L
+71    (JMPIFNOT L107)
+73    L73
+73    (GETVALUE 11)                       ; L
+75    (CAR)
+76    (CAR&PUSH)
+77    (JMPIFNOTEQTO 12 L98)               ; DEF-MTRVAR
+80    (GETVALUE 11)                       ; L
+82    (CAR)
+83    (CDR)
+84    (CAR&PUSH)
+85    (GETVALUE 1)                        ; VAR
+87    (JMPIFNOTEQ L98)
+89    (GETVALUE 11)                       ; L
+91    (CAR&PUSH)
+92    (GETVALUE&PUSH 10)                  ; *PRE-TRANSL-FORMS*
+94    (CALL2 13)                          ; DELQ
+96    (SETVALUE 10)                       ; *PRE-TRANSL-FORMS*
+98    L98
+98    (GETVALUE 11)                       ; L
+100   (CDR)
+101   (SETVALUE 11)                       ; L
+103   (GETVALUE 11)                       ; L
+105   (JMPIF L73)
+107   L107
+107   (UNBIND1)
+108   (LOAD&PUSH 5)
+109   (JMPIFEQTO 14 L119)                 ; $ANY
+112   (GETVALUE&PUSH 1)                   ; VAR
+114   (CONST&PUSH 15)                     ; ASSIGN-MODE-CHECK
+115   (CONST&PUSH 16)                     ; ASSIGN
+116   (CALL 3 17)                         ; PUTPROP
+119   L119
+119   (CONST&PUSH 14)                     ; $ANY
+120   (CONST&PUSH 18)                     ; EVAL-WHEN
+121   (CONST&PUSH 19)                     ; (COMPILE EVAL LOAD)
+122   (CONST&PUSH 20)                     ; MEVAL*
+123   (CONST&PUSH 21)                     ; QUOTE
+124   (LOAD&PUSH 5)
+125   (LIST&PUSH 2)
+127   (LIST&PUSH 2)
+129   (CONST&PUSH 20)                     ; MEVAL*
+130   (CONST&PUSH 21)                     ; QUOTE
+131   (LOAD&PUSH 7)
+132   (LIST&PUSH 2)
+134   (LIST&PUSH 2)
+136   (LOAD&PUSH 10)
+137   (CONST 14)                          ; $ANY
+138   (EQ)
+139   (NOT)
+140   (JMPIFNOT L149)
+142   (CONST&PUSH 22)                     ; DEFPROP
+143   (GETVALUE&PUSH 1)                   ; VAR
+145   (CONST 23)                          ; (ASSIGN-MODE-CHECK ASSIGN)
+147   (LIST* 2)
+149   L149
+149   (PUSH)
+150   (CONST&PUSH 12)                     ; DEF-MTRVAR
+151   (LOAD 15)
+153   (CDR)
+154   (CAR&PUSH)
+155   (LOAD 16)
+157   (CDR)
+158   (CDR)
+159   (CAR&PUSH)
+160   (CALL1&PUSH 24)                     ; DTRANSLATE
+162   (LIST&PUSH 3)
+164   (LIST 7)
+166   (SKIP 2)
+168   (UNBIND1)
+169   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMSPEC $DEFINE_VARIABLE (L) ...)-13-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $DEFINE_VARIABLE (L) ...)-13-2-1|>
+(CONST 1) = $DEFINE_VARIABLE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $DEFINE_VARIABLE (L) ...)-13-2-1|>
+1     (CONST&PUSH 1)                      ; $DEFINE_VARIABLE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $DEFINE_VARIABLE (L) ...)-13-2-1|
+(CONST 0) = L
+(CONST 1) = 2
+(CONST 2) = "Wrong number of arguments to DEFINE_VARIABLE"
+(CONST 3) = MERROR
+(CONST 4) = "First arg to DEFINE_VARIABLE not a SYMBOL."
+(CONST 5) = ($MODEDECLARE)
+(CONST 6) = MEVAL
+(CONST 7) = ($DECLARE)
+(CONST 8) = ($SPECIAL)
+(CONST 9) = $ANY
+(CONST 10) = ASSIGN-MODE-CHECK
+(CONST 11) = ASSIGN
+(CONST 12) = PUTPROP
+(CONST 13) = MSEEMINGLY-UNBOUND
+(CONST 14) = (MSETQ)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+63 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (CDR)
+6     (SETVALUE 0)                        ; L
+8     (PUSH)
+9     (CALLS2&PUSH 71)                    ; LENGTH
+11    (CONST&PUSH 1)                      ; 2
+12    (CALLSR&JMPIF 1 48 L19)             ; >
+16    (CONST&PUSH 2)                      ; "Wrong number of arguments to DEFINE_VARIABLE"
+17    (CALL1 3)                           ; MERROR
+19    L19
+19    (GETVALUE 0)                        ; L
+21    (CAR&PUSH)
+22    (CALLS2&JMPIF 6 L28)                ; SYMBOLP
+25    (CONST&PUSH 4)                      ; "First arg to DEFINE_VARIABLE not a SYMBOL."
+26    (CALL1 3)                           ; MERROR
+28    L28
+28    (CONST&PUSH 5)                      ; ($MODEDECLARE)
+29    (GETVALUE 0)                        ; L
+31    (CAR&PUSH)
+32    (GETVALUE 0)                        ; L
+34    (CDR)
+35    (CDR)
+36    (CAR&PUSH)
+37    (LIST&PUSH 3)
+39    (CALL1 6)                           ; MEVAL
+41    (CONST&PUSH 7)                      ; ($DECLARE)
+42    (GETVALUE 0)                        ; L
+44    (CAR&PUSH)
+45    (CONST 8)                           ; ($SPECIAL)
+46    (LIST*&PUSH 2)
+48    (CALL1 6)                           ; MEVAL
+50    (GETVALUE 0)                        ; L
+52    (CDR)
+53    (CDR)
+54    (CAR&PUSH)
+55    (JMPIFEQTO 9 L66)                   ; $ANY
+58    (GETVALUE 0)                        ; L
+60    (CAR&PUSH)
+61    (CONST&PUSH 10)                     ; ASSIGN-MODE-CHECK
+62    (CONST&PUSH 11)                     ; ASSIGN
+63    (CALL 3 12)                         ; PUTPROP
+66    L66
+66    (GETVALUE 0)                        ; L
+68    (CAR&PUSH)
+69    (CALL1&JMPIF 13 L81)                ; MSEEMINGLY-UNBOUND
+72    (GETVALUE 0)                        ; L
+74    (CAR)
+75    L75
+75    (PUSH)
+76    (CALL1 6)                           ; MEVAL
+78    (UNBIND1)
+79    (SKIP&RET 2)
+81    L81
+81    (CONST&PUSH 14)                     ; (MSETQ)
+82    (GETVALUE 0)                        ; L
+84    (CAR&PUSH)
+85    (GETVALUE 0)                        ; L
+87    (CDR)
+88    (CAR&PUSH)
+89    (LIST 3)
+91    (JMP L75)
+
+
+Disassembly of function #:|(DEFMSPEC $MODE_IDENTITY (L) ...)-14-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $MODE_IDENTITY (L) ...)-14-2-1|>
+(CONST 1) = $MODE_IDENTITY
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $MODE_IDENTITY (L) ...)-14-2-1|>
+1     (CONST&PUSH 1)                      ; $MODE_IDENTITY
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MODE_IDENTITY (L) ...)-14-2-1|
+(CONST 0) = L
+(CONST 1) = 2
+(CONST 2) = "MODE_IDENTITY takes 2 arguments."
+(CONST 3) = MERROR
+(CONST 4) = MEVAL
+(CONST 5) = V
+(CONST 6) = IR-OR-EXTEND
+(CONST 7) = CHEKVALUE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (V L)
+writes special variable : (L)
+29 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (CDR)
+6     (SETVALUE 0)                        ; L
+8     (PUSH)
+9     (CALLS2&PUSH 71)                    ; LENGTH
+11    (CONST&PUSH 1)                      ; 2
+12    (CALLSR&JMPIF 1 45 L19)             ; =
+16    (CONST&PUSH 2)                      ; "MODE_IDENTITY takes 2 arguments."
+17    (CALL1 3)                           ; MERROR
+19    L19
+19    (GETVALUE 0)                        ; L
+21    (CDR)
+22    (CAR&PUSH)
+23    (LOAD&PUSH 0)
+24    (CALL1 4)                           ; MEVAL
+26    (BIND 5)                            ; V
+28    (LOAD&PUSH 3)
+29    (GETVALUE 0)                        ; L
+31    (CAR&PUSH)
+32    (CALL1&PUSH 6)                      ; IR-OR-EXTEND
+34    (GETVALUE&PUSH 5)                   ; V
+36    (CALL 3 7)                          ; CHEKVALUE
+39    (GETVALUE 5)                        ; V
+41    (UNBIND1)
+42    (SKIP 1)
+44    (UNBIND1)
+45    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MODE_IDENTITY (FORM) ...)-15-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MODE_IDENTITY (FORM) ...)-15-2-1|>
+(CONST 1) = $MODE_IDENTITY
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MODE_IDENTITY (FORM) ...)-15-2-1|>
+1     (CONST&PUSH 1)                      ; $MODE_IDENTITY
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MODE_IDENTITY (FORM) ...)-15-2-1|
+(CONST 0) = IR-OR-EXTEND
+(CONST 1) = DTRANSLATE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1&PUSH 0)                      ; IR-OR-EXTEND
+5     (LOAD 2)
+6     (CDR)
+7     (CDR)
+8     (CAR&PUSH)
+9     (CALL1 1)                           ; DTRANSLATE
+11    (CONS)
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN IR-OR-EXTEND (X) ...)-16|
+(CONST 0) = IR-OR-EXTEND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE IR-OR-EXTEND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; IR-OR-EXTEND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; IR-OR-EXTEND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE IR-OR-EXTEND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; IR-OR-EXTEND
+8     (SKIP&RET 1)
+
+
+Disassembly of function IR-OR-EXTEND
+(CONST 0) = X
+(CONST 1) = 
+#S(HASH-TABLE EQ ($ANY_CHECK . 22) ($NONE . 22) ($ANY . 22) ($COMPLEX . 19)
+   ($LISTP . 16) ($LIST . 16) ($BOOL . 13) ($BOOLEAN . 13) ($BIG . 10)
+   ($BIGNUM . 10) ($NUMBER . 10) ($RAT . 7) ($RATIONAL . 7) ($INTEGER . 4)
+   ($FIXNUM . 4) ($FIXP . 4) ($FLOATNUM . 1) ($FLONUM . 1) ($FLOATP . 1)
+   ($REAL . 1) ($FLOAT . 1))
+(CONST 2) = $FLOAT
+(CONST 3) = $FIXNUM
+(CONST 4) = $RATIONAL
+(CONST 5) = $NUMBER
+(CONST 6) = $BOOLEAN
+(CONST 7) = $LIST
+(CONST 8) = $COMPLEX
+(CONST 9) = $ANY
+(CONST 10) = $MACSYMA_EXTEND_WARNP
+(CONST 11) = "WARNING: ~M is not a built-in type; assuming it is a MACSYMA EXTEND type"
+(CONST 12) = MTELL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($MACSYMA_EXTEND_WARNP X)
+48 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     
+(JMPHASH 1 L32 L8 L8 L8 L8 L8 L11 L11 L11 L14 L14 L17 L17 L17 L20 L20 L23 L23
+ L26 L29 L29 L29)
+8     L8
+8     (CONST 2)                           ; $FLOAT
+9     (JMP L33)
+11    L11
+11    (CONST 3)                           ; $FIXNUM
+12    (JMP L33)
+14    L14
+14    (CONST 4)                           ; $RATIONAL
+15    (JMP L33)
+17    L17
+17    (CONST 5)                           ; $NUMBER
+18    (JMP L33)
+20    L20
+20    (CONST 6)                           ; $BOOLEAN
+21    (JMP L33)
+23    L23
+23    (CONST 7)                           ; $LIST
+24    (JMP L33)
+26    L26
+26    (CONST 8)                           ; $COMPLEX
+27    (JMP L33)
+29    L29
+29    (CONST 9)                           ; $ANY
+30    (JMP L33)
+32    L32
+32    (NIL)
+33    L33
+33    (PUSH)
+34    (LOAD&JMPIF 0 L53)
+37    (GETVALUE&PUSH 0)                   ; X
+39    (GETVALUE 10)                       ; $MACSYMA_EXTEND_WARNP
+41    (JMPIFNOT L48)
+43    (CONST&PUSH 11)                     ; "WARNING: ~M is not a built-in type; assuming it is a MACSYMA EXTEND type"
+44    (GETVALUE&PUSH 0)                   ; X
+46    (CALL2 12)                          ; MTELL
+48    L48
+48    (POP)
+49    (SKIP 1)
+51    (JMP L55)
+53    L53
+53    (SKIP 1)
+55    L55
+55    (UNBIND1)
+56    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MODEDECLARE (FORM) ...)-17-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $MODEDECLARE (FORM) ...)-17-2-1|>
+(CONST 1) = $MODEDECLARE
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $MODEDECLARE (FORM) ...)-17-2-1|>
+1     (CONST&PUSH 1)                      ; $MODEDECLARE
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $MODEDECLARE (FORM) ...)-17-2-1|
+(CONST 0) = L
+(CONST 1) = IR-OR-EXTEND
+(CONST 2) = DECLMODE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+24 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (BIND 0)                            ; L
+4     (GETVALUE 0)                        ; L
+6     (JMPIFNOT L31)
+8     L8
+8     (GETVALUE 0)                        ; L
+10    (CAR&PUSH)
+11    (GETVALUE 0)                        ; L
+13    (CDR)
+14    (CAR&PUSH)
+15    (CALL1&PUSH 1)                      ; IR-OR-EXTEND
+17    (T&PUSH)
+18    (CALL 3 2)                          ; DECLMODE
+21    (GETVALUE 0)                        ; L
+23    (CDR)
+24    (CDR)
+25    (SETVALUE 0)                        ; L
+27    (GETVALUE 0)                        ; L
+29    (JMPIF L8)
+31    L31
+31    (NIL)
+32    (UNBIND1)
+33    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN ASS-EQ-REF N ...)-18|
+(CONST 0) = ASS-EQ-REF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ASS-EQ-REF>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ASS-EQ-REF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ASS-EQ-REF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ASS-EQ-REF>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ASS-EQ-REF
+8     (SKIP&RET 1)
+
+
+Disassembly of function ASS-EQ-REF
+(CONST 0) = N
+(CONST 1) = 2
+(CONST 2) = NARG1
+(CONST 3) = 1
+(CONST 4) = ASSQ
+(CONST 5) = 3
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variable: (N)
+29 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2 71)                         ; LENGTH
+3     (BIND 0)                            ; N
+5     (CONST&PUSH 1)                      ; 2
+6     (LOAD&PUSH 5)
+7     (CALL2&PUSH 2)                      ; NARG1
+9     (CONST&PUSH 3)                      ; 1
+10    (LOAD&PUSH 6)
+11    (CALL2&PUSH 2)                      ; NARG1
+13    (CALL2&PUSH 4)                      ; ASSQ
+15    (LOAD&JMPIF 0 L34)
+18    (GETVALUE&PUSH 0)                   ; N
+20    (CONST&PUSH 5)                      ; 3
+21    (CALLSR 1 45)                       ; =
+24    (JMPIFNOT1 L39)
+26    (CONST&PUSH 5)                      ; 3
+27    (LOAD&PUSH 6)
+28    (CALL2 2)                           ; NARG1
+30    (SKIP 1)
+32    (JMP L41)
+34    L34
+34    (CDR)
+35    (SKIP 1)
+37    (JMP L41)
+39    L39
+39    (SKIP 1)
+41    L41
+41    (UNBIND1)
+42    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN ASS-EQ-SET (VAL TABLE KEY) ...)-19|
+(CONST 0) = ASS-EQ-SET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ASS-EQ-SET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ASS-EQ-SET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ASS-EQ-SET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ASS-EQ-SET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ASS-EQ-SET
+8     (SKIP&RET 1)
+
+
+Disassembly of function ASS-EQ-SET
+(CONST 0) = ASSQ
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&PUSH 3)
+2     (CALL2&PUSH 0)                      ; ASSQ
+4     (LOAD&JMPIF 0 L17)
+7     (LOAD&PUSH 2)
+8     (LOAD 5)
+9     (CONS&PUSH)
+10    (LOAD&CONS&STORE 3)
+12    L12
+12    (SKIP 1)
+14    (LOAD 2)
+15    (SKIP&RET 4)
+17    L17
+17    (PUSH)
+18    (LOAD&PUSH 5)
+19    (CALLS1 171)                        ; SYSTEM::%RPLACD
+21    (JMP L12)
+
+
+Disassembly of function #:|(DEFMSPEC $MODEDECLARE (X) ...)-20-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $MODEDECLARE (X) ...)-20-2-1|>
+(CONST 1) = $MODEDECLARE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $MODEDECLARE (X) ...)-20-2-1|>
+1     (CONST&PUSH 1)                      ; $MODEDECLARE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MODEDECLARE (X) ...)-20-2-1|
+(CONST 0) = X
+(CONST 1) = "MODE_DECLARE takes an even number of arguments."
+(CONST 2) = MERROR
+(CONST 3) = L
+(CONST 4) = IR-OR-EXTEND
+(CONST 5) = DECLMODE
+(CONST 6) = (MLIST)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L X)
+writes special variables : (L X)
+42 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (CDR)
+6     (SETVALUE 0)                        ; X
+8     (PUSH)
+9     (CALLS2&PUSH 71)                    ; LENGTH
+11    (CALLS2&JMPIFNOT 148 L17)           ; ODDP
+14    (CONST&PUSH 1)                      ; "MODE_DECLARE takes an even number of arguments."
+15    (CALL1 2)                           ; MERROR
+17    L17
+17    (GETVALUE 0)                        ; X
+19    (BIND 3)                            ; L
+21    (NIL&PUSH)
+22    (GETVALUE 3)                        ; L
+24    (JMPIFNOT L54)
+26    L26
+26    (GETVALUE 3)                        ; L
+28    (CAR&PUSH)
+29    (GETVALUE 3)                        ; L
+31    (CDR)
+32    (CAR&PUSH)
+33    (CALL1&PUSH 4)                      ; IR-OR-EXTEND
+35    (NIL&PUSH)
+36    (CALL 3 5)                          ; DECLMODE
+39    (GETVALUE 3)                        ; L
+41    (CAR&PUSH)
+42    (LOAD&CONS&STORE 0)
+44    (GETVALUE 3)                        ; L
+46    (CDR)
+47    (CDR)
+48    (SETVALUE 3)                        ; L
+50    (GETVALUE 3)                        ; L
+52    (JMPIF L26)
+54    L54
+54    (CONST&PUSH 6)                      ; (MLIST)
+55    (LOAD&PUSH 1)
+56    (CALLS2 73)                         ; NREVERSE
+58    (CONS)
+59    (SKIP 1)
+61    (UNBIND 2)
+63    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TR-DECLARE-VARMODE (VARIABLE MODE) ...)-21|
+(CONST 0) = TR-DECLARE-VARMODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-DECLARE-VARMODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-DECLARE-VARMODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-DECLARE-VARMODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-DECLARE-VARMODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-DECLARE-VARMODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-DECLARE-VARMODE
+(CONST 0) = IR-OR-EXTEND
+(CONST 1) = DECLVALUE
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (LOAD&PUSH 2)
+2     (CALL1&PUSH 0)                      ; IR-OR-EXTEND
+4     (T&PUSH)
+5     (CALL 3 1)                          ; DECLVALUE
+8     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL TRFLAG MODE ...))-22|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN DECLMODE (FORM MODE TRFLAG) ...)-23|
+(CONST 0) = DECLMODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DECLMODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DECLMODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DECLMODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DECLMODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DECLMODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DECLMODE
+(CONST 0) = FORM
+(CONST 1) = MODE
+(CONST 2) = TRFLAG
+(CONST 3) = DECLVALUE
+(CONST 4) = $MODE_CHECKP
+(CONST 5) = CHEKVALUE
+(CONST 6) = MLIST
+(CONST 7) = L
+(CONST 8) = ARRAY
+(CONST 9) = MEMQ
+(CONST 10) = DECLARRAY
+(CONST 11) = $FUNCTION
+(CONST 12) = DECLFUN
+(CONST 13) = ($FIXED_NUM_ARGS_FUNCTION $VARIABLE_NUM_ARGS_FUNCTION)
+(CONST 14) = F
+(CONST 15) = MPUTPROP
+(CONST 16) = $COMPLETEARRAY
+(CONST 17) = ARRAY-MODE
+(CONST 18) = PUTPROP
+(CONST 19) = $ARRAY
+(CONST 20) = $ARRAYFUN
+(CONST 21) = ARRAYFUN-MODE
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (F L $MODE_CHECKP TRFLAG MODE FORM)
+194 byte-code instructions:
+0     L0
+0     (LOAD 3)
+1     (BIND 0)                            ; FORM
+3     (LOAD 5)
+4     (BIND 1)                            ; MODE
+6     (LOAD 7)
+7     (BIND 2)                            ; TRFLAG
+9     (GETVALUE 0)                        ; FORM
+11    (JMPIFATOM L84)
+14    (GETVALUE 0)                        ; FORM
+16    (CAR)
+17    (CAR&PUSH)
+18    (JMPIFEQTO 6 L110)                  ; MLIST
+22    (CONST&PUSH 8)                      ; ARRAY
+23    (GETVALUE 0)                        ; FORM
+25    (CAR)
+26    (CDR&PUSH)
+27    (CALL2&JMPIF 9 L140)                ; MEMQ
+31    (GETVALUE 0)                        ; FORM
+33    (CAR)
+34    (CAR&PUSH)
+35    (JMPIFEQTO 11 L151)                 ; $FUNCTION
+39    (GETVALUE 0)                        ; FORM
+41    (CAR)
+42    (CAR&PUSH)
+43    (CONST&PUSH 13)                     ; ($FIXED_NUM_ARGS_FUNCTION ...)
+44    (CALL2&JMPIF 9 L178)                ; MEMQ
+48    (GETVALUE 0)                        ; FORM
+50    (CAR)
+51    (CAR&PUSH)
+52    (JMPIFEQTO 16 L219)                 ; $COMPLETEARRAY
+56    (GETVALUE 0)                        ; FORM
+58    (CAR)
+59    (CAR&PUSH)
+60    (JMPIFEQTO 19 L255)                 ; $ARRAY
+64    (GETVALUE 0)                        ; FORM
+66    (CAR)
+67    (CAR&PUSH)
+68    (JMPIFEQTO 20 L283)                 ; $ARRAYFUN
+72    (GETVALUE 0)                        ; FORM
+74    (CAR)
+75    (CAR&PUSH)
+76    (GETVALUE&PUSH 1)                   ; MODE
+78    (CALL2 12)                          ; DECLFUN
+80    L80
+80    (UNBIND 3)
+82    (SKIP&RET 4)
+84    L84
+84    (GETVALUE&PUSH 0)                   ; FORM
+86    (GETVALUE&PUSH 1)                   ; MODE
+88    (GETVALUE&PUSH 2)                   ; TRFLAG
+90    (CALL 3 3)                          ; DECLVALUE
+93    (GETVALUE 2)                        ; TRFLAG
+95    (NOT)
+96    (JMPIFNOT1 L80)
+98    (GETVALUE 4)                        ; $MODE_CHECKP
+100   (JMPIFNOT1 L80)
+102   (GETVALUE&PUSH 0)                   ; FORM
+104   (GETVALUE&PUSH 1)                   ; MODE
+106   (CALL2 5)                           ; CHEKVALUE
+108   (JMP L80)
+110   L110
+110   (GETVALUE 0)                        ; FORM
+112   (CDR&PUSH)
+113   (LOAD&PUSH 0)
+114   L114
+114   (LOAD&PUSH 0)
+115   (CALLS1&JMPIF 146 L311)             ; ENDP
+119   (LOAD&CAR&PUSH 0)
+121   (LOAD 0)
+122   (BIND 7)                            ; L
+124   (GETVALUE&PUSH 7)                   ; L
+126   (GETVALUE&PUSH 1)                   ; MODE
+128   (GETVALUE&PUSH 2)                   ; TRFLAG
+130   (JSR L0)
+133   (UNBIND1)
+134   (SKIP 1)
+136   (LOAD&CDR&STORE 0)
+138   (JMP L114)
+140   L140
+140   (GETVALUE 0)                        ; FORM
+142   (CAR)
+143   (CAR&PUSH)
+144   (GETVALUE&PUSH 1)                   ; MODE
+146   (CALL2 10)                          ; DECLARRAY
+148   (JMP L80)
+151   L151
+151   (GETVALUE 0)                        ; FORM
+153   (CDR&PUSH)
+154   (LOAD&PUSH 0)
+155   L155
+155   (LOAD&PUSH 0)
+156   (CALLS1&JMPIF 146 L311)             ; ENDP
+160   (LOAD&CAR&PUSH 0)
+162   (LOAD 0)
+163   (BIND 7)                            ; L
+165   (GETVALUE&PUSH 7)                   ; L
+167   (GETVALUE&PUSH 1)                   ; MODE
+169   (CALL2 12)                          ; DECLFUN
+171   (UNBIND1)
+172   (SKIP 1)
+174   (LOAD&CDR&STORE 0)
+176   (JMP L155)
+178   L178
+178   (GETVALUE 0)                        ; FORM
+180   (CDR&PUSH)
+181   (LOAD&PUSH 0)
+182   L182
+182   (LOAD&PUSH 0)
+183   (CALLS1&JMPIF 146 L311)             ; ENDP
+187   (LOAD&CAR&PUSH 0)
+189   (LOAD 0)
+190   (BIND 14)                           ; F
+192   (GETVALUE&PUSH 14)                  ; F
+194   (GETVALUE&PUSH 1)                   ; MODE
+196   (CALL2 12)                          ; DECLFUN
+198   (GETVALUE&PUSH 14)                  ; F
+200   (T&PUSH)
+201   (GETVALUE 0)                        ; FORM
+203   (CAR)
+204   (CAR&PUSH)
+205   (CALL 3 15)                         ; MPUTPROP
+208   (UNBIND1)
+209   (SKIP 1)
+211   (LOAD&CDR&STORE 0)
+213   (JMP L182)
+215   L215
+215   (GETVALUE 7)                        ; L
+217   (JMP L241)
+219   L219
+219   (GETVALUE 0)                        ; FORM
+221   (CDR&PUSH)
+222   (LOAD&PUSH 0)
+223   L223
+223   (LOAD&PUSH 0)
+224   (CALLS1&JMPIF 146 L311)             ; ENDP
+228   (LOAD&CAR&PUSH 0)
+230   (LOAD 0)
+231   (BIND 7)                            ; L
+233   (GETVALUE 7)                        ; L
+235   (JMPIFATOM L215)
+237   (GETVALUE 7)                        ; L
+239   (CAR)
+240   (CAR)
+241   L241
+241   (PUSH)
+242   (GETVALUE&PUSH 1)                   ; MODE
+244   (CONST&PUSH 17)                     ; ARRAY-MODE
+245   (CALL 3 18)                         ; PUTPROP
+248   (UNBIND1)
+249   (SKIP 1)
+251   (LOAD&CDR&STORE 0)
+253   (JMP L223)
+255   L255
+255   (GETVALUE 0)                        ; FORM
+257   (CDR&PUSH)
+258   (LOAD&PUSH 0)
+259   L259
+259   (LOAD&PUSH 0)
+260   (CALLS1&JMPIF 146 L311)             ; ENDP
+263   (LOAD&CAR&PUSH 0)
+265   (LOAD 0)
+266   (BIND 7)                            ; L
+268   (GETVALUE&PUSH 7)                   ; L
+270   (GETVALUE&PUSH 1)                   ; MODE
+272   (CONST&PUSH 17)                     ; ARRAY-MODE
+273   (CALL 3 15)                         ; MPUTPROP
+276   (UNBIND1)
+277   (SKIP 1)
+279   (LOAD&CDR&STORE 0)
+281   (JMP L259)
+283   L283
+283   (GETVALUE 0)                        ; FORM
+285   (CDR&PUSH)
+286   (LOAD&PUSH 0)
+287   (JMP L307)
+289   L289
+289   (LOAD&CAR&PUSH 0)
+291   (LOAD 0)
+292   (BIND 7)                            ; L
+294   (GETVALUE&PUSH 7)                   ; L
+296   (GETVALUE&PUSH 1)                   ; MODE
+298   (CONST&PUSH 21)                     ; ARRAYFUN-MODE
+299   (CALL 3 15)                         ; MPUTPROP
+302   (UNBIND1)
+303   (SKIP 1)
+305   (LOAD&CDR&STORE 0)
+307   L307
+307   (LOAD&PUSH 0)
+308   (CALLS1&JMPIFNOT 146 L289)          ; ENDP
+311   L311
+311   (SKIP 1)
+313   (POP)
+314   (JMP L80)
+
+
+Disassembly of function #:|(DECLARE-TOP (UNSPECIAL TRFLAG MODE ...))-24|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRFUN DECLVALUE (V MODE TRFLAG) ...)-25|
+(CONST 0) = DECLVALUE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DECLVALUE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DECLVALUE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DECLVALUE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DECLVALUE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DECLVALUE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DECLVALUE
+(CONST 0) = V
+(CONST 1) = MODE
+(CONST 2) = TRFLAG
+(CONST 3) = TEVAL
+(CONST 4) = $PROPS
+(CONST 5) = ADD2LNC
+(CONST 6) = PUTPROP
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE $PROPS V TRFLAG)
+writes special variable : (V)
+21 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; V
+3     (LOAD 5)
+4     (BIND 1)                            ; MODE
+6     (LOAD 7)
+7     (BIND 2)                            ; TRFLAG
+9     (GETVALUE 2)                        ; TRFLAG
+11    (JMPIFNOT L19)
+13    (GETVALUE&PUSH 0)                   ; V
+15    (CALL1 3)                           ; TEVAL
+17    (SETVALUE 0)                        ; V
+19    L19
+19    (GETVALUE&PUSH 0)                   ; V
+21    (GETVALUE&PUSH 4)                   ; $PROPS
+23    (CALL2 5)                           ; ADD2LNC
+25    (GETVALUE&PUSH 0)                   ; V
+27    (GETVALUE&PUSH 1)                   ; MODE
+29    (CONST&PUSH 1)                      ; MODE
+30    (CALL 3 6)                          ; PUTPROP
+33    (UNBIND 3)
+35    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN CHEKVALUE (V MODE &OPTIONAL ...) ...)-26|
+(CONST 0) = CHEKVALUE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHEKVALUE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHEKVALUE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHEKVALUE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHEKVALUE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHEKVALUE
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHEKVALUE
+(CONST 0) = V
+(CONST 1) = MODE
+(CONST 2) = MEVAL1
+(CONST 3) = ($FLOAT . FLOATP)
+(CONST 4) = ($FIXNUM . INTEGERP)
+(CONST 5) = ($NUMBER . NUMBERP)
+(CONST 6) = ($LIST . $LISTP)
+(CONST 7) = $BOOLEAN
+(CONST 8) = #<COMPILED-CLOSURE CHEKVALUE-1>
+(CONST 9) = ASSQ
+(CONST 10) = (($FLOAT . $REAL) ($FIXNUM . $INTEGER) ($COMPLEX . $COMPLEX))
+(CONST 11) = $EXTENDP
+(CONST 12) = $ANY
+(CONST 13) = $FEATUREP
+(CONST 14) = MFUNCALL
+(CONST 15) = SIGNAL-MODE-ERROR
+2 required arguments
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (MODE V)
+87 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; V
+3     (LOAD 5)
+4     (BIND 1)                            ; MODE
+6     (BOUNDP 7)
+8     (PUSH)
+9     (JMPIFBOUNDP 8 L23)
+12    (GETVALUE&PUSH 0)                   ; V
+14    (CALL1 2)                           ; MEVAL1
+16    (STORE 8)
+18    (LOAD&JMPIFNOT 0 L26)
+21    (JMP L32)
+23    L23
+23    (LOAD&JMPIF 0 L32)
+26    L26
+26    (GETVALUE&PUSH 0)                   ; V
+28    (LOAD 9)
+29    (JMPIFEQ L132)
+32    L32
+32    (GETVALUE&PUSH 1)                   ; MODE
+34    (CONST&PUSH 3)                      ; ($FLOAT . FLOATP)
+35    (CONST&PUSH 4)                      ; ($FIXNUM . INTEGERP)
+36    (CONST&PUSH 5)                      ; ($NUMBER . NUMBERP)
+37    (CONST&PUSH 6)                      ; ($LIST . $LISTP)
+38    (CONST&PUSH 7)                      ; $BOOLEAN
+39    (CONST 8)                           ; #<COMPILED-CLOSURE CHEKVALUE-1>
+40    (CONS&PUSH)
+41    (LIST&PUSH 5)
+43    (CALL2&PUSH 9)                      ; ASSQ
+45    (GETVALUE&PUSH 1)                   ; MODE
+47    (CONST&PUSH 10)                     ; (# # #)
+48    (CALL2&PUSH 9)                      ; ASSQ
+50    (LOAD&PUSH 10)
+51    (CALL1&PUSH 11)                     ; $EXTENDP
+53    (T&PUSH)
+54    (LOAD&JMPIF 1 L103)
+57    (LOAD&JMPIFNOT 3 L83)
+60    (CDR&PUSH)
+61    (LOAD&PUSH 13)
+62    (FUNCALL 1)
+64    (JMPIF L83)
+66    (LOAD&JMPIFNOT 2 L116)
+69    (CONST&PUSH 13)                     ; $FEATUREP
+70    (LOAD&PUSH 13)
+71    (LOAD&CDR&PUSH 4)
+73    (CALL 3 14)                         ; MFUNCALL
+76    (NOT)
+77    (PUSH)
+78    (NIL&STORE 1)
+80    (POP)
+81    (JMPIF L116)
+83    L83
+83    (LOAD&JMPIFNOT 0 L98)
+86    (LOAD&JMPIFNOT 2 L98)
+89    (CONST&PUSH 13)                     ; $FEATUREP
+90    (LOAD&PUSH 13)
+91    (LOAD&CDR&PUSH 4)
+93    (CALL 3 14)                         ; MFUNCALL
+96    (JMPIFNOT L116)
+98    L98
+98    (NIL)
+99    (SKIP 4)
+101   (JMP L133)
+103   L103
+103   (GETVALUE&PUSH 1)                   ; MODE
+105   (JMPIFEQTO 12 L98)                  ; $ANY
+108   (GETVALUE&PUSH 1)                   ; MODE
+110   (LOAD&PUSH 2)
+111   (CALLS2 1)                          ; EQL
+113   (NOT)
+114   (JMPIFNOT1 L128)
+116   L116
+116   (GETVALUE&PUSH 0)                   ; V
+118   (GETVALUE&PUSH 1)                   ; MODE
+120   (LOAD&PUSH 14)
+121   (CALL 3 15)                         ; SIGNAL-MODE-ERROR
+124   (SKIP 4)
+126   (JMP L133)
+128   L128
+128   (SKIP 4)
+130   (JMP L133)
+132   L132
+132   (NIL)
+133   L133
+133   (SKIP 1)
+135   (UNBIND 2)
+137   (SKIP&RET 4)
+
+
+Disassembly of function CHEKVALUE-1
+(CONST 0) = (T NIL)
+(CONST 1) = MEMQ
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; (T NIL)
+2     (CALL2 1)                           ; MEMQ
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SIGNAL-MODE-ERROR (OBJECT MODE VALUE) ...)-27|
+(CONST 0) = SIGNAL-MODE-ERROR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIGNAL-MODE-ERROR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIGNAL-MODE-ERROR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIGNAL-MODE-ERROR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIGNAL-MODE-ERROR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIGNAL-MODE-ERROR
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIGNAL-MODE-ERROR
+(CONST 0) = MODE
+(CONST 1) = $MODE_CHECK_WARNP
+(CONST 2) = $MODE_CHECK_ERRORP
+(CONST 3) = "Warning: ~:M was declared mode ~:M, has value: ~M"
+(CONST 4) = MTELL
+(CONST 5) = "Error: ~:M was declared mode ~:M, has value: ~M"
+(CONST 6) = MERROR
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE $MODE_CHECK_ERRORP $MODE_CHECK_WARNP)
+27 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; MODE
+3     (GETVALUE 1)                        ; $MODE_CHECK_WARNP
+5     (JMPIFNOT L11)
+7     (GETVALUE 2)                        ; $MODE_CHECK_ERRORP
+9     (JMPIFNOT L19)
+11    L11
+11    (GETVALUE 2)                        ; $MODE_CHECK_ERRORP
+13    (JMPIF L29)
+15    (NIL)
+16    L16
+16    (UNBIND1)
+17    (SKIP&RET 4)
+19    L19
+19    (CONST&PUSH 3)                      ; "Warning: ~:M was declared mode ~:M, has value: ~M"
+20    (LOAD&PUSH 7)
+21    (GETVALUE&PUSH 0)                   ; MODE
+23    (LOAD&PUSH 7)
+24    (CALL 4 4)                          ; MTELL
+27    (JMP L16)
+29    L29
+29    (CONST&PUSH 5)                      ; "Error: ~:M was declared mode ~:M, has value: ~M"
+30    (LOAD&PUSH 7)
+31    (GETVALUE&PUSH 0)                   ; MODE
+33    (LOAD&PUSH 7)
+34    (CALL 4 6)                          ; MERROR
+37    (JMP L16)
+
+
+Disassembly of function #:|(DEFUN PUT-MODE (NAME MODE TYPE) ...)-28|
+(CONST 0) = PUT-MODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUT-MODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUT-MODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUT-MODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUT-MODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PUT-MODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function PUT-MODE
+(CONST 0) = NAME
+(CONST 1) = MODE
+(CONST 2) = TBIND
+(CONST 3) = VAL-MODES
+(CONST 4) = ASS-EQ-SET
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE NAME)
+31 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; NAME
+3     (LOAD 5)
+4     (BIND 1)                            ; MODE
+6     (GETVALUE&PUSH 0)                   ; NAME
+8     (CONST&PUSH 2)                      ; TBIND
+9     (PUSH-UNBOUND 1)
+11    (CALLS2&JMPIF 132 L30)              ; GET
+14    (GETVALUE&PUSH 0)                   ; NAME
+16    (GETVALUE&PUSH 1)                   ; MODE
+18    (LOAD&PUSH 1)
+19    (LOAD 10)
+20    L20
+20    (PUSH)
+21    (LOAD&PUSH 2)
+22    (CALLS2 136)                        ; SYSTEM::%PUT
+24    (SKIP 2)
+26    (UNBIND 2)
+28    (SKIP&RET 4)
+30    L30
+30    (GETVALUE&PUSH 0)                   ; NAME
+32    (GETVALUE&PUSH 1)                   ; MODE
+34    (GETVALUE&PUSH 0)                   ; NAME
+36    (CONST&PUSH 3)                      ; VAL-MODES
+37    (PUSH-UNBOUND 1)
+39    (CALLS2&PUSH 132)                   ; GET
+41    (LOAD&PUSH 10)
+42    (CALL&PUSH 3 4)                     ; ASS-EQ-SET
+45    (LOAD&PUSH 1)
+46    (CONST 3)                           ; VAL-MODES
+47    (JMP L20)
+
+
+Disassembly of function #:|(DEFUN DECLARRAY (AR MODE) ...)-29|
+(CONST 0) = DECLARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DECLARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DECLARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DECLARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DECLARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DECLARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function DECLARRAY
+(CONST 0) = MODE
+(CONST 1) = ARRAY-MODE
+(CONST 2) = PUT-MODE
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (MODE)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; MODE
+3     (LOAD&PUSH 5)
+4     (GETVALUE&PUSH 0)                   ; MODE
+6     (CONST&PUSH 1)                      ; ARRAY-MODE
+7     (CALL 3 2)                          ; PUT-MODE
+10    (UNBIND1)
+11    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN DECLFUN (F MODE) ...)-30|
+(CONST 0) = DECLFUN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DECLFUN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DECLFUN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DECLFUN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DECLFUN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DECLFUN
+8     (SKIP&RET 1)
+
+
+Disassembly of function DECLFUN
+(CONST 0) = F
+(CONST 1) = MODE
+(CONST 2) = FUNCTION-MODE
+(CONST 3) = PUT-MODE
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MODE F)
+10 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; F
+3     (LOAD 4)
+4     (BIND 1)                            ; MODE
+6     (GETVALUE&PUSH 0)                   ; F
+8     (GETVALUE&PUSH 1)                   ; MODE
+10    (CONST&PUSH 2)                      ; FUNCTION-MODE
+11    (CALL 3 3)                          ; PUT-MODE
+14    (UNBIND 2)
+16    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN IR (X) ...)-31|
+(CONST 0) = IR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE IR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; IR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; IR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE IR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; IR
+8     (SKIP&RET 1)
+
+
+Disassembly of function IR
+(CONST 0) = X
+(CONST 1) = 
+#S(HASH-TABLE EQ ($ANY_CHECK . 19) ($NONE . 19) ($ANY . 19) ($LISTP . 16)
+   ($LIST . 16) ($BOOL . 13) ($BOOLEAN . 13) ($BIG . 10) ($BIGNUM . 10)
+   ($NUMBER . 10) ($RAT . 7) ($RATIONAL . 7) ($FIXNUM . 4) ($FIXP . 4)
+   ($FLOATNUM . 1) ($FLONUM . 1) ($FLOATP . 1) ($REAL . 1) ($FLOAT . 1))
+(CONST 2) = $FLOAT
+(CONST 3) = $FIXNUM
+(CONST 4) = $RATIONAL
+(CONST 5) = $NUMBER
+(CONST 6) = $BOOLEAN
+(CONST 7) = $LIST
+(CONST 8) = $ANY
+(CONST 9) = UDM-ERR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+32 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     
+(JMPHASH 1 L29 L8 L8 L8 L8 L8 L11 L11 L14 L14 L17 L17 L17 L20 L20 L23 L23 L26
+ L26 L26)
+8     L8
+8     (CONST 2)                           ; $FLOAT
+9     (JMP L35)
+11    L11
+11    (CONST 3)                           ; $FIXNUM
+12    (JMP L35)
+14    L14
+14    (CONST 4)                           ; $RATIONAL
+15    (JMP L35)
+17    L17
+17    (CONST 5)                           ; $NUMBER
+18    (JMP L35)
+20    L20
+20    (CONST 6)                           ; $BOOLEAN
+21    (JMP L35)
+23    L23
+23    (CONST 7)                           ; $LIST
+24    (JMP L35)
+26    L26
+26    (CONST 8)                           ; $ANY
+27    (JMP L35)
+29    L29
+29    (GETVALUE&PUSH 0)                   ; X
+31    (CALL1 9)                           ; UDM-ERR
+33    (GETVALUE 0)                        ; X
+35    L35
+35    (UNBIND1)
+36    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN UDM-ERR (MODE) ...)-32|
+(CONST 0) = UDM-ERR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE UDM-ERR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UDM-ERR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; UDM-ERR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE UDM-ERR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; UDM-ERR
+8     (SKIP&RET 1)
+
+
+Disassembly of function UDM-ERR
+(CONST 0) = MODE
+(CONST 1) = 
+"Warning:  ~:M is not a known mode declaration ~
+	      maybe you want ~:M mode.~%"
+(CONST 2) = 
+#S(HASH-TABLE EQ ($SHITTY . 7) ($FUCKED . 7) ($COMPLEX . 4) ($INTEGERP . 1)
+   ($INTEGER . 1))
+(CONST 3) = $FIXNUM
+(CONST 4) = "&to ask about this"
+(CONST 5) = "&to watch your language"
+(CONST 6) = "&to see the documentation on"
+(CONST 7) = MTELL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (MODE)
+22 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; MODE
+3     (CONST&PUSH 1)                      ; "Warning:  ~:M is not a known mode declaration ~
+	      maybe you want ~:M mode.~%"
+4     (GETVALUE&PUSH 0)                   ; MODE
+6     (GETVALUE 0)                        ; MODE
+8     (JMPHASH 2 L20 L11 L11 L14 L17 L17)
+11    L11
+11    (CONST 3)                           ; $FIXNUM
+12    (JMP L21)
+14    L14
+14    (CONST 4)                           ; "&to ask about this"
+15    (JMP L21)
+17    L17
+17    (CONST 5)                           ; "&to watch your language"
+18    (JMP L21)
+20    L20
+20    (CONST 6)                           ; "&to see the documentation on"
+21    L21
+21    (PUSH)
+22    (CALL 3 7)                          ; MTELL
+25    (UNBIND1)
+26    (SKIP&RET 2)
+
+WARNING in (DEFUN IR (X) ...)-33 in lines 291..300 :
+Function IR
+ was already defined in lines 268..279
+
+Disassembly of function #:|(DEFUN IR (X) ...)-33|
+(CONST 0) = IR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE IR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; IR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; IR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE IR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; IR
+8     (SKIP&RET 1)
+
+
+Disassembly of function IR
+(CONST 0) = X
+(CONST 1) = 
+#S(HASH-TABLE EQ ($ANY_CHECK . 19) ($NONE . 19) ($ANY . 19) ($LISTP . 16)
+   ($LIST . 16) ($BOOL . 13) ($BOOLEAN . 13) ($BIG . 10) ($BIGNUM . 10)
+   ($NUMBER . 10) ($RAT . 7) ($RATIONAL . 7) ($FIXNUM . 4) ($FIXP . 4)
+   ($FLOATNUM . 1) ($FLONUM . 1) ($FLOATP . 1) ($REAL . 1) ($FLOAT . 1))
+(CONST 2) = $FLOAT
+(CONST 3) = $FIXNUM
+(CONST 4) = $RATIONAL
+(CONST 5) = $NUMBER
+(CONST 6) = $BOOLEAN
+(CONST 7) = $LIST
+(CONST 8) = $ANY
+(CONST 9) = UDM-ERR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+32 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     
+(JMPHASH 1 L29 L8 L8 L8 L8 L8 L11 L11 L14 L14 L17 L17 L17 L20 L20 L23 L23 L26
+ L26 L26)
+8     L8
+8     (CONST 2)                           ; $FLOAT
+9     (JMP L35)
+11    L11
+11    (CONST 3)                           ; $FIXNUM
+12    (JMP L35)
+14    L14
+14    (CONST 4)                           ; $RATIONAL
+15    (JMP L35)
+17    L17
+17    (CONST 5)                           ; $NUMBER
+18    (JMP L35)
+20    L20
+20    (CONST 6)                           ; $BOOLEAN
+21    (JMP L35)
+23    L23
+23    (CONST 7)                           ; $LIST
+24    (JMP L35)
+26    L26
+26    (CONST 8)                           ; $ANY
+27    (JMP L35)
+29    L29
+29    (GETVALUE&PUSH 0)                   ; X
+31    (CALL1 9)                           ; UDM-ERR
+33    (GETVALUE 0)                        ; X
+35    L35
+35    (UNBIND1)
+36    (SKIP&RET 2)
+
+WARNING in (DEFUN UDM-ERR (MODE) ...)-34 in lines 302..310 :
+Function UDM-ERR
+ was already defined in lines 281..289
+
+Disassembly of function #:|(DEFUN UDM-ERR (MODE) ...)-34|
+(CONST 0) = UDM-ERR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE UDM-ERR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UDM-ERR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; UDM-ERR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE UDM-ERR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; UDM-ERR
+8     (SKIP&RET 1)
+
+
+Disassembly of function UDM-ERR
+(CONST 0) = MODE
+(CONST 1) = 
+"Warning:  ~:M is not a known mode declaration ~
+maybe you want ~:M mode.~%"
+(CONST 2) = 
+#S(HASH-TABLE EQ ($SHITTY . 7) ($FUCKED . 7) ($COMPLEX . 4) ($INTEGERP . 1)
+   ($INTEGER . 1))
+(CONST 3) = $FIXNUM
+(CONST 4) = "&to ask about this"
+(CONST 5) = "&to watch your language"
+(CONST 6) = "&to see the documentation on"
+(CONST 7) = MTELL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (MODE)
+22 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; MODE
+3     (CONST&PUSH 1)                      ; "Warning:  ~:M is not a known mode declaration ~
+maybe you want ~:M mode.~%"
+4     (GETVALUE&PUSH 0)                   ; MODE
+6     (GETVALUE 0)                        ; MODE
+8     (JMPHASH 2 L20 L11 L11 L14 L17 L17)
+11    L11
+11    (CONST 3)                           ; $FIXNUM
+12    (JMP L21)
+14    L14
+14    (CONST 4)                           ; "&to ask about this"
+15    (JMP L21)
+17    L17
+17    (CONST 5)                           ; "&to watch your language"
+18    (JMP L21)
+20    L20
+20    (CONST 6)                           ; "&to see the documentation on"
+21    L21
+21    (PUSH)
+22    (CALL 3 7)                          ; MTELL
+25    (UNBIND1)
+26    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN FLUIDIZE (VARIABLE) ...)-35|
+(CONST 0) = FLUIDIZE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FLUIDIZE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FLUIDIZE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FLUIDIZE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FLUIDIZE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FLUIDIZE
+8     (SKIP&RET 1)
+
+
+Disassembly of function FLUIDIZE
+(CONST 0) = (*IN-COMPILE* *IN-COMPFILE* *IN-TRANSLATE* *IN-TRANSLATE-FILE*)
+(CONST 1) = V
+(CONST 2) = SET
+(CONST 3) = SPECIAL
+(CONST 4) = PUTPROP
+(CONST 5) = $TRANSCOMPILE
+(CONST 6) = *IN-COMPILE*
+(CONST 7) = *IN-COMPFILE*
+(CONST 8) = *IN-TRANSLATE*
+(CONST 9) = *IN-TRANSLATE-FILE*
+(CONST 10) = SPECIALS
+(CONST 11) = MEMQ
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: 
+(SPECIALS *IN-TRANSLATE-FILE* *IN-TRANSLATE* *IN-COMPFILE* *IN-COMPILE*
+ $TRANSCOMPILE V)
+writes special variable : (SPECIALS)
+45 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (*IN-COMPILE* *IN-COMPFILE* ...)
+1     (JMP L23)
+3     L3
+3     (LOAD&CAR&PUSH 0)
+5     (LOAD 0)
+6     (BIND 1)                            ; V
+8     (GETVALUE&PUSH 1)                   ; V
+10    (CALLS1&JMPIF 79 L18)               ; BOUNDP
+13    (GETVALUE&PUSH 1)                   ; V
+15    (NIL&PUSH)
+16    (CALL2 2)                           ; SET
+18    L18
+18    (UNBIND1)
+19    (SKIP 1)
+21    (LOAD&CDR&STORE 0)
+23    L23
+23    (LOAD&PUSH 0)
+24    (CALLS1&JMPIFNOT 146 L3)            ; ENDP
+27    (SKIP 1)
+29    (LOAD&PUSH 1)
+30    (T&PUSH)
+31    (CONST&PUSH 3)                      ; SPECIAL
+32    (CALL 3 4)                          ; PUTPROP
+35    (GETVALUE 5)                        ; $TRANSCOMPILE
+37    (JMPIFNOT1 L70)
+39    (GETVALUE 6)                        ; *IN-COMPILE*
+41    (JMPIF L55)
+43    (GETVALUE 7)                        ; *IN-COMPFILE*
+45    (JMPIF L55)
+47    (GETVALUE 8)                        ; *IN-TRANSLATE*
+49    (JMPIF L55)
+51    (GETVALUE 9)                        ; *IN-TRANSLATE-FILE*
+53    (JMPIFNOT1 L70)
+55    L55
+55    (LOAD&PUSH 1)
+56    (GETVALUE&PUSH 10)                  ; SPECIALS
+58    (CALL2 11)                          ; MEMQ
+60    (JMPIF1 L70)
+62    (LOAD&PUSH 1)
+63    (GETVALUE 10)                       ; SPECIALS
+65    (CONS)
+66    (SETVALUE 10)                       ; SPECIALS
+68    (SKIP&RET 2)
+70    L70
+70    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $BIND_DURING_TRANSLATION (FORM) ...)-36-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $BIND_DURING_TRANSLATION (FORM) ...)-36-2-1|>
+(CONST 1) = $BIND_DURING_TRANSLATION
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $BIND_DURING_TRANSLATION (FORM) ...)-36-2-1|>
+1     (CONST&PUSH 1)                      ; $BIND_DURING_TRANSLATION
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $BIND_DURING_TRANSLATION (FORM) ...)-36-2-1|
+(CONST 0) = FORM
+(CONST 1) = MEVALN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORM)
+8 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FORM
+3     (GETVALUE 0)                        ; FORM
+5     (CDR)
+6     (CDR&PUSH)
+7     (CALL1 1)                           ; MEVALN
+9     (UNBIND1)
+10    (SKIP&RET 2)
+
+
+Wrote file binary-clisp/trmode.fas
+Wrote file /cygdrive/e/temp/maxima/src/trmode.lis

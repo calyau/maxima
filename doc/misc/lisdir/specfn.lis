@@ -1,0 +1,2906 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/specfn.lisp
+on 2002-12-17 13:35:08 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/specfn.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE SPECFN)-2|
+(CONST 0) = SPECFN
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SPECFN
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS RZMAC)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS MHAYAT)-4|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO MNUMERICALP (ARG) ...)-5|
+(CONST 0) = MNUMERICALP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MNUMERICALP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MNUMERICALP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MNUMERICALP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MNUMERICALP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; MNUMERICALP
+10    (SKIP&RET 1)
+
+
+Disassembly of function MNUMERICALP
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = ARG
+(CONST 3) = OR
+(CONST 4) = FLOATP
+(CONST 5) = AND
+(CONST 6) = (OR $NUMER $FLOAT)
+(CONST 7) = INTEGERP
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (ARG)
+25 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L33)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; ARG
+13    (CONST&PUSH 3)                      ; OR
+14    (CONST&PUSH 4)                      ; FLOATP
+15    (GETVALUE&PUSH 2)                   ; ARG
+17    (LIST&PUSH 2)
+19    (CONST&PUSH 5)                      ; AND
+20    (CONST&PUSH 6)                      ; (OR $NUMER $FLOAT)
+21    (CONST&PUSH 7)                      ; INTEGERP
+22    (GETVALUE&PUSH 2)                   ; ARG
+24    (LIST&PUSH 2)
+26    (LIST&PUSH 3)
+28    (LIST 3)
+30    (UNBIND1)
+31    (SKIP&RET 3)
+33    L33
+33    (LOAD&PUSH 2)
+34    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+36    (SKIP&RET 3)
+
+
+Disassembly of function #:|(COMMENT SUBTITLE POLYLOGARITHM ...)-6|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE PLYLOG))-7|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $ZEROBERN IVARS ...) (NOTYPE # #))-8|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN LISIMP (EXP VESTIGIAL Z) ...)-9|
+(CONST 0) = LISIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LISIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function LISIMP
+(CONST 0) = EXP
+(CONST 1) = SUBFUNSUBS
+(CONST 2) = SIMPCHECK
+(CONST 3) = S
+(CONST 4) = $ZEROBERN
+(CONST 5) = A
+(CONST 6) = 1
+(CONST 7) = $LI
+(CONST 8) = SUBARGCHECK
+(CONST 9) = SUBFUNARGS
+(CONST 10) = ZEROP1
+(CONST 11) = 0
+(CONST 12) = -1
+(CONST 13) = (%LOG)
+(CONST 14) = SUB*
+(CONST 15) = MUL*
+(CONST 16) = $ZETA
+(CONST 17) = (RAT)
+(CONST 18) = 2
+(CONST 19) = ADD*
+(CONST 20) = MUL
+(CONST 21) = LI2SIMP
+(CONST 22) = 3
+(CONST 23) = LI3SIMP
+(CONST 24) = SUBFUNMAKES
+(CONST 25) = EQTEST
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (A S EXP)
+writes special variable : (A)
+102 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 0)                   ; EXP
+5     (CALL1 1)                           ; SUBFUNSUBS
+7     (CAR&PUSH)
+8     (LOAD&PUSH 5)
+9     (CALL2 2)                           ; SIMPCHECK
+11    (BIND 3)                            ; S
+13    (T)
+14    (BIND 4)                            ; $ZEROBERN
+16    (NIL)
+17    (BIND 5)                            ; A
+19    (GETVALUE&PUSH 0)                   ; EXP
+21    (CONST&PUSH 6)                      ; 1
+22    (CONST&PUSH 6)                      ; 1
+23    (CONST&PUSH 7)                      ; $LI
+24    (CALL 4 8)                          ; SUBARGCHECK
+27    (GETVALUE&PUSH 0)                   ; EXP
+29    (CALL1 9)                           ; SUBFUNARGS
+31    (CAR&PUSH)
+32    (LOAD&PUSH 14)
+33    (CALL2 2)                           ; SIMPCHECK
+35    (SETVALUE 5)                        ; A
+37    (PUSH)
+38    (CALL1&JMPIF 10 L147)               ; ZEROP1
+42    (GETVALUE&PUSH 3)                   ; S
+44    (CALLS2&JMPIFNOT 12 L127)           ; INTEGERP
+48    (GETVALUE&PUSH 3)                   ; S
+50    (CONST&PUSH 6)                      ; 1
+51    (CALLSR&JMPIF 1 45 L150)            ; =
+56    (GETVALUE&PUSH 5)                   ; A
+58    (CALLS2&JMPIFNOT 12 L107)           ; INTEGERP
+61    (GETVALUE&PUSH 3)                   ; S
+63    (CONST&PUSH 6)                      ; 1
+64    (CALLSR&JMPIFNOT 1 48 L107)         ; >
+68    (GETVALUE&PUSH 5)                   ; A
+70    (CONST&PUSH 6)                      ; 1
+71    (CALLSR&JMPIF 1 45 L165)            ; =
+76    (GETVALUE&PUSH 5)                   ; A
+78    (CONST&PUSH 12)                     ; -1
+79    (CALLSR&JMPIFNOT 1 45 L107)         ; =
+83    (CONST&PUSH 12)                     ; -1
+84    (CONST&PUSH 17)                     ; (RAT)
+85    (CONST&PUSH 6)                      ; 1
+86    (CONST&PUSH 18)                     ; 2
+87    (GETVALUE&PUSH 3)                   ; S
+89    (CONST&PUSH 6)                      ; 1
+90    (CALLSR&PUSH 1 54)                  ; -
+93    (CALLS2&PUSH 154)                   ; EXPT
+95    (LIST&PUSH 3)
+97    (CALL2&PUSH 19)                     ; ADD*
+99    (GETVALUE&PUSH 3)                   ; S
+101   (CALL1&PUSH 16)                     ; $ZETA
+103   (CALL2 20)                          ; MUL
+105   (JMPIF1 L143)
+107   L107
+107   (GETVALUE&PUSH 3)                   ; S
+109   (CONST&PUSH 18)                     ; 2
+110   (CALLSR&JMPIF 1 45 L174)            ; =
+114   (GETVALUE&PUSH 3)                   ; S
+116   (CONST&PUSH 22)                     ; 3
+117   (CALLSR&JMPIFNOT 1 45 L127)         ; =
+121   (GETVALUE&PUSH 5)                   ; A
+123   (CALL1 23)                          ; LI3SIMP
+125   (JMPIF1 L143)
+127   L127
+127   (CONST&PUSH 7)                      ; $LI
+128   (GETVALUE&PUSH 3)                   ; S
+130   (NIL)
+131   (CONS&PUSH)
+132   (GETVALUE&PUSH 5)                   ; A
+134   (NIL)
+135   (CONS&PUSH)
+136   (CALL&PUSH 3 24)                    ; SUBFUNMAKES
+139   (GETVALUE&PUSH 0)                   ; EXP
+141   (CALL2 25)                          ; EQTEST
+143   L143
+143   (UNBIND 4)
+145   (SKIP&RET 4)
+147   L147
+147   (CONST 11)                          ; 0
+148   (JMP L143)
+150   L150
+150   (CONST&PUSH 12)                     ; -1
+151   (CONST&PUSH 13)                     ; (%LOG)
+152   (CONST&PUSH 6)                      ; 1
+153   (GETVALUE&PUSH 5)                   ; A
+155   (CALL2&PUSH 14)                     ; SUB*
+157   (LIST&PUSH 2)
+159   (CALL2 15)                          ; MUL*
+161   (JMPIF1 L143)
+163   (JMP L127)
+165   L165
+165   (GETVALUE&PUSH 3)                   ; S
+167   (CALL1 16)                          ; $ZETA
+169   (JMPIF1 L143)
+171   (JMP L107)
+174   L174
+174   (GETVALUE&PUSH 5)                   ; A
+176   (CALL1 21)                          ; LI2SIMP
+178   (JMPIF1 L143)
+180   (JMP L127)
+
+
+Disassembly of function #:|(DEFUN LI2SIMP (ARG) ...)-10|
+(CONST 0) = LI2SIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LI2SIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LI2SIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LI2SIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LI2SIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LI2SIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function LI2SIMP
+(CONST 0) = ARG
+(CONST 1) = $NUMER
+(CONST 2) = $FLOAT
+(CONST 3) = 1.0
+(CONST 4) = LI2NUMER
+(CONST 5) = ((RAT) 1 2)
+(CONST 6) = ALIKE1
+(CONST 7) = 2
+(CONST 8) = $ZETA
+(CONST 9) = DIV*
+(CONST 10) = ((RAT SIMP) -1 2)
+(CONST 11) = ((%LOG) 2)
+(CONST 12) = POWER*
+(CONST 13) = MUL
+(CONST 14) = ADD
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($FLOAT $NUMER ARG)
+37 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; ARG
+3     (GETVALUE&PUSH 0)                   ; ARG
+5     (CALLS2&JMPIF 15 L31)               ; FLOATP
+8     (GETVALUE 1)                        ; $NUMER
+10    (JMPIF L16)
+12    (GETVALUE 2)                        ; $FLOAT
+14    (JMPIFNOT L21)
+16    L16
+16    (GETVALUE&PUSH 0)                   ; ARG
+18    (CALLS2&JMPIF 12 L31)               ; INTEGERP
+21    L21
+21    (GETVALUE&PUSH 0)                   ; ARG
+23    (CONST&PUSH 5)                      ; ((RAT) 1 2)
+24    (CALL2&JMPIF 6 L40)                 ; ALIKE1
+27    (NIL)
+28    L28
+28    (UNBIND1)
+29    (SKIP&RET 2)
+31    L31
+31    (GETVALUE&PUSH 0)                   ; ARG
+33    (CONST&PUSH 3)                      ; 1.0
+34    (CALLS2&PUSH 174)                   ; COMMON-LISP:FLOAT
+36    (CALL1 4)                           ; LI2NUMER
+38    (JMP L28)
+40    L40
+40    (CONST&PUSH 7)                      ; 2
+41    (CALL1&PUSH 8)                      ; $ZETA
+43    (CONST&PUSH 7)                      ; 2
+44    (CALL2&PUSH 9)                      ; DIV*
+46    (CONST&PUSH 10)                     ; ((RAT SIMP) -1 2)
+47    (CONST&PUSH 11)                     ; ((%LOG) 2)
+48    (CONST&PUSH 7)                      ; 2
+49    (CALL2&PUSH 12)                     ; POWER*
+51    (CALL2&PUSH 13)                     ; MUL
+53    (CALL2 14)                          ; ADD
+55    (JMP L28)
+
+
+Disassembly of function #:|(DEFUN LI3SIMP (ARG) ...)-11|
+(CONST 0) = LI3SIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LI3SIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LI3SIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LI3SIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LI3SIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LI3SIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function LI3SIMP
+(CONST 0) = ARG
+(CONST 1) = $NUMER
+(CONST 2) = $FLOAT
+(CONST 3) = 1.0
+(CONST 4) = LI3NUMER
+(CONST 5) = ((RAT) 1 2)
+(CONST 6) = ALIKE1
+(CONST 7) = ((RAT SIMP) 7 8)
+(CONST 8) = (($ZETA) 3)
+(CONST 9) = MUL*
+(CONST 10) = 2
+(CONST 11) = $ZETA
+(CONST 12) = -2
+(CONST 13) = DIV*
+(CONST 14) = ((%LOG) 2)
+(CONST 15) = SIMPLIFY
+(CONST 16) = MUL
+(CONST 17) = ((RAT SIMP) 1 6)
+(CONST 18) = ((%LOG) 2)
+(CONST 19) = 3
+(CONST 20) = POWER*
+(CONST 21) = ADD
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($FLOAT $NUMER ARG)
+43 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; ARG
+3     (GETVALUE&PUSH 0)                   ; ARG
+5     (CALLS2&JMPIF 15 L31)               ; FLOATP
+8     (GETVALUE 1)                        ; $NUMER
+10    (JMPIF L16)
+12    (GETVALUE 2)                        ; $FLOAT
+14    (JMPIFNOT L21)
+16    L16
+16    (GETVALUE&PUSH 0)                   ; ARG
+18    (CALLS2&JMPIF 12 L31)               ; INTEGERP
+21    L21
+21    (GETVALUE&PUSH 0)                   ; ARG
+23    (CONST&PUSH 5)                      ; ((RAT) 1 2)
+24    (CALL2&JMPIF 6 L40)                 ; ALIKE1
+27    (NIL)
+28    L28
+28    (UNBIND1)
+29    (SKIP&RET 2)
+31    L31
+31    (GETVALUE&PUSH 0)                   ; ARG
+33    (CONST&PUSH 3)                      ; 1.0
+34    (CALLS2&PUSH 174)                   ; COMMON-LISP:FLOAT
+36    (CALL1 4)                           ; LI3NUMER
+38    (JMP L28)
+40    L40
+40    (CONST&PUSH 7)                      ; ((RAT SIMP) 7 8)
+41    (CONST&PUSH 8)                      ; (($ZETA) 3)
+42    (CALL2&PUSH 9)                      ; MUL*
+44    (CONST&PUSH 10)                     ; 2
+45    (CALL1&PUSH 11)                     ; $ZETA
+47    (CONST&PUSH 12)                     ; -2
+48    (CALL2&PUSH 13)                     ; DIV*
+50    (CONST&PUSH 14)                     ; ((%LOG) 2)
+51    (CALL1&PUSH 15)                     ; SIMPLIFY
+53    (CALL2&PUSH 16)                     ; MUL
+55    (CONST&PUSH 17)                     ; ((RAT SIMP) 1 6)
+56    (CONST&PUSH 18)                     ; ((%LOG) 2)
+57    (CONST&PUSH 19)                     ; 3
+58    (CALL2&PUSH 20)                     ; POWER*
+60    (CALL2&PUSH 16)                     ; MUL
+62    (CALL 3 21)                         ; ADD
+65    (JMP L28)
+
+
+Disassembly of function #:|(DECLARE-TOP (FLONUM X))-12|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN CHEBY (X CHEBARR) ...)-13|
+(CONST 0) = CHEBY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHEBY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHEBY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHEBY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHEBY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHEBY
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHEBY
+(CONST 0) = X
+(CONST 1) = 0.0
+(CONST 2) = 0
+(CONST 3) = FIX
+(CONST 4) = 1
+(CONST 5) = 2.0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+35 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; X
+3     (CONST&PUSH 1)                      ; 0.0
+4     (CONST&PUSH 1)                      ; 0.0
+5     (LOAD&PUSH 6)
+6     (CONST&PUSH 2)                      ; 0
+7     (CALLSR&PUSH 1 1)                   ; AREF
+10    (CALL1&PUSH 3)                      ; FIX
+12    (JMP L39)
+14    L14
+14    (LOAD&PUSH 1)
+15    (LOAD&PUSH 8)
+16    (LOAD&PUSH 2)
+17    (CALLSR&PUSH 1 1)                   ; AREF
+20    (CONST&PUSH 5)                      ; 2.0
+21    (GETVALUE&PUSH 0)                   ; X
+23    (LOAD&PUSH 5)
+24    (CALLSR&PUSH 3 55)                  ; *
+27    (LOAD&PUSH 5)
+28    (CALLSR&PUSH 1 54)                  ; -
+31    (CALLSR&STORE 2 53 2)               ; +
+35    (POP&STORE 2)
+37    (LOAD&DEC&STORE 0)
+39    L39
+39    (LOAD&PUSH 0)
+40    (CONST&PUSH 4)                      ; 1
+41    (CALLSR&JMPIFNOT 1 47 L14)          ; <
+45    (LOAD&PUSH 1)
+46    (LOAD&PUSH 3)
+47    (GETVALUE&PUSH 0)                   ; X
+49    (CALLSR&PUSH 2 55)                  ; *
+52    (CALLSR 1 54)                       ; -
+55    (SKIP 3)
+57    (UNBIND1)
+58    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN CHEBY-PRIME (X CHEBARR) ...)-14|
+(CONST 0) = CHEBY-PRIME
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHEBY-PRIME>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHEBY-PRIME
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHEBY-PRIME
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHEBY-PRIME>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHEBY-PRIME
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHEBY-PRIME
+(CONST 0) = X
+(CONST 1) = CHEBY
+(CONST 2) = 1
+(CONST 3) = 0.5
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+13 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (LOAD&PUSH 5)
+6     (CALL2&PUSH 1)                      ; CHEBY
+8     (LOAD&PUSH 5)
+9     (CONST&PUSH 2)                      ; 1
+10    (CALLSR&PUSH 1 1)                   ; AREF
+13    (CONST&PUSH 3)                      ; 0.5
+14    (CALLSR&PUSH 2 55)                  ; *
+17    (CALLSR 1 54)                       ; -
+20    (UNBIND1)
+21    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN LI2NUMER (X) ...)-15|
+(CONST 0) = LI2NUMER
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LI2NUMER>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LI2NUMER
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LI2NUMER
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LI2NUMER>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LI2NUMER
+8     (SKIP&RET 1)
+
+
+Disassembly of function LI2NUMER
+(CONST 0) = X
+(CONST 1) = 0.0
+(CONST 2) = 1.0
+(CONST 3) = 1.64493407
+(CONST 4) = -1.0
+(CONST 5) = -0.822467033
+(CONST 6) = QUOT
+(CONST 7) = CHEBYLI2
+(CONST 8) = 2
+(CONST 9) = 2.0
+(CONST 10) = 0.5
+(CONST 11) = 3.28986813
+(CONST 12) = 3.14159265
+(CONST 13) = $%I
+(CONST 14) = MUL
+(CONST 15) = ADD
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+91 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CONST&PUSH 1)                      ; 0.0
+6     (CALLSR&JMPIF 1 45 L95)             ; =
+11    (GETVALUE&PUSH 0)                   ; X
+13    (CONST&PUSH 2)                      ; 1.0
+14    (CALLSR&JMPIF 1 45 L98)             ; =
+19    (GETVALUE&PUSH 0)                   ; X
+21    (CONST&PUSH 4)                      ; -1.0
+22    (CALLSR&JMPIF 1 45 L101)            ; =
+27    (GETVALUE&PUSH 0)                   ; X
+29    (CONST&PUSH 4)                      ; -1.0
+30    (CALLSR&JMPIF 1 47 L104)            ; <
+35    (GETVALUE&PUSH 0)                   ; X
+37    (CONST&PUSH 10)                     ; 0.5
+38    (CALLSR&JMPIFNOT 1 48 L134)         ; >
+43    (GETVALUE&PUSH 0)                   ; X
+45    (CONST&PUSH 2)                      ; 1.0
+46    (CALLSR&JMPIF 1 47 L140)            ; <
+51    (CONST&PUSH 11)                     ; 3.28986813
+52    (GETVALUE&PUSH 0)                   ; X
+54    (PUSH-UNBOUND 1)
+56    (CALLS2&PUSH 155)                   ; LOG
+58    (CONST&PUSH 8)                      ; 2
+59    (CALLS2&PUSH 154)                   ; EXPT
+61    (CONST&PUSH 9)                      ; 2.0
+62    (CALL2&PUSH 6)                      ; QUOT
+64    (GETVALUE&PUSH 0)                   ; X
+66    (CALL1&PUSH 6)                      ; QUOT
+68    (JSR&PUSH L0)
+71    (CALLSR&PUSH 2 54)                  ; -
+74    (CONST&PUSH 12)                     ; 3.14159265
+75    (GETVALUE&PUSH 0)                   ; X
+77    (PUSH-UNBOUND 1)
+79    (CALLS2&PUSH 155)                   ; LOG
+81    (CALLSR&PUSH 2 55)                  ; *
+84    (CALLSR&PUSH 0 54)                  ; -
+87    (CONST&PUSH 13)                     ; $%I
+88    (CALL2&PUSH 14)                     ; MUL
+90    (CALL2 15)                          ; ADD
+92    L92
+92    (UNBIND1)
+93    (SKIP&RET 2)
+95    L95
+95    (CONST 1)                           ; 0.0
+96    (JMP L92)
+98    L98
+98    (CONST 3)                           ; 1.64493407
+99    (JMP L92)
+101   L101
+101   (CONST 5)                           ; -0.822467033
+102   (JMP L92)
+104   L104
+104   (GETVALUE&PUSH 0)                   ; X
+106   (CALL1&PUSH 6)                      ; QUOT
+108   (CALL1&PUSH 7)                      ; CHEBYLI2
+110   (CONST&PUSH 3)                      ; 1.64493407
+111   (GETVALUE&PUSH 0)                   ; X
+113   (CALLSR&PUSH 0 54)                  ; -
+116   (PUSH-UNBOUND 1)
+118   (CALLS2&PUSH 155)                   ; LOG
+120   (CONST&PUSH 8)                      ; 2
+121   (CALLS2&PUSH 154)                   ; EXPT
+123   (CONST&PUSH 9)                      ; 2.0
+124   (CALL2&PUSH 6)                      ; QUOT
+126   (CALLSR&PUSH 3 53)                  ; +
+129   (CALLSR 0 54)                       ; -
+132   (JMP L92)
+134   L134
+134   (GETVALUE&PUSH 0)                   ; X
+136   (CALL1 7)                           ; CHEBYLI2
+138   (JMP L92)
+140   L140
+140   (CONST&PUSH 3)                      ; 1.64493407
+141   (GETVALUE&PUSH 0)                   ; X
+143   (PUSH-UNBOUND 1)
+145   (CALLS2&PUSH 155)                   ; LOG
+147   (CONST&PUSH 2)                      ; 1.0
+148   (GETVALUE&PUSH 0)                   ; X
+150   (CALLSR&PUSH 1 54)                  ; -
+153   (PUSH-UNBOUND 1)
+155   (CALLS2&PUSH 155)                   ; LOG
+157   (CALLSR&PUSH 2 55)                  ; *
+160   (CONST&PUSH 2)                      ; 1.0
+161   (GETVALUE&PUSH 0)                   ; X
+163   (CALLSR&PUSH 1 54)                  ; -
+166   (CALL1&PUSH 7)                      ; CHEBYLI2
+168   (CALLSR 2 54)                       ; -
+171   (JMP L92)
+
+
+Disassembly of function #:|(DEFUN LI3NUMER (X) ...)-16|
+(CONST 0) = LI3NUMER
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LI3NUMER>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LI3NUMER
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LI3NUMER
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LI3NUMER>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LI3NUMER
+8     (SKIP&RET 1)
+
+
+Disassembly of function LI3NUMER
+(CONST 0) = X
+(CONST 1) = 0.0
+(CONST 2) = 1.0
+(CONST 3) = 1.2020569
+(CONST 4) = -1.0
+(CONST 5) = QUOT
+(CONST 6) = CHEBYLI3
+(CONST 7) = 1.64493407
+(CONST 8) = 3
+(CONST 9) = 6.0
+(CONST 10) = 0.5
+(CONST 11) = 2.0
+(CONST 12) = 2
+(CONST 13) = CHEBYLI2
+(CONST 14) = CHEBYS12
+(CONST 15) = 0
+(CONST 16) = -3.14159265
+(CONST 17) = $%I
+(CONST 18) = MUL
+(CONST 19) = ADD
+(CONST 20) = 3.28986813
+(CONST 21) = -6.0
+(CONST 22) = -1.57079633
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+135 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CONST&PUSH 1)                      ; 0.0
+6     (CALLSR&JMPIF 1 45 L95)             ; =
+11    (GETVALUE&PUSH 0)                   ; X
+13    (CONST&PUSH 2)                      ; 1.0
+14    (CALLSR&JMPIF 1 45 L98)             ; =
+19    (GETVALUE&PUSH 0)                   ; X
+21    (CONST&PUSH 4)                      ; -1.0
+22    (CALLSR&JMPIF 1 47 L101)            ; <
+27    (GETVALUE&PUSH 0)                   ; X
+29    (CONST&PUSH 10)                     ; 0.5
+30    (CALLSR&JMPIFNOT 1 48 L140)         ; >
+35    (GETVALUE&PUSH 0)                   ; X
+37    (CONST&PUSH 11)                     ; 2.0
+38    (CALLSR&JMPIFNOT 1 48 L158)         ; >
+43    (GETVALUE&PUSH 0)                   ; X
+45    (CALL1&PUSH 5)                      ; QUOT
+47    (CALL1&PUSH 6)                      ; CHEBYLI3
+49    (CONST&PUSH 20)                     ; 3.28986813
+50    (GETVALUE&PUSH 0)                   ; X
+52    (PUSH-UNBOUND 1)
+54    (CALLS2&PUSH 155)                   ; LOG
+56    (CALLSR&PUSH 2 55)                  ; *
+59    (GETVALUE&PUSH 0)                   ; X
+61    (PUSH-UNBOUND 1)
+63    (CALLS2&PUSH 155)                   ; LOG
+65    (CONST&PUSH 8)                      ; 3
+66    (CALLS2&PUSH 154)                   ; EXPT
+68    (CONST&PUSH 21)                     ; -6.0
+69    (CALL2&PUSH 5)                      ; QUOT
+71    (CALLSR&PUSH 3 53)                  ; +
+74    (CONST&PUSH 22)                     ; -1.57079633
+75    (GETVALUE&PUSH 0)                   ; X
+77    (PUSH-UNBOUND 1)
+79    (CALLS2&PUSH 155)                   ; LOG
+81    (CONST&PUSH 12)                     ; 2
+82    (CALLS2&PUSH 154)                   ; EXPT
+84    (CALLSR&PUSH 2 55)                  ; *
+87    (CONST&PUSH 17)                     ; $%I
+88    (CALL2&PUSH 18)                     ; MUL
+90    (CALL2 19)                          ; ADD
+92    L92
+92    (UNBIND1)
+93    (SKIP&RET 2)
+95    L95
+95    (CONST 1)                           ; 0.0
+96    (JMP L92)
+98    L98
+98    (CONST 3)                           ; 1.2020569
+99    (JMP L92)
+101   L101
+101   (GETVALUE&PUSH 0)                   ; X
+103   (CALL1&PUSH 5)                      ; QUOT
+105   (CALL1&PUSH 6)                      ; CHEBYLI3
+107   (CONST&PUSH 7)                      ; 1.64493407
+108   (GETVALUE&PUSH 0)                   ; X
+110   (CALLSR&PUSH 0 54)                  ; -
+113   (PUSH-UNBOUND 1)
+115   (CALLS2&PUSH 155)                   ; LOG
+117   (CALLSR&PUSH 2 55)                  ; *
+120   (GETVALUE&PUSH 0)                   ; X
+122   (CALLSR&PUSH 0 54)                  ; -
+125   (PUSH-UNBOUND 1)
+127   (CALLS2&PUSH 155)                   ; LOG
+129   (CONST&PUSH 8)                      ; 3
+130   (CALLS2&PUSH 154)                   ; EXPT
+132   (CONST&PUSH 9)                      ; 6.0
+133   (CALL2&PUSH 5)                      ; QUOT
+135   (CALLSR 2 54)                       ; -
+138   (JMP L92)
+140   L140
+140   (GETVALUE&PUSH 0)                   ; X
+142   (CALL1 6)                           ; CHEBYLI3
+144   (JMP L92)
+146   L146
+146   (CONST&PUSH 2)                      ; 1.0
+147   (GETVALUE&PUSH 0)                   ; X
+149   (CALLSR 1 54)                       ; -
+152   (JMP L215)
+154   L154
+154   (CONST 15)                          ; 0
+155   (JMP L247)
+158   L158
+158   (GETVALUE&PUSH 0)                   ; X
+160   (PUSH-UNBOUND 1)
+162   (CALLS2&PUSH 155)                   ; LOG
+164   (CONST&PUSH 12)                     ; 2
+165   (CALLS2&PUSH 154)                   ; EXPT
+167   (CONST&PUSH 10)                     ; 0.5
+168   (CALLSR&PUSH 2 55)                  ; *
+171   (CONST&PUSH 3)                      ; 1.2020569
+172   (GETVALUE&PUSH 0)                   ; X
+174   (PUSH-UNBOUND 1)
+176   (CALLS2&PUSH 155)                   ; LOG
+178   (CONST&PUSH 7)                      ; 1.64493407
+179   (CONST&PUSH 2)                      ; 1.0
+180   (GETVALUE&PUSH 0)                   ; X
+182   (CALLSR&PUSH 1 54)                  ; -
+185   (CALL1&PUSH 13)                     ; CHEBYLI2
+187   (CALLSR&PUSH 1 54)                  ; -
+190   (CALLSR&PUSH 2 55)                  ; *
+193   (CONST&PUSH 2)                      ; 1.0
+194   (GETVALUE&PUSH 0)                   ; X
+196   (CALLSR&PUSH 1 54)                  ; -
+199   (CALL1&PUSH 14)                     ; CHEBYS12
+201   (LOAD&PUSH 3)
+202   (GETVALUE&PUSH 0)                   ; X
+204   (CONST&PUSH 2)                      ; 1.0
+205   (CALLSR&JMPIF 1 47 L146)            ; <
+209   (GETVALUE&PUSH 0)                   ; X
+211   (CALLS2&JMPIF 151 L215)             ; 1-
+214   (NIL)
+215   L215
+215   (PUSH)
+216   (PUSH-UNBOUND 1)
+218   (CALLS2&PUSH 155)                   ; LOG
+220   (CALLSR&PUSH 2 55)                  ; *
+223   (CALLSR&PUSH 2 54)                  ; -
+226   (CALLSR&PUSH 2 53)                  ; +
+229   (GETVALUE&PUSH 0)                   ; X
+231   (CONST&PUSH 2)                      ; 1.0
+232   (CALLSR&JMPIF 1 47 L154)            ; <
+237   (LOAD&PUSH 1)
+238   (CONST&PUSH 16)                     ; -3.14159265
+239   (CALLSR&PUSH 2 55)                  ; *
+242   (CONST&PUSH 17)                     ; $%I
+243   (CALL2&JMPIF 18 L247)               ; MUL
+246   (NIL)
+247   L247
+247   (PUSH)
+248   (CALL2 19)                          ; ADD
+250   (SKIP 1)
+252   (JMP L92)
+
+
+Disassembly of function #:|(DEFVAR *LI2* (*ARRAY NIL 'FLONUM ...))-17|
+(CONST 0) = (SPECIAL *LI2*)
+(CONST 1) = *LI2*
+(CONST 2) = FLONUM
+(CONST 3) = 15
+(CONST 4) = *ARRAY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *LI2*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *LI2*
+4     (CALLS1&JMPIF 79 L16)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *LI2*
+8     (NIL&PUSH)
+9     (CONST&PUSH 2)                      ; FLONUM
+10    (CONST&PUSH 3)                      ; 15
+11    (CALL&PUSH 3 4)                     ; *ARRAY
+14    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+16    L16
+16    (CONST 1)                           ; *LI2*
+17    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD EVAL) (FILLARRAY *LI2* '#))-18|
+(CONST 0) = *LI2*
+(CONST 1) = 
+(14.0 1.9350643 0.166073033 0.0248793229 0.00468636196 0.0010016275
+ 2.32002196E-4 5.68178227E-5 1.44963006E-5 3.81632946E-6 1.02990426E-6
+ 2.83575385E-7 7.9387055E-8 2.2536705E-8 6.474338E-9)
+(CONST 2) = FILLARRAY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*LI2*)
+4 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; *LI2*
+2     (CONST&PUSH 1)                      ; (14.0 1.9350643 0.166073033 ...)
+3     (CALL2 2)                           ; FILLARRAY
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *LI3* (*ARRAY NIL 'FLONUM ...))-19|
+(CONST 0) = (SPECIAL *LI3*)
+(CONST 1) = *LI3*
+(CONST 2) = FLONUM
+(CONST 3) = 15
+(CONST 4) = *ARRAY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *LI3*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *LI3*
+4     (CALLS1&JMPIF 79 L16)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *LI3*
+8     (NIL&PUSH)
+9     (CONST&PUSH 2)                      ; FLONUM
+10    (CONST&PUSH 3)                      ; 15
+11    (CALL&PUSH 3 4)                     ; *ARRAY
+14    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+16    L16
+16    (CONST 1)                           ; *LI3*
+17    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD EVAL) (FILLARRAY *LI3* '#))-20|
+(CONST 0) = *LI3*
+(CONST 1) = 
+(14.0 1.95841721 0.0851881315 0.00855985222 0.00121177214 2.07227685E-4
+ 3.99695869E-5 8.38064066E-6 1.86848945E-6 4.36660867E-7 1.05917334E-7
+ 2.647892E-8 6.787E-9 1.776536E-9 4.73417E-10)
+(CONST 2) = FILLARRAY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*LI3*)
+4 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; *LI3*
+2     (CONST&PUSH 1)                      ; (14.0 1.95841721 0.0851881315 ...)
+3     (CALL2 2)                           ; FILLARRAY
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *S12* (*ARRAY NIL 'FLONUM ...))-21|
+(CONST 0) = (SPECIAL *S12*)
+(CONST 1) = *S12*
+(CONST 2) = FLONUM
+(CONST 3) = 18
+(CONST 4) = *ARRAY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *S12*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *S12*
+4     (CALLS1&JMPIF 79 L16)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *S12*
+8     (NIL&PUSH)
+9     (CONST&PUSH 2)                      ; FLONUM
+10    (CONST&PUSH 3)                      ; 18
+11    (CALL&PUSH 3 4)                     ; *ARRAY
+14    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+16    L16
+16    (CONST 1)                           ; *S12*
+17    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD EVAL) (FILLARRAY *S12* '#))-22|
+(CONST 0) = *S12*
+(CONST 1) = 
+(17.0 1.90361778 0.431311318 0.100022507 0.024424156 0.00622512464
+ 0.00164078831 4.44079203E-4 1.22774942E-4 3.45398128E-5 9.85869565E-6
+ 2.84856995E-6 8.31708473E-7 2.45039499E-7 7.2764962E-8 2.1758023E-8
+ 6.546158E-9 1.980328E-9)
+(CONST 2) = FILLARRAY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*S12*)
+4 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; *S12*
+2     (CONST&PUSH 1)                      ; (17.0 1.90361778 0.431311318 ...)
+3     (CALL2 2)                           ; FILLARRAY
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN CHEBYLI2 (X) ...)-23|
+(CONST 0) = CHEBYLI2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHEBYLI2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHEBYLI2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHEBYLI2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHEBYLI2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHEBYLI2
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHEBYLI2
+(CONST 0) = X
+(CONST 1) = 4.0
+(CONST 2) = 3.0
+(CONST 3) = QUOT
+(CONST 4) = *LI2*
+(CONST 5) = CHEBY-PRIME
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*LI2* X)
+14 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (GETVALUE&PUSH 0)                   ; X
+7     (CONST&PUSH 1)                      ; 4.0
+8     (CALLSR&PUSH 2 55)                  ; *
+11    (CALLS2&PUSH 150)                   ; 1+
+13    (CONST&PUSH 2)                      ; 3.0
+14    (CALL2&PUSH 3)                      ; QUOT
+16    (GETVALUE&PUSH 4)                   ; *LI2*
+18    (CALL2&PUSH 5)                      ; CHEBY-PRIME
+20    (CALLSR 2 55)                       ; *
+23    (UNBIND1)
+24    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN CHEBYLI3 (X) ...)-24|
+(CONST 0) = CHEBYLI3
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHEBYLI3>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHEBYLI3
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHEBYLI3
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHEBYLI3>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHEBYLI3
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHEBYLI3
+(CONST 0) = X
+(CONST 1) = 4.0
+(CONST 2) = 3.0
+(CONST 3) = QUOT
+(CONST 4) = *LI3*
+(CONST 5) = CHEBY-PRIME
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*LI3* X)
+14 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CONST&PUSH 1)                      ; 4.0
+6     (GETVALUE&PUSH 0)                   ; X
+8     (CALLSR&PUSH 2 55)                  ; *
+11    (CALLS2&PUSH 150)                   ; 1+
+13    (CONST&PUSH 2)                      ; 3.0
+14    (CALL2&PUSH 3)                      ; QUOT
+16    (GETVALUE&PUSH 4)                   ; *LI3*
+18    (CALL2&PUSH 5)                      ; CHEBY-PRIME
+20    (CALLSR 2 55)                       ; *
+23    (UNBIND1)
+24    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN CHEBYS12 (X) ...)-25|
+(CONST 0) = CHEBYS12
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHEBYS12>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHEBYS12
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHEBYS12
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHEBYS12>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHEBYS12
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHEBYS12
+(CONST 0) = X
+(CONST 1) = 2
+(CONST 2) = 4.0
+(CONST 3) = QUOT
+(CONST 4) = 3.0
+(CONST 5) = *S12*
+(CONST 6) = CHEBY-PRIME
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*S12* X)
+18 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CONST&PUSH 1)                      ; 2
+6     (CALLS2&PUSH 154)                   ; EXPT
+8     (CONST&PUSH 2)                      ; 4.0
+9     (CALL2&PUSH 3)                      ; QUOT
+11    (CONST&PUSH 2)                      ; 4.0
+12    (GETVALUE&PUSH 0)                   ; X
+14    (CALLSR&PUSH 2 55)                  ; *
+17    (CALLS2&PUSH 150)                   ; 1+
+19    (CONST&PUSH 4)                      ; 3.0
+20    (CALL2&PUSH 3)                      ; QUOT
+22    (GETVALUE&PUSH 5)                   ; *S12*
+24    (CALL2&PUSH 6)                      ; CHEBY-PRIME
+26    (CALLSR 2 55)                       ; *
+29    (UNBIND1)
+30    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (NOTYPE X))-26|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(COMMENT SUBTITLE POLYGAMMA ...)-27|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE PLYGAM))-28|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MSUM (EXP LO HI) ...)-29|
+(CONST 0) = MSUM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MSUM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MSUM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MSUM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MSUM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MSUM
+8     (SKIP&RET 1)
+
+
+Disassembly of function MSUM
+(CONST 0) = EXP
+(CONST 1) = 0
+(CONST 2) = *K*
+(CONST 3) = MEVAL
+(CONST 4) = ADD2
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*K* EXP)
+writes special variable : (*K*)
+31 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; EXP
+3     (LOAD&PUSH 4)
+4     (LOAD&PUSH 6)
+5     (CALLSR&JMPIF 1 47 L15)             ; <
+9     (CONST&PUSH 1)                      ; 0
+10    (LOAD 6)
+11    (BIND 2)                            ; *K*
+13    (JMP L32)
+15    L15
+15    (CONST 1)                           ; 0
+16    (JMP L43)
+18    L18
+18    (LOAD&PUSH 3)
+19    (GETVALUE&PUSH 0)                   ; EXP
+21    (CALL1&PUSH 3)                      ; MEVAL
+23    (CALL2 4)                           ; ADD2
+25    (STORE 3)
+26    (GETVALUE&PUSH 2)                   ; *K*
+28    (CALLS2 150)                        ; 1+
+30    (SETVALUE 2)                        ; *K*
+32    L32
+32    (GETVALUE&PUSH 2)                   ; *K*
+34    (LOAD&PUSH 9)
+35    (CALLSR&JMPIFNOT 1 48 L18)          ; >
+39    (LOAD 3)
+40    (UNBIND1)
+41    (SKIP 1)
+43    L43
+43    (UNBIND1)
+44    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN POLE-ERR (EXP) ...)-30|
+(CONST 0) = POLE-ERR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POLE-ERR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POLE-ERR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POLE-ERR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POLE-ERR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; POLE-ERR
+8     (SKIP&RET 1)
+
+
+Disassembly of function POLE-ERR
+(CONST 0) = EXP
+(CONST 1) = ERRORSW
+(CONST 2) = "Pole encountered in: ~M"
+(CONST 3) = MERROR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (EXP ERRORSW)
+13 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE 1)                        ; ERRORSW
+5     (JMPIF L15)
+7     (CONST&PUSH 2)                      ; "Pole encountered in: ~M"
+8     (GETVALUE&PUSH 0)                   ; EXP
+10    (CALL2 3)                           ; MERROR
+12    (UNBIND1)
+13    (SKIP&RET 2)
+15    L15
+15    (CONST&PUSH 1)                      ; ERRORSW
+16    (T)
+17    (THROW)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $MAXPSIPOSINT $MAXPSINEGINT ...) (FIXNUM $MAXPSIPOSINT $MAXPSINEGINT ...) ...)-31|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP $PSI PSISIMP ...)-32|
+(CONST 0) = $PSI
+(CONST 1) = SPECSIMP
+(CONST 2) = PSISIMP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PSI
+1     (CONST&PUSH 1)                      ; SPECSIMP
+2     (CONST&PUSH 2)                      ; PSISIMP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MAPCAR #'(LAMBDA # #) '($MAXPSIPOSINT $MAXPSINEGINT $MAXPSIFRACNUM ...) ...)-33|
+(CONST 0) = ($MAXPSIPOSINT $MAXPSINEGINT $MAXPSIFRACNUM $MAXPSIFRACDENOM)
+(CONST 1) = (20 -10 4 4)
+(CONST 2) = VAR
+(CONST 3) = SET
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+36 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; ($MAXPSIPOSINT $MAXPSINEGINT ...)
+2     (CONST&PUSH 1)                      ; (20 -10 4 4)
+3     (JMP L36)
+5     L5
+5     (SKIP 2)
+7     (JMP L48)
+9     L9
+9     (LOAD&CAR&PUSH 1)
+11    (LOAD 1)
+12    (BIND 2)                            ; VAR
+14    (GETVALUE&PUSH 2)                   ; VAR
+16    (CALLS1 79)                         ; BOUNDP
+18    (NOT)
+19    (JMPIFNOT L26)
+21    (GETVALUE&PUSH 2)                   ; VAR
+23    (LOAD&PUSH 4)
+24    (CALL2 3)                           ; SET
+26    L26
+26    (UNBIND1)
+27    (PUSH)
+28    (LOAD&CONS&STORE 4)
+30    (SKIP 2)
+32    (LOAD&CDR&STORE 1)
+34    (LOAD&CDR&STORE 0)
+36    L36
+36    (LOAD&PUSH 1)
+37    (CALLS1&JMPIF 146 L5)               ; ENDP
+40    (LOAD&CAR&PUSH 1)
+42    (LOAD&PUSH 1)
+43    (CALLS1&JMPIFNOT 146 L9)            ; ENDP
+46    (SKIP 3)
+48    L48
+48    (LOAD&PUSH 0)
+49    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+51    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN PSISIMP (EXP A Z) ...)-34|
+(CONST 0) = PSISIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PSISIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PSISIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PSISIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PSISIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PSISIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function PSISIMP
+(CONST 0) = EXP
+(CONST 1) = A
+(CONST 2) = SUBFUNSUBS
+(CONST 3) = SIMPCHECK
+(CONST 4) = S
+(CONST 5) = 1
+(CONST 6) = $PSI
+(CONST 7) = SUBARGCHECK
+(CONST 8) = SUBFUNARGS
+(CONST 9) = POLE-ERR
+(CONST 10) = PSISIMP1
+(CONST 11) = EQTEST
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (S A EXP)
+writes special variable : (A)
+36 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; EXP
+3     (LOAD 5)
+4     (BIND 1)                            ; A
+6     (GETVALUE&PUSH 0)                   ; EXP
+8     (CALL1 2)                           ; SUBFUNSUBS
+10    (CAR&PUSH)
+11    (LOAD&PUSH 8)
+12    (CALL2 3)                           ; SIMPCHECK
+14    (BIND 4)                            ; S
+16    (GETVALUE&PUSH 0)                   ; EXP
+18    (CONST&PUSH 5)                      ; 1
+19    (CONST&PUSH 5)                      ; 1
+20    (CONST&PUSH 6)                      ; $PSI
+21    (CALL 4 7)                          ; SUBARGCHECK
+24    (GETVALUE&PUSH 0)                   ; EXP
+26    (CALL1 8)                           ; SUBFUNARGS
+28    (CAR&PUSH)
+29    (LOAD&PUSH 11)
+30    (CALL2 3)                           ; SIMPCHECK
+32    (SETVALUE 1)                        ; A
+34    (PUSH)
+35    (CALLS2&JMPIFNOT 12 L49)            ; INTEGERP
+38    (GETVALUE&PUSH 1)                   ; A
+40    (CONST&PUSH 5)                      ; 1
+41    (CALLSR&JMPIFNOT 1 47 L49)          ; <
+45    (GETVALUE&PUSH 0)                   ; EXP
+47    (CALL1 9)                           ; POLE-ERR
+49    L49
+49    (GETVALUE&PUSH 4)                   ; S
+51    (GETVALUE&PUSH 1)                   ; A
+53    (CALL2&PUSH 10)                     ; PSISIMP1
+55    (GETVALUE&PUSH 0)                   ; EXP
+57    (CALL2 11)                          ; EQTEST
+59    (UNBIND 3)
+61    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN PSISIMP1 (S A) ...)-35|
+(CONST 0) = PSISIMP1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PSISIMP1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PSISIMP1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PSISIMP1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PSISIMP1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PSISIMP1
+8     (SKIP&RET 1)
+
+
+Disassembly of function PSISIMP1
+(CONST 0) = S
+(CONST 1) = A
+(CONST 2) = *K*
+(CONST 3) = $NUMER
+(CONST 4) = $FLOAT
+(CONST 5) = -1
+(CONST 6) = $MAXPSIPOSINT
+(CONST 7) = FACTORIAL
+(CONST 8) = POWER
+(CONST 9) = 1
+(CONST 10) = MSUM
+(CONST 11) = $%GAMMA
+(CONST 12) = $ZETA
+(CONST 13) = SUB*
+(CONST 14) = MUL
+(CONST 15) = RATNUMP
+(CONST 16) = RATGREATERP
+(CONST 17) = 0
+(CONST 18) = $ENTIER
+(CONST 19) = SUB
+(CONST 20) = $PSI
+(CONST 21) = SUBFUNMAKES
+(CONST 22) = ADD
+(CONST 23) = P
+(CONST 24) = $MAXPSIFRACNUM
+(CONST 25) = $MAXPSIFRACDENOM
+(CONST 26) = BIGP
+(CONST 27) = 2
+(CONST 28) = -2
+(CONST 29) = ((%LOG) 2)
+(CONST 30) = MUL*
+(CONST 31) = ADD*
+(CONST 32) = 3
+(CONST 33) = ((RAT SIMP) -1 2)
+(CONST 34) = ((RAT SIMP) -1 2)
+(CONST 35) = $%PI
+(CONST 36) = ((RAT SIMP) -3 2)
+(CONST 37) = ((%LOG) 3)
+(CONST 38) = 4
+(CONST 39) = ((RAT SIMP) -1 2)
+(CONST 40) = -3
+(CONST 41) = ((%LOG) 2)
+(CONST 42) = ((RAT SIMP) 1 2)
+(CONST 43) = ((RAT SIMP) -1 2)
+(CONST 44) = ((RAT SIMP) -3 2)
+(CONST 45) = ((%LOG) 3)
+(CONST 46) = ((RAT SIMP) 1 2)
+(CONST 47) = ((%LOG) 2)
+(CONST 48) = (%COS)
+(CONST 49) = (%LOG)
+(CONST 50) = (%COS)
+(CONST 51) = DIV
+(CONST 52) = F
+(CONST 53) = QUOT
+(CONST 54) = MEVAL
+(CONST 55) = ((RAT SIMP) 1 2)
+(CONST 56) = ((RAT SIMP) 1 2)
+(CONST 57) = (%COT)
+(CONST 58) = (MTIMES SIMP)
+(CONST 59) = ($%PI)
+(CONST 60) = (%LOG)
+(CONST 61) = NEG
+(CONST 62) = ((RAT) 1 2)
+(CONST 63) = ALIKE1
+(CONST 64) = SIMPLIFY
+(CONST 65) = $MAXPSINEGINT
+(CONST 66) = (%COT)
+(CONST 67) = $Z
+(CONST 68) = $DIFF
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: 
+($MAXPSINEGINT F $MAXPSIFRACDENOM $MAXPSIFRACNUM P $MAXPSIPOSINT A S $FLOAT
+ $NUMER)
+371 byte-code instructions:
+0     L0
+0     (LOAD 2)
+1     (BIND 0)                            ; S
+3     (LOAD 4)
+4     (BIND 1)                            ; A
+6     (NIL)
+7     (BIND 2)                            ; *K*
+9     (GETVALUE 3)                        ; $NUMER
+11    (JMPIF L682)
+14    (GETVALUE 4)                        ; $FLOAT
+16    (JMPIF L682)
+19    (GETVALUE&PUSH 0)                   ; S
+21    (CALLS2&JMPIFNOT 12 L682)           ; INTEGERP
+25    (GETVALUE&PUSH 0)                   ; S
+27    (CONST&PUSH 5)                      ; -1
+28    (CALLSR&JMPIFNOT 1 48 L682)         ; >
+33    (GETVALUE&PUSH 1)                   ; A
+35    (CALLS2&JMPIF 12 L225)              ; INTEGERP
+39    (GETVALUE&PUSH 1)                   ; A
+41    (CALL1&JMPIFNOT 15 L682)            ; RATNUMP
+45    (GETVALUE&PUSH 1)                   ; A
+47    (GETVALUE&PUSH 6)                   ; $MAXPSIPOSINT
+49    (CALL2&JMPIF 16 L682)               ; RATGREATERP
+53    (GETVALUE&PUSH 1)                   ; A
+55    (CONST&PUSH 17)                     ; 0
+56    (CALL2&JMPIFNOT 16 L604)            ; RATGREATERP
+60    (GETVALUE&PUSH 1)                   ; A
+62    (CONST&PUSH 9)                      ; 1
+63    (CALL2&JMPIF 16 L299)               ; RATGREATERP
+67    (GETVALUE&PUSH 0)                   ; S
+69    (CONST&PUSH 17)                     ; 0
+70    (CALLSR&JMPIFNOT 1 45 L559)         ; =
+75    (GETVALUE 1)                        ; A
+77    (CDR)
+78    (CAR&PUSH)
+79    (GETVALUE 1)                        ; A
+81    (CDR)
+82    (CDR)
+83    (CAR&PUSH)
+84    (LOAD 1)
+85    (BIND 23)                           ; P
+87    (GETVALUE&PUSH 23)                  ; P
+89    (GETVALUE&PUSH 24)                  ; $MAXPSIFRACNUM
+91    (CALLSR&JMPIF 1 48 L367)            ; >
+96    (LOAD&PUSH 3)
+97    (GETVALUE&PUSH 25)                  ; $MAXPSIFRACDENOM
+99    (CALLSR&JMPIF 1 48 L367)            ; >
+104   (GETVALUE&PUSH 23)                  ; P
+106   (CALL1&JMPIF 26 L367)               ; BIGP
+110   (LOAD&PUSH 3)
+111   (CALL1&JMPIF 26 L367)               ; BIGP
+115   (GETVALUE&PUSH 23)                  ; P
+117   (CONST&PUSH 9)                      ; 1
+118   (CALLSR&JMPIFNOT 1 45 L167)         ; =
+122   (LOAD&PUSH 3)
+123   (CONST&PUSH 27)                     ; 2
+124   (CALLSR&JMPIF 1 45 L371)            ; =
+129   (LOAD&PUSH 3)
+130   (CONST&PUSH 32)                     ; 3
+132   (CALLSR&JMPIF 1 45 L386)            ; =
+137   (LOAD&PUSH 3)
+138   (CONST&PUSH 38)                     ; 4
+140   (CALLSR&JMPIFNOT 1 45 L167)         ; =
+144   (CONST&PUSH 39)                     ; ((RAT SIMP) -1 2)
+146   (CONST&PUSH 35)                     ; $%PI
+148   (CALL2&PUSH 30)                     ; MUL*
+150   (CONST&PUSH 40)                     ; -3
+152   (CONST&PUSH 41)                     ; ((%LOG) 2)
+154   (CALL2&PUSH 30)                     ; MUL*
+156   (CONST&PUSH 5)                      ; -1
+157   (CONST 11)                          ; $%GAMMA
+158   L158
+158   (PUSH)
+159   (CALL2&PUSH 30)                     ; MUL*
+161   (CALL 3 31)                         ; ADD*
+164   (JMPIF L550)
+167   L167
+167   (GETVALUE&PUSH 23)                  ; P
+169   (CONST&PUSH 27)                     ; 2
+170   (CALLSR&JMPIFNOT 1 45 L182)         ; =
+174   (LOAD&PUSH 3)
+175   (CONST&PUSH 32)                     ; 3
+177   (CALLSR&JMPIF 1 45 L410)            ; =
+182   L182
+182   (GETVALUE&PUSH 23)                  ; P
+184   (CONST&PUSH 32)                     ; 3
+186   (CALLSR&JMPIFNOT 1 45 L438)         ; =
+191   (LOAD&PUSH 3)
+192   (CONST&PUSH 38)                     ; 4
+194   (CALLSR&JMPIFNOT 1 45 L438)         ; =
+199   (CONST&PUSH 46)                     ; ((RAT SIMP) 1 2)
+201   (CONST&PUSH 35)                     ; $%PI
+203   (CALL2&PUSH 30)                     ; MUL*
+205   (CONST&PUSH 40)                     ; -3
+207   (CONST&PUSH 47)                     ; ((%LOG) 2)
+209   (CALL2&PUSH 30)                     ; MUL*
+211   (CONST&PUSH 5)                      ; -1
+212   (CONST 11)                          ; $%GAMMA
+213   L213
+213   (PUSH)
+214   (CALL2&PUSH 30)                     ; MUL*
+216   (CALL 3 31)                         ; ADD*
+219   (JMP L550)
+222   L222
+222   (CONST 11)                          ; $%GAMMA
+223   (JMP L274)
+225   L225
+225   (GETVALUE&PUSH 1)                   ; A
+227   (GETVALUE&PUSH 6)                   ; $MAXPSIPOSINT
+229   (CALLSR&JMPIF 1 48 L682)            ; >
+234   (CONST&PUSH 5)                      ; -1
+235   (GETVALUE&PUSH 0)                   ; S
+237   (CALLS2&PUSH 154)                   ; EXPT
+239   (GETVALUE&PUSH 0)                   ; S
+241   (CALL1&PUSH 7)                      ; FACTORIAL
+243   (CONST&PUSH 2)                      ; *K*
+244   (GETVALUE&PUSH 0)                   ; S
+246   (CALLS2&PUSH 150)                   ; 1+
+248   (CALL2&PUSH 8)                      ; POWER
+250   (CONST&PUSH 5)                      ; -1
+251   (CALL2&PUSH 8)                      ; POWER
+253   (CONST&PUSH 9)                      ; 1
+254   (GETVALUE&PUSH 1)                   ; A
+256   (CALLS2&PUSH 151)                   ; 1-
+258   (CALL&PUSH 3 10)                    ; MSUM
+261   (GETVALUE&PUSH 0)                   ; S
+263   (CALLS2&JMPIF 145 L222)             ; ZEROP
+266   (GETVALUE&PUSH 0)                   ; S
+268   (CALLS2&PUSH 150)                   ; 1+
+270   (CALL1&JMPIF 12 L274)               ; $ZETA
+273   (NIL)
+274   L274
+274   (PUSH)
+275   (CALL2&PUSH 13)                     ; SUB*
+277   (CALL 3 14)                         ; MUL
+280   (JMPIF1 L697)
+283   (JMP L682)
+286   L286
+286   (CONST&PUSH 20)                     ; $PSI
+287   (GETVALUE&PUSH 0)                   ; S
+289   (NIL)
+290   (CONS&PUSH)
+291   (LOAD&PUSH 4)
+292   (NIL)
+293   (CONS&PUSH)
+294   (CALL 3 21)                         ; SUBFUNMAKES
+297   (JMP L356)
+299   L299
+299   (GETVALUE&PUSH 1)                   ; A
+301   (CALL1&PUSH 18)                     ; $ENTIER
+303   (GETVALUE&PUSH 1)                   ; A
+305   (LOAD&PUSH 1)
+306   (CALL2&PUSH 19)                     ; SUB
+308   (GETVALUE&PUSH 0)                   ; S
+310   (LOAD&PUSH 1)
+311   (JSR&PUSH L0)
+314   (LOAD&PUSH 2)
+315   (GETVALUE&PUSH 6)                   ; $MAXPSIPOSINT
+317   (CALLSR&JMPIF 1 48 L286)            ; >
+321   (CONST&PUSH 5)                      ; -1
+322   (GETVALUE&PUSH 0)                   ; S
+324   (CALLS2&PUSH 154)                   ; EXPT
+326   (GETVALUE&PUSH 0)                   ; S
+328   (CALL1&PUSH 7)                      ; FACTORIAL
+330   (GETVALUE&PUSH 1)                   ; A
+332   (LOAD&PUSH 5)
+333   (CALL2&PUSH 19)                     ; SUB
+335   (CONST&PUSH 2)                      ; *K*
+336   (CALL2&PUSH 22)                     ; ADD
+338   (GETVALUE&PUSH 0)                   ; S
+340   (CALLSR&PUSH 0 54)                  ; -
+343   (CALLS2&PUSH 151)                   ; 1-
+345   (CALL2&PUSH 8)                      ; POWER
+347   (CONST&PUSH 17)                     ; 0
+348   (LOAD&DEC&PUSH 6)
+350   (CALL&PUSH 3 10)                    ; MSUM
+353   (CALL 3 14)                         ; MUL
+356   L356
+356   (PUSH)
+357   (CALL2 22)                          ; ADD
+359   (SKIP 2)
+361   (JMPIF1 L697)
+364   (JMP L682)
+367   L367
+367   (NIL)
+368   (JMP L550)
+371   L371
+371   (CONST&PUSH 28)                     ; -2
+372   (CONST&PUSH 29)                     ; ((%LOG) 2)
+373   (CALL2&PUSH 30)                     ; MUL*
+375   (CONST&PUSH 5)                      ; -1
+376   (CONST&PUSH 11)                     ; $%GAMMA
+377   (CALL2&PUSH 30)                     ; MUL*
+379   (CALL2&JMPIFNOT 31 L167)            ; ADD*
+383   (JMP L550)
+386   L386
+386   (CONST&PUSH 33)                     ; ((RAT SIMP) -1 2)
+388   (CONST&PUSH 32)                     ; 3
+390   (CONST&PUSH 34)                     ; ((RAT SIMP) -1 2)
+392   (CALL2&PUSH 8)                      ; POWER
+394   (CONST&PUSH 35)                     ; $%PI
+396   (CALL&PUSH 3 30)                    ; MUL*
+399   (CONST&PUSH 36)                     ; ((RAT SIMP) -3 2)
+401   (CONST&PUSH 37)                     ; ((%LOG) 3)
+403   (CALL2&PUSH 30)                     ; MUL*
+405   (CONST&PUSH 5)                      ; -1
+406   (CONST 11)                          ; $%GAMMA
+407   (JMP L158)
+410   L410
+410   (CONST&PUSH 42)                     ; ((RAT SIMP) 1 2)
+412   (CONST&PUSH 32)                     ; 3
+414   (CONST&PUSH 43)                     ; ((RAT SIMP) -1 2)
+416   (CALL2&PUSH 8)                      ; POWER
+418   (CONST&PUSH 35)                     ; $%PI
+420   (CALL&PUSH 3 30)                    ; MUL*
+423   (CONST&PUSH 44)                     ; ((RAT SIMP) -3 2)
+425   (CONST&PUSH 45)                     ; ((%LOG) 3)
+427   (CALL2&PUSH 30)                     ; MUL*
+429   (CONST&PUSH 5)                      ; -1
+430   (CONST 11)                          ; $%GAMMA
+431   (JMP L213)
+434   L434
+434   (CONST 9)                           ; 1
+435   (JMP L508)
+438   L438
+438   (CONST&PUSH 48)                     ; (%COS)
+440   (CONST&PUSH 27)                     ; 2
+441   (GETVALUE&PUSH 1)                   ; A
+443   (CONST&PUSH 35)                     ; $%PI
+445   (CONST&PUSH 2)                      ; *K*
+446   (CALL&PUSH 4 30)                    ; MUL*
+449   (LIST&PUSH 2)
+451   (CONST&PUSH 49)                     ; (%LOG)
+453   (CONST&PUSH 27)                     ; 2
+454   (CONST&PUSH 27)                     ; 2
+455   (CONST&PUSH 50)                     ; (%COS)
+457   (CONST&PUSH 27)                     ; 2
+458   (CONST&PUSH 35)                     ; $%PI
+460   (CONST&PUSH 2)                      ; *K*
+461   (CALL&PUSH 3 30)                    ; MUL*
+464   (LOAD&PUSH 9)
+465   (CALL2&PUSH 51)                     ; DIV
+467   (LIST&PUSH 2)
+469   (CALL2&PUSH 30)                     ; MUL*
+471   (CALL2&PUSH 19)                     ; SUB
+473   (LIST&PUSH 2)
+475   (CALL2 30)                          ; MUL*
+477   (BIND 52)                           ; F
+479   (GETVALUE&PUSH 52)                  ; F
+481   (CONST&PUSH 9)                      ; 1
+482   (LOAD&PUSH 8)
+483   (CONST&PUSH 27)                     ; 2
+484   (CALL2&PUSH 53)                     ; QUOT
+486   (CALLS2&PUSH 151)                   ; 1-
+488   (CALL&PUSH 3 10)                    ; MSUM
+491   (LOAD&PUSH 7)
+492   (CONST&PUSH 27)                     ; 2
+493   (CALL2 53)                          ; QUOT
+495   (BIND 2)                            ; *K*
+497   (GETVALUE&PUSH 52)                  ; F
+499   (CALL1&PUSH 54)                     ; MEVAL
+501   (LOAD&PUSH 11)
+502   (CALLS2&JMPIF 148 L434)             ; ODDP
+506   (CONST 55)                          ; ((RAT SIMP) 1 2)
+508   L508
+508   (PUSH)
+509   (CALL2 14)                          ; MUL
+511   (UNBIND1)
+512   (PUSH)
+513   (CONST&PUSH 35)                     ; $%PI
+515   (CONST&PUSH 56)                     ; ((RAT SIMP) 1 2)
+517   (CONST&PUSH 57)                     ; (%COT)
+519   (CONST&PUSH 58)                     ; (MTIMES SIMP)
+521   (GETVALUE&PUSH 1)                   ; A
+523   (CONST 59)                          ; ($%PI)
+525   (LIST*&PUSH 2)
+527   (LIST&PUSH 2)
+529   (CALL&PUSH 3 30)                    ; MUL*
+532   (CONST&PUSH 60)                     ; (%LOG)
+534   (LOAD&PUSH 10)
+535   (LIST&PUSH 2)
+537   (CONST&PUSH 11)                     ; $%GAMMA
+538   (CALL&PUSH 3 31)                    ; ADD*
+541   (CALL1&PUSH 61)                     ; NEG
+543   (CALL 3 22)                         ; ADD
+546   (UNBIND1)
+547   (JMPIF L550)
+549   (NIL)
+550   L550
+550   (UNBIND1)
+551   (SKIP 2)
+553   (JMPIF1 L697)
+556   (JMP L682)
+559   L559
+559   (GETVALUE&PUSH 1)                   ; A
+561   (CONST&PUSH 62)                     ; ((RAT) 1 2)
+563   (CALL2&JMPIFNOT 63 L682)            ; ALIKE1
+567   (CONST&PUSH 5)                      ; -1
+568   (GETVALUE&PUSH 0)                   ; S
+570   (CALLS2&PUSH 150)                   ; 1+
+572   (CALLS2&PUSH 154)                   ; EXPT
+574   (GETVALUE&PUSH 0)                   ; S
+576   (CALL1&PUSH 7)                      ; FACTORIAL
+578   (CONST&PUSH 27)                     ; 2
+579   (GETVALUE&PUSH 0)                   ; S
+581   (CALLS2&PUSH 150)                   ; 1+
+583   (CALLS2&PUSH 154)                   ; EXPT
+585   (CALLS2&PUSH 151)                   ; 1-
+587   (GETVALUE&PUSH 0)                   ; S
+589   (CALLS2&PUSH 150)                   ; 1+
+591   (CALL1&PUSH 12)                     ; $ZETA
+593   (CALL1&PUSH 64)                     ; SIMPLIFY
+595   (CALL 4 14)                         ; MUL
+598   (JMPIF1 L697)
+601   (JMP L682)
+604   L604
+604   (GETVALUE&PUSH 1)                   ; A
+606   (GETVALUE&PUSH 65)                  ; $MAXPSINEGINT
+608   (CALL2&JMPIFNOT 16 L682)            ; RATGREATERP
+612   (CONST&PUSH 5)                      ; -1
+613   (GETVALUE&PUSH 0)                   ; S
+615   (CALLS2&PUSH 154)                   ; EXPT
+617   (GETVALUE&PUSH 0)                   ; S
+619   (CONST&PUSH 5)                      ; -1
+620   (GETVALUE&PUSH 1)                   ; A
+622   (CALL2&PUSH 30)                     ; MUL*
+624   (JSR&PUSH L0)
+627   (CONST&PUSH 66)                     ; (%COT)
+629   (CONST&PUSH 35)                     ; $%PI
+631   (CONST&PUSH 67)                     ; $Z
+633   (CALL2&PUSH 30)                     ; MUL*
+635   (LIST&PUSH 2)
+637   (CONST&PUSH 67)                     ; $Z
+639   (GETVALUE&PUSH 0)                   ; S
+641   (CALL&PUSH 3 68)                    ; $DIFF
+644   (GETVALUE&PUSH 1)                   ; A
+646   (CALL1 61)                          ; NEG
+648   (BIND 67)                           ; $Z
+650   (LOAD&PUSH 3)
+651   (CALL1 54)                          ; MEVAL
+653   (UNBIND1)
+654   (STORE 0)
+655   (CALL2&PUSH 22)                     ; ADD
+657   (GETVALUE&PUSH 0)                   ; S
+659   (CALL1&PUSH 7)                      ; FACTORIAL
+661   (GETVALUE&PUSH 1)                   ; A
+663   (CALL1&PUSH 61)                     ; NEG
+665   (GETVALUE&PUSH 0)                   ; S
+667   (CALLSR&PUSH 0 54)                  ; -
+670   (CALLS2&PUSH 151)                   ; 1-
+672   (CALL2&PUSH 8)                      ; POWER
+674   (CALL2&PUSH 14)                     ; MUL
+676   (CALL2&PUSH 22)                     ; ADD
+678   (CALL2 14)                          ; MUL
+680   (JMPIF1 L697)
+682   L682
+682   (CONST&PUSH 20)                     ; $PSI
+683   (GETVALUE&PUSH 0)                   ; S
+685   (NIL)
+686   (CONS&PUSH)
+687   (GETVALUE&PUSH 1)                   ; A
+689   (NIL)
+690   (CONS&PUSH)
+691   (CALL 3 21)                         ; SUBFUNMAKES
+694   (UNBIND1)
+695   (JMP L698)
+697   L697
+697   (UNBIND1)
+698   L698
+698   (UNBIND 2)
+700   (SKIP&RET 3)
+
+
+Disassembly of function #:|(COMMENT SUBTITLE POLYGAMMA ...)-36|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL VAR SUBL ...))-37|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN EXPGAM-FUN (PW TEMP) ...)-38|
+(CONST 0) = EXPGAM-FUN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXPGAM-FUN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXPGAM-FUN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXPGAM-FUN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXPGAM-FUN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXPGAM-FUN
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXPGAM-FUN
+(CONST 0) = TEMP
+(CONST 1) = VAR
+(CONST 2) = KEY-VARS
+(CONST 3) = ASSQ
+(CONST 4) = TLIST
+(CONST 5) = ZL-ASSOC
+(CONST 6) = D
+(CONST 7) = PUSH-PW
+(CONST 8) = E1+
+(CONST 9) = (($PSI) -1)
+(CONST 10) = GETEXP-FUN
+(CONST 11) = PSEXPT-FN
+(CONST 12) = POP-PW
+(CONST 13) = PS
+(CONST 14) = (((-1 . 1) 1 . 1))
+(CONST 15) = PSTIMES
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (TEMP D TLIST KEY-VARS VAR)
+writes special variable : (TEMP)
+46 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; TEMP
+3     (GETVALUE 1)                        ; VAR
+5     (CAR&PUSH)
+6     (GETVALUE&PUSH 2)                   ; KEY-VARS
+8     (CALL2 3)                           ; ASSQ
+10    (CDR&PUSH)
+11    (GETVALUE&PUSH 4)                   ; TLIST
+13    (CALL2 5)                           ; ZL-ASSOC
+15    (SETVALUE 0)                        ; TEMP
+17    (BIND 6)                            ; D
+19    (GETVALUE&PUSH 6)                   ; D
+21    (LOAD&PUSH 9)
+22    (CALL2 7)                           ; PUSH-PW
+24    (GETVALUE 0)                        ; TEMP
+26    (BIND 6)                            ; D
+28    (GETVALUE&PUSH 6)                   ; D
+30    (LOAD&PUSH 12)
+31    (CALL1&PUSH 8)                      ; E1+
+33    (CALL2 7)                           ; PUSH-PW
+35    (CONST&PUSH 9)                      ; (($PSI) -1)
+36    (GETVALUE&PUSH 1)                   ; VAR
+38    (LOAD&PUSH 13)
+39    (CALL1&PUSH 8)                      ; E1+
+41    (CALL&PUSH 3 10)                    ; GETEXP-FUN
+44    (CALL1&PUSH 11)                     ; PSEXPT-FN
+46    (GETVALUE&PUSH 6)                   ; D
+48    (CALL1 12)                          ; POP-PW
+50    (POP)
+51    (UNBIND1)
+52    (PUSH)
+53    (CONST&PUSH 13)                     ; PS
+54    (GETVALUE&PUSH 1)                   ; VAR
+56    (LOAD&PUSH 11)
+57    (NIL)
+58    (CONS&PUSH)
+59    (CONST 14)                          ; (((-1 . 1) 1 . 1))
+60    (CONS)
+61    (CONS)
+62    (CONS&PUSH)
+63    (CALL2&PUSH 15)                     ; PSTIMES
+65    (GETVALUE&PUSH 6)                   ; D
+67    (CALL1 12)                          ; POP-PW
+69    (POP)
+70    (UNBIND 2)
+72    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN EXPPLYGAM-FUNS (PW SUBL L) ...)-39|
+(CONST 0) = EXPPLYGAM-FUNS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXPPLYGAM-FUNS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXPPLYGAM-FUNS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXPPLYGAM-FUNS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXPPLYGAM-FUNS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXPPLYGAM-FUNS
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXPPLYGAM-FUNS
+(CONST 0) = SUBL
+(CONST 1) = L
+(CONST 2) = -1
+(CONST 3) = TAY-ERR
+(CONST 4) = "Unable to expand at a subscript in"
+(CONST 5) = LAST-EXP
+(CONST 6) = 0
+(CONST 7) = E
+(CONST 8) = SIGN
+(CONST 9) = 1.0
+(CONST 10) = QUOT
+(CONST 11) = (1 . 1)
+(CONST 12) = ((MTIMES) -1 $%GAMMA)
+(CONST 13) = PREP1
+(CONST 14) = ((-1 . 1) -1 . 1)
+(CONST 15) = 0.0
+(CONST 16) = (0 . 1)
+(CONST 17) = ((MTIMES) -1 $%GAMMA)
+(CONST 18) = FACTORIAL
+(CONST 19) = LAST
+(CONST 20) = 1
+(CONST 21) = RCPLYGAM
+(CONST 22) = $ZETA
+(CONST 23) = RATTIMES
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (SIGN E L LAST-EXP SUBL)
+writes special variables : (SIGN E L LAST SUBL)
+137 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; SUBL
+3     (LOAD 4)
+4     (BIND 1)                            ; L
+6     (GETVALUE 0)                        ; SUBL
+8     (CAR)
+9     (SETVALUE 0)                        ; SUBL
+11    (PUSH)
+12    (CALLS2&JMPIFNOT 12 L124)           ; INTEGERP
+16    (GETVALUE&PUSH 0)                   ; SUBL
+18    (CONST&PUSH 2)                      ; -1
+19    (CALLSR&JMPIF 1 47 L124)            ; <
+24    (CONST 6)                           ; 0
+25    (BIND 7)                            ; E
+27    (CONST 6)                           ; 0
+28    (BIND 8)                            ; SIGN
+30    (NIL&PUSH)
+31    (LOAD&CAR&PUSH 16)
+33    (CONST&PUSH 9)                      ; 1.0
+34    (CALLS2&PUSH 174)                   ; COMMON-LISP:FLOAT
+36    (LOAD&CDR&PUSH 17)
+38    (CONST&PUSH 9)                      ; 1.0
+39    (CALLS2&PUSH 174)                   ; COMMON-LISP:FLOAT
+41    (CALL2 10)                          ; QUOT
+43    (STORE 0)
+44    (GETVALUE&PUSH 0)                   ; SUBL
+46    (CONST&PUSH 2)                      ; -1
+47    (CALLSR&JMPIF 1 45 L131)            ; =
+52    (GETVALUE&PUSH 0)                   ; SUBL
+54    (CONST&PUSH 6)                      ; 0
+55    (CALLSR&JMPIF 1 45 L142)            ; =
+60    (GETVALUE&PUSH 0)                   ; SUBL
+62    (CALL1 18)                          ; FACTORIAL
+64    (SETVALUE 19)                       ; LAST
+66    (GETVALUE&PUSH 0)                   ; SUBL
+68    (CALLS2&PUSH 150)                   ; 1+
+70    (CALLSR&PUSH 0 54)                  ; -
+73    (CONST 20)                          ; 1
+74    (CONS&PUSH)
+75    (CONST&PUSH 2)                      ; -1
+76    (GETVALUE&PUSH 0)                   ; SUBL
+78    (CALLS2&PUSH 150)                   ; 1+
+80    (CALLS2&PUSH 154)                   ; EXPT
+82    (GETVALUE&PUSH 0)                   ; SUBL
+84    (CALL1&PUSH 18)                     ; FACTORIAL
+86    (CALLSR&PUSH 2 55)                  ; *
+89    (CONST 20)                          ; 1
+90    (LIST* 2)
+92    L92
+92    (PUSH)
+93    (LIST 1)
+95    L95
+95    (SETVALUE 1)                        ; L
+97    (GETVALUE&PUSH 0)                   ; SUBL
+99    (CONST&PUSH 20)                     ; 1
+100   (CALLSR&JMPIF 1 47 L159)            ; <
+104   (CONST 2)                           ; -1
+105   L105
+105   (SETVALUE 7)                        ; E
+107   (GETVALUE&PUSH 0)                   ; SUBL
+109   (CONST&PUSH 20)                     ; 1
+110   (CALLSR&JMPIF 1 47 L166)            ; <
+114   (CONST&PUSH 2)                      ; -1
+115   (GETVALUE&PUSH 0)                   ; SUBL
+117   (CALLS2 154)                        ; EXPT
+119   (SETVALUE 8)                        ; SIGN
+121   (JMP L207)
+124   L124
+124   (CONST&PUSH 3)                      ; TAY-ERR
+125   (CONST&PUSH 4)                      ; "Unable to expand at a subscript in"
+126   (GETVALUE&PUSH 5)                   ; LAST-EXP
+128   (LIST 2)
+130   (THROW)
+131   L131
+131   (CONST&PUSH 11)                     ; (1 . 1)
+132   (CONST&PUSH 12)                     ; ((MTIMES) -1 $%GAMMA)
+133   (CALL1 13)                          ; PREP1
+135   (CONS)
+136   (JMP L92)
+138   L138
+138   (NIL)
+139   (CONS)
+140   (JMP L95)
+142   L142
+142   (CONST&PUSH 14)                     ; ((-1 . 1) -1 . 1)
+143   (CONST&PUSH 15)                     ; 0.0
+144   (LOAD&PUSH 2)
+145   (CALLSR&JMPIF 1 48 L138)            ; >
+149   (CONST&PUSH 16)                     ; (0 . 1)
+150   (CONST&PUSH 17)                     ; ((MTIMES) -1 $%GAMMA)
+151   (CALL1 13)                          ; PREP1
+153   (CONS&PUSH)
+154   (LIST 1)
+156   (CONS)
+157   (JMP L95)
+159   L159
+159   (GETVALUE&PUSH 0)                   ; SUBL
+161   (CALLSR 0 54)                       ; -
+164   (JMP L105)
+166   L166
+166   (CONST 2)                           ; -1
+167   (SETVALUE 8)                        ; SIGN
+169   (JMP L207)
+171   L171
+171   (GETVALUE&PUSH 1)                   ; L
+173   (PUSH-UNBOUND 1)
+175   (CALLS1&PUSH 156)                   ; LAST
+177   (GETVALUE&PUSH 7)                   ; E
+179   (CONST 20)                          ; 1
+180   (CONS&PUSH)
+181   (GETVALUE&PUSH 7)                   ; E
+183   (CALL1&PUSH 21)                     ; RCPLYGAM
+185   (GETVALUE&PUSH 0)                   ; SUBL
+187   (CALLS2&PUSH 150)                   ; 1+
+189   (GETVALUE&PUSH 7)                   ; E
+191   (CALLSR&PUSH 2 53)                  ; +
+194   (CALL1&PUSH 22)                     ; $ZETA
+196   (CALL1&PUSH 13)                     ; PREP1
+198   (T&PUSH)
+199   (CALL 3 23)                         ; RATTIMES
+202   (CONS&PUSH)
+203   (LIST&PUSH 1)
+205   (CALLS1 170)                        ; RPLACD
+207   L207
+207   (GETVALUE&PUSH 7)                   ; E
+209   (CALLS2 150)                        ; 1+
+211   (SETVALUE 7)                        ; E
+213   (GETVALUE&PUSH 8)                   ; SIGN
+215   (CALLSR 0 54)                       ; -
+218   (SETVALUE 8)                        ; SIGN
+220   (GETVALUE&PUSH 7)                   ; E
+222   (LOAD&PUSH 1)
+223   (CALLSR&JMPIFNOT 1 48 L171)         ; >
+227   (GETVALUE 1)                        ; L
+229   (SKIP 1)
+231   (UNBIND 4)
+233   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN RCPLYGAM (K) ...)-40|
+(CONST 0) = RCPLYGAM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE RCPLYGAM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; RCPLYGAM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; RCPLYGAM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE RCPLYGAM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; RCPLYGAM
+8     (SKIP&RET 1)
+
+
+Disassembly of function RCPLYGAM
+(CONST 0) = K
+(CONST 1) = SUBL
+(CONST 2) = -1
+(CONST 3) = SIGN
+(CONST 4) = 0
+(CONST 5) = 1
+(CONST 6) = LAST
+(CONST 7) = X
+(CONST 8) = Y
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X K LAST SIGN SUBL)
+writes special variable : (LAST)
+53 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; K
+3     (GETVALUE&PUSH 1)                   ; SUBL
+5     (CONST&PUSH 2)                      ; -1
+6     (CALLSR&JMPIF 1 45 L73)             ; =
+10    (GETVALUE&PUSH 1)                   ; SUBL
+12    (CONST&PUSH 4)                      ; 0
+13    (CALLSR&JMPIF 1 45 L80)             ; =
+17    (GETVALUE&PUSH 3)                   ; SIGN
+19    (GETVALUE&PUSH 6)                   ; LAST
+21    (CALLSR&PUSH 2 55)                  ; *
+24    (CONST 5)                           ; 1
+25    (CONS&PUSH)
+26    (GETVALUE&PUSH 6)                   ; LAST
+28    (GETVALUE&PUSH 1)                   ; SUBL
+30    (GETVALUE&PUSH 0)                   ; K
+32    (CALLS2&PUSH 150)                   ; 1+
+34    (CALLSR&PUSH 2 53)                  ; +
+37    (CALLSR 2 55)                       ; *
+40    (BIND 7)                            ; X
+42    (GETVALUE&PUSH 0)                   ; K
+44    (CALLS2 150)                        ; 1+
+46    (BIND 8)                            ; Y
+48    (GETVALUE&PUSH 7)                   ; X
+50    (CALLS2&JMPIFNOT 12 L58)            ; INTEGERP
+53    (GETVALUE&PUSH 8)                   ; Y
+55    (CALLS2&JMPIF 12 L86)               ; INTEGERP
+58    L58
+58    (GETVALUE&PUSH 7)                   ; X
+60    (GETVALUE&PUSH 8)                   ; Y
+62    (CALLSR 1 56)                       ; /
+65    L65
+65    (UNBIND 2)
+67    (SETVALUE 6)                        ; LAST
+69    (POP)
+70    L70
+70    (UNBIND1)
+71    (SKIP&RET 2)
+73    L73
+73    (GETVALUE&PUSH 3)                   ; SIGN
+75    (GETVALUE 0)                        ; K
+77    (CONS)
+78    (JMP L70)
+80    L80
+80    (GETVALUE&PUSH 3)                   ; SIGN
+82    (CONST 5)                           ; 1
+83    (CONS)
+84    (JMP L70)
+86    L86
+86    (GETVALUE&PUSH 7)                   ; X
+88    (GETVALUE&PUSH 8)                   ; Y
+90    (CALLS2 181)                        ; TRUNCATE
+92    (JMP L65)
+
+
+Disassembly of function #:|(DEFUN PLYGAM-ORD (SUBL) ...)-41|
+(CONST 0) = PLYGAM-ORD
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PLYGAM-ORD>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PLYGAM-ORD
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PLYGAM-ORD
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PLYGAM-ORD>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PLYGAM-ORD
+8     (SKIP&RET 1)
+
+
+Disassembly of function PLYGAM-ORD
+(CONST 0) = SUBL
+(CONST 1) = -1
+(CONST 2) = (1 . 1)
+(CONST 3) = 1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (SUBL)
+20 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; SUBL
+3     (GETVALUE 0)                        ; SUBL
+5     (CAR&PUSH)
+6     (JMPIFEQTO 1 L24)                   ; -1
+9     (GETVALUE 0)                        ; SUBL
+11    (CAR&PUSH)
+12    (CALLS2&PUSH 150)                   ; 1+
+14    (CALLSR&PUSH 0 54)                  ; -
+17    (CONST 3)                           ; 1
+18    (CONS&PUSH)
+19    (LIST 1)
+21    L21
+21    (UNBIND1)
+22    (SKIP&RET 2)
+24    L24
+24    (CONST&PUSH 2)                      ; (1 . 1)
+25    (NIL)
+26    (CONS)
+27    (JMP L21)
+
+
+Disassembly of function #:|(DEFUN PLYGAM-POLE (A C FUNC) ...)-42|
+(CONST 0) = PLYGAM-POLE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PLYGAM-POLE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PLYGAM-POLE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PLYGAM-POLE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PLYGAM-POLE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PLYGAM-POLE
+8     (SKIP&RET 1)
+
+
+Disassembly of function PLYGAM-POLE
+(CONST 0) = A
+(CONST 1) = C
+(CONST 2) = 1
+(CONST 3) = CDISREP
+(CONST 4) = SUB*
+(CONST 5) = GET-LEXP
+(CONST 6) = (0 . 1)
+(CONST 7) = GAM-CONST
+(CONST 8) = PLYGAM-CONST
+(CONST 9) = (%GAMMA)
+(CONST 10) = (MQAPPLY)
+(CONST 11) = SIMPLIFYA
+(CONST 12) = PREP1
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (A C)
+70 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; A
+3     (LOAD 5)
+4     (BIND 1)                            ; C
+6     (GETVALUE 1)                        ; C
+8     (CAR&PUSH)
+9     (CALLS2&JMPIFNOT 12 L24)            ; INTEGERP
+12    (GETVALUE 1)                        ; C
+14    (CDR&PUSH)
+15    (JMPIFNOTEQTO 2 L24)                ; 1
+18    (GETVALUE 1)                        ; C
+20    (CAR&PUSH)
+21    (CALLS2&JMPIF 147 L57)              ; MINUSP
+24    L24
+24    (LOAD 7)
+25    (JMPIFATOM L98)
+28    (CONST&PUSH 10)                     ; (MQAPPLY)
+29    (LOAD&PUSH 8)
+30    (GETVALUE&PUSH 1)                   ; C
+32    (CALL1&PUSH 3)                      ; CDISREP
+34    (LIST 3)
+36    L36
+36    (PUSH)
+37    (NIL&PUSH)
+38    (CALL2&PUSH 11)                     ; SIMPLIFYA
+40    (CALL1 12)                          ; PREP1
+42    L42
+42    (UNBIND 2)
+44    (SKIP&RET 4)
+46    L46
+46    (GETVALUE&PUSH 0)                   ; A
+48    (LOAD&PUSH 1)
+49    (LOAD&PUSH 10)
+50    (CALL 3 7)                          ; GAM-CONST
+53    (SKIP 1)
+55    (JMP L42)
+57    L57
+57    (GETVALUE&PUSH 0)                   ; A
+59    (GETVALUE&PUSH 1)                   ; C
+61    (CALL1&PUSH 3)                      ; CDISREP
+63    (CALL2&PUSH 4)                      ; SUB*
+65    (NIL&PUSH)
+66    (T&PUSH)
+67    (CALL&PUSH 3 5)                     ; GET-LEXP
+70    (LOAD 0)
+71    (CDR)
+72    (CDR&PUSH)
+73    (CONST&PUSH 6)                      ; (0 . 1)
+74    (GETVALUE 1)                        ; C
+76    (CONS&PUSH)
+77    (LOAD 2)
+78    (CDR)
+79    (CDR)
+80    (CDR)
+81    (CONS&PUSH)
+82    (CALLS1 170)                        ; RPLACD
+84    (LOAD 8)
+85    (JMPIFATOM L46)
+87    (GETVALUE&PUSH 0)                   ; A
+89    (LOAD&PUSH 1)
+90    (LOAD&PUSH 10)
+91    (CALL 3 8)                          ; PLYGAM-CONST
+94    (SKIP 1)
+96    (JMP L42)
+98    L98
+98    (CONST&PUSH 9)                      ; (%GAMMA)
+99    (GETVALUE&PUSH 1)                   ; C
+101   (CALL1&PUSH 3)                      ; CDISREP
+103   (LIST 2)
+105   (JMP L36)
+
+
+Disassembly of function #:|(DEFUN GAM-CONST (A ARG FUNC) ...)-43|
+(CONST 0) = GAM-CONST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GAM-CONST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GAM-CONST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GAM-CONST
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GAM-CONST>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GAM-CONST
+8     (SKIP&RET 1)
+
+
+Disassembly of function GAM-CONST
+(CONST 0) = A
+(CONST 1) = ARG
+(CONST 2) = PS
+(CONST 3) = 1
+(CONST 4) = (%GAMMA)
+(CONST 5) = TLIST
+(CONST 6) = DIFF-EXPAND
+(CONST 7) = TAYLOR2
+(CONST 8) = ADD
+(CONST 9) = (1 . 1)
+(CONST 10) = 0
+(CONST 11) = GET-LEXP
+(CONST 12) = (%GAMMA)
+(CONST 13) = SIMPLIFY
+(CONST 14) = KEY-VARS
+(CONST 15) = ASSQ
+(CONST 16) = ZL-ASSOC
+(CONST 17) = D
+(CONST 18) = EDIFF
+(CONST 19) = PUSH-PW
+(CONST 20) = %GAMMA
+(CONST 21) = EXPAND
+(CONST 22) = POP-PW
+(CONST 23) = E+
+(CONST 24) = %%TAYLOR-INDEX%%
+(CONST 25) = NEG
+(CONST 26) = %PRODUCT
+(CONST 27) = TSPRSUM
+(CONST 28) = PSTIMES
+(CONST 29) = (-1 . 1)
+(CONST 30) = PSEXPT
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (KEY-VARS D TLIST A ARG)
+166 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; A
+3     (LOAD 5)
+4     (BIND 1)                            ; ARG
+6     (GETVALUE 1)                        ; ARG
+8     (CAR&PUSH)
+9     (JMPIFEQTO 2 L59)                   ; PS
+12    (GETVALUE 1)                        ; ARG
+14    L14
+14    (PUSH)
+15    (NIL&PUSH)
+16    (LOAD&CAR&PUSH 1)
+18    (CALLS2&JMPIFNOT 12 L68)            ; INTEGERP
+21    (LOAD&CDR&PUSH 1)
+23    (JMPIFNOTEQTO 3 L68)                ; 1
+26    (LOAD&CAR&STORE 1 1)
+29    (GETVALUE 1)                        ; ARG
+31    (CAR&PUSH)
+32    (JMPIFNOTEQTO 2 L138)               ; PS
+36    (LOAD&JMPIFNOT 0 L165)
+40    L40
+40    (CAR&PUSH)
+41    (JMPIFEQTO 2 L165)                  ; PS
+45    (CONST&PUSH 12)                     ; (%GAMMA)
+46    (LOAD&PUSH 2)
+47    (LIST&PUSH 2)
+49    (CALL1 13)                          ; SIMPLIFY
+51    L51
+51    (PUSH)
+52    (CALL1 7)                           ; TAYLOR2
+54    (SKIP 2)
+56    (JMP L261)
+59    L59
+59    (GETVALUE 1)                        ; ARG
+61    (CDR)
+62    (CDR)
+63    (CDR)
+64    (CAR)
+65    (CDR)
+66    (JMP L14)
+68    L68
+68    (CONST&PUSH 4)                      ; (%GAMMA)
+69    (GETVALUE&PUSH 0)                   ; A
+71    (LIST&PUSH 2)
+73    (GETVALUE&PUSH 5)                   ; TLIST
+75    (CALL2 6)                           ; DIFF-EXPAND
+77    (JMP L51)
+79    L79
+79    (LOAD 1)
+80    (BIND 17)                           ; D
+82    (GETVALUE&PUSH 17)                  ; D
+84    (LOAD&PUSH 15)
+85    (LOAD&PUSH 5)
+86    (CALL2&PUSH 18)                     ; EDIFF
+88    (CALL2 19)                          ; PUSH-PW
+90    (GETVALUE&PUSH 0)                   ; A
+92    (LOAD&PUSH 7)
+93    (CALLSR&PUSH 0 54)                  ; -
+96    (CALL2&PUSH 8)                      ; ADD
+98    (CONST&PUSH 20)                     ; %GAMMA
+99    (CALL2&PUSH 21)                     ; EXPAND
+101   (GETVALUE&PUSH 17)                  ; D
+103   (CALL1 22)                          ; POP-PW
+105   (POP)
+106   (UNBIND1)
+107   (PUSH)
+108   (LOAD 2)
+109   (BIND 17)                           ; D
+111   (GETVALUE&PUSH 17)                  ; D
+113   (LOAD&PUSH 16)
+114   (LOAD&PUSH 6)
+115   (CALL2&PUSH 23)                     ; E+
+117   (CALL2 19)                          ; PUSH-PW
+119   (GETVALUE&PUSH 0)                   ; A
+121   (CONST&PUSH 24)                     ; %%TAYLOR-INDEX%%
+122   (CALL1&PUSH 25)                     ; NEG
+124   (CALL2&PUSH 8)                      ; ADD
+126   (CONST&PUSH 24)                     ; %%TAYLOR-INDEX%%
+127   (CONST&PUSH 3)                      ; 1
+128   (LOAD&PUSH 10)
+129   (LIST&PUSH 3)
+131   (CONST&PUSH 26)                     ; %PRODUCT
+132   (CALL 3 27)                         ; TSPRSUM
+135   (JMP L249)
+138   L138
+138   (GETVALUE&PUSH 0)                   ; A
+140   (LOAD&PUSH 2)
+141   (CALLSR&PUSH 0 54)                  ; -
+144   (CALL2&PUSH 8)                      ; ADD
+146   (CONST&PUSH 9)                      ; (1 . 1)
+147   (LOAD&PUSH 3)
+148   (CALLS2&JMPIFNOT 8 L156)            ; NUMBERP
+151   (LOAD&PUSH 3)
+152   (CONST&PUSH 10)                     ; 0
+153   (CALLSR 1 49)                       ; <=
+156   L156
+156   (PUSH)
+157   (CALL 3 11)                         ; GET-LEXP
+160   (STORE 0)
+161   (LOAD&JMPIF 0 L40)
+165   L165
+165   (LOAD&JMPIF 0 L170)
+168   (GETVALUE 1)                        ; ARG
+170   L170
+170   (CDR)
+171   (CAR)
+172   (CAR&PUSH)
+173   (GETVALUE&PUSH 14)                  ; KEY-VARS
+175   (CALL2 15)                          ; ASSQ
+177   (CDR&PUSH)
+178   (GETVALUE&PUSH 5)                   ; TLIST
+180   (CALL2&PUSH 16)                     ; ZL-ASSOC
+182   (LOAD&JMPIF 1 L188)
+185   (GETVALUE 1)                        ; ARG
+187   (CDR)
+188   L188
+188   (CDR)
+189   (CDR)
+190   (CDR)
+191   (CAR)
+192   (CAR&PUSH)
+193   (LOAD 1)
+194   (CDR)
+195   (CAR)
+196   (CAR)
+197   (STORE 11)
+199   (LOAD&PUSH 3)
+200   (CONST&PUSH 10)                     ; 0
+201   (CALLSR&JMPIF 1 48 L79)             ; >
+206   (GETVALUE&PUSH 0)                   ; A
+208   (LOAD&PUSH 4)
+209   (CALLSR&PUSH 0 54)                  ; -
+212   (CALL2&PUSH 8)                      ; ADD
+214   (CONST&PUSH 20)                     ; %GAMMA
+215   (CALL2&PUSH 21)                     ; EXPAND
+217   (LOAD 2)
+218   (BIND 17)                           ; D
+220   (GETVALUE&PUSH 17)                  ; D
+222   (LOAD&PUSH 16)
+223   (LOAD&PUSH 6)
+224   (CALL2&PUSH 23)                     ; E+
+226   (CALL2 19)                          ; PUSH-PW
+228   (GETVALUE&PUSH 0)                   ; A
+230   (CONST&PUSH 24)                     ; %%TAYLOR-INDEX%%
+231   (CALL2&PUSH 8)                      ; ADD
+233   (CONST&PUSH 24)                     ; %%TAYLOR-INDEX%%
+234   (CONST&PUSH 10)                     ; 0
+235   (LOAD&INC&PUSH 10)
+237   (CALLSR&PUSH 0 54)                  ; -
+240   (LIST&PUSH 3)
+242   (CONST&PUSH 26)                     ; %PRODUCT
+243   (CALL&PUSH 3 27)                    ; TSPRSUM
+246   (CONST&PUSH 29)                     ; (-1 . 1)
+247   (CALL2 30)                          ; PSEXPT
+249   L249
+249   (PUSH)
+250   (GETVALUE&PUSH 17)                  ; D
+252   (CALL1 22)                          ; POP-PW
+254   (POP)
+255   (UNBIND1)
+256   (PUSH)
+257   (CALL2 28)                          ; PSTIMES
+259   (SKIP 4)
+261   L261
+261   (UNBIND 2)
+263   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN PLYGAM-CONST (A ARG FUNC) ...)-44|
+(CONST 0) = PLYGAM-CONST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PLYGAM-CONST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PLYGAM-CONST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PLYGAM-CONST
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PLYGAM-CONST>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PLYGAM-CONST
+8     (SKIP&RET 1)
+
+
+Disassembly of function PLYGAM-CONST
+(CONST 0) = A
+(CONST 1) = ARG
+(CONST 2) = PS
+(CONST 3) = -1
+(CONST 4) = TAY-ERR
+(CONST 5) = "Unable to expand at a subscript in"
+(CONST 6) = LAST-EXP
+(CONST 7) = 1
+(CONST 8) = (MQAPPLY)
+(CONST 9) = TLIST
+(CONST 10) = DIFF-EXPAND
+(CONST 11) = TAYLOR2
+(CONST 12) = ADD
+(CONST 13) = EXPAND
+(CONST 14) = 0
+(CONST 15) = FACTORIAL
+(CONST 16) = (MEXPT)
+(CONST 17) = %%TAYLOR-INDEX%%
+(CONST 18) = NEG
+(CONST 19) = %SUM
+(CONST 20) = TSPRSUM
+(CONST 21) = PSTIMES
+(CONST 22) = (MEXPT)
+(CONST 23) = PSPLUS
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (TLIST LAST-EXP A ARG)
+109 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; A
+3     (LOAD 5)
+4     (BIND 1)                            ; ARG
+6     (GETVALUE 1)                        ; ARG
+8     (CAR&PUSH)
+9     (JMPIFEQTO 2 L114)                  ; PS
+13    (GETVALUE 1)                        ; ARG
+15    L15
+15    (PUSH)
+16    (LOAD 8)
+17    (CDR)
+18    (CAR&PUSH)
+19    (LOAD&PUSH 0)
+20    (CALLS2&JMPIFNOT 12 L124)           ; INTEGERP
+24    (LOAD&PUSH 0)
+25    (CONST&PUSH 3)                      ; -1
+26    (CALLSR&JMPIF 1 47 L124)            ; <
+31    (LOAD&CAR&PUSH 1)
+33    (CALLS2&JMPIFNOT 12 L131)           ; INTEGERP
+37    (LOAD&CDR&PUSH 1)
+39    (JMPIFNOTEQTO 7 L131)               ; 1
+43    (LOAD&CAR&STORE 1 1)
+46    (GETVALUE&PUSH 0)                   ; A
+48    (LOAD&PUSH 2)
+49    (CALLSR&PUSH 0 54)                  ; -
+52    (CALL2&PUSH 12)                     ; ADD
+54    (LOAD&PUSH 10)
+55    (CALL2&PUSH 13)                     ; EXPAND
+57    (LOAD&PUSH 2)
+58    (CONST&PUSH 14)                     ; 0
+59    (CALLSR&JMPIF 1 48 L147)            ; >
+64    (CONST&PUSH 3)                      ; -1
+65    (LOAD&INC&PUSH 2)
+67    (CALLS2&PUSH 154)                   ; EXPT
+69    (LOAD&PUSH 2)
+70    (CALL1&PUSH 15)                     ; FACTORIAL
+72    (CALLSR&PUSH 2 55)                  ; *
+75    (CONST 7)                           ; 1
+76    (CONS&PUSH)
+77    (CONST&PUSH 22)                     ; (MEXPT)
+78    (GETVALUE&PUSH 0)                   ; A
+80    (CONST&PUSH 17)                     ; %%TAYLOR-INDEX%%
+81    (CALL2&PUSH 12)                     ; ADD
+83    (LOAD&INC&PUSH 4)
+85    (CALLSR&PUSH 0 54)                  ; -
+88    (LIST&PUSH 3)
+90    (CONST&PUSH 17)                     ; %%TAYLOR-INDEX%%
+91    (CONST&PUSH 14)                     ; 0
+92    (LOAD&INC&PUSH 6)
+94    (CALLSR&PUSH 0 54)                  ; -
+97    (LIST&PUSH 3)
+99    (CONST 19)                          ; %SUM
+100   L100
+100   (PUSH)
+101   (CALL&PUSH 3 20)                    ; TSPRSUM
+104   (CALL2&PUSH 21)                     ; PSTIMES
+106   (CALL2 23)                          ; PSPLUS
+108   (SKIP 2)
+110   L110
+110   (UNBIND 2)
+112   (SKIP&RET 4)
+114   L114
+114   (GETVALUE 1)                        ; ARG
+116   (CDR)
+117   (CDR)
+118   (CDR)
+119   (CAR)
+120   (CDR)
+121   (JMP L15)
+124   L124
+124   (CONST&PUSH 4)                      ; TAY-ERR
+125   (CONST&PUSH 5)                      ; "Unable to expand at a subscript in"
+126   (GETVALUE&PUSH 6)                   ; LAST-EXP
+128   (LIST 2)
+130   (THROW)
+131   L131
+131   (CONST&PUSH 8)                      ; (MQAPPLY)
+132   (LOAD&PUSH 10)
+133   (GETVALUE&PUSH 0)                   ; A
+135   (LIST&PUSH 3)
+137   (GETVALUE&PUSH 9)                   ; TLIST
+139   (CALL2&PUSH 10)                     ; DIFF-EXPAND
+141   (CALL1 11)                          ; TAYLOR2
+143   (SKIP 2)
+145   (JMP L110)
+147   L147
+147   (CONST&PUSH 3)                      ; -1
+148   (LOAD&PUSH 2)
+149   (CALLS2&PUSH 154)                   ; EXPT
+151   (LOAD&PUSH 2)
+152   (CALL1&PUSH 15)                     ; FACTORIAL
+154   (CALLSR&PUSH 2 55)                  ; *
+157   (CONST 7)                           ; 1
+158   (CONS&PUSH)
+159   (CONST&PUSH 16)                     ; (MEXPT)
+160   (GETVALUE&PUSH 0)                   ; A
+162   (CONST&PUSH 17)                     ; %%TAYLOR-INDEX%%
+163   (CALL1&PUSH 18)                     ; NEG
+165   (CALL2&PUSH 12)                     ; ADD
+167   (LOAD&INC&PUSH 4)
+169   (CALLSR&PUSH 0 54)                  ; -
+172   (LIST&PUSH 3)
+174   (CONST&PUSH 17)                     ; %%TAYLOR-INDEX%%
+175   (CONST&PUSH 7)                      ; 1
+176   (LOAD&PUSH 6)
+177   (LIST&PUSH 3)
+179   (CONST 19)                          ; %SUM
+180   (JMP L100)
+
+
+Disassembly of function #:|(DECLARE-TOP (UNSPECIAL VAR SUBL ...))-45|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/specfn.fas
+Wrote file /cygdrive/e/temp/maxima/src/specfn.lis

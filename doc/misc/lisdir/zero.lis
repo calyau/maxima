@@ -1,0 +1,450 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/zero.lisp
+on 2002-12-17 13:33:17 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/zero.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE ZERO)-2|
+(CONST 0) = ZERO
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZERO
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $NUMER $LISTCONSTVARS ...) (*LEXPR $RAT))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $ZEROEQUIV (EXP VAR) ...)-4|
+(CONST 0) = $ZEROEQUIV
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ZEROEQUIV>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ZEROEQUIV
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ZEROEQUIV
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ZEROEQUIV>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ZEROEQUIV
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ZEROEQUIV
+(CONST 0) = VAR
+(CONST 1) = S
+(CONST 2) = V
+(CONST 3) = VARLIST
+(CONST 4) = GENVAR
+(CONST 5) = SPECREPCHECK
+(CONST 6) = $LISTCONSTVARS
+(CONST 7) = $LISTOFVARS
+(CONST 8) = ALIKE1
+(CONST 9) = $DONTKNOW
+(CONST 10) = $EXPONENTIALIZE
+(CONST 11) = SDIFF
+(CONST 12) = %DERIVATIVE
+(CONST 13) = ISINOP
+(CONST 14) = $RAT
+(CONST 15) = RATNUMERATOR
+(CONST 16) = ZEROEQUIV1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+writes special variables : (V S)
+68 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; VAR
+3     (NIL&PUSH)
+4     (NIL)
+5     (BIND 1)                            ; S
+7     (NIL)
+8     (BIND 2)                            ; V
+10    (NIL)
+11    (BIND 3)                            ; VARLIST
+13    (NIL)
+14    (BIND 4)                            ; GENVAR
+16    (LOAD&PUSH 18)
+17    (CALL1 5)                           ; SPECREPCHECK
+19    (STORE 18)
+21    (NIL)
+22    (BIND 6)                            ; $LISTCONSTVARS
+24    (LOAD&PUSH 21)
+25    (CALL1 7)                           ; $LISTOFVARS
+27    (UNBIND1)
+28    (STORE 12)
+30    (CDR)
+31    (JMPIFNOT L46)
+33    (LOAD 12)
+34    (CDR)
+35    (CDR)
+36    (JMPIF L70)
+38    (LOAD 12)
+39    (CDR)
+40    (CAR&PUSH)
+41    (GETVALUE&PUSH 0)                   ; VAR
+43    (CALL2&JMPIFNOT 8 L70)              ; ALIKE1
+46    L46
+46    (LOAD&PUSH 18)
+47    (CALL1 10)                          ; $EXPONENTIALIZE
+49    (STORE 18)
+51    (PUSH)
+52    (GETVALUE&PUSH 0)                   ; VAR
+54    (CALL2 11)                          ; SDIFF
+56    (STORE 12)
+58    (PUSH)
+59    (CONST&PUSH 12)                     ; %DERIVATIVE
+60    (CALL2&JMPIFNOT 13 L73)             ; ISINOP
+63    (CONST 9)                           ; $DONTKNOW
+64    L64
+64    (UNBIND 4)
+66    (SKIP 1)
+68    (JMP L97)
+70    L70
+70    (CONST 9)                           ; $DONTKNOW
+71    (JMP L64)
+73    L73
+73    (LOAD&PUSH 12)
+74    (CALL1 14)                          ; $RAT
+76    (LOAD&PUSH 18)
+77    (CALL1 14)                          ; $RAT
+79    (STORE 12)
+81    (CAR)
+82    (SETVALUE 1)                        ; S
+84    (LOAD&CDR&PUSH 12)
+86    (CALL1 15)                          ; RATNUMERATOR
+88    (SETVALUE 2)                        ; V
+90    (PUSH)
+91    (CALL1 16)                          ; ZEROEQUIV1
+93    (UNBIND 4)
+95    (SKIP 1)
+97    L97
+97    (UNBIND1)
+98    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN ZEROEQUIV1 (V) ...)-5|
+(CONST 0) = ZEROEQUIV1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZEROEQUIV1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZEROEQUIV1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZEROEQUIV1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZEROEQUIV1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZEROEQUIV1
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZEROEQUIV1
+(CONST 0) = V
+(CONST 1) = V1
+(CONST 2) = V2
+(CONST 3) = 0
+(CONST 4) = S
+(CONST 5) = RATDISREP
+(CONST 6) = VAR
+(CONST 7) = SDIFF
+(CONST 8) = $RAT
+(CONST 9) = PDEGREE
+(CONST 10) = ZEROEQUIV2
+(CONST 11) = $DONTKNOW
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (V2 VAR S V)
+writes special variables : (V2 V1 V)
+104 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; V
+3     (NIL)
+4     (BIND 1)                            ; V1
+6     (NIL)
+7     (BIND 2)                            ; V2
+9     (PUSH-NIL 2)
+11    (GETVALUE 0)                        ; V
+13    (JMPIFCONSP L47)
+15    (GETVALUE&PUSH 0)                   ; V
+17    (CONST 3)                           ; 0
+18    (EQ)
+19    (JMP L142)
+22    L22
+22    (T)
+23    (JMP L149)
+26    L26
+26    (GETVALUE 0)                        ; V
+28    (CDR)
+29    (CDR)
+30    (CAR&PUSH)
+31    (JSR L0)
+33    (JMP L142)
+36    L36
+36    (GETVALUE 0)                        ; V
+38    (CAR&PUSH)
+39    (GETVALUE 0)                        ; V
+41    (CDR)
+42    (CDR)
+43    (CDR)
+44    (CONS)
+45    (SETVALUE 0)                        ; V
+47    L47
+47    (GETVALUE 0)                        ; V
+49    (CDR)
+50    (JMPIFNOT L22)
+52    (GETVALUE 0)                        ; V
+54    (CDR)
+55    (CAR)
+56    (STORE 0)
+57    (PUSH)
+58    (JMPIFEQTO 3 L26)                   ; 0
+61    (GETVALUE 0)                        ; V
+63    (CDR)
+64    (CDR)
+65    (CAR)
+66    (STORE 1)
+67    (PUSH)
+68    (JSR L0)
+71    (JMPIF L36)
+73    (GETVALUE&PUSH 4)                   ; S
+75    (GETVALUE&PUSH 0)                   ; V
+77    (GETVALUE 0)                        ; V
+79    (CDR)
+80    (CDR)
+81    (CAR)
+82    (CONS)
+83    (CONS&PUSH)
+84    (CALL1&PUSH 5)                      ; RATDISREP
+86    (GETVALUE&PUSH 6)                   ; VAR
+88    (CALL2&PUSH 7)                      ; SDIFF
+90    (CALL1 8)                           ; $RAT
+92    (SETVALUE 1)                        ; V1
+94    (PUSH)
+95    (CALL1&PUSH 5)                      ; RATDISREP
+97    (CALL1 8)                           ; $RAT
+99    (CDR)
+100   (CAR)
+101   (SETVALUE 2)                        ; V2
+103   (PUSH)
+104   (GETVALUE 0)                        ; V
+106   (CAR&PUSH)
+107   (CALL2&PUSH 9)                      ; PDEGREE
+109   (GETVALUE 0)                        ; V
+111   (CDR)
+112   (CAR&PUSH)
+113   (CALLS2&JMPIF 2 L138)               ; EQUAL
+116   (GETVALUE&PUSH 2)                   ; V2
+118   (GETVALUE 0)                        ; V
+120   (CAR&PUSH)
+121   (CALL2&PUSH 9)                      ; PDEGREE
+123   (GETVALUE 0)                        ; V
+125   (CDR)
+126   (CAR&PUSH)
+127   (CALLSR&JMPIFNOT 1 47 L148)         ; <
+131   (GETVALUE&PUSH 2)                   ; V2
+133   (JSR L0)
+136   (JMPIFNOT1 L142)
+138   L138
+138   (GETVALUE&PUSH 0)                   ; V
+140   (CALL1 10)                          ; ZEROEQUIV2
+142   L142
+142   (SKIP 2)
+144   (UNBIND 2)
+146   (JMP L153)
+148   L148
+148   (CONST 11)                          ; $DONTKNOW
+149   L149
+149   (SKIP 2)
+151   (UNBIND 2)
+153   L153
+153   (UNBIND1)
+154   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN ZEROEQUIV2 (V) ...)-6|
+(CONST 0) = ZEROEQUIV2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZEROEQUIV2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZEROEQUIV2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZEROEQUIV2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZEROEQUIV2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZEROEQUIV2
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZEROEQUIV2
+(CONST 0) = V
+(CONST 1) = R1
+(CONST 2) = R2
+(CONST 3) = 0.001
+(CONST 4) = 1000
+(CONST 5) = VAR
+(CONST 6) = S
+(CONST 7) = 1
+(CONST 8) = RATDISREP
+(CONST 9) = MAXIMA-SUBSTITUTE
+(CONST 10) = (($EV) V $NUMER)
+(CONST 11) = MEVAL
+(CONST 12) = 0.01
+(CONST 13) = $%I
+(CONST 14) = FREE
+(CONST 15) = %LOG
+(CONST 16) = ISINOP
+(CONST 17) = $DONTKNOW
+(CONST 18) = $REALPART
+(CONST 19) = (($EV) R1 $NUMER)
+(CONST 20) = $IMAGPART
+(CONST 21) = (($EV) R2 $NUMER)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (R2 R1 V S VAR)
+writes special variables : (R2 R1 V)
+96 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; V
+3     (NIL&PUSH)
+4     (NIL)
+5     (BIND 1)                            ; R1
+7     (NIL)
+8     (BIND 2)                            ; R2
+10    (CONST&PUSH 3)                      ; 0.001
+11    (CONST&PUSH 4)                      ; 1000
+12    (PUSH-UNBOUND 1)
+14    (CALLS2&PUSH 220)                   ; RANDOM
+16    (CALLSR&PUSH 2 55)                  ; *
+19    (CALLS2&STORE 161 6)                ; SIN
+22    (PUSH)
+23    (GETVALUE&PUSH 5)                   ; VAR
+25    (GETVALUE&PUSH 6)                   ; S
+27    (GETVALUE&PUSH 0)                   ; V
+29    (CONST 7)                           ; 1
+30    (CONS)
+31    (CONS&PUSH)
+32    (CALL1&PUSH 8)                      ; RATDISREP
+34    (CALL 3 9)                          ; MAXIMA-SUBSTITUTE
+37    (SETVALUE 0)                        ; V
+39    (CONST&PUSH 10)                     ; (($EV) V $NUMER)
+40    (CALL1 11)                          ; MEVAL
+42    (SETVALUE 0)                        ; V
+44    (PUSH)
+45    (CALLS2&JMPIFNOT 8 L62)             ; NUMBERP
+48    (GETVALUE&PUSH 0)                   ; V
+50    (CALLS2&PUSH 158)                   ; ABS
+52    (CONST&PUSH 12)                     ; 0.01
+53    (LOAD&PUSH 8)
+54    (CALLSR&PUSH 2 55)                  ; *
+57    (CALLSR&JMPIF 1 47 L144)            ; <
+62    L62
+62    (GETVALUE&PUSH 0)                   ; V
+64    (CALLS2&JMPIF 8 L156)               ; NUMBERP
+68    (GETVALUE&PUSH 0)                   ; V
+70    (CONST&PUSH 13)                     ; $%I
+71    (CALL2&JMPIFNOT 14 L81)             ; FREE
+74    (GETVALUE&PUSH 0)                   ; V
+76    (CONST&PUSH 15)                     ; %LOG
+77    (CALL2&JMPIFNOT 16 L147)            ; ISINOP
+81    L81
+81    (GETVALUE&PUSH 0)                   ; V
+83    (CALL1 18)                          ; $REALPART
+85    (SETVALUE 1)                        ; R1
+87    (CONST&PUSH 19)                     ; (($EV) R1 $NUMER)
+88    (CALL1 11)                          ; MEVAL
+90    (SETVALUE 1)                        ; R1
+92    (PUSH)
+93    (CALLS2&JMPIFNOT 8 L150)            ; NUMBERP
+96    (GETVALUE&PUSH 0)                   ; V
+98    (CALL1 20)                          ; $IMAGPART
+100   (SETVALUE 2)                        ; R2
+102   (CONST&PUSH 21)                     ; (($EV) R2 $NUMER)
+103   (CALL1 11)                          ; MEVAL
+105   (SETVALUE 2)                        ; R2
+107   (PUSH)
+108   (CALLS2&JMPIFNOT 8 L153)            ; NUMBERP
+111   (GETVALUE&PUSH 1)                   ; R1
+113   (CALLS2&PUSH 158)                   ; ABS
+115   (CONST&PUSH 12)                     ; 0.01
+116   (LOAD&PUSH 8)
+117   (CALLSR&PUSH 2 55)                  ; *
+120   (CALLSR&JMPIFNOT 1 47 L156)         ; <
+124   (GETVALUE&PUSH 2)                   ; R2
+126   (CALLS2&PUSH 158)                   ; ABS
+128   (CONST&PUSH 12)                     ; 0.01
+129   (LOAD&PUSH 8)
+130   (CALLSR&PUSH 2 55)                  ; *
+133   (CALLSR&JMPIFNOT 1 47 L156)         ; <
+137   (T)
+138   L138
+138   (UNBIND 2)
+140   (SKIP 1)
+142   (JMP L161)
+144   L144
+144   (T)
+145   (JMP L138)
+147   L147
+147   (CONST 17)                          ; $DONTKNOW
+148   (JMP L138)
+150   L150
+150   (CONST 17)                          ; $DONTKNOW
+151   (JMP L138)
+153   L153
+153   (CONST 17)                          ; $DONTKNOW
+154   (JMP L138)
+156   L156
+156   (NIL)
+157   (UNBIND 2)
+159   (SKIP 1)
+161   L161
+161   (UNBIND1)
+162   (SKIP&RET 2)
+
+
+Wrote file binary-clisp/zero.fas
+Wrote file /cygdrive/e/temp/maxima/src/zero.lis

@@ -1,0 +1,2514 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/sinint.lisp
+on 2002-12-17 13:34:38 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/sinint.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE SININT)-2|
+(CONST 0) = SININT
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SININT
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS RATMAC)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (GENPREFIX I))-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL RISCHPF GENVAR ...))-5|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (FIXNUM NARGS I ...))-6|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN ROOTFAC (Q) ...)-7|
+(CONST 0) = ROOTFAC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ROOTFAC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ROOTFAC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ROOTFAC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ROOTFAC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ROOTFAC
+8     (SKIP&RET 1)
+
+
+Disassembly of function ROOTFAC
+(CONST 0) = VAR
+(CONST 1) = PDERIVATIVE
+(CONST 2) = PGCD
+(CONST 3) = PQUOTIENT
+(CONST 4) = B
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (B VAR)
+55 byte-code instructions:
+0     (PUSH-NIL 4)
+2     (LOAD&PUSH 5)
+3     (LOAD&PUSH 6)
+4     (GETVALUE&PUSH 0)                   ; VAR
+6     (CALL2&PUSH 1)                      ; PDERIVATIVE
+8     (CALL2 2)                           ; PGCD
+10    (STORE 3)
+11    (LOAD&PUSH 5)
+12    (LOAD&PUSH 4)
+13    (CALL2 3)                           ; PQUOTIENT
+15    (STORE 1)
+16    (PUSH)
+17    (LOAD&PUSH 4)
+18    (LOAD&PUSH 3)
+19    (CALL2&PUSH 2)                      ; PGCD
+21    (CALL2&PUSH 3)                      ; PQUOTIENT
+23    (LIST 1)
+25    (STORE 0)
+26    (JMP L51)
+28    L28
+28    (LOAD&PUSH 3)
+29    (GETVALUE&PUSH 0)                   ; VAR
+31    (CALL2&PUSH 1)                      ; PDERIVATIVE
+33    (LOAD&PUSH 4)
+34    (CALL2 2)                           ; PGCD
+36    (STORE 2)
+37    (LOAD&PUSH 3)
+38    (LOAD&PUSH 2)
+39    (CALL2&PUSH 2)                      ; PGCD
+41    (LOAD&PUSH 3)
+42    (LOAD&PUSH 3)
+43    (CALL2&PUSH 2)                      ; PGCD
+45    (CALL2&PUSH 3)                      ; PQUOTIENT
+47    (LOAD&CONS&STORE 0)
+49    (LOAD 2)
+50    (STORE 3)
+51    L51
+51    (LOAD 3)
+52    (JMPIFATOM L75)
+54    (GETVALUE&PUSH 0)                   ; VAR
+56    (LOAD 4)
+57    (CAR)
+58    (BIND 4)                            ; B
+60    (LOAD&PUSH 3)
+61    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+63    (GETVALUE&PUSH 4)                   ; B
+65    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+67    (CALLSR 1 48)                       ; >
+70    (UNBIND1)
+71    (SKIP 1)
+73    (JMPIFNOT L28)
+75    L75
+75    (LOAD&PUSH 0)
+76    (CALLS2 72)                         ; REVERSE
+78    (SKIP&RET 6)
+
+
+Disassembly of function #:|(DEFUN APROG (Q) ...)-8|
+(CONST 0) = APROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE APROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; APROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; APROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE APROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; APROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function APROG
+(CONST 0) = OLDCONTENT
+(CONST 1) = ROOTFAC
+(CONST 2) = ROOTFACTOR
+(CONST 3) = PTIMES
+(CONST 4) = 2
+(CONST 5) = N
+(CONST 6) = PEXPT
+(CONST 7) = PARDENOM
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (N ROOTFACTOR)
+writes special variables : (PARDENOM N ROOTFACTOR)
+40 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1 0)                           ; OLDCONTENT
+3     (STORE 1)
+4     (CDR)
+5     (CAR&PUSH)
+6     (CALL1 1)                           ; ROOTFAC
+8     (SETVALUE 2)                        ; ROOTFACTOR
+10    (LOAD&CAR&PUSH 1)
+12    (GETVALUE 2)                        ; ROOTFACTOR
+14    (CAR&PUSH)
+15    (CALL2&PUSH 3)                      ; PTIMES
+17    (GETVALUE 2)                        ; ROOTFACTOR
+19    (CDR)
+20    (CONS)
+21    (SETVALUE 2)                        ; ROOTFACTOR
+23    (CAR&PUSH)
+24    (LIST&PUSH 1)
+26    (GETVALUE 2)                        ; ROOTFACTOR
+28    (CDR&PUSH)
+29    (CONST 4)                           ; 2
+30    (BIND 5)                            ; N
+32    (LOAD&JMPIFNOT 3 L54)
+35    L35
+35    (LOAD&CAR&PUSH 3)
+37    (GETVALUE&PUSH 5)                   ; N
+39    (CALL2&PUSH 6)                      ; PEXPT
+41    (LOAD&CONS&STORE 4)
+43    (LOAD&CDR&STORE 3)
+45    (GETVALUE&PUSH 5)                   ; N
+47    (CALLS2 150)                        ; 1+
+49    (SETVALUE 5)                        ; N
+51    (LOAD&JMPIF 3 L35)
+54    L54
+54    (LOAD&PUSH 4)
+55    (CALLS2 72)                         ; REVERSE
+57    (SETVALUE 7)                        ; PARDENOM
+59    (UNBIND1)
+60    (SKIP 2)
+62    (GETVALUE 2)                        ; ROOTFACTOR
+64    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN CPROG (TOP BOTTOM) ...)-9|
+(CONST 0) = CPROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CPROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CPROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CPROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CPROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CPROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function CPROG
+(CONST 0) = PDIVIDE
+(CONST 1) = WHOLEPART
+(CONST 2) = PARDENOM
+(CONST 3) = 1
+(CONST 4) = PARNUMER
+(CONST 5) = PTIMES
+(CONST 6) = BPROG
+(CONST 7) = RATTI
+(CONST 8) = RATDIVIDE
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (PARNUMER PARDENOM)
+writes special variables : (PARNUMER WHOLEPART)
+72 byte-code instructions:
+0     (PUSH-NIL 4)
+2     (LOAD&PUSH 6)
+3     (LOAD&PUSH 6)
+4     (CALL2 0)                           ; PDIVIDE
+6     (STORE 3)
+7     (CAR)
+8     (SETVALUE 1)                        ; WHOLEPART
+10    (LOAD 3)
+11    (CDR)
+12    (CAR)
+13    (STORE 3)
+14    (GETVALUE&PUSH 2)                   ; PARDENOM
+16    (CALLS2&PUSH 71)                    ; LENGTH
+18    (CONST&PUSH 3)                      ; 1
+19    (CALLSR&JMPIF 1 45 L35)             ; =
+23    (GETVALUE 2)                        ; PARDENOM
+25    (CDR)
+26    (STORE 2)
+27    (GETVALUE 2)                        ; PARDENOM
+29    (CAR&PUSH)
+30    (LIST 1)
+32    (STORE 1)
+33    (JMP L51)
+35    L35
+35    (LOAD&PUSH 3)
+36    (LIST 1)
+38    (JMP L111)
+41    L41
+41    (LOAD&CAR&PUSH 1)
+43    (LOAD&CAR&PUSH 3)
+45    (CALL2&PUSH 5)                      ; PTIMES
+47    (LOAD&CONS&STORE 1)
+49    (LOAD&CDR&STORE 2)
+51    L51
+51    (LOAD&PUSH 2)
+52    (CALLS2&PUSH 71)                    ; LENGTH
+54    (CONST&PUSH 3)                      ; 1
+55    (CALLSR&JMPIFNOT 1 45 L41)          ; =
+59    (GETVALUE&PUSH 2)                   ; PARDENOM
+61    (CALLS2&STORE 72 2)                 ; REVERSE
+64    L64
+64    (LOAD&CAR&PUSH 2)
+66    (LOAD&CAR&PUSH 2)
+68    (CALL2 6)                           ; BPROG
+70    (STORE 0)
+71    (LOAD&PUSH 3)
+72    (LOAD&CDR&PUSH 1)
+74    (T&PUSH)
+75    (CALL&PUSH 3 7)                     ; RATTI
+78    (LOAD&CAR&PUSH 3)
+80    (CALL2 8)                           ; RATDIVIDE
+82    (CDR&PUSH)
+83    (GETVALUE 4)                        ; PARNUMER
+85    (CONS)
+86    (SETVALUE 4)                        ; PARNUMER
+88    (LOAD&PUSH 3)
+89    (LOAD&CAR&PUSH 1)
+91    (T&PUSH)
+92    (CALL&PUSH 3 7)                     ; RATTI
+95    (LOAD&CAR&PUSH 2)
+97    (CALL2 8)                           ; RATDIVIDE
+99    (CDR)
+100   (STORE 3)
+101   (LOAD&CDR&STORE 2)
+103   (LOAD&CDR&STORE 1)
+105   (JMPIF L64)
+107   (LOAD&PUSH 3)
+108   (GETVALUE 4)                        ; PARNUMER
+110   (CONS)
+111   L111
+111   (SETVALUE 4)                        ; PARNUMER
+113   (SKIP&RET 7)
+
+
+Disassembly of function #:|(DEFUN POLYINT (P) ...)-10|
+(CONST 0) = POLYINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POLYINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POLYINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POLYINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POLYINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; POLYINT
+8     (SKIP&RET 1)
+
+
+Disassembly of function POLYINT
+(CONST 0) = P
+(CONST 1) = RATNUMERATOR
+(CONST 2) = POLYINT1
+(CONST 3) = RATDENOMINATOR
+(CONST 4) = RATQU
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+10 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (GETVALUE&PUSH 0)                   ; P
+5     (CALL1&PUSH 1)                      ; RATNUMERATOR
+7     (CALL1&PUSH 2)                      ; POLYINT1
+9     (GETVALUE&PUSH 0)                   ; P
+11    (CALL1&PUSH 3)                      ; RATDENOMINATOR
+13    (CALL2 4)                           ; RATQU
+15    (UNBIND1)
+16    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN POLYINT1 (P) ...)-11|
+(CONST 0) = POLYINT1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POLYINT1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POLYINT1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POLYINT1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POLYINT1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; POLYINT1
+8     (SKIP&RET 1)
+
+
+Disassembly of function POLYINT1
+(CONST 0) = P
+(CONST 1) = 0
+(CONST 2) = 1
+(CONST 3) = VAR
+(CONST 4) = B
+(CONST 5) = POLYINT2
+(CONST 6) = RATPLUS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (B VAR P)
+56 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (JMPIFNOT L54)
+7     (GETVALUE&PUSH 0)                   ; P
+9     (JMPIFEQTO 1 L54)                   ; 0
+12    (GETVALUE 0)                        ; P
+14    (JMPIFATOM L59)
+16    (GETVALUE 0)                        ; P
+18    (CAR&PUSH)
+19    (CALLS2&JMPIF 8 L72)                ; NUMBERP
+22    (GETVALUE&PUSH 3)                   ; VAR
+24    (GETVALUE 0)                        ; P
+26    (CAR)
+27    (BIND 4)                            ; B
+29    (LOAD&PUSH 3)
+30    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+32    (GETVALUE&PUSH 4)                   ; B
+34    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+36    (CALLSR 1 48)                       ; >
+39    (UNBIND1)
+40    (SKIP 1)
+42    (JMPIFNOT L64)
+44    (GETVALUE&PUSH 3)                   ; VAR
+46    (CONST 2)                           ; 1
+47    L47
+47    (PUSH)
+48    (GETVALUE&PUSH 0)                   ; P
+50    (LIST 3)
+52    (JMP L85)
+54    L54
+54    (CONST&PUSH 1)                      ; 0
+55    (CONST 2)                           ; 1
+56    (CONS)
+57    (JMP L85)
+59    L59
+59    (GETVALUE&PUSH 3)                   ; VAR
+61    (CONST 2)                           ; 1
+62    (JMP L47)
+64    L64
+64    (GETVALUE 0)                        ; P
+66    (CDR&PUSH)
+67    (JSR L0)
+70    (JMP L85)
+72    L72
+72    (GETVALUE&PUSH 0)                   ; P
+74    (CALL1&PUSH 5)                      ; POLYINT2
+76    (GETVALUE 0)                        ; P
+78    (CDR)
+79    (CDR&PUSH)
+80    (JSR&PUSH L0)
+83    (CALL2 6)                           ; RATPLUS
+85    L85
+85    (UNBIND1)
+86    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN POLYINT2 (P) ...)-12|
+(CONST 0) = POLYINT2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POLYINT2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POLYINT2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POLYINT2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POLYINT2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; POLYINT2
+8     (SKIP&RET 1)
+
+
+Disassembly of function POLYINT2
+(CONST 0) = P
+(CONST 1) = VAR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (P VAR)
+16 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (GETVALUE&PUSH 1)                   ; VAR
+5     (GETVALUE 0)                        ; P
+7     (CAR&PUSH)
+8     (CALLS2&PUSH 150)                   ; 1+
+10    (GETVALUE 0)                        ; P
+12    (CDR)
+13    (CAR&PUSH)
+14    (LIST&PUSH 3)
+16    (GETVALUE 0)                        ; P
+18    (CAR&PUSH)
+19    (CALLS2 150)                        ; 1+
+21    (CONS)
+22    (UNBIND1)
+23    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN DPROG (RATARG) ...)-13|
+(CONST 0) = DPROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPROG
+(CONST 0) = 0
+(CONST 1) = 1
+(CONST 2) = VAR
+(CONST 3) = B
+(CONST 4) = POLYINT
+(CONST 5) = DISREP
+(CONST 6) = RATDENOMINATOR
+(CONST 7) = APROG
+(CONST 8) = RATNUMERATOR
+(CONST 9) = CPROG
+(CONST 10) = ROOTFACTOR
+(CONST 11) = PARNUMER
+(CONST 12) = PDEGREE
+(CONST 13) = PDERIVATIVE
+(CONST 14) = BPROG
+(CONST 15) = RATTI
+(CONST 16) = PEXPT
+(CONST 17) = RATMINUS
+(CONST 18) = RATQU
+(CONST 19) = RATPLUS
+(CONST 20) = RATREDUCE
+(CONST 21) = RATDIVIDE
+(CONST 22) = LOGPTDX
+(CONST 23) = WHOLEPART
+(CONST 24) = PDIVIDE
+(CONST 25) = (MPLUS)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (WHOLEPART LOGPTDX PARNUMER ROOTFACTOR B VAR)
+writes special variables : (LOGPTDX PARNUMER ROOTFACTOR)
+162 byte-code instructions:
+0     (PUSH-NIL 10)
+2     (CONST&PUSH 0)                      ; 0
+3     (CONST 1)                           ; 1
+4     (CONS)
+5     (STORE 0)
+6     (LOAD 11)
+7     (CDR)
+8     (JMPIFATOM L65)
+10    (GETVALUE&PUSH 2)                   ; VAR
+12    (LOAD 12)
+13    (CDR)
+14    (CAR)
+15    (BIND 3)                            ; B
+17    (LOAD&PUSH 3)
+18    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+20    (GETVALUE&PUSH 3)                   ; B
+22    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+24    (CALLSR 1 48)                       ; >
+27    (UNBIND1)
+28    (SKIP 1)
+30    (JMPIF L65)
+32    (LOAD&PUSH 11)
+33    (CALL1&PUSH 6)                      ; RATDENOMINATOR
+35    (CALL1 7)                           ; APROG
+37    (LOAD&PUSH 11)
+38    (CALL1&PUSH 8)                      ; RATNUMERATOR
+40    (LOAD&PUSH 12)
+41    (CALL1&PUSH 6)                      ; RATDENOMINATOR
+43    (CALL2 9)                           ; CPROG
+45    (GETVALUE&PUSH 10)                  ; ROOTFACTOR
+47    (CALLS2 72)                         ; REVERSE
+49    (SETVALUE 10)                       ; ROOTFACTOR
+51    (GETVALUE&PUSH 11)                  ; PARNUMER
+53    (CALLS2 72)                         ; REVERSE
+55    (SETVALUE 11)                       ; PARNUMER
+57    (GETVALUE&PUSH 10)                  ; ROOTFACTOR
+59    (CALLS2&STORE 71 9)                 ; LENGTH
+62    (JMP L192)
+65    L65
+65    (LOAD 11)
+66    (JMP L218)
+69    L69
+69    (GETVALUE 10)                       ; ROOTFACTOR
+71    (CAR)
+72    (STORE 7)
+73    (PUSH)
+74    (GETVALUE&PUSH 2)                   ; VAR
+76    (CALL2&PUSH 12)                     ; PDEGREE
+78    (CALLS2&JMPIF 145 L180)             ; ZEROP
+82    (LOAD&PUSH 7)
+83    (GETVALUE&PUSH 2)                   ; VAR
+85    (CALL2 13)                          ; PDERIVATIVE
+87    (STORE 6)
+88    (LOAD&PUSH 7)
+89    (LOAD&PUSH 7)
+90    (CALL2 14)                          ; BPROG
+92    (STORE 5)
+93    (LOAD&PUSH 9)
+94    (CALLS2&STORE 151 8)                ; 1-
+97    (GETVALUE 11)                       ; PARNUMER
+99    (CAR)
+100   (STORE 4)
+101   (JMP L105)
+103   L103
+103   (LOAD&DEC&STORE 8)
+105   L105
+105   (LOAD&PUSH 4)
+106   (LOAD&CAR&PUSH 6)
+108   (T&PUSH)
+109   (CALL 3 15)                         ; RATTI
+112   (STORE 2)
+113   (LOAD&PUSH 4)
+114   (LOAD&CDR&PUSH 6)
+116   (T&PUSH)
+117   (CALL 3 15)                         ; RATTI
+120   (STORE 1)
+121   (LOAD&PUSH 7)
+122   (LOAD&PUSH 9)
+123   (CALL2 16)                          ; PEXPT
+125   (STORE 3)
+126   (LOAD&PUSH 0)
+127   (LOAD&PUSH 2)
+128   (CALL1&PUSH 17)                     ; RATMINUS
+130   (LOAD&PUSH 10)
+131   (LOAD&PUSH 6)
+132   (T&PUSH)
+133   (CALL&PUSH 3 15)                    ; RATTI
+136   (CALL2&PUSH 18)                     ; RATQU
+138   (CALL2 19)                          ; RATPLUS
+140   (STORE 0)
+141   (LOAD&PUSH 2)
+142   (LOAD&CAR&PUSH 2)
+144   (GETVALUE&PUSH 2)                   ; VAR
+146   (CALL2&PUSH 13)                     ; PDERIVATIVE
+148   (LOAD&CDR&PUSH 3)
+150   (CALL2&PUSH 20)                     ; RATREDUCE
+152   (LOAD&PUSH 10)
+153   (CALL2&PUSH 18)                     ; RATQU
+155   (CALL2 19)                          ; RATPLUS
+157   (STORE 4)
+158   (PUSH)
+159   (LOAD&PUSH 4)
+160   (CALL2 21)                          ; RATDIVIDE
+162   (CDR)
+163   (STORE 4)
+164   (LOAD&PUSH 8)
+165   (CONST&PUSH 1)                      ; 1
+166   (CALLSR&JMPIFNOT 1 45 L103)         ; =
+171   (LOAD&PUSH 4)
+172   (LOAD&PUSH 8)
+173   (CALL2&PUSH 18)                     ; RATQU
+175   (GETVALUE 22)                       ; LOGPTDX
+177   (CONS)
+178   (SETVALUE 22)                       ; LOGPTDX
+180   L180
+180   (GETVALUE 10)                       ; ROOTFACTOR
+182   (CDR)
+183   (SETVALUE 10)                       ; ROOTFACTOR
+185   (GETVALUE 11)                       ; PARNUMER
+187   (CDR)
+188   (SETVALUE 11)                       ; PARNUMER
+190   (LOAD&DEC&STORE 9)
+192   L192
+192   (LOAD&PUSH 9)
+193   (CONST&PUSH 1)                      ; 1
+194   (CALLSR&JMPIFNOT 1 45 L69)          ; =
+199   (GETVALUE 11)                       ; PARNUMER
+201   (CAR&PUSH)
+202   (GETVALUE 10)                       ; ROOTFACTOR
+204   (CAR&PUSH)
+205   (CALL2&PUSH 18)                     ; RATQU
+207   (GETVALUE 22)                       ; LOGPTDX
+209   (CONS)
+210   (SETVALUE 22)                       ; LOGPTDX
+212   (LOAD&PUSH 0)
+213   (JMPIFNOTEQTO 0 L225)               ; 0
+216   (GETVALUE 23)                       ; WHOLEPART
+218   L218
+218   (PUSH)
+219   (CALL1&PUSH 4)                      ; POLYINT
+221   (CALL1 5)                           ; DISREP
+223   (SKIP&RET 12)
+225   L225
+225   (LOAD&PUSH 0)
+226   (CALL1&PUSH 8)                      ; RATNUMERATOR
+228   (LOAD&PUSH 1)
+229   (CALL1&PUSH 6)                      ; RATDENOMINATOR
+231   (CALL2 24)                          ; PDIVIDE
+233   (CDR)
+234   (CAR)
+235   (STORE 4)
+236   (CONST&PUSH 25)                     ; (MPLUS)
+237   (GETVALUE&PUSH 23)                  ; WHOLEPART
+239   (CALL1&PUSH 4)                      ; POLYINT
+241   (CALL1&PUSH 5)                      ; DISREP
+243   (LOAD&PUSH 6)
+244   (LOAD&PUSH 3)
+245   (CALL1&PUSH 6)                      ; RATDENOMINATOR
+247   (CALL2&PUSH 18)                     ; RATQU
+249   (CALL1&PUSH 5)                      ; DISREP
+251   (LIST 3)
+253   (SKIP&RET 12)
+
+
+Disassembly of function #:|(DEFUN LOGMABS (X) ...)-14|
+(CONST 0) = LOGMABS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LOGMABS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LOGMABS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LOGMABS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LOGMABS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LOGMABS
+8     (SKIP&RET 1)
+
+
+Disassembly of function LOGMABS
+(CONST 0) = X
+(CONST 1) = (%LOG)
+(CONST 2) = $LOGABS
+(CONST 3) = (MABS)
+(CONST 4) = SIMPLIFY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X $LOGABS)
+17 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (CONST&PUSH 1)                      ; (%LOG)
+4     (GETVALUE 2)                        ; $LOGABS
+6     (JMPIF L16)
+8     (GETVALUE 0)                        ; X
+10    L10
+10    (PUSH)
+11    (LIST 2)
+13    (UNBIND1)
+14    (SKIP&RET 2)
+16    L16
+16    (CONST&PUSH 3)                      ; (MABS)
+17    (GETVALUE&PUSH 0)                   ; X
+19    (LIST&PUSH 2)
+21    (CALL1 4)                           ; SIMPLIFY
+23    (JMP L10)
+
+
+Disassembly of function #:|(DEFUN NPASK (EXP) ...)-15|
+(CONST 0) = NPASK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NPASK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NPASK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NPASK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NPASK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NPASK
+8     (SKIP&RET 1)
+
+
+Disassembly of function NPASK
+(CONST 0) = EXP
+(CONST 1) = $%I
+(CONST 2) = FREEOF
+(CONST 3) = (MNOTEQUAL)
+(CONST 4) = (0)
+(CONST 5) = LEARN
+(CONST 6) = ASKSIGN
+(CONST 7) = $POSITIVE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (EXP)
+19 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (CONST&PUSH 1)                      ; $%I
+4     (GETVALUE&PUSH 0)                   ; EXP
+6     (CALL2&JMPIF 2 L13)                 ; FREEOF
+9     (CONST 7)                           ; $POSITIVE
+10    L10
+10    (UNBIND1)
+11    (SKIP&RET 2)
+13    L13
+13    (CONST&PUSH 3)                      ; (MNOTEQUAL)
+14    (GETVALUE&PUSH 0)                   ; EXP
+16    (CONST 4)                           ; (0)
+17    (LIST*&PUSH 2)
+19    (T&PUSH)
+20    (CALL2 5)                           ; LEARN
+22    (GETVALUE&PUSH 0)                   ; EXP
+24    (CALL1 6)                           ; ASKSIGN
+26    (JMP L10)
+
+
+Disassembly of function #:|(DEFVAR $INTEGRATE_USE_ROOTSOF NIL ...)-16|
+(CONST 0) = (SPECIAL $INTEGRATE_USE_ROOTSOF)
+(CONST 1) = $INTEGRATE_USE_ROOTSOF
+(CONST 2) = VARIABLE
+(CONST 3) = "Use the rootsof form for integrals when denominator does not factor"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $INTEGRATE_USE_ROOTSOF)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $INTEGRATE_USE_ROOTSOF
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $INTEGRATE_USE_ROOTSOF
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $INTEGRATE_USE_ROOTSOF
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Use the rootsof form for integrals when denominator does not factor"
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $INTEGRATE_USE_ROOTSOF
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN INTEGRATE-USE-ROOTSOF (F Q VARIABLE ...) ...)-17|
+(CONST 0) = INTEGRATE-USE-ROOTSOF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INTEGRATE-USE-ROOTSOF>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INTEGRATE-USE-ROOTSOF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INTEGRATE-USE-ROOTSOF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INTEGRATE-USE-ROOTSOF>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INTEGRATE-USE-ROOTSOF
+8     (SKIP&RET 1)
+
+
+Disassembly of function INTEGRATE-USE-ROOTSOF
+(CONST 0) = F
+(CONST 1) = FF
+(CONST 2) = MAKE-PARAM
+(CONST 3) = PDERIVATIVE
+(CONST 4) = DISREP
+(CONST 5) = (%LSUM)
+(CONST 6) = (MTIMES)
+(CONST 7) = MUL*
+(CONST 8) = DIV*
+(CONST 9) = (%LOG)
+(CONST 10) = SUB*
+(CONST 11) = ($ROOTSOF)
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (FF F)
+writes special variable : (FF)
+56 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; F
+3     (NIL&PUSH)
+4     (NIL)
+5     (BIND 1)                            ; FF
+7     (NIL&PUSH)
+8     (CALL0 2)                           ; MAKE-PARAM
+10    (PUSH)
+11    (NIL&PUSH)
+12    (LOAD 12)
+13    (CDR)
+14    (CDR)
+15    (CAR)
+16    (STORE 0)
+17    (LOAD&PUSH 12)
+18    (LOAD&CAR&PUSH 13)
+20    (CALL2&PUSH 3)                      ; PDERIVATIVE
+22    (CALL1 4)                           ; DISREP
+24    (STORE 6)
+25    (GETVALUE&PUSH 0)                   ; F
+27    (CALL1 4)                           ; DISREP
+29    (SETVALUE 1)                        ; FF
+31    (LOAD&PUSH 12)
+32    (CALL1 4)                           ; DISREP
+34    (STORE 2)
+35    (CONST&PUSH 5)                      ; (%LSUM)
+36    (CONST&PUSH 6)                      ; (MTIMES)
+37    (LOAD&PUSH 2)
+38    (LOAD&PUSH 4)
+39    (LOAD&PUSH 15)
+40    (GETVALUE&PUSH 1)                   ; FF
+42    (PUSH-UNBOUND 3)
+44    (CALLS1&PUSH 172)                   ; SUBST
+46    (CALL2&PUSH 7)                      ; MUL*
+48    (LOAD&PUSH 4)
+49    (LOAD&PUSH 15)
+50    (LOAD&PUSH 11)
+51    (PUSH-UNBOUND 3)
+53    (CALLS1&PUSH 172)                   ; SUBST
+55    (CALL2&PUSH 8)                      ; DIV*
+57    (CONST&PUSH 9)                      ; (%LOG)
+58    (LOAD&PUSH 15)
+59    (LOAD&PUSH 6)
+60    (CALL2&PUSH 10)                     ; SUB*
+62    (LIST&PUSH 2)
+64    (LIST&PUSH 3)
+66    (LOAD&PUSH 3)
+67    (CONST&PUSH 11)                     ; ($ROOTSOF)
+68    (LOAD&PUSH 6)
+69    (LIST&PUSH 2)
+71    (LIST 4)
+73    (SKIP 3)
+75    (UNBIND1)
+76    (SKIP 1)
+78    (UNBIND1)
+79    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN EPROG (P) ...)-18|
+(CONST 0) = EPROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EPROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EPROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EPROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EPROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EPROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function EPROG
+(CONST 0) = P
+(CONST 1) = SIGN
+(CONST 2) = 0
+(CONST 3) = RATNUMERATOR
+(CONST 4) = RATDENOMINATOR
+(CONST 5) = SWITCH1
+(CONST 6) = OLDCONTENT
+(CONST 7) = VAR
+(CONST 8) = PDEGREE
+(CONST 9) = (5 6)
+(CONST 10) = ZL-MEMBER
+(CONST 11) = ZEROCOEFL
+(CONST 12) = 5
+(CONST 13) = PMINUSP
+(CONST 14) = INTFACTOR
+(CONST 15) = 1
+(CONST 16) = RATQU
+(CONST 17) = PDERIVATIVE
+(CONST 18) = POLCOEF
+(CONST 19) = RATTI
+(CONST 20) = (MTIMES)
+(CONST 21) = DISREP
+(CONST 22) = LOGMABS
+(CONST 23) = 2
+(CONST 24) = 3
+(CONST 25) = E3PROG
+(CONST 26) = (4 5 6)
+(CONST 27) = ENPROG
+(CONST 28) = $INTEGRATE_USE_ROOTSOF
+(CONST 29) = PSQFR
+(CONST 30) = (MTIMES)
+(CONST 31) = VARLIST
+(CONST 32) = INTEGRATE-USE-ROOTSOF
+(CONST 33) = (MTIMES)
+(CONST 34) = (%INTEGRATE)
+(CONST 35) = (MQUOTIENT)
+(CONST 36) = (MTIMES)
+(CONST 37) = PEXPT
+(CONST 38) = 4
+(CONST 39) = RATDIFFERENCE
+(CONST 40) = SIMPLIFY
+(CONST 41) = $%I
+(CONST 42) = FREE
+(CONST 43) = NPASK
+(CONST 44) = $NEGATIVE
+(CONST 45) = $ZERO
+(CONST 46) = RATSQRT
+(CONST 47) = (MQUOTIENT)
+(CONST 48) = (MPLUS)
+(CONST 49) = (MTIMES)
+(CONST 50) = (MMINUS)
+(CONST 51) = (MPLUS)
+(CONST 52) = (MTIMES)
+(CONST 53) = (MTIMES)
+(CONST 54) = (MQUOTIENT)
+(CONST 55) = (MPLUS)
+(CONST 56) = (MTIMES)
+(CONST 57) = (MTIMES)
+(CONST 58) = (MQUOTIENT)
+(CONST 59) = EPROGRATD
+(CONST 60) = RATMINUS
+(CONST 61) = (MTIMES)
+(CONST 62) = (MQUOTIENT)
+(CONST 63) = (%ATAN)
+(CONST 64) = (MQUOTIENT)
+(CONST 65) = (MPLUS)
+(CONST 66) = (MTIMES)
+(CONST 67) = PTIMES
+(CONST 68) = PCOEFADD
+(CONST 69) = PSIMP
+(CONST 70) = FPROG
+(CONST 71) = PARNUMER
+(CONST 72) = PARDENOM
+(CONST 73) = CPROG
+(CONST 74) = K
+(CONST 75) = (MPLUS)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (K PARDENOM PARNUMER SIGN $INTEGRATE_USE_ROOTSOF VARLIST VAR SWITCH1 P)
+writes special variables : (SWITCH1 PARDENOM PARNUMER SIGN)
+529 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (PUSH-NIL 7)
+5     (NIL)
+6     (BIND 1)                            ; SIGN
+8     (PUSH-NIL 5)
+10    (GETVALUE&PUSH 0)                   ; P
+12    (JMPIFEQTO 2 L201)                  ; 0
+16    (GETVALUE 0)                        ; P
+18    (CAR&PUSH)
+19    (JMPIFEQTO 2 L201)                  ; 0
+23    (GETVALUE&PUSH 0)                   ; P
+25    (CALL1 3)                           ; RATNUMERATOR
+27    (STORE 14)
+29    (GETVALUE&PUSH 0)                   ; P
+31    (CALL1 4)                           ; RATDENOMINATOR
+33    (STORE 13)
+35    (GETVALUE 5)                        ; SWITCH1
+37    (JMPIF L96)
+39    (LOAD 13)
+40    (JMPIFATOM L82)
+42    (LOAD&PUSH 13)
+43    (CALL1 6)                           ; OLDCONTENT
+45    (CDR)
+46    (CAR)
+47    (STORE 1)
+48    (CAR&PUSH)
+49    (GETVALUE 7)                        ; VAR
+51    (JMPIFNOTEQ L82)
+53    (LOAD&PUSH 1)
+54    (GETVALUE&PUSH 7)                   ; VAR
+56    (CALL2 8)                           ; PDEGREE
+58    (STORE 0)
+59    (PUSH)
+60    (CONST&PUSH 9)                      ; (5 6)
+61    (CALL2&JMPIFNOT 10 L82)             ; ZL-MEMBER
+64    (LOAD&PUSH 1)
+65    (LOAD&PUSH 1)
+66    (CALL2&JMPIFNOT 11 L82)             ; ZEROCOEFL
+69    (LOAD&PUSH 0)
+70    (JMPIFEQTO 12 L96)                  ; 5
+73    (LOAD&PUSH 1)
+74    (PUSH-UNBOUND 1)
+76    (CALLS1 156)                        ; LAST
+78    (CAR&PUSH)
+79    (CALL1&JMPIFNOT 13 L96)             ; PMINUSP
+82    L82
+82    (LOAD&PUSH 13)
+83    (CALL1 14)                          ; INTFACTOR
+85    (STORE 12)
+87    (PUSH)
+88    (CALLS2&PUSH 71)                    ; LENGTH
+90    (CONST&PUSH 15)                     ; 1
+91    (CALLSR&JMPIF 1 48 L770)            ; >
+96    L96
+96    (LOAD&PUSH 14)
+97    (CALL1 6)                           ; OLDCONTENT
+99    (STORE 4)
+100   (CDR)
+101   (CAR)
+102   (STORE 14)
+104   (LOAD&PUSH 13)
+105   (CALL1 6)                           ; OLDCONTENT
+107   (STORE 3)
+108   (CDR)
+109   (CAR)
+110   (STORE 13)
+112   (LOAD&CAR&PUSH 4)
+114   (LOAD&CAR&PUSH 4)
+116   (CALL2 16)                          ; RATQU
+118   (STORE 2)
+119   (LOAD&PUSH 13)
+120   (GETVALUE&PUSH 7)                   ; VAR
+122   (CALL2 8)                           ; PDEGREE
+124   (STORE 0)
+125   (LOAD&PUSH 13)
+126   (GETVALUE&PUSH 7)                   ; VAR
+128   (CALL2 17)                          ; PDERIVATIVE
+130   (STORE 12)
+132   (LOAD&PUSH 14)
+133   (LOAD&PUSH 15)
+134   (GETVALUE&PUSH 7)                   ; VAR
+136   (CALL2&PUSH 8)                      ; PDEGREE
+138   (CALL2&PUSH 18)                     ; POLCOEF
+140   (LOAD&PUSH 13)
+141   (LOAD&PUSH 14)
+142   (GETVALUE&PUSH 7)                   ; VAR
+144   (CALL2&PUSH 8)                      ; PDEGREE
+146   (CALL2&PUSH 18)                     ; POLCOEF
+148   (CALL2 16)                          ; RATQU
+150   (STORE 11)
+152   (PUSH)
+153   (LOAD&PUSH 13)
+154   (T&PUSH)
+155   (CALL&PUSH 3 19)                    ; RATTI
+158   (LOAD&PUSH 15)
+159   (CONST 15)                          ; 1
+160   (CONS&PUSH)
+161   (CALLS2&JMPIF 2 L205)               ; EQUAL
+164   (LOAD&PUSH 0)
+165   (JMPIFNOTEQTO 15 L338)              ; 1
+169   (CONST&PUSH 36)                     ; (MTIMES)
+171   (LOAD&PUSH 3)
+172   (LOAD&PUSH 16)
+173   (LOAD&PUSH 17)
+174   (GETVALUE&PUSH 7)                   ; VAR
+176   (CALL2&PUSH 8)                      ; PDEGREE
+178   (CALL2&PUSH 18)                     ; POLCOEF
+180   (LOAD&PUSH 16)
+181   (CONST&PUSH 15)                     ; 1
+182   (CALL2&PUSH 18)                     ; POLCOEF
+184   (CALL2 16)                          ; RATQU
+186   L186
+186   (PUSH)
+187   (T&PUSH)
+188   (CALL&PUSH 3 19)                    ; RATTI
+191   (CALL1&PUSH 21)                     ; DISREP
+193   (LOAD&PUSH 15)
+194   (CALL1&PUSH 21)                     ; DISREP
+196   (CALL1 22)                          ; LOGMABS
+198   (JMP L685)
+201   L201
+201   (CONST 2)                           ; 0
+202   (JMP L843)
+205   L205
+205   (CONST&PUSH 20)                     ; (MTIMES)
+206   (LOAD&PUSH 3)
+207   (LOAD 13)
+208   (JMP L186)
+210   L210
+210   (LOAD&PUSH 14)
+211   (LOAD&PUSH 14)
+212   (LOAD&PUSH 4)
+213   (CALL 3 25)                         ; E3PROG
+216   (JMP L762)
+219   L219
+219   (LOAD&PUSH 14)
+220   (LOAD&PUSH 14)
+221   (LOAD&PUSH 4)
+222   (LOAD&PUSH 3)
+223   (CALL 4 27)                         ; ENPROG
+226   (JMP L762)
+229   L229
+229   (CONST&PUSH 30)                     ; (MTIMES)
+231   (LOAD&PUSH 3)
+232   (CALL1&PUSH 21)                     ; DISREP
+234   (LOAD&PUSH 16)
+235   (LOAD&PUSH 16)
+236   (GETVALUE&PUSH 31)                  ; VARLIST
+238   (PUSH-UNBOUND 1)
+240   (CALLS1 156)                        ; LAST
+242   (CAR&PUSH)
+243   (CALL 3 32)                         ; INTEGRATE-USE-ROOTSOF
+246   (JMP L685)
+249   L249
+249   (LOAD&PUSH 0)
+250   (JMPIFNOTEQTO 24 L267)              ; 3
+253   (LOAD&PUSH 13)
+254   (CONST&PUSH 23)                     ; 2
+255   (CALL2&PUSH 18)                     ; POLCOEF
+257   (JMPIFNOTEQTO 2 L267)               ; 0
+260   (LOAD&PUSH 13)
+261   (CONST&PUSH 15)                     ; 1
+262   (CALL2&PUSH 18)                     ; POLCOEF
+264   (JMPIFEQTO 2 L210)                  ; 0
+267   L267
+267   (LOAD&PUSH 0)
+268   (CONST&PUSH 26)                     ; (4 5 6)
+269   (CALL2&JMPIFNOT 10 L277)            ; ZL-MEMBER
+272   (LOAD&PUSH 13)
+273   (LOAD&PUSH 1)
+274   (CALL2&JMPIF 11 L219)               ; ZEROCOEFL
+277   L277
+277   (GETVALUE 28)                       ; $INTEGRATE_USE_ROOTSOF
+279   (JMPIFNOT L289)
+281   (LOAD&PUSH 13)
+282   (CALL1 29)                          ; PSQFR
+284   (CAR&PUSH)
+285   (LOAD&PUSH 14)
+286   (CALLS2&JMPIF 2 L229)               ; EQUAL
+289   L289
+289   (CONST&PUSH 33)                     ; (MTIMES)
+291   (LOAD&PUSH 3)
+292   (CALL1&PUSH 21)                     ; DISREP
+294   (CONST&PUSH 34)                     ; (%INTEGRATE)
+296   (CONST&PUSH 35)                     ; (MQUOTIENT)
+298   (LOAD&PUSH 18)
+299   (CALL1&PUSH 21)                     ; DISREP
+301   (LOAD&PUSH 18)
+302   (CALL1&PUSH 21)                     ; DISREP
+304   (LIST&PUSH 3)
+306   (GETVALUE&PUSH 31)                  ; VARLIST
+308   (PUSH-UNBOUND 1)
+310   (CALLS1 156)                        ; LAST
+312   (CAR)
+313   (JMP L548)
+316   L316
+316   (CONST&PUSH 53)                     ; (MTIMES)
+318   (LOAD&PUSH 3)
+319   (CALL1&PUSH 21)                     ; DISREP
+321   (CONST&PUSH 54)                     ; (MQUOTIENT)
+323   (LOAD&PUSH 17)
+324   (CONST&PUSH 2)                      ; 0
+325   (CALL2&PUSH 18)                     ; POLCOEF
+327   (CALL1&PUSH 21)                     ; DISREP
+329   (LOAD&PUSH 16)
+330   (LIST&PUSH 3)
+332   (LOAD&PUSH 13)
+333   (LIST 4)
+335   (JMP L843)
+338   L338
+338   (LOAD&PUSH 0)
+339   (JMPIFNOTEQTO 23 L249)              ; 2
+343   (LOAD&PUSH 13)
+344   (CONST&PUSH 15)                     ; 1
+345   (CALL2&PUSH 18)                     ; POLCOEF
+347   (CONST&PUSH 23)                     ; 2
+348   (CALL2&PUSH 37)                     ; PEXPT
+350   (CONST 15)                          ; 1
+351   (CONS&PUSH)
+352   (CONST&PUSH 38)                     ; 4
+354   (LOAD&PUSH 15)
+355   (CONST&PUSH 23)                     ; 2
+356   (CALL2&PUSH 18)                     ; POLCOEF
+358   (LOAD&PUSH 16)
+359   (CONST&PUSH 2)                      ; 0
+360   (CALL2&PUSH 18)                     ; POLCOEF
+362   (T&PUSH)
+363   (CALL&PUSH 3 19)                    ; RATTI
+366   (T&PUSH)
+367   (CALL&PUSH 3 19)                    ; RATTI
+370   (CALL2 39)                          ; RATDIFFERENCE
+372   (STORE 9)
+374   (LOAD&PUSH 13)
+375   (LOAD&PUSH 14)
+376   (GETVALUE&PUSH 7)                   ; VAR
+378   (CALL2&PUSH 8)                      ; PDEGREE
+380   (CALL2&PUSH 18)                     ; POLCOEF
+382   (CONST&PUSH 23)                     ; 2
+383   (T&PUSH)
+384   (CALL 3 19)                         ; RATTI
+387   (STORE 11)
+389   (LOAD&PUSH 9)
+390   (CALL1&PUSH 21)                     ; DISREP
+392   (CALL1 40)                          ; SIMPLIFY
+394   (STORE 1)
+395   (PUSH)
+396   (CONST&PUSH 41)                     ; $%I
+398   (CALL2&JMPIFNOT 42 L417)            ; FREE
+401   (LOAD&PUSH 1)
+402   (CALL1 43)                          ; NPASK
+404   (SETVALUE 1)                        ; SIGN
+406   (PUSH)
+407   (JMPIFEQTO 44 L573)                 ; $NEGATIVE
+411   (GETVALUE&PUSH 1)                   ; SIGN
+413   (JMPIFEQTO 45 L691)                 ; $ZERO
+417   L417
+417   (LOAD&PUSH 9)
+418   (CALL1 46)                          ; RATSQRT
+420   (STORE 12)
+422   (CONST&PUSH 47)                     ; (MQUOTIENT)
+424   (CONST&PUSH 48)                     ; (MPLUS)
+426   (CONST&PUSH 49)                     ; (MTIMES)
+428   (LOAD&PUSH 14)
+429   (CALL1&PUSH 21)                     ; DISREP
+431   (GETVALUE&PUSH 7)                   ; VAR
+433   (CONST&PUSH 15)                     ; 1
+434   (CONST&PUSH 15)                     ; 1
+435   (LIST&PUSH 3)
+437   (CALL1&PUSH 21)                     ; DISREP
+439   (LIST&PUSH 3)
+441   (LOAD&PUSH 16)
+442   (CONST&PUSH 15)                     ; 1
+443   (CALL2&PUSH 18)                     ; POLCOEF
+445   (CALL1&PUSH 21)                     ; DISREP
+447   (CONST&PUSH 50)                     ; (MMINUS)
+449   (LOAD&PUSH 17)
+450   (LIST&PUSH 2)
+452   (LIST&PUSH 4)
+454   (CONST&PUSH 51)                     ; (MPLUS)
+456   (CONST&PUSH 52)                     ; (MTIMES)
+458   (LOAD&PUSH 15)
+459   (CALL1&PUSH 21)                     ; DISREP
+461   (GETVALUE&PUSH 7)                   ; VAR
+463   (CONST&PUSH 15)                     ; 1
+464   (CONST&PUSH 15)                     ; 1
+465   (LIST&PUSH 3)
+467   (CALL1&PUSH 21)                     ; DISREP
+469   (LIST&PUSH 3)
+471   (LOAD&PUSH 17)
+472   (CONST&PUSH 15)                     ; 1
+473   (CALL2&PUSH 18)                     ; POLCOEF
+475   (CALL1&PUSH 21)                     ; DISREP
+477   (LOAD&PUSH 17)
+478   (LIST&PUSH 4)
+480   (LIST&PUSH 3)
+482   (CALL1 22)                          ; LOGMABS
+484   (STORE 10)
+486   (LOAD&PUSH 14)
+487   (GETVALUE&PUSH 7)                   ; VAR
+489   (CALL2&PUSH 8)                      ; PDEGREE
+491   (CALLS2&JMPIF 145 L316)             ; ZEROP
+495   (CONST&PUSH 55)                     ; (MPLUS)
+497   (CONST&PUSH 56)                     ; (MTIMES)
+499   (LOAD&PUSH 4)
+500   (LOAD&PUSH 17)
+501   (LOAD&PUSH 18)
+502   (GETVALUE&PUSH 7)                   ; VAR
+504   (CALL2&PUSH 8)                      ; PDEGREE
+506   (CALL2&PUSH 18)                     ; POLCOEF
+508   (LOAD&PUSH 15)
+509   (CALL2&PUSH 16)                     ; RATQU
+511   (T&PUSH)
+512   (CALL&PUSH 3 19)                    ; RATTI
+515   (CALL1&PUSH 21)                     ; DISREP
+517   (LOAD&PUSH 16)
+518   (CALL1&PUSH 21)                     ; DISREP
+520   (CALL1&PUSH 22)                     ; LOGMABS
+522   (LIST&PUSH 3)
+524   (CONST&PUSH 57)                     ; (MTIMES)
+526   (CONST&PUSH 58)                     ; (MQUOTIENT)
+528   (LOAD&PUSH 6)
+529   (LOAD&PUSH 16)
+530   (LOAD&PUSH 20)
+531   (LOAD&PUSH 20)
+532   (CALL&PUSH 3 59)                    ; EPROGRATD
+535   (LOAD&PUSH 17)
+536   (CALL2&PUSH 16)                     ; RATQU
+538   (T&PUSH)
+539   (CALL&PUSH 3 19)                    ; RATTI
+542   (CALL1&PUSH 21)                     ; DISREP
+544   (LOAD&PUSH 17)
+545   (LIST&PUSH 3)
+547   (LOAD 14)
+548   L548
+548   (PUSH)
+549   (LIST 3)
+551   (JMP L685)
+554   L554
+554   (LOAD&PUSH 11)
+555   (LOAD&PUSH 15)
+556   (CONST&PUSH 2)                      ; 0
+557   (CALL2&PUSH 18)                     ; POLCOEF
+559   (T&PUSH)
+560   (CALL 3 19)                         ; RATTI
+563   (JMP L594)
+565   L565
+565   (CONST 2)                           ; 0
+566   (JMP L644)
+569   L569
+569   (LOAD 10)
+570   (JMP L762)
+573   L573
+573   (LOAD&PUSH 9)
+574   (CALL1&PUSH 60)                     ; RATMINUS
+576   (CALL1 46)                          ; RATSQRT
+578   (STORE 12)
+580   (LOAD&PUSH 14)
+581   (GETVALUE&PUSH 7)                   ; VAR
+583   (CALL2&PUSH 8)                      ; PDEGREE
+585   (CALLS2&JMPIF 145 L554)             ; ZEROP
+588   (LOAD&PUSH 11)
+589   (LOAD&PUSH 15)
+590   (LOAD&PUSH 15)
+591   (CALL 3 59)                         ; EPROGRATD
+594   L594
+594   (PUSH)
+595   (LOAD&PUSH 14)
+596   (LOAD&PUSH 15)
+597   (GETVALUE&PUSH 7)                   ; VAR
+599   (CALL2&PUSH 8)                      ; PDEGREE
+601   (CALL2&PUSH 18)                     ; POLCOEF
+603   (CALL2 16)                          ; RATQU
+605   (STORE 8)
+607   (CAR&PUSH)
+608   (JMPIFEQTO 2 L565)                  ; 0
+611   (CONST&PUSH 61)                     ; (MTIMES)
+613   (CONST&PUSH 62)                     ; (MQUOTIENT)
+615   (LOAD&PUSH 4)
+616   (LOAD&PUSH 11)
+617   (T&PUSH)
+618   (CALL&PUSH 3 19)                    ; RATTI
+621   (CALL1&PUSH 21)                     ; DISREP
+623   (LOAD&PUSH 15)
+624   (LIST&PUSH 3)
+626   (CONST&PUSH 63)                     ; (%ATAN)
+628   (CONST&PUSH 64)                     ; (MQUOTIENT)
+630   (LOAD&PUSH 17)
+631   (GETVALUE&PUSH 7)                   ; VAR
+633   (CALL2&PUSH 17)                     ; PDERIVATIVE
+635   (CALL1&PUSH 21)                     ; DISREP
+637   (LOAD&PUSH 17)
+638   (LIST&PUSH 3)
+640   (LIST&PUSH 2)
+642   (LIST 3)
+644   L644
+644   (STORE 10)
+646   (LOAD&PUSH 14)
+647   (GETVALUE&PUSH 7)                   ; VAR
+649   (CALL2&PUSH 8)                      ; PDEGREE
+651   (CALLS2&JMPIF 145 L569)             ; ZEROP
+655   (CONST&PUSH 65)                     ; (MPLUS)
+657   (CONST&PUSH 66)                     ; (MTIMES)
+659   (LOAD&PUSH 4)
+660   (LOAD&PUSH 17)
+661   (LOAD&PUSH 18)
+662   (GETVALUE&PUSH 7)                   ; VAR
+664   (CALL2&PUSH 8)                      ; PDEGREE
+666   (CALL2&PUSH 18)                     ; POLCOEF
+668   (LOAD&PUSH 15)
+669   (CALL2&PUSH 16)                     ; RATQU
+671   (T&PUSH)
+672   (CALL&PUSH 3 19)                    ; RATTI
+675   (CALL1&PUSH 21)                     ; DISREP
+677   (LOAD&PUSH 16)
+678   (CALL1&PUSH 21)                     ; DISREP
+680   (CALL1&PUSH 22)                     ; LOGMABS
+682   (LIST&PUSH 3)
+684   (LOAD 12)
+685   L685
+685   (PUSH)
+686   (LIST 3)
+688   (JMP L843)
+691   L691
+691   (LOAD&CAR&PUSH 13)
+693   (CONST&PUSH 23)                     ; 2
+694   (CONST&PUSH 23)                     ; 2
+695   (LOAD&PUSH 16)
+696   (CONST&PUSH 23)                     ; 2
+697   (CALL2&PUSH 18)                     ; POLCOEF
+699   (CALL2&PUSH 67)                     ; PTIMES
+701   (CONST&PUSH 23)                     ; 2
+702   (CALL2&PUSH 37)                     ; PEXPT
+704   (CONST&PUSH 15)                     ; 1
+705   (CONST&PUSH 38)                     ; 4
+707   (LOAD&PUSH 18)
+708   (CONST&PUSH 23)                     ; 2
+709   (CALL2&PUSH 18)                     ; POLCOEF
+711   (LOAD&PUSH 19)
+712   (CONST&PUSH 15)                     ; 1
+713   (CALL2&PUSH 18)                     ; POLCOEF
+715   (CALL2&PUSH 67)                     ; PTIMES
+717   (CALL2&PUSH 67)                     ; PTIMES
+719   (CONST&PUSH 2)                      ; 0
+720   (LOAD&PUSH 19)
+721   (CONST&PUSH 15)                     ; 1
+722   (CALL2&PUSH 18)                     ; POLCOEF
+724   (CONST&PUSH 23)                     ; 2
+725   (CALL2&PUSH 37)                     ; PEXPT
+727   (NIL&PUSH)
+728   (CALL&PUSH 3 68)                    ; PCOEFADD
+731   (CALL&PUSH 3 68)                    ; PCOEFADD
+734   (CALL&PUSH 3 68)                    ; PCOEFADD
+737   (CALL2&PUSH 69)                     ; PSIMP
+739   (CONST&PUSH 38)                     ; 4
+741   (LOAD&PUSH 15)
+742   (CONST&PUSH 23)                     ; 2
+743   (CALL2&PUSH 18)                     ; POLCOEF
+745   (CALL2&PUSH 67)                     ; PTIMES
+747   (CALL2 16)                          ; RATQU
+749   (STORE 13)
+751   (LOAD&PUSH 2)
+752   (LOAD&PUSH 15)
+753   (LOAD&PUSH 15)
+754   (CALL2&PUSH 16)                     ; RATQU
+756   (T&PUSH)
+757   (CALL&PUSH 3 19)                    ; RATTI
+760   (CALL1 70)                          ; FPROG
+762   L762
+762   (SKIP 5)
+764   (UNBIND1)
+765   (SKIP 7)
+767   (JMP L848)
+770   L770
+770   (NIL)
+771   (SETVALUE 71)                       ; PARNUMER
+773   (LOAD 12)
+774   (SETVALUE 72)                       ; PARDENOM
+776   (T)
+777   (SETVALUE 5)                        ; SWITCH1
+779   (LOAD&PUSH 14)
+780   (LOAD&PUSH 14)
+781   (CALL2 73)                          ; CPROG
+783   (NIL&PUSH)
+784   (GETVALUE&PUSH 71)                  ; PARNUMER
+786   (GETVALUE&PUSH 72)                  ; PARDENOM
+788   (JMP L817)
+790   L790
+790   (SKIP 2)
+792   (JMP L829)
+794   L794
+794   (LOAD&CAR&PUSH 1)
+796   (LOAD 0)
+797   (BIND 74)                           ; K
+799   (LOAD&PUSH 4)
+800   (GETVALUE&PUSH 74)                  ; K
+802   (CALL2&PUSH 16)                     ; RATQU
+804   (JSR L0)
+807   (UNBIND1)
+808   (PUSH)
+809   (LOAD&CONS&STORE 4)
+811   (SKIP 2)
+813   (LOAD&CDR&STORE 1)
+815   (LOAD&CDR&STORE 0)
+817   L817
+817   (LOAD&PUSH 1)
+818   (CALLS1&JMPIF 146 L790)             ; ENDP
+821   (LOAD&CAR&PUSH 1)
+823   (LOAD&PUSH 1)
+824   (CALLS1&JMPIFNOT 146 L794)          ; ENDP
+827   (SKIP 3)
+829   L829
+829   (LOAD&PUSH 0)
+830   (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+832   (SKIP 1)
+834   (STORE 11)
+836   (NIL)
+837   (SETVALUE 5)                        ; SWITCH1
+839   (CONST&PUSH 75)                     ; (MPLUS)
+841   (LOAD 12)
+842   (CONS)
+843   L843
+843   (SKIP 5)
+845   (UNBIND1)
+846   (SKIP 7)
+848   L848
+848   (UNBIND1)
+849   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN E3PROG (NUM DENOM CONT) ...)-19|
+(CONST 0) = E3PROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE E3PROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; E3PROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; E3PROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE E3PROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; E3PROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function E3PROG
+(CONST 0) = NUM
+(CONST 1) = B
+(CONST 2) = X
+(CONST 3) = 2
+(CONST 4) = POLCOEF
+(CONST 5) = 1
+(CONST 6) = 0
+(CONST 7) = 3
+(CONST 8) = RATQU
+(CONST 9) = DISREP
+(CONST 10) = SIMPLIFY
+(CONST 11) = NPASK
+(CONST 12) = $NEGATIVE
+(CONST 13) = -1
+(CONST 14) = RATTI
+(CONST 15) = SIMPNRT
+(CONST 16) = NEG
+(CONST 17) = VAR
+(CONST 18) = NEWVAR
+(CONST 19) = VARLIST
+(CONST 20) = ORDERPOINTER
+(CONST 21) = RATF
+(CONST 22) = RATFORM
+(CONST 23) = (MPLUS)
+(CONST 24) = (MTIMES)
+(CONST 25) = RATPL
+(CONST 26) = LOGMABS
+(CONST 27) = EPROG
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (B X VARLIST VAR NUM)
+writes special variables : (RATFORM X B)
+206 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; NUM
+3     (NIL&PUSH)
+4     (NIL)
+5     (BIND 1)                            ; B
+7     (PUSH-NIL 6)
+9     (NIL)
+10    (BIND 2)                            ; X
+12    (GETVALUE&PUSH 0)                   ; NUM
+14    (CONST&PUSH 3)                      ; 2
+15    (CALL2 4)                           ; POLCOEF
+17    (STORE 12)
+19    (GETVALUE&PUSH 0)                   ; NUM
+21    (CONST&PUSH 5)                      ; 1
+22    (CALL2 4)                           ; POLCOEF
+24    (SETVALUE 1)                        ; B
+26    (GETVALUE&PUSH 0)                   ; NUM
+28    (CONST&PUSH 6)                      ; 0
+29    (CALL2 4)                           ; POLCOEF
+31    (STORE 8)
+33    (LOAD&PUSH 18)
+34    (CONST&PUSH 7)                      ; 3
+35    (CALL2 4)                           ; POLCOEF
+37    (STORE 7)
+38    (LOAD&PUSH 18)
+39    (CONST&PUSH 6)                      ; 0
+40    (CALL2 4)                           ; POLCOEF
+42    (STORE 6)
+43    (PUSH)
+44    (LOAD&PUSH 8)
+45    (CALL2&PUSH 8)                      ; RATQU
+47    (CALL1&PUSH 9)                      ; DISREP
+49    (CALL1&PUSH 10)                     ; SIMPLIFY
+51    (CALL1&PUSH 11)                     ; NPASK
+53    (JMPIFEQTO 12 L315)                 ; $NEGATIVE
+57    (LOAD&PUSH 6)
+58    (LOAD&PUSH 8)
+59    (CALL2&PUSH 8)                      ; RATQU
+61    (CALL1&PUSH 9)                      ; DISREP
+63    (CONST&PUSH 7)                      ; 3
+64    (CALL2&PUSH 15)                     ; SIMPNRT
+66    (CALL1 16)                          ; NEG
+68    L68
+68    (STORE 5)
+69    (GETVALUE&PUSH 17)                  ; VAR
+71    (CONST&PUSH 5)                      ; 1
+72    (CONST&PUSH 5)                      ; 1
+73    (LIST 3)
+75    (STORE 3)
+76    (LOAD&PUSH 5)
+77    (CALL1 18)                          ; NEWVAR
+79    (GETVALUE&PUSH 19)                  ; VARLIST
+81    (CALL1 20)                          ; ORDERPOINTER
+83    (LOAD&PUSH 5)
+84    (CALL1 21)                          ; RATF
+86    (SETVALUE 2)                        ; X
+88    (CAR)
+89    (SETVALUE 22)                       ; RATFORM
+91    (GETVALUE 2)                        ; X
+93    (CDR)
+94    (STORE 4)
+95    (CONST&PUSH 23)                     ; (MPLUS)
+96    (CONST&PUSH 24)                     ; (MTIMES)
+97    (LOAD&PUSH 19)
+98    (LOAD&PUSH 15)
+99    (LOAD&PUSH 8)
+100   (LOAD&PUSH 9)
+101   (T&PUSH)
+102   (CALL&PUSH 3 14)                    ; RATTI
+105   (T&PUSH)
+106   (CALL&PUSH 3 14)                    ; RATTI
+109   (GETVALUE&PUSH 1)                   ; B
+111   (LOAD&PUSH 9)
+112   (T&PUSH)
+113   (CALL&PUSH 3 14)                    ; RATTI
+116   (LOAD&PUSH 13)
+117   (CALL2&PUSH 25)                     ; RATPL
+119   (CALL2&PUSH 25)                     ; RATPL
+121   (T&PUSH)
+122   (CALL&PUSH 3 14)                    ; RATTI
+125   (LOAD&PUSH 7)
+126   (LOAD&PUSH 8)
+127   (CONST&PUSH 7)                      ; 3
+128   (LOAD&PUSH 13)
+129   (T&PUSH)
+130   (CALL&PUSH 3 14)                    ; RATTI
+133   (T&PUSH)
+134   (CALL&PUSH 3 14)                    ; RATTI
+137   (T&PUSH)
+138   (CALL&PUSH 3 14)                    ; RATTI
+141   (CALL2&PUSH 8)                      ; RATQU
+143   (CALL1&PUSH 9)                      ; DISREP
+145   (CONST&PUSH 13)                     ; -1
+146   (LOAD&PUSH 8)
+147   (T&PUSH)
+148   (CALL&PUSH 3 14)                    ; RATTI
+151   (LOAD&PUSH 7)
+152   (CALL2&PUSH 25)                     ; RATPL
+154   (CALL1&PUSH 9)                      ; DISREP
+156   (CALL1&PUSH 26)                     ; LOGMABS
+158   (LIST&PUSH 3)
+160   (LOAD&PUSH 19)
+161   (CONST&PUSH 3)                      ; 2
+162   (LOAD&PUSH 16)
+163   (LOAD&PUSH 9)
+164   (LOAD&PUSH 10)
+165   (T&PUSH)
+166   (CALL&PUSH 3 14)                    ; RATTI
+169   (T&PUSH)
+170   (CALL&PUSH 3 14)                    ; RATTI
+173   (T&PUSH)
+174   (CALL&PUSH 3 14)                    ; RATTI
+177   (CONST&PUSH 13)                     ; -1
+178   (GETVALUE&PUSH 1)                   ; B
+180   (LOAD&PUSH 10)
+181   (T&PUSH)
+182   (CALL&PUSH 3 14)                    ; RATTI
+185   (T&PUSH)
+186   (CALL&PUSH 3 14)                    ; RATTI
+189   (CONST&PUSH 13)                     ; -1
+190   (LOAD&PUSH 14)
+191   (T&PUSH)
+192   (CALL&PUSH 3 14)                    ; RATTI
+195   (CALL2&PUSH 25)                     ; RATPL
+197   (CALL2&PUSH 25)                     ; RATPL
+199   (LOAD&PUSH 7)
+200   (T&PUSH)
+201   (CALL&PUSH 3 14)                    ; RATTI
+204   (CONST&PUSH 13)                     ; -1
+205   (LOAD&PUSH 17)
+206   (LOAD&PUSH 12)
+207   (T&PUSH)
+208   (CALL&PUSH 3 14)                    ; RATTI
+211   (T&PUSH)
+212   (CALL&PUSH 3 14)                    ; RATTI
+215   (LOAD&PUSH 12)
+216   (CALL2&PUSH 8)                      ; RATQU
+218   (GETVALUE&PUSH 1)                   ; B
+220   (LOAD&PUSH 10)
+221   (LOAD&PUSH 11)
+222   (T&PUSH)
+223   (CALL&PUSH 3 14)                    ; RATTI
+226   (T&PUSH)
+227   (CALL&PUSH 3 14)                    ; RATTI
+230   (CONST&PUSH 13)                     ; -1
+231   (CONST&PUSH 3)                      ; 2
+232   (LOAD&PUSH 16)
+233   (LOAD&PUSH 13)
+234   (T&PUSH)
+235   (CALL&PUSH 3 14)                    ; RATTI
+238   (T&PUSH)
+239   (CALL&PUSH 3 14)                    ; RATTI
+242   (T&PUSH)
+243   (CALL&PUSH 3 14)                    ; RATTI
+246   (CALL2&PUSH 25)                     ; RATPL
+248   (CALL2&PUSH 25)                     ; RATPL
+250   (CALL2&PUSH 25)                     ; RATPL
+252   (CONST&PUSH 7)                      ; 3
+253   (LOAD&PUSH 12)
+254   (LOAD&PUSH 10)
+255   (LOAD&PUSH 11)
+256   (LOAD&PUSH 11)
+257   (LOAD&PUSH 12)
+258   (T&PUSH)
+259   (CALL&PUSH 3 14)                    ; RATTI
+262   (LOAD&PUSH 13)
+263   (LOAD&PUSH 13)
+264   (T&PUSH)
+265   (CALL&PUSH 3 14)                    ; RATTI
+268   (LOAD&PUSH 14)
+269   (LOAD&PUSH 15)
+270   (T&PUSH)
+271   (CALL&PUSH 3 14)                    ; RATTI
+274   (CALL2&PUSH 25)                     ; RATPL
+276   (CALL2&PUSH 25)                     ; RATPL
+278   (T&PUSH)
+279   (CALL&PUSH 3 14)                    ; RATTI
+282   (T&PUSH)
+283   (CALL&PUSH 3 14)                    ; RATTI
+286   (T&PUSH)
+287   (CALL&PUSH 3 14)                    ; RATTI
+290   (T&PUSH)
+291   (CALL&PUSH 3 14)                    ; RATTI
+294   (CALL2&PUSH 8)                      ; RATQU
+296   (T&PUSH)
+297   (CALL&PUSH 3 14)                    ; RATTI
+300   (CALL1&PUSH 27)                     ; EPROG
+302   (LIST&PUSH 3)
+304   (CALL1 10)                          ; SIMPLIFY
+306   (UNBIND1)
+307   (SKIP 6)
+309   (UNBIND1)
+310   (SKIP 1)
+312   (UNBIND1)
+313   (SKIP&RET 4)
+315   L315
+315   (CONST&PUSH 13)                     ; -1
+316   (LOAD&PUSH 7)
+317   (T&PUSH)
+318   (CALL&PUSH 3 14)                    ; RATTI
+321   (LOAD&PUSH 8)
+322   (CALL2&PUSH 8)                      ; RATQU
+324   (CALL1&PUSH 9)                      ; DISREP
+326   (CONST&PUSH 7)                      ; 3
+327   (CALL2 15)                          ; SIMPNRT
+329   (JMP L68)
+
+
+Disassembly of function #:|(DEFUN EPROGRATD (A2E P1E P2E) ...)-20|
+(CONST 0) = EPROGRATD
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EPROGRATD>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EPROGRATD
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EPROGRATD
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EPROGRATD>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EPROGRATD
+8     (SKIP&RET 1)
+
+
+Disassembly of function EPROGRATD
+(CONST 0) = VAR
+(CONST 1) = PDEGREE
+(CONST 2) = POLCOEF
+(CONST 3) = RATTI
+(CONST 4) = RATDIFFERENCE
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+24 byte-code instructions:
+0     (LOAD&PUSH 3)
+1     (LOAD&PUSH 3)
+2     (LOAD&PUSH 4)
+3     (GETVALUE&PUSH 0)                   ; VAR
+5     (CALL2&PUSH 1)                      ; PDEGREE
+7     (CALLS2&PUSH 151)                   ; 1-
+9     (CALL2&PUSH 2)                      ; POLCOEF
+11    (T&PUSH)
+12    (CALL&PUSH 3 3)                     ; RATTI
+15    (LOAD&PUSH 2)
+16    (LOAD&PUSH 3)
+17    (GETVALUE&PUSH 0)                   ; VAR
+19    (CALL2&PUSH 1)                      ; PDEGREE
+21    (CALLS2&PUSH 151)                   ; 1-
+23    (CALL2&PUSH 2)                      ; POLCOEF
+25    (LOAD&PUSH 4)
+26    (LOAD&PUSH 5)
+27    (GETVALUE&PUSH 0)                   ; VAR
+29    (CALL2&PUSH 1)                      ; PDEGREE
+31    (CALL2&PUSH 2)                      ; POLCOEF
+33    (T&PUSH)
+34    (CALL&PUSH 3 3)                     ; RATTI
+37    (CALL2 4)                           ; RATDIFFERENCE
+39    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN ENPROG (NUM DENOM CONT ...) ...)-21|
+(CONST 0) = ENPROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ENPROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ENPROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ENPROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ENPROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ENPROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function ENPROG
+(CONST 0) = NUM
+(CONST 1) = $EXPOP
+(CONST 2) = $EXPON
+(CONST 3) = B
+(CONST 4) = $ALGEBRAIC
+(CONST 5) = 0
+(CONST 6) = POLCOEF
+(CONST 7) = DISREP
+(CONST 8) = SIMPLIFY
+(CONST 9) = VAR
+(CONST 10) = 4
+(CONST 11) = ((RAT SIMP) 1 2)
+(CONST 12) = POWER
+(CONST 13) = 2
+(CONST 14) = MUL2
+(CONST 15) = ((RAT SIMP) 1 2)
+(CONST 16) = ADD2
+(CONST 17) = ((RAT SIMP) 1 2)
+(CONST 18) = ((RAT SIMP) 1 4)
+(CONST 19) = ((RAT SIMP) 1 4)
+(CONST 20) = MULN
+(CONST 21) = SUB
+(CONST 22) = 5
+(CONST 23) = ((RAT SIMP) 1 5)
+(CONST 24) = ((RAT SIMP) 1 5)
+(CONST 25) = MUL3
+(CONST 26) = ((RAT SIMP) 2 5)
+(CONST 27) = ((RAT SIMP) 2 5)
+(CONST 28) = ((RAT SIMP) 1 2)
+(CONST 29) = ((RAT SIMP) 1 4)
+(CONST 30) = ((RAT SIMP) 1 5)
+(CONST 31) = ((RAT SIMP) 1 5)
+(CONST 32) = ((RAT SIMP) 1 3)
+(CONST 33) = ((RAT SIMP) 1 3)
+(CONST 34) = 3
+(CONST 35) = ((RAT SIMP) 1 2)
+(CONST 36) = ((RAT SIMP) 1 6)
+(CONST 37) = ((RAT SIMP) 1 6)
+(CONST 38) = DIV
+(CONST 39) = RATINT
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (B NUM VAR)
+writes special variables : (NUM B $EXPON $EXPOP)
+186 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; NUM
+3     (NIL)
+4     (BIND 1)                            ; $EXPOP
+6     (NIL)
+7     (BIND 2)                            ; $EXPON
+9     (NIL&PUSH)
+10    (NIL)
+11    (BIND 3)                            ; B
+13    (PUSH-NIL 2)
+15    (NIL)
+16    (BIND 4)                            ; $ALGEBRAIC
+18    (CONST 5)                           ; 0
+19    (SETVALUE 1)                        ; $EXPOP
+21    (SETVALUE 2)                        ; $EXPON
+23    (LOAD&PUSH 21)
+24    (LOAD&PUSH 20)
+25    (CALL2&PUSH 6)                      ; POLCOEF
+27    (CALL1&PUSH 7)                      ; DISREP
+29    (CALL1 8)                           ; SIMPLIFY
+31    (STORE 8)
+33    (LOAD&PUSH 21)
+34    (CONST&PUSH 5)                      ; 0
+35    (CALL2&PUSH 6)                      ; POLCOEF
+37    (CALL1&PUSH 7)                      ; DISREP
+39    (CALL1 8)                           ; SIMPLIFY
+41    (SETVALUE 3)                        ; B
+43    (GETVALUE&PUSH 9)                   ; VAR
+45    (CONST&PUSH 7)                      ; DISREP
+46    (PUSH-UNBOUND 1)
+48    (CALLS2&PUSH 132)                   ; GET
+50    (CALL1 8)                           ; SIMPLIFY
+52    (STORE 3)
+53    (GETVALUE&PUSH 0)                   ; NUM
+55    (CALL1&PUSH 7)                      ; DISREP
+57    (CALL1 8)                           ; SIMPLIFY
+59    (SETVALUE 0)                        ; NUM
+61    (LOAD&PUSH 20)
+62    (CALL1&PUSH 7)                      ; DISREP
+64    (CALL1 8)                           ; SIMPLIFY
+66    (STORE 20)
+68    (LOAD&PUSH 19)
+69    (CONST&PUSH 10)                     ; 4
+70    (CALLSR&JMPIF 1 45 L162)            ; =
+75    (LOAD&PUSH 19)
+76    (CONST&PUSH 22)                     ; 5
+77    (CALLSR&JMPIF 1 45 L216)            ; =
+82    (LOAD&PUSH 8)
+83    (CONST&PUSH 32)                     ; ((RAT SIMP) 1 3)
+85    (CALL2&PUSH 12)                     ; POWER
+87    (LOAD&PUSH 4)
+88    (CONST&PUSH 13)                     ; 2
+89    (CALL2&PUSH 12)                     ; POWER
+91    (CALL2&PUSH 14)                     ; MUL2
+93    (GETVALUE&PUSH 3)                   ; B
+95    (CONST&PUSH 33)                     ; ((RAT SIMP) 1 3)
+97    (CALL2&PUSH 12)                     ; POWER
+99    (CALL2 16)                          ; ADD2
+101   (STORE 21)
+103   (CONST&PUSH 34)                     ; 3
+105   (CONST&PUSH 35)                     ; ((RAT SIMP) 1 2)
+107   (CALL2&PUSH 12)                     ; POWER
+109   (LOAD&PUSH 9)
+110   (CONST&PUSH 36)                     ; ((RAT SIMP) 1 6)
+112   (CALL2&PUSH 12)                     ; POWER
+114   (GETVALUE&PUSH 3)                   ; B
+116   (CONST&PUSH 37)                     ; ((RAT SIMP) 1 6)
+118   (CALL2&PUSH 12)                     ; POWER
+120   (LOAD&PUSH 6)
+121   (LIST&PUSH 4)
+123   (T&PUSH)
+124   (CALL2 20)                          ; MULN
+126   (STORE 4)
+127   (LOAD&PUSH 21)
+128   (LOAD&PUSH 22)
+129   (LOAD&PUSH 6)
+130   (CALL2&PUSH 16)                     ; ADD2
+132   (LOAD&PUSH 23)
+133   (LOAD&PUSH 7)
+134   (CALL2&PUSH 21)                     ; SUB
+136   (CALL 3 25)                         ; MUL3
+139   (STORE 21)
+141   L141
+141   (LOAD&PUSH 20)
+142   (GETVALUE&PUSH 0)                   ; NUM
+144   (LOAD&PUSH 23)
+145   (CALL2&PUSH 38)                     ; DIV
+147   (LOAD&PUSH 5)
+148   (CALL2&PUSH 39)                     ; RATINT
+150   (CALL2 14)                          ; MUL2
+152   (UNBIND1)
+153   (SKIP 2)
+155   (UNBIND1)
+156   (SKIP 1)
+158   (UNBIND 3)
+160   (SKIP&RET 5)
+162   L162
+162   (LOAD&PUSH 8)
+163   (CONST&PUSH 11)                     ; ((RAT SIMP) 1 2)
+164   (CALL2&PUSH 12)                     ; POWER
+166   (LOAD&PUSH 4)
+167   (CONST&PUSH 13)                     ; 2
+168   (CALL2&PUSH 12)                     ; POWER
+170   (CALL2&PUSH 14)                     ; MUL2
+172   (GETVALUE&PUSH 3)                   ; B
+174   (CONST&PUSH 15)                     ; ((RAT SIMP) 1 2)
+175   (CALL2&PUSH 12)                     ; POWER
+177   (CALL2 16)                          ; ADD2
+179   (STORE 21)
+181   (CONST&PUSH 13)                     ; 2
+182   (CONST&PUSH 17)                     ; ((RAT SIMP) 1 2)
+183   (CALL2&PUSH 12)                     ; POWER
+185   (LOAD&PUSH 9)
+186   (CONST&PUSH 18)                     ; ((RAT SIMP) 1 4)
+187   (CALL2&PUSH 12)                     ; POWER
+189   (GETVALUE&PUSH 3)                   ; B
+191   (CONST&PUSH 19)                     ; ((RAT SIMP) 1 4)
+192   (CALL2&PUSH 12)                     ; POWER
+194   (LOAD&PUSH 6)
+195   (LIST&PUSH 4)
+197   (T&PUSH)
+198   (CALL2 20)                          ; MULN
+200   (STORE 4)
+201   (LOAD&PUSH 21)
+202   (LOAD&PUSH 5)
+203   (CALL2&PUSH 16)                     ; ADD2
+205   (LOAD&PUSH 22)
+206   (LOAD&PUSH 6)
+207   (CALL2&PUSH 21)                     ; SUB
+209   (CALL2 14)                          ; MUL2
+211   (STORE 21)
+213   (JMP L141)
+216   L216
+216   (LOAD&PUSH 8)
+217   (CONST&PUSH 23)                     ; ((RAT SIMP) 1 5)
+218   (CALL2&PUSH 12)                     ; POWER
+220   (GETVALUE&PUSH 3)                   ; B
+222   (CONST&PUSH 24)                     ; ((RAT SIMP) 1 5)
+223   (CALL2&PUSH 12)                     ; POWER
+225   (LOAD&PUSH 5)
+226   (CALL 3 25)                         ; MUL3
+229   (STORE 4)
+230   (CONST&PUSH 13)                     ; 2
+231   (LOAD&PUSH 9)
+232   (CONST&PUSH 26)                     ; ((RAT SIMP) 2 5)
+233   (CALL2&PUSH 12)                     ; POWER
+235   (LOAD&PUSH 5)
+236   (CONST&PUSH 13)                     ; 2
+237   (CALL2&PUSH 12)                     ; POWER
+239   (CALL&PUSH 3 25)                    ; MUL3
+242   (CONST&PUSH 13)                     ; 2
+243   (GETVALUE&PUSH 3)                   ; B
+245   (CONST&PUSH 27)                     ; ((RAT SIMP) 2 5)
+246   (CALL2&PUSH 12)                     ; POWER
+248   (CALL2&PUSH 14)                     ; MUL2
+250   (LOAD&PUSH 6)
+251   (CALL2&PUSH 21)                     ; SUB
+253   (CALL2 16)                          ; ADD2
+255   (STORE 21)
+257   (CONST&PUSH 22)                     ; 5
+258   (CONST&PUSH 28)                     ; ((RAT SIMP) 1 2)
+259   (CALL2&PUSH 12)                     ; POWER
+261   (LOAD&PUSH 5)
+262   (CALL2 14)                          ; MUL2
+264   (STORE 4)
+265   (CONST&PUSH 29)                     ; ((RAT SIMP) 1 4)
+266   (LOAD&PUSH 9)
+267   (CONST&PUSH 30)                     ; ((RAT SIMP) 1 5)
+269   (CALL2&PUSH 12)                     ; POWER
+271   (LOAD&PUSH 5)
+272   (CALL2&PUSH 14)                     ; MUL2
+274   (GETVALUE&PUSH 3)                   ; B
+276   (CONST&PUSH 31)                     ; ((RAT SIMP) 1 5)
+278   (CALL2&PUSH 12)                     ; POWER
+280   (CALL2&PUSH 16)                     ; ADD2
+282   (LOAD&PUSH 23)
+283   (LOAD&PUSH 7)
+284   (CALL2&PUSH 16)                     ; ADD2
+286   (LOAD&PUSH 24)
+287   (LOAD&PUSH 8)
+288   (CALL2&PUSH 21)                     ; SUB
+290   (LIST&PUSH 4)
+292   (T&PUSH)
+293   (CALL2 20)                          ; MULN
+295   (STORE 21)
+297   (JMP L141)
+
+
+Disassembly of function #:|(DEFUN ZEROCOEFL (E N) ...)-22|
+(CONST 0) = ZEROCOEFL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZEROCOEFL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZEROCOEFL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZEROCOEFL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZEROCOEFL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZEROCOEFL
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZEROCOEFL
+(CONST 0) = N
+(CONST 1) = 1
+(CONST 2) = POLCOEF
+(CONST 3) = 0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (N)
+23 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; N
+3     (CONST&PUSH 1)                      ; 1
+4     (JMP L20)
+6     L6
+6     (NIL)
+7     (SKIP 1)
+9     (JMP L30)
+11    L11
+11    (LOAD&PUSH 6)
+12    (LOAD&PUSH 1)
+13    (CALL2&PUSH 2)                      ; POLCOEF
+15    (JMPIFNOTEQTO 3 L6)                 ; 0
+18    (LOAD&INC&STORE 0)
+20    L20
+20    (LOAD&PUSH 0)
+21    (GETVALUE&PUSH 0)                   ; N
+23    (CALLSR&JMPIFNOT 1 45 L11)          ; =
+27    (T)
+28    (SKIP 1)
+30    L30
+30    (UNBIND1)
+31    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN RATSQRT (A) ...)-23|
+(CONST 0) = RATSQRT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE RATSQRT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; RATSQRT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; RATSQRT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE RATSQRT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; RATSQRT
+8     (SKIP&RET 1)
+
+
+Disassembly of function RATSQRT
+(CONST 0) = VARLIST
+(CONST 1) = DISREP
+(CONST 2) = 2
+(CONST 3) = SIMPNRT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (NIL)
+1     (BIND 0)                            ; VARLIST
+3     (LOAD&PUSH 4)
+4     (CALL1&PUSH 1)                      ; DISREP
+6     (CONST&PUSH 2)                      ; 2
+7     (CALL2 3)                           ; SIMPNRT
+9     (UNBIND1)
+10    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FPROG (RAT*) ...)-24|
+(CONST 0) = FPROG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FPROG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FPROG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FPROG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FPROG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FPROG
+8     (SKIP&RET 1)
+
+
+Disassembly of function FPROG
+(CONST 0) = ROOTFACTOR
+(CONST 1) = PARDENOM
+(CONST 2) = PARNUMER
+(CONST 3) = LOGPTDX
+(CONST 4) = WHOLEPART
+(CONST 5) = SWITCH1
+(CONST 6) = DPROG
+(CONST 7) = EPROG
+(CONST 8) = ADDN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (LOGPTDX)
+22 byte-code instructions:
+0     (NIL)
+1     (BIND 0)                            ; ROOTFACTOR
+3     (NIL)
+4     (BIND 1)                            ; PARDENOM
+6     (NIL)
+7     (BIND 2)                            ; PARNUMER
+9     (NIL)
+10    (BIND 3)                            ; LOGPTDX
+12    (NIL)
+13    (BIND 4)                            ; WHOLEPART
+15    (NIL)
+16    (BIND 5)                            ; SWITCH1
+18    (LOAD&PUSH 19)
+19    (CALL1&PUSH 6)                      ; DPROG
+21    (CONST&SYMBOL-FUNCTION&PUSH 7)      ; EPROG
+23    (GETVALUE&PUSH 3)                   ; LOGPTDX
+25    (CALLSR 0 22)                       ; MAPCAR
+28    (CONS&PUSH)
+29    (NIL&PUSH)
+30    (CALL2 8)                           ; ADDN
+32    (UNBIND 6)
+34    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN RATINT (EXP VAR) ...)-25|
+(CONST 0) = RATINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE RATINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; RATINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; RATINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE RATINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; RATINT
+8     (SKIP&RET 1)
+
+
+Disassembly of function RATINT
+(CONST 0) = EXP
+(CONST 1) = VAR
+(CONST 2) = GENVAR
+(CONST 3) = CHECKFACTORS
+(CONST 4) = VARLIST
+(CONST 5) = RATFORM
+(CONST 6) = $KEEPFLOAT
+(CONST 7) = RATF
+(CONST 8) = FPROG
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (EXP VAR)
+writes special variables : (VAR RATFORM VARLIST)
+35 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; EXP
+3     (LOAD 4)
+4     (BIND 1)                            ; VAR
+6     (NIL)
+7     (BIND 2)                            ; GENVAR
+9     (NIL)
+10    (BIND 3)                            ; CHECKFACTORS
+12    (NIL)
+13    (BIND 4)                            ; VARLIST
+15    (NIL&PUSH)
+16    (NIL)
+17    (BIND 5)                            ; RATFORM
+19    (NIL)
+20    (BIND 6)                            ; $KEEPFLOAT
+22    (GETVALUE&PUSH 1)                   ; VAR
+24    (LIST 1)
+26    (SETVALUE 4)                        ; VARLIST
+28    (GETVALUE&PUSH 0)                   ; EXP
+30    (CALL1 7)                           ; RATF
+32    (STORE 6)
+33    (CAR)
+34    (SETVALUE 5)                        ; RATFORM
+36    (GETVALUE&PUSH 1)                   ; VAR
+38    (CALL1 7)                           ; RATF
+40    (CDR)
+41    (CAR)
+42    (CAR)
+43    (SETVALUE 1)                        ; VAR
+45    (LOAD&CDR&PUSH 6)
+47    (CALL1 8)                           ; FPROG
+49    (UNBIND 2)
+51    (SKIP 1)
+53    (UNBIND 5)
+55    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN INTFACTOR (L) ...)-26|
+(CONST 0) = INTFACTOR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INTFACTOR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INTFACTOR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INTFACTOR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INTFACTOR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INTFACTOR
+8     (SKIP&RET 1)
+
+
+Disassembly of function INTFACTOR
+(CONST 0) = L
+(CONST 1) = $FACTORFLAG
+(CONST 2) = B
+(CONST 3) = OLDCONTENT
+(CONST 4) = PFACTOR
+(CONST 5) = EVERYSECOND
+(CONST 6) = 1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (B L)
+writes special variable : (B)
+28 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (NIL)
+4     (BIND 1)                            ; $FACTORFLAG
+6     (NIL&PUSH)
+7     (NIL)
+8     (BIND 2)                            ; B
+10    (GETVALUE&PUSH 0)                   ; L
+12    (CALL1 3)                           ; OLDCONTENT
+14    (STORE 3)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CALL1&PUSH 4)                      ; PFACTOR
+19    (CALL1 5)                           ; EVERYSECOND
+21    (SETVALUE 2)                        ; B
+23    (LOAD&CAR&PUSH 3)
+25    (JMPIFEQTO 6 L40)                   ; 1
+28    (LOAD&CAR&PUSH 3)
+30    (GETVALUE 2)                        ; B
+32    (CONS)
+33    L33
+33    (UNBIND1)
+34    (SKIP 1)
+36    (UNBIND 2)
+38    (SKIP&RET 2)
+40    L40
+40    (GETVALUE 2)                        ; B
+42    (JMP L33)
+
+
+Disassembly of function #:|(DEFUN EVERYSECOND (A) ...)-27|
+(CONST 0) = EVERYSECOND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EVERYSECOND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EVERYSECOND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EVERYSECOND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EVERYSECOND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EVERYSECOND
+8     (SKIP&RET 1)
+
+
+Disassembly of function EVERYSECOND
+(CONST 0) = PEXPT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+28 byte-code instructions:
+0     (LOAD 1)
+1     (JMPIFNOT1 L32)
+3     (JMP L17)
+5     L5
+5     (LOAD&CAR&PUSH 1)
+7     (LOAD 2)
+8     (CDR)
+9     (CAR&PUSH)
+10    (CALL2 0)                           ; PEXPT
+12    (JMP L23)
+14    L14
+14    (LOAD 1)
+15    (JMPIFNOT1 L32)
+17    L17
+17    (CAR&PUSH)
+18    (CALLS2&JMPIF 8 L5)                 ; NUMBERP
+21    (LOAD 1)
+22    (CAR)
+23    L23
+23    (PUSH)
+24    (LOAD 2)
+25    (CDR)
+26    (CDR&PUSH)
+27    (JSR L14)
+29    (CONS)
+30    (SKIP&RET 2)
+32    L32
+32    (SKIP&RET 2)
+
+
+Wrote file binary-clisp/sinint.fas
+Wrote file /cygdrive/e/temp/maxima/src/sinint.lis

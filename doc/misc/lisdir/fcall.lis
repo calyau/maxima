@@ -1,0 +1,1245 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/fcall.lisp
+on 2002-12-17 13:34:02 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/fcall.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE FCALL)-2|
+(CONST 0) = FCALL
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FCALL
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE FCALL)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN _EVAL (X) ...)-4|
+(CONST 0) = _EVAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE _EVAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; _EVAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; _EVAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE _EVAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; _EVAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function _EVAL
+(CONST 0) = X
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+6 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALLS1 91)                         ; EVAL
+7     (UNBIND1)
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMVAR $TR_WARN_BAD_FUNCTION_CALLS T ...)-5-1|
+(CONST 0) = $TR_WARN_BAD_FUNCTION_CALLS
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TR_WARN_BAD_FUNCTION_CALLS
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $TR_WARN_BAD_FUNCTION_CALLS
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $TR_WARN_BAD_FUNCTION_CALLS T ...)-5-2|
+(CONST 0) = (SPECIAL $TR_WARN_BAD_FUNCTION_CALLS)
+(CONST 1) = $TR_WARN_BAD_FUNCTION_CALLS
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Warn when strange kinds of function calls are going on in
+	 translated code."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $TR_WARN_BAD_FUNCTION_CALLS
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $TR_WARN_BAD_FUNCTION_CALLS
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $TR_WARN_BAD_FUNCTION_CALLS
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Warn when strange kinds of function calls are going on in
+	 translated code."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $TR_WARN_BAD_FUNCTION_CALLS
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *TR-RUNTIME-WARNED* NIL ...)-6|
+(CONST 0) = (SPECIAL *TR-RUNTIME-WARNED*)
+(CONST 1) = *TR-RUNTIME-WARNED*
+(CONST 2) = VARIABLE
+(CONST 3) = "This is an alist of warnings which have been given"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *TR-RUNTIME-WARNED*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *TR-RUNTIME-WARNED*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *TR-RUNTIME-WARNED*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; *TR-RUNTIME-WARNED*
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "This is an alist of warnings which have been given"
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; *TR-RUNTIME-WARNED*
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $TR_WARNINGS_GET NIL ...)-7|
+(CONST 0) = $TR_WARNINGS_GET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TR_WARNINGS_GET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TR_WARNINGS_GET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TR_WARNINGS_GET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TR_WARNINGS_GET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TR_WARNINGS_GET
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TR_WARNINGS_GET
+(CONST 0) = (MLIST)
+(CONST 1) = *TR-RUNTIME-WARNED*
+(CONST 2) = (MLIST)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*TR-RUNTIME-WARNED*)
+22 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (MLIST)
+1     (NIL&PUSH)
+2     (GETVALUE&PUSH 1)                   ; *TR-RUNTIME-WARNED*
+4     (JMP L21)
+6     L6
+6     (LOAD&CAR&PUSH 0)
+8     (CONST&PUSH 2)                      ; (MLIST)
+9     (LOAD&CAR&PUSH 1)
+11    (LOAD&CDR&PUSH 2)
+13    (LIST&PUSH 3)
+15    (LOAD&CONS&STORE 2)
+17    (SKIP 1)
+19    (LOAD&CDR&STORE 0)
+21    L21
+21    (LOAD&PUSH 0)
+22    (CALLS1&JMPIFNOT 146 L6)            ; ENDP
+25    (SKIP 1)
+27    (LOAD&PUSH 0)
+28    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+30    (SKIP 1)
+32    (CONS)
+33    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MFUNCTION-CALL-WARN (F TYPE) ...)-8|
+(CONST 0) = MFUNCTION-CALL-WARN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MFUNCTION-CALL-WARN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFUNCTION-CALL-WARN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MFUNCTION-CALL-WARN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MFUNCTION-CALL-WARN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MFUNCTION-CALL-WARN
+8     (SKIP&RET 1)
+
+
+Disassembly of function MFUNCTION-CALL-WARN
+(CONST 0) = F
+(CONST 1) = *TR-RUNTIME-WARNED*
+(CONST 2) = ASSQ
+(CONST 3) = $TR_WARN_BAD_FUNCTION_CALLS
+(CONST 4) = 
+((FEXPR FEXPR-WARNEDP
+  "This may be due to lack of enough translation data *print-base* info.")
+ (MACRO MACRO-WARNEDP "Macros should to be loaded when you are translating.")
+ (UNDEFINED UNDEFINED-WARNP
+  "The function was totaly undefined. Maybe you want to quote it.")
+ (PUNT-NIL PUNT-NIL-WARNP
+  "If you want the value of the function name, use APPLY")
+ (MFEXPR MFEXPR-WARNEDP
+  "MFEXPRS should be loaded at translating time. Use of them in
+translated code (nay, any code!), is NOT recommened however."))
+(CONST 5) = PUTPROP
+(CONST 6) = "Warning: "
+(CONST 7) = MGRIND
+(CONST 8) = 
+" has a function or macro call which has not been
+translated properly."
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($TR_WARN_BAD_FUNCTION_CALLS *TR-RUNTIME-WARNED* F)
+writes special variable : (*TR-RUNTIME-WARNED*)
+65 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; F
+3     (GETVALUE&PUSH 0)                   ; F
+5     (GETVALUE&PUSH 1)                   ; *TR-RUNTIME-WARNED*
+7     (CALL2 2)                           ; ASSQ
+9     (JMPIF1 L25)
+11    (GETVALUE&PUSH 0)                   ; F
+13    (LOAD 5)
+14    (CONS&PUSH)
+15    (GETVALUE 1)                        ; *TR-RUNTIME-WARNED*
+17    (CONS)
+18    (SETVALUE 1)                        ; *TR-RUNTIME-WARNED*
+20    (GETVALUE 3)                        ; $TR_WARN_BAD_FUNCTION_CALLS
+22    (JMPIF L43)
+24    (NIL)
+25    L25
+25    (UNBIND1)
+26    (SKIP&RET 3)
+28    L28
+28    (PUSH-UNBOUND 1)
+30    (CALLS1 139)                        ; TERPRI
+32    (LOAD 0)
+33    (CDR)
+34    (CAR&PUSH)
+35    (PUSH-UNBOUND 1)
+37    (CALLS1 132)                        ; PRINC
+39    (SKIP 1)
+41    (JMP L25)
+43    L43
+43    (LOAD&PUSH 4)
+44    (CONST&PUSH 4)                      ; (# # # ...)
+45    (CALL2 2)                           ; ASSQ
+47    (CDR&PUSH)
+48    (LOAD 0)
+49    (NOT)
+50    (JMPIF1 L100)
+52    (GETVALUE&PUSH 0)                   ; F
+54    (LOAD&CAR&PUSH 1)
+56    (PUSH-UNBOUND 1)
+58    (CALLS2 132)                        ; GET
+60    (JMPIF1 L100)
+62    (GETVALUE&PUSH 0)                   ; F
+64    (T&PUSH)
+65    (LOAD&CAR&PUSH 2)
+67    (CALL 3 5)                          ; PUTPROP
+70    (PUSH-UNBOUND 1)
+72    (CALLS1 139)                        ; TERPRI
+74    (CONST&PUSH 6)                      ; "Warning: "
+75    (PUSH-UNBOUND 1)
+77    (CALLS1 132)                        ; PRINC
+79    (GETVALUE&PUSH 0)                   ; F
+81    (NIL&PUSH)
+82    (CALL2 7)                           ; MGRIND
+84    (CONST&PUSH 8)                      ; " has a function or macro call which has not been
+translated properly."
+85    (PUSH-UNBOUND 1)
+87    (CALLS1 132)                        ; PRINC
+89    (LOAD 0)
+90    (CDR)
+91    (JMPIF L28)
+94    (NIL)
+95    (SKIP 1)
+97    (JMP L25)
+100   L100
+100   (SKIP 1)
+102   (JMP L25)
+
+
+Disassembly of function #:|(DEFUN MAPCAR-EVAL (X) ...)-9|
+(CONST 0) = MAPCAR-EVAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAPCAR-EVAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAPCAR-EVAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAPCAR-EVAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAPCAR-EVAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAPCAR-EVAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAPCAR-EVAL
+(CONST 0) = X
+(CONST 1) = _EVAL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+7 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (CONST&SYMBOL-FUNCTION&PUSH 1)      ; _EVAL
+5     (GETVALUE&PUSH 0)                   ; X
+7     (CALLSR 0 22)                       ; MAPCAR
+10    (UNBIND1)
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMACRO MFUNCTION-CALL (F &REST ARGL) ...)-10|
+(CONST 0) = MFUNCTION-CALL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MFUNCTION-CALL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFUNCTION-CALL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MFUNCTION-CALL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MFUNCTION-CALL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; MFUNCTION-CALL
+10    (SKIP&RET 1)
+
+
+Disassembly of function MFUNCTION-CALL
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = F
+(CONST 3) = LISPM-MFUNCTION-CALL-AUX
+(CONST 4) = QUOTE
+(CONST 5) = LIST
+(CONST 6) = (NIL)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (F)
+38 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L42)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; F
+13    (LOAD 5)
+14    (CDR)
+15    (CDR&PUSH)
+16    (GETVALUE&PUSH 2)                   ; F
+18    (CALLS1&JMPIF 80 L47)               ; FBOUNDP
+21    (CONST&PUSH 3)                      ; LISPM-MFUNCTION-CALL-AUX
+22    (CONST&PUSH 4)                      ; QUOTE
+23    (GETVALUE&PUSH 2)                   ; F
+25    (LIST&PUSH 2)
+27    (CONST&PUSH 4)                      ; QUOTE
+28    (LOAD&PUSH 3)
+29    (LIST&PUSH 2)
+31    (CONST&PUSH 5)                      ; LIST
+32    (LOAD 4)
+33    (CONS&PUSH)
+34    (CONST 6)                           ; (NIL)
+35    (LIST* 4)
+37    L37
+37    (SKIP 1)
+39    (UNBIND1)
+40    (SKIP&RET 3)
+42    L42
+42    (LOAD&PUSH 2)
+43    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+45    (SKIP&RET 3)
+47    L47
+47    (GETVALUE&PUSH 2)                   ; F
+49    (LOAD 1)
+50    (CONS)
+51    (JMP L37)
+
+
+Disassembly of function #:|(DEFUN LISPM-MFUNCTION-CALL-AUX (F ARGL LIST-ARGL ...) ...)-11|
+(CONST 0) = LISPM-MFUNCTION-CALL-AUX
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISPM-MFUNCTION-CALL-AUX>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISPM-MFUNCTION-CALL-AUX
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISPM-MFUNCTION-CALL-AUX
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISPM-MFUNCTION-CALL-AUX>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LISPM-MFUNCTION-CALL-AUX
+8     (SKIP&RET 1)
+
+
+Disassembly of function LISPM-MFUNCTION-CALL-AUX
+(CONST 0) = F
+(CONST 1) = FUNCTIONP
+(CONST 2) = "expected symbol or function"
+(CONST 3) = MFEXPR*
+(CONST 4) = LOCF
+(CONST 5) = MEXPR
+(CONST 6) = MGET
+(CONST 7) = MFEXPRP
+(CONST 8) = MFEXPR
+(CONST 9) = MFUNCTION-CALL-WARN
+(CONST 10) = MEVAL
+(CONST 11) = MLAMBDA
+(CONST 12) = AUTOLOAD
+(CONST 13) = "~:@M, Function undefined after loading file:~A "
+(CONST 14) = MERROR
+(CONST 15) = PUNT-NIL
+(CONST 16) = _EVAL
+(CONST 17) = MAPCAR-EVAL
+(CONST 18) = MAPPLY
+(CONST 19) = UNDEFINED
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (AUTOLOAD F)
+114 byte-code instructions:
+0     L0
+0     (LOAD 4)
+1     (BIND 0)                            ; F
+3     (NIL&PUSH)
+4     (GETVALUE&PUSH 0)                   ; F
+6     (CALL1&JMPIF 1 L76)                 ; FUNCTIONP
+10    (GETVALUE&PUSH 0)                   ; F
+12    (PUSH-UNBOUND 1)
+14    (CALLS1&JMPIF 87 L83)               ; MACRO-FUNCTION
+18    (GETVALUE&PUSH 0)                   ; F
+20    (CALLS2&JMPIFNOT 6 L91)             ; SYMBOLP
+24    (GETVALUE&PUSH 0)                   ; F
+26    (CONST&PUSH 3)                      ; MFEXPR*
+27    (PUSH-UNBOUND 1)
+29    (CALLS2&STORE 132 0)                ; GET
+32    (JMPIF L95)
+34    (GETVALUE&PUSH 0)                   ; F
+36    (CONST&PUSH 5)                      ; MEXPR
+37    (CALL2 6)                           ; MGET
+39    (STORE 0)
+40    (JMPIF L118)
+43    (GETVALUE&PUSH 0)                   ; F
+45    (CONST&PUSH 12)                     ; AUTOLOAD
+46    (PUSH-UNBOUND 1)
+48    (CALLS2&STORE 132 0)                ; GET
+51    (JMPIF L155)
+54    (GETVALUE&PUSH 0)                   ; F
+56    (CALLS1&JMPIF 79 L177)              ; BOUNDP
+60    (GETVALUE&PUSH 0)                   ; F
+62    (CONST&PUSH 19)                     ; UNDEFINED
+63    (CALL2 9)                           ; MFUNCTION-CALL-WARN
+65    (GETVALUE&PUSH 0)                   ; F
+67    (LIST&PUSH 1)
+69    (LOAD 7)
+70    (CONS)
+71    L71
+71    (SKIP 1)
+73    (UNBIND1)
+74    (SKIP&RET 5)
+76    L76
+76    (GETVALUE&PUSH 0)                   ; F
+78    (LOAD 7)
+79    (APPLY 0)
+81    (JMP L71)
+83    L83
+83    (GETVALUE&PUSH 0)                   ; F
+85    (LOAD 7)
+86    (CONS&PUSH)
+87    (CALLS1 91)                         ; EVAL
+89    (JMP L71)
+91    L91
+91    (CONST&PUSH 2)                      ; "expected symbol or function"
+92    (CALLSR 0 29)                       ; ERROR
+95    L95
+95    (PUSH)
+96    (LOAD&PUSH 8)
+97    (CALL1&PUSH 4)                      ; LOCF
+99    (FUNCALL 1)
+101   (JMP L71)
+103   L103
+103   (GETVALUE&PUSH 0)                   ; F
+105   (CONST&PUSH 8)                      ; MFEXPR
+106   (CALL2 9)                           ; MFUNCTION-CALL-WARN
+108   (GETVALUE&PUSH 0)                   ; F
+110   (LIST&PUSH 1)
+112   (LOAD 8)
+113   (CONS&PUSH)
+114   (CALL1 10)                          ; MEVAL
+116   (JMP L71)
+118   L118
+118   (GETVALUE&PUSH 0)                   ; F
+120   (CONST&PUSH 7)                      ; MFEXPRP
+121   (CALL2&JMPIF 6 L103)                ; MGET
+124   (LOAD&PUSH 0)
+125   (LOAD&PUSH 7)
+126   (GETVALUE&PUSH 0)                   ; F
+128   (PUSH-NIL 2)
+130   (CALL 5 11)                         ; MLAMBDA
+133   (JMP L71)
+135   L135
+135   (CONST&PUSH 13)                     ; "~:@M, Function undefined after loading file:~A "
+136   (GETVALUE&PUSH 0)                   ; F
+138   (GETVALUE&PUSH 0)                   ; F
+140   (CONST&PUSH 12)                     ; AUTOLOAD
+141   (PUSH-UNBOUND 1)
+143   (CALLS2&PUSH 132)                   ; GET
+145   (PUSH-UNBOUND 1)
+147   (CALLS1&PUSH 244)                   ; NAMESTRING
+149   (CALL 3 14)                         ; MERROR
+152   (JMP L71)
+155   L155
+155   (LOAD&JMPIF 5 L135)
+158   (GETVALUE&PUSH 12)                  ; AUTOLOAD
+160   (GETVALUE&PUSH 0)                   ; F
+162   (LOAD 2)
+163   (CONS&PUSH)
+164   (FUNCALL 1)
+166   (GETVALUE&PUSH 0)                   ; F
+168   (LOAD&PUSH 8)
+169   (LOAD&PUSH 8)
+170   (T&PUSH)
+171   (JSR L0)
+174   (JMP L71)
+177   L177
+177   (GETVALUE&PUSH 0)                   ; F
+179   (CONST&PUSH 15)                     ; PUNT-NIL
+180   (CALL2 9)                           ; MFUNCTION-CALL-WARN
+182   (GETVALUE&PUSH 0)                   ; F
+184   (CALL1&PUSH 16)                     ; _EVAL
+186   (LOAD&PUSH 8)
+187   (CALL1&PUSH 17)                     ; MAPCAR-EVAL
+189   (GETVALUE&PUSH 0)                   ; F
+191   (CALL 3 18)                         ; MAPPLY
+194   (JMP L71)
+
+
+Disassembly of function #:|(DEFQUOTE TRD-MSYMEVAL (&REST L) ...)-12-2|
+(CONST 0) = TRD-MSYMEVAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRD-MSYMEVAL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRD-MSYMEVAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRD-MSYMEVAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRD-MSYMEVAL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function TRD-MSYMEVAL
+(CONST 0) = L
+(CONST 1) = |TRD-MSYMEVAL-aux|
+(CONST 2) = QUOTE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+10 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (BIND 0)                            ; L
+4     (CONST&PUSH 1)                      ; |TRD-MSYMEVAL-aux|
+5     (CONST&PUSH 2)                      ; QUOTE
+6     (GETVALUE&PUSH 0)                   ; L
+8     (LIST&PUSH 2)
+10    (LIST 2)
+12    (UNBIND1)
+13    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFQUOTE TRD-MSYMEVAL (&REST L) ...)-12-3|
+(CONST 0) = |TRD-MSYMEVAL-aux|
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE |TRD-MSYMEVAL-aux|>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; |TRD-MSYMEVAL-aux|
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; |TRD-MSYMEVAL-aux|
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE |TRD-MSYMEVAL-aux|>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; |TRD-MSYMEVAL-aux|
+8     (SKIP&RET 1)
+
+
+Disassembly of function |TRD-MSYMEVAL-aux|
+(CONST 0) = L
+(CONST 1) = _EVAL
+(CONST 2) = SET
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+29 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (CAR&PUSH)
+6     (LOAD&PUSH 0)
+7     (CALLS1&JMPIF 79 L25)               ; BOUNDP
+10    (LOAD&PUSH 0)
+11    (GETVALUE 0)                        ; L
+13    (CDR)
+14    (JMPIF L32)
+16    (LOAD 1)
+17    L17
+17    (PUSH)
+18    (CALL2 2)                           ; SET
+20    (SKIP 1)
+22    L22
+22    (UNBIND1)
+23    (SKIP&RET 2)
+25    L25
+25    (LOAD&PUSH 0)
+26    (CALL1 1)                           ; _EVAL
+28    (SKIP 1)
+30    (JMP L22)
+32    L32
+32    (GETVALUE 0)                        ; L
+34    (CDR)
+35    (CAR&PUSH)
+36    (CALL1 1)                           ; _EVAL
+38    (JMP L17)
+
+
+Disassembly of function #:|(DEFUN EXPT$ (A B) ...)-13|
+(CONST 0) = EXPT$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXPT$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXPT$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXPT$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXPT$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXPT$
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXPT$
+(CONST 0) = B
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (B)
+7 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; B
+3     (LOAD&PUSH 5)
+4     (GETVALUE&PUSH 0)                   ; B
+6     (CALLS2 154)                        ; EXPT
+8     (UNBIND1)
+9     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MAKE-M-LAMBDA& (ARGL BODY) ...)-14|
+(CONST 0) = MAKE-M-LAMBDA&
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKE-M-LAMBDA&>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKE-M-LAMBDA&
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKE-M-LAMBDA&
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKE-M-LAMBDA&>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKE-M-LAMBDA&
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKE-M-LAMBDA&
+(CONST 0) = L
+(CONST 1) = 1
+(CONST 2) = ARG
+(CONST 3) = LAMBDA
+(CONST 4) = *N*
+(CONST 5) = CONS
+(CONST 6) = '(MLIST)
+(CONST 7) = LISTIFY
+(CONST 8) = F-
+(CONST 9) = (*N*)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+42 byte-code instructions:
+0     (NIL)
+1     (BIND 0)                            ; L
+3     (LOAD&PUSH 5)
+4     (CONST&PUSH 1)                      ; 1
+5     (JMP L20)
+7     L7
+7     (CONST&PUSH 2)                      ; ARG
+8     (LOAD&PUSH 1)
+9     (LIST&PUSH 2)
+11    (GETVALUE 0)                        ; L
+13    (CONS)
+14    (SETVALUE 0)                        ; L
+16    (LOAD&CDR&STORE 1)
+18    (LOAD&INC&STORE 0)
+20    L20
+20    (LOAD 1)
+21    (CDR)
+22    (JMPIF L7)
+24    (CONST&PUSH 3)                      ; LAMBDA
+25    (CONST&PUSH 4)                      ; *N*
+26    (CONST&PUSH 3)                      ; LAMBDA
+27    (LOAD&PUSH 10)
+28    (LOAD 10)
+29    (LIST*&PUSH 2)
+31    (GETVALUE&PUSH 0)                   ; L
+33    (CALLS2&PUSH 73)                    ; NREVERSE
+35    (CONST&PUSH 5)                      ; CONS
+36    (CONST&PUSH 6)                      ; '(MLIST)
+37    (CONST&PUSH 7)                      ; LISTIFY
+38    (CONST&PUSH 8)                      ; F-
+39    (LOAD&DEC&PUSH 8)
+41    (CONST 9)                           ; (*N*)
+42    (LIST*&PUSH 2)
+44    (LIST&PUSH 2)
+46    (LIST&PUSH 3)
+48    (LIST&PUSH 1)
+50    (CALLSR 2 34)                       ; APPEND
+53    (CONS&PUSH)
+54    (LIST 3)
+56    (SKIP 2)
+58    (UNBIND1)
+59    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFVAR *FCALL-MEMORY* NIL ...)-15|
+(CONST 0) = (SPECIAL *FCALL-MEMORY*)
+(CONST 1) = *FCALL-MEMORY*
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"This ALIST will never be very long. Considerably less hairy then
+	a hashing scheme, perhaps faster in normal use. In either case
+	there is the problem of garbage from red-defined functions."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *FCALL-MEMORY*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *FCALL-MEMORY*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *FCALL-MEMORY*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; *FCALL-MEMORY*
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "This ALIST will never be very long. Considerably less hairy then
+	a hashing scheme, perhaps faster in normal use. In either case
+	there is the problem of garbage from red-defined functions."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; *FCALL-MEMORY*
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN EVALQUOTE (EXP) ...)-16|
+(CONST 0) = EVALQUOTE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EVALQUOTE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EVALQUOTE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EVALQUOTE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EVALQUOTE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EVALQUOTE
+8     (SKIP&RET 1)
+
+
+Disassembly of function EVALQUOTE
+(CONST 0) = EXP
+(CONST 1) = _EVAL
+(CONST 2) = QUOTE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (EXP)
+writes special variable : (EXP)
+16 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 0)                   ; EXP
+5     (CALL1 1)                           ; _EVAL
+7     (SETVALUE 0)                        ; EXP
+9     (PUSH)
+10    (CALLS2&JMPIF 8 L21)                ; NUMBERP
+13    (CONST&PUSH 2)                      ; QUOTE
+14    (GETVALUE&PUSH 0)                   ; EXP
+16    (LIST 2)
+18    L18
+18    (UNBIND1)
+19    (SKIP&RET 2)
+21    L21
+21    (GETVALUE 0)                        ; EXP
+23    (JMP L18)
+
+
+Disassembly of function #:|(DEFQUOTE FUNGEN&ENV-FOR-MEVAL (&REST ARGS) ...)-17-2|
+(CONST 0) = FUNGEN&ENV-FOR-MEVAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FUNGEN&ENV-FOR-MEVAL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FUNGEN&ENV-FOR-MEVAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FUNGEN&ENV-FOR-MEVAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FUNGEN&ENV-FOR-MEVAL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function FUNGEN&ENV-FOR-MEVAL
+(CONST 0) = |FUNGEN&ENV-FOR-MEVAL-aux|
+(CONST 1) = QUOTE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; |FUNGEN&ENV-FOR-MEVAL-aux|
+3     (CONST&PUSH 1)                      ; QUOTE
+4     (LOAD&PUSH 2)
+5     (LIST&PUSH 2)
+7     (LIST 2)
+9     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFQUOTE FUNGEN&ENV-FOR-MEVAL (&REST ARGS) ...)-17-3|
+(CONST 0) = |FUNGEN&ENV-FOR-MEVAL-aux|
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE |FUNGEN&ENV-FOR-MEVAL-aux|>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; |FUNGEN&ENV-FOR-MEVAL-aux|
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; |FUNGEN&ENV-FOR-MEVAL-aux|
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE |FUNGEN&ENV-FOR-MEVAL-aux|>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; |FUNGEN&ENV-FOR-MEVAL-aux|
+8     (SKIP&RET 1)
+
+
+Disassembly of function |FUNGEN&ENV-FOR-MEVAL-aux|
+(CONST 0) = ($APPLY)
+(CONST 1) = (MQUOTE)
+(CONST 2) = (LAMBDA)
+(CONST 3) = (MLIST)
+(CONST 4) = (MQUOTE SIMP)
+(CONST 5) = (MLIST)
+(CONST 6) = MAPCAR-EVAL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+23 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (LOAD&CAR&STORE 0 1)
+5     (LOAD&CDR&STORE 0)
+7     (CDR)
+8     (STORE 0)
+9     (CONST&PUSH 0)                      ; ($APPLY)
+10    (CONST&PUSH 1)                      ; (MQUOTE)
+11    (CONST&PUSH 2)                      ; (LAMBDA)
+12    (CONST&PUSH 3)                      ; (MLIST)
+13    (LOAD 5)
+14    (CONS&PUSH)
+15    (LOAD 4)
+16    (LIST*&PUSH 2)
+18    (LIST&PUSH 2)
+20    (CONST&PUSH 4)                      ; (MQUOTE SIMP)
+21    (CONST&PUSH 5)                      ; (MLIST)
+22    (LOAD&PUSH 5)
+23    (CALL1 6)                           ; MAPCAR-EVAL
+25    (CONS&PUSH)
+26    (LIST&PUSH 2)
+28    (LIST 3)
+30    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFQUOTE FUNGEN&ENV-FOR-MEVALSUMARG (&REST ARGS) ...)-18-2|
+(CONST 0) = FUNGEN&ENV-FOR-MEVALSUMARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FUNGEN&ENV-FOR-MEVALSUMARG>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FUNGEN&ENV-FOR-MEVALSUMARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FUNGEN&ENV-FOR-MEVALSUMARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FUNGEN&ENV-FOR-MEVALSUMARG>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function FUNGEN&ENV-FOR-MEVALSUMARG
+(CONST 0) = |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+(CONST 1) = QUOTE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+3     (CONST&PUSH 1)                      ; QUOTE
+4     (LOAD&PUSH 2)
+5     (LIST&PUSH 2)
+7     (LIST 2)
+9     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFQUOTE FUNGEN&ENV-FOR-MEVALSUMARG (&REST ARGS) ...)-18-3|
+(CONST 0) = |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE |FUNGEN&ENV-FOR-MEVALSUMARG-aux|>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE |FUNGEN&ENV-FOR-MEVALSUMARG-aux|>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+8     (SKIP&RET 1)
+
+
+Disassembly of function |FUNGEN&ENV-FOR-MEVALSUMARG-aux|
+(CONST 0) = *FCALL-MEMORY*
+(CONST 1) = ASSQ
+(CONST 2) = RES
+(CONST 3) = LAMBDA
+(CONST 4) = (*IGNORED*)
+(CONST 5) = PROG2
+(CONST 6) = MBIND
+(CONST 7) = QUOTE
+(CONST 8) = GET
+(CONST 9) = ('SUMARG-ENV)
+(CONST 10) = (NIL)
+(CONST 11) = MEVALATOMS
+(CONST 12) = MUNBIND
+(CONST 13) = FUNCTION
+(CONST 14) = MEVALSUMARG-MACRO
+(CONST 15) = PUTPROP
+(CONST 16) = APPLY
+(CONST 17) = ('SUMARG-ENV)
+(CONST 18) = #.#'EVAL
+(CONST 19) = SUMARG-ENV
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (RES *FCALL-MEMORY*)
+writes special variables : (*FCALL-MEMORY* RES)
+101 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (GETVALUE&PUSH 0)                   ; *FCALL-MEMORY*
+3     (CALL2 1)                           ; ASSQ
+5     (BIND 2)                            ; RES
+7     (GETVALUE 2)                        ; RES
+9     (JMPIF L132)
+12    (PUSH-NIL 2)
+14    (LOAD&PUSH 6)
+15    (LOAD&CAR&STORE 0 2)
+18    (LOAD&CDR&STORE 0)
+20    (CDR)
+21    (STORE 0)
+22    (CAR)
+23    (STORE 1)
+24    (LOAD 0)
+25    (CDR)
+26    (CAR)
+27    (STORE 0)
+28    (PUSH-UNBOUND 1)
+30    (CALLS2 143)                        ; GENSYM
+32    (SETVALUE 2)                        ; RES
+34    (PUSH)
+35    (CONST&PUSH 3)                      ; LAMBDA
+36    (CONST&PUSH 4)                      ; (*IGNORED*)
+37    (CONST&PUSH 5)                      ; PROG2
+38    (CONST&PUSH 6)                      ; MBIND
+39    (CONST&PUSH 7)                      ; QUOTE
+40    (LOAD&PUSH 8)
+41    (LIST&PUSH 2)
+43    (CONST&PUSH 8)                      ; GET
+44    (CONST&PUSH 7)                      ; QUOTE
+45    (GETVALUE&PUSH 2)                   ; RES
+47    (LIST&PUSH 2)
+49    (CONST 9)                           ; ('SUMARG-ENV)
+50    (LIST*&PUSH 2)
+52    (CONST 10)                          ; (NIL)
+53    (LIST*&PUSH 3)
+55    (CONST&PUSH 11)                     ; MEVALATOMS
+56    (CONST&PUSH 7)                      ; QUOTE
+57    (LOAD&PUSH 7)
+58    (LIST&PUSH 2)
+60    (LIST&PUSH 2)
+62    (CONST&PUSH 12)                     ; MUNBIND
+63    (CONST&PUSH 7)                      ; QUOTE
+64    (LOAD&PUSH 10)
+65    (LIST&PUSH 2)
+67    (LIST&PUSH 2)
+69    (LIST&PUSH 4)
+71    (LIST&PUSH 3)
+73    (CONST&PUSH 13)                     ; FUNCTION
+74    (CALLS2&PUSH 42)                    ; COERCE
+76    (CONST&PUSH 14)                     ; MEVALSUMARG-MACRO
+77    (CALL 3 15)                         ; PUTPROP
+80    (GETVALUE&PUSH 2)                   ; RES
+82    (CONST&PUSH 3)                      ; LAMBDA
+83    (NIL&PUSH)
+84    (CONST&PUSH 16)                     ; APPLY
+85    (CONST&PUSH 13)                     ; FUNCTION
+86    (CONST&PUSH 3)                      ; LAMBDA
+87    (LOAD&PUSH 8)
+88    (LOAD&PUSH 8)
+89    (LIST&PUSH 3)
+91    (LIST&PUSH 2)
+93    (CONST&PUSH 8)                      ; GET
+94    (CONST&PUSH 7)                      ; QUOTE
+95    (GETVALUE&PUSH 2)                   ; RES
+97    (LIST&PUSH 2)
+99    (CONST 17)                          ; ('SUMARG-ENV)
+100   (LIST*&PUSH 2)
+102   (LIST&PUSH 3)
+104   (LIST&PUSH 3)
+106   (CONST&PUSH 13)                     ; FUNCTION
+107   (CALLS2&PUSH 42)                    ; COERCE
+109   (CALLS2 130)                        ; SYSTEM::%PUTD
+111   (LOAD&PUSH 7)
+112   (GETVALUE&PUSH 2)                   ; RES
+114   (GETVALUE&PUSH 2)                   ; RES
+116   (LIST&PUSH 1)
+118   (LIST&PUSH 1)
+120   (LIST 3)
+122   (SETVALUE 2)                        ; RES
+124   (PUSH)
+125   (GETVALUE 0)                        ; *FCALL-MEMORY*
+127   (CONS)
+128   (SETVALUE 0)                        ; *FCALL-MEMORY*
+130   (SKIP 3)
+132   L132
+132   (GETVALUE 2)                        ; RES
+134   (CDR)
+135   (CAR&PUSH)
+136   (CONST&PUSH 18)                     ; #.#'EVAL
+137   (LOAD&CAR&PUSH 6)
+139   (CALLSR&PUSH 0 22)                  ; MAPCAR
+142   (CONST&PUSH 19)                     ; SUMARG-ENV
+143   (CALL 3 15)                         ; PUTPROP
+146   (GETVALUE 2)                        ; RES
+148   (CDR)
+149   (CDR)
+150   (CAR)
+151   (UNBIND1)
+152   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFQUOTE M-TLAMBDA-I (&REST ARGS) ...)-19-2|
+(CONST 0) = M-TLAMBDA-I
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE M-TLAMBDA-I>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; M-TLAMBDA-I
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; M-TLAMBDA-I
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE M-TLAMBDA-I>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function M-TLAMBDA-I
+(CONST 0) = |M-TLAMBDA-I-aux|
+(CONST 1) = QUOTE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; |M-TLAMBDA-I-aux|
+3     (CONST&PUSH 1)                      ; QUOTE
+4     (LOAD&PUSH 2)
+5     (LIST&PUSH 2)
+7     (LIST 2)
+9     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFQUOTE M-TLAMBDA-I (&REST ARGS) ...)-19-3|
+(CONST 0) = |M-TLAMBDA-I-aux|
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE |M-TLAMBDA-I-aux|>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; |M-TLAMBDA-I-aux|
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; |M-TLAMBDA-I-aux|
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE |M-TLAMBDA-I-aux|>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; |M-TLAMBDA-I-aux|
+8     (SKIP&RET 1)
+
+
+Disassembly of function |M-TLAMBDA-I-aux|
+(CONST 0) = LAMBDA
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LAMBDA
+1     (LOAD 2)
+2     (CDR)
+3     (CDR)
+4     (CONS)
+5     (SKIP&RET 2)
+
+
+Wrote file binary-clisp/fcall.fas
+Wrote file /cygdrive/e/temp/maxima/src/fcall.lis

@@ -1,0 +1,360 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/pois2.lisp
+on 2002-12-17 13:36:01 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/pois2.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE POIS2)-2|
+(CONST 0) = POIS2
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POIS2
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *ARGC *COEF ...) (*LEXPR $PRINT $COEFF) ...)-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR TRIM NIL)-4|
+(CONST 0) = (SPECIAL TRIM)
+(CONST 1) = TRIM
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TRIM)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; TRIM
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; TRIM
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; TRIM
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMSPEC MPOIS (X) ...)-5-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC MPOIS (X) ...)-5-2-1|>
+(CONST 1) = MPOIS
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC MPOIS (X) ...)-5-2-1|>
+1     (CONST&PUSH 1)                      ; MPOIS
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC MPOIS (X) ...)-5-2-1|
+(CONST 0) = X
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+5 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (UNBIND1)
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *B *FN))-6|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN POISLIM1 (U N) ...)-7|
+(CONST 0) = POISLIM1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POISLIM1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POISLIM1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POISLIM1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POISLIM1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; POISLIM1
+8     (SKIP&RET 1)
+
+
+Disassembly of function POISLIM1
+(CONST 0) = U
+(CONST 1) = N
+(CONST 2) = FIXNUMP
+(CONST 3) = "Improper argument to POISLIM:~%~M"
+(CONST 4) = MERROR
+(CONST 5) = POISVALS
+(CONST 6) = 2
+(CONST 7) = POISTS
+(CONST 8) = 0
+(CONST 9) = J
+(CONST 10) = 5
+(CONST 11) = POISSIZ
+(CONST 12) = POISTSM
+(CONST 13) = SUM
+(CONST 14) = POISHIFT
+(CONST 15) = ((MPOIS SIMP) NIL NIL)
+(CONST 16) = $POISZ
+(CONST 17) = (MPOIS SIMP)
+(CONST 18) = 1
+(CONST 19) = $POIS1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (POISHIFT POISTSM SUM POISVALS J POISTS N)
+writes special variables : ($POIS1 $POISZ POISHIFT SUM POISTSM POISSIZ J POISTS POISVALS)
+77 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; U
+3     (LOAD 4)
+4     (BIND 1)                            ; N
+6     (GETVALUE&PUSH 1)                   ; N
+8     (CALL1&JMPIF 2 L16)                 ; FIXNUMP
+11    (CONST&PUSH 3)                      ; "Improper argument to POISLIM:~%~M"
+12    (GETVALUE&PUSH 1)                   ; N
+14    (CALL2 4)                           ; MERROR
+16    L16
+16    (NIL)
+17    (SETVALUE 5)                        ; POISVALS
+19    (CONST&PUSH 6)                      ; 2
+20    (GETVALUE&PUSH 1)                   ; N
+22    (CALLS2 154)                        ; EXPT
+24    (SETVALUE 7)                        ; POISTS
+26    (CONST 8)                           ; 0
+27    (BIND 9)                            ; J
+29    (JMP L48)
+31    L31
+31    (GETVALUE&PUSH 7)                   ; POISTS
+33    (GETVALUE&PUSH 9)                   ; J
+35    (CALLS2&PUSH 154)                   ; EXPT
+37    (GETVALUE 5)                        ; POISVALS
+39    (CONS)
+40    (SETVALUE 5)                        ; POISVALS
+42    (GETVALUE&PUSH 9)                   ; J
+44    (CALLS2 150)                        ; 1+
+46    (SETVALUE 9)                        ; J
+48    L48
+48    (GETVALUE&PUSH 9)                   ; J
+50    (CONST&PUSH 10)                     ; 5
+51    (CALLSR&JMPIFNOT 1 48 L31)          ; >
+55    (UNBIND1)
+56    (GETVALUE 1)                        ; N
+58    (SETVALUE 11)                       ; POISSIZ
+60    (CONST&PUSH 6)                      ; 2
+61    (GETVALUE&PUSH 1)                   ; N
+63    (CALLS2&PUSH 151)                   ; 1-
+65    (CALLS2 154)                        ; EXPT
+67    (SETVALUE 12)                       ; POISTSM
+69    (NIL)
+70    (BIND 13)                           ; SUM
+72    (CONST 8)                           ; 0
+73    (SETVALUE 13)                       ; SUM
+75    (PUSH)
+76    (JMP L97)
+78    L78
+78    (GETVALUE&PUSH 13)                  ; SUM
+80    (GETVALUE&PUSH 12)                  ; POISTSM
+82    (GETVALUE&PUSH 7)                   ; POISTS
+84    (LOAD&PUSH 3)
+85    (CALLS2&PUSH 154)                   ; EXPT
+87    (CALLSR&PUSH 2 55)                  ; *
+90    (CALLSR 2 53)                       ; +
+93    (SETVALUE 13)                       ; SUM
+95    (LOAD&INC&STORE 0)
+97    L97
+97    (LOAD&PUSH 0)
+98    (CONST&PUSH 10)                     ; 5
+99    (CALLSR&JMPIFNOT 1 48 L78)          ; >
+103   (SKIP 1)
+105   (GETVALUE 13)                       ; SUM
+107   (UNBIND1)
+108   (SETVALUE 14)                       ; POISHIFT
+110   (CONST 15)                          ; ((MPOIS SIMP) NIL NIL)
+111   (SETVALUE 16)                       ; $POISZ
+113   (CONST&PUSH 17)                     ; (MPOIS SIMP)
+114   (NIL&PUSH)
+115   (GETVALUE&PUSH 14)                  ; POISHIFT
+117   (CONST&PUSH 18)                     ; 1
+118   (LIST&PUSH 2)
+120   (LIST 3)
+122   (SETVALUE 19)                       ; $POIS1
+124   (GETVALUE 1)                        ; N
+126   (UNBIND 2)
+128   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN NONPERIOD (P) ...)-8|
+(CONST 0) = NONPERIOD
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NONPERIOD>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NONPERIOD
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NONPERIOD
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NONPERIOD>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NONPERIOD
+8     (SKIP&RET 1)
+
+
+Disassembly of function NONPERIOD
+(CONST 0) = P
+(CONST 1) = POISHIFT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (POISHIFT P)
+25 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (CDR)
+6     (CAR)
+7     (NOT)
+8     (JMPIFNOT1 L30)
+10    (GETVALUE 0)                        ; P
+12    (CDR)
+13    (CDR)
+14    (CAR)
+15    (CAR&PUSH)
+16    (GETVALUE&PUSH 1)                   ; POISHIFT
+18    (CALLS2 2)                          ; EQUAL
+20    (JMPIFNOT1 L30)
+22    (GETVALUE 0)                        ; P
+24    (CDR)
+25    (CDR)
+26    (CAR)
+27    (CDR)
+28    (CDR)
+29    (NOT)
+30    L30
+30    (UNBIND1)
+31    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL ANS))-9|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL TRIM POISCOM1 ...))-10|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL DC DS ...))-11|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *ARGC *COEF))-12|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(POISLIM1 NIL 5)-13|
+(CONST 0) = 5
+(CONST 1) = POISLIM1
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; 5
+2     (CALL2 1)                           ; POISLIM1
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(SETQ POISCO1 1 ...)-14|
+(CONST 0) = 1
+(CONST 1) = POISCO1
+(CONST 2) = -1
+(CONST 3) = POISCOM1
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variables : (POISCOM1 POISCO1)
+5 byte-code instructions:
+0     (CONST 0)                           ; 1
+1     (SETVALUE 1)                        ; POISCO1
+3     (CONST 2)                           ; -1
+4     (SETVALUE 3)                        ; POISCOM1
+6     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/pois2.fas
+Wrote file /cygdrive/e/temp/maxima/src/pois2.lis

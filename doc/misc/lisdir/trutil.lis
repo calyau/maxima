@@ -1,0 +1,755 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trutil.lisp
+on 2002-12-17 13:33:58 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trutil.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRUTIL)-2|
+(CONST 0) = TRUTIL
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRUTIL
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TRUTIL)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL TR-GENSYM-KOUNTER))-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(SETQ TR-GENSYM-KOUNTER 0)-5|
+(CONST 0) = 0
+(CONST 1) = TR-GENSYM-KOUNTER
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (TR-GENSYM-KOUNTER)
+3 byte-code instructions:
+0     (CONST 0)                           ; 0
+1     (SETVALUE 1)                        ; TR-GENSYM-KOUNTER
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRFUN TR-GENSYM (&OPTIONAL K) ...)-6|
+(CONST 0) = TR-GENSYM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-GENSYM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-GENSYM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-GENSYM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-GENSYM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-GENSYM
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-GENSYM
+(CONST 0) = K
+(CONST 1) = TR-GENSYM-KOUNTER
+(CONST 2) = |tr-gensym~|
+(CONST 3) = EXPLODEC
+(CONST 4) = IMPLODE
+0 required arguments
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (TR-GENSYM-KOUNTER K)
+writes special variable : (TR-GENSYM-KOUNTER)
+20 byte-code instructions:
+0     (JMPIFBOUNDP 1 L4)
+3     (NIL)
+4     L4
+4     (BIND 0)                            ; K
+6     (GETVALUE 0)                        ; K
+8     (JMPIFNOT L12)
+10    (SETVALUE 1)                        ; TR-GENSYM-KOUNTER
+12    L12
+12    (CONST&PUSH 2)                      ; |tr-gensym~|
+13    (CALL1&PUSH 3)                      ; EXPLODEC
+15    (GETVALUE&PUSH 1)                   ; TR-GENSYM-KOUNTER
+17    (CALL1&PUSH 3)                      ; EXPLODEC
+19    (CALLSR&PUSH 2 35)                  ; NCONC
+22    (CALL1&PUSH 4)                      ; IMPLODE
+24    (GETVALUE&PUSH 1)                   ; TR-GENSYM-KOUNTER
+26    (CALLS2 150)                        ; 1+
+28    (SETVALUE 1)                        ; TR-GENSYM-KOUNTER
+30    (POP)
+31    (UNBIND1)
+32    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (UNSPECIAL TR-GENSYM-KOUNTER))-7|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRFUN CONSERVE-EVAL-ARGS-DATA (L) ...)-8|
+(CONST 0) = CONSERVE-EVAL-ARGS-DATA
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CONSERVE-EVAL-ARGS-DATA>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CONSERVE-EVAL-ARGS-DATA
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CONSERVE-EVAL-ARGS-DATA
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CONSERVE-EVAL-ARGS-DATA>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CONSERVE-EVAL-ARGS-DATA
+8     (SKIP&RET 1)
+
+
+Disassembly of function CONSERVE-EVAL-ARGS-DATA
+(CONST 0) = L
+(CONST 1) = TR-GENSYM
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+43 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (NIL&PUSH)
+4     (GETVALUE 0)                        ; L
+6     (BIND 0)                            ; L
+8     (NIL&PUSH)
+9     (GETVALUE 0)                        ; L
+11    (JMPIFNOT L42)
+13    L13
+13    (GETVALUE 0)                        ; L
+15    (CAR)
+16    (JMPIFATOM L55)
+18    (CALL0 1)                           ; TR-GENSYM
+20    (PUSH)
+21    (LOAD&PUSH 0)
+22    (GETVALUE 0)                        ; L
+24    (CAR)
+25    (CONS&PUSH)
+26    (LOAD&CONS&STORE 5)
+28    (LOAD&PUSH 0)
+29    (LOAD&CONS&STORE 1)
+31    (SKIP 1)
+33    L33
+33    (GETVALUE 0)                        ; L
+35    (CDR)
+36    (SETVALUE 0)                        ; L
+38    (GETVALUE 0)                        ; L
+40    (JMPIF L13)
+42    L42
+42    (LOAD&PUSH 4)
+43    (LOAD&PUSH 1)
+44    (CALLS2 73)                         ; NREVERSE
+46    (CONS)
+47    (SKIP 1)
+49    (UNBIND1)
+50    (SKIP 1)
+52    (UNBIND1)
+53    (SKIP&RET 2)
+55    L55
+55    (GETVALUE 0)                        ; L
+57    (CAR&PUSH)
+58    (LOAD&CONS&STORE 0)
+60    (JMP L33)
+
+
+Disassembly of function #:|(DEFUN TR-TRACE-HANDLE (FORM) ...)-9|
+(CONST 0) = TR-TRACE-HANDLE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-TRACE-HANDLE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-TRACE-HANDLE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-TRACE-HANDLE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-TRACE-HANDLE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-TRACE-HANDLE
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-TRACE-HANDLE
+(CONST 0) = TR-TRACE-LEVEL
+(CONST 1) = LEVEL
+(CONST 2) = #:| Enter |
+(CONST 3) = GETOP
+(CONST 4) = MGRIND
+(CONST 5) = OTRANSLATE
+(CONST 6) = SUBRCALL
+(CONST 7) = #:| Exit  |
+(CONST 8) = SPRINTER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (LEVEL)
+63 byte-code instructions:
+0     (LOAD 1)
+1     (CAR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; TR-TRACE-LEVEL
+4     (PUSH-UNBOUND 1)
+6     (CALLS2&PUSH 132)                   ; GET
+8     (LOAD&PUSH 0)
+9     (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+11    (CALLS2 150)                        ; 1+
+13    (BIND 1)                            ; LEVEL
+15    (LOAD 5)
+16    (CAR)
+17    (CAR&PUSH)
+18    (LOAD&PUSH 4)
+19    (LIST&PUSH 1)
+21    (GETVALUE&PUSH 1)                   ; LEVEL
+23    (LIST 1)
+25    (PROGV)
+26    (PUSH-UNBOUND 1)
+28    (CALLS1 139)                        ; TERPRI
+30    (GETVALUE&PUSH 1)                   ; LEVEL
+32    (PUSH-UNBOUND 1)
+34    (CALLS1 129)                        ; PRIN1
+36    (CONST&PUSH 2)                      ; #:| Enter |
+37    (PUSH-UNBOUND 1)
+39    (CALLS1 132)                        ; PRINC
+41    (LOADI&PUSH 0 0 0)
+45    (CALL1&PUSH 3)                      ; GETOP
+47    (NIL&PUSH)
+48    (CALL2 4)                           ; MGRIND
+50    (PUSH-UNBOUND 1)
+52    (CALLS1 139)                        ; TERPRI
+54    (LOADI&PUSH 0 0 6)
+58    (NIL&PUSH)
+59    (CALL2 4)                           ; MGRIND
+61    (NIL&PUSH)
+62    (LOADI&PUSH 0 0 0)
+66    (CONST&PUSH 5)                      ; OTRANSLATE
+67    (PUSH-UNBOUND 1)
+69    (CALLS2&PUSH 132)                   ; GET
+71    (LOADI&PUSH 0 0 6)
+75    (CALL 3 6)                          ; SUBRCALL
+78    (STOREI 0 0 6)
+82    (PUSH-UNBOUND 1)
+84    (CALLS1 139)                        ; TERPRI
+86    (GETVALUE&PUSH 1)                   ; LEVEL
+88    (PUSH-UNBOUND 1)
+90    (CALLS1 129)                        ; PRIN1
+92    (CONST&PUSH 7)                      ; #:| Exit  |
+93    (PUSH-UNBOUND 1)
+95    (CALLS1 132)                        ; PRINC
+97    (LOADI&PUSH 0 0 0)
+101   (CALL1&PUSH 3)                      ; GETOP
+103   (NIL&PUSH)
+104   (CALL2 4)                           ; MGRIND
+106   (LOADI&PUSH 0 0 6)
+110   (CALL1 8)                           ; SPRINTER
+112   (LOADI 0 0 6)
+116   (UNBIND1)
+117   (SKIPSP 1 0)
+120   (SKIP 1)
+122   (UNBIND1)
+123   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN TR-TRACE (OP) ...)-10|
+(CONST 0) = TR-TRACE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-TRACE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-TRACE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-TRACE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-TRACE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-TRACE
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-TRACE
+(CONST 0) = OTRANSLATE
+(CONST 1) = TR-UNTRACE
+(CONST 2) = 0
+(CONST 3) = SET
+(CONST 4) = TR-TRACE-LEVEL
+(CONST 5) = PUTPROP
+(CONST 6) = TRANSLATE
+(CONST 7) = GET!
+(CONST 8) = TR-TRACE-HANDLE
+(CONST 9) = SUBR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+30 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; OTRANSLATE
+2     (PUSH-UNBOUND 1)
+4     (CALLS2&JMPIFNOT 132 L10)           ; GET
+7     (LOAD&PUSH 1)
+8     (CALL1 1)                           ; TR-UNTRACE
+10    L10
+10    (PUSH-UNBOUND 1)
+12    (CALLS2&PUSH 143)                   ; GENSYM
+14    (LOAD&PUSH 0)
+15    (CONST&PUSH 2)                      ; 0
+16    (CALL2 3)                           ; SET
+18    (LOAD&PUSH 2)
+19    (LOAD&PUSH 1)
+20    (CONST&PUSH 4)                      ; TR-TRACE-LEVEL
+21    (CALL 3 5)                          ; PUTPROP
+24    (SKIP 1)
+26    (LOAD&PUSH 1)
+27    (LOAD&PUSH 2)
+28    (CONST&PUSH 6)                      ; TRANSLATE
+29    (CALL2&PUSH 7)                      ; GET!
+31    (CONST&PUSH 0)                      ; OTRANSLATE
+32    (CALL 3 5)                          ; PUTPROP
+35    (LOAD&PUSH 1)
+36    (CONST&PUSH 8)                      ; TR-TRACE-HANDLE
+37    (CONST&PUSH 9)                      ; SUBR
+38    (CALL2&PUSH 7)                      ; GET!
+40    (CONST&PUSH 6)                      ; TRANSLATE
+41    (CALL 3 5)                          ; PUTPROP
+44    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TR-UNTRACE (OP) ...)-11|
+(CONST 0) = TR-UNTRACE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-UNTRACE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-UNTRACE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-UNTRACE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-UNTRACE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-UNTRACE
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-UNTRACE
+(CONST 0) = TR-TRACE-LEVEL
+(CONST 1) = OTRANSLATE
+(CONST 2) = GET!
+(CONST 3) = TRANSLATE
+(CONST 4) = PUTPROP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; TR-TRACE-LEVEL
+2     (CALLS2 137)                        ; REMPROP
+4     (LOAD&PUSH 1)
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 1)                      ; OTRANSLATE
+7     (CALL2&PUSH 2)                      ; GET!
+9     (CONST&PUSH 3)                      ; TRANSLATE
+10    (CALL 3 4)                          ; PUTPROP
+13    (LOAD&PUSH 1)
+14    (CONST&PUSH 1)                      ; OTRANSLATE
+15    (CALLS2 137)                        ; REMPROP
+17    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFTRFUN PUSH-DEFVAR (VAR VAL) ...)-12|
+(CONST 0) = PUSH-DEFVAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-DEFVAR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-DEFVAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-DEFVAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-DEFVAR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PUSH-DEFVAR
+8     (SKIP&RET 1)
+
+
+Disassembly of function PUSH-DEFVAR
+(CONST 0) = VAR
+(CONST 1) = DEFINED_VARIABLES
+(CONST 2) = MEMQ
+(CONST 3) = $DEFINE_VARIABLE
+(CONST 4) = $NO_DEFAULT
+(CONST 5) = $MODE
+(CONST 6) = MODE
+(CONST 7) = *PRE-TRANSL-FORMS*
+(CONST 8) = L
+(CONST 9) = DEF-MTRVAR
+(CONST 10) = "~%Note: ~:M being given a default setting of ~:M"
+(CONST 11) = TR-FORMAT
+(CONST 12) = (1)
+(CONST 13) = PUSH-PRE-TRANSL-FORM
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L *PRE-TRANSL-FORMS* $DEFINE_VARIABLE DEFINED_VARIABLES VAR)
+writes special variable : (L)
+71 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; VAR
+3     (GETVALUE&PUSH 0)                   ; VAR
+5     (GETVALUE&PUSH 1)                   ; DEFINED_VARIABLES
+7     (CALL2 2)                           ; MEMQ
+9     (JMPIF1 L95)
+12    (GETVALUE&PUSH 3)                   ; $DEFINE_VARIABLE
+14    (CONST 4)                           ; $NO_DEFAULT
+15    (EQ)
+16    (JMPIF1 L95)
+19    (GETVALUE&PUSH 3)                   ; $DEFINE_VARIABLE
+21    (JMPIFNOTEQTO 5 L33)                ; $MODE
+24    (GETVALUE&PUSH 0)                   ; VAR
+26    (CONST&PUSH 6)                      ; MODE
+27    (PUSH-UNBOUND 1)
+29    (CALLS2 132)                        ; GET
+31    (JMPIF1 L95)
+33    L33
+33    (GETVALUE 7)                        ; *PRE-TRANSL-FORMS*
+35    (BIND 8)                            ; L
+37    (GETVALUE 8)                        ; L
+39    (JMPIFNOT L67)
+41    L41
+41    (GETVALUE 8)                        ; L
+43    (CAR&PUSH)
+44    (LOAD&CAR&PUSH 0)
+46    (JMPIFNOTEQTO 9 L56)                ; DEF-MTRVAR
+49    (LOAD 0)
+50    (CDR)
+51    (CAR&PUSH)
+52    (GETVALUE 0)                        ; VAR
+54    (JMPIFEQ L98)
+56    L56
+56    (SKIP 1)
+58    (GETVALUE 8)                        ; L
+60    (CDR)
+61    (SETVALUE 8)                        ; L
+63    (GETVALUE 8)                        ; L
+65    (JMPIF L41)
+67    L67
+67    (GETVALUE&PUSH 3)                   ; $DEFINE_VARIABLE
+69    (JMPIFNOTEQTO 5 L85)                ; $MODE
+72    (CONST&PUSH 10)                     ; "~%Note: ~:M being given a default setting of ~:M"
+73    (GETVALUE&PUSH 0)                   ; VAR
+75    (LOAD 9)
+76    (JMPIFATOM L104)
+78    (LOAD 9)
+79    (CDR)
+80    (CAR)
+81    L81
+81    (PUSH)
+82    (CALL 3 11)                         ; TR-FORMAT
+85    L85
+85    (CONST&PUSH 9)                      ; DEF-MTRVAR
+86    (GETVALUE&PUSH 0)                   ; VAR
+88    (LOAD&PUSH 9)
+89    (CONST 12)                          ; (1)
+90    (LIST*&PUSH 3)
+92    (CALL1 13)                          ; PUSH-PRE-TRANSL-FORM
+94    (UNBIND1)
+95    L95
+95    (UNBIND1)
+96    (SKIP&RET 3)
+98    L98
+98    (NIL)
+99    (SKIP 1)
+101   (UNBIND1)
+102   (JMP L95)
+104   L104
+104   (LOAD 9)
+105   (JMP L81)
+
+
+Disassembly of function #:|(DEFTRFUN PUSH-PRE-TRANSL-FORM (FORM) ...)-13|
+(CONST 0) = PUSH-PRE-TRANSL-FORM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-PRE-TRANSL-FORM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-PRE-TRANSL-FORM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-PRE-TRANSL-FORM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-PRE-TRANSL-FORM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PUSH-PRE-TRANSL-FORM
+8     (SKIP&RET 1)
+
+
+Disassembly of function PUSH-PRE-TRANSL-FORM
+(CONST 0) = *PRE-TRANSL-FORMS*
+(CONST 1) = ZL-MEMBER
+(CONST 2) = *IN-TRANSLATE*
+(CONST 3) = "Bad *PRE-TRANSL-FORM*"
+(CONST 4) = BARFO
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*IN-TRANSLATE* *PRE-TRANSL-FORMS*)
+writes special variable : (*PRE-TRANSL-FORMS*)
+30 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (GETVALUE&PUSH 0)                   ; *PRE-TRANSL-FORMS*
+3     (CALL2 1)                           ; ZL-MEMBER
+5     (JMPIF1 L46)
+7     (LOAD&PUSH 1)
+8     (GETVALUE 0)                        ; *PRE-TRANSL-FORMS*
+10    (CONS)
+11    (SETVALUE 0)                        ; *PRE-TRANSL-FORMS*
+13    (GETVALUE 2)                        ; *IN-TRANSLATE*
+15    (JMPIFNOT1 L46)
+17    (NIL&PUSH)
+18    (UNWIND-PROTECT-OPEN L34)
+20    (LOAD&PUSH 4)
+21    (CALLS1 91)                         ; EVAL
+23    (T&STORE 2)
+25    (UNWIND-PROTECT-NORMAL-EXIT)
+26    (LOADI 0 0 0)
+30    (JMPIFNOT L40)
+32    (JMP L43)
+34    L34
+34    (LOADI 0 0 0)
+38    (JMPIF L43)
+40    L40
+40    (CONST&PUSH 3)                      ; "Bad *PRE-TRANSL-FORM*"
+41    (CALL1 4)                           ; BARFO
+43    L43
+43    (UNWIND-PROTECT-CLOSE)
+44    (SKIP&RET 3)
+46    L46
+46    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFTRFUN PUSH-AUTOLOAD-DEF (OLD-ENTRY NEW-ENTRIES) ...)-14|
+(CONST 0) = PUSH-AUTOLOAD-DEF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-AUTOLOAD-DEF>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-AUTOLOAD-DEF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-AUTOLOAD-DEF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-AUTOLOAD-DEF>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PUSH-AUTOLOAD-DEF
+8     (SKIP&RET 1)
+
+
+Disassembly of function PUSH-AUTOLOAD-DEF
+(CONST 0) = AUTOLOAD
+(CONST 1) = *NEW-AUTOLOAD-ENTRIES*
+(CONST 2) = MEMQ
+(CONST 3) = PUTPROP
+(CONST 4) = QUOTE
+(CONST 5) = OR
+(CONST 6) = GET
+(CONST 7) = ('AUTOLOAD)
+(CONST 8) = (T)
+(CONST 9) = ('AUTOLOAD)
+(CONST 10) = PUSH-PRE-TRANSL-FORM
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*NEW-AUTOLOAD-ENTRIES*)
+39 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CONST&PUSH 0)                      ; AUTOLOAD
+2     (PUSH-UNBOUND 1)
+4     (CALLS2 132)                        ; GET
+6     (JMPIFNOT1 L57)
+8     (NIL&PUSH)
+9     (LOAD&JMPIFNOT 2 L54)
+12    (JMP L39)
+14    L14
+14    (CONST&PUSH 3)                      ; PUTPROP
+15    (CONST&PUSH 4)                      ; QUOTE
+16    (LOAD&PUSH 2)
+17    (LIST&PUSH 2)
+19    (CONST&PUSH 5)                      ; OR
+20    (CONST&PUSH 6)                      ; GET
+21    (CONST&PUSH 4)                      ; QUOTE
+22    (LOAD&PUSH 8)
+23    (LIST&PUSH 2)
+25    (CONST 7)                           ; ('AUTOLOAD)
+26    (LIST*&PUSH 2)
+28    (CONST 8)                           ; (T)
+29    (LIST*&PUSH 2)
+31    (CONST 9)                           ; ('AUTOLOAD)
+32    (LIST*&PUSH 3)
+34    (CALL1 10)                          ; PUSH-PRE-TRANSL-FORM
+36    (LOAD&JMPIFNOT 2 L54)
+39    L39
+39    (LOAD&CAR&PUSH 2)
+41    (LOAD&CDR&STORE 3)
+43    (POP&STORE 0)
+45    (PUSH)
+46    (GETVALUE&PUSH 1)                   ; *NEW-AUTOLOAD-ENTRIES*
+48    (CALL2&JMPIFNOT 2 L14)              ; MEMQ
+51    (LOAD&JMPIF 2 L39)
+54    L54
+54    (NIL)
+55    (SKIP&RET 4)
+57    L57
+57    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFTRFUN TR-NARGS-CHECK (FORM &OPTIONAL # ...) ...)-15|
+(CONST 0) = TR-NARGS-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-NARGS-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-NARGS-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-NARGS-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-NARGS-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-NARGS-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-NARGS-CHECK
+(CONST 0) = *TRANSLATION-MSGS-FILES*
+(CONST 1) = "~%ERROR: Too few arguments supplied to ~:@M~%"
+(CONST 2) = MFORMAT
+(CONST 3) = MGRIND
+(CONST 4) = "~%ERROR: Too many arguments supplied to ~:@M~%"
+(CONST 5) = TR-FORMAT
+1 required argument
+2 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*TRANSLATION-MSGS-FILES*)
+52 byte-code instructions:
+0     (UNBOUND->NIL 2)
+2     (JMPIFBOUNDP 1 L27)
+5     (LOAD&CDR&PUSH 3)
+7     (CALLS2&STORE 71 1)                 ; LENGTH
+10    (LOAD&JMPIFNOT 2 L78)
+14    (JMP L30)
+16    L16
+16    (GETVALUE&PUSH 0)                   ; *TRANSLATION-MSGS-FILES*
+18    (CONST&PUSH 1)                      ; "~%ERROR: Too few arguments supplied to ~:@M~%"
+19    (LOAD 8)
+20    (CAR)
+21    (CAR&PUSH)
+22    (CALL 3 2)                          ; MFORMAT
+25    (JMP L67)
+27    L27
+27    (LOAD&JMPIFNOT 2 L78)
+30    L30
+30    (LOAD&CDR&PUSH 3)
+32    (CALLS2&PUSH 71)                    ; LENGTH
+34    (LOAD 3)
+35    (CAR)
+36    (JMPIF L40)
+38    (LOAD 3)
+39    (CDR)
+40    L40
+40    (PUSH)
+41    (LOAD&CDR&PUSH 4)
+43    (LOAD&JMPIFNOT 1 L52)
+46    (LOAD&PUSH 2)
+47    (LOAD&PUSH 2)
+48    (CALLSR&JMPIF 1 47 L16)             ; <
+52    L52
+52    (LOAD&JMPIFNOT 0 L76)
+55    (LOAD&PUSH 2)
+56    (LOAD&PUSH 1)
+57    (CALLSR&JMPIFNOT 1 48 L76)          ; >
+61    (CONST&PUSH 4)                      ; "~%ERROR: Too many arguments supplied to ~:@M~%"
+62    (LOAD 7)
+63    (CAR)
+64    (CAR&PUSH)
+65    (CALL2 5)                           ; TR-FORMAT
+67    L67
+67    (LOAD&PUSH 6)
+68    (GETVALUE&PUSH 0)                   ; *TRANSLATION-MSGS-FILES*
+70    (CALL2 3)                           ; MGRIND
+72    (SKIP 3)
+74    (JMP L78)
+76    L76
+76    (SKIP 3)
+78    L78
+78    (LOAD 1)
+79    (SKIP&RET 4)
+
+
+Wrote file binary-clisp/trutil.fas
+Wrote file /cygdrive/e/temp/maxima/src/trutil.lis

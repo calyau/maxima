@@ -1,0 +1,556 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/buildq.lisp
+on 2002-12-17 13:32:19 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/buildq.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE BUILDQ)-2|
+(CONST 0) = BUILDQ
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; BUILDQ
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP $BUILDQ SIMPBUILDQ ...)-3|
+(CONST 0) = $BUILDQ
+(CONST 1) = OPERATORS
+(CONST 2) = SIMPBUILDQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BUILDQ
+1     (CONST&PUSH 1)                      ; OPERATORS
+2     (CONST&PUSH 2)                      ; SIMPBUILDQ
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP %BUILDQ SIMPBUILDQ ...)-4|
+(CONST 0) = %BUILDQ
+(CONST 1) = OPERATORS
+(CONST 2) = SIMPBUILDQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; %BUILDQ
+1     (CONST&PUSH 1)                      ; OPERATORS
+2     (CONST&PUSH 2)                      ; SIMPBUILDQ
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN SIMPBUILDQ (X *IGNORE* SIMP-FLAGS) ...)-5|
+(CONST 0) = SIMPBUILDQ
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPBUILDQ>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPBUILDQ
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPBUILDQ
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPBUILDQ>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPBUILDQ
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPBUILDQ
+(CONST 0) = X
+(CONST 1) = ($BUILDQ SIMP)
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+8 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; X
+3     (CONST&PUSH 1)                      ; ($BUILDQ SIMP)
+4     (GETVALUE 0)                        ; X
+6     (CDR)
+7     (CONS)
+8     (UNBIND1)
+9     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMSPEC $BUILDQ (FORM) ...)-6-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $BUILDQ (FORM) ...)-6-2-1|>
+(CONST 1) = $BUILDQ
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $BUILDQ (FORM) ...)-6-2-1|>
+1     (CONST&PUSH 1)                      ; $BUILDQ
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $BUILDQ (FORM) ...)-6-2-1|
+(CONST 0) = "BUILDQ takes 2 args:~%~M"
+(CONST 1) = ($BUILDQ)
+(CONST 2) = MERROR
+(CONST 3) = MBUILDQ
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CDR)
+3     (JMPIFNOT L19)
+5     (LOAD 1)
+6     (CDR)
+7     (CDR)
+8     (JMPIF L19)
+10    (LOAD&CAR&PUSH 1)
+12    (LOAD 2)
+13    (CDR)
+14    (CAR&PUSH)
+15    (CALL2 3)                           ; MBUILDQ
+17    (SKIP&RET 2)
+19    L19
+19    (CONST&PUSH 0)                      ; "BUILDQ takes 2 args:~%~M"
+20    (CONST&PUSH 1)                      ; ($BUILDQ)
+21    (LOAD 3)
+22    (CONS&PUSH)
+23    (CALL2 2)                           ; MERROR
+25    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MBUILDQ (VARLIST EXPRESSION) ...)-7|
+(CONST 0) = MBUILDQ
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MBUILDQ>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MBUILDQ
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MBUILDQ
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MBUILDQ>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MBUILDQ
+8     (SKIP&RET 1)
+
+
+Disassembly of function MBUILDQ
+(CONST 0) = VARLIST
+(CONST 1) = $LISTP
+(CONST 2) = "First arg to BUILDQ not a list: ~M"
+(CONST 3) = MERROR
+(CONST 4) = MEVAL
+(CONST 5) = MSETQ
+(CONST 6) = "Illegal form in variable list--BUILDQ: ~M"
+(CONST 7) = MBUILDQ-SUBST
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VARLIST)
+59 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; VARLIST
+3     (GETVALUE&PUSH 0)                   ; VARLIST
+5     (CALL1&JMPIF 1 L13)                 ; $LISTP
+8     (CONST&PUSH 2)                      ; "First arg to BUILDQ not a list: ~M"
+9     (GETVALUE&PUSH 0)                   ; VARLIST
+11    (CALL2 3)                           ; MERROR
+13    L13
+13    (NIL&PUSH)
+14    (GETVALUE 0)                        ; VARLIST
+16    (CDR&PUSH)
+17    L17
+17    (LOAD&PUSH 0)
+18    (CALLS1&JMPIF 146 L69)              ; ENDP
+21    (LOAD&CAR&PUSH 0)
+23    (LOAD&PUSH 0)
+24    (CALLS2&JMPIF 6 L52)                ; SYMBOLP
+27    (LOAD 0)
+28    (CAR)
+29    (CAR&PUSH)
+30    (JMPIFNOTEQTO 5 L56)                ; MSETQ
+33    (LOAD 0)
+34    (CDR)
+35    (CAR&PUSH)
+36    (CALLS2&JMPIFNOT 6 L56)             ; SYMBOLP
+39    (LOAD 0)
+40    (CDR)
+41    (CAR&PUSH)
+42    (LOAD 1)
+43    (CDR)
+44    (CDR)
+45    (CAR)
+46    L46
+46    (PUSH)
+47    (CALL1 4)                           ; MEVAL
+49    (CONS)
+50    (JMP L60)
+52    L52
+52    (LOAD&PUSH 0)
+53    (LOAD 1)
+54    (JMP L46)
+56    L56
+56    (CONST&PUSH 6)                      ; "Illegal form in variable list--BUILDQ: ~M"
+57    (LOAD&PUSH 1)
+58    (CALL2 3)                           ; MERROR
+60    L60
+60    (PUSH)
+61    (LOAD&CONS&STORE 2)
+63    (SKIP 1)
+65    (LOAD&CDR&STORE 0)
+67    (JMP L17)
+69    L69
+69    (SKIP 1)
+71    (LOAD&PUSH 0)
+72    (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+75    (LOAD&PUSH 5)
+76    (CALL2 7)                           ; MBUILDQ-SUBST
+78    (UNBIND1)
+79    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN MBUILDQ-SUBST (ALIST EXPRESSION) ...)-8|
+(CONST 0) = MBUILDQ-SUBST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MBUILDQ-SUBST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MBUILDQ-SUBST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MBUILDQ-SUBST
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MBUILDQ-SUBST>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MBUILDQ-SUBST
+8     (SKIP&RET 1)
+
+
+Disassembly of function MBUILDQ-SUBST
+(CONST 0) = MBUILDQ-ASSOCIATE
+(CONST 1) = MBUILDQ-SPLICE-ASSOCIATE
+(CONST 2) = "SPLICE used in illegal context: ~M"
+(CONST 3) = MERROR
+(CONST 4) = MQAPPLY
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+102 byte-code instructions:
+0     L0
+0     (NIL&PUSH)
+1     (LOAD 2)
+2     (JMPIFATOM L55)
+4     (LOAD 2)
+5     (CAR)
+6     (JMPIFATOM L61)
+8     (LOAD&PUSH 2)
+9     (LOAD&PUSH 4)
+10    (CALL2&JMPIF 1 L69)                 ; MBUILDQ-SPLICE-ASSOCIATE
+13    (LOAD 2)
+14    (CAR)
+15    (CAR)
+16    (JMPIFATOM L88)
+19    (LOAD&CAR&PUSH 2)
+21    (LOAD&PUSH 4)
+22    (CALL2 1)                           ; MBUILDQ-SPLICE-ASSOCIATE
+24    (STORE 0)
+25    (JMPIF L120)
+28    (LOAD&PUSH 3)
+29    (LOAD&CAR&PUSH 3)
+31    (JSR L0)
+33    (STORE 0)
+34    L34
+34    (LOAD&PUSH 3)
+35    (LOAD&CDR&PUSH 3)
+37    (JSR&PUSH L0)
+39    (LOAD&PUSH 1)
+40    (LOAD 4)
+41    (CAR)
+42    (JMPIFNOTEQ L50)
+44    (LOAD&PUSH 0)
+45    (LOAD 4)
+46    (CDR)
+47    (JMPIFEQ L132)
+50    L50
+50    (LOAD&PUSH 1)
+51    (LOAD 1)
+52    (CONS)
+53    (SKIP&RET 5)
+55    L55
+55    (LOAD&PUSH 2)
+56    (LOAD&PUSH 4)
+57    (CALL2 0)                           ; MBUILDQ-ASSOCIATE
+59    (SKIP&RET 4)
+61    L61
+61    (LOAD&CAR&PUSH 2)
+63    (LOAD&PUSH 4)
+64    (CALL2 0)                           ; MBUILDQ-ASSOCIATE
+66    (STORE 0)
+67    (JMP L34)
+69    L69
+69    (CONST&PUSH 2)                      ; "SPLICE used in illegal context: ~M"
+70    (LOAD&PUSH 3)
+71    (CALL2 3)                           ; MERROR
+73    (JMP L34)
+75    L75
+75    (LOAD&CAR&STORE 2 0)
+78    (JMP L34)
+80    L80
+80    (LOAD&PUSH 0)
+81    (LOAD 3)
+82    (CAR)
+83    (CDR)
+84    (CONS)
+85    (STORE 0)
+86    (JMP L34)
+88    L88
+88    (LOAD 2)
+89    (CAR)
+90    (CAR&PUSH)
+91    (LOAD&PUSH 4)
+92    (CALL2 0)                           ; MBUILDQ-ASSOCIATE
+94    (STORE 0)
+95    (PUSH)
+96    (LOAD 3)
+97    (CAR)
+98    (CAR)
+99    (JMPIFEQ L75)
+101   (LOAD 0)
+102   (JMPIFATOM L80)
+104   (CONST&PUSH 4)                      ; MQAPPLY
+105   (LOAD 3)
+106   (CAR)
+107   (CDR)
+108   (CONS&PUSH)
+109   (LOAD&PUSH 1)
+110   (LOAD&PUSH 5)
+111   (LOAD&CDR&PUSH 5)
+113   (JSR L0)
+116   (LIST* 2)
+118   (SKIP&RET 4)
+120   L120
+120   (CDR&PUSH)
+121   (LOAD&PUSH 4)
+122   (LOAD&CDR&PUSH 4)
+124   (JSR&PUSH L0)
+127   (CALLSR 2 34)                       ; APPEND
+130   (SKIP&RET 4)
+132   L132
+132   (LOAD 3)
+133   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN MBUILDQ-ASSOCIATE (ATOM ALIST) ...)-9|
+(CONST 0) = MBUILDQ-ASSOCIATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MBUILDQ-ASSOCIATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MBUILDQ-ASSOCIATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MBUILDQ-ASSOCIATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MBUILDQ-ASSOCIATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MBUILDQ-ASSOCIATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function MBUILDQ-ASSOCIATE
+(CONST 0) = ASSQ
+(CONST 1) = $VERBIFY
+(CONST 2) = $NOUNIFY
+(CONST 3) = (MQUOTE MLIST MPROG MPROGN LAMBDA)
+(CONST 4) = MEMQ
+(CONST 5) = (MQUOTE)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+53 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 3)
+2     (CALLS2&JMPIFNOT 6 L21)             ; SYMBOLP
+5     (LOAD&PUSH 3)
+6     (LOAD&PUSH 3)
+7     (CALL2 0)                           ; ASSQ
+9     (STORE 0)
+10    (JMPIF L24)
+12    (LOAD&PUSH 3)
+13    (CALL1&PUSH 1)                      ; $VERBIFY
+15    (LOAD&PUSH 3)
+16    (CALL2 0)                           ; ASSQ
+18    (STORE 0)
+19    (JMPIF L40)
+21    L21
+21    (LOAD 3)
+22    (SKIP&RET 4)
+24    L24
+24    (CDR)
+25    (SKIP&RET 4)
+27    L27
+27    (LOAD&CDR&PUSH 0)
+29    (CALL1 2)                           ; $NOUNIFY
+31    (SKIP&RET 4)
+33    L33
+33    (CONST&PUSH 5)                      ; (MQUOTE)
+34    (LOAD&CDR&PUSH 1)
+36    (LIST 2)
+38    (SKIP&RET 4)
+40    L40
+40    (CDR)
+41    (JMPIFATOM L27)
+43    (LOAD 0)
+44    (CDR)
+45    (CAR)
+46    (CAR&PUSH)
+47    (CONST&PUSH 3)                      ; (MQUOTE MLIST MPROG MPROGN LAMBDA)
+48    (CALL2&JMPIF 4 L33)                 ; MEMQ
+51    (LOAD 0)
+52    (CDR)
+53    (CAR)
+54    (CAR&PUSH)
+55    (CALL1&PUSH 2)                      ; $NOUNIFY
+57    (LOAD 1)
+58    (CDR)
+59    (CAR)
+60    (CDR)
+61    (CONS&PUSH)
+62    (LOAD 1)
+63    (CDR)
+64    (CDR)
+65    (CONS)
+66    (SKIP&RET 4)
+
+
+Disassembly of function #:|(SETF (GET '$SPLICE '$BOTHCASES) T)-10|
+(CONST 0) = $SPLICE
+(CONST 1) = $BOTHCASES
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SPLICE
+1     (CONST&PUSH 1)                      ; $BOTHCASES
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MBUILDQ-SPLICE-ASSOCIATE (EXPRESSION VARLIST) ...)-11|
+(CONST 0) = MBUILDQ-SPLICE-ASSOCIATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MBUILDQ-SPLICE-ASSOCIATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MBUILDQ-SPLICE-ASSOCIATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MBUILDQ-SPLICE-ASSOCIATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MBUILDQ-SPLICE-ASSOCIATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MBUILDQ-SPLICE-ASSOCIATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function MBUILDQ-SPLICE-ASSOCIATE
+(CONST 0) = VARLIST
+(CONST 1) = $SPLICE
+(CONST 2) = ASSQ
+(CONST 3) = $LISTP
+(CONST 4) = "~M returned ~M~%But SPLICE must return a list"
+(CONST 5) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VARLIST)
+41 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; VARLIST
+3     (LOAD 5)
+4     (CAR)
+5     (CAR&PUSH)
+6     (CONST 1)                           ; $SPLICE
+7     (EQ)
+8     (JMPIFNOT1 L39)
+10    (LOAD 5)
+11    (CDR)
+12    (JMPIFNOT1 L39)
+14    (LOAD 5)
+15    (CDR)
+16    (CDR)
+17    (NOT)
+18    (JMPIFNOT1 L39)
+20    (LOAD 5)
+21    (CDR)
+22    (CAR&PUSH)
+23    (GETVALUE&PUSH 0)                   ; VARLIST
+25    (CALL2&PUSH 2)                      ; ASSQ
+27    (LOAD&JMPIFNOT 0 L42)
+30    (LOAD&CDR&PUSH 0)
+32    (CALL1&JMPIFNOT 3 L47)              ; $LISTP
+35    (LOAD 0)
+36    (CDR)
+37    (SKIP 1)
+39    L39
+39    (UNBIND1)
+40    (SKIP&RET 3)
+42    L42
+42    (NIL)
+43    (SKIP 1)
+45    (JMP L39)
+47    L47
+47    (CONST&PUSH 4)                      ; "~M returned ~M~%But SPLICE must return a list"
+48    (LOAD&PUSH 7)
+49    (LOAD&CDR&PUSH 2)
+51    (CALL 3 5)                          ; MERROR
+54    (SKIP 1)
+56    (JMP L39)
+
+
+Wrote file binary-clisp/buildq.fas
+Wrote file /cygdrive/e/temp/maxima/src/buildq.lis

@@ -1,0 +1,2281 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/transm.lisp
+on 2002-12-17 13:33:47 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/transm.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRANSM MACRO)-2|
+(CONST 0) = TRANSM
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (MACRO)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSM
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (MACRO)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS PROCS)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS-AT-RUNTIME 'PROCS)-4|
+(CONST 0) = PROCS
+(CONST 1) = LOAD-MACSYMA-MACROS-AT-RUNTIME
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PROCS
+1     (CALL1 1)                           ; LOAD-MACSYMA-MACROS-AT-RUNTIME
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR TRANSL-MODULES NIL)-5|
+(CONST 0) = (SPECIAL TRANSL-MODULES)
+(CONST 1) = TRANSL-MODULES
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TRANSL-MODULES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; TRANSL-MODULES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; TRANSL-MODULES
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; TRANSL-MODULES
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO ENTERQ (THING LIST) ...)-6|
+(CONST 0) = ENTERQ
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ENTERQ>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ENTERQ
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ENTERQ
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ENTERQ>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; ENTERQ
+10    (SKIP&RET 1)
+
+
+Disassembly of function ENTERQ
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = OR
+(CONST 3) = MEMQ
+(CONST 4) = SETF
+(CONST 5) = CONS
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+29 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L34)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (CONST&PUSH 2)                      ; OR
+16    (CONST&PUSH 3)                      ; MEMQ
+17    (LOAD&PUSH 3)
+18    (LOAD&PUSH 3)
+19    (LIST&PUSH 3)
+21    (CONST&PUSH 4)                      ; SETF
+22    (LOAD&PUSH 3)
+23    (CONST&PUSH 5)                      ; CONS
+24    (LOAD&PUSH 6)
+25    (LOAD&PUSH 6)
+26    (LIST&PUSH 3)
+28    (LIST&PUSH 3)
+30    (LIST 3)
+32    (SKIP&RET 5)
+34    L34
+34    (LOAD&PUSH 2)
+35    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+37    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEF-TRANSL-MODULE (NAME &REST PROPERTIES) ...)-7|
+(CONST 0) = DEF-TRANSL-MODULE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-TRANSL-MODULE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-TRANSL-MODULE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-TRANSL-MODULE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-TRANSL-MODULE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF-TRANSL-MODULE
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-TRANSL-MODULE
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = PROGN
+(CONST 4) = ENTERQ
+(CONST 5) = QUOTE
+(CONST 6) = (TRANSL-MODULES)
+(CONST 7) = P
+(CONST 8) = DEFPROP
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (P NAME)
+66 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L30)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR&PUSH)
+16    (CONST&PUSH 3)                      ; PROGN
+17    (CONST&PUSH 4)                      ; ENTERQ
+18    (CONST&PUSH 5)                      ; QUOTE
+19    (GETVALUE&PUSH 2)                   ; NAME
+21    (LIST&PUSH 2)
+23    (CONST 6)                           ; (TRANSL-MODULES)
+24    (LIST*&PUSH 2)
+26    (NIL&PUSH)
+27    (LOAD&PUSH 3)
+28    (JMP L76)
+30    L30
+30    (LOAD&PUSH 2)
+31    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+33    (SKIP&RET 3)
+35    L35
+35    (T)
+36    (JMP L57)
+38    L38
+38    (GETVALUE 7)                        ; P
+40    (JMP L65)
+42    L42
+42    (LOAD&CAR&PUSH 0)
+44    (LOAD 0)
+45    (BIND 7)                            ; P
+47    (CONST&PUSH 8)                      ; DEFPROP
+48    (GETVALUE&PUSH 2)                   ; NAME
+50    (GETVALUE 7)                        ; P
+52    (JMPIFATOM L35)
+54    (GETVALUE 7)                        ; P
+56    (CDR)
+57    L57
+57    (PUSH)
+58    (GETVALUE 7)                        ; P
+60    (JMPIFATOM L38)
+62    (GETVALUE 7)                        ; P
+64    (CAR)
+65    L65
+65    (PUSH)
+66    (LIST 4)
+68    (UNBIND1)
+69    (PUSH)
+70    (LOAD&CONS&STORE 2)
+72    (SKIP 1)
+74    (LOAD&CDR&STORE 0)
+76    L76
+76    (LOAD&PUSH 0)
+77    (CALLS1&JMPIFNOT 146 L42)           ; ENDP
+80    (SKIP 1)
+82    (LOAD&PUSH 0)
+83    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+85    (SKIP 1)
+87    (LIST* 2)
+89    (SKIP 1)
+91    (UNBIND1)
+92    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSS TTIME-AUTO)-8-1|
+(CONST 0) = TRANSS
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSS
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANSS
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSS TTIME-AUTO)-8-2|
+(CONST 0) = TRANSS
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSS
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSL TTIME-AUTO ...)-9-1|
+(CONST 0) = TRANSL
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSL
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANSL
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSL TTIME-AUTO ...)-9-2|
+(CONST 0) = TRANSL
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSL
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSL TTIME-AUTO ...)-9-3|
+(CONST 0) = TRANSL
+(CONST 1) = FIRST-LOAD
+(CONST 2) = (TRDATA DCL)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSL
+1     (CONST&PUSH 1)                      ; FIRST-LOAD
+2     (CONST&PUSH 2)                      ; (TRDATA DCL)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRUTIL TTIME-AUTO)-10-1|
+(CONST 0) = TRUTIL
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRUTIL
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRUTIL
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRUTIL TTIME-AUTO)-10-2|
+(CONST 0) = TRUTIL
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRUTIL
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS1 TTIME-AUTO)-11-1|
+(CONST 0) = TRANS1
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS1
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANS1
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS1 TTIME-AUTO)-11-2|
+(CONST 0) = TRANS1
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS1
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS2 TTIME-AUTO)-12-1|
+(CONST 0) = TRANS2
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS2
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANS2
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS2 TTIME-AUTO)-12-2|
+(CONST 0) = TRANS2
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS2
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS3 TTIME-AUTO)-13-1|
+(CONST 0) = TRANS3
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS3
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANS3
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS3 TTIME-AUTO)-13-2|
+(CONST 0) = TRANS3
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS3
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS4 TTIME-AUTO)-14-1|
+(CONST 0) = TRANS4
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS4
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANS4
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS4 TTIME-AUTO)-14-2|
+(CONST 0) = TRANS4
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS4
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS5 TTIME-AUTO)-15-1|
+(CONST 0) = TRANS5
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS5
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANS5
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANS5 TTIME-AUTO)-15-2|
+(CONST 0) = TRANS5
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS5
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSF TTIME-AUTO)-16-1|
+(CONST 0) = TRANSF
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSF
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANSF
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSF TTIME-AUTO)-16-2|
+(CONST 0) = TRANSF
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSF
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TROPER TTIME-AUTO)-17-1|
+(CONST 0) = TROPER
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TROPER
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TROPER
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TROPER TTIME-AUTO)-17-2|
+(CONST 0) = TROPER
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TROPER
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRPRED TTIME-AUTO)-18-1|
+(CONST 0) = TRPRED
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRPRED
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRPRED
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRPRED TTIME-AUTO)-18-2|
+(CONST 0) = TRPRED
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRPRED
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE MTAGS TTIME-AUTO)-19-1|
+(CONST 0) = MTAGS
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MTAGS
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; MTAGS
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE MTAGS TTIME-AUTO)-19-2|
+(CONST 0) = MTAGS
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MTAGS
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE MDEFUN)-20|
+(CONST 0) = MDEFUN
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+13 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; MDEFUN
+2     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+4     (CALL2 2)                           ; MEMQ
+6     (STORE 0)
+7     (JMPIFNOT L11)
+9     (SKIP&RET 2)
+11    L11
+11    (CONST&PUSH 0)                      ; MDEFUN
+12    (GETVALUE 1)                        ; TRANSL-MODULES
+14    (CONS)
+15    (SETVALUE 1)                        ; TRANSL-MODULES
+17    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSQ)-21|
+(CONST 0) = TRANSQ
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+13 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; TRANSQ
+2     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+4     (CALL2 2)                           ; MEMQ
+6     (STORE 0)
+7     (JMPIFNOT L11)
+9     (SKIP&RET 2)
+11    L11
+11    (CONST&PUSH 0)                      ; TRANSQ
+12    (GETVALUE 1)                        ; TRANSL-MODULES
+14    (CONS)
+15    (SETVALUE 1)                        ; TRANSL-MODULES
+17    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE FCALL NO-LOAD-AUTO)-22-1|
+(CONST 0) = FCALL
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FCALL
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; FCALL
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE FCALL NO-LOAD-AUTO)-22-2|
+(CONST 0) = FCALL
+(CONST 1) = NO-LOAD-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FCALL
+1     (CONST&PUSH 1)                      ; NO-LOAD-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE ACALL NO-LOAD-AUTO)-23-1|
+(CONST 0) = ACALL
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ACALL
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; ACALL
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE ACALL NO-LOAD-AUTO)-23-2|
+(CONST 0) = ACALL
+(CONST 1) = NO-LOAD-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ACALL
+1     (CONST&PUSH 1)                      ; NO-LOAD-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRDATA NO-LOAD-AUTO)-24-1|
+(CONST 0) = TRDATA
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRDATA
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRDATA
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRDATA NO-LOAD-AUTO)-24-2|
+(CONST 0) = TRDATA
+(CONST 1) = NO-LOAD-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRDATA
+1     (CONST&PUSH 1)                      ; NO-LOAD-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE MCOMPI TTIME-AUTO)-25-1|
+(CONST 0) = MCOMPI
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MCOMPI
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; MCOMPI
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE MCOMPI TTIME-AUTO)-25-2|
+(CONST 0) = MCOMPI
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MCOMPI
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE DCL PSEUDO)-26-1|
+(CONST 0) = DCL
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DCL
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; DCL
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE DCL PSEUDO)-26-2|
+(CONST 0) = DCL
+(CONST 1) = PSEUDO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DCL
+1     (CONST&PUSH 1)                      ; PSEUDO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP DCL MAXDOC ...)-27|
+(CONST 0) = DCL
+(CONST 1) = FASL-DIR
+(CONST 2) = MAXDOC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DCL
+1     (CONST&PUSH 1)                      ; FASL-DIR
+2     (CONST&PUSH 2)                      ; MAXDOC
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRMODE TTIME-AUTO ...)-28-1|
+(CONST 0) = TRMODE
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRMODE
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRMODE
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRMODE TTIME-AUTO ...)-28-2|
+(CONST 0) = TRMODE
+(CONST 1) = TTIME-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRMODE
+1     (CONST&PUSH 1)                      ; TTIME-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRMODE TTIME-AUTO ...)-28-3|
+(CONST 0) = TRMODE
+(CONST 1) = NO-LOAD-AUTO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRMODE
+1     (CONST&PUSH 1)                      ; NO-LOAD-AUTO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRHOOK HYPER)-29-1|
+(CONST 0) = TRHOOK
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRHOOK
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRHOOK
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRHOOK HYPER)-29-2|
+(CONST 0) = TRHOOK
+(CONST 1) = HYPER
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRHOOK
+1     (CONST&PUSH 1)                      ; HYPER
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSL-AUTOLOAD PSEUDO)-30-1|
+(CONST 0) = TRANSL-AUTOLOAD
+(CONST 1) = TRANSL-MODULES
+(CONST 2) = MEMQ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRANSL-MODULES)
+writes special variable : (TRANSL-MODULES)
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSL-AUTOLOAD
+1     (GETVALUE&PUSH 1)                   ; TRANSL-MODULES
+3     (CALL2&JMPIF 2 L12)                 ; MEMQ
+6     (CONST&PUSH 0)                      ; TRANSL-AUTOLOAD
+7     (GETVALUE 1)                        ; TRANSL-MODULES
+9     (CONS)
+10    (SETVALUE 1)                        ; TRANSL-MODULES
+12    L12
+12    (VALUES0)
+13    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF-TRANSL-MODULE TRANSL-AUTOLOAD PSEUDO)-30-2|
+(CONST 0) = TRANSL-AUTOLOAD
+(CONST 1) = PSEUDO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSL-AUTOLOAD
+1     (CONST&PUSH 1)                      ; PSEUDO
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (EVAL COMPILE LOAD) (LOAD-MACSYMA-MACROS PROCS))-31|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR MODULE-STACK NIL)-32|
+(CONST 0) = (SPECIAL MODULE-STACK)
+(CONST 1) = MODULE-STACK
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL MODULE-STACK)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; MODULE-STACK
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; MODULE-STACK
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; MODULE-STACK
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO TRANSL-MODULE (NAME) ...)-33|
+(CONST 0) = TRANSL-MODULE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRANSL-MODULE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANSL-MODULE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRANSL-MODULE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRANSL-MODULE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; TRANSL-MODULE
+10    (SKIP&RET 1)
+
+
+Disassembly of function TRANSL-MODULE
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = TRANSL-MODULES
+(CONST 4) = MEMQ
+(CONST 5) = "without any special action"
+(CONST 6) = "Not a TRANSL-MODULE, see LIBMAX;TRANSM >"
+(CONST 7) = CERROR
+(CONST 8) = (COMMENT THERE ARE REASONABLE THINGS TO DO HERE)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (TRANSL-MODULES NAME)
+22 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L28)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (GETVALUE&PUSH 2)                   ; NAME
+15    (GETVALUE&PUSH 3)                   ; TRANSL-MODULES
+17    (CALL2&JMPIF 4 L24)                 ; MEMQ
+20    (CONST&PUSH 5)                      ; "without any special action"
+21    (CONST&PUSH 6)                      ; "Not a TRANSL-MODULE, see LIBMAX;TRANSM >"
+22    (CALL2 7)                           ; CERROR
+24    L24
+24    (CONST 8)                           ; (COMMENT THERE ARE REASONABLE ...)
+25    (UNBIND1)
+26    (SKIP&RET 3)
+28    L28
+28    (LOAD&PUSH 2)
+29    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+31    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEF-DEF-PROPERTY TRANSLATE (FORM))-34|
+(CONST 0) = DEF-TRANSLATE-PROPERTY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-TRANSLATE-PROPERTY>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-TRANSLATE-PROPERTY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-TRANSLATE-PROPERTY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-TRANSLATE-PROPERTY>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF-TRANSLATE-PROPERTY
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-TRANSLATE-PROPERTY
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = TRANSLATE
+(CONST 4) = 1
+(CONST 5) = A-DEF-PROPERTY
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+29 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L35)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (LOAD 6)
+18    (CDR)
+19    (CDR)
+20    (CDR&PUSH)
+21    (GETVALUE&PUSH 2)                   ; NAME
+23    (LOAD&PUSH 2)
+24    (LOAD&PUSH 2)
+25    (CONST&PUSH 3)                      ; TRANSLATE
+26    (CONST&PUSH 4)                      ; 1
+27    (CALL 5 5)                          ; A-DEF-PROPERTY
+30    (SKIP 2)
+32    (UNBIND1)
+33    (SKIP&RET 3)
+35    L35
+35    (LOAD&PUSH 2)
+36    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+38    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEF%TR (NAME LAMBDA-LIST &BODY ...) ...)-35|
+(CONST 0) = DEF%TR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF%TR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF%TR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF%TR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF%TR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF%TR
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF%TR
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = DEF-SAME%TR
+(CONST 4) = DEFUN-PROP
+(CONST 5) = (TRANSLATE)
+(CONST 6) = EVAL-WHEN
+(CONST 7) = (COMPILE EVAL LOAD)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+47 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L49)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (LOAD 6)
+18    (CDR)
+19    (CDR)
+20    (CDR&PUSH)
+21    (NIL&PUSH)
+22    (LOAD&JMPIF 1 L29)
+25    (LOAD&PUSH 2)
+26    (CALLS2&JMPIF 6 L54)                ; SYMBOLP
+29    L29
+29    (CONST&PUSH 4)                      ; DEFUN-PROP
+30    (GETVALUE&PUSH 2)                   ; NAME
+32    (CONST 5)                           ; (TRANSLATE)
+33    (CONS&PUSH)
+34    (LOAD&PUSH 4)
+35    (LOAD 4)
+36    (LIST* 3)
+38    L38
+38    (STORE 0)
+39    (CONST&PUSH 6)                      ; EVAL-WHEN
+40    (CONST&PUSH 7)                      ; (COMPILE EVAL LOAD)
+41    (LOAD&PUSH 2)
+42    (LIST 3)
+44    (SKIP 3)
+46    (UNBIND1)
+47    (SKIP&RET 3)
+49    L49
+49    (LOAD&PUSH 2)
+50    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+52    (SKIP&RET 3)
+54    L54
+54    (CONST&PUSH 3)                      ; DEF-SAME%TR
+55    (GETVALUE&PUSH 2)                   ; NAME
+57    (LOAD&PUSH 4)
+58    (LIST 3)
+60    (JMP L38)
+
+
+Disassembly of function #:|(DEFMACRO DEF-SAME%TR (NAME SAME-AS) ...)-36|
+(CONST 0) = DEF-SAME%TR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-SAME%TR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-SAME%TR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-SAME%TR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-SAME%TR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF-SAME%TR
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-SAME%TR
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = PUTPROP
+(CONST 4) = QUOTE
+(CONST 5) = OR
+(CONST 6) = GET
+(CONST 7) = ('TRANSLATE)
+(CONST 8) = MAXIMA-ERROR
+(CONST 9) = '|No TRANSLATE property to alias.|
+(CONST 10) = ('TRANSLATE)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+39 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L50)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CONST&PUSH 3)                      ; PUTPROP
+18    (CONST&PUSH 4)                      ; QUOTE
+19    (GETVALUE&PUSH 2)                   ; NAME
+21    (LIST&PUSH 2)
+23    (CONST&PUSH 5)                      ; OR
+24    (CONST&PUSH 6)                      ; GET
+25    (CONST&PUSH 4)                      ; QUOTE
+26    (LOAD&PUSH 5)
+27    (LIST&PUSH 2)
+29    (CONST 7)                           ; ('TRANSLATE)
+30    (LIST*&PUSH 2)
+32    (CONST&PUSH 8)                      ; MAXIMA-ERROR
+33    (CONST&PUSH 9)                      ; '|No TRANSLATE property to alias.|
+34    (CONST&PUSH 4)                      ; QUOTE
+35    (LOAD&PUSH 7)
+36    (LIST&PUSH 2)
+38    (LIST&PUSH 3)
+40    (LIST&PUSH 3)
+42    (CONST 10)                          ; ('TRANSLATE)
+43    (LIST* 3)
+45    (SKIP 1)
+47    (UNBIND1)
+48    (SKIP&RET 3)
+50    L50
+50    (LOAD&PUSH 2)
+51    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+53    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEF%TR-INHERIT (FROM &REST OTHERS) ...)-37|
+(CONST 0) = DEF%TR-INHERIT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF%TR-INHERIT>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF%TR-INHERIT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF%TR-INHERIT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF%TR-INHERIT>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF%TR-INHERIT
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF%TR-INHERIT
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = LET
+(CONST 3) = TR-PROP
+(CONST 4) = OR
+(CONST 5) = GET
+(CONST 6) = QUOTE
+(CONST 7) = ('TRANSLATE)
+(CONST 8) = MAXIMA-ERROR
+(CONST 9) = '|No TRANSLATE property to alias.|
+(CONST 10) = MAPC
+(CONST 11) = #'(LAMBDA (NAME) (PUTPROP NAME TR-PROP 'TRANSLATE))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+40 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L51)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (CONST&PUSH 2)                      ; LET
+15    (CONST&PUSH 3)                      ; TR-PROP
+16    (CONST&PUSH 4)                      ; OR
+17    (CONST&PUSH 5)                      ; GET
+18    (CONST&PUSH 6)                      ; QUOTE
+19    (LOAD&PUSH 6)
+20    (LIST&PUSH 2)
+22    (CONST 7)                           ; ('TRANSLATE)
+23    (LIST*&PUSH 2)
+25    (CONST&PUSH 8)                      ; MAXIMA-ERROR
+26    (CONST&PUSH 9)                      ; '|No TRANSLATE property to alias.|
+27    (CONST&PUSH 6)                      ; QUOTE
+28    (LOAD&PUSH 8)
+29    (LIST&PUSH 2)
+31    (LIST&PUSH 3)
+33    (LIST&PUSH 3)
+35    (LIST&PUSH 2)
+37    (LIST&PUSH 1)
+39    (CONST&PUSH 10)                     ; MAPC
+40    (CONST&PUSH 11)                     ; #'(LAMBDA (NAME) ...)
+41    (CONST&PUSH 6)                      ; QUOTE
+42    (LOAD&PUSH 5)
+43    (LIST&PUSH 2)
+45    (LIST&PUSH 3)
+47    (LIST 3)
+49    (SKIP&RET 5)
+51    L51
+51    (LOAD&PUSH 2)
+52    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+54    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEFTRFUN (NAME ARGL &REST ...) ...)-38|
+(CONST 0) = DEFTRFUN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFTRFUN>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFTRFUN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFTRFUN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFTRFUN>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEFTRFUN
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFTRFUN
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = DEFUN
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+28 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L33)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (LOAD 6)
+18    (CDR)
+19    (CDR)
+20    (CDR&PUSH)
+21    (CONST&PUSH 3)                      ; DEFUN
+22    (GETVALUE&PUSH 2)                   ; NAME
+24    (LOAD&PUSH 3)
+25    (LOAD 3)
+26    (LIST* 3)
+28    (SKIP 2)
+30    (UNBIND1)
+31    (SKIP&RET 3)
+33    L33
+33    (LOAD&PUSH 2)
+34    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+36    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEFTRVAR (NAME VALUE &REST ...) ...)-39|
+(CONST 0) = DEFTRVAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFTRVAR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFTRVAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFTRVAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFTRVAR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEFTRVAR
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFTRVAR
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = DEFVAR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+23 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L28)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CONST&PUSH 3)                      ; DEFVAR
+18    (GETVALUE&PUSH 2)                   ; NAME
+20    (LOAD&PUSH 2)
+21    (LIST 3)
+23    (SKIP 1)
+25    (UNBIND1)
+26    (SKIP&RET 3)
+28    L28
+28    (LOAD&PUSH 2)
+29    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+31    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO TPROP-CALL (OP FORM) ...)-40|
+(CONST 0) = TPROP-CALL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TPROP-CALL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TPROP-CALL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TPROP-CALL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TPROP-CALL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; TPROP-CALL
+10    (SKIP&RET 1)
+
+
+Disassembly of function TPROP-CALL
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = SUBR-CALL
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L22)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (CONST&PUSH 2)                      ; SUBR-CALL
+16    (LOAD&PUSH 2)
+17    (LOAD&PUSH 2)
+18    (LIST 3)
+20    (SKIP&RET 5)
+22    L22
+22    (LOAD&PUSH 2)
+23    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+25    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEF-AUTOLOAD-TRANSLATE (&REST FUNS) ...)-41|
+(CONST 0) = DEF-AUTOLOAD-TRANSLATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-AUTOLOAD-TRANSLATE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-AUTOLOAD-TRANSLATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-AUTOLOAD-TRANSLATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-AUTOLOAD-TRANSLATE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEF-AUTOLOAD-TRANSLATE
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-AUTOLOAD-TRANSLATE
+(CONST 0) = COMMENT
+(CONST 1) = *AUTOLOADING?*
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; COMMENT
+3     (CONST&PUSH 1)                      ; *AUTOLOADING?*
+4     (LOAD 2)
+5     (LIST* 2)
+7     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *TRANSL-SOURCES*) (SPECIAL TR-ABORT *TRANSLATION-MSGS-FILES*) ...)-42-1|
+(CONST 0) = (SPECIAL *TRANSL-SOURCES*)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *TRANSL-SOURCES*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *TRANSL-SOURCES*) (SPECIAL TR-ABORT *TRANSLATION-MSGS-FILES*) ...)-42-2|
+(CONST 0) = (SPECIAL TR-ABORT *TRANSLATION-MSGS-FILES*)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TR-ABORT ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *TRANSL-SOURCES*) (SPECIAL TR-ABORT *TRANSLATION-MSGS-FILES*) ...)-42-3|
+(CONST 0) = 
+(SPECIAL PRE-TRANSL-FORMS* *WARNED-UN-DECLARED-VARS* *WARNED-FEXPRS*
+ *WARNED-MODE-VARS* *WARNED-UNDEFINED-VARS* WARNED-UNDEFINED-VARIABLES TR-ABORT
+ TRANSL-FILE *IN-COMPFILE* *IN-TRANSLATE-FILE* *IN-TRANSLATE*
+ *PRE-TRANSL-FORMS* *NEW-AUTOLOAD-ENTRIES* *UNTRANSLATED-FUNCTIONS-CALLED*)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL PRE-TRANSL-FORMS* ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (VALUES0)
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL *TRANSL-SOURCES*) (SPECIAL TR-ABORT *TRANSLATION-MSGS-FILES*) ...)-42-4|
+(CONST 0) = 
+(SPECIAL $ERREXP $LOADPRINT $NUMER $SAVEDEF $NOLABELS $FUNCTIONS $PROPS
+ $FILENAME $FILENUM $DIREC $DEVICE MUNBOUND $VALUES $TRANSRUN ST OLDST $VERSION
+ REPHRASE $PACKAGEFILE DSKFNP)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $ERREXP $LOADPRINT ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO BIND-TRANSL-STATE (&REST FORMS) ...)-43|
+(CONST 0) = BIND-TRANSL-STATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE BIND-TRANSL-STATE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; BIND-TRANSL-STATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; BIND-TRANSL-STATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE BIND-TRANSL-STATE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; BIND-TRANSL-STATE
+10    (SKIP&RET 1)
+
+
+Disassembly of function BIND-TRANSL-STATE
+(CONST 0) = LET
+(CONST 1) = 
+(*WARNED-UN-DECLARED-VARS* *WARNED-FEXPRS* *WARNED-MODE-VARS*
+ *WARNED-UNDEFINED-VARS* WARNED-UNDEFINED-VARIABLES TR-ABORT TRANSL-FILE
+ *IN-COMPFILE* *IN-TRANSLATE-FILE* *IN-TRANSLATE* *PRE-TRANSL-FORMS*
+ *NEW-AUTOLOAD-ENTRIES* ($TR_SEMICOMPILE $TR_SEMICOMPILE) (ARRAYS NIL)
+ (EXPRS NIL) (LEXPRS NIL) (FEXPRS NIL) (SPECIALS NIL) (DECLARES NIL)
+ ($TRANSCOMPILE $TRANSCOMPILE) ($TR_NUMER $TR_NUMER) DEFINED_VARIABLES)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; LET
+3     (CONST&PUSH 1)                      ; (*WARNED-UN-DECLARED-VARS* ...)
+4     (LOAD 2)
+5     (LIST* 2)
+7     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN TR-FORMAT (SSTRING &REST ARGL ...) ...)-44|
+(CONST 0) = TR-FORMAT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-FORMAT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-FORMAT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-FORMAT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-FORMAT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-FORMAT
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-FORMAT
+(CONST 0) = *TRANSLATION-MSGS-FILES*
+(CONST 1) = V
+(CONST 2) = MFORMAT
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variables: (V *TRANSLATION-MSGS-FILES*)
+writes special variable : (V)
+32 byte-code instructions:
+0     (NIL&PUSH)
+1     (GETVALUE 0)                        ; *TRANSLATION-MSGS-FILES*
+3     (JMPIFCONSP L42)
+5     (GETVALUE&PUSH 0)                   ; *TRANSLATION-MSGS-FILES*
+7     (LIST 1)
+9     (STORE 0)
+10    L10
+10    (NIL)
+11    (BIND 1)                            ; V
+13    (LOAD&PUSH 3)
+14    (LOAD&JMPIFNOT 0 L36)
+17    L17
+17    (LOAD&CAR&PUSH 0)
+19    (LOAD 0)
+20    (SETVALUE 1)                        ; V
+22    (SKIP 1)
+24    (CONST&PUSH 2)                      ; MFORMAT
+25    (GETVALUE&PUSH 1)                   ; V
+27    (LOAD&PUSH 9)
+28    (LOAD 9)
+29    (APPLY 2)
+31    (LOAD&CDR&STORE 0)
+33    (LOAD&JMPIF 0 L17)
+36    L36
+36    (NIL)
+37    (SKIP 1)
+39    (UNBIND1)
+40    (SKIP&RET 4)
+42    L42
+42    (GETVALUE 0)                        ; *TRANSLATION-MSGS-FILES*
+44    (STORE 0)
+45    (JMP L10)
+
+
+Disassembly of function #:|(DEFMACRO TR (U) ...)-45|
+(CONST 0) = TR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; TR
+10    (SKIP&RET 1)
+
+
+Disassembly of function TR
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = QUOTE
+(CONST 3) = *WARNED-UN-DECLARED-VARS*
+(CONST 4) = *WARNED-FEXPRS*
+(CONST 5) = *WARNED-MODE-VARS*
+(CONST 6) = *WARNED-UNDEFINED-VARS*
+(CONST 7) = WARNED-UNDEFINED-VARIABLES
+(CONST 8) = TR-ABORT
+(CONST 9) = TRANSL-FILE
+(CONST 10) = *IN-COMPFILE*
+(CONST 11) = *IN-TRANSLATE-FILE*
+(CONST 12) = *IN-TRANSLATE*
+(CONST 13) = *PRE-TRANSL-FORMS*
+(CONST 14) = *NEW-AUTOLOAD-ENTRIES*
+(CONST 15) = $TR_SEMICOMPILE
+(CONST 16) = ARRAYS
+(CONST 17) = EXPRS
+(CONST 18) = LEXPRS
+(CONST 19) = FEXPRS
+(CONST 20) = SPECIALS
+(CONST 21) = DECLARES
+(CONST 22) = $TRANSCOMPILE
+(CONST 23) = $TR_NUMER
+(CONST 24) = DEFINED_VARIABLES
+(CONST 25) = TRANSLATE-MACEXPR-TOPLEVEL
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: ($TR_NUMER $TRANSCOMPILE $TR_SEMICOMPILE)
+70 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L104)            ; /=
+9     (LOAD 2)
+10    (CDR)
+11    (CAR&PUSH)
+12    (LOAD&PUSH 0)
+13    (CALLS2 4)                          ; CONSP
+15    (JMPIFNOT1 L109)
+18    (LOAD&CAR&PUSH 0)
+20    (CONST 2)                           ; QUOTE
+21    (EQ)
+22    (JMPIFNOT1 L109)
+25    (NIL)
+26    (BIND 3)                            ; *WARNED-UN-DECLARED-VARS*
+28    (NIL)
+29    (BIND 4)                            ; *WARNED-FEXPRS*
+31    (NIL)
+32    (BIND 5)                            ; *WARNED-MODE-VARS*
+34    (NIL)
+35    (BIND 6)                            ; *WARNED-UNDEFINED-VARS*
+37    (NIL)
+38    (BIND 7)                            ; WARNED-UNDEFINED-VARIABLES
+40    (NIL)
+41    (BIND 8)                            ; TR-ABORT
+43    (NIL)
+44    (BIND 9)                            ; TRANSL-FILE
+46    (NIL)
+47    (BIND 10)                           ; *IN-COMPFILE*
+49    (NIL)
+50    (BIND 11)                           ; *IN-TRANSLATE-FILE*
+52    (NIL)
+53    (BIND 12)                           ; *IN-TRANSLATE*
+55    (NIL)
+56    (BIND 13)                           ; *PRE-TRANSL-FORMS*
+58    (NIL)
+59    (BIND 14)                           ; *NEW-AUTOLOAD-ENTRIES*
+61    (GETVALUE 15)                       ; $TR_SEMICOMPILE
+63    (BIND 15)                           ; $TR_SEMICOMPILE
+65    (NIL)
+66    (BIND 16)                           ; ARRAYS
+68    (NIL)
+69    (BIND 17)                           ; EXPRS
+71    (NIL)
+72    (BIND 18)                           ; LEXPRS
+74    (NIL)
+75    (BIND 19)                           ; FEXPRS
+77    (NIL)
+78    (BIND 20)                           ; SPECIALS
+80    (NIL)
+81    (BIND 21)                           ; DECLARES
+83    (GETVALUE 22)                       ; $TRANSCOMPILE
+85    (BIND 22)                           ; $TRANSCOMPILE
+87    (GETVALUE 23)                       ; $TR_NUMER
+89    (BIND 23)                           ; $TR_NUMER
+91    (NIL)
+92    (BIND 24)                           ; DEFINED_VARIABLES
+94    (LOAD 66)
+96    (CDR)
+97    (CAR&PUSH)
+98    (CALL1 25)                          ; TRANSLATE-MACEXPR-TOPLEVEL
+100   (UNBIND 22)
+102   (SKIP&RET 4)
+104   L104
+104   (LOAD&PUSH 2)
+105   (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+107   (SKIP&RET 3)
+109   L109
+109   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMACRO PUSH-INFO (NAME INFO STACK) ...)-46|
+(CONST 0) = PUSH-INFO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PUSH-INFO>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PUSH-INFO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PUSH-INFO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PUSH-INFO>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; PUSH-INFO
+10    (SKIP&RET 1)
+
+
+Disassembly of function PUSH-INFO
+(CONST 0) = 4
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = LET
+(CONST 4) = *INFO*
+(CONST 5) = ASSQ
+(CONST 6) = COND
+(CONST 7) = (*INFO*)
+(CONST 8) = PUSH
+(CONST 9) = CONS
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+45 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 4
+4     (CALLSR&JMPIF 1 46 L58)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (LOAD 6)
+18    (CDR)
+19    (CDR)
+20    (CDR)
+21    (CAR&PUSH)
+22    (CONST&PUSH 3)                      ; LET
+23    (CONST&PUSH 4)                      ; *INFO*
+24    (CONST&PUSH 5)                      ; ASSQ
+25    (GETVALUE&PUSH 2)                   ; NAME
+27    (LOAD&PUSH 4)
+28    (LIST&PUSH 3)
+30    (LIST&PUSH 2)
+32    (LIST&PUSH 1)
+34    (CONST&PUSH 6)                      ; COND
+35    (CONST&PUSH 7)                      ; (*INFO*)
+36    (T&PUSH)
+37    (CONST&PUSH 8)                      ; PUSH
+38    (CONST&PUSH 9)                      ; CONS
+39    (GETVALUE&PUSH 2)                   ; NAME
+41    (LOAD&PUSH 9)
+42    (LIST&PUSH 3)
+44    (LOAD&PUSH 7)
+45    (LIST&PUSH 3)
+47    (LIST&PUSH 2)
+49    (LIST&PUSH 3)
+51    (LIST 3)
+53    (SKIP 2)
+55    (UNBIND1)
+56    (SKIP&RET 3)
+58    L58
+58    (LOAD&PUSH 2)
+59    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+61    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO GET-INFO (NAME STACK) ...)-47|
+(CONST 0) = GET-INFO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GET-INFO>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GET-INFO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GET-INFO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GET-INFO>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; GET-INFO
+10    (SKIP&RET 1)
+
+
+Disassembly of function GET-INFO
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = CDR
+(CONST 4) = ASSQ
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+25 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L31)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CONST&PUSH 3)                      ; CDR
+18    (CONST&PUSH 4)                      ; ASSQ
+19    (GETVALUE&PUSH 2)                   ; NAME
+21    (LOAD&PUSH 3)
+22    (LIST&PUSH 3)
+24    (LIST 2)
+26    (SKIP 1)
+28    (UNBIND1)
+29    (SKIP&RET 3)
+31    L31
+31    (LOAD&PUSH 2)
+32    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+34    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO POP-INFO (NAME STACK) ...)-48|
+(CONST 0) = POP-INFO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE POP-INFO>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; POP-INFO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; POP-INFO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE POP-INFO>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; POP-INFO
+10    (SKIP&RET 1)
+
+
+Disassembly of function POP-INFO
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = LET
+(CONST 4) = *INFO*
+(CONST 5) = ASSQ
+(CONST 6) = COND
+(CONST 7) = SETQ
+(CONST 8) = ZL-DELETE
+(CONST 9) = ((CDR *INFO*))
+(CONST 10) = ((T NIL))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+41 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L53)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (LOAD 5)
+14    (CDR)
+15    (CDR)
+16    (CAR&PUSH)
+17    (CONST&PUSH 3)                      ; LET
+18    (CONST&PUSH 4)                      ; *INFO*
+19    (CONST&PUSH 5)                      ; ASSQ
+20    (GETVALUE&PUSH 2)                   ; NAME
+22    (LOAD&PUSH 4)
+23    (LIST&PUSH 3)
+25    (LIST&PUSH 2)
+27    (LIST&PUSH 1)
+29    (CONST&PUSH 6)                      ; COND
+30    (CONST&PUSH 4)                      ; *INFO*
+31    (CONST&PUSH 7)                      ; SETQ
+32    (LOAD&PUSH 5)
+33    (CONST&PUSH 8)                      ; ZL-DELETE
+34    (CONST&PUSH 4)                      ; *INFO*
+35    (LOAD&PUSH 8)
+36    (LIST&PUSH 3)
+38    (LIST&PUSH 3)
+40    (CONST 9)                           ; ((CDR *INFO*))
+41    (LIST*&PUSH 2)
+43    (CONST 10)                          ; ((T NIL))
+44    (LIST*&PUSH 2)
+46    (LIST 3)
+48    (SKIP 1)
+50    (UNBIND1)
+51    (SKIP&RET 3)
+53    L53
+53    (LOAD&PUSH 2)
+54    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+56    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO TOP-IND (STACK) ...)-49|
+(CONST 0) = TOP-IND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TOP-IND>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TOP-IND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TOP-IND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TOP-IND>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; TOP-IND
+10    (SKIP&RET 1)
+
+
+Disassembly of function TOP-IND
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = COND
+(CONST 3) = NULL
+(CONST 4) = (NIL)
+(CONST 5) = CAAR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+24 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L29)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; COND
+12    (CONST&PUSH 3)                      ; NULL
+13    (LOAD&PUSH 2)
+14    (LIST&PUSH 2)
+16    (CONST 4)                           ; (NIL)
+17    (CONS&PUSH)
+18    (T&PUSH)
+19    (CONST&PUSH 5)                      ; CAAR
+20    (LOAD&PUSH 4)
+21    (LIST&PUSH 2)
+23    (LIST&PUSH 2)
+25    (LIST 3)
+27    (SKIP&RET 4)
+29    L29
+29    (LOAD&PUSH 2)
+30    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+32    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/transm.fas
+Wrote file /cygdrive/e/temp/maxima/src/transm.lis

@@ -1,0 +1,2432 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mdot.lisp
+on 2002-12-17 13:35:46 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mdot.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MDOT)-2|
+(CONST 0) = MDOT
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MDOT
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTCONSTRULES T ...)-3-1|
+(CONST 0) = $DOTCONSTRULES
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOTCONSTRULES
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOTCONSTRULES
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTCONSTRULES T ...)-3-2|
+(CONST 0) = (SPECIAL $DOTCONSTRULES)
+(CONST 1) = $DOTCONSTRULES
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a non-commutative product of a constant and
+another term to be simplified to a commutative product.  Turning on this
+flag effectively turns on DOT0SIMP, DOT0NSCSIMP, and DOT1SIMP as well."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOTCONSTRULES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOTCONSTRULES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOTCONSTRULES
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOTCONSTRULES
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a non-commutative product of a constant and
+another term to be simplified to a commutative product.  Turning on this
+flag effectively turns on DOT0SIMP, DOT0NSCSIMP, and DOT1SIMP as well."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOTCONSTRULES
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOT0SIMP T ...)-4-1|
+(CONST 0) = $DOT0SIMP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOT0SIMP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOT0SIMP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOT0SIMP T ...)-4-2|
+(CONST 0) = (SPECIAL $DOT0SIMP)
+(CONST 1) = $DOT0SIMP
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a non-commutative product of zero and a scalar term to
+be simplified to a commutative product."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOT0SIMP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOT0SIMP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOT0SIMP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOT0SIMP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a non-commutative product of zero and a scalar term to
+be simplified to a commutative product."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOT0SIMP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOT0NSCSIMP T ...)-5-1|
+(CONST 0) = $DOT0NSCSIMP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOT0NSCSIMP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOT0NSCSIMP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOT0NSCSIMP T ...)-5-2|
+(CONST 0) = (SPECIAL $DOT0NSCSIMP)
+(CONST 1) = $DOT0NSCSIMP
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a non-commutative product of zero and a nonscalar term
+to be simplified to a commutative product."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOT0NSCSIMP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOT0NSCSIMP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOT0NSCSIMP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOT0NSCSIMP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a non-commutative product of zero and a nonscalar term
+to be simplified to a commutative product."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOT0NSCSIMP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOT1SIMP T ...)-6-1|
+(CONST 0) = $DOT1SIMP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOT1SIMP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOT1SIMP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOT1SIMP T ...)-6-2|
+(CONST 0) = (SPECIAL $DOT1SIMP)
+(CONST 1) = $DOT1SIMP
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a non-commutative product of one and another term to be
+simplified to  a commutative product."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOT1SIMP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOT1SIMP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOT1SIMP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOT1SIMP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a non-commutative product of one and another term to be
+simplified to  a commutative product."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOT1SIMP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTSCRULES NIL ...)-7-1|
+(CONST 0) = $DOTSCRULES
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOTSCRULES
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOTSCRULES
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTSCRULES NIL ...)-7-2|
+(CONST 0) = (SPECIAL $DOTSCRULES)
+(CONST 1) = $DOTSCRULES
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a non-commutative product of a scalar and another term to
+be simplified to a commutative product.  Scalars and constants are carried
+to the front of the expression."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOTSCRULES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOTSCRULES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOTSCRULES
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOTSCRULES
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a non-commutative product of a scalar and another term to
+be simplified to a commutative product.  Scalars and constants are carried
+to the front of the expression."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOTSCRULES
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTDISTRIB NIL ...)-8-1|
+(CONST 0) = $DOTDISTRIB
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOTDISTRIB
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOTDISTRIB
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTDISTRIB NIL ...)-8-2|
+(CONST 0) = (SPECIAL $DOTDISTRIB)
+(CONST 1) = $DOTDISTRIB
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes every non-commutative product to be expanded each time it
+is simplified, i.e.  A . (B + C) will simplify to A . B + A . C."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOTDISTRIB)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOTDISTRIB
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOTDISTRIB
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOTDISTRIB
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes every non-commutative product to be expanded each time it
+is simplified, i.e.  A . (B + C) will simplify to A . B + A . C."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOTDISTRIB
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTEXPTSIMP T ...)-9-1|
+(CONST 0) = $DOTEXPTSIMP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOTEXPTSIMP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOTEXPTSIMP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTEXPTSIMP T ...)-9-2|
+(CONST 0) = (SPECIAL $DOTEXPTSIMP)
+(CONST 1) = $DOTEXPTSIMP
+(CONST 2) = VARIABLE
+(CONST 3) = "Causes A . A to be simplified to A ^^ 2."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOTEXPTSIMP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOTEXPTSIMP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOTEXPTSIMP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOTEXPTSIMP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes A . A to be simplified to A ^^ 2."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOTEXPTSIMP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTASSOC T ...)-10-1|
+(CONST 0) = $DOTASSOC
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOTASSOC
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOTASSOC
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTASSOC T ...)-10-2|
+(CONST 0) = (SPECIAL $DOTASSOC)
+(CONST 1) = $DOTASSOC
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a non-commutative product to be considered associative, so
+that A . (B . C) is simplified to A . B . C.  If this flag is off, dot is
+taken to be right associative, i.e.  A . B . C is simplified to A . (B . C)."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOTASSOC)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOTASSOC
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOTASSOC
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOTASSOC
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a non-commutative product to be considered associative, so
+that A . (B . C) is simplified to A . B . C.  If this flag is off, dot is
+taken to be right associative, i.e.  A . B . C is simplified to A . (B . C)."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOTASSOC
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOALLMXOPS T ...)-11-1|
+(CONST 0) = $DOALLMXOPS
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOALLMXOPS
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOALLMXOPS
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOALLMXOPS T ...)-11-2|
+(CONST 0) = (SPECIAL $DOALLMXOPS)
+(CONST 1) = $DOALLMXOPS
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes all operations relating to matrices (and lists) to be
+carried out.  For example, the product of two matrices will actually be
+computed rather than simply being returned.  Turning on this switch
+effectively turns on the following three."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOALLMXOPS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOALLMXOPS
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOALLMXOPS
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOALLMXOPS
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes all operations relating to matrices (and lists) to be
+carried out.  For example, the product of two matrices will actually be
+computed rather than simply being returned.  Turning on this switch
+effectively turns on the following three."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOALLMXOPS
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOMXMXOPS T ...)-12-1|
+(CONST 0) = $DOMXMXOPS
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOMXMXOPS
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOMXMXOPS
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOMXMXOPS T ...)-12-2|
+(CONST 0) = (SPECIAL $DOMXMXOPS)
+(CONST 1) = $DOMXMXOPS
+(CONST 2) = VARIABLE
+(CONST 3) = "Causes matrix-matrix operations to be carried out."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOMXMXOPS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOMXMXOPS
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOMXMXOPS
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOMXMXOPS
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes matrix-matrix operations to be carried out."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOMXMXOPS
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOSCMXOPS NIL ...)-13-1|
+(CONST 0) = $DOSCMXOPS
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOSCMXOPS
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOSCMXOPS
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOSCMXOPS NIL ...)-13-2|
+(CONST 0) = (SPECIAL $DOSCMXOPS)
+(CONST 1) = $DOSCMXOPS
+(CONST 2) = VARIABLE
+(CONST 3) = "Causes scalar-matrix operations to be carried out."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOSCMXOPS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOSCMXOPS
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOSCMXOPS
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOSCMXOPS
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes scalar-matrix operations to be carried out."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOSCMXOPS
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOMXNCTIMES NIL ...)-14-1|
+(CONST 0) = $DOMXNCTIMES
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOMXNCTIMES
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOMXNCTIMES
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOMXNCTIMES NIL ...)-14-2|
+(CONST 0) = (SPECIAL $DOMXNCTIMES)
+(CONST 1) = $DOMXNCTIMES
+(CONST 2) = VARIABLE
+(CONST 3) = "Causes non-commutative products of matrices to be carried out."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOMXNCTIMES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOMXNCTIMES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOMXNCTIMES
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOMXNCTIMES
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes non-commutative products of matrices to be carried out."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOMXNCTIMES
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $SCALARMATRIXP T ...)-15-1|
+(CONST 0) = $SCALARMATRIXP
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SCALARMATRIXP
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $SCALARMATRIXP
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $SCALARMATRIXP T ...)-15-2|
+(CONST 0) = (SPECIAL $SCALARMATRIXP)
+(CONST 1) = $SCALARMATRIXP
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Causes a square matrix of dimension one to be converted to a
+scalar, i.e. its only element."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $SCALARMATRIXP)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $SCALARMATRIXP
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $SCALARMATRIXP
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $SCALARMATRIXP
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Causes a square matrix of dimension one to be converted to a
+scalar, i.e. its only element."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $SCALARMATRIXP
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTIDENT 1 ...)-16-1|
+(CONST 0) = $DOTIDENT
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+(CONST 2) = 1
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $DOTIDENT
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $DOTIDENT
+11    (LOAD&PUSH 1)
+12    (CONST&PUSH 2)                      ; 1
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $DOTIDENT 1 ...)-16-2|
+(CONST 0) = (SPECIAL $DOTIDENT)
+(CONST 1) = $DOTIDENT
+(CONST 2) = 1
+(CONST 3) = VARIABLE
+(CONST 4) = "The value to be returned by X^^0."
+(CONST 5) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $DOTIDENT)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $DOTIDENT
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $DOTIDENT
+8     (CONST&PUSH 2)                      ; 1
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $DOTIDENT
+12    (CONST&PUSH 3)                      ; VARIABLE
+13    (CONST&PUSH 4)                      ; "The value to be returned by X^^0."
+14    (CALL 3 5)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $DOTIDENT
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $ASSUMESCALAR T ...)-17-1|
+(CONST 0) = $ASSUMESCALAR
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ASSUMESCALAR
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $ASSUMESCALAR
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $ASSUMESCALAR T ...)-17-2|
+(CONST 0) = (SPECIAL $ASSUMESCALAR)
+(CONST 1) = $ASSUMESCALAR
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"This governs whether unknown expressions 'exp' are assumed to behave
+like scalars for combinations of the form 'exp op matrix' where op is one of
+{+, *, ^, .}.  It has three settings:
+
+FALSE -- such expressions behave like non-scalars.
+TRUE  -- such expressions behave like scalars only for the commutative
+	 operators but not for non-commutative multiplication.
+ALL   -- such expressions will behave like scalars for all operators
+	 listed above.
+
+Note:  This switch is primarily for the benefit of old code.  If possible,
+you should declare your variables to be SCALAR or NONSCALAR so that there
+is no need to rely on the setting of this switch."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $ASSUMESCALAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $ASSUMESCALAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $ASSUMESCALAR
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $ASSUMESCALAR
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "This governs whether unknown expressions 'exp' are assumed to behave
+like scalars for combinations of the form 'exp op matrix' where op is one of
+{+, *, ^, .}.  It has three settings:
+
+FALSE -- such expressions behave like non-scalars.
+TRUE  -- such expressions behave like scalars only for the commutative
+	 operators but not for non-commutative multiplication.
+ALL   -- such expressions will behave like scalars for all operators
+	 listed above.
+
+Note:  This switch is primarily for the benefit of old code.  If possible,
+you should declare your variables to be SCALAR or NONSCALAR so that there
+is no need to rely on the setting of this switch."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $ASSUMESCALAR
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $EXPOP $EXPON ...) (FIXNUM $EXPOP $EXPON) ...)-18|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT (EXP VESTIGIAL SIMP-FLAG) ...)-19|
+(CONST 0) = SIMPNCT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT
+(CONST 0) = EXP
+(CONST 1) = SIMPCHECK
+(CONST 2) = NCMULN
+(CONST 3) = $DOTIDENT
+(CONST 4) = COMMUTATIVE-PRODUCTP
+(CONST 5) = MUL2
+(CONST 6) = PRODUCT-WITH-INNER-SCALARP
+(CONST 7) = PARTITION-PRODUCT
+(CONST 8) = OUTER-CONSTANT
+(CONST 9) = MPLUSP
+(CONST 10) = $DOTDISTRIB
+(CONST 11) = $EXPOP
+(CONST 12) = X
+(CONST 13) = NCMUL2
+(CONST 14) = ADDN
+(CONST 15) = MATRIX-MATRIX-PRODUCTP
+(CONST 16) = TIMEX
+(CONST 17) = SCALAR-MATRIX-PRODUCTP
+(CONST 18) = MNCTIMES
+(CONST 19) = OUTERMAP1
+(CONST 20) = SIMPLIFYA
+(CONST 21) = SIMPNCT-ALIKE
+(CONST 22) = $DOTEXPTSIMP
+(CONST 23) = SIMPNCT-MERGE-FACTORS
+(CONST 24) = MNCTIMESP
+(CONST 25) = $DOTASSOC
+(CONST 26) = SIMPNCT-MERGE-PRODUCT
+(CONST 27) = SIMPNCT-ANTISYM-CHECK
+(CONST 28) = EQTEST
+(CONST 29) = (MNCTIMES)
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($DOTEXPTSIMP $EXPOP $DOTDISTRIB $DOTASSOC X $DOTIDENT EXP)
+writes special variable : (EXP)
+243 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 0)                   ; EXP
+5     (GETVALUE 0)                        ; EXP
+7     (CDR)
+8     (CAR&PUSH)
+9     (LOAD&PUSH 6)
+10    (CALL2&PUSH 1)                      ; SIMPCHECK
+12    (GETVALUE 0)                        ; EXP
+14    (CDR)
+15    (CDR)
+16    (CDR)
+17    (JMPIF L70)
+19    (GETVALUE 0)                        ; EXP
+21    (CDR)
+22    (CDR)
+23    (CAR&PUSH)
+24    (LOAD&PUSH 7)
+25    (CALL2 1)                           ; SIMPCHECK
+27    L27
+27    (PUSH)
+28    (GETVALUE 0)                        ; EXP
+30    (CDR)
+31    (JMPIFNOT L79)
+33    (GETVALUE 0)                        ; EXP
+35    (CDR)
+36    (CDR)
+37    (JMPIFNOT L86)
+39    (LOAD&PUSH 1)
+40    (LOAD&PUSH 1)
+41    (CALL2&JMPIF 4 L92)                 ; COMMUTATIVE-PRODUCTP
+44    (LOAD&PUSH 1)
+45    (CALL1&JMPIF 6 L101)                ; PRODUCT-WITH-INNER-SCALARP
+48    (LOAD&PUSH 0)
+49    (CALL1&JMPIFNOT 6 L262)             ; PRODUCT-WITH-INNER-SCALARP
+53    (LOAD&PUSH 0)
+54    (CALL1&PUSH 7)                      ; PARTITION-PRODUCT
+56    (LOAD&CAR&PUSH 0)
+58    (LOAD&PUSH 3)
+59    (LOAD 2)
+60    (CDR)
+61    L61
+61    (PUSH)
+62    (CALL 3 8)                          ; OUTER-CONSTANT
+65    (SKIP 4)
+67    (JMP L373)
+70    L70
+70    (GETVALUE 0)                        ; EXP
+72    (CDR)
+73    (CDR&PUSH)
+74    (LOAD&PUSH 7)
+75    (CALL2 2)                           ; NCMULN
+77    (JMP L27)
+79    L79
+79    (GETVALUE 3)                        ; $DOTIDENT
+81    (SKIP 3)
+83    (JMP L373)
+86    L86
+86    (LOAD 1)
+87    (SKIP 3)
+89    (JMP L373)
+92    L92
+92    (LOAD&PUSH 1)
+93    (LOAD&PUSH 1)
+94    (CALL2 5)                           ; MUL2
+96    (SKIP 3)
+98    (JMP L373)
+101   L101
+101   (LOAD&PUSH 1)
+102   (CALL1&PUSH 7)                      ; PARTITION-PRODUCT
+104   (LOAD&CAR&PUSH 0)
+106   (LOAD&CDR&PUSH 1)
+108   (LOAD 3)
+109   (JMP L61)
+111   L111
+111   (NIL&PUSH)
+112   (LOAD&CDR&PUSH 2)
+114   L114
+114   (LOAD&PUSH 0)
+115   (CALLS1&JMPIF 146 L165)             ; ENDP
+118   (LOAD&CAR&PUSH 0)
+120   (LOAD 0)
+121   (BIND 12)                           ; X
+123   (GETVALUE&PUSH 12)                  ; X
+125   (LOAD&PUSH 7)
+126   (CALL2 13)                          ; NCMUL2
+128   (UNBIND1)
+129   (PUSH)
+130   (LOAD&CONS&STORE 2)
+132   (SKIP 1)
+134   (LOAD&CDR&STORE 0)
+136   (JMP L114)
+138   L138
+138   (NIL&PUSH)
+139   (LOAD&CDR&PUSH 1)
+141   (JMP L161)
+143   L143
+143   (LOAD&CAR&PUSH 0)
+145   (LOAD 0)
+146   (BIND 12)                           ; X
+148   (LOAD&PUSH 7)
+149   (GETVALUE&PUSH 12)                  ; X
+151   (CALL2 13)                          ; NCMUL2
+153   (UNBIND1)
+154   (PUSH)
+155   (LOAD&CONS&STORE 2)
+157   (SKIP 1)
+159   (LOAD&CDR&STORE 0)
+161   L161
+161   (LOAD&PUSH 0)
+162   (CALLS1&JMPIFNOT 146 L143)          ; ENDP
+165   L165
+165   (SKIP 1)
+167   (LOAD&PUSH 0)
+168   (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+171   (T&PUSH)
+172   (CALL2 14)                          ; ADDN
+174   (SKIP 3)
+176   (JMP L373)
+179   L179
+179   (LOAD&PUSH 1)
+180   (LOAD&PUSH 1)
+181   (CALL2 16)                          ; TIMEX
+183   (SKIP 3)
+185   (JMP L373)
+188   L188
+188   (CONST&PUSH 18)                     ; MNCTIMES
+189   (LOAD&PUSH 2)
+190   (LOAD&PUSH 2)
+191   (CALL&PUSH 3 19)                    ; OUTERMAP1
+194   (T&PUSH)
+195   (CALL2 20)                          ; SIMPLIFYA
+197   (SKIP 3)
+199   (JMP L373)
+202   L202
+202   (LOAD&PUSH 1)
+203   (LOAD&PUSH 1)
+204   (CALL2 23)                          ; SIMPNCT-MERGE-FACTORS
+206   (SKIP 3)
+208   (JMP L373)
+211   L211
+211   (LOAD 1)
+212   (CDR)
+213   (JMP L224)
+215   L215
+215   (LOAD&CDR&PUSH 1)
+217   (LOAD&PUSH 1)
+218   (CALL1&JMPIF 24 L211)               ; MNCTIMESP
+221   (LOAD&PUSH 1)
+222   (NIL)
+223   (CONS)
+224   L224
+224   (PUSH)
+225   (CALLSR&PUSH 2 34)                  ; APPEND
+228   (T&PUSH)
+229   (CALL2 2)                           ; NCMULN
+231   (SKIP 3)
+233   (JMP L373)
+236   L236
+236   (GETVALUE 0)                        ; EXP
+238   (CDR)
+239   (JMP L354)
+242   L242
+242   (LOAD&PUSH 1)
+243   (LOAD&CDR&PUSH 1)
+245   (CALL2 26)                          ; SIMPNCT-MERGE-PRODUCT
+247   (SETVALUE 0)                        ; EXP
+249   (PUSH)
+250   (CALL1&JMPIFNOT 24 L257)            ; MNCTIMESP
+253   (GETVALUE 25)                       ; $DOTASSOC
+255   (JMPIF L236)
+257   L257
+257   (GETVALUE 0)                        ; EXP
+259   (JMP L367)
+262   L262
+262   (LOAD&PUSH 1)
+263   (CALL1&JMPIFNOT 9 L277)             ; MPLUSP
+266   (GETVALUE 10)                       ; $DOTDISTRIB
+268   (JMPIF L111)
+271   (GETVALUE&PUSH 11)                  ; $EXPOP
+273   (CALLS2&JMPIFNOT 145 L111)          ; ZEROP
+277   L277
+277   (LOAD&PUSH 0)
+278   (CALL1&JMPIFNOT 9 L292)             ; MPLUSP
+281   (GETVALUE 10)                       ; $DOTDISTRIB
+283   (JMPIF L138)
+286   (GETVALUE&PUSH 11)                  ; $EXPOP
+288   (CALLS2&JMPIFNOT 145 L138)          ; ZEROP
+292   L292
+292   (LOAD&PUSH 1)
+293   (LOAD&PUSH 1)
+294   (CALL2&JMPIF 15 L179)               ; MATRIX-MATRIX-PRODUCTP
+298   (LOAD&PUSH 1)
+299   (LOAD&PUSH 1)
+300   (CALL2&JMPIF 17 L188)               ; SCALAR-MATRIX-PRODUCTP
+304   (LOAD&PUSH 0)
+305   (LOAD&PUSH 2)
+306   (CALL2&JMPIF 17 L188)               ; SCALAR-MATRIX-PRODUCTP
+310   (LOAD&PUSH 1)
+311   (LOAD&PUSH 1)
+312   (CALL2&JMPIFNOT 21 L320)            ; SIMPNCT-ALIKE
+315   (GETVALUE 22)                       ; $DOTEXPTSIMP
+317   (JMPIF L202)
+320   L320
+320   (LOAD&PUSH 1)
+321   (CALL1&JMPIFNOT 24 L329)            ; MNCTIMESP
+324   (GETVALUE 25)                       ; $DOTASSOC
+326   (JMPIF L215)
+329   L329
+329   (LOAD&PUSH 0)
+330   (CALL1&JMPIFNOT 24 L342)            ; MNCTIMESP
+333   (GETVALUE 25)                       ; $DOTASSOC
+335   (JMPIFNOT L342)
+337   (GETVALUE 22)                       ; $DOTEXPTSIMP
+339   (JMPIF L242)
+342   L342
+342   (LOAD&PUSH 0)
+343   (CALL1&JMPIFNOT 24 L362)            ; MNCTIMESP
+346   (GETVALUE 25)                       ; $DOTASSOC
+348   (JMPIFNOT L362)
+350   (LOAD&PUSH 1)
+351   (LOAD 1)
+352   (CDR)
+353   (CONS)
+354   L354
+354   (PUSH)
+355   (LOAD&PUSH 3)
+356   (CALL2 27)                          ; SIMPNCT-ANTISYM-CHECK
+358   (SKIP 3)
+360   (JMP L373)
+362   L362
+362   (CONST&PUSH 29)                     ; (MNCTIMES)
+363   (LOAD&PUSH 2)
+364   (LOAD&PUSH 2)
+365   (LIST 3)
+367   L367
+367   (PUSH)
+368   (LOAD&PUSH 3)
+369   (CALL2 28)                          ; EQTEST
+371   (SKIP 3)
+373   L373
+373   (UNBIND1)
+374   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN COMMUTATIVE-PRODUCTP (FIRST-FACTOR REMAINDER) ...)-20|
+(CONST 0) = COMMUTATIVE-PRODUCTP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COMMUTATIVE-PRODUCTP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COMMUTATIVE-PRODUCTP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COMMUTATIVE-PRODUCTP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COMMUTATIVE-PRODUCTP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COMMUTATIVE-PRODUCTP
+8     (SKIP&RET 1)
+
+
+Disassembly of function COMMUTATIVE-PRODUCTP
+(CONST 0) = SIMPNCT-SC-OR-CONST-P
+(CONST 1) = SIMPNCT-ONEP
+(CONST 2) = ZERO-PRODUCTP
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALL1 0)                           ; SIMPNCT-SC-OR-CONST-P
+3     (JMPIF1 L32)
+5     (LOAD&PUSH 1)
+6     (CALL1 0)                           ; SIMPNCT-SC-OR-CONST-P
+8     (JMPIF1 L32)
+10    (LOAD&PUSH 2)
+11    (CALL1 1)                           ; SIMPNCT-ONEP
+13    (JMPIF1 L32)
+15    (LOAD&PUSH 1)
+16    (CALL1 1)                           ; SIMPNCT-ONEP
+18    (JMPIF1 L32)
+20    (LOAD&PUSH 2)
+21    (LOAD&PUSH 2)
+22    (CALL2 2)                           ; ZERO-PRODUCTP
+24    (JMPIF1 L32)
+26    (LOAD&PUSH 1)
+27    (LOAD&PUSH 3)
+28    (CALL2 2)                           ; ZERO-PRODUCTP
+30    (SKIP&RET 3)
+32    L32
+32    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-SC-OR-CONST-P (TERM) ...)-21|
+(CONST 0) = SIMPNCT-SC-OR-CONST-P
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-SC-OR-CONST-P>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-SC-OR-CONST-P
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-SC-OR-CONST-P
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-SC-OR-CONST-P>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-SC-OR-CONST-P
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-SC-OR-CONST-P
+(CONST 0) = SIMPNCT-CONSTANTP
+(CONST 1) = SIMPNCT-ASSUMESCALARP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1 0)                           ; SIMPNCT-CONSTANTP
+3     (JMPIF1 L10)
+5     (LOAD&PUSH 1)
+6     (CALL1 1)                           ; SIMPNCT-ASSUMESCALARP
+8     (SKIP&RET 2)
+10    L10
+10    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-CONSTANTP (TERM) ...)-22|
+(CONST 0) = SIMPNCT-CONSTANTP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-CONSTANTP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-CONSTANTP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-CONSTANTP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-CONSTANTP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-CONSTANTP
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-CONSTANTP
+(CONST 0) = $DOTCONSTRULES
+(CONST 1) = MNUMP
+(CONST 2) = $CONSTANTP
+(CONST 3) = $NONSCALARP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($DOTCONSTRULES)
+14 byte-code instructions:
+0     (GETVALUE 0)                        ; $DOTCONSTRULES
+2     (JMPIFNOT1 L20)
+4     (LOAD&PUSH 1)
+5     (CALL1 1)                           ; MNUMP
+7     (JMPIF1 L20)
+9     (LOAD&PUSH 1)
+10    (CALL1 2)                           ; $CONSTANTP
+12    (JMPIFNOT1 L20)
+14    (LOAD&PUSH 1)
+15    (CALL1 3)                           ; $NONSCALARP
+17    (NOT)
+18    (SKIP&RET 2)
+20    L20
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-ASSUMESCALARP (TERM) ...)-23|
+(CONST 0) = SIMPNCT-ASSUMESCALARP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-ASSUMESCALARP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-ASSUMESCALARP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-ASSUMESCALARP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-ASSUMESCALARP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-ASSUMESCALARP
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-ASSUMESCALARP
+(CONST 0) = $DOTSCRULES
+(CONST 1) = $ASSUMESCALAR
+(CONST 2) = $ALL
+(CONST 3) = SCALAR-OR-CONSTANT-P
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($ASSUMESCALAR $DOTSCRULES)
+11 byte-code instructions:
+0     (GETVALUE 0)                        ; $DOTSCRULES
+2     (JMPIFNOT1 L14)
+4     (LOAD&PUSH 1)
+5     (GETVALUE&PUSH 1)                   ; $ASSUMESCALAR
+7     (CONST 2)                           ; $ALL
+8     (EQ)
+9     (PUSH)
+10    (CALL2 3)                           ; SCALAR-OR-CONSTANT-P
+12    (SKIP&RET 2)
+14    L14
+14    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-ONEP (TERM) ...)-24|
+(CONST 0) = SIMPNCT-ONEP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-ONEP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-ONEP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-ONEP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-ONEP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-ONEP
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-ONEP
+(CONST 0) = $DOT1SIMP
+(CONST 1) = ONEP1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($DOT1SIMP)
+7 byte-code instructions:
+0     (GETVALUE 0)                        ; $DOT1SIMP
+2     (JMPIFNOT1 L9)
+4     (LOAD&PUSH 1)
+5     (CALL1 1)                           ; ONEP1
+7     (SKIP&RET 2)
+9     L9
+9     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN ZERO-PRODUCTP (ONE-TERM OTHER-TERM) ...)-25|
+(CONST 0) = ZERO-PRODUCTP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZERO-PRODUCTP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZERO-PRODUCTP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZERO-PRODUCTP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZERO-PRODUCTP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZERO-PRODUCTP
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZERO-PRODUCTP
+(CONST 0) = ZEROP1
+(CONST 1) = $DOT0SIMP
+(CONST 2) = $DOT0NSCSIMP
+(CONST 3) = $NONSCALARP
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($DOT0NSCSIMP $DOT0SIMP)
+13 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALL1 0)                           ; ZEROP1
+3     (JMPIFNOT1 L19)
+5     (GETVALUE 1)                        ; $DOT0SIMP
+7     (JMPIFNOT1 L19)
+9     (GETVALUE 2)                        ; $DOT0NSCSIMP
+11    (JMPIF1 L19)
+13    (LOAD&PUSH 1)
+14    (CALL1 3)                           ; $NONSCALARP
+16    (NOT)
+17    (SKIP&RET 3)
+19    L19
+19    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN PRODUCT-WITH-INNER-SCALARP (PRODUCT) ...)-26|
+(CONST 0) = PRODUCT-WITH-INNER-SCALARP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PRODUCT-WITH-INNER-SCALARP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PRODUCT-WITH-INNER-SCALARP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PRODUCT-WITH-INNER-SCALARP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PRODUCT-WITH-INNER-SCALARP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PRODUCT-WITH-INNER-SCALARP
+8     (SKIP&RET 1)
+
+
+Disassembly of function PRODUCT-WITH-INNER-SCALARP
+(CONST 0) = MTIMESP
+(CONST 1) = $DOTCONSTRULES
+(CONST 2) = $DOTSCRULES
+(CONST 3) = SIMPNCT-SC-OR-CONST-P
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($DOTSCRULES $DOTCONSTRULES)
+23 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1 0)                           ; MTIMESP
+3     (JMPIFNOT1 L34)
+5     (GETVALUE 1)                        ; $DOTCONSTRULES
+7     (JMPIF L13)
+9     (GETVALUE 2)                        ; $DOTSCRULES
+11    (JMPIFNOT1 L34)
+13    L13
+13    (LOAD&CDR&PUSH 1)
+15    (LOAD&JMPIFNOT 0 L28)
+18    L18
+18    (LOAD&CAR&PUSH 0)
+20    (CALL1&JMPIF 3 L31)                 ; SIMPNCT-SC-OR-CONST-P
+23    (LOAD&CDR&STORE 0)
+25    (LOAD&JMPIF 0 L18)
+28    L28
+28    (NIL)
+29    (SKIP&RET 3)
+31    L31
+31    (T)
+32    (SKIP&RET 3)
+34    L34
+34    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN PARTITION-PRODUCT (PRODUCT) ...)-27|
+(CONST 0) = PARTITION-PRODUCT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PARTITION-PRODUCT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PARTITION-PRODUCT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PARTITION-PRODUCT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PARTITION-PRODUCT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PARTITION-PRODUCT
+8     (SKIP&RET 1)
+
+
+Disassembly of function PARTITION-PRODUCT
+(CONST 0) = SIMPNCT-SC-OR-CONST-P
+(CONST 1) = MULN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+24 byte-code instructions:
+0     (LOAD&CDR&PUSH 1)
+2     (PUSH-NIL 2)
+4     (LOAD&JMPIFNOT 2 L21)
+7     L7
+7     (LOAD&CAR&PUSH 2)
+9     (CALL1&JMPIF 0 L33)                 ; SIMPNCT-SC-OR-CONST-P
+12    (LOAD&CAR&PUSH 2)
+14    (LOAD&CONS&STORE 0)
+16    L16
+16    (LOAD&CDR&STORE 2)
+18    (LOAD&JMPIF 2 L7)
+21    L21
+21    (LOAD&PUSH 1)
+22    (CALLS2&PUSH 73)                    ; NREVERSE
+24    (LOAD&PUSH 1)
+25    (CALLS2&PUSH 73)                    ; NREVERSE
+27    (T&PUSH)
+28    (CALL2 1)                           ; MULN
+30    (CONS)
+31    (SKIP&RET 5)
+33    L33
+33    (LOAD&CAR&PUSH 2)
+35    (LOAD&CONS&STORE 1)
+37    (JMP L16)
+
+
+Disassembly of function #:|(DEFUN OUTER-CONSTANT (CONSTANT NONSCALAR1 NONSCALAR2) ...)-28|
+(CONST 0) = OUTER-CONSTANT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE OUTER-CONSTANT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OUTER-CONSTANT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; OUTER-CONSTANT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE OUTER-CONSTANT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; OUTER-CONSTANT
+8     (SKIP&RET 1)
+
+
+Disassembly of function OUTER-CONSTANT
+(CONST 0) = NCMUL2
+(CONST 1) = MULN
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 3)
+1     (LOAD&PUSH 3)
+2     (LOAD&PUSH 3)
+3     (CALL2&PUSH 0)                      ; NCMUL2
+5     (NIL)
+6     (CONS&PUSH)
+7     (CALLSR&PUSH 2 35)                  ; NCONC
+10    (T&PUSH)
+11    (CALL2 1)                           ; MULN
+13    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-BASE (TERM) ...)-29|
+(CONST 0) = SIMPNCT-BASE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-BASE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-BASE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-BASE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-BASE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-BASE
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-BASE
+(CONST 0) = MNCEXPTP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&JMPIF 0 L7)                  ; MNCEXPTP
+4     (LOAD 1)
+5     (SKIP&RET 2)
+7     L7
+7     (LOAD 1)
+8     (CDR)
+9     (CAR)
+10    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-POWER (TERM) ...)-30|
+(CONST 0) = SIMPNCT-POWER
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-POWER>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-POWER
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-POWER
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-POWER>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-POWER
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-POWER
+(CONST 0) = MNCEXPTP
+(CONST 1) = 1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&JMPIF 0 L7)                  ; MNCEXPTP
+4     (CONST 1)                           ; 1
+5     (SKIP&RET 2)
+7     L7
+7     (LOAD 1)
+8     (CDR)
+9     (CDR)
+10    (CAR)
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-ALIKE (TERM1 TERM2) ...)-31|
+(CONST 0) = SIMPNCT-ALIKE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-ALIKE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-ALIKE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-ALIKE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-ALIKE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-ALIKE
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-ALIKE
+(CONST 0) = SIMPNCT-BASE
+(CONST 1) = ALIKE1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALL1&PUSH 0)                      ; SIMPNCT-BASE
+3     (LOAD&PUSH 2)
+4     (CALL1&PUSH 0)                      ; SIMPNCT-BASE
+6     (CALL2 1)                           ; ALIKE1
+8     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-MERGE-FACTORS (TERM1 TERM2) ...)-32|
+(CONST 0) = SIMPNCT-MERGE-FACTORS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-MERGE-FACTORS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-MERGE-FACTORS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-MERGE-FACTORS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-MERGE-FACTORS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-MERGE-FACTORS
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-MERGE-FACTORS
+(CONST 0) = SIMPNCT-BASE
+(CONST 1) = SIMPNCT-POWER
+(CONST 2) = ADD2
+(CONST 3) = NCPOWER
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALL1&PUSH 0)                      ; SIMPNCT-BASE
+3     (LOAD&PUSH 3)
+4     (CALL1&PUSH 1)                      ; SIMPNCT-POWER
+6     (LOAD&PUSH 3)
+7     (CALL1&PUSH 1)                      ; SIMPNCT-POWER
+9     (CALL2&PUSH 2)                      ; ADD2
+11    (CALL2 3)                           ; NCPOWER
+13    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MATRIX-MATRIX-PRODUCTP (TERM1 TERM2) ...)-33|
+(CONST 0) = MATRIX-MATRIX-PRODUCTP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MATRIX-MATRIX-PRODUCTP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MATRIX-MATRIX-PRODUCTP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MATRIX-MATRIX-PRODUCTP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MATRIX-MATRIX-PRODUCTP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MATRIX-MATRIX-PRODUCTP
+8     (SKIP&RET 1)
+
+
+Disassembly of function MATRIX-MATRIX-PRODUCTP
+(CONST 0) = $DOALLMXOPS
+(CONST 1) = $DOMXMXOPS
+(CONST 2) = $DOMXNCTIMES
+(CONST 3) = MXORLISTP1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($DOMXNCTIMES $DOMXMXOPS $DOALLMXOPS)
+15 byte-code instructions:
+0     (GETVALUE 0)                        ; $DOALLMXOPS
+2     (JMPIF L12)
+4     (GETVALUE 1)                        ; $DOMXMXOPS
+6     (JMPIF L12)
+8     (GETVALUE 2)                        ; $DOMXNCTIMES
+10    (JMPIFNOT1 L22)
+12    L12
+12    (LOAD&PUSH 2)
+13    (CALL1 3)                           ; MXORLISTP1
+15    (JMPIFNOT1 L22)
+17    (LOAD&PUSH 1)
+18    (CALL1 3)                           ; MXORLISTP1
+20    (SKIP&RET 3)
+22    L22
+22    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN SCALAR-MATRIX-PRODUCTP (TERM1 TERM2) ...)-34|
+(CONST 0) = SCALAR-MATRIX-PRODUCTP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SCALAR-MATRIX-PRODUCTP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SCALAR-MATRIX-PRODUCTP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SCALAR-MATRIX-PRODUCTP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SCALAR-MATRIX-PRODUCTP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SCALAR-MATRIX-PRODUCTP
+8     (SKIP&RET 1)
+
+
+Disassembly of function SCALAR-MATRIX-PRODUCTP
+(CONST 0) = $DOALLMXOPS
+(CONST 1) = $DOSCMXOPS
+(CONST 2) = MXORLISTP1
+(CONST 3) = $ASSUMESCALAR
+(CONST 4) = $ALL
+(CONST 5) = SCALAR-OR-CONSTANT-P
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($ASSUMESCALAR $DOSCMXOPS $DOALLMXOPS)
+17 byte-code instructions:
+0     (GETVALUE 0)                        ; $DOALLMXOPS
+2     (JMPIF L8)
+4     (GETVALUE 1)                        ; $DOSCMXOPS
+6     (JMPIFNOT1 L23)
+8     L8
+8     (LOAD&PUSH 2)
+9     (CALL1 2)                           ; MXORLISTP1
+11    (JMPIFNOT1 L23)
+13    (LOAD&PUSH 1)
+14    (GETVALUE&PUSH 3)                   ; $ASSUMESCALAR
+16    (CONST 4)                           ; $ALL
+17    (EQ)
+18    (PUSH)
+19    (CALL2 5)                           ; SCALAR-OR-CONSTANT-P
+21    (SKIP&RET 3)
+23    L23
+23    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DECLARE-TOP (MUZZLED T))-35|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN SIMPNCEXPT (EXP VESTIGIAL SIMP-FLAG) ...)-36|
+(CONST 0) = SIMPNCEXPT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCEXPT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCEXPT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCEXPT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCEXPT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCEXPT
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCEXPT
+(CONST 0) = EXP
+(CONST 1) = SIMPCHECK
+(CONST 2) = TWOARGCHECK
+(CONST 3) = ZEROP1
+(CONST 4) = ERRORSW
+(CONST 5) = "~M has been generated"
+(CONST 6) = (MNCEXPT)
+(CONST 7) = MERROR
+(CONST 8) = MXORLISTP1
+(CONST 9) = IDENTITYMX
+(CONST 10) = $DOTIDENT
+(CONST 11) = ONEP1
+(CONST 12) = SIMPNCT-SC-OR-CONST-P
+(CONST 13) = POWER
+(CONST 14) = $DOT0SIMP
+(CONST 15) = $DOT1SIMP
+(CONST 16) = $DOALLMXOPS
+(CONST 17) = $DOMXMXOPS
+(CONST 18) = FIXNUMP
+(CONST 19) = FIXNUM
+(CONST 20) = $LISTP
+(CONST 21) = $SCALARMATRIXP
+(CONST 22) = POWERX
+(CONST 23) = SIMPLIFY
+(CONST 24) = MPLUSP
+(CONST 25) = $DOTEXPTSIMP
+(CONST 26) = MNCTIMESP
+(CONST 27) = $EXPOP
+(CONST 28) = NCPOWER
+(CONST 29) = NCMUL2
+(CONST 30) = $EXPON
+(CONST 31) = SIMPNCT-INVERT
+(CONST 32) = PRODUCT-WITH-INNER-SCALARP
+(CONST 33) = PARTITION-PRODUCT
+(CONST 34) = MULN
+(CONST 35) = MUL2
+(CONST 36) = $DOTASSOC
+(CONST 37) = MNCEXPTP
+(CONST 38) = (MNCEXPT)
+(CONST 39) = EQTEST
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: 
+($DOTASSOC $EXPON $EXPOP $DOTEXPTSIMP $DOMXMXOPS $DOALLMXOPS $SCALARMATRIXP
+ $DOTIDENT ERRORSW $DOT1SIMP $DOT0SIMP EXP)
+183 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE 0)                        ; EXP
+5     (CDR)
+6     (CAR&PUSH)
+7     (LOAD&PUSH 5)
+8     (CALL2&PUSH 1)                      ; SIMPCHECK
+10    (GETVALUE 0)                        ; EXP
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (LOAD&PUSH 6)
+16    (CALL2&PUSH 1)                      ; SIMPCHECK
+18    (GETVALUE&PUSH 0)                   ; EXP
+20    (GETVALUE&PUSH 0)                   ; EXP
+22    (CALL1 2)                           ; TWOARGCHECK
+24    (LOAD&PUSH 1)
+25    (CALL1&JMPIF 3 L71)                 ; ZEROP1
+28    (LOAD&PUSH 1)
+29    (CALL1&JMPIF 11 L54)                ; ONEP1
+32    (LOAD&PUSH 2)
+33    (CALL1&JMPIF 12 L98)                ; SIMPNCT-SC-OR-CONST-P
+36    (LOAD&PUSH 2)
+37    (CALL1&JMPIFNOT 3 L44)              ; ZEROP1
+40    (GETVALUE 14)                       ; $DOT0SIMP
+42    (JMPIF L54)
+44    L44
+44    (LOAD&PUSH 2)
+45    (CALL1&JMPIFNOT 11 L135)            ; ONEP1
+49    (GETVALUE 15)                       ; $DOT1SIMP
+51    (JMPIFNOT L135)
+54    L54
+54    (LOAD 2)
+55    (SKIP 3)
+57    (JMP L288)
+60    L60
+60    (CONST&PUSH 4)                      ; ERRORSW
+61    (T)
+62    (THROW)
+63    L63
+63    (LOAD&PUSH 2)
+64    (CALL1 9)                           ; IDENTITYMX
+66    (SKIP 3)
+68    (JMP L288)
+71    L71
+71    (LOAD&PUSH 2)
+72    (CALL1&JMPIFNOT 3 L87)              ; ZEROP1
+75    (GETVALUE 4)                        ; ERRORSW
+77    (JMPIF L60)
+79    (CONST&PUSH 5)                      ; "~M has been generated"
+80    (CONST&PUSH 6)                      ; (MNCEXPT)
+81    (LOAD&PUSH 4)
+82    (LOAD&PUSH 4)
+83    (LIST&PUSH 3)
+85    (CALL2 7)                           ; MERROR
+87    L87
+87    (LOAD&PUSH 2)
+88    (CALL1&JMPIF 8 L63)                 ; MXORLISTP1
+91    (GETVALUE 10)                       ; $DOTIDENT
+93    (SKIP 3)
+95    (JMP L288)
+98    L98
+98    (LOAD&PUSH 2)
+99    (LOAD&PUSH 2)
+100   (CALL2 13)                          ; POWER
+102   (SKIP 3)
+104   (JMP L288)
+107   L107
+107   (LOAD&PUSH 2)
+108   (CALL1&JMPIF 20 L113)               ; $LISTP
+111   (GETVALUE 21)                       ; $SCALARMATRIXP
+113   L113
+113   (BIND 21)                           ; $SCALARMATRIXP
+115   (LOAD&PUSH 5)
+116   (LOAD&PUSH 5)
+117   (CALL2&PUSH 22)                     ; POWERX
+119   (CALL1 23)                          ; SIMPLIFY
+121   (UNBIND1)
+122   (SKIP 3)
+124   (JMP L288)
+127   L127
+127   (LOAD&PUSH 2)
+128   (LOAD&PUSH 3)
+129   (LOAD&PUSH 3)
+130   (CALLS2 151)                        ; 1-
+132   (JMP L218)
+135   L135
+135   (GETVALUE 16)                       ; $DOALLMXOPS
+137   (JMPIF L143)
+139   (GETVALUE 17)                       ; $DOMXMXOPS
+141   (JMPIFNOT L151)
+143   L143
+143   (LOAD&PUSH 2)
+144   (CALL1&JMPIFNOT 8 L151)             ; MXORLISTP1
+147   (LOAD&PUSH 1)
+148   (CALL1&JMPIF 18 L107)               ; FIXNUMP
+151   L151
+151   (LOAD&PUSH 2)
+152   (CALL1&JMPIF 24 L163)               ; MPLUSP
+155   (GETVALUE 25)                       ; $DOTEXPTSIMP
+157   (JMPIF L178)
+159   (LOAD&PUSH 2)
+160   (CALL1&JMPIFNOT 26 L178)            ; MNCTIMESP
+163   L163
+163   (LOAD&PUSH 1)
+164   (CALL1&JMPIFNOT 18 L178)            ; FIXNUMP
+167   (LOAD&PUSH 1)
+168   (GETVALUE&PUSH 27)                  ; $EXPOP
+170   (CALLSR&JMPIF 1 48 L178)            ; >
+174   (LOAD&PUSH 1)
+175   (CALLS2&JMPIF 146 L127)             ; PLUSP
+178   L178
+178   (LOAD&PUSH 2)
+179   (CALL1&JMPIF 24 L192)               ; MPLUSP
+182   (GETVALUE 25)                       ; $DOTEXPTSIMP
+184   (JMPIF L265)
+187   (LOAD&PUSH 2)
+188   (CALL1&JMPIFNOT 26 L265)            ; MNCTIMESP
+192   L192
+192   (LOAD&PUSH 1)
+193   (CALL1&JMPIFNOT 18 L265)            ; FIXNUMP
+197   (LOAD&PUSH 1)
+198   (CALLSR&PUSH 0 54)                  ; -
+201   (GETVALUE&PUSH 30)                  ; $EXPON
+203   (CALLSR&JMPIF 1 48 L265)            ; >
+207   (LOAD&PUSH 1)
+208   (CALLS2&JMPIFNOT 147 L265)          ; MINUSP
+211   (LOAD&PUSH 2)
+212   (CALL1&PUSH 31)                     ; SIMPNCT-INVERT
+214   (LOAD&PUSH 3)
+215   (LOAD&PUSH 3)
+216   (CALLS2 150)                        ; 1+
+218   L218
+218   (PUSH)
+219   (CALL2&PUSH 28)                     ; NCPOWER
+221   (CALL2 29)                          ; NCMUL2
+223   (SKIP 3)
+225   (JMP L288)
+227   L227
+227   (LOAD&PUSH 2)
+228   (CALL1&PUSH 33)                     ; PARTITION-PRODUCT
+230   (LOAD&CAR&PUSH 0)
+232   (T&PUSH)
+233   (CALL2&PUSH 34)                     ; MULN
+235   (LOAD&PUSH 3)
+236   (CALL2&PUSH 13)                     ; POWER
+238   (LOAD&CDR&PUSH 1)
+240   (LOAD&PUSH 4)
+241   (CALL2&PUSH 28)                     ; NCPOWER
+243   (CALL2 35)                          ; MUL2
+245   (SKIP 4)
+247   (JMP L288)
+249   L249
+249   (LOAD 2)
+250   (CDR)
+251   (CAR&PUSH)
+252   (LOAD 3)
+253   (CDR)
+254   (CDR)
+255   (CAR&PUSH)
+256   (LOAD&PUSH 3)
+257   (CALL2&PUSH 35)                     ; MUL2
+259   (CALL2 28)                          ; NCPOWER
+261   (SKIP 3)
+263   (JMP L288)
+265   L265
+265   (LOAD&PUSH 2)
+266   (CALL1&JMPIF 32 L227)               ; PRODUCT-WITH-INNER-SCALARP
+269   (GETVALUE 36)                       ; $DOTASSOC
+271   (JMPIFNOT L277)
+273   (LOAD&PUSH 2)
+274   (CALL1&JMPIF 37 L249)               ; MNCEXPTP
+277   L277
+277   (CONST&PUSH 38)                     ; (MNCEXPT)
+279   (LOAD&PUSH 3)
+280   (LOAD&PUSH 3)
+281   (LIST&PUSH 3)
+283   (LOAD&PUSH 1)
+284   (CALL2 39)                          ; EQTEST
+286   (SKIP 3)
+288   L288
+288   (UNBIND1)
+289   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DECLARE-TOP (MUZZLED NIL))-37|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-INVERT (EXP) ...)-38|
+(CONST 0) = SIMPNCT-INVERT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-INVERT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-INVERT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-INVERT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-INVERT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-INVERT
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-INVERT
+(CONST 0) = EXP
+(CONST 1) = MNCTIMESP
+(CONST 2) = SIMPNCT-INVERT
+(CONST 3) = NCMULN
+(CONST 4) = MNCEXPTP
+(CONST 5) = NCPOWER
+(CONST 6) = (MNCEXPT SIMP)
+(CONST 7) = -1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (EXP)
+39 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (GETVALUE&PUSH 0)                   ; EXP
+5     (CALL1&JMPIF 1 L30)                 ; MNCTIMESP
+8     (GETVALUE&PUSH 0)                   ; EXP
+10    (CALL1&JMPIFNOT 4 L21)              ; MNCEXPTP
+13    (GETVALUE 0)                        ; EXP
+15    (CDR)
+16    (CDR)
+17    (CAR&PUSH)
+18    (CALLS2&JMPIF 12 L45)               ; INTEGERP
+21    L21
+21    (CONST&PUSH 6)                      ; (MNCEXPT SIMP)
+22    (GETVALUE&PUSH 0)                   ; EXP
+24    (CONST&PUSH 7)                      ; -1
+25    (LIST 3)
+27    L27
+27    (UNBIND1)
+28    (SKIP&RET 2)
+30    L30
+30    (CONST&SYMBOL-FUNCTION&PUSH 2)      ; SIMPNCT-INVERT
+32    (GETVALUE 0)                        ; EXP
+34    (CDR&PUSH)
+35    (CALLSR&PUSH 0 22)                  ; MAPCAR
+38    (CALLS2&PUSH 73)                    ; NREVERSE
+40    (T&PUSH)
+41    (CALL2 3)                           ; NCMULN
+43    (JMP L27)
+45    L45
+45    (GETVALUE 0)                        ; EXP
+47    (CDR)
+48    (CAR&PUSH)
+49    (GETVALUE 0)                        ; EXP
+51    (CDR)
+52    (CDR)
+53    (CAR&PUSH)
+54    (CALLSR&PUSH 0 54)                  ; -
+57    (CALL2 5)                           ; NCPOWER
+59    (JMP L27)
+
+
+Disassembly of function #:|(DEFUN IDENTITYMX (X) ...)-39|
+(CONST 0) = IDENTITYMX
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE IDENTITYMX>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; IDENTITYMX
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; IDENTITYMX
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE IDENTITYMX>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; IDENTITYMX
+8     (SKIP&RET 1)
+
+
+Disassembly of function IDENTITYMX
+(CONST 0) = X
+(CONST 1) = $LISTP
+(CONST 2) = $IDENT
+(CONST 3) = SIMPLIFYA
+(CONST 4) = $DOTIDENT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($DOTIDENT X)
+32 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (CDR)
+6     (CAR&PUSH)
+7     (CALL1&JMPIFNOT 1 L26)              ; $LISTP
+10    (GETVALUE 0)                        ; X
+12    (CDR&PUSH)
+13    (CALLS2&PUSH 71)                    ; LENGTH
+15    (GETVALUE 0)                        ; X
+17    (CDR)
+18    (CAR)
+19    (CDR&PUSH)
+20    (CALLS2&PUSH 71)                    ; LENGTH
+22    (CALLSR&JMPIF 1 45 L31)             ; =
+26    L26
+26    (GETVALUE 4)                        ; $DOTIDENT
+28    L28
+28    (UNBIND1)
+29    (SKIP&RET 2)
+31    L31
+31    (GETVALUE 0)                        ; X
+33    (CAR&PUSH)
+34    (GETVALUE 0)                        ; X
+36    (CDR&PUSH)
+37    (CALLS2&PUSH 71)                    ; LENGTH
+39    (CALL1 2)                           ; $IDENT
+41    (CDR)
+42    (CONS&PUSH)
+43    (T&PUSH)
+44    (CALL2 3)                           ; SIMPLIFYA
+46    (JMP L28)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-MERGE-PRODUCT (FIRST-FACTOR REMAINDER) ...)-40|
+(CONST 0) = SIMPNCT-MERGE-PRODUCT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-MERGE-PRODUCT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-MERGE-PRODUCT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-MERGE-PRODUCT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-MERGE-PRODUCT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-MERGE-PRODUCT
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-MERGE-PRODUCT
+(CONST 0) = 2
+(CONST 1) = QUOT
+(CONST 2) = (MNCTIMES)
+(CONST 3) = SIMPNCT-ALIKE
+(CONST 4) = SIMPNCT-MERGE-FACTORS
+(CONST 5) = NCMULN
+(CONST 6) = (MNCTIMES)
+(CONST 7) = FIRSTN
+(CONST 8) = ALIKE1
+(CONST 9) = NCPOWER
+(CONST 10) = (MNCTIMES)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+78 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CALLS2&PUSH 150)                   ; 1+
+5     (CONST&PUSH 0)                      ; 2
+6     (CALL2&PUSH 1)                      ; QUOT
+8     (LOAD&CAR&PUSH 2)
+10    (CONST&PUSH 2)                      ; (MNCTIMES)
+11    (LOAD&PUSH 5)
+12    (LOAD&CAR&PUSH 5)
+14    (LIST&PUSH 3)
+16    (CONST&PUSH 0)                      ; 2
+17    (LOAD&CDR&PUSH 5)
+19    (LOAD&JMPIFNOT 0 L111)
+23    L23
+23    (LOAD&PUSH 7)
+24    (LOAD&PUSH 4)
+25    (CALL2&JMPIF 3 L64)                 ; SIMPNCT-ALIKE
+28    (LOAD&PUSH 2)
+29    (LOAD&CAR&PUSH 1)
+31    (CALL2&JMPIF 3 L71)                 ; SIMPNCT-ALIKE
+34    (LOAD&PUSH 1)
+35    (LOAD&PUSH 5)
+36    (CALLSR&JMPIF 1 48 L80)             ; >
+40    (LOAD&PUSH 2)
+41    (CONST&PUSH 6)                      ; (MNCTIMES)
+42    (LOAD&PUSH 3)
+43    (LOAD&PUSH 3)
+44    (CALL2 7)                           ; FIRSTN
+46    (CONS&PUSH)
+47    (CALL2&JMPIFNOT 8 L80)              ; ALIKE1
+50    (LOAD&PUSH 2)
+51    (CONST&PUSH 0)                      ; 2
+52    (CALL2&PUSH 9)                      ; NCPOWER
+54    (LOAD&PUSH 2)
+55    (LOAD&PUSH 2)
+56    (CALLS1 155)                        ; NTHCDR
+58    L58
+58    (CONS&PUSH)
+59    (T&PUSH)
+60    (CALL2 5)                           ; NCMULN
+62    (SKIP&RET 8)
+64    L64
+64    (LOAD&PUSH 7)
+65    (LOAD&PUSH 4)
+66    (CALL2&PUSH 4)                      ; SIMPNCT-MERGE-FACTORS
+68    (LOAD 1)
+69    (JMP L58)
+71    L71
+71    (LOAD&PUSH 2)
+72    (LOAD&CAR&PUSH 1)
+74    (CALL2&PUSH 4)                      ; SIMPNCT-MERGE-FACTORS
+76    (LOAD 1)
+77    (CDR)
+78    (JMP L58)
+80    L80
+80    (LOAD&PUSH 1)
+81    (CONST&PUSH 0)                      ; 2
+82    (CALLSR&JMPIFNOT 1 45 L92)          ; =
+86    (CONST&PUSH 10)                     ; (MNCTIMES)
+87    (LOAD 3)
+88    (CDR)
+89    (CDR)
+90    (CONS)
+91    (STORE 3)
+92    L92
+92    (LOAD&PUSH 3)
+93    (PUSH-UNBOUND 1)
+95    (CALLS1&PUSH 156)                   ; LAST
+97    (LOAD&CAR&PUSH 1)
+99    (NIL)
+100   (CONS&PUSH)
+101   (CALLS1 170)                        ; RPLACD
+103   (LOAD&CDR&STORE 0)
+105   (LOAD&INC&STORE 1)
+107   (LOAD&JMPIF 0 L23)
+111   L111
+111   (LOAD 2)
+112   (SKIP&RET 8)
+
+
+Disassembly of function #:|(DEFUN SIMPNCT-ANTISYM-CHECK (L CHECK) ...)-41|
+(CONST 0) = SIMPNCT-ANTISYM-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPNCT-ANTISYM-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPNCT-ANTISYM-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPNCT-ANTISYM-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPNCT-ANTISYM-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPNCT-ANTISYM-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPNCT-ANTISYM-CHECK
+(CONST 0) = L
+(CONST 1) = SIGN
+(CONST 2) = MNCTIMES
+(CONST 3) = $ANTISYMMETRIC
+(CONST 4) = BBSORT1
+(CONST 5) = 0
+(CONST 6) = (MNCTIMES)
+(CONST 7) = EQTEST
+(CONST 8) = NEG
+(CONST 9) = (MNCTIMES)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (SIGN L)
+writes special variable : (L)
+51 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; L
+3     (NIL)
+4     (BIND 1)                            ; SIGN
+6     (CONST&PUSH 2)                      ; MNCTIMES
+7     (CONST&PUSH 3)                      ; $ANTISYMMETRIC
+8     (PUSH-UNBOUND 1)
+10    (CALLS2&JMPIFNOT 132 L19)           ; GET
+13    (GETVALUE 0)                        ; L
+15    (CDR)
+16    (CDR)
+17    (JMPIF L39)
+19    L19
+19    (CONST&PUSH 9)                      ; (MNCTIMES)
+20    (GETVALUE 0)                        ; L
+22    (CONS&PUSH)
+23    (LOAD&PUSH 8)
+24    (CALL2 7)                           ; EQTEST
+26    (UNBIND1)
+27    L27
+27    (UNBIND1)
+28    (SKIP&RET 3)
+30    L30
+30    (CONST 5)                           ; 0
+31    (UNBIND1)
+32    (JMP L27)
+34    L34
+34    (GETVALUE 0)                        ; L
+36    (UNBIND1)
+37    (JMP L27)
+39    L39
+39    (GETVALUE&PUSH 0)                   ; L
+41    (CALL1 4)                           ; BBSORT1
+43    (SETVALUE 0)                        ; L
+45    (PUSH)
+46    (JMPIFEQTO 5 L30)                   ; 0
+49    (GETVALUE 1)                        ; SIGN
+51    (NOT)
+52    (PUSH)
+53    (CONST&PUSH 6)                      ; (MNCTIMES)
+54    (GETVALUE 0)                        ; L
+56    (CONS&PUSH)
+57    (LOAD&PUSH 9)
+58    (CALL2 7)                           ; EQTEST
+60    (SETVALUE 0)                        ; L
+62    (POP)
+63    (JMPIF L34)
+65    (GETVALUE&PUSH 0)                   ; L
+67    (CALL1 8)                           ; NEG
+69    (UNBIND1)
+70    (JMP L27)
+
+
+Wrote file binary-clisp/mdot.fas
+Wrote file /cygdrive/e/temp/maxima/src/mdot.lis

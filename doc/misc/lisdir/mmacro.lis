@@ -1,0 +1,904 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mmacro.lisp
+on 2002-12-17 13:32:19 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mmacro.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MMACRO)-2|
+(CONST 0) = MMACRO
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MMACRO
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $MACROS $FUNCTIONS ...))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MACROEXPANSION NIL ...)-4-1|
+(CONST 0) = $MACROEXPANSION
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MACROEXPANSION
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $MACROEXPANSION
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $MACROEXPANSION NIL ...)-4-2|
+(CONST 0) = (SPECIAL $MACROEXPANSION)
+(CONST 1) = $MACROEXPANSION
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Governs the expansion of Macsyma Macros.  The following settings are
+available:  FALSE means to re-expand the macro every time it gets called.
+EXPAND means to remember the expansion for each individual call do that it 
+won't have to be re-expanded every time the form is evaluated.  The form will 
+still grind and display as if the expansion had not taken place.  DISPLACE
+means to completely replace the form with the expansion.  This is more space
+efficient than EXPAND but grinds and displays the expansion instead of the
+call."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $MACROEXPANSION)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $MACROEXPANSION
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $MACROEXPANSION
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $MACROEXPANSION
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Governs the expansion of Macsyma Macros.  The following settings are
+available:  FALSE means to re-expand the macro every time it gets called.
+EXPAND means to remember the expansion for each individual call do that it 
+won't have to be re-expanded every time the form is evaluated.  The form will 
+still grind and display as if the expansion had not taken place.  DISPLACE
+means to completely replace the form with the expansion.  This is more space
+efficient than EXPAND but grinds and displays the expansion instead of the
+call."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $MACROEXPANSION
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO COPY1CONS (NAME) ...)-5|
+(CONST 0) = COPY1CONS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COPY1CONS>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COPY1CONS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COPY1CONS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COPY1CONS>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; COPY1CONS
+10    (SKIP&RET 1)
+
+
+Disassembly of function COPY1CONS
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NAME
+(CONST 3) = CONS
+(CONST 4) = CAR
+(CONST 5) = CDR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+22 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L29)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (BIND 2)                            ; NAME
+13    (CONST&PUSH 3)                      ; CONS
+14    (CONST&PUSH 4)                      ; CAR
+15    (GETVALUE&PUSH 2)                   ; NAME
+17    (LIST&PUSH 2)
+19    (CONST&PUSH 5)                      ; CDR
+20    (GETVALUE&PUSH 2)                   ; NAME
+22    (LIST&PUSH 2)
+24    (LIST 3)
+26    (UNBIND1)
+27    (SKIP&RET 3)
+29    L29
+29    (LOAD&PUSH 2)
+30    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+32    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMSPEC MDEFMACRO (FORM) ...)-6-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC MDEFMACRO (FORM) ...)-6-2-1|>
+(CONST 1) = MDEFMACRO
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC MDEFMACRO (FORM) ...)-6-2-1|>
+1     (CONST&PUSH 1)                      ; MDEFMACRO
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC MDEFMACRO (FORM) ...)-6-2-1|
+(CONST 0) = "Wrong number of args to ::= ~%~M"
+(CONST 1) = (MDEFMACRO)
+(CONST 2) = MERROR
+(CONST 3) = MDEFMACRO1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CDR)
+3     (JMPIFNOT L20)
+5     (LOAD 1)
+6     (CDR)
+7     (CDR)
+8     (CDR)
+9     (JMPIF L20)
+11    (LOAD&CAR&PUSH 1)
+13    (LOAD 2)
+14    (CDR)
+15    (CAR&PUSH)
+16    (CALL2 3)                           ; MDEFMACRO1
+18    (SKIP&RET 2)
+20    L20
+20    (CONST&PUSH 0)                      ; "Wrong number of args to ::= ~%~M"
+21    (CONST&PUSH 1)                      ; (MDEFMACRO)
+22    (LOAD 3)
+23    (CONS&PUSH)
+24    (CALL2 2)                           ; MERROR
+26    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MDEFMACRO1 (FUN BODY) ...)-7|
+(CONST 0) = MDEFMACRO1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MDEFMACRO1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MDEFMACRO1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MDEFMACRO1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MDEFMACRO1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MDEFMACRO1
+8     (SKIP&RET 1)
+
+
+Disassembly of function MDEFMACRO1
+(CONST 0) = NAME
+(CONST 1) = ARRAY
+(CONST 2) = MEMQ
+(CONST 3) = $VERBIFY
+(CONST 4) = MOPP
+(CONST 5) = ($ALL $% $%% MQAPPLY)
+(CONST 6) = "Illegal macro definition: ~M"
+(CONST 7) = MERROR
+(CONST 8) = MREDEF-CHECK
+(CONST 9) = MDEFPARAM
+(CONST 10) = MDEFLISTP
+(CONST 11) = "Illegal parameter in macro definition: ~M"
+(CONST 12) = MEXPR
+(CONST 13) = $FUNCTIONS
+(CONST 14) = REMOVE1
+(CONST 15) = MLEXPRP
+(CONST 16) = MPUTPROP
+(CONST 17) = REMOVE-TRANSL-FUN-PROPS
+(CONST 18) = $MACROS
+(CONST 19) = ADD2LNC
+(CONST 20) = MDEFINE1
+(CONST 21) = MMACRO
+(CONST 22) = $TRANSLATE
+(CONST 23) = (MDEFMACRO)
+(CONST 24) = TRANSLATE-AND-EVAL-MACSYMA-EXPRESSION
+(CONST 25) = (MDEFMACRO SIMP)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($TRANSLATE $MACROS $FUNCTIONS NAME)
+writes special variable : (NAME)
+114 byte-code instructions:
+0     (NIL)
+1     (BIND 0)                            ; NAME
+3     (NIL&PUSH)
+4     (LOAD 6)
+5     (JMPIFATOM L155)
+8     (LOAD 6)
+9     (CAR)
+10    (CAR)
+11    (JMPIFCONSP L155)
+14    (CONST&PUSH 1)                      ; ARRAY
+15    (LOAD 7)
+16    (CAR)
+17    (CDR&PUSH)
+18    (CALL2&JMPIF 2 L155)                ; MEMQ
+22    (LOAD 6)
+23    (CAR)
+24    (CAR&PUSH)
+25    (CALL1 3)                           ; $VERBIFY
+27    (SETVALUE 0)                        ; NAME
+29    (PUSH)
+30    (CALL1&JMPIF 4 L155)                ; MOPP
+34    (GETVALUE&PUSH 0)                   ; NAME
+36    (CONST&PUSH 5)                      ; ($ALL $% $%% MQAPPLY)
+37    (CALL2&JMPIF 2 L155)                ; MEMQ
+41    (GETVALUE&PUSH 0)                   ; NAME
+43    (LOAD 7)
+44    (CAR)
+45    (CAR)
+46    (JMPIFEQ L54)
+48    (LOAD&CAR&PUSH 6)
+50    (GETVALUE&PUSH 0)                   ; NAME
+52    (CALLS1 168)                        ; RPLACA
+54    L54
+54    (LOAD 6)
+55    (CDR)
+56    (STORE 0)
+57    (GETVALUE&PUSH 0)                   ; NAME
+59    (CALL1 8)                           ; MREDEF-CHECK
+61    (LOAD&PUSH 0)
+62    (NIL&PUSH)
+63    (LOAD&JMPIFNOT 1 L93)
+66    L66
+66    (LOAD&CAR&PUSH 1)
+68    (CALL1&JMPIF 9 L88)                 ; MDEFPARAM
+71    (LOAD&PUSH 1)
+72    (CALL1&JMPIFNOT 10 L83)             ; MDEFLISTP
+75    (LOAD 1)
+76    (CAR)
+77    (CDR)
+78    (CAR&PUSH)
+79    (CALL1&JMPIF 9 L162)                ; MDEFPARAM
+83    L83
+83    (CONST&PUSH 11)                     ; "Illegal parameter in macro definition: ~M"
+84    (LOAD&CAR&PUSH 2)
+86    (CALL2 7)                           ; MERROR
+88    L88
+88    (LOAD&CDR&STORE 1)
+90    (LOAD&JMPIF 1 L66)
+93    L93
+93    (GETVALUE&PUSH 0)                   ; NAME
+95    (NIL)
+96    (CONS&PUSH)
+97    (CONST&PUSH 12)                     ; MEXPR
+98    (T&PUSH)
+99    (GETVALUE&PUSH 13)                  ; $FUNCTIONS
+101   (T&PUSH)
+102   (CALL 5 14)                         ; REMOVE1
+105   (LOAD&JMPIF 0 L167)
+108   (SKIP 2)
+110   L110
+110   (GETVALUE&PUSH 0)                   ; NAME
+112   (CALL1 17)                          ; REMOVE-TRANSL-FUN-PROPS
+114   (GETVALUE&PUSH 0)                   ; NAME
+116   (LIST&PUSH 1)
+118   (LOAD 1)
+119   (CONS&PUSH)
+120   (GETVALUE&PUSH 18)                  ; $MACROS
+122   (CALL2 19)                          ; ADD2LNC
+124   (GETVALUE&PUSH 0)                   ; NAME
+126   (LOAD&PUSH 1)
+127   (LOAD&PUSH 7)
+128   (CALL2&PUSH 20)                     ; MDEFINE1
+130   (CONST&PUSH 21)                     ; MMACRO
+131   (CALL 3 16)                         ; MPUTPROP
+134   (GETVALUE 22)                       ; $TRANSLATE
+136   (JMPIFNOT L145)
+138   (CONST&PUSH 23)                     ; (MDEFMACRO)
+139   (LOAD&PUSH 7)
+140   (LOAD&PUSH 7)
+141   (LIST&PUSH 3)
+143   (CALL1 24)                          ; TRANSLATE-AND-EVAL-MACSYMA-EXPRESSION
+145   L145
+145   (CONST&PUSH 25)                     ; (MDEFMACRO SIMP)
+146   (LOAD&PUSH 7)
+147   (LOAD&PUSH 7)
+148   (LIST 3)
+150   (SKIP 1)
+152   (UNBIND1)
+153   (SKIP&RET 3)
+155   L155
+155   (CONST&PUSH 6)                      ; "Illegal macro definition: ~M"
+156   (LOAD&PUSH 7)
+157   (CALL2 7)                           ; MERROR
+159   (JMP L54)
+162   L162
+162   (T&STORE 0)
+164   (JMP L88)
+167   L167
+167   (GETVALUE&PUSH 0)                   ; NAME
+169   (T&PUSH)
+170   (CONST&PUSH 15)                     ; MLEXPRP
+171   (CALL 3 16)                         ; MPUTPROP
+174   (SKIP 2)
+176   (JMP L110)
+
+
+Disassembly of function #:|(DEFMFUN MMACRO-APPLY (DEFN FORM) ...)-8|
+(CONST 0) = MMACRO-APPLY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MMACRO-APPLY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MMACRO-APPLY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MMACRO-APPLY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MMACRO-APPLY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MMACRO-APPLY
+8     (SKIP&RET 1)
+
+
+Disassembly of function MMACRO-APPLY
+(CONST 0) = MAPPLY1
+(CONST 1) = MMACROEXPANSION-CHECK
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+23 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD 3)
+2     (JMPIFCONSP L8)
+4     (LOAD&PUSH 3)
+5     (CALLS2&JMPIFNOT 6 L23)             ; SYMBOLP
+8     L8
+8     (LOAD&PUSH 3)
+9     (LOAD&CDR&PUSH 3)
+11    (LOAD 4)
+12    (CAR)
+13    (CAR&PUSH)
+14    (LOAD&PUSH 5)
+15    (CALL 4 0)                          ; MAPPLY1
+18    L18
+18    (PUSH)
+19    (CALL2 1)                           ; MMACROEXPANSION-CHECK
+21    (SKIP&RET 3)
+23    L23
+23    (LOAD&PUSH 3)
+24    (LOAD 3)
+25    (CDR)
+26    (APPLY 0)
+28    (JMP L18)
+
+
+Disassembly of function #:|(DEFUN MMACROEXPANSION-CHECK (FORM EXPANSION) ...)-9|
+(CONST 0) = MMACROEXPANSION-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MMACROEXPANSION-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MMACROEXPANSION-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MMACROEXPANSION-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MMACROEXPANSION-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MMACROEXPANSION-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function MMACROEXPANSION-CHECK
+(CONST 0) = $MACROEXPANSION
+(CONST 1) = #S(HASH-TABLE EQ ($DISPLACE . 28) ($EXPAND . 1) (NIL . 22))
+(CONST 2) = MMACROEXPANDED
+(CONST 3) = MMACRO-DISPLACE
+(CONST 4) = (MMACROEXPANDED)
+(CONST 5) = DISPLACE
+(CONST 6) = "Warning:  MACROEXPANSION set to unrecognized value."
+(CONST 7) = MTELL
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($MACROEXPANSION)
+33 byte-code instructions:
+0     (GETVALUE 0)                        ; $MACROEXPANSION
+2     (JMPHASH 1 L38 L26 L5 L32)
+5     L5
+5     (LOAD 2)
+6     (CAR)
+7     (CAR&PUSH)
+8     (JMPIFEQTO 2 L23)                   ; MMACROEXPANDED
+11    (LOAD&PUSH 2)
+12    (CONST&PUSH 4)                      ; (MMACROEXPANDED)
+13    (LOAD&PUSH 3)
+14    (LOAD&CAR&PUSH 5)
+16    (LOAD 6)
+17    (CDR)
+18    (CONS&PUSH)
+19    (LIST&PUSH 3)
+21    (CALL2 5)                           ; DISPLACE
+23    L23
+23    (LOAD 1)
+24    (SKIP&RET 3)
+26    L26
+26    (LOAD 2)
+27    (CAR)
+28    (CAR&PUSH)
+29    (JMPIFNOTEQTO 2 L23)                ; MMACROEXPANDED
+32    L32
+32    (LOAD&PUSH 2)
+33    (LOAD&PUSH 2)
+34    (CALL2 3)                           ; MMACRO-DISPLACE
+36    (SKIP&RET 3)
+38    L38
+38    (CONST&PUSH 6)                      ; "Warning:  MACROEXPANSION set to unrecognized value."
+39    (CALL1 7)                           ; MTELL
+41    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MMACRO-DISPLACE (FORM EXPANSION) ...)-10|
+(CONST 0) = MMACRO-DISPLACE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MMACRO-DISPLACE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MMACRO-DISPLACE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MMACRO-DISPLACE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MMACRO-DISPLACE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MMACRO-DISPLACE
+8     (SKIP&RET 1)
+
+
+Disassembly of function MMACRO-DISPLACE
+(CONST 0) = (MPROGN)
+(CONST 1) = DISPLACE
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (LOAD 2)
+2     (JMPIFATOM L10)
+4     (LOAD 2)
+5     L5
+5     (PUSH)
+6     (CALL2 1)                           ; DISPLACE
+8     (SKIP&RET 3)
+10    L10
+10    (CONST&PUSH 0)                      ; (MPROGN)
+11    (LOAD&PUSH 3)
+12    (LIST 2)
+14    (JMP L5)
+
+
+Disassembly of function #:|(DEFMSPEC MMACROEXPANDED (FORM) ...)-11-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC MMACROEXPANDED (FORM) ...)-11-2-1|>
+(CONST 1) = MMACROEXPANDED
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC MMACROEXPANDED (FORM) ...)-11-2-1|>
+1     (CONST&PUSH 1)                      ; MMACROEXPANDED
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC MMACROEXPANDED (FORM) ...)-11-2-1|
+(CONST 0) = MMACROEXPANSION-CHECK
+(CONST 1) = MEVAL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD 2)
+2     (CDR)
+3     (CAR&PUSH)
+4     (CALL2&PUSH 0)                      ; MMACROEXPANSION-CHECK
+6     (CALL1 1)                           ; MEVAL
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MACROEXPAND (FORM) ...)-12-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $MACROEXPAND (FORM) ...)-12-2-1|>
+(CONST 1) = $MACROEXPAND
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $MACROEXPAND (FORM) ...)-12-2-1|>
+1     (CONST&PUSH 1)                      ; $MACROEXPAND
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MACROEXPAND (FORM) ...)-12-2-1|
+(CONST 0) = "MACROEXPAND only takes one argument:~%~M"
+(CONST 1) = ($MACROEXPAND)
+(CONST 2) = MERROR
+(CONST 3) = MMACROEXPAND
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+15 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (JMPIFNOT L14)
+4     (LOAD 1)
+5     (CDR)
+6     (JMPIF L14)
+8     (LOAD&CAR&PUSH 1)
+10    (CALL1 3)                           ; MMACROEXPAND
+12    (SKIP&RET 2)
+14    L14
+14    (CONST&PUSH 0)                      ; "MACROEXPAND only takes one argument:~%~M"
+15    (CONST&PUSH 1)                      ; ($MACROEXPAND)
+16    (LOAD 3)
+17    (CONS&PUSH)
+18    (CALL2 2)                           ; MERROR
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MACROEXPAND1 (FORM) ...)-13-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $MACROEXPAND1 (FORM) ...)-13-2-1|>
+(CONST 1) = $MACROEXPAND1
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $MACROEXPAND1 (FORM) ...)-13-2-1|>
+1     (CONST&PUSH 1)                      ; $MACROEXPAND1
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MACROEXPAND1 (FORM) ...)-13-2-1|
+(CONST 0) = "MACROEXPAND only takes one argument: ~%~M"
+(CONST 1) = ($MACROEXPAND1)
+(CONST 2) = MERROR
+(CONST 3) = MMACROEXPAND1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+15 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (JMPIFNOT L14)
+4     (LOAD 1)
+5     (CDR)
+6     (JMPIF L14)
+8     (LOAD&CAR&PUSH 1)
+10    (CALL1 3)                           ; MMACROEXPAND1
+12    (SKIP&RET 2)
+14    L14
+14    (CONST&PUSH 0)                      ; "MACROEXPAND only takes one argument: ~%~M"
+15    (CONST&PUSH 1)                      ; ($MACROEXPAND1)
+16    (LOAD 3)
+17    (CONS&PUSH)
+18    (CALL2 2)                           ; MERROR
+20    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MMACROEXPAND (FORM) ...)-14|
+(CONST 0) = MMACROEXPAND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MMACROEXPAND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MMACROEXPAND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MMACROEXPAND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MMACROEXPAND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MMACROEXPAND
+8     (SKIP&RET 1)
+
+
+Disassembly of function MMACROEXPAND
+(CONST 0) = MMACROEXPAND1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (JMPIFATOM L22)
+3     (LOAD&CAR&PUSH 1)
+5     (LOAD 2)
+6     (CDR)
+7     (CONS)
+8     L8
+8     (PUSH)
+9     (LOAD&PUSH 2)
+10    (CALL1&PUSH 0)                      ; MMACROEXPAND1
+12    (LOAD&PUSH 0)
+13    (LOAD&PUSH 2)
+14    (CALLS2&JMPIF 2 L25)                ; EQUAL
+17    (LOAD&PUSH 0)
+18    (JMPTAIL 1 5 L0)
+22    L22
+22    (LOAD 1)
+23    (JMP L8)
+25    L25
+25    (POP)
+26    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MMACROEXPAND1 (FORM) ...)-15|
+(CONST 0) = MMACROEXPAND1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MMACROEXPAND1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MMACROEXPAND1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MMACROEXPAND1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MMACROEXPAND1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MMACROEXPAND1
+8     (SKIP&RET 1)
+
+
+Disassembly of function MMACROEXPAND1
+(CONST 0) = ARRAY
+(CONST 1) = MEMQ
+(CONST 2) = MOP
+(CONST 3) = MMACROEXPANDED
+(CONST 4) = MMACROEXPANSION-CHECK
+(CONST 5) = $TRANSRUN
+(CONST 6) = TRANSLATED-MMACRO
+(CONST 7) = MMACRO
+(CONST 8) = MGET
+(CONST 9) = MMACRO-APPLY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($TRANSRUN)
+51 byte-code instructions:
+0     (PUSH-NIL 2)
+2     (LOAD 3)
+3     (JMPIFATOM L44)
+5     (LOAD 3)
+6     (CAR)
+7     (JMPIFATOM L44)
+9     (CONST&PUSH 0)                      ; ARRAY
+10    (LOAD 4)
+11    (CAR)
+12    (CDR&PUSH)
+13    (CALL2&JMPIF 1 L44)                 ; MEMQ
+16    (LOAD&PUSH 3)
+17    (CALL1 2)                           ; MOP
+19    (STORE 1)
+20    (PUSH)
+21    (CALLS2&JMPIFNOT 6 L44)             ; SYMBOLP
+24    (LOAD&PUSH 1)
+25    (JMPIFEQTO 3 L47)                   ; MMACROEXPANDED
+28    (GETVALUE 5)                        ; $TRANSRUN
+30    (JMPIFNOT L55)
+32    (LOAD 3)
+33    (CAR)
+34    (CAR&PUSH)
+35    (CONST&PUSH 6)                      ; TRANSLATED-MMACRO
+36    (PUSH-UNBOUND 1)
+38    (CALLS2&JMPIFNOT 132 L55)           ; GET
+41    (STORE 0)
+42    (JMPIF L64)
+44    L44
+44    (LOAD 3)
+45    (SKIP&RET 4)
+47    L47
+47    (LOAD&PUSH 3)
+48    (LOAD 4)
+49    (CDR)
+50    (CAR&PUSH)
+51    (CALL2 4)                           ; MMACROEXPANSION-CHECK
+53    (SKIP&RET 4)
+55    L55
+55    (LOAD 3)
+56    (CAR)
+57    (CAR&PUSH)
+58    (CONST&PUSH 7)                      ; MMACRO
+59    (CALL2 8)                           ; MGET
+61    (STORE 0)
+62    (JMPIFNOT L44)
+64    L64
+64    (PUSH)
+65    (LOAD&PUSH 4)
+66    (CALL2 9)                           ; MMACRO-APPLY
+68    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFPROP MDEFMACRO SIMPMDEFMACRO ...)-16|
+(CONST 0) = MDEFMACRO
+(CONST 1) = OPERATORS
+(CONST 2) = SIMPMDEFMACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MDEFMACRO
+1     (CONST&PUSH 1)                      ; OPERATORS
+2     (CONST&PUSH 2)                      ; SIMPMDEFMACRO
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN SIMPMDEFMACRO (X *IGNORED* SIMP-FLAG) ...)-17|
+(CONST 0) = SIMPMDEFMACRO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPMDEFMACRO>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPMDEFMACRO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPMDEFMACRO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPMDEFMACRO>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPMDEFMACRO
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPMDEFMACRO
+(CONST 0) = X
+(CONST 1) = (MDEFMACRO SIMP)
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+8 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; X
+3     (CONST&PUSH 1)                      ; (MDEFMACRO SIMP)
+4     (GETVALUE 0)                        ; X
+6     (CDR)
+7     (CONS)
+8     (UNBIND1)
+9     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN DISPLACE (X Y) ...)-18|
+(CONST 0) = DISPLACE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DISPLACE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISPLACE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DISPLACE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DISPLACE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DISPLACE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DISPLACE
+(CONST 0) = X
+(CONST 1) = Y
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X)
+15 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; X
+3     (LOAD 4)
+4     (BIND 1)                            ; Y
+6     (GETVALUE&PUSH 0)                   ; X
+8     (GETVALUE 1)                        ; Y
+10    (CAR&PUSH)
+11    (CALLS1 169)                        ; SYSTEM::%RPLACA
+13    (GETVALUE&PUSH 0)                   ; X
+15    (GETVALUE 1)                        ; Y
+17    (CDR&PUSH)
+18    (CALLS1 171)                        ; SYSTEM::%RPLACD
+20    (GETVALUE 0)                        ; X
+22    (UNBIND 2)
+24    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/mmacro.fas
+Wrote file /cygdrive/e/temp/maxima/src/mmacro.lis

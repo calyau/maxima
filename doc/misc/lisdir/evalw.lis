@@ -1,0 +1,118 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/evalw.lisp
+on 2002-12-17 13:34:02 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/evalw.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE EVALW)-2|
+(CONST 0) = EVALW
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EVALW
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $VERSION STATE-PDL ...))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMSPEC $EVAL_WHEN (ARGL) ...)-4-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $EVAL_WHEN (ARGL) ...)-4-2-1|>
+(CONST 1) = $EVAL_WHEN
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $EVAL_WHEN (ARGL) ...)-4-2-1|>
+1     (CONST&PUSH 1)                      ; $EVAL_WHEN
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $EVAL_WHEN (ARGL) ...)-4-2-1|
+(CONST 0) = 2
+(CONST 1) = $LISTP
+(CONST 2) = "Bad whens form to EVAL_WHEN~%~M"
+(CONST 3) = MERROR
+(CONST 4) = $BATCH
+(CONST 5) = MEMQ
+(CONST 6) = ($EVALUATED_WHEN)
+(CONST 7) = MEVAL
+(CONST 8) = $NOT_EVALUATED_WHEN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+37 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (PUSH)
+3     (CALLS2&PUSH 71)                    ; LENGTH
+5     (CONST&PUSH 0)                      ; 2
+6     (CALLSR&JMPIF 1 47 L19)             ; <
+10    (LOAD 1)
+11    (CAR)
+12    (JMPIFATOM L24)
+14    (LOAD&CAR&PUSH 1)
+16    (CALL1&JMPIF 1 L24)                 ; $LISTP
+19    L19
+19    (CONST&PUSH 2)                      ; "Bad whens form to EVAL_WHEN~%~M"
+20    (LOAD&CAR&PUSH 2)
+22    (CALL2 3)                           ; MERROR
+24    L24
+24    (LOAD&CAR&PUSH 1)
+26    (CALL1&JMPIF 1 L41)                 ; $LISTP
+29    (LOAD&CAR&PUSH 1)
+31    (LIST&PUSH 1)
+33    L33
+33    (CONST&PUSH 4)                      ; $BATCH
+34    (LOAD&PUSH 1)
+35    (CALL2&JMPIF 5 L46)                 ; MEMQ
+38    (CONST 8)                           ; $NOT_EVALUATED_WHEN
+39    (SKIP&RET 3)
+41    L41
+41    (LOAD 1)
+42    (CAR)
+43    (CDR&PUSH)
+44    (JMP L33)
+46    L46
+46    (CONST&PUSH 6)                      ; ($EVALUATED_WHEN)
+47    (CONST&PUSH 7)                      ; MEVAL
+48    (LOAD&CDR&PUSH 4)
+50    (CALLSR 0 22)                       ; MAPCAR
+53    (CONS)
+54    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/evalw.fas
+Wrote file /cygdrive/e/temp/maxima/src/evalw.lis

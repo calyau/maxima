@@ -1,0 +1,587 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/lmdcls.lisp
+on 2002-12-17 13:31:52 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/lmdcls.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN REMOVE-TYPE (L) ...)-2|
+(CONST 0) = REMOVE-TYPE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE REMOVE-TYPE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; REMOVE-TYPE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; REMOVE-TYPE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE REMOVE-TYPE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; REMOVE-TYPE
+8     (SKIP&RET 1)
+
+
+Disassembly of function REMOVE-TYPE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (LOAD&JMPIFNOT 0 L29)
+5     L5
+5     (LOAD&CAR&PUSH 0)
+7     (LOAD 0)
+8     (STORE 2)
+9     (SKIP 1)
+11    (JMPIFATOM L16)
+13    (LOAD&CAR&STORE 1 1)
+16    L16
+16    (LOAD&PUSH 1)
+17    (CALLS2&JMPIFNOT 6 L24)             ; SYMBOLP
+20    (LOAD&PUSH 1)
+21    (NIL&PUSH)
+22    (CALLS2 137)                        ; REMPROP
+24    L24
+24    (LOAD&CDR&STORE 0)
+26    (LOAD&JMPIF 0 L5)
+29    L29
+29    (NIL)
+30    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFVAR *MACRO-FILE* NIL)-3|
+(CONST 0) = (SPECIAL *MACRO-FILE*)
+(CONST 1) = *MACRO-FILE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *MACRO-FILE*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *MACRO-FILE*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *MACRO-FILE*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *MACRO-FILE*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO DECLARE-TOP (&REST DECL-SPECS) ...)-4|
+(CONST 0) = DECLARE-TOP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DECLARE-TOP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DECLARE-TOP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DECLARE-TOP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DECLARE-TOP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DECLARE-TOP
+10    (SKIP&RET 1)
+
+
+Disassembly of function DECLARE-TOP
+(CONST 0) = EVAL-WHEN
+(CONST 1) = *MACRO-FILE*
+(CONST 2) = (COMPILE EVAL LOAD)
+(CONST 3) = (EVAL COMPILE)
+(CONST 4) = (SPECIAL UNSPECIAL NO-TYPE)
+(CONST 5) = UNSPECIAL
+(CONST 6) = PROGN
+(CONST 7) = REMPROP
+(CONST 8) = QUOTE
+(CONST 9) = ('SPECIAL)
+(CONST 10) = FIXNUM
+(CONST 11) = PROCLAIM
+(CONST 12) = NOTYPE
+(CONST 13) = REMOVE-TYPE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (*MACRO-FILE*)
+169 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; EVAL-WHEN
+3     (GETVALUE 1)                        ; *MACRO-FILE*
+5     (JMPIF L74)
+8     (CONST 3)                           ; (EVAL COMPILE)
+9     L9
+9     (PUSH)
+10    (NIL&PUSH)
+11    (LOAD&PUSH 3)
+12    (PUSH-NIL 6)
+14    (LOAD&JMPIFNOT 6 L233)
+18    L18
+18    (LOAD&CAR&PUSH 6)
+20    (LOAD 0)
+21    (STORE 8)
+23    (SKIP 1)
+25    (CAR&PUSH)
+26    (CONST&PUSH 4)                      ; (SPECIAL UNSPECIAL NO-TYPE)
+27    (PUSH-UNBOUND 3)
+29    (CALLS1&JMPIFNOT 180 L227)          ; MEMBER
+33    (LOAD&CAR&PUSH 7)
+35    (JMPIFEQTO 5 L92)                   ; UNSPECIAL
+38    (LOAD&CAR&PUSH 7)
+40    (JMPIFEQTO 10 L156)                 ; FIXNUM
+44    (LOAD&CAR&PUSH 7)
+46    (JMPIFEQTO 12 L206)                 ; NOTYPE
+50    (CONST&PUSH 11)                     ; PROCLAIM
+51    (CONST&PUSH 8)                      ; QUOTE
+52    (LOAD&PUSH 9)
+53    (LIST&PUSH 2)
+55    (LIST 2)
+57    (STORE 0)
+58    (LOAD&JMPIFNOT 4 L221)
+62    (PUSH)
+63    (LOAD 1)
+64    L64
+64    (PUSH)
+65    (NIL)
+66    (CONS)
+67    (STORE 5)
+68    (PUSH)
+69    (CALLS1 171)                        ; SYSTEM::%RPLACD
+71    (JMP L227)
+74    L74
+74    (CONST 2)                           ; (COMPILE EVAL LOAD)
+75    (JMP L9)
+78    L78
+78    (PUSH)
+79    (LOAD&PUSH 1)
+80    (NIL)
+81    (CONS)
+82    (STORE 2)
+83    (PUSH)
+84    (CALLS1 171)                        ; SYSTEM::%RPLACD
+86    (JMP L124)
+88    L88
+88    (PUSH)
+89    (LOAD 4)
+90    (JMP L64)
+92    L92
+92    (CONST&PUSH 6)                      ; PROGN
+93    (NIL&PUSH)
+94    (LOAD&CDR&PUSH 9)
+96    (PUSH-NIL 3)
+98    (LOAD&JMPIFNOT 3 L129)
+101   L101
+101   (LOAD&CAR&PUSH 3)
+103   (LOAD 0)
+104   (STORE 5)
+105   (SKIP 1)
+107   (CONST&PUSH 7)                      ; REMPROP
+108   (CONST&PUSH 8)                      ; QUOTE
+109   (LOAD&PUSH 6)
+110   (LIST&PUSH 2)
+112   (CONST 9)                           ; ('SPECIAL)
+113   (LIST* 2)
+115   (STORE 0)
+116   (LOAD&JMPIF 1 L78)
+119   (LOAD&PUSH 0)
+120   (NIL)
+121   (CONS)
+122   (STORE 1)
+123   (STORE 2)
+124   L124
+124   (LOAD&CDR&STORE 3)
+126   (LOAD&JMPIF 3 L101)
+129   L129
+129   (LOAD 2)
+130   (SKIP 5)
+132   (CONS)
+133   (STORE 3)
+134   (LOAD&JMPIF 4 L88)
+137   (LOAD 3)
+138   (JMP L222)
+141   L141
+141   (PUSH)
+142   (LOAD&PUSH 4)
+143   (NIL)
+144   (CONS)
+145   (STORE 1)
+146   (PUSH)
+147   (CALLS1 171)                        ; SYSTEM::%RPLACD
+149   (JMP L181)
+151   L151
+151   (PUSH)
+152   (LOAD 3)
+153   (JMP L64)
+156   L156
+156   (CONST&PUSH 11)                     ; PROCLAIM
+157   (CONST&PUSH 8)                      ; QUOTE
+158   (NIL&PUSH)
+159   (LOAD&PUSH 10)
+160   (PUSH-NIL 2)
+162   (LOAD&JMPIFNOT 2 L186)
+165   L165
+165   (LOAD&CAR&PUSH 2)
+167   (LOAD 0)
+168   (STORE 4)
+169   (STORE 0)
+170   (CALLS2&JMPIFNOT 6 L181)            ; SYMBOLP
+173   (LOAD&JMPIF 0 L141)
+176   (LOAD&PUSH 3)
+177   (NIL)
+178   (CONS)
+179   (STORE 0)
+180   (STORE 1)
+181   L181
+181   (LOAD&CDR&STORE 2)
+183   (LOAD&JMPIF 2 L165)
+186   L186
+186   (LOAD 1)
+187   (SKIP 3)
+189   (STORE 0)
+190   (LIST&PUSH 2)
+192   (LIST 2)
+194   (STORE 2)
+195   (LOAD&JMPIF 4 L151)
+198   (LOAD 2)
+199   (JMP L222)
+201   L201
+201   (PUSH)
+202   (LOAD 2)
+203   (JMP L64)
+206   L206
+206   (CONST&PUSH 13)                     ; REMOVE-TYPE
+207   (CONST&PUSH 8)                      ; QUOTE
+208   (LOAD&CDR&PUSH 9)
+210   (LIST&PUSH 2)
+212   (LIST 2)
+214   (STORE 1)
+215   (LOAD&JMPIF 4 L201)
+218   (LOAD 1)
+219   (JMP L222)
+221   L221
+221   (LOAD 0)
+222   L222
+222   (PUSH)
+223   (NIL)
+224   (CONS)
+225   (STORE 4)
+226   (STORE 5)
+227   L227
+227   (LOAD&CDR&STORE 6)
+229   (LOAD&JMPIF 6 L18)
+233   L233
+233   (LOAD 5)
+234   (SKIP 8)
+236   (LIST* 2)
+238   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMACRO FLONUM (&REST IGN) ...)-5|
+(CONST 0) = FLONUM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FLONUM>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FLONUM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FLONUM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FLONUM>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; FLONUM
+10    (SKIP&RET 1)
+
+
+Disassembly of function FLONUM
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 3)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (PROCLAIM '#))-6|
+(CONST 0) = 
+(SPECIAL $% $%% $%EDISPFLAG $%EMODE $%ENUMER $%E_TO_NUMLOG $%IARGS $%PIARGS
+ $%RNUM $%RNUM_LIST $ABSBOXCHAR $ACTIVECONTEXTS $ALGEBRAIC $ALGEXACT $ALIASES
+ $ARRAYS $ASKEXP $ASSUMESCALAR $BACKSUBST $BERLEFACT $BETA_ARGS_SUM_TO_INTEGER
+ $BFTORAT $BFTRUNC $BOTHCASES $BOXCHAR $BREAKUP $CAUCHYSUM $CHANGE_FILEDEFAULTS
+ $COMPGRIND $CONTEXT $CONTEXTS $CURRENT_LET_RULE_PACKAGE $CURSORDISP $DEBUGMODE
+ $DEFAULT_LET_RULE_PACKAGE $DEMOIVRE $DEPENDENCIES $DERIVABBREV $DERIVSUBST
+ $DETOUT $DIREC $DISPFLAG $DISPLAY2D $DISPLAYSET $DISPLAY_FORMAT_INTERNAL
+ $DOALLMXOPS $DOMAIN $DOMXEXPT $DOMXMXOPS $DOMXNCTIMES $DOMXPLUS $DOMXTIMES
+ $DONTFACTOR $DOSCMXOPS $DOSCMXPLUS $DOT0NSCSIMP $DOT0SIMP $DOT1SIMP $DOTASSOC
+ $DOTCONSTRULES $DOTDISTRIB $DOTEXPTSIMP $DOTIDENT $DOTSCRULES $DSKGC $ERFFLAG
+ $ERREXP $ERROR $ERROR_SIZE $ERROR_SYMS $EXPON $EXPONENTIALIZE $EXPOP
+ $EXPTDISPFLAG $EXPTISOLATE $EXPTSUBST $FACEXPAND $FACTORFLAG $FEATURES
+ $FILE_SEARCH $FILE_STRING_PRINT $FILE_TYPES $FLOAT $FLOAT2BF $FLOATFORMAT
+ $FLOATFRAC $FLOATINT $FLOATOPTIONS $FLOATPREC $FLOATWIDTH $FORTFLOAT
+ $FORTINDENT $FORTSPACES $FPPREC $FPPRINTPREC $FPTRUNC $FUNCTIONS $GAMMALIM
+ $GCD $GENINDEX $GENSUMNUM $GLOBALSOLVE $GRADEFS $HALFANGLES $HOMOG_HACK
+ $INCHAR $INFEVAL $INFLAG $INTEGRATION_CONSTANT_COUNTER $INTFACLIM
+ $ISOLATE_WRT_TIMES $KEEPFLOAT $LABELS $LEFTJUST $LETRAT $LETVARSIMP
+ $LET_RULE_PACKAGES $LIFLAG $LINECHAR $LINEDISP $LINENUM $LINEL $LINSOLVEWARN
+ $LINSOLVE_PARAMS $LISPDISP $LISTARITH $LISTCONSTVARS $LMXCHAR $LOGARC
+ $LOGCONCOEFFP $LOGEXPAND $LOGNEGINT $LOGNUMER $LOGSIMP $M1PBRANCH
+ $MACROEXPANSION $MACROS $MAPERROR $MAPPRINT $MATRIX_ELEMENT_ADD
+ $MATRIX_ELEMENT_MULT $MATRIX_ELEMENT_TRANSPOSE $MAXAPPLYDEPTH $MAXAPPLYHEIGHT
+ $MAXNEGEX $MAXPOSEX $MAXPRIME $MAXTAYORDER $MODE_CHECKP $MODE_CHECK_ERRORP
+ $MODE_CHECK_WARNP $MOREWAIT $MULTIPLICITIES $MX0SIMP $MYOPTIONS $NALGFAC
+ $NEGDISTRIB $NEGSUMDISPFLAG $NEWFAC $NOLABELS $NOREPEAT $NOUNDISP $NUMER
+ $NUMER_PBRANCH $OPERATORS $OPSUBST $OPTIMPREFIX $OPTIONSET $OUTCHAR $PAGEPAUSE
+ $PARSEWINDOW $PARTSWITCH $PFEFORMAT $PIECE $POINTBOUND $POISLIM $POWERDISP
+ $PREDERROR $PRODHACK $PROGRAMMODE $PROPS $RADEXPAND $RATALGDENOM
+ $RATDENOMDIVIDE $RATEPSILON $RATEXPAND $RATFAC $RATMX $RATPRINT $RATSIMPEXPONS
+ $RATVARS $RATWEIGHTS $RATWTLVL $REALONLY $REFCHECK $RESULTANT $RMXCHAR
+ $ROMBERGABS $ROMBERGIT $ROMBERGIT_USED $ROMBERGMIN $ROMBERGTOL $ROOTSCONMODE
+ $RULES $SAVEDEF $SAVEFACTORS $SCALARMATRIXP $SETCHECK $SETCHECKBREAK $SETVAL
+ $SHOWTIME $SIGNBFLOAT $SIMP $SIMPSUM $SOLVEDECOMPOSES $SOLVEEXPLICIT
+ $SOLVEFACTORS $SOLVENULLWARN $SOLVERADCAN $SOLVETRIGWARN
+ $SOLVE_INCONSISTENT_ERROR $SPARSE $SPECIAL $SQRTDISPFLAG $STARDISP $STORENUM
+ $SUBLIS_APPLY_LAMBDA $SUBNUMSIMP $SUBSCRMAP $SUMEXPAND $SUMHACK $SUMSPLITFACT
+ $SUPERLOGCON $SUSPEND $TAYLOR_LOGEXPAND $TAYLOR_TRUNCATE_POLYNOMIALS $TIMER
+ $TIMER_DEVALUE $TO_CALL_LISP_COMPILER $TRACE $TRACE_BREAK_ARG
+ $TRACE_MAX_INDENT $TRACE_SAFETY $TRANSBIND $TRANSCOMPILE $TRANSLATE $TRANSRUN
+ $TRIGEXPAND $TRIGEXPANDPLUS $TRIGEXPANDTIMES $TRIGINVERSES $TRIGSIGN
+ $TR_ARRAY_AS_REF $TR_BOUND_FUNCTION_APPLYP $TR_FILE_TTY_MESSAGESP
+ $TR_FLOAT_CAN_BRANCH_COMPLEX $TR_FUNCTION_CALL_DEFAULT $TR_GEN_TAGS $TR_NUMER
+ $TR_OPTIMIZE_MAX_LOOP $TR_OUTPUT_FILE_DEFAULT $TR_PREDICATE_BRAIN_DAMAGE
+ $TR_SEMICOMPILE $TR_STATE_VARS $TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED
+ $TR_WARN_BAD_FUNCTION_CALLS $TR_WARN_FEXPR $TR_WARN_MEVAL $TR_WARN_MODE
+ $TR_WARN_UNDECLARED $TR_WARN_UNDEFINED_VARIABLE $TR_WINDY $TTYINTFUN
+ $TTYINTNUM $UNIVERSE $USER_MESFILE $USE_FAST_ARRAYS $VALUES $VECT_CROSS
+ $ZEROBERN %E-VAL %P%I %PI-VAL %PI//2 %PI//4 %PI2 &** *$ANY-MODES* *ALPHA
+ *CONST* *FNEWVARSW *GCDL* *IN *IN-$BATCHLOAD* *IN-COMPILE*
+ *IN-MACSYMA-INDEXER* *IN-TRANSLATE-FILE* *INV* *IRREDS *MIN* *MX* *N
+ *OPERS-LIST *OUT *RATWEIGHTS *TR-WARN-BREAK* *TRANSL-BACKTRACE* *TRANSL-DEBUG*
+ *TRANSL-FILE-DEBUG* *WARNED-FEXPRS* *WARNED-MODE-VARS*
+ *WARNED-UN-DECLARED-VARS* *ZEXPTSIMP? |-1//2| -SQRT2//2 -SQRT3//2 |1//2| ADN*
+ AEXPRP ALGFAC* ALGNOTEXACT ALIASLIST ALPHA ALPHABET ARRAYS ARYP ASSIGNS ATP
+ ATVARS BAKTRCL BFHALF BFMHALF BIGFLOAT%E BIGFLOAT%PI BIGFLOATONE BIGFLOATZERO
+ BIGPRIMES BINDLIST BVARS CASEP CHARACTER-GRAPHICS-TTY DEBUG DECLARES
+ DEFINED_VARIABLES DEFINTDEBUG DERIVFLAG DERIVLIST DERIVSIMP DISPLAYP DN*
+ DOSIMP DSKSETP DUMMY-VARIABLE-OPERATORS DUMPING ENVLIST ERRORSW ERRRJFFLAG
+ EVARRP EVP EXPANDFLAG EXPANDP EXPRS EXPTRLSW FACTLIST FEATUREL FEXPRERRP
+ FEXPRS FMAPLVL FORMS-TO-COMPILE-QUEUE FOURTH%PI FR-FACTOR FUNDEFSIMP GAUSS
+ GENERATE-ATAN2 GENPAIRS GENVAR HALF%PI HALF%PI3 HMODULUS IMPLICIT-REAL IN-P
+ INFINITESIMALS INFINITIES INRATSIMP INSIDE-MPROG INTEGERL ISLINP LEXPRS
+ LIMIT-ANSWERS LIMITP LINE-GRAPHICS-TTY LINEL LINELABLE LNORECURSE LOCAL
+ LOCLIST LOW* MAPLP MASTER-MESFILE MDOP META-PROP-L META-PROP-P MFEXPRP
+ MINPOLY* MLOCP MM* MODULUS MOPL MPLC* MPROGP MPROPLIST MSPECLIST MSPECLIST2
+ MSUMP MUNBINDP NEED-PROG? NEGPRODS NEGSUMS NN* NOEVALARGS NOITEMS NONINTEGERL
+ NOUNL NOUNSFLAG OPERS OPERS-LIST OPEXPRP OUTARGS1 OUTARGS2 OUTFILES PLUSFLAG
+ PRESERVE-DIRECTION PRODS PUTL RADCANP RADPE RD* REAL-INFINITIES REALONLYRATNUM
+ REFCHKL RETURN-MODE RETURNS RULEFCNL RULESW SCANMAPP SFINDEX SIGN-IMAG-ERRP
+ SIMPLIMPLUS-PROBLEMS SMALLPRIMES SPECIALS SQRT2//2 SQRT3//2 STATE-PDL
+ STRINGDISP SUBSTP SUMS TELLRATLIST TIMESINP TIMESP TR-ABORT TR-PROGRET
+ TR-UNIQUE TRAMP1$ TRAMP2$ TRAMP3$ TRANSL-FILE TRANSLATE-TIME-EVALABLES TRANSP
+ TSTACK TYPEL USER-MESFILE USER-TIMESOFAR VARLIST WFLAG ^DMSG-OFF ^DMSG-ON
+ $WTLEVEL $CFLENGTH $WEIGHTLEVELS *TRUNCLIST $TAYLORDEPTH $MAXTAYDIFF $VERBOSE
+ $PSEXPAND PS-BMT-DISREP SILENT-TAYLOR-FLAG $DEFINE_VARIABLE)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $% $%% $%EDISPFLAG ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION SPLITFILE))-7|
+(CONST 0) = (DECLARATION SPLITFILE)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION SPLITFILE)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION UNSPECIAL))-8|
+(CONST 0) = (DECLARATION UNSPECIAL)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION UNSPECIAL)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION MUZZLED))-9|
+(CONST 0) = (DECLARATION MUZZLED)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION MUZZLED)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION NO-TYPE))-10|
+(CONST 0) = (DECLARATION NO-TYPE)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION NO-TYPE)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION GENPREFIX))-11|
+(CONST 0) = (DECLARATION GENPREFIX)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION GENPREFIX)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION FLONUM))-12|
+(CONST 0) = (DECLARATION FLONUM)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION FLONUM)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION *LEXPR))-13|
+(CONST 0) = (DECLARATION *LEXPR)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION *LEXPR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION *FEXPR))-14|
+(CONST 0) = (DECLARATION *FEXPR)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION *FEXPR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION *EXPR))-15|
+(CONST 0) = (DECLARATION *EXPR)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION *EXPR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION MAPEX))-16|
+(CONST 0) = (DECLARATION MAPEX)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION MAPEX)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION MACROS))-17|
+(CONST 0) = (DECLARATION MACROS)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION MACROS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION ARRAY*))-18|
+(CONST 0) = (DECLARATION ARRAY*)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION ARRAY*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION NOTYPE))-19|
+(CONST 0) = (DECLARATION NOTYPE)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION NOTYPE)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(DECLARATION OBJECT))-20|
+(CONST 0) = (DECLARATION OBJECT)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DECLARATION OBJECT)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/lmdcls.fas
+Wrote file /cygdrive/e/temp/maxima/src/lmdcls.lis

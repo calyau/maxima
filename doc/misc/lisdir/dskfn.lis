@@ -1,0 +1,3042 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/dskfn.lisp
+on 2002-12-17 13:33:24 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/dskfn.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE DSKFN)-2|
+(CONST 0) = DSKFN
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKFN
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (GENPREFIX DK) (SPECIAL $FILENAME $DEVICE ...) ...)-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(SETQ FILELIST NIL ...)-4|
+(CONST 0) = FILELIST
+(CONST 1) = FILELIST1
+(CONST 2) = $PACKAGEFILE
+(CONST 3) = (EVFUN EVFLAG BINDTEST NONARRAY SP2 SP2SUBS OPERS SPECIAL AUTOLOAD ASSIGN MODE)
+(CONST 4) = INDLIST
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variables : (INDLIST $PACKAGEFILE FILELIST1 FILELIST)
+7 byte-code instructions:
+0     (NIL)
+1     (SETVALUE 0)                        ; FILELIST
+3     (SETVALUE 1)                        ; FILELIST1
+5     (SETVALUE 2)                        ; $PACKAGEFILE
+7     (CONST 3)                           ; (EVFUN EVFLAG BINDTEST ...)
+8     (SETVALUE 4)                        ; INDLIST
+10    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMSPEC $UNSTORE (FORM) ...)-5-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $UNSTORE (FORM) ...)-5-2-1|>
+(CONST 1) = $UNSTORE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $UNSTORE (FORM) ...)-5-2-1|>
+1     (CONST&PUSH 1)                      ; $UNSTORE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $UNSTORE (FORM) ...)-5-2-1|
+(CONST 0) = I-$UNSTORE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD&CDR&PUSH 1)
+2     (CALL1 0)                           ; I-$UNSTORE
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN I-$UNSTORE (X) ...)-6|
+(CONST 0) = I-$UNSTORE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE I-$UNSTORE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; I-$UNSTORE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; I-$UNSTORE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE I-$UNSTORE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; I-$UNSTORE
+8     (SKIP&RET 1)
+
+
+Disassembly of function I-$UNSTORE
+(CONST 0) = X
+(CONST 1) = (MLIST SIMP)
+(CONST 2) = INFOLSTCHK
+(CONST 3) = MFILEP
+(CONST 4) = VALUE
+(CONST 5) = DSKGET
+(CONST 6) = SET
+(CONST 7) = MPROPS
+(CONST 8) = SAFE-GET
+(CONST 9) = (NIL)
+(CONST 10) = (HASHAR ARRAY)
+(CONST 11) = MEMQ
+(CONST 12) = AAAAA
+(CONST 13) = MPUTPROP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (AAAAA X)
+writes special variable : (X)
+135 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (BIND 0)                            ; X
+7     (CONST&PUSH 1)                      ; (MLIST SIMP)
+8     (NIL)
+9     (CONS&PUSH)
+10    (PUSH-NIL 2)
+12    (GETVALUE 0)                        ; X
+14    (JMPIFNOT L145)
+17    L17
+17    (GETVALUE&PUSH 0)                   ; X
+19    (CALL1 2)                           ; INFOLSTCHK
+21    (SETVALUE 0)                        ; X
+23    (CAR&PUSH)
+24    (CALLS1&JMPIFNOT 79 L58)            ; BOUNDP
+27    (GETVALUE 0)                        ; X
+29    (CAR&PUSH)
+30    (CALLS1&STORE 78 1)                 ; SYMBOL-VALUE
+33    (PUSH)
+34    (CALL1&JMPIFNOT 3 L58)              ; MFILEP
+37    (T&STORE 0)
+39    (GETVALUE 0)                        ; X
+41    (CAR&PUSH)
+42    (LOAD 2)
+43    (CDR)
+44    (CAR&PUSH)
+45    (LOAD 3)
+46    (CDR)
+47    (CDR)
+48    (CAR&PUSH)
+49    (CONST&PUSH 4)                      ; VALUE
+50    (NIL&PUSH)
+51    (CALL&PUSH 4 5)                     ; DSKGET
+54    (CALLS1&PUSH 91)                    ; EVAL
+56    (CALL2 6)                           ; SET
+58    L58
+58    (GETVALUE 0)                        ; X
+60    (CAR&PUSH)
+61    (CONST&PUSH 7)                      ; MPROPS
+62    (CALL2&JMPIF 8 L66)                 ; SAFE-GET
+65    (CONST 9)                           ; (NIL)
+66    L66
+66    (CDR&PUSH)
+67    (LOAD&JMPIFNOT 0 L119)
+70    L70
+70    (LOAD 0)
+71    (CDR)
+72    (CAR&PUSH)
+73    (CALL1&JMPIFNOT 3 L112)             ; MFILEP
+76    (T&STORE 1)
+78    (LOAD&CAR&PUSH 0)
+80    (CONST&PUSH 10)                     ; (HASHAR ARRAY)
+81    (CALL2&JMPIF 11 L156)               ; MEMQ
+85    (LOAD 0)
+86    (CDR)
+87    (CAR)
+88    (CDR)
+89    (CAR&PUSH)
+90    (LOAD 1)
+91    (CDR)
+92    (CAR)
+93    (CDR)
+94    (CDR)
+95    (CAR&PUSH)
+96    (LOAD&CAR&PUSH 2)
+98    (NIL&PUSH)
+99    (CALL 4 5)                          ; DSKGET
+102   (STORE 2)
+103   (GETVALUE 0)                        ; X
+105   (CAR&PUSH)
+106   (LOAD&PUSH 3)
+107   (LOAD&CAR&PUSH 2)
+109   (CALL 3 13)                         ; MPUTPROP
+112   L112
+112   (LOAD 0)
+113   (CDR)
+114   (CDR)
+115   (STORE 0)
+116   (LOAD&JMPIF 0 L70)
+119   L119
+119   (SKIP 1)
+121   (LOAD&JMPIFNOT 0 L133)
+124   (LOAD&PUSH 2)
+125   (GETVALUE 0)                        ; X
+127   (CAR&PUSH)
+128   (NIL)
+129   (CONS&PUSH)
+130   (CALLSR 2 35)                       ; NCONC
+133   L133
+133   (GETVALUE 0)                        ; X
+135   (CDR)
+136   (SETVALUE 0)                        ; X
+138   (NIL&STORE 0)
+140   (GETVALUE 0)                        ; X
+142   (JMPIF L17)
+145   L145
+145   (LOAD 2)
+146   (SKIP 3)
+148   (UNBIND 2)
+150   (SKIP&RET 2)
+152   L152
+152   (GETVALUE 12)                       ; AAAAA
+154   (JMP L190)
+156   L156
+156   (PUSH-UNBOUND 1)
+158   (CALLS2 143)                        ; GENSYM
+160   (BIND 12)                           ; AAAAA
+162   (LOAD 3)
+163   (CDR)
+164   (CAR)
+165   (CDR)
+166   (CAR&PUSH)
+167   (LOAD 4)
+168   (CDR)
+169   (CAR)
+170   (CDR)
+171   (CDR)
+172   (CAR&PUSH)
+173   (LOAD&CAR&PUSH 5)
+175   (T&PUSH)
+176   (CALL 4 5)                          ; DSKGET
+179   (STORE 5)
+180   (GETVALUE 0)                        ; X
+182   (CAR&PUSH)
+183   (LOAD&PUSH 6)
+184   (JMPIFEQTO 12 L152)                 ; AAAAA
+187   (GETVALUE 0)                        ; X
+189   (CAR)
+190   L190
+190   (PUSH)
+191   (LOAD&CAR&PUSH 5)
+193   (CALL 3 13)                         ; MPUTPROP
+196   (UNBIND1)
+197   (JMP L112)
+
+
+Disassembly of function #:|(DEFUN INFOLSTCHK (X) ...)-7|
+(CONST 0) = INFOLSTCHK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INFOLSTCHK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INFOLSTCHK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INFOLSTCHK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INFOLSTCHK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INFOLSTCHK
+8     (SKIP&RET 1)
+
+
+Disassembly of function INFOLSTCHK
+(CONST 0) = X
+(CONST 1) = ($ALL $CONTEXTS)
+(CONST 2) = MEMQ
+(CONST 3) = $INFOLISTS
+(CONST 4) = $ALL
+(CONST 5) = 
+($LINENUM $RATVARS $WEIGHTLEVELS *RATWEIGHTS TELLRATLIST $DONTFACTOR $FEATURES
+ $CONTEXTS)
+(CONST 6) = $LABELS
+(CONST 7) = ($FUNCTIONS $MACROS $GRADEFS $DEPENDENCIES)
+(CONST 8) = #.#'CAAR
+(CONST 9) = $CONTEXTS
+(CONST 10) = $GLOBAL
+(CONST 11) = 1
+(CONST 12) = DELQ
+(CONST 13) = (NIL)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($CONTEXTS $LABELS $INFOLISTS X)
+82 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (JMPIFNOT L74)
+8     (CAR&PUSH)
+9     (CONST&PUSH 1)                      ; ($ALL $CONTEXTS)
+10    (CALL2&JMPIF 2 L22)                 ; MEMQ
+13    (GETVALUE 0)                        ; X
+15    (CAR&PUSH)
+16    (GETVALUE 3)                        ; $INFOLISTS
+18    (CDR&PUSH)
+19    (CALL2&JMPIFNOT 2 L74)              ; MEMQ
+22    L22
+22    (GETVALUE 0)                        ; X
+24    (CAR&PUSH)
+25    (JMPIFEQTO 4 L77)                   ; $ALL
+28    (GETVALUE 0)                        ; X
+30    (CAR&PUSH)
+31    (JMPIFEQTO 6 L89)                   ; $LABELS
+34    (GETVALUE 0)                        ; X
+36    (CAR&PUSH)
+37    (CONST&PUSH 7)                      ; ($FUNCTIONS $MACROS $GRADEFS ...)
+38    (CALL2&JMPIF 2 L96)                 ; MEMQ
+41    (GETVALUE 0)                        ; X
+43    (CAR&PUSH)
+44    (JMPIFEQTO 9 L108)                  ; $CONTEXTS
+47    (GETVALUE 0)                        ; X
+49    (CAR&PUSH)
+50    (CALLS1 78)                         ; SYMBOL-VALUE
+52    (CDR)
+53    L53
+53    (PUSH)
+54    (LOAD&PUSH 0)
+55    (T)
+56    (JMPIFEQ L121)
+58    (LOAD&JMPIF 0 L62)
+61    (CONST 13)                          ; (NIL)
+62    L62
+62    (PUSH)
+63    (GETVALUE 0)                        ; X
+65    (CDR&PUSH)
+66    (CALLSR 2 34)                       ; APPEND
+69    (SKIP 1)
+71    L71
+71    (UNBIND1)
+72    (SKIP&RET 2)
+74    L74
+74    (T)
+75    (JMP L53)
+77    L77
+77    (GETVALUE 3)                        ; $INFOLISTS
+79    (CDR&PUSH)
+80    (CONST&PUSH 5)                      ; ($LINENUM $RATVARS ...)
+81    (CALLSR&PUSH 2 34)                  ; APPEND
+84    (JSR L0)
+87    (JMP L53)
+89    L89
+89    (GETVALUE 6)                        ; $LABELS
+91    (CDR&PUSH)
+92    (CALLS2 72)                         ; REVERSE
+94    (JMP L53)
+96    L96
+96    (CONST&PUSH 8)                      ; #.#'CAAR
+97    (GETVALUE 0)                        ; X
+99    (CAR&PUSH)
+100   (CALLS1 78)                         ; SYMBOL-VALUE
+102   (CDR&PUSH)
+103   (CALLSR 0 22)                       ; MAPCAR
+106   (JMP L53)
+108   L108
+108   (CONST&PUSH 10)                     ; $GLOBAL
+109   (GETVALUE 9)                        ; $CONTEXTS
+111   (CDR&PUSH)
+112   (CALLS2&PUSH 72)                    ; REVERSE
+114   (CONST&PUSH 11)                     ; 1
+115   (CALL 3 12)                         ; DELQ
+118   (JMP L53)
+121   L121
+121   (GETVALUE 0)                        ; X
+123   (SKIP 1)
+125   (JMP L71)
+
+
+Disassembly of function #:|(DEFUN FILELENGTH (FILE) ...)-8|
+(CONST 0) = FILELENGTH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FILELENGTH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FILELENGTH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FILELENGTH
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FILELENGTH>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FILELENGTH
+8     (SKIP&RET 1)
+
+
+Disassembly of function FILELENGTH
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2 129)                        ; FILE-LENGTH
+3     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $SAVE (FORM) ...)-9-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $SAVE (FORM) ...)-9-2-1|>
+(CONST 1) = $SAVE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $SAVE (FORM) ...)-9-2-1|>
+1     (CONST&PUSH 1)                      ; $SAVE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $SAVE (FORM) ...)-9-2-1|
+(CONST 0) = $SAVE
+(CONST 1) = DSKSETUP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD&CDR&PUSH 1)
+2     (PUSH-NIL 2)
+4     (CONST&PUSH 0)                      ; $SAVE
+5     (CALL 4 1)                          ; DSKSETUP
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN I-$STORE (X) ...)-10|
+(CONST 0) = I-$STORE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE I-$STORE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; I-$STORE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; I-$STORE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE I-$STORE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; I-$STORE
+8     (SKIP&RET 1)
+
+
+Disassembly of function I-$STORE
+(CONST 0) = X
+(CONST 1) = $STORE
+(CONST 2) = DSKSETUP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+9 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (T&PUSH)
+6     (NIL&PUSH)
+7     (CONST&PUSH 1)                      ; $STORE
+8     (CALL 4 2)                          ; DSKSETUP
+11    (UNBIND1)
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $FASSAVE (FORM) ...)-11-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $FASSAVE (FORM) ...)-11-2-1|>
+(CONST 1) = $FASSAVE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $FASSAVE (FORM) ...)-11-2-1|>
+1     (CONST&PUSH 1)                      ; $FASSAVE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $FASSAVE (FORM) ...)-11-2-1|
+(CONST 0) = $FASSAVE
+(CONST 1) = DSKSETUP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&CDR&PUSH 1)
+2     (NIL&PUSH)
+3     (T&PUSH)
+4     (CONST&PUSH 0)                      ; $FASSAVE
+5     (CALL 4 1)                          ; DSKSETUP
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFVAR *MACSYMA-EXTEND-TYPES-SAVED* NIL)-12|
+(CONST 0) = (SPECIAL *MACSYMA-EXTEND-TYPES-SAVED*)
+(CONST 1) = *MACSYMA-EXTEND-TYPES-SAVED*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *MACSYMA-EXTEND-TYPES-SAVED*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *MACSYMA-EXTEND-TYPES-SAVED*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *MACSYMA-EXTEND-TYPES-SAVED*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN DSKSETUP (X STOREFL FASDUMPFL ...) ...)-13|
+(CONST 0) = DSKSETUP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKSETUP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKSETUP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKSETUP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKSETUP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKSETUP
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKSETUP
+(CONST 0) = X
+(CONST 1) = FASDUMPFL
+(CONST 2) = PRINLENGTH
+(CONST 3) = PRINLEVEL
+(CONST 4) = *PRINT-GENSYM*
+(CONST 5) = FASDEQLIST
+(CONST 6) = FASDNONEQLIST
+(CONST 7) = 1
+(CONST 8) = NSUBSTRING
+(CONST 9) = :OUTPUT
+(CONST 10) = SAVEFILE
+(CONST 11) = ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- "
+(CONST 12) = "(in-package \"MAXIMA\")"
+(CONST 13) = IMPROPER-ARG-ERR
+(CONST 14) = LISTARGP
+(CONST 15) = MEQUAL
+(CONST 16) = DSKSAVEP
+(CONST 17) = FILELIST
+(CONST 18) = *MACSYMA-EXTEND-TYPES-SAVED*
+(CONST 19) = #(NIL)
+(CONST 20) = (#(ERROR 111) 1 . 1)
+(CONST 21) = DSKSTORE
+(CONST 22) = ERRSET
+(CONST 23) = #(NIL)
+(CONST 24) = (#(ERROR 111) 1 . 1)
+(CONST 25) = &{
+(CONST 26) = CLOSE
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*MACSYMA-EXTEND-TYPES-SAVED* FILELIST DSKSAVEP ERRSET SAVEFILE FASDUMPFL X)
+writes special variables : (*MACSYMA-EXTEND-TYPES-SAVED* X FILELIST SAVEFILE)
+150 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; X
+3     (LOAD 5)
+4     (BIND 1)                            ; FASDUMPFL
+6     (NIL)
+7     (BIND 2)                            ; PRINLENGTH
+9     (NIL)
+10    (BIND 3)                            ; PRINLEVEL
+12    (NIL&PUSH)
+13    (NIL)
+14    (BIND 4)                            ; *PRINT-GENSYM*
+16    (NIL&PUSH)
+17    (NIL)
+18    (BIND 5)                            ; FASDEQLIST
+20    (NIL)
+21    (BIND 6)                            ; FASDNONEQLIST
+23    (GETVALUE 0)                        ; X
+25    (CAR&PUSH)
+26    (CALLS1&PUSH 75)                    ; STRING
+28    (CONST&PUSH 7)                      ; 1
+29    (CALL2&PUSH 8)                      ; NSUBSTRING
+31    (CONST&PUSH 9)                      ; :OUTPUT
+32    (PUSH-UNBOUND 5)
+34    (CALLS1 249)                        ; OPEN
+36    (SETVALUE 10)                       ; SAVEFILE
+38    (GETVALUE 0)                        ; X
+40    (CAR&PUSH)
+41    (LIST 1)
+43    (STORE 10)
+45    (GETVALUE 1)                        ; FASDUMPFL
+47    (JMPIF L63)
+49    (CONST&PUSH 11)                     ; ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- "
+50    (GETVALUE&PUSH 10)                  ; SAVEFILE
+52    (CALLS1 132)                        ; PRINC
+54    (GETVALUE&PUSH 10)                  ; SAVEFILE
+56    (CALLS1 139)                        ; TERPRI
+58    (CONST&PUSH 12)                     ; "(in-package \"MAXIMA\")"
+59    (GETVALUE&PUSH 10)                  ; SAVEFILE
+61    (CALLS1 132)                        ; PRINC
+63    L63
+63    (GETVALUE&PUSH 0)                   ; X
+65    (NIL&PUSH)
+66    L66
+66    (LOAD&PUSH 1)
+67    (CALLS1&JMPIF 146 L122)             ; ENDP
+70    (LOAD&CAR&STORE 1 0)
+73    (JMPIFATOM L101)
+75    (LOAD&PUSH 0)
+76    (CALL1&JMPIF 14 L97)                ; LISTARGP
+79    (LOAD 0)
+80    (CAR)
+81    (CAR&PUSH)
+82    (JMPIFNOTEQTO 15 L92)               ; MEQUAL
+85    (LOAD 0)
+86    (CDR)
+87    (CAR)
+88    L88
+88    (PUSH)
+89    (CALLS2&JMPIF 6 L97)                ; SYMBOLP
+92    L92
+92    (LOAD&PUSH 0)
+93    (LOAD&PUSH 27)
+95    (CALL2 13)                          ; IMPROPER-ARG-ERR
+97    L97
+97    (LOAD&CDR&STORE 1)
+99    (JMP L66)
+101   L101
+101   (LOAD 0)
+102   (JMP L88)
+104   L104
+104   (GETVALUE 22)                       ; ERRSET
+106   (JMPIFNOT L165)
+108   (JMP L202)
+111   L111
+111   (HANDLER-BEGIN&PUSH)
+112   (LOAD 0)
+113   (STOREI 0 0 4)
+117   (GO-I 0 0 2 0)
+122   L122
+122   (SKIP 2)
+124   (GETVALUE 16)                       ; DSKSAVEP
+126   (JMPIFNOT L134)
+128   (LOAD&PUSH 10)
+129   (GETVALUE 17)                       ; FILELIST
+131   (CONS)
+132   (SETVALUE 17)                       ; FILELIST
+134   L134
+134   (GETVALUE 0)                        ; X
+136   (CAR&PUSH)
+137   (NIL)
+138   (CONS)
+139   (STORE 6)
+140   (GETVALUE 0)                        ; X
+142   (CDR)
+143   (SETVALUE 0)                        ; X
+145   (NIL)
+146   (SETVALUE 18)                       ; *MACSYMA-EXTEND-TYPES-SAVED*
+148   (PUSH)
+149   (TAGBODY-OPEN 19 L104)              ; #(NIL)
+152   (HANDLER-OPEN 20 L111)              ; (#(ERROR 111) 1 . 1)
+154   (GETVALUE&PUSH 0)                   ; X
+156   (LOAD&PUSH 36)
+158   (LOAD&PUSH 21)
+159   (LOAD&PUSH 18)
+160   (CALL 4 21)                         ; DSKSTORE
+163   (SKIP 4)
+165   L165
+165   (TAGBODY-CLOSE)
+166   (SKIP 1)
+168   (GETVALUE 18)                       ; *MACSYMA-EXTEND-TYPES-SAVED*
+170   (JMPIFNOT L212)
+172   (NIL&PUSH)
+173   (TAGBODY-OPEN 23 L198)              ; #(NIL)
+176   (HANDLER-OPEN 24 L111)              ; (#(ERROR 111) 1 . 1)
+178   (CONST&PUSH 25)                     ; &{
+179   (GETVALUE 18)                       ; *MACSYMA-EXTEND-TYPES-SAVED*
+181   (CONS&PUSH)
+182   (LOAD&PUSH 36)
+184   (LOAD&PUSH 21)
+185   (LOAD&PUSH 18)
+186   (CALL&PUSH 4 21)                    ; DSKSTORE
+189   (LIST 1)
+191   (SKIP 4)
+193   (TAGBODY-CLOSE)
+194   (SKIP 1)
+196   (JMP L209)
+198   L198
+198   (GETVALUE 22)                       ; ERRSET
+200   (JMPIFNOT L206)
+202   L202
+202   (LOAD&PUSH 4)
+203   (CALLSR 0 29)                       ; ERROR
+206   L206
+206   (TAGBODY-CLOSE)
+207   (SKIP 1)
+209   L209
+209   (NIL)
+210   (SETVALUE 18)                       ; *MACSYMA-EXTEND-TYPES-SAVED*
+212   L212
+212   (GETVALUE&PUSH 10)                  ; SAVEFILE
+214   (CALL1 26)                          ; CLOSE
+216   (GETVALUE&PUSH 10)                  ; SAVEFILE
+218   (PUSH-UNBOUND 1)
+220   (CALLS1 244)                        ; NAMESTRING
+222   (UNBIND 2)
+224   (SKIP 1)
+226   (UNBIND1)
+227   (SKIP 1)
+229   (UNBIND 4)
+231   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN DSKSTORE (X STOREFL FILE ...) ...)-14|
+(CONST 0) = DSKSTORE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKSTORE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKSTORE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKSTORE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKSTORE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKSTORE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKSTORE
+(CONST 0) = X
+(CONST 1) = LISTARGP
+(CONST 2) = GETLABELS
+(CONST 3) = (($CLABELS . $INCHAR) ($DLABELS . $OUTCHAR) ($ELABELS . $LINECHAR))
+(CONST 4) = ASSQ
+(CONST 5) = GETLABELS*
+(CONST 6) = GETOPR
+(CONST 7) = INFOLSTCHK
+(CONST 8) = MEVAL
+(CONST 9) = SET
+(CONST 10) = $RATWEIGHTS
+(CONST 11) = *RATWEIGHTS
+(CONST 12) = $TELLRATS
+(CONST 13) = TELLRATLIST
+(CONST 14) = $RATVARS
+(CONST 15) = VARLIST
+(CONST 16) = ($WEIGHTLEVELS $DONTFACTOR)
+(CONST 17) = MEMQ
+(CONST 18) = (TELLRATLIST *RATWEIGHTS)
+(CONST 19) = $FEATURES
+(CONST 20) = FEATUREL
+(CONST 21) = ALIKE
+(CONST 22) = $DEFAULT_LET_RULE_PACKAGE
+(CONST 23) = MFILEP
+(CONST 24) = DSKSAVEP
+(CONST 25) = UNSTOREP
+(CONST 26) = MPROPS
+(CONST 27) = SAFE-GET
+(CONST 28) = (NIL)
+(CONST 29) = (OPERATORS REVERSEALIAS GRAD NOUN VERB EXPR OP DATA)
+(CONST 30) = GETL
+(CONST 31) = $PROPS
+(CONST 32) = $CONTEXTS
+(CONST 33) = $INITIAL
+(CONST 34) = CONTEXT
+(CONST 35) = $FACTS
+(CONST 36) = $CONTEXT
+(CONST 37) = DSKATOM
+(CONST 38) = OPTIONP
+(CONST 39) = VALUE
+(CONST 40) = INFOSTORE
+(CONST 41) = $ALIASES
+(CONST 42) = REVERSEALIAS
+(CONST 43) = DSKDEFPROP
+(CONST 44) = PRADD2LNC
+(CONST 45) = MAKEALIAS
+(CONST 46) = ALIAS
+(CONST 47) = GREATORDER
+(CONST 48) = LESSORDER
+(CONST 49) = NOUN
+(CONST 50) = VERB
+(CONST 51) = $RULE
+(CONST 52) = MGET
+(CONST 53) = RULEOF
+(CONST 54) = GETOP
+(CONST 55) = $RULES
+(CONST 56) = (EXPR)
+(CONST 57) = GETL-LM-FCN-PROP
+(CONST 58) = TRANSLATED
+(CONST 59) = TRACE
+(CONST 60) = EXPR
+(CONST 61) = SETPLIST
+(CONST 62) = PROPSCHK
+(CONST 63) = (A-EXPR FEXPR TRANSLATED-MMACRO)
+(CONST 64) = OPERATORS
+(CONST 65) = RULES
+(CONST 66) = OLDRULES
+(CONST 67) = INDLIST
+(CONST 68) = STRIPDOLLAR
+(CONST 69) = ALPHABET
+(CONST 70) = 1
+(CONST 71) = GETCHARN
+(CONST 72) = OPERS
+(CONST 73) = OP
+(CONST 74) = OPR
+(CONST 75) = EXTOPCHK
+(CONST 76) = GRAD
+(CONST 77) = $GRADEFS
+(CONST 78) = ZL-ASSOC
+(CONST 79) = DATA
+(CONST 80) = RESTORE-FACTS
+(CONST 81) = QUOTE
+(CONST 82) = FASPRIN
+(CONST 83) = DSKSETQ
+(CONST 84) = FASPRINT
+(CONST 85) = $ACTIVECONTEXTS
+(CONST 86) = $ACTIVATE
+(CONST 87) = MPROPSCHK
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: 
+($ACTIVECONTEXTS $GRADEFS OPERS INDLIST $FEATURES GREATORDER $ALIASES FEATUREL
+ VARLIST LESSORDER $CONTEXTS $PROPS DSKSAVEP X)
+writes special variable : (X)
+670 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (BIND 0)                            ; X
+7     (PUSH-NIL 4)
+9     (LOAD&PUSH 13)
+10    (NIL&PUSH)
+11    (GETVALUE 0)                        ; X
+13    (JMPIFNOT L1069)
+16    L16
+16    (GETVALUE 0)                        ; X
+18    (CAR&PUSH)
+19    (CALL1 1)                           ; LISTARGP
+21    (STORE 5)
+22    (JMPIF L90)
+25    (GETVALUE 0)                        ; X
+27    (CAR&PUSH)
+28    (CONST&PUSH 3)                      ; (# # #)
+29    (CALL2 4)                           ; ASSQ
+31    (STORE 5)
+32    (JMPIFNOT L49)
+34    (CDR&PUSH)
+35    (CALLS1&PUSH 91)                    ; EVAL
+37    (NIL&PUSH)
+38    (CALL2 5)                           ; GETLABELS*
+40    L40
+40    (PUSH)
+41    (GETVALUE 0)                        ; X
+43    (CDR&PUSH)
+44    (CALLSR 2 35)                       ; NCONC
+47    (SETVALUE 0)                        ; X
+49    L49
+49    (GETVALUE 0)                        ; X
+51    (CAR)
+52    (JMPIFCONSP L99)
+54    (GETVALUE&PUSH 0)                   ; X
+56    (CALL1 7)                           ; INFOLSTCHK
+58    (SETVALUE 0)                        ; X
+60    (JMPIFNOT L65)
+62    (CAR&PUSH)
+63    (CALL1 6)                           ; GETOPR
+65    L65
+65    (STORE 4)
+66    (STORE 3)
+67    L67
+67    (LOAD&PUSH 3)
+68    (CALLS2&JMPIFNOT 6 L116)            ; SYMBOLP
+71    (LOAD&PUSH 3)
+72    (JMPIFEQTO 10 L131)                 ; $RATWEIGHTS
+75    (LOAD&PUSH 3)
+76    (JMPIFNOTEQTO 12 L286)              ; $TELLRATS
+80    (CONST 13)                          ; TELLRATLIST
+81    L81
+81    (STORE 3)
+82    (GETVALUE 0)                        ; X
+84    (JMPIFNOT L1069)
+87    (JMP L291)
+90    L90
+90    (CAR&PUSH)
+91    (LOAD&CDR&PUSH 6)
+93    (NIL&PUSH)
+94    (CALL 3 2)                          ; GETLABELS
+97    (JMP L40)
+99    L99
+99    (GETVALUE 0)                        ; X
+101   (CAR)
+102   (CDR)
+103   (CAR)
+104   (STORE 4)
+105   (GETVALUE 0)                        ; X
+107   (CAR)
+108   (CDR)
+109   (CDR)
+110   (CAR&PUSH)
+111   (CALL1 6)                           ; GETOPR
+113   (STORE 3)
+114   (JMP L67)
+116   L116
+116   (LOAD 3)
+117   (STORE 0)
+118   (PUSH-UNBOUND 1)
+120   (CALLS2&PUSH 143)                   ; GENSYM
+122   (LOAD&PUSH 0)
+123   (LOAD&PUSH 5)
+124   (CALL1&PUSH 8)                      ; MEVAL
+126   (CALL2 9)                           ; SET
+128   (POP)
+129   (JMP L81)
+131   L131
+131   (CONST 11)                          ; *RATWEIGHTS
+132   (JMP L81)
+134   L134
+134   (LOAD&PUSH 3)
+135   (CONST&PUSH 26)                     ; MPROPS
+136   (CALL2 27)                          ; SAFE-GET
+138   (STORE 5)
+139   (JMPIFNOT L156)
+141   (LOAD&PUSH 5)
+142   (CONST&PUSH 28)                     ; (NIL)
+143   (CALLS2&JMPIF 2 L156)               ; EQUAL
+146   (GETVALUE 24)                       ; DSKSAVEP
+148   (JMPIF L389)
+151   (LOAD&PUSH 3)
+152   (CALL1&JMPIF 25 L389)               ; UNSTOREP
+156   L156
+156   (LOAD&PUSH 3)
+157   (CONST&PUSH 29)                     ; (OPERATORS REVERSEALIAS GRAD ...)
+158   (CALL2&JMPIF 30 L389)               ; GETL
+162   (LOAD&PUSH 3)
+163   (GETVALUE 31)                       ; $PROPS
+165   (CDR&PUSH)
+166   (CALL2&JMPIF 17 L389)               ; MEMQ
+170   (LOAD&PUSH 3)
+171   (GETVALUE 32)                       ; $CONTEXTS
+173   (CDR&PUSH)
+174   (CALL2&JMPIFNOT 17 L1054)           ; MEMQ
+178   (LOAD&PUSH 3)
+179   (JMPIFNOTEQTO 33 L1054)             ; $INITIAL
+183   (CONST 33)                          ; $INITIAL
+185   (BIND 34)                           ; CONTEXT
+187   (CONST&PUSH 33)                     ; $INITIAL
+189   (CALL1 35)                          ; $FACTS
+191   (CDR)
+192   (UNBIND1)
+193   (JMPIFNOT L1054)
+196   (JMP L389)
+199   L199
+199   (LOAD&PUSH 3)
+200   (CONST&PUSH 42)                     ; REVERSEALIAS
+202   (PUSH-UNBOUND 1)
+204   (CALLS2&STORE 132 5)                ; GET
+207   (JMPIFNOT L507)
+210   (JMP L444)
+213   L213
+213   (NIL&PUSH)
+214   (CONST&PUSH 47)                     ; GREATORDER
+216   (GETVALUE 0)                        ; X
+218   (CDR)
+219   (LIST* 2)
+221   (SETVALUE 0)                        ; X
+223   (GETVALUE 48)                       ; LESSORDER
+225   (JMPIFNOT L496)
+228   (JMP L480)
+231   L231
+231   (NIL&PUSH)
+232   (LOAD&PUSH 6)
+233   (GETVALUE 0)                        ; X
+235   (CDR)
+236   (LIST* 2)
+238   (SETVALUE 0)                        ; X
+240   (LOAD&PUSH 4)
+241   (LOAD&PUSH 6)
+242   (CONST 49)                          ; NOUN
+244   (JMP L541)
+247   L247
+247   (NIL&PUSH)
+248   (LOAD&PUSH 4)
+249   (CONST&PUSH 60)                     ; EXPR
+251   (CALLS2 137)                        ; REMPROP
+253   (LOAD&PUSH 4)
+254   (CONST&PUSH 60)                     ; EXPR
+256   (PUSH-UNBOUND 1)
+258   (CALLS2&STORE 132 0)                ; GET
+261   (JMPIFNOT L270)
+263   (LOAD&PUSH 5)
+264   (LOAD&PUSH 1)
+265   (CONST&PUSH 60)                     ; EXPR
+267   (CALL 3 43)                         ; DSKDEFPROP
+270   L270
+270   (LOAD&PUSH 4)
+271   (CONST&PUSH 60)                     ; EXPR
+273   (LOAD&PUSH 8)
+274   (LOAD&PUSH 7)
+275   (CALLS2 139)                        ; SYMBOL-PLIST
+277   (LIST*&PUSH 2)
+279   (CALL2 61)                          ; SETPLIST
+281   (SKIP 1)
+283   (JMP L611)
+286   L286
+286   (GETVALUE 0)                        ; X
+288   (JMPIFNOT L1069)
+291   L291
+291   (GETVALUE 0)                        ; X
+293   (CAR)
+294   (JMPIFNOT L1054)
+297   (LOAD&PUSH 3)
+298   (LOAD&PUSH 3)
+299   (CALL2 4)                           ; ASSQ
+301   (STORE 5)
+302   (JMPIFNOT L310)
+304   (LOAD&PUSH 4)
+305   (LOAD 6)
+306   (CDR)
+307   (JMPIFEQ L1054)
+310   L310
+310   (LOAD&PUSH 3)
+311   (LOAD 5)
+312   (CONS&PUSH)
+313   (LOAD&CONS&STORE 2)
+315   (LOAD&PUSH 3)
+316   (CALLS1&JMPIFNOT 79 L134)           ; BOUNDP
+320   (LOAD&PUSH 3)
+321   (JMPIFNOTEQTO 14 L329)              ; $RATVARS
+324   (GETVALUE 15)                       ; VARLIST
+326   (JMPIFNOT L134)
+329   L329
+329   (LOAD&PUSH 3)
+330   (CALLS1&STORE 78 5)                 ; SYMBOL-VALUE
+333   (LOAD&PUSH 3)
+334   (CONST&PUSH 16)                     ; ($WEIGHTLEVELS $DONTFACTOR)
+335   (CALL2&JMPIFNOT 17 L343)            ; MEMQ
+338   (LOAD 5)
+339   (CDR)
+340   (JMPIFNOT L134)
+343   L343
+343   (LOAD&PUSH 3)
+344   (CONST&PUSH 18)                     ; (TELLRATLIST *RATWEIGHTS)
+345   (CALL2&JMPIFNOT 17 L352)            ; MEMQ
+348   (LOAD&JMPIFNOT 5 L134)
+352   L352
+352   (LOAD&PUSH 3)
+353   (JMPIFNOTEQTO 19 L364)              ; $FEATURES
+356   (LOAD&CDR&PUSH 5)
+358   (GETVALUE&PUSH 20)                  ; FEATUREL
+360   (CALL2&JMPIF 21 L134)               ; ALIKE
+364   L364
+364   (LOAD&PUSH 3)
+365   (JMPIFNOTEQTO 22 L373)              ; $DEFAULT_LET_RULE_PACKAGE
+368   (LOAD&PUSH 3)
+369   (LOAD 6)
+370   (JMPIFEQ L134)
+373   L373
+373   (LOAD&PUSH 5)
+374   (CALL1&JMPIFNOT 23 L389)            ; MFILEP
+377   (GETVALUE 24)                       ; DSKSAVEP
+379   (JMPIF L134)
+382   (LOAD&PUSH 3)
+383   (CALL1&JMPIFNOT 25 L134)            ; UNSTOREP
+387   (T&STORE 1)
+389   L389
+389   (LOAD&PUSH 3)
+390   (CALLS1&JMPIFNOT 79 L433)           ; BOUNDP
+393   (LOAD&PUSH 3)
+394   (CALLS1&STORE 78 5)                 ; SYMBOL-VALUE
+397   (PUSH)
+398   (CALL1&JMPIF 23 L433)               ; MFILEP
+401   (LOAD&PUSH 3)
+402   (JMPIFNOTEQTO 36 L414)              ; $CONTEXT
+405   (NIL&PUSH)
+406   (LOAD&PUSH 6)
+407   (GETVALUE 0)                        ; X
+409   (CDR)
+410   (LIST* 2)
+412   (SETVALUE 0)                        ; X
+414   L414
+414   (LOAD&PUSH 3)
+415   (LOAD&PUSH 5)
+416   (LOAD&PUSH 7)
+417   (CALL 3 37)                         ; DSKATOM
+420   (LOAD&PUSH 4)
+421   (CALL1&JMPIF 38 L433)               ; OPTIONP
+424   (LOAD&PUSH 3)
+425   (LOAD&PUSH 15)
+426   (CONST&PUSH 39)                     ; VALUE
+428   (LOAD&PUSH 4)
+429   (LOAD&PUSH 8)
+430   (CALL 5 40)                         ; INFOSTORE
+433   L433
+433   (LOAD&PUSH 3)
+434   (GETVALUE 41)                       ; $ALIASES
+436   (CDR&PUSH)
+437   (CALL2&JMPIF 17 L199)               ; MEMQ
+441   (STORE 5)
+442   (JMPIFNOT L507)
+444   L444
+444   (LOAD&PUSH 4)
+445   (LOAD&PUSH 6)
+446   (CONST&PUSH 42)                     ; REVERSEALIAS
+448   (CALL 3 43)                         ; DSKDEFPROP
+451   (LOAD&PUSH 4)
+452   (CONST&PUSH 41)                     ; $ALIASES
+454   (CALL2 44)                          ; PRADD2LNC
+456   (LOAD&PUSH 5)
+457   (CALL1&PUSH 45)                     ; MAKEALIAS
+459   (LOAD&PUSH 5)
+460   (CONST&PUSH 46)                     ; ALIAS
+462   (CALL 3 43)                         ; DSKDEFPROP
+465   (GETVALUE 47)                       ; GREATORDER
+467   (JMPIFNOT L476)
+469   (CONST&PUSH 47)                     ; GREATORDER
+471   (LOAD&PUSH 3)
+472   (CALL2&JMPIFNOT 4 L213)             ; ASSQ
+476   L476
+476   (GETVALUE 48)                       ; LESSORDER
+478   (JMPIFNOT L496)
+480   L480
+480   (CONST&PUSH 48)                     ; LESSORDER
+482   (LOAD&PUSH 3)
+483   (CALL2&JMPIF 4 L496)                ; ASSQ
+486   (NIL&PUSH)
+487   (CONST&PUSH 48)                     ; LESSORDER
+489   (GETVALUE 0)                        ; X
+491   (CDR)
+492   (LIST* 2)
+494   (SETVALUE 0)                        ; X
+496   L496
+496   (NIL&PUSH)
+497   (LOAD&PUSH 6)
+498   (CALL1&PUSH 45)                     ; MAKEALIAS
+500   (GETVALUE 0)                        ; X
+502   (CDR)
+503   (LIST* 2)
+505   (SETVALUE 0)                        ; X
+507   L507
+507   (LOAD&PUSH 3)
+508   (CONST&PUSH 49)                     ; NOUN
+510   (PUSH-UNBOUND 1)
+512   (CALLS2&STORE 132 5)                ; GET
+515   (JMPIF L231)
+518   (LOAD&PUSH 3)
+519   (CONST&PUSH 50)                     ; VERB
+521   (PUSH-UNBOUND 1)
+523   (CALLS2&STORE 132 5)                ; GET
+526   (JMPIFNOT L545)
+528   (NIL&PUSH)
+529   (LOAD&PUSH 6)
+530   (GETVALUE 0)                        ; X
+532   (CDR)
+533   (LIST* 2)
+535   (SETVALUE 0)                        ; X
+537   (LOAD&PUSH 4)
+538   (LOAD&PUSH 6)
+539   (CONST 50)                          ; VERB
+541   L541
+541   (PUSH)
+542   (CALL 3 43)                         ; DSKDEFPROP
+545   L545
+545   (LOAD&PUSH 3)
+546   (CONST&PUSH 51)                     ; $RULE
+548   (CALL2&JMPIFNOT 52 L573)            ; MGET
+551   (LOAD&PUSH 3)
+552   (CALL1 53)                          ; RULEOF
+554   (STORE 5)
+555   (JMPIFNOT L566)
+557   (NIL&PUSH)
+558   (LOAD&PUSH 6)
+559   (GETVALUE 0)                        ; X
+561   (CDR)
+562   (LIST* 2)
+564   (SETVALUE 0)                        ; X
+566   L566
+566   (LOAD&PUSH 4)
+567   (CALL1&PUSH 54)                     ; GETOP
+569   (CONST&PUSH 55)                     ; $RULES
+571   (CALL2 44)                          ; PRADD2LNC
+573   L573
+573   (LOAD&PUSH 3)
+574   (CONST&PUSH 56)                     ; (EXPR)
+576   (CALL2 57)                          ; GETL-LM-FCN-PROP
+578   (CDR)
+579   (CAR)
+580   (STORE 5)
+581   (JMPIFNOT L620)
+583   (LOAD&PUSH 3)
+584   (CONST&PUSH 51)                     ; $RULE
+586   (CALL2&JMPIF 52 L597)               ; MGET
+589   (LOAD&PUSH 3)
+590   (CONST&PUSH 58)                     ; TRANSLATED
+592   (PUSH-UNBOUND 1)
+594   (CALLS2&JMPIFNOT 132 L620)          ; GET
+597   L597
+597   (LOAD&PUSH 3)
+598   (CONST&PUSH 59)                     ; TRACE
+600   (CALL2&JMPIF 52 L247)               ; MGET
+604   (LOAD&PUSH 4)
+605   (LOAD&PUSH 6)
+606   (CONST&PUSH 60)                     ; EXPR
+608   (CALL 3 43)                         ; DSKDEFPROP
+611   L611
+611   (NIL&STORE 5)
+613   (LOAD&PUSH 3)
+614   (LOAD&PUSH 5)
+615   (CONST&PUSH 58)                     ; TRANSLATED
+617   (CALL 3 62)                         ; PROPSCHK
+620   L620
+620   (LOAD&PUSH 3)
+621   (CONST&PUSH 63)                     ; (A-EXPR FEXPR TRANSLATED-MMACRO)
+623   (CALL2 30)                          ; GETL
+625   (STORE 5)
+626   (JMPIFNOT L652)
+628   (LOAD&PUSH 3)
+629   (CONST&PUSH 58)                     ; TRANSLATED
+631   (PUSH-UNBOUND 1)
+633   (CALLS2&JMPIFNOT 132 L652)          ; GET
+636   (LOAD&PUSH 4)
+637   (LOAD 6)
+638   (CDR)
+639   (CAR&PUSH)
+640   (LOAD&CAR&PUSH 7)
+642   (CALL 3 43)                         ; DSKDEFPROP
+645   (LOAD&PUSH 3)
+646   (LOAD&PUSH 5)
+647   (CONST&PUSH 58)                     ; TRANSLATED
+649   (CALL 3 62)                         ; PROPSCHK
+652   L652
+652   (LOAD&PUSH 3)
+653   (CONST&PUSH 64)                     ; OPERATORS
+655   (PUSH-UNBOUND 1)
+657   (CALLS2&STORE 132 5)                ; GET
+660   (JMPIFNOT L732)
+663   (LOAD&PUSH 4)
+664   (LOAD&PUSH 6)
+665   (CONST&PUSH 64)                     ; OPERATORS
+667   (CALL 3 43)                         ; DSKDEFPROP
+670   (LOAD&PUSH 3)
+671   (CONST&PUSH 65)                     ; RULES
+673   (PUSH-UNBOUND 1)
+675   (CALLS2&STORE 132 5)                ; GET
+678   (JMPIFNOT L698)
+680   (LOAD&PUSH 4)
+681   (LOAD&PUSH 6)
+682   (CONST&PUSH 65)                     ; RULES
+684   (CALL 3 43)                         ; DSKDEFPROP
+687   (NIL&PUSH)
+688   (LOAD&PUSH 6)
+689   (GETVALUE 0)                        ; X
+691   (CDR&PUSH)
+692   (CALLSR 2 34)                       ; APPEND
+695   (CONS)
+696   (SETVALUE 0)                        ; X
+698   L698
+698   (LOAD&PUSH 3)
+699   (GETVALUE 31)                       ; $PROPS
+701   (CDR&PUSH)
+702   (CALL2&JMPIFNOT 17 L710)            ; MEMQ
+705   (LOAD&PUSH 4)
+706   (CONST&PUSH 31)                     ; $PROPS
+708   (CALL2 44)                          ; PRADD2LNC
+710   L710
+710   (LOAD&PUSH 3)
+711   (CONST&PUSH 66)                     ; OLDRULES
+713   (CALL2 52)                          ; MGET
+715   (STORE 5)
+716   (JMPIFNOT L732)
+718   (NIL&PUSH)
+719   (LOAD&PUSH 6)
+720   (CALLS2 72)                         ; REVERSE
+722   (CDR&PUSH)
+723   (GETVALUE 0)                        ; X
+725   (CDR&PUSH)
+726   (CALLSR 2 35)                       ; NCONC
+729   (CONS)
+730   (SETVALUE 0)                        ; X
+732   L732
+732   (LOAD&PUSH 3)
+733   (GETVALUE 19)                       ; $FEATURES
+735   (CDR&PUSH)
+736   (CALL2&JMPIFNOT 17 L743)            ; MEMQ
+739   (LOAD&PUSH 4)
+740   (CONST&PUSH 19)                     ; $FEATURES
+741   (CALL2 44)                          ; PRADD2LNC
+743   L743
+743   (LOAD&PUSH 3)
+744   (CALL1&PUSH 54)                     ; GETOP
+746   (GETVALUE 31)                       ; $PROPS
+748   (CDR&PUSH)
+749   (CALL2&JMPIFNOT 17 L830)            ; MEMQ
+753   (GETVALUE&PUSH 67)                  ; INDLIST
+755   (NIL&PUSH)
+756   (JMP L769)
+758   L758
+758   (LOAD&CAR&STORE 1 0)
+761   (LOAD&PUSH 5)
+762   (LOAD&PUSH 7)
+763   (LOAD&PUSH 2)
+764   (CALL 3 62)                         ; PROPSCHK
+767   (LOAD&CDR&STORE 1)
+769   L769
+769   (LOAD&PUSH 1)
+770   (CALLS1&JMPIFNOT 146 L758)          ; ENDP
+773   (SKIP 2)
+775   (LOAD&PUSH 3)
+776   (CALL1 68)                          ; STRIPDOLLAR
+778   (STORE 5)
+779   (PUSH)
+780   (CONST&PUSH 69)                     ; ALPHABET
+782   (PUSH-UNBOUND 1)
+784   (CALLS2&JMPIFNOT 132 L808)          ; GET
+787   (LOAD&PUSH 5)
+788   (T&PUSH)
+789   (CONST&PUSH 69)                     ; ALPHABET
+791   (CALL 3 43)                         ; DSKDEFPROP
+794   (LOAD&PUSH 5)
+795   (CONST&PUSH 70)                     ; 1
+797   (CALL2&PUSH 71)                     ; GETCHARN
+799   (CONST&PUSH 69)                     ; ALPHABET
+801   (CALL2 44)                          ; PRADD2LNC
+803   (LOAD&PUSH 3)
+804   (CONST&PUSH 31)                     ; $PROPS
+806   (CALL2 44)                          ; PRADD2LNC
+808   L808
+808   (GETVALUE&PUSH 72)                  ; OPERS
+810   (NIL&PUSH)
+811   (JMP L824)
+813   L813
+813   (LOAD&CAR&STORE 1 0)
+816   (LOAD&PUSH 5)
+817   (LOAD&PUSH 7)
+818   (LOAD&PUSH 2)
+819   (CALL 3 62)                         ; PROPSCHK
+822   (LOAD&CDR&STORE 1)
+824   L824
+824   (LOAD&PUSH 1)
+825   (CALLS1&JMPIFNOT 146 L813)          ; ENDP
+828   (SKIP 2)
+830   L830
+830   (LOAD&PUSH 3)
+831   (CONST&PUSH 73)                     ; OP
+833   (PUSH-UNBOUND 1)
+835   (CALLS2&STORE 132 5)                ; GET
+838   (JMPIFNOT L882)
+840   (PUSH)
+841   (GETVALUE 31)                       ; $PROPS
+843   (CDR&PUSH)
+844   (CALL2&JMPIFNOT 17 L882)            ; MEMQ
+847   (LOAD&PUSH 3)
+848   (LOAD&PUSH 6)
+849   (CONST&PUSH 73)                     ; OP
+851   (CALL 3 43)                         ; DSKDEFPROP
+854   (LOAD&PUSH 5)
+855   (LOAD&PUSH 4)
+856   (CONST&PUSH 74)                     ; OPR
+858   (CALL 3 43)                         ; DSKDEFPROP
+861   (LOAD&PUSH 5)
+862   (CONST&PUSH 31)                     ; $PROPS
+864   (CALL2 44)                          ; PRADD2LNC
+866   (LOAD&PUSH 3)
+867   (LOAD&PUSH 6)
+868   (CALL2 75)                          ; EXTOPCHK
+870   (STORE 5)
+871   (JMPIFNOT L882)
+873   (NIL&PUSH)
+874   (LOAD&PUSH 6)
+875   (GETVALUE 0)                        ; X
+877   (CDR)
+878   (LIST* 2)
+880   (SETVALUE 0)                        ; X
+882   L882
+882   (LOAD&PUSH 3)
+883   (CONST&PUSH 76)                     ; GRAD
+885   (PUSH-UNBOUND 1)
+887   (CALLS2&STORE 132 5)                ; GET
+890   (JMPIFNOT L917)
+892   (LOAD&PUSH 3)
+893   (NIL)
+894   (CONS&PUSH)
+895   (GETVALUE&PUSH 77)                  ; $GRADEFS
+897   (CALL2&JMPIFNOT 78 L917)            ; ZL-ASSOC
+900   (LOAD&PUSH 4)
+901   (LOAD&PUSH 6)
+902   (CONST&PUSH 76)                     ; GRAD
+904   (CALL 3 43)                         ; DSKDEFPROP
+907   (LOAD&PUSH 4)
+908   (NIL)
+909   (CONS&PUSH)
+910   (LOAD 6)
+911   (CAR)
+912   (CONS&PUSH)
+913   (CONST&PUSH 77)                     ; $GRADEFS
+915   (CALL2 44)                          ; PRADD2LNC
+917   L917
+917   (LOAD&PUSH 3)
+918   (CONST&PUSH 79)                     ; DATA
+920   (PUSH-UNBOUND 1)
+922   (CALLS2&JMPIFNOT 132 L962)          ; GET
+925   (LOAD&PUSH 3)
+926   (GETVALUE 32)                       ; $CONTEXTS
+928   (CDR&PUSH)
+929   (CALL2&JMPIF 17 L962)               ; MEMQ
+932   (LOAD&PUSH 3)
+933   (CALL1 35)                          ; $FACTS
+935   (CDR)
+936   (STORE 5)
+937   (JMPIFNOT L962)
+939   (CONST&PUSH 80)                     ; RESTORE-FACTS
+941   (CONST&PUSH 81)                     ; QUOTE
+943   (LOAD&PUSH 7)
+944   (LIST&PUSH 2)
+946   (LIST&PUSH 2)
+948   (CALL1 82)                          ; FASPRIN
+950   (LOAD&PUSH 3)
+951   (GETVALUE 31)                       ; $PROPS
+953   (CDR&PUSH)
+954   (CALL2&JMPIFNOT 17 L962)            ; MEMQ
+957   (LOAD&PUSH 3)
+958   (CONST&PUSH 31)                     ; $PROPS
+960   (CALL2 44)                          ; PRADD2LNC
+962   L962
+962   (LOAD&PUSH 3)
+963   (GETVALUE 32)                       ; $CONTEXTS
+965   (CDR&PUSH)
+966   (CALL2&JMPIFNOT 17 L1026)           ; MEMQ
+969   (LOAD 3)
+970   (BIND 34)                           ; CONTEXT
+972   (LOAD&PUSH 6)
+973   (CALL1 35)                          ; $FACTS
+975   (CDR)
+976   (STORE 8)
+978   (UNBIND1)
+979   (JMPIFNOT L1026)
+981   (T&PUSH)
+982   (CONST&PUSH 83)                     ; DSKSETQ
+984   (CONST&PUSH 36)                     ; $CONTEXT
+986   (CONST&PUSH 81)                     ; QUOTE
+988   (LOAD&PUSH 7)
+989   (LIST&PUSH 2)
+991   (LIST&PUSH 3)
+993   (CALL2 84)                          ; FASPRINT
+995   (LOAD&PUSH 3)
+996   (GETVALUE 85)                       ; $ACTIVECONTEXTS
+998   (CDR&PUSH)
+999   (CALL2&JMPIFNOT 17 L1014)           ; MEMQ
+1002  (T&PUSH)
+1003  (CONST&PUSH 86)                     ; $ACTIVATE
+1005  (CONST&PUSH 81)                     ; QUOTE
+1007  (LOAD&PUSH 6)
+1008  (LIST&PUSH 2)
+1010  (LIST&PUSH 2)
+1012  (CALL2 84)                          ; FASPRINT
+1014  L1014
+1014  (T&PUSH)
+1015  (CONST&PUSH 80)                     ; RESTORE-FACTS
+1017  (CONST&PUSH 81)                     ; QUOTE
+1019  (LOAD&PUSH 8)
+1020  (LIST&PUSH 2)
+1022  (LIST&PUSH 2)
+1024  (CALL2 84)                          ; FASPRINT
+1026  L1026
+1026  (LOAD&PUSH 3)
+1027  (LOAD&PUSH 5)
+1028  (LOAD&PUSH 16)
+1029  (LOAD&PUSH 4)
+1030  (CALL 4 87)                         ; MPROPSCHK
+1033  (LOAD&PUSH 3)
+1034  (CONST&PUSH 50)                     ; VERB
+1036  (PUSH-UNBOUND 1)
+1038  (CALLS2&JMPIF 132 L1054)            ; GET
+1041  (LOAD&PUSH 13)
+1042  (LOAD&JMPIF 1 L1048)
+1045  (LOAD&PUSH 4)
+1046  (CALL1 54)                          ; GETOP
+1048  L1048
+1048  (PUSH)
+1049  (NIL)
+1050  (CONS&PUSH)
+1051  (CALLSR 2 35)                       ; NCONC
+1054  L1054
+1054  (GETVALUE 0)                        ; X
+1056  (CDR)
+1057  (SETVALUE 0)                        ; X
+1059  (LOAD 15)
+1061  (STORE 1)
+1062  (NIL&STORE 0)
+1064  (GETVALUE 0)                        ; X
+1066  (JMPIF L16)
+1069  L1069
+1069  (NIL)
+1070  (SKIP 6)
+1072  (UNBIND 2)
+1074  (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN DSKATOM (ITEM RENAME VAL) ...)-15|
+(CONST 0) = DSKATOM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKATOM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKATOM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKATOM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKATOM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKATOM
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKATOM
+(CONST 0) = $RATVARS
+(CONST 1) = SETQ
+(CONST 2) = VARLIST
+(CONST 3) = APPEND
+(CONST 4) = QUOTE
+(CONST 5) = FASPRINT
+(CONST 6) = (SETQ $RATVARS (CONS '(MLIST SIMP) VARLIST))
+(CONST 7) = $MYOPTIONS
+(CONST 8) = PRADD2LNC
+(CONST 9) = ($WEIGHTLEVELS $DONTFACTOR)
+(CONST 10) = MEMQ
+(CONST 11) = NCONC
+(CONST 12) = CDR
+(CONST 13) = FASPRIN
+(CONST 14) = TELLRATLIST
+(CONST 15) = (TELLRATLIST)
+(CONST 16) = *RATWEIGHTS
+(CONST 17) = APPLY
+(CONST 18) = #'$RATWEIGHT
+(CONST 19) = DOT2L
+(CONST 20) = $FEATURES
+(CONST 21) = VAR
+(CONST 22) = FEATUREL
+(CONST 23) = $LINENUM
+(CONST 24) = $RATP
+(CONST 25) = DSKSETQ
+(CONST 26) = (NIL T)
+(CONST 27) = DSKRAT
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (VAR FEATUREL $FEATURES VARLIST)
+writes special variable : (VAR)
+140 byte-code instructions:
+0     (LOAD&PUSH 3)
+1     (JMPIFEQTO 0 L57)                   ; $RATVARS
+4     (LOAD&PUSH 3)
+5     (CONST&PUSH 9)                      ; ($WEIGHTLEVELS $DONTFACTOR)
+6     (CALL2&JMPIF 10 L81)                ; MEMQ
+10    (LOAD&PUSH 3)
+11    (JMPIFEQTO 14 L102)                 ; TELLRATLIST
+15    (LOAD&PUSH 3)
+16    (JMPIFEQTO 16 L123)                 ; *RATWEIGHTS
+20    (LOAD&PUSH 3)
+21    (JMPIFEQTO 20 L137)                 ; $FEATURES
+25    (LOAD&PUSH 3)
+26    (JMPIFNOTEQTO 23 L34)               ; $LINENUM
+29    (LOAD&PUSH 3)
+30    (LOAD 3)
+31    (JMPIFEQ L170)
+34    L34
+34    (LOAD&PUSH 1)
+35    (CALL1&JMPIFNOT 24 L181)            ; $RATP
+39    (T&PUSH)
+40    (CONST&PUSH 25)                     ; DSKSETQ
+41    (LOAD&PUSH 4)
+42    (CONST&PUSH 27)                     ; DSKRAT
+43    (CONST&PUSH 4)                      ; QUOTE
+44    (LOAD&PUSH 6)
+45    (LIST 2)
+47    L47
+47    (PUSH)
+48    (LIST 2)
+50    L50
+50    (PUSH)
+51    (LIST&PUSH 3)
+53    (CALL2 5)                           ; FASPRINT
+55    (SKIP&RET 4)
+57    L57
+57    (T&PUSH)
+58    (CONST&PUSH 1)                      ; SETQ
+59    (CONST&PUSH 2)                      ; VARLIST
+60    (CONST&PUSH 3)                      ; APPEND
+61    (CONST&PUSH 2)                      ; VARLIST
+62    (CONST&PUSH 4)                      ; QUOTE
+63    (GETVALUE&PUSH 2)                   ; VARLIST
+65    (LIST&PUSH 2)
+67    (LIST&PUSH 3)
+69    (LIST&PUSH 3)
+71    (CALL2 5)                           ; FASPRINT
+73    (T&PUSH)
+74    (CONST&PUSH 6)                      ; (SETQ $RATVARS (CONS '# VARLIST))
+75    (CALL2 5)                           ; FASPRINT
+77    (CONST&PUSH 0)                      ; $RATVARS
+78    (CONST 7)                           ; $MYOPTIONS
+79    (JMP L118)
+81    L81
+81    (CONST&PUSH 1)                      ; SETQ
+82    (LOAD&PUSH 4)
+83    (CONST&PUSH 11)                     ; NCONC
+84    (CONST&PUSH 4)                      ; QUOTE
+85    (LOAD&PUSH 5)
+86    (LIST&PUSH 2)
+88    (CONST&PUSH 12)                     ; CDR
+89    (LOAD&PUSH 8)
+90    (LIST&PUSH 2)
+92    (LIST&PUSH 3)
+94    (LIST&PUSH 3)
+96    (CALL1 13)                          ; FASPRIN
+98    (LOAD&PUSH 3)
+99    (CONST 7)                           ; $MYOPTIONS
+100   (JMP L118)
+102   L102
+102   (CONST&PUSH 1)                      ; SETQ
+103   (CONST&PUSH 14)                     ; TELLRATLIST
+104   (CONST&PUSH 11)                     ; NCONC
+105   (CONST&PUSH 4)                      ; QUOTE
+106   (LOAD&PUSH 5)
+107   (LIST&PUSH 2)
+109   (CONST 15)                          ; (TELLRATLIST)
+110   (LIST*&PUSH 2)
+112   (LIST&PUSH 3)
+114   (CALL1 13)                          ; FASPRIN
+116   (CONST&PUSH 14)                     ; TELLRATLIST
+117   (CONST 7)                           ; $MYOPTIONS
+118   L118
+118   (PUSH)
+119   (CALL2 8)                           ; PRADD2LNC
+121   (SKIP&RET 4)
+123   L123
+123   (CONST&PUSH 17)                     ; APPLY
+124   (CONST&PUSH 18)                     ; #'$RATWEIGHT
+125   (CONST&PUSH 4)                      ; QUOTE
+126   (LOAD&PUSH 4)
+127   (CALL1&PUSH 19)                     ; DOT2L
+129   (LIST&PUSH 2)
+131   (LIST&PUSH 3)
+133   (CALL1 13)                          ; FASPRIN
+135   (SKIP&RET 4)
+137   L137
+137   (GETVALUE 20)                       ; $FEATURES
+139   (CDR&PUSH)
+140   (NIL)
+141   (BIND 21)                           ; VAR
+143   (JMP L162)
+145   L145
+145   (LOAD 3)
+146   (CAR)
+147   (SETVALUE 21)                       ; VAR
+149   (PUSH)
+150   (GETVALUE&PUSH 22)                  ; FEATUREL
+152   (CALL2&JMPIF 10 L160)               ; MEMQ
+155   (GETVALUE&PUSH 21)                  ; VAR
+157   (CONST&PUSH 20)                     ; $FEATURES
+158   (CALL2 8)                           ; PRADD2LNC
+160   L160
+160   (LOAD&CDR&STORE 3)
+162   L162
+162   (LOAD&PUSH 3)
+163   (CALLS1&JMPIFNOT 146 L145)          ; ENDP
+166   (NIL)
+167   (UNBIND1)
+168   (SKIP&RET 5)
+170   L170
+170   (T&PUSH)
+171   (CONST&PUSH 1)                      ; SETQ
+172   (CONST&PUSH 23)                     ; $LINENUM
+173   (LOAD 4)
+174   (JMP L50)
+177   L177
+177   (LOAD 4)
+178   (JMP L50)
+181   L181
+181   (T&PUSH)
+182   (CONST&PUSH 25)                     ; DSKSETQ
+183   (LOAD&PUSH 4)
+184   (LOAD&PUSH 4)
+185   (CALLS2&JMPIF 8 L177)               ; NUMBERP
+188   (LOAD&PUSH 4)
+189   (CONST&PUSH 26)                     ; (NIL T)
+190   (CALL2&JMPIF 10 L177)               ; MEMQ
+193   (CONST&PUSH 4)                      ; QUOTE
+194   (LOAD 5)
+195   (JMP L47)
+
+
+Disassembly of function #:|(DEFUN MPROPSCHK (ITEM RENAME FILE ...) ...)-16|
+(CONST 0) = MPROPSCHK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MPROPSCHK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MPROPSCHK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MPROPSCHK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MPROPSCHK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MPROPSCHK
+8     (SKIP&RET 1)
+
+
+Disassembly of function MPROPSCHK
+(CONST 0) = MPROPS
+(CONST 1) = (NIL)
+(CONST 2) = (TRACE TRACE-TYPE TRACE-LEVEL)
+(CONST 3) = MEMQ
+(CONST 4) = MFILEP
+(CONST 5) = T-MFEXPR
+(CONST 6) = TRANSLATED
+(CONST 7) = (HASHAR ARRAY)
+(CONST 8) = MDEFPROP
+(CONST 9) = FASPRIN
+(CONST 10) = (MLEXPRP MFEXPRP T-MFEXPR)
+(CONST 11) = (MEXPR MMACRO)
+(CONST 12) = FUNCTION-MODE
+(CONST 13) = DSKDEFPROP
+(CONST 14) = DEPENDS
+(CONST 15) = INFOSTORE
+(CONST 16) = QUOTE
+(CONST 17) = DSKARY
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+102 byte-code instructions:
+0     (LOAD&PUSH 4)
+1     (CONST&PUSH 0)                      ; MPROPS
+2     (PUSH-UNBOUND 1)
+4     (CALLS2&JMPIF 132 L8)               ; GET
+7     (CONST 1)                           ; (NIL)
+8     L8
+8     (CDR&PUSH)
+9     (NIL&PUSH)
+10    (LOAD&JMPIFNOT 1 L74)
+13    L13
+13    (LOAD&CAR&PUSH 1)
+15    (CONST&PUSH 2)                      ; (TRACE TRACE-TYPE TRACE-LEVEL)
+16    (CALL2&JMPIF 3 L67)                 ; MEMQ
+19    (LOAD 1)
+20    (CDR)
+21    (CAR)
+22    (STORE 0)
+23    (PUSH)
+24    (CALL1&JMPIF 4 L67)                 ; MFILEP
+27    (LOAD&CAR&PUSH 1)
+29    (JMPIFNOTEQTO 5 L39)                ; T-MFEXPR
+32    (LOAD&PUSH 6)
+33    (CONST&PUSH 6)                      ; TRANSLATED
+34    (PUSH-UNBOUND 1)
+36    (CALLS2&JMPIFNOT 132 L67)           ; GET
+39    L39
+39    (LOAD&CAR&PUSH 1)
+41    (CONST&PUSH 7)                      ; (HASHAR ARRAY)
+42    (CALL2&JMPIFNOT 3 L111)             ; MEMQ
+46    (LOAD&PUSH 6)
+47    (CONST&PUSH 16)                     ; QUOTE
+48    (LOAD&PUSH 7)
+49    (LIST&PUSH 2)
+51    (LOAD&PUSH 2)
+52    (LOAD&CAR&PUSH 4)
+54    (CALL 4 17)                         ; DSKARY
+57    (LOAD&PUSH 6)
+58    (LOAD&PUSH 5)
+59    (LOAD&CAR&PUSH 3)
+61    (LOAD&PUSH 6)
+62    (LOAD 9)
+63    L63
+63    (PUSH)
+64    (CALL 5 15)                         ; INFOSTORE
+67    L67
+67    (LOAD 1)
+68    (CDR)
+69    (CDR)
+70    (STORE 1)
+71    (LOAD&JMPIF 1 L13)
+74    L74
+74    (NIL)
+75    (SKIP&RET 7)
+77    L77
+77    (LOAD&PUSH 10)
+78    (CONST&PUSH 12)                     ; FUNCTION-MODE
+79    (PUSH-UNBOUND 1)
+81    (CALLS2&PUSH 132)                   ; GET
+83    (LOAD&JMPIFNOT 0 L92)
+86    (LOAD&PUSH 10)
+87    (LOAD&PUSH 1)
+88    (CONST&PUSH 12)                     ; FUNCTION-MODE
+89    (CALL 3 13)                         ; DSKDEFPROP
+92    L92
+92    (SKIP 1)
+94    (LOAD&PUSH 9)
+95    (NIL)
+96    (CONS&PUSH)
+97    (LOAD 5)
+98    (CDR)
+99    (CAR)
+100   (CDR)
+101   (CONS)
+102   (JMP L63)
+104   L104
+104   (LOAD&PUSH 9)
+105   (NIL)
+106   (CONS&PUSH)
+107   (LOAD 5)
+108   (CONS)
+109   (JMP L63)
+111   L111
+111   (CONST&PUSH 8)                      ; MDEFPROP
+112   (LOAD&PUSH 6)
+113   (LOAD&PUSH 2)
+114   (LOAD&CAR&PUSH 4)
+116   (LIST&PUSH 4)
+118   (CALL1 9)                           ; FASPRIN
+120   (LOAD&CAR&PUSH 1)
+122   (CONST&PUSH 10)                     ; (MLEXPRP MFEXPRP T-MFEXPR)
+123   (CALL2&JMPIF 3 L67)                 ; MEMQ
+126   (LOAD&PUSH 6)
+127   (LOAD&PUSH 5)
+128   (LOAD&CAR&PUSH 3)
+130   (LOAD&PUSH 6)
+131   (LOAD&CAR&PUSH 5)
+133   (CONST&PUSH 11)                     ; (MEXPR MMACRO)
+134   (CALL2&JMPIF 3 L77)                 ; MEMQ
+137   (LOAD&CAR&PUSH 5)
+139   (JMPIFEQTO 14 L104)                 ; DEPENDS
+142   (LOAD 9)
+143   (JMP L63)
+
+
+Disassembly of function #:|(DEFUN DSKARY (ITEM RENAME VAL ...) ...)-17|
+(CONST 0) = DSKARY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKARY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKARY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKARY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKARY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKARY
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKARY
+(CONST 0) = ARRAY
+(CONST 1) = (SETQ AAAAA (GENSYM))
+(CONST 2) = FASPRINT
+(CONST 3) = AAAAA
+(CONST 4) = ARRAYDIMS
+(CONST 5) = HASHAR
+(CONST 6) = REMCOMPARY
+(CONST 7) = MREMPROP
+(CONST 8) = QUOTE
+(CONST 9) = MPUTPROP
+(CONST 10) = *ARRAY
+(CONST 11) = FILLARRAY
+(CONST 12) = LISTARRAY
+(CONST 13) = ARRAY-MODE
+(CONST 14) = DEFPROP
+(CONST 15) = (ARRAY-MODE)
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+87 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (JMPIFNOTEQTO 0 L12)                ; ARRAY
+4     (LOAD&PUSH 4)
+5     (CONST&PUSH 0)                      ; ARRAY
+6     (PUSH-UNBOUND 1)
+8     (CALLS2&JMPIF 132 L111)             ; GET
+12    L12
+12    (T&PUSH)
+13    (CONST&PUSH 1)                      ; (SETQ AAAAA (GENSYM))
+14    (CALL2 2)                           ; FASPRINT
+16    (CONST 3)                           ; AAAAA
+17    L17
+17    (PUSH)
+18    (LOAD&PUSH 3)
+19    (CALL1&PUSH 4)                      ; ARRAYDIMS
+21    (NIL&PUSH)
+22    (LOAD&PUSH 4)
+23    (JMPIFNOTEQTO 5 L33)                ; HASHAR
+26    (T&PUSH)
+27    (CONST&PUSH 6)                      ; REMCOMPARY
+28    (LOAD&PUSH 8)
+29    (LIST&PUSH 2)
+31    (CALL2 2)                           ; FASPRINT
+33    L33
+33    (T&PUSH)
+34    (CONST&PUSH 7)                      ; MREMPROP
+35    (LOAD&PUSH 8)
+36    (CONST&PUSH 8)                      ; QUOTE
+37    (LOAD&PUSH 8)
+38    (JMPIFEQTO 0 L115)                  ; ARRAY
+42    (CONST 0)                           ; ARRAY
+43    L43
+43    (PUSH)
+44    (LIST&PUSH 2)
+46    (LIST&PUSH 3)
+48    (CALL2 2)                           ; FASPRINT
+50    (T&PUSH)
+51    (CONST&PUSH 9)                      ; MPUTPROP
+52    (LOAD&PUSH 8)
+53    (LOAD&PUSH 5)
+54    (CONST&PUSH 8)                      ; QUOTE
+55    (LOAD&PUSH 9)
+56    (LIST&PUSH 2)
+58    (LIST&PUSH 4)
+60    (CALL2 2)                           ; FASPRINT
+62    (T&PUSH)
+63    (CONST&PUSH 10)                     ; *ARRAY
+64    (LOAD&PUSH 4)
+65    (CONST&PUSH 8)                      ; QUOTE
+66    (LOAD&CAR&PUSH 5)
+68    (LIST&PUSH 2)
+70    (LOAD 5)
+71    (CDR)
+72    (LIST*&PUSH 3)
+74    (CALL2 2)                           ; FASPRINT
+76    (T&PUSH)
+77    (CONST&PUSH 11)                     ; FILLARRAY
+78    (LOAD&PUSH 4)
+79    (CONST&PUSH 8)                      ; QUOTE
+80    (LOAD&PUSH 9)
+81    (CALL1&PUSH 12)                     ; LISTARRAY
+83    (LIST&PUSH 2)
+85    (LIST&PUSH 3)
+87    (CALL2 2)                           ; FASPRINT
+89    (LOAD&PUSH 7)
+90    (CONST&PUSH 13)                     ; ARRAY-MODE
+91    (PUSH-UNBOUND 1)
+93    (CALLS2&STORE 132 0)                ; GET
+96    (JMPIFNOT1 L119)
+98    (T&PUSH)
+99    (CONST&PUSH 14)                     ; DEFPROP
+100   (LOAD 8)
+101   (CDR)
+102   (CAR&PUSH)
+103   (LOAD&PUSH 3)
+104   (CONST 15)                          ; (ARRAY-MODE)
+105   (LIST*&PUSH 3)
+107   (CALL2 2)                           ; FASPRINT
+109   (SKIP&RET 8)
+111   L111
+111   (LOAD 3)
+112   (JMP L17)
+115   L115
+115   (CONST 5)                           ; HASHAR
+116   (JMP L43)
+119   L119
+119   (SKIP&RET 8)
+
+
+Disassembly of function #:|(DEFUN EXTOPCHK (ITEM VAL) ...)-18|
+(CONST 0) = EXTOPCHK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXTOPCHK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXTOPCHK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXTOPCHK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXTOPCHK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXTOPCHK
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXTOPCHK
+(CONST 0) = #\$
+(CONST 1) = EXPLODEN
+(CONST 2) = IMPLODE
+(CONST 3) = NUD
+(CONST 4) = LED
+(CONST 5) = LBP
+(CONST 6) = DEFINE-SYMBOL
+(CONST 7) = QUOTE
+(CONST 8) = FASPRIN
+(CONST 9) = MOPL
+(CONST 10) = MEMQ
+(CONST 11) = SETQ
+(CONST 12) = CONS
+(CONST 13) = (MOPL)
+(CONST 14) = DIMENSION
+(CONST 15) = DSKDEFPROP
+(CONST 16) = DISSYM
+(CONST 17) = GRIND
+(CONST 18) = RBP
+(CONST 19) = VERB
+(CONST 20) = MATCH
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (MOPL)
+137 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #\$
+1     (LOAD&PUSH 2)
+2     (CALL1 1)                           ; EXPLODEN
+4     (CDR)
+5     (CONS&PUSH)
+6     (CALL1&PUSH 2)                      ; IMPLODE
+8     (LOAD&PUSH 0)
+9     (CONST&PUSH 3)                      ; NUD
+10    (PUSH-UNBOUND 1)
+12    (CALLS2&JMPIF 132 L31)              ; GET
+15    (LOAD&PUSH 0)
+16    (CONST&PUSH 4)                      ; LED
+17    (PUSH-UNBOUND 1)
+19    (CALLS2&JMPIF 132 L31)              ; GET
+22    (LOAD&PUSH 0)
+23    (CONST&PUSH 5)                      ; LBP
+24    (PUSH-UNBOUND 1)
+26    (CALLS2 132)                        ; GET
+28    (JMPIFNOT1 L206)
+31    L31
+31    (CONST&PUSH 6)                      ; DEFINE-SYMBOL
+32    (CONST&PUSH 7)                      ; QUOTE
+33    (LOAD&PUSH 4)
+34    (LIST&PUSH 2)
+36    (LIST&PUSH 2)
+38    (CALL1 8)                           ; FASPRIN
+40    (LOAD&PUSH 2)
+41    (GETVALUE&PUSH 9)                   ; MOPL
+43    (CALL2&JMPIFNOT 10 L60)             ; MEMQ
+46    (CONST&PUSH 11)                     ; SETQ
+47    (CONST&PUSH 9)                      ; MOPL
+48    (CONST&PUSH 12)                     ; CONS
+49    (CONST&PUSH 7)                      ; QUOTE
+50    (LOAD&PUSH 6)
+51    (LIST&PUSH 2)
+53    (CONST 13)                          ; (MOPL)
+54    (LIST*&PUSH 2)
+56    (LIST&PUSH 3)
+58    (CALL1 8)                           ; FASPRIN
+60    L60
+60    (LOAD&PUSH 0)
+61    (CONST&PUSH 14)                     ; DIMENSION
+62    (PUSH-UNBOUND 1)
+64    (CALLS2&STORE 132 2)                ; GET
+67    (JMPIFNOT L97)
+69    (LOAD&PUSH 0)
+70    (LOAD&PUSH 3)
+71    (CONST&PUSH 14)                     ; DIMENSION
+72    (CALL 3 15)                         ; DSKDEFPROP
+75    (LOAD&PUSH 0)
+76    (LOAD&PUSH 1)
+77    (CONST&PUSH 16)                     ; DISSYM
+78    (PUSH-UNBOUND 1)
+80    (CALLS2&PUSH 132)                   ; GET
+82    (CONST&PUSH 16)                     ; DISSYM
+83    (CALL 3 15)                         ; DSKDEFPROP
+86    (LOAD&PUSH 0)
+87    (LOAD&PUSH 1)
+88    (CONST&PUSH 17)                     ; GRIND
+89    (PUSH-UNBOUND 1)
+91    (CALLS2&PUSH 132)                   ; GET
+93    (CONST&PUSH 17)                     ; GRIND
+94    (CALL 3 15)                         ; DSKDEFPROP
+97    L97
+97    (LOAD&PUSH 0)
+98    (CONST&PUSH 5)                      ; LBP
+99    (PUSH-UNBOUND 1)
+101   (CALLS2&STORE 132 2)                ; GET
+104   (JMPIFNOT L112)
+106   (LOAD&PUSH 0)
+107   (LOAD&PUSH 3)
+108   (CONST&PUSH 5)                      ; LBP
+109   (CALL 3 15)                         ; DSKDEFPROP
+112   L112
+112   (LOAD&PUSH 0)
+113   (CONST&PUSH 18)                     ; RBP
+114   (PUSH-UNBOUND 1)
+116   (CALLS2&STORE 132 2)                ; GET
+119   (JMPIFNOT L127)
+121   (LOAD&PUSH 0)
+122   (LOAD&PUSH 3)
+123   (CONST&PUSH 18)                     ; RBP
+124   (CALL 3 15)                         ; DSKDEFPROP
+127   L127
+127   (LOAD&PUSH 0)
+128   (CONST&PUSH 3)                      ; NUD
+129   (PUSH-UNBOUND 1)
+131   (CALLS2&STORE 132 2)                ; GET
+134   (JMPIFNOT L142)
+136   (LOAD&PUSH 0)
+137   (LOAD&PUSH 3)
+138   (CONST&PUSH 3)                      ; NUD
+139   (CALL 3 15)                         ; DSKDEFPROP
+142   L142
+142   (LOAD&PUSH 0)
+143   (CONST&PUSH 4)                      ; LED
+144   (PUSH-UNBOUND 1)
+146   (CALLS2&STORE 132 2)                ; GET
+149   (JMPIFNOT L157)
+151   (LOAD&PUSH 0)
+152   (LOAD&PUSH 3)
+153   (CONST&PUSH 4)                      ; LED
+154   (CALL 3 15)                         ; DSKDEFPROP
+157   L157
+157   (LOAD&PUSH 0)
+158   (CONST&PUSH 19)                     ; VERB
+159   (PUSH-UNBOUND 1)
+161   (CALLS2&STORE 132 2)                ; GET
+164   (JMPIFNOT L188)
+166   (PUSH)
+167   (LOAD&PUSH 3)
+168   (CONST&PUSH 14)                     ; DIMENSION
+169   (PUSH-UNBOUND 1)
+171   (CALLS2&PUSH 132)                   ; GET
+173   (CONST&PUSH 14)                     ; DIMENSION
+174   (CALL 3 15)                         ; DSKDEFPROP
+177   (LOAD&PUSH 2)
+178   (LOAD&PUSH 3)
+179   (CONST&PUSH 16)                     ; DISSYM
+180   (PUSH-UNBOUND 1)
+182   (CALLS2&PUSH 132)                   ; GET
+184   (CONST&PUSH 16)                     ; DISSYM
+185   (CALL 3 15)                         ; DSKDEFPROP
+188   L188
+188   (LOAD&PUSH 3)
+189   (CONST&PUSH 20)                     ; MATCH
+190   (PUSH-UNBOUND 1)
+192   (CALLS2&STORE 132 2)                ; GET
+195   (JMPIFNOT1 L206)
+197   (LOAD&PUSH 3)
+198   (LOAD&PUSH 3)
+199   (CONST&PUSH 20)                     ; MATCH
+200   (CALL 3 15)                         ; DSKDEFPROP
+203   (LOAD 2)
+204   (SKIP&RET 4)
+206   L206
+206   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN PROPSCHK (ITEM RENAME IND) ...)-19|
+(CONST 0) = PROPSCHK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PROPSCHK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PROPSCHK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PROPSCHK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PROPSCHK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PROPSCHK
+8     (SKIP&RET 1)
+
+
+Disassembly of function PROPSCHK
+(CONST 0) = DSKDEFPROP
+(CONST 1) = GETOP
+(CONST 2) = $PROPS
+(CONST 3) = PRADD2LNC
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (LOAD&PUSH 3)
+1     (LOAD&PUSH 2)
+2     (PUSH-UNBOUND 1)
+4     (CALLS2&PUSH 132)                   ; GET
+6     (LOAD 0)
+7     (JMPIFNOT1 L23)
+9     (LOAD&PUSH 3)
+10    (LOAD&PUSH 1)
+11    (LOAD&PUSH 4)
+12    (CALL 3 0)                          ; DSKDEFPROP
+15    (LOAD&PUSH 3)
+16    (CALL1&PUSH 1)                      ; GETOP
+18    (CONST&PUSH 2)                      ; $PROPS
+19    (CALL2 3)                           ; PRADD2LNC
+21    (SKIP&RET 5)
+23    L23
+23    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN FASPRIN (FORM) ...)-20|
+(CONST 0) = FASPRIN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FASPRIN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FASPRIN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FASPRIN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FASPRIN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FASPRIN
+8     (SKIP&RET 1)
+
+
+Disassembly of function FASPRIN
+(CONST 0) = FASPRINT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (CALL2 0)                           ; FASPRINT
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FASPRINT (EQFL FORM) ...)-21|
+(CONST 0) = FASPRINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FASPRINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FASPRINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FASPRINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FASPRINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FASPRINT
+8     (SKIP&RET 1)
+
+
+Disassembly of function FASPRINT
+(CONST 0) = FASDUMPFL
+(CONST 1) = SAVEFILE
+(CONST 2) = FASDEQLIST
+(CONST 3) = FASDNONEQLIST
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (FASDEQLIST SAVEFILE FASDNONEQLIST FASDUMPFL)
+writes special variables : (FASDEQLIST FASDNONEQLIST)
+19 byte-code instructions:
+0     (GETVALUE 0)                        ; FASDUMPFL
+2     (JMPIFNOT L15)
+4     (LOAD&JMPIF 2 L22)
+7     (LOAD&PUSH 1)
+8     (GETVALUE 3)                        ; FASDNONEQLIST
+10    (CONS)
+11    (SETVALUE 3)                        ; FASDNONEQLIST
+13    (SKIP&RET 3)
+15    L15
+15    (LOAD&PUSH 1)
+16    (GETVALUE&PUSH 1)                   ; SAVEFILE
+18    (CALLS1 130)                        ; PRINT
+20    (SKIP&RET 3)
+22    L22
+22    (LOAD&PUSH 1)
+23    (GETVALUE 2)                        ; FASDEQLIST
+25    (CONS)
+26    (SETVALUE 2)                        ; FASDEQLIST
+28    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN UNSTOREP (ITEM) ...)-22|
+(CONST 0) = UNSTOREP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE UNSTOREP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UNSTOREP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; UNSTOREP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE UNSTOREP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; UNSTOREP
+8     (SKIP&RET 1)
+
+
+Disassembly of function UNSTOREP
+(CONST 0) = I-$UNSTORE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (NIL)
+2     (CONS&PUSH)
+3     (CALL1 0)                           ; I-$UNSTORE
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN INFOSTORE (ITEM FILE FLAG ...) ...)-23|
+(CONST 0) = INFOSTORE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INFOSTORE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INFOSTORE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INFOSTORE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INFOSTORE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INFOSTORE
+8     (SKIP&RET 1)
+
+
+Disassembly of function INFOSTORE
+(CONST 0) = FLAG
+(CONST 1) = VALUE
+(CONST 2) = $LABELS
+(CONST 3) = MEMQ
+(CONST 4) = $VALUES
+(CONST 5) = MEXPR
+(CONST 6) = $FUNCTIONS
+(CONST 7) = MMACRO
+(CONST 8) = $MACROS
+(CONST 9) = (ARRAY HASHAR)
+(CONST 10) = $ARRAYS
+(CONST 11) = DEPENDS
+(CONST 12) = $DEPENDENCIES
+(CONST 13) = $PROPS
+(CONST 14) = ADDLABEL
+(CONST 15) = QUOTE
+(CONST 16) = FASPRIN
+(CONST 17) = NODISP
+(CONST 18) = DSKDEFPROP
+(CONST 19) = PRADD2LNC
+(CONST 20) = (MEXPR MMACRO)
+(CONST 21) = ARRAY
+(CONST 22) = REMCOMPARY
+(CONST 23) = (MFILE)
+(CONST 24) = SET
+(CONST 25) = (MEXPR MMACRO AEXPR ARRAY HASHAR)
+(CONST 26) = MPUTPROP
+5 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($LABELS FLAG)
+110 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; FLAG
+3     (GETVALUE&PUSH 0)                   ; FLAG
+5     (JMPIFEQTO 1 L107)                  ; VALUE
+9     (GETVALUE&PUSH 0)                   ; FLAG
+11    (JMPIFEQTO 5 L118)                  ; MEXPR
+15    (GETVALUE&PUSH 0)                   ; FLAG
+17    (JMPIFEQTO 7 L122)                  ; MMACRO
+21    (GETVALUE&PUSH 0)                   ; FLAG
+23    (CONST&PUSH 9)                      ; (ARRAY HASHAR)
+24    (CALL2&JMPIF 3 L126)                ; MEMQ
+28    (GETVALUE&PUSH 0)                   ; FLAG
+30    (JMPIFEQTO 11 L130)                 ; DEPENDS
+34    (NIL&STORE 5)
+36    (CONST 13)                          ; $PROPS
+37    L37
+37    (PUSH)
+38    (LOAD&PUSH 0)
+39    (JMPIFNOTEQTO 2 L148)               ; $LABELS
+43    (CONST&PUSH 14)                     ; ADDLABEL
+44    (CONST&PUSH 15)                     ; QUOTE
+45    (LOAD&PUSH 7)
+46    (LIST&PUSH 2)
+48    (LIST&PUSH 2)
+50    (CALL1 16)                          ; FASPRIN
+52    (LOAD&PUSH 9)
+53    (CONST&PUSH 17)                     ; NODISP
+54    (PUSH-UNBOUND 1)
+56    (CALLS2&JMPIF 132 L136)             ; GET
+60    (LOAD&JMPIFNOT 6 L97)
+63    L63
+63    (GETVALUE&PUSH 0)                   ; FLAG
+65    (CONST&PUSH 20)                     ; (MEXPR MMACRO)
+66    (CALL2&JMPIF 3 L158)                ; MEMQ
+70    (GETVALUE&PUSH 0)                   ; FLAG
+72    (JMPIFNOTEQTO 21 L78)               ; ARRAY
+75    (LOAD&PUSH 9)
+76    (CALL1 22)                          ; REMCOMPARY
+78    L78
+78    (CONST&PUSH 23)                     ; (MFILE)
+79    (LOAD&PUSH 9)
+80    (LOAD&PUSH 7)
+81    (LIST 3)
+83    (STORE 0)
+84    (GETVALUE&PUSH 0)                   ; FLAG
+86    (JMPIFEQTO 1 L165)                  ; VALUE
+90    (GETVALUE&PUSH 0)                   ; FLAG
+92    (CONST&PUSH 25)                     ; (MEXPR MMACRO AEXPR ARRAY HASHAR)
+93    (CALL2&JMPIF 3 L174)                ; MEMQ
+97    L97
+97    (NIL)
+98    (SKIP 1)
+100   L100
+100   (UNBIND1)
+101   (SKIP&RET 6)
+103   L103
+103   (CONST 2)                           ; $LABELS
+104   (JMP L37)
+107   L107
+107   (LOAD&PUSH 4)
+108   (GETVALUE 2)                        ; $LABELS
+110   (CDR&PUSH)
+111   (CALL2&JMPIF 3 L103)                ; MEMQ
+114   (CONST 4)                           ; $VALUES
+115   (JMP L37)
+118   L118
+118   (CONST 6)                           ; $FUNCTIONS
+119   (JMP L37)
+122   L122
+122   (CONST 8)                           ; $MACROS
+123   (JMP L37)
+126   L126
+126   (CONST 10)                          ; $ARRAYS
+127   (JMP L37)
+130   L130
+130   (NIL&STORE 5)
+132   (CONST 12)                          ; $DEPENDENCIES
+133   (JMP L37)
+136   L136
+136   (LOAD&PUSH 5)
+137   (T&PUSH)
+138   (CONST&PUSH 17)                     ; NODISP
+139   (CALL 3 18)                         ; DSKDEFPROP
+142   (LOAD&JMPIFNOT 6 L97)
+145   (JMP L63)
+148   L148
+148   (LOAD&PUSH 5)
+149   (LOAD&PUSH 1)
+150   (CALL2 19)                          ; PRADD2LNC
+152   (LOAD&JMPIFNOT 6 L97)
+155   (JMP L63)
+158   L158
+158   (LOAD 5)
+159   (CAR)
+160   (CAR)
+161   (STORE 5)
+162   (JMP L78)
+165   L165
+165   (LOAD&PUSH 9)
+166   (LOAD&PUSH 1)
+167   (CALL2 24)                          ; SET
+169   (SKIP 1)
+171   (JMP L100)
+174   L174
+174   (LOAD&PUSH 9)
+175   (LOAD&PUSH 1)
+176   (GETVALUE&PUSH 0)                   ; FLAG
+178   (CALL 3 26)                         ; MPUTPROP
+181   (SKIP 1)
+183   (JMP L100)
+
+
+Disassembly of function #:|(DEFUN PRADD2LNC (ITEM PROP) ...)-24|
+(CONST 0) = PRADD2LNC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PRADD2LNC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PRADD2LNC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PRADD2LNC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PRADD2LNC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PRADD2LNC
+8     (SKIP&RET 1)
+
+
+Disassembly of function PRADD2LNC
+(CONST 0) = $PACKAGEFILE
+(CONST 1) = $INFOLISTS
+(CONST 2) = MEMQ
+(CONST 3) = $PROPS
+(CONST 4) = OPR
+(CONST 5) = ADD2LNC
+(CONST 6) = QUOTE
+(CONST 7) = FASPRIN
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($INFOLISTS $PACKAGEFILE)
+26 byte-code instructions:
+0     (GETVALUE 0)                        ; $PACKAGEFILE
+2     (JMPIFNOT L24)
+4     (LOAD&PUSH 1)
+5     (GETVALUE 1)                        ; $INFOLISTS
+7     (CDR&PUSH)
+8     (CALL2&JMPIFNOT 2 L24)              ; MEMQ
+11    (LOAD&PUSH 1)
+12    (CONST 3)                           ; $PROPS
+13    (EQ)
+14    (JMPIFNOT1 L36)
+16    (LOAD&PUSH 2)
+17    (CONST&PUSH 4)                      ; OPR
+18    (PUSH-UNBOUND 1)
+20    (CALLS2 132)                        ; GET
+22    (JMPIFNOT1 L36)
+24    L24
+24    (CONST&PUSH 5)                      ; ADD2LNC
+25    (CONST&PUSH 6)                      ; QUOTE
+26    (LOAD&PUSH 4)
+27    (LIST&PUSH 2)
+29    (LOAD&PUSH 3)
+30    (LIST&PUSH 3)
+32    (CALL1 7)                           ; FASPRIN
+34    (SKIP&RET 3)
+36    L36
+36    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN DSKDEFPROP (NAME VAL IND) ...)-25|
+(CONST 0) = DSKDEFPROP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKDEFPROP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKDEFPROP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKDEFPROP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKDEFPROP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKDEFPROP
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKDEFPROP
+(CONST 0) = NAME
+(CONST 1) = (EXPR FEXPR MACRO)
+(CONST 2) = MEMQ
+(CONST 3) = LAMBDA
+(CONST 4) = DEFUN
+(CONST 5) = EXPR
+(CONST 6) = DEFPROP
+(CONST 7) = FASPRIN
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+34 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; NAME
+3     (LOAD&PUSH 4)
+4     (CONST&PUSH 1)                      ; (EXPR FEXPR MACRO)
+5     (CALL2&JMPIFNOT 2 L13)              ; MEMQ
+8     (LOAD&CAR&PUSH 5)
+10    (JMPIFEQTO 3 L32)                   ; LAMBDA
+13    L13
+13    (CONST&PUSH 6)                      ; DEFPROP
+14    (GETVALUE&PUSH 0)                   ; NAME
+16    (LOAD&PUSH 7)
+17    (LOAD&PUSH 7)
+18    (LIST 4)
+20    L20
+20    (PUSH)
+21    (CALL1 7)                           ; FASPRIN
+23    (UNBIND1)
+24    (SKIP&RET 4)
+26    L26
+26    (LOAD 7)
+27    (CDR)
+28    (LIST* 2)
+30    (JMP L20)
+32    L32
+32    (CONST&PUSH 4)                      ; DEFUN
+33    (GETVALUE&PUSH 0)                   ; NAME
+35    (LOAD&PUSH 6)
+36    (JMPIFEQTO 5 L26)                   ; EXPR
+39    (LOAD&PUSH 6)
+40    (LOAD 8)
+41    (CDR)
+42    (CONS)
+43    (LIST* 2)
+45    (JMP L20)
+
+
+Disassembly of function #:|(DEFUN DSKGET (FILE NAME FLAG ...) ...)-26|
+(CONST 0) = DSKGET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKGET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKGET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKGET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKGET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKGET
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKGET
+(CONST 0) = NAME
+(CONST 1) = FLAG
+(CONST 2) = DEFAULTF
+(CONST 3) = DSKSETQ
+(CONST 4) = VALUE
+(CONST 5) = 4
+(CONST 6) = QUOTE
+(CONST 7) = "~%~:M not found"
+(CONST 8) = MERROR
+(CONST 9) = CLOSE
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (NAME FLAG DEFAULTF)
+114 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; NAME
+3     (LOAD 5)
+4     (BIND 1)                            ; FLAG
+6     (GETVALUE 2)                        ; DEFAULTF
+8     (BIND 2)                            ; DEFAULTF
+10    (NIL&PUSH)
+11    (LIST&PUSH 1)
+13    (NIL&PUSH)
+14    (LOAD&PUSH 15)
+15    (PUSH-UNBOUND 6)
+17    (CALLS1&STORE 249 15)               ; OPEN
+20    (PUSH)
+21    (LOAD&PUSH 2)
+22    (PUSH-UNBOUND 2)
+24    (CALLS1&PUSH 116)                   ; READ
+26    (JMP L125)
+29    L29
+29    (POP)
+30    (JMP L137)
+33    L33
+33    (LOAD 0)
+34    (JMPIFATOM L53)
+36    (LOAD&CAR&PUSH 0)
+38    (JMPIFNOTEQTO 3 L53)                ; DSKSETQ
+41    (GETVALUE&PUSH 1)                   ; FLAG
+43    (JMPIFNOTEQTO 4 L53)                ; VALUE
+46    (LOAD 0)
+47    (CDR)
+48    (CAR&PUSH)
+49    (GETVALUE 0)                        ; NAME
+51    (JMPIFEQ L29)
+53    L53
+53    (LOAD 0)
+54    (JMPIFATOM L118)
+56    (LOAD&PUSH 0)
+57    (CALLS2&PUSH 71)                    ; LENGTH
+59    (CONST&PUSH 5)                      ; 4
+60    (CALLSR&JMPIFNOT 1 45 L118)         ; =
+64    (LOAD 0)
+65    (CDR)
+66    (CDR)
+67    (CDR)
+68    (CAR&PUSH)
+69    (GETVALUE 1)                        ; FLAG
+71    (JMPIFEQ L93)
+73    (LOAD 0)
+74    (CDR)
+75    (CDR)
+76    (CDR)
+77    (CAR)
+78    (CAR&PUSH)
+79    (JMPIFNOTEQTO 6 L118)               ; QUOTE
+82    (LOAD 0)
+83    (CDR)
+84    (CDR)
+85    (CDR)
+86    (CAR)
+87    (CDR)
+88    (CAR&PUSH)
+89    (GETVALUE 1)                        ; FLAG
+91    (JMPIFNOTEQ L118)
+93    L93
+93    (LOAD 0)
+94    (CDR)
+95    (CAR&PUSH)
+96    (GETVALUE 0)                        ; NAME
+98    (JMPIFEQ L29)
+101   (LOAD 0)
+102   (CDR)
+103   (CAR)
+104   (CAR&PUSH)
+105   (JMPIFNOTEQTO 6 L118)               ; QUOTE
+108   (LOAD 0)
+109   (CDR)
+110   (CAR)
+111   (CDR)
+112   (CAR&PUSH)
+113   (GETVALUE 0)                        ; NAME
+115   (JMPIFEQ L29)
+118   L118
+118   (LOAD&PUSH 16)
+119   (LOAD&PUSH 3)
+120   (PUSH-UNBOUND 2)
+122   (CALLS1&STORE 116 0)                ; READ
+125   L125
+125   (LOAD&PUSH 0)
+126   (LOAD 3)
+127   (JMPIFNOTEQ L33)
+130   (CONST&PUSH 7)                      ; "~%~:M not found"
+131   (GETVALUE&PUSH 0)                   ; NAME
+133   (CALL2 8)                           ; MERROR
+135   (SKIP 1)
+137   L137
+137   (STORE 0)
+138   (LOAD&JMPIFNOT 12 L155)
+141   (LOAD&PUSH 15)
+142   (PUSH-UNBOUND 3)
+144   (CALLS1&PUSH 116)                   ; READ
+146   (CALLS1 91)                         ; EVAL
+148   (LOAD&PUSH 15)
+149   (PUSH-UNBOUND 3)
+151   (CALLS1&PUSH 116)                   ; READ
+153   (CALLS1 91)                         ; EVAL
+155   L155
+155   (LOAD&PUSH 15)
+156   (CALL1 9)                           ; CLOSE
+158   (LOAD 0)
+159   (CDR)
+160   (CDR)
+161   (CAR)
+162   (SKIP 2)
+164   (UNBIND 3)
+166   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN DSKSAVE NIL ...)-27|
+(CONST 0) = DSKSAVE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DSKSAVE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DSKSAVE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DSKSAVE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DSKSAVE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DSKSAVE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DSKSAVE
+(CONST 0) = DSKSAVEP
+(CONST 1) = $DSKALL
+(CONST 2) = ($LABELS $VALUES $FUNCTIONS $MACROS $ARRAYS)
+(CONST 3) = I-$STORE
+(CONST 4) = ($LABELS)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($DSKALL)
+13 byte-code instructions:
+0     (T)
+1     (BIND 0)                            ; DSKSAVEP
+3     (GETVALUE 1)                        ; $DSKALL
+5     (JMPIF L14)
+7     (CONST 4)                           ; ($LABELS)
+8     L8
+8     (PUSH)
+9     (CALL1 3)                           ; I-$STORE
+11    (UNBIND1)
+12    (SKIP&RET 1)
+14    L14
+14    (CONST 2)                           ; ($LABELS $VALUES $FUNCTIONS ...)
+15    (JMP L8)
+
+
+Disassembly of function #:|(DEFMSPEC $RESTORE (FILE) ...)-28-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $RESTORE (FILE) ...)-28-2-1|>
+(CONST 1) = $RESTORE
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $RESTORE (FILE) ...)-28-2-1|>
+1     (CONST&PUSH 1)                      ; $RESTORE
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $RESTORE (FILE) ...)-28-2-1|
+(CONST 0) = FILESTRIP
+(CONST 1) = DSKSETQ
+(CONST 2) = OPTIONP
+(CONST 3) = (MFILE)
+(CONST 4) = SET
+(CONST 5) = MDEFPROP
+(CONST 6) = (MEXPR MMACRO AEXPR)
+(CONST 7) = MEMQ
+(CONST 8) = (MFILE)
+(CONST 9) = MPUTPROP
+(CONST 10) = (ARRAY HASHAR)
+(CONST 11) = (MFILE)
+(CONST 12) = ADD2LNC
+(CONST 13) = CLOSE
+(CONST 14) = $CHANGE_FILEDEFAULTS
+(CONST 15) = DEFAULTF
+(CONST 16) = MFILE-OUT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($CHANGE_FILEDEFAULTS)
+147 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (NIL&PUSH)
+3     (NIL)
+4     (CONS&PUSH)
+5     (LOAD&PUSH 2)
+6     (CALL1&PUSH 0)                      ; FILESTRIP
+8     (PUSH-UNBOUND 6)
+10    (CALLS1&PUSH 249)                   ; OPEN
+12    (LOAD&PUSH 0)
+13    (CALLS1&STORE 245 3)                ; TRUENAME
+16    (JMPIFATOM L35)
+18    (LOAD&CDR&PUSH 3)
+20    (LOAD&CAR&PUSH 4)
+22    (CALLSR 2 34)                       ; APPEND
+25    L25
+25    (STORE 3)
+26    (LOAD&PUSH 0)
+27    (LOAD&PUSH 2)
+28    (PUSH-UNBOUND 2)
+30    (CALLS1&PUSH 116)                   ; READ
+32    (JMP L180)
+35    L35
+35    (LOAD 3)
+36    (JMP L25)
+38    L38
+38    (LOAD 0)
+39    (CDR)
+40    (CAR&PUSH)
+41    (CONST&PUSH 3)                      ; (MFILE)
+42    (LOAD&PUSH 6)
+43    (LOAD 3)
+44    (CDR)
+45    (CAR&PUSH)
+46    (LIST&PUSH 3)
+48    (CALL2 4)                           ; SET
+50    (JMP L173)
+53    L53
+53    (LOAD 0)
+54    (CDR)
+55    (CAR&PUSH)
+56    (CONST&PUSH 8)                      ; (MFILE)
+57    (LOAD&PUSH 6)
+58    (LOAD 3)
+59    (CDR)
+60    (CAR&PUSH)
+61    (LIST&PUSH 3)
+63    (LOAD 2)
+64    (CDR)
+65    (CDR)
+66    (CDR)
+67    (CAR&PUSH)
+68    (CALL 3 9)                          ; MPUTPROP
+71    (JMP L173)
+74    L74
+74    (LOAD 0)
+75    (CDR)
+76    (CAR)
+77    (CDR)
+78    (CAR&PUSH)
+79    (CONST&PUSH 11)                     ; (MFILE)
+80    (LOAD&PUSH 6)
+81    (LOAD 3)
+82    (CDR)
+83    (CAR)
+84    (CDR)
+85    (CAR&PUSH)
+86    (LIST&PUSH 3)
+88    (LOAD 2)
+89    (CDR)
+90    (CDR)
+91    (CDR)
+92    (CAR)
+93    (CDR)
+94    (CAR&PUSH)
+95    (CALL 3 9)                          ; MPUTPROP
+98    (LOAD&PUSH 1)
+99    (PUSH-UNBOUND 3)
+101   (CALLS1&PUSH 116)                   ; READ
+103   (JMP L111)
+105   L105
+105   (LOAD&PUSH 2)
+106   (PUSH-UNBOUND 3)
+108   (CALLS1&STORE 116 0)                ; READ
+111   L111
+111   (LOAD&CAR&PUSH 0)
+113   (JMPIFNOTEQTO 12 L105)              ; ADD2LNC
+116   (LOAD&PUSH 0)
+117   (CALLS1 91)                         ; EVAL
+119   (SKIP 1)
+121   (JMP L173)
+123   L123
+123   (LOAD 3)
+124   (SKIP&RET 4)
+126   L126
+126   (LOAD&CAR&PUSH 0)
+128   (JMPIFNOTEQTO 1 L138)               ; DSKSETQ
+131   (LOAD 0)
+132   (CDR)
+133   (CAR&PUSH)
+134   (CALL1&JMPIFNOT 2 L38)              ; OPTIONP
+138   L138
+138   (LOAD&CAR&PUSH 0)
+140   (JMPIFNOTEQTO 5 L153)               ; MDEFPROP
+143   (LOAD 0)
+144   (CDR)
+145   (CDR)
+146   (CDR)
+147   (CAR&PUSH)
+148   (CONST&PUSH 6)                      ; (MEXPR MMACRO AEXPR)
+149   (CALL2&JMPIF 7 L53)                 ; MEMQ
+153   L153
+153   (LOAD&CAR&PUSH 0)
+155   (JMPIFNOTEQTO 9 L170)               ; MPUTPROP
+158   (LOAD 0)
+159   (CDR)
+160   (CDR)
+161   (CDR)
+162   (CAR)
+163   (CDR)
+164   (CAR&PUSH)
+165   (CONST&PUSH 10)                     ; (ARRAY HASHAR)
+166   (CALL2&JMPIF 7 L74)                 ; MEMQ
+170   L170
+170   (LOAD&PUSH 0)
+171   (CALLS1 91)                         ; EVAL
+173   L173
+173   (LOAD&PUSH 1)
+174   (LOAD&PUSH 3)
+175   (PUSH-UNBOUND 2)
+177   (CALLS1&STORE 116 0)                ; READ
+180   L180
+180   (LOAD&PUSH 0)
+181   (LOAD 3)
+182   (JMPIFNOTEQ L126)
+184   (SKIP 1)
+186   (LOAD&PUSH 0)
+187   (CALL1 13)                          ; CLOSE
+189   (GETVALUE 14)                       ; $CHANGE_FILEDEFAULTS
+191   (JMPIFNOT L196)
+193   (LOAD&PUSH 3)
+194   (CALL1 15)                          ; DEFAULTF
+196   L196
+196   (LOAD 3)
+197   (JMPIFATOM L123)
+200   (LOAD&PUSH 3)
+201   (CALL1 16)                          ; MFILE-OUT
+203   (SKIP&RET 4)
+
+
+Wrote file binary-clisp/dskfn.fas
+Wrote file /cygdrive/e/temp/maxima/src/dskfn.lis

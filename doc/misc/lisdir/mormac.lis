@@ -1,0 +1,122 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mormac.lisp
+on 2002-12-17 13:31:56 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mormac.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(SSTATUS FEATURE MAXII)-2|
+(CONST 0) = :MAXII
+(CONST 1) = *FEATURES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+writes special variable : (*FEATURES*)
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MAXII
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1 184)                        ; ADJOIN
+7     (SETVALUE 1)                        ; *FEATURES*
+9     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO MACSYMA-MODULE (MODULE &REST OPTIONS) ...)-3|
+(CONST 0) = MACSYMA-MODULE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MACSYMA-MODULE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MACSYMA-MODULE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MACSYMA-MODULE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MACSYMA-MODULE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; MACSYMA-MODULE
+10    (SKIP&RET 1)
+
+
+Disassembly of function MACSYMA-MODULE
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = MACRO
+(CONST 3) = *MACRO-FILE*
+(CONST 4) = RUNTIME
+(CONST 5) = DEFPROP
+(CONST 6) = (MACSYMA-MODULE)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+writes special variable : (*MACRO-FILE*)
+31 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L38)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (CONST&PUSH 2)                      ; MACRO
+15    (LOAD&PUSH 1)
+16    (PUSH-UNBOUND 3)
+18    (CALLS1&JMPIFNOT 180 L22)           ; MEMBER
+21    (T)
+22    L22
+22    (SETVALUE 3)                        ; *MACRO-FILE*
+24    (LOAD&JMPIF 0 L30)
+27    (CONST&PUSH 4)                      ; RUNTIME
+28    (LOAD&CONS&STORE 0)
+30    L30
+30    (CONST&PUSH 5)                      ; DEFPROP
+31    (LOAD&PUSH 2)
+32    (LOAD&PUSH 2)
+33    (CONST 6)                           ; (MACSYMA-MODULE)
+34    (LIST* 3)
+36    (SKIP&RET 5)
+38    L38
+38    (LOAD&PUSH 2)
+39    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+41    (SKIP&RET 3)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MORMAC MACRO)-4|
+(CONST 0) = MORMAC
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (MACRO)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MORMAC
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (MACRO)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/mormac.fas
+Wrote file /cygdrive/e/temp/maxima/src/mormac.lis

@@ -1,0 +1,1157 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/ufact.lisp
+on 2002-12-17 13:33:32 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/ufact.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE UFACT)-2|
+(CONST 0) = UFACT
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UFACT
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL MODULUS COEF-TYPE))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS RATMAC RZMAC)-4|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN DPREP (P) ...)-5|
+(CONST 0) = DPREP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPREP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPREP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPREP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPREP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPREP
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPREP
+(CONST 0) = P
+(CONST 1) = L
+(CONST 2) = 0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L P)
+writes special variables : (P L)
+44 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (CAR&PUSH)
+6     (GETVALUE 0)                        ; P
+8     (CAR&PUSH)
+9     (NIL)
+10    (BIND 1)                            ; L
+12    (JMP L46)
+14    L14
+14    (GETVALUE 0)                        ; P
+16    (CDR)
+17    (CAR&PUSH)
+18    (GETVALUE 1)                        ; L
+20    (CONS)
+21    (SETVALUE 1)                        ; L
+23    (GETVALUE 0)                        ; P
+25    (CDR)
+26    (CDR)
+27    (SETVALUE 0)                        ; P
+29    (JMP L44)
+31    L31
+31    (LOAD&PUSH 3)
+32    (GETVALUE 0)                        ; P
+34    (CAR&PUSH)
+35    (CALLS2&JMPIF 2 L14)                ; EQUAL
+38    (CONST&PUSH 2)                      ; 0
+39    (GETVALUE 1)                        ; L
+41    (CONS)
+42    (SETVALUE 1)                        ; L
+44    L44
+44    (LOAD&DEC&STORE 3)
+46    L46
+46    (LOAD&PUSH 3)
+47    (CONST&PUSH 2)                      ; 0
+48    (CALLSR&JMPIFNOT 1 47 L31)          ; <
+52    (LOAD&PUSH 4)
+53    (GETVALUE&PUSH 1)                   ; L
+55    (CALLS2 73)                         ; NREVERSE
+57    (CONS)
+58    (UNBIND1)
+59    (SKIP 2)
+61    (UNBIND1)
+62    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN DPDISREP (L) ...)-6|
+(CONST 0) = DPDISREP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPDISREP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPDISREP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPDISREP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPDISREP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPDISREP
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPDISREP
+(CONST 0) = L
+(CONST 1) = 0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+46 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (CAR&PUSH)
+6     (CALLS2&JMPIF 145 L59)              ; ZEROP
+9     (GETVALUE 0)                        ; L
+11    (CDR&PUSH)
+12    (CALLS2 73)                         ; NREVERSE
+14    (BIND 0)                            ; L
+16    (CONST&PUSH 1)                      ; 0
+17    (NIL&PUSH)
+18    (GETVALUE 0)                        ; L
+20    (JMPIFNOT L49)
+22    L22
+22    (GETVALUE 0)                        ; L
+24    (CAR&PUSH)
+25    (CONST&PUSH 1)                      ; 0
+26    (CALLSR&JMPIF 1 45 L38)             ; =
+30    (LOAD&PUSH 1)
+31    (GETVALUE 0)                        ; L
+33    (CAR&PUSH)
+34    (LOAD 2)
+35    (CONS)
+36    (CONS)
+37    (STORE 0)
+38    L38
+38    (GETVALUE 0)                        ; L
+40    (CDR)
+41    (SETVALUE 0)                        ; L
+43    (LOAD&INC&STORE 1)
+45    (GETVALUE 0)                        ; L
+47    (JMPIF L22)
+49    L49
+49    (POP)
+50    (SKIP 1)
+52    (UNBIND1)
+53    (JMPIF1 L56)
+55    (NIL)
+56    L56
+56    (UNBIND1)
+57    (SKIP&RET 2)
+59    L59
+59    (GETVALUE 0)                        ; L
+61    (CDR)
+62    (CAR)
+63    (JMP L56)
+
+
+Disassembly of function #:|(DEFUN DPGCD (P Q) ...)-7|
+(CONST 0) = DPGCD
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPGCD>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPGCD
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPGCD
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPGCD>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPGCD
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPGCD
+(CONST 0) = P
+(CONST 1) = 0
+(CONST 2) = DPREMQUO
+(CONST 3) = (0 1)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+writes special variable : (P)
+46 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (CAR&PUSH)
+6     (LOAD&CAR&PUSH 5)
+8     (CALLSR&JMPIFNOT 1 47 L19)          ; <
+12    (LOAD&PUSH 4)
+13    (GETVALUE 0)                        ; P
+15    (STORE 5)
+16    (POP)
+17    (SETVALUE 0)                        ; P
+19    L19
+19    (GETVALUE&PUSH 0)                   ; P
+21    (CALLS1&PUSH 158)                   ; COPY-LIST
+23    (LOAD&PUSH 5)
+24    (CALLS1&PUSH 158)                   ; COPY-LIST
+26    (LOAD 1)
+27    (BIND 0)                            ; P
+29    (JMP L47)
+31    L31
+31    (GETVALUE 0)                        ; P
+33    (JMP L63)
+35    L35
+35    (LOAD&PUSH 3)
+36    (GETVALUE&PUSH 0)                   ; P
+38    (LOAD&PUSH 5)
+39    (NIL&PUSH)
+40    (CALL 3 2)                          ; DPREMQUO
+43    (STORE 4)
+44    (POP)
+45    (SETVALUE 0)                        ; P
+47    L47
+47    (LOAD&CAR&PUSH 3)
+49    (CONST&PUSH 1)                      ; 0
+50    (CALLSR&JMPIFNOT 1 45 L35)          ; =
+54    (LOAD 3)
+55    (CDR)
+56    (CAR&PUSH)
+57    (CONST&PUSH 1)                      ; 0
+58    (CALLSR&JMPIF 1 45 L31)             ; =
+62    (CONST 3)                           ; (0 1)
+63    L63
+63    (UNBIND1)
+64    (SKIP 2)
+66    (UNBIND1)
+67    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN DPDIF (P Q) ...)-8|
+(CONST 0) = DPDIF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPDIF>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPDIF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPDIF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPDIF>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPDIF
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPDIF
+(CONST 0) = P
+(CONST 1) = L
+(CONST 2) = DPDIF1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L P)
+writes special variable : (L)
+72 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (CAR&PUSH)
+6     (LOAD&CAR&PUSH 5)
+8     (CALLSR&JMPIF 1 48 L33)             ; >
+12    (GETVALUE 0)                        ; P
+14    (CAR&PUSH)
+15    (LOAD&CAR&PUSH 5)
+17    (CALLSR&JMPIF 1 47 L69)             ; <
+21    (GETVALUE 0)                        ; P
+23    (CDR&PUSH)
+24    (LOAD&CDR&PUSH 5)
+26    (NIL&PUSH)
+27    (CALL 3 2)                          ; DPDIF1
+30    L30
+30    (UNBIND1)
+31    (SKIP&RET 3)
+33    L33
+33    (GETVALUE 0)                        ; P
+35    (CAR&PUSH)
+36    (GETVALUE 0)                        ; P
+38    (CDR&PUSH)
+39    (NIL)
+40    (BIND 1)                            ; L
+42    (JMP L57)
+44    L44
+44    (LOAD&CDR&PUSH 3)
+46    (LOAD&CAR&PUSH 4)
+48    (GETVALUE 1)                        ; L
+50    (CONS)
+51    (SETVALUE 1)                        ; L
+53    (POP&STORE 3)
+55    (LOAD&DEC&STORE 4)
+57    L57
+57    (LOAD&PUSH 4)
+58    (LOAD&CAR&PUSH 10)
+60    (CALLSR&JMPIFNOT 1 45 L44)          ; =
+64    (LOAD&PUSH 3)
+65    (LOAD 10)
+66    (CDR)
+67    (JMP L106)
+69    L69
+69    (LOAD&CAR&PUSH 4)
+71    (LOAD&CDR&PUSH 5)
+73    (NIL)
+74    (BIND 1)                            ; L
+76    (JMP L94)
+78    L78
+78    (LOAD&CDR&PUSH 3)
+80    (LOAD&CAR&PUSH 4)
+82    (CALLSR&PUSH 0 54)                  ; -
+85    (GETVALUE 1)                        ; L
+87    (CONS)
+88    (SETVALUE 1)                        ; L
+90    (POP&STORE 3)
+92    (LOAD&DEC&STORE 4)
+94    L94
+94    (LOAD&PUSH 4)
+95    (GETVALUE 0)                        ; P
+97    (CAR&PUSH)
+98    (CALLSR&JMPIFNOT 1 45 L78)          ; =
+102   (GETVALUE 0)                        ; P
+104   (CDR&PUSH)
+105   (LOAD 4)
+106   L106
+106   (PUSH)
+107   (GETVALUE&PUSH 1)                   ; L
+109   (CALL 3 2)                          ; DPDIF1
+112   (UNBIND1)
+113   (SKIP 2)
+115   (JMP L30)
+
+
+Disassembly of function #:|(DEFUN DPDIF1 (P1 Q1 L) ...)-9|
+(CONST 0) = DPDIF1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPDIF1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPDIF1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPDIF1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPDIF1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPDIF1
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPDIF1
+(CONST 0) = L
+(CONST 1) = CDIFFERENCE
+(CONST 2) = DPSIMP
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+23 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (LOAD&PUSH 6)
+4     (LOAD&PUSH 6)
+5     (GETVALUE&PUSH 0)                   ; L
+7     (LOAD&JMPIFNOT 2 L29)
+10    L10
+10    (LOAD&CDR&PUSH 2)
+12    (LOAD&CDR&PUSH 2)
+14    (LOAD&CAR&PUSH 4)
+16    (LOAD&CAR&PUSH 4)
+18    (CALL2&PUSH 1)                      ; CDIFFERENCE
+20    (LOAD&CONS&STORE 2)
+22    (POP&STORE 2)
+24    (POP&STORE 2)
+26    (LOAD&JMPIF 2 L10)
+29    L29
+29    (LOAD&PUSH 0)
+30    (CALLS2&PUSH 73)                    ; NREVERSE
+32    (CALL1 2)                           ; DPSIMP
+34    (SKIP 3)
+36    (UNBIND1)
+37    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN DPSIMP (PL) ...)-10|
+(CONST 0) = DPSIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPSIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPSIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPSIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPSIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPSIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPSIMP
+(CONST 0) = UFACT-STRIP-ZEROES
+(CONST 1) = (0 0)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1 0)                           ; UFACT-STRIP-ZEROES
+3     (STORE 1)
+4     (JMPIFNOT L15)
+6     (LOAD&PUSH 1)
+7     (CALLS2&PUSH 71)                    ; LENGTH
+9     (CALLS2&PUSH 151)                   ; 1-
+11    (LOAD 2)
+12    (CONS)
+13    (SKIP&RET 2)
+15    L15
+15    (CONST 1)                           ; (0 0)
+16    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN DPDERIV (P) ...)-11|
+(CONST 0) = DPDERIV
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPDERIV>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPDERIV
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPDERIV
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPDERIV>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPDERIV
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPDERIV
+(CONST 0) = P
+(CONST 1) = 0
+(CONST 2) = (0 0)
+(CONST 3) = L
+(CONST 4) = CTIMES
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (L P)
+writes special variable : (L)
+44 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; P
+3     (CONST&PUSH 1)                      ; 0
+4     (GETVALUE 0)                        ; P
+6     (CAR&PUSH)
+7     (CALLSR&JMPIF 1 45 L23)             ; =
+11    (GETVALUE 0)                        ; P
+13    (CDR&PUSH)
+14    (GETVALUE 0)                        ; P
+16    (CAR&PUSH)
+17    (NIL&PUSH)
+18    (LOAD 2)
+19    (BIND 3)                            ; L
+21    (JMP L44)
+23    L23
+23    (CONST 2)                           ; (0 0)
+24    (JMP L62)
+26    L26
+26    (GETVALUE 3)                        ; L
+28    (CDR&PUSH)
+29    (LOAD&DEC&PUSH 5)
+31    (LOAD&PUSH 6)
+32    (GETVALUE 3)                        ; L
+34    (CAR&PUSH)
+35    (CALL2&PUSH 4)                      ; CTIMES
+37    (LOAD&CONS&STORE 5)
+39    (POP&STORE 5)
+41    (POP)
+42    (SETVALUE 3)                        ; L
+44    L44
+44    (LOAD&PUSH 4)
+45    (CONST&PUSH 1)                      ; 0
+46    (CALLSR&JMPIFNOT 1 45 L26)          ; =
+50    (GETVALUE 0)                        ; P
+52    (CAR&PUSH)
+53    (CALLS2&PUSH 151)                   ; 1-
+55    (LOAD&PUSH 4)
+56    (CALLS2 73)                         ; NREVERSE
+58    (CONS)
+59    (UNBIND1)
+60    (SKIP 3)
+62    L62
+62    (UNBIND1)
+63    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN DPSQFR (Q) ...)-12|
+(CONST 0) = DPSQFR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPSQFR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPSQFR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPSQFR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPSQFR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPSQFR
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPSQFR
+(CONST 0) = DPDERIV
+(CONST 1) = 0
+(CONST 2) = P
+(CONST 3) = DPDIF
+(CONST 4) = DPGCD
+(CONST 5) = 1
+(CONST 6) = DPMODQUO
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+writes special variable : (P)
+60 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&PUSH 2)
+2     (CALL1&PUSH 0)                      ; DPDERIV
+4     (CONST&PUSH 1)                      ; 0
+5     (NIL)
+6     (BIND 2)                            ; P
+8     (NIL&PUSH)
+9     (JMP L77)
+12    L12
+12    (LOAD&PUSH 6)
+13    (LOAD&PUSH 6)
+14    (CALL2 4)                           ; DPGCD
+16    (SETVALUE 2)                        ; P
+18    (CAR&PUSH)
+19    (CONST&PUSH 1)                      ; 0
+20    (CALLSR&JMPIFNOT 1 45 L62)          ; =
+24    (CONST&PUSH 5)                      ; 1
+25    (LOAD 7)
+26    (CONS&PUSH)
+27    (NIL)
+28    (CONS)
+29    (SKIP 1)
+31    (JMP L85)
+33    L33
+33    (GETVALUE 2)                        ; P
+35    (JMPIFNOT L12)
+37    (LOAD&PUSH 5)
+38    (LOAD&PUSH 7)
+39    (CALL1&PUSH 0)                      ; DPDERIV
+41    (CALL2 3)                           ; DPDIF
+43    (STORE 5)
+44    (LOAD&PUSH 6)
+45    (LOAD&PUSH 6)
+46    (CALL2 4)                           ; DPGCD
+48    (SETVALUE 2)                        ; P
+50    (CAR&PUSH)
+51    (CONST&PUSH 1)                      ; 0
+52    (CALLSR&JMPIFNOT 1 48 L62)          ; >
+56    (LOAD&PUSH 4)
+57    (GETVALUE 2)                        ; P
+59    (CONS&PUSH)
+60    (LOAD&CONS&STORE 0)
+62    L62
+62    (LOAD&PUSH 6)
+63    (GETVALUE&PUSH 2)                   ; P
+65    (CALL2&PUSH 6)                      ; DPMODQUO
+67    (LOAD&PUSH 6)
+68    (GETVALUE&PUSH 2)                   ; P
+70    (CALL2 6)                           ; DPMODQUO
+72    (STORE 6)
+73    (LOAD&INC&STORE 5)
+75    (POP&STORE 6)
+77    L77
+77    (CONST&PUSH 1)                      ; 0
+78    (LOAD&CAR&PUSH 7)
+80    (CALLSR&JMPIFNOT 1 45 L33)          ; =
+84    (POP)
+85    L85
+85    (UNBIND1)
+86    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN DPMODREM (P Q) ...)-13|
+(CONST 0) = DPMODREM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPMODREM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPMODREM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPMODREM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPMODREM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPMODREM
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPMODREM
+(CONST 0) = P
+(CONST 1) = 0
+(CONST 2) = (0 0)
+(CONST 3) = DPREMQUO
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+26 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (CAR&PUSH)
+6     (LOAD&CAR&PUSH 5)
+8     (CALLSR&JMPIF 1 47 L36)             ; <
+12    (LOAD&CAR&PUSH 4)
+14    (CONST&PUSH 1)                      ; 0
+15    (CALLSR&JMPIF 1 45 L40)             ; =
+19    (GETVALUE&PUSH 0)                   ; P
+21    (CALLS1&PUSH 158)                   ; COPY-LIST
+23    (LOAD&PUSH 5)
+24    (CALLS1&PUSH 158)                   ; COPY-LIST
+26    (NIL&PUSH)
+27    (CALL 3 3)                          ; DPREMQUO
+30    (JMPIF1 L33)
+32    (NIL)
+33    L33
+33    (UNBIND1)
+34    (SKIP&RET 3)
+36    L36
+36    (GETVALUE 0)                        ; P
+38    (JMP L33)
+40    L40
+40    (CONST 2)                           ; (0 0)
+41    (JMP L33)
+
+
+Disassembly of function #:|(DEFUN DPMODQUO (P Q) ...)-14|
+(CONST 0) = DPMODQUO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPMODQUO>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPMODQUO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPMODQUO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPMODQUO>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPMODQUO
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPMODQUO
+(CONST 0) = P
+(CONST 1) = (0 0)
+(CONST 2) = 0
+(CONST 3) = 1
+(CONST 4) = CQUOTIENT
+(CONST 5) = DPREMQUO
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (P)
+56 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; P
+3     (GETVALUE 0)                        ; P
+5     (CAR&PUSH)
+6     (LOAD&CAR&PUSH 5)
+8     (CALLSR&JMPIF 1 47 L36)             ; <
+12    (LOAD&CAR&PUSH 4)
+14    (CONST&PUSH 2)                      ; 0
+15    (CALLSR&JMPIF 1 45 L43)             ; =
+19    (GETVALUE&PUSH 0)                   ; P
+21    (CALLS1&PUSH 158)                   ; COPY-LIST
+23    (LOAD&PUSH 5)
+24    (CALLS1&PUSH 158)                   ; COPY-LIST
+26    (T&PUSH)
+27    (CALL 3 5)                          ; DPREMQUO
+30    (JMPIF1 L33)
+32    (NIL)
+33    L33
+33    (UNBIND1)
+34    (SKIP&RET 3)
+36    L36
+36    (CONST 1)                           ; (0 0)
+37    (JMP L33)
+39    L39
+39    (GETVALUE 0)                        ; P
+41    (JMP L33)
+43    L43
+43    (LOAD 4)
+44    (CDR)
+45    (CAR&PUSH)
+46    (JMPIFEQTO 3 L39)                   ; 1
+49    (GETVALUE 0)                        ; P
+51    (CAR&PUSH)
+52    (NIL&PUSH)
+53    (GETVALUE 0)                        ; P
+55    (CDR&PUSH)
+56    (JMP L72)
+58    L58
+58    (LOAD&CAR&PUSH 0)
+60    (LOAD&PUSH 0)
+61    (LOAD 9)
+62    (CDR)
+63    (CAR&PUSH)
+64    (CALL2&PUSH 4)                      ; CQUOTIENT
+66    (LOAD&CONS&STORE 2)
+68    (SKIP 1)
+70    (LOAD&CDR&STORE 0)
+72    L72
+72    (LOAD&PUSH 0)
+73    (CALLS1&JMPIFNOT 146 L58)           ; ENDP
+76    (SKIP 1)
+78    (LOAD&PUSH 0)
+79    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+81    (SKIP 1)
+83    (CONS)
+84    (JMP L33)
+
+
+Disassembly of function #:|(DEFUN DPREMQUO (P Q FLAG) ...)-15|
+(CONST 0) = DPREMQUO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPREMQUO>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPREMQUO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPREMQUO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPREMQUO>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPREMQUO
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPREMQUO
+(CONST 0) = P
+(CONST 1) = FLAG
+(CONST 2) = L
+(CONST 3) = ALPHA
+(CONST 4) = 1
+(CONST 5) = CRECIP
+(CONST 6) = CTIMES
+(CONST 7) = CDIFFERENCE
+(CONST 8) = 0
+(CONST 9) = (0 0)
+(CONST 10) = DPSIMP
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (P FLAG ALPHA L)
+writes special variables : (P L ALPHA)
+148 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; P
+3     (LOAD 4)
+4     (BIND 1)                            ; FLAG
+6     (PUSH-NIL 2)
+8     (NIL)
+9     (BIND 2)                            ; L
+11    (NIL)
+12    (BIND 3)                            ; ALPHA
+14    (LOAD 16)
+16    (CDR)
+17    (CAR&PUSH)
+18    (CONST&PUSH 4)                      ; 1
+19    (CALLSR&JMPIF 1 45 L97)             ; =
+24    (LOAD 16)
+26    (CDR)
+27    (CAR&PUSH)
+28    (CALL1 5)                           ; CRECIP
+30    (SETVALUE 3)                        ; ALPHA
+32    (LOAD 16)
+34    (CDR)
+35    (CDR)
+36    (BIND 2)                            ; L
+38    (GETVALUE 2)                        ; L
+40    (JMPIFNOT L62)
+42    L42
+42    (GETVALUE&PUSH 2)                   ; L
+44    (GETVALUE 2)                        ; L
+46    (CAR&PUSH)
+47    (GETVALUE&PUSH 3)                   ; ALPHA
+49    (CALL2&PUSH 6)                      ; CTIMES
+51    (CALLS1 168)                        ; RPLACA
+53    (GETVALUE 2)                        ; L
+55    (CDR)
+56    (SETVALUE 2)                        ; L
+58    (GETVALUE 2)                        ; L
+60    (JMPIF L42)
+62    L62
+62    (LOAD&CDR&PUSH 19)
+64    (CONST&PUSH 4)                      ; 1
+65    (CALLS1 168)                        ; RPLACA
+67    (UNBIND1)
+68    (GETVALUE 1)                        ; FLAG
+70    (JMPIFNOT L85)
+72    L72
+72    (GETVALUE 0)                        ; P
+74    (CDR)
+75    (CAR&PUSH)
+76    (GETVALUE&PUSH 3)                   ; ALPHA
+78    (CALL2&PUSH 6)                      ; CTIMES
+80    (GETVALUE 2)                        ; L
+82    (CONS)
+83    (SETVALUE 2)                        ; L
+85    L85
+85    (GETVALUE 0)                        ; P
+87    (CDR)
+88    (CDR)
+89    (STORE 7)
+90    (LOAD 16)
+92    (CDR)
+93    (CDR)
+94    (STORE 6)
+95    (JMP L137)
+97    L97
+97    (CONST 4)                           ; 1
+98    (SETVALUE 3)                        ; ALPHA
+100   (GETVALUE 1)                        ; FLAG
+102   (JMPIFNOT L85)
+104   (JMP L72)
+106   L106
+106   (LOAD&PUSH 0)
+107   (CALLS2 145)                        ; ZEROP
+109   (SKIP 1)
+111   (JMPIF L180)
+114   L114
+114   (LOAD&PUSH 1)
+115   (LOAD 1)
+116   (CONS)
+117   (JMP L205)
+120   L120
+120   (GETVALUE&PUSH 2)                   ; L
+122   (CALLS2&PUSH 73)                    ; NREVERSE
+124   (CALL1 10)                          ; DPSIMP
+126   (JMP L229)
+129   L129
+129   (GETVALUE 1)                        ; FLAG
+131   (JMPIFNOT L85)
+133   (JMP L72)
+135   L135
+135   (LOAD&CDR&STORE 7)
+137   L137
+137   (LOAD&PUSH 7)
+138   (LOAD&CAR&PUSH 8)
+140   (LOAD&CAR&PUSH 8)
+142   (GETVALUE 0)                        ; P
+144   (CDR)
+145   (CAR&PUSH)
+146   (CALL2&PUSH 6)                      ; CTIMES
+148   (CALL2&PUSH 7)                      ; CDIFFERENCE
+150   (CALLS1 168)                        ; RPLACA
+152   (LOAD&CDR&STORE 6)
+154   (JMPIF L135)
+156   (GETVALUE 0)                        ; P
+158   (CAR&PUSH)
+159   (CALLS2&PUSH 151)                   ; 1-
+161   (GETVALUE 0)                        ; P
+163   (CDR)
+164   (CDR&PUSH)
+165   (LOAD&JMPIFNOT 0 L204)
+168   L168
+168   (LOAD&CAR&PUSH 0)
+170   (LOAD&PUSH 0)
+171   (CALLS2&JMPIF 8 L106)               ; NUMBERP
+175   (SKIP 1)
+177   (JMPIFNOT L114)
+180   L180
+180   (GETVALUE 1)                        ; FLAG
+182   (JMPIFNOT L197)
+184   (LOAD&PUSH 1)
+185   (LOAD&CAR&PUSH 19)
+187   (CALLSR&JMPIF 1 47 L197)            ; <
+191   (CONST&PUSH 8)                      ; 0
+192   (GETVALUE 2)                        ; L
+194   (CONS)
+195   (SETVALUE 2)                        ; L
+197   L197
+197   (LOAD&CDR&STORE 0)
+199   (LOAD&DEC&STORE 1)
+201   (LOAD&JMPIF 0 L168)
+204   L204
+204   (CONST 9)                           ; (0 0)
+205   L205
+205   (SETVALUE 0)                        ; P
+207   (SKIP 2)
+209   (GETVALUE 0)                        ; P
+211   (CAR&PUSH)
+212   (LOAD&CAR&PUSH 17)
+214   (CALLSR&JMPIFNOT 1 47 L129)         ; <
+219   (GETVALUE 1)                        ; FLAG
+221   (JMPIF L120)
+224   (GETVALUE 0)                        ; P
+226   (JMPIF1 L229)
+228   (NIL)
+229   L229
+229   (UNBIND 2)
+231   (SKIP 2)
+233   (UNBIND 2)
+235   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN UFACT-STRIP-ZEROES (L) ...)-16|
+(CONST 0) = UFACT-STRIP-ZEROES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE UFACT-STRIP-ZEROES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UFACT-STRIP-ZEROES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; UFACT-STRIP-ZEROES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE UFACT-STRIP-ZEROES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; UFACT-STRIP-ZEROES
+8     (SKIP&RET 1)
+
+
+Disassembly of function UFACT-STRIP-ZEROES
+(CONST 0) = L
+(CONST 1) = X
+(CONST 2) = FIXNUMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X L)
+writes special variable : (L)
+34 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (BIND 0)                            ; L
+7     L7
+7     (GETVALUE 0)                        ; L
+9     (CAR)
+10    (BIND 1)                            ; X
+12    (GETVALUE&PUSH 1)                   ; X
+14    (CALL1&JMPIF 2 L26)                 ; FIXNUMP
+17    (GETVALUE 1)                        ; X
+19    (JMPIFCONSP L45)
+21    (GETVALUE&PUSH 1)                   ; X
+23    (CALLS2&JMPIFNOT 15 L35)            ; FLOATP
+26    L26
+26    (GETVALUE&PUSH 1)                   ; X
+28    (CALLS2 145)                        ; ZEROP
+30    (UNBIND1)
+31    (JMPIFNOT L46)
+33    (JMP L38)
+35    L35
+35    (UNBIND1)
+36    (JMPIFNOT L46)
+38    L38
+38    (GETVALUE 0)                        ; L
+40    (CDR)
+41    (SETVALUE 0)                        ; L
+43    (JMP L7)
+45    L45
+45    (UNBIND1)
+46    L46
+46    (GETVALUE 0)                        ; L
+48    (UNBIND 2)
+50    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN CPRES1 (A B) ...)-17|
+(CONST 0) = CPRES1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CPRES1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CPRES1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CPRES1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CPRES1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CPRES1
+8     (SKIP&RET 1)
+
+
+Disassembly of function CPRES1
+(CONST 0) = B
+(CONST 1) = RES
+(CONST 2) = 0
+(CONST 3) = DPREP
+(CONST 4) = 1
+(CONST 5) = DPMODREM
+(CONST 6) = #.BOOLE-XOR
+(CONST 7) = CEXPT
+(CONST 8) = CTIMES
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (RES B)
+writes special variables : (RES B)
+66 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; B
+3     (NIL)
+4     (BIND 1)                            ; RES
+6     (CONST&PUSH 2)                      ; 0
+7     (NIL&PUSH)
+8     (LOAD&PUSH 10)
+9     (CALL1 3)                           ; DPREP
+11    (STORE 10)
+13    (GETVALUE&PUSH 0)                   ; B
+15    (CALL1 3)                           ; DPREP
+17    (SETVALUE 0)                        ; B
+19    (CONST 4)                           ; 1
+20    (SETVALUE 1)                        ; RES
+22    (JMP L39)
+24    L24
+24    (GETVALUE&PUSH 1)                   ; RES
+26    (CALLSR 0 54)                       ; -
+29    (JMP L106)
+32    L32
+32    (GETVALUE 0)                        ; B
+34    (STORE 10)
+36    (LOAD 0)
+37    (SETVALUE 0)                        ; B
+39    L39
+39    (LOAD&PUSH 10)
+40    (GETVALUE&PUSH 0)                   ; B
+42    (CALL2 5)                           ; DPMODREM
+44    (STORE 0)
+45    (CONST&PUSH 6)                      ; #.BOOLE-XOR
+46    (LOAD&PUSH 2)
+47    (CONST&PUSH 4)                      ; 1
+48    (LOAD&CAR&PUSH 13)
+50    (GETVALUE 0)                        ; B
+52    (CAR&PUSH)
+53    (CALLSR&PUSH 3 61)                  ; LOGAND
+56    (CALLS2&STORE 205 1)                ; BOOLE
+59    (GETVALUE&PUSH 1)                   ; RES
+61    (GETVALUE 0)                        ; B
+63    (CDR)
+64    (CAR&PUSH)
+65    (LOAD&CAR&PUSH 12)
+67    (LOAD&CAR&PUSH 3)
+69    (CALLSR&PUSH 1 54)                  ; -
+72    (CALL2&PUSH 7)                      ; CEXPT
+74    (CALL2 8)                           ; CTIMES
+76    (SETVALUE 1)                        ; RES
+78    (CONST&PUSH 2)                      ; 0
+79    (LOAD&CAR&PUSH 1)
+81    (CALLSR&JMPIFNOT 1 45 L32)          ; =
+85    (GETVALUE&PUSH 1)                   ; RES
+87    (LOAD 1)
+88    (CDR)
+89    (CAR&PUSH)
+90    (GETVALUE 0)                        ; B
+92    (CAR&PUSH)
+93    (CALL2&PUSH 7)                      ; CEXPT
+95    (CALL2 8)                           ; CTIMES
+97    (SETVALUE 1)                        ; RES
+99    (LOAD&PUSH 1)
+100   (CALLS2&JMPIF 148 L24)              ; ODDP
+104   (GETVALUE 1)                        ; RES
+106   L106
+106   (SKIP 2)
+108   (UNBIND 2)
+110   (SKIP&RET 3)
+
+
+Wrote file binary-clisp/ufact.fas
+Wrote file /cygdrive/e/temp/maxima/src/ufact.lis

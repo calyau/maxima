@@ -1,0 +1,2098 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/todd-coxeter.lisp
+on 2002-12-17 13:36:24 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/todd-coxeter.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(USE-PACKAGE "SLOOP")-2|
+(CONST 0) = "SLOOP"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "SLOOP"
+1     (PUSH-UNBOUND 1)
+3     (CALLS1 220)                        ; USE-PACKAGE
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR $TODD_COXETER_STATE NIL)-3|
+(CONST 0) = (SPECIAL $TODD_COXETER_STATE)
+(CONST 1) = $TODD_COXETER_STATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $TODD_COXETER_STATE)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $TODD_COXETER_STATE
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $TODD_COXETER_STATE
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $TODD_COXETER_STATE
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROCLAIM '(TYPE # $TODD_COXETER_STATE))-4|
+(CONST 0) = (TYPE (VECTOR T) $TODD_COXETER_STATE)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (TYPE (VECTOR T) ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *DEBUG* NIL)-5|
+(CONST 0) = (SPECIAL *DEBUG*)
+(CONST 1) = *DEBUG*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *DEBUG*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *DEBUG*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *DEBUG*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *DEBUG*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *THIS-ROW* NIL)-6|
+(CONST 0) = (SPECIAL *THIS-ROW*)
+(CONST 1) = *THIS-ROW*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *THIS-ROW*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *THIS-ROW*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *THIS-ROW*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *THIS-ROW*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL) (DEFMACRO NVARS NIL ...) ...)-7|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFTYPE COSET NIL ...) ...)-8-1|
+(CONST 0) = COSET
+(CONST 1) = SYSTEM::DEFTYPE-EXPANDER
+(CONST 2) = #<COMPILED-CLOSURE #:DEFTYPE-COSET>
+(CONST 3) = TYPE
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COSET
+1     (CONST&PUSH 1)                      ; SYSTEM::DEFTYPE-EXPANDER
+2     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE #:DEFTYPE-COSET>
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (CONST&PUSH 0)                      ; COSET
+6     (CONST&PUSH 3)                      ; TYPE
+7     (NIL&PUSH)
+8     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+11    (VALUES0)
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:DEFTYPE-COSET
+(CONST 0) = 1
+(CONST 1) = SYSTEM::TYPE-CALL-ERROR
+(CONST 2) = FIXNUM
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 1
+4     (CALLSR&JMPIF 1 48 L11)             ; >
+8     (CONST 2)                           ; FIXNUM
+9     (SKIP&RET 2)
+11    L11
+11    (LOAD&PUSH 1)
+12    (CALL1 1)                           ; SYSTEM::TYPE-CALL-ERROR
+14    (SKIP&RET 2)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFTYPE COSET NIL ...) ...)-8-2|
+(CONST 0) = (TYPE (VECTOR (COSET)) *TODO*)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (TYPE (VECTOR (COSET)) *TODO*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *TODO* (MAKE-ARRAY 10 :ELEMENT-TYPE ...))-9|
+(CONST 0) = (SPECIAL *TODO*)
+(CONST 1) = *TODO*
+(CONST 2) = 10
+(CONST 3) = COSET
+(CONST 4) = 0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *TODO*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *TODO*
+4     (CALLS1&JMPIF 79 L20)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *TODO*
+8     (CONST&PUSH 2)                      ; 10
+9     (T&PUSH)
+10    (PUSH-UNBOUND 6)
+12    (CONST 3)                           ; COSET
+13    (STORE 5)
+14    (CONST 4)                           ; 0
+15    (STORE 2)
+16    (CALLS1&PUSH 29)                    ; MAKE-ARRAY
+18    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+20    L20
+20    (CONST 1)                           ; *TODO*
+21    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN TODD-COXETER (NVARS RELS SUBGP ...) ...)-10|
+(CONST 0) = TODD-COXETER
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TODD-COXETER>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TODD-COXETER
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TODD-COXETER
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TODD-COXETER>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TODD-COXETER
+8     (SKIP&RET 1)
+
+
+Disassembly of function TODD-COXETER
+(CONST 0) = 1
+(CONST 1) = 0
+(CONST 2) = C
+(CONST 3) = SET-UP
+(CONST 4) = $TODD_COXETER_STATE
+(CONST 5) = DOING-ROW
+(CONST 6) = REPLACE-COSET-IN-MULTIPLY-TABLE
+(CONST 7) = *TODO*
+(CONST 8) = #<COMPILED-CLOSURE TODD-COXETER-1>
+(CONST 9) = *STANDARD-OUTPUT*
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*STANDARD-OUTPUT* $TODD_COXETER_STATE *TODO* C)
+writes special variable : (C)
+41 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 1
+1     (CONST 1)                           ; 0
+2     (BIND 2)                            ; C
+4     (LOAD&PUSH 7)
+5     (LOAD&PUSH 7)
+6     (LOAD&PUSH 7)
+7     (CALL 3 3)                          ; SET-UP
+10    (JMP L43)
+12    L12
+12    (CALL0 6)                           ; REPLACE-COSET-IN-MULTIPLY-TABLE
+14    (JMP L43)
+16    L16
+16    (LOAD&INC&STORE 3)
+18    (CALL0 6)                           ; REPLACE-COSET-IN-MULTIPLY-TABLE
+20    (JMP L43)
+22    L22
+22    (GETVALUE&PUSH 2)                   ; C
+24    (CALLS2 150)                        ; 1+
+26    (SETVALUE 2)                        ; C
+28    (LOAD&PUSH 3)
+29    (CALL1&JMPIF 5 L12)                 ; DOING-ROW
+32    (GETVALUE&PUSH 7)                   ; *TODO*
+34    (CALLS1&PUSH 24)                    ; FILL-POINTER
+36    (CONST&PUSH 1)                      ; 0
+37    (CALLSR&JMPIF 1 48 L16)             ; >
+41    (LOAD&INC&STORE 3)
+43    L43
+43    (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+45    (CONST&PUSH 0)                      ; 1
+46    (CALLSR&PUSH 1 1)                   ; AREF
+49    (LOAD&PUSH 4)
+50    (CALLSR&JMPIF 1 50 L22)             ; >=
+54    (CONST&PUSH 8)                      ; #<COMPILED-CLOSURE TODD-COXETER-1>
+55    (GETVALUE&PUSH 9)                   ; *STANDARD-OUTPUT*
+57    (GETVALUE&PUSH 2)                   ; C
+59    (CALLSR 2 21)                       ; FUNCALL
+62    (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+64    (CONST&PUSH 0)                      ; 1
+65    (CALLSR 1 1)                        ; AREF
+68    (UNBIND1)
+69    (SKIP&RET 5)
+
+
+Disassembly of function TODD-COXETER-1
+(CONST 0) = 
+"
+Rows tried "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Rows tried "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD 1)
+11    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN SET-UP (NVARS RELS SUBGP) ...)-11|
+(CONST 0) = SET-UP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SET-UP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SET-UP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SET-UP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SET-UP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SET-UP
+8     (SKIP&RET 1)
+
+
+Disassembly of function SET-UP
+(CONST 0) = 6
+(CONST 1) = $TODD_COXETER_STATE
+(CONST 2) = 0
+(CONST 3) = 1
+(CONST 4) = 3
+(CONST 5) = 4
+(CONST 6) = 5
+(CONST 7) = *TODO*
+(CONST 8) = 2
+(CONST 9) = V
+(CONST 10) = "Vars must be integers with absolute value between 1 and ~a"
+(CONST 11) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 12) = 10
+(CONST 13) = COSET
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (V *TODO* $TODD_COXETER_STATE)
+writes special variables : (V $TODD_COXETER_STATE)
+137 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 6
+1     (PUSH-UNBOUND 7)
+3     (CALLS1 29)                         ; MAKE-ARRAY
+5     (SETVALUE 1)                        ; $TODD_COXETER_STATE
+7     (PUSH)
+8     (LOAD&PUSH 0)
+9     (CONST&PUSH 2)                      ; 0
+10    (LOAD&PUSH 6)
+11    (CALLSR 1 2)                        ; SYSTEM::STORE
+14    (SKIP 1)
+16    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+18    (LOAD&PUSH 0)
+19    (CONST&PUSH 3)                      ; 1
+20    (CONST&PUSH 3)                      ; 1
+21    (CALLSR 1 2)                        ; SYSTEM::STORE
+24    (SKIP 1)
+26    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+28    (LOAD&PUSH 0)
+29    (CONST&PUSH 4)                      ; 3
+30    (LOAD&PUSH 5)
+31    (CALLSR 1 2)                        ; SYSTEM::STORE
+34    (SKIP 1)
+36    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+38    (LOAD&PUSH 0)
+39    (CONST&PUSH 5)                      ; 4
+40    (LOAD&PUSH 4)
+41    (CALLSR 1 2)                        ; SYSTEM::STORE
+44    (SKIP 1)
+46    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+48    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+50    (CONST&PUSH 5)                      ; 4
+51    (CALLSR&PUSH 1 1)                   ; AREF
+54    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+56    (CONST&PUSH 4)                      ; 3
+57    (CALLSR&PUSH 1 1)                   ; AREF
+60    (CALLSR&PUSH 2 34)                  ; APPEND
+63    (LOAD&PUSH 1)
+64    (CONST&PUSH 6)                      ; 5
+65    (LOAD&PUSH 2)
+66    (CALLSR 1 2)                        ; SYSTEM::STORE
+69    (SKIP 2)
+71    (GETVALUE&PUSH 7)                   ; *TODO*
+73    (CONST&PUSH 2)                      ; 0
+74    (CALLS1 25)                         ; SYSTEM::SET-FILL-POINTER
+76    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+78    (CONST&PUSH 8)                      ; 2
+79    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+81    (CONST&PUSH 2)                      ; 0
+82    (CALLSR&PUSH 1 1)                   ; AREF
+85    (CALLS2&PUSH 150)                   ; 1+
+87    (CALLSR&PUSH 2 55)                  ; *
+90    (PUSH-UNBOUND 7)
+92    (CALLS1&PUSH 29)                    ; MAKE-ARRAY
+94    (LOAD&PUSH 1)
+95    (CONST&PUSH 8)                      ; 2
+96    (LOAD&PUSH 2)
+97    (CALLSR 1 2)                        ; SYSTEM::STORE
+100   (SKIP 2)
+102   (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+104   (CONST&PUSH 2)                      ; 0
+105   (CALLSR&PUSH 1 1)                   ; AREF
+108   (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+110   (CONST&PUSH 8)                      ; 2
+111   (CALLSR&PUSH 1 1)                   ; AREF
+114   (NIL&PUSH)
+115   (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+117   (CONST&PUSH 6)                      ; 5
+118   (CALLSR&PUSH 1 1)                   ; AREF
+121   (LOAD&JMPIFNOT 0 L167)
+124   L124
+124   (LOAD&CAR&PUSH 0)
+126   (LOAD 0)
+127   (STORE 2)
+128   (SKIP 1)
+130   (NIL)
+131   (BIND 9)                            ; V
+133   (LOAD&PUSH 4)
+134   (LOAD&JMPIFNOT 0 L159)
+137   L137
+137   (LOAD&CAR&PUSH 0)
+139   (LOAD 0)
+140   (SETVALUE 9)                        ; V
+142   (SKIP 1)
+144   (CONST&PUSH 3)                      ; 1
+145   (GETVALUE&PUSH 9)                   ; V
+147   (CALLS2&PUSH 158)                   ; ABS
+149   (LOAD&PUSH 9)
+150   (CALLSR&JMPIFNOT 2 49 L189)         ; <=
+154   (LOAD&CDR&STORE 0)
+156   (LOAD&JMPIF 0 L137)
+159   L159
+159   (SKIP 1)
+161   (UNBIND1)
+162   (LOAD&CDR&STORE 0)
+164   (LOAD&JMPIF 0 L124)
+167   L167
+167   (SKIP 2)
+169   (LOAD&PUSH 1)
+170   (CALLSR&PUSH 0 54)                  ; -
+173   (LOAD&PUSH 0)
+174   (CALLS2&JMPIF 13 L179)              ; SYSTEM::FIXNUMP
+177   (CALL0 11)                          ; SLOOP::SLOOP-TYPE-ERROR
+179   L179
+179   (LOAD&INC&PUSH 2)
+181   (CALLS2&JMPIF 13 L186)              ; SYSTEM::FIXNUMP
+184   (CALL0 11)                          ; SLOOP::SLOOP-TYPE-ERROR
+186   L186
+186   (LOAD&PUSH 2)
+187   (JMP L220)
+189   L189
+189   (CONST&PUSH 10)                     ; "Vars must be integers with absolute value between 1 and ~a"
+190   (LOAD&PUSH 8)
+191   (CALLSR 1 29)                       ; ERROR
+194   L194
+194   (LOAD&PUSH 1)
+195   (CALLS2&JMPIF 145 L218)             ; ZEROP
+198   (LOAD&PUSH 1)
+199   (LOAD&PUSH 4)
+200   (CALLSR&PUSH 2 53)                  ; +
+203   (CONST&PUSH 12)                     ; 10
+204   (T&PUSH)
+205   (CONST&PUSH 13)                     ; COSET
+206   (PUSH-UNBOUND 5)
+208   (CALLS1&PUSH 29)                    ; MAKE-ARRAY
+210   (LOAD&PUSH 4)
+211   (LOAD&PUSH 2)
+212   (LOAD&PUSH 2)
+213   (CALLSR 1 2)                        ; SYSTEM::STORE
+216   (SKIP 2)
+218   L218
+218   (LOAD&INC&STORE 1)
+220   L220
+220   (LOAD&PUSH 1)
+221   (LOAD&PUSH 1)
+222   (CALLSR&JMPIFNOT 1 48 L194)         ; >
+226   (NIL)
+227   (SKIP&RET 8)
+
+
+Disassembly of function #:|(DEFUN DOING-ROW (I &AUX # ...) ...)-12|
+(CONST 0) = DOING-ROW
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DOING-ROW>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DOING-ROW
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DOING-ROW
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DOING-ROW>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DOING-ROW
+8     (SKIP&RET 1)
+
+
+Disassembly of function DOING-ROW
+(CONST 0) = 0
+(CONST 1) = J
+(CONST 2) = K
+(CONST 3) = R
+(CONST 4) = S
+(CONST 5) = *THIS-ROW*
+(CONST 6) = 1
+(CONST 7) = $TODD_COXETER_STATE
+(CONST 8) = 5
+(CONST 9) = 3
+(CONST 10) = 2
+(CONST 11) = V
+(CONST 12) = NEXT-COSET
+(CONST 13) = *TODO*
+(CONST 14) = *DEBUG*
+(CONST 15) = MY-PRINT
+(CONST 16) = DCHECK-TABLES
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (J *THIS-ROW* *DEBUG* *TODO* S K R V $TODD_COXETER_STATE)
+writes special variables : (V J *THIS-ROW* S R K)
+213 byte-code instructions:
+0     (CONST 0)                           ; 0
+1     (BIND 1)                            ; J
+3     (CONST 0)                           ; 0
+4     (BIND 2)                            ; K
+6     (CONST 0)                           ; 0
+7     (BIND 3)                            ; R
+9     (CONST 0)                           ; 0
+10    (BIND 4)                            ; S
+12    (NIL)
+13    (BIND 5)                            ; *THIS-ROW*
+15    (NIL&PUSH)
+16    (LOAD&PUSH 17)
+17    (JMPIFEQTO 6 L171)                  ; 1
+21    (GETVALUE&PUSH 7)                   ; $TODD_COXETER_STATE
+23    (CONST 9)                           ; 3
+24    L24
+24    (PUSH)
+25    (CALLSR&STORE 1 1 0)                ; AREF
+29    (GETVALUE&PUSH 7)                   ; $TODD_COXETER_STATE
+31    (CONST&PUSH 0)                      ; 0
+32    (CALLSR&PUSH 1 1)                   ; AREF
+35    (GETVALUE&PUSH 7)                   ; $TODD_COXETER_STATE
+37    (CONST&PUSH 10)                     ; 2
+38    (CALLSR&PUSH 1 1)                   ; AREF
+41    (NIL&PUSH)
+42    (LOAD&PUSH 3)
+43    (LOAD 4)
+44    (BIND 11)                           ; V
+46    (GETVALUE 11)                       ; V
+48    (JMPIFNOT L370)
+51    L51
+51    (LOAD&JMPIFNOT 3 L370)
+55    (LOAD&CAR&PUSH 3)
+57    (LOAD 0)
+58    (STORE 5)
+59    (SKIP 1)
+61    (LOAD 24)
+63    (SETVALUE 2)                        ; K
+65    L65
+65    (LOAD 4)
+66    (CAR)
+67    (SETVALUE 3)                        ; R
+69    (LOAD&PUSH 5)
+70    (GETVALUE&PUSH 3)                   ; R
+72    (LOAD&PUSH 8)
+73    (CALLSR&PUSH 2 53)                  ; +
+76    (CALLSR&PUSH 1 1)                   ; AREF
+79    (GETVALUE&PUSH 2)                   ; K
+81    (CALLSR 1 1)                        ; AREF
+84    (SETVALUE 4)                        ; S
+86    (PUSH)
+87    (JMPIFNOTEQTO 0 L146)               ; 0
+90    (LOAD 4)
+91    (CDR)
+92    (JMPIFNOT L288)
+95    (CALL0 12)                          ; NEXT-COSET
+97    (SETVALUE 4)                        ; S
+99    (LOAD&PUSH 5)
+100   (GETVALUE&PUSH 3)                   ; R
+102   (LOAD&PUSH 8)
+103   (CALLSR&PUSH 2 53)                  ; +
+106   (CALLSR&PUSH 1 1)                   ; AREF
+109   (GETVALUE&PUSH 2)                   ; K
+111   (GETVALUE&PUSH 4)                   ; S
+113   (LOAD&PUSH 2)
+114   (LOAD&PUSH 2)
+115   (LOAD&PUSH 2)
+116   (CALLSR 1 2)                        ; SYSTEM::STORE
+119   (SKIP 3)
+121   (LOAD&PUSH 5)
+122   (GETVALUE&PUSH 3)                   ; R
+124   (CALLSR&PUSH 0 54)                  ; -
+127   (LOAD&PUSH 8)
+128   (CALLSR&PUSH 2 53)                  ; +
+131   (CALLSR&PUSH 1 1)                   ; AREF
+134   (GETVALUE&PUSH 4)                   ; S
+136   (GETVALUE&PUSH 2)                   ; K
+138   (LOAD&PUSH 2)
+139   (LOAD&PUSH 2)
+140   (LOAD&PUSH 2)
+141   (CALLSR 1 2)                        ; SYSTEM::STORE
+144   (SKIP 3)
+146   L146
+146   (LOAD&CDR&STORE 4)
+148   (JMPIF L244)
+151   (LOAD&PUSH 24)
+152   (GETVALUE&PUSH 4)                   ; S
+154   (CALLSR&JMPIFNOT 1 47 L210)         ; <
+158   (LOAD 24)
+160   L160
+160   (PUSH)
+161   (GETVALUE&PUSH 13)                  ; *TODO*
+163   (PUSH-UNBOUND 1)
+165   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+167   (GETVALUE 4)                        ; S
+169   (JMP L228)
+171   L171
+171   (GETVALUE&PUSH 7)                   ; $TODD_COXETER_STATE
+173   (CONST 8)                           ; 5
+174   (JMP L24)
+177   L177
+177   (GETVALUE 2)                        ; K
+179   (JMP L160)
+181   L181
+181   (GETVALUE&PUSH 2)                   ; K
+183   (GETVALUE&PUSH 4)                   ; S
+185   (CALLSR&JMPIF 1 47 L177)            ; <
+189   (GETVALUE&PUSH 2)                   ; K
+191   (GETVALUE&PUSH 4)                   ; S
+193   (CALLSR&JMPIFNOT 1 48 L358)         ; >
+198   (GETVALUE&PUSH 4)                   ; S
+200   (GETVALUE&PUSH 13)                  ; *TODO*
+202   (PUSH-UNBOUND 1)
+204   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+206   (GETVALUE 2)                        ; K
+208   (JMP L228)
+210   L210
+210   (LOAD&PUSH 24)
+211   (GETVALUE&PUSH 4)                   ; S
+213   (CALLSR&JMPIFNOT 1 48 L358)         ; >
+218   (GETVALUE&PUSH 4)                   ; S
+220   (GETVALUE&PUSH 13)                  ; *TODO*
+222   (PUSH-UNBOUND 1)
+224   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+226   (LOAD 24)
+228   L228
+228   (PUSH)
+229   (GETVALUE&PUSH 13)                  ; *TODO*
+231   (PUSH-UNBOUND 1)
+233   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+235   (GETVALUE 11)                       ; V
+237   (CDR)
+238   (UNBIND1)
+239   (SKIP 4)
+241   (JMP L379)
+244   L244
+244   (GETVALUE 14)                       ; *DEBUG*
+246   (JMPIFNOT L262)
+248   (GETVALUE&PUSH 4)                   ; S
+250   (GETVALUE 5)                        ; *THIS-ROW*
+252   (CONS)
+253   (SETVALUE 5)                        ; *THIS-ROW*
+255   (PUSH)
+256   (CALLS2&PUSH 72)                    ; REVERSE
+258   (LOAD&PUSH 25)
+260   (CALL2 15)                          ; MY-PRINT
+262   L262
+262   (GETVALUE 4)                        ; S
+264   (SETVALUE 2)                        ; K
+266   (GETVALUE&PUSH 1)                   ; J
+268   (CALLS2 150)                        ; 1+
+270   (SETVALUE 1)                        ; J
+272   (JMP L65)
+275   L275
+275   (CALL0 16)                          ; DCHECK-TABLES
+277   (GETVALUE&PUSH 5)                   ; *THIS-ROW*
+279   (CALLS2&PUSH 72)                    ; REVERSE
+281   (LOAD&PUSH 18)
+282   (CALL2 15)                          ; MY-PRINT
+284   (NIL)
+285   (JMP L379)
+288   L288
+288   (LOAD&PUSH 5)
+289   (GETVALUE&PUSH 3)                   ; R
+291   (CALLSR&PUSH 0 54)                  ; -
+294   (LOAD&PUSH 8)
+295   (CALLSR&PUSH 2 53)                  ; +
+298   (CALLSR&PUSH 1 1)                   ; AREF
+301   (LOAD&PUSH 25)
+303   (CALLSR 1 1)                        ; AREF
+306   (SETVALUE 4)                        ; S
+308   (PUSH)
+309   (JMPIFNOTEQTO 0 L181)               ; 0
+313   (LOAD&PUSH 5)
+314   (GETVALUE&PUSH 3)                   ; R
+316   (LOAD&PUSH 8)
+317   (CALLSR&PUSH 2 53)                  ; +
+320   (CALLSR&PUSH 1 1)                   ; AREF
+323   (GETVALUE&PUSH 2)                   ; K
+325   (LOAD&PUSH 1)
+326   (LOAD&PUSH 1)
+327   (LOAD&PUSH 28)
+329   (CALLSR 1 2)                        ; SYSTEM::STORE
+332   (SKIP 2)
+334   (LOAD&PUSH 5)
+335   (GETVALUE&PUSH 3)                   ; R
+337   (CALLSR&PUSH 0 54)                  ; -
+340   (LOAD&PUSH 8)
+341   (CALLSR&PUSH 2 53)                  ; +
+344   (CALLSR&PUSH 1 1)                   ; AREF
+347   (GETVALUE&PUSH 2)                   ; K
+349   (LOAD&PUSH 1)
+350   (LOAD&PUSH 27)
+352   (LOAD&PUSH 2)
+353   (CALLSR 1 2)                        ; SYSTEM::STORE
+356   (SKIP 2)
+358   L358
+358   (LOAD&CDR&STORE 3)
+360   (GETVALUE 11)                       ; V
+362   (CDR)
+363   (SETVALUE 11)                       ; V
+365   (GETVALUE 11)                       ; V
+367   (JMPIF L51)
+370   L370
+370   (UNBIND1)
+371   (SKIP 4)
+373   (GETVALUE 14)                       ; *DEBUG*
+375   (JMPIF L275)
+378   (NIL)
+379   L379
+379   (SKIP 1)
+381   (UNBIND 5)
+383   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FILL-IN-INVERSES (&AUX # #) ...)-13|
+(CONST 0) = FILL-IN-INVERSES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FILL-IN-INVERSES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FILL-IN-INVERSES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FILL-IN-INVERSES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FILL-IN-INVERSES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FILL-IN-INVERSES
+8     (SKIP&RET 1)
+
+
+Disassembly of function FILL-IN-INVERSES
+(CONST 0) = 0
+(CONST 1) = S
+(CONST 2) = $TODD_COXETER_STATE
+(CONST 3) = 2
+(CONST 4) = 1
+(CONST 5) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 6) = J
+(CONST 7) = *TODO*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (S *TODO* J $TODD_COXETER_STATE)
+writes special variables : (S J)
+119 byte-code instructions:
+0     (CONST 0)                           ; 0
+1     (BIND 1)                            ; S
+3     (CONST&PUSH 0)                      ; 0
+4     (GETVALUE&PUSH 2)                   ; $TODD_COXETER_STATE
+6     (CONST&PUSH 0)                      ; 0
+7     (CALLSR&PUSH 1 1)                   ; AREF
+10    (GETVALUE&PUSH 2)                   ; $TODD_COXETER_STATE
+12    (CONST&PUSH 3)                      ; 2
+13    (CALLSR&PUSH 1 1)                   ; AREF
+16    (CONST&PUSH 4)                      ; 1
+17    (LOAD&INC&PUSH 2)
+19    (CALLS2&JMPIF 13 L24)               ; SYSTEM::FIXNUMP
+22    (CALL0 5)                           ; SLOOP::SLOOP-TYPE-ERROR
+24    L24
+24    (LOAD&PUSH 2)
+25    (JMP L187)
+28    L28
+28    (LOAD&PUSH 2)
+29    (LOAD&PUSH 2)
+30    (LOAD&PUSH 5)
+31    (CALLSR&PUSH 2 53)                  ; +
+34    (CALLSR&PUSH 1 1)                   ; AREF
+37    (LOAD&PUSH 3)
+38    (LOAD&PUSH 3)
+39    (CALLSR&PUSH 0 54)                  ; -
+42    (LOAD&PUSH 6)
+43    (CALLSR&PUSH 2 53)                  ; +
+46    (CALLSR&PUSH 1 1)                   ; AREF
+49    (CONST&PUSH 4)                      ; 1
+50    (GETVALUE&PUSH 2)                   ; $TODD_COXETER_STATE
+52    (CONST&PUSH 4)                      ; 1
+53    (CALLSR&PUSH 1 1)                   ; AREF
+56    (LOAD&INC&PUSH 0)
+58    (CALLS2&JMPIF 13 L63)               ; SYSTEM::FIXNUMP
+61    (CALL0 5)                           ; SLOOP::SLOOP-TYPE-ERROR
+63    L63
+63    (LOAD 1)
+64    (BIND 6)                            ; J
+66    (JMP L84)
+68    L68
+68    (GETVALUE&PUSH 6)                   ; J
+70    (LOAD&PUSH 6)
+71    (LOAD&PUSH 1)
+72    (CONST&PUSH 0)                      ; 0
+73    (CALLSR 1 2)                        ; SYSTEM::STORE
+76    (SKIP 1)
+78    (GETVALUE&PUSH 6)                   ; J
+80    (CALLS2 150)                        ; 1+
+82    (SETVALUE 6)                        ; J
+84    L84
+84    (GETVALUE&PUSH 6)                   ; J
+86    (LOAD&PUSH 4)
+87    (CALLSR&JMPIFNOT 1 48 L68)          ; >
+91    (UNBIND1)
+92    (SKIP 2)
+94    (CONST&PUSH 4)                      ; 1
+95    (GETVALUE&PUSH 2)                   ; $TODD_COXETER_STATE
+97    (CONST&PUSH 4)                      ; 1
+98    (CALLSR&PUSH 1 1)                   ; AREF
+101   (LOAD&INC&PUSH 0)
+103   (CALLS2&JMPIF 13 L108)              ; SYSTEM::FIXNUMP
+106   (CALL0 5)                           ; SLOOP::SLOOP-TYPE-ERROR
+108   L108
+108   (LOAD 1)
+109   (BIND 6)                            ; J
+111   (JMP L175)
+113   L113
+113   (LOAD&PUSH 11)
+114   (GETVALUE&PUSH 7)                   ; *TODO*
+116   (PUSH-UNBOUND 1)
+118   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+120   (GETVALUE&PUSH 6)                   ; J
+122   (GETVALUE&PUSH 7)                   ; *TODO*
+124   (PUSH-UNBOUND 1)
+126   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+128   (T)
+129   (UNBIND1)
+130   (SKIP 8)
+132   (JMP L197)
+134   L134
+134   (LOAD&PUSH 6)
+135   (GETVALUE&PUSH 6)                   ; J
+137   (CALLSR 1 1)                        ; AREF
+140   (SETVALUE 1)                        ; S
+142   (PUSH)
+143   (JMPIFEQTO 0 L169)                  ; 0
+146   (LOAD&PUSH 5)
+147   (GETVALUE&PUSH 1)                   ; S
+149   (CALLSR&STORE 1 1 11)               ; AREF
+153   (PUSH)
+154   (JMPIFNOTEQTO 0 L113)               ; 0
+157   (GETVALUE&PUSH 1)                   ; S
+159   (GETVALUE&PUSH 6)                   ; J
+161   (LOAD&PUSH 7)
+162   (LOAD&PUSH 2)
+163   (LOAD&PUSH 2)
+164   (CALLSR 1 2)                        ; SYSTEM::STORE
+167   (SKIP 2)
+169   L169
+169   (GETVALUE&PUSH 6)                   ; J
+171   (CALLS2 150)                        ; 1+
+173   (SETVALUE 6)                        ; J
+175   L175
+175   (GETVALUE&PUSH 6)                   ; J
+177   (LOAD&PUSH 4)
+178   (CALLSR&JMPIFNOT 1 48 L134)         ; >
+182   (UNBIND1)
+183   (SKIP 4)
+185   (LOAD&INC&STORE 1)
+187   L187
+187   (LOAD&PUSH 1)
+188   (LOAD&PUSH 1)
+189   (CALLSR&JMPIFNOT 1 48 L28)          ; >
+194   (NIL)
+195   (SKIP 4)
+197   L197
+197   (SKIP 1)
+199   (UNBIND1)
+200   (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN REPLACE-COSET-IN-MULTIPLY-TABLE (&AUX # # ...) ...)-14|
+(CONST 0) = REPLACE-COSET-IN-MULTIPLY-TABLE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE REPLACE-COSET-IN-MULTIPLY-TABLE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; REPLACE-COSET-IN-MULTIPLY-TABLE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; REPLACE-COSET-IN-MULTIPLY-TABLE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE REPLACE-COSET-IN-MULTIPLY-TABLE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; REPLACE-COSET-IN-MULTIPLY-TABLE
+8     (SKIP&RET 1)
+
+
+Disassembly of function REPLACE-COSET-IN-MULTIPLY-TABLE
+(CONST 0) = 0
+(CONST 1) = M
+(CONST 2) = N
+(CONST 3) = S
+(CONST 4) = $TODD_COXETER_STATE
+(CONST 5) = 2
+(CONST 6) = *TODO*
+(CONST 7) = DPRINT-STATE
+(CONST 8) = *DEBUG*
+(CONST 9) = #<COMPILED-CLOSURE REPLACE-COSET-IN-MULTIPLY-TABLE-1>
+(CONST 10) = *STANDARD-OUTPUT*
+(CONST 11) = 1
+(CONST 12) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 13) = J
+(CONST 14) = FILL-IN-INVERSES
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (J S M *STANDARD-OUTPUT* *DEBUG* N *TODO* $TODD_COXETER_STATE)
+writes special variables : (J S M N)
+271 byte-code instructions:
+0     (CONST 0)                           ; 0
+1     (BIND 1)                            ; M
+3     (CONST 0)                           ; 0
+4     (BIND 2)                            ; N
+6     (CONST 0)                           ; 0
+7     (BIND 3)                            ; S
+9     (CONST&PUSH 0)                      ; 0
+10    (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+12    (CONST&PUSH 0)                      ; 0
+13    (CALLSR&PUSH 1 1)                   ; AREF
+16    (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+18    (CONST&PUSH 5)                      ; 2
+19    (CALLSR&PUSH 1 1)                   ; AREF
+22    L22
+22    (GETVALUE&PUSH 6)                   ; *TODO*
+24    (CALLS1 27)                         ; VECTOR-POP
+26    (SETVALUE 2)                        ; N
+28    (GETVALUE&PUSH 6)                   ; *TODO*
+30    (CALLS1 27)                         ; VECTOR-POP
+32    (SETVALUE 1)                        ; M
+34    (PUSH)
+35    (GETVALUE&PUSH 2)                   ; N
+37    (CALLS2&JMPIF 1 L458)               ; EQL
+41    (CALL0 7)                           ; DPRINT-STATE
+43    (GETVALUE 8)                        ; *DEBUG*
+45    (JMPIFNOT L57)
+47    (CONST&PUSH 9)                      ; #<COMPILED-CLOSURE REPLACE-COSET-IN-MULTIPLY-TABLE-1>
+48    (GETVALUE&PUSH 10)                  ; *STANDARD-OUTPUT*
+50    (GETVALUE&PUSH 2)                   ; N
+52    (GETVALUE&PUSH 1)                   ; M
+54    (CALLSR 3 21)                       ; FUNCALL
+57    L57
+57    (CONST&PUSH 11)                     ; 1
+58    (LOAD&INC&PUSH 2)
+60    (CALLS2&JMPIF 13 L65)               ; SYSTEM::FIXNUMP
+63    (CALL0 12)                          ; SLOOP::SLOOP-TYPE-ERROR
+65    L65
+65    (LOAD&PUSH 2)
+66    L66
+66    (LOAD&PUSH 1)
+67    (LOAD&PUSH 1)
+68    (CALLSR&JMPIF 1 48 L376)            ; >
+73    (LOAD&PUSH 2)
+74    (LOAD&PUSH 2)
+75    (LOAD&PUSH 5)
+76    (CALLSR&PUSH 2 53)                  ; +
+79    (CALLSR&PUSH 1 1)                   ; AREF
+82    (LOAD&PUSH 3)
+83    (LOAD&PUSH 3)
+84    (LOAD&PUSH 6)
+85    (CALLSR&PUSH 2 53)                  ; +
+88    (CALLSR&PUSH 1 1)                   ; AREF
+91    (GETVALUE&PUSH 2)                   ; N
+93    (CALLSR&STORE 1 1 5)                ; AREF
+97    (PUSH)
+98    (JMPIFEQTO 0 L153)                  ; 0
+101   (LOAD&PUSH 3)
+102   (LOAD&PUSH 3)
+103   (LOAD&PUSH 6)
+104   (CALLSR&PUSH 2 53)                  ; +
+107   (CALLSR&PUSH 1 1)                   ; AREF
+110   (GETVALUE&PUSH 1)                   ; M
+112   (CALLSR 1 1)                        ; AREF
+115   (SETVALUE 3)                        ; S
+117   (PUSH)
+118   (JMPIFEQTO 0 L219)                  ; 0
+122   (GETVALUE&PUSH 3)                   ; S
+124   (LOAD&PUSH 6)
+125   (CALLSR&JMPIF 1 47 L241)            ; <
+130   (GETVALUE&PUSH 3)                   ; S
+132   (LOAD&PUSH 6)
+133   (CALLSR&JMPIFNOT 1 48 L153)         ; >
+137   (LOAD&PUSH 5)
+138   (GETVALUE&PUSH 6)                   ; *TODO*
+140   (PUSH-UNBOUND 1)
+142   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+144   (GETVALUE 3)                        ; S
+146   L146
+146   (PUSH)
+147   (GETVALUE&PUSH 6)                   ; *TODO*
+149   (PUSH-UNBOUND 1)
+151   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+153   L153
+153   (GETVALUE&PUSH 2)                   ; N
+155   (CONST&PUSH 11)                     ; 1
+156   (CALLSR&PUSH 1 54)                  ; -
+159   (LOAD&PUSH 0)
+160   (CALLS2&JMPIF 13 L165)              ; SYSTEM::FIXNUMP
+163   (CALL0 12)                          ; SLOOP::SLOOP-TYPE-ERROR
+165   L165
+165   (POP)
+166   (BIND 13)                           ; J
+168   L168
+168   (GETVALUE&PUSH 13)                  ; J
+170   (CONST&PUSH 11)                     ; 1
+171   (CALLSR&JMPIF 1 47 L263)            ; <
+176   (LOAD&PUSH 3)
+177   (GETVALUE&PUSH 13)                  ; J
+179   (CALLSR 1 1)                        ; AREF
+182   (SETVALUE 3)                        ; S
+184   (PUSH)
+185   (GETVALUE&PUSH 2)                   ; N
+187   (CALLSR&JMPIF 1 48 L253)            ; >
+191   (GETVALUE&PUSH 3)                   ; S
+193   (GETVALUE&PUSH 2)                   ; N
+195   (CALLS2&JMPIFNOT 1 L211)            ; EQL
+198   (GETVALUE&PUSH 13)                  ; J
+200   (GETVALUE 1)                        ; M
+202   L202
+202   (PUSH)
+203   (LOAD&PUSH 5)
+204   (LOAD&PUSH 2)
+205   (LOAD&PUSH 2)
+206   (CALLSR 1 2)                        ; SYSTEM::STORE
+209   (SKIP 2)
+211   L211
+211   (GETVALUE&PUSH 13)                  ; J
+213   (CALLS2 151)                        ; 1-
+215   (SETVALUE 13)                       ; J
+217   (JMP L168)
+219   L219
+219   (LOAD&PUSH 3)
+220   (LOAD&PUSH 3)
+221   (LOAD&PUSH 6)
+222   (CALLSR&PUSH 2 53)                  ; +
+225   (CALLSR&PUSH 1 1)                   ; AREF
+228   (GETVALUE&PUSH 1)                   ; M
+230   (LOAD&PUSH 1)
+231   (LOAD&PUSH 1)
+232   (LOAD&PUSH 9)
+233   (CALLSR 1 2)                        ; SYSTEM::STORE
+236   (SKIP 2)
+238   (JMP L153)
+241   L241
+241   (GETVALUE&PUSH 3)                   ; S
+243   (GETVALUE&PUSH 6)                   ; *TODO*
+245   (PUSH-UNBOUND 1)
+247   (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+249   (LOAD 5)
+250   (JMP L146)
+253   L253
+253   (GETVALUE&PUSH 13)                  ; J
+255   (GETVALUE&PUSH 3)                   ; S
+257   (CONST&PUSH 11)                     ; 1
+258   (CALLSR 1 54)                       ; -
+261   (JMP L202)
+263   L263
+263   (UNBIND1)
+264   (GETVALUE&PUSH 2)                   ; N
+266   (CALLS2&JMPIF 13 L271)              ; SYSTEM::FIXNUMP
+269   (CALL0 12)                          ; SLOOP::SLOOP-TYPE-ERROR
+271   L271
+271   (GETVALUE&PUSH 2)                   ; N
+273   (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+275   (CONST&PUSH 11)                     ; 1
+276   (CALLSR&PUSH 1 1)                   ; AREF
+279   (LOAD&PUSH 0)
+280   (CALLS2&JMPIF 13 L285)              ; SYSTEM::FIXNUMP
+283   (CALL0 12)                          ; SLOOP::SLOOP-TYPE-ERROR
+285   L285
+285   (LOAD 1)
+286   (BIND 13)                           ; J
+288   (JMP L351)
+290   L290
+290   (GETVALUE&PUSH 13)                  ; J
+292   (GETVALUE&PUSH 3)                   ; S
+294   (CONST&PUSH 11)                     ; 1
+295   (CALLSR 1 54)                       ; -
+298   (JMP L336)
+300   L300
+300   (GETVALUE&PUSH 13)                  ; J
+302   (GETVALUE 1)                        ; M
+304   (JMP L336)
+306   L306
+306   (LOAD&PUSH 5)
+307   (GETVALUE&PUSH 13)                  ; J
+309   (CONST&PUSH 11)                     ; 1
+310   (CALLSR&PUSH 2 53)                  ; +
+313   (CALLSR 1 1)                        ; AREF
+316   (SETVALUE 3)                        ; S
+318   (PUSH)
+319   (GETVALUE&PUSH 2)                   ; N
+321   (CALLSR&JMPIF 1 48 L290)            ; >
+325   (GETVALUE&PUSH 3)                   ; S
+327   (GETVALUE&PUSH 2)                   ; N
+329   (CALLS2&JMPIF 1 L300)               ; EQL
+332   (GETVALUE&PUSH 13)                  ; J
+334   (GETVALUE 3)                        ; S
+336   L336
+336   (PUSH)
+337   (LOAD&PUSH 7)
+338   (LOAD&PUSH 2)
+339   (LOAD&PUSH 2)
+340   (CALLSR 1 2)                        ; SYSTEM::STORE
+343   (SKIP 2)
+345   (GETVALUE&PUSH 13)                  ; J
+347   (CALLS2 150)                        ; 1+
+349   (SETVALUE 13)                       ; J
+351   L351
+351   (GETVALUE&PUSH 13)                  ; J
+353   (LOAD&PUSH 4)
+354   (CALLSR&JMPIFNOT 1 50 L306)         ; >=
+358   (UNBIND1)
+359   (SKIP 3)
+361   (LOAD&INC&STORE 1)
+363   (JMP L66)
+366   L366
+366   (GETVALUE&PUSH 6)                   ; *TODO*
+368   (GETVALUE&PUSH 3)                   ; S
+370   (CONST&PUSH 11)                     ; 1
+371   (CALLSR 1 54)                       ; -
+374   (JMP L424)
+376   L376
+376   (SKIP 2)
+378   (GETVALUE&PUSH 6)                   ; *TODO*
+380   (CALLS1&PUSH 24)                    ; FILL-POINTER
+382   (CONST&PUSH 11)                     ; 1
+383   (CALLSR&PUSH 1 54)                  ; -
+386   (LOAD&PUSH 0)
+387   (CALLS2&JMPIF 13 L392)              ; SYSTEM::FIXNUMP
+390   (CALL0 12)                          ; SLOOP::SLOOP-TYPE-ERROR
+392   L392
+392   (LOAD&PUSH 0)
+393   (CONST&PUSH 0)                      ; 0
+394   (CALLSR&JMPIF 1 47 L437)            ; <
+398   (GETVALUE&PUSH 6)                   ; *TODO*
+400   (LOAD&PUSH 1)
+401   (CALLSR 1 1)                        ; AREF
+404   (SETVALUE 3)                        ; S
+406   (PUSH)
+407   (GETVALUE&PUSH 2)                   ; N
+409   (CALLSR&JMPIF 1 48 L366)            ; >
+413   (GETVALUE&PUSH 3)                   ; S
+415   (GETVALUE&PUSH 2)                   ; N
+417   (CALLS2&JMPIFNOT 1 L433)            ; EQL
+420   (GETVALUE&PUSH 6)                   ; *TODO*
+422   (GETVALUE 1)                        ; M
+424   L424
+424   (PUSH)
+425   (LOAD&PUSH 1)
+426   (LOAD&PUSH 3)
+427   (LOAD&PUSH 2)
+428   (CALLSR 1 2)                        ; SYSTEM::STORE
+431   (SKIP 2)
+433   L433
+433   (LOAD&DEC&STORE 0)
+435   (JMP L392)
+437   L437
+437   (SKIP 1)
+439   (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+441   (LOAD&PUSH 0)
+442   (CONST&PUSH 11)                     ; 1
+443   (CALLSR&PUSH 1 1)                   ; AREF
+446   (CALLS2&PUSH 151)                   ; 1-
+448   (LOAD&PUSH 1)
+449   (CONST&PUSH 11)                     ; 1
+450   (LOAD&PUSH 2)
+451   (CALLSR 1 2)                        ; SYSTEM::STORE
+454   (SKIP 2)
+456   (CALL0 7)                           ; DPRINT-STATE
+458   L458
+458   (GETVALUE&PUSH 6)                   ; *TODO*
+460   (CALLS1&PUSH 24)                    ; FILL-POINTER
+462   (CONST&PUSH 0)                      ; 0
+463   (CALLSR&JMPIF 1 48 L22)             ; >
+468   (CALL0 14)                          ; FILL-IN-INVERSES
+470   (JMPIF L22)
+473   (NIL)
+474   (SKIP 3)
+476   (UNBIND 3)
+478   (SKIP&RET 1)
+
+
+Disassembly of function REPLACE-COSET-IN-MULTIPLY-TABLE-1
+(CONST 0) = "     "
+(CONST 1) = " --> "
+(CONST 2) = #\Space
+3 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "     "
+1     (LOAD&PUSH 5)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 3)
+7     (LOAD&PUSH 5)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; " --> "
+11    (LOAD&PUSH 5)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD&PUSH 2)
+17    (LOAD&PUSH 5)
+18    (CALLS1 132)                        ; PRINC
+20    (CONST&PUSH 2)                      ; #\Space
+21    (LOAD&PUSH 5)
+22    (CALLS1 136)                        ; WRITE-CHAR
+24    (LOAD 1)
+25    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN NEXT-COSET NIL ...)-15|
+(CONST 0) = NEXT-COSET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NEXT-COSET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NEXT-COSET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NEXT-COSET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NEXT-COSET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NEXT-COSET
+8     (SKIP&RET 1)
+
+
+Disassembly of function NEXT-COSET
+(CONST 0) = 1
+(CONST 1) = $TODD_COXETER_STATE
+(CONST 2) = N
+(CONST 3) = 0
+(CONST 4) = M
+(CONST 5) = 2
+(CONST 6) = -1
+(CONST 7) = SLOOP::SLOOP-TYPE-ERROR
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (M N $TODD_COXETER_STATE)
+writes special variable : (M)
+118 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 1
+1     (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+3     (CONST&PUSH 0)                      ; 1
+4     (CALLSR&PUSH 1 1)                   ; AREF
+7     (CALLSR 2 53)                       ; +
+10    (BIND 2)                            ; N
+12    (CONST 3)                           ; 0
+13    (BIND 4)                            ; M
+15    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+17    (CONST&PUSH 3)                      ; 0
+18    (CALLSR&PUSH 1 1)                   ; AREF
+21    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+23    (CONST&PUSH 5)                      ; 2
+24    (CALLSR&PUSH 1 1)                   ; AREF
+27    (LOAD&PUSH 0)
+28    (CONST&PUSH 0)                      ; 1
+29    (LOAD&PUSH 3)
+30    (CALLSR&PUSH 2 53)                  ; +
+33    (CALLSR&PUSH 1 1)                   ; AREF
+36    (LOAD&PUSH 0)
+37    (CALLS1&PUSH 10)                    ; ARRAY-TOTAL-SIZE
+39    (GETVALUE&PUSH 2)                   ; N
+41    (CONST&PUSH 0)                      ; 1
+42    (CALLSR&PUSH 2 53)                  ; +
+45    (CALLSR&JMPIF 1 48 L127)            ; >
+50    (GETVALUE&PUSH 2)                   ; N
+52    (GETVALUE&PUSH 2)                   ; N
+54    (CONST&PUSH 6)                      ; -1
+55    (CALLS2&PUSH 209)                   ; ASH
+57    (CALLSR 2 53)                       ; +
+60    (SETVALUE 4)                        ; M
+62    (CONST&PUSH 3)                      ; 0
+63    (LOAD&PUSH 3)
+64    (CALLSR&PUSH 1 54)                  ; -
+67    (LOAD&PUSH 0)
+68    (CALLS2&JMPIF 13 L73)               ; SYSTEM::FIXNUMP
+71    (CALL0 7)                           ; SLOOP::SLOOP-TYPE-ERROR
+73    L73
+73    (LOAD&INC&PUSH 3)
+75    (CALLS2&JMPIF 13 L80)               ; SYSTEM::FIXNUMP
+78    (CALL0 7)                           ; SLOOP::SLOOP-TYPE-ERROR
+80    L80
+80    (LOAD&PUSH 3)
+81    (JMP L119)
+83    L83
+83    (LOAD&PUSH 1)
+84    (JMPIFEQTO 3 L117)                  ; 0
+87    (LOAD&PUSH 3)
+88    (LOAD&PUSH 2)
+89    (LOAD&PUSH 6)
+90    (CALLSR&PUSH 2 53)                  ; +
+93    (CALLSR&STORE 1 1 2)                ; AREF
+97    (LOAD&PUSH 1)
+98    (LOAD&PUSH 5)
+99    (CALLSR&PUSH 2 53)                  ; +
+102   (LOAD&PUSH 3)
+103   (GETVALUE&PUSH 4)                   ; M
+105   (PUSH-UNBOUND 6)
+107   (CALLS1&PUSH 30)                    ; ADJUST-ARRAY
+109   (LOAD&PUSH 5)
+110   (LOAD&PUSH 2)
+111   (LOAD&PUSH 2)
+112   (CALLSR 1 2)                        ; SYSTEM::STORE
+115   (SKIP 2)
+117   L117
+117   (LOAD&INC&STORE 1)
+119   L119
+119   (LOAD&PUSH 1)
+120   (LOAD&PUSH 1)
+121   (CALLSR&JMPIFNOT 1 48 L83)          ; >
+125   (SKIP 2)
+127   L127
+127   (CONST&PUSH 0)                      ; 1
+128   (LOAD&INC&PUSH 3)
+130   (CALLS2&JMPIF 13 L135)              ; SYSTEM::FIXNUMP
+133   (CALL0 7)                           ; SLOOP::SLOOP-TYPE-ERROR
+135   L135
+135   (LOAD&PUSH 3)
+136   (JMP L181)
+138   L138
+138   (LOAD&PUSH 3)
+139   (LOAD&PUSH 2)
+140   (LOAD&PUSH 6)
+141   (CALLSR&PUSH 2 53)                  ; +
+144   (CALLSR&PUSH 1 1)                   ; AREF
+147   (GETVALUE&PUSH 2)                   ; N
+149   (LOAD&PUSH 1)
+150   (LOAD&PUSH 1)
+151   (CONST&PUSH 3)                      ; 0
+152   (CALLSR 1 2)                        ; SYSTEM::STORE
+155   (SKIP 2)
+157   (LOAD&PUSH 3)
+158   (LOAD&PUSH 2)
+159   (CALLSR&PUSH 0 54)                  ; -
+162   (LOAD&PUSH 6)
+163   (CALLSR&PUSH 2 53)                  ; +
+166   (CALLSR&PUSH 1 1)                   ; AREF
+169   (GETVALUE&PUSH 2)                   ; N
+171   (LOAD&PUSH 1)
+172   (LOAD&PUSH 1)
+173   (CONST&PUSH 3)                      ; 0
+174   (CALLSR 1 2)                        ; SYSTEM::STORE
+177   (SKIP 2)
+179   (LOAD&INC&STORE 1)
+181   L181
+181   (LOAD&PUSH 1)
+182   (LOAD&PUSH 1)
+183   (CALLSR&JMPIFNOT 1 48 L138)         ; >
+187   (SKIP 5)
+189   (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+191   (GETVALUE&PUSH 2)                   ; N
+193   (LOAD&PUSH 1)
+194   (CONST&PUSH 0)                      ; 1
+195   (LOAD&PUSH 2)
+196   (CALLSR 1 2)                        ; SYSTEM::STORE
+199   (SKIP 2)
+201   (UNBIND 2)
+203   (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN $TODD_COXETER (RELS &OPTIONAL #) ...)-16|
+(CONST 0) = $TODD_COXETER
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TODD_COXETER>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TODD_COXETER
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TODD_COXETER
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TODD_COXETER>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TODD_COXETER
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TODD_COXETER
+(CONST 0) = ((MLIST))
+(CONST 1) = $LISTOFVARS
+(CONST 2) = $SORT
+(CONST 3) = VARS
+(CONST 4) = 1
+(CONST 5) = NEG
+(CONST 6) = $LENGTH
+(CONST 7) = COERCE-REL
+(CONST 8) = TODD-COXETER
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (VARS)
+21 byte-code instructions:
+0     (JMPIFBOUNDP 1 L5)
+3     (CONST 0)                           ; ((MLIST))
+4     (STORE 1)
+5     L5
+5     (LOAD&PUSH 2)
+6     (CALL1&PUSH 1)                      ; $LISTOFVARS
+8     (CALL1 2)                           ; $SORT
+10    (BIND 3)                            ; VARS
+12    (CONST 4)                           ; 1
+13    (BIND 5)                            ; NEG
+15    (GETVALUE&PUSH 3)                   ; VARS
+17    (CALL1&PUSH 6)                      ; $LENGTH
+19    (CONST&PUSH 7)                      ; COERCE-REL
+20    (LOAD&CDR&PUSH 10)
+22    (CALLSR&PUSH 0 22)                  ; MAPCAR
+25    (CONST&PUSH 7)                      ; COERCE-REL
+26    (LOAD&CDR&PUSH 10)
+28    (CALLSR&PUSH 0 22)                  ; MAPCAR
+31    (CALL 3 8)                          ; TODD-COXETER
+34    (UNBIND 2)
+36    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN COERCE-REL (REL) ...)-17|
+(CONST 0) = COERCE-REL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COERCE-REL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COERCE-REL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COERCE-REL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COERCE-REL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COERCE-REL
+8     (SKIP&RET 1)
+
+
+Disassembly of function COERCE-REL
+(CONST 0) = NEG
+(CONST 1) = VARS
+(CONST 2) = MNCTIMES
+(CONST 3) = APPEND
+(CONST 4) = COERCE-REL
+(CONST 5) = MNCEXPT
+(CONST 6) = MEVAL*
+(CONST 7) = N
+(CONST 8) = SIGNUM
+(CONST 9) = V
+(CONST 10) = 0
+(CONST 11) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 12) = "bad rel"
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (VARS NEG V N)
+81 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (JMPIFATOM L79)
+4     (LOAD 1)
+5     (CAR)
+6     (CAR&PUSH)
+7     (LOAD&PUSH 0)
+8     (JMPIFEQTO 2 L95)                   ; MNCTIMES
+12    (LOAD&PUSH 0)
+13    (JMPIFNOTEQTO 5 L121)               ; MNCEXPT
+17    (LOAD 2)
+18    (CDR)
+19    (CDR)
+20    (CAR&PUSH)
+21    (CALL1 6)                           ; MEVAL*
+23    (BIND 7)                            ; N
+25    (GETVALUE&PUSH 7)                   ; N
+27    (CALL1 8)                           ; SIGNUM
+29    (BIND 0)                            ; NEG
+31    (LOAD 8)
+32    (CDR)
+33    (CAR&PUSH)
+34    (JSR L0)
+36    (BIND 9)                            ; V
+38    (CONST&PUSH 10)                     ; 0
+39    (LOAD 12)
+40    (CDR)
+41    (CDR)
+42    (CAR&PUSH)
+43    (CALLS2&PUSH 158)                   ; ABS
+45    (LOAD&PUSH 0)
+46    (CALLS2&JMPIF 13 L51)               ; SYSTEM::FIXNUMP
+49    (CALL0 11)                          ; SLOOP::SLOOP-TYPE-ERROR
+51    L51
+51    (PUSH-NIL 3)
+53    L53
+53    (LOAD&PUSH 4)
+54    (LOAD&PUSH 4)
+55    (CALLSR&JMPIF 1 50 L114)            ; >=
+59    (GETVALUE&PUSH 9)                   ; V
+61    (CALLS1&STORE 158 0)                ; COPY-LIST
+64    (LOAD&JMPIF 1 L105)
+67    (LOAD 0)
+68    (STORE 2)
+69    L69
+69    (PUSH)
+70    (PUSH-UNBOUND 1)
+72    (CALLS1&STORE 156 1)                ; LAST
+75    L75
+75    (LOAD&INC&STORE 4)
+77    (JMP L53)
+79    L79
+79    (GETVALUE&PUSH 0)                   ; NEG
+81    (LOAD&PUSH 2)
+82    (GETVALUE&PUSH 1)                   ; VARS
+84    (PUSH-UNBOUND 6)
+86    (CALLS2&PUSH 95)                    ; POSITION
+88    (CALLSR&PUSH 2 55)                  ; *
+91    (LIST 1)
+93    (SKIP&RET 2)
+95    L95
+95    (CONST&PUSH 3)                      ; APPEND
+96    (CONST&PUSH 4)                      ; COERCE-REL
+97    (LOAD&CDR&PUSH 4)
+99    (CALLSR 0 22)                       ; MAPCAR
+102   (APPLY&SKIP&RET 0 3)
+105   L105
+105   (PUSH)
+106   (LOAD&PUSH 1)
+107   (CALLS1&JMPIFNOT 171 L75)           ; SYSTEM::%RPLACD
+110   (LOAD 1)
+111   (CDR)
+112   (JMP L69)
+114   L114
+114   (LOAD 2)
+115   (SKIP 5)
+117   (UNBIND 3)
+119   (SKIP&RET 3)
+121   L121
+121   (CONST&PUSH 12)                     ; "bad rel"
+122   (CALLSR 0 29)                       ; ERROR
+
+
+Disassembly of function #:|(PROGN (DEFVAR *NAMES* '#) (DEFUN MY-PRINT # ...) ...)-18-1|
+(CONST 0) = (SPECIAL *NAMES*)
+(CONST 1) = *NAMES*
+(CONST 2) = (NIL X Y Z)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *NAMES*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *NAMES*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *NAMES*
+8     (CONST&PUSH 2)                      ; (NIL X Y Z)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (VALUES0)
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(PROGN (DEFVAR *NAMES* '#) (DEFUN MY-PRINT # ...) ...)-18-2|
+(CONST 0) = MY-PRINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MY-PRINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MY-PRINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MY-PRINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MY-PRINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function MY-PRINT
+(CONST 0) = *DEBUG*
+(CONST 1) = #<COMPILED-CLOSURE MY-PRINT-1>
+(CONST 2) = *STANDARD-OUTPUT*
+(CONST 3) = 1
+(CONST 4) = $TODD_COXETER_STATE
+(CONST 5) = 5
+(CONST 6) = 3
+(CONST 7) = V
+(CONST 8) = 0
+(CONST 9) = "~a"
+(CONST 10) = "~(~a~)"
+(CONST 11) = *NAMES*
+(CONST 12) = FORMAT
+(CONST 13) = #<COMPILED-CLOSURE MY-PRINT-2>
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*NAMES* V $TODD_COXETER_STATE *STANDARD-OUTPUT* *DEBUG*)
+writes special variable : (V)
+83 byte-code instructions:
+0     (NIL&PUSH)
+1     (GETVALUE 0)                        ; *DEBUG*
+3     (JMPIFNOT1 L129)
+6     (PUSH-UNBOUND 1)
+8     (CALLS1 140)                        ; FRESH-LINE
+10    (CONST&PUSH 1)                      ; #<COMPILED-CLOSURE MY-PRINT-1>
+11    (GETVALUE&PUSH 2)                   ; *STANDARD-OUTPUT*
+13    (LOAD&PUSH 4)
+14    (CALLSR 2 21)                       ; FUNCALL
+17    (LOAD&PUSH 2)
+18    (JMPIFEQTO 3 L106)                  ; 1
+22    (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+24    (CONST 6)                           ; 3
+25    L25
+25    (PUSH)
+26    (CALLSR&STORE 1 1 0)                ; AREF
+30    (NIL&PUSH)
+31    (LOAD&PUSH 1)
+32    (LOAD&JMPIFNOT 0 L103)
+36    L36
+36    (LOAD&CAR&PUSH 0)
+38    (LOAD 0)
+39    (STORE 2)
+40    (SKIP 1)
+42    (BIND 7)                            ; V
+44    (GETVALUE 7)                        ; V
+46    (JMPIFNOT L96)
+48    L48
+48    (T&PUSH)
+49    (GETVALUE 7)                        ; V
+51    (CAR&PUSH)
+52    (CONST&PUSH 8)                      ; 0
+53    (CALLSR&JMPIF 1 48 L112)            ; >
+57    (CONST 10)                          ; "~(~a~)"
+58    L58
+58    (PUSH)
+59    (GETVALUE 7)                        ; V
+61    (CAR&PUSH)
+62    (CALLS2&PUSH 158)                   ; ABS
+64    (GETVALUE&PUSH 11)                  ; *NAMES*
+66    (CALLS1&PUSH 148)                   ; NTH
+68    (CALL 3 12)                         ; FORMAT
+71    (LOAD&JMPIFNOT 8 L115)
+74    (GETVALUE 7)                        ; V
+76    (CDR)
+77    (JMPIF L119)
+79    (CONST&PUSH 13)                     ; #<COMPILED-CLOSURE MY-PRINT-2>
+80    (GETVALUE&PUSH 2)                   ; *STANDARD-OUTPUT*
+82    (LOAD&PUSH 9)
+83    (LOAD&PUSH 10)
+84    (CALLSR 3 21)                       ; FUNCALL
+87    L87
+87    (GETVALUE 7)                        ; V
+89    (CDR)
+90    (SETVALUE 7)                        ; V
+92    (GETVALUE 7)                        ; V
+94    (JMPIF L48)
+96    L96
+96    (UNBIND1)
+97    (LOAD&CDR&STORE 0)
+99    (LOAD&JMPIF 0 L36)
+103   L103
+103   (NIL)
+104   (SKIP&RET 6)
+106   L106
+106   (GETVALUE&PUSH 4)                   ; $TODD_COXETER_STATE
+108   (CONST 5)                           ; 5
+109   (JMP L25)
+112   L112
+112   (CONST 9)                           ; "~a"
+113   (JMP L58)
+115   L115
+115   (NIL)
+116   (UNBIND1)
+117   (SKIP&RET 6)
+119   L119
+119   (LOAD&CAR&PUSH 8)
+121   (LOAD&CDR&STORE 9)
+123   (PUSH-UNBOUND 1)
+125   (CALLS1 132)                        ; PRINC
+127   (JMP L87)
+129   L129
+129   (SKIP&RET 4)
+
+
+Disassembly of function MY-PRINT-1
+(CONST 0) = "Row "
+(CONST 1) = #\Space
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "Row "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; #\Space
+11    (LOAD&PUSH 4)
+12    (CALLS1 136)                        ; WRITE-CHAR
+14    (LOAD 1)
+15    (SKIP&RET 4)
+
+
+Disassembly of function MY-PRINT-2
+(CONST 0) = " | "
+3 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (LOAD&PUSH 3)
+1     (LOAD&PUSH 5)
+2     (CALLS1 132)                        ; PRINC
+4     (CONST&PUSH 0)                      ; " | "
+5     (LOAD&PUSH 5)
+6     (PUSH-UNBOUND 2)
+8     (CALLS1 137)                        ; WRITE-STRING
+10    (LOAD&PUSH 2)
+11    (LOAD&PUSH 5)
+12    (CALLS1 132)                        ; PRINC
+14    (LOAD 1)
+15    (SKIP&RET 5)
+
+
+Disassembly of function #:|(PROGN (DEFVAR *NAMES* '#) (DEFUN MY-PRINT # ...) ...)-18-3|
+(CONST 0) = HAS-REPEAT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE HAS-REPEAT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; HAS-REPEAT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; HAS-REPEAT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE HAS-REPEAT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function HAS-REPEAT
+(CONST 0) = $TODD_COXETER_STATE
+(CONST 1) = 1
+(CONST 2) = J
+(CONST 3) = ANS
+(CONST 4) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 5) = K
+(CONST 6) = 0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS J K $TODD_COXETER_STATE)
+writes special variables : (K ANS)
+52 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; $TODD_COXETER_STATE
+2     (CONST&PUSH 1)                      ; 1
+3     (CALLSR&PUSH 1 1)                   ; AREF
+6     (CALLS2 150)                        ; 1+
+8     (BIND 2)                            ; J
+10    (NIL)
+11    (BIND 3)                            ; ANS
+13    (NIL&PUSH)
+14    (CONST&PUSH 1)                      ; 1
+15    (GETVALUE&PUSH 0)                   ; $TODD_COXETER_STATE
+17    (CONST&PUSH 1)                      ; 1
+18    (CALLSR&PUSH 1 1)                   ; AREF
+21    (LOAD&INC&PUSH 0)
+23    (CALLS2&JMPIF 13 L28)               ; SYSTEM::FIXNUMP
+26    (CALL0 4)                           ; SLOOP::SLOOP-TYPE-ERROR
+28    L28
+28    (LOAD 1)
+29    (BIND 5)                            ; K
+31    (JMP L74)
+33    L33
+33    (LOAD&PUSH 13)
+34    (GETVALUE&PUSH 5)                   ; K
+36    (CALLSR&STORE 1 1 5)                ; AREF
+40    (PUSH)
+41    (JMPIFEQTO 6 L68)                   ; 0
+44    (LOAD&PUSH 5)
+45    (LOAD&PUSH 14)
+46    (PUSH-UNBOUND 6)
+48    (GETVALUE&PUSH 5)                   ; K
+50    (CALLS2&STORE 150 4)                ; 1+
+53    (GETVALUE 2)                        ; J
+55    (STORE 3)
+56    (CALLS2&JMPIFNOT 92 L68)            ; FIND
+59    (LOAD&PUSH 5)
+60    (GETVALUE&PUSH 3)                   ; ANS
+62    (PUSH-UNBOUND 3)
+64    (CALLS1 184)                        ; ADJOIN
+66    (SETVALUE 3)                        ; ANS
+68    L68
+68    (GETVALUE&PUSH 5)                   ; K
+70    (CALLS2 150)                        ; 1+
+72    (SETVALUE 5)                        ; K
+74    L74
+74    (GETVALUE&PUSH 5)                   ; K
+76    (LOAD&PUSH 4)
+77    (CALLSR&JMPIFNOT 1 48 L33)          ; >
+81    (UNBIND1)
+82    (SKIP 2)
+84    (GETVALUE 3)                        ; ANS
+86    (SKIP 1)
+88    (UNBIND 2)
+90    (SKIP&RET 2)
+
+
+Disassembly of function #:|(PROGN (DEFVAR *NAMES* '#) (DEFUN MY-PRINT # ...) ...)-18-4|
+(CONST 0) = DCHECK-TABLES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DCHECK-TABLES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DCHECK-TABLES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DCHECK-TABLES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DCHECK-TABLES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function DCHECK-TABLES
+(CONST 0) = *DEBUG*
+(CONST 1) = $TODD_COXETER_STATE
+(CONST 2) = 0
+(CONST 3) = 2
+(CONST 4) = 1
+(CONST 5) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 6) = HAS-REPEAT
+(CONST 7) = #<COMPILED-CLOSURE DCHECK-TABLES-1>
+(CONST 8) = *STANDARD-OUTPUT*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*STANDARD-OUTPUT* $TODD_COXETER_STATE *DEBUG*)
+41 byte-code instructions:
+0     (NIL&PUSH)
+1     (GETVALUE 0)                        ; *DEBUG*
+3     (JMPIFNOT1 L66)
+5     (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+7     (CONST&PUSH 2)                      ; 0
+8     (CALLSR&PUSH 1 1)                   ; AREF
+11    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+13    (CONST&PUSH 3)                      ; 2
+14    (CALLSR&PUSH 1 1)                   ; AREF
+17    (CONST&PUSH 4)                      ; 1
+18    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+20    (CONST&PUSH 2)                      ; 0
+21    (CALLSR&PUSH 1 1)                   ; AREF
+24    (LOAD&INC&PUSH 0)
+26    (CALLS2&JMPIF 13 L57)               ; SYSTEM::FIXNUMP
+29    (CALL0 5)                           ; SLOOP::SLOOP-TYPE-ERROR
+31    (JMP L57)
+33    L33
+33    (LOAD&PUSH 2)
+34    (LOAD&PUSH 2)
+35    (LOAD&PUSH 5)
+36    (CALLSR&PUSH 2 53)                  ; +
+39    (CALLSR&PUSH 1 1)                   ; AREF
+42    (CALL1 6)                           ; HAS-REPEAT
+44    (STORE 4)
+45    (JMPIFNOT L55)
+47    (CONST&PUSH 7)                      ; #<COMPILED-CLOSURE DCHECK-TABLES-1>
+48    (GETVALUE&PUSH 8)                   ; *STANDARD-OUTPUT*
+50    (LOAD&PUSH 3)
+51    (LOAD&PUSH 7)
+52    (CALLSR 3 21)                       ; FUNCALL
+55    L55
+55    (LOAD&INC&STORE 1)
+57    L57
+57    (LOAD&PUSH 1)
+58    (LOAD&PUSH 1)
+59    (CALLSR&JMPIFNOT 1 48 L33)          ; >
+63    (NIL)
+64    (SKIP&RET 6)
+66    L66
+66    (SKIP&RET 2)
+
+
+Disassembly of function DCHECK-TABLES-1
+(CONST 0) = 
+"
+Table "
+(CONST 1) = " has repeat "
+(CONST 2) = #\Space
+3 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Table "
+1     (LOAD&PUSH 5)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 3)
+7     (LOAD&PUSH 5)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; " has repeat "
+11    (LOAD&PUSH 5)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD&PUSH 2)
+17    (LOAD&PUSH 5)
+18    (CALLS1 132)                        ; PRINC
+20    (CONST&PUSH 2)                      ; #\Space
+21    (LOAD&PUSH 5)
+22    (CALLS1 136)                        ; WRITE-CHAR
+24    (LOAD 1)
+25    (SKIP&RET 5)
+
+
+Disassembly of function #:|(PROGN (DEFVAR *NAMES* '#) (DEFUN MY-PRINT # ...) ...)-18-5|
+(CONST 0) = DPRINT-STATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DPRINT-STATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DPRINT-STATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DPRINT-STATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DPRINT-STATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DPRINT-STATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function DPRINT-STATE
+(CONST 0) = *DEBUG*
+(CONST 1) = $TODD_COXETER_STATE
+(CONST 2) = 0
+(CONST 3) = 2
+(CONST 4) = #<COMPILED-CLOSURE DPRINT-STATE-1>
+(CONST 5) = *STANDARD-OUTPUT*
+(CONST 6) = 1
+(CONST 7) = *TODO*
+(CONST 8) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 9) = #<COMPILED-CLOSURE DPRINT-STATE-2>
+(CONST 10) = *NAMES*
+(CONST 11) = *THIS-ROW*
+(CONST 12) = MY-PRINT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*THIS-ROW* *NAMES* *TODO* *STANDARD-OUTPUT* $TODD_COXETER_STATE *DEBUG*)
+54 byte-code instructions:
+0     (GETVALUE 0)                        ; *DEBUG*
+2     (JMPIFNOT1 L97)
+5     (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+7     (CONST&PUSH 2)                      ; 0
+8     (CALLSR&PUSH 1 1)                   ; AREF
+11    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+13    (CONST&PUSH 3)                      ; 2
+14    (CALLSR&PUSH 1 1)                   ; AREF
+17    (CONST&PUSH 4)                      ; #<COMPILED-CLOSURE DPRINT-STATE-1>
+18    (GETVALUE&PUSH 5)                   ; *STANDARD-OUTPUT*
+20    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+22    (CONST&PUSH 6)                      ; 1
+23    (CALLSR&PUSH 1 1)                   ; AREF
+26    (GETVALUE&PUSH 7)                   ; *TODO*
+28    (CALLSR 3 21)                       ; FUNCALL
+31    (CONST&PUSH 6)                      ; 1
+32    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+34    (CONST&PUSH 2)                      ; 0
+35    (CALLSR&PUSH 1 1)                   ; AREF
+38    (LOAD&INC&PUSH 0)
+40    (CALLS2&JMPIF 13 L80)               ; SYSTEM::FIXNUMP
+43    (CALL0 8)                           ; SLOOP::SLOOP-TYPE-ERROR
+45    (JMP L80)
+47    L47
+47    (CONST&PUSH 9)                      ; #<COMPILED-CLOSURE DPRINT-STATE-2>
+48    (GETVALUE&PUSH 5)                   ; *STANDARD-OUTPUT*
+50    (LOAD&PUSH 3)
+51    (GETVALUE&PUSH 10)                  ; *NAMES*
+53    (CALLS1&PUSH 148)                   ; NTH
+55    (LOAD&PUSH 5)
+56    (LOAD&PUSH 5)
+57    (LOAD&PUSH 8)
+58    (CALLSR&PUSH 2 53)                  ; +
+61    (CALLSR&PUSH 1 1)                   ; AREF
+64    (CONST&PUSH 6)                      ; 1
+65    (GETVALUE&PUSH 1)                   ; $TODD_COXETER_STATE
+67    (CONST&PUSH 6)                      ; 1
+68    (CALLSR&PUSH 1 1)                   ; AREF
+71    (CALLS2&PUSH 150)                   ; 1+
+73    (CALLS2&PUSH 69)                    ; SUBSEQ
+75    (CALLSR 3 21)                       ; FUNCALL
+78    (LOAD&INC&STORE 1)
+80    L80
+80    (LOAD&PUSH 1)
+81    (LOAD&PUSH 1)
+82    (CALLSR&JMPIFNOT 1 48 L47)          ; >
+86    (SKIP 2)
+88    (GETVALUE&PUSH 11)                  ; *THIS-ROW*
+90    (CALLS2&PUSH 72)                    ; REVERSE
+92    (CONST&PUSH 2)                      ; 0
+93    (CALL2 12)                          ; MY-PRINT
+95    (SKIP&RET 3)
+97    L97
+97    (SKIP&RET 1)
+
+
+Disassembly of function DPRINT-STATE-1
+(CONST 0) = 
+"
+Ncosets = "
+(CONST 1) = ", *todo*="
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Ncosets = "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; ", *todo*="
+11    (LOAD&PUSH 4)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD 1)
+17    (SKIP&RET 4)
+
+
+Disassembly of function DPRINT-STATE-2
+(CONST 0) = #\:
+3 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (LOAD&PUSH 4)
+1     (CALLS1 139)                        ; TERPRI
+3     (LOAD&PUSH 3)
+4     (LOAD&PUSH 5)
+5     (CALLS1 132)                        ; PRINC
+7     (CONST&PUSH 0)                      ; #\:
+8     (LOAD&PUSH 5)
+9     (CALLS1 136)                        ; WRITE-CHAR
+11    (LOAD&PUSH 2)
+12    (LOAD&PUSH 5)
+13    (CALLS1 132)                        ; PRINC
+15    (LOAD 1)
+16    (SKIP&RET 5)
+
+
+Wrote file binary-clisp/todd-coxeter.fas
+Wrote file /cygdrive/e/temp/maxima/src/todd-coxeter.lis

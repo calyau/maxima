@@ -1,0 +1,3144 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mload.lisp
+on 2002-12-17 13:33:20 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mload.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MLOAD)-2|
+(CONST 0) = MLOAD
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MLOAD
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $FILE_SEARCH_LISP $FILE_SEARCH_MAXIMA ...))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $LISTP_CHECK (VAR VAL) ...)-4|
+(CONST 0) = $LISTP_CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = 
+"Gives an MAXIMA-ERROR message including its first argument if its second
+  argument is not a LIST"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE $LISTP_CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTP_CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $LISTP_CHECK
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "Gives an MAXIMA-ERROR message including its first argument if its second
+  argument is not a LIST"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; $LISTP_CHECK
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE $LISTP_CHECK>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; $LISTP_CHECK
+14    (SKIP&RET 1)
+
+
+Disassembly of function $LISTP_CHECK
+(CONST 0) = VAR
+(CONST 1) = $LISTP
+(CONST 2) = "The variable ~:M being set to a non-LISTP object:~%~M"
+(CONST 3) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+12 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; VAR
+3     (LOAD&PUSH 4)
+4     (CALL1 1)                           ; $LISTP
+6     (JMPIF1 L15)
+8     (CONST&PUSH 2)                      ; "The variable ~:M being set to a non-LISTP object:~%~M"
+9     (GETVALUE&PUSH 0)                   ; VAR
+11    (LOAD&PUSH 6)
+12    (CALL 3 3)                          ; MERROR
+15    L15
+15    (UNBIND1)
+16    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFPROP $FILE_SEARCH $LISTP_CHECK ...)-5|
+(CONST 0) = $FILE_SEARCH
+(CONST 1) = ASSIGN
+(CONST 2) = $LISTP_CHECK
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILE_SEARCH
+1     (CONST&PUSH 1)                      ; ASSIGN
+2     (CONST&PUSH 2)                      ; $LISTP_CHECK
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP $FILE_TYPES $LISTP_CHECK ...)-6|
+(CONST 0) = $FILE_TYPES
+(CONST 1) = ASSIGN
+(CONST 2) = $LISTP_CHECK
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILE_TYPES
+1     (CONST&PUSH 1)                      ; ASSIGN
+2     (CONST&PUSH 2)                      ; $LISTP_CHECK
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN LISPM-MERGE-PATHNAME (&REST L) ...)-7|
+(CONST 0) = LISPM-MERGE-PATHNAME
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISPM-MERGE-PATHNAME>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISPM-MERGE-PATHNAME
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISPM-MERGE-PATHNAME
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISPM-MERGE-PATHNAME>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LISPM-MERGE-PATHNAME
+8     (SKIP&RET 1)
+
+
+Disassembly of function LISPM-MERGE-PATHNAME
+(CONST 0) = MERGE-PATHNAMES
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MERGE-PATHNAMES
+1     (LOAD 2)
+2     (APPLY&SKIP&RET 0 2)
+
+
+Disassembly of function #:|(DEFUN $LOAD_SEARCH_DIR NIL ...)-8|
+(CONST 0) = $LOAD_SEARCH_DIR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $LOAD_SEARCH_DIR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LOAD_SEARCH_DIR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $LOAD_SEARCH_DIR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $LOAD_SEARCH_DIR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $LOAD_SEARCH_DIR
+8     (SKIP&RET 1)
+
+
+Disassembly of function $LOAD_SEARCH_DIR
+(CONST 0) = *DEFAULT-PATHNAME-DEFAULTS*
+(CONST 1) = TO-MACSYMA-NAMESTRING
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*DEFAULT-PATHNAME-DEFAULTS*)
+3 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; *DEFAULT-PATHNAME-DEFAULTS*
+2     (CALL1 1)                           ; TO-MACSYMA-NAMESTRING
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL $LOADPRINT))-9|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN LOAD-AND-TELL (FILENAME) ...)-10|
+(CONST 0) = LOAD-AND-TELL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LOAD-AND-TELL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LOAD-AND-TELL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LOAD-AND-TELL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LOAD-AND-TELL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LOAD-AND-TELL
+8     (SKIP&RET 1)
+
+
+Disassembly of function LOAD-AND-TELL
+(CONST 0) = $LOADPRINT
+(CONST 1) = LOADFILE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($LOADPRINT)
+5 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (T&PUSH)
+2     (GETVALUE&PUSH 0)                   ; $LOADPRINT
+4     (CALL 3 1)                          ; LOADFILE
+7     (SKIP&RET 2)
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFUN TO-MACSYMA-NAMESTRING # ...) ...)-11-2|
+(CONST 0) = TO-MACSYMA-NAMESTRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TO-MACSYMA-NAMESTRING>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TO-MACSYMA-NAMESTRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TO-MACSYMA-NAMESTRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TO-MACSYMA-NAMESTRING>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function TO-MACSYMA-NAMESTRING
+(CONST 0) = X
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+6 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALLS1 231)                        ; PATHNAME
+7     (UNBIND1)
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFUN TO-MACSYMA-NAMESTRING # ...) ...)-11-3|
+(CONST 0) = MACSYMA-NAMESTRINGP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MACSYMA-NAMESTRINGP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MACSYMA-NAMESTRINGP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MACSYMA-NAMESTRINGP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MACSYMA-NAMESTRINGP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function MACSYMA-NAMESTRINGP
+(CONST 0) = X
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+6 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALLS2 26)                         ; PATHNAMEP
+7     (UNBIND1)
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFUN TO-MACSYMA-NAMESTRING # ...) ...)-11-4|
+(CONST 0) = ERRSET-NAMESTRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ERRSET-NAMESTRING>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ERRSET-NAMESTRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ERRSET-NAMESTRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ERRSET-NAMESTRING>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function ERRSET-NAMESTRING
+(CONST 0) = X
+(CONST 1) = ERRSET
+(CONST 2) = #(NIL)
+(CONST 3) = (#(ERROR 27) 1 . 1)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ERRSET X)
+26 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (NIL)
+4     (BIND 1)                            ; ERRSET
+6     (NIL&PUSH)
+7     (TAGBODY-OPEN 2 L38)                ; #(NIL)
+10    (HANDLER-OPEN 3 L27)                ; (#(ERROR 27) 1 . 1)
+12    (GETVALUE&PUSH 0)                   ; X
+14    (CALLS1&PUSH 231)                   ; PATHNAME
+16    (LIST 1)
+18    (SKIP 4)
+20    L20
+20    (TAGBODY-CLOSE)
+21    (SKIP 1)
+23    (UNBIND 2)
+25    (SKIP&RET 2)
+27    L27
+27    (HANDLER-BEGIN&PUSH)
+28    (LOAD 0)
+29    (STOREI 0 0 4)
+33    (GO-I 0 0 2 0)
+38    L38
+38    (GETVALUE 1)                        ; ERRSET
+40    (JMPIFNOT1 L20)
+42    (LOAD&PUSH 4)
+43    (CALLSR 0 29)                       ; ERROR
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFUN TO-MACSYMA-NAMESTRING # ...) ...)-11-5|
+(CONST 0) = $FILENAME_MERGE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FILENAME_MERGE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILENAME_MERGE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FILENAME_MERGE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FILENAME_MERGE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FILENAME_MERGE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FILENAME_MERGE
+(CONST 0) = MACSYMA-NAMESTRING-SUB
+(CONST 1) = ("**")
+(CONST 2) = MERGEF
+(CONST 3) = TO-MACSYMA-NAMESTRING
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (LOAD&JMPIF 1 L18)
+3     (CONST 1)                           ; ("**")
+4     L4
+4     (STORE 1)
+5     (CDR)
+6     (JMPIFNOT L26)
+8     (CONST&SYMBOL-FUNCTION&PUSH 2)      ; MERGEF
+10    (LOAD 2)
+11    (APPLY 0)
+13    L13
+13    (PUSH)
+14    (CALL1 3)                           ; TO-MACSYMA-NAMESTRING
+16    (SKIP&RET 2)
+18    L18
+18    (CONST&SYMBOL-FUNCTION&PUSH 0)      ; MACSYMA-NAMESTRING-SUB
+20    (LOAD&PUSH 2)
+21    (CALLSR 0 22)                       ; MAPCAR
+24    (JMP L4)
+26    L26
+26    (LOAD 1)
+27    (CAR)
+28    (JMP L13)
+
+
+Disassembly of function #:|(DEFUN MACSYMA-NAMESTRING-SUB (USER-OBJECT) ...)-12|
+(CONST 0) = MACSYMA-NAMESTRING-SUB
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MACSYMA-NAMESTRING-SUB>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MACSYMA-NAMESTRING-SUB
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MACSYMA-NAMESTRING-SUB
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MACSYMA-NAMESTRING-SUB>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MACSYMA-NAMESTRING-SUB
+8     (SKIP&RET 1)
+
+
+Disassembly of function MACSYMA-NAMESTRING-SUB
+(CONST 0) = MACSYMA-NAMESTRINGP
+(CONST 1) = 1
+(CONST 2) = GETCHARN
+(CONST 3) = #\$
+(CONST 4) = FULLSTRIP1
+(CONST 5) = $LISTP
+(CONST 6) = FULLSTRIP
+(CONST 7) = "Bad file spec:~%~M"
+(CONST 8) = MERROR
+(CONST 9) = ERRSET-NAMESTRING
+(CONST 10) = "Bad file spec: ~:M"
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+53 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&JMPIF 0 L46)                 ; MACSYMA-NAMESTRINGP
+4     (LOAD 1)
+5     (JMPIFCONSP L11)
+7     (LOAD&PUSH 1)
+8     (CALLS2&JMPIFNOT 6 L49)             ; SYMBOLP
+11    L11
+11    (LOAD&PUSH 1)
+12    (CALLS2&JMPIFNOT 6 L22)             ; SYMBOLP
+15    (LOAD&PUSH 1)
+16    (CONST&PUSH 1)                      ; 1
+17    (CALL2&PUSH 2)                      ; GETCHARN
+19    (JMPIFEQTO 3 L52)                   ; #\$
+22    L22
+22    (LOAD 1)
+23    (JMPIFATOM L61)
+25    (LOAD&PUSH 1)
+26    (CALL1&JMPIF 5 L66)                 ; $LISTP
+29    (CONST&PUSH 7)                      ; "Bad file spec:~%~M"
+30    (LOAD&PUSH 2)
+31    (CALL2 8)                           ; MERROR
+33    L33
+33    (PUSH)
+34    (LOAD&PUSH 0)
+35    (CALL1&PUSH 9)                      ; ERRSET-NAMESTRING
+37    (LOAD&JMPIF 0 L72)
+40    (CONST&PUSH 10)                     ; "Bad file spec: ~:M"
+41    (LOAD&PUSH 4)
+42    (CALL2 8)                           ; MERROR
+44    (SKIP&RET 4)
+46    L46
+46    (LOAD 1)
+47    (SKIP&RET 2)
+49    L49
+49    (LOAD 1)
+50    (JMP L33)
+52    L52
+52    (LOAD&PUSH 1)
+53    (CALL1&PUSH 4)                      ; FULLSTRIP1
+55    (PUSH-UNBOUND 2)
+57    (CALLS1 72)                         ; STRING-DOWNCASE
+59    (JMP L33)
+61    L61
+61    (LOAD&PUSH 1)
+62    (CALL1 4)                           ; FULLSTRIP1
+64    (JMP L33)
+66    L66
+66    (LOAD&CDR&PUSH 1)
+68    (CALL1 6)                           ; FULLSTRIP
+70    (JMP L33)
+72    L72
+72    (CAR)
+73    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN OPEN-OUT-DSK (X) ...)-13|
+(CONST 0) = OPEN-OUT-DSK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE OPEN-OUT-DSK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OPEN-OUT-DSK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; OPEN-OUT-DSK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE OPEN-OUT-DSK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; OPEN-OUT-DSK
+8     (SKIP&RET 1)
+
+
+Disassembly of function OPEN-OUT-DSK
+(CONST 0) = X
+(CONST 1) = :OUTPUT
+(CONST 2) = CHARACTER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+9 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CONST&PUSH 1)                      ; :OUTPUT
+6     (CONST&PUSH 2)                      ; CHARACTER
+7     (PUSH-UNBOUND 4)
+9     (CALLS1 249)                        ; OPEN
+11    (UNBIND1)
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN OPEN-IN-DSK (X) ...)-14|
+(CONST 0) = OPEN-IN-DSK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE OPEN-IN-DSK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OPEN-IN-DSK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; OPEN-IN-DSK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE OPEN-IN-DSK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; OPEN-IN-DSK
+8     (SKIP&RET 1)
+
+
+Disassembly of function OPEN-IN-DSK
+(CONST 0) = X
+(CONST 1) = :INPUT
+(CONST 2) = CHARACTER
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+9 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CONST&PUSH 1)                      ; :INPUT
+6     (CONST&PUSH 2)                      ; CHARACTER
+7     (PUSH-UNBOUND 4)
+9     (CALLS1 249)                        ; OPEN
+11    (UNBIND1)
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN $BATCHLOAD (FILENAME &AUX EXPR ...) ...)-15|
+(CONST 0) = $BATCHLOAD
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $BATCHLOAD>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BATCHLOAD
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $BATCHLOAD
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $BATCHLOAD>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $BATCHLOAD
+8     (SKIP&RET 1)
+
+
+Disassembly of function $BATCHLOAD
+(CONST 0) = ""
+(CONST 1) = *MREAD-PROMPT*
+(CONST 2) = ((MLIST) $FILE_SEARCH_MAXIMA)
+(CONST 3) = $FILE_SEARCH1
+(CONST 4) = #.#'VALUES
+(CONST 5) = $LOADPRINT
+(CONST 6) = #<COMPILED-CLOSURE $BATCHLOAD-1>
+(CONST 7) = *STANDARD-OUTPUT*
+(CONST 8) = CLEANUP
+(CONST 9) = #\n
+(CONST 10) = NEWLINE
+(CONST 11) = MREAD
+(CONST 12) = MEVAL*
+(CONST 13) = CLOSE
+(CONST 14) = :ABORT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*STANDARD-OUTPUT* $LOADPRINT)
+70 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST 0)                           ; ""
+2     (BIND 1)                            ; *MREAD-PROMPT*
+4     (LOAD&PUSH 5)
+5     (CONST&PUSH 2)                      ; ((MLIST) $FILE_SEARCH_MAXIMA)
+6     (CALL2 3)                           ; $FILE_SEARCH1
+8     (STORE 5)
+9     (PUSH)
+10    (PUSH-UNBOUND 6)
+12    (CALLS1&PUSH 249)                   ; OPEN
+14    (UNWIND-PROTECT-OPEN L86)
+17    (CONST 4)                           ; #.#'VALUES
+18    (MVCALLP)
+19    (GETVALUE 5)                        ; $LOADPRINT
+21    (JMPIFNOT L36)
+23    (CONST&PUSH 6)                      ; #<COMPILED-CLOSURE $BATCHLOAD-1>
+24    (GETVALUE&PUSH 7)                   ; *STANDARD-OUTPUT*
+26    (LOAD&PUSH 5)
+27    (CALLS1&PUSH 245)                   ; TRUENAME
+29    (PUSH-UNBOUND 1)
+31    (CALLS1&PUSH 244)                   ; NAMESTRING
+33    (CALLSR 2 21)                       ; FUNCALL
+36    L36
+36    (CALL0 8)                           ; CLEANUP
+38    (LOAD&PUSH 3)
+39    (CONST&PUSH 9)                      ; #\n
+40    (CALL2 10)                          ; NEWLINE
+42    (JMP L50)
+44    L44
+44    (LOAD 7)
+45    (CDR)
+46    (CDR)
+47    (CAR&PUSH)
+48    (CALL1 12)                          ; MEVAL*
+50    L50
+50    (LOAD&PUSH 3)
+51    (NIL&PUSH)
+52    (CALL2 11)                          ; MREAD
+54    (STORE 7)
+55    (JMPIFNOT L59)
+57    (JMPIFCONSP L44)
+59    L59
+59    (LOAD&PUSH 3)
+60    (CALLS1&PUSH 245)                   ; TRUENAME
+62    (PUSH-UNBOUND 1)
+64    (CALLS1 244)                        ; NAMESTRING
+66    (MV-TO-STACK)
+67    (LOADI 0 0 2)
+71    (JMPIFNOT L76)
+73    (PUSH)
+74    (CALL1 13)                          ; CLOSE
+76    L76
+76    (MVCALL)
+77    (UNWIND-PROTECT-NORMAL-EXIT)
+78    (LOADI 0 0 0)
+82    (JMPIFNOT L98)
+84    (JMP L92)
+86    L86
+86    (LOADI 0 0 0)
+90    (JMPIFNOT L98)
+92    L92
+92    (PUSH)
+93    (CONST&PUSH 14)                     ; :ABORT
+94    (T&PUSH)
+95    (CALL 3 13)                         ; CLOSE
+98    L98
+98    (UNWIND-PROTECT-CLOSE)
+99    (SKIP 1)
+101   (UNBIND1)
+102   (SKIP&RET 3)
+
+
+Disassembly of function $BATCHLOAD-1
+(CONST 0) = "batching "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD&PUSH 3)
+1     (CALLS1 140)                        ; FRESH-LINE
+3     (CONST&PUSH 0)                      ; "batching "
+4     (LOAD&PUSH 4)
+5     (PUSH-UNBOUND 2)
+7     (CALLS1 137)                        ; WRITE-STRING
+9     (LOAD&PUSH 2)
+10    (LOAD&PUSH 4)
+11    (CALLS1 132)                        ; PRINC
+13    (LOAD 1)
+14    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN $FILE_SEARCH1 (NAME SEARCH-LISTS &AUX ...) ...)-16|
+(CONST 0) = $FILE_SEARCH1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FILE_SEARCH1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILE_SEARCH1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FILE_SEARCH1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FILE_SEARCH1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FILE_SEARCH1
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FILE_SEARCH1
+(CONST 0) = NAME
+(CONST 1) = $APPEND
+(CONST 2) = SYMBOL-VALUE
+(CONST 3) = $FILE_SEARCH
+(CONST 4) = "Could not find `~M' using paths in ~A (combined values: ~M )"
+(CONST 5) = "[]"
+(CONST 6) = $SCONCAT
+(CONST 7) = STRING-TRIM
+(CONST 8) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+writes special variable : (NAME)
+37 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; NAME
+3     (NIL&PUSH)
+4     (GETVALUE&PUSH 0)                   ; NAME
+6     (CALLS2&JMPIFNOT 26 L17)            ; PATHNAMEP
+9     (GETVALUE&PUSH 0)                   ; NAME
+11    (PUSH-UNBOUND 1)
+13    (CALLS1 244)                        ; NAMESTRING
+15    (SETVALUE 0)                        ; NAME
+17    L17
+17    (CONST&PUSH 1)                      ; $APPEND
+18    (CONST&PUSH 2)                      ; SYMBOL-VALUE
+19    (LOAD&CDR&PUSH 7)
+21    (CALLSR 0 22)                       ; MAPCAR
+24    (APPLY 0)
+26    (STORE 0)
+27    (GETVALUE&PUSH 0)                   ; NAME
+29    (LOAD&PUSH 1)
+30    (CALL2&PUSH 3)                      ; $FILE_SEARCH
+32    (LOAD 0)
+33    (JMPIF1 L52)
+35    (CONST&PUSH 4)                      ; "Could not find `~M' using paths in ~A (combined values: ~M )"
+36    (GETVALUE&PUSH 0)                   ; NAME
+38    (CONST&PUSH 5)                      ; "[]"
+39    (LOAD&PUSH 9)
+40    (CALL1&PUSH 6)                      ; $SCONCAT
+42    (CALL2&PUSH 7)                      ; STRING-TRIM
+44    (LOAD&PUSH 4)
+45    (CALL 4 8)                          ; MERROR
+48    (SKIP 1)
+50    (JMP L54)
+52    L52
+52    (SKIP 1)
+54    L54
+54    (SKIP 1)
+56    (UNBIND1)
+57    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN $LOAD (FILENAME) ...)-17|
+(CONST 0) = $LOAD
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = 
+"This is the generic file loading function.
+  LOAD(filename) will either BATCHLOAD or LOADFILE the file,
+  depending on wether the file contains Macsyma, Lisp, or Compiled
+  code. The file specifications default such that a compiled file
+  is searched for first, then a lisp file, and finally a macsyma batch
+  file. This command is designed to provide maximum utility and
+  convenience for writers of packages and users of the macsyma->lisp
+  translator."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE $LOAD>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LOAD
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $LOAD
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "This is the generic file loading function.
+  LOAD(filename) will either BATCHLOAD or LOADFILE the file,
+  depending on wether the file contains Macsyma, Lisp, or Compiled
+  code. The file specifications default such that a compiled file
+  is searched for first, then a lisp file, and finally a macsyma batch
+  file. This command is designed to provide maximum utility and
+  convenience for writers of packages and users of the macsyma->lisp
+  translator."
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; $LOAD
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE $LOAD>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; $LOAD
+14    (SKIP&RET 1)
+
+
+Disassembly of function $LOAD
+(CONST 0) = MSTRINGP
+(CONST 1) = STRIPDOLLAR
+(CONST 2) = ((MLIST) $FILE_SEARCH_MAXIMA $FILE_SEARCH_LISP)
+(CONST 3) = $FILE_SEARCH1
+(CONST 4) = $FILE_TYPE
+(CONST 5) = #S(HASH-TABLE EQ ($OBJECT . 6) ($LISP . 6) ($MAXIMA . 1))
+(CONST 6) = $BATCHLOAD
+(CONST 7) = LOAD-AND-TELL
+(CONST 8) = "MACSYMA BUG: Unknown file type ~M"
+(CONST 9) = MERROR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+33 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&JMPIFNOT 6 L18)             ; SYMBOLP
+4     (LOAD&PUSH 1)
+5     (CALL1&JMPIF 0 L18)                 ; MSTRINGP
+8     (LOAD&PUSH 1)
+9     (CALL1&PUSH 1)                      ; STRIPDOLLAR
+11    (CALLS2&PUSH 140)                   ; SYMBOL-NAME
+13    (PUSH-UNBOUND 2)
+15    (CALLS1&STORE 72 1)                 ; STRING-DOWNCASE
+18    L18
+18    (LOAD&PUSH 1)
+19    (CONST&PUSH 2)                      ; ((MLIST) $FILE_SEARCH_MAXIMA ...)
+20    (CALL2&PUSH 3)                      ; $FILE_SEARCH1
+22    (NIL&PUSH)
+23    (LOAD&PUSH 1)
+24    (CALL1 4)                           ; $FILE_TYPE
+26    (STORE 0)
+27    (JMPHASH 5 L40 L30 L35 L35)
+30    L30
+30    (LOAD&PUSH 1)
+31    (CALL1 6)                           ; $BATCHLOAD
+33    (JMP L44)
+35    L35
+35    (LOAD&PUSH 1)
+36    (CALL1 7)                           ; LOAD-AND-TELL
+38    (JMP L44)
+40    L40
+40    (CONST&PUSH 8)                      ; "MACSYMA BUG: Unknown file type ~M"
+41    (LOAD&PUSH 1)
+42    (CALL2 9)                           ; MERROR
+44    L44
+44    (LOAD 1)
+45    (SKIP&RET 4)
+
+WARNING in (DEFUN $MKEY (KEYWORD) ...)-18 in lines 517..581 :
+Function $MKEY
+ was already defined in file #P"/cygdrive/e/temp/maxima/src/commac.lisp" in lines 567..569
+
+Disassembly of function #:|(DEFUN $MKEY (KEYWORD) ...)-18|
+(CONST 0) = $MKEY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "takes a macsyma symbol and makes a keyword of it"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE $MKEY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MKEY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $MKEY
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "takes a macsyma symbol and makes a keyword of it"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; $MKEY
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE $MKEY>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; $MKEY
+14    (SKIP&RET 1)
+
+
+Disassembly of function $MKEY
+(CONST 0) = "$"
+(CONST 1) = STRING-LEFT-TRIM
+(CONST 2) = KEYWORD
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "$"
+1     (LOAD&PUSH 2)
+2     (CALLS1&PUSH 75)                    ; STRING
+4     (PUSH-UNBOUND 2)
+6     (CALLS1&PUSH 70)                    ; STRING-UPCASE
+8     (CALL2&PUSH 1)                      ; STRING-LEFT-TRIM
+10    (CONST&PUSH 2)                      ; KEYWORD
+11    (CALLS1 212)                        ; INTERN
+13    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN QUOTE-SIMPLE-EQUAL (F G) ...)-19|
+(CONST 0) = QUOTE-SIMPLE-EQUAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE QUOTE-SIMPLE-EQUAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; QUOTE-SIMPLE-EQUAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; QUOTE-SIMPLE-EQUAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE QUOTE-SIMPLE-EQUAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; QUOTE-SIMPLE-EQUAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function QUOTE-SIMPLE-EQUAL
+(CONST 0) = MQUOTE
+(CONST 1) = $SIMPLE_EQUAL
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+37 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2 4)                          ; CONSP
+3     (JMPIFNOT1 L44)
+5     (LOAD 2)
+6     (CAR)
+7     (CAR&PUSH)
+8     (CONST 0)                           ; MQUOTE
+9     (EQ)
+10    (JMPIFNOT1 L44)
+12    (LOAD 1)
+13    (JMPIFATOM L30)
+15    (LOAD 1)
+16    (CAR)
+17    (CAR&PUSH)
+18    (JMPIFNOTEQTO 0 L38)                ; MQUOTE
+21    (LOAD&CDR&PUSH 2)
+23    (LOAD 2)
+24    (CDR)
+25    L25
+25    (PUSH)
+26    (CALL2 1)                           ; $SIMPLE_EQUAL
+28    (SKIP&RET 3)
+30    L30
+30    (LOAD 2)
+31    (CDR)
+32    (CAR&PUSH)
+33    (LOAD&PUSH 2)
+34    (CALLS2 2)                          ; EQUAL
+36    (SKIP&RET 3)
+38    L38
+38    (LOAD 2)
+39    (CDR)
+40    (CAR&PUSH)
+41    (LOAD 2)
+42    (JMP L25)
+44    L44
+44    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN UNEQUAL-PAIRLIS (VAR GEN) ...)-20|
+(CONST 0) = UNEQUAL-PAIRLIS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE UNEQUAL-PAIRLIS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; UNEQUAL-PAIRLIS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; UNEQUAL-PAIRLIS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE UNEQUAL-PAIRLIS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; UNEQUAL-PAIRLIS
+8     (SKIP&RET 1)
+
+
+Disassembly of function UNEQUAL-PAIRLIS
+(CONST 0) = VAR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAR)
+46 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; VAR
+3     (NIL&PUSH)
+4     (GETVALUE&PUSH 0)                   ; VAR
+6     (NIL&PUSH)
+7     (LOAD&PUSH 7)
+8     (PUSH-NIL 3)
+10    (LOAD&JMPIFNOT 3 L47)
+13    L13
+13    (LOAD&JMPIFNOT 5 L47)
+16    (LOAD&CAR&PUSH 5)
+18    (LOAD 0)
+19    (STORE 7)
+20    (SKIP 1)
+22    (LOAD&CAR&PUSH 3)
+24    (LOAD 0)
+25    (STORE 5)
+26    (SKIP 1)
+28    (LOAD&PUSH 6)
+29    (LOAD 5)
+30    (CONS)
+31    (STORE 0)
+32    (LOAD&JMPIF 1 L53)
+35    (LOAD&PUSH 0)
+36    (NIL)
+37    (CONS)
+38    (STORE 1)
+39    (STORE 2)
+40    L40
+40    (LOAD&CDR&STORE 5)
+42    (LOAD&CDR&STORE 3)
+44    (LOAD&JMPIF 3 L13)
+47    L47
+47    (LOAD 2)
+48    (SKIP 7)
+50    (UNBIND1)
+51    (SKIP&RET 3)
+53    L53
+53    (PUSH)
+54    (LOAD&PUSH 1)
+55    (NIL)
+56    (CONS)
+57    (STORE 2)
+58    (PUSH)
+59    (CALLS1 171)                        ; SYSTEM::%RPLACD
+61    (JMP L40)
+
+
+Disassembly of function #:|(DEFUN $SIMPLE_EQUAL (F G) ...)-21|
+(CONST 0) = $SIMPLE_EQUAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "checks if equal up to simp flags"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE $SIMPLE_EQUAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SIMPLE_EQUAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $SIMPLE_EQUAL
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "checks if equal up to simp flags"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; $SIMPLE_EQUAL
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE $SIMPLE_EQUAL>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; $SIMPLE_EQUAL
+14    (SKIP&RET 1)
+
+
+Disassembly of function $SIMPLE_EQUAL
+(CONST 0) = QUOTE-SIMPLE-EQUAL
+(CONST 1) = 1.0E-4
+(CONST 2) = MRAT
+(CONST 3) = UNEQUAL-PAIRLIS
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+117 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 2)
+1     (LOAD&PUSH 2)
+2     (CALL2 0)                           ; QUOTE-SIMPLE-EQUAL
+4     (JMPIF1 L165)
+7     (LOAD&PUSH 1)
+8     (LOAD&PUSH 3)
+9     (CALL2 0)                           ; QUOTE-SIMPLE-EQUAL
+11    (JMPIF1 L165)
+14    (LOAD&PUSH 2)
+15    (CALLS2&JMPIFNOT 8 L39)             ; NUMBERP
+18    (LOAD&PUSH 1)
+19    (CALLS2&JMPIFNOT 8 L39)             ; NUMBERP
+22    (LOAD&PUSH 2)
+23    (LOAD&PUSH 2)
+24    (CALLS2&JMPIFNOT 1 L39)             ; EQL
+27    (LOAD&PUSH 2)
+28    (LOAD&PUSH 2)
+29    (CALLSR&PUSH 1 54)                  ; -
+32    (CONST&PUSH 1)                      ; 1.0E-4
+33    (CALLSR 1 47)                       ; <
+36    (JMPIF1 L165)
+39    L39
+39    (LOAD 2)
+40    (JMPIFATOM L94)
+42    (LOAD 1)
+43    (JMPIFATOM L98)
+45    (LOAD 2)
+46    (CAR)
+47    (CAR&PUSH)
+48    (JMPIFNOTEQTO 2 L104)               ; MRAT
+51    (LOAD 2)
+52    (CAR)
+53    (CDR)
+54    (CDR)
+55    (CAR&PUSH)
+56    (LOAD 3)
+57    (CAR)
+58    (CDR)
+59    (CDR)
+60    (CDR)
+61    (CAR&PUSH)
+62    (CALL2&PUSH 3)                      ; UNEQUAL-PAIRLIS
+64    (LOAD&CDR&PUSH 3)
+66    (PUSH-UNBOUND 3)
+68    (CALLS1&PUSH 178)                   ; SUBLIS
+70    (LOAD 2)
+71    (CAR)
+72    (CDR)
+73    (CDR)
+74    (CAR&PUSH)
+75    (LOAD 3)
+76    (CAR)
+77    (CDR)
+78    (CDR)
+79    (CDR)
+80    (CAR&PUSH)
+81    (CALL2&PUSH 3)                      ; UNEQUAL-PAIRLIS
+83    (LOAD&CDR&PUSH 3)
+85    (PUSH-UNBOUND 3)
+87    (CALLS1 178)                        ; SUBLIS
+89    L89
+89    (PUSH)
+90    (CALLS2 2)                          ; EQUAL
+92    (SKIP&RET 3)
+94    L94
+94    (LOAD&PUSH 2)
+95    (LOAD 2)
+96    (JMP L89)
+98    L98
+98    (NIL)
+99    (SKIP&RET 3)
+101   L101
+101   (NIL)
+102   (SKIP&RET 7)
+104   L104
+104   (LOAD 2)
+105   (CAR)
+106   (CAR&PUSH)
+107   (LOAD 2)
+108   (CAR)
+109   (CAR&PUSH)
+110   (CALLS2 2)                          ; EQUAL
+112   (JMPIFNOT1 L165)
+114   (LOAD&PUSH 2)
+115   (CALLS2&PUSH 71)                    ; LENGTH
+117   (LOAD&PUSH 2)
+118   (CALLS2&PUSH 71)                    ; LENGTH
+120   (CALLS2 1)                          ; EQL
+122   (JMPIFNOT1 L165)
+124   (NIL&PUSH)
+125   (LOAD&CDR&PUSH 3)
+127   (NIL&PUSH)
+128   (LOAD&CDR&PUSH 4)
+130   (LOAD&JMPIFNOT 0 L162)
+133   L133
+133   (LOAD&JMPIFNOT 2 L162)
+136   (LOAD&CAR&PUSH 2)
+138   (LOAD 0)
+139   (STORE 4)
+140   (SKIP 1)
+142   (LOAD&CAR&PUSH 0)
+144   (LOAD 0)
+145   (STORE 2)
+146   (SKIP 1)
+148   (LOAD&PUSH 3)
+149   (LOAD&PUSH 2)
+150   (JSR L0)
+153   (JMPIFNOT L101)
+155   (LOAD&CDR&STORE 2)
+157   (LOAD&CDR&STORE 0)
+159   (LOAD&JMPIF 0 L133)
+162   L162
+162   (T)
+163   (SKIP&RET 7)
+165   L165
+165   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN $FILE_TYPE (FIL &AUX TYP) ...)-22|
+(CONST 0) = $FILE_TYPE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FILE_TYPE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILE_TYPE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FILE_TYPE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FILE_TYPE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FILE_TYPE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FILE_TYPE
+(CONST 0) = 0
+(CONST 1) = ((#\m . $MAXIMA) (#\d . $MAXIMA) (#\l . $LISP) (#\o . $OBJECT) (#\f . $OBJECT))
+(CONST 2) = $OBJECT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+46 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (CALLS1&STORE 231 2)                ; PATHNAME
+5     (PUSH-UNBOUND 2)
+7     (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+9     (LOAD&PUSH 3)
+10    (PUSH-UNBOUND 1)
+12    (CALLS1&PUSH 236)                   ; PATHNAME-TYPE
+14    (PUSH-UNBOUND 1)
+16    (LOAD&PUSH 2)
+17    (CALLS1&PUSH 144)                   ; SYSTEM::LINE-POSITION
+19    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+21    (LOAD&PUSH 1)
+22    (LOAD&PUSH 1)
+23    (CALLS1 132)                        ; PRINC
+25    (LOAD&PUSH 0)
+26    (CALLS2&PUSH 118)                   ; GET-OUTPUT-STREAM-STRING
+28    (PUSH-UNBOUND 2)
+30    (CALLS1&PUSH 71)                    ; NSTRING-DOWNCASE
+32    (LOAD&PUSH 3)
+33    (PUSH-UNBOUND 2)
+35    (CALLS1 137)                        ; WRITE-STRING
+37    (SKIP 2)
+39    (LOAD&PUSH 0)
+40    (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+42    (SKIP 1)
+44    (STORE 0)
+45    (PUSH)
+46    (CALLS2&PUSH 71)                    ; LENGTH
+48    (CONST&PUSH 0)                      ; 0
+49    (CALLSR&JMPIFNOT 1 48 L69)          ; >
+53    (LOAD&PUSH 0)
+54    (CONST&PUSH 0)                      ; 0
+55    (CALLSR&PUSH 1 1)                   ; AREF
+58    (LOAD&PUSH 0)
+59    (CONST&PUSH 1)                      ; (# # # ...)
+60    (PUSH-UNBOUND 3)
+62    (CALLS1 187)                        ; ASSOC
+64    (CDR)
+65    (SKIP 1)
+67    (JMPIF1 L72)
+69    L69
+69    (CONST 2)                           ; $OBJECT
+70    (SKIP&RET 3)
+72    L72
+72    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFVAR *MACSYMA-STARTUP-QUEUE* NIL)-23|
+(CONST 0) = (SPECIAL *MACSYMA-STARTUP-QUEUE*)
+(CONST 1) = *MACSYMA-STARTUP-QUEUE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *MACSYMA-STARTUP-QUEUE*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *MACSYMA-STARTUP-QUEUE*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *MACSYMA-STARTUP-QUEUE*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *MACSYMA-STARTUP-QUEUE*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE) (PROCLAIM '#))-24|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN MFILENAME-ONLYP (X) ...)-25|
+(CONST 0) = MFILENAME-ONLYP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "Returns T iff the argument could only be reasonably taken as a filename."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE MFILENAME-ONLYP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFILENAME-ONLYP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MFILENAME-ONLYP
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "Returns T iff the argument could only be reasonably taken as a filename."
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; MFILENAME-ONLYP
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE MFILENAME-ONLYP>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; MFILENAME-ONLYP
+14    (SKIP&RET 1)
+
+
+Disassembly of function MFILENAME-ONLYP
+(CONST 0) = X
+(CONST 1) = MACSYMA-NAMESTRINGP
+(CONST 2) = $LISTP
+(CONST 3) = #\&
+(CONST 4) = 1
+(CONST 5) = GETCHARN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+25 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALL1&JMPIF 1 L22)                 ; MACSYMA-NAMESTRINGP
+8     (GETVALUE&PUSH 0)                   ; X
+10    (CALL1&JMPIF 2 L25)                 ; $LISTP
+13    (GETVALUE&PUSH 0)                   ; X
+15    (CALLS2&JMPIF 6 L28)                ; SYMBOLP
+18    (NIL)
+19    L19
+19    (UNBIND1)
+20    (SKIP&RET 2)
+22    L22
+22    (T)
+23    (JMP L19)
+25    L25
+25    (T)
+26    (JMP L19)
+28    L28
+28    (CONST&PUSH 3)                      ; #\&
+29    (GETVALUE&PUSH 0)                   ; X
+31    (CONST&PUSH 4)                      ; 1
+32    (CALL2&PUSH 5)                      ; GETCHARN
+34    (CALLSR 1 7)                        ; CHAR=
+37    (JMP L19)
+
+
+Disassembly of function #:|(DEFUN $BATCH (FILENAME &OPTIONAL # ...) ...)-26|
+(CONST 0) = $BATCH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = 
+"giving a second argument makes it use demo mode, ie pause after evaluation
+   of each command line"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE $BATCH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $BATCH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $BATCH
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "giving a second argument makes it use demo mode, ie pause after evaluation
+   of each command line"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; $BATCH
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE $BATCH>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; $BATCH
+14    (SKIP&RET 1)
+
+
+Disassembly of function $BATCH
+(CONST 0) = :BATCH
+(CONST 1) = $MKEY
+(CONST 2) = (:DEMO :BATCH :TEST)
+(CONST 3) = MEMQ
+(CONST 4) = #<COMPILED-CLOSURE $BATCH-1>
+(CONST 5) = *STANDARD-OUTPUT*
+(CONST 6) = :DEMO
+(CONST 7) = ((MLIST) $FILE_SEARCH_DEMO)
+(CONST 8) = ((MLIST) $FILE_SEARCH_MAXIMA)
+(CONST 9) = $FILE_SEARCH1
+(CONST 10) = :TEST
+(CONST 11) = TEST-BATCH
+(CONST 12) = #.#'VALUES
+(CONST 13) = #<COMPILED-CLOSURE $BATCH-2>
+(CONST 14) = CONTINUE
+(CONST 15) = CLOSE
+(CONST 16) = :ABORT
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (*STANDARD-OUTPUT*)
+77 byte-code instructions:
+0     (JMPIFBOUNDP 1 L5)
+3     (CONST 0)                           ; :BATCH
+4     (STORE 1)
+5     L5
+5     (NIL&PUSH)
+6     (LOAD&PUSH 2)
+7     (CALL1&PUSH 1)                      ; $MKEY
+9     (CONST&PUSH 2)                      ; (:DEMO :BATCH :TEST)
+10    (CALL2 3)                           ; MEMQ
+12    (STORE 0)
+13    (JMPIF L85)
+16    (CONST&PUSH 4)                      ; #<COMPILED-CLOSURE $BATCH-1>
+17    (GETVALUE&PUSH 5)                   ; *STANDARD-OUTPUT*
+19    (LOAD&PUSH 4)
+20    (CONST&PUSH 2)                      ; (:DEMO :BATCH :TEST)
+21    (CALLSR 3 21)                       ; FUNCALL
+24    L24
+24    (LOAD&PUSH 3)
+25    (LOAD&PUSH 3)
+26    (JMPIFEQTO 6 L90)                   ; :DEMO
+29    (CONST 8)                           ; ((MLIST) $FILE_SEARCH_MAXIMA)
+30    L30
+30    (PUSH)
+31    (CALL2 9)                           ; $FILE_SEARCH1
+33    (STORE 3)
+34    (LOAD&PUSH 2)
+35    (JMPIFEQTO 10 L93)                  ; :TEST
+38    (LOAD&PUSH 3)
+39    (PUSH-UNBOUND 6)
+41    (CALLS1&PUSH 249)                   ; OPEN
+43    (UNWIND-PROTECT-OPEN L98)
+45    (CONST 12)                          ; #.#'VALUES
+46    (MVCALLP)
+47    (CONST&PUSH 13)                     ; #<COMPILED-CLOSURE $BATCH-2>
+48    (GETVALUE&PUSH 5)                   ; *STANDARD-OUTPUT*
+50    (LOAD&PUSH 5)
+51    (CALLS1&PUSH 245)                   ; TRUENAME
+53    (CALLSR 2 21)                       ; FUNCALL
+56    (LOAD&PUSH 3)
+57    (LOAD&PUSH 7)
+58    (CALL2 14)                          ; CONTINUE
+60    (LOAD&PUSH 3)
+61    (PUSH-UNBOUND 1)
+63    (CALLS1 244)                        ; NAMESTRING
+65    (MV-TO-STACK)
+66    (LOADI 0 0 2)
+70    (JMPIFNOT L75)
+72    (PUSH)
+73    (CALL1 15)                          ; CLOSE
+75    L75
+75    (MVCALL)
+76    (UNWIND-PROTECT-NORMAL-EXIT)
+77    (LOADI 0 0 0)
+81    (JMPIFNOT L110)
+83    (JMP L104)
+85    L85
+85    (CAR)
+86    (STORE 2)
+87    (JMP L24)
+90    L90
+90    (CONST 7)                           ; ((MLIST) $FILE_SEARCH_DEMO)
+91    (JMP L30)
+93    L93
+93    (LOAD&PUSH 3)
+94    (CALL1 11)                          ; TEST-BATCH
+96    (SKIP&RET 4)
+98    L98
+98    (LOADI 0 0 0)
+102   (JMPIFNOT L110)
+104   L104
+104   (PUSH)
+105   (CONST&PUSH 16)                     ; :ABORT
+106   (T&PUSH)
+107   (CALL 3 15)                         ; CLOSE
+110   L110
+110   (UNWIND-PROTECT-CLOSE)
+111   (SKIP&RET 5)
+
+
+Disassembly of function $BATCH-1
+(CONST 0) = "Second arg "
+(CONST 1) = " is not in "
+(CONST 2) = " so using :Batch"
+3 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "Second arg "
+1     (LOAD&PUSH 5)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 3)
+7     (LOAD&PUSH 5)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; " is not in "
+11    (LOAD&PUSH 5)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD&PUSH 2)
+17    (LOAD&PUSH 5)
+18    (CALLS1 132)                        ; PRINC
+20    (CONST&PUSH 2)                      ; " so using :Batch"
+21    (LOAD&PUSH 5)
+22    (PUSH-UNBOUND 2)
+24    (CALLS1 137)                        ; WRITE-STRING
+26    (LOAD 1)
+27    (SKIP&RET 5)
+
+
+Disassembly of function $BATCH-2
+(CONST 0) = 
+"
+batching "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+batching "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD 1)
+11    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFVAR *COLLECT-ERRORS* T)-27|
+(CONST 0) = (SPECIAL *COLLECT-ERRORS*)
+(CONST 1) = *COLLECT-ERRORS*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *COLLECT-ERRORS*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *COLLECT-ERRORS*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *COLLECT-ERRORS*
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *COLLECT-ERRORS*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN TEST-BATCH (FILENAME &OPTIONAL # ...) ...)-28|
+(CONST 0) = TEST-BATCH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TEST-BATCH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TEST-BATCH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TEST-BATCH
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TEST-BATCH>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TEST-BATCH
+8     (SKIP&RET 1)
+
+
+Disassembly of function TEST-BATCH
+(CONST 0) = *STANDARD-OUTPUT*
+(CONST 1) = ""
+(CONST 2) = *MREAD-PROMPT*
+(CONST 3) = &*
+(CONST 4) = $MATRIX_ELEMENT_MULT
+(CONST 5) = *COLLECT-ERRORS*
+(CONST 6) = :TYPE
+(CONST 7) = "ERR"
+(CONST 8) = ALTER-PATHNAME
+(CONST 9) = :OUTPUT
+(CONST 10) = #<COMPILED-CLOSURE TEST-BATCH-1>
+(CONST 11) = #<COMPILED-CLOSURE TEST-BATCH-2>
+(CONST 12) = FORMAT
+(CONST 13) = #<COMPILED-CLOSURE TEST-BATCH-3>
+(CONST 14) = 1
+(CONST 15) = MREAD
+(CONST 16) = #<COMPILED-CLOSURE TEST-BATCH-4>
+(CONST 17) = #<COMPILED-CLOSURE TEST-BATCH-5>
+(CONST 18) = DISPLA
+(CONST 19) = MEVAL*
+(CONST 20) = $%
+(CONST 21) = #<COMPILED-CLOSURE TEST-BATCH-6>
+(CONST 22) = "no result"
+(CONST 23) = BATCH-EQUAL-CHECK
+(CONST 24) = #<COMPILED-CLOSURE TEST-BATCH-7>
+(CONST 25) = #<COMPILED-CLOSURE TEST-BATCH-8>
+(CONST 26) = MGRIND
+(CONST 27) = LIST-VARIABLE-BINDINGS
+(CONST 28) = #<COMPILED-CLOSURE TEST-BATCH-9>
+(CONST 29) = #<COMPILED-CLOSURE TEST-BATCH-10>
+(CONST 30) = #<COMPILED-CLOSURE TEST-BATCH-11>
+(CONST 31) = #<COMPILED-CLOSURE TEST-BATCH-12>
+(CONST 32) = 16777214
+(CONST 33) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 34) = CLOSE
+(CONST 35) = :ABORT
+(CONST 36) = #<COMPILED-CLOSURE TEST-BATCH-13>
+(CONST 37) = ((MLIST))
+(CONST 38) = #<COMPILED-CLOSURE TEST-BATCH-14>
+(CONST 39) = (MLIST)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: ($% *COLLECT-ERRORS* *STANDARD-OUTPUT*)
+writes special variable : ($%)
+201 byte-code instructions:
+0     (JMPIFBOUNDP 1 L6)
+3     (GETVALUE 0)                        ; *STANDARD-OUTPUT*
+5     (STORE 1)
+6     L6
+6     (PUSH-NIL 5)
+8     (CONST 1)                           ; ""
+9     (BIND 2)                            ; *MREAD-PROMPT*
+11    (CONST 3)                           ; &*
+12    (BIND 4)                            ; $MATRIX_ELEMENT_MULT
+14    (GETVALUE 5)                        ; *COLLECT-ERRORS*
+16    (JMPIFNOT L51)
+18    (PUSH)
+19    (CALLS2&JMPIF 22 L67)               ; STREAMP
+22    (LOAD&PUSH 13)
+23    (CONST&PUSH 6)                      ; :TYPE
+24    (CONST&PUSH 7)                      ; "ERR"
+25    (CALL&PUSH 3 8)                     ; ALTER-PATHNAME
+28    (CONST&PUSH 9)                      ; :OUTPUT
+29    (PUSH-UNBOUND 5)
+31    (CALLS1 249)                        ; OPEN
+33    L33
+33    (STORE 7)
+34    (CONST&PUSH 10)                     ; #<COMPILED-CLOSURE TEST-BATCH-1>
+35    (GETVALUE&PUSH 0)                   ; *STANDARD-OUTPUT*
+37    (LOAD&PUSH 9)
+38    (CALLSR 2 21)                       ; FUNCALL
+41    (LOAD&PUSH 7)
+42    (CONST&PUSH 11)                     ; #<COMPILED-CLOSURE TEST-BATCH-2>
+43    (LOAD&PUSH 15)
+44    (CALL 3 12)                         ; FORMAT
+47    (LOAD&PUSH 7)
+48    (CONST&PUSH 13)                     ; #<COMPILED-CLOSURE TEST-BATCH-3>
+49    (CALL2 12)                          ; FORMAT
+51    L51
+51    (UNWIND-PROTECT-OPEN L271)
+54    (LOAD&PUSH 15)
+55    (PUSH-UNBOUND 6)
+57    (CALLS1&PUSH 249)                   ; OPEN
+59    (UNWIND-PROTECT-OPEN L234)
+62    (NIL&PUSH)
+63    (CONST&PUSH 14)                     ; 1
+64    (JMP L208)
+67    L67
+67    (GETVALUE 5)                        ; *COLLECT-ERRORS*
+69    (JMP L33)
+71    L71
+71    (CONST&PUSH 22)                     ; "no result"
+72    (CALLSR 0 29)                       ; ERROR
+75    L75
+75    (CONST&PUSH 24)                     ; #<COMPILED-CLOSURE TEST-BATCH-7>
+76    (GETVALUE&PUSH 0)                   ; *STANDARD-OUTPUT*
+78    (CALLSR 1 21)                       ; FUNCALL
+81    (JMP L197)
+84    L84
+84    (LOAD&PUSH 19)
+85    (CONST&PUSH 16)                     ; #<COMPILED-CLOSURE TEST-BATCH-4>
+86    (LOAD&PUSH 2)
+87    (CALL 3 12)                         ; FORMAT
+90    (LOAD&PUSH 19)
+91    (CONST&PUSH 17)                     ; #<COMPILED-CLOSURE TEST-BATCH-5>
+92    (CALL2 12)                          ; FORMAT
+94    (LOAD 1)
+95    (CDR)
+96    (CDR)
+97    (CAR&PUSH)
+98    (CALL1 18)                          ; DISPLA
+100   (LOAD 1)
+101   (CDR)
+102   (CDR)
+103   (CAR&PUSH)
+104   (CALL1 19)                          ; MEVAL*
+106   (STORE 17)
+108   (SETVALUE 20)                       ; $%
+110   (LOAD&PUSH 19)
+111   (CONST&PUSH 21)                     ; #<COMPILED-CLOSURE TEST-BATCH-6>
+112   (CALL2 12)                          ; FORMAT
+114   (GETVALUE&PUSH 20)                  ; $%
+116   (CALL1 18)                          ; DISPLA
+118   (LOAD&PUSH 4)
+119   (NIL&PUSH)
+120   (CALL2 15)                          ; MREAD
+122   (STORE 15)
+124   (JMPIFNOT L71)
+126   (LOAD 15)
+128   (CDR)
+129   (CDR)
+130   (CAR)
+131   (STORE 16)
+133   (PUSH)
+134   (LOAD&PUSH 18)
+135   (CALL2&JMPIF 23 L75)                ; BATCH-EQUAL-CHECK
+138   (CONST&PUSH 25)                     ; #<COMPILED-CLOSURE TEST-BATCH-8>
+139   (GETVALUE&PUSH 0)                   ; *STANDARD-OUTPUT*
+141   (CALLSR 1 21)                       ; FUNCALL
+144   (LOAD&PUSH 0)
+145   (LOAD&CONS&STORE 13)
+147   (LOAD&PUSH 16)
+148   (CALL1 18)                          ; DISPLA
+150   (GETVALUE 5)                        ; *COLLECT-ERRORS*
+152   (JMPIFNOT L197)
+154   (LOAD 1)
+155   (CDR)
+156   (CDR)
+157   (CAR&PUSH)
+158   (LOAD&PUSH 15)
+159   (CALL2 26)                          ; MGRIND
+161   (LOAD 1)
+162   (CDR)
+163   (CDR)
+164   (CAR&PUSH)
+165   (LOAD&PUSH 15)
+166   (CALL2 27)                          ; LIST-VARIABLE-BINDINGS
+168   (LOAD&PUSH 14)
+169   (CONST&PUSH 28)                     ; #<COMPILED-CLOSURE TEST-BATCH-9>
+170   (CALL2 12)                          ; FORMAT
+172   (LOAD&PUSH 14)
+173   (CONST&PUSH 29)                     ; #<COMPILED-CLOSURE TEST-BATCH-10>
+174   (CALL2 12)                          ; FORMAT
+176   (LOAD&PUSH 17)
+177   (LOAD&PUSH 15)
+178   (CALL2 26)                          ; MGRIND
+180   (LOAD&PUSH 14)
+181   (CONST&PUSH 30)                     ; #<COMPILED-CLOSURE TEST-BATCH-11>
+183   (CALL2 12)                          ; FORMAT
+185   (LOAD&PUSH 14)
+186   (CALLS1 139)                        ; TERPRI
+188   (LOAD&PUSH 16)
+189   (LOAD&PUSH 15)
+190   (CALL2 26)                          ; MGRIND
+192   (LOAD&PUSH 14)
+193   (CONST&PUSH 31)                     ; #<COMPILED-CLOSURE TEST-BATCH-12>
+195   (CALL2 12)                          ; FORMAT
+197   L197
+197   (LOAD&PUSH 0)
+198   (CONST&PUSH 32)                     ; 16777214
+200   (CALLSR&JMPIF 1 47 L206)            ; <
+204   (CALL0 33)                          ; SLOOP::SLOOP-TYPE-ERROR
+206   L206
+206   (LOAD&INC&STORE 0)
+208   L208
+208   (LOAD&PUSH 4)
+209   (NIL&PUSH)
+210   (CALL2 15)                          ; MREAD
+212   (STORE 1)
+213   (JMPIF L84)
+216   (SKIP 2)
+218   (LOAD&JMPIFNOT 2 L224)
+221   (PUSH)
+222   (CALL1 34)                          ; CLOSE
+224   L224
+224   (VALUES0)
+225   (UNWIND-PROTECT-NORMAL-EXIT)
+226   (LOADI 0 0 0)
+230   (JMPIFNOT L247)
+232   (JMP L240)
+234   L234
+234   (LOADI 0 0 0)
+238   (JMPIFNOT L247)
+240   L240
+240   (PUSH)
+241   (CONST&PUSH 35)                     ; :ABORT
+243   (T&PUSH)
+244   (CALL 3 34)                         ; CLOSE
+247   L247
+247   (UNWIND-PROTECT-CLOSE)
+248   (SKIP 1)
+250   (VALUES0)
+251   (UNWIND-PROTECT-NORMAL-EXIT)
+252   (LOADI 0 0 7)
+256   (JMPIFNOT L288)
+258   (JMP L277)
+260   L260
+260   (CONST&PUSH 36)                     ; #<COMPILED-CLOSURE TEST-BATCH-13>
+262   (GETVALUE&PUSH 0)                   ; *STANDARD-OUTPUT*
+264   (CALLSR 1 21)                       ; FUNCALL
+267   (CONST 37)                          ; ((MLIST))
+269   (JMP L309)
+271   L271
+271   (LOADI 0 0 7)
+275   (JMPIFNOT L288)
+277   L277
+277   (GETVALUE&PUSH 5)                   ; *COLLECT-ERRORS*
+279   (CALLS2&JMPIF 22 L288)              ; STREAMP
+282   (LOADI&PUSH 0 0 7)
+286   (CALL1 34)                          ; CLOSE
+288   L288
+288   (UNWIND-PROTECT-CLOSE)
+289   (LOAD&JMPIFNOT 6 L260)
+292   (CONST&PUSH 38)                     ; #<COMPILED-CLOSURE TEST-BATCH-14>
+294   (GETVALUE&PUSH 0)                   ; *STANDARD-OUTPUT*
+296   (LOAD&PUSH 8)
+297   (CALLS2&PUSH 71)                    ; LENGTH
+299   (LOAD&PUSH 9)
+300   (CALLSR 3 21)                       ; FUNCALL
+303   (CONST&PUSH 39)                     ; (MLIST)
+305   (LOAD&PUSH 14)
+306   (LOAD 8)
+307   (LIST* 2)
+309   L309
+309   (UNBIND 2)
+311   (SKIP&RET 8)
+
+
+Disassembly of function TEST-BATCH-1
+(CONST 0) = 
+"
+Error log on "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Error log on "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD 1)
+11    (SKIP&RET 4)
+
+
+Disassembly of function TEST-BATCH-2
+(CONST 0) = 
+"
+/*    MAXIMA-ERROR log for testing of "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+/*    MAXIMA-ERROR log for testing of "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD 1)
+11    (SKIP&RET 4)
+
+
+Disassembly of function TEST-BATCH-3
+(CONST 0) = "*/"
+(CONST 1) = 2
+(CONST 2) = SYSTEM::FORMAT-TERPRI
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "*/"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (PUSH-NIL 2)
+9     (CONST&PUSH 1)                      ; 2
+10    (CALL 4 2)                          ; SYSTEM::FORMAT-TERPRI
+13    (LOAD 1)
+14    (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-4
+(CONST 0) = 
+"
+/* ********************** Problem "
+(CONST 1) = ". *************** */ "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+/* ********************** Problem "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; ". *************** */ "
+11    (LOAD&PUSH 4)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD 1)
+17    (SKIP&RET 4)
+
+
+Disassembly of function TEST-BATCH-5
+(CONST 0) = 
+"
+%Input is"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+%Input is"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-6
+(CONST 0) = 
+"
+
+The result is"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+
+The result is"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-7
+(CONST 0) = 
+"
+..Which was correct"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+..Which was correct"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-8
+(CONST 0) = 
+"
+This differed from the expected result:"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+This differed from the expected result:"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-9
+(CONST 0) = 
+";
+"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ";
+"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-10
+(CONST 0) = 
+"//*Erroneous Result?:
+"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "//*Erroneous Result?:
+"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-11
+(CONST 0) = "*// "
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "*// "
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-12
+(CONST 0) = 
+";
+
+"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ";
+
+"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-13
+(CONST 0) = 
+"
+Congratulations: No differences!"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Congratulations: No differences!"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function TEST-BATCH-14
+(CONST 0) = 
+"
+The number of differences found was "
+(CONST 1) = " in problems: "
+3 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+The number of differences found was "
+1     (LOAD&PUSH 5)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 3)
+7     (LOAD&PUSH 5)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; " in problems: "
+11    (LOAD&PUSH 5)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD&PUSH 2)
+17    (LOAD&PUSH 5)
+18    (CALLS1 132)                        ; PRINC
+20    (LOAD 1)
+21    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN BATCH-EQUAL-CHECK (NEXT-RESULT RESULT &OPTIONAL ...) ...)-29|
+(CONST 0) = BATCH-EQUAL-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE BATCH-EQUAL-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; BATCH-EQUAL-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; BATCH-EQUAL-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE BATCH-EQUAL-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; BATCH-EQUAL-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function BATCH-EQUAL-CHECK
+(CONST 0) = LIKE
+(CONST 1) = $SIMPLE_EQUAL
+(CONST 2) = $FUNCTIONS
+(CONST 3) = MEVAL*
+(CONST 4) = $BFLOATP
+(CONST 5) = 12
+(CONST 6) = $FPPREC
+(CONST 7) = MSTRING
+(CONST 8) = FACTORED
+(CONST 9) = APPEARS-IN
+(CONST 10) = #<COMPILED-CLOSURE BATCH-EQUAL-CHECK-1>
+(CONST 11) = *STANDARD-OUTPUT*
+(CONST 12) = $RATSIMP
+(CONST 13) = (MPLUS)
+(CONST 14) = (MTIMES)
+(CONST 15) = -1
+(CONST 16) = 0
+(CONST 17) = MSIZE
+2 required arguments
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (*STANDARD-OUTPUT* $FUNCTIONS)
+67 byte-code instructions:
+0     L0
+0     (UNBOUND->NIL 1)
+2     (LOAD&PUSH 3)
+3     (LOAD&PUSH 3)
+4     (CALL2 0)                           ; LIKE
+6     (JMPIF1 L105)
+9     (LOAD&PUSH 3)
+10    (LOAD&PUSH 3)
+11    (CALL2 1)                           ; $SIMPLE_EQUAL
+13    (JMPIF1 L105)
+16    (LOAD&JMPIF 1 L35)
+19    (LOAD&PUSH 2)
+20    (GETVALUE&PUSH 2)                   ; $FUNCTIONS
+22    (CALL2&JMPIF 1 L35)                 ; $SIMPLE_EQUAL
+25    (LOAD&PUSH 3)
+26    (CALL1&PUSH 3)                      ; MEVAL*
+28    (LOAD&PUSH 3)
+29    (T&PUSH)
+30    (JSR L0)
+32    (JMPIF1 L105)
+35    L35
+35    (LOAD&PUSH 2)
+36    (CALL1&JMPIF 4 L53)                 ; $BFLOATP
+39    (CONST 5)                           ; 12
+40    (BIND 6)                            ; $FPPREC
+42    (LOAD&PUSH 5)
+43    (CALL1&PUSH 7)                      ; MSTRING
+45    (LOAD&PUSH 7)
+46    (CALL1&PUSH 7)                      ; MSTRING
+48    (CALLS2 2)                          ; EQUAL
+50    (UNBIND1)
+51    (JMPIF1 L105)
+53    L53
+53    (LOAD&PUSH 2)
+54    (CONST&PUSH 8)                      ; FACTORED
+55    (CALL2&JMPIF 9 L74)                 ; APPEARS-IN
+58    (CONST&PUSH 10)                     ; #<COMPILED-CLOSURE BATCH-EQUAL-CHECK-1>
+59    (GETVALUE&PUSH 11)                  ; *STANDARD-OUTPUT*
+61    (CALLSR 1 21)                       ; FUNCALL
+64    (LOAD&PUSH 3)
+65    (CALL1&PUSH 12)                     ; $RATSIMP
+67    (LOAD&PUSH 3)
+68    (CALL1&PUSH 12)                     ; $RATSIMP
+70    (CALL2 0)                           ; LIKE
+72    (JMPIF1 L105)
+74    L74
+74    (CONST&PUSH 13)                     ; (MPLUS)
+75    (LOAD&PUSH 4)
+76    (CONST&PUSH 14)                     ; (MTIMES)
+77    (CONST&PUSH 15)                     ; -1
+78    (LOAD&PUSH 6)
+79    (LIST&PUSH 3)
+81    (LIST&PUSH 3)
+83    (CALL1&PUSH 12)                     ; $RATSIMP
+85    (CONST 16)                          ; 0
+86    (EQ)
+87    (JMPIF1 L105)
+89    (LOAD&PUSH 2)
+90    (PUSH-NIL 4)
+92    (CALL&PUSH 5 17)                    ; MSIZE
+95    (LOAD&PUSH 4)
+96    (PUSH-NIL 4)
+98    (CALL&PUSH 5 17)                    ; MSIZE
+101   (CALLS2 2)                          ; EQUAL
+103   (SKIP&RET 4)
+105   L105
+105   (SKIP&RET 4)
+
+
+Disassembly of function BATCH-EQUAL-CHECK-1
+(CONST 0) = 
+"
+Using ratsimp"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Using ratsimp"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN LIST-VARIABLE-BINDINGS (EXPR &OPTIONAL STR ...) ...)-30|
+(CONST 0) = LIST-VARIABLE-BINDINGS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LIST-VARIABLE-BINDINGS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LIST-VARIABLE-BINDINGS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LIST-VARIABLE-BINDINGS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LIST-VARIABLE-BINDINGS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LIST-VARIABLE-BINDINGS
+8     (SKIP&RET 1)
+
+
+Disassembly of function LIST-VARIABLE-BINDINGS
+(CONST 0) = $LISTOFVARS
+(CONST 1) = $VALUES
+(CONST 2) = ZL-MEMBER
+(CONST 3) = (MEQUAL)
+(CONST 4) = MEVAL*
+(CONST 5) = #<COMPILED-CLOSURE LIST-VARIABLE-BINDINGS-1>
+(CONST 6) = FORMAT
+(CONST 7) = MGRIND
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: ($VALUES)
+51 byte-code instructions:
+0     (UNBOUND->NIL 1)
+2     (PUSH-NIL 2)
+4     (LOAD&PUSH 4)
+5     (CALL1 0)                           ; $LISTOFVARS
+7     (CDR&PUSH)
+8     (PUSH-NIL 3)
+10    (LOAD&JMPIFNOT 3 L56)
+13    L13
+13    (LOAD&CAR&PUSH 3)
+15    (LOAD 0)
+16    (STORE 5)
+17    (STORE 0)
+18    (GETVALUE&PUSH 1)                   ; $VALUES
+20    (CALL2&JMPIFNOT 2 L51)              ; ZL-MEMBER
+23    (CONST&PUSH 3)                      ; (MEQUAL)
+24    (LOAD&PUSH 5)
+25    (LOAD&PUSH 6)
+26    (CALL1&PUSH 4)                      ; MEVAL*
+28    (LIST 3)
+30    (STORE 5)
+31    (STORE 0)
+32    (LOAD&JMPIF 1 L59)
+35    (LOAD&PUSH 0)
+36    (NIL)
+37    (CONS)
+38    (STORE 1)
+39    (STORE 2)
+40    (LOAD&JMPIFNOT 7 L51)
+43    L43
+43    (PUSH)
+44    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE LIST-VARIABLE-BINDINGS-1>
+45    (CALL2 6)                           ; FORMAT
+47    (LOAD&PUSH 5)
+48    (LOAD&PUSH 8)
+49    (CALL2 7)                           ; MGRIND
+51    L51
+51    (LOAD&CDR&STORE 3)
+53    (LOAD&JMPIF 3 L13)
+56    L56
+56    (LOAD 2)
+57    (SKIP&RET 9)
+59    L59
+59    (PUSH)
+60    (LOAD&PUSH 1)
+61    (NIL)
+62    (CONS)
+63    (STORE 2)
+64    (PUSH)
+65    (CALLS1 171)                        ; SYSTEM::%RPLACD
+67    (LOAD&JMPIFNOT 7 L51)
+70    (JMP L43)
+
+
+Disassembly of function LIST-VARIABLE-BINDINGS-1
+(CONST 0) = #\,
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #\,
+1     (LOAD&PUSH 3)
+2     (CALLS1 136)                        ; WRITE-CHAR
+4     (LOAD 1)
+5     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN $FILE_SEARCH (NAME &OPTIONAL PATHS) ...)-31|
+(CONST 0) = $FILE_SEARCH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FILE_SEARCH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILE_SEARCH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FILE_SEARCH
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FILE_SEARCH>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FILE_SEARCH
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FILE_SEARCH
+(CONST 0) = NAME
+(CONST 1) = 1
+(CONST 2) = GETCHARN
+(CONST 3) = (#\& #\$)
+(CONST 4) = $FILE_SEARCH_LISP
+(CONST 5) = $FILE_SEARCH_MAXIMA
+(CONST 6) = $FILE_SEARCH_DEMO
+(CONST 7) = $APPEND
+(CONST 8) = $FILE_SEARCH
+(CONST 9) = ATOMCHK
+(CONST 10) = NEW-FILE-SEARCH
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: ($FILE_SEARCH_DEMO $FILE_SEARCH_MAXIMA $FILE_SEARCH_LISP NAME)
+writes special variable : (NAME)
+47 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; NAME
+3     (UNBOUND->NIL 4)
+5     (GETVALUE&PUSH 0)                   ; NAME
+7     (CALLS2&JMPIFNOT 6 L32)             ; SYMBOLP
+10    (GETVALUE&PUSH 0)                   ; NAME
+12    (CONST&PUSH 1)                      ; 1
+13    (CALL2&PUSH 2)                      ; GETCHARN
+15    (CONST&PUSH 3)                      ; (#\& #\$)
+16    (PUSH-UNBOUND 3)
+18    (CALLS1&JMPIFNOT 180 L32)           ; MEMBER
+21    (GETVALUE&PUSH 0)                   ; NAME
+23    (CALLS2&PUSH 140)                   ; SYMBOL-NAME
+25    (CONST&PUSH 1)                      ; 1
+26    (PUSH-UNBOUND 1)
+28    (CALLS2 69)                         ; SUBSEQ
+30    (SETVALUE 0)                        ; NAME
+32    L32
+32    (GETVALUE&PUSH 0)                   ; NAME
+34    (CALLS2&JMPIFNOT 6 L43)             ; SYMBOLP
+37    (GETVALUE&PUSH 0)                   ; NAME
+39    (CALLS1 75)                         ; STRING
+41    (SETVALUE 0)                        ; NAME
+43    L43
+43    (GETVALUE&PUSH 0)                   ; NAME
+45    (CALLS1&JMPIF 246 L78)              ; PROBE-FILE
+48    (LOAD&JMPIF 4 L61)
+51    (GETVALUE&PUSH 4)                   ; $FILE_SEARCH_LISP
+53    (GETVALUE&PUSH 5)                   ; $FILE_SEARCH_MAXIMA
+55    (GETVALUE&PUSH 6)                   ; $FILE_SEARCH_DEMO
+57    (CALL 3 7)                          ; $APPEND
+60    (STORE 4)
+61    L61
+61    (LOAD&PUSH 4)
+62    (CONST&PUSH 8)                      ; $FILE_SEARCH
+63    (T&PUSH)
+64    (CALL 3 9)                          ; ATOMCHK
+67    (GETVALUE&PUSH 0)                   ; NAME
+69    (CALLS1&PUSH 75)                    ; STRING
+71    (LOAD&CDR&PUSH 5)
+73    (CALL2 10)                          ; NEW-FILE-SEARCH
+75    L75
+75    (UNBIND1)
+76    (SKIP&RET 3)
+78    L78
+78    (GETVALUE 0)                        ; NAME
+80    (JMP L75)
+
+
+Disassembly of function #:|(DEFUN NEW-FILE-SEARCH (NAME TEMPLATE &AUX ...) ...)-32|
+(CONST 0) = NEW-FILE-SEARCH
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NEW-FILE-SEARCH>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NEW-FILE-SEARCH
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NEW-FILE-SEARCH
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NEW-FILE-SEARCH>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NEW-FILE-SEARCH
+8     (SKIP&RET 1)
+
+
+Disassembly of function NEW-FILE-SEARCH
+(CONST 0) = NAME
+(CONST 1) = $FILENAME_MERGE
+(CONST 2) = "{}"
+(CONST 3) = SPLIT-STRING
+(CONST 4) = #\,
+(CONST 5) = ","
+(CONST 6) = ""
+(CONST 7) = NEW-FILE-SEARCH1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (NAME)
+97 byte-code instructions:
+0     L0
+0     (LOAD 2)
+1     (BIND 0)                            ; NAME
+3     (PUSH-NIL 2)
+5     (GETVALUE&PUSH 0)                   ; NAME
+7     (CALLS1 246)                        ; PROBE-FILE
+9     (JMPIF1 L131)
+12    (LOAD 6)
+13    (JMPIFCONSP L99)
+16    (LOAD&PUSH 6)
+17    (GETVALUE&PUSH 0)                   ; NAME
+19    (CALL2&PUSH 1)                      ; $FILENAME_MERGE
+21    (PUSH-UNBOUND 1)
+23    (CALLS1&STORE 244 6)                ; NAMESTRING
+26    (NIL&PUSH)
+27    (LOAD&PUSH 7)
+28    (CONST&PUSH 2)                      ; "{}"
+29    (CALL2&PUSH 3)                      ; SPLIT-STRING
+31    (PUSH-NIL 3)
+33    (LOAD&JMPIFNOT 3 L89)
+36    L36
+36    (LOAD&CAR&PUSH 3)
+38    (LOAD 0)
+39    (STORE 5)
+40    (SKIP 1)
+42    (CONST&PUSH 4)                      ; #\,
+43    (LOAD&PUSH 5)
+44    (PUSH-UNBOUND 6)
+46    (CALLS2&JMPIFNOT 95 L72)            ; POSITION
+49    (LOAD&PUSH 4)
+50    (CONST&PUSH 5)                      ; ","
+51    (CALL2 3)                           ; SPLIT-STRING
+53    (STORE 0)
+54    (LOAD&JMPIFNOT 1 L78)
+57    (PUSH)
+58    (LOAD 1)
+59    L59
+59    (PUSH)
+60    (NIL)
+61    (CONS)
+62    (STORE 2)
+63    (PUSH)
+64    (CALLS1 171)                        ; SYSTEM::%RPLACD
+66    (JMP L84)
+68    L68
+68    (PUSH)
+69    (LOAD 5)
+70    (JMP L59)
+72    L72
+72    (LOAD&JMPIF 1 L68)
+75    (LOAD 4)
+76    (JMP L79)
+78    L78
+78    (LOAD 0)
+79    L79
+79    (PUSH)
+80    (NIL)
+81    (CONS)
+82    (STORE 1)
+83    (STORE 2)
+84    L84
+84    (LOAD&CDR&STORE 3)
+86    (LOAD&JMPIF 3 L36)
+89    L89
+89    (LOAD 2)
+90    (SKIP 5)
+92    (STORE 1)
+93    (CONST&PUSH 6)                      ; ""
+94    (LOAD&PUSH 2)
+95    (CALL2 7)                           ; NEW-FILE-SEARCH1
+97    (JMP L131)
+99    L99
+99    (NIL&PUSH)
+100   (LOAD&PUSH 7)
+101   (LOAD&JMPIF 0 L114)
+104   L104
+104   (NIL)
+105   (SKIP 2)
+107   (JMP L131)
+109   L109
+109   (LOAD&CDR&STORE 0)
+111   (LOAD&JMPIFNOT 0 L104)
+114   L114
+114   (LOAD&CAR&PUSH 0)
+116   (LOAD 0)
+117   (STORE 2)
+118   (SKIP 1)
+120   (GETVALUE&PUSH 0)                   ; NAME
+122   (LOAD&PUSH 2)
+123   (JSR L0)
+126   (STORE 2)
+127   (JMPIFNOT L109)
+129   (SKIP 2)
+131   L131
+131   (SKIP 2)
+133   (UNBIND1)
+134   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN NEW-FILE-SEARCH1 (BEGIN LIS) ...)-33|
+(CONST 0) = NEW-FILE-SEARCH1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NEW-FILE-SEARCH1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NEW-FILE-SEARCH1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NEW-FILE-SEARCH1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NEW-FILE-SEARCH1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NEW-FILE-SEARCH1
+8     (SKIP&RET 1)
+
+
+Disassembly of function NEW-FILE-SEARCH1
+(CONST 0) = $SCONCAT
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+52 byte-code instructions:
+0     (LOAD&JMPIF 1 L33)
+3     L3
+3     (LOAD&PUSH 2)
+4     (CALLS1 246)                        ; PROBE-FILE
+6     (JMPIFNOT1 L70)
+8     (LOAD 2)
+9     (SKIP&RET 3)
+11    L11
+11    (PUSH)
+12    (LOAD&CAR&PUSH 2)
+14    (CALL2 0)                           ; $SCONCAT
+16    (JMP L23)
+18    L18
+18    (LOAD&JMPIF 2 L11)
+21    (LOAD 1)
+22    (CAR)
+23    L23
+23    (PUSH)
+24    (LOAD&CDR&PUSH 2)
+26    (JMPTAIL 2 5 L30)
+30    L30
+30    (LOAD&JMPIFNOT 1 L3)
+33    L33
+33    (LOAD 1)
+34    (CAR)
+35    (JMPIFATOM L18)
+37    (NIL&PUSH)
+38    (LOAD&CAR&PUSH 2)
+40    (NIL&PUSH)
+41    (LOAD&JMPIF 1 L52)
+44    L44
+44    (NIL)
+45    (SKIP&RET 6)
+47    L47
+47    (LOAD&CDR&STORE 1)
+49    (LOAD&JMPIFNOT 1 L44)
+52    L52
+52    (LOAD&CAR&PUSH 1)
+54    (LOAD 0)
+55    (STORE 3)
+56    (SKIP 1)
+58    (LOAD&PUSH 5)
+59    (LOAD&PUSH 3)
+60    (LOAD 6)
+61    (CDR)
+62    (CONS&PUSH)
+63    (JSR L30)
+65    (STORE 0)
+66    (JMPIFNOT L47)
+68    (SKIP&RET 6)
+70    L70
+70    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN SAVE-LINENUMBERS (&KEY # D-LINES ...) ...)-34|
+(CONST 0) = SAVE-LINENUMBERS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SAVE-LINENUMBERS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SAVE-LINENUMBERS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SAVE-LINENUMBERS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SAVE-LINENUMBERS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SAVE-LINENUMBERS
+8     (SKIP&RET 1)
+
+
+Disassembly of function SAVE-LINENUMBERS
+(CONST 0) = :C-LINES
+(CONST 1) = :D-LINES
+(CONST 2) = :FROM
+(CONST 3) = :BELOW
+(CONST 4) = :A-LIST
+(CONST 5) = :FILE
+(CONST 6) = 1
+(CONST 7) = $LINENUM
+(CONST 8) = "/tmp/lines"
+(CONST 9) = 79
+(CONST 10) = LINEL
+(CONST 11) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 12) = :OUTPUT
+(CONST 13) = #.#'VALUES
+(CONST 14) = #<COMPILED-CLOSURE SAVE-LINENUMBERS-1>
+(CONST 15) = FORMAT
+(CONST 16) = #<COMPILED-CLOSURE SAVE-LINENUMBERS-2>
+(CONST 17) = GET-DECODED-TIME
+(CONST 18) = #\:
+(CONST 19) = "$C"
+(CONST 20) = #<COMPILED-CLOSURE SAVE-LINENUMBERS-3>
+(CONST 21) = MGRIND
+(CONST 22) = #<COMPILED-CLOSURE SAVE-LINENUMBERS-4>
+(CONST 23) = "$D"
+(CONST 24) = #<COMPILED-CLOSURE SAVE-LINENUMBERS-5>
+(CONST 25) = #<COMPILED-CLOSURE SAVE-LINENUMBERS-6>
+(CONST 26) = CLOSE
+(CONST 27) = :ABORT
+0 required arguments
+0 optional arguments
+No rest parameter
+6 keyword parameters: :C-LINES, :D-LINES, :FROM, :BELOW, :A-LIST, :FILE.
+reads special variable: ($LINENUM)
+204 byte-code instructions:
+0     (JMPIFBOUNDP 6 L5)
+3     (T&STORE 6)
+5     L5
+5     (UNBOUND->NIL 5)
+7     (JMPIFBOUNDP 4 L12)
+10    (CONST 6)                           ; 1
+11    (STORE 4)
+12    L12
+12    (JMPIFBOUNDP 3 L18)
+15    (GETVALUE 7)                        ; $LINENUM
+17    (STORE 3)
+18    L18
+18    (UNBOUND->NIL 2)
+20    (JMPIFBOUNDP 1 L25)
+23    (CONST 8)                           ; "/tmp/lines"
+24    (STORE 1)
+25    L25
+25    (NIL&PUSH)
+26    (CONST 9)                           ; 79
+27    (BIND 10)                           ; LINEL
+29    (LOAD&JMPIF 6 L104)
+33    (LOAD&PUSH 8)
+34    (CALLS2&JMPIF 13 L39)               ; SYSTEM::FIXNUMP
+37    (CALL0 11)                          ; SLOOP::SLOOP-TYPE-ERROR
+39    L39
+39    (LOAD&PUSH 8)
+40    (LOAD&PUSH 8)
+41    (CALLS2&JMPIF 13 L46)               ; SYSTEM::FIXNUMP
+44    (CALL0 11)                          ; SLOOP::SLOOP-TYPE-ERROR
+46    L46
+46    (LOAD&PUSH 8)
+47    (PUSH-NIL 2)
+49    (JMP L94)
+51    L51
+51    (PUSH)
+52    (LOAD&PUSH 4)
+53    (NIL)
+54    (CONS)
+55    (STORE 1)
+56    (PUSH)
+57    (CALLS1 171)                        ; SYSTEM::%RPLACD
+59    (JMP L92)
+61    L61
+61    (LOAD&PUSH 5)
+62    (CONST&PUSH 20)                     ; #<COMPILED-CLOSURE SAVE-LINENUMBERS-3>
+63    (LOAD&PUSH 3)
+64    (CALL 3 15)                         ; FORMAT
+67    (LOAD&PUSH 9)
+68    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+70    (LOAD&PUSH 6)
+71    (CALL2 21)                          ; MGRIND
+73    (LOAD&PUSH 5)
+74    (CONST&PUSH 22)                     ; #<COMPILED-CLOSURE SAVE-LINENUMBERS-4>
+75    (CALL2 15)                          ; FORMAT
+77    (LOAD&JMPIFNOT 15 L260)
+81    (JMP L217)
+84    L84
+84    (LOAD&JMPIF 0 L51)
+87    (LOAD&PUSH 3)
+88    (NIL)
+89    (CONS)
+90    (STORE 0)
+91    (STORE 1)
+92    L92
+92    (LOAD&INC&STORE 3)
+94    L94
+94    (LOAD&PUSH 3)
+95    (LOAD&PUSH 3)
+96    (CALLSR&JMPIFNOT 1 50 L84)          ; >=
+100   (LOAD 1)
+101   (SKIP 4)
+103   (STORE 6)
+104   L104
+104   (LOAD&PUSH 5)
+105   (CONST&PUSH 12)                     ; :OUTPUT
+106   (PUSH-UNBOUND 5)
+108   (CALLS1&PUSH 249)                   ; OPEN
+110   (UNWIND-PROTECT-OPEN L289)
+113   (CONST 13)                          ; #.#'VALUES
+114   (MVCALLP)
+115   (LOAD&PUSH 3)
+116   (CONST&PUSH 14)                     ; #<COMPILED-CLOSURE SAVE-LINENUMBERS-1>
+117   (CALL2 15)                          ; FORMAT
+119   (LOAD&PUSH 3)
+120   (CONST&PUSH 16)                     ; #<COMPILED-CLOSURE SAVE-LINENUMBERS-2>
+121   (CALL0 17)                          ; GET-DECODED-TIME
+123   (MV-TO-LIST)
+124   (CDR)
+125   (CDR)
+126   (CDR&PUSH)
+127   (PUSH-UNBOUND 2)
+129   (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+131   (LOAD&CAR&PUSH 1)
+133   (LOAD 2)
+134   (CDR)
+135   (CAR&PUSH)
+136   (LOAD 3)
+137   (CDR)
+138   (CAR)
+139   (CAR&PUSH)
+140   (LOAD&PUSH 2)
+141   (LOAD&PUSH 4)
+142   (CALLS1 132)                        ; PRINC
+144   (CONST&PUSH 18)                     ; #\:
+145   (LOAD&PUSH 4)
+146   (CALLS1 136)                        ; WRITE-CHAR
+148   (LOAD&PUSH 1)
+149   (LOAD&PUSH 4)
+150   (CALLS1 132)                        ; PRINC
+152   (CONST&PUSH 18)                     ; #\:
+153   (LOAD&PUSH 4)
+154   (CALLS1 136)                        ; WRITE-CHAR
+156   (LOAD&PUSH 0)
+157   (LOAD&PUSH 4)
+158   (CALLS1 132)                        ; PRINC
+160   (SKIP 3)
+162   (LOAD&PUSH 0)
+163   (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+165   (SKIP 1)
+167   (STORE 0)
+168   (CALL 3 15)                         ; FORMAT
+171   (NIL&PUSH)
+172   (LOAD&PUSH 11)
+173   (LOAD&JMPIFNOT 0 L266)
+177   L177
+177   (LOAD&CAR&PUSH 0)
+179   (LOAD 0)
+180   (STORE 2)
+181   (SKIP 1)
+183   (LOAD&JMPIFNOT 16 L214)
+186   (PUSH-UNBOUND 2)
+188   (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+190   (CONST&PUSH 19)                     ; "$C"
+191   (LOAD&PUSH 1)
+192   (PUSH-UNBOUND 2)
+194   (CALLS1 137)                        ; WRITE-STRING
+196   (LOAD&PUSH 2)
+197   (LOAD&PUSH 1)
+198   (CALLS1 132)                        ; PRINC
+200   (LOAD&PUSH 0)
+201   (CALLS2&STORE 118 0)                ; GET-OUTPUT-STREAM-STRING
+204   (PUSH-UNBOUND 1)
+206   (CALLS1&STORE 212 9)                ; INTERN
+209   (PUSH)
+210   (CALLS1&JMPIF 79 L61)               ; BOUNDP
+214   L214
+214   (LOAD&JMPIFNOT 15 L260)
+217   L217
+217   (PUSH-UNBOUND 2)
+219   (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+221   (CONST&PUSH 23)                     ; "$D"
+222   (LOAD&PUSH 1)
+223   (PUSH-UNBOUND 2)
+225   (CALLS1 137)                        ; WRITE-STRING
+227   (LOAD&PUSH 2)
+228   (LOAD&PUSH 1)
+229   (CALLS1 132)                        ; PRINC
+231   (LOAD&PUSH 0)
+232   (CALLS2&STORE 118 0)                ; GET-OUTPUT-STREAM-STRING
+235   (PUSH-UNBOUND 1)
+237   (CALLS1&STORE 212 9)                ; INTERN
+240   (PUSH)
+241   (CALLS1&JMPIFNOT 79 L260)           ; BOUNDP
+244   (LOAD&PUSH 5)
+245   (CONST&PUSH 24)                     ; #<COMPILED-CLOSURE SAVE-LINENUMBERS-5>
+246   (LOAD&PUSH 3)
+247   (CALL 3 15)                         ; FORMAT
+250   (LOAD&PUSH 9)
+251   (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+253   (LOAD&PUSH 6)
+254   (CALL2 21)                          ; MGRIND
+256   (LOAD&PUSH 5)
+257   (CONST&PUSH 25)                     ; #<COMPILED-CLOSURE SAVE-LINENUMBERS-6>
+258   (CALL2 15)                          ; FORMAT
+260   L260
+260   (LOAD&CDR&STORE 0)
+262   (LOAD&JMPIF 0 L177)
+266   L266
+266   (NIL)
+267   (SKIP 2)
+269   (MV-TO-STACK)
+270   (LOADI 0 0 2)
+274   (JMPIFNOT L279)
+276   (PUSH)
+277   (CALL1 26)                          ; CLOSE
+279   L279
+279   (MVCALL)
+280   (UNWIND-PROTECT-NORMAL-EXIT)
+281   (LOADI 0 0 0)
+285   (JMPIFNOT L301)
+287   (JMP L295)
+289   L289
+289   (LOADI 0 0 0)
+293   (JMPIFNOT L301)
+295   L295
+295   (PUSH)
+296   (CONST&PUSH 27)                     ; :ABORT
+297   (T&PUSH)
+298   (CALL 3 26)                         ; CLOSE
+301   L301
+301   (UNWIND-PROTECT-CLOSE)
+302   (SKIP 1)
+304   (UNBIND1)
+305   (SKIP&RET 8)
+
+
+Disassembly of function SAVE-LINENUMBERS-1
+(CONST 0) = "/* -*- Mode: MACSYMA; Package: MACSYMA -*- */"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "/* -*- Mode: MACSYMA; Package: MACSYMA -*- */"
+1     (LOAD&PUSH 3)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD 1)
+7     (SKIP&RET 3)
+
+
+Disassembly of function SAVE-LINENUMBERS-2
+(CONST 0) = 
+"
+
+       /*    "
+(CONST 1) = 
+"     */  
+"
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+
+       /*    "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (CONST&PUSH 1)                      ; "     */  
+"
+11    (LOAD&PUSH 4)
+12    (PUSH-UNBOUND 2)
+14    (CALLS1 137)                        ; WRITE-STRING
+16    (LOAD 1)
+17    (SKIP&RET 4)
+
+
+Disassembly of function SAVE-LINENUMBERS-3
+(CONST 0) = 
+"
+ C"
+(CONST 1) = 3
+(CONST 2) = SYSTEM::DO-FORMAT-ASCII
+(CONST 3) = ";  "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+ C"
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 3)
+7     (PUSH-NIL 2)
+9     (CONST&PUSH 1)                      ; 3
+10    (PUSH-NIL 3)
+12    (LOAD&PUSH 9)
+13    (CALL 8 2)                          ; SYSTEM::DO-FORMAT-ASCII
+16    (CONST&PUSH 3)                      ; ";  "
+17    (LOAD&PUSH 4)
+18    (PUSH-UNBOUND 2)
+20    (CALLS1 137)                        ; WRITE-STRING
+22    (LOAD 1)
+23    (SKIP&RET 4)
+
+
+Disassembly of function SAVE-LINENUMBERS-4
+(CONST 0) = #\;
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #\;
+1     (LOAD&PUSH 3)
+2     (CALLS1 136)                        ; WRITE-CHAR
+4     (LOAD 1)
+5     (SKIP&RET 3)
+
+
+Disassembly of function SAVE-LINENUMBERS-5
+(CONST 0) = 
+"
+ D"
+(CONST 1) = 3
+(CONST 2) = SYSTEM::DO-FORMAT-ASCII
+(CONST 3) = ":  "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+ D"
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 3)
+7     (PUSH-NIL 2)
+9     (CONST&PUSH 1)                      ; 3
+10    (PUSH-NIL 3)
+12    (LOAD&PUSH 9)
+13    (CALL 8 2)                          ; SYSTEM::DO-FORMAT-ASCII
+16    (CONST&PUSH 3)                      ; ":  "
+17    (LOAD&PUSH 4)
+18    (PUSH-UNBOUND 2)
+20    (CALLS1 137)                        ; WRITE-STRING
+22    (LOAD 1)
+23    (SKIP&RET 4)
+
+
+Disassembly of function SAVE-LINENUMBERS-6
+(CONST 0) = #\$
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #\$
+1     (LOAD&PUSH 3)
+2     (CALLS1 136)                        ; WRITE-CHAR
+4     (LOAD 1)
+5     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN $PRINTFILE (FILE) ...)-35|
+(CONST 0) = $PRINTFILE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $PRINTFILE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PRINTFILE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $PRINTFILE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $PRINTFILE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $PRINTFILE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $PRINTFILE
+(CONST 0) = ((MLIST) $FILE_SEARCH_USAGE)
+(CONST 1) = $FILE_SEARCH1
+(CONST 2) = #.#'VALUES
+(CONST 3) = CLOSE
+(CONST 4) = :ABORT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+47 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; ((MLIST) $FILE_SEARCH_USAGE)
+2     (CALL2 1)                           ; $FILE_SEARCH1
+4     (STORE 1)
+5     (PUSH)
+6     (PUSH-UNBOUND 6)
+8     (CALLS1&PUSH 249)                   ; OPEN
+10    (UNWIND-PROTECT-OPEN L57)
+12    (CONST 2)                           ; #.#'VALUES
+13    (MVCALLP)
+14    (NIL&PUSH)
+15    (JMP L22)
+17    L17
+17    (LOAD&PUSH 0)
+18    (PUSH-UNBOUND 1)
+20    (CALLS1 132)                        ; PRINC
+22    L22
+22    (LOAD&PUSH 4)
+23    (PUSH-UNBOUND 3)
+25    (CALLS1&STORE 120 0)                ; READ-CHAR
+28    (JMPIF L17)
+30    (SKIP 1)
+32    (LOAD&PUSH 5)
+33    (PUSH-UNBOUND 1)
+35    (CALLS1 244)                        ; NAMESTRING
+37    (MV-TO-STACK)
+38    (LOADI 0 0 2)
+42    (JMPIFNOT L47)
+44    (PUSH)
+45    (CALL1 3)                           ; CLOSE
+47    L47
+47    (MVCALL)
+48    (UNWIND-PROTECT-NORMAL-EXIT)
+49    (LOADI 0 0 0)
+53    (JMPIFNOT L69)
+55    (JMP L63)
+57    L57
+57    (LOADI 0 0 0)
+61    (JMPIFNOT L69)
+63    L63
+63    (PUSH)
+64    (CONST&PUSH 4)                      ; :ABORT
+65    (T&PUSH)
+66    (CALL 3 3)                          ; CLOSE
+69    L69
+69    (UNWIND-PROTECT-CLOSE)
+70    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/mload.fas
+Wrote file /cygdrive/e/temp/maxima/src/mload.lis

@@ -1,0 +1,5426 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/commac.lisp
+on 2002-12-17 13:31:54 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/commac.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE) (PROCLAIM '#))-2|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE LOAD EVAL) (DEFMACRO DEFFIF # ...) ...)-3-1|
+(CONST 0) = DEFFIF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFFIF>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFFIF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFFIF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFFIF>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFFIF
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = #(NIL)
+(CONST 3) = :NAME
+(CONST 4) = COMMON-LISP:CONTINUE
+(CONST 5) = :INVOKE-FUNCTION
+(CONST 6) = #<COMPILED-CLOSURE DEFFIF-1>
+(CONST 7) = :REPORT
+(CONST 8) = SYSTEM::REPORT-NO-NEW-VALUE
+(CONST 9) = :INTERACTIVE
+(CONST 10) = SYSTEM::ASSERT-RESTART-NO-PROMPTS
+(CONST 11) = SYSTEM::MAKE-RESTART
+(CONST 12) = SYSTEM::*ACTIVE-RESTARTS*
+(CONST 13) = SYSTEM::*CONDITION-RESTARTS*
+(CONST 14) = (#(CONDITION 23) 1 . 1)
+(CONST 15) = SYSTEM::ADD-CONDITION-RESTARTS
+(CONST 16) = SIGNAL
+(CONST 17) = "~A"
+(CONST 18) = (AND (SYMBOLP NEW) (SYMBOLP OLD))
+(CONST 19) = SYSTEM::ASSERT-ERROR-STRING
+(CONST 20) = DEFF
+(CONST 21) = FUNCTION
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (SYSTEM::*CONDITION-RESTARTS* SYSTEM::*ACTIVE-RESTARTS*)
+77 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L18)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (JMP L101)
+18    L18
+18    (LOAD&PUSH 2)
+19    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+21    (SKIP&RET 3)
+23    L23
+23    (HANDLER-BEGIN&PUSH)
+24    (LOAD&PUSH 0)
+25    (LOADI&PUSH 0 0 6)
+29    (CALL2 15)                          ; SYSTEM::ADD-CONDITION-RESTARTS
+31    (LOAD&PUSH 0)
+32    (CALL1 16)                          ; SIGNAL
+34    (SKIPSP 2 1)
+37    (SKIP&RET 2)
+39    L39
+39    (NIL)
+40    (MAKE-VECTOR1&PUSH 1)
+42    (NIL)
+43    (STOREC 0 0)
+46    (TAGBODY-OPEN 2 L92)                ; #(NIL)
+49    (CONST&PUSH 3)                      ; :NAME
+50    (CONST&PUSH 4)                      ; COMMON-LISP:CONTINUE
+51    (CONST&PUSH 5)                      ; :INVOKE-FUNCTION
+52    (LOAD&PUSH 7)
+53    (LOAD&PUSH 6)
+54    (COPY-CLOSURE&PUSH 6 2)             ; #<COMPILED-CLOSURE DEFFIF-1>
+57    (CONST&PUSH 7)                      ; :REPORT
+58    (CONST&SYMBOL-FUNCTION&PUSH 8)      ; SYSTEM::REPORT-NO-NEW-VALUE
+60    (CONST&PUSH 9)                      ; :INTERACTIVE
+61    (CONST&SYMBOL-FUNCTION&PUSH 10)     ; SYSTEM::ASSERT-RESTART-NO-PROMPTS
+63    (CALL&PUSH 8 11)                    ; SYSTEM::MAKE-RESTART
+66    (LIST&PUSH 1)
+68    (LOAD&PUSH 0)
+69    (GETVALUE&PUSH 12)                  ; SYSTEM::*ACTIVE-RESTARTS*
+71    (CALLSR 2 34)                       ; APPEND
+74    (BIND 12)                           ; SYSTEM::*ACTIVE-RESTARTS*
+76    (GETVALUE 13)                       ; SYSTEM::*CONDITION-RESTARTS*
+78    (BIND 13)                           ; SYSTEM::*CONDITION-RESTARTS*
+80    (HANDLER-OPEN 14 L23)               ; (#(CONDITION 23) 1 . 1)
+82    (CONST&PUSH 17)                     ; "~A"
+83    (CONST&PUSH 18)                     ; (AND (SYMBOLP NEW) (SYMBOLP OLD))
+84    (CALL1&PUSH 19)                     ; SYSTEM::ASSERT-ERROR-STRING
+86    (CALLSR 1 29)                       ; ERROR
+89    L89
+89    (NIL)
+90    (SKIP&RET 5)
+92    L92
+92    (LOADC 4 0)
+95    (UNLIST 0 0)
+98    (TAGBODY-CLOSE)
+99    (SKIP 1)
+101   L101
+101   (LOAD&PUSH 1)
+102   (CALLS2&JMPIFNOT 6 L39)             ; SYMBOLP
+106   (LOAD&PUSH 0)
+107   (CALLS2&JMPIFNOT 6 L39)             ; SYMBOLP
+111   (LOAD&PUSH 1)
+112   (LOAD&PUSH 1)
+113   (CALLS2&JMPIF 1 L89)                ; EQL
+116   (CONST&PUSH 20)                     ; DEFF
+117   (LOAD&PUSH 2)
+118   (CONST&PUSH 21)                     ; FUNCTION
+119   (LOAD&PUSH 3)
+120   (LIST&PUSH 2)
+122   (LIST 3)
+124   (SKIP&RET 5)
+
+
+Disassembly of function DEFFIF-1
+(CONST 0) = NIL
+(CONST 1) = NIL
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD 1)
+1     (STOREV 0 1)
+4     (GO 1 0)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE LOAD EVAL) (DEFMACRO DEFFIF # ...) ...)-3-2|
+(CONST 0) = DEF-COPY-SPECIAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEF-COPY-SPECIAL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEF-COPY-SPECIAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEF-COPY-SPECIAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEF-COPY-SPECIAL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEF-COPY-SPECIAL
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = DEFMACRO
+(CONST 3) = (&REST L)
+(CONST 4) = SYSTEM::BACKQUOTE
+(CONST 5) = ((SYSTEM::SPLICE (SYSTEM::UNQUOTE L)))
+(CONST 6) = CONS
+(CONST 7) = QUOTE
+(CONST 8) = (L)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+37 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L23)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (LOAD&PUSH 1)
+16    (LOAD&PUSH 1)
+17    (CALLS2&JMPIFNOT 1 L28)             ; EQL
+20    (NIL)
+21    (SKIP&RET 5)
+23    L23
+23    (LOAD&PUSH 2)
+24    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+26    (SKIP&RET 3)
+28    L28
+28    (CONST&PUSH 2)                      ; DEFMACRO
+29    (LOAD&PUSH 2)
+30    (CONST&PUSH 3)                      ; (&REST L)
+31    (CONST&PUSH 4)                      ; SYSTEM::BACKQUOTE
+32    (LOAD&PUSH 4)
+33    (CONST 5)                           ; ((SYSTEM::SPLICE #))
+34    (CONS&PUSH)
+35    (CONST&PUSH 6)                      ; CONS
+36    (CONST&PUSH 7)                      ; QUOTE
+37    (LOAD&PUSH 7)
+38    (LIST&PUSH 2)
+40    (CONST 8)                           ; (L)
+41    (LIST*&PUSH 2)
+43    (LIST&PUSH 3)
+45    (LIST 4)
+47    (SKIP&RET 5)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE LOAD EVAL) (DEFMACRO DEFFIF # ...) ...)-3-3|
+(CONST 0) = DEFUN-PROP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFUN-PROP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFUN-PROP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFUN-PROP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFUN-PROP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFUN-PROP
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = #(NIL)
+(CONST 3) = :NAME
+(CONST 4) = COMMON-LISP:CONTINUE
+(CONST 5) = :INVOKE-FUNCTION
+(CONST 6) = #<COMPILED-CLOSURE DEFUN-PROP-1>
+(CONST 7) = :REPORT
+(CONST 8) = SYSTEM::REPORT-NO-NEW-VALUE
+(CONST 9) = :INTERACTIVE
+(CONST 10) = SYSTEM::ASSERT-RESTART-NO-PROMPTS
+(CONST 11) = SYSTEM::MAKE-RESTART
+(CONST 12) = SYSTEM::*ACTIVE-RESTARTS*
+(CONST 13) = SYSTEM::*CONDITION-RESTARTS*
+(CONST 14) = (#(CONDITION 27) 1 . 1)
+(CONST 15) = SYSTEM::ADD-CONDITION-RESTARTS
+(CONST 16) = SIGNAL
+(CONST 17) = "~A"
+(CONST 18) = (LISTP F)
+(CONST 19) = SYSTEM::ASSERT-ERROR-STRING
+(CONST 20) = PROGN
+(CONST 21) = 'COMPILE
+(CONST 22) = SETF
+(CONST 23) = GET
+(CONST 24) = QUOTE
+(CONST 25) = FUNCTION
+(CONST 26) = LAMBDA
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (SYSTEM::*CONDITION-RESTARTS* SYSTEM::*ACTIVE-RESTARTS*)
+88 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L22)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (LOAD 4)
+16    (CDR)
+17    (CDR)
+18    (CDR&PUSH)
+19    (JMP L102)
+22    L22
+22    (LOAD&PUSH 2)
+23    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+25    (SKIP&RET 3)
+27    L27
+27    (HANDLER-BEGIN&PUSH)
+28    (LOAD&PUSH 0)
+29    (LOADI&PUSH 0 0 6)
+33    (CALL2 15)                          ; SYSTEM::ADD-CONDITION-RESTARTS
+35    (LOAD&PUSH 0)
+36    (CALL1 16)                          ; SIGNAL
+38    (SKIPSP 2 1)
+41    (SKIP&RET 2)
+43    L43
+43    (NIL)
+44    (MAKE-VECTOR1&PUSH 1)
+46    (NIL)
+47    (STOREC 0 0)
+50    (TAGBODY-OPEN 2 L93)                ; #(NIL)
+53    (CONST&PUSH 3)                      ; :NAME
+54    (CONST&PUSH 4)                      ; COMMON-LISP:CONTINUE
+55    (CONST&PUSH 5)                      ; :INVOKE-FUNCTION
+56    (LOAD&PUSH 7)
+57    (LOAD&PUSH 6)
+58    (COPY-CLOSURE&PUSH 6 2)             ; #<COMPILED-CLOSURE DEFUN-PROP-1>
+61    (CONST&PUSH 7)                      ; :REPORT
+62    (CONST&SYMBOL-FUNCTION&PUSH 8)      ; SYSTEM::REPORT-NO-NEW-VALUE
+64    (CONST&PUSH 9)                      ; :INTERACTIVE
+65    (CONST&SYMBOL-FUNCTION&PUSH 10)     ; SYSTEM::ASSERT-RESTART-NO-PROMPTS
+67    (CALL&PUSH 8 11)                    ; SYSTEM::MAKE-RESTART
+70    (LIST&PUSH 1)
+72    (LOAD&PUSH 0)
+73    (GETVALUE&PUSH 12)                  ; SYSTEM::*ACTIVE-RESTARTS*
+75    (CALLSR 2 34)                       ; APPEND
+78    (BIND 12)                           ; SYSTEM::*ACTIVE-RESTARTS*
+80    (GETVALUE 13)                       ; SYSTEM::*CONDITION-RESTARTS*
+82    (BIND 13)                           ; SYSTEM::*CONDITION-RESTARTS*
+84    (HANDLER-OPEN 14 L27)               ; (#(CONDITION 27) 1 . 1)
+86    (CONST&PUSH 17)                     ; "~A"
+87    (CONST&PUSH 18)                     ; (LISTP F)
+88    (CALL1&PUSH 19)                     ; SYSTEM::ASSERT-ERROR-STRING
+90    (CALLSR 1 29)                       ; ERROR
+93    L93
+93    (LOADC 4 0)
+96    (UNLIST 0 0)
+99    (TAGBODY-CLOSE)
+100   (SKIP 1)
+102   L102
+102   (LOAD&PUSH 2)
+103   (CALLS2&JMPIFNOT 11 L43)            ; LISTP
+106   (CONST&PUSH 20)                     ; PROGN
+107   (CONST&PUSH 21)                     ; 'COMPILE
+108   (CONST&PUSH 22)                     ; SETF
+109   (CONST&PUSH 23)                     ; GET
+110   (CONST&PUSH 24)                     ; QUOTE
+111   (LOAD&CAR&PUSH 7)
+113   (LIST&PUSH 2)
+115   (CONST&PUSH 24)                     ; QUOTE
+116   (LOAD 8)
+117   (CDR)
+118   (CAR&PUSH)
+119   (LIST&PUSH 2)
+121   (LIST&PUSH 3)
+123   (CONST&PUSH 25)                     ; FUNCTION
+124   (CONST&PUSH 26)                     ; LAMBDA
+125   (LOAD&PUSH 7)
+126   (LOAD 7)
+127   (LIST*&PUSH 2)
+129   (LIST&PUSH 2)
+131   (LIST&PUSH 3)
+133   (LIST 3)
+135   (SKIP&RET 6)
+
+
+Disassembly of function DEFUN-PROP-1
+(CONST 0) = NIL
+(CONST 1) = NIL
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD 1)
+1     (STOREV 0 1)
+4     (GO 1 0)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE LOAD EVAL) (DEFMACRO DEFFIF # ...) ...)-3-4|
+(CONST 0) = COMPILE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMPILE
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR PRIN1 NIL)-4|
+(CONST 0) = (SPECIAL PRIN1)
+(CONST 1) = PRIN1
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL PRIN1)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; PRIN1
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; PRIN1
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; PRIN1
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD COMPILE EVAL) (DEFVAR *ALLOW-REDEFINES* T))-5|
+(CONST 0) = (SPECIAL *ALLOW-REDEFINES*)
+(CONST 1) = *ALLOW-REDEFINES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *ALLOW-REDEFINES*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *ALLOW-REDEFINES*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *ALLOW-REDEFINES*
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *ALLOW-REDEFINES*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD COMPILE EVAL) (DEFUN APPEARS # ...) ...)-6-1|
+(CONST 0) = APPEARS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE APPEARS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; APPEARS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; APPEARS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE APPEARS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function APPEARS
+(CONST 0) = APPEARS
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 2)
+1     (LOAD&PUSH 2)
+2     (CALLS2&JMPIF 2 L21)                ; EQUAL
+5     (LOAD 2)
+6     (JMPIFATOM L18)
+8     (LOAD&CAR&PUSH 2)
+10    (LOAD&PUSH 2)
+11    (JSR L0)
+13    (LOAD&CDR&PUSH 2)
+15    (LOAD&PUSH 2)
+16    (JSR L0)
+18    L18
+18    (NIL)
+19    (SKIP&RET 3)
+21    L21
+21    (CONST&PUSH 0)                      ; APPEARS
+22    (T)
+23    (THROW)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD COMPILE EVAL) (DEFUN APPEARS # ...) ...)-6-2|
+(CONST 0) = APPEARS1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE APPEARS1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; APPEARS1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; APPEARS1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE APPEARS1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function APPEARS1
+(CONST 0) = APPEARS
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+18 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (LOAD 2)
+2     (JMPIFEQ L20)
+4     (LOAD 2)
+5     (JMPIFATOM L17)
+7     (LOAD&CAR&PUSH 2)
+9     (LOAD&PUSH 2)
+10    (CALL2 0)                           ; APPEARS
+12    (LOAD&CDR&PUSH 2)
+14    (LOAD&PUSH 2)
+15    (CALL2 0)                           ; APPEARS
+17    L17
+17    (NIL)
+18    (SKIP&RET 3)
+20    L20
+20    (CONST&PUSH 0)                      ; APPEARS
+21    (T)
+22    (THROW)
+
+
+Disassembly of function #:|(EVAL-WHEN (LOAD COMPILE EVAL) (DEFUN APPEARS # ...) ...)-6-3|
+(CONST 0) = APPEARS-IN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "Yields t if var appears in tree"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE APPEARS-IN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; APPEARS-IN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; APPEARS-IN
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "Yields t if var appears in tree"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; APPEARS-IN
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE APPEARS-IN>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; APPEARS-IN
+14    (SKIP&RET 1)
+
+
+Disassembly of function APPEARS-IN
+(CONST 0) = APPEARS
+(CONST 1) = FIXNUMP
+(CONST 2) = APPEARS1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (CONST 0)                           ; APPEARS
+1     (CATCH-OPEN L24)
+3     (LOAD&PUSH 4)
+4     (CALLS2&JMPIF 6 L18)                ; SYMBOLP
+7     (LOAD&PUSH 4)
+8     (CALL1&JMPIF 1 L18)                 ; FIXNUMP
+11    (LOAD&PUSH 5)
+12    (LOAD&PUSH 5)
+13    (CALL2 0)                           ; APPEARS
+15    L15
+15    (CATCH-CLOSE)
+16    (SKIP&RET 3)
+18    L18
+18    (LOAD&PUSH 5)
+19    (LOAD&PUSH 5)
+20    (CALL2 2)                           ; APPEARS1
+22    (JMP L15)
+24    L24
+24    (SKIP&RET 3)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE LOAD) (DEFVAR *PRIMITIVE-DATA-TYPE-FUNCTION* 'TYPE-OF))-7|
+(CONST 0) = (SPECIAL *PRIMITIVE-DATA-TYPE-FUNCTION*)
+(CONST 1) = *PRIMITIVE-DATA-TYPE-FUNCTION*
+(CONST 2) = TYPE-OF
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *PRIMITIVE-DATA-TYPE-FUNCTION*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *PRIMITIVE-DATA-TYPE-FUNCTION*
+8     (CONST&PUSH 2)                      ; TYPE-OF
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *PRIMITIVE-DATA-TYPE-FUNCTION*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO ONE-OF-TYPES (TYP &REST OBJS ...) ...)-8|
+(CONST 0) = ONE-OF-TYPES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "typ is a primitive data type of the machine, and"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE ONE-OF-TYPES>
+(CONST 6) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ONE-OF-TYPES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ONE-OF-TYPES
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "typ is a primitive data type of the machine, and"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; ONE-OF-TYPES
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE ONE-OF-TYPES>
+11    (CALL1&PUSH 6)                      ; SYSTEM::MAKE-MACRO
+13    (CALLS2 130)                        ; SYSTEM::%PUTD
+15    (CONST 0)                           ; ONE-OF-TYPES
+16    (SKIP&RET 1)
+
+
+Disassembly of function ONE-OF-TYPES
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = *PRIMITIVE-DATA-TYPE-FUNCTION*
+(CONST 3) = MEMQ
+(CONST 4) = QUOTE
+(CONST 5) = EQL
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (*PRIMITIVE-DATA-TYPE-FUNCTION*)
+50 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L19)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (NIL&PUSH)
+15    (LOAD&PUSH 1)
+16    (NIL&PUSH)
+17    (JMP L48)
+19    L19
+19    (LOAD&PUSH 2)
+20    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+22    (SKIP&RET 3)
+24    L24
+24    (CONST&PUSH 3)                      ; MEMQ
+25    (LOAD&PUSH 5)
+26    (CONST&PUSH 4)                      ; QUOTE
+27    (LOAD 5)
+28    (JMP L61)
+30    L30
+30    (LOAD&CAR&STORE 1 0)
+33    (GETVALUE&PUSH 2)                   ; *PRIMITIVE-DATA-TYPE-FUNCTION*
+35    (LOAD&PUSH 1)
+36    (CALLS1&PUSH 91)                    ; EVAL
+38    (FUNCALL&PUSH 1)
+40    (LOAD&PUSH 3)
+41    (PUSH-UNBOUND 3)
+43    (CALLS1&STORE 184 2)                ; ADJOIN
+46    (LOAD&CDR&STORE 1)
+48    L48
+48    (LOAD&PUSH 1)
+49    (CALLS1&JMPIFNOT 146 L30)           ; ENDP
+52    (LOAD 2)
+53    (CDR)
+54    (JMPIF L24)
+56    (CONST&PUSH 5)                      ; EQL
+57    (LOAD&PUSH 5)
+58    (CONST&PUSH 4)                      ; QUOTE
+59    (LOAD 5)
+60    (CAR)
+61    L61
+61    (PUSH)
+62    (LIST&PUSH 2)
+64    (LIST 3)
+66    (SKIP&RET 8)
+
+
+Disassembly of function #:|(DEFUN MACLISP-TYPEP (X &OPTIONAL TYPE) ...)-9|
+(CONST 0) = MACLISP-TYPEP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MACLISP-TYPEP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MACLISP-TYPEP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MACLISP-TYPEP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MACLISP-TYPEP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MACLISP-TYPEP
+8     (SKIP&RET 1)
+
+
+Disassembly of function MACLISP-TYPEP
+(CONST 0) = ML-TYPEP
+(CONST 1) = TYPEP
+(CONST 2) = (NULL SYMBOL)
+(CONST 3) = MEMQ
+(CONST 4) = SYMBOL
+(CONST 5) = CONS
+(CONST 6) = LIST
+(CONST 7) = FIXNUM
+(CONST 8) = ((SIMPLE-BASE-STRING 3) (SIMPLE-VECTOR 3))
+(CONST 9) = STRING
+(CONST 10) = ARRAY
+(CONST 11) = (LONG-FLOAT SINGLE-FLOAT DOUBLE-FLOAT BIGNUM)
+(CONST 12) = BIGNUM
+(CONST 13) = FLONUM
+(CONST 14) = NUMBER
+(CONST 15) = COMPILED-FUNCTION
+(CONST 16) = HASH-TABLE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+87 byte-code instructions:
+0     (JMPIFBOUNDP 1 L80)
+4     (NIL&STORE 1)
+6     (LOAD&JMPIFNOT 1 L84)
+10    L10
+10    (PUSH)
+11    (CONST&PUSH 0)                      ; ML-TYPEP
+12    (PUSH-UNBOUND 1)
+14    (CALLS2&PUSH 132)                   ; GET
+16    (LOAD&JMPIF 0 L25)
+19    (LOAD&PUSH 3)
+20    (LOAD&PUSH 3)
+21    (CALL2 1)                           ; TYPEP
+23    (SKIP&RET 4)
+25    L25
+25    (PUSH)
+26    (LOAD&PUSH 4)
+27    (FUNCALL 1)
+29    (SKIP&RET 4)
+31    L31
+31    (CONST 4)                           ; SYMBOL
+32    (SKIP&RET 4)
+34    L34
+34    (CONST 6)                           ; LIST
+35    (SKIP&RET 4)
+37    L37
+37    (CONST 7)                           ; FIXNUM
+38    (SKIP&RET 4)
+40    L40
+40    (CONST 9)                           ; STRING
+41    (SKIP&RET 4)
+43    L43
+43    (LOAD&PUSH 3)
+44    (CALLS2&JMPIF 7 L40)                ; STRINGP
+47    (CONST 10)                          ; ARRAY
+48    (SKIP&RET 4)
+50    L50
+50    (CONST 12)                          ; BIGNUM
+51    (SKIP&RET 4)
+53    L53
+53    (CONST 13)                          ; FLONUM
+54    (SKIP&RET 4)
+56    L56
+56    (LOAD&PUSH 3)
+57    (CALLS2&JMPIF 12 L50)               ; INTEGERP
+60    (LOAD&PUSH 3)
+61    (CALLS2&JMPIF 15 L53)               ; FLOATP
+64    (CONST 14)                          ; NUMBER
+65    (SKIP&RET 4)
+67    L67
+67    (CONST 15)                          ; COMPILED-FUNCTION
+68    (SKIP&RET 4)
+70    L70
+70    (LOAD&PUSH 3)
+71    (CALLS2&JMPIFNOT 25 L122)           ; HASH-TABLE-P
+74    (CONST 16)                          ; HASH-TABLE
+75    (SKIP&RET 4)
+77    L77
+77    (CONST 10)                          ; ARRAY
+78    (SKIP&RET 4)
+80    L80
+80    (LOAD&JMPIF 1 L10)
+84    L84
+84    (LOAD&PUSH 2)
+85    (CALLS2&PUSH 39)                    ; TYPE-OF
+87    (LOAD&PUSH 0)
+88    (CONST&PUSH 2)                      ; (NULL SYMBOL)
+89    (CALL2&JMPIF 3 L31)                 ; MEMQ
+92    (LOAD&PUSH 0)
+93    (JMPIFEQTO 5 L34)                   ; CONS
+96    (LOAD&PUSH 0)
+97    (JMPIFEQTO 7 L37)                   ; FIXNUM
+100   (LOAD&PUSH 0)
+101   (CONST&PUSH 8)                      ; (# #)
+102   (CALL2&JMPIF 3 L43)                 ; MEMQ
+105   (LOAD&PUSH 0)
+106   (CONST&PUSH 11)                     ; (LONG-FLOAT SINGLE-FLOAT ...)
+107   (CALL2&JMPIF 3 L56)                 ; MEMQ
+110   (LOAD&PUSH 0)
+111   (JMPIFEQTO 15 L67)                  ; COMPILED-FUNCTION
+114   (LOAD&PUSH 0)
+115   (JMPIFEQTO 16 L70)                  ; HASH-TABLE
+118   (LOAD&PUSH 3)
+119   (CALLS2&JMPIF 32 L77)               ; ARRAYP
+122   L122
+122   (LOAD&PUSH 3)
+123   (CALLS2 39)                         ; TYPE-OF
+125   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFF ML-TYPEP #'MACLISP-TYPEP)-10|
+(CONST 0) = ML-TYPEP
+(CONST 1) = MACLISP-TYPEP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ML-TYPEP
+1     (CONST&SYMBOL-FUNCTION&PUSH 1)      ; MACLISP-TYPEP
+3     (CALLS2 130)                        ; SYSTEM::%PUTD
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP :EXTENDED-NUMBER EXTENDED-NUMBER-P ...)-11|
+(CONST 0) = :EXTENDED-NUMBER
+(CONST 1) = ML-TYPEP
+(CONST 2) = EXTENDED-NUMBER-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :EXTENDED-NUMBER
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; EXTENDED-NUMBER-P
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP ARRAY ARRAYP ...)-12|
+(CONST 0) = ARRAY
+(CONST 1) = ML-TYPEP
+(CONST 2) = ARRAYP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ARRAY
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; ARRAYP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP ATOM ATOM ...)-13|
+(CONST 0) = ATOM
+(CONST 1) = ML-TYPEP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ATOM
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 0)                      ; ATOM
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP COMPILED-FUNCTION COMPILED-FUNCTION-P ...)-14|
+(CONST 0) = COMPILED-FUNCTION
+(CONST 1) = ML-TYPEP
+(CONST 2) = COMPILED-FUNCTION-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COMPILED-FUNCTION
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; COMPILED-FUNCTION-P
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP EXTENDED-NUMBER EXTENDED-NUMBER-P ...)-15|
+(CONST 0) = EXTENDED-NUMBER
+(CONST 1) = ML-TYPEP
+(CONST 2) = EXTENDED-NUMBER-P
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXTENDED-NUMBER
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; EXTENDED-NUMBER-P
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP FIXNUM FIXNUMP ...)-16|
+(CONST 0) = FIXNUM
+(CONST 1) = ML-TYPEP
+(CONST 2) = FIXNUMP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FIXNUM
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; FIXNUMP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP LIST CONSP ...)-17|
+(CONST 0) = LIST
+(CONST 1) = ML-TYPEP
+(CONST 2) = CONSP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LIST
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; CONSP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP NUMBER NUMBERP ...)-18|
+(CONST 0) = NUMBER
+(CONST 1) = ML-TYPEP
+(CONST 2) = NUMBERP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NUMBER
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; NUMBERP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP STRING STRINGP ...)-19|
+(CONST 0) = STRING
+(CONST 1) = ML-TYPEP
+(CONST 2) = STRINGP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; STRING
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; STRINGP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFPROP SYMBOL SYMBOLP ...)-20|
+(CONST 0) = SYMBOL
+(CONST 1) = ML-TYPEP
+(CONST 2) = SYMBOLP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SYMBOL
+1     (CONST&PUSH 1)                      ; ML-TYPEP
+2     (CONST&PUSH 2)                      ; SYMBOLP
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *MAKE-ARRAY-OPTION-REPLACEMENTS* '(# # #))-21|
+(CONST 0) = (SPECIAL *MAKE-ARRAY-OPTION-REPLACEMENTS*)
+(CONST 1) = *MAKE-ARRAY-OPTION-REPLACEMENTS*
+(CONST 2) = 
+((:ELEMENT-TYPE :TYPE (T . ART-Q) (STRING-CHAR . ART-STRING))
+ (:INITIAL-ELEMENT :INITIAL-VALUE NIL) (:ADJUSTABLE))
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *MAKE-ARRAY-OPTION-REPLACEMENTS*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *MAKE-ARRAY-OPTION-REPLACEMENTS*
+8     (CONST&PUSH 2)                      ; (# # #)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *MAKE-ARRAY-OPTION-REPLACEMENTS*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *CL-MAKE-ARRAY-OPTION-REPLACEMENTS* '(# # #))-22|
+(CONST 0) = (SPECIAL *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*)
+(CONST 1) = *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*
+(CONST 2) = 
+((:TYPE :ELEMENT-TYPE (ART-Q . T) (ART-1B MOD 2) (ART-8B MOD 8) (ART-4B MOD 4)
+  (ART-STRING . CHARACTER))
+ (:INITIAL-VALUE :INITIAL-ELEMENT NIL) (:ADJUSTABLE))
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ...)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*
+8     (CONST&PUSH 2)                      ; (# # #)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MAXIMA-COPY-REST (FORM) ...)-23|
+(CONST 0) = MAXIMA-COPY-REST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "copy those things out of the stack in `(($hi array) ,@ inds) which would be bad if inds is rest arg"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE MAXIMA-COPY-REST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAXIMA-COPY-REST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAXIMA-COPY-REST
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "copy those things out of the stack in `(($hi array) ,@ inds) which would be bad if inds is rest arg"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; MAXIMA-COPY-REST
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE MAXIMA-COPY-REST>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; MAXIMA-COPY-REST
+14    (SKIP&RET 1)
+
+
+Disassembly of function MAXIMA-COPY-REST
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS1 158)                        ; COPY-LIST
+3     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN SUBSTITUTE-KEYWORD-ARG (REPL KEYWORD-REST-ARG &AUX ...) ...)-24|
+(CONST 0) = SUBSTITUTE-KEYWORD-ARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SUBSTITUTE-KEYWORD-ARG>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SUBSTITUTE-KEYWORD-ARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SUBSTITUTE-KEYWORD-ARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SUBSTITUTE-KEYWORD-ARG>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SUBSTITUTE-KEYWORD-ARG
+8     (SKIP&RET 1)
+
+
+Disassembly of function SUBSTITUTE-KEYWORD-ARG
+(CONST 0) = ZL-ASSOC
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+44 byte-code instructions:
+0     (PUSH-NIL 4)
+2     (LOAD&PUSH 5)
+3     (LOAD&JMPIFNOT 0 L34)
+6     L6
+6     (LOAD&CAR&STORE 0 2)
+9     (LOAD 0)
+10    (CDR)
+11    (CAR)
+12    (STORE 1)
+13    (LOAD&PUSH 2)
+14    (LOAD&PUSH 8)
+15    (CALL2 0)                           ; ZL-ASSOC
+17    (STORE 4)
+18    (JMPIF L39)
+20    (LOAD&PUSH 1)
+21    (LOAD&CONS&STORE 3)
+23    (LOAD 2)
+24    L24
+24    (PUSH)
+25    (LOAD&CONS&STORE 3)
+27    L27
+27    (LOAD 0)
+28    (CDR)
+29    (CDR)
+30    (STORE 0)
+31    (LOAD&JMPIF 0 L6)
+34    L34
+34    (SKIP 3)
+36    (POP)
+37    (SKIP&RET 4)
+39    L39
+39    (CDR)
+40    (JMPIFNOT L27)
+42    (LOAD 4)
+43    (CDR)
+44    (CDR&PUSH)
+45    (LOAD&PUSH 2)
+46    (PUSH-UNBOUND 3)
+48    (CALLS1&PUSH 178)                   ; SUBLIS
+50    (LOAD&CONS&STORE 3)
+52    (LOAD 4)
+53    (CDR)
+54    (CAR)
+55    (JMP L24)
+
+
+Disassembly of function #:|(DEFUN ZL-MAKE-ARRAY (DIMENSIONS &REST OPTIONS) ...)-25|
+(CONST 0) = ZL-MAKE-ARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZL-MAKE-ARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZL-MAKE-ARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZL-MAKE-ARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZL-MAKE-ARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZL-MAKE-ARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZL-MAKE-ARRAY
+(CONST 0) = MAKE-ARRAY
+(CONST 1) = *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*
+(CONST 2) = SUBSTITUTE-KEYWORD-ARG
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variable: (*CL-MAKE-ARRAY-OPTION-REPLACEMENTS*)
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKE-ARRAY
+1     (LOAD&PUSH 3)
+2     (GETVALUE&PUSH 1)                   ; *CL-MAKE-ARRAY-OPTION-REPLACEMENTS*
+4     (LOAD&PUSH 4)
+5     (CALL2 2)                           ; SUBSTITUTE-KEYWORD-ARG
+7     (APPLY&SKIP&RET 1 3)
+
+
+Disassembly of function #:|(DEFVAR *MAXIMA-ARRAYS* NIL ...)-26|
+(CONST 0) = (SPECIAL *MAXIMA-ARRAYS*)
+(CONST 1) = *MAXIMA-ARRAYS*
+(CONST 2) = VARIABLE
+(CONST 3) = "Trying to track down any functional arrays in maxima"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *MAXIMA-ARRAYS*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *MAXIMA-ARRAYS*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *MAXIMA-ARRAYS*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; *MAXIMA-ARRAYS*
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Trying to track down any functional arrays in maxima"
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; *MAXIMA-ARRAYS*
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN *ARRAY (NAME MACLISP-TYPE &REST ...) ...)-27|
+(CONST 0) = *ARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE *ARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; *ARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; *ARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE *ARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; *ARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function *ARRAY
+(CONST 0) = (READTABLE OBARRAY)
+(CONST 1) = MEMQ
+(CONST 2) = " bad type ~S"
+(CONST 3) = *MAXIMA-ARRAYS*
+(CONST 4) = FIXNUM
+(CONST 5) = 0
+(CONST 6) = FLONUM
+(CONST 7) = 0.0
+(CONST 8) = ARRAY
+(CONST 9) = "~S is illegal first arg for *ARRAY"
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variable: (*MAXIMA-ARRAYS*)
+writes special variable : (*MAXIMA-ARRAYS*)
+47 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 3)
+2     (CONST&PUSH 0)                      ; (READTABLE OBARRAY)
+3     (CALL2&JMPIF 1 L44)                 ; MEMQ
+6     (LOAD&PUSH 4)
+7     (GETVALUE&PUSH 3)                   ; *MAXIMA-ARRAYS*
+9     (PUSH-UNBOUND 3)
+11    (CALLS1 184)                        ; ADJOIN
+13    (SETVALUE 3)                        ; *MAXIMA-ARRAYS*
+15    (LOAD&PUSH 2)
+16    (PUSH-UNBOUND 7)
+18    (LOAD&PUSH 11)
+19    (JMPIFEQTO 4 L48)                   ; FIXNUM
+22    (LOAD&PUSH 11)
+23    (JMPIFEQTO 6 L51)                   ; FLONUM
+26    (NIL)
+27    L27
+27    (STORE 4)
+28    (CALLS1&STORE 29 0)                 ; MAKE-ARRAY
+31    (LOAD&JMPIFNOT 4 L54)
+34    (LOAD&PUSH 4)
+35    (CALLS2&JMPIF 6 L57)                ; SYMBOLP
+38    (CONST&PUSH 9)                      ; "~S is illegal first arg for *ARRAY"
+39    (LOAD 5)
+40    L40
+40    (PUSH)
+41    (CALLSR 1 29)                       ; ERROR
+44    L44
+44    (CONST&PUSH 2)                      ; " bad type ~S"
+45    (LOAD 4)
+46    (JMP L40)
+48    L48
+48    (CONST 5)                           ; 0
+49    (JMP L27)
+51    L51
+51    (CONST 7)                           ; 0.0
+52    (JMP L27)
+54    L54
+54    (POP)
+55    (SKIP&RET 4)
+57    L57
+57    (LOAD&PUSH 4)
+58    (CONST&PUSH 8)                      ; ARRAY
+59    (LOAD&PUSH 2)
+60    (CALLS2 136)                        ; SYSTEM::%PUT
+62    (LOAD 4)
+63    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFMACRO ARRAY (NAME MACLISP-TYPE &REST ...) ...)-28|
+(CONST 0) = ARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ARRAY>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ARRAY>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; ARRAY
+10    (SKIP&RET 1)
+
+
+Disassembly of function ARRAY
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = *ARRAY
+(CONST 3) = QUOTE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+29 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L33)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (LOAD 4)
+16    (CDR)
+17    (CDR)
+18    (CDR&PUSH)
+19    (CONST&PUSH 2)                      ; *ARRAY
+20    (CONST&PUSH 3)                      ; QUOTE
+21    (LOAD&PUSH 4)
+22    (LIST&PUSH 2)
+24    (CONST&PUSH 3)                      ; QUOTE
+25    (LOAD&PUSH 4)
+26    (LIST&PUSH 2)
+28    (LOAD 3)
+29    (LIST* 3)
+31    (SKIP&RET 6)
+33    L33
+33    (LOAD&PUSH 2)
+34    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+36    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO MAXIMA-ERROR (CTL-STRING &REST ARGS) ...)-29|
+(CONST 0) = MAXIMA-ERROR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAXIMA-ERROR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAXIMA-ERROR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAXIMA-ERROR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAXIMA-ERROR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; MAXIMA-ERROR
+10    (SKIP&RET 1)
+
+
+Disassembly of function MAXIMA-ERROR
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = CERROR
+(CONST 3) = "without any special action"
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L22)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (CONST&PUSH 2)                      ; CERROR
+15    (CONST&PUSH 3)                      ; "without any special action"
+16    (LOAD&PUSH 3)
+17    (LOAD 3)
+18    (LIST* 3)
+20    (SKIP&RET 5)
+22    L22
+22    (LOAD&PUSH 2)
+23    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+25    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO SAFE-VALUE (SYM) ...)-30|
+(CONST 0) = SAFE-VALUE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SAFE-VALUE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SAFE-VALUE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SAFE-VALUE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SAFE-VALUE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; SAFE-VALUE
+10    (SKIP&RET 1)
+
+
+Disassembly of function SAFE-VALUE
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = COND
+(CONST 3) = SYMBOLP
+(CONST 4) = QUOTE
+(CONST 5) = AND
+(CONST 6) = BOUNDP
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+36 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L18)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD&PUSH 0)
+12    (CALLS2&JMPIF 6 L23)                ; SYMBOLP
+15    (NIL)
+16    (SKIP&RET 4)
+18    L18
+18    (LOAD&PUSH 2)
+19    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+21    (SKIP&RET 3)
+23    L23
+23    (CONST&PUSH 2)                      ; COND
+24    (CONST&PUSH 3)                      ; SYMBOLP
+25    (CONST&PUSH 4)                      ; QUOTE
+26    (LOAD&PUSH 3)
+27    (LIST&PUSH 2)
+29    (LIST&PUSH 2)
+31    (CONST&PUSH 5)                      ; AND
+32    (CONST&PUSH 6)                      ; BOUNDP
+33    (CONST&PUSH 4)                      ; QUOTE
+34    (LOAD&PUSH 5)
+35    (LIST&PUSH 2)
+37    (LIST&PUSH 2)
+39    (LOAD&PUSH 4)
+40    (LIST&PUSH 3)
+42    (LIST&PUSH 2)
+44    (T&PUSH)
+45    (LOAD&PUSH 3)
+46    (LIST&PUSH 2)
+48    (LIST 3)
+50    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMACRO WITH-POLYNOMIAL-AREA (IGN &BODY BODY) ...)-31|
+(CONST 0) = WITH-POLYNOMIAL-AREA
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE WITH-POLYNOMIAL-AREA>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; WITH-POLYNOMIAL-AREA
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; WITH-POLYNOMIAL-AREA
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE WITH-POLYNOMIAL-AREA>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; WITH-POLYNOMIAL-AREA
+10    (SKIP&RET 1)
+
+
+Disassembly of function WITH-POLYNOMIAL-AREA
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = PROGN
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+15 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L16)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CDR&PUSH)
+11    (CONST&PUSH 2)                      ; PROGN
+12    (LOAD 1)
+13    (CONS)
+14    (SKIP&RET 4)
+16    L16
+16    (LOAD&PUSH 2)
+17    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+19    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO SHOW (&REST L) ...)-32|
+(CONST 0) = SHOW
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SHOW>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SHOW
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SHOW
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SHOW>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; SHOW
+10    (SKIP&RET 1)
+
+
+Disassembly of function SHOW
+(CONST 0) = FORMAT
+(CONST 1) = "~%The value of ~A is ~A"
+(CONST 2) = QUOTE
+(CONST 3) = PROGN
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+42 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (NIL&PUSH)
+3     (LOAD&PUSH 1)
+4     (PUSH-NIL 3)
+6     (LOAD&JMPIFNOT 3 L39)
+9     L9
+9     (LOAD&CAR&PUSH 3)
+11    (LOAD 0)
+12    (STORE 5)
+13    (SKIP 1)
+15    (CONST&PUSH 0)                      ; FORMAT
+16    (T&PUSH)
+17    (CONST&PUSH 1)                      ; "~%The value of ~A is ~A"
+18    (CONST&PUSH 2)                      ; QUOTE
+19    (LOAD&PUSH 8)
+20    (LIST&PUSH 2)
+22    (LOAD&PUSH 8)
+23    (LIST 5)
+25    (STORE 0)
+26    (LOAD&JMPIF 1 L44)
+29    (LOAD&PUSH 0)
+30    (NIL)
+31    (CONS)
+32    (STORE 1)
+33    (STORE 2)
+34    L34
+34    (LOAD&CDR&STORE 3)
+36    (LOAD&JMPIF 3 L9)
+39    L39
+39    (CONST&PUSH 3)                      ; PROGN
+40    (LOAD 3)
+41    (CONS)
+42    (SKIP&RET 9)
+44    L44
+44    (PUSH)
+45    (LOAD&PUSH 1)
+46    (NIL)
+47    (CONS)
+48    (STORE 2)
+49    (PUSH)
+50    (CALLS1 171)                        ; SYSTEM::%RPLACD
+52    (JMP L34)
+
+
+Disassembly of function #:|(DEFMACRO DEFQUOTE (FN # &BODY ...) ...)-33|
+(CONST 0) = DEFQUOTE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFQUOTE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFQUOTE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFQUOTE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFQUOTE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEFQUOTE
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFQUOTE
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = "-aux"
+(CONST 3) = &REST
+(CONST 4) = DEFMACRO
+(CONST 5) = SYSTEM::BACKQUOTE
+(CONST 6) = QUOTE
+(CONST 7) = SYSTEM::UNQUOTE
+(CONST 8) = LIST
+(CONST 9) = 'QUOTE
+(CONST 10) = DEFUN
+(CONST 11) = "at present &rest may only occur as first item in a defquote argument"
+(CONST 12) = OTHER
+(CONST 13) = (SETQ OTHER (SLOOP FOR V IN OTHER COLLECTING (LIST 'QUOTE V)))
+(CONST 14) = CHECK-ARG
+(CONST 15) = EQL
+(CONST 16) = (LENGTH OTHER)
+(CONST 17) = "wrong number of args to "
+(CONST 18) = ((SYSTEM::SPLICE (SYSTEM::UNQUOTE OTHER)))
+(CONST 19) = LIST*
+(CONST 20) = 'QUOTE
+(CONST 21) = (OTHER)
+(CONST 22) = PROGN
+(CONST 23) = 'COMPILE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+140 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L148)            ; <
+9     (LOAD 2)
+10    (CDR)
+11    (CAR&PUSH)
+12    (LOAD 3)
+13    (CDR)
+14    (CDR)
+15    (CAR)
+16    (CAR&PUSH)
+17    (LOAD 4)
+18    (CDR)
+19    (CDR)
+20    (CAR)
+21    (CDR&PUSH)
+22    (LOAD 5)
+23    (CDR)
+24    (CDR)
+25    (CDR&PUSH)
+26    (PUSH-NIL 2)
+28    (PUSH-UNBOUND 2)
+30    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+32    (LOAD&PUSH 6)
+33    (LOAD&PUSH 1)
+34    (CALLS1 132)                        ; PRINC
+36    (CONST&PUSH 2)                      ; "-aux"
+37    (LOAD&PUSH 1)
+38    (PUSH-UNBOUND 2)
+40    (CALLS1 137)                        ; WRITE-STRING
+42    (LOAD&PUSH 0)
+43    (CALLS2&STORE 118 0)                ; GET-OUTPUT-STREAM-STRING
+46    (PUSH-UNBOUND 1)
+48    (CALLS1&STORE 212 1)                ; INTERN
+51    (LOAD&PUSH 4)
+52    (JMPIFEQTO 3 L153)                  ; &REST
+56    (CONST&PUSH 3)                      ; &REST
+57    (LOAD&PUSH 4)
+58    (PUSH-UNBOUND 3)
+60    (CALLS1&JMPIF 180 L197)             ; MEMBER
+64    (CONST&PUSH 4)                      ; DEFMACRO
+65    (LOAD&PUSH 6)
+66    (LOAD&PUSH 6)
+67    (CONST 12)                          ; OTHER
+68    (CONS&PUSH)
+69    (CONST&PUSH 13)                     ; (SETQ OTHER (SLOOP FOR V IN ...))
+70    (CONST&PUSH 14)                     ; CHECK-ARG
+71    (CONST&PUSH 12)                     ; OTHER
+72    (CONST&PUSH 15)                     ; EQL
+73    (CONST&PUSH 16)                     ; (LENGTH OTHER)
+74    (LOAD&PUSH 11)
+75    (CALLS2&PUSH 71)                    ; LENGTH
+77    (LIST&PUSH 3)
+79    (PUSH-UNBOUND 2)
+81    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+83    (CONST&PUSH 17)                     ; "wrong number of args to "
+84    (LOAD&PUSH 1)
+85    (PUSH-UNBOUND 2)
+87    (CALLS1 137)                        ; WRITE-STRING
+89    (LOAD&PUSH 13)
+90    (LOAD&PUSH 1)
+91    (CALLS1 132)                        ; PRINC
+93    (LOAD&PUSH 0)
+94    (CALLS2&STORE 118 0)                ; GET-OUTPUT-STREAM-STRING
+97    (LIST&PUSH 4)
+99    (CONST&PUSH 5)                      ; SYSTEM::BACKQUOTE
+100   (LOAD&PUSH 7)
+101   (CONST&PUSH 6)                      ; QUOTE
+102   (CONST&PUSH 7)                      ; SYSTEM::UNQUOTE
+103   (LOAD&PUSH 13)
+104   (LIST&PUSH 2)
+106   (LIST&PUSH 2)
+108   (CONST 18)                          ; ((SYSTEM::SPLICE #))
+109   (LIST*&PUSH 2)
+111   (CONST&PUSH 19)                     ; LIST*
+112   (CONST&PUSH 6)                      ; QUOTE
+113   (LOAD&PUSH 10)
+114   (LIST&PUSH 2)
+116   (CONST&PUSH 8)                      ; LIST
+117   (CONST&PUSH 20)                     ; 'QUOTE
+118   (LOAD&PUSH 15)
+119   (LIST&PUSH 3)
+121   (CONST 21)                          ; (OTHER)
+123   (LIST*&PUSH 3)
+125   (LIST&PUSH 3)
+127   (LIST&PUSH 6)
+129   (CONST&PUSH 10)                     ; DEFUN
+130   (LOAD&PUSH 3)
+131   (LOAD&PUSH 7)
+132   (LOAD 7)
+133   (CONS)
+134   L134
+134   (PUSH)
+135   (LOAD 6)
+136   (LIST*&PUSH 3)
+138   (LIST 2)
+140   (STORE 0)
+141   (CONST&PUSH 22)                     ; PROGN
+142   (CONST&PUSH 23)                     ; 'COMPILE
+143   (LOAD 2)
+144   (LIST* 2)
+146   (SKIP&RET 9)
+148   L148
+148   (LOAD&PUSH 2)
+149   (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+151   (SKIP&RET 3)
+153   L153
+153   (CONST&PUSH 4)                      ; DEFMACRO
+154   (LOAD&PUSH 6)
+155   (CONST&PUSH 3)                      ; &REST
+156   (LOAD&CAR&PUSH 6)
+158   (LIST&PUSH 2)
+160   (CONST&PUSH 5)                      ; SYSTEM::BACKQUOTE
+161   (LOAD&PUSH 5)
+162   (CONST&PUSH 6)                      ; QUOTE
+163   (CONST&PUSH 7)                      ; SYSTEM::UNQUOTE
+164   (LOAD&CAR&PUSH 10)
+166   (LIST&PUSH 2)
+168   (LIST&PUSH 2)
+170   (LIST&PUSH 2)
+172   (CONST&PUSH 8)                      ; LIST
+173   (CONST&PUSH 6)                      ; QUOTE
+174   (LOAD&PUSH 8)
+175   (LIST&PUSH 2)
+177   (CONST&PUSH 8)                      ; LIST
+178   (CONST&PUSH 9)                      ; 'QUOTE
+179   (LOAD&CAR&PUSH 12)
+181   (LIST&PUSH 3)
+183   (LIST&PUSH 3)
+185   (LIST&PUSH 3)
+187   (LIST&PUSH 4)
+189   (CONST&PUSH 10)                     ; DEFUN
+190   (LOAD&PUSH 3)
+191   (LOAD&CAR&PUSH 6)
+193   (LIST 1)
+195   (JMP L134)
+197   L197
+197   (CONST&PUSH 11)                     ; "at present &rest may only occur as first item in a defquote argument"
+198   (CALLSR 0 29)                       ; ERROR
+
+
+Disassembly of function #:|(DEFQUOTE $MDEFVAR (&REST L) ...)-34-2|
+(CONST 0) = $MDEFVAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $MDEFVAR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MDEFVAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $MDEFVAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $MDEFVAR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function $MDEFVAR
+(CONST 0) = |$MDEFVAR-aux|
+(CONST 1) = QUOTE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (LOAD&CDR&PUSH 2)
+2     (CONST&PUSH 0)                      ; |$MDEFVAR-aux|
+3     (CONST&PUSH 1)                      ; QUOTE
+4     (LOAD&PUSH 2)
+5     (LIST&PUSH 2)
+7     (LIST 2)
+9     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFQUOTE $MDEFVAR (&REST L) ...)-34-3|
+(CONST 0) = |$MDEFVAR-aux|
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE |$MDEFVAR-aux|>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; |$MDEFVAR-aux|
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; |$MDEFVAR-aux|
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE |$MDEFVAR-aux|>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; |$MDEFVAR-aux|
+8     (SKIP&RET 1)
+
+
+Disassembly of function |$MDEFVAR-aux|
+(CONST 0) = (DEFVAR)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (DEFVAR)
+1     (LOAD 2)
+2     (CONS)
+3     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN ONEP (X) ...)-35|
+(CONST 0) = ONEP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ONEP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ONEP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ONEP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ONEP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ONEP
+8     (SKIP&RET 1)
+
+
+Disassembly of function ONEP
+(CONST 0) = 1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 1
+2     (EQ)
+3     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN EXTENDED-NUMBER-P (X) ...)-36|
+(CONST 0) = EXTENDED-NUMBER-P
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXTENDED-NUMBER-P>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXTENDED-NUMBER-P
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXTENDED-NUMBER-P
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXTENDED-NUMBER-P>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXTENDED-NUMBER-P
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXTENDED-NUMBER-P
+(CONST 0) = (BIGNUM RATIONAL FLOAT)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 39)                    ; TYPE-OF
+3     (CONST&PUSH 0)                      ; (BIGNUM RATIONAL FLOAT)
+4     (PUSH-UNBOUND 3)
+6     (CALLS1 180)                        ; MEMBER
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFVAR *SCAN-STRING-BUFFER* NIL)-37|
+(CONST 0) = (SPECIAL *SCAN-STRING-BUFFER*)
+(CONST 1) = *SCAN-STRING-BUFFER*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *SCAN-STRING-BUFFER*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *SCAN-STRING-BUFFER*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *SCAN-STRING-BUFFER*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *SCAN-STRING-BUFFER*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MACSYMA-READ-STRING (A-STRING &AUX ANSWER) ...)-38|
+(CONST 0) = MACSYMA-READ-STRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MACSYMA-READ-STRING>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MACSYMA-READ-STRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MACSYMA-READ-STRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MACSYMA-READ-STRING>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MACSYMA-READ-STRING
+8     (SKIP&RET 1)
+
+
+Disassembly of function MACSYMA-READ-STRING
+(CONST 0) = "$"
+(CONST 1) = STRING-SEARCH
+(CONST 2) = ";"
+(CONST 3) = #\$
+(CONST 4) = MREAD
+(CONST 5) = CLOSE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+28 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; "$"
+2     (LOAD&PUSH 3)
+3     (CALL2&JMPIF 1 L17)                 ; STRING-SEARCH
+6     (CONST&PUSH 2)                      ; ";"
+7     (LOAD&PUSH 3)
+8     (CALL2&JMPIF 1 L17)                 ; STRING-SEARCH
+11    (CONST&PUSH 3)                      ; #\$
+12    (LOAD&PUSH 3)
+13    (PUSH-UNBOUND 1)
+15    (CALLS1 28)                         ; VECTOR-PUSH-EXTEND
+17    L17
+17    (LOAD&PUSH 2)
+18    (PUSH-UNBOUND 2)
+20    (CALLS2&PUSH 115)                   ; MAKE-STRING-INPUT-STREAM
+22    (UNWIND-PROTECT-OPEN L32)
+24    (LOAD&PUSH 2)
+25    (CALL1 4)                           ; MREAD
+27    (CDR)
+28    (CDR)
+29    (CAR)
+30    (STORE 3)
+31    (UNWIND-PROTECT-NORMAL-EXIT)
+32    L32
+32    (LOADI&PUSH 0 0 0)
+36    (CALL1 5)                           ; CLOSE
+38    (UNWIND-PROTECT-CLOSE)
+39    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFVAR *SHARP-READ-BUFFER* (MAKE-ARRAY 140 :ELEMENT-TYPE ...))-39|
+(CONST 0) = (SPECIAL *SHARP-READ-BUFFER*)
+(CONST 1) = *SHARP-READ-BUFFER*
+(CONST 2) = 140
+(CONST 3) = CHARACTER
+(CONST 4) = 0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *SHARP-READ-BUFFER*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *SHARP-READ-BUFFER*
+4     (CALLS1&JMPIF 79 L20)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *SHARP-READ-BUFFER*
+8     (CONST&PUSH 2)                      ; 140
+9     (T&PUSH)
+10    (PUSH-UNBOUND 6)
+12    (CONST 3)                           ; CHARACTER
+13    (STORE 5)
+14    (CONST 4)                           ; 0
+15    (STORE 2)
+16    (CALLS1&PUSH 29)                    ; MAKE-ARRAY
+18    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+20    L20
+20    (CONST 1)                           ; *SHARP-READ-BUFFER*
+21    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN X$-CL-MACRO-READ (&OPTIONAL STREAM ARG ...) ...)-40|
+(CONST 0) = X$-CL-MACRO-READ
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE X$-CL-MACRO-READ>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; X$-CL-MACRO-READ
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; X$-CL-MACRO-READ
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE X$-CL-MACRO-READ>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; X$-CL-MACRO-READ
+8     (SKIP&RET 1)
+
+
+Disassembly of function X$-CL-MACRO-READ
+(CONST 0) = $-READ-AUX
+0 required arguments
+2 optional arguments
+Rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (UNBOUND->NIL 3)
+2     (UNBOUND->NIL 2)
+4     (LOAD&PUSH 2)
+5     (LOAD&PUSH 4)
+6     (CALL2 0)                           ; $-READ-AUX
+8     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN $-READ-AUX (ARG STREAM &AUX ...) ...)-41|
+(CONST 0) = $-READ-AUX
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $-READ-AUX>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $-READ-AUX
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $-READ-AUX
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $-READ-AUX>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $-READ-AUX
+8     (SKIP&RET 1)
+
+
+Disassembly of function $-READ-AUX
+(CONST 0) = ""
+(CONST 1) = *MREAD-PROMPT*
+(CONST 2) = *SHARP-READ-BUFFER*
+(CONST 3) = 0
+(CONST 4) = TYIPEEK
+(CONST 5) = #\$
+(CONST 6) = TYI
+(CONST 7) = TYO
+(CONST 8) = "There was no matching $"
+(CONST 9) = CLOSE
+(CONST 10) = MEVAL*
+(CONST 11) = QUOTE
+(CONST 12) = MACSYMA-READ-STRING
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*SHARP-READ-BUFFER*)
+58 byte-code instructions:
+0     (T&PUSH)
+1     (CONST 0)                           ; ""
+2     (BIND 1)                            ; *MREAD-PROMPT*
+4     (GETVALUE&PUSH 2)                   ; *SHARP-READ-BUFFER*
+6     (CONST&PUSH 3)                      ; 0
+7     (CALLS1 25)                         ; SYSTEM::SET-FILL-POINTER
+9     (T&PUSH)
+10    (LOAD&PUSH 6)
+11    (CALL2&PUSH 4)                      ; TYIPEEK
+13    (JMPIFNOTEQTO 5 L21)                ; #\$
+16    (LOAD&PUSH 5)
+17    (CALL1 6)                           ; TYI
+19    (NIL&STORE 3)
+21    L21
+21    (GETVALUE&PUSH 2)                   ; *SHARP-READ-BUFFER*
+23    (CALLS2&PUSH 119)                   ; SYSTEM::MAKE-STRING-PUSH-STREAM
+25    (UNWIND-PROTECT-OPEN L64)
+27    (NIL&PUSH)
+28    (JMP L52)
+30    L30
+30    (CONST&PUSH 8)                      ; "There was no matching $"
+31    (CALLSR 0 29)                       ; ERROR
+34    L34
+34    (CONST&PUSH 10)                     ; MEVAL*
+35    (CONST&PUSH 11)                     ; QUOTE
+36    (GETVALUE&PUSH 2)                   ; *SHARP-READ-BUFFER*
+38    (CALL1&PUSH 12)                     ; MACSYMA-READ-STRING
+40    (LIST 2)
+42    (JMP L81)
+44    L44
+44    (LOAD&PUSH 9)
+45    (CALL1 6)                           ; TYI
+47    (STORE 0)
+48    (PUSH)
+49    (LOAD&PUSH 4)
+50    (CALL2 7)                           ; TYO
+52    L52
+52    (LOAD&PUSH 0)
+53    (JMPIFNOTEQTO 5 L44)                ; #\$
+56    (LOAD&PUSH 0)
+57    (JMPIFNOTEQTO 5 L30)                ; #\$
+60    (SKIP 1)
+62    (VALUES0)
+63    (UNWIND-PROTECT-NORMAL-EXIT)
+64    L64
+64    (LOADI&PUSH 0 0 0)
+68    (CALL1 9)                           ; CLOSE
+70    (UNWIND-PROTECT-CLOSE)
+71    (SKIP 1)
+73    (LOAD&JMPIF 3 L34)
+76    (CONST&PUSH 11)                     ; QUOTE
+77    (GETVALUE&PUSH 2)                   ; *SHARP-READ-BUFFER*
+79    (CALL1 12)                          ; MACSYMA-READ-STRING
+81    L81
+81    (PUSH)
+82    (LIST 2)
+84    (UNBIND1)
+85    (SKIP&RET 4)
+
+
+Disassembly of function #:|(SET-DISPATCH-MACRO-CHARACTER #\\# #\\$ ...)-42|
+(CONST 0) = #\#
+(CONST 1) = #\$
+(CONST 2) = X$-CL-MACRO-READ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #\#
+1     (CONST&PUSH 1)                      ; #\$
+2     (CONST&PUSH 2)                      ; X$-CL-MACRO-READ
+3     (PUSH-UNBOUND 1)
+5     (CALLS1 114)                        ; SET-DISPATCH-MACRO-CHARACTER
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *MACSYMA-READTABLE*)-43|
+(CONST 0) = (SPECIAL *MACSYMA-READTABLE*)
+(CONST 1) = *MACSYMA-READTABLE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *MACSYMA-READTABLE*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST 1)                           ; *MACSYMA-READTABLE*
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN FIND-LISP-READTABLE-FOR-MACSYMA NIL ...)-44|
+(CONST 0) = FIND-LISP-READTABLE-FOR-MACSYMA
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FIND-LISP-READTABLE-FOR-MACSYMA>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FIND-LISP-READTABLE-FOR-MACSYMA
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FIND-LISP-READTABLE-FOR-MACSYMA
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FIND-LISP-READTABLE-FOR-MACSYMA>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FIND-LISP-READTABLE-FOR-MACSYMA
+8     (SKIP&RET 1)
+
+
+Disassembly of function FIND-LISP-READTABLE-FOR-MACSYMA
+(CONST 0) = *MACSYMA-READTABLE*
+(CONST 1) = #\#
+(CONST 2) = #\$
+(CONST 3) = X$-CL-MACRO-READ
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*MACSYMA-READTABLE*)
+writes special variable : (*MACSYMA-READTABLE*)
+17 byte-code instructions:
+0     (CONST&PUSH 0)                      ; *MACSYMA-READTABLE*
+1     (CALLS1&JMPIFNOT 79 L9)             ; BOUNDP
+4     (GETVALUE&PUSH 0)                   ; *MACSYMA-READTABLE*
+6     (CALLS2&JMPIF 24 L23)               ; READTABLEP
+9     L9
+9     (NIL&PUSH)
+10    (PUSH-UNBOUND 1)
+12    (CALLS1 109)                        ; COPY-READTABLE
+14    (SETVALUE 0)                        ; *MACSYMA-READTABLE*
+16    (CONST&PUSH 1)                      ; #\#
+17    (CONST&PUSH 2)                      ; #\$
+18    (CONST&PUSH 3)                      ; X$-CL-MACRO-READ
+19    (GETVALUE&PUSH 0)                   ; *MACSYMA-READTABLE*
+21    (CALLS1 114)                        ; SET-DISPATCH-MACRO-CHARACTER
+23    L23
+23    (GETVALUE 0)                        ; *MACSYMA-READTABLE*
+25    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN SET-READTABLE-FOR-MACSYMA NIL ...)-45|
+(CONST 0) = SET-READTABLE-FOR-MACSYMA
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SET-READTABLE-FOR-MACSYMA>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SET-READTABLE-FOR-MACSYMA
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SET-READTABLE-FOR-MACSYMA
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SET-READTABLE-FOR-MACSYMA>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SET-READTABLE-FOR-MACSYMA
+8     (SKIP&RET 1)
+
+
+Disassembly of function SET-READTABLE-FOR-MACSYMA
+(CONST 0) = FIND-LISP-READTABLE-FOR-MACSYMA
+(CONST 1) = *READTABLE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*READTABLE*)
+3 byte-code instructions:
+0     (CALL0 0)                           ; FIND-LISP-READTABLE-FOR-MACSYMA
+2     (SETVALUE 1)                        ; *READTABLE*
+4     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN LASTN (N X) ...)-46|
+(CONST 0) = LASTN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LASTN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LASTN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LASTN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LASTN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LASTN
+8     (SKIP&RET 1)
+
+
+Disassembly of function LASTN
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (LOAD&PUSH 3)
+4     (CALLSR&PUSH 1 54)                  ; -
+7     (LOAD&PUSH 2)
+8     (CALLS1 155)                        ; NTHCDR
+10    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO NARG-ARG (X) ...)-47|
+(CONST 0) = NARG-ARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NARG-ARG>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NARG-ARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NARG-ARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NARG-ARG>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; NARG-ARG
+10    (SKIP&RET 1)
+
+
+Disassembly of function NARG-ARG
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NTH
+(CONST 3) = F1-
+(CONST 4) = (NARG-REST-ARGUMENT)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+18 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L21)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; NTH
+12    (CONST&PUSH 3)                      ; F1-
+13    (LOAD&PUSH 2)
+14    (LIST&PUSH 2)
+16    (CONST 4)                           ; (NARG-REST-ARGUMENT)
+17    (LIST* 2)
+19    (SKIP&RET 4)
+21    L21
+21    (LOAD&PUSH 2)
+22    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+24    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN NARG-LISTIFY1 (X LIST) ...)-48|
+(CONST 0) = NARG-LISTIFY1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NARG-LISTIFY1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NARG-LISTIFY1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NARG-LISTIFY1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NARG-LISTIFY1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NARG-LISTIFY1
+8     (SKIP&RET 1)
+
+
+Disassembly of function NARG-LISTIFY1
+(CONST 0) = LASTN
+(CONST 1) = FIRSTN
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&JMPIF 147 L10)              ; MINUSP
+4     (LOAD&PUSH 2)
+5     (LOAD&PUSH 2)
+6     (CALL2 1)                           ; FIRSTN
+8     (SKIP&RET 3)
+10    L10
+10    (LOAD&PUSH 2)
+11    (CALLS2&PUSH 158)                   ; ABS
+13    (LOAD&PUSH 2)
+14    (CALL2 0)                           ; LASTN
+16    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO NARG-LISTIFY (X) ...)-49|
+(CONST 0) = NARG-LISTIFY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NARG-LISTIFY>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NARG-LISTIFY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NARG-LISTIFY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NARG-LISTIFY>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; NARG-LISTIFY
+10    (SKIP&RET 1)
+
+
+Disassembly of function NARG-LISTIFY
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NARG-LISTIFY1
+(CONST 3) = (NARG-REST-ARGUMENT)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L18)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; NARG-LISTIFY1
+12    (LOAD&PUSH 1)
+13    (CONST 3)                           ; (NARG-REST-ARGUMENT)
+14    (LIST* 2)
+16    (SKIP&RET 4)
+18    L18
+18    (LOAD&PUSH 2)
+19    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+21    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO NARG-SETARG (I VAL) ...)-50|
+(CONST 0) = NARG-SETARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NARG-SETARG>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NARG-SETARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NARG-SETARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NARG-SETARG>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; NARG-SETARG
+10    (SKIP&RET 1)
+
+
+Disassembly of function NARG-SETARG
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = SETF
+(CONST 3) = NARG-ARG
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L25)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (CONST&PUSH 2)                      ; SETF
+16    (CONST&PUSH 3)                      ; NARG-ARG
+17    (LOAD&PUSH 3)
+18    (LIST&PUSH 2)
+20    (LOAD&PUSH 2)
+21    (LIST 3)
+23    (SKIP&RET 5)
+25    L25
+25    (LOAD&PUSH 2)
+26    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+28    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFVAR *RESET-VAR* T)-51|
+(CONST 0) = (SPECIAL *RESET-VAR*)
+(CONST 1) = *RESET-VAR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *RESET-VAR*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *RESET-VAR*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *RESET-VAR*
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *RESET-VAR*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *VARIABLE-INITIAL-VALUES* (MAKE-HASH-TABLE) ...)-52|
+(CONST 0) = (SPECIAL *VARIABLE-INITIAL-VALUES*)
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+(CONST 2) = VARIABLE
+(CONST 3) = 
+"Hash table containing all Maxima defmvar variables and their initial
+values"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+15 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *VARIABLE-INITIAL-VALUES*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *VARIABLE-INITIAL-VALUES*
+4     (CALLS1&JMPIF 79 L14)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *VARIABLE-INITIAL-VALUES*
+8     (PUSH-UNBOUND 6)
+10    (CALLS1&PUSH 98)                    ; MAKE-HASH-TABLE
+12    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+14    L14
+14    (CONST&PUSH 1)                      ; *VARIABLE-INITIAL-VALUES*
+15    (CONST&PUSH 2)                      ; VARIABLE
+16    (CONST&PUSH 3)                      ; "Hash table containing all Maxima defmvar variables and their initial
+values"
+17    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+20    (CONST 1)                           ; *VARIABLE-INITIAL-VALUES*
+21    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO DEFMVAR (VAR &REST VAL-AND-DOC) ...)-53|
+(CONST 0) = DEFMVAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE DEFMVAR>
+(CONST 6) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFMVAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFMVAR
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "If *reset-var* is true then loading or eval'ing will reset value, otherwise like defvar"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; DEFMVAR
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE DEFMVAR>
+11    (CALL1&PUSH 6)                      ; SYSTEM::MAKE-MACRO
+13    (CALLS2 130)                        ; SYSTEM::%PUTD
+15    (CONST 0)                           ; DEFMVAR
+16    (SKIP&RET 1)
+
+
+Disassembly of function DEFMVAR
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = PROGN
+(CONST 3) = UNLESS
+(CONST 4) = GETHASH
+(CONST 5) = QUOTE
+(CONST 6) = (*VARIABLE-INITIAL-VALUES*)
+(CONST 7) = SETF
+(CONST 8) = (*VARIABLE-INITIAL-VALUES*)
+(CONST 9) = DEFVAR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+49 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L64)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (LOAD&PUSH 0)
+15    (CALLS2&PUSH 71)                    ; LENGTH
+17    (CONST&PUSH 0)                      ; 2
+18    (CALLSR&JMPIFNOT 1 48 L30)          ; >
+22    (LOAD&CAR&PUSH 0)
+24    (LOAD 1)
+25    (CDR)
+26    (CAR&PUSH)
+27    (LIST 2)
+29    (STORE 0)
+30    L30
+30    (CONST&PUSH 2)                      ; PROGN
+31    (CONST&PUSH 3)                      ; UNLESS
+32    (CONST&PUSH 4)                      ; GETHASH
+33    (CONST&PUSH 5)                      ; QUOTE
+34    (LOAD&PUSH 5)
+35    (LIST&PUSH 2)
+37    (CONST 6)                           ; (*VARIABLE-INITIAL-VALUES*)
+38    (LIST*&PUSH 2)
+40    (CONST&PUSH 7)                      ; SETF
+41    (CONST&PUSH 4)                      ; GETHASH
+42    (CONST&PUSH 5)                      ; QUOTE
+43    (LOAD&PUSH 7)
+44    (LIST&PUSH 2)
+46    (CONST 8)                           ; (*VARIABLE-INITIAL-VALUES*)
+47    (LIST*&PUSH 2)
+49    (LOAD&CAR&PUSH 5)
+51    (LIST&PUSH 3)
+53    (LIST&PUSH 3)
+55    (CONST&PUSH 9)                      ; DEFVAR
+56    (LOAD&PUSH 4)
+57    (LOAD 4)
+58    (LIST*&PUSH 2)
+60    (LIST 3)
+62    (SKIP&RET 5)
+64    L64
+64    (LOAD&PUSH 2)
+65    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+67    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MAYBE-RESET (VAR VAL-AND-DOC &AUX ...) ...)-54|
+(CONST 0) = MAYBE-RESET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAYBE-RESET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAYBE-RESET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAYBE-RESET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAYBE-RESET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAYBE-RESET
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAYBE-RESET
+(CONST 0) = *RESET-VAR*
+(CONST 1) = #<COMPILED-CLOSURE MAYBE-RESET-1>
+(CONST 2) = *STANDARD-OUTPUT*
+(CONST 3) = SET
+(CONST 4) = #<COMPILED-CLOSURE MAYBE-RESET-2>
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (*STANDARD-OUTPUT* *RESET-VAR*)
+32 byte-code instructions:
+0     (NIL&PUSH)
+1     (GETVALUE 0)                        ; *RESET-VAR*
+3     (JMPIFNOT L12)
+5     (LOAD&JMPIF 2 L15)
+8     (LOAD&PUSH 3)
+9     (CALLS1&JMPIF 79 L40)               ; BOUNDP
+12    L12
+12    (NIL)
+13    (SKIP&RET 4)
+15    L15
+15    (LOAD&CAR&PUSH 2)
+17    (CALLS1&STORE 91 0)                 ; EVAL
+20    (PUSH)
+21    (LOAD&PUSH 4)
+22    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+24    (CALLS2&JMPIF 2 L12)                ; EQUAL
+27    (CONST&PUSH 1)                      ; #<COMPILED-CLOSURE MAYBE-RESET-1>
+28    (GETVALUE&PUSH 2)                   ; *STANDARD-OUTPUT*
+30    (LOAD&PUSH 5)
+31    (CALLSR 2 21)                       ; FUNCALL
+34    (LOAD&PUSH 3)
+35    (LOAD&PUSH 1)
+36    (CALL2 3)                           ; SET
+38    (SKIP&RET 4)
+40    L40
+40    (CONST&PUSH 4)                      ; #<COMPILED-CLOSURE MAYBE-RESET-2>
+41    (GETVALUE&PUSH 2)                   ; *STANDARD-OUTPUT*
+43    (LOAD&PUSH 5)
+44    (CALLSR 2 21)                       ; FUNCALL
+47    (LOAD&PUSH 3)
+48    (CALLS1 83)                         ; MAKUNBOUND
+50    (SKIP&RET 4)
+
+
+Disassembly of function MAYBE-RESET-1
+(CONST 0) = 
+"
+Replacing value of "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Replacing value of "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD 1)
+11    (SKIP&RET 4)
+
+
+Disassembly of function MAYBE-RESET-2
+(CONST 0) = 
+"
+Removing value of "
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "
+Removing value of "
+1     (LOAD&PUSH 4)
+2     (PUSH-UNBOUND 2)
+4     (CALLS1 137)                        ; WRITE-STRING
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 4)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD 1)
+11    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN $MKEY (VARIABLE) ...)-55|
+(CONST 0) = $MKEY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = FUNCTION
+(CONST 3) = "($mkey '$demo)==>:demo"
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+(CONST 5) = #<COMPILED-CLOSURE $MKEY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MKEY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $MKEY
+4     (CONST&PUSH 2)                      ; FUNCTION
+5     (CONST&PUSH 3)                      ; "($mkey '$demo)==>:demo"
+6     (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+9     (CONST&PUSH 0)                      ; $MKEY
+10    (CONST&PUSH 5)                      ; #<COMPILED-CLOSURE $MKEY>
+11    (CALLS2 130)                        ; SYSTEM::%PUTD
+13    (CONST 0)                           ; $MKEY
+14    (SKIP&RET 1)
+
+
+Disassembly of function $MKEY
+(CONST 0) = "$"
+(CONST 1) = STRING-LEFT-TRIM
+(CONST 2) = KEYWORD
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "$"
+1     (LOAD&PUSH 2)
+2     (CALLS1&PUSH 75)                    ; STRING
+4     (CALL2&PUSH 1)                      ; STRING-LEFT-TRIM
+6     (CALLS1&PUSH 75)                    ; STRING
+8     (CONST&PUSH 2)                      ; KEYWORD
+9     (CALLS1 212)                        ; INTERN
+11    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFVAR DOUBLE-QUOTE-CHAR (CODE-CHAR 34))-56|
+(CONST 0) = (SPECIAL DOUBLE-QUOTE-CHAR)
+(CONST 1) = DOUBLE-QUOTE-CHAR
+(CONST 2) = #\"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL DOUBLE-QUOTE-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; DOUBLE-QUOTE-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; DOUBLE-QUOTE-CHAR
+8     (CONST&PUSH 2)                      ; #\"
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; DOUBLE-QUOTE-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR SEMI-COLON-CHAR (CODE-CHAR 59))-57|
+(CONST 0) = (SPECIAL SEMI-COLON-CHAR)
+(CONST 1) = SEMI-COLON-CHAR
+(CONST 2) = #\;
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL SEMI-COLON-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; SEMI-COLON-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; SEMI-COLON-CHAR
+8     (CONST&PUSH 2)                      ; #\;
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; SEMI-COLON-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR BACK-SLASH-CHAR (CODE-CHAR 92))-58|
+(CONST 0) = (SPECIAL BACK-SLASH-CHAR)
+(CONST 1) = BACK-SLASH-CHAR
+(CONST 2) = #\\
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL BACK-SLASH-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; BACK-SLASH-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; BACK-SLASH-CHAR
+8     (CONST&PUSH 2)                      ; #\\
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; BACK-SLASH-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR FORWARD-SLASH-CHAR (CODE-CHAR 47))-59|
+(CONST 0) = (SPECIAL FORWARD-SLASH-CHAR)
+(CONST 1) = FORWARD-SLASH-CHAR
+(CONST 2) = #\/
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL FORWARD-SLASH-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; FORWARD-SLASH-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; FORWARD-SLASH-CHAR
+8     (CONST&PUSH 2)                      ; #\/
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; FORWARD-SLASH-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR LEFT-PARENTHESES-CHAR (CODE-CHAR 40))-60|
+(CONST 0) = (SPECIAL LEFT-PARENTHESES-CHAR)
+(CONST 1) = LEFT-PARENTHESES-CHAR
+(CONST 2) = #\(
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL LEFT-PARENTHESES-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; LEFT-PARENTHESES-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; LEFT-PARENTHESES-CHAR
+8     (CONST&PUSH 2)                      ; #\(
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; LEFT-PARENTHESES-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR RIGHT-PARENTHESES-CHAR (CODE-CHAR 41))-61|
+(CONST 0) = (SPECIAL RIGHT-PARENTHESES-CHAR)
+(CONST 1) = RIGHT-PARENTHESES-CHAR
+(CONST 2) = #\)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL RIGHT-PARENTHESES-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; RIGHT-PARENTHESES-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; RIGHT-PARENTHESES-CHAR
+8     (CONST&PUSH 2)                      ; #\)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; RIGHT-PARENTHESES-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR PERIOD-CHAR (CODE-CHAR 46))-62|
+(CONST 0) = (SPECIAL PERIOD-CHAR)
+(CONST 1) = PERIOD-CHAR
+(CONST 2) = #\.
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL PERIOD-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; PERIOD-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; PERIOD-CHAR
+8     (CONST&PUSH 2)                      ; #\.
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; PERIOD-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR VERTICAL-STROKE-CHAR (CODE-CHAR 124))-63|
+(CONST 0) = (SPECIAL VERTICAL-STROKE-CHAR)
+(CONST 1) = VERTICAL-STROKE-CHAR
+(CONST 2) = #\|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL VERTICAL-STROKE-CHAR)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; VERTICAL-STROKE-CHAR
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; VERTICAL-STROKE-CHAR
+8     (CONST&PUSH 2)                      ; #\|
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; VERTICAL-STROKE-CHAR
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR $FORWARD-SLASH-SYMBOL '$/)-64|
+(CONST 0) = (SPECIAL $FORWARD-SLASH-SYMBOL)
+(CONST 1) = $FORWARD-SLASH-SYMBOL
+(CONST 2) = $/
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $FORWARD-SLASH-SYMBOL)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $FORWARD-SLASH-SYMBOL
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $FORWARD-SLASH-SYMBOL
+8     (CONST&PUSH 2)                      ; $/
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $FORWARD-SLASH-SYMBOL
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR FORWARD-SLASH-STRING (STRING FORWARD-SLASH-CHAR))-65|
+(CONST 0) = (SPECIAL FORWARD-SLASH-STRING)
+(CONST 1) = FORWARD-SLASH-STRING
+(CONST 2) = FORWARD-SLASH-CHAR
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FORWARD-SLASH-CHAR)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL FORWARD-SLASH-STRING)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; FORWARD-SLASH-STRING
+4     (CALLS1&JMPIF 79 L14)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; FORWARD-SLASH-STRING
+8     (GETVALUE&PUSH 2)                   ; FORWARD-SLASH-CHAR
+10    (CALLS1&PUSH 75)                    ; STRING
+12    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+14    L14
+14    (CONST 1)                           ; FORWARD-SLASH-STRING
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO ARG (X) ...)-66|
+(CONST 0) = ARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ARG>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ARG>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; ARG
+10    (SKIP&RET 1)
+
+
+Disassembly of function ARG
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = NARG1
+(CONST 3) = (NARG-REST-ARGUMENT)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L18)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; NARG1
+12    (LOAD&PUSH 1)
+13    (CONST 3)                           ; (NARG-REST-ARGUMENT)
+14    (LIST* 2)
+16    (SKIP&RET 4)
+18    L18
+18    (LOAD&PUSH 2)
+19    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+21    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN NARG1 (X L &AUX ...) ...)-67|
+(CONST 0) = NARG1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE NARG1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NARG1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; NARG1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE NARG1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; NARG1
+8     (SKIP&RET 1)
+
+
+Disassembly of function NARG1
+(CONST 0) = "arg ~A beyond range ~A "
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&JMPIFNOT 3 L16)
+4     (LOAD&DEC&PUSH 3)
+6     (LOAD&PUSH 3)
+7     (CALLS1&STORE 155 0)                ; NTHCDR
+10    (JMPIFNOT L21)
+12    (LOAD 0)
+13    (CAR)
+14    (SKIP&RET 4)
+16    L16
+16    (LOAD&PUSH 2)
+17    (CALLS2 71)                         ; LENGTH
+19    (SKIP&RET 4)
+21    L21
+21    (CONST&PUSH 0)                      ; "arg ~A beyond range ~A "
+22    (LOAD&PUSH 4)
+23    (LOAD&PUSH 4)
+24    (CALLS2&PUSH 71)                    ; LENGTH
+26    (CALLSR 2 29)                       ; ERROR
+
+
+Disassembly of function #:|(DEFMACRO LISTIFY (X) ...)-68|
+(CONST 0) = LISTIFY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISTIFY>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISTIFY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISTIFY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISTIFY>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; LISTIFY
+10    (SKIP&RET 1)
+
+
+Disassembly of function LISTIFY
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = LISTIFY1
+(CONST 3) = (NARG-REST-ARGUMENT)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L18)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; LISTIFY1
+12    (LOAD&PUSH 1)
+13    (CONST 3)                           ; (NARG-REST-ARGUMENT)
+14    (LIST* 2)
+16    (SKIP&RET 4)
+18    L18
+18    (LOAD&PUSH 2)
+19    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+21    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO SETARG (I VAL) ...)-69|
+(CONST 0) = SETARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SETARG>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SETARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SETARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SETARG>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; SETARG
+10    (SKIP&RET 1)
+
+
+Disassembly of function SETARG
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = SETARG1
+(CONST 3) = (NARG-REST-ARGUMENT)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L23)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (CONST&PUSH 2)                      ; SETARG1
+16    (LOAD&PUSH 2)
+17    (LOAD&PUSH 2)
+18    (CONST 3)                           ; (NARG-REST-ARGUMENT)
+19    (LIST* 3)
+21    (SKIP&RET 5)
+23    L23
+23    (LOAD&PUSH 2)
+24    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+26    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN SETARG1 (I VAL L) ...)-70|
+(CONST 0) = SETARG1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SETARG1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SETARG1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SETARG1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SETARG1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SETARG1
+8     (SKIP&RET 1)
+
+
+Disassembly of function SETARG1
+(CONST 0) = SYSTEM::%SETNTH
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&DEC&PUSH 3)
+2     (LOAD&PUSH 2)
+3     (LOAD&PUSH 4)
+4     (CALL 3 0)                          ; SYSTEM::%SETNTH
+7     (LOAD 2)
+8     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN LISTIFY1 (N NARG-REST-ARGUMENT) ...)-71|
+(CONST 0) = LISTIFY1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISTIFY1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISTIFY1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISTIFY1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISTIFY1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LISTIFY1
+8     (SKIP&RET 1)
+
+
+Disassembly of function LISTIFY1
+(CONST 0) = NLEFT
+(CONST 1) = FIRSTN
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+18 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&JMPIF 147 L14)              ; MINUSP
+4     (LOAD&PUSH 2)
+5     (CALLS2&JMPIF 145 L25)              ; ZEROP
+8     (LOAD&PUSH 2)
+9     (LOAD&PUSH 2)
+10    (CALL2 1)                           ; FIRSTN
+12    (SKIP&RET 3)
+14    L14
+14    (LOAD&PUSH 2)
+15    (CALLSR&PUSH 0 54)                  ; -
+18    (LOAD&PUSH 2)
+19    (CALL2&PUSH 0)                      ; NLEFT
+21    (CALLS1 158)                        ; COPY-LIST
+23    (SKIP&RET 3)
+25    L25
+25    (NIL)
+26    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO DEFMFUN (FUNCTION &BODY REST ...) ...)-72|
+(CONST 0) = DEFMFUN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFMFUN>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFMFUN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFMFUN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFMFUN>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEFMFUN
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFMFUN
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = &REST
+(CONST 3) = NARG-REST-ARGUMENT
+(CONST 4) = &AUX
+(CONST 5) = ((LENGTH NARG-REST-ARGUMENT))
+(CONST 6) = PROGN
+(CONST 7) = DEFUN
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+38 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L48)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR&PUSH)
+14    (NIL&PUSH)
+15    (LOAD 1)
+16    (CAR)
+17    (JMPIFNOT L38)
+19    (LOAD&CAR&PUSH 1)
+21    (CALLS2&JMPIFNOT 6 L38)             ; SYMBOLP
+24    (LOAD&CAR&STORE 1 0)
+27    (LOAD&PUSH 1)
+28    (CONST&PUSH 2)                      ; &REST
+29    (CONST&PUSH 3)                      ; NARG-REST-ARGUMENT
+30    (CONST&PUSH 4)                      ; &AUX
+31    (LOAD&PUSH 4)
+32    (CONST 5)                           ; ((LENGTH NARG-REST-ARGUMENT))
+33    (CONS&PUSH)
+34    (LIST&PUSH 4)
+36    (CALLS1 169)                        ; SYSTEM::%RPLACA
+38    L38
+38    (CONST&PUSH 6)                      ; PROGN
+39    (CONST&PUSH 7)                      ; DEFUN
+40    (LOAD&PUSH 4)
+41    (LOAD 4)
+42    (LIST*&PUSH 2)
+44    (LIST 2)
+46    (SKIP&RET 6)
+48    L48
+48    (LOAD&PUSH 2)
+49    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+51    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFVAR *BIG-CHUNK-SIZE* 120)-73|
+(CONST 0) = (SPECIAL *BIG-CHUNK-SIZE*)
+(CONST 1) = *BIG-CHUNK-SIZE*
+(CONST 2) = 120
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *BIG-CHUNK-SIZE*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *BIG-CHUNK-SIZE*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *BIG-CHUNK-SIZE*
+8     (CONST&PUSH 2)                      ; 120
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *BIG-CHUNK-SIZE*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR *TENTOCHUNKSIZE* (EXPT 10 *BIG-CHUNK-SIZE*))-74|
+(CONST 0) = (SPECIAL *TENTOCHUNKSIZE*)
+(CONST 1) = *TENTOCHUNKSIZE*
+(CONST 2) = 10
+(CONST 3) = *BIG-CHUNK-SIZE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*BIG-CHUNK-SIZE*)
+12 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *TENTOCHUNKSIZE*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *TENTOCHUNKSIZE*
+4     (CALLS1&JMPIF 79 L15)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *TENTOCHUNKSIZE*
+8     (CONST&PUSH 2)                      ; 10
+9     (GETVALUE&PUSH 3)                   ; *BIG-CHUNK-SIZE*
+11    (CALLS2&PUSH 154)                   ; EXPT
+13    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+15    L15
+15    (CONST 1)                           ; *TENTOCHUNKSIZE*
+16    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN EXPLODEN (SYMB &AUX STRING) ...)-75|
+(CONST 0) = EXPLODEN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXPLODEN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXPLODEN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXPLODEN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXPLODEN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXPLODEN
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXPLODEN
+(CONST 0) = 0.0
+(CONST 1) = 0.001
+(CONST 2) = 1.0E7
+(CONST 3) = $FPPREC
+(CONST 4) = SYSTEM::DO-FORMAT-FIXED-FLOAT
+(CONST 5) = 4
+(CONST 6) = SYSTEM::DO-FORMAT-EXPONENTIAL-FLOAT
+(CONST 7) = " "
+(CONST 8) = STRING-LEFT-TRIM
+(CONST 9) = #(NIL)
+(CONST 10) = :NAME
+(CONST 11) = COMMON-LISP:CONTINUE
+(CONST 12) = :INVOKE-FUNCTION
+(CONST 13) = #<COMPILED-CLOSURE EXPLODEN-1>
+(CONST 14) = :REPORT
+(CONST 15) = SYSTEM::REPORT-NO-NEW-VALUE
+(CONST 16) = :INTERACTIVE
+(CONST 17) = SYSTEM::ASSERT-RESTART-NO-PROMPTS
+(CONST 18) = SYSTEM::MAKE-RESTART
+(CONST 19) = SYSTEM::*ACTIVE-RESTARTS*
+(CONST 20) = SYSTEM::*CONDITION-RESTARTS*
+(CONST 21) = (#(CONDITION 111) 1 . 1)
+(CONST 22) = SYSTEM::ADD-CONDITION-RESTARTS
+(CONST 23) = SIGNAL
+(CONST 24) = "~A"
+(CONST 25) = (STRINGP STRING)
+(CONST 26) = SYSTEM::ASSERT-ERROR-STRING
+(CONST 27) = LIST-STRING
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (SYSTEM::*CONDITION-RESTARTS* SYSTEM::*ACTIVE-RESTARTS* $FPPREC)
+116 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (CALLS2&JMPIF 6 L26)                ; SYMBOLP
+5     (LOAD&PUSH 2)
+6     (CALLS2&JMPIF 15 L53)               ; FLOATP
+9     (PUSH-UNBOUND 2)
+11    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+13    (LOAD&PUSH 3)
+14    (LOAD&PUSH 1)
+15    (CALLS1 132)                        ; PRINC
+17    (LOAD&PUSH 0)
+18    (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+20    (SKIP 1)
+22    (STORE 0)
+23    (JMP L186)
+26    L26
+26    (LOAD&PUSH 2)
+27    (CALLS2&STORE 140 0)                ; SYMBOL-NAME
+30    (JMP L186)
+33    L33
+33    (PUSH-UNBOUND 2)
+35    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+37    (GETVALUE&PUSH 3)                   ; $FPPREC
+39    (CALLS2&PUSH 150)                   ; 1+
+41    (LOAD&PUSH 1)
+42    (PUSH-NIL 2)
+44    (LOAD&PUSH 3)
+45    (PUSH-NIL 4)
+47    (LOAD&PUSH 13)
+48    (CALL 9 4)                          ; SYSTEM::DO-FORMAT-FIXED-FLOAT
+51    (JMP L93)
+53    L53
+53    (LOAD&PUSH 2)
+54    (CALLS2&PUSH 158)                   ; ABS
+56    (LOAD&PUSH 0)
+57    (CONST&PUSH 0)                      ; 0.0
+58    (CALLS2&JMPIF 1 L33)                ; EQL
+61    (LOAD&PUSH 0)
+62    (CONST&PUSH 1)                      ; 0.001
+63    (CALLSR&JMPIFNOT 1 50 L73)          ; >=
+67    (LOAD&PUSH 0)
+68    (CONST&PUSH 2)                      ; 1.0E7
+69    (CALLSR&JMPIF 1 49 L33)             ; <=
+73    L73
+73    (PUSH-UNBOUND 2)
+75    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+77    (CONST&PUSH 5)                      ; 4
+78    (GETVALUE&PUSH 3)                   ; $FPPREC
+80    (CALLSR&PUSH 2 53)                  ; +
+83    (LOAD&PUSH 1)
+84    (PUSH-NIL 2)
+86    (LOAD&PUSH 3)
+87    (PUSH-NIL 6)
+89    (LOAD&PUSH 15)
+90    (CALL 11 6)                         ; SYSTEM::DO-FORMAT-EXPONENTIAL-FLOAT
+93    L93
+93    (SKIP 1)
+95    (LOAD&PUSH 0)
+96    (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+98    (SKIP 1)
+100   (STORE 1)
+101   (SKIP 1)
+103   (CONST&PUSH 7)                      ; " "
+104   (LOAD&PUSH 1)
+105   (CALL2 8)                           ; STRING-LEFT-TRIM
+107   (STORE 0)
+108   (JMP L186)
+111   L111
+111   (HANDLER-BEGIN&PUSH)
+112   (LOAD&PUSH 0)
+113   (LOADI&PUSH 0 0 6)
+117   (CALL2 22)                          ; SYSTEM::ADD-CONDITION-RESTARTS
+119   (LOAD&PUSH 0)
+120   (CALL1 23)                          ; SIGNAL
+122   (SKIPSP 2 1)
+125   (SKIP&RET 2)
+127   L127
+127   (NIL)
+128   (MAKE-VECTOR1&PUSH 1)
+130   (NIL)
+131   (STOREC 0 0)
+134   (TAGBODY-OPEN 9 L177)               ; #(NIL)
+137   (CONST&PUSH 10)                     ; :NAME
+138   (CONST&PUSH 11)                     ; COMMON-LISP:CONTINUE
+139   (CONST&PUSH 12)                     ; :INVOKE-FUNCTION
+140   (LOAD&PUSH 7)
+141   (LOAD&PUSH 6)
+142   (COPY-CLOSURE&PUSH 13 2)            ; #<COMPILED-CLOSURE EXPLODEN-1>
+145   (CONST&PUSH 14)                     ; :REPORT
+146   (CONST&SYMBOL-FUNCTION&PUSH 15)     ; SYSTEM::REPORT-NO-NEW-VALUE
+148   (CONST&PUSH 16)                     ; :INTERACTIVE
+149   (CONST&SYMBOL-FUNCTION&PUSH 17)     ; SYSTEM::ASSERT-RESTART-NO-PROMPTS
+151   (CALL&PUSH 8 18)                    ; SYSTEM::MAKE-RESTART
+154   (LIST&PUSH 1)
+156   (LOAD&PUSH 0)
+157   (GETVALUE&PUSH 19)                  ; SYSTEM::*ACTIVE-RESTARTS*
+159   (CALLSR 2 34)                       ; APPEND
+162   (BIND 19)                           ; SYSTEM::*ACTIVE-RESTARTS*
+164   (GETVALUE 20)                       ; SYSTEM::*CONDITION-RESTARTS*
+166   (BIND 20)                           ; SYSTEM::*CONDITION-RESTARTS*
+168   (HANDLER-OPEN 21 L111)              ; (#(CONDITION 111) 1 . 1)
+170   (CONST&PUSH 24)                     ; "~A"
+171   (CONST&PUSH 25)                     ; (STRINGP STRING)
+172   (CALL1&PUSH 26)                     ; SYSTEM::ASSERT-ERROR-STRING
+174   (CALLSR 1 29)                       ; ERROR
+177   L177
+177   (LOADC 4 0)
+180   (UNLIST 0 0)
+183   (TAGBODY-CLOSE)
+184   (SKIP 1)
+186   L186
+186   (LOAD&PUSH 0)
+187   (CALLS2&JMPIFNOT 7 L127)            ; STRINGP
+190   (LOAD&PUSH 0)
+191   (CALL1 27)                          ; LIST-STRING
+193   (SKIP&RET 3)
+
+
+Disassembly of function EXPLODEN-1
+(CONST 0) = NIL
+(CONST 1) = NIL
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD 1)
+1     (STOREV 0 1)
+4     (GO 1 0)
+
+
+Disassembly of function #:|(DEFUN EXPLODEC (SYMB &AUX TEM ...) ...)-76|
+(CONST 0) = EXPLODEC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXPLODEC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXPLODEC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXPLODEC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXPLODEC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXPLODEC
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXPLODEC
+(CONST 0) = LIST-STRING
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+28 byte-code instructions:
+0     (PUSH-NIL 2)
+2     (PUSH-UNBOUND 2)
+4     (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+6     (LOAD&PUSH 4)
+7     (LOAD&PUSH 1)
+8     (CALLS1 132)                        ; PRINC
+10    (LOAD&PUSH 0)
+11    (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+13    (SKIP 1)
+15    (STORE 0)
+16    (PUSH)
+17    (CALL1 0)                           ; LIST-STRING
+19    (STORE 1)
+20    (PUSH)
+21    (LOAD&JMPIFNOT 0 L40)
+24    L24
+24    (LOAD&PUSH 0)
+25    (LOAD&CAR&PUSH 1)
+27    (CALLS1&PUSH 75)                    ; STRING
+29    (PUSH-UNBOUND 1)
+31    (CALLS1&PUSH 212)                   ; INTERN
+33    (CALLS1 169)                        ; SYSTEM::%RPLACA
+35    (LOAD&CDR&STORE 0)
+37    (LOAD&JMPIF 0 L24)
+40    L40
+40    (SKIP 1)
+42    (LOAD 1)
+43    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFVAR *STRING-FOR-IMPLODE* (MAKE-ARRAY 20 :FILL-POINTER ...))-77|
+(CONST 0) = (SPECIAL *STRING-FOR-IMPLODE*)
+(CONST 1) = *STRING-FOR-IMPLODE*
+(CONST 2) = 20
+(CONST 3) = CHARACTER
+(CONST 4) = 0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *STRING-FOR-IMPLODE*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *STRING-FOR-IMPLODE*
+4     (CALLS1&JMPIF 79 L19)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *STRING-FOR-IMPLODE*
+8     (CONST&PUSH 2)                      ; 20
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; CHARACTER
+11    (PUSH-UNBOUND 5)
+13    (CONST 4)                           ; 0
+14    (STORE 2)
+15    (CALLS1&PUSH 29)                    ; MAKE-ARRAY
+17    (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+19    L19
+19    (CONST 1)                           ; *STRING-FOR-IMPLODE*
+20    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN IMPLODE (LIS) ...)-78|
+(CONST 0) = IMPLODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE IMPLODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; IMPLODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; IMPLODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE IMPLODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; IMPLODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function IMPLODE
+(CONST 0) = IMPLODE1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (NIL&PUSH)
+2     (CALL2 0)                           ; IMPLODE1
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN IMPLODE1 (LIS UPCASE &AUX ...) ...)-79|
+(CONST 0) = IMPLODE1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE IMPLODE1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; IMPLODE1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; IMPLODE1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE IMPLODE1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; IMPLODE1
+8     (SKIP&RET 1)
+
+
+Disassembly of function IMPLODE1
+(CONST 0) = *STRING-FOR-IMPLODE*
+(CONST 1) = 0
+(CONST 2) = 20
+(CONST 3) = SLOOP::SLOOP-TYPE-ERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*STRING-FOR-IMPLODE*)
+75 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; *STRING-FOR-IMPLODE*
+2     (CONST&PUSH 1)                      ; 0
+3     (LOAD&PUSH 1)
+4     (CALLS1&PUSH 10)                    ; ARRAY-TOTAL-SIZE
+6     (LOAD&PUSH 5)
+7     (CALLS2&STORE 71 1)                 ; LENGTH
+10    (PUSH)
+11    (CALLSR&JMPIF 1 48 L25)             ; >
+15    (LOAD&PUSH 1)
+16    (CONST&PUSH 2)                      ; 20
+17    (LOAD&PUSH 2)
+18    (CALLSR&PUSH 2 53)                  ; +
+21    (PUSH-UNBOUND 6)
+23    (CALLS1 30)                         ; ADJUST-ARRAY
+25    L25
+25    (LOAD&PUSH 1)
+26    (LOAD&PUSH 1)
+27    (CALLS1 25)                         ; SYSTEM::SET-FILL-POINTER
+29    (NIL&PUSH)
+30    (LOAD&PUSH 5)
+31    (CONST&PUSH 1)                      ; 0
+32    (LOAD&PUSH 3)
+33    (CALLS2&JMPIF 13 L38)               ; SYSTEM::FIXNUMP
+36    (CALL0 3)                           ; SLOOP::SLOOP-TYPE-ERROR
+38    L38
+38    (LOAD&PUSH 3)
+39    L39
+39    (LOAD&PUSH 1)
+40    (LOAD&PUSH 1)
+41    (CALLSR&JMPIF 1 50 L105)            ; >=
+45    (LOAD&JMPIFNOT 2 L105)
+48    (LOAD&CAR&PUSH 2)
+50    (LOAD 0)
+51    (STORE 4)
+52    (STORE 0)
+53    (CALLS2&JMPIF 28 L85)               ; CHARACTERP
+56    (LOAD&PUSH 3)
+57    (CALLS2&JMPIF 6 L76)                ; SYMBOLP
+60    (LOAD&PUSH 3)
+61    (CALLS2&JMPIFNOT 8 L85)             ; NUMBERP
+64    (LOAD&PUSH 3)
+65    (CALLS1 41)                         ; CODE-CHAR
+67    L67
+67    (STORE 3)
+68    (LOAD&JMPIFNOT 7 L88)
+71    L71
+71    (LOAD&PUSH 3)
+72    (CALLS1 43)                         ; CHAR-UPCASE
+74    (JMP L89)
+76    L76
+76    (LOAD&PUSH 3)
+77    (CALLS2&PUSH 140)                   ; SYMBOL-NAME
+79    (CONST&PUSH 1)                      ; 0
+80    (CALLSR 1 1)                        ; AREF
+83    (JMP L67)
+85    L85
+85    (LOAD&JMPIF 7 L71)
+88    L88
+88    (LOAD 3)
+89    L89
+89    (PUSH)
+90    (LOAD&PUSH 6)
+91    (LOAD&PUSH 3)
+92    (LOAD&PUSH 2)
+93    (CALLSR 1 2)                        ; SYSTEM::STORE
+96    (SKIP 1)
+98    (LOAD&CDR&STORE 2)
+100   (LOAD&INC&STORE 1)
+102   (JMP L39)
+105   L105
+105   (SKIP 4)
+107   (LOAD&PUSH 1)
+108   (PUSH-UNBOUND 1)
+110   (CALLS1 212)                        ; INTERN
+112   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN BOTHCASE-IMPLODE (LIS &AUX TEM) ...)-80|
+(CONST 0) = BOTHCASE-IMPLODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE BOTHCASE-IMPLODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; BOTHCASE-IMPLODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; BOTHCASE-IMPLODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE BOTHCASE-IMPLODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; BOTHCASE-IMPLODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function BOTHCASE-IMPLODE
+(CONST 0) = #\$
+(CONST 1) = IMPLODE1
+(CONST 2) = UPCASE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+75 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&CAR&PUSH 2)
+3     (JMPIFNOTEQTO 0 L77)                ; #\$
+7     (LOAD&PUSH 2)
+8     (NIL&PUSH)
+9     (CALL2 1)                           ; IMPLODE1
+11    (NV-TO-STACK 2)
+13    (LOAD&JMPIF 0 L102)
+17    (NIL&PUSH)
+18    (LOAD&PUSH 5)
+19    (NIL&PUSH)
+20    (LOAD&JMPIFNOT 1 L39)
+23    L23
+23    (LOAD&CAR&PUSH 1)
+25    (LOAD 0)
+26    (STORE 3)
+27    (STORE 0)
+28    (CALLS1&PUSH 43)                    ; CHAR-UPCASE
+30    (LOAD&PUSH 3)
+31    (CALLS2&JMPIFNOT 1 L86)             ; EQL
+34    (LOAD&CDR&STORE 1)
+36    (LOAD&JMPIF 1 L23)
+39    L39
+39    (LOAD&JMPIFNOT 0 L91)
+42    L42
+42    (SKIP 3)
+44    (LOAD&PUSH 4)
+45    (T&PUSH)
+46    (CALL2 1)                           ; IMPLODE1
+48    (NV-TO-STACK 2)
+50    (LOAD&JMPIFNOT 0 L66)
+53    (LOAD 6)
+54    (CDR)
+55    (CDR)
+56    (JMPIF L94)
+58    (LOAD&PUSH 1)
+59    (CALLS1&JMPIF 80 L94)               ; FBOUNDP
+62    (LOAD&PUSH 1)
+63    (CALLS2&JMPIF 139 L94)              ; SYMBOL-PLIST
+66    L66
+66    (LOAD&JMPIF 0 L74)
+69    (LOAD&PUSH 1)
+70    (PUSH-UNBOUND 1)
+72    (CALLS1 214)                        ; UNINTERN
+74    L74
+74    (LOAD 3)
+75    (SKIP&RET 7)
+77    L77
+77    (LOAD&PUSH 2)
+78    (NIL&PUSH)
+79    (CALL2 1)                           ; IMPLODE1
+81    (SKIP&RET 3)
+83    L83
+83    (LOAD 1)
+84    (SKIP&RET 5)
+86    L86
+86    (T&STORE 0)
+88    (LOAD&JMPIF 0 L42)
+91    L91
+91    (LOAD 4)
+92    (SKIP&RET 8)
+94    L94
+94    (LOAD&PUSH 3)
+95    (CONST&PUSH 2)                      ; UPCASE
+96    (LOAD&PUSH 3)
+97    (CALLS2 136)                        ; SYSTEM::%PUT
+99    (LOAD 1)
+100   (SKIP&RET 7)
+102   L102
+102   (LOAD&PUSH 1)
+103   (CONST&PUSH 2)                      ; UPCASE
+104   (PUSH-UNBOUND 1)
+106   (CALLS2&STORE 132 2)                ; GET
+109   (JMPIFNOT L83)
+111   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN LIST-STRING (STRIN &AUX TEM) ...)-81|
+(CONST 0) = LIST-STRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LIST-STRING>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LIST-STRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LIST-STRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LIST-STRING>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LIST-STRING
+8     (SKIP&RET 1)
+
+
+Disassembly of function LIST-STRING
+(CONST 0) = 0
+(CONST 1) = 16777214
+(CONST 2) = SLOOP::SLOOP-TYPE-ERROR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+26 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (CALLS2&PUSH 71)                    ; LENGTH
+4     (PUSH-UNBOUND 1)
+6     (CALLS1&STORE 157 0)                ; MAKE-LIST
+9     (PUSH)
+10    (CONST&PUSH 0)                      ; 0
+11    (LOAD&JMPIFNOT 1 L37)
+14    L14
+14    (LOAD&PUSH 1)
+15    (LOAD&PUSH 5)
+16    (LOAD&PUSH 2)
+17    (CALLSR&PUSH 1 1)                   ; AREF
+20    (CALLS1 169)                        ; SYSTEM::%RPLACA
+22    (LOAD&CDR&STORE 1)
+24    (LOAD&PUSH 0)
+25    (CONST&PUSH 1)                      ; 16777214
+26    (CALLSR&JMPIF 1 47 L32)             ; <
+30    (CALL0 2)                           ; SLOOP::SLOOP-TYPE-ERROR
+32    L32
+32    (LOAD&INC&STORE 0)
+34    (LOAD&JMPIF 1 L14)
+37    L37
+37    (SKIP 2)
+39    (POP)
+40    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN EXPLODE (SYMB &AUX TEM ...) ...)-82|
+(CONST 0) = EXPLODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE EXPLODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; EXPLODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; EXPLODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE EXPLODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; EXPLODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function EXPLODE
+(CONST 0) = LIST-STRING
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+28 byte-code instructions:
+0     (PUSH-NIL 2)
+2     (PUSH-UNBOUND 2)
+4     (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+6     (LOAD&PUSH 4)
+7     (LOAD&PUSH 1)
+8     (CALLS1 129)                        ; PRIN1
+10    (LOAD&PUSH 0)
+11    (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+13    (SKIP 1)
+15    (STORE 0)
+16    (PUSH)
+17    (CALL1 0)                           ; LIST-STRING
+19    (STORE 1)
+20    (PUSH)
+21    (LOAD&JMPIFNOT 0 L40)
+24    L24
+24    (LOAD&PUSH 0)
+25    (LOAD&CAR&PUSH 1)
+27    (CALLS1&PUSH 75)                    ; STRING
+29    (PUSH-UNBOUND 1)
+31    (CALLS1&PUSH 212)                   ; INTERN
+33    (CALLS1 169)                        ; SYSTEM::%RPLACA
+35    (LOAD&CDR&STORE 0)
+37    (LOAD&JMPIF 0 L24)
+40    L40
+40    (SKIP 1)
+42    (LOAD 1)
+43    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN GETCHARN (SYMB I &AUX ...) ...)-83|
+(CONST 0) = GETCHARN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GETCHARN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GETCHARN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GETCHARN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GETCHARN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GETCHARN
+8     (SKIP&RET 1)
+
+
+Disassembly of function GETCHARN
+(CONST 0) = 0
+(CONST 1) = 1
+(CONST 2) = "without any special action"
+(CONST 3) = "out of bounds"
+(CONST 4) = CERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 3)
+2     (CALLS1&STORE 75 0)                 ; STRING
+5     (LOAD&PUSH 2)
+6     (LOAD&PUSH 1)
+7     (CALLS2&PUSH 71)                    ; LENGTH
+9     (CALLSR&JMPIFNOT 1 49 L19)          ; <=
+13    (LOAD&PUSH 2)
+14    (CONST&PUSH 0)                      ; 0
+15    (CALLSR&JMPIF 1 48 L25)             ; >
+19    L19
+19    (CONST&PUSH 2)                      ; "without any special action"
+20    (CONST&PUSH 3)                      ; "out of bounds"
+21    (CALL2 4)                           ; CERROR
+23    (SKIP&RET 4)
+25    L25
+25    (LOAD&PUSH 0)
+26    (LOAD&PUSH 3)
+27    (CONST&PUSH 1)                      ; 1
+28    (CALLSR&PUSH 1 54)                  ; -
+31    (CALLSR 1 1)                        ; AREF
+34    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMACRO ZL-STRING (X) ...)-84|
+(CONST 0) = ZL-STRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZL-STRING>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZL-STRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZL-STRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZL-STRING>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; ZL-STRING
+10    (SKIP&RET 1)
+
+
+Disassembly of function ZL-STRING
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L13)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (SKIP&RET 3)
+13    L13
+13    (LOAD&PUSH 2)
+14    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+16    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN ZL-CHAR (CHAR) ...)-85|
+(CONST 0) = ZL-CHAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ZL-CHAR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ZL-CHAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ZL-CHAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ZL-CHAR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ZL-CHAR
+8     (SKIP&RET 1)
+
+
+Disassembly of function ZL-CHAR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&JMPIF 8 L9)                 ; NUMBERP
+4     (LOAD&PUSH 1)
+5     (CALLS1 46)                         ; CHAR-INT
+7     (SKIP&RET 2)
+9     L9
+9     (LOAD 1)
+10    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN GETCHAR (SYMB I &AUX ...) ...)-86|
+(CONST 0) = GETCHAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GETCHAR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GETCHAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GETCHAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GETCHAR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GETCHAR
+8     (SKIP&RET 1)
+
+
+Disassembly of function GETCHAR
+(CONST 0) = 0
+(CONST 1) = 1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+23 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 3)
+2     (CALLS1&STORE 75 0)                 ; STRING
+5     (LOAD&PUSH 2)
+6     (LOAD&PUSH 1)
+7     (CALLS2&PUSH 71)                    ; LENGTH
+9     (CALLSR&JMPIFNOT 1 49 L19)          ; <=
+13    (LOAD&PUSH 2)
+14    (CONST&PUSH 0)                      ; 0
+15    (CALLSR&JMPIF 1 48 L22)             ; >
+19    L19
+19    (NIL)
+20    (SKIP&RET 4)
+22    L22
+22    (LOAD&PUSH 0)
+23    (LOAD&PUSH 3)
+24    (CONST&PUSH 1)                      ; 1
+25    (CALLSR&PUSH 1 54)                  ; -
+28    (CALLSR&PUSH 1 1)                   ; AREF
+31    (CALLS1&PUSH 75)                    ; STRING
+33    (PUSH-UNBOUND 1)
+35    (CALLS1 212)                        ; INTERN
+37    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN ASCII (N) ...)-87|
+(CONST 0) = ASCII
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ASCII>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ASCII
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ASCII
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ASCII>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ASCII
+8     (SKIP&RET 1)
+
+
+Disassembly of function ASCII
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS1&PUSH 75)                    ; STRING
+3     (PUSH-UNBOUND 1)
+5     (CALLS1 212)                        ; INTERN
+7     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MAKNAM (LIS) ...)-88|
+(CONST 0) = MAKNAM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKNAM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKNAM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKNAM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKNAM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKNAM
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKNAM
+(CONST 0) = 1
+(CONST 1) = GETCHARN
+(CONST 2) = "without any special action"
+(CONST 3) = "bad entry"
+(CONST 4) = CERROR
+(CONST 5) = STRING
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+57 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD&PUSH 2)
+2     (PUSH-NIL 3)
+4     (LOAD&JMPIFNOT 3 L65)
+7     L7
+7     (LOAD&CAR&PUSH 3)
+9     (LOAD 0)
+10    (STORE 5)
+11    (STORE 0)
+12    (CALLS2&JMPIF 6 L37)                ; SYMBOLP
+15    (LOAD&PUSH 4)
+16    (CALLS2&JMPIFNOT 28 L56)            ; CHARACTERP
+19    (LOAD&JMPIFNOT 1 L48)
+22    (PUSH)
+23    (LOAD 5)
+24    L24
+24    (PUSH)
+25    (NIL)
+26    (CONS)
+27    (STORE 2)
+28    (PUSH)
+29    (CALLS1 171)                        ; SYSTEM::%RPLACD
+31    (JMP L60)
+33    L33
+33    (PUSH)
+34    (LOAD 1)
+35    (JMP L24)
+37    L37
+37    (LOAD&PUSH 4)
+38    (CONST&PUSH 0)                      ; 1
+39    (CALL2 1)                           ; GETCHARN
+41    (STORE 0)
+42    (LOAD&JMPIF 1 L33)
+45    (LOAD 0)
+46    (JMP L49)
+48    L48
+48    (LOAD 4)
+49    L49
+49    (PUSH)
+50    (NIL)
+51    (CONS)
+52    (STORE 1)
+53    (STORE 2)
+54    (JMP L60)
+56    L56
+56    (CONST&PUSH 2)                      ; "without any special action"
+57    (CONST&PUSH 3)                      ; "bad entry"
+58    (CALL2 4)                           ; CERROR
+60    L60
+60    (LOAD&CDR&STORE 3)
+62    (LOAD&JMPIF 3 L7)
+65    L65
+65    (LOAD&PUSH 2)
+66    (CONST&PUSH 5)                      ; STRING
+67    (CALLS2&PUSH 42)                    ; COERCE
+69    (CALLS1 203)                        ; MAKE-SYMBOL
+71    (SKIP&RET 7)
+
+
+Disassembly of function #:|(DEFUN FLATC (SYM) ...)-89|
+(CONST 0) = FLATC
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FLATC>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FLATC
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FLATC
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FLATC>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FLATC
+8     (SKIP&RET 1)
+
+
+Disassembly of function FLATC
+(CONST 0) = EXPLODEC
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; EXPLODEC
+3     (CALLS2 71)                         ; LENGTH
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FLATSIZE (SYM &AUX #) ...)-90|
+(CONST 0) = FLATSIZE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FLATSIZE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FLATSIZE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FLATSIZE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FLATSIZE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FLATSIZE
+8     (SKIP&RET 1)
+
+
+Disassembly of function FLATSIZE
+(CONST 0) = *PRINT-CIRCLE*
+(CONST 1) = EXPLODEN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (T)
+1     (BIND 0)                            ; *PRINT-CIRCLE*
+3     (LOAD&PUSH 4)
+4     (CALL1&PUSH 1)                      ; EXPLODEN
+6     (CALLS2 71)                         ; LENGTH
+8     (UNBIND1)
+9     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMACRO SAFE-ZEROP (X) ...)-91|
+(CONST 0) = SAFE-ZEROP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SAFE-ZEROP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SAFE-ZEROP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SAFE-ZEROP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SAFE-ZEROP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; SAFE-ZEROP
+10    (SKIP&RET 1)
+
+
+Disassembly of function SAFE-ZEROP
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = AND
+(CONST 3) = NUMBERP
+(CONST 4) = ZEROP
+(CONST 5) = LET
+(CONST 6) = .X.
+(CONST 7) = ((AND (NUMBERP .X.) (ZEROP .X.)))
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+31 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L27)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD&PUSH 0)
+12    (CALLS2&JMPIF 6 L32)                ; SYMBOLP
+15    (CONST&PUSH 5)                      ; LET
+16    (CONST&PUSH 6)                      ; .X.
+17    (LOAD&PUSH 2)
+18    (LIST&PUSH 2)
+20    (LIST&PUSH 1)
+22    (CONST 7)                           ; ((AND (NUMBERP .X.) (ZEROP .X.)))
+23    (LIST* 2)
+25    (SKIP&RET 4)
+27    L27
+27    (LOAD&PUSH 2)
+28    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+30    (SKIP&RET 3)
+32    L32
+32    (CONST&PUSH 2)                      ; AND
+33    (CONST&PUSH 3)                      ; NUMBERP
+34    (LOAD&PUSH 2)
+35    (LIST&PUSH 2)
+37    (CONST&PUSH 4)                      ; ZEROP
+38    (LOAD&PUSH 3)
+39    (LIST&PUSH 2)
+41    (LIST 3)
+43    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMACRO SIGNP (SYM X) ...)-92|
+(CONST 0) = SIGNP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIGNP>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIGNP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIGNP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIGNP>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; SIGNP
+10    (SKIP&RET 1)
+
+
+Disassembly of function SIGNP
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = #S(HASH-TABLE EQ (N . 33) (GE . 26) (G . 19) (LE . 12) (L . 5) (E . 1))
+(CONST 3) = ZEROP
+(CONST 4) = <
+(CONST 5) = (0)
+(CONST 6) = <=
+(CONST 7) = (0)
+(CONST 8) = >
+(CONST 9) = (0)
+(CONST 10) = >=
+(CONST 11) = (0)
+(CONST 12) = NOT
+(CONST 13) = AND
+(CONST 14) = NUMBERP
+(CONST 15) = LET
+(CONST 16) = .X.
+(CONST 17) = SIGNP
+(CONST 18) = (.X.)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+79 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L34)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD 3)
+12    (CDR)
+13    (CDR)
+14    (CAR&PUSH)
+15    (LOAD 0)
+16    (JMPIFATOM L39)
+18    (CONST&PUSH 15)                     ; LET
+19    (CONST&PUSH 16)                     ; .X.
+20    (LOAD&PUSH 2)
+21    (LIST&PUSH 2)
+23    (LIST&PUSH 1)
+25    (CONST&PUSH 17)                     ; SIGNP
+26    (LOAD&PUSH 4)
+27    (CONST 18)                          ; (.X.)
+28    (LIST*&PUSH 2)
+30    (LIST 3)
+32    (SKIP&RET 5)
+34    L34
+34    (LOAD&PUSH 2)
+35    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+37    (SKIP&RET 3)
+39    L39
+39    (LOAD 1)
+40    (JMPHASH 2 L85 L43 L47 L54 L61 L68 L75)
+43    L43
+43    (CONST&PUSH 3)                      ; ZEROP
+44    (LOAD 1)
+45    (JMP L80)
+47    L47
+47    (CONST&PUSH 4)                      ; <
+48    (LOAD&PUSH 1)
+49    (CONST 5)                           ; (0)
+50    (LIST* 2)
+52    (JMP L86)
+54    L54
+54    (CONST&PUSH 6)                      ; <=
+55    (LOAD&PUSH 1)
+56    (CONST 7)                           ; (0)
+57    (LIST* 2)
+59    (JMP L86)
+61    L61
+61    (CONST&PUSH 8)                      ; >
+62    (LOAD&PUSH 1)
+63    (CONST 9)                           ; (0)
+64    (LIST* 2)
+66    (JMP L86)
+68    L68
+68    (CONST&PUSH 10)                     ; >=
+69    (LOAD&PUSH 1)
+70    (CONST 11)                          ; (0)
+71    (LIST* 2)
+73    (JMP L86)
+75    L75
+75    (CONST&PUSH 12)                     ; NOT
+76    (CONST&PUSH 3)                      ; ZEROP
+77    (LOAD&PUSH 2)
+78    (LIST 2)
+80    L80
+80    (PUSH)
+81    (LIST 2)
+83    (JMP L86)
+85    L85
+85    (NIL)
+86    L86
+86    (PUSH)
+87    (CONST&PUSH 13)                     ; AND
+88    (CONST&PUSH 14)                     ; NUMBERP
+89    (LOAD&PUSH 3)
+90    (LIST&PUSH 2)
+92    (LOAD&PUSH 2)
+93    (LIST 3)
+95    (SKIP&RET 6)
+
+
+Disassembly of function #:|(DEFMACRO COMMENT (&REST A) ...)-93|
+(CONST 0) = COMMENT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COMMENT>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COMMENT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COMMENT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COMMENT>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; COMMENT
+10    (SKIP&RET 1)
+
+
+Disassembly of function COMMENT
+(CONST 0) = 'COMMENT
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; 'COMMENT
+1     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN TYO (CHAR &OPTIONAL #) ...)-94|
+(CONST 0) = TYO
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TYO>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TYO
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TYO
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TYO>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TYO
+8     (SKIP&RET 1)
+
+
+Disassembly of function TYO
+(CONST 0) = *STANDARD-OUTPUT*
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (*STANDARD-OUTPUT*)
+8 byte-code instructions:
+0     (JMPIFBOUNDP 1 L6)
+3     (GETVALUE 0)                        ; *STANDARD-OUTPUT*
+5     (STORE 1)
+6     L6
+6     (LOAD&PUSH 2)
+7     (LOAD&PUSH 2)
+8     (CALLS1 136)                        ; WRITE-CHAR
+10    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN TYI (&OPTIONAL # EOF-OPTION) ...)-95|
+(CONST 0) = TYI
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TYI>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TYI
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TYI
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TYI>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TYI
+8     (SKIP&RET 1)
+
+
+Disassembly of function TYI
+(CONST 0) = *STANDARD-INPUT*
+0 required arguments
+2 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*STANDARD-INPUT*)
+23 byte-code instructions:
+0     (JMPIFBOUNDP 2 L6)
+3     (GETVALUE 0)                        ; *STANDARD-INPUT*
+5     (STORE 2)
+6     L6
+6     (JMPIFBOUNDP 1 L19)
+9     (NIL&STORE 1)
+11    (LOAD&JMPIFNOT 1 L22)
+14    L14
+14    (LOAD&PUSH 2)
+15    (NIL&PUSH)
+16    (LOAD 3)
+17    (JMP L25)
+19    L19
+19    (LOAD&JMPIF 1 L14)
+22    L22
+22    (LOAD&PUSH 2)
+23    (NIL&PUSH)
+24    (NIL)
+25    L25
+25    (PUSH)
+26    (PUSH-UNBOUND 1)
+28    (CALLS1 120)                        ; READ-CHAR
+30    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN TYIPEEK (&OPTIONAL PEEK-TYPE &REST ...) ...)-96|
+(CONST 0) = TYIPEEK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TYIPEEK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TYIPEEK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TYIPEEK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TYIPEEK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TYIPEEK
+8     (SKIP&RET 1)
+
+
+Disassembly of function TYIPEEK
+0 required arguments
+1 optional argument
+Rest parameter
+No keyword parameters
+16 byte-code instructions:
+0     (JMPIFBOUNDP 2 L15)
+3     (NIL&STORE 2)
+5     (LOAD&JMPIFNOT 1 L18)
+8     L8
+8     (LOAD&PUSH 2)
+9     (LOAD&CAR&PUSH 2)
+11    (PUSH-UNBOUND 3)
+13    (JMP L21)
+15    L15
+15    (LOAD&JMPIF 1 L8)
+18    L18
+18    (LOAD&PUSH 2)
+19    (PUSH-UNBOUND 4)
+21    L21
+21    (CALLS1 122)                        ; PEEK-CHAR
+23    (SKIP&RET 3)
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFMACRO *EXPR # ...) ...)-97-2|
+(CONST 0) = *EXPR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE *EXPR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; *EXPR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; *EXPR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE *EXPR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function *EXPR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 3)
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFMACRO *EXPR # ...) ...)-97-3|
+(CONST 0) = *LEXPR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE *LEXPR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; *LEXPR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; *LEXPR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE *LEXPR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (VALUES0)
+10    (SKIP&RET 1)
+
+
+Disassembly of function *LEXPR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 3)
+
+
+Disassembly of function #:|(PROGN 'COMPILE (DEFMACRO *EXPR # ...) ...)-97-4|
+(CONST 0) = *FEXPR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE *FEXPR>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; *FEXPR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; *FEXPR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE *FEXPR>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; *FEXPR
+10    (SKIP&RET 1)
+
+
+Disassembly of function *FEXPR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO LOCAL-DECLARE (DCLS &BODY BODY) ...)-98|
+(CONST 0) = LOCAL-DECLARE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LOCAL-DECLARE>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LOCAL-DECLARE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LOCAL-DECLARE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LOCAL-DECLARE>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; LOCAL-DECLARE
+10    (SKIP&RET 1)
+
+
+Disassembly of function LOCAL-DECLARE
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = PROGN
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+15 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 47 L16)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CDR&PUSH)
+11    (CONST&PUSH 2)                      ; PROGN
+12    (LOAD 1)
+13    (CONS)
+14    (SKIP&RET 4)
+16    L16
+16    (LOAD&PUSH 2)
+17    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+19    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO ARRAYCALL (IGN ARRAY &REST ...) ...)-99|
+(CONST 0) = ARRAYCALL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ARRAYCALL>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ARRAYCALL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ARRAYCALL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ARRAYCALL>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; ARRAYCALL
+10    (SKIP&RET 1)
+
+
+Disassembly of function ARRAYCALL
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = AREF
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 47 L23)             ; <
+8     (LOAD 2)
+9     (CDR)
+10    (CDR)
+11    (CAR&PUSH)
+12    (LOAD 3)
+13    (CDR)
+14    (CDR)
+15    (CDR&PUSH)
+16    (CONST&PUSH 2)                      ; AREF
+17    (LOAD&PUSH 2)
+18    (LOAD 2)
+19    (LIST* 2)
+21    (SKIP&RET 5)
+23    L23
+23    (LOAD&PUSH 2)
+24    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+26    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMACRO COPY-REST-ARG (ARG) ...)-100|
+(CONST 0) = COPY-REST-ARG
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COPY-REST-ARG>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COPY-REST-ARG
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COPY-REST-ARG
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COPY-REST-ARG>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; COPY-REST-ARG
+10    (SKIP&RET 1)
+
+
+Disassembly of function COPY-REST-ARG
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+12 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L13)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR)
+11    (SKIP&RET 3)
+13    L13
+13    (LOAD&PUSH 2)
+14    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+16    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFVAR ^W NIL)-101|
+(CONST 0) = (SPECIAL ^W)
+(CONST 1) = ^W
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ^W)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; ^W
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; ^W
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; ^W
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFVAR ^R NIL)-102|
+(CONST 0) = (SPECIAL ^R)
+(CONST 1) = ^R
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL ^R)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; ^R
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; ^R
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; ^R
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN CURSORPOS (&REST ARGS &AUX ...) ...)-103|
+(CONST 0) = CURSORPOS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CURSORPOS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CURSORPOS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CURSORPOS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CURSORPOS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CURSORPOS
+8     (SKIP&RET 1)
+
+
+Disassembly of function CURSORPOS
+(CONST 0) = "cursorpos doesn't know position"
+(CONST 1) = FIXNUMP
+(CONST 2) = "can't set cursor pos"
+(CONST 3) = "can't set cursor pos"
+(CONST 4) = 0
+(CONST 5) = "bad first arg to cursorpos"
+(CONST 6) = 
+#S(HASH-TABLE EQ (#\t . 49) (#\x . 40) (#\z . 37) (#\l . 34) (#\k . 31)
+   (#\f . 28) (#\e . 25) (#\c . 22) (#\b . 19) (#\a . 13))
+(CONST 7) = "cant backspace"
+(CONST 8) = "cant clear window"
+(CONST 9) = "can't clear rest of window"
+(CONST 10) = " "
+(CONST 11) = "can't clear-char"
+(CONST 12) = "can't clear end of line"
+(CONST 13) = "can't home-down"
+(CONST 14) = " "
+(CONST 15) = "can't home up"
+(CONST 16) = "unknown arg for this simple cursorpos"
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+80 byte-code instructions:
+0     (PUSH-NIL 2)
+2     (LOAD&JMPIFNOT 3 L48)
+5     (LOAD&CAR&STORE 3 1)
+8     (LOAD 3)
+9     (CDR)
+10    (CAR)
+11    (STORE 0)
+12    (LOAD&JMPIFNOT 1 L51)
+15    (LOAD&PUSH 1)
+16    (CALL1&JMPIFNOT 1 L22)              ; FIXNUMP
+19    (LOAD&JMPIFNOT 0 L51)
+22    L22
+22    (LOAD&PUSH 1)
+23    (CALL1&JMPIFNOT 1 L30)              ; FIXNUMP
+26    (LOAD&PUSH 0)
+27    (CALL1&JMPIF 1 L54)                 ; FIXNUMP
+30    L30
+30    (LOAD&PUSH 1)
+31    (CALLS2&JMPIFNOT 6 L57)             ; SYMBOLP
+34    (LOAD&PUSH 1)
+35    (CALLS2&PUSH 140)                   ; SYMBOL-NAME
+37    (CONST&PUSH 4)                      ; 0
+38    (CALLSR&STORE 1 1 1)                ; AREF
+42    (LOAD&PUSH 1)
+43    (CALLS1 44)                         ; CHAR-DOWNCASE
+45    (JMPHASH 6 L99 L60 L66 L69 L72 L75 L78 L81 L84 L87 L96)
+48    L48
+48    (CONST 0)                           ; "cursorpos doesn't know position"
+49    (JMP L100)
+51    L51
+51    (CONST 2)                           ; "can't set cursor pos"
+52    (JMP L100)
+54    L54
+54    (CONST 3)                           ; "can't set cursor pos"
+55    (JMP L100)
+57    L57
+57    (CONST 5)                           ; "bad first arg to cursorpos"
+58    (JMP L100)
+60    L60
+60    (PUSH-UNBOUND 1)
+62    (CALLS1 140)                        ; FRESH-LINE
+64    (JMP L93)
+66    L66
+66    (CONST 7)                           ; "cant backspace"
+67    (JMP L100)
+69    L69
+69    (CONST 8)                           ; "cant clear window"
+70    (JMP L100)
+72    L72
+72    (CONST 9)                           ; "can't clear rest of window"
+73    (JMP L100)
+75    L75
+75    (CONST 10)                          ; " "
+76    (JMP L88)
+78    L78
+78    (CONST 11)                          ; "can't clear-char"
+79    (JMP L100)
+81    L81
+81    (CONST 12)                          ; "can't clear end of line"
+82    (JMP L100)
+84    L84
+84    (CONST 13)                          ; "can't home-down"
+85    (JMP L100)
+87    L87
+87    (CONST 14)                          ; " "
+88    L88
+88    (PUSH)
+89    (PUSH-UNBOUND 1)
+91    (CALLS1 132)                        ; PRINC
+93    L93
+93    (T)
+94    (SKIP&RET 4)
+96    L96
+96    (CONST 15)                          ; "can't home up"
+97    (JMP L100)
+99    L99
+99    (CONST 16)                          ; "unknown arg for this simple cursorpos"
+100   L100
+100   (PUSH)
+101   (CALLSR 0 29)                       ; ERROR
+
+
+Disassembly of function #:|(DEFVAR *ALL-ARRAYS* NIL)-104|
+(CONST 0) = (SPECIAL *ALL-ARRAYS*)
+(CONST 1) = *ALL-ARRAYS*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL *ALL-ARRAYS*)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; *ALL-ARRAYS*
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; *ALL-ARRAYS*
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; *ALL-ARRAYS*
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN FUNCTION-ARRAY-P (SYM) ...)-105|
+(CONST 0) = FUNCTION-ARRAY-P
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FUNCTION-ARRAY-P>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FUNCTION-ARRAY-P
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FUNCTION-ARRAY-P
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FUNCTION-ARRAY-P>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FUNCTION-ARRAY-P
+8     (SKIP&RET 1)
+
+
+Disassembly of function FUNCTION-ARRAY-P
+(CONST 0) = ARRAY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; ARRAY
+2     (PUSH-UNBOUND 1)
+4     (CALLS2&PUSH 132)                   ; GET
+6     (CALLS2 32)                         ; ARRAYP
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMACRO MARGCHK (FN ARGS) ...)-106|
+(CONST 0) = MARGCHK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MARGCHK>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MARGCHK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MARGCHK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MARGCHK>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; MARGCHK
+10    (SKIP&RET 1)
+
+
+Disassembly of function MARGCHK
+(CONST 0) = 3
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 3
+4     (CALLSR&JMPIF 1 46 L11)             ; /=
+8     (NIL)
+9     (SKIP&RET 3)
+11    L11
+11    (LOAD&PUSH 2)
+12    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN $TIMEDATE NIL ...)-107|
+(CONST 0) = $TIMEDATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TIMEDATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TIMEDATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TIMEDATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TIMEDATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TIMEDATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TIMEDATE
+(CONST 0) = "date"
+(CONST 1) = SYSTEM
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "date"
+1     (CALL1 1)                           ; SYSTEM
+3     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN FUNCTIONP (X) ...)-108|
+(CONST 0) = FUNCTIONP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FUNCTIONP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FUNCTIONP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FUNCTIONP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FUNCTIONP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FUNCTIONP
+8     (SKIP&RET 1)
+
+
+Disassembly of function FUNCTIONP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+20 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&JMPIF 6 L12)                ; SYMBOLP
+4     (LOAD&PUSH 1)
+5     (CALLS2 29)                         ; COMMON-LISP:FUNCTIONP
+7     (JMPIF1 L28)
+9     (NIL)
+10    (SKIP&RET 2)
+12    L12
+12    (LOAD&PUSH 1)
+13    (PUSH-UNBOUND 1)
+15    (CALLS1 87)                         ; MACRO-FUNCTION
+17    (NOT)
+18    (JMPIFNOT1 L28)
+20    (LOAD&PUSH 1)
+21    (CALLS1 80)                         ; FBOUNDP
+23    (JMPIFNOT1 L28)
+25    (T)
+26    (SKIP&RET 2)
+28    L28
+28    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FILE-TO-STRING (X) ...)-109|
+(CONST 0) = FILE-TO-STRING
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FILE-TO-STRING>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FILE-TO-STRING
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FILE-TO-STRING
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FILE-TO-STRING>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FILE-TO-STRING
+8     (SKIP&RET 1)
+
+
+Disassembly of function FILE-TO-STRING
+(CONST 0) = #.#'VALUES
+(CONST 1) = CHARACTER
+(CONST 2) = 0
+(CONST 3) = SLOOP::SLOOP-TYPE-ERROR
+(CONST 4) = CLOSE
+(CONST 5) = :ABORT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+65 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (PUSH-UNBOUND 6)
+3     (CALLS1&PUSH 249)                   ; OPEN
+5     (UNWIND-PROTECT-OPEN L82)
+8     (CONST 0)                           ; #.#'VALUES
+9     (MVCALLP)
+10    (LOAD&PUSH 3)
+11    (CALLS2&PUSH 129)                   ; FILE-LENGTH
+13    (LOAD&PUSH 0)
+14    (PUSH-UNBOUND 7)
+16    (CONST 1)                           ; CHARACTER
+17    (STORE 5)
+18    (CALLS1&PUSH 29)                    ; MAKE-ARRAY
+20    (CONST&PUSH 2)                      ; 0
+21    (LOAD&PUSH 2)
+22    (CALLS2&JMPIF 13 L27)               ; SYSTEM::FIXNUMP
+25    (CALL0 3)                           ; SLOOP::SLOOP-TYPE-ERROR
+27    L27
+27    (LOAD&PUSH 2)
+28    (NIL&PUSH)
+29    (JMP L51)
+31    L31
+31    (LOAD&PUSH 8)
+32    (NIL&PUSH)
+33    (PUSH-UNBOUND 2)
+35    (CALLS1&PUSH 120)                   ; READ-CHAR
+37    (LOAD 0)
+38    (STORE 1)
+39    (SKIP 1)
+41    (JMPIFNOT L49)
+43    (LOAD&PUSH 3)
+44    (LOAD&PUSH 3)
+45    (LOAD&PUSH 2)
+46    (CALLSR 1 2)                        ; SYSTEM::STORE
+49    L49
+49    (LOAD&INC&STORE 2)
+51    L51
+51    (LOAD&PUSH 2)
+52    (LOAD&PUSH 2)
+53    (CALLSR&JMPIFNOT 1 50 L31)          ; >=
+57    (SKIP 3)
+59    (POP)
+60    (SKIP 1)
+62    (MV-TO-STACK)
+63    (LOADI 0 0 2)
+67    (JMPIFNOT L72)
+69    (PUSH)
+70    (CALL1 4)                           ; CLOSE
+72    L72
+72    (MVCALL)
+73    (UNWIND-PROTECT-NORMAL-EXIT)
+74    (LOADI 0 0 0)
+78    (JMPIFNOT L94)
+80    (JMP L88)
+82    L82
+82    (LOADI 0 0 0)
+86    (JMPIFNOT L94)
+88    L88
+88    (PUSH)
+89    (CONST&PUSH 5)                      ; :ABORT
+90    (T&PUSH)
+91    (CALL 3 4)                          ; CLOSE
+94    L94
+94    (UNWIND-PROTECT-CLOSE)
+95    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/commac.fas
+Wrote file /cygdrive/e/temp/maxima/src/commac.lis

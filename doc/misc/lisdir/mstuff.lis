@@ -1,0 +1,629 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/mstuff.lisp
+on 2002-12-17 13:36:00 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/mstuff.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE MSTUFF)-2|
+(CONST 0) = MSTUFF
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MSTUFF
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE MSORT) (FIXNUM N))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $SORT N ...)-4|
+(CONST 0) = $SORT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $SORT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SORT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $SORT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $SORT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $SORT
+8     (SKIP&RET 1)
+
+
+Disassembly of function $SORT
+(CONST 0) = N
+(CONST 1) = 0
+(CONST 2) = 2
+(CONST 3) = "SORT takes 1 or 2 arguments."
+(CONST 4) = MERROR
+(CONST 5) = 1
+(CONST 6) = NARG1
+(CONST 7) = $LISTP
+(CONST 8) = "The first argument to SORT must be a list:~%~M"
+(CONST 9) = GETOPR
+(CONST 10) = LESSTHAN
+(CONST 11) = MFUNCTION1
+(CONST 12) = (LESSTHAN GREAT)
+(CONST 13) = MEMQ
+(CONST 14) = RATDISREP
+(CONST 15) = (MLIST SIMP)
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variable: (N)
+56 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2 71)                         ; LENGTH
+3     (BIND 0)                            ; N
+5     (GETVALUE&PUSH 0)                   ; N
+7     (CONST&PUSH 1)                      ; 0
+8     (CALLSR&JMPIF 1 45 L19)             ; =
+12    (GETVALUE&PUSH 0)                   ; N
+14    (CONST&PUSH 2)                      ; 2
+15    (CALLSR&JMPIFNOT 1 48 L22)          ; >
+19    L19
+19    (CONST&PUSH 3)                      ; "SORT takes 1 or 2 arguments."
+20    (CALL1 4)                           ; MERROR
+22    L22
+22    (CONST&PUSH 5)                      ; 1
+23    (LOAD&PUSH 5)
+24    (CALL2&PUSH 6)                      ; NARG1
+26    (PUSH-NIL 2)
+28    (LOAD&PUSH 2)
+29    (CALL1&JMPIF 7 L36)                 ; $LISTP
+32    (CONST&PUSH 8)                      ; "The first argument to SORT must be a list:~%~M"
+33    (LOAD&PUSH 3)
+34    (CALL2 4)                           ; MERROR
+36    L36
+36    (LOAD&CDR&PUSH 2)
+38    (CALLS1&STORE 158 2)                ; COPY-LIST
+41    (GETVALUE&PUSH 0)                   ; N
+43    (CONST&PUSH 2)                      ; 2
+44    (CALLSR&JMPIF 1 45 L79)             ; =
+48    (CONST 10)                          ; LESSTHAN
+49    L49
+49    (STORE 0)
+50    (PUSH)
+51    (CALL1 11)                          ; MFUNCTION1
+53    (STORE 1)
+54    (LOAD&PUSH 0)
+55    (CONST&PUSH 12)                     ; (LESSTHAN GREAT)
+56    (CALL2&JMPIFNOT 13 L66)             ; MEMQ
+59    (CONST&SYMBOL-FUNCTION&PUSH 14)     ; RATDISREP
+61    (LOAD&PUSH 3)
+62    (CALLSR&STORE 0 22 2)               ; MAPCAR
+66    L66
+66    (CONST&PUSH 15)                     ; (MLIST SIMP)
+67    (LOAD&PUSH 3)
+68    (LOAD&PUSH 3)
+69    (PUSH-UNBOUND 3)
+71    (CALLS2 103)                        ; SORT
+73    (CONS)
+74    (SKIP 3)
+76    (UNBIND1)
+77    (SKIP&RET 2)
+79    L79
+79    (CONST&PUSH 2)                      ; 2
+80    (LOAD&PUSH 8)
+81    (CALL2&PUSH 6)                      ; NARG1
+83    (CALL1 9)                           ; GETOPR
+85    (JMP L49)
+
+
+Disassembly of function #:|(DEFUN MFUNCTION1 (FUN) ...)-5|
+(CONST 0) = MFUNCTION1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MFUNCTION1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MFUNCTION1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MFUNCTION1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MFUNCTION1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MFUNCTION1
+8     (SKIP&RET 1)
+
+
+Disassembly of function MFUNCTION1
+(CONST 0) = #<COMPILED-CLOSURE MFUNCTION1-1>
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (NIL)
+1     (MAKE-VECTOR1&PUSH 1)
+3     (LOAD&STOREC 2 0 0)
+7     (LOAD&PUSH 0)
+8     (COPY-CLOSURE 0 1)                  ; #<COMPILED-CLOSURE MFUNCTION1-1>
+11    (SKIP&RET 3)
+
+
+Disassembly of function MFUNCTION1-1
+(CONST 0) = NIL
+(CONST 1) = X
+(CONST 2) = Y
+(CONST 3) = (MQUOTE)
+(CONST 4) = (MQUOTE)
+(CONST 5) = MEVALP
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X)
+16 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 1)                            ; X
+3     (LOAD 4)
+4     (BIND 2)                            ; Y
+6     (LOADV&PUSH 0 1)
+9     (LIST&PUSH 1)
+11    (CONST&PUSH 3)                      ; (MQUOTE)
+12    (GETVALUE&PUSH 1)                   ; X
+14    (LIST&PUSH 2)
+16    (CONST&PUSH 4)                      ; (MQUOTE)
+17    (GETVALUE&PUSH 2)                   ; Y
+19    (LIST&PUSH 2)
+21    (LIST&PUSH 3)
+23    (CALL1 5)                           ; MEVALP
+25    (UNBIND 2)
+27    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN LESSTHAN (A B) ...)-6|
+(CONST 0) = LESSTHAN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LESSTHAN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LESSTHAN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LESSTHAN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LESSTHAN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LESSTHAN
+8     (SKIP&RET 1)
+
+
+Disassembly of function LESSTHAN
+(CONST 0) = A
+(CONST 1) = B
+(CONST 2) = GREAT
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (A B)
+12 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; A
+3     (LOAD 4)
+4     (BIND 1)                            ; B
+6     (GETVALUE&PUSH 1)                   ; B
+8     (GETVALUE&PUSH 0)                   ; A
+10    (CALL2 2)                           ; GREAT
+12    (JMPIFNOT1 L15)
+14    (T)
+15    L15
+15    (UNBIND 2)
+17    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE MAKEL))-7|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMSPEC $MAKELIST (X) ...)-8-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $MAKELIST (X) ...)-8-2-1|>
+(CONST 1) = $MAKELIST
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $MAKELIST (X) ...)-8-2-1|>
+1     (CONST&PUSH 1)                      ; $MAKELIST
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $MAKELIST (X) ...)-8-2-1|
+(CONST 0) = X
+(CONST 1) = N
+(CONST 2) = FORM
+(CONST 3) = ARG
+(CONST 4) = A
+(CONST 5) = B
+(CONST 6) = D
+(CONST 7) = 3
+(CONST 8) = 4
+(CONST 9) = "MAKELIST takes 3 or 4 arguments."
+(CONST 10) = MERROR
+(CONST 11) = MEVAL
+(CONST 12) = $LISTP
+(CONST 13) = U
+(CONST 14) = (MQUOTE)
+(CONST 15) = 
+"
+If 3 arguments are given to MAKELIST,
+the 3rd argument should evaluate to a list:~%~M"
+(CONST 16) = SUB*
+(CONST 17) = FIXNUMP
+(CONST 18) = -1
+(CONST 19) = 
+"
+If 4 arguments are given to MAKELIST, the difference of the 3rd
+and 4th arguments should evaluate to a non-negative integer:~%~M"
+(CONST 20) = INTERVAL
+(CONST 21) = ANS
+(CONST 22) = ($EV)
+(CONST 23) = (MQUOTE)
+(CONST 24) = (MEQUAL SIMP)
+(CONST 25) = (MLIST SIMP)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ANS ARG FORM B U D A N X)
+writes special variables : (ANS D B A ARG FORM N X)
+138 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE 0)                        ; X
+5     (CDR)
+6     (SETVALUE 0)                        ; X
+8     (NIL)
+9     (BIND 1)                            ; N
+11    (NIL)
+12    (BIND 2)                            ; FORM
+14    (NIL)
+15    (BIND 3)                            ; ARG
+17    (NIL)
+18    (BIND 4)                            ; A
+20    (NIL)
+21    (BIND 5)                            ; B
+23    (NIL&PUSH)
+24    (NIL)
+25    (BIND 6)                            ; D
+27    (GETVALUE&PUSH 0)                   ; X
+29    (CALLS2 71)                         ; LENGTH
+31    (SETVALUE 1)                        ; N
+33    (PUSH)
+34    (CONST&PUSH 7)                      ; 3
+35    (CALLSR&JMPIF 1 47 L46)             ; <
+39    (GETVALUE&PUSH 1)                   ; N
+41    (CONST&PUSH 8)                      ; 4
+42    (CALLSR&JMPIFNOT 1 48 L49)          ; >
+46    L46
+46    (CONST&PUSH 9)                      ; "MAKELIST takes 3 or 4 arguments."
+47    (CALL1 10)                          ; MERROR
+49    L49
+49    (GETVALUE 0)                        ; X
+51    (CAR)
+52    (SETVALUE 2)                        ; FORM
+54    (GETVALUE 0)                        ; X
+56    (CDR)
+57    (CAR)
+58    (SETVALUE 3)                        ; ARG
+60    (GETVALUE 0)                        ; X
+62    (CDR)
+63    (CDR)
+64    (CAR&PUSH)
+65    (CALL1 11)                          ; MEVAL
+67    (SETVALUE 4)                        ; A
+69    (GETVALUE&PUSH 1)                   ; N
+71    (CONST&PUSH 7)                      ; 3
+72    (CALLSR&JMPIF 1 45 L150)            ; =
+77    (GETVALUE 0)                        ; X
+79    (CDR)
+80    (CDR)
+81    (CDR)
+82    (CAR&PUSH)
+83    (CALL1 11)                          ; MEVAL
+85    (SETVALUE 5)                        ; B
+87    (PUSH)
+88    (GETVALUE&PUSH 4)                   ; A
+90    (CALL2 16)                          ; SUB*
+92    (SETVALUE 6)                        ; D
+94    (PUSH)
+95    (CALL1&JMPIFNOT 17 L105)            ; FIXNUMP
+98    (GETVALUE&PUSH 6)                   ; D
+100   (CONST&PUSH 18)                     ; -1
+101   (CALLSR&JMPIFNOT 1 47 L160)         ; <
+105   L105
+105   (CONST&PUSH 19)                     ; "
+If 4 arguments are given to MAKELIST, the difference of the 3rd
+and 4th arguments should evaluate to a non-negative integer:~%~M"
+106   (GETVALUE 6)                        ; D
+108   L108
+108   (PUSH)
+109   (CALL2 10)                          ; MERROR
+111   (JMP L166)
+113   L113
+113   (NIL&PUSH)
+114   (GETVALUE 4)                        ; A
+116   (CDR&PUSH)
+117   (JMP L137)
+119   L119
+119   (LOAD&CAR&PUSH 0)
+121   (LOAD 0)
+122   (BIND 13)                           ; U
+124   (CONST&PUSH 14)                     ; (MQUOTE)
+125   (GETVALUE&PUSH 13)                  ; U
+127   (LIST 2)
+129   (UNBIND1)
+130   (PUSH)
+131   (LOAD&CONS&STORE 2)
+133   (SKIP 1)
+135   (LOAD&CDR&STORE 0)
+137   L137
+137   (LOAD&PUSH 0)
+138   (CALLS1&JMPIFNOT 146 L119)          ; ENDP
+141   (SKIP 1)
+143   (LOAD&PUSH 0)
+144   (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+146   (SKIP 1)
+148   (JMP L166)
+150   L150
+150   (GETVALUE&PUSH 4)                   ; A
+152   (CALL1&JMPIF 12 L113)               ; $LISTP
+155   (CONST&PUSH 15)                     ; "
+If 3 arguments are given to MAKELIST,
+the 3rd argument should evaluate to a list:~%~M"
+156   (GETVALUE 4)                        ; A
+158   (JMP L108)
+160   L160
+160   (GETVALUE&PUSH 4)                   ; A
+162   (GETVALUE&PUSH 5)                   ; B
+164   (CALL2 20)                          ; INTERVAL
+166   L166
+166   (STORE 3)
+167   (PUSH)
+168   (NIL)
+169   (BIND 21)                           ; ANS
+171   (LOAD&JMPIFNOT 3 L201)
+174   L174
+174   (CONST&PUSH 22)                     ; ($EV)
+175   (CONST&PUSH 23)                     ; (MQUOTE)
+176   (GETVALUE&PUSH 2)                   ; FORM
+178   (LIST&PUSH 2)
+180   (CONST&PUSH 24)                     ; (MEQUAL SIMP)
+181   (GETVALUE&PUSH 3)                   ; ARG
+183   (LOAD&CAR&PUSH 7)
+185   (LIST&PUSH 3)
+187   (LIST&PUSH 3)
+189   (CALL1&PUSH 11)                     ; MEVAL
+191   (GETVALUE 21)                       ; ANS
+193   (CONS)
+194   (SETVALUE 21)                       ; ANS
+196   (LOAD&CDR&STORE 3)
+198   (LOAD&JMPIF 3 L174)
+201   L201
+201   (CONST&PUSH 25)                     ; (MLIST SIMP)
+202   (GETVALUE&PUSH 21)                  ; ANS
+204   (CALLS2 73)                         ; NREVERSE
+206   (CONS)
+207   (UNBIND1)
+208   (SKIP 1)
+210   (UNBIND1)
+211   (SKIP 1)
+213   (UNBIND 6)
+215   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN INTERVAL (I J) ...)-9|
+(CONST 0) = INTERVAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE INTERVAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; INTERVAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; INTERVAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE INTERVAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; INTERVAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function INTERVAL
+(CONST 0) = J
+(CONST 1) = 0
+(CONST 2) = SUB*
+(CONST 3) = K
+(CONST 4) = ANS
+(CONST 5) = NN
+(CONST 6) = M
+(CONST 7) = 1
+(CONST 8) = ADD2
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (K M ANS NN J)
+writes special variables : (M NN ANS)
+37 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; J
+3     (LOAD&PUSH 5)
+4     (CONST&PUSH 1)                      ; 0
+5     (GETVALUE&PUSH 0)                   ; J
+7     (LOAD&PUSH 8)
+8     (CALL2 2)                           ; SUB*
+10    (BIND 3)                            ; K
+12    (NIL)
+13    (BIND 4)                            ; ANS
+15    (LOAD 7)
+16    (BIND 5)                            ; NN
+18    (LOAD 9)
+19    (BIND 6)                            ; M
+21    (JMP L43)
+23    L23
+23    (GETVALUE&PUSH 5)                   ; NN
+25    (GETVALUE 4)                        ; ANS
+27    (CONS)
+28    (SETVALUE 4)                        ; ANS
+30    (CONST&PUSH 7)                      ; 1
+31    (GETVALUE&PUSH 5)                   ; NN
+33    (CALL2 8)                           ; ADD2
+35    (SETVALUE 5)                        ; NN
+37    (GETVALUE&PUSH 6)                   ; M
+39    (CALLS2 150)                        ; 1+
+41    (SETVALUE 6)                        ; M
+43    L43
+43    (GETVALUE&PUSH 6)                   ; M
+45    (GETVALUE&PUSH 3)                   ; K
+47    (CALLSR&JMPIFNOT 1 48 L23)          ; >
+51    (GETVALUE&PUSH 4)                   ; ANS
+53    (CALLS2 73)                         ; NREVERSE
+55    (UNBIND 4)
+57    (SKIP 2)
+59    (UNBIND1)
+60    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN $SUBLIST (A F) ...)-10|
+(CONST 0) = $SUBLIST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $SUBLIST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $SUBLIST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $SUBLIST
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $SUBLIST>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $SUBLIST
+8     (SKIP&RET 1)
+
+
+Disassembly of function $SUBLIST
+(CONST 0) = A
+(CONST 1) = F
+(CONST 2) = $LISTP
+(CONST 3) = X
+(CONST 4) = MEVALP
+(CONST 5) = (MLIST SIMP)
+(CONST 6) = "The first argument to SUBLIST must be a list:~%~M"
+(CONST 7) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X F A)
+writes special variables : (A X)
+46 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; A
+3     (LOAD 4)
+4     (BIND 1)                            ; F
+6     (GETVALUE&PUSH 0)                   ; A
+8     (CALL1&JMPIF 2 L20)                 ; $LISTP
+11    (CONST&PUSH 6)                      ; "The first argument to SUBLIST must be a list:~%~M"
+12    (GETVALUE&PUSH 0)                   ; A
+14    (CALL2 7)                           ; MERROR
+16    L16
+16    (UNBIND 2)
+18    (SKIP&RET 3)
+20    L20
+20    (GETVALUE 0)                        ; A
+22    (CDR)
+23    (BIND 0)                            ; A
+25    (NIL)
+26    (BIND 3)                            ; X
+28    (GETVALUE 0)                        ; A
+30    (JMPIFNOT L61)
+32    L32
+32    (GETVALUE&PUSH 1)                   ; F
+34    (NIL)
+35    (CONS&PUSH)
+36    (GETVALUE 0)                        ; A
+38    (CAR&PUSH)
+39    (LIST&PUSH 2)
+41    (CALL1&JMPIFNOT 4 L52)              ; MEVALP
+44    (GETVALUE 0)                        ; A
+46    (CAR&PUSH)
+47    (GETVALUE 3)                        ; X
+49    (CONS)
+50    (SETVALUE 3)                        ; X
+52    L52
+52    (GETVALUE 0)                        ; A
+54    (CDR)
+55    (SETVALUE 0)                        ; A
+57    (GETVALUE 0)                        ; A
+59    (JMPIF L32)
+61    L61
+61    (CONST&PUSH 5)                      ; (MLIST SIMP)
+62    (GETVALUE&PUSH 3)                   ; X
+64    (CALLS2 73)                         ; NREVERSE
+66    (CONS)
+67    (UNBIND 2)
+69    (JMP L16)
+
+
+Disassembly of function #:|(DECLARE-TOP (NOTYPE N))-11|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/mstuff.fas
+Wrote file /cygdrive/e/temp/maxima/src/mstuff.lis

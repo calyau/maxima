@@ -1,0 +1,1647 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/numer.lisp
+on 2002-12-17 13:34:11 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/numer.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE NUMER)-2|
+(CONST 0) = NUMER
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; NUMER
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS NUMERM)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN COMPATIBLE-ARRAY-TYPE? (TYPE TYPE-LIST) ...)-4|
+(CONST 0) = COMPATIBLE-ARRAY-TYPE?
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COMPATIBLE-ARRAY-TYPE?>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COMPATIBLE-ARRAY-TYPE?
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COMPATIBLE-ARRAY-TYPE?
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COMPATIBLE-ARRAY-TYPE?>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COMPATIBLE-ARRAY-TYPE?
+8     (SKIP&RET 1)
+
+
+Disassembly of function COMPATIBLE-ARRAY-TYPE?
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (T)
+2     (EQ)
+3     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN GET-ARRAY (X &OPTIONAL # ...) ...)-5|
+(CONST 0) = GET-ARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GET-ARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GET-ARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GET-ARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GET-ARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GET-ARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function GET-ARRAY
+(CONST 0) = X
+(CONST 1) = GET-ARRAY-POINTER
+(CONST 2) = ARRAY-TYPE
+(CONST 3) = COMPATIBLE-ARRAY-TYPE?
+(CONST 4) = "~:M is not an array of type: ~:M"
+(CONST 5) = (MLIST)
+(CONST 6) = MERROR
+(CONST 7) = "~:M does not have ~:M dimensions."
+(CONST 8) = 1
+(CONST 9) = L
+(CONST 10) = *
+(CONST 11) = ARRAY-DIMENSION-N
+(CONST 12) = "~:M does not have dimension ~:M equal to ~:M"
+1 required argument
+2 optional arguments
+Rest parameter
+No keyword parameters
+reads special variables: (L X)
+writes special variable : (L)
+93 byte-code instructions:
+0     L0
+0     (LOAD 4)
+1     (BIND 0)                            ; X
+3     (UNBOUND->NIL 6)
+5     (JMPIFBOUNDP 5 L47)
+8     (NIL&STORE 5)
+10    (LOAD&JMPIF 6 L50)
+13    L13
+13    (GETVALUE&PUSH 0)                   ; X
+15    (CALL1 1)                           ; GET-ARRAY-POINTER
+17    (JMP L142)
+20    L20
+20    (POP)
+21    (JMP L142)
+24    L24
+24    (GETVALUE&PUSH 0)                   ; X
+26    (CALL1&PUSH 1)                      ; GET-ARRAY-POINTER
+28    (LOAD&PUSH 0)
+29    (CALL1&PUSH 2)                      ; ARRAY-TYPE
+31    (LOAD&PUSH 8)
+32    (CALL2&JMPIF 3 L20)                 ; COMPATIBLE-ARRAY-TYPE?
+35    (CONST&PUSH 4)                      ; "~:M is not an array of type: ~:M"
+36    (GETVALUE&PUSH 0)                   ; X
+38    (CONST&PUSH 5)                      ; (MLIST)
+39    (LOAD 10)
+40    (CONS)
+41    (JMP L76)
+43    L43
+43    (POP)
+44    (JMP L142)
+47    L47
+47    (LOAD&JMPIFNOT 6 L13)
+50    L50
+50    (LOAD&JMPIFNOT 5 L24)
+53    (LOAD&JMPIF 4 L84)
+56    (GETVALUE&PUSH 0)                   ; X
+58    (LOAD&PUSH 7)
+59    (PUSH-UNBOUND 1)
+61    (NIL&PUSH)
+62    (JSR&PUSH L0)
+64    (LOAD&PUSH 0)
+65    (CALLS1&PUSH 7)                     ; ARRAY-RANK
+67    (LOAD&PUSH 7)
+68    (CALLSR&JMPIF 1 45 L43)             ; =
+72    (CONST&PUSH 7)                      ; "~:M does not have ~:M dimensions."
+73    (GETVALUE&PUSH 0)                   ; X
+75    (LOAD 8)
+76    L76
+76    (PUSH)
+77    (CALL 3 6)                          ; MERROR
+80    (SKIP 1)
+82    (JMP L142)
+84    L84
+84    (GETVALUE&PUSH 0)                   ; X
+86    (LOAD&PUSH 7)
+87    (LOAD&PUSH 7)
+88    (NIL&PUSH)
+89    (JSR&PUSH L0)
+92    (CONST&PUSH 8)                      ; 1
+93    (LOAD 6)
+94    (BIND 9)                            ; L
+96    (GETVALUE 9)                        ; L
+98    (JMPIFNOT L138)
+100   L100
+100   (GETVALUE 9)                        ; L
+102   (CAR&PUSH)
+103   (JMPIFEQTO 10 L127)                 ; *
+106   (GETVALUE 9)                        ; L
+108   (CAR&PUSH)
+109   (LOAD&PUSH 4)
+110   (LOAD&PUSH 6)
+111   (CALL2&PUSH 11)                     ; ARRAY-DIMENSION-N
+113   (CALLSR&JMPIF 1 45 L127)            ; =
+117   (CONST&PUSH 12)                     ; "~:M does not have dimension ~:M equal to ~:M"
+118   (GETVALUE&PUSH 0)                   ; X
+120   (LOAD&PUSH 5)
+121   (GETVALUE 9)                        ; L
+123   (CAR&PUSH)
+124   (CALL 4 6)                          ; MERROR
+127   L127
+127   (GETVALUE 9)                        ; L
+129   (CDR)
+130   (SETVALUE 9)                        ; L
+132   (LOAD&INC&STORE 3)
+134   (GETVALUE 9)                        ; L
+136   (JMPIF L100)
+138   L138
+138   (LOAD 4)
+139   (UNBIND1)
+140   (SKIP 2)
+142   L142
+142   (UNBIND1)
+143   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL %E-VAL))-6|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN MTO-FLOAT (X) ...)-7|
+(CONST 0) = MTO-FLOAT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MTO-FLOAT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MTO-FLOAT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MTO-FLOAT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MTO-FLOAT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MTO-FLOAT
+8     (SKIP&RET 1)
+
+
+Disassembly of function MTO-FLOAT
+(CONST 0) = X
+(CONST 1) = $NUMER
+(CONST 2) = $FLOAT
+(CONST 3) = %E-VAL
+(CONST 4) = $%E
+(CONST 5) = RESIMPLIFY
+(CONST 6) = 1.0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (%E-VAL X)
+24 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALLS2&JMPIF 8 L34)                ; NUMBERP
+8     (T)
+9     (BIND 1)                            ; $NUMER
+11    (T)
+12    (BIND 2)                            ; $FLOAT
+14    (GETVALUE&PUSH 3)                   ; %E-VAL
+16    (CONST&PUSH 4)                      ; $%E
+17    (GETVALUE&PUSH 0)                   ; X
+19    (PUSH-UNBOUND 3)
+21    (CALLS1&PUSH 172)                   ; SUBST
+23    (CALL1 5)                           ; RESIMPLIFY
+25    (UNBIND 2)
+27    L27
+27    (PUSH)
+28    (CONST&PUSH 6)                      ; 1.0
+29    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+31    (UNBIND1)
+32    (SKIP&RET 2)
+34    L34
+34    (GETVALUE 0)                        ; X
+36    (JMP L27)
+
+
+Disassembly of function #:|(DEFVAR TRAMP$-ALIST NIL)-8|
+(CONST 0) = (SPECIAL TRAMP$-ALIST)
+(CONST 1) = TRAMP$-ALIST
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TRAMP$-ALIST)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; TRAMP$-ALIST
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; TRAMP$-ALIST
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; TRAMP$-ALIST
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMACRO DEFTRAMP$ (NARGS) ...)-9|
+(CONST 0) = DEFTRAMP$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DEFTRAMP$>
+(CONST 3) = SYSTEM::MAKE-MACRO
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+8 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DEFTRAMP$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DEFTRAMP$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DEFTRAMP$>
+5     (CALL1&PUSH 3)                      ; SYSTEM::MAKE-MACRO
+7     (CALLS2 130)                        ; SYSTEM::%PUTD
+9     (CONST 0)                           ; DEFTRAMP$
+10    (SKIP&RET 1)
+
+
+Disassembly of function DEFTRAMP$
+(CONST 0) = 2
+(CONST 1) = SYSTEM::MACRO-CALL-ERROR
+(CONST 2) = TRAMP
+(CONST 3) = $
+(CONST 4) = SYMBOLCONC
+(CONST 5) = $-F
+(CONST 6) = $-M
+(CONST 7) = L
+(CONST 8) = PROGN
+(CONST 9) = PUSH
+(CONST 10) = QUOTE
+(CONST 11) = (TRAMP$-ALIST)
+(CONST 12) = DEFMVAR
+(CONST 13) = ("Contains the object to jump to if needed")
+(CONST 14) = DEFUN
+(CONST 15) = FLOAT
+(CONST 16) = FUNCALL
+(CONST 17) = MAPPLY1
+(CONST 18) = LIST
+(CONST 19) = (NIL)
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+88 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (CONST&PUSH 0)                      ; 2
+4     (CALLSR&JMPIF 1 46 L41)             ; /=
+8     (LOAD 2)
+9     (CDR)
+10    (CAR&PUSH)
+11    (CONST&PUSH 2)                      ; TRAMP
+12    (LOAD&PUSH 1)
+13    (CONST&PUSH 3)                      ; $
+14    (CALL&PUSH 3 4)                     ; SYMBOLCONC
+17    (CONST&PUSH 2)                      ; TRAMP
+18    (LOAD&PUSH 2)
+19    (CONST&PUSH 5)                      ; $-F
+20    (CALL&PUSH 3 4)                     ; SYMBOLCONC
+23    (CONST&PUSH 2)                      ; TRAMP
+24    (LOAD&PUSH 3)
+25    (CONST&PUSH 6)                      ; $-M
+26    (CALL&PUSH 3 4)                     ; SYMBOLCONC
+29    (LOAD&PUSH 3)
+30    (PUSH-UNBOUND 1)
+32    (CALLS1 157)                        ; MAKE-LIST
+34    (BIND 7)                            ; L
+36    (NIL&PUSH)
+37    (GETVALUE&PUSH 7)                   ; L
+39    (JMP L58)
+41    L41
+41    (LOAD&PUSH 2)
+42    (CALL1 1)                           ; SYSTEM::MACRO-CALL-ERROR
+44    (SKIP&RET 3)
+46    L46
+46    (LOAD&CAR&PUSH 0)
+48    (PUSH-UNBOUND 1)
+50    (CALLS2&PUSH 143)                   ; GENSYM
+52    (LOAD&CONS&STORE 2)
+54    (SKIP 1)
+56    (LOAD&CDR&STORE 0)
+58    L58
+58    (LOAD&PUSH 0)
+59    (CALLS1&JMPIFNOT 146 L46)           ; ENDP
+62    (SKIP 1)
+64    (LOAD&PUSH 0)
+65    (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+68    (CONST&PUSH 8)                      ; PROGN
+69    (CONST&PUSH 9)                      ; PUSH
+70    (CONST&PUSH 10)                     ; QUOTE
+71    (LOAD&PUSH 10)
+72    (LOAD&PUSH 10)
+73    (LOAD&PUSH 10)
+74    (LOAD&PUSH 10)
+75    (LIST&PUSH 4)
+77    (LIST&PUSH 2)
+79    (CONST 11)                          ; (TRAMP$-ALIST)
+80    (LIST*&PUSH 2)
+82    (CONST&PUSH 12)                     ; DEFMVAR
+83    (LOAD&PUSH 9)
+84    (CONST 13)                          ; #
+85    (LIST*&PUSH 2)
+87    (CONST&PUSH 14)                     ; DEFUN
+88    (LOAD&PUSH 9)
+89    (LOAD&PUSH 5)
+90    (CONST&PUSH 15)                     ; FLOAT
+91    (CONST&PUSH 16)                     ; FUNCALL
+92    (LOAD&PUSH 14)
+93    (LOAD 9)
+94    (LIST*&PUSH 2)
+96    (LIST&PUSH 2)
+98    (LIST&PUSH 4)
+100   (CONST&PUSH 14)                     ; DEFUN
+101   (LOAD&PUSH 9)
+102   (LOAD&PUSH 6)
+103   (CONST&PUSH 15)                     ; FLOAT
+104   (CONST&PUSH 17)                     ; MAPPLY1
+105   (LOAD&PUSH 15)
+106   (CONST&PUSH 18)                     ; LIST
+107   (LOAD 11)
+108   (CONS&PUSH)
+109   (CONST&PUSH 10)                     ; QUOTE
+110   (LOAD&PUSH 18)
+111   (LIST&PUSH 2)
+113   (CONST 19)                          ; (NIL)
+114   (LIST*&PUSH 4)
+116   (LIST&PUSH 2)
+118   (LIST&PUSH 4)
+120   (LIST 5)
+122   (SKIP 1)
+124   (UNBIND1)
+125   (SKIP&RET 7)
+
+
+Disassembly of function #:|(DEFTRAMP$ 1)-10-1|
+(CONST 0) = (1 TRAMP1$ TRAMP1$-F TRAMP1$-M)
+(CONST 1) = TRAMP$-ALIST
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP$-ALIST)
+writes special variable : (TRAMP$-ALIST)
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (1 TRAMP1$ TRAMP1$-F TRAMP1$-M)
+1     (GETVALUE 1)                        ; TRAMP$-ALIST
+3     (CONS)
+4     (SETVALUE 1)                        ; TRAMP$-ALIST
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 1)-10-2-1|
+(CONST 0) = TRAMP1$
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+(CONST 2) = "Contains the object to jump to if needed"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP1$
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; TRAMP1$
+11    (LOAD&PUSH 1)
+12    (CONST&PUSH 2)                      ; "Contains the object to jump to if needed"
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 1)-10-2-2|
+(CONST 0) = (SPECIAL TRAMP1$)
+(CONST 1) = TRAMP1$
+(CONST 2) = "Contains the object to jump to if needed"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TRAMP1$)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; TRAMP1$
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; TRAMP1$
+8     (CONST&PUSH 2)                      ; "Contains the object to jump to if needed"
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (VALUES0)
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 1)-10-3|
+(CONST 0) = TRAMP1$-F
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRAMP1$-F>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP1$-F
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRAMP1$-F
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRAMP1$-F>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRAMP1$-F
+(CONST 0) = TRAMP1$
+(CONST 1) = 1.0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP1$)
+6 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; TRAMP1$
+2     (LOAD&PUSH 2)
+3     (FUNCALL&PUSH 1)
+5     (CONST&PUSH 1)                      ; 1.0
+6     (CALLS2 174)                        ; COMMON-LISP:FLOAT
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFTRAMP$ 1)-10-4|
+(CONST 0) = TRAMP1$-M
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRAMP1$-M>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP1$-M
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRAMP1$-M
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRAMP1$-M>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRAMP1$-M
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRAMP1$-M
+(CONST 0) = TRAMP1$
+(CONST 1) = MAPPLY1
+(CONST 2) = 1.0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP1$)
+9 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; TRAMP1$
+2     (LOAD&PUSH 2)
+3     (LIST&PUSH 1)
+5     (CONST&PUSH 0)                      ; TRAMP1$
+6     (NIL&PUSH)
+7     (CALL&PUSH 4 1)                     ; MAPPLY1
+10    (CONST&PUSH 2)                      ; 1.0
+11    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+13    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFTRAMP$ 2)-11-1|
+(CONST 0) = (2 TRAMP2$ TRAMP2$-F TRAMP2$-M)
+(CONST 1) = TRAMP$-ALIST
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP$-ALIST)
+writes special variable : (TRAMP$-ALIST)
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (2 TRAMP2$ TRAMP2$-F TRAMP2$-M)
+1     (GETVALUE 1)                        ; TRAMP$-ALIST
+3     (CONS)
+4     (SETVALUE 1)                        ; TRAMP$-ALIST
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 2)-11-2-1|
+(CONST 0) = TRAMP2$
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+(CONST 2) = "Contains the object to jump to if needed"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP2$
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; TRAMP2$
+11    (LOAD&PUSH 1)
+12    (CONST&PUSH 2)                      ; "Contains the object to jump to if needed"
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 2)-11-2-2|
+(CONST 0) = (SPECIAL TRAMP2$)
+(CONST 1) = TRAMP2$
+(CONST 2) = "Contains the object to jump to if needed"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TRAMP2$)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; TRAMP2$
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; TRAMP2$
+8     (CONST&PUSH 2)                      ; "Contains the object to jump to if needed"
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (VALUES0)
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 2)-11-3|
+(CONST 0) = TRAMP2$-F
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRAMP2$-F>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP2$-F
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRAMP2$-F
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRAMP2$-F>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRAMP2$-F
+(CONST 0) = TRAMP2$
+(CONST 1) = 1.0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP2$)
+7 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; TRAMP2$
+2     (LOAD&PUSH 3)
+3     (LOAD&PUSH 3)
+4     (FUNCALL&PUSH 2)
+6     (CONST&PUSH 1)                      ; 1.0
+7     (CALLS2 174)                        ; COMMON-LISP:FLOAT
+9     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFTRAMP$ 2)-11-4|
+(CONST 0) = TRAMP2$-M
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRAMP2$-M>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP2$-M
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRAMP2$-M
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRAMP2$-M>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRAMP2$-M
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRAMP2$-M
+(CONST 0) = TRAMP2$
+(CONST 1) = MAPPLY1
+(CONST 2) = 1.0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP2$)
+10 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; TRAMP2$
+2     (LOAD&PUSH 3)
+3     (LOAD&PUSH 3)
+4     (LIST&PUSH 2)
+6     (CONST&PUSH 0)                      ; TRAMP2$
+7     (NIL&PUSH)
+8     (CALL&PUSH 4 1)                     ; MAPPLY1
+11    (CONST&PUSH 2)                      ; 1.0
+12    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFTRAMP$ 3)-12-1|
+(CONST 0) = (3 TRAMP3$ TRAMP3$-F TRAMP3$-M)
+(CONST 1) = TRAMP$-ALIST
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP$-ALIST)
+writes special variable : (TRAMP$-ALIST)
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (3 TRAMP3$ TRAMP3$-F TRAMP3$-M)
+1     (GETVALUE 1)                        ; TRAMP$-ALIST
+3     (CONS)
+4     (SETVALUE 1)                        ; TRAMP$-ALIST
+6     (VALUES0)
+7     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 3)-12-2-1|
+(CONST 0) = TRAMP3$
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+(CONST 2) = "Contains the object to jump to if needed"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP3$
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; TRAMP3$
+11    (LOAD&PUSH 1)
+12    (CONST&PUSH 2)                      ; "Contains the object to jump to if needed"
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 3)-12-2-2|
+(CONST 0) = (SPECIAL TRAMP3$)
+(CONST 1) = TRAMP3$
+(CONST 2) = "Contains the object to jump to if needed"
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL TRAMP3$)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; TRAMP3$
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; TRAMP3$
+8     (CONST&PUSH 2)                      ; "Contains the object to jump to if needed"
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (VALUES0)
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFTRAMP$ 3)-12-3|
+(CONST 0) = TRAMP3$-F
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRAMP3$-F>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP3$-F
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRAMP3$-F
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRAMP3$-F>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (VALUES0)
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRAMP3$-F
+(CONST 0) = TRAMP3$
+(CONST 1) = 1.0
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP3$)
+8 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; TRAMP3$
+2     (LOAD&PUSH 4)
+3     (LOAD&PUSH 4)
+4     (LOAD&PUSH 4)
+5     (FUNCALL&PUSH 3)
+7     (CONST&PUSH 1)                      ; 1.0
+8     (CALLS2 174)                        ; COMMON-LISP:FLOAT
+10    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFTRAMP$ 3)-12-4|
+(CONST 0) = TRAMP3$-M
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TRAMP3$-M>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRAMP3$-M
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TRAMP3$-M
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TRAMP3$-M>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TRAMP3$-M
+8     (SKIP&RET 1)
+
+
+Disassembly of function TRAMP3$-M
+(CONST 0) = TRAMP3$
+(CONST 1) = MAPPLY1
+(CONST 2) = 1.0
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (TRAMP3$)
+11 byte-code instructions:
+0     (GETVALUE&PUSH 0)                   ; TRAMP3$
+2     (LOAD&PUSH 4)
+3     (LOAD&PUSH 4)
+4     (LOAD&PUSH 4)
+5     (LIST&PUSH 3)
+7     (CONST&PUSH 0)                      ; TRAMP3$
+8     (NIL&PUSH)
+9     (CALL&PUSH 4 1)                     ; MAPPLY1
+12    (CONST&PUSH 2)                      ; 1.0
+13    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+15    (SKIP&RET 4)
+
+WARNING in MAKE-TRAMP$ in lines 107..140 :
+TRAMP$-M is neither declared nor bound,
+it will be treated as if it were declared SPECIAL.
+WARNING in MAKE-TRAMP$ in lines 107..140 :
+TRAMP$-M is neither declared nor bound,
+it will be treated as if it were declared SPECIAL.
+WARNING in MAKE-TRAMP$ in lines 107..140 :
+TRAMP$-M is neither declared nor bound,
+it will be treated as if it were declared SPECIAL.
+
+Disassembly of function #:|(DEFMFUN MAKE-TRAMP$ (F N) ...)-13|
+(CONST 0) = MAKE-TRAMP$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKE-TRAMP$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKE-TRAMP$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKE-TRAMP$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKE-TRAMP$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKE-TRAMP$
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKE-TRAMP$
+(CONST 0) = F
+(CONST 1) = N
+(CONST 2) = TRAMP$-ALIST
+(CONST 3) = ZL-ASSOC
+(CONST 4) = L
+(CONST 5) = "BUG: No trampoline of argument length ~M"
+(CONST 6) = MERROR
+(CONST 7) = TRAMP$
+(CONST 8) = TRAMP$-S
+(CONST 9) = TRAMP$-F
+(CONST 10) = TRAMP$-M
+(CONST 11) = FUNTYPEP
+(CONST 12) = #S(HASH-TABLE EQ (LSUBR . 19) (EXPR . 19) (MEXPR . 7) (OPERATORS . 1))
+(CONST 13) = SET
+(CONST 14) = GETSUBR!
+(CONST 15) = "Undefined or inscrutable function~%~M"
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (TRAMP$-F TRAMP$-M TRAMP$ F L TRAMP$-ALIST N)
+writes special variables : (TRAMP$-M TRAMP$-F TRAMP$ L)
+82 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; F
+3     (LOAD 4)
+4     (BIND 1)                            ; N
+6     (GETVALUE&PUSH 1)                   ; N
+8     (GETVALUE&PUSH 2)                   ; TRAMP$-ALIST
+10    (CALL2 3)                           ; ZL-ASSOC
+12    (BIND 4)                            ; L
+14    (GETVALUE 4)                        ; L
+16    (JMPIF L23)
+18    (CONST&PUSH 5)                      ; "BUG: No trampoline of argument length ~M"
+19    (GETVALUE&PUSH 1)                   ; N
+21    (CALL2 6)                           ; MERROR
+23    L23
+23    (GETVALUE 4)                        ; L
+25    (CDR)
+26    (SETVALUE 4)                        ; L
+28    (NIL)
+29    (BIND 7)                            ; TRAMP$
+31    (NIL)
+32    (BIND 8)                            ; TRAMP$-S
+34    (NIL)
+35    (BIND 9)                            ; TRAMP$-F
+37    (GETVALUE 4)                        ; L
+39    (CAR&PUSH)
+40    (GETVALUE 4)                        ; L
+42    (CDR)
+43    (SETVALUE 4)                        ; L
+45    (POP)
+46    (SETVALUE 7)                        ; TRAMP$
+48    (GETVALUE 4)                        ; L
+50    (CAR&PUSH)
+51    (GETVALUE 4)                        ; L
+53    (CDR)
+54    (SETVALUE 4)                        ; L
+56    (POP)
+57    (SETVALUE 9)                        ; TRAMP$-F
+59    (GETVALUE 4)                        ; L
+61    (CAR&PUSH)
+62    (GETVALUE 4)                        ; L
+64    (CDR)
+65    (SETVALUE 4)                        ; L
+67    (POP)
+68    (SETVALUE 10)                       ; TRAMP$-M
+70    (GETVALUE&PUSH 0)                   ; F
+72    (CALL1&PUSH 11)                     ; FUNTYPEP
+74    (LOAD 0)
+75    (CAR)
+76    (JMPHASH 12 L111 L79 L85 L97 L97)
+79    L79
+79    (GETVALUE&PUSH 7)                   ; TRAMP$
+81    (GETVALUE 0)                        ; F
+83    (JMP L90)
+85    L85
+85    (GETVALUE&PUSH 7)                   ; TRAMP$
+87    (LOAD 1)
+88    (CDR)
+89    (CAR)
+90    L90
+90    (PUSH)
+91    (CALL2 13)                          ; SET
+93    (GETVALUE 10)                       ; TRAMP$-M
+95    (JMP L106)
+97    L97
+97    (GETVALUE&PUSH 7)                   ; TRAMP$
+99    (LOAD 1)
+100   (CDR)
+101   (CAR&PUSH)
+102   (CALL2 13)                          ; SET
+104   (GETVALUE 9)                        ; TRAMP$-F
+106   L106
+106   (PUSH)
+107   (CALL1 14)                          ; GETSUBR!
+109   (JMP L116)
+111   L111
+111   (CONST&PUSH 15)                     ; "Undefined or inscrutable function~%~M"
+112   (GETVALUE&PUSH 0)                   ; F
+114   (CALL2 6)                           ; MERROR
+116   L116
+116   (SKIP 1)
+118   (UNBIND 6)
+120   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN GETSUBR! (X) ...)-14|
+(CONST 0) = GETSUBR!
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GETSUBR!>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GETSUBR!
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GETSUBR!
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GETSUBR!>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GETSUBR!
+8     (SKIP&RET 1)
+
+
+Disassembly of function GETSUBR!
+(CONST 0) = X
+(CONST 1) = "without any special action"
+(CONST 2) = "No subr property for it!"
+(CONST 3) = WRNG-TYPE-ARG
+(CONST 4) = CERROR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (X)
+20 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; X
+3     (GETVALUE&PUSH 0)                   ; X
+5     (CALLS2&JMPIFNOT 6 L18)             ; SYMBOLP
+8     (GETVALUE&PUSH 0)                   ; X
+10    (CALLS1&JMPIFNOT 80 L18)            ; FBOUNDP
+13    (GETVALUE 0)                        ; X
+15    (SYMBOL-FUNCTION)
+16    (JMPIF1 L28)
+18    L18
+18    (CONST&PUSH 1)                      ; "without any special action"
+19    (CONST&PUSH 2)                      ; "No subr property for it!"
+20    (GETVALUE&PUSH 0)                   ; X
+22    (CONST&PUSH 3)                      ; WRNG-TYPE-ARG
+23    (CALL&PUSH 4 4)                     ; CERROR
+26    (JSR L0)
+28    L28
+28    (UNBIND1)
+29    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FUNTYPEP (F) ...)-15|
+(CONST 0) = FUNTYPEP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FUNTYPEP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FUNTYPEP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FUNTYPEP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FUNTYPEP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FUNTYPEP
+8     (SKIP&RET 1)
+
+
+Disassembly of function FUNTYPEP
+(CONST 0) = F
+(CONST 1) = (MEXPR)
+(CONST 2) = MGETL
+(CONST 3) = EXPR
+(CONST 4) = $TRANSRUN
+(CONST 5) = (OPERATORS)
+(CONST 6) = GETL
+(CONST 7) = (FUNCTION LAMBDA NAMED-LAMBDA)
+(CONST 8) = MEMQ
+(CONST 9) = MEXPR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($TRANSRUN F)
+58 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; F
+3     (GETVALUE&PUSH 0)                   ; F
+5     (CALLS2&JMPIF 6 L24)                ; SYMBOLP
+8     (GETVALUE 0)                        ; F
+10    (JMPIFCONSP L68)
+12    (NIL)
+13    L13
+13    (UNBIND1)
+14    (SKIP&RET 2)
+16    L16
+16    (LOAD 0)
+17    (JMPIF1 L61)
+19    (LOAD 1)
+20    (JMPIF1 L61)
+22    (JMP L52)
+24    L24
+24    (GETVALUE&PUSH 0)                   ; F
+26    (CONST&PUSH 1)                      ; (MEXPR)
+27    (CALL2&PUSH 2)                      ; MGETL
+29    (GETVALUE&PUSH 0)                   ; F
+31    (CALLS1&JMPIFNOT 80 L41)            ; FBOUNDP
+34    (CONST&PUSH 3)                      ; EXPR
+35    (GETVALUE 0)                        ; F
+37    (SYMBOL-FUNCTION)
+38    (PUSH)
+39    (LIST 2)
+41    L41
+41    (PUSH)
+42    (GETVALUE 4)                        ; $TRANSRUN
+44    (JMPIF L16)
+46    (LOAD 1)
+47    (JMPIF1 L61)
+49    (LOAD 0)
+50    (JMPIF1 L61)
+52    L52
+52    (GETVALUE&PUSH 0)                   ; F
+54    (CONST&PUSH 5)                      ; (OPERATORS)
+55    (CALL2 6)                           ; GETL
+57    (SKIP 2)
+59    (JMP L13)
+61    L61
+61    (SKIP 2)
+63    (JMP L13)
+65    L65
+65    (CONST 3)                           ; EXPR
+66    (JMP L76)
+68    L68
+68    (GETVALUE 0)                        ; F
+70    (CAR&PUSH)
+71    (CONST&PUSH 7)                      ; (FUNCTION LAMBDA NAMED-LAMBDA)
+72    (CALL2&JMPIF 8 L65)                 ; MEMQ
+75    (CONST 9)                           ; MEXPR
+76    L76
+76    (PUSH)
+77    (GETVALUE&PUSH 0)                   ; F
+79    (LIST 2)
+81    (JMP L13)
+
+
+Disassembly of function #:|(DEFUN MAKE-GTRAMP$ (F NARGS) ...)-16|
+(CONST 0) = MAKE-GTRAMP$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKE-GTRAMP$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKE-GTRAMP$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKE-GTRAMP$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKE-GTRAMP$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKE-GTRAMP$
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKE-GTRAMP$
+(CONST 0) = F
+(CONST 1) = FUNTYPEP
+(CONST 2) = K
+(CONST 3) = #S(HASH-TABLE EQ (LSUBR . 6) (EXPR . 6) (MEXPR . 6) (OPERATORS . 1))
+(CONST 4) = OPERATORS
+(CONST 5) = "Undefined or inscrutable function~%~M"
+(CONST 6) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (K F)
+30 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; F
+3     (GETVALUE&PUSH 0)                   ; F
+5     (CALL1 1)                           ; FUNTYPEP
+7     (BIND 2)                            ; K
+9     (GETVALUE 2)                        ; K
+11    (CAR)
+12    (JMPHASH 3 L31 L15 L20 L20 L20)
+15    L15
+15    (CONST&PUSH 4)                      ; OPERATORS
+16    (GETVALUE 0)                        ; F
+18    (JMP L27)
+20    L20
+20    (GETVALUE 2)                        ; K
+22    (CAR&PUSH)
+23    (GETVALUE 2)                        ; K
+25    (CDR)
+26    (CAR)
+27    L27
+27    (CONS)
+28    (UNBIND1)
+29    (JMP L37)
+31    L31
+31    (CONST&PUSH 5)                      ; "Undefined or inscrutable function~%~M"
+32    (GETVALUE&PUSH 0)                   ; F
+34    (CALL2 6)                           ; MERROR
+36    (UNBIND1)
+37    L37
+37    (UNBIND1)
+38    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN GCALL1$ (F X) ...)-17|
+(CONST 0) = GCALL1$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GCALL1$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GCALL1$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GCALL1$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GCALL1$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GCALL1$
+8     (SKIP&RET 1)
+
+
+Disassembly of function GCALL1$
+(CONST 0) = F
+(CONST 1) = X
+(CONST 2) = #S(HASH-TABLE EQ (OPERATORS . 11) (MEXPR . 11) (EXPR . 1))
+(CONST 3) = 1.0
+(CONST 4) = MAPPLY1
+(CONST 5) = "BUG: GCALL1$"
+(CONST 6) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (X F)
+32 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; F
+3     (LOAD 4)
+4     (BIND 1)                            ; X
+6     (GETVALUE 0)                        ; F
+8     (CAR)
+9     (JMPHASH 2 L40 L12 L22 L22)
+12    L12
+12    (GETVALUE 0)                        ; F
+14    (CDR&PUSH)
+15    (GETVALUE&PUSH 1)                   ; X
+17    (FUNCALL&PUSH 1)
+19    (CONST 3)                           ; 1.0
+20    (JMP L35)
+22    L22
+22    (GETVALUE 0)                        ; F
+24    (CDR&PUSH)
+25    (GETVALUE&PUSH 1)                   ; X
+27    (LIST&PUSH 1)
+29    (PUSH-NIL 2)
+31    (CALL&PUSH 4 4)                     ; MAPPLY1
+34    (CONST 3)                           ; 1.0
+35    L35
+35    (PUSH)
+36    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+38    (JMP L43)
+40    L40
+40    (CONST&PUSH 5)                      ; "BUG: GCALL1$"
+41    (CALL1 6)                           ; MERROR
+43    L43
+43    (UNBIND 2)
+45    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN GCALL2$ (F X Y) ...)-18|
+(CONST 0) = GCALL2$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GCALL2$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GCALL2$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GCALL2$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GCALL2$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GCALL2$
+8     (SKIP&RET 1)
+
+
+Disassembly of function GCALL2$
+(CONST 0) = F
+(CONST 1) = X
+(CONST 2) = Y
+(CONST 3) = #S(HASH-TABLE EQ (OPERATORS . 13) (MEXPR . 13) (EXPR . 1))
+(CONST 4) = 1.0
+(CONST 5) = MAPPLY
+(CONST 6) = "BUG: GCALL2$"
+(CONST 7) = MERROR
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X F)
+36 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; F
+3     (LOAD 5)
+4     (BIND 1)                            ; X
+6     (LOAD 7)
+7     (BIND 2)                            ; Y
+9     (GETVALUE 0)                        ; F
+11    (CAR)
+12    (JMPHASH 3 L46 L15 L27 L27)
+15    L15
+15    (GETVALUE 0)                        ; F
+17    (CDR&PUSH)
+18    (GETVALUE&PUSH 1)                   ; X
+20    (GETVALUE&PUSH 2)                   ; Y
+22    (FUNCALL&PUSH 2)
+24    (CONST 4)                           ; 1.0
+25    (JMP L41)
+27    L27
+27    (GETVALUE 0)                        ; F
+29    (CDR&PUSH)
+30    (GETVALUE&PUSH 1)                   ; X
+32    (GETVALUE&PUSH 2)                   ; Y
+34    (LIST&PUSH 2)
+36    (NIL&PUSH)
+37    (CALL&PUSH 3 5)                     ; MAPPLY
+40    (CONST 4)                           ; 1.0
+41    L41
+41    (PUSH)
+42    (CALLS2 174)                        ; COMMON-LISP:FLOAT
+44    (JMP L49)
+46    L46
+46    (CONST&PUSH 6)                      ; "BUG: GCALL2$"
+47    (CALL1 7)                           ; MERROR
+49    L49
+49    (UNBIND 3)
+51    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN AR$+AR$ (A$ B$ C$) ...)-19|
+(CONST 0) = AR$+AR$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE AR$+AR$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; AR$+AR$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; AR$+AR$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE AR$+AR$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; AR$+AR$
+8     (SKIP&RET 1)
+
+
+Disassembly of function AR$+AR$
+(CONST 0) = 1
+(CONST 1) = ARRAY-DIMENSION-N
+(CONST 2) = N
+(CONST 3) = 0
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (N)
+28 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 1
+1     (LOAD&PUSH 4)
+2     (CALL2 1)                           ; ARRAY-DIMENSION-N
+4     (BIND 2)                            ; N
+6     (CONST&PUSH 3)                      ; 0
+7     (JMP L32)
+9     L9
+9     (LOAD&PUSH 6)
+10    (LOAD&PUSH 1)
+11    (CALLSR&PUSH 1 1)                   ; AREF
+14    (LOAD&PUSH 6)
+15    (LOAD&PUSH 2)
+16    (CALLSR&PUSH 1 1)                   ; AREF
+19    (CALLSR&PUSH 2 53)                  ; +
+22    (LOAD&PUSH 8)
+23    (LOAD&PUSH 2)
+24    (LOAD&PUSH 2)
+25    (CALLSR 1 2)                        ; SYSTEM::STORE
+28    (SKIP 1)
+30    (LOAD&INC&STORE 0)
+32    L32
+32    (LOAD&PUSH 0)
+33    (GETVALUE&PUSH 2)                   ; N
+35    (CALLSR&JMPIFNOT 1 45 L9)           ; =
+39    (NIL)
+40    (SKIP 1)
+42    (UNBIND1)
+43    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN AR$*S (A$ B$ S) ...)-20|
+(CONST 0) = AR$*S
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE AR$*S>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; AR$*S
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; AR$*S
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE AR$*S>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; AR$*S
+8     (SKIP&RET 1)
+
+
+Disassembly of function AR$*S
+(CONST 0) = 1
+(CONST 1) = ARRAY-DIMENSION-N
+(CONST 2) = N
+(CONST 3) = 0
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (N)
+26 byte-code instructions:
+0     (CONST&PUSH 0)                      ; 1
+1     (LOAD&PUSH 4)
+2     (CALL2 1)                           ; ARRAY-DIMENSION-N
+4     (BIND 2)                            ; N
+6     (CONST&PUSH 3)                      ; 0
+7     (JMP L28)
+9     L9
+9     (LOAD&PUSH 6)
+10    (LOAD&PUSH 1)
+11    (CALLSR&PUSH 1 1)                   ; AREF
+14    (LOAD&PUSH 6)
+15    (CALLSR&PUSH 2 55)                  ; *
+18    (LOAD&PUSH 8)
+19    (LOAD&PUSH 2)
+20    (LOAD&PUSH 2)
+21    (CALLSR 1 2)                        ; SYSTEM::STORE
+24    (SKIP 1)
+26    (LOAD&INC&STORE 0)
+28    L28
+28    (LOAD&PUSH 0)
+29    (GETVALUE&PUSH 2)                   ; N
+31    (CALLSR&JMPIFNOT 1 45 L9)           ; =
+35    (NIL)
+36    (SKIP 1)
+38    (UNBIND1)
+39    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN AR$GCALL2$ (AR FL X ...) ...)-21|
+(CONST 0) = AR$GCALL2$
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE AR$GCALL2$>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; AR$GCALL2$
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; AR$GCALL2$
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE AR$GCALL2$>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; AR$GCALL2$
+8     (SKIP&RET 1)
+
+
+Disassembly of function AR$GCALL2$
+(CONST 0) = X
+(CONST 1) = Y
+(CONST 2) = 0
+(CONST 3) = L
+(CONST 4) = GCALL2$
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (Y X L)
+writes special variable : (L)
+32 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; X
+3     (LOAD 4)
+4     (BIND 1)                            ; Y
+6     (CONST&PUSH 2)                      ; 0
+7     (LOAD 10)
+8     (BIND 3)                            ; L
+10    (GETVALUE 3)                        ; L
+12    (JMPIFNOT L43)
+14    L14
+14    (GETVALUE 3)                        ; L
+16    (CAR&PUSH)
+17    (GETVALUE&PUSH 0)                   ; X
+19    (GETVALUE&PUSH 1)                   ; Y
+21    (CALL&PUSH 3 4)                     ; GCALL2$
+24    (LOAD&PUSH 15)
+25    (LOAD&PUSH 5)
+26    (LOAD&PUSH 2)
+27    (CALLSR 1 2)                        ; SYSTEM::STORE
+30    (SKIP 1)
+32    (GETVALUE 3)                        ; L
+34    (CDR)
+35    (SETVALUE 3)                        ; L
+37    (LOAD&INC&STORE 3)
+39    (GETVALUE 3)                        ; L
+41    (JMPIF L14)
+43    L43
+43    (NIL)
+44    (UNBIND1)
+45    (SKIP 1)
+47    (UNBIND 2)
+49    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN MAKE-GTRAMP (F NARGS) ...)-22|
+(CONST 0) = MAKE-GTRAMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKE-GTRAMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKE-GTRAMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKE-GTRAMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKE-GTRAMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKE-GTRAMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKE-GTRAMP
+(CONST 0) = F
+(CONST 1) = FUNTYPEP
+(CONST 2) = K
+(CONST 3) = #S(HASH-TABLE EQ (LSUBR . 6) (EXPR . 6) (MEXPR . 6) (OPERATORS . 1))
+(CONST 4) = OPERATORS
+(CONST 5) = "Undefined or inscrutable function~%~M"
+(CONST 6) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (K F)
+30 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; F
+3     (GETVALUE&PUSH 0)                   ; F
+5     (CALL1 1)                           ; FUNTYPEP
+7     (BIND 2)                            ; K
+9     (GETVALUE 2)                        ; K
+11    (CAR)
+12    (JMPHASH 3 L31 L15 L20 L20 L20)
+15    L15
+15    (CONST&PUSH 4)                      ; OPERATORS
+16    (GETVALUE 0)                        ; F
+18    (JMP L27)
+20    L20
+20    (GETVALUE 2)                        ; K
+22    (CAR&PUSH)
+23    (GETVALUE 2)                        ; K
+25    (CDR)
+26    (CAR)
+27    L27
+27    (CONS)
+28    (UNBIND1)
+29    (JMP L37)
+31    L31
+31    (CONST&PUSH 5)                      ; "Undefined or inscrutable function~%~M"
+32    (GETVALUE&PUSH 0)                   ; F
+34    (CALL2 6)                           ; MERROR
+36    (UNBIND1)
+37    L37
+37    (UNBIND1)
+38    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN GCALL3 (F A1 A2 ...) ...)-23|
+(CONST 0) = GCALL3
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GCALL3>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GCALL3
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GCALL3
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GCALL3>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GCALL3
+8     (SKIP&RET 1)
+
+
+Disassembly of function GCALL3
+(CONST 0) = F
+(CONST 1) = #S(HASH-TABLE EQ (OPERATORS . 11) (MEXPR . 11) (EXPR . 1))
+(CONST 2) = GCALL3
+(CONST 3) = MAPPLY
+(CONST 4) = "BUG: GCALL3"
+(CONST 5) = MERROR
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (F)
+29 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; F
+3     (GETVALUE 0)                        ; F
+5     (CAR)
+6     (JMPHASH 1 L33 L9 L19 L19)
+9     L9
+9     (GETVALUE 0)                        ; F
+11    (CDR&PUSH)
+12    (LOAD&PUSH 7)
+13    (LOAD&PUSH 7)
+14    (LOAD&PUSH 7)
+15    (FUNCALL 3)
+17    (JMP L36)
+19    L19
+19    (GETVALUE 0)                        ; F
+21    (CDR&PUSH)
+22    (LOAD&PUSH 7)
+23    (LOAD&PUSH 7)
+24    (LOAD&PUSH 7)
+25    (LIST&PUSH 3)
+27    (CONST&PUSH 2)                      ; GCALL3
+28    (CALL 3 3)                          ; MAPPLY
+31    (JMP L36)
+33    L33
+33    (CONST&PUSH 4)                      ; "BUG: GCALL3"
+34    (CALL1 5)                           ; MERROR
+36    L36
+36    (UNBIND1)
+37    (SKIP&RET 5)
+
+
+Wrote file binary-clisp/numer.fas
+Wrote file /cygdrive/e/temp/maxima/src/numer.lis

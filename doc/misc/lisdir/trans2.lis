@@ -1,0 +1,965 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/trans2.lisp
+on 2002-12-17 13:33:55 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/trans2.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TRANS2)-2|
+(CONST 0) = TRANS2
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TRANS2
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(TRANSL-MODULE TRANS2)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEF%TR $RANDOM (FORM) ...)-4-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $RANDOM (FORM) ...)-4-2-1|>
+(CONST 1) = $RANDOM
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $RANDOM (FORM) ...)-4-2-1|>
+1     (CONST&PUSH 1)                      ; $RANDOM
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $RANDOM (FORM) ...)-4-2-1|
+(CONST 0) = $FIXNUM
+(CONST 1) = RANDOM
+(CONST 2) = TR-ARGS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FIXNUM
+1     (CONST&PUSH 1)                      ; RANDOM
+2     (LOAD&CDR&PUSH 3)
+4     (CALL1 2)                           ; TR-ARGS
+6     (LIST* 2)
+8     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MEQUAL (FORM) ...)-5-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MEQUAL (FORM) ...)-5-2-1|>
+(CONST 1) = MEQUAL
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MEQUAL (FORM) ...)-5-2-1|>
+1     (CONST&PUSH 1)                      ; MEQUAL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MEQUAL (FORM) ...)-5-2-1|
+(CONST 0) = $ANY
+(CONST 1) = SIMPLIFY
+(CONST 2) = LIST
+(CONST 3) = '(MEQUAL)
+(CONST 4) = TR-ARGS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ANY
+1     (CONST&PUSH 1)                      ; SIMPLIFY
+2     (CONST&PUSH 2)                      ; LIST
+3     (CONST&PUSH 3)                      ; '(MEQUAL)
+4     (LOAD&CDR&PUSH 5)
+6     (CALL1 4)                           ; TR-ARGS
+8     (LIST*&PUSH 2)
+10    (LIST 3)
+12    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MCALL (FORM) ...)-6-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MCALL (FORM) ...)-6-2-1|>
+(CONST 1) = MCALL
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MCALL (FORM) ...)-6-2-1|>
+1     (CONST&PUSH 1)                      ; MCALL
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MCALL (FORM) ...)-6-2-1|
+(CONST 0) = FUNCTION-MODE
+(CONST 1) = $ANY
+(CONST 2) = TR-ARGS
+(CONST 3) = MCALL
+(CONST 4) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+22 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CAR)
+3     (JMPIFATOM L23)
+5     (CONST 1)                           ; $ANY
+6     L6
+6     (PUSH)
+7     (LOAD&PUSH 2)
+8     (CALL1 2)                           ; TR-ARGS
+10    (STORE 2)
+11    (CAR&PUSH)
+12    (LOAD&PUSH 1)
+13    (CONST&PUSH 3)                      ; MCALL
+14    (LOAD&PUSH 2)
+15    (LOAD 6)
+16    (CDR)
+17    (CONS&PUSH)
+18    (CALL 3 4)                          ; CALL-AND-SIMP
+21    (SKIP&RET 4)
+23    L23
+23    (LOAD&CAR&PUSH 1)
+25    (CALL1 0)                           ; FUNCTION-MODE
+27    (JMP L6)
+
+
+Disassembly of function #:|(DEFVAR $TRANSLATE_FAST_ARRAYS T)-7|
+(CONST 0) = (SPECIAL $TRANSLATE_FAST_ARRAYS)
+(CONST 1) = $TRANSLATE_FAST_ARRAYS
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $TRANSLATE_FAST_ARRAYS)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $TRANSLATE_FAST_ARRAYS
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $TRANSLATE_FAST_ARRAYS
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $TRANSLATE_FAST_ARRAYS
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN LISPM-MARRAY-TYPE (AR) ...)-8|
+(CONST 0) = LISPM-MARRAY-TYPE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISPM-MARRAY-TYPE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISPM-MARRAY-TYPE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISPM-MARRAY-TYPE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISPM-MARRAY-TYPE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LISPM-MARRAY-TYPE
+8     (SKIP&RET 1)
+
+
+Disassembly of function LISPM-MARRAY-TYPE
+(CONST 0) = ARRAY
+(CONST 1) = HASH-TABLE
+(CONST 2) = $LISTP
+(CONST 3) = $LIST
+(CONST 4) = $MATRIXP
+(CONST 5) = $MATRIX
+(CONST 6) = SYMBOL
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+27 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&JMPIF 32 L23)               ; ARRAYP
+4     (LOAD&PUSH 1)
+5     (CALLS2&JMPIF 25 L26)               ; HASH-TABLE-P
+8     (LOAD&PUSH 1)
+9     (CALL1&JMPIF 2 L29)                 ; $LISTP
+12    (LOAD&PUSH 1)
+13    (CALL1&JMPIF 4 L32)                 ; $MATRIXP
+16    (LOAD&PUSH 1)
+17    (CALLS2&JMPIF 6 L35)                ; SYMBOLP
+20    (NIL)
+21    (SKIP&RET 2)
+23    L23
+23    (CONST 0)                           ; ARRAY
+24    (SKIP&RET 2)
+26    L26
+26    (CONST 1)                           ; HASH-TABLE
+27    (SKIP&RET 2)
+29    L29
+29    (CONST 3)                           ; $LIST
+30    (SKIP&RET 2)
+32    L32
+32    (CONST 5)                           ; $MATRIX
+33    (SKIP&RET 2)
+35    L35
+35    (CONST 6)                           ; SYMBOL
+36    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TR-MASET (AR VAL INDS) ...)-9|
+(CONST 0) = TR-MASET
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-MASET>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-MASET
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-MASET
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-MASET>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-MASET
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-MASET
+(CONST 0) = MASET
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; MASET
+2     (LOAD&PUSH 4)
+3     (LOAD&PUSH 6)
+4     (LOAD 5)
+5     (LIST* 4)
+7     (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN MASET1 (VAL AR &REST ...) ...)-10|
+(CONST 0) = MASET1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MASET1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MASET1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MASET1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MASET1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MASET1
+8     (SKIP&RET 1)
+
+
+Disassembly of function MASET1
+(CONST 0) = (SIMPLE-VECTOR 3)
+(CONST 1) = #.#'SYSTEM::STORE
+(CONST 2) = HASH-TABLE
+(CONST 3) = COPY-REST
+(CONST 4) = SYMBOL
+(CONST 5) = "must set the hash table outside"
+(CONST 6) = $LISTP
+(CONST 7) = SYSTEM::%SETNTH
+(CONST 8) = $MATRIXP
+(CONST 9) = "not a valid array reference to ~A"
+2 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+61 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 39)                    ; TYPE-OF
+3     (LOAD&PUSH 0)
+4     (CONST&PUSH 0)                      ; (SIMPLE-VECTOR 3)
+5     (CALLS2&JMPIF 1 L40)                ; EQL
+8     (LOAD&PUSH 0)
+9     (JMPIFEQTO 2 L57)                   ; HASH-TABLE
+12    (LOAD&PUSH 0)
+13    (JMPIFEQTO 4 L71)                   ; SYMBOL
+16    (LOAD&PUSH 3)
+17    (CALL1&JMPIF 6 L75)                 ; $LISTP
+20    (LOAD&PUSH 3)
+21    (CALL1&JMPIFNOT 8 L80)              ; $MATRIXP
+24    (LOAD 2)
+25    (CDR)
+26    (CAR&PUSH)
+27    (LOAD&CAR&PUSH 3)
+29    (LOAD&PUSH 5)
+30    (CALLS1 148)                        ; NTH
+32    L32
+32    (PUSH)
+33    (LOAD&PUSH 6)
+34    (CALL 3 7)                          ; SYSTEM::%SETNTH
+37    (LOAD 4)
+38    (SKIP&RET 5)
+40    L40
+40    (CONST&PUSH 1)                      ; #.#'SYSTEM::STORE
+41    (LOAD&PUSH 4)
+42    (LOAD&PUSH 4)
+43    (LOAD&PUSH 7)
+44    (LIST&PUSH 1)
+46    (CALLSR 2 34)                       ; APPEND
+49    (APPLY&SKIP&RET 1 5)
+52    L52
+52    (LOAD&PUSH 2)
+53    (CALL1 3)                           ; COPY-REST
+55    (JMP L63)
+57    L57
+57    (LOAD 2)
+58    (CDR)
+59    (JMPIF L52)
+61    (LOAD 2)
+62    (CAR)
+63    L63
+63    (PUSH)
+64    (LOAD&PUSH 0)
+65    (LOAD&PUSH 5)
+66    (LOAD&PUSH 7)
+67    (CALLS1 100)                        ; SYSTEM::PUTHASH
+69    (SKIP&RET 6)
+71    L71
+71    (CONST&PUSH 5)                      ; "must set the hash table outside"
+72    (CALLSR 0 29)                       ; ERROR
+75    L75
+75    (LOAD&CAR&PUSH 2)
+77    (LOAD 4)
+78    (JMP L32)
+80    L80
+80    (CONST&PUSH 9)                      ; "not a valid array reference to ~A"
+81    (LOAD&PUSH 4)
+82    (CALLSR 1 29)                       ; ERROR
+
+
+Disassembly of function #:|(DEFUN TR-MAREF (AR INDS) ...)-11|
+(CONST 0) = TR-MAREF
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-MAREF>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-MAREF
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-MAREF
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-MAREF>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-MAREF
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-MAREF
+(CONST 0) = MAREF
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (NIL&PUSH)
+1     (CONST&PUSH 0)                      ; MAREF
+2     (LOAD&PUSH 4)
+3     (LOAD&PUSH 4)
+4     (CALLS1 158)                        ; COPY-LIST
+6     (LIST* 3)
+8     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MAREF1 (AR &REST INDS ...) ...)-12|
+(CONST 0) = MAREF1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAREF1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAREF1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAREF1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAREF1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAREF1
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAREF1
+(CONST 0) = (SIMPLE-VECTOR 3)
+(CONST 1) = #.#'AREF
+(CONST 2) = HASH-TABLE
+(CONST 3) = SYMBOL
+(CONST 4) = (ARRAY)
+(CONST 5) = $LISTP
+(CONST 6) = $MATRIXP
+(CONST 7) = "not a valid array reference to ~A"
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+59 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS2&PUSH 39)                    ; TYPE-OF
+3     (LOAD&PUSH 0)
+4     (CONST&PUSH 0)                      ; (SIMPLE-VECTOR 3)
+5     (CALLS2&JMPIF 1 L37)                ; EQL
+8     (LOAD&PUSH 0)
+9     (JMPIFEQTO 2 L46)                   ; HASH-TABLE
+12    (LOAD&PUSH 0)
+13    (JMPIFEQTO 3 L60)                   ; SYMBOL
+16    (LOAD&PUSH 3)
+17    (CALL1&JMPIF 5 L69)                 ; $LISTP
+20    (LOAD&PUSH 3)
+21    (CALL1&JMPIFNOT 6 L74)              ; $MATRIXP
+24    (LOAD 2)
+25    (CDR)
+26    (CAR&PUSH)
+27    (LOAD&CAR&PUSH 3)
+29    (LOAD&PUSH 5)
+30    (CALLS1 148)                        ; NTH
+32    L32
+32    (PUSH)
+33    (CALLS1 148)                        ; NTH
+35    (SKIP&RET 4)
+37    L37
+37    (CONST&PUSH 1)                      ; #.#'AREF
+38    (LOAD&PUSH 4)
+39    (LOAD 4)
+40    (APPLY&SKIP&RET 1 4)
+43    L43
+43    (LOAD 2)
+44    (JMP L52)
+46    L46
+46    (LOAD 2)
+47    (CDR)
+48    (JMPIF L43)
+50    (LOAD 2)
+51    (CAR)
+52    L52
+52    (PUSH)
+53    (LOAD&PUSH 4)
+54    (PUSH-UNBOUND 1)
+56    (CALLS1 99)                         ; GETHASH
+58    (SKIP&RET 4)
+60    L60
+60    (LOAD&PUSH 3)
+61    (CONST 4)                           ; (ARRAY)
+62    (CONS&PUSH)
+63    (LOAD&PUSH 3)
+64    (CALLS1 158)                        ; COPY-LIST
+66    (CONS)
+67    (SKIP&RET 4)
+69    L69
+69    (LOAD&CAR&PUSH 2)
+71    (LOAD 4)
+72    (JMP L32)
+74    L74
+74    (CONST&PUSH 7)                      ; "not a valid array reference to ~A"
+75    (LOAD&PUSH 4)
+76    (CALLSR 1 29)                       ; ERROR
+
+
+Disassembly of function #:|(DEFTRFUN TR-ARRAYCALL (FORM &AUX ALL-INDS) ...)-13|
+(CONST 0) = TR-ARRAYCALL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-ARRAYCALL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-ARRAYCALL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-ARRAYCALL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-ARRAYCALL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-ARRAYCALL
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-ARRAYCALL
+(CONST 0) = ARRAY-MODE
+(CONST 1) = ARRAYS
+(CONST 2) = MEMQ
+(CONST 3) = TR-ARGS
+(CONST 4) = $TRANSLATE_FAST_ARRAYS
+(CONST 5) = DTRANSLATE
+(CONST 6) = TR-MAREF
+(CONST 7) = TRANSLATE
+(CONST 8) = (MARRAYREF)
+(CONST 9) = $TR_ARRAY_AS_REF
+(CONST 10) = (MQUOTE)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (ARRAYS $TR_ARRAY_AS_REF $TRANSLATE_FAST_ARRAYS)
+writes special variable : (ARRAYS)
+66 byte-code instructions:
+0     (NIL&PUSH)
+1     (LOAD 2)
+2     (CAR)
+3     (CAR&PUSH)
+4     (CONST&PUSH 0)                      ; ARRAY-MODE
+5     (PUSH-UNBOUND 1)
+7     (CALLS2&JMPIF 132 L35)              ; GET
+10    (GETVALUE 4)                        ; $TRANSLATE_FAST_ARRAYS
+12    (JMPIF L67)
+14    (CONST&PUSH 8)                      ; (MARRAYREF)
+15    (GETVALUE 9)                        ; $TR_ARRAY_AS_REF
+17    (JMPIF L86)
+20    (CONST&PUSH 10)                     ; (MQUOTE)
+21    (LOAD 4)
+22    (CAR)
+23    (CAR&PUSH)
+24    (LIST 2)
+26    L26
+26    (PUSH)
+27    (LOAD 4)
+28    (CDR)
+29    (LIST*&PUSH 2)
+31    (CALL1 7)                           ; TRANSLATE
+33    (SKIP&RET 3)
+35    L35
+35    (LOAD 2)
+36    (CAR)
+37    (CAR&PUSH)
+38    (GETVALUE&PUSH 1)                   ; ARRAYS
+40    (CALL2&JMPIF 2 L51)                 ; MEMQ
+43    (LOAD 2)
+44    (CAR)
+45    (CAR&PUSH)
+46    (GETVALUE 1)                        ; ARRAYS
+48    (CONS)
+49    (SETVALUE 1)                        ; ARRAYS
+51    L51
+51    (LOAD 2)
+52    (CAR)
+53    (CAR&PUSH)
+54    (CALL1&PUSH 0)                      ; ARRAY-MODE
+56    (LOAD 3)
+57    (CAR)
+58    (CAR&PUSH)
+59    (LOAD&CDR&PUSH 4)
+61    (CALL1 3)                           ; TR-ARGS
+63    (LIST* 2)
+65    (SKIP&RET 3)
+67    L67
+67    (CONST&PUSH 5)                      ; DTRANSLATE
+68    (LOAD&CDR&PUSH 3)
+70    (CALLSR&STORE 0 22 0)               ; MAPCAR
+74    (CONST&PUSH 6)                      ; TR-MAREF
+75    (LOAD 3)
+76    (CAR)
+77    (CAR&PUSH)
+78    (CALL1 7)                           ; TRANSLATE
+80    (CDR&PUSH)
+81    (LOAD&PUSH 2)
+82    (FUNCALL 2)
+84    (SKIP&RET 3)
+86    L86
+86    (LOAD 3)
+87    (CAR)
+88    (CAR)
+89    (JMP L26)
+
+
+Disassembly of function #:|(DEFTRFUN TR-ARRAYSETQ (ARRAY-REF VALUE) ...)-14|
+(CONST 0) = TR-ARRAYSETQ
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TR-ARRAYSETQ>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TR-ARRAYSETQ
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TR-ARRAYSETQ
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TR-ARRAYSETQ>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TR-ARRAYSETQ
+8     (SKIP&RET 1)
+
+
+Disassembly of function TR-ARRAYSETQ
+(CONST 0) = (ARRAY-MODE)
+(CONST 1) = GETL
+(CONST 2) = TRANSLATE
+(CONST 3) = WARN-MODE
+(CONST 4) = STORE
+(CONST 5) = $TRANSLATE_FAST_ARRAYS
+(CONST 6) = TR-MASET
+(CONST 7) = DTRANSLATE
+(CONST 8) = (MARRAYSET)
+(CONST 9) = $TR_ARRAY_AS_REF
+(CONST 10) = (MQUOTE)
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($TR_ARRAY_AS_REF $TRANSLATE_FAST_ARRAYS)
+58 byte-code instructions:
+0     (LOAD 2)
+1     (CAR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; (ARRAY-MODE)
+4     (CALL2&JMPIF 1 L32)                 ; GETL
+7     (GETVALUE 5)                        ; $TRANSLATE_FAST_ARRAYS
+9     (JMPIF L60)
+11    (CONST&PUSH 8)                      ; (MARRAYSET)
+12    (LOAD&PUSH 2)
+13    (GETVALUE 9)                        ; $TR_ARRAY_AS_REF
+15    (JMPIF L79)
+17    (CONST&PUSH 10)                     ; (MQUOTE)
+18    (LOAD 5)
+19    (CAR)
+20    (CAR&PUSH)
+21    (LIST 2)
+23    L23
+23    (PUSH)
+24    (LOAD 5)
+25    (CDR)
+26    (LIST*&PUSH 3)
+28    (CALL1 2)                           ; TRANSLATE
+30    (SKIP&RET 3)
+32    L32
+32    (LOAD&PUSH 2)
+33    (CALL1&PUSH 2)                      ; TRANSLATE
+35    (LOAD&PUSH 2)
+36    (CALL1&PUSH 2)                      ; TRANSLATE
+38    (NIL&PUSH)
+39    (LOAD&PUSH 5)
+40    (LOAD&CAR&PUSH 3)
+42    (LOAD&CAR&PUSH 3)
+44    (CALL 3 3)                          ; WARN-MODE
+47    (LOAD&CAR&STORE 2 0)
+50    (PUSH)
+51    (CONST&PUSH 4)                      ; STORE
+52    (LOAD&CDR&PUSH 4)
+54    (LOAD&CDR&PUSH 4)
+56    (LIST 4)
+58    (SKIP&RET 6)
+60    L60
+60    (CONST&PUSH 6)                      ; TR-MASET
+61    (LOAD 3)
+62    (CAR)
+63    (CAR&PUSH)
+64    (LOAD&PUSH 3)
+65    (CALL1&PUSH 7)                      ; DTRANSLATE
+67    (CONST&PUSH 7)                      ; DTRANSLATE
+68    (LOAD&CDR&PUSH 6)
+70    (CALLS1&PUSH 158)                   ; COPY-LIST
+72    (CALLSR&PUSH 0 22)                  ; MAPCAR
+75    (FUNCALL 3)
+77    (SKIP&RET 3)
+79    L79
+79    (LOAD 4)
+80    (CAR)
+81    (CAR)
+82    (JMP L23)
+
+
+Disassembly of function #:|(DEF%TR MARRAYREF (FORM) ...)-15-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MARRAYREF (FORM) ...)-15-2-1|>
+(CONST 1) = MARRAYREF
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MARRAYREF (FORM) ...)-15-2-1|>
+1     (CONST&PUSH 1)                      ; MARRAYREF
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MARRAYREF (FORM) ...)-15-2-1|
+(CONST 0) = ARRAY-MODE
+(CONST 1) = MGET
+(CONST 2) = $ANY
+(CONST 3) = TR-ARGS
+(CONST 4) = 2
+(CONST 5) = $FLOAT
+(CONST 6) = MARRAYREF
+(CONST 7) = (MARRAYREF1$)
+(CONST 8) = PUSH-AUTOLOAD-DEF
+(CONST 9) = MARRAYREF1$
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+41 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CAR)
+3     (JMPIFATOM L39)
+5     (NIL)
+6     L6
+6     (PUSH)
+7     (LOAD&JMPIF 0 L12)
+10    (CONST 2)                           ; $ANY
+11    (STORE 0)
+12    L12
+12    (LOAD&PUSH 2)
+13    (CALL1 3)                           ; TR-ARGS
+15    (STORE 2)
+16    (CAR&PUSH)
+17    (LOAD&PUSH 1)
+18    (LOAD&PUSH 4)
+19    (CALLS2&PUSH 71)                    ; LENGTH
+21    (CONST&PUSH 4)                      ; 2
+22    (CALLSR&JMPIFNOT 1 45 L30)          ; =
+26    (LOAD&PUSH 2)
+27    (JMPIFEQTO 5 L46)                   ; $FLOAT
+30    L30
+30    (CONST 6)                           ; MARRAYREF
+31    L31
+31    (PUSH)
+32    (LOAD&PUSH 2)
+33    (LOAD 6)
+34    (CDR)
+35    (LIST* 3)
+37    (SKIP&RET 4)
+39    L39
+39    (LOAD&CAR&PUSH 1)
+41    (CONST&PUSH 0)                      ; ARRAY-MODE
+42    (CALL2 1)                           ; MGET
+44    (JMP L6)
+46    L46
+46    (CONST&PUSH 6)                      ; MARRAYREF
+47    (CONST&PUSH 7)                      ; (MARRAYREF1$)
+48    (CALL2 8)                           ; PUSH-AUTOLOAD-DEF
+50    (CONST 9)                           ; MARRAYREF1$
+51    (JMP L31)
+
+
+Disassembly of function #:|(DEF%TR MARRAYSET (FORM) ...)-16-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MARRAYSET (FORM) ...)-16-2-1|>
+(CONST 1) = MARRAYSET
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MARRAYSET (FORM) ...)-16-2-1|>
+1     (CONST&PUSH 1)                      ; MARRAYSET
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MARRAYSET (FORM) ...)-16-2-1|
+(CONST 0) = ARRAY-MODE
+(CONST 1) = MGET
+(CONST 2) = $ANY
+(CONST 3) = TR-ARGS
+(CONST 4) = 1
+(CONST 5) = $FLOAT
+(CONST 6) = MARRAYSET
+(CONST 7) = (MARRAYSET1$)
+(CONST 8) = PUSH-AUTOLOAD-DEF
+(CONST 9) = MARRAYSET1$
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+50 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CDR)
+3     (CAR)
+4     (JMPIFATOM L51)
+6     (NIL)
+7     L7
+7     (PUSH)
+8     (LOAD&JMPIF 0 L13)
+11    (CONST 2)                           ; $ANY
+12    (STORE 0)
+13    L13
+13    (LOAD&PUSH 2)
+14    (CALL1 3)                           ; TR-ARGS
+16    (STORE 2)
+17    (PUSH-NIL 2)
+19    (LOAD&PUSH 4)
+20    (LOAD&CAR&STORE 0 2)
+23    (LOAD&CDR&STORE 0)
+25    (CAR)
+26    (STORE 1)
+27    (LOAD&CDR&STORE 0)
+29    (LOAD&PUSH 3)
+30    (LOAD&PUSH 1)
+31    (CALLS2&PUSH 71)                    ; LENGTH
+33    (CONST&PUSH 4)                      ; 1
+34    (CALLSR&JMPIFNOT 1 45 L42)          ; =
+38    (LOAD&PUSH 4)
+39    (JMPIFEQTO 5 L59)                   ; $FLOAT
+42    L42
+42    (CONST 6)                           ; MARRAYSET
+43    L43
+43    (PUSH)
+44    (LOAD&PUSH 4)
+45    (LOAD&PUSH 4)
+46    (LOAD 4)
+47    (LIST* 4)
+49    (SKIP&RET 6)
+51    L51
+51    (LOAD 1)
+52    (CDR)
+53    (CAR&PUSH)
+54    (CONST&PUSH 0)                      ; ARRAY-MODE
+55    (CALL2 1)                           ; MGET
+57    (JMP L7)
+59    L59
+59    (CONST&PUSH 6)                      ; MARRAYSET
+60    (CONST&PUSH 7)                      ; (MARRAYSET1$)
+61    (CALL2 8)                           ; PUSH-AUTOLOAD-DEF
+63    (CONST 9)                           ; MARRAYSET1$
+64    (JMP L43)
+
+
+Disassembly of function #:|(DEF%TR MLIST (FORM) ...)-17-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR MLIST (FORM) ...)-17-2-1|>
+(CONST 1) = MLIST
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR MLIST (FORM) ...)-17-2-1|>
+1     (CONST&PUSH 1)                      ; MLIST
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR MLIST (FORM) ...)-17-2-1|
+(CONST 0) = ($ANY QUOTE ((MLIST)))
+(CONST 1) = $ANY
+(CONST 2) = LIST
+(CONST 3) = '(MLIST)
+(CONST 4) = TR-ARGS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+13 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (JMPIFNOT L15)
+4     (CONST&PUSH 1)                      ; $ANY
+5     (CONST&PUSH 2)                      ; LIST
+6     (CONST&PUSH 3)                      ; '(MLIST)
+7     (LOAD&CDR&PUSH 4)
+9     (CALL1 4)                           ; TR-ARGS
+11    (LIST* 3)
+13    (SKIP&RET 2)
+15    L15
+15    (CONST 0)                           ; ($ANY QUOTE ((MLIST)))
+16    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $FIRST (FORM) ...)-18-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEF%TR $FIRST (FORM) ...)-18-2-1|>
+(CONST 1) = $FIRST
+(CONST 2) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEF%TR $FIRST (FORM) ...)-18-2-1|>
+1     (CONST&PUSH 1)                      ; $FIRST
+2     (CONST&PUSH 2)                      ; TRANSLATE
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEF%TR $FIRST (FORM) ...)-18-2-1|
+(CONST 0) = TRANSLATE
+(CONST 1) = $ANY
+(CONST 2) = $LIST
+(CONST 3) = CADR
+(CONST 4) = $FIRST
+(CONST 5) = CALL-AND-SIMP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+18 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CALL1 0)                           ; TRANSLATE
+5     (STORE 1)
+6     (CONST&PUSH 1)                      ; $ANY
+7     (LOAD&CAR&PUSH 2)
+9     (JMPIFEQTO 2 L23)                   ; $LIST
+12    (CONST 4)                           ; $FIRST
+13    L13
+13    (PUSH)
+14    (LOAD&CDR&PUSH 3)
+16    (LIST&PUSH 1)
+18    (CALL 3 5)                          ; CALL-AND-SIMP
+21    (SKIP&RET 2)
+23    L23
+23    (CONST 3)                           ; CADR
+24    (JMP L13)
+
+
+Wrote file binary-clisp/trans2.fas
+Wrote file /cygdrive/e/temp/maxima/src/trans2.lis

@@ -1,0 +1,384 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/invert.lisp
+on 2002-12-17 13:36:13 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/invert.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ADJOINT T ...) ...)-2-1|
+(CONST 0) = $ADJOINT
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJOINT
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ADJOINT T ...) ...)-2-2|
+(CONST 0) = $ADJOINT
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJOINT
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ADJOINT T ...) ...)-2-3-1|
+(CONST 0) = $ADJOINT
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJOINT
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ADJOINT T ...) ...)-2-3-2|
+(CONST 0) = $ADJOINT
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJOINT
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ADJOINT T ...) ...)-2-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $ADJOINT
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $ADJOINT
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $ADJOINT T ...) ...)-2-3-5|
+(CONST 0) = $ADJOINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ADJOINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJOINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ADJOINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ADJOINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ADJOINT
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ADJOINT
+(CONST 0) = $ADJ
+(CONST 1) = $N
+(CONST 2) = $LENGTH
+(CONST 3) = $IDENT
+(CONST 4) = SIMPLIFY
+(CONST 5) = 1
+(CONST 6) = LIKE
+(CONST 7) = MAKE-EQUAL-HASH-TABLE
+(CONST 8) = -1
+(CONST 9) = POWER
+(CONST 10) = $MINOR
+(CONST 11) = $DETERMINANT
+(CONST 12) = MUL*
+(CONST 13) = MASET1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+60 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJ
+1     (CONST&PUSH 1)                      ; $N
+2     (LOAD&PUSH 3)
+3     (CALL1 2)                           ; $LENGTH
+5     (STORE 0)
+6     (PUSH)
+7     (CALL1&PUSH 3)                      ; $IDENT
+9     (CALL1 4)                           ; SIMPLIFY
+11    (STORE 1)
+12    (LOAD&PUSH 0)
+13    (CONST&PUSH 5)                      ; 1
+14    (CALL2&JMPIF 6 L89)                 ; LIKE
+18    (CONST&PUSH 5)                      ; 1
+19    (JMP L80)
+21    L21
+21    (CONST&PUSH 5)                      ; 1
+22    (JMP L66)
+24    L24
+24    (LOAD&PUSH 3)
+25    (CALLS2&JMPIFNOT 6 L32)             ; SYMBOLP
+28    (T&PUSH)
+29    (CALL1 7)                           ; MAKE-EQUAL-HASH-TABLE
+31    (STORE 3)
+32    L32
+32    (CONST&PUSH 8)                      ; -1
+33    (LOAD&PUSH 2)
+34    (LOAD&PUSH 2)
+35    (CALLSR&PUSH 2 53)                  ; +
+38    (CALL2&PUSH 9)                      ; POWER
+40    (LOAD&PUSH 6)
+41    (LOAD&PUSH 2)
+42    (LOAD&PUSH 4)
+43    (CALL&PUSH 3 10)                    ; $MINOR
+46    (CALL1&PUSH 4)                      ; SIMPLIFY
+48    (CALL1&PUSH 11)                     ; $DETERMINANT
+50    (CALL1&PUSH 4)                      ; SIMPLIFY
+52    (CALL2&PUSH 12)                     ; MUL*
+54    (LOAD&PUSH 4)
+55    (LOAD&PUSH 3)
+56    (LOAD&PUSH 3)
+57    (CALL 4 13)                         ; MASET1
+60    (CONST&PUSH 5)                      ; 1
+61    (LOAD&PUSH 1)
+62    (CALLSR&STORE 2 53 0)               ; +
+66    L66
+66    (LOAD&PUSH 0)
+67    (LOAD&PUSH 3)
+68    (CALLSR&JMPIFNOT 1 48 L24)          ; >
+72    (SKIP 1)
+74    (CONST&PUSH 5)                      ; 1
+75    (LOAD&PUSH 1)
+76    (CALLSR&STORE 2 53 0)               ; +
+80    L80
+80    (LOAD&PUSH 0)
+81    (LOAD&PUSH 2)
+82    (CALLSR&JMPIFNOT 1 48 L21)          ; >
+87    (SKIP 1)
+89    L89
+89    (LOAD 1)
+90    (SKIP&RET 4)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $INVERT T ...) ...)-3-1|
+(CONST 0) = $INVERT
+(CONST 1) = TRANSLATED
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $INVERT
+1     (CONST&PUSH 1)                      ; TRANSLATED
+2     (T&PUSH)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $INVERT T ...) ...)-3-2|
+(CONST 0) = $INVERT
+(CONST 1) = $PROPS
+(CONST 2) = ADD2LNC
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $INVERT
+1     (GETVALUE&PUSH 1)                   ; $PROPS
+3     (CALL2 2)                           ; ADD2LNC
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $INVERT T ...) ...)-3-3-1|
+(CONST 0) = $INVERT
+(CONST 1) = TRANSLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $INVERT
+1     (CONST&PUSH 1)                      ; TRANSLATE
+2     (CALLS2 137)                        ; REMPROP
+4     (VALUES0)
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $INVERT T ...) ...)-3-3-2|
+(CONST 0) = $INVERT
+(CONST 1) = FUNCTION-MODE
+(CONST 2) = $ANY
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $INVERT
+1     (CONST&PUSH 1)                      ; FUNCTION-MODE
+2     (CONST&PUSH 2)                      ; $ANY
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (VALUES0)
+6     (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $INVERT T ...) ...)-3-3-3|
+(CONST 0) = :MACSYMA
+(CONST 1) = *FEATURES*
+(CONST 2) = $INVERT
+(CONST 3) = $FIXED_NUM_ARGS_FUNCTION
+(CONST 4) = MPUTPROP
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*FEATURES*)
+11 byte-code instructions:
+0     (CONST&PUSH 0)                      ; :MACSYMA
+1     (GETVALUE&PUSH 1)                   ; *FEATURES*
+3     (PUSH-UNBOUND 3)
+5     (CALLS1&JMPIFNOT 180 L14)           ; MEMBER
+8     (CONST&PUSH 2)                      ; $INVERT
+9     (T&PUSH)
+10    (CONST&PUSH 3)                      ; $FIXED_NUM_ARGS_FUNCTION
+11    (CALL 3 4)                          ; MPUTPROP
+14    L14
+14    (VALUES0)
+15    (SKIP&RET 1)
+
+
+Disassembly of function #:|(EVAL-WHEN (COMPILE EVAL LOAD) (DEFPROP $INVERT T ...) ...)-3-3-5|
+(CONST 0) = $INVERT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $INVERT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $INVERT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $INVERT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $INVERT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $INVERT
+8     (SKIP&RET 1)
+
+
+Disassembly of function $INVERT
+(CONST 0) = $ADJ
+(CONST 1) = $ANS
+(CONST 2) = $ADJOINT
+(CONST 3) = SIMPLIFY
+(CONST 4) = $SCALARMATRIXP
+(CONST 5) = 1
+(CONST 6) = $ROW
+(CONST 7) = $COL
+(CONST 8) = NCMUL2
+(CONST 9) = DIV
+(CONST 10) = ($SCALARMATRIXP '$SCALARMATRIXP)
+(CONST 11) = |TRD-MSYMEVAL-aux|
+(CONST 12) = LIKE
+(CONST 13) = $LENGTH
+(CONST 14) = MAREF1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($ANS)
+writes special variable : ($ANS)
+40 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ADJ
+1     (CONST 1)                           ; $ANS
+2     (BIND 1)                            ; $ANS
+4     (LOAD&PUSH 5)
+5     (CALL1&PUSH 2)                      ; $ADJOINT
+7     (CALL1 3)                           ; SIMPLIFY
+9     (STORE 3)
+10    (T)
+11    (BIND 4)                            ; $SCALARMATRIXP
+13    (LOAD&PUSH 6)
+14    (LOAD&PUSH 9)
+15    (CONST&PUSH 5)                      ; 1
+16    (CALL2&PUSH 6)                      ; $ROW
+18    (CALL1&PUSH 3)                      ; SIMPLIFY
+20    (LOAD&PUSH 8)
+21    (CONST&PUSH 5)                      ; 1
+22    (CALL2&PUSH 7)                      ; $COL
+24    (CALL1&PUSH 3)                      ; SIMPLIFY
+26    (CALL2&PUSH 8)                      ; NCMUL2
+28    (CALL2 9)                           ; DIV
+30    (UNBIND1)
+31    (SETVALUE 1)                        ; $ANS
+33    (CONST&PUSH 10)                     ; ($SCALARMATRIXP '$SCALARMATRIXP)
+34    (CALL1&PUSH 11)                     ; |TRD-MSYMEVAL-aux|
+36    (T&PUSH)
+37    (CALL2&JMPIFNOT 12 L46)             ; LIKE
+40    (LOAD&PUSH 5)
+41    (CALL1&PUSH 13)                     ; $LENGTH
+43    (JMPIFEQTO 5 L51)                   ; 1
+46    L46
+46    (GETVALUE 1)                        ; $ANS
+48    L48
+48    (UNBIND1)
+49    (SKIP&RET 3)
+51    L51
+51    (GETVALUE&PUSH 1)                   ; $ANS
+53    (CONST&PUSH 5)                      ; 1
+54    (CONST&PUSH 5)                      ; 1
+55    (CALL 3 14)                         ; MAREF1
+58    (JMP L48)
+
+
+Wrote file binary-clisp/invert.fas
+Wrote file /cygdrive/e/temp/maxima/src/invert.lis

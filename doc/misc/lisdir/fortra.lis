@@ -1,0 +1,965 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/fortra.lisp
+on 2002-12-17 13:35:44 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/fortra.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE FORTRA)-2|
+(CONST 0) = FORTRA
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FORTRA
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL LB RB ...) (*LEXPR FORTRAN-PRINT $FORTMX))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $FORTSPACES NIL ...)-4-1|
+(CONST 0) = $FORTSPACES
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FORTSPACES
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $FORTSPACES
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $FORTSPACES NIL ...)-4-2|
+(CONST 0) = (SPECIAL $FORTSPACES)
+(CONST 1) = $FORTSPACES
+(CONST 2) = VARIABLE
+(CONST 3) = "If T, Fortran card images are filled out to 80 columns using spaces."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $FORTSPACES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $FORTSPACES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $FORTSPACES
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $FORTSPACES
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "If T, Fortran card images are filled out to 80 columns using spaces."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $FORTSPACES
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $FORTINDENT 0 ...)-5-1|
+(CONST 0) = $FORTINDENT
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+(CONST 2) = 0
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FORTINDENT
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $FORTINDENT
+11    (LOAD&PUSH 1)
+12    (CONST&PUSH 2)                      ; 0
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $FORTINDENT 0 ...)-5-2|
+(CONST 0) = (SPECIAL $FORTINDENT)
+(CONST 1) = $FORTINDENT
+(CONST 2) = 0
+(CONST 3) = VARIABLE
+(CONST 4) = 
+"The number of spaces (beyond 6) to indent Fortran statements as they
+   are printed."
+(CONST 5) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $FORTINDENT)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $FORTINDENT
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $FORTINDENT
+8     (CONST&PUSH 2)                      ; 0
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $FORTINDENT
+12    (CONST&PUSH 3)                      ; VARIABLE
+13    (CONST&PUSH 4)                      ; "The number of spaces (beyond 6) to indent Fortran statements as they
+   are printed."
+14    (CALL 3 5)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $FORTINDENT
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $FORTFLOAT NIL ...)-6-1|
+(CONST 0) = $FORTFLOAT
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FORTFLOAT
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $FORTFLOAT
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $FORTFLOAT NIL ...)-6-2|
+(CONST 0) = (SPECIAL $FORTFLOAT)
+(CONST 1) = $FORTFLOAT
+(CONST 2) = VARIABLE
+(CONST 3) = "Something JPG is working on."
+(CONST 4) = SYSTEM::%SET-DOCUMENTATION
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+14 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $FORTFLOAT)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $FORTFLOAT
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $FORTFLOAT
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST&PUSH 1)                      ; $FORTFLOAT
+12    (CONST&PUSH 2)                      ; VARIABLE
+13    (CONST&PUSH 3)                      ; "Something JPG is working on."
+14    (CALL 3 4)                          ; SYSTEM::%SET-DOCUMENTATION
+17    (CONST 1)                           ; $FORTFLOAT
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMSPEC $FORTRAN (L) ...)-7-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $FORTRAN (L) ...)-7-2-1|>
+(CONST 1) = $FORTRAN
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $FORTRAN (L) ...)-7-2-1|>
+1     (CONST&PUSH 1)                      ; $FORTRAN
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $FORTRAN (L) ...)-7-2-1|
+(CONST 0) = L
+(CONST 1) = FEXPRCHECK
+(CONST 2) = STRMEVAL
+(CONST 3) = MSETQP
+(CONST 4) = (MEQUAL)
+(CONST 5) = MEVAL
+(CONST 6) = $MATRIXP
+(CONST 7) = $FORTMX
+(CONST 8) = MEQUAL
+(CONST 9) = FORTRAN-PRINT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (L)
+writes special variable : (L)
+60 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE&PUSH 0)                   ; L
+5     (CALL1 1)                           ; FEXPRCHECK
+7     (SETVALUE 0)                        ; L
+9     (PUSH)
+10    (CALL1&PUSH 2)                      ; STRMEVAL
+12    (GETVALUE&PUSH 0)                   ; L
+14    (CALL1&JMPIFNOT 3 L29)              ; MSETQP
+17    (CONST&PUSH 4)                      ; (MEQUAL)
+18    (GETVALUE 0)                        ; L
+20    (CDR)
+21    (CAR&PUSH)
+22    (GETVALUE&PUSH 0)                   ; L
+24    (CALL1&PUSH 5)                      ; MEVAL
+26    (LIST 3)
+28    (STORE 0)
+29    L29
+29    (GETVALUE&PUSH 0)                   ; L
+31    (CALLS2&JMPIFNOT 6 L38)             ; SYMBOLP
+34    (LOAD&PUSH 0)
+35    (CALL1&JMPIF 6 L72)                 ; $MATRIXP
+38    L38
+38    (LOAD 0)
+39    (JMPIFATOM L77)
+41    (LOAD 0)
+42    (CAR)
+43    (CAR&PUSH)
+44    (JMPIFNOTEQTO 8 L77)                ; MEQUAL
+47    (LOAD 0)
+48    (CDR)
+49    (CAR&PUSH)
+50    (CALLS2&JMPIFNOT 6 L77)             ; SYMBOLP
+53    (LOAD 0)
+54    (CDR)
+55    (CDR)
+56    (CAR&PUSH)
+57    (CALL1&JMPIFNOT 6 L77)              ; $MATRIXP
+60    (LOAD 0)
+61    (CDR)
+62    (CAR&PUSH)
+63    (LOAD 1)
+64    (CDR)
+65    (CDR)
+66    (CAR)
+67    L67
+67    (PUSH)
+68    (CALL2 7)                           ; $FORTMX
+70    (JMP L80)
+72    L72
+72    (GETVALUE&PUSH 0)                   ; L
+74    (LOAD 1)
+75    (JMP L67)
+77    L77
+77    (LOAD&PUSH 0)
+78    (CALL1 9)                           ; FORTRAN-PRINT
+80    L80
+80    (SKIP 1)
+82    (UNBIND1)
+83    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFPROP MEXPT (#\\* #\\*) ...)-8|
+(CONST 0) = MEXPT
+(CONST 1) = DISSYM
+(CONST 2) = (#\* #\*)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MEXPT
+1     (CONST&PUSH 1)                      ; DISSYM
+2     (CONST&PUSH 2)                      ; (#\* #\*)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN FORTRAN-PRINT (X &OPTIONAL # ...) ...)-9|
+(CONST 0) = FORTRAN-PRINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FORTRAN-PRINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FORTRAN-PRINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FORTRAN-PRINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FORTRAN-PRINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FORTRAN-PRINT
+8     (SKIP&RET 1)
+
+
+Disassembly of function FORTRAN-PRINT
+(CONST 0) = X
+(CONST 1) = *STANDARD-OUTPUT*
+(CONST 2) = #\(
+(CONST 3) = LB
+(CONST 4) = #\)
+(CONST 5) = RB
+(CONST 6) = FORTSCAN
+(CONST 7) = MEXPT
+(CONST 8) = GRIND
+(CONST 9) = MSIZE-INFIX
+(CONST 10) = MMINUS
+(CONST 11) = LBP
+(CONST 12) = 100
+(CONST 13) = MSETQ
+(CONST 14) = STRSYM
+(CONST 15) = (#\:)
+(CONST 16) = MSTRING
+(CONST 17) = MSZ-MEXPT
+(CONST 18) = 48
+(CONST 19) = C
+(CONST 20) = 6
+(CONST 21) = $FORTINDENT
+(CONST 22) = PRINT-SPACES
+(CONST 23) = 5
+(CONST 24) = TYO
+(CONST 25) = 72
+(CONST 26) = $FORTSPACES
+(CONST 27) = #\Space
+(CONST 28) = #\\
+(CONST 29) = 8
+(CONST 30) = 1
+(CONST 31) = 16
+(CONST 32) = 9
+(CONST 33) = $DONE
+1 required argument
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: ($FORTSPACES C $FORTINDENT X *STANDARD-OUTPUT*)
+writes special variables : (C X)
+126 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; X
+3     (JMPIFBOUNDP 4 L9)
+6     (GETVALUE 1)                        ; *STANDARD-OUTPUT*
+8     (STORE 4)
+9     L9
+9     (CONST 2)                           ; #\(
+10    (BIND 3)                            ; LB
+12    (CONST 4)                           ; #\)
+13    (BIND 5)                            ; RB
+15    (GETVALUE&PUSH 0)                   ; X
+17    (CALL1 6)                           ; FORTSCAN
+19    (SETVALUE 0)                        ; X
+21    (UNWIND-PROTECT-OPEN L30)
+23    (CONST&PUSH 7)                      ; MEXPT
+24    (CONST&PUSH 8)                      ; GRIND
+25    (CONST&PUSH 9)                      ; MSIZE-INFIX
+26    (CALLS2 136)                        ; SYSTEM::%PUT
+28    (VALUES0)
+29    (UNWIND-PROTECT-NORMAL-EXIT)
+30    L30
+30    (CONST&PUSH 10)                     ; MMINUS
+31    (CONST&PUSH 11)                     ; LBP
+32    (CONST&PUSH 12)                     ; 100
+33    (CALLS2 136)                        ; SYSTEM::%PUT
+35    (CONST&PUSH 13)                     ; MSETQ
+36    (CONST&PUSH 14)                     ; STRSYM
+37    (CONST&PUSH 15)                     ; (#\:)
+38    (CALLS2 136)                        ; SYSTEM::%PUT
+40    (GETVALUE&PUSH 0)                   ; X
+42    (CALL1 16)                          ; MSTRING
+44    (SETVALUE 0)                        ; X
+46    (CONST&PUSH 7)                      ; MEXPT
+47    (CONST&PUSH 8)                      ; GRIND
+48    (CONST&PUSH 17)                     ; MSZ-MEXPT
+49    (CALLS2 136)                        ; SYSTEM::%PUT
+51    (CONST&PUSH 10)                     ; MMINUS
+52    (CONST&PUSH 11)                     ; LBP
+53    (CALLS2 137)                        ; REMPROP
+55    (UNWIND-PROTECT-CLOSE)
+56    (CONST 18)                          ; 48
+57    (BIND 19)                           ; C
+59    (CONST&PUSH 20)                     ; 6
+60    (GETVALUE&PUSH 21)                  ; $FORTINDENT
+62    (CALLSR&PUSH 2 53)                  ; +
+65    (GETVALUE 0)                        ; X
+67    (JMPIFNOT L185)
+70    L70
+70    (GETVALUE&PUSH 19)                  ; C
+72    (CONST&PUSH 18)                     ; 48
+73    (CALLSR&JMPIF 1 45 L99)             ; =
+77    (CONST&PUSH 23)                     ; 5
+78    (LOAD&PUSH 15)
+79    (CALL2 22)                          ; PRINT-SPACES
+81    (GETVALUE&PUSH 19)                  ; C
+83    (CALLS1&PUSH 41)                    ; CODE-CHAR
+85    (LOAD&PUSH 15)
+86    (CALL2 24)                          ; TYO
+88    (LOAD&PUSH 0)
+89    (CONST&PUSH 20)                     ; 6
+90    (CALLSR 1 54)                       ; -
+93    L93
+93    (PUSH)
+94    (LOAD&PUSH 15)
+95    (CALL2 22)                          ; PRINT-SPACES
+97    (JMP L129)
+99    L99
+99    (LOAD 0)
+100   (JMP L93)
+102   L102
+102   (CONST&PUSH 27)                     ; #\Space
+103   (JMP L124)
+105   L105
+105   (GETVALUE 0)                        ; X
+107   (CAR&PUSH)
+108   (JMPIFNOTEQTO 28 L116)              ; #\\
+111   (GETVALUE 0)                        ; X
+113   (CDR)
+114   (SETVALUE 0)                        ; X
+116   L116
+116   (GETVALUE 0)                        ; X
+118   (CAR&PUSH)
+119   (GETVALUE 0)                        ; X
+121   (CDR)
+122   (SETVALUE 0)                        ; X
+124   L124
+124   (LOAD&PUSH 15)
+125   (CALL2 24)                          ; TYO
+127   (LOAD&INC&STORE 0)
+129   L129
+129   (LOAD&PUSH 0)
+130   (CONST&PUSH 25)                     ; 72
+131   (CALLSR&JMPIF 1 45 L143)            ; =
+135   (GETVALUE 0)                        ; X
+137   (JMPIF L105)
+139   (GETVALUE 26)                       ; $FORTSPACES
+141   (JMPIF L102)
+143   L143
+143   (GETVALUE 26)                       ; $FORTSPACES
+145   (JMPIFNOT L151)
+147   (CONST&PUSH 29)                     ; 8
+148   (LOAD&PUSH 15)
+149   (CALL2 22)                          ; PRINT-SPACES
+151   L151
+151   (LOAD&PUSH 14)
+152   (CALLS1 139)                        ; TERPRI
+154   (CONST&PUSH 30)                     ; 1
+156   (GETVALUE&PUSH 19)                  ; C
+158   (CONST&PUSH 18)                     ; 48
+159   (CALLSR&PUSH 1 54)                  ; -
+162   (CONST&PUSH 31)                     ; 16
+164   (CALLS2&PUSH 184)                   ; REM
+166   (CONST&PUSH 18)                     ; 48
+167   (CALLSR 3 53)                       ; +
+170   (SETVALUE 19)                       ; C
+172   (CONST&PUSH 32)                     ; 9
+174   (GETVALUE&PUSH 21)                  ; $FORTINDENT
+176   (CALLSR&STORE 2 53 0)               ; +
+180   (GETVALUE 0)                        ; X
+182   (JMPIF L70)
+185   L185
+185   (SKIP 1)
+187   (UNBIND1)
+188   (CONST 33)                          ; $DONE
+190   (UNBIND 3)
+192   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN PRINT-SPACES (N STREAM) ...)-10|
+(CONST 0) = PRINT-SPACES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PRINT-SPACES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PRINT-SPACES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PRINT-SPACES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PRINT-SPACES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PRINT-SPACES
+8     (SKIP&RET 1)
+
+
+Disassembly of function PRINT-SPACES
+(CONST 0) = N
+(CONST 1) = 0
+(CONST 2) = #\Space
+(CONST 3) = TYO
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (N)
+18 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; N
+3     (CONST&PUSH 1)                      ; 0
+4     (GETVALUE&PUSH 0)                   ; N
+6     (JMP L14)
+8     L8
+8     (CONST&PUSH 2)                      ; #\Space
+9     (LOAD&PUSH 7)
+10    (CALL2 3)                           ; TYO
+12    (LOAD&INC&STORE 1)
+14    L14
+14    (LOAD&PUSH 1)
+15    (LOAD&PUSH 1)
+16    (CALLSR&JMPIFNOT 1 50 L8)           ; >=
+20    (NIL)
+21    (SKIP 2)
+23    (UNBIND1)
+24    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN FORTSCAN (E) ...)-11|
+(CONST 0) = FORTSCAN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FORTSCAN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FORTSCAN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FORTSCAN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FORTSCAN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FORTSCAN
+8     (SKIP&RET 1)
+
+
+Disassembly of function FORTSCAN
+(CONST 0) = E
+(CONST 1) = $%I
+(CONST 2) = ((MPROGN) 0.0 1.0)
+(CONST 3) = MEXPT
+(CONST 4) = $%E
+(CONST 5) = ($EXP SIMP)
+(CONST 6) = |1//2|
+(CONST 7) = ALIKE1
+(CONST 8) = (%SQRT SIMP)
+(CONST 9) = |-1//2|
+(CONST 10) = (MQUOTIENT SIMP)
+(CONST 11) = 1
+(CONST 12) = (%SQRT SIMP)
+(CONST 13) = MTIMES
+(CONST 14) = RATNUMP
+(CONST 15) = (1 -1)
+(CONST 16) = ZL-MEMBER
+(CONST 17) = FORTSCAN-MTIMES
+(CONST 18) = (MMINUS SIMP)
+(CONST 19) = RAT
+(CONST 20) = (MQUOTIENT SIMP)
+(CONST 21) = 1.0
+(CONST 22) = MRAT
+(CONST 23) = RATDISREP
+(CONST 24) = (MTIMES MPLUS)
+(CONST 25) = MEMQ
+(CONST 26) = $BOTHCOEF
+(CONST 27) = SIMPLIFY
+(CONST 28) = A
+(CONST 29) = ZEROP1
+(CONST 30) = (MPROGN)
+(CONST 31) = FORTSCAN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (A |-1//2| |1//2| E)
+181 byte-code instructions:
+0     L0
+0     (LOAD 1)
+1     (BIND 0)                            ; E
+3     (GETVALUE 0)                        ; E
+5     (JMPIFATOM L52)
+7     (GETVALUE 0)                        ; E
+9     (CAR)
+10    (CAR&PUSH)
+11    (JMPIFNOTEQTO 3 L21)                ; MEXPT
+14    (GETVALUE 0)                        ; E
+16    (CDR)
+17    (CAR&PUSH)
+18    (JMPIFEQTO 4 L62)                   ; $%E
+21    L21
+21    (GETVALUE 0)                        ; E
+23    (CAR)
+24    (CAR&PUSH)
+25    (JMPIFNOTEQTO 3 L90)                ; MEXPT
+28    (GETVALUE 0)                        ; E
+30    (CDR)
+31    (CDR)
+32    (CAR&PUSH)
+33    (GETVALUE&PUSH 6)                   ; |1//2|
+35    (CALL2&JMPIFNOT 7 L90)              ; ALIKE1
+38    (CONST&PUSH 8)                      ; (%SQRT SIMP)
+39    (GETVALUE 0)                        ; E
+41    L41
+41    (CDR)
+42    (CAR&PUSH)
+43    (JSR L0)
+45    (JMP L145)
+48    L48
+48    (CONST 2)                           ; ((MPROGN) 0.0 1.0)
+49    (JMP L272)
+52    L52
+52    (GETVALUE&PUSH 0)                   ; E
+54    (JMPIFEQTO 1 L48)                   ; $%I
+57    (GETVALUE 0)                        ; E
+59    (JMP L272)
+62    L62
+62    (CONST&PUSH 5)                      ; ($EXP SIMP)
+63    (GETVALUE 0)                        ; E
+65    (CDR)
+66    (JMP L41)
+68    L68
+68    (CONST&PUSH 10)                     ; (MQUOTIENT SIMP)
+69    (CONST&PUSH 11)                     ; 1
+70    (CONST&PUSH 12)                     ; (%SQRT SIMP)
+71    (GETVALUE 0)                        ; E
+73    (CDR)
+74    (CAR&PUSH)
+75    (JSR&PUSH L0)
+78    (LIST 2)
+80    (JMP L174)
+83    L83
+83    (GETVALUE&PUSH 0)                   ; E
+85    (CALL1 17)                          ; FORTSCAN-MTIMES
+87    (JMP L272)
+90    L90
+90    (GETVALUE 0)                        ; E
+92    (CAR)
+93    (CAR&PUSH)
+94    (JMPIFNOTEQTO 3 L107)               ; MEXPT
+97    (GETVALUE 0)                        ; E
+99    (CDR)
+100   (CDR)
+101   (CAR&PUSH)
+102   (GETVALUE&PUSH 9)                   ; |-1//2|
+104   (CALL2&JMPIF 7 L68)                 ; ALIKE1
+107   L107
+107   (GETVALUE 0)                        ; E
+109   (CAR)
+110   (CAR&PUSH)
+111   (JMPIFNOTEQTO 13 L151)              ; MTIMES
+114   (GETVALUE 0)                        ; E
+116   (CDR)
+117   (CAR&PUSH)
+118   (CALL1&JMPIFNOT 14 L151)            ; RATNUMP
+121   (GETVALUE 0)                        ; E
+123   (CDR)
+124   (CAR)
+125   (CDR)
+126   (CAR&PUSH)
+127   (CONST&PUSH 15)                     ; (1 -1)
+128   (CALL2&JMPIFNOT 16 L151)            ; ZL-MEMBER
+131   (GETVALUE 0)                        ; E
+133   (CDR)
+134   (CAR)
+135   (CDR)
+136   (CAR&PUSH)
+137   (JMPIFEQTO 11 L83)                  ; 1
+140   (CONST&PUSH 18)                     ; (MMINUS SIMP)
+141   (GETVALUE&PUSH 0)                   ; E
+143   (CALL1 17)                          ; FORTSCAN-MTIMES
+145   L145
+145   (PUSH)
+146   (LIST 2)
+148   (JMP L272)
+151   L151
+151   (GETVALUE 0)                        ; E
+153   (CAR)
+154   (CAR&PUSH)
+155   (JMPIFNOTEQTO 19 L208)              ; RAT
+158   (CONST&PUSH 20)                     ; (MQUOTIENT SIMP)
+159   (GETVALUE 0)                        ; E
+161   (CDR)
+162   (CAR&PUSH)
+163   (CONST&PUSH 21)                     ; 1.0
+164   (CALLS2&PUSH 174)                   ; COMMON-LISP:FLOAT
+166   (GETVALUE 0)                        ; E
+168   (CDR)
+169   (CDR)
+170   (CAR&PUSH)
+171   (CONST&PUSH 21)                     ; 1.0
+172   (CALLS2 174)                        ; COMMON-LISP:FLOAT
+174   L174
+174   (PUSH)
+175   (LIST 3)
+177   (JMP L272)
+180   L180
+180   (GETVALUE&PUSH 0)                   ; E
+182   (CALL1&PUSH 23)                     ; RATDISREP
+184   (JSR L0)
+187   (JMP L272)
+190   L190
+190   (CONST&PUSH 30)                     ; (MPROGN)
+192   (GETVALUE 28)                       ; A
+194   (CDR)
+195   (CDR)
+196   (CAR&PUSH)
+197   (GETVALUE 28)                       ; A
+199   (CDR)
+200   (CAR&PUSH)
+201   (LIST 3)
+203   (UNBIND1)
+204   (VALUES1)
+205   (JMP L272)
+208   L208
+208   (GETVALUE 0)                        ; E
+210   (CAR)
+211   (CAR&PUSH)
+212   (JMPIFEQTO 22 L180)                 ; MRAT
+215   (GETVALUE 0)                        ; E
+217   (CAR)
+218   (CAR&PUSH)
+219   (CONST&PUSH 24)                     ; (MTIMES MPLUS)
+220   (CALL2&JMPIFNOT 25 L260)            ; MEMQ
+223   (GETVALUE&PUSH 0)                   ; E
+225   (CONST&PUSH 1)                      ; $%I
+226   (CALL2&PUSH 26)                     ; $BOTHCOEF
+228   (CALL1 27)                          ; SIMPLIFY
+230   (BIND 28)                           ; A
+232   (GETVALUE 28)                       ; A
+234   (CDR)
+235   (CAR&PUSH)
+236   (CALLS2&JMPIFNOT 8 L257)            ; NUMBERP
+239   (GETVALUE 28)                       ; A
+241   (CDR)
+242   (CDR)
+243   (CAR&PUSH)
+244   (CALLS2&JMPIFNOT 8 L257)            ; NUMBERP
+247   (GETVALUE 28)                       ; A
+249   (CDR)
+250   (CAR&PUSH)
+251   (CALL1 29)                          ; ZEROP1
+253   (NOT)
+254   (JMPIF L190)
+257   L257
+257   (UNBIND1)
+258   (JMPIF1 L272)
+260   L260
+260   (GETVALUE 0)                        ; E
+262   (CAR&PUSH)
+263   (CONST&PUSH 31)                     ; FORTSCAN
+265   (GETVALUE 0)                        ; E
+267   (CDR&PUSH)
+268   (CALLSR 0 22)                       ; MAPCAR
+271   (CONS)
+272   L272
+272   (UNBIND1)
+273   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FORTSCAN-MTIMES (E) ...)-12|
+(CONST 0) = FORTSCAN-MTIMES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FORTSCAN-MTIMES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FORTSCAN-MTIMES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FORTSCAN-MTIMES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FORTSCAN-MTIMES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FORTSCAN-MTIMES
+8     (SKIP&RET 1)
+
+
+Disassembly of function FORTSCAN-MTIMES
+(CONST 0) = E
+(CONST 1) = (MQUOTIENT SIMP)
+(CONST 2) = FORTSCAN
+(CONST 3) = 1.0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (E)
+36 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; E
+3     (CONST&PUSH 1)                      ; (MQUOTIENT SIMP)
+4     (GETVALUE 0)                        ; E
+6     (CDR)
+7     (CDR)
+8     (CDR)
+9     (JMPIFNOT L39)
+11    (GETVALUE 0)                        ; E
+13    (CAR&PUSH)
+14    (CONST&PUSH 2)                      ; FORTSCAN
+15    (GETVALUE 0)                        ; E
+17    (CDR)
+18    (CDR&PUSH)
+19    (CALLSR 0 22)                       ; MAPCAR
+22    (CONS)
+23    L23
+23    (PUSH)
+24    (GETVALUE 0)                        ; E
+26    (CDR)
+27    (CAR)
+28    (CDR)
+29    (CDR)
+30    (CAR&PUSH)
+31    (CONST&PUSH 3)                      ; 1.0
+32    (CALLS2&PUSH 174)                   ; COMMON-LISP:FLOAT
+34    (LIST 3)
+36    (UNBIND1)
+37    (SKIP&RET 2)
+39    L39
+39    (GETVALUE 0)                        ; E
+41    (CDR)
+42    (CDR)
+43    (CAR&PUSH)
+44    (CALL1 2)                           ; FORTSCAN
+46    (JMP L23)
+
+
+Disassembly of function #:|(DEFMFUN $FORTMX (NAME MAT &OPTIONAL ...) ...)-13|
+(CONST 0) = $FORTMX
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FORTMX>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FORTMX
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FORTMX
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FORTMX>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FORTMX
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FORTMX
+(CONST 0) = NAME
+(CONST 1) = *STANDARD-OUTPUT*
+(CONST 2) = $LOADPRINT
+(CONST 3) = "~%First argument to FORTMX must be a symbol."
+(CONST 4) = MERROR
+(CONST 5) = $MATRIXP
+(CONST 6) = "Second argument to FORTMX not a matrix: ~M"
+(CONST 7) = 1
+(CONST 8) = M
+(CONST 9) = J
+(CONST 10) = (MEQUAL)
+(CONST 11) = FORTRAN-PRINT
+(CONST 12) = $DONE
+2 required arguments
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variables: (J M NAME *STANDARD-OUTPUT*)
+writes special variables : (J M)
+62 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; NAME
+3     (JMPIFBOUNDP 4 L9)
+6     (GETVALUE 1)                        ; *STANDARD-OUTPUT*
+8     (STORE 4)
+9     L9
+9     (NIL)
+10    (BIND 2)                            ; $LOADPRINT
+12    (GETVALUE&PUSH 0)                   ; NAME
+14    (CALLS2&JMPIFNOT 6 L93)             ; SYMBOLP
+18    (LOAD&PUSH 8)
+19    (CALL1&JMPIF 5 L26)                 ; $MATRIXP
+22    (CONST&PUSH 6)                      ; "Second argument to FORTMX not a matrix: ~M"
+23    (LOAD&PUSH 9)
+24    (CALL2 4)                           ; MERROR
+26    L26
+26    (LOAD&CDR&PUSH 8)
+28    (CONST&PUSH 7)                      ; 1
+29    (LOAD&JMPIFNOT 1 L86)
+32    L32
+32    (LOAD 1)
+33    (CAR)
+34    (CDR)
+35    (BIND 8)                            ; M
+37    (CONST 7)                           ; 1
+38    (BIND 9)                            ; J
+40    (GETVALUE 8)                        ; M
+42    (JMPIFNOT L77)
+44    L44
+44    (CONST&PUSH 10)                     ; (MEQUAL)
+45    (GETVALUE&PUSH 0)                   ; NAME
+47    (LIST&PUSH 1)
+49    (LOAD&PUSH 8)
+50    (GETVALUE&PUSH 9)                   ; J
+52    (LIST&PUSH 3)
+54    (GETVALUE 8)                        ; M
+56    (CAR&PUSH)
+57    (LIST&PUSH 3)
+59    (LOAD&PUSH 16)
+60    (CALL2 11)                          ; FORTRAN-PRINT
+62    (GETVALUE 8)                        ; M
+64    (CDR)
+65    (SETVALUE 8)                        ; M
+67    (GETVALUE&PUSH 9)                   ; J
+69    (CALLS2 150)                        ; 1+
+71    (SETVALUE 9)                        ; J
+73    (GETVALUE 8)                        ; M
+75    (JMPIF L44)
+77    L77
+77    (UNBIND 2)
+79    (LOAD&CDR&STORE 1)
+81    (LOAD&INC&STORE 0)
+83    (LOAD&JMPIF 1 L32)
+86    L86
+86    (SKIP 2)
+88    (CONST 12)                          ; $DONE
+89    (UNBIND 2)
+91    (SKIP&RET 4)
+93    L93
+93    (CONST&PUSH 3)                      ; "~%First argument to FORTMX must be a symbol."
+94    (CALL1 4)                           ; MERROR
+96    (JMP L26)
+
+
+Wrote file binary-clisp/fortra.fas
+Wrote file /cygdrive/e/temp/maxima/src/fortra.lis

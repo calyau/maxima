@@ -1,0 +1,300 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/tlimit.lisp
+on 2002-12-17 13:35:21 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/tlimit.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE TLIMIT)-2|
+(CONST 0) = TLIMIT
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TLIMIT
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(LOAD-MACSYMA-MACROS RZMAC)-3|
+(CONST 0) = COMMENT
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (CONST 0)                           ; COMMENT
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (GENPREFIX TL) (*LEXPR $LIMIT) ...)-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $TLIMIT NARGS ...)-5|
+(CONST 0) = $TLIMIT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TLIMIT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TLIMIT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TLIMIT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TLIMIT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TLIMIT
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TLIMIT
+(CONST 0) = $TLIMSWITCH
+(CONST 1) = $LIMIT
+(CONST 2) = LISTIFY1
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (T)
+4     (BIND 0)                            ; $TLIMSWITCH
+6     (CONST&PUSH 1)                      ; $LIMIT
+7     (LOAD&PUSH 4)
+8     (LOAD&PUSH 7)
+9     (CALL2 2)                           ; LISTIFY1
+11    (APPLY 0)
+13    (UNBIND1)
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN $TLDEFINT (EXP VAR LL ...) ...)-6|
+(CONST 0) = $TLDEFINT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $TLDEFINT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $TLDEFINT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $TLDEFINT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $TLDEFINT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $TLDEFINT
+8     (SKIP&RET 1)
+
+
+Disassembly of function $TLDEFINT
+(CONST 0) = EXP
+(CONST 1) = VAR
+(CONST 2) = LL
+(CONST 3) = UL
+(CONST 4) = $TLIMSWITCH
+(CONST 5) = $LDEFINT
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (UL LL VAR EXP)
+17 byte-code instructions:
+0     (LOAD 4)
+1     (BIND 0)                            ; EXP
+3     (LOAD 6)
+4     (BIND 1)                            ; VAR
+6     (LOAD 8)
+7     (BIND 2)                            ; LL
+9     (LOAD 10)
+10    (BIND 3)                            ; UL
+12    (T)
+13    (BIND 4)                            ; $TLIMSWITCH
+15    (GETVALUE&PUSH 0)                   ; EXP
+17    (GETVALUE&PUSH 1)                   ; VAR
+19    (GETVALUE&PUSH 2)                   ; LL
+21    (GETVALUE&PUSH 3)                   ; UL
+23    (CALL 4 5)                          ; $LDEFINT
+26    (UNBIND 5)
+28    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFUN TLIMP (EXP) ...)-7|
+(CONST 0) = TLIMP
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TLIMP>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TLIMP
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TLIMP
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TLIMP>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TLIMP
+8     (SKIP&RET 1)
+
+
+Disassembly of function TLIMP
+(CONST 0) = EXP
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; EXP
+3     (T)
+4     (UNBIND1)
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN TAYLIM (E *I*) ...)-8|
+(CONST 0) = TAYLIM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE TAYLIM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; TAYLIM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; TAYLIM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE TAYLIM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; TAYLIM
+8     (SKIP&RET 1)
+
+
+Disassembly of function TAYLIM
+(CONST 0) = E
+(CONST 1) = *I*
+(CONST 2) = TAYLOR-CATCH
+(CONST 3) = SILENT-TAYLOR-FLAG
+(CONST 4) = VAR
+(CONST 5) = VAL
+(CONST 6) = RIDOFAB
+(CONST 7) = 1
+(CONST 8) = $TAYLOR
+(CONST 9) = LIMIT1
+(CONST 10) = THINK
+(CONST 11) = EXP
+(CONST 12) = (MTIMES MEXPT)
+(CONST 13) = MEMQ
+(CONST 14) = SIMPLIMIT
+(CONST 15) = TAYLORED
+(CONST 16) = $RATDISREP
+(CONST 17) = $LOGCONTRACT
+(CONST 18) = SIMPLIFY
+(CONST 19) = LIMIT
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (EXP *I* VAL VAR E)
+63 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; E
+3     (LOAD 4)
+4     (BIND 1)                            ; *I*
+6     (NIL&PUSH)
+7     (CONST 2)                           ; TAYLOR-CATCH
+8     (CATCH-OPEN L55)
+10    (T)
+11    (BIND 3)                            ; SILENT-TAYLOR-FLAG
+13    (GETVALUE&PUSH 0)                   ; E
+15    (GETVALUE&PUSH 4)                   ; VAR
+17    (GETVALUE&PUSH 5)                   ; VAL
+19    (CALL1&PUSH 6)                      ; RIDOFAB
+21    (CONST&PUSH 7)                      ; 1
+22    (CALL 4 8)                          ; $TAYLOR
+25    (UNBIND1)
+26    (CATCH-CLOSE)
+27    (STORE 0)
+28    (JMPIFNOT L58)
+30    L30
+30    (T)
+31    (BIND 15)                           ; TAYLORED
+33    (LOAD&PUSH 3)
+34    (CALL1&PUSH 16)                     ; $RATDISREP
+36    (CALL1&PUSH 17)                     ; $LOGCONTRACT
+38    (CALL1&PUSH 18)                     ; SIMPLIFY
+40    (GETVALUE&PUSH 4)                   ; VAR
+42    (GETVALUE&PUSH 5)                   ; VAL
+44    (CONST&PUSH 10)                     ; THINK
+45    (CALL 4 19)                         ; LIMIT
+48    (UNBIND1)
+49    (SKIP 1)
+51    L51
+51    (UNBIND 2)
+53    (SKIP&RET 3)
+55    L55
+55    (STORE 0)
+56    (JMPIF L30)
+58    L58
+58    (GETVALUE&PUSH 1)                   ; *I*
+60    (T)
+61    (JMPIFEQ L76)
+63    (GETVALUE&PUSH 1)                   ; *I*
+65    (JMPIFNOTEQTO 10 L89)               ; THINK
+68    (GETVALUE 11)                       ; EXP
+70    (CAR)
+71    (CAR&PUSH)
+72    (CONST&PUSH 12)                     ; (MTIMES MEXPT)
+73    (CALL2&JMPIFNOT 13 L89)             ; MEMQ
+76    L76
+76    (GETVALUE&PUSH 0)                   ; E
+78    (GETVALUE&PUSH 4)                   ; VAR
+80    (GETVALUE&PUSH 5)                   ; VAL
+82    (CALL 3 9)                          ; LIMIT1
+85    (SKIP 1)
+87    (JMP L51)
+89    L89
+89    (GETVALUE&PUSH 0)                   ; E
+91    (GETVALUE&PUSH 4)                   ; VAR
+93    (GETVALUE&PUSH 5)                   ; VAL
+95    (CALL 3 14)                         ; SIMPLIMIT
+98    (SKIP 1)
+100   (JMP L51)
+
+
+Disassembly of function #:|(DECLARE-TOP (UNSPECIAL TAYLORED EXP ...))-9|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/tlimit.fas
+Wrote file /cygdrive/e/temp/maxima/src/tlimit.lis

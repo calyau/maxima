@@ -1,0 +1,1471 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/ar.lisp
+on 2002-12-17 13:32:08 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/ar.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE AR)-2|
+(CONST 0) = AR
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; AR
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL EVARRP MUNBOUND ...))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFSTRUCT (MGENARRAY # #) AREF ...)-4|
+(CONST 0) = MGENARRAY
+(CONST 1) = STRUCTURE-OBJECT
+(CONST 2) = SYSTEM::DEFSTRUCT-DESCRIPTION
+(CONST 3) = 0
+(CONST 4) = MAKE-MGENARRAY
+(CONST 5) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 6) = #<COMPILED-CLOSURE MAKE-MGENARRAY>
+(CONST 7) = VECTOR
+(CONST 8) = 
+(#(AREF (:AREF) 0 (NIL) NIL T NIL) #(ASET (:ASET) 1 (NIL) NIL T NIL)
+ #(TYPE (:TYPE) 2 (NIL) NIL T NIL) #(NULL (:NULL) 3 (NIL) NIL T NIL)
+ #(GENERATOR (:GENERATOR) 4 (NIL) NIL T NIL)
+ #(CONTENT (:CONTENT) 5 (NIL) NIL T NIL))
+(CONST 9) = COPY-MGENARRAY
+(CONST 10) = #<COMPILED-CLOSURE COPY-MGENARRAY>
+(CONST 11) = (FUNCTION MGENARRAY-AREF (MGENARRAY) T)
+(CONST 12) = (INLINE MGENARRAY-AREF)
+(CONST 13) = MGENARRAY-AREF
+(CONST 14) = SYSTEM::INLINE-EXPANSION
+(CONST 15) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN MGENARRAY-AREF))
+ (BLOCK MGENARRAY-AREF (THE T (SVREF SYSTEM::OBJECT 0))))
+(CONST 16) = #<COMPILED-CLOSURE MGENARRAY-AREF>
+(CONST 17) = SYSTEM::DEFSTRUCT-READER
+(CONST 18) = (FUNCTION MGENARRAY-ASET (MGENARRAY) T)
+(CONST 19) = (INLINE MGENARRAY-ASET)
+(CONST 20) = MGENARRAY-ASET
+(CONST 21) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN MGENARRAY-ASET))
+ (BLOCK MGENARRAY-ASET (THE T (SVREF SYSTEM::OBJECT 1))))
+(CONST 22) = #<COMPILED-CLOSURE MGENARRAY-ASET>
+(CONST 23) = (FUNCTION MGENARRAY-TYPE (MGENARRAY) T)
+(CONST 24) = (INLINE MGENARRAY-TYPE)
+(CONST 25) = MGENARRAY-TYPE
+(CONST 26) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN MGENARRAY-TYPE))
+ (BLOCK MGENARRAY-TYPE (THE T (SVREF SYSTEM::OBJECT 2))))
+(CONST 27) = #<COMPILED-CLOSURE MGENARRAY-TYPE>
+(CONST 28) = (FUNCTION MGENARRAY-NULL (MGENARRAY) T)
+(CONST 29) = (INLINE MGENARRAY-NULL)
+(CONST 30) = MGENARRAY-NULL
+(CONST 31) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN MGENARRAY-NULL))
+ (BLOCK MGENARRAY-NULL (THE T (SVREF SYSTEM::OBJECT 3))))
+(CONST 32) = #<COMPILED-CLOSURE MGENARRAY-NULL>
+(CONST 33) = (FUNCTION MGENARRAY-GENERATOR (MGENARRAY) T)
+(CONST 34) = (INLINE MGENARRAY-GENERATOR)
+(CONST 35) = MGENARRAY-GENERATOR
+(CONST 36) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN MGENARRAY-GENERATOR))
+ (BLOCK MGENARRAY-GENERATOR (THE T (SVREF SYSTEM::OBJECT 4))))
+(CONST 37) = #<COMPILED-CLOSURE MGENARRAY-GENERATOR>
+(CONST 38) = (FUNCTION MGENARRAY-CONTENT (MGENARRAY) T)
+(CONST 39) = (INLINE MGENARRAY-CONTENT)
+(CONST 40) = MGENARRAY-CONTENT
+(CONST 41) = 
+((SYSTEM::OBJECT) (DECLARE (SYSTEM::IN-DEFUN MGENARRAY-CONTENT))
+ (BLOCK MGENARRAY-CONTENT (THE T (SVREF SYSTEM::OBJECT 5))))
+(CONST 42) = #<COMPILED-CLOSURE MGENARRAY-CONTENT>
+(CONST 43) = SYSTEM::DEFSTRUCT-WRITER
+(CONST 44) = SYSTEM::SETF-EXPANDER
+(CONST 45) = -1
+(CONST 46) = 1
+(CONST 47) = #<COMPILED-CLOSURE SETF-MGENARRAY-AREF>
+(CONST 48) = SETF
+(CONST 49) = SYSTEM::%SET-DOCUMENTATION
+(CONST 50) = #<COMPILED-CLOSURE SETF-MGENARRAY-ASET>
+(CONST 51) = #<COMPILED-CLOSURE SETF-MGENARRAY-TYPE>
+(CONST 52) = #<COMPILED-CLOSURE SETF-MGENARRAY-NULL>
+(CONST 53) = #<COMPILED-CLOSURE SETF-MGENARRAY-GENERATOR>
+(CONST 54) = #<COMPILED-CLOSURE SETF-MGENARRAY-CONTENT>
+(CONST 55) = STRUCTURE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+243 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MGENARRAY
+1     (CONST&PUSH 1)                      ; STRUCTURE-OBJECT
+2     (CONST&PUSH 2)                      ; SYSTEM::DEFSTRUCT-DESCRIPTION
+3     (PUSH-UNBOUND 1)
+5     (CALLS2&PUSH 132)                   ; GET
+7     (CONST 3)                           ; 0
+8     (SVREF)
+9     (CONS&PUSH)
+10    (CONST&PUSH 4)                      ; MAKE-MGENARRAY
+11    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+13    (CONST&PUSH 4)                      ; MAKE-MGENARRAY
+14    (CONST&PUSH 6)                      ; #<COMPILED-CLOSURE MAKE-MGENARRAY>
+15    (CALLS2 130)                        ; SYSTEM::%PUTD
+17    (CONST&PUSH 0)                      ; MGENARRAY
+18    (CONST&PUSH 2)                      ; SYSTEM::DEFSTRUCT-DESCRIPTION
+19    (LOAD&PUSH 2)
+20    (CONST&PUSH 7)                      ; VECTOR
+21    (CONST&PUSH 4)                      ; MAKE-MGENARRAY
+22    (CONST&PUSH 8)                      ; (#(AREF # ...) #(ASET # ...) ...)
+23    (CALLSR&PUSH 4 0)                   ; VECTOR
+26    (CALLS2 136)                        ; SYSTEM::%PUT
+28    (SKIP 1)
+30    (CONST&PUSH 9)                      ; COPY-MGENARRAY
+31    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+33    (CONST&PUSH 9)                      ; COPY-MGENARRAY
+34    (CONST&PUSH 10)                     ; #<COMPILED-CLOSURE COPY-MGENARRAY>
+35    (CALLS2 130)                        ; SYSTEM::%PUTD
+37    (CONST&PUSH 11)                     ; (FUNCTION MGENARRAY-AREF ...)
+38    (CALLS1 90)                         ; PROCLAIM
+40    (CONST&PUSH 12)                     ; (INLINE MGENARRAY-AREF)
+41    (CALLS1 90)                         ; PROCLAIM
+43    (CONST&PUSH 13)                     ; MGENARRAY-AREF
+44    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+46    (CONST&PUSH 13)                     ; MGENARRAY-AREF
+47    (CONST&PUSH 14)                     ; SYSTEM::INLINE-EXPANSION
+48    (CONST&PUSH 15)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+49    (CALLS2 136)                        ; SYSTEM::%PUT
+51    (CONST&PUSH 13)                     ; MGENARRAY-AREF
+52    (CONST&PUSH 16)                     ; #<COMPILED-CLOSURE MGENARRAY-AREF>
+53    (CALLS2 130)                        ; SYSTEM::%PUTD
+55    (CONST&PUSH 13)                     ; MGENARRAY-AREF
+56    (CONST&PUSH 17)                     ; SYSTEM::DEFSTRUCT-READER
+57    (CONST&PUSH 0)                      ; MGENARRAY
+58    (CALLS2 136)                        ; SYSTEM::%PUT
+60    (CONST&PUSH 18)                     ; (FUNCTION MGENARRAY-ASET ...)
+61    (CALLS1 90)                         ; PROCLAIM
+63    (CONST&PUSH 19)                     ; (INLINE MGENARRAY-ASET)
+64    (CALLS1 90)                         ; PROCLAIM
+66    (CONST&PUSH 20)                     ; MGENARRAY-ASET
+67    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+69    (CONST&PUSH 20)                     ; MGENARRAY-ASET
+70    (CONST&PUSH 14)                     ; SYSTEM::INLINE-EXPANSION
+71    (CONST&PUSH 21)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+72    (CALLS2 136)                        ; SYSTEM::%PUT
+74    (CONST&PUSH 20)                     ; MGENARRAY-ASET
+75    (CONST&PUSH 22)                     ; #<COMPILED-CLOSURE MGENARRAY-ASET>
+76    (CALLS2 130)                        ; SYSTEM::%PUTD
+78    (CONST&PUSH 20)                     ; MGENARRAY-ASET
+79    (CONST&PUSH 17)                     ; SYSTEM::DEFSTRUCT-READER
+80    (CONST&PUSH 0)                      ; MGENARRAY
+81    (CALLS2 136)                        ; SYSTEM::%PUT
+83    (CONST&PUSH 23)                     ; (FUNCTION MGENARRAY-TYPE ...)
+84    (CALLS1 90)                         ; PROCLAIM
+86    (CONST&PUSH 24)                     ; (INLINE MGENARRAY-TYPE)
+87    (CALLS1 90)                         ; PROCLAIM
+89    (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+90    (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+92    (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+93    (CONST&PUSH 14)                     ; SYSTEM::INLINE-EXPANSION
+94    (CONST&PUSH 26)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+95    (CALLS2 136)                        ; SYSTEM::%PUT
+97    (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+98    (CONST&PUSH 27)                     ; #<COMPILED-CLOSURE MGENARRAY-TYPE>
+99    (CALLS2 130)                        ; SYSTEM::%PUTD
+101   (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+102   (CONST&PUSH 17)                     ; SYSTEM::DEFSTRUCT-READER
+103   (CONST&PUSH 0)                      ; MGENARRAY
+104   (CALLS2 136)                        ; SYSTEM::%PUT
+106   (CONST&PUSH 28)                     ; (FUNCTION MGENARRAY-NULL ...)
+107   (CALLS1 90)                         ; PROCLAIM
+109   (CONST&PUSH 29)                     ; (INLINE MGENARRAY-NULL)
+110   (CALLS1 90)                         ; PROCLAIM
+112   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+114   (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+116   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+118   (CONST&PUSH 14)                     ; SYSTEM::INLINE-EXPANSION
+119   (CONST&PUSH 31)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+121   (CALLS2 136)                        ; SYSTEM::%PUT
+123   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+125   (CONST&PUSH 32)                     ; #<COMPILED-CLOSURE MGENARRAY-NULL>
+127   (CALLS2 130)                        ; SYSTEM::%PUTD
+129   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+131   (CONST&PUSH 17)                     ; SYSTEM::DEFSTRUCT-READER
+132   (CONST&PUSH 0)                      ; MGENARRAY
+133   (CALLS2 136)                        ; SYSTEM::%PUT
+135   (CONST&PUSH 33)                     ; (FUNCTION MGENARRAY-GENERATOR ...)
+137   (CALLS1 90)                         ; PROCLAIM
+139   (CONST&PUSH 34)                     ; (INLINE MGENARRAY-GENERATOR)
+141   (CALLS1 90)                         ; PROCLAIM
+143   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+145   (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+147   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+149   (CONST&PUSH 14)                     ; SYSTEM::INLINE-EXPANSION
+150   (CONST&PUSH 36)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+152   (CALLS2 136)                        ; SYSTEM::%PUT
+154   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+156   (CONST&PUSH 37)                     ; #<COMPILED-CLOSURE MGENARRAY-GENERATOR>
+158   (CALLS2 130)                        ; SYSTEM::%PUTD
+160   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+162   (CONST&PUSH 17)                     ; SYSTEM::DEFSTRUCT-READER
+163   (CONST&PUSH 0)                      ; MGENARRAY
+164   (CALLS2 136)                        ; SYSTEM::%PUT
+166   (CONST&PUSH 38)                     ; (FUNCTION MGENARRAY-CONTENT ...)
+168   (CALLS1 90)                         ; PROCLAIM
+170   (CONST&PUSH 39)                     ; (INLINE MGENARRAY-CONTENT)
+172   (CALLS1 90)                         ; PROCLAIM
+174   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+176   (CALL1 5)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+178   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+180   (CONST&PUSH 14)                     ; SYSTEM::INLINE-EXPANSION
+181   (CONST&PUSH 41)                     ; ((SYSTEM::OBJECT) (DECLARE #) ...)
+183   (CALLS2 136)                        ; SYSTEM::%PUT
+185   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+187   (CONST&PUSH 42)                     ; #<COMPILED-CLOSURE MGENARRAY-CONTENT>
+189   (CALLS2 130)                        ; SYSTEM::%PUTD
+191   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+193   (CONST&PUSH 17)                     ; SYSTEM::DEFSTRUCT-READER
+194   (CONST&PUSH 0)                      ; MGENARRAY
+195   (CALLS2 136)                        ; SYSTEM::%PUT
+197   (CONST&PUSH 13)                     ; MGENARRAY-AREF
+198   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+200   (CALLS2 137)                        ; REMPROP
+202   (CONST&PUSH 13)                     ; MGENARRAY-AREF
+203   (CONST&PUSH 44)                     ; SYSTEM::SETF-EXPANDER
+205   (CONST&PUSH 45)                     ; -1
+207   (CONST&PUSH 46)                     ; 1
+209   (CONST 47)                          ; #<COMPILED-CLOSURE SETF-MGENARRAY-AREF>
+211   (LIST*&PUSH 2)
+213   (CALLS2 136)                        ; SYSTEM::%PUT
+215   (CONST&PUSH 13)                     ; MGENARRAY-AREF
+216   (CONST&PUSH 48)                     ; SETF
+218   (NIL&PUSH)
+219   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+222   (CONST&PUSH 13)                     ; MGENARRAY-AREF
+223   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+225   (CONST&PUSH 0)                      ; MGENARRAY
+226   (CALLS2 136)                        ; SYSTEM::%PUT
+228   (CONST&PUSH 20)                     ; MGENARRAY-ASET
+229   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+231   (CALLS2 137)                        ; REMPROP
+233   (CONST&PUSH 20)                     ; MGENARRAY-ASET
+234   (CONST&PUSH 44)                     ; SYSTEM::SETF-EXPANDER
+236   (CONST&PUSH 45)                     ; -1
+238   (CONST&PUSH 46)                     ; 1
+240   (CONST 50)                          ; #<COMPILED-CLOSURE SETF-MGENARRAY-ASET>
+242   (LIST*&PUSH 2)
+244   (CALLS2 136)                        ; SYSTEM::%PUT
+246   (CONST&PUSH 20)                     ; MGENARRAY-ASET
+247   (CONST&PUSH 48)                     ; SETF
+249   (NIL&PUSH)
+250   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+253   (CONST&PUSH 20)                     ; MGENARRAY-ASET
+254   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+256   (CONST&PUSH 0)                      ; MGENARRAY
+257   (CALLS2 136)                        ; SYSTEM::%PUT
+259   (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+260   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+262   (CALLS2 137)                        ; REMPROP
+264   (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+265   (CONST&PUSH 44)                     ; SYSTEM::SETF-EXPANDER
+267   (CONST&PUSH 45)                     ; -1
+269   (CONST&PUSH 46)                     ; 1
+271   (CONST 51)                          ; #<COMPILED-CLOSURE SETF-MGENARRAY-TYPE>
+273   (LIST*&PUSH 2)
+275   (CALLS2 136)                        ; SYSTEM::%PUT
+277   (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+278   (CONST&PUSH 48)                     ; SETF
+280   (NIL&PUSH)
+281   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+284   (CONST&PUSH 25)                     ; MGENARRAY-TYPE
+285   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+287   (CONST&PUSH 0)                      ; MGENARRAY
+288   (CALLS2 136)                        ; SYSTEM::%PUT
+290   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+292   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+294   (CALLS2 137)                        ; REMPROP
+296   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+298   (CONST&PUSH 44)                     ; SYSTEM::SETF-EXPANDER
+300   (CONST&PUSH 45)                     ; -1
+302   (CONST&PUSH 46)                     ; 1
+304   (CONST 52)                          ; #<COMPILED-CLOSURE SETF-MGENARRAY-NULL>
+306   (LIST*&PUSH 2)
+308   (CALLS2 136)                        ; SYSTEM::%PUT
+310   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+312   (CONST&PUSH 48)                     ; SETF
+314   (NIL&PUSH)
+315   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+318   (CONST&PUSH 30)                     ; MGENARRAY-NULL
+320   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+322   (CONST&PUSH 0)                      ; MGENARRAY
+323   (CALLS2 136)                        ; SYSTEM::%PUT
+325   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+327   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+329   (CALLS2 137)                        ; REMPROP
+331   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+333   (CONST&PUSH 44)                     ; SYSTEM::SETF-EXPANDER
+335   (CONST&PUSH 45)                     ; -1
+337   (CONST&PUSH 46)                     ; 1
+339   (CONST 53)                          ; #<COMPILED-CLOSURE SETF-MGENARRAY-GENERATOR>
+341   (LIST*&PUSH 2)
+343   (CALLS2 136)                        ; SYSTEM::%PUT
+345   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+347   (CONST&PUSH 48)                     ; SETF
+349   (NIL&PUSH)
+350   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+353   (CONST&PUSH 35)                     ; MGENARRAY-GENERATOR
+355   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+357   (CONST&PUSH 0)                      ; MGENARRAY
+358   (CALLS2 136)                        ; SYSTEM::%PUT
+360   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+362   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+364   (CALLS2 137)                        ; REMPROP
+366   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+368   (CONST&PUSH 44)                     ; SYSTEM::SETF-EXPANDER
+370   (CONST&PUSH 45)                     ; -1
+372   (CONST&PUSH 46)                     ; 1
+374   (CONST 54)                          ; #<COMPILED-CLOSURE SETF-MGENARRAY-CONTENT>
+376   (LIST*&PUSH 2)
+378   (CALLS2 136)                        ; SYSTEM::%PUT
+380   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+382   (CONST&PUSH 48)                     ; SETF
+384   (NIL&PUSH)
+385   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+388   (CONST&PUSH 40)                     ; MGENARRAY-CONTENT
+390   (CONST&PUSH 43)                     ; SYSTEM::DEFSTRUCT-WRITER
+392   (CONST&PUSH 0)                      ; MGENARRAY
+393   (CALLS2 136)                        ; SYSTEM::%PUT
+395   (CONST&PUSH 0)                      ; MGENARRAY
+396   (CONST&PUSH 55)                     ; STRUCTURE
+398   (NIL&PUSH)
+399   (CALL 3 49)                         ; SYSTEM::%SET-DOCUMENTATION
+402   (CONST 0)                           ; MGENARRAY
+403   (SKIP&RET 1)
+
+
+Disassembly of function MAKE-MGENARRAY
+(CONST 0) = :AREF
+(CONST 1) = :ASET
+(CONST 2) = :TYPE
+(CONST 3) = :NULL
+(CONST 4) = :GENERATOR
+(CONST 5) = :CONTENT
+0 required arguments
+0 optional arguments
+No rest parameter
+6 keyword parameters: :AREF, :ASET, :TYPE, :NULL, :GENERATOR, :CONTENT.
+14 byte-code instructions:
+0     (UNBOUND->NIL 6)
+2     (UNBOUND->NIL 5)
+4     (UNBOUND->NIL 4)
+6     (UNBOUND->NIL 3)
+8     (UNBOUND->NIL 2)
+10    (UNBOUND->NIL 1)
+12    (LOAD&PUSH 6)
+13    (LOAD&PUSH 6)
+14    (LOAD&PUSH 6)
+15    (LOAD&PUSH 6)
+16    (LOAD&PUSH 6)
+17    (LOAD&PUSH 6)
+18    (CALLSR 6 0)                        ; VECTOR
+21    (SKIP&RET 7)
+
+
+Disassembly of function COPY-MGENARRAY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+3 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS1 3)                          ; SYSTEM::%COPY-SIMPLE-VECTOR
+3     (SKIP&RET 2)
+
+
+Disassembly of function MGENARRAY-AREF
+(CONST 0) = 0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 0
+2     (SVREF)
+3     (SKIP&RET 2)
+
+
+Disassembly of function MGENARRAY-ASET
+(CONST 0) = 1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 1
+2     (SVREF)
+3     (SKIP&RET 2)
+
+
+Disassembly of function MGENARRAY-TYPE
+(CONST 0) = 2
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 2
+2     (SVREF)
+3     (SKIP&RET 2)
+
+
+Disassembly of function MGENARRAY-NULL
+(CONST 0) = 3
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 3
+2     (SVREF)
+3     (SKIP&RET 2)
+
+
+Disassembly of function MGENARRAY-GENERATOR
+(CONST 0) = 4
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 4
+2     (SVREF)
+3     (SKIP&RET 2)
+
+
+Disassembly of function MGENARRAY-CONTENT
+(CONST 0) = 5
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST 0)                           ; 5
+2     (SVREF)
+3     (SKIP&RET 2)
+
+
+Disassembly of function SETF-MGENARRAY-AREF
+(CONST 0) = SETF
+(CONST 1) = SVREF
+(CONST 2) = 0
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; SVREF
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; 0
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function SETF-MGENARRAY-ASET
+(CONST 0) = SETF
+(CONST 1) = SVREF
+(CONST 2) = 1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; SVREF
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; 1
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function SETF-MGENARRAY-TYPE
+(CONST 0) = SETF
+(CONST 1) = SVREF
+(CONST 2) = 2
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; SVREF
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; 2
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function SETF-MGENARRAY-NULL
+(CONST 0) = SETF
+(CONST 1) = SVREF
+(CONST 2) = 3
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; SVREF
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; 3
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function SETF-MGENARRAY-GENERATOR
+(CONST 0) = SETF
+(CONST 1) = SVREF
+(CONST 2) = 4
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; SVREF
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; 4
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function SETF-MGENARRAY-CONTENT
+(CONST 0) = SETF
+(CONST 1) = SVREF
+(CONST 2) = 5
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD 2)
+1     (CDR)
+2     (CAR&PUSH)
+3     (CONST&PUSH 0)                      ; SETF
+4     (CONST&PUSH 1)                      ; SVREF
+5     (LOAD&PUSH 2)
+6     (CONST&PUSH 2)                      ; 5
+7     (LIST&PUSH 3)
+9     (LOAD&PUSH 4)
+10    (LIST 3)
+12    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN MARRAY-TYPE (X) ...)-5|
+(CONST 0) = MARRAY-TYPE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MARRAY-TYPE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MARRAY-TYPE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MARRAY-TYPE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MARRAY-TYPE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MARRAY-TYPE
+8     (SKIP&RET 1)
+
+
+Disassembly of function MARRAY-TYPE
+(CONST 0) = ML-TYPEP
+(CONST 1) = #S(HASH-TABLE EQ (COMMON-LISP:ARRAY . 4) (HASH-TABLE . 1) (ARRAY . 9))
+(CONST 2) = HASH-TABLE
+(CONST 3) = "confusion over array and lisp::array"
+(CONST 4) = ARRAY-TYPE
+(CONST 5) = ((FLONUM . $FLOAT) (FIXNUM . $FIXNUM))
+(CONST 6) = ASSQ
+(CONST 7) = 2
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+27 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1 0)                           ; ML-TYPEP
+3     (JMPHASH 1 L19 L14 L6 L9)
+6     L6
+6     (CONST 2)                           ; HASH-TABLE
+7     (SKIP&RET 2)
+9     L9
+9     (CONST&PUSH 3)                      ; "confusion over array and lisp::array"
+10    (PUSH-UNBOUND 1)
+12    (CALLS1 132)                        ; PRINC
+14    L14
+14    (LOAD&PUSH 1)
+15    (CALLS1 6)                          ; ARRAY-ELEMENT-TYPE
+17    (SKIP&RET 2)
+19    L19
+19    (LOAD&PUSH 1)
+20    (CALL1&PUSH 4)                      ; ARRAY-TYPE
+22    (CONST&PUSH 5)                      ; (# #)
+23    (CALL2 6)                           ; ASSQ
+25    (CDR)
+26    (JMPIF1 L33)
+28    (LOAD&PUSH 1)
+29    (CONST 7)                           ; 2
+30    (SVREF)
+31    (SKIP&RET 2)
+33    L33
+33    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN $MAKE_ARRAY (TYPE &REST DIML) ...)-6|
+(CONST 0) = $MAKE_ARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $MAKE_ARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MAKE_ARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $MAKE_ARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $MAKE_ARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $MAKE_ARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function $MAKE_ARRAY
+(CONST 0) = (($FLOAT . FLONUM) ($FLONUM . FLONUM) ($FIXNUM . FIXNUM))
+(CONST 1) = ASSQ
+(CONST 2) = $ANY
+(CONST 3) = $HASHED
+(CONST 4) = "non-integer number of dimensions: ~M"
+(CONST 5) = MERROR
+(CONST 6) = INSURE-ARRAY-PROPS
+(CONST 7) = :TYPE
+(CONST 8) = :CONTENT
+(CONST 9) = MAKE-MGENARRAY
+(CONST 10) = $FUNCTIONAL
+(CONST 11) = 1
+(CONST 12) = "not enough arguments for functional array specification"
+(CONST 13) = MARRAY-TYPE
+(CONST 14) = #S(HASH-TABLE EQ ($ANY . 11) ($FLOAT . 6) ($FIXNUM . 1))
+(CONST 15) = FIXUNBOUND
+(CONST 16) = FILLARRAY
+(CONST 17) = FLOUNBOUND
+(CONST 18) = 5
+(CONST 19) = MUNBOUND
+(CONST 20) = NOTEXIST
+(CONST 21) = :GENERATOR
+(CONST 22) = :NULL
+(CONST 23) = "Array type of ~M is not recognized by MAKE_ARRAY"
+(CONST 24) = *ARRAY
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variables: (MUNBOUND FLOUNBOUND FIXUNBOUND)
+96 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 2)
+1     (CONST&PUSH 0)                      ; (# # #)
+2     (CALL2&PUSH 1)                      ; ASSQ
+4     (LOAD&JMPIFNOT 0 L121)
+8     (CONST&PUSH 24)                     ; *ARRAY
+9     (NIL&PUSH)
+10    (LOAD&CDR&PUSH 2)
+12    (LOAD 5)
+13    (APPLY&SKIP&RET 2 4)
+16    L16
+16    (LOAD&PUSH 2)
+17    (PUSH-UNBOUND 7)
+19    (NIL&STORE 4)
+21    (CALLS1 29)                         ; MAKE-ARRAY
+23    (SKIP&RET 4)
+25    L25
+25    (PUSH-UNBOUND 1)
+27    (CALLS2&PUSH 143)                   ; GENSYM
+29    (LOAD&CAR&PUSH 3)
+31    (CALLS2&JMPIF 12 L39)               ; INTEGERP
+34    (CONST&PUSH 4)                      ; "non-integer number of dimensions: ~M"
+35    (LOAD&CAR&PUSH 4)
+37    (CALL2 5)                           ; MERROR
+39    L39
+39    (LOAD&PUSH 0)
+40    (NIL&PUSH)
+41    (LOAD&CAR&PUSH 5)
+43    (CALL 3 6)                          ; INSURE-ARRAY-PROPS
+46    (CONST&PUSH 7)                      ; :TYPE
+47    (CONST&PUSH 3)                      ; $HASHED
+48    (CONST&PUSH 8)                      ; :CONTENT
+49    (LOAD&PUSH 3)
+50    (CALL 4 9)                          ; MAKE-MGENARRAY
+53    (SKIP&RET 5)
+55    L55
+55    (LOAD&PUSH 2)
+56    (CALLS2&PUSH 71)                    ; LENGTH
+58    (CONST&PUSH 11)                     ; 1
+59    (CALLSR&JMPIF 1 48 L66)             ; >
+63    (CONST&PUSH 12)                     ; "not enough arguments for functional array specification"
+64    (CALL1 5)                           ; MERROR
+66    L66
+66    (LOAD 2)
+67    (CDR)
+68    (UNLIST* 1 0)
+71    (JSR&PUSH L0)
+74    (NIL&PUSH)
+75    (LOAD&PUSH 1)
+76    (CALL1 13)                          ; MARRAY-TYPE
+78    (JMPHASH 14 L105 L81 L86 L91)
+81    L81
+81    (LOAD&PUSH 1)
+82    (GETVALUE 15)                       ; FIXUNBOUND
+84    (JMP L97)
+86    L86
+86    (LOAD&PUSH 1)
+87    (GETVALUE 17)                       ; FLOUNBOUND
+89    (JMP L97)
+91    L91
+91    (LOAD&PUSH 1)
+92    (CONST 18)                          ; 5
+93    (SVREF)
+94    (PUSH)
+95    (GETVALUE 19)                       ; MUNBOUND
+97    L97
+97    (STORE 1)
+98    (PUSH)
+99    (LIST&PUSH 1)
+101   (CALL2 16)                          ; FILLARRAY
+103   (JMP L107)
+105   L105
+105   (CONST 20)                          ; NOTEXIST
+106   (STORE 0)
+107   L107
+107   (CONST&PUSH 7)                      ; :TYPE
+108   (CONST&PUSH 10)                     ; $FUNCTIONAL
+109   (CONST&PUSH 8)                      ; :CONTENT
+110   (LOAD&PUSH 4)
+111   (CONST&PUSH 21)                     ; :GENERATOR
+112   (LOAD&CAR&PUSH 9)
+114   (CONST&PUSH 22)                     ; :NULL
+115   (LOAD&PUSH 7)
+116   (CALL 8 9)                          ; MAKE-MGENARRAY
+119   (SKIP&RET 6)
+121   L121
+121   (LOAD&PUSH 3)
+122   (JMPIFEQTO 2 L16)                   ; $ANY
+126   (LOAD&PUSH 3)
+127   (JMPIFEQTO 3 L25)                   ; $HASHED
+131   (LOAD&PUSH 3)
+132   (JMPIFEQTO 10 L55)                  ; $FUNCTIONAL
+136   (CONST&PUSH 23)                     ; "Array type of ~M is not recognized by MAKE_ARRAY"
+137   (LOAD&PUSH 4)
+138   (CALL2 5)                           ; MERROR
+140   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN MAKNUM (X) ...)-7|
+(CONST 0) = MAKNUM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MAKNUM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MAKNUM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MAKNUM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MAKNUM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MAKNUM
+8     (SKIP&RET 1)
+
+
+Disassembly of function MAKNUM
+(CONST 0) = $USE_FAST_ARRAYS
+(CONST 1) = EXPLODEN
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($USE_FAST_ARRAYS)
+20 byte-code instructions:
+0     (GETVALUE 0)                        ; $USE_FAST_ARRAYS
+2     (JMPIF L17)
+4     (PUSH-UNBOUND 2)
+6     (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+8     (LOAD&PUSH 2)
+9     (LOAD&PUSH 1)
+10    (CALLS1 132)                        ; PRINC
+12    (LOAD&PUSH 0)
+13    (CALLS2 118)                        ; GET-OUTPUT-STREAM-STRING
+15    (SKIP&RET 3)
+17    L17
+17    (PUSH-UNBOUND 2)
+19    (CALLS2&PUSH 117)                   ; MAKE-STRING-OUTPUT-STREAM
+21    (LOAD&PUSH 2)
+22    (LOAD&PUSH 1)
+23    (CALLS1 132)                        ; PRINC
+25    (LOAD&PUSH 0)
+26    (CALLS2&STORE 118 0)                ; GET-OUTPUT-STREAM-STRING
+29    (CALL1 1)                           ; EXPLODEN
+31    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN DIMENSION-ARRAY-OBJECT (FORM RESULT &AUX ...) ...)-8|
+(CONST 0) = DIMENSION-ARRAY-OBJECT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DIMENSION-ARRAY-OBJECT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DIMENSION-ARRAY-OBJECT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DIMENSION-ARRAY-OBJECT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DIMENSION-ARRAY-OBJECT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DIMENSION-ARRAY-OBJECT
+8     (SKIP&RET 1)
+
+
+Disassembly of function DIMENSION-ARRAY-OBJECT
+(CONST 0) = MARRAY-TYPE
+(CONST 1) = $USE_FAST_ARRAYS
+(CONST 2) = MAKNUM
+(CONST 3) = DIMENSION-STRING
+(CONST 4) = "{Array: "
+(CONST 5) = EXPLODEN
+(CONST 6) = " "
+(CONST 7) = ($FLOAT $FIXNUM $ANY)
+(CONST 8) = MEMQ
+(CONST 9) = "["
+(CONST 10) = ($FLOAT $FIXNUM)
+(CONST 11) = 5
+(CONST 12) = ARRAYDIMS
+(CONST 13) = #\,
+(CONST 14) = "]"
+(CONST 15) = "}"
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($USE_FAST_ARRAYS)
+69 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALL1&PUSH 0)                      ; MARRAY-TYPE
+3     (GETVALUE 1)                        ; $USE_FAST_ARRAYS
+5     (JMPIF L97)
+8     (CONST&PUSH 4)                      ; "{Array: "
+9     (CALL1&PUSH 5)                      ; EXPLODEN
+11    (LOAD&PUSH 1)
+12    (CALL1 5)                           ; EXPLODEN
+14    (CDR&PUSH)
+15    (CONST&PUSH 6)                      ; " "
+16    (CALL1&PUSH 5)                      ; EXPLODEN
+18    (LOAD&PUSH 6)
+19    (CALL1&PUSH 2)                      ; MAKNUM
+21    (CALL1&PUSH 5)                      ; EXPLODEN
+23    (LOAD&PUSH 4)
+24    (CONST&PUSH 7)                      ; ($FLOAT $FIXNUM $ANY)
+25    (CALL2&JMPIFNOT 8 L84)              ; MEMQ
+28    (CONST&PUSH 9)                      ; "["
+29    (CALL1&PUSH 5)                      ; EXPLODEN
+31    (LOAD&PUSH 5)
+32    (CONST&PUSH 10)                     ; ($FLOAT $FIXNUM)
+33    (CALL2&JMPIF 8 L102)                ; MEMQ
+37    (LOAD&PUSH 8)
+38    (CONST 11)                          ; 5
+39    (SVREF)
+40    L40
+40    (PUSH)
+41    (CALL1 12)                          ; ARRAYDIMS
+43    (CDR&PUSH)
+44    (NIL&PUSH)
+45    (LOAD&JMPIFNOT 1 L72)
+48    L48
+48    (LOAD&JMPIFNOT 0 L54)
+51    (CONST&PUSH 13)                     ; #\,
+52    (LOAD&CONS&STORE 0)
+54    L54
+54    (LOAD&CDR&PUSH 1)
+56    (LOAD&CAR&PUSH 2)
+58    (CALL1&PUSH 5)                      ; EXPLODEN
+60    (CALLS2&PUSH 73)                    ; NREVERSE
+62    (LOAD&PUSH 2)
+63    (CALLSR&STORE 2 35 1)               ; NCONC
+67    (POP&STORE 1)
+69    (LOAD&JMPIF 1 L48)
+72    L72
+72    (LOAD&PUSH 0)
+73    (CALLS2 73)                         ; NREVERSE
+75    (SKIP 1)
+77    (STORE 0)
+78    (CONST&PUSH 14)                     ; "]"
+79    (CALL1&PUSH 5)                      ; EXPLODEN
+81    (CALLSR 3 35)                       ; NCONC
+84    L84
+84    (PUSH)
+85    (CONST&PUSH 15)                     ; "}"
+86    (CALL1&PUSH 5)                      ; EXPLODEN
+88    (CALLSR 6 35)                       ; NCONC
+91    L91
+91    (PUSH)
+92    (LOAD&PUSH 3)
+93    (CALL2 3)                           ; DIMENSION-STRING
+95    (SKIP&RET 4)
+97    L97
+97    (LOAD&PUSH 3)
+98    (CALL1 2)                           ; MAKNUM
+100   (JMP L91)
+102   L102
+102   (LOAD 8)
+103   (JMP L40)
+
+
+Disassembly of function #:|(DEFUN MARRAY-CHECK (A) ...)-9|
+(CONST 0) = MARRAY-CHECK
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MARRAY-CHECK>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MARRAY-CHECK
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MARRAY-CHECK
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MARRAY-CHECK>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MARRAY-CHECK
+8     (SKIP&RET 1)
+
+
+Disassembly of function MARRAY-CHECK
+(CONST 0) = ML-TYPEP
+(CONST 1) = ARRAY
+(CONST 2) = MARRAY-TYPE
+(CONST 3) = 
+#S(HASH-TABLE EQ ($FUNCTIONAL . 9) ($HASHED . 9) ($ANY . 4) ($FLOAT . 1)
+   ($FIXNUM . 1) (ART-Q . 1))
+(CONST 4) = 5
+(CONST 5) = "Hashed array has no dimension info: ~M"
+(CONST 6) = MERROR
+(CONST 7) = MARRAY-TYPE-UNKNOWN
+(CONST 8) = "Not an array: ~M"
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+28 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; ML-TYPEP
+3     (JMPIFEQTO 1 L13)                   ; ARRAY
+6     (CONST 8)                           ; "Not an array: ~M"
+7     L7
+7     (PUSH)
+8     (LOAD&PUSH 2)
+9     (CALL2 6)                           ; MERROR
+11    (SKIP&RET 2)
+13    L13
+13    (LOAD&PUSH 1)
+14    (CALL1 2)                           ; MARRAY-TYPE
+16    (JMPHASH 3 L30 L19 L19 L19 L22 L27 L27)
+19    L19
+19    (LOAD 1)
+20    (SKIP&RET 2)
+22    L22
+22    (LOAD&PUSH 1)
+23    (CONST 4)                           ; 5
+24    (SVREF)
+25    (SKIP&RET 2)
+27    L27
+27    (CONST 5)                           ; "Hashed array has no dimension info: ~M"
+28    (JMP L7)
+30    L30
+30    (LOAD&PUSH 1)
+31    (CALL1 7)                           ; MARRAY-TYPE-UNKNOWN
+33    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN $ARRAY_NUMBER_OF_DIMENSIONS (A) ...)-10|
+(CONST 0) = $ARRAY_NUMBER_OF_DIMENSIONS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ARRAY_NUMBER_OF_DIMENSIONS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARRAY_NUMBER_OF_DIMENSIONS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ARRAY_NUMBER_OF_DIMENSIONS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ARRAY_NUMBER_OF_DIMENSIONS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ARRAY_NUMBER_OF_DIMENSIONS
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ARRAY_NUMBER_OF_DIMENSIONS
+(CONST 0) = MARRAY-CHECK
+(CONST 1) = ARRAY-/#-DIMS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; MARRAY-CHECK
+3     (CALL1 1)                           ; ARRAY-/#-DIMS
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN $ARRAY_DIMENSION_N (N A) ...)-11|
+(CONST 0) = $ARRAY_DIMENSION_N
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ARRAY_DIMENSION_N>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ARRAY_DIMENSION_N
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ARRAY_DIMENSION_N
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ARRAY_DIMENSION_N>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ARRAY_DIMENSION_N
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ARRAY_DIMENSION_N
+(CONST 0) = MARRAY-CHECK
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; MARRAY-CHECK
+3     (LOAD&PUSH 3)
+4     (CALLS1 8)                          ; ARRAY-DIMENSION
+6     (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN MARRAY-TYPE-UNKNOWN (X) ...)-12|
+(CONST 0) = MARRAY-TYPE-UNKNOWN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MARRAY-TYPE-UNKNOWN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MARRAY-TYPE-UNKNOWN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MARRAY-TYPE-UNKNOWN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MARRAY-TYPE-UNKNOWN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MARRAY-TYPE-UNKNOWN
+8     (SKIP&RET 1)
+
+
+Disassembly of function MARRAY-TYPE-UNKNOWN
+(CONST 0) = "BUG: Array of unhandled type: ~S"
+(CONST 1) = MERROR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "BUG: Array of unhandled type: ~S"
+1     (LOAD&PUSH 2)
+2     (CALL2 1)                           ; MERROR
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MARRAYREF-GENSUB (AARRAY IND1 INDS) ...)-13|
+(CONST 0) = MARRAYREF-GENSUB
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MARRAYREF-GENSUB>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MARRAYREF-GENSUB
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MARRAYREF-GENSUB
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MARRAYREF-GENSUB>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MARRAYREF-GENSUB
+8     (SKIP&RET 1)
+
+
+Disassembly of function MARRAYREF-GENSUB
+(CONST 0) = MARRAY-TYPE
+(CONST 1) = 
+#S(HASH-TABLE EQ ($FUNCTIONAL . 68) ($ANY . 37) ($FIXNUM . 34) ($FLOAT . 34)
+   ($HASHED . 23) (HASH-TABLE . 11) (T . 2))
+(CONST 2) = #.#'AREF
+(CONST 3) = MARRAYREF
+(CONST 4) = 5
+(CONST 5) = EVARRP
+(CONST 6) = 3
+(CONST 7) = MFUNCALL
+(CONST 8) = 4
+(CONST 9) = MARRAYSET-GENSUB
+(CONST 10) = MARRAY-TYPE-UNKNOWN
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+90 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 3)
+1     (CALL1 0)                           ; MARRAY-TYPE
+3     (JMPHASH 1 L102 L7 L16 L28 L39 L39 L42 L73)
+7     L7
+7     (CONST&PUSH 2)                      ; #.#'AREF
+8     (LOAD 4)
+9     (JMP L33)
+11    L11
+11    (LOAD&PUSH 2)
+12    (LOAD 2)
+13    (CONS)
+14    (JMP L20)
+16    L16
+16    (LOAD&JMPIF 1 L11)
+19    (LOAD 2)
+20    L20
+20    (PUSH)
+21    (LOAD&PUSH 4)
+22    (PUSH-UNBOUND 1)
+24    (CALLS1 99)                         ; GETHASH
+26    (SKIP&RET 4)
+28    L28
+28    (CONST&SYMBOL-FUNCTION&PUSH 3)      ; MARRAYREF
+30    (LOAD&PUSH 4)
+31    (CONST 4)                           ; 5
+32    (SVREF)
+33    L33
+33    (PUSH)
+34    (LOAD&PUSH 4)
+35    (LOAD 4)
+36    (APPLY&SKIP&RET 2 4)
+39    L39
+39    (LOAD 3)
+40    (JMP L45)
+42    L42
+42    (LOAD&PUSH 3)
+43    (CONST 4)                           ; 5
+44    (SVREF)
+45    L45
+45    (PUSH)
+46    (LOAD&PUSH 3)
+47    (LOAD 3)
+48    (APPLY&SKIP&RET 1 4)
+51    L51
+51    (CONST&SYMBOL-FUNCTION&PUSH 7)      ; MFUNCALL
+53    (LOAD&PUSH 5)
+54    (CONST 8)                           ; 4
+55    (SVREF)
+56    (PUSH)
+57    (LOAD&PUSH 6)
+58    (LOAD&PUSH 6)
+59    (LOAD 6)
+60    (APPLY&PUSH 3)
+62    (LOAD&PUSH 5)
+63    (CONST 4)                           ; 5
+64    (SVREF)
+65    (PUSH)
+66    (LOAD&PUSH 5)
+67    (LOAD&PUSH 5)
+68    (CALL 4 9)                          ; MARRAYSET-GENSUB
+71    (SKIP&RET 5)
+73    L73
+73    (T)
+74    (BIND 5)                            ; EVARRP
+76    (CONST 5)                           ; EVARRP
+77    (CATCH-OPEN L89)
+79    (LOAD&PUSH 9)
+80    (CONST 4)                           ; 5
+81    (SVREF)
+82    (PUSH)
+83    (LOAD&PUSH 9)
+84    (LOAD&PUSH 9)
+85    (JSR L0)
+88    (CATCH-CLOSE)
+89    L89
+89    (UNBIND1)
+90    (PUSH)
+91    (LOAD&PUSH 0)
+92    (LOAD&PUSH 5)
+93    (CONST 6)                           ; 3
+94    (SVREF)
+95    (PUSH)
+96    (CALLS2&JMPIF 2 L51)                ; EQUAL
+99    (POP)
+100   (SKIP&RET 4)
+102   L102
+102   (LOAD&PUSH 3)
+103   (CALL1 10)                          ; MARRAY-TYPE-UNKNOWN
+105   (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN $MAKE_ART_Q (&REST L) ...)-14|
+(CONST 0) = $MAKE_ART_Q
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $MAKE_ART_Q>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $MAKE_ART_Q
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $MAKE_ART_Q
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $MAKE_ART_Q>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $MAKE_ART_Q
+8     (SKIP&RET 1)
+
+
+Disassembly of function $MAKE_ART_Q
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (PUSH-UNBOUND 7)
+3     (CALLS1 29)                         ; MAKE-ARRAY
+5     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MARRAYSET-GENSUB (VAL AARRAY IND1 ...) ...)-15|
+(CONST 0) = MARRAYSET-GENSUB
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MARRAYSET-GENSUB>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MARRAYSET-GENSUB
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MARRAYSET-GENSUB
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MARRAYSET-GENSUB>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MARRAYSET-GENSUB
+8     (SKIP&RET 1)
+
+
+Disassembly of function MARRAYSET-GENSUB
+(CONST 0) = MARRAY-TYPE
+(CONST 1) = 
+#S(HASH-TABLE EQ ($FUNCTIONAL . 51) ($FIXNUM . 33) ($FLOAT . 33) ($ANY . 26)
+   ($HASHED . 14) (T . 1))
+(CONST 2) = #.#'SYSTEM::STORE
+(CONST 3) = MARRAYSET
+(CONST 4) = 5
+(CONST 5) = MARRAY-TYPE-UNKNOWN
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+58 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 3)
+1     (CALL1 0)                           ; MARRAY-TYPE
+3     (JMPHASH 1 L68 L6 L19 L31 L38 L38 L56)
+6     L6
+6     (CONST&PUSH 2)                      ; #.#'SYSTEM::STORE
+7     (LOAD&PUSH 4)
+8     (LOAD&PUSH 4)
+9     (LOAD&PUSH 4)
+10    (LOAD&PUSH 8)
+11    (LIST&PUSH 1)
+13    (CALLSR 2 34)                       ; APPEND
+16    (APPLY&SKIP&RET 2 5)
+19    L19
+19    (CONST&SYMBOL-FUNCTION&PUSH 3)      ; MARRAYSET
+21    (LOAD&PUSH 5)
+22    (LOAD&PUSH 5)
+23    (CONST 4)                           ; 5
+24    (SVREF)
+25    (PUSH)
+26    (LOAD&PUSH 5)
+27    (LOAD 5)
+28    (APPLY&SKIP&RET 3 5)
+31    L31
+31    (LOAD&PUSH 3)
+32    (CONST 4)                           ; 5
+33    (SVREF)
+34    (PUSH)
+35    (CONST 2)                           ; #.#'SYSTEM::STORE
+36    (JMP L43)
+38    L38
+38    (LOAD&PUSH 3)
+39    (CONST 4)                           ; 5
+40    (SVREF)
+41    (PUSH)
+42    (CONST 2)                           ; #.#'SYSTEM::STORE
+43    L43
+43    (PUSH)
+44    (LOAD&PUSH 1)
+45    (LOAD&PUSH 5)
+46    (LOAD&PUSH 5)
+47    (LOAD&PUSH 9)
+48    (LIST&PUSH 1)
+50    (CALLSR 2 34)                       ; APPEND
+53    (APPLY&SKIP&RET 2 6)
+56    L56
+56    (LOAD&PUSH 4)
+57    (LOAD&PUSH 4)
+58    (CONST 4)                           ; 5
+59    (SVREF)
+60    (PUSH)
+61    (LOAD&PUSH 4)
+62    (LOAD&PUSH 4)
+63    (JMPTAIL 4 9 L0)
+68    L68
+68    (LOAD&PUSH 3)
+69    (CALL1 5)                           ; MARRAY-TYPE-UNKNOWN
+71    (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFMFUN MEVAL1-EXTEND (FORM) ...)-16|
+(CONST 0) = MEVAL1-EXTEND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MEVAL1-EXTEND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MEVAL1-EXTEND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MEVAL1-EXTEND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MEVAL1-EXTEND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MEVAL1-EXTEND
+8     (SKIP&RET 1)
+
+
+Disassembly of function MEVAL1-EXTEND
+(CONST 0) = MEVALARGS
+(CONST 1) = MARRAYREF-GENSUB
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+9 byte-code instructions:
+0     (LOAD&CDR&PUSH 1)
+2     (CALL1&PUSH 0)                      ; MEVALARGS
+4     (LOAD 2)
+5     (CAR)
+6     (CAR&PUSH)
+7     (LOAD&CAR&PUSH 1)
+9     (LOAD&CDR&PUSH 2)
+11    (CALL 3 1)                          ; MARRAYREF-GENSUB
+14    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN ARRSTORE-EXTEND (A L R) ...)-17|
+(CONST 0) = ARRSTORE-EXTEND
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ARRSTORE-EXTEND>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ARRSTORE-EXTEND
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ARRSTORE-EXTEND
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ARRSTORE-EXTEND>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ARRSTORE-EXTEND
+8     (SKIP&RET 1)
+
+
+Disassembly of function ARRSTORE-EXTEND
+(CONST 0) = MARRAYSET-GENSUB
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&PUSH 4)
+2     (LOAD&CAR&PUSH 4)
+4     (LOAD&CDR&PUSH 5)
+6     (CALL 4 0)                          ; MARRAYSET-GENSUB
+9     (SKIP&RET 4)
+
+
+Wrote file binary-clisp/ar.fas
+Wrote file /cygdrive/e/temp/maxima/src/ar.lis

@@ -1,0 +1,468 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/marray.lisp
+on 2002-12-17 13:35:45 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/marray.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE ARRAY)-2|
+(CONST 0) = ARRAY
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ARRAY
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN $LISTARRAY (ARY) ...)-3|
+(CONST 0) = $LISTARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $LISTARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $LISTARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $LISTARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $LISTARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $LISTARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function $LISTARRAY
+(CONST 0) = (MLIST)
+(CONST 1) = HASHAR
+(CONST 2) = MGET
+(CONST 3) = ($ARRAYINFO)
+(CONST 4) = MEVAL
+(CONST 5) = $ARRAYAPPLY
+(CONST 6) = ARRAY
+(CONST 7) = LISTARRAY
+(CONST 8) = LIST
+(CONST 9) = VALS
+(CONST 10) = TAB
+(CONST 11) = #<COMPILED-CLOSURE $LISTARRAY-1>
+(CONST 12) = "Argument to LISTARRAY must be an array:~%~M"
+(CONST 13) = MERROR
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VALS)
+65 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (MLIST)
+1     (LOAD&PUSH 2)
+2     (CONST&PUSH 1)                      ; HASHAR
+3     (CALL2&JMPIF 2 L26)                 ; MGET
+6     (LOAD&PUSH 2)
+7     (CONST&PUSH 6)                      ; ARRAY
+8     (CALL2&JMPIF 2 L63)                 ; MGET
+11    (LOAD&PUSH 2)
+12    (CALLS2&JMPIF 32 L71)               ; ARRAYP
+15    (LOAD&PUSH 2)
+16    (CALLS2&JMPIF 25 L77)               ; HASH-TABLE-P
+19    (CONST&PUSH 12)                     ; "Argument to LISTARRAY must be an array:~%~M"
+20    (LOAD&PUSH 3)
+21    (CALL2 13)                          ; MERROR
+23    L23
+23    (CONS)
+24    (SKIP&RET 2)
+26    L26
+26    (NIL&PUSH)
+27    (CONST&PUSH 3)                      ; ($ARRAYINFO)
+28    (LOAD&PUSH 4)
+29    (LIST&PUSH 2)
+31    (CALL1 4)                           ; MEVAL
+33    (CDR)
+34    (CDR)
+35    (CDR&PUSH)
+36    (JMP L50)
+38    L38
+38    (LOAD&CAR&PUSH 0)
+40    (LOAD&PUSH 5)
+41    (LOAD&PUSH 1)
+42    (CALL2&PUSH 5)                      ; $ARRAYAPPLY
+44    (LOAD&CONS&STORE 2)
+46    (SKIP 1)
+48    (LOAD&CDR&STORE 0)
+50    L50
+50    (LOAD&PUSH 0)
+51    (CALLS1&JMPIFNOT 146 L38)           ; ENDP
+54    (SKIP 1)
+56    (LOAD&PUSH 0)
+57    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+59    (SKIP 1)
+61    (JMP L23)
+63    L63
+63    (LOAD&PUSH 2)
+64    (CONST&PUSH 6)                      ; ARRAY
+65    (CALL2&PUSH 2)                      ; MGET
+67    (CALL1 7)                           ; LISTARRAY
+69    (JMP L23)
+71    L71
+71    (LOAD&PUSH 2)
+72    (CONST&PUSH 8)                      ; LIST
+73    (CALLS2 42)                         ; COERCE
+75    (JMP L23)
+77    L77
+77    (NIL)
+78    (BIND 9)                            ; VALS
+80    (LOAD 5)
+81    (BIND 10)                           ; TAB
+83    (CONST&PUSH 11)                     ; #<COMPILED-CLOSURE $LISTARRAY-1>
+84    (LOAD&PUSH 9)
+85    (CALLS1 102)                        ; MAPHASH
+87    (GETVALUE 9)                        ; VALS
+89    (UNBIND 2)
+91    (JMP L23)
+
+
+Disassembly of function $LISTARRAY-1
+(CONST 0) = X
+(CONST 1) = L
+(CONST 2) = TAB
+(CONST 3) = VALS
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+reads special variables: (VALS TAB X)
+writes special variable : (VALS)
+13 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; X
+3     (LOAD 4)
+4     (BIND 1)                            ; L
+6     (GETVALUE&PUSH 0)                   ; X
+8     (GETVALUE&PUSH 2)                   ; TAB
+10    (PUSH-UNBOUND 1)
+12    (CALLS1&PUSH 99)                    ; GETHASH
+14    (GETVALUE 3)                        ; VALS
+16    (CONS)
+17    (SETVALUE 3)                        ; VALS
+19    (UNBIND 2)
+21    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN $FILLARRAY (ARY1 ARY2) ...)-4|
+(CONST 0) = $FILLARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FILLARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FILLARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FILLARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FILLARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FILLARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FILLARRAY
+(CONST 0) = ARRAY
+(CONST 1) = MGET
+(CONST 2) = "First argument to FILLARRAY must be a declared array:~%~M"
+(CONST 3) = MERROR
+(CONST 4) = $LISTP
+(CONST 5) = "Second argument to FILLARRAY must be an array or list:~%~M"
+(CONST 6) = FILLARRAY
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+38 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CONST&PUSH 0)                      ; ARRAY
+2     (CALL2&JMPIF 1 L16)                 ; MGET
+5     (LOAD&PUSH 2)
+6     (CALLS2&JMPIFNOT 32 L12)            ; ARRAYP
+9     (LOAD&JMPIF 2 L16)
+12    L12
+12    (CONST&PUSH 2)                      ; "First argument to FILLARRAY must be a declared array:~%~M"
+13    (LOAD&PUSH 3)
+14    (CALL2 3)                           ; MERROR
+16    L16
+16    (PUSH)
+17    (LOAD&PUSH 0)
+18    (LOAD&PUSH 3)
+19    (CALL1&JMPIF 4 L46)                 ; $LISTP
+22    (LOAD&PUSH 3)
+23    (CONST&PUSH 0)                      ; ARRAY
+24    (CALL2&PUSH 1)                      ; MGET
+26    (CONST&PUSH 0)                      ; ARRAY
+27    (PUSH-UNBOUND 1)
+29    (CALLS2&JMPIF 132 L40)              ; GET
+32    (LOAD&PUSH 3)
+33    (CALLS2&JMPIF 32 L50)               ; ARRAYP
+36    (CONST&PUSH 5)                      ; "Second argument to FILLARRAY must be an array or list:~%~M"
+37    (LOAD&PUSH 4)
+38    (CALL2 3)                           ; MERROR
+40    L40
+40    (PUSH)
+41    (CALL2 6)                           ; FILLARRAY
+43    (LOAD 3)
+44    (SKIP&RET 4)
+46    L46
+46    (LOAD 3)
+47    (CDR)
+48    (JMP L40)
+50    L50
+50    (LOAD 3)
+51    (JMP L40)
+
+
+Disassembly of function #:|(DEFUN GETVALUE (SYM) ...)-5|
+(CONST 0) = GETVALUE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE GETVALUE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; GETVALUE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; GETVALUE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE GETVALUE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; GETVALUE
+8     (SKIP&RET 1)
+
+
+Disassembly of function GETVALUE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2 6)                          ; SYMBOLP
+3     (JMPIFNOT1 L15)
+5     (LOAD&PUSH 1)
+6     (CALLS1 79)                         ; BOUNDP
+8     (JMPIFNOT1 L15)
+10    (LOAD&PUSH 1)
+11    (CALLS1 78)                         ; SYMBOL-VALUE
+13    (SKIP&RET 2)
+15    L15
+15    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $REARRAY (L) ...)-6-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $REARRAY (L) ...)-6-2-1|>
+(CONST 1) = $REARRAY
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $REARRAY (L) ...)-6-2-1|>
+1     (CONST&PUSH 1)                      ; $REARRAY
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $REARRAY (L) ...)-6-2-1|
+(CONST 0) = L
+(CONST 1) = $USE_FAST_ARRAYS
+(CONST 2) = GETVALUE
+(CONST 3) = REARRAY-AUX
+(CONST 4) = SET
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($USE_FAST_ARRAYS L)
+writes special variable : (L)
+28 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; L
+3     (GETVALUE 0)                        ; L
+5     (CDR)
+6     (SETVALUE 0)                        ; L
+8     (CAR&PUSH)
+9     (GETVALUE 0)                        ; L
+11    (CDR&PUSH)
+12    (GETVALUE 1)                        ; $USE_FAST_ARRAYS
+14    (JMPIF L29)
+16    (LOAD&PUSH 1)
+17    (LOAD&PUSH 2)
+18    (CALL1&PUSH 2)                      ; GETVALUE
+20    (LOAD&PUSH 2)
+21    (CALL 3 3)                          ; REARRAY-AUX
+24    L24
+24    (SKIP 2)
+26    (UNBIND1)
+27    (SKIP&RET 2)
+29    L29
+29    (LOAD&PUSH 1)
+30    (LOAD&PUSH 2)
+31    (LOAD&PUSH 3)
+32    (CALL1&PUSH 2)                      ; GETVALUE
+34    (LOAD&PUSH 3)
+35    (CALL&PUSH 3 3)                     ; REARRAY-AUX
+38    (CALL2 4)                           ; SET
+40    (JMP L24)
+
+
+Disassembly of function #:|(DEFUN REARRAY-AUX (AR VAL DIMS ...) ...)-7|
+(CONST 0) = REARRAY-AUX
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE REARRAY-AUX>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; REARRAY-AUX
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; REARRAY-AUX
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE REARRAY-AUX>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; REARRAY-AUX
+8     (SKIP&RET 1)
+
+
+Disassembly of function REARRAY-AUX
+(CONST 0) = VAL
+(CONST 1) = LISPM-REARRAY
+(CONST 2) = ARRAY
+(CONST 3) = MGET
+(CONST 4) = REARRAY-AUX
+(CONST 5) = "unknown array ~A "
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (VAL)
+49 byte-code instructions:
+0     (LOAD 2)
+1     (BIND 0)                            ; VAL
+3     (NIL&PUSH)
+4     (GETVALUE&PUSH 0)                   ; VAL
+6     (CALLS2&JMPIF 32 L37)               ; ARRAYP
+9     (LOAD&PUSH 7)
+10    (CONST&PUSH 2)                      ; ARRAY
+11    (PUSH-UNBOUND 1)
+13    (CALLS2&PUSH 132)                   ; GET
+15    (CALLS2&JMPIF 32 L45)               ; ARRAYP
+18    (LOAD&PUSH 7)
+19    (CONST&PUSH 2)                      ; ARRAY
+20    (CALL2 3)                           ; MGET
+22    (STORE 0)
+23    (JMPIFNOT L64)
+25    (CONST&PUSH 4)                      ; REARRAY-AUX
+26    (LOAD&PUSH 1)
+27    (NIL&PUSH)
+28    (LOAD 8)
+29    (APPLY 2)
+31    (LOAD 7)
+32    L32
+32    (SKIP 1)
+34    (UNBIND1)
+35    (SKIP&RET 4)
+37    L37
+37    (CONST&PUSH 1)                      ; LISPM-REARRAY
+38    (GETVALUE&PUSH 0)                   ; VAL
+40    (LOAD 7)
+41    (APPLY 1)
+43    (JMP L32)
+45    L45
+45    (CONST&PUSH 1)                      ; LISPM-REARRAY
+46    (LOAD&PUSH 8)
+47    (CONST&PUSH 2)                      ; ARRAY
+48    (PUSH-UNBOUND 1)
+50    (CALLS2&PUSH 132)                   ; GET
+52    (LOAD 7)
+53    (APPLY&PUSH 1)
+55    (LOAD&PUSH 8)
+56    (CONST&PUSH 2)                      ; ARRAY
+57    (LOAD&PUSH 2)
+58    (CALLS2 136)                        ; SYSTEM::%PUT
+60    (SKIP 1)
+62    (JMP L32)
+64    L64
+64    (CONST&PUSH 5)                      ; "unknown array ~A "
+65    (LOAD&PUSH 8)
+66    (CALLSR 1 29)                       ; ERROR
+
+
+Disassembly of function #:|(DEFUN LISPM-REARRAY (AR &REST DIMS) ...)-8|
+(CONST 0) = LISPM-REARRAY
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE LISPM-REARRAY>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; LISPM-REARRAY
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; LISPM-REARRAY
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE LISPM-REARRAY>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; LISPM-REARRAY
+8     (SKIP&RET 1)
+
+
+Disassembly of function LISPM-REARRAY
+(CONST 0) = 1+
+(CONST 1) = "Rearray only works for arrays with same rank ie number of subscripts"
+(CONST 2) = MERROR
+1 required argument
+0 optional arguments
+Rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALLS1&PUSH 7)                     ; ARRAY-RANK
+3     (LOAD&PUSH 2)
+4     (CALLS2&PUSH 71)                    ; LENGTH
+6     (CALLS2&JMPIF 1 L14)                ; EQL
+9     (CONST&PUSH 1)                      ; "Rearray only works for arrays with same rank ie number of subscripts"
+10    (CALL1 2)                           ; MERROR
+12    (SKIP&RET 3)
+14    L14
+14    (LOAD&PUSH 2)
+15    (CONST&PUSH 0)                      ; 1+
+16    (LOAD&PUSH 3)
+17    (CALLS1&PUSH 158)                   ; COPY-LIST
+19    (CALLSR&PUSH 0 22)                  ; MAPCAR
+22    (LOAD&PUSH 4)
+23    (CALLS1&PUSH 6)                     ; ARRAY-ELEMENT-TYPE
+25    (PUSH-UNBOUND 5)
+27    (CALLS1 30)                         ; ADJUST-ARRAY
+29    (SKIP&RET 3)
+
+
+Wrote file binary-clisp/marray.fas
+Wrote file /cygdrive/e/temp/maxima/src/marray.lis

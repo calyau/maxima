@@ -1,0 +1,3536 @@
+Listing of compilation of file /cygdrive/e/temp/maxima/src/outmis.lisp
+on 2002-12-17 13:32:07 by CLISP, version 2.30 (released 2002-09-15) (built 3249143430) (memory 3249145291)
+Compiling file /cygdrive/e/temp/maxima/src/outmis.lisp ...
+
+Disassembly of function #:|(IN-PACKAGE "MAXIMA")-1|
+(CONST 0) = "MAXIMA"
+(CONST 1) = *PACKAGE*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+writes special variable : (*PACKAGE*)
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; "MAXIMA"
+1     (CALLS1 228)                        ; SYSTEM::%FIND-PACKAGE
+3     (SETVALUE 1)                        ; *PACKAGE*
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(MACSYMA-MODULE OUTMIS)-2|
+(CONST 0) = OUTMIS
+(CONST 1) = MACSYMA-MODULE
+(CONST 2) = (RUNTIME)
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+5 byte-code instructions:
+0     (CONST&PUSH 0)                      ; OUTMIS
+1     (CONST&PUSH 1)                      ; MACSYMA-MODULE
+2     (CONST&PUSH 2)                      ; (RUNTIME)
+3     (CALLS2 136)                        ; SYSTEM::%PUT
+5     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (FIXNUM NN))-3|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE STATUS))-4|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE ISOLAT) (SPECIAL *XVAR $EXPTISOLATE ...) ...)-5|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $EXPTISOLATE NIL)-6-1|
+(CONST 0) = $EXPTISOLATE
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $EXPTISOLATE
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $EXPTISOLATE
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $EXPTISOLATE NIL)-6-2|
+(CONST 0) = (SPECIAL $EXPTISOLATE)
+(CONST 1) = $EXPTISOLATE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $EXPTISOLATE)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $EXPTISOLATE
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $EXPTISOLATE
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $EXPTISOLATE
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $ISOLATE_WRT_TIMES NIL)-7-1|
+(CONST 0) = $ISOLATE_WRT_TIMES
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ISOLATE_WRT_TIMES
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $ISOLATE_WRT_TIMES
+11    (LOAD&PUSH 1)
+12    (NIL&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $ISOLATE_WRT_TIMES NIL)-7-2|
+(CONST 0) = (SPECIAL $ISOLATE_WRT_TIMES)
+(CONST 1) = $ISOLATE_WRT_TIMES
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $ISOLATE_WRT_TIMES)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $ISOLATE_WRT_TIMES
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $ISOLATE_WRT_TIMES
+8     (NIL&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $ISOLATE_WRT_TIMES
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $ISOLATE (E *XVAR) ...)-8|
+(CONST 0) = $ISOLATE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $ISOLATE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $ISOLATE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $ISOLATE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $ISOLATE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $ISOLATE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $ISOLATE
+(CONST 0) = *XVAR
+(CONST 1) = GETOPR
+(CONST 2) = ISO1
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*XVAR)
+writes special variable : (*XVAR)
+9 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; *XVAR
+3     (GETVALUE&PUSH 0)                   ; *XVAR
+5     (CALL1 1)                           ; GETOPR
+7     (SETVALUE 0)                        ; *XVAR
+9     (LOAD&PUSH 5)
+10    (CALL1 2)                           ; ISO1
+12    (UNBIND1)
+13    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN ISO1 (E) ...)-9|
+(CONST 0) = ISO1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ISO1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ISO1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ISO1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ISO1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ISO1
+8     (SKIP&RET 1)
+
+
+Disassembly of function ISO1
+(CONST 0) = SPECREPP
+(CONST 1) = SPECDISREP
+(CONST 2) = MPLUS
+(CONST 3) = FREE
+(CONST 4) = $ISOLATE_WRT_TIMES
+(CONST 5) = MTIMES
+(CONST 6) = *XVAR
+(CONST 7) = FREEOF
+(CONST 8) = MGEN2
+(CONST 9) = ALIKE1
+(CONST 10) = (MPLUS MTIMES)
+(CONST 11) = MEMQ
+(CONST 12) = ISO2
+(CONST 13) = MEXPT
+(CONST 14) = $EXPTISOLATE
+(CONST 15) = $RAT
+(CONST 16) = 0
+(CONST 17) = $RATNUMER
+(CONST 18) = RATDISREP
+(CONST 19) = $RATDENOM
+(CONST 20) = 1
+(CONST 21) = (MEXPT)
+(CONST 22) = -1
+(CONST 23) = $MULTTHRU
+(CONST 24) = MPLUSP
+(CONST 25) = $PARTITION
+(CONST 26) = POWER*
+(CONST 27) = MUL2*
+(CONST 28) = ISO1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($EXPTISOLATE *XVAR $ISOLATE_WRT_TIMES)
+138 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 1)
+1     (CALL1&JMPIF 0 L64)                 ; SPECREPP
+4     (LOAD&PUSH 1)
+5     (CONST&PUSH 2)                      ; MPLUS
+6     (CALL2&JMPIFNOT 3 L18)              ; FREE
+9     (GETVALUE 4)                        ; $ISOLATE_WRT_TIMES
+11    (JMPIFNOT L61)
+13    (LOAD&PUSH 1)
+14    (CONST&PUSH 5)                      ; MTIMES
+15    (CALL2&JMPIF 3 L61)                 ; FREE
+18    L18
+18    (GETVALUE&PUSH 6)                   ; *XVAR
+20    (LOAD&PUSH 2)
+21    (CALL2&JMPIF 7 L72)                 ; FREEOF
+24    (GETVALUE&PUSH 6)                   ; *XVAR
+26    (LOAD&PUSH 2)
+27    (CALL2&JMPIF 9 L77)                 ; ALIKE1
+30    (LOAD 1)
+31    (CAR)
+32    (CAR&PUSH)
+33    (CONST&PUSH 10)                     ; (MPLUS MTIMES)
+34    (CALL2&JMPIF 11 L81)                ; MEMQ
+37    (LOAD 1)
+38    (CAR)
+39    (CAR&PUSH)
+40    (JMPIFNOTEQTO 13 L186)              ; MEXPT
+44    (LOAD 1)
+45    (CDR)
+46    (CAR)
+47    (JMPIFCONSP L86)
+49    (LOAD 1)
+50    (CDR)
+51    (CAR&PUSH)
+52    (GETVALUE&PUSH 6)                   ; *XVAR
+54    (CALL2&JMPIF 9 L61)                 ; ALIKE1
+57    (GETVALUE 14)                       ; $EXPTISOLATE
+59    (JMPIF L115)
+61    L61
+61    (LOAD 1)
+62    (SKIP&RET 2)
+64    L64
+64    (LOAD&PUSH 1)
+65    (CALL1&PUSH 1)                      ; SPECDISREP
+67    (JMPTAIL 1 3 L0)
+72    L72
+72    (LOAD&PUSH 1)
+73    (CALL1 8)                           ; MGEN2
+75    (SKIP&RET 2)
+77    L77
+77    (GETVALUE 6)                        ; *XVAR
+79    (SKIP&RET 2)
+81    L81
+81    (LOAD&PUSH 1)
+82    (CALL1 12)                          ; ISO2
+84    (SKIP&RET 2)
+86    L86
+86    (LOAD&CAR&PUSH 1)
+88    (LOAD 2)
+89    (CDR)
+90    (CAR&PUSH)
+91    (JSR&PUSH L0)
+94    (LOAD 3)
+95    (CDR)
+96    (CDR)
+97    (CAR&PUSH)
+98    (LIST 3)
+100   (SKIP&RET 2)
+102   L102
+102   (LOAD 4)
+103   (CDR)
+104   (CAR&PUSH)
+105   (LOAD&PUSH 1)
+106   (CALL2&PUSH 26)                     ; POWER*
+108   (CALL1&PUSH 8)                      ; MGEN2
+110   (LOAD&PUSH 2)
+111   (CALL2 27)                          ; MUL2*
+113   (SKIP&RET 5)
+115   L115
+115   (LOAD 1)
+116   (CDR)
+117   (CDR)
+118   (CAR&PUSH)
+119   (GETVALUE&PUSH 6)                   ; *XVAR
+121   (CALL2&PUSH 15)                     ; $RAT
+123   (CONST&PUSH 16)                     ; 0
+124   (CONST&PUSH 16)                     ; 0
+125   (LOAD&PUSH 2)
+126   (CALL1&PUSH 17)                     ; $RATNUMER
+128   (CALL1 18)                          ; RATDISREP
+130   (STORE 1)
+131   (LOAD&PUSH 2)
+132   (CALL1&PUSH 19)                     ; $RATDENOM
+134   (CALL1 18)                          ; RATDISREP
+136   (STORE 2)
+137   (PUSH)
+138   (JMPIFEQTO 20 L150)                 ; 1
+141   (CONST&PUSH 21)                     ; (MEXPT)
+142   (LOAD&PUSH 3)
+143   (CONST&PUSH 22)                     ; -1
+144   (LIST&PUSH 3)
+146   (LOAD&PUSH 2)
+147   (CALL2 23)                          ; $MULTTHRU
+149   (STORE 1)
+150   L150
+150   (LOAD&PUSH 1)
+151   (CALL1&JMPIFNOT 24 L168)            ; MPLUSP
+154   (LOAD&PUSH 1)
+155   (GETVALUE&PUSH 6)                   ; *XVAR
+157   (CALL2 25)                          ; $PARTITION
+159   (STORE 1)
+160   (CDR)
+161   (CAR)
+162   (STORE 0)
+163   (LOAD 1)
+164   (CDR)
+165   (CDR)
+166   (CAR)
+167   (STORE 1)
+168   L168
+168   (LOAD 4)
+169   (CDR)
+170   (CAR&PUSH)
+171   (LOAD&PUSH 2)
+172   (JSR&PUSH L0)
+175   (CALL2 26)                          ; POWER*
+177   (STORE 1)
+178   (LOAD&PUSH 0)
+179   (JMPIFNOTEQTO 16 L102)              ; 0
+183   (LOAD 1)
+184   (SKIP&RET 5)
+186   L186
+186   (LOAD&CAR&PUSH 1)
+188   (CONST&SYMBOL-FUNCTION&PUSH 28)     ; ISO1
+190   (LOAD&CDR&PUSH 3)
+192   (CALLSR 0 22)                       ; MAPCAR
+195   (CONS)
+196   (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN ISO2 (E) ...)-10|
+(CONST 0) = ISO2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ISO2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ISO2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ISO2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ISO2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ISO2
+8     (SKIP&RET 1)
+
+
+Disassembly of function ISO2
+(CONST 0) = *XVAR
+(CONST 1) = FREEOF
+(CONST 2) = ISO1
+(CONST 3) = SIMPLIFY
+(CONST 4) = MPLUS
+(CONST 5) = FREE
+(CONST 6) = $ISOLATE_WRT_TIMES
+(CONST 7) = MTIMES
+(CONST 8) = MGEN2
+(CONST 9) = SIMPLIFYA
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($ISOLATE_WRT_TIMES *XVAR)
+64 byte-code instructions:
+0     (PUSH-NIL 3)
+2     (LOAD 4)
+3     (CAR)
+4     (CAR&PUSH)
+5     (NIL)
+6     (CONS)
+7     (STORE 0)
+8     (LOAD&CDR&PUSH 4)
+10    (LOAD&JMPIFNOT 0 L32)
+13    L13
+13    (GETVALUE&PUSH 0)                   ; *XVAR
+15    (LOAD&CAR&PUSH 1)
+17    (CALL2&JMPIF 1 L85)                 ; FREEOF
+21    (LOAD&CAR&PUSH 0)
+23    (CALL1&PUSH 2)                      ; ISO1
+25    (LOAD&CONS&STORE 3)
+27    L27
+27    (LOAD&CDR&STORE 0)
+29    (LOAD&JMPIF 0 L13)
+32    L32
+32    (SKIP 1)
+34    (LOAD&JMPIFNOT 1 L73)
+37    (LOAD 1)
+38    (CDR)
+39    (JMPIF L45)
+41    (LOAD 1)
+42    (CAR)
+43    (JMPIFATOM L73)
+45    L45
+45    (LOAD&PUSH 0)
+46    (LOAD 2)
+47    (CONS&PUSH)
+48    (CALL1 3)                           ; SIMPLIFY
+50    (STORE 1)
+51    (PUSH)
+52    (CONST&PUSH 4)                      ; MPLUS
+53    (CALL2&JMPIFNOT 5 L65)              ; FREE
+56    (GETVALUE 6)                        ; $ISOLATE_WRT_TIMES
+58    (JMPIFNOT L69)
+60    (LOAD&PUSH 1)
+61    (CONST&PUSH 7)                      ; MTIMES
+62    (CALL2&JMPIF 5 L69)                 ; FREE
+65    L65
+65    (LOAD&PUSH 1)
+66    (CALL1 8)                           ; MGEN2
+68    (STORE 1)
+69    L69
+69    (LOAD&PUSH 1)
+70    (NIL)
+71    (CONS)
+72    (STORE 1)
+73    L73
+73    (LOAD&PUSH 0)
+74    (LOAD&PUSH 3)
+75    (LOAD&PUSH 3)
+76    (CALLSR 2 35)                       ; NCONC
+79    (CONS&PUSH)
+80    (NIL&PUSH)
+81    (CALL2 9)                           ; SIMPLIFYA
+83    (SKIP&RET 5)
+85    L85
+85    (LOAD&CAR&PUSH 0)
+87    (LOAD&CONS&STORE 2)
+89    (JMP L27)
+
+
+Disassembly of function #:|(DEFUN MGEN2 (H) ...)-11|
+(CONST 0) = MGEN2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MGEN2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MGEN2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MGEN2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MGEN2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MGEN2
+8     (SKIP&RET 1)
+
+
+Disassembly of function MGEN2
+(CONST 0) = $LABELS
+(CONST 1) = $LINECHAR
+(CONST 2) = GETLABCHARN
+(CONST 3) = MEMSIMILARL
+(CONST 4) = DISPLINE
+(CONST 5) = $DISPFLAG
+(CONST 6) = MTERPRI
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($DISPFLAG $LINECHAR $LABELS)
+18 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (GETVALUE 0)                        ; $LABELS
+3     (CDR&PUSH)
+4     (GETVALUE&PUSH 1)                   ; $LINECHAR
+6     (CALL1&PUSH 2)                      ; GETLABCHARN
+8     (CALL 3 3)                          ; MEMSIMILARL
+11    (JMPIF1 L26)
+13    (LOAD&PUSH 1)
+14    (CALL1 4)                           ; DISPLINE
+16    (STORE 1)
+17    (GETVALUE 5)                        ; $DISPFLAG
+19    (JMPIFNOT L23)
+21    (CALL0 6)                           ; MTERPRI
+23    L23
+23    (LOAD 1)
+24    (SKIP&RET 2)
+26    L26
+26    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN MEMSIMILARL (ITEM LIST LINECHAR) ...)-12|
+(CONST 0) = MEMSIMILARL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MEMSIMILARL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MEMSIMILARL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MEMSIMILARL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MEMSIMILARL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MEMSIMILARL
+8     (SKIP&RET 1)
+
+
+Disassembly of function MEMSIMILARL
+(CONST 0) = GETLABCHARN
+(CONST 1) = MEMSIMILAR
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+26 byte-code instructions:
+0     (LOAD&JMPIF 2 L9)
+3     L3
+3     (NIL)
+4     (SKIP&RET 4)
+6     L6
+6     (LOAD&JMPIFNOT 2 L3)
+9     L9
+9     (LOAD&CAR&PUSH 2)
+11    (CALL1&PUSH 0)                      ; GETLABCHARN
+13    (LOAD&PUSH 2)
+14    (CALLSR&JMPIFNOT 1 7 L35)           ; CHAR=
+18    (LOAD&CAR&PUSH 2)
+20    (CALLS1&JMPIFNOT 79 L35)            ; BOUNDP
+23    (LOAD&PUSH 3)
+24    (LOAD&CAR&PUSH 3)
+26    (LOAD&CAR&PUSH 4)
+28    (CALLS1&PUSH 78)                    ; SYMBOL-VALUE
+30    (CALL 3 1)                          ; MEMSIMILAR
+33    (JMPIF1 L43)
+35    L35
+35    (LOAD&PUSH 3)
+36    (LOAD&CDR&PUSH 3)
+38    (LOAD&PUSH 3)
+39    (JMPTAIL 3 7 L6)
+43    L43
+43    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN MEMSIMILAR (ITEM1 ITEM2 ITEM2EV) ...)-13|
+(CONST 0) = MEMSIMILAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE MEMSIMILAR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; MEMSIMILAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; MEMSIMILAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE MEMSIMILAR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; MEMSIMILAR
+8     (SKIP&RET 1)
+
+
+Disassembly of function MEMSIMILAR
+(CONST 0) = 0
+(CONST 1) = ALIKE1
+(CONST 2) = ERRORSW
+(CONST 3) = DIV
+(CONST 4) = MNUMP
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+36 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (JMPIFEQTO 0 L42)                   ; 0
+4     (LOAD&PUSH 3)
+5     (LOAD&PUSH 2)
+6     (CALL2&JMPIF 1 L45)                 ; ALIKE1
+9     (T)
+10    (BIND 2)                            ; ERRORSW
+12    (NIL&PUSH)
+13    (CONST 2)                           ; ERRORSW
+14    (CATCH-OPEN L21)
+16    (LOAD&PUSH 8)
+17    (LOAD&PUSH 11)
+18    (CALL2 3)                           ; DIV
+20    (CATCH-CLOSE)
+21    L21
+21    (STORE 0)
+22    (PUSH)
+23    (CALL1 4)                           ; MNUMP
+25    (JMPIFNOT1 L37)
+27    (LOAD&PUSH 0)
+28    (CALLS2 145)                        ; ZEROP
+30    (NOT)
+31    (JMPIFNOT1 L37)
+33    (LOAD&PUSH 6)
+34    (LOAD&PUSH 1)
+35    (CALL2 3)                           ; DIV
+37    L37
+37    (SKIP 1)
+39    (UNBIND1)
+40    (SKIP&RET 4)
+42    L42
+42    (NIL)
+43    (SKIP&RET 4)
+45    L45
+45    (LOAD 2)
+46    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN $PICKAPART (X LEV) ...)-14|
+(CONST 0) = $PICKAPART
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $PICKAPART>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PICKAPART
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $PICKAPART
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $PICKAPART>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $PICKAPART
+8     (SKIP&RET 1)
+
+
+Disassembly of function $PICKAPART
+(CONST 0) = FORMAT1
+(CONST 1) = FIXNUMP
+(CONST 2) = "Improper 2nd argument to PICKAPART:~%~M"
+(CONST 3) = MERROR
+(CONST 4) = MMINUS
+(CONST 5) = 0
+(CONST 6) = MGEN2
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+60 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 2)
+1     (CALL1 0)                           ; FORMAT1
+3     (STORE 2)
+4     (LOAD&PUSH 1)
+5     (CALL1&JMPIFNOT 1 L39)              ; FIXNUMP
+8     (LOAD 2)
+9     (JMPIFATOM L36)
+11    (LOAD 2)
+12    (CAR)
+13    (CAR&PUSH)
+14    (JMPIFNOTEQTO 4 L22)                ; MMINUS
+17    (LOAD 2)
+18    (CDR)
+19    (CAR)
+20    (JMPIFATOM L36)
+22    L22
+22    (LOAD&PUSH 1)
+23    (CONST&PUSH 5)                      ; 0
+24    (CALLSR&JMPIF 1 45 L45)             ; =
+28    (LOAD 2)
+29    (CDR)
+30    (JMPIFCONSP L50)
+32    (LOAD 2)
+33    (CDR)
+34    (JMPIFNOT L50)
+36    L36
+36    (LOAD 2)
+37    (SKIP&RET 3)
+39    L39
+39    (CONST&PUSH 2)                      ; "Improper 2nd argument to PICKAPART:~%~M"
+40    (LOAD&PUSH 2)
+41    (CALL2 3)                           ; MERROR
+43    (SKIP&RET 3)
+45    L45
+45    (LOAD&PUSH 2)
+46    (CALL1 6)                           ; MGEN2
+48    (SKIP&RET 3)
+50    L50
+50    (LOAD&CAR&PUSH 2)
+52    (NIL&PUSH)
+53    (LOAD&CDR&PUSH 4)
+55    (JMP L70)
+57    L57
+57    (LOAD&CAR&PUSH 0)
+59    (LOAD&PUSH 0)
+60    (LOAD&DEC&PUSH 6)
+62    (JSR&PUSH L0)
+64    (LOAD&CONS&STORE 2)
+66    (SKIP 1)
+68    (LOAD&CDR&STORE 0)
+70    L70
+70    (LOAD&PUSH 0)
+71    (CALLS1&JMPIFNOT 146 L57)           ; ENDP
+74    (SKIP 1)
+76    (LOAD&PUSH 0)
+77    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+79    (SKIP 1)
+81    (CONS)
+82    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMFUN $REVEAL (E LEV) ...)-15|
+(CONST 0) = $REVEAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $REVEAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $REVEAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $REVEAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $REVEAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $REVEAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function $REVEAL
+(CONST 0) = FORMAT1
+(CONST 1) = ML-TYPEP
+(CONST 2) = FIXNUM
+(CONST 3) = 0
+(CONST 4) = 1
+(CONST 5) = REVEAL
+(CONST 6) = "Second argument to REVEAL must be positive integer."
+(CONST 7) = MERROR
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+19 byte-code instructions:
+0     (LOAD&PUSH 2)
+1     (CALL1 0)                           ; FORMAT1
+3     (STORE 2)
+4     (LOAD&PUSH 1)
+5     (CALL1&PUSH 1)                      ; ML-TYPEP
+7     (JMPIFNOTEQTO 2 L16)                ; FIXNUM
+10    (LOAD&PUSH 1)
+11    (CONST&PUSH 3)                      ; 0
+12    (CALLSR&JMPIF 1 48 L21)             ; >
+16    L16
+16    (CONST&PUSH 6)                      ; "Second argument to REVEAL must be positive integer."
+17    (CALL1 7)                           ; MERROR
+19    (SKIP&RET 3)
+21    L21
+21    (LOAD&PUSH 2)
+22    (CONST&PUSH 4)                      ; 1
+23    (LOAD&PUSH 3)
+24    (CALL 3 5)                          ; REVEAL
+27    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN SIMPLE (X) ...)-16|
+(CONST 0) = SIMPLE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SIMPLE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SIMPLE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SIMPLE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SIMPLE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SIMPLE
+8     (SKIP&RET 1)
+
+
+Disassembly of function SIMPLE
+(CONST 0) = (RAT BIGFLOAT)
+(CONST 1) = MEMQ
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+11 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2 5)                          ; ATOM
+3     (JMPIF1 L13)
+5     (LOAD 1)
+6     (CAR)
+7     (CAR&PUSH)
+8     (CONST&PUSH 0)                      ; (RAT BIGFLOAT)
+9     (CALL2 1)                           ; MEMQ
+11    (SKIP&RET 2)
+13    L13
+13    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN REVEAL (E NN LEV) ...)-17|
+(CONST 0) = REVEAL
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE REVEAL>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; REVEAL
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; REVEAL
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE REVEAL>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; REVEAL
+8     (SKIP&RET 1)
+
+
+Disassembly of function REVEAL
+(CONST 0) = SIMPLE
+(CONST 1) = MPLUS
+(CONST 2) = (|&Sum| SIMP)
+(CONST 3) = MTIMES
+(CONST 4) = (|&Product| SIMP)
+(CONST 5) = MEXPT
+(CONST 6) = |&Expt|
+(CONST 7) = MQUOTIENT
+(CONST 8) = |&Quotient|
+(CONST 9) = MMINUS
+(CONST 10) = |&Negterm|
+(CONST 11) = MOP
+(CONST 12) = GETOP
+(CONST 13) = SIMP
+(CONST 14) = MEMQ
+(CONST 15) = MARGS
+(CONST 16) = FORMAT1
+(CONST 17) = MQAPPLY
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+122 byte-code instructions:
+0     L0
+0     (LOAD&PUSH 3)
+1     (CALL1&JMPIF 0 L34)                 ; SIMPLE
+4     (LOAD&PUSH 2)
+5     (LOAD&PUSH 2)
+6     (CALLSR&JMPIFNOT 1 45 L78)          ; =
+11    (LOAD 3)
+12    (CAR)
+13    (CAR&PUSH)
+14    (JMPIFEQTO 1 L37)                   ; MPLUS
+17    (LOAD 3)
+18    (CAR)
+19    (CAR&PUSH)
+20    (JMPIFNOTEQTO 3 L49)                ; MTIMES
+23    (CONST 4)                           ; (|&Product| SIMP)
+24    L24
+24    (PUSH)
+25    (LOAD&CDR&PUSH 4)
+27    (CALLS2&PUSH 71)                    ; LENGTH
+29    (NIL)
+30    (CONS)
+31    (CONS)
+32    (SKIP&RET 4)
+34    L34
+34    (LOAD 3)
+35    (SKIP&RET 4)
+37    L37
+37    (CONST 2)                           ; (|&Sum| SIMP)
+38    (JMP L24)
+40    L40
+40    (CONST 6)                           ; |&Expt|
+41    (SKIP&RET 4)
+43    L43
+43    (CONST 8)                           ; |&Quotient|
+44    (SKIP&RET 4)
+46    L46
+46    (CONST 10)                          ; |&Negterm|
+47    (SKIP&RET 4)
+49    L49
+49    (LOAD 3)
+50    (CAR)
+51    (CAR&PUSH)
+52    (JMPIFEQTO 5 L40)                   ; MEXPT
+55    (LOAD 3)
+56    (CAR)
+57    (CAR&PUSH)
+58    (JMPIFEQTO 7 L43)                   ; MQUOTIENT
+61    (LOAD 3)
+62    (CAR)
+63    (CAR&PUSH)
+64    (JMPIFEQTO 9 L46)                   ; MMINUS
+67    (LOAD&PUSH 3)
+68    (CALL1&PUSH 11)                     ; MOP
+70    (CALL1 12)                          ; GETOP
+72    (SKIP&RET 4)
+74    L74
+74    (LOAD 3)
+75    (CAR)
+76    (JMP L94)
+78    L78
+78    (CONST&PUSH 13)                     ; SIMP
+79    (LOAD 4)
+80    (CAR)
+81    (CDR&PUSH)
+82    (CALL2&JMPIF 14 L74)                ; MEMQ
+85    (LOAD 3)
+86    (CAR)
+87    (CAR&PUSH)
+88    (CONST&PUSH 13)                     ; SIMP
+89    (LOAD 5)
+90    (CAR)
+91    (CDR)
+92    (CONS)
+93    (CONS)
+94    L94
+94    (PUSH)
+95    (NIL&PUSH)
+96    (LOAD&PUSH 5)
+97    (CALL1&PUSH 15)                     ; MARGS
+99    (JMP L132)
+101   L101
+101   (LOAD&PUSH 1)
+102   (LOAD 6)
+103   (CDR)
+104   (CAR&PUSH)
+105   (LOAD 2)
+106   (CONS)
+107   (JMP L156)
+109   L109
+109   (LOAD&PUSH 1)
+110   (LOAD&PUSH 1)
+111   (CALLS2 73)                         ; NREVERSE
+113   (JMP L156)
+115   L115
+115   (LOAD&CAR&PUSH 0)
+117   (LOAD&PUSH 0)
+118   (CALL1&PUSH 16)                     ; FORMAT1
+120   (LOAD&INC&PUSH 7)
+122   (LOAD&PUSH 7)
+123   (JSR&PUSH L0)
+126   (LOAD&CONS&STORE 2)
+128   (SKIP 1)
+130   (LOAD&CDR&STORE 0)
+132   L132
+132   (LOAD&PUSH 0)
+133   (CALLS1&JMPIFNOT 146 L115)          ; ENDP
+136   (SKIP 1)
+138   (LOAD&PUSH 0)
+139   (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+142   (LOAD 5)
+143   (CAR)
+144   (CAR&PUSH)
+145   (JMPIFEQTO 17 L101)                 ; MQAPPLY
+148   (LOAD 5)
+149   (CAR)
+150   (CAR&PUSH)
+151   (JMPIFEQTO 1 L109)                  ; MPLUS
+154   (LOAD&PUSH 1)
+155   (LOAD 1)
+156   L156
+156   (CONS)
+157   (SKIP&RET 6)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE PROPFN) (SPECIAL ATVARS MUNBOUND ...))-18|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMSPEC $PROPERTIES (X) ...)-19-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $PROPERTIES (X) ...)-19-2-1|>
+(CONST 1) = $PROPERTIES
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $PROPERTIES (X) ...)-19-2-1|>
+1     (CONST&PUSH 1)                      ; $PROPERTIES
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $PROPERTIES (X) ...)-19-2-1|
+(CONST 0) = FEXPRCHECK
+(CONST 1) = GETOPR
+(CONST 2) = $PROPERTIES
+(CONST 3) = NONSYMCHK
+(CONST 4) = PROPERTIES
+(CONST 5) = NOUN
+(CONST 6) = VERB
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+29 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&PUSH 0)                      ; FEXPRCHECK
+3     (CALL1 1)                           ; GETOPR
+5     (STORE 1)
+6     (PUSH)
+7     (CONST&PUSH 2)                      ; $PROPERTIES
+8     (CALL2 3)                           ; NONSYMCHK
+10    (LOAD&PUSH 1)
+11    (CALL1&PUSH 4)                      ; PROPERTIES
+13    (LOAD&PUSH 2)
+14    (CONST&PUSH 5)                      ; NOUN
+15    (PUSH-UNBOUND 1)
+17    (CALLS2&JMPIF 132 L26)              ; GET
+20    (LOAD&PUSH 2)
+21    (CONST&PUSH 6)                      ; VERB
+22    (PUSH-UNBOUND 1)
+24    (CALLS2 132)                        ; GET
+26    L26
+26    (PUSH)
+27    (LOAD&JMPIF 0 L33)
+30    (LOAD 1)
+31    (SKIP&RET 4)
+33    L33
+33    (LOAD&PUSH 1)
+34    (LOAD&PUSH 1)
+35    (CALL1 4)                           ; PROPERTIES
+37    (CDR&PUSH)
+38    (CALLSR 2 35)                       ; NCONC
+41    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFUN PROPERTIES (X) ...)-20|
+(CONST 0) = PROPERTIES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE PROPERTIES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; PROPERTIES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; PROPERTIES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE PROPERTIES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; PROPERTIES
+8     (SKIP&RET 1)
+
+
+Disassembly of function PROPERTIES
+(CONST 0) = (MLIST SIMP)
+(CONST 1) = OPTIONP
+(CONST 2) = |&System Value|
+(CONST 3) = $VALUE
+(CONST 4) = 
+((BINDTEST . $BINDTEST) (SP2 . $DEFTAYLOR) (SP2SUBS . $DEFTAYLOR)
+ (ASSIGN . |&Assign Property|) (NONARRAY . $NONARRAY) (GRAD . $GRADEF)
+ (NOUN . $NOUN) (EVFUN . $EVFUN) (SPECIAL . $SPECIAL) (EVFLAG . $EVFLAG)
+ (OP . $OPERATOR) (ALPHABET . $ALPHABETIC))
+(CONST 5) = ASSQ
+(CONST 6) = OPERS
+(CONST 7) = MEMQ
+(CONST 8) = OPERATORS
+(CONST 9) = SIMPARGS1
+(CONST 10) = $RULE
+(CONST 11) = (FEXPR FSUBR MFEXPR*S MFEXPR*)
+(CONST 12) = |&Special Evaluation Form|
+(CONST 13) = MFEXPR*
+(CONST 14) = |&System Function|
+(CONST 15) = TRANSLATED
+(CONST 16) = $TRANSFUN
+(CONST 17) = ($RULE RULEOF)
+(CONST 18) = MGETL
+(CONST 19) = AUTOLOAD
+(CONST 20) = $PROPS
+(CONST 21) = |&User Autoload Function|
+(CONST 22) = REVERSEALIAS
+(CONST 23) = $ALIASES
+(CONST 24) = $ALIAS
+(CONST 25) = DATA
+(CONST 26) = |&Database Info|
+(CONST 27) = $FACTS
+(CONST 28) = MPROPS
+(CONST 29) = 
+((MEXPR . $FUNCTION) (MMACRO . $MACRO) (HASHAR . |&Hashed Array|)
+ (AEXPR . |&Array Function|) (ATVALUES . $ATVALUE) ($ATOMGRAD . $ATOMGRAD)
+ ($NUMER . $NUMER) (DEPENDS . $DEPENDENCY) ($CONSTANT . $CONSTANT)
+ ($NONSCALAR . $NONSCALAR) ($SCALAR . $SCALAR) (MATCHDECLARE . $MATCHDECLARE)
+ (MODE . $MODEDECLARE))
+(CONST 30) = ARRAY
+(CONST 31) = |&Complete Array|
+(CONST 32) = |&Declared Array|
+(CONST 33) = (MLIST)
+(CONST 34) = |&User Properties|
+(CONST 35) = $FEATURES
+(CONST 36) = $FEATURE
+(CONST 37) = $CONTEXTS
+(CONST 38) = $CONTEXT
+(CONST 39) = $ACTIVECONTEXTS
+(CONST 40) = $ACTIVECONTEXT
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: ($ACTIVECONTEXTS $CONTEXTS $FEATURES $PROPS $ALIASES OPERS)
+258 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 139)                   ; SYMBOL-PLIST
+3     (CONST&PUSH 0)                      ; (MLIST SIMP)
+4     (LOAD&PUSH 3)
+5     (CALLS1&JMPIFNOT 79 L17)            ; BOUNDP
+8     (LOAD&PUSH 3)
+9     (CALL1&JMPIF 1 L119)                ; OPTIONP
+13    (CONST 3)                           ; $VALUE
+14    L14
+14    (PUSH)
+15    (NIL)
+16    (CONS)
+17    L17
+17    (CONS&PUSH)
+18    (NIL&PUSH)
+19    (LOAD&JMPIFNOT 2 L318)
+23    L23
+23    (LOAD&CAR&PUSH 2)
+25    (CONST&PUSH 4)                      ; (# # # ...)
+26    (CALL2 5)                           ; ASSQ
+28    (STORE 0)
+29    (JMPIF L123)
+32    (LOAD&CAR&PUSH 2)
+34    (GETVALUE&PUSH 6)                   ; OPERS
+36    (CALL2 7)                           ; MEMQ
+38    (STORE 0)
+39    (JMPIF L128)
+42    (LOAD&CAR&PUSH 2)
+44    (JMPIFNOTEQTO 8 L54)                ; OPERATORS
+47    (LOAD 2)
+48    (CDR)
+49    (CAR&PUSH)
+50    (JMPIFNOTEQTO 9 L133)               ; SIMPARGS1
+54    L54
+54    (LOAD&CAR&PUSH 2)
+56    (CONST&PUSH 11)                     ; (FEXPR FSUBR MFEXPR*S MFEXPR*)
+57    (CALL2&JMPIFNOT 7 L67)              ; MEMQ
+60    (LOAD&PUSH 1)
+61    (CONST&PUSH 12)                     ; |&Special Evaluation Form|
+62    (NIL)
+63    (CONS&PUSH)
+64    (CALLSR 2 35)                       ; NCONC
+67    L67
+67    (LOAD&CAR&PUSH 2)
+69    (CONST&PUSH 13)                     ; MFEXPR*
+70    (PUSH-UNBOUND 1)
+72    (CALLS2&JMPIF 132 L79)              ; GET
+75    (LOAD&PUSH 4)
+76    (CALLS1&JMPIFNOT 80 L84)            ; FBOUNDP
+79    L79
+79    (CONST&PUSH 14)                     ; |&System Function|
+80    (LOAD&PUSH 2)
+81    (CALL2&JMPIFNOT 7 L143)             ; MEMQ
+84    L84
+84    (LOAD&CAR&PUSH 2)
+86    (JMPIFNOTEQTO 19 L95)               ; AUTOLOAD
+89    (CONST&PUSH 14)                     ; |&System Function|
+90    (LOAD&PUSH 2)
+91    (CALL2&JMPIFNOT 7 L166)             ; MEMQ
+95    L95
+95    (LOAD&CAR&PUSH 2)
+97    (JMPIFNOTEQTO 22 L177)              ; REVERSEALIAS
+101   (LOAD&CAR&PUSH 2)
+103   (GETVALUE 23)                       ; $ALIASES
+105   (CDR&PUSH)
+106   (CALL2&JMPIFNOT 7 L177)             ; MEMQ
+110   (LOAD&PUSH 1)
+111   (CONST 24)                          ; $ALIAS
+113   L113
+113   (PUSH)
+114   (NIL)
+115   (CONS)
+116   (JMP L189)
+119   L119
+119   (CONST 2)                           ; |&System Value|
+120   (JMP L14)
+123   L123
+123   (LOAD&PUSH 1)
+124   (LOAD 1)
+125   (CDR)
+126   (JMP L113)
+128   L128
+128   (LOAD&PUSH 1)
+129   (LOAD 1)
+130   (CAR)
+131   (JMP L157)
+133   L133
+133   (LOAD&PUSH 1)
+134   (CONST 10)                          ; $RULE
+135   (JMP L157)
+137   L137
+137   (CONST 16)                          ; $TRANSFUN
+138   (JMP L157)
+140   L140
+140   (CONST 10)                          ; $RULE
+141   (JMP L157)
+143   L143
+143   (LOAD&PUSH 1)
+144   (LOAD&PUSH 5)
+145   (CONST&PUSH 15)                     ; TRANSLATED
+146   (PUSH-UNBOUND 1)
+148   (CALLS2&JMPIF 132 L137)             ; GET
+151   (LOAD&PUSH 5)
+152   (CONST&PUSH 17)                     ; ($RULE RULEOF)
+153   (CALL2&JMPIF 18 L140)               ; MGETL
+156   (CONST 14)                          ; |&System Function|
+157   L157
+157   (PUSH)
+158   (LIST 1)
+160   (JMP L189)
+162   L162
+162   (CONST 21)                          ; |&User Autoload Function|
+164   (JMP L113)
+166   L166
+166   (LOAD&PUSH 1)
+167   (LOAD&PUSH 5)
+168   (GETVALUE 20)                       ; $PROPS
+170   (CDR&PUSH)
+171   (CALL2&JMPIF 7 L162)                ; MEMQ
+174   (CONST 14)                          ; |&System Function|
+175   (JMP L113)
+177   L177
+177   (LOAD&CAR&PUSH 2)
+179   (JMPIFNOTEQTO 25 L205)              ; DATA
+182   (LOAD&PUSH 1)
+183   (CONST&PUSH 26)                     ; |&Database Info|
+184   (LOAD&PUSH 6)
+185   (CALL1 27)                          ; $FACTS
+187   (CDR)
+188   (CONS)
+189   L189
+189   (PUSH)
+190   (CALLSR 2 35)                       ; NCONC
+193   (JMP L310)
+196   L196
+196   (LOAD&PUSH 2)
+197   (LOAD 2)
+198   (CDR)
+199   (JMP L243)
+201   L201
+201   (CONST 31)                          ; |&Complete Array|
+203   (JMP L243)
+205   L205
+205   (LOAD&CAR&PUSH 2)
+207   (JMPIFNOTEQTO 28 L310)              ; MPROPS
+211   (LOAD 2)
+212   (CDR)
+213   (CAR)
+214   (CDR&PUSH)
+215   (LOAD&JMPIFNOT 0 L308)
+219   L219
+219   (LOAD&CAR&PUSH 0)
+221   (CONST&PUSH 29)                     ; (# # # ...)
+222   (CALL2 5)                           ; ASSQ
+224   (STORE 1)
+225   (JMPIF L196)
+227   (LOAD&CAR&PUSH 0)
+229   (JMPIFNOTEQTO 30 L251)              ; ARRAY
+232   (LOAD&PUSH 2)
+233   (LOAD&PUSH 6)
+234   (CONST&PUSH 30)                     ; ARRAY
+236   (PUSH-UNBOUND 1)
+238   (CALLS2&JMPIF 132 L201)             ; GET
+241   (CONST 32)                          ; |&Declared Array|
+243   L243
+243   (PUSH)
+244   (LIST&PUSH 1)
+246   (CALLSR 2 35)                       ; NCONC
+249   (JMP L300)
+251   L251
+251   (LOAD&CAR&PUSH 0)
+253   (JMPIFNOTEQTO 20 L300)              ; $PROPS
+256   (LOAD 0)
+257   (CDR)
+258   (CAR)
+259   (CDR)
+260   (JMPIFNOT L300)
+262   (LOAD&PUSH 2)
+263   (LOAD 1)
+264   (CDR)
+265   (CAR)
+266   (CDR&PUSH)
+267   (CONST&PUSH 33)                     ; (MLIST)
+269   (CONST&PUSH 34)                     ; |&User Properties|
+271   (LIST&PUSH 2)
+273   (LOAD&JMPIFNOT 1 L291)
+276   L276
+276   (LOAD&PUSH 0)
+277   (LOAD&CAR&PUSH 2)
+279   (LIST&PUSH 1)
+281   (CALLSR 2 35)                       ; NCONC
+284   (LOAD 1)
+285   (CDR)
+286   (CDR)
+287   (STORE 1)
+288   (LOAD&JMPIF 1 L276)
+291   L291
+291   (LOAD&PUSH 0)
+292   (LIST 1)
+294   (SKIP 1)
+296   (STORE 0)
+297   (CALLSR 2 35)                       ; NCONC
+300   L300
+300   (LOAD 0)
+301   (CDR)
+302   (CDR)
+303   (STORE 0)
+304   (LOAD&JMPIF 0 L219)
+308   L308
+308   (SKIP 1)
+310   L310
+310   (LOAD 2)
+311   (CDR)
+312   (CDR)
+313   (STORE 2)
+314   (LOAD&JMPIF 2 L23)
+318   L318
+318   (LOAD&PUSH 4)
+319   (GETVALUE 35)                       ; $FEATURES
+321   (CDR&PUSH)
+322   (CALL2&JMPIFNOT 7 L333)             ; MEMQ
+325   (LOAD&PUSH 1)
+326   (CONST&PUSH 36)                     ; $FEATURE
+328   (NIL)
+329   (CONS&PUSH)
+330   (CALLSR 2 35)                       ; NCONC
+333   L333
+333   (LOAD&PUSH 4)
+334   (GETVALUE 37)                       ; $CONTEXTS
+336   (CDR&PUSH)
+337   (CALL2&JMPIFNOT 7 L348)             ; MEMQ
+340   (LOAD&PUSH 1)
+341   (CONST&PUSH 38)                     ; $CONTEXT
+343   (NIL)
+344   (CONS&PUSH)
+345   (CALLSR 2 35)                       ; NCONC
+348   L348
+348   (LOAD&PUSH 4)
+349   (GETVALUE 39)                       ; $ACTIVECONTEXTS
+351   (CDR&PUSH)
+352   (CALL2&JMPIFNOT 7 L363)             ; MEMQ
+355   (LOAD&PUSH 1)
+356   (CONST&PUSH 40)                     ; $ACTIVECONTEXT
+358   (NIL)
+359   (CONS&PUSH)
+360   (CALLSR 2 35)                       ; NCONC
+363   L363
+363   (LOAD&PUSH 4)
+364   (CALLS2&JMPIF 139 L378)             ; SYMBOL-PLIST
+367   (LOAD&PUSH 4)
+368   (CALLS1&JMPIFNOT 80 L378)           ; FBOUNDP
+371   (LOAD&PUSH 1)
+372   (CONST&PUSH 14)                     ; |&System Function|
+373   (LIST&PUSH 1)
+375   (CALLSR 2 35)                       ; NCONC
+378   L378
+378   (LOAD 1)
+379   (SKIP&RET 5)
+
+
+Disassembly of function #:|(DEFMSPEC $PROPVARS (X) ...)-21-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $PROPVARS (X) ...)-21-2-1|>
+(CONST 1) = $PROPVARS
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $PROPVARS (X) ...)-21-2-1|>
+1     (CONST&PUSH 1)                      ; $PROPVARS
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $PROPVARS (X) ...)-21-2-1|
+(CONST 0) = FEXPRCHECK
+(CONST 1) = $PROPS
+(CONST 2) = (MLIST)
+(CONST 3) = ($PROPERTIES)
+(CONST 4) = MEVAL
+(CONST 5) = AMONG
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($PROPS)
+27 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1 0)                           ; FEXPRCHECK
+3     (STORE 1)
+4     (GETVALUE 1)                        ; $PROPS
+6     (CDR&PUSH)
+7     (CONST&PUSH 2)                      ; (MLIST)
+8     (NIL)
+9     (CONS&PUSH)
+10    (LOAD&JMPIFNOT 1 L37)
+13    L13
+13    (LOAD&PUSH 3)
+14    (CONST&PUSH 3)                      ; ($PROPERTIES)
+15    (LOAD&CAR&PUSH 3)
+17    (LIST&PUSH 2)
+19    (CALL1&PUSH 4)                      ; MEVAL
+21    (CALL2&JMPIFNOT 5 L32)              ; AMONG
+24    (LOAD&PUSH 0)
+25    (LOAD&CAR&PUSH 2)
+27    (NIL)
+28    (CONS&PUSH)
+29    (CALLSR 2 35)                       ; NCONC
+32    L32
+32    (LOAD&CDR&STORE 1)
+34    (LOAD&JMPIF 1 L13)
+37    L37
+37    (POP)
+38    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFMSPEC $PRINTPROPS (R) ...)-22-2|
+(CONST 0) = #<COMPILED-CLOSURE #:|(DEFMSPEC $PRINTPROPS (R) ...)-22-2-1|>
+(CONST 1) = $PRINTPROPS
+(CONST 2) = MFEXPR*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+6 byte-code instructions:
+0     (CONST&PUSH 0)                      ; #<COMPILED-CLOSURE #:|(DEFMSPEC $PRINTPROPS (R) ...)-22-2-1|>
+1     (CONST&PUSH 1)                      ; $PRINTPROPS
+2     (CONST&PUSH 2)                      ; MFEXPR*
+3     (LOAD&PUSH 2)
+4     (CALLS2 136)                        ; SYSTEM::%PUT
+6     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMSPEC $PRINTPROPS (R) ...)-22-2-1|
+(CONST 0) = "PRINTPROPS takes two arguments."
+(CONST 1) = MERROR
+(CONST 2) = $ALL
+(CONST 3) = $GRADEF
+(CONST 4) = CAAR
+(CONST 5) = $GRADEFS
+(CONST 6) = ($PROPVARS)
+(CONST 7) = MEVAL
+(CONST 8) = $ATVALUE
+(CONST 9) = DISPATVALUES
+(CONST 10) = $ATOMGRAD
+(CONST 11) = DISPATOMGRADS
+(CONST 12) = DISPGRADEFS
+(CONST 13) = $MATCHDECLARE
+(CONST 14) = DISPMATCHDECLARES
+(CONST 15) = "UNKNOWN PROPERTY - PRINTPROPS:  ~:M"
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($GRADEFS)
+65 byte-code instructions:
+0     (LOAD&CDR&STORE 1)
+2     (CDR)
+3     (JMPIF L8)
+5     (CONST&PUSH 0)                      ; "PRINTPROPS takes two arguments."
+6     (CALL1 1)                           ; MERROR
+8     L8
+8     (LOAD 1)
+9     (CDR)
+10    (CAR&PUSH)
+11    (LOAD&CAR&STORE 2 2)
+14    (JMPIFATOM L63)
+16    (LOAD 2)
+17    (CDR)
+18    L18
+18    (STORE 2)
+19    (LOAD&PUSH 0)
+20    (JMPIFEQTO 8 L72)                   ; $ATVALUE
+23    (LOAD&PUSH 0)
+24    (JMPIFEQTO 10 L77)                  ; $ATOMGRAD
+27    (LOAD&PUSH 0)
+28    (JMPIFEQTO 3 L82)                   ; $GRADEF
+31    (LOAD&PUSH 0)
+32    (JMPIFEQTO 13 L87)                  ; $MATCHDECLARE
+35    (CONST&PUSH 15)                     ; "UNKNOWN PROPERTY - PRINTPROPS:  ~:M"
+36    (LOAD&PUSH 1)
+37    (CALL2 1)                           ; MERROR
+39    (SKIP&RET 3)
+41    L41
+41    (CONST&PUSH 4)                      ; CAAR
+42    (GETVALUE 5)                        ; $GRADEFS
+44    (CDR&PUSH)
+45    (CALLSR 0 22)                       ; MAPCAR
+48    (JMP L18)
+50    L50
+50    (LOAD&PUSH 0)
+51    (JMPIFEQTO 3 L41)                   ; $GRADEF
+54    (CONST&PUSH 6)                      ; ($PROPVARS)
+55    (LOAD&PUSH 1)
+56    (LIST&PUSH 2)
+58    (CALL1 7)                           ; MEVAL
+60    (CDR)
+61    (JMP L18)
+63    L63
+63    (LOAD&PUSH 2)
+64    (JMPIFEQTO 2 L50)                   ; $ALL
+67    (LOAD&PUSH 2)
+68    (NIL)
+69    (CONS)
+70    (JMP L18)
+72    L72
+72    (LOAD&PUSH 2)
+73    (CALL1 9)                           ; DISPATVALUES
+75    (SKIP&RET 3)
+77    L77
+77    (LOAD&PUSH 2)
+78    (CALL1 11)                          ; DISPATOMGRADS
+80    (SKIP&RET 3)
+82    L82
+82    (LOAD&PUSH 2)
+83    (CALL1 12)                          ; DISPGRADEFS
+85    (SKIP&RET 3)
+87    L87
+87    (LOAD&PUSH 2)
+88    (CALL1 14)                          ; DISPMATCHDECLARES
+90    (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN DISPATVALUES (L) ...)-23|
+(CONST 0) = DISPATVALUES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DISPATVALUES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISPATVALUES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DISPATVALUES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DISPATVALUES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DISPATVALUES
+8     (SKIP&RET 1)
+
+
+Disassembly of function DISPATVALUES
+(CONST 0) = ATVALUES
+(CONST 1) = MGET
+(CONST 2) = (MLABLE)
+(CONST 3) = (MEQUAL)
+(CONST 4) = ATDECODE
+(CONST 5) = DISPLA
+(CONST 6) = $DONE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+40 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&JMPIFNOT 0 L54)
+4     L4
+4     (LOAD&CAR&PUSH 0)
+6     (CONST&PUSH 0)                      ; ATVALUES
+7     (CALL2&PUSH 1)                      ; MGET
+9     (LOAD&JMPIFNOT 0 L47)
+12    L12
+12    (CONST&PUSH 2)                      ; (MLABLE)
+13    (NIL&PUSH)
+14    (CONST&PUSH 3)                      ; (MEQUAL)
+15    (LOAD&CAR&PUSH 4)
+17    (LOAD 4)
+18    (CAR)
+19    (CAR&PUSH)
+20    (LOAD 5)
+21    (CAR)
+22    (CDR)
+23    (CAR&PUSH)
+24    (CALL&PUSH 3 4)                     ; ATDECODE
+27    (LOAD 4)
+28    (CAR)
+29    (CDR)
+30    (CDR)
+31    (CAR&PUSH)
+32    (LIST&PUSH 3)
+34    (LIST&PUSH 3)
+36    (CALL1 5)                           ; DISPLA
+38    (PUSH-UNBOUND 1)
+40    (CALLS1 139)                        ; TERPRI
+42    (LOAD&CDR&STORE 0)
+44    (LOAD&JMPIF 0 L12)
+47    L47
+47    (SKIP 1)
+49    (LOAD&CDR&STORE 0)
+51    (LOAD&JMPIF 0 L4)
+54    L54
+54    (SKIP 1)
+56    (CONST 6)                           ; $DONE
+57    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (FIXNUM N))-24|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFUN ATDECODE (FUN DL VL) ...)-25|
+(CONST 0) = ATDECODE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE ATDECODE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; ATDECODE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; ATDECODE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE ATDECODE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; ATDECODE
+8     (SKIP&RET 1)
+
+
+Disassembly of function ATDECODE
+(CONST 0) = ATVARSCHK
+(CONST 1) = MEMQ
+(CONST 2) = ATVARS
+(CONST 3) = MUNBOUND
+(CONST 4) = (MEQUAL)
+(CONST 5) = (MLIST)
+(CONST 6) = (%AT)
+(CONST 7) = (%DERIVATIVE)
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MUNBOUND ATVARS)
+123 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS1&STORE 158 1)                ; COPY-LIST
+4     (PUSH)
+5     (CALL1 0)                           ; ATVARSCHK
+7     (PUSH-NIL 4)
+9     (LOAD&PUSH 6)
+10    (JMP L63)
+12    L12
+12    (LOAD&PUSH 3)
+13    (GETVALUE&PUSH 2)                   ; ATVARS
+15    (LOAD&JMPIFNOT 1 L38)
+18    L18
+18    (LOAD&CAR&PUSH 1)
+20    (GETVALUE 3)                        ; MUNBOUND
+22    (JMPIFNOTEQ L29)
+24    (LOAD&PUSH 1)
+25    (LOAD&CAR&PUSH 1)
+27    (CALLS1 168)                        ; RPLACA
+29    L29
+29    (LOAD&CDR&PUSH 1)
+31    (LOAD&CDR&STORE 1)
+33    (POP&STORE 1)
+35    (LOAD&JMPIF 1 L18)
+38    L38
+38    (SKIP 2)
+40    (LOAD&PUSH 5)
+41    (LIST&PUSH 1)
+43    (LOAD 4)
+44    (CONS)
+45    (SKIP&RET 6)
+47    L47
+47    (LOAD&CAR&PUSH 0)
+49    (LOAD&PUSH 0)
+50    (CALLS2&JMPIFNOT 8 L56)             ; NUMBERP
+53    (LOAD&PUSH 0)
+54    (CALLS2 145)                        ; ZEROP
+56    L56
+56    (PUSH)
+57    (LOAD&CONS&STORE 2)
+59    (SKIP 1)
+61    (LOAD&CDR&STORE 0)
+63    L63
+63    (LOAD&PUSH 0)
+64    (CALLS1&JMPIFNOT 146 L47)           ; ENDP
+67    (SKIP 1)
+69    (LOAD&PUSH 0)
+70    (CALLS1&STORE 164 0)                ; SYSTEM::LIST-NREVERSE
+73    (CALL2&JMPIFNOT 1 L12)              ; MEMQ
+76    (LOAD&PUSH 5)
+77    (LIST&PUSH 1)
+79    (LOAD&PUSH 4)
+80    (CALLS2&PUSH 71)                    ; LENGTH
+82    (GETVALUE&PUSH 2)                   ; ATVARS
+84    (NIL&PUSH)
+85    (JMP L97)
+87    L87
+87    (LOAD&CDR&PUSH 1)
+89    (LOAD&CAR&PUSH 2)
+91    (LOAD&CONS&STORE 1)
+93    (POP&STORE 1)
+95    (LOAD&DEC&STORE 2)
+97    L97
+97    (LOAD&PUSH 2)
+98    (CALLS2&JMPIFNOT 145 L87)           ; ZEROP
+101   (LOAD&PUSH 0)
+102   (CALLS2 73)                         ; NREVERSE
+104   (SKIP 3)
+106   (CONS)
+107   (STORE 5)
+108   (LOAD&PUSH 3)
+109   (GETVALUE&PUSH 2)                   ; ATVARS
+111   (LOAD&JMPIFNOT 1 L138)
+114   L114
+114   (LOAD&CAR&PUSH 1)
+116   (GETVALUE 3)                        ; MUNBOUND
+118   (JMPIFEQ L129)
+120   (CONST&PUSH 4)                      ; (MEQUAL)
+121   (LOAD&CAR&PUSH 1)
+123   (LOAD&CAR&PUSH 3)
+125   (LIST&PUSH 3)
+127   (LOAD&CONS&STORE 3)
+129   L129
+129   (LOAD&CDR&PUSH 1)
+131   (LOAD&CDR&STORE 1)
+133   (POP&STORE 1)
+135   (LOAD&JMPIF 1 L114)
+138   L138
+138   (SKIP 2)
+140   (CONST&PUSH 5)                      ; (MLIST)
+141   (LOAD&PUSH 2)
+142   (CALLS2 73)                         ; NREVERSE
+144   (CONS)
+145   (STORE 1)
+146   (GETVALUE&PUSH 2)                   ; ATVARS
+148   (LOAD&PUSH 5)
+149   (LOAD&JMPIFNOT 0 L174)
+152   L152
+152   (LOAD&CAR&PUSH 0)
+154   (CALLS2&JMPIF 145 L165)             ; ZEROP
+157   (LOAD&CAR&PUSH 0)
+159   (LOAD&CAR&PUSH 2)
+161   (LOAD 4)
+162   (CONS)
+163   (CONS)
+164   (STORE 2)
+165   L165
+165   (LOAD&CDR&PUSH 1)
+167   (LOAD&CDR&STORE 1)
+169   (POP&STORE 1)
+171   (LOAD&JMPIF 0 L152)
+174   L174
+174   (LOAD&PUSH 2)
+175   (CALLS2&STORE 73 2)                 ; NREVERSE
+178   (SKIP 2)
+180   (CONST&PUSH 6)                      ; (%AT)
+181   (CONST&PUSH 7)                      ; (%DERIVATIVE)
+182   (LOAD&PUSH 7)
+183   (LOAD 3)
+184   (CONS)
+185   (CONS&PUSH)
+186   (LOAD&PUSH 3)
+187   (LIST 3)
+189   (SKIP&RET 6)
+
+
+Disassembly of function #:|(DEFUN DISPATOMGRADS (L) ...)-26|
+(CONST 0) = DISPATOMGRADS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DISPATOMGRADS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISPATOMGRADS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DISPATOMGRADS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DISPATOMGRADS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DISPATOMGRADS
+8     (SKIP&RET 1)
+
+
+Disassembly of function DISPATOMGRADS
+(CONST 0) = $ATOMGRAD
+(CONST 1) = MGET
+(CONST 2) = (MLABLE)
+(CONST 3) = (MEQUAL)
+(CONST 4) = (%DERIVATIVE)
+(CONST 5) = 1
+(CONST 6) = DISPLA
+(CONST 7) = $DONE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+36 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&JMPIFNOT 0 L49)
+4     L4
+4     (LOAD&CAR&PUSH 0)
+6     (CONST&PUSH 0)                      ; $ATOMGRAD
+7     (CALL2&PUSH 1)                      ; MGET
+9     (LOAD&JMPIFNOT 0 L42)
+12    L12
+12    (CONST&PUSH 2)                      ; (MLABLE)
+13    (NIL&PUSH)
+14    (CONST&PUSH 3)                      ; (MEQUAL)
+15    (CONST&PUSH 4)                      ; (%DERIVATIVE)
+16    (LOAD&CAR&PUSH 5)
+18    (LOAD 5)
+19    (CAR)
+20    (CAR&PUSH)
+21    (CONST&PUSH 5)                      ; 1
+22    (LIST&PUSH 4)
+24    (LOAD 4)
+25    (CAR)
+26    (CDR&PUSH)
+27    (LIST&PUSH 3)
+29    (LIST&PUSH 3)
+31    (CALL1 6)                           ; DISPLA
+33    (PUSH-UNBOUND 1)
+35    (CALLS1 139)                        ; TERPRI
+37    (LOAD&CDR&STORE 0)
+39    (LOAD&JMPIF 0 L12)
+42    L42
+42    (SKIP 1)
+44    (LOAD&CDR&STORE 0)
+46    (LOAD&JMPIF 0 L4)
+49    L49
+49    (SKIP 1)
+51    (CONST 7)                           ; $DONE
+52    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN DISPGRADEFS (L) ...)-27|
+(CONST 0) = DISPGRADEFS
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DISPGRADEFS>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISPGRADEFS
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DISPGRADEFS
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DISPGRADEFS>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DISPGRADEFS
+8     (SKIP&RET 1)
+
+
+Disassembly of function DISPGRADEFS
+(CONST 0) = GRAD
+(CONST 1) = (MLABLE)
+(CONST 2) = (MEQUAL)
+(CONST 3) = (%DERIVATIVE)
+(CONST 4) = 1
+(CONST 5) = DISPLA
+(CONST 6) = $DONE
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+44 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (LOAD&JMPIFNOT 0 L66)
+4     L4
+4     (LOAD&CAR&PUSH 0)
+6     (CONST&PUSH 0)                      ; GRAD
+7     (PUSH-UNBOUND 1)
+9     (CALLS2&STORE 132 2)                ; GET
+12    (CAR&PUSH)
+13    (LOAD&CDR&PUSH 3)
+15    (LOAD&CAR&PUSH 2)
+17    (NIL)
+18    (CONS&PUSH)
+19    (LOAD 5)
+20    (CAR)
+21    (CONS&PUSH)
+22    (LOAD&JMPIFNOT 1 L59)
+25    L25
+25    (LOAD&JMPIFNOT 2 L59)
+28    (CONST&PUSH 1)                      ; (MLABLE)
+29    (NIL&PUSH)
+30    (CONST&PUSH 2)                      ; (MEQUAL)
+31    (CONST&PUSH 3)                      ; (%DERIVATIVE)
+32    (LOAD&PUSH 4)
+33    (LOAD&CAR&PUSH 7)
+35    (CONST&PUSH 4)                      ; 1
+36    (LIST&PUSH 4)
+38    (LOAD&CAR&PUSH 5)
+40    (LIST&PUSH 3)
+42    (LIST&PUSH 3)
+44    (CALL1 5)                           ; DISPLA
+46    (PUSH-UNBOUND 1)
+48    (CALLS1 139)                        ; TERPRI
+50    (LOAD&CDR&PUSH 2)
+52    (LOAD&CDR&STORE 2)
+54    (POP&STORE 2)
+56    (LOAD&JMPIF 1 L25)
+59    L59
+59    (SKIP 3)
+61    (LOAD&CDR&STORE 0)
+63    (LOAD&JMPIF 0 L4)
+66    L66
+66    (SKIP 1)
+68    (CONST 6)                           ; $DONE
+69    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN DISPMATCHDECLARES (L) ...)-28|
+(CONST 0) = DISPMATCHDECLARES
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DISPMATCHDECLARES>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DISPMATCHDECLARES
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DISPMATCHDECLARES
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DISPMATCHDECLARES>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DISPMATCHDECLARES
+8     (SKIP&RET 1)
+
+
+Disassembly of function DISPMATCHDECLARES
+(CONST 0) = MATCHDECLARE
+(CONST 1) = MGET
+(CONST 2) = (MLIST)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+32 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (NIL&PUSH)
+2     (LOAD&JMPIFNOT 1 L30)
+5     L5
+5     (LOAD&CAR&PUSH 1)
+7     (CONST&PUSH 0)                      ; MATCHDECLARE
+8     (CALL2 1)                           ; MGET
+10    (CAR)
+11    (STORE 3)
+12    (JMPIFATOM L35)
+14    (LOAD 3)
+15    L15
+15    (PUSH)
+16    (LOAD&CAR&PUSH 2)
+18    (NIL)
+19    (CONS&PUSH)
+20    (CALLSR&PUSH 2 34)                  ; APPEND
+23    (LOAD&CONS&STORE 0)
+25    (LOAD&CDR&STORE 1)
+27    (LOAD&JMPIF 1 L5)
+30    L30
+30    (CONST&PUSH 2)                      ; (MLIST)
+31    (LOAD 1)
+32    (CONS)
+33    (SKIP&RET 4)
+35    L35
+35    (LOAD&PUSH 3)
+36    (NIL)
+37    (CONS&PUSH)
+38    (NIL)
+39    (CONS)
+40    (JMP L15)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE CHANGV) (SPECIAL TRANS OVAR ...))-29|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $CHANGEVAR (EXPR TRANS NVAR ...) ...)-30|
+(CONST 0) = $CHANGEVAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $CHANGEVAR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $CHANGEVAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $CHANGEVAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $CHANGEVAR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $CHANGEVAR
+8     (SKIP&RET 1)
+
+
+Disassembly of function $CHANGEVAR
+(CONST 0) = TRANS
+(CONST 1) = NVAR
+(CONST 2) = OVAR
+(CONST 3) = INVFUN
+(CONST 4) = NFUN
+(CONST 5) = $RATFAC
+(CONST 6) = RAT
+(CONST 7) = MRAT
+(CONST 8) = "2nd arg must not be atomic"
+(CONST 9) = MERROR
+(CONST 10) = "3rd arg must be atomic"
+(CONST 11) = "4th arg must be atomic"
+(CONST 12) = MEQHK
+(CONST 13) = SOLVABLE
+(CONST 14) = TFUN
+(CONST 15) = CHANGEVAR
+4 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (OVAR NVAR TRANS)
+writes special variables : (TFUN TRANS)
+50 byte-code instructions:
+0     (LOAD 3)
+1     (BIND 0)                            ; TRANS
+3     (LOAD 5)
+4     (BIND 1)                            ; NVAR
+6     (LOAD 7)
+7     (BIND 2)                            ; OVAR
+9     (NIL)
+10    (BIND 3)                            ; INVFUN
+12    (NIL)
+13    (BIND 4)                            ; NFUN
+15    (NIL)
+16    (BIND 5)                            ; $RATFAC
+18    (LOAD 22)
+20    (JMPIFATOM L52)
+22    (LOAD 22)
+24    (CAR)
+25    (CAR&PUSH)
+26    (JMPIFEQTO 6 L52)                   ; RAT
+29    (LOAD 22)
+31    (CAR)
+32    (CAR&PUSH)
+33    (JMPIFEQTO 7 L52)                   ; MRAT
+36    (GETVALUE 0)                        ; TRANS
+38    (JMPIFATOM L72)
+40    (GETVALUE 1)                        ; NVAR
+42    (JMPIFCONSP L75)
+44    (GETVALUE 2)                        ; OVAR
+46    (JMPIFATOM L52)
+48    (CONST 11)                          ; "4th arg must be atomic"
+49    L49
+49    (PUSH)
+50    (CALL1 9)                           ; MERROR
+52    L52
+52    (GETVALUE&PUSH 0)                   ; TRANS
+54    (CALL1 12)                          ; MEQHK
+56    (SETVALUE 0)                        ; TRANS
+58    (PUSH)
+59    (GETVALUE&PUSH 2)                   ; OVAR
+61    (CALL2 13)                          ; SOLVABLE
+63    (SETVALUE 14)                       ; TFUN
+65    (LOAD&PUSH 22)
+66    (CALL1 15)                          ; CHANGEVAR
+68    (UNBIND 6)
+70    (SKIP&RET 5)
+72    L72
+72    (CONST 8)                           ; "2nd arg must not be atomic"
+73    (JMP L49)
+75    L75
+75    (CONST 10)                          ; "3rd arg must be atomic"
+76    (JMP L49)
+
+
+Disassembly of function #:|(DEFUN SOLVABLE (L VAR &OPTIONAL ...) ...)-31|
+(CONST 0) = SOLVABLE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE SOLVABLE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; SOLVABLE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; SOLVABLE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE SOLVABLE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; SOLVABLE
+8     (SKIP&RET 1)
+
+
+Disassembly of function SOLVABLE
+(CONST 0) = *ROOTS
+(CONST 1) = *FAILURES
+(CONST 2) = 1
+(CONST 3) = SOLVE
+(CONST 4) = $RHS
+(CONST 5) = "Unable to solve for ~M"
+(CONST 6) = MERROR
+2 required arguments
+1 optional argument
+No rest parameter
+No keyword parameters
+reads special variable: (*ROOTS)
+25 byte-code instructions:
+0     (UNBOUND->NIL 1)
+2     (NIL)
+3     (BIND 0)                            ; *ROOTS
+5     (NIL)
+6     (BIND 1)                            ; *FAILURES
+8     (LOAD&PUSH 9)
+9     (LOAD&PUSH 9)
+10    (CONST&PUSH 2)                      ; 1
+11    (CALL 3 3)                          ; SOLVE
+14    (GETVALUE 0)                        ; *ROOTS
+16    (JMPIF L26)
+18    (LOAD&JMPIF 7 L31)
+21    (NIL)
+22    L22
+22    (UNBIND 2)
+24    (SKIP&RET 4)
+26    L26
+26    (CAR&PUSH)
+27    (CALL1 4)                           ; $RHS
+29    (JMP L22)
+31    L31
+31    (CONST&PUSH 5)                      ; "Unable to solve for ~M"
+32    (LOAD&PUSH 9)
+33    (CALL2 6)                           ; MERROR
+35    (JMP L22)
+
+
+Disassembly of function #:|(DEFUN CHANGEVAR (EXPR) ...)-32|
+(CONST 0) = CHANGEVAR
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE CHANGEVAR>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; CHANGEVAR
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; CHANGEVAR
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE CHANGEVAR>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; CHANGEVAR
+8     (SKIP&RET 1)
+
+
+Disassembly of function CHANGEVAR
+(CONST 0) = (%INTEGRATE %SUM %PRODUCT)
+(CONST 1) = MEMQ
+(CONST 2) = OVAR
+(CONST 3) = ALIKE1
+(CONST 4) = CHANGEVAR
+(CONST 5) = RECUR-APPLY
+(CONST 6) = TFUN
+(CONST 7) = NVAR
+(CONST 8) = SDIFF
+(CONST 9) = TRANS
+(CONST 10) = DIV
+(CONST 11) = NEG
+(CONST 12) = (%SUM %PRODUCT)
+(CONST 13) = 1
+(CONST 14) = "Illegal change in summation or product"
+(CONST 15) = MERROR
+(CONST 16) = MAXIMA-SUBSTITUTE
+(CONST 17) = MUL
+(CONST 18) = $RATSIMP
+(CONST 19) = KERNSUBST
+(CONST 20) = $RADCAN
+(CONST 21) = NFUN
+(CONST 22) = INVFUN
+(CONST 23) = SOLVABLE
+(CONST 24) = $PLUS
+(CONST 25) = $LIMIT
+(CONST 26) = $MINUS
+(CONST 27) = (%INTEGRATE)
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (NFUN INVFUN NVAR TRANS TFUN OVAR)
+writes special variables : (INVFUN NFUN)
+126 byte-code instructions:
+0     (LOAD 1)
+1     (JMPIFATOM L85)
+4     (LOAD 1)
+5     (CAR)
+6     (CAR&PUSH)
+7     (CONST&PUSH 0)                      ; (%INTEGRATE %SUM %PRODUCT)
+8     (CALL2&JMPIFNOT 1 L88)              ; MEMQ
+12    (LOAD 1)
+13    (CDR)
+14    (CDR)
+15    (CAR&PUSH)
+16    (GETVALUE&PUSH 2)                   ; OVAR
+18    (CALL2&JMPIFNOT 3 L88)              ; ALIKE1
+22    (GETVALUE 6)                        ; TFUN
+24    (JMPIF L95)
+27    (GETVALUE&PUSH 9)                   ; TRANS
+29    (GETVALUE&PUSH 7)                   ; NVAR
+31    (CALL2&PUSH 8)                      ; SDIFF
+33    (GETVALUE&PUSH 9)                   ; TRANS
+35    (GETVALUE&PUSH 2)                   ; OVAR
+37    (CALL2&PUSH 8)                      ; SDIFF
+39    (CALL2&PUSH 10)                     ; DIV
+41    (CALL1 11)                          ; NEG
+43    L43
+43    (PUSH)
+44    (LOAD 2)
+45    (CAR)
+46    (CAR&PUSH)
+47    (CONST&PUSH 12)                     ; (%SUM %PRODUCT)
+48    (CALL2&JMPIFNOT 1 L55)              ; MEMQ
+51    (LOAD&PUSH 0)
+52    (JMPIFNOTEQTO 13 L102)              ; 1
+55    L55
+55    (GETVALUE 6)                        ; TFUN
+57    (JMPIF L107)
+59    (LOAD 2)
+60    (CDR)
+61    (CAR&PUSH)
+62    (LOAD&PUSH 1)
+63    (CALL2&PUSH 17)                     ; MUL
+65    (CALL1&PUSH 18)                     ; $RATSIMP
+67    (GETVALUE&PUSH 9)                   ; TRANS
+69    (GETVALUE&PUSH 2)                   ; OVAR
+71    (CALL 3 19)                         ; KERNSUBST
+74    L74
+74    (PUSH)
+75    (CALL1 20)                          ; $RADCAN
+77    (SETVALUE 21)                       ; NFUN
+79    (JMPIF L175)
+82    (LOAD 2)
+83    (SKIP&RET 3)
+85    L85
+85    (LOAD 1)
+86    (SKIP&RET 2)
+88    L88
+88    (CONST&SYMBOL-FUNCTION&PUSH 4)      ; CHANGEVAR
+90    (LOAD&PUSH 2)
+91    (CALL2 5)                           ; RECUR-APPLY
+93    (SKIP&RET 2)
+95    L95
+95    (PUSH)
+96    (GETVALUE&PUSH 7)                   ; NVAR
+98    (CALL2 8)                           ; SDIFF
+100   (JMP L43)
+102   L102
+102   (CONST&PUSH 14)                     ; "Illegal change in summation or product"
+103   (CALL1 15)                          ; MERROR
+105   (SKIP&RET 3)
+107   L107
+107   (PUSH)
+108   (GETVALUE&PUSH 2)                   ; OVAR
+110   (LOAD 4)
+111   (CDR)
+112   (CAR&PUSH)
+113   (CALL&PUSH 3 16)                    ; MAXIMA-SUBSTITUTE
+116   (LOAD&PUSH 1)
+117   (CALL2 17)                          ; MUL
+119   (JMP L74)
+121   L121
+121   (GETVALUE 22)                       ; INVFUN
+123   (JMPIF L135)
+125   (GETVALUE&PUSH 9)                   ; TRANS
+127   (GETVALUE&PUSH 7)                   ; NVAR
+129   (T&PUSH)
+130   (CALL 3 23)                         ; SOLVABLE
+133   (SETVALUE 22)                       ; INVFUN
+135   L135
+135   (LOAD 2)
+136   (CAR)
+137   (CAR&PUSH)
+138   (NIL)
+139   (CONS&PUSH)
+140   (GETVALUE&PUSH 21)                  ; NFUN
+142   (GETVALUE&PUSH 7)                   ; NVAR
+144   (GETVALUE&PUSH 22)                  ; INVFUN
+146   (GETVALUE&PUSH 2)                   ; OVAR
+148   (LOAD 7)
+149   (CDR)
+150   (CDR)
+151   (CDR)
+152   (CAR&PUSH)
+153   (CONST&PUSH 24)                     ; $PLUS
+154   (CALL&PUSH 4 25)                    ; $LIMIT
+157   (GETVALUE&PUSH 22)                  ; INVFUN
+159   (GETVALUE&PUSH 2)                   ; OVAR
+161   (LOAD 8)
+162   (CDR)
+163   (CDR)
+164   (CDR)
+165   (CDR)
+166   (CAR&PUSH)
+167   (CONST&PUSH 26)                     ; $MINUS
+168   (CALL&PUSH 4 25)                    ; $LIMIT
+171   (LIST 5)
+173   (SKIP&RET 3)
+175   L175
+175   (LOAD 2)
+176   (CDR)
+177   (CDR)
+178   (CDR)
+179   (JMPIF L121)
+181   (CONST&PUSH 27)                     ; (%INTEGRATE)
+182   (GETVALUE&PUSH 21)                  ; NFUN
+184   (GETVALUE&PUSH 7)                   ; NVAR
+186   (LIST 3)
+188   (SKIP&RET 3)
+
+
+Disassembly of function #:|(DEFUN KERNSUBST (EXPR FORM OVAR) ...)-33|
+(CONST 0) = KERNSUBST
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE KERNSUBST>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; KERNSUBST
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; KERNSUBST
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE KERNSUBST>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; KERNSUBST
+8     (SKIP&RET 1)
+
+
+Disassembly of function KERNSUBST
+(CONST 0) = OVAR
+(CONST 1) = VARLIST
+(CONST 2) = GENVAR
+(CONST 3) = NEWVAR
+(CONST 4) = FREEOF
+(CONST 5) = SOLVABLE
+(CONST 6) = MEMQ
+(CONST 7) = RATREP*
+(CONST 8) = RDIS
+3 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (OVAR VARLIST)
+writes special variable : (VARLIST)
+54 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; OVAR
+3     (NIL)
+4     (BIND 1)                            ; VARLIST
+6     (NIL)
+7     (BIND 2)                            ; GENVAR
+9     (NIL&PUSH)
+10    (LOAD&PUSH 13)
+11    (CALL1 3)                           ; NEWVAR
+13    (NIL&PUSH)
+14    (GETVALUE&PUSH 1)                   ; VARLIST
+16    (JMP L43)
+18    L18
+18    (LOAD 0)
+19    (JMP L36)
+21    L21
+21    (NIL)
+22    (JMP L73)
+24    L24
+24    (LOAD&CAR&PUSH 0)
+26    (GETVALUE&PUSH 0)                   ; OVAR
+28    (LOAD&PUSH 1)
+29    (CALL2&JMPIF 4 L18)                 ; FREEOF
+32    (LOAD&PUSH 15)
+33    (LOAD&PUSH 1)
+34    (CALL2 5)                           ; SOLVABLE
+36    L36
+36    (PUSH)
+37    (LOAD&CONS&STORE 2)
+39    (SKIP 1)
+41    (LOAD&CDR&STORE 0)
+43    L43
+43    (LOAD&PUSH 0)
+44    (CALLS1&JMPIFNOT 146 L24)           ; ENDP
+47    (SKIP 1)
+49    (LOAD&PUSH 0)
+50    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+52    (SKIP 1)
+54    (STORE 0)
+55    (NIL&PUSH)
+56    (LOAD&PUSH 1)
+57    (CALL2&JMPIF 6 L21)                 ; MEMQ
+60    (LOAD&PUSH 13)
+61    (CALL1 7)                           ; RATREP*
+63    (STORE 13)
+65    (LOAD 0)
+66    (SETVALUE 1)                        ; VARLIST
+68    (LOAD&CDR&PUSH 13)
+70    (CALL1 8)                           ; RDIS
+72    (VALUES1)
+73    L73
+73    (SKIP 1)
+75    (UNBIND 3)
+77    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE FACSUM) (SPECIAL $LISTCONSTVARS FACFUN))-34|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $FACTORSUM (E) ...)-35|
+(CONST 0) = $FACTORSUM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FACTORSUM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FACTORSUM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FACTORSUM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FACTORSUM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FACTORSUM
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FACTORSUM
+(CONST 0) = $FACTOR
+(CONST 1) = FACTORSUM0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; $FACTOR
+2     (CALL2 1)                           ; FACTORSUM0
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFMFUN $GFACTORSUM (E) ...)-36|
+(CONST 0) = $GFACTORSUM
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $GFACTORSUM>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $GFACTORSUM
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $GFACTORSUM
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $GFACTORSUM>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $GFACTORSUM
+8     (SKIP&RET 1)
+
+
+Disassembly of function $GFACTORSUM
+(CONST 0) = $GFACTOR
+(CONST 1) = FACTORSUM0
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CONST&PUSH 0)                      ; $GFACTOR
+2     (CALL2 1)                           ; FACTORSUM0
+4     (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FACTORSUM0 (E FACFUN) ...)-37|
+(CONST 0) = FACTORSUM0
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FACTORSUM0>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FACTORSUM0
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FACTORSUM0
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FACTORSUM0>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FACTORSUM0
+8     (SKIP&RET 1)
+
+
+Disassembly of function FACTORSUM0
+(CONST 0) = FACFUN
+(CONST 1) = MPLUSP
+(CONST 2) = FACTORSUM1
+(CONST 3) = FACTORSUM2
+2 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FACFUN)
+17 byte-code instructions:
+0     (LOAD 1)
+1     (BIND 0)                            ; FACFUN
+3     (GETVALUE&PUSH 0)                   ; FACFUN
+5     (LOAD&PUSH 6)
+6     (FUNCALL 1)
+8     (STORE 5)
+9     (PUSH)
+10    (CALL1&JMPIF 1 L19)                 ; MPLUSP
+13    (LOAD&PUSH 5)
+14    (CALL1 3)                           ; FACTORSUM2
+16    L16
+16    (UNBIND1)
+17    (SKIP&RET 3)
+19    L19
+19    (LOAD&CDR&PUSH 5)
+21    (CALL1 2)                           ; FACTORSUM1
+23    (JMP L16)
+
+
+Disassembly of function #:|(DEFUN FACTORSUM1 (E) ...)-38|
+(CONST 0) = FACTORSUM1
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FACTORSUM1>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FACTORSUM1
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FACTORSUM1
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FACTORSUM1>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FACTORSUM1
+8     (SKIP&RET 1)
+
+
+Disassembly of function FACTORSUM1
+(CONST 0) = $SHOWRATVARS
+(CONST 1) = INTERSECT
+(CONST 2) = UNION*
+(CONST 3) = FACFUN
+(CONST 4) = (MPLUS)
+(CONST 5) = FACTORSUM2
+(CONST 6) = MTIMESP
+(CONST 7) = MNUMP
+(CONST 8) = ALIKE1
+(CONST 9) = DCON
+(CONST 10) = (MTIMES)
+(CONST 11) = (MPLUS)
+(CONST 12) = 1
+(CONST 13) = SIMPTIMES
+(CONST 14) = (MPLUS)
+(CONST 15) = SIMPLUS
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (FACFUN)
+205 byte-code instructions:
+0     (PUSH-NIL 7)
+2     L2
+2     (LOAD&CAR&STORE 8 6)
+5     (PUSH)
+6     (CALL1 0)                           ; $SHOWRATVARS
+8     (CDR)
+9     (STORE 5)
+10    (JMPIFNOT L20)
+12    (LOAD&PUSH 4)
+13    (LOAD&PUSH 4)
+14    (LOAD&JMPIFNOT 1 L87)
+18    (JMP L64)
+20    L20
+20    (LOAD&PUSH 6)
+21    (LOAD&CONS&STORE 2)
+23    (JMP L100)
+26    L26
+26    (LOAD&PUSH 0)
+27    (LOAD&PUSH 5)
+28    (LOAD&CAR&PUSH 2)
+30    (CALLSR&PUSH 2 35)                  ; NCONC
+33    (CALLS1 168)                        ; RPLACA
+35    (NIL&STORE 4)
+37    (SKIP 2)
+39    (JMP L135)
+42    L42
+42    (GETVALUE&PUSH 3)                   ; FACFUN
+44    (CONST&PUSH 4)                      ; (MPLUS)
+45    (LOAD 2)
+46    (CAR)
+47    (CONS&PUSH)
+48    (FUNCALL&PUSH 1)
+50    (CALL1 5)                           ; FACTORSUM2
+52    (JMP L166)
+55    L55
+55    (LOAD&CDR&PUSH 1)
+57    (LOAD&CDR&STORE 1)
+59    (POP&STORE 1)
+61    (LOAD&JMPIFNOT 1 L87)
+64    L64
+64    (LOAD&CAR&PUSH 1)
+66    (LOAD&PUSH 8)
+67    (CALL2&JMPIFNOT 1 L55)              ; INTERSECT
+70    (LOAD&PUSH 1)
+71    (LOAD&CAR&PUSH 2)
+73    (LOAD&PUSH 9)
+74    (CALL2&PUSH 2)                      ; UNION*
+76    (CALLS1 168)                        ; RPLACA
+78    (LOAD&PUSH 0)
+79    (LOAD&PUSH 9)
+80    (LOAD 2)
+81    (CAR)
+82    (CONS&PUSH)
+83    (CALLS1 168)                        ; RPLACA
+85    (NIL&STORE 7)
+87    L87
+87    (SKIP 2)
+89    (LOAD&JMPIFNOT 5 L100)
+92    (LOAD&PUSH 5)
+93    (LOAD&CONS&STORE 4)
+95    (LOAD&PUSH 6)
+96    (NIL)
+97    (CONS&PUSH)
+98    (LOAD&CONS&STORE 3)
+100   L100
+100   (LOAD&CDR&STORE 8)
+102   (JMPIF L2)
+105   (LOAD&JMPIFNOT 2 L135)
+108   (LOAD&PUSH 4)
+109   (LOAD&PUSH 4)
+110   (LOAD&JMPIFNOT 1 L133)
+113   L113
+113   (LOAD 1)
+114   (CAR)
+115   (CDR)
+116   (JMPIF L124)
+118   (LOAD 0)
+119   (CAR)
+120   (CDR)
+121   (JMPIF L26)
+124   L124
+124   (LOAD&CDR&PUSH 1)
+126   (LOAD&CDR&STORE 1)
+128   (POP&STORE 1)
+130   (LOAD&JMPIF 1 L113)
+133   L133
+133   (SKIP 2)
+135   L135
+135   (NIL&STORE 4)
+137   (STORE 5)
+138   (LOAD&PUSH 3)
+139   (LOAD&JMPIFNOT 0 L225)
+143   L143
+143   (LOAD 0)
+144   (CAR)
+145   (CDR)
+146   (JMPIF L42)
+149   (LOAD 0)
+150   (CAR)
+151   (CAR)
+152   (STORE 7)
+153   (PUSH)
+154   (CALL1&JMPIFNOT 6 L165)             ; MTIMESP
+157   (LOAD 7)
+158   (CDR)
+159   (CAR)
+160   (STORE 1)
+161   (PUSH)
+162   (CALL1&JMPIF 7 L171)                ; MNUMP
+165   L165
+165   (LOAD 7)
+166   L166
+166   (PUSH)
+167   (LOAD&CONS&STORE 5)
+169   (JMP L219)
+171   L171
+171   (LOAD&PUSH 2)
+172   (LOAD&PUSH 7)
+173   (LOAD&JMPIFNOT 1 L204)
+176   (JMP L187)
+178   L178
+178   (LOAD&CDR&PUSH 1)
+180   (LOAD&CDR&STORE 1)
+182   (POP&STORE 1)
+184   (LOAD&JMPIFNOT 1 L204)
+187   L187
+187   (LOAD&CAR&PUSH 0)
+189   (LOAD&PUSH 4)
+190   (CALL2&JMPIFNOT 8 L178)             ; ALIKE1
+193   (LOAD&PUSH 1)
+194   (LOAD&PUSH 10)
+195   (CALL1&PUSH 9)                      ; DCON
+197   (LOAD 3)
+198   (CAR)
+199   (CONS&PUSH)
+200   (CALLS1 168)                        ; RPLACA
+202   (NIL&STORE 9)
+204   L204
+204   (SKIP 2)
+206   (LOAD&JMPIFNOT 7 L219)
+209   (LOAD&PUSH 1)
+210   (LOAD&CONS&STORE 6)
+212   (LOAD&PUSH 7)
+213   (CALL1&PUSH 9)                      ; DCON
+215   (NIL)
+216   (CONS&PUSH)
+217   (LOAD&CONS&STORE 2)
+219   L219
+219   (LOAD&CDR&STORE 0)
+221   (LOAD&JMPIF 0 L143)
+225   L225
+225   (SKIP 1)
+227   (NIL&PUSH)
+228   (LOAD&PUSH 6)
+229   (LOAD&PUSH 3)
+230   (JMP L267)
+232   L232
+232   (SKIP 2)
+234   (JMP L279)
+236   L236
+236   (CONST&PUSH 11)                     ; (MPLUS)
+237   (LOAD 3)
+238   (CONS)
+239   (JMP L251)
+241   L241
+241   (LOAD&CAR&PUSH 1)
+243   (CONST&PUSH 10)                     ; (MTIMES)
+244   (LOAD&PUSH 2)
+245   (LOAD 2)
+246   (CDR)
+247   (JMPIF L236)
+249   (LOAD 2)
+250   (CAR)
+251   L251
+251   (PUSH)
+252   (LIST&PUSH 3)
+254   (CONST&PUSH 12)                     ; 1
+255   (NIL&PUSH)
+256   (CALL&PUSH 3 13)                    ; SIMPTIMES
+259   (LOAD&CONS&STORE 4)
+261   (SKIP 2)
+263   (LOAD&CDR&STORE 1)
+265   (LOAD&CDR&STORE 0)
+267   L267
+267   (LOAD&PUSH 1)
+268   (CALLS1&JMPIF 146 L232)             ; ENDP
+271   (LOAD&CAR&PUSH 1)
+273   (LOAD&PUSH 1)
+274   (CALLS1&JMPIFNOT 146 L241)          ; ENDP
+277   (SKIP 3)
+279   L279
+279   (LOAD&PUSH 0)
+280   (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+282   (SKIP 1)
+284   (STORE 3)
+285   (CONST&PUSH 14)                     ; (MPLUS)
+286   (LOAD&PUSH 3)
+287   (LOAD&PUSH 5)
+288   (LOAD&PUSH 7)
+289   (CALLSR 3 35)                       ; NCONC
+292   (CONS&PUSH)
+293   (CONST&PUSH 12)                     ; 1
+294   (NIL&PUSH)
+295   (CALL 3 15)                         ; SIMPLUS
+298   (SKIP&RET 9)
+
+
+Disassembly of function #:|(DEFUN DCON (MT) ...)-39|
+(CONST 0) = DCON
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE DCON>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; DCON
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; DCON
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE DCON>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; DCON
+8     (SKIP&RET 1)
+
+
+Disassembly of function DCON
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+17 byte-code instructions:
+0     (LOAD 1)
+1     (CDR)
+2     (CDR)
+3     (CDR)
+4     (JMPIF L12)
+6     (LOAD 1)
+7     (CDR)
+8     (CDR)
+9     (CAR)
+10    (SKIP&RET 2)
+12    L12
+12    (LOAD&CAR&PUSH 1)
+14    (LOAD 2)
+15    (CDR)
+16    (CDR)
+17    (CONS)
+18    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN FACTORSUM2 (E) ...)-40|
+(CONST 0) = FACTORSUM2
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE FACTORSUM2>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; FACTORSUM2
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; FACTORSUM2
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE FACTORSUM2>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; FACTORSUM2
+8     (SKIP&RET 1)
+
+
+Disassembly of function FACTORSUM2
+(CONST 0) = MTIMESP
+(CONST 1) = (MTIMES)
+(CONST 2) = MPLUSP
+(CONST 3) = FACTORSUM1
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+32 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALL1&JMPIFNOT 0 L10)              ; MTIMESP
+4     (CONST&PUSH 1)                      ; (MTIMES)
+5     (NIL&PUSH)
+6     (LOAD&CDR&PUSH 3)
+8     (JMP L33)
+10    L10
+10    (LOAD 1)
+11    (SKIP&RET 2)
+13    L13
+13    (LOAD&CDR&PUSH 0)
+15    (CALL1 3)                           ; FACTORSUM1
+17    (JMP L26)
+19    L19
+19    (LOAD&CAR&PUSH 0)
+21    (LOAD&PUSH 0)
+22    (CALL1&JMPIF 2 L13)                 ; MPLUSP
+25    (LOAD 0)
+26    L26
+26    (PUSH)
+27    (LOAD&CONS&STORE 2)
+29    (SKIP 1)
+31    (LOAD&CDR&STORE 0)
+33    L33
+33    (LOAD&PUSH 0)
+34    (CALLS1&JMPIFNOT 146 L19)           ; ENDP
+37    (SKIP 1)
+39    (LOAD&PUSH 0)
+40    (CALLS1 164)                        ; SYSTEM::LIST-NREVERSE
+42    (SKIP 1)
+44    (CONS)
+45    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE COMBF) (SPECIAL $COMBINEFLAG))-41|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $COMBINEFLAG T)-42-1|
+(CONST 0) = $COMBINEFLAG
+(CONST 1) = *VARIABLE-INITIAL-VALUES*
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: (*VARIABLE-INITIAL-VALUES*)
+13 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $COMBINEFLAG
+1     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+3     (PUSH-UNBOUND 1)
+5     (CALLS1&JMPIF 99 L17)               ; GETHASH
+8     (GETVALUE&PUSH 1)                   ; *VARIABLE-INITIAL-VALUES*
+10    (CONST&PUSH 0)                      ; $COMBINEFLAG
+11    (LOAD&PUSH 1)
+12    (T&PUSH)
+13    (CALLS1 100)                        ; SYSTEM::PUTHASH
+15    (SKIP 1)
+17    L17
+17    (VALUES0)
+18    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMVAR $COMBINEFLAG T)-42-2|
+(CONST 0) = (SPECIAL $COMBINEFLAG)
+(CONST 1) = $COMBINEFLAG
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+10 byte-code instructions:
+0     (CONST&PUSH 0)                      ; (SPECIAL $COMBINEFLAG)
+1     (CALLS1 90)                         ; PROCLAIM
+3     (CONST&PUSH 1)                      ; $COMBINEFLAG
+4     (CALLS1&JMPIF 79 L11)               ; BOUNDP
+7     (CONST&PUSH 1)                      ; $COMBINEFLAG
+8     (T&PUSH)
+9     (CALLS1 82)                         ; SYSTEM::SET-SYMBOL-VALUE
+11    L11
+11    (CONST 1)                           ; $COMBINEFLAG
+12    (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $COMBINE (E) ...)-43|
+(CONST 0) = $COMBINE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $COMBINE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $COMBINE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $COMBINE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $COMBINE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $COMBINE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $COMBINE
+(CONST 0) = RAT
+(CONST 1) = MPLUS
+(CONST 2) = COMBINE
+(CONST 3) = $COMBINE
+(CONST 4) = RECUR-APPLY
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+21 byte-code instructions:
+0     (LOAD 1)
+1     (JMPIFATOM L22)
+3     (LOAD 1)
+4     (CAR)
+5     (CAR&PUSH)
+6     (JMPIFEQTO 0 L22)                   ; RAT
+9     (LOAD 1)
+10    (CAR)
+11    (CAR&PUSH)
+12    (JMPIFEQTO 1 L25)                   ; MPLUS
+15    (CONST&SYMBOL-FUNCTION&PUSH 3)      ; $COMBINE
+17    (LOAD&PUSH 2)
+18    (CALL2 4)                           ; RECUR-APPLY
+20    (SKIP&RET 2)
+22    L22
+22    (LOAD 1)
+23    (SKIP&RET 2)
+25    L25
+25    (LOAD&CDR&PUSH 1)
+27    (CALL1 2)                           ; COMBINE
+29    (SKIP&RET 2)
+
+
+Disassembly of function #:|(DEFUN COMBINE (E) ...)-44|
+(CONST 0) = COMBINE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE COMBINE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; COMBINE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; COMBINE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE COMBINE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; COMBINE
+8     (SKIP&RET 1)
+
+
+Disassembly of function COMBINE
+(CONST 0) = RATNUMP
+(CONST 1) = MTIMESP
+(CONST 2) = MEXPTP
+(CONST 3) = $DENOM
+(CONST 4) = 1
+(CONST 5) = $NUM
+(CONST 6) = $COMBINEFLAG
+(CONST 7) = ALIKE1
+(CONST 8) = ADDN
+(CONST 9) = $XTHRU
+(CONST 10) = -1
+(CONST 11) = POWER*
+(CONST 12) = MUL2
+1 required argument
+0 optional arguments
+No rest parameter
+No keyword parameters
+reads special variable: ($COMBINEFLAG)
+118 byte-code instructions:
+0     (PUSH-NIL 8)
+2     L2
+2     (LOAD&CAR&STORE 9 7)
+5     (LOAD&CDR&STORE 9)
+7     (LOAD&PUSH 7)
+8     (CALL1&JMPIF 0 L19)                 ; RATNUMP
+11    (LOAD&PUSH 7)
+12    (CALL1&JMPIF 1 L19)                 ; MTIMESP
+15    (LOAD&PUSH 7)
+16    (CALL1&JMPIFNOT 2 L46)              ; MEXPTP
+19    L19
+19    (LOAD&PUSH 7)
+20    (CALL1 3)                           ; $DENOM
+22    (STORE 2)
+23    (PUSH)
+24    (JMPIFEQTO 4 L46)                   ; 1
+27    (LOAD&PUSH 7)
+28    (CALL1 5)                           ; $NUM
+30    (STORE 3)
+31    (GETVALUE 6)                        ; $COMBINEFLAG
+33    (JMPIFNOT L39)
+35    (LOAD&PUSH 2)
+36    (CALLS2&JMPIF 12 L54)               ; INTEGERP
+39    L39
+39    (LOAD&PUSH 5)
+40    (LOAD&PUSH 2)
+41    (LOAD&JMPIFNOT 1 L95)
+44    (JMP L80)
+46    L46
+46    (LOAD&PUSH 7)
+47    (LOAD&CONS&STORE 6)
+49    (LOAD&JMPIFNOT 9 L114)
+52    (JMP L2)
+54    L54
+54    (LOAD&PUSH 7)
+55    (LOAD&CONS&STORE 0)
+57    (LOAD&JMPIFNOT 9 L114)
+60    (JMP L2)
+62    L62
+62    (LOAD&PUSH 0)
+63    (T&PUSH)
+64    (CALL2&PUSH 8)                      ; ADDN
+66    (CALL1 9)                           ; $XTHRU
+68    (STORE 0)
+69    (JMP L123)
+71    L71
+71    (LOAD&CDR&PUSH 1)
+73    (LOAD&CDR&STORE 1)
+75    (POP&STORE 1)
+77    (LOAD&JMPIFNOT 1 L95)
+80    L80
+80    (LOAD&CAR&PUSH 1)
+82    (LOAD&PUSH 5)
+83    (CALL2&JMPIFNOT 7 L71)              ; ALIKE1
+86    (LOAD&PUSH 0)
+87    (LOAD&PUSH 6)
+88    (LOAD 2)
+89    (CAR)
+90    (CONS&PUSH)
+91    (CALLS1 168)                        ; RPLACA
+93    (T&STORE 6)
+95    L95
+95    (SKIP 2)
+97    (LOAD&JMPIF 4 L108)
+100   (LOAD&PUSH 2)
+101   (LOAD&CONS&STORE 5)
+103   (LOAD&PUSH 3)
+104   (NIL)
+105   (CONS&PUSH)
+106   (LOAD&CONS&STORE 1)
+108   L108
+108   (NIL&STORE 4)
+110   (LOAD&JMPIF 9 L2)
+114   L114
+114   (LOAD&JMPIFNOT 0 L123)
+117   (CDR)
+118   (JMPIF L62)
+120   (LOAD&CAR&STORE 0 0)
+123   L123
+123   (LOAD&PUSH 1)
+124   (LOAD&PUSH 6)
+125   (JMP L157)
+127   L127
+127   (SKIP 2)
+129   (LOAD&JMPIFNOT 0 L172)
+132   L132
+132   (PUSH)
+133   (LOAD 7)
+134   (CONS)
+135   (JMP L173)
+137   L137
+137   (LOAD&CAR&PUSH 1)
+139   (LOAD&PUSH 1)
+140   (NIL&PUSH)
+141   (CALL2&PUSH 8)                      ; ADDN
+143   (LOAD&PUSH 1)
+144   (CONST&PUSH 10)                     ; -1
+145   (CALL2&PUSH 11)                     ; POWER*
+147   (CALL2&PUSH 12)                     ; MUL2
+149   (LOAD&CONS&STORE 10)
+151   (SKIP 2)
+153   (LOAD&CDR&STORE 1)
+155   (LOAD&CDR&STORE 0)
+157   L157
+157   (LOAD&PUSH 1)
+158   (CALLS1&JMPIF 146 L127)             ; ENDP
+161   (LOAD&CAR&PUSH 1)
+163   (LOAD&PUSH 1)
+164   (CALLS1&JMPIFNOT 146 L137)          ; ENDP
+167   (SKIP 3)
+169   (LOAD&JMPIF 0 L132)
+172   L172
+172   (LOAD 6)
+173   L173
+173   (PUSH)
+174   (NIL&PUSH)
+175   (CALL2 8)                           ; ADDN
+177   (SKIP&RET 10)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE FACOUT) (FIXNUM NUM))-45|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $FACTOROUT NUM ...)-46|
+(CONST 0) = $FACTOROUT
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $FACTOROUT>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $FACTOROUT
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $FACTOROUT
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $FACTOROUT>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $FACTOROUT
+8     (SKIP&RET 1)
+
+
+Disassembly of function $FACTOROUT
+(CONST 0) = 1
+(CONST 1) = NARG1
+(CONST 2) = LISTIFY1
+(CONST 3) = "FACTOROUT called on only one argument"
+(CONST 4) = MERROR
+(CONST 5) = MPLUSP
+(CONST 6) = MTIMESP
+(CONST 7) = (MTIMES)
+(CONST 8) = $FREEOF
+(CONST 9) = (MTIMES)
+(CONST 10) = SIMPTIMES
+(CONST 11) = (MTIMES)
+(CONST 12) = ALIKE1
+(CONST 13) = (MTIMES)
+(CONST 14) = (MPLUS)
+(CONST 15) = SIMPLUS
+(CONST 16) = $FACTORSUM
+(CONST 17) = ADDN
+0 required arguments
+0 optional arguments
+Rest parameter
+No keyword parameters
+167 byte-code instructions:
+0     (LOAD&PUSH 1)
+1     (CALLS2&PUSH 71)                    ; LENGTH
+3     (PUSH-NIL 8)
+5     (CONST&PUSH 0)                      ; 1
+6     (LOAD&PUSH 11)
+7     (CALL2 1)                           ; NARG1
+9     (STORE 7)
+10    (CONST&PUSH 0)                      ; 1
+11    (LOAD&PUSH 9)
+12    (CALLSR&PUSH 1 54)                  ; -
+15    (LOAD&PUSH 11)
+16    (CALL2 2)                           ; LISTIFY1
+18    (STORE 6)
+19    (JMPIF L24)
+21    (CONST&PUSH 3)                      ; "FACTOROUT called on only one argument"
+22    (CALL1 4)                           ; MERROR
+24    L24
+24    (LOAD&PUSH 7)
+25    (CALL1&JMPIFNOT 5 L35)              ; MPLUSP
+28    (LOAD&JMPIFNOT 6 L92)
+31    (LOAD&PUSH 7)
+32    (CALL1&JMPIF 5 L92)                 ; MPLUSP
+35    L35
+35    (LOAD 7)
+36    (SKIP&RET 11)
+38    L38
+38    (LOAD&CAR&PUSH 0)
+40    (LOAD&CONS&STORE 5)
+42    (JMP L140)
+45    L45
+45    (LOAD&PUSH 1)
+46    (LOAD&CONS&STORE 5)
+48    (LOAD&JMPIFNOT 7 L211)
+52    (JMP L94)
+54    L54
+54    (CONST&PUSH 9)                      ; (MTIMES)
+55    (LOAD 5)
+56    (CONS&PUSH)
+57    (CONST&PUSH 0)                      ; 1
+58    (NIL&PUSH)
+59    (CALL 3 10)                         ; SIMPTIMES
+62    (JMP L158)
+65    L65
+65    (CONST 0)                           ; 1
+66    (JMP L170)
+69    L69
+69    (CONST&PUSH 11)                     ; (MTIMES)
+70    (LOAD 4)
+71    (CONS&PUSH)
+72    (CONST&PUSH 0)                      ; 1
+73    (T&PUSH)
+74    (CALL 3 10)                         ; SIMPTIMES
+77    (JMP L170)
+80    L80
+80    (LOAD&PUSH 4)
+81    (LOAD&PUSH 4)
+82    (LIST&PUSH 2)
+84    (LOAD&CONS&STORE 2)
+86    (LOAD&JMPIFNOT 7 L211)
+90    (JMP L94)
+92    L92
+92    (LOAD&CDR&STORE 7)
+94    L94
+94    (LOAD&CAR&STORE 7 1)
+97    (LOAD&CDR&STORE 7)
+99    (LOAD&PUSH 1)
+100   (CALL1&JMPIF 6 L109)                ; MTIMESP
+103   (CONST&PUSH 7)                      ; (MTIMES)
+104   (CONST&PUSH 0)                      ; 1
+105   (LOAD&PUSH 3)
+106   (LIST 3)
+108   (STORE 1)
+109   L109
+109   (NIL&STORE 4)
+111   (STORE 3)
+112   (LOAD&CDR&PUSH 1)
+114   (LOAD&JMPIFNOT 0 L145)
+117   L117
+117   (LOAD&CAR&PUSH 0)
+119   (CALLS2&JMPIF 8 L136)               ; NUMBERP
+122   (CONST&PUSH 8)                      ; $FREEOF
+123   (LOAD&PUSH 8)
+124   (LOAD&CAR&PUSH 2)
+126   (NIL)
+127   (CONS&PUSH)
+128   (CALLSR 2 34)                       ; APPEND
+131   (APPLY 0)
+133   (JMPIF L38)
+136   L136
+136   (LOAD&CAR&PUSH 0)
+138   (LOAD&CONS&STORE 4)
+140   L140
+140   (LOAD&CDR&STORE 0)
+142   (LOAD&JMPIF 0 L117)
+145   L145
+145   (SKIP 1)
+147   (LOAD&JMPIFNOT 4 L45)
+151   (LOAD 4)
+152   (CDR)
+153   (JMPIF L54)
+156   (LOAD 4)
+157   (CAR)
+158   L158
+158   (STORE 4)
+159   (LOAD&JMPIFNOT 3 L65)
+163   (LOAD 3)
+164   (CDR)
+165   (JMPIF L69)
+168   (LOAD 3)
+169   (CAR)
+170   L170
+170   (STORE 3)
+171   (T&STORE 0)
+173   (LOAD&PUSH 2)
+174   (LOAD&JMPIFNOT 0 L201)
+177   L177
+177   (LOAD 0)
+178   (CAR)
+179   (CAR&PUSH)
+180   (LOAD&PUSH 6)
+181   (CALL2&JMPIFNOT 12 L196)            ; ALIKE1
+184   (LOAD&CAR&PUSH 0)
+186   (LOAD&PUSH 5)
+187   (LOAD 2)
+188   (CAR)
+189   (CDR)
+190   (CONS&PUSH)
+191   (CALLS1 170)                        ; RPLACD
+193   (NIL&STORE 0)
+195   (STORE 1)
+196   L196
+196   (LOAD&CDR&STORE 0)
+198   (LOAD&JMPIF 0 L177)
+201   L201
+201   (SKIP 1)
+203   (LOAD&JMPIF 0 L80)
+207   (LOAD&JMPIF 7 L94)
+211   L211
+211   (LOAD&PUSH 2)
+212   (LOAD&JMPIFNOT 0 L245)
+215   L215
+215   (CONST&PUSH 13)                     ; (MTIMES)
+216   (LOAD 1)
+217   (CAR)
+218   (CAR&PUSH)
+219   (CONST&PUSH 14)                     ; (MPLUS)
+220   (LOAD 3)
+221   (CAR)
+222   (CDR)
+223   (CONS&PUSH)
+224   (CONST&PUSH 0)                      ; 1
+225   (NIL&PUSH)
+226   (CALL&PUSH 3 15)                    ; SIMPLUS
+229   (CALL1&PUSH 16)                     ; $FACTORSUM
+231   (LIST&PUSH 3)
+233   (CONST&PUSH 0)                      ; 1
+234   (NIL&PUSH)
+235   (CALL&PUSH 3 10)                    ; SIMPTIMES
+238   (LOAD&CONS&STORE 6)
+240   (LOAD&CDR&STORE 0)
+242   (LOAD&JMPIF 0 L215)
+245   L245
+245   (SKIP 1)
+247   (LOAD&PUSH 5)
+248   (NIL&PUSH)
+249   (CALL2 17)                          ; ADDN
+251   (SKIP&RET 11)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPLITFILE SCREEN))-47|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DECLARE-TOP (SPECIAL MOREMSG MORECONTINUE))-48|
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+2 byte-code instructions:
+0     (NIL)
+1     (SKIP&RET 1)
+
+
+Disassembly of function #:|(DEFMFUN $PAUSE (&OPTIONAL # #) ...)-49|
+(CONST 0) = $PAUSE
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $PAUSE>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $PAUSE
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $PAUSE
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $PAUSE>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $PAUSE
+8     (SKIP&RET 1)
+
+
+Disassembly of function $PAUSE
+(CONST 0) = MOREMSG
+(CONST 1) = MORECONTINUE
+(CONST 2) = STRIPDOLLAR
+(CONST 3) = MORE-FUN
+(CONST 4) = $DONE
+0 required arguments
+2 optional arguments
+No rest parameter
+No keyword parameters
+reads special variables: (MORECONTINUE MOREMSG)
+20 byte-code instructions:
+0     (JMPIFBOUNDP 2 L6)
+3     (GETVALUE 0)                        ; MOREMSG
+5     (STORE 2)
+6     L6
+6     (JMPIFBOUNDP 1 L12)
+9     (GETVALUE 1)                        ; MORECONTINUE
+11    (STORE 1)
+12    L12
+12    (LOAD&PUSH 2)
+13    (CALL1&PUSH 2)                      ; STRIPDOLLAR
+15    (LOAD&PUSH 2)
+16    (CALL1 2)                           ; STRIPDOLLAR
+18    (BIND 1)                            ; MORECONTINUE
+20    (LOAD 3)
+21    (BIND 0)                            ; MOREMSG
+23    (NIL&PUSH)
+24    (CALL1 3)                           ; MORE-FUN
+26    (CONST 4)                           ; $DONE
+27    (UNBIND 2)
+29    (SKIP&RET 4)
+
+
+Disassembly of function #:|(DEFMFUN $CLEARSCREEN NIL ...)-50|
+(CONST 0) = $CLEARSCREEN
+(CONST 1) = SYSTEM::REMOVE-OLD-DEFINITIONS
+(CONST 2) = #<COMPILED-CLOSURE $CLEARSCREEN>
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+7 byte-code instructions:
+0     (CONST&PUSH 0)                      ; $CLEARSCREEN
+1     (CALL1 1)                           ; SYSTEM::REMOVE-OLD-DEFINITIONS
+3     (CONST&PUSH 0)                      ; $CLEARSCREEN
+4     (CONST&PUSH 2)                      ; #<COMPILED-CLOSURE $CLEARSCREEN>
+5     (CALLS2 130)                        ; SYSTEM::%PUTD
+7     (CONST 0)                           ; $CLEARSCREEN
+8     (SKIP&RET 1)
+
+
+Disassembly of function $CLEARSCREEN
+(CONST 0) = C
+(CONST 1) = CURSORPOS
+(CONST 2) = $DONE
+0 required arguments
+0 optional arguments
+No rest parameter
+No keyword parameters
+4 byte-code instructions:
+0     (CONST&PUSH 0)                      ; C
+1     (CALL1 1)                           ; CURSORPOS
+3     (CONST 2)                           ; $DONE
+4     (SKIP&RET 1)
+
+
+Wrote file binary-clisp/outmis.fas
+Wrote file /cygdrive/e/temp/maxima/src/outmis.lis
