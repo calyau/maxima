@@ -944,7 +944,7 @@
   (tex (caddr x)
     (append l
       (if (cadr x)
-        (list (format nil "\\mbox{\\tt\\red(~A) \\black}" (stripdollar (cadr x))))
+        (list (format nil "\\mbox{\\tt\\red(~A) \\black}" (tex-stripdollar (cadr x))))
         nil))
     r 'mparen 'mparen))
 
