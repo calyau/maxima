@@ -207,19 +207,42 @@ ratsimp(specint(t^(3/2)*hstruve[1](t^(1/2))*%e^(-p*t),t));
 specint(t*%ibes[0](a*t/2)*%ibes[1](a*t/2)*%e^(-p*t),t);
 %ibes[0](a*t/2)*%ibes[1](a*t/2)/p^2 $
 
+/*
+ * t^(3/4)*bessel_j(1/2,t)*bessel_j(1/4,t)
+ *
+ * Luke gives
+ *
+ * bessel_j(u,t)*bessel_j(v,t)
+ *    = (z/2)^(u+v)/gamma(u+1)/gamma(v+1)
+ *        * %f[2,3]([(u+v+1)/2,(u+v+2)/2],[u+1,v+1,u+v+1],-z^2)
+ *
+ * So the integrand is
+ *
+ * 8/2^(3/4)/sqrt(%pi)/gamma(1/4)*t^(3/2)*%f[2,3]([7/8,11/8],[3/2,5/4,7/4],-t^2)
+ *
+ * f19p220 gives
+ *
+ * t^(3/2)*%f[2,3]([7/8,11/8],[3/2,5/4,7/4],-t^2)
+ *
+ *    -> gamma(5/2)*p^(-5/2)
+ *         *%f[4,3]([7/8,11/8,5/2/2,(5/2+1)/2],[3/2,5/4,7/4],-4/p^2)
+ *    =  gamma(5/2)*p^(-5/2)
+ *         $%f[2,1]([7/8,11/8],[3/2],-4/p^2)
+ *
+ * And we know %f[2,1]([7/8,11/8],[3/2],z) is
+ *
+ * -2*(1/(sqrt(z)+1)^(3/4)-1/(1-sqrt(z))^(3/4))/(3*sqrt(z))
+ *
+ * Applying all of this gives the expected answer below.
+ */
+
 specint(t^(3/4)*bessel_j(1/2,t)*bessel_j(1/4,t)*%e^(-p*t),t);
 2*%i*(1/(2*%i/p+1)^(3/4)-1/(1-2*%i/p)^(3/4))/(2^(3/4)*gamma(1/4)*p^(3/2)) $
 
 /*
- * Sec 4.14, formula (50):
- *
- * t^(u-1/2)*bessel_y(2*v,2*sqrt(a)*sqrt(t)) ->
- *    a^(-1/2)*p^(-u)*exp(-a/p/2)*(tan((u-v)*%pi)*gamma(u+v+1/2)/gamma(2*v+1)*%m(u,v,a/p)
- *                                 -sec((u-v)*%pi)*%w(u,v,a/p))
- * 
- * Maxima can't do this for general v, but for specific v, it can
- * compute it.  I don't know if the result is right or not.
- *
+ * Not sure this is right.  We can convert bessel_y to bessel_j,
+ * multiply them together and use the results for products of bessel_j
+ * functions.
  */
 specint(t^(5/2)*bessel_y(1/2,t^(1/2))^2*%e^(-p*t),t);
 -12*((-3*sqrt(%pi)*%i*erf(%i/sqrt(p))*p^(5/2)*%e^-(1/p)/8-sqrt(%pi)*%i*erf 
@@ -228,8 +251,32 @@ specint(t^(5/2)*bessel_y(1/2,t^(1/2))^2*%e^(-p*t),t);
  +sqrt(%pi)*%i*erf(%i/sqrt(p))*sqrt(p)*%e^-(1/p)/2+p/2)/p-sqrt(%pi)*%i*erf 
  (%i/sqrt(p))*sqrt(p)*%e^-(1/p)/2)/(%pi*p^4) $
 
+/*
+ * See formula (42), p. 187:
+ *
+ * t^(lam-1)*bessel_j(2*u,2*sqrt(a)*sqrt(t))*bessel_j(2*v,2*sqrt(a)*sqrt(t))
+ *
+ *    -> 2*gamma(lam+u+v)*a^(u+v)/gamma(2*u+1)/gamma(2*v+1)/p^(lam+u+v)
+ *        *%f[3,3]([u+v+1/2,u+v+1,lam+u+v],[2*u+1,2*v+1,2*u+2*v+1],-4*a/p)
+ *
+ * with Re(lam + u + v) > 0.
+ *
+ * So, we have lam = 3/2, u=v=1/4, a = 1/4, we get
+ *
+ * 4/%pi/p^2*%f[3,3]([1,3/2,2],[3/2,3/2,2],-1/p)
+ *  = 4/%pi/p^2*%f[1,1]([1],[3/2],-1/p)
+ *
+ * And %f[1,1]([1],[3/2],-1/p) is 
+ *
+ *     -sqrt(%pi)*%i*erf(%i*sqrt(1/p))*%e^-(1/p)/(2*sqrt(1/p))
+ *
+ * So, the final result is:
+ *
+ * -2*%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2))
+ */
+
 specint(t^(1/2)*bessel_j(1/2,t^(1/2))^2*%e^(-p*t),t);
--%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2)) $
+-2*%i*erf(%i/sqrt(p))*%e^-(1/p)/(sqrt(%pi)*p^(3/2)) $
 
 /*
  * See formula (8), section 4.16 of Table of Integral Transforms:
