@@ -619,6 +619,11 @@ Kronecker delta.  The command @code{ev(exp,kdelta)} causes the evaluation of
 an expression containing @code{kdelta([],[])} to the dimension of the
 manifold.
 
+In what amounts to an abuse of this notation, Itensor also allows
+@code{kdelta()} to have 2 covariant and no contravariant, or 2 contravariant
+and no covariant indices, in effect providing a co(ntra)variant "unit matrix"
+capability. This capability is used by @code{lc2kdt}.
+
 @end defun
 
 @c @node kdels
@@ -662,13 +667,76 @@ repeated.
 
 @end defun
 
+@c @node lc2kdt
+@c @unnumberedsec phony
+@defun lc2kdt (exp)
+Simplifies expressions containing the Levi-Civita symbol, converting these
+to Kronecker-delta expressions when possible. The main difference between
+this function and simply evaluating the Levi-Civita symbol is that direct
+evaluation often results in Kronecker expressions containing numerical
+indices. This is often undesirable as it prevents further simplification.
+The @code{lc2kdt} function avoids this problem, yielding expressions that
+are more easily simplified with @code{rename()} or @code{contract()}.
+
+@example
+
+(%i1) load(itensor);
+
+(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%i2) exp:ishow('levi_civita([],[i,j])*'levi_civita([k,l],[])*a([j],[k]))$
+
+                                  i j  k
+(%t2)                  levi_civita    a  levi_civita
+                                       j            k l
+(%i3) ishow(ev(exp,levi_civita))$
+
+                                  i j  k       1 2
+(%t3)                       kdelta    a  kdelta
+                                  1 2  j       k l
+(%i4) ishow(lc2kdt(exp))$
+
+                     k        i       j         j       i
+(%t4)               a  (kdelta  kdelta  - kdelta  kdelta )
+                     j        k       l         k       l
+(%i5) ishow(ev(%,kdelta))$
+
+             i       j         j       i
+(%t5) (kdelta  kdelta  - kdelta  kdelta )
+             1       2         1       2
+
+                           k       l         l       k
+                    (kdelta  kdelta  - kdelta  kdelta ) a
+                           1       2         1       2   j k
+
+@end example
+
+The @code{lc2kdt()} function sometimes makes use of a special form of the
+Kronecker delta @code{kdelta}, using two upper or two lower indices.
+
+@example
+
+(%i6) exp:ishow('levi_civita([],[i,j])*'levi_civita([],[k,l])*a([j,k],[]))$
+
+                                 i j            k l
+(%t6)                 levi_civita    levi_civita    a
+                                                     j k
+(%i7) ishow(lc2kdt(exp))$
+
+            %1 i       %2 j        k        l          l        k
+(%t7) kdelta     kdelta     (kdelta   kdelta   - kdelta   kdelta  ) a
+                                   %1       %2         %1       %2   j k
+
+@end example
+
+@end defun
+
 @c @node lc_l
 @c @unnumberedsec phony
 @defun lc_l
 
 Simplification rule used for expressions containing the unevaluated Levi-Civita
-symbol (@code{levi-civita}). Along with @code{lc_u}, it can be used to simplify
-many expressions more efficiently than the evaluation of @code{levi-civita}.
+symbol (@code{levi_civita}). Along with @code{lc_u}, it can be used to simplify
+many expressions more efficiently than the evaluation of @code{levi_civita}.
 For example:
 
 @example
@@ -702,8 +770,8 @@ For example:
 @defun lc_u
 
 Simplification rule used for expressions containing the unevaluated Levi-Civita
-symbol (@code{levi-civita}). Along with @code{lc_u}, it can be used to simplify
-many expressions more efficiently than the evaluation of @code{levi-civita}.
+symbol (@code{levi_civita}). Along with @code{lc_u}, it can be used to simplify
+many expressions more efficiently than the evaluation of @code{levi_civita}.
 For details, see @code{lc_l}.
 
 @end defun
@@ -1348,7 +1416,7 @@ coefficients.) In ITENSOR, defined as
 @example
 
     c         c        c        c         c
-icc2   = ichr2   + ifc2   + ikt2   - inmc2
+icc2   = ichr2   + ifc2   - ikt2   - inmc2
     ab        ab       ab       ab        ab
 
 @end example
