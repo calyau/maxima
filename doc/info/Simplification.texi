@@ -8,20 +8,6 @@
 @menu
 @end menu
 
-@c @node APPLY_NOUNS, ASKEXP, Simplification, Simplification
-@c @unnumberedsec phony
-@defun APPLY_NOUNS (exp)
-causes the application of noun forms in an
-expression.  E.g. EXP:'DIFF(X^2/2,X); APPLY_NOUNS(EXP); gives X.  This
-gives the same result as EV(EXP,NOUNS); except that it can be faster
-and use less storage.  It also can be used in translated code, where
-EV may cause problems.  Note that it is called APPLY_NOUNS, not
-EV_NOUNS, because what it does is to APPLY the rules corresponding to
-the noun-form operators, which is not evaluation.
-
-@end defun
-@c @node ASKEXP, ASKINTEGER, APPLY_NOUNS, Simplification
-@c @unnumberedsec phony
 @defvar ASKEXP
  default: [] contains the expression upon which ASKSIGN is
 called.  A user may enter a Maxima break with ^A and inspect this
