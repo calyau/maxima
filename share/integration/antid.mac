@@ -1,44 +1,44 @@
 
-NONZEROANDFREEOF(XARGUMENTX, EARGUMENTE)
-:= IS(EARGUMENTE # 0 AND FREEOF(XARGUMENTX, EARGUMENTE))$
-MATCHDECLARE(AARGUMENTA, NONZEROANDFREEOF(XARGUMENTX), BARGUMENTB,
-FREEOF(XARGUMENTX))$
-DEFMATCH(LINEAR, AARGUMENTA*XARGUMENTX+BARGUMENTB, XARGUMENTX)$
-ANTID(FN, VAR, UNK) := BLOCK(
-  [LCLVARIABLELCL, DVARIABLED, AARGUMENTA, BARGUMENTB, TVARIABLET,
-  UVARIABLEU, KILLER, lisarith:true],
-   DVARIABLED : DERIVDEGREE(FN, UNK, VAR),
-   IF DVARIABLED = 0 THEN (
-    TVARIABLET : INTEGRATE(FN, VAR),
-      IF 
-      NOT FREEOF(NOUNIFY(INTEGRATE), TVARIABLET) 
-      THEN RETURN([0, FN]) ELSE 
-      RETURN([TVARIABLET, 0])  ),
-   UVARIABLEU : DIFF(UNK, VAR, DVARIABLED),
-   KILLER(EARGUMENTE) := IF 
-    HIPOW(EARGUMENTE, UVARIABLEU) <= 1 
-   THEN EARGUMENTE ELSE 0,
-   IF 
-    LINEAR(FN, UVARIABLEU) = FALSE 
-   THEN (
-    TVARIABLET : EXPAND(FN),
-      IF 
-      PART(TVARIABLET, 0) # "+" 
-      THEN 
-      RETURN([0, TVARIABLET]),
-      AARGUMENTA : MAP(KILLER, TVARIABLET),
-      RETURN(ANTID(AARGUMENTA, VAR, UNK)+[0, RATSIMP(FN-AARGUMENTA)])
+nonzeroandfreeof(xargumentx, eargumente)
+:= is(eargumente # 0 and freeof(xargumentx, eargumente))$
+matchdeclare(aargumenta, nonzeroandfreeof(xargumentx), bargumentb,
+freeof(xargumentx))$
+defmatch(linear, aargumenta*xargumentx+bargumentb, xargumentx)$
+antid(fn, var, unk) := block(
+  [lclvariablelcl, dvariabled, aargumenta, bargumentb, tvariablet,
+  uvariableu, killer, lisarith:true],
+   dvariabled : derivdegree(fn, unk, var),
+   if dvariabled = 0 then (
+    tvariablet : integrate(fn, var),
+      if 
+      not freeof(nounify(integrate), tvariablet) 
+      then return([0, fn]) else 
+      return([tvariablet, 0])  ),
+   uvariableu : diff(unk, var, dvariabled),
+   killer(eargumente) := if 
+    hipow(eargumente, uvariableu) <= 1 
+   then eargumente else 0,
+   if 
+    linear(fn, uvariableu) = false 
+   then (
+    tvariablet : expand(fn),
+      if 
+      part(tvariablet, 0) # "+" 
+      then 
+      return([0, tvariablet]),
+      aargumenta : map(killer, tvariablet),
+      return(antid(aargumenta, var, unk)+[0, ratsimp(fn-aargumenta)])
        ),
-   TVARIABLET : SUBST(DIFF(UNK, VAR, DVARIABLED-1), LCLVARIABLELCL,
-   INTEGRATE(SUBST(LCLVARIABLELCL, DIFF(UNK, VAR, DVARIABLED-1),
-   EXPAND(AARGUMENTA)), LCLVARIABLELCL)),
-   IF 
-    NOT FREEOF(NOUNIFY(INTEGRATE), TVARIABLET) 
-   THEN 
-    RETURN([0, AARGUMENTA*UVARIABLEU]+ANTID(BARGUMENTB, VAR, UNK)),
-   RETURN([TVARIABLET, 0]+ANTID(RATSIMP(FN-DIFF(TVARIABLET, VAR)),
-   VAR, UNK))  )$
-ANTIDIFF(FN, VAR, UNK) := BLOCK(
-  [TVARIABLET],
-   TVARIABLET : ANTID(FN, VAR, UNK),
-   RETURN(PART(TVARIABLET, 1)+'INTEGRATE(PART(TVARIABLET, 2), VAR))  )$
+   tvariablet : subst(diff(unk, var, dvariabled-1), lclvariablelcl,
+   integrate(subst(lclvariablelcl, diff(unk, var, dvariabled-1),
+   expand(aargumenta)), lclvariablelcl)),
+   if 
+    not freeof(nounify(integrate), tvariablet) 
+   then 
+    return([0, aargumenta*uvariableu]+antid(bargumentb, var, unk)),
+   return([tvariablet, 0]+antid(ratsimp(fn-diff(tvariablet, var)),
+   var, unk))  )$
+antidiff(fn, var, unk) := block(
+  [tvariablet],
+   tvariablet : antid(fn, var, unk),
+   return(part(tvariablet, 1)+'integrate(part(tvariablet, 2), var))  )$
