@@ -104,13 +104,11 @@
 (defbinop $/ / long-float)
 
 
-#+clisp
 (defstruct (polygon (:type list)
-		    (:constructor make-polygon (pts edges))
+		    (:constructor %make-polygon (pts edges))
 		    )
   (dummy '($polygon simp))
   pts edges)
-
 
 (eval-when (compile eval)
 
@@ -133,16 +131,10 @@
 (defmacro print-pt (f)
   `(print-pt1 ,f $pstream ))
 
-#-clisp
-(defstruct (polygon (:type list)
-		    (:constructor make-polygon (pts edges))
-		    )
-  (dummy '($polygon simp))
-  pts edges)
-
-#-cmu ;; somehow this definition undefines whole structure for cmulisp
 (defmacro make-polygon (a b) `(list '($polygon) ,a ,b))
 )
+
+
 
 (defun draw3d (f minx maxx miny maxy  nxint nyint)
   (let* ((epsx (/ (- maxx minx) nxint))
