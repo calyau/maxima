@@ -22,8 +22,8 @@ uninstall-clisp:
 
 clean-clisp:
 	-test -d binary-clisp && \
-                cd binary-clisp ; \
-                rm -f `ls -1 | grep -v maxima.mem`
+                ( cd binary-clisp && \
+                rm -f `ls -1 | grep -v maxima.mem` )
 distclean-clisp:
 	rm -rf binary-clisp
 clisp-depends.mk: maxima.system
@@ -52,8 +52,8 @@ uninstall-cmucl:
 
 clean-cmucl:
 	-test -d binary-cmucl && \
-                cd binary-cmucl ; \
-                rm -f `ls -1 | grep -v maxima.core`
+                ( cd binary-cmucl && \
+                rm -f `ls -1 | grep -v maxima.core` )
 distclean-cmucl:
 	rm -rf binary-cmucl
 cmucl-depends.mk: maxima.system
@@ -83,8 +83,8 @@ uninstall-gcl:
 
 clean-gcl:
 	-test -d binary-gcl && \
-                cd binary-gcl ; \
-                rm -f `ls -1 | grep -v maxima`
+                ( cd binary-gcl && \
+                rm -f `ls -1 | grep -v maxima` )
 distclean-gcl:
 	rm -rf binary-gcl
 gcl-depends.mk: maxima.system
