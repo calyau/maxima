@@ -317,7 +317,7 @@
 	(LET (((|0| N) (MAPCAR #'TRANSLATE (CDDDR FORM)))
 	      (FLAG (EQ (CAAR FORM) '$SUM))
 	      (VAR (CADDR FORM))
-	      (SUM (GENSYM)))
+	      (SUM (tr-GENSYM)))
 	     (COND ((AND (EQ (CAR |0|) '$FIXNUM)
 			 (EQ (CAR N) '$FIXNUM))
 		    (LET ((SUM-EXP
@@ -325,7 +325,9 @@
 						   (T 'MTIMES)))
 					   ,SUM ,(CADR FORM))
 					 SUM '$FIXNUM
-					 VAR '$FIXNUM)))
+					 VAR '$FIXNUM))
+			  (|00| (tr-gensym))
+			  (NN (tr-gensym)))
 			 ;; here is the bummer. We need to know the
 			 ;; mode of SUM before we know the mode of the
 			 ;; SUM-EXP, but that tells us something about
@@ -349,21 +351,19 @@
 			 ;; crazzyness?
 
 			 `(,(CAR SUM-EXP)
-			   . ((LAMBDA (|0| N)
-				      ;; should be gensyms. WHY does GJC
-				      ;; lose like this?
-				      (COND ((NOT (< N |0|))
-					     (DO ((,VAR |0| (f1+ ,VAR))
+			   . ((LAMBDA (,|00| ,NN)
+				      (COND ((NOT (< ,NN ,|00|))
+					     (DO ((,VAR ,|00| (f1+ ,VAR))
 						  (,SUM ,(START-VAL
 							  FLAG
 							  (CAR SUM-EXP))
 							,(CDR SUM-EXP)))
-						 ((< N ,VAR) ,SUM)
+						 ((< ,NN ,VAR) ,SUM)
 						 ))
-					    ((= N (f1- |0|))
+					    ((= ,NN (f1- ,|00|))
 					     ,(START-VAL FLAG (CAR SUM-EXP)))
 					    (T
-					     (INTERVAL-ERROR ',(caar form) |0| N))))
+					     (INTERVAL-ERROR ',(caar form) ,|00| ,NN))))
 			      ,(CDR |0|)
 			      ,(CDR N)))))
 		   (T
@@ -398,8 +398,8 @@
 	(SETQ FORM (CDR FORM))
 	(COND ((= (LENGTH FORM) 3)
 	       (LET  (((EXP X LLIST) FORM)
-		      (SUM (GENSYM))
-		      (LIL (GENSYM)))
+		      (SUM (tr-GENSYM))
+		      (LIL (tr-GENSYM)))
 		     `($ANY . (DO ((,LIL (CDR ,(DTRANSLATE LLIST)) (CDR ,LIL))
 				   (,SUM NIL)
 				   (,X))
@@ -412,9 +412,9 @@
 						   ,SUM))))))
 	      ((= (LENGTH FORM) 4)
 	       (LET (((EXP X |0| N) FORM)
-		     (|00| (GENSYM))
-		     (NN (GENSYM))
-		     (SUM (GENSYM)))
+		     (|00| (tr-GENSYM))
+		     (NN (tr-GENSYM))
+		     (SUM (tr-GENSYM)))
 		    (SETQ |0| (DTRANSLATE |0|) ; I had forgotten this before!
 			  N (DTRANSLATE N))  ; never noticed.
 		    `($ANY . ((LAMBDA (,|00| ,NN)
