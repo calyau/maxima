@@ -193,15 +193,22 @@
 
 
 (DEFMFUN $gcfactor (n)
-       (setq n (cdr ($totaldisrep ($bothcoef ($rat n '$%i) '$%i))))
-       (cond ((and (integerp (car n)) (integerp (cadr n)))
-	      (setq n (sloop for (term exp) on (gcfactor (cadr n) (car n))
-			    collecting
-			     (cond ((= exp 1) (gcdisp term))
-				       (t (list '(mexpt) (gcdisp term) exp)))))
-	      (cond ((null (cdr n)) (car n))
-		    (t (cons '(mtimes simp) (nreverse n)))))
-	     (t (gcdisp (nreverse n)))))
+  (let ((n (cdr ($totaldisrep ($bothcoef ($rat n '$%i) '$%i)))))
+    (if (not (and (integerp (car n)) (integerp (cadr n))))
+	(gcdisp (nreverse n))
+	(do ((factors (gcfactor (cadr n) (car n)) (cddr factors))
+	     (res nil))
+	    ((null factors)
+	     (cond ((null res) 1)
+		   ((null (cdr res)) (car res))
+		   (t (cons '(mtimes simp) (nreverse res)))))
+	  (let ((term (car factors))
+		(exp (cadr factors)))
+	    (push 
+	     (if (= exp 1)
+		 (gcdisp term)
+		 (pow (gcdisp term) exp))
+	     res))))))
 
 (defun gcdisp (term)
        (cond ((atom term) term)
