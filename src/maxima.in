@@ -241,17 +241,17 @@ if [ "$verbose" = "true" ]; then
   echo "$maxima_image_base=$maxima_image_base"
 fi
 
-if [ "$MAXIMA_LISP" == "clisp" ]; then
+if [ "$MAXIMA_LISP" = "clisp" ]; then
     exec "@CLISP_NAME@" -M "$maxima_image_base.mem"
-elif [ "$MAXIMA_LISP" == "cmucl" ]; then
+elif [ "$MAXIMA_LISP" = "cmucl" ]; then
     exec "@CMUCL_NAME@" -core "$maxima_image_base.core" -eval '(user::run)'
-elif [ "$MAXIMA_LISP" == "gcl" ]; then
+elif [ "$MAXIMA_LISP" = "gcl" ]; then
     exec "$maxima_image_base" -eval '(user::run)'
-elif [ "$MAXIMA_LISP" == "acl6" ]; then
+elif [ "$MAXIMA_LISP" = "acl6" ]; then
     exec "@ACL6_NAME@" -I "$maxima_image_base.dxl" -e '(user::run)'
-elif [ "$MAXIMA_LISP" == "openmcl" ]; then
+elif [ "$MAXIMA_LISP" = "openmcl" ]; then
     exec "@OPENMCL_NAME@" -I "$maxima_image_base.image"
-elif [ "$MAXIMA_LISP" == "sbcl" ]; then
+elif [ "$MAXIMA_LISP" = "sbcl" ]; then
     exec "@SBCL_NAME@" --core "$maxima_image_base.core" --eval '(user::run)'
 else
     echo "Maxima does not know which Lisp to use. This should never happen." >2
