@@ -41,6 +41,7 @@
 	 (error
 	  '|arg to fft//ift//recttopolar//polartorect must be floating point array|))))
 
+#-cl
 (declare (flonum x y xa ya)
 	 (fixnum i n m1 m2))
 
