@@ -7,7 +7,7 @@ clisp-check:
 	MAXIMA_VERPKGLIBDIR=$(top_srcdir)/src; \
 	export MAXIMA_VERPKGLIBDIR; \
 	echo "Running test suite with clisp..."; \
-	$(MAXIMA) --lisp=clisp --batch-lisp=tests.lisp > tests-clisp.log 2>&1; \
+	$(MAXIMA) --lisp=clisp --batch-lisp=tests.lisp > tests-clisp.log < /dev/null 2>&1; \
 	./summarize-log tests-clisp.log
 endif
 
@@ -19,7 +19,7 @@ cmucl-check:
 	MAXIMA_VERPKGLIBDIR=$(top_srcdir)/src; \
 	export MAXIMA_VERPKGLIBDIR; \
 	echo "Running test suite with cmucl..."; \
-	$(MAXIMA) --lisp=cmucl --batch-lisp=tests.lisp > tests-cmucl.log 2>&1; \
+	$(MAXIMA) --lisp=cmucl --batch-lisp=tests.lisp > tests-cmucl.log < /dev/null 2>&1; \
 	./summarize-log tests-cmucl.log
 endif
 
@@ -31,6 +31,6 @@ gcl-check:
 	MAXIMA_VERPKGLIBDIR=$(top_srcdir)/src; \
 	export MAXIMA_VERPKGLIBDIR; \
 	echo "Running test suite with gcl..."; \
-	$(MAXIMA) --lisp=gcl --batch-lisp=tests.lisp > tests-gcl.log 2>&1; \
+	$(MAXIMA) --lisp=gcl --batch-lisp=tests.lisp > tests-gcl.log < /dev/null 2>&1; \
 	./summarize-log tests-gcl.log
 endif
