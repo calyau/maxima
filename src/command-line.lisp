@@ -118,8 +118,12 @@
 	    (do ((removed-arg nil (pop result)))
 		 ((or (equal removed-arg "--") (equal nil result)) result)))
 
-;; FIXME: acl version needs to be tested/fixed
-    #+acl (system:command-line-arguments t)
+    #+allegro
+    (let ((args (system:command-line-arguments :application t)))
+      ;; Skip the first arg, which is the full path to alisp.
+      (rest args))
+      
+      
 
-;; FIXME: openmcl version missing
+    ;; FIXME: openmcl version missing
 )
