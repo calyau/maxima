@@ -447,8 +447,7 @@ properties from all indexed objects.
 
 Carries out the tensorial contractions in @code{exp} which may be any
 combination of sums and products. This function uses the information
-given to the @code{defcon} function. When the @code{allsym} flag is @code{true},
-indices are sorted into alphabetical order. For best results, @code{exp}
+given to the @code{defcon} function. For best results, @code{exp}
 should be fully expanded. @code{ratexpand} is the fastest way to expand
 products and powers of sums if there are no variables in the denominators
 of the terms. The @code{gcd} switch should be @code{false} if GCD
