@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.8 2004-02-07 21:16:04 amundson Exp $
+#       $Id: Paths.tcl,v 1.9 2004-03-16 11:58:15 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -268,12 +268,53 @@ proc vMAXSetMaximaCommand {} {
 	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 	    tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 	}
+	# jfa: bypass maxima script on windows
+        # vvz: on Windows 9X/ME only
+	if {$tcl_platform(os) == "Windows 95"} {
+	    # maybe it's in lib - I don't like this
+	    set dir $maxima_priv(maxima_verpkglibdir)
+	    # FIXME - need autoconf(lisp) so we don't need glob
+	    set exes [glob -nocomplain $dir/binary-*/maxima.exe]
+	    if {[llength $exes] != "1" || \
+		    [set exe [lindex $exes 0]] == "" || \
+		    ![file isfile $exe]} {
+		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+		return
+	    }
+	    
+	} else {
+	    set maxima_priv(xmaxima_maxima) maxima
+	    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
+		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+	    }
+	}
     }
 
     set command {}
     lappend command $exe
     eval lappend command  $maxima_opts
-    lappend command -s PORT
+
+    # FIXME: This is gcl specific so -lisp option is bogus
+    if {$tcl_platform(os) == "Windows 95"} {
+	# A gruesome hack. Normally, we communicate to the
+	# maxima image through the maxima shell script, as
+	# above. If the maxima script is not available,
+	# as may happen on windows, directly talk to the GCL
+	# saved image. jfa 04/28/2002
+	#mike FIXME: this means xmaxima on windows is GCL only
+        # vvz: We need this only on Windows 9X/ME
+
+	lappend command -eval "(maxima::setup-server PORT)" -eval "(run)" -f
+    } else { 
+        # vvz: Windows NT/2000/XP
+	if {$tcl_platform(platform) == "windows"} {
+	  lappend command -s PORT
+        # vvz: Unix. Should be as above but we need this due to
+        # weird behaviour with some lisps - Why?
+	} else {
+          lappend command -r ":lisp (setup-server PORT)"
+        }
+    }
 
     lappend command &
     set maxima_priv(localMaximaServer) $command
