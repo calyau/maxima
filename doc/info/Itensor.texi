@@ -31,18 +31,26 @@ particular nature and difficulty of the user's problem.  However, one
 should keep in mind the following characteristics of the two
 implementations:
 
-i) The representation of tensors and tensor operations explicitly in
+The representation of tensors and tensor operations explicitly in
 terms of their components makes CTENSOR easy to use. Specification of
 the metric and the computation of the induced tensors and invariants
-is straightforward.
+is straightforward. Although all of MAXIMA's powerful simplification
+capacity is at hand, a complex metric with intricate functional and
+coordinate dependencies can easily lead to expressions whose size is
+excessive and whose structure is hidden. In addition, many calculations
+involve intermediate expressions which swell causing programs to
+terminate before completion. Through experience, a user can avoid avoid
+many of these difficulties.
 
-ii) Although all of MAXIMA's powerful simplification capacity is at
-hand, a complex metric with intricate functional and coordinate
-dependencies can easily lead to expressions whose size is excessive
-and whose structure is hidden. In addition, many calculations involve
-intermediate expressions which swell causing programs to terminate
-before completion. Through experience, a user can avoid avoid many of
-these difficulties.
+Because of the special way in which tensors and tensor operations
+are represented in terms of symbolic operations on their indices,
+expressions which in the component representation would be
+unmanageable can sometimes be greatly simplified by using the special
+routines for symmetrical objects in ITENSOR. In this way the structure
+of a large expression may be more transparent. On the other hand, because
+of the the special indicial representation in ITENSOR, in some cases the
+user may find difficulty with the specification of the metric, function
+definition, and the evaluation of differentiated "indexed" objects.
 
 @subsection New Tensor Notation
 
