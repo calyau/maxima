@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.10 2003-01-22 02:55:44 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.11 2003-01-27 07:55:38 mikeclarkson Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -18,7 +18,7 @@ proc pMAXSaveTexToFile {text} {
 
 proc vMAXAddSystemMenu {fr text} {
     global maxima_priv maxima_default
-    global tcl_platform
+    global tcl_platform env
 
     set win $fr.textcommands
 
@@ -208,7 +208,12 @@ proc vMAXAddSystemMenu {fr text} {
     if {$tcl_platform(platform) == "windows"} {
 	if {$tcl_platform(os) == "Windows 95"} {
 	    # Windows 95/98
-	    lappend browse command.com /c start
+	    if {[info exists env(COMSPEC)]} {
+		# This should always exist
+		lappend browse $env(COMSPEC) /c start
+	    } else {
+		lappend browse c:/command.com /c start
+	    }
 	} else {
 	    # Windows NT / 2000 - untested
 	    lappend browse cmd.exe /c start
