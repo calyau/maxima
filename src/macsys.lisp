@@ -121,13 +121,13 @@
 	      (eof-count 0))
 	  (tagbody
 	   top
-	     (setq r      (dbm-read input-stream nil eof))
-					; This is something of a hack. If we are running in a server mode
-					; (which we determine by checking *socket-connection*) and we get
-					; an eof on an input-stream that is not *standard-input*, switch
-					; the input stream to *standard-input*.
-					; There should probably be a better scheme for server mode.
-					; jfa 10/09/2002.
+	     (setq r (dbm-read input-stream nil eof))
+	     ;; This is something of a hack. If we are running in a server mode
+	     ;; (which we determine by checking *socket-connection*) and we get
+	     ;; an eof on an input-stream that is not *standard-input*, switch
+	     ;; the input stream to *standard-input*.
+	     ;; There should probably be a better scheme for server mode.
+	     ;; jfa 10/09/2002.
 	     (if (and
 		  (eq r eof)
 		  (not (eq input-stream *standard-input*))
@@ -143,21 +143,15 @@
 			   (print "exiting on eof")
 			   ($quit))
 			  (t (go top)))))
-		 
 	     (cond ((and (consp r) (keywordp (car r)))
 		    (break-call (car r) (cdr r) 'break-command)
-		    (go top)))
-	      
-	     )
-	  )
-    
-	(format t "~a" *general-display-prefix*)
+		    (go top)))))
+    	(format t "~a" *general-display-prefix*)
 	(cond (#.writefilep  ;write out the c line to the dribble file
 	       (let ( (#.ttyoff t) smart-tty  $linedisp)
 		 (displa `((mlable) , c-tag , $__)))))
 	(if (eq r eof) (return '$done))
 	(fresh-line *standard-output*)
-	;;    #+lispm (SEND *standard-output* :SEND-IF-HANDLES ':FORCE-OUTPUT)
 	(setq $__ (caddr r))
 	(set  c-tag $__)
 	(cond (batch-or-demo-flag
@@ -169,21 +163,18 @@
 	(setq etime-after (get-internal-real-time)
 	      time-after (get-internal-run-time))
 	(setq area-after (used-area))
-	(setq time-used (quotient (float (difference time-after time-before))
-				  internal-time-units-per-second)
-	      etime-used (quotient (float (difference etime-after etime-before))
-				   internal-time-units-per-second))
+	(setq time-used (quotient 
+			 (float (difference time-after time-before))
+			 internal-time-units-per-second)
+	      etime-used (quotient 
+			  (float (difference etime-after etime-before))
+			  internal-time-units-per-second))
 	(setq accumulated-time (plus accumulated-time time-used))
 	(set (setq d-tag (makelabel $outchar)) $%)
 	(setq $_ $__)
 	(when $showtime
-	  ;;	  #+NIL (format t "~&Evaluation took ~$ seconds (~$ elapsed)."
-	  ;;		    time-used etime-used)
-	  ;;	  #-(or NIL cl) (mtell "Evaluation took ~S seconds (~S elapsed)."
-	  ;;			   time-used etime-used)
 	  (format t "~&Evaluation took ~$ seconds (~$ elapsed)"
 		  time-used etime-used )
-	  ;;	  #+lispm (format t "using ~A words." (f-  area-after area-before))
 	  #+(or cmu sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes (* 1024 1024))
@@ -192,26 +183,21 @@
 		  ((> total-bytes 1024)
 		   (format t " using ~,3F KB." (/ total-bytes 1024.0)))
 		  (t
-		   (format t " using ~:D bytes." total-bytes))))
-
-	  )
+		   (format t " using ~:D bytes." total-bytes)))))
 	(unless $nolabels
-	  (putprop d-tag
-		   (cons time-used  0)
-		   'time))
+	  (putprop d-tag (cons time-used  0) 'time))
 	(fresh-line *standard-output*)
-	;;    #+never(let ((tem (read-char-no-hang)))
-	;;      (or (eql tem #\newline) (and tem (unread-char tem))))
 	(if (eq (caar r) 'displayinput)
 	    (displa `((mlable) ,d-tag ,$%)))
 	(when (eq batch-or-demo-flag ':demo)
 	  (mtell "~&~A_~A" *prompt-prefix* *prompt-suffix*)
 	  (let (quitting)	  
 	    (do ((char)) (nil)
-	      ;;those are common lisp characters you'r reading here
+	      ;;those are common lisp characters you're reading here
 	      (case
 		  (setq char (read-char *terminal-io*))
-		((#\page) (unless (cursorpos 'c input-stream) (terpri *standard-output*))
+		((#\page) (unless (cursorpos 'c input-stream) 
+			    (terpri *standard-output*))
 		 (princ "_" *standard-output*))
 		((#\?) (mtell "  Pausing.  Type a ';' and Enter to continue demo.~%_"))
 		((#\space #\; #\n #\e #\x #\t))
@@ -219,20 +205,13 @@
 		 (if quitting (throw 'abort-demo nil) (return nil))) 
 		(t (setq quitting t)
 		   )))))
-	;; This is sort of a kludge -- eat newlines and blanks so that they don't echo
+	;; This is sort of a kludge -- eat newlines and blanks so that
+	;; they don't echo
 	(and batch-or-demo-flag
-	     ;;	 #+lispm
-	     ;;	 (send input-stream :operation-handled-p :read-char-no-echo)
-	     ;;	 #+lispm
-	     ;;	 (send input-stream :operation-handled-p :unread-char-no-echo)
 	     (do ((char)) (())
 	       (setq char (read-char input-stream nil #+cl nil)) 
-
-;;;; INSERTED BY MASAMI 
 	       (when (null char) 
 		 (throw 'macsyma-quit nil)) 
-;;;; END INSERT 
-
 	       (unless (zl-member char '(#\space #\newline #\return #\tab))
 		 (unread-char char input-stream)  
 		 (return nil)))))))) 
