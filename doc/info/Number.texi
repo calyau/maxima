@@ -127,31 +127,6 @@ period.  Thus the default is to give one period.
 
 @end defvar
 
-@defun CGAMMA
- - The Gamma function in the complex plane.  Do LOAD(CGAMMA) to
-use these functions.  Functions Cgamma, Cgamma2, and LogCgamma2.
-These functions evaluate the Gamma function over the complex plane
-using the algorithm of Kuki, CACM algorithm 421.  Calculations are
-performed in single precision and the relative error is typically
-around 1.0E-7; evaluation at one point costs less than 1 msec.  The
-algorithm provides for an error estimate, but the Maxima
-implementation currently does not use it.
-Cgamma is the general function and may be called with a symbolic or
-numeric argument.  With symbolic arguments, it returns as is; with
-real floating or rational arguments, it uses the Maxima Gamma
-function; and for complex numeric arguments, it uses the Kuki
-algorithm.
-Cgamma2 of two arguments, real and imaginary, is for numeric arguments
-only; LogCgamma2 is the same, but the log-gamma function is
-calculated.  These two functions are somewhat more efficient.
-
-@end defun
-
-@defun CGAMMA2
- - See CGAMMA.
-
-@end defun
-
 @defun DIVSUM (n,k)
 adds up all the factors of n raised to the kth power.  If
 only one argument is given then k is assumed to be 1.
@@ -164,10 +139,9 @@ Euler-Mascheroni constant, see %GAMMA.
 
 @end defun
 
-@defun FACTORIAL (X)
-The factorial function.  FACTORIAL(X) = X! .
-See also MINFACTORIAL and FACTCOMB.  The factorial operator is !,
-and the double factorial operator is !!.
+@defun factorial (X)
+The factorial function. Maxima treats @code{factorial (x)} the same as @code{x!}.
+See @code{!}.
 
 @end defun
 
