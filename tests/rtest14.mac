@@ -10,6 +10,10 @@ bessel(2,3);
 true$
 (assume(4*p+a>0),true);
 true$
+(assume(a > 0), true);
+true$
+(assume(t > 0), true);
+true$
 
 specint(t^(1/2)*%e^(-a*t/4)*%e^(-p*t),t);
 sqrt(%pi)/(2*(p+a/4)^(3/2));
