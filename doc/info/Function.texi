@@ -359,12 +359,6 @@ used inside the Maxima break to quit locally, without quitting the
 main computation.
 
 @end defun
-@c @node BUILDQ, CATCH, BREAK, Function Definition
-@c @unnumberedsec phony
-@defmac BUILDQ
- - See DESCRIBE(MACROS); .
-
-@end defmac
 @c @node CATCH, COMPFILE, BUILDQ, Function Definition
 @c @unnumberedsec phony
 @defun CATCH (exp1,...,expn)
