@@ -16,7 +16,7 @@
 (defvar *z-range* nil)
 (defvar *original-points* nil)
 (defvar $axes_length 4.0)
-(defvar *rot* (make-array 9 :element-type 'long-float))
+(defvar *rot* (make-array 9 :element-type 'double-float))
 (defvar $rot nil)
 
 (defvar $plot_options '((mlist)
@@ -101,10 +101,10 @@
 	    defmacro ,name (x y)
          `(the ,',type (,',op  (the ,',type ,x) (the ,',type ,y)))))))
 
-(defbinop $+ + long-float)
-(defbinop $- - long-float)
-(defbinop $* * long-float)
-(defbinop $/ / long-float)
+(defbinop $+ + double-float)
+(defbinop $- - double-float)
+(defbinop $* * double-float)
+(defbinop $/ / double-float)
 
 
 (defstruct (polygon (:type list)
@@ -119,7 +119,7 @@
   (if c `(f* (f* ,a ,b) ,c)
     `(the fixnum (* (the fixnum ,a) (the fixnum ,b)))))
 
-(defmacro float-< (a b) `(< (the long-float ,a) (the long-float ,b)))
+(defmacro float-< (a b) `(< (the double-float ,a) (the double-float ,b)))
   
 
 
@@ -148,12 +148,12 @@
 	 (ny (+ nyint 1))
 	 (ar (make-array  (+ 12  ; 12  for axes
 			     (f* (f* 3 nx) ny))  :fill-pointer (f* (f* 3 nx) ny)
-			 :element-type 'long-float
+			 :element-type 'double-float
 			 :adjustable t
 			 )))
-    (declare (long-float x y epsy epsx)
+    (declare (double-float x y epsy epsx)
 	     (fixnum nx  ny l)
-	     (type (array long-float) ar))
+	     (type (array double-float) ar))
     (sloop for j below ny
 	   initially (setq y miny)
 	   do (setq x minx)
@@ -238,8 +238,8 @@
 	 (l (length pts))
 	 (x 0.0) (y 0.0) (z 0.0)
 	 )
-    (declare (long-float  x y z))
-    (declare (type (array long-float) rot))
+    (declare (double-float  x y z))
+    (declare (type (array double-float) rot))
     ($copy_pts rotation-matrix *rot* 0)
 	
 ;    (setf (rot rot  0 0) (* cosphi costh))
@@ -261,7 +261,7 @@
 	   (setq y (aref pts (+ j 1)))
 	   (setq z (aref pts (+ j 2)))
 	   (sloop for i below 3 with a = 0.0
-		  declare (long-float a)
+		  declare (double-float a)
 		  do
 		  (setq a (* x (aref rot (+ (* 3 i) 0))))
 		  (setq a (+ a (* y (aref rot (+ (* 3 i) 1)))))
@@ -274,9 +274,9 @@
          ($list_matrix_entries (ncmul2  $rot x)))
         ((mbagp x) (cons (car x) (mapcar '$rotate_list (cdr x))))))
 
-(defun $get_range (pts k &aux (z 0.0) (max most-negative-long-float) (min most-positive-long-float))
-  (declare (long-float z max min))
-  (declare (type (vector long-float) pts))
+(defun $get_range (pts k &aux (z 0.0) (max most-negative-double-float) (min most-positive-double-float))
+  (declare (double-float z max min))
+  (declare (type (vector double-float) pts))
   (sloop for i from k below (length pts) by 3
 	 do (setq z (aref pts i))
 	 (cond ((< z min) (setq min z)))
@@ -303,11 +303,11 @@ setrgbcolor} def
 
 (defun $draw_ngons(pts ngons number_edges &aux (i 0)(j 0) (s 0)
 		       (opts *original-points*)
-		       (maxz  most-negative-long-float))
-  (declare (type (array long-float) pts opts)
+		       (maxz  most-negative-double-float))
+  (declare (type (array double-float) pts opts)
 	   (type (array (mod 64000)) ngons)
 	   (fixnum number_edges i s j number_edges)
-	   (long-float maxz))
+	   (double-float maxz))
   (setq j (length ngons))
   (add-ps-finish opts)
   (sloop while (< i j) 
@@ -334,7 +334,7 @@ setrgbcolor} def
 		(p (f+ 1 (round ($* 100.0 ($/ ($- maxz (car *z-range*))
 					  (or (third *z-range*)
 					      ($- (second *z-range*) (car *z-range*))))))))
-		(setq maxz most-negative-long-float)
+		(setq maxz most-negative-double-float)
 		))
 	 (p " myfinish")
 	 ))
@@ -372,11 +372,15 @@ setrgbcolor} def
       $rot)))
 
 (defun get-theta-for-vertical-z (z1 z2)
-  (cond ((eql z1 0.0) (if (> z2 0.0) 0.0  pi))
-	(t (lisp::atan  z2 z1 ))))
+  (cond ((eql z1 0.0)
+	 (if (> z2 0.0)
+	     0.0
+	     (coerce pi 'double-float)))
+	(t
+	 (lisp::atan  z2 z1 ))))
 
 (defun $ps_axes ( rot )
-  (let ((tem (make-array 9 :element-type 'long-float)))
+  (let ((tem (make-array 9 :element-type 'double-float)))
     (setf (aref tem 0) 4.0)
     (setf (aref tem 4) 4.0)
     (setf (aref tem 8) 4.0)
@@ -393,9 +397,9 @@ setrgbcolor} def
     ))
 
 (defun $polar_to_xy (pts &aux (r 0.0) (th 0.0))
-  (declare (long-float r th))
-  (declare (type (array long-float) pts))
-  (assert (typep pts '(vector long-float)))
+  (declare (double-float r th))
+  (declare (type (array double-float) pts))
+  (assert (typep pts '(vector double-float)))
   (sloop for i below (length pts) by 3
 	 do (setq r (aref pts i))
 	 (setq th (aref pts (f+ i 1)))
@@ -414,8 +418,8 @@ setrgbcolor} def
   (let ((sym (gensym "transform")))
     (setf (symbol-function sym)
   #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
-      (declare (long-float  x1 x2 x3))
-      (declare (type (array long-float) pts))
+      (declare (double-float  x1 x2 x3))
+      (declare (type (array double-float) pts))
       (sloop for i below (length pts) by 3
 	     do 
 	 (setq x1 (aref pts i))
@@ -436,15 +440,18 @@ setrgbcolor} def
 		       (args (nth 1 mexpr)))
 		  (or mexpr (merror "Undefined function ~a" expr))
 		(coerce `(lambda ,(cdr args)
-			     (declare (special ,@(cdr args)))
-			     (float ($realpart(meval* ',(nth 2 mexpr))) 1d0))
-			  'function)))))
+			   (declare (special ,@(cdr args)))
+			   (let (($ratprint nil))
+			     ($float ($realpart (meval* ',(nth 2 mexpr))))))
+			   'function)))))
 	(t
 	 (let ((vars (or lvars ($sort ($listofvars expr))))
 	       ;(na (gensym "TMPF"))
 		)
-	   (coerce `(lambda ,(cdr vars) (declare (special ,@(cdr vars)))
-			(float ($realpart (meval* ',expr)) 1d0))
+	   (coerce `(lambda ,(cdr vars)
+		      (declare (special ,@(cdr vars)))
+		      (let (($ratprint nil))
+			($float ($realpart (meval* ',expr)))))
 		   'function)))))
 
 (defmacro zval (points verts i) `(aref ,points (f+ 2 (f* 3 (aref ,verts ,i)))))
@@ -457,7 +464,7 @@ setrgbcolor} def
 ;; which is closer to us (ie highest z component after rotating towards the user)
 ;; and this is then they are sorted in groups of 5.   
 (defun sort-ngons (points edges n &aux lis )
-  (declare (type (array (long-float))  points)
+  (declare (type (array (double-float))  points)
 	   (type (array (mod 65000)) edges)
 	   (fixnum n))
   (let ((new (make-array (length edges) :element-type  (array-element-type edges)))
@@ -471,7 +478,7 @@ setrgbcolor} def
     (declare (type (array (mod 65000)) new)
 	     (fixnum i leng n1 at )
 	     )
-    (declare (long-float z z1))
+    (declare (double-float z z1))
     
     (setq lis
 	  (sloop  for i0 below leng by (+ n 1)
@@ -537,9 +544,9 @@ setrgbcolor} def
 (defun $copy_pts(lis vec start)
   (declare (fixnum start))
   (let ((tem vec))
-    (declare (type (array long-float) tem))
+    (declare (type (array double-float) tem))
     (cond ((numberp lis)
-	   (or (typep lis 'long-float) (setq lis (float lis 0.0)))
+	   (or (typep lis 'double-float) (setq lis (float lis 0.0)))
 	   (setf (aref tem start) lis)
 	   
 	   (+ start 1))
@@ -581,7 +588,7 @@ setrgbcolor} def
 	 (eps (/ (- tmax tmin) (- nticks 1)))
 	 f1 f2 in-range-y in-range-x in-range last-ok 
 	 )
-    (declare (long-float x y tt ymin ymax xmin xmax tmin tmax eps))
+    (declare (double-float x y tt ymin ymax xmin xmax tmin tmax eps))
     (setq f1 (coerce-float-fun (nth 2 param) `((mlist), (nth 1 trange))))
     (setq f2 (coerce-float-fun (nth 3 param) `((mlist), (nth 1 trange))))
    (cons '(mlist simp)    
@@ -630,7 +637,7 @@ setrgbcolor} def
 	   (eps2 (* eps eps))
 	   in-range last-ok
 	   )
-      (declare (long-float x1 y1 x y dy eps2 eps ymin ymax ))
+      (declare (double-float x1 y1 x y dy eps2 eps ymin ymax ))
 					;(print (list 'ymin ymin 'ymax ymax epsy))
       (setq x ($- x eps))  
       (cons '(mlist)
@@ -667,12 +674,12 @@ setrgbcolor} def
 		     and do (sloop::loop-finish))))))
 
 (defun get-range (lis)
-  (let ((ymin most-positive-long-float)
-	(ymax most-negative-long-float))
-    (declare (long-float ymin ymax))
+  (let ((ymin most-positive-double-float)
+	(ymax most-negative-double-float))
+    (declare (double-float ymin ymax))
     (do ((l lis (cddr l)))
 	((null l))
-	(or (floatp (car l)) (setf (car l) (float (car l) #. (coerce 2 'long-float))))
+	(or (floatp (car l)) (setf (car l) (float (car l) #. (coerce 2 'double-float))))
       (cond ((float-<   (car l)ymin)
 	     (setq ymin (car l))))
       (cond ((float-<  ymax  (car l))
@@ -963,7 +970,7 @@ setrgbcolor} def
   (tan ($/ ($+ (lisp::atan m1) (lisp::atan m2)) 2.0)))
 
 (defun slope (x1 y1 x2 y2 &aux (del ($- x2 x1)))
-  (declare (long-float x1 y1 x2 y2 del))
+  (declare (double-float x1 y1 x2 y2 del))
   (cond ((eql del 0.0)
 	 #. (expt 10 30))
 	(t ($/ ($- y2 y1) del))))
@@ -1378,7 +1385,7 @@ setrgbcolor} def
 		       (nth 3 grid)))
 	   (ar (polygon-pts pl)) tem
 	   )
-      (declare (type (array long-float) ar))
+      (declare (type (array double-float) ar))
 
       (if trans  (mfuncall trans ar))
       (if (setq tem  ($get_plot_option '$transform_xy 2)) (mfuncall tem ar))
