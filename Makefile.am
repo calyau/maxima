@@ -1,10 +1,26 @@
 SUBDIRS = src lisp-utils tests doc interfaces share demo plotting
-EXTRA_DIST = common.mk maxima-local xmaxima-local README.lisps
+EXTRA_DIST = common.mk maxima-local xmaxima-local README.lisps COPYING1 maxima.iss.in README.rpms
+
+include common.mk
+
+extradocinstall:
+	test -d "$(docdir)" || mkdir -p "$(docdir)"
+	for file in AUTHORS COPYING COPYING1 INSTALL README README.lisps ; \
+            do \
+            $(INSTALL_DATA) $$file "$(docdir)" ; \
+            done
+
+$(distdir).tar.gz: Makefile.am
+	$(MAKE) dist
+
+iss: extradocinstall
+	$(MAKE) -C interfaces/xmaxima/win32 install
 
 # Build the Maxima rpms. Optionally, use
 #     make rpm SUDO=sudo
 # to use sudo to wrap the commands. The user must have sudo permissions
 # for rpm and cp.
-rpm:
+rpm: $(distdir).tar.gz
 	$(SUDO) cp $(distdir).tar.gz /usr/src/redhat/SOURCES && \
 	$(SUDO) rpm -ba maxima.spec
+
