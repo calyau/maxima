@@ -57,3 +57,9 @@ integrate(h(x,y),x);
 'INTEGRATE(x*'DIFF(f(x,y),x,1,y,1)*y,x)$
 integrate(h(x,y),y);
 'INTEGRATE(x*'DIFF(f(x,y),x,1,y,1)*y,y)$
+
+/* Trigrat example from manual - Fixed June 2002 */
+(load("trigonometry/trigrat.lisp"),done);
+done;
+trigrat(sin(3*a)/sin(a+%pi/3));
+sqrt(3)*sin(2*a)+cos(2*a)-1;
