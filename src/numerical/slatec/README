@@ -1,0 +1,24 @@
+Numerical routines for use with Maxima.
+
+These are routines converted from the original Fortran code from the
+SLATEC library to Lisp via f2cl.  The Fortran code is stored in the
+fortran directory.  (Some of the code may have been slightly modified
+from the original code obtained from www.netlib.org, but the original
+versions are stored in CVS.)
+
+Here is a simple script used to convert the Fortran code from the
+SLATEC library to Lisp.
+
+(dolist (f (directory "numerical/slatec/fortran/*.f"))
+  (let ((lisp-path
+	 (make-pathname :directory (remove "fortran" (pathname-directory f)
+					   :test #'string=)
+			:name (pathname-name f)
+			:type "lisp")))
+    (f2cl::f2cl f :output-file lisp-path :array-type :simple-array 
+      :array-slicing nil :package "SLATEC" :float-format
+      'double-float)))
+
+It is important that the options given above to f2cl are used,
+especially the array-slicing, package, and float-format options.  If
+these are wrong, the resulting code may not work with maxima.
