@@ -686,23 +686,17 @@ The Maxima process can be killed, after asking for confirmation
 with \texttt{C-cC-k}.  To kill without confirmation, give \texttt{C-cC-k}
 an argument.
 
-By default, a newline will be indented to the same level as the 
-previous line, with an additional space added for open parentheses.
-A tab will add extra spaces, as determined by the value of the 
-variable \texttt{maxima-indent-amount}.  By default, this is 2.
-The behaviour of newline and indent can be changed by the command 
-\texttt{M-x maxima-change-newline-style}.  The possibilities are:
+The behaviour of indent can be changed by the command 
+\texttt{M-x maxima-change-indent-style}.  The possibilities are:
 \begin{description}
-\item[Basic] A newline will have no indentation, and indentation
-               must be added with tabs.
-\item[Standard]      As above.
+\item[Standard]      Standard indentation.
 \item[Perhaps smart] Tries to guess an appropriate indentation, based on
                open parentheses, "do" loops, etc.
                A newline will re-indent the current line, then indent
                the new line an appropriate amount.
 \end{description}
 The default can be set by setting the value of the variable 
-\texttt{maxima-newline-style} to either \texttt{'basic}, 
+\texttt{maxima-newline-style} to either 
 \texttt{'standard} or \texttt{'perhaps-smart}.
 In all cases, \texttt{M-x maxima-untab} will remove a level of indentation.
 
