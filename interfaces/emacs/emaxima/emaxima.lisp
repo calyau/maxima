@@ -1,7 +1,8 @@
-;;; This was stolen from imaxima, by Jesper Harder
-;;; http://purl.org/harder/imaxima.tar.gz
-
 (in-package "MAXIMA")
+
+(declare-top
+	 (special lop rop $gcprint $inchar)
+	 (*expr tex-lbp tex-rbp))
 
 (DEFUN MAIN-PROMPT ()
   (FORMAT () "(~A~D) "
@@ -10,37 +11,6 @@
 ;(DEFUN BREAK-PROMPT ()
 ;  (declare (special $prompt))
 ;  (format nil "~A" (STRIPDOLLAR $PROMPT)))
-
-(DEFMFUN DISPLA (FORM &aux #+kcl(form form))
-  (IF (OR (NOT #.TTYOFF) #.WRITEFILEP)
-      (cond #+Franz ($typeset (apply #'$photot (list form)))
-            ((eq $display2d '$emaxima) (latex form))
-	    ($DISPLAY2D
-	     (LET ((DISPLAYP T)
-		   (LINEARRAY (IF DISPLAYP (MAKE-array 80.) LINEARRAY))
-		   (MRATP (CHECKRAT FORM))
-		   (#.WRITEFILEP #.WRITEFILEP)
-		   (MAXHT     1) (MAXDP   0) (WIDTH   0)
-		   (HEIGHT    0) (DEPTH   0) (LEVEL   0) (SIZE   2)
-		   (BREAK     0) (RIGHT   0) (LINES   1) BKPT
-		   (BKPTWD    0) (BKPTHT  1) (BKPTDP  0) (BKPTOUT 0)
-		   (BKPTLEVEL 0) IN-P
-		   (MOREFLUSH D-MOREFLUSH)
-		   MORE-^W
-		   (MOREMSG D-MOREMSG))
-	       (UNWIND-PROTECT
-		(PROGN (SETQ FORM (DIMENSION FORM
-					     NIL 'MPAREN 'MPAREN 0 0))
-		       (CHECKBREAK FORM WIDTH)
-		       (OUTPUT FORM (IF (AND (NOT $LEFTJUST) (= 2 LINES))
-					(f- LINEL (f- WIDTH BKPTOUT))
-					0))
-		       (IF (AND SMART-TTY (NOT (AND SCROLLP (NOT $CURSORDISP)))
-				(> (CAR (CURSORPOS)) (f- TTYHEIGHT 3)))
-			   (LET (#.writefilep) (MTERPRI))))
-	     ;; make sure the linearray gets cleared out.
-	     (CLEAR-LINEARRAY))))
-	    (T (LINEAR-DISPLA FORM)))))
 
 (defun break-dbm-loop (at)
   (let* (
@@ -94,41 +64,7 @@
 ;; Small changes for interfacing with TeXmacs: Andrey Grozin, 2001
 ;; Yet more small changes for interfacing with imaxima: Jesper Harder 2001
 
-(declare-top
-	 (special lop rop ccol $gcprint $inchar)
-	 (*expr tex-lbp tex-rbp))
-(defconstant texport t)
 
-;;; myprinc is an intelligent low level printing routine.  it keeps track of 
-;;; the size of the output for purposes of allowing the TeX file to
-;;; have a reasonable line-line. myprinc will break it at a space 
-;;; once it crosses a threshold.
-;;; this has nothign to do with breaking the resulting equations.
- 
-;-      arg:    chstr -  string or number to princ
-;-      scheme: This function keeps track of the current location
-;-              on the line of the cursor and makes sure
-;-              that a value is all printed on one line (and not divided
-;-              by the crazy top level os routines)
- 
-(defun myprinc (chstr)
-       (prog (chlst) 
-              (cond ((greaterp (plus (length (setq chlst (exploden chstr)))
-                                 ccol)
-                           70.)
-                  (terpri texport)      ;would have exceeded the line length
-                      (setq ccol 1.)
-		      (myprinc " ")   ; lead off with a space for safety
-                      )) ;so we split it up.
-             (do ((ch chlst (cdr ch))
-                  (colc ccol (add1 colc)))
-                 ((null ch) (setq ccol colc))
-                 (tyo (car ch) texport))))
-
-(defun myterpri nil
-  (cond (texport (terpri texport))
-	(t (mterpri)))
-	(setq ccol 1))
 
 (defun tex (x l r lop rop)
 	;; x is the expression of interest; l is the list of strings to its
@@ -190,17 +126,28 @@
      ((eql l 1) (myquote pname))
      (t (concatenate 'string "\\mathrm{" (myquote pname) "}")))))
 
-(defun texnumformat(atom)  ;; 10/14/87 RJF  convert 1.2e20 to 1.2 \cdot 10^{20}
-  (let(r firstpart exponent)
-       (cond ((integerp atom)atom)
-	     (t (setq r (explode atom))
-		(setq exponent (memq 'e r)) ;; is it ddd.ddde+EE
-		(cond ((null exponent) atom); it is not. go with it as given
-		      (t (setq firstpart (nreverse (cdr (memq 'e (reverse r)))))
-			 (strcat (apply #'strcat firstpart )
-					 "\\cdot 10^{"
-					 (apply #'strcat (cdr exponent))
-					 "}")))))))
+(defun strcat (&rest args)
+  (apply #'concatenate 'string (mapcar #'string args)))
+
+;; 10/14/87 RJF  convert 1.2e20 to 1.2 \cdot 10^{20}
+;; 03/30/01 RLT  make that 1.2 \times 10^{20}
+(defun texnumformat(atom)
+  (let (r firstpart exponent)
+    (cond ((integerp atom)
+	   atom)
+	  (t
+	   (setq r (explode atom))
+	   (setq exponent (member 'e r :test #'string-equal));; is it ddd.ddde+EE
+	   (cond ((null exponent)
+		   ;; it is not. go with it as given
+		  atom)
+		 (t
+		  (setq firstpart
+			(nreverse (cdr (member 'e (reverse r) :test #'string-equal))))
+		  (strcat (apply #'strcat firstpart )
+			  " \\times 10^{"
+			  (apply #'strcat (cdr exponent))
+			  "}")))))))
 
 (defun tex-paren (x l r) 
   (tex x (append l '("\\left(")) (cons "\\right)" r) 'mparen 'mparen))
@@ -211,10 +158,15 @@
 	   (setq f (cadr x) 
 		 x (cdr x))
 	   (setq f (caar x)))
-       (setq l (tex (texword f) l nil lop 'mfunction)
-	     
-	     r (nconc (tex-list (cdr x) nil (list "}") ",") r)) 
-       (nconc l (list "_{") r  )))
+       (if (atom (cadr x))
+	   ;; subscript is an atom -- don't use \isubscript
+	   (progn
+	     (setq l (tex (texword f) l nil lop 'mfunction)
+		   r (nconc (tex-list (cdr x) nil (list "}") ",") r))
+	     (nconc l (list "_{") r))
+	 (setq l (tex (texword f) (append l (list "\\isubscript{"))  nil lop 'mfunction)
+	       r (nconc (tex-list (cdr x) nil (list "}") ",") r))
+	 (nconc  l (list "}{") r ))))
 
 ;; we could patch this so sin x rather than sin(x), but instead we made sin a prefix
 ;; operator
@@ -233,9 +185,9 @@
 	  ((null (cdr x))
 	   (setq nl (nconc nl (tex (car x)  l r 'mparen 'mparen)))
 	   nl)
-;	  (setq nl (nconc nl (tex (car x)  l (list sym) 'mparen 'mparen))
-	  (setq nl (nconc nl (tex (car x)  l (list (concat sym "\\linebreak[0]")) 'mparen 'mparen))
-		  x (cdr x) 
+;;	  (setq nl (nconc nl (tex (car x)  l (list sym) 'mparen 'mparen))
+	  (setq nl (nconc nl (tex (car x)  l (list (concatenate 'string sym "\\linebreak[0]")) 'mparen 'mparen))
+		  x (cdr x)
 		  l nil))))
 
 (defun tex-prefix (x l r)
@@ -379,8 +331,8 @@
      ;; which should be sin^2 x rather than (sin x)^2 or (sin(x))^2. 
      ;; yet we must not display (a+b)^2 as +^2(a,b)...
      ;; or (sin(x))^(-1) as sin^(-1)x, which would be arcsine x
-     (cond ;; this whole clause
-	   ;; should be deleted if this hack is unwanted and/or the
+    (cond ;; this whole clause
+     ;; should be deleted if this hack is unwanted and/or the
 	   ;; time it takes is of concern.
 	   ;; it shouldn't be too expensive.
 	   ((and (eq (caar x) 'mexpt) ; don't do this hack for mncexpt
@@ -400,22 +352,39 @@
 			      ; inverse of f, if written f^-1 x
 			      ; what else? f(x)^(1/2) is sqrt(f(x)), ??
 		  (cond (doit
-			(setq l (tex `((mexpt) ,f ,expon) l nil 'mparen 'mparen))
-			(setq r (tex
-                                 (if (and (null (cdr bascdr)) (eq (get f 'tex) 'tex-prefix))
-                                     (car bascdr) (cons '(mprogn) bascdr))
-                                 nil r f rop)))
-		        (t nil))))) ; won't doit. fall through
-      (t (setq l (tex (cadr x) l nil lop (caar x))
-	       r (if (mmminusp (setq x (nformat (caddr x))))
-		    ;; the change in base-line makes parens unnecessary
-		    (if nc
-			(tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
-			(tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
-		    (if nc
-			(tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
-			(tex x (list "^{")(cons "}" r) 'mparen 'mparen))))))
-      (append l r)))
+			 (setq l (append (tex f l nil lop 'mexpt)
+					(tex expon (list "^{")
+					     (cons " }" nil) 'mparen 'mparen)))
+			 (if (and (null (cdr bascdr))
+				  (eq (get f 'tex) 'tex-prefix))
+			     (setq r (tex (car bascdr) nil r f 'mparen))
+			   (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen)))
+			 (append l r))
+			(t nil))))) ; won't doit. fall through
+	   (t
+	    (if (atom (caddr x))
+		;; Don't use \iexpt when exponent is an atom
+		(progn
+		  (setq l (tex (cadr x) l nil lop (caar x))
+			r (if (mmminusp (setq x (nformat (caddr x))))
+			      ;; the change in base-line makes parens unnecessary
+			      (if nc
+				  (tex (cadr x) '("^ {-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
+				(tex (cadr x) '("^ {- ")(cons " }" r) 'mparen 'mparen))
+			    (if nc
+				(tex x (list "^{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
+			      (tex x (list "^{")(cons "}" r) 'mparen 'mparen))))
+		  (append l r))
+	      (setq l (tex (cadr x) (append l (list "\\iexpt{")) nil lop (caar x))
+		  r (if (mmminusp (setq x (nformat (caddr x))))
+			;; the change in base-line makes parens unnecessary
+			(if nc
+			    (tex (cadr x) '("{-\\langle ")(cons "\\rangle }" r) 'mparen 'mparen)
+			  (tex (cadr x) '("{- ")(cons " }" r) 'mparen 'mparen))
+		      (if nc
+			  (tex x (list "{\\langle ")(cons "\\rangle}" r) 'mparen 'mparen)
+			(tex x (list "{") (cons "}" r) 'mparen 'mparen))))
+	         (append l (list "}") r))))))
 
 (defprop mncexpt tex-mexpt tex)
 
@@ -452,9 +421,22 @@
 
 (defun tex-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
-  (setq l (tex (cadr x) (append l '("{{")) nil 'mparen 'mparen)
-	;the divide bar groups things
-	r (tex (caddr x) (list "}\\over{") (append '("}}")r) 'mparen 'mparen))
+  (cond ((and (atom (cadr x)) (atom (caddr x)))
+	 ;; both denom and numerator are atoms
+	 (setq l (tex (cadr x) (append l '("\\frac{")) nil nil nil) ;;fixme
+	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen)))
+	((atom (cadr x))
+	 ;; numerator is an atom
+	 (setq l (tex (cadr x) (append l '("\\ifracd{")) nil 'mparen 'mparen)
+	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen)))
+	((atom (caddr x))
+	 ;; denom is an atom
+	 (setq l (tex (cadr x) (append l '("\\ifracn{")) nil 'mparen 'mparen)
+	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen)))
+	(t
+	 ;; neither are atoms
+	 (setq l (tex (cadr x) (append l '("\\ifrac{")) nil 'mparen 'mparen)
+	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen))))
   (append l r))
 
 (defprop $matrix tex-matrix tex)
@@ -527,10 +509,16 @@
 	(sub (tex (caddr x) nil nil 'mparen 'mparen)))
        (append l '("\\left.") s1  '("\\right|_{") sub '("}") r)))
 
-;; (defprop mbox tex-mbox tex)
+(defprop mbox tex-mbox tex)
 
-;; (defun tex-mbox (x l r)
-;;   (append l '("\\fbox{") (tex (cadr x) nil nil 'mparen 'mparen) '("}"))) ; jh
+(defun tex-mbox (x l r)
+  (append l '("\\boxed{") (tex (cadr x) nil nil 'mparen 'mparen) '("}") r))
+
+(defprop mlabox tex-mlabox tex)
+
+(defun tex-mlabox (x l r)
+   (append l '("\\stackrel{") (tex (caddr x) nil nil 'mparen 'mparen)
+	   '("}{\\boxed{") (tex (cadr x) nil nil 'mparen 'mparen) '("}}") r)) ; jh
 
 ;;binomial coefficients
 
@@ -538,9 +526,9 @@
 	   
 (defun tex-choose (x l r)
   `(,@l 
-    "\\pmatrix{" 
+    "{" 
     ,@(tex (cadr x) nil nil 'mparen 'mparen)
-    "\\\\"
+    "\\choose "
     ,@(tex (caddr x) nil nil 'mparen 'mparen)
     "}"
     ,@r))
@@ -647,11 +635,22 @@
      (%asin "\\arcsin ")
      (%acos "\\arccos ")
      (%atan "\\arctan ")
+     (%acot "\\operatorname{arccot}")
+     (%asec "\\operatorname{arcsec}")
+     (%acsc "\\operatorname{arccsc}")
      (%sinh "\\sinh ")
      (%cosh "\\cosh ")
      (%tanh "\\tanh ")
      (%coth "\\coth ")
-     (%sech "{\\rm sech}") ;; jah
+     (%sech "\\operatorname{sech}")          
+     (%csch "\\operatorname{csch}")
+     (%asinh "\\operatorname{arcsinh}")
+     (%acosh "\\operatorname{arccosh}")
+     (%atanh "\\operatorname{arctanh}")
+     (%acoth "\\operatorname{arccoth}")
+     (%asech "\\operatorname{arcsech}")
+     (%acsch "\\operatorname{arccsch}")
+     (%determinant "\\det ")     
      (%ln "\\ln ")
      (%log "\\log ")
     ;; (%erf "{\\rm erf}") this would tend to set erf(x) as erf x. Unusual
@@ -677,7 +676,7 @@
     (difflist (cddr x)) ;; list of derivs e.g. (x 1 y 2)
     (ords (odds difflist 0)) ;; e.g. (1 2)
     (vars (odds difflist 1)) ;; e.g. (x y)
-    (numer `((mexpt) $|d| ((mplus) ,@ords))) ; d^n numerator
+    (numer `((mexpt) ,dsym ((mplus) ,@ords))) ; d^n numerator
     (denom (cons '(mtimes)
 		 (mapcan #'(lambda(b e)
 				  `(,dsym ,(simplifya `((mexpt) ,b ,e) nil)))
@@ -733,7 +732,7 @@
 	 `("\\mathbf{do}" ,(eighth x))))
 
 (defun texmdoin (x)
-  (nconc `("\\mathbf{for}" ,(second x) $|in| ,(third x))
+  (nconc `("\\mathbf{for}" ,(second x) "\\mathbf{in}" ,(third x))
 	 (cond ((sixth x) `("\\mathbf{thru}" ,(sixth x))))
 	 (cond ((null (seventh x)) nil)
 	       ((eq 'mnot (caar (seventh x)))
@@ -772,11 +771,16 @@
 ; jh: verb & mbox
 
 (defun latex (x)
-  (let ((ccol 1))
-    (mapc #'myprinc
-	  (if (and (listp x) (cdr x) (stringp (cadr x))
-		   (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
-	      (tex x '("") '("") 'mparen 'mparen)
-	    (tex x '("") '("
-") 'mparen 'mparen)))
-    ))
+;;  (princ x)  ;; uncomment to debug.
+  (mapc #'princ
+	(if (and (listp x) (cdr x)
+		 (equal (string-right-trim '(#\Space) (cadr x)) "Is"))
+	    (tex x '("") '("") 'mparen 'mparen)
+	  (tex x '("") '("
+") 'mparen 'mparen))))
+
+(let ((old-displa (symbol-function 'displa)))
+  (defun displa (form)
+    (if (eq $display2d '$emaxima)
+        (latex form)
+      (funcall old-displa form))))
