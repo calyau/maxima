@@ -151,12 +151,19 @@ sqrt(a)*%e^-(a/p)/p^2$
 factor(ratsimp(specint(t^2*bessel_j(1,a*t)*%e^(-p*t),t)));
 3*a*p/(p^2+a^2)^(5/2) $
 
-/*
- * I (rtoy) think this is incorrect, but I haven't found any reference
- * to gives this integral.
- */
-radcan(specint(t*hstruve[1](t)*%e^(-p*t),t));
-16*(2*p*sqrt(p^2+1)+2*p^2)/(9*%pi^(3/2)*p^4*(2*p*sqrt(p^2+1)+2*p^2+1)) $
+(/* This is the Laplace transform of the Struve H_1 function, see
+  http://dlmf.nist.gov/Draft/ST/about_ST.8.13.html */    
+ 2/(%pi*p)-2*p*log(p/(sqrt(p^2+1)-1))/(%pi*sqrt(p^2+1)),
+ /* And this should be the same as the specint of the next test below */
+ -diff(%%,p),
+ ev(fullratsimp(%%),logexpand:all));
+-(sqrt(p^2+1)*(2*p^2*log(sqrt(p^2+1)-1)-2*p^2*log(p))-2*p^2-2)
+ /(%pi*p^6+2*%pi*p^4+%pi*p^2)$
+
+(ev(fullratsimp(specint(t*hstruve[1](t)*%e^(-p*t),t)),logexpand:all),
+ ratsimp(%%/%));
+/* Well, except for a fishy constant factor... */
+4/(3*sqrt(%pi))$
 
 /*
  * I (rtoy) also have doubts about this integral, but I haven't found
