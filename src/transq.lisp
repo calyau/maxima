@@ -264,12 +264,13 @@
   (let #+lispm ((default-cons-area working-storage-area)) #-lispm nil
       (SETQ FORMS-TO-COMPILE-QUEUE (NCONC FORMS-TO-COMPILE-QUEUE (LIST (COPY-TREE EXP))))))
 
+#+ignore
 (DEFOPT FUNGEN&ENV-FOR-MEVAL (EV EV-LATE EXP
 				   &AUX (NAME (GEN-NAME)))
   (EMIT-DEFUN `(DEFUN ,NAME (,@EV ,@EV-LATE) ,EXP))
   `(LIST* '(,NAME) ,@(PROC-EV EV)
 	  ',EV-LATE))
-
+#+ignore
 (DEFOPT FUNGEN&ENV-FOR-MEVALSUMARG (EV EV-LATE TR-EXP MAC-EXP
 					 &AUX (NAME (GEN-NAME)))
   (EMIT-DEFUN
@@ -292,32 +293,54 @@
 	(pop ,l)))
 
 
-;;; the lambda forms.
-#+cl
-(progn 'compile
-(defmacro M-TLAMBDA (&REST L )
-  `(function (lambda ,(car l)
-	       (declare (special ,@ (car l))) ,@ (copy-rest-arg (cdr  l)))))
+;;; Lambda expressions emitted by the translator.
+
+;; lambda([u,...],...) where any free unquoted variable in the body is
+;; either unbound or globally bound or locally bound in some
+;; non-enclosing block.  At this point, BODY has already the correct
+;; special declarations for elements of ARGL.
+(defmacro m-tlambda (argl &body body)
+  `(function
+    (lambda ,argl
+     ,@body)))
+
+;; lambda([u,...,[v]],...) with the same condition as above.
 (defmacro m-tlambda& (argl &rest body)
   `(function (lambda (,@(REVERSE (CDR (REVERSE ARGL)))
-	    &REST ,@(LAST ARGL))
+		      &REST ,@(LAST ARGL))
      ,(pop-declare-statement body)
      (SETQ ,(CAR (LAST ARGL))
 	   (CONS '(MLIST) ,(CAR (LAST ARGL))))
      ,@ BODY)))
 
-(DEFmacro M-TLAMBDA&ENV ( argl &REST BODY
-		       &AUX (NAME (GEN-NAME))
-		       (reg-argl (first argl))(env-argl (second argl)))
-  `(function (lambda (,@ reg-argl) ,@ (copy-rest-arg body))))
-(defmacro M-TLAMBDA&ENV&  ( argl &REST BODY &aux (reg-argl (first argl)))
-  `(function (lambda ( ,@REG-ARGL) ,@ (copy-rest-arg BODY))))
- (sloop for v in '(m-tlambda m-tlambda& m-tlambda&env m-tlambda&env&)
-      do
-      (remprop v 'opt)
-      #+lispm
-      (remprop v 'compiler:optimizers))
-)
+;; lambda([u,...],...) with free unquoted variables in the body which
+;; have a local binding in some enclosing block, but no global one,
+;; i.e, the complement of the condition for m-tlambda above.
+(defmacro m-tlambda&env ((reg-argl env-argl) &body body)
+  (declare (ignore env-argl))
+  `(function
+    (lambda ,reg-argl
+     ;;(,@(or (pop-declare-statement body) '(declare)) (special ,@env-argl))
+     ,@body)))
+
+;; lambda([u,...,[v]],...) with the same condition as above.
+(defmacro m-tlambda&env& ((reg-argl env-argl) &body body)
+  (declare (ignore env-argl))
+  (let ((last-arg (car (last reg-argl))))
+    `(function
+      (lambda (,@(butlast reg-argl) &rest ,last-arg)
+       ;;(,@(or (pop-declare-statement body) '(declare)) (special ,@env-argl))
+       ,(pop-declare-statement body)
+       (setq ,last-arg (cons '(mlist) ,last-arg))
+       ,@body))))
+
+;; ???
+;; (sloop for v in '(m-tlambda m-tlambda& m-tlambda&env m-tlambda&env&)
+;;        do
+;;        (remprop v 'opt)
+;;        #+lispm
+;;        (remprop v 'compiler:optimizers))
+
 ;#+cl  ;;wrap function around the lambda forms.. 
 ;(progn 'compile
 ;(defmacro M-TLAMBDA (&REST L )
