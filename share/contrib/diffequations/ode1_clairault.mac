@@ -107,15 +107,18 @@ ode1_clairault(eq,y,x) := block(
 */
 
 ode1_clairault_singular(eq,y,x) := block(
-  [expr,eq2,%t,ans],
+  [expr,eq2,%t,ans,u],
   eq:lhs(eq)-rhs(eq),
-  expr:subst('y(x),y,eq),
+  expr:subst(u,y,eq),
+  depends(u,x),
   expr:diff(expr,x),
-  expr:subst(y,'y(x),expr),
+  remove(u,dependency),
+  expr:subst(y,u,expr),
   expr:expand(expr),
   eq2:ratsimp(ratcoeff(expr,'diff(y,x,2))),
   if not(freeof('diff(y,x,2),eq2)) then return([]),
-  if not(is(ratsimp(expr-eq2*'diff(y,x,2)=0))) then return([]),
+  expr: ratsimp(expr-eq2*'diff(y,x,2)),
+  if not(is(expr=0)) then return([]),
   /* Try and eliminate t */
   eq:subst(%t,'diff(y,x),eq),
   eq2:subst(%t,'diff(y,x),eq2),
