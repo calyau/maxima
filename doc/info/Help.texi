@@ -194,9 +194,8 @@ example(integrate);
 (C8) test(1/(x^2+1));
 (D8) 						       0
 (C9) INTEGRATE(SIN(X)^3,X);
-...
-@end example	
-
+ 
+@end example
 
 
 @node Definitions for Help,  , Documentation, Help

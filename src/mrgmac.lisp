@@ -13,7 +13,7 @@
 
 (defun zl-get (sym tag)
   (cond ((symbolp sym) (get sym tag))
-	(t (getf (cdr sym) tag))))
+	((consp sym) (getf (cdr sym) tag))))
 
 #-LISPM
 (DEFMACRO FIX-LM (&rest BODY)
