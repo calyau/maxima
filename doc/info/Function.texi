@@ -480,6 +480,7 @@ time of definition of the function which contains it.
 
 @end defun
 
+@c THIS ITEM NEEDS TO BE REVISED
 @defun define_variable (name,default-binding,mode,optional-documentation)
 
 introduces a global variable into the Maxima environment.  This is
@@ -522,15 +523,68 @@ Use @code{define_variable (g5, 'g5, any_check, "this ain't supposed to be set by
 
 @end defun
 
-@defun dispfun (f1, f2, ...)
-displays the definition of the user defined
-functions f1, f2, ... which may also be the names of array associated
-functions, subscripted functions, or functions with constant
-subscripts which are the same as those used when the functions were
-defined.  @code{dispfun (all)} will display all user defined functions as
-given on the @code{functions} and @code{arrays} lists except subscripted functions
-with constant subscripts.  E.g. if the user has defined a function
-@code{f}, @code{dispfun (f)} will display the definition.
+@defun dispfun (@var{f_1}, ..., @var{f_n})
+@defunx dispfun (all)
+Displays the definition of the user-defined functions @var{f_1}, ..., @var{f_n}.
+Each argument may be the name of a macro (defined with @code{::=}),
+an ordinary function (defined with @code{:=} or @code{define}),
+an array function (defined with @code{:=} or @code{define},
+but enclosing arguments in square brackets @code{[ ]}),
+a subscripted function, (defined with @code{:=} or @code{define},
+but enclosing some arguments in square brackets and others in parentheses @code{( )})
+one of a family of subscripted functions selected by a particular subscript value,
+or a subscripted function defined with a constant subscript.
+
+@code{dispfun (all)} displays all user-defined functions as
+given by the @code{functions}, @code{arrays}, and @code{macros} lists,
+omitting subscripted functions defined with constant subscripts.
+
+@code{dispfun} creates an intermediate expression label
+(@code{%t1}, @code{%t2}, etc.)
+for each displayed function, and assigns the function definition to the label.
+In contrast, @code{fundef} returns the function definition.
+
+@code{dispfun} quotes its arguments; 
+the double-single-quote operator @code{'@w{}'} defeats quotation.
+@code{dispfun} always returns @code{done}.
+
+Examples:
+
+@example
+(%i1) m(x, y) ::= x^(-y)$
+(%i2) f(x, y) :=  x^(-y)$
+(%i3) g[x, y] :=  x^(-y)$
+(%i4) h[x](y) :=  x^(-y)$
+(%i5) i[8](y) :=  8^(-y)$
+(%i6) dispfun (m, f, g, h, h[5], h[10], i[8])$
+                                     - y
+(%t6)                   m(x, y) ::= x
+
+                                     - y
+(%t7)                    f(x, y) := x
+
+                                    - y
+(%t8)                     g     := x
+                           x, y
+
+                                    - y
+(%t9)                     h (y) := x
+                           x
+
+                                    1
+(%t10)                     h (y) := --
+                            5        y
+                                    5
+
+                                     1
+(%t11)                    h  (y) := ---
+                           10         y
+                                    10
+
+                                    - y
+(%t12)                    i (y) := 8
+                           8
+@end example
 
 @end defun
 
@@ -547,16 +601,25 @@ Lisp functions, however, are not added to @code{functions}.
 
 @end defvar
 
-@defun fundef (@var{functionname})
-Returns the function definition associated
-with @var{functionname}.
-@c FOLLOWING BIT IS A LITTLE CONFUSING. 
-@code{fundef (f)} is similar to @code{dispfun (f)}
-except that @code{fundef} does not invoke @code{display}.
+@defun fundef (@var{f})
+Returns the definition of the function @var{f}.
+The argument may be the name of a macro (defined with @code{::=}),
+an ordinary function (defined with @code{:=} or @code{define}),
+an array function (defined with @code{:=} or @code{define},
+but enclosing arguments in square brackets @code{[ ]}),
+a subscripted function, (defined with @code{:=} or @code{define},
+but enclosing some arguments in square brackets and others in parentheses @code{( )})
+one of a family of subscripted functions selected by a particular subscript value,
+or a subscripted function defined with a constant subscript.
 
-@code{fundef} quotes its argument.
-The double-single-quote operator @code{'@w{}'} defeats quotation.
+@code{fundef} quotes its argument;
+the double-single-quote operator @code{'@w{}'} defeats quotation.
 
+@code{fundef (@var{f})} returns the definition of @var{f}.
+In contrast, @code{dispfun (@var{f})} creates an intermediate expression label
+and assigns the definition to the label.
+
+@c PROBABLY NEED SOME EXAMPLES HERE
 @end defun
 
 @defun funmake (@var{name}, [@var{arg_1}, ..., @var{arg_n}])
@@ -771,7 +834,7 @@ declarations to make the translated code more suitable for compilation.
 @defun translate (@var{f_1}, ..., @var{f_n})
 @defunx translate (functions)
 @defunx translate (all)
-Translates the user defined functions
+Translates the user-defined functions
 @var{f_1}, ..., @var{f_n} from the Maxima language into Lisp
 and evaluates the Lisp translations.
 Typically the translated functions run faster than the originals.
