@@ -23,12 +23,16 @@ Constant, in ODE2
 
 @c specint IS ALSO THE NAME OF A FUNCTION. DON'T WE WANT TO GIVE IT ITS OWN @defun ??
 @section specint
-@code{hypgeo} is a package of hypergeometric special functions.
+@code{hypgeo} is a package for handling Laplace transforms of special functions.
+@code{hyp} is a package for handling generalized Hypergeometric functions.
 
 @code{specint} attempts to compute the definite integral
 (over the range from zero to infinity) of an expression containing special functions.
 When the integrand contains a factor @code{exp (-s t)}, 
 the result is a Laplace transform.
+
+@c I DON'T THINK specint EVEN WORKS IF THERE'S NO EXPLICIT EXPONENTIAL
+@c FORM.  THAT IS, IT CAN REALLY ONLY HANDLE Laplace TRANSFORMS.
 
 The syntax is as follows:
 
@@ -39,9 +43,12 @@ specint (exp (-s*@var{t}) * @var{expr}, @var{t});
 where @var{t} is the variable of integration
 and @var{expr} is an expression containing special functions.
 
-If @code{specint} cannot compute the integral,
-the return value is a Lisp symbol @code{other-defint-to-follow-negtest};
-this is a bug.
+If @code{specint} cannot compute the integral, the return value may
+contain various Lisp symbols, including
+@code{other-defint-to-follow-negtest},
+@code{other-lt-exponential-to-follow},
+@code{product-of-y-with-nofract-indices}, etc.; this is a bug.  
+
 @c REPORTED AS SOURCEFORGE BUG # 1162505
 
 Special function notation follows:
@@ -51,22 +58,28 @@ bessel_j (index, expr)         Bessel function, 1st kind
 bessel_y (index, expr)         Bessel function, 2nd kind
 bessel_i (index, expr)         Modified Bessel function, 1st kind
 bessel_k (index, expr)         Modified Bessel function, 2nd kind
-%he[] ()                       Hermite polynomial (Nota bene: @code{he}, not @code{h}. See A&S 22.5.18)
-%p[] ()                        Legendre function
-%q[] ()                        Legendre function, 2nd kind
-hstruve[] ()                   Struve H function
-lstruve[] ()                   Struve L function
-%f[] ([], [], expr)            Hypergeometric function
+%he[n] (z)                     Hermite polynomial (Nota bene: @code{he}, not @code{h}. See A&S 22.5.18)
+%p[u,v] (z)                    Legendre function
+%q[u,v] (z)                    Legendre function, 2nd kind
+hstruve[n] (z)                 Struve H function
+lstruve[n] (z)                 Struve L function
+%f[p,q] ([], [], expr)         Generalized Hypergeometric function
 gamma()                        Gamma function
-gammagreek()                   Incomplete gamma function
-gammaincomplete()              Tail of incomplete gamma function
+gammagreek(a,z)                Incomplete gamma function
+gammaincomplete(a,z)           Tail of incomplete gamma function
 @c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
 slommel
-%m[] ()                        Whittaker function, 1st kind
-%w[] ()                        Whittaker function, 2nd kind
+%m[u,k] (z)                    Whittaker function, 1st kind
+%w[u,k] (z)                    Whittaker function, 2nd kind
+erfc (z)                       Complement of the erf function
+ei (z)                         Exponential integral (?)
+kelliptic (z)                  Complete elliptic integral of the first kind (K)
+%d [n] (z)                     Parabolic cylinder function
 @end example
 
 @code{demo ("hypgeo")} displays several examples of Laplace transforms computed by @code{specint}.
+
+This is a work in progress.  Some of the function names may change.
 @c COPY SOME OF THOSE EXAMPLES INTO THIS DOCUMENT
 
 @c end concepts Special Functions
