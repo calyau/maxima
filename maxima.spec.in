@@ -65,12 +65,12 @@ Maxima compiled with CMUCL.
 %endif
 
 %if %{enable_sbcl}
-%package exec_sbcl
+%package exec-sbcl
 Summary: Maxima compiled with SBCL
 Group: Development/Languages
 Requires: sbcl maxima
 Provides: maxima_exec
-%description exec_sbcl
+%description exec-sbcl
 Maxima compiled with SBCL.
 %endif
 
@@ -110,6 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 	infodir=%{?buildroot:%{buildroot}}%{_infodir} \
   install-info
 touch debugfiles.list
+#  Deal with info/dir
+rm -f $RPM_BUILD_ROOT%{_datadir}/info/dir
 
 %post
 /sbin/install-info %{_infodir}/maxima.info %{_infodir}/dir
@@ -134,6 +136,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files xmaxima
 %{_bindir}/xmaxima
+%{_datadir}/maxima/%{version}/xmaxima/*
 
 %if %{enable_clisp}
 %files exec-clisp

@@ -1,4 +1,5 @@
-These RPMs were created on a RedHat 9 system.
+These RPMs were created on a RedHat Enterprise Linux 3-compatible
+system.
 
 Both the maxima and maxima-exec-cmucl packages are required. It is
 possible to simultaneously install maxima-exec packages for other
