@@ -122,6 +122,10 @@
 			(t `(eql ,typ ',(car all)))))
     (pushnew  (funcall *primitive-data-type-function* (eval v)) all)))
 
+;; This assumes way too much about how typep works, so don't use it.
+;; We leave it here for reference to make sure the replacement below
+;; does the same thing.
+#+nil
 (defun maclisp-typep (x &optional type)
   (cond (type
 	 (lisp:let (( pred (get type 'ml-typep)))
@@ -155,7 +159,28 @@
 	   ;((one-of-types .type. (make-array '(2 3)))  'array)
 	   (t (type-of x)))))))
 
- 
+;; A more portable implementation of maclisp-typep.  I (rtoy) think it
+;; would probably be better to replace uses of maclisp-typep and/or
+;; ml-typep with the corresponding Common Lisp typep or type-of or
+;; subtypep, as appropriate.
+(defun maclisp-typep (x &optional type)
+  (cond (type
+	 (lisp:let ((pred (get type 'ml-typep)))
+	   (cond (pred
+		  (funcall pred x))
+		 (t (typep x type)))))
+	(t
+	 (typecase x
+	   (cl:cons 'list)
+	   (cl:fixnum 'fixnum)
+	   (cl:integer 'bignum)
+	   (cl:float 'flonum)
+	   (cl:number 'number)
+	   (cl:array 'array)
+	   (cl:hash-table 'hash-table)
+	   (t
+	    (type-of x))))))
+
 (deff ml-typep #'maclisp-typep)
 ;;so that (ml-typep a 'list) ==> (zl-listp a)
 
