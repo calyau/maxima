@@ -21,7 +21,10 @@
 (DEFMVAR $NEGSUMDISPFLAG T)
 (SETQ IN-P NIL)
 
-(defun $extendp (x) x nil)
+;(defun $extendp (xxxx)
+;  (declare (ignore xxxx))
+;  nil)
+
 ;;for new types that answer (send x :macsyma-extended-type) and such like.
 
 (DEFMFUN NFORMAT (FORM)
@@ -30,8 +33,8 @@
 	       ((EQ T FORM) (IF IN-P T '$TRUE))
 	       ((EQ NIL FORM) (IF IN-P NIL '$FALSE))
 	       ((AND DISPLAYP (CAR (ASSQR FORM ALIASLIST))))
-	       (($EXTENDP FORM)
-		(NFORMAT (transform-extends form)))
+;	       (($EXTENDP FORM)
+;		(NFORMAT (transform-extends form)))
 	       (T FORM)))
 	((ATOM (CAR FORM))
 	 FORM)

@@ -229,11 +229,11 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 	       (nchecker (assq mode '(($float . $real)
 				      ($fixnum . $integer)
 				      ($complex . $complex))))
-	       (extend-type ($extendp val))
+	       ;(extend-type nil) ;($extendp val))
 	       (not-done t))
-	   (if (cond (extend-type
-		      (cond ((eql mode '$any) nil)
-			    (t (not (eql mode extend-type)))))
+	   (if (cond ;(extend-type
+;		      (cond ((eql mode '$any) nil)
+;			    (t (not (eql mode extend-type)))))
 		     ((AND CHECKER
 			   (NOT (FUNCALL (CDR CHECKER) VAL))
 			   (if nchecker
