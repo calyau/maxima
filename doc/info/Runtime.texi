@@ -42,16 +42,6 @@ level maxima back again.
 @c end concepts Runtime Environment
 @node Definitions for Runtime Environment,  , INTERRUPTS, Runtime Environment
 @section Definitions for Runtime Environment
-@c @node ALLOC
-@c @unnumberedsec phony
-@defun ALLOC
- takes any number of arguments which are the same as the replies
-to the "run out of space" question.  It increases allocations
-accordingly.  E.g. If the user knows initially that his problem will
-require much space, he can say ALLOC(4); to allocate the maximum
-amount initially.  See also the DYNAMALLOC switch.
-
-@end defun
 @c @node CLEARSCREEN
 @c @unnumberedsec phony
 @defun CLEARSCREEN ()
@@ -65,32 +55,6 @@ Clears the screen.  The same as typing control-L.
 entered.  The user can now type any LISP S-expression and have it
 evaluated.  Typing (CONTINUE) or ^G (control-G) causes MACSYMA to be
 re-entered.
-
-@end defun
-@c @node DDT
-@c @unnumberedsec phony
-@defun DDT ()
-Exits from MACSYMA to the operating system level.  (The same
-as control-Z on ITS, or control-C on Tops-20.)
-
-@end defun
-@c @node DELFILE
-@c @unnumberedsec phony
-@defun DELFILE (file-specification)
-will delete the file given by the
-file-specification (i.e. firstname, secondname, device, user) from the
-given device.
-
-@end defun
-@c @node DISKFREE
-@c @unnumberedsec phony
-@defun DISKFREE ()
-With no args or an arg of TRUE, will return the total
-number of free blocks of disk space in the system.  With an arg of 0,
-1, or 13, it will return the number of free blocks of diskspace on the
-respective disk pack.  With an arg of SECONDARY or PRIMARY, it will
-return the total number of free blocks of disk space on the secondary
-or primary disk pack respectively.
 
 @end defun
 @c @node declaration
