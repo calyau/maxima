@@ -17,6 +17,13 @@
        *          Programmed by Cliff Yapp and Barton Willis         *
        *            	     					     *
        ***************************************************************
+       
+       
+    General Design Notes:
+    
+       The variables current_let_rule_package and letrat are set on a
+       per function level in order to cause the minimum of disruption
+       to the default system behavior.
 
      Changes:
 
@@ -223,6 +230,18 @@ globalderivedunitlist:[[r,%volume],[r,%frequency],[r,%force],[r,%pressure],
 
 unitlet(expression,ruleset) := apply('let,[expression,ruleset]);
 
+/* Tool to check for duplicates in a list - returns false if found,
+   true otherwise */
+   
+checkforuniqueness(list1) := block([i,j,return],
+   return : true,
+   for i : 1 thru length(list1) do (
+      for j : i+1 thru length(list1) do (
+        if ?equal(list1[i],list1[j]) then (
+	   return : false)
+	 )),
+   return);
+
 /* Add all desired metric quantities into %quantitylist_use lists.  
    %quantitylist_use lists are the one actually used in functions.  This allows
    the program to regenerate a new metric list from "original" package lists
@@ -253,8 +272,10 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 	             (?equal(unitlistname[j][1][l],gram) or
 		      ?equal(unitlistname[j][1][l],grams)))) then (
 	      tempentry[1] : append(tempentry[1],[concat(metricprefull[k][1],
-		                      unitlistname[j][1][l])]),
-	      unitlistusename :: append(ev(unitlistusename),[tempentry])))))))),
+		                      unitlistname[j][1][l])])
+	      ))),
+	  if not(?equal(tempentry[1][1],0)) then (    
+	  unitlistusename :: append(ev(unitlistusename),[tempentry])))))),
 	  
    for i : 1 thru length(globalderivedunitlist) do  (
      unitlistname : concat(globalderivedunitlist[i][2],list),
@@ -353,53 +374,50 @@ base(unit):= block([letrat:true,result,i,j,listname],
 	result : unit),
 	result);
 
+/* This utility makes a list of quantities from a list of units.  It is
+   used to validate input for setunits. */
+makequantlist(unitlist) := block([current_let_rule_package : toquantities, return], 
+         return : map('letsimp,unitlist));
+
+
 /* Handles creation of rules for base units */
-baserules(currentunitlist,unitlistname, unitrules):= 
- block([letrat:true,i,j,a,b],
+baserules(currentunitlist,unitlistname,unitrules):= 
+ block([letrat:true,i,j,a,b,fakerule],
+   killruleset(ruleset) := apply('kill,[ruleset]),
    killruleset(unitrules),
-   unitlet([a,a],unitrules),
-   for i = 1 to length(ev(unitlistname)) do (
-     if lfreeof(unitlistname[i][1],units) then (
-       for j : 1 to length(unitlistname[i][1]) do (
+   unitlet([fakerule,fakerule],unitrules),
+   for i : 1 thru length(ev(unitlistname)) do (
+     if lfreeof(unitlistname[i][1],currentunitlist[1]) then (
+       for j : 1 thru length(unitlistname[i][1]) do (
          if ?equal(abbrevsimp,1) then (
 	     unitlet([unitlistname[i][1][j],
 	        unitlistname[i][2]/currentunitlist[2]*
-		first(currentunitlist[1]),unitrules)
+		first(currentunitlist[1])],unitrules)
 	 )else(
 	 if ?equal(abbrevsimp,1) then (
 	     unitlet([unitlistname[i][1][j],
 	        unitlistname[i][2]/currentunitlist[2]*
-		last(currentunitlist[1]),unitrules)
+		last(currentunitlist[1])],unitrules)
 	 )else(
 	     a : length(unitlistname[i][1]),
 	     b : length(currentlistname[1]),
-	     if (a > b) then (
-	        if (?equal(j,1)) then (
- 	         unitlet([unitlistname[i][1][j],
+	     
+	     if (?equal(a,b) or ?equal(j,1)) then (
+	         unitlet([unitlistname[i][1][j],
 		    unitlistname[i][2]/currentunitlist[2]*
-		    currentunitlist[1][j],unitrules)
-		)else(
+		    currentunitlist[1][j]],unitrules)
+	     )else(
 		 unitlet([unitlistname[i][1][j],
 		    unitlistname[i][2]/currentunitlist[2]*
-		    last(currentunitlist[1]),unitrules)
-		)else(
-		if (?equal(j,1)) then (
-      		 unitlet([unitlistname[i][1][j],
-		    unitlistname[i][2]/currentunitlist[2]*
-		    currentunitlist[1][j],unitrules)
-		)else(
-		 unitlet([unitlistname[i][1][j],
-		    unitlistname[i][2]/currentunitlist[2]*
-		    currentunitlist[1][j+1],unitrules)
-		))))
+		    last(currentunitlist[1])],unitrules)
+	     ))
 	))))
-)
-	
-	
+);
+
 /* Creates rule sets based on user selected units  - Note, will need
-some kind of sort here to ensure proper simplification takes place.
-Map won't be usable in such a case - need to sort only once.  Will
-need to use for do loops.  Will also need to use per-quantity rulesets.*/
+some kind of sort here to ensure proper simplification takes place.  The
+sort(list) command will work on the globalderivedunitslist as it is now
+configured (3/10/2005) - that is the reason for the rank being first.*/
 derivedsimprules(selectedunits,rulepackage) := 
  block([current_let_rule_package : rulepackage,letrat:true, a],
   unitlet([a,a],rulepackage), /*Used to initialize ruleset*/
@@ -420,28 +438,35 @@ unitinfo(unit):= block([letrat:true,result,quantity],
 setunits(units):= block([letrat:true,i,j,unittype,unitlistname,
                          unitrules,currentunitlist, flag],
   modedeclare([i,j], fixnum),
-  killruleset(ruleset) := apply('kill,ruleset),
-  if listp(units) then (                 
-     map ('setunits, units))
+  if listp(units) then (
+     if (is(length(units) > 1) and not(?equal(length(units),0))) then (
+        if (checkforuniqueness(makequantlist(units))) then (             
+              map ('setunits, units))
+        else (
+          (error ("Error - two or more of these units describe the same quantity."))
+     ))
+     else (
+     	if ?equal(length(units),1) then (map ('setunits, units))
+     ))
   else (
   if (isunit(units)) then (
-      unittype : letsimp(unit,toquantities),
+      unittype : letsimp(units,toquantities),
       unitlistname : concat(unittype,list_use),
-      unitrules : concat(unittype,rules),
-      flag = 0, i=0,
+      unitrules : concat(unittype,'rules),
+      flag : 0, i:0,
       while ?equal(flag,0) do(
         i : i+1,
         if not(lfreeof(unitlistname[i][1],units)) then (
-        currentunitlist : unitlistname[i],
-	flag : 1)
+           currentunitlist : unitlistname[i],
+	   flag : 1),
 	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
-      )
+      ),
       if isbase(units) then (
          baserules(currentunitlist,unitlistname,unitrules)
       ) else (
          derivedrules(currentunitlist,unitlistname,unitrules)
       )
-))
+   )));
   
 addunits([[unitname(s)],definition,0]):=
 
