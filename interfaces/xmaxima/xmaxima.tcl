@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.7 2002-09-05 01:48:21 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.8 2002-09-05 02:07:36 mikeclarkson Exp $
 #
 
 # The following files are prepended, and could be sourced instead.
@@ -3378,7 +3378,9 @@ proc doConfig { win }  {
 }
 # mkentry { newframe textvar text } 
 
-set show_balloons 1
+# turn off the horrible show_balloons by default.
+global show_balloons
+set show_balloons 0
 
 proc balloonhelp { win subwin msg } {
     global show_balloons
