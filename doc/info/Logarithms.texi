@@ -1,12 +1,12 @@
 
 @menu
-* Definitions for Logarithms::  
+* Definitions for Logarithms::
 @end menu
 
 @node Definitions for Logarithms,  , Logarithms, Logarithms
 @section Definitions for Logarithms
 
-@defvar %e_to_numlog 
+@defvar %e_to_numlog
 when @code{true}, @code{r} some rational number, and
 @code{x} some expression, @code{%e^(r*log(x))} will be simplified into @code{x^r} .  It
 should be noted that the @code{radcan} command also does this transformation,
@@ -18,8 +18,8 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 @defun log (x)
 the natural logarithm.
 
-  @code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}.  
-If it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  
+  @code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}.
+If it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.
 If it is set to @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)} for rational
 numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for @code{b} integer, always simplifies.)  If
 it is set to @code{false}, all of these simplifications will be turned off.
@@ -75,6 +75,7 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 recursively scans an @code{exp}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
+
 @example
 (%i1) 2*(a*log(x) + 2*a*log(y))$
 (%i2) logcontract(%);
@@ -82,6 +83,7 @@ subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 (%o3)                         a log(x  y )
 
 @end example
+
 If you do @code{declare(n,integer);} then @code{logcontract(2*a*n*log(x));} gives
 @code{a*log(x^(2*n))}.  The coefficients that "contract" in this manner are
 those such as the 2 and the @code{n} here which satisfy
@@ -105,7 +107,7 @@ be turned off.
 @end defvar
 
 @defvar lognegint
- default value: @code{false} - if @code{true} implements the rule 
+ default value: @code{false} - if @code{true} implements the rule
 @code{log(-n)} -> @code{log(n)+%i*%pi} for @code{n} a positive integer.
 
 @end defvar

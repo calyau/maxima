@@ -1,6 +1,6 @@
 
 @menu
-* Definitions for Limits::      
+* Definitions for Limits::
 @end menu
 
 @node Definitions for Limits,  , Limits, Limits

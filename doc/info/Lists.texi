@@ -1,6 +1,7 @@
+
 @menu
-* Introduction to Lists::       
-* Definitions for Lists::       
+* Introduction to Lists::
+* Definitions for Lists::
 @end menu
 
 @node Introduction to Lists, Definitions for Lists, Lists, Lists
@@ -31,15 +32,13 @@ itself, since after it has been through the simplifier the list would become
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
-
-
 @node Definitions for Lists,  , Introduction to Lists, Lists
 @section Definitions for Lists
 
 @defun append (list1, list2, ...)
-returns a single list of the elements of @code{list1} followed 
+returns a single list of the elements of @code{list1} followed
 by the elements of @code{list2},...  @code{append} also works on
-general expressions, e.g. @code{append(f(a,b), f(c,d,e));} -> 
+general expressions, e.g. @code{append(f(a,b), f(c,d,e));} ->
 @code{f(a,b,c,d,e)}.
 
 Do @code{example(append);} for an example.
@@ -64,7 +63,7 @@ is @code{true} if @code{exp} is atomic (i.e. a number, name or string) else
 @code{false} (asuming @code{a[1]} and @code{x} are unbound).
 
 @end defun
- 
+
 @defun cons (exp, list)
 returns a new list constructed of the element @code{exp} as
 its first element, followed by the elements of @code{list}.  @code{cons} also works
@@ -80,7 +79,7 @@ creates a copy of the list @code{list}.
 @defun delete (exp1, exp2)
 @defunx delete (exp1, exp2, n)
 removes all occurrences of @code{exp1} from @code{exp2}.  @code{exp1}
-may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2} 
+may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2}
 (if it is a product).
 @example
 (%i1)  delete(sin(x),x+sin(x)+y);
@@ -97,8 +96,9 @@ occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
 (%o2)           f(b, d, a)
 
 @end example
+
 @end defun
- 
+
 @defun endcons (exp, list)
 returns a new list consisting of the elements of
 @code{list} followed by @code{exp}.  @code{endcons} also works on general expressions, e.g.
@@ -112,8 +112,6 @@ This function takes a list, or a positive number of arguments and returns
 
 @end defun
 
-@c @node first, flatten, every, Lists
-@c @unnumberedsec 
 @defun first (exp) second (exp) .. tenth (exp)
 yields the first part of exp which may result in the first
 element of a list, the first row of a matrix, the first term of a sum,
@@ -127,17 +125,16 @@ results).  The functions @code{second} .. @code{tenth} yield the second through 
 tenth part of their input argument.
 
 @end defun
-@c @node flatten, get, first, Lists
-@c @unnumberedsec 
+
 @defun flatten (exp)
 Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 
 @end defun
-@c @node get, last, first, Lists
-@c @unnumberedsec 
+
 @defun get (a, i)
 retrieves the user property indicated by @code{i} associated with
 atom @code{a} or returns @code{false} if a doesn't have property @code{i}.
+
 @example
 (%i1) put (%e, 'transcendental, 'type);
 (%o1)                      transcendental
@@ -159,14 +156,12 @@ x is not numeric.
 @end example
 
 @end defun
-@c @node last, length, get, Lists
-@c @unnumberedsec 
+
 @defun last (exp)
 yields the last part (term, row, element, etc.) of the @code{exp}.
 
 @end defun
-@c @node length, listarith, last, Lists
-@c @unnumberedsec 
+
 @defun length (exp)
 gives (by default) the number of parts in the external
 (displayed) form of @code{exp}.  For lists this is the number of elements,
@@ -177,8 +172,7 @@ of terms (see @code{dispform}).  The @code{length} command is affected by the
 @code{true} (the internal representation is essentially @code{a*b^-1*c^-1}).
 
 @end defun
-@c @node listarith, listp, length, Lists
-@c @unnumberedsec 
+
 @defvar listarith
  default value: @code{true} - if @code{false} causes any arithmetic operations
 with lists to be suppressed; when @code{true}, list-matrix operations are
@@ -187,19 +181,18 @@ which is always a matrix.  However, list-list operations should return
 lists.
 
 @end defvar
-@c @node listp, makelist, listarith, Lists
-@c @unnumberedsec 
+
 @defun listp (exp)
 is @code{true} if @code{exp} is a list else @code{false}.
 
 @end defun
-@c @node makelist, member, listp, Lists
-@c @unnumberedsec 
+
 @defun makelist (exp,var,lo,hi)
 returns a list as value.  @code{makelist} may be called as
 @code{makelist(exp,var,lo,hi)} [@code{lo} and @code{hi} must be integers], or as
 @code{makelist(exp,var,list)}.  In the first case @code{makelist} is analogous to
 @code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.  Examples:
+
 @example
 (%i1) makelist(concat(x,i),i,1,6);
 (%o1)          [x1, x2, x3, x4, x5, x6]
@@ -208,24 +201,21 @@ returns a list as value.  @code{makelist} may be called as
 @end example
 
 @end defun
-@c @node member, rest, makelist, Lists
-@c @unnumberedsec 
+
 @defun member (exp, list)
 returns @code{true} if @code{exp} occurs as a member of @code{list} (not
 within a member).  Otherwise @code{false} is returned.  @code{member} also works on
 non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
 @end defun
-@c @node rest, reverse, member, Lists
-@c @unnumberedsec 
+
 @defun rest (exp, n)
 yields @code{exp} with its first @code{n} elements removed if @code{n} is
 positive and its last @code{-n} elements removed if @code{n} is negative.  If @code{n} is 1
 it may be omitted.  @code{exp} may be a list, matrix, or other expression.
 
 @end defun
-@c @node reverse,  , rest, Lists
-@c @unnumberedsec  
+
 @defun reverse (list)
 reverses the order of the members of the @code{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
@@ -234,3 +224,4 @@ e.g.  @code{reverse(a=b);} gives @code{b=a}.
 left-handed coordinate system to be assumed.
 
 @end defun
+

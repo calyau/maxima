@@ -1,6 +1,6 @@
 
 @menu
-* Definitions for Constants::   
+* Definitions for Constants::
 @end menu
 
 @node Definitions for Constants,  , Constants, Constants
@@ -41,3 +41,4 @@ as @code{%e}.
  - the Boolean constant, true. (T in Lisp)
 
 @end defvar
+
