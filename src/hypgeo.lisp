@@ -1,661 +1,661 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 
 
-;    ** (c) Copyright 1976, 1983 Massachusetts Institute of Technology **
+;;    ** (c) Copyright 1976, 1983 Massachusetts Institute of Technology **
 (in-package "MAXIMA")
 
-;These are the main routines for finding the Laplace Transform
-; of special functions   --- written by Yannis Avgoustis
-;                        --- modified by Edward Lafferty
-;                       Latest mod by jpg 8/21/81
-;
-;   This program uses the programs on ELL;HYP FASL.
+;;These are the main routines for finding the Laplace Transform
+;; of special functions   --- written by Yannis Avgoustis
+;;                        --- modified by Edward Lafferty
+;;                       Latest mod by jpg 8/21/81
+;;
+;;   This program uses the programs on ELL;HYP FASL.
 
 (macsyma-module hypgeo)
 
-(DECLARE-top (SPECIAL VAR PAR ZEROSIGNTEST PRODUCTCASE CHECKCOEFSIGNLIST
-		  $EXPONENTIALIZE $RADEXPAND))
+(declare-top (special var par zerosigntest productcase checkcoefsignlist
+		      $exponentialize $radexpand))
 
 (load-macsyma-macros rzmac)
 
-(DEFUN BESS
-       (V Z FLG)
-       (LIST '(MQAPPLY)
-	     (LIST (COND ((EQ FLG 'J)'($%J ARRAY))
-			 (T '($%I ARRAY)))
-		   V)
-	     Z))
+(defun bess
+    (v z flg)
+  (list '(mqapply)
+	(list (cond ((eq flg 'j)'($%j array))
+		    (t '($%i array)))
+	      v)
+	z))
 
-;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
+;;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
 
-(DEFUN GM(EXPR)(SIMPLIFYA (LIST '(%GAMMA) EXPR) NIL))
+(defun gm(expr)(simplifya (list '(%gamma) expr) nil))
 
-(DEFUN SIN%(ARG)(LIST '(%SIN) ARG))
+(defun sin%(arg)(list '(%sin) arg))
 
-(DEFUN NUMP
-       (X)
-       (COND ((ATOM X)(NUMBERP X))
-	     ((NOT (ATOM X))(EQ (CAAR (SIMPLIFYA X NIL)) 'RAT))))
+(defun nump
+    (x)
+  (cond ((atom x)(numberp x))
+	((not (atom x))(eq (caar (simplifya x nil)) 'rat))))
 
-(DEFUN COS%(ARG)(LIST '(%COS) ARG))
+(defun cos%(arg)(list '(%cos) arg))
 
-(DEFUN NEGINP (A) (COND ((MAXIMA-INTEGERP A)(OR (ZERP A)(MINUSP A)))))
+(defun neginp (a) (cond ((maxima-integerp a)(or (zerp a)(minusp a)))))
 
-(DEFUN NOTNUMP(X)(NOT (NUMP X)))
+(defun notnump(x)(not (nump x)))
 
-(DEFUN NEGNUMP
-       (X)
-       (COND ((NOT (MAXIMA-INTEGERP X))
-	      (MINUSP (CADR (SIMPLIFYA X NIL))))
-	     (T (MINUSP X))))
+(defun negnump
+    (x)
+  (cond ((not (maxima-integerp x))
+	 (minusp (cadr (simplifya x nil))))
+	(t (minusp x))))
 
 
 
-(DEFUN EXPOR1P(EXP)(OR (EQUAL EXP 1)(EQ EXP '$%E)))
+(defun expor1p(exp)(or (equal exp 1)(eq exp '$%e)))
 
-(DEFUN PARP(A)(EQ A PAR))
+(defun parp(a)(eq a par))
 
 
 
-;(DEFUN HASVAR(EXP)(COND ((FREEVAR EXP) NIL)(T T)))
+;;(DEFUN HASVAR(EXP)(COND ((FREEVAR EXP) NIL)(T T)))
 
 
 
-(DEFUN ARBPOW1
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (C NONZERP)
-	      ((MEXPT)(U HASVAR)(V FREEVAR)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
+(defun arbpow1
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (c nonzerp)
+	 ((mexpt)(u hasvar)(v freevar)))
+	((coeffpp)(a zerp)))
+      nil))
 
-(DEFUN U*ASINX
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT) (U NONZERP)((%ASIN)(X HASVAR)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
+(defun u*asinx
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt) (u nonzerp)((%asin)(x hasvar)))
+	((coeffpp)(a zerp)))
+      nil))
 
-(DEFUN U*ATANX
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)((%ATAN)(X HASVAR)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-
-
-(DEFUN GMINC(A B)(LIST '($GAMMAINCOMPLETE) A B))
-
-(DEFUN LITTLESLOMMEL
-       (M N Z)
-       (LIST '(MQAPPLY)(LIST '($%S ARRAY) M N) Z))
-
-(DEFUN MWHIT(A I1 I2)(LIST '(MQAPPLY)(LIST '($%M ARRAY) I1 I2) A))
-
-(DEFUN WWHIT(A I1 I2)(LIST '(MQAPPLY)(LIST '($%W ARRAY) I1 I2) A))
-
-(DEFUN PJAC(X N A B)(LIST '(MQAPPLY)(LIST '($%P ARRAY) N A B) X))
-
-(DEFUN PARCYL(X N)(LIST '(MQAPPLY)(LIST '($%D ARRAY) N) X))
-
-
-;...HOPEFULLY AMONG WHATEVER GARBAGE IT RECOGNIZES J[V](W).
-
-(DEFUN ONEJ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%J ARRAY) (V TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-;...AMONG GARBAGE RECOGNIZES J[V1](W1)*J[V2](W2)
-
-
-(DEFUN TWOJ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%J ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%J ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN TWOY
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%Y ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%Y ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN TWOK
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%K ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%K ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEKONEY
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%K ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%Y ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-;...AMONG GARBAGE RECOGNIZES J[V](W)^2.
-
-
-(DEFUN ONEJ^2
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       ((MQAPPLY)(($%J ARRAY)(V TRUE))(W TRUE))
-	       2.))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEY^2
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       ((MQAPPLY)(($%Y ARRAY)(V TRUE))(W TRUE))
-	       2.))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEK^2
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       ((MQAPPLY)(($%K ARRAY)(V TRUE))(W TRUE))
-	       2.))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEI
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%I ARRAY) (V TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN TWOI
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%I ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%I ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN TWOH
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%H ARRAY)(V1 TRUE)(V11 TRUE))
-	       (W1 TRUE))
-	      ((MQAPPLY)
-	       (($%H ARRAY)(V2 TRUE)(V21 TRUE))
-	       (W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEYONEJ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%Y ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%J ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEKONEJ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%K ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%J ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEYONEH
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%Y ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)
-	       (($%H ARRAY)(V2 TRUE)(V21 TRUE))
-	       (W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEKONEH
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%K ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)
-	       (($%H ARRAY)(V2 TRUE)(V21 TRUE))
-	       (W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEIONEJ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%I ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%J ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEIONEH
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%I ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)
-	       (($%H ARRAY)(V2 TRUE)(V21 TRUE))
-	       (W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEHONEJ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%H ARRAY)(V1 TRUE)(V11 TRUE))
-	       (W1 TRUE))
-	      ((MQAPPLY)(($%J ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEIONEY
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%I ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%Y ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEIONEK
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%I ARRAY)(V1 TRUE))(W1 TRUE))
-	      ((MQAPPLY)(($%K ARRAY)(V2 TRUE))(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEI^2
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       ((MQAPPLY)(($%I ARRAY)(V TRUE))(W TRUE))
-	       2.))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEH^2
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       ((MQAPPLY)
-		(($%H ARRAY)(V1 TRUE)(V2 TRUE))
-		(W TRUE))
-	       2.))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONERF
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)((%ERF)(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONELOG
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)((%LOG)(W HASVAR)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONERFC
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)(($ERFC)(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEEI
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)(($%EI)(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEKELLIPTIC
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)(($KELLIPTIC)(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEE
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)(U NONZERP)(($%E)(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEGAMMAINCOMPLETE
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      (($GAMMAINCOMPLETE)(W1 FREEVARPAR)(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEGAMMAGREEK
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      (($GAMMAGREEK)(W1 FREEVARPAR)(W2 TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEHSTRUVE
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($HSTRUVE ARRAY)(V TRUE))(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONELSTRUVE
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($LSTRUVE ARRAY)(V TRUE))(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONES
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%S ARRAY)(V1 TRUE)(V2 TRUE))(W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONESLOMMEL
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($SLOMMEL ARRAY)(V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP)(A ZERP)))
-	   NIL))
-
-(DEFUN ONEY
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%Y ARRAY) (V TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEK
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%K ARRAY) (V TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONED
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%D ARRAY) (V TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEKBATEMAN
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($KBATEMAN ARRAY) (V TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEH
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%H ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEM
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%M ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEL
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%L ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEC
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%C ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONET
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%T ARRAY) (V1 TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEU
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%U ARRAY) (V1 TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEPJAC
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%P ARRAY) (V1 TRUE)(V2 TRUE)(V3 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEHE
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%HE ARRAY) (V1 TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEQ
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%Q ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEP0
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)(($%P ARRAY) (V1 TRUE)) (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN HYP-ONEP
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%P ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
-
-(DEFUN ONEW
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MQAPPLY)
-	       (($%W ARRAY) (V1 TRUE)(V2 TRUE))
-	       (W TRUE)))
-	     ((COEFFPP) (A ZERP)))
-	   NIL))
+(defun u*atanx
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%atan)(x hasvar)))
+	((coeffpp)(a zerp)))
+      nil))
+
+
+
+(defun gminc(a b)(list '($gammaincomplete) a b))
+
+(defun littleslommel
+    (m n z)
+  (list '(mqapply)(list '($%s array) m n) z))
+
+(defun mwhit(a i1 i2)(list '(mqapply)(list '($%m array) i1 i2) a))
+
+(defun wwhit(a i1 i2)(list '(mqapply)(list '($%w array) i1 i2) a))
+
+(defun pjac(x n a b)(list '(mqapply)(list '($%p array) n a b) x))
+
+(defun parcyl(x n)(list '(mqapply)(list '($%d array) n) x))
+
+
+;;...HOPEFULLY AMONG WHATEVER GARBAGE IT RECOGNIZES J[V](W).
+
+(defun onej
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%j array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+;;...AMONG GARBAGE RECOGNIZES J[V1](W1)*J[V2](W2)
+
+
+(defun twoj
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%j array)(v1 true))(w1 true))
+	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun twoy
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%y array)(v1 true))(w1 true))
+	 ((mqapply)(($%y array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun twok
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%k array)(v1 true))(w1 true))
+	 ((mqapply)(($%k array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onekoney
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%k array)(v1 true))(w1 true))
+	 ((mqapply)(($%y array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+;;...AMONG GARBAGE RECOGNIZES J[V](W)^2.
+
+
+(defun onej^2
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  ((mqapply)(($%j array)(v true))(w true))
+	  2.))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oney^2
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  ((mqapply)(($%y array)(v true))(w true))
+	  2.))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onek^2
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  ((mqapply)(($%k array)(v true))(w true))
+	  2.))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onei
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%i array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun twoi
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%i array)(v1 true))(w1 true))
+	 ((mqapply)(($%i array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun twoh
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%h array)(v1 true)(v11 true))
+	  (w1 true))
+	 ((mqapply)
+	  (($%h array)(v2 true)(v21 true))
+	  (w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneyonej
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%y array)(v1 true))(w1 true))
+	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onekonej
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%k array)(v1 true))(w1 true))
+	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneyoneh
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%y array)(v1 true))(w1 true))
+	 ((mqapply)
+	  (($%h array)(v2 true)(v21 true))
+	  (w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onekoneh
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%k array)(v1 true))(w1 true))
+	 ((mqapply)
+	  (($%h array)(v2 true)(v21 true))
+	  (w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneionej
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%i array)(v1 true))(w1 true))
+	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneioneh
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%i array)(v1 true))(w1 true))
+	 ((mqapply)
+	  (($%h array)(v2 true)(v21 true))
+	  (w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onehonej
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%h array)(v1 true)(v11 true))
+	  (w1 true))
+	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneioney
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%i array)(v1 true))(w1 true))
+	 ((mqapply)(($%y array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneionek
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%i array)(v1 true))(w1 true))
+	 ((mqapply)(($%k array)(v2 true))(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onei^2
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  ((mqapply)(($%i array)(v true))(w true))
+	  2.))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneh^2
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  ((mqapply)
+	   (($%h array)(v1 true)(v2 true))
+	   (w true))
+	  2.))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onerf
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%erf)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onelog
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)((%log)(w hasvar)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onerfc
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($erfc)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneei
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($%ei)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onekelliptic
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($kelliptic)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onee
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)(u nonzerp)(($%e)(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onegammaincomplete
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 (($gammaincomplete)(w1 freevarpar)(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onegammagreek
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 (($gammagreek)(w1 freevarpar)(w2 true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onehstruve
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($hstruve array)(v true))(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun onelstruve
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($lstruve array)(v true))(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun ones
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%s array)(v1 true)(v2 true))(w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oneslommel
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($slommel array)(v1 true)(v2 true))
+	  (w true)))
+	((coeffpp)(a zerp)))
+      nil))
+
+(defun oney
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%y array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onek
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%k array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun oned
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%d array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onekbateman
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($kbateman array) (v true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun oneh
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%h array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onem
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%m array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onel
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%l array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onec
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%c array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onet
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%t array) (v1 true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun oneu
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%u array) (v1 true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onepjac
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%p array) (v1 true)(v2 true)(v3 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onehe
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%he array) (v1 true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun oneq
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%q array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onep0
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)(($%p array) (v1 true)) (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun hyp-onep
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%p array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
+
+(defun onew
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mqapply)
+	  (($%w array) (v1 true)(v2 true))
+	  (w true)))
+	((coeffpp) (a zerp)))
+      nil))
 
  
 
@@ -664,1727 +664,1727 @@
 
 
 
-;...RECOGNIZES L.T.E. "U*%E^(A*X+E*F(X)-P*X+C)+D".
+;;...RECOGNIZES L.T.E. "U*%E^(A*X+E*F(X)-P*X+C)+D".
 
-(DEFUN LTEP
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       $%E
-	       ((MPLUS)
-		((COEFFPT) (A FREEVARPAR) (X VARP))
-		((COEFFPT) (E FREEVARPAR) (F HASVAR))
-		((MTIMES) -1. (P PARP) (X VARP))
-		((COEFFPP) (C FREEVARPAR)))))
-	     ((COEFFPP) (D ZERP)))
-	   NIL)) 
+(defun ltep
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  $%e
+	  ((mplus)
+	   ((coeffpt) (a freevarpar) (x varp))
+	   ((coeffpt) (e freevarpar) (f hasvar))
+	   ((mtimes) -1. (p parp) (x varp))
+	   ((coeffpp) (c freevarpar)))))
+	((coeffpp) (d zerp)))
+      nil)) 
 
-;(DEFUN ZERP(A)(EQUAL A 0))
+;;(DEFUN ZERP(A)(EQUAL A 0))
 
-;(DEFUN NONZERP(A)(NOT (ZERP A)))
+;;(DEFUN NONZERP(A)(NOT (ZERP A)))
 
-(DEFMFUN $SPECINT (EXP VAR)
-       (PROG ($radexpand CHECKCOEFSIGNLIST)
-	    (progn (FIND-FUNCTION 'SININT))
-	    (setq $radexpand '$all)
-	    (RETURN (GRASP-SOME-TRIGS EXP))))
+(defmfun $specint (exp var)
+  (prog ($radexpand checkcoefsignlist)
+     (progn (find-function 'sinint))
+     (setq $radexpand '$all)
+     (return (grasp-some-trigs exp))))
 
 (declare-top (special asinx atanx))
 
 (setq asinx nil atanx nil)
 
-(DEFUN GRASP-SOME-TRIGS
-       (EXP)
-       (PROG(U X L )
-	    (COND ((SETQ L (U*ASINX EXP))
-		   (SETQ U
-			 (CDRAS 'U L)
-			 X
-			 (CDRAS 'X L)
-			 ASINX
-			 'T)
-		   (RETURN (DEFINTEGRATE U))))
-	    (COND ((SETQ L (U*ATANX EXP))
-		   (SETQ U
-			 (CDRAS 'U L)
-			 X
-			 (CDRAS 'X L)
-			 ATANX
-			 'T)
-		   (RETURN (DEFINTEGRATE U))))
-	    (RETURN (DEFINTEGRATE EXP))))
+(defun grasp-some-trigs
+    (exp)
+  (prog(u x l )
+     (cond ((setq l (u*asinx exp))
+	    (setq u
+		  (cdras 'u l)
+		  x
+		  (cdras 'x l)
+		  asinx
+		  't)
+	    (return (defintegrate u))))
+     (cond ((setq l (u*atanx exp))
+	    (setq u
+		  (cdras 'u l)
+		  x
+		  (cdras 'x l)
+		  atanx
+		  't)
+	    (return (defintegrate u))))
+     (return (defintegrate exp))))
 
 
 
-(DEFUN DEFINTEGRATE
-       (EXP)
-       (PROG ($EXPONENTIALIZE)
-	     (SETQ $EXPONENTIALIZE t)
-	     (RETURN (DISTRDEFEXECINIT ($EXPAND (SSIMPLIFYA EXP))))))
+(defun defintegrate
+    (exp)
+  (prog ($exponentialize)
+     (setq $exponentialize t)
+     (return (distrdefexecinit ($expand (ssimplifya exp))))))
 
 
-(DEFUN DEFEXEC
-       (EXP VAR)
-       (PROG(L A)
-	    (SETQ EXP (SIMPLIFYA EXP NIL))
-	    (COND ((SETQ L (DEFLTEP EXP))
-		   (SETQ A (CDRAS 'A L))
-		   (RETURN (NEGTEST L A))))
-	    (RETURN 'OTHER-DEFINT-TO-FOLLOW-DEFEXEC)))
+(defun defexec
+    (exp var)
+  (prog(l a)
+     (setq exp (simplifya exp nil))
+     (cond ((setq l (defltep exp))
+	    (setq a (cdras 'a l))
+	    (return (negtest l a))))
+     (return 'other-defint-to-follow-defexec)))
 
-(DEFUN NEGTEST
-       (L A)
-       (PROG(U E F C)
-	    (COND ((EQ (CHECKSIGNTM ($REALPART A)) '$NEGATIVE)
-		   (SETQ U
-			 (CDRAS 'U L)
-			 E
-			 (CDRAS 'E L)
-			 F
-			 (CDRAS 'F L)
-			 C
-			 (CDRAS 'C L))
-		   (COND ((ZERP E)(SETQ F 1)))
-		   (RETURN (MAXIMA-SUBSTITUTE (MUL -1 A)
-				       'PSEY
-				       (LTSCALE U
-						VAR
-						'PSEY
-						C
+(defun negtest
+    (l a)
+  (prog(u e f c)
+     (cond ((eq (checksigntm ($realpart a)) '$negative)
+	    (setq u
+		  (cdras 'u l)
+		  e
+		  (cdras 'e l)
+		  f
+		  (cdras 'f l)
+		  c
+		  (cdras 'c l))
+	    (cond ((zerp e)(setq f 1)))
+	    (return (maxima-substitute (mul -1 a)
+				       'psey
+				       (ltscale u
+						var
+						'psey
+						c
 						0
-						E
-						F)))))
-	    (RETURN 'OTHER-DEFINT-TO-FOLLOW-NEGTEST)))
+						e
+						f)))))
+     (return 'other-defint-to-follow-negtest)))
 
-(DEFUN LTSCALE
-       (EXP VAR PAR C PAR0 E F)
-       (MUL* (POWER '$%E C)
-	    (SUBSTL (SUB PAR PAR0) PAR (LT-EXEC EXP E F))))
+(defun ltscale
+    (exp var par c par0 e f)
+  (mul* (power '$%e c)
+	(substl (sub par par0) par (lt-exec exp e f))))
 
-(DEFUN DEFLTEP
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (U NONZERP)
-	      ((MEXPT)
-	       $%E
-	       ((MPLUS)
-		((COEFFPT) (A FREEVAR) (X VARP))
-		((COEFFPT) (E FREEVAR) (F HASVARNOVARP))
-		((COEFFPP) (C FREEVAR)))))
-	     ((COEFFPP) (D ZERP)))
-	   NIL))
+(defun defltep
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (u nonzerp)
+	 ((mexpt)
+	  $%e
+	  ((mplus)
+	   ((coeffpt) (a freevar) (x varp))
+	   ((coeffpt) (e freevar) (f hasvarnovarp))
+	   ((coeffpp) (c freevar)))))
+	((coeffpp) (d zerp)))
+      nil))
 
-(DEFUN HASVARNOVARP (A) (AND (HASVAR A) (NOT (VARP A))))
-;it dispatches according to the kind of transform it matches
-
-
-(DEFUN HYPGEO-EXEC (EXP VAR PAR)
-       (PROG (L U A C E F)
-	    (SETQ EXP (SIMPLIFYA EXP NIL))
-	    (COND ((SETQ L (LTEP EXP))
-		   (SETQ U (CDRAS 'U L)
-			 A (CDRAS 'A L)
-			 C (CDRAS 'C L)
-			 E (CDRAS 'E L)
-			 F (CDRAS 'F L))
-		   (RETURN (LTSCALE U VAR PAR C A E F))))
-	    (RETURN 'OTHER-TRANS-TO-FOLLOW)))
-
-(DEFUN SUBSTL
-       (P1 P2 P3)
-       (COND ((EQ P1 P2) P3)(T (MAXIMA-SUBSTITUTE P1 P2 P3)))) 
-
-(DEFUN LT-EXEC
-       (U E F)
-       (PROG(L)
-	    (COND ((OR ASINX ATANX)(RETURN (LT-ASINATAN U E))))
-	    (COND ((ZERP E)(RETURN (LT-SF-LOG U))))
-	    (COND ((AND (NOT (ZERP E))(SETQ L (C*T^V U)))
-		   (RETURN (LT-EXP L E F))))
-	    (RETURN (LT-SF-LOG (MUL* U (POWER '$%E (MUL E F)))))))
-
-(DEFUN C*T^V
-       (EXP)
-       (M2 EXP
-	   '((MTIMES)
-	     ((COEFFTT)(C FREEVAR))
-	     ((MEXPT)(T VARP)(V FREEVAR)))
-	   NIL))
-
-(DEFUN LT-ASINATAN (U E)
-       (COND ((ZERP E)
-	      (COND (ASINX (LT-LTP 'ASIN U var NIL))
-		    (ATANX (LT-LTP 'ATAN U var NIL))
-		    (T 'LT-ASINATAN-FAILED-1)))
-	     (T 'LT-ASINATAN-FAILED-2)))
-
-(DEFUN LT-EXP
-       (L E F)
-       (PROG(C V)
-	    (SETQ C (CDRAS 'C L) V (CDRAS 'V L))
-	    (COND ((T^2 F)
-		   (SETQ E (INV (MUL -8 E)) V (ADD V 1))
-		   (RETURN (F24P146TEST C V E))))
-	    (COND ((SQROOTT F)
-		   (SETQ E (MUL* E E (INV 4)) V (ADD V 1))
-		   (RETURN (F35P147TEST C V E))))
-	    (COND ((T^-1 F)
-		   (SETQ E (MUL -4 E) V (ADD V 1))
-		   (RETURN (F29P146TEST V E))))
-	    (RETURN 'OTHER-LT-EXPONENTIAL-TO-FOLLOW)))
-
-(DEFUN T^2(EXP)(M2 EXP '((MEXPT)(T VARP) 2) NIL))
-
-(DEFUN SQROOTT(EXP)(M2 EXP '((MEXPT)(T VARP)((RAT) 1 2)) NIL))
-
-(DEFUN T^-1(EXP)(M2 EXP '((MEXPT)(T VARP) -1) NIL))
-
-(DEFUN F24P146TEST
-       (C V A)
-       (COND ((NOT (OR (NEGINP A)(NEGINP V)))(F24P146 C V A))
-	     (T 'FAIL-ON-F24P146TEST)))
-
-(DEFUN F35P147TEST
-       (C V A)
-       (COND ((NOT (NEGINP V))(F35P147 C V A))
-	     (T 'FAIL-ON-F35P147TEST)))
-
-(DEFUN F29P146TEST (V A)
-       (COND ((NOT (NEGINP A))
-	      (F29P146 V A))
-	     (T 'FAIL-ON-F29P146TEST)))
-
-(DEFUN F1P137TEST
-       (POW)
-       (COND ((NOT (NEGINP (ADD POW 1)))(F1P137 POW))
-	     (T 'FAIL-IN-ARBPOW))) 
-
-(DEFUN F1P137
-       (POW)
-       (MUL* (GM (ADD POW 1))(POWER PAR (SUB (MUL -1 POW) 1))))
-
-(DEFUN F24P146
-       (C V A)
-       (MUL* C
-	     (GM V)
-	     (POWER 2 V)
-	     (POWER A (DIV V 2))
-	     (POWER '$%E (MUL* A PAR PAR))
-	     (DTFORD (MUL* 2 PAR (POWER A (1//2)))(MUL -1 V))))
-
-(DEFUN F35P147
-       (C V A)
-       (MUL* C
-	     (GM (ADD V V))
-	     (POWER 2 (SUB 1 V))
-	     (POWER PAR (MUL -1 V))
-	     (POWER '$%E (MUL* A (1//2)(INV PAR)))
-	     (DTFORD (POWER (MUL* 2 A (INV PAR))(1//2))(MUL -2 V))))
-
-(DEFUN F29P146 (V A)
-       (MUL* 2
-	     (POWER (MUL* A (INV 4)(INV PAR))(DIV V 2))
-	     (KTFORK A V)))
-
-(DEFUN KTFORK
-       (A V)
-       ((LAMBDA(Z)
-	       (COND ((MAXIMA-INTEGERP V)(KMODBES Z V))
-		     (T (SIMPKTF Z V))))
-	(POWER (MUL* A PAR)(1//2))))
-
-(DEFUN DTFORD
-       (Z V)
-       (COND (((LAMBDA(INV4)
-		      (WHITTINDTEST (ADD (DIV V 2) INV4) INV4))
-	       (INV 4))
-	      (PARCYL Z V))
-	     (T (SIMPDTF Z V))))
+(defun hasvarnovarp (a) (and (hasvar a) (not (varp a))))
+;;it dispatches according to the kind of transform it matches
 
 
-(DEFUN SIMPDTF
-       (Z V)
-       ((LAMBDA(INV2 POW)
-	       (ADD (MUL* (POWER 2 (DIV (SUB V 1) 2))
-			  Z
-			  (GM (INV -2))
-			  (INV (GM (MUL* V -1 INV2)))
-			  POW
-			  (HGFSIMP-EXEC (LIST (SUB INV2
-						   (DIV V
-							2)))
-					(LIST (DIV 3 2))
-					(MUL* Z Z INV2)))
-		    (MUL* (POWER 2 (DIV V 2))
-			  (GM INV2)
-			  POW
-			  (INV (GM (SUB INV2 (MUL V INV2))))
-			  (HGFSIMP-EXEC (LIST (MUL* V
-						   -1
-						   INV2))
-					(LIST INV2)
-					(MUL* Z Z INV2)))))
+(defun hypgeo-exec (exp var par)
+  (prog (l u a c e f)
+     (setq exp (simplifya exp nil))
+     (cond ((setq l (ltep exp))
+	    (setq u (cdras 'u l)
+		  a (cdras 'a l)
+		  c (cdras 'c l)
+		  e (cdras 'e l)
+		  f (cdras 'f l))
+	    (return (ltscale u var par c a e f))))
+     (return 'other-trans-to-follow)))
+
+(defun substl
+    (p1 p2 p3)
+  (cond ((eq p1 p2) p3)(t (maxima-substitute p1 p2 p3)))) 
+
+(defun lt-exec
+    (u e f)
+  (prog(l)
+     (cond ((or asinx atanx)(return (lt-asinatan u e))))
+     (cond ((zerp e)(return (lt-sf-log u))))
+     (cond ((and (not (zerp e))(setq l (c*t^v u)))
+	    (return (lt-exp l e f))))
+     (return (lt-sf-log (mul* u (power '$%e (mul e f)))))))
+
+(defun c*t^v
+    (exp)
+  (m2 exp
+      '((mtimes)
+	((coefftt)(c freevar))
+	((mexpt)(t varp)(v freevar)))
+      nil))
+
+(defun lt-asinatan (u e)
+  (cond ((zerp e)
+	 (cond (asinx (lt-ltp 'asin u var nil))
+	       (atanx (lt-ltp 'atan u var nil))
+	       (t 'lt-asinatan-failed-1)))
+	(t 'lt-asinatan-failed-2)))
+
+(defun lt-exp
+    (l e f)
+  (prog(c v)
+     (setq c (cdras 'c l) v (cdras 'v l))
+     (cond ((t^2 f)
+	    (setq e (inv (mul -8 e)) v (add v 1))
+	    (return (f24p146test c v e))))
+     (cond ((sqroott f)
+	    (setq e (mul* e e (inv 4)) v (add v 1))
+	    (return (f35p147test c v e))))
+     (cond ((t^-1 f)
+	    (setq e (mul -4 e) v (add v 1))
+	    (return (f29p146test v e))))
+     (return 'other-lt-exponential-to-follow)))
+
+(defun t^2(exp)(m2 exp '((mexpt)(t varp) 2) nil))
+
+(defun sqroott(exp)(m2 exp '((mexpt)(t varp)((rat) 1 2)) nil))
+
+(defun t^-1(exp)(m2 exp '((mexpt)(t varp) -1) nil))
+
+(defun f24p146test
+    (c v a)
+  (cond ((not (or (neginp a)(neginp v)))(f24p146 c v a))
+	(t 'fail-on-f24p146test)))
+
+(defun f35p147test
+    (c v a)
+  (cond ((not (neginp v))(f35p147 c v a))
+	(t 'fail-on-f35p147test)))
+
+(defun f29p146test (v a)
+  (cond ((not (neginp a))
+	 (f29p146 v a))
+	(t 'fail-on-f29p146test)))
+
+(defun f1p137test
+    (pow)
+  (cond ((not (neginp (add pow 1)))(f1p137 pow))
+	(t 'fail-in-arbpow))) 
+
+(defun f1p137
+    (pow)
+  (mul* (gm (add pow 1))(power par (sub (mul -1 pow) 1))))
+
+(defun f24p146
+    (c v a)
+  (mul* c
+	(gm v)
+	(power 2 v)
+	(power a (div v 2))
+	(power '$%e (mul* a par par))
+	(dtford (mul* 2 par (power a (1//2)))(mul -1 v))))
+
+(defun f35p147
+    (c v a)
+  (mul* c
+	(gm (add v v))
+	(power 2 (sub 1 v))
+	(power par (mul -1 v))
+	(power '$%e (mul* a (1//2)(inv par)))
+	(dtford (power (mul* 2 a (inv par))(1//2))(mul -2 v))))
+
+(defun f29p146 (v a)
+  (mul* 2
+	(power (mul* a (inv 4)(inv par))(div v 2))
+	(ktfork a v)))
+
+(defun ktfork
+    (a v)
+  ((lambda(z)
+     (cond ((maxima-integerp v)(kmodbes z v))
+	   (t (simpktf z v))))
+   (power (mul* a par)(1//2))))
+
+(defun dtford
+    (z v)
+  (cond (((lambda(inv4)
+	    (whittindtest (add (div v 2) inv4) inv4))
+	  (inv 4))
+	 (parcyl z v))
+	(t (simpdtf z v))))
+
+
+(defun simpdtf
+    (z v)
+  ((lambda(inv2 pow)
+     (add (mul* (power 2 (div (sub v 1) 2))
+		z
+		(gm (inv -2))
+		(inv (gm (mul* v -1 inv2)))
+		pow
+		(hgfsimp-exec (list (sub inv2
+					 (div v
+					      2)))
+			      (list (div 3 2))
+			      (mul* z z inv2)))
+	  (mul* (power 2 (div v 2))
+		(gm inv2)
+		pow
+		(inv (gm (sub inv2 (mul v inv2))))
+		(hgfsimp-exec (list (mul* v
+					  -1
+					  inv2))
+			      (list inv2)
+			      (mul* z z inv2)))))
+   (1//2)
+   (power '$%e (mul* z z (inv -4)))))
+
+(defun simpktf
+    (z v)
+  ((lambda(dz2)
+     (mul* '$%pi
+	   (1//2)
+	   (inv (sin% (mul v '$%pi)))
+	   (sub (mul* (power  dz2 (mul -1 v))
+		      (inv (gm (sub 1 v)))
+		      (hgfsimp-exec nil
+				    (list (sub 1
+					       v))
+				    (mul* z
+					  z
+					  (inv 4))))
+		(mul* (power dz2 v)
+		      (inv (gm (add v 1)))
+		      (hgfsimp-exec nil
+				    (list (add v
+					       1))
+				    (mul* z
+					  z
+					  (inv 4)))))))
+   (div z 2))) 
+;;dispatches according to the special functions involved in the laplace transformable expression
+
+(defun lt-sf-log
+    (u)
+  (prog(l index1 index11 index2 index21 arg1 arg2 rest)
+     (cond ((setq l (twoj u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt2j rest arg1 arg2 index1 index2))))
+     (cond ((setq l (twoh u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v11 l)
+		  index2
+		  (cdras 'v2 l)
+		  index21
+		  (cdras 'v21 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg2
+			      index1
+			      index11
+			      index2
+			      index21
+			      '2htjory))))
+     (cond ((setq l (twoy u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg2
+			      index1
+			      nil
+			      index2
+			      nil
+			      '2ytj))))
+     (cond ((setq l (twok u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg2
+			      index1
+			      nil
+			      index2
+			      nil
+			      '2kti))))
+     (cond ((setq l (onekoney u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg2
+			      index1
+			      nil
+			      index2
+			      nil
+			      'ktiytj))))
+     (cond ((setq l (oneionej u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  index21
+		  (cdras 'v21 l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w1 l))
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (return (lt2j rest arg1 arg2 index1 index2))))
+     (cond ((setq l (oneioneh u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  index21
+		  (cdras 'v21 l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w1 l))
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (return (fractest1 rest
+			       arg1
+			       arg2
+			       index1
+			       index2
+			       index21
+			       'besshtjory))))
+     (cond ((setq l (oneyonej u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest1 rest
+			       arg2
+			       arg1
+			       index2
+			       index1
+			       nil
+			       'bessytj))))
+     (cond ((setq l (onekonej u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest1 rest
+			       arg2
+			       arg1
+			       index2
+			       index1
+			       nil
+			       'besskti))))
+     (cond ((setq l (onehonej u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v11 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest1 rest
+			       arg2
+			       arg1
+			       index2
+			       index1
+			       index11
+			       'besshtjory))))
+     (cond ((setq l (oneyoneh u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  index11
+		  (cdras 'v21 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest1 rest
+			       arg2
+			       arg1
+			       index2
+			       index1
+			       index11
+			       'htjoryytj))))
+     (cond ((setq l (onekoneh u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  index11
+		  (cdras 'v21 l)
+		  arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest1 rest
+			       arg2
+			       arg1
+			       index2
+			       index1
+			       index11
+			       'htjorykti))))
+     (cond ((setq l (oneioney u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w1 l))
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (return (fractest1 rest
+			       arg1
+			       arg2
+			       index1
+			       index2
+			       nil
+			       'bessytj))))
+     (cond ((setq l (oneionek u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w1 l))
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (return (fractest1 rest
+			       arg1
+			       arg2
+			       index1
+			       index2
+			       nil
+			       'besskti))))
+     (cond ((setq l (onehstruve u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1hstruve rest arg1 index1))))
+     (cond ((setq l (onelstruve u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1lstruve rest arg1 index1))))
+     (cond ((setq l (ones u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1s rest arg1 index1 index2))))
+     (cond ((setq l (oneslommel u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest2 rest
+			       arg1
+			       index1
+			       index2
+			       'slommel))))
+     (cond ((setq l (oney u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1yref rest arg1 index1))))
+     (cond ((setq l (onek u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest2 rest
+			       arg1
+			       index1
+			       nil
+			       'kti))))
+     (cond ((setq l (oned u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest2 rest arg1 index1 nil 'd))))
+     (cond ((setq l (onegammaincomplete u))
+	    (setq arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest2 rest
+			       arg1
+			       arg2
+			       nil
+			       'gammaincomplete))))
+     (cond ((setq l (onekbateman u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest2 rest
+			       arg1
+			       index1
+			       nil
+			       'kbateman))))
+     (cond ((setq l (onej u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1j rest arg1 index1))))
+     (cond ((setq l (onegammagreek u))
+	    (setq arg1
+		  (cdras 'w1 l)
+		  arg2
+		  (cdras 'w2 l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1gammagreek rest arg1 arg2))))
+     (cond ((setq l (oneh u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest2 rest
+			       arg1
+			       index1
+			       index11
+			       'htjory))))
+     (cond ((setq l (onem u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1m rest arg1 index1 index11))))
+     (cond ((setq l (onel u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (integertest rest
+				 arg1
+				 index1
+				 index11
+				 'l))))
+     (cond ((setq l (onec u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (integertest rest
+				 arg1
+				 index1
+				 index11
+				 'c))))
+     (cond ((setq l (onet u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (integertest rest
+				 arg1
+				 index1
+				 nil
+				 't))))
+     (cond ((setq l (oneu u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (integertest rest
+				 arg1
+				 index1
+				 nil
+				 'u))))
+     (cond ((setq l (onehe u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (integertest rest
+				 arg1
+				 index1
+				 nil
+				 'he))))
+     (cond ((setq l (hyp-onep u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1p rest arg1 index1 index11))))
+     (cond ((setq l (onepjac u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  index21
+		  (cdras 'v3 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (pjactest rest
+			      arg1
+			      index1
+			      index2
+			      index21))))
+     (cond ((setq l (oneq u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1q rest arg1 index1 index11))))
+     (cond ((setq l (onep0 u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  0
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1p rest arg1 index1 index11))))
+     (cond ((setq l (onew u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (whittest rest arg1 index1 index11))))
+     (cond ((setq l (onej^2 u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (lt1j^2 rest arg1 index1))))
+     (cond ((setq l (oneh^2 u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index11
+		  (cdras 'v2 l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg1
+			      index1
+			      index11
+			      index1
+			      index11
+			      '2htjory))))
+     (cond ((setq l (oney^2 u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg1
+			      index1
+			      nil
+			      index1
+			      nil
+			      '2ytj))))
+     (cond ((setq l (onek^2 u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (cdras 'w l)
+		  rest
+		  (cdras 'u l))
+	    (return (fractest rest
+			      arg1
+			      arg1
+			      index1
+			      nil
+			      index1
+			      nil
+			      '2kti))))
+     (cond ((setq l (twoi u))
+	    (setq index1
+		  (cdras 'v1 l)
+		  index2
+		  (cdras 'v2 l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w1 l))
+		  arg2
+		  (mul* (1fact t t) (cdras 'w2 l))
+		  rest
+		  (mul* (1fact nil index1)
+			(1fact nil index2)
+			(cdras 'u l)))
+	    (return (lt2j rest arg1 arg2 index1 index2))))
+     (cond ((setq l (onei u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w l))
+		  rest
+		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (return (lt1j rest arg1 index1))))
+     (cond ((setq l (onei^2 u))
+	    (setq index1
+		  (cdras 'v l)
+		  arg1
+		  (mul* (1fact t t)(cdras 'w l))
+		  rest
+		  (mul* (1fact nil index1)(cdras 'u l)))
+	    (return (lt1j^2 rest arg1 index1))))
+     (cond ((setq l (onerf u))
+	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (return (lt1erf rest arg1))))
+     (cond ((setq l (onelog u))
+	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (return (lt1log rest arg1))))
+     (cond ((setq l (onerfc u))
+	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (return (fractest2 rest arg1 nil nil 'erfc))))
+     (cond ((setq l (oneei u))
+	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (return (fractest2 rest arg1 nil nil 'ei))))
+     (cond ((setq l (onekelliptic u))
+	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (return (lt1kelliptic rest arg1))))
+     (cond ((setq l (onee u))
+	    (setq arg1 (cdras 'w l) rest (cdras 'u l))
+	    (return (lt1e rest arg1))))
+     (cond ((setq l (arbpow1 u))
+	    (setq arg1
+		  (cdras 'u l)
+		  arg2
+		  (cdras 'c l)
+		  index1
+		  (cdras 'v l))
+	    (return (mul arg2 (lt-arbpow arg1 index1)))))
+     (return 'other-j-cases-next)))
+
+(defun lt-arbpow
+    (exp pow)
+  (cond ((or (eq exp var)(zerp pow))(f1p137test pow))))
+
+(defun fractest
+    (r a1 a2 i1 i11 i2 i21 flg)
+  (cond ((or (and (equal (caar i1) 'rat)
+		  (equal (caar i2) 'rat))
+	     (eq flg '2htjory))
+	 (sendexec r
+		   (cond ((eq flg '2ytj)
+			  (mul (ytj i1 a1)(ytj i2 a2)))
+			 ((eq flg '2htjory)
+			  (mul (htjory i1 i11 a1)
+			       (htjory i2 i21 a2)))
+			 ((eq flg 'ktiytj)
+			  (mul (kti i1 a1)(ytj i2 a2)))
+			 ((eq flg '2kti)
+			  (mul (kti i1 a1)(kti i2 a2))))))
+	(t 'product-of-y-with-nofract-indices)))
+
+(defun fractest1
+    (r a1 a2 i1 i2 i flg)
+  (cond ((or (equal (caar i2) 'rat)(eq flg 'besshtjory))
+	 (sendexec r
+		   (cond ((eq flg 'bessytj)
+			  (mul (bess i1 a1 'j)
+			       (ytj i2 a2)))
+			 ((eq flg 'besshtjory)
+			  (mul (bess i1 a1 'j)
+			       (htjory i2 i a2)))
+			 ((eq flg 'htjoryytj)
+			  (mul (htjory i1 i a1)
+			       (ytj i2 a2)))
+			 ((eq flg 'besskti)
+			  (mul (bess i1 a1 'j)
+			       (kti i2 a2)))
+			 ((eq flg 'htjorykti)
+			  (mul (htjory i1 i a1)
+			       (kti i2 a2))))))
+	(t 'product-of-i-y-of-nofract-index)))
+
+(defun fractest2
+    (r a1 i1 i11 flg)
+  (cond ((or (equal (caar i1) 'rat)
+	     (eq flg 'd)
+	     (eq flg 'kbateman)
+	     (eq flg 'gammaincomplete)
+	     (eq flg 'htjory)
+	     (eq flg 'erfc)
+	     (eq flg 'ei)
+	     (eq flg 'slommel))
+	 (sendexec r
+		   (cond ((eq flg 'ytj)(ytj i1 a1))
+			 ((eq flg 'htjory)
+			  (htjory i1 i11 a1))
+			 ((eq flg 'd)(dtw i1 a1))
+			 ((eq flg 'kbateman)
+			  (kbatemantw a1))
+			 ((eq flg 'gammaincomplete)
+			  (gammaincompletetw a1 i1))
+			 ((eq flg 'kti)(kti i1 a1))
+			 ((eq flg 'erfc)(erfctd a1))
+			 ((eq flg 'ei)
+			  (eitgammaincomplete a1))
+			 ((eq flg 'slommel)
+			  (slommeltjandy i1 i11 a1)))))
+	(t 'y-of-nofract-index)))
+
+(defun lt1yref
+    (rest arg1 index1)
+  (cond ((maxima-integerp index1)(lt1y rest arg1  index1))
+	(t (fractest2 rest arg1 index1 nil 'ytj))))
+
+(defun pjactest
+    (rest arg index1 index2 index3)
+  (cond ((maxima-integerp index1)
+	 (lt-ltp 'onepjac
+		 rest
+		 arg
+		 (list index1 index2 index3)))
+	(t 'ind-should-be-an-integer-in-polys)))
+
+(defun eqrat(a)(cond ((numberp a) nil)(t (equal (caar a) 'rat)))) 
+
+(defun integertest
+    (r arg i1 i2 flg)
+  (cond ((maxima-integerp i1)(dispatchpoltrans r arg i1 i2 flg))
+	(t 'index-should-be-an-integer-in-polys)))
+
+(defun dispatchpoltrans
+    (r x i1 i2 flg)
+  (sendexec r
+	    (cond ((eq flg 'l)(ltw x i1 i2))
+		  ((eq flg 'he)(hetd x i1))
+		  ((eq flg 'c)(ctpjac x i1 i2))
+		  ((eq flg 't)(ttpjac x i1))
+		  ((eq flg 'u)(utpjac x i1)))))
+
+(defun sendexec(r a)(distrexecinit ($expand (mul (init r) a)))) 
+
+(defun whittest
+    (r a i1 i2)
+  (cond ((whittindtest i1 i2) 'formula-for-confl-needed)
+	(t (distrexecinit ($expand (mul (init r)
+					(wtm a i1 i2)))))))
+
+(defun whittindtest
+    (i1 i2)
+  (or (maxima-integerp (add i2 i2))
+      (neginp (sub (sub (1//2) i2) i1))
+      (neginp (sub (add (1//2) i2) i1))))
+
+(defun init(r)(mul* r (power '$%e (mul* -1 var par))))
+
+(defun ltw
+    (x n a)
+  ((lambda(diva2)
+     (mul* (power -1 n)
+	   (inv (factorial n))
+	   (power x (sub (inv -2) diva2))
+	   (power '$%e (div x 2))
+	   (wwhit x (add (1//2) diva2 n) diva2)))
+   (div a 2)))
+
+(defun ctpjac
+    (x n v)
+  ((lambda(inv2)
+     (mul* (gm (add v v n))
+	   (inv (gm (add v v)))
+	   (gm (add inv2 v))
+	   (inv (gm (add v inv2 n)))
+	   (pjac x n (sub v inv2)(sub v inv2))))
+   (1//2)))
+
+(defun ttpjac
+    (x n)
+  ((lambda(inv2)
+     (mul* (factorial n)
+	   (gm inv2)
+	   (inv (gm (add inv2 n)))
+	   (pjac x n (mul -1 inv2)(mul -1 inv2))))
+   (1//2)))
+
+(defun utpjac
+    (x n)
+  ((lambda(inv2)
+     (mul* (factorial (add n 1))
+	   inv2
+	   (gm inv2)
+	   (inv (gm (add inv2 n 1)))
+	   (pjac x n inv2 inv2)))
+   (1//2)))
+
+(defun hetd(x n)(mul* (power '$%e (mul* x x (inv 4)))(parcyl x n)))
+
+(defun erfctd
+    (x)
+  ((lambda(inv2)
+     (mul* (power 2 inv2)
+	   (power '$%pi (mul* -1 inv2))
+	   (power '$%e (mul* -1 inv2 x x))
+	   (parcyl (mul* (power 2 inv2) x) -1)))
+   (1//2)))
+
+(defun eitgammaincomplete(x)(mul* -1 (gminc 0 (mul -1 x))))
+
+(defun slommeltjandy
+    (m n z)
+  ((lambda(arg)
+     (add (littleslommel m n z)
+	  (mul* (power 2 (sub m 1))
+		(gm (div (sub (add m 1) n) 2))
+		(gm (div (add m n 1) 2))
+		(sub (mul* (sin% arg)(bess n z 'j))
+		     (mul* (cos% arg)(bess n z 'y))))))
+   (mul* (1//2) '$%pi (sub m n))))
+
+(defun wtm
+    (a i1 i2)
+  (add (mul* (gm (mul -2 i2))
+	     (mwhit a i1 i2)
+	     (inv (gm (sub (sub (1//2) i2) i1))))
+       (mul* (gm (add i2 i2))
+	     (mwhit a i1 (mul -1 i2))
+	     (inv (gm (sub (add (1//2) i2) i1))))))
+
+(defun gammaincompletetw
+    (a x)
+  (mul* (power x (div (sub a 1) 2))
+	(power '$%e (div x -2))
+	(wwhit x (div (sub a 1) 2)(div a 2))))
+
+(defun distrexecinit (fun)
+  (cond ((equal (caar fun) 'mplus) (distrexec (cdr fun)))
+	(t (hypgeo-exec fun var par))))
+
+(defun distrdefexecinit (fun)
+  (cond ((equal (caar fun) 'mplus) (distrdefexec (cdr fun)))
+	(t (defexec fun var))))
+
+(defun distrexec (fun)
+  (cond ((null fun) 0)
+	(t (add (hypgeo-exec (car fun) var par)
+		(distrexec (cdr fun))))))
+
+(defun distrdefexec (fun)
+  (cond ((null fun) 0)
+	(t (add (defexec (car fun) var)
+		(distrdefexec (cdr fun))))))
+
+(defun ytj (i a)
+  (sub (mul* (bess i a 'j)(list '(%cot) (mul i '$%pi)))
+       (mul* (bess (mul -1 i) a 'j)(inv (sin% (mul i '$%pi))))))
+
+(defun dtw (i a)
+  (mul* (power 2 (add (div i 2)(inv 4)))
+	(power a (inv -2))
+	(wwhit (mul* a a (1//2))
+	       (add (div i 2)(inv 4))
+	       (inv 4))))
+
+(defun kbatemantw (a)
+  ((lambda(ind)
+     (div (wwhit (add a a) ind (1//2))
+	  (gm (add ind 1))))
+   (div 1 2)))
+
+(defun kti
+    (i a)
+  (mul* '$%pi
 	(1//2)
-	(POWER '$%E (MUL* Z Z (INV -4)))))
-
-(DEFUN SIMPKTF
-       (Z V)
-       ((LAMBDA(DZ2)
-	       (MUL* '$%PI
-		     (1//2)
-		     (INV (sin% (MUL V '$%PI)))
-		     (SUB (MUL* (POWER  DZ2 (MUL -1 V))
-			       (INV (GM (SUB 1 V)))
-			       (HGFSIMP-EXEC NIL
-					     (LIST (SUB 1
-							V))
-					     (MUL* Z
-						  Z
-						  (INV 4))))
-			  (MUL* (POWER DZ2 V)
-			       (INV (GM (ADD V 1)))
-			       (HGFSIMP-EXEC NIL
-					     (LIST (ADD V
-							1))
-					     (MUL* Z
-						  Z
-						  (INV 4)))))))
-	(DIV Z 2))) 
-;dispatches according to the special functions involved in the laplace transformable expression
-
-(DEFUN LT-SF-LOG
-       (U)
-       (PROG(L INDEX1 INDEX11 INDEX2 INDEX21 ARG1 ARG2 REST)
-	    (COND ((SETQ L (TWOJ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT2J REST ARG1 ARG2 INDEX1 INDEX2))))
-	    (COND ((SETQ L (TWOH U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V11 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 INDEX21
-			 (CDRAS 'V21 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG2
-				     INDEX1
-				     INDEX11
-				     INDEX2
-				     INDEX21
-				     '2HTJORY))))
-	    (COND ((SETQ L (TWOY U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG2
-				     INDEX1
-				     NIL
-				     INDEX2
-				     NIL
-				     '2YTJ))))
-	    (COND ((SETQ L (TWOK U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG2
-				     INDEX1
-				     NIL
-				     INDEX2
-				     NIL
-				     '2KTI))))
-	    (COND ((SETQ L (ONEKONEY U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG2
-				     INDEX1
-				     NIL
-				     INDEX2
-				     NIL
-				     'KTIYTJ))))
-	    (COND ((SETQ L (ONEIONEJ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 INDEX21
-			 (CDRAS 'V21 L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W1 L))
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (MUL* (1FACT NIL INDEX1)(CDRAS 'U L)))
-		   (RETURN (LT2J REST ARG1 ARG2 INDEX1 INDEX2))))
-	    (COND ((SETQ L (ONEIONEH U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 INDEX21
-			 (CDRAS 'V21 L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W1 L))
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (MUL* (1FACT NIL INDEX1)(CDRAS 'U L)))
-		   (RETURN (FRACTEST1 REST
-				      ARG1
-				      ARG2
-				      INDEX1
-				      INDEX2
-				      INDEX21
-				      'BESSHTJORY))))
-	    (COND ((SETQ L (ONEYONEJ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST1 REST
-				      ARG2
-				      ARG1
-				      INDEX2
-				      INDEX1
-				      NIL
-				      'BESSYTJ))))
-	    (COND ((SETQ L (ONEKONEJ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST1 REST
-				      ARG2
-				      ARG1
-				      INDEX2
-				      INDEX1
-				      NIL
-				      'BESSKTI))))
-	    (COND ((SETQ L (ONEHONEJ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V11 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST1 REST
-				      ARG2
-				      ARG1
-				      INDEX2
-				      INDEX1
-				      INDEX11
-				      'BESSHTJORY))))
-	    (COND ((SETQ L (ONEYONEH U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 INDEX11
-			 (CDRAS 'V21 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST1 REST
-				      ARG2
-				      ARG1
-				      INDEX2
-				      INDEX1
-				      INDEX11
-				      'HTJORYYTJ))))
-	    (COND ((SETQ L (ONEKONEH U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 INDEX11
-			 (CDRAS 'V21 L)
-			 ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST1 REST
-				      ARG2
-				      ARG1
-				      INDEX2
-				      INDEX1
-				      INDEX11
-				      'HTJORYKTI))))
-	    (COND ((SETQ L (ONEIONEY U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W1 L))
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (MUL* (1FACT NIL INDEX1)(CDRAS 'U L)))
-		   (RETURN (FRACTEST1 REST
-				      ARG1
-				      ARG2
-				      INDEX1
-				      INDEX2
-				      NIL
-				      'BESSYTJ))))
-	    (COND ((SETQ L (ONEIONEK U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W1 L))
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (MUL* (1FACT NIL INDEX1)(CDRAS 'U L)))
-		   (RETURN (FRACTEST1 REST
-				      ARG1
-				      ARG2
-				      INDEX1
-				      INDEX2
-				      NIL
-				      'BESSKTI))))
-	    (COND ((SETQ L (ONEHSTRUVE U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1HSTRUVE REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONELSTRUVE U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1LSTRUVE REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONES U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1S REST ARG1 INDEX1 INDEX2))))
-	    (COND ((SETQ L (ONESLOMMEL U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST
-				      ARG1
-				      INDEX1
-				      INDEX2
-				      'SLOMMEL))))
-	    (COND ((SETQ L (ONEY U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1YREF REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONEK U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST
-				      ARG1
-				      INDEX1
-				      NIL
-				      'KTI))))
-	    (COND ((SETQ L (ONED U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST ARG1 INDEX1 NIL 'D))))
-	    (COND ((SETQ L (ONEGAMMAINCOMPLETE U))
-		   (SETQ ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST
-				      ARG1
-				      ARG2
-				      NIL
-				      'GAMMAINCOMPLETE))))
-	    (COND ((SETQ L (ONEKBATEMAN U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST
-				      ARG1
-				      INDEX1
-				      NIL
-				      'KBATEMAN))))
-	    (COND ((SETQ L (ONEJ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1J REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONEGAMMAGREEK U))
-		   (SETQ ARG1
-			 (CDRAS 'W1 L)
-			 ARG2
-			 (CDRAS 'W2 L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1GAMMAGREEK REST ARG1 ARG2))))
-	    (COND ((SETQ L (ONEH U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST
-				      ARG1
-				      INDEX1
-				      INDEX11
-				      'HTJORY))))
-	    (COND ((SETQ L (ONEM U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1M REST ARG1 INDEX1 INDEX11))))
-	    (COND ((SETQ L (ONEL U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (INTEGERTEST REST
-					ARG1
-					INDEX1
-					INDEX11
-					'L))))
-	    (COND ((SETQ L (ONEC U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (INTEGERTEST REST
-					ARG1
-					INDEX1
-					INDEX11
-					'C))))
-	    (COND ((SETQ L (ONET U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (INTEGERTEST REST
-					ARG1
-					INDEX1
-					NIL
-					'T))))
-	    (COND ((SETQ L (ONEU U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (INTEGERTEST REST
-					ARG1
-					INDEX1
-					NIL
-					'U))))
-	    (COND ((SETQ L (ONEHE U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (INTEGERTEST REST
-					ARG1
-					INDEX1
-					NIL
-					'HE))))
-	    (COND ((SETQ L (HYP-ONEP U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1P REST ARG1 INDEX1 INDEX11))))
-	    (COND ((SETQ L (ONEPJAC U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 INDEX21
-			 (CDRAS 'V3 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (PJACTEST REST
-				     ARG1
-				     INDEX1
-				     INDEX2
-				     INDEX21))))
-	    (COND ((SETQ L (ONEQ U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1Q REST ARG1 INDEX1 INDEX11))))
-	    (COND ((SETQ L (ONEP0 U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 0
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1P REST ARG1 INDEX1 INDEX11))))
-	    (COND ((SETQ L (ONEW U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (WHITTEST REST ARG1 INDEX1 INDEX11))))
-	    (COND ((SETQ L (ONEJ^2 U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (LT1J^2 REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONEH^2 U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX11
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG1
-				     INDEX1
-				     INDEX11
-				     INDEX1
-				     INDEX11
-				     '2HTJORY))))
-	    (COND ((SETQ L (ONEY^2 U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG1
-				     INDEX1
-				     NIL
-				     INDEX1
-				     NIL
-				     '2YTJ))))
-	    (COND ((SETQ L (ONEK^2 U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (CDRAS 'W L)
-			 REST
-			 (CDRAS 'U L))
-		   (RETURN (FRACTEST REST
-				     ARG1
-				     ARG1
-				     INDEX1
-				     NIL
-				     INDEX1
-				     NIL
-				     '2KTI))))
-	    (COND ((SETQ L (TWOI U))
-		   (SETQ INDEX1
-			 (CDRAS 'V1 L)
-			 INDEX2
-			 (CDRAS 'V2 L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W1 L))
-			 ARG2
-			 (MUL* (1FACT T T) (CDRAS 'W2 L))
-			 REST
-			 (MUL* (1FACT NIL INDEX1)
-			      (1FACT NIL INDEX2)
-			      (CDRAS 'U L)))
-		   (RETURN (LT2J REST ARG1 ARG2 INDEX1 INDEX2))))
-	    (COND ((SETQ L (ONEI U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W L))
-			 REST
-			 (MUL* (1FACT NIL INDEX1)(CDRAS 'U L)))
-		   (RETURN (LT1J REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONEI^2 U))
-		   (SETQ INDEX1
-			 (CDRAS 'V L)
-			 ARG1
-			 (MUL* (1FACT T T)(CDRAS 'W L))
-			 REST
-			 (MUL* (1FACT NIL INDEX1)(CDRAS 'U L)))
-		   (RETURN (LT1J^2 REST ARG1 INDEX1))))
-	    (COND ((SETQ L (ONERF U))
-		   (SETQ ARG1 (CDRAS 'W L) REST (CDRAS 'U L))
-		   (RETURN (LT1ERF REST ARG1))))
-	    (COND ((SETQ L (ONELOG U))
-		   (SETQ ARG1 (CDRAS 'W L) REST (CDRAS 'U L))
-		   (RETURN (LT1LOG REST ARG1))))
-	    (COND ((SETQ L (ONERFC U))
-		   (SETQ ARG1 (CDRAS 'W L) REST (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST ARG1 NIL NIL 'ERFC))))
-	    (COND ((SETQ L (ONEEI U))
-		   (SETQ ARG1 (CDRAS 'W L) REST (CDRAS 'U L))
-		   (RETURN (FRACTEST2 REST ARG1 NIL NIL 'EI))))
-	    (COND ((SETQ L (ONEKELLIPTIC U))
-		   (SETQ ARG1 (CDRAS 'W L) REST (CDRAS 'U L))
-		   (RETURN (LT1KELLIPTIC REST ARG1))))
-	    (COND ((SETQ L (ONEE U))
-		   (SETQ ARG1 (CDRAS 'W L) REST (CDRAS 'U L))
-		   (RETURN (LT1E REST ARG1))))
-	    (COND ((SETQ L (ARBPOW1 U))
-		   (SETQ ARG1
-			 (CDRAS 'U L)
-			 ARG2
-			 (CDRAS 'C L)
-			 INDEX1
-			 (CDRAS 'V L))
-		   (RETURN (MUL ARG2 (LT-ARBPOW ARG1 INDEX1)))))
-	    (RETURN 'OTHER-J-CASES-NEXT)))
-
-(DEFUN LT-ARBPOW
-       (EXP POW)
-       (COND ((OR (EQ EXP VAR)(ZERP POW))(F1P137TEST POW))))
-
-(DEFUN FRACTEST
-       (R A1 A2 I1 I11 I2 I21 FLG)
-       (COND ((OR (AND (EQUAL (CAAR I1) 'RAT)
-		       (EQUAL (CAAR I2) 'RAT))
-		  (EQ FLG '2HTJORY))
-	      (SENDEXEC R
-			(COND ((EQ FLG '2YTJ)
-			       (MUL (YTJ I1 A1)(YTJ I2 A2)))
-			      ((EQ FLG '2HTJORY)
-			       (MUL (HTJORY I1 I11 A1)
-				    (HTJORY I2 I21 A2)))
-			      ((EQ FLG 'KTIYTJ)
-			       (MUL (KTI I1 A1)(YTJ I2 A2)))
-			      ((EQ FLG '2KTI)
-			       (MUL (KTI I1 A1)(KTI I2 A2))))))
-	     (T 'PRODUCT-OF-Y-WITH-NOFRACT-INDICES)))
-
-(DEFUN FRACTEST1
-       (R A1 A2 I1 I2 I FLG)
-       (COND ((OR (EQUAL (CAAR I2) 'RAT)(EQ FLG 'BESSHTJORY))
-	      (SENDEXEC R
-			(COND ((EQ FLG 'BESSYTJ)
-			       (MUL (BESS I1 A1 'J)
-				    (YTJ I2 A2)))
-			      ((EQ FLG 'BESSHTJORY)
-			       (MUL (BESS I1 A1 'J)
-				    (HTJORY I2 I A2)))
-			      ((EQ FLG 'HTJORYYTJ)
-			       (MUL (HTJORY I1 I A1)
-				    (YTJ I2 A2)))
-			      ((EQ FLG 'BESSKTI)
-			       (MUL (BESS I1 A1 'J)
-				    (KTI I2 A2)))
-			      ((EQ FLG 'HTJORYKTI)
-			       (MUL (HTJORY I1 I A1)
-				    (KTI I2 A2))))))
-	     (T 'PRODUCT-OF-I-Y-OF-NOFRACT-INDEX)))
-
-(DEFUN FRACTEST2
-       (R A1 I1 I11 FLG)
-       (COND ((OR (EQUAL (CAAR I1) 'RAT)
-		  (EQ FLG 'D)
-		  (EQ FLG 'KBATEMAN)
-		  (EQ FLG 'GAMMAINCOMPLETE)
-		  (EQ FLG 'HTJORY)
-		  (EQ FLG 'ERFC)
-		  (EQ FLG 'EI)
-		  (EQ FLG 'SLOMMEL))
-	      (SENDEXEC R
-			(COND ((EQ FLG 'YTJ)(YTJ I1 A1))
-			      ((EQ FLG 'HTJORY)
-			       (HTJORY I1 I11 A1))
-			      ((EQ FLG 'D)(DTW I1 A1))
-			      ((EQ FLG 'KBATEMAN)
-			       (KBATEMANTW A1))
-			      ((EQ FLG 'GAMMAINCOMPLETE)
-			       (GAMMAINCOMPLETETW A1 I1))
-			      ((EQ FLG 'KTI)(KTI I1 A1))
-			      ((EQ FLG 'ERFC)(ERFCTD A1))
-			      ((EQ FLG 'EI)
-			       (EITGAMMAINCOMPLETE A1))
-			      ((EQ FLG 'SLOMMEL)
-			       (SLOMMELTJANDY I1 I11 A1)))))
-	     (T 'Y-OF-NOFRACT-INDEX)))
-
-(DEFUN LT1YREF
-       (REST ARG1 INDEX1)
-       (COND ((MAXIMA-INTEGERP INDEX1)(LT1Y REST ARG1  INDEX1))
-	     (T (FRACTEST2 REST ARG1 INDEX1 NIL 'YTJ))))
-
-(DEFUN PJACTEST
-       (REST ARG INDEX1 INDEX2 INDEX3)
-       (COND ((MAXIMA-INTEGERP INDEX1)
-	      (LT-LTP 'ONEPJAC
-		      REST
-		      ARG
-		      (LIST INDEX1 INDEX2 INDEX3)))
-	     (T 'IND-SHOULD-BE-AN-INTEGER-IN-POLYS)))
-
-(DEFUN EQRAT(A)(COND ((NUMBERP A) NIL)(T (EQUAL (CAAR A) 'RAT)))) 
-
-(DEFUN INTEGERTEST
-       (R ARG I1 I2 FLG)
-       (COND ((MAXIMA-INTEGERP I1)(DISPATCHPOLTRANS R ARG I1 I2 FLG))
-	     (T 'INDEX-SHOULD-BE-AN-INTEGER-IN-POLYS)))
-
-(DEFUN DISPATCHPOLTRANS
-       (R X I1 I2 FLG)
-       (SENDEXEC R
-		 (COND ((EQ FLG 'L)(LTW X I1 I2))
-		       ((EQ FLG 'HE)(HETD X I1))
-		       ((EQ FLG 'C)(CTPJAC X I1 I2))
-		       ((EQ FLG 'T)(TTPJAC X I1))
-		       ((EQ FLG 'U)(UTPJAC X I1)))))
-
-(DEFUN SENDEXEC(R A)(DISTREXECINIT ($EXPAND (MUL (INIT R) A)))) 
-
-(DEFUN WHITTEST
-       (R A I1 I2)
-       (COND ((WHITTINDTEST I1 I2) 'FORMULA-FOR-CONFL-NEEDED)
-	     (T (DISTREXECINIT ($EXPAND (MUL (INIT R)
-					     (WTM A I1 I2)))))))
-
-(DEFUN WHITTINDTEST
-       (I1 I2)
-       (OR (MAXIMA-INTEGERP (ADD I2 I2))
-	   (NEGINP (SUB (SUB (1//2) I2) I1))
-	   (NEGINP (SUB (ADD (1//2) I2) I1))))
-
-(DEFUN INIT(R)(MUL* R (POWER '$%E (MUL* -1 VAR PAR))))
-
-(DEFUN LTW
-       (X N A)
-       ((LAMBDA(DIVA2)
-	       (MUL* (POWER -1 N)
-		     (INV (FACTORIAL N))
-		     (POWER X (SUB (INV -2) DIVA2))
-		     (POWER '$%E (DIV X 2))
-		     (WWHIT X (ADD (1//2) DIVA2 N) DIVA2)))
-	(DIV A 2)))
-
-(DEFUN CTPJAC
-       (X N V)
-       ((LAMBDA(INV2)
-	       (MUL* (GM (ADD V V N))
-		     (INV (GM (ADD V V)))
-		     (GM (ADD INV2 V))
-		     (INV (GM (ADD V INV2 N)))
-		     (PJAC X N (SUB V INV2)(SUB V INV2))))
-	(1//2)))
-
-(DEFUN TTPJAC
-       (X N)
-       ((LAMBDA(INV2)
-	       (MUL* (FACTORIAL N)
-		     (GM INV2)
-		     (INV (GM (ADD INV2 N)))
-		     (PJAC X N (MUL -1 INV2)(MUL -1 INV2))))
-	(1//2)))
-
-(DEFUN UTPJAC
-       (X N)
-       ((LAMBDA(INV2)
-	       (MUL* (FACTORIAL (ADD N 1))
-		     INV2
-		     (GM INV2)
-		     (INV (GM (ADD INV2 N 1)))
-		     (PJAC X N INV2 INV2)))
-	(1//2)))
-
-(DEFUN HETD(X N)(MUL* (POWER '$%E (MUL* X X (INV 4)))(PARCYL X N)))
-
-(DEFUN ERFCTD
-       (X)
-       ((LAMBDA(INV2)
-	       (MUL* (POWER 2 INV2)
-		     (POWER '$%PI (MUL* -1 INV2))
-		     (POWER '$%E (MUL* -1 INV2 X X))
-		     (PARCYL (MUL* (POWER 2 INV2) X) -1)))
-	(1//2)))
-
-(DEFUN EITGAMMAINCOMPLETE(X)(MUL* -1 (GMINC 0 (MUL -1 X))))
-
-(DEFUN SLOMMELTJANDY
-       (M N Z)
-       ((LAMBDA(ARG)
-	       (ADD (LITTLESLOMMEL M N Z)
-		    (MUL* (POWER 2 (SUB M 1))
-			  (GM (DIV (SUB (ADD M 1) N) 2))
-			  (GM (DIV (ADD M N 1) 2))
-			  (SUB (MUL* (sin% ARG)(BESS N Z 'J))
-			       (MUL* (COS% ARG)(BESS N Z 'Y))))))
-	(MUL* (1//2) '$%PI (SUB M N))))
-
-(DEFUN WTM
-       (A I1 I2)
-       (ADD (MUL* (GM (MUL -2 I2))
-		  (MWHIT A I1 I2)
-		  (INV (GM (SUB (SUB (1//2) I2) I1))))
-	    (MUL* (GM (ADD I2 I2))
-		  (MWHIT A I1 (MUL -1 I2))
-		  (INV (GM (SUB (ADD (1//2) I2) I1))))))
-
-(DEFUN GAMMAINCOMPLETETW
-       (A X)
-       (MUL* (POWER X (DIV (SUB A 1) 2))
-	     (POWER '$%E (DIV X -2))
-	     (WWHIT X (DIV (SUB A 1) 2)(DIV A 2))))
-
-(DEFUN DISTREXECINIT (FUN)
-       (COND ((EQUAL (CAAR FUN) 'MPLUS) (DISTREXEC (CDR FUN)))
-	     (T (HYPGEO-EXEC FUN VAR PAR))))
-
-(DEFUN DISTRDEFEXECINIT (FUN)
-       (COND ((EQUAL (CAAR FUN) 'MPLUS) (DISTRDEFEXEC (CDR FUN)))
-	     (T (DEFEXEC FUN VAR))))
-
-(DEFUN DISTREXEC (FUN)
-       (COND ((NULL FUN) 0)
-	     (T (ADD (HYPGEO-EXEC (CAR FUN) VAR PAR)
-		     (DISTREXEC (CDR FUN))))))
-
-(DEFUN DISTRDEFEXEC (FUN)
-       (COND ((NULL FUN) 0)
-	     (T (ADD (DEFEXEC (CAR FUN) VAR)
-		     (DISTRDEFEXEC (CDR FUN))))))
-
-(DEFUN YTJ (I A)
-       (SUB (MUL* (BESS I A 'J)(LIST '(%COT) (MUL I '$%PI)))
-	    (MUL* (BESS (MUL -1 I) A 'J)(INV (sin% (MUL I '$%PI))))))
-
-(DEFUN DTW (I A)
-       (MUL* (POWER 2 (ADD (DIV I 2)(INV 4)))
-	     (POWER A (INV -2))
-	     (WWHIT (MUL* A A (1//2))
-		    (ADD (DIV I 2)(INV 4))
-		    (INV 4))))
-
-(DEFUN KBATEMANTW (A)
-       ((LAMBDA(IND)
-	       (DIV (WWHIT (ADD A A) IND (1//2))
-		    (GM (ADD IND 1))))
-	(DIV 1 2)))
-
-(DEFUN KTI
-       (I A)
-       (MUL* '$%PI
-	     (1//2)
-	     (INV (sin% (MUL I '$%PI)))
-	     (SUB (BESS (MUL -1 I) A 'I)(BESS I A 'I))))
-
-(DEFUN 1FACT
-       (FLG V)
-       (POWER '$%E
-	      (MUL* '$%PI
-		    '$%I
-		    (1//2)
-		    (COND (FLG 1)(T (MUL -1 V))))))
-
-(DEFUN BESSY(V Z)(LIST '(MQAPPLY)(LIST '($%Y ARRAY) V) Z))
-
-(DEFUN KMODBES(Z V)(LIST '(MQAPPLY)(LIST '($%K ARRAY) V)  Z))
-
-
-
-(DEFUN TAN%(ARG)(LIST  '(%TAN) ARG))
-
-(DEFUN DESJY
-       (V Z FLG)
-       (COND ((EQ FLG 'J)(BESS V Z 'J))(T (BESSY V Z))))
-
-(DEFUN NUMJORY
-       (V SORT Z FLG)
-       (COND ((EQUAL SORT 1)
-	      (SUB (DESJY (MUL -1 V) Z FLG)
-		   (MUL* (POWER '$%E (MUL* -1 V '$%PI '$%I))
-			(DESJY V Z FLG))))
-	     (T (SUB (MUL* (POWER '$%E (MUL* V '$%PI '$%I))
-			  (DESMJY V Z FLG))
-		     (DESMJY (MUL -1 V) Z FLG)))))
-
-(DEFUN DESMJY
-       (V Z FLG)
-       (COND ((EQ FLG 'J)(BESS V Z 'J))(T (MUL -1 (BESSY V Z)))))
-
-(DEFUN HTJORY
-       (V SORT Z)
-       (COND ((EQUAL (CAAR V) 'RAT)
-	      (DIV (NUMJORY V SORT Z 'J)
-		   (MUL* '$%I (SIN% (MUL V '$%PI)))))
-	     (T (DIV (NUMJORY V SORT Z 'Y)(SIN% (MUL V '$%PI)))))) 
-;expert on l.t. expressions containing one bessel function of the first kind
-
-(DEFUN LT1J(REST ARG INDEX)(LT-LTP 'ONEJ REST ARG INDEX))
-
-(DEFUN LT1Y(REST ARG INDEX)(LT-LTP 'ONEY REST ARG INDEX))
-
-(DEFUN LT2J
-       (REST ARG1 ARG2 INDEX1 INDEX2)
-       (COND ((NOT (EQUAL ARG1 ARG2))
-	      'PRODUCT-OF-BESSEL-WITH-DIFFERENT-ARGS)
-	     (T (LT-LTP 'TWOJ
-			REST
-			ARG1
-			(LIST 'LIST INDEX1 INDEX2)))))
-
-(DEFUN LT1J^2
-       (REST ARG INDEX)
-       (LT-LTP 'TWOJ REST ARG (LIST 'LIST INDEX INDEX)))
-
-(DEFUN LT1GAMMAGREEK
-       (REST ARG1 ARG2)
-       (LT-LTP 'GAMMAGREEK REST ARG2 ARG1))
-
-(DEFUN LT1M(R A I1 I2)(LT-LTP 'ONEM R A (LIST I1 I2)))
-
-(DEFUN LT1P(R A I1 I2)(LT-LTP 'HYP-ONEP R A (LIST I1 I2)))
-
-(DEFUN LT1Q(R A I1 I2)(LT-LTP 'ONEQ R A (LIST I1 I2)))
-
-(DEFUN LT1ERF(REST ARG)(LT-LTP 'ONERF REST ARG NIL))
-
-(DEFUN LT1LOG(REST ARG)(LT-LTP 'ONELOG REST ARG NIL))
-
-(DEFUN LT1KELLIPTIC(REST ARG)(LT-LTP 'ONEKELLIPTIC REST ARG NIL))
-
-(DEFUN LT1E(REST ARG)(LT-LTP 'ONEE REST ARG NIL))
-
-(DEFUN LT1HSTRUVE(REST ARG1 INDEX1)(LT-LTP 'HS REST ARG1 INDEX1))
-
-(DEFUN LT1LSTRUVE(REST ARG1 INDEX1)(LT-LTP 'HL REST ARG1 INDEX1))
-
-(DEFUN LT1S
-       (REST ARG1 INDEX1 INDEX2)
-       (LT-LTP 'S REST ARG1 (LIST INDEX1 INDEX2)))
-
-(DEFUN HSTF
-       (V Z)
-       (PROG(D32)
-	    (SETQ D32 (DIV 3 2))
-	    (RETURN (LIST (MUL* (POWER (DIV Z 2)(ADD V 1))
-				(INV (GM D32))
-				(INV (GM (ADD V D32)))
-				(INV (GM (ADD V D32))))
-			  (LIST 'FPQ
-				(LIST 1 2)
-				(LIST 1)
-				(LIST D32 (ADD V D32))
-				(MUL* (INV -4) Z Z))))))
-
-(DEFUN LSTF
-       (V Z)
-       (PROG(HST)
-	    (RETURN (LIST (MUL* (POWER '$%E
-				      (MUL* (DIV (ADD V 1)
-						 -2)
-					    '$%PI
-					    '$%I))
-			       (CAR (SETQ HST
-					  (HSTF V
-						(MUL* Z
-						     (POWER '$%E
-							    (MUL*
-							     (1//2)
-							     '$%I
-							     '$%PI)))))))
-			  (CADR HST)))))
-
-(DEFUN STF
-       (M N Z)
-       (LIST (MUL* (POWER Z (ADD M 1))
-		   (INV (SUB (ADD M 1) N))
-		   (INV (ADD M N 1)))
-	     (LIST 'FPQ
-		   (LIST 1 2)
-		   (LIST 1)
-		   (LIST (DIV (SUB (ADD M 3) N) 2)
-			 (DIV (ADD* M N 3) 2))
-		   (MUL* (INV -4) Z Z))))
-
-(DEFUN LT-LTP
-       (FLG REST ARG INDEX)
-       (PROG(index1 index2 ARGL CONST L L1)
-	    (COND ((OR (ZERP INDEX)
-		       (EQ FLG 'ONERF)
-		       (EQ FLG 'ONEKELLIPTIC)
-		       (EQ FLG 'ONEE)
-		       (EQ FLG 'ONEPJAC)
-		       (EQ FLG 'D)
-		       (EQ FLG 'S)
-		       (EQ FLG 'HS)
-		       (EQ FLG 'LS)
-		       (EQ FLG 'ONEM)
-		       (EQ FLG 'ONEQ)
-		       (EQ FLG 'GAMMAGREEK)
-		       (EQ FLG 'ASIN)
-		       (EQ FLG 'ATAN))
-		   (GO LABL)))
-	    (COND ((OR (EQ FLG 'HYP-ONEP)(EQ FLG 'ONELOG))
-		   (GO LABL1)))
-	    (cond ((not (consp index)) (go lab)))
-	    (COND ((NOT (EQ (CAR INDEX) 'LIST))(GO LAB)))
-	    (COND ((ZERP (SETQ INDEX1 (CADR INDEX)))(GO LA)))
-	    (COND ((EQ (CHECKSIGNTM (SIMPLIFYA (INV (SETQ INDEX1
-							  (CADR
-							   INDEX)))
-					       NIL))
-		       '$NEGATIVE)
-		   (SETQ INDEX1
-			 (MUL -1 INDEX1)
-			 REST
-			 (MUL* (POWER -1 INDEX1) REST))))
-	    LA
-	    (COND ((ZERP (SETQ INDEX2 (CADDR INDEX)))(GO LA2)))
-	    (COND ((EQ (CHECKSIGNTM (SIMPLIFYA (INV (SETQ INDEX2
-							  (CADDR
-							   INDEX)))
-					       NIL))
-		       '$NEGATIVE)
-		   (SETQ INDEX2
-			 (MUL -1 INDEX2)
-			 REST
-			 (MUL* (POWER -1 INDEX2) REST))))
-	    LA2
-	    (SETQ INDEX (LIST INDEX1 INDEX2))
-	    (GO LABL)
-	    LAB
-	    (COND ((AND (EQ (CHECKSIGNTM (SIMPLIFYA (INV INDEX)
-						    NIL))
-			    '$NEGATIVE)
-			(MAXIMA-INTEGERP INDEX))
-		   (SETQ INDEX (MUL -1 INDEX))
-		   (SETQ REST (MUL (POWER -1 INDEX) REST))))
-	    LABL
-	    (SETQ ARGL (F+C ARG))
-	    (SETQ CONST (CDRAS 'C ARGL) ARG (CDRAS 'F ARGL))
-	    (COND ((NULL CONST)(GO LABL1)))
-	    (COND ((NOT (EQ (CHECKSIGNTM (SIMPLIFYA (POWER CONST
-							   2)
-						    NIL))
-			    '$ZERO))
-		   (RETURN 'PROP4-TO-BE-APPLIED)))
-	    LABL1
-	    (COND ((EQ FLG 'ONEY)(RETURN (LTY REST ARG INDEX))))
-	    (COND ((SETQ L
-			 (D*X^M*%E^A*X ($FACTOR (MUL* REST
-						     (CAR (SETQ
-							   L1
-							   (REF
-							    FLG
-							    INDEX
-							    ARG)))))))
-		   (RETURN (%$ETEST L L1))))
-	    (RETURN 'OTHER-CA-LATER)))
-
-(DEFUN LTY
-       (REST ARG INDEX)
-       (PROG(l)
-	    (COND ((SETQ L (D*X^M*%E^A*X REST))
-		   (RETURN (EXECFY L ARG INDEX))))
-	    (RETURN 'FAIL-IN-LTY)))
-
-(DEFUN %$ETEST
-       (L L1)
-       (PROG(A Q)
-	    (SETQ Q (CDRAS 'Q L))
-	    (COND ((EQUAL Q 1)(SETQ A 0)(GO LOOP)))
-	    (SETQ A (CDRAS 'A L))
-	    LOOP
-	    (RETURN (SUBSTL (SUB PAR A)
-			    PAR
-			    (EXECF19 L (CADR L1))))))
-
-(DEFUN REF
-       (FLG INDEX ARG)
-       (COND ((EQ FLG 'ONEJ)(J1TF INDEX ARG))
-	     ((EQ FLG 'TWOJ)(J2TF (CAR INDEX)(CADR INDEX) ARG))
-	     ((EQ FLG 'HS)(HSTF INDEX ARG))
-	     ((EQ FLG 'HL)(LSTF INDEX ARG))
-	     ((EQ FLG 'S)(STF (CAR INDEX)(CADR INDEX) ARG))
-	     ((EQ FLG 'ONERF)(ERFTF ARG))
-	     ((EQ FLG 'ONELOG)(LOGTF ARG))
-	     ((EQ FLG 'ONEKELLIPTIC)(KELLIPTICTF ARG))
-	     ((EQ FLG 'ONEE)(ETF ARG))
-	     ((EQ FLG 'ONEM)(MTF (CAR INDEX)(CADR INDEX) ARG))
-	     ((EQ FLG 'HYP-ONEP)(PTF (CAR INDEX)(CADR INDEX) ARG))
-	     ((EQ FLG 'ONEQ)(QTF (CAR INDEX)(CADR INDEX) ARG))
-	     ((EQ FLG 'GAMMAGREEK)(GAMMAGREEKTF INDEX ARG))
-	     ((EQ FLG 'ONEPJAC)
-	      (PJACTF (CAR INDEX)(CADR INDEX)(CADDR INDEX) ARG))
-	     ((EQ FLG 'ASIN)(ASINTF ARG))
-	     ((EQ FLG 'ATAN)(ATANTF ARG))))
-
-(DEFUN MTF
-       (I1 I2 ARG)
-       (LIST (MUL (POWER ARG (ADD I2 (1//2)))
-		  (POWER '$%E (DIV ARG -2)))
-	     (LIST 'FPQ
-		   (LIST 1 1)
-		   (LIST (ADD* (1//2) I2 (MUL -1 I1)))
-		   (LIST (ADD* I2 I2 1))
-		   ARG)))
-
-(DEFUN PJACTF
-       (N A B X)
-       (LIST (MUL* (GM (ADD N A 1))
-		   (INV (GM (ADD A 1)))
-		   (INV (FACTORIAL N)))
-	     (LIST 'FPQ
-		   (LIST 2 1)
-		   (LIST (MUL -1 N)(ADD* N A B 1))
-		   (LIST (ADD A 1))
-		   (SUB (1//2)(DIV X 2)))))
-
-(DEFUN ASINTF
-       (ARG)
-       ((LAMBDA(INV2)
-	       (LIST ARG
-		     (LIST 'FPQ
-			   (LIST 2 1)
-			   (LIST INV2 INV2)
-			   (LIST (DIV 3 2))
-			   (MUL ARG ARG))))
-	(1//2)))
-
-(DEFUN ATANTF
-       (ARG)
-       (LIST ARG
-	     (LIST 'FPQ
-		   (LIST 2 1)
-		   (LIST (INV 2) 1)
-		   (LIST (DIV 3 2))
-		   (MUL* -1 ARG ARG))))
-
-(DEFUN PTF
-       (N M Z)
-       (LIST (MUL (INV (GM (SUB 1 M)))
-		  (POWER (DIV (ADD Z 1)(SUB Z 1))(DIV M 2)))
-	     (LIST 'FPQ
-		   (LIST 2 1)
-		   (LIST (MUL -1 N)(ADD N 1))
-		   (LIST (SUB 1 M))
-		   (SUB (1//2)(DIV Z 2)))))
-
-(DEFUN QTF
-       (N M Z)
-       (LIST (MUL* (POWER '$%E (MUL* M '$%PI '$%I))
-		   (POWER '$%PI (1//2))
-		   (GM (ADD* M N 1))
-		   (POWER 2 (SUB -1 N))
-		   (INV (GM (ADD N (DIV 3 2))))
-		   (POWER Z (MUL -1 (ADD* M N 1)))
-		   (POWER (SUB (MUL Z Z) 1)(DIV M 2)))
-	     (LIST 'FPQ
-		   (LIST 2 1)
-		   (LIST (DIV (ADD* M N 1) 2)
-			 (DIV (ADD* M N 2) 2))
-		   (LIST (ADD N (DIV 3 2)))
-		   (POWER Z -2))))
-
-(DEFUN GAMMAGREEKTF
-       (A X)
-       (LIST (MUL (INV A)(POWER X A))
-	     (LIST 'FPQ
-		   (LIST 1 1)
-		   (LIST A)
-		   (LIST (ADD A 1))
-		   (MUL -1 X))))
-
-(DEFUN KELLIPTICTF
-       (K)
-       ((LAMBDA(INV2)
-	       (LIST (MUL INV2 '$%PI)
-		     (LIST 'FPQ
-			   (LIST  2 1)
-			   (LIST INV2 INV2)
-			   (LIST 1)
-			   (MUL K K))))
-	(1//2)))
-
-(DEFUN ETF
-       (K)
-       ((LAMBDA(INV2)
-	       (LIST (MUL INV2 '$%PI)
-		     (LIST 'FPQ
-			   (LIST  2 1)
-			   (LIST (MUL -1 INV2) INV2)
-			   (LIST 1)
-			   (MUL K K))))
-	(1//2)))
-
-(DEFUN ERFTF
-       (ARG)
-       (LIST (MUL* 2 ARG (POWER '$%PI (INV -2)))
-	     (LIST 'FPQ
-		   (LIST 1 1)
-		   (LIST (1//2))
-		   (LIST (DIV 3 2))
-		   (MUL* -1 ARG ARG))))
-
-(DEFUN LOGTF
-       (ARG)
-       (LIST 1
-	     (LIST 'FPQ (LIST 2 1)(LIST 1 1)(LIST 2)(SUB 1 ARG))))
-
-(DEFUN J2TF
-       (N M ARG)
-       (LIST (MUL* (INV (GM (ADD N 1)))
-		   (INV (GM (ADD M 1)))
-		   (INV (POWER 2 (ADD N M)))
-		   (POWER ARG (ADD N M)))
-	     (LIST 'FPQ
-		   (LIST 2 3)
-		   (LIST (ADD* (1//2)(DIV N 2)(DIV M 2))
-			 (ADD* 1 (DIV N 2)(DIV M 2)))
-		   (LIST (ADD 1 N)(ADD 1 M)(ADD* 1 N M))
-		   (MUL -1 (POWER ARG 2)))))
-
-(DEFUN D*X^M*%E^A*X
-       (EXP)
-       (M2 EXP
-	   '((MTIMES)
-	     ((COEFFTT)(D FREEVARPAR))
-	     ((MEXPT) (X VARP) (M FREEVARPAR))
-	     ((MEXPT)
-	      (Q EXPOR1P)
-	      ((MTIMES)((COEFFTT)(A FREEVARPAR)) (X VARP))))
-	   NIL)) 
-
-(DEFUN EXECF19
-       (L1 L2)
-       (PROG(ANS)
-	    (SETQ ANS (EXECARGMATCH (CAR (CDDDDR L2))))
-	    (COND ((EQ (CAR ANS) 'DIONIMO)
-		   (RETURN (DIONARGHYP L1 L2 (CADR ANS)))))
-	    (RETURN 'NEXT-FOR-OTHER-ARGS)))
-
-(DEFUN EXECFY
-       (L ARG INDEX)
-       (PROG(ANS)
-	    (SETQ ANS (EXECARGMATCH ARG))
-	    (COND ((EQ (CAR ANS) 'DIONIMO)
-		   (RETURN (DIONARGHYP-Y L INDEX (CADR ANS)))))
-	    (RETURN 'FAIL-IN-EXECFY)))
-;executive  for recognizing the sort of argument
-
-(DEFUN EXECARGMATCH
-       (ARG)
-       (PROG(L1)
-	    (COND ((SETQ L1 (A*X^M+C ($FACTOR ARG)))
-		   (RETURN (LIST 'DIONIMO L1))))
-	    (COND ((SETQ L1 (A*X^M+C ($EXPAND ARG)))
-		   (RETURN (LIST 'DIONIMO L1))))
-	    (RETURN 'OTHER-CASE-ARGS-TO-FOLLOW)))
-
-(DEFUN DIONARGHYP
-       (L1 L2 ARG)
-       (PROG(A M C)
-	    (SETQ A
-		  (CDRAS 'A ARG)
-		  M
-		  (CDRAS 'M ARG)
-		  C
-		  (CDRAS 'C ARG))
-	    (COND ((AND (MAXIMA-INTEGERP M)(ZERP C))
-		   (RETURN (F19COND A M L1 L2))))
-	    (RETURN 'PROP4-AND-AOTHER-CASES-TO-FOLOW)))
+	(inv (sin% (mul i '$%pi)))
+	(sub (bess (mul -1 i) a 'i)(bess i a 'i))))
+
+(defun 1fact
+    (flg v)
+  (power '$%e
+	 (mul* '$%pi
+	       '$%i
+	       (1//2)
+	       (cond (flg 1)(t (mul -1 v))))))
+
+(defun bessy(v z)(list '(mqapply)(list '($%y array) v) z))
+
+(defun kmodbes(z v)(list '(mqapply)(list '($%k array) v)  z))
+
+
+
+(defun tan%(arg)(list  '(%tan) arg))
+
+(defun desjy
+    (v z flg)
+  (cond ((eq flg 'j)(bess v z 'j))(t (bessy v z))))
+
+(defun numjory
+    (v sort z flg)
+  (cond ((equal sort 1)
+	 (sub (desjy (mul -1 v) z flg)
+	      (mul* (power '$%e (mul* -1 v '$%pi '$%i))
+		    (desjy v z flg))))
+	(t (sub (mul* (power '$%e (mul* v '$%pi '$%i))
+		      (desmjy v z flg))
+		(desmjy (mul -1 v) z flg)))))
+
+(defun desmjy
+    (v z flg)
+  (cond ((eq flg 'j)(bess v z 'j))(t (mul -1 (bessy v z)))))
+
+(defun htjory
+    (v sort z)
+  (cond ((equal (caar v) 'rat)
+	 (div (numjory v sort z 'j)
+	      (mul* '$%i (sin% (mul v '$%pi)))))
+	(t (div (numjory v sort z 'y)(sin% (mul v '$%pi)))))) 
+;;expert on l.t. expressions containing one bessel function of the first kind
+
+(defun lt1j(rest arg index)(lt-ltp 'onej rest arg index))
+
+(defun lt1y(rest arg index)(lt-ltp 'oney rest arg index))
+
+(defun lt2j
+    (rest arg1 arg2 index1 index2)
+  (cond ((not (equal arg1 arg2))
+	 'product-of-bessel-with-different-args)
+	(t (lt-ltp 'twoj
+		   rest
+		   arg1
+		   (list 'list index1 index2)))))
+
+(defun lt1j^2
+    (rest arg index)
+  (lt-ltp 'twoj rest arg (list 'list index index)))
+
+(defun lt1gammagreek
+    (rest arg1 arg2)
+  (lt-ltp 'gammagreek rest arg2 arg1))
+
+(defun lt1m(r a i1 i2)(lt-ltp 'onem r a (list i1 i2)))
+
+(defun lt1p(r a i1 i2)(lt-ltp 'hyp-onep r a (list i1 i2)))
+
+(defun lt1q(r a i1 i2)(lt-ltp 'oneq r a (list i1 i2)))
+
+(defun lt1erf(rest arg)(lt-ltp 'onerf rest arg nil))
+
+(defun lt1log(rest arg)(lt-ltp 'onelog rest arg nil))
+
+(defun lt1kelliptic(rest arg)(lt-ltp 'onekelliptic rest arg nil))
+
+(defun lt1e(rest arg)(lt-ltp 'onee rest arg nil))
+
+(defun lt1hstruve(rest arg1 index1)(lt-ltp 'hs rest arg1 index1))
+
+(defun lt1lstruve(rest arg1 index1)(lt-ltp 'hl rest arg1 index1))
+
+(defun lt1s
+    (rest arg1 index1 index2)
+  (lt-ltp 's rest arg1 (list index1 index2)))
+
+(defun hstf
+    (v z)
+  (prog(d32)
+     (setq d32 (div 3 2))
+     (return (list (mul* (power (div z 2)(add v 1))
+			 (inv (gm d32))
+			 (inv (gm (add v d32)))
+			 (inv (gm (add v d32))))
+		   (list 'fpq
+			 (list 1 2)
+			 (list 1)
+			 (list d32 (add v d32))
+			 (mul* (inv -4) z z))))))
+
+(defun lstf
+    (v z)
+  (prog(hst)
+     (return (list (mul* (power '$%e
+				(mul* (div (add v 1)
+					   -2)
+				      '$%pi
+				      '$%i))
+			 (car (setq hst
+				    (hstf v
+					  (mul* z
+						(power '$%e
+						       (mul*
+							(1//2)
+							'$%i
+							'$%pi)))))))
+		   (cadr hst)))))
+
+(defun stf
+    (m n z)
+  (list (mul* (power z (add m 1))
+	      (inv (sub (add m 1) n))
+	      (inv (add m n 1)))
+	(list 'fpq
+	      (list 1 2)
+	      (list 1)
+	      (list (div (sub (add m 3) n) 2)
+		    (div (add* m n 3) 2))
+	      (mul* (inv -4) z z))))
+
+(defun lt-ltp
+    (flg rest arg index)
+  (prog(index1 index2 argl const l l1)
+     (cond ((or (zerp index)
+		(eq flg 'onerf)
+		(eq flg 'onekelliptic)
+		(eq flg 'onee)
+		(eq flg 'onepjac)
+		(eq flg 'd)
+		(eq flg 's)
+		(eq flg 'hs)
+		(eq flg 'ls)
+		(eq flg 'onem)
+		(eq flg 'oneq)
+		(eq flg 'gammagreek)
+		(eq flg 'asin)
+		(eq flg 'atan))
+	    (go labl)))
+     (cond ((or (eq flg 'hyp-onep)(eq flg 'onelog))
+	    (go labl1)))
+     (cond ((not (consp index)) (go lab)))
+     (cond ((not (eq (car index) 'list))(go lab)))
+     (cond ((zerp (setq index1 (cadr index)))(go la)))
+     (cond ((eq (checksigntm (simplifya (inv (setq index1
+						   (cadr
+						    index)))
+					nil))
+		'$negative)
+	    (setq index1
+		  (mul -1 index1)
+		  rest
+		  (mul* (power -1 index1) rest))))
+     la
+     (cond ((zerp (setq index2 (caddr index)))(go la2)))
+     (cond ((eq (checksigntm (simplifya (inv (setq index2
+						   (caddr
+						    index)))
+					nil))
+		'$negative)
+	    (setq index2
+		  (mul -1 index2)
+		  rest
+		  (mul* (power -1 index2) rest))))
+     la2
+     (setq index (list index1 index2))
+     (go labl)
+     lab
+     (cond ((and (eq (checksigntm (simplifya (inv index)
+					     nil))
+		     '$negative)
+		 (maxima-integerp index))
+	    (setq index (mul -1 index))
+	    (setq rest (mul (power -1 index) rest))))
+     labl
+     (setq argl (f+c arg))
+     (setq const (cdras 'c argl) arg (cdras 'f argl))
+     (cond ((null const)(go labl1)))
+     (cond ((not (eq (checksigntm (simplifya (power const
+						    2)
+					     nil))
+		     '$zero))
+	    (return 'prop4-to-be-applied)))
+     labl1
+     (cond ((eq flg 'oney)(return (lty rest arg index))))
+     (cond ((setq l
+		  (d*x^m*%e^a*x ($factor (mul* rest
+					       (car (setq
+						     l1
+						     (ref
+						      flg
+						      index
+						      arg)))))))
+	    (return (%$etest l l1))))
+     (return 'other-ca-later)))
+
+(defun lty
+    (rest arg index)
+  (prog(l)
+     (cond ((setq l (d*x^m*%e^a*x rest))
+	    (return (execfy l arg index))))
+     (return 'fail-in-lty)))
+
+(defun %$etest
+    (l l1)
+  (prog(a q)
+     (setq q (cdras 'q l))
+     (cond ((equal q 1)(setq a 0)(go loop)))
+     (setq a (cdras 'a l))
+     loop
+     (return (substl (sub par a)
+		     par
+		     (execf19 l (cadr l1))))))
+
+(defun ref
+    (flg index arg)
+  (cond ((eq flg 'onej)(j1tf index arg))
+	((eq flg 'twoj)(j2tf (car index)(cadr index) arg))
+	((eq flg 'hs)(hstf index arg))
+	((eq flg 'hl)(lstf index arg))
+	((eq flg 's)(stf (car index)(cadr index) arg))
+	((eq flg 'onerf)(erftf arg))
+	((eq flg 'onelog)(logtf arg))
+	((eq flg 'onekelliptic)(kelliptictf arg))
+	((eq flg 'onee)(etf arg))
+	((eq flg 'onem)(mtf (car index)(cadr index) arg))
+	((eq flg 'hyp-onep)(ptf (car index)(cadr index) arg))
+	((eq flg 'oneq)(qtf (car index)(cadr index) arg))
+	((eq flg 'gammagreek)(gammagreektf index arg))
+	((eq flg 'onepjac)
+	 (pjactf (car index)(cadr index)(caddr index) arg))
+	((eq flg 'asin)(asintf arg))
+	((eq flg 'atan)(atantf arg))))
+
+(defun mtf
+    (i1 i2 arg)
+  (list (mul (power arg (add i2 (1//2)))
+	     (power '$%e (div arg -2)))
+	(list 'fpq
+	      (list 1 1)
+	      (list (add* (1//2) i2 (mul -1 i1)))
+	      (list (add* i2 i2 1))
+	      arg)))
+
+(defun pjactf
+    (n a b x)
+  (list (mul* (gm (add n a 1))
+	      (inv (gm (add a 1)))
+	      (inv (factorial n)))
+	(list 'fpq
+	      (list 2 1)
+	      (list (mul -1 n)(add* n a b 1))
+	      (list (add a 1))
+	      (sub (1//2)(div x 2)))))
+
+(defun asintf
+    (arg)
+  ((lambda(inv2)
+     (list arg
+	   (list 'fpq
+		 (list 2 1)
+		 (list inv2 inv2)
+		 (list (div 3 2))
+		 (mul arg arg))))
+   (1//2)))
+
+(defun atantf
+    (arg)
+  (list arg
+	(list 'fpq
+	      (list 2 1)
+	      (list (inv 2) 1)
+	      (list (div 3 2))
+	      (mul* -1 arg arg))))
+
+(defun ptf
+    (n m z)
+  (list (mul (inv (gm (sub 1 m)))
+	     (power (div (add z 1)(sub z 1))(div m 2)))
+	(list 'fpq
+	      (list 2 1)
+	      (list (mul -1 n)(add n 1))
+	      (list (sub 1 m))
+	      (sub (1//2)(div z 2)))))
+
+(defun qtf
+    (n m z)
+  (list (mul* (power '$%e (mul* m '$%pi '$%i))
+	      (power '$%pi (1//2))
+	      (gm (add* m n 1))
+	      (power 2 (sub -1 n))
+	      (inv (gm (add n (div 3 2))))
+	      (power z (mul -1 (add* m n 1)))
+	      (power (sub (mul z z) 1)(div m 2)))
+	(list 'fpq
+	      (list 2 1)
+	      (list (div (add* m n 1) 2)
+		    (div (add* m n 2) 2))
+	      (list (add n (div 3 2)))
+	      (power z -2))))
+
+(defun gammagreektf
+    (a x)
+  (list (mul (inv a)(power x a))
+	(list 'fpq
+	      (list 1 1)
+	      (list a)
+	      (list (add a 1))
+	      (mul -1 x))))
+
+(defun kelliptictf
+    (k)
+  ((lambda(inv2)
+     (list (mul inv2 '$%pi)
+	   (list 'fpq
+		 (list  2 1)
+		 (list inv2 inv2)
+		 (list 1)
+		 (mul k k))))
+   (1//2)))
+
+(defun etf
+    (k)
+  ((lambda(inv2)
+     (list (mul inv2 '$%pi)
+	   (list 'fpq
+		 (list  2 1)
+		 (list (mul -1 inv2) inv2)
+		 (list 1)
+		 (mul k k))))
+   (1//2)))
+
+(defun erftf
+    (arg)
+  (list (mul* 2 arg (power '$%pi (inv -2)))
+	(list 'fpq
+	      (list 1 1)
+	      (list (1//2))
+	      (list (div 3 2))
+	      (mul* -1 arg arg))))
+
+(defun logtf
+    (arg)
+  (list 1
+	(list 'fpq (list 2 1)(list 1 1)(list 2)(sub 1 arg))))
+
+(defun j2tf
+    (n m arg)
+  (list (mul* (inv (gm (add n 1)))
+	      (inv (gm (add m 1)))
+	      (inv (power 2 (add n m)))
+	      (power arg (add n m)))
+	(list 'fpq
+	      (list 2 3)
+	      (list (add* (1//2)(div n 2)(div m 2))
+		    (add* 1 (div n 2)(div m 2)))
+	      (list (add 1 n)(add 1 m)(add* 1 n m))
+	      (mul -1 (power arg 2)))))
+
+(defun d*x^m*%e^a*x
+    (exp)
+  (m2 exp
+      '((mtimes)
+	((coefftt)(d freevarpar))
+	((mexpt) (x varp) (m freevarpar))
+	((mexpt)
+	 (q expor1p)
+	 ((mtimes)((coefftt)(a freevarpar)) (x varp))))
+      nil)) 
+
+(defun execf19
+    (l1 l2)
+  (prog(ans)
+     (setq ans (execargmatch (car (cddddr l2))))
+     (cond ((eq (car ans) 'dionimo)
+	    (return (dionarghyp l1 l2 (cadr ans)))))
+     (return 'next-for-other-args)))
+
+(defun execfy
+    (l arg index)
+  (prog(ans)
+     (setq ans (execargmatch arg))
+     (cond ((eq (car ans) 'dionimo)
+	    (return (dionarghyp-y l index (cadr ans)))))
+     (return 'fail-in-execfy)))
+;;executive  for recognizing the sort of argument
+
+(defun execargmatch
+    (arg)
+  (prog(l1)
+     (cond ((setq l1 (a*x^m+c ($factor arg)))
+	    (return (list 'dionimo l1))))
+     (cond ((setq l1 (a*x^m+c ($expand arg)))
+	    (return (list 'dionimo l1))))
+     (return 'other-case-args-to-follow)))
+
+(defun dionarghyp
+    (l1 l2 arg)
+  (prog(a m c)
+     (setq a
+	   (cdras 'a arg)
+	   m
+	   (cdras 'm arg)
+	   c
+	   (cdras 'c arg))
+     (cond ((and (maxima-integerp m)(zerp c))
+	    (return (f19cond a m l1 l2))))
+     (return 'prop4-and-aother-cases-to-folow)))
 
  
-(DEFUN F+C
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)((COEFFPT)(F HASVAR))((COEFFPP)(C FREEVAR)))
-	   NIL))
+(defun f+c
+    (exp)
+  (m2 exp
+      '((mplus)((coeffpt)(f hasvar))((coeffpp)(c freevar)))
+      nil))
 
-(DEFUN A*X^M+C
-       (EXP)
-       (M2 EXP
-	   '((MPLUS)
-	     ((COEFFPT)
-	      (A FREEVAR)
-	      ((MEXPT) (X VARP) (M FREEVAR0)))
-	     ((COEFFPP) (C FREEVAR)))
-	   NIL))
+(defun a*x^m+c
+    (exp)
+  (m2 exp
+      '((mplus)
+	((coeffpt)
+	 (a freevar)
+	 ((mexpt) (x varp) (m freevar0)))
+	((coeffpp) (c freevar)))
+      nil))
 
-(DEFUN FREEVAR0(M)(COND ((EQUAL M 0) NIL)(T (FREEVAR M))))
+(defun freevar0(m)(cond ((equal m 0) nil)(t (freevar m))))
 
-(DEFUN ADDARGLIST
-       (S K)
-       (PROG(K1 L)
-	    (SETQ K1 (SUB K 1))
-	    LOOP
-	    (COND ((ZERP K1)
-		   (RETURN (APPEND (LIST (DIV S K)) L))))
-	    (SETQ L
-		  (APPEND (LIST (DIV (ADD S K1) K)) L)
-		  K1
-		  (SUB K1 1))
-	    (GO LOOP)))
+(defun addarglist
+    (s k)
+  (prog(k1 l)
+     (setq k1 (sub k 1))
+     loop
+     (cond ((zerp k1)
+	    (return (append (list (div s k)) l))))
+     (setq l
+	   (append (list (div (add s k1) k)) l)
+	   k1
+	   (sub k1 1))
+     (go loop)))
 
-(DEFUN F19COND
-       (A M L1 L2)
-       (PROG(P Q S D)
-	    (SETQ P
-		  (CAADR L2)
-		  Q
-		  (CADADR L2)
-		  S
-		  (CDRAS 'M L1)
-		  D
-		  (CDRAS 'D L1)
-		  L1
-		  (CADDR L2)
-		  L2
-		  (CADDDR L2))
-	    (COND ((AND (NOT (EQ (CHECKSIGNTM (SUB (ADD* P
-							 M
-							 -1)
-						   Q))
-				 '$POSITIVE))
-			(EQ (CHECKSIGNTM (ADD S 1))
-			    '$POSITIVE))
-		   (RETURN (MUL D
-				(F19P220-SIMP (ADD S 1)
-					      L1
-					      L2
-					      A
-					      M)))))
-	    (RETURN 'FAILED-ON-F19COND-MULTIPLY-THE-OTHER-CASES-WITH-D)))
+(defun f19cond
+    (a m l1 l2)
+  (prog(p q s d)
+     (setq p
+	   (caadr l2)
+	   q
+	   (cadadr l2)
+	   s
+	   (cdras 'm l1)
+	   d
+	   (cdras 'd l1)
+	   l1
+	   (caddr l2)
+	   l2
+	   (cadddr l2))
+     (cond ((and (not (eq (checksigntm (sub (add* p
+						  m
+						  -1)
+					    q))
+			  '$positive))
+		 (eq (checksigntm (add s 1))
+		     '$positive))
+	    (return (mul d
+			 (f19p220-simp (add s 1)
+				       l1
+				       l2
+				       a
+				       m)))))
+     (return 'failed-on-f19cond-multiply-the-other-cases-with-d)))
 
-(DEFUN F19P220-SIMP
-       (S L1 L2 CF K)
-       (MUL* (GM S)
-	     (INV (POWER PAR S))
-	     (HGFSIMP-EXEC (APPEND L1 (ADDARGLIST S K))
-			   L2
-			   (MUL* CF
-				(POWER K K)
-				(POWER (INV PAR) K))))) 
+(defun f19p220-simp
+    (s l1 l2 cf k)
+  (mul* (gm s)
+	(inv (power par s))
+	(hgfsimp-exec (append l1 (addarglist s k))
+		      l2
+		      (mul* cf
+			    (power k k)
+			    (power (inv par) k))))) 
 
-(DEFUN J1TF
-       (V Z)
-       (LIST (MUL* (INV (POWER 2 V))
-		   (POWER Z V)
-		   (INV (GM (ADD V 1))))
-	     (LIST 'FPQ
-		   (LIST 0 1)
-		   NIL
-		   (LIST (ADD V 1))
-		   (MUL (INV -4)(POWER Z 2)))))
+(defun j1tf
+    (v z)
+  (list (mul* (inv (power 2 v))
+	      (power z v)
+	      (inv (gm (add v 1))))
+	(list 'fpq
+	      (list 0 1)
+	      nil
+	      (list (add v 1))
+	      (mul (inv -4)(power z 2)))))
 
-(DEFUN DIONARGHYP-Y (L INDEX ARG) 
-       (PROG (A M C) 
-	     (SETQ A (CDRAS 'A ARG) 
-		   M (CDRAS 'M ARG) 
-		   C (CDRAS 'C ARG))
-	     (COND ((AND (ZERP C) (EQUAL M 1.))
-		    (RETURN (F2P105V2COND A L INDEX))))
-	     (COND ((AND (ZERP C) (EQUAL M (INV 2.)))
-		    (RETURN (F50COND A L INDEX))))
-	     (RETURN 'FAIL-IN-DIONARGHYP-Y))) 
+(defun dionarghyp-y (l index arg) 
+  (prog (a m c) 
+     (setq a (cdras 'a arg) 
+	   m (cdras 'm arg) 
+	   c (cdras 'c arg))
+     (cond ((and (zerp c) (equal m 1.))
+	    (return (f2p105v2cond a l index))))
+     (cond ((and (zerp c) (equal m (inv 2.)))
+	    (return (f50cond a l index))))
+     (return 'fail-in-dionarghyp-y))) 
 
-(DEFUN F2P105V2COND (A L INDEX) 
-       (PROG (D M) 
-	     (SETQ D (CDRAS 'D L) M (CDRAS 'M L))
-	     (SETQ M (ADD M 1.))
-	     (COND ((EQ (CHECKSIGNTM ($REALPART (SUB M INDEX)))
-			'$POSITIVE)
-		    (RETURN (F2P105V2COND-SIMP M INDEX A))))
-	     (RETURN 'FAIL-IN-F2P105V2COND))) 
+(defun f2p105v2cond (a l index) 
+  (prog (d m) 
+     (setq d (cdras 'd l) m (cdras 'm l))
+     (setq m (add m 1.))
+     (cond ((eq (checksigntm ($realpart (sub m index)))
+		'$positive)
+	    (return (f2p105v2cond-simp m index a))))
+     (return 'fail-in-f2p105v2cond))) 
 
-(DEFUN F50COND (A L V) 
-       (PROG (D M) 
-	     (SETQ D (CDRAS 'D L) 
-		   M (CDRAS 'M L) 
-		   M (ADD M (INV 2.)) 
-		   V (DIV V 2.))
-	     (COND
-	      ((AND (EQ (CHECKSIGNTM ($REALPART (ADD M V (INV 2.))))
-			'$POSITIVE)
-		    (EQ (CHECKSIGNTM ($REALPART (SUB (ADD M (INV 2.))
-						     V)))
-			'$POSITIVE)
-		    (NOT (MAXIMA-INTEGERP (MUL (SUB (ADD M M) (ADD V V 1.))
-					(INV 2.)))))
-	       (SETQ A (MUL A A (INV 4.)))
-	       (RETURN (F50P188-SIMP D M V A))))
-	     (RETURN 'FAIL-IN-F50COND))) 
+(defun f50cond (a l v) 
+  (prog (d m) 
+     (setq d (cdras 'd l) 
+	   m (cdras 'm l) 
+	   m (add m (inv 2.)) 
+	   v (div v 2.))
+     (cond
+       ((and (eq (checksigntm ($realpart (add m v (inv 2.))))
+		 '$positive)
+	     (eq (checksigntm ($realpart (sub (add m (inv 2.))
+					      v)))
+		 '$positive)
+	     (not (maxima-integerp (mul (sub (add m m) (add v v 1.))
+					(inv 2.)))))
+	(setq a (mul a a (inv 4.)))
+	(return (f50p188-simp d m v a))))
+     (return 'fail-in-f50cond))) 
 
-(DEFUN F2P105V2COND-SIMP (M V A) 
-       (MUL -2.
-	    (POWER '$%PI -1.)
-	    (GM (ADD M V))
-	    (POWER (ADD (MUL A A) (MUL PAR PAR)) (MUL -1. (INV 2.) M))
-	    (LEG2FSIMP (SUB M 1.)
-		       (MUL -1. V)
-		       (MUL PAR
-			    (POWER (ADD (MUL A A) (MUL PAR PAR))
-				   (INV -2.)))))) 
+(defun f2p105v2cond-simp (m v a) 
+  (mul -2.
+       (power '$%pi -1.)
+       (gm (add m v))
+       (power (add (mul a a) (mul par par)) (mul -1. (inv 2.) m))
+       (leg2fsimp (sub m 1.)
+		  (mul -1. v)
+		  (mul par
+		       (power (add (mul a a) (mul par par))
+			      (inv -2.)))))) 
 
-(DEFUN LEG1FSIMP (M V Z) 
-       (MUL (INV (GM (SUB 1. M)))
-	    (POWER (DIV (ADD Z 1.) (SUB Z 1.)) (DIV M 2.))
-	    (HGFSIMP-EXEC (LIST (MUL -1. V) (ADD V 1.))
-			  (LIST (SUB 1. M))
-			  (SUB (INV 2.) (DIV Z 2.))))) 
+(defun leg1fsimp (m v z) 
+  (mul (inv (gm (sub 1. m)))
+       (power (div (add z 1.) (sub z 1.)) (div m 2.))
+       (hgfsimp-exec (list (mul -1. v) (add v 1.))
+		     (list (sub 1. m))
+		     (sub (inv 2.) (div z 2.))))) 
 
-(DEFUN LEG2FSIMP (M V Z) 
-       (MUL (POWER '$%E (MUL M '$%PI '$%I))
-	    (POWER '$%PI (INV 2.))
-	    (GM (ADD M V 1.))
-	    (INV (POWER 2. (ADD V 1.)))
-	    (INV (GM (ADD V (DIV 3. 2.))))
-	    (POWER Z (SUB -1. (ADD M V)))
-	    (POWER (SUB (MUL Z Z) 1.) (MUL (INV 2.) M))
-	    (HGFSIMP-EXEC (LIST (DIV (ADD M V 1.) 2.)
-				(DIV (ADD M V 2.) 2.))
-			  (LIST (ADD V (MUL 3. (INV 2.))))
-			  (INV (MUL Z Z))))) 
+(defun leg2fsimp (m v z) 
+  (mul (power '$%e (mul m '$%pi '$%i))
+       (power '$%pi (inv 2.))
+       (gm (add m v 1.))
+       (inv (power 2. (add v 1.)))
+       (inv (gm (add v (div 3. 2.))))
+       (power z (sub -1. (add m v)))
+       (power (sub (mul z z) 1.) (mul (inv 2.) m))
+       (hgfsimp-exec (list (div (add m v 1.) 2.)
+			   (div (add m v 2.) 2.))
+		     (list (add v (mul 3. (inv 2.))))
+		     (inv (mul z z))))) 
 
 (declare-top (unspecial asinx atanx))
