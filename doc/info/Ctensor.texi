@@ -122,7 +122,9 @@ y;
 @c end concepts Ctensor
 @node Definitions for Ctensor,  , Introduction to Ctensor, Ctensor
 
-@section Initialization and setup
+@section Definitions for Ctensor
+
+@subsection Initialization and setup
 
 @c @node csetup
 @c @unnumberedsec phony
@@ -280,7 +282,7 @@ The @code{init_ctensor()} function reinitializes the CTENSOR package. It removes
 @end defun
 
 
-@section The tensors of curved space
+@subsection The tensors of curved space
 
 The main purpose of the CTENSOR package is to compute the tensors
 of curved space(time), most notably the tensors used in general
@@ -470,7 +472,7 @@ factored as well.
 
 @end defun
 
-@section Frame fields
+@subsection Frame fields
 
 When the variable @code{cframe_flag} is set to true, the CTENSOR package
 performs its calculations using a moving frame.
@@ -483,7 +485,7 @@ The frame bracket (@code{fb[]}).
 *** TO BE WRITTEN ***
 @end defun
 
-@section Algebraic classification
+@subsection Algebraic classification
 
 A new feature (as of November, 2004) of CTENSOR is its ability to
 compute the Petrov classification of a 4-dimensional spacetime metric.
@@ -597,12 +599,78 @@ of the Kerr metric:
 @end defun
 
 
-@section Torsion and nonmetricity
+@subsection Torsion and nonmetricity
 
-*** TO BE WRITTEN - NOT YET IMPLEMENTED ***
+Ctensor has the ability to compute and include torsion and nonmetricity
+coefficients in the connection coefficients.
+
+The torsion coefficients are calculated from a user-supplied tensor
+@code{tr}, which should be a rank (2,1) tensor. From this, the torsion
+coefficients @code{kt} are computed according to the following formulae:
+
+@example
+
+              m          m      m
+       - g  tr   - g   tr   - tr   g
+          im  kj    jm   ki     ij  km
+kt   = -------------------------------
+  ijk                 2
 
 
-@section Miscellaneous features
+  k     km
+kt   = g   kt
+  ij         ijm
+
+@end example
+
+Note that only the mixed-index tensor is calculated and stored in the
+array @code{kt}.
+
+The nonmetricity coefficients are calculated from the user-supplied
+nonmetricity vector @code{nm}. From this, the nonmetricity coefficients
+@code{nmc} are computed as follows:
+
+@example
+
+            k    k        km
+       nm  D  - D  nm  + g   nm  g
+   k     i  j    i   j         m  ij
+nmc  = -----------------------------
+   ij                2
+
+@end example
+
+where D stands for the Kronecker-delta.
+
+When @code{ctorsion_flag} is set to @code{true}, the values of @code{kt}
+are substracted from the mixed-indexed connection coefficients computed by
+@code{christof()} and stored in @code{mcs}. Similarly, if @code{cnonmet_flag}
+is set to @code{true}, the values of @code{nmc} are substracted from the
+mixed-indexed connection coefficients.
+
+If necessary, @code{christof} calls the functions @code{contortion()} and
+@code{nonmetricity()} in order to compute @code{kt} and @code{nm}.
+
+@c @node contortion
+@c @unnumberedsec phony
+@defun contortion (tr)
+
+Computes the (2,1) contortion coefficients from the torsion tensor @code{tr}.
+
+@end defun
+
+@c @node nonmetricity
+@c @unnumberedsec phony
+@defun nonmetricity (nm)
+
+Computes the (2,1) nonmetricity coefficients from the nonmetricity
+vector @code{nm}.
+
+@end defun
+
+
+
+@subsection Miscellaneous features
 
 @c @node ctransform
 @c @unnumberedsec phony
@@ -826,7 +894,7 @@ equations are the components of an array named @code{rosen}.
 
 @end defun
 
-@section Utility functions
+@subsection Utility functions
 
 @c @node diagmatrixp
 @c @unnumberedsec phony
@@ -1083,7 +1151,7 @@ returns a new list consisting of @code{list} with the @code{n}th element
 deleted.
 @end defun
 
-@section Variables used by CTENSOR
+@subsection Variables used by CTENSOR
 
 
 @c @node dim
@@ -1120,13 +1188,33 @@ Causes trigonometric simplifications to be used when tensors are computed. Prese
 @c @unnumberedsec phony
 @defvar cframe_flag
 
-Causes computations to be performed relative to a moving frame as opposed to a holonomic
-metric. The frame is defined by the inverse frame array @code{fri} and the frame metric
-@code{lfg}. For computations using a Cartesian frame, @code{lfg} should be the unit
-matrix of the appropriate dimension; for computations in a Lorentz frame, @code{lfg}
-should have the appropriate signature.
+Causes computations to be performed relative to a moving frame as opposed to
+a holonomic metric. The frame is defined by the inverse frame array @code{fri}
+and the frame metric @code{lfg}. For computations using a Cartesian frame,
+@code{lfg} should be the unit matrix of the appropriate dimension; for
+computations in a Lorentz frame, @code{lfg} should have the appropriate
+signature.
 
 @end defvar
+
+@c @node ctorsion_flag
+@c @unnumberedsec phony
+@defvar ctorsion_flag
+
+Causes the contortion tensor to be included in the computation of the
+connection coefficients. The contortion tensor itself is computed by
+@code{contortion()} from the user-supplied tensor @code{tr}.
+
+@end defvar
+
+@c @node cnonmet_flag
+@c @unnumberedsec phony
+@defvar cnonmet_flag
+
+Causes the nonmetricity coefficients to be included in the computation of
+the connection coefficients. The nonmetricity coefficients are computed
+from the user-supplied nonmetricity vector @code{nm} by the function
+@code{nonmetricity()}.
 
 @c @node ctayswitch
 @c @unnumberedsec phony
@@ -1264,7 +1352,8 @@ The Weyl tensor. Computed by @code{weyl()}.
 @c @unnumberedsec phony
 @defvar fb
 
-*** TO BE WRITTEN ***
+Frame bracket coefficients, as computed by @code{frame_bracket}.
+
 @end defvar
 
 @c @node kinvariant
@@ -1291,6 +1380,34 @@ The inverse Newman-Penrose null tetrad. Computed by @code{nptetrad()}.
 
 @end defvar
 
+@c @node tr
+@c @unnumberedsec phony
+@defvar tr
+
+User-supplied rank-3 tensor representing torsion. Used by @code{contortion()}.
+@end defvar
+
+@c @node kt
+@c @unnumberedsec phony
+@defvar kt
+
+The contortion tensor, computed from @code{tr} by @code{contortion()}.
+@end defvar
+
+@c @node nm
+@c @unnumberedsec phony
+@defvar nm
+
+User-supplied nonmetricity vector. Used by @code{nonmetricity()}.
+@end defvar
+
+@c @node nmc
+@c @unnumberedsec phony
+
+The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity()}.
+
+@end defvar
+
 @c @node tensorkill
 @c @unnumberedsec phony
 @defvar tensorkill
@@ -1312,9 +1429,7 @@ See also @code{csetup}.
 
 @end defvar
 
-
-
-@section Reserved names
+@subsection Reserved names
 
 The following names are used internally by the CTENSOR package and
 should not be redefined:
@@ -1345,7 +1460,7 @@ should not be redefined:
 @end example
 
 
-@section Changes
+@subsection Changes
 
 In November, 2004, the CTENSOR package was extensively rewritten.
 Many functions and variables have been renamed in order to make the

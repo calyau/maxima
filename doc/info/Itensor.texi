@@ -42,7 +42,7 @@ intermediate expressions which swell causing programs to terminate
 before completion. Through experience, a user can avoid avoid many of
 these difficulties.
 
-@section Indicial Tensor Manipulation
+@subsection Indicial Tensor Manipulation
 
 The Indicial Tensor Manipulation package may be loaded by
 @code{load(itensor)}. Demos are also available: try @code{demo(tensor)}.
@@ -197,7 +197,8 @@ specify the name of the metric, and perform some simple calculations.
 
 @node Definitions for Itensor,  , Introduction to Itensor, Itensor
 
-@section Managing Indexed Objects
+@section Definitions for Itensor
+@subsection Managing Indexed Objects
 
 @c @node entertensor
 @c @unnumberedsec phony
@@ -417,7 +418,7 @@ Carries out the tensorial contractions in @code{exp} which may be any
 combination of sums and products.  This function uses the information
 given to the @code{defcon} function.  When using @code{contract}, @code{exp}
 must be fully expanded. Also see the function @code{imetric} and the
- example under @code{dim}.
+example under @code{dim}.
 
 
 @end defun
@@ -718,7 +719,7 @@ required simplification.
 
 @end defun
 
-@section Tensor symmetries
+@subsection Tensor symmetries
 
 @c @node allsym
 @c @unnumberedsec phone
@@ -828,7 +829,7 @@ reduce an expression completely to its simplest form although it will
 always return a mathematically correct result.
 @end defun
 
-@section Indicial tensor calculus
+@subsection Indicial tensor calculus
 
 @c @node diff
 @c @unnumberedsec phony
@@ -1037,7 +1038,7 @@ exactly one derivative index.
 
 @end defun
 
-@section Tensors in curved spaces
+@subsection Tensors in curved spaces
 
 @c @node imetric
 @c @unnumberedsec phony
@@ -1184,7 +1185,7 @@ curvature tensor using the @code{igeodesic_coords} function.
 
 @end defun
 
-@section Moving frames
+@subsection Moving frames
 
 MAXIMA now has the ability to perform calculations using moving frames.
 These can be orthonormal frames (tetrads, vielbeins) or an arbitrary frame.
@@ -1441,7 +1442,7 @@ Specifies how the frame bracket (@code{ifb}) is computed. Default is
 
 @end defvar
 
-@section Torsion
+@subsection Torsion
 
 MAXIMA can now take into account torsion and nonmetricity. When the flag
 @code{itorsion_flag} is set to @code{true}, the contribution of torsion
@@ -1605,7 +1606,7 @@ by the following example:
 
 @end defvar
 
-@section Interfacing with CTENSOR
+@subsection Interfacing with CTENSOR
 
 The ITENSOR package has the ability to generate MAXIMA code that can
 then be executed in the context of CTENSOR. The function that performs
@@ -1674,7 +1675,7 @@ do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
 
 @end defun
 
-@section Reserved Words
+@subsection Reserved Words
 
 The following MAXIMA words are used by the ITENSOR package internally and
 should not be redefined:
@@ -1695,7 +1696,7 @@ should not be redefined:
 
 @end example
 
-@section Developer's Notes
+@subsection Developer's Notes
 
 I added support for moving frames, torsion, and nonmetricity to ITENSOR
 in November, 2004. I reconstructed this functionality based on the
