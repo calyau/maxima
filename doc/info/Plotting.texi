@@ -72,11 +72,12 @@ and finally we plot this together with an ordinary function of X.
 
 
 @example
-(%i1) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2]]);
+(%i1) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2],
+        [nticks,80]]);
 (%i2) plot2d([parametric,cos(t),sin(t),[t,-%pi*2,%pi*2],
         [nticks,8]]);
-(%i3) plot2d([x^3+2,[parametric,cos(t),sin(t),[t,-5,5]]],
-        [x,-3,3]);
+(%i3) plot2d([x^3+2,[parametric,cos(t),sin(t),[t,-5,5],
+        [nticks,80]]],[x,-3,3]);
 @end example
 
 See PLOT_OPTIONS for more examples.
@@ -418,7 +419,7 @@ as the first argument to plot3d.  An additional optional argument
 y direction.
 
 @example
-/* REal part of z ^ 1/3 */
+/* Real part of z ^ 1/3 */
  plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
      ['grid,12,80],['PLOT_FORMAT,ps],
      ['TRANSFORM_XY,POLAR_TO_XY],['VIEW_DIRECTION,1,1,1.4],
@@ -541,10 +542,10 @@ PSCURVE.   Here is the definition:
 
 @end example
 
- ?DRAW2D  may also be used to produce a list
-@example
- points1:?draw2d(1/x,[.05,10],.03) 
-@end example
+@c ?DRAW2D  may also be used to produce a list
+@c @example
+@c  points1:?draw2d(1/x,[.05,10],.03) 
+@c @end example
 
 
 @end defun
