@@ -1,0 +1,23 @@
+defsystem.lisp is a slightly modified version of mk:defsystem from
+CLOCC, <http://clocc.sourceforge.net>. This file contains instructions
+for applying CLOCC updates to defsystem.lisp.
+
+1) Get difference between current defsystem.lisp and the clocc version
+   it is based on.
+   
+   diff -c defsystem.lisp-clocc defsystem.lisp > ds.diff
+
+2) Get the new version of defsystem.lisp from
+   clocc.sourceforge.net. Call it defsystem.lisp-new.
+
+3) Replace *both* defsystem.lisp and defsystem.lisp-clocc with
+   defsystem.lisp-new.
+
+   cp defsystem.lisp-new defsystem.lisp
+   cp defsystem.lisp-new defsystem.lisp-clocc
+
+4) Apply the patch from step (1).
+   
+   patch < ds.diff
+
+5) Make sure to commit both defsystem.lisp and defsystem.lisp-clocc.
