@@ -407,5 +407,6 @@ ode1_abel2(eq,y,x) := block(
 
   /* Just substitute regardless.  Is s is false or [] then ok */
   s:subst(1/(g1*y+g0),v,s),
-  ode_disp2("  s: ",s)
+  ode_disp2("  s: ",s),
+  s
 )$
