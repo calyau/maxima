@@ -1,3 +1,11 @@
+2003-02-09 20:57  amundson
+
+	* NEWS: Updated for release
+
+2003-02-09 17:40  amundson
+
+	* ChangeLog: ChangeLog updated by cvs2cl.pl.
+
 2003-02-09 17:36  amundson
 
 	* configure.in: Update version to 5.9.0. (Gulp...)
