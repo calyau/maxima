@@ -357,7 +357,7 @@
 
 (defun tex-bigfloat (x l r) (fpformat x))
 
-(defprop mprog "\\mathbf{block}\\>" texword)
+(defprop mprog "\\mathbf{block}\\;" texword)
 (defprop %erf "\\mathrm{erf}" texword)
 (defprop $erf "\\mathrm{erf}" texword) ;; etc for multicharacter names
 (defprop $true  "\\mathbf{true}"  texword)
@@ -390,6 +390,7 @@
 (defprop $beta "\\beta" texword)
 (defprop $gamma "\\gamma" texword)
 (defprop %gamma "\\Gamma" texword)
+(defprop $%gamma "\\gamma" texword)
 (defprop $delta "\\delta" texword)
 (defprop $epsilon "\\varepsilon" texword)
 (defprop $zeta "\\zeta" texword)
@@ -472,6 +473,8 @@
 		   (doit (and
 			  f ; there is such a function
 			  (memq (getchar f 1) '(% $)) ;; insist it is a % or $ function
+                          (not (eq (car (last (car fx))) 'array)) ; fix for x[i]^2
+                              ; Jesper Harder <harder@ifa.au.dk>
                           (not (memq f '(%sum %product %derivative %integrate %at
 					      %lsum %limit))) ;; what else? what a hack...
 			  (or (and (atom expon) (not (numberp expon))) ; f(x)^y is ok
@@ -585,12 +588,12 @@
   (let ((s1 (tex (cadr x) nil nil 'mparen 'mparen));;integrand delims / & d
 	(var (tex (caddr x) nil nil 'mparen rop))) ;; variable
        (cond((= (length x) 3)
-	     (append l `("\\int {" ,@s1 "}{\\>d" ,@var "}") r))
+	     (append l `("\\int {" ,@s1 "}{\\;d" ,@var "}") r))
 	    (t ;; presumably length 5
 	       (let ((low (tex (nth 3 x) nil nil 'mparen 'mparen))
 		     ;; 1st item is 0
 		     (hi (tex (nth 4 x) nil nil 'mparen 'mparen)))
-		    (append l `("\\int_{" ,@low "}^{" ,@hi "}{" ,@s1 "\\>d" ,@var "}") r))))))
+		    (append l `("\\int_{" ,@low "}^{" ,@hi "}{" ,@s1 "\\;d" ,@var "}") r))))))
 
 (defprop %limit tex-limit tex)
 
@@ -630,13 +633,12 @@
 
 (defun tex-choose (x l r)
   `(,@l
-    "{"
+    "\\pmatrix{"
     ,@(tex (cadr x) nil nil 'mparen 'mparen)
-    "\\choose "
+    "\\\\"
     ,@(tex (caddr x) nil nil 'mparen 'mparen)
     "}"
     ,@r))
-
 
 (defprop rat tex-rat tex)
 (defprop rat 120. tex-lbp)
@@ -830,12 +832,12 @@
 
 (defun tex-mcond (x l r)
   (append l
-    (tex (cadr x) '("\\mathbf{if}\\>")
-      '("\\>\\mathbf{then}\\>") 'mparen 'mparen)
+    (tex (cadr x) '("\\mathbf{if}\\;")
+      '("\\;\\mathbf{then}\\;") 'mparen 'mparen)
     (if (eql (fifth x) '$false)
       (tex (caddr x) nil r 'mcond rop)
       (append (tex (caddr x) nil nil 'mparen 'mparen)
-        (tex (fifth x) '("\\>\\mathbf{else}\\>") r 'mcond rop)))))
+        (tex (fifth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))))
 
 (defprop mdo tex-mdo tex)
 (defprop mdo 30. tex-lbp)
@@ -849,10 +851,10 @@
 ;; these aren't quite right
 
 (defun tex-mdo (x l r)
-  (tex-list (texmdo x) l r "\\>"))
+  (tex-list (texmdo x) l r "\\;"))
 
 (defun tex-mdoin (x l r)
-  (tex-list (texmdoin x) l r "\\>"))
+  (tex-list (texmdoin x) l r "\\;"))
 
 (defun texmdo (x)
    (nconc (cond ((second x) `("\\mathbf{for}" ,(second x))))
@@ -882,7 +884,46 @@
 (defprop mlable tex-mlable tex)
 (defprop spaceout tex-spaceout tex)
 
-(defun tex-mtext (x l r) (tex-list (cdr x) l r ""))
+;; Additions by Marek Rychlik (rychlik@u.arizona.edu)
+;; This stuff handles setting of LET rules
+
+(defprop | --> | "\\longrightarrow " texsym)
+(defprop | WHERE | "\\;\\mathbf{where}\\;}" texsym)
+
+(defprop &>= ("\\ge ") texsym)
+(defprop &>= tex-infix tex)
+
+(defprop &> (">") texsym)
+(defprop &> tex-infix tex)
+
+(defprop &<= ("\\le ") texsym)
+(defprop &<= tex-infix tex)
+
+(defprop &< ("<") texsym)
+(defprop &< tex-infix tex)
+
+(defprop &= ("=") texsym)
+(defprop &= tex-infix tex)
+
+(defprop |&#| ("\\ne ") texsym)
+(defprop |&#| tex-infix tex)
+
+;; handles portrayal of rules, e.g.
+;; let(abs(x),x, ">" , x, 0);
+;; results in
+;; ((MTEXT SIMP) ((MABS SIMP) |$x|) | --> | |$x| | WHERE | ((&> SIMP) |$x| 0))
+
+(defun tex-mtext (x l r)
+  (tex-list (list* (cadr x)
+                 (texsym (caddr x))
+                 (cadddr x)
+                 (cond ((cddddr x)
+                        (list*
+                         (texsym (caddddr x))
+                         (cdddddr x)))))
+          l r ""))
+
+;; end of additions by Marek Rychlik
 
 (defun tex-mlable (x l r)
   (tex (caddr x)
