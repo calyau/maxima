@@ -91,6 +91,7 @@
 				   (:file "fdump")
 				   (:file "j4save")
 				   (:file "initds")
+				   (:file "xgetua")
 				   (:file "xermsg")
 				   (:file "xercnt")
 				   (:file "xerhlt")
