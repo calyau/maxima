@@ -1,3 +1,26 @@
+2002-10-29 12:47  amundson
+
+	* doc/info/Makefile.am: Automake can cause trouble if generated
+	make files are not included in tarball. Include maximahtml.mk in
+	tarball.
+
+2002-10-29 12:46  amundson
+
+	* maxima.spec.in: Previous version had an ugly hack to create
+	uncompressed info files. The hack caused info files to be deleted
+	when upgrading the RPMS.
+	
+	We now have a new ugly (but less ugly!) hack to avoid compressing
+	the info files.
+
+2002-10-29 12:43  amundson
+
+	* configure.in: Update for rc3.
+
+2002-10-28 15:28  amundson
+
+	* ChangeLog: ChangeLog updated by cvs2cl.pl.
+
 2002-10-28 12:22  amundson
 
 	* doc/info/Makefile.am: Last minute packaging problem discovered
