@@ -558,6 +558,8 @@ If @var{lbp} is equal to @var{rbp}, @var{op} is left-associative.
 
 See also @code{Syntax}.
 
+Examples:
+
 @itemize @bullet
 @item
 If the left and right binding powers of @var{op} are both greater
@@ -565,15 +567,15 @@ the left and right binding powers of some other operator,
 then @var{op} takes precedence over the other operator.
 @end itemize
 @example
-(%i1) "@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
 (%i2) :lisp (get '$+ 'lbp)
 100
 (%i2) :lisp (get '$+ 'rbp)
 100
-(%i2) infix ("@", 101, 101)$
+(%i2) infix ("@@", 101, 101)$
 (%i3) 1 + a@@b + 2;
 (%o3)                       (a,b) + 3
-(%i4) infix ("@", 99, 99)$
+(%i4) infix ("@@", 99, 99)$
 (%i5) 1 + a@@b + 2;
 (%o5)                       (a+1,b+2)
 @end example
@@ -584,11 +586,11 @@ Greater @var{lbp} makes @var{op} right-associative,
 while greater @var{rbp} makes @var{op} left-associative.
 @end itemize
 @example
-(%i1) "@"(a, b) := sconcat("(", a, ",", b, ")")$
-(%i2) infix ("@", 100, 99)$
+(%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
+(%i2) infix ("@@", 100, 99)$
 (%i3) foo @@ bar @@ baz;
 (%o3)                    (foo,(bar,baz))
-(%i4) infix ("@", 100, 101)$
+(%i4) infix ("@@", 100, 101)$
 (%i5) foo @@ bar @@ baz;
 (%o5)                    ((foo,bar),baz)
 @end example
