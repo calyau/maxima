@@ -702,7 +702,7 @@
 	     w2 (f+ 2 w2 width) h2 (max h2 height) d2 (f+ d2 depth)))
      (setq num (nformat-check (addn num t)))
      (cond ((equal 1 num) (setq num (list #\d) w1 1 h1 1 d1 0))
-	   (t (setq num (dimension-superscript (list '(diff) '|d| num) nil)
+	   (t (setq num (dimension-superscript (list '(diff) #\d num) nil)
 		    w1 width h1 height d1 depth)))
      (cond ((atom (setq form (nformat-check (cadr form))))
 	    (setq num (dimension form num '%deriv 'mparen nil 0) w1 (f+ w1 width))
