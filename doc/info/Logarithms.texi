@@ -137,9 +137,3 @@ logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 @end deffn
 
-@deffn {function} polarform (exp)
-returns @code{r*%e^(%i*theta)} where @code{r} and @code{theta} are purely
-real.
-
-@end deffn
-

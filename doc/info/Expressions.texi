@@ -187,6 +187,14 @@ and in the @code{dpart} and @code{lpart} functions.
 
 @end defvar
 
+@defun carg (@var{z})
+Returns the complex argument of @var{z}.
+The complex argument is an angle @code{theta} in @code{[-%pi, %pi]}
+such that @code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
+
+See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
+@code{realpart}, and @code{imagpart}.
+
 @deffn {special operator} constant
 Makes ai a constant as is @code{%pi}.
 
@@ -1012,6 +1020,13 @@ functions.  It is set during the execution of the function and thus
 may be referred to in the function itself.
 
 @end defvar
+
+@deffn {function} polarform (@var{expr})
+Returns @code{r*%e^(%i*theta)} where @code{r} and @code{theta} are purely
+real.
+
+@end deffn
+
 
 @defun powers (expr, var)
 Gives the powers of var occuring in @code{expr}.  To use
