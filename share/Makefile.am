@@ -42,7 +42,6 @@ algebra/differ.mac\
 algebra/gcdex.mac\
 algebra/grob1.lisp\
 algebra/nusum.mac\
-algebra/nusum.usg\
 algebra/recur.dem\
 algebra/recur.lisp\
 algebra/recur.mac\
