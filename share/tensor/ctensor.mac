@@ -1493,7 +1493,132 @@ psi(disp):=block
   done
 );
 
-/* Compute the Petrov-classification of the metric */
+/* Compute the Petrov-classification of the metric; algorithm based on
+   Classifying geometries in general relativity: III Classification in practice
+   by Pollney, Skea, d'Inverno, Class. Quant. Grav. 17 2885-2992 (2000)
+
+   The algoritm has been optimized to compute only quantities that are
+   required for a specific (sub)case. As of 12/19/2004, it is essentially
+   untested, may even contain typos in some expressions.
+*/
+petrov():=block
+(
+  [
+    T:[   0,'N,'II,'III, 'D,'II,'II, 7,
+        'II,'I, 'I,  11,'II, 13, 14,15,
+         'N,'I, 'I,  19,'II, 21, 13,23,
+       'III,19, 11,  27,  7, 23, 15,31],
+    P:1
+  ],
+
+  if psi[4]#0 then P:P+1,
+  if psi[3]#0 then P:P+2,
+  if psi[2]#0 then P:P+4,
+  if psi[1]#0 then P:P+8,
+  if psi[0]#0 then P:P+16,
+
+  if numberp(T[P]) and T[P]>0 then
+  (
+    if T[P]=7 then
+      if ratsimp(psi[3]^2-3*psi[2]*psi[4])=0 then 'D
+      else 'II
+    else if T[P]=11 then
+      if ratsimp(27*psi[4]^2*psi[1]+64*psi[3]^3)=0 then 'II
+      else 'I
+    else if T[P]=13 then
+      if ratsimp(psi[1]^2*psi[4]+2*psi[2]^3)=0 then 'II
+      else 'I
+    else if T[P]=14 then
+      if ratsimp(9*psi[2]^2-16*psi[1]*psi[3])=0 then 'II
+      else 'I
+    else if T[P]=15 then
+      if ratsimp(3*psi[2]^2-4*psi[1]*psi[3])=0 and
+         ratsimp(psi[2]*psi[3]-3*psi[1]*psi[4])=0 then 'II
+      else 'I
+    else if T[P]=19 then
+      if ratsimp(psi[0]*psi[4]^3-27*psi[3]^4)=0 then 'II
+      else 'I
+    else if T[P]=21 then
+      if ratsimp(9*psi[2]^2-psi[4]^2) then 'D
+      else 'I
+    else if T[P]=23 then block
+    (
+      [I:ratsimp(psi[0]*psi[4]+3*psi[2]^2)],
+      if I=0 and ratsimp(4*psi[2]*psi[4]-3*psi[3]^2)=0 then 'III
+      else block
+      (
+        [J:ratsimp(4*psi[2]*psi[4]-3*psi[3]^2)],
+        if ratsimp(psi[4]*I^2-3*J*(psi[0]*J-2*psi[2]*I))=0 then 'II
+        else 'I
+      )
+    )
+    else if T[P]=27 then
+      if ratsimp(psi[0]*psi[3]^2-psi[1]^2*psi[4])=0 then
+        if ratsimp(psi[0]*psi[4]+2*psi[1]*psi[3])=0 then 'D
+        else if ratsimp(psi[0]*psi[4]-16*psi[1]*psi[3])=0 then 'II
+        else 'I
+      else block
+      (
+        [I:ratsimp(psi[0]*psi[4]+2*psi[1]*psi[3])],
+        if I=0 then block
+        (
+          [J:ratsimp(-psi[0]*psi[3]^2-psi[1]^2*psi[4])],
+          if J=0 then 'III
+          else if ratsimp(I^3-27*J^2)=0 then 'II
+          else 'I
+        )
+        else 'I
+      )
+    else block
+    (
+      [H:ratsimp(psi[0]*psi[2]-psi[1]^2)],
+      if H=0 then
+        if ratsimp(psi[0]*psi[3]-psi[1]*psi[2])=0 then
+          if ratsimp(psi[0]*psi[4]-psi[2]^2)=0 then 'N
+          else 'I
+        else block
+        (
+          [E:ratsimp(psi[0]*psi[4]-psi[2]^2)],
+          if E=0 then
+            if ratsimp(37*psi[2]^2+27*psi[1]*psi[3])=0 then 'II
+            else 'I
+          else block
+          (
+            [
+              A:ratsimp(psi[1]*psi[3]+psi[2]^2),
+              I:ratsimp(E-4*A)
+            ],
+            if I#0 and ratsimp(I^3-27*(psi[4]*H-psi[3]^2*psi[0]+
+                               psi[1]*psi[2]*psi[3]+psi[2]*A)^2)=0 then 'II
+            else 'I
+          )
+        )
+        else block
+        (
+          [I:ratsimp(psi[0]*psi[4]-psi[2]^2-4*(psi[1]*psi[3]+psi[2]^2))],
+          if I=0 then
+            if ratsimp(psi[4]*H-psi[3]^2*psi[0]+psi[1]*psi[2]*psi[3]+
+                       psi[2]*(psi[1]*psi[3]+psi[2]^2))=0 then 'III
+            else 'I
+          else
+            if ratsimp(psi[0]^2*psi[3]-psi[0]*psi[1]*psi[2]-2*psi[1]*H)=0 then
+              if ratsimp(psi[0]^2*I-12*H^2)=0 then 'D
+              else if ratsimp(psi[0]^2*I-3*H^2)=0 then 'II
+              else 'I
+            else block
+            (
+              [J:ratsimp(psi[4]*H-psi[3]^2*psi[0]+psi[1]*psi[2]*psi[3]+
+                         psi[2]*(psi[1]*psi[3]+psi[2]^2))],
+              if J#0 and ratsimp(I^3-27*J^2)=0 then 'II
+              else 'I
+            )
+        )
+    )
+  )
+  else T[P]
+);
+
+/* Old algorithm by anonymous, intended for diagonal metrics
 petrov():=block
 (
   [ii,jj,gg,hh],
@@ -1523,12 +1648,11 @@ petrov():=block
     else
     (
       hh:ratsimp(psi[0]*psi[2]-psi[1]^2),
-/*      if ratsimp(gg-psi[0]^2*ii-12*hh^2)#0 then "Type is II"*/
       if ratsimp(gg-(psi[0]^2*ii-12*hh^2))#0 then "Type is II"
       else "Type is D"
     )
   )
-)$
+)$*/
 
 frame_bracket(fr,fri,diagframe):=
 (
