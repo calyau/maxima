@@ -47,11 +47,11 @@ goto continueparseargs
 :endparseargs
 
 if "%MAXIMA_LAYOUT_AUTOTOOLS%" == "" goto defaultlayout
-set layout_autotools="true"
+set layout_autotools=true
 goto endlayout
 
 :defaultlayout
-set layout_autotools="@default_layout_autotools@"
+set layout_autotools=@default_layout_autotools@
 
 :endlayout
 
@@ -98,6 +98,3 @@ goto end
 goto end
 
 :end
-
-
-
