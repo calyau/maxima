@@ -596,6 +596,13 @@
 		    (REVERSE (CDR E))
 		    (CDR E))))))
 
+;;; These functions implement the Macsyma functions $op and $operatorp.
+;;; Dan Stanger
+(defmfun $op (expr) ($part expr 0))
+
+(defmfun $operatorp (expr oplist)
+   (if ($listp oplist) ($member ($op expr) oplist) (equal ($op expr) oplist)))
+
 (DEFMFUN $PART N (MPART (LISTIFY N) NIL NIL $INFLAG '$PART))
 
 (DEFMFUN $INPART N (MPART (LISTIFY N) NIL NIL T '$INPART))

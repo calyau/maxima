@@ -612,6 +612,21 @@ count as just one term regardless of how many terms E has (if it is a
 sum).
 
 @end defun
+@c @node OP, OPERATORP, NTERMS, Expressions
+@c @unnumberedsec phony
+@defun OP (exp)
+Returns the operator of the expression, and functions the same way as
+PART(exp,0).  It observes the setting of the INPART flag.  It may not
+return the same value as the commercial Macsyma.
+
+@end defun
+@c @node OPERATORP, OPTIMIZE, OP, Expressions
+@c @unnumberedsec phony
+@defun OPERATORP (exp, ool)
+Uses OP to get the operator of the expression and either compares it to ool,
+if it is a operator, or checks if it is a member of ool if it is a list.
+
+@end defun
 @c @node OPTIMIZE, OPTIMPREFIX, NTERMS, Expressions
 @c @unnumberedsec phony
 @defun OPTIMIZE (exp)
