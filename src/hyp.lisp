@@ -1535,7 +1535,7 @@
 			 (power '$%e (div var 2))
 			 (whitfun k m var))))
 	   (t
-	    (fpqform l1 l2 var)))))
+	    (return (fpqform l1 l2 var))))))
 
 ;; Return sqrt(%pi)*erf(%i*sqrt(x))/2/(%i*sqrt(x))
 (defun hyprederf (x)
