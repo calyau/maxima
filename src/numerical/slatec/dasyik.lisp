@@ -1,8 +1,8 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:36
+;;; Compiled by f2cl version 2.0 beta on 2002/04/26 at 12:16:51
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
-;;;           (:array-slicing nil) (:declare-common nil)
+;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
 (in-package "SLATEC")
@@ -80,7 +80,7 @@
   (f2cl-lib:fset (f2cl-lib:fref c (64) ((1 65))) -13886.089753716999)
   (f2cl-lib:fset (f2cl-lib:fref c (65) ((1 65))) 110.01714026924701)
   (defun dasyik (x fnu kode flgik ra arg in y)
-    (declare (type (simple-array double-float (*)) y)
+    (declare (type (array double-float (*)) y)
              (type f2cl-lib:integer4 in kode)
              (type double-float arg ra flgik fnu x))
     (f2cl-lib:with-array-data (y-%data% y-%offset% y)
