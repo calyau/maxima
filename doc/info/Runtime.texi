@@ -96,46 +96,31 @@ the same information.
 @end defun
 @c @node STATUS
 @c @unnumberedsec phony
-@defun STATUS (arg)
-will return miscellaneous status information about the
-user's MACSYMA depending upon the arg given.  Permissible arguments
-and results are as follows:
+@defun STATUS (FEATURE)
+@defunx STATUS (FEATURE, putative_feature)
+@defunx STATUS (STATUS)
+Returns information about the presence or absence of certain
+system-dependent features.
 @itemize @bullet
 @item
-TIME - the time used so far in the computation.
+STATUS (FEATURE) returns a list of system features.
+These include Lisp version, operating system type, etc.
+The list may vary from one Lisp type to another.
+@item STATUS (FEATURE, putative_feature) returns TRUE if putative_feature
+is on the list of items returned by STATUS (FEATURE) and FALSE otherwise.
+A feature whose name contains a special character, such as a hyphen,
+must be given as a string argument. For example,
+@example
+STATUS (FEATURE, "ANSI-CL");
+@end example
 @item
-DAY - the day of the week.
-@item
-DATE - a list of the year, month, and day.
-@item
-DAYTIME - a list of the hour, minute, and second.
-@item
-RUNTIME - accumulated cpu time times the atom "MILLISECONDS" in the current
-   MACSYMA.  
-@item
-REALTIME - the real time (in sec) elapsed since the user started up
-   his MACSYMA.
-@item
-GCTIME - the garbage collection time used so far in the current
-   computation.
-@item
-TOTALGCTIME - gives the total garbage collection time used in MACSYMA
-   so far.
-@item
-FREECORE - the number of blocks of core your MACSYMA can expand
-   before it runs out of address space.  (A block is 1024 words.)
-   Subtracting that value from 250*BLOCKS (the maximum you can get on MC)
-   tells you how many blocks of core your MACSYMA is using up.  (A
-   MACSYMA with no "fix" file starts at approx. 191 blocks.)
-@item
-FEATURE - gives you a list of system features. At present the list for
-   MC is: MACSYMA, NOLDMSG, MACLISP, PDP10, BIGNUM, FASLOAD, HUNK,
-   FUNARG, ROMAN, NEWIO, SFA, PAGING, MC, and ITS.  Any of these
-   "features" may be given as a second argument to STATUS(FEATURE,...);
-   If the specified feature exists, TRUE will be returned, else FALSE.
-   Note: these are system features, and not really "user related".
+STATUS (STATUS) returns a two-element list [FEATURE, STATUS].
+FEATURE and STATUS are the two arguments accepted by the STATUS function;
+it is unclear if this list has additional significance.
 @end itemize
-For information about your files, see the FILEDEFAULTS(); command.
+
+The variable FEATURES contains a list of features which apply to 
+mathematical expressions. See FEATURES and FEATUREP for more information.
 
 @end defun
 @c @node TIME
