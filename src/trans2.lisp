@@ -20,7 +20,7 @@
 
 (transl-module trans2)
 
-(def%tr $random (form) `($fixnum . (random ,@(tr-args (cdr form)))))
+(def%tr $random (form) `($fixnum . ($random ,@(tr-args (cdr form)))))
 
 (def%tr mequal (form)
   `($any . (simplify (list '(mequal) ,@(tr-args (cdr form))))))
