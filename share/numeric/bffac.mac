@@ -1,0 +1,147 @@
+/* Author: Bill Gosper */
+
+/*
+  Generated from bffac.lisp with the commands
+
+  load("bffac.lisp");
+  bffac_functions:[OBFAC,AZETB,VONSCHTOONK,DIVRLST,BURN,OBZETA,BZETA,
+  BFPSI,BFFAC,BFHZETA,CBFFAC,BFPSI0,BFZETA];
+  apply(stringout,cons("bffac.mac",map('fundef,bffac_functions))),grind:true;
+*/
+
+OBFAC(Z,FPPREC):=BLOCK([PRODHACK:TRUE,Y:Z-ENTIER(Z),X:ENTIER(7*FPPREC/3),M:0],
+      FOR K FROM ENTIER(26*FPPREC/3) STEP -1 THRU 1 DO M:X*(1/(Y+K)-M/K),
+      BFLOAT(M)*X^Y*PRODUCT(Z-I+1,I,1,ENTIER(Z)));
+AZETB(S,FPP):=BLOCK([FPPREC:15],
+      IF S > 0
+	  THEN BLOCK([M:0,
+		      P:PRINT(ENTIER(LOG(
+				      BFLOAT(2*%PI)^S
+				       *BFLOAT(10)^(FPP:ENTIER(FPP))
+				       /BFLOAT(%PI*(S-1)!))
+				      /BFLOAT(2*%PI)))],FPPREC:FPP,
+		     FOR K FROM ENTIER(EV(%PI*P,NUMER)) STEP -1 THRU 0 DO
+			 M:(S+2*K)*(S+2*K-1)*M/((2*K+1)*(2*K+2)*P^2)
+			   +P*BERN(2*K)/(S-1),(1/2+M)/P^S+SUM(K^-S,K,1,P-1),
+		     BFLOAT(%\%))
+	  ELSE (IF S = 0 THEN -1/2
+		    ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFAC(-S,FPPREC)
+				   *BZETA(1-S,FPPREC)
+			   /%PI,BFLOAT(%\%))));
+VONSCHTOONK(P):=APPLY("*",
+	    SUBST(["*" = LAMBDA([[L]],1),"^" = LAMBDA([[L]],1)],
+		  FACTOR(1+DIVRLST(P))));
+DIVRLST(P):=(
+	ARGS(EXPAND(RATSIMP(SUBST("^" = LAMBDA([A,B],
+					       (1-PART(A)^(B/2+1))
+						/(1-PART(A))),FACTOR(P^2))))),
+	EV(%\%,PART));
+BURN(P):=IF EVENP(P)
+      THEN BLOCK([D:VONSCHTOONK(P)],
+		 BLOCK([FPPREC:ENTIER(EV(
+				       (LOG(8*%PI*P)/2+P*(LOG(P/(2*%PI))-1)
+						      +2*LOG(D))
+					/LOG(10),NUMER))
+			       +1],
+		       BLOCK([PI:BFLOAT(%PI)],
+			     ENTIER(2*D*P!*BFZETA(P,FPPREC)/(2^P*PI^P)+1/2)
+			      /D)))
+      *(-1)^(P/2-1) ELSE BERN(P);
+OBZETA(S,FPPREC):=IF S > 0
+        THEN BLOCK([M:0,
+		    P:ENTIER(EV((LOG(2*%PI)*S+LOG(10)*FPPREC-LOG(%PI*(S-1)!))
+				 /(2*%PI),NUMER))],
+		   FOR K FROM ENTIER(EV(%PI*P,NUMER)) STEP -1 THRU 0 DO
+		       M:(S+2*K)*(S+2*K-1)*M/((2*K+1)*(2*K+2)*P^2)
+			 +P*BERN(2*K)/(S-1),(1/2+M)/P^S+SUM(K^-S,K,1,P-1),
+		   BFLOAT(%\%))
+        ELSE (IF S = 0 THEN -1/2
+		  ELSE ?DOLIST((2*%PI)^S*SIN(%PI*S/2)*BFAC(-S,FPPREC)
+					*BZETA(1-S,FPPREC)
+				/%PI,BFLOAT(%\%)));
+BZETA(S,FPP):=IF S > 0
+       THEN BLOCK([FPPREC:7,M:0,T:0.0B0,P,
+		   K:2*MAX(1,
+			   ENTIER(EV(3/2-(S-1/2)*LOG(S/(2*%PI))+LOG(10)*FPP
+					-LOG(%PI),NUMER)
+				   /2))],
+		  P:1+ENTIER(BFLOAT((2*10^FPP*PRODUCT(S+K-I-2,I,0,K-2)
+				     /(2*3.14159265B0)^K)
+				     ^(1.0B0/(S+K-1)))),FPPREC:FPP,
+		  FOR K FROM K/2 STEP -1 THRU 0 DO
+		      M:(S+2*K)*(S+2*K-1)*M/((2*K+1)*(2*K+2)*P^2)
+			+P*BERN(2*K)/(S-1),
+		  IF S < 25 THEN T:SUM(K^-S,K,1,P-1)
+		      ELSE FOR K FROM P-1 STEP -1 THRU 1 DO
+			       (FPPREC:FPP-ENTIER(EV(S*LOG(K)/LOG(10),NUMER)),
+				T:T+K^-S),BFLOAT((1/2+M)/P^S+T))
+       ELSE (IF S = 0 THEN -1/2
+		 ELSE ((2*%PI)^S*SIN(%PI*S/2)*BFAC(-S,FPPREC)
+				*BZETA(1-S,FPPREC)
+			/%PI,BFLOAT(%\%)));
+BFPSI(N,Z,FPPREC):=IF EQUAL(N,0) THEN BFPSI0(Z,FPPREC)
+       ELSE BFHZETA(N+1,Z,FPPREC)*(-1)^(N-1)*N!;
+BFFAC(Z,FPPREC):=IF Z < 0 THEN BFLOAT(%PI*Z/SIN(%PI*Z))/BFFAC(-Z,FPPREC)
+       ELSE BLOCK([K:2*(ENTIER(0.41*FPPREC)+1)],
+		  BLOCK([M:1,Y:(Z+K)^2,X:0.0B0],
+			FOR I THRU K/2 DO
+			    (M:M*(Z+2*I-1)*(Z+2*I),
+			     X:(X+BERN(K-2*I+2)/((K-2*I+1)*(K-2*I+2)))/Y),
+			BFLOAT(SQRT(2)*SQRT(%PI)*SQRT(Z+K)
+				      *%E^((Z+K)*(LOG(Z+K)+X-1)))
+			 /M));
+BFHZETA(S,H,FPPREC):=IF S > 0
+	 THEN BLOCK([M:0,P,
+		     Q:ENTIER(EV((-LOG(%PI*(S-1)!)+LOG(2*%PI)*S
+						  +LOG(10)*FPPREC)
+				  /(2*%PI)
+				  -H+1,NUMER))
+		       +H],P:MAX(Q,H+1),
+		    FOR K FROM ENTIER(EV(%PI*Q,NUMER)) STEP -1 THRU 0 DO
+		        M:M*(S+2*K-1)*(S+2*K)/((2*K+1)*(2*K+2)*(P-1)^2)
+			  +BERN(2*K)*(P-1)/(S-1),
+		    (M+1/2)/(P-1)^S+SUM(1/(K+H)^S,K,0,ENTIER(P-H-1.9B0)),
+		    BFLOAT(%\%))
+	 ELSE (IF S = 0 THEN 1/2-H ELSE FUNMAKE('BFHZETA,[S,H,FPPREC]));
+CBFFAC(Z,FPPREC):=RECTFORM(
+       IF REALPART(Z:RECTFORM(Z)) < 0
+	   THEN BFLOAT(%PI*Z/SIN(%PI*Z))/CBFFAC(-Z,FPPREC)
+	   ELSE BLOCK([K:2*(ENTIER(0.41*FPPREC)+1)],
+		      BLOCK([M:1,Y:RECTFORM(1/(Z+K)^2),X:0.0B0],
+			    FOR I THRU K/2 DO
+			        (M:EXPAND(M*(Z+2*I-1)*(Z+2*I)),
+				 X:EXPAND(
+				   (X+BERN(K-2*I+2)/((K-2*I+1)*(K-2*I+2)))
+				    *Y)),
+			    BFLOAT(SQRT(2)*SQRT(%PI)*SQRT(Z+K)
+					  *%E^((Z+K)*(LOG(Z+K)+X-1)))
+			     /M)));
+BFPSI0(Z,FPPREC):=IF Z < 0 THEN BFLOAT(%PI*COT(%PI*Z))+BFPSI0(-Z,FPPREC)
+        ELSE BLOCK([K:2*(ENTIER(0.41*FPPREC)+1)],
+		   BLOCK([M:0,Y:(Z+K)^2,X:0.0B0],
+			 FOR I THRU K/2 DO
+			     (M:1/(Z+2*I-1)+1/(Z+2*I-2)+M,
+			      X:(X+BERN(K-2*I+2)/(K-2*I+2))/Y),
+			 BFLOAT(LOG(Z+K)-1/(2*(Z+K))-X-M)));
+BFZETA(S,FPP):=IF S > 0
+        THEN BLOCK([FPPREC:7,M:0,T:0.0B0,P,
+		    K:2*MAX(1,
+			    ENTIER(EV(-(S-1/2)*LOG(S/(2*%PI))
+				       +LOG(10)*FPP-LOG(%PI)+3/2,NUMER)
+				    /2))],
+		   P:ENTIER(BFLOAT(2^(1/(S+K-1))*10^(FPP/(S+K-1))
+						*PRODUCT(S+K-I-2,I,0,K-2)
+						 ^(1/(S+K-1))
+				    /6.2831853B0^(K/(S+K-1))))
+		     +1,FPPREC:FPP,
+		   FOR K FROM K/2 STEP -1 THRU 0 DO
+		       M:M*(S+2*K-1)*(S+2*K)/((2*K+1)*(2*K+2)*P^2)
+			 +BERN(2*K)*P/(S-1),
+		   IF S < 25 THEN T:SUM(1/K^S,K,1,P-1)
+		       ELSE FOR K FROM P-1 STEP -1 THRU 1 DO
+			        (FPPREC:FPP
+					-ENTIER(EV(LOG(K)*S/LOG(10),NUMER)),
+				 T:T+1/K^S),BFLOAT(T+(M+1/2)/P^S))
+        ELSE (IF S = 0 THEN -1/2
+		  ELSE (BFZETA(1-S,FPPREC)*%PI^(S-1)*2^S*BFAC(-S,FPPREC)
+					  *SIN(%PI*S/2),BFLOAT(%\%)));
