@@ -515,13 +515,16 @@
      (go loop)))
 
 
-(defun mull(l)
-  (cond ((null l) 1)(t (mul (car l)(mull (cdr l))))))
+;; Compute the product of the elements of the list L.
+(defun mull (l)
+  (cond ((null l) 1)
+	(t (mul (car l) (mull (cdr l))))))
 
 
+;; Add 1 to each element of the list L
 (defun incr1 (l)
   (cond ((null l) nil)
-	(t (append (list (add (car l) 1))(incr1 (cdr l))))))
+	(t (append (list (add (car l) 1)) (incr1 (cdr l))))))
 
 
 (defun dispatch-spec-simp (l1 l2)
@@ -1892,7 +1895,11 @@
 	   (t
 	    (return (fpqform l1 l2 var))))))
 
-;; Return sqrt(%pi)*erf(%i*sqrt(x))/2/(%i*sqrt(x))
+;; A&S 13.6.19:
+;; M(1/2,3/2,-z^2) =  sqrt(%pi)*erf(z)/2/sqrt(z)
+;;
+;; So M(1/2,3/2,z) = sqrt(%pi)*erf(sqrt(-z))/2/sqrt(-z)
+;;                 = sqrt(%pi)*erf(%i*sqrt(z))/2/(%i*sqrt(z))
 (defun hyprederf (x)
   (let ((x (mul '$%i (power x (inv 2)))))
     (mul (power '$%pi (inv 2))
@@ -1902,7 +1909,7 @@
 
 ;; M(a,c,z), where a-c is a negative integer.
 (defun erfgammared (a c z)
-  (cond ((and (nump a)(nump c))
+  (cond ((and (nump a) (nump c))
 	 (erfgamnumred a c z))
 	(t (gammareds a c z))))
 
@@ -1971,7 +1978,7 @@
   ;; M(a,c,z) where a-c is a negative integer.
   (let ((diff (sub c a)))
     (cond ((eql diff 1)
-	   ;; We have M(a,a+1,z)
+	   ;; We have M(a,a+1,z).
 	   (hypredincgm a z))
 	  ((eql a 1)
 	   ;; We have M(1,a,z)
@@ -1989,6 +1996,9 @@
 	   ;; So
 	   ;;
 	   ;; M(a,b,z) = [a*M(a+1,b,z) - (b-1)*M(a,b-1,z)]/(1+a-b);
+	   ;;
+	   ;; Thus, the difference between b and a is reduced, until
+	   ;; b-a=1, which we handle above.
 	   (mul (sub (mul a
 			  (gammareds (add 1 a) c z))
 		     (mul (sub c 1)
@@ -2155,8 +2165,15 @@
 	 (subst x 'yannis diff2))))
 
 ;; M(n+1/2,m+3/2,z), with n < 0 and m > 0
-(defun thno34
-    (n m x)
+;;
+;; Let p = -n.  Then we basically have M(-p+1/2,m+3/2,z).  If we apply
+;; Kummer's transformation, we get
+;;
+;;    M(-p+1/2,m+3/2,z) = exp(z)*M(m+p+1,m+3/2,-z)
+;;
+;; And we know how to compute M(m+p+1,m+3/2,z), so why don't we do
+;; that?  I don't really know how thno34 works.
+(defun thno34 (n m x)
   (subst x
 	 'yannis
 	 (mul (power -1 m)
@@ -2180,8 +2197,7 @@
 			   n)))))
 
 ;; M(n+1/2,m+3/2,z), with n < 0 and m < 0 
-(defun thno35
-    (n m x)
+(defun thno35 (n m x)
   (subst x
 	 'yannis
 	 (mul (div (power 'yannis (sub m (inv 2)))
@@ -2301,42 +2317,28 @@
 (defun splitpfq
     (l l1 l2)
   (prog(result prodnum proden count k a1 b1)
-     (setq result
-	   0
-	   prodnum
-	   1
-	   proden
-	   1
-	   count
-	   0
-	   k
-	   (cadr l)
-	   a1
-	   (car l)
-	   b1
-	   (sub a1 k))
-     (setq l1
-	   (zl-delete a1 l1 1)
-	   l2
-	   (zl-delete b1 l2 1)
-	   result
-	   (hgfsimp l1 l2 var))
+     (setq result 0
+	   prodnum 1
+	   proden 1
+	   count 0
+	   k (cadr l)
+	   a1 (car l)
+	   b1 (sub a1 k))
+     (setq l1 (zl-delete a1 l1 1)
+	   l2 (zl-delete b1 l2 1)
+	   result (hgfsimp l1 l2 var))
      loop
      (cond ((eq count k) (return result)))
-     (setq count
-	   (add1 count)
-	   prodnum
-	   (mul prodnum (mull l1))
-	   proden
-	   (mul proden (mull l2))
-	   result
-	   (add result
-		(mul (combin k count)
-		     (div prodnum proden)
-		     (power var count)
-		     (hgfsimp (setq l1 (incr1 l1))
-			      (setq l2 (incr1 l2))
-			      var))))
+     (setq count (add1 count)
+	   prodnum (mul prodnum (mull l1))
+	   proden (mul proden (mull l2))
+	   result (add result
+		       (mul (combin k count)
+			    (div prodnum proden)
+			    (power var count)
+			    (hgfsimp (setq l1 (incr1 l1))
+				     (setq l2 (incr1 l2))
+				     var))))
      (go loop)))
 
 (defun combin
