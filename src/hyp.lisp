@@ -1065,6 +1065,7 @@
 		    (inv (factorial l))
 		    (inv (factorial (+ n m)))
 		    (inv (factorial (+ m l)))
+		    (power (sub 1 'psey) (sub n l))
 		    ($diff (mul (power (sub 1 'psey) (+ m l))
 				($diff (mul (power  'psey  -1)
 					    -1

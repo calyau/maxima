@@ -325,3 +325,77 @@ hgfred([1,2],[3],z);
 
 hgfred([1,2],[3],z)-hgfred([2,1],[3],z);
 0$
+
+/*
+ * Test F(a,b;c;z) for some integral values of a,b,c.
+ * These can all be written in terms of F(1,1;2;z).
+ */
+
+/*
+ * A&S 15.2.6:
+ * diff((1-z)^(a+b-c)*F(a,b;c;z),z,n) = poch(c-a,n)*poch(c-b,n)/poch(c,n)*
+ *    (1-z)^(a+b-c-n)*F(a,b;c+n;z)
+ *
+ * With a=b=1 and c = 2, we have
+ *
+ * diff(F(1,1;2;z),z,n) = poch(1,n)*poch(1,n)/poch(2,n)*(1-z)^(-n)*F(1,1;2+n,z)
+ *
+ * And A&S 15.1.3 says F(1,1;2;z) = -log(1-z)/z.
+ *
+ * So F(1,1;2+n;z) = diff(F(1,1;2;z),z,n)*(1-z)^n*poch(2,n)/poch(1,n)/poch(1,n)
+ *
+ * F(1,1;3;z) = diff(F(1,1;2;z),z,1)*(1-z)*2/1!/1!
+ *            = 2*(1-z)*diff(F(1,1;2;z),z,1)
+ * F(1,1;4;z) = diff(F(1,1;2;z),z,2)*(1-z)^2*(2*3)/2!/2!
+ *            = 3/2*(1-z)^2*diff(F(1,1;2;z),z,2);
+ */
+
+hgfred([1,1],[3],z);
+2*(1/((1-z)*z)+log(1-z)/z^2)*(1-z)$
+
+hgfred([1,1],[4],z);
+3*(1/((1-z)^2*z)-2/((1-z)*z^2)-2*log(1-z)/z^3)*(1-z)^2/2$
+
+/*
+ * A&S 15.2.7:
+ * diff((1-z)^(a+n-1)*F(a,b;c;z),z,n) 
+ *    = (-1)^n*poch(a,n)*poch(c-b,n)/poch(c,n)*(1-z)^(a-1)*F(a+n,b;c+n;z)
+ *
+ * So
+ * F(a+n,b;c+n;z) = (-1)^n*poch(c,n)/poch(a,n)/poch(c-b,n)*(1-z)^(1-a)
+ *                  *diff((1-z)^(a+n-1)*F(a,b;c;z),z,n)
+ *
+ * Thus,
+ * F(1+n,1;2+n;z) = (-1)^n*poch(2,n)/n!/n!*diff((1-z)^n*F(1,1;2;z),z,n)
+ *
+ * F(2,1;3;z) = -1*2*diff((1-z)*F(1,1;2;z),z,1)
+ * F(3,1;4;z) = (2*3)/2!/2!*diff((1-z)^2*F(1,1;2;z),z,2)
+ */
+hgfred([2,1],[3],z);
+-2*(log(1-z)/z+1/z+log(1-z)*(1-z)/z^2)$
+
+hgfred([3,1],[4],z);
+3*(-2*log(1-z)/z-3/z-4*log(1-z)*(1-z)/z^2-2*(1-z)/z^2
+		       -2*log(1-z)*(1-z)^2/z^3)
+	/2$
+
+/*
+ * A&S 15.2.2:
+ * diff(F(a,b;c;z),z,n) = poch(a,n)*poch(b,n)/poch(c,n)*F(a+n,b+n;c+n;z)
+ *
+ * So 
+ *
+ * F(a+n,b+n;c+n;z) = poch(c,n)/poch(a,n)/poch(b,n)*diff(F(a,b;c;z),z,n)
+ *
+ * F(1+n,1+n;2+n;z) = poch(2,n)/n!/n!*diff(F(1,1;2;z),z,n)
+ *
+ * F(2,2;3;z) = 2*diff(F(1,1;2;z),z,1);
+ * F(3,3;4;z) = 2*3/2!/2!*diff(f(1,1;2;z),z,2)
+ */
+
+hgfred([2,2],[3],z);
+2*(1/((1-z)*z)+log(1-z)/z^2)$
+
+hgfred([3,3],[4],z);
+3*(1/((1-z)^2*z)-2/((1-z)*z^2)-2*log(1-z)/z^3)/2$
+
