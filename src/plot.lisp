@@ -110,7 +110,6 @@
 	  ($plot_format (or (member (nth 2 value) '($zic $geomview $ps
 							 $gnuplot
 							 $mgnuplot
-							 $zplot
 							 $openmath
 							 ))
 			    (merror "plot_format: only [gnuplot,mgnuplot,openmath,ps,geomview] are available"))
