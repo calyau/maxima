@@ -6,6 +6,9 @@
 %define enable_gcl 1
 %define gcl_flags --enable-gcl
 
+# Inhibit automatic compressing of info files.
+%define __spec_install_post /bin/true
+
 Summary: Maxima Symbolic Computation Program
 Name: maxima
 Version: @VERSION@
@@ -78,11 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/install-info %{_infodir}/maxima.info %{_infodir}/dir
-gunzip %{_infodir}/maxima*.gz >& /dev/null || /bin/true
 
 %postun
 /sbin/install-info --delete %{_infodir}/maxima.info %{_infodir}/dir
-rm %{_infodir}/maxima.info*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -91,8 +92,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 /usr/share/maxima/%{version}/*
 /usr/libexec/maxima/%{version}
-/usr/share/info/*.gz
-/usr/share/man/man1/maxima.1.gz
+/usr/share/info/*
+/usr/share/man/man1/maxima.1
 /usr/bin/maxima
 
 %files xmaxima
