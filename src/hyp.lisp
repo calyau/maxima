@@ -707,6 +707,7 @@
 			  (power (add z z) 2r+1)))))
      (go loop)))
 
+;; sqrt(2/(pi*z))
 (defun ctr(z)
   (power (div 2 (mul '$%pi z)) (inv 2)))
 
@@ -1898,47 +1899,109 @@
 	 (inv x)
 	 (list '(%erf) x))))
 
-;; M(a,c,z), where a-c is an integer
+;; M(a,c,z), where a-c is a negative integer.
 (defun erfgammared (a c z)
   (cond ((and (nump a)(nump c))
 	 (erfgamnumred a c z))
 	(t (gammareds a c z))))
 
-(defun gammareds
-    (a c z)
-  (prog(m numprod result count atemp)
+;; M(a,c,z) where a-c is a negative integer, and at least one of a or
+;; c is not a number.
+#+nil
+(defun gammareds (a c z)
+  (prog (m numprod result count atemp)
      (setq m (sub c a))
-     (cond ((eq m 1)(return (hypredincgm a z))))
-     (setq numprod
-	   (prod a m)
-	   count
-	   2
-	   atemp
-	   a
-	   result
-	   (sub (mul 2
-		     numprod
-		     (inv atemp)
-		     (hypredincgm atemp z))
-		(mul 2
-		     numprod
-		     (inv (setq atemp (add atemp 1)))
-		     (hypredincgm atemp z))))
+     ;; m = c - a
+     (cond ((eq m 1)
+	    ;; We have M(a,a+1,z)
+	    (return (hypredincgm a z))))
+     (setq numprod (prod a m)
+	   count 2
+	   atemp a
+	   result (sub (mul 2
+			    numprod
+			    (inv atemp)
+			    (hypredincgm atemp z))
+		       (mul 2
+			    numprod
+			    (inv (setq atemp (add atemp 1)))
+			    (hypredincgm atemp z))))
      loop
      (cond ((eq count m)(return result)))
-     (setq count
-	   (add1 count)
-	   atemp
-	   (add atemp 1)
-	   result
-	   (add result
-		(mul (power -1 count)
-		     (inv (factorial (sub m
-					  (sub1 count))))
-		     numprod
-		     (inv atemp)
-		     (hypredincgm atemp z))))
+     (setq count (add1 count)
+	   atemp (add atemp 1)
+	   result (add result
+		       (mul (power -1 count)
+			    (inv (factorial (sub m
+						 (sub1 count))))
+			    numprod
+			    (inv atemp)
+			    (hypredincgm atemp z))))
      (go loop)))
+
+;; I (rtoy) think this is what the function above is doing, but I'm
+;; not sure.  Plus, I think it's wrong.
+;;
+;; For hgfred([n],[2+n],-z), the above returns
+;;
+;; 2*n*(n+1)*z^(-n-1)*(%gammagreek(n,z)*z-%gammagreek(n+1,z))
+;;
+;; But from A&S 13.4.3
+;;
+;; -M(n,2+n,z) - n*M(n+1,n+2,z) + (n+1)*M(n,n+1,z) = 0
+;;
+;; so M(n,2+n,z) = (n+1)*M(n,n+1,z)-n*M(n+1,n+2,z)
+;;
+;; And M(n,n+1,-z) = n*z^(-n)*%gammagreek(n,z)
+;;
+;; This gives
+;;
+;; M(n,2+n,z) = (n+1)*n*z^(-n)*%gammagreek(n,z) - n*(n+1)*z^(-n-1)*%gammagreek(n+1,z)
+;;            = n*(n+1)*z^(-n-1)*(%gammagreek(n,z)*n-%gammagreek(n+1,z))
+;;
+;; So the version above is off by a factor of 2.  But I think it's more than that.
+;; Using A&S 13.4.3 again,
+;;
+;; M(n,n+3,-z) = [n*M(n+1,n+3,-z) - (n+2)*M(n,n+2,-z)]/(-2);
+;;
+;; The version above doesn't produce anything like this equation would
+;; produce, given the value of M(n,n+2,-z) derived above.
+(defun gammareds (a c z)
+  ;; M(a,c,z) where a-c is a negative integer.
+  (let ((diff (sub c a)))
+    (cond ((eql diff 1)
+	   ;; We have M(a,a+1,z)
+	   (hypredincgm a z))
+	  ((eql a 1)
+	   ;; We have M(1,a,z)
+	   ;; Apply Kummer's tranformation to get the form M(a-1,a,z)
+	   ;;
+	   ;; (I don't think we ever get here, but just in case, we leave it.)
+	   (let ((var z))
+	     (kummer (list a) (list c))))
+	  (t
+	   ;; We have M(a, a+n, z)
+	   ;;
+	   ;; A&S 13.4.3 says
+	   ;; (1+a-b)*M(a,b,z) - a*M(a+1,b,z)+(b-1)*M(a,b-1,z) = 0
+	   ;;
+	   ;; So
+	   ;;
+	   ;; M(a,b,z) = [a*M(a+1,b,z) - (b-1)*M(a,b-1,z)]/(1+a-b);
+	   (mul (sub (mul a
+			  (gammareds (add 1 a) c z))
+		     (mul (sub c 1)
+			  (gammareds a (sub c 1) z)))
+		(inv (sub (add 1 a) c)))))))
+
+;; A&S 6.5.12: 
+;; %gammagreek(a,x) = x^a/a*M(a,1+a,-x)
+;;                  = x^a/a*exp(-x)*M(1,1+a,x)
+;;
+;; where %gammagreek(a,x) is the incomplete gamma function.
+;;
+;; M(a,1+a,x) = a*(-x)^(-a)*%gammagreek(a,-x)
+#+nil
 (defun hypredincgm
     (a z)
   (prog()
@@ -1946,6 +2009,13 @@
      (return (mul a
 		  (power z (mul -1 a))
 		  (list '($%gammagreek) a z)))))
+
+(defun hypredincgm (a z)
+  (let ((-z (mul -1 z)))
+    (mul a (power -z (mul -1 a))
+	 `(($%gammagreek) ,a ,-z))))
+
+#+nil
 (defun prod
     (a m)
   (cond ((eq m 2) (mul a (add a 1)))
