@@ -31,13 +31,31 @@ done.
 @node INTERRUPTS, Definitions for Runtime Environment, Introduction for Runtime Environment, Runtime Environment
 @section INTERRUPTS
 
- - There are several ways the user can interrupt a MACSYMA computation,
-usually with a control character.  Do DESCRIBE(CHARACTERS); for details.
-MACSYMA will also be interrupted if ^Z (control-Z) is typed, as this
-will exit back to Unix shell level Usually Control-C interrupts the
-computation putting you in a break loop.  Typing :t should give you top
-level maxima back again.
+The user can stop a time-consuming computation with the
+^C (control-C) character.
+The default action is to stop the computation
+and print another user prompt.
+In this case, it is not possible to restart a stopped computation.
 
+If the variable @code{*debugger-hook*} is set to NIL, by executing
+
+@example
+:lisp (setq *debugger-hook* nil)
+@end example
+
+@noindent
+then upon receiving ^C, Maxima will enter the Lisp debugger,
+and the user may use the debugger to inspect the Lisp environment.
+The stopped computation can be restarted by entering
+@code{continue} in the Lisp debugger.
+The means of returning to Maxima from the Lisp debugger
+(other than running the computation to completion)
+is different for each version of Lisp.
+
+On Unix systems, the character ^Z (control-Z) causes Maxima
+to stop altogether, and control is returned to the shell prompt.
+The @code{fg} command causes Maxima
+to resume from the point at which it was stopped.
 
 @c end concepts Runtime Environment
 @node Definitions for Runtime Environment,  , INTERRUPTS, Runtime Environment
@@ -45,7 +63,8 @@ level maxima back again.
 @c @node CLEARSCREEN
 @c @unnumberedsec phony
 @defun CLEARSCREEN ()
-Clears the screen.  The same as typing control-L.
+This function has no effect aside from printing a diagnostic message.
+On some systems, typing ^L (control-L) will clear the screen.
 
 @end defun
 @c @node declaration
