@@ -22,6 +22,11 @@
   (:import-from "SYSTEM" "INFO" "*INFO-PATHS*")
   (:export "INFO" "*INFO-PATHS"))
 
+#+(and gcl (not ansi-cl))
+;; Traditional GCL may have empty CL package.  Delete it.
+(if (find-package :common-lisp)
+  (delete-package :common-lisp)) 
+
 #+gcl
 (unless (find-package :common-lisp)
   ;; Make the LISP package be the CL package
