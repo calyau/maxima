@@ -136,6 +136,7 @@ simplification/lrats.usg\
 simplification/sqdnst.mac\
 simplification/sqdnst.usg\
 simplification/elim.mac\
+physics/battex.sty\
 physics/gamalg.lisp\
 physics/gamalg.dem\
 physics/gamalg.usg\
@@ -312,6 +313,7 @@ tensor/info-tensor-2.txt\
 tensor/test1.mac\
 contrib/diag.usg\
 contrib/diag.mac\
+contrib/diag.dem\
 contrib/impdiff.mac\
 contrib/lindstedt.mac\
 contrib/makeOrders.mac
