@@ -1,0 +1,1 @@
+Do not install maxima in a folder with spaces in the name.
