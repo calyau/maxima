@@ -302,7 +302,7 @@
 				     (:file "mdefun")))
 	       (:module numerical-functions :source-pathname ""
 			:components ((:file "bessel")
-				     #+gcl(:file "parse-body")
+				     ;;#+gcl(:file "parse-body")
 				     (:file "ellipt") 
 				     (:file "numer") 
 				     (:file "intpol") 
