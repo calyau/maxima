@@ -1,0 +1,199 @@
+% -*-mode: latex; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
+%
+% $Id: pdfcolmk.sty,v 1.1 2002-09-22 03:16:20 mikeclarkson Exp $
+%
+% File:        pdfcolmk.sty
+% Version:     2000/09/06 v0.5
+% Author:      Heiko Oberdiek
+% Email:       <oberdiek@ruf.uni-freiburg.de>
+%
+% Copyright:   Copyright (C) 2000 Heiko Oberdiek.
+%
+%              This program may be distributed and/or modified under
+%              the conditions of the LaTeX Project Public License,
+%              either version 1.2 of this license or (at your option)
+%              any later version. The latest version of this license
+%              is in
+%                http://www.latex-project.org/lppl.txt
+%              and version 1.2 or later is part of all distributions
+%              of LaTeX version 1999/12/01 or later.
+%
+% Function:    This package tries a solution for the missing color
+%              stack of pdfTeX.
+%
+% Background:  After the Dante meeting (Clausthal 2000) I have started
+%              to experiment with the eTeX method of a `colour' mark.
+%              One of the major problems is the understanding of the
+%              output routine and the need to rewrite it because of
+%              missing hooks. Currently I have made some tests in
+%              in onecolumn and twocolumn mode, but the state is
+%              experimental.
+%
+% Limitations: * mark limitations: page breaks in math
+%              * LaTeX's output routine is redefinded.
+%                * Changes in the output routine of newer versions
+%                  of LaTeX are not detected.
+%                * Packages that change the output routine are not
+%                  supported.
+%
+% Recommended: e-TeX (for additional mark register)
+%              Without e-TeX LaTeX's mark commands are redefined
+%              to store an additional color value.
+%
+% Use:         Load after package color:
+%                \usepackage[pdftex]{color}
+%                \usepackage{pdfcolmk}
+%
+% History:     2000/08/27 v0.1:
+%                first published version
+%                (comp.text.tex, pdftex@tug.org)
+%              2000/09/02 v0.2:
+%                * next try.
+%              2000/09/02 v0.3:
+%                * solution without e-TeX added.
+%              2000/09/06 v0.4:
+%                * Patch commands added.
+%                * Patch for seminar.cls added.
+%              2000/09/06 v0.5:
+%                * Bug fix: initialization of \pec@value added.
+%
+\NeedsTeXFormat{LaTeX2e}[1997/11/09]
+\ProvidesPackage{pdfcolmk}[2000/09/06 v0.5 PDFtex COLor MarK (HO)]
+
+\@ifundefined{ver@pdftex.def}{%
+  \PackageWarningNoLine{pdfcolmk}{%
+    Nothing to fix, because \string`pdftex.def\string' not loaded%
+  }%
+  \endinput
+}{}
+\@ifpackageloaded{color}{}{%
+  \PackageWarningNoLine{pdfcolmk}{%
+    Nothing to fix, because \string`color.sty\string' not loaded%
+  }%
+  \endinput
+}
+
+\typeout{*** CAUTION: EXPERIMENTAL ***}%
+\PackageInfo{pdfcolmk}{%
+  This package tries to simulate dvips's color stack\MessageBreak
+  for pdfTeX based on a mark register of e-TeX.\MessageBreak
+  It redefines LaTeX's output routine. Therefore\MessageBreak
+  use with care, no warranties%
+}
+
+\ifx\marks\@undefined
+
+  \let\pec@mark\mark
+  \let\pec@value\empty
+  \long\def\mark#1{%
+    \protected@xdef\pec@value{#1}%
+    \pec@setmark
+  }
+  \def\pec@setmark{%
+    \begingroup
+      \@temptokena\expandafter{\pec@value}%
+      \pec@mark{{\current@color}\the\@temptokena}%
+    \endgroup
+  }
+  \def\pec@getmark{%
+    \xdef\pec@botcolor{%
+      \expandafter\@firstofthree\botmark\@empty\@empty\@empty
+    }%
+  }
+  \long\def\@firstofthree#1#2#3{#1}%
+  \CheckCommand{\@leftmark}[2]{#1}
+  \CheckCommand{\@rightmark}[2]{#2}
+  \CheckCommand*{\leftmark}{%
+    \expandafter\@leftmark\botmark\@empty\@empty
+  }
+  \CheckCommand*{\rightmark}{%
+    \expandafter\@rightmark\firstmark\@empty\@empty
+  }
+  \long\def\@leftmark#1#2#3{#2}
+  \long\def\@rightmark#1#2#3{#3}
+  \g@addto@macro\leftmark\@empty
+  \g@addto@macro\rightmark\@empty
+
+\else
+
+  \RequirePackage{etex}[1998/03/26]
+  \newmarks\pec@marks
+  \def\pec@setmark{\marks\pec@marks{\current@color}}
+  \def\pec@getmark{\xdef\pec@botcolor{\botmarks\pec@marks}}
+
+\fi
+
+\def\set@color{%
+  \pdfliteral{\current@color}%
+  \ifinner
+  \else
+    \pec@setmark
+  \fi
+  \aftergroup\reset@color
+}
+\def\reset@color{%
+  \pdfliteral{\current@color}%
+  \ifinner
+  \else
+    \pec@setmark
+  \fi
+}
+
+\let\pec@botcolor\current@color
+
+\def\pec@PatchVBoxCCLV{%
+  \ifx\pec@botcolor\@empty
+  \else
+    \setbox\@cclv\vbox{%
+      \pdfliteral{\pec@botcolor}%
+      \unvbox\@cclv
+    }%
+  \fi
+  \pec@getmark
+}
+
+\def\pec@PatchAlreadyInBox{%
+  \ifx\pec@botcolor\@empty
+  \else
+    \pdfliteral{\pec@botcolor}%
+  \fi
+  \pec@getmark
+}
+
+\@ifclassloaded{seminar}{%
+  \newcommand\pec@org@makeslide{}
+  \let\pec@org@makeslide\@makeslide
+  \def\@makeslide{%
+    \pec@PatchVBoxCCLV
+    \pec@org@makeslide
+  }%
+  \endinput
+}{}
+
+\long\def\pec@output#1\@specialoutput\else#2\pec@end{%
+  \begingroup
+    \def\x{#2}%
+  \expandafter\endgroup
+  \ifx\x\@empty
+    \PackageWarningNoLine{pdfcolmk}{%
+      Unexpected \string\output\space routine detected,%
+      \MessageBreak
+      loading of package stopped%
+    }%
+    \expandafter\endinput
+  \fi
+}
+\expandafter\expandafter\expandafter\pec@output
+\expandafter\@firstofone\the\output\@specialoutput\else\pec@end
+
+\long\def\pec@output#1\@specialoutput\else#2\pec@end{%
+  \output{%
+    #1\@specialoutput\else
+    \pec@PatchVBoxCCLV
+    #2%
+  }%
+}
+\expandafter\expandafter\expandafter\pec@output
+\expandafter\@firstofone\the\output\pec@end
+
+\endinput
