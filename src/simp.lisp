@@ -660,7 +660,8 @@
 ;  any more bits than can be represented in the significand of a floating
 ;  point number.
 (eval-when (compile load)
-(defvar machine-mantissa-precision 24 );;is this correct 
+(defconstant machine-mantissa-precision
+  (float-digits 1d0))
 )
 (DEFUN FPCOFRAT1 (NU D)
   (IF (AND (BIGP NU) (BIGP D))

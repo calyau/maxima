@@ -32,21 +32,23 @@
 	#+NIL		     30.
 	#+Franz		     32.
 
+#|
 	MACHINE-MANTISSA-PRECISION
 	#+(OR PDP10 H6180)   27.
 	#+cl(integer-length (integer-decode-float most-positive-double-float))
 	;#+LISPM		     32.
 	#+(OR NIL Franz)     56.	;double-float.  Long would be 113.
-
+|#
 	;; Not used anymore, but keep it around anyway in case
 	;; we need it later.
 
 	MACHINE-EXPONENT-PRECISION
 	#+(OR PDP10 H6180)    8.
 	#+cl
-	(integer-length (multiple-value-bind
-		  (a b) (integer-decode-float most-positive-double-float)
-		  b))
+	(integer-length
+	 (multiple-value-bind (a b)
+	     (integer-decode-float most-positive-double-float)
+	   b))
 	;#+LISPM		     11.
 	#+(OR NIL Franz)      8.	;Double float.  Long would be 15.
 	)
