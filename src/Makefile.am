@@ -11,6 +11,7 @@ distclean: clean-clisp
 
 binary-clisp/maxima.mem:
 	LISPTYPE=clisp ; export LISPTYPE ;\
+	CLISP=$(CLISP_NAME) ; export CLISP ;\
 	$(RUNLISP) -i ../lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) -i ../lisp-utils/defsystem \
@@ -43,6 +44,7 @@ distclean: clean-cmucl
 
 binary-cmucl/maxima.core:
 	LISPTYPE=cmucl ; export LISPTYPE ;\
+	CMUCL=$(CMUCL_NAME) ; export CMUCL ;\
 	$(RUNLISP) -i ../lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) -i ../lisp-utils/defsystem \
@@ -76,6 +78,7 @@ binary-gcl/maxima:
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
 	LISPTYPE=gcl ; export LISPTYPE ;\
+	GCL=$(GCL_NAME) ; export GCL ;\
 	$(RUNLISP) \
         -x '(load "../lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) \
