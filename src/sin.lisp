@@ -535,6 +535,11 @@
 	((NOT (FLOATP X)) 1)
 	(T (CDR (MAXIMA-RATIONALIZE X)))))
 
+;; EXP = f(t,u) where f is some function with, say, VAR = t,
+;; u^k = RATROOT = e*(a*t+b)/(c*t+d), where the smallest possible k
+;; is calculated below.
+;; As always, W is an alist which associates to the coefficients
+;; a, b... (and to VAR) their values.
 (DEFUN RATROOT (EXP VAR RATROOT W) 
 	 (PROG (ROOTLIST K Y W1) 
 	       (COND ((SETQ Y (CHEBYF EXP VAR)) (RETURN Y)))
@@ -569,7 +574,7 @@
 						  ((MEXPT) VAR ((MPLUS) -1 K))))))
 				   ((MEXPT) ((MPLUS)
 					     ((MTIMES) C ((MEXPT) VAR K))
-					     ((MTIMES) -1 A))
+					     ((MTIMES) -1 A e))
 					    2)))))
 		      VAR))
 	       (RETURN (SUBSTINT (SIMPLIFY (LIST '(MEXPT)
