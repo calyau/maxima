@@ -354,9 +354,8 @@ option to put the key at the bottom of the plot instead of the top.
 
 @example
 plot2d([cos(x),sin(x),tan(x),cot(x)],[x,-2*%pi,2*%pi],[y,-2,2],
-[gnuplot_preamble,"set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2'
--4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi'
-3.1415,'3pi/2' 4.712, '2pi' 6.283)"])
+[gnuplot_preamble,
+"set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"])
 @end example
 uses a very complicated gnuplot_preamble to produce fancy x-axis
 labels. (Note that the above expression must be entered without any
@@ -364,11 +363,9 @@ line breaks in the gnuplot_preamble string.)
 
 @example
 plot2d([cos(x),sin(x),tan(x)],[x,-2*%pi,2*%pi],[y,-2,2],
-[gnuplot_preamble,"set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283,
-'-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol
-p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}'
-3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}'
-6.283)"],[gnuplot_term,ps],[gnuplot_out_file,"trig.eps"])
+[gnuplot_preamble,
+"set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' 6.283)"],
+[gnuplot_term,ps],[gnuplot_out_file,"trig.eps"])
 @end example
 is similar to the previous example, except that it produces postscript
 output that takes advantage of the advanced text formatting available
@@ -383,15 +380,15 @@ produces a three-dimensional plot using the gnuplot pm3d terminal.
 
 @example
 plot3d(atan(-x^2+y^3/4),[x,-4,4], [y,-4,4], [grid,50,50],
-[gnuplot_pm3d,true], [gnuplot_preamble,"set pm3d at s;unset
-surface;set contour;set cntrparam levels 20;unset key"])
+[gnuplot_pm3d,true], [gnuplot_preamble,
+"set pm3d at s;unset surface;set contour;set cntrparam levels 20;unset key"])
 @end example
 produces a three-dimensional plot without a mesh and with contours
 projected on the bottom plane.
 
 @example
-plot3d(cos(-x^2+y^3/4),[x,-4,4], [y,-4,4], [gnuplot_preamble, "set
-view map; unset surface"], [gnuplot_pm3d,true], [grid,150,150]);
+plot3d(cos(-x^2+y^3/4),[x,-4,4], [y,-4,4], [gnuplot_preamble, 
+"set view map; unset surface"], [gnuplot_pm3d,true], [grid,150,150]);
 @end example
 produces a plot where the z-axis is represented by color only. (Note
 that the above expression must be entered without any line breaks in
