@@ -87,26 +87,6 @@ They are used as in the following examples:
 @end example
 
 @end defun
-@c @node ODE
-@c @unnumberedsec phony
-@defun ODE (equation,y,x)
-This no longer exists in Maxima.  The documentation is left here for
-historical purposes.
-
-a pot-pourri of Ordinary Differential solvers
-combined in such a way as to attempt more and more difficult methods
-as each fails. For example, the first attempt is with ODE2, so
-therefore, a user using ODE can assume he has all the capabilities of
-ODE2 at the very beginning and if he has been using ODE2 in programs
-they will still run if he substitutes ODE (the returned values, and
-calling sequence are identical).
-In addition, ODE has a number of user features which can assist an
-experienced ODE solver if the basic system cannot handle the equation.
-The equation is of the same form as required for ODE2 (which see) and
-the y and x are dependent and independent variables, as with ODE2.
-For more details, do PRINTFILE(ODE,USAGE,SHARE); .
-
-@end defun
 @c @node ODE2
 @c @unnumberedsec phony
 @defun ODE2 (exp,dvar,ivar)
