@@ -865,15 +865,16 @@
 
 (DEFMFUN $CONCAT (&REST L)
   (IF (NULL L) (MERROR "CONCAT needs at least one argument."))
-  (IMPLODE
-   (CONS (COND ((NOT (ATOM (CAR L))))
-	       ((OR (NUMBERP (CAR L)) (char= (GETCHARN (CAR L) 1) #\&)) #\&)
-	       (T #\$))
-	 (MAPCAN #'(LAMBDA (X)
-		     (IF (NOT (ATOM X))
-			 (MERROR "Argument to CONCAT not an atom: ~M" X))
-		     (STRING* X))
-		 L))))
+  (getalias
+   (IMPLODE
+    (CONS (COND ((NOT (ATOM (CAR L))))
+		((OR (NUMBERP (CAR L)) (char= (GETCHARN (CAR L) 1) #\&)) #\&)
+		(T #\$))
+	  (MAPCAN #'(LAMBDA (X)
+		      (IF (NOT (ATOM X))
+			  (MERROR "Argument to CONCAT not an atom: ~M" X))
+		      (STRING* X))
+		  L)))))
 
 (DEFMFUN $GETCHAR (X Y)
  (LET ((N 0))
