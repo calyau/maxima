@@ -301,7 +301,6 @@ first argument evaluated as well as its second.
 
 @end defun
 
-@end defun
 @c @node BLOCK, BREAK, BINDTEST, Function Definition
 @c @unnumberedsec phony
 @defun BLOCK ([v1,...,vk], statement1,...,statementj)
