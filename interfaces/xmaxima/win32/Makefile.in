@@ -65,5 +65,32 @@ gcccopy:
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/include/*.h  \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include
 
-install: xmaxima.exe winkill.exe tclwinkill.dll
+# Some little hacks for Windows
+fixes: fix_maxima_bat fix_maxima_init
+
+# Installed maxima.bat must have DOS line termination on win9x
+fix_maxima_bat: 
+		unix2dos "@prefix@/bin/maxima.bat"
+
+# Add some magic to reliably find gcc.exe
+# Change default plot format to openmath
+# Check first to ensure we only do it once
+fix_maxima_init:
+	grep -q compiler @prefix@/share/maxima/@VERSION@/share/maxima-init.lisp || \
+	( echo;\
+	echo ';; Hard code the path to the included gcc compiler';\
+	echo ';; The path must have \ directory separators on windows 9x';\
+	echo '(setq compiler::*cc*';\
+	echo "  (concatenate 'string ";\
+	echo '     (substitute #\\ #\/ *maxima-prefix*)';\
+	echo '     "\\bin\\" ';\
+	echo '     compiler::*cc*)';\
+	echo ')';\
+	echo ;\
+	echo ';; Set default plot format to openmath';\
+	echo "(mfuncall '\$$set_plot_option '((mlist) \$$plot_format \$$openmath) )";\
+	 ) >> @prefix@/share/maxima/@VERSION@/share/maxima-init.lisp 
+
+install: xmaxima.exe winkill.exe tclwinkill.dll fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
+
