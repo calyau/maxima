@@ -68,9 +68,10 @@ displays as 1.000000000000000B0. Otherwise, this is displayed as
 @end defvar
 @c @node CBFAC
 @c @unnumberedsec phony
-@defun CBFAC (z,fpprec)
+@defun CBFFAC (z,fpprec)
 a factorial for complex bfloats.  It may be used by
-doing LOAD(BFAC); For more details see share2/bfac.usg.
+doing @code{load ("bffac")}. 
+For more details see @code{share/numeric/bffac.usg}.
 
 @end defun
 @c @node FLOAT
