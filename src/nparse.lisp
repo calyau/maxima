@@ -422,7 +422,7 @@
   (IF (NOT (EQUAL (NTH 3. DATA) '(#\B)))
       (READLIST (APPLY #'APPEND DATA))
       ;; For bigfloats, turn them into rational numbers then convert to bigfloat
-      ($BFLOAT `((MTIMES) ((MPLUS) ,(READLIST (FIRST DATA))
+      ($BFLOAT `((MTIMES) ((MPLUS) ,(READLIST (or (FIRST DATA) '(#\0)))
 				   ((MTIMES) ,(READLIST (or (THIRD DATA) '(#\0)))
 					     ((MEXPT) 10. ,(f- (LENGTH (THIRD DATA))))))
 			  ((MEXPT) 10. ,(FUNCALL (IF (char= (FIRST (FIFTH DATA)) #\-) #'- #'+)
