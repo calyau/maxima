@@ -1,0 +1,79 @@
+/* Use the variational method to estimate the eigenvalues of
+
+   -f'' + (x^2 + epsilon * x^4) * f = mu * f
+
+for epsilon near zero.  The hamiltonian is   
+*/
+
+ham (e)  := -diff(e, x, 2) + (x^2  + epsilon * x^4 ) * e;
+
+/*  Assume a trial solution psi that is a linear combination of n+1 even 
+order Hermite polynomials times a Gaussian function. We'll need to
+assign a value to n, load specfun, and assign psi.
+*/
+
+n : 4;
+
+if get('specfun,'version) = 'false then load("specfun")$
+
+psi : sum(c[2*k] * hermite(2*k,x) * exp(-x^2 / 2),k,0,n) / %pi^(1/4)$
+
+/*  The denominator %pi^(1/4) makes the computation easier. Let
+vars be a list of the unknown c's.  Although the c's really aren't
+positive, we'll assume they are to prevent int from asking lots
+of questions about the signs of the c's. The same is true for
+epsilon.
+*/
+
+vars : makelist(c[ 2*i ],i,0,n)$
+
+map(assume, outermap(">",vars,0))$
+
+assume(epsilon > 0)$
+
+/* Define an the L2 inner product with the match fix operator
+<< , >>. Everything in sight is real, so we don't need a conjugate.
+*/
+
+matchfix("<<", ">>")$
+
+"<<" (f, g) := integrate(expand (f * g), x,-inf, inf)$
+
+/*  Minimize << psi, ham(psi) >> subject to the constraint 
+<< psi, psi >> =1; let mu be the Lagrange multiplier.
+*/
+
+min_this : << psi, ham(psi) >> - mu * << psi, psi >>;
+
+eqs : makelist(diff(min_this,vars[ i ]),i,1,n+1)$
+
+/* The equations are linear and homogeneous in the c's.  Demand
+that the coefficient matrix is singular.
+*/
+m_det : determinant(coefmatrix(eqs, vars))$
+m_det : ratsimp(m_det)$
+
+/* Solve for mu as power series in epsilon.  Thus assume
+mu = cf[ 0] + cf[1] * epsilon + ... + cf[solve_ord] epsilon^solve_ord.
+*/
+
+solve_ord : 3;
+pows : makelist(epsilon^i,i,0,solve_ord)$
+unks : makelist(cf[ i ],i,0,solve_ord)$
+eq : ev(m_det, mu = unks . pows)$
+eq : taylor(eq, epsilon, 0, solve_ord)$
+eq : expand(eq)$
+eq : makelist(coeff(eq,epsilon,i),i,0,solve_ord)$
+ans : algsys(eq, unks)$
+
+for i : 1 thru length(ans) do (
+       ans[ i ] : map(rhs, ans[ i ]) . pows
+)$
+
+/* Look at the solution graphically.
+*/
+
+ans;
+  
+plot2d(ans, [epsilon,0,0.15],[y,0,30]);
+
