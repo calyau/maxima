@@ -1753,7 +1753,7 @@ For use when the process asks a question."
            (pmark (progn (goto-char (process-mark inferior-maxima-process))
                          (forward-line 0)
                          (point-marker)))
-           (output (buffer-substring-no-properties comint-last-input-end pmark)))
+           (output (buffer-substring-no-properties maxima-real-input-end pmark)))
       (goto-char pt)
       output)))
 
