@@ -427,15 +427,15 @@
 	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen)))
 	((atom (cadr x))
 	 ;; numerator is an atom
-	 (setq l (tex (cadr x) (append l '("\\ifracd{")) nil 'mparen 'mparen)
+	 (setq l (tex (cadr x) (append l '("\\frac{")) nil 'mparen 'mparen)
 	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen)))
 	((atom (caddr x))
 	 ;; denom is an atom
-	 (setq l (tex (cadr x) (append l '("\\ifracn{")) nil 'mparen 'mparen)
+	 (setq l (tex (cadr x) (append l '("\\frac{")) nil 'mparen 'mparen)
 	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen)))
 	(t
 	 ;; neither are atoms
-	 (setq l (tex (cadr x) (append l '("\\ifrac{")) nil 'mparen 'mparen)
+	 (setq l (tex (cadr x) (append l '("\\frac{")) nil 'mparen 'mparen)
 	       r (tex (caddr x) (list "}{") (append '("}")r) 'mparen 'mparen))))
   (append l r))
 
