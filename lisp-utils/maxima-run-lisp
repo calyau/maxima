@@ -6,7 +6,7 @@
 #   License: LGPL (See file GNU-LGPL for details)
 # -----------------------------------------------------------------------------
 #  (c) copyright 1999 by Gilbert Baumann, Sam Steingold, Bruno Haible
-# $Id: maxima-run-lisp,v 1.2 2002-01-07 18:33:18 amundson Exp $
+# $Id: maxima-run-lisp,v 1.3 2002-04-28 21:12:37 amundson Exp $
 # $Source: /home/lbutler/maxima/sandbox/cvs/maxima/maxima/lisp-utils/maxima-run-lisp,v $
 
 # Prior to invocation the LISPTYPE environment variable must been set to
@@ -182,7 +182,9 @@ case "$1" in
 	    if [ -n "$load_file" ]; then
 	      load_arg="-load $load_file"
 	    fi
-            ${CMUCL-lisp} $extra_args $load_arg -core "$1".core
+	    # jfa: fixme 04/24/02
+	    # jfa: The -eval part of the following line is a big hack!
+            ${CMUCL-lisp} -eval "(user::run)" $extra_args $load_arg -core "$1".core
             ;;
         acl43 )
 	    if [ -n "$load_file" ]; then
@@ -361,7 +363,7 @@ case "$1" in
                                         (fresh-line) (finish-output))))
                     (unix:unix-exit (if .cond 1 0))))"
           test -z "$image" || image="-core ${image}.core";
-          exec ${CMUCL-lisp} $extra_args -noinit ${image} -eval "$todo"
+	  exec ${CMUCL-lisp} $extra_args -noinit ${image} -eval "$todo"
           ;;
       acl43 )
           exec echo "$todo" | ${image-${ACL43-cl}} $extra_args -batch
