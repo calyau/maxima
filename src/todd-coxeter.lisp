@@ -24,12 +24,14 @@
 (defmacro  undef (s) `(eql 0 ,s))
 
 ;; Multiply coset K times variable R
-(defmacro mult (k r) `(the coset (aref (table ,r) ,k)))
+; jfa: original macro mult renamed to tc-mult to avoid clash with
+; maxima function mult
+(defmacro tc-mult (k r) `(the coset (aref (table ,r) ,k)))
 
 ; Force  k . r = s and  k = s . r^-1
-(defmacro define-mult (k r s)
-  `(progn (setf (mult ,k ,r) ,s)
-	  (setf (mult ,s (- ,r)) ,k)))
+(defmacro define-tc-mult (k r s)
+  `(progn (setf (tc-mult ,k ,r) ,s)
+	  (setf (tc-mult ,s (- ,r)) ,k)))
 
 ;; cosets M < N are to be made equal
 (defmacro push-todo (m n)
@@ -155,14 +157,14 @@
       (sloop 
 	 do
 	 (setq r (car rel))
-	 (setq s (mult  k r))
+	 (setq s (tc-mult  k r))
 	 (cond
 	  ((undef s)
 	   (cond ((cdr rel)
 		  (setq s  (next-coset))
-		  (define-mult k r s))
-		 (t (setq s (mult i  (- r)))
-		    (cond ((undef s) (define-mult k r i))
+		  (define-tc-mult k r s))
+		 (t (setq s (tc-mult i  (- r)))
+		    (cond ((undef s) (define-tc-mult k r i))
 			  ((< k s) (push-todo k s)(return-from doing-row (cdr v)))
 			  ((> k s) (push-todo s k)(return-from doing-row (cdr v))))
 		    (loop-finish)))))
@@ -228,11 +230,11 @@
 	       do
 	       (let ((ta (table i)))
 		 (declare (type  (vector (coset)) ta))
-		 (setq s2 (mult n i))
+		 (setq s2 (tc-mult n i))
 		 (unless (undef s2)
-			 (setq s (mult m i))
+			 (setq s (tc-mult m i))
 			 (cond
-			  ((undef s) (setf (mult m i) s2))
+			  ((undef s) (setf (tc-mult m i) s2))
 			  ((< s s2) (push-todo s s2))
 			  ((> s s2)(push-todo s2 s))))
 		 (sloop for  j downfrom (f- n 1) to 1
