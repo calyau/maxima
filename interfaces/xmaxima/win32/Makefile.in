@@ -9,6 +9,7 @@ prefix=@prefix@
 TCLKITSH = tclkitsh.exe
 TCLKITDIR = /c/star
 SDXDIR = $(TCLKITDIR)
+GNUPLOTDIR = /c/programs/gnuplot
 
 GCCPREFIX=/mingw
 GCCVER=3.3.1
@@ -65,6 +66,12 @@ gcccopy:
 	cp $(GCCPREFIX)/lib/gcc-lib/mingw32/$(GCCVER)/include/*.h  \
 		$(prefix)/lib/gcc-lib/mingw32/$(GCCVER)/include
 
+# Install the gnuplot binary files in bin
+gnuplot: 
+	cp $(GNUPLOTDIR)/bin/wgnuplot.exe $(prefix)/bin
+	cp $(GNUPLOTDIR)/bin/wgnuplot.hlp $(prefix)/bin
+	cp $(GNUPLOTDIR)/bin/wgnuplot.mnu $(prefix)/bin
+
 # Some little hacks for Windows
 fixes: fix_maxima_bat fix_maxima_init
 
@@ -73,8 +80,6 @@ fix_maxima_bat:
 		unix2dos "@prefix@/bin/maxima.bat"
 
 # Add some magic to reliably find gcc.exe
-# Change default plot format to openmath
-# Check first to ensure we only do it once
 fix_maxima_init:
 	grep -q compiler @prefix@/share/maxima/@VERSION@/share/maxima-init.lisp || \
 	( echo;\
@@ -87,10 +92,8 @@ fix_maxima_init:
 	echo '     compiler::*cc*)';\
 	echo ')';\
 	echo ;\
-	echo ';; Set default plot format to openmath';\
-	echo "(mfuncall '\$$set_plot_option '((mlist) \$$plot_format \$$openmath) )";\
 	 ) >> @prefix@/share/maxima/@VERSION@/share/maxima-init.lisp 
 
-install: xmaxima.exe winkill.exe tclwinkill.dll fixes
+install: xmaxima.exe winkill.exe tclwinkill.dll gnuplot fixes
 	cp xmaxima.exe winkill.exe tclwinkill.dll "@prefix@/bin"
-
+	cp readme.txt "@prefix@"
