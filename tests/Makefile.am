@@ -55,4 +55,4 @@ rtest9a.mac \
 rtest9.mac \
 tests.lisp
 
-EXTRA_DIST = $(genericdirDATA) summarize-log
+EXTRA_DIST = $(genericdirDATA) summarize-log known-bugs
