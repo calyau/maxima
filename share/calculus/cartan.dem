@@ -22,7 +22,7 @@ DERIVABBREV:PARTSWITCH:TRUE$
 /* if status(feature,its) then LOADFILE(CARTAN,lisp,DSK,SHARE2) else
 if status(feature,multics) then LOADFILE(">lib>macsyma>share>cartan.lisp")
 	                   else error("Unknown operating system")$ */
-load("cartan.lsp")$
+load("cartan")$
 ("AN EXAMPLE OF A 1-FORM IS",F1:X*DY+Z*DZ);
 ("THE EXTERIOR PRODUCT OPERATION IS DENOTED BY THE AMPERSAND, & , 
 WRITTEN AS AN INFIX OPERATOR BETWEEN DIFFERENTIAL FORMS.
