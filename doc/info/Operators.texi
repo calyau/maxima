@@ -50,8 +50,7 @@ be a PREFIX operator.  Do DESCRIBE(SYNTAX); for more details.
 @c end concepts Operators
 @node Definitions for Operators,  , PREFIX, Operators
 @section Definitions for Operators
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "!"
 The factorial operator, which is the product of all the integers
 from 1 up to its argument.  Thus 5! = 1*2*3*4*5 = 120.  The value of
@@ -60,22 +59,19 @@ automatically expanded.  If it is -1 then all integers are expanded.
 See also the FACTORIAL, MINFACTORIAL, and FACTCOMB commands.
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "!!"
 Stands for double factorial which is defined as the product of
 all the consecutive odd (or even) integers from 1 (or 2) to the odd
 (or even) argument.  Thus 8!! is 2*4*6*8 = 384.
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "#"
 The logical operator "Not equals".
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "."
 The dot operator, for matrix (non-commutative) multiplication.
 When "." is used in this way, spaces should be left on both sides of
@@ -85,53 +81,46 @@ which affect the dot operator.  DESCRIBE(switch-name); will explain
 them.
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator ":"
 The assignment operator.  E.g. A:3 sets the variable A to 3.
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "::"
 Assignment operator.  :: assigns the value of the expression
 on its right to the value of the quantity on its left, which must
 evaluate to an atomic variable or subscripted variable.
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "::="
 The "::=" is used instead of ":=" to indicate that what
 follows is a macro definition, rather than an ordinary functional
 definition.  See DESCRIBE(MACROS).
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator ":="
 The function definition operator.  E.g. F(X):=SIN(X) defines
 a function F.
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator "="
 denotes an equation to Maxima.  To the pattern matcher in
 Maxima it denotes a total relation that holds between two expressions
 if and only if the expressions are syntactically identical.
 
 @end deffn
-@c @node ABS
-@c @unnumberedsec phony
+
 @defun ABS (exp)
 returns the absolute value exp.  If exp is complex, returns the complex
 modulus of exp.
 
 @end defun
 @c end concepts Operators
-@c @node ADDITIVE
-@c @unnumberedsec phony
+
 @defvr {special symbol} ADDITIVE
  - If DECLARE(F,ADDITIVE) has been executed, then:
 (1) If F is univariate, whenever the simplifier encounters F applied
@@ -144,8 +133,7 @@ This simplification does not occur when F is applied to expressions of
 the form SUM(X[I],I,lower-limit,upper-limit).
 
 @end defvr
-@c @node keyword
-@c @unnumberedsec phony
+
 @defvr keyword ALLBUT
  works with the PART commands (i.e. PART, INPART, SUBSTPART,
 SUBSTINPART, DPART, and LPART).  For example,
@@ -172,8 +160,7 @@ name such as U, F, FOO, or G, not an infolist such as FUNCTIONS.
 
 
 @end defvr
-@c @node declaration
-@c @unnumberedsec phony
+
 @defvr declaration ANTISYMMETRIC
  - If DECLARE(H,ANTISYMMETRIC); is done, this tells the
 simplifier that H is antisymmetric.  E.g. H(X,Z,Y) will simplify to -
@@ -182,30 +169,26 @@ SYMMETRIC or COMMUTATIVE, where n is the number of interchanges of two
 arguments necessary to convert it to that form.
 
 @end defvr
-@c @node CABS
-@c @unnumberedsec phony
+
 @defun CABS (exp)
 returns the complex absolute value (the complex modulus) of
 exp.
 
 @end defun
-@c @node declaration
-@c @unnumberedsec phony
+
 @defvr declaration COMMUTATIVE
  - If DECLARE(H,COMMUTATIVE); is done, this tells the
 simplifier that H is a commutative function.  E.g. H(X,Z,Y) will
 simplify to H(X, Y, Z).  This is the same as SYMMETRIC.
 
 @end defvr
-@c @node ENTIER
-@c @unnumberedsec phony
+
 @defun ENTIER (X)
 largest integer <= X where X is numeric.  FIX (as in
 FIXnum) is a synonym for this, so FIX(X); is precisely the same.
 
 @end defun
-@c @node EQUAL
-@c @unnumberedsec phony
+
 @defun EQUAL (expr1,expr2)
 used with an "IS", returns TRUE (or FALSE) if
 and only if expr1 and expr2 are equal (or not equal) for all possible
@@ -228,28 +211,24 @@ EV(exp,PRED) is equivalent to IS(exp).
 
 @end example
 @end defun
-@c @node EVAL
-@c @unnumberedsec phony
+
 @defun EVAL
  causes an extra post-evaluation of exp to occur.
 
 @end defun
-@c @node EVENP
-@c @unnumberedsec phony
+
 @defun EVENP (exp)
 is TRUE if exp is an even integer.  FALSE is returned in
 all other cases.
 
 @end defun
-@c @node FIX
-@c @unnumberedsec phony
+
 @defun FIX (x)
 a synonym for ENTIER(X) - largest integer <= X where X is
 numeric.
 
 @end defun
-@c @node FULLMAP
-@c @unnumberedsec phony
+
 @defun FULLMAP (fn, exp1, ...)
 is similar to MAP but it will keep mapping
 down all subexpressions until the main operators are no longer the
@@ -267,8 +246,7 @@ explicitly called by the user.
 
 @end example
 @end defun
-@c @node FULLMAPL
-@c @unnumberedsec phony
+
 @defun FULLMAPL (fn, list1, ...)
 is similar to FULLMAP but it only maps onto
 lists and matrices
@@ -279,8 +257,7 @@ lists and matrices
 
 @end example
 @end defun
-@c @node IS
-@c @unnumberedsec phony
+
 @defun IS (exp)
 attempts to determine whether exp (which must evaluate to a
 predicate) is provable from the facts in the current data base.  IS
@@ -291,29 +268,25 @@ switch PREDERROR (default: TRUE). IS errs out if the value of
 PREDERROR is TRUE and returns UNKNOWN if PREDERROR is FALSE.
 
 @end defun
-@c @node ISQRT
-@c @unnumberedsec phony
+
 @defun ISQRT (X)
 takes one integer argument and returns the "integer SQRT"
 of its absolute value.
 
 @end defun
-@c @node MAX
-@c @unnumberedsec phony
+
 @defun MAX (X1, X2, ...)
 yields the maximum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
 @end defun
-@c @node MIN
-@c @unnumberedsec phony
+
 @defun MIN (X1, X2, ...)
 yields the minimum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
 @end defun
-@c @node MOD
-@c @unnumberedsec phony
+
 @defun MOD (poly)
 converts the polynomial poly to a modular representation
 with respect to the current modulus which is the value of the variable
@@ -323,22 +296,19 @@ it is desired to override the current global value of MODULUS.
 See DESCRIBE(MODULUS); .
 
 @end defun
-@c @node ODDP
-@c @unnumberedsec phony
+
 @defun ODDP (exp)
 is TRUE if exp is an odd integer.  FALSE is returned in all
 other cases.
 
 @end defun
-@c @node operator
-@c @unnumberedsec phony
+
 @deffn operator PRED
  (EVFLAG) causes predicates (expressions which evaluate to TRUE
 or FALSE) to be evaluated.
 
 @end deffn
-@c @node RANDOM
-@c @unnumberedsec phony
+
 @defun RANDOM (X)
 Returns a pseudorandom number. If X is an integer, RANDOM (X) returns an
 integer from 0 through X-1 inclusive. If X is a floating point number,
@@ -354,8 +324,7 @@ functions MAKE-RANDOM-STATE and RANDOM, and the global variable
 *RANDOM-STATE*.
 
 @end defun
-@c @node SIGN
-@c @unnumberedsec phony
+
 @defun SIGN (exp)
 attempts to determine the sign of its specified expression
 on the basis of the facts in the current data base.  It returns one of
@@ -364,16 +333,14 @@ the following answers: POS (positive), NEG (negative), ZERO, PZ
 or PNZ (positive, negative, or zero, i.e. nothing known).
 
 @end defun
-@c @node SIGNUM
-@c @unnumberedsec phony
+
 @defun SIGNUM (X)
 if X<0 then -1 else if X>0 then 1 else 0.  If X is not
 numeric then a simplified but equivalent form is returned. For
 example, SIGNUM(-X) gives -SIGNUM(X).
 
 @end defun
-@c @node SORT
-@c @unnumberedsec phony
+
 @defun SORT (list,optional-predicate)
 sorts the list using a suitable
 optional-predicate of two arguments (such as "<" or ORDERLESSP).  If
@@ -381,8 +348,7 @@ the optional-predicate is not given, then Maxima's built-in ordering
 predicate is used.
 
 @end defun
-@c @node SQRT
-@c @unnumberedsec phony
+
 @defun SQRT (X)
 the square root of X. It is represented internally by
 X^(1/2).  Also see ROOTSCONTRACT.
@@ -391,15 +357,13 @@ which are powers of n to be pulled outside of the radical, e.g.
 SQRT(16*X^2) will become 4*X only if RADEXPAND is TRUE.
 
 @end defun
-@c @node SQRTDISPFLAG
-@c @unnumberedsec phony
+
 @defvar SQRTDISPFLAG
  default: [TRUE] - if FALSE causes SQRT to display with
 exponent 1/2.
 
 @end defvar
-@c @node SUBLIS
-@c @unnumberedsec phony
+
 @defun SUBLIS (list,expr)
 allows multiple substitutions into an expression in
 parallel.  Sample syntax:
@@ -411,16 +375,14 @@ The variable SUBLIS_APPLY_LAMBDA[TRUE] controls simplification after
 SUBLIS.
 
 @end defun
-@c @node SUBLIST
-@c @unnumberedsec phony
+
 @defun SUBLIST (L,F)
 returns the list of elements of the list L for which the
 function F returns TRUE.  E.g., SUBLIST([1,2,3,4],EVENP); returns
 [2,4].
 
 @end defun
-@c @node SUBLIS_APPLY_LAMBDA
-@c @unnumberedsec phony
+
 @defvar SUBLIS_APPLY_LAMBDA
  default:[TRUE] - controls whether LAMBDA's
 substituted are applied in simplification after SUBLIS is used or
@@ -428,8 +390,7 @@ whether you have to do an EV to get things to apply. TRUE means do the
 application.
 
 @end defvar
-@c @node SUBST
-@c @unnumberedsec phony
+
 @defun SUBST (a, b, c)
 substitutes a for b in c.  b must be an atom, or a
 complete subexpression of c.  For example, X+Y+Z is a complete
@@ -465,8 +426,7 @@ will work.
 expression.)  For further examples, do EXAMPLE(SUBST);
 
 @end defun
-@c @node SUBSTINPART
-@c @unnumberedsec phony
+
 @defun SUBSTINPART (x, exp, n1, ...)
 is like SUBSTPART but works on the
 internal representation of exp.
@@ -521,8 +481,7 @@ Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is
 the same as calling INPART/SUBSTINPART.
 
 @end defun
-@c @node SUBSTPART
-@c @unnumberedsec phony
+
 @defun SUBSTPART (x, exp, n1, ..., nk)
 substitutes x for the subexpression
 picked out by the rest of the arguments as in PART.  It returns the
@@ -550,22 +509,19 @@ Also, setting the option INFLAG to TRUE and calling PART/SUBSTPART is
 the same as calling INPART/SUBSTINPART.
 
 @end defun
-@c @node SUBVARP
-@c @unnumberedsec phony
+
 @defun SUBVARP (exp)
 is TRUE if exp is a subscripted variable, for example
 A[I].
 
 @end defun
-@c @node SYMBOLP
-@c @unnumberedsec phony
+
 @defun SYMBOLP (exp)
 returns TRUE if "exp" is a "symbol" or "name", else
 FALSE.  I.e., in effect, SYMBOLP(X):=ATOM(X) AND NOT NUMBERP(X)$ .
 
 @end defun
-@c @node UNORDER
-@c @unnumberedsec phony
+
 @defun UNORDER ()
 stops the aliasing created by the last use of the ordering
 commands ORDERGREAT and ORDERLESS.  ORDERGREAT and ORDERLESS may not
@@ -574,8 +530,7 @@ DESCRIBE(ORDERGREAT); and DESCRIBE(ORDERLESS);, and also do
 EXAMPLE(UNORDER); for specifics.
 
 @end defun
-@c @node VECTORPOTENTIAL
-@c @unnumberedsec phony
+
 @defun VECTORPOTENTIAL (givencurl)
 Returns the vector potential of a given
 curl vector, in the current coordinate system.
@@ -584,8 +539,7 @@ the left-hand sides of the equations must be a cyclic permutation of
 the coordinate variables.
 
 @end defun
-@c @node XTHRU
-@c @unnumberedsec phony
+
 @defun XTHRU (exp)
 combines all terms of exp (which should be a sum) over a
 common denominator without expanding products and exponentiated sums
@@ -612,8 +566,7 @@ expression to be RATSIMPed.
 
 @end example
 @end defun
-@c @node ZEROEQUIV
-@c @unnumberedsec phony
+
 @defun ZEROEQUIV (exp,var)
 tests whether the expression exp in the variable
 var is equivalent to zero.  It returns either TRUE, FALSE, or
