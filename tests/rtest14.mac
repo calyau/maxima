@@ -826,3 +826,43 @@ specint(t*bessel_y(0,a*t)*exp(-p*t),t);
  */
 specint(t*bessel_y(1,a*t)*exp(-p*t),t);
 -4/%pi/(p^2+a^2)*assoc_legendre_q(1,-1,p/sqrt(p^2+a^2))$
+
+/*
+ * Some tests for step7
+ */
+
+/*
+ * F(s,s+1/2;2*s+1;z) can be transformed to F(s,s+1/2;2*s+2;z) via
+ * A&S 15.2.6.  And we know that F(s,s+1/2;2*s+1;z) =
+ * 2^(2*s)/(1+sqrt(1-z))^(2*s).
+ *
+ * A&S 15.2.6 says 
+ * F(a,b;c+n;z) = poch(c,n)/poch(c-a,n)/poch(c-b,n)*(1-z)^(c+n-a-b)
+ *                 *diff((1-z)^(a+b-c)*F(a,b;c;z),z,n)
+ *
+ * F(s,s+1/2;2*s+2;z)
+ *    = poch(2*s+1,1)/poch(s+1,1)/poch(s+1/2,1)*(1-z)^(3/2)
+ *       *diff((1-z)^(-1/2)*F(s,s+1/2;2*s+1;z),z,1)
+ *
+ * 
+ */
+
+hgfred([s,s+1/2],[2*s+2],z)
+  -(2*s+1)/(s+1)/(s+1/2)*(1-z)^(3/2)*diff((1-z)^(-1/2)
+    *hgfred([s,s+1/2],[2*s+1],z,1);
+0$
+
+/*
+ * F(s,s+1/2;2*s+1;z) can be transformed to F(s+2,s+1/2;2*s+1;z) via
+ * A&S 15.2.3:
+ *    F(a+n,b;c;z) = z^(1-a)/poch(a,n)*diff(z^(a+n-1)*F(a,b;c;z),z,n)
+ *
+ * F(s+2,s+1/2;2*s+1,z) 
+ *    = z^(1-s)/s*diff(z^s*F(s,s+1/2;2*s+1;z),z,2)
+ */
+
+hgfred([s+2,s+1/2],[2*s+1],z)
+  - z^(1-s)/s*diff(z^s*hgfred([s,s+1/2],[2*s+1],z),z,2);
+0$
+
+
