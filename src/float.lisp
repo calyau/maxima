@@ -862,30 +862,32 @@ One extra decimal digit in actual representation for rounding purposes.")
   ;;
   ;; We also assume don't need a really precise value of beta because
   ;; our N's are not so big that we need more.
-  (let* ((big-n (floor (* 1/4 prec (log 2d0))))
-	 (big-n-sq (cdr ($bfloat (* big-n big-n))))
+  (let* ((fpprec prec)
+	 (big-n (floor (* 1/4 prec (log 2d0))))
+	 (big-n-sq (intofp (* big-n big-n)))
 	 (beta 3.591121476668622136649223d0)
 	 (limit (floor (* beta big-n)))
-	 (term (cdr bigfloatone))
-	 (harmonic (cdr bigfloatzero))
-	 (a-sum (cdr bigfloatzero))
-	 (b-sum (cdr bigfloatone)))
+	 (one (fpone))
+	 (term (intofp 1))
+	 (harmonic (intofp 0))
+	 (a-sum (intofp 0))
+	 (b-sum (intofp 1)))
     (do ((n 1 (1+ n)))
 	((> n limit))
-      (let ((bf-n (cdr ($bfloat n))))
+      (let ((bf-n (intofp n)))
 	(setf term (fpquotient (fptimes* term big-n-sq)
 			       (fptimes* bf-n bf-n)))
 	(setf harmonic (fpplus harmonic
-			       (fpquotient (fpone) bf-n)))
+			       (fpquotient one bf-n)))
 	(setf a-sum (fpplus a-sum
 			    (fptimes* term harmonic)))
 	(setf b-sum (fpplus b-sum term))))
     (fpplus (fpquotient a-sum b-sum)
-	    (fpminus (cdr ($bfloat (list '(%log simp) big-n)))))))
+	    (fpminus (fplog (intofp big-n))))))
 
 (defun fpgamma1 ()
   ;; Use a few extra bits of precision
-  (bcons (list (fpround (first (comp-bf%gamma (plus fpprec 5)))) 0)))
+  (bcons (list (fpround (first (comp-bf%gamma (plus fpprec 8)))) 0)))
 
 (defmfun fpmax na
   (prog (max) 
