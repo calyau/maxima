@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.8 2003-01-08 12:32:45 amundson Exp $
+#       $Id: Menu.tcl,v 1.9 2003-01-20 16:22:26 mikeclarkson Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -18,6 +18,7 @@ proc pMAXSaveTexToFile {text} {
 
 proc vMAXAddSystemMenu {fr text} {
     global maxima_priv maxima_default
+    global tcl_platform
 
     set win $fr.textcommands
 
@@ -190,6 +191,11 @@ proc vMAXAddSystemMenu {fr text} {
     set file $maxima_priv(pReferenceToc)
     if {[file isfile $file]} {
 	set state normal
+	if {$tcl_platform(platform) == "windows"} {
+	    # decodeURL is broken and needs fixing
+	    # This is a workaround
+	    set file [file attrib $file -shortname]
+	}
     } else {
 	set state disabled
     }
@@ -197,12 +203,19 @@ proc vMAXAddSystemMenu {fr text} {
 	-state $state \
 	-command "OpenMathOpenUrl \"file:/$file\""
     set browse {exec}
-    global tcl_platform
+
+    # FIXME: get a browser object
     if {$tcl_platform(platform) == "windows"} {
-	lappend browse command.com /c start
+	if {$tcl_platform(os) == "Windows 95"} {
+	    # Windows 95/98
+	    lappend browse command.com /c start
+	} else {
+	    # Windows NT / 2000 - untested
+	    lappend browse cmd.exe /c start
+	}
     } else {
-	# FIXME: get a browser object
-	lappend browse [auto_execok netscape]
+	# This is more difficult under Unix - KDE GNOME CDE etc...
+	lappend browse netscape
     }
     $m add sep
     $m add command -underline 0 -label {Maxima Homepage} \
