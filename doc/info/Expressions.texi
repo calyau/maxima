@@ -139,22 +139,21 @@ also be removed.
 (%o4)                            12
 @end example
 
-@c end concepts Expressions
 @node Definitions for Expressions,  , SYNTAX, Expressions
 @section Definitions for Expressions
 
-@defun AT (exp, list)
+@defun at (exp, list)
 will evaluate exp (which may be any expression) with
 the variables assuming the values as specified for them in the list of
-equations or the single equation similar to that given to the ATVALUE
+equations or the single equation similar to that given to the @code{atvalue}
 function.  If a subexpression depends on any of the variables in list
 but it hasn't had an atvalue specified and it can't be evaluated then
-a noun form of the AT will be returned which will display in a
+a noun form of the @code{at} will be returned which will display in a
 two-dimensional form.  Do EXAMPLE(AT); for an example.
 
 @end defun
 
-@defun BOX (expr)
+@defun box (expr)
 returns expr enclosed in a box.  The box is actually part
 of the expression.
 @example
@@ -163,99 +162,103 @@ BOX(expr,label)
 encloses expr in a labelled box.
 label is a name which will be truncated in display if it is too long.
     BOXCHAR["] - is the character used to draw the box in this and in
-the DPART and LPART functions.
+the @code{dpart} and @code{lpart} functions.
 
 @end defun
 
-@defvar BOXCHAR
- default: ["] is the character used to draw the box in the BOX
-and in the DPART and LPART functions.
+@defvar boxchar
+ default: ["] is the character used to draw the box in the @code{box}
+and in the @code{dpart} and @code{lpart} functions.
 
 @end defvar
 
-@deffn {special operator} CONSTANT
+@deffn {special operator} constant
  - makes ai a constant as is %PI.
 
 @end deffn
 
-@defun CONSTANTP (exp)
-is TRUE if exp is a constant (i.e.  composed of
+@defun constantp (exp)
+is @code{true} if exp is a constant (i.e.  composed of
 numbers and %PI, %E, %I or any variables bound to a constant or
-DECLAREd constant) else FALSE.  Any function whose arguments are
+DECLAREd constant) else @code{false}.  Any function whose arguments are
 constant is also considered to be a constant.
 
 @end defun
 
-@defun CONTRACT (exp)
+@defun contract (exp)
 carries out all possible contractions in exp, which may
 be any well-formed combination of sums and products.  This function
-uses the information given to the DEFCON function.  Since all tensors
+uses the information given to the @code{defcon} function.  Since all tensors
 are considered to be symmetric in all indices, the indices are sorted
 into alphabetical order.  Also all dummy indices are renamed using the
 symbols !1,!2,... to permit the expression to be simplified as much as
 possible by reducing equivalent terms to a canonical form.  For best
-results exp should be fully expanded.  RATEXPAND is the fastest way to
+results exp should be fully expanded.  @code{ratexpand} is the fastest way to
 expand products and powers of sums if there are no variables in the
-denominators of the terms.  The GCD switch should be FALSE if gcd
+denominators of the terms.  The GCD switch should be @code{false} if gcd
 cancellations are unnecessary.
 
 @end defun
 
-@defun DECLARE (a1, f1, a2, f2, ...)
+@defun declare (a1, f1, a2, f2, ...)
 gives the atom ai the flag fi.  The ai's
 and fi's may also be lists of atoms and flags respectively in which
 case each of the atoms gets all of the properties.  The possible flags
 and their meanings are:
 
-CONSTANT - makes ai a constant as is %PI.
+@code{constant} - makes ai a constant as is %PI.
 
-MAINVAR - makes ai a MAINVAR.  The ordering scale for atoms: numbers <
+@code{mainvar} - makes ai a MAINVAR.  The ordering scale for atoms: numbers <
 constants (e.g. %E,%PI) < scalars < other variables < mainvars.
 
-SCALAR - makes ai a scalar.
+@code{scalar} - makes ai a scalar.
 
-NONSCALAR - makes ai behave as does a list or matrix with respect to
+@code{nonscalar} - makes ai behave as does a list or matrix with respect to
 the dot operator.
 
-NOUN - makes the function ai a noun so that it won't be evaluated
+@code{noun} - makes the function ai a noun so that it won't be evaluated
 automatically.
 
-EVFUN - makes ai known to the EV function so that it will get applied
+@code{evfun} - makes ai known to the EV function so that it will get applied
 if its name is mentioned.  Initial evfuns are
+@c NEED TO CHECK THIS LIST !!!
 @example
-FACTOR, TRIGEXPAND,
-TRIGREDUCE, BFLOAT, RATSIMP, RATEXPAND, and RADCAN
+factor, trigexpand,
+trigreduce, bfloat, ratsimp, ratexpand, and radcan
 @end example
 
-EVFLAG - makes ai known to the EV function so that it will be bound to
-TRUE during the execution of EV if it is mentioned.  Initial evflags
+@code{evflag} - makes ai known to the @code{ev} function so that it will be bound to
+@code{true} during the execution of @code{ev} if it is mentioned.  Initial evflags
 are
+@c NEED TO CHECK THIS LIST !!!
 @example
-FLOAT, PRED, SIMP, NUMER, DETOUT, EXPONENTIALIZE, DEMOIVRE,
-KEEPFLOAT, LISTARITH, TRIGEXPAND, SIMPSUM, ALGEBRAIC,
-RATALGDENOM, FACTORFLAG, %EMODE, LOGARC, LOGNUMER,
-RADEXPAND, RATSIMPEXPONS, RATMX, RATFAC, INFEVAL, %ENUMER,
-PROGRAMMODE, LOGNEGINT, LOGABS, LETRAT, HALFANGLES,
-EXPTISOLATE, ISOLATE_WRT_TIMES, SUMEXPAND, CAUCHYSUM,
-NUMER_PBRANCH, M1PBRANCH, DOTSCRULES, and LOGEXPAND
+float, pred, simp, numer, detout, exponentialize, demoivre,
+keepfloat, listarith, trigexpand, simpsum, algebraic,
+ratalgdenom, factorflag, %emode, logarc, lognumer,
+radexpand, ratsimpexpons, ratmx, ratfac, infeval, %enumer,
+programmode, lognegint, logabs, letrat, halfangles,
+exptisolate, isolate_wrt_times, sumexpand, cauchysum,
+numer_pbranch, m1pbranch, dotscrules, and logexpand
 @end example
 
-BINDTEST - causes ai to signal an error if it ever is used in a
+@code{bindtest} - causes ai to signal an error if it ever is used in a
 computation unbound.  DECLARE([var1, var2, ...], BINDTEST) causes
 Maxima to give an error message whenever any of the vari occur
 unbound in a computation.
 Maxima currently recognizes and uses the following features of
 objects:
+@c NEED TO CHECK THIS LIST !!!
 @example
-EVEN, ODD, INTEGER, RATIONAL, IRRATIONAL, REAL, IMAGINARY,
-and COMPLEX
+even, odd, integer, rational, irrational, real, imaginary,
+and complex
 @end example
 he useful features of functions include:
+@c NEED TO CHECK THIS LIST !!!
 @example
- INCREASING,
-DECREASING, ODDFUN (odd function), EVENFUN (even function),
-COMMUTATIVE (or SYMMETRIC), ANTISYMMETRIC, LASSOCIATIVE and
-RASSOCIATIVE
+ increasing,
+decreasing, oddfun (odd function), evenfun (even function),
+commutative (or symmetric), antisymmetric, lassociative and
+rassociative
 @end example
 DECLARE(F,INCREASING) is in all respects equivalent to
 
@@ -273,7 +276,7 @@ DESCRIBE(FEATURES); .
 
 @end defun
 
-@defun DISOLATE (exp, var1, var2, ..., varN)
+@defun disolate (exp, var1, var2, ..., varn)
 is similar to ISOLATE(exp, var)
 (Do DESCRIBE(ISOLATE);) except that it enables the user to isolate
 more than one variable simultaneously.  This might be useful, for
@@ -285,23 +288,23 @@ integration variables.  This function is autoloaded from
 
 @end defun
 
-@defun DISPFORM (exp)
+@defun dispform (exp)
 returns the external representation of exp (wrt its
-main operator).  This should be useful in conjunction with PART which
+main operator).  This should be useful in conjunction with @code{part} which
 also deals with the external representation.  Suppose EXP is -A .
 Then the internal representation of EXP is "*"(-1,A), while the
 external representation is "-"(A). DISPFORM(exp,ALL) converts the
 entire expression (not just the top-level) to external format.  For
 example, if EXP:SIN(SQRT(X)), then FREEOF(SQRT,EXP) and
-FREEOF(SQRT,DISPFORM(EXP)) give TRUE, while
-FREEOF(SQRT,DISPFORM(EXP,ALL)) gives FALSE.
+FREEOF(SQRT,DISPFORM(EXP)) give @code{true}, while
+FREEOF(SQRT,DISPFORM(EXP,ALL)) gives @code{false}.
 
 @end defun
 
-@defun DISTRIB (exp)
-distributes sums over products.  It differs from EXPAND
+@defun distrib (exp)
+distributes sums over products.  It differs from @code{expand}
 in that it works at only the top level of an expression, i.e. it doesn't
-recurse and it is faster than EXPAND.  It differs from MULTTHRU in
+recurse and it is faster than @code{expand}.  It differs from @code{multthru} in
 that it expands all sums at that level. For example, 
 DISTRIB((A+B)*(C+D)) -> A C + A D + B C + B D 
 MULTTHRU ((A+B)*(C+D)) -> (A + B) C + (A + B) D
@@ -310,8 +313,8 @@ EXPAND(1/((A+B)*(C+D)),1,0) -> 1/(A C + A D + B C + B D)
 
 @end defun
 
-@defun DPART (exp, n1, ..., nk)
-selects the same subexpression as PART, but
+@defun dpart (exp, n1, ..., nk)
+selects the same subexpression as @code{part}, but
 instead of just returning that subexpression as its value, it returns
 the whole expression with the selected subexpression displayed inside
 a box.  The box is actually part of the expression.
@@ -328,67 +331,68 @@ a box.  The box is actually part of the expression.
 @end example
 @end defun
 
-@defun EXP (X)
+@defun exp (x)
 the exponential function.  It is represented internally as
 %E^X.
-  DEMOIVRE[FALSE] - if TRUE will cause %E^(A+B*%I) to become
+  DEMOIVRE[FALSE] - if @code{true} will cause %E^(A+B*%I) to become
 %E^A*(COS(B)+%I*SIN(B)) if B is free of %I.  A and B are not expanded.
-  %EMODE[TRUE] - when TRUE %E^(%PI*%I*X) will be simplified as
+@c %emode AND %enumer NEED THEIR OWN DESCRIPTIONS !!!
+  %EMODE[TRUE] - when @code{true} %E^(%PI*%I*X) will be simplified as
 follows: it will become COS(%PI*X)+%I*SIN(%PI*X) if X is an integer or
 a multiple of 1/2, 1/3, 1/4, or 1/6 and thus will simplify further.
 For other numerical X it will become %E^(%PI*%I*Y) where Y is X-2*k
-for some integer k such that ABS(Y)<1.  If %EMODE is FALSE no
+for some integer k such that ABS(Y)<1.  If %EMODE is @code{false} no
 simplification of %E^(%PI*%I*X) will take place.
-  %ENUMER[FALSE] - when TRUE will cause %E to be converted into
-2.718...  whenever NUMER is TRUE.  The default is that this conversion
+  %ENUMER[FALSE] - when @code{true} will cause %E to be converted into
+2.718...  whenever NUMER is @code{true}.  The default is that this conversion
 will take place only if the exponent in %E^X evaluates to a number.
 
 @end defun
 
-@defvar EXPTISOLATE
- default: [FALSE] if TRUE will cause ISOLATE(expr,var); to
+@defvar exptisolate
+ default: @code{false} if @code{true} will cause ISOLATE(expr,var); to
 examine exponents of atoms (like %E) which contain var.
 
 @end defvar
 
-@defvar EXPTSUBST
- default: [FALSE] if TRUE permits substitutions such as Y
+@defvar exptsubst
+ default: @code{false} if @code{true} permits substitutions such as Y
 for %E**X in %E**(A*X) to take place.
 
 @end defvar
 
-@defun FREEOF (x1, x2, ..., exp)
-yields TRUE if the xi do not occur in exp
-and FALSE otherwise.  The xi are atoms or they may be subscripted
+@defun freeof (x1, x2, ..., exp)
+yields @code{true} if the xi do not occur in exp
+and @code{false} otherwise.  The xi are atoms or they may be subscripted
 names, functions (e.g.  SIN(X) ), or operators enclosed in "s.  If
 'var' is a "dummy variable" of 'exp', then FREEOF(var,exp); will
-return TRUE.  "Dummy variables" are mathematical things like the index
+return @code{true}.  "Dummy variables" are mathematical things like the index
 of a sum or product, the limit variable, and the definite integration
-variable.  Example: FREEOF(I,'SUM(F(I),I,0,N)); returns TRUE.  Do
+variable.  Example: FREEOF(I,'SUM(F(I),I,0,N)); returns @code{true}.  Do
 EXAMPLE(FREEOF); for more examples.
 
 @end defun
 
-@defun GENFACT (X, Y, Z)
+@defun genfact (x, y, z)
 is the generalized factorial of X which is:
 X*(X-Z)*(X-2*Z)*...*(X-(Y-1)*Z).  Thus, for integral X,
 GENFACT(X,X,1)=X!  and GENFACT(X,X/2,2)=X!!
 
 @end defun
 
-@defun IMAGPART (exp)
+@defun imagpart (exp)
 returns the imaginary part of the expression exp.
 
 @end defun
 
-@defun INDICES (exp)
+@defun indices (exp)
 returns a list of two elements.  The first is a list of
 the free indices in exp (those that occur only once); the second is
 the list of dummy indices in exp (those that occur exactly twice).
 
 @end defun
 
-@defun INFIX (op)
+@defun infix (op)
  - INFIX operators are used to denote functions of two
 arguments, one given before the operator and one after, e.g. A^2 .
 The INFIX("x") function is a syntax extention function to declare x to
@@ -396,19 +400,19 @@ be an INFIX operator.  Do DESCRIBE(SYNTAX); for more details.
 
 @end defun
 
-@defvar INFLAG
- default: [FALSE] if set to TRUE, the functions for part
+@defvar inflag
+ default: @code{false} if set to @code{true}, the functions for part
 extraction will look at the internal form of exp.  Note that the
 simplifier re-orders expressions.  Thus FIRST(X+Y) will be X if INFLAG
-is TRUE and Y if INFLAG is FALSE.  (FIRST(Y+X) gives the same
-results).  Also, setting INFLAG to TRUE and calling PART/SUBSTPART is
+is @code{true} and Y if INFLAG is @code{false}.  (FIRST(Y+X) gives the same
+results).  Also, setting INFLAG to @code{true} and calling PART/SUBSTPART is
 the same as calling INPART/SUBSTINPART.  Functions affected by the
 setting of INFLAG are: PART, SUBSTPART, FIRST, REST, LAST, LENGTH, the
 FOR ... IN construct, MAP, FULLMAP, MAPLIST, REVEAL and PICKAPART.
 
 @end defvar
 
-@defun INPART (exp, n1, ..., nk)
+@defun inpart (exp, n1, ..., nk)
 is similar to PART but works on the internal
 representation of the expression rather than the displayed form and
 thus may be faster since no formatting is done.  Care should be taken
@@ -437,7 +441,7 @@ refer to the operator it must be enclosed in "s.  For example
 @end example
 @end defun
 
-@defun ISOLATE (exp, var)
+@defun isolate (exp, var)
 returns exp with subexpressions which are sums and
 which do not contain var replaced by intermediate expression labels
 (these being atomic symbols like %t1, %t2, ...).  This is often useful
@@ -445,44 +449,44 @@ to avoid unnecessary expansion of subexpressions which don't contain
 the variable of interest.  Since the intermediate labels are bound to
 the subexpressions they can all be substituted back by evaluating the
 expression in which they occur.
-EXPTISOLATE[FALSE] if TRUE will cause ISOLATE to examine exponents of
+EXPTISOLATE[FALSE] if @code{true} will cause ISOLATE to examine exponents of
 atoms (like %E) which contain var.
-ISOLATE_WRT_TIMES[FALSE] if TRUE, then ISOLATE will also isolate wrt
+ISOLATE_WRT_TIMES[FALSE] if @code{true}, then ISOLATE will also isolate wrt
 products.  E.g. compare both settings of the switch on
 ISOLATE(EXPAND((A+B+C)^2),C); .
 Do EXAMPLE(ISOLATE); for examples.
 
 @end defun
 
-@defvar ISOLATE_WRT_TIMES
- default: [FALSE] - if set to TRUE, then ISOLATE
+@defvar isolate_wrt_times
+ default: @code{false} - if set to @code{true}, then ISOLATE
 will also isolate wrt products.  E.g. compare both settings of the
 switch on ISOLATE(EXPAND((A+B+C)^2),C); .
 
 @end defvar
 
-@defvar LISTCONSTVARS
- default: [FALSE] - if TRUE will cause LISTOFVARS to
+@defvar listconstvars
+ default: @code{false} - if @code{true} will cause LISTOFVARS to
 include %E, %PI, %I, and any variables declared constant in the list
 it returns if they appear in the expression LISTOFVARS is called on.
 The default is to omit these.
 
 @end defvar
 
-@defvar LISTDUMMYVARS
- default: [TRUE] - if FALSE, "dummy variables" in the
+@defvar listdummyvars
+ default: @code{true} - if @code{false}, "dummy variables" in the
 expression will not be included in the list returned by LISTOFVARS.
 (The meaning of "dummy variables" is as given in DESCRIBE(FREEOF):
 "Dummy variables" are mathematical things like the index of a sum or
 product, the limit variable, and the definite integration variable.)
 Example: LISTOFVARS('SUM(F(I),I,0,N)); gives [I,N] if LISTDUMMYVARS is
-TRUE, and [N] if LISTDUMMYVARS is FALSE.
+@code{true}, and [N] if LISTDUMMYVARS is @code{false}.
 
 @end defvar
 
-@defun LISTOFVARS (exp)
+@defun listofvars (exp)
 yields a list of the variables in exp.
-LISTCONSTVARS[FALSE] if TRUE will cause LISTOFVARS to include %E, %PI,
+LISTCONSTVARS[FALSE] if @code{true} will cause LISTOFVARS to include %E, %PI,
 %I, and any variables declared constant in the list it returns if they
 appear in exp.  The default is to omit these.
 @example
@@ -494,12 +498,12 @@ appear in exp.  The default is to omit these.
 @end defun
 
 
-@defun LFREEOF (list, exp)
+@defun lfreeof (list, exp)
 For each member m of list, calls FREEOF(m,exp).
 It returns false if any call to FREEOF does and true otherwise.
 @end defun
 
-@defun LOPOW (exp, v)
+@defun lopow (exp, v)
 the lowest exponent of v which explicitly appears in
 exp.  Thus
 
@@ -510,14 +514,14 @@ LOPOW((X+Y)**2+(X+Y)**A,X+Y) ==> MIN(A,2)
 
 @end defun
 
-@defun LPART (label, expr, n1, ..., nk)
+@defun lpart (label, expr, n1, ..., nk)
 is similar to DPART but uses a
 labelled box. A labelled box is similar to the one produced by DPART
 but it has a name in the top line.
 
 @end defun
 
-@defun MULTTHRU (exp)
+@defun multthru (exp)
 multiplies a factor (which should be a sum) of exp by
 the other factors of exp.  That is exp is f1*f2*...*fn where at least
 one factor, say fi, is a sum of terms.  Each term in that sum is
@@ -562,7 +566,7 @@ form is equivalent to MULTTHRU(exp1*exp2).
 @end example
 @end defun
 
-@defun NOUNIFY (f)
+@defun nounify (f)
 returns the noun form of the function name f.  This is
 needed if one wishes to refer to the name of a verb function as if it
 were a noun.  Note that some verb functions will return their noun
@@ -571,7 +575,7 @@ the form returned if a function call is preceded by a quote.
 
 @end defun
 
-@defun NTERMS (exp)
+@defun nterms (exp)
 gives the number of terms that exp would have if it were
 fully expanded out and no cancellations or combination of terms
 occurred. Note that expressions like SIN(E), SQRT(E), EXP(E), etc.
@@ -580,19 +584,19 @@ sum).
 
 @end defun
 
-@defun OP (exp)
+@defun op (exp)
 Returns the operator of the expression, and functions the same way as
 PART(exp,0).  It observes the setting of the INPART flag.
 
 @end defun
 
-@defun OPERATORP (exp, ool)
+@defun operatorp (exp, ool)
 Uses OP to get the operator of the expression and either compares it to ool,
 if it is a operator, or checks if it is a member of ool if it is a list.
 
 @end defun
 
-@defun OPTIMIZE (exp)
+@defun optimize (exp)
 returns an expression that produces the same value and
 side effects as exp but does so more efficiently by avoiding the
 recomputation of common subexpressions.  OPTIMIZE also has the side
@@ -602,13 +606,13 @@ Do EXAMPLE(OPTIMIZE); for examples.
 
 @end defun
 
-@defvar OPTIMPREFIX
+@defvar optimprefix
  default: [%] - The prefix used for generated symbols by
 the OPTIMIZE command.
 
 @end defvar
 
-@defun ORDERGREAT (V1, ..., Vn)
+@defun ordergreat (v1, ..., vn)
 sets up aliases for the variables V1, ..., Vn
 such that V1 > V2 > ...  > Vn > any other variable not mentioned as an
 argument.  See also ORDERLESS.  Caveat:  do EXAMPLE(ORDERGREAT); for
@@ -616,13 +620,13 @@ some specifics.
 
 @end defun
 
-@defun ORDERGREATP (exp1,exp2)
-returns TRUE if exp2 precedes exp1 in the
+@defun ordergreatp (exp1,exp2)
+returns @code{true} if exp2 precedes exp1 in the
 ordering set up with the ORDERGREAT function (see DESCRIBE(ORDERGREAT);).
 
 @end defun
 
-@defun ORDERLESS (V1, ..., Vn)
+@defun orderless (v1, ..., vn)
 sets up aliases for the variables V1, ..., Vn
 such that V1 < V2 < ...  < Vn < any other variable not mentioned as an
 argument.  Thus the complete ordering scale is: numerical constants <
@@ -635,13 +639,13 @@ see DESCRIBE(MAINVAR);.
 
 @end defun
 
-@defun ORDERLESSP (exp1,exp2)
-returns TRUE if exp1 precedes exp2 in the
+@defun orderlessp (exp1,exp2)
+returns @code{true} if exp1 precedes exp2 in the
 ordering set up by the ORDERLESS command (see DESCRIBE(ORDERLESS);).
 
 @end defun
 
-@defun PART (exp, n1, ..., nk)
+@defun part (exp, n1, ..., nk)
 deals with the displayed form of exp. It
 obtains the part of exp as specified by the indices n1,...,nk.  First
 part n1 of exp is obtained, then part n2 of that, etc.  The result is
@@ -654,14 +658,14 @@ index of the list.  Thus PART(X+Y+Z,[1,3]) is Z+X.
 PIECE holds the last expression selected when using the Part
 functions.  It is set during the execution of the function and thus
 may be referred to in the function itself as shown below.
-If PARTSWITCH[FALSE] is set to TRUE then END is returned when a
+If PARTSWITCH[FALSE] is set to @code{true} then END is returned when a
 selected part of an expression doesn't exist, otherwise an error
 message is given.
 For examples, do EXAMPLE(PART);
 
 @end defun
 
-@defun PARTITION (exp, var)
+@defun partition (exp, var)
 returns a list of two expressions.  They are (1)
 the factors of exp (if it is a product), the terms of exp (if it is a
 sum), or the list (if it is a list) which don't contain var and, (2)
@@ -678,14 +682,14 @@ the factors, terms, or list which do.
 @end example
 @end defun
 
-@defvar PARTSWITCH
- default: [FALSE] - if set to TRUE then END is returned
+@defvar partswitch
+ default: @code{false} - if set to @code{true} then END is returned
 when a selected part of an expression doesn't exist, otherwise an
 error message is given.
 
 @end defvar
 
-@defun PICKAPART (exp,depth)
+@defun pickapart (exp,depth)
 will assign E labels to all subexpressions of
 exp down to the specified integer depth.  This is useful for dealing
 with large expressions and for automatically assigning parts of an
@@ -711,21 +715,21 @@ expression to a variable without having to use the part functions.
 @end example
 @end defun
 
-@defvar PIECE
+@defvar piece
  - holds the last expression selected when using the Part
 functions.  It is set during the execution of the function and thus
 may be referred to in the function itself.
 
 @end defvar
 
-@defun POWERS (expr, var)
+@defun powers (expr, var)
 gives the powers of var occuring in expr.  To use
 it, do LOAD(POWERS);.  For details on usage, do
 PRINTFILE("powers.usg");.
 
 @end defun
 
-@defun PRODUCT (exp, ind, lo, hi)
+@defun product (exp, ind, lo, hi)
 gives the product of the values of exp as
 the index ind varies from lo to hi.  The evaluation is similar to that
 of SUM.  No simplification of products is available at this time.
@@ -739,20 +743,20 @@ returns 1 rather than erring out.  Also see DESCRIBE(PRODHACK).
 @end example
 @end defun
 
-@defun REALPART (exp)
+@defun realpart (exp)
 gives the real part of exp. REALPART and IMAGPART will
 work on expressions involving trigonometic and hyperbolic functions,
 as well as SQRT, LOG, and exponentiation.
 
 @end defun
 
-@defun RECTFORM (exp)
+@defun rectform (exp)
 returns an expression of the form A + B*%I, where A and
 B are purely real.
 
 @end defun
 
-@defun REMBOX (expr, arg)
+@defun rembox (expr, arg)
 removes boxes from expr according to arg.  If arg
 is UNLABELED then all unlabelled boxes are removed.  If arg is the
 name of some label then only boxes with that label are removed.  If
@@ -760,13 +764,13 @@ arg is omitted then all boxes labelled and unlabelled are removed.
 
 @end defun
 
-@defun SUM (exp, ind, lo, hi)
+@defun sum (exp, ind, lo, hi)
 performs a summation of the values of exp as
 the index ind varies from lo to hi.  If the upper and lower limits
 differ by an integer then each term in the sum is evaluated and added
-together.  Otherwise, if the SIMPSUM [FALSE] is TRUE the result is
+together.  Otherwise, if the SIMPSUM [FALSE] is @code{true} the result is
 simplified.  This simplification may sometimes be able to produce a
-closed form.  If SIMPSUM is FALSE or if 'SUM is used, the value is a
+closed form.  If SIMPSUM is @code{false} or if 'SUM is used, the value is a
 sum noun form which is a representation of the sigma notation used in
 mathematics.
 If hi is one less than lo, we have an "empty sum" and SUM returns 0 
@@ -774,20 +778,20 @@ rather than erring out.
 Sums may be differentiated, added, subtracted, or multiplied with some
 automatic simplification being performed.
 Also see DESCRIBE(SUMHACK).
-CAUCHYSUM[FALSE] when TRUE causes the Cauchy product to be used when
+CAUCHYSUM[FALSE] when @code{true} causes the Cauchy product to be used when
 multiplying sums together rather than the usual product.  In the
 Cauchy product the index of the inner summation is a function of the
 index of the outer one rather than varying independently.
 GENINDEX[I] is the alphabetic prefix used to generate the next
 variable of summation.
 GENSUMNUM[0] is the numeric suffix used to generate the next variable
-of summation.  If it is set to FALSE then the index will consist only
+of summation.  If it is set to @code{false} then the index will consist only
 of GENINDEX with no numeric suffix.
 Do EXAMPLE(SUM); for examples.  See also SUMCONTRACT, INTOSUM,
 BASHINDICES, and NICEINDICES.
 
 @end defun
-@defun LSUM (exp, ind, list)
+@defun lsum (exp, ind, list)
 performs the sum of EXP for each element IND of the LIST.
 @example
 (%i10) lsum(x^i,i,[1,2,7]);
@@ -812,7 +816,7 @@ evaluate to a Maxima list then the answer is left in noun form
 @end defun
 
 
-@defvr {special symbol} VERB
+@defvr {special symbol} verb
  - the opposite of "noun", i.e. a function form which "does
 something" ("action" - for most functions the usual case).  E.g.
 INTEGRATE integrates a function, unless it is DECLAREd to be a "noun",
@@ -821,7 +825,7 @@ NOUNIFY, and VERBIFY.
 
 @end defvr
 
-@defun VERBIFY (f)
+@defun verbify (f)
 returns the function name f in its verb form (See also VERB,
 NOUN, and NOUNIFY).
 
