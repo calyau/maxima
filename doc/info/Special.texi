@@ -50,22 +50,45 @@ For a better feeling for what it can do, do DEMO(HYPGEO,DEMO,SHARE1); .
 @section Definitions for Special Functions
 @c @node AIRY
 @c @unnumberedsec phony
+@c AIRY IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
 @defun AIRY (X)
 returns the Airy function Ai of real argument X.
-The Airy package contains routines to evaluate the Airy functions
-Ai(X), Bi(X), and their derivatives dAi(X), dBi(X).  Ai and Bi satisfy the
-AIRY eqn diff(y(x),x,2)-x*y(x)=0.  Read SHARE1;AIRY USAGE for details.
+
+@c REMAINDER DERIVED FROM airy.usg AND SHOULD PROBABLY BE MOVED
+@c TO A NODE DEVOTED TO THE airy PACKAGE.
+The Airy equation @code{diff (y(x), x, 2) - x y(x) = 0} has two linearly independent
+solutions, named @code{ai} and @code{bi}. This equation is very popular
+as an approximation to more complicated problems in many mathematical
+physics settings.
+
+@code{load ("airy")} loads the functions @code{ai}, @code{bi}, @code{dai}, and @code{dbi}.
+
+The @code{airy} package contains routines to compute
+@code{ai} and @code{bi} and their derivatives @code{dai} and @code{dbi}. The result is
+a floating point number if the argument is a number, and a
+simplified form otherwise. An error occurs if the argument is large
+enough to cause an overflow in the exponentials, or a loss of 
+accuracy in @code{sin} or @code{cos}. This makes the range of validity
+@c NEED TO UPDATE RANGES TO REFLECT DOUBLE PRECISION ARITHMETIC.
+about -2800 to 10^38 for @code{ai} and @code{dai}, and -2800 to 25 for @code{bi} and @code{dbi}.
+The derivative rules are known to Maxima:
+@code{diff (ai(x), x)} yields @code{dai(x)},
+@code{diff (dai(x), x)} yields @code{x ai(x)},
+@code{diff (bi(x), x)} yields @code{dbi(x)},
+and @code{diff (dbi(x), x)} yields @code{x bi(x)}.
+
+Function values are computed from the convergent Taylor series for @code{abs(x) < 3},
+and from the asymptotic expansions for @code{x < -3} or @code{x > 3} as needed.
+This results in only very minor numerical discrepancies at @code{x = 3} and @code{x = -3}.
+For details, see Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 10.4 and Table 10.11.
+
+@code{ev (taylor (ai(x), x, 0, 9), infeval)} yields a
+floating point Taylor expansions of the function @code{ai}.
+A similar expression can be constructed for @code{bi}.
 
 @end defun
-@c @node ASYMP
-@c @unnumberedsec phony
-@defun ASYMP
- - A preliminary version of a program to find the asymptotic behavior
-of Feynman diagrams has been installed on the SHARE1; directory.
-For further information, see the file SHARE1;ASYMP USAGE.
-(For Asymptotic Analysis functions, see ASYMPA.)
 
-@end defun
 @c @node ASYMPA
 @c @unnumberedsec phony
 @defun ASYMPA
