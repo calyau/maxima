@@ -52,5 +52,5 @@
 			 (mapcar
 			  #'(lambda (x)
 			      (format t "Error(s) found in ~a: ~a~%"
-				      (first x) (rest x)))
+				      (first x) (sort (rest x) #'<)))
 			  errs)))))
