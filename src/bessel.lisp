@@ -489,21 +489,101 @@
 	      (t (return (list '($nzetai simp) $z))))))
 
 
-(declare-top (fixnum i) (flonum (gauss) te)) 
+;; Initialize tables for Marsaglia's Ziggurat method of generating
+;; random numbers.  See http://www.jstatsoft.org for a reference.
+;;
+;; Let 0 = x[0] < x[1] < x[2] <...< x[n].  Select a set of rectangles
+;; with common area v such that
+;;
+;; x[k]*(f(x[k-1]) - f(x[k])) = v
+;;
+;; and
+;;
+;;              inf
+;; v = r*f(r) + int f(x) dx
+;;               r
+;;
+;; where r = x[n].
+;;
+(defun ziggurat-init (n r v scale f finv)
+  ;; n = one less than the number of elements in the tables
+  ;; r = x[n]
+  ;; v = common area term
+  ;; scale = 2^scale is the scaling to use to make integers
+  ;; f = density function
+  ;; finv = inverse density function
+  (let ((x (make-array (1+ n) :element-type 'double-float))
+	(fx (make-array (1+ n) :element-type 'double-float))
+	(k-table (make-array (1+ n) :element-type '(unsigned-byte 32)))
+	(w-table (make-array (1+ n) :element-type 'double-float)))
+    (setf (aref x n) r)
+    (loop for k from (1- n) downto 1 do
+	  (let ((prev (aref x (1+ k))))
+	    (setf (aref x k) (funcall finv (+ (/ v prev)
+					      (funcall f prev))))
+	    (setf (aref fx k) (funcall f (aref x k)))))
 
-(defun gauss nil
-  (do ((i 0. (f1+ i))
-       ;;are these random numbers supposed to be negative too?
-       (te 0.0 (+$ te (*$ (float (random #+cl most-positive-fixnum
-					 #-cl #. (^ 2 30))) 1.45519152e-11))))
-      ((= i 12.) te)))
+    (setf (aref x 0) 0d0)
+    (setf (aref fx 0) (funcall f (aref x 0)))
+    (setf (aref fx n) (funcall f (aref x n)))
 
+    (loop for k from 1 to n do
+	  (setf (aref k-table k)
+		(floor (scale-float (/ (aref x (1- k)) (aref x k)) scale)))
+	  (setf (aref w-table k)
+		(* (aref x k) (expt .5d0 scale))))
+
+    (setf (aref k-table 0) (floor (scale-float (/ (* r (funcall f r)) v) scale)))
+    (setf (aref w-table 0) (* (/ v (funcall f r)) (expt 0.5d0 scale)))
+    (values k-table w-table fx)))
+
+;; Marsaglia's Ziggurat method for Gaussians
+(let ((r 3.442619855899d0))
+  (flet ((density (x)
+	   (declare (double-float x)
+		    (optimize (speed 3) (safety 0)))
+	   (exp (* -0.5d0 x x))))
+    (declaim (inline density))
+    (multiple-value-bind (k-table w-table f-table)
+	(ziggurat-init 127 r 9.91256303526217d-3 31
+		       #'density
+		       #'(lambda (x)
+			   (sqrt (* -2 (log x)))))
+      (defun gen-gaussian-variate-ziggurat (state)
+	(declare (random-state state)
+		 (optimize (speed 3)))
+	(loop
+	    ;; We really want a signed 32-bit random number. So make a
+	    ;; 32-bit unsigned number, take the low 31 bits as the
+	    ;; number, and use the most significant bit as the sign.
+	    ;; Doing this in other ways can cause consing.
+	    (let* ((ran (random (ash 1 32) state))
+		   (sign (ldb (byte 1 31) ran))
+		   (j (if (plusp sign)
+			  (- (ldb (byte 31 0) ran))
+			  (ldb (byte 31 0) ran)))
+		   (i (logand j 127))
+		   (x (* j (aref w-table i))))
+	      (when (< (abs j) (aref k-table i))
+		(return x))
+	      (when (zerop i)
+		(loop
+		    (let ((x (/ (- (log (random 1d0 state))) r))
+			  (y (- (log (random 1d0 state)))))
+		      (when (> (+ y y) (* x x))
+			(return-from gen-gaussian-variate-ziggurat
+			  (if (plusp j)
+			      (- (+ r x))
+			      (+ r x)))))))
+	      (when (< (* (random 1d0 state) (- (aref f-table (1- i))
+						(aref f-table i)))
+		       (- (density x) (aref f-table i)))
+		(return x))))))))
 
 (defun $gauss ($mean $sd)
   (cond ((and (numberp $mean) (numberp $sd))
-	 (+$ (float $mean) (*$ (float $sd) (gauss))))
+	 (+$ (float $mean) (*$ (float $sd) (gen-gaussian-variate-ziggurat *random-state*))))
 	(t (list '($gauss simp) $mean $sd))))
-
 
 (declare-top (flonum x w y (expint flonum)))
 
@@ -522,6 +602,13 @@
 ;; Define the Bessel funtion J[n](z)
 
 (defprop $bessel_j bessel-j-simp specsimp)
+
+(defprop $bessel_j
+    ((n x)
+     ((%derivative) ((mqapply) (($bessel_j array) n) x) n 1)
+		     ((mplus) ((mqapply) (($bessel_j array) ((mplus) -1 n)) x)
+			      ((mtimes) -1 n ((mqapply) (($bessel_j array) n) x) ((mexpt) x -1))))
+  grad)
 
 ;; If E is a maxima ratio with a denominator of DEN, return the ratio
 ;; as a Lisp rational.  Otherwise NIL.
@@ -599,7 +686,8 @@
 
 (defun bessel-j-simp (exp ignored z)
   (declare (ignore ignored))
-  (let ((order (simpcheck (car (subfunsubs exp)) z)))
+  (let ((order (simpcheck (car (subfunsubs exp)) z))
+	(rat-order nil))
     (subargcheck exp 1 1 '$bessel_j)
     (let* ((arg (simpcheck (car (subfunargs exp)) z))
 	   (real-arg ($realpart arg))
@@ -620,14 +708,14 @@
 		   (t
 		    (eqtest (subfunmakes '$bessel_j (ncons order) (ncons arg))
 			    exp))))
-	    ((setq order (max-numeric-ratio-p order 2))
+	    ((setq rat-order (max-numeric-ratio-p order 2))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
 	     ;;
 	     ;; J[1/2](z) is a function of sin.  J[-1/2](z) is a
 	     ;; function of cos.
-	     (bessel-half-order arg order '%sin '%cos))
+	     (bessel-half-order arg rat-order '%sin '%cos))
 	    (t
 	     (eqtest (subfunmakes '$bessel_j (ncons order) (ncons arg))
 		     exp))))))
@@ -637,28 +725,10 @@
 
 (defprop $bessel_y bessel-y-simp specsimp)
 
-#+nil
 (defun bessel-y-simp (exp ignored z)
   (declare (ignore ignored))
-  (let ((order (simpcheck (car (subfunsubs exp)) z)))
-    (subargcheck exp 1 1 '$bessel_y)
-    (let* ((arg (simpcheck (car (subfunargs exp)) z))
-	   (real-arg ($realpart arg))
-	   (imag-arg ($imagpart arg)))
-      ;;(format t "order = ~A~%" order)
-      ;;(format t "arg   = ~A (~A ~A)~%" arg real-arg imag-arg)
-      (cond ((and (numberp order)
-		  (numberp real-arg) (floatp real-arg)
-		  (numberp imag-arg))
-	     ;; Numerically evaluate it
-	     (bessel-y (complex ($realpart arg) ($imagpart arg)) order))
-	    (t
-	     (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
-		     exp))))))
-
-(defun bessel-y-simp (exp ignored z)
-  (declare (ignore ignored))
-  (let ((order (simpcheck (car (subfunsubs exp)) z)))
+  (let ((order (simpcheck (car (subfunsubs exp)) z))
+	(rat-order nil))
     (subargcheck exp 1 1 '$bessel_y)
     (let* ((arg (simpcheck (car (subfunargs exp)) z))
 	   (real-arg ($realpart arg))
@@ -679,14 +749,14 @@
 		   (t
 		    (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
 			    exp))))
-	    ((setq order (max-numeric-ratio-p order 2))
+	    ((setq rat-order (max-numeric-ratio-p order 2))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
 	     ;;
 	     ;; Y[1/2](z) = -J[1/2](z) is a function of sin.
 	     ;; Y[-1/2](z) = -J[-1/2](z) is a function of cos.
-	     (simplify `((mtimes) -1 ,(bessel-half-order arg order '%sin '%cos))))
+	     (simplify `((mtimes) -1 ,(bessel-half-order arg rat-order '%sin '%cos))))
 	    (t
 	     (eqtest (subfunmakes '$bessel_y (ncons order) (ncons arg))
 		     exp))))))
@@ -695,28 +765,10 @@
 
 (defprop $bessel_i bessel-i-simp specsimp)
 
-#+nil
 (defun bessel-i-simp (exp ignored z)
   (declare (ignore ignored))
-  (let ((order (simpcheck (car (subfunsubs exp)) z)))
-    (subargcheck exp 1 1 '$bessel_i)
-    (let* ((arg (simpcheck (car (subfunargs exp)) z))
-	   (real-arg ($realpart arg))
-	   (imag-arg ($imagpart arg)))
-      ;;(format t "order = ~A~%" order)
-      ;;(format t "arg   = ~A (~A ~A)~%" arg real-arg imag-arg)
-      (cond ((and (numberp order)
-		  (numberp real-arg) (floatp real-arg)
-		  (numberp imag-arg))
-	     ;; Numerically evaluate it
-	     ($in arg order))
-	    (t
-	     (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
-		     exp))))))
-
-(defun bessel-i-simp (exp ignored z)
-  (declare (ignore ignored))
-  (let ((order (simpcheck (car (subfunsubs exp)) z)))
+  (let ((order (simpcheck (car (subfunsubs exp)) z))
+	(rat-order nil))
     (subargcheck exp 1 1 '$bessel_i)
     (let* ((arg (simpcheck (car (subfunargs exp)) z))
 	   (real-arg ($realpart arg))
@@ -735,14 +787,14 @@
 		   (t
 		    (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
 			    exp))))
-	    ((setq order (max-numeric-ratio-p order 2))
+	    ((setq rat-order (max-numeric-ratio-p order 2))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
 	     ;; functions.
 	     ;;
 	     ;; I[1/2](z) = sqrt(2/%pi/z)*sinh(z)
 	     ;; I[-1/2](z) = sqrt(2/%pi/z)*cosh(z)
-	     (bessel-half-order arg order '%sinh '%cosh))
+	     (bessel-half-order arg rat-order '%sinh '%cosh))
 	    (t
 	     (eqtest (subfunmakes '$bessel_i (ncons order) (ncons arg))
 		     exp))))))
