@@ -14,12 +14,12 @@ There are a number of reserved words which cannot be used as
 variable names.   Their use would cause a possibly cryptic syntax error.
 
 @example
-INTEGRATE            NEXT           FROM                 DIFF            
-IN                   AT             LIMIT                SUM             
-FOR                  AND            ELSEIF               THEN            
-ELSE                 DO             OR                   IF              
-UNLESS               PRODUCT        WHILE                THRU            
-STEP                                                                     
+integrate            next           from                 diff            
+in                   at             limit                sum             
+for                  and            elseif               then            
+else                 do             or                   if              
+unless               product        while                thru            
+step                                                                     
 @end example
 
 Most things in Maxima are expressions.   A sequence of expressions
@@ -38,7 +38,7 @@ putting parentheses around them.   This is similar to the @b{C}
 @end example
 
 Even loops in Maxima are expressions, although the value they
-return is the not too useful @code{DONE}
+return is the not too useful @code{done}.
 
 @example
 (%i33) joe:(x:1,for i from 1 thru 10 do (x:x*i));
@@ -56,32 +56,35 @@ term in the @i{comma expression} which actually gives back the value.
 
 @node ASSIGNMENT, COMPLEX, Introduction to Expressions, Expressions
 @section ASSIGNMENT
- - There are two assignment operators in Maxima, : and :: .
-E.g. A:3 sets the variable A to 3.  :: assigns the value of the
+There are two assignment operators in Maxima, @code{:} and @code{::}.
+E.g., @code{a: 3} sets the variable @code{a} to 3. @code{::} assigns the value of the
 expression on its right to the value of the quantity on its left,
 which must evaluate to an atomic variable or subscripted variable.
 
 @node COMPLEX, INEQUALITY, ASSIGNMENT, Expressions
 @section COMPLEX
- - A complex expression is specified in Maxima by adding the
-real part of the expression to %I times the imaginary part.  Thus the
-roots of the equation X^2-4*X+13=0 are 2+3*%I and 2-3*%I.  Note that
+A complex expression is specified in Maxima by adding the
+real part of the expression to @code{%i} times the imaginary part.  Thus the
+roots of the equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%I} and @code{2 - 3*%i}.  Note that
 simplification of products of complex expressions can be effected by
 expanding the product.  Simplification of quotients, roots, and other
 functions of complex expressions can usually be accomplished by using
-the REALPART, IMAGPART, RECTFORM, POLARFORM, ABS, CARG functions.
+the @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg} functions.
 
 @node INEQUALITY, SYNTAX, COMPLEX, Expressions
 @section INEQUALITY
- - Maxima has the usual inequality operators:
+Maxima has the usual inequality operators:
+
+@example
 less than:  <
 greater than:  >
 greater than or equal to:  >=
 less than or equal to:  <=
+@end example
 
 @node SYNTAX, Definitions for Expressions, INEQUALITY, Expressions
 @section SYNTAX
- - It is possible to add new operators to Maxima (infix,
+It is possible to add new operators to Maxima (infix,
 prefix, postfix, unary, or matchfix with given precedences), to remove
 existing operators, or to redefine the precedence of existing
 operators.  While Maxima's syntax should be adequate for most
@@ -89,6 +92,7 @@ ordinary applications, it is possible to define new operators or
 eliminate predefined ones that get in the user's way.  The extension
 mechanism is rather straightforward and should be evident from the
 examples below.
+
 @example
 (%i1) PREFIX("DDX")$
 (%i2) DDX Y$
@@ -96,12 +100,12 @@ examples below.
 (%i3) INFIX("<-")$
 (%i4) A<-DDX Y$
     /* means               "<-"(A,"DDX"(Y)) */
-
 @end example
-For each of the types of operator except SPECIAL, there is a
+
+For each of the types of operator except @code{special}, there is a
 corresponding creation function that will give the lexeme specified
-the corresponding parsing properties.  Thus "PREFIX("DDX")" will make
-"DDX" a prefix operator just like "-" or "NOT".  Of course, certain
+the corresponding parsing properties.  Thus @code{prefix ("ddx")} will make
+@code{ddx} a prefix operator just like @code{-} or @code{not}.  Of course, certain
 extension functions require additional information such as the
 matching keyword for a matchfix operator.  In addition, binding powers
 and parts of speech must be specified for all keywords defined.  This
@@ -110,23 +114,31 @@ If a user does not specify these additional parameters, Maxima will
 assign default values.  The six extension functions with binding
 powers and parts of speech defaults (enclosed in brackets) are
 summarized below.
-PREFIX(operator, rbp[180], rpos[ANY], pos[ANY])
-POSTFIX(operator, lbp[180], lpos[ANY], pos[ANY])
-INFIX(operator, lbp[180], rbp[180], lpos[ANY], rpos[ANY],pos[ANY])
-NARY(operator, bp[180], argpos[ANY], pos[ANY])
-NOFIX(operator, pos[ANY])
-MATCHFIX(operator, match, argpos[ANY], pos[ANY])
-    The defaults have been provided so that a user who does not wish
+
+@example
+prefix (operator, rbp[180], rpos[any], pos[any])
+postfix (operator, lbp[180], lpos[any], pos[any])
+infix (operator, lbp[180], rbp[180], lpos[any], rpos[any], pos[any])
+nary (operator, bp[180], argpos[any], pos[any])
+nofix (operator, pos[any])
+matchfix (operator, match, argpos[any], pos[any])
+@end example
+
+The defaults have been provided so that a user who does not wish
 to concern himself with parts of speech or binding powers may simply
 omit those arguments to the extension functions.  Thus the following
 are all equivalent.
-PREFIX("DDX",180,ANY,ANY)$
-PREFIX("DDX",180)$
-PREFIX("DDX")$
-    It is also possible to remove the syntax properties of an operator
-by using the functions REMOVE or KILL.  Specifically,
-"REMOVE("DDX",OP)" or "KILL("DDX")" will return "DDX" to operand
-status; but in the second case all the other properties of "DDX" will
+
+@example
+prefix ("ddx", 180, any, any)$
+prefix ("ddx", 180)$
+prefix ("ddx")$
+@end example
+
+It is also possible to remove the syntax properties of an operator
+by using the functions @code{remove} or @code{kill}.  Specifically,
+@code{remove ("ddx", op)} or @code{kill ("ddx")} will return @code{ddx} to operand
+status; but in the second case all the other properties of @code{ddx} will
 also be removed.
 
 @example
@@ -142,84 +154,86 @@ also be removed.
 @node Definitions for Expressions,  , SYNTAX, Expressions
 @section Definitions for Expressions
 
-@defun at (exp, list)
-will evaluate exp (which may be any expression) with
+@c CONTRAST at WITH ev AND subst !!!
+@defun at (expr, list)
+Evaluates @code{expr} (which may be any expression) with
 the variables assuming the values as specified for them in the list of
 equations or the single equation similar to that given to the @code{atvalue}
 function.  If a subexpression depends on any of the variables in list
 but it hasn't had an atvalue specified and it can't be evaluated then
 a noun form of the @code{at} will be returned which will display in a
-two-dimensional form.  Do EXAMPLE(AT); for an example.
+two-dimensional form.  @code{example ("at")} displays some examples of @code{at}.
 
 @end defun
 
 @defun box (expr)
-returns expr enclosed in a box.  The box is actually part
-of the expression.
-@example
-BOX(expr,label)
-@end example
-encloses expr in a labelled box.
-label is a name which will be truncated in display if it is too long.
-    BOXCHAR["] - is the character used to draw the box in this and in
+@defunx box (expr, label)
+Returns @code{expr} enclosed in a box.  The box is actually part
+of the expression. @code{box (expr, label)}
+encloses @code{expr} in a labelled box.
+@code{label} is a name which will be truncated in display if it is too long.
+
+@code{boxchar} is the character used to draw the box in this and in
 the @code{dpart} and @code{lpart} functions.
 
 @end defun
 
 @defvar boxchar
- default: ["] is the character used to draw the box in the @code{box}
+Default value: ["]
+
+@code{boxchar} is the character used to draw the box in the @code{box}
 and in the @code{dpart} and @code{lpart} functions.
 
 @end defvar
 
 @deffn {special operator} constant
- - makes ai a constant as is %PI.
+Makes ai a constant as is @code{%pi}.
 
 @end deffn
 
-@defun constantp (exp)
-is @code{true} if exp is a constant (i.e.  composed of
-numbers and %PI, %E, %I or any variables bound to a constant or
-DECLAREd constant) else @code{false}.  Any function whose arguments are
+@defun constantp (expr)
+Returns @code{true} if @code{expr} is a constant (i.e.  composed of
+numbers and @code{%pi}, @code{%e}, @code{%i} or any variables bound to a constant or
+declared constant by @code{declare}) else @code{false}.  Any function whose arguments are
 constant is also considered to be a constant.
 
 @end defun
 
-@defun contract (exp)
-carries out all possible contractions in exp, which may
+@defun contract (expr)
+Carries out all possible contractions in @code{expr}, which may
 be any well-formed combination of sums and products.  This function
 uses the information given to the @code{defcon} function.  Since all tensors
 are considered to be symmetric in all indices, the indices are sorted
 into alphabetical order.  Also all dummy indices are renamed using the
 symbols !1,!2,... to permit the expression to be simplified as much as
 possible by reducing equivalent terms to a canonical form.  For best
-results exp should be fully expanded.  @code{ratexpand} is the fastest way to
+results @code{expr} should be fully expanded.  @code{ratexpand} is the fastest way to
 expand products and powers of sums if there are no variables in the
-denominators of the terms.  The GCD switch should be @code{false} if gcd
+denominators of the terms.  The @code{gcd} switch should be @code{false} if gcd
 cancellations are unnecessary.
 
 @end defun
 
 @defun declare (a1, f1, a2, f2, ...)
-gives the atom ai the flag fi.  The ai's
+Returns the atom ai the flag fi.  The ai's
 and fi's may also be lists of atoms and flags respectively in which
 case each of the atoms gets all of the properties.  The possible flags
 and their meanings are:
 
-@code{constant} - makes ai a constant as is %PI.
+@code{constant} makes ai a constant as is @code{%pi}.
 
-@code{mainvar} - makes ai a MAINVAR.  The ordering scale for atoms: numbers <
-constants (e.g. %E,%PI) < scalars < other variables < mainvars.
+@code{mainvar} makes ai a @code{mainvar}.  The ordering scale for atoms: numbers <
+constants (e.g. @code{%e}, @code{%pi}) < scalars < other variables < mainvars.
 
-@code{scalar} - makes ai a scalar.
+@code{scalar} makes ai a scalar.
 
-@code{nonscalar} - makes ai behave as does a list or matrix with respect to
+@code{nonscalar} makes ai behave as does a list or matrix with respect to
 the dot operator.
 
-@code{noun} - makes the function ai a noun so that it won't be evaluated
+@code{noun} makes the function ai a noun so that it won't be evaluated
 automatically.
 
-@code{evfun} - makes ai known to the EV function so that it will get applied
+@code{evfun} makes ai known to the @code{ev} function so that it will get applied
 if its name is mentioned.  Initial evfuns are
 @c NEED TO CHECK THIS LIST !!!
 @example
@@ -227,7 +241,7 @@ factor, trigexpand,
 trigreduce, bfloat, ratsimp, ratexpand, and radcan
 @end example
 
-@code{evflag} - makes ai known to the @code{ev} function so that it will be bound to
+@code{evflag} makes ai known to the @code{ev} function so that it will be bound to
 @code{true} during the execution of @code{ev} if it is mentioned.  Initial evflags
 are
 @c NEED TO CHECK THIS LIST !!!
@@ -241,8 +255,8 @@ exptisolate, isolate_wrt_times, sumexpand, cauchysum,
 numer_pbranch, m1pbranch, dotscrules, and logexpand
 @end example
 
-@code{bindtest} - causes ai to signal an error if it ever is used in a
-computation unbound.  DECLARE([var1, var2, ...], BINDTEST) causes
+@code{bindtest} causes ai to signal an error if it ever is used in a
+computation unbound.  @code{declare ([var1, var2, ...], bindtest)} causes
 Maxima to give an error message whenever any of the vari occur
 unbound in a computation.
 Maxima currently recognizes and uses the following features of
@@ -260,25 +274,18 @@ decreasing, oddfun (odd function), evenfun (even function),
 commutative (or symmetric), antisymmetric, lassociative and
 rassociative
 @end example
-DECLARE(F,INCREASING) is in all respects equivalent to
-
-@example
-ASSUME(KIND(F,INCREASING))
-@end example
+@code{declare (f, increasing)} is in all respects equivalent to
+@code{assume (kind (f, increasing))}.
 The ai and fi may also be lists of
-objects or features.  The command
-@example
-FEATUREP(object,feature)
-@end example
+objects or features.  The command @code{featurep (object, feature)}
 may be used
-to determine if an object has been DECLAREd to have "feature".  See
-DESCRIBE(FEATURES); .
+to determine if an object has been declared to have "feature".  See also @code{features}.
 
 @end defun
 
-@defun disolate (exp, var1, var2, ..., varn)
-is similar to ISOLATE(exp, var)
-(Do DESCRIBE(ISOLATE);) except that it enables the user to isolate
+@defun disolate (expr, var1, var2, ..., varn)
+is similar to @code{isolate (expr, var)}
+except that it enables the user to isolate
 more than one variable simultaneously.  This might be useful, for
 example, if one were attempting to change variables in a multiple
 integration, and that variable change involved two or more of the
@@ -288,36 +295,40 @@ integration variables.  This function is autoloaded from
 
 @end defun
 
-@defun dispform (exp)
-returns the external representation of exp (wrt its
+@defun dispform (expr)
+Returns the external representation of @code{expr} (wrt its
 main operator).  This should be useful in conjunction with @code{part} which
-also deals with the external representation.  Suppose EXP is -A .
-Then the internal representation of EXP is "*"(-1,A), while the
-external representation is "-"(A). DISPFORM(exp,ALL) converts the
+also deals with the external representation.  Suppose @code{expr} is -A .
+Then the internal representation of @code{expr} is "*"(-1,A), while the
+external representation is "-"(A). @code{dispform (expr, all)} converts the
 entire expression (not just the top-level) to external format.  For
-example, if EXP:SIN(SQRT(X)), then FREEOF(SQRT,EXP) and
-FREEOF(SQRT,DISPFORM(EXP)) give @code{true}, while
-FREEOF(SQRT,DISPFORM(EXP,ALL)) gives @code{false}.
+example, if @code{expr: sin (sqrt (x))}, then @code{freeof (sqrt, expr)} and
+@code{freeof (sqrt, dispform (expr))} give @code{true}, while
+@code{freeof (sqrt, dispform (expr, all))} gives @code{false}.
 
 @end defun
 
-@defun distrib (exp)
-distributes sums over products.  It differs from @code{expand}
+@defun distrib (expr)
+Distributes sums over products.  It differs from @code{expand}
 in that it works at only the top level of an expression, i.e. it doesn't
 recurse and it is faster than @code{expand}.  It differs from @code{multthru} in
 that it expands all sums at that level. For example, 
+
+@example
 DISTRIB((A+B)*(C+D)) -> A C + A D + B C + B D 
 MULTTHRU ((A+B)*(C+D)) -> (A + B) C + (A + B) D
 DISTRIB (1/((A+B)*(C+D))) ->  1/ ((A+B) *(C+D))
 EXPAND(1/((A+B)*(C+D)),1,0) -> 1/(A C + A D + B C + B D)
+@end example
 
 @end defun
 
-@defun dpart (exp, n1, ..., nk)
-selects the same subexpression as @code{part}, but
+@defun dpart (expr, n1, ..., nk)
+Selects the same subexpression as @code{part}, but
 instead of just returning that subexpression as its value, it returns
 the whole expression with the selected subexpression displayed inside
 a box.  The box is actually part of the expression.
+
 @example
 (%i1) DPART(X+Y/Z**2,1,2,1);
                        Y
@@ -332,97 +343,108 @@ a box.  The box is actually part of the expression.
 @end defun
 
 @defun exp (x)
-the exponential function.  It is represented internally as
-%E^X.
-  DEMOIVRE[FALSE] - if @code{true} will cause %E^(A+B*%I) to become
-%E^A*(COS(B)+%I*SIN(B)) if B is free of %I.  A and B are not expanded.
+The exponential function.  It is represented internally as
+@code{%e^x}.
+
+@code{demoivre} if @code{true} will cause @code{%e^(a+b*%i)} to become
+@code{%e^a*(cos(b)+%i*sin(b))} if @code{b} is free of @code{%i}.  @code{a} and @code{b} are not expanded.
+
 @c %emode AND %enumer NEED THEIR OWN DESCRIPTIONS !!!
-  %EMODE[TRUE] - when @code{true} %E^(%PI*%I*X) will be simplified as
-follows: it will become COS(%PI*X)+%I*SIN(%PI*X) if X is an integer or
+@code{%emode} (default value: @code{true}) when @code{true}, 
+@code{%e^(%pi*%i*x)} will be simplified as
+follows: it will become @code{cos (%pi*x)+%i * sin (%pi*x)} if @code{x} is an integer or
 a multiple of 1/2, 1/3, 1/4, or 1/6 and thus will simplify further.
-For other numerical X it will become %E^(%PI*%I*Y) where Y is X-2*k
-for some integer k such that ABS(Y)<1.  If %EMODE is @code{false} no
-simplification of %E^(%PI*%I*X) will take place.
-  %ENUMER[FALSE] - when @code{true} will cause %E to be converted into
-2.718...  whenever NUMER is @code{true}.  The default is that this conversion
-will take place only if the exponent in %E^X evaluates to a number.
+For other numerical @code{x} it will become @code{%e^(%pi*%i*y)} where @code{y} is @code{x-2*k}
+for some integer @code{k} such that @code{abs(y)<1}.  If @code{%emode} is @code{false} no
+simplification of @code{%e^(%pi*%i*x)} will take place.
+
+@code{%enumer} (default value: @code{false}) when @code{true} will cause @code{%e} to be converted into
+2.718...  whenever @code{numer} is @code{true}.  The default is that this conversion
+will take place only if the exponent in @code{%e^x} evaluates to a number.
 
 @end defun
 
 @defvar exptisolate
- default: @code{false} if @code{true} will cause ISOLATE(expr,var); to
-examine exponents of atoms (like %E) which contain var.
+Default value: @code{false}
+
+When @code{exptisolate} is @code{true}, will cause @code{isolate (expr, var)} to
+examine exponents of atoms (like @code{%e}) which contain @code{var}.
 
 @end defvar
 
 @defvar exptsubst
- default: @code{false} if @code{true} permits substitutions such as Y
-for %E**X in %E**(A*X) to take place.
+Default value: @code{false}
+
+When @code{exptsubst} is @code{true}, permits substitutions such as @code{y}
+for @code{%e^x} in @code{%e^(a*x)} to take place.
 
 @end defvar
 
-@defun freeof (x1, x2, ..., exp)
-yields @code{true} if the xi do not occur in exp
+@defun freeof (x1, x2, ..., expr)
+Returns @code{true} if the xi do not occur in @code{expr}
 and @code{false} otherwise.  The xi are atoms or they may be subscripted
-names, functions (e.g.  SIN(X) ), or operators enclosed in "s.  If
-'var' is a "dummy variable" of 'exp', then FREEOF(var,exp); will
+names, functions (e.g. @code{sin(x)}), or operators enclosed in "s.  If
+'var' is a "dummy variable" of @code{expr}, then @code{freeof (var, expr)} will
 return @code{true}.  "Dummy variables" are mathematical things like the index
 of a sum or product, the limit variable, and the definite integration
-variable.  Example: FREEOF(I,'SUM(F(I),I,0,N)); returns @code{true}.  Do
-EXAMPLE(FREEOF); for more examples.
+variable.  Example: @code{freeof (i, 'sum (f(i), i, 0, n))} returns @code{true}.  Do
+@code{example (freeof)} for more examples.
 
 @end defun
 
 @defun genfact (x, y, z)
-is the generalized factorial of X which is:
+Returns the generalized factorial of X which is:
 X*(X-Z)*(X-2*Z)*...*(X-(Y-1)*Z).  Thus, for integral X,
-GENFACT(X,X,1)=X!  and GENFACT(X,X/2,2)=X!!
+@code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = X!!}.
 
 @end defun
 
-@defun imagpart (exp)
-returns the imaginary part of the expression exp.
+@defun imagpart (expr)
+Returns the imaginary part of the expression @code{expr}.
 
 @end defun
 
-@defun indices (exp)
-returns a list of two elements.  The first is a list of
-the free indices in exp (those that occur only once); the second is
-the list of dummy indices in exp (those that occur exactly twice).
+@defun indices (expr)
+Returns a list of two elements.  The first is a list of
+the free indices in @code{expr} (those that occur only once); the second is
+the list of dummy indices in @code{expr} (those that occur exactly twice).
 
 @end defun
 
 @defun infix (op)
- - INFIX operators are used to denote functions of two
+Infix operators are used to denote functions of two
 arguments, one given before the operator and one after, e.g. A^2 .
-The INFIX("x") function is a syntax extention function to declare x to
-be an INFIX operator.  Do DESCRIBE(SYNTAX); for more details.
+The @code{infix ("x")} function is a syntax extention function to declare @code{x} to
+be an infix operator.  See also @code{Syntax}.
 
 @end defun
 
 @defvar inflag
- default: @code{false} if set to @code{true}, the functions for part
-extraction will look at the internal form of exp.  Note that the
-simplifier re-orders expressions.  Thus FIRST(X+Y) will be X if INFLAG
-is @code{true} and Y if INFLAG is @code{false}.  (FIRST(Y+X) gives the same
-results).  Also, setting INFLAG to @code{true} and calling PART/SUBSTPART is
-the same as calling INPART/SUBSTINPART.  Functions affected by the
-setting of INFLAG are: PART, SUBSTPART, FIRST, REST, LAST, LENGTH, the
-FOR ... IN construct, MAP, FULLMAP, MAPLIST, REVEAL and PICKAPART.
+Default value: @code{false}
+
+When @code{inflag} is @code{true}, the functions for part
+extraction will look at the internal form of @code{expr}.  Note that the
+simplifier re-orders expressions.  Thus @code{first (x+y)} will be @code{x} if @code{inflag}
+is @code{true} and Y if @code{inflag} is @code{false}.  (@code{first (y+x)} gives the same
+results).  Also, setting @code{inflag} to @code{true} and calling @code{part}/@code{substpart} is
+the same as calling @code{inpart}/@code{substinpart}.  Functions affected by the
+setting of @code{inflag} are: @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length}, the
+@code{for} ... @code{in} construct, @code{map}, @code{fullmap}, @code{maplist}, @code{reveal} and @code{pickapart}.
 
 @end defvar
 
-@defun inpart (exp, n1, ..., nk)
-is similar to PART but works on the internal
+@defun inpart (expr, n1, ..., nk)
+is similar to @code{part} but works on the internal
 representation of the expression rather than the displayed form and
 thus may be faster since no formatting is done.  Care should be taken
 with respect to the order of subexpressions in sums and products
 (since the order of variables in the internal form is often different
 from that in the displayed form) and in dealing with unary minus,
 subtraction, and division (since these operators are removed from the
-expression). PART(X+Y,0) or INPART(X+Y,0) yield +, though in order to
+expression). @code{part (x+y, 0)} or @code{inpart (x+y, 0)} yield @code{+}, though in order to
 refer to the operator it must be enclosed in "s.  For example
-...IF INPART(%o9,0)="+" THEN ...
+@code{... if inpart (%o9,0) = "+" then ...}.
+
 @example
 (%i1)  X+Y+W*Z;
 (%o1)                  W Z + Y + X
@@ -436,103 +458,124 @@ refer to the operator it must be enclosed in "s.  For example
                           X ->0-
 (%i5) INPART(%,1,2);
 (%o5)                            G(X + 1)
-
-
 @end example
+
 @end defun
 
-@defun isolate (exp, var)
-returns exp with subexpressions which are sums and
+@defun isolate (expr, var)
+Returns @code{expr} with subexpressions which are sums and
 which do not contain var replaced by intermediate expression labels
 (these being atomic symbols like %t1, %t2, ...).  This is often useful
 to avoid unnecessary expansion of subexpressions which don't contain
 the variable of interest.  Since the intermediate labels are bound to
 the subexpressions they can all be substituted back by evaluating the
 expression in which they occur.
-EXPTISOLATE[FALSE] if @code{true} will cause ISOLATE to examine exponents of
-atoms (like %E) which contain var.
-ISOLATE_WRT_TIMES[FALSE] if @code{true}, then ISOLATE will also isolate wrt
+
+@code{exptisolate} (default value: @code{false}) if @code{true} will cause @code{isolate} to examine exponents of
+atoms (like @code{%e}) which contain var.
+
+@code{isolate_wrt_times} (default value: @code{false}) if @code{true}, then @code{isolate} will also isolate wrt
 products.  E.g. compare both settings of the switch on
+
+@example
 ISOLATE(EXPAND((A+B+C)^2),C); .
-Do EXAMPLE(ISOLATE); for examples.
+@end example
+
+Do @code{example (isolate)} for examples.
 
 @end defun
 
 @defvar isolate_wrt_times
- default: @code{false} - if set to @code{true}, then ISOLATE
+Default value: @code{false}
+
+When @code{isolate_wrt_times} is @code{true}, @code{isolate}
 will also isolate wrt products.  E.g. compare both settings of the
-switch on ISOLATE(EXPAND((A+B+C)^2),C); .
+switch on
+
+@example
+ISOLATE(EXPAND((A+B+C)^2),C);
+@end example
 
 @end defvar
 
 @defvar listconstvars
- default: @code{false} - if @code{true} will cause LISTOFVARS to
-include %E, %PI, %I, and any variables declared constant in the list
-it returns if they appear in the expression LISTOFVARS is called on.
+Default value: @code{false}
+
+When @code{listconstvars} is @code{true}, it will cause @code{listofvars} to
+include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in the list
+it returns if they appear in the expression @code{listofvars} is called on.
 The default is to omit these.
 
 @end defvar
 
 @defvar listdummyvars
- default: @code{true} - if @code{false}, "dummy variables" in the
-expression will not be included in the list returned by LISTOFVARS.
-(The meaning of "dummy variables" is as given in DESCRIBE(FREEOF):
+Default value: @code{true}
+
+When @code{listdummyvars} is @code{false}, "dummy variables" in the
+expression will not be included in the list returned by @code{listofvars}.
+(The meaning of "dummy variables" is as given in @code{freeof}.
 "Dummy variables" are mathematical things like the index of a sum or
 product, the limit variable, and the definite integration variable.)
-Example: LISTOFVARS('SUM(F(I),I,0,N)); gives [I,N] if LISTDUMMYVARS is
-@code{true}, and [N] if LISTDUMMYVARS is @code{false}.
+Example:
+
+@example
+LISTOFVARS('SUM(F(I),I,0,N));
+Returns [I,N] if LISTDUMMYVARS is @code{true},
+and [N] if LISTDUMMYVARS is @code{false}.
+@end example
 
 @end defvar
 
-@defun listofvars (exp)
-yields a list of the variables in exp.
-LISTCONSTVARS[FALSE] if @code{true} will cause LISTOFVARS to include %E, %PI,
-%I, and any variables declared constant in the list it returns if they
-appear in exp.  The default is to omit these.
+@defun listofvars (expr)
+Returns a list of the variables in @code{expr}.
+
+@code{listconstvars} (default value: @code{false}) if @code{true} will cause @code{listofvars} to include @code{%e}, @code{%pi},
+@code{%i}, and any variables declared constant in the list it returns if they
+appear in @code{expr}.  The default is to omit these.
+
 @example
 (%i1) LISTOFVARS(F(X[1]+Y)/G**(2+A));
 (%o1)                            [X[1], Y, A, G]
-
-
 @end example
+
 @end defun
 
 
-@defun lfreeof (list, exp)
-For each member m of list, calls FREEOF(m,exp).
-It returns false if any call to FREEOF does and true otherwise.
+@defun lfreeof (list, expr)
+For each member @code{m} of list, calls @code{freeof (m, expr)}.
+It returns @code{false} if any call to @code{freeof} does and @code{true} otherwise.
 @end defun
 
-@defun lopow (exp, v)
-the lowest exponent of v which explicitly appears in
-exp.  Thus
+@defun lopow (expr, v)
+Returns the lowest exponent of @code{v} which explicitly appears in
+@code{expr}.  Thus
 
 @example
 LOPOW((X+Y)**2+(X+Y)**A,X+Y) ==> MIN(A,2)
 @end example
-.
 
 @end defun
 
 @defun lpart (label, expr, n1, ..., nk)
-is similar to DPART but uses a
-labelled box. A labelled box is similar to the one produced by DPART
+is similar to @code{dpart} but uses a
+labelled box. A labelled box is similar to the one produced by @code{dpart}
 but it has a name in the top line.
 
 @end defun
 
-@defun multthru (exp)
-multiplies a factor (which should be a sum) of exp by
-the other factors of exp.  That is exp is f1*f2*...*fn where at least
+@defun multthru (expr)
+Multiplies a factor (which should be a sum) of @code{expr} by
+the other factors of @code{expr}.  That is @code{expr} is f1*f2*...*fn where at least
 one factor, say fi, is a sum of terms.  Each term in that sum is
 multiplied by the other factors in the product.  (Namely all the
-factors except fi).  MULTTHRU does not expand exponentiated sums.
+factors except fi).  @code{multthru} does not expand exponentiated sums.
 This function is the fastest way to distribute products (commutative
 or noncommutative) over sums.  Since quotients are represented as
-products MULTTHRU can be used to divide sums by products as well.
-MULTTHRU(exp1, exp2) multiplies each term in exp2 (which should be a
-sum or an equation) by exp1.  If exp1 is not itself a sum then this
-form is equivalent to MULTTHRU(exp1*exp2).
+products @code{multthru} can be used to divide sums by products as well.
+@code{multthru (expr_1, expr_2)} multiplies each term in @code{expr_2} (which should be a
+sum or an equation) by @code{expr_1}.  If @code{expr_1} is not itself a sum then this
+form is equivalent to @code{multthru (expr_1*expr_2)}.
+
 @example
 (%i1) X/(X-Y)**2-1/(X-Y)-F(X)/(X-Y)**3;
                1        X         F(X)
@@ -561,13 +604,12 @@ form is equivalent to MULTTHRU(exp1*exp2).
 (%i6) MULTTHRU(A.(B+C.(D+E)+F));
 (%o6)                A . F + A . (C . (E + D)) + A . B
 (compare with similar example under EXPAND)
-
-
 @end example
+
 @end defun
 
 @defun nounify (f)
-returns the noun form of the function name f.  This is
+Returns the noun form of the function name f.  This is
 needed if one wishes to refer to the name of a verb function as if it
 were a noun.  Note that some verb functions will return their noun
 forms if they can't be evaluated for certain arguments.  This is also
@@ -575,101 +617,102 @@ the form returned if a function call is preceded by a quote.
 
 @end defun
 
-@defun nterms (exp)
-gives the number of terms that exp would have if it were
+@defun nterms (expr)
+Returns the number of terms that @code{expr} would have if it were
 fully expanded out and no cancellations or combination of terms
-occurred. Note that expressions like SIN(E), SQRT(E), EXP(E), etc.
-count as just one term regardless of how many terms E has (if it is a
+occurred. Note that expressions like @code{sin (expr)}, @code{sqrt (expr)}, @code{exp (expr)}, etc.
+count as just one term regardless of how many terms @code{expr} has (if it is a
 sum).
 
 @end defun
 
-@defun op (exp)
+@defun op (expr)
 Returns the operator of the expression, and functions the same way as
-PART(exp,0).  It observes the setting of the INPART flag.
+@code{part (expr, 0)}.  It observes the setting of the @code{inpart} flag.
 
 @end defun
 
-@defun operatorp (exp, ool)
-Uses OP to get the operator of the expression and either compares it to ool,
-if it is a operator, or checks if it is a member of ool if it is a list.
+@defun operatorp (expr, ool)
+Uses @code{op} to get the operator of the expression and either compares it to @code{ool},
+if it is a operator, or checks if it is a member of @code{ool} if it is a list.
 
 @end defun
 
-@defun optimize (exp)
-returns an expression that produces the same value and
-side effects as exp but does so more efficiently by avoiding the
-recomputation of common subexpressions.  OPTIMIZE also has the side
+@defun optimize (expr)
+Returns an expression that produces the same value and
+side effects as @code{expr} but does so more efficiently by avoiding the
+recomputation of common subexpressions.  @code{optimize} also has the side
 effect of "collapsing" its argument so that all common subexpressions
 are shared.
-Do EXAMPLE(OPTIMIZE); for examples.
+Do @code{example (optimize)} for examples.
 
 @end defun
 
 @defvar optimprefix
- default: [%] - The prefix used for generated symbols by
-the OPTIMIZE command.
+Default value: [%]
+
+@code{optimprefix} is the prefix used for generated symbols by
+the @code{optimize} command.
 
 @end defvar
 
 @defun ordergreat (v1, ..., vn)
-sets up aliases for the variables V1, ..., Vn
+Sets up aliases for the variables V1, ..., Vn
 such that V1 > V2 > ...  > Vn > any other variable not mentioned as an
-argument.  See also ORDERLESS.  Caveat:  do EXAMPLE(ORDERGREAT); for
-some specifics.
+argument.  See also @code{orderless}.  See also @code{ordergreat}.
 
 @end defun
 
 @defun ordergreatp (exp1,exp2)
-returns @code{true} if exp2 precedes exp1 in the
-ordering set up with the ORDERGREAT function (see DESCRIBE(ORDERGREAT);).
+Returns @code{true} if exp2 precedes exp1 in the
+ordering set up with the @code{ordergreat} function.
 
 @end defun
 
 @defun orderless (v1, ..., vn)
-sets up aliases for the variables V1, ..., Vn
+Sets up aliases for the variables V1, ..., Vn
 such that V1 < V2 < ...  < Vn < any other variable not mentioned as an
 argument.  Thus the complete ordering scale is: numerical constants <
-declared constants < declared scalars < first argument to ORDERLESS <
-...  < last argument to ORDERLESS < variables which begin with A < ...
-< variables which begin with Z < last argument to ORDERGREAT <
- ... < first argument to ORDERGREAT < declared MAINVARs.  Caveat: do
-EXAMPLE(ORDERLESS); for some specifics.  For another ordering scheme,
-see DESCRIBE(MAINVAR);.
+declared constants < declared scalars < first argument to @code{orderless} <
+...  < last argument to @code{orderless} < variables which begin with A < ...
+< variables which begin with Z < last argument to @code{ordergreat} <
+ ... < first argument to @code{ordergreat} < declared @code{mainvar}s.
+See also @code{orderless} and @code{mainvar}.
 
 @end defun
 
 @defun orderlessp (exp1,exp2)
-returns @code{true} if exp1 precedes exp2 in the
-ordering set up by the ORDERLESS command (see DESCRIBE(ORDERLESS);).
+Returns @code{true} if exp1 precedes exp2 in the
+ordering set up by the @code{orderless} command.
 
 @end defun
 
-@defun part (exp, n1, ..., nk)
-deals with the displayed form of exp. It
-obtains the part of exp as specified by the indices n1,...,nk.  First
-part n1 of exp is obtained, then part n2 of that, etc.  The result is
-part nk of ... part n2 of part n1 of exp.  Thus PART(Z+2*Y,2,1) yields
-2.  PART can be used to obtain an element of a list, a row of a
+@defun part (expr, n1, ..., nk)
+Deals with the displayed form of @code{expr}. It
+obtains the part of @code{expr} as specified by the indices n1,...,nk.  First
+part n1 of @code{expr} is obtained, then part n2 of that, etc.  The result is
+part nk of ... part n2 of part n1 of @code{expr}.  Thus @code{part (z+2*y, 2, 1)} yields
+2.  @code{part} can be used to obtain an element of a list, a row of a
 matrix, etc.
 If the last argument to a Part function is a list of indices then
 several subexpressions are picked out, each one corresponding to an
-index of the list.  Thus PART(X+Y+Z,[1,3]) is Z+X.
-PIECE holds the last expression selected when using the Part
+index of the list.  Thus @code{part (x+y+z, [1,3])} is @code{z+x}.
+@code{piece} holds the last expression selected when using the Part
 functions.  It is set during the execution of the function and thus
 may be referred to in the function itself as shown below.
-If PARTSWITCH[FALSE] is set to @code{true} then END is returned when a
+If @code{partswitch} is set to @code{true} then @code{end} is returned when a
 selected part of an expression doesn't exist, otherwise an error
 message is given.
-For examples, do EXAMPLE(PART);
+For examples, do @code{example (part)}.
 
 @end defun
 
-@defun partition (exp, var)
-returns a list of two expressions.  They are (1)
-the factors of exp (if it is a product), the terms of exp (if it is a
+@defun partition (expr, var)
+Returns a list of two expressions.  They are (1)
+the factors of @code{expr} (if it is a product), the terms of @code{expr} (if it is a
 sum), or the list (if it is a list) which don't contain var and, (2)
 the factors, terms, or list which do.
+
 @example
 (%i1) PARTITION(2*A*X*F(X),X);
 (%o1)                 [ 2 A , X F(X) ]
@@ -677,23 +720,25 @@ the factors, terms, or list which do.
 (%o2)                 [ A + B , 0 ]
 (%i3) PARTITION([A,B,F(A),C],A); 
 (%o3)                [[B,C],[A,F(A)]]
-
-
 @end example
+
 @end defun
 
 @defvar partswitch
- default: @code{false} - if set to @code{true} then END is returned
+Default value: @code{false}
+
+When @code{partswitch} is @code{true}, @code{end} is returned
 when a selected part of an expression doesn't exist, otherwise an
 error message is given.
 
 @end defvar
 
-@defun pickapart (exp,depth)
+@defun pickapart (expr,depth)
 will assign E labels to all subexpressions of
-exp down to the specified integer depth.  This is useful for dealing
+@code{expr} down to the specified integer depth.  This is useful for dealing
 with large expressions and for automatically assigning parts of an
 expression to a variable without having to use the part functions.
+
 @example
 (%i1) EXP:(A+B)/2+SIN(X^2)/3-LOG(1+SQRT(X+1));
                                                  2
@@ -716,91 +761,107 @@ expression to a variable without having to use the part functions.
 @end defun
 
 @defvar piece
- - holds the last expression selected when using the Part
+Holds the last expression selected when using the @code{part}
 functions.  It is set during the execution of the function and thus
 may be referred to in the function itself.
 
 @end defvar
 
 @defun powers (expr, var)
-gives the powers of var occuring in expr.  To use
-it, do LOAD(POWERS);.  For details on usage, do
-PRINTFILE("powers.usg");.
+Gives the powers of var occuring in @code{expr}.  To use
+it, do @code{load (powers)}.
+@c HERE IS THE TEXT FROM archive/share/unknown/powers.usg -- MERGE !!!
+@c THIS FUNCTION IS A GENERALISATION OF "HIPOW" AND "LOPOW"
+@c IN THAT IT RETURNS A LIST OF ALL THE POWERS OF VAR OCCURING
+@c IN EXPR. IT IS STILL NECESSARY TO EXPAND EXPR BEFORE APPLYING
+@c POWERS (ON PAIN OF GETTING THE WRONG ANSWER).
+@c 
+@c THIS FUNCTION HAS MANY USES, E.G. IF YOU WANT TO FIND ALL
+@c THE COEFFICIENTS OF X IN A POLYNOMIAL POLY YOU CAN USE
+@c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
+@c AND MANY OTHER SIMILAR USEFUL HACKS.
 
 @end defun
 
-@defun product (exp, ind, lo, hi)
-gives the product of the values of exp as
+@defun product (expr, ind, lo, hi)
+Returns the product of the values of @code{expr} as
 the index ind varies from lo to hi.  The evaluation is similar to that
-of SUM.  No simplification of products is available at this time.
-If hi is one less than lo, we have an "empty product" and PRODUCT 
-returns 1 rather than erring out.  Also see DESCRIBE(PRODHACK).
+of @code{sum}.  No simplification of products is available at this time.
+If hi is one less than lo, we have an "empty product" and @code{product} 
+returns 1 rather than erring out.  See also @code{prodhack}.
+
 @example
 (%i1)  PRODUCT(X+I*(I+1)/2,I,1,4);
 (%o1)             (X + 1) (X + 3) (X + 6) (X + 10)
-
-
 @end example
+
 @end defun
 
-@defun realpart (exp)
-gives the real part of exp. REALPART and IMAGPART will
+@defun realpart (expr)
+Returns the real part of @code{expr}. @code{realpart} and @code{imagpart} will
 work on expressions involving trigonometic and hyperbolic functions,
-as well as SQRT, LOG, and exponentiation.
+as well as square root, logarithm, and exponentiation.
 
 @end defun
 
-@defun rectform (exp)
-returns an expression of the form A + B*%I, where A and
-B are purely real.
+@defun rectform (expr)
+Returns an expression of the form @code{a + b*%i}, where @code{a} and
+@code{b} are purely real.
 
 @end defun
 
 @defun rembox (expr, arg)
-removes boxes from expr according to arg.  If arg
-is UNLABELED then all unlabelled boxes are removed.  If arg is the
+Removes boxes from @code{expr} according to arg.  If arg
+is @code{unlabeled} then all unlabelled boxes are removed.  If arg is the
 name of some label then only boxes with that label are removed.  If
 arg is omitted then all boxes labelled and unlabelled are removed.
 
 @end defun
 
-@defun sum (exp, ind, lo, hi)
-performs a summation of the values of exp as
+@defun sum (expr, ind, lo, hi)
+Performs a summation of the values of @code{expr} as
 the index ind varies from lo to hi.  If the upper and lower limits
 differ by an integer then each term in the sum is evaluated and added
-together.  Otherwise, if the SIMPSUM [FALSE] is @code{true} the result is
+together.  Otherwise, if the @code{simpsum} is @code{true} the result is
 simplified.  This simplification may sometimes be able to produce a
-closed form.  If SIMPSUM is @code{false} or if 'SUM is used, the value is a
+closed form.  If @code{simpsum} is @code{false} or if @code{'sum} is used, the value is a
 sum noun form which is a representation of the sigma notation used in
 mathematics.
-If hi is one less than lo, we have an "empty sum" and SUM returns 0 
+If hi is one less than lo, we have an "empty sum" and @code{sum} returns 0 
 rather than erring out.
 Sums may be differentiated, added, subtracted, or multiplied with some
 automatic simplification being performed.
-Also see DESCRIBE(SUMHACK).
-CAUCHYSUM[FALSE] when @code{true} causes the Cauchy product to be used when
+See also @code{sumhack}.
+
+@code{cauchysum} when @code{true} causes the Cauchy product to be used when
 multiplying sums together rather than the usual product.  In the
 Cauchy product the index of the inner summation is a function of the
 index of the outer one rather than varying independently.
-GENINDEX[I] is the alphabetic prefix used to generate the next
+
+@code{genindex} is the alphabetic prefix used to generate the next
 variable of summation.
-GENSUMNUM[0] is the numeric suffix used to generate the next variable
+
+@code{gensumnum} is the numeric suffix used to generate the next variable
 of summation.  If it is set to @code{false} then the index will consist only
-of GENINDEX with no numeric suffix.
-Do EXAMPLE(SUM); for examples.  See also SUMCONTRACT, INTOSUM,
-BASHINDICES, and NICEINDICES.
+of @code{genindex} with no numeric suffix.
+
+Do @code{example (sum)} for examples.  See also @code{sumcontract}, @code{intosum},
+@code{bashindices}, and @code{niceindices}.
 
 @end defun
-@defun lsum (exp, ind, list)
-performs the sum of EXP for each element IND of the LIST.
+@defun lsum (expr, ind, list)
+performs the sum of @code{expr} for each element @code{ind} of the @code{list}.
+
 @example
 (%i10) lsum(x^i,i,[1,2,7]);
 
                             7    2
 (%o10)                      x  + x  + x
 @end example
-If the last element LIST argument does not evaluate, or does not
+
+If the last element @code{list} argument does not evaluate, or does not
 evaluate to a Maxima list then the answer is left in noun form
+
 @example
 (%i13) lsum(i^2,i,rootsof(x^3-1));
 
@@ -817,16 +878,16 @@ evaluate to a Maxima list then the answer is left in noun form
 
 
 @defvr {special symbol} verb
- - the opposite of "noun", i.e. a function form which "does
+@code{verb} is the opposite of "noun", i.e. a function form which "does
 something" ("action" - for most functions the usual case).  E.g.
-INTEGRATE integrates a function, unless it is DECLAREd to be a "noun",
-in which case it represents the integral of the function.  See NOUN,
-NOUNIFY, and VERBIFY.
+@code{integrate} integrates a function, unless it is declared to be a "noun",
+in which case it represents the integral of the function.  See @code{noun},
+@code{nounify}, @code{verbify}.
 
 @end defvr
 
 @defun verbify (f)
-returns the function name f in its verb form (See also VERB,
-NOUN, and NOUNIFY).
+Returns the function name f in its verb form. See also @code{verb},
+@code{noun}, and @code{nounify}.
 
 @end defun
