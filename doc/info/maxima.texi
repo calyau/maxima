@@ -140,11 +140,11 @@ Command Line
 
 Operators
 
-* NARY::                        
-* NOFIX::                       
-* OPERATOR::                    
-* POSTFIX::                     
-* PREFIX::                      
+* nary::                        
+* nofix::                       
+* operator::                    
+* postfix::                     
+* prefix::                      
 * Definitions for Operators::   
 
 Expressions
