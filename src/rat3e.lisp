@@ -292,8 +292,8 @@
 		    (SETQ ALPHA (MEQHK (ARG 2)))
 		    (NEWVAR ALPHA)
 		    (SETQ MINPOLY* (CADR (RATREP* ALPHA)))
-		    (IF (OR (NOT (UNIVAR (CDR MINPOLY*)))
-			    (PCOEFP MINPOLY*)
+		    (IF (OR (PCOEFP MINPOLY*)
+			    (NOT (UNIVAR (CDR MINPOLY*)))
 			    (f< (CADR MINPOLY*) 2))
 			(MERROR
 			  "The second argument to FACTOR must be a non-linear, univariate polynomial:~%~M"
