@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.30 2002-09-11 01:09:40 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.31 2002-09-13 17:34:12 mikeclarkson Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -9,6 +9,7 @@
 # Note that the order of required files may be important.
 
 # Source Tkmaxima/Constants.tcl 	;# required - must not be autoloaded
+# Source Tkmaxima/Cygwin.tcl 		;# required - must not be autoloaded
 # Source Tkmaxima/Preamble.tcl 		;# required - must not be autoloaded
 # Source Tkmaxima/Readdata.tcl 		;# can be autoloaded
 # Source Tkmaxima/Getdata1.tcl 		;# can be autoloaded
@@ -46,7 +47,6 @@
 # Source Tkmaxima/OpenMath.tcl 		;# active
 # Source Tkmaxima/NConsole.tcl 		;# can be autoloaded
 # Source Tkmaxima/String.tcl 		;# can be autoloaded
-# Source Tkmaxima/CMMenu.tcl 		;# can be autoloaded
 # Source Tkmaxima/Prefs.tcl 		;# can be autoloaded
 # Source Tkmaxima/RunMaxima.tcl		;# can be autoloaded
 
@@ -136,8 +136,12 @@ proc usage {} {
 	"           If given, [url] will be opened in the help browser instead" \
 	"           of the default starting page." \
 	"options:" \
-	"    --help: Display this usage message." \
-	"    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>." \
+	"    --help: Display this usage message." 
+    if {$tcl_platform(platform) != "windows"} {
+	lappend usage \
+	    "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."
+    }
+    lappend usage \
 	"    --use-version=<version>: Launch maxima version <version>."
 
     tide_notify [join $usage "\n"]
@@ -206,6 +210,14 @@ rename exit tkexit
 proc vMAXExit {{text ""} {val "0"}} {
     global maxima_priv
 
+    #mike FIXME: Yes/No/Cancel
+    set retval [tide_yesnocancel "Exiting Maxima. Save Preferences?"]
+    switch -exact -- $retval "1" {
+	catch {savePreferences}
+    } -1 {
+	return
+    }
+
     if {$text == ""} {
 	if {[info exists maxima_priv(cConsoleText)]} {
 	    set text $maxima_priv(cConsoleText)
@@ -213,21 +225,30 @@ proc vMAXExit {{text ""} {val "0"}} {
 	    set text ""
 	}
     }
+
     catch {closeMaxima $text}
+    # Maxima takes time to shutdown?
+    after 1000
     tkexit $val
 }
 proc exit {{val "0"}} {vMAXExit "" $val}
 
 proc doit { fr } {
-    global maxima_priv argv argv0 env fontSize
+    global maxima_priv argv argv0 env fontSize maxima_default
 
     wm withdraw .
     wm title . xmaxima
 
-    #mike Move this in from being at the global level
+    cMAXINITBeforeIni
     if {[file isfile ~/xmaxima.ini]} {
-	catch { source ~/xmaxima.ini }
+	if {[catch {uplevel "#0" [list source ~/xmaxima.ini] } err]} {
+	    tide_failure [M "Error sourcing %s\n%s" \
+			      [file native ~/xmaxima.ini] \
+			      $err]
+	}
+
     }
+    cMAXINITAfterIni
 
     if {[winfo exists $fr]} {catch { destroy $fr }}
     frame .browser
@@ -238,16 +259,9 @@ proc doit { fr } {
     frame $fr
     pack $fr -expand 1 -fill both -side top
     pack .browser -side bottom
-    set m [oget .browser.textcommands.file menu]
-    $m add command -underline 0 -label "Toggle Visibility of $fr" -command "if { \[catch {pack info $fr} \] } {packBoth $fr .browser} else { pack forget $fr}"
     packBoth $fr .browser
 
     set w $fr.text
-
-    #mike An abomination:
-    # set men [CMmenu $fr]
-    # oset $men textwin $w
-    # Replace with a proper system menu below
 
     clearLocal $w
     oset $w heightDesired 80%
@@ -276,10 +290,7 @@ proc doit { fr } {
     bind $w <Configure> "resizeSubPlotWindows $w %w %h; resizeMaxima $w %w %h"
 
     $w tag configure input -foreground blue
-    # -relief sunken -borderwidth 1
     bindtags $w [linsert [bindtags $w] 1 CNtext OpenMathText ]
-
-    global maxima_priv
 
     if { ![regexp  input $maxima_priv(sticky)] } {
 	append maxima_priv(sticky) {|^input$}
@@ -287,9 +298,13 @@ proc doit { fr } {
     pack $fr.text -expand 1 -fill both -side left
     set maxima_priv(cConsoleText) $fr.text
 
-    $fr.text configure -height 24 -width 80
+    $fr.text configure \
+	-height $maxima_default(iConsoleHeight) \
+	-width $maxima_default(iConsoleWidth)
     set btext [info commands .browser.*.text]
-    $btext configure -height 24 -width 80
+    $btext configure \
+	-height $maxima_default(iConsoleHeight) \
+	-width $maxima_default(iConsoleWidth)
 
     vMAXSetCNTextBindings $w
     wm protocol . WM_DELETE_WINDOW [list vMAXExit $fr.text]

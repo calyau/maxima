@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.8 2002-09-12 07:59:39 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.9 2002-09-13 17:34:18 mikeclarkson Exp $
 #
 ###### browser.tcl ######
 ############################################################
@@ -10,9 +10,7 @@
 
 global MathServer
 set MathServer "locahost 4443"
-# help keysyms
-# bind .jim <Key> "puts {%A %K}"
-# to print them out
+
 
 ## source keyb.tcl
 
@@ -116,7 +114,8 @@ bind OpenMathText <Control-Key-w> {
 }
 
 
-if { [catch { set maxima_priv(bindings_added) } ] } {
+global maxima_priv
+if {! [info exists maxima_priv(bindings_added) ] } {
     bind Text <Control-Key-k> "openMathControlK %W \n [bind Text <Control-Key-k>]"
     bind Text <B3-Motion> [bind Text <B2-Motion>]
     bind Text <Button-3> [bind Text <Button-2>]
@@ -124,7 +123,6 @@ if { [catch { set maxima_priv(bindings_added) } ] } {
     set maxima_priv(bindings_added) 1
 }
 
-global maxima_priv
 set maxima_priv(doublek) 0
 
 bind OpenMathText <Control-Key-k><Control-Key-k> {
@@ -1343,7 +1341,9 @@ proc fontDialog { top } {
 }
 proc savePreferences {} {
     global maxima_default maxima_priv
-    set fi [open  "~/netmath.ini" w]
+
+    if {[catch {open  "~/netmath.ini" w} fi]} {return}
+
     puts $fi "array set maxima_default {"
     foreach {k v} [array get maxima_default *] {
 	lappend all [list $k $v]
@@ -1351,6 +1351,8 @@ proc savePreferences {} {
     set all [lsort $all]
     foreach v $all { puts $fi $v }
     puts $fi "}"
+
+    #mike FIXME: make this a _default
     if { [info exists maxima_priv(proxy,http)] && [llength $maxima_priv(proxy,http)] == 2   } {
 	puts $fi [list array set maxima_priv [array get maxima_priv proxy,http]
 		 ]

@@ -1,11 +1,45 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.12 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.13 2002-09-13 17:34:18 mikeclarkson Exp $
 #
 
-global maxima_default
-set maxima_default(plotwindow) embedded
+proc cMAXINITBeforeIni {} {
+    global maxima_default
+    set maxima_default(plotwindow) embedded
 
+    # from Send-some.tcl
+    set maxima_default(sMathServerHost) genie1.ma.utexas.edu
+    set maxima_default(iMathServerPort) 4443
+
+    #mike turn these off by default
+    set maxima_default(iShowBalloons) 0
+
+    set maxima_default(fontAdjust) 0
+
+    set maxima_default(iConsoleWidth) 80
+    set maxima_default(iConsoleHeight) 24
+    
+    set maxima_default(iLocalPort) 4008
+}
+
+proc cMAXINITAfterIni {} {
+    global maxima_default maxima_priv
+
+    global MathServer
+    set MathServer [list $maxima_default(sMathServerHost) \
+			$maxima_default(iMathServerPort) ]
+    
+    # from plot3d.tcl
+    set maxima_priv(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
+
+    # from Wmenu.tcl
+    global show_balloons
+    set show_balloons $maxima_default(iShowBalloons)
+
+   
+}
+
+# Constants
 global maxima_priv
 set maxima_priv(date) 04/28/2002
 
@@ -19,14 +53,6 @@ set maxima_priv(clicks_per_second) 1000000
 
 # from Getdata1.tcl
 set maxima_priv(cachedir) ~/.netmath/cache
-
-# from plot3d.tcl
-set maxima_priv(speed) [expr {(9700.0 / (1 + [lindex [time {set i 0 ; while { [incr i] < 1000} {}} 1] 0]))}]
-
-# from Send-some.tcl
-#mike I think this should be eliminated
-global MathServer
-set MathServer { genie1.ma.utexas.edu 4443 }
 
 # from Plotconf.tcl
 global ftpInfo
@@ -60,15 +86,9 @@ set maxima_priv(options,href) {
     {searchregexp "" "A regexp to search for, to get an initial position"}
 }
 
-# from Wmenu.tcl
-global show_balloons
-#mike turn these off by default
-set show_balloons 0
-
 # from preamle.tcl
 set maxima_priv(counter) 0
 	
-global maxima_priv
 # the linelength should be long enough to display formatted mathematical
 # output from things like maxima, without adjustment, and to allow
 # for a margin.
@@ -98,7 +118,5 @@ set NCtextHelp "
 	    <Alt-n>   Like Previous input, but in opposite direction.
 	"
 
-global xmaximaPreferences
-array set xmaximaPreferences {fontAdjust 0 }
 
 
