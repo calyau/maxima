@@ -2087,6 +2087,9 @@ already) so the file will begin in emaxima-mode next time it's opened.
     (setq ispell-parser 'tex)
     (make-local-variable 'ispell-tex-p)
     (setq ispell-tex-p t))
+  (when (eq emaxima-use-tex 'auctex)
+    (make-local-variable 'TeX-auto-untabify)
+    (setq TeX-auto-untabify t))
   (make-local-variable 'texmathp-tex-commands)
   (setq texmathp-tex-commands 
      '(("\\endmaxima" sw-off)))
