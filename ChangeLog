@@ -1,3 +1,61 @@
+2003-02-09 17:36  amundson
+
+	* configure.in: Update version to 5.9.0. (Gulp...)
+
+2003-02-09 17:06  amundson
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: Set default MAXIMA_USERDIR
+	under Windows 98 to $maxima_priv(maxima_prefix)/user. This should
+	solve extremely long startup time problems under Windows 98. Thanks
+	to paricaud@club-internet.fr. A better understanding of the
+	USERDIR/startup time issue is still desirable.
+	
+	Modify exact capitalization/path separator in PATH addition for
+	Windows 98. This fixes one problem which prevented maxima compile
+	function from working with GCL.
+
+2003-02-09 16:59  amundson
+
+	* Makefile.am: Include INSTALL.win32 in release tarball.
+	
+	gcccopy now includes several more files, as suggested by David
+	Billinghurst.
+
+2003-02-09 16:56  amundson
+
+	* INSTALL.win32: Clarified several points in response to questions
+	by Michel Lavaud.
+
+2003-02-06 13:29  amundson
+
+	* INSTALL.win32: fix typo
+
+2003-02-06 13:11  amundson
+
+	* INSTALL.win32: first attempt at an official description of how to
+	generate a windows installer.
+
+2003-02-04 02:14  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Fix for Win98 - finally?
+
+2003-02-03 05:41  billingd
+
+	* doc/maximabook/programming/prog.tex: Fix trivial typo
+
+2003-02-03 05:37  billingd
+
+	* doc/: man/maxima.1.in, maximabook/maxima.tex: Fix trivial typo
+
+2003-02-03 05:27  billingd
+
+	* doc/info/Expressions.texi: Fix typos in report [ 614390 ] trivial
+	typos
+
+2003-01-30 11:02  amundson
+
+	* ChangeLog: ChangeLog updated by cvs2cl.pl.
+
 2003-01-29 15:06  vvzhy
 
 	* share/tensor/itensor.lisp: Fix to wrong KDELTA([1],[A]) by V.
@@ -3497,6 +3555,21 @@
 		* tests/rtest15.mac: New file
 		* tests/tests.lisp: Add above tests
 
+2002-04-08 11:56  starseeker
+
+	* doc/maximabook/images/.xvpics/: 2dplotwindow.eps,
+	2dplotwindow.jpg, 2dplotwindowa.eps, 2dplotwindowa.jpg,
+	3dplotwindow.eps, 3dplotwindow.jpg, 3dplotwindowa.eps,
+	3dplotwindowa.jpg, emacsmaximamodeshot.eps,
+	emacsmaximamodeshot.jpg, imaxima.eps, imaxima.png,
+	maxima_geomview.eps, maxima_geomview.jpg, maxima_gnuplot.eps,
+	maxima_gnuplot.jpg, maxima_openmath.eps, maxima_openmath.jpg,
+	symaxx.eps, symaxx.jpg, symaxxgraph.ps, symaxxoutput.jpg,
+	symaxxtex.ps, symaxxunits.ps, terminalshot.eps, terminalshot.jpg,
+	texmacs.eps: 
+	
+	removing xv files
+
 2002-04-08 11:55  starseeker
 
 	* doc/maximabook/storage/bibarchive/bibliography.tar.gz: 
@@ -3536,9 +3609,25 @@
 	images/maxima_gnuplot.png, images/maxima_openmath.png,
 	images/maximawindowsinstall1.png, images/symaxx.png,
 	images/symaxxoutput.png, images/terminalshot.png,
-	images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
-	odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
-	odes/odes.tex, basics/basics.dvi, basics/basics.tex,
+	images/texmacs.png, images/xmaxima.png,
+	images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
+	images/.xvpics/2dplotwindowa.eps, images/.xvpics/2dplotwindowa.jpg,
+	images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
+	images/.xvpics/3dplotwindowa.eps, images/.xvpics/3dplotwindowa.jpg,
+	images/.xvpics/emacsmaximamodeshot.eps,
+	images/.xvpics/emacsmaximamodeshot.jpg, images/.xvpics/imaxima.eps,
+	images/.xvpics/imaxima.png, images/.xvpics/maxima_geomview.eps,
+	images/.xvpics/maxima_geomview.jpg,
+	images/.xvpics/maxima_gnuplot.eps,
+	images/.xvpics/maxima_gnuplot.jpg,
+	images/.xvpics/maxima_openmath.eps,
+	images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
+	images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
+	images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
+	images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
+	images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
+	maxims/maxims.tex, odes/advmath.tex, odes/odes.aux, odes/odes.dvi,
+	odes/odes.log, odes/odes.tex, basics/basics.dvi, basics/basics.tex,
 	examples/examples.tex, install/install.tex,
 	interfaces/interfaces.tex, introduction/introduction.tex,
 	output/izicinfo.txt, output/output.tex, preface/pref.tex,
@@ -3574,9 +3663,25 @@
 	images/maxima_gnuplot.png, images/maxima_openmath.png,
 	images/maximawindowsinstall1.png, images/symaxx.png,
 	images/symaxxoutput.png, images/terminalshot.png,
-	images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
-	odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
-	odes/odes.tex, basics/basics.dvi, basics/basics.tex,
+	images/texmacs.png, images/xmaxima.png,
+	images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
+	images/.xvpics/2dplotwindowa.eps, images/.xvpics/2dplotwindowa.jpg,
+	images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
+	images/.xvpics/3dplotwindowa.eps, images/.xvpics/3dplotwindowa.jpg,
+	images/.xvpics/emacsmaximamodeshot.eps,
+	images/.xvpics/emacsmaximamodeshot.jpg, images/.xvpics/imaxima.eps,
+	images/.xvpics/imaxima.png, images/.xvpics/maxima_geomview.eps,
+	images/.xvpics/maxima_geomview.jpg,
+	images/.xvpics/maxima_gnuplot.eps,
+	images/.xvpics/maxima_gnuplot.jpg,
+	images/.xvpics/maxima_openmath.eps,
+	images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
+	images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
+	images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
+	images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
+	images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
+	maxims/maxims.tex, odes/advmath.tex, odes/odes.aux, odes/odes.dvi,
+	odes/odes.log, odes/odes.tex, basics/basics.dvi, basics/basics.tex,
 	examples/examples.tex, install/install.tex,
 	interfaces/interfaces.tex, introduction/introduction.tex,
 	output/izicinfo.txt, output/output.tex, preface/pref.tex,
