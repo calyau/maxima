@@ -466,8 +466,10 @@ setrgbcolor} def
 			;; because the function is not defined there,
 			;; not because of some other maxima error.
 			(let ((result
-			       (catch 'errorsw
-				 ($float ($realpart (meval* ',expr))))))
+			       (handler-case 
+				   (catch 'errorsw
+				     ($float ($realpart (meval* ',expr))))
+				 (arithmetic-error () t))))
 			  result)))
 		   'function)))))
 
