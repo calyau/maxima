@@ -3,9 +3,12 @@
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing nil) (:declare-common nil)
-;;;           (:float-format single-float))
+;;;           (:float-format double-float))
 
-(let ((p 0.9d0) (pi$ 3.141592653589793d0))
+(in-package "SLATEC")
+
+
+(let ((p 0.9) (pi$ 3.141592653589793))
   (declare (type double-float pi$ p))
   (defun dqawfe
          (f a omega integr epsabs limlst limit maxp1 result abserr neval ier
@@ -27,32 +30,30 @@
          (nnlog f2cl-lib:integer4 nnlog-%data% nnlog-%offset%))
       (prog ((psum (make-array 52 :element-type 'double-float))
              (res3la (make-array 3 :element-type 'double-float)) (ktmin 0)
-             (l 0) (ll 0) (momcom 0) (nev 0) (nres 0) (numrl2 0) (abseps 0.0d0)
-             (correc 0.0d0) (cycle 0.0d0) (c1 0.0d0) (c2 0.0d0) (dl 0.0d0)
-             (drl 0.0d0) (ep 0.0d0) (eps 0.0d0) (epsa 0.0d0) (errsum 0.0d0)
-             (fact 0.0d0) (p1 0.0d0) (reseps 0.0d0) (uflow 0.0d0) (abs$ 0.0)
-             (last$ 0))
+             (l 0) (ll 0) (momcom 0) (nev 0) (nres 0) (numrl2 0) (abseps 0.0)
+             (correc 0.0) (cycle 0.0) (c1 0.0) (c2 0.0) (dl 0.0) (drl 0.0)
+             (ep 0.0) (eps 0.0) (epsa 0.0) (errsum 0.0) (fact 0.0) (p1 0.0)
+             (reseps 0.0) (uflow 0.0) (abs$ 0.0f0) (last$ 0))
         (declare (type single-float abs$)
          (type (array double-float (3)) res3la)
          (type (array double-float (52)) psum)
          (type double-float uflow reseps p1 fact errsum epsa eps ep drl dl c2
           c1 cycle correc abseps)
          (type f2cl-lib:integer4 last$ numrl2 nres nev momcom ll l ktmin))
-        (setf result 0.0d0)
-        (setf abserr 0.0d0)
+        (setf result 0.0)
+        (setf abserr 0.0)
         (setf neval 0)
         (setf lst 0)
         (setf ier 0)
-        (if
-         (or (and (/= integr 1) (/= integr 2)) (<= epsabs 0.0d0) (< limlst 3))
-         (setf ier 6))
+        (if (or (and (/= integr 1) (/= integr 2)) (<= epsabs 0.0) (< limlst 3))
+            (setf ier 6))
         (if (= ier 6) (go label999))
-        (if (/= omega 0.0d0) (go label10))
+        (if (/= omega 0.0) (go label10))
         (if (= integr 1)
             (multiple-value-bind
                 (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                  var-10 var-11 var-12 var-13 var-14 var-15)
-                (dqagie f a 1 epsabs 0.0d0 limit result abserr neval ier alist
+                (dqagie f a 1 epsabs 0.0 limit result abserr neval ier alist
                  blist rlist elist iord last$)
               (declare
                (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-10 var-11 var-12
@@ -86,15 +87,15 @@
         (setf nres 0)
         (setf c1 a)
         (setf c2 (+ cycle a))
-        (setf p1 (- 1.0d0 p))
+        (setf p1 (- 1.0 p))
         (setf uflow (f2cl-lib:d1mach 1))
         (setf eps epsabs)
         (if (> epsabs (/ uflow p1)) (setf eps (* epsabs p1)))
         (setf ep eps)
-        (setf fact 1.0d0)
-        (setf correc 0.0d0)
-        (setf abserr 0.0d0)
-        (setf errsum 0.0d0)
+        (setf fact 1.0)
+        (setf correc 0.0)
+        (setf abserr 0.0)
+        (setf errsum 0.0)
         (f2cl-lib:fdo (lst 1 (f2cl-lib:int-add lst 1))
                       ((> lst limlst) nil)
           (tagbody
@@ -103,7 +104,7 @@
                 (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                  var-10 var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18
                  var-19 var-20 var-21 var-22)
-                (dqawoe f c1 c2 omega integr epsa 0.0d0 limit lst maxp1
+                (dqawoe f c1 c2 omega integr epsa 0.0 limit lst maxp1
                  (f2cl-lib:fref rslst-%data% (lst) ((1 *)) rslst-%offset%)
                  (f2cl-lib:fref erlst-%data% (lst) ((1 *)) erlst-%offset%) nev
                  (f2cl-lib:fref ierlst-%data% (lst) ((1 *)) ierlst-%offset%)
@@ -133,7 +134,7 @@
                                       ((1 *))
                                       erlst-%offset%)))
             (setf drl
-                    (* 50.0d0
+                    (* 50.0
                        (abs
                         (f2cl-lib:fref rslst-%data%
                                        (lst)
@@ -152,7 +153,7 @@
             (if
              (/= (f2cl-lib:fref ierlst-%data% (lst) ((1 *)) ierlst-%offset%) 0)
              (setf ier 7))
-            (if (and (= ier 7) (<= (+ errsum drl) (* correc 10.0d0)) (> lst 5))
+            (if (and (= ier 7) (<= (+ errsum drl) (* correc 10.0)) (> lst 5))
                 (go label80))
             (setf numrl2 (f2cl-lib:int-add numrl2 1))
             (if (> lst 1) (go label20))
@@ -180,15 +181,15 @@
               (setf abseps var-3)
               (setf nres var-5))
             (setf ktmin (f2cl-lib:int-add ktmin 1))
-            (if (and (>= ktmin 15) (<= abserr (* 0.001d0 (+ errsum drl))))
+            (if (and (>= ktmin 15) (<= abserr (* 0.001 (+ errsum drl))))
                 (setf ier 4))
             (if (and (> abseps abserr) (/= lst 3)) (go label30))
             (setf abserr abseps)
             (setf result reseps)
             (setf ktmin 0)
             (if
-             (or (<= (+ abserr (* 10.0d0 correc)) epsabs)
-                 (and (<= abserr epsabs) (>= (* 10.0d0 correc) epsabs)))
+             (or (<= (+ abserr (* 10.0 correc)) epsabs)
+                 (and (<= abserr epsabs) (>= (* 10.0 correc) epsabs)))
              (go label60))
            label30
             (if (and (/= ier 0) (/= ier 7)) (go label60))
@@ -198,14 +199,13 @@
             (setf c2 (+ c2 cycle))
            label50))
        label60
-        (setf abserr (+ abserr (* 10.0d0 correc)))
+        (setf abserr (+ abserr (* 10.0 correc)))
         (if (= ier 0) (go label999))
         (if
-         (and (/= result 0.0d0)
-              (/= (f2cl-lib:fref psum (numrl2) ((1 52))) 0.0d0))
+         (and (/= result 0.0) (/= (f2cl-lib:fref psum (numrl2) ((1 52))) 0.0))
          (go label70))
         (if (> abserr errsum) (go label80))
-        (if (= (f2cl-lib:fref psum (numrl2) ((1 52))) 0.0d0) (go label999))
+        (if (= (f2cl-lib:fref psum (numrl2) ((1 52))) 0.0) (go label999))
        label70
         (if
          (> (/ abserr (abs result))

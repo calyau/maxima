@@ -12,14 +12,14 @@
   (declare (type (simple-array double-float (11)) x))
   (f2cl-lib:fset (f2cl-lib:fref x (1) ((1 11))) 0.9914448613738104)
   (f2cl-lib:fset (f2cl-lib:fref x (2) ((1 11))) 0.9659258262890683)
-  (f2cl-lib:fset (f2cl-lib:fref x (3) ((1 11))) 0.9238795325112868)
+  (f2cl-lib:fset (f2cl-lib:fref x (3) ((1 11))) 0.9238795325112867)
   (f2cl-lib:fset (f2cl-lib:fref x (4) ((1 11))) 0.8660254037844386)
   (f2cl-lib:fset (f2cl-lib:fref x (5) ((1 11))) 0.7933533402912352)
-  (f2cl-lib:fset (f2cl-lib:fref x (6) ((1 11))) 0.7071067811865475)
-  (f2cl-lib:fset (f2cl-lib:fref x (7) ((1 11))) 0.6087614290087205)
+  (f2cl-lib:fset (f2cl-lib:fref x (6) ((1 11))) 0.7071067811865476)
+  (f2cl-lib:fset (f2cl-lib:fref x (7) ((1 11))) 0.6087614290087207)
   (f2cl-lib:fset (f2cl-lib:fref x (8) ((1 11))) 0.5)
   (f2cl-lib:fset (f2cl-lib:fref x (9) ((1 11))) 0.3826834323650898)
-  (f2cl-lib:fset (f2cl-lib:fref x (10) ((1 11))) 0.2588190451025208)
+  (f2cl-lib:fset (f2cl-lib:fref x (10) ((1 11))) 0.25881904510252074)
   (f2cl-lib:fset (f2cl-lib:fref x (11) ((1 11))) 0.1305261922200516)
   (defun dqc25f
          (f a b omega integr nrmom maxp1 ksave result abserr neval resabs
@@ -370,13 +370,12 @@
                                      (m (f2cl-lib:int-add k 1))
                                      ((1 maxp1) (1 25))))))
           (setf resabs
-                  (coerce
-                   (+ (abs (f2cl-lib:fref cheb24 (k) ((1 25))))
-                      (abs
-                       (f2cl-lib:fref cheb24
-                                      ((f2cl-lib:int-add k 1))
-                                      ((1 25)))))
-                   'double-float))
+                  (+ resabs
+                     (abs (f2cl-lib:fref cheb24 (k) ((1 25))))
+                     (abs
+                      (f2cl-lib:fref cheb24
+                                     ((f2cl-lib:int-add k 1))
+                                     ((1 25))))))
           (setf k (f2cl-lib:int-sub k 2))
          label150))
       (setf estc (coerce (abs (- resc24 resc12)) 'double-float))

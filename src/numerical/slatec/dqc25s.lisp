@@ -133,7 +133,7 @@
                      (* (f2cl-lib:fref cheb12 (i) ((1 13)))
                         (f2cl-lib:fref rg (i) ((1 25))))))
           (setf res24
-                  (+ res12
+                  (+ res24
                      (* (f2cl-lib:fref cheb24 (i) ((1 25)))
                         (f2cl-lib:fref rg (i) ((1 25))))))
          label50))

@@ -343,7 +343,7 @@
    label180
     (if
      (and (= ksgn -1)
-          (<= (max (abs result) (abs area)) (* defabs 0.010000000000000002)))
+          (<= (max (abs result) (abs area)) (* resabs 0.010000000000000002)))
      (go label210))
     (if
      (or (> 0.010000000000000002 (/ result area))
