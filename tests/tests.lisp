@@ -24,12 +24,13 @@
 (time 
  (sloop with errs = '() for testv in 
 	'(
+          "rtestode"
 	  "rtest1" "rtest1a" "rtest2" "rtest3" "rtest4" "rtest5"
 	  "rtest6" "rtest6a" "rtest6b" "rtest7"
 	  "rtest8"
 	  "rtest9"
 	  "rtest9a" "rtest10" "rtest11" "rtest12" "rtest13" "rtest13s"
-	  "rtest14" "rtest15" "rexamples" "rtestode"
+	  "rtest14" "rtest15" "rexamples" 
 	  )
 	do
 	(format t "~%Testing ~a.mac" testv)
