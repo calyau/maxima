@@ -2805,6 +2805,18 @@
 		       (power (add (mul a a) (mul *par* *par*))
 			      (inv -2.)))))) 
 
+;; This doesn't seem to be used anywhere.
+;;
+;; A&S 8.1.2:
+;;
+;; assoc_legendre_p(v,m,z)
+;;    = 1/gamma(1-m)*((z+1)/(z-1))^(m/2)*F(-v,v+1;1-m;(1-z)/2)
+;;
+;; for |1-z|<2
+;;
+;; Note: The args here are reversed from our definition of
+;; assoc_legendre_p!
+#+nil
 (defun leg1fsimp (m v z) 
   (mul (inv (gm (sub 1. m)))
        (power (div (add z 1.) (sub z 1.)) (div m 2.))
@@ -2812,7 +2824,20 @@
 		     (list (sub 1. m))
 		     (sub (inv 2.) (div z 2.))))) 
 
-;; Simplify assoc_legendre_q(m,v,z)
+;; A&S 8.1.3:
+;;
+;; assoc_legendre_q(v,m,z)
+;;    = exp(%i*%pi*m)*2^(-v-1)*sqrt(%pi)*gamma(v+m+1)/gamma(v+3/2)*z^(-v-u-1)
+;;        *(z^2-1)^(m/2)*F(1+v/2+u/2,1/2+v/2+u/2;v+3/2;1/z^2)
+;;
+;; for |z| > 1.
+;;
+;; But note that we are called with z = p/sqrt(p^2+a^2) so |z| < 1 for
+;; all real p and a.  So I (rtoy) don't think this is the right thing
+;; to use.
+;;
+;; Perhaps we should use A&S 8.1.6 or 8.1.7 combined with 8.3.4 is
+;; what we want.
 (defun leg2fsimp (m v z) 
   (mul (power '$%e (mul m '$%pi '$%i))
        (power '$%pi (inv 2.))
