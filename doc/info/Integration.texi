@@ -282,6 +282,10 @@ Depending on the question,
 suitable responses are @code{yes;} or @code{no;},
 or @code{pos;}, @code{zero;}, or @code{neg;}.
 
+@code{integrate} is not, by default, declared to be linear. See @code{declare} and @code{linear}.
+
+@code{integrate} attempts integration by parts only in a few special cases.
+
 Examples:
 
 @itemize @bullet
@@ -391,10 +395,6 @@ and the result becomes the body of @code{f_2}.
 (%o4)                          600
 @end example
 @end itemize
-
-@code{integrate} is not, by default, declared to be linear. See @code{declare} and @code{linear}.
-
-@code{integrate} attempts integration by parts only in a few special cases.
 
 @end defun
 
