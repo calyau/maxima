@@ -1,218 +1,265 @@
+\section{Requirements}
 
-\section{Installing on Linux}
+Your basic needs are a computer running Windows, Linux or MacOSX and a
+supported Lisp implimentation.  Currently on Linux Maxima will build on CMUCL (18e 
+recommended), GCL (2.5.0 or greater) and CLisp (2.29, 2.31 or greater - 2.30 won't work
+properly).  On Windows builds have been achieved with Clisp and GCL - GCL is used
+in the standard binary.  On MacOSX Maxima is compiled using OpenMCL. Note that Lisp choice 
+is not an either/or situation - if you have
+multiple lisp implimentations available you can build on all of them and
+select at runtime which Lisp you would like to use.  While it is possible
+to build your own Windows or Mac OS X binary, it is quite difficult to do
+so (especially on Windows) and unless there is a real need we recommend you
+use the provided binaries for those platforms.  For Windows a Wizard based install
+has been created using InnoSetup which should look and feel very familiar to most
+Windows users.  On MacOSX you need to use either the DarwinPorts? or Other way?
+tools to download the binaries.
 
-Note:  This is written for version 5.6.  With 5.9 things should change
-significantly, both for Windows and Linux, so a rewrite will be performed
-at that time.
+\section{Source Based Installation on Linux}
 
-\subsection{The Easy Way}
+Note:  we assume here that your machine has development libraries and tools
+installed.  If you get file/feature not found failures during configure it 
+is probably because your distribution doesn't have the development libraries
+and tools you need installed.
 
-If you are using Debian Linux, there are packages for Maxima in the
-Debian archives. Redhat users can find packages at rpmfind.net and
-mirrors. To the best of my knowledge these packages are all compiled
-against GNU Common Lisp (GCL). GCL does not access the readline library,
-which makes using Maxima on the terminal somewhat cumbersome. There
-are various interfaces which address this issue, but in the case of
-these packages the left arrow key will not take you back to the middle
-of an expression and let you edit just what you want - you will have
-to delete everything back to the point where you made your error.
-See the interfaces section for more about this, or if you really want
-to use maxima in the terminal I'd recommend compiling against CLISP. 
+\index{Compiling!Linux}
 
+\subsection{Configure}
 
-\subsection{The Hard Way}
+(Note - this discussion assumes you are using Maxima 5.9.0 or greater to
+build with.  Older versions have a terrible build system and are no longer]
+supported.)
 
-Compiling Maxima on Linux should go reasonably smoothly, although
-some distributions seem to have problems with the makefiles. Redhat
-7.1 is known to be a bit flaky in this regard.
+Your first task (assuming you are in the top level directory of the maxima
+source file hierchy) is to determine which version(s) of Lisp you intend to
+build on.  If you are building with multiple Lisps, you should specify which
+one you want to be your default Lisp (the Lisp Maxima will run with if you do
+not tell it otherwise.)
 
-
-\subsubsection{Compiling with GCL\index{Compiling!GCL} }
-
-GCL is the version of Lisp Maxima has been maintained on for many
-years by William Schelter, and thus the default system on which to
-build Maxima. Maxima will typically be made to work with GCL, and
-then be fixed to work with other Lisps. If in doubt, start here, but
-again be warned that readline support is not present in GCL.
-
-The first step in this process is to compile GCL. The files from the
-compiling of GCL are needed when building Maxima against it, so first
-download and decompress the most current version of GCL. Compiling
-it should be simple:
+In the example below, options are given to enable building on all three Lisps
+supported by Maxima 5.9.0.  The default Lisp of CLisp is selected.
+\index{Compiling!Linux!CMUCl}\index{Compiling!Linux!GCL}\index{Compiling!Linux!Clisp}
 
 \vspace{3ex}
 
 
-cd \$HOME/gcl
+\texttt{./configure --enable-gcl --enable-cmucl --enable-clisp }
 
-./configure
+\texttt{--with-default-lisp=clisp}
 
-make\vspace{3ex}
+\vspace{3ex}
 
 
-Once that is complete, download and decompress Maxima. Now the process
-gets a little more complicated - you will have to hand edit the file
-\texttt{configure}. What follows is the first part of the file, with
-the parts you must edit in bold:
+You should see some output scroll by and then a summary similar to the 
+following:
 
 \vspace{3ex}%
 
-\#!/bin/sh
+Summary:
 
-\# edit next few lines 
+clisp enabled. Executable name: "clisp"
 
-\# GCLDIR should be where gcl was built, and the o/{*}.o lsp/{*}.o
-etc must be
+CMUCL enabled. Executable name: "lisp"
 
-\# there to link with maxima
+GCL enabled. Executable name: "gcl"
 
-GCLDIR=\textbf{/home/cliff/gcl-2.3.8}
+default lisp: clisp
 
-\# the directory where this file is, and where you will build maxima
-
-\# could use
-
-MAXDIR=\textbf{/home/cliff/maxima-5.5}
-
-MAXDIR=`pwd`
-
-\# where to put some maxima .el files
-
-EMACS\_SITE\_LISP=\textbf{/usr/lib/emacs/site-lisp}
-
-\# determines where to install
-
-\# PREFIX\_DIR=/usr/local puts things in /usr/local/lib/maxima-x.y
-
-\# and /usr/local/bin
-
-PREFIX\_DIR=\textbf{/usr/local}
-
-INFO\_DIR=\$\{PREFIX\_DIR\}/info
-
-MAN\_DIR=\$\{PREFIX\_DIR\}/man/man1
-
-\#\#\#\#\# end editing \#\#\#\#\#\#\#\#\#
+wish executable name: "wish"
 
 \vspace{3ex}%
 
-Once this is correctly done, run the configure script: \texttt{./configure.}
-If this succeeds without any problems, run \texttt{make}. This could
-be a long process, depending on your machine. Once it is done, and
-if no errors result, run \texttt{make test}. If any errors appear
-in either stage, consult the trouble shooting section. Otherwise,
-you are ready to su into root and run \texttt{make install}. Once
-this process is completed, you should be able to run \texttt{maxima}
-and \texttt{xmaxima}. Emacs mode may take a little more work, and
-the other interfaces are separate programs - see the Interfaces chapter
-for details.
+The wish executable is related to Tcl/Tk used for the Xmaxima gui.  If you 
+encounter a case where a Lisp executable name is not found or you wish to
+use a different version of a particular lisp, you can specify the location
+of the executible you wish to use.  For example, if you have a different 
+copy of CMUCL you wish to use with an executable name of cmulisp instead of
+lisp, you can specify that with the following:
 
-
-\subsubsection{Compiling with CLISP\index{Compiling!CLISP}}
-
-Clisp has, among other features, the ability to use the readline library.
-This means that many of the limitations created in the terminal by
-GCL are not relevant here, and for the beginner especially this is
-a good place to start. Unfortunately, compiling on a flavor of Lisp
-other than GCL is not quite as smooth - here are the steps. 
-
-Change into the directory \$HOME/maxima/src (or \$HOME/maxima-5.6/src
-- whatever your setup dictates.)
-
-For newer versions of clisp, you need to change a couple lines in
-the file compile-clisp.lisp:
 
 \vspace{3ex}
 
-< (lisp:gc) \( \rightarrow  \) (ext:gc)
+\texttt{./configure --enable-gcl --enable-cmucl --enable-clisp}
 
-< (lisp:saveinitmem \char`\"{}maxima-clisp.mem\char`\"{} \( \rightarrow  \)
-(ext:saveinitmem \char`\"{}maxima-clisp.mem\char`\"{}
-
-\vspace{3ex}
-
-Then run the following commands:
+\texttt{--with-cmucl=/usr/local/bin/cmulisp --with-default-lisp=clisp}
 
 \vspace{3ex}
 
-make clisp-compile CLISP=clisp
+Summary:
 
-make maxima-clisp.mem CLISP=clisp
+clisp enabled. Executable name: "clisp"
 
-make test-clisp CLISP=clisp
+CMUCL enabled. Executable name: "\texttt{/usr/local/bin/cmulisp}"
 
-\vspace{3ex}
+GCL enabled. Executable name: "gcl"
 
-Once that is complete, you can either leave maxima where you built
-it, or move the directory to a more suitable place. Once that is done,
-in order to set up a convenient way to run Maxima, you can create
-some shell scripts in /usr/local/bin (make sure to do chmod +x on
-both files):
+default lisp: clisp
 
-\vspace{3ex}
-
-===================maxima==============
-
-\#!/bin/bash
-
-export~MAXIMA\_DIRECTORY=/PATH\_TO\_NEW\_DIRECTORY/maxima
-
-exec~clisp~-M~\$\{MAXIMA\_DIRECTORY\}/src/maxima-clisp.mem 
-
-=======================================
-
-\vspace{3ex}
-
-===============xmaxima==================
-
-\#!/bin/bash
-
-export~MAXIMA\_DIRECTORY=/PATH\_TO\_NEW\_DIRECTORY/maxima
-
-exec~\$\{MAXIMA\_DIRECTORY\}/bin/xmaxima~-lisp~clisp
-
-=======================================
+wish executable name: "wish"
 
 \vspace{3ex}
 
 
-\subsubsection{Compiling with CMULISP\index{Compiling!CMULISP}}
-
-
-\subsubsection{Other Lisps}
-
-
-\section{Installing on Windows}
-
-
-\subsection{The Easy Way - Installing the Windows Binary }
-
-This is the recommended way to use Maxima on Windows. The current
-binary release is technically a beta, but should serve most needs
-quite well. Here is how a basic install works:
-
-\begin{enumerate}
-\item Download the binary from http://www.ma.utexas.edu/maxima.html
-It should be named maxima55l-setup.exe
-\item Once you have downloaded that file, launch the installer. You
-should see this screen:
-\end{enumerate}
-\vspace{0.3cm}
-{\centering \includegraphics{images/maximawindowsinstall1}}
-\vspace{0.3cm}
-\begin{enumerate}
-\item [3.]Simply follow the menus from that point - the install dialog
-should be very clear. Do read the README and License when they are
-presented - the information there is good to know.
-\item [4.]Simply launch the program from it's icon - everything should work
-out of box. It is known to run on the following versions of Windows:
+There are other options available for configure, but these should be enough
+to get you started on a standard Linux system.  If you need more options, check
+the output from
 
 \vspace{3ex}
 
-Windows 98
+\texttt{./configure --help}
 
-\end{enumerate}
+\subsection{Make}
 
-\subsection{The Hard Way}
+Once you have configured the program to your satisfaction, simply type make.
+You will see a very long series of outputs as Maxima is compiled on each Lisp
+platform you have selected.  This is a long process even on fairly fast 
+machines.
 
-Compiling on Windows (I have no idea how to do this.)
+Once this process is done, you should run make check.  This will run each build
+of Maxima through a series of mathematical tests to ensure your Maxima build
+succeeded.  You will see something similar to the following, depending on
+which Lisp(s) you compiled with. (Plus some make
+related output about checking directories for tasks which doesn't matter):
+
+\vspace{3ex}
+
+\texttt{make[1]: Entering directory `/home/user/maxima/tests'}
+
+\texttt{echo "Running test suite with clisp..."; \ }
+
+\vspace{2ex}
+
+\texttt{/bin/sh ../maxima-local --lisp=clisp --batch-lisp=tests.lisp > tests-clisp.log <}
+
+\texttt{ /dev/null 2>\&1; \ }
+
+\texttt{./summarize-log tests-clisp.log}
+
+\texttt{Running test suite with clisp...}
+
+\vspace{2ex}
+
+\texttt{*** Summary results for tests recorded in}
+
+\texttt{*** log file tests-clisp.log:}
+
+\texttt{Error summary:}
+
+\texttt{Error(s) found in rtest15.mac: (4)}
+
+\vspace{2ex}
+
+\texttt{Expected failures (known bugs in this version of Maxima):}
+
+\texttt{rtest15.mac: (4)}
+
+\vspace{2ex}
+
+\texttt{Timing:}
+
+\texttt{Real time: 9.218797 sec.}
+
+\texttt{Run time: 9.01 sec.}
+
+\texttt{GC: 60, GC time: 0.64 sec.}
+
+\texttt{*** end of summary for tests-clisp.log}
+
+\vspace{2ex}
+
+\texttt{echo "Running test suite with cmucl..."; \ }
+
+\texttt{/bin/sh ../maxima-local --lisp=cmucl --batch-lisp=tests.lisp > tests-cmucl.log < }
+
+\texttt{ /dev/null 2>\&1; \ }
+ 
+\texttt{./summarize-log tests-cmucl.log}
+
+\texttt{Running test suite with cmucl...}
+
+\vspace{2ex}
+
+\texttt{*** Summary results for tests recorded in}
+
+\texttt{*** log file tests-cmucl.log:}
+
+\texttt{Error summary:}
+
+\texttt{Error(s) found in rtest15.mac: (4)}
+
+\vspace{2ex}
+
+\texttt{Expected failures (known bugs in this version of Maxima):}
+
+\texttt{rtest15.mac: (4)}
+
+\vspace{2ex}
+
+\texttt{Timing:}
+
+\texttt{;   3.91f0 seconds of real time}
+
+\texttt{;   3.34f0 seconds of user run time}
+
+\texttt{;   0.49f0 seconds of system run time}
+
+\texttt{;   [Run times include 0.21f0 seconds GC run time]}
+
+\texttt{*** end of summary for tests-cmucl.log}
+
+\vspace{2ex}
+
+\texttt{echo "Running test suite with gcl..."; \ }
+
+\texttt{/bin/sh ../maxima-local --lisp=gcl --batch-lisp=tests.lisp > tests-gcl.log < /de}
+
+\texttt{v/null 2>\&1; \ }
+
+\texttt{./summarize-log tests-gcl.log}
+
+\texttt{Running test suite with gcl...}
+
+\vspace{2ex}
+
+\texttt{*** Summary results for tests recorded in}
+
+\texttt{*** log file tests-gcl.log:}
+
+\texttt{Error summary:}
+
+\texttt{Error(s) found in rtest15.mac: (4)}
+
+\vspace{2ex}
+
+\texttt{Expected failures (known bugs in this version of Maxima):}
+
+\texttt{rtest15.mac: (4)}
+
+\vspace{2ex}
+
+\texttt{Timing:}
+
+\texttt{real time : 8.690 secs}
+
+\texttt{run time  : 7.160 secs}
+
+\texttt{*** end of summary for tests-gcl.log}
+
+
+\vspace{3ex}
+
+If all these tests are passed and the number of expected
+failures is the same as the number of known failures,
+everything has tested out correctly and you can proceed to the
+install, which is simply the standard make install.  Getting
+advanced features like the Emacs modes to work may require a
+little extra work - see the documentation on those specific
+modes for details about making them work.
+
+\section{Source Based Installation on Windows}
+
+Someone want to write this one up?  I am most definitely not qualified.
+
+\section{Source Based Installation on MacOSX}
+
+Someone who has done it?

@@ -175,9 +175,6 @@ Cliff Yapp\\
 \chapter{Introduction}
   \input{introduction/introduction.tex}
 
-\chapter{Installing}
-  \input{install/install.tex}
-
 \chapter{Available Interfaces to Maxima}
   \input{interfaces/interfaces.tex}
 
@@ -243,13 +240,47 @@ Cliff Yapp\\
     way the first part of the book can be rewritten less frequently, but
     we can still have all the information here.
 
+\chapter{Algebra}
+\chapter{Calculus}
+   Packages:  asympa, pdiff, qual
+   \section{asympa}
+%   \input{share/calculus/asympa.tex}
+   \pagebreak
+   \section{pdiff - Positional Derivatives}
+   \input{share/calculus/pdiff.tex}
+   \pagebreak
+   \section{qual}
+%   \input{share/calculus/qual.tex}   
+\chapter{Combinatorics}
+\chapter{Differential Equations}
+\chapter{Graphics}
+\chapter{Integequations}
+\chapter{Integration}
+\chapter{Macro}
+\chapter{Matrix}
+\chapter{Numeric}
+\chapter{Physics}
+   Packages:  dimen, dimension, physconst
+   \section{dimen}
+%   \input{share/physics/dimen.tex}
+   \pagebreak
+   \section{dimension - Advanced Dimensional Analysis}
+   \input{share/physics/dimension.tex}
+   \pagebreak
+   \section{physconst - Definitions for Physical Constants}
+%   \input{share/physics/physconst.tex}   
+\chapter{Simplification}
+\chapter{Special Functions}
+\chapter{Sym}
+\chapter{Tensor}
+\chapter{Trigonometry}
+\chapter{Utils}
+\chapter{Vector}
 
-\chapter{Available Packages for Maxima}
-
-    Maybe we can do this in one chapter, maybe each package will warrant
-    a chapter. Not sure. For now, I'll assume one Section per package,
-    not one Chapter.
-
+\part{Installing, Resources, Misc.}  
+\chapter{Installing Maxima}
+  \input{install/install.tex}
+  
 \addcontentsline{toc}{chapter}{List of Figures}
 \listoffigures
 
