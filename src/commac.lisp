@@ -1154,7 +1154,7 @@ format:
    (let* ((n (file-length st))
 	  (ar (make-array n :element-type '#.(array-element-type "a")))
 	  )
-     (declare (type (array #.(array-element-type "a")) ar))
+     (declare (type (cl:array #.(array-element-type "a")) ar))
      (sloop for i below n 
 	    for tem = (read-char st nil)
 	    do 
