@@ -545,9 +545,20 @@
 ;; TeX is lots more flexible .. but
 
 (defprop %sum tex-sum tex)
+(defprop %lsum tex-lsum tex)
 (defprop %product tex-sum tex)
 
 ;; easily extended to union, intersect, otherops
+
+(defun tex-lsum(x l r)
+  (let ((op (cond ((eq (caar x) '%lsum) "\\sum_{")
+		  ;; extend here
+		  ))
+	;; gotta be one of those above 
+	(s1 (tex (cadr x) nil nil 'mparen rop));; summand
+	(index ;; "index = lowerlimit"
+	       (tex `((min simp) , (caddr x), (cadddr x))  nil nil 'mparen 'mparen)))
+       (append l `( ,op ,@index "}}{" ,@s1 "}") r)))
 
 (defun tex-sum(x l r)
   (let ((op (cond ((eq (caar x) '%sum) "\\sum_{")
@@ -652,6 +663,11 @@
 (defprop mminus ("-") texsym)
 (defprop mminus 100. tex-rbp)
 (defprop mminus 100. tex-lbp)
+
+(defprop min tex-infix tex)
+(defprop min ("\\in{") texsym)
+(defprop min 80. tex-lbp)
+(defprop min 80. tex-rbp)
 
 (defprop mequal tex-infix tex)
 (defprop mequal (=) texsym)
