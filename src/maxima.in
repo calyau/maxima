@@ -21,6 +21,11 @@ EOF
 }
 
 setup_vars() {
+  # Tell maxima-run-lisp what binaries to run for the various Lisps.
+  CLISP=@CLISP_NAME@
+  CMUCL=@CMUCL_NAME@
+  GCL=@GCL_NAME@
+  export CLISP CMUCL GCL
   MAXIMA_VERSION=@VERSION@
   prefix=@prefix@
   exec_prefix=@exec_prefix@
