@@ -160,7 +160,7 @@ OBJS   = opers.o utils.o sumcon.o sublis.o runtim.o \
 
 TRANSLATED = nusum.o desoln.o elim.o trgsmp.o ode2.o invert.o plot.o
 
-OTHERS 	= hypgeo.o hyp.o todd-coxeter.o
+OTHERS 	= hypgeo.o hyp.o todd-coxeter.o mactex.o
 
 all:   $(MACROS) $(OBJS)  saved_maxima $(OTHERS)
 	make translated
