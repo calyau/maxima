@@ -78,7 +78,7 @@
 ;;principal interfaces
 
 (defmacro cond-error (variables body-form &body clauses)
-  "If a condition is signalled during evaluation of body-form, The first
+  "If a condition is signaled during evaluation of body-form, The first
 of VARIABLES is bound to the condition, and the clauses are evaluated
 like cond clauses. Note if the conditions involve lexical variables other than
 VARIABLES, there will be a new lexical closure cons'd each time through this!!
@@ -110,7 +110,7 @@ VARIABLES, there will be a new lexical closure cons'd each time through this!!
   `(block cond-error-continue ,bod))))
 
 (defmacro cond-any-error (variables body-form &body clauses)
-  "If a condition is signalled during evaluation of body-form, The first
+  "If a condition is signaled during evaluation of body-form, The first
 of VARIABLES is bound to the condition, and the clauses are evaluated
 like cond clauses, If the cond falls off the end, then the error is
 signaled at this point in the stack.  For the moment the rest of the VARIABLES are ignored.

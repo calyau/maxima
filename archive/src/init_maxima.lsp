@@ -12,6 +12,7 @@
 (load "../gcl-tk/tk-package.lsp")
 (progn (allocate 'cons 100) (allocate 'string 40)
  (system:init-system) (gbc t)
+#+gmp (defun si::multiply-bignum-stack (n) "nothing")
  (si::multiply-bignum-stack 25)
  (or lisp::*link-array*
   (setq lisp::*link-array*

@@ -925,6 +925,7 @@
 
 (DEFMFUN $FLOAT (E) 
  (COND ((NUMBERP E) (FLOAT E))
+       ((and (symbolp e) (mget e '$numer)))
        ((OR (ATOM E) (MEMQ 'array (CDAR E))) E)
        ((EQ (CAAR E) 'RAT) (FPCOFRAT E))
        ((EQ (CAAR E) 'BIGFLOAT) (FP2FLO E))

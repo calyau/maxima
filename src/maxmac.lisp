@@ -642,3 +642,13 @@
 ;  #+nil `(si:get-symbol-array-pointer ,x)
 ;  #+cl `(symbol-array ,x)
 ;  #+maclisp `(get ,x 'array))
+
+
+(defmacro  mdefprop (sym val indicator)
+  `(mputprop ',sym ',val ',indicator))
+
+
+(DEFMFUN MPUTPROP (ATOM VAL IND)
+  (LET ((PROPS (GET ATOM 'MPROPS)))
+    (IF (NULL PROPS) (PUTPROP ATOM (SETQ PROPS (NCONS NIL)) 'MPROPS))
+    (PUTPROP PROPS VAL IND)))

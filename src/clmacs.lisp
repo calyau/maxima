@@ -291,7 +291,8 @@
   (declare (object plist))
   (cond ((symbolp plist)
 	 (setq plist (symbol-plist plist)))
-	((consp plist) (setq plist (cdr plist))))
+	((consp plist) (setq plist (cdr plist)))
+	(t (return-from oldget nil)))
   (sloop for tail on plist by 'cddr
 	 when (eq (car tail) indic)
 	 do (loop-return (second tail))))

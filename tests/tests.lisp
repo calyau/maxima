@@ -15,6 +15,7 @@
 
 ;; bang on sgc if we have it.
 #+sgc (si::sgc-on t)
+;(si::set-gmp-allocate-relocatable t)
 
 ;;we won't bother collecting the errors
 

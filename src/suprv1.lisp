@@ -363,7 +363,7 @@
   '$DONE)
 #+cl
 (DEFun $SETUP_AUTOLOAD (filename &rest functions)
-  (LET ((FILE  (pathname (string-trim "&$" filename))))
+  (LET ((FILE  (string-trim "&$" filename)))
     (DOLIST (FUNC functions)
 	    (NONSYMCHK FUNC '$SETUP_AUTOLOAD)
 	    (PUTPROP (SETQ FUNC (DOLLARIFY-NAME FUNC)) FILE 'AUTOLOAD)

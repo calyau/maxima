@@ -661,6 +661,7 @@ compiler:
 		 (t (setq string (format nil "~ve" (+ 4 $fpprec) symb)))))
 	 (setq string (string-left-trim " " string))
 	 )
+	#-gmp
 	((bignump symb)
 	 (let* ((big symb)
 		ans rem tem
@@ -815,8 +816,9 @@ compiler:
 (defun flatc (sym)
   (length (explodec sym)))
 
-(defun flatsize (sym)
- (length (explode sym)))
+(defun flatsize (sym &aux (*print-circle* t))
+  (length (exploden sym)))
+
 (defmacro safe-zerop (x)
   (cond((symbolp x)`(and (numberp ,x) (zerop ,x)))
        (t `(let ((.x. ,x))

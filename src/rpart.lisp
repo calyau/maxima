@@ -54,7 +54,7 @@
 ;;; be syntactically real without being real (e.g. sqrt(x), x<0).  Thus
 ;;; Cabs must lead an independent existence from Abs.
 
-(defmfun $cabs (xx) (cabs xx))
+(defmfun $cabs (xx) (cabs ($rectform xx)))
 
 ;;; Carg gives the complex argument.
 (defmfun $carg (xx) (cdr (absarg xx)))

@@ -478,6 +478,7 @@
 ;; each of which contains a list of paths.   This is
 ;; so users can correct the variable..
 (defun $file_search1 (name search-lists &aux lis)
+  (if (pathnamep name) (setq name (namestring name)))
   (setq lis (apply '$append (mapcar 'symbol-value (cdr search-lists))))
   (let ((res ($file_search name lis)))
     (or res

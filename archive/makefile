@@ -109,6 +109,8 @@ LIBFILES=bsearch.o
 
 # the  make to use for saved_kcp the profiler.
 KCP=kcp-bsd
+MPFILES=${GMP_DIR}libgmp.a
+
 
 # end makedefs
 GCLDIR=/home/wfs/cvs/gcl

@@ -200,7 +200,7 @@
 (defMACRO DEFMODE (&rest X)
   (setq X (cons ' DEFMODE X ))
   (LET ((SELECTOR (MEMQ 'SELECTOR (CDDDDR X))))
-       (setq billy `(DEFINE-MODE ,(CADR X) ,(CADDDR X)))
+       ;(setq billy `(DEFINE-MODE ,(CADR X) ,(CADDDR X)))
        
     (DEFINE-MODE (CADR X) (CADDDR X))
     (MAPC 'EVAL (CDDDDR X))
@@ -214,7 +214,7 @@
 	  C (INTERN (FORMAT NIL "C-~A" NAME)) 
 	  S (INTERN (FORMAT NIL "S-~A" NAME)) 
 	  A (INTERN (FORMAT NIL "A-~A" NAME)))
-     (setq silly `    (DEFINE-MACRO ,C ,(DEFC DESC))	)
+     ;(setq silly `    (DEFINE-MACRO ,C ,(DEFC DESC))	)
     (DEFINE-MACRO C (DEFC DESC))
     (DEFINE-MACRO S (DEFS DESC))
     (DEFINE-MACRO A (DEFA DESC))
