@@ -1,0 +1,118 @@
+Command-line usage:
+
+sfquery.py <filename> <query> <action>
+    <filename> is an XML dump of a SourceForge bug database.
+    <query> is a python command evaluating to 1 or 0.
+    <action> is a python command or commands to perform on each matched
+             object. Multiple command should be separated by the ';'
+             character.
+
+To search for field foo=bar, use the following query:
+ "artifact.get('foo') == 'bar'"
+
+To search all field values for the string 'foobar', use the following query:
+ "contains(artifact,'foobar')"
+
+The function "contains" will accept a regular expression as well as a
+plain string.
+
+The most common actions are
+ "artifact.print_summary()"
+and
+ "artifact.print_all()"
+
+===============================================================
+Examples:
+
+Find all the bugs submitted by amundson and print summaries:
+
+./sfquery.py bugs-10-02-2003.xml\
+ "artifact.get('submitted_by') == 'amundson'"\
+ "artifact.print_summary()"
+
+gives:
+
+Total number of artifacts = 447
+545221 : xmaxima calls "kill -1"
+625439 : xmaxima can call "kill -1"
+624940 : xmaxima-local is broken
+566870 : plotting programs not found
+549185 : Bugs were not copied to the mailing list
+566883 : make distclean broken
+552045 : strcat missing in mactex.lisp
+624941 : maxima needs a -quiet option
+545219 : configure does not accept full paths
+596204 : Compiler warnings
+571254 : subdirectories of share are not searched
+566871 : files not installed
+689792 : omplotdata and mgnuplot do not honor --with-wish
+596202 : AUTHORS and ChangeLog are empty
+530419 : zsolve exists only in documentation
+573689 : genut package
+689320 : patch for openmcl support
+573692 : solver package
+689794 : tests/Makefile.in uses ${INSTALL_PROGRAM} to install summari
+689795 : texinfo fixes
+Found 20 matches.
+
+------------------------------------------------------------------
+Find all the *open* bugs submitted by amundson and print summaries:
+
+./sfquery.py bugs-10-02-2003.xml\
+ "artifact.get('submitted_by')=='amundson' and artifact.get('status')=='Open'"\
+ "artifact.print_summary()"
+
+gives:
+
+Total number of artifacts = 447
+624941 : maxima needs a -quiet option
+596204 : Compiler warnings
+689792 : omplotdata and mgnuplot do not honor --with-wish
+573689 : genut package
+573692 : solver package
+689794 : tests/Makefile.in uses ${INSTALL_PROGRAM} to install summari
+689795 : texinfo fixes
+Found 7 matches.
+
+------------------------------------------------------------------
+Find a specific bug and print the full record:
+
+./sfquery.py bugs-10-02-2003.xml\
+ "artifact.get('artifact_id') == '596204'"\
+ "artifact.print_all()"
+
+gives:
+
+
+Total number of artifacts = 447
+ ==================== artifact ====================
+status : Open
+submitted_by : amundson
+artifact_id : 596204
+artifact_group_id : None
+summary : Compiler warnings
+priority : 5
+details :
+-------------------------------------------------
+The Maxima build generates many compiler warnings for
+alll lisps. They should be eliminated if at all possible.
+
+
+-------------------------------------------------
+assigned_to : nobody
+artifact_type : Bugs
+open_date : Fri Aug 16 18:34:06 2002
+category : None
+resolution : None
+ ----------- histories -----------
+ ----------- messages -----------
+ --------------------------------
+ =================================================
+Found 1 matches.
+
+------------------------------------------------------------------
+Find all bugs containing plot and print who submitted them and their status:
+
+./sfquery.py bugs-10-02-2003.xml\
+ "contains(artifact,'plot')"\
+ "sys.stdout.write('%s\n' % artifact.get('submitted_by'));sys.stdout.write('%s\n\n' % artifact.get('status'))"
