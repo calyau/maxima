@@ -1,15 +1,14 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.31 2002-10-28 02:33:13 amundson Exp $
+#       $Id: Makefile.am,v 1.32 2003-01-05 18:57:25 amundson Exp $
 #
 
 include $(top_srcdir)/common.mk
-xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif server.lisp
+xmaxima_DATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif server.lisp maxima-icon.ico maxima-icon.png
 
 bin_SCRIPTS = xmaxima
 
 TKSOURCES = \
-	Tkmaxima/Header.tcl \
 	Tkmaxima/Cygwin.tcl \
 	Utils/FileDlg.tcl \
 	Utils/Messages.tcl \
@@ -64,7 +63,8 @@ TKSOURCES = \
 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-trailer.tcl
-XMAXIMASOURCES = $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl
+XMAXIMASOURCES = Tkmaxima/Header.tcl $(TKSOURCES) autoconf-variables.tcl xmaxima-trailer.tcl Tkmaxima/Header.tcl
+
 
 xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
 	rm -f xmaxima && \
@@ -72,7 +72,7 @@ xmaxima: $(XMAXIMASOURCES) Tkmaxima/tclIndex
 		chmod +x xmaxima
 
 WIN32_FILES = win32/ChangeLog win32/Makefile.in  win32/tclwinkill.c  win32/winkill.c
-EXTRA_DIST = $(xmaxima_DATA) $(XMAXIMA_REAL_SOURCES) $(WIN32_FILES)
+EXTRA_DIST = $(xmaxima_DATA) $(XMAXIMA_REAL_SOURCES) $(WIN32_FILES) Tkmaxima/Header.tcl.in maxima-icon.png
 
 
 # Developer convenience target

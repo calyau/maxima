@@ -1,0 +1,9 @@
+#!/bin/sh
+#  -*- mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*- \
+exec @WISH@ "$0" "$@"
+#
+#       $Id: Header.tcl.in,v 1.1 2003-01-05 18:57:25 amundson Exp $
+#
+# Header to allow for Unix execution
+#
+
