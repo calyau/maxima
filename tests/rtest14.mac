@@ -280,11 +280,29 @@ specint( t^(1/2)*%h[3/4,2](t)*%e^(-p*t),t);
  *                         =  -r^(-5/2)*assoc_legendre_p(3/2,1/2,p/r))
  *
  * assoc_legendre_p(3/2,+/-1/2,z) can be expressed in terms of 
- * hypergeometric functions (A&S 8.1.2).  I don't think the result here is correct.
+ * hypergeometric functions (A&S 8.1.2).
+ *
+ * assoc_legendre_p(3/2,-1/2,z) 
+ *   = 1/gamma(3/2)*((z+1)/(z-1))^(-1/4)*F(-3/2,5/2;3/2;(1-z)/2)
+ *   = sqrt(2)*(z-1)^(1/4)*z*(z+1)^(1/4)/sqrt(%pi)
+ *
+ * assoc_legendre_p(3/2,1/2,z) 
+ *   = 1/gamma(-1/2)*((z+1)/(z-1))^(1/4)*F(-3/2,5/2;-1/2;(1-z)/2)
+ *   = sqrt(2)*z*(2*z^2-3)/(sqrt(%pi)*(z-1)^(1/4)*(z+1)^(5/4))
+ *
+ *
+ * So the result should be
+ * 
+ * t^(3/2)*bessel_j(1/2,t)
+ *    -> 4*p/(sqrt(2)*sqrt(%pi)*(p^2+1)^2)
+ *
+ * t^(3/2)*bessel_y(1/2,t)
+ *    -> -sqrt(2)*(p-1)*(p+1)/(sqrt(%pi)*(p^2+1)^2)
  */
 specint( t^(3/2)*%h[1/2,1](t)*%e^(-p*t),t);
-4/(sqrt(2)*sqrt(%pi)*(1/p^2+1)^2*p^3)-sqrt(2)*%i*(1/(1/p^2+1)-1/((1/p^2+1)^2 
- *p^2))/(sqrt(%pi)*p^2) $
+4/(sqrt(2)*sqrt(%pi)*(1/p^2+1)^2*p^3)
+	 -sqrt(2)*%i*(1/(1/p^2+1)-2/((1/p^2+1)^2*p^2))/(sqrt(%pi)*p^2) $
+
 
 /*
  * t^(3/2)*bessel_j(1,a*t) -> gamma(3/2+1+1)*r^(-3/2-1)*assoc_legendre_p(3/2,-1,p/r)
