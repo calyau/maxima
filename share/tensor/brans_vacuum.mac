@@ -8,19 +8,19 @@ loadfile(ctms,fasl,dsk,rp)$
 setup(all)$
 ug:lg^^-1$
 christof(none)$
-riccicom(false)$
+uricci(false)$
 einstein(false)$
-r:factor(ratsimp(sum(ricci[i,i],i,1,4)))$
-for i:1 thru 4 do for j:1 thru 4 do [lr[i,j]:factor(ratsimp(lr[i,j]))]$
+r:factor(ratsimp(sum(uric[i,i],i,1,4)))$
+for i:1 thru 4 do for j:1 thru 4 do [ric[i,j]:factor(ratsimp(ric[i,j]))]$
 read("DEPENDENCIES ON THE SCALAR FIELD P");
 boxp:0$
 for i:1 thru 4 do for j:1 thru 4 do (add[i,j]:w/p^2*(
-diff(p,omega[i])*diff(p,omega[j])-
-lg[i,j]*sum(diff(p,omega[kk])*diff(p,omega[kk])*ug[kk,kk],kk,1,4)/2        )
-+(   diff(diff(p,omega[i]),omega[j])-sum(mcs[i,j,kk]*diff(p,omega[kk]),kk,1,4)-
+diff(p,ct_coords[i])*diff(p,ct_coords[j])-
+lg[i,j]*sum(diff(p,ct_coords[kk])*diff(p,ct_coords[kk])*ug[kk,kk],kk,1,4)/2        )
++(   diff(diff(p,ct_coords[i]),ct_coords[j])-sum(mcs[i,j,kk]*diff(p,ct_coords[kk]),kk,1,4)-
 lg[i,j]*boxp        )/p   );
 for i:1 thru 4 do for j:1 thru 4 do (bd[i,j]:ratsimp(
-lr[i,j]-r*lg[i,j]/2-0*t[i,j]-add[i,j]));
+ric[i,j]-r*lg[i,j]/2-0*t[i,j]-add[i,j]));
 
 
 

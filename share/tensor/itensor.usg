@@ -30,7 +30,7 @@ Maxima functions.
 Though it is not essential, you might want to compile the
 tensor sources (Just start Maxima and type
 :lisp(compile-file "itensor.lisp"). Repeat it for canten, gener &
-symtry.lisp). Note the cool feature provided by generate(eqs). It
+symtry.lisp). Note the cool feature provided by ic_convert(eqs). It
 makes possible to use results obtained by "itensor" in "ctensor"
 (express indexed terms via components).
 

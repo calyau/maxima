@@ -11,22 +11,22 @@ ratfac:true$
 /* the dimension of the manifold */
 dim:4$
 /* the coordinate labels */
-omega:[x,y,z,t]$
+ct_coords:[x,y,z,t]$
 /* This is the standard spherically symmetric metric */
 lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,-d]);
 /* functional dependencies */
 depends([a,d],x);
 /* computes inverse metric and specifies diagonality */
-metric()$
+setmetric()$
 /* computes the mixed Christoffel symbols */
 christof(false)$
 /* computes and ratsimps Ricci tensor */
-riccicom(false)$
+uricci(false)$
 /* computes and displays the Einstein tensor */
 einstein(true);
-/* makes a list of the non-zero components of the Einstein tensor (G)
-where the 2 indicates the order of the array G */
-exp:findde(g,2);
+/* makes a list of the non-zero components of the Einstein tensor (EIN)
+where the 2 indicates the order of the array EIN */
+exp:findde(ein,2);
 /* now begins to solve the field equations */
 ode2(last(exp),a,x);
 /* a kludge to get the solution (the 1,1 component) explicitly */

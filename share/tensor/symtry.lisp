@@ -135,7 +135,7 @@
                                     ;Indicates whether overall sign of
                                     ;expression needs changing.
 	     (cond
-		   ((OR (OR (eq (caar e) '$LC) (eq (caar e) '%LC)) (OR (eq (caar e) '$KDELTA) (eq (caar e) '%KDELTA))) (setq cov (ANTISORT cov) contr (ANTISORT contr)))
+		   ((OR (OR (eq (caar e) '$Levi_Civita) (eq (caar e) '%Levi_Civita)) (OR (eq (caar e) '$KDELTA) (eq (caar e) '%KDELTA))) (setq cov (ANTISORT cov) contr (ANTISORT contr)))
 		   ((OR $allsym (eq (caar e) '$KDELS) (eq (caar e) '%KDELS)) (setq cov (itensor-sort cov) contr (itensor-sort contr)))
 		   ((zl-member ($VERBIFY tensor) (cdr $symmetries))
 		    (do ((q symtypes (cdr q)) (type))
@@ -189,7 +189,7 @@
 	     (t (cycsort l))))
 
 (defun ANTISORT (l)         ;SORT ANTIsymmetric indices and set CSIGN as needed
-       ((lambda (q) (cond ((equal ($lc (consmlist (mapcar 'cdr q))) -1)
+       ((lambda (q) (cond ((equal ($Levi_Civita (consmlist (mapcar 'cdr q))) -1)
 		           (setq csign (not csign))))
 		    (mapcar 'car q))
 	(sortcar (index l) 'less)))

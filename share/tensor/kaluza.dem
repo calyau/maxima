@@ -7,56 +7,56 @@ load("kaluza.mac");
 assume(k<=4,l<=4,m<=4)$
 
 ("Equation of motion in empty 5-space")$
-show('diff(x([],[a]),t,2)+'chr2([b,c],[a])*'diff(x([],[b]),t)*'diff(x([],[c]),t)=0)$
-show(part(first(%),1))$
-show(subst(m,c,%)+subst(5,c,%))$
-show(subst(l,b,%)+subst(5,b,%)+part(first(%th(3)),2)=last(%th(3)))$
+ishow('diff(x([],[a]),t,2)+'ichr2([b,c],[a])*'diff(x([],[b]),t)*'diff(x([],[c]),t)=0)$
+ishow(part(first(%),1))$
+ishow(subst(m,c,%)+subst(5,c,%))$
+ishow(subst(l,b,%)+subst(5,b,%)+part(first(%th(3)),2)=last(%th(3)))$
 
 ("We are only interested in the case where A is a 4D index")$
-show(subst(k,a,%th(2)))$
+ishow(subst(k,a,%th(2)))$
 
 ("We protect one of the Christoffel-symbols from expansion")$
-show(subst(chr2klm,'chr2([l,m],[k]),%th(2)))$
-%,chr2$
-show(rename(%))$
+ishow(subst(chr2klm,'ichr2([l,m],[k]),%th(2)))$
+%,ichr2$
+ishow(rename(%))$
 
 ("Now we break this up into two parts depending on whether %1=5")$
 map(lambda([u],block(if freeof(%1,u) then u else u+subst(5,%1,u))),first(%th(2)))=last(%th(2))$
 assume(%1<=4)$
 %th(2),g5$
 %,nouns$
-show(%)$
+ishow(%)$
 
 ("Now we're ready to isolate the electromagnetic field tensor")$
 map(lambda([u],factorout(u,g55)),%th(2))$
-show(apply1(%,evpot))$
+ishow(apply1(%,evpot))$
 
 ("Contracting and rearranging yields the equation in the usual form")$
 contract(%th(2))$
 %,nouns$
-show(rename(%))$
+ishow(rename(%))$
 
 %-part(first(%),1)$
-show(subst('chr2([l,m],[k]),chr2klm,%))$
+ishow(subst('ichr2([l,m],[k]),chr2klm,%))$
 
 ("But what about the 5D Christoffel-symbol?")$
-show(chr2([k,l],[m]))$
+ishow(ichr2([k,l],[m]))$
 rename(%)$
 forget(%1<=4)$
 subst(5,%1,%th(2))$
 %,g5,g4$
-show(%)$
+ishow(%)$
 
 assume(%1<=4)$
 %th(6),g5$
 scanmap(lambda([u],apply1(  ratsimp(u,g55,g4([],[%1,m]),a([k],[]))  ,evpot)),%)$
-show(%)$
+ishow(%)$
 
 %+%th(5)$
 %,nouns$
 ratsubst(chr42([k,l],[m]),g4([],[%1,m])*(g4([l,%1],[],k)+g4([k,%1],[],l)-g4([k,l],[],%1))/2,%)$
-show(%)$
+ishow(%)$
 
 contract(%)$
 ("The extra term is presumably the curvature caused by the EM field.")$
-show(map(factor,combine(distrib(%th(2)))))$
+ishow(map(factor,combine(distrib(%th(2)))))$

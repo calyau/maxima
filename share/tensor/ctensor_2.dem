@@ -12,21 +12,21 @@ ratfac:true$
 /* the dimension of the manifold */
 dim:4$
 /* the coordinate labels */
-omega:[x,y,z,t]$
+ct_coords:[x,y,z,t]$
 /* THIS IS THE SCHWARZSCHILD METRIC IN STANDARD COORDINATES */
 lg:
 matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,2*m/x-1]);
 /* computes metric inverse and determines diagonality */
-metric()$
+setmetric()$
 /* computes and displays mixed Christoffel symbols */
 christof(mcs)$
 /* computes and ratsimps Ricci tensor */
-riccicom(true)$
+uricci(true)$
 /* computes scalar curvature */
 scurvature();
 /* computes Riemann tensor */
 riemann(true)$
 /* computes contravariant Riemann tensor */
-raiseriemann(false)$
+uriemann(false)$
 /* computes the Kretchmann invariant Rijkl^2 */
 rinvariant();

@@ -91,13 +91,13 @@ several CTENSOR and ITENSOR demos and more are being added.
 
 To use CTENSOR the user does LOADFILE(CTENSOR,FASL,TENSOR). The basic
 function is called
-.function(TSETUP,)
+.function(CSETUP,)
 which automatically loads the CTENSOR package from within MACSYMA (if
 it is not already loaded) and then prompts the user to make use of it.
 The user is first asked to specify the dimension of the manifold. If
 the dimension is 2, 3 or 4 then the list of coordinates defaults to
 [X,Y], [X,Y,Z] or [X,Y,Z,T] respectively. These names may be changed
-by assigning a new list of coordinates to the variable OMEGA
+by assigning a new list of coordinates to the variable CT_COORDS
 (described below) and the user is queried about this. Care must be
 taken to avoid the coordinate names conflicting with other object
 definitions. Next, the user enters the metric either directly or
@@ -114,7 +114,7 @@ solution) as an example. Many of the functions in CTENSOR will be
 displayed for the standard metric as examples.
 .example
 .begin group
-(C2) TSETUP();
+(C2) CSETUP();
 Enter the dimension of the coordinate system: 
 4;
 Do you wish to change the coordinate names?
@@ -246,7 +246,7 @@ the final index is contravariant. For the standard metric one has:
 if TRUE causes special routines to compute all geometrical objects
 (which contain the metric tensor explicitly) by taking into
 consideration the diagonality of the metric. Reduced run times will,
-of course, result. Note: this option is set automatically by TSETUP if
+of course, result. Note: this option is set automatically by CSETUP if
 a diagonal metric is specified.
 .endfunction
 
@@ -258,7 +258,7 @@ N will reset the dimension to any other integral value.
 .function(EINSTEIN,dis)
 computes the mixed Einstein tensor after the Christoffel symbols and
 Ricci tensor have been obtained.  If the argument 2dis* is TRUE,
-then the non-zero values of the mixed Einstein tensor G[i,j] will be
+then the non-zero values of the mixed Einstein tensor EIN[i,j] will be
 displayed where j is the contravariant index. $var<RATEINSTEIN/TRUE>
 if TRUE will cause the rational simplification on these components. If
 RATFAC is TRUE then the components will also be factored as the
@@ -268,7 +268,7 @@ following example, for the standard metric, demonstrates:
 (C40) EINSTEIN(TRUE);
 				    D  X - A D + D
 				     X
-(E40) 			    G	  = --------------
+(E40) 			    EIN	  = --------------
 			     1, 1	     2
 					A D X
 .end
@@ -278,7 +278,7 @@ following example, for the standard metric, demonstrates:
 				  2				     2
 	       2 A D D	  X - A D   X - A  D D  X + 2 A D D  - 2 A  D
 		      X X	 X	 X    X		   X	  X
-(E41)  G     = -------------------------------------------------------
+(E41)  EIN     = -------------------------------------------------------
 	2, 2				 2  2
 				      4 A  D  X
 .end
@@ -288,7 +288,7 @@ following example, for the standard metric, demonstrates:
 				  2				     2
 	       2 A D D	  X - A D   X - A  D D  X + 2 A D D  - 2 A  D
 		      X X	 X	 X    X		   X	  X
-(E42)  G     = -------------------------------------------------------
+(E42)  EIN     = -------------------------------------------------------
 	3, 3				 2  2
 				      4 A  D  X
 .end
@@ -298,15 +298,15 @@ following example, for the standard metric, demonstrates:
 					     2
 				     A  X + A  - A
 				      X
-(E43) 			   G     = - -------------
+(E43) 			   EIN     = - -------------
 			    4, 4	  2  2
 					 A  X
 .end
 .end
 .endfunction
 
-.function(LRICCICOM,dis)
-computes the covariant (symmetric) components LR[i,j] of the Ricci
+.function(RICCI,dis)
+computes the covariant (symmetric) components RIC[i,j] of the Ricci
 tensor.  If the argument 2dis* is TRUE, then the non-zero components
 are displayed. For the standard metric one finds (with RATFAC:TRUE):
 .example
@@ -316,11 +316,11 @@ are displayed. For the standard metric one finds (with RATFAC:TRUE):
 .skip
 .begin group
 
-(C25) LRICCICOM(TRUE);
+(C25) RICCI(TRUE);
 					 2			 2
 		      2 A D D    X - A D   X - A  D D  X - 4 A  D
 			     X X        X       X    X	      X
-(E25) 	   LR	  = - --------------------------------------------
+(E25) 	   RIC	  = - --------------------------------------------
 	     1, 1			     2
 					4 A D  X
 .end
@@ -330,7 +330,7 @@ are displayed. For the standard metric one finds (with RATFAC:TRUE):
 						 2
 			    A D  X - A  D X - 2 A  D + 2 A D
 			       X      X
-(E26) 		 LR     = - --------------------------------
+(E26) 		 RIC     = - --------------------------------
 		   2, 2			    2
 					 2 A  D
 .end
@@ -340,7 +340,7 @@ are displayed. For the standard metric one finds (with RATFAC:TRUE):
 					     2		     2
 		       (A D  X - A  D X - 2 A  D + 2 A D) SIN (Y)
 			   X	  X
-(E27) 	    LR	   = - ------------------------------------------
+(E27) 	    RIC	   = - ------------------------------------------
 	      3, 3			    2
 					 2 A  D
 .end
@@ -350,7 +350,7 @@ are displayed. For the standard metric one finds (with RATFAC:TRUE):
 					2
 		     2 A D D    X - A D	  X - A  D D  X + 4 A D D
 			    X X	       X       X    X		 X
-(E28) 	    LR	   = ---------------------------------------------
+(E28) 	    RIC	   = ---------------------------------------------
 	      4, 4			  2
 				       4 A  D X
 .end
@@ -363,12 +363,12 @@ given metric.  They are stored in the array EM[i].  If the argument
 2dis* is TRUE then these equations are displayed.
 .endfunction
 
-.function2 OMEGA
+.function2 CT_COORDS
 is an option which assigns a list of coordinates to the variable.
-While normally defined when the function TSETUP is called, one may
-redefine the coordinates with the assignment OMEGA:[2j1,j2,...jn*]
-where the 2j*'s are the new coordinate names. A call to OMEGA will
-return the coordinate name list. Also see the function TSETUP above.
+While normally defined when the function CSETUP is called, one may
+redefine the coordinates with the assignment CT_COORDS:[2j1,j2,...jn*]
+where the 2j*'s are the new coordinate names. A call to CT_COORDS will
+return the coordinate name list. Also see the function CSETUP above.
 .endfunction
 
 .function(RATFAC,false)
@@ -381,7 +381,7 @@ components are known to consist of few terms.
 .function(RIEMANN,dis)
 computes the Riemann curvature tensor from the given metric and the
 corresponding Christoffel symbols.  If 2dis* is TRUE, the non-zero
-components R[i,j,k,l] will be displayed. All the indicated indices
+components RIEM[i,j,k,l] will be displayed. All the indicated indices
 are covariant.  As with the Einstein tensor, various switches set by
 the user control the simplification of the components of the Riemann
 tensor.  If $var<RATRIEMANN/TRUE> is TRUE then rational simplification
@@ -389,14 +389,14 @@ will be done. If RATFAC is TRUE then each of the components will also
 be factored.
 .endfunction
 
-.function(RICCICOM,dis)
-This function first computes the covariant components LR[i,j] of the
+.function(URICCI,dis)
+This function first computes the covariant components RIC[i,j] of the
 Ricci tensor.  Then the mixed Ricci tensor is computed using the
-contravariant metric tensor.  If the value of the argument to RICCICOM
-is TRUE, then these mixed components, RICCI[i,j] (the index i is
+contravariant metric tensor.  If the value of the argument to URICCI
+is TRUE, then these mixed components, URIC[i,j] (the index i is
 covariant and the index j is contravariant), will be displayed
-directly.  Otherwise, RICCICOM(FALSE) will simply compute the entries
-of the array RICCI[i,j] without displaying the results.
+directly.  Otherwise, URICCI(FALSE) will simply compute the entries
+of the array URIC[i,j] without displaying the results.
 .endfunction
 
 .function(SCURVATURE,)
@@ -530,12 +530,12 @@ returns a list of the unique differential equations (expressions)
 corresponding to the elements of the 2n* dimensional square
 2array*. Presently, 2n* may be 2 or 3. DEINDEX is a global list
 containing the indices of 2array* corresponding to these unique
-differential equations. For the Einstein tensor (G) given above, which
+differential equations. For the Einstein tensor (EIN) given above, which
 is a two dimensional array, FINDDE gives the following independent
 differential equations:
 .example
 .begin group
-(C19) FINDDE(G,2);
+(C19) FINDDE(EIN,2);
 					  2
 (D19) [D  X - A D + D, 2 A D D	  X - A D   X - A  D D  X + 2 A D D
 	X		      X X	 X	 X    X		   X
@@ -558,15 +558,15 @@ elements.  In this way, it is possible to quickly find the non-zero
 expressions and attempt simplification.
 .endfunction
 
-.function(RAISERIEMANN,dis) 
+.function(URIEMANN,dis) 
 returns the 2contravariant* components of the Riemann curvature
-tensor as array elements UR[i,j,k,l].  These are displayed if 2dis*
+tensor as array elements URIEM[i,j,k,l].  These are displayed if 2dis*
 is TRUE.
 .endfunction
 
 .function(RINVARIANT,)
 forms the Kretschmann invariant, $fun<KINVARIANT>, obtained by
-contracting the tensors R[i,j,k,l]*UR[i,j,k,l]. This object not
+contracting the tensors RIEM[i,j,k,l]*URIEM[i,j,k,l]. This object not
 automatically simplified since it can be very large. For the standard
 metric, however, the invariant is small and easily factored. One
 finds:
@@ -597,7 +597,7 @@ finds:
 .end
 .endfunction
 
-.function(TTRANSFORM,matrix)
+.function(CTRANSFORM,matrix)
 will perform a coordinate transformation upon an arbitrary square
 symmetric 2matrix*. The user must input the functions which define
 the transformation as in C8 below. The following example demonstrates
@@ -606,7 +606,7 @@ the transformation from Cartesian to spherical coordinates:
 .begin group
 (C5) DIM:3$
 
-(C6) OMEGA:[X,Y,Z]$
+(C6) CT_COORDS:[X,Y,Z]$
 .end
 .skip
 .begin group
@@ -621,7 +621,7 @@ the transformation from Cartesian to spherical coordinates:
 .end
 .skip
 .begin group
-(C8) TTRANSFORM(LG)$
+(C8) CTRANSFORM(LG)$
 
 TRANSFORM # 1 
 X*SIN(Y)*SIN(Z);
@@ -668,7 +668,7 @@ array named INV1.
 
 .function(INVARIANT2,)
 generates the mixed Euler- Lagrange tensor (field equations) for the
-invariant density of LR[i,j]*UR[i,j]. The field equations are the
+invariant density of RIC[i,j]*URIEM[i,j]. The field equations are the
 components of an array named INV2.
 .endfunction
 
@@ -727,7 +727,7 @@ brackets.
 .next page
 .sec(|ITENSOR - Basic Functions|,compontenfun)
 
-.function(CHR1,|1[*i,j,k1]*|)
+.function(ICHR1,|1[*i,j,k1]*|)
 yields the Christoffel symbol of the first kind via the definition
 .skip 1
 
@@ -738,16 +738,16 @@ yields the Christoffel symbol of the first kind via the definition
 .skip 1
 .continue
 To evaluate the Christoffel symbols for a particular metric, the
-variable METRIC must be assigned a name as in the example under CHR2.
+variable IMETRIC must be assigned a name as in the example under ICHR2.
 .endfunction
 
-.function(CHR2,|1[*i,j1]*,1[*k1]*|)
+.function(ICHR2,|1[*i,j1]*,1[*k1]*|)
 yields the Christoffel symbol of the second kind defined by the
 relation
 .skip 1
 .begin turn on "{"
 .once center
-CHR2([i,j],[k]) = {sp(g,|[ks]|)} ({sb(g,|[is,j]|)} + {sb(g,|[js,i]|)} - {sb(g,|[ij,s]|)})/2
+ICHR2([i,j],[k]) = {sp(g,|[ks]|)} ({sb(g,|[is,j]|)} + {sb(g,|[js,i]|)} - {sb(g,|[ij,s]|)})/2
 .end
 As an example we consider a conformally flat metric and find the
 Christoffel symbols of both kinds:
@@ -757,7 +757,7 @@ Christoffel symbols of both kinds:
 .end
 .skip
 .begin group
-(C8) METRIC(G)$
+(C8) IMETRIC(G)$
 .end
 .skip
 .begin group
@@ -769,13 +769,13 @@ Christoffel symbols of both kinds:
 .end
 .skip
 .begin group
-(C11) SHOW(G([I,J],[]));
+(C11) ISHOW(G([I,J],[]));
 (D11) 			        P E
 				   I J
 .end
 .skip
 .begin group
-(C12) SHOW(G([],[I,J]));
+(C12) ISHOW(G([],[I,J]));
 				  I J
 				 E
 (D12) 				 ----
@@ -784,7 +784,7 @@ Christoffel symbols of both kinds:
 .end
 .skip
 .begin group
-(C13) SHOW(FACTOR(CHR1([I,J,K])));
+(C13) ISHOW(FACTOR(ICHR1([I,J,K])));
 		    P   E    + P   E    - P   E
 		     ,I	 J K    ,J  I K	   ,K  I J
 (D13) 		    ------------------------------
@@ -792,7 +792,7 @@ Christoffel symbols of both kinds:
 .end
 .skip
 .begin group
-(C30) SHOW(FACTOR(CHR2([I,J],[K])));
+(C30) ISHOW(FACTOR(ICHR2([I,J],[K])));
 		%1 K
 	       E     (P	   E    - P   E	    - P	  E    )
 		       ,%1  I J	   ,I  %1 J    ,J  %1 I
@@ -817,7 +817,7 @@ assignment is given to the function REMCOMPS described below.
 The example under DEFCON (C9 - D12) demonstrates the use of the
 2COMPONENTS* function to define an 2algebraically special metric*
 and also shows how the null property of the vector field can be given
-with the property assignment functions. The example above under CHR2
+with the property assignment functions. The example above under ICHR2
 gives the basic syntax used in the COMPONENTS statement.
 .endfunction
 
@@ -825,15 +825,15 @@ gives the basic syntax used in the COMPONENTS statement.
 carries out the tensorial contractions in 2exp* which may be any
 combination of sums and products.  This function uses the information
 given to the DEFCON function.  When using CONTRACT, 2exp* must be
-fully expanded. Also see the function METRIC and the example under
+fully expanded. Also see the function IMETRIC and the example under
 2DIM*.
 .endfunction
 
 .function(COVDIFF,|exp,v1,v2,...|)
  yields the covariant derivative of 2exp* with respect to the
 variables 2vi* in terms of the Christoffel symbols of the second
-kind (CHR2).  In order to evaluate these, one can use
-EV(2exp1,CHR2).
+kind (ICHR2).  In order to evaluate these, one can use
+EV(2exp1,ICHR2).
 .example
 .begin group
 (C3) ENTERTENSOR();
@@ -847,25 +847,25 @@ Enter a list of the derivative indices: [];
 .end
 .skip
 .begin group
-(C4) SHOW(COVDIFF(%,S));
+(C4) ISHOW(COVDIFF(%,S));
 	      K	       %1     K	       %1     K		  K     %1
-(D4) 	   - A	   CHR2	   - A	   CHR2	   + A	    + CHR2     A
+(D4) 	   - A	   ICHR2	   - A	   ICHR2	   + A	    + ICHR2     A
 	      I %1     J S    %1 J     I S    I J,S	  %1 S  I J
 .end
 .end
 .endfunction
 
-.function(CURVATURE,|1[*i,j,k1]*,1[*h1]*|) 
+.function(ICURVATURE,|1[*i,j,k1]*,1[*h1]*|) 
  yields the Riemann curvature tensor in terms of the Christoffel
-symbols of the second kind (CHR2).  The following notation is used:
+symbols of the second kind (ICHR2).  The following notation is used:
 .example
 .begin group
 	       h            h           h        %1        h
-      CURVATURE     = - CHR2      - CHR2     CHR2    + CHR2
+     ICURVATURE     = - ICHR2      - ICHR2     ICHR2    + ICHR2
 	       i j k        i k,j       %1 j     i k       i j,k
 
 			      h         %1
-			+ CHR2	    CHR2
+			+ ICHR2	    ICHR2
 			      %1 k      i j
 
 .end
@@ -898,8 +898,8 @@ above.
 .break continue
 .skip
 3) one may now differentiate the determinant of the metric tensor.
-Thus, if METRIC has been bound to G then DIFF(DETERMINANT(G),K) will
-return 2*DETERMINANT(G)*CHR2([%i,K],[%i]) where the dummy index has
+Thus, if IMETRIC has been bound to G then DIFF(DETERMINANT(G),K) will
+return 2*DETERMINANT(G)*ICHR2([%i,K],[%i]) where the dummy index has
 been appropriately chosen.
 .endfunction
 
@@ -932,52 +932,52 @@ enables the user to cause undifferentiated Christoffel symbols and
 first derivatives of the metric tensor vanish in 2exp*. The 2name*
 in the GEODESIC function refers to the metric 2name* (if it appears
 in 2exp*) while the connection coefficients must be called with the
-names CHR1 and/or CHR2. The following example demonstrates the
+names ICHR1 and/or ICHR2. The following example demonstrates the
 verification of the cyclic identity satisfied by the Riemann curvature
 tensor using RENAME while also showing the use of the GEODESIC
 function.
 .example
 .begin group
-(C2) EXP:CURVATURE([R,S,T],[U])+CURVATURE([S,T,R],[U])+CURVATURE([T,R,S],[U])$
+(C2) EXP:ICURVATURE([R,S,T],[U])+ICURVATURE([S,T,R],[U])+ICURVATURE([T,R,S],[U])$
 .end
 .skip
 .begin group
-(C3) SHOW(EXP);
+(C3) ISHOW(EXP);
 	   U          U       %6       U          U       %6       U
-(D3) - CHR2     - CHR2    CHR2   + CHR2     + CHR2    CHR2   + CHR2
+(D3) - ICHR2     - ICHR2    ICHR2   + ICHR2     + ICHR2    ICHR2   + ICHR2
 	   T S,R      %6 R    T S      T R,S      %6 S    T R      S T,R
 .end
 .skip
 .begin group
        U        %5	  U	      U	       %5	 U
- + CHR2	    CHR2    - CHR2      - CHR2	   CHR2	   - CHR2
+ + ICHR2	    ICHR2    - ICHR2      - ICHR2	   ICHR2	   - ICHR2
        %5 R     S T	  S R,T	      %5 T     S R	 R T,S
 .end
 .skip
 .begin group
        U        %4	  U	      U	       %4
- - CHR2	    CHR2    + CHR2      + CHR2	   CHR2
+ - ICHR2	    ICHR2    + ICHR2      + ICHR2	   ICHR2
        %4 S     R T	  R S,T	      %4 T     R S
 .end
 .skip
 .begin group
-(C4) SHOW(GEODESIC(EXP,CHR2));
+(C4) ISHOW(GEODESIC(EXP,ICHR2));
 	   U          U          U          U          U          U
-(D4) - CHR2     + CHR2     + CHR2     - CHR2     - CHR2     + CHR2
+(D4) - ICHR2     + ICHR2     + ICHR2     - ICHR2     - ICHR2     + ICHR2
 	   T S,R      T R,S      S T,R      S R,T      R T,S      R S,T
 .end
 .skip
 .begin group
-(C5) SHOW(RENAME(EXP));
+(C5) ISHOW(RENAME(EXP));
 (D5) 				      0
 .end
 .end
 .endfunction
 
-.function(INDEXED,tensor)
+.function(INDEXED_TENSOR,tensor)
 must be executed before assigning components to a 2tensor1 for which
-a built in value already exists as with CHR1, CHR2, CURVATURE See the
-example under CURVATURE.
+a built in value already exists as with ICHR1, ICHR2, ICURVATURE See the
+example under ICURVATURE.
 .endfunction
 
 .function(KDELTA,|L1,L2|)
@@ -993,7 +993,7 @@ DIM).
 .end
 .skip
 .begin group
-(C4) SHOW(%);
+(C4) ISHOW(%);
 	     R	      S	      T	        T       S
 (D4) - KDELTA  (KDELTA  KDELTA  - KDELTA  KDELTA )
 	     A	      B	      C	        B       C
@@ -1014,19 +1014,19 @@ DIM).
 .end
 .endfunction
 
-.function(LC,|L|)
+.function(Levi_Civita,|L|)
  is the permutation (or Levi-Civita) tensor density which yields 1 if
 the list 2L* consists of an even permutation of integers, -1 if it
 consists of an odd permutation, and 0 if some indices in 2L* are
 repeated.
 .endfunction
 
-.function(METRIC,|name|)
+.function(IMETRIC,|name|)
 specifies 2name* as the metric name by assigning the variable
-METRIC:2name1. In addition, the contraction properties of the metric
+IMETRIC:2name1. In addition, the contraction properties of the metric
 2name1 are set up by executing the commands DEFCON(2name1),
 DEFCON(2name, name1, KDELTA). See, for example, the example under
-CURVATURE.
+ICURVATURE.
 .endfunction
 
 .function(RATEXPAND,|exp|)
@@ -1051,13 +1051,13 @@ often happens that the combined effect of the two renamings will
 reduce an expression more than either one by itself.
 .example
 .begin group
-(C41) SHOW(EXP);
+(C41) ISHOW(EXP);
        %4 %5  %6 %7     %3	  U	    %1	      %2
-(D41) G	     G	    CHR2      CHR2      CHR2	  CHR2
+(D41) G	     G	    ICHR2      ICHR2      ICHR2	  ICHR2
 			%1 %4	  %2 %3	    %5 %6     %7 R
 
 		   %4 %5  %6 %7	    U	      %1        %3	  %2
-	        - G      G      CHR2	  CHR2	    CHR2      CHR2
+	        - G      G      ICHR2	  ICHR2	    ICHR2      ICHR2
 				    %1 %2     %3 %5     %4 %6	  %7 R
 .end
 .skip
@@ -1067,13 +1067,13 @@ reduce an expression more than either one by itself.
 .end
 .skip
 .begin group
-(C43) SHOW(RENAME(EXP));
+(C43) ISHOW(RENAME(EXP));
        %2 %5  %6 %7     %4	  U	    %1	      %3
-(D43) G	     G	    CHR2      CHR2      CHR2	  CHR2
+(D43) G	     G	    ICHR2      ICHR2      ICHR2	  ICHR2
 			%1 %2	  %3 %4	    %5 %6     %7 R
 
 		   %4 %5  %6 %7	    U	      %1        %3	  %2
-	        - G      G      CHR2	  CHR2	    CHR2      CHR2
+	        - G      G      ICHR2	  ICHR2	    ICHR2      ICHR2
 				    %1 %2     %3 %4     %5 %6	  %7 R
 .end
 .skip
@@ -1091,19 +1091,19 @@ reduce an expression more than either one by itself.
 .end
 .skip
 .begin group
-(C46) SHOW(RENAME(%));
+(C46) ISHOW(RENAME(%));
 	%1 %2  %3 %4	 %5	   %6	     %7	      U
-(D46) [G      G	     CHR2      CHR2      CHR2	  CHR2	   , 
+(D46) [G      G	     ICHR2      ICHR2      ICHR2	  ICHR2	   , 
 			 %1 %6	   %2 %3     %4 R     %5 %7
 
 		  %1 %2	 %3 %4	   %5	     %6	       %7       U
-	       - G      G      CHR2      CHR2	   CHR2	    CHR2     ]
+	       - G      G      ICHR2      ICHR2	   ICHR2	    ICHR2     ]
 				   %1 %6     %2 %3     %4 R     %5 %7
 .end
 .end
 .endfunction
 
-Suppose the name specified by the value of METRIC corresponds to a
+Suppose the name specified by the value of IMETRIC corresponds to a
 tensor which has been given some structure via the COMPONENTS command.
 In order to evaluate an 2expression1 involving the Riemann tensor
 and incorporate this given definition of the metric explicitly into
@@ -1111,7 +1111,7 @@ the result, the user can do 2expression1, EVAL as the following
 example for the weak field metric demonstrates:
 .example
 .begin group
-(C5) INDEXED(CHR2)$
+(C5) INDEXED_TENSOR(ICHR2)$
 .end
 .skip
 .begin group
@@ -1119,7 +1119,7 @@ example for the weak field metric demonstrates:
 .end
 .skip
 .begin group
-(C7) METRIC:G$
+(C7) IMETRIC:G$
 .end
 .skip
 .begin group
@@ -1131,13 +1131,13 @@ example for the weak field metric demonstrates:
 .end
 .skip
 .begin group
-(C10) SHOW(G([I,J],[]));
+(C10) ISHOW(G([I,J],[]));
 (D10) 			   2 L P    + E
 				I J    I J
 .end
 .skip
 .begin group
-(C11) SHOW(G([],[I,J]));
+(C11) ISHOW(G([],[I,J]));
 			    I J	     I J
 (D11) 			   E    - 2 P    L
 .end
@@ -1147,7 +1147,7 @@ example for the weak field metric demonstrates:
 .end
 .skip
 .begin group
-(C13) CURVATURE([S,U,N],[Y])$
+(C13) ICURVATURE([S,U,N],[Y])$
 .end
 .skip
 .begin group
@@ -1155,7 +1155,7 @@ example for the weak field metric demonstrates:
 .end
 .skip
 .begin group
-(C15) SHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(%)))))$
+(C15) ISHOW(CANFORM(CONTRACT(RENAME(RATEXPAND(%)))))$
 
 	 %1 Y		     %1 Y		 %1 Y
 (D15) - E     L P	  + E	  L P	      + E     P	        L
@@ -1167,7 +1167,7 @@ example for the weak field metric demonstrates:
 .end
 .end
 
-.function(SHOW,|exp|)
+.function(ISHOW,|exp|)
 displays 2exp* with the indexed objects in it shown having their
 covariant indices as subscripts and contravariant indices as
 superscripts. The derivative indices are displayed as subscripts,
@@ -1235,7 +1235,7 @@ symbols as seen from the following:
 .end
 .skip
 .begin group
-(C8) SHOW(G([],[A,B],C))$
+(C8) ISHOW(G([],[A,B],C))$
 
 				      A B
 (D8) 				     G
@@ -1243,9 +1243,9 @@ symbols as seen from the following:
 .end
 .skip
 .begin group
-(C9) SHOW(CONMETDERIV(%,G));
+(C9) ISHOW(CONMETDERIV(%,G));
 			 %1 B	  A	  %1 A	   B
-(D9) 		      - G     CHR2     - G     CHR2
+(D9) 		      - G     ICHR2     - G     ICHR2
 				  %1 C		   %1 C
 .end
 .end
@@ -1267,14 +1267,14 @@ will set to zero, in 2exp*, all occurrences of the 2tensori* that have deriv
 will set to zero, in 2exp*, all occurrences of the differentiated object 2tensor* that have 2n* or more derivative indices as the following example demonstrates.
 .example
 .begin group
-(C3) SHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S));
+(C3) ISHOW(A([I],[J,R],K,R)+A([I],[J,R,S],K,R,S));
 			       J R S	  J R
 (D3) 			      A	       + A
 			       I,K R S	  I,K R
 .end
 .skip
 .begin group
-(C4) SHOW(FLUSHND(D3,A,3));
+(C4) ISHOW(FLUSHND(D3,A,3));
 				     J R
 (D4) 				    A
 				     I,K R
@@ -1287,7 +1287,7 @@ will set to zero, in 2exp*, all occurrences of 2tensor* that have
 exactly one derivative index.
 .endfunction
 
-.function(LORENTZ,|exp, <tensor1, tensor2, ...>|)
+.function(LORENTZ_GAUGE,|exp, <tensor1, tensor2, ...>|)
 imposes a generalized Lorentz condition on 2exp* replacing by zero
 those 2tensori* which have a derivative index identical to a
 contravariant index. If no 2tensori* are specified, this process
@@ -1303,14 +1303,14 @@ following example EIN is the weak field approximation of the Einstein
 tensor for the metric (D56) where L is a small parameter.
 .example
 .begin group
-(C56) SHOW(G([I,J]));
+(C56) ISHOW(G([I,J]));
 
 (D56) 			    P    L + E
 			     I J      I J
 .end
 .skip
 .begin group
-(C57) SHOW(EIN);
+(C57) ISHOW(EIN);
 	 %1 %2  I J	    %1 %2   I J		     %1 %2  I J
 (D57) - E      P       L - P	   E    L + P	    E	   E    L
 		,%1 %2	    ,%1 %2	     ,%1 %2
@@ -1321,7 +1321,7 @@ tensor for the metric (D56) where L is a small parameter.
 .end
 .skip
 .begin group
-(C58) SHOW(LORENTZ(%,P));
+(C58) ISHOW(LORENTZ_GAUGE(%,P));
 	 %1 %2  I J		    %1 %2  I J
 (D58) - E      P       L + P	   E	  E    L
 		,%1 %2	    ,%1 %2
@@ -1332,7 +1332,7 @@ tensor for the metric (D56) where L is a small parameter.
 .end
 .skip
 .begin group
-(C59) SHOW(MAKEBOX(%,E));
+(C59) ISHOW(MAKEBOX(%,E));
 		I J	     I J	      %1 I  %2 J
 (D59) 	   - []P    L + []P E    L - P	     E	   E     L
 				      ,%1 %2
@@ -1385,7 +1385,7 @@ simplifications is CANFORM as the example below illustrates.
 .end
 .skip
 .begin group
-(C5) SHOW(EXP);
+(C5) ISHOW(EXP);
 (D5) 	     A	    + A	     + A      + A      + A      + A
 	      K J I    K I J    J K I	 J I K	  I K J	   I J K
 .end
@@ -1396,7 +1396,7 @@ simplifications is CANFORM as the example below illustrates.
 .end
 .skip
 .begin group
-(C7) SHOW(CANFORM(EXP));
+(C7) ISHOW(CANFORM(EXP));
 
 (D7) 				   6 A
 				      I J K
@@ -1416,7 +1416,7 @@ simplifications is CANFORM as the example below illustrates.
 .end
 .skip
 .begin group
-(C11) SHOW(CANFORM(EXP));
+(C11) ISHOW(CANFORM(EXP));
 (D11) 				      0
 .end
 .skip
@@ -1429,7 +1429,7 @@ simplifications is CANFORM as the example below illustrates.
 .end
 .skip
 .begin group
-(C14) SHOW(CANFORM(EXP));
+(C14) ISHOW(CANFORM(EXP));
 (D14) 			     3 A      + 3 A
 				I K J	   I J K
 
@@ -1445,7 +1445,7 @@ then the contraction of the product of 2tensor11 with any indexed
 object having the appropriate indices (say 2tensor*) will yield an
 indexed object with that name, i.e. 2tensor*, and with a new set of
 indices reflecting the contractions performed. For example, if
-METRIC:G, then DEFCON(G) will implement the raising and lowering of
+IMETRIC:G, then DEFCON(G) will implement the raising and lowering of
 indices through contraction with the metric tensor. CONTRACTIONS is a
 list of those indexed objects which have been given contraction
 properties with DEFCON.
@@ -1484,19 +1484,19 @@ the same indexed object.
 .end
 .skip
 .begin group
-(C11) SHOW(G([I,J],[]));
+(C11) ISHOW(G([I,J],[]));
 (D11) 			       2 L  L  M + E
 				  I  J	    I J
 .end
 .skip
 .begin group
-(C12) SHOW(G([],[I,J]));
+(C12) ISHOW(G([],[I,J]));
 				I J	 I  J
 (D12) 			       E    - 2 L  L  M
 .end
 .skip
 .begin group
-(C13) METRIC(G)$
+(C13) IMETRIC(G)$
 .end
 .skip
 .begin group
@@ -1504,7 +1504,7 @@ the same indexed object.
 .end
 .skip
 .begin group
-(C15) SHOW(%);
+(C15) ISHOW(%);
 					 K
 (D15) 				   KDELTA
 					 I
@@ -1557,14 +1557,14 @@ covariant indices and 2n* contravariant indices.
 .next page
 .sec(|ITENSOR - Indexing Functions|,compontenindx)
 
-.function2 COUNTER
+.function2 ICOUNTER
 determines the numerical suffix to be used in generating the next
 dummy index. It may also be used to set the counter to any value (see
 the example under INDICES).
 .endfunction
 
-.function(DUMMY,)
-increments COUNTER and returns as its value an index of the form %n
+.function(IDUMMY,)
+increments ICOUNTER and returns as its value an index of the form %n
 where n is a positive integer.  This guarantees that dummy indices
 which are needed in forming expressions will not conflict with indices
 already in use (see the example under INDICES).
@@ -1581,15 +1581,15 @@ list of the dummy indices in 2exp* (those that occur exactly twice)
 as the following example demonstrates.
 .example
 .begin group
-(C3) SHOW(CURVATURE([I,J,K],[L])*CURVATURE([A,B,C],[D]));
+(C3) ISHOW(ICURVATURE([I,J,K],[L])*ICURVATURE([A,B,C],[D]));
 	    D	        D	 %2	   D	       D        %2
-(D3) (- CHR2	  - CHR2     CHR2    + CHR2      + CHR2	    CHR2   )
+(D3) (- ICHR2	  - ICHR2     ICHR2    + ICHR2      + ICHR2	    ICHR2   )
 	    A C,B       %2 B	 A C	   A B,C       %2 C     A B
 .end
 .skip
 .begin group
 	      L		  L	   %1	     L		 L	  %1
-       (- CHR2	    - CHR2     CHR2    + CHR2	   + CHR2     CHR2   )
+       (- ICHR2	    - ICHR2     ICHR2    + ICHR2	   + ICHR2     ICHR2   )
 	      I K,J	  %1 J	   I K	     I J,K	 %1 K	  I J
 .end
 .skip
@@ -1599,24 +1599,24 @@ as the following example demonstrates.
 .end
 .skip
 .begin group
-(C5) COUNTER;
+(C5) ICOUNTER;
 (D5) 				      2
 .end
 .skip
 .begin group
-(C6) COUNTER:11$
+(C6) ICOUNTER:11$
 .end
 .skip
 .begin group
 (C7) ''C3;
 	    D	        D	  %13	    D	        D	  %13
-(D7) (- CHR2	  - CHR2      CHR2    + CHR2	  + CHR2      CHR2   )
+(D7) (- ICHR2	  - ICHR2      ICHR2    + ICHR2	  + ICHR2      ICHR2   )
 	    A C,B       %13 B	  A C	    A B,C       %13 C	  A B
 .end
 .skip
 .begin group
 	    L	        L	  %12	    L	        L	  %12
-     (- CHR2	  - CHR2      CHR2    + CHR2	  + CHR2      CHR2   )
+     (- ICHR2	  - ICHR2      ICHR2    + ICHR2	  + ICHR2      ICHR2   )
 	    I K,J       %12 J	  I K	    I J,K       %12 K	  I J
 .end
 .skip
@@ -1632,13 +1632,13 @@ as the following example demonstrates.
 .begin group
 (C10) ''C3;
 	     D		 D	   &15	     D		 D	   &15
-(D10) (- CHR2	   - CHR2      CHR2    + CHR2	   + CHR2      CHR2   )
+(D10) (- ICHR2	   - ICHR2      ICHR2    + ICHR2	   + ICHR2      ICHR2   )
 	     A C,B	 &15 B	   A C	     A B,C	 &15 C	   A B
 .end
 .skip
 .begin group
 	    L	        L	  &14	    L	        L	  &14
-     (- CHR2	  - CHR2      CHR2    + CHR2	  + CHR2      CHR2   )
+     (- ICHR2	  - ICHR2      ICHR2    + ICHR2	  + ICHR2      ICHR2   )
 	    I K,J       &14 J	  I K	    I J,K       &14 K	  I J
 .end
 .end
@@ -1648,14 +1648,14 @@ as the following example demonstrates.
 @section(Indicial Tensor Manipulation- ITENSOR --> CTENSOR)
 @label(compontenie)
 
-.function(GENERATE,eqn)
+.function(IC_CONVERT,eqn)
 converts an ITENSOR equation 2eqn* to a CTENSOR assignment statement.
 Implied sums over dummy indices are made explicit while indexed
 objects are transformed into arrays (the array subscripts are in the
 order of covariant followed by contravariant indices of the indexed
 objects). The derivative of an indexed object will be replaced by the
-noun form of DIFF taken with respect to OMEGA subscripted by the
-derivative index. The Christoffel symbols CHR1 and CHR2 will be
+noun form of DIFF taken with respect to CT_COORDS subscripted by the
+derivative index. The Christoffel symbols ICHR1 and ICHR2 will be
 translated to LCS and MCS respectively and if $var<METRICCONVERT/TRUE>
 is TRUE then all occurrences of the metric with two covariant
 (contravariant) indices will be renamed to LG (UG). In addition, DO
@@ -1665,14 +1665,14 @@ EV(...). The following examples demonstrate the features of this
 function.
 .example
 .begin group
-(C11) SHOW(X);
+(C11) ISHOW(X);
 			      L	       K  I    I   J
 (D11) 			 G = F  A    (C  B  + D ) E
 				 I J	  K	   L
 .end
 .skip
 .begin group
-(C12) GENERATE(X);
+(C12) IC_CONVERT(X);
 (D12) G : SUM(SUM(SUM(F  A     (SUM(C  B    , K, 1, DIM) + D ) E    ,
 		       L  I, J	     K  K, I		    I   L, J
 
@@ -1680,16 +1680,16 @@ function.
 .end
 .skip
 .begin group
-(C4) SHOW(T([I],[J]));
+(C4) ISHOW(T([I],[J]));
 				   J
 (D4) 				  T
 				   I
 .end
 .skip
 .begin group
-(C5) SHOW(COVDIFF(%,K));
+(C5) ISHOW(COVDIFF(%,K));
 		    J	   %1	  J	    J	  %1
-(D5) 		 - T   CHR2    + T    + CHR2     T
+(D5) 		 - T   ICHR2    + T    + ICHR2     T
 		    %1	   I K	  I,K	    %1 K  I
 .end
 .skip
@@ -1699,14 +1699,14 @@ function.
 .end
 .skip
 .begin group
-(C7) GENERATE(H([I,K],[J])=D5);
+(C7) IC_CONVERT(H([I,K],[J])=D5);
 
 (D7) 
 
 FOR I THRU DIM DO (FOR J THRU DIM DO (FOR K THRU DIM DO H        : 
 							 I, K, J
 
-- SUM(T	     MCS        , %1, 1, DIM) + DIFF(T	  , OMEGA )
+- SUM(T	     MCS        , %1, 1, DIM) + DIFF(T	  , CT_COORDS )
        %1, J    I, K, %1		      I, J	 K
 
  + SUM(MCS	   T	 , %1, 1, DIM)))
@@ -1714,15 +1714,15 @@ FOR I THRU DIM DO (FOR J THRU DIM DO (FOR K THRU DIM DO H        :
 .end
 .skip
 .begin group
-(C8) METRIC(G)$
+(C8) IMETRIC(G)$
 .end
 .skip
 .begin group
-(C9) D5,CHR2$
+(C9) D5,ICHR2$
 .end
 .skip
 .begin group
-(C10) SHOW(%);
+(C10) ISHOW(%);
 	 %1 %3  J
 	G      T   (G	    - G	      + G      )
 		%1   K %3,I    I K,%3	 I %3,K
@@ -1737,25 +1737,25 @@ FOR I THRU DIM DO (FOR J THRU DIM DO (FOR K THRU DIM DO H        :
 .end
 .skip
 .begin group
-(C11) GENERATE(H([I,K],[J])=D10);
+(C11) IC_CONVERT(H([I,K],[J])=D10);
 (D11) 
 
 FOR I THRU DIM DO (FOR J THRU DIM DO (FOR K THRU DIM DO H        : 
 							 I, K, J
 
-- SUM(SUM(UG	   T	  (DIFF(LG     , OMEGA )
+- SUM(SUM(UG	   T	  (DIFF(LG     , CT_COORDS )
 	    %1, %3  %1, J	  K, %3	      I
 
- - DIFF(LG    , OMEGA  ) + DIFF(LG     , OMEGA )), %1, 1, DIM), %3, 
+ - DIFF(LG    , CT_COORDS  ) + DIFF(LG     , CT_COORDS )), %1, 1, DIM), %3, 
 	  I, K	     %3		  I, %3	      K
 
-1, DIM)/2 + SUM(SUM(UG	    T	   (DIFF(LG     , OMEGA	 )
+1, DIM)/2 + SUM(SUM(UG	    T	   (DIFF(LG     , CT_COORDS	 )
 		      J, %2  I, %1	   K, %2       %1
 
- - DIFF(LG     , OMEGA  ) + DIFF(LG	 , OMEGA )), %1, 1, DIM), %2, 
+ - DIFF(LG     , CT_COORDS  ) + DIFF(LG	 , CT_COORDS )), %1, 1, DIM), %2, 
 	  %1, K	      %2	   %1, %2       K
 
-1, DIM)/2 + DIFF(T    , OMEGA )))
+1, DIM)/2 + DIFF(T    , CT_COORDS )))
 		  I, J	     K
 .end
 .end

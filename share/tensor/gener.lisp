@@ -4,16 +4,16 @@
 (in-package "MAXIMA")
 
 
-(declare-top (special $metric $metricconvert indlist empty))
+(declare-top (special $imetric $metricconvert indlist empty))
 
-;$METRICCONVERT if non-NIL will allow $GENERATE to rename the metric tensor
-;   ($METRIC must be bound) with 2 covariant indices to LG and with 2
+;$METRICCONVERT if non-NIL will allow $IC_CONVERT to rename the metric tensor
+;   ($IMETRIC must be bound) with 2 covariant indices to LG and with 2
 ;   contravariant indices to UG.
 
-(defun $GENERATE (e)
+(defun $IC_CONVERT (e)
        (prog (free lhs rhs)
 	     (cond ((or (atom e) (not (eq (caar e) 'MEQUAL)))
-		    (merror "GENERATE requires an equation as an argument"))
+		    (merror "IC_CONVERT requires an equation as an argument"))
 		   ((equal (setq free ($indices e)) empty)
 		    (return (cons '(MSETQ) (cdr e))))
 		   ((or (eq (ml-typep (cadr e)) 'SYMBOL)           ;If a symbol or
@@ -33,18 +33,18 @@
 			    (ishow lhs))))
 	     (setq free (nreverse (itensor-sort (cdadr free)))  ;Set FREE to just the
 		   indlist nil)                           ;free indices
-	     (and $METRICCONVERT (boundp '$METRIC)
-		  (setq lhs (changename $METRIC t 0 2 '$UG
-					(changename $METRIC t 2 0 '$LG lhs))
-			rhs (changename $METRIC t 0 2 '$UG
-					(changename $METRIC t 2 0 '$LG rhs))))
+	     (and $METRICCONVERT (boundp '$IMETRIC)
+		  (setq lhs (changename $IMETRIC t 0 2 '$UG
+					(changename $IMETRIC t 2 0 '$LG lhs))
+			rhs (changename $IMETRIC t 0 2 '$UG
+					(changename $IMETRIC t 2 0 '$LG rhs))))
 	     (tabulate rhs)
 	     (setq indlist (unique indlist))
 	     (do ((q (mapcar 'car indlist) (cdr q)))
 		 ((null q))
 		 (cond ((memq (car q) (cdr q))
 			(merror "~
-GENERATE cannot currently handle indexed objects of the same name~
+IC_CONVERT cannot currently handle indexed objects of the same name~
 ~%with different numbers of covariant and//or contravariant indices:~%~M"
 				(car q)))))
 	     (cond ((not (eq (ml-typep lhs) 'SYMBOL))
@@ -177,13 +177,13 @@ GENERATE cannot currently handle indexed objects of the same name~
 				       (append (cdadr e) (cdaddr e)))))))
 		  ((null deriv) new)
 		  (setq new (append '(($DIFF)) (ncons new)
-				    (ncons (cons '($OMEGA ARRAY)
+				    (ncons (cons '($CT_COORDS ARRAY)
 						 (ncons (car deriv))))))))
 	     (t e)))
 
 (defun EQUIV-TABLE (a)                ;Makes appropiate name changes converting
-       (cond ((memq a '($CHR1 %CHR1)) '$LCS)            ;from ITENSOR to ETENSR
-	     ((memq a '($CHR2 %CHR2)) '$MCS)
+       (cond ((memq a '($ICHR1 %ICHR1)) '$LCS)            ;from ITENSOR to ETENSR
+	     ((memq a '($ICHR2 %ICHR2)) '$MCS)
 	     (t a)))
 
 (declare-top (unspecial indlist))
@@ -310,13 +310,13 @@ GENERATE cannot currently handle indexed objects of the same name~
 	   (flag (list '(MPLUS SIMP)
 		       (list '(MTIMES SIMP) -1
 			     (list g (ncons SMLIST) (list SMLIST dummy i))
-			     (list '($CHR2 SIMP) (list SMLIST dummy k)
+			     (list '($ICHR2 SIMP) (list SMLIST dummy k)
 				   (list SMLIST j)))
 		       (list '(MTIMES SIMP) -1
 			     (list g (ncons SMLIST) (list SMLIST dummy j))
-			     (list '($CHR2 SIMP) (list SMLIST dummy k)
+			     (list '($ICHR2 SIMP) (list SMLIST dummy k)
 				   (list SMLIST i)))))
-	   (setq dummy ($dummy))
+	   (setq dummy ($idummy))
 	   (and (not (memq dummy indexl)) (setq flag t))))
 
 (add2lnc '(($CONMETDERIV) $EXP $NAME) $funcs)
@@ -343,9 +343,9 @@ GENERATE cannot currently handle indexed objects of the same name~
 
 (add2lnc '(($FLUSH1DERIV) $EXP $NAME) $funcs)
 
-(defun $GEODESIC (exp g)
-       ($flush1deriv ($flush exp '$CHR2 '%CHR2) g))
+(defun $IGEODESIC_COORDS (exp g)
+       ($flush1deriv ($flush exp '$ICHR2 '%ICHR2) g))
 
-(add2lnc '(($GEODESIC) $EXP $NAME) $funcs)
+(add2lnc '(($IGEODESIC_COORDS) $EXP $NAME) $funcs)
 
 

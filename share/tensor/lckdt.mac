@@ -13,7 +13,7 @@ _lc2kdt0(exp):=block([temp1:1,temp2:1,temp,i1],
 	if part(exp,0)="-" then for i1 thru length(part(num(exp),1)) do
 	(
 		temp:part(num(exp),1,i1),
-		if tenpr(temp) and verbify(name(temp))=lc then
+		if tenpr(temp) and verbify(name(temp))=levi_civita then
 		(
 			temp1:_lcprod(temp1,temp),
 			temp2:temp2*temp
@@ -22,7 +22,7 @@ _lc2kdt0(exp):=block([temp1:1,temp2:1,temp,i1],
 	else for i1 thru length(num(exp)) do
 	(
 		temp:part(num(exp),i1),
-		if tenpr(temp) and verbify(name(temp))=lc then
+		if tenpr(temp) and verbify(name(temp))=levi_civita then
 		(
 			temp1:_lcprod(temp1,temp),
 			temp2:temp2*temp
@@ -35,7 +35,7 @@ _lcprod(lc1,lc2):=block([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
 	if numberp(lc1) or symbolp(lc1) then lc1*lc2
 	else if tenpr(lc2) then	/* so name(LC1)=LC */
 	(
-		if verbify(name(lc2))=lc and tenpr(lc1) then
+		if verbify(name(lc2))=levi_civita and tenpr(lc1) then
 		(		/* again test if LC1 is a single */
 			l1:covi(lc1),
 			l11:conti(lc1),
@@ -46,7 +46,7 @@ _lcprod(lc1,lc2):=block([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
 			if lkl=[] then
 			(
 				lf:length(l11),
-				ln11:makelist(dummy(),i,1,lf),
+				ln11:makelist(idummy(),i,1,lf),
 				(
 					tempk:1,
 					for i thru lf do
@@ -57,7 +57,7 @@ _lcprod(lc1,lc2):=block([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
 			else if lku=[] then
 			(
 				lf:length(l1),
-				ln11:makelist(dummy(),i,1,lf),
+				ln11:makelist(idummy(),i,1,lf),
 				(
 					tempk:1,
 					for i thru lf do
@@ -84,7 +84,7 @@ _extlc(lc1,lc2):=block([temp],
 	if covi(lc1)#[] then
 	(
 		temp:part(num(lc2),1,1),
-		if tenpr(temp) and verbify(name(temp))=lc and conti(temp)#[] then temp
+		if tenpr(temp) and verbify(name(temp))=levi_civita and conti(temp)#[] then temp
 		else 1.
 	)
 	else

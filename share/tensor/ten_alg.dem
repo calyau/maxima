@@ -7,39 +7,39 @@ load("tensor/lckdt.mac")$
 bothcases:false$
 */
 
-("To show a tensor use SHOW()")$
-show(g([a,b],[c,i],i2,i1))$
+("To show a tensor use ISHOW()")$
+ishow(g([a,b],[c,i],i2,i1))$
 
 ("define tensor components through the usual maxima function syntax")$
 t(l1,l2):=c*a(l1,l2)+b(l1,l2)$
-show(t([i,k],[]))$
-show(t([],[j,m]))$
+ishow(t([i,k],[]))$
+ishow(t([],[j,m]))$
 
 ("the Euler equation ")$
 Eu(l1,l2):=block(d_t* v(l1,[])+v([],[j])*v(l1,[],j)+
 1/rho([])*diff(p([],[]),l1[1])+diff(phi([],[]),l1[1]))$
-show(Eu([i],[]))$
+ishow(Eu([i],[]))$
 ("one can give another definition for
   the Euler equation using the metric ")$
-metric:g$
-Eu(l1,l2):=block(j1:dummy(), if l2=[] then
+imetric:g$
+Eu(l1,l2):=block(j1:idummy(), if l2=[] then
 d_t* v(l1,[])+v([],[j1])*v(l1,[],j1)+1/rho([])*diff(p([],[]),l1[1])+diff(phi([],[]),l1[1])
  else d_t*v([],l2)+v([],[j1])*v([],l2,j1)+
 g([],[l2[1],j1])*(diff(p([],[]),j1)/rho([])+diff(phi([],[]),j1)) )$
-show(Eu([i],[]))$
-show(Eu([],[i]))$
+ishow(Eu([i],[]))$
+ishow(Eu([],[i]))$
 ("control the dummy indices with dummyx: something")$
 dummyx:n$
-show(Eu([i],[]))$
+ishow(Eu([i],[]))$
 
 
 ("tensor algebra operations")$
 ("contractions, raising (lowering), symmetrization (antisymmetrization),
   exterior product, dualization, all of this is possible to do")$
 ("the Kronecker delta is very important")$
-show(kdelta([i],[j]))$
-show(kdelta([i,j],[n,m]))$
-show(kdelta([i,j,k],[l,n,m]))$
+ishow(kdelta([i],[j]))$
+ishow(kdelta([i,j],[n,m]))$
+ishow(kdelta([i,j,k],[l,n,m]))$
 
 ("Contractions, to define defcon(tensor1,tensor2,tensor3) before")$
 (declare(e, constant), defcon(e), defcon(e,e,kdelta))$
@@ -47,50 +47,50 @@ show(kdelta([i,j,k],[l,n,m]))$
 g(l1,l2):=block(
 if l2=[] then e(l1,[])+m*l([l1[1]],[])*l([l1[2]],[])
 else  e([],l2)-m*l([],[l2[1]])*l([],[l2[2]]))$
-show(g([i,j],[]))$
-show(g([],[i,j]))$
-metric:g$
-show(contract(rename(expand(g([j,k],[])*g([],[i,j])))))$
+ishow(g([i,j],[]))$
+ishow(g([],[i,j]))$
+imetric:g$
+ishow(contract(rename(expand(g([j,k],[])*g([],[i,j])))))$
 
 ("raising and lowering of indices with function contract(exp)")$
 (defcon(Ti),expr1:Te([i,j],[k,l])*Ti([k,m])*Ti([l,n]),
 expr2:Te([i,j],[k,l])*Ti([],[i,n])*Ti([],[j,m]))$
-show(expr1)$
-show(expr2)$
+ishow(expr1)$
+ishow(expr2)$
 
 ("symmetrization via contract with function kdels(L1,L2)")$
 (" kdels(L1,L2) gives the symmetric combination of the Kronecker delta")$
-show(kdels([i],[l]))$
-show(kdels([i,j],[l,k]))$
-show(kdels([i,j,k],[l,m,n]))$
-show(ev(kdels([],[]),kdelta))$
+ishow(kdels([i],[l]))$
+ishow(kdels([i,j],[l,k]))$
+ishow(kdels([i,j,k],[l,m,n]))$
+ishow(ev(kdels([],[]),kdelta))$
 
 ("naturally the contraction of such symmetric and antisymmetric tensors
   like kdels and kdelta gives zero.  Look at the huge sum.")$
 expr:expand(kdels([i,j,k],[l,m,n])*kdelta([l,m,n],[i1,i2,i3]))$
-show(expr)$
+ishow(expr)$
 ("contract it to zero")$
-show(contract(expr))$
+ishow(contract(expr))$
 ("another example")$
 ("take the symmetrization of A_{ijk}")$
 expr:contract(expand(a([i1,j1,k1],[])*kdels([i,j,k],[i1,j1,k1])))$
-show(expr)$
+ishow(expr)$
 ("declare A to be fully symmetric")$
 decsym(a,3,0,[sym(all)],[])$
 allsym:true;
 ("look at the result of the simplification with canform")$
-show(canform(expr))$
+ishow(canform(expr))$
 ("now let A be fully antisymmetric")$
 allsym:false$
 remsym(a,3,0)$
 decsym(a,3,0,[anti(all)],[])$
 dispsym(a,3,0);
 ("then the simplification of expr leads to another result")$
-show(canform(expr))$
+ishow(canform(expr))$
 ("again, if A is cyclic on indices")$ 
 remsym(a,3,0);
 decsym(a,3,0,[cyc(all)],[])$
-show(canform(expand(expr)))$
+ishow(canform(expand(expr)))$
 
 ("revise the defined contraction properties")$
 dispcon(all);
@@ -101,83 +101,83 @@ decsym(s,0,3,[],[sym(all)]);
 ("take the antisymmetrization of another tensor
   B and contract the result with S")$
 exp1: canform(contract(expand(kdelta([i,k,l],[i1,k1,l1])*b([i1,k1,l1],[]))))$
-show(exp1)$
+ishow(exp1)$
 exp2:exp1*s([],[i,k,l])$
-show(expand(exp2))$
-show(canform(contract(%)))$
+ishow(expand(exp2))$
+ishow(canform(contract(%)))$
 
 ("the exterior algebra for the antisymmetric covariant objects")$
 ("the exterior product is defined through the infix operator &
-  the exterior derivative through @ ind, inner product with |_ vec,
-  and the Lie derivative through @L [vec, ind]")$
+  the exterior derivative through extdiff(), inner product with |_ vec,
+  and the Lie derivative through liediff(x, [vec, ind])")$
 ("load the package in the system")$
 ("now look at the exterior product of two 1-forms
   and 1-form with 2-form")$
 allsym:false$
 decsym(p,2,0,[anti(all)],[])$
 kill(a)$
-show(a([i])&b([j]))$
-show(a([i])&p([j,k])+a([i])&b([j])&a([k]))$
+ishow(a([i])&b([j]))$
+ishow(a([i])&p([j,k])+a([i])&b([j])&a([k]))$
 
 ("dualization")$
 ("the itensor's old-style Levi-Civita symbol operates only on integers")$
 dim:3;
-lc([1,2,3]);
-lc([i,j,j]);
+levi_civita([1,2,3]);
+levi_civita([i,j,j]);
 ("but we now have a better implementation")$
-ax_bxc:'lc([i,j,k],[])*a([],[j])*'lc([],[k,l,n])*b([l],[])*c([n],[])$
-show(ax_bxc)$
+ax_bxc:'levi_civita([i,j,k],[])*a([],[j])*'levi_civita([],[k,l,n])*b([l],[])*c([n],[])$
+ishow(ax_bxc)$
 lc2kdt(ax_bxc)$
-show(contract(expand(%)))$
+ishow(contract(expand(%)))$
 
-axb_cxu:'lc([i,j,k],[])*a([],[j])*b([],[k])*'lc([],[i,l,n])*c([l],[])*u([n],[])$
-show(axb_cxu)$
+axb_cxu:'levi_civita([i,j,k],[])*a([],[j])*b([],[k])*'levi_civita([],[i,l,n])*c([l],[])*u([n],[])$
+ishow(axb_cxu)$
 lc2kdt(axb_cxu)$
-show(contract(expand(%)))$
+ishow(contract(expand(%)))$
 
 ("The indexing properties of the Levi-Civita symbol are encoded in two")$
 ("simplification rules, LC_L and LC_U. These rules can be used to simplify")$
 ("expressions containing the unevaluated Levi-Civita symbol.")$
-expr2:'lc([i,j,k],[])*a([],[j])*a([],[k])+'lc([],[i,j,k])*a([j])*b([k])$
-show(expr2)$
+expr2:'levi_civita([i,j,k],[])*a([],[j])*a([],[k])+'levi_civita([],[i,j,k])*a([j])*b([k])$
+ishow(expr2)$
 applyb1(expr2,lc_l,lc_u)$
-show(factor(canform(contract(expand(%)))))$
+ishow(factor(canform(contract(expand(%)))))$
 
 ("finally look for the dualization of some tensor B")$
 ("declare symmetry prop of B")$
-(allsym:false, decsym(b,2,0,[anti(all)],[]),show(b([i,j],[])))$
+(allsym:false, decsym(b,2,0,[anti(all)],[]),ishow(b([i,j],[])))$
 ("compute the dualization")$
-(rank:length(covi(b([i,j],[]))),dual:'lc([],[l,i,j])*b([i,j],[])/rank!,show(dual))$
+(rank:length(covi(b([i,j],[]))),dual:'levi_civita([],[l,i,j])*b([i,j],[])/rank!,ishow(dual))$
 ("return to the original")$
-(ddual:'lc([i2,j2,l],[])*dual,show(ddual))$
-show(canform(contract(expand(lc2kdt(ddual)))))$
+(ddual:'levi_civita([i2,j2,l],[])*dual,ishow(ddual))$
+ishow(canform(contract(expand(lc2kdt(ddual)))))$
 
 ("differentiation of tensors")$
 kill(g)$
 remcomps(g)$
-metric:g$
+imetric:g$
 dim:4$
-show(chr1([i,j,k]))$
-show(chr2([i,j],[k]))$
-show(covdiff(a([j,k],[i]),i))$
-expr:canform(contract(expand(ev(%,chr2))))$
-show(expr)$
-show(geodesic(expr,g))$
+ishow(ichr1([i,j,k]))$
+ishow(ichr2([i,j],[k]))$
+ishow(covdiff(a([j,k],[i]),i))$
+expr:canform(contract(expand(ev(%,ichr2))))$
+ishow(expr)$
+ishow(igeodesic_coords(expr,g))$
 ("the geodesic was used to cancel the first derivatives of the metric")$
 allsym:true$
-exp:'curvature([r,s,t],[u])+'curvature([s,t,r],[u])+'curvature([t,r,s],[u])$
-show(exp)$
-show(ev(exp,curvature))$
-show(geodesic(%,chr2))$
-show(rename(%))$
+exp:'icurvature([r,s,t],[u])+'icurvature([s,t,r],[u])+'icurvature([t,r,s],[u])$
+ishow(exp)$
+ishow(ev(exp,icurvature))$
+ishow(igeodesic_coords(%,ichr2))$
+ishow(rename(%))$
 
 ("exterior derivatives")$
-(allsym:false,decsym(p,2,0,[anti(all)],[]),show(p([i,j])@k))$
+(allsym:false,decsym(p,2,0,[anti(all)],[]),ishow(extdiff(p([i,j]),k)))$
 ("the Lie derivative of a 1-form")$
-show(a([i])@L[v,k])$
+ishow(liediff(a([i]),[v,k]))$
 ("the Lie derivative has to commute with the exterior one.")$
-show((a([i])@L[v,j])@k-(a([i])@j)@L[v,k])$
-show((p([i1,i2])@L[v,i3])@i4-(p([i1,i2])@i3)@L[v,i4])$
+ishow(extdiff(liediff(a([i]),[v,j]),k)-liediff(extdiff(a([i]),j),[v,k]))$
+ishow(extdiff(liediff(p([i1,i2]),[v,i3]),i4)-liediff(extdiff(p([i1,i2]),i3),[v,i4]))$
 
 ("more examples about the Cartan identity are in car_iden.dem")$
 
@@ -185,100 +185,100 @@ show((p([i1,i2])@L[v,i3])@i4-(p([i1,i2])@i3)@L[v,i4])$
 kill(g)$
 remcomps(g)$
 declare(e,constant)$
-metric:g$
+imetric:g$
 components(g([i,j],[]),e([i,j],[])+2*l*p([i,j],[]));
 components(g([],[i,j]),e([],[i,j])-2*l*p([],[i,j]));
 	/*G(L1,L2):=BLOCK( IF L2=[] THEN RETURN(E(L1,[])+2*L*P(L1,[]) ),
 	  E([],L2)-2*L*P([],L2) )$*/
-show(g([i,j],[]))$
-show(g([],[i,j]))$
+ishow(g([i,j],[]))$
+ishow(g([],[i,j]))$
 (ratvars(l),ratweight(l,1),ratwtlvl:1)$
-exp1:curvature([s,u,n],[y])$
+exp1:icurvature([s,u,n],[y])$
 nterms(exp1);
 exp2:ev(exp1)$
-	/*(exp2:undiff(exp1),exp3:ev(exp2,chr2),exp4:ev(exp3,diff))$*/
+	/*(exp2:undiff(exp1),exp3:ev(exp2,ichr2),exp4:ev(exp3,diff))$*/
 ("look the number of terms with nterms")$
 nterms(exp2);
-show(canform(contract(rename(ratexpand(exp2)))))$
+ishow(canform(contract(rename(ratexpand(exp2)))))$
 ("the FLUSH() function is used to simplify an expr with derivatives")$
 exp:u([i],[j,r],k,r)+a([i],[j,r,s],k,r,s)+b([i,k],[j,r],r)+u([i,k,r],[j,r])$
-show(exp)$
-show(flush(exp,u))$
-show(flushd(exp,u,b))$
-show(flushnd(exp,a,1))$
+ishow(exp)$
+ishow(flush(exp,u))$
+ishow(flushd(exp,u,b))$
+ishow(flushnd(exp,a,1))$
 (if allsym=false then allsym:true)$
 (" the divergence free terms could be removed with lorentz")$
 defcon(e,e,kdelta)$
 defcon(e,p,p)$
 defcon(p,e,p)$
-rr : g([],[r,t])*curvature([r,s,t],[s])$
-rrij : g([],[i,r])*g([],[j,t])*curvature([r,s,t],[s])$
+rr : g([],[r,t])*icurvature([r,s,t],[s])$
+rrij : g([],[i,r])*g([],[j,t])*icurvature([r,s,t],[s])$
 ein:-(rrij-1/2*rr*g([],[i,j]))$
 	/*undiff(ein)$
-	ev(%,chr2)$
+	ev(%,ichr2)$
 	ev(%,diff)$*/
 ein:canform(rename(contract(ratexpand(ev(%)))))$
-show(ein)$
-ein_l:lorentz(ein,p)$
-show(ein_l)$
+ishow(ein)$
+ein_l:lorentz_gauge(ein,p)$
+ishow(ein_l)$
 
 ("Now consider the permutations prop of the Riemann curvature tensor")$
 
 ("firstly, compute the symmetrization")$
-exp:contract(expand('curvature([k,i1,j1],[l])*kdels([i,j],[i1,j1])/2))$
-show(exp)$
-(exp1:ev(exp,curvature),show(exp1))$
+exp:contract(expand('icurvature([k,i1,j1],[l])*kdels([i,j],[i1,j1])/2))$
+ishow(exp)$
+(exp1:ev(exp,icurvature),ishow(exp1))$
 ("simplify via canform")$
-show(canform(exp1))$
+ishow(canform(exp1))$
 ("compute the antisymmetrization")$
-exp:contract(expand('curvature([i1,j1,k1],[l])*kdelta([i,j,k],[i1,j1,k1])))$
-show(exp)$
-(exp1:ev(exp,curvature),show(expand(exp1)))$
-show(canform(exp1))$
+exp:contract(expand('icurvature([i1,j1,k1],[l])*kdelta([i,j,k],[i1,j1,k1])))$
+ishow(exp)$
+(exp1:ev(exp,icurvature),ishow(expand(exp1)))$
+ishow(canform(exp1))$
 ("the Bianchi rules")$
-bianchi_r:'covdiff('curvature([k,i1,j1],[l]),m1)*
+bianchi_r:'covdiff('icurvature([k,i1,j1],[l]),m1)*
 'kdelta([i,j,m],[i1,j1,m1])=0$
-show(bianchi_r)$
-exp:contract(expand(ev(lhs(bianchi_r),kdelta,curvature,covdiff)))$
+ishow(bianchi_r)$
+exp:contract(expand(ev(lhs(bianchi_r),kdelta,icurvature,covdiff)))$
 nterms(exp);
-show(canform(exp))$
+ishow(canform(exp))$
 
 ("transition to the coordinates")$
 dummyx:di$
 remcomps(g);
-metric:g$
+imetric:g$
 dim:3$
 (" The RHS of the heat transport equation with Te as the temperature
   and k as the heat conductivity")$
 eq1 : td = canform(rename(expand(covdiff( -k([],[])*covdiff(Te([],[]),i),j)*g([],[i,j]))))+ source$
-heat : generate(eq1 )$
-(omega:[x,y,z],lg:matrix([1,0,0],[0,1,0],[0,0,1]),ug : invert(lg))$
-	/*(dim:DIM,omega:OMEGA,lg:LG,ug:UG,christof(false),MCS:mcs)$*/
+heat : ic_convert(eq1 )$
+(ct_coords:[x,y,z],lg:matrix([1,0,0],[0,1,0],[0,0,1]),ug : invert(lg))$
+	/*(dim:DIM,ct_coords:CT_COORDS,lg:LG,ug:UG,christof(false),MCS:mcs)$*/
 christof(false);
-(depends(Te,omega),depends(k,x))$
+(depends(Te,ct_coords),depends(k,x))$
 ev(heat);
 (" get the equation in spherical coordinates ")$
-omega:[r,theta,phi];
+ct_coords:[r,theta,phi];
 lg:matrix([1,0,0],[0,r^2,0],[0,0,r^2*sin(theta)^2])$
 ug : invert(lg)$
-	/*(omega:OMEGA,lg:LG,ug:UG,christof(false),MCS:mcs)$*/
+	/*(ct_coords:CT_COORDS,lg:LG,ug:UG,christof(false),MCS:mcs)$*/
 christof(all);
 remove([Te,k],dependency)$
-(depends(Te,omega),depends(k,r))$
+(depends(Te,ct_coords),depends(k,r))$
 ev(heat);
-kill(omega)$
+kill(ct_coords)$
 ("the conservation of the helicity in hydrodynamics")$
 (if allsym=true then allsym:false)$
 dummyx:j$
 ("the covariant formulation of the Euler equation is")$
 euler: d_t*v([i1])+
-'"@L"(v([i0]),[v,i1])=-(p([])@i1)/rho([])+(v([i0])|_v/2-phi([]))@i1$
-show(euler)$
+'liediff(v([i0]),[v,i1])=-extdiff(p([]),i1)/rho([])+extdiff((v([i0])|_v/2-phi([])),i1)$
+ishow(euler)$
 ("take the exterior derivative of both sides")$
-euler1: d_t*omega([i1,i2])+'"@L"(omega([i0,i1]),[v,i2])=
-(-(p([])@i1)/rho([])+(v([i0])|_v/2-phi([]))@i1)@i2$
-show(euler1)$
-show(omega([i1,i2])=v([i1])@i2)$
+euler1:d_t*ct_coords([i1,i2])+'liediff(ct_coords([i0,i1]),[v,i2])=
+extdiff(-extdiff(p([]),i1)/rho([])+extdiff(v([i0])|_v/2-phi([]),i1),i2)$
+ishow(euler1)$
+ishow(ct_coords([i1,i2])=extdiff(v([i1]),i2))$
 ("declare the function's dependencies")$
 depends(p,[rho,s])$
 ("define the chain rule for the derivatives' replacement")$
@@ -286,16 +286,16 @@ matchdeclare(i,symbolp);
 defrule(p_r, p([],[],i),  'diff(p,rho)*rho([],[],i));
 defrule(p_sr, p([],[],i),  'diff(p,s)*s([],[],i)+'diff(p,rho)*rho([],[],i));
 ("apply the rules")$
-show(apply1(euler1,p_r))$
+ishow(apply1(euler1,p_r))$
 ("this law was originally discovered by Lord Kelvin")$
 ("for the more general case there is Ertel's theorem")$
 ("apply another rule where pressure depends on both rho and the entropy")$
 euler2:factor(expand(apply1(euler1,p_sr)))$
-show(euler2)$
+ishow(euler2)$
 ("so the rhs will vanish after forming the exterior product with
   the differential of the entropy")$
-rhs(euler1)&(s([])@i3)$
-show(factor(expand(apply1(%,p_sr))))$
+rhs(euler1)&extdiff(s([]),i3)$
+ishow(factor(expand(apply1(%,p_sr))))$
 
 ("the magnetic field lines are embedded in the moving plasma")$
 allsym:false$
@@ -303,16 +303,16 @@ allsym:false$
 decsym(b,2,0,[anti(all)],[])$
 ("due to the infinite conductivity the electric field is expressed through")$
 e_field:b([i1,i2])|_v$
-equat: d_t*b([i2,i3])=-e_field@i3$
-show(equat)$
+equat: d_t*b([i2,i3])=-extdiff(e_field,i3)$
+ishow(equat)$
 
 ("express B through the vector potential")$
 ("i.e., re-compute the electric field")$
-e_field1:a([i1])@i2|_v$
+e_field1:extdiff(a([i1]),i2)|_v$
 ("substitute it in Equat")$
-equat1: d_t*b([i2,i3])=-e_field1@i3$
+equat1: d_t*b([i2,i3])=-extdiff(e_field1,i3)$
 ("compute the Lie derivative of B")$
-lie_derb: '"@L"(b([i1,i2]),[v,i3])=(a([i1])@i2)@L[v,i3]$
+lie_derb: 'liediff(b([i1,i2]),[v,i3])=extdiff(extdiff(a([i1]),i2),L[v,i3])$
 ("summing up the lhs and rhs parts")$
 emded:lhs(equat1)+lhs(lie_derb)=canform(rhs(equat1)+rhs(lie_derb))$
-show(emded)$
+ishow(emded)$

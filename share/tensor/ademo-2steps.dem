@@ -2,12 +2,12 @@ load(itensor)$
 dummyx:m;
 showtime:true;
 allsym:true;
-metric:g$
-q1:covdiff(curvature([r,s,t],[u])*g([],[s,i])*g([],[t,j]),i)$
+imetric:g$
+q1:covdiff(icurvature([r,s,t],[u])*g([],[s,i])*g([],[t,j]),i)$
 nterms(%);
 rename(expand(q1))$
-q2:geodesic(canform(rename(expand(ev(%)))),g)$
-show(q2)$
+q2:igeodesic_coords(canform(rename(expand(ev(%)))),g)$
+ishow(q2)$
 q3:canform(covdiff(q2,j))$
 nterms(%);
-show(rename(expand(geodesic(q3,g))))$
+ishow(rename(expand(igeodesic_coords(q3,g))))$

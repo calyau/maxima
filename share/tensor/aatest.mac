@@ -3,39 +3,39 @@
 riccicov(ii,jj,kk,ll):=block(modedeclare([ii,jj,kk,ll,aa,bb],fixnum), 
 if diagmetric then h[ii,jj,kk,ll]:h[jj,ii,kk,ll]:
   ratsimp(sum(
-   mcs[aa,ii,jj]*lr[jj,jj]*mcs[kk,ll,aa]+
-    mcs[aa,jj,ii]*lr[ii,ii]*mcs[kk,ll,aa]+
-     lr[aa,aa]*mcs[ii,kk,aa]*mcs[jj,ll,aa]+
-      mcs[aa,kk,ii]*lr[ii,ii]*mcs[jj,ll,aa]+
-       lr[aa,aa]*mcs[ii,ll,aa]*mcs[jj,kk,aa]+
-        mcs[aa,kk,jj]*lr[jj,jj]*mcs[ii,ll,aa]-
-         diff(lr[ii,jj],omega[aa],1)*mcs[kk,ll,aa],aa,1,dim)
+   mcs[aa,ii,jj]*ric[jj,jj]*mcs[kk,ll,aa]+
+    mcs[aa,jj,ii]*ric[ii,ii]*mcs[kk,ll,aa]+
+     ric[aa,aa]*mcs[ii,kk,aa]*mcs[jj,ll,aa]+
+      mcs[aa,kk,ii]*ric[ii,ii]*mcs[jj,ll,aa]+
+       ric[aa,aa]*mcs[ii,ll,aa]*mcs[jj,kk,aa]+
+        mcs[aa,kk,jj]*ric[jj,jj]*mcs[ii,ll,aa]-
+         diff(ric[ii,jj],ct_coords[aa],1)*mcs[kk,ll,aa],aa,1,dim)
 
--(diff(lr[ii,ii],omega[kk],1)*mcs[jj,ll,ii]+
-   lr[ii,ii]*diff(mcs[jj,kk,ii],omega[ll],1)+
-    diff(lr[ii,ii],omega[ll],1)*mcs[jj,kk,ii]+
-     diff(lr[jj,jj],omega[kk],1)*mcs[ii,ll,jj]+
-      lr[jj,jj]*diff(mcs[ii,kk,jj],omega[ll],1)+
-      diff(lr[jj,jj],omega[ll],1)*mcs[ii,kk,jj])
+-(diff(ric[ii,ii],ct_coords[kk],1)*mcs[jj,ll,ii]+
+   ric[ii,ii]*diff(mcs[jj,kk,ii],ct_coords[ll],1)+
+    diff(ric[ii,ii],ct_coords[ll],1)*mcs[jj,kk,ii]+
+     diff(ric[jj,jj],ct_coords[kk],1)*mcs[ii,ll,jj]+
+      ric[jj,jj]*diff(mcs[ii,kk,jj],ct_coords[ll],1)+
+      diff(ric[jj,jj],ct_coords[ll],1)*mcs[ii,kk,jj])
 
-+diff(diff(lr[ii,jj],omega[kk],1),omega[ll],1)) 
++diff(diff(ric[ii,jj],ct_coords[kk],1),ct_coords[ll],1)) 
 
 else  h[ii,jj,kk,ll]:h[jj,ii,kk,ll]:
 ratsimp(sum(sum(
-  mcs[aa,ii,bb]*lr[bb,jj]*mcs[kk,ll,aa]+
-   mcs[aa,jj,bb]*lr[bb,ii]*mcs[kk,ll,aa]+
-    lr[aa,bb]*mcs[ii,kk,aa]*mcs[jj,ll,bb]+
-     mcs[aa,kk,bb]*lr[bb,ii]*mcs[jj,ll,aa]+
-      lr[aa,bb]*mcs[ii,ll,aa]*mcs[jj,kk,bb]+
-        mcs[aa,kk,bb]*lr[bb,jj]*mcs[ii,ll,aa],aa,1,dim),bb,1,dim)
+  mcs[aa,ii,bb]*ric[bb,jj]*mcs[kk,ll,aa]+
+   mcs[aa,jj,bb]*ric[bb,ii]*mcs[kk,ll,aa]+
+    ric[aa,bb]*mcs[ii,kk,aa]*mcs[jj,ll,bb]+
+     mcs[aa,kk,bb]*ric[bb,ii]*mcs[jj,ll,aa]+
+      ric[aa,bb]*mcs[ii,ll,aa]*mcs[jj,kk,bb]+
+        mcs[aa,kk,bb]*ric[bb,jj]*mcs[ii,ll,aa],aa,1,dim),bb,1,dim)
 
 - sum(
-    diff(lr[ii,jj],omega[aa],1)*mcs[kk,ll,aa]+
-     diff(lr[aa,ii],omega[kk],1)*mcs[jj,ll,aa]+
-      lr[aa,ii]*diff(mcs[jj,kk,aa],omega[ll],1)+
-       diff(lr[aa,ii],omega[ll],1)*mcs[jj,kk,aa]+
-        diff(lr[aa,jj],omega[kk],1)*mcs[ii,ll,aa]+
-         lr[aa,jj]*diff(mcs[ii,kk,aa],omega[ll],1)+
-     	  diff(lr[aa,jj],omega[ll],1)*mcs[ii,kk,aa],aa,1,dim)
+    diff(ric[ii,jj],ct_coords[aa],1)*mcs[kk,ll,aa]+
+     diff(ric[aa,ii],ct_coords[kk],1)*mcs[jj,ll,aa]+
+      ric[aa,ii]*diff(mcs[jj,kk,aa],ct_coords[ll],1)+
+       diff(ric[aa,ii],ct_coords[ll],1)*mcs[jj,kk,aa]+
+        diff(ric[aa,jj],ct_coords[kk],1)*mcs[ii,ll,aa]+
+         ric[aa,jj]*diff(mcs[ii,kk,aa],ct_coords[ll],1)+
+     	  diff(ric[aa,jj],ct_coords[ll],1)*mcs[ii,kk,aa],aa,1,dim)
 
-+diff(diff(lr[ii,jj],omega[kk],1),omega[ll],1)))$
++diff(diff(ric[ii,jj],ct_coords[kk],1),ct_coords[ll],1)))$

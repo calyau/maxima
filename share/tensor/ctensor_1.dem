@@ -6,7 +6,7 @@ load("ctensor")$
 /*  dimension of the manifold */
 dim:3$
 /* the coordinate labels */
-omega:[x,y,z]$
+ct_coords:[x,y,z]$
 /* the basis metric */
 lg:ident(3);
 (" the required coordinate transformation is:
@@ -15,6 +15,6 @@ lg:ident(3);
 # 3 = X*COS(Y)
 PLEASE PROVIDE these right hand sides as INPUT now!!")$
 
-ttransform(lg)$
+ctransform(lg)$
 /* a substitution which reduces the transformed matrix */
 ev(%,cos(y) = sqrt(1-sin(y)^2),sin(z) = sqrt(1-cos(z)^2),ratsimp);

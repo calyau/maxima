@@ -6,12 +6,12 @@ load("ctensor")$
 setflags()$
 ratfac:true$
 dim:4$
-omega:[x,y,z,t]$
+ct_coords:[x,y,z,t]$
 /* THIS IS A CONFORMALLY FLAT METRIC */
 lg:a*ident(4)$
 dependencies(a(t))$
-metric()$
+setmetric()$
 christof(mcs)$
-riccicom(false)$
+uricci(false)$
 riemann(false)$
 weyl(true)$

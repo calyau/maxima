@@ -1,7 +1,7 @@
 load("itensor");
 
 dim:5;
-metric:g5;
+imetric:g5;
 defcon(g4);
 defcon(g5);
 defcon(g4,g4,kdelta);

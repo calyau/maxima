@@ -13,7 +13,7 @@ setflags()$
 ratfac:true$
 ("Specify the dimension of the manifold and
 the coordinate labels.");
-(dim:4,omega:[r,th,ph,t])$
+(dim:4,ct_coords:[r,th,ph,t])$
 ("Enter the general static spherically symmetric metric."); 
 lg:matrix([a,0,0,0],[0,r^2,0,0],[0,0,r^2*sin(th)^2,0],[0,0,0,-d]);
 ug:invert(lg)$
@@ -24,14 +24,14 @@ ug:invert(lg)$
 ("computes the mixed Christoffel symbols but not display them");
 christof(false)$
 ("computes and ratsimps Ricci tensor");
-riccicom(false)$
+uricci(false)$
 ("computes and displays the Einstein tensor");
 einstein(true);
 
-("makes a list of the non-zero components of the Einstein tensor (G)
-where the 2 indicates the order of the array G");
+("makes a list of the non-zero components of the Einstein tensor (EIN)
+where the 2 indicates the order of the array EIN");
 
-exp:findde(g,2);
+exp:findde(ein,2);
 
 ("now begins to solve the field equations");
 
@@ -54,7 +54,7 @@ sol:[h1,h2];
 exp,sol,diff,ratsimp;
 /* kill(all);
 IF GET('CTENSOR,'VERSION) = FALSE THEN LOAD("ctensor.mac")$ */
-(dim:4,omega:[r,th,ph,t])$
+(dim:4,ct_coords:[r,th,ph,t])$
 
 ("Enter the Schwarzschild metric in standard coordinates.")$ 
 lg : matrix([1/(1-2*m/r),0,0,0],[0,r^2,0,0]
@@ -64,13 +64,13 @@ ug:invert(lg)$
 ("Compute and display mixed Christoffel symbols")$
 
 christof(all)$
-riccicom(true)$
+uricci(true)$
 ("computes scalar curvature")$
 scurvature();
 ("computes Riemann tensor")$
 riemann(true)$
 ("computes contravariant Riemann tensor")$
-raiseriemann(false)$
+uriemann(false)$
 ("computes the Kretchmann invariant Rijkl^2")$
 rinvariant();
 diagmetric:true;
