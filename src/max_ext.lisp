@@ -1106,16 +1106,6 @@
 
 (autof '$todd_coxeter '|todd-coxeter|)
 
-
-(defvar $chemin
-  #+kcl (intern (concatenate 'string "&"
-			     (namestring (truename si::*system-directory*))
-			     "../sym/"))
-  #-kcl		    
-  '|&/usr/local/maxima/sym/|)
-
-
-
 (dolist (v       
 	  '($arite
 	    $card_orbit
