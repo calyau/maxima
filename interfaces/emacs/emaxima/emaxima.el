@@ -553,7 +553,7 @@ Return the filename."
                 (while (emaxima-dereference-buffer cell-key files parts nil))
             ;; Prebuild all reference buffers
             (emaxima-collate-cells file part files parts nil)
-            (while (emaxima-dereference-buffer cell-key files parts nil nil))
+            (while (emaxima-dereference-buffer cell-key files parts nil))
             )
           (set-buffer cell-buffer)
           (write-file (concat emaxima-temp-dir cell-buffer))
@@ -661,7 +661,7 @@ without asking."
           (setq emaxima-source-buffer (current-buffer)) ; Collate from here
           (emaxima-collate-cells file nil files parts nil)
           (or (get-buffer (cdr (assoc file emaxima-buffer-alist)))
-              (error "No `%s' cell `%s:' found" file))
+              (error "No `%s' cell `%s:' found" file file))
           
           ;; OK, here we go:  Recursively dereference the cell buffer:
           (while (emaxima-dereference-buffer file files parts))
@@ -1318,8 +1318,9 @@ Return nil if no name or error in name."
          (end))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert string)
       (beginning-of-buffer)
       (search-forward ":lisp")
@@ -1334,8 +1335,9 @@ Return nil if no name or error in name."
          (end))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert string)
       (beginning-of-buffer)
       (maxima-goto-end-of-form)
@@ -1669,8 +1671,9 @@ output."
          (end))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert string)
       ;; Replace beginning \maxima with \begin{verbatim}
       (goto-char (point-min))
@@ -1751,8 +1754,9 @@ output."
          (end))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert string)
       (goto-char (point-min))
       ;; Take care of the output
@@ -1827,6 +1831,7 @@ output."
 (defun emaxima-replace-cells-by-latex ()
   (interactive)
   (let ((cell-type)
+        (cell)
         (beg)
         (end))
     (save-excursion

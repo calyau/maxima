@@ -289,7 +289,7 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
 ;; This variable seems to be necessary ...
 (defvar inferior-maxima-after-output-wait 100)
 
-(defconst maxima-temp-suffix 0
+(defvar maxima-temp-suffix 0
   "Temporary filename suffix.  Incremented by 1 for each filename.")
 
 (defvar maxima-special-symbol-letters "!:='")
@@ -338,10 +338,16 @@ Taken from `replace-regexp-in-string' from subr.el in GNU emacs."
       (setq matches (cons (substring string start l) matches)) ; leftover
       (apply #'concat (nreverse matches)))))
 
-;(defun maxima-replace-in-string (from to string)
-;  (if running-xemacs
-;      (replace-in-string string from to)
-;    (replace-regexp-in-string from to string nil t)))
+(defun maxima-remove-kill-buffer-hooks ()
+  "Remove the kill-buffer-hooks locally"
+  (if (and (not running-xemacs) (< emacs-major-version 21))
+      (progn
+        (make-local-hook 'kill-buffer-hook)
+        (setq kill-buffer-hook nil))
+    (let ((hooks kill-buffer-hook))
+      (while hooks
+        (remove-hook 'kill-buffer-hook (car hooks) t)
+        (setq hooks (cdr hooks))))))
 
 (defun maxima-make-temp-name ()
   "Return a unique filename."
@@ -356,8 +362,9 @@ Taken from `replace-regexp-in-string' from subr.el in GNU emacs."
          (out))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert string)
       (goto-char (point-min))
       (maxima-forward-over-comment-whitespace)
@@ -371,8 +378,9 @@ Taken from `replace-regexp-in-string' from subr.el in GNU emacs."
          (out))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert string)
       (goto-char (point-max))
       (maxima-back-over-comment-whitespace)
@@ -762,6 +770,7 @@ Ignores parens inside comments.  Returns nil if not in sexp."
   "Move to the end of the current sexp."
   (let ((keep-looking t)
 	(found nil)
+        (match)
 	pt)
     (save-excursion
       (setq match (maxima-re-search-backward "(" nil))
@@ -838,7 +847,10 @@ is the same as the previous line."
   "Return appropriate indentation for current line as Maxima code.
 Returns an integer: the column to indent to."
   (let ((indent 0)
+        (close-char "[,;$]")
+        (begin-construct)
         (pmin)
+        (pt)
         (bc))
     (save-excursion
       (beginning-of-line)
@@ -877,11 +889,11 @@ Returns an integer: the column to indent to."
         (if (and pt (< pt pmin))   ;; This shouldn't happen
               (setq pt nil)
             (if pt (setq pmin pt)))
-        (setq current-point (point))
+;        (setq current-point (point))
 ;        (if pt 
 ;            (setq close-char "[,]") 
 ;          (setq close-char "[;\\$]"))
-        (setq close-char "[,;$]")
+;        (setq close-char "[,;$]")
         ;; Now, find the indentation of beginning of the current construct
         (setq begin-construct (maxima-construct-beginning-position))
         ;; If begin-construct is nil, indent according to the opening paren
@@ -993,25 +1005,27 @@ Returns an integer: the column to indent to."
 
 (defun maxima-get-help ()
   "Get help on a given subject"
-  (save-excursion
-    (beginning-of-line)
-    (skip-chars-forward "* ")
-    (setq pt (point))
-    (search-forward ":")
-    (skip-chars-backward ": ")
-    (setq name (buffer-substring-no-properties pt (point)))
-    (skip-chars-forward ": ")
-    (setq pt (point))
-    (end-of-line)
-    (skip-chars-backward ". ")
-    (setq place (buffer-substring-no-properties pt (point))))
-  (if (not running-xemacs)
-      (info (concat "(" maxima-info-dir "maxima.info)" place))
-    (info (concat maxima-info-dir "maxima.info"))
-    (search-forward place)
-    (Info-follow-nearest-node (point)))
-  (re-search-forward (concat "-.*: *" name "\\>"))
-  (beginning-of-line))
+  (let ((pt)
+        (place))
+    (save-excursion
+      (beginning-of-line)
+      (skip-chars-forward "* ")
+      (setq pt (point))
+      (search-forward ":")
+      (skip-chars-backward ": ")
+      (setq name (buffer-substring-no-properties pt (point)))
+      (skip-chars-forward ": ")
+      (setq pt (point))
+      (end-of-line)
+      (skip-chars-backward ". ")
+      (setq place (buffer-substring-no-properties pt (point))))
+    (if (not running-xemacs)
+        (info (concat "(" maxima-info-dir "maxima.info)" place))
+      (info (concat maxima-info-dir "maxima.info"))
+      (search-forward place)
+      (Info-follow-nearest-node))
+    (re-search-forward (concat "-.*: *" name "\\>"))
+    (beginning-of-line)))
 
 (defun maxima-get-fast-help (expr)
   "Go directly to the help item if possible." 
@@ -1024,6 +1038,7 @@ Returns an integer: the column to indent to."
        place)
     (save-excursion
       (set-buffer index-buffer)
+      (maxima-remove-kill-buffer-hooks)
       (goto-char 1)
       (search-forward "Menu:")
       (forward-line 1)
@@ -1053,6 +1068,7 @@ Returns an integer: the column to indent to."
     (if (not expr1) 
         (setq expr (read-string "Maxima Help: ")) (setq expr expr1)) 
     (set-buffer maxima-help-buffer)
+    (maxima-remove-kill-buffer-hooks)
     (setq buffer-read-only nil)
     (erase-buffer)
     (insert "Maxima help for " expr "\n\n")
@@ -1082,6 +1098,7 @@ Returns an integer: the column to indent to."
 	    (interactive)
 	    (let ((buf (current-buffer)))
 	      (delete-window)
+              (maxima-remove-kill-buffer-hooks)
 	      (kill-buffer buf)))
 	  (use-local-map (make-sparse-keymap))
 	  (define-key (current-local-map) "\C-m" 'maxima-help-subject)
@@ -1188,6 +1205,7 @@ Returns an integer: the column to indent to."
       (interactive)
       (let ((buf (current-buffer)))
 	(delete-window)
+        (maxima-remove-kill-buffer-hooks)
 	(kill-buffer buf)))
     (use-local-map (append (make-sparse-keymap) (current-local-map)))
     (define-key (current-local-map) "\C-m" 'maxima-help-subject)
@@ -1483,8 +1501,8 @@ if completion is ambiguous."
   (setq comment-start-skip "/\*+ *")
   (make-local-variable 'comment-column)
   (setq comment-column 40)
-  (make-local-variable 'comment-indent-hook)
-  (setq comment-indent-hook 'maxima-comment-indent))
+  (make-local-variable 'comment-indent-function)
+  (setq comment-indent-function 'maxima-comment-indent))
 
 
 ;;;; Maxima mode
@@ -1694,8 +1712,9 @@ To get apropos with the symbol under point, use:
          (pt))
     (save-excursion
       (set-buffer tmpbuf)
-      (make-local-hook 'kill-buffer-hook)
-      (setq kill-buffer-hook nil)
+      (maxima-remove-kill-buffer-hooks)
+;      (make-local-hook 'kill-buffer-hook)
+;      (setq kill-buffer-hook nil)
       (insert stuff)
       (beginning-of-buffer)
       (while (string-match "[$;]\\|:lisp"
@@ -1864,13 +1883,15 @@ and such that no line contains an incomplete form."
 (defun maxima-send-completed-region (beg end)
   "Send the marked region, but complete possibly non-complete forms at the bounderies."
   (interactive "r\nP")
-  (save-excursion
-    (goto-char beg)
-    (setq beg1 (maxima-form-beginning-position))
-    (goto-char end)
-    (setq end1 (maxima-form-end-position-or-point-max))
-    (maxima-send-region beg1 end1)
-    end1))
+  (let ((beg1)
+        (end1))
+    (save-excursion
+      (goto-char beg)
+      (setq beg1 (maxima-form-beginning-position))
+      (goto-char end)
+      (setq end1 (maxima-form-end-position-or-point-max))
+      (maxima-send-region beg1 end1)
+      end1)))
 
 (defun maxima-send-completed-region-and-goto-next-form (beg end)
   "Do a maxima-send-completed-region and go to the beginning of the next form."
@@ -1935,7 +1956,9 @@ to grab the current one.
 	   (insert new)))))
 
 (defun maxima-smart-complete2 (prompt str)
-  (let ((pt (point)) found
+  (let ((at)
+        (this)
+        (pt (point)) found
 	(pat (concat (maxima-regexp-for-this-prompt prompt)
 		     "\\(" (regexp-quote str) "\\)" ))
 	offered (not-yet t))
@@ -2112,14 +2135,16 @@ The following commands are available:
   (maxima-mode-variables)
   (use-local-map inferior-maxima-mode-map)
   (setq tab-width 8)
+  (if (and (not running-xemacs) (< emacs-major-version 21))
+      (make-local-hook 'kill-buffer-hook))
   (if running-xemacs
-      (add-local-hook 'kill-buffer-hook
+      (add-hook 'kill-buffer-hook
                       (function
                        (lambda ()
                          (if (processp inferior-maxima-process)
                              (delete-process inferior-maxima-process))
                          (setq inferior-maxima-process nil)
-                         (run-hooks 'inferior-maxima-exit-hook))))
+                         (run-hooks 'inferior-maxima-exit-hook))) nil t)
     (add-hook 'kill-buffer-hook
               (function
                (lambda ()
@@ -2160,12 +2185,10 @@ The following commands are available:
     (if (not twod)
         (setq output (maxima-strip-string output))
       ;; Strip the beginning and trailing newline
-      (while (string-match "\\` *\n" maxima-minibuffer-output)
-        (setq maxima-minibuffer-output 
-              (substring maxima-minibuffer-output (match-end 0))))
-      (while (string-match "\n *\\'" maxima-minibuffer-output)
-        (setq maxima-minibuffer-output 
-              (substring maxima-minibuffer-output 0 (match-beginning 0)))))
+      (while (string-match "\\` *\n" output)
+        (setq output (substring output (match-end 0))))
+      (while (string-match "\n *\\'" output)
+        (setq output (substring output 0 (match-beginning 0)))))
     (setq output (maxima-replace-in-string "%" "%%" output))
     (message output)))
 
