@@ -15,7 +15,7 @@
  * exterior forms. We introduce the "~" operator for the exterior product,
  * and "|" for the inner product of a form with a vector.
 */
-load("tensor/itensor")$
+/*load("tensor/itensor")$*/
 
 infix("~");
 declare("~",additive);
@@ -84,7 +84,7 @@ declare("~",antisymmetric);
 
 extdiff(forma,[optind]):=block
 (
-  [l1:first(indices(forma)),
+  [l11,l1s,lk1,lk2,indd,res,l1:first(indices(forma)),
    ind:if length(optind)>0 then optind[1] else idummy()],
   if l1=[] then return(idiff(forma,ind))
   else
@@ -94,9 +94,17 @@ extdiff(forma,[optind]):=block
     lk1:append([ind],l1),
     indd:idummy(),
     lk2:append(l11,[indd]),
-    forma:sublis(l1s,forma),
-    contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(forma,indd))))/
-                               (length(lk1)-1)!
+    res:sublis(l1s,forma),
+    res:contract(canform(ratexpand(kdelta(lk1,lk2)*idiff(res,indd))))/
+                               (length(lk1)-1)!,
+    if iframe_flag=true then
+      for i thru length(l1) do
+      (
+        l1s:map("=",[l1[i]],[indd]),
+        res:res+(if evenp(length(l1)) then 1 else -1)*
+                'ifb([l1[i],ind],[indd])*apply(op(forma),[sublis(l1s,l1)])
+      ),
+    res
   )
 );
 

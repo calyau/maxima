@@ -96,10 +96,11 @@ contract(%th(2))$
 %,nouns$
 ishow(rename(%))$
 %-part(first(%),1)$
-ishow(subst('ichr2([l,m],[k]),chr2klm,%))$
+EQ:ishow(subst('ichr2([l,m],[k]),chr2klm,%))$
 
 ("But what about the 5D Christoffel-symbol?")$
-ishow(ichr2([k,l],[m]))$
+/*ishow(ichr2([k,l],[m]))$*/
+ishow(ichr2([l,m],[k]))$
 rename(%)$
 forget(%1<=4)$
 subst(5,%1,%th(2))$
@@ -108,16 +109,22 @@ ishow(%)$
 
 assume(%1<=4)$
 %th(6),g5$
-ratsubst(-f([%1,k],[]),a([%1],[],k)-a([k],[],%1),%)$
+/*ratsubst(-f([%1,k],[]),a([%1],[],k)-a([k],[],%1),%)$*/
 ratsubst(-f([%1,l],[]),a([%1],[],l)-a([l],[],%1),%)$
+ratsubst(-f([%1,m],[]),a([%1],[],m)-a([m],[],%1),%)$
 ishow(factor(contract(expand(%))))$
 
 %+%th(6)$
 %,nouns$
-ratsubst(chr42([k,l],[m]),
-         g4([],[m,%1])*(g4([l,%1],[],k)+g4([k,%1],[],l)-g4([k,l],[],%1))/2,%)$
+/*ratsubst(ichr42([k,l],[m]),
+         g4([],[m,%1])*(g4([l,%1],[],k)+g4([k,%1],[],l)-g4([k,l],[],%1))/2,%)$*/
+ratsubst(ichr42([l,m],[k]),
+         g4([],[k,%1])*(g4([m,%1],[],l)+g4([l,%1],[],m)-g4([l,m],[],%1))/2,%)$
 ishow(%)$
 
 contract(%)$
 ("The extra term is presumably the curvature caused by the EM field.")$
-ishow(map(factor,combine(distrib(%th(2)))))$
+/*ishow('ichr2([k,l],[m])=map(factor,combine(distrib(%th(2)))))$*/
+ishow('ichr2([l,m],[k])=map(factor,combine(distrib(%th(2)))))$
+("Or, if you wish, you can apply this result to the equation of motion:")$
+ishow(subst(rhs(%th(2)),lhs(%th(2)),EQ))$

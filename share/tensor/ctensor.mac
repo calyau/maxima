@@ -19,6 +19,9 @@
  * correspond with the naming conventions in commercial MACSYMA.
 */
 
+if get('ctensor,'version)#false then error("CTENSOR already loaded!")$
+put('ctensor,'v20041126,'version)$
+
 
 /***********************************
   PACKAGE INITIALIZATION

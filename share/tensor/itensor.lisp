@@ -3,6 +3,10 @@
 (in-package "MAXIMA")
 
 (macsyma-module itensor) ;; added 9/24/82 at UCB
+
+(cond (($get '$itensor '$version) (merror "ITENSOR already loaded"))
+      (t ($put '$itensor '$v20041126 '$version))
+)
 ;	** (c) Copyright 1981 Massachusetts Institute of Technology **
 
 ;    Various functions in Itensor have been parceled out to separate files. A
@@ -58,7 +62,8 @@
 #+maclisp ($UUO) 	                        ;Restore calls to SDIFF so it can be redefined	
 
 (DECLARE-TOP (SPECIAL SMLIST $IDUMMYX $VECT_COORDS $IMETRIC $ICOUNTER $DIM
-		  $CONTRACTIONS $COORD $ALLSYM $METRICCONVERT)
+		  $CONTRACTIONS $COORD $ALLSYM $METRICCONVERT $IFRAME_FLAG
+          $ITORSION_FLAG)
 	 (*LEXPR $RENAME $DIFF $COORD $REMCOORD $LORENTZ_GAUGE))
 
 (SETQ $IDUMMYX '$%                   ;Prefix for dummy indices
@@ -67,7 +72,9 @@
       $VECT_COORDS NIL               ;Used when differentiating w.r.t. a number
       $COORD '((MLIST SIMP))         ;Objects treated liked coordinates in DIFF
       $ALLSYM NIL                    ;If T then all indexed objects symmetric
-      $METRICCONVERT T)              ;Flag used by $IC_CONVERT
+      $METRICCONVERT T               ;Flag used by $IC_CONVERT
+      $IFRAME_FLAG NIL
+      $ITORSION_FLAG NIL)
 
 ;(DEFUN IFNOT MACRO (CLAUSE) (CONS 'OR (CDR CLAUSE)))
 (DEFmacro IFNOT  (&rest CLAUSE) `(or ,@ clause))
@@ -186,99 +193,124 @@
 		))
 		(T (merror "Name of metric must be specified"))))
 
-;(DEFMFUN $ICHR1 (L1)                             ;Christoffel symbol of first kind
-;       (PROG (A B C)
-;	     (SETQ A (CADDDR L1) B (CADR L1) C (CADDR L1))
-;	     (RETURN (LIST '(MTIMES)
-;			   '((RAT SIMP) 1. 2.)
-;			   (LIST '(MPLUS)
-;				 (SDIFF (COV B A) C)
-;				 (SDIFF (COV C A) B)
-;				 (LIST '(MTIMES)
-;				       -1.
-;				       (SDIFF (COV B C) A)))))))
-(DEFMFUN $ICHR1 NARGS
-	(PROG (A B C)
-		(COND 
-;			((> NARGS 2) (RETURN (MEVAL (CONS '$COVDIFF (CONS ($ICHR1 (ARG 1) (ARG 2)) (CDDR (LISTIFY NARGS)))))))
-			((> NARGS 2) (RETURN (MEVAL (CONS '$IDIFF (CONS ($ICHR1 (ARG 1) (ARG 2)) (APPLY #'APPEND (MAPCAR #'(LAMBDA (E) (LIST E 1)) (CDDR (LISTIFY NARGS)))))))))
-			((> NARGS 1) (AND (EQ 1 (LENGTH (ARG 2))) (RETURN ($ICHR1 (ARG 1))))
-					(merror "ICHR1 cannot have contravariant indices"))
-;;				(COND
-;;					((NULL (ARG 2)) (merror "ICHR1 has no contravariant indices"))
-;;					(T (RETURN ($ICHR1 (ARG 1))))
-;;				)
-;;			)
-			(T
-				(SETQ A (CADDDR (ARG 1)) B (CADR (ARG 1)) C (CADDR (ARG 1)))
-				(RETURN (LIST '(MTIMES)
-					'((RAT SIMP) 1. 2.)
-					(LIST '(MPLUS)
-;;						(SDIFF (COV B A) C)
-;;						(SDIFF (COV C A) B)
-						(DIFFCOV B A C)
-						(DIFFCOV C A B)
-						(LIST '(MTIMES) -1.
-;;							(SDIFF (COV B C) A))))))
-							(DIFFCOV B C A))))))
-		)
-	)
+(defmfun $ichr1 nargs                   ; Christoffel-symbol of the first kind
+  (prog (a b c)
+    (cond 
+      (
+        (> nargs 2) ; Derivative indices present; use idiff() to resolve
+        (return
+          (meval
+            (cons
+              '$idiff
+              (cons
+                ($ichr1 (arg 1) (arg 2))
+                (apply
+                  #'append
+                  (mapcar #'(lambda (e) (list e 1)) (cddr (listify nargs)))
+                )
+              )
+            )
+          )
+        )
+      )
+      (
+        (> nargs 1)
+        (and (eq 1 (length (arg 2))) (return ($ichr1 (arg 1))))
+        (merror "ichr1 cannot have contravariant indices")
+      )
+      (t            ; G_abc = 1/2*(g_ba,c+g_ca,b-g_bc,a)
+        (setq a (cadddr (arg 1)) b (cadr (arg 1)) c (caddr (arg 1)))
+        (return
+          (list
+            '(mtimes)
+            '((rat simp) 1. 2.)
+            (list
+              '(mplus)
+              (diffcov b a c)
+              (diffcov c a b)
+              (list '(mtimes) -1. (diffcov b c a))
+            )
+          )
+        )
+      )
+    )
+  )
 )
 
-;(DEFMFUN $ICHR2 (L1 L2)                         ;Christoffel symbol of second kind
-;       (PROG (A B C D) 
-;	     (SETQ A (CADR L1) B (CADDR L1) C (CADR L2))
-;	     (return (do ((flag) (l (append (cdr l1) (cdr l2))))
-;			 (flag (LIST '(MTIMES)
-;				     (CONTR C D)
-;				     ($ICHR1 (LIST SMLIST A B D))))
-;			 (setq d ($idummy))
-;			 (and (not (memq d l)) (setq flag t))))))
-(DEFMFUN $ICHR2 NARGS
-	(PROG (A B C D) 
-		(COND
-			((> NARGS 2) (RETURN (MEVAL (CONS '$IDIFF (CONS ($ICHR2 (ARG 1) (ARG 2)) (APPLY #'APPEND (MAPCAR #'(LAMBDA (E) (LIST E 1)) (CDDR (LISTIFY NARGS)))))))))
-			(T
-				(SETQ A (CADR (ARG 1)) B (CADDR (ARG 1)) C (CADR (ARG 2)))
-				(return (do ((flag) (l (append (cdr (ARG 1)) (cdr (ARG 2)))))
-					(flag (LIST '(MTIMES)
-						(CONTR C D)
-						($ICHR1 (LIST SMLIST A B D))))
-				(setq d ($idummy))
-				(and (not (memq d l)) (setq flag t))))))
-	)
+(defmfun $ichr2 nargs                   ; Christoffel-symbol of the second kind
+  (prog (a b c d) 
+    (cond
+      (
+        (> nargs 2) ; Derivative indices present; use idiff() to resolve
+        (return
+          (meval
+            (cons
+              '$idiff
+              (cons
+                ($ichr2 (arg 1) (arg 2))
+                (apply
+                  #'append
+                  (mapcar #'(lambda (e) (list e 1)) (cddr (listify nargs)))
+                )
+              )
+            )
+          )
+        )
+      )
+      (t            ; G_ab^c=g^cd*G_abd
+        (setq a (cadr (arg 1)) b (caddr (arg 1)) c (cadr (arg 2)))
+        (return
+          (do
+            ((flag) (l (append (cdr (arg 1)) (cdr (arg 2)))))
+            (flag
+              (list '(mtimes) (contr c d) ($ichr1 (list smlist a b d)))
+            )
+            (setq d ($idummy))
+            (and (not (memq d l)) (setq flag t))
+          )
+        )
+      )
+    )
+  )
 )
-
-(DEFMFUN $icurvature (L1 L2) 
-       (PROG (I J K H R) 
-	     (setq r ($idummy))
-	     (SETQ I (CADR L1) K (CADDR L1) H (CADDDR L1) J (CADR L2))
-	     (RETURN (LIST '(MPLUS)
-			   (IDIFF (LIST '($ICHR2 SIMP)
-					(LIST SMLIST I K)
-					L2)
-				  H)
-			   (LIST '(MTIMES)
-				 -1.
-				 (IDIFF (LIST '($ICHR2 SIMP)
-					      (LIST SMLIST I H)
-					      (LIST SMLIST J))
-					K))
-			   (LIST '(MTIMES)
-				 (LIST '($ICHR2 SIMP)
-				       (LIST SMLIST I K)
-				       (LIST SMLIST R))
-				 (LIST '($ICHR2 SIMP)
-				       (LIST SMLIST R H)
-				       L2))
-			   (LIST '(MTIMES)
-				 -1.
-				 (LIST '($ICHR2 SIMP)
-				       (LIST SMLIST I H)
-				       (LIST SMLIST R))
-				 (LIST '($ICHR2 SIMP)
-				       (LIST SMLIST R K)
-				       L2)))))) 
+
+(defmfun $icurvature (l1 l2) 
+  (prog (i j k h r) 
+    (setq r ($idummy) i (cadr l1) k (caddr l1) h (cadddr l1) j (cadr l2))
+    (return
+      (list
+        '(mplus)
+        (idiff (list (diffop) (list smlist i k) l2) h)
+        (list
+          '(mtimes) -1.
+          (idiff (list (diffop) (list smlist i h) (list smlist j)) k)
+        )
+        (list
+          '(mtimes)
+          (list (diffop) (list smlist i k) (list smlist r))
+          (list (diffop) (list smlist r h) l2)
+        )
+        (list
+          '(mtimes)
+          -1.
+          (list (diffop) (list smlist i h) (list smlist r))
+          (list (diffop) (list smlist r k) l2)
+        )
+        (cond
+          (
+            $iframe_flag
+            (list
+              '(mtimes) -1.
+              (list '($ifb) (list smlist k h) (list smlist r))
+              (list '($icc2) (list smlist r i) (list smlist j))
+            )
+          )
+          (t 0.)
+        )
+      )
+    )
+  )
+) 
 
 (DEFUN COVSUBST (X Y RP)       ;Substitutes X for Y in the covariant part of RP
        (CONS (CAR RP) (CONS (SUBST X Y (CADR RP)) (CDDR RP)))) 
@@ -291,100 +323,371 @@
 (DEFUN DERSUBST (X Y RP)   ;Substitutes X for Y in the derivative indices of RP
        (NCONC (LIST (CAR RP) (CADR RP) (CADDR RP))
 	      (SUBST X Y (CDDDR RP)))) 
-
-(DECLARE-TOP (SPECIAL X TEMP D)) 
 
-(DEFMFUN $COVDIFF NARGS
-       (PROG (X E TEMP D I)
-	     (AND (< NARGS 2) (merror "COVDIFF must have at least 2 args"))
-	     (SETQ I 2 E (ARG 1))
-       AGAIN (SETQ X (ARG I) E (COVDIFF E) I (1+ I))
-	     (AND (> I NARGS) (RETURN E))
-	     (GO AGAIN)))
+;; COVARIANT DIFFERENTIATION
+;; As of November, 2004, COVDIFF now takes into account the value of
+;; iframe_flag. If true, COVDIFF uses the coefficients icc2 in place
+;; of the Christoffel-symbols ichr2.
 
-(DEFUN COVDIFF (E) 
-       (setq d ($idummy)) 
-       (COND
-	((OR (ATOM E) (EQ (CAAR E) 'RAT)) (IDIFF E X))
-	((RPOBJ E)
-	 (SETQ TEMP (MAPCAR #'(LAMBDA (V) (LIST '(MTIMES)
-					       (LIST '($ICHR2 SIMP)
-						     (LIST SMLIST D X)
-						     (LIST SMLIST V))
-					       (CONSUBST D V E)))
-			    (CDADDR E)))  
-	 (SIMPLUS
-	  (CONS
-	   '(MPLUS)
-	   (CONS
-	    (IDIFF E X)
-	    (COND
-	     ((OR (CDADR E) (CDDDR E))
-	      (CONS
-	       (LIST
-		'(MTIMES)
-		-1.
-		(CONS '(MPLUS)
-		      (NCONC (MAPCAR #'(LAMBDA (V) 
-					      (LIST '(MTIMES)
-						    (LIST '($ICHR2 SIMP)
-							  (LIST SMLIST
-								V
-								X)
-							  (LIST SMLIST
-								D))
-						    (COVSUBST D V E)))
-				     (CDADR E))
-			     (MAPCAR #'(LAMBDA (V) 
-					      (LIST '(MTIMES)
-						    (LIST '($ICHR2 SIMP)
-							  (LIST SMLIST
-								V
-								X)
-							  (LIST SMLIST
-								D))
-						    (DERSUBST D V E)))
-				     (CDDDR E)))))
-	       TEMP))
-	     (T TEMP))))
-	  1.
-	  T))
- 	((EQ (CAAR E) 'MTIMES) (SIMPLUS (COVDIFFTIMES (CDR E) X) 1 T))
-	((EQ (CAAR E) 'MPLUS)
-	 (SIMPLIFYA (CONS '(MPLUS)
-			  (MAPCAR 'COVDIFF (CDR E)))
-		    NIL))
-	((EQ (CAAR E) 'MEXPT)
-	 (SIMPTIMES (LIST '(MTIMES)
-			  (CADDR E)
-			  (LIST '(MEXPT)
-				(CADR E)
-				(LIST '(MPLUS) -1. (CADDR E)))
-			  ($COVDIFF (CADR E) X))
-		    1.
-		    NIL))
-	((EQ (CAAR E) 'MEQUAL)
-	 (LIST (CAR E) (COVDIFF (CADR E)) (COVDIFF (CADDR E))))
-	(T 
-	   (MERROR "Not acceptable to COVDIFF: ~M"
-		   (ISHOW E)))))
+(defun diffop ()                ; ichr2 or icc2 depending on iframe_flag
+  (cond
+    (
+      (or $iframe_flag $itorsion_flag)
+      '($icc2 simp)
+    ) 
+    (t '($ichr2 simp))
+  )
+)
 
-(DEFUN COVDIFFTIMES (L X) 
-       (PROG (SP LEFT OUT) 
-	     (SETQ OUT (NCONS '(MPLUS)))
-	LOOP (SETQ SP (CAR L) L (CDR L))
-	     (NCONC OUT
-		    (LIST (SIMPTIMES (CONS '(MTIMES)
-					   (CONS ($COVDIFF SP X)
-						 (APPEND LEFT L)))
-				     1.
-				     T)))
-	     (COND ((NULL L) (RETURN OUT)))
-	     (SETQ LEFT (NCONC LEFT (NCONS SP)))
-	     (GO LOOP))) 
+(declare-top (special x temp d)) 
 
-(DECLARE-TOP (UNSPECIAL R TEMP D)) 
-
+(defmfun $covdiff nargs
+  (prog
+    (x e temp d i)
+    (and (< nargs 2) (merror "COVDIFF must have at least 2 args"))
+    (setq i 2 e (arg 1))
+    again (setq x (arg i) e (covdiff e) i (1+ i))
+    (and (> i nargs) (return e))
+    (go again)
+  )
+)
+
+(defun covdiff (e)                      ; The covariant derivative...
+  (setq d ($idummy))
+  (cond
+    (               ; is the partial derivative for scalars (*** torsion?)
+      (or (atom e) (eq (caar e) 'rat))
+      (idiff e x)
+    )
+    (
+      (rpobj e)
+      (setq temp
+        (mapcar 
+          #'(lambda (v)
+            (list '(mtimes)
+              (list (diffop) (list smlist d x) (list smlist v))
+              (consubst d v e)
+            )
+          )
+          (cdaddr e)
+        )
+      )
+      (simplus
+        (cons
+          '(mplus)
+          (cons
+            (idiff e x)
+              (cond
+                (
+                  (or (cdadr e) (cdddr e))
+                  (cons (list '(mtimes) -1.  (cons '(mplus)
+                    (nconc
+                      (mapcar 
+                        #'(lambda (v) 
+                          (list '(mtimes)
+                              (list
+                                (diffop)
+                                (list smlist v x)
+                                (list smlist d)
+                              )
+                              (covsubst d v e)
+                            )
+                          )
+                          (cdadr e)
+                        )
+                        (mapcar 
+                          #'(lambda (v) 
+                            (list
+                              '(mtimes)
+                              (list 
+                                (diffop)
+                                (list smlist v x)
+                                (list smlist d)
+                              )
+                              (dersubst d v e)
+                            )
+                          )
+                          (cdddr e)
+                        )
+                      )
+                    )
+                  )
+                  temp
+                )
+              )
+              (t temp)
+            )
+          )
+        )
+        1. t
+      )
+    )
+    (
+      (eq (caar e) 'mtimes)     ; (a*b)'
+      (simplus
+        (covdifftimes (cdr e) X)
+        1 T
+      )
+    )
+    (
+      (eq (caar e) 'mplus)      ; (a+b)'=a'+b'
+      (simplifya
+        (cons
+          '(mplus)
+          (mapcar 'covdiff (cdr e))
+        )
+        nil
+      )
+    )
+    (
+      (eq (caar e) 'mexpt)      ; (a^b)'=b*a^(b-1)*a'
+      (simptimes
+        (list
+          '(mtimes)
+          (caddr e)
+          (list
+            '(mexpt)
+            (cadr e)
+            (list '(mplus) -1. (caddr e))
+          )
+          ($covdiff (cadr e) x)
+        )
+        1. nil
+      )
+    )
+    (
+      (eq (caar e) 'mequal)
+      (list (car e) (covdiff (cadr e)) (covdiff (caddr e)))
+    )
+    (t (merror "Not acceptable to COVDIFF: ~M" (ishow e)))
+  )
+)
+
+(defun covdifftimes (l x) 
+  (prog (sp left out) 
+    (setq out (ncons '(mplus)))
+    loop (setq sp (car l) l (cdr l))
+    (nconc out
+      (list
+        (simptimes
+          (cons '(mtimes) (cons ($covdiff sp x) (append left l)))
+          1. t
+        )
+      )
+    )
+    (cond ((null l) (return out)))
+    (setq left (nconc left (ncons sp)))
+    (go loop)
+  )
+) 
+
+(declare-top (unspecial r temp d)) 
+
+(defun vecdiff (v i j d) ;Add frame bracket contribution when iframe_flag:true
+  (cond
+    (
+      $iframe_flag
+      (cons
+        '(mplus simp)
+        (list
+          (list (list v) '((mlist)) (list '(mlist) i) j)
+          (list
+            '(mtimes simp)
+            (list (list v) '((mlist)) (list '(mlist) d))
+            (list
+              '(mtimes simp)
+              -1.
+              (list '(%ifb) (list '(mlist) d j) (list '(mlist) i))
+            )
+          )
+        )
+      )
+    )
+    (t
+      (list (list v) '((mlist)) (list '(mlist) i) j)
+    )
+  )
+)
+
+(defun liediff (v e n)
+  (cond
+    ((not (symbolp v)) (merror "~M is not a symbol" v))
+    (
+      (or (atom e) (eq (caar e) 'rat)) ; Scalar field
+                                       ; v([],[%1])*idiff(e,%1)
+      (let
+        ((dummy (implode (nconc (exploden $idummyx) (exploden n)))))
+        (list
+          '(mtimes) (list (list v) '((mlist)) (list '(mlist) dummy))
+          ($idiff e dummy)
+        )
+      )
+    )
+    (
+      (rpobj e)                        ; Tensor field
+
+;     Dummy implementation for logic tests
+;     (list '(%liediff) v e)
+
+;     Shall the dummy index be in ICOUNTER sequence? Probably yes.
+;     (let ((dummy (implode (nconc (exploden $idummyx) (exploden n)))))
+      (let
+        (
+          (dummy ($idummy))
+          (dummy2
+            (cond
+              ($iframe_flag ($idummy))
+              (t nil)
+            )
+          )
+        )
+        (
+          append
+          (list
+            '(mplus) 0
+            (list
+              '(mtimes)                ; e([...],[...],%1)*v([],[%1])
+              (list (list v) '((mlist)) (list '(mlist) dummy))
+              ($idiff e dummy)
+            )
+          )
+          (maplist
+            #'(lambda (s)              ; e([..%1..],[...])*v([],[%1],k)
+              (list
+                '(mtimes)
+                (append
+                  (list
+                    (car e)
+                    (cons
+                      '(mlist)
+                      (append
+                        (subseq (cdadr e) 0 (- (length (cdadr e)) (length s)))
+                        (cons dummy (cdr s))
+                      )
+                    )
+                    (caddr e)
+                  )
+                  (cdddr e)
+                )
+;                (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
+                (vecdiff v dummy (car s) dummy2)
+              )
+            )
+            (cdadr e)
+          )
+          (maplist
+            #'(lambda (s)              ; +e([...],[...],..%1..)*v([],[%1],k)
+              (list
+                '(mtimes)
+                (append
+                  (list (car e) (cadr e) (caddr e))
+                  (subseq (cdddr e) 0 (- (length (cdddr e)) (length s)))
+                  (cons dummy (cdr s))
+                )
+;                (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
+                (vecdiff v dummy (car s) dummy2)
+              )
+            )
+            (cdddr e)
+          )
+          (maplist
+            #'(lambda (s)             ; -e([...],[..%1..])*v([],[k],%1)
+              (list
+                '(mtimes) -1
+                (append
+                  (list (car e) (cadr e)
+                    (cons
+                      '(mlist)
+                      (append
+                        (subseq (cdaddr e) 0 (- (length (cdaddr e)) (length s)))
+                        (cons dummy (cdr s))
+                      )
+                    )
+                  )
+                  (cdddr e)
+                )
+;                (list (list v) '((mlist)) (list '(mlist) (car s)) dummy)
+                (vecdiff v (car s) dummy dummy2)
+              )
+            )
+            (cdaddr e)
+          )
+        )
+      )
+    )
+    (
+      (eq (caar e) 'mtimes)           ; Leibnitz rule
+                                      ; Lv(cadr e)*(cddr e)+(cadr e)*Lv(cddr e)
+      (list
+        '(mplus)
+        (cons '(mtimes) (cons (liediff v (cadr e) n) (cddr e)))
+        (cons
+          '(mtimes)
+          (list
+            (cadr e)
+            (liediff
+              v
+              (cond ((cdddr e) (cons '(mtimes) (cddr e))) (t (caddr e)))
+              n
+            )
+          )
+        )
+      )
+    )
+    (
+      (eq (caar e) 'mplus)            ; Linearity
+;     We prefer mapcar to iteration, but the recursive code also works
+;     (list
+;       '(mplus)
+;       (liediff v (cadr e) n)
+;       (liediff v (cond ((cdddr e) (cons '(mplus) (cddr e))) (t (caddr e))) n)
+;     )
+      (cons '(mplus) (mapcar #'(lambda (u) (liediff v u n)) (cdr e)))
+    )
+    (t (merror "~M is not a tensorial expression liediff can handle" e))
+  )
+)
+
+(defmfun $liediff (v e) (liediff v e 1))
+
+(defmfun $rediff (x) (meval '(($ev) x $idiff)))
+
+(defmfun $evundiff (x) ($rediff ($undiff x)))
+
+(defmfun $undiff (x) 
+  (cond
+    ((atom x) x)
+    (
+      (rpobj x)
+      (cond
+        (
+          (cdddr x)
+          (nconc
+            (list '(%idiff) (list (car x) (cadr x) (caddr x)))
+            (putinones (cdddr x))
+          )
+        )
+        (t x)
+      )
+    )
+    (t
+      (mysubst0
+        (simplifya (cons (ncons (caar x)) (mapcar '$undiff (cdr x))) t)
+        x
+      )
+    )
+  )
+)
+
+(defun putinones (e) 
+  (cond
+    ((cdr e) (cons (car e) (cons 1. (putinones (cdr e)))))
+    (t (list (car e) 1.))
+  )
+) 
+
+
+
 (DEFMFUN $LORENTZ_GAUGE n
        (cond ((equal n 0) (merror "LORENTZ_GAUGE requires at least one argument"))
 	     ((equal n 1) (lorentz (arg 1) nil))
@@ -419,10 +722,20 @@
 		    (T (ALPHALESSP (ASCII X) Y))))
 	     (T (COND ((NUMBERP Y) (ALPHALESSP X (ASCII Y)))
 		      (T (ALPHALESSP X Y)))))) 
-
-(DECLARE-TOP (SPECIAL CHRISTOFFELS))
 
-(SETQ CHRISTOFFELS '($ICHR2 $ICHR1 %ICHR2 %ICHR1))
+;; Christoffels contains all Christoffel-like symbols: i.e., symbols
+;; that make sense only with certain index patterns. These symbols are
+;; excluded from contractions, because those would produce illegal
+;; index combinations (e.g., ichr1([a,b],[c])). However, special rules
+;; exist to convert a covariant symbol into a mixed symbol and vice
+;; versa; for instance, g^ad*ichr1_bcd will contract to ichr2_bc^a.
+(declare-top (special christoffels christoffels1 christoffels2))
+
+(setq christoffels1 '($ichr1 %ichr1 $icc1 %icc1 $ifc1 %ifc1
+                      $inmc1 %inmc1 $ikt1 %ikt1))
+(setq christoffels2 '($ichr2 %ichr2 $icc2 %icc2 $ifc2 %ifc2
+                      $inmc2 %inmc2 $ikt2 %ikt2))
+(setq christoffels (append christoffels1 christoffels2 '(%ifb $ifb)))
 
 (DEFMFUN $CONTRACT (E)                                 ;Main contraction function
        (COND ((ATOM E) E)
@@ -633,17 +946,22 @@
 ;; when we turn ICHR1 into ICHR2 or vice versa; other index combinations are
 ;; illegal. This code checks if the index pattern is a valid one and replaces
 ;; ICHR1 with ICHR2 or vice versa as appropriate.
-	     (COND ((OR (EQ (CAR CF) '$ICHR1) (EQ (CAR CF) '%ICHR1))
+;;	     (COND ((OR (EQ (CAR CF) '$ICHR1) (EQ (CAR CF) '%ICHR1))
+	     (COND ((member (car CF) christoffels1)
 		      (COND	 ((AND (EQ (LENGTH A) 2) (EQ (LENGTH B) 1))
-				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$ICHR1) '$ICHR2) (T '%ICHR2)) (CDR CF))))
+;;				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$ICHR1) '$ICHR2) (T '%ICHR2)) (CDR CF))))
+				  (SETQ CF (CONS (elt christoffels2 (position (car CF) christoffels1)) (CDR CF))))
 				 ((NOT (AND (EQ (LENGTH A) 3) (EQ (LENGTH B) 0))) (RETURN NIL)))
 		   )
-		   ((OR (EQ (CAR CF) '$ICHR2) (EQ (CAR CF) '%ICHR2))
+;;		   ((OR (EQ (CAR CF) '$ICHR2) (EQ (CAR CF) '%ICHR2))
+		   ((member (car CF) christoffels2)
 		      (COND	 ((AND (EQ (LENGTH A) 3) (EQ (LENGTH B) 0))
-				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$ICHR2) '$ICHR1) (T '%ICHR1)) (CDR CF)))
+;;				  (SETQ CF (CONS (COND ((EQ (CAR CF) '$ICHR2) '$ICHR1) (T '%ICHR1)) (CDR CF)))
+				  (SETQ CF (CONS (elt christoffels1 (position (car CF) christoffels2))  (CDR CF)))
 				 )
 				 ((NOT (AND (EQ (LENGTH A) 2) (EQ (LENGTH B) 1))) (RETURN NIL)))
 		   )
+           ((member (car CF) christoffels) (return nil))
 	     )
 
 	     (SETQ F (MEVAL (LIST CF (CONS SMLIST A) (CONS SMLIST B))))
@@ -659,135 +977,6 @@
 	     (RETURN F)))
 
 
-(defun liediff (v e n)
-  (cond
-    ((not (symbolp v)) (merror "~M is not a symbol" v))
-    ((or (atom e) (eq (caar e) 'rat)) ; Scalar field
-                                      ; v([],[%1])*idiff(e,%1)
-     (let ((dummy (implode (nconc (exploden $idummyx) (exploden n)))))
-      (list '(mtimes)
-            (list (list v) '((mlist)) (list '(mlist) dummy))
-            ($idiff e dummy)
-      )
-     )
-    )
-    ((rpobj e)                        ; Tensor field
-;     Dummy implementation for logic tests
-;     (list '(%liediff) v e)
-;     Shall the dummy index be in ICOUNTER sequence? Probably yes.
-;     (let ((dummy (implode (nconc (exploden $idummyx) (exploden n)))))
-     (let ((dummy ($idummy)))
-      (append
-       (list '(mplus) 0
-             (list '(mtimes)          ; e([...],[...],%1)*v([],[%1])
-                   (list (list v) '((mlist)) (list '(mlist) dummy))
-                   ($idiff e dummy)
-            )
-       )
-       (maplist #'(lambda (s)         ; e([..%1..],[...])*v([],[%1],k)
-         (list '(mtimes)
-               (append (list (car e)
-                             (cons '(mlist)
-                              (append (subseq (cdadr e) 0
-                                       (- (length (cdadr e)) (length s))
-                                      )
-                                      (cons dummy (cdr s))
-                              )
-                             )
-                             (caddr e)
-                       )
-                       (cdddr e)
-               )
-               (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
-         )
-        )
-        (cdadr e)
-       )
-       (maplist #'(lambda (s)         ; +e([...],[...],..%1..)*v([],[%1],k)
-         (list '(mtimes)
-               (append (list (car e)
-                             (cadr e)
-                             (caddr e)
-                       )
-                       (subseq (cdddr e) 0
-                        (- (length (cdddr e)) (length s))
-                       )
-                       (cons dummy (cdr s))
-               )
-               (list (list v) '((mlist)) (list '(mlist) dummy) (car s))
-         )
-        )
-        (cdddr e)
-       )
-       (maplist #'(lambda (s)         ; -e([...],[..%1..])*v([],[k],%1)
-         (list '(mtimes) -1
-               (append (list (car e)
-                             (cadr e)
-                             (cons '(mlist)
-                              (append (subseq (cdaddr e) 0
-                                       (- (length (cdaddr e)) (length s))
-                                      )
-                                      (cons dummy (cdr s))
-                              )
-                             )
-                       )
-                       (cdddr e)
-               )
-               (list (list v) '((mlist)) (list '(mlist) (car s)) dummy)
-         )
-        )
-        (cdaddr e)
-       )
-      )
-     )
-    )
-    ((eq (caar e) 'mtimes)            ; Leibnitz rule
-                                      ; Lv(cadr e)*(cddr e)+(cadr e)*Lv(cddr e)
-     (list '(mplus)
-            (cons '(mtimes) (cons (liediff v (cadr e) n) (cddr e)))
-            (cons '(mtimes)
-              (list (cadr e) (liediff v
-                              (cond ((cdddr e) (cons '(mtimes) (cddr e)))
-                                    (t (caddr e)))
-                              n)))
-     )
-    )
-    ((eq (caar e) 'mplus)             ; Linearity
-;     We prefer mapcar to iteration, but the commented code also works
-;     (list '(mplus) (liediff v (cadr e) n)
-;                    (liediff v (cond ((cdddr e) (cons '(mplus) (cddr e)))
-;                                     (t (caddr e)))
-;                             n)
-;     )
-    (cons '(mplus) (mapcar #'(lambda (u) (liediff v u n)) (cdr e)))
-    )
-    (t (merror "~M is not a tensorial expression liediff can handle" e))
-  )
-)
-
-(defmfun $liediff (v e) (liediff v e 1))
-
-(defmfun $rediff (x) (meval '(($ev) x $idiff)))
-(defmfun $evundiff (x) ($rediff ($undiff x)))
-
-(DEFMFUN $UNDIFF (X) 
-       (COND
-         ((ATOM X) X)
-	     ((RPOBJ X)
-	      (COND ((CDDDR X)
-		     (NCONC (LIST '(%IDIFF)
-				  (LIST (CAR X) (CADR X) (CADDR X)))
-			    (PUTINONES (CDDDR X))))
-		    (T X)))
-	     (T
-	      (MYSUBST0 (SIMPLIFYA (CONS (NCONS (CAAR X))
-					 (MAPCAR '$UNDIFF (CDR X)))
-				   T) X))))
-
-(DEFUN PUTINONES (E) 
-       (COND ((CDR E) (CONS (CAR E) (CONS 1. (PUTINONES (CDR E)))))
-	     (T (LIST (CAR E) 1.)))) 
-
 (DEFMFUN $KDELTA (L1 L2)
        (COND ((NULL (AND ($LISTP L1)
 			 ($LISTP L2)
@@ -1218,14 +1407,35 @@
   )
 )
 
-(defun DIFFRPOBJ (e x)                         ;Derivative of an indexed object
-       (cond ((and (memq (caar e) $COORD) (null (cdadr e))
-		   (equal (length (cdaddr e)) 1) (null (cdddr e)))
-	      (delta (ncons x) (cdaddr e)))
-	     (t (NCONC (LIST (CAR E) (CADR E) (CADDR E))
-		       (COND ((NULL (CDDDR E)) (NCONS X))
-			     (T (itensor-SORT (APPEND (CDDDR E) (NCONS X)))))))))
-
+(defun diffrpobj (e x)                  ;Derivative of an indexed object
+  (cond
+    (               ; Special case: functions declared with coord()
+      (and
+        (memq (caar e) $COORD) (null (cdadr e))
+        (equal (length (cdaddr e)) 1) (null (cdddr e))
+      )
+      (delta (ncons x) (cdaddr e))
+    )
+    (t              ; Everything else
+      (nconc
+        (list (car e) (cadr e) (caddr e))
+        (cond
+          (
+            (null (cdddr e))
+            (ncons x)
+          )
+          (         ; Derivative indices do not commute when frames are used
+            (or $iframe_flag $itorsion_flag)
+            (append (cdddr e) (ncons x))
+          )
+          (t
+            (itensor-sort (append (cdddr e) (ncons x)))
+          )
+        )
+      )
+    )
+  )
+)
 
 
 (DEFMFUN $LC0 (L1) 
@@ -1264,7 +1474,7 @@
 	(CATCH 'MATCH
 	  (COND ((ATOM E) (MATCHERR)))
 	  (COND ((ATOM (CAR E)) (MATCHERR)))
-	  (COND ((NOT (OR (EQ (CAAR E) '$Levi_Civita) (EQ (CAAR E) '%Levi_Civita))) (MATCHERR)))
+	  (COND ((NOT (OR (EQ (CAAR E) '$levi_civita) (EQ (CAAR E) '%levi_civita))) (MATCHERR)))
 	  (COND ((NOT ($LISTP (SETQ L1 (CADR E)))) (MATCHERR)))
 	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L2 (CADDR E)))) (MATCHERR)))
 	  (COND ((CDDDR E) (MATCHERR)))
@@ -1284,7 +1494,7 @@
 	(CATCH 'MATCH
 	  (COND ((ATOM E) (MATCHERR)))
 	  (COND ((ATOM (CAR E)) (MATCHERR)))
-	  (COND ((NOT (OR (EQ (CAAR E) '$Levi_Civita) (EQ (CAAR E) '%Levi_Civita))) (MATCHERR)))
+	  (COND ((NOT (OR (EQ (CAAR E) '$levi_civita) (EQ (CAAR E) '%levi_civita))) (MATCHERR)))
 	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L1 (CADR E)))) (MATCHERR)))
 	  (COND ((NOT ($LISTP (SETQ L2 (CADDR E)))) (MATCHERR)))
 	  (COND ((CDDDR E) (MATCHERR)))
@@ -1663,6 +1873,11 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 
 (defun CONSMLIST (l) (cons smlist l))			;Converts from Lisp list to Macsyma list
 
+;$INDICES2 is similar to $INDICES except that here dummy indices are picked off
+;as they first occur in going from left to right through the product or indexed
+;object. Also, $INDICES2 works only on the top level of a product and will
+;miss indices for products of sums (which is used to advantage by $IC_CONVERT).
+
 (DEFMFUN $INDICES2 (e)
   (cond ((atom e) empty)
 	((not (or (memq (caar e) '(MTIMES MNCTIMES)) (rpobj e)))
@@ -1689,11 +1904,6 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	      (setq a (car e))
 	      (and (rpobj a) (setq l (append l (cdadr a) (cdaddr a)
 					     (cdddr a)))))))))
-
-;$INDICES2 is similar to $INDICES except that here dummy indices are picked off
-;as they first occur in going from left to right through the product or indexed
-;object. Also, $INDICES2 works only on the top level of a product and will
-;miss indices for products of sums (which is used to advantage by $IC_CONVERT).
 
 (DEFMFUN $CHANGENAME (a b e)				;Change the name of the indexed object A to B in E
   (prog (old indspec ncov ncontr)			;INDSPEC is INDex SPECification flag
@@ -1788,3 +1998,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
   )
  )
 )
+
+($load '$ex_calc)
+($load 'lckdt)
+($load 'iframe)

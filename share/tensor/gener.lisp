@@ -296,7 +296,7 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 					(cadr (cdaddr e)) (cadddr e) indexl))
 			  (deriv (cddddr e) (cdr deriv)))
 			 ((null deriv) e)
-			 (setq e (conmetderiv ($diff e (car deriv))
+			 (setq e (conmetderiv ($idiff e (car deriv))
 					      g indexl))))
 		    (t e)))
 	     (t (mysubst0 (cons (car e)

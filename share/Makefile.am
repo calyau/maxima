@@ -504,6 +504,7 @@ tensor/ctensor.mac\
 tensor/ex_calc.dem\
 tensor/ex_calc.mac\
 tensor/gener.lisp\
+tensor/iframe.mac\
 tensor/info-tensor-2.txt\
 tensor/info-tensor.txt\
 tensor/itensor.dem\

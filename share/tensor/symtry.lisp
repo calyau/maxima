@@ -241,7 +241,7 @@
 				      ((lambda (q)
 					       (rename1 q
 						       (NONUMBER (cdaddr
-						        ($indices
+						        ($indices2
 						         (cons '(MTIMES) q))))))
 				       (mapcar 'cdr
 					       (sortcar
