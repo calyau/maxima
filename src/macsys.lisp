@@ -311,9 +311,44 @@
   (throw 'macsyma-quit t))
 
 
-(defmfun $writefile (x) (dribble (subseq (string x) 1))) 
- 
-(defmfun $closefile () (dribble)) 
+(defmfun $writefile (x) (dribble (subseq (string x) 1)))
+(defvar $appendfile nil )
+(defmfun $appendfile (name)
+  (if (and (symbolp name)
+	   (member (getcharn name 1) '(#\& #\$)))
+      (setq name (subseq (symbol-name name) 1)))
+  (if $appendfile (merror "already in appendfile, use closefile first"))
+  (let ((stream  (open name :direction :output
+                                       :if-exists :append
+                                       :if-does-not-exist :create)))
+  (setq *appendfile-data* (list stream *terminal-io* name ))
+  
+  (setq $appendfile (make-two-way-stream
+		     (make-echo-stream *terminal-io* stream)
+		     (make-broadcast-stream *terminal-io* stream))
+	*terminal-io* $appendfile)
+  (multiple-value-bind (sec min hour day month year)
+		       (get-decoded-time)
+		       (format t
+			       "~&/* Starts dribbling to ~A (~d/~d/~d, ~d:~d:~d).*/"
+			       name year month day hour min sec))
+  '$done))
+  
+(defmfun $closefile ()
+  (cond ($appendfile
+	 
+	 (cond ((eq $appendfile *terminal-io*)
+                 (format t "~&/*Finished dribbling to ~A.*/"
+			 (nth 2 *appendfile-data*))
+		(setq *terminal-io* (nth 1 *appendfile-data*))
+		)
+	       (t  (warn "*TERMINAL-IO* was rebound while APPENDFILE is on.~%~
+                   You may miss some dribble output.")))
+	 (close (nth 0 *appendfile-data*))
+	 (setq *appendfile-data* nil $appendfile nil)
+	 
+	 )
+	(t (dribble))))
  
 
 (defmfun $ed (x) (ed (subseq (string x) 1))) 

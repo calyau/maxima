@@ -417,6 +417,18 @@
   (SETQ ^R T)
   NAME))
 
+(DEFMFUN $APPENDFILE (&REST L)
+  (LET ((NAME ($FILENAME_MERGE (FILENAME-FROM-ARG-LIST L)
+			       "MAXOUT"
+			       (FS:USER-HOMEDIR))))
+  (SETQ WRITEFILE-OUTPUT #-cl (OPEN NAME  ':OUT)
+	#+cl (open name :direction :output :if-exists :append
+		   :if-does-not-exist :create
+		   ))
+  (SETQ WRITEFILE-OPERATIONS (SEND WRITEFILE-OUTPUT ':WHICH-OPERATIONS))
+  (SETQ ^R T)
+  NAME))
+
 (DEFUN $CLOSEFILE ()
   (SETQ ^R NIL)
   (CLOSE WRITEFILE-OUTPUT)
