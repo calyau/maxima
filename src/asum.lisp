@@ -108,6 +108,159 @@
   (cond ((atom e) e)
 	((eq (caar e) 'mfactorial)
 	 (list '(%gamma) (list '(mplus) 1 (makegamma1 (cadr e)))))
+	((eq (caar e) '%elliptic_kc)
+	 ;; Complete elliptic integral of the first kind
+	 (cond ((alike1 (cadr e) '((rat simp) 1 2))
+		;; K(1/2) = gamma(1/4)/4/sqrt(pi)
+		'((mtimes simp) ((rat simp) 1 4)
+		  ((mexpt simp) $%pi ((rat simp) -1 2))
+		  ((mexpt simp) ((%gamma simp) ((rat simp) 1 4)) 2)))
+	       ((or (alike1 (cadr e)
+			    '((mtimes simp) ((rat simp) 1 4)
+			      ((mplus simp) 2
+			       ((mexpt simp) 3 ((rat simp) 1 2)))))
+		    (alike1 (cadr e)
+			    '((mplus simp) ((rat simp) 1 2)
+			      ((mtimes simp) ((rat simp) 1 4)
+			       ((mexpt simp) 3 ((rat simp) 1 2)))))
+		    (alike1 (cadr e)
+			    ;; 1/(8-4*sqrt(3))
+			    '((mexpt simp)
+			      ((mplus simp) 8
+			       ((mtimes simp) -4
+				((mexpt simp) 3 ((rat simp) 1 2))))
+			      -1)))
+		    ;; K((2+sqrt(3)/4))
+		    '((mtimes simp) ((rat simp) 1 4)
+		      ((mexpt simp) 3 ((rat simp) 1 4))
+		      ((mexpt simp) $%pi ((rat simp) -1 2))
+		      ((%gamma simp) ((rat simp) 1 6))
+		      ((%gamma simp) ((rat simp) 1 3))))
+		((or (alike1 (cadr e)
+			     ;; (2-sqrt(3))/4
+			     '((mtimes simp) ((rat simp) 1 4)
+			       ((mplus simp) 2
+				((mtimes simp) -1
+				 ((mexpt simp) 3 ((rat simp) 1 2))))))
+		     (alike1 (cadr e)
+			     ;; 1/2-sqrt(3)/4
+			     '((mplus simp) ((rat simp) 1 2)
+			       ((mtimes simp) ((rat simp) -1 4)
+				((mexpt simp) 3 ((rat simp) 1 2)))))
+		     (alike (cadr e)
+			    ;; 1/(4*sqrt(3)+8)
+			    '((mexpt simp)
+			      ((mplus simp) 8
+			       ((mtimes simp) 4
+				((mexpt simp) 3 ((rat simp) 1 2))))
+			      -1)))
+		     ;; K((2-sqrt(3))/4)
+		     '((mtimes simp) ((rat simp) 1 4)
+		       ((mexpt simp) 3 ((rat simp) -1 4))
+		       ((mexpt simp) $%pi ((rat simp) -1 2))
+		       ((%gamma simp) ((rat simp) 1 6))
+		       ((%gamma simp) ((rat simp) 1 3))))
+		 ((or
+		   ;; (3-2*sqrt(2))/(3+2*sqrt(2))
+		   (alike1 (cadr e)
+			   '((mtimes simp)
+			     ((mplus simp) 3 
+			      ((mtimes simp) -2 
+			       ((mexpt simp) 2 ((rat simp) 1 2))))
+			     ((mexpt simp)
+			      ((mplus simp) 3 
+			       ((mtimes simp) 2
+				((mexpt simp) 2 ((rat simp) 1 2)))) -1)))
+		   ;; 17 - 12*sqrt(2)
+		   (alike1 (cadr e)
+			   '((mplus simp) 17 
+			     ((mtimes simp) -12
+			      ((mexpt simp) 2 ((rat simp) 1 2)))))
+		   ;;   (2*SQRT(2) - 3)/(2*SQRT(2) + 3)
+		   (alike1 (cadr e)
+			   '((mtimes simp) -1
+			     ((mplus simp) -3
+			      ((mtimes simp) 2 
+			       ((mexpt simp) 2 ((rat simp) 1 2))))
+			     ((mexpt simp)
+			      ((mplus simp) 3
+			       ((mtimes simp) 2
+				((mexpt simp) 2 ((rat simp) 1 2))))
+			      -1))))
+		  '((mtimes simp) ((rat simp) 1 8)
+		    ((mexpt simp) 2 ((rat simp) -1 2))
+		    ((mplus simp) 1 ((mexpt simp) 2 ((rat simp) 1 2)))
+		    ((mexpt simp) $%pi ((rat simp) -1 2))
+		    ((mexpt simp) ((%gamma simp) ((rat simp) 1 4)) 2)))
+		 (t
+		  ;; Give up
+		  e)))
+	((eq (caar e) '%elliptic_ec)
+	 ;; Complete elliptic integral of the second kind
+	 (cond ((alike1 (cadr e) '((rat simp) 1 2))
+		;; 2*E(1/2) - K(1/2) = 2*%pi^(3/2)*gamma(1/4)^(-2)
+		'((mplus simp)
+		  ((mtimes simp) ((mexpt simp) $%pi ((rat simp) 3 2))
+		   ((mexpt simp) 
+		    ((%gamma simp irreducible) ((rat simp) 1 4)) -2))
+		  ((mtimes simp) ((rat simp) 1 8)
+		   ((mexpt simp) $%pi ((rat simp) -1 2))
+		   ((mexpt simp) ((%gamma simp) ((rat simp) 1 4)) 2))))
+	       ((or (alike1 (cadr e)
+			    '((mtimes simp) ((rat simp) 1 4)
+			      ((mplus simp) 2
+			       ((mtimes simp) -1
+				((mexpt simp) 3 ((rat simp) 1 2))))))
+		    (alike1 (cadr e)
+			    '((mplus simp) ((rat simp) 1 2)
+			      ((mtimes simp) ((rat simp) -1 4)
+			       ((mexpt simp) 3 ((rat simp) 1 2))))))
+		;; E((2-sqrt(3))/4)
+		;;
+		;; %pi/4/sqrt(3) = K*(E-(sqrt(3)+1)/2/sqrt(3)*K)
+		'((mplus simp)
+		  ((mtimes simp) ((mexpt simp) 3 ((rat simp) -1 4))
+		   ((mexpt simp) $%pi ((rat simp) 3 2))
+		   ((mexpt simp) ((%gamma simp) ((rat simp) 1 6)) -1)
+		   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1))
+		  ((mtimes simp) ((rat simp) 1 8)
+		   ((mexpt simp) 3 ((rat simp) -3 4))
+		   ((mexpt simp) $%pi ((rat simp) -1 2))
+		   ((%gamma simp) ((rat simp) 1 6))
+		   ((%gamma simp) ((rat simp) 1 3)))
+		  ((mtimes simp) ((rat simp) 1 8)
+		   ((mexpt simp) 3 ((rat simp) -1 4))
+		   ((mexpt simp) $%pi ((rat simp) -1 2))
+		   ((%gamma simp) ((rat simp) 1 6))
+		   ((%gamma simp) ((rat simp) 1 3)))))
+	       ((or (alike1 (cadr e)
+			    '((mtimes simp) ((rat simp) 1 4)
+			      ((mplus simp) 2
+			       ((mexpt simp) 3 ((rat simp) 1 2)))))
+		    (alike1 (cadr e)
+			    '((mplus simp) ((rat simp) 1 2)
+			      ((mtimes simp) ((rat simp) 1 4)
+			       ((mexpt simp) 3 ((rat simp) 1 2))))))
+		;; E((2+sqrt(3))/4)
+		;;
+		;; %pi*sqrt(3)/4 = K1*(E1-(sqrt(3)-1)/2/sqrt(3)*K1)
+		'((mplus simp)
+		  ((mtimes simp) 3 ((mexpt simp) 3 ((rat simp) -3 4))
+		   ((mexpt simp) $%pi ((rat simp) 3 2))
+		   ((mexpt simp) ((%gamma simp) ((rat simp) 1 6)) -1)
+		   ((mexpt simp) ((%gamma simp) ((rat simp) 1 3)) -1))
+		  ((mtimes simp) ((rat simp) 3 8)
+		   ((mexpt simp) 3 ((rat simp) -3 4))
+		   ((mexpt simp) $%pi ((rat simp) -1 2))
+		   ((%gamma simp) ((rat simp) 1 6))
+		   ((%gamma simp) ((rat simp) 1 3)))
+		  ((mtimes simp) ((rat simp) -1 8)
+		   ((mexpt simp) 3 ((rat simp) -1 4))
+		   ((mexpt simp) $%pi ((rat simp) -1 2))
+		   ((%gamma simp) ((rat simp) 1 6))
+		   ((%gamma simp) ((rat simp) 1 3)))))
+	       (t
+		e)))
 	(t (recur-apply #'makegamma1 e))))
 
 (defmfun simpgfact (x vestigial z)
