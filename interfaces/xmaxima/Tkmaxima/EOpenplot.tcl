@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: eopenplot.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### eopenplot.tcl ######
+###### EOpenplot.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
@@ -137,9 +133,8 @@ proc getDimensions { w name } {
    return " -width $width -height $height"
 }
 
-set ws_openMath(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
-proc insertResult_openplot {w args } { puts "insert=[$w index insert]"  }
 
+proc insertResult_openplot {w args } { puts "insert=[$w index insert]"  }
 
 proc ShowPlotWindow { w name thisRange resultRange desired } {
    if { "[winfo toplevel $w]" != "[winfo toplevel $name]" } {

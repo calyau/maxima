@@ -1,7 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: patchold.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
+#mike Obsolete unused code
 ###### patchold.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #

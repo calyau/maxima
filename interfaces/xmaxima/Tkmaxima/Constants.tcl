@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.5 2002-09-06 02:21:11 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.6 2002-09-06 03:27:59 mikeclarkson Exp $
 #
 
 global ws_openMath
@@ -36,3 +36,15 @@ static unsigned char disc_bits[] = {
     0xde, 0xff, 0xff, 0xff, 0xff, 0xde};}
 }
 
+# from EOctave.tcl
+set ws_openMath(options,octave) {{doinsert 1 "Do an insertion" boolean}}
+
+# from EOpenplot.tcl
+set ws_openMath(options,openplot) {{doinsert 0 "Do an insertion" boolean}}
+
+# from EHref.tcl
+set ws_openMath(options,href) {
+    {src "" "A URL (universal resource locator) such as http://www.ma.utexas.edu/foo.om"}
+    {search "" "A string to search for, to get an initial position"}
+    {searchregexp "" "A regexp to search for, to get an initial position"}
+}

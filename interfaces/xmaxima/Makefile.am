@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.19 2002-09-06 02:21:10 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.20 2002-09-06 03:27:58 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -31,6 +31,10 @@ TKSOURCES = \
 	Tkmaxima/Matrix.tcl \
 	Tkmaxima/Plot3d.tcl \
 	Tkmaxima/NPlot3d.tcl \
+	Tkmaxima/EOctave.tcl \
+	Tkmaxima/EOpenplot.tcl \
+	Tkmaxima/EMaxima.tcl \
+	Tkmaxima/EHref.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl
