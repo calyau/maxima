@@ -64,7 +64,6 @@ calculus/cartan.lisp\
 calculus/fourie.dem\
 calculus/fourie.mac\
 calculus/gendif.mac\
-calculus/gendif.usg\
 calculus/optmiz.dem\
 calculus/optmiz.mac\
 calculus/optmiz.transcript\
@@ -85,7 +84,6 @@ calculus/qual.mac\
 calculus/qual.usg\
 calculus/qualsp.lisp\
 calculus/revert.mac\
-calculus/revert.usg\
 calculus/taylor1.mac\
 combinatorics/comgen.lisp\
 combinatorics/permut.lisp\
@@ -348,7 +346,6 @@ integequations/inteqn.usg\
 integequations/intexs.mac\
 integration/antid.dem\
 integration/antid.mac\
-integration/antid.usg\
 integration/bypart.mac\
 integration/delta.dem\
 integration/delta.mac\
