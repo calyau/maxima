@@ -74,7 +74,8 @@
 (deff getpid (symbol-function
 	      ;; Decide at load time which function to use.
 	      (or (and (memq :unix *features*)
-		       (find-symbol "PROGRAM-ID" "SYS"))
+		       (or (find-symbol "PROCESS-ID" "SYS")
+			   (find-symbol "PROGRAM-ID" "SYS")))
 		  'getpid-from-environment)))
 
 #+cmu
