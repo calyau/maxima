@@ -39,7 +39,9 @@
 	       (:file "dqk15w")
 	       (:file "dqwgts")
 	       (:file "dqwgtc")
-	       (:file "dgtsl")
+	       (:file "dgtsl"
+		      :compiler-options (:array-slicing nil :array-type :array
+							:float-format double-float :package "SLATEC"))
 	       ;;(:file "xerror")
 	       
 	       ;; Core integration routines
@@ -109,23 +111,16 @@
 	       ;; Simplified interface routines
 	       (:file "dqng")
 	       (:file "dqag"
-		      :depends-on ("dqage"
-				   #+nil "xerror"))
+		      :depends-on ("dqage"))
 	       (:file "dqags"
-		      :depends-on ("dqagse"
-				   #+nil "xerror"))
+		      :depends-on ("dqagse"))
 	       (:file "dqagi"
-		      :depends-on ("dqagie"
-				   #+nil "xerror"))
+		      :depends-on ("dqagie"))
 	       (:file "dqawf"
-		      :depends-on ("dqawfe"
-				   #+nil "xerror"))
+		      :depends-on ("dqawfe"))
 	       (:file "dqawo"
-		      :depends-on ("dqawoe"
-				   #+nil "xerror"))
+		      :depends-on ("dqawoe"))
 	       (:file "dqaws"
-		      :depends-on ("dqawse"
-				   #+nil "xerror"))
+		      :depends-on ("dqawse"))
 	       (:file "dqawc"
-		      :depends-on ("dqawce"
-				   #+nil "xerror"))))))
+		      :depends-on ("dqawce"))))))
