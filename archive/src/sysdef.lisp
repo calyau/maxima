@@ -280,7 +280,7 @@
 	  (format t "~%Setting object path default to ~a"
 		  (setf (get :maxima :object-path)
 			(probe-file (object 'clmacs)))))
-	(:load-source version autol max_ext)
+	(:load-source version autol max_ext init_max1)
 	))
 
 
@@ -432,7 +432,7 @@
 		    (format t "~%Setting object path default to ~a"
 			    (setf (get :maxima :object-path)
 				  (probe-file (object 'clmacs)))))
-		  (:load-source version autol max_ext)
+		  (:load-source version autol max_ext init_max1 )
 		  ))
 
 ;(in-package "MAXIMA")

@@ -14,11 +14,8 @@
 
 (in-package "MAXIMA")
 
-(defun user::run ()
-  (IN-PACKAGE "MAXIMA")
-  (CATCH 'TO-LISP (SET-PATHNAMES) (MACSYMA-TOP-LEVEL)))
 
-
+;; define bye so that quit() will work in maxima
 (defun bye () (ext:quit))
 
 

@@ -104,7 +104,10 @@
 	 (return-from complete-prop sym)))
   (sloop for v in-package package 
 	 when (and (get v prop)
-		   (eql (string-match sym v) 0))
+		   (eql #+gcl (string-match sym v)
+                        #-gcl (search (symbol-name sym) (symbol-name v)) 
+			0)
+			)
 	 collect v into all
 	 finally
        
@@ -192,7 +195,7 @@
     (cond ((atom body) (return-from set-full-lineinfo body))
 	  (t (cond ((null *lineinfo-array-internal*)
 		    (setq *lineinfo-array-internal*
-			  (make-array 20 :fill-pointer 0)))
+			  (make-array 20 :fill-pointer 0 :adjustable t)))
 		   (t (setf (fill-pointer *lineinfo-array-internal*) 0)))
 	     (cond ((setq te (get-lineinfo body))
 		    (vector-push (car te) *lineinfo-array-internal*)
@@ -247,6 +250,7 @@
 			      (cons
 			       (make-array (setq l (length all))
 					   :fill-pointer l
+                                           :adjustable t
 					   :initial-contents (nreverse all)
 					   :element-type
                                          ' #. (array-element-type "ab")

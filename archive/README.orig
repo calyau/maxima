@@ -19,7 +19,7 @@ On most common lisp systems, all necessary files are in the src directory.
 Basically one loads the file sysdef.lisp, after having set the directory
 paths in that file, and then does a (make :maxima :compile t).  Before
 dumping it one does (make :maxima ).   See the file src/compile-clisp.lisp
-as an example for doing this in clisp.
+as an example for doing this in clisp.    
 
 BUILDING:
 ========

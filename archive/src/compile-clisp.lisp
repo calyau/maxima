@@ -6,7 +6,27 @@
 
 (defun save-maxima ()
   (make::make :maxima )
-  (savemem "maxima-clisp.mem" :init-function  ))
+  (lisp:gc)
+  (lisp:saveinitmem "maxima-clisp.mem"
+                  :init-function #'user::run)
+)
+
+(in-package "MAXIMA")
+
+(or (fboundp 'commands1.orig)
+  (setf (fdefinition 'commands1.orig) (fdefinition 'sys::commands1)))
+
+;;add the quit maxima for the clisp debugger.
+(defun sys::commands1 ()
+    (append (list "
+Quit to top    :q       Quit to MAXIMA top level"
+                (cons ":q" #'(lambda () (throw 'macsyma-quit nil)))
+          )
+          (commands1.orig)
+)
+)
+
+
 
 ;; compile maxima
 ;(make::make :maxima :compile t)

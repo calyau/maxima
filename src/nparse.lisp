@@ -67,12 +67,12 @@
   #+(OR  NIL) (APPLY #'ERROR #+LISPM NIL #+NIL ':READ-ERROR sSTRING L)
   #-(OR LISPM NIL)
   (progn 
-    (let ((tem (file-position *parse-stream*))
+    (let (tem 
 	  errset
 	  (file "stdin"))
-			    
-      (errset (setq file  (namestring *parse-stream*)))
-
+      (errset
+       (setq tem (file-position *parse-stream*))
+       (setq file  (namestring *parse-stream*)))
       (cond (tem (format t "~%~a:~a:"  file  tem))
 	    (t ;(terpri)
 	       ))
@@ -1868,8 +1868,10 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   (or (dolist (v *stream-alist*)
 	(cond ((eq str (instream-stream v))
 	       (return v))))
+      (let (name errset)
+	(errset (setq name (namestring str)))
       (car (setq *stream-alist*
-		 (cons  (make-instream :stream str) *stream-alist*)))))
+		 (cons  (make-instream :stream str :stream-name name) *stream-alist*))))))
 
 
 
