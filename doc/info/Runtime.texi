@@ -42,17 +42,6 @@ level maxima back again.
 @c end concepts Runtime Environment
 @node Definitions for Runtime Environment,  , INTERRUPTS, Runtime Environment
 @section Definitions for Runtime Environment
-@c @node ALARMCLOCK
-@c @unnumberedsec phony
-@defun ALARMCLOCK (arg1, arg2, arg3)
-will execute the function of no
-arguments whose name is arg3 when the time specified by arg1 and arg2
-elapses.  If arg1 is the atom "TIME" then arg3 will be executed after
-arg2 seconds of real-time has elapsed while if arg1 is the atom
-"RUNTIME" then arg3 will be executed after arg2 milliseconds of cpu
-time. If arg2 is negative then the arg1 timer is shut off.
-
-@end defun
 @c @node ALLOC
 @c @unnumberedsec phony
 @defun ALLOC
@@ -61,17 +50,6 @@ to the "run out of space" question.  It increases allocations
 accordingly.  E.g. If the user knows initially that his problem will
 require much space, he can say ALLOC(4); to allocate the maximum
 amount initially.  See also the DYNAMALLOC switch.
-
-@end defun
-@c @node BUG
-@c @unnumberedsec phony
-@defun BUG ("message")
-similar to mail, sends a message to MACSYMA Mail.
-This may be used for reporting bugs or suspected bugs in MACSYMA.
-Expressions may be included by referring to them, outside double
-quotes, e.g.
-BUG("I am trying to integrate",%o3,"but it asks for more list space.
-What should I do?");
 
 @end defun
 @c @node CLEARSCREEN
