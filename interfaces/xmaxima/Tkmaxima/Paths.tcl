@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.6 2003-02-09 23:06:31 amundson Exp $
+#       $Id: Paths.tcl,v 1.7 2003-11-27 02:39:23 amundson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -301,22 +301,6 @@ proc vMAXSetMaximaCommand {} {
 	# 5.9 maxima takes different arguments
 	eval lappend command  $maxima_opts
 	lappend command -p $lisp -r ":lisp (progn (user::setup PORT)(values))"
-
-	# FIXME: This is gcl specific so -lisp option is bogus
-	if {$maxima_priv(platform) == "windows"} {
-	    # A gruesome hack. Normally, we communicate to the
-	    # maxima image through the maxima shell script, as
-	    # above. If the maxima script is not available,
-	    # as may happen on windows, directly talk to the GCL
-	    # saved image. jfa 04/28/2002
-	    #mike FIXME: this means xmaxima on windows is GCL only
-	
-	    set env(MAXIMA_INT_LISP_PRELOAD)  "$lisp"
-	    set env(MAXIMA_INT_INPUT_STRING)  ":lisp (progn (user::setup PORT)(values));"
-	    lappend command -eval "(run)" -f
-	
-	}
-
     }
 
 
