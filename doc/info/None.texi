@@ -540,3 +540,128 @@ it disregards line length.
 @end defun
 @c END ITEMS CUT FROM Input.texi 20041031
 
+@c BEGIN TEXT RECENTLY (200410) CUT FROM doc/info/Program.texi
+@defun LISPDEBUGMODE ()
+LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG();
+make available to the user debugging features used by systems
+programmers.  These tools are powerful, and although some conventions
+are different from the usual macsyma level it is felt their use is
+very intuitive.  [Some printout may be verbose for slow terminals,
+there are switches for controlling this.]  These commands were
+designed for the user who must debug translated macsyma code, as such
+they are a boon.  See MACDOC;TRDEBG USAGE for more information.
+
+@end defun
+@c END TEXT RECENTLY (200410) CUT FROM doc/info/Program.texi
+
+@c BEGIN TEXT RECENTLY (200410) CUT FROM doc/info/Command.texi
+@defvar LASTTIME
+ - the time to compute the last expression in milliseconds
+presented as a list of "time" and "gctime".
+
+@end defvar
+
+@defun TOBREAK ()
+causes the MACSYMA break which was left by typing
+TOPLEVEL; to be re-entered.  If TOBREAK is given any argument
+whatsoever, then the break will be exited, which is equivalent to
+typing TOBREAK() immediately followed by EXIT;.
+
+@end defun
+
+@defun TOPLEVEL ()
+During a break one may type TOPLEVEL;.  This will cause
+top-level MACSYMA to be entered recursively.  Labels will now be bound
+as usual.  Everything will be identical to the previous top-level
+state except that the computation which was interrupted is saved.  The
+function TOBREAK() will cause the break which was left by typing
+TOPLEVEL; to be re-entered.  If TOBREAK is given any argument
+whatsoever, then the break will be exited, which is equivalent to
+typing TOBREAK() immediately followed by EXIT;.
+
+@end defun
+
+@defvar TTYINTFUN
+ default: [FALSE] - Governs the function which will be run
+whenever the User-interrupt-character is typed.  To use this feature,
+one sets TTYINTFUN (default FALSE meaning feature not in use) to a
+function of no arguments.  Then whenever (e.g.) ^U (control-U) is
+typed, this function is run.  E.g. suppose you have a FOR statement
+loop which increments I, and you want an easy way of checking on the
+value of I while the FOR statement is running.  You can do:
+TTYINTFUN:PRINTI$ PRINTI():=PRINT(I)$ , then whenever you type (e.g.)
+^U you get the check you want.
+
+@end defvar
+
+@defvar TTYINTNUM
+ default: [21] (the ascii value of Control-U (^U), U being
+the 21st letter of the alphabet).  This controls what character
+becomes the User-interrupt-character.  ^U was chosen for it mnemonic
+value.  Most users should not reset TTYINTNUM unless they are already
+using ^U for something else.
+
+@end defvar
+@c END TEXT RECENTLY (200410) CUT FROM doc/info/Command.texi
+
+@c BEGIN TEXT RECENTLY (200410) CUT FROM doc/info/Runtime.texi
+@defun CONTINUE
+ - Control-^ typed while in MACSYMA causes LISP to be
+entered.  The user can now type any LISP S-expression and have it
+evaluated.  Typing (CONTINUE) or ^G (control-G) causes MACSYMA to be
+re-entered.
+
+@end defun
+
+@defun ALARMCLOCK (arg1, arg2, arg3)
+will execute the function of no
+arguments whose name is arg3 when the time specified by arg1 and arg2
+elapses.  If arg1 is the atom "TIME" then arg3 will be executed after
+arg2 seconds of real-time has elapsed while if arg1 is the atom
+"RUNTIME" then arg3 will be executed after arg2 milliseconds of cpu
+time. If arg2 is negative then the arg1 timer is shut off.
+
+@end defun
+
+@defun ALLOC
+ takes any number of arguments which are the same as the replies
+to the "run out of space" question.  It increases allocations
+accordingly.  E.g. If the user knows initially that his problem will
+require much space, he can say ALLOC(4); to allocate the maximum
+amount initially.  See also the DYNAMALLOC switch.
+
+@end defun
+
+@defun BUG ("message")
+similar to mail, sends a message to MACSYMA Mail.
+This may be used for reporting bugs or suspected bugs in MACSYMA.
+Expressions may be included by referring to them, outside double
+quotes, e.g.
+BUG("I am trying to integrate",%o3,"but it asks for more list space.
+What should I do?");
+
+@end defun
+
+@defun DDT ()
+Exits from MACSYMA to the operating system level.  (The same
+as control-Z on ITS, or control-C on Tops-20.)
+
+@end defun
+
+@defun DELFILE (file-specification)
+will delete the file given by the
+file-specification (i.e. firstname, secondname, device, user) from the
+given device.
+
+@end defun
+
+@defun DISKFREE ()
+With no args or an arg of TRUE, will return the total
+number of free blocks of disk space in the system.  With an arg of 0,
+1, or 13, it will return the number of free blocks of diskspace on the
+respective disk pack.  With an arg of SECONDARY or PRIMARY, it will
+return the total number of free blocks of disk space on the secondary
+or primary disk pack respectively.
+
+@end defun
+@c END TEXT RECENTLY (200410) CUT FROM doc/info/Runtime.texi
