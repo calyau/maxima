@@ -1,0 +1,157 @@
+Executive Summary
+=================
+
+Maxima can be simply compiled and installed under MSYS or Cygwin by
+following the instructions in INSTALL. With a few more steps, Maxima
+will create a windows installer executable. The instructions for doing
+so are contained in this file. Note, however, that this process is not
+as polished as the unix-like install process.
+
+In principle, creating a Windows (X)maxima installer executable is a
+straightforward exercise. In order to create the maxima windows
+installer from the maxima tarball distribution, I do the following in
+a msys window:
+-----------------------------
+./configure  --with-wish=wish83 --prefix=c:/msys/1.0/maxinstall
+make
+make install
+make iss
+-----------------------------
+I then run InnoSetup on the generated maxima.iss file. That is all it
+takes.
+
+
+External Requirements
+=====================
+
+1) MSYS+MinGW
+2) GCL
+3) Tcl/SK
+4) Perl
+5) Strict sdk, et. al.
+6) InnoSetup
+
+Detailed Instructions
+=====================
+
+I am posting my notes here in hopes that they will be corrected
+by people who know better. I don't know much about windows (and it
+shows.) Also, I am reconstructing these steps from memory, so I may be
+leaving out steps.
+
+1) Get a working msys+mingw installation from www.mingw.org.
+        a) Follow the links to
+<http://sourceforge.net/project/showfiles.php?group_id=2435>. Get MinGW
+2.0.0-3.exe. I installed it in c:\MinGW
+        b) From the same page, get msys Snapshot 1.0.8. I installed it in
+c:\msys\1.0. The installer should magically find your mingw installation
+and add it to your path.
+
+2) Get a working GCL using either (2a) or (2b):
+
+2a) Get GCL 2.5.0 snapshot binary from
+<http://savannah.gnu.org/projects/gcl/>. Follow the links to
+<ftp://ftp.gnu.org/pub/gnu/gcl/cvs/>. I installed it in c:\gcl.
+
+Edit the paths in the gcl wrapper script (c:\gcl\bin\gcl) to reflect
+the installation directory. Pay careful attention to the format of the
+path descriptions (g:/gclm vs. /g/gclm). If you change the format of
+the paths, you will get strange errors when you try to run
+gcl. Unfortunately, recent binaries (as of Feb 4, 2003) have crashed
+for me during maxima compiles and/or checks.
+
+2b) Get a GCL 2.5.0 tarball. The recent CVS versions of GCL have also
+crashed for me. I am currently using a CVS snapshot from approximately
+January 3, 2003. Follow the cvs instructions at
+<http://savannah.gnu.org/projects/gcl/> to check out GCL. The cvs
+command to check out the version from January 3 is
+
+cvs -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/gcl checkout -D
+"2003-01-03" gcl
+
+I leave getting a cvs checkout on a windows machine as an exercise for
+the reader. Personally, I check it out under Linux, then tar up the
+results and copy them to my windows partition.
+
+Once the gcl sources are available, compile it with
+
+./configure  --prefix=c:/gcl
+make
+make install
+
+For extra portability, I do, instead,
+
+./configure --prefix=c:/gcl
+cs gmp3
+./configure --build=i486-unknown-linux-gnu
+cd ..
+make
+make install
+
+3) Get Tcl/Tk 8.3 from
+<http://members1.chello.nl/~j.nijtmans/mingw.html>. I installed it in
+c:\tcltk.
+
+4) Get and install ActivePerl from <http://www.activestate.com>.
+
+5) Get and install TclKit and Starkit sdx from
+<http://www.equi4.com>. Frankly, I found this step confusing. Although
+Starkit are very simply to use, it took me quite a while to understand
+what needed to be download, installed etc. In the end, I have the
+following files installed in c:\star
+	sdx.bat  sdx.kit  tclkit.exe  tclkitsh.exe
+
+6) Get and install Inno Setup from
+<http://www.jrsoftware.org/isinfo.php>. 
+
+7) Edit your MSYS startup paths in c:\msys\1.0\etc\profile to put gcl,
+tcltk and tclkitsh in your PATH. I did so by adding the following line
+after the initial setting of PATH:
+        export PATH="/c/gcl/bin:/c/tcltk/bin:/c/star:$PATH"
+
+8) You should now be ready to compile and install maxima. configure
+maxima so that it will install in some sort of temporary
+directory. The directory does not need to exist ahead of time.
+
+./configure  --with-wish=wish83 --prefix=c:/msys/1.0/maxinstall
+make
+make check
+make install
+
+The "check" should pass all tests except those listed as known
+failures.
+
+9) The next step depends on the install locations of TCL/TK, sdx,
+tclkit, tclkitsh and gcc. The system for determining these locations
+is not as elegant as autoconf (configure). Instead, the system
+defaults to the directories on my build machine. However, all the
+defaults are override-able on the make command line. If you have all
+the files installed in the (my) default locations, the next step is
+simply
+
+make iss
+
+If, for example, you have sdx installed in d:\other\starkit, you would
+type
+
+make iss SDXDIR=/d/other/starkit
+
+The override-able variables and their defaults are:
+
+TCLKITSH = tclkitsh.exe
+TCLKITDIR = /c/star
+SDXDIR = $(TCLKITDIR)
+TCLTKDIR = /c/tcltk
+TCLTKINCFLAGS = -I $(TCLTKDIR)/include
+TCLTKLINKFLAGS = -L $(TCLTKDIR)/lib
+GCCPREFIX=/mingw
+
+To see how they are used, look in interfaces/xmaxima/win32/Makefile.in
+and Makefile.am in the top level maxima directory.
+
+10) Once "make iss" is complete, run Inno Setup on the maxima.iss
+file. I recommend completely removing the temporary maxima install
+directory (c:/msys/1.0/maxinstall above) before testing the
+installation.
+
+ LocalWords:  iss Tcl mingw gmp linux
