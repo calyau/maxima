@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd `dirname $0` &&
+cd ../share && \
+find . -type f | \
+grep -v CVS | \
+sed 's%\./%%' | \
+sed 's%$%\\%' | \
+grep / | \
+grep -v '~' | \
+sort
+

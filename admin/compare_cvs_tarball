@@ -1,0 +1,9 @@
+#!/bin/sh -x
+cvsdir=$1
+tarballdir=$2
+
+find $cvsdir -type f| grep -v CVS | grep -v cvsignore | sed "s%$cvsdir%%" |\
+grep -v '/archive/' | grep -v '/admin/' | sort > cct-cvs
+
+find $tarballdir -type f| sed "s%$tarballdir%%" |\
+sort > cct-tarball

@@ -10,12 +10,16 @@ mkdir snapshots
 
 # checkout
 cd snapshots
-cvs -z6 -d :pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima 
+cvs -z6 -d cvs.Maxima.sourceforge.net:/cvsroot/maxima co maxima 
 if [ "$?" != "0" ]; then
     echo "cvs checkout failed. Aborting"
     rmdir .
     exit 1
 fi
+
+# change CVS/Root files to anonymous
+echo ':pserver:anonymous@cvs.Maxima.sourceforge.net:/cvsroot/maxima' > Root
+find maxima -name Root -exec cp Root {} \;
 
 # bootstrap
 cd maxima
