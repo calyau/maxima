@@ -563,8 +563,11 @@
       \def\ps{\m@ximapreoutputskip}
       \def\C{\begingroup\color{\maximainputcolor}
         \setupm@ximasessionverbatim\dom@ximatexsessionverbatim}
+      \let\i=\C
       \def\D{\begingroup\color{\maximaoutputcolor}\par\m@ximasessionoutput}
+      \let\o=\D
       \def\E{\begingroup\color{\maximaoutputcolor}\par\m@ximasessioneoutput}
+      \let\t=\E
       \def\DD{\begingroup\color{\maximaoutputcolor}\par\m@ximatexd}
       \def\p{\begingroup\color{\maximaoutputcolor}\setupm@ximasessionverbatim\dom@ximasessionpreprompt}
       \baselineskip=\maximatexsessionbaselineskip
