@@ -58,7 +58,7 @@ documents.
 
 \noindent
 The Emaxima package consists of the files \texttt{maxima.el},
-\texttt{emaxima.el}, \texttt{maxima-symbols.el},
+\texttt{emaxima.el},
 \texttt{maxima-font-lock.el}, \texttt{emaxima.sty} and \texttt{emaxima.lisp}.
 To install, place the \texttt{.el} files, as well as
 \texttt{emaxima.lisp}\footnote{If Emacs cannot find
@@ -185,8 +185,7 @@ Maxima mode has the following completions commands:
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{M-TAB} & Complete the Maxima symbol.\\
-\texttt{C-TAB} & Cycle through completions of the Maxima symbol.\\
+\texttt{M-TAB} & Complete the Maxima symbol.
 \end{tabular}
 
 \smallskip
@@ -259,7 +258,7 @@ Maxima mode has the following completions commands:
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{M-C-h} & Mark the form.\\
+\texttt{M-h} & Mark the form.\\
 \texttt{C-c)} & Check the region for balanced parentheses.\\
 \texttt{C-c C-)} & Check the form for balanced parentheses.
 \end{tabular}
@@ -323,8 +322,10 @@ parentheses.  The following commands are also available.
 
 \begin{tabular}{p{\firstcol}p{\secondcol}}
 \texttt{M-TAB} & Complete the Maxima symbol as much as possible, providing
-     a completion buffer if there is more than one possible completion.\\
-\texttt{C-TAB} & Cycle through possible completions.\\
+     a completion buffer if there is more than one possible
+     completion.
+     (If \texttt{maxima-use-dynamic-complete} is non-nil, then instead
+     this will cycle through possible completions.\\
 \texttt{C-M-TAB} & Complete the input line, based on previous input lines.\\
 \texttt{C-c C-d} & Get help on a Maxima topic.\\
 \texttt{C-c C-m} & Bring up the Maxima info manual.\\
