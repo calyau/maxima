@@ -35,7 +35,7 @@ repeatedly applied, etc.  Only if they all fail on a given
 subexpression is the whole set of rules repeatedly applied to the next
 subexpression.  If one of the rules succeeds, then the same
 subexpression is reprocessed, starting with the first rule.
-@code{maxapplydepth}[10000] is the maximum depth to which @code{apply1} and @code{apply2}
+@code{maxapplydepth} is the maximum depth to which @code{apply1} and @code{apply2}
 will delve.
 
 @end defun
@@ -44,7 +44,7 @@ will delve.
 is similar to @code{apply1} but works from
 the "bottom up" instead of from the "top down".  That is, it processes
 the smallest subexpression of exp, then the next smallest, etc.
-@code{maxapplyheight}[10000] - is the maximum height to which @code{applyb1} will
+@code{maxapplyheight} is the maximum height to which @code{applyb1} will
 reach before giving up.
 
 @end defun
@@ -72,48 +72,93 @@ is not explicitly set by the user with @code{let} or by changing the value of
 
 @end defvar
 
-@defun defmatch (@var{progname}, @var{pattern}, @var{param_1}, ..., @var{param_n})
-creates a function of
-n+1 arguments with the name progname which tests an expression to see
-if it can match a particular pattern.  The pattern is some expression
-containing pattern variables and parameters.  The parms are given
-explicitly as arguments to @code{defmatch} while the pattern variables (if
-supplied) were given implicitly in a previous @code{matchdeclare} function.
-The first argument to the created function progname, is an expression
-to be matched against the "pattern" and the other n arguments are the
-actual variables occurring in the expression which are to take the
-place of dummy variables occurring in the "pattern".  Thus the parms
-in the @code{defmatch} are like the dummy arguments to the @code{subroutine}
-statement in Fortran.  When the function is "called" the actual
-arguments are substituted.  For example:
+@defun defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
+Creates a function @code{@var{progname} (@var{expr}, @var{y_1}, ..., @var{y_n})}
+which tests @var{expr} to see if it matches @var{pattern}.
+
+@var{pattern} is an expression
+containing the pattern variables @var{x_1}, ..., @var{x_n}
+and pattern parameters, if any.
+The pattern variables are given
+explicitly as arguments to @code{defmatch} while the pattern parameters
+are declared by the @code{matchdeclare} function.
+@c DOES matchdeclare HAVE TO GO BEFORE defmatch ?? OR CAN IT GO AFTER ??
+
+The first argument to the created function @var{progname} is an expression
+to be matched against the pattern and the other arguments are the
+actual variables @var{y_1}, ..., @var{y_n}
+in the expression which correspond to
+the dummy variables @var{x_1}, ..., @var{x_n}
+in the pattern.
+
+If the match is successful, @var{progname} returns
+a list of equations whose left sides are the
+pattern variables and pattern parameters, and whose right sides are the expressions
+which the pattern variables and parameters matched.
+The pattern parameters, but not the variables, are assigned the subexpressions they match.
+If the match fails, @var{progname} returns @code{false}.  
+
+Any variables not declared as pattern parameters in @code{matchdeclare} or as
+variables in @code{defmatch} match only themselves.
+
+A pattern which contains no pattern variables or parameters
+returns @code{true} if the match succeeds.
+
+Examples:
 
 @example
-(%i1)  nonzeroandfreeof(x,e):=  if e#0 and freeof(x,e)
-            then true else false$
-(is(e#0 and freeof(x,e)) is an  equivalent function
-definition)
-(%i2)  matchdeclare(a,nonzeroandfreeof(x),b,freeof(x))$
-(%i3)  defmatch(linear,a*x+b,x)$
+(%i1) matchdeclare (a, freeof(x), b, freeof(x))$
+(%i2) defmatch (linearp, a*x + b, x)$
 @end example
 
-@noindent
-    This has caused the function @code{linear (expr, var_1)} to be defined.  It
-tests exp to see if it is of the form A*var1+B where A and B do not
-contain var1 and A is not zero.  @code{defmatch}'ed functions return (if the
-match is successful) a list of equations whose left sides are the
-pattern variables and parms and whose right sides are the expressions
-which the pattern variables and parameters matched.  The pattern
-variables, but not the parameters, are set to the matched expressions.
-If the match fails, the function returns @code{false}.  Thus
-LINEAR(3*Z+(Y+1)*Z+Y**2,Z) would return [B=Y**2, A=Y+4, X=Z].  Any
-variables not declared as pattern variables in @code{matchdeclare} or as
-parameters in @code{defmatch} which occur in pattern will match only
-themselves so that if the third argument to the @code{defmatch} in (%i4) had
+This @code{defmatch} defines the function @code{linearp (expr, y)}, which
+tests @code{expr} to see if it is of the form @code{a*y + b}
+such that @code{a} and @code{b} do not contain @code{y}.
+
+@c HOW HARD WILL MAXIMA TRY TO COLLECT TERMS AND DO OTHER MUNGEING TO FIT THE PATTERN ??
+@example
+(%i3) linearp (3*z + (y+1)*z + y^2, z);
+                         2
+(%o3)              [b = y , a = y + 4, x = z]
+(%i4) a;
+(%o4)                         y + 4
+(%i5) b;
+                                2
+(%o5)                          y
+@end example
+
+If the third argument to the @code{defmatch} in (%i4) had
 been omitted, then @code{linear} would only match expressions linear in X,
 not in any other variable.
-    A pattern which contains no parameters or pattern variables
-returns @code{true} if the match succeeds.
-Do @code{example (defmatch)} for more examples.
+@c SHOW THAT IN AN EXAMPLE
+
+@example
+(%i1) matchdeclare ([a, f], true)$
+(%i2) constinterval (l, h) := constantp (h - l)$
+(%i3) matchdeclare (b, constinterval (a))$
+(%i4) matchdeclare (x, atom)$
+(%i5) (remove (integrate, outative),
+          defmatch (checklimits, 'integrate (f, x, a, b)),
+          declare (integrate, outative))$
+(%i6) 'integrate (sin(t), t, %pi + x, 2*%pi + x);
+                       x + 2 %pi
+                      /
+                      [
+(%o6)                 I          sin(t) dt
+                      ]
+                      /
+                       x + %pi
+(%i7) checklimits (%);
+(%o7)    [b = x + 2 %pi, a = x + %pi, x = t, f = sin(t)]
+(%i8) a;
+(%o8)                        x + %pi
+(%i9) b;
+(%o9)                       x + 2 %pi
+(%i10) f;
+(%o10)                       sin(t)
+(%i11) x;
+(%o11)                          t
+@end example
 
 @end defun
 
