@@ -78,7 +78,7 @@ Copy the \texttt{.el} and \texttt{.lisp} files to the site-lisp directory of you
 On a Redhat Linux system, for example, this would be /usr/share/emacs/site-lisp,
 /usr/local/share/emacs/site-lisp, or some variation thereof.  Copy the \texttt{.sty}
 files to a directory where LaTeX can see them - I've found on Redhat Linux
-/usr/share/texmf/tex/latex/base works fairly well.  Once you have done this,
+/usr/share/texmf/tex/latex/emaxima works fairly well.  Once you have done this,
 run the command mktexlsr.  You should now be almost ready to roll.
 
 The last step is to edit your .emacs file.  In order to use the enhanced terminal
@@ -125,6 +125,220 @@ This can be done automatically everytime a file is put in
 \end{verbatim}
 \noindent
 somewhere in your \texttt{.emacs} file.
+
+
+\subsection{Maxima-mode}
+
+This mode is fairly basic, and is not dependant on LaTeX.  It basically amounts
+to a text editor which allows you to send lines to Maxima.  
+
+For moving around in the code, Maxima mode provides the following
+
+\noindent
+Maxima mode has the following completions commands:
+
+\textbf{Motion}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{M-C-a} & Go to the beginning of the form.\\
+\texttt{M-C-e} & Go to the end of the form.\\
+\texttt{M-C-b} & Go to the beginning of the sexp.\\
+\texttt{M-C-f} & Go to the end of the sexp.
+\end{tabular}
+
+\smallskip
+
+\noindent
+\textbf{Process}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{C-cC-p} & Start a Maxima process.\\
+\texttt{C-cC-r} & Send the region to the Maxima process.\\
+\texttt{C-cC-b} & Send the buffer to the Maxima process.\\
+\texttt{C-cC-c} & Send the line to the Maxima process.\\
+\texttt{C-cC-e} & Send the form to the Maxima process.\\
+\texttt{C-cC-k} & Kill the Maxima process.\\
+\texttt{C-cC-p} & Display the Maxima buffer.
+\end{tabular}
+
+\smallskip
+
+\noindent
+\textbf{Completion}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{M-TAB} & Complete the Maxima symbol.\\
+\texttt{C-TAB} & Cycle through completions of the Maxima symbol.\\
+\end{tabular}
+
+\smallskip
+
+\noindent
+\textbf{Comments}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{C-c ;} & Comment the region.\\
+\texttt{C-c :} & Uncomment the region.\\
+\texttt{M-;} & Insert a short comment.\\
+\texttt{C-c *} & Insert a comment environment.
+\end{tabular}
+
+
+\smallskip
+
+\noindent
+\textbf{Indentation}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{TAB} & Indent line.\\
+\texttt{M-C-q} & Indent form.
+\end{tabular}
+
+
+\smallskip
+
+\noindent
+\textbf{Maxima help}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{C-c C-d}
+%& \texttt{maxima-help}
+& Get help on a (prompted for) subject.\\
+\texttt{C-c C-m}
+%& \texttt{maxima-apropos}
+& Read the manual.\\
+\texttt{C-cC-h} & Get help with the symbol under point.\\
+\texttt{C-cC-a} & Get apropos with the symbol under point.
+\end{tabular}
+
+\smallskip
+
+\noindent
+\textbf{Miscellaneous}
+
+\smallskip
+
+\noindent
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\hline
+\textbf{Key} & \textbf{Description}\\
+\hline
+\texttt{M-C-h} & Mark the form.\\
+\texttt{C-c)} & Check the region for balanced parentheses.\\
+\texttt{C-c C-)} & Check the form for balanced parentheses.
+\end{tabular}
+
+\begin{figure}
+\centering \includegraphics{images/emacsmaximamodeshot} 
+\caption{Maxima-mode} 
+\end{figure}
+
+\noindent
+When something is sent to Maxima, a buffer running an inferior Maxima 
+process will appear.  It can also be made to appear by using the command
+\texttt{C-c C-p}.
+If an argument is given to a command to send information to Maxima,
+the region (buffer, line, form) will first be checked to make sure
+the parentheses are balanced.
+The Maxima process can be killed, after asking for confirmation 
+with \texttt{C-cC-k}.  To kill without confirmation, give \texttt{C-cC-k}
+an argument.
+
+By default, a newline will be indented to the same level as the 
+previous line, with an additional space added for open parentheses.
+A tab will add extra spaces, as determined by the value of the 
+variable \texttt{maxima-indent-amount}.  By default, this is 2.
+The behaviour of newline and indent can be changed by the command 
+\texttt{M-x maxima-change-newline-style}.  The possibilities are:
+\begin{description}
+\item[Basic] A newline will have no indentation, and indentation
+               must be added with tabs.
+\item[Standard]      As above.
+\item[Perhaps smart] Tries to guess an appropriate indentation, based on
+               open parentheses, "do" loops, etc.
+               A newline will re-indent the current line, then indent
+               the new line an appropriate amount.
+\end{description}
+The default can be set by setting the value of the variable 
+\texttt{maxima-newline-style} to either \texttt{'basic}, 
+\texttt{'standard} or \texttt{'perhaps-smart}.
+In all cases, \texttt{M-x maxima-untab} will remove a level of indentation.
+
+\subsection{Enhanced Terminal Mode}
+
+For those just want a better terminal session, you can run a regular terminal
+style session in Emacs.  This gives you everything the 
+terminal interface does, plus syntax highlighting, plus more flexibility when
+editing your commands.  If you already have a copy of Emacs open, you can start
+up the Maxima buffer by typing \verb@ M-x maxima @.  If you do not have Emacs
+running, a shortcut is to start emacs using the following command: \verb@ emacs -f maxima @.  
+
+\begin{figure}
+\centering \includegraphics{images/emacsshot}
+\caption{Enhanced Terminal Mode}
+\end{figure}
+
+In the Maxima process buffer,
+return will check the line for balanced parentheses, and send line as input.
+Control return will send the line as input without checking for balanced
+parentheses.  The following commands are also available.
+
+\smallskip
+
+\begin{tabular}{p{\firstcol}p{\secondcol}}
+\texttt{M-TAB} & Complete the Maxima symbol as much as possible, providing
+     a completion buffer if there is more than one possible completion.\\
+\texttt{C-TAB} & Cycle through possible completions.\\
+\texttt{C-M-TAB} & Complete the input line, based on previous input lines.\\
+\texttt{C-c C-d} & Get help on a Maxima topic.\\
+\texttt{C-c C-m} & Bring up the Maxima info manual.\\
+\texttt{C-cC-k} & Kill the process and the buffer, after asking for
+  confirmation.  To kill without confirmation, give \texttt{C-cC-k} an
+  argument.\\
+\texttt{M-p} & Bring the previous input to the current prompt.\\
+\texttt{M-n} & Bring the next input to the prompt.\\
+\texttt{M-r} & Bring the previous input matching
+  a regular expression to the prompt.\\
+\texttt{M-s} & Bring the next input matching
+  a regular expression to the prompt.
+\end{tabular}
+
 
 \subsection{Emaxima Mode}
 
@@ -946,220 +1160,6 @@ Maxima output in \TeX{} form.
 & Toggle debug of overful boxes.\\
 \end{tabular}
 
-\subsection{Maxima-mode}
-
-There is a second choice for document editing with Emacs and Maxima, which 
-is not dependant on LaTeX.  That is Maxima-mode, which basically amounts
-to a text editor which allows you to send lines to Maxima.  It does not
-have all the abilities of Emaxima, but is somewhat more flexible than interactive
-Maxima use.
-
-For moving around in the code, Maxima mode provides the following
-
-\noindent
-Maxima mode has the following completions commands:
-
-\textbf{Motion}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{M-C-a} & Go to the beginning of the form.\\
-\texttt{M-C-e} & Go to the end of the form.\\
-\texttt{M-C-b} & Go to the beginning of the sexp.\\
-\texttt{M-C-f} & Go to the end of the sexp.
-\end{tabular}
-
-\smallskip
-
-\noindent
-\textbf{Process}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{C-cC-p} & Start a Maxima process.\\
-\texttt{C-cC-r} & Send the region to the Maxima process.\\
-\texttt{C-cC-b} & Send the buffer to the Maxima process.\\
-\texttt{C-cC-c} & Send the line to the Maxima process.\\
-\texttt{C-cC-e} & Send the form to the Maxima process.\\
-\texttt{C-cC-k} & Kill the Maxima process.\\
-\texttt{C-cC-p} & Display the Maxima buffer.
-\end{tabular}
-
-\smallskip
-
-\noindent
-\textbf{Completion}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{M-TAB} & Complete the Maxima symbol.\\
-\texttt{C-TAB} & Cycle through completions of the Maxima symbol.\\
-\end{tabular}
-
-\smallskip
-
-\noindent
-\textbf{Comments}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{C-c ;} & Comment the region.\\
-\texttt{C-c :} & Uncomment the region.\\
-\texttt{M-;} & Insert a short comment.\\
-\texttt{C-c *} & Insert a comment environment.
-\end{tabular}
-
-
-\smallskip
-
-\noindent
-\textbf{Indentation}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{TAB} & Indent line.\\
-\texttt{M-C-q} & Indent form.
-\end{tabular}
-
-
-\smallskip
-
-\noindent
-\textbf{Maxima help}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{C-c C-d}
-%& \texttt{maxima-help}
-& Get help on a (prompted for) subject.\\
-\texttt{C-c C-m}
-%& \texttt{maxima-apropos}
-& Read the manual.\\
-\texttt{C-cC-h} & Get help with the symbol under point.\\
-\texttt{C-cC-a} & Get apropos with the symbol under point.
-\end{tabular}
-
-\smallskip
-
-\noindent
-\textbf{Miscellaneous}
-
-\smallskip
-
-\noindent
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\hline
-\textbf{Key} & \textbf{Description}\\
-\hline
-\texttt{M-C-h} & Mark the form.\\
-\texttt{C-c)} & Check the region for balanced parentheses.\\
-\texttt{C-c C-)} & Check the form for balanced parentheses.
-\end{tabular}
-
-\begin{figure}
-\centering \includegraphics{images/emacsmaximamodeshot} 
-\caption{Maxima-mode} 
-\end{figure}
-
-\noindent
-When something is sent to Maxima, a buffer running an inferior Maxima 
-process will appear.  It can also be made to appear by using the command
-\texttt{C-c C-p}.
-If an argument is given to a command to send information to Maxima,
-the region (buffer, line, form) will first be checked to make sure
-the parentheses are balanced.
-The Maxima process can be killed, after asking for confirmation 
-with \texttt{C-cC-k}.  To kill without confirmation, give \texttt{C-cC-k}
-an argument.
-
-By default, a newline will be indented to the same level as the 
-previous line, with an additional space added for open parentheses.
-A tab will add extra spaces, as determined by the value of the 
-variable \texttt{maxima-indent-amount}.  By default, this is 2.
-The behaviour of newline and indent can be changed by the command 
-\texttt{M-x maxima-change-newline-style}.  The possibilities are:
-\begin{description}
-\item[Basic] A newline will have no indentation, and indentation
-               must be added with tabs.
-\item[Standard]      As above.
-\item[Perhaps smart] Tries to guess an appropriate indentation, based on
-               open parentheses, "do" loops, etc.
-               A newline will re-indent the current line, then indent
-               the new line an appropriate amount.
-\end{description}
-The default can be set by setting the value of the variable 
-\texttt{maxima-newline-style} to either \texttt{'basic}, 
-\texttt{'standard} or \texttt{'perhaps-smart}.
-In all cases, \texttt{M-x maxima-untab} will remove a level of indentation.
-
-\subsection{Enhanced Terminal Mode}
-
-For those just want a better terminal session, you can run a regular terminal
-style session in Emacs.  This gives you everything the 
-terminal interface does, plus syntax highlighting, plus more flexibility when
-editing your commands.  If you already have a copy of Emacs open, you can start
-up the Maxima buffer by typing \verb@ M-x maxima @.  If you do not have Emacs
-running, a shortcut is to start emacs using the following command: \verb@ emacs -f maxima @.  
-
-\begin{figure}
-\centering \includegraphics{images/emacsshot}
-\caption{Interactive Session}
-\end{figure}
-
-In the Maxima process buffer,
-return will check the line for balanced parentheses, and send line as input.
-Control return will send the line as input without checking for balanced
-parentheses.  The following commands are also available.
-
-\smallskip
-
-\begin{tabular}{p{\firstcol}p{\secondcol}}
-\texttt{M-TAB} & Complete the Maxima symbol as much as possible, providing
-     a completion buffer if there is more than one possible completion.\\
-\texttt{C-TAB} & Cycle through possible completions.\\
-\texttt{C-M-TAB} & Complete the input line, based on previous input lines.\\
-\texttt{C-c C-d} & Get help on a Maxima topic.\\
-\texttt{C-c C-m} & Bring up the Maxima info manual.\\
-\texttt{C-cC-k} & Kill the process and the buffer, after asking for
-  confirmation.  To kill without confirmation, give \texttt{C-cC-k} an
-  argument.\\
-\texttt{M-p} & Bring the previous input to the current prompt.\\
-\texttt{M-n} & Bring the next input to the prompt.\\
-\texttt{M-r} & Bring the previous input matching
-  a regular expression to the prompt.\\
-\texttt{M-s} & Bring the next input matching
-  a regular expression to the prompt.
-\end{tabular}
 \section{Xmaxima}
 ~
 
@@ -1287,8 +1287,13 @@ This program takes advantage of the \TeX{} output Maxima can produce
 to format it's output. To launch Maxima inside of \TeX{}macs you go
 up to the menu and select Insert -> sessions -> maxima. Then things
 work like they do in xmaxima or Emacs. This is probably the most visually
-appealing way to run Maxima.
+appealing way to run Maxima.  You can insert a maxima session in TeXmacs by
+selecting Insert->session->maxima from the menu.  From there the interface
+will feel pretty much like a regular terminal.
 
 ~
 
-{\centering \includegraphics{images/texmacs} \par }
+\begin{figure}
+\centering \includegraphics{images/texmacs} 
+\caption{TeXmacs with a Maxima Session} 
+\end{figure}
