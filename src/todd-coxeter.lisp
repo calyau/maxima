@@ -2,7 +2,7 @@
 (use-package "SLOOP")
 
 (defvar $todd_coxeter_state nil)
-(proclaim '(type (vector (t))  $todd_coxeter_state))
+(proclaim '(type (vector t)  $todd_coxeter_state))
 ;;  To turn on debug printing set to T
 (defvar *debug* nil)
 ;;  When *debug* is not nil, this holds the multiplications for
@@ -18,7 +18,7 @@
 (defmacro row1-relations () '(aref $todd_coxeter_state 5))
 (defmacro with-multiply-table (&body body)
   `(let ((nvars (nvars))(multiply-table (multiply-table)))
-    (declare (fixnum nvars) (type (vector (t)) multiply-table))
+    (declare (fixnum nvars) (type (vector t) multiply-table))
     ,@ body)) 
 
 (defmacro  undef (s) `(eql 0 ,s))
