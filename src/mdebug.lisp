@@ -290,6 +290,8 @@
 	  (go top)
 	  )
 	 ((eq ch eof-value) (return-from dbm-read eof-value)))
+   ;; ANSI CL portability bug here.  It's undefined if you do a stream
+   ;; operation and then unread-char.
    (and (eql ch #\?) (setq next (peek-char nil  stream  nil)))
    (unread-char ch stream)
   )
@@ -314,7 +316,7 @@
 				  eof-error-p eof-value)))))))
 	((and (eql #\? ch) (member next '(#\space #\tab)))
 	 (let* ((line (string-trim '(#\space #\tab #\; #\$)
-				   (subseq  (read-line stream eof-error-p eof-value) 2))))
+				   (subseq (read-line stream eof-error-p eof-value) 1))))
 	   `((displayinput) nil (($describe) ,line))))
 	(t (setq *last-dbm-command* nil)
 	     (mread stream eof-value))))
