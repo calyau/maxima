@@ -15,4 +15,5 @@
 	"rtestode.mac" "rtestode_zp.mac"
 	"rtest3.mac" "rtest8.mac" "rtest12.mac" "rexamples.mac"
 	"rtesthyp.mac"
+    "rtestmt19937.mac"
 	))
