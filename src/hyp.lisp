@@ -334,10 +334,46 @@
 	     (mul (factorial order)
 		  (inv (power x order))
 		  (inv (power -1 order))
-		  (lagpol n (add b order) x)))))))
+		  (lagpol order (mul -1 (add b order)) x)))))))
 
 ;; Compute 2F0(-n,-n+1/2;z) and 2F0(-n-1/2,-n;z) in terms of Hermite
 ;; polynomials.
+;;
+;; Ok.  I couldn't find any references giving expressions for this, so
+;; here's a quick derivation.
+;;
+;; 2F0(-n,-n+1/2;z) = sum(pochhammer(-n,k)*pochhammer(-n+1/2,k)*z^k/k!, k, 0, n)
+;;
+;; It's easy to show pochhammer(-n,k) = (-1)^k*n!/(n-k)!
+;; Also, it's straightforward but tedious to show that
+;; pochhammer(-n+1/2,k) = (-1)^k*(2*n)!*(n-k)!/2^(2*k)/n!/(2*n-2*k)!
+;;
+;; Thus,
+;; 2F0 = (2*n)!*sum(z^k/2^(2*k)/k!/(2*n-2*k)!)
+;;
+;; Compare this to the expression for He(2*n,x) (A&S 22.3.11):
+;;
+;; He(2*n,x) = (2*n)! * x^(2*n) * sum((-1)^k*x^(-2*k)/2^k/k!/(2*n-2*k)!)
+;;
+;; Hence,
+;;
+;; 2F0(-n,-n+1/2;z) = y^n * He(2*n,y)
+;;
+;; where y = sqrt(-2/x)
+;;
+;; For 2F0(-n-1/2,-n;z) = sum(pochhammer(-n,k)*pochhammer(-n-1/2,k)*z^k/k!)
+;; we find that
+;;
+;; pochhammer(-n-1/2,k) = pochhammer(-(n+1)+1/2,k)
+;;  = 
+;;
+;; So 2F0 = (2*n+1)!*sum(z^k/z^(2*k)/k!/(2*n+1-2*k)!)
+;;
+;; and finally
+;;
+;; 2F0(-n-1/2,-n;z) = y^(2*n+1) * He(2*n+1,y)
+;;
+;; with y as above.
 (defun interhermpol (n a b x)
   (let ((arg (power (div 2 (mul -1 x)) (inv 2)))
 	(order (cond ((equal a n)
