@@ -1,5 +1,5 @@
 (in-package "MAXIMA")
-(use-package "SLOOP")
+(use-package "CL-SLOOP")
 
 (defvar $todd_coxeter_state nil)
 (proclaim '(type (vector (t))  $todd_coxeter_state))
