@@ -322,7 +322,7 @@ This doesn't include answers to questions.")
 (defun maxima-replace-in-string (from to string)
   (if running-xemacs
       (replace-in-string string from to)
-    (replace-regexp-in-string from to string)))
+    (replace-regexp-in-string from to string nil t)))
 
 (defun maxima-make-temp-name ()
   "Return a unique filename."
