@@ -1,8 +1,8 @@
-;;; Compiled by f2cl version 2.0 beta on 2002/04/25 at 13:18:42
+;;; Compiled by f2cl version 2.0 beta on 2002/04/26 at 12:17:13
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
-;;;           (:array-slicing nil) (:declare-common nil)
+;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
 (in-package "SLATEC")
@@ -11,7 +11,7 @@
 (let ((rttpi 0.39894228040143304) (inlim 80))
   (declare (type f2cl-lib:integer4 inlim) (type double-float rttpi))
   (defun dbesi (x alpha kode n y nz)
-    (declare (type (simple-array double-float (*)) y)
+    (declare (type (array double-float (*)) y)
              (type f2cl-lib:integer4 nz n kode)
              (type double-float alpha x))
     (f2cl-lib:with-array-data (y-%data% y-%offset% y)
@@ -169,16 +169,15 @@
         (multiple-value-bind
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
             (dasyik x fn kode flgik ra arg i1
-             (f2cl-lib:fref temp (is) ((1 3))))
-          (declare (ignore))
+             (f2cl-lib:array-slice temp double-float (is) ((1 3))))
+          (declare (ignore var-7))
           (when var-0 (setf x var-0))
           (when var-1 (setf fn var-1))
           (when var-2 (setf kode var-2))
           (when var-3 (setf flgik var-3))
           (when var-4 (setf ra var-4))
           (when var-5 (setf arg var-5))
-          (when var-6 (setf i1 var-6))
-          (when var-7 (f2cl-lib:fset (f2cl-lib:fref temp (is) ((1 3))) var-7)))
+          (when var-6 (setf i1 var-6)))
         (f2cl-lib:computed-goto (label180 label350 label510) is)
        label230
         (setf gln
