@@ -79,11 +79,16 @@
     )
 
 
-(defun $hgfred
-    (l1 l2 arg &aux ($bestriglim 3) ($radexpand '$all))
-  (prog()
-     (setq var arg par arg)
-     (return (hgfsimp-exec (cdr l1)(cdr l2) arg))))
+;; Main entry point for simplification of hypergeometric functions.
+;;
+;; F(a1,a2,a3,...;b1,b2,b3;z)
+;;
+;; L1 is a (maxima) list of an's, L2 is a (maxima) list of bn's.
+(defun $hgfred (l1 l2 arg )
+  (let (($radexpand '$all)
+	(var arg)
+	(par arg))
+    (hgfsimp-exec (cdr l1) (cdr l2) arg)))
 
 
 (defun hgfsimp-exec
@@ -192,9 +197,10 @@
 		  (gm (add c n))
 		  (lagpol n (sub c 1) var)))))
 
+;; Hermite polynomial
+(defun hermpol (n arg)
+  `(($hermite) ,n ,arg))
 
-(defun hermpol(n arg)
-  (list '(mqapply)(list '($%he array) n) arg))
 
 (defun lagpol(n a arg)
   (list '(mqapply)(list '($%l array) n a) arg))
@@ -264,7 +270,7 @@
   (list '(mqapply) (list '($%p array) n) x))
 
 (defun tchebypol (n x)
-  (list '(mqapply) (list '($%t array) n) x))
+  `(($chebyshev_t) ,n ,x))
 
 (defun create-any-poly
     (l1 l2 n)
@@ -323,9 +329,24 @@
 
 
 	    
+;; Computes 
+;;
+;; bessel_i(a-1,2*sqrt(x))*gamma(a)*x^((1-a)/2)
+;;
+;; if x > 0
+;;
+;; or
+;;
+;; bessel_j(a-1,2*sqrt(x))*gamma(a)*x^((1-a)/2)
+;;
+;; if x < 0.
+;;
+;; If a is half of an odd integer and small enough, the Bessel
+;; functions are expanded in terms of trig or hyperbolic functions.
 
 (defun bestrig (a x)
   (prog (n res)
+     ;; gamma(a)*x^((1-a)/2)
      (setq res (mul (gm a) (power x (div (sub 1 a) 2))))
      (cond ((and (maxima-integerp (add a a))
 		 (numberp (setq n (sub a (inv 2))))
@@ -343,18 +364,15 @@
 			 (bes (sub a 1) (setq x (mul -1 x)) 'j)))))
      (return (mul res (bes (sub a 1) x 'i)))))
 	    
-	    
-
 (defun bes (a x flg)
-  (list '(mqapply)
-	(list (cond ((eq flg 'j) '($%j array))
-		    (t '($%ibes array)))
-	      a)
-	(mul 2 (power x (inv 2)))))
+  (let ((fun (if (eq flg 'j) '%bessel_j '%bessel_i)))
+    `((,fun) ,a ,(mul 2 (power x (inv 2))))))
 
 
+;; Compute bessel_j(n+1/2,z) in terms of trig functions.
 (defun besredtrig (n z)
-  (cond ((minusp n)(trigredminus (mul -1 (add1 n)) z))
+  (cond ((minusp n)
+	 (trigredminus (mul -1 (add1 n)) z))
 	(t (trigredplus n z))))
 
 (defun trigredplus (n z)
@@ -508,27 +526,35 @@
      (cond ((and (equal a 1)
 		 (equal b 1)
 		 (equal c 2))
+	    ;; F(1,1;2;z), A&S 15.1.3
 	    (return (mul (inv (mul -1 var))
-			 ($log (add 1 (mul -1 var)))))))
+			 (mlog (add 1 (mul -1 var)))))))
      (cond ((or (equal c  (div 3 2))
 		(equal c  (div 1 2)))
+	    ;; F(a,b; 3/2; z) or F(a,b;1/2;z)
 	    (cond ((setq lgf (trig-log (list a b) (list c)))
 		   (return lgf)))))
 	    
      (cond ((or
 	     (equal (sub a b) (div 1 2))
 	     (equal (sub b a) (div 1 2)))
+	    ;; F(a,b;c;z) where |a-b|=1/2 
 	    (cond ((setq lgf (hyp-cos a b c))(return lgf)))))
      (cond ((and (maxima-integerp a)
 		 (maxima-integerp b) (maxima-integerp c))
+	    ;; F(a,b;c;z) when a, b, c are integers.
 	    (return (simpr2f1 (list a b) (list c)))))
      (cond ((and (maxima-integerp (add c (inv 2)))
 		 (maxima-integerp (add a b)))
+	    ;; F(a,b;c;z) where a+b is an integer and c+1/2 is an
+	    ;; integer.
 	    (return (step4 a b c))))
      (cond ((maxima-integerp (add (sub a b) (inv 2)))
+	    ;; F(a,b;c,z) where a-b+1/2 is an integer
 	    (cond ((setq lgf (step7 a b c))
 		   (return lgf)))))
-     (cond ((setq lgf (legfun a b c))(return lgf)))
+     (cond ((setq lgf (legfun a b c))
+	    (return lgf)))
      (print 'simp2f1-will-continue-in)
      (return  (fpqform l1 l2 var))))
 
@@ -682,7 +708,7 @@
 		       ($diff  (mul (power (sub 1 'psey) (+ m l))
 				    ($diff (mul (power  'psey  -1)
 						-1
-						($log (sub 1 'psey)))
+						(mlog (sub 1 'psey)))
 					   'psey
 					   l))
 			       'psey
@@ -975,14 +1001,13 @@
 		  (legen n m (div (sub 2 var) var) '$q)))))
 
 
-(defun legen
-    (n m x pq)
-  (list '(mqapply)
-	(list (cond ((eq pq '$q) '($%q array))
-		    (t '($%p array)))
-	      n
-	      m)
-	x))
+(defun legen (n m x pq)
+  (cond ((and (equal m 0)
+	      (eq ($askinteger n) '$yes))
+	 `((,(if (eq pq '$q) '$legendre_q '$legendre_p)) ,n ,x))
+	(t
+	 `((,(if (eq pq '$q) '$assoc_legendre_q '$assoc_legendre_p))
+	    ,n ,m ,x))))
 
 
 (defun legpol
@@ -1061,89 +1086,146 @@
 
 
 
-(defun trig-log
-    (l1 l2)
+(defun trig-log (l1 l2)
   (cond ((equal (simplifya (car l2) nil) '((rat simp) 3 2))
+	 ;; c = 3/2
 	 (trig-log-3 l1 l2))
 	((equal (simplifya (car l2) nil) '((rat simp) 1 2))
+	 ;; c = 1/2
 	 (trig-log-1 l1 l2))
 	(t nil)))
 
 
-(defun trig-log-3
-    (l1 l2)
+(defun trig-log-3 (l1 l2)
   (cond ((and (or (equal (car l1) 1) (equal (cadr l1) 1))
 	      (or (equal (car l1) (div 1 2))
 		  (equal (cadr l1) (div 1 2))))
+	 ;; (a = 1 or b = 1) and (a = 1/2 or b = 1/2)
 	 (trig-log-3-exec l1 l2))
 	((and (equal (car l1) (cadr l1))
 	      (or (equal 1 (car l1))
 		  (equal (div 1 2) (car l1))))
+	 ;; a = b and (a = 1 or a = 1/2)
 	 (trig-log-3a-exec l1 l2))
-	((or(equal (add (car l1) (cadr l1)) 1)
-	    (equal (add (car l1) (cadr l1)) 2))
+	((or (equal (add (car l1) (cadr l1)) 1)
+	     (equal (add (car l1) (cadr l1)) 2))
+	 ;; a + b = 1 or a + b = 2
 	 (trig-sin l1 l2))
 	((or (equal (sub (car l1) (cadr l1)) (div 1 2))
 	     (equal (sub (cadr l1) (car l1)) (div 1 2)))
+	 ;; a - b = 1/2 or b - a = 1/2
 	 (trig-3 l1 l2))
 	(t nil)))
 
-(defun trig-3
-    (l1 l2)
-  (prog (a z)
-     (return (mul (inv (setq z (power var (div 1 2))))
-		  (inv 2)
-		  (inv (setq a
-			     (sub 1
-				  (sub (add (car l1)
-					    (cadr l1))
-				       (div 1 2)))))
-		  (sub (power (add 1 z) a)
-		       (power (sub 1 z) a))))))
-(defun trig-sin
-    (l1 l2)
+(defun trig-3 (l1 l2)
+  ;; A&S 15.1.10
+  ;;
+  ;; F(a,a+1/2,3/2,z^2) =
+  ;; ((1+z)^(1-2*a) - (1-z)^(1-2*a))/2/z/(1-2*a)
+  
+  (let ((a (sub 1
+		(sub (add (car l1)
+			  (cadr l1))
+		     (div 1 2))))
+	(z (power var (div 1 2))))
+    (mul (inv z)
+	 (inv 2)
+	 (inv a)
+	 (sub (power (add 1 z) a)
+	      (power (sub 1 z) a)))))
+
+(defun trig-sin (l1 l2)
+  ;; A&S 15.1.15, 15.1.16
   (prog (a1 z1 a b c)
      (setq a (car l1) b (cadr l1) c (car l2))
      (cond ((equal (add a b) 1)
+	    ;; A&S 15.1.15
+	    ;;
+	    ;; F(a,1-a;3/2;sin(z)^2) =
+	    ;;
+	    ;; sin((2*a-1)*z)/(2*a-1)/sin(z)
 	    (return (mul (inv (mul (mul -1 (sub a b))
-				   ($sin ($asin ($sqrt var)))))
-			 ($sin (mul (mul -1
+				   (msin (masin (msqrt var)))))
+			 (msin (mul (mul -1
 					 (sub a b))
-				    ($asin ($sqrt var)))))))
-	   ((eq (add a b) 2)
-	    (return (mul ($sin (mul (setq z1
-					  ($asin ($sqrt
+				    (masin (msqrt var)))))))
+	   ((equal (add a b) 2)
+	    ;; A&S 15.1.16
+	    ;;
+	    ;; F(a, 2-a; 3/2; sin(z)^2) =
+	    ;;
+	    ;; sin((2*a-2)*z)/(a-1)/sin(2*z)
+	    (return (mul (msin (mul (setq z1
+					  (masin (msqrt
 						  var)))
 				    (setq a1
 					  (mul -1
 					       (sub a
 						    b)))))
 			 (inv (mul a1
-				   ($sin z1)
-				   ($cos z1)))))))
+				   (msin z1)
+				   (mcos z1)))))))
      (return nil)))
 
 ;;Generates atan if arg positive else log
-(defun trig-log-3-exec
-    (l1 l2)
-  (prog (z)
-     (cond ((equal (checksigntm var) '$positive)
-	    (return (mul (power (setq z
-				      (power var
-					     (div 1
-						  2)))
-				-1)
-			 (inv 2)
-			 ($log (div (add 1 z)
-				    (sub 1 z))))))
-	   ((equal (checksigntm var) '$negative)
-	    (return (mul (power (setq z
-				      (power (mul -1
-						  var)
-					     (div 1
-						  2)))
-				-1)
-			 ($atan z)))))))
+(defun trig-log-3-exec (l1 l2)
+  ;; See A&S 15.1.4 and 15.1.5
+  ;;
+  ;; F(a,b;3/2;z) where a = 1/2 and b = 1 (or vice versa).
+  (cond ((equal (checksigntm var) '$positive)
+	 ;; A&S 15.1.4
+	 ;;
+	 ;; F(1/2,1;3/2,z^2) =
+	 ;;
+	 ;; log((1+z)/(1-z))/z/2
+	 (let ((z (power var (div 1 2))))
+	   (mul (power z -1)
+		(inv 2)
+		(mlog (div (add 1 z)
+			   (sub 1 z))))))
+	((equal (checksigntm var) '$negative)
+	 ;; A&S 15.1.5
+	 ;;
+	 ;; F(1/2,1;3/2,z^2) =
+	 ;; atan(z)/z
+	 (let ((z (power (mul -1 var)
+			 (div 1 2))))
+	   (mul (power z -1)
+		(matan z))))))
+
+(defun trig-log-3a-exec (l1 l2)
+  ;; See A&S 15.1.6 and 15.1.7
+  ;;
+  ;; F(a,b;3/2,z) where a = b and a = 1/2 or a = 1.
+  (destructuring-bind (a b)
+      l1
+    (cond ((equal (checksigntm var) '$positive)
+	   ;; A&S 15.1.6
+	   ;;
+	   ;; F(1/2,1/2; 3/2; z^2) = sqrt(1-z^2)*F(1,1;3/2;z^2) =
+	   ;; asin(z)/z
+	   (let ((z (power var (div 1 2))))
+	     (if (equal a 1)
+		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2)) l2)
+		      (power (sub 1 (power z 2)) (div 1 2)))
+		 (div (masin z) z))))
+	  ((equal (checksigntm var) '$negative)
+	   ;; A&S 15.1.7
+	   ;;
+	   ;; F(1/2,1/2; 3/2; -z^2) = sqrt(1+z^2)*F(1,1,3/2; -z^2) =
+	   ;;log(z + sqrt(1+z^2))/z
+	   (let* ((z (power (mul -1 var)
+			    (div 1 2)))
+		  (1+z^2 (add 1 (power z 2))))
+	     (if (equal a 1)
+		 (div (trig-log-3a-exec (list (div 1 2) (div 1 2))
+					l2)
+		      (power 1+z^2
+			     (div 1 2)))
+		 (div (mlog (add z (power 1+z^2
+					  (div 1 2))))
+		      z)))))))
+
 
 ;;(defun trig-log-1
 ;;       (l1 l2)
@@ -1198,9 +1280,12 @@
   (let (x z $exponentialize) ;; 15.1.17, 11, 18, 12, 9, and 19
     (setq a (car l1) b (cadr l1))
     (cond ((=0 (m+t a b))
+	   ;; F(-a,a;1/2,z)
 	   (cond ((equal (checksigntm var) '$positive)
+		  ;; A&S 15.1.17
 		  (mcos (m*t 2. a (masin (msqrt var)))))
 		 ((equal (checksigntm var) '$negative)
+		  ;; A&X 15.1.11
 		  (m*t 1//2
 		       (m+t (m^t (m+t (setq x (msqrt (m-t 1. var)))
 				      (setq z (msqrt (m-t var))))
@@ -1208,22 +1293,28 @@
 			    (m^t (m-t x z) b))))
 		 (t ())))
 	  ((equal (m+t a b) 1.)
+	   ;; F(a,1-a;1/2,z)
 	   (cond ((equal (checksigntm var) '$positive)
+		  ;; A&S 15.1.18
 		  (m//t (mcos (m*t (m-t a b) (setq z (masin (msqrt var)))))
 			(mcos z)))
 		 ((equal (checksigntm var) '$negative)
+		  ;; A&S 15.1.12
 		  (m*t 1//2 (m//t (setq x (msqrt (m-t 1. var))))
 		       (m+t (m^t (m+t x (setq z (msqrt (m-t var))))
 				 (setq b (m-t a b)))
 			    (m^t (m-t x z) b))))
 		 (t ())))
 	  ((=1//2 (hyp-mabs (m-t b a)))
+	   ;; F(a, a+1/2; 1/2; z)
 	   (cond ((equal (checksigntm var) '$positive)
+		  ;; A&S 15.1.9
 		  (m*t 1//2
 		       (m+t (m^t (m1+t (setq z (msqrt var)))
 				 (setq b (m-t 1//2 (m+t a b))))
 			    (m^t (m-t 1. z) b))))
 		 ((equal (checksigntm var) '$negative)
+		  ;; A&S 15.1.19
 		  (m*t (m^t (mcos (setq z (matan (msqrt (m-t var)))))
 			    (setq b (m+t a b -1//2)))
 		       (mcos (m*t b z))))
@@ -1359,12 +1450,24 @@
 
 (defun haspar(exp)(cond ((freepar exp) nil)(t t)))
 
-(defun confl
-    (l1 l2 var)
-  (prog(a c a-c k m z)
-     (setq a (car l1) c (car l2))
+;; Confluent hypergeometric function.
+;;
+;; F(a;c;z)
+(defun confl (l1 l2 var)
+  (prog (a c a-c k m z)
+     (setq a (car l1)
+	   c (car l2))
      (cond ((equal c (add a a))
-
+	    ;; F(a;2a;z)
+	    ;; A&S 13.6.6
+	    ;;
+	    ;; F(n+1;2*n+1;2*z) =
+	    ;; gamma(3/2+n)*exp(z)*(z/2)^(-n-1/2)*bessel_i(n+1/2,z).
+	    ;;
+	    ;; So
+	    ;;
+	    ;; F(n,2*n,z) =
+	    ;; gamma(n+1/2)*exp(z/2)*(z/4)^(-n-3/2)*bessel_i(n-1/2,z/2);
 	    (return (mul (power '$%e (setq z (div var 2)))
 			 (bestrig (add a (inv 2))
 				  (div (mul z z) 4))))))
@@ -1372,10 +1475,12 @@
 		
      (cond ((not (maxima-integerp (setq a-c (sub a c))))
 	    (go kumcheck)))
-     (cond ((minusp a-c)(return (erfgammared a c var))))
+     (cond ((minusp a-c)
+	    (return (erfgammared a c var))))
      (return (kummer l1 l2))
      kumcheck
-     (cond ((maxima-integerp a)(return (kummer l1 l2))))
+     (cond ((maxima-integerp a)
+	    (return (kummer l1 l2))))
      (setq m
 	   (div (sub c 1) 2)
 	   k
@@ -1383,6 +1488,7 @@
      (return (mul (power var (mul -1 (add (inv 2) m)))
 		  (power '$%e (div var 2))
 		  (whitfun k m var)))))
+
 (defun hyprederf
     (x)
   (prog()
@@ -1391,10 +1497,12 @@
 		  (inv 2)
 		  (inv x)
 		  (list '(%erf) x)))))
-(defun erfgammared
-    (a c z)
-  (cond ((and (nump a)(nump c))(erfgamnumred a c z))
+
+(defun erfgammared (a c z)
+  (cond ((and (nump a)(nump c))
+	 (erfgamnumred a c z))
 	(t (gammareds a c z))))
+
 (defun gammareds
     (a c z)
   (prog(m numprod result count atemp)
@@ -1441,19 +1549,21 @@
     (a m)
   (cond ((eq m 2) (mul a (add a 1)))
 	(t (mul (add a (sub1 m))(prod a (sub1 m))))))
-(defun erfgamnumred
-    (a c z)
-  (cond ((maxima-integerp (sub c (inv 2)))(erfred a c z))
+
+(defun erfgamnumred (a c z)
+  (cond ((maxima-integerp (sub c (inv 2)))
+	 (erfred a c z))
 	(t (gammareds a c z))))
-(defun erfred
-    (a c z)
-  (prog(n m)
-     (setq n (sub a (inv 2)) m (sub c (div 3 2)))
-     (cond ((not (or (greaterp n m)(minusp n)))
+
+(defun erfred (a c z)
+  (prog (n m)
+     (setq n (sub a (inv 2))
+	   m (sub c (div 3 2)))
+     (cond ((not (or (greaterp n m) (minusp n)))
 	    (return (thno33 n m z))))
-     (cond ((and (minusp n)(minusp m))
-	    (return (thno35 (mul -1 n)(mul -1 m) z))))
-     (cond ((and (minusp n)(plusp m))
+     (cond ((and (minusp n) (minusp m))
+	    (return (thno35 (mul -1 n) (mul -1 m) z))))
+     (cond ((and (minusp n) (plusp m))
 	    (return (thno34 (mul -1 n) m z))))
      (return (gammareds (add n (inv 2))
 			(add m (div 3 2))
