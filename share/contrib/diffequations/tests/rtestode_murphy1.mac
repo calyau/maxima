@@ -674,8 +674,11 @@ map(exp,-%);
 cos(y)=%e^-%c*cos(x);
 subst(%c,%e^-%c,%); /* Change to form of the constant */
 cos(y)=%c*cos(x);   /* This is correct */
-method;
-separable;
+solve(%,y);
+[y = acos(%c*cos(x))];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[separable, 0];
+
 
 /* 121 */
 (pn_(121),ans:contrib_ode(eqn:'diff(y,x)+tan(x)*cot(y)=0,y,x));
@@ -688,14 +691,20 @@ map(exp,%);
 cos(y)=%e^%c/cos(x);
 subst(%c,%e^%c,%); /* Change to form of the constant */
 cos(y)=%c/cos(x);  /* This is correct */
+solve(%,y);
+[y = acos(%c/cos(x))];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[separable,0];
 
 /* 122 */
 (pn_(122),ans:contrib_ode(eqn:'diff(y,x)+sin(2*x)*csc(2*y)=0,y,x));
 [cos(2*y)/2=%c-cos(2*x)/2];
 (ans:expand(2*ans[1]),ans:subst(%c,2*%c,ans));
 cos(2*y)=%c-cos(2*x); /* This is correct */
-method;
-separable;
+solve(%,y);
+[y = -(acos(cos(2*x)-%c)-%pi)/2];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[separable,0];
 
 /* 123 */
 (pn_(123),ans:contrib_ode(eqn:'diff(y,x)=tan(x)*(tan(y)+sec(x)*sec(y)),y,x));
@@ -1239,7 +1248,9 @@ map(log,%/%c);
 log(x/%c) = asinh(y/x);
 solve(%,y);   
 [y = x*sinh(log(x/%c))];
-[method,trigsimp(ode_check(eqn,%))];
+ode_check(eqn,%[1]);
+x*cosh(log(x/%c))-sqrt(x^2*sinh(log(x/%c))^2+x^2);
+[method,trigsimp(%)];
 [genhom,0];
 forget(x>0);
 [x > 0];
@@ -1284,11 +1295,21 @@ forget(x>0,y>0);
 assume(b>0);
 [b>0];
 (pn_(201),ans:contrib_ode(eqn:x*'diff(y,x)=y+a*sqrt(y^2+b*x^2),y,x));
-[x=%c*%e^(x*asinh(y/(sqrt(b)*x))/(a*abs(x)))]; /* CHECKME */
-method;
-genhom;
-forget(b>0);
-[b>0];
+[x=%c*%e^(x*asinh(y/(sqrt(b)*x))/(a*abs(x)))];
+assume(x>0);
+[x>0];
+ratsimp(ans[1]);
+x = %c*%e^(asinh(y/(sqrt(b)*x))/a);
+map(log,%/%c);
+log(x/%c) = asinh(y/(sqrt(b)*x))/a;
+map(sinh,a*%);
+sinh(a*log(x/%c)) = y/(sqrt(b)*x);
+solve(%,y);
+[y = sqrt(b)*x*sinh(a*log(x/%c))];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[genhom,0];
+forget(b>0,x>0);
+[b>0,x>0];
 
 /* 240 riccati */
 
