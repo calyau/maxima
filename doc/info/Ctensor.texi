@@ -19,7 +19,7 @@ this.
 with other object definitions **.
 Next, the user enters the metric either directly or from a file by
 specifying its ordinal position. As an example of a file of common
-metrics, see TENSOR;METRIC FILE. The metric is stored in the matrix
+metrics, see @code{share/tensor/metrics.mac}. The metric is stored in the matrix
 LG. Finally, the metric inverse is computed and stored in the matrix
 UG. One has the option of carrying out all calculations in a power
 series.
@@ -227,7 +227,7 @@ renamed to TTRANSFORM.
 A function in the CTENSR (Component Tensor Manipulation)
 package which automatically loads the CTENSR package from within
 MACSYMA (if it is not already loaded) and then prompts the user to
-make use of it.  Do DESCRIBE(CTENSR); for more details.
+make use of it.  See CTENSOR (nota bene, not CTENSR) for more details.
 
 @end defun
 @c @node TTRANSFORM
