@@ -14,17 +14,15 @@
 			(setq $d2 (cons $d2  (cdr e))) )
 	    (setq var (car lvar))
 	    (cond ((and
-		     (CONSP VAR)
-		     (CONSP (CAR VAR))
-		     (equal (caar var) 'mexpt)
-	     		(equal (cadr var) '$%e)
-			(equal (caaaddr var) 'mtimes)
-			(equal (cadaddr var) '$%i))
-		     (setq $lexp (cons var $lexp))
-		     (setq var  (concat "$_" (car lg)))
-		     (setq $lg (cons var $lg))
-		     (rplaca lvar var)
-		     ))))
+		    (mexptp var)
+		    (equal (cadr var) '$%e)
+		    (mtimesp (caddr var))
+		    (eq (cadr (caddr var)) '$%i)) 
+		   (setq $lexp (cons var $lexp))
+		   (setq var  (concat "$_" (car lg)))
+		   (setq $lg (cons var $lg))
+		   (rplaca lvar var)
+		   ))))
 
 #$trigrat(exp):=	block([e,n,d,lg,f,lexp,ls,d2,l2,alg,gcd1],
 		declare(d2,special,lg,special,lexp,special),
