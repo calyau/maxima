@@ -229,16 +229,41 @@ period.  Thus the default is to give one period.
 @end defvar
 
 @defun divsum (n, k)
-adds up all the factors of n raised to the kth power.  If
-only one argument is given then k is assumed to be 1.
+@defunx divsum (n)
+@code{divsum (n, k)} returns the sum of the divisors of @code{n}
+raised to the @code{k}'th power.
+@code{divsum (n)} returns the sum of the divisors of @code{n}.
+
+@example
+(%i1) divsum (12);
+(%o1)                          28
+(%i2) 1 + 2 + 3 + 4 + 6 + 12;
+(%o2)                          28
+(%i3) divsum (12, 2);
+(%o3)                          210
+(%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
+(%o4)                          210
+@end example
 
 @end defun
 
-@defun euler (x)
-gives the Xth Euler number for integer X.  For the
-Euler-Mascheroni constant, see %GAMMA.
+@defun euler (n)
+Returns the @code{n}'th Euler number for nonnegative integer @code{n}.
+
+For the Euler-Mascheroni constant, see @code{%gamma}.
+
+@example
+(%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
+@end example
 
 @end defun
+
+@defvar %gamma
+The Euler-Mascheroni constant, 0.5772156649015329 ....
+@c DOUBTLESS THERE IS MORE TO SAY HERE.
+
+@end defvar
 
 @defun factorial (x)
 The factorial function. Maxima treats @code{factorial (x)} the same as @code{x!}.
@@ -246,121 +271,200 @@ See @code{!}.
 
 @end defun
 
-@defun fib (x)
-the Xth Fibonacci number with FIB(0)=0, FIB(1)=1, and
-FIB(-N)=(-1)^(N+1) *FIB(N).  PREVFIB is FIB(X-1), the Fibonacci number
-preceding the last one computed.
+@defun fib (n)
+Returns the @code{n}'th Fibonacci number.
+@code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
+and
+@code{fib (-n)} equal to @code{(-1)^(n+1) * fib(n)}.
+
+After calling @code{fib},
+@code{prevfib} is equal to @code{fib (x-1)},
+the Fibonacci number preceding the last one computed.
+
+@example
+(%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+@end example
 
 @end defun
 
 @defun fibtophi (expr)
-converts FIB(n) to its closed form definition.
-This involves the constant %PHI (= (SQRT(5)+1)/2 = 1.618033989).
-If you want the Rational Function Package to know 
-About %PHI do TELLRAT(%PHI^2-%PHI-1)$  ALGEBRAIC:TRUE$ .
+Expresses Fibonacci numbers in terms of the constant @code{%phi},
+which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
+
+@c SEEMS LIKE THIS WANTS TO BE UNDER %phi !!!
+By default, Maxima does not know about @code{%phi}.
+After executing @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
+@code{ratsimp} can simplify some expressions containing @code{%phi}.
+
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) ratsimp (fibtophi (%));
+(%o3)                           0
+@end example
 
 @end defun
 
 @defun inrt (x, n)
-takes two integer arguments, X and n, and returns the
-integer nth root of the absolute value of X.
+Returns the integer @code{n}'th root of the absolute value of @code{x}.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], inrt (10^a, 3)), l);
+(%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
+@end example
 
 @end defun
 
 @defun jacobi (p, q)
-is the Jacobi symbol of p and q.
+Returns the Jacobi symbol of @code{p} and @code{q}.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], jacobi (a, 9)), l);
+(%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+@end example
 
 @end defun
 
 @defun lcm (expr_1, expr_2, expr_3, ...)
-returns the Least Common Multiple of its arguments.
-Do LOAD(FUNCTS); to access this function.
+Returns the least common multiple of its arguments.
+The arguments may be general expressions as well as integers.
+
+@code{load ("functs")} loads this function.
 
 @end defun
 
-@defvar maxprime
- default: [489318] - the largest number which may be given to
-the PRIME(n) command, which returns the nth prime.
-
-@end defvar
-
 @defun minfactorial (expr)
-examines exp for occurrences of two factorials
-which differ by an integer.  It then turns one into a polynomial times
-the other.  If exp involves binomial coefficients then they will be
-converted into ratios of factorials.
+Examines @var{expr} for occurrences of two factorials
+which differ by an integer.
+@code{minfactorial} then turns one into a polynomial times the other.
+
+@c I CAN'T TELL WHAT THIS IS SUPPOSED TO MEAN. !!!
+@c minfactorial DOESN'T SEEM TO DO ANYTHING binomial DOESN'T DO BY ITSELF !!!
+@c LOOKING AT THE minfactorial CODE DOESN'T HELP !!!
+@c If exp involves binomial coefficients then they will be
+@c converted into ratios of factorials.
+
 @example
-(%i1) N!/(N+1)!;
-                                    N!
-(%o1)                             --------
-                                 (N + 1)!
-(%i2) MINFACTORIAL(%);
-                                     1
-(%o2)                               -----
-                                   N + 1
-
-
+(%i1) n!/(n+2)!;
+                               n!
+(%o1)                       --------
+                            (n + 2)!
+(%i2) minfactorial (%);
+                                1
+(%o2)                    ---------------
+                         (n + 1) (n + 2)
 @end example
+
 @end defun
 
 @defun partfrac (expr, var)
-expands the expression exp in partial fractions
-with respect to the main variable, var.  PARTFRAC does a complete
+Expands the expression @var{expr} in partial fractions
+with respect to the main variable @var{var}.  @code{partfrac} does a complete
 partial fraction decomposition.  The algorithm employed is based on
 the fact that the denominators of the partial fraction expansion (the
 factors of the original denominator) are relatively prime.  The
 numerators can be written as linear combinations of denominators, and
-the expansion falls out.  See EXAMPLE(PARTFRAC); for examples.
+the expansion falls out.
 
-@end defun
-
-@defun prime (n)
-gives the nth prime. MAXPRIME[489318] is the largest number
-accepted as argument.  Note:  The PRIME command does not work in
-Maxima, since it required a large file of primes, which most users
-do not want.    PRIMEP does work however.
+@example
+(%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
+                      2       2        1
+(%o1)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+(%i2) ratsimp (%);
+                                 x
+(%o2)                 - -------------------
+                         3      2
+                        x  + 4 x  + 5 x + 2
+(%i3) partfrac (%, x);
+                      2       2        1
+(%o3)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+@end example
 
 @end defun
 
 @defun primep (n)
-returns TRUE if n is a prime, FALSE if not.
+Returns @code{true} if @code{n} is a prime, @code{false} if not.
 
 @end defun
 
 @defun qunit (n)
-gives the principal unit of the real quadratic number field
-SQRT(n) where n is an integer, i.e.  the element whose norm is unity.
-This amounts to solving Pell's equation A**2- n*B**2=1.
+Returns the principal unit of the real quadratic number field
+@code{sqrt(n)} where @code{n} is an integer,
+i.e., the element whose norm is unity.
+This amounts to solving Pell's equation @code{a^2 - n b^2 = 1}.
+
 @example
-(%i1) QUNIT(17);
-(%o1)              SQRT(17)+4
-(%i2)  EXPAND(%*(SQRT(17)-4));
-(%o2)               1
-
-
+(%i1) qunit (17);
+(%o1)                     sqrt(17) + 4
+(%i2) expand (% * (sqrt(17) - 4));
+(%o2)                           1
 @end example
+
 @end defun
 
 @defun totient (n)
-is the number of integers less than or equal to n which
-are relatively prime to n.
+Returns the number of integers less than or equal to @code{n} which
+are relatively prime to @code{n}.
 
 @end defun
 
 @defvar zerobern
- default: [TRUE] - if set to FALSE excludes the zero
-BERNOULLI numbers.  (See the BERN function.)
+Default value: @code{true}
+
+When @code{zerobern} is @code{false},
+@code{bern} excludes the Bernoulli numbers which are equal to zero. 
+See @code{bern}.
 
 @end defvar
 
-@defun zeta (x)
-gives the Riemann zeta function for certain integer values
-of X.
+@defun zeta (n)
+Returns the Riemann zeta function if @code{x} is a negative integer, 0, 1,
+or a positive even number,
+and returns a noun form @code{zeta (n)} for all other arguments,
+including rational noninteger, floating point, and complex arguments.
+
+See also @code{bfzeta} and @code{zeta%pi}.
+
+@example
+(%i1) map (zeta, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]);
+                                     2              4
+           1        1     1       %pi            %pi
+(%o1) [0, ---, 0, - --, - -, inf, ----, zeta(3), ----, zeta(5)]
+          120       12    2        6              90
+@end example
 
 @end defun
 
 @defvar zeta%pi
- default: [TRUE] - if FALSE, suppresses ZETA(n) giving
-coeff*%PI^n for n even.
+Default value: @code{true}
+
+When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression
+proportional to @code{%pi^n} for even integer @code{n}.
+Otherwise, @code{zeta} returns a noun form @code{zeta (n)}
+for even integer @code{n}.
+
+@example
+(%i1) zeta%pi: true$
+(%i2) zeta (4);
+                                 4
+                              %pi
+(%o2)                         ----
+                               90
+(%i3) zeta%pi: false$
+(%i4) zeta (4);
+(%o4)                        zeta(4)
+@end example
 
 @end defvar
