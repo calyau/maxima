@@ -38,8 +38,12 @@
 
 (DEFMACRO SIMP-LIST (L) `(MAPCAR #'(LAMBDA (X) (SIMP X)) ,L))
 
-;; jfa removed to avoid conflict with main definition of MABS.
-;; (DEFMACRO MABS (X) `(SIMP `((MABS) ,,X)))
+; The macro MABS has been renamed to HYP-MABS in order to
+; avoid conflict with the Maxima symbol MABS. The other
+; M* macros defined here should probably be similarly renamed
+; for consistency. jfa 03/27/2002
+
+(DEFMACRO HYP-MABS (X) `(SIMP `((MABS) ,,X)))
 
 (DEFMACRO MSQRT (X) `(M^T ,X 1//2))
 
@@ -1226,7 +1230,7 @@
 				    (SETQ B (M-T A B)))
 			       (M^T (M-T X Z) B))))
 		    (T ())))
-	     ((=1//2 (MABS (M-T B A)))
+	     ((=1//2 (HYP-MABS (M-T B A)))
 	      (COND ((EQUAL (CHECKSIGNTM VAR) '$POSITIVE)
 		     (M*T 1//2
 			  (M+T (M^T (M1+T (SETQ Z (MSQRT VAR)))
