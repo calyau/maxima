@@ -11,18 +11,19 @@
 
 ;; This file contains some functions to read and write data files.
 ;; Data files can contain integers, rationals, floats, complex,
-;; strings (in double quotes), and symbols. Symbols are translated
-;; to uppercase when read in, thus ``foo'' in a data file is
-;; ``FOO'' in Maxima. The entire file is read to construct one
-;; object, i.e., no partial reads.
+;; strings (in double quotes), and symbols. The case of a symbol
+;; (upper, lower, or mixed) is preserved, thus ``FOO'', ``Bar'',
+;; and ``baz'' in a data file are ``FOO'', ``Bar'', and ``baz'' in
+;; Maxima. The entire file is read to construct one object;
+;; partial reads are not supported.
 ;;
 ;; Read functions:
-;;   M: read_matrix(file_name, sep_ch_flag)$
-;;   read_lisp_array(file_name, A, sep_ch_flag)$
-;;   read_maxima_array(file_name, A, sep_ch_flag)$
-;;   read_hashed_array(file_name, A, sep_ch_flag)$
-;;   L: read_nested_list(file_name, sep_ch_flag)$
-;;   L: read_list(file_name, sep_ch_flag)$
+;;   M: read_matrix (file_name, sep_ch_flag)$
+;;   read_lisp_array (file_name, A, sep_ch_flag)$
+;;   read_maxima_array (file_name, A, sep_ch_flag)$
+;;   read_hashed_array (file_name, A, sep_ch_flag)$
+;;   L: read_nested_list (file_name, sep_ch_flag)$
+;;   L: read_list (file_name, sep_ch_flag)$
 ;;
 ;; Write function:
 ;;   write_data(X, file_name, sep_ch_flag)$
@@ -94,14 +95,16 @@
   (setq file-name (require-string file-name))
   (with-open-file (in file-name :if-does-not-exist nil)
     (cond ((not (null in))
-        (let ((sep-ch (get-sep-ch sep-ch-flag file-name)))
+        (let ((sep-ch (get-sep-ch sep-ch-flag file-name)) (local-table (copy-readtable nil)))
+          (setf (readtable-case local-table) :invert)
           (loop
-            (let ((key (read in nil 'eof)) (L))
-              (if (eq key 'eof) (return t))
-              (if (symbolp key) (setq key (makealias key)))
-              (setq L (read-line in nil 'eof))
-              (setq L (make-mlist-from-string L sep-ch))
-              (arrstore (list (list A 'simp 'array) key) L)))))
+            (let ((*readtable* local-table))
+              (let ((key (read in nil 'eof)) (L))
+                (if (eq key 'eof) (return t))
+                (if (symbolp key) (setq key (makealias key)))
+                (setq L (read-line in nil 'eof))
+                (setq L (make-mlist-from-string L sep-ch))
+                (arrstore (list (list A 'simp 'array) key) L))))))
       (t (merror "read_hashed_array: ~S: no such file" file-name))))
   '$done)
 
@@ -143,8 +146,11 @@
   (cond ((> (length (string-trim '(#\space #\tab) s)) 0)
       (setq s (concatenate 'string s (string sep-ch)))))
 
-  (let ((L '()) (in (make-string-input-stream s)) (x) (pc)) 
-    (loop 
+  (let ((L '()) (in (make-string-input-stream s)) (x) (pc) (local-table (copy-readtable nil)))
+    (setf (readtable-case local-table) :invert)
+    (let ((*readtable* local-table))
+      
+      (loop 
 
       ;; Two different methods of reading are needed, because:
       ;; read-delimited-list is undefined if sep-ch is whitespace,
@@ -165,7 +171,7 @@
 
       (if (eq x 'eof) (return  (cons '(mlist simp) L)))
       (setq x (lisp-to-maxima x))
-      (setq L (append L (list x))))))
+      (setq L (append L (list x)))))))
 
 
 (defun lisp-to-maxima (x)
@@ -265,8 +271,9 @@
   (setq x (maybe-convert-complex x))
   (setq x (maybe-convert-rat x))
   (setq x (maybe-convert-symbol x))
-  (format fs (cond ((floatp x) "~F")
-    (t "~S")) x))
+  (let ((*print-case* :downcase))
+    (format fs (cond ((floatp x) "~F")
+      (t "~S")) x)))
 
 
 (defun maybe-convert-complex (x)
@@ -306,6 +313,6 @@
 
 (defun require-string (s)
   (cond ((mstringp s)
-      (symbol-name (stripdollar s)))
+      (print-invert-case (stripdollar s)))
     (t
       (merror "numericalio: expected a string, instead found a ~:M" (type-of s)))))

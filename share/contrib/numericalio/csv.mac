@@ -30,15 +30,15 @@ m3: read_matrix("really-csv.data", 'csv)$
 
 m4: read_matrix("really-space-separated.csv", 'space)$
 
-if is(equal(m, m2)) = TRUE
+if is(equal(m, m2)) = true
   then print("success: rectangular.csv loaded as a matrix")
   else print("FAILED to load rectangular.csv as a matrix")$
 
-if is(equal(m, m3)) = TRUE
+if is(equal(m, m3)) = true
   then print("success: really-csv.data loaded as a matrix")
   else print("FAILED to load really-csv.data as a matrix")$
 
-if is(equal(m, m4)) = TRUE
+if is(equal(m, m4)) = true
   then print("success: really-space-separated.csv loaded as a matrix")
   else print("FAILED to load really-space-separated.csv as a matrix")$
 
@@ -50,15 +50,15 @@ m5: read_matrix("tmp-matrix.csv")$
 m6: read_matrix("tmp-matrix.data", 'csv)$
 m7: read_matrix("tmp-matrix-2.csv", 'space)$
 
-if is(equal(m2, m5)) = TRUE
+if is(equal(m2, m5)) = true
   then print("success: wrote .csv file, read again as matrix")
   else print("FAILED to write .csv file, read again as matrix")$
 
-if is(equal(m2, m6)) = TRUE
+if is(equal(m2, m6)) = true
   then print("success: wrote .data file (using 'csv flag), read again as matrix")
   else print("FAILED to write .data file (using 'csv flag), read again as matrix")$
 
-if is(equal(m2, m7)) = TRUE
+if is(equal(m2, m7)) = true
   then print("success: wrote .csv file (using 'space flag), read again as matrix")
   else print("FAILED to write .csv file (using 'space flag), read again as matrix")$
 
@@ -69,6 +69,6 @@ write_data(a, "tmp-array.csv")$
 array(a2, 2, 3, 4)$
 read_maxima_array("tmp-array.csv", a2)$
 
-if is_equal_array(a, a2) = TRUE
+if is_equal_array(a, a2) = true
   then print("success: read space-separated, wrote csv, read csv into array")
   else print("FAILED to read space-separated, write csv, read csv into array")$

@@ -44,21 +44,21 @@ l2_nested: read_nested_list("ragged.data")$
 kill(h2)$
 read_hashed_array("ragged.data", h2)$
 
-prederror:FALSE$
+prederror:false$
 
-if is(equal(l, l2)) = TRUE
+if is(equal(l, l2)) = true
   then print("success: ragged.data loaded as flat list")
   else print("FAILED to load ragged.data as flat list")$
 
-if is(equal(l_nested, l2_nested)) = TRUE
+if is(equal(l_nested, l2_nested)) = true
   then print("success: ragged.data loaded as nested list")
   else print("FAILED to load ragged.data as nested list")$
 
-if is(equal(arrayinfo(h), arrayinfo(h2))) = TRUE
+if is(equal(arrayinfo(h), arrayinfo(h2))) = true
   then print("success: ragged.data keys loaded")
   else print("FAILED to load ragged.data keys")$
 
-if is(equal(listarray(h), listarray(h2))) = TRUE
+if is(equal(listarray(h), listarray(h2))) = true
   then print("success: ragged.data records loaded as hashed array")
   else print("FAILED to load ragged.data records as hashed array")$
 
@@ -80,6 +80,6 @@ BAR2: -12/17$
 l_dot_l: l . transpose(l)$
 l2_dot_l2: l2 . transpose(l2)$
 
-if is(equal(ev(l_dot_l - l2_dot_l2), 0)) = TRUE
+if is(equal(ev(l_dot_l - l2_dot_l2), 0)) = true
   then print("success: ragged.data variables assigned")
   else print("FAILED to assign ragged.data variables")$
