@@ -60,15 +60,42 @@
 (defun used-area ( &optional (area working-storage-area ))
   (multiple-value-bind (nil used)(si:room-get-area-length-used area)
     used))
- 
+
+#+cmu
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  (ext:get-bytes-consed))
+
+#+clisp
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  (multiple-value-bind (real1 real2 run1 run2 gc1 gc2 space1 space2 gccount)
+      (sys::%%time)
+    (declare (ignore real1 real2 run1 run2 gc1 gc2 gccount))
+    (dpb space1 (byte 24 24) space2)))
+
+#-(or lispm cmu clisp)
+(defun used-area (&optional unused)
+  (declare (ignore unused))
+  0)
+
 (DEFUN CONTINUE (&OPTIONAL (*standard-input* *standard-input*)
 			   BATCH-OR-DEMO-FLAG)
  (if (eql BATCH-OR-DEMO-FLAG :demo)
      (format t "~% At the _ prompt, type ';' followed by enter to get next demo"))
  (catch 'abort-demo
-  (DO ((R) (time-before) (time-after) (time-used) (EOF (LIST NIL))
-       (etime-before) (etime-after) #+lispm (area-before)#+lispm (area-after)
-       (etime-used) (c-tag) (d-tag))
+  (DO ((R)
+       (time-before)
+       (time-after)
+       (time-used)
+       (EOF (LIST NIL))
+       (etime-before)
+       (etime-after)
+       (area-before)
+       (area-after)
+       (etime-used)
+       (c-tag)
+       (d-tag))
       (NIL)
     (when (not (checklabel $inchar))
 	  (setq $linenum (f1+ $linenum)))
@@ -106,12 +133,12 @@
 	   (displa `((mlable) ,c-tag , $__))))
     (setq time-before (get-internal-run-time)
 	  etime-before (get-internal-real-time))
-    #+lispm (setq area-before (used-area))
+    (setq area-before (used-area))
     (SETQ $% (TOPLEVEL-MACSYMA-EVAL $__))
     (setq etime-after (get-internal-real-time)
 	  time-after (get-internal-run-time))
-    #+lispm (setq area-after (used-area))
-	(setq time-used (quotient (float (difference time-after time-before))
+    (setq area-after (used-area))
+    (setq time-used (quotient (float (difference time-after time-before))
 			      internal-time-units-per-second)
 	  etime-used (quotient (float (difference etime-after etime-before))
 			       internal-time-units-per-second))
@@ -126,6 +153,17 @@
 	  (format t "~&Evaluation took ~$ seconds (~$ elapsed)"
        		    time-used etime-used )
 	  #+lispm (format t "using ~A words." (f-  area-after area-before))
+	  #+(or cmu clisp)
+	  (let ((total-bytes (- area-after area-before)))
+	    (cond ((> total-bytes 1024)
+		   (format t " using ~,3F KB." (/ total-bytes 1024.0))
+		   )
+		  ((> total-bytes (* 1024 1024))
+		   (format t " using ~,3F MB." (/ total-bytes (* 1024.0 1024.0)))
+		   )
+		  (t
+		   (format t " using ~:D bytes." total-bytes))))
+
       )
     (UNLESS $NOLABELS
 		     (PUTPROP d-tag
