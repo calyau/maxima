@@ -353,17 +353,26 @@ translated properly.")
 		   (LET (((EVL LEVL T-BODY M-BODY) ARGS))
 			(SETQ RES (GENSYM))
 			(PUTPROP RES
+				 (coerce
 				 `(LAMBDA (*IGNORED*)
 					  (PROG2 (MBIND ',EVL
 							(GET ',RES 'SUMARG-ENV) NIL)
 						 (MEVALATOMS ',M-BODY)
 						 (MUNBIND ',EVL)))
+				 'function)
 				 'MEVALSUMARG-MACRO)
-			(PUTPROP RES
-				 `(LAMBDA ()
-					  (APPLY #'(LAMBDA ,EVL ,T-BODY)
-						 (GET ',RES 'SUMARG-ENV)))
-				 'EXPR)
+			;; Obsolete and replaced by the following form --wj
+;;; 			(PUTPROP RES
+;;; 				 `(LAMBDA ()
+;;; 					  (APPLY #'(LAMBDA ,EVL ,T-BODY)
+;;; 						 (GET ',RES 'SUMARG-ENV)))
+;;; 				 'EXPR)
+			(setf (symbol-function res)
+			      (coerce
+			       `(lambda ()
+				  (apply #'(lambda ,evl ,t-body)
+					 (get ',res 'sumarg-env)))
+			       'function))
 			(SETQ RES `(,ARGS ,RES ((,RES))))
 			(PUSH RES *FCALL-MEMORY*))))
 	    (PUTPROP (CADR RES) (MAPCAR #'EVAL (CAR ARGS)) 'SUMARG-ENV)
