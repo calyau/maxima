@@ -72,17 +72,18 @@ default, will be used.
 @end defvar
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defun bezout (p1, p2, var)
+@defun bezout (@var{p1}, @var{p2}, @var{x})
 an alternative to the @code{resultant} command.  It
 returns a matrix. @code{determinant} of this matrix is the desired resultant.
 
 @end defun
 
-@defun bothcoef (exp, var)
-returns a list whose first member is the
-coefficient of var in exp (as found by @code{ratcoef} if exp is in CRE form
+@c REWORD THIS ITEM -- COULD BE MORE CONCISE
+@defun bothcoef (@var{expr}, @var{x})
+Returns a list whose first member is the
+coefficient of @var{x} in @var{expr} (as found by @code{ratcoef} if @var{expr} is in CRE form
 otherwise by @code{coeff}) and whose second member is the remaining part of
-exp.  That is, [A,B] where exp=A*var+B.
+@var{expr}.  That is, @code{[A, B]} where @code{@var{expr} = A*@var{x} + B}.
 
 Example:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -101,12 +102,12 @@ Example:
 
 @end defun
 
-@defun coeff (exp, v, n)
-obtains the coefficient of v**n in exp.  n may be
-omitted if it is 1.  v may be an atom, or complete subexpression of
-exp e.g., X, SIN(X), A[I+1], X+Y, etc. (In the last case the
-expression (X+Y) should occur in exp).  Sometimes it may be necessary
-to expand or factor exp in order to make v^n explicit.  This is not
+@defun coeff (@var{expr}, @var{x}, @var{n})
+Returns the coefficient of @code{@var{x}^@var{n}} in @var{expr}.  @var{n} may be
+omitted if it is 1.  @var{x} may be an atom, or complete subexpression of
+@var{expr} e.g., @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (In the last case the
+expression @code{(x + y)} should occur in @var{expr}).  Sometimes it may be necessary
+to expand or factor @var{expr} in order to make @code{@var{x}^@var{n}} explicit.  This is not
 done automatically by @code{coeff}.
 
 Examples:
@@ -123,17 +124,20 @@ Examples:
 
 @end defun
 
-@defun combine (exp)
-simplifies the sum exp by combining terms with the same
+@defun combine (@var{expr})
+Simplifies the sum @var{expr} by combining terms with the same
 denominator into a single term.
 
+@c NEED EXAMPLE HERE
 @end defun
 
-@defun content (p1, var1, ..., varn)
-returns a list whose first element is
+@defun content (@var{p_1}, @var{x_1}, ..., @var{x_n})
+Returns a list whose first element is
 the greatest common divisor of the coefficients of the terms of the
-polynomial p1 in the variable varn (this is the content) and whose
-second element is the polynomial p1 divided by the content.
+polynomial @var{p_1} in the variable @var{x_n} (this is the content) and whose
+second element is the polynomial @var{p_1} divided by the content.
+@c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
+@c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
 
 Examples:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -147,16 +151,18 @@ Examples:
 
 @end defun
 
-@defun denom (exp)
-returns the denominator of the rational expression exp.
+@defun denom (@var{expr})
+Returns the denominator of the rational expression @var{expr}.
 
 @end defun
 
-@defun divide (p1, p2, var1, ..., varn)
+@defun divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 computes the quotient and remainder
-of the polynomial p1 divided by the polynomial p2, in a main
-polynomial variable, varn.  The other variables are as in the @code{ratvars}
-function.  The result is a list whose first element is the quotient
+of the polynomial @var{p_1} divided by the polynomial @var{p_2}, in a main
+polynomial variable, @var{x_n}.
+@c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
+The other variables are as in the @code{ratvars} function.
+The result is a list whose first element is the quotient
 and whose second element is the remainder.
 
 Examples:
@@ -172,17 +178,17 @@ Examples:
 @end example
 
 @noindent
-(Note that Y is the main variable in %i2)
+Note that @code{y} is the main variable in the second example.
 
 @end defun
 
-@defun eliminate ([eq1,eq2,...,eqn],[v1,v2,...,vk])
-eliminates variables from
+@defun eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
+Eliminates variables from
 equations (or expressions assumed equal to zero) by taking successive
-resultants. This returns a list of n-k expressions with the k
-variables v1,...,vk eliminated.  First v1 is eliminated yielding n-1
-expressions, then v2 is, etc.  If k=n then a single expression in a
-list is returned free of the variables v1,...,vk.  In this case @code{solve}
+resultants. This returns a list of @code{@var{n} - @var{k}} expressions with the @var{k}
+variables @var{x_1}, ..., @var{x_k} eliminated.  First @var{x_1} is eliminated yielding @code{@var{n} - 1}
+expressions, then @code{x_2} is eliminated, etc.  If @code{@var{k} = @var{n}} then a single expression in a
+list is returned free of the variables @var{x_1}, ..., @var{x_k}.  In this case @code{solve}
 is called to solve the last resultant for the last variable.
 
 Example:
@@ -211,9 +217,9 @@ Example:
 
 @end defun
 
-@defun ezgcd (p1, p2, ...)
-gives a list whose first element is the g.c.d of
-the polynomials p1,p2,...  and whose remaining elements are the
+@defun ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
+Returns a list whose first element is the g.c.d of
+the polynomials @var{p_1}, @var{p_2}, @var{p_3}, ...  and whose remaining elements are the
 polynomials divided by the g.c.d.  This always uses the @code{ezgcd}
 algorithm.
 
@@ -228,10 +234,10 @@ CRE) form.
 
 @end defvar
 
-@defun factcomb (exp)
-tries to combine the coefficients of factorials in exp
-with the factorials themselves by converting, for example, (N+1)*N!
-into (N+1)!.
+@defun factcomb (@var{expr})
+Tries to combine the coefficients of factorials in @var{expr}
+with the factorials themselves by converting, for example, @code{(n + 1)*n!}
+into @code{(n + 1)!}.
 
 @code{sumsplitfact} if set to @code{false} will cause @code{minfactorial} to be
 applied after a @code{factcomb}.
@@ -244,10 +250,10 @@ applied after a @code{factcomb}.
 @c factcomb (%);
 @end defun
 
-@defun factor (exp)
-factors the expression exp, containing any number of
+@defun factor (@var{expr})
+Factors the expression @var{expr}, containing any number of
 variables or functions, into factors irreducible over the integers.
-@code{factor (exp, p)} factors exp over the field of integers with an element
+@code{factor (@var{expr}, p)} factors @var{expr} over the field of integers with an element
 adjoined whose minimum polynomial is p.
 
 @code{factorflag} if @code{false} suppresses the factoring of integer factors
@@ -396,21 +402,23 @@ Examples:
 @defvar factorflag
 Default value: @code{false}
 
-@code{factorflag} if @code{false} suppresses the factoring of
+@c WHAT IS THIS ABOUT EXACTLY ??
+When @code{factorflag} is @code{false}, suppresses the factoring of
 integer factors of rational expressions.
 
 @end defvar
 
-@defun factorout (exp,var1,var2,...)
-rearranges the sum exp into a sum of
-terms of the form f(var1,var2,...)*g where g is a product of
-expressions not containing the vari's and f is factored.
+@defun factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
+Rearranges the sum @var{expr} into a sum of
+terms of the form @code{f (@var{x_1}, @var{x_2}, ...)*g} where @code{g} is a product of
+expressions not containing any @var{x_i} and @code{f} is factored.
+@c NEED EXAMPLE HERE
 
 @end defun
 
-@defun factorsum (exp)
-tries to group terms in factors of exp which are sums
-into groups of terms such that their sum is factorable.  It can
+@defun factorsum (@var{expr})
+Tries to group terms in factors of @var{expr} which are sums
+into groups of terms such that their sum is factorable.  @code{factorsum} can
 recover the result of @code{expand ((x + y)^2 + (z + w)^2)} but it can't recover
 @code{expand ((x + 1)^2 + (x + y)^2)} because the terms have variables in common.
 
@@ -433,34 +441,68 @@ Example:
 
 @end defun
 
-@defun fasttimes (p1, p2)
-multiplies the polynomials p1 and p2 by using a
-special algorithm for multiplication of polynomials.  They should be
+@defun fasttimes (@var{p_1}, @var{p_2})
+Returns the product of the polynomials @var{p_1} and @var{p_2} by using a
+special algorithm for multiplication of polynomials.  @code{p_1} and @code{p_2} should be
 multivariate, dense, and nearly the same size.  Classical
-multiplication is of order N*M where N and M are the degrees.
-@code{fasttimes} is of order MAX(N,M)**1.585.
+multiplication is of order @code{n_1 n_2} where
+@code{n_1} is the degree of @code{p_1}
+and @code{n_2} is the degree of @code{p_2}.
+@code{fasttimes} is of order @code{max (n_1, n_2)^1.585}.
 
 @end defun
 
-@defun fullratsimp (exp)
+@defun fullratsimp (@var{expr})
+@code{fullratsimp} repeatedly
+applies @code{ratsimp} followed by non-rational simplification to an
+expression until no further change occurs,
+and returns the result.
+
 When non-rational expressions are involved, one call
 to @code{ratsimp} followed as is usual by non-rational ("general")
 simplification may not be sufficient to return a simplified result.
-Sometimes, more than one such call may be necessary.  The command
-@code{fullratsimp} makes this process convenient.  @code{fullratsimp} repeatedly
-applies @code{ratsimp} followed by non-rational simplification to an
-expression until no further change occurs.
+Sometimes, more than one such call may be necessary.
+@code{fullratsimp} makes this process convenient.
 
-For the expression  EXP:   (X^(A/2)+1)^2*(X^(A/2)-1)^2/(X^A-1) .
-RATSIMP(EXP); gives (X^(2*A)-2*X^A+1)/(X^A-1) .
-FULLRATSIMP(EXP); gives   X^A-1 .  The problem may be seen by looking at 
-RAT(EXP); which gives  ((X^(A/2))^4-2*(X^(A/2))^2+1)/(X^A-1) .
-FULLRATSIMP(exp,var1,...,varn) takes one or more arguments similar 
-to RATSIMP and RAT.
+@code{fullratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} takes one or more arguments similar 
+to @code{ratsimp} and @code{rat}.
+
+Example:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
+@c ratsimp (expr);
+@c fullratsimp (expr);
+@c rat (expr);
+
+@example
+(%i1) expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
+                       a/2     2   a/2     2
+                     (x    - 1)  (x    + 1)
+(%o1)                -----------------------
+                              a
+                             x  - 1
+(%i2) ratsimp (expr);
+                          2 a      a
+                         x    - 2 x  + 1
+(%o2)                    ---------------
+                              a
+                             x  - 1
+(%i3) fullratsimp (expr);
+                              a
+(%o3)                        x  - 1
+(%i4) rat (expr);
+                       a/2 4       a/2 2
+                     (x   )  - 2 (x   )  + 1
+(%o4)/R/             -----------------------
+                              a
+                             x  - 1
+@end example
 
 @end defun
 
-@defun fullratsubst (a,b,c)
+@c SPELL OUT WHAT fullratsubst DOES INSTEAD OF ALLUDING TO ratsubst AND lratsubst
+@c THIS ITEM NEEDS MORE WORK
+@defun fullratsubst (@var{a}, @var{b}, @var{c})
 is the same as @code{ratsubst} except that it calls
 itself recursively on its result until that result stops changing.
 This function is useful when the replacement expression and the
@@ -471,15 +513,87 @@ replaced expression have one or more variables in common.
 equation or a list of such equations, while the second argument is the
 expression being processed.
 
-There is a demo available by
-DEMO("lrats.dem"); .
+@code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
+
+Examples:
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
+@c CAN PROBABLY CUT OUT THE lratsubst STUFF (lratsubst HAS ITS OWN DESCRIPTION)
+@c load ("lrats")$
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c lratsubst (a^2 = b, a^3);
+@c ratsubst (b*a, a^2, a^3);
+@c fullratsubst (b*a, a^2, a^3);
+@c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+@c fullratsubst (a^2 = b*a, a^3);
+@c errcatch (fullratsubst (b*a^2, a^2, a^3));
+
+@example
+(%i1) load ("lrats")$
+@end example
+@itemize @bullet
+@item
+@code{subst} can carry out multiple substitutions.
+@code{lratsubst} is analogous to @code{subst}.
+@end itemize
+@example
+(%i2) subst ([a = b, c = d], a + c);
+(%o2)                         d + b
+(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o3)                (d + a c) e + a d + b c
+@end example
+@itemize @bullet
+@item
+If only one substitution is desired, then a single
+equation may be given as first argument.
+@end itemize
+@example
+(%i4) lratsubst (a^2 = b, a^3);
+(%o4)                          a b
+@end example
+@itemize @bullet
+@item
+@code{fullratsubst} is equivalent to @code{ratsubst}
+except that it recurses until its result stops changing.
+@end itemize
+@example
+(%i5) ratsubst (b*a, a^2, a^3);
+                               2
+(%o5)                         a  b
+(%i6) fullratsubst (b*a, a^2, a^3);
+                                 2
+(%o6)                         a b
+@end example
+@itemize @bullet
+@item
+@code{fullratsubst} also accepts a list of equations or a single
+equation as first argument.
+@end itemize
+@example
+(%i7) fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+(%o7)                           b
+(%i8) fullratsubst (a^2 = b*a, a^3);
+                                 2
+(%o8)                         a b
+@end example
+@itemize @bullet
+@item
+@c REWORD THIS SENTENCE
+@code{fullratsubst} may cause an indefinite recursion.
+@end itemize
+@example
+(%i9) errcatch (fullratsubst (b*a^2, a^2, a^3));
+
+*** - Lisp stack overflow. RESET
+@end example
 
 @end defun
 
 @c GCD IS A VARIABLE AND A FUNCTION
-@defun gcd (p1, p2, var1, ...)
-computes the greatest common divisor of p1 and
-p2.  The flag @code{gcd} determines which algorithm is employed.
+@c THIS ITEM NEEDS A LOT OF WORK
+@defun gcd (p_1, p_2, x_1, ...)
+Returns the greatest common divisor of @var{p_1} and @var{p_2}.
+The flag @code{gcd} determines which algorithm is employed.
 Setting @code{gcd} to @code{ez}, @code{eez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd}, New
 @code{eez} @code{gcd}, subresultant @code{prs}, reduced, or modular algorithm,
 respectively.  If @code{gcd} @code{false} then GCD(p1,p2,var) will always return 1
@@ -492,27 +606,31 @@ who have been using the @code{red} setting should probably change it to
 @code{subres}.
 
 The @code{gcd} flag, default: @code{subres}, if @code{false} will also prevent the greatest
-common divisor from being taken when expressions are converted to CRE
+common divisor from being taken when expressions are converted to canonical rational expression (CRE)
 form.  This will sometimes speed the calculation if gcds are not
 required.
+@c NEEDS EXAMPLES HERE
 
 @end defun
 
-@defun gcdex (f,g)
-@defunx gcdex (f,g,var)
-returns a list containing [a,b,u] where u is the gcd of f and g,
-and u = a*f + b*g.   The arguments f and g should b univariate polynomials,
-or else polynomials in VAR a supplied @b{main} variable   
-since we need to be in a principal ideal domain for this to work.   The
-gcd means the gcd regarding f and g as univariate polynomials with coefficients
+@c IN NEED OF SERIOUS CLARIFICATION HERE
+@defun gcdex (@var{f}, @var{g})
+@defunx gcdex (@var{f}, @var{g}, @var{x})
+Returns a list @code{[@var{a}, @var{b}, @var{u}]}
+where @var{u} is the greatest common divisor (gcd) of @var{f} and @var{g},
+and @var{u} is equal to @code{@var{a} @var{f} + @var{b} @var{g}}.
+The arguments @var{f} and @var{g} should be univariate polynomials,
+or else polynomials in @var{x} a supplied @b{main} variable   
+since we need to be in a principal ideal domain for this to work.
+The gcd means the gcd regarding @var{f} and @var{g} as univariate polynomials with coefficients
 being rational functions in the other variables.
 
-The
-algorithm is simply the euclidean algorithm, where we have a sequence
-of @code{lis[i]:[a[i],b[i],r[i]] ..} which are all perpendicular
-to @code{[f,g,-1]} and the next one is built as
-if @code{q = quotient(r[i]/r[i+1])} then @code{lis[i+2]:lis[i]-q*lis[i+1]}, and it
-terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
+@code{gcdex} implements the Euclidean algorithm,
+where we have a sequence
+of @code{L[i]: [a[i], b[i], r[i]]} which are all perpendicular
+to @code{[f, g, -1]} and the next one is built as
+if @code{q = quotient(r[i]/r[i+1])} then @code{L[i+2]: L[i] - q L[i+1]}, and it
+terminates at @code{L[i+1]} when the remainder @code{r[i+2]} is zero.
 
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
 @c gcdex (x^2 + 1, x^3 + 4);
@@ -528,8 +646,9 @@ terminates at @code{lis[i+1]} when the remainder @code{r[i+2]} is zero.
 (%o2)/R/                        0
 @end example
 
+@c SORRY FOR BEING DENSE BUT WHAT IS THIS ABOUT EXACTLY
 Note that the gcd in the following is @code{1}
-since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[y,x] }
+since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[y, x]}.
 
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
 @c gcdex (x*(y + 1), y^2 - 1, x);
@@ -545,18 +664,22 @@ since we work in @code{k(y)[x]}, not the  @code{y+1} we would expect in @code{k[
 @end defun
 
 
-@defun gcfactor (n)
-factors the gaussian integer n over the gaussians, i.e.
-numbers of the form a + b i where a and b are rational integers (i.e.
-ordinary integers).  Factors are normalized by making a and b
+@c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
+@defun gcfactor (@var{n})
+Factors the Gaussian integer @var{n} over the Gaussian integers, i.e.,
+numbers of the form @code{@var{a} + @var{b} @code{%i}} where @var{a} and @var{b} are rational integers
+(i.e.,  ordinary integers).  Factors are normalized by making @var{a} and @var{b}
 non-negative.
+@c NEED EXAMPLES HERE
 
 @end defun
 
-@defun gfactor (exp)
-factors the polynomial exp over the Gaussian integers
-(that is, the integers with the imaginary unit @code{%i} adjoined).  This is like
-FACTOR(exp,A**2+1) where A is %I.
+@c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
+@defun gfactor (@var{expr})
+Factors the polynomial @var{expr} over the Gaussian integers
+(that is, the integers with the imaginary unit @code{%i} adjoined).
+@c "This is like" -- IS IT THE SAME OR NOT ??
+This is like @code{factor (@var{expr}, @var{a}^2+1)} where @var{a} is @code{%i}.
 
 Example:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -569,30 +692,63 @@ Example:
 
 @end defun
 
-@defun gfactorsum (exp)
+@c DESCRIBE THIS INDEPENDENTLY OF factorsum
+@c THIS ITEM NEEDS MORE WORK
+@defun gfactorsum (@var{expr})
 is similar to @code{factorsum} but applies @code{gfactor} instead
 of @code{factor}.
 
 @end defun
 
-@defun hipow (exp, v)
-the highest explicit exponent of v in exp.  Sometimes
-it may be necessary to expand exp since this is not done automatically
-by @code{hipow}.  Thus HIPOW(Y**3*X**2+X*Y**4,X) is 2.
+@defun hipow (@var{expr}, @var{x})
+Returns the highest explicit exponent of @var{x} in @var{expr}.
+@var{x} may be a variable or a general expression.
+If @var{x} does not appear in @var{expr},
+@code{hipow} returns @code{0}.
+
+@code{hipow} does not consider expressions equivalent to @code{expr}.
+In particular, @code{hipow} does not expand @code{expr},
+so @code{hipow (@var{expr}, @var{x})} and @code{hipow (expand (@var{expr}, @var{x}))}
+may yield different results.
+
+Examples:
+
+@example
+(%i1) hipow (y^3 * x^2 + x * y^4, x);
+(%o1)                           2
+(%i2) hipow ((x + y)^5, x);
+(%o2)                           1
+(%i3) hipow (expand ((x + y)^5), x);
+(%o3)                           5
+(%i4) hipow ((x + y)^5, x + y);
+(%o4)                           5
+(%i5) hipow (expand ((x + y)^5), x + y);
+(%o5)                           0
+@end example
 
 @end defun
 
 @defvar intfaclim
 Default value: 1000
 
+@c NEED A LINK TO DESCRIPTION OF "BIGNUM"
 @code{intfaclim} is the largest divisor which will be tried
-when factoring a bignum integer.  If set to @code{false} (this is the case
+when factoring a bignum integer.
+
+When @code{intfaclim} is @code{false} (this is the case
+@c MAYBE WE WANT TO LINK TO A DESCRIPTION OF "FIXNUM" HERE
 when the user calls @code{factor} explicitly), or if the integer is a fixnum
-(i.e. fits in one machine word), complete factorization of the integer
-will be attempted.  The user's setting of @code{intfaclim} is used for
-internal calls to @code{factor}. Thus, @code{intfaclim} may be reset to prevent
-Maxima from taking an inordinately long time factoring large
-integers.
+(i.e., fits in one machine word),
+factors of any size are considered.
+@code{intfaclim} is set to @code{false} when factors are computed in
+@code{divsum}, @code{totient}, and @code{primep}.
+@c ANY OTHERS ??
+
+@c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
+Internal calls to @code{factor} respect the user-specified value of @code{intfaclim}.
+Setting @code{intfaclim} to a smaller value may reduce the
+time spent factoring large integers.
+@c NEED EXAMPLES HERE
 
 @end defvar
 
@@ -601,81 +757,147 @@ Default value: @code{false}
 
 When @code{keepfloat} is @code{true}, prevents floating
 point numbers from being rationalized when expressions which contain
-them are converted to CRE form.
+them are converted to canonical rational expression (CRE) form.
+@c NEED EXAMPLES HERE
 
 @end defvar
 
-@defun lratsubst (list,exp)
-is analogous to SUBST(list_of_equations,exp)
-except that it uses @code{ratsubst} instead of @code{subst}.  The first argument of
-@code{lratsubst} must be an equation or a list of equations identical in
+@c DESCRIBE lratsubst INDEPENDENTLY OF subst
+@c THIS ITEM NEEDS MORE WORK
+@defun lratsubst (@var{L}, @var{expr})
+is analogous to @code{subst (@var{L}, @var{expr})}
+except that it uses @code{ratsubst} instead of @code{subst}.
+
+The first argument of
+@code{lratsubst} is an equation or a list of equations identical in
 format to that accepted by @code{subst}.  The
 substitutions are made in the order given by the list of equations,
 that is, from left to right.
 
-A demo is available by doing
-DEMO("lrats.dem"); .
+@code{load ("lrats")} loads @code{fullratsubst} and @code{lratsubst}.
+
+Examples:
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
+@c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
+@c load ("lrats")$
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c lratsubst (a^2 = b, a^3);
+
+@example
+(%i1) load ("lrats")$
+@end example
+@itemize @bullet
+@item
+@code{subst} can carry out multiple substitutions.
+@code{lratsubst} is analogous to @code{subst}.
+@end itemize
+@example
+(%i2) subst ([a = b, c = d], a + c);
+(%o2)                         d + b
+(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o3)                (d + a c) e + a d + b c
+@end example
+@itemize @bullet
+@item
+If only one substitution is desired, then a single
+equation may be given as first argument.
+@end itemize
+@example
+(%i4) lratsubst (a^2 = b, a^3);
+(%o4)                          a b
+@end example
 
 @end defun
 
 @defvar modulus
 Default value: @code{false}
 
-When @code{modulus} is a positive prime p, then all
-arithmetic in the rational function routines will be done modulo p.
-That is all integers will be reduced to less than p/2 in absolute
-value (if p=2 then all integers are reduced to 1 or 0).  This is the
-so called "balanced" modulus system, e.g. N MOD 5 = -2, -1, 0, 1, or
-2.  Warning: If EXP is already in CRE form when you reset @code{modulus},
-then you may need to re-rat EXP, e.g. EXP:RAT(RATDISREP(EXP)), in
-order to get correct results. (If @code{modulus} is set to a positive
-non-prime integer, this setting will be accepted, but a warning will
-be given.)
+When @code{modulus} is a positive number @var{p},
+operations on rational numbers (as returned by @code{rat} and related functions)
+are carried out modulo @var{p},
+using the so-called "balanced" modulus system
+in which @code{@var{n} modulo @var{p}} is defined as 
+an integer @var{k} in @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}
+when @var{p} is odd, or @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} when @var{p} is even,
+such that @code{@var{a} @var{p} + @var{k}} equals @var{n} for some integer @var{a}.
+@c NEED EXAMPLES OF "BALANCED MODULUS" HERE
 
+@c WHAT CAN THIS MEAN ?? IS THE MODULUS STORED WITH THE EXPRESSION ??
+@c "... in order to get correct results" -- WHAT DO YOU GET IF YOU DON'T RE-RAT ??
+If @var{expr} is already in canonical rational expression (CRE) form when @code{modulus} is reset,
+then you may need to re-rat @var{expr}, e.g., @code{expr: rat (ratdisrep (expr))},
+in order to get correct results.
+
+Typically @code{modulus} is set to a prime number.
+If @code{modulus} is set to a positive non-prime integer,
+this setting is accepted, but a warning message is displayed.
+Maxima will allow zero or a negative integer to be assigned to @code{modulus},
+although it is not clear if that has any useful consequences.
+
+@c NEED EXAMPLES HERE
 @end defvar
 
-@c STILL APPLICABLE ??
-@defvar newfac
-Default value: @code{false}
+@c APPARENTLY OBSOLETE: ONLY EFFECT OF $newfac COULD BE TO CAUSE NONEXISTENT FUNCTION NMULTFACT
+@c TO BE CALLED (IN FUNCTION FACTOR72 IN src/factor.lisp CIRCA LINE 1400)
+@c $newfac NOT USED IN ANY OTHER CONTEXT (ASIDE FROM DECLARATIONS)
+@c COMMENT IT OUT NOW, CUT IT ON THE NEXT PASS THROUGH THIS FILE
+@c @defvar newfac
+@c Default value: @code{false}
+@c 
+@c When @code{newfac} is @code{true}, @code{factor} will use the new factoring
+@c routines.
+@c 
+@c @end defvar
 
-When @code{newfac} is @code{true}, @code{factor} will use the new factoring
-routines.
+@defun num (@var{expr})
+Returns the numerator of @var{expr} if it is a ratio.
+If @var{expr} is not a ratio, @var{expr} is returned.
 
-@end defvar
+@code{num} evaluates its argument.
 
-@defun num (exp)
-obtains the numerator, exp1, of the rational expression
-exp = exp1/exp2.
-
+@c NEED SOME EXAMPLES HERE
 @end defun
 
-@defun quotient (p1, p2, var1, ...)
-computes the quotient of the polynomial
-p1 divided by the polynomial p2.
+@defun quotient (@var{p_1}, @var{p_2})
+@defunx quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.
+The arguments @var{x_1}, ..., @var{x_n} are interpreted as in @code{ratvars}.
 
+@code{quotient} returns the first element of the two-element list returned by @code{divide}.
+
+@c NEED SOME EXAMPLES HERE
 @end defun
 
-@defun rat (exp, v1, ..., vn)
-converts exp to CRE form by expanding and
+@c THIS ITEM CAN PROBABLY BE IMPROVED
+@defun rat (@var{expr})
+@defunx rat (@var{expr}, @var{x_1}, ..., @var{x_n})
+Converts @var{expr} to canonical rational expression (CRE) form by expanding and
 combining all terms over a common denominator and cancelling out the
-greatest common divisor of the numerator and denominator as well as
+greatest common divisor of the numerator and denominator, as well as
 converting floating point numbers to rational numbers within a
-tolerance of @code{ratepsilon}.  The variables are ordered according
-to the v1,...,vn as in @code{ratvars}, if these are specified.  @code{rat} does not
-generally simplify functions other than + , - , * , / , and
-exponentiation to an integer power whereas @code{ratsimp} does handle these
-cases.  Note that atoms (numbers and names) in CRE form are not the
-same as they are in the general form.  Thus RAT(X)- X results in
-RAT(0) which has a different internal representation than 0.
+tolerance of @code{ratepsilon}.
+The variables are ordered according
+to the @var{x_1}, ..., @var{x_n}, if specified, as in @code{ratvars}.
 
-@code{ratfac} when @code{true} invokes a partially factored form for CRE
-rational expressions.  During rational operations the expression is
+@code{rat} does not generally simplify functions other than
+addition @code{+}, subtraction @code{-}, multiplication @code{*}, division @code{/}, and
+exponentiation to an integer power,
+whereas @code{ratsimp} does handle those cases.
+Note that atoms (numbers and variables) in CRE form are not the
+same as they are in the general form.
+For example, @code{rat(x)- x} yields 
+@code{rat(0)} which has a different internal representation than 0.
+
+@c WHAT'S THIS ABOUT EXACTLY ??
+When @code{ratfac} is @code{true}, @code{rat} yields a partially factored form for CRE.
+During rational operations the expression is
 maintained as fully factored as possible without an actual call to the
 factor package.  This should always save space and may save some time
 in some computations.  The numerator and denominator are still made
-relatively prime (e.g.  RAT((X^2 -1)^4/(X+1)^2); yields
-(X-1)^4*(X+1)^2), but the factors within each part may not be
-relatively prime.
+relatively prime
+(e.g.  @code{rat ((x^2 - 1)^4/(x + 1)^2)} yields @code{(x - 1)^4 (x + 1)^2)},
+but the factors within each part may not be relatively prime.
 
 @code{ratprint} if @code{false} suppresses the printout of the message
 informing the user of the conversion of floating point numbers to
@@ -684,9 +906,9 @@ rational numbers.
 @code{keepfloat} if @code{true} prevents floating point numbers from being
 converted to rational numbers.
 
-(Also see the @code{ratexpand} and  @code{ratsimp} functions.)
+See also @code{ratexpand} and  @code{ratsimp}.
 
-Example:
+Examples:
 @c FOLLOW GENERATED FROM THESE EXPRESSIONS
 @c ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
 @c rat (%, y, a, x);
@@ -713,22 +935,36 @@ Example:
 Default value: @code{true}
 
 When @code{ratalgdenom} is @code{true}, allows rationalization of
-denominators wrt.  radicals to take effect.  To do this one must use
-CRE form in algebraic mode.
+denominators with respect to radicals to take effect.
+@code{ratalgdenom} has an effect only when canonical rational expressions (CRE) are used in algebraic mode.
 
 @end defvar
 
-@defun ratcoef (exp, v, n)
-returns the coefficient, C, of the expression v**n
-in the expression exp.  n may be omitted if it is 1.  C will be free
-(except possibly in a non-rational sense) of the variables in v.  If
-no coefficient of this type exists, zero will be returned.  @code{ratcoef}
+@c THIS ITEM NEEDS MORE WORK
+@defun ratcoef (@var{expr}, @var{x}, @var{n})
+@defunx ratcoef (@var{expr}, @var{x})
+Returns the coefficient of the expression @code{@var{x}^@var{n}}
+in the expression @var{expr}.
+If omitted, @var{n} is assumed to be 1.
+
+The return value is free
+(except possibly in a non-rational sense) of the variables in @var{x}.
+If no coefficient of this type exists, 0 is returned.
+
+@code{ratcoef}
 expands and rationally simplifies its first argument and thus it may
 produce answers different from those of @code{coeff} which is purely
-syntactic.  Thus RATCOEF((X+1)/Y+X,X) returns (Y+1)/Y whereas @code{coeff}
-returns 1.  RATCOEF(exp,v,0), viewing exp as a sum, gives a sum of
-those terms which do not contain v.  Therefore if v occurs to any
-negative powers, @code{ratcoef} should not be used.  Since exp is rationally
+syntactic.
+@c MOVE THIS TO EXAMPLES SECTION
+Thus RATCOEF((X+1)/Y+X,X) returns (Y+1)/Y whereas @code{coeff} returns 1.
+
+@code{ratcoef (@var{expr}, @var{x}, 0)}, viewing @var{expr} as a sum,
+returns a sum of those terms which do not contain @var{x}.
+@c "SHOULD NOT" -- WHAT DOES THIS MEAN ??
+Therefore if @var{x} occurs to any negative powers, @code{ratcoef} should not be used.
+
+@c WHAT IS THE INTENT HERE ??
+Since @var{expr} is rationally
 simplified before it is examined, coefficients may not appear quite
 the way they were envisioned.
 
@@ -742,12 +978,13 @@ Example:
 (%i2) ratcoef (s, a + b);
 (%o2)                           x
 @end example
+@c NEED MORE EXAMPLES HERE
 
 @end defun
 
-@defun ratdenom (exp)
-obtains the denominator of the rational expression exp.
-If exp is in general form then the @code{denom} function should be used
+@defun ratdenom (@var{expr})
+Returns the denominator of the rational expression @var{expr}.
+If @var{expr} is in general form then the @code{denom} function should be used
 instead, unless one wishes to get a CRE result.
 
 @end defun
@@ -761,13 +998,18 @@ occurring.
 
 @end defvar
 
-@defun ratdiff (exp, var)
-differentiates the rational expression exp (which
-must be a ratio of polynomials or a polynomial in the variable var)
-with respect to var.  For rational expressions this is much faster
-than @code{diff}.  The result is left in CRE form.  However, @code{ratdiff} should
-not be used on factored CRE forms; use @code{diff} instead for such
-expressions.
+@defun ratdiff (@var{expr}, @var{x})
+Differentiates the rational expression @var{expr} (which
+must be a ratio of polynomials or a polynomial in the variable @var{x})
+with respect to @var{x}.
+For rational expressions this is much faster than @code{diff}.
+@c IS THE RESULT EQUIVALENT TO diff ??
+
+The result is returned in canonical rational expression (CRE) form.
+@c "SHOULD NOT" -- WHAT IS THIS ABOUT ?? 
+@c (GREP ALL TEXI FILES FOR "SHOULD" AT SOME POINT)
+However, @code{ratdiff} should not be used on factored CRE forms;
+use @code{diff} instead for such expressions.
 
 Example:
 @c FOLLOWING GENERATED FROM THESE EXPRESSIONS
@@ -777,11 +1019,6 @@ Example:
 @c ratdiff (expr, x);
 
 @example
-(%i1) s: a*x + b*x + 5$
-(%i2) ratcoef (s, a + b);
-(%o2)                           x
-(%i3) kill(all);
-(%o0)                         done
 (%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
                            3
                         4 x  + 10 x - 11
@@ -805,7 +1042,7 @@ Example:
 
 @end defun
 
-@defun ratdisrep (exp)
+@defun ratdisrep (@var{expr})
 changes its argument from CRE form to general form.
 This is sometimes convenient if one wishes to stop the "contagion", or
 use rational functions in non-rational contexts.  Most CRE functions
@@ -824,13 +1061,13 @@ of floating point numbers to rational numbers.
 @end defvar
 
 @c ratexpand IS ALSO A VARIABLE -- MAKE SURE THAT IS CLEAR
-@defun ratexpand (exp)
-expands exp by multiplying out products of sums and
+@defun ratexpand (@var{expr})
+expands @var{expr} by multiplying out products of sums and
 exponentiated sums, combining fractions over a common denominator,
 cancelling the greatest common divisor of the numerator and
 denominator, then splitting the numerator (if a sum) into its
 respective terms divided by the denominator.  This is accomplished by
-converting exp to CRE form and then back to general form.
+converting @var{expr} to CRE form and then back to general form.
 
 The switch @code{ratexpand} if @code{true} will cause CRE
 expressions to be fully expanded when they are converted back to
@@ -897,21 +1134,21 @@ both be used at the same time.
 
 @end defvar
 
-@defun ratnumer (exp)
-obtains the numerator of the rational expression exp.
-If exp is in general form then the @code{num} function should be used
+@defun ratnumer (@var{expr})
+obtains the numerator of the rational expression @var{expr}.
+If @var{expr} is in general form then the @code{num} function should be used
 instead, unless one wishes to get a CRE result.
 
 @end defun
 
-@defun ratnump (exp)
-is @code{true} if exp is a rational number (includes integers)
+@defun ratnump (@var{expr})
+is @code{true} if @var{expr} is a rational number (includes integers)
 else @code{false}.
 
 @end defun
 
-@defun ratp (exp)
-is @code{true} if exp is in CRE or extended CRE form else @code{false}.
+@defun ratp (@var{expr})
+is @code{true} if @var{expr} is in CRE or extended CRE form else @code{false}.
 
 @end defun
 
@@ -924,9 +1161,9 @@ to rational numbers.
 
 @end defvar
 
-@defun ratsimp (exp)
+@defun ratsimp (@var{expr})
 rationally simplifies (similar to @code{ratexpand}) the
-expression exp and all of its subexpressions including the arguments
+expression @var{expr} and all of its subexpressions including the arguments
 to non- rational functions.  The result is returned as the quotient of
 two polynomials in a recursive form, i.e.  the coefficients of the
 main variable are polynomials in the other variables.  Variables may,
@@ -935,7 +1172,7 @@ but with @code{ratsimp}, the arguments to non-rational functions are
 rationally simplified.  Note that @code{ratsimp} is affected by some of the
 variables which affect @code{ratexpand}.
 
-RATSIMP(exp,v1,v2,...,vn) - enables rational simplification with the
+RATSIMP(@var{expr},v1,v2,...,vn) - enables rational simplification with the
 specification of variable ordering as in @code{ratvars}.
 
 @code{ratsimpexpons} - if @code{true} will cause exponents of expressions to
@@ -1121,7 +1358,7 @@ containing some of the same factors.
 
 @end defvar
 
-@defun sqfr (exp)
+@defun sqfr (@var{expr})
 is similar to @code{factor} except that the polynomial factors are
 "square-free." That is, they have factors only of degree one.  This
 algorithm, which is also used by the first stage of @code{factor}, utilizes
@@ -1198,10 +1435,10 @@ Examples:
 
 @end defun
 
-@defun totaldisrep (exp)
-converts every subexpression of exp from CRE to
-general form.  If exp is itself in CRE form then this is identical to
-@code{ratdisrep} but if not then @code{ratdisrep} would return exp unchanged while
+@defun totaldisrep (@var{expr})
+converts every subexpression of @var{expr} from CRE to
+general form.  If @var{expr} is itself in CRE form then this is identical to
+@code{ratdisrep} but if not then @code{ratdisrep} would return @var{expr} unchanged while
 @code{totaldisrep} would "totally disrep" it.  This is useful for
 ratdisrepping expressions e.g., equations, lists, matrices, etc. which
 have some subexpressions in CRE form.
