@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.10 2004-03-28 07:16:55 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.11 2004-07-03 01:44:55 billingd Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -290,6 +290,17 @@ proc vMAXSetMaximaCommand {} {
 	}
     }
 
+    # FIXME: More gruesome windows hacks.  db: 2004-07-02
+    # Q. What if there is a space in the path component of exe? 
+    # A. Convert it to a shortname.
+    # Q. Why does that fail?
+    # A. The name is surrounded by {}.  Just rip these out. Yuk
+    if {$tcl_platform(platform) == "windows"} {
+	if {[string first " " $exe] >= 0} {
+            regsub -all "\[\{\}\]" $exe "" exe
+            set exe [file attrib $exe -shortname]
+        }
+    }
     set command {}
     lappend command $exe
     eval lappend command  $maxima_opts
