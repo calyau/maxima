@@ -7,8 +7,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.1 $
-;; $Date: 2001-11-08 22:25:21 $
+;; $Revision: 1.2 $
+;; $Date: 2001-11-11 01:53:21 $
 ;; Keywords: maxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -181,107 +181,6 @@
 ;; A short help page on debugging can be accessed through
 ;; C-c C-d
 
-;;; Change Log:
-
-;; $Log: maxima.el,v $
-;; Revision 1.1  2001-11-08 22:25:21  belanger
-;; Initial commit of maxima mode for Emacs.
-;;
-;; Revision 1.23  2001/11/08 16:41:16  jay
-;; I made some changes so this would work with XEmacs.
-;;
-;; Revision 1.22  2001/11/06 21:08:40  jay
-;; I fixed a problem with maxima-mode not recognizing when
-;; a computation is finished.
-;;
-;; Revision 1.21  2001/11/06 20:52:06  jay
-;; I changed the default behavior of maxima-send-region to check for
-;; parentheses.
-;;
-;; Revision 1.20  2001/11/06 17:23:06  jay
-;; I updated the documentation to reflect J"urgen's changes.
-;;
-;; Revision 1.19  2001/11/06 17:09:50  jay
-;; I added J"urgen Tischer's changes.
-;;
-;; Revision 1.18  2001/11/05 13:45:07  jaycvs
-;; I added a `get last input prompt' function.
-;;
-;; Revision 1.17  2001/11/03 19:58:22  jaycvs
-;; I added some functions to copy the last maxima output
-;; without the prompts.
-;;
-;; Revision 1.16  2001/11/02 20:09:41  jay
-;; I made some fixes for getting the TeXed output.
-;;
-;; Revision 1.15  2001/11/02 17:04:41  jay
-;; I changed the behavior (and names) of the copy-last-output functions.
-;;
-;; Revision 1.14  2001/11/02 03:02:00  jaycvs
-;; I changed some names, so that all names begin with
-;; maxima-
-;; inferior-maxima-
-;; or maxima-debug-
-;;
-;; Revision 1.13  2001/11/01 21:58:49  jay
-;; I fixed `maxima-last-output'.
-;; It no longer uses a filter to keep track of the last output, since
-;; that wasn't working correctly.
-;;
-;; Revision 1.12  2001/11/01 21:26:21  jay
-;; I put `maxima-wait' back in.
-;;
-;; Revision 1.11  2001/11/01 03:46:03  jaycvs
-;; I added the functions `maxima-last-output' and
-;; `maxima-last-tex-output', for getting copies of the last output.
-;;
-;; Revision 1.10  2001/10/25 21:00:54  jay
-;; I fixed a bug where sending a line in the process buffer would signal
-;; an error if the point were between parentheses.
-;;
-;; Revision 1.9  2001/10/25 20:44:24  jay
-;; I fixed it so that a Maxima process can be started even if there's a
-;; dead one laying around.
-;;
-;; Revision 1.8  2001/10/21 19:16:20  jay
-;; I made a minor correction to maxima-complete.
-;;
-;; Revision 1.7  2001/10/21 16:09:55  jay
-;; I fixed a minor keymap problem.
-;;
-;; Revision 1.6  2001/10/21 16:03:03  jay
-;; I made the user changable variables customizable.
-;;
-;; Revision 1.5  2001/10/21 05:45:01  jay
-;; I added Jürgen Tischer's maxima-complete to provide a completion
-;; mechanism to maxima-mode.  I then added maxima-dynamic-complete to add
-;; another completion mechanism.
-;; To bind both of these to TABs, some other keybindings were changed.
-;; maxima-complete is bound to M-TAB
-;; maxima-dynamic-complete is bound to C-TAB
-;; (in both maxima-mode and inferior-maxima-mode).
-;; In maxima-mode
-;;  maxima-stop is now bound to M-C-k
-;;  maxima-indent-form is now bound to M-C-q (this matches indent-sexp in
-;;    lisp mode)
-;; In inferior-maxima-mode
-;;   inferior-maxima-smart-complete is now bound to M-C-TAB.
-;;
-;; Revision 1.3  2001/10/19 19:16:41  jay
-;; I did some minor clean-up.
-;;
-;; Revision 1.2  2001/10/19 18:50:50  jay
-;; I removed the lisp-level functions.  (Lisp work, I suppose, should be
-;; done in lisp-mode.)
-;; I removed `inferior-maxima-backward/forward-prompt', since comint can
-;; take care of that.
-;; I removed the "don't show Maxima buffer when a command is sent"
-;; option; it was left over from mupad.el (to be used by emupad.el).
-;;
-;; Revision 1.1.1.1  2001/10/10 19:37:15  jay
-;; Initial checkin of files to CVS.
-;;
-
 ;;; Code:
 
 ;;;; First
@@ -291,9 +190,7 @@
 
 (require 'comint)
 (require 'easymenu)
-(if running-xemacs
-    (require 'maxima-font-lock-xemacs)
-  (require 'maxima-font-lock))
+(require 'maxima-font-lock)
 (provide 'maxima)
 
 ;;;; The variables that the user may wish to change
@@ -1252,21 +1149,21 @@ if completion is ambiguous."
       (modify-syntax-entry ?_ "w" maxima-mode-syntax-table)
       (modify-syntax-entry ?% "w" maxima-mode-syntax-table)
       (modify-syntax-entry ?? "w" maxima-mode-syntax-table)
-      (while (< i ?0)
-	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
-	(setq i (1+ i)))
-      (setq i (1+ ?9))
-      (while (< i ?A)
-	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
-	(setq i (1+ i)))
-      (setq i (1+ ?Z))
-      (while (< i ?a)
-	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
-	(setq i (1+ i)))
-      (setq i (1+ ?z))
-      (while (< i 128)
-	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
-	(setq i (1+ i)))
+;;       (while (< i ?0)
+;; 	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
+;; 	(setq i (1+ i)))
+;;       (setq i (1+ ?9))
+;;       (while (< i ?A)
+;; 	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
+;; 	(setq i (1+ i)))
+;;       (setq i (1+ ?Z))
+;;       (while (< i ?a)
+;; 	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
+;; 	(setq i (1+ i)))
+;;       (setq i (1+ ?z))
+;;       (while (< i 128)
+;; 	(modify-syntax-entry i "_   " maxima-mode-syntax-table)
+;; 	(setq i (1+ i)))
       (modify-syntax-entry ?  "    " maxima-mode-syntax-table)
       (modify-syntax-entry ?\t "   " maxima-mode-syntax-table)
       (modify-syntax-entry ?` "'   " maxima-mode-syntax-table)
@@ -1280,7 +1177,6 @@ if completion is ambiguous."
       (modify-syntax-entry ?+ "." maxima-mode-syntax-table)
       (modify-syntax-entry ?- "." maxima-mode-syntax-table)
       (modify-syntax-entry ?= "." maxima-mode-syntax-table)
-      (modify-syntax-entry ?% "." maxima-mode-syntax-table)
       (modify-syntax-entry ?< "." maxima-mode-syntax-table)
       (modify-syntax-entry ?> "." maxima-mode-syntax-table)
       (modify-syntax-entry ?& "." maxima-mode-syntax-table)
@@ -1481,9 +1377,6 @@ To get apropos with the symbol under point, use:
   (setq mode-name "Maxima")
   (use-local-map maxima-mode-map)
   (maxima-mode-variables)
-  (setq font-lock-defaults 
-        '(maxima-font-lock-keywords 
-          nil t nil maxima-beginning-of-form))
   (run-hooks 'maxima-mode-hook))
 
 
@@ -2631,10 +2524,6 @@ The following commands are available:
   (setq mode-line-process '(": %s"))
   (maxima-mode-variables)
   (use-local-map inferior-maxima-mode-map)
-  ;; More font locking
-  (setq font-lock-defaults 
-        '(inferior-maxima-font-lock-keywords 
-          nil t nil maxima-beginning-of-form))
   ;; Debugging stuff
   (setq maxima-debug-last-frame nil)
   (setq maxima-debug-last-frame-displayed-flag t)
@@ -2646,7 +2535,7 @@ The following commands are available:
        (add-to-list 'comint-preoutput-filter-functions 'inferior-maxima-filter)
       (add-to-list 'comint-output-filter-functions 'maxima-check-level)))
   (set-process-sentinel inferior-maxima-process 'inferior-maxima-sentinel)
-  (run-hooks 'maxima-mode-hook))
+  (run-hooks 'inferior-maxima-mode-hook))
 
 ;;;; Running Maxima
 
