@@ -306,10 +306,6 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
 
 (defvar inferior-maxima-waiting-for-output nil)
 
-(defvar inferior-maxima-asking-question nil)
-
-(defvar inferior-maxima-question nil)
-
 (defvar inferior-maxima-exit-hook nil)
 
 ;;;; Utility functions
@@ -1599,7 +1595,6 @@ To get apropos with the symbol under point, use:
   "Take note of position, then send the input"
   (setq inferior-maxima-input-end (point))
   (setq inferior-maxima-waiting-for-output t)
-  (setq inferior-maxima-asking-question nil)
   (comint-send-input))
 
 ;;; This next function is a modified version of comint-strip-ctrl-m
@@ -1628,12 +1623,10 @@ To get apropos with the symbol under point, use:
 
 (defun inferior-maxima-output-filter (str)
   "Look for a new input prompt"
-   (cond ((string-match inferior-maxima-prompt str)
+  (cond ((string-match inferior-maxima-prompt str)
          (setq inferior-maxima-waiting-for-output nil))
         ((string-match "?" str)
-         (setq inferior-maxima-waiting-for-output nil)
-         (setq inferior-maxima-asking-question t)
-         (setq inferior-maxima-question str))))
+         (maxima-ask-question str))))
 
 (defun maxima-start ()
   "Start the Maxima process."
@@ -1648,7 +1641,6 @@ To get apropos with the symbol under point, use:
   (unless (processp inferior-maxima-process)
     (setq inferior-maxima-input-end 0)
     (setq inferior-maxima-waiting-for-output t)
-    (setq inferior-maxima-asking-question nil)
     (let ((mbuf)
           (cmd))
       (if maxima-args
@@ -1688,21 +1680,28 @@ To get apropos with the symbol under point, use:
 (defun maxima-single-string (string)
   "Send a string to the Maxima process."
   (setq string (maxima-strip-string string))
-  (let ((prompt))
-    (maxima-start)
+  (maxima-start)
+  (inferior-maxima-wait-for-output)
+  (save-current-buffer
+    (set-buffer (process-buffer inferior-maxima-process))
+    (goto-char (point-max))
+    (insert string)
+    (inferior-maxima-comint-send-input)
+    (goto-char (point-max))))
+
+(defun maxima-ask-question (string)
+  "Ask the question maxima wants answered."
+  (let ((ans (read-string 
+              (concat (maxima-strip-string string) " " ))))
+    (unless (string-match "[;$]" ans)
+      (setq ans (concat ans ";")))
+    (setq ans (maxima-strip-string ans))
     (save-current-buffer
       (set-buffer (process-buffer inferior-maxima-process))
       (goto-char (point-max))
-      (insert string)
+      (insert ans)
       (inferior-maxima-comint-send-input)
-      (inferior-maxima-wait-for-output)
-      (goto-char (point-max)))
-    (when inferior-maxima-asking-question
-      (let ((ans (read-string 
-                  (concat (maxima-strip-string inferior-maxima-question) " " ))))
-        (unless (string-match "[;$]" ans)
-          (setq ans (concat ans ";")))
-        (maxima-single-string ans)))))
+      (goto-char (point-max)))))
 
 (defun maxima-send-block (stuff)
   "Send a block of code to Maxima."
