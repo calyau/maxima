@@ -14,7 +14,9 @@
 #-(or cl NIL)
 (EVAL-WHEN (EVAL COMPILE) (SETQ OLD-IBASE *read-base* *read-base* 10.))
 #+cl
-(EVAL-WHEN (EVAL COMPILE) (SETQ OLD-read-base *read-BASE* *read-base* 10.))
+(EVAL-WHEN (EVAL COMPILE)
+  (defvar *old-read-base* *read-base*)
+  (setq *read-base* 10.))
 
 (declare-top (SPECIAL MSPECLIST MPROPLIST BINDLIST LOCLIST BVARS NOUNSFLAG putl
 		  NOITEMS DERIVFLAG DERIVLIST MPROGP MDOP EVP AEXPRP MLOCP $LABELS
@@ -2712,7 +2714,8 @@
 #-(or cl NIL)
 (EVAL-WHEN (EVAL COMPILE) (SETQ *read-base* OLD-IBASE))
 #+cl
-(EVAL-WHEN (EVAL COMPILE) (SETQ  *read-BASE* OLD-read-base))
+(EVAL-WHEN (EVAL COMPILE)
+  (setq  *read-base* *old-read-base*))
 
 ; Undeclarations for the file:
 (declare-top (NOTYPE N I J NNEED NGIVEN NCELLS NITEMS LISPSUB INDX EVFLG))
