@@ -1,6 +1,6 @@
 @menu
-* Introduction to ITENSOR::
-* Definitions for ITENSOR::
+* Introduction to Tensor::
+* Definitions for Tensor::
 @end menu
 
 @node Introduction to Tensor, Definitions for Tensor, Tensor, Tensor
@@ -132,7 +132,7 @@ all indexed objects.
 @defvar icounter
  default: [1] determines the numerical suffix to be used in
 generating the next dummy index in the tensor package.  The prefix is
-determined by the option @node{idummy} (default: %).
+determined by the option @code{idummy} (default: %).
 @end defvar
 
 @c @node kdelta

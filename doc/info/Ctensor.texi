@@ -548,8 +548,6 @@ performed on the non-zero components of Einstein tensors; if
 @code{ratfac} is @code{true} then the components will also be factored.
 
 @end defvar
-
-@end defvar
 @c @node ratriemann
 @c @unnumberedsec phony
 @defvar ratriemann
