@@ -283,6 +283,7 @@
           hyp
           todd-coxeter
           mactex
+	  plot
 
         )
 	(:load-source autol max_ext)

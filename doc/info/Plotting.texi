@@ -214,9 +214,9 @@ y direction.
 @example
 /* REal part of z ^ 1/3 */
  plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
-     ['grid,12,80],['plot_format,ps],
-     ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],
-     ['colour_z,true])
+     ['grid,12,80],['PLOT_FORMAT,ps],
+     ['TRANSFORM_XY,POLAR_TO_XY],['VIEW_DIRECTION,1,1,1.4],
+     ['COLOUR_Z,true])
 @end example
 @noindent
 Here the View_direction indicates the direction from which we
@@ -252,6 +252,16 @@ We can output to gnplot too:
 
 @example
  plot3d(2^(x^2-y^2),[x,-1,1],[y,-2,2],[plot_format,gnuplot])
+@end example
+
+Sometimes you may need to define a function to plot the expression.  All
+the arguments to plot3d are evaluated before being passed to plot3d, and
+so trying to make an expression which does just what you want may be
+difficult, and it is just easier to make a function.   
+@example
+M:MATRIX([1,2,3,4],[1,2,3,2],[1,2,3,4],[1,2,3,3])$
+f(x,y):=float(M[?round(x),?round(y)]);
+plot3d(f,[x,1,4],[y,1,4],['grid,4,4]);
 @end example
 
 
