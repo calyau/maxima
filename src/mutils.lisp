@@ -33,6 +33,20 @@
             (if found (third found) default))
          (MERROR "Improper form for list:~%~M" ielist))))
 
+;;; This function works like the every function in lisp.
+;;; It can take a list, or a positive number of arguments returning
+;;; true if all its arguments are not false.
+;;; Author Dan Stanger 12/1/02
+(defmfun $every (&rest args)
+  (let ((n (length args)))
+     (cond ((= n 0) (merror "Every must have at least 1 argument"))
+           ((= n 1)
+               (let ((args (first args)))
+                  (if (and ($listp args) (> ($length args) 0))
+                      (notany #'not (margs args))
+                      (if (and ($listp args) (= ($length args) 0)) nil args))))
+           (t (notany #'not args)))))
+
 ;;; (ASSOL item A-list)
 ;;;
 ;;;  Like ASSOC, but uses ALIKE1 as the comparison predicate rather
