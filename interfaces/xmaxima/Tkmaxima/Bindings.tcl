@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Bindings.tcl,v 1.1 2002-09-19 16:15:28 mikeclarkson Exp $
+#       $Id: Bindings.tcl,v 1.2 2003-01-22 02:57:23 mikeclarkson Exp $
 #
 ###### Bindings.tcl ######
 ############################################################
@@ -132,12 +132,13 @@ proc openMathAnyKey { win keysym s  } {
     }
 
     if { "$s" != "" && [doInsertp [$win tag names insert]]
-	 && ("$s" == "$keysym"  || [regexp  "\[\n\t \]" "$s" junk] )} {
+	 && ("$s" == "$keysym"  || [regexp -- "\[\n\t \]" "$s" junk] )} {
 	setModifiedFlag $win insert
     }
 }
 
-proc OpenMathYank {win level } {
+#mike this code is impenetrable:
+proc OpenMathYank {win level} {
     global maxima_priv
     #puts "doing OpenMathYank $win $level"
     if { $level == 0 } {
@@ -147,17 +148,25 @@ proc OpenMathYank {win level } {
 	$win mark set beforeyank insert
 	$win mark gravity beforeyank left
 	eval [peekl killRing "" ]
+    } elseif { ![info exists maxima_priv(lastcom,$win)]} {
+	#mike this case was not forseen in the code below and
+	# it always occurs on the first Yank if nothing has benn Killed
     } elseif { [catch {
 	set last $maxima_priv(lastcom,$win)
 	set m [lindex [lindex $last 1] 1]
 	incr m
-	if { "[lindex $last 0]" == "OpenMathYank" && \
-		 "$maxima_priv(currentwin)" == "$win" && \
-		 "$maxima_priv(point)" == "insert" } {set doit 1}} ] \ 
-	       || $doit==0} {
+	if { [lindex $last 0] == "OpenMathYank" && \
+		"$maxima_priv(currentwin)" == "$win" && \
+		"$maxima_priv(point)" == "insert"} {
+	    set doit 1
+	} else {
+	    #mike the following was missing, and its 
+	    # lack was obscurred by the catch
+  	    set doit 0
+	}
+    } err] || "$doit" == "0"} {
 	pushCommand $win Error "" 
     } else {
-	
 	set res [peekl killRing _none_ [expr {$m + 1}]]
 	if { "$res" == "_none_" } {
 	    # this will cause to cycle
@@ -168,7 +177,7 @@ proc OpenMathYank {win level } {
 	}
 	pushCommand $win OpenMathYank [list $win $m]
     }
-    catch { $win see insert}
+    catch {$win see insert}
 }
 
 proc saveText { win args } {
