@@ -6,9 +6,6 @@
 ;; Author: William F. Schelter
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
-;; $Name:  $
-;; $Revision: 1.3 $
-;; $Date: 2001-12-09 19:31:43 $
 ;; Keywords: maxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -235,9 +232,6 @@ Choices are 'standard, 'perhaps-smart, 'basic"
 
 (defvar inferior-maxima-computing-p nil
   "Non-nil if Maxima process is computing.")
-
-(defvar inferior-maxima-running-p nil
-  "Non-nil if Maxima process is alive.")
 
 (defvar inferior-maxima-question-p nil)
 
@@ -861,8 +855,6 @@ rigidly along with this one."
       (beginning-of-line)
       (kill-buffer index-buffer))))
 
-
-
 (defun maxima-help (&optional expr1)
   "Get help on a certain subject"
   (interactive)
@@ -1409,6 +1401,8 @@ To get apropos with the symbol under point, use:
 (defun maxima-start ()
   "Start the Maxima process."
   (interactive)
+  (setq inferior-maxima-computing-p t)
+  (setq inferior-maxima-question-p nil)
   (if (processp inferior-maxima-process)
       (unless (eq (process-status inferior-maxima-process) 'run)
         (delete-process inferior-maxima-process)
@@ -1417,15 +1411,12 @@ To get apropos with the symbol under point, use:
           (erase-buffer))
         (setq inferior-maxima-process nil)))
   (unless (processp inferior-maxima-process)
-    (setq inferior-maxima-computing-p t)
-    (setq inferior-maxima-running-p t)
-    (setq inferior-maxima-question-p nil)
     (let ((mbuf (make-comint "maxima" maxima-command)))
+      (accept-process-output (get-buffer-process mbuf))
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
-        (inferior-maxima-mode)))
-    (maxima-wait)))
+        (inferior-maxima-mode)))))
 
 (defun maxima-stop (&optional arg)
   "Kill the currently running Maxima process."
@@ -1442,30 +1433,6 @@ To get apropos with the symbol under point, use:
 	      (kill-buffer "*maxima*")
 	      (setq inferior-maxima-process nil))))))
 
-(defun maxima-wait ()
-  "Waits until the Maxima process is finished with a computation."
-  (if (not inferior-maxima-running-p) 
-      (if running-xemacs
-          (sit-for 1)
-        (sleep-for 1)))
-  (while (and 
-          inferior-maxima-computing-p 
-          inferior-maxima-running-p
-          (not inferior-maxima-question-p))
-    (if running-xemacs
-        (sleep-for 1)
-      (sleep-for 0 100)))
-  (when inferior-maxima-question-p
-    (let ((ans (read-string (maxima-question))))
-      (unless (string-match "[;$]" ans)
-        (setq ans (concat ans ";")))
-      (save-excursion
-        (set-buffer (process-buffer inferior-maxima-process))
-        (insert ans "\n")
-        (set-marker (process-mark inferior-maxima-process) (point)))
-      (maxima-string-nodisplay ans)
-      (maxima-wait))))
-
 ;;;; Sending information to the process
 
 ;;; Sending information to the process should be done through these
@@ -1475,12 +1442,6 @@ To get apropos with the symbol under point, use:
   "Send a string to the Maxima process."
   (maxima-start)
   (setq inferior-maxima-computing-p t)
-  (if (or
-       (string-match "quit();" string)
-       (string-match "" string))
-      (setq inferior-maxima-running-p nil)
-    (setq inferior-maxima-running-p t))
-;  (setq inferior-maxima-running-p t)
   (setq inferior-maxima-question-p nil)
   (comint-send-string inferior-maxima-process (concat string "\n"))
   (maxima-display-buffer))
@@ -1489,12 +1450,6 @@ To get apropos with the symbol under point, use:
   "Send a string to the Maxima process."
   (maxima-start)
   (setq inferior-maxima-computing-p t)
-  (if (or
-       (string-match "quit();" string)
-       (string-match "" string))
-      (setq inferior-maxima-running-p nil)
-    (setq inferior-maxima-running-p t))
-;  (setq inferior-maxima-running-p t)
   (setq inferior-maxima-question-p nil)
   (comint-send-string inferior-maxima-process (concat string "\n")))
     
@@ -1502,7 +1457,6 @@ To get apropos with the symbol under point, use:
   "Send the region to the Maxima process."
   (maxima-start)
   (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-running-p t)
   (setq inferior-maxima-question-p nil)
   (comint-send-region inferior-maxima-process beg end)
   (comint-send-string inferior-maxima-process "\n")
@@ -1513,7 +1467,6 @@ To get apropos with the symbol under point, use:
 do not display the maxima-buffer."
   (maxima-start)
   (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-running-p t)
   (setq inferior-maxima-question-p nil)
   (comint-send-region inferior-maxima-process beg end)
   (comint-send-string inferior-maxima-process "\n"))
@@ -1753,6 +1706,9 @@ to grab the current one.
 ;; maxima-debug-display-frame is invoked automatically when a 
 ;; filename-and-line-number appears in the output.
 
+(defun maxima-running ()
+  (and (processp inferior-maxima-process)
+       (eq (process-status inferior-maxima-process) 'run)))
 
 (defun maxima-check-level (string)
   "Tell when the process is done computing (by looking for the prompt)."
@@ -1774,12 +1730,7 @@ to grab the current one.
                (setq inferior-maxima-top-level-flag t)
                (setq inferior-maxima-debug-level-flag nil))))
     (if (string-match "?" string)
-        (setq inferior-maxima-question-p t)))
-;  (if (string= string "\n")
-;      (setq inferior-maxima-running-p nil)))
-  (if (not (and (processp inferior-maxima-process)
-                (eq (process-status inferior-maxima-process) 'run)))
-      (setq inferior-maxima-running-p nil)))
+        (setq inferior-maxima-question-p t))))
 
 (defun inferior-maxima-filter (string)
   (maxima-check-level string)
@@ -1794,75 +1745,6 @@ to grab the current one.
 	 (concat maxima-debug-filter-accumulator string))
       (inferior-maxima-filter-scan-input string)))
   "")
-
-(defun maxima-question ()
-  "Return inferior-maxima-result with whitespace trimmed off the ends.
-For use when the process asks a question."
-  (let ((beg (string-match "[^ \n]" inferior-maxima-result))
-        (end (string-match "?" inferior-maxima-result)))
-    (concat 
-     (substring inferior-maxima-result beg (1+ end))
-     " ")))
-
-(defun maxima-last-output ()
-  "Copy the last output from Maxima."
-  (interactive)
-  (let ((out-start)
-	(out-end)
-	(old-buffer (current-buffer))
-        (maxima-buffer (get-buffer "*maxima*"))
-        (output))
-    (maxima-wait)
-    (if (null maxima-buffer)
-        (message "No Maxima output buffer")
-      (set-buffer maxima-buffer)
-      (save-excursion
-	(end-of-buffer)
-        (if inferior-maxima-running-p
-            (re-search-backward inferior-maxima-prompt))
-	(setq out-end (point))
-	(re-search-backward inferior-maxima-prompt)
-	(forward-line 1)
-	(setq out-start (point))
-	(setq output 
-              (buffer-substring-no-properties out-start out-end))))
-    (set-buffer old-buffer)
-    output))
-
-(defun maxima-last-output-noprompt ()
-  "Return the last Maxima output, without the prompts"
-  (interactive)
-  (if (not inferior-maxima-running-p)
-      (maxima-last-output)
-    (let* ((output (maxima-last-output))
-           (newstring)
-           (i 0)
-           (beg)
-           (end)
-           (k))
-    ;; Replace the output prompt with spaces
-      (setq beg (string-match "\\(^([D][0-9]*) \\)" output))
-      (if (not beg)
-          output
-        (setq end (1+ (string-match ")" output beg)))
-        (setq newstring (substring output 0 beg))
-        (setq k (- end beg))
-        (while (< i k)
-          (setq newstring (concat newstring " "))
-          (setq i (1+ i)))
-        (concat newstring 
-                (substring output 
-                           end))))))
-
-(defun maxima-last-output-tex-noprompt ()
-  "Return the last Maxima output, between the dollar signs."
-  (interactive)
-  (let* ((output (maxima-last-output))
-         (begtex (string-match "\\$\\$" output))
-         (endtex (string-match "\\$\\$" output (1+ begtex))))
-    (concat
-     (substring output begtex (+ endtex 2))
-     "\n")))
 
 (defun inferior-maxima-filter-accumulate-marker (string)
   (setq maxima-debug-filter-accumulator nil)
@@ -2307,11 +2189,9 @@ Thus `:br' would suffice for `:break'.  The current commands are:
 	  (if (maxima-check-parens pt1 pt)
               (progn
                 (setq inferior-maxima-computing-p t)
-                (setq inferior-maxima-running-p t)
                 (setq inferior-maxima-question-p nil)
                 (comint-send-input))))
       (setq inferior-maxima-computing-p t)
-      (setq inferior-maxima-running-p t)
       (setq inferior-maxima-question-p nil)
       (comint-send-input))))
 
@@ -2319,7 +2199,6 @@ Thus `:br' would suffice for `:break'.  The current commands are:
   "Send the line to the Maxima process."
   (interactive)
   (setq inferior-maxima-computing-p t)
-  (setq inferior-maxima-running-p t)
   (setq inferior-maxima-question-p nil)
   (comint-send-input))
 
