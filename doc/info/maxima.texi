@@ -283,7 +283,7 @@ Groups
 Runtime Environment
 
 * Introduction for Runtime Environment::  
-* INTERRUPTS::                  
+* Interrupts::                  
 * Definitions for Runtime Environment::  
 
 Miscellaneous Options
