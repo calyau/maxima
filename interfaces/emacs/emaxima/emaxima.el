@@ -30,7 +30,7 @@
 ;; The latest version of this package should be available at
 ;; ftp://vh213601.truman.edu/pub/Maxima
 ;; You will need, in addition to this file,
-;; maxima.el, maxima-font-lock.el, maxima-symbols.el, and emaxima.sty
+;; maxima.el, maxima-font-lock.el and emaxima.sty
 
 ;;; Commentary:
 
@@ -1891,50 +1891,13 @@ output."
   (require 'tex-site)
   ;; I don't think this is the best thing to do...
   (load "latex")
-  (setq texmode-map LaTeX-mode-map)
   (defun texmode () (latex-mode)))
  ((eq emaxima-use-tex 'tex)
   (require 'tex-mode)
-  (setq texmode-map tex-mode-map)
   (defun texmode () (tex-mode)))
  (t
   (autoload 'text-mode "text-mode")
-  (setq texmode-map text-mode-map)
   (defun texmode () (text-mode))))
-
-;;; Now, define the keymap
-(defvar emaxima-mode-map nil
-  "The keymap for emaxima-mode")
-
-(if emaxima-mode-map
-    nil
-  (let ((map (copy-keymap texmode-map)))
-    (define-key map "\"" 'emaxima-insert-quote)
-    (define-key map "$" 'emaxima-insert-dollar)
-    (define-key map "\C-c\C-u" nil)
-    (define-key map "\C-c+" 'emaxima-forward-cell)
-    (define-key map "\C-c-" 'emaxima-backward-cell)
-    (define-key map "\C-c\C-ua" 'emaxima-update-all)
-    (define-key map "\C-c\C-uA" 'emaxima-tex-update-all)
-    (define-key map "\C-c\C-us" 'emaxima-update-session)
-    (define-key map "\C-c\C-uS" 'emaxima-tex-update-session)
-    (define-key map "\C-c\C-o" 'emaxima-create-standard-cell)
-    (define-key map "\C-c\C-p" 'emaxima-create-session-cell)
-    (define-key map "\C-c\C-n" 'emaxima-create-noshow-cell)
-    (define-key map "\C-c\C-ul" 'emaxima-replace-line)
-    (define-key map "\C-c\C-uL" 'emaxima-replace-line-with-tex)
-    (define-key map "\C-c\C-k"  'maxima-stop)
-    ;; And some emaxima keys that make sense in cells
-    (define-key map "\C-c\C-v" 'emaxima-send-cell)
-    (define-key map "\C-c\C-uc" 'emaxima-update-single-cell)
-    (define-key map "\C-c\C-uC" 'emaxima-tex-update-single-cell)
-    (define-key map "\C-c\C-d" 'emaxima-delete-output)
-    (define-key map "\C-c\C-x" 'emaxima-package-part)
-    (define-key map "\C-c@" 'emaxima-assemble)
-    (define-key map "\C-c\C-h" 'maxima-help)
-    (define-key map "\C-c\C-i" 'maxima-info)
-    (define-key map [(control c) (control tab)] 'emaxima-insert-complete-name)
-    (setq emaxima-mode-map map)))
 
 ;;; A function for font-locking
 (defun emaxima-match-cells (limit)
@@ -1949,11 +1912,11 @@ output."
       (store-match-data (list beg end))
       t)))
 
-(define-derived-mode emaxima-mode tex-mode  "EMaxima"
+(define-derived-mode emaxima-mode texmode  "EMaxima"
   "This is a mode intended to allow the user to write documents that
 include Maxima code.  The file can be LaTeXed to produce nice 
 looking output (although that isn't necessary, of course), and so the
-mode is an extension of tex-mode (AucTeX).
+mode is an extension of texmode (AucTeX).
 The units of Maxima code that are worked with are \"cells\", which are 
 delimited by \"\\beginmaxima\" and \"\\endmaxima\". The cells can be evaluated 
 individually, as a group, and the output can be returned as Maxima output 
@@ -2021,6 +1984,34 @@ already) so the file will begin in emaxima-mode next time it's opened.
 ;  (if running-xemacs 
 ;      (add-hook 'inferior-maxima-mode-hook (lambda () (sit-for 1))))
   (run-hooks 'emaxima-mode-hook))
+
+
+;;; Now, add to  the keymap
+(define-key emaxima-mode-map "\"" 'emaxima-insert-quote)
+(define-key emaxima-mode-map "$" 'emaxima-insert-dollar)
+(define-key emaxima-mode-map "\C-c\C-u" nil)
+(define-key emaxima-mode-map "\C-c+" 'emaxima-forward-cell)
+(define-key emaxima-mode-map "\C-c-" 'emaxima-backward-cell)
+(define-key emaxima-mode-map "\C-c\C-ua" 'emaxima-update-all)
+(define-key emaxima-mode-map "\C-c\C-uA" 'emaxima-tex-update-all)
+(define-key emaxima-mode-map "\C-c\C-us" 'emaxima-update-session)
+(define-key emaxima-mode-map "\C-c\C-uS" 'emaxima-tex-update-session)
+(define-key emaxima-mode-map "\C-c\C-o" 'emaxima-create-standard-cell)
+(define-key emaxima-mode-map "\C-c\C-a" 'emaxima-create-session-cell)
+(define-key emaxima-mode-map "\C-c\C-n" 'emaxima-create-noshow-cell)
+(define-key emaxima-mode-map "\C-c\C-ul" 'emaxima-replace-line)
+(define-key emaxima-mode-map "\C-c\C-uL" 'emaxima-replace-line-with-tex)
+(define-key emaxima-mode-map "\C-c\C-k"  'maxima-stop)
+;; And some emaxima keys that make sense in cells
+(define-key emaxima-mode-map "\C-c\C-v" 'emaxima-send-cell)
+(define-key emaxima-mode-map "\C-c\C-uc" 'emaxima-update-single-cell)
+(define-key emaxima-mode-map "\C-c\C-uC" 'emaxima-tex-update-single-cell)
+(define-key emaxima-mode-map "\C-c\C-d" 'emaxima-delete-output)
+(define-key emaxima-mode-map "\C-c\C-x" 'emaxima-package-part)
+(define-key emaxima-mode-map "\C-c@" 'emaxima-assemble)
+(define-key emaxima-mode-map "\C-c\C-h" 'maxima-help)
+(define-key emaxima-mode-map "\C-c\C-i" 'maxima-info)
+(define-key emaxima-mode-map [(control c) (control tab)] 'emaxima-insert-complete-name)
 
 ;;; Now, the menu.
 (easy-menu-define emaxima-menu emaxima-mode-map
