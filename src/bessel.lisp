@@ -427,7 +427,7 @@
 	   (numberp ($realpart arg))
 	   (numberp ($imagpart arg)))
       ($bessel (complex ($realpart arg) ($imagpart arg)) order)
-      (subfunmakes '$%j (ncons order) (ncons arg))))
+      (subfunmakes '$bessel_j (ncons order) (ncons arg))))
 
 ;; Bessel function of the second kind, Y[n](z), for real or complex z
 ;; and non-negative real n.
@@ -925,18 +925,20 @@
 	(rat-order nil))
     (subargcheck exp 1 1 '$bessel_j)
     (let* ((arg (simpcheck (car (subfunargs exp)) z)))
+      (when (and (numberp arg) (zerop arg)
+		 (numberp order))
+	;; J[v](0) = 1 if v = 0.  Otherwise 0.
+	(return-from bessel-j-simp
+	  (if (zerop order)
+	      1
+	      0)))
       (cond ((and $numer (numberp order)
 		  (complex-number-p arg))
 	     ;; We have numeric order and arg, so let's try to
 	     ;; evaluate it numerically.
 	     (let ((real-arg ($realpart arg))
 		   (imag-arg ($imagpart arg)))
-	       (cond ((and (numberp real-arg) (numberp imag-arg)
-			   (zerop real-arg) (zerop imag-arg))
-		      (if (zerop order)
-			  1
-			  0))
-		     ((or (and (floatp real-arg) (numberp imag-arg))
+	       (cond ((or (and (floatp real-arg) (numberp imag-arg))
 			  (and $numer (numberp real-arg) (numberp imag-arg)))
 		      ;; Numerically evaluate it if the arg is a float
 		      ;; or if the arg is a number and $numer is
@@ -967,6 +969,14 @@
 ;; Define the Bessel funtion Y[n](z)
 
 (defprop $bessel_y bessel-y-simp specsimp)
+
+(defprop $bessel_y
+    ((n x)
+     ((%derivative) ((mqapply) (($bessel_y array) n) x) n 1)
+     ((mplus)
+      ((mqapply) (($bessel_y array) ((mplus) -1 n)) x)
+      ((mtimes) -1 n ((mqapply) (($bessel_y array) n) x) ((mexpt) x -1))))
+  grad)
 
 (defun bessel-y-simp (exp ignored z)
   (declare (ignore ignored))
@@ -1009,6 +1019,14 @@
 
 (defprop $bessel_i bessel-i-simp specsimp)
 
+(defprop $bessel_i
+    ((n x)
+     ((%derivative) ((mqapply) (($bessel_i array) n) x) n 1)
+     ((mplus)
+      ((mqapply) (($bessel_i array) ((mplus) -1 n)) x)
+      ((mtimes) -1 n ((mqapply) (($bessel_i array) n) x) ((mexpt) x -1))))
+  grad)
+
 (defun bessel-i-simp (exp ignored z)
   (declare (ignore ignored))
   (let ((order (simpcheck (car (subfunsubs exp)) z))
@@ -1047,6 +1065,15 @@
 ;; Define the Bessel funtion K[n](z)
 
 (defprop $bessel_k bessel-k-simp specsimp)
+
+(defprop $bessel_k
+    ((n x)
+     ((%derivative) ((mqapply) (($bessel_k array) n) x) n 1)
+     ((mplus simp)
+      ((mtimes simp) -1 ((mqapply simp) (($bessel_k simp array) n) x))
+      ((mtimes simp) -1 n ((mexpt simp) x -1)
+       ((mqapply simp) (($bessel_k simp array) n) x))))
+  grad)
 
 (defun bessel-k-half-order (arg order)
   ;; K[n+1/2](z) and K[-n-1/2](z) can be expressed in terms of
