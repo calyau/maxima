@@ -9,6 +9,7 @@ docsharedir = $(docdir)/share
 demodir = $(verpkgdatadir)/demo
 emacsdir = $(verpkgdatadir)/emacs
 sharedir = $(verpkgdatadir)/share
+instsrcdir = $(verpkgdatadir)/src
 xmaximadir = $(verpkgdatadir)/xmaxima
 
 # Support for installation of DATA files in a generic directory
