@@ -26,6 +26,12 @@
 
 (declare-top (special eps $exponentialize $bestriglim $radexpand))
 
+;; I (rtoy) don't know what the default should be. but $hgfred sets it
+;; to 3.  But we also need to define it because some of the specint
+;; demos need it set.
+;;
+(defmvar $bestriglim 3)
+
 (eval-when
     #+gcl (eval compile)
     #-gcl (:execute :compile-toplevel)
