@@ -66,15 +66,65 @@ contrib_ode(eqn,y,x) := block(
   )
 )$
 
-/* Check the solution of an ode. */
-ode_check(e_,a_) := block(
-  ratsimp(ev(lhs(e_)-rhs(e_),a_,diff))
-)$
-
 ode_disp(msg) := block(
   if get('contrib_ode,'verbose) then print(msg)
 )$
 
 ode_disp2(msg,e) := block(
   if get('contrib_ode,'verbose) then print(msg,e)
+)$
+
+/* recurse through expression eq looking for a derivative
+   Return the derivative if found, false otherwise
+ */
+ode_deriv(eq) := block( 
+  [u,v:false],
+  eq:expand(eq),
+  if atom(eq) then return(false),
+  if operatorp(eq,nounify('diff)) then return(eq),
+  for u in eq do 
+    (if (v:ode_deriv(u))#false then return(true)),
+  v
+)$
+
+/* Check the solution of an ode. */
+ode_check(e_,a_) := block(
+  [deriv,x_,y_,diff_e,u,v],
+
+  deriv:ode_deriv(e_),
+  if deriv=false then (
+    print("Not a differential equation"),
+    return(false)
+  ),
+  x_:part(deriv,2),  /* Independent variable */
+  y_:part(deriv,1),  /* Dependent variable */
+
+  if not(atom(x_)) then (
+    print("Independent variable ",x_," not an atom"),
+    return(false)
+  ),
+  if not(atom(y_)) then (
+    print("Dependent variable ",y_," not an atom"),
+    return(false)
+  ),
+
+  /* Is it a simple solution */
+  if lhs(a_)=y_ then (
+    return(ratsimp(ev(lhs(e_)-rhs(e_),a_,diff)))
+  ),
+
+  /* Must be an implicit solution */
+  diff_e:diff(subst(v(x),y_,a_),x_),
+  diff_e:subst(y_,v(x),diff_e),
+  u:solve(diff_e,'diff(y_,x_)),
+  if u=[] then (
+    print("Problem - dy/dx is ",u),
+    return(false)
+  ),
+  u:first(u),
+  if ( lhs(u)#'diff(y_,x_) or not(freeof('diff(y_,x_),rhs(u))) ) then (
+    print("Problem - dy/dx is ",u),
+    return(false)
+  ),
+  fullratsimp(ev(lhs(e_)-rhs(e_),u))
 )$
