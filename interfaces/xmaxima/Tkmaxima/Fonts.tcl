@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Fonts.tcl,v 1.4 2002-09-10 09:17:19 mikeclarkson Exp $
+#       $Id: Fonts.tcl,v 1.5 2002-09-12 07:59:39 mikeclarkson Exp $
 #
 
 # set font {Courier 8}
@@ -115,3 +115,30 @@ if {0} {
 	unset width_
     }
 }
+
+
+
+######### font choosing utilities #########
+global tcl_platform
+global isFixedp
+
+if { "$tcl_platform(platform)" == "unix" } {
+    array set isFixedp {
+	fixed 1 {fangsong ti} 1 {clearlyu alternate glyphs} 0 lucidatypewriter 1 charter 0 lucidabright 0 times 0 ming 1 {lucidux sans} 0 {open look glyph} 0 {song ti} 1 newspaper 0 helvetica 0 {open look cursor} 1 li 1 mincho 1 {clearlyu ligature} 0 {clearlyu pua} 0 {lucidux mono} 1 courier 1 clearlyu 0 utopia 0 lucida 0 nil 1 clean 1 terminal 1 kai 1 gothic 1 cursor 0 symbol 0 {clearlyu arabic extra} 0 {lucidux serif} 0 {new century schoolbook} 0 song 1
+    }
+}
+
+proc getFontFamilies { fixed } {
+    global isFixedp
+    foreach font  [font families] {
+	if { ![info exists isFixedp($font)] } {
+	    set isFixedp($font) [font metrics [list $font] -fixed]
+	}
+	if { $isFixedp($font) == $fixed } {
+	    lappend answer $font
+	}
+    }
+    return [lsort $answer]
+}
+
+
