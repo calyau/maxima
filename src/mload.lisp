@@ -787,9 +787,11 @@
 		(setf tmp-output (make-string-output-stream))
 		(setf save-output *standard-output*)
 		(setf *standard-output* tmp-output)
-		(setq $%(setq result  (meval* (third expr))))
-		(setf *standard-output* save-output)
-		(setq next (mread st eof))
+		(unwind-protect
+		     (catch 'macsyma-quit
+		       (setq $%(setq result  (meval* (third expr)))))
+		  (setf *standard-output* save-output))
+		(setq next (catch 'macsyma-quit (mread st eof)))
 		(cond ((null next) (error "no result")))
 		(setq next-result  (third next))
 		(let* ((correct (batch-equal-check next-result result))
@@ -841,27 +843,27 @@
 	   
 (defun batch-equal-check (next-result result 
 			  &optional recursive)
-  (or (like next-result result)
-      ($simple_equal next-result result)
-      (cond ((not
-	      (or recursive ($simple_equal result $functions)))
-	     (batch-equal-check (meval* next-result)  result ;(meval* result)
-				t )))
-      (and (not ($bfloatp result))
-	   (let (($fpprec 12))
-	     (declare (special $fpprec))
-	     (equal (mstring result) (mstring next-result))
-	     ))
-
-	     
-      (cond ((not  (appears-in result 'factored))
-	     (like ($ratsimp next-result)
-		   ($ratsimp result))))
-      (equal 0 ($ratsimp `((mplus) ,next-result ((mtimes) -1 ,result))))
-      (equal (msize result nil nil nil nil )
-	     (msize next-result nil nil nil nil))
-
-      ))
+  (let ((answer 
+	 (catch 'macsyma-quit 
+	   (or (like next-result result)
+	       ($simple_equal next-result result)
+	       (cond ((not
+		       (or recursive ($simple_equal result $functions)))
+		      (batch-equal-check (meval* next-result) result t)))
+	       (and (not ($bfloatp result))
+		    (let (($fpprec 12))
+		      (declare (special $fpprec))
+		      (equal (mstring result) (mstring next-result))))
+	       (cond ((not  (appears-in result 'factored))
+		      (like ($ratsimp next-result)
+			    ($ratsimp result))))
+	       (equal 0 ($ratsimp `((mplus) ,next-result 
+				    ((mtimes) -1 ,result))))
+	       (equal (msize result nil nil nil nil )
+		      (msize next-result nil nil nil nil))))))
+    (if (eql answer 'maxima-error)
+	nil
+	answer)))
 
 ;;to keep track of global values during the error:
 (defun list-variable-bindings (expr &optional str &aux tem)
@@ -1001,6 +1003,6 @@
 				#'(lambda (x)
 				    (let ((s (if (> (length (rest x)) 1) "s" "")))
 				      (format 
-				       t "Error~a found in ~a, problem~a: ~a~%"
+				       t "Error~a found in ~a, problem~a:~%~a~%"
 				       s (first x) s (sort (rest x) #'<))))
 				errs))))))))

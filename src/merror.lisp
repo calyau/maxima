@@ -107,7 +107,7 @@
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
 	 (format t "~& -- an error.  Quitting.  To debug this try debugmode(true);~%")
-	 (throw 'macsyma-quit t )
+	 (throw 'macsyma-quit 'maxima-error)
 					;(if errcatch (error "macsyma error"))
 	 )))
 
