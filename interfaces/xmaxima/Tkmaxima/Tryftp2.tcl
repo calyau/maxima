@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: tryftp2.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### tryftp2.tcl ######
+###### Tryftp2.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
@@ -13,6 +9,7 @@ if { "[info commands vwait]" == "vwait" && "[info commands myVwait]" == "" } {
 
 proc submitFtp { viahost host name password directory filename} {
     global ftpInfo 
+
     if  { [catch { set sock [socket $viahost 80] } ] } {
 	set sock [socket $viahost 4080]
     }
@@ -39,7 +36,9 @@ proc submitFtp { viahost host name password directory filename} {
     # puts $sock $ftpInfo(data) ; flush $sock
     # puts sock=$sock
     set ftpInfo(message) ""
-    after 10000 "set ftpInfo($sock,done) -1"
+
+    set after_id [after 10000 "set ftpInfo($sock,done) -1"]
+
     set ftpInfo($sock,datalength) $len
     set ftpInfo($sock,datanext) 0
     set ftpInfo($sock,log) "none.."
@@ -49,11 +48,12 @@ proc submitFtp { viahost host name password directory filename} {
     myVwait ftpInfo($sock,done)
     set res $ftpInfo($sock,done)
     set ftpInfo(message) $ftpInfo($sock,log)
-    after cancel "set ftpInfo($sock,done) -1"
+
+    after cancel $after_id
+
     # puts $ftpInfo($sock,return)
-     ftp2Close $sock
+    ftp2Close $sock
     return $res
-    
 }
 
 proc ftp2Close { sock } {
@@ -80,6 +80,7 @@ proc ftp2WatchReturn { sock } {
 	set ftpInfo($sock,done) -1
 	set ftpInfo($sock,log) $msg
     }
+    #mike FIXME: this is a wrong use of after cancel
     after cancel "set ftpInfo($sock,done) -1"
     after 3000 "set ftpInfo($sock,done) -1"
 }
@@ -93,6 +94,7 @@ proc ftp2SendData { sock } {
     set ftpInfo(percent) [expr {($dn >= $dl ? 100.0 : 100.0 * $dn/$dl)}]
     # puts "storing data to $sock $percent %"
     if { $ftpInfo($sock,datanext) >= $ftpInfo($sock,datalength) } {
+	#mike FIXME: this is a wrong use of after cancel
 	after cancel "set ftpInfo($sock,done) -1"
 	after 10000 "set ftpInfo($sock,done) -1"
 	fileevent $sock writable ""
@@ -104,8 +106,10 @@ proc ftp2SendData { sock } {
     puts -nonewline $sock [string range $ftpInfo($sock,data) $ftpInfo($sock,datanext) [expr {$ftpInfo($sock,datanext) + $amtToSend -1}]]
     # puts  $sock $tosend
     flush $sock
+
     set ftpInfo($sock,datanext) [expr {$ftpInfo($sock,datanext) + $amtToSend}]
-	after cancel "set ftpInfo($sock,done) -1"
+    #mike FIXME: this is a wrong use of after cancel
+    after cancel "set ftpInfo($sock,done) -1"
     after 10000 "set ftpInfo($sock,done) -1"
 }
     

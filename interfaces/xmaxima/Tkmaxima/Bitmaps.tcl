@@ -1,13 +1,10 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: bitmaps.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### bitmaps.tcl ######
+###### Bitmaps.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
 
+global xHMulBMPdata
 set xHMulBMPdata ""
 lappend xHMulBMPdata "#define disc_width 6\n#define disc_height 6
 static unsigned char disc_bits[] = {

@@ -1,7 +1,3 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: wmenu.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
 ###### wmenu.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
@@ -53,11 +49,12 @@ proc deleteHelp { win } {
 	after cancel $helpPending
 	unset helpPending
     }
-   set top [winfo toplevel $win]
-   set helpwin [oget $top helpwin]
-    if { "$helpwin" != ""} {
-     place forget $helpwin 
-}   }
+    set top [winfo toplevel $win]
+    set helpwin [oget $top helpwin]
+   if { "$helpwin" != ""} {
+       place forget $helpwin 
+   }   
+}
     
 proc setHelp {win  help args } {
    # set c [ogetr $win c "cant"]
@@ -76,8 +73,6 @@ proc setHelp {win  help args } {
     bind $win <Enter> "$enter; showHelp $win  {$help} $args"
     bind $win <Leave> "$exit; deleteHelp $win"
 }
-
-set show_balloons 1
 
 
 #

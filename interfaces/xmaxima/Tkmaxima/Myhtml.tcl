@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: myhtml.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### myhtml.tcl ######
+###### Myhtml.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
@@ -199,52 +195,6 @@ proc xHMsetFont { win fonttag  } {
 }
 
 
-    
-#
-#  #### We have legacy code from before the font command existed..
-#  
-    
-if { "[info command font]" != "font" } {
-
- #convert a fonttag into an actual font specifier, using preferences.
- # mapping propor,fixed to font families, and dobing size adjusting based
- # on font type.
- proc xHMmapFont {  fonttag } {
-    # font:family:weight:style:size
-    global xHMpreferences
-    set s [split $fonttag :]
-    set fam [lindex $s 1]
-    #puts "fam=$fam,fonttag=$fonttag"
-    if { "$fam" == "" } {
-	set fam propor
-    }
-    set si [expr {$xHMpreferences($fam,adjust) + [lindex $s 4]}]
-    set si [expr {($si < 1 ? 1 : ($si > 8 ? 8 : $si))}]
-#    set family $xHMpreferences([lindex $s 1])
-#    set weight [lindex $s 2]
-#    set style [lindex $s 3]
-    return "-*-$xHMpreferences($fam)-[lindex $s 2]-[lindex $s 3]-normal-*-*-$xHMpreferences($fam,$si)0-*-*-*-*-*-*"
- }
- # reset fonts for a window taking into account current preferences.
- proc xHMresetFonts { win } {
-    upvar #0 xHMvar$win wvar
-    foreach fonttag [array names wvar font:* ] {
-	xHMsetFont $win $fonttag }
-    }
-
-
- proc xHMfontPointSize { string } {
-#    expr round ([lindex [split [xHMmapFont font:fixed:normal:r:3] -] 8] / 10.0)
-    set tem [lindex $string 1]
-    if { [catch { expr { $tem +1} }] } {
-	error "bad font $string"
-    }
-    return $tem
-#    expr round ([lindex [split $string -] 8] / 10.0)
- }
-	
- } else {    
-    
 #convert a fonttag into an actual font specifier, using preferences.
 # mapping propor,fixed to font families, and dobing size adjusting based
 # on font type.
@@ -296,11 +246,13 @@ if { "[info command font]" != "font" } {
 	 xHMconfigFont $v
      }
  }
-  proc xHMfontPointSize { string } {
-      set si [font config font2 -size]
-      return [expr { $si < 0 ? - $si : $si }]
-  }
+
+proc xHMfontPointSize { string } {
+    #mike FIXME: hard coded font name and $string is ignored
+    set si [font config font2 -size]
+    return [expr { $si < 0 ? - $si : $si }]
 }
+
 
 
 
@@ -356,7 +308,7 @@ proc xHMextract_param {paramList  key args} {
     }
 
 global xHMtag
-catch {unset xHMtag}
+if {[info exists xHMtag]} {catch {unset xHMtag}}
 
 defTag a -alter {Cdoaref doaref} -body xHMdo_a  -sbody xHMdo_/a 
 defTag b -alter {weight bold }
@@ -587,6 +539,7 @@ defTag option -body { set text [string trimright $text]
        set text ""
 }
 
+global xHMpriv
 set xHMpriv(counter) 0
 
 
@@ -1069,6 +1022,8 @@ proc xHMassureNewlines { n } {
 	xHMtextInsert $win [dupString "\n" [expr {$_n - $_have}]]
     }
 }
+
+global xHMpreferences
 set xHMpreferences(adjust) 0
 catch {
     set width_ [expr {.9 * [winfo screenwidth .]}]
@@ -1224,6 +1179,8 @@ proc xHMinit_win { win } {
     $win tag configure center -justify center
     $win configure -wrap word
 }
+
+global HMdefaultOptions
 set HMdefaultOptions {
     {atagforeground blue "foreground for <a href=...>  tags"}
     {currenthrefforeground red "foreground of current <a href=..> tags"} 
@@ -1299,6 +1256,7 @@ proc xHMdo_isindex {} {
 #   c --> [format %.2x $c]
 
 # make a list of all characters, to get char code from char.
+global xHMallchars
 set xHMallchars ""
 for { set i 1} { $i <256 } {incr i } { append xHMallchars [format %c $i] }
 
@@ -1420,158 +1378,4 @@ proc myPost { win menu } {
     place $menu -anchor center -relx 0 -rely 1.0 -bordermode outside -in $win
     raise $menu
 }
-
-## source "myhtml1.tcl"
-
-###### myhtml1.tcl ######
-############################################################
-# Netmath       Copyright (C) 1998 William F. Schelter     #
-# For distribution under GNU public License.  See COPYING. # 
-############################################################
-
-defTag eval -alter {family fixed Cnowrap nowrap adjust 0} \
-	-body {
-    set paramList [xHMsplitParams $params]
-    if { [xHMextract_param $paramList program ""] } {
-	set wvar(evalPushed) "Teval"
-	xHMpushConstantTag $win Teval
-	foreach { k val } $paramList {
-	    if { "$k" == "doinsert" } {
-		set doinsert $val
-		if { "$doinsert" != "[defaultInsertMode $program]" } {
-		    lappend wvar(evalPushed) [list Targs -doinsert $doinsert]
-		    xHMpushConstantTag $win [list Targs -doinsert $doinsert]
-		}
-	    } else {
-		set tem "$k:$val"
-		xHMpushConstantTag $win $tem
-		lappend wvar(evalPushed) $tem
-	    }
-	}
-    }
-   }  -sbody {
-       catch {foreach v $wvar(evalPushed) { xHMpopConstantTag $win $v } }
-   }
-   
-
-defTag result  -alter {family fixed  weight bold  adjust 0} -body {
-    set paramList [xHMsplitParams $params]
-    set wvar(resultPushed) Tresult
-    set taglist(Tresult) 1
-    if { [xHMextract_param $paramList modified ""] } {
-	lappend wvar(resultPushed) Tmodified
-	set taglist(Tmodified) 1
-    }
-    if { [xHMextract_param $paramList name ""] } {
-	lappend wvar(resultPushed) result:$name
-	set taglist(result:$name) 1
-    }}   -sbody {
-       catch {foreach v $wvar(resultPushed) { xHMpopConstantTag $win $v } }
-}
-
-defTag netmath -body {
-    set paramList [xHMsplitParams $params]
-    catch {
-    if { [xHMextract_param $paramList version ""] } {
-	global ws_openMath
-	if { [clock scan $version] > [clock scan $ws_openMath(date)] } {
-
-	    xHMextract_param $paramList oldversion ""
-	    append oldversion $text
-	    set text $oldversion
-	}
-    }
-#  swallow the following text if the browser is netmath enabled...
-    if { [xHMextract_param $paramList swallow] } {
-	set text ""
-    }
-    
-  }
-}
-
-defTag math -body {
-    set paramList [xHMsplitParams $params]
-    upvar #0 xHMtaglist$win taglist
-    global xHMpriv 	 xHMpreferences
-    set pre {$}
-    if { [xHMextract_param $paramList display] } {
-	set pre {$\displaystyle}
-	xHMassureNewlines 1
-    }
-	
-    set wc $win.c[incr xHMpriv(counter)]
-    canvas $wc 		-background [$win cget -background] -highlightthickness 0 -borderwidth 0
-    
-    set si [expr {[lindex $wvar(size) end] + [lindex $wvar(adjust) end]}]
-    if { [xHMextract_param $paramList size] } {
-	catch { incr si $size }
-    }
-    set si [expr {($si < 1 ? 1 : ($si > 7 ? 7 : $si))}]
-    
-    set ptsize $xHMpreferences([lindex $wvar(family) end],$si)
-    if { [regexp & $text] }  {
-	set text [xHMconvert_ampersand $text]
-    }
-    if { [catch { set it [ $wc create stext 0 0 \
-	    -anchor nw -stext "$pre $text \$" -pointsize $ptsize \
-	    ] } ]  } {
-	xHMpushConstantTag $win "center"
-	xHMtextInsert $win $text
-	xHMpopConstantTag $win "center"
-	set text ""
-	destroy $wc
-    } else {
-	set text ""
-	set dims [$wc bbox $it]
-	$wc config -width [lindex $dims 2] -height [lindex $dims 3]
-	xHMpushConstantTag $win "center"
-	xHMtextInsert $win " "
-	$win window create $wvar(W_insert) -window $wc  -padx 1 -pady 1
-	xHMpopConstantTag $win "center"
-    }
-} -sbody {list }
-
-proc getDim { dim  max } {
-    if { [regexp {([0-9.]+)%$} $dim junk amt] } {
-	return [expr {round($amt * .01 * $max) }]
-    } elseif { $dim  < 0 } {
-	return $max
-    } else { return $dim }
-}
-
-defTag embed  -body {
-    set paramList [xHMsplitParams $params]
-    xHMextract_param $paramList width -1
-    # allow for things like 50%
-    set width [getDim [set width] [expr {.95 * [winfo width $win]}]]
-    xHMextract_param $paramList height -1
-    set height [getDim [set height] [expr {.95 * [winfo height $win]}]]
-    set ewin [makeEmbedWin $win $width $height]
-    $win window create $wvar(W_insert) -window $ewin  -padx 1 -pady 1
-    set slave [oget $ewin slave]
-    if { [    xHMextract_param $paramList src] } {
-	set data [HMgetURL $win $src text]
-	interp eval $slave $data
-    }
-} -sbody {}
-
-
-proc HMgetURL {  textwin url type } {
-    set currentUrl [oget $textwin currentUrl]
-    catch { set currentUrl [decodeURL [oget $textwin baseurl]] }
-    set new [resolveURL $url $currentUrl ]
-    return [uplevel 1 getURL [list $new] type]
-}
-
-    
-    
-    
-    
-    
-
-## endsource "myhtml1.tcl"
-# source "mytable1.tcl"
-
-
-
 ## endsource myhtml.tcl

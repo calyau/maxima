@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: tryembed.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### tryembed.tcl ######
+###### Tryembed.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
@@ -143,6 +139,7 @@ proc browser_log { args } {
 # Remember the location of the data file for the Safesock policy, so that
 # it can be reloaded each time the policy is used, to reflect changes.
 
+global safesockDataFile
 set safesockDataFile [file join [file dirname [info script]] safesock.data]
 
 proc Safesock_PolicyInit {slave {version 1.0}} {
@@ -381,8 +378,9 @@ proc safesockPortMatches { port portset } {
 }
 
 # the following should be set in safesock.data
+global safesockAllowedServerPorts
 if { ![info exists safesockAllowedServerPorts ] } {
-  set safesockAllowedServerPorts { 1025-3000 }
+    set safesockAllowedServerPorts { 1025-3000 }
 }
 
 proc SafesockSocketAlias {slave host port args} {
@@ -467,10 +465,6 @@ proc SafesockFconfigureAlias {slave sock args} {
 }
 
 ## endsource nsafesock.tcl
-# source /home/wfs/openmath/nsafesock.tcl
-
-
-
 
 
 ## endsource tryembed.tcl

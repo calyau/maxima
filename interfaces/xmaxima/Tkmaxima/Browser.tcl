@@ -3,6 +3,8 @@
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 
 ############################################################
+
+global MathServer
 set MathServer "locahost 4443"
 # help keysyms
 # bind .jim <Key> "puts {%A %K}"
@@ -30,6 +32,7 @@ proc pushCommand { win command arglist } {
 
 
 
+global ws_openMath
 set ws_openMath(sticky) "^Teval$|^program:"
 
 
@@ -117,6 +120,7 @@ if { [catch { set ws_openMath(bindings_added) } ] } {
   set ws_openMath(bindings_added) 1
 }
 
+global ws_openMath
 set ws_openMath(doublek) 0
 
 bind OpenMathText <Control-Key-k><Control-Key-k> {
@@ -397,6 +401,7 @@ proc TinsSlashEnd { tags text } {
 
     
 
+global ws_openMath
 set ws_openMath(richTextCommands) {Tins TinsSlashEnd}
 
 ## endsource keyb.tcl
@@ -680,6 +685,7 @@ proc resolveURL { name current {post ""} } {
     return $ans
 }
 
+global ws_openMath
 set ws_openMath(urlHandlers) {
     text/html  netmath
     text/plain netmath
@@ -934,18 +940,22 @@ proc backgroundGetImage1  { image res width height }   {
 #----------------------------------------------------------------
 #
 proc readData { s { timeout 10000 }} {
-   global ws_openMath
-   after $timeout "set ws_openMath($s,done) -1"
-   fconfigure $s  -blocking 0
-   set ws_openMath($s,done) 0
-   set ws_openMath($s,url_result) ""
-   fileevent $s readable \
+    global ws_openMath
+
+    after $timeout "set ws_openMath($s,done) -1"
+    fconfigure $s  -blocking 0
+    set ws_openMath($s,done) 0
+    set ws_openMath($s,url_result) ""
+
+    #mike FIXME: this is a wrong use of after cancel
+    fileevent $s readable \
 	   "after cancel {set ws_openMath($s,done) -1} ; after $timeout {set ws_openMath($s,done) -1} ; set da \[read $s 8000] ; append ws_openMath($s,url_result) \$da; if { \[string length \$da] < 8000  && \[eof $s] } {after cancel {set ws_openMath($s,done) -1} ; set ws_openMath($s,done) 1; fileevent $s readable {} ;  }"
-   myVwait ws_openMath($s,done)
-	catch { close $s } 
-	after cancel "set ws_openMath($s,done) -1"
-	return $ws_openMath($s,done)
-    }
+    myVwait ws_openMath($s,done)
+    catch { close $s } 
+    #mike FIXME: this is a wrong use of after cancel
+    after cancel "set ws_openMath($s,done) -1"
+    return $ws_openMath($s,done)
+}
 
 			
 
@@ -983,6 +993,7 @@ proc ws_outputToTemp { string file ext encoding } {
     return $tmp
 }
 
+global debugParse
 if { ![info exists debugParse ] } {
 set debugParse 0
 }
@@ -1201,16 +1212,15 @@ proc addTagSameRange { win oldtag newtag index } {
     }
 }
 
+global xHMpreferences
 set xHMpreferences(defaultservers) { nmtp://genie1.ma.utexas.edu/ nmtp://linux51.ma.utexas.edu/ nmtp://linux52.ma.utexas.edu/ }
-
+global embed_args
 if { "[info var embed_args]" != "" } {
      set xHMpreferences(defaultservers) nmtp://genie1.ma.utexas.edu/
  }
 
 proc getBaseprogram { } {
     global xHMpreferences
-#    set n [llength $xHMpreferences(defaultservers)]
-#    set i [expr {round(floor([myrand]*$n*.999999))}]
     lindex  $xHMpreferences(defaultservers) 0
 }
 
@@ -1232,6 +1242,8 @@ proc fileBaseprogram { textwin parent x y } {
 }
 
 ######### font choosing utilities #########
+global tcl_platform
+global isFixedp
 
 if { "$tcl_platform(platform)" == "unix" } {
     array set isFixedp {
@@ -1399,16 +1411,4 @@ proc quoteForRegexp { s } {
 }
 
     
-proc mkOpenMathEditButtons { win } {
-    maxima
-    octave
-    pari
-    bold
-    italic
-    setfont
-    ..
-
-    }
-
-
 ## endsource browser.tcl

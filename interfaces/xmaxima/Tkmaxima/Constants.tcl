@@ -1,10 +1,15 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.6 2002-09-06 03:27:59 mikeclarkson Exp $
+#       $Id: Constants.tcl,v 1.7 2002-09-06 06:21:36 mikeclarkson Exp $
 #
 
 global ws_openMath
 set ws_openMath(date) 04/28/2002
+
+# from 
+if { ![info exists ws_openMath(date)] } {
+    set ws_openMath(date) [clock  format [clock seconds] -format {%m/%d/%Y} ]
+}
 
 # from Preamble.tcl
 set ws_openMath(clicks_per_second) 1000000
@@ -48,3 +53,9 @@ set ws_openMath(options,href) {
     {search "" "A string to search for, to get an initial position"}
     {searchregexp "" "A regexp to search for, to get an initial position"}
 }
+
+# from Wmenu.tcl
+global show_balloons
+#mike turn these off by default
+set show_balloons 0
+

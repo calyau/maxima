@@ -1,8 +1,4 @@
-# -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
-#
-#       $Id: base64.tcl,v 1.1 2002-05-24 17:35:54 amundson Exp $
-#
-###### base64.tcl ######
+###### Base64.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. # 

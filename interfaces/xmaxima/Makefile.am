@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.20 2002-09-06 03:27:58 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.21 2002-09-06 06:21:35 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -35,6 +35,14 @@ TKSOURCES = \
 	Tkmaxima/EOpenplot.tcl \
 	Tkmaxima/EMaxima.tcl \
 	Tkmaxima/EHref.tcl \
+	Tkmaxima/Browser.tcl \
+	Tkmaxima/Wmenu.tcl \
+	Tkmaxima/Tryftp2.tcl \
+	Tkmaxima/Myhtml.tcl \
+	Tkmaxima/Myhtml1.tcl \
+	Tkmaxima/Base64.tcl \
+	Tkmaxima/Bitmaps.tcl \
+	Tkmaxima/Tryembed.tcl \
 	xmaxima.tcl 
 
 XMAXIMA_REAL_SOURCES = $(TKSOURCES) xmaxima-paths.tcl xmaxima-trailer.tcl
