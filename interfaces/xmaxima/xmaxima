@@ -4,7 +4,7 @@ exec wish "$0" "$@"
 #############################################
 ##### Copyright William Schelter 1997 #######
 #############################################
-set ws_openMath(date) 11/01/2000
+set ws_openMath(date) 04/24/2001
 
 ###### maxima-browser ######
 
@@ -328,6 +328,7 @@ proc readAllData1 { sock } {
 		    [expr {$bytesread * 100.0 / $contentlength }]
 	
 	}
+
 	if { $docommand } {
 	    catch { uplevel #0  [oget $sock command] }
 	}
@@ -678,6 +679,122 @@ proc apply {f args } {
 
 
 ## endsource macros.tcl
+## source proxy.tcl
+
+###### proxy.tcl ######
+
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # openSocketAndSend --  open a Socket to HOST on PORT and then
+ # send the message MSG to it.   If verify is non 0, then read
+ # up through the end of the http header and verify this is not
+ # an error.
+ #
+ #  Results:  returns a socket which you can read from using ordinary
+ #  read and write, but to which you should write only using s
+ #
+ #  Side Effects: 
+ #
+ #----------------------------------------------------------------
+#
+proc openSocketAndSend { host port msg { verify 0}} {
+    global ws_openMath  pdata
+    dtrace
+    if { [info exists ws_openMath(proxy,http)] } {
+	global pdata
+	set magic "billy-[clock clicks]"
+	debugsend "sendViaProxy $msg $host $port $magic"
+	
+	set sock [sendViaProxy $msg $host $port $magic]
+
+	if { $verify } {
+	    fconfigure $sock -blocking  1 -translation {crlf binary}
+	    gets $sock tem
+	    if { [regexp "503" $tem] } {
+		error "Could not connect $host $port"
+	    }
+	    while { 1 } {
+		gets $sock tem
+		if  { [string length $tem] == 0 } { break }
+	    }
+	}
+	set pdata($sock,proxyto) [list $host $port $magic]
+	fconfigure $sock -blocking  0
+	return $sock
+	    
+	    
+    } else {
+	set sock [socket $host $port]
+	if {[info exists pdata($sock,proxyto)]} {
+	    unset pdata($sock,proxyto)
+	}
+	fconfigure $sock -blocking  0
+	puts -nonewline $sock $msg
+	flush $sock
+	return $sock
+    }
+}
+
+
+
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # proxyPuts --  send the MESSAGE to SOCK, not appending a newline.
+ #
+ #  Results: none
+ #
+ #  Side Effects: message sent
+ #
+ #----------------------------------------------------------------
+#
+proc proxyPuts { sock  message } {
+    global pdata
+    debugsend "proxyPuts $sock  $message useproxy=[info exists pdata($sock,proxyto)]"
+    if { [info exists pdata($sock,proxyto)] } {
+	desetq "host port magic" $pdata($sock,proxyto)
+	close [sendViaProxy $message $host $port $magic]
+    } else {
+	puts -nonewline $sock $message
+	flush $sock
+    }
+}
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # sendViaProxy --  send a message.
+ #  this is a private function.
+ #
+ #  Results: a socket one can read the answer from.
+ #   Caller is responsible for closing the socket. 
+ #
+ #  Side Effects: socket opened and message sent as the body
+ #  of a post.  The magic is put in the http header request as the
+ #  filename	
+ #
+ #----------------------------------------------------------------
+#
+proc sendViaProxy { message host port magic  } {
+    global ws_openMath
+    dtrace
+   set ss [eval socket $ws_openMath(proxy,http)]
+   fconfigure $ss -blocking 0
+   fconfigure $ss -translation {crlf binary}
+   set request [getURLrequest http://$host:$port/$magic $host $port "" $message]
+   debugsend "<$ss  request=$request>"
+   puts $ss $request
+   flush $ss
+   return $ss
+}
+
+## endsource proxy.tcl
 
 if { $argc == 0 } {
 set port 4444
@@ -796,11 +913,12 @@ proc  msleep { n } {
   debugsend "..donewaiting Msleeping"
 }
 proc message { msg } {
-    global ws_openMath
+    global ws_openMath _debugSend
+    if { $_debugSend } { puts "setting message=<$msg>" }
    catch { set ws_openMath(load_rate) $msg }
 }
 proc sendOne { program  com }  {
-    global  pdata
+    global  pdata ws_openMath
     incr pdata($program,currentExpr)
     set socket $pdata($program,socket)
     
@@ -811,8 +929,8 @@ proc sendOne { program  com }  {
  
     message "sending $program on [lindex [fconfigure $socket -peername] 1]"
     debugsend "sending.. {$com<$pdata($program,currentExpr)\|fayve>}"
-    puts  $socket "$com<$pdata($program,currentExpr)\|fayve>"
-    flush $socket
+    set msg "$com<$pdata($program,currentExpr)\|fayve>\n"
+    proxyPuts $socket $msg
     }
 
 
@@ -850,8 +968,8 @@ proc testit { program com } {
     proc jimmy {s} { puts "<result is:[uplevel #0 set $s]>" ; flush stdout}
 }
 proc invokeAndUntrace { callback name1 name2 op args} {
-  #  puts "callback:$callback $name1 $name2 $op, args=$args"
-  #  puts "trace vdelete [set name1]($name2) w [list invokeAndUntrace $callback]"
+    #puts "callback:$callback $name1 $name2 $op, args=$args"
+    #puts "trace vdelete [set name1]($name2) w [list invokeAndUntrace $callback]"
     trace vdelete [set name1]($name2) w [list invokeAndUntrace $callback]
     lappend callback  [set name1]($name2)
     # puts "callback=$callback" ; flush stdout
@@ -893,23 +1011,33 @@ proc closeConnection { program } {
     }
 }
 
+proc dtrace { } {
+    global _debugSend
+    if { $_debugSend } {
+	puts "at: [info level -1]"
+	if { [info level]>2 } {puts "   from:[info level -2 ]"}
+    }
+}
+	
 proc openConnection { tohost port magic program } {
    global  pdata
-    set retries 7
+    dtrace
+    set msg "magic: $magic\n"
+    set retries 2
     message "connecting to nmtp($port)://$tohost/$program"
+    debugsend "openConnection { $tohost $port $magic $program }"
 
     while { [incr retries -1] > 0 \
-             && 	[catch { set socket [socket $tohost $port] }] } {
+             && [catch { set socket [openSocketAndSend $tohost $port $msg 1] }] }   {
 	         debugsend retries=$retries
 		 msleep 400
 	     }
 	     
-    if { $retries == 0 } { return 0}	     
+   if { $retries == 0 } { return 0}	     
 
-    message "connected to nmtp($port)://$tohost/$program"
+   message "connected to nmtp//$tohost:$port/$program"
    set pdata($program,socket) $socket
    set pdata($program,currentExpr) 0 
-   puts $socket "magic: $magic" ; flush $socket
    set pdata(input,$socket) ""
    catch { fconfigure $socket -blocking 0 }
    fileevent $socket readable "getResults $program $socket"
@@ -1012,7 +1140,10 @@ proc currentTextWinWidth { } {
 proc assureProgram { program timeout tries } {
     # puts "assure: program=$program"
     global pdata MathServer
+
+
     if { $tries <=  0   } { return 0}
+    
     if  { [catch { set socket $pdata($program,socket) } ]
     || [catch { eof $socket}]
     || [eof $socket]
@@ -1020,19 +1151,19 @@ proc assureProgram { program timeout tries } {
     append pdata(input,$socket) $s }] } {
 	cleanPdata $program
 	message "connecting [lindex $MathServer 0]"
-	if { [catch { set sock [eval socket $MathServer ] } ]  } {
+	set msg "OPEN [programName $program] MMTP/1.0\nLineLength: [currentTextWinWidth]\n\n\n"
+	if { [catch {
+	    set sock [openSocketAndSend [lindex $MathServer 0] \
+  	    [lindex $MathServer 1] $msg\n ] } ]  } {
 	    error "Can't connect to $MathServer.  You can try another host by altering Base Program under the \"file\" menu."
 	    
 	}
 	    
 	set pdata($program,currentExpr) 0
-	message "connected to [lindex $MathServer 0]"
 	fconfigure $sock -blocking 0
 	if { [eof $sock] } {return 0}
-	set msg "OPEN [programName $program] MMTP/1.0\nLineLength: [currentTextWinWidth]\n"
+	message "connected to [lindex $MathServer 0]"
 	debugsend $msg
-	puts $sock $msg
-	flush $sock 
 	set result ""
         set pdata(waiting,$sock) 1
 	set script "close $sock ; debugsend {after closing} ; set pdata(waiting,$sock) -1"
@@ -1041,7 +1172,7 @@ proc assureProgram { program timeout tries } {
 	debugsend "after=$af"
 	while {1 } {
 	    debugsend "waiting pdata(waiting,$sock)=$pdata(waiting,$sock)"
-	    
+#	    puts "pdata=[array get pdata *$sock* ]"
 	    fileevent $sock readable "if { [eof $sock] }  {set pdata(waiting,$sock) -2} else { set pdata(waiting,$sock) 0 ;} ;fileevent $sock readable {} "
 	    set pdata(waiting,$sock) 1
 	    debugsend "waiting on  pdata(waiting,$sock)" 
@@ -1343,6 +1474,7 @@ proc optLoc { op ar }  {
 
 proc getOptions { optlist options_supplied args } {
    # global  getOptionSpecs
+
     set ar [assoc -usearray $args 0]
     set help [assoc -help $args ""]
     if { "$ar" != "0" } { global $ar }
@@ -2180,6 +2312,9 @@ proc makeFrame { w type } {
     if { "$parent" == "." } {
 	set dismiss "destroy ."
     }
+    if { [string match .plot* [winfo toplevel $win]] } {
+	set dismiss "destroy [winfo toplevel $win]"
+    }
     }
     
     if { "$doExit" != "" } {set dismiss $doExit } 	
@@ -2229,7 +2364,7 @@ proc makeFrame { w type } {
 
 
     bind $win.position <Enter> "+place $win.buttons -in $win.position -x 0 -rely 1.0 ;  after cancel lower $win.position ; raise $win.buttons "
-    bind $win.buttons <Leave> "place forget $win.buttons"
+    bind $win.buttons <Leave> "deleteBalloon $c ; place forget $win.buttons"
 
     # pack $wb
     scrollbar $w.hscroll -orient horiz -command "$c xview"
@@ -2499,7 +2634,12 @@ proc doZoom { win x y direction } {
 #
 
 proc doZoomXY { win x y facx facy } {
-    makeLocal $win c transform
+    if { [catch {
+	makeLocal $win c transform
+    } ] } {
+	# not ready
+	return
+    }
     
     set x [$c canvasx $x]
     set y [$c canvasy $y]
@@ -2559,6 +2699,7 @@ proc reConfigure { c width height  } {
     set oldy [$c canvasy [expr {$oldCheight/2.0}]]
     doZoomXY $w [expr {$oldCwidth/2.0}] [expr {$oldCheight/2.0}] \
 	    [expr {1.0*$width/$oldCwidth}] [expr {1.0*$height/$oldCheight}]
+    
     scrollPointTo $c $oldx $oldy [expr {$width/2.0}] [expr {$height/2.0}]
    # update
     oset $w oldCwidth $width
@@ -3238,6 +3379,13 @@ set show_balloons 1
 proc balloonhelp { win subwin msg } {
     global show_balloons
     if { $show_balloons == 0 } return;
+    linkLocal  [oget $win c] helpPending
+    if { [info exists helpPending] } {after cancel $helpPending}
+    set helpPending [after 1000 [list balloonhelp1 $win $subwin $msg]]
+}
+
+proc balloonhelp1 { win subwin msg } {
+    if { ![winfo exists $win] } { return }
     makeLocal $win c buttonFont
     set x0 [winfo rootx $win]
     set y0 [winfo rooty $win]
@@ -3274,9 +3422,17 @@ proc balloonhelp { win subwin msg } {
 proc setBalloonhelp { win subwin msg } {
     makeLocal $win c
     bind $subwin <Enter> "balloonhelp $win $subwin [list $msg]"
-    bind $subwin <Leave> "$c delete balloon"
+    bind $subwin <Leave> "deleteBalloon $c"
 }
     
+proc deleteBalloon { c } {
+    linkLocal $c helpPending
+    if { [info exists helpPending] } {
+	after cancel $helpPending
+	unset helpPending
+    }
+    $c delete balloon
+}
 
 
 #
@@ -3534,10 +3690,6 @@ set plotdfOptions {
 }
 
 if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
-
-
-
-
  proc makeFrameDf { win } {
    set w [makeFrame $win df]
     makeLocal $win c dydx
@@ -4048,10 +4200,9 @@ proc plotdf { args } {
     # to see options add: -debug 1
     set win [assoc -windowname $args]
     if { "$win" == "" } {set win [getOptionDefault windowname $plotdfOptions] }
-    if { "[lindex $args 0]" == "-ode" } {
-	set tem [parseOdeArg [lindex $args 1]]
-	set args [lrange $args 2 end]
-	set args [concat $tem  $args]
+    if { "[set ode [assoc "-ode" $args]]" != "" }  {
+	set args [delassoc -ode $args]
+	set args [concat [parseOdeArg $ode] $args]
     }
     global [oarray $win]
     getOptions $plotdfOptions $args -usearray [oarray $win]
@@ -5296,10 +5447,11 @@ proc calculatePlot3data {win fun  nx ny } {
 	}
 	lappend matrix $row
     }
+    global silly
+    set silly [list variable_grid $rowx $rowy $matrix ]
     return [list variable_grid $rowx $rowy $matrix ]
     
 }
-
 
 proc addAxes { win } {
     #global plot3dPoints plot3dMeshes xradius yradius xcenter ycenter
@@ -5503,12 +5655,15 @@ proc setUpTransforms3d { win } {
     # set screenwindow $scr
     linkLocal $win scale
         makeLocal $win xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
+    #dshow xcenter ycenter xradius yradius c zmin zmax xmin xmax ymin ymax zradius
     set fac .5
 
     set delx [$c cget -width]
     set dely [$c cget -height]
     set f1 [expr {(1 - $fac)/2.0}]
+
     set scale [list [expr {1.5/($xradius)}] 0 0 0 [expr {1.5/($yradius)}] 0 0 0 [expr {1.5/($zradius)}] ]
+
     set x1 [expr {$f1 *$delx}]
     set y1 [expr {$f1 *$dely}]
     set x2 [expr {$x1 + $fac*$delx}]
@@ -5542,6 +5697,7 @@ proc plot3d { args } {
 	set win [getOptionDefault windowname $plot3dOptions] }
     clearLocal $win
     apply mkPlot3d  $win $args
+#    bind $win <Configure> {}	
     replot3d $win
 }
 
@@ -5569,12 +5725,28 @@ proc replot3d { win } {
 	addOnePlot3d $win [calculatePlot3data $win _xf  [lindex $nsteps 0] [lindex $nsteps 1]]
 	# calculatePlot3d $win _xf [lindex $nsteps 0] [lindex $nsteps 1]
     }
+
     if { "$data" != "" } {
+	if { 0 } {
+        puts "here"
+	set ranges [ plot3dGetDataRange [list $data]]
+	linkLocal $win zmin zmax
+	desetq "zmin zmax" [lindex $ranges 2]
+	puts "ranges=$ranges"
+	set some [plot2dRangesToRadius [lindex $ranges 0] [lindex $ranges 1] ""]
+	puts "and now"
+	foreach {v k} $some {
+	    puts "oset $win [string range $v 1 end] $k"
+	    oset $win [string range $v 1 end] $k
+	}
+        }
+	
 	addOnePlot3d $win $data
     }
 
 
     setUpTransforms3d $win
+
     oset $win colorfun plot3dcolorFun
 #    addAxes $win
     oset $win cmap c1
@@ -6127,12 +6299,15 @@ proc addOnePlot3d { win data } {
 	set nx [expr {[llength $xrow] -1}]
 	set ny [expr {[llength $yrow] -1}]
 	#puts "nx=$nx,ny=$ny"
-	set xmin [lindex $xrow 0]
-	set xmax [lindex $xrow $nx]
-	set ymin [lindex $yrow 0]
-	set ymax [lindex $yrow $ny]
+#	set xmin [lindex $xrow 0]
+#	set xmax [lindex $xrow $nx]
+#	set ymin [lindex $yrow 0]
+#	set ymax [lindex $yrow $ny]
+	desetq "xmin xmax" [minMax $xrow ""]
+	desetq "ymin ymax" [minMax $yrow ""]
 	desetq "zmin zmax" [matrixMinMax [list $zmat]]
-	
+#	puts "and now"
+#	dshow nx xmin xmax ymin ymax zmin zmax
 	if { $dotruncate } {
 	    if { $flatten } { set dotruncate 0 }
 
@@ -6378,7 +6553,7 @@ mproc font  {option args} {
 	    } else { set slant r}
 	    
 	    set size [assoc -size $args 10]
-	    set weight [assoc -weight $args medium]
+	    set weight [assoc -weight $args normal]
 	    if { [fontExistsp  $family $weight $slant $size ] } {
 		return [.bfontexists cget -font]
 	    }
@@ -6415,7 +6590,7 @@ mproc font {option args} {
 	    } else { set slant r}
 	    
 	    set size [assoc -size $args 10]
-	    set weight [assoc -weight $args medium]
+	    set weight [assoc -weight $args normal]
     	    if { [catch { set allfonts $ws_openMath(allfonts)} ] &&
 	    [catch { set allfonts [exec xlsfonts] } ]
 	} { 	        return [list $family $size $weight]
@@ -6425,7 +6600,7 @@ mproc font {option args} {
 	# puts *$family-$weight-$slant*-$size-*
 	if { [set ind [lsearch -glob $allfonts *$family-$weight-$slant*-$size-*]] < 0 } {
 	   #  puts *$family-normal-$slant*-$size-*
-	    if { [set ind [lsearch -glob $allfonts *$family-medium-$slant*-$size-*]] >= 0 } { return  [lindex $allfonts $ind]  }
+	    if { [set ind [lsearch -glob $allfonts *$family-normal-$slant*-$size-*]] >= 0 } { return  [lindex $allfonts $ind]  }
 	return [list $family $size $weight]
 	} else { 	    return [lindex $allfonts $ind] }
     }  
@@ -6472,7 +6647,7 @@ proc insertResult_octave {  w thisRange resultRange res } {
     #puts "res=$res"
   if { [regexp "\{plot\[23\]d" $res] } {
       #puts "its a plot"
-      set name $w.plot[oset $w counter [expr {1 + [oget $w counter]}]]
+      set name [plotWindowName $w]
       set tem [setDesiredDims $w $name $thisRange ]
       eval plot2dData $name $res [getDimensions $w $name] 
       ShowPlotWindow $w $name  $thisRange $resultRange $tem
@@ -6513,8 +6688,9 @@ set ws_openMath(options,octave) {{doinsert 1 "Do an insertion" boolean}}
 
 proc eval_openplot { program w thisRange resultRange } {
 
-    set name $w.plot[oset $w counter [expr {1 + [oget $w counter]}]]
-   set desired [setDesiredDims $w $name $thisRange ]
+ 
+   set name  [plotWindowName $w]
+    set desired [setDesiredDims $w $name $thisRange ]
    set tem [eval $w get $thisRange]
    lappend tem -windowname $name
    foreach v [getDimensions $w $name] { lappend tem $v }
@@ -6526,7 +6702,55 @@ proc eval_openplot { program w thisRange resultRange } {
    } else { error "$f not allowed, only {$allowed}" }
    return 0
 }
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # plotWindowName --  checks preferences to see if separate or multiple
+ #  or nontoplevel windows are desired, and chooses a name accordingly.  
+ #  in the first two cases it also assures that the toplevel window exists.
+ #  
+ #  Results: window name
+ #
+ #  Side Effects:  possibly make a new toplevel window.
+ #
+ #----------------------------------------------------------------
+#
+proc plotWindowName { w } {
+    upvar #0 xHMpreferences(plotwindow) plot
+    upvar #0 ws_openMath(plot,count) count
+    set name ""
     
+    if { ![info exists plot] || "$plot" == "embedded" } {
+	linkLocal $w counter
+	if { ![info exists counter] } {set counter 0}
+	return $w.plot[incr counter]
+    }
+    set name ".plotfr"	
+    if { "$plot" == "multiple" } {
+	if { ![info exists count] } { set count 1} else {
+	    incr count }
+	append name $count
+    }
+    if { ![winfo exists $name ] } {
+	toplevel $name
+	set h [expr {round ([winfo screenheight $name]*.6) }]
+	set wid [expr round ($h * 1.2) ]
+	set r1 [expr {round(10+rand()*30)} ]
+	set r2 [expr {round(10+rand()*30)} ]
+	wm geometry $name ${wid}x${h}+${r1}+${r2}
+	if { "[info proc setIcon]" != "" } {
+	    after 1000 setIcon $name
+	}
+
+    }
+
+    append name .plot
+    return $name
+}
+
+
 proc whereToPutPlot { w thisRange resultRange } {
     if { "$resultRange" != "" } {
 	eval $w  delete $resultRange
@@ -6580,6 +6804,12 @@ proc insertResult_openplot {w args } { puts "insert=[$w index insert]"  }
 
 
 proc ShowPlotWindow { w name thisRange resultRange desired } {
+   if { "[winfo toplevel $w]" != "[winfo toplevel $name]" } {
+       $name config -relief sunken -borderwidth 2
+       pack $name -expand 1 -fill both
+       raise [winfo toplevel $name ]
+       return
+   }
    oarraySet $name $desired
    set at [whereToPutPlot $w $thisRange $resultRange]
    set col [lindex [split $at .] 1]
@@ -6662,7 +6892,7 @@ proc insertResult_maxima {  w thisRange resultRange res } {
     }
   if { [regexp "\{plot\[23\]d" $res] } {
       #puts "its a plot"
-      set name $w.plot[oset $w counter [expr {1 + [oget $w counter]}]]
+      set name [plotWindowName $w]
       eval plot2dData $name $res [getDimensions $w $name]
       set desired [setDesiredDims $w $name $thisRange ]
       ShowPlotWindow $w $name  $thisRange $resultRange $desired
@@ -6812,6 +7042,10 @@ proc tkTextInsert { w s } {
 	if { [regexp $ws_openMath(sticky) $v] } {
 	    lappend both $v
 	}
+    }
+
+    if { [info exists ws_openMath($w,inputTag) ] } {
+	lappend both $ws_openMath($w,inputTag)
     }
     
     if {($s == "") || ([$w cget -state] == "disabled")} {
@@ -7437,31 +7671,39 @@ set ws_openMath(urlHandlers) {
     application/x-dvi "xdvi %s"
 }
 
-proc getURLrequest { path server port types {post ""}} {
+proc getURLrequest { path server port types {post ""} {meth ""} } {
     global ws_openMath
 
-    set method GET
-    if { "$post" != "" } {set method POST}
+    if { "$meth" != "" } {set method $meth } else {
+	
+	set method GET
+	if { "$post" != "" } {set method POST}
+    }
     
-#    puts "getURLrequest $path $server $port [list $types]"
+    #puts "getURLrequest $path $server $port [list $types]"
     foreach {v handler}  $ws_openMath(urlHandlers) {
 	lappend types $v, 
     }
 
     set ans "$method $path HTTP/1.0\nConnection: Keep-Alive\nUser-agent: netmath\nHost: $server:$port\nAccept: $types\n"
-    set ans "$method $path HTTP/1.0\nReferer: http://www.dejanews.com/index.html\nConnection: Keep-Alive\nUser-agent: netmath\nHost: $server:$port\nAccept: $types\n"
     if { "$post" != "" } {
 	# append ans "Content-length: [string length $post]\n\n$post"
 	append ans "Content-type: application/x-www-form-urlencoded\nContent-length: [string length $post]\n\n$post"
     }
+    
 	return $ans
     
 }
 
+proc canonicalizeContentType { type } {
+    regexp -nocase {([---a-zA-Z]+)/([---a-zA-Z]+)} $type type
+    return [string tolower $type]
+}
 
 proc getURL { resolved type {mimeheader ""} {post ""} } {
     global ws_openMath
     set res $resolved
+    
     set ans ""
     set method ""
     if { "$mimeheader" != ""} {
@@ -7475,16 +7717,21 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	http {
 	   # puts $res
 	   # puts "socket [assoc server $res] [assoc port $res 80]"
+	    if { [info exists ws_openMath(proxy,http) ] } {
+		set sock [eval socket $ws_openMath(proxy,http)]
+#		puts "opening proxy request socket $ws_openMath(proxy,http)"
+	    } else {
 	    set sock [socket [assoc server $res] [assoc port $res 80]]
+	    }
+	    
 	    fconfigure $sock -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    #puts request=[getURLrequest [dirnamePlusFilename $res] [assoc server $res] [assoc port $res] image/gif $post]
-	    set path [dirnamePlusFilename $res]
+#	    set path [dirnamePlusFilename $res]
+	    set path [encodeURL $res]
 	    set server [assoc server $res]
 	    set port  [assoc port $res]
 	    puts $sock [getURLrequest $path $server $port image/gif $post]
-	    # puts [getURLrequest [dirnamePlusFilename $res] [assoc server $res] [assoc port $res] image/gif ]
-
 	    if { "$post" == "" } {
 		oset $sock cachename "http://$server:$port$path"
 	    } else { oset $sock cachename "" }
@@ -7495,7 +7742,8 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		
 	    #puts "length=[string length $ws_openMath(url_result)]"
 	    #	flush stdout
-		set contentType [assoc content-type $ws_openMath(mimeheader) text/plain]
+		
+		set contentType [canonicalizeContentType [assoc content-type $ws_openMath(mimeheader) text/plain]]
 		uplevel 1 set $type [list $contentType]
 		if { "$mimeheader" != "" } {
 		    uplevel 1 set $mimeheader \[ uplevel #0 set ws_openMath(mimeheader) \]
@@ -7510,7 +7758,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    set name [toLocalFilename $res]
 	    set fi [open $name r]
 	    set answer [read $fi]
-	    if { [regexp {[.]html?$} $name ] || [regexp "<html>" $answer] } {
+	    if { [regexp {[.]html?$} $name ] || [regexp -nocase "^(\[ \n\t\r\])*<html>" $answer] } {
 		set contentType text/html
 	    } elseif {  [regexp {[.]gif([^/]*)$} $name ] } {
 		set contentType image/gif
@@ -7525,13 +7773,14 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	}
     }
 }
-set ws_openMath(imagecounter) 0
+
+
 
 
 proc getImage { resolved width height} {
     global ws_openMath
     set res $resolved
-    #puts "getImage [list $resolved] $width $height"
+    #puts [list getImage [list $resolved] $width $height]
     set ans ""
     catch {
 	if { "" != "[image type $ws_openMath(image,$res,$width,$height)]" } {
@@ -7539,16 +7788,51 @@ proc getImage { resolved width height} {
 	}
     }
     if { "$ans" != "" } { return $ans }
+
+    set image [image create photo -width $width -height $height]
+    after 10 backgroundGetImage $image [list $resolved] $width $height
+    set ws_openMath(image,$res,$width,$height) $image
+    return $image
+    }
+
+
+global ws_openMath    
+set ws_openMath(imagecounter) 0    
+
+set ws_openMath(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
+
+proc backgroundGetImage  { image res width height }   {
+    global ws_openMath
+    #puts [list backgroundGetImage  $image $res $width $height ]
+    if { [catch { backgroundGetImage1 $image $res $width $height } ] } {
+	if { ![info exists ws_openMath(brokenimage)] } {
+	    set ws_openMath(brokenimage) [image create photo -data $ws_openMath(brokenimage,data)]
+	}
+	# puts "got error, doing $image copy $ws_openMath(brokenimage)"
+	set im $ws_openMath(brokenimage)
+	$image config -width [image width $im] -height [image height $im]
+	$image copy $im
+    }
+}
+
     
+proc backgroundGetImage1  { image res width height }   {
+    # res = resolved
+    global ws_openMath
+    #puts [list backgroundGetImage $image $res $width $height]
     switch [assoc type $res] {
 	http {
 	    set server [assoc server $res]
 	    set port [assoc port $res 80]
-	    set s [socket $server $port]
-
+	    if { [info exists ws_openMath(proxy,http) ] } {
+		set s [eval socket $ws_openMath(proxy,http)]
+#		puts "opening proxy request socket $ws_openMath(proxy,http)"
+	    } else {
+	    set s [socket [assoc server $res] [assoc port $res 80]]
+	    }
 	    fconfigure $s -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
-	    puts $s [getURLrequest [dirnamePlusFilename $res] \
+	    puts $s [getURLrequest [encodeURL $res] \
 		    $server $port {image/gif image/x-bitmap}]
 	    flush $s
 
@@ -7565,7 +7849,9 @@ proc getImage { resolved width height} {
 				ws_openMath($s,url_result) -mimeheader \
 				ws_openMath($s,mimeheader) 
 			] > 0  && [string match *gif [assoc content-type $ws_openMath($s,mimeheader)]] } {
-			    set ans [image create photo -data [tobase64 $ws_openMath($s,url_result)] -width $width -height $height]
+			    set ans $image
+			    $image configure -data [tobase64 $ws_openMath($s,url_result)]
+
 			    unset ws_openMath($s,mimeheader)
 			    unset ws_openMath($s,url_result)
 			    
@@ -7578,8 +7864,9 @@ proc getImage { resolved width height} {
 				-translation binary \
 				-mimeheader \
 				ws_openMath($s,mimeheader) -timeout 15000 -chunksize 2024 ] > 0 } {
-			    set ans [image create photo -file \
-				    $tmp -width $width -height $height]
+			    set ans $image
+			    $image config  -file \
+				    $tmp 
 			    unset ws_openMath($s,mimeheader)
 			}
 
@@ -7599,13 +7886,10 @@ proc getImage { resolved width height} {
 	 && [catch { exec rm $tmp }] } {
 			    puts "cant remove tmp file $tmp"
 	 }
+	 if { "$ans" == "" } {
+	     error "Unable to open an image for [encodeURL $res]"
+	 }
 
-	    
-	if { "$ans" != "" } {
-	    set ws_openMath(image,$res,$width,$height) $ans
-	    return $ans
-	}
-	error "Unable to open an image for [encodeURL $res]"
     }
     
 
@@ -7731,9 +8015,14 @@ proc OpenMathOpenUrl { name args} {
 	list
     }
    }
-
-   set new  [resolveURL $name $currentUrl $post]
-   set result [getURL $new contentType mimeheader $post]
+   set count 5
+   while { [incr count -1] > 0 } {
+       set new  [resolveURL $name $currentUrl $post]
+       set result [getURL $new contentType mimeheader $post]
+       if { [set tem [assoc location $mimeheader]] == "" } { break }
+       set name $tem
+   }
+       
    #puts "contentType defined:[info exists contentType]"
    set handler [assoc $contentType $ws_openMath(urlHandlers)]
    if { "$handler" != "netmath" && "$handler" != "" } {
@@ -7742,6 +8031,7 @@ proc OpenMathOpenUrl { name args} {
        exec sh -c "[format $handler $tmp] ; rm -f $tmp" &
        return
    }
+  #puts contentType=$contentType
 
   #puts "got [string length $result] bytes"
   #puts ", result= [string range $result 0 70] .."
@@ -7779,7 +8069,13 @@ proc OpenMathOpenUrl { name args} {
    set tem [assoc filename $new ""]
    #puts $contentType
    if { "$contentType" != "text/html" } {
+       if { [string match "image/*" $contentType] } {
+	   set im [image  create photo -data $result]
+	   $win image create 0.0 -image $im
+	   set err 0
+       } else {
        set err [catch {   $win insert 0.0 $result } ]
+       }
    } elseif { 1 }  {
     xHMinit_win $win
     xHMset_state $win url [encodeURL $new]
@@ -7888,10 +8184,9 @@ if { "[info var embed_args]" != "" } {
 
 proc getBaseprogram { } {
     global xHMpreferences
-    set n [llength $xHMpreferences(defaultservers)]
-    set i [expr {round(floor([myrand]*$n*.999999))}]
-    # puts "[lindex  $xHMpreferences(defaultservers) $i]"
-    lindex  $xHMpreferences(defaultservers) $i
+#    set n [llength $xHMpreferences(defaultservers)]
+#    set i [expr {round(floor([myrand]*$n*.999999))}]
+    lindex  $xHMpreferences(defaultservers) 0
 }
 
 proc fileBaseprogram { textwin parent x y } {
@@ -7913,22 +8208,32 @@ proc fileBaseprogram { textwin parent x y } {
 
 ######### font choosing utilities #########
 
-proc fontDialog { win } {
-    global xHMpreferences
-    set font [xHMmapFont font:propor:medium:r:3]
-    catch { destroy $win}
-    text $win -font $font
+if { "$tcl_platform(platform)" == "unix" } {
+    array set isFixedp {
+fixed 1 {fangsong ti} 1 {clearlyu alternate glyphs} 0 lucidatypewriter 1 charter 0 lucidabright 0 times 0 ming 1 {lucidux sans} 0 {open look glyph} 0 {song ti} 1 newspaper 0 helvetica 0 {open look cursor} 1 li 1 mincho 1 {clearlyu ligature} 0 {clearlyu pua} 0 {lucidux mono} 1 courier 1 clearlyu 0 utopia 0 lucida 0 nil 1 clean 1 terminal 1 kai 1 gothic 1 cursor 0 symbol 0 {clearlyu arabic extra} 0 {lucidux serif} 0 {new century schoolbook} 0 song 1
+}
+}
+
+proc fontDialog { top } {
+    global xHMpreferences 
+    set font [xHMmapFont font:propor:normal:r:3]
+    catch { destroy $top }
+    toplevel $top
+    wm iconify  $top
+    set win $top.text
+    text $win -font [list [font config $font -family] [font config $font -size]] -height 20
+    wm deiconify $top
     foreach fam {propor fixed} {
 	set lis ""
 	set i 0
-	while { $i <= 7 } {
+	while { $i <= 8 } {
 	    lappend lis [expr {$i - 3}]
 	    incr i
 	}
 	if { "$fam" == "fixed" } { set fixed 1 } else { set fixed 0}
 	mkLabelListBoxChooser $win.size$fam "list $lis" xHMpreferences($fam,adjust)
 	mkLabelListBoxChooser $win.family$fam "getFontFamilies $fixed " xHMpreferences($fam)
-	set fo [xHMmapFont "font:$fam:*:*:3"]
+	set fo [xHMmapFont "font:$fam:normal:r:3"]
 	catch { set xHMpreferences($fam) [assoc -family [font actual $fo]]}
     }
     $win insert insert "Font Settings\nThe proportional font is "
@@ -7946,21 +8251,46 @@ proc fontDialog { win } {
     entry $win.entry -textvariable _servers -width 40
     $win window create insert -window $win.entry
     $win insert insert "\n\n"
-    $win insert insert "OK" "bye click"
-    $win insert insert "      "
-    $win insert insert "Cancel" "cancel click"
-    $win tag bind click <1> "set xHMpreferences(defaultservers) \$_servers;"
-    $win tag bind bye <1> "set xHMpreferences(defaultservers) \$_servers;destroy $win"
-    $win tag bind cancel <1> "destroy $win"
-    $win tag configure click -relief raised -borderwidth 2
-    $win insert insert "      "
-    $win insert insert "Save Preference" "save click"
-    $win tag bind save <1> "savePreferences"
+    global ws_openMath
+    $win insert insert "http Proxy host and port:"
+    entry $win.entryproxy  -width 40
+    catch { $win.entryproxy insert 0 $ws_openMath(proxy,http) }
+    $win window create insert -window $win.entryproxy
+    $win insert insert "\nIf you are behind a firewall enter the name of your http proxy host and port,\n eg: `foo.ma.utexas.edu 3128', otherwise leave this blank"
+    global xHMpreferences
+    set men [tk_optionMenu $win.plottype xHMpreferences(plotwindow) embedded separate multiple ]
+    $win insert insert "\nShould plot windows be "
+    $win window create insert -window $win.plottype
+    $win insert insert "?"
     
-    place $win -in [oget [omPanel .] textwin] -x 10 -y 10
+    
+    $win insert insert "\n\n\n"
+    $win insert insert " Apply and Quit " "bye raised"
+    $win insert insert "      "
+    $win insert insert " Apply " "click raised"
+    $win insert insert "      "
+    $win insert insert " Cancel " "cancel raised"
+    proc _FontDialogApply { win } {
+	global xHMpreferences _servers ws_openMath
+	set xHMpreferences(defaultservers) $_servers
+	catch {xHMresetFonts .}
+	if { [llength [$win.entryproxy get]] == 2 } {
+	    set ws_openMath(proxy,http) [$win.entryproxy get]
+	}
+    }
+    $win tag bind click <1> "_FontDialogApply $win"
+    $win tag bind bye <1> "_FontDialogApply $win ; destroy $top"
+    $win tag bind cancel <1> "destroy $top"
+    $win tag configure raised -relief raised -borderwidth 2
+    $win insert insert "      "
+    $win insert insert "Save Preference" "save raised"
+    $win tag bind save <1> "_FontDialogApply $win ; savePreferences"
+
+    pack $win
+#    place $win -in [oget [omPanel .] textwin] -x 10 -y 10
 }
 proc savePreferences {} {
-    global xHMpreferences
+    global xHMpreferences ws_openMath
     set fi [open  "~/netmath.ini" w]
     puts $fi "array set xHMpreferences {"
     foreach {k v} [array get xHMpreferences *] {
@@ -7969,6 +8299,10 @@ proc savePreferences {} {
     set all [lsort $all]
     foreach v $all { puts $fi $v }
     puts $fi "}"
+    if { [info exists ws_openMath(proxy,http)] && [llength $ws_openMath(proxy,http)] == 2   } {
+	puts $fi [list array set ws_openMath [array get ws_openMath proxy,http]
+	]
+    }
     close $fi
 }
     
@@ -7978,20 +8312,16 @@ proc savePreferences {} {
     
     
 proc getFontFamilies { fixed } {
-    global xHMpriv
-    catch { destroy .ttt_ }
-    label .ttt_
-    if {[info exists xHMpriv(fontfamilies,$fixed)]} {
-	return $xHMpriv(fontfamilies,$fixed)
-    }
+    global isFixedp
     foreach font  [font families] {
-#	.ttt_ config -font [list $font]
-	if { [font metrics [list $font] -fixed] == $fixed } {
+	if { ![info exists isFixedp($font)] } {
+	    set isFixedp($font) [font metrics [list $font] -fixed]
+	}
+	if { $isFixedp($font) == $fixed } {
 	    lappend answer $font
 	}
     }
-    set xHMpriv(fontfamilies,$fixed) $answer
-    return $answer
+    return [lsort $answer]
 }
 	
 
@@ -8012,24 +8342,37 @@ proc getFontFamilies { fixed } {
 #
 proc mkLabelListBoxChooser { win items  textvar} {
     button $win -textvariable $textvar -command "listBoxChoose $win [list $items] $textvar"
-
-    
 }
 proc listBoxChoose { win  items textvar  } {
+    global xHMpreferences
+    set whei [winfo height $win]
     set items [eval $items]
     set hei [llength $items]
-    set w ${win}list 
+    set fr ${win}frame
+    frame ${win}frame
+    set list $fr.list
+    set scroll $fr.scroll
+    scrollbar $scroll -command "$list yview"
+    listbox $list -yscroll "$scroll set" -setgrid 1 -height 8
+    pack $scroll -side right -fill y
+    pack $list -side left -expand 1 -fill both
     set wid 0
     foreach v $items {
 	set xx [string length $v] ;
 	set wid [expr {($xx > $wid ? $xx : $wid)}]
     }
-    listbox $w -width [expr {$wid + 2}] -height $hei
-    eval [concat $w insert 0 $items]
-    $w selection set [lsearch $items [$win cget -text]]
-    bind $w <1> "set $textvar \[$w get \[$w nearest %y]]; destroy $w"
-    place $w -in $win -x 0 -y 0 -anchor nw
+    eval [concat $list insert 0 $items]
+    catch { $list selection set [lsearch $items [set $textvar]] } 
+    bind $list <1> "set $textvar \[$list get \[$list nearest %y\]\]; destroy $fr"
+    place $fr -in $win -x 0  -y 0 -anchor n
 }
+
+
+proc quoteForRegexp { s } {
+    regsub -all {[\]\[$+()\\.?*]} $s {\\\0}  ans
+    return $ans
+}
+
     
 proc mkOpenMathEditButtons { win } {
     maxima
@@ -8091,7 +8434,12 @@ proc ogetr { win var dflt } {
 }
 
 proc deleteHelp { win } {
-    #puts "deleting"
+
+   linkLocal $win helpPending
+   if { [info exists  helpPending] } {
+	after cancel $helpPending
+	unset helpPending
+    }
    set top [winfo toplevel $win]
    set helpwin [oget $top helpwin]
     if { "$helpwin" != ""} {
@@ -8135,24 +8483,28 @@ set show_balloons 1
  #----------------------------------------------------------------
 #
 proc showHelp { win help args } {
-    set top [winfo toplevel [lindex $win 0]]
-    global show_balloons tk_version
-
+    global show_balloons helpwin
     if { $show_balloons == 0 } {
 	catch { place forget $helpwin }
 	return
     }
-    set anchors $args
-    append anchors "  w  e s ne n sw nw"
-    set anchors " nw"
-    set anchors "w e n {nw .2 1.2} {ne .8 1.2} s se"
-     set anchors "w e n {nw .2 1.2} {ne .8 1.2} s se"
+    linkLocal [lindex $win 0] helpPending
+    set helpPending [after 1000 [list showHelp1 $win $help $args]]
+}
+
+proc showHelp1 { win help args } {
+    global  tk_version
+    set top [winfo toplevel [lindex $win 0]]
+#    set anchors $args
+#    append anchors "  w  e s ne n sw nw"
+#    set anchors " nw"
+#    set anchors "w e n {nw .2 1.2} {ne .8 1.2} s se"
+#     set anchors "w e n {nw .2 1.2} {ne .8 1.2} s se"
     set anchors "sw w e n {nw .2 1.2} {ne .8 1.2} s se"
     makeLocal $top helpwin
     if { "$helpwin" == "" } {
 	set tt $top
 	if { "$tt" == "." } {set tt ""}
-	puts "$helpwin"
 	set helpwin $tt.balloonhelpwin
 	if { ![winfo exists $helpwin] } {
 	
@@ -8710,11 +9062,11 @@ proc slashNewline { s } {
 }
 # netscape uses fonts in the following progression.
 # we will have the font labels looking like:
-#  font:propor:medium:r:4   to indicate size 4
+#  font:propor:normal:r:4   to indicate size 4
 # In an application if the user sets the default
 # nfont:nfamily:nweight:nstyle:nsize
 # where nfamily is in {propor,fixed}
-# where nweight is in {medium,bold}
+# where nweight is in {normal,bold}
 # where nstyle  is in {i,r}
 # where nsize   is in {1,2,3,4,5,6,7}
 # then we map the label to a particular font....
@@ -8729,17 +9081,18 @@ proc xHMsetFont { win fonttag  } {
     $win tag config $fonttag -font $fo
 }
 
-# reset fonts for a window taking into account current preferences.
-proc xHMresetFonts { win } {
-    upvar #0 xHMvar$win wvar
-    foreach fonttag [array names wvar font:* ] {
-	xHMsetFont $win $fonttag }
-    }
 
-#convert a fonttag into an actual font specifier, using preferences.
-# mapping propor,fixed to font families, and dobing size adjusting based
-# on font type.
-proc xHMmapFont {  fonttag } {
+    
+#
+#  #### We have legacy code from before the font command existed..
+#  
+    
+if { "[info command font]" != "font" } {
+
+ #convert a fonttag into an actual font specifier, using preferences.
+ # mapping propor,fixed to font families, and dobing size adjusting based
+ # on font type.
+ proc xHMmapFont {  fonttag } {
     # font:family:weight:style:size
     global xHMpreferences
     set s [split $fonttag :]
@@ -8749,27 +9102,96 @@ proc xHMmapFont {  fonttag } {
 	set fam propor
     }
     set si [expr {$xHMpreferences($fam,adjust) + [lindex $s 4]}]
-    set si [expr {($si < 1 ? 1 : ($si > 7 ? 7 : $si))}]
+    set si [expr {($si < 1 ? 1 : ($si > 8 ? 8 : $si))}]
 #    set family $xHMpreferences([lindex $s 1])
 #    set weight [lindex $s 2]
 #    set style [lindex $s 3]
-
-    # return "-*-$family-$weight-$style-normal-*-*-${size}0-*-*-*-*-*-*"
-#    set ans "-*-"
-#    append ans $xHMpreferences($fam)
-#    append ans "-[lindex $s 2]-[lindex $s 3]-normal-*-*-$xHMpreferences($fam,$si)0-*-*-*-*-*-*"
-#    return $ans
     return "-*-$xHMpreferences($fam)-[lindex $s 2]-[lindex $s 3]-normal-*-*-$xHMpreferences($fam,$si)0-*-*-*-*-*-*"
-}
+ }
+ # reset fonts for a window taking into account current preferences.
+ proc xHMresetFonts { win } {
+    upvar #0 xHMvar$win wvar
+    foreach fonttag [array names wvar font:* ] {
+	xHMsetFont $win $fonttag }
+    }
+
+
+ proc xHMfontPointSize { string } {
+#    expr round ([lindex [split [xHMmapFont font:fixed:normal:r:3] -] 8] / 10.0)
+    set tem [lindex $string 1]
+    if { [catch { expr { $tem +1} }] } {
+	error "bad font $string"
+    }
+    return $tem
+#    expr round ([lindex [split $string -] 8] / 10.0)
+ }
+	
+ } else {    
     
-proc xHMfontPointSize { string } {
-    expr round ([lindex [split [xHMmapFont font:fixed:medium:r:3] -] 8] / 10.0)
+#convert a fonttag into an actual font specifier, using preferences.
+# mapping propor,fixed to font families, and dobing size adjusting based
+# on font type.
+ proc xHMmapFont {  fonttag } {
+    # font:family:weight:style:size
+    global xHMpreferences xHMfonts
+    if { [info exists xHMfonts($fonttag) ] } {
+	return $xHMfonts($fonttag)
+    } else {
+	set xHMfonts($fonttag) [set fo [font create]]
+	xHMconfigFont $fonttag
+	return $fo
+	
+    }
+ }
+
+ proc xHMconfigFont {  fonttag } {
+    # font:family:weight:style:size
+    global xHMpreferences xHMfonts
+    set font $xHMfonts($fonttag)
+    set s [split $fonttag :]
+    set fam [lindex $s 1]
+    #puts "fam=$fam,fonttag=$fonttag,s=$s"
+    if { "$fam" == "" } {
+	set fam propor
+    }
+    set si [expr {$xHMpreferences($fam,adjust) + [lindex $s 4]}]
+    #set si [lindex $s 4]
+    set si [expr {($si < 1 ? 1 : ($si > 8 ? 8 : $si))}]
+    set family $xHMpreferences([lindex $s 1])
+    set weight [lindex $s 2]
+    set slant [lindex $s 3]
+    if { "$slant" == "i" } { set slant italic} else {set slant roman}
+    #puts "font config $font -family $family -size $xHMpreferences($fam,$si) -slant $slant -weight $weight"
+    global tcl_platform
+    if { "$tcl_platform(platform)" == "unix" } {
+	set usePixel "-"
+    } else { set usePixel "" }
+    font config $font -family $family -size $usePixel$xHMpreferences($fam,$si) -slant $slant -weight $weight
+    return
+ }
+
+ ### the following resets all the fonts
+ ### for any windows now that font objects are interned
+
+ proc xHMresetFonts { win } {
+     global xHMfonts
+     foreach v [array names xHMfonts] {
+	 xHMconfigFont $v
+     }
+ }
+  proc xHMfontPointSize { string } {
+      set si [font config font2 -size]
+      return [expr { $si < 0 ? - $si : $si }]
+  }
 }
+
+
+
 proc xHMalterFont {win args } {
     upvar #0 xHMvar$win wvar
     upvar #0 xHMtaglist$win taglist
 
-    #puts "font:$args,[array get wvar *]"
+#    puts "font:$args,[array get wvar *]"
     foreach v {family weight style size adjust}  {
 	set $v [lindex $wvar($v) end]
     }
@@ -8782,7 +9204,7 @@ proc xHMalterFont {win args } {
     set font font:$family:$weight:$style:$si
     if { ![catch { set fo $wvar(font) }] } {
 	catch { unset taglist($fo) } }
-    #puts "font=$font, wvar=[array get wvar fon*]"
+#    puts "font=$font, wvar=[array get wvar fon*]"
     set  wvar(font) $font
     if { ![info exists wvar($font)] } {
 	xHMsetFont $win $font }
@@ -8880,10 +9302,16 @@ defTag sub -alter {Csub sub}
 defTag tt -alter {family fixed}
 defTag u -alter {Cunderline underline}
 
-defTag hr -before \n -body { $win insert $wvar(W_insert) \n\t\n hrule} -sbody {} 
+defTag hrx  -body { $win insert $wvar(W_insert) "\n" ;
+     $win insert $wvar(W_insert) "\n" hrule
+    } -sbody {} 
+defTag hr -before \n  -body { 
+     $win insert $wvar(W_insert) "                  " underline
+    } -sbody {} 
+
 defTag var -alter {style i}
 
-defTag hmstart -alter {	family propor   weight medium   style r   size 3
+defTag hmstart -alter {	family propor   weight normal   style r   size 3
 	list list 
         adjust 0 } -body { set wvar(counter) 0 }
 
@@ -8928,7 +9356,7 @@ defTag form  -before "\n" -after "\n"  -body {
     }
 defTag input -body xHMdo_input
 defTag select -body "xHMdo_input select" -sbody {
-    puts wvar=[array get wvar f_in_select]
+#    puts wvar=[array get wvar f_in_select]
     #catch {
     global xHMpriv
     upvar #0 $xHMpriv(form) form
@@ -8989,7 +9417,7 @@ defTag body -body {
      set paramList [xHMsplitParams $params]
     if { [xHMextract_param $paramList bgcolor ""] } {
 	configColor $win config -background $bgcolor
-	configColor $win tag hrule config -background $bgcolor 
+	configColor $win tag  config hrule -font {courier 2} -background $bgcolor
     }
     if { [xHMextract_param $paramList baseprogram ] } {
         oset $win baseprogram [resolveURL $baseprogram [oget $win baseprogram]]
@@ -9093,7 +9521,7 @@ proc xHMdo_input {{type ""}} {
     xHMextract_param $paramList value ""
     set value  [xHMconvert_ampersand $value]
     switch -regexp -- $type {
-	{text$|password|int$} {
+	{text$|password|int$|string} {
 	    xHMextract_param $paramList size 20
 	    entry $w -width $size
 	    if { "$type" == "password" } { $w config -show * }
@@ -9437,7 +9865,8 @@ proc xHMdo_img {} {
     xHMextract_param $paramList width 0
     xHMextract_param $paramList height 0
     xHMextract_param $paramList src ""
-    xHMextract_param $paramList alt <image:[file tail $src]>
+#    xHMextract_param $paramList alt <image:[file tail $src]>
+    xHMextract_param $paramList alt <image:$src>
     #puts "img:$src,$alt,$width,$height"
     if { [lsearch {bottom top center} $align ] < 0 } { set align bottom}
 	set w $win.fr[incr wvar(counter)]
@@ -9446,7 +9875,7 @@ proc xHMdo_img {} {
 
     catch { set base $wvar(url) ; set base $wvar(baseurl) }
     if { [catch { set im [xHMgetImage $win $src $base $width $height] }] } {
-
+	error "dont get here now"
 	frame $w -width $width -height $height -background $bg
 	label $w.label -text $alt -background $bg
 	if { $width && $height } { pack  propagate  $w 0 }
@@ -9456,6 +9885,9 @@ proc xHMdo_img {} {
 	    incr wvar(measure) [image width $image]
 	}
 	label $w -image $im -background $bg
+	bind $w <Enter> [list set ws_openMath(load_rate) "$alt" ]
+	bind $w <Leave> [list set ws_openMath(load_rate) ""  ]
+
     }
     catch { $w configure -border $border}
     set href [lindex [array names taglist h:*] 0]
@@ -9472,8 +9904,8 @@ proc xHMdo_img {} {
     
 # return an image object..
 proc xHMgetImage {win src baseurl width height } {
-    # puts "$win,$src,$baseurl,$width,$height"
-    # puts "getImage [resolveURL $src [decodeURL $baseurl]] $width $height"
+#     puts "$win,$src,$baseurl,$width,$height"
+#     puts "getImage [resolveURL $src [decodeURL $baseurl]] $width $height"
     return [getImage [resolveURL $src [decodeURL $baseurl]] $width $height]
 }
 
@@ -9524,26 +9956,27 @@ set xHMpreferences(adjust) 0
 catch {
     set width_ [expr {.9 * [winfo screenwidth .]}]
 if { [winfo width .] >= 500 } {  set width_ [winfo width .] }
-# catch { set width_ $embed_args(width) }
-if { $width_ >= 800 } { set xHMpreferences(adjust) 1 
-  } elseif { $width_ <= 640} { set xHMpreferences(adjust) -1  } else {
-     set xHMpreferences(adjust) 0}
-
-unset width_    
+set xHMpreferences(adjust) [expr {
+    $width_<= 640 ? -1 :
+    $width_<= 800 ? 0 :
+    1 } ]
+   unset width_    
 }
 proc xHMsetDefaultPreferences {} {
     global xHMpreferences 
     foreach fam {propor fixed} {
-	foreach {n si} { 1 8
+	foreach {n si} {  1 8
     2 10
     3 12
     4 14
     5 18
     6 24
-    7 36 } { set xHMpreferences($fam,$n) $si}}
+    7 24
+    8 34	
+    } { set xHMpreferences($fam,$n) $si}}
     set xHMpreferences(propor,adjust) [expr {$xHMpreferences(adjust) + 0}]
     set xHMpreferences(fixed,adjust) [expr {$xHMpreferences(adjust)  + 0}]
-    array set xHMpreferences { propor times fixed courier  indentwidth .7 }
+    array set xHMpreferences { propor arial fixed courier  indentwidth .7 }
 }
 
 xHMsetDefaultPreferences
@@ -9558,7 +9991,7 @@ proc xHMinit_state { win args } {
     catch { unset wvar}
         catch { unset taglist}
     array set wvar {
-	family propor   weight medium   style r   size 3
+	family propor   weight normal   style r   size 3
 	list list 
 	indent 0
 	adjust 0
@@ -9649,7 +10082,7 @@ proc xHMinit_win { win } {
     # global xHMvar$win
    # catch { unset xHMvar$win }
     xHMinit_state $win
-    $win config -font [xHMmapFont font:fixed:medium:r:3]
+    $win config -font [xHMmapFont font:fixed:normal:r:3]
     catch { eval destroy [winfo children $win] }
     set iwidth [toPixelWidth  [set xHMpreferences(indentwidth)]c $win]
     # puts iwidth=$iwidth
@@ -10206,8 +10639,7 @@ proc browser_log { args } {
     # puts "$args"
 }
 
-
-## source /home/wfs/openmath/nsafesock.tcl
+## source nsafesock.tcl
 
 ###### nsafesock.tcl ######
 # The Safesock Security Policy.
@@ -10552,7 +10984,8 @@ proc SafesockFconfigureAlias {slave sock args} {
     }
 }
 
-## endsource /home/wfs/openmath/nsafesock.tcl
+## endsource nsafesock.tcl
+# source /home/wfs/openmath/nsafesock.tcl
 
 
 
@@ -10620,7 +11053,7 @@ proc getMaxDimensions { } {
   global embed_args
   set dims "800 600"
  if { [catch { set dims "$embed_args(width) $embed_args(height)" } ] } {
-   set dims "[expr round(.8* [winfo screenwidth .])] [expr round(.8* [winfo screenheight .])]"} else {
+   set dims "[expr round(.85* [winfo screenwidth .])] [expr round(.9* [winfo screenheight .])]"} else {
        set dims "[getPercentDim [lindex $dims 0] width .] [getPercentDim [lindex $dims 1] height .]"
    }
   return $dims
@@ -10640,10 +11073,10 @@ proc computeTextWinDimensions { win width height } {
    global fixedFont ws_openMath
     # desetq "fsize wid" [getDefaultFontSize [expr {$width -15}]]
     set wid $width
-   set fixedFont [xHMmapFont font:fixed:medium:r:3]
+   set fixedFont [xHMmapFont font:fixed:normal:r:3]
    set fsize [xHMfontPointSize $fixedFont]
-    
-    set lh [expr {$fsize +1}]
+   
+   set lh [expr {$fsize +1}]
    catch {   set lh [font metrics $fixedFont -linespace] }
    oset $win fixedFont $fixedFont
    oset $win fontSize $fsize
@@ -10777,7 +11210,14 @@ proc omPanel { w args } {
     $m add command -label "Exit" -command  "destroy ."   -help {Exit this program}        
 #    $m add command -label "Print not yet!" -command "puts printing" -underline 0 -help {You may print individual graphs using their menu bars, but printing the whole file is not yet implemented.}
     $m add command -label Preferences -command "fontDialog .fontdialog" -help {set the default font sizes and types}
-    
+    if { "[info command console]" == "console" } {
+	$m add command -underline 0 -label "Show Tcl Console" \
+		-command "console show" -help \
+		{This console is used mainly in debugging netmath}
+    }
+
+
+
     global location
     button $win.loclabel -text " Url:" -command "OpenMathOpenUrl \[$win.location get\] -commandpanel  $win" -font $labelfont
     setHelp $win.loclabel {Fetch the URL or FILE indicated in the entry box. \
@@ -11067,11 +11507,11 @@ proc mkOpenMath { win  } {
 
     
 
-    $w.text tag configure bold -font [font create -family  Helvetica -size $fontSize2 -weight bold ] -lmargin1 15
-    $w.text tag configure plain -font [font create -family Helvetica -size $fontSize2 ] -lmargin1 10 
-    $w.text tag configure Tresult -font [font create -family Courier -size $fontSize -weight bold ] -lmargin1 10
-    $w.text tag configure Tmodified -font [font create -family Courier -size $fontSize ] -background pink -relief sunken -border 1
-    $w.text tag configure Thref -font [font create -family Courier -size $fontSize ]  -foreground blue  -relief flat 
+    $w.text tag configure bold -font [xHMmapFont font:propor:bold:r:3] -lmargin1 15
+    $w.text tag configure plain -font [xHMmapFont font:propor:bold:r:3] -lmargin1 10 
+    $w.text tag configure Tresult -font [xHMmapFont font:fixed:bold:r:3] -lmargin1 10
+    $w.text tag configure Tmodified -font [xHMmapFont font:fixed:normal:r:3] -background pink -relief sunken -border 1
+    $w.text tag configure Thref -font [xHMmapFont font:fixed:normal:r:3]  -foreground blue  -relief flat 
 
     set lh [oget $win lineheight]
     $w.text tag configure sub -offset [expr {-round($lh*.6) }]
@@ -11308,6 +11748,38 @@ proc insertResult { w resultRange value } {
    }
 
 
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # addPreloads --  Tack any preloads or preevals on to the 
+ #  command.
+ #  Results: the new COMMAND
+ #
+ #  Side Effects: 
+ #
+ #----------------------------------------------------------------
+#   
+proc addPreloads {command program win this } {   
+   set preload [getTagsMatching $win ^pre(load|eval):* $this]
+    if { "$preload" != "" &&  ![preeval $program $preload] } {
+	if { [regexp \{pre(load|eval):(.*)\} $preload junk op url] ||
+	[regexp pre(load|eval):(.*) $preload junk op url]} {
+	    if { "$op" == "load" } {
+		set res [HMgetURL $win $url type]
+		append res $command
+		set command $res
+	    } else {
+		append url $command
+		set command $url
+	    }
+
+    }
+   }
+   return $command
+}
+
 
 #
  #-----------------------------------------------------------------
@@ -11337,21 +11809,8 @@ proc sendOneInsertTextWin { program command win this range} {
 	    set command $val
 	}
     }
-    set preload [getTagsMatching $win ^pre(load|eval):* $this]
-    if { "$preload" != "" &&  ![preeval $program $preload] } {
-	if { [regexp \{pre(load|eval):(.*)\} $preload junk op url] ||
-	[regexp pre(load|eval):(.*) $preload junk op url]} {
-	    if { "$op" == "load" } {
-		set res [HMgetURL $win $url type]
-		append res $command
-		set command $res
-	    } else {
-		append url $command
-		set command $url
-	    }
-
-    }
-   }
+    set command [addPreloads $command $program $win $this ]
+    
    # puts "preload=$preload,command:$command"
     set loc [sendOneDoCommand $program $command "sendOneInsertTextWin1 $win $program "]
     if { "$range" != "" } {
@@ -11586,16 +12045,25 @@ set toeval "OpenMathOpenUrl http://www.ma.utexas.edu/users/wfs/netmath/netmath.h
 
 
 catch { if { "[lindex $argv 0]" != "" } {
+    wm minsize . 500 400
+    after 7000  wm minsize . 0 0
     set toeval "OpenMathOpenUrl [lindex $argv 0]"
+    
 }
 }
 catch { set toeval [assoc eval [getattr browserArgs]] }
 
-eval $toeval
-
-
-
-
+if { [catch { eval $toeval } err ] }  {
+    if { [regexp "unreachable|couldn't open" $err] 
+        &&  (1 || [catch { socket www.yahoo.com 80 } ])
+       && (![info exists ws_openMath(proxy,http)] ||
+           [catch { eval socket $ws_openMath(proxy,http) } ]) } {
+	if { 0 == [tk_dialog .jil 0 "Connection Problem:$err" "" 0 \
+	 {Configure proxy server?} {Connect Later}] } {
+	     fontDialog .top
+	 }
+     } else {error "$toeval:\n   error: $err" }
+ }
 
 ## endsource "startup.tcl"
 }
@@ -11776,11 +12244,6 @@ proc CNpreviousInput { w direction } {
     }
 }
 
-proc quoteForRegexp { s } {
-    regsub -all {[\]\[$+()\\.?*]} $s {\\\0}  ans
-    return $ans
-}
-
 proc CNblinkMatchingParen { win ch } {
     $win tag delete blink
     if { [string first $ch "\}\)\]"] >= 0 } {
@@ -11892,35 +12355,84 @@ proc genword { string count } {
 ## endsource string.tcl
 #source eopenplot.tcl
 
+
+array set xmaximaPreferences {fontAdjust 0 }
+catch { source ~/xmaxima.ini }
+
+
+
+
 proc setMaxDir {} {
     global env ws_openMath
+    # the executable is in the src directory so we want to lop off one more
+    set epath [file dirname [file dirname [info nameofexecutable]]]
+    if {[file exists [set tem [file join $epath system.ini]]] } {
+	source $tem
+    }
     if { [info exists env(MAXIMA_DIRECTORY)] } { 
 	set ws_openMath(maximaPath) $env(MAXIMA_DIRECTORY)
 	return
     }
-    set m maxima-5.4
+    if { [file exists [file join $epath src/plot.o]] } {
+	set ws_openMath(maximaPath) $epath
+	set env(MAXIMA_DIRECTORY) $epath
+	return
+    }
+    set m maxima-5.5
     foreach v { c:/ d:/ /usr/lib /usr/local/lib /cdrom /home/wfs } {
 	if { [file exists [file join $v $m intro.html]] } {
 	    set ws_openMath(maximaPath) [file join $v $m ]
 	    return
 	}
     }
-    error "Unable to find maximaPath.  Please set MAXIMA_PATH
+    error "Unable to find maximaPath.  Please set MAXIMA_DIRECTORY
     environment variable, to the path eg c:/myhome/maxima-5.4"
 }
-setMaxDir
-rename setMaxDir {}
-set ws_openMath(localMaximaServer) "[file join $ws_openMath(maximaPath) src/saved_maxima] -load [file join $ws_openMath(maximaPath) src/server.lisp] -eval \"(setup PORT)\" &"
 
-set xmaximaPreferences(font) {Courier 12}
-catch { source ~/xmaxina.ini}
+
+setMaxDir
+if { "$tcl_platform(platform)" == "windows" } {
+    global ws_openMath
+    set ws_openMath(kill) [file join $ws_openMath(maximaPath) \
+	    src winkill.exe]
+    catch { load  [file join $ws_openMath(maximaPath) \
+	    src tclwinkill.dll]  }
+    proc setIcon { w } {
+	global ws_openMath
+	winico set [winfo toplevel $w] [winico createfrom [file join \
+		$ws_openMath(maximaPath) src max.ico ]]   
+    }
+    after 2000 { setIcon . }
+    after 6000 { setIcon . }
+    
+  } else {
+    set ws_openMath(kill) kill
+}
+
+rename setMaxDir {}
+
+set ws_openMath(localMaximaServer) "[file join $ws_openMath(maximaPath) src/saved_maxima] -load [file join $ws_openMath(maximaPath) src/server.lisp] -eval \"(setup PORT)\" -f &"
+
+
 
 
 proc doit { fr } {
     catch { destroy $fr }
-    global NCtextHelp ws_openMath
+    global NCtextHelp ws_openMath xmaximaPreferences argv
     frame .browser
-    OpenMathOpenUrl file:[file join $ws_openMath(maximaPath) intro.html] -toplevel .browser
+    set firstUrl file:/[file join $ws_openMath(maximaPath) intro.html]
+    if { [llength $argv] > 0 } {
+	set i 0
+	if { [string match "-*" $argv] == 0 } {
+	    set firstUrl [lindex $argv 0]
+	    incr i
+	}
+    while { [set tem [lsearch [lrange $argv $i end] -source]] >= 0 } {
+	catch { source [lindex $argv [expr $tem + $i +1]] }
+	set i [expr $tem + $i +2]
+    }
+    }
+    OpenMathOpenUrl $firstUrl -toplevel .browser
     frame $fr
     pack $fr -expand 1 -fill both -side top
     pack .browser -side bottom
@@ -11980,17 +12492,18 @@ proc doit { fr } {
     frame $fr.bottom -height 2
     $fr.bottom config -cursor double_arrow
     bind  $fr.bottom <B1-Motion> "changeSize $w %Y"
-    pack $fr.bottom -side bottom -fill x 
+    pack $fr.bottom -side bottom -fill x
+   
     text $w -background white -yscrollcommand "$fr.scroll set"
+    set ws_openMath($w,inputTag) input
+    resetMaximaFont $w
     scrollbar $fr.scroll -command "$w yview"
     pack $fr.scroll -side right -fill y
     runOneMaxima $w
-    set sock [oget $w socket]
-    fileevent $sock readable  "maximaFilter $w $sock"
     
     $w mark set lastStart end
     $w mark gravity lastStart left
-    bind $w <Configure> "resizeSubPlotWindows $w %w %h"
+    bind $w <Configure> "resizeSubPlotWindows $w %w %h; resizeMaxima $w %w %h"
 
     $w tag configure input -foreground blue
     # -relief sunken -borderwidth 1
@@ -12002,21 +12515,45 @@ proc doit { fr } {
 	append ws_openMath(sticky) {|^input$}
     }
     pack $fr.text -expand 1 -fill both -side left
-
     desetq "width height"  [getMaxDimensions]
+    wm geometry . ${width}x${height}
+    update
     
-    wm geometry . "${width}x${height}"
+    if { [winfo height $fr] > .8 * [winfo height .]  } {
+	$fr.text config -height 15
+    }
+    
+
     wm title . xmaxima
+
+
+   
+
+}
+
+proc textWindowWidth { w } {
+    set font [$w cget -font]
+    set w20 [font measure [$w cget -font] -displayof $w "01234567890123456789"]
+    return [expr round(floor([winfo width $w]*20.0/$w20))]
+}
+    
+
+proc resizeMaxima { win width height } {
+    linkLocal $win pid
+    if { [info exists pid] && $pid!=-1 } {
+	set wid [expr [textWindowWidth $win]-6]
+	sendMaxima $win ":lisp-quiet (setq linel $wid)\n"
+    }
 }
 
 proc packBoth {fr browser} {
     pack forget $fr $browser
     pack $fr -expand 1 -fill both -side top
-    pack $browser -side bottom
+    pack $browser -side bottom -fill x
 }
 
 proc CMmenu { win } {
-    global buttonfont
+    global buttonfont ws_openMath
     set menubar $win.textcommands
     set win $menubar
     if { [winfo exists $menubar] } {
@@ -12035,10 +12572,12 @@ proc CMmenu { win } {
     setHelp $win.help {Bring down a menu with some help options}
     set m [oget $win.help menu]
     #oset $win showHelpBar "show help bar"
-    $m add command -underline 0 -label {Maxima Help} -help {Visit local maxima help file in html} -command {OpenMathOpenUrl file:[file join $ws_openMath(maximaPath) info maxima_toc.html]}
-
+    $m add command -underline 0 -label {Maxima Help} -help {Visit local maxima help file in html} -command {OpenMathOpenUrl file:/[file join $ws_openMath(maximaPath) info maxima_toc.html]}
      $m add command -underline 0 -label {Netmath} -help {Visit netmath page} -command {OpenMathOpenUrl http://www.ma.utexas.edu/users/wfs/netmath/netmath.html}
+     $m add command -underline 0 -label {Run Tests} -help {Run the test files in the doc/*.mac} -command "sendMaxima \[oget $win textwin\] {:lisp (progn (si::chdir \"[file join $ws_openMath(maximaPath) doc]\")(load \"tests.lisp\"))\n}"
 
+ 
+ 
     
 
     
@@ -12049,7 +12588,16 @@ proc CMmenu { win } {
     #oset $win showFileBar "show file bar"
     $m add command -underline 0 -label {Toggle Browser Visibility} -help {Toggle display of Browser} -command {if { [catch { pack info .browser }] } { pack .browser -side bottom } else { pack forget .browser }} 
     $m add command -underline 0 -label {Exit} -command "closeMaxima \[oget $win textwin] ; destroy ." -help  "End this session of Maxima"
-     $m add command -underline 0 -label {Preferences} -command "xmaximaPreferences" -help  "Set Preferences for Xmaxima saved in ~/xmaxima.ini"
+     $m add command -underline 0 -label {Interrupt   C-c C-c} -command "CMinterrupt \[oget $win textwin\]" -help  "Interrupt the Maxima process and reset the filter"
+    $m add command -underline 0 -label {Restart} -command "runOneMaxima \[oget $win textwin\]" -help  "Kill the Maxima process and reset the filter, and start a new one"
+#     $m add command -underline 0 -label {Preferences} -command "xmaximaPreferences" -help  "Set Preferences for Xmaxima saved in ~/xmaxima.ini"
+     $m add command -underline 0 -label {Preferences} -command "fontDialog .preferences" -help  "Set Preferences for Xmaxima and Netmath saved in ~/netmath.ini"
+    if { "[info command console]" == "console" } {
+	$m add command -underline 0 -label "Show Tcl Console" \
+		-command "console show" -help \
+		{This console is used mainly in debugging xmaxima}
+    }
+
 
 
      ####### begin edit button
@@ -12058,7 +12606,6 @@ proc CMmenu { win } {
     set m [oget $win.edit menu]
     #oset $win showEditBar "show edit bar"
     $m add command -underline 0 -label {Previous Input   Alt-p} -command "CNpreviousInput \[oget $win textwin\] -1" -help  "Insert previous inputs matching what is already typed"
-    $m add command -underline 0 -label {Interrupt   C-c C-c} -command "CMinterrupt \[oget $win textwin\]" -help  "Interrupt the Maxima process and reset the filter"
     $m add command -underline 0 -label {Clear input   C-u} -command "CNclearinput \[oget $win textwin\]" -help  "Erase the current input"
     $m add command -underline 0 -label {Cut   C-c} -command "tk_textCut \[oget $win textwin\]" -help  "Cut the highlighted region, ready for pasting"
     $m add command -underline 0 -label {Paste   C-v} -command "tk_textPaste \[oget $win textwin\]" -help  "Paste the last cut region"
@@ -12088,7 +12635,11 @@ proc xmaximaPreferences { } {
     }
 
     button .prefs.apply -text apply -command {
-	.maxima.text config -font $xmaximaPreferences(font)
+	if { [catch { resetMaximaFont .maxima.text } ] } {
+	    error  "fontAdjust must be an integer not $xmaximaPreferences(fontAdjust)"
+	}
+	    
+
     }
 
     button .prefs.exit -text "exit preferences" -command {destroy .prefs}
@@ -12099,10 +12650,18 @@ proc xmaximaPreferences { } {
 
 
 
+proc resetMaximaFont { w } {
+    global xmaximaPreferences
+    $w config -font [xHMmapFont font:fixed:normal:r:[expr $xmaximaPreferences(fontAdjust) + 3]]
+}
+
+
+
 
 proc CMeval { w } {
     linkLocal $w inputs
     set prev ""
+  #puts "CMeval $w, [$w compare insert < lastStart]"
     if { [$w compare insert < lastStart] } {
 	set this [thisRange $w input insert]
 	if { "$this" != "" } {
@@ -12159,7 +12718,9 @@ proc openMaxima { win filter } {
 	set com "exec "
 	append com    $ws_openMath(localMaximaServer)
 	regsub PORT $com $port com
-	eval $com
+#	puts com=$com
+	if { [catch { eval $com } err ] } {
+	    tk_messageBox -title "Error" -message "Can't execute $ws_openMath(localMaximaServer) : $err" }
     } else {error "could not open a socket " }
 }
 
@@ -12179,7 +12740,14 @@ proc runMaxima { win  filter sock args } {
 }
 
 proc closeMaxima { win } {
-    linkLocal $win maximaSocket
+    global pdata
+    linkLocal $win maximaSocket pid 
+    foreach v [array names pdata maxima*] { unset pdata($v) }
+    
+    catch {
+	CMkill -TERM $pid
+	unset pid
+     }
     catch {    close $maximaSocket
                  unset maximaSocket
       }
@@ -12233,11 +12801,11 @@ proc maximaFilter { win sock } {
 	 set it $res
      }
     # puts it=<$it>
-    if { [regexp -indices "\{plot\[23]d" $it inds] } {
+    if { [regexp -indices "\{plot\[d23]\[fd]" $it inds] } {
 	set plotPending [string range $it [lindex $inds 0] end]
 	set it ""
 	if { [regexp {\(C[0-9]+\) $} $it ff] } {
-	    regexp "\{plot\[23]d.*\}" $ff it
+	    regexp "\{plot\[d23]\[df].*\}" $ff it
 #	set it $ff
 	}
     }
@@ -12264,10 +12832,10 @@ proc maximaFilter { win sock } {
 	 #puts "it=<$it>,pdata={[array get pdata *]},[$win index end],[$win index insert]"
 
 	if { [info exists pdata($sock,wait) ] && $pdata($sock,wait) > 0 } {
-	 #   puts "it=<$it>,begin=$pdata($sock,begin),end=[$win index {end linestart}]"
+	    #puts "it=<$it>,begin=$pdata($sock,begin),end=[$win index {end linestart}]"
 	    #puts dump=[$win dump -all "insert -3 lines" end]
-	    set pdata($sock,result) [$win get $pdata($sock,begin) "end -1char linestart" ]
-	#    puts result=$pdata($sock,result)
+	    setAct pdata($sock,result) [$win get $pdata($sock,begin) "end -1char linestart" ]
+	    #puts result=$pdata($sock,result)
 	    set pdata($sock,wait) 0
 	 }
 	$win mark set lastStart "end -1char"
@@ -12280,30 +12848,57 @@ proc maximaFilter { win sock } {
 }
 
 proc littleFilter {win sock } {
+    global pdata
     set tem [gets $sock]
-    if { [regexp {pid=([0-9]+)} $tem junk pid] } {
+    append pdata(maximaInit,$sock) $tem
+    debugsend "littlefilter got:<$tem>"
+    if { [regexp {pid=([---0-9]+)} $tem junk pid] } {
 	fileevent $sock readable ""
 	oset $win pid $pid
 	oset $win socket $sock
     }
 }
 
-proc runOneMaxima { win } {
-    closeMaxima $win
-    openMaxima $win littleFilter
-    set af [after 5000 oset $win pid -1 ]
-    vwait [oloc $win pid]
-    after cancel $af
-    if { [oget $win pid] >= 0 } {
-	
-	return [list [oget $win pid] [oget $win socket] ]
-    } else {
-	closeMaxima $win
-	error "runOneMaxima timed out"
-    }
+if { ![info exists ws_openMath(timeout)] } {
+    
+    set ws_openMath(timeout) 20000
 }
 
+proc runOneMaxima { win } {
+    global ws_openMath
+    closeMaxima $win
+    linkLocal $win pid
+    set pid -1
+    openMaxima $win littleFilter
+    while { $pid == -1 } {  
+	set af [after $ws_openMath(timeout) oset $win pid -1 ]
+	# puts "waiting pid=$pid"
+	vwait [oloc $win pid]
+	after cancel $af
+	if { $pid  == -1 } {
+	    if { "[info  command console]" != "" } { console show }
+	    if { [tk_dialog .jim ask {Starting maxima timed out.  Wait longer?} \
+		    {} yes  no yes ] } {
+		list
+	    } else {
+		closeMaxima $win
+		set err   "runOneMaxima timed out"
+		global pdata
+		if { [info exists pdata(maximaInit,[oget $win socket])] } {
+		    append err : $pdata(maximaInit,[oget $win socket])
+		}
+		error $err
+	    }
+	}
+    }
+    set res [list [oget $win pid] [oget $win socket] ]
+    set sock [oget $win socket]
+    global pdata
+    set pdata(maxima,socket) $sock
+    fileevent $sock readable  "maximaFilter $win $sock"
+    return $res
 
+}
 
 proc sendMaxima { win form } {
     linkLocal $win maximaSocket
@@ -12311,77 +12906,126 @@ proc sendMaxima { win form } {
 	# append form ";"
     }
     puts -nonewline $maximaSocket $form
-    #puts "form=<$form>"
     flush $maximaSocket
 }
 
-proc sendMaximaWait { win form } {
+
+proc sendMaximaWait { win form {timeout 20000 }} {
+    linkLocal $win maximaWait 
+
+    set form [string trimright $form "\n \t\r"]
+    
+    if { ![regexp "\[\$;\]|^\[ \t]*:" $form ] } {
+	 append form ";"
+    }
+    sendMaximaCall $win $form\n [list oset $win maximaWait 1]
+    set maximaWait -1
+    set af [after $timeout oset $win maximaWait -1]
+    vwait [oloc $win maximaWait]
+    after cancel $af
+    if { $maximaWait > 0 } {
+	global pdata 
+	return [trim_maxima $pdata([oget $win maximaSocket],result)]
+    } else {
+	error "sendMaximaWait $form timed out"
+    }
+}
+    
+
+
+#
+ #-----------------------------------------------------------------
+ #
+ # sendMaximaCall --  send FORM to maxima process in WIN
+ # and when it gets the result have it execute CALL
+ #
+ #  Results: none
+ #
+ #  Side Effects: maxima executes form and then call may
+ #  do something like insert it somewhere in a buffer.   
+ #
+ #  # todo: should probably make it so this guy looks at maxima c, d numbers
+ #    and matches results ..
+ #----------------------------------------------------------------
+#
+proc sendMaximaCall { win form call } {
     linkLocal $win maximaSocket
     global pdata
-    
-    if { ![regexp "\[\$;\]\[ \t\n\r\]*\$" $form ] } {
-	# append form ";"
-    }
     set begin [$win index lastStart]
     if { [regexp {C([0-9]+)} [$win get "$begin linestart" $begin] junk \
 	    counter ] } {
-	set af [after 5000 set pdata($maximaSocket,wait) -1]
+	#	set af [after 5000 set pdata($maximaSocket,wait) -1]
 	set pdata($maximaSocket,wait) 1
-
+	
 	set pdata($maximaSocket,begin) $begin
     } else {
-
 	catch { unset pdata($maximaSocket,wait) }
     }
     puts -nonewline $maximaSocket $form
     flush $maximaSocket
     if { [info exists counter] } {
-	vwait pdata($maximaSocket,wait)
-	after cancel $af
-	#puts pdata=[array get pdata *]
-	if { $pdata($maximaSocket,wait) == 0 } {
-	    unset pdata($maximaSocket,wait)
-	    return [trim_maxima $pdata($maximaSocket,result)]
-	}
-	unset pdata($maximaSocket,wait)
-	
+	setAction pdata($maximaSocket,result) $call
     }
-    
+}
+
+proc setAction { var action } {
+    global _actions
+    set _actions($var) $action
+}
+
+proc setAct { var val } {
+    global _actions 
+    uplevel #0 set $var [list $val]
+    if { [info exists _actions($var)] } {
+	uplevel #0 $_actions($var)
+	unset _actions($var)
+    }
 }
 
 proc CMresetFilter { win } {
     set sock [oget $win maximaSocket]
     fileevent $sock readable "maximaFilter $win $sock"
 }
+
+proc CMkill {  signal pid } {
+    global ws_openMath
+    if { [info command "winkill"] == "winkill" } {
+	winkill -pid $pid -signal $signal
+    } else {
+	exec $ws_openMath(kill) -INT $pid
+    }
+}
+
 proc CMinterrupt { win } {
-    exec kill -INT [oget $win pid]
+    global ws_openMath
+    CMkill   -INT [oget $win pid]  
     CMresetFilter $win
 }
 
 
-proc CMkill { win } {
-    exec kill -9 [oget $win pid]
-    
-}
-
-
 proc doShowPlot { w data } {
-	linkLocal $w counter
+        global xHMpreferences
 	#puts data=$data
-	if { ![info exists counter] } {set counter 0} 
-	set name $w.plot[oset $w counter [expr {1 + [oget $w counter]}]]
-#        eval plot2dData $name $data [getDimensions $w $name]
-        set command [list [lindex [lindex $data 0] 0]  -data [lindex $data 0] \
-		-windowname $name]
+    set name [plotWindowName $w]
+    set command [lindex [lindex $data 0] 0]
+    if { "$command" == "plotdf" } {
+	set command [lindex $data 0]
+    } else {
+	lappend command -data [lindex $data 0]
+    }
+    lappend command -windowname $name
 #	puts $command
 	eval $command
-#	return 
+#	return
 	set e [$w index end]
 	set view [ShowPlotWindow $w $name  "$e $e" "$e $e"  ""]
+	if { "$view" == "" } { return }
 	append view " -1 line"
 	set tem [$w dump -window $view end]
+	global billy
+	set billy $tem
 	if { [llength $tem] == 3 } {
-	    after 2 $w see [lindex $tem 2]
+	    after 80 $w see [lindex $tem 2]
 	    #after 400 $w see [lindex $tem 2]
 	    #puts "	    after 400 $w see [lindex $tem 2]"
 	}
@@ -12439,17 +13083,36 @@ proc trim_maxima { string } {
     return $string
 }
 
+proc dshow { args  } {
+    foreach v $args { append ans $v=[uplevel 1 set $v], }
+    puts $ans
+}
+proc maxima_insert { w this next val args } {
+    catch { 
+    set res [uplevel #0 set $val]
+    }
+    catch { 
+    insertResult_maxima $w $this $next [trim_maxima $res]
+    }
+}
 
 proc eval_maxima { prog win this nextResult } {
     global ws_openMath
+    set w $ws_openMath(maximaWindow)
+    linkLocal $w maximaSocket
     set form [string trimright [eval $win get $this] " \t\n;$"]
-    set res [sendMaximaWait $ws_openMath(maximaWindow) "$form;"]
-    # puts "res=$res"
+    set form [addPreloads $form maxima $win $this]
     if { "[lindex $nextResult 0]" != "" } {
-	insertResult_maxima $win $this  $nextResult $res
+	sendMaximaCall $w "$form;\n" [list maxima_insert $win $this  $nextResult pdata($maximaSocket,result)]
+	
+#         set res [sendMaximaWait $ws_openMath(maximaWindow) "$form;"]
+#	insertResult_maxima $win $this  $nextResult $res
+    } else {
+	sendMaxima $ws_openMath(maximaWindow) "$form;\n"
     }
     return 0
 }
+
 
 
 

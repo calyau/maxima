@@ -27,105 +27,105 @@
 \secentry{Definitions for Simplification}{6}{1}{41}
 \chapentry{Plotting}{7}{49}
 \secentry{Definitions for Plotting}{7}{1}{49}
-\chapentry{Input and Output}{8}{53}
-\secentry{Introduction to Input and Output}{8}{1}{53}
-\secentry{FILES}{8}{2}{53}
-\secentry{PLAYBACK}{8}{3}{53}
-\secentry{Definitions for Input and Output}{8}{4}{53}
-\chapentry{Floating Point}{9}{67}
-\secentry{Definitions for Floating Point}{9}{1}{67}
-\chapentry{Contexts}{10}{71}
-\secentry{Definitions for Contexts}{10}{1}{71}
-\chapentry{Polynomials}{11}{75}
-\secentry{Introduction to Polynomials}{11}{1}{75}
-\secentry{Definitions for Polynomials}{11}{2}{75}
-\chapentry{Constants}{12}{89}
-\secentry{Definitions for Constants}{12}{1}{89}
-\chapentry{Logarithms}{13}{91}
-\secentry{Definitions for Logarithms}{13}{1}{91}
-\chapentry{Trigonometric}{14}{93}
-\secentry{Introduction to Trigonometric}{14}{1}{93}
-\secentry{Definitions for Trigonometric}{14}{2}{93}
-\chapentry{Special Functions}{15}{99}
-\secentry{Introduction to Special Functions}{15}{1}{99}
-\secentry{GAMALG}{15}{2}{99}
-\secentry{SPECINT}{15}{3}{99}
-\secentry{Definitions for Special Functions}{15}{4}{100}
-\chapentry{Orthogonal Polynomials}{16}{103}
-\secentry{Introduction to Orthogonal Polynomials}{16}{1}{103}
-\secentry{Definitions for Orthogonal Polynomials}{16}{2}{105}
-\chapentry{Limits}{17}{109}
-\secentry{Definitions for Limits}{17}{1}{109}
-\chapentry{Differentiation}{18}{111}
-\secentry{Definitions for Differentiation}{18}{1}{111}
-\chapentry{Integration}{19}{117}
-\secentry{Introduction to Integration}{19}{1}{117}
-\secentry{Definitions for Integration}{19}{2}{117}
-\chapentry{Equations}{20}{127}
-\secentry{Definitions for Equations}{20}{1}{127}
-\chapentry{Differential Equations}{21}{135}
-\secentry{Definitions for Differential Equations}{21}{1}{135}
-\chapentry{Numerical}{22}{139}
-\secentry{Introduction to Numerical}{22}{1}{139}
-\secentry{DCADRE}{22}{2}{139}
-\secentry{ELLIPT}{22}{3}{141}
-\secentry{FOURIER}{22}{4}{141}
-\secentry{NDIFFQ}{22}{5}{141}
-\secentry{Definitions for Numerical}{22}{6}{142}
-\chapentry{Statistics}{23}{147}
-\secentry{Definitions for Statistics}{23}{1}{147}
-\chapentry{Arrays and Tables}{24}{149}
-\secentry{Definitions for Arrays and Tables}{24}{1}{149}
-\chapentry{Matrices and Linear Algebra}{25}{153}
-\secentry{Introduction to Matrices and Linear Algebra}{25}{1}{153}
-\subsecentry{DOT}{25}{1}{1}{153}
-\subsecentry{VECTORS}{25}{1}{2}{153}
-\secentry{Definitions for Matrices and Linear Algebra}{25}{2}{153}
-\chapentry{Affine}{26}{165}
-\secentry{Definitions for Affine}{26}{1}{165}
-\chapentry{Tensor}{27}{169}
-\secentry{Introduction to Tensor}{27}{1}{169}
-\secentry{Definitions for Tensor}{27}{2}{169}
-\chapentry{Ctensor}{28}{173}
-\secentry{Introduction to Ctensor}{28}{1}{173}
-\secentry{Definitions for Ctensor}{28}{2}{174}
-\chapentry{Series}{29}{177}
-\secentry{Introduction to Series}{29}{1}{177}
-\secentry{Definitions for Series}{29}{2}{177}
-\chapentry{Number Theory}{30}{183}
-\secentry{Definitions for Number Theory}{30}{1}{183}
-\chapentry{Symmetries}{31}{189}
-\secentry{Definitions for Symmetries}{31}{1}{189}
-\chapentry{Groups}{32}{207}
-\secentry{Definitions for Groups}{32}{1}{207}
-\chapentry{Runtime Environment}{33}{209}
-\secentry{Introduction for Runtime Environment}{33}{1}{209}
-\secentry{INTERRUPTS}{33}{2}{209}
-\secentry{Definitions for Runtime Environment}{33}{3}{209}
-\chapentry{Miscellaneous Options}{34}{213}
-\secentry{Introduction to Miscellaneous Options}{34}{1}{213}
-\secentry{SHARE}{34}{2}{213}
-\secentry{Definitions for Miscellaneous Options}{34}{3}{213}
-\chapentry{Rules and Patterns}{35}{219}
-\secentry{Introduction to Rules and Patterns}{35}{1}{219}
-\secentry{Definitions for Rules and Patterns}{35}{2}{219}
-\chapentry{Lists}{36}{225}
-\secentry{Introduction to Lists}{36}{1}{225}
-\secentry{Definitions for Lists}{36}{2}{225}
-\chapentry{Function Definition}{37}{229}
-\secentry{Introduction to Function Definition}{37}{1}{229}
-\secentry{FUNCTION}{37}{2}{229}
-\secentry{MACROS}{37}{3}{230}
-\subsecentry{Semantics}{37}{3}{1}{230}
-\subsecentry{SIMPLIFICATION}{37}{3}{2}{230}
-\secentry{OPTIMIZATION}{37}{4}{232}
-\secentry{Definitions for Function Definition}{37}{5}{233}
-\chapentry{Program Flow}{38}{243}
-\secentry{Introduction to Program Flow}{38}{1}{243}
-\secentry{Definitions for Program Flow}{38}{2}{243}
-\chapentry{Debugging}{39}{251}
-\secentry{Source Level Debugging}{39}{1}{251}
-\secentry{Keyword Commands}{39}{2}{252}
-\secentry{Definitions for Debugging}{39}{3}{253}
-\chapentry{Indices}{40}{255}
-\chapentry{Function and Variable Index}{Appendix{} \char 65}{257}
+\chapentry{Input and Output}{8}{55}
+\secentry{Introduction to Input and Output}{8}{1}{55}
+\secentry{FILES}{8}{2}{55}
+\secentry{PLAYBACK}{8}{3}{55}
+\secentry{Definitions for Input and Output}{8}{4}{55}
+\chapentry{Floating Point}{9}{69}
+\secentry{Definitions for Floating Point}{9}{1}{69}
+\chapentry{Contexts}{10}{73}
+\secentry{Definitions for Contexts}{10}{1}{73}
+\chapentry{Polynomials}{11}{77}
+\secentry{Introduction to Polynomials}{11}{1}{77}
+\secentry{Definitions for Polynomials}{11}{2}{77}
+\chapentry{Constants}{12}{91}
+\secentry{Definitions for Constants}{12}{1}{91}
+\chapentry{Logarithms}{13}{93}
+\secentry{Definitions for Logarithms}{13}{1}{93}
+\chapentry{Trigonometric}{14}{95}
+\secentry{Introduction to Trigonometric}{14}{1}{95}
+\secentry{Definitions for Trigonometric}{14}{2}{95}
+\chapentry{Special Functions}{15}{101}
+\secentry{Introduction to Special Functions}{15}{1}{101}
+\secentry{GAMALG}{15}{2}{101}
+\secentry{SPECINT}{15}{3}{101}
+\secentry{Definitions for Special Functions}{15}{4}{102}
+\chapentry{Orthogonal Polynomials}{16}{105}
+\secentry{Introduction to Orthogonal Polynomials}{16}{1}{105}
+\secentry{Definitions for Orthogonal Polynomials}{16}{2}{107}
+\chapentry{Limits}{17}{111}
+\secentry{Definitions for Limits}{17}{1}{111}
+\chapentry{Differentiation}{18}{113}
+\secentry{Definitions for Differentiation}{18}{1}{113}
+\chapentry{Integration}{19}{119}
+\secentry{Introduction to Integration}{19}{1}{119}
+\secentry{Definitions for Integration}{19}{2}{119}
+\chapentry{Equations}{20}{129}
+\secentry{Definitions for Equations}{20}{1}{129}
+\chapentry{Differential Equations}{21}{137}
+\secentry{Definitions for Differential Equations}{21}{1}{137}
+\chapentry{Numerical}{22}{141}
+\secentry{Introduction to Numerical}{22}{1}{141}
+\secentry{DCADRE}{22}{2}{141}
+\secentry{ELLIPT}{22}{3}{143}
+\secentry{FOURIER}{22}{4}{143}
+\secentry{NDIFFQ}{22}{5}{143}
+\secentry{Definitions for Numerical}{22}{6}{144}
+\chapentry{Statistics}{23}{149}
+\secentry{Definitions for Statistics}{23}{1}{149}
+\chapentry{Arrays and Tables}{24}{151}
+\secentry{Definitions for Arrays and Tables}{24}{1}{151}
+\chapentry{Matrices and Linear Algebra}{25}{155}
+\secentry{Introduction to Matrices and Linear Algebra}{25}{1}{155}
+\subsecentry{DOT}{25}{1}{1}{155}
+\subsecentry{VECTORS}{25}{1}{2}{155}
+\secentry{Definitions for Matrices and Linear Algebra}{25}{2}{155}
+\chapentry{Affine}{26}{167}
+\secentry{Definitions for Affine}{26}{1}{167}
+\chapentry{Tensor}{27}{171}
+\secentry{Introduction to Tensor}{27}{1}{171}
+\secentry{Definitions for Tensor}{27}{2}{171}
+\chapentry{Ctensor}{28}{175}
+\secentry{Introduction to Ctensor}{28}{1}{175}
+\secentry{Definitions for Ctensor}{28}{2}{176}
+\chapentry{Series}{29}{179}
+\secentry{Introduction to Series}{29}{1}{179}
+\secentry{Definitions for Series}{29}{2}{179}
+\chapentry{Number Theory}{30}{185}
+\secentry{Definitions for Number Theory}{30}{1}{185}
+\chapentry{Symmetries}{31}{191}
+\secentry{Definitions for Symmetries}{31}{1}{191}
+\chapentry{Groups}{32}{209}
+\secentry{Definitions for Groups}{32}{1}{209}
+\chapentry{Runtime Environment}{33}{211}
+\secentry{Introduction for Runtime Environment}{33}{1}{211}
+\secentry{INTERRUPTS}{33}{2}{211}
+\secentry{Definitions for Runtime Environment}{33}{3}{211}
+\chapentry{Miscellaneous Options}{34}{215}
+\secentry{Introduction to Miscellaneous Options}{34}{1}{215}
+\secentry{SHARE}{34}{2}{215}
+\secentry{Definitions for Miscellaneous Options}{34}{3}{215}
+\chapentry{Rules and Patterns}{35}{221}
+\secentry{Introduction to Rules and Patterns}{35}{1}{221}
+\secentry{Definitions for Rules and Patterns}{35}{2}{221}
+\chapentry{Lists}{36}{227}
+\secentry{Introduction to Lists}{36}{1}{227}
+\secentry{Definitions for Lists}{36}{2}{227}
+\chapentry{Function Definition}{37}{231}
+\secentry{Introduction to Function Definition}{37}{1}{231}
+\secentry{FUNCTION}{37}{2}{231}
+\secentry{MACROS}{37}{3}{232}
+\subsecentry{Semantics}{37}{3}{1}{232}
+\subsecentry{SIMPLIFICATION}{37}{3}{2}{232}
+\secentry{OPTIMIZATION}{37}{4}{234}
+\secentry{Definitions for Function Definition}{37}{5}{235}
+\chapentry{Program Flow}{38}{245}
+\secentry{Introduction to Program Flow}{38}{1}{245}
+\secentry{Definitions for Program Flow}{38}{2}{245}
+\chapentry{Debugging}{39}{253}
+\secentry{Source Level Debugging}{39}{1}{253}
+\secentry{Keyword Commands}{39}{2}{254}
+\secentry{Definitions for Debugging}{39}{3}{255}
+\chapentry{Indices}{40}{257}
+\chapentry{Function and Variable Index}{Appendix{} \char 65}{259}

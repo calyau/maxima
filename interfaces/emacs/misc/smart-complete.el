@@ -47,6 +47,11 @@
     (define-key comint-mode-map "\ep" 'smart-complete)
   )
 
+(if (boundp 'sshell-mode-map)
+    (define-key sshell-mode-map "\ep" 'smart-complete)
+   (define-key sshell-mode-map "\M-p" 'smart-complete)
+  )
+
 (defun get-match-n (i )
   (buffer-substring (match-beginning i) (match-end i)))
 

@@ -143,7 +143,7 @@ or not there exists a rational fcn g(t) satisfying eqn, which must be
 a first order, linear polynomial in (for this case) g(t) and g(t+1).
 @example
 (C1) FUNCSOLVE((N+1)*FOO(N)-(N+3)*FOO(N+1)/(N+1) =
-(N-1)/(N+2),FOO(N));
+    (N-1)/(N+2),FOO(N));
                                    N
 (D1)               FOO(N) = ---------------
                             (N + 1) (N + 2)

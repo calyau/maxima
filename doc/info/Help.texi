@@ -184,16 +184,16 @@ Additionally there are examples so that you may do
 @example
 example(integrate);
 (C4) example(integrate);
-(C5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)))
+(C5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)));
 (D5) test(f) := BLOCK([u], u :
-         INTEGRATE(f, x), RATSIMP(f - DIFF(u, x)))
-(C6) test(SIN(x))
+         INTEGRATE(f, x), RATSIMP(f - DIFF(u, x)));
+(C6) test(SIN(x));
 (D6) 						       0
-(C7) test(1/(x+1))
+(C7) test(1/(x+1));
 (D7) 						       0
-(C8) test(1/(x^2+1))
+(C8) test(1/(x^2+1));
 (D8) 						       0
-(C9) INTEGRATE(SIN(X)^3,X)
+(C9) INTEGRATE(SIN(X)^3,X);
 ...
 @end example	
 

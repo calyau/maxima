@@ -5,6 +5,12 @@
 
 (eval-when (compile) (proclaim '(optimize (safety 0))))
 
+
+(eval-when (compile eval load)
+ (defmacro coerce-float (x)
+   `(lisp::float ,x 1.d0))
+  )
+
 (defvar *z-range* nil)
 (defvar *original-points* nil)
 (defvar $axes_length 4.0)
@@ -119,6 +125,7 @@
   (dummy '($polygon simp))
   pts edges)
 
+#-cmu ;; somehow this definition undefines whole structure for cmulisp
 (defmacro make-polygon (a b) `(list '($polygon) ,a ,b))
 )
 
@@ -562,11 +569,11 @@ setrgbcolor} def
 				  
   (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
 
-  (let* ((x (lisp::float (nth 2 range)))
-	 (xend (lisp::float (nth 3 range)))
-	 (ymin (lisp::float (nth 2 yrange)))
-	 (ymax (lisp::float (nth 3 yrange)))
-	 (eps ($/ (- xend x) (lisp::float nticks)))
+  (let* ((x (coerce-float (nth 2 range)))
+	 (xend (coerce-float (nth 3 range)))
+	 (ymin (coerce-float (nth 2 yrange)))
+	 (ymax (coerce-float (nth 3 yrange)))
+	 (eps ($/ (- xend x) (coerce-float nticks)))
 	 (x1 0.0)
 	 (y1 0.0)
 	 (y (funcall f x))
@@ -647,8 +654,8 @@ setrgbcolor} def
   (setq range (meval* range))
   (or supplied (setq delta (/ (- (nth   2 range) (nth 1 range)) (nth 2 ($get_plot_option '$nticks)))))
   (setq pts(cons '(Mlist)
-		 (sloop with tt = (lisp::float (nth 1 range))
-		    with end = (lisp::float (nth 2 range))
+		 (sloop with tt = (coerce-float (nth 1 range))
+		    with end = (coerce-float (nth 2 range))
 		    while (float-< tt end)
 		    collect (funcall f tt)
 		    collect (funcall g tt)
@@ -708,7 +715,7 @@ setrgbcolor} def
 	($gnuplot 
 	 ($system (maxima-bin-search $gnuplot_command) " -plot2d maxout.gnuplot -title '" plot-name "'"))
 	($xgraph
-	 (4system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
+	 ($system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
 	))
 
 (defun maxima-bin-search (command)
@@ -924,10 +931,6 @@ setrgbcolor} def
 ;; initially 1/72 of inch is the scale
 (defvar $ps_scale '((mlist) 72  72))
 
-(eval-when (compile eval)
- (defmacro coerce-float (x)
-   `(lisp::float x 1.0d0))
-  )
 
 (defun $pscom (&rest l)
   (apply 'p l))
@@ -1434,7 +1437,6 @@ setrgbcolor} def
       )
       (cond (($get_plot_option '$run_viewer 2)
 	     (case plot-format
-	       #-cmu
 	       ($zic ($view_zic))
 	       ($ps ($viewps))
 	       ($openmath

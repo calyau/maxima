@@ -660,10 +660,6 @@ batching /usr/public/maxima/share/eigen.mc
 				SQRT(D  - 2 A D + 4 B C + A ) + D + A
 				-------------------------------------], [1, 1]]
 						  2
-(C8) 
-
-
-
 
 @end example
 @end defun
@@ -941,10 +937,10 @@ systems, but generally exists in the unix environment.
 if hist is a list of frequencies which you wish to plot as a bar graph
 using xgraph. 
 @example
-      with_stdout("_hist.out",
+(C1) (with_stdout("_hist.out",
            for i:1 thru length(hist) do (
              print(i,hist[i]))),
-      system("xgraph -bar -brw .7 -nl < _hist.out")
+       system("xgraph -bar -brw .7 -nl < _hist.out"));
 @end example
 In order to make the plot be done in the background (returning control to maxima)
 and remove the temporary file after it is done do:

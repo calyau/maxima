@@ -96,7 +96,7 @@
 
 (defun $system (&rest x)
   (let ((cmdline (apply '$sconcat x)))
-    (ext:run-program "/bin/sh"   (list "-c" cmdline))
+    (ext:run-program "/bin/sh"   (list "-c" cmdline) :output t)
 ))
 
 (defvar *init-run* nil)

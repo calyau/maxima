@@ -172,21 +172,17 @@ version may be found using get:
 @section Definitions for Orthogonal Polynomials
 
 @defun ASSOC_LEGENDRE_P (n, m, x)
-
 [specfun package] return the associated Legendre function
 of the first kind for  integers @math{ n > -1 } and 
 @math{ m > -1}.  When @math{ | m | > n } and @math{ n >= 0},
 we have   @math{assoc_legendre_p (n, m, x) = 0}.
-
-
 Reference: A&S 22.5.37 page 779,  A&S 8.6.6 (second 
 equation) page 334, and A&S 8.2.5 page 333.
-
 To access this function, load("specfun").
-
-See also ASSOC_LEGENDRE_Q, LEGENDRE_P, and LEGENDRE_Q.
+(@pxref{ASSOC_LEGENDRE_Q}), (@pxref{LEGENDRE_P}), and LEGENDRE_Q.
 @end defun
 
+@anchor{ASSOC_LEGENDRE_Q}
 @defun ASSOC_LEGENDRE_Q (n, m, x)
 
 [specfun package] return the associated Legendre function
@@ -290,7 +286,9 @@ See also GEN_LAGUERRE.
 
 @end defun
 
+@anchor{LEGENDRE_P}
 @defun  LEGENDRE_P (n, x)
+
 
 [specfun package] return the Legendre polynomial of the 
 first kind for  integers @math{ n > -1}.  

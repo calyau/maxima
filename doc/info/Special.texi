@@ -157,7 +157,7 @@ sum is desired the CONTENT function may be used.
 (D1)               15 SQRT(%PI)
                    ------------
                         8
-(C2) NUMFACTOR(%)
+(C2) NUMFACTOR(%);
                     15
 (D2)                --
                      8

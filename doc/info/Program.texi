@@ -152,7 +152,7 @@ to give only the termination conditions omitting the initialization
 and updating information as in the following example to compute the
 square-root of 5 using a poor initial guess.
 @example
-(C1) X:1000
+(C1) X:1000;
 (C2)  THRU 10 WHILE X#0.0 DO X:.5*(X+5.0/X)$
 (C3) X;
 (D3)               2.236068

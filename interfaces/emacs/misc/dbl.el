@@ -54,6 +54,8 @@
 
 (require 'sshell)
 (require 'smart-complete)
+(define-key sshell-mode-map "\ep" 'smart-complete)
+(define-key sshell-mode-map "\M-p" 'smart-complete)
 (require 'gcl)
 (autoload 'maxima-mode "maxima-mode" "Major mode for editing maxima code and interacting with debugger" t)
 (autoload 'gcl-mode "gcl" "Major mode for editing maxima code and interacting with debugger" t)

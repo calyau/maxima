@@ -101,9 +101,8 @@ Break commands start with ':'.   Thus to evaluate a lisp form you
 may type @code{:lisp } followed by the argument which is the form
 to be evaluated.  
 @example
-(C3) :lisp (+ 2 3)
+(C3) :lisp (+ 2 3) 
 5
-(C3)
 @end example
 The number of arguments taken depends on the particular command.  Also
 you need not type the whole command, just enough to be unique among

@@ -91,9 +91,11 @@ mechanism is rather straightforward and should be evident from the
 examples below.
 @example
 (C1) PREFIX("DDX")$
-(C2) DDX Y$             means                   "DDX"(Y)
+(C2) DDX Y$
+     /* means                   "DDX"(Y) */
 (C3) INFIX("<-")$
-(C4) A<-DDX Y$          means               "<-"(A,"DDX"(Y))
+(C4) A<-DDX Y$
+    /* means               "<-"(A,"DDX"(Y)) */
 
 @end example
 For each of the types of operator except SPECIAL, there is a

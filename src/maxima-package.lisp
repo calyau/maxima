@@ -92,14 +92,14 @@
 
 ;;get
 #+gcl
-(import '( si::cleanup
+(import '( si::cleanup si::*info-paths*
 	   si::get-instream  si::short-name  si::cleanup
 	   si::instream-stream-name si::instream-line si::instream-name
 	   si::instream-stream
 	   si::stream-name si::complete-prop
 	   si::*stream-alist*
 	   si::break-call
-) 'maxima)
+) "MAXIMA")
 #+gcl
 (setf (symbol-function 'maxima::newline) (symbol-function 'si::newline))
 

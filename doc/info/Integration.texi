@@ -347,7 +347,6 @@ integral will undergo further simplification.
                                 LOG(x  + x + 1)          SQRT(3)
                               - --------------- + ---------------
                                       14             7 SQRT(3)
-(C7) 
 @end example
 
 Note that it may be that we want to approximate the roots in the
