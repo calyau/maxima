@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Wmenu.tcl,v 1.5 2002-09-14 17:25:35 mikeclarkson Exp $
+#       $Id: Wmenu.tcl,v 1.6 2002-09-19 16:17:20 mikeclarkson Exp $
 #
 ###### wmenu.tcl ######
 ############################################################
@@ -31,7 +31,7 @@ proc wmenubar { name  } {
 proc eswitch { key lis } {
     foreach {k act} $lis { lappend allowd $k}
     lappend lis default "error $key must be  one of: $allowd"
-    uplevel 1 switch $key  [list  $lis]
+    uplevel 1 switch -- $key  [list  $lis]
 }
 
 proc ogetr { win var dflt } {
@@ -99,7 +99,11 @@ proc setHelp {win  help args } {
 proc showHelp { win help args } {
     global show_balloons helpwin
     if { $show_balloons == 0 } {
-	catch { place forget $helpwin }
+	set top [winfo toplevel $win]
+	set helpwin [oget $top helpwin]
+	if {$helpwin != "" && [winfo exists $helpwin]} {
+	    place forget $helpwin 
+	}
 	return
     }
     linkLocal [lindex $win 0] helpPending
@@ -167,7 +171,7 @@ proc showHelp1 { win help args } {
 	    place forget $helpwin
 
     	    place $helpwin -x $x -y $y -anchor nw
-	    raise $helpwin
+	    after idle raise $helpwin
 	    return
 	}
     }
@@ -188,7 +192,7 @@ proc wmenubarInternal { win  option  lis } {
 	    rename $men $men-orig
 	    set body "wmenuInternal $key \$option \$args"
 	    proc $men {option args } $body
-	    pack $key -in $win -side left -expand 1 -fill both
+	    pack $key -in $win -side left -expand 0 -fill both
 	    global [oarray $win]
 	    lappend [oloc $win items] $key
 	    oset $key menu $men
@@ -261,7 +265,7 @@ proc wmenuInternal {win option  olist } {
 	    set opts [excludeSomeOpts "-textvariable -image -label -underline -help" $lis]
 	    set labopts [lsublis {{-label -text}} \
 		    [getSomeOpts "-image -label -textvariable -underline" $lis]]
-	    append labopts " -justify left -anchor w"
+	    append labopts " -justify left -anchor w -padx 2"
 	    eswitch $key {
 		radio {
 		    set new $menu.fr$counter
@@ -319,7 +323,7 @@ proc wmenuInternal {win option  olist } {
 		
 	    }
 	    bindAltForUnderline $new.label "$menu invoke $new"
-	    pack $new -in $menu -side top -fill x -expand 1
+	    pack $new -in $menu -side top -fill both -expand 0
 	    oset $menu items [lappend items $new]
 	    oset $menu command$new $com
 	    setHelp $new [assoc -help $lis] w e
@@ -367,7 +371,9 @@ proc bindAltForUnderline { item command } {
 }
 
 proc showSomeEvents { win } {
-    foreach v { Enter FocusIn FocusOut Visibility Leave} {  bind $win <$v> "puts {$win $v %x %y}"}
+    foreach v { Enter FocusIn FocusOut Visibility Leave} {  
+	bind $win <$v> "puts {$win $v %x %y}"
+    }
 }
 
 global anchorPositions
@@ -378,12 +384,14 @@ array set anchorPositions {
 
 proc getPlaceCoords { x y relx rely anchor xIn yIn xdimIn ydimIn xdim ydim } {
     global anchorPositions
+
     # puts "xIn=$xIn,yIn=$yIn,xdimIn=$xdimIn,ydimIn=$ydimIn,xdim=$xdim,ydim=$ydim"
     set x1 [expr {$x + $xIn+$relx * $xdimIn}]
     set y1 [expr {$y + $yIn+$rely * $ydimIn}]
     desetq "fx1 fy1" $anchorPositions($anchor)
     set atx [expr {$x1 - $fx1*$xdim}]
     set aty [expr {$y1 - $fy1*$ydim}]
+
     return [list $atx $aty]
 }
 

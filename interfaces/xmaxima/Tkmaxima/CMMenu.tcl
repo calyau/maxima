@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: CMMenu.tcl,v 1.7 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: CMMenu.tcl,v 1.8 2002-09-19 16:17:22 mikeclarkson Exp $
 #
 proc CMmenu { win } {
     global buttonfont maxima_priv
@@ -56,7 +56,7 @@ proc CMmenu { win } {
     #oset $win showFileBar "show file bar"
     $m add command -underline 0 -label {Toggle Browser Visibility} \
 	-help {Toggle display of Browser} -command {if { [catch { pack info .browser }] } { pack .browser -side bottom } else { pack forget .browser }}
-    $m add command -underline 0 -label {Exit} -command "vMAXExit $maxima_priv(cConsoleText)" \
+    $m add command -underline 0 -label {Exit} -command "tkmaxima exit $maxima_priv(cConsoleText)" \
 	-help  "End this session of Maxima"
     $m add command -underline 0 -label {Interrupt   C-c C-c} -command "CMinterrupt \[oget $win textwin\]" \
 	-help  "Interrupt the Maxima process and reset the filter"
@@ -79,10 +79,11 @@ proc CMmenu { win } {
     setHelp $win.edit {Bring down a menu with some edit options}
     set m [oget $win.edit menu]
     #oset $win showEditBar "show edit bar"
-    $m add command -underline 0 -label {Previous Input   Alt-p} -command "CNpreviousInput \[oget $win textwin\] -1"
-    $m add command -underline 0 -label {Clear input   C-u} -command "CNclearinput \[oget $win textwin\]"
-    $m add command -underline 0 -label {Cut   C-c} -command "tk_textCut \[oget $win textwin\]"
-    $m add command -underline 0 -label {Paste   C-v} -command "tk_textPaste \[oget $win textwin\]" \
+    $m add command -underline 0 -label {Previous Input} -command "CNpreviousInput \[oget $win textwin\] -1"
+    $m add command -underline 0 -label {Clear input} -command "CNclearinput \[oget $win textwin\]"
+    $m add command -underline 0 -label {Copy} -command "tk_textCopy \[oget $win textwin\]"
+    $m add command -underline 1 -label {Cut} -command "tk_textCut \[oget $win textwin\]"
+    $m add command -underline 0 -label {Paste} -command "tk_textPaste \[oget $win textwin\]" \
 	pack $menubar -side top
     return $win
 }

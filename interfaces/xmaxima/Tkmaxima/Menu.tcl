@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.6 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Menu.tcl,v 1.7 2002-09-19 16:17:21 mikeclarkson Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -28,7 +28,7 @@ proc vMAXAddSystemMenu {fr text} {
 
     # Add a File menubutton
     set m [menu .menu.file -tearoff 0]
-    .menu add cascade -label File -menu $m
+    .menu add cascade -label File -menu $m -underline 0
 
     $m add command -underline 0 \
 	-accel {Ctrl+b} \
@@ -68,8 +68,8 @@ proc vMAXAddSystemMenu {fr text} {
     $m add sep
     $m add command -underline 0 \
 	-label {Interrupt} \
-	-accel {C-c C-c} \
-	-command [list CMinterrupt $text]
+	-accel {Ctrl+g} \
+	-command [list event generate $text <Control-Key-g>]
     $m add command -underline 0 \
 	-label {Restart} \
 	-command [list runOneMaxima $text]
@@ -77,33 +77,45 @@ proc vMAXAddSystemMenu {fr text} {
     $m add separator
     $m add command -underline 1 \
 	-label {Exit} \
-	-command [list vMAXExit $text]
+	-command [list tkmaxima exit $text]
 
     # Add a Edit menubutton
     set m [menu .menu.edit -tearoff 0]
-    .menu add cascade -label Edit -menu $m
+    .menu add cascade -label Edit -menu $m -underline 0
 
-    $m add command -underline 0 \
-	-state disabled \
-	-label {Copy} \
-	-accel {Ctrl+c} \
-	-command [list event generate $text <<Copy>>]
-    $m add command -underline 0 \
-	-state disabled \
+    $m add command -underline 2 \
 	-label {Cut} \
 	-accel {Ctrl+x} \
-	-command [list event generate $text <<Cut>>]
+	-command [list event generate $text <Control-Key-x>]
     $m add command -underline 0 \
-	-state disabled \
+	-label {Copy} \
+	-accel {Ctrl+c} \
+	-command [list event generate $text <Control-Key-c>]
+    $m add command -underline 0 \
 	-label {Paste} \
 	-accel {Ctrl+v} \
-	-command [list event generate $text <<Paste>>]
+	-command [list event generate $text <Control-Key-v>]
+    #mike distinguish from Cut/Copy/Past and Kill/Yank
     $m add separator
+    $m add command -underline 0 \
+	-label {Kill} \
+	-accel {Ctrl+k} \
+	-command [list event generate $text <Control-Key-k>]
+    $m add command -underline 0 \
+	-label {Yank} \
+	-accel {Ctrl+y} \
+	-command [list event generate $text <Control-Key-y>]
+    $m add separator
+    #mike FIXME: use event generate
     $m add command -underline 0 \
 	-label {Previous Input} \
 	-accel {Alt-p} \
 	-command [list CNpreviousInput $text -1]
-    $m add command -underline 0 -label {Clear input} \
+    $m add command -underline 0 \
+	-label {Next Input} \
+	-accel {Alt-n} \
+	-command [list CNpreviousInput $text 1]
+    $m add command -underline 9 -label {Clear input} \
 	-accel {Ctrl+u} \
 	-command [list CNclearinput $text]
     $m add separator
@@ -112,12 +124,13 @@ proc vMAXAddSystemMenu {fr text} {
 
     # Add a Options menubutton
     set m [menu .menu.options -tearoff 0]
-    .menu add cascade -label Options -menu $m
+    .menu add cascade -label Options -menu $m -underline 0
 
     $m add command -underline 0 -label {Toggle Browser Visibility} \
 	-command {
+	    #mike FIXME: hard coding
 	    if { [catch { pack info .browser }] } {
-		pack .browser -side bottom
+		packBoth .maxima .browser
 	    } else {
 		pack forget .browser
 	    }
@@ -144,7 +157,7 @@ proc vMAXAddSystemMenu {fr text} {
 
     # Add a Maxima menubutton
     set m [menu .menu.maxima -tearoff 0]
-    .menu add cascade -label Maxima -menu $m
+    .menu add cascade -label Maxima -menu $m -underline 0
 
     set km [menu $m.kill]
     $m add cascade -label "Clear Memory" -menu $km
@@ -172,7 +185,7 @@ proc vMAXAddSystemMenu {fr text} {
 
     # Add a Help menubutton
     set m [menu .menu.help -tearoff 0]
-    .menu add cascade -label Help -menu $m
+    .menu add cascade -label Help -menu $m -underline 0
 
     set file $maxima_priv(pReferenceToc)
     if {[file isfile $file]} {
@@ -186,8 +199,8 @@ proc vMAXAddSystemMenu {fr text} {
     set browse {exec}
     global tcl_platform
     if {$tcl_platform(platform) == "windows"} {
-	lappend browse start
-} else {
+	lappend browse command.com /c start
+    } else {
 	# FIXME: get a browser object
 	lappend browse [auto_execok netscape]
     }

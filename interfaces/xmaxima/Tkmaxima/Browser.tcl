@@ -1,16 +1,12 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.10 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Browser.tcl,v 1.11 2002-09-19 16:15:28 mikeclarkson Exp $
 #
-###### browser.tcl ######
+###### Browser.tcl ######
 ############################################################
 # Netmath       Copyright (C) 1998 William F. Schelter     #
 # For distribution under GNU public License.  See COPYING. #
 ############################################################
-
-global MathServer
-set MathServer "locahost 4443"
-
 
 ## source keyb.tcl
 
@@ -32,10 +28,6 @@ proc pushCommand { win command arglist } {
     set maxima_priv(lastcom,$win) [list $command $arglist]
 }
 
-
-
-global maxima_priv
-set maxima_priv(sticky) "^Teval$|^program:"
 
 
 #
@@ -62,7 +54,7 @@ proc tkTextInsert { w s } {
     # puts "before=$before"
 
     foreach v [concat $after $before] {
-	if { [regexp $maxima_priv(sticky) $v] } {
+	if { [regexp -- $maxima_priv(sticky) $v] } {
 	    lappend both $v
 	}
     }
@@ -85,188 +77,12 @@ proc tkTextInsert { w s } {
 
 }
 proc getRange { win a b }  {
-    if { [$win compare $a < $b ] } { return "$a $b" } else { return "$b $a"}
-}
-
-
-#
-#-----------------------------------------------------------------
-#
-# binding --   push the current selection on the killRing, and
-# if there is no selection, push the region between the anchor and
-# the point.
-#  Results:
-#
-#  Side Effects:
-#
-#----------------------------------------------------------------
-#
-bind OpenMathText <Control-Key-w> {
-    pushCommand %W OpenMathTextCut ""
-    # in the first case the <<Cut>> event on Text will delete the selection.
-    if { [catch { pushl [saveText %W sel.first sel.last] killRing } ] } {
-	catch {
-	    set range [getRange %W anchor insert]
-	    pushl [eval saveText %W $range] killRing
-	    eval %W delete $range
-	}
+    if { [$win compare $a < $b ] } {
+	return "$a $b" 
+    } else { 
+	return "$b $a"
     }
 }
-
-
-global maxima_priv
-if {0} {
-if {! [info exists maxima_priv(bindings_added) ] } {
-    bind Text <Control-Key-k> "openMathControlK %W \n [bind Text <Control-Key-k>]"
-    bind Text <B3-Motion> [bind Text <B2-Motion>]
-    bind Text <Button-3> [bind Text <Button-2>]
-
-    set maxima_priv(bindings_added) 1
-}
-}
-set maxima_priv(doublek) 0
-
-bind OpenMathText <Control-Key-k><Control-Key-k> {
-    set maxima_priv(doublek) 1
-}
-
-proc openMathControlK { win } {
-    global maxima_priv
-    if { $maxima_priv(doublek) != 0 } {
-	set now [popl killRing ""]
-    } else {
-	set now ""
-    }
-    set maxima_priv(doublek) 0
-    if { [$win compare insert == "insert lineend" ]  } {
-	if { [$win compare insert < end] } {
-	    append now "\nTins {[ldelete sel [$win tag names insert]]} {\n}"
-	} } else {
-	    append now "\n[saveText $win insert {insert lineend}]"
-	}
-    pushl $now killRing
-}
-
-bind OpenMathText <Control-Key-y> "OpenMathYank %W 0; break"
-bind OpenMathText <Alt-Key-y> "OpenMathYank %W 1; break"
-bind OpenMathText <Meta-Key-y> "OpenMathYank %W 1; break"
-
-proc OpenMathYank {win level } {
-    global maxima_priv
-    #puts "doing OpenMathYank $win $level"
-    if { $level == 0 } {
-	set maxima_priv(currentwin) $win
-	pushCommand $win OpenMathYank [list $win $level]
-	set maxima_priv(point) insert
-	$win mark set beforeyank insert
-	$win mark gravity beforeyank left
-	eval [peekl killRing "" ]
-    } else {
-	if { [catch {
-	    set last $maxima_priv(lastcom,$win)
-	    set m [lindex [lindex $last 1] 1]
-	    incr m
-	    if { "[lindex $last 0]" == "OpenMathYank" &&
-		 "$maxima_priv(currentwin)" == "$win"
-		 && "$maxima_priv(point)" == "insert" } {set doit 1}} ]
-	     || $doit==0} {
-	    pushCommand $win Error "" } else {
-		
-		set res [peekl killRing _none_ [expr {$m + 1}]]
-		if { "$res" == "_none_" } {
-		    # this will cause to cycle
-		    set m 0
-		} else {
-		    $win delete beforeyank insert
-		    eval $res
-		}
-                pushCommand $win OpenMathYank [list $win $m]
-	    }
-    }
-    catch { $win see insert}
-}
-
-# put the clipboard paste on Control-Shift-y
-event add <<Paste>> <Control-Shift-y>
-
-bind OpenMathText <Alt-Key-w> {
-    pushCommand %W SaveSelection ""
-    if { "[selection own -displayof %W]" == "%W"} {
-	pushl [saveText %W sel.first sel.last] killRing
-	selection clear -displayof %W
-    }
-}
-
-bind OpenMathText <Key> {openMathAnyKey %W %K %A}
-bind OpenMathText <Alt-Key> {openMathAnyKey %W %K ALT_%A}
-
-# stop the double button click word selection in openMathText..
-bind OpenMathText <Double-Button-1> { break; }
-bind OpenMathText <Control-c><Key-e> {doInvoke %W insert ; break; }
-
-bind OpenMathText <Control-Key-space> {
-    pushCommand %W SetAnchor ""
-    %W mark set anchor insert }
-
-
-proc openMathAnyKey { win keysym s  } {
-    # puts "$win `$keysym' `$s'"
-    if { "$s" != "" } {
-	pushCommand $win openMathAnyKey [list $win  $keysym $s]
-    }
-
-    if { "$s" != "" && [doInsertp [$win tag names insert]]
-	 && ("$s" == "$keysym"  || [regexp  "\[\n\t \]" "$s" junk] )} {
-	setModifiedFlag $win insert
-    }
-}
-
-proc saveText { win args } {
-    set tags [ldelete sel  [$win tag names]]
-    set prev [lindex $args 0]
-    set endregion [$win index [lindex $args 1 ]]
-    if { "$prev" == "" } {set prev 0.0 }
-    if { "$endregion" == "" } {set endregion end}
-    set allar($prev) 1
-    set allar($endregion) 1
-    foreach v $tags {
-	set ranges [tagRanges $win $v  $prev $endregion]
-	foreach {begin end} $ranges {
-	    lappend start($begin) $v
-	    lappend stop($end) $v
-	    set allar($begin) 1
-	    set allar($end) 1
-	
-	}
-    }
-    proc __comp { a b} " return  \[$win compare \$a > \$b \] "
-    set all [lsort -command __comp [array names allar]]
-    set result ""
-    foreach v $all {
-	append result "Tins [list [array names currentTags]] [quoteBraces [$win get $prev $v]]\n"
-	set prev $v
-
-
-	if { [info exists start($v)] } {
-
-	    foreach u $start($v) { set currentTags($u) 1}
-	}
-
-	if { [info exists stop($v)] } {
-
-	    foreach u $stop($v) { unset currentTags($u) }
-	}
-
-
-
-	#puts -nonewline "..deleting{$stop($v)} giving {$currentTags}"
-
-	# puts ">>"
-
-    }
-    return $result
-}
-
 
 
 #
@@ -283,10 +99,11 @@ proc saveText { win args } {
 #----------------------------------------------------------------
 #
 proc tagRanges { win tag begin end } {
-    if {  [$win  compare $begin <= 1.0 ]  &&
-	  [$win  compare $end >= end ] } {
-	return [$win tag ranges $tag ] } else {
-	    set answer ""
+    if {  [$win  compare $begin <= 1.0 ]  && \
+	      [$win  compare $end >= end ] } {
+	return [$win tag ranges $tag ] 
+    } else {
+	set answer ""
 	    set begin [$win index $begin]
 	    set end [$win index $end]
 	    if { [lsearch [$win tag names $begin] $tag ]>=0 } {
@@ -317,8 +134,6 @@ proc tagRanges { win tag begin end } {
 	
 	}
 }
-
-
 
 
 #
@@ -409,9 +224,6 @@ proc TinsSlashEnd { tags text } {
 
 
 
-global maxima_priv
-set maxima_priv(richTextCommands) {Tins TinsSlashEnd}
-
 ## endsource keyb.tcl
 
 proc underTop {top win} {
@@ -422,18 +234,24 @@ proc underTop {top win} {
     }
 }
 
+# now unused
 proc showHistory { window } {
     set top [winfo toplevel $window]
     set win [omPanel $window]
     makeLocal $win history historyIndex
+
     set w [underTop $top .historylist]
-    catch {destroy $w}
+    if {[winfo exists $w]} {catch {destroy $w}}
+
     frame $w -borderwidth 2 -relief raised
     label $w.title -text "History List" -relief raised
+    pack $w.title -side top -fill x
     setHelp $w.title {This window may be dragged elsewhere by grabbing this title bar with the mouse.   Double clicking on a history item, moves to that page.}
-    button $w.dismiss -command "destroy $w" -text dimsiss
+
+    button $w.dismiss -command "destroy $w" -text Close
+    pack $w.dismiss -side bottom -fill x
     setHelp $w.dismiss {Remove the history list}
-    pack $w.title $w.dismiss -side top -expand 1 -fill x
+
     scrollbar $w.scrolly -command "$w.list yview"
     scrollbar $w.scrollx -orient horizontal -command "$w.list xview"
     pack $w.scrollx -side bottom -fill x -expand 1
@@ -457,6 +275,7 @@ proc showHistory { window } {
     bind  $w.title <1> "startDragPlacedWindow $w %X %Y"
     place $w -relx .4 -rely .8 -in $top
 
+
 }
 
 proc deleteAllTraces {var} {
@@ -464,6 +283,8 @@ proc deleteAllTraces {var} {
 	uplevel "#0" trace vdelete $var [lindex $v 0] [list [lindex $v 1]]
     }
 }
+
+# now unused
 proc resetHistory { win list args } {
     set action [lindex $args 1]
     if { [catch {
@@ -506,12 +327,14 @@ proc dragPlacedWindow { win w1 x y } {
     oset $win placeinfo [list $x $y $new]
 }
 
+# now unused
 proc OpenMathMoveHistory { win  n } {
     makeLocal $win history historyIndex
     incr historyIndex $n
     if { $historyIndex >= [llength $history] } {
-	set historyIndex  [expr {[llength $history] -1}] }
-    if { $historyIndex <0 } { set historyIndex 0}
+	set historyIndex  [expr {[llength $history] -1}] 
+    }
+    if { $historyIndex < 0 } { set historyIndex 0}
     if { "[lindex $history $historyIndex]" != ""} {
 	OpenMathGetWindow $win [lindex $history $historyIndex]
 	oset $win historyIndex $historyIndex
@@ -520,7 +343,7 @@ proc OpenMathMoveHistory { win  n } {
 
 proc toLocalFilename { url } {
     set type [assoc type $url]
-    switch $type {
+    switch -- $type {
 	http {
 	    return [assoc filename $url]
 	}
@@ -619,7 +442,7 @@ proc dirnamePlusFilename { lis } {
 }
 proc encodeURL { lis } {
     set type [assoc type $lis ""]
-    switch $type {
+    switch -- $type {
 	nmtp {
 	    if { [ set port [assoc port $lis 4443]] != 4443 } {
 		append type "($port)"
@@ -660,7 +483,7 @@ proc resolveURL { name current {post ""} } {
 	set ans  $decode
     } else {
 	foreach {x y } $current {
-	    switch $x {
+	    switch -- $x {
 		dirname {
 		    set ndir [assoc dirname $decode ""]
 		    set cdir [assoc dirname $current ""]
@@ -704,21 +527,12 @@ proc resolveURL { name current {post ""} } {
     return $ans
 }
 
-global maxima_priv
-set maxima_priv(urlHandlers) {
-    text/html  netmath
-    text/plain netmath
-    image/gif  netmath
-    application/postscript "ghostview -safer %s"
-    application/pdf "acroread %s"
-    application/x-dvi "xdvi %s"
-}
-
 proc getURLrequest { path server port types {post ""} {meth ""} } {
     global maxima_priv
 
-    if { "$meth" != "" } {set method $meth } else {
-	
+    if { "$meth" != "" } {
+	set method $meth 
+    } else {
 	set method GET
 	if { "$post" != "" } {set method POST}
     }
@@ -758,13 +572,22 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
     #puts "getting $resolved,post=<$post>"
     switch [assoc type $res] {
 	http {
+	    #mike FIXME: replace with http get
 	    # puts $res
 	    # puts "socket [assoc server $res] [assoc port $res 80]"
 	    if { [info exists maxima_priv(proxy,http) ] } {
 		set sock [eval socket $maxima_priv(proxy,http)]
 		#		puts "opening proxy request socket $maxima_priv(proxy,http)"
 	    } else {
-		set sock [socket [assoc server $res] [assoc port $res 80]]
+		set server [assoc server $res]
+		set port [assoc port $res 80]
+		#mike FIXME - use async sockets and dns
+		if {[catch {socket $server $port} sock]} {
+		    global errorInfo
+		    tide_failure [M "Error connecting to %s on %s\n%s" \
+				      $server $port $sock]
+		    return
+		}
 	    }
 	
 	    fconfigure $sock -blocking 0
@@ -796,7 +619,8 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		set ans $maxima_priv(url_result)
 		unset maxima_priv(url_result)
 		return $ans
-	    } else {return "had error"
+	    } else {
+		return "had error"
 	    }
 	}
 	file {
@@ -816,6 +640,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    return $answer
 	}
 	default {
+	    #mike dirpath?
 	    error "not supported [lindex $res 0]"
 	}
     }
@@ -842,11 +667,6 @@ proc getImage { resolved width height} {
     return $image
 }
 
-
-global maxima_priv
-set maxima_priv(imagecounter) 0
-
-set maxima_priv(brokenimage,data) R0lGODlhHQAgAMIAAAAAAP9jMcbGxoSEhP///zExY/9jzgCEACH5BAEAAAIALAAAAAAdACAAAAPOOLrcLjDCQaq9+CoZaf7YIIicx50nNZYV6k4tCRPuYduSR8vmef+dy2rU4vyOM8uqJzkCBYCoNEqkGZ04SGHLBSiKTewhx/AyI+LxqWIGh5Eo9pdm8D3jhDa9/nrJTQaBfS5/LYGCgxyFe4cnAY+Qj1oFegKHjRKRkpMbgJeIEJqTBTyGnxybAlwbQYygKFusOaavo5SkJ5WYErELKAO6fBy4LxS6vFzEv4snpLIpIszIMiWKeXMWvS7RGXoVsX0g11NR1Bzk6F4jCn0ODgkAOwAA
 
 proc backgroundGetImage  { image res width height }   {
     global maxima_priv
@@ -985,6 +805,7 @@ proc readData { s { timeout 10000 }} {
 
 proc doRead { sock } {
     global maxima_priv
+
     #puts reading; flush stdout;
     set tem [read $sock]
     append maxima_priv(url_result)  $tem
@@ -992,12 +813,14 @@ proc doRead { sock } {
     # flush stdout
     if { [eof $sock] } {
 	set maxima_priv(done) 1
-	close $sock}
+	close $sock
+    }
 }
 
 proc tes {} {
     OpenMathOpenUrl http://www.ma.utexas.edu/users/wfs/foo/t1.om
 }
+
 proc tempName { name extension } {
     set count [pid]
     while { [file exists $name[incr count].$extension] } { list }
@@ -1008,18 +831,16 @@ proc ws_outputToTemp { string file ext encoding } {
     upvar 1 $string result
     set tmp [tempName $file $ext ]
     set open $tmp
-    if { [lsearch {x-gzip x-compress}  $encoding] >= 0 } { lappend dogzip |gzip -dc > $open ; set open $dogzip}
+    if { [lsearch {x-gzip x-compress}  $encoding] >= 0 } { 
+	# FIXME: Unix only
+	lappend dogzip |gzip -dc > $open ; set open $dogzip
+    }
     set fi [open $open w]
     fconfigure $fi -translation binary
     puts -nonewline $fi $result
     flush $fi
     close $fi
     return $tmp
-}
-
-global debugParse
-if { ![info exists debugParse ] } {
-    set debugParse 0
 }
 
 proc OpenMathOpenUrl { name args} {
@@ -1243,6 +1064,7 @@ proc getBaseprogram { } {
     return [lindex  $maxima_default(defaultservers) 0]
 }
 
+#mike FIXME: This is an abomination
 proc fileBaseprogram { textwin parent x y } {
     set e $textwin.e
     catch { destroy $e }
@@ -1262,13 +1084,17 @@ proc fileBaseprogram { textwin parent x y } {
 
 proc fontDialog { top } {
     global maxima_default
+
     set font [xHMmapFont font:propor:normal:r:3]
-    catch { destroy $top }
+    if {[winfo exists $top]} {catch { destroy $top }}
+
     toplevel $top
     wm iconify  $top
+
     set win $top.text
     text $win -font [list [font config $font -family] [font config $font -size]] -height 20
     wm deiconify $top
+
     foreach fam {propor fixed} {
 	set lis ""
 	set i 0
@@ -1380,8 +1206,10 @@ proc savePreferences {} {
 proc mkLabelListBoxChooser { win items  textvar} {
     button $win -textvariable $textvar -command "listBoxChoose $win [list $items] $textvar"
 }
+
 proc listBoxChoose { win  items textvar  } {
     global maxima_default
+
     set whei [winfo height $win]
     set items [eval $items]
     set hei [llength $items]
