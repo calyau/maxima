@@ -102,22 +102,16 @@
 ;; with C-cC-k.  To kill without confirmation, give C-cC-k
 ;; an argument.
 
-;; By default, a newline will be indented to the same level as the 
+;; By default, indentation will be to the same level as the 
 ;; previous line, with an additional space added for open parentheses.
-;; A tab will add extra spaces, as determined by the value of the 
-;; variable "maxima-indent-amount".  By default, this is 2.
-;; The behaviour of newline and indent can be changed by the command 
-;; M-x maxima-change-newline-style.  The possibilities are:
-;; Basic:         A newline will have no indentation, and indentation
-;;                must be added with tabs.
-;; Standard:      As above.
+;; The behaviour of indent can be changed by the command 
+;; M-x maxima-change-indent-style.  The possibilities are:
+;; Standard:      Simply indent
 ;; Perhaps smart: Tries to guess an appropriate indentation, based on
 ;;                open parentheses, "do" loops, etc.
-;;                A newline will re-indent the current line, then indent
-;;                the new line an appropriate amount.
 ;; The default can be set by setting the value of the variable 
-;; "maxima-newline-style" to either 'basic, 'standard or 'perhaps-smart.
-;; In all cases, M-x maxima-untab will remove a level of indentation.
+;; "maxima-indent-style" to either 'standard or 'perhaps-smart.
+;; In both cases, M-x maxima-untab will remove a level of indentation.
 
 ;; To get help on a Maxima topic, use:
 ;; C-c C-d.
@@ -207,15 +201,17 @@
   :group 'maxima
   :type 'boolean)
 
-(defcustom maxima-newline-style 'standard
-  "*Determines how `maxima-mode' will handle tabs and newlines by default.
-Choices are 'standard, 'perhaps-smart, 'basic"
+(defcustom maxima-indent-style 'standard
+  "*Determines how `maxima-mode' will handle tabs.
+Choices are 'standard, 'perhaps-smart"
   :group 'maxima
-  :type '(choice :menu-tag "Newline style"
-                 :tag      "Newline style"
-                 (const basic)
+  :type '(choice :menu-tag "Indent style"
+                 :tag      "Indent style"
                  (const standard) 
                  (const perhaps-smart)))
+
+(defvar maxima-newline-style nil
+  "For compatability.")
 
 (defcustom maxima-info-dir "/usr/local/info/"
   "*The directory where the maxima info files are kept."
@@ -231,6 +227,11 @@ Choices are 'standard, 'perhaps-smart, 'basic"
   "*The command used to start Maxima."
   :group 'maxima
   :type 'file)
+
+(defcustom maxima-use-tabs t
+  "*If non-nil, indentation will use tabs."
+  :group 'maxima
+  :type 'boolean)
 
 ;;;; The other variables
 
@@ -758,21 +759,21 @@ rigidly along with this one."
   (maxima-perhaps-smart-indent))
 
 (cond
- ((eq maxima-newline-style 'basic)
-  (defun maxima-indent-line ()
-    (interactive)
-    (maxima-standard-indent))
-  (defun maxima-newline ()
-    (interactive)
-    (newline)))
- ((eq maxima-newline-style 'standard)
+; ((eq maxima-newline-style 'basic)
+;  (defun maxima-indent-line ()
+;    (interactive)
+;    (maxima-standard-indent))
+;  (defun maxima-newline ()
+;    (interactive)
+;    (newline)))
+ ((eq maxima-indent-style 'standard)
   (defun maxima-indent-line ()
     (interactive)
     (maxima-standard-indent))
   (defun maxima-newline ()
     (interactive)
     (maxima-standard-newline)))
- ((eq maxima-newline-style 'perhaps-smart)
+ ((eq maxima-indent-style 'perhaps-smart)
   (defun maxima-indent-line ()
     (interactive)
     (maxima-perhaps-smart-indent))
@@ -780,20 +781,20 @@ rigidly along with this one."
     (interactive)
     (maxima-perhaps-smart-newline))))
 
-(defun maxima-change-newline-style (new-style)
+(defun maxima-change-indent-style (new-style)
   "Change the newline style."
-  (interactive "sNewline style (insert \"b\" for basic, \"s\" for standard, or \"p\" for perhaps-smart): ")
+  (interactive "sNewline style (insert \"s\" for standard, or \"p\" for perhaps-smart): ")
   (cond
-   ((string= new-style "b")
-    (setq maxima-newline-style 'basic)
-    (defun maxima-indent-line ()
-      (interactive)
-      (maxima-standard-indent))
-    (defun maxima-newline ()
-      (interactive)
-      (newline)))
+;   ((string= new-style "b")
+;    (setq maxima-indent-style 'basic)
+;    (defun maxima-indent-line ()
+;      (interactive)
+;      (maxima-standard-indent))
+;    (defun maxima-newline ()
+;      (interactive)
+;      (newline)))
    ((string= new-style "s")
-    (setq maxima-newline-style 'standard)
+    (setq maxima-indent-style 'standard)
     (defun maxima-indent-line ()
       (interactive)
       (maxima-standard-indent))
@@ -801,13 +802,23 @@ rigidly along with this one."
       (interactive)
       (maxima-standard-newline)))
    ((string= new-style "p")
-    (setq maxima-newline-style 'perhaps-smart)
+    (setq maxima-indent-style 'perhaps-smart)
     (defun maxima-indent-line ()
       (interactive)
       (maxima-perhaps-smart-indent))
     (defun maxima-newline ()
       (interactive)
       (maxima-perhaps-smart-newline)))))
+
+(defun maxima-reindent-line ()
+  "Reindent the current line."
+  (interactive)
+  (save-excursion
+    (beginning-of-line)
+    (delete-horizontal-space)
+    (maxima-indent-line))
+  (if (looking-at " *$")
+      (end-of-line)))
 
 ;;;; Commenting
 
@@ -1264,8 +1275,8 @@ if completion is ambiguous."
     (define-key map "\M-;" 'maxima-insert-short-comment)
     (define-key map "\C-c*" 'maxima-insert-long-comment)
     ;; Indentation
-    (define-key map "\t" 'maxima-indent-line)
-    (define-key map "\C-m" 'maxima-newline)
+;    (define-key map "\t" 'maxima-reindent-line)
+;    (define-key map "\C-m" 'maxima-newline)
     (define-key map "\M-\C-q" 'maxima-indent-form)
 ;    (define-key map [(control tab)] 'maxima-untab)
     ;; Help
@@ -1304,12 +1315,12 @@ if completion is ambiguous."
      "----"
      ["Kill process" maxima-stop t])
     ("Indentation"
-     ["Change to basic" (maxima-change-newline-style "b")  
-      (not (eq maxima-newline-style 'basic))]
-     ["Change to standard" (maxima-change-newline-style "s")  
-      (not (eq maxima-newline-style 'standard))]
-     ["Change to smart" (maxima-change-newline-style "p")  
-      (not (eq maxima-newline-style 'perhaps-smart))])
+;     ["Change to basic" (maxima-change-indent-style "b")  
+;      (not (eq maxima-newline-style 'basic))]
+     ["Change to standard" (maxima-change-indent-style "s")  
+      (not (eq maxima-indent-style 'standard))]
+     ["Change to smart" (maxima-change-indent-style "p")  
+      (not (eq maxima-indent-style 'perhaps-smart))])
     ("Misc"
      ["Mark form" maxima-mark-form t]
      ["Check parens in region" maxima-check-parens t]
@@ -1319,6 +1330,7 @@ if completion is ambiguous."
     ("Help"
      ["Maxima info" maxima-info t]
      ["Help" maxima-help t])))
+
 
 ;;;; Variable setup
 ;;;; (These are used in both maxima-mode and inferior-maxima-mode).
@@ -1334,7 +1346,10 @@ if completion is ambiguous."
   (make-local-variable 'paragraph-separate)
   (setq paragraph-separate paragraph-start)
   (make-local-variable 'indent-line-function)
-  (setq indent-line-function 'maxima-indent-line)
+  (setq indent-line-function 'maxima-reindent-line)
+  (make-local-variable 'indent-tabs-mode)
+  (unless maxima-use-tabs
+    (setq indent-tabs-mode nil))
   (make-local-variable 'comment-start)
   (setq comment-start "/*")
   (make-local-variable 'comment-end)
@@ -1390,22 +1405,16 @@ The Maxima process can be killed, after asking for confirmation
 with \\[maxima-stop].  To kill without confirmation, give \\[maxima-stop]
 an argument.
 
-By default, a newline will be indented to the same level as the 
+By default, indentation will be to the same level as the 
 previous line, with an additional space added for open parentheses.
-A tab will add extra spaces, as determined by the value of the 
-variable \"maxima-indent-amount\".  By default, this is 2.
-The behaviour of newline and indent can be changed by the command 
-\\[maxima-change-newline-style].  The possibilities are:
-Basic:         A newline will have no indentation, and indentation
-               must be added with tabs.
-Standard:      As above.
+The behaviour of indent can be changed by the command 
+\\[maxima-change-indent-style].  The possibilities are:
+Standard:      Standard indentation.
 Perhaps smart: Tries to guess an appropriate indentation, based on
                open parentheses, \"do\" loops, etc.
-               A newline will re-indent the current line, then indent
-               the new line an appropriate amount.
 The default can be set by setting the value of the variable 
-\"maxima-newline-style\" to either 'basic, 'standard or 'perhaps-smart.
-In all cases, \\[maxima-untab] will remove a level of indentation.
+\"maxima-indent-style\" to either 'standard or 'perhaps-smart.
+In both cases, \\[maxima-untab] will remove a level of indentation.
 
 To get help on a Maxima topic, use:
 \\[maxima-help].
@@ -1424,6 +1433,14 @@ To get apropos with the symbol under point, use:
   (setq mode-name "Maxima")
   (use-local-map maxima-mode-map)
   (maxima-mode-variables)
+  (cond
+   ((eq maxima-newline-style 'basic)
+    (setq maxima-indent-style 'standard))
+   ((eq maxima-newline-style 'standard)
+    (setq maxima-indent-style 'standard))
+   ((eq maxima-newline-style 'perhaps-smart)
+    (setq maxima-indent-style 'perhaps-smart)))
+  (easy-menu-add maxima-mode-menu maxima-mode-map)
   (run-hooks 'maxima-mode-hook))
 
 
@@ -2563,13 +2580,21 @@ The following commands are available:
       (add-to-list 'comint-output-filter-functions 'maxima-check-level)))
   (unless running-xemacs
     (set-process-sentinel inferior-maxima-process 'inferior-maxima-sentinel))
-  (add-hook 'kill-buffer-hook
-            (function
-             (lambda ()
-               (if (processp inferior-maxima-process)
-                   (delete-process inferior-maxima-process))
-               (setq inferior-maxima-process nil)
-               (run-hooks 'inferior-maxima-exit-hook))) t t)
+  (if running-xemacs
+      (add-local-hook 'kill-buffer-hook
+                      (function
+                       (lambda ()
+                         (if (processp inferior-maxima-process)
+                             (delete-process inferior-maxima-process))
+                         (setq inferior-maxima-process nil)
+                         (run-hooks 'inferior-maxima-exit-hook))))
+    (add-hook 'kill-buffer-hook
+              (function
+               (lambda ()
+                 (if (processp inferior-maxima-process)
+                     (delete-process inferior-maxima-process))
+                 (setq inferior-maxima-process nil)
+                 (run-hooks 'inferior-maxima-exit-hook))) t t))
   (run-hooks 'inferior-maxima-mode-hook))
 
 ;;;; Running Maxima
