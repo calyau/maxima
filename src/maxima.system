@@ -376,6 +376,7 @@
 	       (:module server :source-pathname ""
 			:components ((:file "server")))
                (:module i-o :source-pathname ""
+			:depends-on (compatibility-macros)
                         :components ((:file "macsys") 
                                      (:file "mload") 
                                      (:file "suprv1")
