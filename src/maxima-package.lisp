@@ -22,6 +22,10 @@
   (:import-from "SYSTEM" "INFO" "*INFO-PATHS*")
   (:export "INFO" "*INFO-PATHS"))
 
+#+gcl
+(unless (find-package :common-lisp)
+  ;; Make the LISP package be the CL package
+  (rename-package "LISP" "COMMON-LISP" '("LISP" "CL")))
 
 (or (find-package "SLOOP") (make-package "SLOOP" :use '(LISP)))
 
