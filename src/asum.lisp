@@ -46,7 +46,8 @@
 (defun smonogen (x var fl)	; fl indicates whether to return *a *n
   (cond ((free x var) (and fl (setq *n 0 *a x)) t)
 	((atom x) (and fl (setq *n (setq *a 1))) t)
-	((eq (caar x) 'mtimes)
+	((and (listp (car x))
+	      (eq (caar x) 'mtimes))
 	 (do ((x (cdr x) (cdr x))
 	      (a '(1)) (n '(0)))
 	     ((null x)
@@ -55,7 +56,8 @@
 	     (if (smonogen (car x) var fl)
 		 (and fl (setq a (cons *a a) n (cons *n n)))
 		 (return nil)))))
-	((eq (caar x) 'mexpt)
+	((and (listp (car x))
+	      (eq (caar x) 'mexpt))
 	 (cond ((and (free (caddr x) var) (eq (cadr x) var))
 		(and fl (setq *n (caddr x) *a 1)) t)))))
 

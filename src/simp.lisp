@@ -443,7 +443,10 @@
 (defmfun free (exp var)
   (cond ((alike1 exp var) nil)
 	((atom exp) t)
-	(t (and (free (caar exp) var) (freel (cdr exp) var)))))
+	(t
+	 (and (listp (car exp))
+	      (free (caar exp) var)
+	      (freel (cdr exp) var)))))
 
 (defmfun freel (l var)
   (do ((l l (cdr l))) ((null l) t)
