@@ -1,6 +1,10 @@
 MAXIMA=../../../../maxima-local
 
-TEST_FILES = rtestode_murphy1.mac rtestode_murphy2.mac \
+TEST_FILES = \
+        rtestode_murphy_1_1.mac rtestode_murphy_1_2.mac rtestode_murphy_1_3.mac \
+        rtestode_murphy_1_4.mac rtestode_murphy_1_5.mac rtestode_murphy_1_6.mac \
+        rtestode_murphy_2_1.mac rtestode_murphy_2_2.mac rtestode_murphy_2_3.mac \
+        rtestode_murphy_2_4.mac rtestode_murphy_2_5.mac  \
 	rtestode_kamke_1_1.mac rtestode_kamke_1_2.mac rtestode_kamke_1_3.mac \
 	rtestode_kamke_1_4.mac rtestode_kamke_1_5.mac rtestode_kamke_1_6.mac \
 	rtest_sym.mac rtest_sym2.mac \
