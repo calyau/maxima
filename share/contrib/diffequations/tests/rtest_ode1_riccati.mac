@@ -355,7 +355,7 @@ assume(x>0);
 ans:ode1_riccati_original(b:2,c:3,m:-5,y,x);
 y=-((sqrt(6)*bessel_k(-2/3,-2*sqrt(6)/(3*x^(3/2)))*%c-sqrt(6)*bessel_i(-4/3,-2*sqrt(6)/(3*x^(3/2))))*sqrt(x)-bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2)))*%c*x^2)/((2*bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2)))*%c+2*bessel_i(-1/3,-2*sqrt(6)/(3*x^(3/2))))*x^3);
 ode_check(eqn,ans);
-((6*bessel_k(-2/3,-2*sqrt(6)/(3*x^(3/2)))*%c-12*bessel_i(-4/3,-2*sqrt(6)/(3*x^(3/2))))*x^(3/2)+(3*sqrt(6)*bessel_k(-5/3,-2*sqrt(6)/(3*x^(3/2)))-3*sqrt(6)*bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2))))*%c-3*sqrt(6)*bessel_i(-1/3,-2*sqrt(6)/(3*x^(3/2)))+3*sqrt(6)*bessel_i(-7/3,-2*sqrt(6)/(3*x^(3/2))))/((sqrt(6)*bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2)))*%c+sqrt(6)*bessel_i(-1/3,-2*sqrt(6)/(3*x^(3/2))))*x^5);
+-(12*bessel_i(-4/3,-2*sqrt(6)/(3*x^(3/2)))*x^(3/2)+3*sqrt(6)*bessel_i(-1/3,-2*sqrt(6)/(3*x^(3/2)))-3*sqrt(6)*bessel_i(-7/3,-2*sqrt(6)/(3*x^(3/2))))/((sqrt(6)*bessel_k(1/3,-2*sqrt(6)/(3*x^(3/2)))*%c+sqrt(6)*bessel_i(-1/3,-2*sqrt(6)/(3*x^(3/2))))*x^5);
 expand(ev(%,besiident(-1/3,-2*sqrt(6)/(3*x^(3/2))),beskident(1/3,-2*sqrt(6)/(3*x^(3/2)))));
 0;
 forget(x>0);
