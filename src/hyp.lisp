@@ -564,15 +564,15 @@
 		   l ($denom kl))
 	     (cond ((equal (* 2 l) n)
 		    (cond ((maxima-integerp (// (- k m) n))
-			   (return (hyp-algv k l m n a b))))))
+			   (return (hyp-algv k l m n a b c))))))
 	     (cond ((maxima-integerp (// k (* 2 l)))
 		    (cond ((maxima-integerp (// m n))
-			   (return (hyp-algv k l m n a b)))
+			   (return (hyp-algv k l m n a b c)))
 			  (t (return nil))))
 		   ((maxima-integerp (// m n))
 			   (return nil))
 		   ((maxima-integerp (/ (- (* k n) (* 2 l m)) (* 2 l n)))
-		    (return (hyp-algv k l m n a b))))
+		    (return (hyp-algv k l m n a b c))))
 	     (return nil)))
 
 (defun getxy
