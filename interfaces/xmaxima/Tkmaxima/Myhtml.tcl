@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.6 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Myhtml.tcl,v 1.7 2002-09-10 09:17:19 mikeclarkson Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -1035,17 +1035,6 @@ proc xHMassureNewlines { n } {
     }
 }
 
-global maxima_default
-set maxima_default(adjust) 0
-catch {
-    set width_ [expr {.9 * [winfo screenwidth .]}]
-if { [winfo width .] >= 500 } {  set width_ [winfo width .] }
-set maxima_default(adjust) [expr {
-    $width_<= 640 ? -1 :
-    $width_<= 800 ? 0 :
-    1 } ]
-   unset width_
-}
 proc xHMsetDefaultPreferences {} {
     global maxima_default tcl_platform
 

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Fonts.tcl,v 1.3 2002-09-10 06:59:27 mikeclarkson Exp $
+#       $Id: Fonts.tcl,v 1.4 2002-09-10 09:17:19 mikeclarkson Exp $
 #
 
 # set font {Courier 8}
@@ -98,3 +98,20 @@ switch -exact -- $tcl_platform(platform) windows {
     set fontSize -$_pixel
 }
 
+
+global maxima_default
+set maxima_default(adjust) 0
+# I think this is too crude and wont work with WM schemes
+if {0} {
+    catch {
+	set width_ [expr {.9 * [winfo screenwidth .]}]
+	if { [winfo width .] >= 500 } {  
+	    set width_ [winfo width .] 
+	}
+	set maxima_default(adjust) [expr {
+					  $width_<= 640 ? -1 :
+					  $width_<= 800 ? 0 :
+					  1 } ]
+	unset width_
+    }
+}
