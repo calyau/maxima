@@ -1,0 +1,37 @@
+Release notes for Maxima 5.9.0:
+
+This is the first of a series of develoment releases which will
+culminate in Maxima 6.0, which will be the first truly stable release
+of the new Maxima project. This release has known bugs. However, we
+believe it is stable enough for use by a wide audience. We are relying
+on bug reports from users to help us make 6.0 the most bug-free
+version of Maxima ever.
+
+Changes in this release include:
+
+    1) Maxima is now compatible with ANSI Common Lisp. CMUCL, Clisp
+    and GCL are fully supported.
+
+    2) Maxima has a new build system based on the GNU
+    Autotools. Installation should be easier and more flexible than
+    ever before.
+
+    3) The Maxima build now uses mk:defsystem from CLOCC at the Lisp
+    level. mk:defsystem provides a powerful and familiar environment
+    for Lisp developers.
+
+    4) Maxima has a new User Manual, which is provided as a complement
+    to the detailed reference manual from earlier versions of Maxima.
+
+    5) The command-line interface has been enhanced with several
+    options, including a batch mode.
+
+    6) The bundled Emacs/XEmacs modes have been improved.
+
+    7) The internal layout of source code and shared Maxima files has
+    been vastly improved.
+
+    8) Precision of some numerical special functions has been
+    dramatically enhanced.
+
+    9) Last, but not least, many bugs have been fixed.
