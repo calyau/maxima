@@ -453,7 +453,7 @@ substituting them to be zero."
 )
 (defvar *must-replace-data* nil)
 (defun monomial-finish-replace ( )
-  (let (((part-above mon repl) *must-replace-data*))
+  (destructuring-let (((part-above mon repl) *must-replace-data*))
     (cons (ptimes (num  repl) (num (ratreduce part-above mon))) (denom repl))))
 
 (defun sort-poly-simplifications ()
