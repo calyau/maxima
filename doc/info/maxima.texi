@@ -29,6 +29,12 @@ END-INFO-DIR-ENTRY
 @end format
 @end ifinfo
 
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
 @titlepage
 @sp 10
 @comment The title is printed in a large font.
