@@ -73,6 +73,7 @@ fi
 
 dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
+CMUCL_RUNTIME=lisp
 AC_ARG_ENABLE(cmucl,[  --enable-cmucl                   Use CMUCL],
      	[case "${enableval}" in
        		yes) cmucl=true 
