@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.6 $
-;; $Date: 2002-05-21 18:51:27 $
+;; $Revision: 1.7 $
+;; $Date: 2002-09-06 16:55:10 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -1569,6 +1569,11 @@ With C-u prefix, update without confirmation at each cell."
         (emaxima-update nil nil nil)
       (emaxima-update nil (y-or-n-p "Interactive update? ") nil))))
 
+(defun emaxima-menu-update-all ()
+  (interactive)
+  "Update all cells"
+  (emaxima-update nil nil nil))
+
 (defun emaxima-tex-update-all (arg)
   "Optionally update all cells and return output in TeX form.
 With C-u prefix, update without confirmation at each cell."
@@ -1578,6 +1583,13 @@ With C-u prefix, update without confirmation at each cell."
       (emaxima-update nil nil t)
     (emaxima-update nil (y-or-n-p "Interactive update? ") t))
   (emaxima-tex-off))
+
+(defun emaxima-menu-tex-update-all ()
+  (interactive)
+  (emaxima-tex-on)
+  (emaxima-update nil nil t)
+  (emaxima-tex-off))
+  
 
 (defun emaxima-update-init (arg)
   "Optionally update all initialization cells.
@@ -1950,12 +1962,12 @@ already) so the file will begin in emaxima-mode next time it's opened.
      ["Backwards cell"  emaxima-backward-cell])
     ("Update"
      ["Update line"   emaxima-replace-line (not (emaxima-cell-p))]
-     ["Update all cells"  emaxima-update-all]
+     ["Update all cells"  emaxima-menu-update-all]
      ["Update session cells" emaxima-update-session]
      ["Update initialization cells"  emaxima-update-init]
      "---"
      ["TeX update line"   emaxima-replace-line-with-tex (not (emaxima-cell-p))]
-     ["TeX update all cells"  emaxima-tex-update-all]
+     ["TeX update all cells"  emaxima-menu-tex-update-all]
      ["TeX update initialization cells"  emaxima-tex-update-init])
     ("Process"
      ["Start a Maxima process"   maxima-start
