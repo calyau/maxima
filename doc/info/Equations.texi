@@ -7,65 +7,99 @@
 @section Definitions for Equations
 
 @defvar %rnum_list
-Default value: [] - When @code{%r} variables are introduced in solutions
-by the @code{algsys} command, they are added to @code{%rnum_list} in the order they
-are created.  This is convenient for doing substitutions into the
-solution later on.  It's recommended to use this list rather than
+Default value: []
+
+@code{%rnum_list} is the list of variables introduced in solutions
+by @code{algsys}.
+@code{%r} variables are added to @code{%rnum_list} in the order they
+are created.
+This is convenient for doing substitutions into the
+solution later on.
+@c WHAT DOES THIS STATEMENT MEAN ??
+It's recommended to use this list rather than
 doing @code{concat ('%r, j)}.
+
+@c NEED EXAMPLE HERE
 @end defvar
 
 @defvar algexact
-Default value: @code{false} affects the behavior of @code{algsys} as follows:
-If @code{algexact} is @code{true}, @code{algsys} always calls @code{solve} and then uses @code{realroots}
-on @code{solve}'s failures.  If @code{algexact} is @code{false}, @code{solve} is called only if
+Default value: @code{false}
+
+@code{algexact} affects the behavior of @code{algsys} as follows:
+
+If @code{algexact} is @code{true},
+@code{algsys} always calls @code{solve} and then uses @code{realroots}
+on @code{solve}'s failures.
+
+If @code{algexact} is @code{false}, @code{solve} is called only if
 the eliminant was not univariate, or if it was a quadratic or
-biquadratic.  Thus @code{algexact: true} doesn't guarantee only exact
+biquadratic.
+
+Thus @code{algexact: true} doesn't guarantee only exact
 solutions, just that @code{algsys} will first try as hard as it can to give
 exact solutions, and only yield approximations when all else fails.
+
+@c ABOVE DESCRIPTION NOT TOO CLEAR -- MAYBE EXAMPLES WILL HELP
 @end defvar
 
-@defun algsys ([@var{expr_1}, @var{expr_2}, ...], [@var{var_1}, @var{var_2}, ...])
-solves the list of
-simultaneous polynomials or polynomial equations (which can be
-non-linear) for the list of variables.  The symbols @code{%r1}, @code{%r2}, etc.
-will be used to represent arbitrary parameters when needed for the
-solution (the variable @code{%rnum_list} holds these).  In the process
-described below, @code{algsys} is entered recursively if necessary.
+@defun algsys ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+@defunx algsys ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+Solves the simultaneous polynomials @var{expr_1}, ..., @var{expr_m}
+or polynomial equations @var{eqn_1}, ..., @var{eqn_m}
+for the variables @var{x_1}, ..., @var{x_n}.
+An expression @var{expr} is equivalent to an equation @code{@var{expr} = 0}.
+There may be more equations than variables or vice versa.
+
+@code{algsys} returns a list of solutions,
+with each solution given as a list of equations stating values of
+the variables @var{x_1}, ..., @var{x_n} which satisfy the system of equations.
+If @code{algsys} cannot find a solution, an empty list @code{[]} is returned.
+
+The symbols @code{%r1}, @code{%r2}, ...,
+are introduced as needed to represent arbitrary parameters in the solution;
+these variables are also appended to the list @code{%rnum_list}.
 
 The method is as follows:
 
 (1) First the equations are factored and split into subsystems.
 
-(2) For each subsystem Si, an equation E and a variable var are
-selected (the var is chosen to have lowest nonzero degree).  Then the
-resultant of E and Ej with respect to var is computed for each of the
-remaining equations Ej in the subsystem Si.  This yields a new
-subsystem S'i in one fewer variables (var has been eliminated).  The
-process now returns to (1).
+(2) For each subsystem @var{S_i}, an equation @var{E} and a variable @var{x} are
+selected.
+The variable is chosen to have lowest nonzero degree.
+Then the resultant of @var{E} and @var{E_j} with respect to @var{x} is computed for each of the
+remaining equations @var{E_j} in the subsystem @var{S_i}.
+This yields a new subsystem @var{S_i'} in one fewer variables, as @var{x} has been eliminated.
+The process now returns to (1).
 
 (3) Eventually, a subsystem consisting of a single equation is
 obtained.  If the equation is multivariate and no approximations in
 the form of floating point numbers have been introduced, then @code{solve} is
-called to find an exact solution.  (The user should realize that @code{solve}
-may not be able to produce a solution or if it does the solution may
-be a very large expression.)
+called to find an exact solution.
 
+In some cases, @code{solve} is not be able to find a solution,
+or if it does the solution may be a very large expression.
+
+@c REMAINDER OF (3) IS PRETTY COMPLEX. HOW CAN IT BE CLARIFIED ??
 If the equation is univariate and is either linear, quadratic, or
-bi-quadratic, then again @code{solve} is called if no approximations have
+biquadratic, then again @code{solve} is called if no approximations have
 been introduced.  If approximations have been introduced or the
 equation is not univariate and neither linear, quadratic, or
-bi-quadratic, then if the switch @code{realonly} is @code{true}, the function
+biquadratic, then if the switch @code{realonly} is @code{true}, the function
 @code{realroots} is called to find the real-valued solutions.  If
-@code{realonly: false} then @code{allroots} is called which looks for real and
-complex-valued solutions.  If @code{algsys} produces a solution which has
+@code{realonly} is @code{false}, then @code{allroots} is called which looks for real and
+complex-valued solutions.
+
+If @code{algsys} produces a solution which has
 fewer significant digits than required, the user can change the value
-of @code{algepsilon} to a higher value.  If @code{algexact} is set to
+of @code{algepsilon} to a higher value.
+
+If @code{algexact} is set to
 @code{true}, @code{solve} will always be called.
 @c algepsilon IS IN Floating.texi -- MAY WANT TO BRING IT INTO THIS FILE
 
-(4) Finally, the solutions obtained in step (3) are re-inserted into
+(4) Finally, the solutions obtained in step (3) are substituted into
 previous levels and the solution process returns to (1).
-The user should be aware of several caveats:
+@c "PREVIOUS LEVELS" -- WHAT ARE THOSE ??
 
 When @code{algsys} encounters a multivariate equation which contains
 floating point approximations (usually due to its failing to find
@@ -74,35 +108,124 @@ apply exact methods to such equations and instead prints the message:
 "@code{algsys} cannot solve - system too complicated."
 
 Interactions with @code{radcan} can produce large or complicated
-expressions.  In that case, the user may use @code{pickapart} or @code{reveal} to
-analyze the solution.  Occasionally, @code{radcan} may introduce an apparent
+expressions.
+In that case, it may be possible to isolate parts of the result
+with @code{pickapart} or @code{reveal}.
+
+Occasionally, @code{radcan} may introduce an imaginary unit
 @code{%i} into a solution which is actually real-valued.
 
-Do @code{example (algsys)} for examples.
+Examples:
+@c FOLLOWING EXAMPLES GENERATED FROM THIS CODE, ADAPTED FROM example(algsys)
+@c e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
+@c e2: a2 - a1; 
+@c e3: a1*(-y - x^2 + 1); 
+@c e4: a2*(y - (x - 1)^2);
+@c algsys ([e1, e2, e3, e4], [x, y, a1, a2]);
+@c e1: x^2 - y^2;
+@c e2: -1 - y + 2*y^2 - x + x^2;
+@c algsys ([e1, e2], [x, y]);
+
+@example
+(%i1) e1: 2*x*(1 - a1) - 2*(x - 1)*a2;
+(%o1)              2 (1 - a1) x - 2 a2 (x - 1)
+(%i2) e2: a2 - a1; 
+(%o2)                        a2 - a1
+(%i3) e3: a1*(-y - x^2 + 1); 
+                                   2
+(%o3)                   a1 (- y - x  + 1)
+(%i4) e4: a2*(y - (x - 1)^2);
+                                       2
+(%o4)                   a2 (y - (x - 1) )
+(%i5) algsys ([e1, e2, e3, e4], [x, y, a1, a2]);
+(%o5) [[x = 0, y = %r1, a1 = 0, a2 = 0], 
+
+                                  [x = 1, y = 0, a1 = 1, a2 = 1]]
+(%i6) e1: x^2 - y^2;
+                              2    2
+(%o6)                        x  - y
+(%i7) e2: -1 - y + 2*y^2 - x + x^2;
+                         2        2
+(%o7)                 2 y  - y + x  - x - 1
+(%i8) algsys ([e1, e2], [x, y]);
+                 1            1
+(%o8) [[x = - -------, y = -------], 
+              sqrt(3)      sqrt(3)
+
+        1              1             1        1
+[x = -------, y = - -------], [x = - -, y = - -], [x = 1, y = 1]]
+     sqrt(3)        sqrt(3)          3        3
+@end example
 
 @end defun
 
-@defun allroots (@var{poly})
-finds all the real and complex roots of the real
-polynomial poly which must be univariate and may be an equation, e.g.
-poly=0.  For complex polynomials an algorithm by Jenkins and Traub is
-used (Algorithm 419, Comm. ACM, vol. 15, (1972), p. 97).  For real
-polynomials the algorithm used is due to Jenkins (Algorithm 493, TOMS,
-vol. 1, (1975), p.178).
+@defun allroots (@var{expr})
+@defunx allroots (@var{eqn})
+Finds all the real and complex roots of the
+polynomial @var{expr} or polynomial equation @var{eqn} of one variable.
 
 @c polyfactor IS NOT OTHERWISE DOCUMENTED
-The flag @code{polyfactor} when true causes
+The flag @code{polyfactor} when @code{true} causes
 @code{allroots} to factor the polynomial over the real numbers if the
 polynomial is real, or over the complex numbers, if the polynomial is
-complex.  @code{allroots} may give inaccurate results in case of multiple
+complex.
+
+@code{allroots} may give inaccurate results in case of multiple
 roots.  (If poly is real and you get inaccurate answers, you may want
-to try @code{allroots (%i*@var{poly})}) Do @code{example (allroots)} for an example.
+to try @code{allroots (%i*@var{poly})})
 
 @code{allroots} rejects non-polynomials.  It requires that the numerator
 after @code{rat}'ing should be a polynomial, and it requires that the
 denominator be at most a complex number.  As a result of this @code{allroots}
 will always return an equivalent (but factored) expression, if
 @code{polyfactor} is @code{true}.
+
+For complex polynomials an algorithm by Jenkins and Traub is
+used (Algorithm 419, @i{Comm. ACM}, vol. 15, (1972), p. 97).
+For real polynomials the algorithm used is due to Jenkins (Algorithm 493, @i{ACM TOMS},
+vol. 1, (1975), p.178).
+
+Examples:
+@c EXAMPLES GENERATED BY THESE INPUTS:
+@c eqn: (1 + 2*x)^3 = 13.5*(1 + x^5);
+@c soln: allroots (eqn);
+@c for e in soln
+@c         do (e2: subst (e, eqn), disp (expand (lhs(e2) - rhs(e2))));
+@c polyfactor: true$
+@c allroots (eqn);
+
+@example
+(%i1) eqn: (1 + 2*x)^3 = 13.5*(1 + x^5);
+                            3          5
+(%o1)              (2 x + 1)  = 13.5 (x  + 1)
+(%i2) soln: allroots (eqn);
+(%o2) [x = .8296749902129361, x = - 1.015755543828121, 
+
+x = .9659625152196369 %i - .4069597231924075, 
+
+x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
+(%i3) for e in soln
+        do (e2: subst (e, eqn), disp (expand (lhs(e2) - rhs(e2))));
+                      - 3.5527136788005E-15
+
+                     - 5.32907051820075E-15
+
+         4.44089209850063E-15 %i - 4.88498130835069E-15
+
+        - 4.44089209850063E-15 %i - 4.88498130835069E-15
+
+                       3.5527136788005E-15
+
+(%o3)                         done
+(%i4) polyfactor: true$
+(%i5) allroots (eqn);
+(%o5) - 13.5 (x - 1.0) (x - .8296749902129361)
+
+                           2
+ (x + 1.015755543828121) (x  + .8139194463848151 x
+
+ + 1.098699797110288)
+@end example
 
 @end defun
 
@@ -213,7 +336,7 @@ the left side of the equation eqn.
 
 @end defun
 
-@defun linsolve ([@var{expr_1}, @var{expr_2}, ...], [@var{var_1}, @var{var_2}, ...])
+@defun linsolve ([@var{expr_1}, @var{expr_2}, ...], [@var{x_1}, @var{x_2}, ...])
 solves the list of
 simultaneous linear equations for the list of variables.  The expi
 must each be polynomials in the variables and may be equations.
@@ -422,7 +545,7 @@ Try @code{apropos (solve)} for the switches which affect @code{solve}.  @code{de
 then by used on the individual switch names if their purpose is not
 clear.
 
-@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{v_1}, ..., @var{v_n}])}
+@code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 solves a system of simultaneous
 (linear or non-linear) polynomial equations by calling @code{linsolve} or
 @code{algsys} and returns a list of the solution lists in the variables.  In
