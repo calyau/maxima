@@ -18,15 +18,15 @@
 if get('ctensor,'version)=false then load(ctensor);
 ratfac:true;
 derivabbrev:true;
-ct_coords:[t,r,phi,theta];
-lg:ident(4);
-lg[1,1]:-1;
+ct_coords:[t,r,theta,phi];
+lg:matrix([-1,0,0,0],[0,1,0,0],[0,0,r^2,0],[0,0,0,r^2*sin(theta)^2]);
 h:matrix([h11,0,0,0],[0,h22,0,0],[0,0,h33,0],[0,0,0,h44]);
 ("Spherically symmetric metric depends on the scalar field l")$
 depends(l,r);
 lg:lg+l*h;
 ("First, we compute the Einstein tensor")$
 cmetric(false);
+("Be patient, this will take a while...")$
 einstein(false);
 ("And it has far too many terms")$
 ntermst(ein);
@@ -43,6 +43,6 @@ einstein(false);
 ("Which now has far fewer terms:")$
 ntermst(ein);
 ("The truncated terms are small enough for display")$
-for i thru dim do ldisplay(ein[i,i]);
+for i thru dim do (ein[i,i]:ratsimp(ein[i,i]),ldisplay(ein[i,i]));
 
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */

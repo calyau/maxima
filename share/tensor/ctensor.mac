@@ -1065,8 +1065,8 @@ uricci(dis):=block(
   (
     for j thru dim do
     (
-      uric[i,j]:if diagmetric then ratsimp(ctaylor(ric[i,j]*ug[j,j]))
-                else ctaylor(sum(ric[i,k]*ug[k,j],k,1,dim)),
+      uric[i,j]:if diagmetric then ratsimp(ctaylor(ric[i,j]*_ug()[j,j]))
+                else ctaylor(sum(ric[i,k]*_ug()[k,j],k,1,dim)),
       if ratfac then uric[i,j]:factor(ctaylor(ratsimp(uric[i,j])))
     )
   ),
@@ -1361,7 +1361,7 @@ bdvac(zz):=block
   if dim#4 then error("This program is restricted to 4 dimensions"),
   for i:1 thru 4 do for j:1 thru 4 do
     addd[i,j]:w/zz^2*(diff(zz,ct_coords[i])*diff(zz,ct_coords[j])-lg[i,j]*
-      sum(diff(zz,ct_coords[kk])*diff(zz,ct_coords[kk])*ug[kk,kk],kk,1,4)/2)+
+      sum(diff(zz,ct_coords[kk])*diff(zz,ct_coords[kk])*_ug()[kk,kk],kk,1,4)/2)+
       (diff(diff(zz,ct_coords[i]),ct_coords[j])-sum(mcs[i,j,kk]*
       diff(zz,ct_coords[kk]),kk,1,4)-lg[i,j]*boxq)/zz,
   for i:1 thru 4 do for j:1 thru 4 do
@@ -1389,14 +1389,14 @@ invariant1():=block
   if diagmetric then for aa thru dim do for bb thru dim do 
   (
     inv1[aa,bb]:ratsimp(kdelt(aa,bb)*tracer^2/2-2*tracer*uric[aa,bb]-
-                2*kdelt(aa,bb)*dscalar(tracer)+2*ug[aa,aa]*
+                2*kdelt(aa,bb)*dscalar(tracer)+2*_ug()[aa,aa]*
                 (diff(diff(tracer,ct_coords[bb]),ct_coords[aa])-
                 sum(mcs[bb,aa,kk]*diff(tracer,ct_coords[kk]),kk,1,dim)))
   )
   else for aa thru dim do for bb thru dim do 
   (
     inv1[aa,bb]:ratsimp(kdelt(aa,bb)*tracer^2/2-2*tracer*uric[aa,bb]-
-                2*kdelt(aa,bb)*dscalar(tracer)+2*sum(ug[bb,cc]*
+                2*kdelt(aa,bb)*dscalar(tracer)+2*sum(_ug()[bb,cc]*
                 (diff(diff(tracer,ct_coords[aa]),ct_coords[cc])-sum(
                 mcs[aa,cc,kk]*diff(tracer,ct_coords[kk]),kk,1,dim)),cc,1,dim))
   )
@@ -1648,15 +1648,15 @@ contragrad(f,xyz):=block
 (
   [],
   if diagmetric then for mm thru dim do 
-    arraysetapply(xyz,[mm],ratsimp(ratsimp(ug[mm,mm]*diff(f,ct_coords[mm]))))
+    arraysetapply(xyz,[mm],ratsimp(ratsimp(_ug()[mm,mm]*diff(f,ct_coords[mm]))))
   else for mm thru dim do 
-    arraysetapply(xyz,[mm],sum(ug[m,n]*diff(f,ct_coords[nn]),nn,1,dim))
+    arraysetapply(xyz,[mm],sum(_ug()[m,n]*diff(f,ct_coords[nn]),nn,1,dim))
 )$
 
 /* The d'Alembertian of a scalar */
-dscalar(phi):=if diagmetric then ratsimp(1/sqrt(-gdet)*sum(diff(ug[i,i]*
+dscalar(phi):=if diagmetric then ratsimp(1/sqrt(-gdet)*sum(diff(_ug()[i,i]*
                 sqrt(-gdet)*diff(phi,ct_coords[i]),ct_coords[i]),i,1,dim))
-              else ratsimp(1/sqrt(-gdet)*sum(sum(diff(ug[i,j]*sqrt(-gdet)*
+              else ratsimp(1/sqrt(-gdet)*sum(sum(diff(_ug()[i,j]*sqrt(-gdet)*
                 diff(phi,ct_coords[j]),ct_coords[i]),i,1,dim),j,1,dim))$
 
 /* Covariant divergence. The object gxyz must be a mixed 2nd rank tensor
@@ -1676,7 +1676,7 @@ checkdiv(gxyz):=block
 contortion(tr):=
   for i thru dim do
     for j thru dim do
-      for k thru dim do kt[i,j,k]:sum(ug[k,l]*
+      for k thru dim do kt[i,j,k]:sum(_ug()[k,l]*
          (-sum(tr[l,i,m]*lg[j,m],m,1,dim)-sum(lg[l,m]*tr[i,j,m],m,1,dim)-
           sum(tr[l,j,m]*lg[i,m],m,1,dim)), l,1,dim)/2;
 
@@ -1685,7 +1685,7 @@ nonmetricity(nm):=
   for i thru dim do
     for j thru dim do
       for k thru dim do nmc[i,j,k]:nm[i]*kdelt(j,k)-kdelt(i,k)*nm[j]+
-                                   sum(ug[k,l]*nm[l],l,1,dim)*lg[i,j];
+                                   sum(_ug()[k,l]*nm[l],l,1,dim)*lg[i,j];
 
 
 /********************************************************************
