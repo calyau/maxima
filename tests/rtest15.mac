@@ -15,6 +15,10 @@ integrate(3^log(x),x);
 integrate(sqrt(x+1/x-2),x,0,1);
 4/3$
 
+/* Bug reported by Kevin Ellwood.  Fixed Mar 11 2004 */
+integrate(exp(-k*t)/sqrt(k*t),t);
+SQRT(%PI)*ERF(SQRT(k*t))/k$
+
 /* second thru tenth code added 9 June 2002 */
 l : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]$
