@@ -661,17 +661,12 @@ ct_coordsys(coordinate_system, [extra_args]):=
   )
   else if coordinate_system='exteriorschwarzschild then
   (
-    assume(r>=2*m),
+    declare(m,constant),
+    assume(r>2*m),
     dim:4,
     ct_coords:[t,r,theta,phi],
-/*    ct_coords:[r,theta,phi,ct],*/
     if cframe_flag then
     (
-/*      fri:matrix(
-        [sqrt(r/(r-2*m)),0,           0,              0],
-        [              0,r,           0,              0],
-        [              0,0,sin(theta)*r,              0],
-        [              0,0,           0,sqrt((r-2*m)/r)]),*/
       fri:matrix(
         [sqrt((r-2*m)/r),              0,0,           0],
         [              0,sqrt(r/(r-2*m)),0,           0],
@@ -679,13 +674,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
         [              0,              0,0,sin(theta)*r]),
         lfg:ident(4),
         lfg[1,1]:-1
-/*        lfg[4,4]:-1*/
     )
-/*    else lg:matrix(
-      [r/(r-2*m),  0,               0,        0],
-      [        0,r^2,               0,        0],
-      [        0,  0,sin(theta)^2*r^2,        0],
-      [        0,  0,               0,(2*m-r)/r])*/
     else lg:matrix(
       [(2*m-r)/r,        0,  0,               0],
       [        0,r/(r-2*m),  0,               0],
@@ -695,19 +684,23 @@ ct_coordsys(coordinate_system, [extra_args]):=
   else if coordinate_system='interiorschwarzschild then
   (
     dim:4,
-    ct_coords:[t,r,theta,phi],
-/*    ct_coords:[r,theta,phi,t],*/
-    declare([r0],constant),
-    depends([f,h],r),
-    if cframe_flag then error("No frame fields yet")
-/*    else lg:matrix([r0^2/(r0^2-r^2),  0,  0,         0],
-                   [0, r^2,               0,         0],
-                   [0, 0,  sin(theta)^2*r^2,         0],
-                   [0, 0, 0, -(f-h*sqrt(1-(r/r0)^2))^2])*/
-    else lg:matrix([-(f-h*sqrt(1-(r/r0)^2))^2, 0, 0, 0],
-                   [0,     r0^2/(r0^2-r^2),  0,      0],
-                   [0,     0,              r^2,      0],
-                   [0,     0,     0,  sin(theta)^2*r^2])
+    ct_coords:[t,z,u,v],
+    declare([m],constant),
+    assume(t<2*m),
+    if cframe_flag then
+    (
+      fri:matrix(
+        [sqrt(t/(2*m-t)),               0, 0,        0],
+        [              0, sqrt((2*m-t)/t), 0,        0],
+        [              0,               0, t,        0],
+        [              0,               0, 0, sin(u)*t]),
+      lfg:ident(4),
+      lfg[1,1]:-1
+    )
+    else lg:matrix([-t/(2*m-t),         0,   0,            0],
+                   [         0, (2*m-t)/t,   0,            0],
+                   [         0,         0, t^2,            0],
+                   [         0,         0,   0, sin(u)^2*t^2])
   )
   else if coordinate_system='kerr_newman then
   (
@@ -716,29 +709,17 @@ ct_coordsys(coordinate_system, [extra_args]):=
     rho:sqrt(r^2+(a*cos(theta))^2),
     delta:a^2-2*m*r+r^2,
     ct_coords:[ct,r,theta,phi],
-/*    ct_coords:[r,theta,phi,ct],*/
     if cframe_flag then
     (
       fri:matrix(
-/*    [rho/sqrt(delta), 0,                               0,                 0],
-      [            0, rho,                               0,                 0],
-      [            0,   0,        (r^2+a^2)*sin(theta)/rho, -a*sin(theta)/rho],
-      [            0,   0, -a*sqrt(delta)*sin(theta)^2/rho,   sqrt(delta)/rho]),*/
-      [sqrt(delta)/rho,  0,   0, -a*sqrt(delta)*sin(theta)^2/rho],
-      [0,  rho/sqrt(delta),   0,                               0],
-      [0,                0, rho,                               0],
-      [-a*sin(theta)/rho,0,   0,        (r^2+a^2)*sin(theta)/rho]),
+        [sqrt(delta)/rho,  0,   0, -a*sqrt(delta)*sin(theta)^2/rho],
+        [0,  rho/sqrt(delta),   0,                               0],
+        [0,                0, rho,                               0],
+        [-a*sin(theta)/rho,0,   0,        (r^2+a^2)*sin(theta)/rho]),
       lfg:ident(4),
       lfg[1,1]:-1
-/*      lfg[4,4]:-1*/
     )
     else lg:matrix(
-/*      [rho^2/delta, 0,                                            0, 0],
-      [0,       rho^2,                                            0, 0],
-      [0,           0, ((r^2+a^2)^2-a^2*delta*sin(theta)^2)*sin(theta)^2/rho^2,
-                                  a*sin(theta)^2*(delta-r^2-a^2)/rho^2],
-      [0,           0, a*sin(theta)^2*(delta-r^2-a^2)/rho^2,
-                                        (a^2*sin(theta)^2-delta)/rho^2])*/
       [(a^2*sin(theta)^2-delta)/rho^2,0,          0,
                                   a*sin(theta)^2*(delta-r^2-a^2)/rho^2],
       [0,                         rho^2/delta,    0,                 0],
@@ -780,6 +761,25 @@ ct_coordsys(coordinate_system, [extra_args]):=
                    [0, r^2,                0,         0],
                    [0,   0, sin(theta)^2*r^2,         0],
                    [1,   0,                0, (2*m-r)/r])
+  )
+  else if coordinate_system='isotropicschwarzschild then
+  (
+    dim:4,
+    ct_coords:[t,r,theta,phi],
+    if cframe_flag then
+    (
+      fri:matrix(
+        [(1-m/2/r)/(1+m/2/r),      0, 0, 0],
+        [0,              (1+m/2/r)^2, 0, 0],
+        [0, 0,            (1+m/2/r)^2*r, 0],
+        [0, 0, 0, (1+m/2/r)^2*r*sin(theta)]),
+      lfg:ident(4),
+      lfg[1,1]:-1
+    )
+    else lg:matrix([-((1-m/2/r)/(1+m/2/r))^2,      0, 0, 0],
+                   [ 0,                  (1+m/2/r)^4, 0, 0],
+                   [ 0, 0,              (1+m/2/r)^4*r^2, 0],
+                   [ 0, 0, 0, (1+m/2/r)^4*r^2*sin(theta)^2])
   )
   else if coordinate_system='vacuum then
   (
