@@ -1,0 +1,3 @@
+include $(top_srcdir)/common.mk
+
+verpkglibexec_SCRIPTS = omplotdata mgnuplot
