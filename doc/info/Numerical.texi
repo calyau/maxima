@@ -25,205 +25,247 @@ a list of the functions included.
 @c in this file. Otherwise DESCRIBE returns the FFT text (because
 @c POLARTORECT, etc are list in the heading of FFT with @defunx).
 
-@defun POLARTORECT (magnitude_array, phase_array)
+@defun polartorect (magnitude_array, phase_array)
 
-Translates complex values of the form r %e^(%i t) to the form a + b %i.
-LOAD ("FFT")$ will load this function into Maxima. See also FFT.
+Translates complex values of the form @code{r %e^(%i t)} to the form @code{a + b %i}.
+@code{load ("fft")} loads this function into Maxima. See also @code{fft}.
 
-The magnitude and phase, r and t, are taken from magnitude_array and
-phase_array, respectively. The original values of the input arrays are
-replaced by the real and imaginary parts, a and b, on return. The outputs are
-equal to
+The magnitude and phase, @code{r} and @code{t}, are taken from @var{magnitude_array} and
+@var{phase_array}, respectively. The original values of the input arrays are
+replaced by the real and imaginary parts, @code{a} and @code{b}, on return. The outputs are
+calculated as
 
 @example
-  a: r COS (t)
-  b: r SIN (t)
+a: r cos (t)
+b: r sin (t)
 @end example
 
 The input arrays must be the same size and 1-dimensional.
 The array size need not be a power of 2.
 
-POLARTORECT is the inverse function of RECTTOPOLAR.
+@code{polartorect} is the inverse function of @code{recttopolar}.
 
 @end defun
 
-@defun RECTTOPOLAR (real_array, imaginary_array)
+@defun recttopolar (real_array, imaginary_array)
 
-Translates complex values of the form a + b %i to the form r %e^(%i t).
-LOAD ("FFT")$ will load this function into Maxima. See also FFT.
+Translates complex values of the form @code{a + b %i} to the form @code{r %e^(%i t)}.
+@code{load ("fft")} loads this function into Maxima. See also @code{fft}.
 
-The real and imaginary parts, a and b, are taken from real_array and
-imaginary_array, respectively. The original values of the input arrays
-are replaced by the magnitude and angle, r and t, on return. The outputs are
-equal to
+The real and imaginary parts, @code{a} and @code{b}, are taken from @var{real_array} and
+@var{imaginary_array}, respectively. The original values of the input arrays
+are replaced by the magnitude and angle, @code{r} and @code{t}, on return. The outputs are
+calculated as
 
 @example
-  r: SQRT (a^2 + b^2)
-  t: ATAN2 (b, a)
+r: sqrt (a^2 + b^2)
+t: atan2 (b, a)
 @end example
 
-The computed angle is in the range -%pi to %pi. 
+The computed angle is in the range @code{-%pi} to @code{%pi}. 
 
 The input arrays must be the same size and 1-dimensional.
 The array size need not be a power of 2.
 
-RECTTOPOLAR is the inverse function of POLARTORECT.
+@code{recttopolar} is the inverse function of @code{polartorect}.
 
 @end defun
 
-@defun IFT (real_array, imaginary_array)
+@defun ift (real_array, imaginary_array)
 
-Fast inverse discrete Fourier transform. LOAD ("FFT")$ will load this function
+Fast inverse discrete Fourier transform. @code{load ("fft")} loads this function
 into Maxima.
 
-IFT carries out the inverse complex fast Fourier transform on
+@code{ift} carries out the inverse complex fast Fourier transform on
 1-dimensional floating point arrays. The inverse transform is defined as
 
 @example
-  X[j]: SUM (Y[j] EXP (+2 %i %pi j k / n), k, 0, n-1)
+x[j]: sum (y[j] exp (+2 %i %pi j k / n), k, 0, n-1)
 @end example
 
-See FFT for more details.
+See @code{fft} for more details.
 
 @end defun
 
-@defun FFT (real_array, imaginary_array)
-@defunx IFT (real_array, imaginary_array)
-@defunx RECTTOPOLAR (real_array, imaginary_array)
-@defunx POLARTORECT (magnitude_array, phase_array)
+@defun fft (real_array, imaginary_array)
+@defunx ift (real_array, imaginary_array)
+@defunx recttopolar (real_array, imaginary_array)
+@defunx polartorect (magnitude_array, phase_array)
 
-Fast Fourier transform and related functions. LOAD ("FFT")$ will
-load these functions into Maxima.
+Fast Fourier transform and related functions. @code{load ("fft")}
+loads these functions into Maxima.
 
-FFT and IFT carry out the complex fast Fourier transform and
+@code{fft} and @code{ift} carry out the complex fast Fourier transform and
 inverse transform, respectively, on 1-dimensional floating
-point arrays. The size of imaginary_array must equal the size of real_array.
+point arrays. The size of @var{imaginary_array} must equal the size of @var{real_array}.
 
-FFT and IFT operate in-place. That is, on return from FFT or IFT,
+@code{fft} and @code{ift} operate in-place. That is, on return from @code{fft} or @code{ift},
 the original content of the input arrays is replaced by the output.
-The FILLARRAY function can make a copy of an array, should it
+The @code{fillarray} function can make a copy of an array, should it
 be necessary.
 
 The discrete Fourier transform and inverse transform are defined
-as follows. Let X be the original data, with
+as follows. Let @code{x} be the original data, with
 
 @example
-  X[i]: real_array[i] + %i imaginary_array[i]
+x[i]: real_array[i] + %i imaginary_array[i]
 @end example
   
-Let Y be the transformed data. The forward and inverse transforms are
+Let @code{y} be the transformed data. The forward and inverse transforms are
 
 @example
-  Y[k]: (1/n) SUM (X[j] EXP (-2 %i %pi j k / n), j, 0, n-1)
+y[k]: (1/n) sum (x[j] exp (-2 %i %pi j k / n), j, 0, n-1)
 
-  X[j]:       SUM (Y[j] EXP (+2 %i %pi j k / n), k, 0, n-1)
+x[j]:       sum (y[j] exp (+2 %i %pi j k / n), k, 0, n-1)
 @end example
 
-Suitable arrays can be allocated by the ARRAY function. For example:
+Suitable arrays can be allocated by the @code{array} function. For example:
 
 @example
-  ARRAY (my_array, FLOAT, n-1)$
+array (my_array, float, n-1)$
 @end example
 
 declares a 1-dimensional array with n elements, indexed from 0 through
 n-1 inclusive. The number of elements n must be equal to 2^m for some m.
 
-FFT can be applied to real data (imaginary array all zeros) to obtain
-sine and cosine coefficients. After calling FFT, the sine and cosine
-coefficients, say A and B, can be calculated as
+@code{fft} can be applied to real data (imaginary array all zeros) to obtain
+sine and cosine coefficients. After calling @code{fft}, the sine and cosine
+coefficients, say @code{a} and @code{b}, can be calculated as
 
 @example
-  A[0]: real_array[0]
-  B[0]: 0
+a[0]: real_array[0]
+b[0]: 0
 @end example
 
 and
 
 @example
-  A[j]: real_array[j] + real_array[n-j]
-  B[j]: imaginary_array[j] - imaginary_array[n-j]
+a[j]: real_array[j] + real_array[n-j]
+b[j]: imaginary_array[j] - imaginary_array[n-j]
 @end example
 
 for j equal to 1 through n/2-1, and
 
 @example
-  A[n/2]: real_array[n/2]
-  B[n/2]: 0
+a[n/2]: real_array[n/2]
+b[n/2]: 0
 @end example
 
-RECTTOPOLAR translates complex values of the form a + b %i to
-the form r %e^(%i t). See RECTTOPOLAR.
+@code{recttopolar} translates complex values of the form @code{a + b %i} to
+the form @code{r %e^(%i t)}. See @code{recttopolar}.
 
-POLARTORECT translates complex values of the form r %e^(%i t)
-to the form a + b %i. See POLARTORECT.
+@code{polartorect} translates complex values of the form @code{r %e^(%i t)}
+to the form @code{a + b %i}. See @code{polartorect}.
 
-Execute DEMO ("FFT")$ to see a demonstration of the FFT package.
+@code{demo ("fft")} displays a demonstration of the @code{fft} package.
 
 @end defun
 
-@defvar FORTINDENT
- default: [0] - controls the left margin indentation of
-expressions printed out by the FORTRAN command.  0 gives normal
-printout (i.e. 6 spaces), and positive values will causes the
+@defvar fortindent
+Default value: 0
+
+@code{fortindent} controls the left margin indentation of
+expressions printed out by the @code{fortran} command.  0 gives normal
+printout (i.e., 6 spaces), and positive values will causes the
 expressions to be printed farther to the right.
 
 @end defvar
 
-@defun FORTMX (name,matrix)
-converts a Maxima matrix into a sequence of
-FORTRAN assignment statements of the form name(i,j)=<corresponding
-matrix element>.  This command is now obsolete.  FORTMX(name,matrix);
-may now be done as FORTRAN(name=matrix);.  (If "name" is bound,
-FORTRAN('name=matrix); may be necessary.)  Please convert code that
-uses the FORTMX command as it may be flushed some day.
+@defun fortran (expr)
+Prints @var{expr} as a Fortran statement.
+The output line is indented with spaces.
+If the line is too long, @code{fortran} prints continuation lines.
+@code{fortran} prints the exponentiation operator @code{^} as @code{**},
+and prints a complex number @code{a + b %i} in the form @code{(a,b)}.
+
+@var{expr} may be an equation. If so, @code{fortran} prints an assignment
+statement, assigning the right-hand side of the equation to the left-hand side.
+In particular, if the right-hand side of @var{expr} is the name of a matrix,
+then @code{fortran} prints an assignment statement for each element of the matrix.
+
+If @var{expr} is not something recognized by @code{fortran},
+the expression is printed in @code{grind} format without complaint.
+@code{fortran} does not know about lists, arrays, or functions.
+
+@code{fortindent} controls the left margin of the printed lines.
+0 is the normal margin (i.e., indented 6 spaces). Increasing @code{fortindent}
+causes expressions to be printed further to the right.
+
+When @code{fortspaces} is @code{true}, @code{fortran} fills out
+each printed line with spaces to 80 columns.
+
+@code{fortran} evaluates its arguments;
+quoting an argument defeats evaluation.
+@code{fortran} always returns @code{done}.
+
+Examples:
+
+@example
+(%i1) expr: (a + b)^12$
+(%i2) fortran (expr);
+      (b+a)**12                                                                 
+(%o2)                         done
+(%i3) fortran ('x=expr);
+      x = (b+a)**12                                                             
+(%o3)                         done
+(%i4) fortran ('x=expand (expr));
+      x = b**12+12*a*b**11+66*a**2*b**10+220*a**3*b**9+495*a**4*b**8+792        
+     1   *a**5*b**7+924*a**6*b**6+792*a**7*b**5+495*a**8*b**4+220*a**9*b        
+     2   **3+66*a**10*b**2+12*a**11*b+a**12                                     
+(%o4)                         done
+(%i5) fortran ('x=7+5*%i);
+      x = (7,5)                                                                 
+(%o5)                         done
+(%i6) fortran ('x=[1,2,3,4]);
+      x = [1,2,3,4]                                                             
+(%o6)                         done
+(%i7) f(x) := x^2$
+(%i8) fortran (f);
+      f                                                                         
+(%o8)                         done
+@end example
 
 @end defun
 
-@defun FORTRAN (exp)
-converts exp into a FORTRAN linear expression in legal
-FORTRAN with 6 spaces inserted at the beginning of each line,
-continuation lines, and ** rather than ^ for exponentiation.  When the
-option FORTSPACES[FALSE] is TRUE, the FORTRAN command fills out to 80
-columns using spaces.  If FORTRAN is called on a bound symbolic atom,
-e.g. FORTRAN(X); where X:A*B$ has been done, then X=@{value of X@}, e.g.
-X=A*B will be generated.  In particular, if e.g. M:MATRIX(...); has
-been done, then FORTRAN(M); will generate the appropriate assignment
-statements of the form name(i,j)=<corresponding matrix element>.
-FORTINDENT[0] controls the left margin of expressions printed out, 0
-is the normal margin (i.e. indented 6 spaces), increasing it will
-cause the expression to be printed further to the right.
+@defvar fortspaces
+Default value: @code{false}
 
-@end defun
-
-@defvar FORTSPACES
- default: [FALSE] - if TRUE, the FORTRAN command fills out
-to 80 columns using spaces.
+When @code{fortspaces} is @code{true}, @code{fortran} fills out
+each printed line with spaces to 80 columns.
 
 @end defvar
 
-@defun HORNER (exp, var)
-will convert exp into a rearranged representation as
-in Horner's rule, using var as the main variable if it is specified.
-Var may also be omitted in which case the main variable of the CRE
-form of exp is used.  HORNER sometimes improves stability if expr is
+@defun horner (expr, var)
+@defunx horner (expr)
+Returns a rearranged representation of @var{expr} as
+in Horner's rule, using @var{var} as the main variable if it is specified.
+@code{var} may be omitted in which case the main variable of the canonical rational expression
+form of @var{expr} is used.
+
+@code{horner} sometimes improves stability if @code{expr} is
 to be numerically evaluated.  It is also useful if Maxima is used to
-generate programs to be run in FORTRAN (see DESCRIBE(STRINGOUT);)
+generate programs to be run in Fortran. See also @code{stringout}.
+
 @example
-(%i1) 1.0E-20*X^2-5.5*X+5.2E20;
-                                2
-(%o1)                   1.0E-20 X  - 5.5 X + 5.2E+20
-(%i2) HORNER(%,X),KEEPFLOAT:TRUE;
-(%o2)                  X (1.0E-20 X - 5.5) + 5.2E+20
-(%i3) %o1,X=1.0E20;
-ARITHMETIC OVERFLOW
-(%i4) %o2,X=1.0E20;
-(%o4)                          6.9999999E+19
+(%i1) expr: 1e-155*x^2 - 5.5*x + 5.2e155;
+                           2
+(%o1)            1.0E-155 x  - 5.5 x + 5.2E+155
+(%i2) expr2: horner (%, x), keepfloat: true;
+(%o2)            (1.0E-155 x - 5.5) x + 5.2E+155
+(%i3) ev (expr, x=1e155);
+Maxima encountered a Lisp error:
 
+ floating point overflow
 
+Automatically continuing.
+To reenable the Lisp debugger set *debugger-hook* to nil.
+(%i4) ev (expr2, x=1e155);
+(%o4)                       7.0E+154
 @end example
+
 @end defun
 
-@defun INTERPOLATE (func,x,a,b)
+@defun interpolate (func, x, a, b)
 finds the zero of func as x varies.  The last
 two args give the range to look in.  The function must have a
 different sign at each endpoint.  If this condition is not met, the
@@ -259,12 +301,12 @@ number.
 
 
 @example
-F(X):=(MODE_DECLARE(X,FLOAT),SIN(X)-X/2.0);
-INTERPOLATE(SIN(X)-X/2,X,0.1,%PI)       time= 60 msec
-INTERPOLATE(F(X),X,0.1,%PI);            time= 68 msec
-TRANSLATE(F);
-INTERPOLATE(F(X),X,0.1,%PI);            time= 26 msec
-INTERPOLATE(F,0.1,%PI);                 time=  5 msec
+f(x):=(mode_declare(x,float),sin(x)-x/2.0);
+interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
+interpolate(f(x),x,0.1,%pi);            time= 68 msec
+translate(f);
+interpolate(f(x),x,0.1,%pi);            time= 26 msec
+interpolate(f,0.1,%pi);                 time=  5 msec
 @end example
 
 There is also a Newton method interpolation routine, do DESCRIBE(NEWTON); .
