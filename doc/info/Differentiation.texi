@@ -67,9 +67,10 @@ The exterior calculus of differential forms is a basic tool
 of differential geometry developed by Elie Cartan and has important
 applications in the theory of partial differential equations.  The
 present implementation is due to F.B. Estabrook and H.D. Wahlquist.
-The program is self-explanatory and can be accessed by doing
-batch("cartan"); which will give a description with
-examples.
+It implements the functions @code{ext_diff} and @code{lie_diff},
+along with the operators @code{~} (wedge product) and ~code{|} (contraction
+of a form with a vector.) Type @code{demo(tensor)} to see a brief
+description of these commands along with examples.
 
 @end defun
 @defun DEL (v)
