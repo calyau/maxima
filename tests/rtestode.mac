@@ -36,12 +36,12 @@ x*sin(x*y)=%C;
 method;
 exact; */
 
-/* ode2( (2*x*y-exp(-2*y))*'diff(y,x)=0, y, x);
+ode2( (2*x*y-exp(-2*y))*'diff(y,x)+y=0, y, x);
 x*exp(2*y) - log(y) = %C;
 method;
 exact; 
 intfactor;
-exp(2*y)/y; */
+exp(2*y)/y;
 
 /* testsuite interaction causes this to fail */
 /* ode2( 'diff(y,x)=(y/x)^2+2*(y/x), y, x);
