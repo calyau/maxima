@@ -1,5 +1,3 @@
-@node Command Line, Contexts, Special Functions, Top
-@chapter Command Line
 @menu
 * Introduction to Command Line::  
 * Definitions for Command Line::  

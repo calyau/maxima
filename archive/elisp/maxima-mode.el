@@ -105,7 +105,7 @@
   (save-excursion
     (beginning-of-maxima-form)
     (while looking
-      (and (re-search-forward "\\b\\([a-zA-Z0-9]+\\)[ \t\n]*(" nil t)
+      (and (re-search-forward "\\b\\([a-z_A-Z0-9]+\\)[ \t\n]*(" nil t)
 	   (save-match-data
 	     (not (or  (is-sharp-comment-line) (in-maxima-comment-p))))
 	   (setq found t)

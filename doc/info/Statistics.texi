@@ -1,5 +1,3 @@
-@node Statistics, Limits, Differential Equations, Top
-@chapter Statistics
 @c end concepts Statistics
 @menu
 * Definitions for Statistics::  

@@ -1,5 +1,3 @@
-@node Help, Differential Equations, Number Theory, Top
-@chapter Help
 @menu
 * Introduction to Help::        
 * LISP-AND-MACSYMA::            

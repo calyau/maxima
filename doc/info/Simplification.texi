@@ -1,5 +1,3 @@
-@node Simplification, Expressions, Polynomials, Top
-@chapter Simplification
 @c end concepts Simplification
 @menu
 * Definitions for Simplification::  

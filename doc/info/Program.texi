@@ -1,5 +1,3 @@
-@node Program Flow, Plotting, Input and Output, Top
-@chapter Program Flow
 @menu
 * Introduction to Program Flow::  
 * Definitions for Program Flow::  

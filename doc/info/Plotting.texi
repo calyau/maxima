@@ -1,5 +1,3 @@
-@node Plotting, Floating Point, Program Flow, Top
-@chapter Plotting
 @menu
 * Definitions for Plotting::    
 @end menu
@@ -23,14 +21,14 @@ or
 and plots them.  This is similar to xgraph_curves, but uses the
 open plot routines.
 Addtional symbol arguments may be given such as
-@code{ "{xrange -3 4}" }
+@code{ "@{xrange -3 4@}" }
 The following plots two curves, using big points, labeling the first one
 @code{jim} and the second one @code{jane}.   
 @example
-openplot_curves([["{plotpoints 1} {pointsize 6} {label jim}
-      {text {xaxislabel {joe is nice}}"] ,
+openplot_curves([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
+      @{text @{xaxislabel @{joe is nice@}@}"] ,
       [1,2,3,4,5,6,7,8],
-      ["{label jane} {color pink } "], [3,1,4,2,5,7]]);
+      ["@{label jane@} @{color pink @} "], [3,1,4,2,5,7]]);
 @end example
 
 Some other special keywords are xfun, color, plotpoints, linecolors,
@@ -48,7 +46,7 @@ a function of 1 variable.
 RANGE is of the form [var,min,max] and expr is assumed to
 be an expression to be plotted against VAR.
 In the second form of the function a list of expressions may
-be given to plot against.   Truncation in the y direction will
+be given to plot against VAR.   Truncation in the y direction will
 be performed, for the default y range.   It may be specified
 as an option or using SET_PLOT_OPTION.
 
@@ -149,13 +147,13 @@ make_transform([r,th,z],[r*cos(th),r*sin(th),z])
 
 @end example
 
-[RUN_VIEWER,TRUE] if not false, means run the viewer software dont just
+[RUN_VIEWER,TRUE] if not false, means run the viewer software - don't just
 output a data file.
 
 [GRID,30,30] means plot3d should divide the x range into 30 intervals
 and similarly the y range.
 
-[COLOUR_Z,false] aplies to colouring done with plot_format ps.
+[COLOUR_Z,false] applies to colouring done with plot_format ps.
 
 [PLOT_FORMAT,ZIC] is for plot3d and currently  ZIC, GNUPLOT, PS, and
 GEOMVIEW are supported.
@@ -167,21 +165,19 @@ izic is available by ftp from zenon.inria.fr.  Contact one of
 
 @{fournier,kajler,mourrain@}@@sophia.inria.fr.
 
-It has beautiful
-colour gouraud shading, and very fast wireframe.   It runs on X
-windows.   
+It has beautiful colour gouraud shading, and very fast wireframe.  It
+runs on X windows.
 
-geomview is from the geometry institute in minnesota, and is
-available by anonymous ftp from there.   It is currently not quite
-as pretty as izic, but provides excellent support for multiple
-objects and multiple lights.
+geomview is from the Geometry Center at the University of Minnesota, and
+is available from
+@file{http://www.geom.umn.edu/software/download/geomview.html} or by
+anonymous ftp from @file{ftp://ftp.geom.umn.edu/pub/software/geomview/}.  It
+is currently not quite as pretty as izic, but provides excellent support
+for multiple objects and multiple lights.
 
-gnuplot is everywhere as is ghostview.   We also provide mgnuplot
+gnuplot is everywhere as is ghostview.   We also provide mgnuplot,
 a tcl interface for gnuplot, which lets you rotate the plots using
 the mouse and a scale.
-
-
-
 
 
 @end defvar

@@ -1,5 +1,3 @@
-@node Groups, Operators, Symmetries, Top
-@chapter Groups
 @c end concepts Groups
 @menu
 * Definitions for Groups::      

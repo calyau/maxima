@@ -1,5 +1,3 @@
-@node Tensor, Ctensor, Affine, Top
-@chapter Tensor
 @menu
 * Introduction to Tensor::      
 * Definitions for Tensor::      

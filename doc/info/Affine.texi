@@ -1,5 +1,3 @@
-@node Affine, Tensor, Debugging, Top
-@chapter Affine
 @c end concepts Affine
 @menu
 * Definitions for Affine::      

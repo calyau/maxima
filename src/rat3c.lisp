@@ -452,19 +452,22 @@
 #+CL
 (eval-when (load )
  
-	   
+;; it is convenient to have the bigprimes be actually less than
+;; half the size of the most positive fixnum, so that arithmetic is
+;; easier
 #.
 (case most-positive-fixnum
   (2147483647
     '(setq bigprimes
-	  '(2147483629  2147483587 2147483579 2147483563 2147483549 2147483543
-	     2147483497 2147483489 2147483477 2147483423 2147483399 2147483353
-	     2147483323 2147483269 2147483249 2147483237 2147483179 2147483171
-	     2147483137 2147483123)))
+	   '(1073741789 1073741783 1073741741 1073741723 1073741719 1073741717
+ 1073741689 1073741671 1073741663 1073741651 1073741621 1073741567
+ 1073741561 1073741527 1073741503 1073741477 1073741467 1073741441
+ 1073741419 1073741399)
+))
   ;; Could always use the following, but it takes several seconds to compute
   ;; so if we want to autoload this file, it is tiresome.
   (t '(DO ((I 0 (f1+ I))				;GENERATES 20 LARGEST
-     (P most-positive-fixnum (NEWPRIME P)))		;PRIMES < WORD
+     (P (quotient most-positive-fixnum 2) (NEWPRIME P)))		;PRIMES < WORD
     ((= I 20.)))))
 
 (setq *ALPHA (CAR BIGPRIMES))

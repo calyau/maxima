@@ -1,5 +1,3 @@
-@node Integration, Polynomials, Differentiation, Top
-@chapter Integration
 @menu
 * Introduction to Integration::  
 * Definitions for Integration::  

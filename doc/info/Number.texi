@@ -1,5 +1,3 @@
-@node Number Theory, Help, Rules and Patterns, Top
-@chapter Number Theory
 @c end concepts Number Theory
 @menu
 * Definitions for Number Theory::  

@@ -1,5 +1,3 @@
-@node Equations, Arrays and Tables, Trigonometric, Top
-@chapter Equations
 @c end concepts Equations
 @menu
 * Definitions for Equations::   

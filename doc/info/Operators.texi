@@ -1,5 +1,3 @@
-@node Operators, Constants, Groups, Top
-@chapter Operators
 @menu
 * NARY::                        
 * NOFIX::                       

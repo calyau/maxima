@@ -1,5 +1,3 @@
-@node Special Functions, Command Line, Constants, Top
-@chapter Special Functions
 @menu
 * Introduction to Special Functions::  
 * GAMALG::                      

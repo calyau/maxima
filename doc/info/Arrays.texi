@@ -1,6 +1,3 @@
-
-@node Arrays and Tables, Series, Equations, Top
-@chapter Arrays and Tables
 @c end concepts Arrays and Tables
 @menu
 * Definitions for Arrays and Tables::  

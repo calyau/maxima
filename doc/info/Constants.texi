@@ -1,5 +1,3 @@
-@node Constants, Special Functions, Operators, Top
-@chapter Constants
 @c end concepts Constants
 @menu
 * Definitions for Constants::   

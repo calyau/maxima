@@ -1,5 +1,3 @@
-@node Logarithms, Debugging, Limits, Top
-@chapter Logarithms
 @c end concepts Logarithms
 @menu
 * Definitions for Logarithms::  

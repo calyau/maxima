@@ -1,5 +1,3 @@
-@node Symmetries, Groups, Series, Top
-@chapter Symmetries
 @c end concepts Symmetries
 @menu
 * Definitions for Symmetries::  

@@ -1,5 +1,3 @@
-@node Floating Point, Numerical, Plotting, Top
-@chapter Floating Point
 @c end concepts Floating Point
 @menu
 * Definitions for Floating Point::  

@@ -1,5 +1,3 @@
-@node Series, Symmetries, Arrays and Tables, Top
-@chapter Series
 @menu
 * Introduction to Series::      
 * Definitions for Series::      
@@ -8,7 +6,7 @@
 @node Introduction to Series, Definitions for Series, Series, Series
 @section Introduction to Series
 Maxima contains functions @code{Taylor} and @code{Powerseries} for finding the 
-sseries of differentiable functions.   It also has tools such as @code{Nusum}
+series of differentiable functions.   It also has tools such as @code{Nusum}
 capable of finding the closed form of some series.   Operations such as addition and multiplication work as usual on series. This section presents the various global various variables which control the expansion.
 @c end concepts Series
 @node Definitions for Series,  , Introduction to Series, Series
@@ -111,15 +109,15 @@ power series is "truncation level" + 1 - minimum(0,"order of series").
 
 @example
 (C15) ff:taylor(1+x+x^2+x^3,x,0,3);
-				     2	  3
-(D15)/T/ 		    1 + X + X  + X  + . . .
+                                     2    3
+(D15)/T/                    1 + X + X  + X  + . . .
 (C16) pade(ff,1,1);
-					1
-(D16) 				   [- -----]
-				      X - 1
+                                        1
+(D16)                              [- -----]
+                                      X - 1
 (c1) ff:taylor(-(83787*X^10-45552*X^9-187296*X^8
                   +387072*X^7+86016*X^6-1507328*X^5
-		  +1966080*X^4+4194304*X^3-25165824*X^2
+                  +1966080*X^4+4194304*X^3-25165824*X^2
                   +67108864*X-134217728)
        /134217728,x,0,10);
 (C25) PADE(ff,4,4);

@@ -1,11 +1,10 @@
-@node Debugging, Affine, Logarithms, Top
-@chapter Debugging
 @c end concepts Debugging
 @menu
+* Introduction to Debugging::
 * Definitions for Debugging::   
 @end menu
 
-@node Introduction to Debugging, Definitions for Debugging
+@node Introduction to Debugging, , Definitions for Debugging, Debugging
 @section Introduction to Debugging
 The Maxima has source level capabilities.  We can set a breakpoint
 at a line in a file, and then step line by line from there.  The
@@ -34,7 +33,7 @@ Maxima now allows special commands beginning with a ':'.   This was
 introduced because of the debugger.  
 
 
-@node Definitions for Debugging,  , Debugging, Debugging
+@node Definitions for Debugging, Introduction to Debugging, Debugging, Debugging
 @section Definitions for Debugging
 @c @node REFCHECK
 @c @unnumberedsec phony

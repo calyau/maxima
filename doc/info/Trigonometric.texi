@@ -1,5 +1,3 @@
-@node Trigonometric, Equations, Numerical, Top
-@chapter Trigonometric
 @menu
 * Introduction to Trigonometric::  
 * Definitions for Trigonometric::  

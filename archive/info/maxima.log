@@ -1,4 +1,4 @@
-This is TeX, Version 3.14159 (C version 6.1) (format=tex 96.9.26)  10 DEC 1998 15:43
+This is TeX, Version 3.14159 (C version 6.1) (format=tex 97.1.20)  8 MAY 2000 01:19
 **maxima.texi
 (maxima.texi
 Hyphenation patterns for english, german, loaded.
@@ -98,11 +98,35 @@ defuns,
 @kyindfile=@write6
 @pgindfile=@write7
 
-[1] () <opening Lists.texi> (Lists.texi Chapter1 [1] [2] [3] [4])
-<closing Lists.texi> <opening Differentiation.texi> (Differentiation.texi
-Chapter2 [5] [6] [7] [8] [9] [10] [11]) <closing Differentiation.texi>
-<opening Integration.texi> (Integration.texi Chapter3 [12] [13]
-Overfull \hbox (0.79964pt too wide) in paragraph at lines 128--131
+[1] () Chapter1 [1] [2] <opening Introduction.texi> (Introduction.texi [3]
+[4] [5]) <closing Introduction.texi> Chapter2 [6] <opening Help.texi>
+(Help.texi [7] [8]) <closing Help.texi> Chapter3 [9] [10]
+<opening Command.texi> (Command.texi [11] [12] [13] [14] [15] [16])
+<closing Command.texi> Chapter4 [17] [18] <opening Operators.texi>
+(Operators.texi [19] [20] [21] [22] [23] [24] [25] [26])
+<closing Operators.texi> Chapter5 [27] [28] <opening Expressions.texi>
+(Expressions.texi [29] [30] [31] [32] [33] [34] [35] [36] [37] [38] [39])
+<closing Expressions.texi> Chapter6 [40] <opening Simplification.texi>
+(Simplification.texi [41] [42] [43] [44] [45] [46])
+<closing Simplification.texi> Chapter7 [47] [48] <opening Plotting.texi>
+(Plotting.texi [49] [50] [51]) <closing Plotting.texi> Chapter8 [52]
+<opening Input.texi> (Input.texi [53] [54] [55] [56] [57] [58] [59] [60]
+[61] [62] [63] [64]) <closing Input.texi> Chapter9 [65] [66]
+<opening Floating.texi> (Floating.texi [67]) <closing Floating.texi> Chapter10
+[68] <opening Contexts.texi> (Contexts.texi [69] [70]) <closing Contexts.texi>
+Chapter11 [71] [72] <opening Polynomials.texi> (Polynomials.texi [73] [74]
+[75] [76] [77] [78] [79] [80] [81] [82] [83] [84]) <closing Polynomials.texi>
+Chapter12 [85] [86] <opening Constants.texi> (Constants.texi)
+<closing Constants.texi> Chapter13 [87] [88] <opening Logarithms.texi>
+(Logarithms.texi [89]) <closing Logarithms.texi> Chapter14 [90]
+<opening Trigonometric.texi> (Trigonometric.texi [91] [92] [93] [94])
+<closing Trigonometric.texi> Chapter15 [95] [96] <opening Special.texi>
+(Special.texi [97] [98] [99]) <closing Special.texi> Chapter16 [100]
+<opening Limits.texi> (Limits.texi) <closing Limits.texi> Chapter17 [101]
+[102] <opening Differentiation.texi> (Differentiation.texi [103] [104] [105]
+[106] [107]) <closing Differentiation.texi> Chapter18 [108]
+<opening Integration.texi> (Integration.texi [109]
+Overfull \hbox (0.79964pt too wide) in paragraph at lines 126--129
  @textrm bolic meth-ods, if you wish to use a nu-mer-i-cal method try ROMBERG(e
 xp,var,low,high).  |
 
@@ -114,70 +138,49 @@ xp,var,low,high).  |
 .@textrm l
 .etc.
 
-[14] [15] [16] [17] [18] [19] [20]) <closing Integration.texi>
-<opening Polynomials.texi> (Polynomials.texi Chapter4 [21] [22] [23] [24]
-[25] [26] [27] [28] [29] [30] [31] [32] [33] [34]) <closing Polynomials.texi>
-<opening Simplification.texi> (Simplification.texi Chapter5 [35] [36] [37]
-[38] [39] [40] [41] [42]) <closing Simplification.texi>
-<opening Expressions.texi> (Expressions.texi Chapter6 [43] [44] [45] [46]
-[47] [48] [49] [50] [51] [52] [53] [54] [55]) <closing Expressions.texi>
-<opening Function.texi> (Function.texi Chapter7 [56] [57] [58] [59] [60]
-[61] [62] [63] [64] [65] [66] [67] [68]) <closing Function.texi>
-<opening Input.texi> (Input.texi Chapter8 [69] [70] [71] [72] [73] [74]
-[75] [76] [77] [78] [79] [80] [81] [82]) <closing Input.texi>
-<opening Program.texi> (Program.texi Chapter9 [83] [84] [85] [86] [87] [88]
-[89] [90]) <closing Program.texi> <opening Plotting.texi> (Plotting.texi
-Chapter10 [91] [92] [93] [94] [95]) <closing Plotting.texi>
-<opening Floating.texi> (Floating.texi Chapter11 [96] [97])
-<closing Floating.texi> <opening Numerical.texi> (Numerical.texi Chapter12
-[98] [99] [100] [101] [102] [103] [104]) <closing Numerical.texi>
-<opening Trigonometric.texi> (Trigonometric.texi Chapter13 [105] [106] [107]
-[108] [109] [110]) <closing Trigonometric.texi> <opening Equations.texi>
-(Equations.texi Chapter14 [111] [112] [113] [114] [115] [116] [117] [118])
-<closing Equations.texi> <opening Arrays.texi> (Arrays.texi Chapter15 [119]
-[120] [121] [122]) <closing Arrays.texi> <opening Series.texi> (Series.texi
-Chapter16 [123] [124] [125] [126] [127] [128] [129]) <closing Series.texi>
-<opening Symmetries.texi> (Symmetries.texi Chapter17 [130] [131] [132] [133]
-[134] [135] [136] [137] [138] [139] [140] [141] [142] [143] [144] [145]
-[146] [147]) <closing Symmetries.texi> <opening Groups.texi> (Groups.texi
-Chapter18 [148] [149]) <closing Groups.texi> <opening Operators.texi>
-(Operators.texi Chapter19 [150] [151] [152] [153] [154] [155] [156] [157]
-[158]) <closing Operators.texi> <opening Constants.texi> (Constants.texi
-Chapter20 [159] [160]) <closing Constants.texi> <opening Special.texi>
-(Special.texi Chapter21 [161] [162] [163] [164] [165]) <closing Special.texi>
-<opening Command.texi> (Command.texi Chapter22 [166] [167] [168] [169] [170]
-[171] [172]) <closing Command.texi> <opening Contexts.texi> (Contexts.texi
-Chapter23 [173] [174] [175] [176]) <closing Contexts.texi>
-<opening Matrices.texi> (Matrices.texi Chapter24 [177] [178] [179] [180]
-[181] [182] [183] [184] [185] [186] [187]) <closing Matrices.texi>
-<opening Runtime.texi> (Runtime.texi Chapter25 [188] [189] [190])
-<closing Runtime.texi> <opening Miscellaneous.texi> (Miscellaneous.texi
-Chapter26 [191] [192] [193] [194] [195]) <closing Miscellaneous.texi>
-<opening Rules.texi> (Rules.texi Chapter27 [196] [197] [198] [199] [200]
-[201]) <closing Rules.texi> <opening Number.texi> (Number.texi Chapter28
-[202] [203] [204] [205]) <closing Number.texi> <opening Help.texi> (Help.texi
-Chapter29 [206] [207] [208]) <closing Help.texi> <opening Differential.texi>
-(Differential.texi Chapter30 [209] [210] [211] [212])
-<closing Differential.texi> <opening Statistics.texi> (Statistics.texi
-Chapter31 [213] [214]) <closing Statistics.texi> <opening Limits.texi>
-(Limits.texi Chapter32 [215] [216]) <closing Limits.texi>
-<opening Logarithms.texi> (Logarithms.texi Chapter33 [217] [218] [219])
-<closing Logarithms.texi> <opening Debugging.texi> (Debugging.texi Chapter34
-[220] [221]) <closing Debugging.texi> <opening Affine.texi> (Affine.texi
-Chapter35 [222] [223] [224]) <closing Affine.texi> <opening Tensor.texi>
-(Tensor.texi Chapter36 [225] [226] [227] [228] [229]) <closing Tensor.texi>
-<opening Ctensor.texi> (Ctensor.texi Chapter37 [230] [231] [232] [233])
-<closing Ctensor.texi> <opening Indices.texi> (Indices.texi Appendix @char 65
-[234] (maxima.fns [235] [236] [237] [238] [239] [240] [241] [242] [243]
-[244])) <closing Indices.texi> [245] [246] (maxima.toc) [-1] [-2] (maxima.toc
+[110] [111] [112] [113] [114] [115] [116]) <closing Integration.texi>
+Chapter19 [117] [118] <opening Equations.texi> (Equations.texi [119] [120]
+[121] [122] [123] [124]) <closing Equations.texi> Chapter20 [125] [126]
+<opening Differential.texi> (Differential.texi [127] [128])
+<closing Differential.texi> Chapter21 [129] [130] <opening Numerical.texi>
+(Numerical.texi [131] [132] [133] [134] [135] [136]) <closing Numerical.texi>
+Chapter22 [137] [138] <opening Statistics.texi> (Statistics.texi)
+<closing Statistics.texi> Chapter23 [139] [140] <opening Arrays.texi>
+(Arrays.texi [141] [142]) <closing Arrays.texi> Chapter24 [143] [144]
+<opening Matrices.texi> (Matrices.texi [145] [146] [147] [148] [149] [150]
+[151] [152] [153]) <closing Matrices.texi> Chapter25 [154]
+<opening Affine.texi> (Affine.texi [155] [156]) <closing Affine.texi>
+Chapter26 [157] [158] <opening Tensor.texi> (Tensor.texi [159] [160] [161])
+<closing Tensor.texi> Chapter27 [162] <opening Ctensor.texi> (Ctensor.texi
+[163] [164] [165]) <closing Ctensor.texi> Chapter28 [166]
+<opening Series.texi> (Series.texi [167] [168] [169] [170] [171])
+<closing Series.texi> Chapter29 [172] <opening Number.texi> (Number.texi
+[173] [174] [175]) <closing Number.texi> Chapter30 [176]
+<opening Symmetries.texi> (Symmetries.texi [177] [178] [179] [180] [181]
+[182] [183] [184] [185] [186] [187] [188] [189] [190] [191] [192] [193])
+<closing Symmetries.texi> Chapter31 [194] <opening Groups.texi> (Groups.texi
+[195]) <closing Groups.texi> Chapter32 [196] <opening Runtime.texi>
+(Runtime.texi [197] [198]) <closing Runtime.texi> Chapter33 [199] [200]
+<opening Miscellaneous.texi> (Miscellaneous.texi [201] [202] [203])
+<closing Miscellaneous.texi> Chapter34 [204] <opening Rules.texi> (Rules.texi
+[205] [206] [207] [208] [209]) <closing Rules.texi> Chapter35 [210]
+<opening Lists.texi> (Lists.texi [211] [212]) <closing Lists.texi> Chapter36
+[213] [214] <opening Function.texi> (Function.texi [215] [216] [217] [218]
+[219] [220] [221] [222] [223] [224] [225] [226]) <closing Function.texi>
+Chapter37 [227] [228] <opening Program.texi> (Program.texi [229] [230] [231]
+[232] [233] [234]) <closing Program.texi> Chapter38 [235] [236]
+<opening Debugging.texi> (Debugging.texi [237]) <closing Debugging.texi>
+Chapter39 [238] <opening Indices.texi> (Indices.texi Appendix @char 65 [239]
+[240] (maxima.fns [241] [242] [243] [244] [245] [246] [247] [248] [249]
+[250])) <closing Indices.texi> [251] [252] (maxima.toc) [-1] [-2] (maxima.toc
 [-3] [-4] [-5]) [-6] ) 
 Here is how much of TeX's memory you used:
- 1396 strings out of 12938
- 18984 string characters out of 94873
- 48840 words of memory out of 262141
- 2234 multiletter control sequences out of 9500
+ 1403 strings out of 12938
+ 19110 string characters out of 94873
+ 50002 words of memory out of 262141
+ 2238 multiletter control sequences out of 9500
  26608 words of font info for 90 fonts, out of 150000 for 255
  18 hyphenation exceptions out of 607
- 16i,5n,13p,247b,375s stack positions out of 300i,40n,60p,3000b,4000s
+ 16i,5n,13p,247b,371s stack positions out of 300i,40n,60p,3000b,4000s
 
-Output written on maxima.dvi (253 pages, 1006184 bytes).
+Output written on maxima.dvi (259 pages, 1016668 bytes).

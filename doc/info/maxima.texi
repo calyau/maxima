@@ -1,8 +1,15 @@
 \input texinfo
 @c -*-texinfo-*-
 
+@c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
+@c info directory entry, reference to introduction chapter, and menu
+@c descriptions.  Rearranged chapters.
+
 @c to update the menus do: 
 @c (texinfo-multiple-files-update "maxima.texi" t t)
+@c
+@c texinfo-multiple-files-update will delete the detailed node listing!
+
 
 @c %**start of header
 @setfilename  maxima.info
@@ -14,6 +21,12 @@
 This is a Texinfo Maxima Manual
 
 Copyright 1994 William F. Schelter
+
+@format
+START-INFO-DIR-ENTRY
+* Maxima: (maxima).     A computer algebra system.
+END-INFO-DIR-ENTRY
+@end format
 @end ifinfo
 
 @titlepage
@@ -23,150 +36,97 @@ Copyright 1994 William F. Schelter
 @end titlepage
 
 
-@node Top, Lists, (dir), (dir)
+@node Top, Introduction to MAXIMA, (dir), (dir)
 @top
+
+MAXIMA is a fairly complete computer algebra system.
+
+This system MAXIMA is a COMMON LISP implementation due to William F.
+Schelter, and is based on the original implementation of Macsyma at
+MIT, as distributed by the Department of Energy.  I now have
+permission from DOE to make derivative copies, and in particular to
+distribute it under the GNU public license.  See the file COPYING
+included in the distribution.   Thus these files may now be redistributed
+under the terms of GNU public license.
 
 @c includes
 
 @menu
-* Lists::                       
-* Differentiation::             
-* Integration::                 
-* Polynomials::                 
-* Simplification::              
-* Expressions::                 
-* Function Definition::         
-* Input and Output::            
-* Program Flow::                
-* Plotting::                    
-* Floating Point::              
-* Numerical::                   
-* Trigonometric::               
-* Equations::                   
-* Arrays and Tables::           
-* Series::                      
-* Symmetries::                  
-* Groups::                      
-* Operators::                   
-* Constants::                   
-* Special Functions::           
-* Command Line::                
-* Contexts::                    
-* Matrices and Linear Algebra::  
-* Runtime Environment::         
-* Miscellaneous Options::       
-* Rules and Patterns::          
-* Number Theory::               
-* Help::                        
-* Differential Equations::      
-* Statistics::                  
-* Limits::                      
-* Logarithms::                  
-* Debugging::                   
-* Affine::                      
-* Tensor::                      
-* Ctensor::                     
-* Function and Variable Index::  
+MAXIMA infrastructure
 
+* Introduction to MAXIMA::      Sample MAXIMA sessions.
+* Help::                        Asking for help from within a MAXIMA session.
+* Command Line::                MAXIMA command line syntax.
+* Operators::                   Operators used in MAXIMA expressions.
+* Expressions::                 Expressions in MAXIMA.
+* Simplification::              Simplifying expressions.
+* Plotting::                    2D and 3D graphical output.
+* Input and Output::            File input and output.
+* Floating Point::              Low level numerical routines.
+* Contexts::                    Sets of assumed facts.
+
+Support for specific areas of mathematics
+
+* Polynomials::                 Standard forms for polynomials, and
+                                functions operating on them.
+* Constants::                   Numerical constants.
+* Logarithms::                  Manipulation of expressions involving
+                                logarithms.
+* Trigonometric::               Manipulating expressions with trig and
+                                inverse trig functions.
+* Special Functions::           Special functions
+* Limits::                      Limits of expressions.
+* Differentiation::             Differential calculus.
+* Integration::                 Integral calculus.
+* Equations::                   Defining and solving equations.
+* Differential Equations::      Defining and solving differential equations.
+* Numerical::                   Numerical integration, Fourier
+                                transforms, etc.
+* Statistics::                  Statistical functions.
+* Arrays and Tables::           Creating and working with arrays.
+* Matrices and Linear Algebra:: Matrix operations.
+* Affine::                      
+* Tensor::                      Indicial Tensor Manipulation package.
+* Ctensor::                     Component Tensor Manipulation.
+* Series::                      Taylor and power series.
+* Number Theory::               Number theory.
+* Symmetries::                  
+* Groups::                      Abstract algebra.
+
+Advanced facilities and programming
+
+* Runtime Environment::         Customization of the MAXIMA environment.
+* Miscellaneous Options::       Options with a global effect on MAXIMA.
+* Rules and Patterns::          User defined pattern matching and
+                                simplification rules.
+* Lists::                       Manipulation of Lisp lists.
+* Function Definition::         Defining functions.
+* Program Flow::                Defining MAXIMA programs.
+* Debugging::                   Debugging MAXIMA programs.
+
+Index
+
+* Function and Variable Index:: Index.
+
+@comment @detailmenu
  --- The Detailed Node Listing ---
 
-Lists
+Introduction
 
-* Introduction to Lists::       
-* Definitions for Lists::       
+* Introduction to MAXIMA::
 
-Differentiation
+Help
 
-* Definitions for Differentiation::  
+* Introduction to Help::        
+* LISP-AND-MACSYMA::            
+* GARBAGE_COLLECTION::          
+* DOCUMENTATION::               
+* Definitions for Help::        
 
-Integration
+Command Line
 
-* Introduction to Integration::  
-* Definitions for Integration::  
-
-Polynomials
-
-* Introduction to Polynomials::  
-* Definitions for Polynomials::  
-
-Simplification
-
-* Definitions for Simplification::  
-
-Definitions for Simplification
-
-
-Expressions
-
-* Introduction to Expressions::  
-* ASSIGNMENT::                  
-* COMPLEX::                     
-* INEQUALITY::                  
-* SYNTAX::                      
-* Definitions for Expressions::  
-
-Function Definition
-
-* Introduction to Function Definition::  
-* FUNCTION::                    
-* MACROS::                      
-* OPTIMIZATION::                
-* Definitions for Function Definition::  
-
-Input and Output
-
-* Introduction to Input and Output::  
-* FILES::                       
-* PLAYBACK::                    
-* Definitions for Input and Output::  
-
-Program Flow
-
-* Introduction to Program Flow::  
-* Definitions for Program Flow::  
-
-Plotting
-
-* Definitions for Plotting::    
-
-Floating Point
-
-* Definitions for Floating Point::  
-
-Numerical
-
-* Introduction to Numerical::   
-* DCADRE::                      
-* ELLIPT::                      
-* FOURIER::                     
-* NDIFFQ::                      
-* Definitions for Numerical::   
-
-Trigonometric
-
-* Introduction to Trigonometric::  
-* Definitions for Trigonometric::  
-
-Equations
-
-* Definitions for Equations::   
-
-Arrays and Tables
-
-* Definitions for Arrays and Tables::  
-
-Series
-
-* Introduction to Series::      
-* Definitions for Series::      
-
-Symmetries
-
-* Definitions for Symmetries::  
-
-Groups
-
-* Definitions for Groups::      
+* Introduction to Command Line::  
+* Definitions for Command Line::  
 
 Operators
 
@@ -177,9 +137,55 @@ Operators
 * PREFIX::                      
 * Definitions for Operators::   
 
+Expressions
+
+* Introduction to Expressions::  
+* ASSIGNMENT::                  
+* COMPLEX::                     
+* INEQUALITY::                  
+* SYNTAX::                      
+* Definitions for Expressions::  
+
+Simplification
+
+* Definitions for Simplification::  
+
+Plotting
+
+* Definitions for Plotting::    
+
+Input and Output
+
+* Introduction to Input and Output::  
+* FILES::                       
+* PLAYBACK::                    
+* Definitions for Input and Output::  
+
+Floating Point
+
+* Definitions for Floating Point::  
+
+Contexts
+
+* Definitions for Contexts::    
+
+Polynomials
+
+* Introduction to Polynomials::  
+* Definitions for Polynomials::  
+
 Constants
 
 * Definitions for Constants::   
+
+Logarithms
+
+* Definitions for Logarithms::  
+
+Trigonometric
+
+* Introduction to Trigonometric::  
+* Definitions for Trigonometric::  
 
 Special Functions
 
@@ -188,14 +194,43 @@ Special Functions
 * SPECINT::                     
 * Definitions for Special Functions::  
 
-Command Line
+Limits
 
-* Introduction to Command Line::  
-* Definitions for Command Line::  
+* Definitions for Limits::      
 
-Contexts
+Differentiation
 
-* Definitions for Contexts::    
+* Definitions for Differentiation::  
+
+Integration
+
+* Introduction to Integration::  
+* Definitions for Integration::  
+
+Equations
+
+* Definitions for Equations::   
+
+Differential Equations
+
+* Definitions for Differential Equations::  
+
+Numerical
+
+* Introduction to Numerical::   
+* DCADRE::                      
+* ELLIPT::                      
+* FOURIER::                     
+* NDIFFQ::                      
+* Definitions for Numerical::   
+
+Statistics
+
+* Definitions for Statistics::  
+
+Arrays and Tables
+
+* Definitions for Arrays and Tables::  
 
 Matrices and Linear Algebra
 
@@ -203,6 +238,37 @@ Matrices and Linear Algebra
 * DOT::                         
 * VECTORS::                     
 * Definitions for Matrices and Linear Algebra::  
+
+Affine
+
+* Definitions for Affine::      
+
+Tensor
+
+* Introduction to Tensor::      
+* Definitions for Tensor::      
+
+Ctensor
+
+* Introduction to Ctensor::     
+* Definitions for Ctensor::     
+
+Series
+
+* Introduction to Series::      
+* Definitions for Series::      
+
+Number Theory
+
+* Definitions for Number Theory::  
+
+Symmetries
+
+* Definitions for Symmetries::  
+
+Groups
+
+* Definitions for Groups::      
 
 Runtime Environment
 
@@ -221,133 +287,196 @@ Rules and Patterns
 * Introduction to Rules and Patterns::  
 * Definitions for Rules and Patterns::  
 
-Number Theory
+Lists
 
-* Definitions for Number Theory::  
+* Introduction to Lists::       
+* Definitions for Lists::       
 
-Help
+Function Definition
 
-* Introduction to Help::        
-* LISP-AND-MACSYMA::            
-* GARBAGE_COLLECTION::          
-* DOCUMENTATION::               
-* Definitions for Help::        
+* Introduction to Function Definition::  
+* FUNCTION::                    
+* MACROS::                      
+* OPTIMIZATION::                
+* Definitions for Function Definition::  
 
-Differential Equations
+Program Flow
 
-* Definitions for Differential Equations::  
-
-Statistics
-
-* Definitions for Statistics::  
-
-Limits
-
-* Definitions for Limits::      
-
-Logarithms
-
-* Definitions for Logarithms::  
+* Introduction to Program Flow::  
+* Definitions for Program Flow::  
 
 Debugging
 
 * Definitions for Debugging::   
 
-Affine
-
-* Definitions for Affine::      
-
-Tensor
-
-* Introduction to Tensor::      
-* Definitions for Tensor::      
-
-Ctensor
-
-* Introduction to Ctensor::     
-* Definitions for Ctensor::     
+@comment @end detailmenu
 @end menu
 
-@include Lists.texi
+@c  Put the @node lines here, rather than in the @included files,
+@c  so emacs can automatically update them with C-c C-u C-e.
+@c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
+@c  the detailed node listing!
 
-@include Differentiation.texi
+@node Introduction to MAXIMA, Help, Top, Top
+@chapter Introduction to MAXIMA
+@include Introduction.texi
 
-@include Integration.texi
+@node Help, Command Line, Introduction to MAXIMA, Top
+@chapter Help
+@include Help.texi
 
-@include Polynomials.texi
+@node Command Line, Operators, Help, Top
+@chapter Command Line
+@include Command.texi
 
-@include Simplification.texi
+@node Operators, Expressions, Command Line, Top
+@chapter Operators
+@include Operators.texi
 
+@node Expressions, Simplification, Operators, Top
+@chapter Expressions
 @include Expressions.texi
 
-@include Function.texi
+@node Simplification, Plotting, Expressions, Top
+@chapter Simplification
+@include Simplification.texi
 
+@node Plotting, Input and Output, Simplification, Top
+@chapter Plotting
+@include Plotting.texi
+
+@node Input and Output, Floating Point, Plotting, Top
+@chapter Input and Output
 @include Input.texi
 
-@include Program.texi
+@node Floating Point, Contexts, Input and Output, Top
+@chapter Floating Point
+@include Floating.texi
 
-@include Plotting.texi
+@node Contexts, Polynomials, Floating Point, Top
+@chapter Contexts
+@include Contexts.texi
+
+@node Polynomials, Constants, Contexts, Top
+@chapter Polynomials
+@include Polynomials.texi
+
+@node Constants, Logarithms, Polynomials, Top
+@chapter Constants
+@include Constants.texi
+
+@node Logarithms, Trigonometric, Constants, Top
+@chapter Logarithms
+@include Logarithms.texi
+
+@node Trigonometric, Special Functions, Logarithms, Top
+@chapter Trigonometric
+@include Trigonometric.texi
+
+@node Special Functions, Limits, Trigonometric, Top
+@chapter Special Functions
+@include Special.texi
+
+@node Limits, Differentiation, Special Functions, Top
+@chapter Limits
+@include Limits.texi
+
+@node Differentiation, Integration, Limits, Top
+@chapter Differentiation
+@include Differentiation.texi
+
+@node Integration, Equations, Differentiation, Top
+@chapter Integration
+@include Integration.texi
+
+@node Equations, Differential Equations, Integration, Top
+@chapter Equations
+@include Equations.texi
+
+@node Differential Equations, Numerical, Equations, Top
+@chapter Differential Equations
+@include Differential.texi
 
 @c @include NonCommutative.texi
 
-@include Floating.texi
-
+@node Numerical, Statistics, Differential Equations, Top
+@chapter Numerical
 @include Numerical.texi
 
-@include Trigonometric.texi
-
-@include Equations.texi
-
-@include Arrays.texi
-
-@include Series.texi
-
-@include Symmetries.texi
-
-@include Groups.texi
-
-@include Operators.texi
-
-@include Constants.texi
-
-@include Special.texi
-
-@include Command.texi
-
-@include Contexts.texi
-
-@include Matrices.texi
-
-@include Runtime.texi
-
-@include Miscellaneous.texi
-
-@include Rules.texi
-
-@include Number.texi
-
-@include Help.texi
-
-@include Differential.texi
-
-@c @include xrefs.texi
-
+@node Statistics, Arrays and Tables, Numerical, Top
+@chapter Statistics
 @include Statistics.texi
 
-@include Limits.texi
+@node Arrays and Tables, Matrices and Linear Algebra, Statistics, Top
+@chapter Arrays and Tables
+@include Arrays.texi
 
-@include Logarithms.texi
+@node Matrices and Linear Algebra, Affine, Arrays and Tables, Top
+@chapter Matrices and Linear Algebra
+@include Matrices.texi
 
-@include Debugging.texi
-
+@node Affine, Tensor, Matrices and Linear Algebra, Top
+@chapter Affine
 @include Affine.texi
 
+@node Tensor, Ctensor, Affine, Top
+@chapter Tensor
 @include Tensor.texi
 
+@node Ctensor, Series, Tensor, Top
+@chapter Ctensor
 @include Ctensor.texi
+
+@node Series, Number Theory, Ctensor, Top
+@chapter Series
+@include Series.texi
 
 @c @include None.texi
 
+@node Number Theory, Symmetries, Series, Top
+@chapter Number Theory
+@include Number.texi
+
+@node Symmetries, Groups, Number Theory, Top
+@chapter Symmetries
+@include Symmetries.texi
+
+@node Groups, Runtime Environment, Symmetries, Top
+@chapter Groups
+@include Groups.texi
+
+@node Runtime Environment, Miscellaneous Options, Groups, Top
+@chapter Runtime Environment
+@include Runtime.texi
+
+@node Miscellaneous Options, Rules and Patterns, Runtime Environment, Top
+@chapter Miscellaneous Options
+@include Miscellaneous.texi
+
+@node Rules and Patterns, Lists, Miscellaneous Options, Top
+@chapter Rules and Patterns
+@include Rules.texi
+
+@c @include xrefs.texi
+
+@node Lists, Function Definition, Rules and Patterns, Top
+@chapter Lists
+@include Lists.texi
+
+@node Function Definition, Program Flow, Lists, Top
+@chapter Function Definition
+@include Function.texi
+
+@node Program Flow, Debugging, Function Definition, Top
+@chapter Program Flow
+@include Program.texi
+
+@node Debugging, Function and Variable Index, Program Flow, Top
+@chapter Debugging
+@include Debugging.texi
+
+@node Function and Variable Index,  , Debugging, Top
+@chapter Indices
 @include Indices.texi
 
 @c end includes

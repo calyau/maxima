@@ -1,6 +1,3 @@
-@node Expressions, Function Definition, Simplification, Top
-@chapter Expressions
-
 @menu
 * Introduction to Expressions::  
 * ASSIGNMENT::                  

@@ -1,5 +1,3 @@
-@node Contexts, Matrices and Linear Algebra, Command Line, Top
-@chapter Contexts
 @c end concepts Contexts
 @menu
 * Definitions for Contexts::    

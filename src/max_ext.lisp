@@ -1086,6 +1086,8 @@
 (AUTOF '$POISPLUS '|pois3|)
 (AUTOF '$POISSIMP '|pois3|)
 
+(autof '$todd_coxeter '|todd-coxeter|)
+
 
 (defvar $chemin
   #+kcl (intern (concatenate 'string "&"

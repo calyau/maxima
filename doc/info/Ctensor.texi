@@ -1,5 +1,3 @@
-@node Ctensor, Function and Variable Index, Tensor, Top
-@chapter Ctensor
 @menu
 * Introduction to Ctensor::     
 * Definitions for Ctensor::     

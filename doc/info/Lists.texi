@@ -1,6 +1,3 @@
-
-@node Lists, Differentiation, Top, Top
-@chapter Lists
 @menu
 * Introduction to Lists::       
 * Definitions for Lists::       

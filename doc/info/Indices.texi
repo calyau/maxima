@@ -1,5 +1,3 @@
-
-@node Function and Variable Index, , Ctensor, Top
 @appendix Function and Variable Index
 
 @printindex fn

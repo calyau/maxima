@@ -1,5 +1,3 @@
-@node Polynomials, Simplification, Integration, Top
-@chapter Polynomials
 @menu
 * Introduction to Polynomials::  
 * Definitions for Polynomials::  

@@ -1,5 +1,3 @@
-@node Numerical, Trigonometric, Floating Point, Top
-@chapter Numerical
 @menu
 * Introduction to Numerical::   
 * DCADRE::                      
@@ -157,7 +155,7 @@ Jacobian elliptic functions
 
 @example
 AM(U,M) - amplitude with modulus M
-AM1(U,M1) - ampiltude with complementary modulus M1
+AM1(U,M1) - amplitude with complementary modulus M1
 AM(U,M):=AM1(U,1-M); so use AM1 if M ~ 1
 SN(U,M):=SIN(AM(U,M));
 CN(U,M):=COS(AM(U,M));

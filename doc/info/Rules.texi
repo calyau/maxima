@@ -1,5 +1,3 @@
-@node Rules and Patterns, Number Theory, Miscellaneous Options, Top
-@chapter Rules and Patterns
 @menu
 * Introduction to Rules and Patterns::  
 * Definitions for Rules and Patterns::  

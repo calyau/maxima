@@ -1,5 +1,3 @@
-@node Differential Equations, Statistics, Help, Top
-@chapter Differential Equations
 @c end concepts Differential Equations
 @menu
 * Definitions for Differential Equations::  

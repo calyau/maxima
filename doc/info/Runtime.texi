@@ -1,5 +1,3 @@
-@node Runtime Environment, Miscellaneous Options, Matrices and Linear Algebra, Top
-@chapter Runtime Environment
 @menu
 * Introduction for Runtime Environment::  
 * INTERRUPTS::                  

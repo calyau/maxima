@@ -1,5 +1,3 @@
-@node Function Definition, Input and Output, Expressions, Top
-@chapter Function Definition
 @menu
 * Introduction to Function Definition::  
 * FUNCTION::                    

@@ -1,5 +1,3 @@
-@node Miscellaneous Options, Rules and Patterns, Runtime Environment, Top
-@chapter Miscellaneous Options
 @menu
 * Introduction to Miscellaneous Options::  
 * SHARE::                       

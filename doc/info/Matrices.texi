@@ -1,5 +1,3 @@
-@node Matrices and Linear Algebra, Runtime Environment, Contexts, Top
-@chapter Matrices and Linear Algebra
 @menu
 * Introduction to Matrices and Linear Algebra::  
 * Definitions for Matrices and Linear Algebra::  

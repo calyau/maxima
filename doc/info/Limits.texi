@@ -1,5 +1,3 @@
-@node Limits, Logarithms, Statistics, Top
-@chapter Limits
 @c end concepts Limits
 @menu
 * Definitions for Limits::      

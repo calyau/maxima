@@ -1,5 +1,3 @@
-@node Differentiation, Integration, Lists, Top
-@chapter Differentiation
 @c end concepts Differentiation
 @menu
 * Definitions for Differentiation::  
