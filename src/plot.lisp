@@ -517,16 +517,18 @@ setrgbcolor} def
 			;; because the function is not defined there,
 			;; not because of some other maxima error.
 			;;
-			;; Hmm, gcl 2.5.1 does appear to have handler-case.  Ick. 
+			;; GCL 2.6.2 has handler-case but not quite ANSI yet. 
 			(let ((result
 			       #-gcl
 				(handler-case 
 				   (catch 'errorsw
 				     ($float ($realpart (meval* ',expr))))
 				 (arithmetic-error () t))
-				#+gcl
-				(catch 'errorsw
+			       #+gcl
+				(conditions::handler-case 
+				   (catch 'errorsw
 				     ($float ($realpart (meval* ',expr))))
+				 (conditions::internal-error () t))
 				))
 			  result)))
 		   'function)))))
@@ -1044,7 +1046,7 @@ setrgbcolor} def
 		($plot_options $plot_options))
   (dolist (v options) ($set_plot_option v))
   
-  (cond ((eq (cadr fun) '$parametric)
+  (cond ((and (consp fun) (eq (cadr fun) '$parametric))
 	 (or range (setq range (nth 4 fun)))
 	 (setf fun `((mlist) ,fun))))
   (cond ((eq ($get_plot_option '$PLOT_FORMAT 2) '$ps)
