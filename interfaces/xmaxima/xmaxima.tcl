@@ -12367,47 +12367,16 @@ array set xmaximaPreferences {fontAdjust 0 }
 catch { source ~/xmaxima.ini }
 
 
-
-
-proc setMaxDir {} {
-    global env ws_openMath
-    # the executable is in the src directory so we want to lop off one more
-    set epath [file dirname [file dirname [info nameofexecutable]]]
-    if {[file exists [set tem [file join $epath system.ini]]] } {
-	source $tem
-    }
-    if { [info exists env(MAXIMA_DIRECTORY)] } { 
-	set ws_openMath(maximaPath) $env(MAXIMA_DIRECTORY)
-	return
-    }
-    if { [file exists [file join $epath src/plot.o]] } {
-	set ws_openMath(maximaPath) $epath
-	set env(MAXIMA_DIRECTORY) $epath
-	return
-    }
-    set m maxima-5.5
-    foreach v { c:/ d:/ /usr/lib /usr/local/lib /cdrom /home/wfs } {
-	if { [file exists [file join $v $m intro.html]] } {
-	    set ws_openMath(maximaPath) [file join $v $m ]
-	    return
-	}
-    }
-    error "Unable to find maximaPath.  Please set MAXIMA_DIRECTORY
-    environment variable, to the path eg c:/myhome/maxima-5.4"
-}
-
-
-setMaxDir
 if { "$tcl_platform(platform)" == "windows" } {
     global ws_openMath
-    set ws_openMath(kill) [file join $ws_openMath(maximaPath) \
+     set ws_openMath(kill) [file join $ws_openMath(maxima_prefix) \
 	    src winkill.exe]
-    catch { load  [file join $ws_openMath(maximaPath) \
+    catch { load  [file join $ws_openMath(maxima_prefix) \
 	    src tclwinkill.dll]  }
     proc setIcon { w } {
 	global ws_openMath
 	winico set [winfo toplevel $w] [winico createfrom [file join \
-		$ws_openMath(maximaPath) src max.ico ]]   
+		$ws_openMath(maxima_prefix) src max.ico ]]   
     }
     after 2000 { setIcon . }
     after 6000 { setIcon . }
@@ -12416,55 +12385,92 @@ if { "$tcl_platform(platform)" == "windows" } {
     set ws_openMath(kill) kill
 }
 
-rename setMaxDir {}
-
-
-
-
 proc getkey {key lis } {
    set tem [ lsearch $lis $key ]
     if { $tem >= 0} {lindex $lis [expr 1 + $tem]}
 }
 
+proc usage {} {
+    puts {usage: xmaxima [options] [url]}
+    puts {           If given, [url] will be opened in the help browser instead}
+    puts "           of the default starting page."
+    puts "options:"
+    puts "    --help: Display this usage message."
+    puts "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."
+    puts "    --use-version=<version>: Launch maxima version <version>."
+}
+
 proc doit { fr } {
     catch { destroy $fr }
-    global NCtextHelp ws_openMath xmaximaPreferences argv
+    global NCtextHelp ws_openMath xmaximaPreferences argv argv0 env
     set ws_openMath(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
     frame .browser
-    set firstUrl file:/[file join $ws_openMath(maximaPath) intro.html]
-    if { [llength $argv] > 0 } {
-	set i 0
-	if { [string match "-*" $argv] == 0 } {
-	    set firstUrl [lindex $argv 0]
-	    incr i
-	}
-    while { [set tem [lsearch [lrange $argv $i end] -source]] >= 0 } {
-	catch { source [lindex $argv [expr $tem + $i +1]] }
-	set i [expr $tem + $i +2]
+    set firstUrl file:/[file join $ws_openMath(maxima_xmaximadir) "intro.html"]
+#    if { [llength $argv] > 0 } {
+#	set i 0
+#	if { [string match "-*" $argv] == 0 } {
+#	    set firstUrl [lindex $argv 0]
+#	    incr i
+#	}
+#	while { [set tem [lsearch [lrange $argv $i end] -source]] >= 0 } {
+#	    catch { source [lindex $argv [expr $tem + $i +1]] }
+#	    set i [expr $tem + $i +2]
+#	}
+#    }
+    set maxima_opts {}
+    if { [lsearch $argv "--help"] > -1 } {
+	usage
+	exit 0
     }
-   }
-    switch  x-[getkey -lisp $argv] {
-	x-(cmu)?lisp {	set ws_openMath(localMaximaServer) "lisp -core \
-	[file join $ws_openMath(maximaPath) src/maxima.core] \
-	-load [file join $ws_openMath(maximaPath) src/server.lisp] \
-	-eval \"(setup PORT)\" &"
-    } 
-    x-clisp {
-	set ws_openMath(localMaximaServer) "clisp -M \
-	[file join $ws_openMath(maximaPath) src/maxima-clisp.mem] \
-	-i [file join $ws_openMath(maximaPath) src/server.lisp] \
-	-x \":lisp (progn (user::setup PORT)(values))\" &"
-   }
-   x- {
-       set ws_openMath(localMaximaServer) "[file join \
-	       $ws_openMath(maximaPath) src/saved_maxima] \
-	       -load [file join $ws_openMath(maximaPath) src/server.lisp] \
-	       -eval \"(setup PORT)\" -f &"
-   }
-   default { error "unrecognized -lisp option:  lisp or clisp.  default is gcl saved_maxima"  }
-   }
+    set lisp_pos [lsearch $argv "--lisp=*"]
+    if { $lisp_pos > -1 } {
+	set arg [lindex $argv $lisp_pos]
+	set prefix_end [expr [string length "--lisp="] - 1]
+	set lisp [string replace $arg 0 $prefix_end]
+	lappend maxima_opts -l $lisp
+	set argv [lreplace $argv $lisp_pos $lisp_pos]
+    }
+    set lisp_pos [lsearch $argv "-l"]
+    if { $lisp_pos > -1 } {
+	set lisp [lindex $argv [expr $lisp_pos + 1]]
+	lappend maxima_opts -l $lisp
+	set argv [lreplace $argv $lisp_pos [expr $lisp_pos + 1]]
+    }
+    set version_pos [lsearch $argv "--use-version=*"]
+    if { $version_pos > -1 } {
+	set arg [lindex $argv $version_pos]
+	set prefix_end [expr [string length "--use-version="] - 1]
+	set version [string replace $arg 0 $prefix_end]
+	lappend maxima_opts -u $version
+	set argv [lreplace $argv $lisp_pos $version_pos]
+    }
+    if { [llength $argv] == 1 } {
+	set firstURL [lindex $argv 0]
+    } else {
+	if { [llength $argv] > 1 } {
+	    puts "xmaxima: Error: arguments \"$argv\" not understood."
+	    exit 1
+	}
+    }
+    if { [auto_execok  "$ws_openMath(xmaxima_maxima)"] != "" } {
+	set ws_openMath(localMaximaServer) "$ws_openMath(xmaxima_maxima) $maxima_opts -p [file join $ws_openMath(maxima_xmaximadir) server.lisp] -r \":lisp (progn (user::setup PORT)(values))\" &"
+    } else {
+	if { [info exists env(XMAXIMA_MAXIMA)] } {
+	    puts "xmaxima: Error. maxima executable XMAXIMA_MAXIMA=$env(XMAXIMA_MAXIMA) not found."
+	    exit 1
+	} else {
+	    # A gruesome hack. Normally, we communicate to the maxima image
+	    # through the maxima script, as above. If the maxima script is not
+	    # available, as may happen on windows, directly talk to the GCL 
+	    # saved image. jfa 04/28/2002
+	    set env(MAXIMA_INT_LISP_PRELOAD) \
+		"[file join $ws_openMath(maxima_xmaximadir) server.lisp]"
+	    set env(MAXIMA_INT_INPUT_STRING) \
+		":lisp (progn (user::setup PORT)(values));"
+	    set ws_openMath(localMaximaServer) "[file join $ws_openMath(maxima_verpkglibdir) binary-gcl maxima] -eval \"(run)\" -f &"
+	}
+    }
 
-    
     OpenMathOpenUrl $firstUrl -toplevel .browser
     frame $fr
     pack $fr -expand 1 -fill both -side top
@@ -12608,9 +12614,9 @@ proc CMmenu { win } {
     setHelp $win.help {Bring down a menu with some help options}
     set m [oget $win.help menu]
     #oset $win showHelpBar "show help bar"
-    $m add command -underline 0 -label {Maxima Help} -help {Visit local maxima help file in html} -command {OpenMathOpenUrl file:/[file join $ws_openMath(maximaPath) info maxima_toc.html]}
+    $m add command -underline 0 -label {Maxima Help} -help {Visit local maxima help file in html} -command {OpenMathOpenUrl file:/[file join $ws_openMath(maxima_verpkgdatadir) doc html maxima_toc.html]}
      $m add command -underline 0 -label {Netmath} -help {Visit netmath page} -command {OpenMathOpenUrl http://www.ma.utexas.edu/users/wfs/netmath/netmath.html}
-     $m add command -underline 0 -label {Run Tests} -help {Run the test files in the doc/*.mac} -command "sendMaxima \[oget $win textwin\] {:lisp (progn (si::chdir \"[file join $ws_openMath(maximaPath) doc]\")(load \"tests.lisp\"))\n}"
+     $m add command -underline 0 -label {Run Tests} -help {Run the test files in the doc/*.mac} -command "sendMaxima \[oget $win textwin\] {:lisp (progn (si::chdir \"[file join $ws_openMath(maxima_prefix) doc]\")(load \"tests.lisp\"))\n}"
 
  
  
@@ -12748,12 +12754,17 @@ proc acceptMaxima { win port filter } {
 }
 
 proc openMaxima { win filter } {
-    global ws_openMath
+    global ws_openMath env
     set port [acceptMaxima $win 4008 $filter]
     if { $port >= 0 } {
 	set com "exec "
 	append com    $ws_openMath(localMaximaServer)
 	regsub PORT $com $port com
+	if { [info exists env(MAXIMA_INT_INPUT_STRING)] } {
+	    regsub PORT $env(MAXIMA_INT_INPUT_STRING) $port env(MAXIMA_INT_INPUT_STRING)
+	    #puts env(MAXIMA_INT_LISP_PRELOAD)=$env(MAXIMA_INT_LISP_PRELOAD)
+	    #puts env(MAXIMA_INT_INPUT_STRING)=$env(MAXIMA_INT_INPUT_STRING)
+	}
 	#puts com=$com
 	if { [catch { eval $com } err ] } {
 	    tk_messageBox -title "Error" -message "Can't execute $ws_openMath(localMaximaServer) : $err" }
@@ -13181,6 +13192,4 @@ proc changeSize { win  y } {
 
 
 ## endsource maxima-local.tcl
-doit .maxima
-
 
