@@ -1112,7 +1112,7 @@ MT~@d)~%"
 	  (if (not ($listp subfun))
 	      (setf no-range-required nil))))
     (unless no-range-required
-      (check-range range))
+      (setq range (check-range range)))
     (if (and no-range-required range)
       ;;; second argument was really a plot option, not a range
 	($set_plot_option range)))
@@ -1726,7 +1726,7 @@ MT~@d)~%"
 128 .8 1 0
 " ncolors))
 
-(defun check-range (range &aux ($numer t) tem a b)
+(defun check-range (range &aux ($numer t) ($float t) tem a b)
   (or (and ($listp range)
 	   (setq tem (cdr range))
 	   (symbolp (car tem))
