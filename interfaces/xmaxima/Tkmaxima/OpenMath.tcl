@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: OpenMath.tcl,v 1.2 2002-09-07 05:21:42 mikeclarkson Exp $
+#       $Id: OpenMath.tcl,v 1.3 2002-09-07 05:24:48 mikeclarkson Exp $
 #
 proc genSample { x n } {
     set sample $x
@@ -173,7 +173,12 @@ proc omPanel { w args } {
 	    whether to show balloon help messages}
 
     global show_balloons showHelpMessages
-    set show_balloons 1 ; set showHelpMessages "Hide Balloon Help"
+    if {$show_balloons == "1"} {
+	set showHelpMessages "Hide Balloon Help"
+    } else {
+	set showHelpMessages "Show Balloon Help"
+    }
+
     $m add command -textvariable showHelpMessages -command {set show_balloons [expr {!$show_balloons}]; if { $show_balloons} {after 500 set showHelpMessages [list "Hide Balloon Help" ]} else {after 500 set showHelpMessages [list "Show Balloon Help" ]}}
     label $m.date -text "Version $ws_openMath(date)"
     $m add window -window $m.date
