@@ -15,7 +15,7 @@
 ;;; can be found in MAXSRC;TRANS5 >.  Be sure to check on those
 ;;; if any semantic changes are made.
 
-(DECLARE-TOP (GENPREFIX M_)
+(DECLARE-TOP (GENPREFIX M_)
 	 (*LEXPR $FACTOR $LDISP)
 	 (SPECIAL *EXPR *RULELIST $RULES $FACTORFLAG
 		  $MAXAPPLYHEIGHT $MAXAPPLYDEPTH)

@@ -17,9 +17,9 @@
 ;; elsewhere.  Most low-level utility programs are also in this file.
 
 (DECLARE-TOP(SPECIAL U* *A* *VAR* *X* V*)
-	 (GENPREFIX A_1))
+	 (GENPREFIX A_1))
 
-(declare-top(unspecial coef var exp p y ))  
+(declare-top (unspecial coef var exp p y ))  
 ;;These do not need to be special for this file and they
 ;;slow it down on lispm. We also eliminated the special
 ;;from ptimes2--wfs

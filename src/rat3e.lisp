@@ -23,7 +23,7 @@
 
 (LOAD-MACSYMA-MACROS RZMAC RATMAC)
 
-(DECLARE-TOP(GENPREFIX A_5))
+(DECLARE-TOP(GENPREFIX A_5))
 
 (DEFMVAR GENVAR NIL
 	 "List of gensyms used to point to kernels from within polynomials.

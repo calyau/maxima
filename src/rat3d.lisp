@@ -11,7 +11,7 @@
 (in-package "MAXIMA")
 (macsyma-module rat3d)
 
-(DECLARE-top (GENPREFIX A_4))
+(DECLARE-top (GENPREFIX A_4))
 
 
 (LOAD-MACSYMA-MACROS RATMAC)
