@@ -1,8 +1,10 @@
 ;;; -*- Mode: lisp -*-
 
 (eval-when (load eval compile)
+  ;; You need to define a logical pathname translation for maxima for
+  ;; this to work.
   (setf (logical-pathname-translations "slatec")
-	'(("**;*.*.*" "/home/toy/apps/sourceforge/maxima/src/numerical/slatec/**/*.*"))))
+	'(("**;*.*.*" "maxima:src;numerical;slatec;**;*.*"))))
 
 (mk:define-language :f2cl
     :compiler #'f2cl:f2cl
@@ -172,6 +174,22 @@
 				       :package "SLATEC"))
 	     (:file "zbesi"
 		    :depends-on ("zabs" "zbinu"))
+
+	     ;; Bessel K functions
+	     (:file "dbesk0"
+		    :depends-on ("dbesi0" "dbsk0e" "dcsevl" "initds" "xermsg"))
+	     (:file "dbsk0e"
+		    :depends-on ("dbesi0" "dcsevl" "initds" "xermsg"))
+	     (:file "dbesk1"
+		    :depends-on ("dbesi1" "dbsk1e" "dcsevl" "initds" "xermsg"))
+	     (:file "dbsk1e"
+		    :depends-on ("dbesi1" "dcsevl" "initds" "xermsg"))
+	     (:file "dbesk"
+		    :depends-on ("dasyik" "dbesk0" "dbesk1" "dbsk0e" "dbsk1e" "dbsknu" "xermsg"))
+	     (:file "dbsknu"
+		    :depends-on ("dgamma" "xermsg"))
+	     (:file "zbesk"
+		    :depends-on ("zabs" "zacon" "zbknu" "zbunk" "zuoik"))
 	     
 	     ;; Airy functions
 	     (:file "d9aimp"
