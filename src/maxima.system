@@ -85,6 +85,7 @@
 			 (:module f2cl-lib :source-pathname ""
 				  :components ((:file "f2cl-lib")))
 			 (:module slatec :source-pathname "slatec"
+				  :depends-on (f2cl-lib packages)
 				  :components
 				  (
 				   (:file "fdump")
