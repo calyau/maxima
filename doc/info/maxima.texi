@@ -201,6 +201,12 @@ Orthogonal Polynomials
 * Introduction to Orthogonal Polynomials::
 * Definitions for Orthogonal Polynomials::
 
+Elliptic Functions
+
+* Introduction to Elliptic Functions and Integrals::
+* Definitions for Elliptic Functions::
+* Definitions for Elliptic Integrals::
+
 Limits
 
 * Definitions for Limits::      

@@ -5,7 +5,9 @@
 * Definitions for Elliptic Integrals::
 @end menu
 
-@node Introduction to Elliptic Functions and Integrals
+
+
+@node Introduction to Elliptic Functions and Integrals, Definitions for Elliptic Functions, , top
 @comment  node-name,  next,  previous,  up
 
 @section Introduction to Elliptic Functions and Integrals
@@ -104,7 +106,7 @@ Support for elliptic functions and integrals was written by Raymond
 Toy.  It is placed under the terms of the General Public License (GPL)
 that governs the distribution of Maxima.
 
-@node Definitions for Elliptic Functions
+@node Definitions for Elliptic Functions, Definitions for Elliptic Integrals, Introduction to Elliptic Functions and Integrals, top
 @comment  node-name,  next,  previous,  up
 
 @section Definitions for Elliptic Functions
@@ -206,7 +208,7 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @end defun
 
 
-@node Definitions for Elliptic Integrals
+@node Definitions for Elliptic Integrals, , Definitions for Elliptic Functions, top
 @comment  node-name,  next,  previous,  up
 
 @section Definitions for Elliptic Integrals
