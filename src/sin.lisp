@@ -369,7 +369,10 @@
   (cond ((alike1 (car wrt) var)
 	 (if (equal (cadr wrt) 1)		;Power = 1?
 	     (if (null (cddr wrt))		;single or partial
-		 expr				;single
+		 (if (null old-wrt)
+		     expr                     ;single
+		   `((%derivative), expr    ;partial in old-wrt
+		     ,.(nreverse old-wrt)))
 		 `((%derivative) ,expr		;Partial, return rest
 		   ,.(nreverse old-wrt)
 		   ,@(cddr wrt)))
@@ -473,7 +476,14 @@
 	((MEMQ (CAAR EX) '(MPLUS MTIMES))
 	 (DO ((U (CDR EX) (CDR U))) ((NULL U) T)
 	     (IF (NOT (RAT10 (CAR U))) (RETURN NIL))))
-	(T (RAT10 (CAR (MARGS EX))))))
+	(T
+	 (let ((examine (margs ex)))
+	   (if (atom (first examine))
+	       (do* ((element examine (rest element))
+		     (result (rat10 (first examine))
+			     (and result (rat10 (first element)))))
+		   ((or (null result) (null element)) result))
+	     (rat10 (first examine)))))))
 
 (DEFUN LISTGCD (POWERLIST)
   (PROG (P)
