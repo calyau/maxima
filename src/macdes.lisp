@@ -20,7 +20,7 @@
      (or (symbolp example)
 	 (merror
 	  "First arg ~M to example must be a symbol, eg example(functions)"))
-     (setq file ($file_search1 file '((mlist) $file_search_demo)))
+     (setq file ($file_search1 $manual_demo '((mlist) $file_search_demo)))
      (with-open-file
       (st file)
       (let ( ;*mread-prompt*
