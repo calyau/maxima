@@ -1797,18 +1797,6 @@
 ;; See A&S 15.3.3:
 ;;
 ;; F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a,c-b;c;z)
-#+nil
-(defun gered1 (arg-l1 arg-l2 simpflg)
-  (mul (power (sub 1 var)
-	      (add (car arg-l2)
-		   (mul -1 (car arg-l1))
-		   (mul -1 (cadr arg-l1))))
-       (funcall simpflg
-		(list (sub (car arg-l2) (car arg-l1))
-		      (sub (car arg-l2) (cadr arg-l1)))
-		arg-l2
-		var)))
-
 (defun gered1 (arg-l1 arg-l2 simpflg)
   (destructuring-bind (a b)
       arg-l1
@@ -1820,7 +1808,7 @@
 		       (mul -1 b)))
 	   (funcall simpflg
 		    (list (sub c a)
-			  (sub c a))
+			  (sub c b))
 		    arg-l2
 		    var)))))
 ;; See A&S 15.3.4
@@ -2003,55 +1991,6 @@
 		 (div (mlog (add z (power 1+z^2
 					  (div 1 2))))
 		      z)))))))
-
-
-;;(defun trig-log-1
-;;       (l1 l2)
-;;       (prog (a b c z1 $exponentialize)
-	     
-;;	     (setq a (car l1) b (cadr l1) c (car l2))
-;;	     (cond ((equal (add a b) 0)
-;;		    (cond ((equal (checksigntm var) '$positive)
-;;			   (return ($cos (mul (mul 2 a)
-;;					      ($asin (power var
-;;							    (inv 2)))))))
-;;			  (t (return (div (add (power (add (setq
-;;							    z1
-;;							    (power
-;;							     (add
-;;							      (mul
-;;							       var
-;;							       -1)
-;;							      1)
-;;							     (inv 2)))
-;;							   var)
-;;						      (mul 2 a))
-;;					       (power (sub z1 var)
-;;						      (mul 2 a)))
-;;					  2)))
-;;			  ((equal (add a b) 1)
-;;			   (return (mul (inv ($cos (setq z1
-;;							 ($asin
-;;							  ($sqrt
-;;							   var)))))
-;;					($cos (mul z1 (sub a b))))))
-;;			  ((or (equal (sub a b) (inv 2))
-;;			       (equal (sub a b) (inv -2)))
-;;			   (return (add (div (power (add 1
-;;							 (setq
-;;							  z1
-;;							  (power
-;;							   var
-;;							   (inv
-;;							    2))))
-;;						    (mul -2 a))
-;;					     2)
-;;					(div (power (sub 1 z1)
-;;						    (mul -2 a))
-;;					     2)))))))
-	     
-;;	     (return nil)))
-
 
 
 (defun trig-log-1 (arg-l1 arg-l2)	;; 2F1's with C = 1/2
@@ -2995,16 +2934,29 @@
 	 (m (caddr alglist))
 	 (n (sub c (inv 2)))
 	 ($ratsimpexpons $true)
-	 ($ratprint $false)
-	 newf)
-    (cond ((or (=1//2 aprime)
-	       (=-1//2 aprime))
-	   ;; Ok.  We have a problem if aprime = 1/2.  We can't use
-	   ;; the algorithm below because we have F(1/2,-1/2;1/2;z)
-	   ;; which is 1F0(-1/2;;z) so the derivation is all wrong.
-	   ;; We need to do something else.  For now, we punt and just
-	   ;; return the function unchanged.
-	   (fpqform (list a b) (list c) var))
+	 ($ratprint $false))
+    ;; At this point, we have F(a'+m,-a';1/2+n;z) where m and n are
+    ;; integers.
+    (cond ((hyp-integerp (add aprime (inv 2)))
+	   ;; Ok.  We have a problem if aprime + 1/2 is an integer.
+	   ;; We can't always use the algorithm below because we have
+	   ;; F(1/2,-1/2;1/2;z) which is 1F0(-1/2;;z) so the
+	   ;; derivation isn't quite right.  Also, sometimes we'll end
+	   ;; up with a division by zero.
+	   ;;
+	   ;; Thus, We need to do something else.  So, use A&S 15.3.3
+	   ;; to change the problem:
+	   ;;
+	   ;; F(a,b;c;z) = (1-z)^(c-a-b)*F(c-a, c-b; c; z)
+	   ;;
+	   ;; which is
+	   ;;
+	   ;; F('a+m,-a';1/2+n;z) = (1-z)^(1/2+n-m)*F(1/2+n-a'-m,1/2+n+a';1/2+n;z)
+	   ;;
+	   ;; Recall that a' + 1/2 is an integer.  Thus we have
+	   ;; F(<int>,<int>,1/2+n;z), which we know how to handle in
+	   ;; step4-int.
+	   (gered1 (list a b) (list c) #'hgfsimp))
 	  (t
 	   (let ((newf 
 		  (cond ((equal (checksigntm var) '$positive)
