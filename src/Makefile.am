@@ -1,8 +1,14 @@
 include $(top_srcdir)/common.mk
-RUNLISP = $(top_srcdir)/lisp-utils/maxima-run-lisp
 bin_SCRIPTS = maxima
 
+LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
+LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
+DEFSYSTEMCOMPILE = (funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)
+DEFSYSTEMLOAD = (funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)
+DEFSYSTEMTESTLOAD = (funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t :test t)
+
 if CLISP
+EXECUTECLISP = $(CLISP_NAME) -norc -q -x
 all-local: binary-clisp/maxima.mem
 install-exec-local: install-clisp
 uninstall: uninstall-clisp
@@ -12,14 +18,8 @@ distclean: clean-clisp
 clisp: binary-clisp/maxima.mem
 
 binary-clisp/maxima.mem:
-	LISPTYPE=clisp ; export LISPTYPE ;\
-	CLISP=$(CLISP_NAME) ; export CLISP ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-         -f user::run -d binary-clisp/maxima
-
+	test -d binary-clisp || mkdir binary-clisp
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (ext:saveinitmem "binary-clisp/maxima.mem" :init-function (function user::run)))'
 
 install-clisp:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-clisp"
@@ -33,12 +33,12 @@ clean-clisp:
 
 clisp-depends.mk: maxima.system
 	test -d binary-clisp || mkdir binary-clisp
-	LISPTYPE=clisp ; export LISPTYPE ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk")'
+	$(EXECUTECLISP) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-clisp/maxima.mem" "clisp-depends.mk"))'
 include clisp-depends.mk
 endif
 
 if CMUCL
+EXECUTECMUCL = $(CMUCL_NAME) -noinit -batch
 all-local: binary-cmucl/maxima.core
 install-exec-local: install-cmucl
 uninstall: uninstall-cmucl
@@ -51,13 +51,7 @@ binary-cmucl/maxima.core:
 	test -d binary-cmucl || mkdir binary-cmucl
 	test -d binary-cmucl/numerical || mkdir binary-cmucl/numerical
 	test -d binary-cmucl/numerical/slatec || mkdir binary-cmucl/numerical/slatec
-	LISPTYPE=cmucl ; export LISPTYPE ;\
-	CMUCL=$(CMUCL_NAME) ; export CMUCL ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -d binary-cmucl/maxima
+	echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-cmucl/maxima.core"))' | $(EXECUTECMUCL)
 
 install-cmucl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-cmucl"
@@ -70,13 +64,14 @@ clean-cmucl:
 	rm -rf binary-cmucl
 cmucl-depends.mk: maxima.system
 	test -d binary-cmucl || mkdir binary-cmucl
-	LISPTYPE=cmucl ; export LISPTYPE ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk")'
+	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk"))' | $(EXECUTECMUCL)
+
 include cmucl-depends.mk
 endif
 
 
 if ACL6
+EXECUTEACL6 = $(ACL6_NAME) -batch
 all-local: binary-acl6/maxima.dxl
 install-exec-local: install-acl6
 uninstall: uninstall-acl6
@@ -89,13 +84,7 @@ binary-acl6/maxima.dxl:
 	test -d binary-acl6 || mkdir binary-acl6
 	test -d binary-acl6/numerical || mkdir binary-acl6/numerical
 	test -d binary-acl6/numerical/slatec || mkdir binary-acl6/numerical/slatec
-	LISPTYPE=acl6 ; export LISPTYPE ;\
-	ACL6=$(ACL6_NAME) ; export ACL6 ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -d binary-acl6/maxima
+	echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (excl:dumplisp :name "binary-acl6/maxima.dxl"))' | $(EXECUTEACL6)
 
 install-acl6:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-acl6"
@@ -108,14 +97,13 @@ clean-acl6:
 	rm -rf binary-acl6
 acl6-depends.mk: maxima.system
 	test -d binary-acl6 || mkdir binary-acl6
-	LISPTYPE=acl6 ; export LISPTYPE ;\
-	ACL6=$(ACL6_NAME); export ACL6 ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl6/maxima.dxl" "acl6-depends.mk")'
+	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-acl6/maxima.dxl" "acl6-depends.mk"))' | $(EXECUTEACL6)
 include acl6-depends.mk
 endif
 
 
 if SBCL
+EXECUTESBCL = $(SBCL_NAME) --noinform --noprint --eval
 all-local: binary-sbcl/maxima.core
 install-exec-local: install-sbcl
 uninstall: uninstall-sbcl
@@ -124,20 +112,14 @@ distclean: clean-sbcl
 
 sbcl:binary-sbcl/maxima.core
 
+# "test -h" lines below work around some problem that sbcl has with defsystem
 binary-sbcl/maxima.core:
 	test -d binary-sbcl || mkdir binary-sbcl
 	test -d binary-sbcl/numerical || mkdir binary-sbcl/numerical
 	test -d binary-sbcl/numerical/slatec || mkdir binary-sbcl/numerical/slatec
-# Work around some problem that sbcl has with defsystem
 	test -h numerical/binary-sbcl || ln -s ../binary-sbcl numerical
 	test -h  numerical/slatec/binary-sbcl || ln -s ../../binary-sbcl numerical/slatec
-	LISPTYPE=sbcl ; export LISPTYPE ;\
-	SBCL=$(SBCL_NAME) ; export SBCL ;\
-	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -d binary-sbcl/maxima
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (sb-ext:save-lisp-and-die "binary-sbcl/maxima.core") (sb-ext:quit))'
 
 install-sbcl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-sbcl
@@ -151,12 +133,12 @@ clean-sbcl:
 	rm -f numerical/binary-sbcl numerical/slatec/binary-sbcl
 sbcl-depends.mk: maxima.system
 	test -d binary-sbcl || mkdir binary-sbcl
-	LISPTYPE=sbcl ; export LISPTYPE ;\
-	$(RUNLISP) -i $(top_srcdir)/lisp-utils/defsystem -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-sbcl/maxima.core" "sbcl-depends.mk")'
+	$(EXECUTESBCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-sbcl/maxima.core" "sbcl-depends.mk") (sb-ext:quit))'
 include sbcl-depends.mk
 endif
 
 if GCL
+EXECUTEGCL = $(GCL_NAME) -batch -eval
 all-local: binary-gcl/maxima
 install-exec-local: install-gcl
 uninstall: uninstall-gcl
@@ -170,12 +152,9 @@ binary-gcl/maxima:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
-	LISPTYPE=gcl ; export LISPTYPE ;\
-        GCL=$(GCL_NAME) ; export GCL ;\
-	$(RUNLISP) \
-        -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-	j=$$($(RUNLISP) \
-                 -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :test t)' < /dev/null |\
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' && \
+	j=$$($(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMTESTLOAD))'\
+	 < /dev/null | \
 		awk 'BEGIN {p="$(shell pwd)" "/"} /oading  *source  *file$$/ {a=$$0;next} {$$0=a $$0;sub(p,"");print;a=""}' |\
                  grep Loading |\
                  grep file | \
@@ -184,19 +163,13 @@ binary-gcl/maxima:
                       END {printf("(%s (list %s) %s %s \"\" t)",\
                             "compiler::link",b,"\"" a "/$@\"",\
                             "\"(provide \\\"maxima\\\")\"")}') && \
-        $(RUNLISP) -x "$$j" < /dev/null
+        $(EXECUTEGCL) "$$j" < /dev/null
 else
 binary-gcl/maxima:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
-	LISPTYPE=gcl ; export LISPTYPE ;\
-	GCL=$(GCL_NAME) ; export GCL ;\
-	$(RUNLISP) \
-        -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) \
-        -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-         -d binary-gcl/maxima
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (si:save-system "binary-gcl/maxima"))'
 endif
 
 install-gcl:
@@ -210,12 +183,12 @@ clean-gcl:
 
 gcl-depends.mk: maxima.system
 	test -d binary-gcl || mkdir binary-gcl
-	LISPTYPE=gcl ; export LISPTYPE ;\
-	$(RUNLISP) -x '(load "$(top_srcdir)/lisp-utils/defsystem.lisp")(load "$(top_srcdir)/lisp-utils/make-depends.lisp")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk")'
+	$(EXECUTEGCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-gcl/maxima" "gcl-depends.mk"))'
 include gcl-depends.mk
 endif
 
 if OPENMCL
+EXECUTEOPENMCL = $(OPENMCL_NAME) -e
 all-local: binary-openmcl/maxima.image
 install-exec-local: install-openmcl
 uninstall: uninstall-openmcl
@@ -225,13 +198,7 @@ distclean: clean-openmcl
 openmcl:binary-openmcl/maxima.image
 
 binary-openmcl/maxima.image:
-	LISPTYPE=openmcl ; export LISPTYPE ;\
-	OPENMCL=$(OPENMCL_NAME) ; export OPENMCL ;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
-        $(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" \
-        -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -f cl-user::run -d binary-openmcl/maxima
+	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE) $(DEFSYSTEMLOAD) (ccl:save-application "binary-openmcl/maxima.image" :toplevel-function (function cl-user::run)) (ccl::quit))'
 
 install-openmcl:
 	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-openmcl"
@@ -244,9 +211,7 @@ clean-openmcl:
 	rm -rf binary-openmcl
 openmcl-depends.mk: maxima.system
 	test -d binary-openmcl || mkdir binary-openmcl
-	LISPTYPE=openmcl ; export LISPTYPE ;\
-	OPENMCL=$(OPENMCL_NAME) ; export OPENMCL;\
-	$(RUNLISP) -i "$(top_srcdir)/lisp-utils/defsystem" -x '(load "$(top_srcdir)/lisp-utils/make-depends")(funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk")'
+	$(EXECUTEOPENMCL) '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-openmcl/maxima.image" "openmcl-depends.mk"))'
 include openmcl-depends.mk
 endif
 

@@ -1,4 +1,5 @@
 #!@POSIX_SHELL@
+# -*- Shell-script -*-
 
 usage () {
 	cat << EOF
@@ -23,14 +24,6 @@ EOF
 }
 
 setup_vars() {
-  # Tell maxima-run-lisp what binaries to run for the various Lisps.
-  CLISP=@CLISP_NAME@
-  CMUCL=@CMUCL_NAME@
-  SBCL=@SBCL_NAME@
-  GCL=@GCL_NAME@
-  ACL6=@ACL6_NAME@
-  OPENMCL=@OPENMCL_NAME@
-  export CLISP CMUCL SBCL GCL ACL6 OPENMCL
   MAXIMA_VERSION=@VERSION@
   prefix=@prefix@
   exec_prefix=@exec_prefix@
@@ -203,9 +196,6 @@ if [ -n "$list_avail" ]; then
   exit 0
 fi
 
-LISPTYPE=$MAXIMA_LISP
-export LISPTYPE
-
 if [ ! -x "$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp" ]; then
 # Have we been moved?
   MAXIMA_PREFIX="`dirname \`dirname $0\``"
@@ -242,12 +232,28 @@ export MAXIMA_INT_LISP_PRELOAD
 export MAXIMA_INT_INPUT_STRING
 export MAXIMA_INT_BATCH_FLAG
 
-command="$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp -run $MAXIMA_VERPKGLIBDIR/binary-$LISPTYPE/maxima"
+maxima_image_base="$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/maxima"
 
 if [ "$verbose" = "true" ]; then
   echo "MAXIMA_INT_LISP_PRELOAD=$MAXIMA_INT_LISP_PRELOAD"
   echo "MAXIMA_INT_INPUT_STRING=$MAXIMA_INT_INPUT_STRING"
   echo "MAXIMA_INT_BATCH_FLAG=$MAXIMA_INT_BATCH_FLAG"
-  echo "command=$command"
+  echo "$maxima_image_base=$maxima_image_base"
 fi
-exec $command
+
+if [ "$MAXIMA_LISP" == "clisp" ]; then
+    exec "@CLISP_NAME@" -M "$maxima_image_base.mem"
+elif [ "$MAXIMA_LISP" == "cmucl" ]; then
+    exec "@CMUCL_NAME@" -core "$maxima_image_base.core" -eval '(user::run)'
+elif [ "$MAXIMA_LISP" == "gcl" ]; then
+    exec "$maxima_image_base" -eval '(user::run)'
+elif [ "$MAXIMA_LISP" == "acl6" ]; then
+    exec "@ACL6_NAME@" -I "$maxima_image_base.dxl" -e '(user::run)'
+elif [ "$MAXIMA_LISP" == "openmcl" ]; then
+    exec "@OPENMCL_NAME@" -I "$maxima_image_base.image"
+elif [ "$MAXIMA_LISP" == "sbcl" ]; then
+    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --eval '(user::run)'
+else
+    echo "Maxima does not know which Lisp to use. This should never happen." >2
+    exit 1
+fi
