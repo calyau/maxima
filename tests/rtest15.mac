@@ -38,3 +38,22 @@ NINTH(l);
 9$
 TENTH(l);
 10$
+
+/* Some older versions of GCL had a bug that resulted in a failure of the */
+/* following. */
+primep(80630964768);
+TRUE$
+
+
+/* Maxima has a bug causing an incorrect answer for the second integral. */
+integrate(diff(f(x,y),x,1,y,1),x);
+'DIFF(f(x,y),y,1)$
+integrate(diff(f(x,y),x,1,y,1),y);
+'DIFF(f(x,y),x,1)$
+/* The same bug causes a bug with the second integral in this set. */
+h(x,y):=x*y*diff(f(x,y),x,1,y,1);
+h(x,y):=x*y*DIFF(f(x,y),x,1,y,1)$
+integrate(h(x,y),x);
+'INTEGRATE(x*'DIFF(f(x,y),x,1,y,1)*y,x)$
+integrate(h(x,y),y);
+'INTEGRATE(x*'DIFF(f(x,y),x,1,y,1)*y,y)$
