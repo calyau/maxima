@@ -8,7 +8,8 @@
 (in-package "SLATEC")
 
 
+;; If we get a SLATEC error, print out the message and signal a Maxima
+;; error.  Should we also clear out the error message summary that
+;; SLATEC seems to keep?
 (defun xerhlt (messg)
-  (declare (type (simple-array base-char (*)) messg))
-  (prog () (declare) end_label (return (values nil))))
-
+  (maxima::merror messg))
