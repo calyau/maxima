@@ -289,9 +289,11 @@
 #-lispm
 (defun macsyma-top-level ()
   (let ((*package* (find-package "MAXIMA")))
-    (apply 'format t
-	   "Maxima ~a.~a ~a (with enhancements by W. Schelter).~%Licensed under the GNU Public License (see file COPYING)~%"
-	   (get :maxima :version))
+    ;; *autconf-version* is not set under old build system.
+    ;; If old build system detect, nform the user that it is deprecated.
+    (if (boundp '*autoconf-version*)
+	(format t "Maxima ~a (with enhancements by W. Schelter).~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*)
+      (format t "Maxima pre59 (with enhancements by W. Schelter).~%Built with old build system. The old build system is depcrecated.~%Please see the 'for59' directory to convert to the new build system.~%Licensed under the GNU Public License (see file COPYING)~%" *autoconf-version*))
     
    (catch 'quit-to-lisp
      (in-package "MAXIMA")
