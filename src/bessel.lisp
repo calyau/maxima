@@ -923,30 +923,33 @@
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
     (subargcheck exp 1 1 '$%j)
-    (let* ((arg (simpcheck (car (subfunargs exp)) z))
-	   (real-arg ($realpart arg))
-	   (imag-arg ($imagpart arg)))
-      (cond ((numberp order)
-	     (cond ((and (numberp real-arg) (numberp imag-arg)
-			 (zerop real-arg) (zerop imag-arg))
-		    (if (zerop order)
-			1
-			0))
-		   ((or (and (floatp real-arg) (numberp imag-arg))
-			(and $numer (numberp real-arg) (numberp imag-arg)))
-		    ;; Numerically evaluate it if the arg is a float
-		    ;; or if the arg is a number and $numer is
-		    ;; non-NIL.
-		    ($bessel arg order))
-		   ((minusp order)
-		    ;; A&S 9.1.5
-		    ;; J[-n](x) = (-1)^n*J[n](x)
-		    (if (evenp order)
-			(subfunmakes '$%j (ncons (- order)) (ncons arg))
-			`((mtimes simp) -1 ,(subfunmakes '$%j (ncons (- order)) (ncons arg)))))
-		   (t
-		    (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
-			    exp))))
+    (let* ((arg (simpcheck (car (subfunargs exp)) z)))
+      (cond ((and $numer (numberp order)
+		  (complex-number-p arg))
+	     ;; We have numeric order and arg, so let's try to
+	     ;; evaluate it numerically.
+	     (let ((real-arg ($realpart arg))
+		   (imag-arg ($imagpart arg)))
+	       (cond ((and (numberp real-arg) (numberp imag-arg)
+			   (zerop real-arg) (zerop imag-arg))
+		      (if (zerop order)
+			  1
+			  0))
+		     ((or (and (floatp real-arg) (numberp imag-arg))
+			  (and $numer (numberp real-arg) (numberp imag-arg)))
+		      ;; Numerically evaluate it if the arg is a float
+		      ;; or if the arg is a number and $numer is
+		      ;; non-NIL.
+		      ($bessel arg order))
+		     ((minusp order)
+		      ;; A&S 9.1.5
+		      ;; J[-n](x) = (-1)^n*J[n](x)
+		      (if (evenp order)
+			  (subfunmakes '$%j (ncons (- order)) (ncons arg))
+			  `((mtimes simp) -1 ,(subfunmakes '$%j (ncons (- order)) (ncons arg)))))
+		     (t
+		      (eqtest (subfunmakes '$%j (ncons order) (ncons arg))
+			      exp)))))
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
@@ -969,25 +972,26 @@
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
     (subargcheck exp 1 1 '$%y)
-    (let* ((arg (simpcheck (car (subfunargs exp)) z))
-	   (real-arg ($realpart arg))
-	   (imag-arg ($imagpart arg)))
-      (cond ((numberp order)
-	     (cond ((or (and (floatp real-arg) (numberp imag-arg))
-			(and $numer (numberp real-arg) (numberp imag-arg)))
-		    ;; Numerically evaluate it if the arg is a float
-		    ;; or if the arg is a number and $numer is
-		    ;; non-NIL.
-		    (bessel-y (complex real-arg imag-arg) (float order)))
-		   ((minusp order)
-		    ;; A&S 9.1.5
-		    ;; Y[-n](x) = (-1)^n*Y[n](x)
-		    (if (evenp order)
-			(subfunmakes '$%y (ncons (- order)) (ncons arg))
-			`((mtimes simp) -1 ,(subfunmakes '$%y (ncons (- order)) (ncons arg)))))
-		   (t
-		    (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
-			    exp))))
+    (let* ((arg (simpcheck (car (subfunargs exp)) z)))
+      (cond ((and $numer (numberp order)
+		  (complex-number-p arg))
+	     (let ((real-arg ($realpart arg))
+		   (imag-arg ($imagpart arg)))
+	       (cond ((or (and (floatp real-arg) (numberp imag-arg))
+			  (and $numer (numberp real-arg) (numberp imag-arg)))
+		      ;; Numerically evaluate it if the arg is a float
+		      ;; or if the arg is a number and $numer is
+		      ;; non-NIL.
+		      (bessel-y (complex real-arg imag-arg) (float order)))
+		     ((minusp order)
+		      ;; A&S 9.1.5
+		      ;; Y[-n](x) = (-1)^n*Y[n](x)
+		      (if (evenp order)
+			  (subfunmakes '$%y (ncons (- order)) (ncons arg))
+			  `((mtimes simp) -1 ,(subfunmakes '$%y (ncons (- order)) (ncons arg)))))
+		     (t
+		      (eqtest (subfunmakes '$%y (ncons order) (ncons arg))
+			      exp)))))
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
@@ -1009,23 +1013,24 @@
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
     (subargcheck exp 1 1 '$%ibes)
-    (let* ((arg (simpcheck (car (subfunargs exp)) z))
-	   (real-arg ($realpart arg))
-	   (imag-arg ($imagpart arg)))
-      (cond ((numberp order)
-	     (cond ((or (and (floatp real-arg) (numberp imag-arg))
-			(and $numer (numberp real-arg) (numberp imag-arg)))
-		    ;; Numerically evaluate it if the arg is a float
-		    ;; or if the arg is a number and $numer is
-		    ;; non-NIL.
-		    (bessel-i (complex real-arg imag-arg) (float order)))
-		   ((minusp order)
-		    ;; A&S 9.6.6
-		    ;; I[-n](x) = I[n](x)
-		    (subfunmakes '$%ibes (ncons (- order)) (ncons arg)))
-		   (t
-		    (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
-			    exp))))
+    (let* ((arg (simpcheck (car (subfunargs exp)) z)))
+      (cond ((and $numer (numberp order)
+		  (complex-number-p arg))
+	     (let ((real-arg ($realpart arg))
+		   (imag-arg ($imagpart arg)))
+	       (cond ((or (and (floatp real-arg) (numberp imag-arg))
+			  (and $numer (numberp real-arg) (numberp imag-arg)))
+		      ;; Numerically evaluate it if the arg is a float
+		      ;; or if the arg is a number and $numer is
+		      ;; non-NIL.
+		      (bessel-i (complex real-arg imag-arg) (float order)))
+		     ((minusp order)
+		      ;; A&S 9.6.6
+		      ;; I[-n](x) = I[n](x)
+		      (subfunmakes '$%ibes (ncons (- order)) (ncons arg)))
+		     (t
+		      (eqtest (subfunmakes '$%ibes (ncons order) (ncons arg))
+			      exp)))))
 	    ((and $besselexpand (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
 	     ;; can express the result in terms of elementary
@@ -1114,23 +1119,24 @@
   (let ((order (simpcheck (car (subfunsubs exp)) z))
 	(rat-order nil))
     (subargcheck exp 1 1 '$%k)
-    (let* ((arg (simpcheck (car (subfunargs exp)) z))
-	   (real-arg ($realpart arg))
-	   (imag-arg ($imagpart arg)))
-      (cond ((numberp order)
-	     (cond ((or (and (floatp real-arg) (numberp imag-arg))
-			(and $numer (numberp real-arg) (numberp imag-arg)))
-		    ;; Numerically evaluate it if the arg is a float
-		    ;; or if the arg is a number and $numer is
-		    ;; non-NIL.
-		    (bessel-k (complex real-arg imag-arg) (float order)))
-		   ((minusp order)
-		    ;; A&S 9.6.6
-		    ;; K[-v](x) = K[v](x)
-		    (subfunmakes '$%k (ncons (- order)) (ncons arg)))
-		   (t
-		    (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
-			    exp))))
+    (let* ((arg (simpcheck (car (subfunargs exp)) z)))
+      (cond ((and $numer (numberp order)
+		  (complex-number-p arg))
+	     (let ((real-arg ($realpart arg))
+		   (imag-arg ($imagpart arg)))
+	       (cond ((or (and (floatp real-arg) (numberp imag-arg))
+			  (and $numer (numberp real-arg) (numberp imag-arg)))
+		      ;; Numerically evaluate it if the arg is a float
+		      ;; or if the arg is a number and $numer is
+		      ;; non-NIL.
+		      (bessel-k (complex real-arg imag-arg) (float order)))
+		     ((minusp order)
+		      ;; A&S 9.6.6
+		      ;; K[-v](x) = K[v](x)
+		      (subfunmakes '$%k (ncons (- order)) (ncons arg)))
+		     (t
+		      (eqtest (subfunmakes '$%k (ncons order) (ncons arg))
+			      exp)))))
 	    ((and $besselexpand
 		  (setq rat-order (max-numeric-ratio-p order 2)))
 	     ;; When order is a fraction with a denominator of 2, we
