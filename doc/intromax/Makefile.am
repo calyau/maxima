@@ -1,3 +1,3 @@
 dochtml_DATA = intromax.html
 include $(top_srcdir)/common.mk
-EXTRA_DIST = $(dochtml_DATA)
+EXTRA_DIST = $(dochtml_DATA) intromax.ltx
