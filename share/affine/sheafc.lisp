@@ -192,8 +192,8 @@
 		     do (fsignal "This refinement is not sufficient."))
 	       ;;what here????
 	       
-	       (format t "~%Refining for the equations ~VQ with inequality ~VQ ~
-                    ~%Using inequalities ~VQ " list-eqns 'fsh gg 'fsh answ 'fsh)
+	       (format t "~%Refining for the equations ~/maxima::tilde-q-fsh/ with inequality ~/maxima::tilde-q-fsh/ ~
+                    ~%Using inequalities ~/maxima::tilde-q-fsh/ " list-eqns gg answ)
 	       
 	       (setq refs
 		     (sloop for gg in answ
@@ -607,9 +607,9 @@
 	when (and tem (not  (= (length (ldata-eqns tem)) (length (ldata-eqns ld)))))
 	do (ferror "wrong number of  equations")
 	do 
-	(format t "~2%On open ~A the inequality is ~VQ (before refinement).~
-                   ~%The translated equations are ~VQ. "
-		op-number (zopen-inequality op) 'fsh	(ldata-eqns tem) 'fsh )
+	(format t "~2%On open ~A the inequality is ~/maxima::tilde-q-fsh/ (before refinement).~
+                   ~%The translated equations are ~/maxima::tilde-q-fsh/. "
+		op-number (zopen-inequality op) (ldata-eqns tem))
 ;	when tem do (fsignal 'hi)
 
 	finally (multiple-value ( ref-pls transl-eqns)
@@ -625,8 +625,8 @@
 	(multiple-value
 	  (norm-op tr-data)
 	  (normalize-zopen op eqns :data lis-dat))
-	(format t "~%On this open ~VQ will correspond to ~VQ" eqns 'fsh
-		(sloop for i from 1 to (length eqns) collecting (xxx i)) 'fsh)
+	(format t "~%On this open ~/maxima::tilde-q-fsh/ will correspond to ~/maxima::tilde-q-fsh/" eqns
+		(sloop for i from 1 to (length eqns) collecting (xxx i)))
 	(check-normalization open-for-equations norm-op orig-eqns)
 ;	(break 'prepare1)
 	(format t "~%normalizing open ~A . " i)
@@ -1241,7 +1241,7 @@
 	collecting (setq tem (sloop for ld in (cdr lis)
 			 when (not (numberp (setq tem (car (ldata-eqns ld)))))
 			 collecting tem))
-	do (format t "~%On open ~D the divisors are ~VQ" i tem 'fsh)))
+	do (format t "~%On open ~D the divisors are ~/maxima::tilde-q-fsh/" i tem)))
 
 (defmacro alter-ldata (ldat &rest keys)
   (sloop for (key repl)  on keys by 'cddr
@@ -1295,7 +1295,7 @@
     (setq to-invert (sftimes 1 to-invert))
     (cond((eql  (length (ldata-eqns ld)) rank)
 	  (cond ((may-invertp to-invert open-g))
-		(t(format t "having to invert ~VQ" to-invert 'fsh)
+		(t(format t "having to invert ~/maxima::tilde-q-fsh/" to-invert)
 		  (setq open-g (sftimes open-g to-invert))))))
     (setq vari (linear-ldatap ld :open-g (setq open-g(st-rat open-g))))
     (cond ((null vari) (fsignal "equations not linear-ldatap")))

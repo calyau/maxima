@@ -515,7 +515,7 @@
    (setq ichart (ichart ith firstk ambient-dim))
    (setq ld (copy-list ld))
    (setq trans  (apply-rmap (zopen-inv ichart) ld))
-   (format t "~%Exceptional divisor is ~vq." (xxx ith) 'fsh)
+   (format t "~%Exceptional divisor is ~/maxima::tilde-q-fsh/." (xxx ith))
    (setq answ
 	 (cdr (eliminate-common-factors (cons (pexpt (xxx ith) 10) (ldata-eqns trans) ))))
    
@@ -1269,10 +1269,10 @@
 		;;the pairs (zopen . (list ldata1 ldata2..))
 		(setq refs       (open-refinement (car w) (first *stop-simplify*)
 						  (second *stop-simplify*)))
-		(format t "~%Refining open number ~D into ~D opens with inequalities ~VQ"
+		(format t "~%Refining open number ~D into ~D opens with inequalities ~/maxima::tilde-q-fsh/"
 			(find-position-in-list (car w) (pls-opens pls))
 			 (length refs) (sloop for v in refs collecting
-					       (zopen-inequality v)) 'fsh)
+					       (zopen-inequality v)))
 		(iassert (not (null *refine-opens*)))
 		(sloop for vv in tem do (check-arg vv (eq (car vv)'ldata) "an ldata"))
 		(setq v (cons nil
@@ -1371,7 +1371,7 @@
 
 
 	      finally (push i bad-components)
-	      (format t  "**The component ~vq ~%does not contain the original data***** " v  'fsh)
+	      (format t  "**The component ~/maxima::tilde-q-fsh/ ~%does not contain the original data***** " v)
 	      (cond (*signal-component-error* (fsignal "not contained" v)))))
   bad-components)
 
@@ -1388,8 +1388,8 @@
 	      when (not ($zerop (polysimp u)))
 	      do (mshow u (polysimp u))
 	      
-	      (format t "**The ideal: ~VQ ~%does not contain the original one *** : ~vQ"
-		      v 'fsh ldata 'fsh)
+	      (format t "**The ideal: ~/maxima::tilde-q-fsh/ ~%does not contain the original one *** : ~/maxima::tilde-q-fsh/"
+		      v ldata)
 	      (push-new i bad-components)
 	      (loop-return (break t)))
 	(format t "~%    Component ~D verified:" i)
