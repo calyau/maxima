@@ -6,124 +6,225 @@
 @node Definitions for Number Theory,  , Number Theory, Number Theory
 @section Definitions for Number Theory
 
-@defun bern (x)
-gives the Xth Bernoulli number for integer X.
-ZEROBERN[TRUE] if set to FALSE excludes the zero BERNOULLI numbers.
-(See also BURN).
+@defun bern (n)
+Returns the @var{n}'th Bernoulli number for integer @code{n}.
+@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
+@c OR JUST PRETEND IT'S "RETURNED" ???
+Bernoulli numbers equal to zero are suppressed if @code{zerobern} is @code{false}.
+
+See also @code{burn}.
+
+@example
+(%i1) zerobern: true$
+(%i2) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+                  1  1       1      1        1
+(%o2)       [1, - -, -, 0, - --, 0, --, 0, - --]
+                  2  6       30     42       30
+(%i3) zerobern: false$
+(%i4) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            1  1    1   5     691   7    3617  43867
+(%o4) [1, - -, -, - --, --, - ----, -, - ----, -----]
+            2  6    30  66    2730  6    510    798
+@end example
 
 @end defun
 
 @defun bernpoly (v, n)
-generates the nth Bernoulli polynomial in the
-variable v.
+Returns the @var{n}'th Bernoulli polynomial in the
+variable @var{v}.
 
 @end defun
 
-@defun bfzeta (expr, n)
-BFLOAT version of the Riemann Zeta function.  The 2nd
-argument is how many digits to retain and return, it's a good idea to
-request a couple of extra.  This function is available by doing
-LOAD(BFFAC); .
+@defun bfzeta (s, n)
+Returns the Riemann zeta function for the argument @var{s}.
+The return value is a big float (bfloat);
+@var{n} is the number of digits in the return value.
+
+@code{load ("bffac")} loads this function.
 
 @end defun
 
-@defun bgzeta (s, fpprec)
-BGZETA is like BZETA, but avoids arithmetic
-overflow errors on large arguments, is faster on medium size arguments
-(say S=55, FPPREC=69), and is slightly slower on small arguments.  It
-may eventually replace BZETA.  BGZETA is available by doing
-LOAD(BFAC);.
+@defun bfhzeta (s, h, n)
+Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
+The return value is a big float (bfloat);
+@var{n} is the number of digits in the return value.
 
-@end defun
-
-@defun bhzeta (s, h, fpprec)
-gives FPPREC digits of
+The Hurwitz zeta function is defined as
 @example
-SUM((K+H)^-S,K,0,INF)
+sum ((k+h)^-s, k, 0, inf)
 @end example
-This is available by doing LOAD(BFFAC);.
+
+@code{load ("bffac")} loads this function.
 
 @end defun
 
 @defun binomial (x, y)
-the binomial coefficient X*(X-1)*...*(X-Y+1)/Y!. If X
-and Y are integers, then the numerical value of the binomial
-coefficient is computed.  If Y, or the value X-Y, is an integer, the
-binomial coefficient is expressed as a polynomial.
+The binomial coefficient @code{(x + y)!/(x! y!)}.
+If @code{x} and @code{y} are integers, then the numerical value of the binomial
+coefficient is computed.
+If @code{y}, or @code{x - y}, is an integer,
+the binomial coefficient is expressed as a polynomial.
 
 @end defun
 
 @defun burn (n)
-is like BERN(N), but without computing all of the uncomputed
-Bernoullis of smaller index.  So BURN works efficiently for large,
-isolated N.  (BERN(402) takes about 645 secs vs 13.5 secs for
-BURN(402).  BERN's time growth seems to be exponential, while BURN's
-is about cubic.  But if next you do BERN(404), it only takes 12 secs,
-since BERN remembers all in an array, whereas BURN(404) will take
-maybe 14 secs or maybe 25, depending on whether Maxima needs to
-BFLOAT a better value of %PI.)  BURN is available by doing LOAD(BFFAC);.
-BURN uses an observation of WGD that (rational) Bernoulli numbers can be
+Returns the @var{n}'th Bernoulli number for integer @code{n}.
+@code{burn} may be more efficient than @code{bern} for large, isolated @code{n},
+as @code{bern} computes all the Bernoulli numbers up to index @code{n} before returning.
+
+@c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
+@c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
+@c The time to compute @code{bern} is approximately exponential,
+@c while the time to compute @code{burn} is approximately cubic.
+@c But if next you do BERN(404), it only takes 12 secs,
+@c since BERN remembers all in an array, whereas BURN(404) will take
+@c maybe 14 secs or maybe 25, depending on whether Maxima needs to
+@c BFLOAT a better value of %PI.)
+
+@code{burn} exploits the observation that (rational) Bernoulli numbers can be
 approximated by (transcendental) zetas with tolerable efficiency.
 
-@end defun
-
-@defun bzeta
- - This function is obsolete, see BFZETA.
+@code{load ("bffac")} loads this function.
 
 @end defun
 
 @defun cf (expr)
-converts exp into a continued fraction.  exp is an expression
-composed of arithmetic operators and lists which represent continued
-fractions.  A continued fraction a+1/(b+1/(c+...)) is represented by
-the list [a,b,c,...]. a,b,c,.. must be integers.  Exp may also involve
-SQRT(n) where n is an integer.  In this case CF will give as many
-terms of the continued fraction as the value of the variable
-CFLENGTH[1] times the period.  Thus the default is to give one period.
-(CF binds LISTARITH to FALSE so that it may carry out its function.)
+Converts @var{expr} into a continued fraction.
+@var{expr} is an expression
+comprising continued fractions and square roots of integers.
+Operands in the expression may be combined with arithmetic operators.
+Aside from continued fractions and square roots,
+factors in the expression must be integer or rational numbers.
+Maxima does not know about operations on continued fractions outside of @code{cf}.
 
+@code{cf} evaluates its arguments after binding @code{listarith} to @code{false}.
+@code{cf} returns a continued fraction, represented as a list.
+
+A continued fraction @code{a + 1/(b + 1/(c + ...))}
+is represented by the list @code{[a, b, c, ...]}.
+The list elements @code{a}, @code{b}, @code{c}, ... must evaluate to integers.
+@var{expr} may also contain @code{sqrt (n)} where @code{n} is an integer.
+In this case @code{cf} will give as many
+terms of the continued fraction as the value of the variable
+@code{cflength} times the period.
+
+A continued fraction can be evaluated to a number
+by evaluating the arithmetic representation
+returned by @code{cfdisrep}.
+See also @code{cfexpand} for another way to evaluate a continued fraction.
+
+See also @code{cfdisrep}, @code{cfexpand}, and @code{cflength}.
+
+Examples:
+
+@itemize @bullet
+@item
+@var{expr} is an expression comprising continued fractions and square roots of integers.
+
+@example
+(%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
+(%o1)               [59, 17, 2, 1, 1, 1, 27]
+(%i2) cf ((3/17)*[1, -2, 5]/sqrt(11) + (8/13));
+(%o2)        [0, 1, 1, 1, 3, 2, 1, 4, 1, 9, 1, 9, 2]
+@end example
+
+@item
+@code{cflength} controls how many periods of the continued fraction
+are computed for algebraic, irrational numbers.
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
+
+@item
+A continued fraction can be evaluated by evaluating the arithmetic representation
+returned by @code{cfdisrep}.
+
+@example
+(%i1) cflength: 3$
+(%i2) cfdisrep (cf (sqrt (3)))$
+(%i3) ev (%, numer);
+(%o3)                   1.731707317073171
+@end example
+
+@item
+Maxima does not know about operations on continued fractions outside of @code{cf}.
+
+@example
+(%i1) cf ([1,1,1,1,1,2] * 3);
+(%o1)                     [4, 1, 5, 2]
+(%i2) cf ([1,1,1,1,1,2]) * 3;
+(%o2)                  [3, 3, 3, 3, 3, 6]
+@end example
+
+@end itemize
 @end defun
 
 @defun cfdisrep (list)
-converts the continued fraction represented by list
-into general representation.
+Constructs and returns an ordinary arithmetic expression
+of the form @code{a + 1/(b + 1/(c + ...))}
+from the list representation of a continued fraction @code{[a, b, c, ...]}.
+
 @example
-(%i1) CF([1,2,-3]+[1,-2,1]);
-(%o1)                 [1, 1, 1, 2]
-(%i2) CFDISREP(%);
-                            1
-(%o2)                1 + ---------
-                              1
-                        1 + -----
-                                1
-                            1 + -
-                                2
-
-
+(%i1) cf ([1, 2, -3] + [1, -2, 1]);
+(%o1)                     [1, 1, 1, 2]
+(%i2) cfdisrep (%);
+                                  1
+(%o2)                     1 + ---------
+                                    1
+                              1 + -----
+                                      1
+                                  1 + -
+                                      2
 @end example
+
 @end defun
 
 @defun cfexpand (x)
-gives a matrix of the numerators and denominators of the
-next-to-last and last convergents of the continued fraction x.
+Returns a matrix of the numerators and denominators of the
+last (column 1) and next-to-last (column 2) convergents of the continued fraction @code{x}.
+
 @example
-(%i1) CF(SQRT(3));
-(%o1)                 [1, 1, 2, 1, 2, 1, 2, 1]
-(%i2) CFEXPAND(%);
-                             [71  97]
-(%o2)                         [      ]
-                             [41  56]
-(%i3) %o2[1,2]/%o2[2,2],NUMER;
-(%o3)                        1.7321429
+(%i1) cf (rat (ev (%pi, numer)));
 
-
+`rat' replaced 3.141592653589793 by 103993//33102 = 3.141592653011902
+(%o1)                  [3, 7, 15, 1, 292]
+(%i2) cfexpand (%); 
+                         [ 103993  355 ]
+(%o2)                    [             ]
+                         [ 33102   113 ]
+(%i3) %[1,1]/%[2,1], numer;
+(%o3)                   3.141592653011902
 @end example
+
 @end defun
 
 @defvar cflength
- default: [1] controls the number of terms of the continued
-fraction the function CF will give, as the value CFLENGTH[1] times the
+Default value: 1
+
+@code{cflength} controls the number of terms of the continued
+fraction the function @code{cf} will give, as the value @code{cflength} times the
 period.  Thus the default is to give one period.
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
 
 @end defvar
 
