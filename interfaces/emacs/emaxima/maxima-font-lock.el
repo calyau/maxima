@@ -4,8 +4,8 @@
 
 ;; Author: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.9 $
-;; $Date: 2003-05-06 03:11:38 $
+;; $Revision: 1.10 $
+;; $Date: 2004-04-02 22:44:43 $
 ;; Keywords: maxima, font-lock
 
 ;; This program is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@
 
 (defvar maxima-match-variables-1
   (concat "\\<\\(" 
-          (regexp-opt maxima-vars-1)
+          (eval-when-compile (regexp-opt maxima-vars-1))
           "\\)\\>")
   "regexp to match the maxima variables.")
 
@@ -155,7 +155,7 @@
    
 (defvar maxima-match-variables-2
   (concat "\\<\\("
-          (regexp-opt maxima-vars-2)
+          (eval-when-compile (regexp-opt maxima-vars-2))
           "\\)\\>")
   "regexp to match the maxima variables.")
 
@@ -279,7 +279,7 @@
 
 (defvar maxima-match-variables-3
   (concat "\\<\\("
-          (regexp-opt maxima-vars-3)
+          (eval-when-compile (regexp-opt maxima-vars-3))
           "\\)\\>")
   "regexp to match the maxima variables.")
 
@@ -388,7 +388,7 @@
 
 (defvar maxima-match-variables-4
   (concat "\\<\\("
-          (regexp-opt maxima-vars-4)
+          (eval-when-compile (regexp-opt maxima-vars-4))
           "\\)\\>")
   "regexp to match the maxima variables.")
 
@@ -404,7 +404,7 @@
 
 (defvar maxima-match-functions-1
   (concat "\\<\\("
-          (regexp-opt maxima-fns-1)
+          (eval-when-compile (regexp-opt maxima-fns-1))
           "\\)\\>" )
   "regexp to match the maxima functions.")
 
@@ -586,7 +586,7 @@
 
 (defvar maxima-match-functions-2
   (concat "\\<\\("
-          (regexp-opt maxima-fns-2)
+          (eval-when-compile (regexp-opt maxima-fns-2))
           "\\)\\>")
   "regexp to match the maxima functions.")
 
@@ -665,7 +665,7 @@
 
 (defvar maxima-match-functions-3
   (concat "\\<\\("
-          (regexp-opt maxima-fns-3)
+          (eval-when-compile (regexp-opt maxima-fns-3))
           "\\)\\>")
   "regexp to match the maxima functions.")
 
@@ -752,7 +752,7 @@
 
 (defvar maxima-match-functions-4
   (concat "\\<\\("
-          (regexp-opt maxima-fns-4)
+          (eval-when-compile (regexp-opt maxima-fns-4))
           "\\)\\>")
   "regexp to match the maxima functions.")
 
@@ -888,7 +888,7 @@
 
 (defvar maxima-match-functions-5
   (concat "\\<\\("
-          (regexp-opt maxima-fns-5)
+          (eval-when-compile (regexp-opt maxima-fns-5))
           "\\)\\>")
   "regexp to match the maxima functions.")
 
@@ -1073,7 +1073,7 @@
 
 (defvar maxima-match-functions-6
   (concat "\\<\\("
-          (regexp-opt maxima-fns-6)
+          (eval-when-compile (regexp-opt maxima-fns-6))
           "\\)\\>")
   "regexp to match the maxima functions.")
 
@@ -1085,7 +1085,7 @@
 
 (defvar maxima-match-constants-1
   (concat "\\<"
-          (regexp-opt maxima-const-1)
+          (eval-when-compile (regexp-opt maxima-const-1))
           "\\>")
   "regexp to match the maxima constants.")
 
@@ -1099,7 +1099,7 @@
 
 (defvar maxima-match-constants-2
   (concat "\\<\\("
-          (regexp-opt maxima-const-2)
+          (eval-when-compile (regexp-opt maxima-const-2))
           "\\)\\>")
   "regexp to match the maxima constants.")
 
@@ -1117,31 +1117,32 @@
 
 (defvar maxima-match-keywords
   (concat "\\<\\("
-          (regexp-opt maxima-keywds)
+          (eval-when-compile (regexp-opt maxima-keywds))
           "\\)\\>")
   "regexp to match the maxima keywords.")
 
 (defvar maxima-match-operators
-  (regexp-opt '(
-                "'"
-                "''"
-                "!"
-                "!!"
-                "#"
-                "."
-                ":"
-                "::"
-                "::="
-                ":="
-                "="
-                "<"
-                ">"
-                "+"
-                "-"
-                "*"
-                "/"
-                "^"
-                ) t)
+  (eval-when-compile 
+    (regexp-opt '(
+                  "'"
+                  "''"
+                  "!"
+                  "!!"
+                  "#"
+                  "."
+                  ":"
+                  "::"
+                  "::="
+                  ":="
+                  "="
+                  "<"
+                  ">"
+                  "+"
+                  "-"
+                  "*"
+                  "/"
+                  "^"
+                  ) t))
   "regexp to match the maxima operators.")
 
 (defvar maxima-props
@@ -1151,7 +1152,7 @@
 
 (defvar maxima-match-properties
   (concat "\\<\\("
-          (regexp-opt maxima-props)
+          (eval-when-compile (regexp-opt maxima-props))
           "\\)\\>")
   "regexp to match maxima properties.")
 
@@ -1163,7 +1164,7 @@
 
 (defvar maxima-match-macros
   (concat "\\<\\("
-          (regexp-opt maxima-macros)
+          (eval-when-compile (regexp-opt maxima-macros))
           "\\)\\>")
   "regexp to match maxima macros.")
 
@@ -1182,7 +1183,7 @@
 
 (defvar maxima-match-specops
   (concat "\\<\\("
-          (regexp-opt maxima-specops)
+          (eval-when-compile (regexp-opt maxima-specops))
           "\\)\\>")
   "regexp to match maxima special operators.")
 
@@ -1207,7 +1208,7 @@
 
 (defvar maxima-match-declarations
   (concat "\\<\\("
-          (regexp-opt maxima-decs)
+          (eval-when-compile (regexp-opt maxima-decs))
           "\\)\\>")
   "regexp to match maxima declarations.")
 
@@ -1225,7 +1226,7 @@
 
 (defvar maxima-match-specsymbs-1
   (concat "\\<\\("
-          (regexp-opt maxima-spsymbs-1)
+          (eval-when-compile (regexp-opt maxima-spsymbs-1))
           "\\)\\>")
   "regexp to match maxima special symbols.")
 
