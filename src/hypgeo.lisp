@@ -18,13 +18,15 @@
 
 (load-macsyma-macros rzmac)
 
-(defun bess
-    (v z flg)
-  (list '(mqapply)
-	(list (cond ((eq flg 'j)'($%j array))
-		    (t '($%i array)))
-	      v)
-	z))
+;; Return the maxima presentation of a bessel function with order v
+;; and arg z.  If flg is 'J, the ti's the J function; otherwise, the I
+;; function.
+(defun bess (v z flg)
+  `((,(if (eq flg 'j)
+	  '%bessel_j
+	  '%bessel_i))
+    ,v ,z))
+
 
 ;;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
 
@@ -112,7 +114,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%j array) (v true)) (w true)))
+	 ((%bessel_j) (v true) (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -125,8 +127,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%j array)(v1 true))(w1 true))
-	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	 ((%bessel_j) (v1 true) (w1 true))
+	 ((%bessel_j) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -136,8 +138,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%y array)(v1 true))(w1 true))
-	 ((mqapply)(($%y array)(v2 true))(w2 true)))
+	 ((%bessel_y) (v1 true) (w1 true))
+	 ((%bessel_y) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -147,8 +149,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%k array)(v1 true))(w1 true))
-	 ((mqapply)(($%k array)(v2 true))(w2 true)))
+	 ((%bessel_k) (v1 true) (w1 true))
+	 ((%bessel_k) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -158,8 +160,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%k array)(v1 true))(w1 true))
-	 ((mqapply)(($%y array)(v2 true))(w2 true)))
+	 ((%bessel_k) (v1 true) (w1 true))
+	 ((%bessel_y) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -173,7 +175,7 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((mexpt)
-	  ((mqapply)(($%j array)(v true))(w true))
+	  ((%bessel_j) (v true) (w true))
 	  2.))
 	((coeffpp)(a zerp)))
       nil))
@@ -185,7 +187,7 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((mexpt)
-	  ((mqapply)(($%y array)(v true))(w true))
+	  ((%bessel_y) (v true) (w true))
 	  2.))
 	((coeffpp)(a zerp)))
       nil))
@@ -197,7 +199,7 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((mexpt)
-	  ((mqapply)(($%k array)(v true))(w true))
+	  ((%bessel_k) (v true) (w true))
 	  2.))
 	((coeffpp)(a zerp)))
       nil))
@@ -208,7 +210,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%i array) (v true)) (w true)))
+	 ((%bessel_i) (v true) (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -218,8 +220,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%i array)(v1 true))(w1 true))
-	 ((mqapply)(($%i array)(v2 true))(w2 true)))
+	 ((%bessel_i) (v1 true) (w1 true))
+	 ((%bessel_i) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -244,8 +246,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%y array)(v1 true))(w1 true))
-	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	 ((%bessel_y) (v1 true) (w1 true))
+	 ((%bessel_j) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -255,8 +257,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%k array)(v1 true))(w1 true))
-	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	 ((%bessel_k) (v1 true) (w1 true))
+	 ((%bessel_j) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -266,7 +268,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%y array)(v1 true))(w1 true))
+	 ((%bessel_y) (v1 true) (w1 true))
 	 ((mqapply)
 	  (($%h array)(v2 true)(v21 true))
 	  (w2 true)))
@@ -279,7 +281,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%k array)(v1 true))(w1 true))
+	 ((%bessel_k) (v1 true) (w1 true))
 	 ((mqapply)
 	  (($%h array)(v2 true)(v21 true))
 	  (w2 true)))
@@ -292,8 +294,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%i array)(v1 true))(w1 true))
-	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	 ((%bessel_i) (v1 true) (w1 true))
+	 ((%bessel_j) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -303,7 +305,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%i array)(v1 true))(w1 true))
+	 ((%bessel_i) (v1 true) (w1 true))
 	 ((mqapply)
 	  (($%h array)(v2 true)(v21 true))
 	  (w2 true)))
@@ -319,7 +321,7 @@
 	 ((mqapply)
 	  (($%h array)(v1 true)(v11 true))
 	  (w1 true))
-	 ((mqapply)(($%j array)(v2 true))(w2 true)))
+	 ((%bessel_j) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -329,8 +331,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%i array)(v1 true))(w1 true))
-	 ((mqapply)(($%y array)(v2 true))(w2 true)))
+	 ((%bessel_i) (v1 true) (w1 true))
+	 ((%bessel_y) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -340,8 +342,8 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%i array)(v1 true))(w1 true))
-	 ((mqapply)(($%k array)(v2 true))(w2 true)))
+	 ((%bessel_i) (v1 true) (w1 true))
+	 ((%bessel_k) (v2 true) (w2 true)))
 	((coeffpp)(a zerp)))
       nil))
 
@@ -352,7 +354,7 @@
 	((coeffpt)
 	 (u nonzerp)
 	 ((mexpt)
-	  ((mqapply)(($%i array)(v true))(w true))
+	  ((%bessel_i) (v true) (w true))
 	  2.))
 	((coeffpp)(a zerp)))
       nil))
@@ -487,7 +489,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%y array) (v true)) (w true)))
+	 ((%bessel_y) (v true) (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -497,7 +499,7 @@
       '((mplus)
 	((coeffpt)
 	 (u nonzerp)
-	 ((mqapply)(($%k array) (v true)) (w true)))
+	 ((%bessel_k) (v true) (w true)))
 	((coeffpp) (a zerp)))
       nil))
 
@@ -1826,17 +1828,24 @@
 	       (1//2)
 	       (cond (flg 1)(t (mul -1 v))))))
 
-(defun bessy(v z)(list '(mqapply)(list '($%y array) v) z))
+;; Bessel Y
+(defun bessy (v z)
+  `((%bessel_y) ,v ,z))
 
-(defun kmodbes(z v)(list '(mqapply)(list '($%k array) v)  z))
+;; Bessel K
+(defun kmodbes(z v)
+  `((%bessel_k) ,v ,z))
 
 
 
 (defun tan%(arg)(list  '(%tan) arg))
 
-(defun desjy
-    (v z flg)
-  (cond ((eq flg 'j)(bess v z 'j))(t (bessy v z))))
+;; Bessel J or Y, depending on if FLG is 'J or not.
+(defun desjy (v z flg)
+  (cond ((eq flg 'j)
+	 (bess v z 'j))
+	(t
+	 (bessy v z))))
 
 (defun numjory
     (v sort z flg)
