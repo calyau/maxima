@@ -330,39 +330,76 @@
 	    (return (mul fact (hermpol n x)))))))
 
 
-(defun 2f1polys
-    (l1 l2 n)
-  (prog(l v lgf)
-     (cond ((not (eq (car l1) n))(setq l1 (reverse l1))))
+;; F(a,b;c;z), where either a or b is a negative integer.
+(defun 2f1polys (l1 l2 n)
+  (prog (l v lgf)
+     ;; Since F(a,b;c;z) = F(b,a;c;z), make sure L1 has the negative
+     ;; integer first, so we have F(-n,d;c;z)
+     (cond ((not (eql (car l1) n))
+	    (setq l1 (reverse l1))))
+     #||
+     (format t "l1 = ~A~%" l1)
+     (format t "vfvp arg = ~A~%" (div (add (cadr l1) n) 2))
+     (format t "var = ~A~%" var)
+     (format t "par = ~A~%" par)
+     ||#
      (setq l (vfvp (div (add (cadr l1) n) 2)))
+
+     ;;(format t "l  = ~A~%" l)
      (setq v (cdr (zl-assoc 'v l)))
+
+     ;; Assuming we have F(-n,b;c;z), then v is (b+n)/2.
 	    
-     (cond ((setq lgf (legpol (car l1)(cadr l1)(car l2)))
+     ;;(format t "v = ~A~%" v)
+
+     ;; See if it can be a Legendre function.
+     (cond ((setq lgf (legpol (car l1) (cadr l1) (car l2)))
 	    (return lgf)))
+
      (cond ((equal (sub (car l2) v) '((rat simp) 1 2))
+	    ;; A&S 15.4.5:
+	    ;; F(-n, n + 2*a; a + 1/2; x) = n!*gegen(n, a, 1-2*x)/pochhammer(2*a,n)
+	    ;;
+	    ;; So v = a, and (car l2) = a + 1/2.
 	    (return (mul 
 		     (cond ((zerp v) 1)
 			   (t (mul (factorial (* -1 n))
-				   (inv (factf (mul 2 v)(* -1 n))))))
+				   (inv (factf (mul 2 v) (* -1 n))))))
 		     (gegenpol (mul -1 n)
 			       v
 			       (sub 1 (mul 2 par)))))))
+     ;; A&S 15.4.6 says
+     ;; F(-n, n + a + 1 + b; a + 1; x) = n!*jacobi_p(n,a,b,1-2*x)/pochhammer(a+1,n);
+     ;;
      (return (mul (factorial (* -1 n))
-		  (inv (factf (add 1 v) (* -1 n)))
+		  ;; I (rlt) don't think this is right, based on
+		  ;; 15.4.6, because v doesn't have the right value.
+		  #+nil(inv (factf (add 1 v) (* -1 n)))
+		  ;; Based on 15.4.6, we really want the l2 arg
+		  (inv (factf (car l2) (* -1 n)))
 		  (jacobpol (mul -1 n)
 			    (add (car l2) -1)
-			    (sub (mul 2 v)(car l2))
+			    (sub (mul 2 v) (car l2))
 			    (sub 1 (mul 2 par)))))))
 
 
+#+nil
 (defun jacobpol
     (n a b x)
   (list '(mqapply)(list '($%p array) n a b) x))
 
+(defun jacobpol (n a b x)
+  `(($jacobi_p) ,n ,a ,b ,x))
+
+
+#+nil
+(defun gegenpol(n v x)
+  (cond ((equal v 0) (tchebypol n x))
+	(t (list '(mqapply)(list '($%c array) n v) x))))
 
 (defun gegenpol(n v x)
   (cond ((equal v 0) (tchebypol n x))
-	(t (list '(mqapply)(list '($%c array) n v) x)))) 
+	(t `(($ultraspherical) ,n ,v ,x))))
 
 ;; Legendre polynomial
 (defun legenpol (n x)
@@ -1170,25 +1207,84 @@
 	    ,n ,m ,x))))
 
 
-(defun legpol
-    (a b c)
-  (prog(l v)
+(defun legpol (a b c)
+  (prog (l v)
      (cond ((not (hyp-negp-in-l (list a)))
 	    (return 'fail-1-in-c-1-case)))
      (setq l (vfvp (div (add b a) 2)))
      (setq v (cdr (zl-assoc 'v l)))
-     (cond ((and (equal v '((rat simp) 1 2))(equal c 1))
+     ;; v is (a+b)/2
+     (cond ((and (equal v '((rat simp) 1 2))
+		 (equal c 1))
+	    ;; A&S 22.5.49:
+	    ;; P(n,x) = F(-n,n+1;1;(1-x)/2)
 	    (return (legenpol (mul -1 a)
 			      (sub 1 (mul 2 var))))))
+
      (cond ((and (equal c '((rat simp) 1 2))
-		 (equal (sub b a) '((rat simp) 1 2)))
-	    (return (mul (factorial (mul -1 a))
-			 (power 2 a)
-			 (multaug (inv 2) (mul -1 a))
+		 (equal (add b a) '((rat simp) 1 2)))
+	    ;; A&S 22.5.52
+	    ;; P(2*n,x) = (-1)^n*(2*n)!/2^(2*n)/(n!)^2*F(-n,n+1/2;1/2;x^2)
+	    ;;
+	    ;; F(-n,n+1/2;1/2;x^2) = P(2*n,x)*(-1)^n*(n!)^2/(2*n)!*2^(2*n)
+	    ;;
+	    (let ((n (mul -1 a)))
+	      (return (mul (power -1 n)
+			   (power (factorial n) 2)
+			   (inv (factorial (mul 2 n)))
+			   (power 2 (mul 2 n))
+			   (legenpol (mul 2 n)
+				     (power var (div 1 2))))))))
+
+     (cond ((and (equal c '((rat simp) 3 2))
+		 (equal (add b a) '((rat simp) 3 2)))
+	    ;; A&S 22.5.53
+	    ;; P(2*n+1,x) = (-1)^n*(2*n+1)!/2^(2*n)/(n!)^2*F(-n,n+3/2;3/2;x^2)*x
+	    ;;
+	    ;; F(-n,n+3/2;3/2;x^2) = P(2*n+1,x)*(-1)^n*(n!)^2/(2*n+1)!*2^(2*n)/x
+	    ;;
+	    (let ((n (mul -1 a)))
+	      (return (mul (power -1 n)
+			   (power (factorial n) 2)
+			   (inv (factorial (add 1 (mul 2 n))))
+			   (power 2 (mul 2 n))
+			   (legenpol (add 1 (mul 2 n))
+				     (power var (div 1 2)))
+			   (inv (power var (div 1 2))))))))
+     
+     (cond ((and (zerp (sub b a))
+		 (zerp (sub c (add a b))))
+	    ;; A&S 22.5.50
+	    ;; P(n,x) = binomial(2*n,n)*((x-1)/2)^n*F(-n,-n;-2*n;2/(1-x))
+	    ;;
+	    ;; F(-n,-n;-2*n;x) = P(n,1-2/x)/binomial(2*n,n)(-1/x)^(-n)
+	    (return (mul (power (factorial (mul -1 a)) 2)
+			 (inv (factorial (mul -2 a)))
+			 (power (mul -1 var) (mul -1 a))
 			 (legenpol (mul -1 a)
-				   (power
-				    var
-				    (div -1 2)))))))
+				   (add 1 (div -2 var)))))))
+     (cond ((and (equal (sub a b) '((rat simp) 1 2))
+		 (equal (sub c (mul 2 b)) '((rat simp) 1 2)))
+	    ;; A&S 22.5.51
+	    ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
+	    ;;
+	    ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
+	    (return (mul (power (factorial (mul -2 b)) 2)
+			 (inv (factorial (mul -4 b)))
+			 (power (mul 2 (power var (div 1 2))) (mul -2 b))
+			 (legenpol (mul -2 b)
+				   (power var (div -1 2)))))))
+     (cond ((and (equal (sub b a) '((rat simp) 1 2))
+		 (equal (sub c (mul 2 a)) '((rat simp) 1 2)))
+	    ;; A&S 22.5.51
+	    ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
+	    ;;
+	    ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
+	    (return (mul (power (factorial (mul -2 a)) 2)
+			 (inv (factorial (mul -4 a)))
+			 (power (mul 2 (power var (div 1 2))) (mul -2 a))
+			 (legenpol (mul -2 a)
+				   (power var (div -1 2)))))))
      (return nil)))
 
 
@@ -1603,10 +1699,11 @@
 ;;		  (merror "`variable-of-integration-appeared-in-subscript'")))
 ;;	     (T (AND (FREEVAR (CAR A)) (FREEVAR (CDR A))))))
 
-(defun freepar
-    (exp)
-  (cond ((atom exp)(not (eq exp par)))
-	(t (and (freepar (car exp))(freepar (cdr exp))))))
+(defun freepar (exp)
+  (cond ((atom exp)
+	 (not (eq exp par)))
+	(t (and (freepar (car exp))
+		(freepar (cdr exp))))))
 
 (defun haspar(exp)(cond ((freepar exp) nil)(t t)))
 
@@ -1881,7 +1978,8 @@
 
 (setq par '$p)                           
 
-(defun vfvp(exp)(m2 exp '(v freevarpar) nil))
+(defun vfvp (exp)
+  (m2 exp '(v freevarpar) nil))
 
 
 (defun d*u
