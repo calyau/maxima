@@ -19,7 +19,11 @@
 
 (defvar $plot_options '((mlist)
 			((mlist) |$x| -3 3)
-			((mlist) |$y| -3 3)
+			;; Make the default range on Y large.  Don't
+			;; use most-positive-double-float because this
+			;; causes overflow in the draw2d routine.
+			((mlist) |$y| #.(- (/ most-positive-double-float 1024))
+			              #.(/ most-positive-double-float 1024))
 			((mlist) |$t| -3 3)
 			((mlist) $grid 30 30)
 			((mlist) $view_direction 1 1 1)
@@ -751,7 +755,9 @@ setrgbcolor} def
 	       )
       (sloop for (v w) on (cdr (draw2d v range )) by 'cddr
 	 do
-	 (cond ((eq v 'moveto) (format st "move "))
+	 (cond ((eq v 'moveto)
+		(unless (equal plot-format '$gnuplot)
+		    (format st "move ")))
 	       (t  (format st "~,3f ~,3f ~%" v w))))))
   (case plot-format
 	($gnuplot 
