@@ -323,6 +323,7 @@
   and less than Arg.  State, if supplied, is the random state to use."
   (declare (inline %random-single-float %random-double-float))
   (cond
+    #-gcl  ; GCL doesn't distinguish single and double floats; route all floats through %random-double-float
     ((and (typep arg 'single-float) (> arg 0.0F0))
      (%random-single-float arg state))
     ((and (typep arg 'double-float) (> arg 0.0D0))
