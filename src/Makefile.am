@@ -15,7 +15,7 @@ binary-clisp/maxima.mem:
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) -i ../lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -f user::run -d binary-clisp/maxima
+         -f user::run -d binary-clisp/maxima
 
 
 install-clisp:
@@ -50,7 +50,7 @@ binary-cmucl/maxima.core:
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) -i ../lisp-utils/defsystem \
         -x '(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -f user::run -d binary-cmucl/maxima
+        -d binary-cmucl/maxima
 
 install-cmucl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-cmucl
@@ -85,7 +85,7 @@ binary-gcl/maxima:
         -x '(load "../lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)' && \
         $(RUNLISP) \
         -x '(load "../lisp-utils/defsystem.lisp")(funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)' \
-        -f user::run -d binary-gcl/maxima
+         -d binary-gcl/maxima
 
 install-gcl:
 	$(mkinstalldirs) $(DESTDIR)$(verpkglibdir)/binary-gcl
