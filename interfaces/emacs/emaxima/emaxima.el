@@ -1206,7 +1206,7 @@ Return nil if no name or error in name."
       (buffer-substring-no-properties start end))))
 
 (defun emaxima-fix-tex-output (string)
-  (maxima-replace-in-string ":=" "\\mathbin{:=}" string))
+  (maxima-replace-in-string ":=" "\\\\mathbin{:=}" string))
 
 (defun emaxima-insert-preoutput (string &optional strip)
   (if (and (> (length string) 1)
@@ -1231,11 +1231,11 @@ Return nil if no name or error in name."
       (when (> mb 0)
         (emaxima-insert-preoutput (substring out 0 mb)))
       (insert "\\t")
-      (insert (substring out (+ mb 2) (- me 1)))
+      (insert (substring out (+ mb 3) (- me 1)))
       (insert ". ")
       (setq out (maxima-strip-string-beginning (substring out me)))
       (string-match 
-       (concat "(\\(" maxima-outchar "\\|" maxima-linechar " \\)[0-9]+)") out)
+       (concat "(\\(" maxima-outchar "\\|" maxima-linechar "\\)[0-9]+)") out)
       (setq ie (match-beginning 0))
       (insert (emaxima-fix-tex-output 
                (maxima-strip-string-end (substring out 0 ie))))
@@ -1267,11 +1267,11 @@ Return nil if no name or error in name."
       (when (> mb 0)
         (emaxima-insert-preoutput (substring out 0 mb)))
       (insert "\\t")
-      (insert (substring out (+ mb 2) (- me 1)))
+      (insert (substring out (+ mb 3) (- me 1)))
       (insert ". ")
       (setq out (maxima-strip-string-beginning (substring out me)))
       (string-match 
-       (concat "(" maxima-outchar "\\|" maxima-linechar "[0-9]+)") out)
+       (concat "(\\(" maxima-outchar "\\|" maxima-linechar "\\)[0-9]+)") out)
       (setq ie (match-beginning 0))
       (insert (emaxima-fix-tex-output
                (maxima-strip-string-end (substring out 0 ie))))
