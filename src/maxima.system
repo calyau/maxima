@@ -425,6 +425,7 @@
 				     (:file "intpol") 
 				     (:file "rombrg")))
 	       (:module reader :source-pathname ""
+			:depends-on (compatibility-macros)
 			:components ((:file "nparse")))
 	       (:module display :source-pathname ""
 			:components ((:file "displa") 
