@@ -25,6 +25,7 @@
 ;; and compile time.  These variables should probably be set up in a prelude
 ;; file so they can be accessible to all Macsyma files.
 
+#+nil
 #.(SETQ MACHINE-FIXNUM-PRECISION
 	#+(OR PDP10 H6180)   36.
 	#+cl (integer-length most-positive-fixnum)
@@ -53,6 +54,16 @@
 	#+(OR NIL Franz)      8.	;Double float.  Long would be 15.
 	)
 
+(eval-when (compile load eval)
+(defconstant +machine-fixnum-precision+
+  (integer-length most-positive-fixnum))
+
+;; Hmm, this doesn't seem to be used anywhere, but we leave here anyway. 
+(defconstant +machine-exponent-precision+
+  (integer-length (multiple-value-bind (a b)
+		      (integer-decode-float most-positive-double-float)
+		    b)))
+)
 ;; External variables
 
 (DEFMVAR $FLOAT2BF NIL
@@ -607,13 +618,13 @@ One extra decimal digit in actual representation for rounding purposes.")
    ;; In MacLisp, the result is undefined if the magnitude of the
    ;; second argument is greater than 36.
    ((AND (NOT (BIGP X))
-	 (< N #.(f- MACHINE-FIXNUM-PRECISION))) 0)
+	 (< N #.(f- +machine-fixnum-precision+))) 0)
    ;; Either we are shifting a fixnum to the right, or shifting
    ;; a fixnum to the left, but not far enough left for it to become
    ;; a bignum.
    ((AND (NOT (BIGP X)) 
 	 (OR (<= N 0)
-	     (< (PLUS (HAULONG X) N) #.MACHINE-FIXNUM-PRECISION)))
+	     (< (PLUS (HAULONG X) N) #.+machine-fixnum-precision+)))
     ;; The form which follows is nearly identical to (ASH X N), however
     ;; (ASH -100 -20) = -1, whereas (BIGLSH -100 -20) = 0.
     (IF (>= X 0)
@@ -629,7 +640,7 @@ One extra decimal digit in actual representation for rounding purposes.")
    ((= N 0) X)
    ;; Isn't this the kind of optimization that compilers are
    ;; supposed to make?
-   ((< N #.(f1- MACHINE-FIXNUM-PRECISION)) (TIMES X (LSH 1 N)))
+   ((< N #.(f1- +machine-fixnum-precision+)) (TIMES X (LSH 1 N)))
    (T (TIMES X (EXPT 2 N)))))
 
 
