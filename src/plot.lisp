@@ -790,11 +790,9 @@ setrgbcolor} def
 
     (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
 
-    (let* ((x (coerce-float (nth 2 range)))
+    (let* ((x-start (coerce-float (nth 2 range)))
 	   (xend (coerce-float (nth 3 range)))
-	   (x-step (/ (- xend x) (coerce-float nticks) 2))
-	   (y (funcall f x))
-	   (yend (funcall f xend))
+	   (x-step (/ (- xend x-start) (coerce-float nticks) 2))
 	   (ymin (coerce-float (nth 2 yrange)))
 	   (ymax (coerce-float (nth 3 yrange)))
 	   ;; What is a good EPS value for adaptive plotting?
@@ -809,9 +807,9 @@ setrgbcolor} def
       ;; in half, it's also probably not a good idea to have NTICKS be
       ;; a power of two.
       (dotimes (k (1+ (* 2 nticks)))
-	(push x x-samples)
-	(push (funcall f x) y-samples)
-	(incf x x-step))
+	(let ((x (+ x-start (* k x-step))))
+	  (push x x-samples)
+	  (push (funcall f x) y-samples)))
       (setf x-samples (nreverse x-samples))
       (setf y-samples (nreverse y-samples))
 
@@ -823,15 +821,24 @@ setrgbcolor} def
 	   (y-mid (cdr y-samples) (cddr y-mid))
 	   (y-end (cddr y-samples) (cddr y-end)))
 	  ((null x-end))
-	;; The region is x-start to x-end, with mid-point x-mid.  The
-	;; cddr is to remove the one extra sample (x and y value) that
-	;; adaptive plot returns.
+	;; The region is x-start to x-end, with mid-point x-mid.
+	;;
+	;; The cddr is to remove the one extra sample (x and y value)
+	;; that adaptive plot returns. But on the first iteration,
+	;; result is empty, so we don't want the cddr because we want
+	;; all the samples returned from adaptive-plot.  On subsequent
+	;; iterations, it's a duplicate of the last ponit of the
+	;; previous interval.
 	(setf result
-	      (append result
-		      (cddr
-		       (adaptive-plot f (car x-start) (car x-mid) (car x-end)
-				      (car y-start) (car y-mid) (car y-end)
-				      depth 1d-5)))))
+	      (if result
+		  (append result
+			  (cddr
+			   (adaptive-plot f (car x-start) (car x-mid) (car x-end)
+					  (car y-start) (car y-mid) (car y-end)
+					  depth 1d-5)))
+		  (adaptive-plot f (car x-start) (car x-mid) (car x-end)
+				 (car y-start) (car y-mid) (car y-end)
+				 depth 1d-5))))
 	  
 
       (format t "Points = ~D~%" (length result))
