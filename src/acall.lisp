@@ -60,6 +60,7 @@
      (CASE (ARRAY-TYPE AARRAY)
 	    ((FLONUM FIXNUM #+LISPM ART-Q #+cl t)
 	     (apply 'aref AARRAY IND1 INDS))
+	    #-cl
 	    ((T)
 	     (MARRAYREF-GENSUB AARRAY IND1 INDS))
 	    (T
@@ -143,6 +144,7 @@
 	#-cl (STORE (APPLY AARRAY IND1 INDS) VAL)
 	#+cl (setf (apply #'aref aarray ind1 inds) val)
 	)
+       #-cl
        ((T)
 	(MARRAYSET-GENSUB VAL AARRAY IND1 INDS))
        (T
