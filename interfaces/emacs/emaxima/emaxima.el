@@ -1895,7 +1895,7 @@ output."
                 (delete-char -2)
                 (insert "\\]"))
               ;; Finally, get rid of the \ps
-              (goto-char pt)
+              (goto-char (point-min))
               (while (re-search-forward "^\\\\p" nil t)
                 (delete-region (line-beginning-position) (point))
                 (insert "\\begin{verbatim}")
