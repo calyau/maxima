@@ -128,7 +128,7 @@ tenth part of their input argument.
 @end defun
 @c @node FLATTEN, GET, FIRST, Lists
 @c @unnumberedsec 
-@defun FLATTEN(exp)
+@defun FLATTEN (exp)
 Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 
 @end defun
