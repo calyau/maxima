@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.3 2002-09-06 09:08:07 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.4 2002-09-07 10:33:35 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -46,6 +46,9 @@ proc setMaxDir {} {
     set ws_openMath(maxima_verpkgdatadir) \
 	[file join $ws_openMath(maxima_datadir) $autoconf(package) \
 	     $autoconf(version)]
+
+    # backwards compatability - to be eliminated
+    set ws_openMath(maximaPath) $ws_openMath(maxima_verpkgdatadir)
 
     if { [info exists env(MAXIMA_XMAXIMADIR)] } {
 	set ws_openMath(maxima_xmaximadir) $env(MAXIMA_XMAXIMADIR)
