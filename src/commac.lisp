@@ -514,20 +514,29 @@ values")
 (defun implode (lis) (implode1 lis nil))
 
 
-(defun intern-invert-case (string)
-  ;; Like read-from-string with readtable-case :invert
+(defun maybe-invert-string-case (string)
+  ;; If STRING is all the same case, invert the case.  Otherwise, do
+  ;; nothing.
   (flet ((alpha-upper-case-p (s)
 	   (not (some #'lower-case-p s)))
 	 (alpha-lower-case-p (s)
 	   (not (some #'upper-case-p s))))
     ;; Don't explicitly add a package here.  It seems maxima sets
     ;; *package* as needed.
-    (intern (cond ((alpha-upper-case-p string)
-		   (string-downcase string))
-		  ((alpha-lower-case-p string)
-		   (string-upcase string))
-		  (t
-		   string)))))
+    (cond ((alpha-upper-case-p string)
+	   (string-downcase string))
+	  ((alpha-lower-case-p string)
+	   (string-upcase string))
+	  (t
+	   string))))
+
+(defun intern-invert-case (string)
+  ;; Like read-from-string with readtable-case :invert
+  ;;
+  ;; Not explicit package for INTERN.  It seems maxima sets *package*
+  ;; as needed.
+  (intern (maybe-invert-string-case string)))
+
 
 #-gcl
 (let ((local-table (copy-readtable nil)))
@@ -618,7 +627,7 @@ values")
 	 collecting v into tem
 	 else do (maxima-error "bad entry")
 	 finally 
-	 (return (make-symbol (coerce tem 'string)))))
+	 (return (make-symbol (maybe-invert-string-case (coerce tem 'string))))))
 
 ;;for those window labels etc. that are wrong type.
 
