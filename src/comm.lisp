@@ -821,6 +821,27 @@
   (IF (NULL (CDR E)) (MERROR "Argument to FIRST is empty."))
   (CAR (MARGS E)))
 
+; This macro is used to create functions second thru tenth.
+; Rather than try to modify mformat for ~:R, use the quoted symbol
+; There may be a way to convert a symbol such as second into $second
+; but I am not sure how to do it.  Dan Stanger
+(defmacro make-nth (sim si i)
+  `(DEFMFUN ,sim (E)
+     (ATOMCHK (SETQ E (FORMAT1 E)) ',sim NIL)
+     (IF (< (LENGTH (MARGS E)) ,i)
+         (MERROR "There is no ~A element:~%~M" ',si E))
+     (,si (MARGS E))))
+
+(make-nth $SECOND  SECOND  2)
+(make-nth $THIRD   THIRD   3)
+(make-nth $FOURTH  FOURTH  4)
+(make-nth $FIFTH   FIFTH   5)
+(make-nth $SIXTH   SIXTH   6)
+(make-nth $SEVENTH SEVENTH 7)
+(make-nth $EIGHTH  EIGHTH  8)
+(make-nth $NINTH   NINTH   9)
+(make-nth $TENTH   TENTH  10)
+
 (DEFMFUN $REST N
   (PROG (M FUN FUN1 REVP)
 	(IF (AND (= N 2) (EQUAL (ARG 2) 0)) (RETURN (ARG 1)))
