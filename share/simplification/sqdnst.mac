@@ -1,12 +1,12 @@
 /* -*- Mode: MACSYMA -*- */
 
-SQRTDENEST(A):=
-  SUBST("^" = LAMBDA([A,B],
-     BLOCK([DISCR,MAX,MIN],
-       IF EVENP(DENOM(B)) AND NOT ATOM(A) AND INPART(A,0) = "+"
-			  AND (MAX:MAX(FIRST(A),REST(A)),
-			       MIN:A-MAX,
-			       NUMBERP(DISCR:SQRT(1-(MIN/MAX)^2)))
-	  THEN (SQRT(MAX*(1+DISCR)/2)+SIGNUM(MIN)*SQRT(MAX*(1-DISCR)/2))^(2*B)
-	  ELSE A^B)),
-      A)$
+sqrtdenest(a):=
+  subst("^" = lambda([a,b],
+     block([discr,max,min],
+       if evenp(denom(b)) and not atom(a) and inpart(a,0) = "+"
+			  and (max:max(first(a),rest(a)),
+			       min:a-max,
+			       numberp(discr:sqrt(1-(min/max)^2)))
+	  then (sqrt(max*(1+discr)/2)+signum(min)*sqrt(max*(1-discr)/2))^(2*b)
+	  else a^b)),
+      a)$

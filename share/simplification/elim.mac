@@ -1,16 +1,16 @@
-ELIMINATE(EQNS,VARS):=BLOCK([TEQNS,SV,SE,L,FLAG,DISPFLAG],
-	MODEDECLARE([L,I],fixnum,FLAG,BOOLEAN),FLAG:DISPFLAG:FALSE,
-	IF NOT (LISTP(EQNS) AND LISTP(VARS)) THEN ERROR("THE ARGUMENTS MUST BOTH BE LISTS"),
-	IF LENGTH(VARS)>L:LENGTH(EQNS) THEN ERROR("MORE VARIABLES THEN EQUATIONS"),
-	IF L=1 THEN ERROR("CAN'T ELIMINATE FROM ONLY ONE EQUATION"),
-	IF LENGTH(VARS)=L THEN (VARS:REVERSE(VARS),SV:VARS[1], VARS:REVERSE(REST(VARS)),FLAG:TRUE),
+eliminate(eqns,vars):=block([teqns,sv,se,l,flag,dispflag],
+	modedeclare([l,i],fixnum,flag,boolean),flag:dispflag:false,
+	if not (listp(eqns) and listp(vars)) then error("the arguments must both be lists"),
+	if length(vars)>l:length(eqns) then error("more variables then equations"),
+	if l=1 then error("can't eliminate from only one equation"),
+	if length(vars)=l then (vars:reverse(vars),sv:vars[1], vars:reverse(rest(vars)),flag:true),
 /* ?meqhk turns [a=b] into [a-b] */
-	EQNS:MAP('?MEQHK,EQNS),
-	FOR V IN VARS DO (
-		TEQNS:[],
-		FOR J:1 THRU L WHILE(FREEOF(V,FIRST(EQNS))) DO(
-		  TEQNS:CONS(FIRST(EQNS),TEQNS), EQNS:REST(EQNS)),
-		IF EQNS=[] THEN EQNS:TEQNS ELSE (TEQNS:APPEND(TEQNS,REST(EQNS)), EQNS:FIRST(EQNS), L:L-1, SE:[],
-		FOR J:1 THRU L DO SE:CONS(RESULTANT(EQNS,TEQNS[J],V),SE),
-		EQNS:SE)),
-	IF FLAG THEN [RHS(apply('EV,[LAST(SOLVE(EQNS[1],SV)),EVAL]))] ELSE EQNS)$
+	eqns:map('?meqhk,eqns),
+	for v in vars do (
+		teqns:[],
+		for j:1 thru l while(freeof(v,first(eqns))) do(
+		  teqns:cons(first(eqns),teqns), eqns:rest(eqns)),
+		if eqns=[] then eqns:teqns else (teqns:append(teqns,rest(eqns)), eqns:first(eqns), l:l-1, se:[],
+		for j:1 thru l do se:cons(resultant(eqns,teqns[j],v),se),
+		eqns:se)),
+	if flag then [rhs(apply('ev,[last(solve(eqns[1],sv)),eval]))] else eqns)$

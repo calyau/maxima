@@ -1,13 +1,13 @@
 load("rncomb")$
 /*  COMBINE will not combine the terms in EXP1 because
       their denominators are not identical:   */
-EXP1:X/(2*(X+Y))+Z/(X+Y);
-COMBINE(EXP1);
+exp1:x/(2*(x+y))+z/(x+y);
+combine(exp1);
 /*  RNCOMBINE will: */
-RNCOMBINE(%);
+rncombine(%);
 /*  RNCOMBINE will combine terms whenever their denominators are
     identical or differ by a numerical factor.  */
-EXP2:A/2+B/2+C/3+D/3;
-COMBINE(exp2);
-RNCOMBINE(exp2);
+exp2:a/2+b/2+c/3+d/3;
+combine(exp2);
+rncombine(exp2);
 
