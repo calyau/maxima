@@ -37,10 +37,10 @@ index:
 dvi:
 		TEXINPUTS="`pwd`/../../interfaces/emacs/emaxima:$$TEXINPUTS";\
 		export TEXINPUTS;\
-		latex maxima
-		makeindex -o maxima.ind maxima.idx
-		bibtex maxima
-		latex maxima
+		latex maxima && \
+		makeindex -o maxima.ind maxima.idx && \
+		bibtex maxima && \
+		latex maxima && \
 		latex maxima
 
 ps:	
@@ -69,7 +69,7 @@ pdf:
 		makeindex -o maxima.ind maxima.idx && \
 		bibtex maxima && \
 		pdflatex maxima && \
-		pdflatex maxima && \
+		pdflatex maxima
 
 pdf-final:
 		TEXINPUTS="`pwd`/../../interfaces/emacs/emaxima:$$TEXINPUTS";\
