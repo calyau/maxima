@@ -9,6 +9,7 @@
 @menu
 * DOT::                         
 * VECTORS::                     
+* eigen::
 @end menu
 
 @node DOT, VECTORS, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
@@ -19,7 +20,7 @@ on both sides of it, e.g. A . B.  This distinguishes it plainly from a
 decimal point in a floating point number.  Do APROPOS(DOT); for a list
 of the switches which affect the dot operator.
 
-@node VECTORS,  , DOT, Introduction to Matrices and Linear Algebra
+@node VECTORS, eigen, DOT, Introduction to Matrices and Linear Algebra
 @subsection VECTORS
  - The file SHARE;VECT > contains a vector analysis package,
 share/vect.dem contains a corresponding demonstration, and SHARE;VECT
@@ -37,6 +38,25 @@ The package contains the following commands: VECTORSIMP, SCALEFACTORS,
 EXPRESS, POTENTIAL, and VECTORPOTENTIAL.  Do DESCRIBE(cmd) on these
 command names, or PRINTFILE(VECT,USAGE,SHARE); for details.
 Warning:  The VECT package declares "." to be a commutative operator.
+
+@node eigen, , VECTORS, Introduction to Matrices and Linear Algebra
+@subsection eigen
+
+The package @code{eigen} contains several functions devoted to the
+symbolic computation of eigenvalues and eigenvectors.
+Maxima loads the package automatically if one of the functions
+@code{eigenvalues} or @code{eigenvectors} is invoked.
+The package may be loaded explicitly as @code{load ("eigen")}.
+
+@code{demo ("eigen")} displays a demonstration of the capabilities
+of this package.
+@code{batch ("eigen")} executes the same demonstration,
+but without the user prompt between successive computations.
+
+The functions in the @code{eigen} package are
+@code{conjugate}, @code{innerproduct}, @code{unitvector}, @code{columnvector},
+@code{gramschmidt}, @code{eigenvalues}, @code{eigenvectors}, @code{uniteigenvectors},
+and @code{similaritytransform}.
 
 @c end concepts Matrices and Linear Algebra
 @node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
@@ -87,6 +107,7 @@ gives a matrix of the ith column of the matrix M.
 @end defun
 
 @defun COLUMNVECTOR (X)
+@defunx covect (x)
 a function in the EIGEN package.  Do LOAD(EIGEN) to
 use it.  COLUMNVECTOR takes a LIST as its argument and returns a
 column vector the components of which are the elements of the list.
@@ -94,13 +115,17 @@ The first element is the first component,...etc...(This is useful if
 you want to use parts of the outputs of the functions in this package
 in matrix calculations.)
 
+@code{covect} is a synonym for @code{columnvector}.
+
 @end defun
 
 @defun CONJUGATE (X)
+@defunx conj (x)
 a function in the EIGEN package on the SHARE
 directory.  It returns the complex conjugate of its argument.  This
-package may be loaded by LOAD(EIGEN); .  For a complete description
-of this package, do PRINTFILE("eigen.usg"); .
+package may be loaded by LOAD(EIGEN); .
+
+@code{conj} is a synonym for @code{conjugate}.
 
 @end defun
 
@@ -270,10 +295,11 @@ column elements under the first one in each row are all zero.
 @end defun
 
 @defun EIGENVALUES (mat)
+@defunx eivals (mat)
 There is a package on the SHARE; directory which
 contains functions for computing EIGENVALUES and EIGENVECTORS and
-related matrix computations.  For information on it do
-PRINTFILE(EIGEN,USAGE,SHARE); . 
+related matrix computations.
+
 EIGENVALUES(mat) takes a MATRIX as its argument and returns a list of
 lists the first sublist of which is the list of eigenvalues of the
 matrix and the other sublist of which is the list of the
@@ -292,13 +318,20 @@ directly from Maxima.  To use the other functions you must have
 loaded in the EIGEN package, either by a previous call to EIGENVALUES,
 or by doing LOADFILE("eigen"); .
 
+@code{eivals} is a synonym for @code{eigenvalues}.
+
 @end defun
 
 @defun EIGENVECTORS (MAT)
+@defunx eivects (mat)
 takes a MATRIX as its argument and returns a list
 of lists the first sublist of which is the output of the EIGENVALUES
 command and the other sublists of which are the eigenvectors of the
-matrix corresponding to those eigenvalues respectively.  This function
+matrix corresponding to those eigenvalues respectively.
+The calculated eigenvectors and the unit eigenvectors of the matrix are the
+RIGHT eigenvectors and the RIGHT unit eigenvectors respectively.
+
+This function
 will work directly from Maxima, but if you wish to take advantage of
 the flags for controlling it (see below), you must first load in the
 EIGEN package from the SHARE; directory.  You may do that by
@@ -319,6 +352,8 @@ In that case you are advised to try to simplify the eigenvalues by
 first finding them using EIGENVALUES command and then using whatever
 marvelous tricks you might have to reduce them to something simpler.
 You can then use the KNOWNEIGVALS flag to proceed further. )
+
+@code{eivects} is a synonym for @code{eigenvectors}.
 
 @end defun
 
@@ -379,6 +414,7 @@ used.
 @end defun
 
 @defun GRAMSCHMIDT (X)
+@defunx gschmit (x)
 a function in the EIGEN package.  Do LOAD(EIGEN) to
 use it.  GRAMSCHMIDT takes a LIST of lists the sublists of which are
 of equal length and not necessarily orthogonal (with respect to the
@@ -389,6 +425,8 @@ the function FACTOR is used to simplify each substage of the
 Gram-Schmidt algorithm.  This prevents the expressions from getting
 very messy and helps to reduce the sizes of the numbers that are
 produced along the way.)
+
+@code{gschmit} (note spelling) is a synonym for @code{gramschmidt}.
 
 @end defun
 
@@ -405,11 +443,14 @@ produces an n by n identity matrix.
 @end defun
 
 @defun INNERPRODUCT (X,Y)
+@defunx inprod (x, y)
 a function in the EIGEN package.  Do LOAD(EIGEN)
 to use it.  INNERPRODUCT takes two LISTS of equal length as its
 arguments and returns their inner (scalar) product defined by (Complex
 Conjugate of X).Y (The "dot" operation is the same as the usual one
 defined for vectors).
+
+@code{inprod} is a synonym for @code{innerproduct}.
 
 @end defun
 
@@ -603,6 +644,7 @@ used, altering M in a similar manner, but returning x as the value.
 @end defun
 
 @defun SIMILARITYTRANSFORM (MAT)
+@defunx simtran (mat)
 a function in the EIGEN package.  Do
 LOAD(EIGEN) to use it.  SIMILARITYTRANSFORM takes a MATRIX as its
 argument and returns a list which is the output of the
@@ -619,6 +661,8 @@ eigenvectors of MAT.  The other flags (see DESCRIBE(EIGENVALUES); and
 DESCRIBE(EIGENVECTORS);) have the same effects since
 SIMILARITYTRANSFORM calls the other functions in the package in order
 to be able to form RIGHTMATRIX.
+
+@code{simtran} is a synonym for @code{similaritytransform}.
 
 @end defun
 
@@ -646,6 +690,7 @@ which needn't be square.
 @end defun
 
 @defun UNITEIGENVECTORS (MAT)
+@defunx ueivects (mat)
 a function in the EIGEN package.  Do
 LOAD(EIGEN) to use it.  UNITEIGENVECTORS takes a MATRIX as its
 argument and returns a list of lists the first sublist of which is the
@@ -665,12 +710,17 @@ the user knows what he is doing and will not try to diagonalize a
 matrix the eigenvectors of which do not span the vector space of the
 appropriate dimension...)
 
+@code{ueivects} is a synonym for @code{uniteigenvectors}.
+
 @end defun
 
 @defun UNITVECTOR (X)
+@defunx uvect (x)
 a function in the EIGEN package.  Do LOAD(EIGEN) to
 use it.  UNITVECTOR takes a LIST as its argument and returns a unit
 list.  (i.e. a list with unit magnitude).
+
+@code{uvect} is a synonym for @code{unitvector}.
 
 @end defun
 
