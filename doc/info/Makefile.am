@@ -15,6 +15,7 @@ maximahtml.mk:
 	rm -f maxima-html.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml.mk
 
+MAXIMAHTML = 
 include maximahtml.mk
 
 $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
