@@ -96,6 +96,7 @@
 					      "info"))
 	(setq *maxima-infodir* *autoconf-infodir*))))
 	 
+  (setq share-with-subdirs "{share,share/algebra,share/calculus,share/combinatorics,share/contrib,share/diffequations,share/graphics,share/integequations,share/integration,share/macro,share/matrix,share/misc,share/numeric,share/physics,share/simplification,share/specfunctions,share/sym,share/tensor,share/trigonometry,share/utils,share/vector}")
   (let ((ext #+gcl "o"
 	     #+cmu (c::backend-fasl-file-type c::*target-backend*)
 	     #+clisp "fas"
@@ -107,19 +108,24 @@
 		;; actually, this entry is not correct.
 		;; there should be a separate directory for compiled
 		;; lisp code. jfa 04/11/02
-		(maxima-data-path "{src,share}"
+		(maxima-data-path share-with-subdirs
 				  (concatenate 'string "###." ext))
-		(maxima-data-path "{src,share}" "###.lisp")
-		(maxima-data-path "{src,share}" "###.lsp"))))
+		(maxima-data-path share-with-subdirs "###.lisp")
+		(maxima-data-path share-with-subdirs "###.lsp")
+		(maxima-data-path "{src}"
+				  (concatenate 'string "###." ext))
+		(maxima-data-path "{src}" "###.lisp")
+		(maxima-data-path "{src}" "###.lsp")
+		)))
   (setq $file_search_maxima
 	(list '(mlist)
-	      (maxima-data-path "{share}" "###.mac")
-	      (maxima-data-path "{share}" "###.mc")))
+	      (maxima-data-path share-with-subdirs "###.mac")
+	      (maxima-data-path share-with-subdirs "###.mc")))
   (setq $file_search_demo
-	(list '(mlist) (maxima-data-path "{demo,share}"
+	(list '(mlist) (maxima-data-path share-with-subdirs
 					 "###.{dem,dm1,dm2,dm3,dmt}")))
   (setq $file_search_usage
-	(list '(mlist) (maxima-data-path "{share}"
+	(list '(mlist) (maxima-data-path share-with-subdirs
 					 "###.{usg,texi}")
 	      (maxima-data-path "doc" "###.{mac}")))
   (setq $chemin
