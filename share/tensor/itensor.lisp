@@ -13,7 +13,7 @@
 ;;
 ;; Comments:
 ;;
-;; The ;tensor package was downcased, cleaned up, and moving frames
+;; The Itensor package was downcased, cleaned up, and moving frames
 ;; functionality was added by Viktor Toth (http://www.vttoth.com/).
 ;;
 ;; As of November, 2004, the naming conventions in this package now
@@ -2229,29 +2229,43 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	NIL (APPEND L1 L2 L3)(LIST (LENGTH L1)(LENGTH L2)(LENGTH L3))))
 
 
-(DEFMFUN $ENTERTENSOR nargs 
+(defmfun $entertensor nargs
   (prog (fun contr cov deriv)
-    (cond ((> nargs 1)
-	   (merror "ENTERTENSOR takes 0 or 1 arguments only"))
-	  ((= nargs 0)
-	   (mtell "Enter tensor name: ") 
-	   (setq fun (meval (retrieve nil nil))))
-	  ((setq fun (arg 1))))
-    (mtell "~%Enter a list of the covariant indices: ")
+    (cond
+      (
+        (> nargs 1)
+	    (merror "ENTERTENSOR takes 0 or 1 arguments only")
+      )
+	  (
+        (= nargs 0)
+	    (mtell "Enter tensor name: ") 
+	    (setq fun (meval (retrieve nil nil)))
+      )
+	  ((setq fun (arg 1)))
+    )
+    (mtell "Enter a list of the covariant indices: ")
     (setq cov (checkindex (meval (retrieve nil nil)) fun))
     (cond ((atom cov) (setq cov (cons smlist (ncons cov)))))
-    (mtell "~%Enter a list of the contravariant indices: ")
+    (mtell "Enter a list of the contravariant indices: ")
     (setq contr (checkindex (meval (retrieve nil nil)) fun))
     (cond ((atom contr) (setq contr (cons smlist (ncons contr)))))
-    (mtell "~%Enter a list of the derivative indices: ")
+    (mtell "Enter a list of the derivative indices: ")
     (setq deriv (checkindex (meval (retrieve nil nil)) fun))
-    (setq deriv (cond ((atom deriv) (ncons deriv))
-		      (t (cdr deriv))))
-    (cond ((memberl (cdr cov) deriv)
-	   (mtell "~%Warning - there are indices that are both covariant ~
-		  and derivative%")))
-    (return ($ISHOW (nconc (list (list fun 'SIMP) cov contr)
-				       deriv)))))
+    (setq deriv
+      (cond ((atom deriv) (ncons deriv))
+		    (t (cdr deriv))
+      )
+    )
+    (cond
+      (
+        (memberl (cdr cov) deriv)
+	    (mtell "Warning - there are indices that are both covariant ~
+                and derivative%")
+      )
+    )
+    (return ($ishow (nconc (list (list fun 'simp) cov contr) deriv)))
+  )
+)
 
 (defun CHECKINDEX (e f)
   (cond ((and (atom e) (not (eq e f))) e)

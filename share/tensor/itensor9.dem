@@ -34,6 +34,7 @@ block([iframe_bracket_form:false],ishow(ifb([i,j],[k])))$
 block([iframe_bracket_form:true],ishow(ifb([i,j],[k])))$
 
 ("To explore torsion, we set up a metric but no contraction properties")$
+remcomps(g);
 imetric:g;
 decsym(g,2,0,[sym(all)],[]);
 decsym(g,0,2,[],[sym(all)]);
