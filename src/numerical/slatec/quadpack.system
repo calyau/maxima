@@ -13,7 +13,7 @@
   ;; You need to define a logical pathname translation for maxima for
   ;; this to work.
   (setf (logical-pathname-translations "slatec")
-	`(("**;*.*.*" ,(translate-logical-pathname "maxima:src;numerical;slatec;**;*.*")))))
+	`(("**;*.*.*" "maxima:src;numerical;slatec;**;*.*"))))
 
 (mk:define-language :f2cl
     :compiler #'f2cl:f2cl
@@ -23,14 +23,14 @@
 (mk:defsystem quadpack
     :source-extension "f"
     :binary-extension "lisp"
-    :source-pathname (translate-logical-pathname "slatec:")
-    :binary-pathname (translate-logical-pathname "slatec:")
+    :source-pathname (logical-pathname "slatec:")
+    :binary-pathname (logical-pathname "slatec:")
     :components
     ((:module fortran
 	      :language :f2cl
 	      :compiler-options (:float-format double-float :package "SLATEC")
 	      :compile-only t
-	      :binary-pathname (translate-logical-pathname "slatec:")
+	      :binary-pathname (logical-pathname "slatec:")
 	      :components
 	      (
 	       ;; Support
@@ -92,7 +92,8 @@
 		      ;; If your defsystem doesn't support :compiler-options, use this:
 		      ;; :language :f2cl-no-slice
 		      ;; If your defsystem does support :compiler-options, use this:
-		      :compiler-options (:array-slicing nil :array-type :array)
+		      :compiler-options (:array-slicing nil :array-type :array
+							:float-format double-float :package "SLATEC")
 		      )
 	       (:file "dqawoe"
 		      :depends-on ("dqc25f"
