@@ -9,6 +9,8 @@
 MAXIMA implements symbolic tensor manipulation of two distinct types:
 component tensor manipulation and indicial tensor manipulation.
 
+IMPORTANT NOTICE: Please see the note on 'new tensor notation' below.
+
 Component tensor manipulation means that geometrical tensor
 objects are represented as arrays or matrices. Tensor operations such
 as contraction or covariant differentiation are carried out by
@@ -41,6 +43,65 @@ and whose structure is hidden. In addition, many calculations involve
 intermediate expressions which swell causing programs to terminate
 before completion. Through experience, a user can avoid avoid many of
 these difficulties.
+
+@subsection New Tensor Notation
+
+Until now, the Itensor package in MAXIMA has used a notation that sometimes
+led to incorrect index ordering. Consider the following, for instance:
+
+@example
+(%i2) imetric(g);
+
+(%o2)                                done
+(%i3) ishow(g([],[j,k])*g([],[i,l])*a([i,j],[]))$
+
+                                 i l  j k
+(%t3)                           g    g    a
+                                           i j
+(%i4) ishow(contract(%))$
+
+                                      k l
+(%t4)                                a
+@end example
+
+This result is incorrect unless @code{a} happens to be a symmetric tensor.
+The reason why this happens is that although Itensor correctly maintains
+the order within the set of covariant and contravariant indices, once an
+index is raised or lowered, its position relative to the other set of
+indices is lost.
+
+To avoid this problem, a new notation has been developed that remains fully
+compatible with the existing notation and can be used interchangeably. In
+this notation, contravariant indices are inserted in the appropriate
+positions in the covariant index list, but with a minus sign prepended.
+Functions like @code{contract()} and @code{ishow()} are now aware of this
+new index notation and can process tensors appropriately.
+
+In this new notation, the previous example yields a correct result:
+
+@example
+(%i5) ishow(g([-j,-k],[])*g([-i,-l],[])*a([i,j],[]))$
+
+                                 i l       j k
+(%t5)                           g    a    g
+                                      i j
+(%i6) ishow(contract(%))$
+
+                                      l k
+(%t6)                                a
+@end example
+
+Presently, the only code that makes use of this notation is the @code{lc2kdt}
+function. Through this notation, it achieves consistent results as it
+applies the metric tensor to resolve Levi-Civita symbols without resorting
+to numeric indices.
+
+Since this code is brand new, it probably contains bugs. While it has been
+tested to make sure that it doesn't break anything using the "old" tensor
+notation, there is a considerable chance that "new" tensors will fail to
+interoperate with certain functions or features. These bugs will be fixed
+as they are encountered... until then, caveat emptor!
+
 
 @subsection Indicial Tensor Manipulation
 
@@ -748,6 +809,22 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
                                   i l      l i
 (%t11)                           a    - a g
 
+@end example
+
+NB: This example also demonstrates a particular shortcoming in Itensor,
+which will be addressed in a future release. As indices are raised or
+lowered, their relative positions are 'forgotten' by Itensor, as the
+package only maintains index ordering within covariant and contravariant
+indices, respectively. In the preceding example, as first one, then the
+other index of the tensor @code{a} is raised, the order of the two indices
+becomes reversed. This is because at the intermediate stage, when one index
+is raised already while the other remains in a covariant position, their
+relative positions are no longer known to Itensor. Because of this,
+the result obtained is not correct if @code{a} is not a symmetric tensor;
+the correct result should have been
+@example
+ l i      i l
+a    - a g
 @end example
 
 @end defun
