@@ -60,3 +60,4 @@ dual:ishow('levi_civita([],[l,i,j])*B([i,j],[])/rank!)$
 ishow('levi_civita([i2,j2,l],[])*dual)$
 ishow(canform(contract(expand(lc2kdt(%)))))$
 
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

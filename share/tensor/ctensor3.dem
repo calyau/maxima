@@ -43,3 +43,5 @@ leinstein(true);
 rinvariant();
 ("The Weyl tensor is empty for a conformally metric")$
 weyl(true);
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

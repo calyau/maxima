@@ -142,3 +142,5 @@ contract(%)$
 ishow('ichr2([l,m],[k])=map(factor,combine(distrib(%th(2)))))$
 ("Or, if you wish, you can apply this result to the equation of motion:")$
 ishow(subst(rhs(%th(2)),lhs(%th(2)),EQ))$
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

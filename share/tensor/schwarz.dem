@@ -99,3 +99,5 @@ block( for i thru dim do
 
 block([title: "Schwarzschild Potential for Mass M=2",m:2.],
 plot3d([r*cos(th),r*sin(th),ug[1,1]],[r,.4,4.],[th,-%pi,%pi],['grid,50,15]));
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

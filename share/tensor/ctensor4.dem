@@ -29,3 +29,5 @@ lg;
 christof(mcs);
 ("We can now compute the Ricci tensor in tetrad base")$
 ricci(true);
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

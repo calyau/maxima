@@ -18,3 +18,5 @@ PLEASE PROVIDE these right hand sides as INPUT now!!")$
 ctransform(lg)$
 /* a substitution which reduces the transformed matrix */
 ev(%,cos(y) = sqrt(1-sin(y)^2),sin(z) = sqrt(1-cos(z)^2),ratsimp);
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

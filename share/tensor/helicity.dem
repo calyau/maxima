@@ -44,3 +44,5 @@ ishow(euler)$
  differential of the entropy")$
 rhs(euler)~extdiff(s([]),i3)$
 ishow(lhs(euler)=factor(expand(apply1(%,p_sr))))$
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

@@ -39,3 +39,5 @@ lriemann(true);
 uriemann(true);
 ("Compute the Kretchmann invariant Rijkl^2")$
 rinvariant();
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

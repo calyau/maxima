@@ -72,3 +72,5 @@ christof(true);
 lriemann(true);
 ("And last, the Ricci tensor, which should indicate an empty spacetime:")$
 ricci(true);
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

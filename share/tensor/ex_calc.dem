@@ -69,3 +69,5 @@ ishow(liediff(v,extdiff(a([i1]),i2)))$
 
 ("the verifications of this consequence of the Cartan identity
   for the higher order forms are in car_iden.dem")$
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

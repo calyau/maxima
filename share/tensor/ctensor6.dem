@@ -31,3 +31,4 @@ psi(true);
 ("And obtain the Petrov class")$
 petrov();
 
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

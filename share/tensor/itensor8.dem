@@ -39,3 +39,4 @@ remove([t,k],dependency);
 depends(t,ct_coords);
 ev(heat);
 
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

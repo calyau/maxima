@@ -47,3 +47,4 @@ t:ratsimp(2*(fl.fm-lg*mattrace(fl.fu)/4));
 ("This and the covariant Einstein tensor should be identical:")$
 ratsimp(lein-t);
 
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */
