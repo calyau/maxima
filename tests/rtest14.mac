@@ -395,7 +395,13 @@ specint( t^(3/2)*%h[1/2,1](t)*%e^(-p*t),t);
 
 
 /*
- * t^(3/2)*bessel_j(1,a*t) -> gamma(3/2+1+1)*r^(-3/2-1)*assoc_legendre_p(3/2,-1,p/r)
+ * Formula 48, p 187:
+ *
+ * t^u*bessel_y(v,a*t)
+ *    -> r^(-u-1)*(gamma(u+v+1)*cot(v*%pi)*assoc_legendre_p(u,-v,p/r)
+ *                  -gamma(u-v+1)*csc(v*%pi)*assoc_legendre_p(u,v,p/r))
+ *
+ * But this doesn't work for v = 1.
  */
 specint( t^(3/2)*bessel_y(1,a*t)*%e^(-t),t);
 15*%i*(1/(a^2+1)-1)^(3/4)*(1/(sqrt(a^2+1)+1)^(3/2)+1/(1-sqrt(a^2+1))^(3/2))/ 
@@ -526,6 +532,31 @@ v*gamma(v)*%gammagreek(v,a/p)/(a^(v/2)*gamma(v+1))$
  * (34)
  * t^(u-1/2)*bessel_j(2*v,2*sqrt(a)*sqrt(t)) ->
  *   gamma(u+v+1/2)/sqrt(a)/gamma(2*v+1)*p^(-u)*exp(-a/p/2)*%m[u,v](a/p)
+ *
+ * A&S 13.1.32 gives
+ *
+ *   %m[k,u](z) = exp(-z/2)*z^(u+1/2)*M(1/2+u-k,1+2*u,z)
+ *
+ * A&S 13.1.27 (Kummer Transformation):
+ *
+ *   M(a,b,z) = exp(z)*M(b-a,b,-z)
+ *
+ * So
+ *
+ *   %m[k,u](z) = exp(z/2)*z^(u+1/2)*M(1/2+u+k,1+2*u,-z)
+ *
+ * But %m[-k,u](-z) = exp(z/2)*(-z)^(u+1/2)*M(1/2+u+k,1+2*u,-z)
+ *
+ * Therefore
+ *
+ *   %m[k,u](z) = (-1)^(u+1/2)*%m[-k,u](-z)
+ *
+ * So the Laplace transform can also be written as
+ *
+ *   gamma(u+v+1/2)/sqrt(a)/gamma(2*v+1)*p^(-u)*exp(-a/p/2)
+ *     *%m[-u,v](-a/p)*(-1)^(v+1/2)
+ *
+ * Which is the answer we produce.
  */
 prefer_whittaker:true;
 true$
@@ -561,4 +592,20 @@ a^v*p^(-v-u)*gamma(v+u)*%f[1,1]([v+u],[2*v+1],-a/p)/gamma(2*v+1)$
 expand(factor(radcan(specint(exp(-p*t)*bessel_y(1/6,a*t),t))));
 sqrt(3)*a^(1/6)/(sqrt(p^2+a^2)*(sqrt(p^2+a^2)+p)^(1/6))
 	-2*(sqrt(p^2+a^2)+p)^(1/6)/(a^(1/6)*sqrt(p^2+a^2))$
+
+
+/*
+ * (42)
+ *
+ * t^(lam-1)*bessel_j(2*u,2*sqrt(a)*sqrt(t))*bessel_j(2*v,2*sqrt(a)*sqrt(t)) ->
+ *    gamma(lam+u+v)/gamma(2*u+1)/gamma(2*v+1)*a^(u+v)/p^(lam+u+v)
+ *      *%f[3,3]([u+v+1/2,u+v+1,lam+u+v],[2*u+1,2*v+1,2*u+2*v+1],-4*a/p)
+ *
+ */
+(assume(u>0,v>0,lam>0),true);
+true$
+specint(t^(lam-1)*bessel_j(2*u,2*sqrt(a)*sqrt(t))*bessel_j(2*v,2*sqrt(a)*sqrt(t))*exp(-p*t),t);
+a^(v+u)*p^(-v-u-lam)*gamma(v+u+lam)
+	      *%f[3,3]([v+u+1/2,v+u+1,v+u+lam],[2*u+1,2*v+1,2*v+2*u+1],-4*a/p)
+	/(gamma(2*u+1)*gamma(2*v+1))$ 
 
