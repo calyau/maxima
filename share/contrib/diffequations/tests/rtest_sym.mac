@@ -116,3 +116,68 @@ ode1_lie(phi:y*(1+2*x*y)/x,y,x);
 false; /* Investigate me */
 ode1_a(phi:y*(1+2*x*y)/x,y,x);
 false;
+
+/* Unit tests for lie_symgen_separable
+
+   solve 'diff(y,x) = phi(x,y) = f(x)*g(y)
+
+   This is using a sledge hammer to crack walnuts, but educational
+
+ */
+s:lie_symgen_separable(f:cos(x),g:exp(y),y,x);
+[1/COS(x),0];
+symtest(phi:f*g,xi:s[1],eta:s[2],y,x);
+0;
+mu:lie_integrating_factor(phi,xi,eta);
+-%E^-y;
+ans:lie_exact(phi,mu,y,x);
+%E^-y*(SIN(x)*%E^y+1) = %C;
+solve(ans,y);
+[y = -LOG(%C-SIN(x))];
+ode_check('diff(y,x)=phi,%[1]);
+0;
+
+s:lie_symgen_separable(f:cos(x),g:tan(y),y,x);
+[1/COS(x),0];
+symtest(phi:f*g,xi:s[1],eta:s[2],y,x);
+0;
+mu:lie_integrating_factor(phi,xi,eta);
+-1/TAN(y);
+ans:lie_exact(phi,mu,y,x);
+SIN(x)-LOG(SIN(y)) = %C;
+solve(ans,y);
+[y = ASIN(%E^(SIN(x)-%C))];
+ode_check('diff(y,x)=phi,%[1]);
+0;
+
+
+/* Unit tests for lie_symgen_linear
+
+   solve 'diff(y,x) = phi(x,y) = f(x)*y + g(x)
+
+ */
+s:lie_symgen_linear(f:2,g:1,y,x);
+[1/2,%C*%E^(2*x)];
+symtest(phi:f*y+g,xi:s[1],eta:s[2],y,x);
+0;
+mu:lie_integrating_factor(phi,xi,eta);
+-2/(2*y-2*%C*%E^(2*x)+1);
+ans:lie_exact(phi,mu,y,x);
+2*x-LOG(-2*y+2*%C*%E^(2*x)-1) = %C;
+solve(ans,y);
+[y = -(%E^(2*x-%C)-2*%C*%E^(2*x)+1)/2];
+ode_check('diff(y,x)=phi,%[1]);
+0;
+
+s:lie_symgen_linear(f:1,g:sin(x)+x,y,x);
+[1,(SIN(x)-COS(x)+2*%C*%E^x-2)/2];
+symtest(phi:f*y+g,xi:s[1],eta:s[2],y,x);
+0;
+mu:lie_integrating_factor(phi,xi,eta);
+-2/(2*y+SIN(x)+COS(x)-2*%C*%E^x+2*x+2);
+ans:lie_exact(phi,mu,y,x);
+x-LOG(2*y+SIN(x)+COS(x)-2*%C*%E^x+2*x+2) = %C;
+solve(ans,y);
+[y = -(SIN(x)+COS(x)-%E^(x-%C)-2*%C*%E^x+2*x+2)/2];
+ode_check('diff(y,x)=phi,%[1]);
+0;
