@@ -169,25 +169,28 @@
     (subseq pathstring 0 (position #\/ pathstring :from-end t))))
 
 (defun list-avail-action ()
-  (let* ((mvpldir (if (maxima-getenv "MAXIMA-VERPKGLIBDIR")
-		      (maxima-getenv "MAXIMA-VERPKGLIBDIR")
-		      (if (maxima-getenv "MAXIMA_PREFIX")
-			  (concatenate 'string (maxima-getenv "MAXIMA_PREFIX")
+  (let* ((maxima-verpkglibdir (if (maxima-getenv "MAXIMA-VERPKGLIBDIR")
+				  (maxima-getenv "MAXIMA-VERPKGLIBDIR")
+				  (if (maxima-getenv "MAXIMA_PREFIX")
+				      (concatenate 
+				       'string (maxima-getenv "MAXIMA_PREFIX")
 				       "/lib/" *autoconf-package* "/"
 				       *autoconf-version*)
-			  (concatenate 'string *autoconf-libdir* "/"
+				      (concatenate 
+				       'string *autoconf-libdir* "/"
 				       *autoconf-package* "/"
 				       *autoconf-version*))))
-	 (len (length mvpldir))
+	 (len (length maxima-verpkglibdir))
 	 (base-dir nil)
 	 (versions nil)
 	 (version-string nil)
 	 (lisps nil)
 	 (lisp-string nil))
     (format t "Available versions:~%")
-    (if (not (equal (subseq mvpldir (- len 1) len) "/"))
-	(setf mvpldir (concatenate 'string mvpldir "/")))
-    (setf base-dir (unix-like-dirname mvpldir))
+    (if (not (equal (subseq maxima-verpkglibdir (- len 1) len) "/"))
+	(setf maxima-verpkglibdir (concatenate 
+				   'string maxima-verpkglibdir "/")))
+    (setf base-dir (unix-like-dirname maxima-verpkglibdir))
     (setf versions (get-dirs base-dir))
     (dolist (version versions)
       (setf lisps (get-dirs version))
