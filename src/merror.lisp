@@ -74,6 +74,13 @@
 ;;  (AND $ERRORMSG ($ERRORMSG))
 ;;  (MAXIMA-ERROR #+(OR CL NIL) STRING))
 
+(define-condition maxima-$error (error)
+  ((message :initform $error :reader the-$error))
+  (:documentation "Muser error, to be signalled by MERROR, usually.")
+  (:report (lambda (c stream)
+	     (declare (ignore c))
+	     (let ((*standard-output* stream))
+	       ($errormsg)))))
 
 (defun merror (sstring &rest l)
   (declare (special errcatch *mdebug*))
@@ -95,7 +102,7 @@
 	     ;;	           (t  (throw 'macsyma-quit t)
 	     ;;	      ))
 	     )))
-	(errcatch  (error " -- an error: macsyma error"))
+	(errcatch  (error 'maxima-$error))
 	(t
 	 (fresh-line *standard-output*)
 	 ($backtrace 3)
@@ -104,9 +111,18 @@
 					;(if errcatch (error "macsyma error"))
 	 )))
 
-;;sample:
-;;(defun h (he)
-;;  (merror "hi there ~:M and ~:M" he he))
+(defmacro with-$error (&body body)
+  "Let MERROR signal a MAXIMA-$ERROR condition."
+  `(let ((errcatch t) *mdebug*	       ;let merror signal a lisp error
+	 $errormsg)			;don't print $error
+     (declare (special errcatch))
+     ,@body))
+
+;; Sample:
+;; (defun h (he)
+;;   (merror "hi there ~:M and ~:M" he he))
+;; This will signal a MAXIMA-$ERROR condition:
+;; (with-$error (h '$you))
 
 (defmvar $error_syms '((mlist) $errexp1 $errexp2 $errexp3)
   "Symbols to bind the too-large `maxima-error' expresssions to")
