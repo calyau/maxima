@@ -1876,7 +1876,7 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			      )))
     (pv-set-up-sparse-matrix-from-rows self )
     (cond (constants-column
-	   (setf (sp-constants-column (pv-the-sparse-matrix self)) constants-column)))))
+	   (setf (sp-constants-column (pv-the-sparse-matrix self)) constants-column))))
 ;
 ;(defun  pv-get-rows-from-macsyma-equations-and-variables
 ;	   (self equations the-variables &aux (eqn-no -1)
