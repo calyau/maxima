@@ -157,8 +157,8 @@ distclean: clean-gcl
 
 gcl:binary-gcl/maxima
 
-if GCL_ALT_LINK
 binary-gcl/maxima:
+if GCL_ALT_LINK
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
@@ -175,7 +175,6 @@ binary-gcl/maxima:
                             "\"(provide \\\"maxima\\\")\"")}') && \
         $(EXECUTEGCL) "$$j" < /dev/null
 else
-binary-gcl/maxima:
 	test -d binary-gcl || mkdir binary-gcl
 	test -d binary-gcl/numerical || mkdir binary-gcl/numerical
 	test -d binary-gcl/numerical/slatec || mkdir binary-gcl/numerical/slatec
