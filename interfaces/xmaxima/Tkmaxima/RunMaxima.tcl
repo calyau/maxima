@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: RunMaxima.tcl,v 1.11 2002-09-16 17:55:12 mikeclarkson Exp $
+#       $Id: RunMaxima.tcl,v 1.12 2002-09-18 17:07:44 mikeclarkson Exp $
 #
 proc textWindowWidth { w } {
     set font [$w cget -font]
@@ -11,7 +11,7 @@ proc textWindowWidth { w } {
 
 proc resizeMaxima { win width height } {
     linkLocal $win pid
-    if { [info exists pid] && $pid!=-1 } {
+    if { [info exists pid] && $pid != -1 } {
 	set wid [expr [textWindowWidth $win]-6]
 	sendMaxima $win ":lisp-quiet (setq linel $wid)\n"
     }
@@ -269,6 +269,8 @@ if { ![info exists maxima_priv(timeout)] } {
 
 proc runOneMaxima { win } {
     global maxima_priv
+    global pdata
+
     closeMaxima $win
     linkLocal $win pid
     set pid -1
@@ -281,14 +283,14 @@ proc runOneMaxima { win } {
 	vwait [oloc $win pid]
 	after cancel $af
 	if { $pid  == -1 } {
-	    if {[tide_yesno {Starting maxima timed out.  Wait longer?}]} {
+	    if {[tide_yesno {Starting Maxima timed out.  Wait longer?}]} {
 		continue
 	    } else {
 		closeMaxima $win
-		set err   "runOneMaxima timed out"
-		global pdata
-		if { [info exists pdata(maximaInit,[oget $win socket])] } {
-		    append err : $pdata(maximaInit,[oget $win socket])
+		set err   "Staring Maxima timed out"
+		if {![ catch {oget $win socket} sock] && \
+			 [info exists pdata(maximaInit,$sock)] } {
+		    append err : $pdata(maximaInit,$sock)
 		}
 		return -code error $err
 	    }
@@ -296,9 +298,10 @@ proc runOneMaxima { win } {
     }
     set res [list [oget $win pid] [oget $win socket] ]
     set sock [oget $win socket]
-    global pdata
+
     set pdata(maxima,socket) $sock
-    fileevent $sock readable  "maximaFilter $win $sock"
+    fileevent $sock readable  [list maximaFilter $win $sock]
+
     return $res
 
 }
@@ -313,7 +316,7 @@ proc sendMaxima { win form } {
     if {[catch {
 	puts -nonewline $maximaSocket $form
 	flush $maximaSocket} err]} {
-	set mes "Error sending to Maxima:"
+	set mess "Error sending to Maxima:"
 	if {[string match "can not find channel named*" err]} {
 	    # The maxima went away
 	    set maximaSocket ""
