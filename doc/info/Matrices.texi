@@ -41,28 +41,24 @@ Warning:  The VECT package declares "." to be a commutative operator.
 @c end concepts Matrices and Linear Algebra
 @node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
 @section Definitions for Matrices and Linear Algebra
-@c @node ADDCOL
-@c @unnumberedsec phony
+
 @defun ADDCOL (M,list1,list2,...,listn)
 appends the column(s) given by the one
 or more lists (or matrices) onto the matrix M.
 
 @end defun
-@c @node ADDROW
-@c @unnumberedsec phony
+
 @defun ADDROW (M,list1,list2,...,listn)
 appends the row(s) given by the one or
 more lists (or matrices) onto the matrix M.
 
 @end defun
-@c @node ADJOINT
-@c @unnumberedsec phony
+
 @defun ADJOINT (matrix)
 computes the adjoint of a matrix.
 
 @end defun
-@c @node AUGCOEFMATRIX
-@c @unnumberedsec phony
+
 @defun AUGCOEFMATRIX ([eq1, ...], [var1, ...])
 the augmented coefficient
 matrix for the variables var1,... of the system of linear equations
@@ -71,29 +67,25 @@ the constant terms in each equation (i.e. those not dependent upon
 var1,...).  Do EXAMPLE(AUGCOEFMATRIX); for an example.
 
 @end defun
-@c @node CHARPOLY
-@c @unnumberedsec phony
+
 @defun CHARPOLY (M, var)
 computes the characteristic polynomial for Matrix M
 with respect to var.  That is, DETERMINANT(M - DIAGMATRIX(LENGTH(M),var)).
 For examples of this command, do EXAMPLE(CHARPOLY); .
 
 @end defun
-@c @node COEFMATRIX
-@c @unnumberedsec phony
+
 @defun COEFMATRIX ([eq1, ...], [var1, ...])
 the coefficient matrix for the
 variables var1,... of the system of linear equations eq1,...
 
 @end defun
-@c @node COL
-@c @unnumberedsec phony
+
 @defun COL (M,i)
 gives a matrix of the ith column of the matrix M.
 
 @end defun
-@c @node COLUMNVECTOR
-@c @unnumberedsec phony
+
 @defun COLUMNVECTOR (X)
 a function in the EIGEN package.  Do LOAD(EIGEN) to
 use it.  COLUMNVECTOR takes a LIST as its argument and returns a
@@ -103,8 +95,7 @@ you want to use parts of the outputs of the functions in this package
 in matrix calculations.)
 
 @end defun
-@c @node CONJUGATE
-@c @unnumberedsec phony
+
 @defun CONJUGATE (X)
 a function in the EIGEN package on the SHARE
 directory.  It returns the complex conjugate of its argument.  This
@@ -112,16 +103,14 @@ package may be loaded by LOAD(EIGEN); .  For a complete description
 of this package, do PRINTFILE("eigen.usg"); .
 
 @end defun
-@c @node COPYMATRIX
-@c @unnumberedsec phony
+
 @defun COPYMATRIX (M)
 creates a copy of the matrix M.  This is the only way
 to make a copy aside from recreating M elementwise.  Copying a matrix
 may be useful when SETELMX is used.
 
 @end defun
-@c @node DETERMINANT
-@c @unnumberedsec phony
+
 @defun DETERMINANT (M)
 computes the determinant of M by a method similar to
 Gaussian elimination.  The form of the result depends upon the setting
@@ -130,8 +119,7 @@ sparse determininants which can be used by setting the switches
 RATMX:TRUE and SPARSE:TRUE.
 
 @end defun
-@c @node DETOUT
-@c @unnumberedsec phony
+
 @defvar DETOUT
  default: [FALSE] if TRUE will cause the determinant of a
 matrix whose inverse is computed to be kept outside of the inverse.
@@ -140,24 +128,21 @@ FALSE (see their descriptions).  Alternatively this switch can be
 given to EV which causes the other two to be set correctly.
 
 @end defvar
-@c @node DIAGMATRIX
-@c @unnumberedsec phony
+
 @defun DIAGMATRIX (n, x)
 returns a diagonal matrix of size n by n with the
 diagonal elements all x.  An identity matrix is created by
 DIAGMATRIX(n,1), or one may use IDENT(n).
 
 @end defun
-@c @node DOALLMXOPS
-@c @unnumberedsec phony
+
 @defvar DOALLMXOPS
  default: [TRUE] if TRUE all operations relating to
 matrices are carried out.  If it is FALSE then the setting of the
 individual DOT switches govern which operations are performed.
 
 @end defvar
-@c @node DOMXEXPT
-@c @unnumberedsec phony
+
 @defvar DOMXEXPT
  default: [TRUE] if TRUE,
 @example
@@ -171,23 +156,20 @@ matrix.  This transformation is turned off if this switch is set to
 FALSE.
 
 @end defvar
-@c @node DOMXMXOPS
-@c @unnumberedsec phony
+
 @defvar DOMXMXOPS
  default: [TRUE] if TRUE then all matrix-matrix or
 matrix-list operations are carried out (but not scalar-matrix
 operations); if this switch is FALSE they are not.
 
 @end defvar
-@c @node DOMXNCTIMES
-@c @unnumberedsec phony
+
 @defvar DOMXNCTIMES
  default: [FALSE] Causes non-commutative products of
 matrices to be carried out.
 
 @end defvar
-@c @node DONTFACTOR
-@c @unnumberedsec phony
+
 @defvar DONTFACTOR
  default: [] may be set to a list of variables with respect
 to which factoring is not to occur.  (It is initially empty).
@@ -196,50 +178,43 @@ are less important (using the variable ordering assumed for CRE form)
 than those on the DONTFACTOR list.
 
 @end defvar
-@c @node DOSCMXOPS
-@c @unnumberedsec phony
+
 @defvar DOSCMXOPS
  default: [FALSE] if TRUE then scalar-matrix operations are
 performed.
 
 @end defvar
-@c @node DOSCMXPLUS
-@c @unnumberedsec phony
+
 @defvar DOSCMXPLUS
  default: [FALSE] if TRUE will cause SCALAR + MATRIX to
 give a matrix answer.  This switch is not subsumed under DOALLMXOPS.
 
 @end defvar
-@c @node DOT0NSCSIMP
-@c @unnumberedsec phony
+
 @defvar DOT0NSCSIMP
  default: [TRUE] Causes a non-commutative product of zero
 and a nonscalar term to be simplified to a commutative product.
 
 @end defvar
-@c @node DOT0SIMP
-@c @unnumberedsec phony
+
 @defvar DOT0SIMP
  default: [TRUE] Causes a non-commutative product of zero and
 a scalar term to be simplified to a commutative product.
 
 @end defvar
-@c @node DOT1SIMP
-@c @unnumberedsec phony
+
 @defvar DOT1SIMP
  default: [TRUE] Causes a non-commutative product of one and
 another term to be simplified to a commutative product.
 
 @end defvar
-@c @node DOTASSOC
-@c @unnumberedsec phony
+
 @defvar DOTASSOC
  default: [TRUE] when TRUE causes (A.B).C to simplify to
 A.(B.C)
 
 @end defvar
-@c @node DOTCONSTRULES
-@c @unnumberedsec phony
+
 @defvar DOTCONSTRULES
  default: [TRUE] Causes a non-commutative product of a
 constant and another term to be simplified to a commutative product.
@@ -247,34 +222,29 @@ Turning on this flag effectively turns on DOT0SIMP, DOT0NSCSIMP, and
 DOT1SIMP as well.
 
 @end defvar
-@c @node DOTDISTRIB
-@c @unnumberedsec phony
+
 @defvar DOTDISTRIB
  default: [FALSE] if TRUE will cause A.(B+C) to simplify to
 A.B+A.C
 
 @end defvar
-@c @node DOTEXPTSIMP
-@c @unnumberedsec phony
+
 @defvar DOTEXPTSIMP
  default: [TRUE] when TRUE causes A.A to simplify to A^^2
 
 @end defvar
-@c @node DOTIDENT
-@c @unnumberedsec phony
+
 @defvar DOTIDENT
  default: [1]  The value to be returned by X^^0.
 
 @end defvar
-@c @node DOTSCRULES
-@c @unnumberedsec phony
+
 @defvar DOTSCRULES
  default: [FALSE] when TRUE will cause A.SC or SC.A to
 simplify to SC*A and A.(SC*B) to simplify to SC*(A.B)
 
 @end defvar
-@c @node ECHELON
-@c @unnumberedsec phony
+
 @defun ECHELON (M)
 produces the echelon form of the matrix M.  That is, M
 with elementary row operations performed on it such that the first
@@ -298,8 +268,7 @@ column elements under the first one in each row are all zero.
 
 @end example
 @end defun
-@c @node EIGENVALUES
-@c @unnumberedsec phony
+
 @defun EIGENVALUES (mat)
 There is a package on the SHARE; directory which
 contains functions for computing EIGENVALUES and EIGENVECTORS and
@@ -324,8 +293,7 @@ loaded in the EIGEN package, either by a previous call to EIGENVALUES,
 or by doing LOADFILE("eigen"); .
 
 @end defun
-@c @node EIGENVECTORS
-@c @unnumberedsec phony
+
 @defun EIGENVECTORS (MAT)
 takes a MATRIX as its argument and returns a list
 of lists the first sublist of which is the output of the EIGENVALUES
@@ -353,15 +321,13 @@ marvelous tricks you might have to reduce them to something simpler.
 You can then use the KNOWNEIGVALS flag to proceed further. )
 
 @end defun
-@c @node EMATRIX
-@c @unnumberedsec phony
+
 @defun EMATRIX (m, n, x, i, j)
 will create an m by n matrix all of whose
 elements are zero except for the i,j element which is x.
 
 @end defun
-@c @node ENTERMATRIX
-@c @unnumberedsec phony
+
 @defun ENTERMATRIX (m, n)
 allows one to enter a matrix element by element
 with Maxima requesting values for each of the m*n entries.
@@ -385,8 +351,7 @@ Matrix entered.
 
 @end example
 @end defun
-@c @node GENMATRIX
-@c @unnumberedsec phony
+
 @defun GENMATRIX (array, i2, j2, i1, j1)
 generates a matrix from the array
 using array(i1,j1) for the first (upper-left) element and array(i2,j2)
@@ -412,8 +377,7 @@ used.
 
 @end example
 @end defun
-@c @node GRAMSCHMIDT
-@c @unnumberedsec phony
+
 @defun GRAMSCHMIDT (X)
 a function in the EIGEN package.  Do LOAD(EIGEN) to
 use it.  GRAMSCHMIDT takes a LIST of lists the sublists of which are
@@ -427,22 +391,19 @@ very messy and helps to reduce the sizes of the numbers that are
 produced along the way.)
 
 @end defun
-@c @node HACH
-@c @unnumberedsec phony
+
 @defun HACH (a,b,m,n,l)
 An implementation of Hacijan's linear programming
 algorithm is available by doing BATCH("kach.mc"$.  Details of use
 are available by doing BATCH("kach.dem");
 
 @end defun
-@c @node IDENT
-@c @unnumberedsec phony
+
 @defun IDENT (n)
 produces an n by n identity matrix.
 
 @end defun
-@c @node INNERPRODUCT
-@c @unnumberedsec phony
+
 @defun INNERPRODUCT (X,Y)
 a function in the EIGEN package.  Do LOAD(EIGEN)
 to use it.  INNERPRODUCT takes two LISTS of equal length as its
@@ -451,8 +412,7 @@ Conjugate of X).Y (The "dot" operation is the same as the usual one
 defined for vectors).
 
 @end defun
-@c @node INVERT
-@c @unnumberedsec phony
+
 @defun INVERT (matrix)
 finds the inverse of a matrix using the adjoint
 method.  This allows a user to compute the inverse of a matrix with
@@ -473,15 +433,13 @@ INVERT(mat):=ADJOINT(mat)/DETERMINANT(mat).
 See also DESCRIBE("^^"); for another method of inverting a matrix.
 
 @end defun
-@c @node LMXCHAR
-@c @unnumberedsec phony
+
 @defvar LMXCHAR
  default: [[] - The character used to display the (left)
 delimiter of a matrix (see also RMXCHAR).
 
 @end defvar
-@c @node MATRIX
-@c @unnumberedsec phony
+
 @defun MATRIX (row1, ..., rown)
 defines a rectangular matrix with the
 indicated rows.  Each row has the form of a list of expressions, e.g.
@@ -506,21 +464,18 @@ DOMXMXOPS, DOSCMXOPS, DOSCMXPLUS, SCALARMATRIX, and SPARSE.
 Do DESCRIBE(option) for details on them.
 
 @end defun
-@c @node MATRIXMAP
-@c @unnumberedsec phony
+
 @defun MATRIXMAP (fn, M)
 will map the function fn onto each element of the
 matrix M.
 
 @end defun
-@c @node MATRIXP
-@c @unnumberedsec phony
+
 @defun MATRIXP (exp)
 is TRUE if exp is a matrix else FALSE.
 
 @end defun
-@c @node MATRIX_ELEMENT_ADD
-@c @unnumberedsec phony
+
 @defvar MATRIX_ELEMENT_ADD
  default: [+] - May be set to "?"; may also be the
 name of a function, or a LAMBDA expression.  In this way, a rich
@@ -528,8 +483,7 @@ variety of algebraic structures may be simulated.  For more details,
 do DEMO("matrix.dem1"); and DEMO("matrix.dem2");.
 
 @end defvar
-@c @node MATRIX_ELEMENT_MULT
-@c @unnumberedsec phony
+
 @defvar MATRIX_ELEMENT_MULT
  default: [*] - May be set to "."; may also be the
 name of a function, or a LAMBDA expression.  In this way, a rich
@@ -537,8 +491,7 @@ variety of algebraic structures may be simulated.  For more details,
 do DEMO("matrix.dem1"); and DEMO("matrix.dem2");
 
 @end defvar
-@c @node MATRIX_ELEMENT_TRANSPOSE
-@c @unnumberedsec phony
+
 @defvar MATRIX_ELEMENT_TRANSPOSE
  default: [FALSE] - Other useful settings are
 TRANSPOSE and NONSCALARS; may also be the name of a function, or a
@@ -547,30 +500,26 @@ structures may be simulated.  For more details, do
 DEMO("matrix.dem1"); and DEMO("matrix.dem2");.
 
 @end defvar
-@c @node MATTRACE
-@c @unnumberedsec phony
+
 @defun MATTRACE (M)
 computes the trace [sum of the elements on the main diagonal] of
 the square matrix M.  It is used by NCHARPOLY, an alternative to Maxima's
 CHARPOLY.  It is used by doing LOADFILE("nchrpl");
 
 @end defun
-@c @node MINOR
-@c @unnumberedsec phony
+
 @defun MINOR (M, i, j)
 computes the i,j minor of the matrix M.  That is, M
 with row i and column j removed.
 
 @end defun
-@c @node NCEXPT
-@c @unnumberedsec phony
+
 @defun NCEXPT (A,B)
 if an (non-commutative) exponential expression is too
 wide to be displayed as A^^B it will appear as NCEXPT(A,B).
 
 @end defun
-@c @node NCHARPOLY
-@c @unnumberedsec phony
+
 @defun NCHARPOLY (M,var)
 finds the characteristic polynomial of the matrix M
 with respect to var.  This is an alternative to Maxima's CHARPOLY.
@@ -585,8 +534,7 @@ since it avoids polynomial arithmetic altogether.  It may be used by
 doing LOADFILE("nchrpl");
 
 @end defun
-@c @node NEWDET
-@c @unnumberedsec phony
+
 @defun NEWDET (M,n)
 also computes the determinant of M but uses the
 Johnson-Gentleman tree minor algorithm.  M may be the name of a
@@ -594,29 +542,25 @@ matrix or array.  The argument n is the order; it is optional if M is
 a matrix.
 
 @end defun
-@c @node declaration
-@c @unnumberedsec phony
+
 @defvr declaration NONSCALAR
  - makes ai behave as does a list or matrix with respect to
 the dot operator.
 
 @end defvr
-@c @node NONSCALARP
-@c @unnumberedsec phony
+
 @defun NONSCALARP (exp)
 is TRUE if exp is a non-scalar, i.e.  it contains
 atoms declared as non-scalars, lists, or matrices.
 
 @end defun
-@c @node PERMANENT
-@c @unnumberedsec phony
+
 @defun PERMANENT (M,n)
 computes the permanent of the matrix M.  A permanent
 is like a determinant but with no sign changes.
 
 @end defun
-@c @node RANK
-@c @unnumberedsec phony
+
 @defun RANK (M)
 computes the rank of the matrix M.  That is, the order of the
 largest non-singular subdeterminant of M.  Caveat: RANK may return the
@@ -624,8 +568,7 @@ wrong answer if it cannot determine that a matrix element that is
 equivalent to zero is indeed so.
 
 @end defun
-@c @node RATMX
-@c @unnumberedsec phony
+
 @defvar RATMX
  default: [FALSE] - if FALSE will cause determinant and matrix
 addition, subtraction, and multiplication to be performed in the
@@ -637,14 +580,12 @@ cause the elements to be expanded (depending on the setting of RATFAC)
 which might not always be desired.
 
 @end defvar
-@c @node ROW
-@c @unnumberedsec phony
+
 @defun ROW (M, i)
 gives a matrix of the ith row of matrix M.
 
 @end defun
-@c @node SCALARMATRIXP
-@c @unnumberedsec phony
+
 @defvar SCALARMATRIXP
  default: [TRUE] - if TRUE, then whenever a 1 x 1 matrix
 is produced as a result of computing the dot product of matrices it
@@ -653,16 +594,14 @@ If set to ALL, then this conversion occurs whenever a 1 x 1 matrix is
 simplified.  If set to FALSE, no conversion will be done.
 
 @end defvar
-@c @node SETELMX
-@c @unnumberedsec phony
+
 @defun SETELMX (x, i, j, M)
 changes the i,j element of M to x.  The altered
 matrix is returned as the value.  The notation M[i,j]:x may also be
 used, altering M in a similar manner, but returning x as the value.
 
 @end defun
-@c @node SIMILARITYTRANSFORM
-@c @unnumberedsec phony
+
 @defun SIMILARITYTRANSFORM (MAT)
 a function in the EIGEN package.  Do
 LOAD(EIGEN) to use it.  SIMILARITYTRANSFORM takes a MATRIX as its
@@ -682,35 +621,30 @@ SIMILARITYTRANSFORM calls the other functions in the package in order
 to be able to form RIGHTMATRIX.
 
 @end defun
-@c @node SPARSE
-@c @unnumberedsec phony
+
 @defvar SPARSE
  default: [FALSE] - if TRUE and if RATMX:TRUE then DETERMINANT
 will use special routines for computing sparse determinants.
 
 @end defvar
-@c @node SUBMATRIX
-@c @unnumberedsec phony
+
 @defun SUBMATRIX (m1, ..., M, n1, ...)
 creates a new matrix composed of the
 matrix M with rows mi deleted, and columns ni deleted.
 
 @end defun
-@c @node TRANSPOSE
-@c @unnumberedsec phony
+
 @defun TRANSPOSE (M)
 produces the transpose of the matrix M.
 
 @end defun
-@c @node TRIANGULARIZE
-@c @unnumberedsec phony
+
 @defun TRIANGULARIZE (M)
 produces the upper triangular form of the matrix M
 which needn't be square.
 
 @end defun
-@c @node UNITEIGENVECTORS
-@c @unnumberedsec phony
+
 @defun UNITEIGENVECTORS (MAT)
 a function in the EIGEN package.  Do
 LOAD(EIGEN) to use it.  UNITEIGENVECTORS takes a MATRIX as its
@@ -732,16 +666,14 @@ matrix the eigenvectors of which do not span the vector space of the
 appropriate dimension...)
 
 @end defun
-@c @node UNITVECTOR
-@c @unnumberedsec phony
+
 @defun UNITVECTOR (X)
 a function in the EIGEN package.  Do LOAD(EIGEN) to
 use it.  UNITVECTOR takes a LIST as its argument and returns a unit
 list.  (i.e. a list with unit magnitude).
 
 @end defun
-@c @node VECTORSIMP
-@c @unnumberedsec phony
+
 @defun VECTORSIMP (vectorexpression)
 This function employs additional
 simplifications, together with various optional
@@ -772,22 +704,19 @@ COORDINATES[[X,Y,Z]], DIMENSION[3], SF[[1,1,1]], and SFPROD[1] are set
 by the function invocation
 
 @end defun
-@c @node VECT_CROSS
-@c @unnumberedsec phony
+
 @defvar VECT_CROSS
  default:[FALSE] - If TRUE allows DIFF(X~Y,T) to work where
 ~ is defined in SHARE;VECT (where VECT_CROSS is set to TRUE, anyway.)
 
 @end defvar
-@c @node ZEROMATRIX
-@c @unnumberedsec phony
+
 @defun ZEROMATRIX (m,n)
 takes integers m,n as arguments and returns an m by
 n matrix of 0's.
 
 @end defun
-@c @node "["
-@c @unnumberedsec phony
+
 @defvr {special symbol} "["
   - [ and ] are the characters which Maxima uses to delimit a
 list.
