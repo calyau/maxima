@@ -23,7 +23,7 @@ Subject: RATRIEMAN
 To: INFO-TENSOR at MIT-MC
 
 At ASB's suggestion, for consistency, I have changed RATRIEMAN to RATRIEMANN 
-in CTENSR. 
+in CTENSOR. 
 
 Date: 2 July 1982 13:58-EDT
 From: Richard Pavelle <RP at MIT-MC>
@@ -31,38 +31,38 @@ To: INFO-TENSOR at MIT-MC
 cc: RP at MIT-MC
 
 I have revised the tensor manual, TM-167 (June 1980), to reflect
-some changes and additions to the CTENSR and ITENSR packages. If
+some changes and additions to the CTENSOR and ITENSOR packages. If
 you wish to receive a copy let me know.
 
 Date: 11 March 1982 16:37-EST
 From: Richard Pavelle <RP at MIT-MC>
-Subject: change to ITENSR
+Subject: change to ITENSOR
 To: INFO-TENSOR at MIT-MC
 
-The RIEMANN function in ITENSR, which represents the standard Riemann 
+The RIEMANN function in ITENSOR, which represents the standard Riemann 
 4 index curvature tensor, has been renamed to CURVATURE to stop the 
-conflict with the RIEMANN function in CTENSR. 
+conflict with the RIEMANN function in CTENSOR. 
 
 Date: 9 March 1982 14:38-EST
 From: Richard Pavelle <TENSOR at MIT-MC>
-Subject: TRANSFORM in CTENSR
+Subject: TRANSFORM in CTENSOR
 To: INFO-TENSOR at MIT-MC
 cc: JPG at MIT-MC, ELLEN at MIT-MC, RJF at MIT-MC, RP at MIT-MC,
     ELL at MIT-MC
 
-The TRANSFORM function in CTENSR has been renamed to TTRANSFORM.
+The TRANSFORM function in CTENSOR has been renamed to TTRANSFORM.
 
 Date: 1 March 1982 08:38-EST
 From: Richard Pavelle <TENSOR at MIT-MC>
 To: INFO-TENSOR at MIT-MC
 
-ITENSR is now fixed.  Thanks JPG.
+ITENSOR is now fixed.  Thanks JPG.
 
 Date: 19 February 1982 07:26-EST
 From: Richard Pavelle <TENSOR at MIT-MC>
 To: INFO-TENSOR at MIT-MC
 
-Do not use ITENSR until further notice. It is broken!
+Do not use ITENSOR until further notice. It is broken!
 
 Date: 14 January 1982 16:03-EST
 From: Anthony D. Kennedy <ADK at MIT-MC>
@@ -200,12 +200,12 @@ To: INFO-TENSOR at MIT-MC
 CC: GJC at MIT-MC
 
 
-There is now a new version of CTENSR called TENSOR;CTENSR FASL. 
+There is now a new version of CTENSOR called TENSOR;CTENSOR FASL. 
 It is translated and compiled and it runs several times as fast 
 as the old version while providing more work space for the user. 
 
 I would like users to test it and let me know if there are any 
-problems. CTENSR FASL may be loaded by calling TSETUP() in MACYSMA
+problems. CTENSOR FASL may be loaded by calling TSETUP() in MACYSMA
 or loading the file directly.
 
 Thanks go to GJC for creating the new version.
@@ -215,8 +215,8 @@ From: TENSOR at MIT-MC (Richard Pavelle)
 To: INFO-TENSOR at MIT-MC
 CC: GJC at MIT-MC
 
-There is now a new version of CTENSR called TENSOR;CTENSR NFASL. 
-It runs about twice as fast as the old version, CTENSR FASL, 
+There is now a new version of CTENSOR called TENSOR;CTENSOR NFASL. 
+It runs about twice as fast as the old version, CTENSOR FASL, 
 but may leave less work space for the user. This may not, however, 
 be apparant for standard problems. 
 
@@ -226,24 +226,24 @@ version with the fassave as the backup version. However, for the
 present the old version will still be loaded by calling TSETUP()
 in MACYSMA.
 
-Thanks go to GJC for creating CTENSR NFASL.
+Thanks go to GJC for creating CTENSOR NFASL.
 
 
 Date: 21 SEP 1980 1115-EDT
 From: RP at MIT-MC (Richard Pavelle)
 To: INFO-TENSOR at MIT-MC
 
-Plans are being made to extend CTENSR to include interaction with LSH's
-STENSR package. This will mean that a user in CTENSR may decide that
+Plans are being made to extend CTENSOR to include interaction with LSH's
+STENSR package. This will mean that a user in CTENSOR may decide that
 a 5dimensional array such as the covariant derivative of the Riemann
 tensor is needed or perhaps a scalar constructed from the Riemann
-tensor and its dual- whatever.  A new function in CTENSR will interact
+tensor and its dual- whatever.  A new function in CTENSOR will interact
 with STENSR to allow construction of a large number of geometrical
 objects.
 
 We need some input and hence this note. We must have some idea
 of the kinds of objects you may be interested in so we can build
-a decent input function in CTENSR. Therefore, if you have some ideas
+a decent input function in CTENSOR. Therefore, if you have some ideas
 of the kinds of objects you may want to construct send mail to TENSOR@MC.
 
 
@@ -291,13 +291,13 @@ From: TENSOR at MIT-MC (Richard Pavelle)
 To: INFO-TENSOR at MIT-MC
 
 The new tensor packages are operational. The ETENSR pack is now called
-CTENSR and is available by doing
+CTENSOR and is available by doing
 
-LOADFILE(CTENSR,FASL,SHARE); for component tensor manipulation.
+LOADFILE(CTENSOR,FASL,SHARE); for component tensor manipulation.
 
-The ITENSR pack, as before, is loaded by doing
+The ITENSOR pack, as before, is loaded by doing
 
-LOADFILE(ITENSR,FASL,SHARE); for indicial tensor manipulation.
+LOADFILE(ITENSOR,FASL,SHARE); for indicial tensor manipulation.
 
 Both packages have many new  functions as well  as old ones which have
 been modified. A full description is available by printing
@@ -305,7 +305,7 @@ been modified. A full description is available by printing
 SHARE;TENSOR DESCR.
 
 In addition,  demos  exist  on the TENSOR  directory  under  the first
-filenames CTENSR and ITENSR. Send bugs or comments to RP or TENSOR.
+filenames CTENSOR and ITENSOR. Send bugs or comments to RP or TENSOR.
 
 Date: 16 DEC 1979 0822-EST
 From: TENSOR at MIT-MC (Richard Pavelle)
@@ -313,12 +313,12 @@ To: INFO-TENSOR at MIT-MC
 
 
 The new  tensor code will  be released shortly.  There has been  a great
-deal of revision to ITENSR and ETENSR. During the next few weeks, before
+deal of revision to ITENSOR and ETENSR. During the next few weeks, before
 the programs are released, it would be helpful if some of you  would try
 the code and examine an early  draft of the manual which is on  the file
 TENSOR;MANUAL  DOCUME.  If  anyone does  not  have  a  hardcopy terminal
 available I  can send a  copy. Recall there  are also demo  files called
-TENSOR;ETENSR DEMO(1,2,...) and  ITENSR DEMO(1,2,...). Send  comments to
+TENSOR;ETENSR DEMO(1,2,...) and  ITENSOR DEMO(1,2,...). Send  comments to
 RP or TENSOR.
 
 
@@ -331,7 +331,7 @@ on the tensor directory a sequence of batch files. These will give
 some problems which have been solved using the new tensor packges and
 should give the user some understanding of the new features which have
 been implemented by MIKE and me. The names of the files will be
-ITENSR DEMO1, ITENSR DEMO2,....    and
+ITENSOR DEMO1, ITENSOR DEMO2,....    and
 ETENSR DEMO1, ETENSR DEMO2,....
 Send comments or bugs to RP@MIT-MC.
 
@@ -342,8 +342,8 @@ To: INFO-TENSOR at MIT-MC
 		ATTENTION TENSOR USERS
 
 It is important that I know the kind of problems which users have for
-which they hope ITENSR can help.  In particular I wish to know about
-problems which involve symmetries.  As you know ITENSR does not yet
+which they hope ITENSOR can help.  In particular I wish to know about
+problems which involve symmetries.  As you know ITENSOR does not yet
 manipulate indexed objects which are skew- symmetric.  If you can tell
 me what you would like perhaps it will happen this summer. Be specific!
 Send mail to me or TENSOR.
@@ -392,10 +392,10 @@ was sent twice.  Somehow, a number of people do not like to look at msgs.
                 Attention TENSOR users
 
 There are plans to rewrite the tensor code this summer.  There are a number
-of known difficulties with the ETENSR and ITENSR (or original CTMS and ITMS)
+of known difficulties with the ETENSR and ITENSOR (or original CTMS and ITMS)
 packs.  However, we would like to know who uses them and more important we
 would appreciate any comments, criticisms, suggestions etc on improving 
-the ETENSR AND ITENSR code. If you have developed any special purpose routines
+the ETENSR AND ITENSOR code. If you have developed any special purpose routines
 utilizing the code let us know this as well.  Further, please criticise the 
 description of these packages in the manual.  Send mail to TENSOR or 
 INFO-TENSOR if you wish to share your ideas.  Work on the tensor packs
@@ -405,10 +405,10 @@ DISTRIB:  *CMU, *DM, *MC, *ML, *AI
 EXPIRES: 04/30/79 20:29:20
 RP@MIT-MC 04/15/79 20:29:20 Re: Attention TENSOR users
 There are plans to rewrite the tensor code this summer.  There are a number
-of known difficulties with the ETENSR and ITENSR (or original CTMS and ITMS)
+of known difficulties with the ETENSR and ITENSOR (or original CTMS and ITMS)
 packs.  However, we would like to know who uses them and more important we
 would appreciate any comments, criticisms, suggestions etc on improving 
-the ETENSR AND ITENSR code. If you have developed any special purpose routines
+the ETENSR AND ITENSOR code. If you have developed any special purpose routines
 utilizing the code let us know this as well.  Further, please criticise the 
 description of these packages in the manual.  Send mail to TENSOR.
 

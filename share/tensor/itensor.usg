@@ -15,7 +15,7 @@ to employ the cumbersome workaround of UNDIFF-ing an expression
 first and then evaluating the Christoffel symbols in a separate
 step before evaluating the differential operator.
 
-The CTENSR package has been changed to behave as other MAXIMA
+The CTENSOR package has been changed to behave as other MAXIMA
 packages behave, i.e., to provide all built-in variable and
 function names in upper case. This will likely change again
 if/when the planned downcasing takes place.
@@ -23,7 +23,7 @@ if/when the planned downcasing takes place.
 An extra LISP file, inpfix.lisp, has been provided to deal with
 the "missing prompts" problem on some systems. This problem has
 been fixed with the CVS version of Maxima, but is still present
-in 5.9.0. Uncomment the last line in CTENSR.MAC to make use of
+in 5.9.0. Uncomment the last line in CTENSOR.MAC to make use of
 this fix. Use with caution: inpfix.lisp redefines some internal
 Maxima functions.
 
@@ -31,7 +31,7 @@ Though it is not essential, you might want to compile the
 tensor sources (Just start Maxima and type
 :lisp(compile-file "itensor.lisp"). Repeat it for canten, gener &
 symtry.lisp). Note the cool feature provided by generate(eqs). It
-makes possible to use results obtained by "itensor" in "ctensr"
+makes possible to use results obtained by "itensor" in "ctensor"
 (express indexed terms via components).
 
 
@@ -48,9 +48,9 @@ Other working (and tested) demo files are:
 
 "ademo.dem" - Verifies the double divergence of the Riemann tensor;
 "ademo-2steps.dem" - As above, different method;
-"ctenso_1.dem ..
- ctenso_4.dem" - Basic CTENSR package demo set;
-"swartz.dem" - finds the Schwarzschild solution using CTENSR.
+"ctensor_1.dem ..
+ ctensor_4.dem" - Basic CTENSOR package demo set;
+"swartz.dem" - finds the Schwarzschild solution using CTENSOR.
 
 There are several other files in this directory that have not
 (yet) been tested. In future releases, these will be fixed and/or

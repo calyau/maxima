@@ -1,45 +1,45 @@
-LOAD("itensor");
+load("itensor");
 
-DIM:5;
-METRIC:G5;
-DEFCON(G4);
-DEFCON(G5);
-DEFCON(G4,G4,KDELTA);
-DEFCON(G5,G5,KDELTA);
+dim:5;
+metric:g5;
+defcon(g4);
+defcon(g5);
+defcon(g4,g4,kdelta);
+defcon(g5,g5,kdelta);
 
-PREDVAL(prd):=BLOCK([RETVAL,SAVED_PREDERROR:PREDERROR],
-	PREDERROR:FALSE,
-	RETVAL:EV(prd,PRED)=TRUE OR EV(prd,PRED)=FALSE,
-	PREDERROR:SAVED_PREDERROR,
-	RETVAL
+predval(prd):=block([retval,saved_prederror:prederror],
+	prederror:false,
+	retval:ev(prd,pred)=true or ev(prd,pred)=false,
+	prederror:saved_prederror,
+	retval
 );
 
-DIFFLIST(exp,lst):=IF LENGTH(lst)=0 THEN exp ELSE DIFFLIST(DIFF(exp,lst[1]),REST(lst));
+difflist(exp,lst):=if length(lst)=0 then exp else difflist(diff(exp,lst[1]),rest(lst));
 
-A(L1,L2,[L3]):=IF MEMBER(5,L3) THEN 0 ELSE FUNMAKE('A,APPEND([L1,L2],L3));
+a(l1,l2,[l3]):=if member(5,l3) then 0 else funmake('a,append([l1,l2],l3));
 
-G4(L1,L2,[L3]):=IF MEMBER(5,L3) THEN 0 ELSE FUNMAKE('G4,APPEND([L1,L2],L3));
+g4(l1,l2,[l3]):=if member(5,l3) then 0 else funmake('g4,append([l1,l2],l3));
 
-G5(L1,L2,[L3]):=
-	IF MEMBER(5,L3) THEN 0
-	ELSE IF L1#[] THEN
+g5(l1,l2,[l3]):=
+	if member(5,l3) then 0
+	else if l1#[] then
 	(
-		IF NOT (PREDVAL(L1[1]<=4) AND PREDVAL(L1[2]<=4)) THEN FUNMAKE('G5,APPEND([L1,L2],L3))
-		ELSE IF L1[1]<=4 AND L1[2]<=4 THEN APPLY('G4,APPEND([L1,L2],L3))+G55*DIFFLIST(A([L1[1]],[])*A([L1[2]],[]),L3)
-		ELSE IF L1[1]<=4 THEN G55*APPLY('A,APPEND([[L1[1]],[]],L3))
-		ELSE IF L1[2]<=4 THEN G55*APPLY('A,APPEND([[L1[2]],[]],L3))
-		ELSE IF L3#[] THEN 0 ELSE G55
+		if not (predval(l1[1]<=4) and predval(l1[2]<=4)) then funmake('g5,append([l1,l2],l3))
+		else if l1[1]<=4 and l1[2]<=4 then apply('g4,append([l1,l2],l3))+g55*difflist(a([l1[1]],[])*a([l1[2]],[]),l3)
+		else if l1[1]<=4 then g55*apply('a,append([[l1[1]],[]],l3))
+		else if l1[2]<=4 then g55*apply('a,append([[l1[2]],[]],l3))
+		else if l3#[] then 0 else g55
 	)
-	ELSE IF L2#[] THEN
+	else if l2#[] then
 	(
-		IF NOT (PREDVAL(L2[1]<=4) AND PREDVAL(L2[2]<=4)) THEN FUNMAKE('G5,APPEND([L1,L2],L3))
-		ELSE IF L2[1]<=4 AND L2[2]<=4 THEN APPLY('G4,APPEND([L1,L2],L3))
-		ELSE IF L2[1]<=4 THEN -APPLY('A,APPEND([[],[L2[1]]],L3))
-		ELSE IF L2[2]<=4 THEN -APPLY('A,APPEND([[],[L2[2]]],L3))
-		ELSE IF L3#[] THEN SUM(DIFFLIST(A([I],[])*A([],[I]),L3),I,1,4)
-		ELSE 1/G55+SUM(A([I],[])*A([],[I]),I,1,4)
+		if not (predval(l2[1]<=4) and predval(l2[2]<=4)) then funmake('g5,append([l1,l2],l3))
+		else if l2[1]<=4 and l2[2]<=4 then apply('g4,append([l1,l2],l3))
+		else if l2[1]<=4 then -apply('a,append([[],[l2[1]]],l3))
+		else if l2[2]<=4 then -apply('a,append([[],[l2[2]]],l3))
+		else if l3#[] then sum(difflist(a([i],[])*a([],[i]),l3),i,1,4)
+		else 1/g55+sum(a([i],[])*a([],[i]),i,1,4)
 	)
-	ELSE FUNMAKE('G5,APPEND([L1,L2],L3));
+	else funmake('g5,append([l1,l2],l3));
 
-MATCHDECLARE([DUMMY1,DUMMY2],TRUE);
-DEFRULE(EVPOT,A([DUMMY1],[],DUMMY2)-A([DUMMY2],[],DUMMY1),-F([DUMMY1,DUMMY2],[]));
+matchdeclare([dummy1,dummy2],true);
+defrule(evpot,a([dummy1],[],dummy2)-a([dummy2],[],dummy1),-f([dummy1,dummy2],[]));

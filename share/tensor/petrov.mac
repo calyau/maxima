@@ -1,59 +1,59 @@
 /* Petrov classification scheme for diagonal metrics of dimension 4 */
 
-SETUPTETRAD():=BLOCK([],
-    IF DIM # 4 THEN
-        ERROR("Dimension of space must be 4 to do this calculation"),
-    ARRAY(%PSI,COMPLETE,4),ARRAY(%TET,COMPLETE,4,4),
-    IF DIAGMETRIC THEN (TETRADCALEQ:TRUE,
-        %TET[1,1]:(-UG[1,1])^(1/2)*2^(-1/2),  %TET[1,2]:0,
-            %TET[1,3]:0,  %TET[1,4]:UG[4,4]^(1/2)*2^(-1/2),
-        %TET[2,1]:-(-UG[1,1])^(1/2)*2^(-1/2),  %TET[2,2]:0,
-            %TET[2,3]:0,  %TET[2,4]:UG[4,4]^(1/2)*2^(-1/2),
-        %TET[3,1]:0,  %TET[3,2]:%I*(-UG[2,2])^(1/2)*2^(-1/2),
-            %TET[3,3]:(-UG[3,3])^(1/2)*2^(-1/2),  %TET[3,4]:0,
-        %TET[4,1]:0,  %TET[4,2]:-%I*(-UG[2,2])^(1/2)*2^(-1/2),
-            %TET[4,3]:(-UG[3,3])^(1/2)*2^(-1/2),  %TET[4,4]:0)
-    ELSE ERROR("Metric not diagonal - cannot calculate tetrad"))$
+setuptetrad():=block([],
+    if dim # 4 then
+        error("Dimension of space must be 4 to do this calculation"),
+    array(%psi,complete,4),array(%tet,complete,4,4),
+    if diagmetric then (tetradcaleq:true,
+        %tet[1,1]:(-ug[1,1])^(1/2)*2^(-1/2),  %tet[1,2]:0,
+            %tet[1,3]:0,  %tet[1,4]:ug[4,4]^(1/2)*2^(-1/2),
+        %tet[2,1]:-(-ug[1,1])^(1/2)*2^(-1/2),  %tet[2,2]:0,
+            %tet[2,3]:0,  %tet[2,4]:ug[4,4]^(1/2)*2^(-1/2),
+        %tet[3,1]:0,  %tet[3,2]:%i*(-ug[2,2])^(1/2)*2^(-1/2),
+            %tet[3,3]:(-ug[3,3])^(1/2)*2^(-1/2),  %tet[3,4]:0,
+        %tet[4,1]:0,  %tet[4,2]:-%i*(-ug[2,2])^(1/2)*2^(-1/2),
+            %tet[4,3]:(-ug[3,3])^(1/2)*2^(-1/2),  %tet[4,4]:0)
+    else error("Metric not diagonal - cannot calculate tetrad"))$
 
-CONTRACT4(L1,L2,L3,L4):=(MODEDECLARE([L1,L2,L3,L4],FIXNUM),
-    BLOCK([ANS:0],
-	  FOR I THRU 4 DO
-	      (FOR J THRU 4 DO
-		   (FOR K THRU 4 DO
-		        (FOR L THRU 4 DO
-			     ANS:ANS+W[I,J,K,L]*%TET[L1,I]*%TET[L2,J]
-                                               *%TET[L3,K]*%TET[L4,L]))),
-	  RATSIMP(ANS)))$
+contract4(l1,l2,l3,l4):=(modedeclare([l1,l2,l3,l4],fixnum),
+    block([ans:0],
+	  for i thru 4 do
+	      (for j thru 4 do
+		   (for k thru 4 do
+		        (for l thru 4 do
+			     ans:ans+w[i,j,k,l]*%tet[l1,i]*%tet[l2,j]
+                                               *%tet[l3,k]*%tet[l4,l]))),
+	  ratsimp(ans)))$
 
-PSI():=BLOCK([],IF NOT TETRADCALEQ THEN SETUPTETRAD(),
-    PSI[0]:-CONTRACT4(1,3,1,3),
-    PSI[1]:-CONTRACT4(1,2,1,3),
-    PSI[2]:-1/2*(CONTRACT4(1,2,1,2)+CONTRACT4(1,2,3,4)),
-    PSI[3]:CONTRACT4(1,2,2,4),
-    PSI[4]:-CONTRACT4(2,4,2,4))$
+psi():=block([],if not tetradcaleq then setuptetrad(),
+    psi[0]:-contract4(1,3,1,3),
+    psi[1]:-contract4(1,2,1,3),
+    psi[2]:-1/2*(contract4(1,2,1,2)+contract4(1,2,3,4)),
+    psi[3]:contract4(1,2,2,4),
+    psi[4]:-contract4(2,4,2,4))$
 
 
-PETROV():=BLOCK([II,JJ,GG,HH],PSI(),
-       II:RATSIMP(%PSI[0]*%PSI[4]-4*%PSI[1]*%PSI[3]+3*%PSI[2]^2),
-       JJ:RATSIMP(DETERMINANT(MATRIX([%PSI[0],%PSI[1],%PSI[2]],
-				     [%PSI[1],%PSI[2],%PSI[3]],
-				     [%PSI[2],%PSI[3],%PSI[4]]))),
-       IF RATSIMP(II^3-27*JJ^2) # 0 THEN "Type is I"
-	   ELSE (GG:RATSIMP(%PSI[0]^2*%PSI[3]-3*%PSI[0]*%PSI[1]*%PSI[2]
-					     +2*%PSI[1]^3),
-		 IF II = 0 AND JJ = 0
-		     THEN (IF GG = 0
-			       THEN (HH:RATSIMP(%PSI[0]*%PSI[2]-%PSI[1]^2),
-				     IF HH = 0
-					 THEN (IF 
-					 %PSI[0] = 0 AND %PSI[1] = 0
-						     AND %PSI[2] = 0
-						     AND %PSI[3] = 0
-						     AND %PSI[4] = 0
-					  THEN "Type is FLAT(0)"
-					  ELSE "Type is N")
-					 ELSE "Type is III")
-			       ELSE "Type is III")
-		     ELSE (HH:RATSIMP(%PSI[0]*%PSI[2]-%PSI[1]^2),
-			   IF RATSIMP(GG-%PSI[0]^2*II-12*HH^2) # 0
-			       THEN "Type is II" ELSE "Type is D")))$
+petrov():=block([ii,jj,gg,hh],psi(),
+       ii:ratsimp(%psi[0]*%psi[4]-4*%psi[1]*%psi[3]+3*%psi[2]^2),
+       jj:ratsimp(determinant(matrix([%psi[0],%psi[1],%psi[2]],
+				     [%psi[1],%psi[2],%psi[3]],
+				     [%psi[2],%psi[3],%psi[4]]))),
+       if ratsimp(ii^3-27*jj^2) # 0 then "Type is I"
+	   else (gg:ratsimp(%psi[0]^2*%psi[3]-3*%psi[0]*%psi[1]*%psi[2]
+					     +2*%psi[1]^3),
+		 if ii = 0 and jj = 0
+		     then (if gg = 0
+			       then (hh:ratsimp(%psi[0]*%psi[2]-%psi[1]^2),
+				     if hh = 0
+					 then (if 
+					 %psi[0] = 0 and %psi[1] = 0
+						     and %psi[2] = 0
+						     and %psi[3] = 0
+						     and %psi[4] = 0
+					  then "Type is FLAT(0)"
+					  else "Type is N")
+					 else "Type is III")
+			       else "Type is III")
+		     else (hh:ratsimp(%psi[0]*%psi[2]-%psi[1]^2),
+			   if ratsimp(gg-%psi[0]^2*ii-12*hh^2) # 0
+			       then "Type is II" else "Type is D")))$

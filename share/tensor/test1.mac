@@ -1,11 +1,11 @@
-(IF GET('CTENSR,'VERSION) = FALSE THEN LOAD(CTENSR),DONE)$
-(SETFLAGS(),RATFAC:TRUE,DIM:4,OMEGA:[X,Y,Z,T],
- LG:
- MATRIX([1/(1-2*M/X),0,0,0],[0,X^2,0,0],[0,0,X^2*SIN(Y)^2,0],[0,0,0,2*M/X-1]))$
-METRIC()$
-CHRISTOF(MCS)$
-RICCICOM(TRUE)$
-SCURVATURE();
-RIEMANN(TRUE)$
-RAISERIEMANN(FALSE)$
-RINVARIANT();
+(if get('ctensor,'version) = false then load(ctensor),done)$
+(setflags(),ratfac:true,dim:4,omega:[x,y,z,t],
+ lg:
+ matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,2*m/x-1]))$
+metric()$
+christof(mcs)$
+riccicom(true)$
+scurvature();
+riemann(true)$
+raiseriemann(false)$
+rinvariant();

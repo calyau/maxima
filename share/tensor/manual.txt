@@ -26,12 +26,12 @@ particular nature and difficulty of the user's problem.  However, one
 should keep in mind the following characteristics of the two
 implementations:
 
-2Component Tensor Manipulation* (CTENSR)
+2Component Tensor Manipulation* (CTENSOR)
 
 .begin narrow 4,5
 
 i) The representation of tensors and tensor operations explicitly in
-terms of their components makes CTENSR easy to use. Specification of
+terms of their components makes CTENSOR easy to use. Specification of
 the metric and the computation of the induced tensors and invariants
 is straightforward.
 
@@ -46,7 +46,7 @@ these difficulties.
 .end
 
 .next page
-2Indicial Tensor Manipulation* (ITENSR)
+2Indicial Tensor Manipulation* (ITENSOR)
 
 .begin narrow 4,5
 
@@ -54,23 +54,23 @@ i) Because of the special way in which tensors and tensor operations
 are represented in terms of symbolic operations on their indices,
 expressions which in the 2component* representation would be
 unmanageable can sometimes be greatly simplified by using the special
-routines for symmetrical objects in ITENSR. In this way the structure
+routines for symmetrical objects in ITENSOR. In this way the structure
 of a large expression may be more transparent.
 
 ii) On the other hand, because of the the special indicial
-representation in ITENSR, in some cases the user may find difficulty
+representation in ITENSOR, in some cases the user may find difficulty
 with the specification of the metric, function definition, and the
 evaluation of differentiated "indexed" objects.
 .end
 
 
-These two tensor manipulation packages, CTENSR and ITENSR, are
+These two tensor manipulation packages, CTENSOR and ITENSOR, are
 available to the MACSYMA user on the TENSOR directory.  To use the
 functions in these files, the user can load them in by doing
 
-LOADFILE(CTENSR,FASL,TENSOR); --- for component tensor manipulation.
+LOADFILE(CTENSOR,FASL,TENSOR); --- for component tensor manipulation.
 
-LOADFILE(ITENSR,FASL,TENSOR); --- for indicial tensor manipulation
+LOADFILE(ITENSOR,FASL,TENSOR); --- for indicial tensor manipulation
 
 
 Both of these packages enable the user to specify a metric and compute
@@ -84,15 +84,15 @@ demonstrate applications of these packages to well defined problems.
 To run these demos the user types, in MACSYMA,
 BATCH(CTENSO,DEMO1,TENSOR), BATCH(CTENSO,DEMO1,TENSOR), ... or
 BATCH(ITENSO,DEMO1,TENSOR), BATCH(ITENSO,DEMO2,TENSOR)... There are
-several CTENSR and ITENSR demos and more are being added.
+several CTENSOR and ITENSOR demos and more are being added.
 
 .next page
 .sec(|Component Tensor Manipulation- Basic Functions|,compontenfuun)
 
-To use CTENSR the user does LOADFILE(CTENSR,FASL,TENSOR). The basic
+To use CTENSOR the user does LOADFILE(CTENSOR,FASL,TENSOR). The basic
 function is called
 .function(TSETUP,)
-which automatically loads the CTENSR package from within MACSYMA (if
+which automatically loads the CTENSOR package from within MACSYMA (if
 it is not already loaded) and then prompts the user to make use of it.
 The user is first asked to specify the dimension of the manifold. If
 the dimension is 2, 3 or 4 then the list of coordinates defaults to
@@ -110,7 +110,7 @@ in a power series.
 A sample protocol is begun below for the static, spherically symmetric
 metric (standard coordinates) which will be applied to the problem of
 deriving Einstein's vacuum equations (which lead to the Schwarzschild
-solution) as an example. Many of the functions in CTENSR will be
+solution) as an example. Many of the functions in CTENSOR will be
 displayed for the standard metric as examples.
 .example
 .begin group
@@ -164,7 +164,7 @@ N;
 .endfunction
 
 .skip
-The other functions and features in CTENSR are now listed below.
+The other functions and features in CTENSOR are now listed below.
 
 .function(CHRISTOF,arg)
 computes the Christoffel symbols of both kinds.  The 2arg*
@@ -680,7 +680,7 @@ equations are the components of an array named ROSEN.
 .next page
 .sec(Indicial Tensor Manipulation ,indicial,1)
 
-In ITENSR a tensor is represented as an "indexed object" .  This is a
+In ITENSOR a tensor is represented as an "indexed object" .  This is a
 function of 3 groups of indices which represent the covariant,
 contravariant and derivative indices.  The covariant indices are
 specified by a list as the first argument to the indexed object, and
@@ -702,11 +702,11 @@ respect to some coordinate whose index does not appear as an argument
 to the indexed object would normally yield zero. This is because
 MACSYMA would not know that the tensor represented by the indexed
 object might depend implicitly on the corresponding coordinate.  By
-modifying the existing MACSYMA function DIFF in ITENSR, MACSYMA now
+modifying the existing MACSYMA function DIFF in ITENSOR, MACSYMA now
 assumes that all indexed objects depend on any variable of
 differentiation unless otherwise stated.  This makes it possible for
 the summation convention to be extended to derivative indices. It
-should be noted that ITENSR does not possess the capabilities of
+should be noted that ITENSOR does not possess the capabilities of
 raising derivative indices, and so they are always treated as
 covariant.
 
@@ -725,7 +725,7 @@ arguments to indexed objects. Optional arguments are enclosed in angle
 brackets.
 
 .next page
-.sec(|ITENSR - Basic Functions|,compontenfun)
+.sec(|ITENSOR - Basic Functions|,compontenfun)
 
 .function(CHR1,|1[*i,j,k1]*|)
 yields the Christoffel symbol of the first kind via the definition
@@ -874,7 +874,7 @@ symbols of the second kind (CHR2).  The following notation is used:
 
 .function(DIFF,|exp,v1,n1,v2,n2,...|) 
  is the usual MACSYMA differentiation function which has been expanded
-in its abilities for ITENSR. It takes the derivative of 2exp* with
+in its abilities for ITENSOR. It takes the derivative of 2exp* with
 respect to 2v1 n1* times, with respect to 2v2 n2* times, etc.  For
 the tensor package, the following modifications have been incorporated
 (also see the function UNDIFF):
@@ -1031,7 +1031,7 @@ CURVATURE.
 
 .function(RATEXPAND,|exp|)
  is the fastest way to expand products and powers of sums of indexed
-objects generated by ITENSR within MACSYMA.
+objects generated by ITENSOR within MACSYMA.
 .endfunction
 
 .function(RENAME,|exp, <count>|)
@@ -1186,7 +1186,7 @@ EV(2exp*, DIFF).
 .endfunction
 
 .next page
-.sec(|ITENSR - Simplification Functions|,compontensimp)
+.sec(|ITENSOR - Simplification Functions|,compontensimp)
 
 .function(ALLSYM,|true|)
 if TRUE then all indexed objects are assumed symmetric in all of their
@@ -1341,7 +1341,7 @@ tensor for the metric (D56) where L is a small parameter.
 .endfunction
 
 .next page
-.sec(ITENSR - Property Assignment Functions,compontenprop)
+.sec(ITENSOR - Property Assignment Functions,compontenprop)
 
 .function(COORD,|tensor1,tensor2,...|)
 gives 2tensori* the coordinate differentiation property that the
@@ -1518,7 +1518,7 @@ the same indexed object.
 .endfunction
 
 .next page
-.sec(|ITENSR - Property Display Functions|,compontenproq)
+.sec(|ITENSOR - Property Display Functions|,compontenproq)
 
 .function(DISPCON,|tensor1,tensor2,...|)
  displays the contraction properties of the 2tensori* which were given to DEFCON.  DISPCON(ALL) displays all defined contraction properties as the example under DEFCON illustrates.
@@ -1530,7 +1530,7 @@ displays symmetries declared by DECSYM as a list of lists or returns [] if there
 .endfunction
 
 .next page
-.sec(ITENSR - Property Removal Functions,compontenprox)
+.sec(ITENSOR - Property Removal Functions,compontenprox)
 
 .function(REMCOMPS,tensor)
 unbinds all values from 2tensor1 which were assigned with the
@@ -1555,7 +1555,7 @@ covariant indices and 2n* contravariant indices.
 .endfunction
 
 .next page
-.sec(|ITENSR - Indexing Functions|,compontenindx)
+.sec(|ITENSOR - Indexing Functions|,compontenindx)
 
 .function2 COUNTER
 determines the numerical suffix to be used in generating the next
@@ -1645,11 +1645,11 @@ as the following example demonstrates.
 .endfunction
 
 .next page
-@section(Indicial Tensor Manipulation- ITENSR --> CTENSR)
+@section(Indicial Tensor Manipulation- ITENSOR --> CTENSOR)
 @label(compontenie)
 
 .function(GENERATE,eqn)
-converts an ITENSR equation 2eqn* to a CTENSR assignment statement.
+converts an ITENSOR equation 2eqn* to a CTENSOR assignment statement.
 Implied sums over dummy indices are made explicit while indexed
 objects are transformed into arrays (the array subscripts are in the
 order of covariant followed by contravariant indices of the indexed

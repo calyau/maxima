@@ -1,96 +1,96 @@
-LC2KDT(EXP):=BLOCK([I1,TEM],
-	TEM:0,
-	IF NTERMS(EXP)=1 THEN _LC2KDT0(EXP)
-	ELSE
+lc2kdt(exp):=block([i1,tem],
+	tem:0,
+	if nterms(exp)=1 then _lc2kdt0(exp)
+	else
 	(
-		FOR I1 THRU NTERMS(EXP) DO
-			TEM:TEM+_LC2KDT0(PART(EXP,I1)),
-		TEM
+		for i1 thru nterms(exp) do
+			tem:tem+_lc2kdt0(part(exp,i1)),
+		tem
 	)
 );
 
-_LC2KDT0(EXP):=BLOCK([TEMP1:1,TEMP2:1,TEMP,I1],
-	IF PART(EXP,0)="-" THEN FOR I1 THRU LENGTH(PART(NUM(EXP),1)) DO
+_lc2kdt0(exp):=block([temp1:1,temp2:1,temp,i1],
+	if part(exp,0)="-" then for i1 thru length(part(num(exp),1)) do
 	(
-		TEMP:PART(NUM(EXP),1,I1),
-		IF TENPR(TEMP) AND VERBIFY(NAME(TEMP))=LC THEN
+		temp:part(num(exp),1,i1),
+		if tenpr(temp) and verbify(name(temp))=lc then
 		(
-			TEMP1:_LCPROD(TEMP1,TEMP),
-			TEMP2:TEMP2*TEMP
+			temp1:_lcprod(temp1,temp),
+			temp2:temp2*temp
 		)
 	)
-	ELSE FOR I1 THRU LENGTH(NUM(EXP)) DO
+	else for i1 thru length(num(exp)) do
 	(
-		TEMP:PART(NUM(EXP),I1),
-		IF TENPR(TEMP) AND VERBIFY(NAME(TEMP))=LC THEN
+		temp:part(num(exp),i1),
+		if tenpr(temp) and verbify(name(temp))=lc then
 		(
-			TEMP1:_LCPROD(TEMP1,TEMP),
-			TEMP2:TEMP2*TEMP
+			temp1:_lcprod(temp1,temp),
+			temp2:temp2*temp
 		)
 	),
-	TEMP1*RATSIMP(EXP/TEMP2)
+	temp1*ratsimp(exp/temp2)
 );
 
-_LCPROD(LC1,LC2):=BLOCK([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
-	IF NUMBERP(LC1) OR SYMBOLP(LC1) THEN LC1*LC2
-	ELSE IF TENPR(LC2) THEN	/* so name(LC1)=LC */
+_lcprod(lc1,lc2):=block([temp1,tempk,ln11,lf,l1,l2,l11,l22,lku,lkl],
+	if numberp(lc1) or symbolp(lc1) then lc1*lc2
+	else if tenpr(lc2) then	/* so name(LC1)=LC */
 	(
-		IF VERBIFY(NAME(LC2))=LC AND TENPR(LC1) THEN
+		if verbify(name(lc2))=lc and tenpr(lc1) then
 		(		/* again test if LC1 is a single */
-			l1:COVI(LC1),
-			l11:CONTI(LC1),
-			l2:COVI(LC2),
-			l22:CONTI(LC2),
-			lkl:APPEND(l1,l2),
-			lku:APPEND(l11,l22),
-			IF lkl=[] THEN
+			l1:covi(lc1),
+			l11:conti(lc1),
+			l2:covi(lc2),
+			l22:conti(lc2),
+			lkl:append(l1,l2),
+			lku:append(l11,l22),
+			if lkl=[] then
 			(
-				lf:LENGTH(l11),
-				ln11:MAKELIST(DUMMY(),I,1,lf),
+				lf:length(l11),
+				ln11:makelist(dummy(),i,1,lf),
 				(
 					tempk:1,
-					FOR i THRU lf DO
-						tempk:tempk*D([],[ln11[i],l11[i]])
+					for i thru lf do
+						tempk:tempk*d([],[ln11[i],l11[i]])
 				),
-				KDELTA(ln11,l22)*tempk
+				kdelta(ln11,l22)*tempk
 			)
-			ELSE IF lku=[] THEN
+			else if lku=[] then
 			(
-				lf:LENGTH(l1),
-				ln11:MAKELIST(DUMMY(),I,1,lf),
+				lf:length(l1),
+				ln11:makelist(dummy(),i,1,lf),
 				(
 					tempk:1,
-					FOR i THRU lf DO
-						tempk:tempk*D([l1[i],ln11[i]],[])
+					for i thru lf do
+						tempk:tempk*d([l1[i],ln11[i]],[])
 				),
-				KDELTA(l2,ln11)*tempk
+				kdelta(l2,ln11)*tempk
 			)
-			ELSE KDELTA(lkl,lku)
+			else kdelta(lkl,lku)
 		)
-		ELSE LC1*LC2
+		else lc1*lc2
 	)
-	ELSE
+	else
 	(
-		IF NUMBERP(LC2) OR SYMBOLP(LC2) THEN LC2*LC1
-		ELSE
+		if numberp(lc2) or symbolp(lc2) then lc2*lc1
+		else
 		(
-			temp1:_EXTLC(LC1,LC2),
-			_LCPROD(LC1,temp1)*(LC2/temp1)
+			temp1:_extlc(lc1,lc2),
+			_lcprod(lc1,temp1)*(lc2/temp1)
 		)
 	)
 );
 
-_EXTLC(LC1,LC2):=BLOCK([temp],
-	IF COVI(LC1)#[] THEN
+_extlc(lc1,lc2):=block([temp],
+	if covi(lc1)#[] then
 	(
-		temp:PART(NUM(LC2),1,1),
-		IF TENPR(temp) AND VERBIFY(NAME(temp))=LC AND CONTI(temp)#[] THEN temp
-		ELSE 1.
+		temp:part(num(lc2),1,1),
+		if tenpr(temp) and verbify(name(temp))=lc and conti(temp)#[] then temp
+		else 1.
 	)
-	ELSE
+	else
 	(
-		temp:PART(NUM(LC2),1,1),
-		IF TENPR(temp) AND VERBIFY(NAME(temp))=VERBIFY(NAME(LC1)) AND COVI(temp)#[] THEN temp
-		ELSE 1.
+		temp:part(num(lc2),1,1),
+		if tenpr(temp) and verbify(name(temp))=verbify(name(lc1)) and covi(temp)#[] then temp
+		else 1.
 	)
 );

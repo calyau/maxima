@@ -21,8 +21,8 @@ Computer Programs for Research in Gravitation and Differential Geometry
                                 ABSTRACT
 
 This report contains a description of all current functions and features
-(with  many  examples)  of  the programs  CTENSR  and  ITENSOR which are
-available  with  MAXIMA.    CTENSR   is  a  standard   Component  TENSoR
+(with  many  examples)  of the programs  CTENSOR  and  ITENSOR which are
+available  with  MAXIMA.    CTENSOR   is a  standard   Component  TENSoR
 manipulation  system which  means  that geometrical  tensor  objects are
 represented  as   arrays  or  matrices.    Tensor  operations   such  as
 contraction  or covariant  differentiation are  carried out  by actually
@@ -33,7 +33,7 @@ indices.   Tensor   operations   such   as   contraction   or  covariant
 differentiation  are performed  by manipulating  the  indices themselves
 rather than the components  to which they correspond.  The  two programs
 are connected in the sense  that  one  can  generate  an  expression  in
-ITENSOR and have the corresponding expression generated  in  the  CTENSR
+ITENSOR and have the corresponding expression generated in  the  CTENSOR
 (MAXIMA) format automatically.
 
 KEY WORDS: MAXIMA,  computer algebra, algebraic  manipulation,  computer
@@ -76,7 +76,7 @@ Chapter 1     Tensor Manipulation . . . . . . . . . . . . . . . . . . .1
     10        Indicial Tensor Manipulation- Property Removal Functions .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .           28
     11        Indicial Tensor Manipulation- Indexing Functions . . . .29
-    12        Indicial Tensor Manipulation- ITENSR --> CTENSR . . . . 31
+    12        Indicial Tensor Manipulation- ITENSOR --> CTENSOR . . . 31
 
 FUNCTION,VARIABLE, and OPTION INDEX  . . . . . . . . . . . . . . . . . i
 Tensor Manipulaton                 1
@@ -112,10 +112,10 @@ particular nature  and difficulty of  the user's problem.   However, one
 should  keep   in  mind  the   following  characteristics  of   the  two
 implementations:
 
-    Component Tensor Manipulation (CTENSR)
+    Component Tensor Manipulation (CTENSOR)
 
         i)  The  representation of  tensors  and  tensor operations
-    explicitly in  terms of their  components makes CTENSR  easy to
+    explicitly in  terms of their  components makes CTENSOR  easy to
     use. Specification  of the  metric and  the computation  of the
     induced tensors and invariants is straightforward.
 
@@ -130,7 +130,7 @@ implementations:
 2           1.1 Tensor Manipulation Programs - Introduction      TENSORS
 
 
-    Indicial Tensor Manipulation (ITENSR)
+    Indicial Tensor Manipulation (ITENSOR)
 
         i) Because of the  special way in which tensors  and tensor
     operations are represented  in terms of symbolic  operations on
@@ -146,11 +146,11 @@ implementations:
     definition,  and  the  evaluation  of  differentiated "indexed"
     objects.
 
-    These  two  tensor  manipulation packages,  CTENSR  and ITENSOR, are
+    These two  tensor  manipulation packages,  CTENSOR  and ITENSOR, are
 available  to the  MAXIMA  user  on the  TENSOR directory.   To  use the
 functions in these files, the user can load them in by doing
 
-    LOAD(CTENSR);  --- for component tensor manipulation.
+    LOAD(CTENSOR);  --- for component tensor manipulation.
 
     LOAD(ITENSOR); --- for indicial tensor manipulation
 
@@ -164,18 +164,18 @@ applied owing to their generality.
 demonstrate applications of these packages to well defined  problems. To
 run  these  demos  the  user  types,  in  MAXIMA,  DEMO("CTENSO_1.DEM"),
 DEMO("CTENSO_2.DEM"), ... or DEMO("ITENSOR.DEM"). There are several
-CTENSR and  ITENSR demos and more are being added.
+CTENSOR and  ITENSOR demos and more are being added.
 TENSORS                                                                3
 
 
 2 Component Tensor Manipulation- Basic Functions
 
 
-    To use CTENSR the user does  LOAD(CTENSR).  The  basic  function  is
+    To use CTENSOR the user does  LOAD(CTENSOR).  The  basic  function  is
     called
 
 
-TSETUP()  which  automatically  loads  the  CTENSR  package  from within
+TSETUP() which  automatically  loads  the  CTENSOR  package  from within
     MAXIMA  (if it is not  already loaded) and then prompts the  user to
     make use of it. The user is first asked to specify the  dimension of
     the  manifold. If  the  dimension is  2, 3  or  4 then  the  list of
@@ -194,7 +194,7 @@ TSETUP()  which  automatically  loads  the  CTENSR  package  from within
     symmetric metric (standard coordinates) which will be applied to the
     problem of deriving Einstein's  vacuum equations (which lead  to the
     Schwarzschild  solution) as  an example.  Many of  the  functions in
-    CTENSR will be displayed for the standard metric as examples.
+    CTENSOR will be displayed for the standard metric as examples.
 
     (Note that interactive prompts do not appear as described in  MAXIMA
     5.9.0. You can still however enter the data "in the blind.")
@@ -244,7 +244,7 @@ TSETUP()  which  automatically  loads  the  CTENSR  package  from within
     N;
 
 
-    The other functions and features in CTENSR are now listed below.
+    The other functions and features in CTENSOR are now listed below.
 
 
 CHRISTOF(arg) computes the Christoffel  symbols of both kinds.   The arg
@@ -666,7 +666,7 @@ BIMETRIC() generates the field equations of Rosen's bimetric theory. The
 [5] Indicial Tensor Manipulation
 
 
-    In ITENSR a tensor is represented as an "indexed object" . This is a
+    In ITENSOR a tensor is represented as an "indexed object". This is a
 function  of  3  groups  of  indices  which  represent   the  covariant,
 contravariant  and  derivative  indices.   The  covariant   indices  are
 specified by a list as the first argument to the indexed object, and the
@@ -958,7 +958,7 @@ METRIC(name) specifies name as the metric name by assigning the variable
 
 
 RATEXPAND(exp) is the fastest way to expand products and powers  of sums
-    of indexed objects generated by ITENSR within MACSYMA.
+    of indexed objects generated by ITENSOR within MACSYMA.
 
 
 RENAME(exp, <count>)  returns an expression  equivalent to exp  but with
@@ -1461,11 +1461,11 @@ INDICES(exp) returns a list of two elements.  The first is a list of the
 TENSORS                                                               31
 
 
-12 Indicial Tensor Manipulation- ITENSR --> CTENSR
+12 Indicial Tensor Manipulation- ITENSOR --> CTENSOR
 
 
 
-GENERATE(eqn) converts  an ITENSR  equation eqn  to a  CTENSR assignment
+GENERATE(eqn) converts an ITENSOR  equation eqn  to a CTENSOR assignment
     statement. Implied sums over  dummy indices are made  explicit while
     indexed objects  are transformed into  arrays (the  array subscripts
     are in the order  of covariant followed by contravariant  indices of
@@ -1503,7 +1503,7 @@ GENERATE(eqn) converts  an ITENSR  equation eqn  to a  CTENSR assignment
 
 (C6) METRICCONVERT;
 (D6)                             TRUE
-32        1.12 Indicial Tensor Manipulation- ITENSR --> CTENSR   TENSORS
+32      1.12 Indicial Tensor Manipulation- ITENSOR --> CTENSOR   TENSORS
 
 
 (C7) GENERATE(H([I,K],[J])=D5);

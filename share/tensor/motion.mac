@@ -1,19 +1,19 @@
 /* Computes geodesic equations of motion */
 
-MOTION(DIS):=BLOCK([S],DEPENDS(OMEGA,S),
-       FOR I THRU DIM DO
-	   EM[I]:IF DIAGMETRIC
-		     THEN RATSIMP(DIFF(OMEGA[I],S,2) + 1/2*SUM(
-				      DIFF(LG[A,A],OMEGA[I])
-				       *DIFF(OMEGA[A],S)^2,A,1,DIM))
-		     ELSE RATSIMP(DIFF(OMEGA[I],S,2) 
-				+ 1/2*SUM(SUM(DIFF(LG[A,B],OMEGA[I])
-				       *DIFF(OMEGA[A],S)*DIFF(OMEGA[B],S),A,
-				      1,DIM),B,1,DIM)),
-       IF DIS#FALSE THEN FOR I THRU DIM DO LDISPLAY(EM[I]),DONE)$
-MOTION2(DIS):=BLOCK([S],DEPENDS(OMEGA,S),
-       FOR I THRU DIM DO
-	   EMM[I]:DIFF(OMEGA[I],S,2) +			 SUM(SUM(MCS[A,B,I]
-				       *DIFF(OMEGA[A],S)*DIFF(OMEGA[B],S),A,
-				      1,DIM),B,1,DIM),
-       IF DIS#FALSE THEN FOR I THRU DIM DO LDISPLAY(EMM[I]),DONE)$
+motion(dis):=block([s],depends(omega,s),
+       for i thru dim do
+	   em[i]:if diagmetric
+		     then ratsimp(diff(omega[i],s,2) + 1/2*sum(
+				      diff(lg[a,a],omega[i])
+				       *diff(omega[a],s)^2,a,1,dim))
+		     else ratsimp(diff(omega[i],s,2) 
+				+ 1/2*sum(sum(diff(lg[a,b],omega[i])
+				       *diff(omega[a],s)*diff(omega[b],s),a,
+				      1,dim),b,1,dim)),
+       if dis#false then for i thru dim do ldisplay(em[i]),done)$
+motion2(dis):=block([s],depends(omega,s),
+       for i thru dim do
+	   emm[i]:diff(omega[i],s,2) +			 sum(sum(mcs[a,b,i]
+				       *diff(omega[a],s)*diff(omega[b],s),a,
+				      1,dim),b,1,dim),
+       if dis#false then for i thru dim do ldisplay(emm[i]),done)$

@@ -166,7 +166,7 @@ GENERATE cannot currently handle indexed objects of the same name~
 	      (append (ncons (car e)) (ncons (t-convert (cadr e))) (cddr e)))
 	     (t (changeform e))))
 
-(defun CHANGEFORM (e)           ;Converts a single object from ITENSR format to
+(defun CHANGEFORM (e)           ;Converts a single object from ITENSOR format to
        (cond ((atom e) e)       ;ETENSR format
 	     ((rpobj e)
 	      (do ((deriv (cdddr e) (cdr deriv))
@@ -182,7 +182,7 @@ GENERATE cannot currently handle indexed objects of the same name~
 	     (t e)))
 
 (defun EQUIV-TABLE (a)                ;Makes appropiate name changes converting
-       (cond ((memq a '($CHR1 %CHR1)) '$LCS)             ;from ITENSR to ETENSR
+       (cond ((memq a '($CHR1 %CHR1)) '$LCS)            ;from ITENSOR to ETENSR
 	     ((memq a '($CHR2 %CHR2)) '$MCS)
 	     (t a)))
 

@@ -1,40 +1,40 @@
 
-CHR1(I,J,K):=(MODEDECLARE([I,J,K],INTEGER),
-  IF %CHR1[I,J,K]#UNDEF THEN %CHR1[I,J,K] 
-  ELSE %CHR1[I,J,K]:%CHR1[J,I,K]:
-      RATSIMP((1/2)*(DIFF(LG[I,K],X[J])+DIFF(LG[J,K],X[I])-DIFF(LG[I,J],X[K]))) )$
+chr1(i,j,k):=(modedeclare([i,j,k],integer),
+  if %chr1[i,j,k]#undef then %chr1[i,j,k] 
+  else %chr1[i,j,k]:%chr1[j,i,k]:
+      ratsimp((1/2)*(diff(lg[i,k],x[j])+diff(lg[j,k],x[i])-diff(lg[i,j],x[k]))) )$
 
-CHR2(I,J,L):=(MODEDECLARE([I,J,K,L],INTEGER),
-  IF %CHR2[I,J,L]#UNDEF THEN %CHR2[I,J,L]
-  ELSE %CHR2[I,J,L]:%CHR2[J,I,L]:BLOCK([ANS],ANS:0,
-       IF NOT INVERTED THEN (INVERTED:TRUE,LG:G^^-1),
-       FOR K:1 THRU 4 DO ANS:ANS+CHR1(I,J,K)*UG[K,L],
-       RATSIMP(ANS) ) )$
+chr2(i,j,l):=(modedeclare([i,j,k,l],integer),
+  if %chr2[i,j,l]#undef then %chr2[i,j,l]
+  else %chr2[i,j,l]:%chr2[j,i,l]:block([ans],ans:0,
+       if not inverted then (inverted:true,lg:g^^-1),
+       for k:1 thru 4 do ans:ans+chr1(i,j,k)*ug[k,l],
+       ratsimp(ans) ) )$
 
-RIEMANN(I,J,K,L):=(MODEDECLARE([I,J,K,L],INTEGER),
-  IF %RIEMANN[I,J,K,L]#UNDEF THEN %RIEMANN[I,J,K,L]
-    ELSE IF (I=J) OR (L=K) THEN %RIEMANN[I,J,K,L]:0
-    ELSE IF I<J THEN %RIEMANN[I,J,K,L]:-RIEMANN(J,I,K,L)
-    ELSE IF K<L THEN %RIEMANN[I,J,K,L]:-RIEMANN(I,J,L,K)
-    ELSE IF I+4*J<K+4*L THEN RIEMANN(K,L,I,J)
-    ELSE %RIEMANN[I,J,K,L]:%RIEMANN[K,L,I,J]:RATSIMP(
-        RIE1(J,L,I,K)-RIE1(J,K,I,L)+RIE2(I,L,J,K)-RIE2(I,K,J,L)))$
+riemann(i,j,k,l):=(modedeclare([i,j,k,l],integer),
+  if %riemann[i,j,k,l]#undef then %riemann[i,j,k,l]
+    else if (i=j) or (l=k) then %riemann[i,j,k,l]:0
+    else if i<j then %riemann[i,j,k,l]:-riemann(j,i,k,l)
+    else if k<l then %riemann[i,j,k,l]:-riemann(i,j,l,k)
+    else if i+4*j<k+4*l then riemann(k,l,i,j)
+    else %riemann[i,j,k,l]:%riemann[k,l,i,j]:ratsimp(
+        rie1(j,l,i,k)-rie1(j,k,i,l)+rie2(i,l,j,k)-rie2(i,k,j,l)))$
 
-RIE2(I,J,K,L):=BLOCK([ANS],
-    MODEDECLARE([I,J,K,L,R],INTEGER),
-     ANS:0,
-        FOR R:1 THRU 4 DO ANS:ANS+CHR1(I,J,R)*CHR2(K,L,R), ANS)$
+rie2(i,j,k,l):=block([ans],
+    modedeclare([i,j,k,l,r],integer),
+     ans:0,
+        for r:1 thru 4 do ans:ans+chr1(i,j,r)*chr2(k,l,r), ans)$
 
-RIE1(I,J,K,L):=(MODEDECLARE([I,J,K,L],INTEGER),
-    DIFF(CHR1(I,J,K),X[L]))$
+rie1(i,j,k,l):=(modedeclare([i,j,k,l],integer),
+    diff(chr1(i,j,k),x[l]))$
 
-RICCI(I,J):=(
-  MODEDECLARE([I,J,K,L],INTEGER,INVERTED,BOOLEAN),
-  IF %RICCI[I,J]#UNDEF THEN %RICCI[I,J]
-  ELSE %RICCI[I,J]:%RICCI[J,I]:BLOCK([ANS], ANS:0,
-    IF NOT INVERTED THEN (INVERTED:TRUE,UG:G^^-1),
-    FOR K:1 THRU 4 DO 
-        FOR L:1 THRU 4 DO ANS:ANS+RIEMANN(I,K,J,L)*UG[K,L],
-     RATSIMP(ANS))
+ricci(i,j):=(
+  modedeclare([i,j,k,l],integer,inverted,boolean),
+  if %ricci[i,j]#undef then %ricci[i,j]
+  else %ricci[i,j]:%ricci[j,i]:block([ans], ans:0,
+    if not inverted then (inverted:true,ug:g^^-1),
+    for k:1 thru 4 do 
+        for l:1 thru 4 do ans:ans+riemann(i,k,j,l)*ug[k,l],
+     ratsimp(ans))
 )$
 

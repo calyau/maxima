@@ -4,23 +4,23 @@ SOL:[D=((1-B/X)/(1+B/X))^(2/L),A=(1+B/X)^4*((1-B/X)/(1+B/X))^(2*(L-C-1)/L),
 P=((1-B/X)/(1+B/X))^(C/L)]$
 ELL:L=SQRT((C+1)^2-C*(1-W*C/2))$    */
 
-LOADFILE(CTMS,FASL,DSK,RP)$
-SETUP(ALL)$
-UG:LG^^-1$
-CHRISTOF(NONE)$
-RICCICOM(FALSE)$
-EINSTEIN(FALSE)$
-R:FACTOR(RATSIMP(SUM(RICCI[I,I],I,1,4)))$
-FOR I:1 THRU 4 DO FOR J:1 THRU 4 DO [LR[I,J]:FACTOR(RATSIMP(LR[I,J]))]$
-READ("DEPENDENCIES ON THE SCALAR FIELD P");
-BOXP:0$
-FOR I:1 THRU 4 DO FOR J:1 THRU 4 DO (ADD[I,J]:W/P^2*(
-DIFF(P,OMEGA[I])*DIFF(P,OMEGA[J])-
-LG[I,J]*SUM(DIFF(P,OMEGA[KK])*DIFF(P,OMEGA[KK])*UG[KK,KK],KK,1,4)/2        )
-+(   DIFF(DIFF(P,OMEGA[I]),OMEGA[J])-SUM(MCS[I,J,KK]*DIFF(P,OMEGA[KK]),KK,1,4)-
-LG[I,J]*BOXP        )/P   );
-FOR I:1 THRU 4 DO FOR J:1 THRU 4 DO (BD[I,J]:RATSIMP(
-LR[I,J]-R*LG[I,J]/2-0*T[I,J]-ADD[I,J]));
+loadfile(ctms,fasl,dsk,rp)$
+setup(all)$
+ug:lg^^-1$
+christof(none)$
+riccicom(false)$
+einstein(false)$
+r:factor(ratsimp(sum(ricci[i,i],i,1,4)))$
+for i:1 thru 4 do for j:1 thru 4 do [lr[i,j]:factor(ratsimp(lr[i,j]))]$
+read("DEPENDENCIES ON THE SCALAR FIELD P");
+boxp:0$
+for i:1 thru 4 do for j:1 thru 4 do (add[i,j]:w/p^2*(
+diff(p,omega[i])*diff(p,omega[j])-
+lg[i,j]*sum(diff(p,omega[kk])*diff(p,omega[kk])*ug[kk,kk],kk,1,4)/2        )
++(   diff(diff(p,omega[i]),omega[j])-sum(mcs[i,j,kk]*diff(p,omega[kk]),kk,1,4)-
+lg[i,j]*boxp        )/p   );
+for i:1 thru 4 do for j:1 thru 4 do (bd[i,j]:ratsimp(
+lr[i,j]-r*lg[i,j]/2-0*t[i,j]-add[i,j]));
 
 
 

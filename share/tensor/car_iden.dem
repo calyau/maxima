@@ -4,9 +4,9 @@ dummyx:z;
 allsym:false;
 /*decsym(a,2,0,[ANTI(ALL)],[]);
 show((a([i1,i2])@i4)@L[v,i5]-(a([i1,i2])@L[v,i4])@i5)$*/
-decsym(q,3,0,[ANTI(ALL)],[]);
+decsym(q,3,0,[anti(all)],[]);
 show((q([i1,i2,i3])@i4)@L[v,i5]-(q([i1,i2,i3])@L[v,i4])@i5)$
-decsym(p,4,0,[ANTI(ALL)],[]);
+decsym(p,4,0,[anti(all)],[]);
 show((p([i1,i2,i3,i4])@i5)@L[v,i6]-(p([i1,i2,i3,i4])@L[v,i5])@i6)$
 /*
 decsym(y,5,0,[anti(all)],[]);

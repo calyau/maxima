@@ -20,57 +20,57 @@ load("tensor/itensor")$
 infix("&");
 declare("&",additive); 
 
-"&"(ANY,BODY):=block(local(I),
-  L1:first(indices(ANY)),
-  L2:first(indices(BODY)),
-  if L1=[] then return(ANY*BODY)
-  else if L2=[] then return(ANY*BODY)
-  else ( L11 : MAKELIST(DUMMY(), I,1, LENGTH(L1)),
-    L22 : MAKELIST(DUMMY(), I,1, LENGTH(L2)),
-    L1S:MAP("=",L1,L11), L2S:MAP("=",L2,L22),
-    LK1:append(L1,L2),LK2:append(L11,L22),
-    ANY:sublis(L1S,ANY), BODY:sublis(L2S,BODY),
-    evf:(if evenp(length(LK1)) then 1 else -1),
+"&"(any,body):=block(local(i),
+  l1:first(indices(any)),
+  l2:first(indices(body)),
+  if l1=[] then return(any*body)
+  else if l2=[] then return(any*body)
+  else ( l11 : makelist(dummy(), i,1, length(l1)),
+    l22 : makelist(dummy(), i,1, length(l2)),
+    l1s:map("=",l1,l11), l2s:map("=",l2,l22),
+    lk1:append(l1,l2),lk2:append(l11,l22),
+    any:sublis(l1s,any), body:sublis(l2s,body),
+    evf:(if evenp(length(lk1)) then 1 else -1),
     canform(contract(
-        expand(evf*KDELTA(LK1,LK2)*ANY*BODY/(length(LK1)-1)!)))));
+        expand(evf*kdelta(lk1,lk2)*any*body/(length(lk1)-1)!)))));
 
 infix("@");
 declare("@",additive);
-"@"(forma,ind):=block(L1:first(indices(forma)),
-  if L1=[] then return(diff(forma,ind))
-  else ( L11 : MAKELIST(DUMMY(), I,1, LENGTH(L1)),
-    L1S:MAP("=",L1,L11),
-    LK1:append([ind],L1),
-    indd:dummy(),LK2:append(L11,[indd]),
-    forma:sublis(L1S,forma),
-    evf:(if evenp(length(LK1)) then 1 else -1),
+"@"(forma,ind):=block(l1:first(indices(forma)),
+  if l1=[] then return(diff(forma,ind))
+  else ( l11 : makelist(dummy(), i,1, length(l1)),
+    l1s:map("=",l1,l11),
+    lk1:append([ind],l1),
+    indd:dummy(),lk2:append(l11,[indd]),
+    forma:sublis(l1s,forma),
+    evf:(if evenp(length(lk1)) then 1 else -1),
     contract(canform(ratexpand(
-          evf*kdelta(LK1,LK2)*diff(forma,indd)/(length(LK1)-1)!)))));
+          evf*kdelta(lk1,lk2)*diff(forma,indd)/(length(lk1)-1)!)))));
 
 /* VTT: To ensure consistent application of the "first" index in |_ */
-PERMUTATOR(L):=BLOCK([RESULT:1,TEMP],
-	FOR I THRU LENGTH(L)-1 DO IF ORDERLESSP(L[I+1],L[I]) THEN
-	(TEMP:L[I+1],L[I+1]:L[I],L[I]:TEMP,I:0,RESULT:-RESULT),
-	[RESULT,L]
+permutator(l):=block([result:1,temp],
+	for i thru length(l)-1 do if orderlessp(l[i+1],l[i]) then
+	(temp:l[i+1],l[i+1]:l[i],l[i]:temp,i:0,result:-result),
+	[result,l]
 );
 
 infix("|_");
 declare("|_",additive);
 /* VTT: ADDITIVE doesn't always do the trick so we break up sums manually */
-"|_"(forma,vec):=BLOCK(LOCAL(ind,perm),
-  IF NOT(ATOM(forma)) AND (OP(forma)="+" OR OP(forma)="=") THEN
-    APPLY(OP(forma),[PART(forma,1)|_vec,REST(forma)|_vec])
-  ELSE (perm:PERMUTATOR(first(indices(forma))),
-    IF perm[2]=[] THEN 0
-    ELSE perm[1]*(CONTRACT(CANFORM(EXPAND(forma*vec([],[FIRST(perm[2])])))))));
+"|_"(forma,vec):=block(local(ind,perm),
+  if not(atom(forma)) and (op(forma)="+" or op(forma)="=") then
+    apply(op(forma),[part(forma,1)|_vec,rest(forma)|_vec])
+  else (perm:permutator(first(indices(forma))),
+    if perm[2]=[] then 0
+    else perm[1]*(contract(canform(expand(forma*vec([],[first(perm[2])])))))));
 
 infix("@L");
 
 declare("@L",additive);
 
-"@L"(forma,L1):=block(local(temp1,temp2,ind1),
-  vec:first(L1),ind1:second(L1),
-  if ind1=0 then (ind1:dummy(),V([],[ind1])*diff(forma,ind1))
+"@L"(forma,l1):=block(local(temp1,temp2,ind1),
+  vec:first(l1),ind1:second(l1),
+  if ind1=0 then (ind1:dummy(),v([],[ind1])*diff(forma,ind1))
   else(
 /* VTT: some black magic needed because MAXIMA doesn't handle ADDITIVE as expected */
   temp1:rename(forma@ind1),

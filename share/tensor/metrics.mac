@@ -1,45 +1,45 @@
 /* THIS IS THE STANDARD SPHERICALLY SYMMETRIC METRIC */
-LG:MATRIX([A,0,0,0],[0,X^2,0,0],[0,0,X^2*SIN(Y)^2,0],[0,0,0,D]);
+lg:matrix([a,0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,d]);
 /* THIS IS A FLAT NON-DIAGONAL 3D */
-LG:MATRIX([X^2,Y,0],[Y,Y^2,0],[0,0,Z]);
+lg:matrix([x^2,y,0],[y,y^2,0],[0,0,z]);
 /* THIS IS THE SCHWARZSCHILD METRIC IN STANDARD COORDINATES */
-LG:
-MATRIX([1/(1-2*M/X),0,0,0],[0,X^2,0,0],[0,0,X^2*SIN(Y)^2,0],[0,0,0,2*M/X-1]);
+lg:
+matrix([1/(1-2*m/x),0,0,0],[0,x^2,0,0],[0,0,x^2*sin(y)^2,0],[0,0,0,2*m/x-1]);
 /* THIS IS FLAT, GENERATED FROM THE FLAT METRIC BY X-->X+T,T-->X*T  */
-LG:MATRIX([1-T^2,0,0,1-T*X],[0,1,0,0],[0,0,1,0],[1-T*X,0,0,1-X^2]);
+lg:matrix([1-t^2,0,0,1-t*x],[0,1,0,0],[0,0,1,0],[1-t*x,0,0,1-x^2]);
 /* KERR METRIC */
-LG:MATRIX([-A,0,0,0],[0,-B,0,0],[0,0,-C,H],[0,0,H,D]);
-[A = (AA^2*COS(Y)^2+X^2)/(X^2-2*M*X+AA^2),B = AA^2*COS(Y)^2+X^2,C = SIN(Y)^2*(
-2*AA^2*M*X*SIN(Y)^2/(AA^2*COS(Y)^2+X^2)+X^2+AA^2),D = 1-2*M*X/(AA^2*COS(Y)^2+X
-^2),H = 2*AA*M*X*SIN(Y)^2/(AA^2*COS(Y)^2+X^2)];
-LG:
-MATRIX([-(AA^2*COS(Y)^2+X^2)/(X^2-2*M*X+AA^2),0,0,0],[0,-AA^2*COS(Y)^2-X^2,0,0
-],[0,0,-(1-COS(Y)^2)*(2*AA^2*M*X*(1-COS(Y)^2)/(AA^2*COS(Y)^2+X^2)+X^2+AA^2),2*
-AA*M*X*(1-COS(Y)^2)/(AA^2*COS(Y)^2+X^2)],[0,0,2*AA*M*X*(1-COS(Y)^2)/(AA^2*COS(
-Y)^2+X^2),1-2*M*X/(AA^2*COS(Y)^2+X^2)]);
-DEPENDENCIES(A(X,Y),B(X,Y),C(X,Y),D(X,Y),H(X,Y));
+lg:matrix([-a,0,0,0],[0,-b,0,0],[0,0,-c,h],[0,0,h,d]);
+[a = (aa^2*cos(y)^2+x^2)/(x^2-2*m*x+aa^2),b = aa^2*cos(y)^2+x^2,c = sin(y)^2*(
+2*aa^2*m*x*sin(y)^2/(aa^2*cos(y)^2+x^2)+x^2+aa^2),d = 1-2*m*x/(aa^2*cos(y)^2+x
+^2),h = 2*aa*m*x*sin(y)^2/(aa^2*cos(y)^2+x^2)];
+lg:
+matrix([-(aa^2*cos(y)^2+x^2)/(x^2-2*m*x+aa^2),0,0,0],[0,-aa^2*cos(y)^2-x^2,0,0
+],[0,0,-(1-cos(y)^2)*(2*aa^2*m*x*(1-cos(y)^2)/(aa^2*cos(y)^2+x^2)+x^2+aa^2),2*
+aa*m*x*(1-cos(y)^2)/(aa^2*cos(y)^2+x^2)],[0,0,2*aa*m*x*(1-cos(y)^2)/(aa^2*cos(
+y)^2+x^2),1-2*m*x/(aa^2*cos(y)^2+x^2)]);
+dependencies(a(x,y),b(x,y),c(x,y),d(x,y),h(x,y));
 /* VACUUM METRIC */
-LG:
-MATRIX([0,1,A*(2*Y-T),1],[1,0,A*(2*X-T),1],[A*(2*Y-T),A*(2*X-T),-6*A^2*(Y+X)^2
-+2*A^2*(2*X-T)*(2*Y-T)-3/2,-A*(Y+X+2*T)],[1,1,-A*(Y+X+2*T),1/2]);
+lg:
+matrix([0,1,a*(2*y-t),1],[1,0,a*(2*x-t),1],[a*(2*y-t),a*(2*x-t),-6*a^2*(y+x)^2
++2*a^2*(2*x-t)*(2*y-t)-3/2,-a*(y+x+2*t)],[1,1,-a*(y+x+2*t),1/2]);
 /* BONDI METRIC */
-LG:
-MATRIX([0,0,0,%E^(2*B)],[0,-%E^(2*A)*X^2,0,%E^(2*A)*D*X^2],[0,0,-%E^(-2*A)*X^2*
-SIN(Y)^2,0],[%E^(2*B),%E^(2*A)*D*X^2,0,%E^(2*B)*C/X-%E^(2*A)*D^2*X^2]);
-DEPENDENCIES(A(X,Y,T),B(X,Y,T),C(X,Y,T),D(X,Y,T));
+lg:
+matrix([0,0,0,%e^(2*b)],[0,-%e^(2*a)*x^2,0,%e^(2*a)*d*x^2],[0,0,-%e^(-2*a)*x^2*
+sin(y)^2,0],[%e^(2*b),%e^(2*a)*d*x^2,0,%e^(2*b)*c/x-%e^(2*a)*d^2*x^2]);
+dependencies(a(x,y,t),b(x,y,t),c(x,y,t),d(x,y,t));
 /* INTERIOR SCHWARZSCHILD */
-LG:
-MATRIX([-1/(1-X^2/RR^2),0,0,0],[0,-X^2,0,0],[0,0,-X^2*SIN(Y)^2,0],[0,0,0,(3*SQ
-RT(1-R0^2/RR^2)/2-SQRT(1-X^2/RR^2)/2)^2]);
+lg:
+matrix([-1/(1-x^2/rr^2),0,0,0],[0,-x^2,0,0],[0,0,-x^2*sin(y)^2,0],[0,0,0,(3*sq
+rt(1-r0^2/rr^2)/2-sqrt(1-x^2/rr^2)/2)^2]);
 /* BRANS DICKE VACUUM VERIFIED MY MACSYMA ON 11/5/78 */
-LG:MATRIX([A,0,0,0],[0,A*X^2,0,0],[0,0,A*X^2*SIN(Y)^2,0],[0,0,0,-D])$
-SOL:[D=((1-B/X)/(1+B/X))^(2/L),A=(1+B/X)^4*((1-B/X)/(1+B/X))^(2*(L-C-1)/L),
-P=((1-B/X)/(1+B/X))^(C/L)]$
-ELL:L=SQRT((C+1)^2-C*(1-W*C/2))$
+lg:matrix([a,0,0,0],[0,a*x^2,0,0],[0,0,a*x^2*sin(y)^2,0],[0,0,0,-d])$
+sol:[d=((1-b/x)/(1+b/x))^(2/l),a=(1+b/x)^4*((1-b/x)/(1+b/x))^(2*(l-c-1)/l),
+p=((1-b/x)/(1+b/x))^(c/l)]$
+ell:l=sqrt((c+1)^2-c*(1-w*c/2))$
 /* RICCI FLAT METRIC FROM QUANTUM GRAVITY-FOUND BY ALAN LAPIDES- LOS ALAMOS
    APRIL 1982- PRESUME IT IT ONE OF THE HARRISON METRICS  */
-LG:MATRIX([1/C,0,0,0],[0,C*A,0,0],[0,0,C*B,0],[0,0,0,C*A]);
-DEPENDENCIES(A(Y,T),B(Y,T),C(T));
-LG,[C = %E^-(2*ATAN(SINH(T))),A = (COSH(T)^2-SIN(Y)^2)^2/COSH(T)^2,B = COSH(T)^2*SIN(Y)^2];
+lg:matrix([1/c,0,0,0],[0,c*a,0,0],[0,0,c*b,0],[0,0,0,c*a]);
+dependencies(a(y,t),b(y,t),c(t));
+lg,[c = %e^-(2*atan(sinh(t))),a = (cosh(t)^2-sin(y)^2)^2/cosh(t)^2,b = cosh(t)^2*sin(y)^2];
 /* TRANSFORMED FORM OF ABOVE */
-LG:MATRIX([%E^(2*T),0,0,0],[0,%E^-(2*T)*(1-COS(T)^2*SIN(Y)^2)^2/COS(T)^2,0,0],[0,0,%E^-(2*T)*SIN(Y)^2/COS(T)^2,0],[0,0,0,%E^-(2*T)*(1-COS(T)^2*SIN(Y)^2)^2/COS(T)^4]);
+lg:matrix([%e^(2*t),0,0,0],[0,%e^-(2*t)*(1-cos(t)^2*sin(y)^2)^2/cos(t)^2,0,0],[0,0,%e^-(2*t)*sin(y)^2/cos(t)^2,0],[0,0,0,%e^-(2*t)*(1-cos(t)^2*sin(y)^2)^2/cos(t)^4]);

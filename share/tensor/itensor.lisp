@@ -5,10 +5,10 @@
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 ;	** (c) Copyright 1981 Massachusetts Institute of Technology **
 
-;    Various functions in Itensr have been parceled out to separate files. A
+;    Various functions in Itensor have been parceled out to separate files. A
 ;    function in one of these files will only be loaded in (automatically) if
 ;    explicitly used in the Macsyma. (It is necessary to have first loaded in
-;    ITENSR FASL for this autoloading to take place.) The current status of
+;    ITENSOR FASL for this autoloading to take place.) The current status of
 ;    these separate files are:
 
 ;    Filename          Macsyma Functions
@@ -796,7 +796,8 @@
 
 (DEFUN SPLICE2 (X)
   (COND ((FIXP X)(EXPLODE X))
-	(T (CDR (EXPLODEc X)))))
+	(T (CDR (EXPLODE X)))))
+;	(T (CDR (EXPLODEc X)))))
 
 (DEFUN DERIV (E) 
        (PROG (EXP Z COUNT V) 
