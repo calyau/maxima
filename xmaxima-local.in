@@ -5,4 +5,4 @@ export MAXIMA_XMAXIMADIR
 XMAXIMA_MAXIMA=$top_srcdir/maxima-local
 export XMAXIMA_MAXIMA
 
-exec /bin/sh $top_srcdir/interfaces/xmaxima/xmaxima "$@"
+exec @WISH@ $top_srcdir/interfaces/xmaxima/xmaxima "$@"
