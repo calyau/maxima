@@ -334,9 +334,9 @@
 		   collecting (append u (list j)))))))
 
 (defun $list_tableaux (length dimension)
-  (cons '(mlist)(mapcar '(lambda (x)
-			   (apply '$concat 
-					  '$ta x)) (list-tableaux length dimension))))
+  (cons '(mlist)(mapcar #'(lambda (x)
+			    (apply '$concat 
+				   '$ta x)) (list-tableaux length dimension))))
 
 (defun $sub_matrix (mat  rows-to-take cols-to-take &aux row)
   (sloop for ii in rows-to-take

@@ -165,7 +165,7 @@
 		   when (may-invertp u g)
 		   collect (list '(mlist) (header-poly u) j i ($complexity ro t) (pcomplexity u)))
 	 into all
-	 finally (setq pivs (sort all '< :key '(lambda (x) (nth 4 x))))
+	 finally (setq pivs (sort all '< :key #'(lambda (x) (nth 4 x))))
 	 (return (cons '(mlist) pivs))))
 
 ;(defun $invertible_pivots(mat g &aux pivs)

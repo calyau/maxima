@@ -188,7 +188,7 @@
 
 (defun new-sublis (subs expr &aux rat-form answer)
   (cond (($ratp expr)(setq expr ($ratdisrep  expr)) (setq rat-form t)))
-    (cond ((mbagp expr)(cons (car expr)(mapcar '(lambda (x) (new-sublis subs x))
+    (cond ((mbagp expr)(cons (car expr)(mapcar #'(lambda (x) (new-sublis subs x))
 					       (cdr expr))))
 	  (t (setq answer (sublis subs expr))(cond (rat-form ($new_rat answer))
 						   (t (meval* expr))))))

@@ -460,9 +460,9 @@ substituting them to be zero."
  (setq *poly-simplifications*
        (sort-grouped-list
 	 *poly-simplifications*
-	 2 '(lambda (x y)
-	      (cond ((equal x y) nil)
-		    (t (funcall *monomial-order-function* y x)))))))
+	 2 #'(lambda (x y)
+	       (cond ((equal x y) nil)
+		     (t (funcall *monomial-order-function* y x)))))))
 
 (defun check-simp (a simped &optional (tag 'simps-not-equal) )
   (cond ((not (equal (polysimp a) simped))(break tag))))

@@ -52,8 +52,8 @@
 
 (defun $sort_dot_simplifications (&optional (pred $order_function) &aux rev-pred)
   (cond ((eq pred '$monomial_alphalessp)(setq rev-pred '$monomial_alphagreatp))
-	(t (setq rev-pred `(lambda (x y)
-			     (and (not (,pred x y))(not (equal x y)))))))
+	(t (setq rev-pred #'(lambda (x y)
+			      (and (not (funcall pred x y))(not (equal x y)))))))
   (rplacd $dot_simplifications
 	  (sort-grouped-list (cdr $dot_simplifications) 2 rev-pred)))
 
