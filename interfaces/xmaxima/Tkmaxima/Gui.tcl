@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Gui.tcl,v 1.1 2002-09-19 16:13:49 mikeclarkson Exp $
+#       $Id: Gui.tcl,v 1.2 2004-10-31 16:55:26 vvzhy Exp $
 #
 
 object_class MAXGui {
@@ -124,9 +124,11 @@ object_class MAXGui {
 	    wm geometry . ${width}x${height}
 	    update
 	    
-	    if { [winfo height $fr] > .8 * [winfo height .]  } {
-		$fr.text config -height 15
-	    }
+	    # ZW: this text window size adjustment doesn't
+	    # work as expected making window height too small.
+	    #if { [winfo height $fr] > .8 * [winfo height .]  } {
+	    #	$fr.text config -height 15
+	    #}
 	}
 
 
