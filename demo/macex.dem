@@ -3,15 +3,15 @@
 /* At some point, we get the message: DISPLACE undefined */
 
 
-/* This is a demo of Macsyma's MACROEXPANDing commands and the use of
-the MACROEXPANSION switch.  */
+/* This is a demo of Macsyma's macroexpanding commands and the use of
+the macroexpansion switch.  */
 
-(SHOWTIME:ALL,MACROEXPANSION:FALSE)$
+(showtime:all,macroexpansion:false)$
 
-/* First we need a macro to play with.  Let's define a CASEQ statement
+/* First we need a macro to play with.  Let's define a caseq statement
 of the form:
 
-CASEQ(<var>,[<keys1>],<stmt1>,
+caseq(<var>,[<keys1>],<stmt1>,
             [<keys2>],<stmt2>,
 	    ....,
 	    [<keysn>],<stmtn>)
@@ -19,97 +19,97 @@ CASEQ(<var>,[<keys1>],<stmt1>,
 where the first <stmt> that has <var> as a member of the associated
 <keys> is the one chosen to execute.  */
 
-CASEQ(VAR,[PAIRS])::=
-     IF LENGTH(PAIRS)<=2
-        THEN BUILDQ([VAR,KEYS:FIRST(PAIRS),STATEMENT:LAST(PAIRS)],
-		    IF MEMBER(VAR,'KEYS) THEN STATEMENT)
-        ELSE BUILDQ([VAR,KEYS:FIRST(PAIRS),
-	                 STATEMENT:FIRST(REST(PAIRS)),
-  		         PAIRS:REST(REST(PAIRS))],
-		    IF MEMBER(VAR,'KEYS) 
-		       THEN STATEMENT
-		       ELSE CASEQ(VAR,SPLICE(PAIRS)))$
+caseq(var,[pairs])::=
+     if length(pairs)<=2
+        then buildq([var,keys:first(pairs),statement:last(pairs)],
+		    if member(var,'keys) then statement)
+        else buildq([var,keys:first(pairs),
+	                 statement:first(rest(pairs)),
+  		         pairs:rest(rest(pairs))],
+		    if member(var,'keys) 
+		       then statement
+		       else caseq(var,splice(pairs)))$
 
-/* Let's use our CASEQ macro to define a simple predicate.  */
+/* let's use our caseq macro to define a simple predicate.  */
 
-VARIABLEP(X)::=BUILDQ([X],CASEQ(X,[A,B,C,D,E],TRUE));
+variablep(x)::=buildq([x],caseq(x,[a,b,c,d,e],true));
 
-/* To make sure it works.  */
+/* to make sure it works.  */
 
-DISPLAY(VARIABLEP(VAR1),VARIABLEP(VAR2)),VAR1:'A,VAR2:'Z;
+display(variablep(var1),variablep(var2)),var1:'a,var2:'z;
 
-/* We can see what VARIABLEP is expanding into.  */
+/* we can see what variablep is expanding into.  */
 
-MACROEXPAND(VARIABLEP(SOME_FORM));
+macroexpand(variablep(some_form));
 
-/* We can also watch the expansion by stages.  */
+/* we can also watch the expansion by stages.  */
 
-MACROEXPAND1(VARIABLEP(SOME_FORM));
+macroexpand1(variablep(some_form));
 
-MACROEXPAND1(''%);
+macroexpand1(''%);
 
-/* We might also create simple TYPEP macro using CASEQ.  */
+/* we might also create simple typep macro using caseq.  */
 
 
-TYPEP(X)::=BUILDQ([X],CASEQ(X,[1,2,3,4,5,6,7,8,9,0], 'DIGIT,
-			      [A,B,C,D,E,F,G,H,I,J], 'VARIABLE,
-			      ["+","-","*","/","^"], 'OPERATOR))$
+typep(x)::=buildq([x],caseq(x,[1,2,3,4,5,6,7,8,9,0], 'digit,
+			      [a,b,c,d,e,f,g,h,i,j], 'variable,
+			      ["+","-","*","/","^"], 'operator))$
 
-/* Let's see what things are expanding into.  */
+/* let's see what things are expanding into.  */
 
-MACROEXPAND(TYPEP(TEST));
+macroexpand(typep(test));
 
-/* The nested CASEQ doesn't expand because MACROEXPAND and
-MACROEXPAND1 only look at the top level function.  To expand all
+/* the nested caseq doesn't expand because macroexpand and
+macroexpand1 only look at the top level function.  to expand all
 levels we can do:  */
 
-SCANMAP('MACROEXPAND,'(TYPEP(TEST)));
+scanmap('macroexpand,'(typep(test)));
 
-/* Let's test it just to make sure it works.  */
+/* let's test it just to make sure it works.  */
 
-EV(%,TEST="*");
+ev(%,test="*");
 
-/* Compare the time it just took to evaluate the macro when expanded
+/* compare the time it just took to evaluate the macro when expanded
 to the time it takes to expand it from scratch and then eval.  */
 
-EV(TYPEP(TEST),TEST="*");
+ev(typep(test),test="*");
 
-/* This is why we can save time by using the MACROEXPANSION switch.  */
+/* this is why we can save time by using the macroexpansion switch.  */
 
-FORM:'(TYPEP(A));
+form:'(typep(a));
 
-EV(FORM);
+ev(form);
 
-MACROEXPANSION:EXPAND;
+macroexpansion:expand;
 
-EV(FORM);
+ev(form);
 
-/* There's no savings on the first call after MACROEXPANSION has been
+/* there's no savings on the first call after macroexpansion has been
 reset, but there is on all subsequent calls.  */
 
-EV(FORM);
+ev(form);
 
-/* MACROEXPAND also uses the saved expansion. */
+/* macroexpand also uses the saved expansion. */
 
-MACROEXPAND(''FORM);
+macroexpand(''form);
 
-/* Note that FORM still displays nicely.  */
+/* note that form still displays nicely.  */
 
-FORM;
+form;
 
-/* If we set MACROEXPANSION to DISPLACE however, each macro call will
+/* if we set macroexpansion to displace however, each macro call will
 be completely replaced by the equivalent code.  */
 
-/* (MACROEXPANSION:DISPLACE,EV(FORM));
+/* (macroexpansion:displace,ev(form));
 
-FORM;
+form;
 */
-/*  Note that once the call is displaced, the original call cannot be
-retrieved by resetting MACROEXPANSION.  */
+/*  note that once the call is displaced, the original call cannot be
+retrieved by resetting macroexpansion.  */
 
-/* (MACROEXPANSION:FALSE,EV(FORM));
+/* (macroexpansion:false,ev(form));
 
-FORM;
+form;
 */ 
-SHOWTIME:FALSE$
+showtime:false$
 

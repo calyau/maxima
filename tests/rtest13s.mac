@@ -6,37 +6,37 @@
 ***************************************************************************/
 
 
-MATCHFIX("{","}");
+matchfix("{","}");
 verbify("{")$
-INFIX("|");
+infix("|");
 verbify("|")$
-EXP1:{X | X > 0};
-{X | X > 0}$
-EXP2:{X | X < 2};
-{X | X < 2}$
-INFIX("OU");
-verbify("OU")$
-INFIX("OI");
-verbify("OI")$
-EXP1 OU EXP2;
-{X | X > 0} OU {X | X < 2}$
-EXP1 OU EXP2;
-{X | X > 0} OU {X | X < 2}$
-EXP1:{1,2,3};
+exp1:{x | x > 0};
+{x | x > 0}$
+exp2:{x | x < 2};
+{x | x < 2}$
+infix("ou");
+verbify("ou")$
+infix("oi");
+verbify("oi")$
+exp1 ou exp2;
+{x | x > 0} ou {x | x < 2}$
+exp1 ou exp2;
+{x | x > 0} ou {x | x < 2}$
+exp1:{1,2,3};
 {1,2,3}$
 {3,4,5};
 {3,4,5}$
-EXP1 OU EXP1 OU %;
-{1,2,3} OU {1,2,3} OU {3,4,5}$
-INFIX("ou",100,100);
-verbify("OU")$
-EXP2:INFIX("OI",120,120);
-verbify("OI")$
-EXP1 OU EXP1 OU {7};
-{1,2,3} OU {1,2,3} OU {7}$
-kill("OU");
-/* REMOVE("OU",OPERATOR); */
-DONE$
+exp1 ou exp1 ou %;
+{1,2,3} ou {1,2,3} ou {3,4,5}$
+infix("ou",100,100);
+verbify("ou")$
+exp2:infix("oi",120,120);
+verbify("oi")$
+exp1 ou exp1 ou {7};
+{1,2,3} ou {1,2,3} ou {7}$
+kill("ou");
+/* remove("ou",operator); */
+done$
 foo(ou);
 foo(ou);
 

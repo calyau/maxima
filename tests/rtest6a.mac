@@ -7,127 +7,127 @@
 
 
 /* -*- Mode: MACSYMA -*- */
-/* BATCH("me:test6a.mac");
+/* batch("me:test6a.mac");
 It asked is a pos answred yes
    and is i+1 zero or nonzero and I answered nonzero 
-  so should add ASSUME (A>0,NOT(EQUAL(I+1,0)))  */
+  so should add assume (a>0,not(equal(i+1,0)))  */
 kill(allbut(props));
 done;
-RISCH(X^2*ERF(X),X);
-(%PI*X^3*ERF(X)+(SQRT(%PI)*X^2+SQRT(%PI))*%E^-X^2)/(3*%PI);
-EV(DIFF(%,X),RATSIMP);
-X^2*ERF(X);
-ASSUME(A>0);
+risch(x^2*erf(x),x);
+(%pi*x^3*erf(x)+(sqrt(%pi)*x^2+sqrt(%pi))*%e^-x^2)/(3*%pi);
+ev(diff(%,x),ratsimp);
+x^2*erf(x);
+assume(a>0);
 [a>0];
-'INTEGRATE(%E^(SQRT(A)*SQRT(Y)),Y,0,4);
-'INTEGRATE(%E^(SQRT(A)*SQRT(Y)),Y,0,4);
-CHANGEVAR(%,Y-Z^2/A,Z,Y);
-/* on lispm -2*('INTEGRATE(Z*%E^ABS(Z),Z,-2*SQRT(A),0))/A; */
-- 'INTEGRATE(2*Z*%E^ABS(Z)/A,Z,-2*SQRT(A),0);
-ASSUME(P > 0);
-[P > 0]$
-T^(1/2)*%E^-(A*T/4)*%E^-(P*T);
-SQRT(T)*%E^(-P*T-A*T/4);
-/* SPECINT(%,T); not available in distribution
-SQRT(%PI)/(2*(P+A/4)^(3/2)); */
-T^(1/2)*%J[1](2*A^(1/2)*T^(1/2))*%E^-(P*T);
-%J[1](2*SQRT(A)*SQRT(T))*SQRT(T)*%E^-(P*T);
-/* SPECINT(%,T); not available
-SQRT(A)*%E^-(A/P)/P^2;*/
-FORGET(P > 0,A > 0)$
-[P > 0,A > 0]$
-X+Y/Z^2;
-Y/Z^2+X;
-PART(%,1,2,2);
+'integrate(%e^(sqrt(a)*sqrt(y)),y,0,4);
+'integrate(%e^(sqrt(a)*sqrt(y)),y,0,4);
+changevar(%,y-z^2/a,z,y);
+/* on lispm -2*('integrate(z*%e^abs(z),z,-2*sqrt(a),0))/a; */
+- 'integrate(2*z*%e^abs(z)/a,z,-2*sqrt(a),0);
+assume(p > 0);
+[p > 0]$
+t^(1/2)*%e^-(a*t/4)*%e^-(p*t);
+sqrt(t)*%e^(-p*t-a*t/4);
+/* specint(%,t); not available in distribution
+sqrt(%pi)/(2*(p+a/4)^(3/2)); */
+t^(1/2)*%j[1](2*a^(1/2)*t^(1/2))*%e^-(p*t);
+%j[1](2*sqrt(a)*sqrt(t))*sqrt(t)*%e^-(p*t);
+/* specint(%,t); not available
+sqrt(a)*%e^-(a/p)/p^2;*/
+forget(p > 0,a > 0)$
+[p > 0,a > 0]$
+x+y/z^2;
+y/z^2+x;
+part(%,1,2,2);
 2;
-REMVALUE(X);
-[FALSE];
-'INTEGRATE(F(X),X,A,B)+X;
-'INTEGRATE(F(X),X,A,B)+X;
-PART(%,1,1);
-F(X);
-X^2+2*X = Y^2;
-X^2+2*X = Y^2;
-EXP:%+1;
-X^2+2*X+1 = Y^2+1;
-LHS(%);
-X^2+2*X+1;
-PART(EXP,2);
-Y^2+1;
-PART(%,1);
-Y^2;
-27*Y^3+54*X*Y^2+36*X^2*Y+Y+8*X^3+X+1;
-27*Y^3+54*X*Y^2+36*X^2*Y+Y+8*X^3+X+1;
-PART(%,2,[1,3]);
-54*Y^2;
-SQRT(PIECE/54);
-ABS(Y);
-X+Y+W*Z;
-W*Z+Y+X;
-INPART(%,3,2);
-Z;
-'LIMIT(F(X)^G(X+1),X,0,MINUS);
-'LIMIT(F(X)^G(X+1),X,0,MINUS);
-INPART(%,1,2);
-G(X+1);
-'LIMIT(F(X)^G(X+1),X,0,MINUS);
-'LIMIT(F(X)^G(X+1),X,0,MINUS);
-IS(INPART(%,0) = NOUNIFY(LIMIT));
-TRUE;
-DPART(X+Y/Z^2,1,2,1);
-Y/?MBOX(Z)^2+X;
-EXP:EXPAND((B+A)^4);
-B^4+4*A*B^3+6*A^2*B^2+4*A^3*B+A^4;
-(B+A)^2*(Y+X)^2;
-(B+A)^2*(Y+X)^2;
-EXPAND(%);
-B^2*Y^2+2*A*B*Y^2+A^2*Y^2+2*B^2*X*Y+4*A*B*X*Y+2*A^2*X*Y+B^2*X^2+2*A*B*X^2+A^2*X^2;
-EXP:EXP/%;
-(B^4+4*A*B^3+6*A^2*B^2+4*A^3*B+A^4)/(B^2*Y^2+2*A*B*Y^2+A^2*Y^2+2*B^2*X*Y+4*A*B*X*Y+2*A^2*X*Y+B^2*X^2+2*A*B*X^2+A^2*X^2);
-FACTOR(%);
-(B+A)^2/(Y+X)^2;
-DPART(EXP,2,4);
-(B^4+4*A*B^3+6*A^2*B^2+4*A^3*B+A^4)/(B^2*Y^2+2*A*B*Y^2+A^2*Y^2+?MBOX(2*B^2*X*Y)+4*A*B*X*Y+2*A^2*X*Y+B^2*X^2+2*A*B*X^2+A^2*X^2);
-PART(EXP,2,4);
-2*B^2*X*Y;
+remvalue(x);
+[false];
+'integrate(f(x),x,a,b)+x;
+'integrate(f(x),x,a,b)+x;
+part(%,1,1);
+f(x);
+x^2+2*x = y^2;
+x^2+2*x = y^2;
+exp:%+1;
+x^2+2*x+1 = y^2+1;
+lhs(%);
+x^2+2*x+1;
+part(exp,2);
+y^2+1;
+part(%,1);
+y^2;
+27*y^3+54*x*y^2+36*x^2*y+y+8*x^3+x+1;
+27*y^3+54*x*y^2+36*x^2*y+y+8*x^3+x+1;
+part(%,2,[1,3]);
+54*y^2;
+sqrt(piece/54);
+abs(y);
+x+y+w*z;
+w*z+y+x;
+inpart(%,3,2);
+z;
+'limit(f(x)^g(x+1),x,0,minus);
+'limit(f(x)^g(x+1),x,0,minus);
+inpart(%,1,2);
+g(x+1);
+'limit(f(x)^g(x+1),x,0,minus);
+'limit(f(x)^g(x+1),x,0,minus);
+is(inpart(%,0) = nounify(limit));
+true;
+dpart(x+y/z^2,1,2,1);
+y/?mbox(z)^2+x;
+exp:expand((b+a)^4);
+b^4+4*a*b^3+6*a^2*b^2+4*a^3*b+a^4;
+(b+a)^2*(y+x)^2;
+(b+a)^2*(y+x)^2;
+expand(%);
+b^2*y^2+2*a*b*y^2+a^2*y^2+2*b^2*x*y+4*a*b*x*y+2*a^2*x*y+b^2*x^2+2*a*b*x^2+a^2*x^2;
+exp:exp/%;
+(b^4+4*a*b^3+6*a^2*b^2+4*a^3*b+a^4)/(b^2*y^2+2*a*b*y^2+a^2*y^2+2*b^2*x*y+4*a*b*x*y+2*a^2*x*y+b^2*x^2+2*a*b*x^2+a^2*x^2);
+factor(%);
+(b+a)^2/(y+x)^2;
+dpart(exp,2,4);
+(b^4+4*a*b^3+6*a^2*b^2+4*a^3*b+a^4)/(b^2*y^2+2*a*b*y^2+a^2*y^2+?mbox(2*b^2*x*y)+4*a*b*x*y+2*a^2*x*y+b^2*x^2+2*a*b*x^2+a^2*x^2);
+part(exp,2,4);
+2*b^2*x*y;
 
-OP(X+Y);
+op(x+y);
 "+"$
 
-OPERATORP(X+Y,"+");
-TRUE$
-OPERATORP(X+Y,["+"]);
-TRUE$
-OPERATORP(X+Y,["*"]);
-FALSE$
-OPERATORP(X+Y,"*");
-FALSE$
+operatorp(x+y,"+");
+true$
+operatorp(x+y,["+"]);
+true$
+operatorp(x+y,["*"]);
+false$
+operatorp(x+y,"*");
+false$
 
-SUBST(A,X+Y,X+(X+Y)^2+Y);
-Y+X+A^2;
-SUBST(-%I,%I,A+B*%I);
-A-%I*B;
-SUBST(X,Y,X+Y);
-2*X;
-SUBST(X = 0,DIFF(SIN(X),X));
+subst(a,x+y,x+(x+y)^2+y);
+y+x+a^2;
+subst(-%i,%i,a+b*%i);
+a-%i*b;
+subst(x,y,x+y);
+2*x;
+subst(x = 0,diff(sin(x),x));
 1;
-ERRCATCH(EV(DIFF(SIN(X),X),X = 0));
+errcatch(ev(diff(sin(x),x),x = 0));
 [];
-ASSUME(NOT(EQUAL(I,-1)));
-[NOT EQUAL(I,-1)]$
-EV(INTEGRATE(X^I,X),I = -1);
-LOG(X);
-ERRCATCH(SUBST(-1,I,INTEGRATE(X^I,X)));
+assume(not(equal(i,-1)));
+[not equal(i,-1)]$
+ev(integrate(x^i,x),i = -1);
+log(x);
+errcatch(subst(-1,i,integrate(x^i,x)));
 [];
-MATRIX([A,B],[C,D]);
-MATRIX([A,B],[C,D]);
-SUBST("[",MATRIX,%);
-[[A,B],[C,D]];
-RATSUBST(A,X*Y^2,X^4*Y^8+X^4*Y^3);
-A*X^3*Y+A^4;
-1+COS(X)+COS(X)^2+COS(X)^3+COS(X)^4;
-COS(X)^4+COS(X)^3+COS(X)^2+COS(X)+1;
-RATSUBST(1-SIN(X)^2,COS(X)^2,%);
-SIN(X)^4-3*SIN(X)^2+COS(X)*(2-SIN(X)^2)+3;
-RATSUBST(1-COS(X)^2,SIN(X)^2,SIN(X)^4);
-COS(X)^4-2*COS(X)^2+1;
+matrix([a,b],[c,d]);
+matrix([a,b],[c,d]);
+subst("[",matrix,%);
+[[a,b],[c,d]];
+ratsubst(a,x*y^2,x^4*y^8+x^4*y^3);
+a*x^3*y+a^4;
+1+cos(x)+cos(x)^2+cos(x)^3+cos(x)^4;
+cos(x)^4+cos(x)^3+cos(x)^2+cos(x)+1;
+ratsubst(1-sin(x)^2,cos(x)^2,%);
+sin(x)^4-3*sin(x)^2+cos(x)*(2-sin(x)^2)+3;
+ratsubst(1-cos(x)^2,sin(x)^2,sin(x)^4);
+cos(x)^4-2*cos(x)^2+1;

@@ -1,87 +1,87 @@
 /* ======================================================================== */
 /*  file: array.dem  */
-/*  Indices problems */
+/*  indices problems */
 
-SUBSCRMAP:TRUE$
+subscrmap:true$
 /*
-THIS BATCH FILE ILLUSTRATES VARIOUS NEW ARRAY CAPABILITIES AVAILABLE
+this batch file illustrates various new array capabilities available
 
-WHICH ARE COMPLETELY COMPATIBLE WITH THE EXISTING SCHEME.
+which are completely compatible with the existing scheme.
 
-MAPPING IN THIS CONTEXT MEANS DISTRIBUTE THE NAME OVER THE STRUCTURE 
+mapping in this context means distribute the name over the structure 
 
-INDICATED BY THE SUBSCRIPTS.
+indicated by the subscripts.
 
-INCLUDED ARE IMPLIED MAPPING USING LISTS AS SUBSCRIPTS,
+included are implied mapping using lists as subscripts,
 
-GENERALIZED ELEMENT EXTRACTION FROM LIST OR MATRIX STRUCTURES,
+generalized element extraction from list or matrix structures,
 
-IMPLIED ASSIGNMENT MAPPING, AND RECURSIVE LIST STRUCTURES.  
+implied assignment mapping, and recursive list structures.  
 
-COMPATIBILITY WITH HASHED ARRAYS AND DECLARED ARRAYS IS SHOWN.
+compatibility with hashed arrays and declared arrays is shown.
 
-FIRST CONSIDER USING LIST STRUCTURES AS SUBSCRIPTS. A,B, AND C
+first consider using list structures as subscripts. a,b, and c
 
-BELOW CAN BE ARRAYS, HASHED ARRAYS, LIST STRUCTURES, MATRICES OR 
+below can be arrays, hashed arrays, list structures, matrices or 
 
-UNDEFINED.
+undefined.
 
 */
 
 
-(A[1]:FIRST,A[2]:SECOND);
-A[[1,2]],EVAL;
-L:[3,2,1];
-L[3];
-L[1];
-''L[1];
-L[1],EVAL;
-MIDDLE&&MAT:MATRIX([Q,V],[W,U]);
-MAT[1];
-MAT[[1,2],[1,2]],EVAL;
-MAT[[1,2]],EVAL;
+(a[1]:first,a[2]:second);
+a[[1,2]],eval;
+l:[3,2,1];
+l[3];
+l[1];
+''l[1];
+l[1],eval;
+middle&&mat:matrix([q,v],[w,u]);
+mat[1];
+mat[[1,2],[1,2]],eval;
+mat[[1,2]],eval;
 
 /*
-ASSIGNMENT MAPS CAN BE CARRIED OUT WITH "::" OR (''FOO):
+assignment maps can be carried out with "::" or (''foo):
 
 */
-D[ [1,2] ]::99;
-D[1];
-(''MAT):0;
-Q;
-MAT;
-LL[''L]::L;
-LL[1];
-
-
-
-/*
-RECURSIVE LIST STRUCTURES:
-
-*/
-X:[X,Y];
-Y:[Y,'X];
-H['X,'Y];
-%,EVAL;
-%,EVAL;
-%,EVAL;
-
-/*
-MAPPING A FUNCTION ON A LIST STRUCTURE
-*/
-FULLMAPL(FOO,[[A,B],[C,D]]);
-FULLMAPL(FUNC,'[AA+BB,'[AA,BB],[AA,BB],[3,4]]);
-DSL:'[AS+BS,[DS,ES],'[GS,HS],144];
-F(X):=X**2;
-FUNC:F$
-FULLMAPL(FUNC,DSL);
+d[ [1,2] ]::99;
+d[1];
+(''mat):0;
+q;
+mat;
+ll[''l]::l;
+ll[1];
 
 
 
 /*
-TO COME: SHAPING, GENERAL REDUCTION, GENERAL CONTRACTION OR EXPANSION
-
-(INNER AND OUTER PRODUCTS), ARITHMETIC, THE WORLD, THE UNIVERSE
+recursive list structures:
 
 */
-FOOBAR;
+x:[x,y];
+y:[y,'x];
+h['x,'y];
+%,eval;
+%,eval;
+%,eval;
+
+/*
+mapping a function on a list structure
+*/
+fullmapl(foo,[[a,b],[c,d]]);
+fullmapl(func,'[aa+bb,'[aa,bb],[aa,bb],[3,4]]);
+dsl:'[as+bs,[ds,es],'[gs,hs],144];
+f(x):=x**2;
+func:f$
+fullmapl(func,dsl);
+
+
+
+/*
+to come: shaping, general reduction, general contraction or expansion
+
+(inner and outer products), arithmetic, the world, the universe
+
+*/
+foobar;

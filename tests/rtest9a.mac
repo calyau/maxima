@@ -8,48 +8,48 @@
 
 kill(allbut(props));
 done;
-DEFTAYLOR(F(X),X^2+SUM(X^I/(2^I*I!^2),I,4,INF));
-[F]$
-TAYLOR(%E^SQRT(F(X)),X,0,4);
-1+X+X^2/2+3073*X^3/18432+12817*X^4/307200$
-POWERSERIES(LOG(SIN(X)/X),X,0);
-('SUM((-1)^I1*2^(2*I1)*BERN(2*I1)*X^(2*I1)/(I1*(2*I1)!),I1,1,INF))/2$
-EV(X+SIN(3*X)/SIN(X),TRIGEXPAND,EXPAND);
--SIN(X)^2+3*COS(X)^2+X$
-TRIGEXPAND(SIN(10*X+Y));
-COS(10*X)*SIN(Y)+SIN(10*X)*COS(Y)$
--SIN(X)^2+3*COS(X)^2+X;
--SIN(X)^2+3*COS(X)^2+X$
-EXPAND(TRIGREDUCE(%));
-2*COS(2*X)+X+1$
-DECLARE(J,INTEGER,E,EVEN,O,ODD);
-DONE$
-SIN(X+(E+1/2)*%PI);
-COS(X)$
-SIN(X+(O+1/2)*%PI);
--COS(X)$
-(linel:500,DIFF(EXP(X^2+Y)/(X+Y),X,2));
-4*X^2*%E^(Y+X^2)/(Y+X)+2*%E^(Y+X^2)/(Y+X)-4*X*%E^(Y+X^2)/(Y+X)^2
-		      +2*%E^(Y+X^2)/(Y+X)^3$
+deftaylor(f(x),x^2+sum(x^i/(2^i*i!^2),i,4,inf));
+[f]$
+taylor(%e^sqrt(f(x)),x,0,4);
+1+x+x^2/2+3073*x^3/18432+12817*x^4/307200$
+powerseries(log(sin(x)/x),x,0);
+('sum((-1)^i1*2^(2*i1)*bern(2*i1)*x^(2*i1)/(i1*(2*i1)!),i1,1,inf))/2$
+ev(x+sin(3*x)/sin(x),trigexpand,expand);
+-sin(x)^2+3*cos(x)^2+x$
+trigexpand(sin(10*x+y));
+cos(10*x)*sin(y)+sin(10*x)*cos(y)$
+-sin(x)^2+3*cos(x)^2+x;
+-sin(x)^2+3*cos(x)^2+x$
+expand(trigreduce(%));
+2*cos(2*x)+x+1$
+declare(j,integer,e,even,o,odd);
+done$
+sin(x+(e+1/2)*%pi);
+cos(x)$
+sin(x+(o+1/2)*%pi);
+-cos(x)$
+(linel:500,diff(exp(x^2+y)/(x+y),x,2));
+4*x^2*%e^(y+x^2)/(y+x)+2*%e^(y+x^2)/(y+x)-4*x*%e^(y+x^2)/(y+x)^2
+		      +2*%e^(y+x^2)/(y+x)^3$
 /* we use sconcat here, because it is not possible to compare the
   output from optimize which involves gensyms whith something we read.
 */
-sconcat(OPTIMIZE(%));
-sconcat("BLOCK([%1,%2,%3,%4],%1:Y+X,%2:X^2,%3:%E^(Y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-4*X*%3/%1^2+2*%3/%1^3)")$
+sconcat(optimize(%));
+sconcat("block([%1,%2,%3,%4],%1:y+x,%2:x^2,%3:%e^(y+%2),%4:1/%1,4*%2*%4*%3+2*%4*%3-4*x*%3/%1^2+2*%3/%1^3)")$
 linel:79;
 79$
-LAPLACE(%E^(2*T+A)*SIN(T)*T,T,S);
-%E^A*(2*S-4)/(S^2-4*S+5)^2$
-'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T) = T^2;
-'INTEGRATE(F(T-X)*SINH(A*X),X,0,T)+B*F(T) = T^2$
-LAPLACE(%,T,S);
-B*LAPLACE(F(T),T,S)+A*LAPLACE(F(T),T,S)/(S^2-A^2) = 2/S^3$
-LINSOLVE([%],['LAPLACE(F(T),T,S)]);
-exp:['LAPLACE(F(T),T,S) = (2*S^2-2*A^2)/(B*S^5+(A-A^2*B)*S^3)]$
+laplace(%e^(2*t+a)*sin(t)*t,t,s);
+%e^a*(2*s-4)/(s^2-4*s+5)^2$
+'integrate(sinh(a*x)*f(t-x),x,0,t)+b*f(t) = t^2;
+'integrate(f(t-x)*sinh(a*x),x,0,t)+b*f(t) = t^2$
+laplace(%,t,s);
+b*laplace(f(t),t,s)+a*laplace(f(t),t,s)/(s^2-a^2) = 2/s^3$
+linsolve([%],['laplace(f(t),t,s)]);
+exp:['laplace(f(t),t,s) = (2*s^2-2*a^2)/(b*s^5+(a-a^2*b)*s^3)]$
 
-/* This is ok but needs a response */
+/* this is ok but needs a response */
 /*
-("respond POSITIVE to a*b(a*b-1) positive,negative,or zero", ILT(EV(exp[1]),S,T));
-F(T) = -2*COSH(SQRT(A*B*(A*B-1))*T/B)/(A^3*B^2-2*A^2*B+A)
-     +A*T^2/(A*B-1)+2/(A^3*B^2-2*A^2*B+A)$
+("respond positive to a*b(a*b-1) positive,negative,or zero", ilt(ev(exp[1]),s,t));
+f(t) = -2*cosh(sqrt(a*b*(a*b-1))*t/b)/(a^3*b^2-2*a^2*b+a)
+     +a*t^2/(a*b-1)+2/(a^3*b^2-2*a^2*b+a)$
 */

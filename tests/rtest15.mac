@@ -3,38 +3,38 @@
 kill(allbut(props));
 done$
 
-/* apropos function added 7 April 2002 */
-apropos('TR_OPTIMIZE_MAX_LOOP);
-[TR_OPTIMIZE_MAX_LOOP]$
+/* apropos function added 7 april 2002 */
+apropos('tr_optimize_max_loop);
+[tr_optimize_max_loop]$
 
-/* Test introduced 7 April 2002. Bug fix incorporated 9 June 2002 */
+/* test introduced 7 april 2002. bug fix incorporated 9 june 2002 */
 integrate(3^log(x),x);
-3^((1/LOG(3)+1)*LOG(x))/((1/LOG(3)+1)*LOG(3))$
+3^((1/log(3)+1)*log(x))/((1/log(3)+1)*log(3))$
 
-/* Wester[1995] Problem 84 - Known failure - 7 April 2002 */
+/* wester[1995] problem 84 - known failure - 7 april 2002 */
 integrate(sqrt(x+1/x-2),x,0,1);
 4/3$
 
-/* Bug reported by Kevin Ellwood.  Fixed Mar 11 2004 */
+/* bug reported by kevin ellwood.  fixed mar 11 2004 */
 integrate(exp(-k*t)/sqrt(k*t),t);
-SQRT(%PI)*ERF(SQRT(k*t))/k$
+sqrt(%pi)*erf(sqrt(k*t))/k$
 
-/* A bug in CHEBYF.  Fixed 20 Apr 2004. */
+/* a bug in chebyf.  fixed 20 apr 2004. */
 
 kill(t,k);
-DONE$
+done$
 integrate(sqrt(k*t)*t,t);
-2*t^2*SQRT(k*t)/5$
+2*t^2*sqrt(k*t)/5$
 integrate(sqrt(k*t)*t^(1/3),t);
-6*t^(4/3)*SQRT(k*t)/11$
+6*t^(4/3)*sqrt(k*t)/11$
 integrate(sqrt(k*t)/t^(3/2),t);
-SQRT(k*t)*LOG(t)/SQRT(t)$
+sqrt(k*t)*log(t)/sqrt(t)$
 integrate(sqrt(k*t)/sqrt(t),t);
-SQRT(t)*SQRT(k*t)$
+sqrt(t)*sqrt(k*t)$
 kill(t,k);
-DONE$
+done$
 
-/* Lisp error observed by Stavros Macrakis (#956730).  Fixed 2004-05-20. */
+/* lisp error observed by stavros macrakis (#956730).  fixed 2004-05-20. */
 
 block([context:'foobar],
   assume(n+1<0),
@@ -46,83 +46,83 @@ error;
 [sconcat("Integral is divergent")]$
 
 killcontext('foobar);
-DONE$
+done$
 
-/* second thru tenth code added 9 June 2002 */
+/* second thru tenth code added 9 june 2002 */
 l : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]$
-FIRST(l);
+first(l);
 1$ 
-SECOND(l);
+second(l);
 2$
-THIRD(l);
+third(l);
 3$
-FOURTH(l);
+fourth(l);
 4$
-FIFTH(l);
+fifth(l);
 5$
-SIXTH(l);
+sixth(l);
 6$
-SEVENTH(l);
+seventh(l);
 7$
-EIGHTH(l);
+eighth(l);
 8$
-NINTH(l);
+ninth(l);
 9$
-TENTH(l);
+tenth(l);
 10$
 
-/* ASSOC tests */
-ASSOC(1,[x=2]);
-FALSE$
-ASSOC(x,[x=2]);
+/* assoc tests */
+assoc(1,[x=2]);
+false$
+assoc(x,[x=2]);
 2$
-ASSOC(1,[x=2],foobar);
+assoc(1,[x=2],foobar);
 foobar$
 
-/* EVERY tests */
-EVERY([]);
-FALSE$
-EVERY([FALSE]);
-FALSE$
-EVERY([FALSE,FALSE]);
-FALSE$
-EVERY(FALSE);
-FALSE$
-EVERY(FALSE,FALSE);
-FALSE$
-EVERY(TRUE);
-TRUE$
-EVERY([TRUE]);
-TRUE$
-EVERY([TRUE,TRUE]);
-TRUE$
-EVERY(TRUE,TRUE);
-TRUE$
-EVERY([TRUE,FALSE]);
-FALSE$
-EVERY(TRUE,FALSE);
-FALSE$
-/* Some older versions of GCL had a bug that resulted in a failure of the */
+/* every tests */
+every([]);
+false$
+every([false]);
+false$
+every([false,false]);
+false$
+every(false);
+false$
+every(false,false);
+false$
+every(true);
+true$
+every([true]);
+true$
+every([true,true]);
+true$
+every(true,true);
+true$
+every([true,false]);
+false$
+every(true,false);
+false$
+/* some older versions of gcl had a bug that resulted in a failure of the */
 /* following. */
 primep(80630964769);
-TRUE$
+true$
 
 
-/* Maxima has a bug causing an incorrect answer for the second integral. */
+/* maxima has a bug causing an incorrect answer for the second integral. */
 integrate(diff(f(x,y),x,1,y,1),x);
-'DIFF(f(x,y),y,1)$
+'diff(f(x,y),y,1)$
 integrate(diff(f(x,y),x,1,y,1),y);
-'DIFF(f(x,y),x,1)$
-/* The same bug causes a bug with the second integral in this set. */
+'diff(f(x,y),x,1)$
+/* the same bug causes a bug with the second integral in this set. */
 h(x,y):=x*y*diff(f(x,y),x,1,y,1);
-h(x,y):=x*y*DIFF(f(x,y),x,1,y,1)$
+h(x,y):=x*y*diff(f(x,y),x,1,y,1)$
 integrate(h(x,y),x);
-'INTEGRATE(x*'DIFF(f(x,y),x,1,y,1)*y,x)$
+'integrate(x*'diff(f(x,y),x,1,y,1)*y,x)$
 integrate(h(x,y),y);
-'INTEGRATE(x*'DIFF(f(x,y),x,1,y,1)*y,y)$
+'integrate(x*'diff(f(x,y),x,1,y,1)*y,y)$
 
-/* Trigrat example from manual - Fixed June 2002 */
+/* trigrat example from manual - fixed june 2002 */
 trigrat(sin(3*a)/sin(a+%pi/3));
 sqrt(3)*sin(2*a)+cos(2*a)-1;
 
@@ -135,9 +135,9 @@ compile(f);
 [f];
 f(2);
 4;
-/* Some tests for lambda expressions.
-  We test for both TRANSLATE and COMPILE because there are some compiler
-  macros for translated code (defined via DEFOPT) */
+/* some tests for lambda expressions.
+  we test for both translate and compile because there are some compiler
+  macros for translated code (defined via defopt) */
 define_variable(qwerty,1,fixnum);
 1;
 /* m-tlambda */
@@ -219,7 +219,7 @@ compile(f);
 f(1);
 [1,[2,3]];
 /* m-tlambda&env (from the sum), the inner lambda currently remains
-  untranslated.  This is really a test for fungen&env-for-mevalsumarg. */
+  untranslated.  this is really a test for fungen&env-for-mevalsumarg. */
 f(n):=sum(apply(lambda([x],i+x),[i]),i,1,n);
 f(n):=sum(apply(lambda([x],i+x),[i]),i,1,n);
 f(3);
@@ -234,14 +234,14 @@ f(3);
 12;
 kill(qwerty,f);
 done;
-/* This should kill f, but doesn't which upsets subsequent tests
-   Redefining it then killing it does the right thing */
+/* this should kill f, but doesn't which upsets subsequent tests
+   redefining it then killing it does the right thing */
 f(x):=x+3;
 f(x):=x+3;
 kill(f);
 done;
 
-/* Trignometric and hyperbolic functions of complex arguments */
+/* trignometric and hyperbolic functions of complex arguments */
 sin(%i*z);
 %i*sinh(z);
 cos(%i*z);
@@ -267,7 +267,7 @@ sec(z);
 coth(%i*z);
 -%i*cot(z);
 
-/* trigreduce(sinh(x)^n)) wrong for some cases.  Fixed 4 Oct 2003 */
+/* trigreduce(sinh(x)^n)) wrong for some cases.  fixed 4 oct 2003 */
 trigreduce(sin(x)^2);
 (1-cos(2*x))/2;
 trigreduce(sin(x)^3);
@@ -301,7 +301,7 @@ trigreduce(cosh(x)^4);
 trigreduce(cosh(x)^5);
 (cosh(5*x)+5*cosh(3*x)+10*cosh(x))/16;
 
-/* De Moivre's Theorem - Abramowitz & Stegun 4.3.48, 4.5.53 */
+/* de moivre's theorem - abramowitz & stegun 4.3.48, 4.5.53 */
 expand(trigreduce(expand((cos(x)+%i*sin(x))^2)));
 %i*sin(2*x)+cos(2*x);
 expand(trigreduce(expand((cos(x)+%i*sin(x))^3)));
@@ -339,6 +339,6 @@ sinh(9*x)+cosh(9*x);
 solve('diff(y,x),'diff(y,x));
 ['diff(y,x,1)=0];
 
-/* Multiplicity bug in solve.lisp 1.3 - 13 May 2004 */
+/* multiplicity bug in solve.lisp 1.3 - 13 may 2004 */
 eigenvalues(matrix([3,1,0,0],[-4,-1,0,0],[7,1,2,1],[-17,-6,-1,0]));
 [[1],[4]];

@@ -10,14 +10,14 @@ y=%c;
 /* Examples from "The Maxima Book" */
 
 ode2(x^2*'diff(y,x)+3*x*y=sin(x)/x, y, x);
-y = (%C-cos(x))/x^3;
+y = (%c-cos(x))/x^3;
 ic1(%, x=1, y=1);
 y = -(cos(x)-cos(1)-1)/x^3;
 method;
 linear;
 
 soln:ode2('diff(y,x,2) + y = 4*x, y, x);
-y = %K1*sin(x) + %K2*cos(x) + 4*x;
+y = %k1*sin(x) + %k2*cos(x) + 4*x;
 method;
 variationofparameters;
 ic2(soln, x=0, y=1, diff(y,x)=3);
@@ -26,88 +26,88 @@ bc2(soln, x=0, y=3, x=2, y=1);
 y = -(3*cos(2)+7)*sin(x)/sin(2) + 3*cos(x) + 4*x;
 
 ode2((3*x^2+4*x+2)=(2*y-1)*'diff(y,x), y, x);
-y^2-y = x^3+2*x^2+2*x+%C;
+y^2-y = x^3+2*x^2+2*x+%c;
 method;
 separable;
 
 ode2(x^2*cos(x*y)*'diff(y,x) + (sin(x*y)+x*y*(cos(x*y)))=0, y, x);
-x*sin(x*y)=%C;
+x*sin(x*y)=%c;
 method;
 exact;
 
 ode2( (2*x*y-exp(-2*y))*'diff(y,x)+y=0, y, x);
-x*exp(2*y) - log(y) = %C;
+x*exp(2*y) - log(y) = %c;
 method;
 exact; 
 intfactor;
 exp(2*y)/y;
 
 ode2( 'diff(y,x)=(y/x)^2+2*(y/x), y, x);
--(x*y+x^2)/y = %C;
+-(x*y+x^2)/y = %c;
 method;
 exact;
 
 ode2( 'diff(y,x)+(2/x)*y=(1/x^2)*y^3, y, x);
-y = 1/(sqrt( 2/(5*x^5) + %C)*x^2);
+y = 1/(sqrt( 2/(5*x^5) + %c)*x^2);
 method;
 bernoulli;
 odeindex;
 3;
 
 ode2( 'diff(y,x,2)-3*'diff(y,x)+2*y=0, y, x);
-y = %K1*exp(2*x) + %K2*exp(x);
+y = %k1*exp(2*x) + %k2*exp(x);
 method;
 constcoeff;
 
 ode2( 'diff(y,x,2)-4*'diff(y,x)+4*y=0, y, x);
-y = (%K2*x + %K1)*exp(2*x);
+y = (%k2*x + %k1)*exp(2*x);
 method;
 constcoeff;
 
 ode2(x^2*'diff(y,x,2)+x*'diff(y,x)-y=0, y, x);
-y=%K2*x-%K1/(2*x);
+y=%k2*x-%k1/(2*x);
 method;
 exact;
 
 ode2( x^2*'diff(y,x,2)+4*x*'diff(y,x)+2*y=0, y, x);
-y=%K1/x+%K2/x^2;
+y=%k1/x+%k2/x^2;
 method;
 exact; /*euler*/
 
 ode2( x^2*'diff(y,x,2)+5*x*'diff(y,x)+4*y=0, y, x);
-y=(%K2*log(x)+%K1)/x^2;
+y=(%k2*log(x)+%k1)/x^2;
 method;
 euler;
 
 ode2( x^2*'diff(y,x,2)+x*'diff(y,x)+(x^2-1/4)*y=0, y, x);
-y=(%K1*sin(x)+%K2*cos(x))/sqrt(x);
+y=(%k1*sin(x)+%k2*cos(x))/sqrt(x);
 method;
 bessel;
 
 ode2( x^2*'diff(y,x,2)+x*'diff(y,x)+(x^2-4)*y=0, y, x);
-y=%K1*%J[2](x)+%K2*%Y[2](x);
+y=%k1*%j[2](x)+%k2*%y[2](x);
 method;
 bessel;
 
 ode2( (x-1)^2*'diff(y,x,2)+(x-1)*'diff(y,x)+((x-1)^2-4)*y=0, y, x);
-y=%K1*%J[2](x-1)+%K2*%Y[2](x-1);
+y=%k1*%j[2](x-1)+%k2*%y[2](x-1);
 method;
 bessel;
 
 ode2( 'diff(y,x,2)+2*'diff(y,x)+y=exp(x), y, x);
-y=exp(x)/4+(%K2*x+%K1)*exp(-x);
+y=exp(x)/4+(%k2*x+%k1)*exp(-x);
 method;
 variationofparameters;
 yp;
 exp(x)/4;
 
 ode2( x*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
-y='integrate(1/(log(x)+%K1),x)+%K2;
+y='integrate(1/(log(x)+%k1),x)+%k2;
 method;
 freeofy;
 
 ode2( y*'diff(y,x,2)+('diff(y,x))^2=0, y, x);
-y^2/(2*%K1)=x+%K2;
+y^2/(2*%k1)=x+%k2;
 method;
 freeofx;
 

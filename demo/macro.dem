@@ -8,39 +8,39 @@
    Classically, the operators PUSH and POP apply to stacks. Let's
    try some examples... */
 
-/* PUSH -- Adds a value to top of a stack */
+/* push -- adds a value to top of a stack */
 
-PUSH(VALUE,STACKNAME)::=BUILDQ([VALUE,STACKNAME],
-		STACKNAME:CONS(VALUE,STACKNAME))$
+push(value,stackname)::=buildq([value,stackname],
+		stackname:cons(value,stackname))$
 
-/* POP -- Removes a value from top of a stack */
+/* pop -- removes a value from top of a stack */
 
-POP(STACKNAME)::=BUILDQ([STACKNAME],
-			BLOCK([TEMP:FIRST(STACKNAME)],
-			      STACKNAME:REST(STACKNAME),TEMP))$
+pop(stackname)::=buildq([stackname],
+			block([temp:first(stackname)],
+			      stackname:rest(stackname),temp))$
 
-A:[];
-PUSH('FOO,A);
-PUSH('BAR,A);
-A;
-POP(A);
-A;
-POP(A);
-A;
+a:[];
+push('foo,a);
+push('bar,a);
+a;
+pop(a);
+a;
+pop(a);
+a;
 
 /* Now let's write a function-defining function. Suppose we have some
    function that we feel like we are always recycling by making just a few
    minor changes and leaving most of it intact ... eg, 
 
-	POLY1(X):=X^3+45*X^2+432*X+1
-	POLY2(X):=X^3+45*X^2+432*X+2
+	poly1(x):=x^3+45*x^2+432*x+1
+	poly2(x):=x^3+45*x^2+432*x+2
 	... etc.
 
    We might consider writing a macro for ourselves to save us the typing
    done by defining this new each time. eg, ...  */
 
-POLYDEF(N)::=BUILDQ([NAME:CONCAT('POLY,N),N],
-		    NAME(X):=X^3+45*X^2+432*X+N);
-MEMBER('POLY83,FUNCTIONS);
-POLYDEF(83);
-DISPFUN(POLY83);
+polydef(n)::=buildq([name:concat('poly,n),n],
+		    name(x):=x^3+45*x^2+432*x+n);
+member('poly83,functions);
+polydef(83);
+dispfun(poly83);

@@ -9,17 +9,17 @@
 kill(allbut(props));
 done;
 
-/* Equation 1 - Linear polynomial */
-eqn: (x^4-x^3)*diff(u(x),x) + 2*x^4*u(x) = x^3/3 + C;
-(x^4-x^3)*'DIFF(u(x),x,1)+2*x^4*u(x) = x^3/3+C;
+/* equation 1 - linear polynomial */
+eqn: (x^4-x^3)*diff(u(x),x) + 2*x^4*u(x) = x^3/3 + c;
+(x^4-x^3)*'diff(u(x),x,1)+2*x^4*u(x) = x^3/3+c;
 ans:ode2(eqn,u(x),x);
-u(x) = ((2*x^3-3*x^2+6*C)*%E^(2*x)/(12*x^2)+%C)*%E^-(2*(LOG(x-1)+x));
+u(x) = ((2*x^3-3*x^2+6*c)*%e^(2*x)/(12*x^2)+%c)*%e^-(2*(log(x-1)+x));
 factor(ans);
-u(x)=%E^-(2*x)*(2*x^3*%E^(2*x)-3*x^2*%E^(2*x)+6*C*%E^(2*x)+12*%C*x^2)/(12*(x-1)^2*x^2);
+u(x)=%e^-(2*x)*(2*x^3*%e^(2*x)-3*x^2*%e^(2*x)+6*c*%e^(2*x)+12*%c*x^2)/(12*(x-1)^2*x^2);
 is(ratsimp(ev(eqn,ans,diff)));
-TRUE;
+true;
 
-/* Equation (2) {firstord2} */
+/* equation (2) {firstord2} */
 eqn: -1/2*'diff(y,x) + y = sin(x);
 y-'diff(y,x,1)/2 = sin(x);
 ans: ode2(eqn,y,x);
@@ -29,7 +29,7 @@ y = 4*sin(x)/5+2*cos(x)/5+%c*%e^(2*x);
 is(ratsimp(ev(eqn,ans,diff)));
 true;
 
-/* Equation 3 - Linear Change of variables */
+/* equation 3 - linear change of variables */
 eqn: 'diff(y,x,2)*(a*x+b)^2+4*'diff(y,x)*(a*x+b)*a+2*y*a^2=0;
 (a*x+b)^2*'diff(y,x,2)+4*a*(a*x+b)*'diff(y,x,1)+2*a^2*y = 0;
 ans:ode2(eqn,y,x);
@@ -37,22 +37,22 @@ y = %k1*x/(a*x+b)^2+%k2/(a*x+b)^2;
 is(ratsimp(ev(eqn,%,diff)));
 true;
 
-/* Equation 4 - Linear polynomial (Adjoint equation) 
-   See Zwillinger, p151
-   This crashed maxima-5.5
+/* equation 4 - linear polynomial (adjoint equation) 
+   see zwillinger, p151
+   this crashed maxima-5.5
    */
 eqn: (x^2-x)*'diff(y,x,2)+(2*x^2+4*x-3)*'diff(y,x)+8*x*y=1;
 (x^2-x)*'diff(y,x,2)+(2*x^2+4*x-3)*'diff(y,x,1)+8*x*y = 1;
 ans:ode2(eqn,y,x);
 false;
 
-/* Equation 5 - Linear polynomial */
+/* equation 5 - linear polynomial */
 eqn: (x^2-x)*'diff(y,x,2)+(1-2*x^2)*'diff(y,x)+(4*x-2)*y=0;
-(x^2-x)*'DIFF(y,x,2)+(1-2*x^2)*'DIFF(y,x,1)+(4*x-2)*y = 0;
+(x^2-x)*'diff(y,x,2)+(1-2*x^2)*'diff(y,x,1)+(4*x-2)*y = 0;
 ans:ode2(eqn,y,x);
 false;
 
-/* Equation 6 - Dependent variable missing */
+/* equation 6 - dependent variable missing */
 eqn:'diff(y,x,2)+2*x*'diff(y,x)=2*x;
 'diff(y,x,2)+2*x*'diff(y,x,1) = 2*x;
 ans: ode2(eqn,y,x);
@@ -60,33 +60,33 @@ y = sqrt(%pi)*%k1*erf(x)/2+x+%k2;
 is(ratsimp(ev(eqn,ans,diff)));
 true;
 
-/* Equation 7 - Liouvillian solution */
+/* equation 7 - liouvillian solution */
 eqn: (x^3/2-x^2)*'diff(y,x,2)+(s2*x^2-3*x+1)*'diff(y,x)+(x-1)*y=0;
 (x^3/2-x^2)*'diff(y,x,2)+(s2*x^2-3*x+1)*'diff(y,x,1)+(x-1)*y = 0;
 ode2(eqn,y,x);
 false;
 
-/* Equation 8 - Reduction of order */
+/* equation 8 - reduction of order */
 eqn: 'diff(y,x,2)-2*x*'diff(y,x)+2*y=3;
 'diff(y,x,2)-2*x*'diff(y,x)+2*y = 3;
 ode2(eqn,y,x);
 false;
 
-/* Equation 9 - Integrating factors */
+/* equation 9 - integrating factors */
 eqn: sqrt(x)*'diff(y,x,2)+2*x*'diff(y,x)+3*y=0;
 sqrt(x)*'diff(y,x,2)+2*x*'diff(y,x)+3*y=0;
 ode2(eqn,y,x);
 false;
 
-/* Equation 18 - Bernoulli equation */
+/* equation 18 - bernoulli equation */
 eqn: 'diff(y,x) + y = y^3*sin(x);
-'DIFF(y,x,1)+y = SIN(x)*y^3;
+'diff(y,x,1)+y = sin(x)*y^3;
 ans: ode2(eqn,y,x);
-y = %E^-x/SQRT(%C-2*%E^-(2*x)*(-2*SIN(x)-COS(x))/5);
+y = %e^-x/sqrt(%c-2*%e^-(2*x)*(-2*sin(x)-cos(x))/5);
 is(ratsimp(ev(eqn,ans,diff)));
 true;
 
-/* Equation (20) {Clairaut} */
+/* equation (20) {clairaut} */
 eqn: (x^2-1)*'diff(y,x)^2 - 2*x*y*'diff(y,x) + y^2 -1 = 0;
 (x^2-1)*'diff(y,x)^2 - 2*x*y*'diff(y,x) + y^2 -1 = 0;
 ode2(eqn,y,x);

@@ -7,93 +7,93 @@
 
 
 kill(allbut(props));
-DONE$
-LINECHAR:%t;
+done$
+linechar:%t;
 %t$
-ATVALUE(F(X,Y),[X = 0,Y = 1],A^2);
-A^2$
-ATVALUE('DIFF(F(X,Y),X),X = 0,Y+1);
+atvalue(f(x,y),[x = 0,y = 1],a^2);
+a^2$
+atvalue('diff(f(x,y),x),x = 0,y+1);
 "@2"+1$
-PRINTPROPS(ALL,ATVALUE);
-DONE$
-DIFF(4*F(X,Y)^2-U(X,Y)^2,X);
-8*F(X,Y)*'DIFF(F(X,Y),X,1)-2*U(X,Y)*'DIFF(U(X,Y),X,1)$
-AT(%,[X = 0,Y = 1]);
-16*A^2-2*U(0,1)*(AT('DIFF(U(X,Y),X,1),[X = 0,Y = 1]))$
-ATVALUE(F(X,Y),[X = 0,Y = 1],A^2);
-A^2$
-ATVALUE('DIFF(F(X,Y),X),X = 0,Y+1);
+printprops(all,atvalue);
+done$
+diff(4*f(x,y)^2-u(x,y)^2,x);
+8*f(x,y)*'diff(f(x,y),x,1)-2*u(x,y)*'diff(u(x,y),x,1)$
+at(%,[x = 0,y = 1]);
+16*a^2-2*u(0,1)*(at('diff(u(x,y),x,1),[x = 0,y = 1]))$
+atvalue(f(x,y),[x = 0,y = 1],a^2);
+a^2$
+atvalue('diff(f(x,y),x),x = 0,y+1);
 "@2"+1$
-PRINTPROPS(ALL,ATVALUE);
-DONE$
-DIFF(4*F(X,Y)^2-U(X,Y)^2,X);
-8*F(X,Y)*'DIFF(F(X,Y),X,1)-2*U(X,Y)*'DIFF(U(X,Y),X,1)$
-AT(%,[X = 0,Y = 1]);
-16*A^2-2*U(0,1)*(AT('DIFF(U(X,Y),X,1),[X = 0,Y = 1]))$
-LISTOFVARS(F(X[1]+Y)/G^(2+A));
-[G,A,X[1],Y]$
-COEFF(2*A*TAN(X)+TAN(X)+B = 5*TAN(X)+3,TAN(X));
-2*A+1 = 5$
-COEFF(Y+X*%E^X+1,X,0);
-Y+1$
-A*X+B*X+5;
-B*X+A*X+5$
-RATCOEF(%,A+B);
-X$
-ISLINEAR(EXP,VAR):=BLOCK([C],C:BOTHCOEF(RAT(EXP,VAR),VAR),
-	 IS(FREEOF(VAR,C) AND C[1] # 0));
-ISLINEAR(EXP,VAR):=BLOCK([C],C:BOTHCOEF(RAT(EXP,VAR),VAR),
-	 IS(FREEOF(VAR,C) AND C[1] # 0))$
-ISLINEAR((R^2-(X-R)^2)/X,X);
-TRUE$
-(A+B)^4*(1+X*(2*X+(C+D)^2));
-(B+A)^4*(X*(2*X+(D+C)^2)+1)$
-(linenum:0,ISOLATE(%,X));
-%t2*(X*(2*X+%t1)+1)$
-RATEXPAND(%);
-2*%t2*X^2+%t1*%t2*X+%t2$
-EV(%);
-2*(B+A)^4*X^2+(B+A)^4*(D+C)^2*X+(B+A)^4$
-(A+B)*(X+A+B)^2*%E^(X^2+A*X+B);
-(B+A)*(X+B+A)^2*%E^(X^2+A*X+B)$
-block([linenum:2],EV(ISOLATE(%,X),EXPTISOLATE:TRUE));
-%t3*%t4*(X+%t3)^2*%E^(X^2+A*X)$
-exp1:INTEGRATE(1/(X^3+2),X);
-  -LOG(X^2-2^(1/3)*X+2^(2/3))/(6*2^(2/3))+ATAN((2*X-2^(1/3))/(2^(1/3)*SQRT(3)))
-					/(2^(2/3)*SQRT(3))
-				       +LOG(X+2^(1/3))/(3*2^(2/3))$
-/* Got this at one point but it differentiates ok
-  -2^(1/3)*LOG(2^(2/3)*X^2-2*X+2*2^(1/3))/12+2^(1/3)*ATAN((2*2^(2/3)*X-2)/(2*SQRT(3)))/(2*SQRT(3))+2^(1/3)*LOG(X+2^(1/3))/6; */
-radcan(diff(%,X));
-1/(X^3+2);
-block([linenum:4],PICKAPART(exp1,1));
+printprops(all,atvalue);
+done$
+diff(4*f(x,y)^2-u(x,y)^2,x);
+8*f(x,y)*'diff(f(x,y),x,1)-2*u(x,y)*'diff(u(x,y),x,1)$
+at(%,[x = 0,y = 1]);
+16*a^2-2*u(0,1)*(at('diff(u(x,y),x,1),[x = 0,y = 1]))$
+listofvars(f(x[1]+y)/g^(2+a));
+[g,a,x[1],y]$
+coeff(2*a*tan(x)+tan(x)+b = 5*tan(x)+3,tan(x));
+2*a+1 = 5$
+coeff(y+x*%e^x+1,x,0);
+y+1$
+a*x+b*x+5;
+b*x+a*x+5$
+ratcoef(%,a+b);
+x$
+islinear(exp,var):=block([c],c:bothcoef(rat(exp,var),var),
+	 is(freeof(var,c) and c[1] # 0));
+islinear(exp,var):=block([c],c:bothcoef(rat(exp,var),var),
+	 is(freeof(var,c) and c[1] # 0))$
+islinear((r^2-(x-r)^2)/x,x);
+true$
+(a+b)^4*(1+x*(2*x+(c+d)^2));
+(b+a)^4*(x*(2*x+(d+c)^2)+1)$
+(linenum:0,isolate(%,x));
+%t2*(x*(2*x+%t1)+1)$
+ratexpand(%);
+2*%t2*x^2+%t1*%t2*x+%t2$
+ev(%);
+2*(b+a)^4*x^2+(b+a)^4*(d+c)^2*x+(b+a)^4$
+(a+b)*(x+a+b)^2*%e^(x^2+a*x+b);
+(b+a)*(x+b+a)^2*%e^(x^2+a*x+b)$
+block([linenum:2],ev(isolate(%,x),exptisolate:true));
+%t3*%t4*(x+%t3)^2*%e^(x^2+a*x)$
+exp1:integrate(1/(x^3+2),x);
+  -log(x^2-2^(1/3)*x+2^(2/3))/(6*2^(2/3))+atan((2*x-2^(1/3))/(2^(1/3)*sqrt(3)))
+					/(2^(2/3)*sqrt(3))
+				       +log(x+2^(1/3))/(3*2^(2/3))$
+/* got this at one point but it differentiates ok
+  -2^(1/3)*log(2^(2/3)*x^2-2*x+2*2^(1/3))/12+2^(1/3)*atan((2*2^(2/3)*x-2)/(2*sqrt(3)))/(2*sqrt(3))+2^(1/3)*log(x+2^(1/3))/6; */
+radcan(diff(%,x));
+1/(x^3+2);
+block([linenum:4],pickapart(exp1,1));
 %t7+%t6+%t5$
-GAMMA(7/2);
-15*SQRT(%PI)/8$
-NUMFACTOR(%);
+gamma(7/2);
+15*sqrt(%pi)/8$
+numfactor(%);
 15/8$
-'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X,1)*X^2;
-2*'DIFF(Y,Z,3)+'DIFF(Y,X,2)+X^2*'DIFF(Y,X,1)$
-DERIVDEGREE(%,Y,X);
+'diff(y,x,2)+'diff(y,z,3)*2+'diff(y,x,1)*x^2;
+2*'diff(y,z,3)+'diff(y,x,2)+x^2*'diff(y,x,1)$
+derivdegree(%,y,x);
 2$
-(%I*V+U)/(F+%I*E)+%E^(%I*ALPHA);
-(%I*V+U)/(F+%I*E)+%E^(%I*ALPHA)$
-REALPART(%);
-(E*V+F*U)/(F^2+E^2)+COS(ALPHA)$
-RECTFORM(SIN(2*%I+X));
-COSH(2)*SIN(X)+%I*SINH(2)*COS(X)$
-POLARFORM(%);
-SQRT(COSH(2)^2*SIN(X)^2+SINH(2)^2*COS(X)^2)
- *%E^(%I*ATAN2(SINH(2)*COS(X),COSH(2)*SIN(X)))$
-RECTFORM(LOG(3+4*%I));
-LOG(5)+%I*ATAN(4/3)$
-POLARFORM(%);
-SQRT(LOG(5)^2+ATAN(4/3)^2)*%E^(%I*ATAN(ATAN(4/3)/LOG(5)))$
-EV(RECTFORM((2+3.5*%I)^0.25),NUMER);
-0.3682587918166914*%I+1.368266274774369;
-/* tops 20 : 0.368258808*%I+1.36826627 */
-POLARFORM(%);
-1.416956998795383*%\E^(0.2629125531370934*%\I);
-/* tops 20 :  1.416957*%E^(0.262912527*%I)$ */
-DELETE(SIN(X),X+SIN(X)+Y);
-Y+X$
+(%i*v+u)/(f+%i*e)+%e^(%i*alpha);
+(%i*v+u)/(f+%i*e)+%e^(%i*alpha)$
+realpart(%);
+(e*v+f*u)/(f^2+e^2)+cos(alpha)$
+rectform(sin(2*%i+x));
+cosh(2)*sin(x)+%i*sinh(2)*cos(x)$
+polarform(%);
+sqrt(cosh(2)^2*sin(x)^2+sinh(2)^2*cos(x)^2)
+ *%e^(%i*atan2(sinh(2)*cos(x),cosh(2)*sin(x)))$
+rectform(log(3+4*%i));
+log(5)+%i*atan(4/3)$
+polarform(%);
+sqrt(log(5)^2+atan(4/3)^2)*%e^(%i*atan(atan(4/3)/log(5)))$
+ev(rectform((2+3.5*%i)^0.25),numer);
+0.3682587918166914*%i+1.368266274774369;
+/* tops 20 : 0.368258808*%i+1.36826627 */
+polarform(%);
+1.416956998795383*%\e^(0.2629125531370934*%\i);
+/* tops 20 :  1.416957*%e^(0.262912527*%i)$ */
+delete(sin(x),x+sin(x)+y);
+y+x$

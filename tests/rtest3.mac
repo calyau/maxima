@@ -9,214 +9,214 @@
 /* rtest3 */						
 kill(allbut(props));
 done;
-FOR A FROM -3 STEP 7 THRU 26 DO LDISPLAY(A);
-DONE$
-S:0;
+for a from -3 step 7 thru 26 do ldisplay(a);
+done$
+s:0;
 0$
-FOR I WHILE I <= 10 DO S:S+I;
-DONE$
-S;
+for i while i <= 10 do s:s+i;
+done$
+s;
 55$
-SERIES:1;
+series:1;
 1$
-TERM:EXP(SIN(X));
-%E^SIN(X)$
-FOR P UNLESS P > 7 DO
-    (TERM:DIFF(TERM,X)/P,SERIES:SERIES+SUBST(X = 0,TERM)*X^P);
-DONE$
-SERIES;
-X^7/90-X^6/240-X^5/15-X^4/8+X^2/2+X+1$
-POLY:0;
+term:exp(sin(x));
+%e^sin(x)$
+for p unless p > 7 do
+    (term:diff(term,x)/p,series:series+subst(x = 0,term)*x^p);
+done$
+series;
+x^7/90-x^6/240-x^5/15-x^4/8+x^2/2+x+1$
+poly:0;
 0$
-FOR I THRU 5 DO (FOR J FROM I STEP -1 THRU 1 DO POLY:POLY+I*X^J);
-DONE$
-POLY;
-5*X^5+9*X^4+12*X^3+14*X^2+15*X$
-GUESS:-3.0;
+for i thru 5 do (for j from i step -1 thru 1 do poly:poly+i*x^j);
+done$
+poly;
+5*x^5+9*x^4+12*x^3+14*x^2+15*x$
+guess:-3.0;
 -3.0$
-FOR I THRU 10 DO
-    (GUESS:SUBST(GUESS,X,0.5*(X+10/X)),
-     IF ABS(GUESS^2-10) < 5.0E-5 THEN RETURN(GUESS));
+for i thru 10 do
+    (guess:subst(guess,x,0.5*(x+10/x)),
+     if abs(guess^2-10) < 5.0e-5 then return(guess));
 -3.162280701754386;
 /* -3.1622806$ */
-FOR COUNT FROM 2 NEXT 3*COUNT THRU 20 DO LDISPLAY(COUNT);
-DONE$
-X:1000;
+for count from 2 next 3*count thru 20 do ldisplay(count);
+done$
+x:1000;
 1000$
-THRU 10 WHILE X # 0 DO X:0.5*(X+5/X);
-DONE$
-X;
+thru 10 while x # 0 do x:0.5*(x+5/x);
+done$
+x;
 2.28242904$
-REMVALUE(X);
-[X]$
-NEWTON(F,GUESS):=BLOCK([NUMER,Y],LOCAL(F,DF,X,GUESS),NUMER:TRUE,
-       DEFINE(DF(X),DIFF(F(X),X)),
-       DO (Y:DF(GUESS),IF Y = 0 THEN ERROR("derivative at",GUESS,"is zero"),
-	   GUESS:GUESS-F(GUESS)/Y,
-	   IF ABS(F(GUESS)) < 5.0E-6 THEN RETURN(GUESS)));
-NEWTON(F,GUESS):=BLOCK([NUMER,Y],LOCAL(F,DF,X,GUESS),NUMER:TRUE,
-       DEFINE(DF(X),DIFF(F(X),X)),
-       DO (Y:DF(GUESS),IF Y = 0 THEN ERROR("derivative at",GUESS,"is zero"),
-	   GUESS:GUESS-F(GUESS)/Y,
-	   IF ABS(F(GUESS)) < 5.0E-6 THEN RETURN(GUESS)))$
-SQR(X):=X^2-5.0;
-SQR(X):=X^2-5.0$
-NEWTON(SQR,1000);
+remvalue(x);
+[x]$
+newton(f,guess):=block([numer,y],local(f,df,x,guess),numer:true,
+       define(df(x),diff(f(x),x)),
+       do (y:df(guess),if y = 0 then error("derivative at",guess,"is zero"),
+	   guess:guess-f(guess)/y,
+	   if abs(f(guess)) < 5.0e-6 then return(guess)));
+newton(f,guess):=block([numer,y],local(f,df,x,guess),numer:true,
+       define(df(x),diff(f(x),x)),
+       do (y:df(guess),if y = 0 then error("derivative at",guess,"is zero"),
+	   guess:guess-f(guess)/y,
+	   if abs(f(guess)) < 5.0e-6 then return(guess)))$
+sqr(x):=x^2-5.0;
+sqr(x):=x^2-5.0$
+newton(sqr,1000);
 2.236068027062195; 
-FOR F IN [LOG,RHO,ATAN] DO LDISP(F(1.0));
-DONE$
-EV(CONCAT(E,LINENUM-1),NUMER);
-E10$
-KILL(FUNCTIONS,VALUES,ARRAYS);
-DONE$
-DONE;
-DONE$
-EXP:DIFF(X*F(X),X);
-X*'DIFF(F(X),X,1)+F(X)$
-F(X):=SIN(X);
-F(X):=SIN(X)$
-EV(EXP,DIFF);
-SIN(X)+X*COS(X)$
-X;
-X$
-X:3;
+for f in [log,rho,atan] do ldisp(f(1.0));
+done$
+ev(concat(e,linenum-1),numer);
+e10$
+kill(functions,values,arrays);
+done$
+done;
+done$
+exp:diff(x*f(x),x);
+x*'diff(f(x),x,1)+f(x)$
+f(x):=sin(x);
+f(x):=sin(x)$
+ev(exp,diff);
+sin(x)+x*cos(x)$
+x;
+x$
+x:3;
 3$
-X;
+x;
 3$
-'X;
-X$
-F(X):=X^2;
-F(X):=X^2$
-'F(2);
-'F(2)$
-EV(%,F);
+'x;
+x$
+f(x):=x^2;
+f(x):=x^2$
+'f(2);
+'f(2)$
+ev(%,f);
 4$
-'(F(2));
-F(2)$
-F(2);
+'(f(2));
+f(2)$
+f(2);
 4$
-SUM(I!,I,1,4);
+sum(i!,i,1,4);
 33$
-'SUM(I!,I,1,4);
-'SUM(I!,I,1,4)$
-REMVALUE(X);
-[X]$
-'INTEGRATE(F(X),X,A,B);
-'INTEGRATE(X^2,X,A,B)$
-FOR I THRU 5 DO S:S+I^2;
-DONE$
-EXP:S;
-S+55$
-EV(%,S:0);
+'sum(i!,i,1,4);
+'sum(i!,i,1,4)$
+remvalue(x);
+[x]$
+'integrate(f(x),x,a,b);
+'integrate(x^2,x,a,b)$
+for i thru 5 do s:s+i^2;
+done$
+exp:s;
+s+55$
+ev(%,s:0);
 55$
-EV(EXP);
-S+110$
-EXP:'SUM(G(I),I,0,N);
-'SUM(G(I),I,0,N)$
-Z*%E^Z;
-Z*%E^Z$
-EV(%,Z:X^2);
-X^2*%E^X^2$
-SUBST(X^2,Z,EXP);
-'SUM(G(I),I,0,N)$
-A:%;
-'SUM(G(I),I,0,N)$
-A+1;
-'SUM(G(I),I,0,N)+1$
-KILL(A,Y);
-DONE$
-A;
-A$
-DECLARE(INTEGRATE,NOUN);
-DONE$
-INTEGRATE(Y^2,Y);
-INTEGRATE(Y^2,Y)$
-''INTEGRATE(Y^2,Y);
-Y^3/3$
-F(Y):=DIFF(Y*LOG(Y),Y,2);
-F(Y):=DIFF(Y*LOG(Y),Y,2)$
-F(Y):=1/Y;
-F(Y):=1/Y$
-C10;
-C10$
-(X+Y)^3;
-(Y+X)^3$
-DIFF(%,X);
-3*(Y+X)^2$
-Y:X^2+1;
-X^2+1$
+ev(exp);
+s+110$
+exp:'sum(g(i),i,0,n);
+'sum(g(i),i,0,n)$
+z*%e^z;
+z*%e^z$
+ev(%,z:x^2);
+x^2*%e^x^2$
+subst(x^2,z,exp);
+'sum(g(i),i,0,n)$
+a:%;
+'sum(g(i),i,0,n)$
+a+1;
+'sum(g(i),i,0,n)+1$
+kill(a,y);
+done$
+a;
+a$
+declare(integrate,noun);
+done$
+integrate(y^2,y);
+integrate(y^2,y)$
+''integrate(y^2,y);
+y^3/3$
+f(y):=diff(y*log(y),y,2);
+f(y):=diff(y*log(y),y,2)$
+f(y):=1/y;
+f(y):=1/y$
+c10;
+c10$
+(x+y)^3;
+(y+x)^3$
+diff(%,x);
+3*(y+x)^2$
+y:x^2+1;
+x^2+1$
 
 /* begin fix */
 kill(allbut(props));
 done;
- EV(%E^X*SIN(X)^2,EXPONENTIALIZE);
- -%E^X*(%E^(%I*X)-%E^-(%I*X))^2/4;
-  integrate(%,X);
--(%E^((2*%I+1)*X)/(2*%I+1)+%E^((1-2*%I)*X)/(1-2*%I)-2*%E^X)/4; 
- EV(%,DEMOIVRE);
- -(%E^X*(%I*SIN(2*X)+COS(2*X))/(2*%I+1)
-      +%E^X*(COS(2*X)-%I*SIN(2*X))/(1-2*%I)-2*%E^X)
+ ev(%e^x*sin(x)^2,exponentialize);
+ -%e^x*(%e^(%i*x)-%e^-(%i*x))^2/4;
+  integrate(%,x);
+-(%e^((2*%i+1)*x)/(2*%i+1)+%e^((1-2*%i)*x)/(1-2*%i)-2*%e^x)/4; 
+ ev(%,demoivre);
+ -(%e^x*(%i*sin(2*x)+cos(2*x))/(2*%i+1)
+      +%e^x*(cos(2*x)-%i*sin(2*x))/(1-2*%i)-2*%e^x)
       /4;
- ANS:EV(%,RATEXPAND);
- -%E^X*SIN(2*X)/5-%E^X*COS(2*X)/10+%E^X/2;
- EV(ANS,X:1,NUMER)-EV(ANS,X:0,NUMER);
+ ans:ev(%,ratexpand);
+ -%e^x*sin(2*x)/5-%e^x*cos(2*x)/10+%e^x/2;
+ ev(ans,x:1,numer)-ev(ans,x:0,numer);
  0.5779160182042402;
- block([FPPREC:35],EV(ANS,X:1,BFLOAT)-EV(ANS,X:0,BFLOAT));
- 5.7791601820424019599988308251707781339427227258443B-1;
- INTEGRATE(%E^X*SIN(X)^2,X);
- -(2*%E^X*SIN(2*X)+%E^X*COS(2*X)-5*%E^X)/10;
+ block([fpprec:35],ev(ans,x:1,bfloat)-ev(ans,x:0,bfloat));
+ 5.7791601820424019599988308251707781339427227258443b-1;
+ integrate(%e^x*sin(x)^2,x);
+ -(2*%e^x*sin(2*x)+%e^x*cos(2*x)-5*%e^x)/10;
  trigreduce(%);
- -(2*%E^X*SIN(2*X)+%E^X*COS(2*X)-5*%E^X)/10;
+ -(2*%e^x*sin(2*x)+%e^x*cos(2*x)-5*%e^x)/10;
  % - ans,ratsimp;
  0 ;
 
 /* end fix*/
 
-EV(SIN(X),%EMODE);
-SIN(X)$
-SIN(%PI/12)+TAN(%PI/6);
-SIN(%PI/12)+1/SQRT(3)$
-EV(%,NUMER);
+ev(sin(x),%emode);
+sin(x)$
+sin(%pi/12)+tan(%pi/6);
+sin(%pi/12)+1/sqrt(3)$
+ev(%,numer);
 0.8361693142921465;
 /* tops 20 : 0.83616931$ */
-SIN(1);
-SIN(1)$
-EV(SIN(1),NUMER);
+sin(1);
+sin(1)$
+ev(sin(1),numer);
 0.8414709848079;
-BETA(1/2,2/5);
-BETA(1/2,2/5)$
-EV(%,NUMER);
+beta(1/2,2/5);
+beta(1/2,2/5)$
+ev(%,numer);
 3.679093980405881;
 /* tops 20: 3.67909265$ */
-DIFF(ATANH(SQRT(X)),X);
-1/(2*(1-X)*SQRT(X))$
-FPPREC:25;
+diff(atanh(sqrt(x)),x);
+1/(2*(1-x)*sqrt(x))$
+fpprec:25;
 25$
-SIN(5.0B-1);
-4.794255386042030002732879B-1$
+sin(5.0b-1);
+4.794255386042030002732879b-1$
 /*begin fix */
- EXP:COS(X)^2-SIN(X)^2;
- COS(X)^2-SIN(X)^2$
- EV(%,X:%PI/3);
+ exp:cos(x)^2-sin(x)^2;
+ cos(x)^2-sin(x)^2$
+ ev(%,x:%pi/3);
  -1/2$
- DIFF(EXP,X);
- -4*COS(X)*SIN(X)$
- INTEGRATE(EXP,X);
- (SIN(2*X)/2+X)/2-(X-SIN(2*X)/2)/2$
- EXPAND(%);
- SIN(2*X)/2$
- TRIGEXPAND(%);
- COS(X)*SIN(X)$
- TRIGREDUCE(%);
- SIN(2*X)/2$
- diff(%,X);
- COS(2*X)$
+ diff(exp,x);
+ -4*cos(x)*sin(x)$
+ integrate(exp,x);
+ (sin(2*x)/2+x)/2-(x-sin(2*x)/2)/2$
+ expand(%);
+ sin(2*x)/2$
+ trigexpand(%);
+ cos(x)*sin(x)$
+ trigreduce(%);
+ sin(2*x)/2$
+ diff(%,x);
+ cos(2*x)$
  %-exp,trigreduce,ratsimp;
   0;
 /*end fix*/
-SECH(X)^2*SINH(X)*TANH(X)/COTH(X)^2+COSH(X)^2*SECH(X)^2*TANH(X)/COTH(X)^2
-				   +SECH(X)^2*TANH(X)/COTH(X)^2;
-SECH(X)^2*SINH(X)*TANH(X)/COTH(X)^2+COSH(X)^2*SECH(X)^2*TANH(X)/COTH(X)^2
-				   +SECH(X)^2*TANH(X)/COTH(X)^2$
-TRIGSIMP(%);
-(SINH(X)^5+SINH(X)^4+2*SINH(X)^3)/COSH(X)^5$
+sech(x)^2*sinh(x)*tanh(x)/coth(x)^2+cosh(x)^2*sech(x)^2*tanh(x)/coth(x)^2
+				   +sech(x)^2*tanh(x)/coth(x)^2;
+sech(x)^2*sinh(x)*tanh(x)/coth(x)^2+cosh(x)^2*sech(x)^2*tanh(x)/coth(x)^2
+				   +sech(x)^2*tanh(x)/coth(x)^2$
+trigsimp(%);
+(sinh(x)^5+sinh(x)^4+2*sinh(x)^3)/cosh(x)^5$

@@ -1,191 +1,191 @@
-/* modified for DOE MACSYMA with define_variable */
+/* modified for doe macsyma with define_variable */
 
-/*	THIS IS THE FILE EIGEN > DSK:SHARE;.
-	THIS IS THE SOURCE CODE FOR THE NEW EIGEN PACKAGE AND IT IS
-	MACSYMA BATCHABLE, I.E. BATCH(EIGEN,>,DSK,SHARE);.  IF YOU DO NOT WANT
-	TO WASTE TIME (AND/OR PAPER...) THE FASTLOADABLE VERSION IS ON THE FILE
-	EIGEN FASL DSK:SHARE;.  YOU CAN LOAD THE LATTER USING MACSYMA'S 
-	LOADFILE COMMAND, I.E. LOADFILE(EIGEN,FASL,DSK,SHARE);. THE FUNCTIONS
-	ARE DESCRIBED IN THE FILE EIGEN USAGE DSK:SHARE;, AND THE DEMO FILE IN
-	WHICH THE FUNCTIONS ARE DEMONSTRATED IS EIGEN DEMO DSK:SHARE;.     */
+/*	this is the file eigen > dsk:share;.
+	this is the source code for the new eigen package and it is
+	macsyma batchable, i.e. batch(eigen,>,dsk,share);.  if you do not want
+	to waste time (and/or paper...) the fastloadable version is on the file
+	eigen fasl dsk:share;.  you can load the latter using macsyma's 
+	loadfile command, i.e. loadfile(eigen,fasl,dsk,share);. the functions
+	are described in the file eigen usage dsk:share;, and the demo file in
+	which the functions are demonstrated is eigen demo dsk:share;.     */
 
-/* commented out of DOE MACSYMA
-EVAL_WHEN(TRANSLATE_FILE,
-        MODEDECLARE([HERMITIANMATRIX,NONDIAGONALIZABLE,KNOWNEIGVALS,
-	KNOWNEIGVECTS],BOOLEAN,
-	[INDEX1,INDEX2,INDEX3,INDEX4,DIMNSN,COUNT,%RNUM],FIXNUM),
-        DECLARE([HERMITIANMATRIX,NONDIAGONALIZABLE,KNOWNEIGVALS,
-        KNOWNEIGVECTS,LISTEIGVECTS,LISTEIGVALS,%RNUM,LISTARITH,PROGRAMMODE,
-	ALGEBRAIC,REALONLY,MULTIPLICITIES,SOLVEEXPLICIT],SPECIAL))$ */
+/* commented out of doe macsyma
+eval_when(translate_file,
+        modedeclare([hermitianmatrix,nondiagonalizable,knowneigvals,
+	knowneigvects],boolean,
+	[index1,index2,index3,index4,dimnsn,count,%rnum],fixnum),
+        declare([hermitianmatrix,nondiagonalizable,knowneigvals,
+        knowneigvects,listeigvects,listeigvals,%rnum,listarith,programmode,
+	algebraic,realonly,multiplicities,solveexplicit],special))$ */
 
-EVAL_WHEN([TRANSLATE,BATCH,DEMO,LOAD,LOADFILE],
-MI(VAR)::=BUILDQ([VAR],MODE_IDENTITY(FIXNUM,VAR)),
-DV(VAR)::=BUILDQ([VAR],DEFINE_VARIABLE(VAR,FALSE,BOOLEAN)))$
+eval_when([translate,batch,demo,load,loadfile],
+mi(var)::=buildq([var],mode_identity(fixnum,var)),
+dv(var)::=buildq([var],define_variable(var,false,boolean)))$
 
-/* COMMENTED OUT OF DOE MACSYMA
-SSTATUS(FEATURE,EIGEN)$
+/* commented out of doe macsyma
+sstatus(feature,eigen)$
 
-HERMITIANMATRIX:FALSE$
+hermitianmatrix:false$
 
-NONDIAGONALIZABLE:FALSE$
+nondiagonalizable:false$
 
-KNOWNEIGVALS:FALSE$
+knowneigvals:false$
 
-KNOWNEIGVECTS:FALSE$
+knowneigvects:false$
 
-LISTEIGVECTS:[]$
+listeigvects:[]$
 
-LISTEIGVALS:[]$
+listeigvals:[]$
 */
 
-DV(HERMITIANMATRIX)$ DV(NONDIAGONALIZABLE)$ DV(KNOWNEIGVALS)$
-DV(KNOWNEIGVECTS)$
+dv(hermitianmatrix)$ dv(nondiagonalizable)$ dv(knowneigvals)$
+dv(knowneigvects)$
 
-DEFINE_VARIABLE(LISTEIGVECTS,[],LIST)$
-DEFINE_VARIABLE(LISTEIGVALS,[],LIST)$
-DEFINE_VARIABLE(RIGHTMATRIX,[],ANY)$
-DEFINE_VARIABLE(LEFTMATRIX,[],ANY)$
+define_variable(listeigvects,[],list)$
+define_variable(listeigvals,[],list)$
+define_variable(rightmatrix,[],any)$
+define_variable(leftmatrix,[],any)$
 
-CONJUGATE(X):=SUBLIS('[%I=-%I],X)$
+conjugate(x):=sublis('[%i=-%i],x)$
 
-INNERPRODUCT(X,Y):=BLOCK([LISTARITH],LISTARITH:TRUE,RATSIMP(CONJUGATE(X).Y))$
+innerproduct(x,y):=block([listarith],listarith:true,ratsimp(conjugate(x).y))$
 /*
-UNITVECTOR(X):=BLOCK([LISTARITH,INTRN],LISTARITH:TRUE,INTRN:INNERPRODUCT(X,X),
-INTRN:SQRT(INTRN),X/INTRN)$
+unitvector(x):=block([listarith,intrn],listarith:true,intrn:innerproduct(x,x),
+intrn:sqrt(intrn),x/intrn)$
 */
-UNITVECTOR(X):=BLOCK([LISTARITH],LISTARITH:TRUE,X/SQRT(INNERPRODUCT(X,X)))$
+unitvector(x):=block([listarith],listarith:true,x/sqrt(innerproduct(x,x)))$
 
-COLUMNVECTOR(X):=TRANSPOSE(MATRIX(X))$
+columnvector(x):=transpose(matrix(x))$
 
 
-GRAMSCHMIDT(X):=
-		BLOCK([LISTARITH,DIMNSN,LISTALL,INTERN,COUNT,DENOM,UNIT,INDEX1,
-		INDEX2],
-                MODE_DECLARE([DIMNSN,COUNT,INDEX1,INDEX2],FIXNUM,
-                              [LISTALL],LIST,[INTERN,DENOM,UNIT],ANY),
-		LISTARITH:TRUE,DIMNSN:MI(LENGTH(X)),LISTALL:[PART(X,1)],
-		COUNT:1,IF DIMNSN=1 THEN RETURN(X)
-		ELSE (FOR INDEX1:2 THRU DIMNSN DO
-		(UNIT:PART(X,INDEX1),FOR INDEX2 THRU COUNT DO
-		(INTERN:PART(LISTALL,INDEX2),DENOM:INNERPRODUCT(INTERN,INTERN),
-		UNIT:FACTOR(RATSIMP(UNIT-INNERPRODUCT(INTERN,UNIT)*INTERN/DENOM
+gramschmidt(x):=
+		block([listarith,dimnsn,listall,intern,count,denom,unit,index1,
+		index2],
+                mode_declare([dimnsn,count,index1,index2],fixnum,
+                              [listall],list,[intern,denom,unit],any),
+		listarith:true,dimnsn:mi(length(x)),listall:[part(x,1)],
+		count:1,if dimnsn=1 then return(x)
+		else (for index1:2 thru dimnsn do
+		(unit:part(x,index1),for index2 thru count do
+		(intern:part(listall,index2),denom:innerproduct(intern,intern),
+		unit:factor(ratsimp(unit-innerproduct(intern,unit)*intern/denom
 		))),
-		COUNT:COUNT+1,LISTALL:ENDCONS(UNIT,LISTALL)),
-		RETURN(LISTALL)))$
+		count:count+1,listall:endcons(unit,listall)),
+		return(listall)))$
 
 
-EIGENVALUES(MAT):=
-		BLOCK([DIMNSN,LISTALL,SOLUTION,MULTIPLICITIES,SOLVEEXPLICIT,
-	        DUMMY:?GENSYM(),INDEX2],
-                MODE_DECLARE([DIMNSN,INDEX2],FIXNUM,[LISTALL,SOLUTION],LIST,
-                             [DUMMY],ANY),
-		LISTALL:[],
-		SOLVEEXPLICIT:TRUE,
-		DIMNSN:MI(LENGTH(MAT)),
-		SOLUTION:BLOCK([PROGRAMMODE:TRUE],
-	        SOLVE(CHARPOLY(MAT,DUMMY),DUMMY)),
-		IF SOLUTION=[] THEN 
-		(PRINT(" "),PRINT("SOLVE is unable to find the roots of"),
-		PRINT("the characteristic polynomial."),
-		RETURN(LISTALL))
-		ELSE (FOR INDEX2 THRU DIMNSN DO
-		(DIMNSN:MI(DIMNSN-PART(MULTIPLICITIES,INDEX2)+1),
-		LISTALL:ENDCONS(RHS(PART(SOLUTION,INDEX2)),LISTALL)),
-		LISTALL:ENDCONS(MULTIPLICITIES,[LISTALL]),
-		RETURN(LISTALL)))$
+eigenvalues(mat):=
+		block([dimnsn,listall,solution,multiplicities,solveexplicit,
+	        dummy:?gensym(),index2],
+                mode_declare([dimnsn,index2],fixnum,[listall,solution],list,
+                             [dummy],any),
+		listall:[],
+		solveexplicit:true,
+		dimnsn:mi(length(mat)),
+		solution:block([programmode:true],
+	        solve(charpoly(mat,dummy),dummy)),
+		if solution=[] then 
+		(print(" "),print("solve is unable to find the roots of"),
+		print("the characteristic polynomial."),
+		return(listall))
+		else (for index2 thru dimnsn do
+		(dimnsn:mi(dimnsn-part(multiplicities,index2)+1),
+		listall:endcons(rhs(part(solution,index2)),listall)),
+		listall:endcons(multiplicities,[listall]),
+		return(listall)))$
 
-EIGENVECTORS(MAT):=
-		BLOCK([EQUATIONS,UNKNOWNS,SOLUTION,LISTALL,EIGVALS,DIMNSN,
-		COUNT,VECTR,INDEX3,INDEX4,INDEX2,INDEX1,MATRX,MMATRX,notknwn,
-		UNIT,MULTIPLICITIES,%RNUM,REALONLY,ALGEBRAIC,INTERM,INTERN],
-                MODE_DECLARE([EQUATIONS,UNKNOWNS,SOLUTION,LISTALL,EIGVALS,
-                              UNIT,INTERM],LIST,
-                             [DIMNSN,COUNT,INDEX3,INDEX4,INDEX2,INDEX1],FIXNUM,
-                             [VECTR,MATRX,MMATRX,INTERN,NOTKNWN],ANY),
-                UNKNOWNS:[],DIMNSN:MI(LENGTH(MAT)),
-                COUNT:MI(DIMNSN),notknwn:?gensym(),
-		IF KNOWNEIGVALS THEN EIGVALS:LISTEIGVALS
-		ELSE EIGVALS:EIGENVALUES(MAT),
-		IF EIGVALS=[] THEN (NONDIAGONALIZABLE:TRUE,RETURN(EIGVALS))
-		ELSE (MULTIPLICITIES:PART(EIGVALS,2),
-		FOR INDEX1 THRU DIMNSN DO
-		UNKNOWNS:ENDCONS(concat(notknwn,index1),UNKNOWNS),
-		VECTR:COLUMNVECTOR(UNKNOWNS),MATRX:MAT.VECTR,
-		NONDIAGONALIZABLE:FALSE,
-		LISTALL:[EIGVALS],REALONLY:FALSE,ALGEBRAIC:TRUE,
-		FOR INDEX1 THRU COUNT DO 
-		(COUNT:MI(COUNT-PART(MULTIPLICITIES,INDEX1)+1),
-		MMATRX:MATRX-PART(EIGVALS,1,INDEX1)*VECTR,
-		EQUATIONS:[],
-		FOR INDEX2 THRU DIMNSN DO
-		EQUATIONS:CONS(MMATRX[INDEX2,1],EQUATIONS),%RNUM:0,
-		SOLUTION:ALGSYS(EQUATIONS,UNKNOWNS),
-		INTERM:MAP('RHS,SOLUTION[1]),
-		UNIT:[],IF %RNUM#PART(MULTIPLICITIES,INDEX1)
-		THEN NONDIAGONALIZABLE:TRUE,
-		FOR INDEX3 THRU %RNUM DO
-		(INTERN:SUBSTVECTK(%RNUM_LIST,INDEX3,INTERM),
-                UNIT:APPEND(UNIT,[INTERN])),
-	        IF UNIT=[] THEN
-		(PRINT(" "),PRINT("ALGSYS failure: The eigenvector(s) for the",
-		INDEX1,"th eigenvalue will be missing.")),
-		IF HERMITIANMATRIX AND %RNUM>1 THEN UNIT:GRAMSCHMIDT(UNIT),
-		LISTALL:APPEND(LISTALL,UNIT)),
-		RETURN(LISTALL)))$
-
-
-/* The first arg is of the form [r1,r2,r3].
-   We want to construct [r1=0,r2=1,r3=0] for example. */		
-
-SUBSTVECTK(L,N,EXP):=(mode_declare(l,list,n,fixnum,exp,any),
-                BLOCK([SUB_LIST:[],J:0],mode_declare(sub_list,list,j,fixnum),
-                FOR VAR IN L DO (mode_declare(var,any),
-                 J:J+1,SUB_LIST:CONS(VAR = IF J=N THEN 1 ELSE 0,SUB_LIST)),
-                SUBLIS(SUB_LIST,EXP)))$
+eigenvectors(mat):=
+		block([equations,unknowns,solution,listall,eigvals,dimnsn,
+		count,vectr,index3,index4,index2,index1,matrx,mmatrx,notknwn,
+		unit,multiplicities,%rnum,realonly,algebraic,interm,intern],
+                mode_declare([equations,unknowns,solution,listall,eigvals,
+                              unit,interm],list,
+                             [dimnsn,count,index3,index4,index2,index1],fixnum,
+                             [vectr,matrx,mmatrx,intern,notknwn],any),
+                unknowns:[],dimnsn:mi(length(mat)),
+                count:mi(dimnsn),notknwn:?gensym(),
+		if knowneigvals then eigvals:listeigvals
+		else eigvals:eigenvalues(mat),
+		if eigvals=[] then (nondiagonalizable:true,return(eigvals))
+		else (multiplicities:part(eigvals,2),
+		for index1 thru dimnsn do
+		unknowns:endcons(concat(notknwn,index1),unknowns),
+		vectr:columnvector(unknowns),matrx:mat.vectr,
+		nondiagonalizable:false,
+		listall:[eigvals],realonly:false,algebraic:true,
+		for index1 thru count do 
+		(count:mi(count-part(multiplicities,index1)+1),
+		mmatrx:matrx-part(eigvals,1,index1)*vectr,
+		equations:[],
+		for index2 thru dimnsn do
+		equations:cons(mmatrx[index2,1],equations),%rnum:0,
+		solution:algsys(equations,unknowns),
+		interm:map('rhs,solution[1]),
+		unit:[],if %rnum#part(multiplicities,index1)
+		then nondiagonalizable:true,
+		for index3 thru %rnum do
+		(intern:substvectk(%rnum_list,index3,interm),
+                unit:append(unit,[intern])),
+	        if unit=[] then
+		(print(" "),print("algsys failure: the eigenvector(s) for the",
+		index1,"th eigenvalue will be missing.")),
+		if hermitianmatrix and %rnum>1 then unit:gramschmidt(unit),
+		listall:append(listall,unit)),
+		return(listall)))$
 
 
-UNITEIGENVECTORS(MAT):=
-		BLOCK([LISTUEVEC,LISTALL,INDEX1,UNIT],
+/* the first arg is of the form [r1,r2,r3].
+   we want to construct [r1=0,r2=1,r3=0] for example. */		
+
+substvectk(l,n,exp):=(mode_declare(l,list,n,fixnum,exp,any),
+                block([sub_list:[],j:0],mode_declare(sub_list,list,j,fixnum),
+                for var in l do (mode_declare(var,any),
+                 j:j+1,sub_list:cons(var = if j=n then 1 else 0,sub_list)),
+                sublis(sub_list,exp)))$
+
+
+uniteigenvectors(mat):=
+		block([listuevec,listall,index1,unit],
                 mode_declare([listuevec,listall],list,index1,fixnum,unit,any),
-		IF KNOWNEIGVECTS THEN LISTUEVEC:LISTEIGVECTS
-		ELSE LISTUEVEC:EIGENVECTORS(MAT),
-		IF LISTUEVEC=[] THEN RETURN(LISTUEVEC)
-		ELSE (LISTALL:[PART(LISTUEVEC,1)],
-		FOR INDEX1:2 THRU LENGTH(LISTUEVEC) DO 
-		(UNIT:PART(LISTUEVEC,INDEX1),
-		UNIT:RATSIMP(UNITVECTOR(UNIT)),
-		LISTALL:ENDCONS(UNIT,LISTALL)),
-		RETURN(LISTALL)))$
+		if knowneigvects then listuevec:listeigvects
+		else listuevec:eigenvectors(mat),
+		if listuevec=[] then return(listuevec)
+		else (listall:[part(listuevec,1)],
+		for index1:2 thru length(listuevec) do 
+		(unit:part(listuevec,index1),
+		unit:ratsimp(unitvector(unit)),
+		listall:endcons(unit,listall)),
+		return(listall)))$
 
 
-SIMILARITYTRANSFORM(MAT):=
-		BLOCK([LISTVEC,LISTUEVEC],
+similaritytransform(mat):=
+		block([listvec,listuevec],
                 mode_declare([listvec,listuevec],list),
-		LISTUEVEC:UNITEIGENVECTORS(MAT),
-		IF NONDIAGONALIZABLE THEN RETURN(LISTUEVEC)
-		ELSE (LISTVEC:DELETE(PART(LISTUEVEC,1),LISTUEVEC),
-		RIGHTMATRIX:TRANSPOSE(APPLY('MATRIX,LISTVEC)),
-		IF HERMITIANMATRIX THEN
-		LEFTMATRIX:CONJUGATE(TRANSPOSE(RIGHTMATRIX))
-		ELSE LEFTMATRIX:RIGHTMATRIX^^-1,
-		RETURN(LISTUEVEC)))$
+		listuevec:uniteigenvectors(mat),
+		if nondiagonalizable then return(listuevec)
+		else (listvec:delete(part(listuevec,1),listuevec),
+		rightmatrix:transpose(apply('matrix,listvec)),
+		if hermitianmatrix then
+		leftmatrix:conjugate(transpose(rightmatrix))
+		else leftmatrix:rightmatrix^^-1,
+		return(listuevec)))$
 
 
-CONJ(X):=CONJUGATE(X)$
+conj(x):=conjugate(x)$
 
-INPROD(X,Y):=INNERPRODUCT(X,Y)$
+inprod(x,y):=innerproduct(x,y)$
 
-UVECT(X):=UNITVECTOR(X)$
+uvect(x):=unitvector(x)$
 
-COVECT(X):=COLUMNVECTOR(X)$
+covect(x):=columnvector(x)$
 
-GSCHMIT(X):=GRAMSCHMIDT(X)$
+gschmit(x):=gramschmidt(x)$
 
-EIVALS(MAT):=EIGENVALUES(MAT)$
+eivals(mat):=eigenvalues(mat)$
 
-EIVECTS(MAT):=EIGENVECTORS(MAT)$
+eivects(mat):=eigenvectors(mat)$
 
-UEIVECTS(MAT):=UNITEIGENVECTORS(MAT)$
+ueivects(mat):=uniteigenvectors(mat)$
 
-SIMTRAN(MAT):=SIMILARITYTRANSFORM(MAT)$
+simtran(mat):=similaritytransform(mat)$
 

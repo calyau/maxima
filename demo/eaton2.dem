@@ -1,26 +1,26 @@
-SHOWTIME:TRUE$
-LOADPRINT:FALSE$
-EQN1:A*COS(P2)=S+B*COS(P3);
-EQN2:A*SIN(P2)=E+B*SIN(P3);
-/* Declare p2, p3 and s to be time-dependent. */
-DEPENDS([P2,P3,S],T);
-/* [1] From equations 1 and 2, eliminate P3: */
-EQN3:EXPAND((EQN1-S)^2+(EQN2-E)^2);
-EQN3:TRIGSIMP(EQN3);
-/* [2] Using the results of step 1, solve for S in terms of
+showtime:true$
+loadprint:false$
+eqn1:a*cos(p2)=s+b*cos(p3);
+eqn2:a*sin(p2)=e+b*sin(p3);
+/* declare p2, p3 and s to be time-dependent. */
+depends([p2,p3,s],t);
+/* [1] from equations 1 and 2, eliminate p3: */
+eqn3:expand((eqn1-s)^2+(eqn2-e)^2);
+eqn3:trigsimp(eqn3);
+/* [2] using the results of step 1, solve for s in terms of
        a,b,e,p2: */
-S_SOLUTION:SOLVE(EQN3,S);
-/* Note that this differs from the result given.
-   [3] Take the derivative of eqn2 wrt t:  */
-EQN3:DIFF(EQN2,T);
-/* [4] Solve for p3-dot in terms of a, b, p2, p2-dot,p3. */
-P3_DOT:SOLVE(%,DIFF(P3,T));
-/* [5] Take the derivative of eqn2 wrt t:  */
-EQN5:DIFF(EQN1,T);
-/* [6] Solve for s-dot in terms of a, b, p2, p2-dot,p3. */
-SOLVE(EQN5,DIFF(s,T));
-%,P3_DOT,FACTOR;
-TRIGREDUCE(%);
+s_solution:solve(eqn3,s);
+/* note that this differs from the result given.
+   [3] take the derivative of eqn2 wrt t:  */
+eqn3:diff(eqn2,t);
+/* [4] solve for p3-dot in terms of a, b, p2, p2-dot,p3. */
+p3_dot:solve(%,diff(p3,t));
+/* [5] take the derivative of eqn2 wrt t:  */
+eqn5:diff(eqn1,t);
+/* [6] solve for s-dot in terms of a, b, p2, p2-dot,p3. */
+solve(eqn5,diff(s,t));
+%,p3_dot,factor;
+trigreduce(%);
 /* [7] */
-Z:I*(A*COS(P2)/(B*COS(P3)))^2;
-DIFF(Z,P2);
+z:i*(a*cos(p2)/(b*cos(p3)))^2;
+diff(z,p2);

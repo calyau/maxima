@@ -6,182 +6,182 @@
 ***************************************************************************/
 
 
-KILL(FUNCTIONS,ARRAYS,VALUES);
-DONE$
-EV(SIN(X),EXPONENTIALIZE);
--%I*(%E^(%I*X)-%E^-(%I*X))/2$
-TAYLOR(SIN(X)/X,X,0,4);
-1-X^2/6+X^4/120$
-EV(COS(X)^2-SIN(X)^2,SIN(X)^2 = 1-COS(X)^2);
-2*COS(X)^2-1$
-(SQRT(-4)+SQRT(2.25))^2;
-(2*%I+1.5)^2$
-EXPAND(%);
-6.0*%I-1.75$
-EXPAND(SQRT(2*%I));
-(-1)^(1/4)*SQRT(2)$
-KILL(ALLBUT(PROPS));
-DONE$
-SIN(X)+COS(Y)+(W+1)^2+'DIFF(SIN(W),W);
-COS(Y)+SIN(X)+'DIFF(SIN(W),W,1)+(W+1)^2$
-EV(%,SIN,EXPAND,DIFF,X = 2,Y = 1);
-COS(W)+W^2+2*W+COS(1)+1.909297426825682;
-EV(X+Y,X:A+Y,Y:2);
-Y+A+2$
-'DIFF(Y^2+X*Y+X^2,X,2,Y,1);
-'DIFF(Y^2+X*Y+X^2,X,2,Y,1)$
-EV(%,DIFF);
+kill(functions,arrays,values);
+done$
+ev(sin(x),exponentialize);
+-%i*(%e^(%i*x)-%e^-(%i*x))/2$
+taylor(sin(x)/x,x,0,4);
+1-x^2/6+x^4/120$
+ev(cos(x)^2-sin(x)^2,sin(x)^2 = 1-cos(x)^2);
+2*cos(x)^2-1$
+(sqrt(-4)+sqrt(2.25))^2;
+(2*%i+1.5)^2$
+expand(%);
+6.0*%i-1.75$
+expand(sqrt(2*%i));
+(-1)^(1/4)*sqrt(2)$
+kill(allbut(props));
+done$
+sin(x)+cos(y)+(w+1)^2+'diff(sin(w),w);
+cos(y)+sin(x)+'diff(sin(w),w,1)+(w+1)^2$
+ev(%,sin,expand,diff,x = 2,y = 1);
+cos(w)+w^2+2*w+cos(1)+1.909297426825682;
+ev(x+y,x:a+y,y:2);
+y+a+2$
+'diff(y^2+x*y+x^2,x,2,y,1);
+'diff(y^2+x*y+x^2,x,2,y,1)$
+ev(%,diff);
 0$
-EXP:2*X-3*Y = 3;
-2*X-3*Y = 3$
--3*X+2*Y = -4;
-2*Y-3*X = -4$
-SOLVE([EXP,%]);
-[[Y = -1/5,X = 6/5]]$
-EV(EXP,%);
+exp:2*x-3*y = 3;
+2*x-3*y = 3$
+-3*x+2*y = -4;
+2*y-3*x = -4$
+solve([exp,%]);
+[[y = -1/5,x = 6/5]]$
+ev(exp,%);
 3 = 3$
-X+1/X > GAMMA(1/2);
-X+1/X > SQRT(%PI)$
-EV(%,NUMER,X = 1/2);
+x+1/x > gamma(1/2);
+x+1/x > sqrt(%pi)$
+ev(%,numer,x = 1/2);
 2.5 > 1.772453850905516;
 /* tops 20 :2.5 > 1.77245384$ */
-EV(%,PRED);
-TRUE$
-ZEROEQUIV(SIN(2*X)-2*SIN(X)*COS(X),X);
-TRUE$
-ZEROEQUIV(%E^X+X,X);
-FALSE$
-ZEROEQUIV(LOG(A*B)-LOG(A)-LOG(B),A);
-DONTKNOW$
-(1/(X+Y)^4-3/(Y+Z)^3)^2;
-(1/(Y+X)^4-3/(Z+Y)^3)^2$
-EXPAND(%,2,0);
--6/((Y+X)^4*(Z+Y)^3)+9/(Z+Y)^6+1/(Y+X)^8$
-EXPAND(A . (B+C . (D+E)+F));
-A . F+A . C . E+A . C . D+A . B$
-EXPAND((X+1)^3);
-X^3+3*X^2+3*X+1$
-EXP:(X+1)^7;
-(X+1)^7$
-EXPAND(%);
-X^7+7*X^6+21*X^5+35*X^4+35*X^3+21*X^2+7*X+1$
-EXPAND(EXP,7,7);
-X^7+7*X^6+21*X^5+35*X^4+35*X^3+21*X^2+7*X+1$
-EV(A*(B+C)+A*(B+C)^2,EXPOP:1);
-A*(C+B)^2+A*C+A*B$
-RATEXPAND((2*X-3*Y)^3);
--27*Y^3+54*X*Y^2-36*X^2*Y+8*X^3$
-EXP:(X-1)/(X+1)^2+1/(X-1);
-(X-1)/(X+1)^2+1/(X-1)$
-EXPAND(%);
-X/(X^2+2*X+1)-1/(X^2+2*X+1)+1/(X-1)$
-RATEXPAND(EXP);
-2*X^2/(X^3+X^2-X-1)+2/(X^3+X^2-X-1)$
-SIN(X/(X^2+X)) = %E^((LOG(X)+1)^2-LOG(X)^2);
-SIN(X/(X^2+X)) = %E^((LOG(X)+1)^2-LOG(X)^2)$
-RATSIMP(%);
-SIN(1/(X+1)) = %E*X^2$
-B*(A/B-X)+B*X+A;
-B*X+B*(A/B-X)+A$
-RATSIMP(%);
-2*A$
-((X-1)^(3/2)-(X+1)*SQRT(X-1))/SQRT(X-1)/SQRT(X+1);
-((X-1)^(3/2)-SQRT(X-1)*(X+1))/(SQRT(X-1)*SQRT(X+1))$
-RATSIMP(%);
--2/SQRT(X+1)$
-EV(X^(A+1/A),RATSIMPEXPONS);
-X^((A^2+1)/A)$
-(LOG(X^2+X)-LOG(X))^A/LOG(X+1)^(A/2);
-(LOG(X^2+X)-LOG(X))^A/LOG(X+1)^(A/2)$
-RADCAN(%);
-LOG(X+1)^(A/2)$
-LOG(A^(2*X)+2*A^X+1)/LOG(A^X+1);
-LOG(A^(2*X)+2*A^X+1)/LOG(A^X+1)$
-RADCAN(%);
+ev(%,pred);
+true$
+zeroequiv(sin(2*x)-2*sin(x)*cos(x),x);
+true$
+zeroequiv(%e^x+x,x);
+false$
+zeroequiv(log(a*b)-log(a)-log(b),a);
+dontknow$
+(1/(x+y)^4-3/(y+z)^3)^2;
+(1/(y+x)^4-3/(z+y)^3)^2$
+expand(%,2,0);
+-6/((y+x)^4*(z+y)^3)+9/(z+y)^6+1/(y+x)^8$
+expand(a . (b+c . (d+e)+f));
+a . f+a . c . e+a . c . d+a . b$
+expand((x+1)^3);
+x^3+3*x^2+3*x+1$
+exp:(x+1)^7;
+(x+1)^7$
+expand(%);
+x^7+7*x^6+21*x^5+35*x^4+35*x^3+21*x^2+7*x+1$
+expand(exp,7,7);
+x^7+7*x^6+21*x^5+35*x^4+35*x^3+21*x^2+7*x+1$
+ev(a*(b+c)+a*(b+c)^2,expop:1);
+a*(c+b)^2+a*c+a*b$
+ratexpand((2*x-3*y)^3);
+-27*y^3+54*x*y^2-36*x^2*y+8*x^3$
+exp:(x-1)/(x+1)^2+1/(x-1);
+(x-1)/(x+1)^2+1/(x-1)$
+expand(%);
+x/(x^2+2*x+1)-1/(x^2+2*x+1)+1/(x-1)$
+ratexpand(exp);
+2*x^2/(x^3+x^2-x-1)+2/(x^3+x^2-x-1)$
+sin(x/(x^2+x)) = %e^((log(x)+1)^2-log(x)^2);
+sin(x/(x^2+x)) = %e^((log(x)+1)^2-log(x)^2)$
+ratsimp(%);
+sin(1/(x+1)) = %e*x^2$
+b*(a/b-x)+b*x+a;
+b*x+b*(a/b-x)+a$
+ratsimp(%);
+2*a$
+((x-1)^(3/2)-(x+1)*sqrt(x-1))/sqrt(x-1)/sqrt(x+1);
+((x-1)^(3/2)-sqrt(x-1)*(x+1))/(sqrt(x-1)*sqrt(x+1))$
+ratsimp(%);
+-2/sqrt(x+1)$
+ev(x^(a+1/a),ratsimpexpons);
+x^((a^2+1)/a)$
+(log(x^2+x)-log(x))^a/log(x+1)^(a/2);
+(log(x^2+x)-log(x))^a/log(x+1)^(a/2)$
+radcan(%);
+log(x+1)^(a/2)$
+log(a^(2*x)+2*a^x+1)/log(a^x+1);
+log(a^(2*x)+2*a^x+1)/log(a^x+1)$
+radcan(%);
 2$
-(%E^X-1)/(%E^(X/2)+1);
-(%E^X-1)/(%E^(X/2)+1)$
-RADCAN(%);
-%E^(X/2)-1$
-KILL(ALLBUT(PROPS));
-DONE$
-COMBINE(A/X+B/X+A/Y+B/Y);
-(B+A)/Y+(B+A)/X$
-X/(X-Y)^2-1/(X-Y)-F(X)/(X-Y)^3;
--1/(X-Y)+X/(X-Y)^2-F(X)/(X-Y)^3$
-MULTTHRU((X-Y)^3,%);
--(X-Y)^2+X*(X-Y)-F(X)$
-RATEXPAND(%);
--Y^2+X*Y-F(X)$
-((A+B)^10*S^2+2*A*B*S+(A*B)^2)/(A*B*S^2);
-((B+A)^10*S^2+2*A*B*S+A^2*B^2)/(A*B*S^2)$
-MULTTHRU(%);
-2/S+A*B/S^2+(B+A)^10/(A*B)$
-MULTTHRU(A . (B+C . (D+E)+F));
-A . F+A . C . (E+D)+A . B$
-((X+2)^20-2*Y)/(X+Y)^20+(X+Y)^-19-X/(X+Y)^20;
-1/(Y+X)^19+((X+2)^20-2*Y)/(Y+X)^20-X/(Y+X)^20$
-XTHRU(%);
-((X+2)^20-Y)/(Y+X)^20$
-2/(X+2)-2/(X+1)+1/(X+1)^2;
-2/(X+2)-2/(X+1)+1/(X+1)^2$
-RATSIMP(%);
--X/(X^3+4*X^2+5*X+2)$
-PARTFRAC(%,X);
-2/(X+2)-2/(X+1)+1/(X+1)^2$
-FACTOR(2^63-1);
+(%e^x-1)/(%e^(x/2)+1);
+(%e^x-1)/(%e^(x/2)+1)$
+radcan(%);
+%e^(x/2)-1$
+kill(allbut(props));
+done$
+combine(a/x+b/x+a/y+b/y);
+(b+a)/y+(b+a)/x$
+x/(x-y)^2-1/(x-y)-f(x)/(x-y)^3;
+-1/(x-y)+x/(x-y)^2-f(x)/(x-y)^3$
+multthru((x-y)^3,%);
+-(x-y)^2+x*(x-y)-f(x)$
+ratexpand(%);
+-y^2+x*y-f(x)$
+((a+b)^10*s^2+2*a*b*s+(a*b)^2)/(a*b*s^2);
+((b+a)^10*s^2+2*a*b*s+a^2*b^2)/(a*b*s^2)$
+multthru(%);
+2/s+a*b/s^2+(b+a)^10/(a*b)$
+multthru(a . (b+c . (d+e)+f));
+a . f+a . c . (e+d)+a . b$
+((x+2)^20-2*y)/(x+y)^20+(x+y)^-19-x/(x+y)^20;
+1/(y+x)^19+((x+2)^20-2*y)/(y+x)^20-x/(y+x)^20$
+xthru(%);
+((x+2)^20-y)/(y+x)^20$
+2/(x+2)-2/(x+1)+1/(x+1)^2;
+2/(x+2)-2/(x+1)+1/(x+1)^2$
+ratsimp(%);
+-x/(x^3+4*x^2+5*x+2)$
+partfrac(%,x);
+2/(x+2)-2/(x+1)+1/(x+1)^2$
+factor(2^63-1);
 7^2*73*127*337*92737*649657$
-FACTOR(Z^2*(X+2*Y)-4*X-8*Y);
-(2*Y+X)*(Z-2)*(Z+2)$
-X^2*Y^2+2*X*Y^2+Y^2-X^2-2*X-1;
-X^2*Y^2+2*X*Y^2+Y^2-X^2-2*X-1$
-BLOCK([DONTFACTOR:[X]],FACTOR(%/36/(Y^2+2*Y+1)));
-(X^2+2*X+1)*(Y-1)/(36*(Y+1))$
-FACTOR(%E^(3*X)+1);
-(%E^X+1)*(%E^(2*X)-%E^X+1)$
-FACTOR(X^4+1,A^2-2);
-(X^2-A*X+1)*(X^2+A*X+1)$
-FACTOR(X^3+X^2*Y^2-X*Z^2-Y^2*Z^2);
--((Y^2+X)*(Z-X)*(Z+X))$
-(X+2)/(X+3)/(X+B)/(X+C)^2;
-(X+2)/((X+3)*(X+B)*(X+C)^2)$
-RATSIMP(%);
-(X+2)/(X^4+(2*C+B+3)*X^3+(C^2+(2*B+6)*C+3*B)*X^2+((B+3)*C^2+6*B*C)*X+3*B*C^2)$
-PARTFRAC(%,X);
--(C^2-4*C-B+6)/((C^4+(-2*B-6)*C^3+(B^2+12*B+9)*C^2+(-6*B^2-18*B)*C+9*B^2)
-	       *(X+C))
- -(C-2)/((C^2+(-B-3)*C+3*B)*(X+C)^2)
- +(B-2)/(((B-3)*C^2+(6*B-2*B^2)*C+B^3-3*B^2)*(X+B))
- -1/(((B-3)*C^2+(18-6*B)*C+9*B-27)*(X+3))$
-MAP('FACTOR,%);
--((C^2-4*C-B+6)/((C-3)^2*(C-B)^2*(X+C)))-((C-2)/((C-3)*(C-B)*(X+C)^2))
-				      +(B-2)/((B-3)*(C-B)^2*(X+B))
-				      -(1/((B-3)*(C-3)^2*(X+3)))$
-EXP:RATSIMP((X^5-1)/(X-1));
-X^4+X^3+X^2+X+1$
-SUBST(A,X,%);
-A^4+A^3+A^2+A+1$
-FACTOR(EXP,%);
-(X-A)*(X-A^2)*(X-A^3)*(X+A^3+A^2+A+1)$
-FACTOR(X^12+1);
-(X^4+1)*(X^8-X^4+1)$
-FACTOR(X^99+1);
-(X+1)*(X^2-X+1)*(X^6-X^3+1)*(X^10-X^9+X^8-X^7+X^6-X^5+X^4-X^3+X^2-X+1)
-     *(X^20+X^19-X^17-X^16+X^14+X^13-X^11-X^10-X^9+X^7+X^6-X^4-X^3+X+1)
-     *(X^60+X^57-X^51-X^48+X^42+X^39-X^33-X^30-X^27+X^21+X^18-X^12-X^9+X^3+1)$
-EV((X+1)*((U+V)^2+A*(W+Z)^2),EXPAND);
-A*X*Z^2+A*Z^2+2*A*W*X*Z+2*A*W*Z+A*W^2*X+V^2*X+2*U*V*X+U^2*X+A*W^2+V^2+2*U*V
-       +U^2$
-FACTORSUM(%);
-(X+1)*(A*(Z+W)^2+(V+U)^2)$
-SQFR(4*X^4+4*X^3-3*X^2-4*X-1);
-(2*X+1)^2*(X^2-1)$
-GFACTOR(X^4-1);
-(X-1)*(X+1)*(X-%I)*(X+%I)$
-factor(Y^20-7*Y^19+11*Y^18-8*Y^17+59*Y^16-461*Y^15+1694*Y^14+198*Y^13-3541*
- Y^12+2818*Y^11-33327*Y^10-11272*Y^9-56656*Y^8-12672*Y^7+433664*Y^6+472064*Y^5
- +241664*Y^4+131072*Y^3+720896*Y^2+1835008*Y+1048576);
-(Y^8-Y^7-11*Y^6-19*Y^5+101*Y^4+76*Y^3-176*Y^2+64*Y+256)
-      *(Y^12-6*Y^11+16*Y^10-39*Y^9-19*Y^8-75*Y^7-315*Y^6+300*Y^5-304*Y^4
-	    +2496*Y^3+4096*Y^2+6144*Y+4096)$
+factor(z^2*(x+2*y)-4*x-8*y);
+(2*y+x)*(z-2)*(z+2)$
+x^2*y^2+2*x*y^2+y^2-x^2-2*x-1;
+x^2*y^2+2*x*y^2+y^2-x^2-2*x-1$
+block([dontfactor:[x]],factor(%/36/(y^2+2*y+1)));
+(x^2+2*x+1)*(y-1)/(36*(y+1))$
+factor(%e^(3*x)+1);
+(%e^x+1)*(%e^(2*x)-%e^x+1)$
+factor(x^4+1,a^2-2);
+(x^2-a*x+1)*(x^2+a*x+1)$
+factor(x^3+x^2*y^2-x*z^2-y^2*z^2);
+-((y^2+x)*(z-x)*(z+x))$
+(x+2)/(x+3)/(x+b)/(x+c)^2;
+(x+2)/((x+3)*(x+b)*(x+c)^2)$
+ratsimp(%);
+(x+2)/(x^4+(2*c+b+3)*x^3+(c^2+(2*b+6)*c+3*b)*x^2+((b+3)*c^2+6*b*c)*x+3*b*c^2)$
+partfrac(%,x);
+-(c^2-4*c-b+6)/((c^4+(-2*b-6)*c^3+(b^2+12*b+9)*c^2+(-6*b^2-18*b)*c+9*b^2)
+	       *(x+c))
+ -(c-2)/((c^2+(-b-3)*c+3*b)*(x+c)^2)
+ +(b-2)/(((b-3)*c^2+(6*b-2*b^2)*c+b^3-3*b^2)*(x+b))
+ -1/(((b-3)*c^2+(18-6*b)*c+9*b-27)*(x+3))$
+map('factor,%);
+-((c^2-4*c-b+6)/((c-3)^2*(c-b)^2*(x+c)))-((c-2)/((c-3)*(c-b)*(x+c)^2))
+				      +(b-2)/((b-3)*(c-b)^2*(x+b))
+				      -(1/((b-3)*(c-3)^2*(x+3)))$
+exp:ratsimp((x^5-1)/(x-1));
+x^4+x^3+x^2+x+1$
+subst(a,x,%);
+a^4+a^3+a^2+a+1$
+factor(exp,%);
+(x-a)*(x-a^2)*(x-a^3)*(x+a^3+a^2+a+1)$
+factor(x^12+1);
+(x^4+1)*(x^8-x^4+1)$
+factor(x^99+1);
+(x+1)*(x^2-x+1)*(x^6-x^3+1)*(x^10-x^9+x^8-x^7+x^6-x^5+x^4-x^3+x^2-x+1)
+     *(x^20+x^19-x^17-x^16+x^14+x^13-x^11-x^10-x^9+x^7+x^6-x^4-x^3+x+1)
+     *(x^60+x^57-x^51-x^48+x^42+x^39-x^33-x^30-x^27+x^21+x^18-x^12-x^9+x^3+1)$
+ev((x+1)*((u+v)^2+a*(w+z)^2),expand);
+a*x*z^2+a*z^2+2*a*w*x*z+2*a*w*z+a*w^2*x+v^2*x+2*u*v*x+u^2*x+a*w^2+v^2+2*u*v
+       +u^2$
+factorsum(%);
+(x+1)*(a*(z+w)^2+(v+u)^2)$
+sqfr(4*x^4+4*x^3-3*x^2-4*x-1);
+(2*x+1)^2*(x^2-1)$
+gfactor(x^4-1);
+(x-1)*(x+1)*(x-%i)*(x+%i)$
+factor(y^20-7*y^19+11*y^18-8*y^17+59*y^16-461*y^15+1694*y^14+198*y^13-3541*
+ y^12+2818*y^11-33327*y^10-11272*y^9-56656*y^8-12672*y^7+433664*y^6+472064*y^5
+ +241664*y^4+131072*y^3+720896*y^2+1835008*y+1048576);
+(y^8-y^7-11*y^6-19*y^5+101*y^4+76*y^3-176*y^2+64*y+256)
+      *(y^12-6*y^11+16*y^10-39*y^9-19*y^8-75*y^7-315*y^6+300*y^5-304*y^4
+	    +2496*y^3+4096*y^2+6144*y+4096)$
 	      

@@ -4,11 +4,11 @@
 /* the 2 last lines gives erroneous results  */
 /* CONTINUED FRACTIONS. THIS IS GOOD STUFF. */
 
-FRAC1:CF([1,2,3,4]);
-FRAC2:CF([2,3,4,5]);
-CFDISREP(FRAC1);
-CF(FRAC1+FRAC2);
-CFDISREP(%);
+frac1:cf([1,2,3,4]);
+frac2:cf([2,3,4,5]);
+cfdisrep(frac1);
+cf(frac1+frac2);
+cfdisrep(%);
 
 
 cf(467288576/469097433);
@@ -16,16 +16,16 @@ cfdisrep(%);
 ratsimp(%);
 
 
-/* CF can make the continued fraction expansion of SQRT(N) to
-   CFLENGTH terms. */
+/* cf can make the continued fraction expansion of sqrt(n) to
+   cflength terms. */
 
-BLOCK([CFLENGTH:4],CFDISREP(CF(SQRT(3))));
-RATSIMP(%);
+block([cflength:4],cfdisrep(cf(sqrt(3))));
+ratsimp(%);
 %^2-3;
 
-RATSQRT(N,CFLENGTH):=RATSIMP(CFDISREP(CF(SQRT(N))))$
+ratsqrt(n,cflength):=ratsimp(cfdisrep(cf(sqrt(n))))$
 
-RATSQRT(1776,25);
+ratsqrt(1776,25);
 %^2-1776;
 
 /* With the primitives of SQRT and rational operations 
