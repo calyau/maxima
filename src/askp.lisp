@@ -107,7 +107,7 @@
 				   ,property ,@fun-or-number |?|)
 			 nil))
 	   (cond 
-	    ((memq answer '($yes $y $no $n $unknown $uk))
+	    ((memq answer '($yes $y |$y| |$n| $no $n $unknown $uk))
 	     (setq end-flag t))
 	    (t (mtell
 		"~%Acceptable answers are Yes, Y, No, N, Unknown, Uk~%")))))
