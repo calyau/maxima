@@ -25,7 +25,7 @@ E2:ishow(expand(2*extdiff(A([i1]),i2)|v))$
 ("and put this result in the following equation:")$
 EQ1:ishow(dt*B([i1,i2])=extdiff(E2,i1))$
 ("Now compute the Lie-derivative of B")$
-EQ2:ishow('liediff(v,B([i2,i1]))=-liediff(v,extdiff(A([i1]),i2)))$
+EQ2:ishow('liediff(v,B([i2,i1]))=liediff(v,extdiff(A([i1]),i2)))$
 ("and sum up the LHS and RHS")$
 ishow(lhs(EQ1)+lhs(EQ2)=rename(expand(rhs(EQ1)+rhs(EQ2))))$
 

@@ -113,7 +113,7 @@ extdiff(forma,[optind]):=if not mapatom(forma) and op(forma)=extdiff then 0
   (
     l11:makelist(idummy(),i,1,length(l1)),
     l1s:map("=",l1,l11),
-    lk1:append(l1,[ind]),
+    lk1:append([ind],l1),
     indd:idummy(),
     lk2:append(l11,[indd]),
     res:sublis(l1s,forma),

@@ -1691,7 +1691,7 @@ contortion(tr):=
 nonmetricity(nm):=
   for i thru dim do
     for j thru dim do
-      for k thru dim do nmc[i,j,k]:nm[i]*kdelt(j,k)-kdelt(i,k)*nm[j]+
+      for k thru dim do nmc[i,j,k]:-nm[i]*kdelt(j,k)-kdelt(i,k)*nm[j]+
                                    sum(_ug()[k,l]*nm[l],l,1,dim)*lg[i,j];
 
 

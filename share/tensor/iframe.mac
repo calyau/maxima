@@ -48,16 +48,17 @@ ifb(l1,l2,[ld]):=
 /* The connection coefficients */
 icc1(l,[ld]):=if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(icc1(l),rest((?putinones)(rest(ld)))))
-  else 'ichr1(l,if length(ld)>0 then ld[1] else [])+
-    (if iframe_flag then 'ifc1(l,[]) else 0)+
+  else
+    (if iframe_flag then 'ifc1(l,[])
+     else 'ichr1(l,if length(ld)>0 then ld[1] else []))+
     (if itorsion_flag then -'ikt1(l,[]) else 0)+
     (if inonmet_flag then -'inmc1(l,[]) else 0);
 icc2(l1,l2,[ld]):=
   if ld#[] then apply('idiff,cons(icc2(l1,l2),rest((?putinones)(ld))))
 /*else block([d:idummy()],_g([],[l2[1],d])*(%icc1([l1[1],d,l1[2]])-
                            %icc1([d,l1[2],l1[1]])+%icc1([l1[2],l1[1],d]))/2);*/
-  else 'ichr2(l1,l2)+
-    (if iframe_flag then 'ifc2(l1,l2) else 0)+
+  else
+    (if iframe_flag then 'ifc2(l1,l2) else 'ichr2(l1,l2))+
     (if itorsion_flag then -'ikt2(l1,l2) else 0)+
     (if inonmet_flag then -'inmc2(l1,l2) else 0);
 
@@ -75,11 +76,11 @@ ifc2(l1,l2,[ld]):=
 inmc1(l,[ld]):=if not inonmet_flag then 0
   else if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(inmc1(l),rest((?putinones)(rest(ld)))))
-  else (_inm([l[1]])*_g([l[2],l[3]])-_inm([l[2]])*_g([l[1],l[3]])+
+  else (-_inm([l[1]])*_g([l[2],l[3]])-_inm([l[2]])*_g([l[1],l[3]])+
         _inm([l[3]])*_g([l[1],l[2]]))/2;
 inmc2(l1,l2,[ld]):=if not inonmet_flag then 0
   else if ld#[] then apply('idiff,cons(inmc2(l1,l2),rest((?putinones)(ld))))
-  else block([m:idummy()],(_inm([l1[1]])*'kdelta([l1[2]],[l2[1]])-
+  else block([m:idummy()],(-_inm([l1[1]])*'kdelta([l1[2]],[l2[1]])-
                            _inm([l1[2]])*'kdelta([l1[1]],[l2[1]])+
                            _g([],[l2[1],m])*_inm([m])*_g([l1[1],l1[2]]))/2);
 

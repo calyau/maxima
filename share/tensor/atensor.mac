@@ -172,6 +172,13 @@ init_atensor(algname, [optdims]):=
       if length(optdims)>1 then error("Invalid optional dimensions"),
       adim:optdims[1],
       aform:ident(adim),
+      if alg_type='lie_envelop then
+      (
+        for i thru adim do for j thru i do
+          if i=j then aform[i,j]:0
+          else aform[i,j]:-(aform[j,i]:(remainder(2*adim+2-i-j,adim)+1)*
+                              signum(i-j)*(if oddp(i+j) then 1 else -1))
+      ),
       optdims:[]
     )
     else

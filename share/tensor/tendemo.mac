@@ -120,6 +120,7 @@ sel:read("Select an option by its number followed by a semicolon (;)"),
      else if sel=5 then demo("taubnut")
      else if sel=6 then demo("allnutt")
      else if sel#X and sel#x then print("*** Invalid entry, please try again")
+     else sel:0
    )
    else if sel=14 then demo(tetrad)
    else if sel#X and sel#x then print("*** Invalid entry, please try again")
