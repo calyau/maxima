@@ -35,8 +35,8 @@
 ;;
 ;; Quick intro
 ;;
-;; To install, put this file (as well as maxima-font-lock.el and 
-;; maxima-symbols.el) somewhere in your emacs load path.
+;; To install, put this file (as well as maxima-font-lock.el)
+;; somewhere in your emacs load path.
 ;; To make sure that `maxima.el' is loaded when necessary, whether to
 ;; edit a file in maxima mode or interact with Maxima in an Emacs buffer,
 ;; put the lines
@@ -71,14 +71,15 @@
 ;; M-C-f: Move to the end of the sexp.
 
 ;; and the following miscellaneous commands.
-;; M-C-h: Mark the current form
+;; M-h: Mark the current form
 ;; C-c): Check the current region for balanced parentheses.
 ;; C-cC-): Check the current form for balanced parentheses.
 
-;; Maxima mode has the following completions commands:
+;; Maxima mode has the following completions command:
 ;; M-TAB: Complete the Maxima symbol as much as possible, providing
 ;;      a completion buffer if there is more than one possible completion.
-;; <C-tab>: Cycle through possible completions.
+;;      If the variable `maxima-use-dynamic-complete' is non-nil, then
+;;      M-TAB will cycle through possible completions.
 
 ;; Portions of the buffer can be sent to a Maxima process.  (If a process is 
 ;; not running, one will be started.)
@@ -137,7 +138,8 @@
 
 ;; <M-tab> will complete the Maxima symbol as much as possible, providing
 ;;      a completion buffer if there is more than one possible completion.
-;; <C-tab> will cycle through possible completions.
+;;      If `maxima-use-dynamic-complete' is non-nil, then <M-tab> will
+;;      cycle through possible completions.
 
 ;; <C-M-tab> will complete the input line, based on previous input lines.
 ;; C-c C-d will get help on a Maxima topic.
@@ -199,6 +201,11 @@
   "*The amount of each indentation level in `maxima-mode'."
   :group 'maxima
   :type '(integer))
+
+(defcustom maxima-use-dynamic-complete nil
+  "*If non-nil, then M-TAB will complete words dynamically."
+  :group 'maxima
+  :type 'boolean)
 
 (defcustom maxima-newline-style 'standard
   "*Determines how `maxima-mode' will handle tabs and newlines by default.
@@ -1043,11 +1050,11 @@ rigidly along with this one."
 ;;;; Completion
 ;;; Use hippie-expand to help with completions
 (require 'hippie-exp)
-(require 'maxima-symbols)
+;(require 'maxima-symbols)
 
 ;;; This next one was mostly stolen from comint.el
 (defun maxima-complete ()
-  "Dynamically complete word from list of candidates.
+  "Complete word from list of candidates.
 A completions listing will be shown in a help buffer 
 if completion is ambiguous."
   (interactive)
@@ -1248,8 +1255,9 @@ if completion is ambiguous."
     (define-key map "\C-c\C-k" 'maxima-stop)
     (define-key map "\C-c\C-l" 'maxima-load-file)
     ;; Completion
-    (define-key map (kbd "M-TAB") 'maxima-complete)
-    (define-key map [(control tab)] 'maxima-dynamic-complete)
+    (if maxima-use-dynamic-complete
+        (define-key map (kbd "M-TAB") 'maxima-dynamic-complete)        
+      (define-key map (kbd "M-TAB") 'maxima-complete))
     ;; Commenting
     (define-key map "\C-c;" 'comment-region)
     (define-key map "\C-c:" 'maxima-uncomment-region)
@@ -1268,7 +1276,7 @@ if completion is ambiguous."
     (define-key map [(meta f12)] 'maxima-apropos-help)
     (define-key map "\C-c\C-a" 'maxima-apropos-help)
     ;; Misc
-    (define-key map "\M-\C-h" 'maxima-mark-form)
+    (define-key map "\M-h" 'maxima-mark-form)
     (define-key map "\C-c\)" 'maxima-check-parens)
     (define-key map "\C-cC-\)" 'maxima-check-form-parens)
     (define-key map "\177" 'backward-delete-char-untabify)
@@ -1356,9 +1364,10 @@ and the following miscellaneous commands.
 \\[maxima-check-form-parens]: Check the current form for balanced parentheses.
 
 Maxima mode has the following completions commands:
-\\[maxima-complete]: Complete the Maxima symbol as much as possible, providing
+M-TAB: Complete the Maxima symbol as much as possible, providing
      a completion buffer if there is more than one possible completion.
-\\[maxima-dynamic-complete]: Cycle through possible completions.
+     If `maxima-use-dynamic-complete' is non-nil, then simple cycle 
+     through possible completions.
 
 Portions of the buffer can be sent to a Maxima process.  (If a process is 
 not running, one will be started.)
@@ -2412,8 +2421,9 @@ It is for customization by you.")
     (define-key map "\C-a" 'inferior-maxima-bol)
     (define-key map "\C-m"  'inferior-maxima-check-and-send-line)
     (define-key map [(control return)] 'inferior-maxima-send-line)
-    (define-key map [(control tab)] 'maxima-dynamic-complete)
-    (define-key map [(meta tab)] 'maxima-complete)
+    (if maxima-use-dynamic-complete
+        (define-key map [(meta tab)] 'maxima-dynamic-complete)
+      (define-key map [(meta tab)] 'maxima-complete))
     (define-key map [(meta control tab)] 'maxima-smart-complete)
     (define-key map "\C-c\C-d" 'maxima-help)
     (define-key map "\C-c\C-m" 'maxima-info)
@@ -2484,9 +2494,10 @@ Return will check the line for balanced parentheses, and send line as input.
 Control return will send the line as input without checking for balanced
 parentheses.
 
-\\[maxima-complete] will complete the Maxima symbol as much as possible, providing
+M-TAB will complete the Maxima symbol as much as possible, providing
      a completion buffer if there is more than one possible completion.
-\\[maxima-dynamic-complete] will cycle through possible completions.
+     If `maxima-use-dynamic-complete' is non-nil, simply cycle through 
+     possible completions.
 
 \\[maxima-smart-complete] will complete the input line, based on previous input lines.
 \\[maxima-help] will get help on a Maxima topic.
