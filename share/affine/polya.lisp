@@ -2036,6 +2036,8 @@ dot_products, much the same as can be obtained by doing $dotsimp")
 			 ((alphalessp yj xi)(return nil)))
 		   finally (return (< lengx lengy)))))))
 
+(deff $tail_alphalessp #'tail-alphalessp)
+
 (defun unreplaced-monomials-in-dot-simplifications
        (&optional   (macsyma-list $dot_simplifications)&aux tem answer)
   (check-arg macsyma-list $listp "macsyma list")
