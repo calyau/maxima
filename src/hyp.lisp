@@ -824,6 +824,10 @@
 (defun whitfun (k m var)
   (list '(mqapply) (list '($%m array) k m) var))
 
+;; Enable STEP7 algorithm if non-NIL.  Currently, it's majorly broken
+;; because it calls functions that seem to be incomplete.
+(defvar *enable-step7* nil)
+
 (defun simp2f1 (arg-l1 arg-l2)
   (prog (a b c lgf)
      (setq a (car arg-l1) b (cadr arg-l1) c (car arg-l2))
@@ -858,7 +862,8 @@
 	    (return (step4 a b c))))
      (cond ((hyp-integerp (add (sub a b) (inv 2)))
 	    ;; F(a,b;c,z) where a-b+1/2 is an integer
-	    (cond ((setq lgf (step7 a b c))
+	    (cond ((and *enable-step7*
+			(setq lgf (step7 a b c)))
 		   (return lgf)))))
      (cond ((setq lgf (legfun a b c))
 	    (unless (atom lgf)
@@ -870,6 +875,7 @@
 	    (when lgf
 	      (return lgf))))
      (print 'simp2f1-will-continue-in)
+     (terpri)
      (return  (fpqform arg-l1 arg-l2 var))))
 
 (defun step7 (a b c)
