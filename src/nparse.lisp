@@ -1833,31 +1833,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
     (MAPC #'(LAMBDA (X) (REMPROP NOUN-FORM X))
  	  '(DIMENSION DISSYM LBP RBP))))
 
-(defun find-stream (stream)
-   (dolist (v *stream-alist*)
-	(cond ((eq stream (instream-stream v))
-	       (return v))))
-  )
-
-
-(defun add-lineinfo (lis)
-  (if (or (atom lis) (and (eq *parse-window* *standard-input*)
-			  (not (find-stream *parse-stream*))))
-			  lis
-    (let* ((st (get-instream *parse-stream*))
- 	   (n (instream-line st))
-	   (nam (instream-name st))
-	   )
-      (or nam (return-from add-lineinfo lis))
-      (setq *current-line-info*
-	    (cond ((eq (cadr *current-line-info*) nam)
-		   (cond ((eql (car *current-line-info*) n)
-			  *current-line-info*)
-			 (t  (cons n (cdr *current-line-info*)))))
-		  (t (list n nam  'src))))
-      (cond ((null (cdr lis))
-	     (list (car lis) *current-line-info*))
-	    (t (append lis (list *current-line-info*)))))))
 
 
 ;; the functions get-instream etc.. are all defined in
@@ -1871,13 +1846,18 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 (defvar *stream-alist* nil)
 
+(defun stream-name (path)
+  (let ((tem (errset (namestring (pathname path)))))
+    (car tem)))
+
 (defun instream-name (instr)
   (or (instream-stream-name instr)
       (stream-name (instream-stream instr))))
 
-(defun stream-name (str) (namestring (pathname str)))
-
-(defstruct instream stream (line 0 :type fixnum) stream-name)
+(defstruct instream
+  stream
+  (line 0 :type fixnum)
+  stream-name)
 
 ;; (closedp stream) checks if a stream is closed.. how to do this in common
 ;; lisp!!
@@ -1906,5 +1886,30 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   ;(setq *at-newline*  (if (eql (peek-char nil str nil) #\() :all t))
   (values))
 
-)
-; end #-gcl
+) ; end #-gcl
+
+(defun find-stream (stream)
+   (dolist (v *stream-alist*)
+	(cond ((eq stream (instream-stream v))
+	       (return v))))
+  )
+
+
+(defun add-lineinfo (lis)
+  (if (or (atom lis) (and (eq *parse-window* *standard-input*)
+			  (not (find-stream *parse-stream*))))
+			  lis
+    (let* ((st (get-instream *parse-stream*))
+ 	   (n (instream-line st))
+	   (nam (instream-name st))
+	   )
+      (or nam (return-from add-lineinfo lis))
+      (setq *current-line-info*
+	    (cond ((eq (cadr *current-line-info*) nam)
+		   (cond ((eql (car *current-line-info*) n)
+			  *current-line-info*)
+			 (t  (cons n (cdr *current-line-info*)))))
+		  (t (list n nam  'src))))
+      (cond ((null (cdr lis))
+	     (list (car lis) *current-line-info*))
+	    (t (append lis (list *current-line-info*)))))))

@@ -85,6 +85,7 @@
 #-gcl
 (progn 'compile
 ;; return path as a string  or nil if none.
+#+nil
 (defun stream-name (path)
   (let ((tem (errset (namestring (pathname path)))))
     (car tem)))
@@ -491,8 +492,8 @@
 (eval-when (eval load  compile)
 
 ;; gcl imports from 'si package
-#-gcl  
-(defstruct instream stream (line 0 :type fixnum) stream-name)
+;;#-gcl  
+;;(defstruct instream stream (line 0 :type fixnum) stream-name)
 
 (defstruct (bkpt (:type list)) form file file-line function)
   )
