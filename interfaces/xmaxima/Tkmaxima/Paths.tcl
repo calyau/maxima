@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.3 2002-10-28 02:31:02 amundson Exp $
+#       $Id: Paths.tcl,v 1.4 2003-01-05 19:00:32 amundson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -34,6 +34,7 @@ proc setMaxDir {} {
 		      [file isdir $up/info] && \
 		      [file isdir $up/share]} {
 	    set autoconf(prefix) $up
+	    set env(MAXIMA_PREFIX) $up
 	    set autoconf(exec_prefix) $up
 	    set autoconf(libdir) "$up/lib"
 	    set autoconf(libexecdir) "$up/libexec"
@@ -239,22 +240,22 @@ proc vMAXSetMaximaCommand {} {
 	    return
 	}
     } else {
-	set maxima_priv(xmaxima_maxima) maxima
-	if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
-	
-	    if {$tcl_platform(platform) == "windows"} {
-		# maybe it's in lib - I don't like this
-		set dir $maxima_priv(maxima_verpkglibdir)
-		# FIXME - need autoconf(lisp) so we don't need glob
-		set exes [glob -nocomplain $dir/binary-*/maxima.exe]
-		if {[llength $exes] != "1" || \
-			[set exe [lindex $exes 0]] == "" || \
-			![file isfile $exe]} {
-		    tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
-		    return
-		}
-
-	    } else {
+	# jfa: bypass maxima script on windows
+	if {$tcl_platform(platform) == "windows"} {
+	    # maybe it's in lib - I don't like this
+	    set dir $maxima_priv(maxima_verpkglibdir)
+	    # FIXME - need autoconf(lisp) so we don't need glob
+	    set exes [glob -nocomplain $dir/binary-*/maxima.exe]
+	    if {[llength $exes] != "1" || \
+		    [set exe [lindex $exes 0]] == "" || \
+		    ![file isfile $exe]} {
+		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
+		return
+	    }
+	    
+	} else {
+	    set maxima_priv(xmaxima_maxima) maxima
+	    if {[set exe [auto_execok $maxima_priv(xmaxima_maxima)]] == "" } {
 		tide_failure [M "Error: Maxima executable not found\n\n Try setting the environment variable  XMAXIMA_MAXIMA."]
 	    }
 	}
