@@ -5,9 +5,10 @@ echo
 echo "*** Summary results for tests recorded in"
 echo "*** log file ${log_file}:"
 grep "No Errors Found" $log_file
-grep "(QUOTE, " $log_file
+grep "Error summary:" $log_file
+grep "Error(s) found in.*:" $log_file
 no_err_count=`grep -c "No Errors Found" $log_file`
-err_count=`grep -c BROKE, $log_file`
+err_count=`grep -c "Error summary:" $log_file`
 if [ "$no_err_count" = "0" ] && [ "$err_count" = "0" ]; then
   echo "Unknown error in log file"
 fi
