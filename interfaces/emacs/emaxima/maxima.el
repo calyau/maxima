@@ -235,6 +235,10 @@ Choices are 'standard, 'perhaps-smart"
 
 ;;;; The other variables
 
+;; This variable seems to be necessary ...
+(defvar maxima-after-output-wait 100
+  "The length of time to wait after Maxima produces output.")
+
 (defconst maxima-temp-suffix 0
   "Temporary filename suffix.  Incremented by 1 for each filename.")
 
@@ -1486,9 +1490,11 @@ To get apropos with the symbol under point, use:
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
+        (accept-process-output inferior-maxima-process)
         (while (not (maxima-new-prompt-p))
-          (sleep-for 0.100))
-        (inferior-maxima-mode)))))
+          (accept-process-output inferior-maxima-process))
+        (inferior-maxima-mode)))
+    (sit-for 0 maxima-after-output-wait)))
 
 (defun maxima-stop (&optional arg)
   "Kill the currently running Maxima process."
@@ -1562,8 +1568,10 @@ To get apropos with the symbol under point, use:
       (unless nonewinput
         (setq maxima-real-input-end (point)))
       (comint-send-input);)
+      (accept-process-output inferior-maxima-process)
       (while (not (maxima-new-prompt-p))
-        (sit-for 0.100))
+        (accept-process-output inferior-maxima-process))
+      (sit-for 0 maxima-after-output-wait)
       (goto-char (point-max)))
     (when (maxima-question-p)
       (let ((ans (read-string (maxima-question))))
