@@ -1,5 +1,7 @@
 # -*- tcl -*-
 
+global autoconf
+set autoconf(defaultlisp) "@DEFAULTLISP@"
 set autoconf(prefix) "@prefix@"
 set autoconf(exec_prefix) "@expanded_exec_prefix@"
 set autoconf(package) "@PACKAGE@"
