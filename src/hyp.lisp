@@ -1913,31 +1913,13 @@
 	   (cond ((equal (checksigntm var) '$positive)
 		  ;; A&S 15.1.17:
 		  ;; F(-a,a;1/2;sin(z)^2) = cos(2*a*z)
-		  (mcos (m*t 2. a (masin (msqrt var)))))
+		  (trig-log-1-pos a var))
 		 ((equal (checksigntm var) '$negative)
 		  ;; A&X 15.1.11:
 		  ;; F(-a,a;1/2;-z^2) = 1/2*((sqrt(1+z^2)+z)^(2*a)
 		  ;;                         +(sqrt(1+z^2)-z)^(2*a))
 		  ;;
-		  ;; Look to see a is of the form m*s+c where m and c
-		  ;; are numbers.  If m is positive, swap a and b.
-		  ;; Basically we want F(-a,a;1/2;-z^2) =
-		  ;; F(a,-a;1/2;-z^2), as they should be.
-		  (let* ((match (m*s+c a))
-			 (m (cdras 'm match))
-			 (s (cdras 's match))
-			 (b (if s
-				(if (and m (plusp m))
-				    a
-				    b)
-				(if (eq (checksigntm a) '$negative)
-				    b
-				    a))))
-		    (m*t 1//2
-			 (m+t (m^t (m+t (setq x (msqrt (m-t 1. var)))
-					(setq z (msqrt (m-t var))))
-				   (setq b (m*t 2. b)))
-			      (m^t (m-t x z) b)))))
+		  (trig-log-1-neg a b var))
 		 (t ())))
 	  ((equal (m+t a b) 1.)
 	   ;; F(a,1-a;1/2,z)
@@ -1974,6 +1956,30 @@
 		 (t ())))
 	  (t ()))))
 
+(defun trig-log-1-pos (a z)
+  (mcos (m*t 2. a (masin (msqrt z)))))
+
+(defun trig-log-1-neg (a b v)
+  ;; Look to see a is of the form m*s+c where m and c
+  ;; are numbers.  If m is positive, swap a and b.
+  ;; Basically we want F(-a,a;1/2;-z^2) =
+  ;; F(a,-a;1/2;-z^2), as they should be.
+  (let* ((match (m*s+c a))
+	 (m (cdras 'm match))
+	 (s (cdras 's match))
+	 (b (if s
+		(if (and m (plusp m))
+		    a
+		    b)
+		(if (eq (checksigntm a) '$negative)
+		    b
+		    a))))
+    (m*t 1//2
+	 (m+t (m^t (m+t (setq x (msqrt (m-t 1. v)))
+			(setq z (msqrt (m-t v))))
+		   (setq b (m*t 2. b)))
+	      (m^t (m-t x z) b)))))
+  
 ;; Pattern match for m*s+c where a is a number, x is symbolic, and c
 ;; is a number.
 (defun m*s+c (exp)
@@ -2700,6 +2706,7 @@
      ;; 15.1.17 also gives a solution in terms of trig functions.)
      ;;
      ;;
+     #+nil
      (setq newf
 	   ($ratsimp (subst aprime
 			    'psa
@@ -2709,8 +2716,21 @@
 					     (inv 2)))
 				   (sub 1
 					(mul 2 'psa))))))
+     ;; Ok, this uses F(a,-a;1/2;z).  Since there are 2 possible
+     ;; representations (A&S 15.1.11 and 15.1.17), we check the sign
+     ;; of the var (as done in trig-log-1) to select which form we
+     ;; want to use.  The original didn't and seemed to want to use
+     ;; the negative form.
+     ;;
+     ;; With this change, F(a,-a;3/2;z) matches what A&S 15.2.6 would
+     ;; produce starting from F(a,-a;1/2;z), assuming z < 0.
+     (setq newf 
+	   (cond ((equal (checksigntm var) '$positive)
+		  (trig-log-1-pos aprime 'ell))
+		 ((equal (checksigntm var) '$negative)
+		  (trig-log-1-neg (mul -1 aprime) aprime 'ell))))
      (return (subst var 'ell
-		    (algiii (subst 'ell var newf)
+		    (algiii newf
 			    m n aprime)))))
 
 ;;Pattern match for s(ymbolic) + c(onstant) in parameter
