@@ -179,9 +179,14 @@
     (subseq pathstring 0 (position #\/ pathstring :from-end t))))
 
 (defun list-avail-action ()
-  (let* ((*maxima-verpkglibdir* 
-	  "/home/amundson/opt/maxinstall/lib/maxima/5.9.0.1cvs")
-	 (mvpldir *maxima-verpkglibdir*)
+  ;; jfa *autoconf-libdir* is only correct if the environment
+  ;; variable MAXIMA_PREFIX has not been set. Fixme, please. 11/21/03
+  (let* ((mvpldir (concatenate 'string
+			       *autoconf-libdir*
+			       "/"
+			       *autoconf-package*
+			       "/"
+			       *autoconf-version*))
 	 (len (length mvpldir))
 	 (base-dir nil)
 	 (versions nil)
