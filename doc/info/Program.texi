@@ -234,8 +234,7 @@ user can then type ERREXP; to see this and hopefully find the problem.
 will evaluate and print its arguments and
 then will cause an error return to top level Maxima or to the nearest
 enclosing ERRCATCH.  This is useful for breaking out of nested
-functions if an error condition is detected, or wherever one can't
-type control-^.
+functions if an error condition is detected.
 The variable ERROR is set to a list describing the error, the first of
 it being a string of text, and the rest the objects in question.
 ERRORMSG(); is the preferred way to see the last error message.
