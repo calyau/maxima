@@ -465,7 +465,7 @@ COMPILE, COMPFILE, and the TRANSLATE SAVE combination.
 @c @node DEFINE, DEFINE_VARIABLE, COMPILE_LISP_FILE, Function Definition
 @c @unnumberedsec phony
 @defun DEFINE (f(x1, ...), body)
-is equivalent to f(x1,...):='@w{}'body but when
+is equivalent to f(x1,...):='@w{}'(body) but when
 used inside functions it happens at execution time rather than at the
 time of definition of the function which contains it.
 
