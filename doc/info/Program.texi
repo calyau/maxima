@@ -12,8 +12,7 @@ constructs such as GO.
 @c end concepts Program Flow
 @node Definitions for Program Flow,  , Introduction to Program Flow, Program Flow
 @section Definitions for Program Flow
-@c @node BACKTRACE, {special operator}, ITERATION, Program Flow
-@c @unnumberedsec phony
+
 @defun BACKTRACE ()
 @defunx BACKTRACE (n)
 Prints the call stack, that is, the list of functions which
@@ -23,8 +22,7 @@ functions, including the currently active function.
 BACKTRACE can be called at any time (not only in a debugging context).
 
 @end defun
-@c @node DO
-@c @unnumberedsec phony
+
 @deffn {special operator} DO
  - The DO statement is used for performing iteration.  Due to its
 great generality the DO statement will be described in two parts.
@@ -207,8 +205,7 @@ non-atomic expression, and successive parts are taken.)
 
 @end example
 @end deffn
-@c @node ERRCATCH, ERREXP, {special operator}, Program Flow
-@c @unnumberedsec phony
+
 @defun ERRCATCH (exp1, exp2, ...)
 evaluates its arguments one by one and
 returns a list of the value of the last one if no error occurs.  If an
@@ -218,8 +215,7 @@ is useful in BATCH files where one suspects an error might occur which
 would otherwise have terminated the BATCH if the error weren't caught.
 
 @end defun
-@c @node ERREXP, ERROR, ERRCATCH, Program Flow
-@c @unnumberedsec phony
+
 @defvar ERREXP
  default: [ERREXP] When an error occurs in the course of a
 computation, Maxima prints out an error message and terminates the
@@ -228,8 +224,7 @@ message "ERREXP contains the offending expression" is printed.  The
 user can then type ERREXP; to see this and hopefully find the problem.
 
 @end defvar
-@c @node ERROR, ERRORFUN, ERREXP, Program Flow
-@c @unnumberedsec phony
+
 @defun ERROR (arg1, arg2, ...)
 will evaluate and print its arguments and
 then will cause an error return to top level Maxima or to the nearest
@@ -245,8 +240,7 @@ Maxima killed or his terminal logged out if an error occurs.  In
 these cases ERRORFUN would be set to QUIT or LOGOUT.
 
 @end defun
-@c @node ERRORFUN, ERRORMSG, ERROR, Program Flow
-@c @unnumberedsec phony
+
 @defvar ERRORFUN
  default: [FALSE] - if set to the name of a function of no
 arguments will cause that function to be executed whenever an error
@@ -255,8 +249,7 @@ Maxima killed or his terminal logged out if an error occurs.  In
 these cases ERRORFUN would be set to QUIT or LOGOUT.
 
 @end defvar
-@c @node ERRORMSG, {special operator}, ERRORFUN, Program Flow
-@c @unnumberedsec phony
+
 @defun ERRORMSG ()
 reprints the last error message.  This is very helpful if
 you are using a display console and the message has gone off the
@@ -267,15 +260,13 @@ TTYINTFUN:LAMBDA([],ERRORMSG(),PRINT(""))$ will set up the user-interrupt
 character (^U) to reprint the message.
 
 @end defun
-@c @node FOR
-@c @unnumberedsec phony
+
 @deffn {special operator} FOR
  - Used in iterations, do DESCRIBE("DO"); for a description of
 Maxima's iteration facilities.
 
 @end deffn
-@c @node GO, {special operator}, {special operator}, Program Flow
-@c @unnumberedsec phony
+
 @defun GO (tag)
 is used within a BLOCK to transfer control to the statement
 of the block which is tagged with the argument to GO.  To tag a
@@ -290,8 +281,7 @@ BLOCK.  One cannot use GO to transfer to tag in a BLOCK other than the
 one containing the GO.
 
 @end defun
-@c @node IF
-@c @unnumberedsec phony
+
 @deffn {special operator} IF
  - The IF statement is used for conditional execution.  The syntax
 is:
@@ -320,7 +310,7 @@ not                 NOT         logical prefix
 
 @end example
 @end deffn
-@c @unnumberedsec phony
+
 @defun MAP (fn, exp1, exp2, ...)
 returns an expression whose leading operator
 is the same as that of the expi but whose subparts are the results of
@@ -354,16 +344,14 @@ exhaustion of list storage space in the course of the computation.
 
 @end example
 @end defun
-@c @node MAPATOM, MAPERROR, MAP, Program Flow
-@c @unnumberedsec phony
+
 @defun MAPATOM (expr)
 is TRUE if and only if expr is treated by the MAPping
 routines as an "atom", a unit.  "Mapatoms" are atoms, numbers
 (including rational numbers), and subscripted variables.
 
 @end defun
-@c @node MAPERROR, MAPLIST, MAPATOM, Program Flow
-@c @unnumberedsec phony
+
 @defvar MAPERROR
  default: [TRUE] - if FALSE will cause all of the mapping
 functions, for example
@@ -377,8 +365,7 @@ the same type of object.  If MAPERROR is TRUE then an error message
 will be given in the above two instances.
 
 @end defvar
-@c @node MAPLIST, PREDERROR, MAPERROR, Program Flow
-@c @unnumberedsec phony
+
 @defun MAPLIST (fn, exp1, exp2, ...)
 yields a list of the applications of fn
 to the parts of the expi.  This differs from MAP(fn,exp1,exp2,...)
@@ -387,8 +374,7 @@ which returns an expression with the same main operator as expi has
 is of the same form as in MAP.
 
 @end defun
-@c @node PREDERROR, RETURN, MAPLIST, Program Flow
-@c @unnumberedsec phony
+
 @defvar PREDERROR
  default: [TRUE] - If TRUE, an error message is signalled
 whenever the predicate of an IF statement or an IS function fails to
@@ -397,15 +383,13 @@ instead in this case.  The PREDERROR:FALSE mode is not supported in
 translated code.
 
 @end defvar
-@c @node RETURN, SCANMAP, PREDERROR, Program Flow
-@c @unnumberedsec phony
+
 @defun RETURN (value)
 may be used to exit explicitly from a BLOCK, bringing
 its argument.  Do DESCRIBE(BLOCK); for more information.
 
 @end defun
-@c @node SCANMAP, THROW, RETURN, Program Flow
-@c @unnumberedsec phony
+
 @defun SCANMAP (function,exp)
 recursively applies function to exp, in a "top
 down" manner.  This is most useful when "complete" factorization is
@@ -450,8 +434,7 @@ In this case, you get the same answer both
 ways.
 
 @end defun
-@c @node THROW,  , SCANMAP, Program Flow
-@c @unnumberedsec phony
+
 @defun THROW (exp)
 evaluates exp and throws the value back to the most recent
 CATCH.  THROW is used with CATCH as a structured nonlocal exit
