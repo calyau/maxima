@@ -93,7 +93,7 @@
 ;; The maxima function call union(a1,a2,...an) forms the union of the
 ;; sets a1,a2,...an.
 
-(defmspec $union (a)
+(defmfun $union ( &rest a)
   (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
 	 (merror "Each argument to UNION must be a list."))
@@ -111,7 +111,7 @@
 ;; Return the intersection of lists a and b.  Use element_equalp for the
 ;; equality test. Signal an error if a or b aren't lists.
 
-(defmspec $intersection (a)
+(defmfun $intersection ( &rest a)
   (setq a (margs a))
   (cond ((member nil (mapcar #'$listp a))
 	 (merror "Each argument to INTERSECTION must be a list."))
@@ -186,7 +186,7 @@
 
 (defun $disjointp (a b)
   (cond ((and ($listp a) ($listp b))
-	 (like nil (intersection (margs a) (margs b) :test #'$elem_equalp)))
+	 (not (intersection (margs a) (margs b) :test #'$elem_equalp)))
 	(t (merror "Both arguments to DISJOINTP must be lists."))))
 
 ;; Return those elements of a for which the predicate f evaluates
