@@ -1,26 +1,64 @@
 dnl Process this file with autoconf to produce a configure script.
+
 AC_INIT(src/macsys.lisp)
 
 AM_INIT_AUTOMAKE(maxima,5.9.0)
 
+explicit_lisp=false
+
+dnl n.b. clisp_default_name is hardcoded in "with" message
+clisp_default_name=clisp
 AC_ARG_ENABLE(clisp,[--enable-clisp                   Use clisp],
      	[case "${enableval}" in
        		yes) clisp=true ;;
        		no)  clisp=false ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-clisp) ;;
-     	esac],
+     	esac
+	explicit_lisp=true],
 	[clisp=false])
+AC_ARG_WITH(clisp,
+	[--with-clisp=<prog>              Use clisp executable <prog> (default clisp)],
+	[clisp=true
+	explicit_lisp=true
+	CLISP_NAME=$withval],
+	[CLISP_NAME=${clisp_default_name}])
+
+if test x"${clisp}" = xtrue ; then
+	AC_CHECK_PROG(clisp_found,$CLISP_NAME,true,false)
+	if test x"${clisp_found}" = xfalse ; then
+		AC_MSG_ERROR(clisp executable ${CLISP_NAME} not found in PATH)
+	fi
+fi
+
 AM_CONDITIONAL(CLISP, test x$clisp = xtrue)
 
+dnl n.b. cmucl_default_name is hardcoded in "with" message
+cmucl_default_name=lisp
 AC_ARG_ENABLE(cmucl,[--enable-cmucl                   Use CMUCL],
      	[case "${enableval}" in
        		yes) cmucl=true ;;
        		no)  cmucl=false ;;
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-cmucl) ;;
-     	esac],
+     	esac
+	explicit_lisp=true],
 	[cmucl=false])
+AC_ARG_WITH(cmucl,
+	[--with-cmucl=<prog>              Use CMUCL executable <prog> (default lisp)],
+	[cmucl=true
+	explicit_lisp=true
+	CMUCL_NAME=$withval],
+	[CMUCL_NAME=${cmucl_default_name}])
+if test x"${cmucl}" = xtrue ; then
+	AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
+	if test x"${cmucl_found}" = xfalse ; then
+		AC_MSG_ERROR(cmucl executable ${CMUCL_NAME} not found in PATH)
+	fi
+fi
+	
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 
+dnl n.b. gcl_default_name is hardcoded in "with" message
+gcl_default_name=gcl
 AC_ARG_ENABLE(gcl,[--enable-gcl                     Use GCL],
      	[case "${enableval}" in
        		yes) gcl=true ;;
@@ -28,37 +66,101 @@ AC_ARG_ENABLE(gcl,[--enable-gcl                     Use GCL],
 		*) AC_MSG_ERROR(bad value ${enableval} for --enable-gcl) ;;
      	esac],
 	[gcl=false])
+AC_ARG_WITH(gcl,
+	[--with-gcl=<prog>                Use GCL executable <prog> (default gcl)],
+	[gcl=true
+	explicit_lisp=true
+	GCL_NAME=$withval],
+	[GCL_NAME=${gcl_default_name}])
+if test x"${gcl}" = xtrue ; then
+	AC_CHECK_PROG(gcl_found,$GCL_NAME,true,false)
+	if test x"${gcl_found}" = xfalse ; then
+		AC_MSG_ERROR(gcl executable ${GCL_NAME} not found in PATH)
+	fi
+fi
 AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 
+if test x"${explicit_lisp}" = xfalse ; then
+	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
+	if test x"${clisp_found}" = xtrue ; then
+		clisp=true
+	else
+		AC_CHECK_PROG(gcl_found,${gcl_default_name},true,false)
+		if test x"${gcl_found}" = xtrue ; then
+			gcl=true
+		else
+			AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
+			if test x"${cmucl_found}" = xtrue ; then
+				cmucl=true
+			else
+				AC_MSG_ERROR(No lisp implementation specified and none of the default executables [${clisp_default_name}(clisp),${gcl_default_name}(GCL),${cmucl_default_name}(CMUCL)] were found in PATH)
+			fi
+		fi
+	fi
+fi
+	
 AC_ARG_WITH(default-lisp,
-	[--with-default-lisp=<lisp>         Set default lisp implementation to <lisp>],
+	[--with-default-lisp=<lisp>       Set default lisp implementation to <lisp>],
      	[case "${withval}" in
        		clisp)
 			if test x"${clisp}" = xtrue ; then
-				default_lisp=clisp
+				DEFAULTLISP=clisp
 			else
 				AC_MSG_ERROR(clisp not enabled)
 			fi
 			;;
 		cmucl)
 			if test x"${cmucl}" = xtrue ; then
-				default_lisp=cmucl
+				DEFAULTLISP=cmucl
 			else
 				AC_MSG_ERROR(cmucl not enabled)
 			fi
 			;;
 		gcl)
 			if test x"${gcl}" = xtrue ; then
-				default_lisp=gcl
+				DEFAULTLISP=gcl
 			else
 				AC_MSG_ERROR(gcl not enabled)
 			fi
 			;;		
 		*) 
-			AC_MSG_ERROR(Unknown argument ${default_lisp} to --default_lisp) 
+			AC_MSG_ERROR(Unknown argument ${DEFAULTLISP} to --with-default-lisp) 
 			;;
      	esac],
-	[default_lisp=clisp])
+	[if test x"${clisp}" = xtrue ; then
+		DEFAULTLISP=clisp
+	else
+		if test x"${cmucl}" = xtrue ; then
+			DEFAULTLISP=cmucl
+		else
+			if test x"${gcl}" = xtrue ; then
+				DEFAULTLISP=gcl
+			else
+				AC_MSG_ERROR(Internal error. No lisp enabled. Please contact maintainer.)
+			fi
+		fi
+	fi])
+dnl AC_ARG_WITH(elispdir,
+dnl	[--with-elispdir=<dir>            Install (X)Emacs lisp files in <dir>],
+dnl	[lispdir=$withval],
+dnl	[AM_PATH_LISPDIR])
 
+AC_SUBST(CLISP_NAME)
+AC_SUBST(CMUCL_NAME)
+AC_SUBST(GCL_NAME)
+AC_SUBST(DEFAULTLISP)
+AC_OUTPUT(Makefile src/Makefile src/maxima lisp-utils/Makefile tests/Makefile doc/Makefile doc/info/Makefile)
 
-AC_OUTPUT(Makefile src/Makefile src/maxima lisp-utils/Makefile tests/Makefile)
+echo
+echo "Summary:"
+if test x"${clisp}" = xtrue ; then
+	echo "clisp enabled. Executable name ${CLISP_NAME}"
+fi
+if test x"${cmucl}" = xtrue ; then
+	echo "CMUCL enabled. Executable name ${CMUCL_NAME}"
+fi
+if test x"${gcl}" = xtrue ; then
+	echo "GCL enabled. Executable name ${GCL_NAME}"
+fi
+echo "default lisp: $DEFAULTLISP"
+echo "(X)Emacs lisp files will be installed in $lispdir"

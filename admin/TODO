@@ -5,7 +5,7 @@
 	-docs
 		-man page
 		-done! -dynamic (--help)
-	-interface for invoking tests
+	-done! -interface for invoking tests
 	-mute the clisp banner, etc. (partially done)
 
 -done! -create test directory
@@ -18,6 +18,9 @@
 -install packages
 
 -install docs
+	-done! -info
+	-man pages
+	-manual
 
 -install xmaxima
 	-option to not install
@@ -25,10 +28,10 @@
 -spec files
 	-separate packages for base, each lisp impl, emacs, xemacs...
 
--configure options
-	-fix default lisp
-	-optional paths to specific lisps
-	-automatically pick lisp implementation if none specified
+-done! -configure options
+	-done! -fix default lisp
+	-done! -optional paths to specific lisps
+	-done! -automatically pick lisp implementation if none specified
 
 -write PORTING documentation
 	-do while adding acl support

@@ -3,6 +3,8 @@
 
 (pushnew :cl *features*)
 (pushnew :nocp *features*)
+#+cmu
+(setf ext:*gc-verbose* nil)
 
 (mk:defsystem "maxima"
   :source-extension "lisp"  
@@ -122,7 +124,8 @@
 				     (:file "trprop") 
 				     (:file "mdefun")))
 	       (:module numerical-functions :source-pathname ""
-			:components ((:file "bessel") 
+			:components ((:file "bessel")
+				     #+gcl(:file "parse-body")
 				     (:file "ellipt") 
 				     (:file "numer") 
 				     (:file "intpol") 

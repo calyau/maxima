@@ -27,7 +27,7 @@ setup_vars() {
   if [ -z "$MAXIMA_VERPKGLIBDIR" ]; then
     MAXIMA_VERPKGLIBDIR=@libdir@/@PACKAGE@/@VERSION@
   fi
-  MAXIMA_DEFAULT_LISP=clisp
+  MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
   if [ -z "$MAXIMA_LISP" ]; then
     MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
   fi
