@@ -221,42 +221,107 @@ is a TRACE package function.
 @end defun
 @c @node TRACE
 @c @unnumberedsec phony
-@defun TRACE (name1, name2, ...)
-gives a trace printout whenever the
-functions mentioned are called.  TRACE() prints a list of the
-functions currently under TRACE.  On MC see MACDOC;TRACE USAGE for
-more information.  Also, DEMO("trace.dem"); .  To remove tracing,
-see UNTRACE.
+@defun TRACE (F1, F2, F3, ...)
+@defunx TRACE ()
+Given a list of functions F1, F2, F3, ..., 
+TRACE instructs Maxima to print out
+debugging information whenever those functions are called.
+With no arguments,
+TRACE returns a list of all the functions currently being traced.
+
+The UNTRACE function disables tracing.
+See also TRACE_OPTIONS. 
+
+@code{TRACE(F)$ TRACE(G)$} will put F and then G onto the list of functions
+to be traced; the list accumulates from one call to the next.
+
+TRACE quotes its arguments. Thus,
+@code{F(X) := X^2$ G:F$ TRACE(G)$} will not put F on the timer list.
+
+When a function is redefined, it is removed from the timer list.
+Thus after @code{TIMER(F)$ F(X) := X^2$},
+function F is no longer on the timer list.
+
+If TIMER (F) is in effect, then TRACE (F) has no effect; TRACE and
+TIMER can't both be in effect for the same function.
 
 @end defun
 @c @node TRACE_OPTIONS
 @c @unnumberedsec phony
-@defun TRACE_OPTIONS (F,option1,option2,...)
-gives the function F the
-options indicated.  An option is either a keyword or an expression.
-The possible Keywords are:
- Keyword     Meaning of return value
-----------------------------------------
- NOPRINT     If TRUE do no printing. 
- BREAK       If TRUE give a breakpoint.
- LISP_PRINT  If TRUE use lisp printing.
- INFO        Extra info to print.
- ERRORCATCH  If TRUE errors are caught.
-A keyword means that the option is in effect.  Using a keyword as an
-expression, e.g. NOPRINT(predicate_function) means to apply the
-predicate_function (which is user-defined) to some arguments to
-determine if the option is in effect. The argument list to this
-predicate_function is always [LEVEL, DIRECTION, FUNCTION, ITEM] where
-LEVEL is the recursion level for the function.  DIRECTION is either
-ENTER or EXIT.  FUNCTION is the name of the function.  ITEM is either
-the argument list or the return value.  On MC see
-DEMO("trace.dem"); for more details.
+@defun TRACE_OPTIONS (F, option1, option2, ...)
+@defunx TRACE_OPTIONS (F)
+Sets the trace options for function F.
+Any previous options are superseded.
+TRACE_OPTIONS (F, ...) has no effect unless
+TRACE (F) is also called (either before or after TRACE_OPTIONS). 
+
+TRACE_OPTIONS (F) resets all options to their default values.
+
+The option keywords are:
+
+@example
+ Keyword     If specified...
+----------------------------------------------------------------
+ NOPRINT     Do not print a message at function entry and exit.
+
+ BREAK       Put a breakpoint before the function is entered,
+             and after the function is exited. See BREAK.
+
+ LISP_PRINT  Display arguments and return values as Lisp objects.
+
+ INFO        Print "-> TRUE" at function entry and exit.
+
+ ERRORCATCH  Catch errors, giving the option to signal an error,
+             retry the function call, or specify a return value.
+@end example
+
+Trace options are specified in two forms. The presence of the option 
+keyword alone puts the option into effect unconditionally.
+(Note that option FOO is not put into effect by specifying 
+FOO:TRUE or a similar form; note also that keywords need not
+be quoted.) Specifying the option keyword with a predicate
+function makes the option conditional on the predicate.
+
+The argument list to the predicate function is always 
+[LEVEL, DIRECTION, FUNCTION, ITEM] where LEVEL is the recursion level
+for the function,  DIRECTION is either ENTER or EXIT, FUNCTION is the
+name of the function, and ITEM is the argument list (on entering)
+or the return value (on exiting).
+
+Here is an example of unconditional trace options:
+
+@example
+(%i1) ff(n) := IF EQUAL(n, 0) THEN 1 ELSE n * ff(n - 1)$
+
+(%i2) TRACE (ff)$
+
+(%i3) TRACE_OPTIONS (ff, LISP_PRINT, BREAK)$
+
+(%i4) ff(3);
+@end example
+
+Here is the same function, with the BREAK option conditional
+on a predicate:
+
+@example
+(%i5) TRACE_OPTIONS (ff, BREAK(pp))$
+
+(%i6) pp (LEVEL, DIRECTION, FUNCTION, ITEM) := BLOCK (PRINT (ITEM),
+    RETURN (FUNCTION = 'ff AND LEVEL = 3 AND DIRECTION = EXIT))$
+
+(%i7) ff(6);
+@end example
 
 @end defun
 @c @node UNTRACE
 @c @unnumberedsec phony
-@defun UNTRACE (name1, ...)
-removes tracing invoked by the TRACE function.
-UNTRACE() removes tracing from all functions.
+@defun UNTRACE (F1, F2, F3, ...)
+@defunx UNTRACE ()
+Given functions F1, F2, F3, ...,
+UNTRACE disables tracing enabled by the TRACE function.
+With no arguments, UNTRACE disables tracing for all functions.
+
+UNTRACE returns a list of the functions for which 
+it disabled tracing.
 
 @end defun
