@@ -25,10 +25,12 @@
 ;;
 ;;(format t "~&The f2cl software has been loaded.~%")
 
-(in-package :common-lisp-user)
+#-gcl(in-package :common-lisp-user)
+#+gcl(in-package "USER")
 
 (defpackage "F2CL-LIB"
-  (:use "CL")
+  #-gcl(:use "CL")
+  #+gcl(:use "LISP")
   (:documentation "The package holding all symbols used by the Fortran to Lisp library")
   (:nicknames "FORTRAN-TO-LISP-LIBRARY")
   (:export
@@ -82,9 +84,12 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.1 2002-04-26 13:04:46 rtoy Exp $
+;;; $Id: f2cl-package.lisp,v 1.2 2002-05-01 18:20:18 amundson Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.1  2002-04-26 13:04:46  rtoy
+;;; Revision 1.2  2002-05-01 18:20:18  amundson
+;;; Package-related hacks for gcl.
+;;;
+;;; Revision 1.1  2002/04/26 13:04:46  rtoy
 ;;; Initial revision.
 ;;;
 ;;; Revision 1.13  2002/03/11 16:40:21  rtoy

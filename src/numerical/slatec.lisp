@@ -1,6 +1,6 @@
 
 (defpackage "SLATEC"
-  (:use "F2CL-LIB" "COMMON-LISP")
+  (:use "F2CL-LIB" #-gcl "COMMON-LISP" #+gcl "LISP")
   (:export
    ;; Error functions
    "DERF" "DERFC"
