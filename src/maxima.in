@@ -50,6 +50,11 @@ setup_vars() {
     fi
   fi
   MAXIMA_DEFAULT_LISP=@DEFAULTLISP@
+  # If the the binary directory for the default lisp is not present,
+  # choose the first one we find.
+  if [ ! -d "$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_DEFAULT_LISP" ]; then
+    MAXIMA_DEFAULT_LISP=`ls -1 $MAXIMA_VERPKGLIBDIR | head -n 1 | sed 's/binary-//'`
+  fi
   if [ -z "$MAXIMA_LISP" ]; then
     MAXIMA_LISP=$MAXIMA_DEFAULT_LISP
   fi
