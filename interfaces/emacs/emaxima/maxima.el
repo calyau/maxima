@@ -279,6 +279,11 @@ Choices are 'newline, 'newline-and-indent, and 'reindent-then-newline-and-indent
   :group 'maxima
   :type 'boolean)
 
+(defcustom maxima-fix-double-prompt nil
+  "*If non-nil, fix the double prompt that sometimes appears in XEmacs."
+  :group 'maxima
+  :type 'boolean)
+
 ;;;; The other variables
 
 ;; This variable seems to be necessary ...
@@ -1537,6 +1542,20 @@ To get apropos with the symbol under point, use:
 ;;;; Interacting with the Maxima process
 
 ;;;; Starting and stopping
+;; This next function is a modified version of comint-strip-ctrl-m
+(defun maxima-remove-double-prompt (&optional string)
+  "Fix the double prompt that occasionally appears in XEmacs."
+  (interactive)
+  (let ((pmark (process-mark inferior-maxima-process))
+	(pos))
+    (set-buffer (process-buffer inferior-maxima-process))
+    (setq pos comint-last-output-start)
+    (if (marker-position pos)
+	(save-excursion
+	  (goto-char pos)
+          (beginning-of-line)
+	  (while (re-search-forward "(C[0-9]+).*\r" pmark t)
+	    (replace-match "" t t))))))
 
 (defun maxima-start ()
   "Start the Maxima process."
@@ -1561,6 +1580,9 @@ To get apropos with the symbol under point, use:
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
+	(if maxima-fix-double-prompt
+            (add-to-list 'comint-output-filter-functions
+                         'maxima-remove-double-prompt))
         (accept-process-output inferior-maxima-process)
         (while (not (maxima-new-prompt-p))
           (accept-process-output inferior-maxima-process))
