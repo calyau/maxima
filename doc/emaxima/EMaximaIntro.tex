@@ -53,7 +53,7 @@ user to work with \mx{} interactively, and produces the output in
 visually nice form.  It is available from
 \verb+http://www.ifa.au.dk/~harder/imaxima.html+.
 
-\section{Running \mx{} from other buffers}
+\section{Running \mx{} from the minibuffer}
 
 The command \texttt{M-x maxima-minibuffer} will use the minibuffer to
 prompt for an expression to send to a \mx{} process, and the result
@@ -63,25 +63,21 @@ useful to add the line
 (global-set-key "\C-cm" 'maxima-minibuffer)
 \end{verbatim}
 (or something similar) to your \texttt{.emacs}, so that this can be
-called with \texttt{C-c m}. 
-In GNU Emacs, the output will be in 2D form.  This can be changed by
-setting the customizable variable \texttt{maxima-minibuffer-2d} to
-\texttt{nil}. 
-
-The command \texttt{M-x maxima-minibuffer-kill-ring} is like
-\texttt{M-x maxima-minibuffer}, except the output, which will not be
-in 2D form, is put in the kill-ring as well as displayed in the
-minibuffer.  Given an argument, \texttt{M-x
-  maxima-minibuffer-kill-ring} will store the \TeX{}ed version of the
-output in the kill-ring.
-
-In an arbitrary buffer, the command \texttt{M-x
-  maxima-replace-expression} will send the expression under the point
-to a \mx{} process.  (The expression needs to be delimited by spaces.)
-The result will then be entered into the buffer, and the original
-expression will be put on a new line preceded by a \verb+%+.  
-(The delimiters can be 
-customized, see Appendix \ref{app:custrepexp}.)
+called with \texttt{C-c m}.%
+\footnote{In GNU Emacs, the output will be in 2D form if the
+customizable variable \texttt{maxima-minibuffer-2d} is non-nil.  Since
+XEmacs does not have a resizable minibuffer, this cannot be done in
+XEmacs.} 
+The latest output from a minibuffer command can be placed in the
+current buffer with the command
+\texttt{M-x maxima-insert-last-minibuffer-output}.%
+\footnote{If the output is 2D, this won't look nice.}
+With an argument, \texttt{C-u M-x
+  maxima-insert-last-minibuffer-tex-output}, this will insert the last
+output in \TeX{} form.%
+\footnote{If this is never going to be used, the customizable variable 
+\texttt{maxima-minibuffer-get-tex} can be set to \texttt{nil}, and
+Emacs won't keep track of the \TeX{} output.}
 
 \section{\mx{} mode}
 
@@ -112,10 +108,9 @@ loops, etc.
 
 A \texttt{RET} will, by default, insert a new line, and indent the new
 line an appropriate amount.  This behavior can be changed by setting
-the value of \\
+the value of 
 \texttt{maxima-return-style}, the self-explanatory options are
-\texttt{'newline},\\
-\texttt{'newline-and-indent}, and 
+\texttt{'newline}, \texttt{'newline-and-indent}, and
 \texttt{'reindent-then-newline-and-indent}.  (Note that standard Emacs
 behavior is to let \texttt{RET} only insert a newline, and
 \texttt{LFD} or \texttt{C-j} insert a newline and indent it.)
@@ -643,11 +638,7 @@ minibuffer, add the line
 (autoload 'maxima-minibuffer "maxima" "Run Maxima from the minibuffer" t)
 \end{verbatim}
 \noindent
-to \texttt{.emacs}, and to be able to send expressions from arbitrary
-buffers, add the line
-\begin{verbatim}
-(autoload 'maxima-replace-expression "maxima" "Run Maxima from an arbitrary buffer" t)
-\end{verbatim}
+to \texttt{.emacs}.
 
 For the \emx{} package, in addition to the above files, the files
 \texttt{emaxima.el} and \texttt{emaxima.lisp} need to be somewhere in
@@ -708,7 +699,6 @@ somewhere in your \texttt{.emacs} file.
   a regular expression to the prompt.
 \end{tabular}
 
-\newpage
 
 \section{\mx{} mode commands}
 \label{app:mxmode}
@@ -767,8 +757,8 @@ somewhere in your \texttt{.emacs} file.
 \texttt{M-TAB} & Complete the \mx{} symbol.\\
 \end{tabular}
 
-\smallskip
-%\newpage
+%\smallskip
+\newpage
 
 \noindent
 \textbf{Comments}
@@ -843,8 +833,6 @@ somewhere in your \texttt{.emacs} file.
 \texttt{C-c C-)} & Check the form for balanced parentheses.
 \end{tabular}
 
-\newpage
-
 \section{\emx{} mode commands}
 \label{app:emx}
 
@@ -876,8 +864,8 @@ argument, don't ask before updating.\\
 argument, don't ask before updating.
 \end{tabular}
 
-\smallskip
-%\newpage
+%\smallskip
+\newpage
 
 \noindent
 \textbf{Commands only available in cells.}
@@ -939,7 +927,6 @@ assemble the package that the cell defines.\\
 \mx{} output in \TeX{} form.
 \end{tabular}
 
-\newpage
 
 \section{AUC\TeX{} commands}
 
@@ -999,8 +986,8 @@ assemble the package that the cell defines.\\
 & Mark a section.
 \end{tabular}
 
-\smallskip
-%\newpage
+%\smallskip
+\newpage
 
 \noindent
 \textbf{Commenting}
@@ -1088,35 +1075,7 @@ assemble the package that the cell defines.\\
 & Toggle debug of overful boxes.\\
 \end{tabular}
 
-\newpage
-
 \section{Customization}
-
-\subsection{Customizing \texttt{maxima-replace-expression}}
-\label{app:custrepexp}
-
-The following options can be changed to effect how expressions are
-evaluated in arbitrary buffers.
-\begin{description}
-\item[maxima-replace-expression-beginning] This is a regexp to
-  indicate the beginning of the expression to be evaluated.  By
-  default, it is \verb+"\\( \\|^\\)"+, to indicate a space or a
-  newline. 
-\item[maxima-replace-expression-end]  This is a regexp to indicate the
-  end of the expression to be evaluated.  By default, it is 
-  \verb+"\\( \\|$\\)"+, to indicate a space or line end.
-\item[maxima-replace-expression-old-beginning] This is a string which
-  will replace \texttt{maxima-replace-expression-beginning} when the
-  expression is evaluated.  By default, it is \verb+"%"+.
-\item[maxima-replace-expression-old-end] This is a string which
-  will replace\\ \texttt{maxima-replace-expression-end} when the
-  expression is evaluated.  By default, it is \verb+"\n"+.
-\item[maxima-replace-expression-new-beginning] This is a string which
-  will be placed at the beginning of the result.  By default, it is
-  \verb+" "+.
-\item[maxima-replace-expression-new-end] This is a string which
-  will be placed at the end of the result.  By default, it is \verb+" "+.
-\end{description}
 
 \subsection{Customizing \mx{} mode}
 \label{app:custmxmode}
@@ -1157,8 +1116,8 @@ options:
   \texttt{nil}.
 \item[maxima-return-style] This determines how \mx{} mode will handle
   \texttt{RET}.  The options are \texttt{'newline},
-  \texttt{'newline-and-indent}, and\\
-  \texttt{'reindent-then-newline-and-indent}, the default is\\
+  \texttt{'newline-and-indent}, and
+  \texttt{'reindent-then-newline-and-indent}, the default is
   \texttt{'reindent-then-newline-and-indent}.
 \end{description}
 
@@ -1230,8 +1189,7 @@ So, for example, to use \texttt{cmtt12} as the input font, use the command
 \end{verbatim}
 \noindent
 The spacing in the cells can be controlled by changing the \TeX{}
-variables\\
-\verb+\maximainputbaselineskip+ and
+variables \verb+\maximainputbaselineskip+ and
 \verb+\maximaoutputbaselineskip+, and so to increase the space between
 the lines of the output, the command
 \begin{verbatim}
