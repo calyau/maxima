@@ -415,36 +415,53 @@
 (DEFUN SIMPATAN2 (E VESTIGIAL Z)  ; atan2(y,x) ~ atan(y/x)
  VESTIGIAL ;ignored
  (TWOARGCHECK E)
- (LET (Y X SIGN)
+ (LET (Y X SIGNY SIGNX)
       (SETQ Y (SIMPCHECK (CADR E) Z) X (SIMPCHECK (CADDR E) Z))
       (COND ((AND (ZEROP1 Y) (ZEROP1 X))
 	     (MERROR "ATAN2(0,0) has been generated."))
-	    ((OR (AND (FLOATP Y) (FLOATP X))
-		 (AND $NUMER (NUMBERP Y) (NUMBERP X)))
-	     (ATAN2 Y X))
-	    ((AND ($BFLOATP Y) ($BFLOATP X))
-	     (IF (MMINUSP* Y) (NEG (*FPATAN (NEG Y) (LIST X)))
-			      (*FPATAN Y (LIST X))))
+	    (;; float contagion
+	     (and (or (numberp x) (ratnump x)) ; both numbers
+		  (or (numberp y) (ratnump y)) ; ...but not bigfloats
+		  (or $numer (floatp x) (floatp y))) ;at least one float
+	     (atan2 ($float y) ($float x)))
+	    (;; bfloat contagion
+	     (and (mnump x)
+		  (mnump y)
+		  (or ($bfloatp x) ($bfloatp y))) ;at least one bfloat
+	     (setq x ($bfloat x)
+		   y ($bfloat y))
+	     (if (MMINUSP* Y)
+		 (NEG (*FPATAN (NEG Y) (LIST X)))
+	       (*FPATAN Y (LIST X))))
 	    ((AND $%PIARGS (FREE X '$%I) (FREE Y '$%I)
+		  ;; Only use asksign if %piargs is on.
 		  (COND ((ZEROP1 Y) (IF (ATAN2NEGP X) (SIMPLIFY '$%PI) 0))
 			((ZEROP1 X) 
 			 (IF (ATAN2NEGP Y) (MUL2* -1 HALF%PI) (SIMPLIFY HALF%PI)))
 			((ALIKE1 Y X)
+			 ;; Should we check if ($sign x) is $zero here?
 			 (IF (ATAN2NEGP X) (MUL2* -3 FOURTH%PI) (SIMPLIFY FOURTH%PI)))
 			((ALIKE1 Y (MUL2 -1 X))
 			 (IF (ATAN2NEGP X) (MUL2* 3 FOURTH%PI) (MUL2* -1 FOURTH%PI)))
+			;; Why is atan2(1,sqrt(3)) super-special-cased here?!?!
+			;; It doesn't even handle atan2(1,-sqrt(3));
+			;; *Atan* should handle sqrt(3) etc., so all cases will work
 			((AND (EQUAL Y 1) (ALIKE1 X '((MEXPT SIMP) 3 ((RAT SIMP) 1 2))))
 			 (MUL2* '((RAT SIMP) 1 6) '$%PI)))))
 	    ($LOGARC (LOGARC '%ATAN (DIV Y X)))
 	    ((AND $TRIGSIGN (MMINUSP* Y))
 	     (NEG (SIMPLIFYA (LIST '($ATAN2) (NEG Y) X) T)))
 			; atan2(y,x) = atan(y/x) + pi sign(y) (1-sign(x))/2
-	    ((AND (FREE X '$%I) (EQ (SETQ SIGN ($SIGN X)) '$POS))
+	    ((AND (FREE X '$%I) (EQ (SETQ SIGNX ($SIGN X)) '$POS))
 	     (SIMPLIFYA (LIST '(%ATAN) (DIV Y X)) T))
-	    ((AND (EQ SIGN '$NEG) (FREE Y '$%I)
-		  (MEMQ (SETQ SIGN ($SIGN Y)) '($POS $NEG)))
+	    ((AND (EQ SIGNX '$NEG) (FREE Y '$%I)
+		  (MEMQ (SETQ SIGNY ($SIGN Y)) '($POS $NEG)))
 	     (ADD2 (SIMPLIFYA (LIST '(%ATAN) (DIV Y X)) T)
-		   (PORM (EQ SIGN '$POS) (SIMPLIFY '$%PI))))
+		   (PORM (EQ SIGNY '$POS) (SIMPLIFY '$%PI))))
+	    ((and (eq signx '$zero) (eq signy '$zero))
+	     ;; Unfortunately, we'll rarely get here.  For example,
+	     ;; assume(equal(x,0)) atan2(x,x) simplifies via the alike1 case above
+	     (MERROR "ATAN2(0,0) has been generated."))
 	    (T (EQTEST (LIST '($ATAN2) Y X) E)))))
 
 (DEFUN ATAN2NEGP (E) (EQ (ASKSIGN-P-OR-N E) '$NEG))
