@@ -1,0 +1,399 @@
+
+@menu
+* Introduction to Orthogonal Polynomials::  
+* Definitions for Orthogonal Polynomials::  
+@end menu
+
+
+@node Introduction to Orthogonal Polynomials, Definitions for Orthogonal Polynomials, Orthogonal Polynomials, Orthogonal Polynomials
+@section Introduction to Orthogonal Polynomials
+
+The specfun package, located in the share directory,  contains Maxima
+code for the evaluation of all orthogonal polynomials listed in 
+Chapter 22 of Abramowitz and Stegun. These include Chebyshev, 
+Laguerre, Hermite, Jacobi, Legendre, and ultraspherical (Gegenbauer) 
+polynomials.  Additionally, specfun contains code for 
+spherical Bessel, spherical  Hankel, and spherical harmonic functions. 
+
+The following table lists each  function in specfun,
+its Maxima name, restrictions on its arguments 
+(@math{ m } and @math{ n } must be integers), and a 
+reference to the algorithm specfun uses to evaluate it.
+With few exceptions, specfun follows the conventions of  
+Abramowitz and Stegun.  Before you use specfun, check
+that specfun's conventions match your expectations.
+
+A&S refers to Abramowitz and Stegun, @emph{Handbook of 
+Mathematical Functions} (10th printing, December 1972), 
+G&R to Gradshteyn and Ryzhik, 
+@emph{Table of Integrals, Series, and Products}
+(1980 corrected and enlarged edition), and Merzbacher 
+to @emph{Quantum Mechanics} (2ed, 1970).  
+
+@multitable @columnfractions 0.25 0.25 0.25 0.25
+@item @emph{Function} @tab  @emph{Maxima Name}  @tab @emph{Restrictions} @tab @emph{Reference(s)}
+@item @ Chebyshev T @tab chebyshev_t(n, x) @tab @math{n > -1} @tab A&S 22.5.31 
+@item  Chebyshev U @tab chebyshev_u(n, x) @tab @math{n > -1} @tab A&S 22.5.32 
+@item generalized Laguerre @tab gen_laguerre(n,a,x) @tab @math{n > -1} @tab A&S page 789
+@item Laguerre @tab laguerre(n,x) @tab @math{n > -1} @tab A&S 22.5.67
+@item Hermite @tab hermite(n,x) @tab @math{ n > -1} @tab A&S 22.4.40, 22.5.41
+@item Jacobi @tab jacobi_p(n,a,b,x) @tab @math{ n > -1, a, b > -1} @tab A&S page 789
+@item associated Legendre P @tab assoc_legendre_p(n,m,x) @tab @math{n > -1} @tab A&S 22.5.37, 8.6.6, 8.2.5
+@item associated Legendre Q @tab assoc_legendre_q(n,m,x) @tab @math{n > -1, m > -1} @tab G & R 8.706
+@item Legendre P @tab legendre_p(n,m,x) @tab @math{n > -1} @tab A&S 22.5.35
+@item Legendre Q @tab legendre_q(n,m,x) @tab @math{n > -1} @tab A&S 8.6.19
+@item spherical Hankel 1st @tab spherical_hankel1(n, x) @tab @math{n > -1} @tab A&S 10.1.36
+@item spherical Hankel 2nd @tab spherical_hankel2(n, x) @tab @math{n > -1} @tab A&S 10.1.17
+@item spherical Bessel J @tab spherical_bessel_j(n,x) @tab @math{n > -1} @tab A&S 10.1.8, 10.1.15
+@item spherical Bessel Y @tab spherical_bessel_y(n,x) @tab @math{n > -1} @tab A&S 10.1.9, 10.1.15
+@item spherical harmonic @tab spherical_harmonic(n,m,x,y) @tab @math{n > -1, |m| <= n} @tab Merzbacher 9.64
+@item ultraspherical (Gegenbauer) @tab ultraspherical(n,a,x) @tab @math{ n > -1} @tab A&S 22.5.27
+@end multitable
+
+The specfun package is primarily intended for symbolic 
+computation. It is hoped  that it gives accurate floating point 
+results as well; however, no claims are made  that the algorithms 
+are well suited for numerical evaluation.  Some effort, however,
+has been made to provide good numerical performance.
+When all arguments, except for the order, are floats (but not bfloats), 
+many functions in specfun call a float modedeclared version of the
+Jacobi function.  This  greatly speeds floating point evaluation
+of the orthogonal polynomials.
+
+specfun handles most domain errors  by returning an unevaluated
+function.  No attempt has been made to define simplification
+rules (based on recursion relations) for unevaluated functions.
+Users should be aware that it is possible for an expression
+involving sums of unevaluated special functions to vanish, yet 
+Maxima is unable to reduce it to zero.  Be careful.
+
+To access functions in specfun, you must first load specfun.o. 
+Alternatively, you may append autoload statements to your 
+init.lsp file (located in your working directory). To autoload  the 
+hermite function, for example, append
+@lisp
+   (defprop |$hermite| #"specfun.o" autoload) 
+   (add2lnc '|$hermite| $props) 
+@end lisp
+to your init.lsp file.  An example use of specfun is
+@example
+(c1) load("specfun.o")$
+(c2) [hermite(0,x),hermite(1,x),hermite(2,x)];
+(d2) [1,2*x,-2*(1-2*x^2)]
+(c3) diff(hermite(n,x),x);
+(d3) 2*n*hermite(n-1,x)
+@end example
+
+When using the compiled version of specfun, be especially
+careful to  use the correct number of function arguments; calling
+them with too few arguments may generate a fatal error messages.  
+For example
+@example
+(c1) load("specfun")$
+/* chebyshev_t requires two arguments. */
+(c2) chebyshev_t(8);
+Error: Caught fatal error [memory may be damaged]
+Fast links are on: do (si::use-fast-links nil) for debugging
+Error signalled by MMAPCAR.
+Broken at SIMPLIFY.  Type :H for Help.
+@end example
+Maxima code translated into Lisp handles such errors more gracefully. 
+If specfun.LISP is installed on your machine, the same computation 
+results in  a clear error message.  For example
+@example
+(c1) load("specfun.LISP")$
+(c2) chebyshev_t(8);
+Error: Expected 2 args but received 1 args
+Fast links are on: do (si::use-fast-links nil) for debugging
+Error signalled by MACSYMA-TOP-LEVEL.
+Broken at |$CHEBYSHEV_T|.  Type :H for Help.
+@end example 
+Generally, compiled code runs faster than translated code; however, 
+translated code may be better for program development.
+
+For some functions, when the order is symbolic but has been 
+declared to be an integer, specfun will return a series 
+representation.  (The series representation is not
+used by specfun for any computations.) You may use this feature to 
+find symbolic values for special values orthogonal polynomials.  
+An example:
+@example
+(c1) load("specfun")$
+(c2) legendre_p(n,1);
+(d2)        legendre_p(n, 1)
+/* Declare n to be an integer; now legendre_p(n,1) evaluates to 1. */
+(c3) declare(n,integer)$
+(c4) legendre_p(n,1);
+(d4)        1
+(c5) ultraspherical(n,3/2,1);
+(d4)         (n+1)*gamma (n+3) / (2*gamma (n+2))
+@end example
+Although the preceding example doesn't show it, two terms
+of the sum are added outside the summation.  Removing these
+two terms avoids errors associated with @math{ 0^0} terms
+in a sum that should evaluate to 1, but evaluate to 0 in a Maxima 
+summation. Because the sum index runs from 1 to 
+@math{n - 1}, the lower sum 
+index will exceed the upper sum index when @math{ n = 0}; 
+setting sumhack to true provides a fix. For example:
+
+@example 
+(c1) load("specfun.o")$
+(c2) declare(n,integer)$
+(c3) e : legendre_p(n,x)$
+(c4) ev(e,sum,n=0);
+Lower bound to SUM: 1
+is greater than the upper bound: - 1
+ -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
+(c5) ev(e,sum,n=0),sumhack : true;
+(d5)         1
+@end example
+
+Most  functions in specfun have a gradef property; 
+derivatives with respect to the order or other function parameters 
+aren't unevaluated. 
+
+The specfun package and its documentation were written by
+Barton Willis of the University of Nebraska at Kearney. It is 
+released under the terms of the General Public License (GPL).
+Send bug reports and comments on this package to 
+willisb@@unk.edu.  In your  report, please include 
+Maxima and specfun version information.  The specfun
+version may be found using get:
+@example
+ (c2) get('specfun,'version);
+ (d2)          110
+ @end example
+
+@c end concepts Orthogonal Polynomials
+@node Definitions for Orthogonal Polynomials,  , Orthogonal Polynomials, Orthogonal Polynomials
+@section Definitions for Orthogonal Polynomials
+
+@defun ASSOC_LEGENDRE_P (n, m, x)
+
+[specfun package] return the associated Legendre function
+of the first kind for  integers @math{ n > -1 } and 
+@math{ m > -1}.  When @math{ | m | > n } and @math{ n >= 0},
+we have   @math{assoc_legendre_p (n, m, x) = 0}.
+
+
+Reference: A&S 22.5.37 page 779,  A&S 8.6.6 (second 
+equation) page 334, and A&S 8.2.5 page 333.
+
+To access this function, load("specfun").
+
+See also ASSOC_LEGENDRE_Q, LEGENDRE_P, and LEGENDRE_Q.
+@end defun
+
+@defun ASSOC_LEGENDRE_Q (n, m, x)
+
+[specfun package] return the associated Legendre function
+of the second kind for  integers @math{ n > -1 } and 
+@math{ m > -1}. 
+
+Reference: Gradshteyn and Ryzhik  8.706 page 1000.
+
+To access this function, load("specfun").
+
+See also ASSOC_LEGENDRE_P, LEGENDRE_P, and LEGENDRE_Q.
+@end defun
+
+@defun   CHEBYSHEV_T (n, x)
+
+[specfun package] return the Chebyshev function of the first kind
+for  integers @math{ n > -1}.
+
+Reference: A&S 22.5.31 page 778 and A&S 6.1.22 page 256.
+
+To access this function, load("specfun").
+
+See also CHEBYSHEV_U.
+
+@end defun
+
+@defun   CHEBYSHEV_U (n, x)
+
+[specfun package] return the Chebyshev function of the 
+second kind for integers @math{ n > -1}.
+
+Reference: A&S, 22.8.3 page 783  and A&S 6.1.22 page 256. 
+
+To access this function, load("specfun").
+
+See also CHEBYSHEV_T.
+
+@end defun
+
+@defun   GEN_LAGUERRE (n, a, x)
+
+[specfun package] return the generalized Laguerre polynomial
+for  integers @math{ n > -1}.
+
+To access this function, load("specfun").
+
+Reference: table on page 789 in A&S.
+@end defun
+
+@defun HERMITE (n,x)
+
+[specfun package] return the Hermite polynomial for
+integers @math{ n > -1}.
+
+To access this function, load("specfun").
+
+Reference:  A&S 22.5.40 and 22.5.41, page 779.
+
+@end defun
+
+@defun  JACOBI_P (n, a, b, x)
+
+[specfun package] return the Jacobi polynomial for
+integers @math{ n > -1 } and @math{ a } and @math{ b }
+symbolic or @math{ a > -1}  and @math{b > -1}.  
+(The Jacobi polynomials are actually defined for all
+@math{ a } and @math{ b }; however, the Jacobi polynomial
+weight @math{ (1-x)^a(1+x)^b} isn't integrable for @math{ a <= -1} or  
+@math{ b <= -1}. ) 
+
+When @math{a, b}, and @math{ x } are floats (but not bfloats)  
+specfun calls a special modedeclared version of @math{jacobi_p}.
+For numerical values, the modedeclared version is much 
+faster than the other version. Many  functions in specfun are 
+computed as a special case of the  Jacobi polynomials; they also 
+enjoy the  speed boost from the modedeclared version of 
+@math{ jacobi}.
+
+If @math{ n } has been declared to be an integer, 
+@math{jacobi_p (n, a, b, x)} returns a summation representation
+for the Jacobi function. Because Maxima simplifies 
+@math{0^0}  to @math{ 0 } in a sum, two terms of the sum are
+added outside the summation.
+
+To access this function, load("specfun").
+
+Reference:  table on page 789 in A&S.
+
+@end defun
+
+@defun  LAGUERRE (n, x)
+
+[specfun package] return the Laguerre polynomial for 
+integers @math{ n > -1}.  
+
+Reference: A&S 22.5.16, page 778 and A&S page 789.
+
+To access this function, load("specfun").
+
+See also GEN_LAGUERRE.
+
+@end defun
+
+@defun  LEGENDRE_P (n, x)
+
+[specfun package] return the Legendre polynomial of the 
+first kind for  integers @math{ n > -1}.  
+
+Reference: A&S 22.5.35 page 779.
+
+To access this function, load("specfun").
+
+See also LEGENDRE_Q.
+
+@end defun
+
+@defun  LEGENDRE_Q (n, x)
+
+[specfun package] return the Legendre polynomial of the 
+first kind for  integers @math{ n > -1}.  
+
+Reference: A&S 8.6.19 page 334.
+
+To access this function, load("specfun").
+
+See also LEGENDRE_P.
+
+@end defun
+
+@defun SPHERICAL_BESSEL_J (n, x)
+
+[specfun package] return the spherical Bessel function of
+the first kind for  integers @math{ n > -1}.  
+
+Reference: A&S 10.1.8 page 437 and A&S 10.1.15 page 439.
+
+To access this function, load("specfun").
+
+See also SPHERICAL_HANKEL1, SPHERICAL_HANKEL2, 
+and SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_BESSEL_Y (n, x)
+
+[specfun package] return the spherical Bessel function of
+the second kind for  integers @math{ n > -1}.  
+
+Reference: A&S 10.1.9 page 437 and 10.1.15 page 439.
+
+To access this function, load("specfun").
+
+See also SPHERICAL_HANKEL1, SPHERICAL_HANKEL2, 
+and SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_HANKEL1 (n,x)
+
+[specfun package] return the spherical hankel function  of the
+first kind for  integers @math{ n > -1}.  
+
+Reference: A&S 10.1.36 page 439.
+
+To access this function, load("specfun").
+
+See also SPHERICAL_HANKEL2, SPHERICAL_BESSEL_J, and
+SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_HANKEL2 (n,x)
+
+[specfun package] return the spherical hankel function  of the
+second kind for  integers @math{ n > -1}.  
+
+Reference:  A&S 10.1.17 page 439.
+
+To access this function, load("specfun").
+
+See also SPHERICAL_HANKEL1, SPHERICAL_BESSEL_J, and
+SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_HARMONIC (n,  m, x, y)
+
+[specfun package] return the spherical harmonic function
+for  integers @math{ n > -1} and @math{ | m | <= n }.
+
+Reference:  Merzbacher 9.64.
+
+To access this function, load("specfun").
+
+See also ASSOC_LEGENDRE_P
+
+@end defun
+
+@defun ULTRASPHERICAL (n,a,x)
+
+[specfun package] return the ultraspherical polynomials for  
+integers @math{ n > -1}.  The ultraspherical polynomials are
+also known as Gegenbauer polynomials.
+
+Reference: A&S 22.5.27
+
+To access this function, load("specfun").
+
+See also JACOBI_P.
+
+@end defun
+
