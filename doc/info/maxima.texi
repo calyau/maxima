@@ -199,7 +199,7 @@ Trigonometric
 Special Functions
 
 * Introduction to Special Functions::  
-* SPECINT::                     
+* specint::                     
 * Definitions for Special Functions::  
 
 Orthogonal Polynomials
