@@ -403,7 +403,7 @@
   (IF PRINTP (FORMAT T "~%~A being loaded.~%" FILE))
   (let* ((path (pathname FILE))
 	 (tem (errset (LOAD (pathname FILE)))))
-    (or tem (merror "Load failed for ~m" (namestring path)))
+    (or tem (merror "Load failed for ~A" (namestring path)))
     (namestring path)))
 
 (defun $directory (path)
