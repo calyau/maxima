@@ -9,8 +9,8 @@
 ;;         Jay Belanger
 ;; Maintainer: Jay Belanger <belanger@truman.edu>
 ;; $Name:  $
-;; $Revision: 1.1 $
-;; $Date: 2001-11-08 22:21:30 $
+;; $Revision: 1.2 $
+;; $Date: 2001-11-11 01:44:59 $
 ;; Keywords: maxima, emaxima
 
 ;; This program is free software; you can redistribute it and/or
@@ -38,32 +38,6 @@
 ;;; Commentary:
 
 ;;  See the file EMintro.ps for a quick introduction.
-
-;;; Change Log:
-
-;; $Log: emaxima.el,v $
-;; Revision 1.1  2001-11-08 22:21:30  belanger
-;; Initial commit of EMaxima elisp file.
-;;
-;; Revision 1.12  2001/11/06 16:13:32  jay
-;; I added the keybinding M-C-k for maxima-stop.
-;;
-;; Revision 1.11  2001/11/06 04:31:07  jaycvs
-;; I fixed the update to return to the original position when the update
-;; if finished.
-;;
-;; Revision 1.10  2001/11/05 13:40:45  jaycvs
-;; I fixed a minor problem with a regexp.
-;;
-;; Revision 1.9  2001/11/03 19:59:13  jaycvs
-;; I added some functions to replace single lines,
-;; and some general tidying up.
-;;
-;; Revision 1.8  2001/11/03 16:07:30  jaycvs
-;; I made some of the variables customizable,
-;; and a few other minor changes.
-;;
-
 
 (require 'maxima)
 (provide 'emaxima)
@@ -159,17 +133,6 @@ The next time the file is loaded, it will then be in EMaxima mode"
 	(open-line 1)
       (insert "%-*-EMaxima-*-"))))
 
-;(defun emaxima-set-output-to-tex ()
-;  "Arrange to have Maxima output in TeX form."
-;  (maxima-send-string "oldPrefoutput := Pref::output():")
-;  (maxima-send-string "Pref::output(x->print(Unquoted,generate::TeX(x))):")
-;  (maxima-wait))
-
-;(defun emaxima-restore-output-form ()
-;  "Restore the output form to the original form."
-;  (maxima-send-string "Pref::output(oldPrefoutput):")
-;  (maxima-wait))
-
 (defun emaxima-replace-assoc (alist key val)
   "Replace ALIST KEY VALUE, if KEY present, else add KEY VALUE.
 Return modified alist."
@@ -210,11 +173,9 @@ With C-u prefix, update without confirmation at each cell."
   "Optionally update all cells and return output in TeX form.
 With C-u prefix, update without confirmation at each cell."
   (interactive "P")
-;  (emaxima-set-output-to-tex)
   (if arg
       (emaxima-update nil nil t)
     (emaxima-update nil (y-or-n-p "Interactive update? ") t)))
-;  (emaxima-restore-output-form))
 
 (defun emaxima-update-init (arg)
   "Optionally update all initialization cells.
@@ -229,12 +190,10 @@ With C-u prefix, update without confirmation at each cell."
   "Optionally update all initialization cells and return output in TeX form.
 With C-u prefix, update without confirmation at each cell."
   (interactive "P")
-;  (emaxima-set-output-to-tex)
   (if arg
       (emaxima-update "\\[\\* Initialization Cell \\*\\]" nil t)
     (emaxima-update "\\[\\* Initialization Cell \\*\\]" 
 		   (y-or-n-p "Interactive update? ") t)))
-;  (emaxima-restore-output-form))
 
 (defun emaxima-create-cell ()
   "Insert cell in buffer."
@@ -1196,7 +1155,7 @@ Return nil if no name or error in name."
   (interactive)
   (if (not (emaxima-cell-p))
       (message "Not in cell.")
-    (maxima-region (emaxima-cell-start) (emaxima-cell-end))))
+    (maxima-region-nodisplay (emaxima-cell-start) (emaxima-cell-end))))
 
 (defun emaxima-update-cell (&optional tex)
   "Send the current cell's contents to Maxima, and return the results."
@@ -1261,15 +1220,6 @@ output."
 
 ;;; @@ The mode
 
-;;; First of all, I want to be able to change the keymap depending 
-;;; on whether the point is in a cell or not.
-;;; So I need one keymap for when in a cell, and one for when 
-;;; not in a cell.
-;;; Changing the keymaps doesn't seem to work, so I'll have to do 
-;;; it on a key by key basis.
-;;; maxima-add-keys will add the maxima keys.
-
-
 ;; First, find out what kind of TeX mode is being used.
 (cond
  ((eq emaxima-use-tex 'auctex)
@@ -1318,6 +1268,19 @@ output."
     (define-key map "\C-c\C-i" 'maxima-info)
     (define-key map [(control c) (control tab)] 'emaxima-insert-complete-name)
     (setq emaxima-mode-map map)))
+
+;;; A function for font-locking
+(defun emaxima-match-cells (limit)
+  "Used to fontify whatever's between \\maxima and \\endmaxima."
+  (when (re-search-forward "\\\\maxima" 
+                           limit t)
+    (let ((beg (match-end 0)) end)
+      (if (search-forward "\\endmaxima"
+                          limit 'move)
+          (setq end (match-beginning 0))
+        (setq end (point)))
+      (store-match-data (list beg end))
+      t)))
 
 (define-derived-mode emaxima-mode tex-mode  "EMaxima"
   "This is a mode intended to allow the user to write documents that
@@ -1369,40 +1332,21 @@ already) so the file will begin in emaxima-mode next time it's opened.
     (setq ispell-parser 'tex)
     (make-local-variable 'ispell-tex-p)
     (setq ispell-tex-p t))
-  (if (eq emaxima-use-tex 'auctex)
-    (progn
-      (require 'font-latex)
-      (add-hook 'emaxima-mode-hook 'font-latex-setup)))
+  (when (eq emaxima-use-tex 'auctex)
+    (require 'font-latex)
+    (defvar emaxima-keywords
+      (append font-latex-keywords-2
+              '((emaxima-match-cells (0 font-lock-function-name-face t t))
+                ("\\(\\\\\\(endmaxima\\|output\\(tex\\)?\\|maxima\\)\\)"
+                 (0 font-lock-keyword-face t t))))
+      "Keywords for EMaxima font-locking.")
+    (make-local-variable 'font-lock-defaults)
+    (setq font-lock-defaults 
+          '(emaxima-keywords
+            nil nil ((?\( . ".") (?\) . ".") (?$ . "\"")) nil
+            (font-lock-comment-start-regexp . "%")
+            (font-lock-mark-block-function . mark-paragraph))))
   (run-hooks 'emaxima-mode-hook))
-
-(if (eq emaxima-use-tex 'auctex)
-    (put 'latex-mode 'font-lock-defaults 'emaxima-mode))
-;; Now, some more font-locking
-;; Some more fontlocking
-;; First, fontify the \maxima and \endmaxima
-
-(if (fboundp 'font-lock-add-keywords)
-    (progn
-      (defun emaxima-font-lock-cell (limit)
-	"Used to fontify whatever's between \\maxima and \\endmaxima."
-	(when (re-search-forward "\\\\maxima" 
-				 limit t)
-	  (let ((beg (match-end 0)) end)
-	    (if (search-forward "\\endmaxima"
-				limit 'move)
-		(setq end (match-beginning 0))
-	      (setq end (point)))
-	    (store-match-data (list beg end))
-	    t)))
-
-      (font-lock-add-keywords 'emaxima-mode 
-			      '((emaxima-font-lock-cell
-				 (0 font-lock-function-name-face append t))))
-
-      (font-lock-add-keywords 'emaxima-mode 
-	    '(("\\(\\\\\\(endmaxima\\|output\\(tex\\)?\\|maxima\\)\\)"
-	       . font-lock-keyword-face)))))
-
 
 ;;; Now, the menu.
 (easy-menu-define emaxima-menu emaxima-mode-map
