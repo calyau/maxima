@@ -171,6 +171,7 @@ contrib/gentran/lspc.lisp\
 contrib/gentran/lspfor.lisp\
 contrib/gentran/lsprat.lisp\
 contrib/gentran/man/MANUAL.ms\
+contrib/gentran/man/MANUAL.ps.gz\
 contrib/gentran/man/appA.ms\
 contrib/gentran/man/appA1.ms\
 contrib/gentran/man/appB.ms\
