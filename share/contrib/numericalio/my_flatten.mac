@@ -1,0 +1,13 @@
+/* For some reason the built-in FLATTEN doesn't appear to be defined
+ * ("flatten([1,2],[3,4])$" returns the noun form) and load("flatten.lisp")$
+ * doesn't appear to define it either. Strange. Anyway here's a work around.
+ */
+my_flatten(l):= block
+  (
+    [m],
+    m:[],
+    for i:1 thru length(l) do
+      if listp(l[i]) then m: append(m, my_flatten(l[i]))
+      else m: append(m, [l[i]]),
+    m
+  )$

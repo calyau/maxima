@@ -1,0 +1,75 @@
+kill(all)$
+
+load("numericalio.lisp")$
+load("is_equal_array.lisp")$
+
+prederror: false$
+
+l: [7, 12, FOO, 45, 91,
+2, -8, 123, -9, -1,
+8, 18, BAR, -5, 17,
+6, 13, -57, 28, 53,
+
+2.5, 19.7, 1.2, 9.1, 1.7,
+3.5, -8.2, 3.1, 7.2, 7.1,
+5.4, -5.3, 9.8, 1.8, 6.2,
+0.8, 52.9, 7.1, 0.2, 1.8,
+
+BAZ, 7/9, 11/2, 17/3, 3/11,
+1/8, 9/7, 2/11, 3/17, 11/3,
+2/9, 3/2, 9/25, 5/12, 7/13,
+8/7, 5/3, 13/3, 12/7, 15/8]$
+
+a: make_array('any, 3, 4, 5)$
+fillarray(a, l)$
+
+array(b, 2, 3, 4)$      /* Note that b is the same size as a.... <sigh> */
+fillarray(b, l)$
+
+a2: make_array('any, 3, 4, 5)$
+array(b2, 2, 3, 4)$
+
+read_lisp_array("array.data", a2)$
+read_maxima_array("array.data", b2)$
+
+prederror: false$
+
+if is_equal_array(a, a2) = TRUE
+  then print("success: array.data loaded as a Lisp array")
+  else print("FAILED to load array.data as a Lisp array")$
+
+if is_equal_array(b, b2) = TRUE
+  then print("success: array.data loaded as a Maxima array")
+  else print("FAILED to load array.data as a Maxima array")$
+
+write_data(a2, "tmp-lisp-array.data")$
+write_data(b2, "tmp-maxima-array.data")$
+
+a3: make_array('any, 3, 4, 5)$
+array(b3, 2, 3, 4)$
+
+read_lisp_array("tmp-maxima-array.data", a3)$
+read_maxima_array("tmp-lisp-array.data", b3)$
+
+if is_equal_array(a2, a3) = TRUE
+  then print("success: wrote Maxima array, read again as Lisp array")
+  else block
+    (
+      print("FAILED to write Maxima array, read again as Lisp array;"),
+      l2: read_list("tmp-maxima-array.data"),
+      if is(equal(l, l2)) = TRUE
+        then print("... success: wrote Maxima array, read again as a list, however.")
+        else print("... FAILED to write Maxima array, read again as a list.")
+    )$
+
+if is_equal_array(b2, b3) = TRUE
+  then print("success: wrote Lisp array, read again as Maxima array")
+  else block
+    (
+      print("FAILED to write Lisp array, read again as Maxima array;"),
+      l2: read_list("tmp-lisp-array.data"),
+      if is(equal(l, l2)) = TRUE
+        then print("... success: wrote Lisp array, read again as a list, however.")
+        else print("... FAILED to write Lisp array, read again as a list.")
+    )$
+
