@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Fonts.tcl,v 1.6 2002-09-14 17:25:34 mikeclarkson Exp $
+#       $Id: Fonts.tcl,v 1.7 2004-10-16 09:44:34 vvzhy Exp $
 #
 
 # set font {Courier 8}
@@ -35,6 +35,10 @@ if {$_screenheight < 500} {
     set _pixel 18
     set _point 12
 }
+
+# ZW: this actually produces better result
+set _pixel 10
+set _point 8
 
 # setup defaults depending on the OS and Window Manager
 # Really should do another version for mono
@@ -72,10 +76,10 @@ switch -exact -- $tcl_platform(platform) windows {
     set fixedFont [font create -family $_fixed_default -size $_point]
 
 } default {
-    set _prop_default helvetica
+    set _prop_default arial
     # make sure this font is installed
     set _allowed [string tolow [font families]]
-    foreach font [list $_prop_default times fixed] {
+    foreach font [list $_prop_default helvetica times fixed] {
 	if {[lsearch -exact $_allowed [string tolow $font]] > -1} {
 	    set _prop_default $font
 	    break

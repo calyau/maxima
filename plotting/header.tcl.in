@@ -11,14 +11,22 @@ set ws_openMath(date) 12/09/2000
 set fontCourier8 "-*-Courier-Medium-R-Normal--*-120-*-*-*-*-*-*"
  
 if {[catch { set doExit }] } { set doExit ""}
-set width_ [winfo screenwidth .]
-if { $width_ >= 1280 } { set fontSize 12
-   } elseif { $width_ <= 640} { set fontSize 8 } else {
-     set fontSize 10}
-unset width_    
+#set width_ [winfo screenwidth .]
+#if { $width_ >= 1280 } { set fontSize 12
+#   } elseif { $width_ <= 640} { set fontSize 8 } else {
+#     set fontSize 10}
+#unset width_    
+
+set fontSize 10
+
+if { [lsearch -exact [string tolow [font families]] arial] > -1 } {
+    set fontFamily arial
+} else {
+    set fontFamily helvetica
+}
 
 if { [catch { set buttonfont} ] } {
-  set buttonfont [font create -family Helvetica -size $fontSize]
+  set buttonfont [font create -family $fontFamily -size $fontSize]
 }
 
 package require msgcat
