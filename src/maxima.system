@@ -8,6 +8,13 @@
 
 (pushnew :cl *features*)
 (pushnew :nocp *features*)
+#+gcl
+(let ((version-num (+ (* 10000 system::*gcl-major-version*)
+		      (* 100 system::*gcl-minor-version*)
+		      system::*gcl-extra-version*)))
+  (if (> version-num 20603)
+      (pushnew :gcl-working-proclaims *features*)))
+		      
 #+cmu
 (setf ext:*gc-verbose* nil)
 (setf *load-verbose* nil)
@@ -35,6 +42,7 @@
 				     (:file "numerical/slatec")
 				     (:file "command-line")
 				     (:file "nregex")
+				     #+gcl-working-proclaims
 				     (:file "sys-proclaim")))
 	       (:module package :source-pathname ""
 			:load-only t
