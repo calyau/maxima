@@ -26,7 +26,15 @@ AC_ARG_WITH(clisp,
 	[CLISP_NAME=${clisp_default_name}])
 
 if test x"${clisp}" = xtrue ; then
-	AC_CHECK_PROG(clisp_found,$CLISP_NAME,true,false)
+	if test `echo "$CLISP_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$CLISP_NAME" ; then
+			clisp_found=true
+		else
+			clisp_found=false
+		fi
+	else
+		AC_CHECK_PROG(clisp_found,$CLISP_NAME,true,false)
+	fi
 	if test x"${clisp_found}" = xfalse ; then
 		AC_MSG_WARN(clisp executable ${CLISP_NAME} not found in PATH)
 	fi
@@ -50,6 +58,15 @@ AC_ARG_WITH(cmucl,
 	CMUCL_NAME=$withval],
 	[CMUCL_NAME=${cmucl_default_name}])
 if test x"${cmucl}" = xtrue ; then
+	if test `echo "$CMUCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$CMUCL_NAME" ; then
+			cmucl_found=true
+		else
+			cmucl_found=false
+		fi
+	else
+		AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
+	fi
 	AC_CHECK_PROG(cmucl_found,$CMUCL_NAME,true,false)
 	if test x"${cmucl_found}" = xfalse ; then
 		AC_MSG_WARN(cmucl executable ${CMUCL_NAME} not found in PATH)
@@ -73,7 +90,15 @@ AC_ARG_WITH(gcl,
 	GCL_NAME=$withval],
 	[GCL_NAME=${gcl_default_name}])
 if test x"${gcl}" = xtrue ; then
-	AC_CHECK_PROG(gcl_found,$GCL_NAME,true,false)
+	if test `echo "$GCL_NAME" | sed 's/\(.\).*/\1/'` = "/" ; then
+		if test -x "$GCL_NAME" ; then
+			gcl_found=true
+		else
+			gcl_found=false
+		fi
+	else
+		AC_CHECK_PROG(gcl_found,$GCL_NAME,true,false)
+	fi
 	if test x"${gcl_found}" = xfalse ; then
 		AC_MSG_WARN(gcl executable ${GCL_NAME} not found in PATH)
 	fi
