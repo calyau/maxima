@@ -1,9 +1,9 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima.tcl,v 1.9 2002-09-05 02:34:58 mikeclarkson Exp $
+#       $Id: xmaxima.tcl,v 1.10 2002-09-05 08:57:06 mikeclarkson Exp $
 #
 
-# The following files are prepended, and could be sourced instead.
+#mike The following files are prepended, and could be sourced instead.
 # The only problem about sourcing them is that the way of finding
 # the directory they're in may differ in a wrapped executable.
 # Note that the order of required files may be important.
@@ -24,11 +24,6 @@ catch {
     array set embed_args [getattr browserArgs]
     proc wm { args } {}
 }
-proc myrand {} {
-  return .[string range [expr abs([clock clicks]*[clock clicks])] 1 end]
-}
-
-
 
 ## source send-some.tcl
 
@@ -2078,7 +2073,7 @@ proc setPrintOptions { lis } {
 }
 
 proc mkentryPr { w var text buttonFont }  {
-     set fr $w ; frame $fr
+    set fr $w ; frame $fr
     uplevel 1 append topack [list " $fr"]
     label $fr.lab -text "$text" -font $buttonFont
     entry $fr.e -width 20 -textvariable $var -font $buttonFont
@@ -8147,8 +8142,6 @@ if { "[info var embed_args]" != "" } {
 
 proc getBaseprogram { } {
     global xHMpreferences
-#    set n [llength $xHMpreferences(defaultservers)]
-#    set i [expr {round(floor([myrand]*$n*.999999))}]
     lindex  $xHMpreferences(defaultservers) 0
 }
 
@@ -9142,7 +9135,8 @@ if { "[info command font]" != "font" } {
 	 xHMconfigFont $v
      }
  }
-  proc xHMfontPointSize { string } {
+
+proc xHMfontPointSize { string } {
       set si [font config font2 -size]
       return [expr { $si < 0 ? - $si : $si }]
   }
@@ -11055,6 +11049,7 @@ proc computeTextWinDimensions { win width height } {
 
 proc setFontOptions { fontSize }     {
     global buttonfont entryfont labelfont ws_openMath
+
     set fsize $fontSize
     if { $fontSize > 10 } { set fsize 12 }
     if { $fsize == 8 } { set entrysize 10 } else {set entrysize $fsize }
@@ -11068,9 +11063,6 @@ proc setFontOptions { fontSize }     {
            option add *Label.font $labelfont
            option add *Entry.font $entryfont
            option add  *Dialog.msg.wrapLength 500
-           #option add  *Checkbutton.selectColor red4
-           #option add  *Radiobutton.selectColor red4
-
 
     }
 
@@ -11098,11 +11090,6 @@ proc omPanel { w args } {
     wmenubar $menubar
     pack $menubar -side top -expand 0 -fill x -anchor nw
 
-#    foreach v { back forward  } {
-#	button $win.$v -text $v -font buttonfont -relief raised
-#	$menubar add $win.$v
-#	# pack $win.$v -side left -fill x -expand 0
-#    }
     foreach v { back forward  file edit help  } {
 	label $win.$v -text $v -font $buttonfont -relief raised
 	$menubar add $win.$v
@@ -12276,28 +12263,23 @@ proc usage {} {
 }
 
 proc doit { fr } {
-    catch { destroy $fr }
     global NCtextHelp ws_openMath xmaximaPreferences argv argv0 env
+
+    #mike Move this in from being at the global level
+    setMaxDir
+
+    if {[winfo exists $fr]} {catch { destroy $fr }}
+
     set ws_openMath(options,maxima) {{doinsert 0 "Do an insertion" boolean}}
     frame .browser
     set firstUrl file:/[file join $ws_openMath(maxima_xmaximadir) "intro.html"]
-#    if { [llength $argv] > 0 } {
-#	set i 0
-#	if { [string match "-*" $argv] == 0 } {
-#	    set firstUrl [lindex $argv 0]
-#	    incr i
-#	}
-#	while { [set tem [lsearch [lrange $argv $i end] -source]] >= 0 } {
-#	    catch { source [lindex $argv [expr $tem + $i +1]] }
-#	    set i [expr $tem + $i +2]
-#	}
-#    }
+
     set maxima_opts {}
     if { [lsearch $argv "--help"] > -1 } {
 	usage
 	exit 0
     }
-    set lisp_pos [lsearch $argv "--lisp=*"]
+    set lisp_pos [lsearch -exact $argv "--lisp=*"]
     if { $lisp_pos > -1 } {
 	set arg [lindex $argv $lisp_pos]
 	set prefix_end [expr [string length "--lisp="] - 1]
@@ -12305,13 +12287,13 @@ proc doit { fr } {
 	lappend maxima_opts -l $lisp
 	set argv [lreplace $argv $lisp_pos $lisp_pos]
     }
-    set lisp_pos [lsearch $argv "-l"]
+    set lisp_pos [lsearch -exact $argv "-l"]
     if { $lisp_pos > -1 } {
 	set lisp [lindex $argv [expr $lisp_pos + 1]]
 	lappend maxima_opts -l $lisp
 	set argv [lreplace $argv $lisp_pos [expr $lisp_pos + 1]]
     }
-    set version_pos [lsearch $argv "--use-version=*"]
+    set version_pos [lsearch -exact $argv "--use-version=*"]
     if { $version_pos > -1 } {
 	set arg [lindex $argv $version_pos]
 	set prefix_end [expr [string length "--use-version="] - 1]
@@ -12321,13 +12303,12 @@ proc doit { fr } {
     }
     if { [llength $argv] == 1 } {
 	set firstURL [lindex $argv 0]
-    } else {
-	if { [llength $argv] > 1 } {
-	    puts "xmaxima: Error: arguments \"$argv\" not understood."
-	    exit 1
-	}
+    } elseif { [llength $argv] > 1 } {
+	puts "xmaxima: Error: arguments \"$argv\" not understood."
+	exit 1
     }
-    if { [auto_execok  "$ws_openMath(xmaxima_maxima)"] != "" } {
+
+    if { [auto_execok $ws_openMath(xmaxima_maxima)] != "" } {
 	set ws_openMath(localMaximaServer) "$ws_openMath(xmaxima_maxima) $maxima_opts -p [file join $ws_openMath(maxima_xmaximadir) server.lisp] -r \":lisp (progn (user::setup PORT)(values))\" &"
     } else {
 	if { [info exists env(XMAXIMA_MAXIMA)] } {
@@ -12414,9 +12395,6 @@ proc doit { fr } {
     scrollbar $fr.scroll -command "$w yview"
     pack $fr.scroll -side right -fill y
     bind $w <Destroy> "closeMaxima $w"
-    runOneMaxima $w
-    
-
     
     $w mark set lastStart end
     $w mark gravity lastStart left
@@ -12443,8 +12421,9 @@ proc doit { fr } {
 
     wm title . xmaxima
 
-
-   
+    #mike Defer the starting of maxima until the interface has been built
+    runOneMaxima $w
+  
 
 }
 
@@ -12578,7 +12557,7 @@ proc resetMaximaFont { w } {
 proc CMeval { w } {
     linkLocal $w inputs
     set prev ""
-  #puts "CMeval $w, [$w compare insert < lastStart]"
+    #puts "CMeval $w, [$w compare insert < lastStart]"
     if { [$w compare insert < lastStart] } {
 	set this [thisRange $w input insert]
 	if { "$this" != "" } {
@@ -13059,14 +13038,3 @@ proc changeSize { win  y } {
     }   }
 	
 }
-    
-
-	
-
-
-#####======
-####
-
-# proc doInsertp { tags } {    return 0}
-
-
