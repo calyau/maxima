@@ -1,15 +1,15 @@
 @menu
-* NARY::                        
-* NOFIX::                       
-* OPERATOR::                    
-* POSTFIX::                     
-* PREFIX::                      
+* nary::                        
+* nofix::                       
+* operator::                    
+* postfix::                     
+* prefix::                      
 * Definitions for Operators::   
 @end menu
 
 
-@node NARY, NOFIX, Operators, Operators
-@section NARY
+@node nary, nofix, Operators, Operators
+@section nary
  - An NARY operator is used to denote a function of any number of
 arguments, each of which is separated by an occurrence of the
 operator, e.g. A+B or A+B+C.  The NARY("x") function is a syntax
@@ -18,8 +18,8 @@ DESCRIBE(SYNTAX); for more details.  Functions may be DECLAREd to be
 NARY.  If DECLARE(J,NARY); is done, this tells the simplifier to
 simplify, e.g. J(J(A,B),J(C,D)) to J(A, B, C, D).
 
-@node NOFIX, OPERATOR, NARY, Operators
-@section NOFIX
+@node nofix, operator, nary, Operators
+@section nofix
  - NOFIX operators are used to denote functions of no arguments.
 The mere presence of such an operator in a command will cause the
 corresponding function to be evaluated.  For example, when one types
@@ -28,27 +28,27 @@ NOFIX operator.  The function NOFIX("x") is a syntax extension
 function which declares x to be a NOFIX operator.  Do
 DESCRIBE(SYNTAX); for more details.
 
-@node OPERATOR, POSTFIX, NOFIX, Operators
-@section OPERATOR
+@node operator, postfix, nofix, Operators
+@section operator
  - See OPERATORS
 
-@node POSTFIX, PREFIX, OPERATOR, Operators
-@section POSTFIX
+@node postfix, prefix, operator, Operators
+@section postfix
  - POSTFIX operators like the PREFIX variety denote functions
 of a single argument, but in this case the argument immediately
 precedes an occurrence of the operator in the input string, e.g. 3! .
 The POSTFIX("x") function is a syntax extension function to declare x
 to be a POSTFIX operator.  Do DESCRIBE(SYNTAX); for details.
 
-@node PREFIX, Definitions for Operators, POSTFIX, Operators
-@section PREFIX
+@node prefix, Definitions for Operators, postfix, Operators
+@section prefix
  - A PREFIX operator is one which signifies a function of one
 argument, which argument immediately follows an occurrence of the
 operator.  PREFIX("x") is a syntax extension function to declare x to
 be a PREFIX operator.  Do DESCRIBE(SYNTAX); for more details.
 
 @c end concepts Operators
-@node Definitions for Operators,  , PREFIX, Operators
+@node Definitions for Operators,  , prefix, Operators
 @section Definitions for Operators
 
 @deffn operator "!"
@@ -114,14 +114,14 @@ if and only if the expressions are syntactically identical.
 
 @end deffn
 
-@defun ABS (exp)
+@defun abs (exp)
 returns the absolute value exp.  If exp is complex, returns the complex
 modulus of exp.
 
 @end defun
 @c end concepts Operators
 
-@defvr {special symbol} ADDITIVE
+@defvr {special symbol} additive
  - If DECLARE(F,ADDITIVE) has been executed, then:
 (1) If F is univariate, whenever the simplifier encounters F applied
 to a sum, F will be distributed over that sum.  I.e. F(Y+X); will
@@ -134,7 +134,7 @@ the form SUM(X[I],I,lower-limit,upper-limit).
 
 @end defvr
 
-@defvr keyword ALLBUT
+@defvr keyword allbut
  works with the PART commands (i.e. PART, INPART, SUBSTPART,
 SUBSTINPART, DPART, and LPART).  For example,
 
@@ -161,7 +161,7 @@ name such as U, F, FOO, or G, not an infolist such as FUNCTIONS.
 
 @end defvr
 
-@defvr declaration ANTISYMMETRIC
+@defvr declaration antisymmetric
  - If DECLARE(H,ANTISYMMETRIC); is done, this tells the
 simplifier that H is antisymmetric.  E.g. H(X,Z,Y) will simplify to -
 H(X, Y, Z).  That is, it will give (-1)^n times the result given by
@@ -170,26 +170,26 @@ arguments necessary to convert it to that form.
 
 @end defvr
 
-@defun CABS (exp)
+@defun cabs (exp)
 returns the complex absolute value (the complex modulus) of
 exp.
 
 @end defun
 
-@defvr declaration COMMUTATIVE
+@defvr declaration commutative
  - If DECLARE(H,COMMUTATIVE); is done, this tells the
 simplifier that H is a commutative function.  E.g. H(X,Z,Y) will
 simplify to H(X, Y, Z).  This is the same as SYMMETRIC.
 
 @end defvr
 
-@defun ENTIER (X)
+@defun entier (x)
 largest integer <= X where X is numeric.  FIX (as in
 FIXnum) is a synonym for this, so FIX(X); is precisely the same.
 
 @end defun
 
-@defun EQUAL (expr1,expr2)
+@defun equal (expr1,expr2)
 used with an "IS", returns TRUE (or FALSE) if
 and only if expr1 and expr2 are equal (or not equal) for all possible
 values of their variables (as determined by RATSIMP).  Thus
@@ -212,24 +212,24 @@ EV(exp,PRED) is equivalent to IS(exp).
 @end example
 @end defun
 
-@defun EVAL
+@defun eval
  causes an extra post-evaluation of exp to occur.
 
 @end defun
 
-@defun EVENP (exp)
+@defun evenp (exp)
 is TRUE if exp is an even integer.  FALSE is returned in
 all other cases.
 
 @end defun
 
-@defun FIX (x)
+@defun fix (x)
 a synonym for ENTIER(X) - largest integer <= X where X is
 numeric.
 
 @end defun
 
-@defun FULLMAP (fn, exp1, ...)
+@defun fullmap (fn, exp1, ...)
 is similar to MAP but it will keep mapping
 down all subexpressions until the main operators are no longer the
 same.  The user should be aware that FULLMAP is used by the Maxima
@@ -247,7 +247,7 @@ explicitly called by the user.
 @end example
 @end defun
 
-@defun FULLMAPL (fn, list1, ...)
+@defun fullmapl (fn, list1, ...)
 is similar to FULLMAP but it only maps onto
 lists and matrices
 @example
@@ -258,7 +258,7 @@ lists and matrices
 @end example
 @end defun
 
-@defun IS (exp)
+@defun is (exp)
 attempts to determine whether exp (which must evaluate to a
 predicate) is provable from the facts in the current data base.  IS
 returns TRUE if the predicate is true for all values of its variables
@@ -269,25 +269,25 @@ PREDERROR is TRUE and returns UNKNOWN if PREDERROR is FALSE.
 
 @end defun
 
-@defun ISQRT (X)
+@defun isqrt (x)
 takes one integer argument and returns the "integer SQRT"
 of its absolute value.
 
 @end defun
 
-@defun MAX (X1, X2, ...)
+@defun max (x1, x2, ...)
 yields the maximum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
 @end defun
 
-@defun MIN (X1, X2, ...)
+@defun min (x1, x2, ...)
 yields the minimum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
 @end defun
 
-@defun MOD (poly)
+@defun mod (poly)
 converts the polynomial poly to a modular representation
 with respect to the current modulus which is the value of the variable
 MODULUS.  
@@ -297,19 +297,19 @@ See DESCRIBE(MODULUS); .
 
 @end defun
 
-@defun ODDP (exp)
+@defun oddp (exp)
 is TRUE if exp is an odd integer.  FALSE is returned in all
 other cases.
 
 @end defun
 
-@deffn operator PRED
+@deffn operator pred
  (EVFLAG) causes predicates (expressions which evaluate to TRUE
 or FALSE) to be evaluated.
 
 @end deffn
 
-@defun RANDOM (X)
+@defun random (x)
 Returns a pseudorandom number. If X is an integer, RANDOM (X) returns an
 integer from 0 through X-1 inclusive. If X is a floating point number,
 RANDOM (X) returns a nonnegative floating point number less than X.
@@ -325,7 +325,7 @@ functions MAKE-RANDOM-STATE and RANDOM, and the global variable
 
 @end defun
 
-@defun SIGN (exp)
+@defun sign (exp)
 attempts to determine the sign of its specified expression
 on the basis of the facts in the current data base.  It returns one of
 the following answers: POS (positive), NEG (negative), ZERO, PZ
@@ -334,14 +334,14 @@ or PNZ (positive, negative, or zero, i.e. nothing known).
 
 @end defun
 
-@defun SIGNUM (X)
+@defun signum (x)
 if X<0 then -1 else if X>0 then 1 else 0.  If X is not
 numeric then a simplified but equivalent form is returned. For
 example, SIGNUM(-X) gives -SIGNUM(X).
 
 @end defun
 
-@defun SORT (list,optional-predicate)
+@defun sort (list,optional-predicate)
 sorts the list using a suitable
 optional-predicate of two arguments (such as "<" or ORDERLESSP).  If
 the optional-predicate is not given, then Maxima's built-in ordering
@@ -349,7 +349,7 @@ predicate is used.
 
 @end defun
 
-@defun SQRT (X)
+@defun sqrt (x)
 the square root of X. It is represented internally by
 X^(1/2).  Also see ROOTSCONTRACT.
 RADEXPAND[TRUE] - if TRUE will cause nth roots of factors of a product
@@ -358,13 +358,13 @@ SQRT(16*X^2) will become 4*X only if RADEXPAND is TRUE.
 
 @end defun
 
-@defvar SQRTDISPFLAG
+@defvar sqrtdispflag
  default: [TRUE] - if FALSE causes SQRT to display with
 exponent 1/2.
 
 @end defvar
 
-@defun SUBLIS (list,expr)
+@defun sublis (list,expr)
 allows multiple substitutions into an expression in
 parallel.  Sample syntax:
 @example
@@ -376,14 +376,14 @@ SUBLIS.
 
 @end defun
 
-@defun SUBLIST (L,F)
+@defun sublist (l,f)
 returns the list of elements of the list L for which the
 function F returns TRUE.  E.g., SUBLIST([1,2,3,4],EVENP); returns
 [2,4].
 
 @end defun
 
-@defvar SUBLIS_APPLY_LAMBDA
+@defvar sublis_apply_lambda
  default:[TRUE] - controls whether LAMBDA's
 substituted are applied in simplification after SUBLIS is used or
 whether you have to do an EV to get things to apply. TRUE means do the
@@ -391,7 +391,7 @@ application.
 
 @end defvar
 
-@defun SUBST (a, b, c)
+@defun subst (a, b, c)
 substitutes a for b in c.  b must be an atom, or a
 complete subexpression of c.  For example, X+Y+Z is a complete
 subexpression of 2*(X+Y+Z)/W while X+Y is not. When b does not have
@@ -427,7 +427,7 @@ expression.)  For further examples, do EXAMPLE(SUBST);
 
 @end defun
 
-@defun SUBSTINPART (x, exp, n1, ...)
+@defun substinpart (x, exp, n1, ...)
 is like SUBSTPART but works on the
 internal representation of exp.
 @example
@@ -482,7 +482,7 @@ the same as calling INPART/SUBSTINPART.
 
 @end defun
 
-@defun SUBSTPART (x, exp, n1, ..., nk)
+@defun substpart (x, exp, n1, ..., nk)
 substitutes x for the subexpression
 picked out by the rest of the arguments as in PART.  It returns the
 new value of exp.  x may be some operator to be substituted for an
@@ -510,19 +510,19 @@ the same as calling INPART/SUBSTINPART.
 
 @end defun
 
-@defun SUBVARP (exp)
+@defun subvarp (exp)
 is TRUE if exp is a subscripted variable, for example
 A[I].
 
 @end defun
 
-@defun SYMBOLP (exp)
+@defun symbolp (exp)
 returns TRUE if "exp" is a "symbol" or "name", else
 FALSE.  I.e., in effect, SYMBOLP(X):=ATOM(X) AND NOT NUMBERP(X)$ .
 
 @end defun
 
-@defun UNORDER ()
+@defun unorder ()
 stops the aliasing created by the last use of the ordering
 commands ORDERGREAT and ORDERLESS.  ORDERGREAT and ORDERLESS may not
 be used more than one time each without calling UNORDER.  Do
@@ -531,7 +531,7 @@ EXAMPLE(UNORDER); for specifics.
 
 @end defun
 
-@defun VECTORPOTENTIAL (givencurl)
+@defun vectorpotential (givencurl)
 Returns the vector potential of a given
 curl vector, in the current coordinate system.
 POTENTIALZEROLOC has a similar role as for POTENTIAL, but the order of
@@ -540,7 +540,7 @@ the coordinate variables.
 
 @end defun
 
-@defun XTHRU (exp)
+@defun xthru (exp)
 combines all terms of exp (which should be a sum) over a
 common denominator without expanding products and exponentiated sums
 as RATSIMP does.  XTHRU cancels common factors in the numerator and
@@ -567,7 +567,7 @@ expression to be RATSIMPed.
 @end example
 @end defun
 
-@defun ZEROEQUIV (exp,var)
+@defun zeroequiv (exp,var)
 tests whether the expression exp in the variable
 var is equivalent to zero.  It returns either TRUE, FALSE, or
 DONTKNOW.  For example ZEROEQUIV(SIN(2*X) - 2*SIN(X)*COS(X),X) returns
