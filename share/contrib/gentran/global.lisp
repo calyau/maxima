@@ -1,15 +1,14 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
 
-(declare (special *gentranlang *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
+
+(declare-top (special *gentranlang *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -23,7 +22,7 @@
 ;;                                                                   ;;
 
 
-(de tempvar (type)
+(defun tempvar (type)
   ;                                                           ;
   ; if type member '(nil 0) then type <- tempvartype*         ;
   ;                                                           ;
@@ -74,19 +73,19 @@
 	       (symtabput nil tvar (list type))))
 	(return tvar)))
 
-(de markvar (var)
+(defun markvar (var)
   (cond ((numberp var) var)
 	((atom var) (progn (flag (list var) '*marked*) var))
 	(t (progn (foreach v in var do (markvar v)) var))))
 
-(de markedvarp (var)
+(defun markedvarp (var)
   (flagp var '*marked*))
 
-(de unmarkvar (var)
+(defun unmarkvar (var)
   (cond ((numberp var) var)
 	(t (remflag (list var) '*marked*))))
 
-(de recurunmark (exp)
+(defun recurunmark (exp)
   (cond ((atom exp) (unmarkvar exp))
 	(t (foreach elt in exp do (recurunmark elt)))))
 
@@ -96,7 +95,7 @@
 ;;                                           ;;
 
 
-(de genstmtno ()
+(defun genstmtno ()
   (setq genstmtno* (plus genstmtno* genstmtincr*)))
 
 
@@ -105,7 +104,7 @@
 ;;                                                             ;;
 
 
-(de symtabput (name type value)
+(defun symtabput (name type value)
   ;                                                                       ;
   ; call                                                inserts           ;
   ; (symtabput subprogname nil       nil              ) subprog name      ;
@@ -137,7 +136,7 @@
 		(setq dec (cons v (cons vtype vdims)))
 		(put name '*decs* (aconc decs dec)))))))
 
-(de symtabget (name type)
+(defun symtabget (name type)
   ;                                                                   ;
   ; call                              retrieves                       ;
   ; (symtabget nil         nil      ) all subprogram names            ;
@@ -157,7 +156,7 @@
 	 ((member type '(*type* *params* *decs*)) (get name type))
 	 ((assoc type (get name '*decs*))))))
 
-(de symtabrem (name type)
+(defun symtabrem (name type)
   ;                                                                   ;
   ; call                              deletes                         ;
   ; (symtabrem subprogname nil      ) subprogram name                 ;
@@ -184,7 +183,7 @@
 		  (setq decs (delete1 dec decs))
 		  (put name '*decs* decs))))))
 
-(de getvartype (var)
+(defun getvartype (var)
   (prog (type)
 	(cond ((listp var) (setq var (car var))))
 	(setq type (symtabget nil var))
@@ -205,7 +204,7 @@
    (cond ((memq (car (explode var)) '(|i| |j| |k| |l| |m| |n|)) 'integer)
 	 (t 'real)))
 
-(de arrayeltp (exp)
+(defun arrayeltp (exp)
   (> (length (symtabget nil (car exp))) 2))
 
 
@@ -214,44 +213,44 @@
 ;;                                                       ;;
 
 
-(de delinstk (pr)
+(defun delinstk (pr)
   (progn
    (setq *instk* (or (delete1 pr *instk*) (list *stdin*)))
    (setq *currin* (car *instk*))))
 
-(de delstk (pr)
+(defun delstk (pr)
   ; remove all occurrences of filepair from output file stack ;
   (while (member pr (cdr (reverse *outstk*)))
 	 (popstk pr)))
 
-(de flisteqp (flist1 flist2)
+(defun flisteqp (flist1 flist2)
   (progn
    (setq flist1 (foreach f in flist1 collect (mkfil f)))
    (foreach f in flist2 do (setq flist1 (delete1 (mkfil f) flist1)))
    (null flist1)))
 
-(de filpr (fname stk)
+(defun filpr (fname stk)
   ; retrieve fname's filepair from stack stk ;
   (cond ((null stk) nil)
 	((and (caar stk) (equal (mkfil fname) (mkfil (caar stk))))
 	 (car stk))
 	((filpr fname (cdr stk)))))
 
-(de mkfilpr (fname)
+(defun mkfilpr (fname)
   ; open output channel & return filepair (fname . chan#) ;
   (cons fname (outfile (mkfil fname) 'append)))
 
-(de pfilpr (flist stk)
+(defun pfilpr (flist stk)
   ; retrieve flist's "parallel" filepair from stack stk ;
   (cond ((null stk) nil)
 	((and (null (caar stk)) (flisteqp flist (cdar stk)))
 	 (car stk))
 	((pfilpr flist (cdr stk)))))
 
-(de popinstk ()
+(defun popinstk ()
   (delinstk *currin*))
 
-(de popstk (pr)
+(defun popstk (pr)
   ; remove top-most occurrence of filepair from output file stack ;
   (cond ((car pr)
 	 (resetstk (delete1 pr *outstk*)))
@@ -265,16 +264,16 @@
 		      (setq stk1 (cdr stk1)))
 	       (resetstk (append stk2 (cdr stk1)))))))
 
-(de pushinstk (pr)
+(defun pushinstk (pr)
   (progn (setq *instk* (cons pr *instk*))
 	 (setq *currin* (car *instk*))))
 
-(de pushstk (pr)
+(defun pushstk (pr)
   ; push filepair onto output file stack ;
   (progn (setq *outstk* (cons pr *outstk*))
 	 (resetstkvars)))
 
-(de resetstk (stk)
+(defun resetstk (stk)
   (prog (s)
 	(cond (stk
 	       (repeat (cond ((or (caar stk) (equal (car stk) '(nil)))
@@ -294,7 +293,7 @@
 	(setq *outstk* (or s (list *stdout*)))
 	(resetstkvars)))
 
-(de resetstkvars ()
+(defun resetstkvars ()
   ; reset current-output to filepair on top of output file stack, ;
   ; reset output channel list to channel #'s corresponding to     ;
   ;  name(s) in current-output                                    ;
@@ -310,26 +309,26 @@
 ;;                                      ;;
 
 
-(de mkassign (var exp)
+(defun mkassign (var exp)
   (list 'setq var exp))
 
-(de mkcond (pairs)
+(defun mkcond (pairs)
   (cons 'cond pairs))
 
-(de mkdef (name params body)
+(defun mkdef (name params body)
   (append (list 'defun name params) body))
 
-(de mkdo (var exitcond body)
+(defun mkdo (var exitcond body)
   (append (list 'do var exitcond) body))
 
-(de mkreturn (exp)
+(defun mkreturn (exp)
   (list 'return exp))
 
-(de mkstmtgp (vars stmts)
+(defun mkstmtgp (vars stmts)
    (cond ((numberp vars) (cons 'progn stmts))
 	 ((cons 'prog (cons vars stmts)))))
 
-(de mkterpri ()
+(defun mkterpri ()
   '(terpri))
 
 
@@ -338,63 +337,63 @@
 ;;                           ;;
 
 
-(de lispassignp (stmt)
+(defun lispassignp (stmt)
   (and (listp stmt)
        (equal (car stmt) 'setq)))
 
-(de lispbreakp (form)
+(defun lispbreakp (form)
   (equal (car form) 'break))
 
-(de lispcallp (form)
+(defun lispcallp (form)
   (listp form))
 
-(de lispcondp (stmt)
+(defun lispcondp (stmt)
   (and (listp stmt)
        (equal (car stmt) 'cond)))
 
-(de lispdefp (form)
+(defun lispdefp (form)
   (and (listp form)
        (member (car form) *lispdefops*)))
 
-(de lispdop (stmt)
+(defun lispdop (stmt)
   (and (listp stmt)
        (equal (car stmt) 'do)))
 
-(de lispexpp (form)
+(defun lispexpp (form)
   (or (atom form)
       (member (car form) (append *lisparithexpops* *lisplogexpops*))
       (not (member (car form) (append (append *lispstmtops* *lispstmtgpops*)
 				      *lispdefops*)))))
 
-(de lispendp (form)
+(defun lispendp (form)
   (and (listp form)
        (equal (car form) 'end)))
 
-(de lispgop (form)
+(defun lispgop (form)
   (equal (car form) 'go))
 
-(de lisplabelp (form)
+(defun lisplabelp (form)
   (atom form))
 
-(de lisplogexpp (form)
+(defun lisplogexpp (form)
   (or (atom form)
       (member (car form) *lisplogexpops*)
       (not (member (car form) (append (append *lisparithexpops* *lispstmtops*)
 				      (append *lispstmtgpops* *lispdefops*))))))
 
-(de lispprintp (form)
+(defun lispprintp (form)
   (equal (car form) 'princ))
 
-(de lispreadp (form)
+(defun lispreadp (form)
   (and (equal (car form) 'setq)
        (listp (caddr form))
        (equal (caaddr form) 'read)))
 
-(de lispreturnp (stmt)
+(defun lispreturnp (stmt)
   (and (listp stmt)
        (equal (car stmt) 'return)))
 
-(de lispstmtp (form)
+(defun lispstmtp (form)
   (or (atom form)
       (member (car form) *lispstmtops*)
       (and (atom (car form))
@@ -402,11 +401,11 @@
 				    (append *lisparithexpops* *lisplogexpops*)
 				    (append *lispstmtgpops* *lispdefops*)))))))
 
-(de lispstmtgpp (form)
+(defun lispstmtgpp (form)
   (and (listp form)
        (member (car form) *lispstmtgpops*)))
 
-(de lispstopp (form)
+(defun lispstopp (form)
   (equal (car form) 'stop))
 
 
@@ -415,7 +414,7 @@
 ;;                      ;;
 
 
-(de functionp (stmt name)
+(defun gfunctionp (stmt name)
   ; does stmt contain an assignment which assigns a value to name? ;
   ; does it contain a (return exp) stmt?                           ;
   ;  i.e., (setq name exp) -or- (return exp)                       ;
@@ -423,9 +422,9 @@
 	((and (equal (car stmt) 'setq) (equal (cadr stmt) name)) t)
 	((and (equal (car stmt) 'return) (cdr stmt)) t)
 	((eval (cons 'or
-		     (foreach st in stmt collect (functionp st name)))))))
+		     (foreach st in stmt collect (gfunctionp st name)))))))
 
-(de implicitp (type)
+(defun implicitp (type)
   (prog (xtype ximp r)
 	(setq xtype (explode2 type))
 	(setq ximp (explode2 'implicit))
@@ -435,7 +434,7 @@
 		    (null (setq ximp (cdr ximp)))))
 	(return r)))
 
-(de inttypep (type)
+(defun inttypep (type)
   (cond ((member type '(integer int long short)))
 	((prog (xtype xint r)
 	       (setq xtype (explode2 type))
@@ -452,12 +451,12 @@
 ;;                      ;;
 
 
-(de complexdop (dostmt)
+(defun complexdop (dostmt)
   (and (lispdop dostmt)
        (or (> (length (cadr dostmt)) 1)
 	   (> (length (caddr dostmt)) 1))))
 
-(de formtypelists (varlists)
+(defun formtypelists (varlists)
   ; ( (var type d1 d2 ..)         ( (type (var d1 d2 ..) ..)   ;
   ;    .                     -->     .                         ;
   ;    .                             .                         ;
@@ -475,7 +474,7 @@
 		  (setq typelists (aconc typelists (aconc tl vl)))))
 	(return typelists)))
 
-(de insertcommas (lst)
+(defun insertcommas (lst)
   (prog (result)
 	(cond ((null lst) (return nil)))
 	(setq result (list (car lst)))
@@ -491,7 +490,7 @@
        (cond ((member ans '(t nil)) ans)
 	     (t '$unknown))))
 
-(de simplifydo (dostmt)
+(defun simplifydo (dostmt)
   (prog (varlst exitlst stmtlst result tmp1 tmp2)
 	(cond ((not (lispdop dostmt)) (return dostmt)))
 	(setq varlst (reverse (cadr dostmt)))
@@ -512,7 +511,7 @@
 	(setq result (append tmp1 result))
 	(return result)))
 
-(de seqtogp (lst)
+(defun seqtogp (lst)
   (cond ((or (null lst) (atom lst) (lispstmtp lst) (lispstmtgpp lst))
 	 lst)
 	((and (onep (length lst)) (listp (car lst)))
@@ -530,7 +529,7 @@
 	((numberp x)
 	 x)
 	((memq (getchar x 1) '($ % &))
-	 (concat (substring x 2)))
+	 (concat (substring x 1)))
 	(t
 	 x)))
 

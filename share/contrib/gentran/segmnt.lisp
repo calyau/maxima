@@ -1,15 +1,15 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
+
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -17,14 +17,14 @@
 ;;  segmnt.l     ;;    segmentation module
 ;;  -----------  ;;
 
-(declare (special *gentranopt *gentranlang maxexpprintlen*))
+(declare-top (special *gentranopt *gentranlang maxexpprintlen*))
 
 ;;                           ;;
 ;; 1. segmentation routines  ;;
 ;;                           ;;
 
 
-(de seg (forms)
+(defun seg (forms)
   ; exp  --+-->  exp                                          ;
   ;        +-->  (assign    assign    ... assign      exp   ) ;
   ;                     (1)       (2)           (n-1)    (n)  ;
@@ -53,12 +53,12 @@
 		 (t
 		  f))))
 
-(de segexp (exp type)
+(defun segexp (exp type)
   ; exp  -->  (assign    assign    ... assign      exp   ) ;
   ;                  (1)       (2)           (n-1)    (n)  ;
   (reverse (segexp1 exp type)))
 
-(de segexp1 (exp type)
+(defun segexp1 (exp type)
   ; exp  -->  (exp    assign      assign      ... assign   ) ;
   ;               (n)       (n-1)       (n-2)           (1)  ;
   (prog (res tempvarname)
@@ -77,7 +77,7 @@
 		(rplaca res (caddar res)))))
 	(return res)))
 
-(de segexp2 (exp type)
+(defun segexp2 (exp type)
   ; exp  -->  (exp    assign      assign      ... assign   ) ;
   ;               (n)       (n-1)       (n-2)           (1)  ;
   (prog (expn assigns newassigns unops op termlist var tmp)
@@ -132,7 +132,7 @@
 		(setq expn var))))
 	(return (cons expn assigns))))
 
-(de segstmt (stmt)
+(defun segstmt (stmt)
   ; assign  --+-->  assign ;
   ;           +-->  stmtgp ;
   ; cond  --+-->  cond     ;
@@ -164,7 +164,7 @@
 	(t
 	 stmt)))
 
-(de segassign (stmt)
+(defun segassign (stmt)
   ; assign  -->  stmtgp ;
   (prog (var exp type)
 	(setq var (cadr stmt))
@@ -174,7 +174,7 @@
 	(rplaca stmt (mkassign var (car stmt)))
 	(return (mkstmtgp 0 (reverse stmt)))))
 
-(de segcond (cond)
+(defun segcond (cond)
   ; cond  --+-->  cond   ;
   ;         +-->  stmtgp ;
   (prog (tassigns res markedvars type)
@@ -202,7 +202,7 @@
 		      (t
 		       (mkcond (reverse res)))))))
 
-(de segdo (stmt)
+(defun segdo (stmt)
   ; do  --+-->  do     ;
   ;       +-->  stmtgp ;
   (prog (tassigns var initexp nextexp exitcond body markedvars type)
@@ -252,14 +252,14 @@
 		      (t
 		       (mkdo var exitcond body))))))
 
-(de segreturn (ret)
+(defun segreturn (ret)
   ; return  -->  stmtgp ;
   (progn
    (setq ret (segexp1 (cadr ret) 'unknown))
    (rplaca ret (mkreturn (car ret)))
    (mkstmtgp 0 (reverse ret))))
 
-(de seggroup (stmtgp)
+(defun seggroup (stmtgp)
   ; stmtgp  -->  stmtgp ;
   (prog (locvars res)
 	(cond ((equal (car stmtgp) 'prog)
@@ -272,7 +272,7 @@
 	       (setq res (cons (segstmt (car stmtgp)) res)))
 	(return (mkstmtgp locvars (reverse res)))))
 
-(de segdef (def)
+(defun segdef (def)
   ; def  -->  def ;
   (mkdef (cadr def)
 	 (caddr def)
@@ -284,10 +284,10 @@
 ;;                                             ;;
 
 
-(de toolongexpp (exp)
+(defun toolongexpp (exp)
   (greaterp (numprintlen exp) maxexpprintlen*))
 
-(de toolongstmtp (stmt)
+(defun toolongstmtp (stmt)
   (cond ((atom stmt) nil)  ;; pwang 11/11/86
 	((lispstmtp stmt)
 	 (cond ((lispcondp stmt)
@@ -304,10 +304,10 @@
 	(t
 	 (toolongstmtgpp stmt))))
 
-(de toolongassignp (assign)
+(defun toolongassignp (assign)
   (toolongexpp (caddr assign)))
 
-(de toolongcondp (cond)
+(defun toolongcondp (cond)
   (prog (toolong)
 	(while (setq cond (cdr cond))
 	       (cond ((or (toolongexpp (caar cond))
@@ -315,7 +315,7 @@
 		      (setq toolong t))))
 	(return toolong)))
 
-(de toolongdop (dostmt)
+(defun toolongdop (dostmt)
   (cond ((greaterp (eval (cons 'plus (foreach exp in (caadr dostmt) collect
 					      (numprintlen exp))))
 		   maxexpprintlen*) t)
@@ -324,14 +324,14 @@
 	(t (eval (cons 'or (foreach stmt in (cdddr dostmt) collect
 				    (toolongstmtp stmt)))))))
 
-(de toolongreturnp (ret)
+(defun toolongreturnp (ret)
   (toolongexpp (cadr ret)))
 
-(de toolongstmtgpp (stmtgp)
+(defun toolongstmtgpp (stmtgp)
   (eval (cons 'or
 	      (foreach stmt in (cdr stmtgp) collect (toolongstmtp stmt)))))
 
-(de toolongdefp (def)
+(defun toolongdefp (def)
   (cond ((lispstmtgpp (cadddr def))
 	 (toolongstmtgpp (cadddr def)))
 	(t
@@ -345,7 +345,7 @@
 ;;                            ;;
 
 
-(de numprintlen (exp)
+(defun numprintlen (exp)
   (cond ((atom exp)
 	 (length (explode exp)))
 	((onep (length exp))

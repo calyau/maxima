@@ -1,20 +1,20 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
+
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk* COMMA*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
 
-(declare (special *gendecs *endofloopstack* fortcurrind* tablen*))
+(declare-top (special *gendecs *endofloopstack* fortcurrind* tablen*))
 ;;  -----------  ;;
 ;;  lspfor.l     ;;    lisp-to-fortran translation module
 ;;  -----------  ;;
@@ -57,7 +57,7 @@
 ;;  control function  ;;
 
 
-(de fortcode (forms)
+(defun fortcode (forms)
   (foreach f in forms conc
 	   (cond ((atom f)
 		  (cond ((member f '($begin_group $end_group)) ())
@@ -83,7 +83,7 @@
 ;;  subprogram translation  ;;
 
 
-(de fortsubprog (def)
+(defun fortsubprog (def)
   (prog (type stype name params body lastst r)
 	(setq name (cadr def))
 	(setq body (cdddr def))
@@ -104,7 +104,7 @@
 		(symtabrem name name))))
 	(setq stype (or (symtabget name '*type*)
 			(cond ((or type
-				   (functionp body name))
+				   (gfunctionp body name))
 			       'function)
 			      (t
 			       'subroutine))))
@@ -123,16 +123,16 @@
 
 ;;  generation of declarations  ;;
 
-(de fortdecs (decs)
+(defun fortdecs (decs)
   (foreach tl in (formtypelists decs) conc
 	   (mkffortdec (car tl) (cdr tl))))
 
 ;;  expression translation  ;;
 
-(de fortexp (exp)
+(defun fortexp (exp)
   (fortexp1 exp 0))
 
-(de fortexp1 (exp wtin)
+(defun fortexp1 (exp wtin)
   (cond ((atom exp) (list (fortranname exp)))
 	((eq (car exp) 'data) (fortdata exp))
 	((eq (car exp) 'literal) (fortliteral exp))
@@ -173,18 +173,18 @@
                  (setq res (append res (cons '|,| (fortexp1 (car exp) 0)))))
               (aconc res '|)|)))))
 
-(de fortranname (name)   
-  (or (get name '*fortranname*) name))
+(defun fortranname (name)   
+  (if (symbolp name) (or (get name '*fortranname*) name) name))
 
-(de fortranop (op)
+(defun fortranop (op)
   (or (get op '*fortranop*) op))
 
-(de fortranprecedence (op)
+(defun fortranprecedence (op)
   (or (get op '*fortranprecedence*) 9))
 
 ;;  statement translation  ;;
 
-(de fortstmt (stmt)
+(defun fortstmt (stmt)
   (cond ((null stmt) nil)
 	((member stmt '($begin_group $end_group)) nil)
 	((lisplabelp stmt) (fortstmtno stmt))
@@ -204,10 +204,10 @@
 	((lispdefp stmt) (fortsubprog stmt))
 	((lispcallp stmt) (fortcall stmt))))
 
-(de fortassign (stmt)
+(defun fortassign (stmt)
   (mkffortassign (cadr stmt) (caddr stmt)))
 
-(de fortbreak (stmt)
+(defun fortbreak (stmt)
   (cond ((null *endofloopstack*)
 	 (gentranerr 'e nil "break not inside loop - cannot be translated" nil))
 	((atom (car *endofloopstack*))
@@ -218,10 +218,10 @@
 	(t
 	 (mkffortgo (cadar *endofloopstack*)))))
 
-(de fortcall (stmt)
+(defun fortcall (stmt)
   (mkffortcall (car stmt) (cdr stmt)))
 
-(de fortdo (var lo nextexp exitcond body)
+(defun fortdo (var lo nextexp exitcond body)
   (prog (n1 hi incr result)
 	(setq n1 (genstmtno))
 	(setq *endofloopstack* (cons n1 *endofloopstack*))
@@ -240,10 +240,10 @@
 	(setq *endofloopstack* (cdr *endofloopstack*))
 	(return result)))
 
-(de fortend (stmt)
+(defun fortend (stmt)
   (mkffortend))
 
-(de fortfor (var lo nextexp exitcond body)
+(defun fortfor (var lo nextexp exitcond body)
   (prog (n1 n2 result)
 	(setq n1 (genstmtno))
 	(setq n2 (genstmtno))
@@ -271,13 +271,13 @@
 	(setq *endofloopstack* (cdr *endofloopstack*))
 	(return result)))
 
-(de fortgoto (stmt)
+(defun fortgoto (stmt)
   (prog (stmtno)
 	(cond ((not (setq stmtno (get (cadr stmt) '*stmtno*)))
 	       (setq stmtno (put (cadr stmt) '*stmtno* (genstmtno)))))
 	(return (mkffortgo stmtno))))
 
-(de fortif (stmt)
+(defun fortif (stmt)
   (prog (n1 n2 res)
 	(setq stmt (cdr stmt))
 	(cond ((onep (length stmt))
@@ -311,7 +311,7 @@
 		 (indentfortlevel (minus 1))
 		 (append res (mkffortcontinue n2))))))))
 
-(de fortliteral (stmt)
+(defun fortliteral (stmt)
   (foreach a in (cdr stmt) conc
 	   (cond ((equal a '$tab) (list (mkforttab)))
 		 ((equal a '$cr) (list (mkterpri)))
@@ -334,7 +334,7 @@
       )
 )
 
-(de fortloop (stmt)
+(defun fortloop (stmt)
   (prog (var lo nextexp exitcond body r)
 	(cond ((complexdop stmt)
 	       (return (fortstmt (seqtogp (simplifydo stmt))))))
@@ -365,10 +365,10 @@
 	      (t
 	       (return (fortfor var lo nextexp exitcond body))))))
 
-(de fortread (stmt)
+(defun fortread (stmt)
   (mkffortread (cadr stmt)))
 
-(de fortrepeat (body exitcond)
+(defun fortrepeat (body exitcond)
   (prog (n result)
 	(setq n (genstmtno))
 	(setq *endofloopstack* (cons 'dummy *endofloopstack*))
@@ -384,7 +384,7 @@
 	(setq *endofloopstack* (cdr *endofloopstack*))
 	(return result)))
 
-(de fortreturn (stmt)
+(defun fortreturn (stmt)
   (cond ((onep (length stmt))
 	 (mkffortreturn))
 	((neq (car *symboltable*) '*main*)
@@ -396,7 +396,7 @@
 		     "return not inside function - cannot be translated"
 		     nil))))
 
-(de fortstmtgp (stmtgp)
+(defun fortstmtgp (stmtgp)
   (progn
    (cond ((equal (car stmtgp) 'progn)
 	  (setq stmtgp (cdr stmtgp)))
@@ -404,16 +404,16 @@
 	  (setq stmtgp (cddr stmtgp))))
    (foreach stmt in stmtgp conc (fortstmt stmt))))
 
-(de fortstmtno (label)
+(defun fortstmtno (label)
   (prog (stmtno)
 	(cond ((not (setq stmtno (get label '*stmtno*)))
 	       (setq stmtno (put label '*stmtno* (genstmtno)))))
 	(return (mkffortcontinue stmtno))))
 
-(de fortstop (stmt)
+(defun fortstop (stmt)
   (mkffortstop))
 
-(de fortwhile (exitcond body)
+(defun fortwhile (exitcond body)
   (prog (n1 n2 result)
 	(setq n1 (genstmtno))
 	(setq n2 (genstmtno))
@@ -431,7 +431,7 @@
 	(setq *endofloopstack* (cdr *endofloopstack*))
 	(return result)))
 
-(de fortwrite (stmt)
+(defun fortwrite (stmt)
   (mkffortwrite (cdr stmt)))
 
 
@@ -442,12 +442,12 @@
 
 ;;  statement formatting  ;;
 
-(de mkffortassign (lhs rhs)
+(defun mkffortassign (lhs rhs)
   (append (append (cons (mkforttab) (fortexp lhs))
 		  (cons '= (fortexp rhs)))
 	  (list (mkterpri))))
 
-(de mkffortcall (fname params)
+(defun mkffortcall (fname params)
   (progn
    (cond (params
 	  (setq params (append (append (list '|(|)
@@ -458,10 +458,10 @@
 		   (fortexp fname))
 	   (append params (list (mkterpri))))))
 
-(de mkffortcontinue (stmtno)
+(defun mkffortcontinue (stmtno)
   (list stmtno '| | (mkforttab) 'continue (mkterpri)))
 
-(de mkffortdec (type varlist)
+(defun mkffortdec (type varlist)
   (progn
    (setq type (or type 'dimension))
    (setq varlist (foreach v in (insertcommas varlist)
@@ -474,7 +474,7 @@
 	  (append (list (mkforttab) type '| |)
 	          (aconc varlist (mkterpri)))))))
 
-(de mkffortdo (stmtno var lo hi incr)
+(defun mkffortdo (stmtno var lo hi incr)
   (progn
    (cond ((onep incr)
           (setq incr nil))
@@ -487,30 +487,30 @@
 	   (append incr
 	           (list (mkterpri))))))
 
-(de mkffortend ()
+(defun mkffortend ()
   (list (mkforttab) 'end (mkterpri)))
 
-(de mkffortgo (stmtno)
+(defun mkffortgo (stmtno)
   (list (mkforttab) 'goto '| | stmtno (mkterpri)))
 
-(de mkffortifgo (exp stmtno)
+(defun mkffortifgo (exp stmtno)
   (append (append (list (mkforttab) 'if '| | '|(|)
 		  (fortexp exp))
 	  (list '|)| '| |  'goto '| |  stmtno (mkterpri))))
 
 
-(de mkffortread (var)
+(defun mkffortread (var)
   (append (list (mkforttab) 'read '|(*,*)| '| | )
 	  (append (fortexp var)
 		  (list (mkterpri)))))
 
-(de mkffortreturn ()
+(defun mkffortreturn ()
   (list (mkforttab) 'return (mkterpri)))
 
-(de mkffortstop ()
+(defun mkffortstop ()
   (list (mkforttab) 'stop (mkterpri)))
 
-(de mkffortsubprogdec (type stype name params)
+(defun mkffortsubprogdec (type stype name params)
   (progn
    (cond (params
 	  (setq params
@@ -525,15 +525,15 @@
    (append (append type (fortexp name))
 	   (aconc params (mkterpri)))))
 
-(de mkffortwrite (arglist)
+(defun mkffortwrite (arglist)
   (append (append (list (mkforttab) 'write '|(*,*)| '| | )
 		  (foreach arg in (insertcommas arglist) conc (fortexp arg)))
 	  (list (mkterpri))))
 
 ;;  indentation control  ;;
 
-(de mkforttab ()
+(defun mkforttab ()
   (list 'forttab (- fortcurrind* 6)))
 
-(de indentfortlevel (n)
+(defun indentfortlevel (n)
   (setq fortcurrind* (+ fortcurrind* (* n tablen*))))

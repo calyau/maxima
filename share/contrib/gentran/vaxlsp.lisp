@@ -1,15 +1,15 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
+
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -18,7 +18,7 @@
 ;;  vaxlsp.l     ;;    lisp code generation module
 ;;  -----------  ;;
 
-(declare (special *float allnum expty lefttype oincr onextexp tvname))
+(declare-top (special *float allnum expty lefttype oincr onextexp tvname))
 
 ;; *float is a flag set to t to cause all constants to be floated
 
@@ -56,14 +56,14 @@
 		       (cond(allnum (setq expty lefttype)))
 				;;solve all numbers in an expression
 
-	     	       (cond ((= expty 'integer)
+	     	       (cond ((eq expty 'integer)
 		    	       exp)
-			     ((= expty 'real)
+			     ((eq expty 'real)
 			      (float exp))
-			     ((= expty 'double)	       ;"double" & "complex"
+			     ((eq expty 'double)       ;"double" & "complex"
 			      (double exp))	       ;are for the time being
-			     ((= expty 'complex)
-			      (complex exp))
+			     ((eq expty 'complex)
+			      (gcomplex exp))
 			     (t (float exp)) ))
 
 		     ((equal ind 1)
@@ -76,7 +76,7 @@
 		      (double exp))		
 
 		     ((equal ind 4)	
-		      (complex exp))		
+		      (gcomplex exp))		
 
 		)
 	)
@@ -209,7 +209,7 @@
 	       (return (apply 'concat dnum)))
 	      (t (return (concat num '|.| 'd0))) )))
 
-(defun complex (num)
+(defun gcomplex (num)
     (prog (cnum)
     	(cond ((floatp num) 
 	       (setq cnum (append (explode num) '( |,| 0 |.| 0 |)| ) ))
@@ -624,3 +624,6 @@
 (defun macendp (stmt)
   ; is stmt a macsyma end statement? ;
   (equal (caar stmt) '$end))
+
+(defun nthchar (s o)
+   (char (string s) (1- o)))

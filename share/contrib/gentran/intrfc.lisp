@@ -1,15 +1,15 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
+
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -17,7 +17,7 @@
 ;;  intrfc.l     ;;    command parsing routines & control functions
 ;;  -----------  ;;
 
-(declare (special *gentranlang *gentranparser *gentranopt gentranopt*
+(declare-top (special *gentranlang *gentranparser *gentranopt gentranopt*
 	*gentranseg piport))
 
 ;;                               ;;
@@ -28,7 +28,7 @@
 ;;  command parsers  ;;
 
 
-(defun $gentran fexpr (forms)
+(defmspec $gentran (forms)
   ;                                                     ;
   ;  gentran(stmt1,stmt2,...,stmtn {,[f1,f2,...,fm]});  ;
   ;      -->                                            ;
@@ -42,11 +42,11 @@
 		    (equal (caaar forms) 'mlist))
 	       (setq flist (cdar forms))
 	       (setq forms (cdr forms))))
-	(setq forms (reverse forms))
+	(setq forms (cdr (reverse forms)))
 	(return (gentran forms flist))))
 
 
-(defun $gentranout fexpr (flist)
+(defmfun $gentranout (flist)
   ;                                                                     ;
   ;  gentranout(f1,f2,...,fn);  -->  (gentranoutpush (f1 f2 ... fn) t)  ;
   ;                                                                     ;
@@ -59,14 +59,14 @@
   (gentranoutpush flist t))
 
 
-(defun $gentranshut fexpr (flist)
+(defmfun $gentranshut (flist)
   ;                                                                 ;
   ;  gentranshut(f1,f2,...,fn);  -->  (gentranshut (f1 f2 ... fn))  ;
   ;                                                                 ;
   (gentranshut flist))
 
 
-(defun $gentranpush fexpr (flist)
+(defmfun $gentranpush (flist)
   ;                                                                        ;
   ;  gentranpush(f1,f2,...,fn);  -->  (gentranoutpush (f1 f2 ... fn) nil)  ;
   ;                                                                        ;
@@ -79,14 +79,14 @@
   (gentranoutpush flist nil))
 
 
-(defun $gentranpop fexpr (flist)
+(defmfun $gentranpop (flist)
   ;                                                               ;
   ;  gentranpop(f1,f2,...,fn);  -->  (gentranpop (f1 f2 ... fn))  ;
   ;                                                               ;
   (gentranpop flist))
 
 
-(defun $gentranin fexpr (forms)
+(defmfun $gentranin (forms)
   ;                                              ;
   ;  gentranin(f1,f2,...,fn {,[f1,f2,...,fm]});  ;
   ;      -->                                     ;
@@ -103,7 +103,7 @@
 	(return (gentranin forms outflist))))
 
 
-(defun $on fexpr (flaglist)
+(defmfun $on (flaglist)
   ;                              ;
   ;  on(flag1,flag2,...,flagn);  ;
   ;    -->                       ;
@@ -118,7 +118,7 @@
   (onoff flaglist t))
 
 
-(defun $off fexpr (flaglist)
+(defmfun $off (flaglist)
   ;                               ;
   ;  off(flag1,flag2,...,flagn);  ;
   ;    -->                        ;
@@ -142,7 +142,7 @@
 ;;  command control functions  ;;
 
 
-(de gentran (forms flist)
+(defun gentran (forms flist)
   (prog ()
 	(cond ((setq flist (preproc flist))
 	       (eval (list 'gentranoutpush (list 'quote flist) nil))))
@@ -172,7 +172,7 @@
 				 (cdr *currout*))))))))
 
 
-(de gentranoutpush (flist outp)
+(defun gentranoutpush (flist outp)
   ;  open, [delete,] push  ;
   (prog (fp)
 	(setq flist (fargstonames (preproc flist) t))
@@ -202,7 +202,7 @@
 		    (cons '(mlist) (cdr *currout*))))))
 
 
-(de gentranshut (flist)
+(defun gentranshut (flist)
   ;  close, delete, [output to t]  ;
   (prog (trm fp)
 	(setq flist (fargstonames (preproc flist) nil))
@@ -233,7 +233,7 @@
 		    (cons '(mlist) (cdr *currout*))))))
 
 
-(de gentranpop (flist)
+(defun gentranpop (flist)
   ;  [close,] delete  ;
   (prog (fp)
 	(setq flist (preproc flist))
@@ -259,7 +259,7 @@
 			  (cdr *currout*))))))
 
 
-(de gentranin (inlist outlist)
+(defun gentranin (inlist outlist)
   (prog (holdich)
 	(foreach inf in (setq inlist (preproc inlist)) do
 		 (cond ((listp inf)
@@ -349,7 +349,7 @@
 ;;  file arg conversion function  ;;
 
 
-(de fargstonames (args openp)
+(defun fargstonames (args openp)
   (prog (names)
 	(setq args
 	      (foreach a in args conc
@@ -387,7 +387,7 @@
 ;;  mode switch control functions  ;;
 
 
-(de gentranswitch (lang)
+(defun gentranswitch (lang)
   ;                   ;
   ;  on/off fortran;  ;
   ;  on/off ratfor;   ;
@@ -405,13 +405,13 @@
 		(eval (list 'gentran (list 'quote exp) 'nil))))
 	(setq *gentranlang hlang)))
 
-(de gentranswitch1 (exp)
+(defun gentranswitch1 (exp)
   (prog (r)
 	(setq r (gentranswitch2 exp))
 	(cond (r (return (car r)))
 	      (t (return r)))))
 
-(de gentranswitch2 (exp)
+(defun gentranswitch2 (exp)
   (cond ((atom exp)
 	 (list exp))
 ((and (listp (car exp))
@@ -422,7 +422,7 @@
 	 (list (foreach e in exp conc (gentranswitch2 e))))))
 
 
-(de gendecs (name)
+(defun gendecs (name)
   ;                        ;
   ;  on/off gendecs;       ;
   ;                        ;
@@ -444,7 +444,7 @@
 ;;  misc. control functions  ;;
 
 
-(de gentranpairs (prs)
+(defun gentranpairs (prs)
   ;                                ;
   ;  gentranpairs dottedpairlist;  ;
   ;                                ;

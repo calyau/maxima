@@ -1,13 +1,13 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
+
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
 
 (declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
@@ -56,7 +56,7 @@
 
 ;;  control function  ;;
 
-(de ratcode (forms)
+(defun ratcode (forms)
   (foreach f in forms conc
 	   (cond ((atom f)
 		  (cond ((equal f '$begin_group)
@@ -82,7 +82,7 @@
 
 ;;  subprogram translation  ;;
 
-(de ratsubprog (def)
+(defun ratsubprog (def)
   (prog (type stype name params body lastst r)
 	(setq name (cadr def))
 	(setq body (cdddr def))
@@ -103,7 +103,7 @@
 		(setq type (cadr type))
 		(symtabrem name name))))
 	(setq stype (or (symtabget name '*type*)
-			(cond ((or type (functionp body name))
+			(cond ((or type (gfunctionp body name))
 			       'function)
 			      (t
 			       'subroutine))))
@@ -122,15 +122,15 @@
 
 ;;  generation of declarations  ;;
 
-(de ratdecs (decs)
+(defun ratdecs (decs)
   (foreach tl in (formtypelists decs) conc (mkfratdec (car tl) (cdr tl))))
 
 ;;  expression translation  ;;
 
-(de ratexp (exp)
+(defun ratexp (exp)
   (ratexp1 exp 0))
 
-(de ratexp1 (exp wtin)
+(defun ratexp1 (exp wtin)
   (cond ((atom exp) (list (ratforname exp)))
 	((eq (car exp) 'literal) (ratliteral exp))
 	((onep (length exp)) exp)
@@ -170,18 +170,18 @@
                  (setq res (append res (cons '|,| (ratexp1 (car exp) 0)))))
               (aconc res '|)| )))))
 
-(de ratforname (name)
+(defun ratforname (name)
   (or (get name '*ratforname*) name))
 
-(de ratforop (op)
+(defun ratforop (op)
   (or (get op '*ratforop*) op))
 
-(de ratforprecedence (op)
+(defun ratforprecedence (op)
   (or (get op '*ratforprecedence*) 9))
 
 ;;  statement translation  ;;
 
-(de ratstmt (stmt)
+(defun ratstmt (stmt)
   (cond ((null stmt) nil)
 	((equal stmt '$begin_group) (mkfratbegingp))
 	((equal stmt '$end_group) (mkfratendgp))
@@ -201,16 +201,16 @@
 	((lispdefp stmt) (ratsubprog stmt))
 	((lispcallp stmt) (ratcall stmt))))
 
-(de ratassign (stmt)
+(defun ratassign (stmt)
   (mkfratassign (cadr stmt) (caddr stmt)))
 
-(de ratbreak (stmt)
+(defun ratbreak (stmt)
   (mkfratbreak))
 
-(de ratcall (stmt)
+(defun ratcall (stmt)
   (mkfratcall (car stmt) (cdr stmt)))
 
-(de ratdo (var lo nextexp exitcond body)
+(defun ratdo (var lo nextexp exitcond body)
   (prog (r hi incr)
 	(setq hi
 	      (car (delete1 'greaterp (delete1 'lessp (delete1 var exitcond)))))
@@ -221,10 +221,10 @@
 	(indentratlevel (minus 1))
 	(return r)))
 
-(de ratend (stmt)
+(defun ratend (stmt)
   (mkfratend))
 
-(de ratforfor (var lo nextexp cond body)
+(defun ratforfor (var lo nextexp cond body)
   (prog (r)
 	(cond (cond
 	       (setq cond (list 'not cond))))
@@ -239,13 +239,13 @@
 	(indentratlevel (minus 1))
 	(return r)))
 
-(de ratgoto (stmt)
+(defun ratgoto (stmt)
   (prog (stmtno)
 	(setq stmtno (or (get (cadr stmt) '*stmtno*)
 			 (put (cadr stmt) '*stmtno* (genstmtno))))
 	(return (mkfratgo stmtno))))
 
-(de ratif (stmt)
+(defun ratif (stmt)
   (prog (r st)
 	(setq r (mkfratif (caadr stmt)))
 	(indentratlevel (+ 1))
@@ -282,10 +282,10 @@
 		(indentratlevel (minus 1)))))
 	(return r)))
 
-(de ratliteral (stmt)
+(defun ratliteral (stmt)
   (mkfratliteral (cdr stmt)))
 
-(de ratloop (stmt)
+(defun ratloop (stmt)
   (prog (var lo nextexp exitcond body r)
 	(cond ((complexdop stmt)
 	       (return (ratstmt (seqtogp (simplifydo stmt))))))
@@ -316,10 +316,10 @@
 	      (t
 	       (return (ratforfor var lo nextexp exitcond body))))))
 
-(de ratread (stmt)
+(defun ratread (stmt)
   (mkfratread (cadr stmt)))
 
-(de ratrepeat (body exitcond)
+(defun ratrepeat (body exitcond)
   (prog (r)
 	(setq r (mkfratrepeat))
 	(indentratlevel (+ 1))
@@ -327,10 +327,10 @@
 	(indentratlevel (minus 1))
 	(return (append r (mkfratuntil exitcond)))))
 
-(de ratreturn (stmt)
+(defun ratreturn (stmt)
   (mkfratreturn (cadr stmt)))
 
-(de ratstmtgp (stmtgp)
+(defun ratstmtgp (stmtgp)
   (prog (r)
 	(cond ((equal (car stmtgp) 'progn)
 	       (setq stmtgp (cdr stmtgp)))
@@ -342,16 +342,16 @@
 	(indentratlevel (minus 1))
 	(return (append r (mkfratendgp)))))
 
-(de ratstmtno (label)
+(defun ratstmtno (label)
   (prog (stmtno)
 	(setq stmtno (or (get label '*stmtno*)
 			 (put label '*stmtno* (genstmtno))))
 	(return (mkfratcontinue stmtno))))
 
-(de ratstop (stmt)
+(defun ratstop (stmt)
   (mkfratstop))
 
-(de ratwhile (cond body)
+(defun ratwhile (cond body)
   (prog (r)
 	(cond (cond
 	       (setq cond (list 'not cond))))
@@ -361,7 +361,7 @@
 	(indentratlevel (minus 1))
 	(return r)))
 
-(de ratwrite (stmt)
+(defun ratwrite (stmt)
   (mkfratwrite (cdr stmt)))
 
 
@@ -372,18 +372,18 @@
 
 ;;  statement formatting  ;;
 
-(de mkfratassign (lhs rhs)
+(defun mkfratassign (lhs rhs)
   (append (append (cons (mkrattab) (ratexp lhs))
 		  (cons '= (ratexp rhs)))
 	  (list (mkterpri))))
 
-(de mkfratbegingp ()
+(defun mkfratbegingp ()
   (list (mkrattab) '{ (mkterpri)))
 
-(de mkfratbreak ()
+(defun mkfratbreak ()
   (list (mkrattab) 'break (mkterpri)))
 
-(de mkfratcall (fname params)
+(defun mkfratcall (fname params)
   (progn
    (cond (params
 	  (setq params (append (append (list '|(|)
@@ -395,10 +395,10 @@
 	   (append params
 		   (list (mkterpri))))))
 
-(de mkfratcontinue (stmtno)
+(defun mkfratcontinue (stmtno)
   (list stmtno '| | (mkrattab) 'continue (mkterpri)))
 
-(de mkfratdec (type varlist)
+(defun mkfratdec (type varlist)
   (progn
    (setq type (or type 'dimension))
    (setq varlist (foreach v in (insertcommas varlist) conc (ratexp v)))
@@ -409,7 +409,7 @@
 	  (append (list (mkrattab) type '| | )
 		  (aconc varlist (mkterpri)))))))
 
-(de mkfratdo (var lo hi incr)
+(defun mkfratdo (var lo hi incr)
   (progn
    (cond ((onep incr)
 	  (setq incr nil))
@@ -422,21 +422,21 @@
 	   (append incr
 		   (list (mkterpri))))))
 
-(de mkfratelse ()
+(defun mkfratelse ()
   (list (mkrattab) 'else (mkterpri)))
 
-(de mkfratelseif (exp)
+(defun mkfratelseif (exp)
   (append (append (list (mkrattab) 'else '| | 'if '| | '|(|)
 		  (ratexp exp))
 	  (list '|)| (mkterpri))))
 
-(de mkfratend ()
+(defun mkfratend ()
   (list (mkrattab) 'end (mkterpri)))
 
-(de mkfratendgp ()
+(defun mkfratendgp ()
   (list (mkrattab) '} (mkterpri)))
 
-(de mkfratfor (var1 lo cond var2 nextexp)
+(defun mkfratfor (var1 lo cond var2 nextexp)
   (progn
    (cond (var1
 	  (setq var1 (append (ratexp var1) (cons '= (ratexp lo))))))
@@ -450,39 +450,39 @@
 	   (append (cons '|;| var2)
 		   (list '|)| (mkterpri))))))
 
-(de mkfratgo (stmtno)
+(defun mkfratgo (stmtno)
   (list (mkrattab) 'goto '| | stmtno (mkterpri)))
 
-(de mkfratif (exp)
+(defun mkfratif (exp)
   (append (append (list (mkrattab) 'if '| |  '|(|)
 		  (ratexp exp))
 	  (list '|)| (mkterpri))))
 
-(de mkfratliteral (args)
+(defun mkfratliteral (args)
   (foreach a in args conc
 	   (cond ((equal a '$tab) (list (mkrattab)))
 		 ((equal a '$cr) (list (mkterpri)))
 		 ((listp a) (ratexp a))
 		 (t (list a)))))
 
-(de mkfratread (var)
+(defun mkfratread (var)
   (append (list (mkrattab) 'read '|(*,*)| '| | )
 	  (append (ratexp var) (list (mkterpri)))))
 
-(de mkfratrepeat ()
+(defun mkfratrepeat ()
   (list (mkrattab) 'repeat (mkterpri)))
 
-(de mkfratreturn (exp)
+(defun mkfratreturn (exp)
   (cond (exp
 	 (append (append (list (mkrattab) 'return '|(|) (ratexp exp))
 		 (list '|)| (mkterpri))))
 	(t
 	 (list (mkrattab) 'return (mkterpri)))))
 
-(de mkfratstop ()
+(defun mkfratstop ()
   (list (mkrattab) 'stop (mkterpri)))
 
-(de mkfratsubprogdec (type stype name params)
+(defun mkfratsubprogdec (type stype name params)
   (progn
    (cond (params
 	  (setq params (aconc (cons '|(|
@@ -496,24 +496,24 @@
    (append (append type (ratexp name))
 	   (aconc params (mkterpri)))))
 
-(de mkfratuntil (logexp)
+(defun mkfratuntil (logexp)
   (append (list (mkrattab) 'until '| |  '|(|)
 	  (append (ratexp logexp) (list '|)| (mkterpri)))))
 
-(de mkfratwhile (exp)
+(defun mkfratwhile (exp)
   (append (append (list (mkrattab) 'while '| |  '|(|)
 		  (ratexp exp))
 	  (list '|)| (mkterpri))))
 
-(de mkfratwrite (arglist)
+(defun mkfratwrite (arglist)
   (append (append (list (mkrattab) 'write '|(*,*)| '| | )
 		  (foreach arg in (insertcommas arglist) conc (ratexp arg)))
 	  (list (mkterpri))))
 
 ;;  indentation control  ;;
 
-(de mkrattab ()
+(defun mkrattab ()
   (list 'rattab ratcurrind*))
 
-(de indentratlevel (n)
+(defun indentratlevel (n)
   (setq ratcurrind* (+ ratcurrind* (* n tablen*))))

@@ -1,11 +1,3 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 (defun fortdata (stmt)
   (append (list (mkforttab) "data " (cadr stmt) "//")
 	  (addcom (cddr stmt))
@@ -23,7 +15,7 @@
 
 
 
-(de fortstmt (stmt)
+(defun fortstmt (stmt)
   (cond ((null stmt) nil)
 	((member stmt '($begin_group $end_group)) nil)
 	((lisplabelp stmt) (fortstmtno stmt))
@@ -46,7 +38,7 @@
 
 
 
-(de fortexp1 (exp wtin)
+(defun fortexp1 (exp wtin)
   (cond ((atom exp) (list (fortranname exp)))
 	((eq (car exp) 'data) (fortdata exp))
 	((eq (car exp) 'literal) (fortliteral exp))

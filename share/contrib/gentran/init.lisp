@@ -1,19 +1,20 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(cond ((null (getd 'wrs)) (include "convmac.l")))
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+(in-package "MAXIMA")
+
+(cond ((null (fboundp 'wrs)) (include "convmac.l")))
+
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
-(declare (special ccurrind* clinelen* fortcurrind* fortlinelen* genstmtincr*
+(declare-top (special ccurrind* clinelen* fortcurrind* fortlinelen* genstmtincr*
 	 genstmtno* *gentranlang gentranopt*
 	  maxexpprintlen* ratcurrind* ratlinelen* tablen*
 	  tempvarname* tempvarnum* tempvartype*))
@@ -30,8 +31,9 @@
 
 ;;  gentran commands  ;;
 
-(declare (nlambda $gentran $gentranin $gentranout $gentranshut
-			  $gentranpush $gentranpop $on $off))
+;; The following will be declared with defmfun instead.
+;(declare (nlambda $gentran $gentranin $gentranout $gentranshut
+;			  $gentranpush $gentranpop $on $off))
 
 ;;  gentran functions  ;;
 
@@ -41,7 +43,7 @@
 
 ;;  mode switches  ;;
 
-(declare (special *c *fortran *gendecs *ratfor))
+(declare-top (special *c *fortran *gendecs *ratfor))
 
 (setq *fortran nil)
 (setq *ratfor  nil)
@@ -55,7 +57,7 @@
 (put 'gendecs 'simpfg '((nil) (t (gendecs nil))))
 ;;  flags  ;;
 
-(declare (special *float *gentranopt *gentranparser *gentranseg))
+(declare-top (special *float *gentranopt *gentranparser *gentranseg))
 
 (setq *float         nil)
 (setq *gentranopt    nil)
@@ -87,7 +89,7 @@
 
 ;;  global variables  ;;
 
-(declare (special *cr* *currin* *currout* *endofloopstack* *errin* *errout*
+(declare-top (special *eof* *cr* *currin* *currout* *endofloopstack* *errin* *errout*
 	  *instk* *lisparithexpops* *lispdefops* *lisplogexpops*
 	  *lispstmtgpops* *lispstmtops* *outchanl* *outstk* *reswds* *slash*
 	  *stdin* *stdout* *symboltable*))
@@ -110,8 +112,9 @@
 			      'stop))
 (setq *lispstmtgpops*   (list 'prog 'progn))
 (setq *lispdefops*      (list 'defun))
-(setq *slash* (ascii 47))
-(setq *cr*    (ascii 10))
+(setq *slash* (character 47))
+(setq *cr*    (character 10))
+(setq *eof*    (character 0))
 (setq *reswds* '(lambda mand mcond mdefine mdo mdoin mequal mexpt mgeqp
 			 mgo mgreaterp mleqp mlessp mlist mminus mnot mnotequal
 			 mor mplus mprog mprogn mquotient mreturn msetq mtimes

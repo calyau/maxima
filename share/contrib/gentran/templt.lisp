@@ -1,15 +1,15 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
 
-(declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
+
+(declare-top (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
 	*stdout* *currout* *outchanl* *lispdefops* *lisparithexpops*
 	*lisplogexpops* *lispstmtops* *lispstmtgpops*))
@@ -17,7 +17,7 @@
 ;;  templt.l     ;;    template processing routines
 ;;  -----------  ;;
 
-(declare (special *cr* *slash* *vexptrm))
+(declare-top (special *cr* *slash* *vexptrm))
 
 ;;                               ;;
 ;;  1. text processing routines  ;;
@@ -27,7 +27,7 @@
 ;;  fortran  ;;
 
 
-(de procforttem ()
+(defun procforttem ()
   (prog (c)
 	(setq c (procfortcomm))
 	(while (neq c '$eof$)
@@ -46,7 +46,7 @@
 		      (progn (pprin2 c)
 			     (setq c (readc nil '$eof$))))))))
 
-(de procfortcomm ()
+(defun procfortcomm ()
   ; <col 1>c ... <cr> ;
   ; <col 1>c ... <cr> ;
   ; <col 1>* ... <cr> ;
@@ -61,7 +61,7 @@
 ;;  ratfor  ;;
 
 
-(de procrattem ()
+(defun procrattem ()
   (prog (c)
 	(setq c (readc nil '$eof$))
 	(while (neq c '$eof$)
@@ -79,7 +79,7 @@
 		      (progn (pprin2 c)
 			     (setq c (readc nil '$eof$))))))))
 
-(de procratcomm ()
+(defun procratcomm ()
   ; # ... <cr> ;
   (prog (c)
 	(pprin2 '|#|)
@@ -92,7 +92,7 @@
 ;;  c  ;;
 
 
-(de procctem ()
+(defun procctem ()
   (prog (c)
 	(setq c (readc nil '$eof$))
 	(while (neq c '$eof$)
@@ -110,7 +110,7 @@
 		      (progn (pprin2 c)
 			     (setq c (readc nil '$eof$))))))))
 
-(de procccomm ()
+(defun procccomm ()
   ; /* ... */ ;
   (prog (c)
 	(pprin2 *slash*)
@@ -141,7 +141,7 @@
    loop (setq vexp ($readvexp *currin*))
 	(setq vexptrm *vexptrm)
 	(meval vexp)
-	(cond ((member vexptrm '(#\eof #/>))
+	(cond ((member vexptrm '(#\NULL #\>))
 	       (return (cond ((equal (setq c (readc nil '$eof$)) *cr*)
 			      (readc nil '$eof$))
 			     (c)))))
@@ -155,32 +155,32 @@
   (prog (test oldst st iport)
       (setq iport (cdr in))
    loop (setq test (tyi iport))
-   c    (cond ((and (equal test #/*)
+   c    (cond ((and (equal test #\*)
 		    st
-		    (equal (car st) #//))
+		    (equal (car st) #\/))
 	        (do ((ch1 (tyi iport) ch2) (ch2))
-		   ((or (and (equal ch1 #/*) (equal ch2 #//))
-			(equal ch2 #\eof))
+		   ((or (and (equal ch1 #\*) (equal ch2 #\/))
+			(equal ch2 #\NULL))
 		    (setq st (cdr st)))
 		   (setq ch2 (tyi iport)))
 	        (go loop))
-	      ((member test '(#\space #\tab #\lf))
+	      ((member test '(#\space #\tab #\linefeed))
 	       (cond ((null st) (go loop))))
-	      ((and (equal test #/>)
+	      ((and (equal test #\>)
 		    st
-		    (equal (car st) #/>))
+		    (equal (car st) #\>))
 	       (setq *vexptrm test)
 	       (go d))
-	      ((member test '(#/; #/$ #\eof))
+	      ((member test '(#\; #\$ #\NULL))
 	       (setq *vexptrm test)
 	       (go d))
-	      ((equal test #/\)
+	      ((equal test #\\)
 	       (setq st (cons test st)
 		     test (tyi iport))))
 	(setq st (cons test st))
 	(go loop)
    d    (cond ((and (null st)
-		    (not (member *vexptrm '(#\lf #\eof #/>))))
+		    (not (member *vexptrm '(#\linefeed #\NULL #\>))))
 	       (go loop)))
 	(setq oldst st)
 	(cond ((null st) (return nil))

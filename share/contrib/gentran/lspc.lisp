@@ -1,13 +1,13 @@
-;=============================================================================
-;    (c) copyright 1988	 Kent State University  kent, ohio 44242 
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Barbara Gates
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;=============================================================================
 
-(include-if (null (getd 'wrs)) convmac.l)
+
+
+;*******************************************************************************
+;*                                                                             *
+;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
+;*                                                                             *
+;*******************************************************************************
+
+(when (null (fboundp 'wrs)) (load "convmac.lisp"))
 
 (declare (special *gentran-dir tempvartype* tempvarname* tempvarnum* genstmtno*
 	genstmtincr* *symboltable* *instk* *stdin* *currin* *outstk*
@@ -52,7 +52,7 @@
 
 ;;  control function  ;;
 
-(de ccode (forms)
+(defun ccode (forms)
   (foreach f in forms conc
 	   (cond ((atom f)
 		  (cond ((equal f '$begin_group) (mkfcbegingp))
@@ -73,7 +73,7 @@
 
 ;;  procedure translation  ;;
 
-(de cproc (def)
+(defun cproc (def)
   (prog (type name params paramtypes vartypes body r)
 	(setq name (cadr def))
 	(setq body (cdddr def))
@@ -112,15 +112,15 @@
 
 ;;  generation of declarations  ;;
 
-(de cdecs (decs)
+(defun cdecs (decs)
   (foreach tl in (formtypelists decs) conc (mkfcdec (car tl) (cdr tl))))
 
 ;;  expression translation  ;;
 
-(de cexp (exp)
+(defun cexp (exp)
   (cexp1 exp 0))
 
-(de cexp1 (exp wtin)
+(defun cexp1 (exp wtin)
   (cond ((atom exp) (list (cname exp)))
 	((eq (car exp) 'literal) (cliteral exp))
 	((memq (car exp) '(minus not))
@@ -169,18 +169,18 @@
                  (setq res (append res (cons '|,| (cexp1 (car exp) 0)))))
               (aconc res '|)|)))))
 
-(de cname (name)
+(defun cname (name)
   (or (get name '*cname*) name))
 
-(de cop (op)
+(defun cop (op)
   (or (get op '*cop*) op))
 
-(de cprecedence (op)
+(defun cprecedence (op)
   (or (get op '*cprecedence*) 8))
 
 ;;  statement translation  ;;
 
-(de cstmt (stmt)
+(defun cstmt (stmt)
   (cond ((null stmt) nil)
 	((equal stmt '$begin_group) (mkfcbegingp))
 	((equal stmt '$end_group) (mkfcendgp))
@@ -197,20 +197,20 @@
 	((lispdefp stmt) (cproc stmt))
 	(t (cexpstmt stmt))))
 
-(de cassign (stmt)
+(defun cassign (stmt)
   (mkfcassign (cadr stmt) (caddr stmt)))
 
-(de cbreak (stmt)
+(defun cbreak (stmt)
   (mkfcbreak))
 
-(de cexit (stmt)
+(defun cexit (stmt)
   (mkfcexit))
 
-(de cexpstmt (exp)
+(defun cexpstmt (exp)
   (append (cons (mkctab) (cexp exp))
 	  (list '|;| (mkterpri))))
 
-(de cfor (var lo nextexp cond body)
+(defun cfor (var lo nextexp cond body)
   (prog (r)
 	(cond (cond (setq cond (list 'not cond))))
 	(cond ((equal nextexp '(nil))
@@ -224,10 +224,10 @@
 	(indentclevel (minus 1))
 	(return r)))
 
-(de cgoto (stmt)
+(defun cgoto (stmt)
   (mkfcgo (cadr stmt)))
 
-(de cif (stmt)
+(defun cif (stmt)
   (prog (r st)
 	(setq r (mkfcif (caadr stmt)))
 	(indentclevel (+ 1))
@@ -263,13 +263,13 @@
 		     (indentclevel (minus 1)))))
 	(return r)))
 
-(de clabel (label)
+(defun clabel (label)
   (mkfclabel label))
 
-(de cliteral (stmt)
+(defun cliteral (stmt)
   (mkfcliteral (cdr stmt)))
 
-(de cloop (stmt)
+(defun cloop (stmt)
   (prog (var lo nextexp exitcond body)
 	(cond ((complexdop stmt)
 	       (return (cstmt (seqtogp (simplifydo stmt))))))
@@ -292,7 +292,7 @@
 	      (t
 	       (return (cfor var lo nextexp exitcond body))))))
 
-(de crepeat (body logexp)
+(defun crepeat (body logexp)
   (prog (r)
 	(setq r (mkfcdo))
 	(indentclevel (+ 1))
@@ -300,10 +300,10 @@
 	(indentclevel (minus 1))
 	(return (append r (mkfcdowhile (list 'not logexp))))))
 
-(de creturn (stmt)
+(defun creturn (stmt)
   (mkfcreturn (cadr stmt)))
 
-(de cstmtgp (stmtgp)
+(defun cstmtgp (stmtgp)
   (prog (r)
 	(cond ((equal (car stmtgp) 'progn)
 	       (setq stmtgp (cdr stmtgp)))
@@ -315,7 +315,7 @@
 	(indentclevel (minus 1))
 	(return (append r (mkfcendgp)))))
 
-(de cwhile (cond body)
+(defun cwhile (cond body)
   (prog (r)
 	(cond (cond (setq cond (list 'not cond))))
 	(setq r (mkfcwhile cond))
@@ -332,18 +332,18 @@
 
 ;;  statement formatting  ;;
 
-(de mkfcassign (lhs rhs)
+(defun mkfcassign (lhs rhs)
   (append (append (cons (mkctab) (cexp lhs))
 		  (cons '= (cexp rhs)))
 	  (list '|;| (mkterpri))))
 
-(de mkfcbegingp ()
+(defun mkfcbegingp ()
   (list (mkctab) '{ (mkterpri)))
 
-(de mkfcbreak ()
+(defun mkfcbreak ()
   (list (mkctab) 'break '|;| (mkterpri)))
 
-(de mkfcdec (type varlist)
+(defun mkfcdec (type varlist)
   (progn
    (setq varlist
 	 (foreach v in varlist collect
@@ -357,28 +357,28 @@
 					  (cexp v)))))
 	   (list '|;| (mkterpri)))))
 
-(de mkfcdo ()
+(defun mkfcdo ()
   (list (mkctab) 'do (mkterpri)))
 
-(de mkfcdowhile (exp)
+(defun mkfcdowhile (exp)
   (append (append (list (mkctab) 'while '| | '|(|)
 		  (cexp exp))
 	  (list '|)| '|;| (mkterpri))))
 
-(de mkfcelse ()
+(defun mkfcelse ()
   (list (mkctab) 'else (mkterpri)))
 
-(de mkfcelseif (exp)
+(defun mkfcelseif (exp)
   (append (append (list (mkctab) 'else '| |  'if '| |  '|(|) (cexp exp))
 		  (list '|)| (mkterpri))))
 
-(de mkfcendgp ()
+(defun mkfcendgp ()
   (list (mkctab) '} (mkterpri)))
 
-(de mkfcexit ()
+(defun mkfcexit ()
   (list (mkctab) 'exit '|(| 0 '|)| '|;| (mkterpri)))
 
-(de mkfcfor (var1 lo cond var2 nextexp)
+(defun mkfcfor (var1 lo cond var2 nextexp)
   (progn
    (cond (var1 (setq var1 (append (cexp var1) (cons '= (cexp lo))))))
    (cond (cond (setq cond (cexp cond))))
@@ -388,25 +388,25 @@
 	   (append (cons '|;| var2)
 		   (list '|)| (mkterpri))))))
 
-(de mkfcgo (label)
+(defun mkfcgo (label)
   (list (mkctab) 'goto '| |  label '|;| (mkterpri)))
 
-(de mkfcif (exp)
+(defun mkfcif (exp)
   (append (append (list (mkctab) 'if '| |  '|(|)
 		  (cexp exp))
 	  (list '|)| (mkterpri))))
 
-(de mkfclabel (label)
+(defun mkfclabel (label)
   (list label ': (mkterpri)))
 
-(de mkfcliteral (args)
+(defun mkfcliteral (args)
   (foreach a in args conc
 	   (cond ((equal a '$tab) (list (mkctab)))
 		 ((equal a '$cr) (list (mkterpri)))
 		 ((listp a) (cexp a))
 		 (t (list a)))))
 
-(de mkfcprocdec (type name params)
+(defun mkfcprocdec (type name params)
   (progn
    (setq params
 	 (aconc (cons '|(| (foreach p in (insertcommas params) conc
@@ -417,22 +417,22 @@
 	 (t (append (cons (mkctab) (cexp name))
 		    (aconc params (mkterpri)))))))
 
-(de mkfcreturn (exp)
+(defun mkfcreturn (exp)
   (cond (exp
 	 (append (append (list (mkctab) 'return '|(|) (cexp exp))
 		 (list '|)| '|;| (mkterpri))))
 	(t
 	 (list (mkctab) 'return '|;| (mkterpri)))))
 
-(de mkfcwhile (exp)
+(defun mkfcwhile (exp)
   (append (append (list (mkctab) 'while '| |  '|(|)
 		  (cexp exp))
 	  (list '|)| (mkterpri))))
 
 ;;  indentation control  ;;
 
-(de mkctab ()
+(defun mkctab ()
   (list 'ctab ccurrind*))
 
-(de indentclevel (n)
+(defun indentclevel (n)
   (setq ccurrind* (+ ccurrind* (* n tablen*))))
