@@ -6,8 +6,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (in-package "MAXIMA")
 
-(eval-when (compile)
-	   (proclaim '(declaration values)))
+;; (eval-when (compile)
+;; 	   (proclaim '(declaration values)))
 
 (defstruct (sparse-matrix :named (:conc-name sp-))
   rows
