@@ -1,3 +1,114 @@
+2004-09-23 19:51  amundson
+
+	* configure.in: Bump version number to 5.9.1.
+
+2004-09-23 19:50  amundson
+
+	* share/contrib/format/: coeflist.lisp, format.lisp: Followed
+	  instructions in README to make code compatible with Maxima.
+	  Untested.
+
+2004-09-22 21:50  amundson
+
+	* src/maxima.in: -u, --use-version argument was being ignored.
+	  Fixed.
+
+2004-09-21 14:36  belanger
+
+	* interfaces/emacs/emaxima/emaxima.el: Fixed a problem with ":=" in
+	  the output.  Fixed a problem with (%t..) output.
+
+2004-09-19 08:50  amundson
+
+	* src/macsys.lisp: Fix problem with with_stdout under sbcl and
+	  cmucl.
+
+2004-09-19 08:49  amundson
+
+	* src/transs.lisp: Fix problem with compile_file under sbcl.
+
+2004-09-19 08:14  amundson
+
+	* doc/maximabook/Makefile: Remove trailing ampersands from ps. Add
+	  ampersands to dvi.
+
+2004-09-19 08:13  amundson
+
+	* configure.in: increment version number
+
+2004-09-18 16:39  amundson
+
+	* doc/Makefile.am: Add a few missing files. A few other files were
+	  moved up or down in the list.
+
+2004-09-08 06:44  amundson
+
+	* src/init-cl.lisp: Ensure prompt is always printed before input in
+	  maxima-read-eval-print loop.
+
+2004-09-06 00:14  vvzhy
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: We partially restore some
+	  Windows 9x specific code.  Maxima works well on Windows 95, 98,
+	  Me, 2000 and XP.
+
+2004-09-06 00:07  vvzhy
+
+	* interfaces/xmaxima/win32/Makefile.in: stdlib.h is required by GCL
+	  2.6.5 compiler
+
+2004-08-26 19:16  amundson
+
+	* src/macsys.lisp: added *prompt-(pre,suf)fix* to demo and read
+	  commands.
+
+2004-08-25 08:29  amundson
+
+	* src/: gcl-depends.mk, sbcl-depends.mk: update
+
+2004-08-19 21:36  amundson
+
+	* doc/info/Plotting.texi: Add ticks to parametric examples. Fix
+	  typo. Comment out broken ?draw2d example.
+
+2004-08-19 20:22  amundson
+
+	* src/macdes.lisp: Properly set info paths when using GCL's
+	  internal info routines.
+
+2004-08-19 20:21  amundson
+
+	* src/sys-proclaim.lisp: proclaims generated with and for gcl
+	  2.6.5.
+
+2004-08-19 20:19  amundson
+
+	* src/maxima.system: Workaround proclaim bug in GCL versions
+	  <=2.6.3.
+
+2004-08-19 20:15  amundson
+
+	* lisp-utils/defsystem.lisp, src/maxima-package.lisp: Added updates
+	  for SBCL 0.8.13 from Andreas Eder.
+
+2004-08-19 20:11  amundson
+
+	* doc/info/Plotting.texi: Removed line breaks within strings to be
+	  sent to gnuplot.
+
+2004-08-19 20:07  amundson
+
+	* README.lisps: Updated for recent versions of GCL and CMUCL. Added
+	  explicit bit about --enable-ansi flag for GCL.
+
+2004-07-26 07:08  billingd
+
+	* interfaces/xmaxima/Makefile.am: Add files to WIN32_FILES.
+
+2004-07-25 17:56  amundson
+
+	* ChangeLog, configure.in: Updates for 5.9.0.9beta2.
+
 2004-07-25 13:11  amundson
 
 	* NEWS, README.lisps: updates.
@@ -7203,6 +7314,21 @@
 		  * tests/rtest15.mac: New file
 		  * tests/tests.lisp: Add above tests
 
+2002-04-08 11:56  starseeker
+
+	* doc/maximabook/images/.xvpics/: 2dplotwindow.eps,
+	  2dplotwindow.jpg, 2dplotwindowa.eps, 2dplotwindowa.jpg,
+	  3dplotwindow.eps, 3dplotwindow.jpg, 3dplotwindowa.eps,
+	  3dplotwindowa.jpg, emacsmaximamodeshot.eps,
+	  emacsmaximamodeshot.jpg, imaxima.eps, imaxima.png,
+	  maxima_geomview.eps, maxima_geomview.jpg, maxima_gnuplot.eps,
+	  maxima_gnuplot.jpg, maxima_openmath.eps, maxima_openmath.jpg,
+	  symaxx.eps, symaxx.jpg, symaxxgraph.ps, symaxxoutput.jpg,
+	  symaxxtex.ps, symaxxunits.ps, terminalshot.eps, terminalshot.jpg,
+	  texmacs.eps:
+
+	  removing xv files
+
 2002-04-08 11:55  starseeker
 
 	* doc/maximabook/storage/bibarchive/bibliography.tar.gz:
@@ -7242,10 +7368,29 @@
 	  images/maxima_gnuplot.png, images/maxima_openmath.png,
 	  images/maximawindowsinstall1.png, images/symaxx.png,
 	  images/symaxxoutput.png, images/terminalshot.png,
-	  images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
-	  odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
-	  odes/odes.tex, basics/basics.dvi, basics/basics.tex,
-	  examples/examples.tex, install/install.tex,
+	  images/texmacs.png, images/xmaxima.png,
+	  images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
+	  images/.xvpics/2dplotwindowa.eps,
+	  images/.xvpics/2dplotwindowa.jpg,
+	  images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
+	  images/.xvpics/3dplotwindowa.eps,
+	  images/.xvpics/3dplotwindowa.jpg,
+	  images/.xvpics/emacsmaximamodeshot.eps,
+	  images/.xvpics/emacsmaximamodeshot.jpg,
+	  images/.xvpics/imaxima.eps, images/.xvpics/imaxima.png,
+	  images/.xvpics/maxima_geomview.eps,
+	  images/.xvpics/maxima_geomview.jpg,
+	  images/.xvpics/maxima_gnuplot.eps,
+	  images/.xvpics/maxima_gnuplot.jpg,
+	  images/.xvpics/maxima_openmath.eps,
+	  images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
+	  images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
+	  images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
+	  images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
+	  images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
+	  maxims/maxims.tex, odes/advmath.tex, odes/odes.aux,
+	  odes/odes.dvi, odes/odes.log, odes/odes.tex, basics/basics.dvi,
+	  basics/basics.tex, examples/examples.tex, install/install.tex,
 	  interfaces/interfaces.tex, introduction/introduction.tex,
 	  output/izicinfo.txt, output/output.tex, preface/pref.tex,
 	  programming/prog.tex, storage/primer/primer.tex,
@@ -7282,10 +7427,29 @@
 	  images/maxima_gnuplot.png, images/maxima_openmath.png,
 	  images/maximawindowsinstall1.png, images/symaxx.png,
 	  images/symaxxoutput.png, images/terminalshot.png,
-	  images/texmacs.png, images/xmaxima.png, maxims/maxims.tex,
-	  odes/advmath.tex, odes/odes.aux, odes/odes.dvi, odes/odes.log,
-	  odes/odes.tex, basics/basics.dvi, basics/basics.tex,
-	  examples/examples.tex, install/install.tex,
+	  images/texmacs.png, images/xmaxima.png,
+	  images/.xvpics/2dplotwindow.eps, images/.xvpics/2dplotwindow.jpg,
+	  images/.xvpics/2dplotwindowa.eps,
+	  images/.xvpics/2dplotwindowa.jpg,
+	  images/.xvpics/3dplotwindow.eps, images/.xvpics/3dplotwindow.jpg,
+	  images/.xvpics/3dplotwindowa.eps,
+	  images/.xvpics/3dplotwindowa.jpg,
+	  images/.xvpics/emacsmaximamodeshot.eps,
+	  images/.xvpics/emacsmaximamodeshot.jpg,
+	  images/.xvpics/imaxima.eps, images/.xvpics/imaxima.png,
+	  images/.xvpics/maxima_geomview.eps,
+	  images/.xvpics/maxima_geomview.jpg,
+	  images/.xvpics/maxima_gnuplot.eps,
+	  images/.xvpics/maxima_gnuplot.jpg,
+	  images/.xvpics/maxima_openmath.eps,
+	  images/.xvpics/maxima_openmath.jpg, images/.xvpics/symaxx.eps,
+	  images/.xvpics/symaxx.jpg, images/.xvpics/symaxxgraph.ps,
+	  images/.xvpics/symaxxoutput.jpg, images/.xvpics/symaxxtex.ps,
+	  images/.xvpics/symaxxunits.ps, images/.xvpics/terminalshot.eps,
+	  images/.xvpics/terminalshot.jpg, images/.xvpics/texmacs.eps,
+	  maxims/maxims.tex, odes/advmath.tex, odes/odes.aux,
+	  odes/odes.dvi, odes/odes.log, odes/odes.tex, basics/basics.dvi,
+	  basics/basics.tex, examples/examples.tex, install/install.tex,
 	  interfaces/interfaces.tex, introduction/introduction.tex,
 	  output/izicinfo.txt, output/output.tex, preface/pref.tex,
 	  programming/prog.tex, storage/primer/primer.tex,
