@@ -2631,32 +2631,89 @@
 
 
 
-(defun splitpfq
-    (l arg-l1 arg-l2)
-  (prog(result prodnum proden count k a1 b1)
-     (setq result 0
-	   prodnum 1
-	   proden 1
-	   count 0
-	   k (cadr l)
-	   a1 (car l)
-	   b1 (sub a1 k))
-     (setq arg-l1 (zl-delete a1 arg-l1 1)
-	   arg-l2 (zl-delete b1 arg-l2 1)
-	   result (hgfsimp arg-l1 arg-l2 var))
-     loop
-     (cond ((eq count k) (return result)))
-     (setq count (add1 count)
-	   prodnum (mul prodnum (mull arg-l1))
-	   proden (mul proden (mull arg-l2))
-	   result (add result
-		       (mul (combin k count)
-			    (div prodnum proden)
-			    (power var count)
-			    (hgfsimp (setq arg-l1 (incr1 arg-l1))
-				     (setq arg-l2 (incr1 arg-l2))
-				     var))))
-     (go loop)))
+;; Consider pFq([a_k]; [c_j]; z).  If a_k = c_j + m for some k and j
+;; and m >= 0, we can express pFq in terms of (p-1)F(q-1).
+;;
+;; Here is a derivation for F(a,b;c;z), but it generalizes to the
+;; generalized hypergeometric very easily.
+;;
+;; From A&s 15.2.3:
+;;
+;; diff(z^(a+n-1)*F(a,b;c;z), z, n) = poch(a,n)*z^(a-1)*F(a+n,b;c;z)
+;;
+;; F(a+n,b;c;z) = diff(z^(a+n-1)*F(a,b;c;z), z, n)/poch(a,n)/z^(a-1)
+;;
+;;
+;; So this expresses F(a+n,b;c;z) in terms of F(a,b;c;z).  Let a = c +
+;; n.  This therefore gives F(c+n,b;c;z) in terms of F(c,b;c;z) =
+;; 1F0(b;;z), which we know.
+;;
+;; For simplicity, we will write F(z) for F(a,b;c;z).
+;;
+;; Now,
+;;
+;;                       n
+;; diff(z^x*F(z),z,n) = sum binomial(n,k)*diff(z^x,z,n-k)*diff(F(z),z,k)
+;;                      k=0
+;;
+;; But diff(z^x,z,n-k) = x*(x-1)*...*(x-n+k+1)*z^(x-n+k)
+;;                     = poch(x-n+k+1,n-k)*z^(x-n+k)
+;;
+;; so
+;; 
+;; z^(-a-1)/poch(a,n)*diff(z^(a+n-1),z,n-k)
+;;    = poch(a+n-1-n+k+1,n-k)/poch(a,n)*z^(a+n-1-n+k)*z^(-a+1)
+;;    = poch(a+k,n-k)/poch(a,n)*z^k
+;;    = z^k/poch(a,k)
+;;
+;; Combining these we have
+;;
+;;                 n
+;; F(a+n,b;c;z) = sum z^k/poch(a,k)*binomial(n,k)*diff(F(a,b;c;z),z,k)
+;;                k=0
+;;
+;; Since a = c, we have
+;;
+;;                 n
+;; F(a+n,b;a;z) = sum z^k/poch(a,k)*binomial(n,k)*diff(F(a,b;a;z),z,k)
+;;                k=0
+;;
+;; But F(a,b;a;z) = F(b;;z) and it's easy to see that A&S 15.2.2 can
+;; be specialized to this case to give
+;;
+;; diff(F(b;;z),z,k) = poch(b,k)*F(b+k;;z)
+;;
+;; Finally, combining all of these, we have
+;;
+;;                 n
+;; F(a+n,b;c;z) = sum z^k/poch(a,k)*binomial(n,k)*poch(b,k)*F(b+k;;z)
+;;                k=0
+;;
+;; Thus, F(a+n,b;c;z) is expressed in terms of 1F0(b+k;;z), as desired.
+(defun splitpfq (l arg-l1 arg-l2)
+  (destructuring-bind (a1 k)
+      l
+    (let* ((result 0)
+	   (prodnum 1)
+	   (proden 1)
+	   (b1 (sub a1 k))
+	   (prod-b 1)
+	   (arg-l1 (zl-delete a1 arg-l1 1))
+	   (arg-l2 (zl-delete b1 arg-l2 1)))
+      (loop for count from 0 upto k
+	 do
+	 (setq result (add result
+			   (mul (combin k count)
+				(div prodnum proden)
+				(inv prod-b)
+				(power var count)
+				(hgfsimp arg-l1 arg-l2 var))))
+	 (setq prod-b (mul prod-b (add b1 count)))
+	 (setq prodnum (mul prodnum (mull arg-l1))
+	       proden (mul proden (mull arg-l2)))
+	 (setq arg-l1 (incr1 arg-l1))
+	 (setq arg-l2 (incr1 arg-l2)))
+      result)))
 
 (defun combin
     (k count)
