@@ -55,12 +55,12 @@ ode1_abel(eq,y,x) := block(
   [s],
   s:ode1_abel1(eq,y,x),
   if s#false then (
-    method:'abel,
+    if s#[] then method:'abel,
     return(s)
   ),
   s:ode1_abel2(eq,y,x),
   if s#false then (
-    method:'abel2,
+    if s#[] then method:'abel2,
     return(s)
   ),
   false
@@ -107,7 +107,12 @@ ode1_abel1(eq,y,x) := block(
   ode_disp2("     f[1]: ",f[1]),
   ode_disp2("     f[0]: ",f[0]),
 
-  ode1_abel1a(f[0],f[1],f[2],f[3],y,x)
+  ans:ode1_abel1a(f[0],f[1],f[2],f[3],y,x),
+
+  /* If equation is an Abel equation and this method fails
+     then give up.  Cannot be solved by ode1_lie() */
+  if ans=false then ans:[],
+  ans
 )$
 
 
