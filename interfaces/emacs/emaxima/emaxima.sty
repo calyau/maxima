@@ -59,15 +59,11 @@
 \maximapostpretexskip = 8pt
 
 %% Process options
-% Breqn
 \newif\ifmaxusebreqn
 \maxusebreqnfalse
-\DeclareOption{breqn}{\maxusebreqntrue}
-\ProcessOptions\relax
-
-% preview-latex might not be loaded, in which case:
 \newif\ifmaximausepreview
 \maximausepreviewfalse
+\DeclareOption{breqn}{\maxusebreqntrue}
 \DeclareOption{preview}{\maximausepreviewtrue}
 \ProcessOptions\relax
 
@@ -97,6 +93,9 @@
 %% Let's use some local macros
 
 \catcode`\@=11\relax
+
+%% To take care of the case where preview isn't loaded.
+\@ifpackageloaded{preview}{}{\newenvironment{preview}{}{}}
 
 %% First of all, set up some delimiters
 %% The units are in terms of em and ex, so if the font size is
