@@ -9,11 +9,11 @@ Lists are the basic building block for Maxima and Lisp.   All data types
 other than arrays, hash tables, numbers are represented as Lisp lists,
 These Lisp lists have the form
 @example
-((mplus) $A 2)
+((MPLUS) $A 2)
 @end example
 @noindent
-to indicate an expression @code{A+2}.   At Maxima level one would see
-the infix notation @code{A+2}.   Maxima also has lists which are printed
+to indicate an expression @code{a+2}.   At Maxima level one would see
+the infix notation @code{a+2}.   Maxima also has lists which are printed
 as
 @example
 [1, 2, 7, x+y]
@@ -22,13 +22,13 @@ as
 for a list with 4 elements.   Internally this corresponds to a Lisp list
 of the form
 @example
-((mlist) 1  2  7  ((mplus)  $X $Y ))
+((MLIST) 1  2  7  ((MPLUS)  $X $Y ))
 @end example
 @noindent
 The flag which denotes the type field of the Maxima expression is a list
 itself, since after it has been through the simplifier the list would become
 @example
-((mlist simp) 1 2 7 ((mplus simp) $X $Y))
+((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
 
@@ -37,106 +37,113 @@ itself, since after it has been through the simplifier the list would become
 @node Definitions for Lists,  , Introduction to Lists, Lists
 @section Definitions for Lists
 
-@c @node APPEND, ASSOC, Lists, Lists
+@c @node append, assoc, Lists, Lists
 @c @unnumberedsec 
-@defun APPEND (list1, list2, ...)
+@defun append (list1, list2, ...)
 returns a single list of the elements of
-list1 followed by the elements of list2,...  APPEND also works on
-general expressions, e.g. APPEND(F(A,B), F(C,D,E)); -> F(A,B,C,D,E).
-Do EXAMPLE(APPEND); for an example.
+@code{list1} followed by the elements of @code{list2},...  APPEND also works on
+general expressions, e.g. @code{append(F(A,B), F(C,D,E)); -> F(A,B,C,D,E)}.
+Do @code{example(append);} for an example.
 
 @end defun
-@c @node ASSOC, ATOM, APPEND, Lists
+@c @node assoc, atom, append, Lists
 @c @unnumberedsec 
-@defun ASSOC (exp)
-This function searches for the key in the left hand side of the input list
-of the form [x,y,z...] where each of the list elements is a expression of
-a binary operand and 2 elements.  For example x=1, 2^3, [a,b] etc.
-The key checked againts the first operand and and returns the second
-operand if the key is found.
-If the key is not found it either returns the default value if supplied or
-false.
-@end defun
-@c @node ATOM, CONS, APPEND, Lists
-@c @unnumberedsec 
-@defun ATOM (exp)
-is TRUE if exp is atomic (i.e. a number or name) else
-FALSE.  Thus ATOM(5) is TRUE while ATOM(A[1]) and ATOM(SIN(X)) are
-FALSE.  (Assuming A[1] and X are unbound.)
+@defun assoc (key, list, default)
+This function searches for the @code{key} in the left hand side of the input @code{list}
+of the form @code{[x,y,z...]} where each of the @code{list} elements is an expression of
+a binary operand and 2 elements.  For example @code{x=1}, @code{2^3}, @code{[a,b]} etc.
+The @code{key} is checked againts the first operand.  @code{assoc} returns the second
+operand if the @code{key} is found.  If the @code{key} is not found it
+either returns the @code{default} value.  @code{default} is optional
+and defaults to @code{false}.
 
 @end defun
-@c @node CONS, COPYLIST, ATOM, Lists
+@c @node atom, cons, append, Lists
 @c @unnumberedsec 
-@defun CONS (exp, list)
-returns a new list constructed of the element exp as
-its first element, followed by the elements of list.  CONS also works
-on other expressions, e.g. CONS(X, F(A,B,C));  ->  F(X,A,B,C).
+@defun atom (exp)
+is @code{true} if @code{exp} is atomic (i.e. a number, name or string) else
+FALSE.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
+@code{false} (asuming @code{a[1]} and @code{x} are unbound).
 
 @end defun
-@c @node COPYLIST, DELETE, CONS, Lists
+@c @node cons, copylist, atom, Lists
 @c @unnumberedsec 
-@defun COPYLIST (L)
-creates a copy of the list L.
+@defun cons (exp, list)
+returns a new list constructed of the element @code{exp} as
+its first element, followed by the elements of @code{list}.  @code{cons} also works
+on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end defun
-@c @node DELETE, ENDCONS, COPYLIST, Lists
+@c @node copylist, delete, cons, Lists
 @c @unnumberedsec 
-@defun DELETE (exp1, exp2)
-removes all occurrences of exp1 from exp2.  Exp1
-may be a term of exp2 (if it is a sum) or a factor of exp2 (if it is a
+@defun copylist (list)
+creates a copy of the list @code{list}.
+
+@end defun
+@c @node delete, endcons, copylist, Lists
+@c @unnumberedsec 
+@defun delete (exp1, exp2)
+removes all occurrences of @code{exp1} from @code{exp2}.  @code{exp1}
+may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2} (if it is a
 product).
 @example
-(%i1)  DELETE(SIN(X),X+SIN(X)+Y);
-(%o1)               Y + X
+(%i1)  delete(sin(x),x+sin(x)+y);
+(%o1)               y + x
 
 @end example
-DELETE(exp1, exp2, integer) removes the first integer occurrences of
-exp1 from exp2.  Of course, if there are fewer than integer
-occurrences of exp1 in exp2 then all occurrences will be deleted.
+@code{delete(exp1, exp2, n)} removes the first @code{n} occurrences of
+@code{exp1} from @code{exp2}.  If there are fewer than @code{n}
+occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
+@example
+(%i1)  delete(a,f(a,b,c,d,a));
+(%o1)             f(b, d)
+(%i2)  delete(a,f(a,b,c,d,a),2);
+(%o2)           f(b, d, a)
 
+@end example
 @end defun
-@c @node ENDCONS, EVERY, DELETE, Lists
+@c @node endcons, every, delete, Lists
 @c @unnumberedsec 
-@defun ENDCONS (exp, list)
+@defun endcons (exp, list)
 returns a new list consisting of the elements of
-list followed by exp.  ENDCONS also works on general expressions, e.g.
-ENDCONS(X, F(A,B,C));  ->  F(A,B,C,X).
+@code{list} followed by @code{exp}.  @code{endcons} also works on general expressions, e.g.
+@code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end defun
-@c @node EVERY, FIRST, DELETE, Lists
+@c @node every, first, delete, Lists
 @c @unnumberedsec 
-@defun EVERY (exp)
+@defun every (exp)
 This function takes a list, or a positive number of arguments and returns
-true if all its arguments are not false.
+@code{true} if all its arguments are not @code{false}.
 
 @end defun
 
-@c @node FIRST, FLATTEN, EVERY, Lists
+@c @node first, flatten, every, Lists
 @c @unnumberedsec 
-@defun FIRST (exp) SECOND (exp) .. TENTH (exp)
+@defun first (exp) second (exp) .. tenth (exp)
 yields the first part of exp which may result in the first
 element of a list, the first row of a matrix, the first term of a sum,
-etc.  Note that FIRST and its related functions, REST and LAST, work
-on the form of exp which is displayed not the form which is typed on
-input.  If the variable INFLAG [FALSE] is set to TRUE however, these
-functions will look at the internal form of exp.  Note that the
-simplifier re-orders expressions.  Thus FIRST(X+Y) will be X if INFLAG
-is TRUE and Y if INFLAG is FALSE.  (FIRST(Y+X) gives the same
-results).  The functions SECOND .. TENTH yield the second through the
+etc.  Note that @code{first} and its related functions, @code{rest} and @code{last}, work
+on the form of @code{exp} which is displayed not the form which is typed on
+input.  If the variable @code{inflag [false]} is set to @code{true} however, these
+functions will look at the internal form of @code{exp}.  Note that the
+simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if @code{inflag}
+is @code{TRUE} and @code{Y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
+results).  The functions @code{second} .. @code{tenth} yield the second through the
 tenth part of their input argument.
 
 @end defun
-@c @node FLATTEN, GET, FIRST, Lists
+@c @node flatten, get, first, Lists
 @c @unnumberedsec 
-@defun FLATTEN (exp)
+@defun flatten (exp)
 Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 
 @end defun
-@c @node GET, LAST, FIRST, Lists
+@c @node get, last, first, Lists
 @c @unnumberedsec 
-@defun GET (a, i)
-retrieves the user property indicated by i associated with
-atom a or returns FALSE if a doesn't have property i.
+@defun get (a, i)
+retrieves the user property indicated by @code{i} associated with
+atom @code{a} or returns @code{false} if a doesn't have property @code{i}.
 @example
 (%i1) put (%e, 'transcendental, 'type);
 (%o1)                      transcendental
@@ -158,76 +165,78 @@ x is not numeric.
 @end example
 
 @end defun
-@c @node LAST, LENGTH, GET, Lists
+@c @node last, length, get, Lists
 @c @unnumberedsec 
-@defun LAST (exp)
-yields the last part (term, row, element, etc.) of the exp.
+@defun last (exp)
+yields the last part (term, row, element, etc.) of the @code{exp}.
 
 @end defun
-@c @node LENGTH, LISTARITH, LAST, Lists
+@c @node length, listarith, last, Lists
 @c @unnumberedsec 
-@defun LENGTH (exp)
+@defun length (exp)
 gives (by default) the number of parts in the external
-(displayed) form of exp.  For lists this is the number of elements,
+(displayed) form of @code{exp}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
-of terms. (See DISPFORM).  The LENGTH command is affected by the
-INFLAG switch [default FALSE].  So, e.g. LENGTH(A/(B*C)); gives 2 if
-INFLAG is FALSE (Assuming EXPTDISPFLAG is TRUE), but 3 if INFLAG is
-TRUE (the internal representation is essentially A*B^-1*C^-1).
+of terms (see @code{dispform}).  The @code{length} command is affected by the
+@code{inflag [false]} switch.  So, e.g. @code{length(a/(b*c));} gives 2 if
+@code{inflag} is @code{false} (Assuming @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is
+@code{true} (the internal representation is essentially @code{a*b^-1*c^-1}).
 
 @end defun
-@c @node LISTARITH, LISTP, LENGTH, Lists
+@c @node listarith, listp, length, Lists
 @c @unnumberedsec 
-@defvar LISTARITH
- default: [TRUE] - if FALSE causes any arithmetic operations
-with lists to be suppressed; when TRUE, list-matrix operations are
+@defvar listarith
+ default: @code{[true]} - if @code{false} causes any arithmetic operations
+with lists to be suppressed; when @code{true}, list-matrix operations are
 contagious causing lists to be converted to matrices yielding a result
 which is always a matrix.  However, list-list operations should return
 lists.
 
 @end defvar
-@c @node LISTP, MAKELIST, LISTARITH, Lists
+@c @node listp, makelist, listarith, Lists
 @c @unnumberedsec 
-@defun LISTP (exp)
-is TRUE if exp is a list else FALSE.
+@defun listp (exp)
+is @code{true} if @code{exp} is a list else @code{false}.
 
 @end defun
-@c @node MAKELIST, MEMBER, LISTP, Lists
+@c @node makelist, member, listp, Lists
 @c @unnumberedsec 
-@defun MAKELIST (exp,var,lo,hi)
-returns a list as value.  MAKELIST may be called as
-MAKELIST(exp,var,lo,hi) ["lo" and "hi" must be integers], or as
-MAKELIST(exp,var,list).  In the first case MAKELIST is analogous to
-SUM, whereas in the second case MAKELIST is similar to MAP.  Examples:
+@defun makelist (exp,var,lo,hi)
+returns a list as value.  @code{makelist} may be called as
+@code{makelist(exp,var,lo,hi)} [@code{lo} and @code{hi} must be integers], or as
+@code{makelist(exp,var,list)}.  In the first case @code{makelist} is analogous to
+@code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.  Examples:
 @example
-   MAKELIST(CONCAT(X,I),I,1,6) yields [X1,X2,X3,X4,X5,X6]
-   MAKELIST(X=Y,Y,[A,B,C]) yields [X=A,X=B,X=C]
+(%i1) makelist(concat(x,i),i,1,6);
+(%o1)          [x1, x2, x3, x4, x5, x6]
+(%i2) makelist(x=y,y,[a,b,c]);
+(%o2)            [x = a, x = b, x = c]
 @end example
 
 @end defun
-@c @node MEMBER, REST, MAKELIST, Lists
+@c @node member, rest, makelist, Lists
 @c @unnumberedsec 
-@defun MEMBER (exp, list)
-returns TRUE if exp occurs as a member of list (not
-within a member).  Otherwise FALSE is returned.  Member also works on
-non-list expressions, e.g. MEMBER(B, F(A,B,C));  ->  TRUE.
+@defun member (exp, list)
+returns @code{true} if @code{exp} occurs as a member of @code{list} (not
+within a member).  Otherwise @code{false} is returned.  @code{member} also works on
+non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
 @end defun
-@c @node REST, REVERSE, MEMBER, Lists
+@c @node rest, reverse, member, Lists
 @c @unnumberedsec 
-@defun REST (exp, n)
-yields exp with its first n elements removed if n is
-positive and its last -n elements removed if n is negative.  If n is 1
-it may be omitted.  Exp may be a list, matrix, or other expression.
+@defun rest (exp, n)
+yields @code{exp} with its first @code{n} elements removed if @code{n} is
+positive and its last @code{-n} elements removed if @code{n} is negative.  If @code{n} is 1
+it may be omitted.  @code{exp} may be a list, matrix, or other expression.
 
 @end defun
-@c @node REVERSE,  , REST, Lists
+@c @node reverse,  , rest, Lists
 @c @unnumberedsec  
-@defun REVERSE (list)
-reverses the order of the members of the list (not
-the members themselves).  REVERSE also works on general expressions,
-e.g.  REVERSE(A=B); gives B=A.
-REVERSE default: [FALSE] - in the Plotting functions, if TRUE cause a
+@defun reverse (list)
+reverses the order of the members of the @code{list} (not
+the members themselves).  @code{reverse} also works on general expressions,
+e.g.  @code{reverse(a=b);} gives @code{b=a}.
+@code{reverse} default: @code{[false]} - in the Plotting functions, if @code{true} cause a
 left-handed coordinate system to be assumed.
 
 @end defun
