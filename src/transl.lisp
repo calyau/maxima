@@ -944,7 +944,7 @@ APPLY means like APPLY.")
 			`(,(CAAR FORM) ARRAY))
 		       (T `(,(CAAR FORM)))))
 	     (ARGS (TR-ARGS (CDR FORM))))
-	    `($ANY . (SIMPLIFY `(,',OP ,,@ARGS)))))
+	    `($any . (simplify (list ',op ,@args)))))
 
 
 
