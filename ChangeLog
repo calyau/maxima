@@ -1,3 +1,64 @@
+2003-01-26 15:48  amundson
+
+	* src/powers.lisp: Updates and translation to unix line endings.
+
+2003-01-26 15:47  amundson
+
+	* src/maxima.in: Workaround for a bug in texmacs -- unset
+	MAXIMA_DIRECTORY if it exists, but is empty.
+
+2003-01-26 15:45  amundson
+
+	* share/algebra/solver/: solver1-en.html, solver1.pdf:
+	Documentation for solver package in German and (machine-translated)
+	English.
+
+2003-01-26 15:44  amundson
+
+	* share/Makefile.am: Install charsets and solver packages.
+
+2003-01-26 15:43  amundson
+
+	* interfaces/xmaxima/Tkmaxima/Paths.tcl: Added maxima's bin
+	directory to path under Windows so that the local copy of gcc can
+	be seen by gcl.
+
+2003-01-26 15:41  amundson
+
+	* interfaces/xmaxima/: Makefile.am, win32/Makefile.in,
+	win32/maxima.bat: Added simple maxima.bat script for Windows.
+
+2003-01-26 15:40  amundson
+
+	* Makefile.am: Added gcccopy target to copy minimal subset of gcc
+	into Windows package.
+
+2003-01-21 20:59  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Push.tcl: Avoid overuse of catch
+
+2003-01-21 20:57  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Bindings.tcl: Try to fix OpenMathYank
+
+2003-01-21 20:55  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Fix Save Expressions to
+	File
+
+2003-01-20 10:22  mikeclarkson
+
+	* interfaces/xmaxima/Tkmaxima/Menu.tcl: Fix UI Help Reference
+	Manual for Windows NT - untested
+
+2003-01-20 09:08  mikeclarkson
+
+	* maxima.iss.in: Allow user to select target directory
+
+2003-01-08 06:36  amundson
+
+	* ChangeLog: updates
+
 2003-01-08 06:34  amundson
 
 	* tests/Makefile.am: Add rtestflatten.mac to tarball.
