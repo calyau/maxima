@@ -571,10 +571,6 @@ trigonometry/spangl.mac\
 trigonometry/spangl.usg\
 trigonometry/trgsmp.mac\
 trigonometry/trigrat.lisp\
-utils/batch.dem\
-utils/batch.mac\
-utils/batch.transcript\
-utils/batch.usg\
 utils/dskuse.lisp\
 utils/dskuse.usg\
 utils/fileop.lisp\
