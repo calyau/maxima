@@ -1,0 +1,110 @@
+;;; -*- Mode: lisp -*-
+
+(eval-when (load eval compile)
+  (setf (logical-pathname-translations "slatec")
+	'(("**;*.*.*" "/apps/public/src/toy/maxima/src/numerical/slatec/**/*.*"))))
+
+(mk:define-language :f2cl
+    :compiler #'f2cl:f2cl
+    :source-extension "f")
+
+(mk:defsystem "slatec"
+  :source-extension "f"
+  :binary-extension "lisp"
+  :components
+  ((:module fortran
+	    :source-pathname (translate-logical-pathname "slatec:fortran;")
+	    :binary-pathname (translate-logical-pathname "slatec:")
+	    :language :f2cl
+	    :compiler-options (:array-slicing nil :array-type :simple-array :float-format double-float :package "SLATEC")
+	    :compile-only t
+	    :components
+	    (
+	     (:file "fdump")
+	     (:file "j4save")
+	     (:file "initds")
+	     (:file "xgetua")
+	     (:file "xermsg")
+	     (:file "xercnt")
+	     (:file "xerhlt")
+	     (:file "xerprn")
+	     (:file "xersve")
+	     (:file "dcsevl")
+	     ;; Gamma function
+	     (:file "d9lgmc")
+	     (:file "dgamlm")
+	     (:file "dgamma")
+	     (:file "dgamln")
+	     (:file "dlngam")
+	     ;; Bessel J functions
+	     (:file "d9b0mp")
+	     (:file "d9b1mp")
+	     (:file "dbesj0")
+	     (:file "dbesj1")
+	     (:file "djairy")
+	     (:file "dasyjy"
+		    :compiler-options (:array-slicing nil
+				       :array-type :array
+				       :float-format double-float
+				       :package "SLATEC"))
+	     (:file "dbesj"
+		    :compiler-options (:array-slicing t
+				       :array-type :simple-array
+				       :float-format double-float
+				       :package "SLATEC"))
+	     ;; Bessel I functions
+	     (:file "dbsi0e")
+	     (:file "dbsi1e")
+	     (:file "dbesi0")
+	     (:file "dbesi1")
+	     (:file "dasyik"
+		    :compiler-options (:array-slicing nil
+				       :array-type :array
+				       :float-format double-float
+				       :package "SLATEC"))
+	     (:file "dbesi"
+		    :compiler-options (:array-slicing t
+				       :array-type :array
+				       :float-format double-float
+				       :package "SLATEC"))
+	     ;; Bessel Y functions
+	     (:file "dbesy0")
+	     (:file "dbesy1")
+	     ;; Bessel J function for complex
+	     ;; arg and real order.
+	     (:file "zacai")
+	     (:file "zairy")
+	     (:file "zasyi")
+	     (:file "zbesj")
+	     (:file "zbinu")
+	     (:file "zbknu")
+	     (:file "zbuni")
+	     (:file "zmlri")
+	     (:file "zmlt")
+	     (:file "zrati")
+	     (:file "zs1s2")
+	     (:file "zseri")
+	     (:file "zshch")
+	     (:file "zsqrt")
+	     (:file "zuchk")
+	     (:file "zunhj")
+	     (:file "zuni1")
+	     (:file "zuni2")
+	     (:file "zunik")
+	     (:file "zuoik")
+	     (:file "zwrsk")
+	     (:file "zabs")
+	     (:file "zdiv")
+	     (:file "zexp")
+	     (:file "zkscl")
+	     (:file "zlog")
+	     ;; Airy functions
+	     (:file "d9aimp")
+	     (:file "daie")
+	     (:file "dai")
+	     ;; Error functions
+	     (:file "derf")
+	     (:file "derfc")
+	     ;; Exponential integrals
+	     (:file "de1")
+	     (:file "dei")))))
