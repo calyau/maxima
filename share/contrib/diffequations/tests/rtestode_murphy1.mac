@@ -384,11 +384,27 @@ y=(2*tan(6*x-6*%c)-12*x-3)/27;
 /* 54 Riccati */
 
 /* 55 Riccati and separable*/
-(pn_(55),assume(a>0,b>0),ans:contrib_ode(eqn:'diff(y,x)=a+b*y^2,y,x),forget(a>0,b>0),ans);
+assume(a>0,b>0);
+[a>0,b>0];
+(pn_(55.1),ans:contrib_ode(eqn:'diff(y,x)=a+b*y^2,y,x));
 [atan(sqrt(b)*y/sqrt(a))/(sqrt(a)*sqrt(b)) = x+%c];
+solve(ans[1],y);
+[y = sqrt(a)*tan(sqrt(a)*sqrt(b)*x+%c*sqrt(a)*sqrt(b))/sqrt(b)];
+[method,trigsimp(ode_check(eqn,%[1]))];
+[separable,0];
+forget(a>0,b>0);
+[a>0,b>0];
 
-(assume(a>0,b<0),ans:contrib_ode(eqn:'diff(y,x)=a+b*y^2,y,x),forget(a>0,b<0),ans);
+assume(a>0,b<0);
+[a>0,b<0];
+(pn_(55.2),ans:contrib_ode(eqn:'diff(y,x)=a+b*y^2,y,x));
 [log(-(sqrt(a)*sqrt(-b)-b*y)/(b*y+sqrt(a)*sqrt(-b)))/(2*sqrt(a)*sqrt(-b))=x+%c];
+solve(%[1],y);
+[y=-(sqrt(a)*sqrt(-b)*%e^(2*sqrt(a)*sqrt(-b)*x+2*%c*sqrt(a)*sqrt(-b))+sqrt(a)*sqrt(-b))/(b*%e^(2*sqrt(a)*sqrt(-b)*x+2*%c*sqrt(a)*sqrt(-b))-b)];
+[method,ode_check(eqn,%[1])];
+[separable,0];
+forget(a>0,b<0);
+[a>0,b<0];
 
 /* 57 Riccati */
 
@@ -1228,7 +1244,7 @@ forget(x>0);
 (pn_(198),ans:contrib_ode(eqn:x*'diff(y,x)=y+sqrt(x^2-y^2),y,x));
 [x = %c*%e^(x*asin(y/x)/abs(x))];
 assume(x>0);
-[x > 0]
+[x > 0];
 ratsimp(ans[1]);
 x = %c*%e^asin(y/x);
 map(log,%/%c);
