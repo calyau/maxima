@@ -13,5 +13,4 @@
  * The main MAXIMA tensor demo
  *
  */
-kill(all)$
 load("tendemo.mac")$

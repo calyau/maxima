@@ -2185,7 +2185,7 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 		 (a) (l))
 		((null e) l)
 	      (setq a (car e))
-	      (and (rpobj a) (setq l (append l (cdadr a) (cdaddr a)
+	      (and (rpobj a) (setq l (append l (covi a) (conti a)
 					     (cdddr a)))))))))
 
 (DEFMFUN $CHANGENAME (a b e)				;Change the name of the indexed object A to B in E

@@ -169,7 +169,8 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
 	       1 nil))))
 
 (defun ALL (l)                        ;Converts [[A, B], [C, D]] into (A B C D)
-       (append (cdadr l) (cdaddr l)))
+;       (append (cdadr l) (cdaddr l)))
+        (append (covi l) (conti l)))
 
 (defun T-CONVERT (e)        ;Applies CHANGEFORM to each individual object in an
        (cond ((atom e) e)   ;expression
@@ -183,11 +184,13 @@ IC_CONVERT cannot currently handle indexed objects of the same name~
        (cond ((atom e) e)       ;ETENSR format
 	     ((rpobj e)
 	      (do ((deriv (cdddr e) (cdr deriv))
-		   (new (cond ((and (null (cdadr e)) (null (cdaddr e)))
+;		   (new (cond ((and (null (cdadr e)) (null (cdaddr e)))
+		   (new (cond ((and (null (covi e)) (null (conti e)))
 			       (caar e))     ;If no covariant and contravariant
 			                     ;indices then make into an atom
 			      (t (cons (cons (equiv-table (caar e)) '(ARRAY))
-				       (append (cdadr e) (cdaddr e)))))))
+;				       (append (cdadr e) (cdaddr e)))))))
+				       (append (covi e) (conti e)))))))
 		  ((null deriv) new)
 		  (setq new (append '(($DIFF)) (ncons new)
 				    (ncons (cons '($CT_COORDS ARRAY)

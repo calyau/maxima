@@ -1003,7 +1003,7 @@ tricci(disp):=block
     ric[i,j]:sum(sum(ufg[k,l]*lriem[l,k,i,j],k,1,dim),l,1,dim),
     if ctrgsimp then ric[i,j]:trigsimp(ric[i,j])
     else if ratfac then ric[i,j]:factor(ric[i,j])
-    else ric[i,j]:ratsimp(ric[i,j]),
+    else ric[i,j]:ctaylor(ratsimp(ric[i,j])),
     if i#j then ric[j,i]:ric[i,j],
     if disp and ric[i,j]#0 then
     (
@@ -1160,12 +1160,12 @@ else block
       for k thru j do
         for l thru dim do
   (
-    riem[i,j,k,l] : diff(mcs[i,j,l], ct_coords[k]) -
-                    diff(mcs[i,k,l], ct_coords[j]) +
-                    sum(mcs[m,k,l]*mcs[i,j,m] -
-                        mcs[m,j,l]*mcs[i,k,m], m, 1, dim),
-    if ratfac then riem[j,i,k,l] : factor(ratsimp(riem[j,i,k,l]))
-    else if ratriemann then riem[j,i,k,l] : ratsimp(riem[j,i,k,l]),
+    riem[i,j,k,l]:ctaylor(diff(mcs[i,j,l], ct_coords[k]) -
+                          diff(mcs[i,k,l], ct_coords[j]) +
+                          sum(mcs[m,k,l]*mcs[i,j,m] -
+                              mcs[m,j,l]*mcs[i,k,m], m, 1, dim)),
+    if ratfac then riem[j,i,k,l] : factor(ctaylor(ratsimp(riem[j,i,k,l])))
+    else if ratriemann then riem[j,i,k,l] : ctaylor(ratsimp(riem[j,i,k,l])),
     if k # j then riem[i,k,j,l] : -riem[i,j,k,l],
     if dis#false and riem[i,j,k,l] # 0 then
     (flat : false, ldisplay(riem[i,j,k,l]))
@@ -1187,10 +1187,10 @@ triemann(disp):=block
         for l from k thru dim do
   (
     if i=j or k=l then lriem[l,j,i,k]:0
-    else lriem[l,j,i,k]:sum(fr[i][a]*diff(lcs[j,k,l],ct_coords[a])-fr[j][a]*
-      diff(lcs[i,k,l],ct_coords[a]),a,1,dim)-sum(sum(ufg[a,b]*(lcs[i,b,k]*
-      lcs[j,a,l]-lcs[j,b,k]*lcs[i,a,l]+lcs[i,b,j]*lcs[a,k,l]-lcs[j,b,i]*
-      lcs[a,k,l]),b,1,dim),a,1,dim),
+    else lriem[l,j,i,k]:ctaylor(sum(fr[i][a]*diff(lcs[j,k,l],ct_coords[a])-
+      fr[j][a]*diff(lcs[i,k,l],ct_coords[a]),a,1,dim)-sum(sum(ufg[a,b]*
+      (lcs[i,b,k]*lcs[j,a,l]-lcs[j,b,k]*lcs[i,a,l]+lcs[i,b,j]*lcs[a,k,l]-
+      lcs[j,b,i]*lcs[a,k,l]),b,1,dim),a,1,dim)),
     if ctrgsimp then lriem[l,j,i,k]:trigsimp(ev(lriem[l,j,i,k]))
     else if ratriemann then lriem[l,j,i,k]:ratsimp(ev(lriem[l,j,i,k]))
     else lriem[l,j,i,k]:ev(lriem[l,j,i,k]),
