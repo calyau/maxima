@@ -1,3 +1,12 @@
+2003-01-29 15:06  vvzhy
+
+	* share/tensor/itensor.lisp: Fix to wrong KDELTA([1],[A]) by V.
+	Pipin.
+
+2003-01-27 20:38  amundson
+
+	* ChangeLog: ChangeLog updated by cvs2cl.pl.
+
 2003-01-27 02:02  mikeclarkson
 
 	* interfaces/xmaxima/Tkmaxima/RunMaxima.tcl: Increased timeout for
