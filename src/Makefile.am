@@ -359,4 +359,4 @@ numerical/f2cl-lib.lisp
 
 genericdirDATA = $(real_lisp_sources) autoconf-variables.lisp
 
-EXTRA_DIST = $(real_lisp_sources) maxima.system numerical/slatec/fortran
+EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  gcl-depends.mk numerical/slatec/fortran
