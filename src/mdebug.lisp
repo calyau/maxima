@@ -95,7 +95,7 @@
   #+clisp (eval '(setq *break-env* (the-environment)))
   (setq fun (get fun prop))
   (if fun
-      (evalhook (cons fun args) nil nil *break-env*)
+      (evalhook (cons 'funcall (cons fun args)) nil nil *break-env*)
       (format *debug-io* "~&~S is undefined break command.~%" key)))
 
 (defun complete-prop (sym package prop &optional return-list)
@@ -435,7 +435,7 @@
 (def-break :step  'step-into "Step program until it reaches a new source line" )
 ;(def-break :location  'loc "" )
 (def-break :quit 'break-quit "Quit this level")
-(def-break :top  #'(lambda( &rest l) (throw 'macsyma-quit 'top)) "Throw to top level")
+(def-break :top  #'(lambda( &rest l)l (throw 'macsyma-quit 'top)) "Throw to top level")
 
 
 
