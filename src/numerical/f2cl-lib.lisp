@@ -60,10 +60,10 @@ is not included")
 ;; If you change this, you may need to change some of the macros
 ;; below, such as INT and AINT!
 
-#+cmu
+#+(or cmu scl)
 (deftype integer4 ()
   `(signed-byte 32))
-#-cmu
+#-(or cmu scl)
 (deftype integer4 ()
   'fixnum)
 
@@ -177,7 +177,24 @@ is not included")
 (defmacro with-array-data ((data-var offset-var array) &rest body)
   `(multiple-value-bind (,data-var ,offset-var)
     (find-array-data ,array)
-    ,@body))
+     ,@body))
+
+(defun multi-array-data-aux (array-info body)
+  (let ((results body))
+    (dolist (a (reverse array-info))
+      (destructuring-bind (array a-type var-name offset-var)
+	  a
+	(setf results
+	      `((multiple-value-bind (,var-name ,offset-var)
+		    (find-array-data ,array)
+		  (declare (ignorable ,offset-var ,var-name)
+			   (type f2cl-lib:integer4 ,offset-var)
+			   (type (simple-array ,a-type (*)) ,var-name))
+		  ,@results)))))
+    (first results)))
+
+(defmacro with-multi-array-data (array-info &rest body)
+  (multi-array-data-aux array-info body))
 
 ;; Create an array slice for the array named VNAME whose elements are
 ;; of type TYPE.  The slice starts at the indices INDICES and the
@@ -251,8 +268,9 @@ is not included")
 ; fdo has similar syntax as do except there will only be one do_vble
 
 (defmacro fdo (do_vble_clause predicate_clause &rest body)
-  (let ((step (gensym "STEP-"))
-	(iteration_count (gensym "CNT-")))
+  (let ((step (gensym (symbol-name '#:step-)))
+	(iteration_count (gensym (symbol-name '#:cnt-)))
+	(loop-var (first do_vble_clause)))
     `(prog* ((,step ,(third (third do_vble_clause)))
 	     (,iteration_count 
 	      (max 0 (the integer4
@@ -264,7 +282,7 @@ is not included")
 		   )))
       (declare (type integer4 ,step ,iteration_count))
       ;; initialise loop variable
-      (setq ,(first do_vble_clause) ,(second do_vble_clause))
+      (setq ,loop-var ,(second do_vble_clause))
       loop
       (return
 	(cond				; all iterations done
@@ -273,7 +291,7 @@ is not included")
 	  ,(cons 't 
 		 (append 
 		  (append body
-			  `((setq ,(first do_vble_clause) (the integer4 ,(third do_vble_clause))
+			  `((setq ,loop-var (the integer4 ,(third do_vble_clause))
 			     ,iteration_count (the integer4 (1- ,iteration_count)))))
 		  '((go loop)))))))))
 
@@ -374,12 +392,25 @@ is not included")
     ,@(computed-goto-aux tag-lst)))
 
 ;; macro for a lisp equivalent of Fortran assigned GOTOs
+#+nil
 (defmacro assigned-goto (i &optional tag-lst)
    `(if ,tag-lst
         (if (member ,i ,tag-lst) 
             (go ,i)
             (error "bad statement number in assigned goto"))
         (go ,i)))
+
+(defun assigned-goto-aux (tag-list)
+  (let ((cases nil))
+    (dolist (tag tag-list)
+      (push `(,tag (go ,(make-label tag)))
+	    cases))
+    (push `(t (error "Unknown label for assigned goto")) cases)
+    (nreverse cases)))
+
+(defmacro assigned-goto (var tag-list)
+  `(case ,var
+     ,@(assigned-goto-aux tag-list)))
 
 ;;-----------------------------------------------------------------------------
 ;;
@@ -392,7 +423,7 @@ is not included")
 
 (declaim (inline int ifix idfix))
 
-#-cmu
+#-(or cmu scl)
 (defun int (x)
   ;; We use fixnum here because f2cl thinks Fortran integers are
   ;; fixnums.  If this should change, we need to change the ranges
@@ -409,7 +440,7 @@ is not included")
 				  #.(float most-positive-fixnum 1d0))
 		 x)))))
 
-#+cmu
+#+(or cmu scl)
 (defun int (x)
   ;; For CMUCL, we support the full 32-bit integer range, so INT can
   ;; return a full 32-bit integer.  Tell CMUCL that this is true so we
@@ -447,13 +478,85 @@ is not included")
 
 (declaim (inline aint dint anint dnint nint idnint))
 
+;; This is based on the algorithm given by Anton Ertl in
+;; comp.arch.arithmetic on Oct. 26, 2002:
+;;
+;; #define X 9007199254740992. /* 2^53 */
+;; double rint(double r)
+;; {
+;;   if (r<0.0)
+;;     return (r+X)-X;
+;;   else
+;;     return (r-X)+X;
+;; }
+;;
+;; We modified this to do truncation instead of directed rounding.
+;; This assumes that we in round-to-nearest mode (the default).
+;;
+;; These only work if you have IEEE FP arithmetic.  There are 2
+;; versions given below.  One is for non-x86, which assumes that
+;; single and double FP numbers are properly rounded after each
+;; operation.  The version for x86 stores away a value to make sure
+;; the rounding happens correctly.
+;;
+;; Finally, the last version if for platforms where none of this
+;; holds and we call ftruncate.
+;;
+;; With CMUCL pre-18e on sparc, this definition of aint reduces the
+;; cost of MPNORM (from MPFUN) from 48.89 sec to 24.88 sec (a factor
+;; of 2!) when computing pi to 29593 digits or os.
+
+#+(and cmu (not x86))
+(defun aint (x)
+  (etypecase x
+    (single-float
+     (let ((const (scale-float 1f0 24)))
+       (if (>= x 0)
+	 (+ (- (- x 0.5f0) const) const)
+	 (- (+ (+ x 0.5f0) const) const))))
+    (double-float
+     (let ((const (scale-float 1d0 53)))
+       (if (>= x 0)
+	 (+ (- (- x 0.5d0) const) const)
+	 (- (+ (+ x 0.5d0) const) const))))))
+
+#+(and cmu x86)
+(let ((junks (make-array 1 :element-type 'single-float))
+      (junkd (make-array 1 :element-type 'double-float)))
+  (defun aint (x)
+    ;; ftruncate is exactly what we want.
+    (etypecase x
+      (single-float
+       (let ((const (scale-float 1f0 24)))
+	 (if (>= x 0)
+	     (progn
+	       (setf (aref junks 0) (- x 0.5f0))
+	       (+ (- (aref junks 0) const) const))
+	     (progn
+	       (setf (aref junks 0) (+ x 0.5f0))
+	       (- (+ (aref junks 0) const) const)))))
+      (double-float
+       (let ((const (scale-float 1d0 53)))
+	 (if (>= x 0)
+	     (progn
+	       (setf (aref junkd 0) (- x 0.5d0))
+	       (+ (- (aref junkd 0) const) const))
+	     (progn
+	       (setf (aref junkd 0) (+ x 0.5d0))
+	       (- (+ (aref junkd 0) const) const))))))))
+
+#-cmu
 (defun aint (x)
   ;; ftruncate is exactly what we want.
   (etypecase x
     (single-float
-     (ftruncate (the single-float x)))
+     (locally 
+       (declare (optimize (space 0) (speed 3)))
+       (values (ftruncate (the single-float x)))))
     (double-float
-     (ftruncate (the double-float x)))))
+     (locally 
+       (declare (optimize (space 0) (speed 3)))
+       (values (ftruncate (the double-float x)))))))
 
 (defun dint (x)
   (aint x))
@@ -610,7 +713,7 @@ is not included")
   (nint (apply #'min x y z)))
 
 ;; Define some compile macros for these max/min functions.
-#+cmu
+#+(or cmu scl)
 (progn
 (define-compiler-macro max0 (&rest args)
   `(max ,@args))
@@ -811,12 +914,12 @@ is not included")
     (cond ((atom array)
 	   `(do ((,do-var ,start (+ ,do-var ,step)))
 	     ((> ,do-var ,end))
-	     (declare (integer4 ,do-var))
+	     (declare (type integer4 ,do-var))
 	     (fset (fref ,array ,(remove '|,| (second implied-do)) ,low-bnds) (pop ,init))))
 	  (t
 	   `(do ((,do-var ,start (+ ,do-var ,step)))
 	     ((> ,do-var ,end))
-	     (declare (integer4 ,do-var))
+	     (declare (type integer4 ,do-var))
 	     ,(process-implied-do (remove '|,| array) low-bnds init))))))
 
 (defun process-implied-do (ido low-bnds var-types init)
@@ -1214,9 +1317,12 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.4 2003-07-24 18:46:30 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.5 2003-11-26 17:27:16 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.4  2003-07-24 18:46:30  rtoy
+;;; Revision 1.5  2003-11-26 17:27:16  rtoy
+;;; Synchronize to the current versions of f2cl.
+;;;
+;;; Revision 1.4  2003/07/24 18:46:30  rtoy
 ;;; Correct a declaration in amax0.
 ;;;
 ;;; Revision 1.3  2002/05/19 20:24:22  rtoy

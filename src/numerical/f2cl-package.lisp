@@ -44,6 +44,7 @@
    "LOGICAL"
    ;; Macros
    "FREF" "FSET" "WITH-ARRAY-DATA"
+   "WITH-MULTI-ARRAY-DATA"
    "F2CL-INIT-STRING" "FREF-STRING" "FSET-STRING" "F2CL-SET-STRING"
    "F2CL-//" "FSTRING-/=" "FSTRING-=" "FSTRING->" "FSTRING->=" "FSTRING-<" "FSTRING-<="
    "FORTRAN_COMMENT" "FDO" "F2CL/" "ARITHMETIC-IF" "COMPUTED-GOTO"
@@ -84,9 +85,12 @@
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.4 2002-07-18 02:37:22 rtoy Exp $
+;;; $Id: f2cl-package.lisp,v 1.5 2003-11-26 17:27:16 rtoy Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.4  2002-07-18 02:37:22  rtoy
+;;; Revision 1.5  2003-11-26 17:27:16  rtoy
+;;; Synchronize to the current versions of f2cl.
+;;;
+;;; Revision 1.4  2002/07/18 02:37:22  rtoy
 ;;; Don't need to import destructuring-bind for GCL anymore.
 ;;;
 ;;; Revision 1.3  2002/05/19 20:22:32  rtoy
