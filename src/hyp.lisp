@@ -303,31 +303,53 @@
       `(($gen_laguerre) ,n ,a, arg)))
 
 
+#+nil
 (defun 2f0polys (l1 n)
   (prog(a b temp x)
      (setq a (car l1) b (cadr l1))
      (cond ((equal (sub b a)(div -1 2))
 	    (setq temp a a b b temp)))
      (cond ((equal (sub b a)(div 1 2))
-	    (setq x (power (div 2 (mul -1 var))(inv 2)))
-	    (return (interhermpol n a b x))))
+	    ;; 2F0(-n,-n+1/2,z) or 2F0(-n-1/2,-n,z)
+	    ;;(setq x (power (div 2 (mul -1 var)) (inv 2)))
+	    (return (interhermpol n a b var))))
      (setq x (mul -1 (inv var)) n (mul -1 n))
      (return (mul (factorial n)
 		  (inv (power x n))
 		  (inv (power -1 n))
 		  (lagpol n (add b n) x)))))
 
-(defun interhermpol
-    (n a b x)
-  (prog(fact)
-     (setq fact (power x (mul -1 n)))
-     (cond ((equal a n)
-	    (setq n (mul -2 n))
-	    (return (mul fact (hermpol n x)))))
-     (cond ((equal b n)
-	    (setq n (sub 1 (add n n)))
-	    (return (mul fact (hermpol n x)))))))
+(defun 2f0polys (l1 n)
+  (let ((a (car l1))
+	(b (cadr l1)))
+    (when (equal (sub b a) (div -1 2))
+      (rotatef a b))
+    (cond ((equal (sub b a) (div 1 2))
+	   ;; 2F0(-n,-n+1/2,z) or 2F0(-n-1/2,-n,z)
+	   (interhermpol n a b var))
+	  (t
+	   ;; 2F0(a,b;z)
+	   (let ((x (mul -1 (inv var)))
+		 (order (mul -1 n)))
+	     (mul (factorial order)
+		  (inv (power x order))
+		  (inv (power -1 order))
+		  (lagpol n (add b order) x)))))))
 
+;; Compute 2F0(-n,-n+1/2;z) and 2F0(-n-1/2,-n;z) in terms of Hermite
+;; polynomials.
+(defun interhermpol (n a b x)
+  (let ((arg (power (div 2 (mul -1 x)) (inv 2)))
+	(order (cond ((equal a n)
+		      (mul -2 n))
+		     ((equal b n)
+		      (sub 1 (add n n))))))
+    ;; 2F0(-n,-n+1/2;z) = y^(-2*n)*He(2*n,y)
+    ;; 2F0(-n-1/2,-n;z) = y^(-(2*n+1))*He(2*n+1,y)
+    ;;
+    ;; where y = sqrt(-2/var);
+    (mul (power arg (mul -1 order))
+	 (hermpol order arg))))
 
 ;; F(a,b;c;z), where either a or b is a negative integer.
 (defun 2f1polys (l1 l2 n)
@@ -407,6 +429,15 @@
 ;; Chebyshev polynomial
 (defun tchebypol (n x)
   `(($chebyshev_t) ,n ,x))
+
+;; Expand the hypergeometric function as a polynomial.  No real checks
+;; are made to ensure the hypergeometric function reduces to a
+;; polynomial.
+(defun $hgfpoly (l1 l2 arg)
+  (let ((var arg)
+	(par arg)
+	(n (hyp-negp-in-l (cdr l1))))
+    (create-any-poly (cdr l1) (cdr l2) (- n))))
 
 (defun create-any-poly
     (l1 l2 n)

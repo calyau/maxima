@@ -214,6 +214,14 @@ hgfred([-2],[3/2],z);
 
 
 /* Test 2F0 polynomials */
+hgfred([-3,-3+1/2],[],z);
+-'hermite(6,%i/sqrt(z))*z^3/64$
+
+hgfred([-3-1/2,-3],[],z);
+%i*'hermite(7,%i/sqrt(z))*z^(7/2)/128$
+
+hgfred([-4,2],[],z);
+24*'gen_laguerre(4,6,-1/z)*z^4$
 
 /* Test 2F1 polynomials */
 
