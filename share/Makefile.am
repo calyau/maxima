@@ -94,6 +94,7 @@ utils/batch.mac\
 utils/batch.usg\
 utils/dskuse.lisp\
 utils/dskuse.usg\
+utils/mactex-utilities.lisp\
 simplification/functs.dem\
 simplification/functs.mac\
 simplification/functs.usg\
@@ -148,6 +149,10 @@ physics/gamnoc.lisp\
 physics/gamsq.lisp\
 physics/physconst.mac\
 physics/physconst.usg\
+physics/dimension.html\
+physics/dimension.mac\
+physics/dimension.pdf\
+physics/dimension.tex\
 algebra/gcdex.mac\
 algebra/grob1.lisp\
 algebra/nusum.usg\
@@ -294,5 +299,7 @@ tensor/tensor-doc.txt\
 tensor/info-tensor-2.txt\
 tensor/test1.mac\
 contrib/diag.usg\
-contrib/diag.mac
+contrib/diag.mac\
+contrib/lindstedt.mac
+
 
