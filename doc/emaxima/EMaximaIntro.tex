@@ -43,7 +43,7 @@ in the preamble.
 The basic unit of \mx{} code in \emx{} is a \textbf{cell}.  A cell
 consists of text between the delimiters
 \begin{verbatim}
-\maxima
+\beginmaxima
 \end{verbatim}
 \noindent
 and
@@ -72,40 +72,40 @@ of the cell to a \mx{} process (if there is no \mx{} process running,
 one will be started) and return the results to the cell,
 separated from the input by the marker
 \begin{verbatim}
-\output
+\maximaoutput
 \end{verbatim}
 \noindent
 To differentiate
 $sin(x^2)$, for example, type 
 \texttt{diff(sin(x\^{}2),x);} in a cell:
 \begin{verbatim}
-\maxima
+\beginmaxima
 diff(sin(x^2),x);
 \endmaxima
 \end{verbatim}
 \noindent
 After typing \texttt{C-c C-u c}, it will look like
 \begin{verbatim}
-\maxima
+\beginmaxima
 diff(sin(x^2),x);
-\output
+\maximaoutput
                                            2
-(D1)                              2 x COS(x )
+                                  2 x COS(x )
 \endmaxima
 \end{verbatim}
 \noindent
 To delete the output and return the cell to its original form, you can
 use the command \texttt{C-c C-d}.
 If the document is to be \TeX{}ed, the above cell will look like:
-\maxima
+\beginmaxima
 diff(sin(x^2),x);
 \endmaxima
 and the cell with output will look like:
-\maxima
+\beginmaxima
 diff(sin(x^2),x);
-\output
+\maximaoutput
                                            2
-(D1)                              2 x COS(x )
+                                  2 x COS(x )
 \endmaxima
 
 \emx{} mode can take advantage of the fact that \mx{} can give its
@@ -116,18 +116,18 @@ form, ready to be formatted by \LaTeX{}.  In general, if
 \texttt{C-c C-u }\textsl{capital letter} will return the output in
 \TeX{} form.  The above cell would become
 \begin{verbatim}
-\maxima
+\beginmaxima
 diff(sin(x^2),x);
-\outputtex
-$$2\>x\>\left(\cos x^{2}\right)$$
+\maximatexoutput
+$$   2\*x\*\cos x^{2} $$
 \endmaxima
 \end{verbatim}
 \noindent
 which, when \LaTeX{}ed, would become
-\maxima
+\beginmaxima
 diff(sin(x^2),x);
-\outputtex
-$$2\>x\>\left(\cos x^{2}\right)$$
+\maximatexoutput
+$$   2\*x\*\cos x^{2} $$
 \endmaxima
 \noindent
 (Note that whenever a cell is updated, any old output is discarded and
@@ -146,7 +146,7 @@ others; perhaps, for example, you want certain cells evaluated whenever
 you open the document.  This can be done using initialization cells.
 An initialization cell is delimited by
 \begin{verbatim}
-\maxima[* Initialization Cell *]
+\beginmaxima[* Initialization Cell *]
 \end{verbatim}
 \noindent
 and
@@ -154,11 +154,11 @@ and
 \endmaxima
 \end{verbatim}
 \noindent
-The command \texttt{C-c C-q} will turn a cell into
-an initialization cell, applying \texttt{C-c C-q} again will turn it
+The command \texttt{C-c C-t} will turn a cell into
+an initialization cell, applying \texttt{C-c C-t} again will turn it
 back into a regular cell.  
 When \LaTeX{}ed, an initialization cell will look like
-\maxima[* Initialization Cell *]
+\beginmaxima[* Initialization Cell *]
 diff(sin(x^2),x);
 \endmaxima
 
@@ -166,7 +166,7 @@ Initialization cells behave like regular
 cells, except that they can be treated as a group.
 To evaluate all initialization cells (without displaying the output in
 the document buffer), the
-command \texttt{C-c C-u q} will go to each of the
+command \texttt{C-c C-u t} will go to each of the
 initialization cells and evaluate them.
 If you want the output of the initialization cells to be brought back 
 to the document buffer,  stopping at each one to see it
@@ -193,7 +193,7 @@ The referenced cell must also be labeled, with the same
 other cell, the original cell need only contain the marker for the
 referenced cell.  For example, given cell 1:
 \begin{verbatim}
-\maxima<filename:optional>
+\beginmaxima<filename:optional>
 <filename:definef>
 diff(f(x),x);
 \endmaxima
@@ -201,21 +201,21 @@ diff(f(x),x);
 \noindent
 and cell 2:
 \begin{verbatim}
-\maxima<filename:definef>
+\beginmaxima<filename:definef>
 f(x):=sin(x^2);
 \endmaxima
 \end{verbatim}
 \noindent
 then the result of updating cell 1 (\texttt{C-c C-u c}) will be:
 \begin{verbatim}
-\maxima<filename:optional>
+\beginmaxima<filename:optional>
 <filename:definef>
 diff(f(x),x);
-\output
+\maximaoutput
                                              2
-(D4)                            f(x) := SIN(x )
+                                f(x) := SIN(x )
                                            2
-(D5)                              2 x COS(x )
+                                  2 x COS(x )
 \endmaxima
 \end{verbatim}
 \noindent
@@ -223,14 +223,14 @@ When \LaTeX{}ed, the top line will contain a copy of the marker.
 
 \newpage
 
-\maxima<filename:optional>
+\beginmaxima<filename:optional>
 <filename:definef>
 diff(f(x),x);
-\output
+\maximaoutput
                                              2
-(D4)                            f(x) := SIN(x )
+                                f(x) := SIN(x )
                                            2
-(D5)                              2 x COS(x )
+                                  2 x COS(x )
 \endmaxima
 
 A cell can contain more than one reference, and referenced cells can
@@ -296,7 +296,7 @@ contain references of the form
 As a simple (and rather silly) example, suppose we want to create a
 program to sum the first $n$ squares.  We could start:
 \begin{verbatim}
-\maxima<squaresum.max:>
+\beginmaxima<squaresum.max:>
 squaresum(n) := (
   <squaresum.max:makelist>
   <squaresum.max:squarelist>
@@ -307,30 +307,30 @@ squaresum(n) := (
 \noindent
 We would then need cells
 \begin{verbatim}
-\maxima<squaresum.max:makelist>,
+\beginmaxima<squaresum.max:makelist>,
 L:makelist(k,k,1,n),
 \endmaxima
 
-\maxima<squaresum.max:squarelist>
+\beginmaxima<squaresum.max:squarelist>
 <squaresum.max:definesquare>
 L:map(square,L),
 \endmaxima
 
-\maxima<squaresum.max:addlist>
+\beginmaxima<squaresum.max:addlist>
 lsum(k,k,L)
 \endmaxima
 \end{verbatim}
 \noindent
 and then we would also need:
 \begin{verbatim}
-\maxima<squaresum.max:definesquare>
+\beginmaxima<squaresum.max:definesquare>
 square(k) := k^2,
 \endmaxima
 \end{verbatim}
 \noindent
 When \TeX{}ed, the header of the cell will say that it determines the
 file \texttt{squaresum.mu}.  
-\maxima<squaresum.max:>
+\beginmaxima<squaresum.max:>
 squaresum(n) := (
   <squaresum.max:makelist>
   <squaresum.max:squarelist>
@@ -353,6 +353,129 @@ squaresum(n) := (
 \noindent
 (Although the idea is that only the computer need look at this file.)
 
+\section{Other types of cells}
+
+\noindent
+When a cell is \TeX{}ed, the input and output are kept separate.  To
+have the results look like a \mx{} session, there are, in addition to
+the standard cells, special cells called \emph{session cells}.   A
+session cell is delimited by
+\begin{verbatim}
+\beginmaximasession
+\end{verbatim}
+\noindent
+and
+\begin{verbatim}
+\endmaximasession
+\end{verbatim}
+\noindent
+The command \texttt{C-c C-p} will create a session cell.  When a
+session cell is updated, the output will be marked off with
+\verb+\maximasession+, and will contain both the input and the output,
+with the \mx{} prompts.  For example, if the session cell
+\begin{verbatim}
+\beginmaximasession
+diff(sin(x),x);
+int(cos(x),x);
+\endmaximasession
+\end{verbatim}
+\noindent
+were updated, the result would look like
+\begin{verbatim}
+\beginmaximasession
+diff(sin(x),x);
+integrate(cos(x),x);
+\maximasession
+(C1)diff(sin(x),x);
+
+(D1)                                COS(x)
+(C2)integrate(cos(x),x);
+
+(D2)                                SIN(x)
+\endmaximasession
+\end{verbatim}
+\noindent
+which, when \TeX{}ed, would look like
+\beginmaximasession
+diff(sin(x),x);
+integrate(cos(x),x);
+\maximasession
+(C1)diff(sin(x),x);
+
+(D1)                                COS(x)
+(C2)integrate(cos(x),x);
+
+(D2)                                SIN(x)
+\endmaximasession
+\noindent
+If it is updated in \TeX{} form, it will look like
+\begin{verbatim}
+\beginmaximasession
+diff(sin(x),x);
+integrate(cos(x),x);
+\maximatexsession
+\C1.  diff(sin(x),x); \\
+\D1.   \cos x \\
+\C2.  integrate(cos(x),x); \\
+\D2.   \sin x \\
+\endmaximasession
+\end{verbatim}
+\noindent
+which, when \TeX{}ed, will look like
+\beginmaximasession
+diff(sin(x),x);
+integrate(cos(x),x);
+\maximatexsession
+\C1.  diff(sin(x),x); \\
+\D1.   \cos x \\
+\C2.  integrate(cos(x),x); \\
+\D2.   \sin x \\
+\endmaximasession
+
+For particularly long output lines inside the \verb+\maximatexsession+
+part of a session cell, the command \verb+\DD+ will typeset anything
+between the command and \verb+\\+.  Unfortunately, to take advantage
+of this, the output has to be broken up by hand.
+If a session cell has not been updated, or has no output for some
+other reason, it will not appear when the document is \TeX{}ed.
+
+There is one other type of cell, a \emph{noshow cell}, which can be
+used to send \mx{} a command, but won't appear in the \TeX{}ed
+output. A noshow cell can be created with \texttt{C-c C-n}, and will
+be delimited by
+\begin{verbatim}
+\beginmaximanoshow
+\end{verbatim}
+\noindent
+and
+\begin{verbatim}
+\endmaximanoshow
+\end{verbatim}
+
+Session cells and noshow cells cannot be initialization cells or part of
+packages.\footnote{That could be changed, but I don't know why it'd be
+useful.} 
+
+If the command to create one type of cell is called while inside
+another type of cell, the type of cell will be changed.  So, for
+example, the command \texttt{C-c C-p} from inside the cell
+\begin{verbatim}
+\beginmaxima
+diff(x*sin(x),x);
+\endmaxima
+\end{verbatim}
+\noindent
+will result in
+\begin{verbatim}
+\beginmaximasession
+diff(x*sin(x),x);
+\endmaximasession
+\end{verbatim}
+\noindent
+If a standard cell is an initialization cell or a package part, its
+type cannot be changed.
+
+
 \section{Miscellaneous}
 
 \noindent
@@ -367,7 +490,7 @@ The command \texttt{C-c C-h} will provide
 information on a prompted for function (like \mx's \texttt{describe}), 
 and  \texttt{C-c C-i} will give the \mx{} info manual.
 
-Finally, the \mx{} process can be killed with \texttt{M-C-k}.
+Finally, the \mx{} process can be killed with \texttt{C-c C-k}.
 
 \newpage
 \appendix
@@ -378,11 +501,16 @@ Finally, the \mx{} process can be killed with \texttt{M-C-k}.
 The \emx{} package consists of the files \texttt{maxima.el},
 \texttt{emaxima.el},\\
 \texttt{maxima-symbols.el},
-\texttt{maxima-font-lock.el}  and \texttt{emaxima.sty}.
-To install, place the \texttt{.el} files somewhere in the
-load path for Emacs.
+\texttt{maxima-font-lock.el}, \texttt{emaxima.sty} and \texttt{emaxima.lisp}.
+To install, place the \texttt{.el} files, as well as
+\texttt{emaxima.lisp}\footnote{If Emacs cannot find
+  \texttt{emaxima.lisp}, then the \TeX{} output functions will not
+  work, any attempts to get \TeX{} output will only result in standard
+  output.} 
+somewhere in the load path for Emacs.
 Finally, if you want to run \LaTeX{} on the resulting document, put
-\texttt{emaxima.sty} somewhere in the \TeX{} inputs path.
+\texttt{emaxima.sty} somewhere in the \TeX{} inputs path.  If you use
+pdflatex, you'll also need \texttt{pdfcolmk.sty}.
 
 To make sure that \texttt{emaxima.el} is loaded when necessary, the line
 \begin{verbatim}
@@ -443,17 +571,62 @@ They can be turned back on with the command
 \begin{verbatim}
 \maximalinestrue
 \end{verbatim}
+\noindent
 
 The fonts used to display the \mx{} input and output in a cell are by
 default \texttt{cmtt10}.  They can be changed, seperately, by changing the
-\TeX{} values of \texttt{\maximainputfont} and \texttt{\maximaoutputfont}.
-
+\TeX{} values of \verb+\maximainputfont+ and \verb+\maximaoutputfont+.
+So, for example, to use \texttt{cmtt12} as the input font, use the command
+\begin{verbatim}
+\font\maximainputfont = cmtt12
+\end{verbatim}
+\noindent
 The spacing in the cells can be controlled by changing the \TeX{}
-variables \verb+\maximainputbaselineskip+ (by default 10 pt) and
-\verb+\maximaoutputbaselineskip+ (by default 14 pt), and similarly, the
-amount of space that appears after a cell can be changed by changing the
-value of \verb+\postmaximaspace+ (by default, 1.5 ex).
-
+variables \verb+\maximainputbaselineskip+ and
+\verb+\maximaoutputbaselineskip+, and so to increase the space between
+the lines of the output, the command
+\begin{verbatim}
+\maximaoutputbaselineskip = 14pt
+\end{verbatim}
+\noindent
+could be used.
+The amount of space that appears before a cell can be changed by changing
+the value of \verb+\premaximaspace+ (by default, 0pt), and that after
+a cell can be changed by changing the value of \verb+\postmaximaspace+
+(by default, 1.5 ex).
+ 
+Session cells can be configured similarly.  
+Lines can be placed around a \mx{} session with the command
+\begin{verbatim}
+\maximasessionlinestrue
+\end{verbatim}
+\noindent
+and they can be turned back off with
+\begin{verbatim}
+\maximasessionlinesfalse
+\end{verbatim}
+\noindent
+The font can be changed by changing the value of
+\verb+\maximasessionfont+.  The color of the prompts when the session
+is in \TeX{} form is controlled by \\
+\verb+\maximapromptcolor+, by
+default red, the colors of the input lines and output lines are
+controlled by \verb+\maximainputcolor+ and \verb+\maximaoutputcolor+,
+respectively. So the command
+\begin{verbatim}
+\def\maximainputcolor{green}
+\end{verbatim}
+\noindent
+would make the input in a \TeX{}ed session green.  
+The session can be \TeX{}ed without the colors by using the command
+\verb+\maximasessionnocolor+.
+The baselineskip is
+set by \verb+\maximasessionbaselineskip+ for normal session cells, and
+by \verb+\maixmatexsessionbaselineskip+ for \TeX{} sessions.  The
+amount of space that appears before a session cell can be changed by
+changing the value of \verb+\premaximasessionspace+ (by default, 0pt),
+and that after a cell can be changed by changing the value of
+\verb+\postmaximasessionspace+ (by default, 1.5 ex).
 
 \section{\mx{} mode}
 
@@ -492,24 +665,25 @@ Portions of the buffer can be sent to a Maxima process.  (If a process is
 not running, one will be started.)
 
 \begin{tabular}{p{\firstcol}p{\secondcol}}
-\texttt{C-M-r} & Send the region to Maxima.\\
-\texttt{C-M-b} & Send the buffer to Maxima.\\
-\texttt{C-M-l} & Send the line to Maxima.\\
-\texttt{C-M-f} & Send the form to Maxima.\\
+\texttt{C-cC-r} & Send the region to Maxima.\\
+\texttt{C-cC-b} & Send the buffer to Maxima.\\
+\texttt{C-cC-c} & Send the line to Maxima.\\
+\texttt{C-cC-e} & Send the form to Maxima.\\
 \texttt{C-RET} & Send the smallest set of lines which contains
 the cursor and contains no incomplete forms, and go to the next form.\\
-\texttt{M-RET} &  As above, but with the region instead of the current line.
+\texttt{M-RET} &  As above, but with the region instead of the current line.\\
+\texttt{C-cC-l} & Prompt for and load a Maxima file.
 \end{tabular}
 
 \noindent
 When something is sent to Maxima, a buffer running an inferior Maxima 
 process will appear.  It can also be made to appear by using the command
-\texttt{C-c C-d}.
+\texttt{C-c C-p}.
 If an argument is given to a command to send information to Maxima,
 the region (buffer, line, form) will first be checked to make sure
 the parentheses are balanced.
 The Maxima process can be killed, after asking for confirmation 
-with \texttt{C-M-k}.  To kill without confirmation, give \texttt{C-M-k}
+with \texttt{C-cC-k}.  To kill without confirmation, give \texttt{C-cC-k}
 an argument.
 
 By default, a newline will be indented to the same level as the 
@@ -532,10 +706,10 @@ The default can be set by setting the value of the variable
 \texttt{'standard} or \texttt{'perhaps-smart}.
 In all cases, \texttt{M-x maxima-untab} will remove a level of indentation.
 
-To get help on a Maxima topic, use \texttt{C-c C-h}.
-To read the Maxima info manual, use \texttt{C-c C-i}.
-To get help with the symbol under point, use \texttt{f12}.
-To get apropos with the symbol under point, use \texttt{M-f12}.
+To get help on a Maxima topic, use \texttt{C-c C-d}.
+To read the Maxima info manual, use \texttt{C-c C-m}.
+To get help with the symbol under point, use \texttt{C-cC-h}.
+To get apropos with the symbol under point, use \texttt{C-cC-a}.
 
 
 \section{Running \mx{} Interactively}
@@ -554,10 +728,10 @@ parentheses.  The following commands are also available.
      a completion buffer if there is more than one possible completion.\\
 \texttt{C-TAB} & Cycle through possible completions.\\
 \texttt{C-M-TAB} & Complete the input line, based on previous input lines.\\
-\texttt{C-c C-h} & Get help on a Maxima topic.\\
-\texttt{C-c C-i} & Bring up the Maxima info manual.\\
-\texttt{C-M-k} & Kill the process and the buffer, after asking for
-  confirmation.  To kill without confirmation, give \texttt{C-M-k} an
+\texttt{C-c C-d} & Get help on a Maxima topic.\\
+\texttt{C-c C-m} & Bring up the Maxima info manual.\\
+\texttt{C-cC-k} & Kill the process and the buffer, after asking for
+  confirmation.  To kill without confirmation, give \texttt{C-cC-k} an
   argument.\\
 \texttt{M-p} & Bring the previous input to the current prompt.\\
 \texttt{M-n} & Bring the next input to the prompt.\\
@@ -578,6 +752,9 @@ parentheses.  The following commands are also available.
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
+\texttt{C-c C-o} & Create a (standard) cell.\\
+\texttt{C-c C-p} & Create a session cell.\\
+\texttt{C-c C-n} & Create a noshow cell.\\
 \texttt{C-c +} & Go the the next cell.\\
 \texttt{C-c -} & Go to the previous cell.\\
 \texttt{C-c C-u a} & 
@@ -585,13 +762,16 @@ Update all of the cells.  With an argument, don't ask before updating.\\
 \texttt{C-c C-u A}
 & Update all of the cells in \TeX{} form. With an argument don't ask
 before updating.\\
-\texttt{C-c C-u q}
+\texttt{C-c C-u t}
 & Evaluate all of the initialization cells.\\
 \texttt{C-c C-u i}
 & Update all of the initialization cells.  With an argument, don't
 ask before updating.\\
 \texttt{C-c C-u I}
 & Update all of the initialization cells in \TeX{} form.  With an
+argument, don't ask before updating.\\
+\texttt{C-c C-u s}
+& Update all of the session cells in \TeX{} form.  With an
 argument, don't ask before updating.
 \end{tabular}
 
@@ -607,7 +787,7 @@ argument, don't ask before updating.
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{C-c C-s}
+\texttt{C-c C-v}
 %& \texttt{emaxima-send-cell}
 & Send the current cell to the \mx{} process.\\
 \texttt{C-c C-u c}
@@ -619,7 +799,7 @@ argument, don't ask before updating.
 \texttt{C-c C-d}
 %& \texttt{emaxima-delete-output}
 & Delete the output from the current cell.\\
-\texttt{C-c C-q}
+\texttt{C-c C-t}
 %& \texttt{emaxima-toggle-init}
 & Toggle whether or not the current cell is an initialization cell.\\
 \texttt{C-c C-x}
@@ -647,9 +827,6 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{C-c C-o}
-%& \texttt{emaxima-create-cell}
-& Create a cell.\\
 \texttt{C-c C-u l}
 %& \texttt{emaxima-replace-line}
 & Send the current line to \mx{}, and replace the line with the
@@ -677,10 +854,10 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{C-c C-a} & Go to the beginning of the form.\\
-\texttt{C-c C-e} & Go to the end of the form.\\
-\texttt{C-c (} & Go to the beginning of the sexp.\\
-\texttt{C-c )} & Go to the end of the sexp.
+\texttt{M-C-a} & Go to the beginning of the form.\\
+\texttt{M-C-e} & Go to the end of the form.\\
+\texttt{M-C-b} & Go to the beginning of the sexp.\\
+\texttt{M-C-f} & Go to the end of the sexp.
 \end{tabular}
 
 \smallskip
@@ -695,13 +872,13 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{M-C-p} & Start a \mx{} process.\\
-\texttt{M-C-r} & Send the region to the \mx{} process.\\
-\texttt{M-C-b} & Send the buffer to the \mx{} process.\\
-\texttt{M-C-l} & Send the line to the \mx{} process.\\
-\texttt{M-C-f} & Send the form to the \mx{} process.\\
-\texttt{M-C-k} & Kill the \mx{} process.\\
-\texttt{C-c C-d} & Display the \mx{} buffer.
+\texttt{C-cC-p} & Start a \mx{} process.\\
+\texttt{C-cC-r} & Send the region to the \mx{} process.\\
+\texttt{C-cC-b} & Send the buffer to the \mx{} process.\\
+\texttt{C-cC-c} & Send the line to the \mx{} process.\\
+\texttt{C-cC-e} & Send the form to the \mx{} process.\\
+\texttt{C-cC-k} & Kill the \mx{} process.\\
+\texttt{C-cC-p} & Display the \mx{} buffer.
 \end{tabular}
 
 \smallskip
@@ -732,9 +909,10 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{C-c C-c} & Comment the region.\\
-\texttt{C-c :} & Insert a short comment.\\
-\texttt{C-c ;} & Insert a comment environment.
+\texttt{C-c ;} & Comment the region.\\
+\texttt{C-c :} & Uncomment the region.\\
+\texttt{M-;} & Insert a short comment.\\
+\texttt{C-c *} & Insert a comment environment.
 \end{tabular}
 
 
@@ -767,14 +945,14 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{C-c C-h}
+\texttt{C-c C-d}
 %& \texttt{maxima-help}
 & Get help on a (prompted for) subject.\\
-\texttt{C-c C-a}
+\texttt{C-c C-m}
 %& \texttt{maxima-apropos}
-& Get a list of subjects concerning a (prompted for) subject.\\
-\texttt{f12} & Get help with the symbol under point.\\
-\texttt{M-f12} & Get apropos with the symbol under point.
+& Read the manual.\\
+\texttt{C-cC-h} & Get help with the symbol under point.\\
+\texttt{C-cC-a} & Get apropos with the symbol under point.
 \end{tabular}
 
 \smallskip
@@ -789,9 +967,9 @@ assemble the package that the cell defines.\\
 \hline
 \textbf{Key} & \textbf{Description}\\
 \hline
-\texttt{C-c C-f} & Mark the form.\\
-\texttt{C-c C-p} & Check the region for balanced parentheses.\\
-\texttt{C-c C-g} & Check the form for balanced parentheses.
+\texttt{M-C-h} & Mark the form.\\
+\texttt{C-c)} & Check the region for balanced parentheses.\\
+\texttt{C-c C-)} & Check the form for balanced parentheses.
 \end{tabular}
 
 \section{AUC\TeX{} commands}
@@ -814,7 +992,7 @@ assemble the package that the cell defines.\\
 & Insert a section.\\
 \texttt{C-c ]}
 & Close an environment.\\
-\texttt{C-c \texttt{RET}}
+\texttt{C-c C-j}
 & Insert an item into a list.\\
 \texttt{"}
 & Smart quote.\\
