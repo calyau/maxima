@@ -25,7 +25,7 @@ as
 @end example
 
 @noindent
-for a list with 4 elements.   Internally this corresponds to a Lisp list
+for a list with 4 elements.  Internally this corresponds to a Lisp list
 of the form
 
 @example
@@ -44,8 +44,8 @@ itself, since after it has been through the simplifier the list would become
 @section Definitions for Lists
 
 @defun append (list1, list2, ...)
-returns a single list of the elements of @code{list1} followed
-by the elements of @code{list2},...  @code{append} also works on
+returns a single list of the elements of @var{list1} followed
+by the elements of @var{list2},...  @code{append} also works on
 general expressions, e.g. @code{append(f(a,b), f(c,d,e));} ->
 @code{f(a,b,c,d,e)}.
 
@@ -55,39 +55,39 @@ Do @code{example(append);} for an example.
 
 @defun assoc (key, list, default)
 @defunx assoc (key, list)
-This function searches for the @code{key} in the left hand side of the input @code{list}
-of the form @code{[x,y,z,...]} where each of the @code{list} elements is an expression of
+This function searches for the @var{key} in the left hand side of the input @var{list}
+of the form @code{[x,y,z,...]} where each of the @var{list} elements is an expression of
 a binary operand and 2 elements.  For example @code{x=1}, @code{2^3}, @code{[a,b]} etc.
-The @code{key} is checked againts the first operand.  @code{assoc} returns the second
+The @var{key} is checked againts the first operand.  @code{assoc} returns the second
 operand if the @code{key} is found.  If the @code{key} is not found it
-either returns the @code{default} value.  @code{default} is optional
+either returns the @var{default} value.  @var{default} is optional
 and defaults to @code{false}.
 
 @end defun
 
 @defun atom (exp)
-is @code{true} if @code{exp} is atomic (i.e. a number, name or string) else
+is @code{true} if @var{exp} is atomic (i.e. a number, name or string) else
 @code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
 @code{false} (asuming @code{a[1]} and @code{x} are unbound).
 
 @end defun
 
 @defun cons (exp, list)
-returns a new list constructed of the element @code{exp} as
-its first element, followed by the elements of @code{list}.  @code{cons} also works
+returns a new list constructed of the element @var{exp} as
+its first element, followed by the elements of @var{list}.  @code{cons} also works
 on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end defun
 
 @defun copylist (list)
-creates a copy of the list @code{list}.
+creates a copy of the list @var{list}.
 
 @end defun
 
 @defun delete (exp1, exp2)
 @defunx delete (exp1, exp2, n)
-removes all occurrences of @code{exp1} from @code{exp2}.  @code{exp1}
-may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2}
+removes all occurrences of @var{exp1} from @var{exp2}.  @var{exp1}
+may be a term of @var{exp2} (if it is a sum) or a factor of @var{exp2}
 (if it is a product).
 
 @example
@@ -96,9 +96,9 @@ may be a term of @code{exp2} (if it is a sum) or a factor of @code{exp2}
 
 @end example
 
-@code{delete(exp1, exp2, n)} removes the first @code{n} occurrences of
-@code{exp1} from @code{exp2}.  If there are fewer than @code{n}
-occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
+@code{delete(@var{exp1}, @var{exp2}, @var{n})} removes the first @var{n} occurrences of
+@var{exp1} from @var{exp2}.  If there are fewer than @var{n}
+occurrences of @var{exp1} in @var{exp2} then all occurrences will be deleted.
 
 @example
 (%i1)  delete(a,f(a,b,c,d,a));
@@ -111,14 +111,14 @@ occurrences of @code{exp1} in @code{exp2} then all occurrences will be deleted.
 @end defun
 
 @defun eigth (exp)
-returns the 8'th item of expression or list @code{exp}.
+returns the 8'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun endcons (exp, list)
 returns a new list consisting of the elements of
-@code{list} followed by @code{exp}.  @code{endcons} also works on general expressions, e.g.
+@code{list} followed by @var{exp}.  @code{endcons} also works on general expressions, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end defun
@@ -130,18 +130,18 @@ This function takes a list, or a positive number of arguments and returns
 @end defun
 
 @defun fifth (exp)
-returns the 5'th item of expression or list @code{exp}.
+returns the 5'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun first (exp)
-yields the first part of @code{exp} which may result in the first
+yields the first part of @var{exp} which may result in the first
 element of a list, the first row of a matrix, the first term of a sum,
 etc.  Note that @code{first} and its related functions, @code{rest} and @code{last}, work
-on the form of @code{exp} which is displayed not the form which is typed on
+on the form of @var{exp} which is displayed not the form which is typed on
 input.  If the variable @code{inflag} is set to @code{true} however, these
-functions will look at the internal form of @code{exp}.  Note that the
+functions will look at the internal form of @var{exp}.  Note that the
 simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if @code{inflag}
 is @code{true} and @code{y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
 results).  The functions @code{second} .. @code{tenth} yield the second through the
@@ -155,14 +155,14 @@ Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 @end defun
 
 @defun fourth (exp)
-returns the 4'th item of expression or list @code{exp}.
+returns the 4'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun get (a, i)
-retrieves the user property indicated by @code{i} associated with
-atom @code{a} or returns @code{false} if a doesn't have property @code{i}.
+retrieves the user property indicated by @var{i} associated with
+atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
 
 @example
 (%i1) put (%e, 'transcendental, 'type);
@@ -187,13 +187,13 @@ x is not numeric.
 @end defun
 
 @defun last (exp)
-yields the last part (term, row, element, etc.) of the @code{exp}.
+yields the last part (term, row, element, etc.) of the @var{exp}.
 
 @end defun
 
 @defun length (exp)
 gives (by default) the number of parts in the external
-(displayed) form of @code{exp}.  For lists this is the number of elements,
+(displayed) form of @var{exp}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
 of terms (see @code{dispform}).  The @code{length} command is affected by the
 @code{inflag} switch.  So, e.g. @code{length(a/(b*c));} gives 2 if
@@ -212,15 +212,15 @@ lists.
 @end defvar
 
 @defun listp (exp)
-is @code{true} if @code{exp} is a list else @code{false}.
+is @code{true} if @var{exp} is a list else @code{false}.
 
 @end defun
 
 @defun makelist (exp,var,lo,hi)
 @defunx makelist (exp,var,list)
 returns a list as value.  @code{makelist} may be called as
-@code{makelist(exp,var,lo,hi)} [@code{lo} and @code{hi} must be integers], or as
-@code{makelist(exp,var,list)}.  In the first case @code{makelist} is analogous to
+@code{makelist(@var{exp},@var{var},@var{lo},@var{hi})} (@var{lo} and @var{hi} must be integers), or as
+@code{makelist(@var{exp},@var{var},@var{list})}.  In the first case @code{makelist} is analogous to
 @code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.
 Examples:
 
@@ -234,59 +234,59 @@ Examples:
 @end defun
 
 @defun member (exp, list)
-returns @code{true} if @code{exp} occurs as a member of @code{list} (not
+returns @code{true} if @var{exp} occurs as a member of @vare{list} (not
 within a member).  Otherwise @code{false} is returned.  @code{member} also works on
 non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
 @end defun
 
 @defun ninth (exp)
-returns the 9'th item of expression or list @code{exp}.
+returns the 9'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun rest (exp, n)
 @defunx rest (exp)
-yields @code{exp} with its first @code{n} elements removed if @code{n} is
-positive and its last @code{-n} elements removed if @code{n} is negative.  If @code{n} is 1
-it may be omitted.  @code{exp} may be a list, matrix, or other expression.
+yields @var{exp} with its first @var{n} elements removed if @var{n} is
+positive and its last @code{-@var{n}} elements removed if @var{n} is negative.  If @var{n} is 1
+it may be omitted.  @var{exp} may be a list, matrix, or other expression.
 
 @end defun
 
 @defun reverse (list)
-reverses the order of the members of the @code{list} (not
+reverses the order of the members of the @var{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
 e.g.  @code{reverse(a=b);} gives @code{b=a}.
 
 @end defun
 
 @defun second (exp)
-returns the 2'nd item of expression or list @code{exp}.
+returns the 2'nd item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun seventh (exp)
-returns the 7'th item of expression or list @code{exp}.
+returns the 7'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun sixth (exp)
-returns the 6'th item of expression or list @code{exp}.
+returns the 6'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun tenth (exp)
-returns the 10'th item of expression or list @code{exp}.
+returns the 10'th item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun
 
 @defun third (exp)
-returns the 3'rd item of expression or list @code{exp}.
+returns the 3'rd item of expression or list @var{exp}.
 See @code{first} for more details.
 
 @end defun

@@ -16,8 +16,8 @@ rule is used in @code{limit}.  This prevents infinite looping in cases like
 @defun limit (exp, var, val, dir)
 @defunx limit (exp, var, val)
 @defunx limit (exp)
-finds the limit of @code{exp} as the real variable
-@code{var} approaches the value @code{val} from the direction @code{dir}.  @code{dir} may have the
+finds the limit of @var{exp} as the real variable
+@var{var} approaches the value @var{val} from the direction @var{dir}.  @var{dir} may have the
 value @code{plus} for a limit from above, @code{minus} for a limit from below, or
 may be omitted (implying a two-sided limit is to be computed).  For
 the method see Wang, P., "Evaluation of Definite Integrals by Symbolic

@@ -18,27 +18,27 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 @defun log (x)
 the natural logarithm.
 
-  @code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}.
+@code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}.
 If it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.
 If it is set to @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)} for rational
 numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for @code{b} integer, always simplifies.)  If
 it is set to @code{false}, all of these simplifications will be turned off.
 
-  @code{logsimp} - if @code{false} then no simplification of @code{%e} to a power
+@code{logsimp} - if @code{false} then no simplification of @code{%e} to a power
 containing @code{log}'s is done.
 
-  @code{lognumer} - if @code{true} then negative floating point arguments to
+@code{lognumer} - if @code{true} then negative floating point arguments to
 @code{log} will always be converted to their absolute value before the @code{log} is
 taken.  If @code{numer} is also @code{true}, then negative integer arguments to @code{log}
 will also be converted to their absolute value.
 
-  @code{lognegint} - if @code{true} implements the rule @code{log(-n)} ->
+@code{lognegint} - if @code{true} implements the rule @code{log(-n)} ->
 @code{log(n)+%i*%pi} for @code{n} a positive integer.
 
-  @code{%e_to_numlog} - when @code{true}, @code{r} some rational number, and
-@code{x} some expression, @code{%e^(r*log(x))} will be simplified into @code{x^r} .  It
-should be noted that the @code{radcan} command also does this transformation,
-and more complicated transformations of this ilk as well.
+@code{%e_to_numlog} - when @code{true}, @code{r} some rational number, and
+@code{x} some expression, @code{%e^(r*log(x))} will be simplified into
+@code{x^r} .  It should be noted that the @code{radcan} command also
+does this transformation, and more complicated transformations of this ilk as well.
 The @code{logcontract} command "contracts" expressions containing @code{log}.
 
 @end defun
@@ -54,15 +54,16 @@ endpoints is often needed.
 @end defvar
 
 @defvar logarc
- default value: @code{false} - if @code{true} will cause the inverse circular and
+default value: @code{false} - if @code{true} will cause the inverse circular and
 hyperbolic functions to be converted into logarithmic form.
-@code{logarc(exp)} will cause this conversion for a particular expression without
-setting the switch or having to re-evaluate the expression with @code{ev}.
+@code{logarc(@var{exp})} will cause this conversion for a particular
+expression @var{exp} without setting the switch or having to
+re-evaluate the expression with @code{ev}.
 
 @end defvar
 
 @defvar logconcoeffp
- default value: @code{false} - controls which coefficients are
+default value: @code{false} - controls which coefficients are
 contracted when using @code{logcontract}.  It may be set to the name of a
 predicate function of one argument.  E.g. if you like to generate
 SQRTs, you can do @code{logconcoeffp:'logconfun$
@@ -72,7 +73,7 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @end defvar
 
 @defun logcontract (exp)
-recursively scans an @code{exp}, transforming
+recursively scans an @var{exp}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
@@ -97,7 +98,7 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @end defun
 
 @defvar logexpand
- default value: @code{true} - causes @code{log(a^b)} to become @code{b*log(a)}.  If
+default value: @code{true} - causes @code{log(a^b)} to become @code{b*log(a)}.  If
 it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If it
 is set to @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)} for
 rational numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for integer @code{b}, always
@@ -107,13 +108,13 @@ be turned off.
 @end defvar
 
 @defvar lognegint
- default value: @code{false} - if @code{true} implements the rule
+default value: @code{false} - if @code{true} implements the rule
 @code{log(-n)} -> @code{log(n)+%i*%pi} for @code{n} a positive integer.
 
 @end defvar
 
 @defvar lognumer
- default value: @code{false} - if @code{true} then negative floating point
+default value: @code{false} - if @code{true} then negative floating point
 arguments to @code{log} will always be converted to their absolute value
 before the @code{log} is taken.  If @code{numer} is also @code{true}, then negative integer
 arguments to @code{log} will also be converted to their absolute value.
@@ -121,14 +122,14 @@ arguments to @code{log} will also be converted to their absolute value.
 @end defvar
 
 @defvar logsimp
- default value: @code{true} - if @code{false} then no simplification of @code{%e} to a
+default value: @code{true} - if @code{false} then no simplification of @code{%e} to a
 power containing @code{log}'s is done.
 
 @end defvar
 
 @defun plog (x)
 the principal branch of the complex-valued natural
-logarithm with @code{-%pi} < @code{carg(x)} <= @code{+%pi} .
+logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 @end defun
 
