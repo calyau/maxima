@@ -1,16 +1,16 @@
 # -*- mode: rpm-spec -*-
 
-# By default, this spec file will generate RPMs for Clisp, CMUCL
-# and GCL. This can be changed by modifying the variables below.
-%define enable_clisp 1
-%define clisp_flags --enable-clisp
-%define clisp_version 2.29
+# By default, this spec file will generate RPMs for CMUCL
+# This can be changed by modifying the variables below.
+%define enable_clisp 0
+%define clisp_flags --disable-clisp
+%define clisp_version 2.33
 %define enable_cmucl 1
 %define cmucl_flags --enable-cmucl
-%define enable_sbcl 1
-%define sbcl_flags --enable-sbcl
-%define enable_gcl 1
-%define gcl_flags --enable-gcl
+%define enable_sbcl 0
+%define sbcl_flags --disable-sbcl
+%define enable_gcl 0
+%define gcl_flags --disable-gcl
 
 # Inhibit automatic compressing of info files. Compressed info
 # files break maxima's internal help.
@@ -25,7 +25,6 @@ Group: Development/Languages
 URL: http://maxima.sourceforge.net
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot
-Requires: maxima_exec
 
 %description
 
@@ -49,7 +48,7 @@ Tcl/Tk interface to Maxima.
 %package exec-clisp
 Summary: Maxima compiled with clisp
 Group: Development/Languages
-Requires: clisp = %{clisp_version}, maxima
+Requires: maxima
 Provides: maxima_exec
 %description exec-clisp
 Maxima compiled with clisp.
@@ -59,7 +58,7 @@ Maxima compiled with clisp.
 %package exec-cmucl
 Summary: Maxima compiled with CMUCL
 Group: Development/Languages
-Requires: cmucl maxima
+Requires: maxima
 Provides: maxima_exec
 %description exec-cmucl
 Maxima compiled with CMUCL.
@@ -95,6 +94,22 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 %makeinstall
+  make \
+	prefix=%{?buildroot:%{buildroot}}%{_prefix} \
+	exec_prefix=%{?buildroot:%{buildroot}}%{_exec_prefix} \
+	bindir=%{?buildroot:%{buildroot}}%{_bindir} \
+	sbindir=%{?buildroot:%{buildroot}}%{_sbindir} \
+	sysconfdir=%{?buildroot:%{buildroot}}%{_sysconfdir} \
+	datadir=%{?buildroot:%{buildroot}}%{_datadir} \
+	includedir=%{?buildroot:%{buildroot}}%{_includedir} \
+	libdir=%{?buildroot:%{buildroot}}%{_libdir} \
+	libexecdir=%{?buildroot:%{buildroot}}%{_libexecdir} \
+	localstatedir=%{?buildroot:%{buildroot}}%{_localstatedir} \
+	sharedstatedir=%{?buildroot:%{buildroot}}%{_sharedstatedir} \
+	mandir=%{?buildroot:%{buildroot}}%{_mandir} \
+	infodir=%{?buildroot:%{buildroot}}%{_infodir} \
+  install-info
+touch debugfiles.list
 
 %post
 /sbin/install-info %{_infodir}/maxima.info %{_infodir}/dir
@@ -114,6 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/*
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
+%{_bindir}/rmaxima
 %doc AUTHORS COPYING INSTALL README README.lisps README.rpms
 
 %files xmaxima
