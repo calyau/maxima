@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: xmaxima-paths.tcl,v 1.10 2002-09-10 15:48:09 mikeclarkson Exp $
+#       $Id: xmaxima-paths.tcl,v 1.11 2002-09-10 16:11:47 mikeclarkson Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -21,8 +21,10 @@ proc setMaxDir {} {
 		[info exists autoconf(libexecdir)] && \
 		[info exists autoconf(datadir)] && \
 		[info exists autoconf(infodir)] && \
+		[info exists autoconf(version)] && \
+		[info exists autoconf(package)] && \
 		[file isdir  $autoconf(datadir)] && \
-		[file isdir 
+		[file isdir \
 		  [file join $autoconf(datadir) 
 		   $autoconf(package) $autoconf(version)]]} {
 
@@ -35,7 +37,7 @@ proc setMaxDir {} {
 	    set autoconf(prefix) $up
 	    set autoconf(exec_prefix) $up
 	    set autoconf(package) "maxima"
-	    # FIXME: hard coding
+	    # FIXME: hard coding of release version
 	    set autoconf(version) "5.9.0rc1"
 	    set autoconf(libdir) "$up/lib"
 	    set autoconf(libexecdir) "$up/libexec"
