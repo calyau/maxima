@@ -30,7 +30,8 @@
 
 ;;(DEFUN CDRAS(A L)(CDR (ZL-ASSOC A L)))
 
-(defun gm(expr)(simplifya (list '(%gamma) expr) nil))
+(defun gm (expr)
+  (simplifya (list '(%gamma) expr) nil))
 
 (defun sin%(arg)(list '(%sin) arg))
 
@@ -91,19 +92,29 @@
 
 
 
-(defun gminc(a b)(list '($gammaincomplete) a b))
+;; I (rtoy) think this is the tail of the incomplete gamma function.
+(defun gminc (a b)
+  (list '($gammaincomplete) a b))
 
 (defun littleslommel
     (m n z)
   (list '(mqapply)(list '($%s array) m n) z))
 
-(defun mwhit(a i1 i2)(list '(mqapply)(list '($%m array) i1 i2) a))
+;; Whittaker's M function
+(defun mwhit (a i1 i2)
+  (list '(mqapply) (list '($%m array) i1 i2) a))
 
-(defun wwhit(a i1 i2)(list '(mqapply)(list '($%w array) i1 i2) a))
+;; Whittaker's W function
+(defun wwhit (a i1 i2)
+  (list '(mqapply) (list '($%w array) i1 i2) a))
 
-(defun pjac(x n a b)(list '(mqapply)(list '($%p array) n a b) x))
+;; Jacobi P
+(defun pjac (x n a b)
+  (list '(mqapply) (list '($%p array) n a b) x))
 
-(defun parcyl(x n)(list '(mqapply)(list '($%d array) n) x))
+;; Parabolic cylinder function D
+(defun parcyl (x n)
+  (list '(mqapply) (list '($%d array) n) x))
 
 
 ;;...HOPEFULLY AMONG WHATEVER GARBAGE IT RECOGNIZES J[V](W).
@@ -431,6 +442,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Incomplete gamma function, integrate(t^(v-1)*exp(-t),t,0,x)
 (defun onegammagreek
     (exp)
   (m2 exp
@@ -1791,9 +1803,15 @@
 	(t (add (defexec (car fun) var)
 		(distrdefexec (cdr fun))))))
 
+;; Express bessel_y in terms of bessel_j.
+;;
+;; A&S 9.1.2:
+;;
+;; bessel_y(v,z) = bessel_j(v,z)*cot(v*%pi)-bessel_j(-v,z)/sin(v*%pi)
 (defun ytj (i a)
-  (sub (mul* (bess i a 'j)(list '(%cot) (mul i '$%pi)))
-       (mul* (bess (mul -1 i) a 'j)(inv (sin% (mul i '$%pi))))))
+  (sub (mul* (bess i a 'j) (list '(%cot) (mul i '$%pi)))
+       (mul* (bess (mul -1 i) a 'j)
+	     (inv (sin% (mul i '$%pi))))))
 
 (defun dtw (i a)
   (mul* (power 2 (add (div i 2)(inv 4)))
@@ -1925,6 +1943,8 @@
 ;;
 ;;         = 2/sqrt(%pi)*(z/2)^(v+1)/gamma(v+3/2) * 1F2(1;3/2,v+3/2;(-z^2/4))
 ;;
+;; See also A&S 12.1.21.
+;;
 (defun hstf (v z)
   (let ((d32 (div 3 2)))
     (list (mul* (power (div z 2)(add v 1))
@@ -1936,9 +1956,28 @@
 		(list d32 (add v d32))
 		(mul* (inv -4) z z)))))
 
-(defun lstf
-    (v z)
-  (prog(hst)
+;; Struve L function
+;;
+;; A&S 12.2.1:
+;;
+;; L[v](z) = -%i*exp(-v*%i*%pi/2)*H[v](%i*z)
+;;
+;; This function computes exactly this way.  (But why is %i written as
+;; exp(%i*%pi/2) instead of just %i)
+;;
+;; A&S 12.2.1 gives the series expansion as
+;;
+;;                       inf
+;; L[v](z) = (z/2)^(v+1)*sum (z/2)^(2*k)/gamma(k+3/2)/gamma(k+v+3/2)
+;;                       k=0
+;;
+;; It's quite easy to derive
+;;
+;; L[v](z) = 2/sqrt(%pi)*(z/2)^(v+1)/gamma(v+3/2) * 1F2(1;3/2,v+3/2;(z^2/4))
+
+#+nil
+(defun lstf (v z)
+  (prog (hst)
      (return (list (mul* (power '$%e
 				(mul* (div (add v 1)
 					   -2)
@@ -1954,17 +1993,30 @@
 							'$%pi)))))))
 		   (cadr hst)))))
 
-(defun stf
-    (m n z)
+(defun lstf (v z)
+  (let ((d32 (div 3 2)))
+    (list (mul* (power (div z 2)(add v 1))
+		(inv (gm d32))
+		(inv (gm (add v d32))))
+	  (list 'fpq
+		(list 1 2)
+		(list 1)
+		(list d32 (add v d32))
+		(mul* (inv 4) z z)))))
+
+;; Lommel s function
+;;
+;; See Y. L. Luke, p 217, formula 1
+;;
+;; s(u,v,z) = z^(u+1)/(u-v+1)/(u+v+1)*1F2(1; (u-v+3)/2, (u+v+3)/2; -z^2/4)
+(defun stf (m n z)
   (list (mul* (power z (add m 1))
 	      (inv (sub (add m 1) n))
 	      (inv (add m n 1)))
-	(list 'fpq
-	      (list 1 2)
-	      (list 1)
-	      (list (div (sub (add m 3) n) 2)
-		    (div (add* m n 3) 2))
-	      (mul* (inv -4) z z))))
+	(ref-fpq (list 1)
+		 (list (div (sub (add m 3) n) 2)
+		       (div (add* m n 3) 2))
+		 (mul* (inv -4) z z))))
 
 (defun lt-ltp
     (flg rest arg index)
@@ -2059,8 +2111,18 @@
 		     par
 		     (execf19 l (cadr l1))))))
 
-(defun ref
-    (flg index arg)
+;; Dispatch function to convert the given function to a hypergeometric
+;; function.
+;;
+;; The first arg is a symbol naming the function; the last is the
+;; argument to the function.  The second arg is the index (or list of
+;; indices) to the function.  Not used if the function doesn't have
+;; any indices
+;;
+;; The result is a list of 2 elements: The first element is a
+;; multiplier; the second, the hypergeometric function itself.
+#+nil
+(defun ref (flg index arg)
   (cond ((eq flg 'onej)(j1tf index arg))
 	((eq flg 'twoj)(j2tf (car index)(cadr index) arg))
 	((eq flg 'hs)(hstf index arg))
@@ -2079,91 +2141,150 @@
 	((eq flg 'asin)(asintf arg))
 	((eq flg 'atan)(atantf arg))))
 
+(defun ref (flg index arg)
+  (case flg
+    (onej (j1tf index arg))
+    (twoj (j2tf (car index)(cadr index) arg))
+    (hs (hstf index arg))
+    (hl (lstf index arg))
+    (s (stf (car index)(cadr index) arg))
+    (onerf (erftf arg))
+    (onelog (logtf arg))
+    (onekelliptic (kelliptictf arg))
+    (onee (etf arg))
+    (onem (mtf (car index)(cadr index) arg))
+    (hyp-onep (ptf (car index)(cadr index) arg))
+    (oneq (qtf (car index)(cadr index) arg))
+    (gammagreek (gammagreektf index arg))
+    (onepjac 
+     (pjactf (car index)(cadr index)(caddr index) arg))
+    (asin (asintf arg))
+    (atan (atantf arg))))
+
+(defun ref-fpq (p q arg)
+  (list 'fpq (list (length p) (length q))
+	p q arg))
+
+;; Whittaker M function.
+;;
+;; A&S 13.1.32:
+;;
+;; M[k,u](z) = exp(-z/2)*z^(1/2+u)*M(1/2+u-k,1+2*u,z)
+;;
 (defun mtf
     (i1 i2 arg)
   (list (mul (power arg (add i2 (1//2)))
 	     (power '$%e (div arg -2)))
-	(list 'fpq
-	      (list 1 1)
-	      (list (add* (1//2) i2 (mul -1 i1)))
-	      (list (add* i2 i2 1))
-	      arg)))
+	(ref-fpq (list (add* (1//2) i2 (mul -1 i1)))
+		 (list (add* i2 i2 1))
+		 arg)))
 
-(defun pjactf
-    (n a b x)
+;; Jacobi P in terms of hypergeometric function
+;;
+;; A&S 15.4.6:
+;;
+;; F(-n,a+1+b+n; a+1; x) = n!/poch(a+1,n)*jacobi_p(n,a,b,1-2*x)
+;;
+;; jacobi_p(n,a,b,x) = poch(a+1,n)/n!*F(-n,a+1+b+n; a+1; (1-x)/2)
+;;                   = gamma(a+n+1)/gamma(a+1)/n!*F(-n,a+1+b+n; a+1; (1-x)/2)
+(defun pjactf (n a b x)
   (list (mul* (gm (add n a 1))
 	      (inv (gm (add a 1)))
 	      (inv (factorial n)))
-	(list 'fpq
-	      (list 2 1)
-	      (list (mul -1 n)(add* n a b 1))
-	      (list (add a 1))
-	      (sub (1//2)(div x 2)))))
+	(ref-fp1 (list (mul -1 n) (add* n a b 1))
+		 (list (add a 1))
+		 (sub (1//2) (div x 2)))))
 
-(defun asintf
-    (arg)
+;; asin(x)
+;;
+;; A&S 15.1.6:
+;;
+;; F(1/2,1/2; 3/2; z^2) = asin(z)/z
+;;
+;; asin(z) = z*F(1/2,1/2; 3/2; z^2)
+(defun asintf (arg)
   ((lambda(inv2)
      (list arg
-	   (list 'fpq
-		 (list 2 1)
-		 (list inv2 inv2)
-		 (list (div 3 2))
-		 (mul arg arg))))
+	   (ref-fpq (list inv2 inv2)
+		    (list (div 3 2))
+		    (mul arg arg))))
    (1//2)))
 
-(defun atantf
-    (arg)
+;; atan(x)
+;;
+;; A&S 15.1.5
+;;
+;; F(1/2,1; 3/2; -z^2) = atan(z)/z
+;;
+;; atan(z) = z*F(1/2,1; 3/2; -z^2)
+(defun atantf (arg)
   (list arg
-	(list 'fpq
-	      (list 2 1)
-	      (list (inv 2) 1)
-	      (list (div 3 2))
-	      (mul* -1 arg arg))))
+	(ref-fpq (list (inv 2) 1)
+		 (list (div 3 2))
+		 (mul* -1 arg arg))))
 
-(defun ptf
-    (n m z)
+;; Associated Legendre function P
+;;
+;; A&S 8.1.2
+;;
+;; assoc_legendre_p(v,u,z) = ((z+1)/(z-2))^(u/2)/gamma(1-u)*F(-v,v+1;1-u,(1-z)/2)
+(defun ptf (n m z)
   (list (mul (inv (gm (sub 1 m)))
-	     (power (div (add z 1)(sub z 1))(div m 2)))
-	(list 'fpq
-	      (list 2 1)
-	      (list (mul -1 n)(add n 1))
-	      (list (sub 1 m))
-	      (sub (1//2)(div z 2)))))
+	     (power (div (add z 1)
+			 (sub z 1))
+		    (div m 2)))
+	(ref-fpq (list (mul -1 n) (add n 1))
+		 (list (sub 1 m))
+		 (sub (1//2) (div z 2)))))
 
-(defun qtf
-    (n m z)
+;; Associated Legendre function Q
+;;
+;; A&S 8.1.3:
+;;
+;; assoc_legendre_q(v,u,z)
+;;    = exp(%i*u*%pi)*2^(-v-1)*sqrt(%pi) *
+;;       gamma(v+u+1)/gamma(v+3/2)*z^(-v-u-1)*(z^2-1)^(u/2) * 
+;;        F(1+v/2+u/2, 1/2+v/2+u/2; v+3/2; 1/z^2)
+(defun qtf (n m z)
   (list (mul* (power '$%e (mul* m '$%pi '$%i))
 	      (power '$%pi (1//2))
 	      (gm (add* m n 1))
 	      (power 2 (sub -1 n))
 	      (inv (gm (add n (div 3 2))))
 	      (power z (mul -1 (add* m n 1)))
-	      (power (sub (mul z z) 1)(div m 2)))
-	(list 'fpq
-	      (list 2 1)
-	      (list (div (add* m n 1) 2)
-		    (div (add* m n 2) 2))
-	      (list (add n (div 3 2)))
-	      (power z -2))))
+	      (power (sub (mul z z) 1)
+		     (div m 2)))
+	(ref-fpq (list (div (add* m n 1) 2)
+		       (div (add* m n 2) 2))
+		 (list (add n (div 3 2)))
+		 (power z -2))))
 
-(defun gammagreektf
-    (a x)
-  (list (mul (inv a)(power x a))
-	(list 'fpq
-	      (list 1 1)
-	      (list a)
-	      (list (add a 1))
-	      (mul -1 x))))
+;; Incomplete gamma function, integrate(t^(v-1)*exp(-t),t,0,x)
+;;
+;; A&S 13.6.10:
+;;
+;; M(a,a+1,-x) = a*x^(-a)*gammagreek(a,x)
+;;
+;; gammagreek(a,x) = x^a/a*M(a,a+1,-x)
+(defun gammagreektf (a x)
+  (list (mul (inv a) (power x a))
+	(ref-fpq (list a)
+		 (list (add a 1))
+		 (mul -1 x))))
 
+;; Complete elliptic K
+;;
+;; A&S 17.3.9
+;;
+;; K(k) = %pi/2*F(1/2,1/2; 1; k^2)
+;;
 (defun kelliptictf
     (k)
   ((lambda(inv2)
      (list (mul inv2 '$%pi)
-	   (list 'fpq
-		 (list  2 1)
-		 (list inv2 inv2)
-		 (list 1)
-		 (mul k k))))
+	   (ref-fpq (list inv2 inv2)
+		    (list 1)
+		    (mul k k))))
    (1//2)))
 
 (defun etf
@@ -2177,32 +2298,47 @@
 		 (mul k k))))
    (1//2)))
 
-(defun erftf
-    (arg)
+;; erf expressed as a hypgeometric function.
+;;
+;; A&S 7.1.21 gives
+;;
+;; erf(z) = 2*z/sqrt(%pi)*M(1/2,3/2,-z^2) = 2*z/sqrt(%pi)*exp(-z^2)*M(1,3/2,z^2)
+(defun erftf (arg)
   (list (mul* 2 arg (power '$%pi (inv -2)))
-	(list 'fpq
-	      (list 1 1)
-	      (list (1//2))
-	      (list (div 3 2))
-	      (mul* -1 arg arg))))
+	(ref-fpq (list (1//2))
+		 (list (div 3 2))
+		 (mul* -1 arg arg))))
 
-(defun logtf
-    (arg)
-  (list 1
-	(list 'fpq (list 2 1)(list 1 1)(list 2)(sub 1 arg))))
+;; We know from A&S 15.1.3 that
+;;
+;; F(1,1;2;z) = -log(1-z)/z.
+;;
+;; So log(z) = (z-1)*F(1,1;2;1-z)
+;;
+(defun logtf (arg)
+  ;; This seems wrong.   Why is the multipler 1 instead of (z-1)?
+  (list #+nil 1
+	(sub arg 1)
+	(ref-fpq (list 1 1)
+		 (list 2)
+		 (sub 1 arg))))
 
-(defun j2tf
-    (n m arg)
+;; Product of 2 Bessel J functions.
+;;
+;; See Y. L. Luke, formula 39, page 216:
+;;
+;; bessel_j(u,z)*bessel_j(v,z)
+;;    = (z/2)^(u+v)/gamma(u+1)/gamma(v+1) *
+;;        2F3((u+v+1)/2, (u+v+2)/2; u+1, v+1, u+v+1; -z^2)
+(defun j2tf (n m arg)
   (list (mul* (inv (gm (add n 1)))
 	      (inv (gm (add m 1)))
 	      (inv (power 2 (add n m)))
 	      (power arg (add n m)))
-	(list 'fpq
-	      (list 2 3)
-	      (list (add* (1//2)(div n 2)(div m 2))
-		    (add* 1 (div n 2)(div m 2)))
-	      (list (add 1 n)(add 1 m)(add* 1 n m))
-	      (mul -1 (power arg 2)))))
+	(ref-fpq (list (add* (1//2) (div n 2) (div m 2))
+		       (add* 1 (div n 2) (div m 2)))
+		 (list (add 1 n) (add 1 m) (add* 1 n m))
+		 (mul -1 (power arg 2)))))
 
 (defun d*x^m*%e^a*x
     (exp)
@@ -2338,16 +2474,23 @@
 			    (power k k)
 			    (power (inv par) k))))) 
 
-(defun j1tf
-    (v z)
+;; Bessel function expressed as a hypergeometric function.
+;;
+;; A&S 9.1.10:
+;;                         inf
+;; bessel_j(v,z) = (z/2)^v*sum (-z^2/4)^k/k!/gamma(v+k+1)
+;;                         k=0
+;;
+;;               = (z/2)^v/gamma(v+1)*sum 1/poch(v+1,k)*(-z^2/4)^k/k!
+;;
+;;               = (z/2)^v/gamma(v+1) * 0F1(; v+1; -z^2/4)
+(defun j1tf (v z)
   (list (mul* (inv (power 2 v))
 	      (power z v)
 	      (inv (gm (add v 1))))
-	(list 'fpq
-	      (list 0 1)
-	      nil
-	      (list (add v 1))
-	      (mul (inv -4)(power z 2)))))
+	(ref-fpq nil
+		 (list (add v 1))
+		 (mul (inv -4)(power z 2)))))
 
 (defun dionarghyp-y (l index arg) 
   (prog (a m c) 
