@@ -165,6 +165,7 @@ evalw.lisp \
 ezgcd.lisp \
 factor.lisp \
 fcall.lisp \
+flatten.lisp \
 float.lisp \
 fortra.lisp \
 generr.lisp \
@@ -239,6 +240,7 @@ plot.lisp \
 pois2.lisp \
 pois3.lisp \
 polyrz.lisp \
+powers.lisp \
 procs.lisp \
 psolve.lisp \
 rat3a.lisp \
@@ -259,6 +261,7 @@ rzmac.lisp \
 schatc.lisp \
 scs.lisp \
 series.lisp \
+set.lisp \
 simp.lisp \
 sin.lisp \
 sinint.lisp \
