@@ -1,0 +1,33 @@
+Preliminary notes on lisp implementations for Maxima:
+
+clisp, CMUCL and GCL are supported by Maxima. Ports to other ANSI
+lisps should be straightforward and are welcome; please contact the
+developers if you are interested in working on a port.
+
+clisp
+-----
+	clisp includes GNU readline support, so Maxima will have
+advanced command-line editing facilities when built with it.
+
+clisp versions: Maxima will fail to build with 2.26 because of a bug
+in clisp. 2.28 is known to work.
+
+CMUCL
+-----
+	CMUCL is the fastest option for Maxima on platforms where it
+is available. Unfortunately, it does not include readline support.
+
+CMUCL versions: Maxima will build with CMUCL 18c, but will hang on
+some run-time operations. 18d is known to work.
+
+GCL
+---
+	GCL was once the preferred platform for Maxima. This is no
+longer the case. Building GCL can be difficult. GCL versions starting
+with 2.5.0 can be built with readline support.
+
+n.b.: At the time of this writing, the build is broken with GCL, but
+the developers are working to fix the problem.
+
+GCL versions: 2.4.1 and 2.5.0 should work. Since 2.5.0 is under
+development, it is probably best to stick with 2.4.1.
