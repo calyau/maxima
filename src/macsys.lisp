@@ -436,8 +436,8 @@
 	  (format t "This is a development version of Maxima. The function bug_report()~%")
 	  (format t "provides bug reporting information.~%")
 	  (setq *maxima-started* t)))
-    (if ($file_search "maxima-init.lisp") ($load "maxima-init.lisp"))
-    (if ($file_search "maxima-init.mac") ($batchload "maxima-init.mac"))
+    (if ($file_search "maxima-init.lisp") ($load ($file_search "maxima-init.lisp")))
+    (if ($file_search "maxima-init.mac") ($batchload ($file_search "maxima-init.mac")))
     
     (catch 'quit-to-lisp
       (in-package "MAXIMA")
