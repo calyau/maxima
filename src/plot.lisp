@@ -1111,7 +1111,7 @@ MT~@d)~%"
 	 (if (> i 1)
 	     (format st ","))
 	 (let ((title (get-plot-option-string '$gnuplot_curve_titles i)))
-	   (if (equal title "DEFAULT")
+	   (if (equal title "default")
 	       (setf title (format nil "title '~a'" plot-name)))
 	   (format st " '-' ~a ~a" title 
 		   (get-plot-option-string '$gnuplot_curve_styles i))))))
