@@ -616,7 +616,7 @@ is the same as the previous line."
       (when (= (forward-line -1) 0)
         (progn
           (setq indent (current-indentation))
-          (setq pt (line-end-position))
+          (setq pt (maxima-line-end-position))
           (while (re-search-forward "[()]" pt t)
             (cond ((string= (match-string 0) ")")
                    (setq indent (- indent maxima-indent-amount)))
@@ -704,7 +704,8 @@ Returns an integer: the column to indent to."
 	    (progn
 	      (forward-line -1)
 	      (end-of-line)
-	      (skip-chars-backward " \t\n")
+              (maxima-back-over-comment-whitespace)
+	      ;;(skip-chars-backward " \t\n")
 	      (if (not (looking-at "^"))
 		  (progn 
 		    (forward-char -1)
@@ -2128,7 +2129,7 @@ and line number."
 	(widen)
 	(goto-line line)
 	(setq pos (point))
-	(setq end (line-end-position))
+	(setq end (maxima-line-end-position))
 	(if (overlayp maxima-debug-overlay)
 	    (delete-overlay maxima-debug-overlay))
 	(setq maxima-debug-overlay (make-overlay pos end))
