@@ -9,6 +9,7 @@ binary-clisp/maxima.mem : clmacs.lisp
 binary-clisp/maxima.mem : commac.lisp
 binary-clisp/maxima.mem : mormac.lisp
 binary-clisp/maxima.mem : compat.lisp
+binary-clisp/maxima.mem : command-line.lisp
 binary-clisp/maxima.mem : defopt.lisp
 binary-clisp/maxima.mem : defcal.lisp
 binary-clisp/maxima.mem : maxmac.lisp

@@ -397,37 +397,61 @@
 (defvar *maxima-started* nil)
 (defvar *maxima-prolog* "")
 (defvar *maxima-epilog* "")
+(defun meshugena-clisp-banner ()
+  (format t "  i i i i i i i       ooooo    o        ooooooo   ooooo   ooooo~%")
+  (format t "  I I I I I I I      8     8   8           8     8     o  8    8~%")
+  (format t "  I  \\ `+' /  I      8         8           8     8        8    8~%")
+  (format t "   \\  `-+-'  /       8         8           8      ooooo   8oooo~%");
+  (format t "    `-__|__-'        8         8           8           8  8~%")
+  (format t "        |            8     o   8           8     o     8  8~%")
+  (format t "  ------+------       ooooo    8oooooo  ooo8ooo   ooooo   8~%")
+  (format t "~%")
+  (format t "Copyright (c) Bruno Haible, Michael Stoll 1992, 1993~%")
+  (format t "Copyright (c) Bruno Haible, Marcus Daniels 1994-1997~%")
+  (format t "Copyright (c) Bruno Haible, Pierpaolo Bernardi, Sam Steingold 1998~%")
+  (format t "Copyright (c) Bruno Haible, Sam Steingold 1999-2003~%")
+  (format t 
+	  "--------------------------------------------------------------~%~%"))
+
 #-lispm
 (defun macsyma-top-level (&OPTIONAL (input-stream *standard-input*)
-				    batch-flag)
+			  batch-flag)
   (let ((*package* (find-package "MAXIMA")))
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
-      (progn
-	(format t *maxima-prolog*)
-	(format t "~&Maxima ~a http://maxima.sourceforge.net~%"
-		*autoconf-version*)
-	(format t "Distributed under the GNU Public License. See the file COPYING.~%")
-	(format t "Dedicated to the memory of William Schelter.~%")
-	(format t "This is a development version of Maxima. The function bug_report()~%")
-	(format t "provides bug reporting information.~%")
-	(setq *maxima-started* t)))
+	(progn
+	  #+clisp (meshugena-clisp-banner)
+	  (format t *maxima-prolog*)
+	  (format t "~&Maxima ~a http://maxima.sourceforge.net~%"
+		  *autoconf-version*)
+	  (format t "Using Lisp ~a ~a" (lisp-implementation-type)
+		  #-clisp (lisp-implementation-version)
+		  #+clisp (subseq (lisp-implementation-version)
+				  0 (+ 1 (search
+					  ")" (lisp-implementation-version)))))
+	  #+gcl (format t " (aka GCL)")
+	  (format t "~%")
+	  (format t "Distributed under the GNU Public License. See the file COPYING.~%")
+	  (format t "Dedicated to the memory of William Schelter.~%")
+	  (format t "This is a development version of Maxima. The function bug_report()~%")
+	  (format t "provides bug reporting information.~%")
+	  (setq *maxima-started* t)))
     (if ($file_search "maxima-init.lisp") ($load "maxima-init.lisp"))
     (if ($file_search "maxima-init.mac") ($batchload "maxima-init.mac"))
     
-   (catch 'quit-to-lisp
-     (in-package "MAXIMA")
-     (sloop 
-	 do
+    (catch 'quit-to-lisp
+      (in-package "MAXIMA")
+      (sloop 
+       do
        (catch #+kcl si::*quit-tag* #+(or cmu sbcl) 'continue #-(or kcl cmu sbcl) nil
 	      (catch 'macsyma-quit
 		(continue input-stream batch-flag)
-		  (format t *maxima-epilog*)
-		  (bye)))))))
+		(format t *maxima-epilog*)
+		(bye)))))))
 
 #-lispm
 (progn 
-
+  
 #+kcl
 (si::putprop :t 'throw-macsyma-top 'si::break-command)
 

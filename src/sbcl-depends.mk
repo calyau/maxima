@@ -9,6 +9,7 @@ binary-sbcl/maxima.core : clmacs.lisp
 binary-sbcl/maxima.core : commac.lisp
 binary-sbcl/maxima.core : mormac.lisp
 binary-sbcl/maxima.core : compat.lisp
+binary-sbcl/maxima.core : command-line.lisp
 binary-sbcl/maxima.core : defopt.lisp
 binary-sbcl/maxima.core : defcal.lisp
 binary-sbcl/maxima.core : maxmac.lisp

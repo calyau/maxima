@@ -7,6 +7,7 @@ binary-gcl/maxima : clmacs.lisp
 binary-gcl/maxima : commac.lisp
 binary-gcl/maxima : mormac.lisp
 binary-gcl/maxima : compat.lisp
+binary-gcl/maxima : command-line.lisp
 binary-gcl/maxima : defopt.lisp
 binary-gcl/maxima : defcal.lisp
 binary-gcl/maxima : maxmac.lisp

@@ -1,28 +1,6 @@
 #!@POSIX_SHELL@
 # -*- Shell-script -*-
 
-usage () {
-	cat << EOF
-usage: maxima [options]
-options:
-    -h, --help: Display this usage message.
-    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>. Use --list-avail
-                              to see the list of possible values.
-    -u <version>, --use-version=<version>: Launch maxima version <version>.
-                                           Use --list-avail to see the list
-                                           of possible values.
-    --list-avail: List the installed versions and lisp implementations.
-    -b <file>, --batch=<file>: Process <file> in maxima batch mode.
-    --batch-lisp=<file>: Process lisp file <file> in batch mode.
-    --batch-string=<string>: Process <string> in maxima batch mode.
-    -r <string>, --run-string=<string>: Process <string> in maxima interactive
-                                        mode.
-    -p <lisp_file>, --preload-lisp=<lisp_file>: Preload <lisp_file>
-    -v, --verbose: Print extra information from the maxima wrapper script.
-    --version: Print the (default) installed version.
-EOF
-}
-
 setup_vars() {
   MAXIMA_VERSION=@VERSION@
   prefix=@prefix@
@@ -62,97 +40,6 @@ unsetup_vars () {
   unset MAXIMA_LISP
 }
 
-list_lisps () {
-  echo "The code to list lisp implementations needs to be written"
-}
-
-list_versions () {
-  echo "The code to list versions needs to be written"
-}
-
-process_args () {
-  batch_file=
-  batch_lisp_file=
-  batch_string=
-  run_string=
-  preload_lisp_file=
-  list_avail=
-  show_version=
-  while getopts "hl:u:b:r:p:v-:" opt; do
-    if [ "$opt" = "-" ]; then
-      opt=$OPTARG
-    fi
-    case $opt in
-      h | help)
-		usage
-		exit
-		;;
-      l | lisp=*)
-		  if [ "$opt" = "l" ]; then
-		    MAXIMA_LISP=$OPTARG
-		  else
-		    MAXIMA_LISP=`echo "$OPTARG" | sed 's/lisp=//'`
-		  fi
-		  if [ -z "$MAXIMA_LISP" ]; then
-		    list_lisps
-		    exit
-		  fi
-		  ;;
-      u | use-version=*)
-		  if [ "$opt" = "u" ]; then
-		    MAXIMA_VERSION=$OPTARG
-		  else
-		    MAXIMA_VERSION=`echo "$OPTARG" | sed 's/use-version=//'`
-		  fi
-		  if [ -z "$MAXIMA_VERSION" ]; then
-		    list_versions
-		    exit
-		  fi
-		  ;;
-      list-avail)
-		  list_avail=true
-		  ;;
-      b | batch=*)
-		   if [ "$opt" = "b" ]; then
-		     batch_file=$OPTARG
-		   else
-		     batch_file=`echo "$OPTARG" | sed 's/batch=//'`
-		   fi
-		   ;;
-      batch-lisp=*)
-		    batch_lisp_file=`echo "$OPTARG" | sed 's/batch-lisp=//'`
-		    ;;
-      batch-string=*)
-		      batch_string=`echo "$OPTARG" | sed 's/batch-string=//'`
-		      ;;
-      r | run-string=*)
-			if [ "$opt" = "r" ]; then
-			  run_string=$OPTARG
-			else
-			  run_string=`echo "$OPTARG" | sed 's/run-string=//'`
-			fi
-			;;
-      p | preload-lisp=*)
-			if [ "$opt" = "p" ]; then
-			  preload_lisp_file=$OPTARG
-			else
-			  preload_lisp_file=`echo "$OPTARG" | sed 's/preload-lisp=//'`
-			fi
-			;;
-      v | verbose)
-	       verbose=true
-	       ;;
-      version)
-	       show_version=true
-	       ;;
-      *)
-	 echo "Option $1 not recognized" 1>&2
-	 usage
-	 exit 1
-	 ;;
-    esac
-  done
-}
 
 if [ -z "$MAXIMA_USERDIR" ]; then
   maximarc_path="$HOME/.maxima/maximarc"
@@ -169,91 +56,66 @@ if [ -z "$MAXIMA_DIRECTORY" ]; then
   unset MAXIMA_DIRECTORY
 fi
 
-process_args "$@"
+arg1=$1
+arg2=$2
+arg3=$3
+arg4=$4
+arg5=$5
+arg6=$6
+arg7=$7
+arg8=$8
+arg9=$9
+while [ -n "$1" ]; do
+    case $1 in 
+	-l ) MAXIMA_LISP=$2 ; shift;;
+	--lisp ) MAXIMA_LISP=$2 ; shift;;
+	--lisp=*) MAXIMA_LISP=`echo "$1" | sed 's/--lisp=//'` ;;
+	-u ) MAXIMA_VERSION=$2 ; shift;;
+	--use-version ) MAXIMA_VERSION=$2 ; shift;;
+	--use-version=*) MAXIMA_VERSION=`echo "$1" | sed 's/--use-version=//'` 
+	    ;;
+	-v ) verbose=true;;
+	--verbose ) verbose=true;;
+	*) ;;
+    esac
+    shift
+done
+
 setup_vars
 
-if [ -n "$show_version" ]; then
-  echo "Maxima $VERSION"
-  exit 0
-fi
-
-if [ -n "$list_avail" ]; then
-  if [ -n "$in_maxima_local" ]; then
-    echo "The --list-avail option is only available once maxima is installed."
-    exit 1
-  fi
-  echo "Available versions:"
-  versions=`ls -1 \`dirname "$MAXIMA_VERPKGLIBDIR"\``
-  for version in $versions
-  do
-    binary_lisps=`ls -1 \`dirname "$MAXIMA_VERPKGLIBDIR"\`/$version`
-    for binary_lisp in $binary_lisps
-    do
-      lisp=`echo $binary_lisp | sed 's/binary-//'`
-      echo "version $version, lisp $lisp"
-    done
-  done
-  exit 0
-fi
-
-if [ ! -x "$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp" ]; then
+if [ ! -d "$MAXIMA_VERPKGLIBEXECDIR" ]; then
 # Have we been moved?
   MAXIMA_PREFIX="`dirname \`dirname $0\``"
   unsetup_vars
   setup_vars
-  if [ ! -x "$MAXIMA_VERPKGLIBEXECDIR/maxima-run-lisp" ]; then
+  if [ ! -d "$MAXIMA_VERPKGLIBEXECDIR" ]; then
     echo "$0: unable to determine MAXIMA_PREFIX" 1>&2
     exit 1
   fi
 fi
-  
-unset MAXIMA_INT_LISP_PRELOAD
-unset MAXIMA_INT_INPUT_STRING
-unset MAXIMA_INT_BATCH_FLAG
-if [ -n "$batch_lisp_file" ]; then
-  MAXIMA_INT_INPUT_STRING=":lisp (load \"$batch_lisp_file\")"
-  MAXIMA_INT_BATCH_FLAG=":batch"
-fi
-if [ -n "$batch_file" ]; then
-  MAXIMA_INT_INPUT_STRING="batch(\"$batch_file\");"
-  MAXIMA_INT_BATCH_FLAG=":batch"
-fi
-if [ -n "$batch_string" ]; then
-  MAXIMA_INT_INPUT_STRING="$batch_string"
-  MAXIMA_INT_BATCH_FLAG=":batch"
-fi
-if [ -n "$run_string" ]; then
-  MAXIMA_INT_INPUT_STRING="$run_string"
-fi
-if [ -n "$preload_lisp_file" ]; then
-  MAXIMA_INT_LISP_PRELOAD="$preload_lisp_file"
-fi
-export MAXIMA_INT_LISP_PRELOAD
-export MAXIMA_INT_INPUT_STRING
-export MAXIMA_INT_BATCH_FLAG
 
 maxima_image_base="$MAXIMA_VERPKGLIBDIR/binary-$MAXIMA_LISP/maxima"
 
 if [ "$verbose" = "true" ]; then
-  echo "MAXIMA_INT_LISP_PRELOAD=$MAXIMA_INT_LISP_PRELOAD"
-  echo "MAXIMA_INT_INPUT_STRING=$MAXIMA_INT_INPUT_STRING"
-  echo "MAXIMA_INT_BATCH_FLAG=$MAXIMA_INT_BATCH_FLAG"
-  echo "$maxima_image_base=$maxima_image_base"
+    set -x
 fi
-
 if [ "$MAXIMA_LISP" = "clisp" ]; then
-    exec "@CLISP_NAME@" -M "$maxima_image_base.mem"
+    exec "@CLISP_NAME@" -q -M "$maxima_image_base.mem" "" -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "cmucl" ]; then
-    exec "@CMUCL_NAME@" -core "$maxima_image_base.core" -eval '(user::run)'
+    exec "@CMUCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "gcl" ]; then
-    exec "$maxima_image_base" -eval '(user::run)'
+    exec "$maxima_image_base" -eval '(user::run)' -f -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "acl6" ]; then
-    exec "@ACL6_NAME@" -I "$maxima_image_base.dxl" -e '(user::run)'
+# FIXME: arguments need in a manner consistent with the way they are extracted
+#        in the function get-application-args in command-line.lisp
+    exec "@ACL6_NAME@" -I "$maxima_image_base.dxl" -e '(user::run)' "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "openmcl" ]; then
-    exec "@OPENMCL_NAME@" -I "$maxima_image_base.image"
+# FIXME: arguments need in a manner consistent with the way they are extracted
+#        in the function get-application-args in command-line.lisp
+    exec "@OPENMCL_NAME@" -I "$maxima_image_base.image" "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "sbcl" ]; then
-    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --eval '(user::run)'
+    exec "@SBCL_NAME@" --core "$maxima_image_base.core" --noinform --end-runtime-options --eval '(user::run)' --end-toplevel-options "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 else
-    echo "Maxima does not know which Lisp to use. This should never happen." >2
+    echo "$0: lisp=\"$MAXIMA_LISP\" not known. Use --list-avail to see possible options." >&2
     exit 1
 fi

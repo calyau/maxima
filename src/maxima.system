@@ -44,6 +44,8 @@
                (:module prerequisites :source-pathname ""
                         :components ((:file "mormac") 
                                      (:file "compat")))
+	       (:module command-line :source-pathname ""
+			:components ((:file "command-line")))
                (:module fundamental-macros :source-pathname ""
                         :components ((:file "defopt") 
                                      (:file "defcal") 

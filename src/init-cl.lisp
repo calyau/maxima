@@ -6,7 +6,7 @@
 ;********************************************************
 
 (in-package :maxima)
-
+(use-package "COMMAND-LINE")
 ;;; An ANSI-CL portable initializer to replace init_max1.lisp
 
 (defvar *maxima-prefix*)
@@ -156,22 +156,142 @@
   (setq cl-info::*info-paths* (list (concatenate 'string
 					    *maxima-infodir* "/")))))
 
+(defun get-dirs (path)
+  #+(or :clisp :sbcl)
+  (directory (concatenate 'string (namestring path) "/*/"))
+  #-(or :clisp :sbcl)
+  (directory (concatenate 'string (namestring path) "/*")))
+  
+(defun unix-like-basename (path)
+  (let* ((pathstring (namestring path))
+	(len (length pathstring)))
+    (if (equal (subseq pathstring (- len 1) len) "/")
+	(progn (setf len (- len 1))
+	 (setf pathstring (subseq pathstring 0 len))))
+    (subseq pathstring (+ (position #\/ pathstring :from-end t) 1) len)))
+
+(defun unix-like-dirname (path)
+  (let* ((pathstring (namestring path))
+	(len (length pathstring)))
+    (if (equal (subseq pathstring (- len 1) len) "/")
+	(progn (setf len (- len 1))
+	 (setf pathstring (subseq pathstring 0 len))))
+    (subseq pathstring 0 (position #\/ pathstring :from-end t))))
+
+(defun list-avail-action ()
+  (let* ((*maxima-verpkglibdir* 
+	  "/home/amundson/opt/maxinstall/lib/maxima/5.9.0.1cvs")
+	 (mvpldir *maxima-verpkglibdir*)
+	 (len (length mvpldir))
+	 (base-dir nil)
+	 (versions nil)
+	 (version-string nil)
+	 (lisps nil)
+	 (lisp-string nil))
+  (format t "Available versions:~%")
+  (if (not (equal (subseq mvpldir (- len 1) len) "/"))
+      (setf mvpldir (concatenate 'string mvpldir "/")))
+  (setf base-dir (unix-like-dirname mvpldir))
+  (setf versions (get-dirs base-dir))
+  (dolist (version versions)
+    (setf lisps (get-dirs version))
+    (setf version-string (unix-like-basename version))
+    (dolist (lisp lisps)
+      (setf lisp-string (unix-like-basename lisp))
+      (setf lisp-string (subseq lisp-string (length "binary-") 
+				(length lisp-string)))
+      (format t "version ~a, lisp ~a~%" version-string lisp-string)))
+  (bye)))
+
 ;#+gcl (setq si::*top-level-hook* 'user::run)
+(defun process-maxima-args (input-stream batch-flag)
+;;   (format t "processing maxima args = ")
+;;   (mapc #'(lambda (x) (format t "\"~a\"~%" x)) (get-application-args))
+;;   (terpri)
+  (let ((maxima-options nil))
+    (setf maxima-options
+	  (list 
+	   (make-cl-option :names '("-h" "--help")
+			:action #'(lambda () 
+				    (format t "usage: maxima [options]~%")
+				    (list-cl-options maxima-options)
+				    (bye))
+			:help-string "Display this usage message.")
+	   (make-cl-option :names '("-l" "--lisp")
+			:argument "<lisp>"
+			:action nil
+			:help-string "Use lisp implementation <lisp>.")
+	   (make-cl-option :names '("-u" "--use-version")
+			:argument "<version>"
+			:action nil
+			:help-string "Use maxima version <version>.")
+	   (make-cl-option :names '("--list-avail")
+			:action 'list-avail-action
+			:help-string 
+			"List the installed version/lisp combinations.")
+	   (make-cl-option :names '("-b" "--batch")
+			:argument "<file>"
+			:action #'(lambda (file)
+				    (setf input-stream
+					  (make-string-input-stream
+					   (format nil "batch(\"~a\");" file)))
+				    (setf batch-flag :batch))
+			:help-string
+			"Process maxima file <file> in batch mode.")
+	   (make-cl-option :names '("--batch-lisp")
+			:argument "<file>"
+			:action #'(lambda (file)
+				    (setf input-stream
+					  (make-string-input-stream
+					   (format nil ":lisp (load \"~a\");"
+						   file)))
+				    (setf batch-flag :batch))
+			:help-string "Process lisp file <file> in batch mode.")
+	   (make-cl-option :names '("--batch-string")
+			:argument "<string>"
+			:action #'(lambda (string)
+				    (setf input-stream 
+					  (make-string-input-stream string))
+				    (setf batch-flag :batch))
+			:help-string 
+			"Process maxima command(s) <string> in batch mode.")
+	   (make-cl-option :names '("-r" "--run-string")
+			:argument "<string>"
+			:action #'(lambda (string)
+				    (setf input-stream
+					  (make-string-input-stream string))
+				    (setf batch-flag nil))
+			:help-string 
+			"Process maxima command(s) <string> in interactive mode.")
+	   (make-cl-option :names '("-p" "--preload-lisp")
+			:argument "<lisp-file>"
+			:action #'(lambda (file)
+				    (load file))
+			:help-string "Preload <lisp-file>.")
+	   (make-cl-option :names '("-v" "--verbose")
+			:action nil
+			:help-string 
+			"Display lisp invocation in maxima wrapper script.")
+	   (make-cl-option :names '("--version")
+			:action #'(lambda ()
+				    (format t "Maxima ~a~%" *autoconf-version*)
+				    ($quit))
+			:help-string 
+			"Display the default installed version.")))
+    (process-args (get-application-args) maxima-options))
+  (values input-stream batch-flag))
+
+
+
 (defun user::run ()
   "Run Maxima in its own package."
   (in-package "MAXIMA")
   (setf *load-verbose* nil)
   (setf *debugger-hook* #'maxima-lisp-debugger)
-  ; jfa new command-line communication
-  (let ((input-string *standard-input*)
-	(maxima_int_lisp_preload (maxima-getenv "MAXIMA_INT_LISP_PRELOAD"))
-	(maxima_int_input_string (maxima-getenv "MAXIMA_INT_INPUT_STRING"))
-	(batch-flag (maxima-getenv "MAXIMA_INT_BATCH_FLAG")))
-    (if maxima_int_lisp_preload
-	(load maxima_int_lisp_preload))
-    (if maxima_int_input_string
-	(setq input-string (make-string-input-stream maxima_int_input_string)))
-
+  (let ((input-stream *standard-input*)
+	(batch-flag nil))
+    (setf (values input-stream batch-flag) 
+	  (process-maxima-args input-stream batch-flag))
     #+allegro
     (progn
       (set-readtable-for-macsyma)
@@ -183,10 +303,10 @@
       (progn
 	(loop 
 	  (with-simple-restart (macsyma-quit "Macsyma top-level")
-			       (macsyma-top-level input-string batch-flag))))
+			       (macsyma-top-level input-stream batch-flag))))
       #-(or cmu sbcl clisp allegro mcl)
       (catch 'macsyma-quit
-	(macsyma-top-level input-string batch-flag)))))
+	(macsyma-top-level input-stream batch-flag)))))
 
 (import 'user::run)
   
