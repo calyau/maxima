@@ -1539,10 +1539,10 @@ first kind:
 	       (and $numer (numberp phi) (numberp m)))
 	   ;; Numerically evaluate it
 	   (elliptic-f (float phi) (float m)))
-	  ((and $numer (complex-number-p u)
+	  ((and $numer (complex-number-p phi)
 		(complex-number-p m))
-	   (complexify (elliptic-f (complex ($realpart u) ($imagpart u)))
-				   (complex ($realpart m) ($imagpart m))))
+	   (complexify (elliptic-f (complex ($realpart phi) ($imagpart phi))
+				   (complex ($realpart m) ($imagpart m)))))
 	  ((zerop1 phi)
 	   0)
 	  ((zerop1 m)
