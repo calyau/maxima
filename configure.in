@@ -8,7 +8,7 @@ explicit_lisp=false
 
 dnl n.b. clisp_default_name is hardcoded in "with" message
 clisp_default_name=clisp
-AC_ARG_ENABLE(clisp,[--enable-clisp                   Use clisp],
+AC_ARG_ENABLE(clisp,[  --enable-clisp                   Use clisp],
      	[case "${enableval}" in
        		yes) clisp=true 
                      explicit_lisp=true ;;
@@ -18,7 +18,7 @@ AC_ARG_ENABLE(clisp,[--enable-clisp                   Use clisp],
 	explicit_lisp=true],
 	[clisp=false])
 AC_ARG_WITH(clisp,
-	[--with-clisp=<prog>              Use clisp executable <prog> (default clisp)],
+	[  --with-clisp=<prog>              Use clisp executable <prog> (default clisp)],
 	[clisp=true
 	explicit_lisp=true
 	CLISP_NAME=$withval],
@@ -33,7 +33,7 @@ fi
 
 dnl n.b. cmucl_default_name is hardcoded in "with" message
 cmucl_default_name=lisp
-AC_ARG_ENABLE(cmucl,[--enable-cmucl                   Use CMUCL],
+AC_ARG_ENABLE(cmucl,[  --enable-cmucl                   Use CMUCL],
      	[case "${enableval}" in
        		yes) cmucl=true 
                      explicit_lisp=true ;;
@@ -43,7 +43,7 @@ AC_ARG_ENABLE(cmucl,[--enable-cmucl                   Use CMUCL],
 	explicit_lisp=true],
 	[cmucl=false])
 AC_ARG_WITH(cmucl,
-	[--with-cmucl=<prog>              Use CMUCL executable <prog> (default lisp)],
+	[  --with-cmucl=<prog>              Use CMUCL executable <prog> (default lisp)],
 	[cmucl=true
 	explicit_lisp=true
 	CMUCL_NAME=$withval],
@@ -57,7 +57,7 @@ fi
 	
 dnl n.b. gcl_default_name is hardcoded in "with" message
 gcl_default_name=gcl
-AC_ARG_ENABLE(gcl,[--enable-gcl                     Use GCL],
+AC_ARG_ENABLE(gcl,[  --enable-gcl                     Use GCL],
      	[case "${enableval}" in
        		yes) gcl=true 
 		     explicit_lisp=true;;
@@ -66,7 +66,7 @@ AC_ARG_ENABLE(gcl,[--enable-gcl                     Use GCL],
      	esac],
 	[gcl=false])
 AC_ARG_WITH(gcl,
-	[--with-gcl=<prog>                Use GCL executable <prog> (default gcl)],
+	[  --with-gcl=<prog>                Use GCL executable <prog> (default gcl)],
 	[gcl=true
 	explicit_lisp=true
 	GCL_NAME=$withval],
@@ -102,7 +102,7 @@ AM_CONDITIONAL(GCL, test x$gcl = xtrue)
 AM_CONDITIONAL(CMUCL, test x$cmucl = xtrue)
 	
 AC_ARG_WITH(default-lisp,
-	[--with-default-lisp=<lisp>       Set default lisp implementation to <lisp>],
+	[  --with-default-lisp=<lisp>       Set default lisp implementation to <lisp>],
      	[case "${withval}" in
        		clisp)
 			if test x"${clisp}" = xtrue ; then
