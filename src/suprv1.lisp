@@ -916,9 +916,6 @@
 	  ((char= n #\%) ($verbify name))
 	  (t name))))
 
-#-nil
-(defmfun $random n (apply #'random (listify n)))
-
 (defmspec $string (form)
   (setq form (strmeval (fexprcheck form)))
   (setq form (if $grind (strgrind form) (mstring form)))
