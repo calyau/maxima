@@ -164,6 +164,11 @@
 (DEFMVAR $% '$% "The last out-line computed, corresponds to lisp *" NO-RESET)
 (DEFMVAR $INCHAR '|$%i|
   "The alphabetic prefix of the names of expressions typed by the user.")
+;;; jfa: begin case-sensitivity hack
+;;;      delete this when case-sensitivity is fixed!!!! 05/11/2004
+(defmvar |$%i| '|$%I|
+  "%i = %I until maxima's case behavior is fixed.")
+;;; jfa: end case-sensitivity hack
 (DEFMVAR $OUTCHAR '|$%o|
   "The alphabetic prefix of the names of expressions returned by the system.")
 (DEFMVAR $LINECHAR '|$%t|
