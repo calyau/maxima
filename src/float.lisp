@@ -102,7 +102,8 @@ One extra decimal digit in actual representation for rounding purposes.")
   "Bigfloat representation of %E")
 (defmvar bigfloat%pi  '((bigfloat simp 56.) 56593902016227522. 2)
   "Bigfloat representation of %PI")
-
+(defmvar bigfloat%gamma '((bigfloat simp 56.) 41592772053807304. 0)
+  "Bigfloat representation of %GAMMA")
 ;; Internal specials
 
 ;; Number of bits of precision in the mantissa of newly created bigfloats. 
@@ -129,6 +130,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 (defvar max-bfloat-%pi bigfloat%pi)
 (defvar max-bfloat-%e  bigfloat%e)
+(defvar max-bfloat-%gamma bigfloat%gamma)
 
 (declare-top (special *cancelled $float $bfloat $ratprint $ratepsilon
 		      $domain $m1pbranch adjust))
@@ -432,7 +434,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 (defmfun $bfloat (x) 
   (let (y)
     (cond ((bigfloatp x))
-	  ((or (numberp x) (memq x '($%e $%pi)))
+	  ((or (numberp x)
+	       (memq x '($%e $%pi $%gamma)))
 	   (bcons (intofp x)))
 	  ((or (atom x) (memq 'array (cdar x)))
 	   (if (eq x '$%phi)
@@ -554,6 +557,7 @@ One extra decimal digit in actual representation for rounding purposes.")
 	((equal 0 l) '(0 0))
 	((eq l '$%pi) (fppi))
 	((eq l '$%e) (fpe))
+	((eq l '$%gamma) (fpgamma))
 	(t (list (fpround l) (plus *m fpprec))))) 
 
 ;; It seems to me that this function gets called on an integer
@@ -725,6 +729,16 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (cdr (setq bigfloat%pi (bigfloatp max-bfloat-%pi))))
 	(t (cdr (setq max-bfloat-%pi (setq bigfloat%pi (fppi1)))))))
 
+(defun fpgamma ()
+  (cond ((= fpprec (caddar bigfloat%gamma))
+	 (cdr bigfloat%gamma))
+	((< fpprec (caddar bigfloat%gamma))
+	 (cdr (setq bigfloat%gamma (bigfloatp bigfloat%gamma))))
+	((< fpprec (caddar max-bfloat-%gamma))
+	 (cdr (setq bigfloat%gamma (bigfloatp max-bfloat-%gamma))))
+	(t
+	 (cdr (setq max-bfloat-%gamma (setq bigfloat%gamma (fpgamma1)))))))
+
 (defun fpone nil 
   (cond (*decfp (intofp 1)) ((= fpprec (caddar bigfloatone)) (cdr bigfloatone))
 	(t (intofp 1)))) 
@@ -745,6 +759,105 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 (defun fppi1 nil 
   (bcons (list (fpround (comppi (plus fpprec 3))) (plus -3 *m)))) 
+
+;; Compute the main part of the Euler-Mascheroni constant using the
+;; Bessel function approach.  See
+;; http://numbers.computation.free.fr/Constants/Gamma/gamma.html for a
+;; description of the algorithm.
+;; Roughly, we have
+;;
+;; %gamma = A(N)/B(N) - log(N) + O(e^(-4*N))
+;;
+;; where
+;;
+;;
+;;          b*N
+;;   A(N) = sum (N^2/n!)^2*H(n)
+;;          n=0
+;;
+;;          b*N
+;;   B(N) = sum (N^2/n!)^2
+;;          n=0
+;;
+;;           n
+;;   H(n) = sum 1/k
+;;          k=1
+;;
+;;   with H(0) = 0
+;;
+;; and b = 4.970625759... where b*(log(b)-1) = 3.
+;;
+;; This formula can be easily justified by looking at the value
+;; K0(2*N)/I0(2*N), where K0 and I0 are the modified Bessel functions.
+;; From A&S 9.6.12 and 9.6.13, We see that
+;;
+;;           inf
+;; I0(2*N) = sum (N^2/n!)^2
+;;           n=0
+;;
+;;
+;;                                        inf
+;; K0(2*N) = -(log(N) + %gamma)*I0(2*N) + sum (N^2/n!)^2*H(n)
+;;                                        n=0
+;;
+;; So
+;;
+;; K0(2*N)/I0(2*N) = -log(N) - %gamma + C
+;;
+;; where
+;;
+;; C = [sum (N^2/n!)^2*H(n)]/sum (N^2/n!)^2
+;;
+;; or
+;;
+;; For N large, A&S gives
+;;
+;; I0(2*N) = exp(2*N)/sqrt(4*%pi*N)
+;;
+;; K0(2*N) = sqrt(%pi/(4*N))*exp(-2*N)
+;;
+;; So K0(2*N)/I0(2*N) = %pi*exp(-4*N) and
+;;
+;; O(exp(-4*N)) = -log(N) - %gamma + C
+;;
+;; or
+;;
+;; %gamma = C - log(N) + O(exp(-4*N))
+;;
+;; And C is approximately A(N)/B(N) if we take enough terms in the
+;; sum.
+;;
+(defun comp-bf%gamma (prec)
+  ;; Prec is the number of digits we want.  We assume the remainder is
+  ;; really e^(-4*N) and not O(e^(-4*N)).  So choose N such that
+  ;; exp(-4*N) is less than the number of digits of precision we want.
+  ;;
+  ;; We also assume don't need a really precise value of beta because
+  ;; our N's are not so big that we need more.
+  (let* ((big-n (floor (* 1/4 prec (log 2d0))))
+	 (big-n-sq (cdr ($bfloat (* big-n big-n))))
+	 (beta 4.9706257595442319023d0)
+	 (limit (floor (* beta big-n)))
+	 (term (cdr bigfloatone))
+	 (harmonic (cdr bigfloatzero))
+	 (a-sum (cdr bigfloatzero))
+	 (b-sum (cdr bigfloatone)))
+    (do ((n 1 (1+ n)))
+	((> n limit))
+      (let ((bf-n (cdr ($bfloat n))))
+	(setf term (fpquotient (fptimes* term big-n-sq)
+			       (fptimes* bf-n bf-n)))
+	(setf harmonic (fpplus harmonic
+			       (fpquotient (fpone) bf-n)))
+	(setf a-sum (fpplus a-sum
+			    (fptimes* term harmonic)))
+	(setf b-sum (fpplus b-sum term))))
+    (fpplus (fpquotient a-sum b-sum)
+	    (fpminus (cdr ($bfloat (list '(%log simp) big-n)))))))
+
+(defun fpgamma1 ()
+  ;; Use a few extra bits of precision
+  (bcons (list (fpround (first (comp-bf%gamma (plus fpprec 5)))) 0)))
 
 (defmfun fpmax na
   (prog (max) 
