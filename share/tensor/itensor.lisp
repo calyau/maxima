@@ -351,7 +351,7 @@
 (defun diffop ()                ; ichr2 or icc2 depending on iframe_flag
   (cond
     (
-      (or $iframe_flag $itorsion_flag)
+      (or $iframe_flag $itorsion_flag $inonmet_flag)
       '($icc2 simp)
     ) 
     (t '($ichr2 simp))
