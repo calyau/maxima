@@ -411,6 +411,40 @@ See also @code{evflag}.
 
 @end deffn
 
+@defun make_random_state (@var{n})
+@c @defunx make_random_state (@var{a})
+@defunx make_random_state (@var{s})
+@defunx make_random_state (true)
+@defunx make_random_state (false)
+
+A random state object represents the state of the random number generator.
+The state comprises 627 32-bit words.
+
+@code{make_random_state (@var{n})} returns a new random state object
+created from an integer seed value equal to @var{n} modulo 2^32.
+@var{n} may be negative.
+
+@c OMIT THIS FOR NOW. NOT SURE HOW THIS IS SUPPOSED TO WORK.
+@c @code{make_random_state (@var{a})} returns a new random state object
+@c created from an array @var{a}, which must be a Lisp array of 32 unsigned bytes.
+
+@code{make_random_state (@var{s})} returns a copy of the random state @var{s}.
+
+@code{make_random_state (true)} returns a new random state object,
+using the current computer clock time as the seed.
+
+@code{make_random_state (false)} returns a copy of the current state
+of the random number generator.
+
+@end defun
+
+@defun set_random_state (@var{s})
+Copies @var{s} to the random number generator state.
+
+@code{set_random_state} always returns @code{done}.
+
+@end defun
+
 @defun random (x)
 Returns a pseudorandom number. If @code{x} is an integer, @code{random (x)} returns an
 integer from 0 through @code{x-1} inclusive. If @code{x} is a floating point number,
@@ -418,12 +452,53 @@ integer from 0 through @code{x-1} inclusive. If @code{x} is a floating point num
 @code{random} complains with an error if @code{x} is neither an integer nor a float,
 or if @code{x} is not positive.
 
-Maxima @code{random} calls the Lisp function @code{RANDOM}. Different Lisp 
-implementations may use different pseudorandom number generators.
-The state of the generator is not directly accessible from Maxima,
-although it can be accessed from the Lisp prompt using the Lisp
-functions @code{MAKE-RANDOM-STATE} and @code{RANDOM}, and the global variable
-@code{*RANDOM-STATE*}.
+The functions @code{make_random_state} and @code{set_random_state}
+maintain the state of the random number generator.
+
+The Maxima random number generator is an implementation of the Mersenne twister MT 19937.
+
+Examples:
+@c GENERATED FROM THE FOLLOWING
+@c s1: make_random_state (654321)$
+@c set_random_state (s1);
+@c random (1000);
+@c random (9573684);
+@c random (2^75);
+@c s2: make_random_state (false)$
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+@c set_random_state (s2);
+@c random (1.0);
+@c random (10.0);
+@c random (100.0);
+
+@example
+(%i1) s1: make_random_state (654321)$
+(%i2) set_random_state (s1);
+(%o2)                         done
+(%i3) random (1000);
+(%o3)                          768
+(%i4) random (9573684);
+(%o4)                        7657880
+(%i5) random (2^75);
+(%o5)                11804491615036831636390
+(%i6) s2: make_random_state (false)$
+(%i7) random (1.0);
+(%o7)                   .2310127244107132
+(%i8) random (10.0);
+(%o8)                   4.394553645870825
+(%i9) random (100.0);
+(%o9)                   32.28666704056853
+(%i10) set_random_state (s2);
+(%o10)                        done
+(%i11) random (1.0);
+(%o11)                  .2310127244107132
+(%i12) random (10.0);
+(%o12)                  4.394553645870825
+(%i13) random (100.0);
+(%o13)                  32.28666704056853
+@end example
 
 @end defun
 
