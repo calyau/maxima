@@ -89,8 +89,9 @@ Support for specific areas of mathematics
 * Arrays and Tables::           Creating and working with arrays.
 * Matrices and Linear Algebra:: Matrix operations.
 * Affine::                      
-* Tensor::                      Indicial Tensor Manipulation package.
+* Itensor::                     Indicial Tensor Manipulation.
 * Ctensor::                     Component Tensor Manipulation.
+* Atensor::                     Algebraic Tensor Manipulation.
 * Series::                      Taylor and power series.
 * Number Theory::               Number theory.
 * Symmetries::                  
@@ -253,15 +254,20 @@ Affine
 
 * Definitions for Affine::      
 
-Tensor
+Iensor
 
-* Introduction to Tensor::      
-* Definitions for Tensor::      
+* Introduction to Itensor::      
+* Definitions for Itensor::      
 
 Ctensor
 
 * Introduction to Ctensor::     
 * Definitions for Ctensor::     
+
+Atensor
+
+* Introduction to Atensor::     
+* Definitions for Atensor::     
 
 Series
 
@@ -436,19 +442,23 @@ Debugging
 @chapter Matrices and Linear Algebra
 @include Matrices.texi
 
-@node Affine, Tensor, Matrices and Linear Algebra, Top
+@node Affine, Itensor, Matrices and Linear Algebra, Top
 @chapter Affine
 @include Affine.texi
 
-@node Tensor, Ctensor, Affine, Top
-@chapter Tensor
-@include Tensor.texi
+@node Itensor, Ctensor, Affine, Top
+@chapter Itensor
+@include Itensor.texi
 
-@node Ctensor, Series, Tensor, Top
+@node Ctensor, Atensor, Itensor, Top
 @chapter Ctensor
 @include Ctensor.texi
 
-@node Series, Number Theory, Ctensor, Top
+@node Atensor, Series, Ctensor, Top
+@chapter Atensor
+@include Atensor.texi
+
+@node Series, Number Theory, Atensor, Top
 @chapter Series
 @include Series.texi
 

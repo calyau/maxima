@@ -1,10 +1,10 @@
 @menu
-* Introduction to Tensor::
-* Definitions for Tensor::
+* Introduction to Itensor::
+* Definitions for Itensor::
 @end menu
 
-@node Introduction to Tensor, Definitions for Tensor, Tensor, Tensor
-@section Introduction to Tensor
+@node Introduction to Itensor, Definitions for Itensor, Itensor, Itensor
+@section Introduction to Itensor
 
 MAXIMA implements symbolic tensor manipulation of two distinct types:
 component tensor manipulation and indicial tensor manipulation.
@@ -193,9 +193,9 @@ specify the name of the metric, and perform some simple calculations.
 
 
 
-@c end concepts Tensor
+@c end concepts Itensor
 
-@node Definitions for Tensor,  , Introduction to Tensor, Tensor
+@node Definitions for Itensor,  , Introduction to Itensor, Itensor
 
 @section Managing Indexed Objects
 
@@ -612,7 +612,7 @@ determined by the option @code{idummy} (default: %).
 @c @unnumberedsec phony
 @defun kdelta (l1,l2)
 is the generalized Kronecker delta function defined in
-the Tensor package with @code{l1} the list of covariant indices and @code{l2}
+the Itensor package with @code{l1} the list of covariant indices and @code{l2}
 the list of contravariant indices.  @code{kdelta([i],[j])} returns the ordinary
 Kronecker delta.  The command @code{ev(exp,kdelta)} causes the evaluation of
 an expression containing @code{kdelta([],[])} to the dimension of the
@@ -710,7 +710,7 @@ For details, see @code{lc_l}.
 @c @node canten
 @c @unnumberedsec phony
 @defun canten (exp)
-[Tensor Package] Simplifies exp by renaming (see @code{rename})
+[Itensor Package] Simplifies exp by renaming (see @code{rename})
 and permuting dummy indices. @code{rename} is restricted to sums of tensor
 products in which no derivatives are present. As such it is limited
 and should only be used if @code{canform} is not capable of carrying out the
@@ -815,7 +815,7 @@ covariant indices and @code{n} contravariant indices.
 @c @node canform
 @c @unnumberedsec phony
 @defun canform (exp)
-[Tensor Package] Simplifies exp by renaming dummy
+[Itensor Package] Simplifies exp by renaming dummy
 indices and reordering all indices as dictated by symmetry conditions
 imposed on them. If @code{allsym} is @code{true} then all indices are assumed
 symmetric, otherwise symmetry information provided by @code{decsym}
@@ -931,7 +931,7 @@ Equivalent to the execution of @code{undiff}, followed by @code{ev} and
 @c @node flush
 @c @unnumberedsec phony
 @defun flush (exp,tensor1,tensor2,...)
-Tensor Package - will set to zero, in
+Itensor Package - will set to zero, in
 exp, all occurrences of the @code{tensori} that have no derivative indices.
 
 @end defun
@@ -939,7 +939,7 @@ exp, all occurrences of the @code{tensori} that have no derivative indices.
 @c @node flushd
 @c @unnumberedsec phony
 @defun flushd (exp,tensor1,tensor2,...)
-Tensor Package - will set to zero, in
+Itensor Package - will set to zero, in
 exp, all occurrences of the @code{tensori} that have derivative indices.
 
 @end defun
@@ -947,7 +947,7 @@ exp, all occurrences of the @code{tensori} that have derivative indices.
 @c @node flushnd
 @c @unnumberedsec phony
 @defun flushnd (exp,tensor,n)
-Tensor Package - will set to zero, in exp, all
+Itensor Package - will set to zero, in exp, all
 occurrences of the differentiated object tensor that have n or more
 derivative indices as the following example demonstrates.
 @example
