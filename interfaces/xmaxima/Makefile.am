@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.12 2002-09-05 22:02:12 mikeclarkson Exp $
+#       $Id: Makefile.am,v 1.13 2002-09-05 22:05:32 mikeclarkson Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -29,6 +29,6 @@ EXTRA_DIST = $(xmaxima_DATA) $(XMAXIMA_REAL_SOURCES)
 
 TCLSH = tclsh
 
-TAGS::
+TAGS:
 	echo x*.tcl Tkmaxima/*.tcl | xargs $(TCLSH) ./Utils/etags.tcl
 
