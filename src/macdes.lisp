@@ -132,6 +132,5 @@ http://www.ma.utexas.edu/maxima/
    Some versions of maxima built have a builtin info retrieval mechanism."
   )
 
-
-
-
+(defun $apropos ( s ) 
+  (cons '(mlist) (apropos-list s "MAXIMA"))) 
