@@ -1280,7 +1280,7 @@
 (defun ideriv (e)
   (prog (exp z count)
      (cond ((null e) (wna-err '$idiff))
-       ((null (cdr e)) (return (itotaldiff (car e))))
+       ((null (cdr e)) (return (stotaldiff (car e))))
        ((null (cddr e)) (nconc e '(1))))
      (setq exp (car e) z (setq e (copy-top-level e)))
      loop (if (or (null derivlist) (zl-member (cadr z) derivlist)) (go doit))
