@@ -96,13 +96,8 @@
 
 (defun $system (&rest x)
   (let ((cmdline (apply '$sconcat x)))
-    ;; Have the command line.  Now extract out the parts.  Note: this
-    ;; assumes that the command is first and that there is exactly one
-    ;; argument.  If not, we need a fancier parser to break all of the
-    ;; arguments up and put them in a list for run-program.
-    (let ((space (position #\space cmdline)))
-      (ext:run-program (subseq cmdline 0 space)
-		       (list (subseq cmdline (1+ space)))))))
+    (ext:run-program "/bin/sh"   (list "-c" cmdline))
+))
 
 (defvar *init-run* nil)
 (defun init-maxima ()

@@ -677,17 +677,10 @@ setrgbcolor} def
     ($viewps)))
 
 
-(defvar $gnuplot_command (maxima-path "bin" "mgnuplot"))
+(defvar $gnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview maxout.geomview")
 
-(defvar $openmath_plot_command
-  ($sconcat   #+winnt
-;	      (maxima-directory "bin" "cygwish80 ")
-              "wish84 "   
-	      (maxima-path "bin" "omplotdata") " "
-	      "maxout.openmath"))
-
-
+(defvar $openmath_plot_command "omplotdata")
 
 (defun $plot2d(fun range &rest options &aux ($numer t) $display2d
                           (i 0) plot-format file plot-name
@@ -717,12 +710,17 @@ setrgbcolor} def
 	 (cond ((eq v 'moveto) (format st "move "))
 	       (t  (format st "~,3f ~,3f ~%" v w))))))
   (case plot-format
-	($gnuplot
-	 ($system ($sconcat $gnuplot_command " -plot2d maxout.gnuplot -title '" plot-name "'")))
+	($gnuplot 
+	 ($system (maxima-bin-search $gnuplot_command) " -plot2d maxout.gnuplot -title '" plot-name "'"))
 	($xgraph
-	 (system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
+	 (4system "xgraph -t 'Maxima Plot' < maxout.xgraph &"))
 	))
 
+(defun maxima-bin-search (command)
+  (or ($file_search command
+		    `((mlist) , (maxima-path "bin" "###")))
+		 command))
+    
 
 
 (defun $plot2dOpen(fun range &rest options &aux ($numer t)  $display2d
@@ -909,7 +907,7 @@ setrgbcolor} def
 	    (setq w (cdar v))
 	    (setq v (cdr v))))
 	  (format st "~,3f ~,3f ~%" (car w) (second w)))))))
-  (system "xgraph -t 'Maxima Plot' < xgraph-out &"))
+  ($system "xgraph -t 'Maxima Plot' < xgraph-out &"))
 
 
      
@@ -1104,7 +1102,7 @@ setrgbcolor} def
   would print it moved 150/72 inches to left, and down, and scaled by 1.2 times
   showpage clears scaling."))
 
-  (system    (format nil $viewps_command file)))
+  ($system    (format nil $viewps_command file)))
 
 (defun $chkpt (a)
   (or (and ($listp a)
@@ -1213,10 +1211,10 @@ setrgbcolor} def
 	 (format nil "~a/tcl-files/maxima.tcl" izdir))
 	(error
 	 "could not find file ~a :  Set environment variable IZICDIR" izdir))
-    (system "izic -interface ${IZICDIR}/tcl-files/maxima.tcl  1> /dev/null &")))
+    ($system "izic -interface ${IZICDIR}/tcl-files/maxima.tcl  1> /dev/null &")))
 
 (defun $isend (x)
-  (system (format nil " izic -app izic -cmd '{~a}'" (string-trim '(#\&) (string x)))))
+  ($system (format nil " izic -app izic -cmd '{~a}'" (string-trim '(#\&) (string x)))))
 
 
 
@@ -1290,7 +1288,7 @@ setrgbcolor} def
   (cond ($show_openplot
 	 (with-open-file (st1 "maxout.openmath" :direction :output)
 			(princ  ans st1))
-	 ($system  $openmath_plot_command))
+	 ($system (maxima-bin-search $openmath_plot_command) " maxout.openmath" ))
 	(t (princ ans) "")))
 
 (defun $plot3d ( fun &optional (xrange ($get_plot_option '$x))
@@ -1445,10 +1443,11 @@ setrgbcolor} def
 	       ($zic ($view_zic))
 	       ($ps ($viewps))
 	       ($openmath
-		($system $openmath_plot_command)
+		($system (maxima-bin-search $openmath_plot_command) " maxout.openmath")
 		)
 	       ($geomview ($system $geomview_command))
-	       ($gnuplot ($system ($sconcat $gnuplot_command " -parametric3d maxout.gnuplot" )))
+	       ($gnuplot ($system (maxima-bin-search $gnuplot_command)
+				  " -parametric3d maxout.gnuplot" ))
 	       )))
       )))
   
