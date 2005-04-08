@@ -537,7 +537,7 @@ of covariant and contravariant indices and no derivative indices, and
 @example
 
 (%i1) load(itensor);
-(%o1)      /home/vttoth/dev/maxima/maxima/share/tensor/itensor.lisp
+(%o1)      /share/tensor/itensor.lisp
 (%i2) matchdeclare(l1,listp);
 (%o2)                                done
 (%i3) defrule(r1,m(l1,[]),(i1:idummy(),
