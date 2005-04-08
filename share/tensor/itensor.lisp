@@ -2103,7 +2103,8 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 		(T (NCONS E)))))
 	E))
 
-(DEFUN itensor-CLEANUP (A N)((LAMBDA (DUMX)(CLEANUP1 A)) NIL))        ;Sets DUMX to NIL
+;;(DEFUN itensor-CLEANUP (A N)((LAMBDA (DUMX)(CLEANUP1 A)) NIL))        ;Sets DUMX to NIL
+(DEFUN itensor-CLEANUP (A NN) (SETQ N NN DUMX NIL) (CLEANUP1 A))
  
 (DEFUN CLEANUP1 (A)
   (AND A (SETQ DUMX (IMPLODE (NCONC (EXPLODEN $IDUMMYX)    ;Keep proper order of
@@ -2131,8 +2132,8 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	 (PROGN (SETQ NEW (GENSYM))(PUTPROP NEW FP 'SUBR)
 		(ZL-REMPROP TENSOR 'SUBR)(PUTPROP TENSOR NEW 'TSUBR)))
     (PUTPROP TENSOR T 'INDEXED)
-    (PUTPROP TENSOR (SUBST TENSOR 'G '(LAMBDA N (TENSOREVAL (QUOTE G)(LISTIFY N)))) 'EXPR)
-		(eval (subst tensor 'g (quote (defmfun g n (tensoreval 'g (listify n))))))
+    (PUTPROP TENSOR (SUBST TENSOR 'G '(LAMBDA NN (TENSOREVAL (QUOTE G)(LISTIFY NN)))) 'EXPR)
+		(eval (subst tensor 'g (quote (defmfun g nn (tensoreval 'g (listify nn))))))
     '$DONE))
 
 
@@ -2225,34 +2226,78 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 ;;  )
 ;;)
 
-(DEFUN SELECT (TENSOR L1 L2 L3)
-  ((LAMBDA (PROP SUBS INDEX)
-	(COND ((AND (ALLFIXED SUBS) (SETQ PROP (ZL-GET TENSOR 'CARRAYS))
-		    (SETQ PROP (ZL-ASSOC INDEX PROP)))
-	       (COND ((ALIKE1 (SETQ PROP (CONS (LIST (CDR PROP) 'ARRAY) SUBS))
-			      (SETQ SUBS (MEVAL PROP))) 0)
-		     (T SUBS)))
-	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
-;;;VTT	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
-;; VTT: What is this business with N instead of $ICOUNTER anyway?
-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER (1- N))) )))))
-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER N)) )))))
-;;;        (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- (COND ((BOUNDP 'N) N) (T 1))))))))
-	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
+;-(DEFUN SELECT (TENSOR L1 L2 L3)
+;-  ((LAMBDA (PROP SUBS INDEX)
+;-	(COND ((AND (ALLFIXED SUBS) (SETQ PROP (ZL-GET TENSOR 'CARRAYS))
+;-		    (SETQ PROP (ZL-ASSOC INDEX PROP)))
+;-	       (COND ((ALIKE1 (SETQ PROP (CONS (LIST (CDR PROP) 'ARRAY) SUBS))
+;-			      (SETQ SUBS (MEVAL PROP))) 0)
+;-		     (T SUBS)))
+;-	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
+;-;;;VTT	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
+;-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
+;-;; VTT: What is this business with N instead of $ICOUNTER anyway?
+;-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER (1- N))) )))))
+;-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER N)) )))))
+;-;;;        (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- (COND ((BOUNDP 'N) N) (T 1))))))))
+;-	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
+;-
+;-
+;-	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
+;-;;	       (APPLY PROP (LIST (CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))(CONS SMLIST L3))))
+;-;;	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR (INCONSTANT L1) (INCONSTANT L2) (CDR L3)) (LIST (CAR L3))))
+;-;;	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))) L3))))
+;-;;	NIL (APPEND (INCONSTANT L1) (INCONSTANT L2) L3)(LIST (LENGTH (INCONSTANT L1))(LENGTH (INCONSTANT L2))(LENGTH L3))))
+;-	       (APPLY PROP (LIST (CONS SMLIST L1)(CONS SMLIST L2)(CONS SMLIST L3))))
+;-	      ((NOT (EQ L3 NIL)) (APPLY '$IDIFF (SELECT TENSOR L1 L2 (CDR L3)) (LIST (CAR L3))))
+;-	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST L1)(CONS SMLIST L2)) L3))))
+;-	NIL (APPEND L1 L2 L3)(LIST (LENGTH L1)(LENGTH L2)(LENGTH L3))))
+
+(defun select (tensor l1 l2 l3)
+  (
+    (lambda
+      (prop subs idx)
+      (cond
+        (
+          (and
+            (allfixed subs)
+            (setq prop (zl-get tensor 'carrays))
+            (setq prop (zl-assoc idx prop))
+          )
+          (cond
+            (
+              (alike1
+                (setq prop (cons (list (cdr prop) 'array) subs))
+                (setq subs (meval prop))
+              )
+              0
+            )
+            (t subs)
+          )
+        )
+        (
+          (setq prop (zl-assoc idx (zl-get tensor 'texprs)))
+          (sublis
+            (mapcar (function cons)(cddr prop) subs)
+            ($rename (cadr prop) (cond ((boundp 'n) n) (t 1)))
+          )
+        )
+        (
+          (setq prop (zl-get tensor 'tsubr))
+          (apply prop (list (cons smlist l1) (cons smlist l2) (cons smlist l3)))
+        )
+        (
+          (not (eq l3 nil))
+          (apply '$idiff (select tensor l1 l2 (cdr l3)) (list (car l3)))
+        )
+        (t (append (list (list tensor 'simp) (cons smlist l1) (cons smlist l2)) l3))
+      )
+    )
+    nil (append l1 l2 l3) (list (length l1)(length l2)(length l3))
+  )
+)
 
 
-	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
-;;	       (APPLY PROP (LIST (CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))(CONS SMLIST L3))))
-;;	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR (INCONSTANT L1) (INCONSTANT L2) (CDR L3)) (LIST (CAR L3))))
-;;	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))) L3))))
-;;	NIL (APPEND (INCONSTANT L1) (INCONSTANT L2) L3)(LIST (LENGTH (INCONSTANT L1))(LENGTH (INCONSTANT L2))(LENGTH L3))))
-	       (APPLY PROP (LIST (CONS SMLIST L1)(CONS SMLIST L2)(CONS SMLIST L3))))
-	      ((NOT (EQ L3 NIL)) (APPLY '$IDIFF (SELECT TENSOR L1 L2 (CDR L3)) (LIST (CAR L3))))
-	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST L1)(CONS SMLIST L2)) L3))))
-	NIL (APPEND L1 L2 L3)(LIST (LENGTH L1)(LENGTH L2)(LENGTH L3))))
-
-
 (defmfun $entertensor nargs
   (prog (fun contr cov deriv)
     (cond
