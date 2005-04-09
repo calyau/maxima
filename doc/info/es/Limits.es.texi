@@ -1,0 +1,60 @@
+
+@menu
+* Definici@'on para L@'{@dotless{i}}mites::      
+@end menu
+
+@node Definici@'on para L@'{@dotless{i}}mites,  ,L@'{@dotless{i}}mites,L@'{@dotless{i}}mites 
+
+@section Definici@'on para L@'{@dotless{i}}mites
+
+@defvr {option variable} lhospitallim
+
+por defecto:[4] - es el n@'umero m@'aximo de veces que la regla de
+L'Hopital es aplicada en la funci@'on @code{limit}. Esto previene lazos infinitos, es decir aplicaci@'on de la regla de forma infinita, en casos como
+@code{limit(cot(x)/csc(x),x,0)}.
+
+@end defvr
+
+@deffn {function} limit (exp, var, val, dir)
+@deffnx {function} limit (exp, var, val)
+@deffnx {function} limit (exp)
+
+busca el l@'{@dotless{i}}mite de @var{exp} cuando la variable real @var{var} se acerca al valor de @var{val} desde la direcci@'on @var{dir}. @var{dir}  puede tener el valor @code{plus} para l@'{@dotless{i}}mites por la derecha, @code{minus} para l@'{@dotless{i}}mites desde la izquierda, o puede ser omitido (implicando que el l@'{@dotless{i}}mite ser@'a calculado por los dos lados). Para observar el m@'etodo empleado v@'ease  Wang, P., "Evaluation of Definite Integrals by Symbolic Manipulation" - Ph.D. Thesis - MAC TR-92 October 1971. @code{limit} usa los siguientes s@'{@dotless{i}}mbolos especiales: @code{inf} (infinito positivo) y @code{minf}(infinito
+negativo). Las salidas (resultados) tambi@'en pueden usar  @code{und}(indefinido), @code{ind} (indefinido pero limitado) e @code{infinity} (infinito complejo). 
+
+
+@code{lhospitallim} es el n@'umero m@'aximo de veces que la regla de
+L'Hopital es aplicada en la funci@'on @code{limit}. Esto previene lazos infinitos, es decir aplicaci@'on de la regla de forma infinita, en casos como
+@code{limit(cot(x)/csc(x),x,0)}.
+
+@code{tlimiswicth} cuando su valor es @code{true} puede causar que el paquete limit use Series de Taylor cuando sea posible.
+
+@code{limsubst} previene que @code{limit} intente sustituciones sobre
+formas desconocidas. Esto es para evitar errores como @code{limit(f(n)/f(n+1),n,inf);} arrojen como resultado 1. Programando @code{limsubst} a @code{true} permitir@'a tales sustituciones. 
+
+@code{limit} con un argumento es a menudo llamado para la simplificaci@'on de expresiones constantes, por ejemplo @code{limit(inf-1)}. 
+
+Pruebe @code{example{limit};} para ejemplos. 
+
+@end deffn
+
+@defvr {option variable} limsubst
+
+por defecto @code{false} - previene que @code{limit} intente sustituciones sobre formas desconocidas. Esto es para evitar errores como @code{limit(f(n)/f(n+1),n,inf);} arrojen como resultado 1. Programando @code{limsubst} a @code{true} permitir@'a tales sustituciones. 
+
+@end defvr
+
+@deffn {function} tlimit (exp, var, val, dir)
+@deffnx {function} tlimit (exp, var, val)
+@deffnx {function} tlimit (exp)
+es s@'olo la funci@'on @code{limit} con @code{tlimswitch} configurado
+a @code{true}. 
+
+@end deffn
+
+@defvr {option variable} tlimswitch
+por defecto: @code{false} - si su valor es @code{true} causar@'a que el
+paquete limit use Series de Potencias cuando sea posible. 
+
+@end defvr
+

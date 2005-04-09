@@ -1,0 +1,203 @@
+@menu
+* Definiciones para Contextos::    
+@end menu
+
+@node Definiciones para Contextos,  , Contextos, Contextos
+@section Definiciones para Contextos
+@c @node ACTIVATE
+@c @unnumberedsec phony
+@defun ACTIVATE (cont1, cont2, ...)
+
+causa que los contextos espec@'{@dotless{i}}ficos @code{conti} sean 
+activados.  Los hechos en estos contextos son usados en la realizaciones de deducciones
+e informaci@'on recobrada. Los hechos en estos contextos no son
+enlistados cuando FACTS; es realizado. La variable ADTIVECONTEXT es la lista
+de contextos que est@'an activos mediante la funci@'on ACTIVATE.
+
+@end defun
+@c @node ACTIVEContextos
+@c @unnumberedsec phony
+@defvar ACTIVEContextos
+ por defecto: [] es una lista de contextos que est@'an activos
+mediante la funci@'on ACTIVATE, como oposici@'on a ser activada por que
+ellos son subcontextos del contexto actual.
+
+@end defvar
+
+@c @node ASSUME
+@c @unnumberedsec phony
+@defun ASSUME (pred1, pred2, ...)
+Primero revisa los predicados especificos para
+redundancia e inconsistencia con la base de datos actual. Si los
+predicados son consistentes y no-redundantes, son adicionados a la
+base de datos; si es inconsistente o redundadnte, no son tomadas acciones algunas. ASSUME
+retorna una lista de cuales entradas son los predicados agregados a la base de datos
+y los @'atomos REDUNDAT o INCONSISTENT donde son aplicables.
+
+@end defun
+@c @node ASSUMESCALAR
+@c @unnumberedsec phony
+@defvar ASSUMESCALAR
+ por defecto: [VERDADERO] - ayuda a manejar expresiones con respecto a 
+@code{exp}
+
+@example
+NONSCALARP(exp) es FALSO
+@end example
+
+son asumidos para comportamientos como escalares
+para ciertas transformaciones como las siguientes: Deje que @code{exp} represente alguna
+no-lista/no-matriz, y @code{[1,2,3]} cualquier lista o matriz.
+@example
+exp.[1,2,3]; ==>
+ [exp,2*exp,3*exp]
+@end example
+si ASSUMESCALAR es VERDADERO o SCALARP(exp) es
+VERDADERO o CONSTANTP(exp) es VERDADERO.  Si ASSUMESCALAR es VERDADERO, dichos
+operadores, pero no para ".". Si ASSUMESCALAR es FALSO, dichas
+expresiones pueden comportarse como no-escalares. Si ASSUMESCALAR es ALL.
+dichas expresiones se comportar@'an como escalares para todos los operadores enlistados
+anteriormente.
+@end defvar
+
+@c @node ASSUME_POS
+@c @unnumberedsec phony
+@defvar ASSUME_POS
+ por defecto:[FALSO] - Cuando se usa INTEGRATE, etc. uno a menudo
+introduce par@'ametros que son reales y positivos o uno tiene
+calculos que pueden a menudo ser construidos si este es VERDADERO. Hay
+una opci@'on ASSUME_POS (por defecto FALSO) tal que si es programada como VERDADERO, MACSYMA
+asumir@'a que los par@'ametos son positivos. La intenci@'on aqu@'{@dotless{i}} es
+reducir el n@'umero de preguntas que MACSYMA necesita preguntar. Obviamente,
+ASSUME (asume) informaci@'on o alguna informaci@'on contextual presente tomar@'a
+precedencia. El usuario puede controlar lo que es considerado para ser un par@'ametro
+para este prop@'osito. Los par@'ametros por defecto son aquellos que satisfacen
+SYMBOLP(x) O SUBVARP(x). El usuario puede cambiar esto mediante la programaci@'on 
+de la opci@'on ASSUME_POS_PRED [por defecto FALSO] para el nombre de una funci@'on
+predicado de un argumento. E.g. si usted desea que los par@'ametros solo 
+sean s@'{@dotless{i}}mbolos, usted puede hacer ASSUME_POS:VERDADERO$ ASSUME_POS_PRED:'SYMBOLP$
+SIGN(A); -> POS, SIGN(A[1]); -> PNZ.
+
+@end defvar
+
+@c @node ASSUME_POS_PRED
+@c @unnumberedsec phony
+@defvar ASSUME_POS_PRED
+ por defecto:[FALSO] - puede ser programada para un argumento para controlar
+que sea considerado un par@'ametro para la "opci@'on assume" que INTEGRATE
+realice... observe ASSUME y ASSUME_POS .
+@end defvar
+
+@c @node CONTEXT
+@c @unnumberedsec phony
+@defvar CONTEXT
+ por defecto: INITIAL. Siempre y cuando un usuario asuma un nuevo hecho, esto es
+ubicado en el contexto llamado como el valor actual de la variable
+CONTEXT.  Similarmente, FORGET referenc@'{@dotless{i}}a el valor actual de CONTEXT.
+Para cambiar contextos,simplemente enlaze CONTEXT al contexto deseado. Si
+el contexto espec@'{@dotless{i}}fico no existe ese ser@'a creado mediante un
+llamdo invisible a NEWCONTEXT. El contexto especificaod para el valor de
+CONTEXT es activado autom@'aticamente. (Haga DESCRIBE(Contextos); para una
+descripci@'on general del mecanismo CONTEXT.)
+
+@end defvar
+@c @node Contextos
+@c @unnumberedsec phony
+@defvar Contextos
+ por defecto: [INITIAL,GLOBAL] es una lista de los contextos que
+existen actualmente, incluyendo el contexto activo actual.
+El mecanismo contexto lo hace posible para un usuario para enlzar junto
+y nombrar una porci@'on seleccionada en su base de datos, llamndo un contexto. Una vez
+esto sea hecho, el usuario puede hacer que MACSYMA asuma o olvide n@'umeros grandes
+de hecho, meramente mediante la activaci@'on o desactivaci@'on de sus contextos. Cualquier
+@'atomo simb@'olico puede ser un contexto, y de hecho contenido en ese
+contexto podr@'a ser retenido en almacenamiento hasta que el usuario los destruya
+individualemente mediante FORGET o destruy@'endolos por completo usando KILL
+para destruir el contexto al que pertenencen.
+    Los contextos existen en una jerarqu@'{@dotless{i}}a formal, con la ra@'{@dotless{i}}z siempre siendo
+el contexto GLOBAL, que contiene informaci@'on que algunas funciones necesitan 
+acerca de MACSYMA. Cuando en un contexto dado, todos los factores en que los
+contextos est@'an "activos" (significa que son usados en deducciones y
+recuperacions) como todos ent@'an de hecho en alg@'un contexto que est@'a 
+inferior a dicho contexto. cunado un MACSYMA nuevo es iniciado, el usuario est@'a en un
+contexto llamado INITIAL, que posee a GLOBAL como un subcontexto.
+Las funciones que tratan con contextos son: FACTS, NEWCONTEXT,
+SUPCONTEXT, KILLCONTEXT, ACTIVATE, DEACTIVATE, ASSUME y FORGET.
+
+@end defvar
+@c @node DEACTIVATE
+@c @unnumberedsec phony
+@defun DEACTIVATE (cont1, cont2, ...)
+causa que el contexto especificado conti sea
+desactivado.
+
+@end defun
+@c @node FACTS
+@c @unnumberedsec phony
+@defun FACTS (item)
+si 'item' es el nombre de un contexto entonces FACTS retorna una lista
+de los hechos en el contexto especificado. Si no son dados argumentos, esta
+lista es el contexto actual. Si 'item' no es el nombre de un contexto
+entonces este retronar@'a una lista de los hechos conocidos acerca de 'item' en el
+contexto actual. Hechos que est@'an activos, paro en un contexto diferente, no son
+enlistados.
+
+@end defun
+@c @node declaration
+@c @unnumberedsec phony
+@defvr declaration FEATURES
+ - MACSYMA posee construir-en porpiedaddes que son tomadas mediante la
+base de datos. Estas son llamadas FEATURES. Uno puede hacer DECLARE(N,INTEGER),
+etc. Uno tambi@'en puede DECLARE (declarar) sus propias FEATURES (caracter@'{@dotless{i}}sticas) mediante e.g.
+DECLARE( INCREASING, FEATURE); que podr@'an entonces permitir que uno diga
+DECLARE(F, INCREASING);.  Uno puede entonces revisar si F est@'a INCREASING (creciendo) mediante el
+uso del predicado FEATURE v@'{@dotless{i}}a FEATUREP(F, INCREASING). Hay
+una lista de informaci@'on FEATURES que es una lista de las FEATURES conocidas. Las FEATURES
+conocidas actualmente son: INTEGER, NONINTEGER, EVEN, ODD, RATIONAL,
+IRRATIONAL, REAL, IMAGINARY, COMPLEX, ANALYTIC, INCREASING,
+DECREASING, ODDFUN, EVENFUN, POSFUN, COMMUTATIVE, LASSOCIATIVE,
+RASSOCIATIVE, SYMMETRIC y ANTISYMMETRIC.  [Nota: las "caracter@'{@dotless{i}}sticas" del sistema
+pueden ser revisadas con STATUS(FEATURE, ...); Observe DESCRIBE(STATUS); o
+DESCRIBE(FEATURE); para detalles.]
+
+@end defvr
+@c @node FORGET
+@c @unnumberedsec phony
+@defun FORGET (pred1, pred2, ...)
+remueve relaciones establecidas mediante ASSUME.
+Los predicados pueden ser expresiones equivalentes a (pero no necesariamente
+identicas a) aquellas previamente ASSUME (asumidas).  FORGET(list) es tambi@'en una
+forma legal.
+
+@end defun
+@c @node KILLCONTEXT
+@c @unnumberedsec phony
+@defun KILLCONTEXT (context1,context2,...,contextn)
+Elimina los contextos 
+especificados. Si uno de ellos el el contexto actual, el nuevo contexto
+actual ser@'a el primer subcontexto disponible de los contextos 
+actuales que no han sido eliminados. Si el primer contexto disponibles
+no eliminado es GLOBAL entonces es usado en cambio INITIAL. Si el  
+contexto INITIAL es eliminado, un nuevo INITIAL es creado, que est@'a limpio de hechos.
+KILLCONTEXT no permite al usuario eliminar contextos que est@'an
+actualmente activos, si porque este es un subcontexto del contexto
+actual, o mediante el uso de la funciq´on ACTIVATE.
+
+@end defun
+@c @node NEWCONTEXT
+@c @unnumberedsec phony
+@defun NEWCONTEXT (name)
+crea un nuevo contexto (vacio), llamado nombre, que
+posee a GLOBAL como su @'unico subcontexto. el nuevo contexto creado
+se convertir@'a en el contexto activo actual.
+
+@end defun
+@c @node SUPCONTEXT
+@c @unnumberedsec phony
+@defun SUPCONTEXT (name,context)
+crear@'a un nuevo contexto (llamado nombre)
+cuyo sobcontexto es el contexto. Si el contexto no es espec@'{@dotless{i}}fico, el contexto 
+actual ser@'a asumido. Si este es espec@'{@dotless{i}}fico, el contexto debe existir
+context will be assumed.  If it is specified, context must exist.
+
+@end defun

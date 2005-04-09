@@ -1,0 +1,355 @@
+
+@menu
+* Introducci@'on a los Polinomios Ortogonales::  
+* Definiciones para los Polinomios Ortogonales::  
+@end menu
+
+@node Introducci@'on a los Polinomios Ortogonales, Definiciones para los Polinomios Ortogonales, , Polinomios Ortogonales
+@comment  node-name,  next,  previous,  up
+@section Introducci@'on a Polinomios Ortogonales
+
+El paquete @code{specfun}, ubicado en el directorio share, contiene el c@'odigo de Maxima para la evaluaci@'on de todos los Polinomios Ortogonales listados en el Cap@'{@dotless{i}}tulo 22 de Abramowitz y Stegun. Estos incluyen los polinomios Chebyshev, Laguerre, Hermite, Jacobi, Legendre, y ultraesf@'ericos(Gegenbauer). Adicionalmente, @code{specfun} contiene el c@'odigo para esf@'ericos de Bessel, Hankel, y funciones harm@'onicas esf@'ericas. 
+
+La siguiente tabla lista cada funci@'on en specfun, su nombre en Maxima, restricciones sobre sus argumentos (@math{ m } y @math{ n } deben ser enteros), y una referencia a el algoritmo specfun usado para evaluarlo. Con pocas excepciones, specfun sigue las convenciones de Abramowitz y Stegun.  Antes de usar specfun, revise que las convenciones de specfun cumplan sus expectativas.
+
+A&S se refiere a Abramowitz y Stegun, @emph{Handbook of 
+Mathematical Functions} (10th edici@'on, Diciembre 1972),
+G&R para Gradshteyn y Ryzhik, 
+@emph{Table of Integrals, Series, and Products}
+(1980, edici@'on corregida y ampliada), y Merzbacher 
+para @emph{Quantum Mechanics} (2ed, 1970).  
+
+
+@multitable @columnfractions 0.25 0.25 0.25 0.25
+@item @emph{Funci@'on} @tab  @emph{Nombre en Maxima}  @tab @emph{Restricciones} @tab @emph{Referencia(s)}
+@item Chebyshev T @tab chebyshev_t(n, x) @tab @math{n > -1} @tab A&S 22.5.31 
+@item Chebyshev U @tab chebyshev_u(n, x) @tab @math{n > -1} @tab A&S 22.5.32 
+@item Laguerre generalizada @tab gen_laguerre(n,a,x) @tab @math{n > -1} @tab A&S p@'agina 789
+@item Laguerre @tab laguerre(n,x) @tab @math{n > -1} @tab A&S 22.5.67
+@item Hermite @tab hermite(n,x) @tab @math{n > -1} @tab A&S 22.4.40, 22.5.41
+@item Jacobi @tab jacobi_p(n,a,b,x) @tab @math{ n > -1, a, b > -1} @tab A&S p@'agina 789
+@item Legendre P asociada @tab assoc_legendre_p(n,m,x) @tab @math{n > -1} @tab A&S 22.5.37, 8.6.6, 8.2.5
+@item Legendre Q asociada @tab assoc_legendre_q(n,m,x) @tab @math{n > -1, m > -1} @tab G & R 8.706
+@item Legendre P @tab legendre_p(n,m,x) @tab @math{n > -1} @tab A&S 22.5.35
+@item Legendre Q @tab legendre_q(n,m,x) @tab @math{n > -1} @tab A&S 8.6.19
+@item esf@'erica de Hankel 1st @tab spherical_hankel1(n, x) @tab @math{n > -1} @tab A&S 10.1.36
+@item esf@'erica de Hankel 2nd @tab spherical_hankel2(n, x) @tab @math{n > -1} @tab A&S 10.1.17
+@item esf@'erica de Bessel J @tab spherical_bessel_j(n,x) @tab @math{n > -1} @tab A&S 10.1.8, 10.1.15
+@item esf@'erica de Bessel Y @tab spherical_bessel_y(n,x) @tab @math{n > -1} @tab A&S 10.1.9, 10.1.15
+@item arm@'{@dotless{i}}ca esf@'erica @tab spherical_harmonic(n,m,x,y) @tab @math{n > -1, |m| <= n} @tab Merzbacher 9.64
+@item ultraesf@'erica (Gegenbauer) @tab ultraspherical(n,a,x) @tab @math{ n > -1} @tab A&S 22.5.27
+
+@end multitable
+
+El paquete @code{specfun} pretende de primera forma realizar c@'alculos simb@'olicos. Se espera que @'este genere un resultado preciso de punto flotante; sin embargo, no se han dado quejas respecto al desempe@~no del algoritmo en evaluaci@'on num@'erica. Algunos esfuerzos, no obstante, han sido realizados para proveer un buen desempe@~no num@'erico. Cuando todos los argumentos, excepto salvo el orden, son flotantes (pero no @code{bfloats}), muchas funciones en @code{specfun} llaman a la versi@'on del modo declarado float de la funci@'on Jacobi. Esto aumenta la velocidad de la evaluaci@'on en punto flotante de los Polinomios Ortogonales. @code{specfun} maneja la mayor@'{@dotless{i}}a de errores de dominio para retornar una funci@'on sin evaluar. No se han hecho esfuerzos para definir reglas de simplifiaci@'on (basado en las relaciones de recursi@'on) para funciones sin evaluar. Los usuarios pueden enterarse de que esto es posible para desaparecer una expresi@'on
+que involucra sumas de funciones especiales no evaluadas, Maxima a@'un
+es incapaz de reducirlas a cero. Tenga cuidado.
+
+Para funciones de acceso en @code{specfun}, usted debe cargar primero specfun.o. Alternamente, usted puede a@~nadir declaraciones autocargadas a su archivo init.lsp (localizado en su directorio de trabajo). Para autocargar la
+funci@'on hermite, por ejemplo, a@~nada: 
+
+@lisp
+   (defprop |$hermite| #"specfun.o" autoload) 
+   (add2lnc '|$hermite| $props) 
+@end lisp
+a su archivo init.lsp. Un ejemplo del uso de specfun es: 
+
+@example
+(c1) load("specfun.o")$
+(c2) [hermite(0,x),hermite(1,x),hermite(2,x)];
+(d2) [1,2*x,-2*(1-2*x^2)]
+(c3) diff(hermite(n,x),x);
+(d3) 2*n*hermite(n-1,x)
+@end example
+
+Cuando use la versi@'on compilada de specfun, sea especialmente
+cuidadoso de usar el n@'umero correcto de argumentos de funciones; llamandolos con muy pocos argumentos puede generar un mensaje de error fatal.
+Por ejemplo 
+@example
+(c1) load("specfun")$
+/* chebyshev_t requires two arguments. */
+(c2) chebyshev_t(8);
+Error: Caught fatal error [memory may be damaged]
+Fast links are on: do (si::use-fast-links nil) for debugging
+Error signalled by MMAPCAR.
+Broken at SIMPLIFY.  Type :H for Help.
+@end example
+
+El c@'odigo de Maxima traducido a Lisp toma cada error de forma m@'as elegantemente. Si specfun.LISP est@'a instalado en su m@'aquina, el mismo computo resulta en un claro mensaje de error. Por  ejemplo:
+@example
+(c1) load("specfun.LISP")$
+(c2) chebyshev_t(8);
+Error: Expected 2 args but received 1 args
+Fast links are on: do (si::use-fast-links nil) for debugging
+Error signalled by MACSYMA-TOP-LEVEL.
+Broken at |$CHEBYSHEV_T|.  Type :H for Help.
+@end example 
+
+Generalmente, el c@'odigo compilado correr@'a m@'as r@'apido que el c@'odigo traducido; sin embargo, el c@'odigo traducido puede ser mejor para el desarrollo del programa.  Para algunas funciones, cuando el orden es simb@'olico pero ha sido declarado para ser entero, @code{specfun} retornar@'a una representaci@'on en series. (La representaci@'on en series no es usada
+por @code{specfun} para algunos computos.) Usted puede usar esta caracter@'{@dotless{i}}stica para buscar valores simb@'olicos para valores especiales de Polinomios Ortogonales. Un ejemplo:
+
+@example
+(c1) load("specfun")$
+(c2) legendre_p(n,1);
+(d2)        legendre_p(n, 1)
+/* Se declara  n para ser entero; ahora legendre_p(n,1) se evalua a 1. */
+(c3) declare(n,integer)$
+(c4) legendre_p(n,1);
+(d4)        1
+(c5) ultraspherical(n,3/2,1);
+(d4)         (n+1)*gamma (n+3) / (2*gamma (n+2))
+@end example
+
+A lo largo del ejemplo anterior no se mostraron, dos t@'erminos
+de la suma que son adicionados fuera de la sumatoria. Removiendo estos
+dos t@'erminos se evita errores asociados con @math{0^0}, t@'erminos
+que en una suma se podr@'{@dotless{i}}an evaluar a 1, pero ser@'{@dotless{i}}an evaluados a 0 en una sumatoria de Maxima. Porque los indices de la suma van desde 1 a
+@math{n - 1}, el indice de suma m@'as peque@~no exceder@'a al indice de suma superior cuando @math{ n = 0}; configurando @code{sumhack} a @code{true} se provee una soluci@'on. Por ejemplo:
+
+@example 
+(c1) load("specfun.o")$
+(c2) declare(n,integer)$
+(c3) e : legendre_p(n,x)$
+(c4) ev(e,sum,n=0);
+L@'{@dotless{i}}mite inferior para SUM: 1
+es m@'as grande que el l@'{@dotless{i}}mite inferior: - 1
+ -- an error. Quitting. To debug this try DEBUGMODE(TRUE);)
+(c5) ev(e,sum,n=0),sumhack:true;
+(d5)         1
+@end example
+
+Las mayor@'{@dotless{i}}a de las funciones en @code{specfun} tienen una propiedad gradef; derivadas con respecto al orden o a los par@'ametros de otras funciones
+que no est@'an sin evaluar. El paquete specfun y su documentaci@'on fueron escritos por Barton Willis de la Universidad de Nebraska en Kearney. Se lanzaron bajo los t@'erminos de la Licencia Publica General (GPL). Envie reportes de errores y comentarios sobre este paquete a willisb@@unk.edu.  En su reporte, por favor incluya la informaci@'on de la versi@'on de Maxima y de specfun. La versi@'on de specfun puede ser encontrada usando get:
+@example
+ (c2) get('specfun,'version);
+ (d2)          110
+@end example
+
+@node Definiciones para los Polinomios Ortogonales, , Introducci@'on a los Polinomios Ortogonales, Polinomios Ortogonales
+@section Definiciones para los Polinomios Ortogonales
+
+@defun ASSOC_LEGENDRE_P (n, m, x)
+[paquete specfun] retorna la funci@'on asociada Legendre
+de primera clase para enteros @math{ n > -1 } y
+@math{ m > -1}. Cuando @math{ | m | > n } y @math{ n >= 0},
+tenemos @math{assoc_legendre_p (n, m, x) = 0}.
+
+Referencia: A&S 22.5.37 p@'agina 779,  A&S 8.6.6 (segunda 
+ecuaci@'on) p@'agina 334, y A&S 8.2.5 p@'agina 333.
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease: @ref{ASSOC_LEGENDRE_Q}, @ref{LEGENDRE_P}, y @ref{LEGENDRE_Q}.
+@end defun
+
+@anchor{ASSOC_LEGENDRE_Q}
+@defun ASSOC_LEGENDRE_Q (n, m, x)
+
+[paquete specfun] retorna la funci@'on asociada Legendre
+de segunda clase para enteros @math{ n > -1 } y
+@math{ m > -1}.
+
+Referencia: Gradshteyn y Ryzhik  8.706 p@'agina 1000.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: ASSOC_LEGENDRE_P, LEGENDRE_P, y LEGENDRE_Q.
+@end defun
+
+@defun CHEBYSHEV_T (n, x)
+
+[paquete specfun] retorna la funci@'on Chebyshev de primera clase para
+enteros @math{ n > -1}.
+
+
+Referencia: A&S 22.5.31 p@'agina 778 y A&S 6.1.22 p@'agina 256.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: CHEBYSHEV_U.
+
+@end defun
+
+@defun CHEBYSHEV_U (n, x)
+
+[paquete specfun] retorna la funci@'on Chebyshev de segunda clase para
+enteros @math{ n > -1}.
+
+Referencia: A&S, 22.8.3 p@'agina 783 y A&S 6.1.22 p@'agina 256. 
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: CHEBYSHEV_T.
+
+@end defun
+
+@defun   GEN_LAGUERRE (n, a, x)
+
+[paquete specfun] retorna el polinomio generalizado Laguerre
+para enteros @math{ n > -1}.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+Referencia: tabla en la p@'agina 789 en A&S.
+
+@end defun
+
+@defun HERMITE (n,x)
+
+[paquete specfun] retorna el polinomio Hermite
+para enteros @math{ n > -1}.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+Referencia:  A&S 22.5.40 and 22.5.41, p@'agina 779.
+
+@end defun
+
+@defun  JACOBI_P (n, a, b, x)
+
+[paquete specfun] retorna el polinomio Jacobi para
+enteros @math{ n > -1 } y @math{ a } y @math{ b } simb@'olicos
+o @math{ a > -1}  y @math{b > -1}. 
+ 
+(Los polinomios Jacobi son actualmente definidos para todas
+@math{ a } y @math{ b }; sin embargo, el peso del polinomio
+Jacobi @math{ (1-x)^a(1+x)^b} no es integrable para @math{ a <= -1} o
+@math{ b <= -1}.) 
+
+Cuando @math{a, b}, y @math{ x } son flotantes (pero no bfloats)  
+specfun llama una versi@'on especial modo-declarado de @math{jacobi_p}.
+Para valores num@'ericos, la versi@'on modo declarado es mucho
+m@'as r@'apida que en otras versiones. Algunas funciones en @code{specfun} son computadas como un caso especial de los polinomios Jacobi; ellos tambi@'en disfrutan del aumento de velocidad de la versi@'on modo declarado de
+@math{jacobi}.
+
+Si @math{ n } ha sido declarado para ser un entero, @math{jacobi_p (n, a, b, x)} retorna una representaci@'on de sumatoria para la funci@'on Jacobi. Porque Maxima simplifica @math{0^0} a @math{ 0 } en una suma, dos t@'erminos de la suma son adicionados fuera de la sumatoria.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+Referencia:  tabla en la p@'agina 789 en A&S.
+
+@end defun
+
+@defun  LAGUERRE (n, x)
+
+[paquete specfun] retorna el polinomio Laguerre para
+enteros @math{ n > -1}.  
+
+Referencia: A&S 22.5.16, p@'agina 778 y A&S p@'agina 789.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}. 
+
+V@'ease tambi@'en: GEN_LAGUERRE.
+
+@end defun
+
+@anchor{LEGENDRE_P}
+@defun  LEGENDRE_P (n, x)
+
+
+[paquete specfun] retorna el polinomio Legendre de 
+primera clase para enteros @math{ n > -1}.  
+
+Referencia: A&S 22.5.35 p@'agina 779.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease: @ref{LEGENDRE_Q}.
+
+@end defun
+
+@anchor{LEGENDRE_Q}
+@defun  LEGENDRE_Q (n, x)
+
+[paquete specfun] retorna el polinomio Legendre de 
+primera clase para enteros @math{ n > -1}.  
+
+Referencia: A&S 8.6.19 p@'agina 334.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: LEGENDRE_P.
+
+@end defun
+
+@defun SPHERICAL_BESSEL_J (n, x)
+
+[paquete specfun] retorna la funci@'on Bessel esf@'erica de
+primera clase para enteros @math{ n > -1}.  
+
+Referencia: A&S 10.1.8 p@'agina 437 y A&S 10.1.15 p@'agina 439.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: SPHERICAL_HANKEL1, SPHERICAL_HANKEL2 
+y SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_BESSEL_Y (n, x)
+
+[paquete specfun] retorna la funci@'on Bessel esf@'erica de
+segunda clase para enteros @math{ n > -1}. 
+
+Referencia: A&S 10.1.9 p@'agina 437 y 10.1.15 p@'agina 439.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en:''SPHERICAL_HANKEL1, SPHERICAL_HANKEL2
+y SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_HANKEL1 (n,x)
+
+[paquete specfun] retorna la funci@'on Hankel esf@'erica de
+primera clase para enteros @math{ n > -1}.  
+
+Referencia: A&S 10.1.36 p@'agina 439.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: SPHERICAL_HANKEL2, SPHERICAL_BESSEL_J y
+SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_HANKEL2 (n,x)
+
+[paquete specfun] retorna la funci@'on Hankel esf@'erica de
+segunda clase para enteros @math{ n > -1}.  
+
+Referencia:  A&S 10.1.17 p@'agina 439.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: SPHERICAL_HANKEL1, SPHERICAL_BESSEL_J, and
+SPHERICAL_BESSEL_Y.
+
+@end defun
+
+@defun SPHERICAL_HARMONIC (n,  m, x, y)
+
+[paquete specfun] retorna la funci@'on arm@'onica esf@'erica 
+para enteros @math{ n > -1} y @math{ | m | <= n }.
+
+Referencia:  Merzbacher 9.64.
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: ASSOC_LEGENDRE_P
+
+@end defun
+
+@defun ULTRASPHERICAL (n,a,x)
+
+[paquete specfun] retorna los polinomios ultraesf@'ericos para
+enteros @math{ n > -1}. Los polinomios ultraesf@'ericos son
+tambi@'en conocidos como polinomios Gegenbauer.
+
+Referencia: A&S 22.5.27
+
+Para acceder a esta funci@'on haga @code{load("specfun");}.
+
+V@'ease tambi@'en: JACOBI_P.
+
+@end defun

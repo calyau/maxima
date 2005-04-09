@@ -1,0 +1,476 @@
+@menu
+* Introducci@'on a la Integraci@'on       
+* Definiciones para la Integraci@'on       
+@end menu
+    
+@node Introduction to Integration, Definitions for Integration, Integration, Integration
+@section introducci@'on a la Integraci@'on   
+
+MAXIMA tiene varias rutinas por ocuparse de integraci@'on. El INTEGRE el orden hace uso de la mayor@'{@dotless{i}}a de ellos. Hay tambi@'en los ANTID empaquetan que maneja una funci@'on no especificada (y sus derivado, claro). Para los usos num@'ericos, hay los ROMBERG funcionan, y la versi@'on de IMSL de Romberg, DCADRE. Hay tambi@'en un integrator del adaptave que usa el Newton-Cotes 8 regla de cuadratura de tablero, QUANC8 llamado. Las Funciones de Hypergeometric est@'an trabaj@'andose adelante, haga DESCRIBE(SPECINT); para los detalles. Generalmente hablando, MAXIMA s@'olo se ocupa de integrales que son los integrable por lo que se refiere a las funciones" "elementales (las funciones racionales, trigonometrics, los le@~nos, el exponentials, los radicales, etc.) y unas extensiones (la funci@'on del error, dilogarithm). no se ocupa de integrales por lo que se refiere a las funciones desconocidas como el g(x) y h(x).   
+    
+  
+@c end concepts Integration
+@node Definitions for Integration,  , Introduction to Integration, Integration
+@section 1.1 definiciones para la Integraci@'on   
+
+@c @node CHANGEVAR, DBLINT, INTEGRALS, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: CHANGEVAR (el exp,f(x,y),y,x)   
+las hechuras el cambio de variable dado por el f(x,y) = 0 en todos los integrales que ocurren en el exp con la integraci@'on con respecto a x; y es la nueva variable.       
+@example
+(C1) 'INTEGRATE(%E**SQRT(A*Y),Y,0,4);  
+                        4  
+                       /  
+                       [SQRT(A) SQRT(Y)  
+    (D1) yo (% E) el dY  
+                       ]  
+                       /  
+                        0  
+    (C2) CHANGEVAR(D1,Y-Z^2/A,Z,Y);  
+                                   2 SQRT(A)  
+                                  /  
+                                  [Z  
+                                2 yo Z% el dZ de E  
+                                  ]  
+                                  /  
+                                   0  
+    (D4)---------------------  
+                                          Un  
+  
+@end example
+CHANGEVAR tambi@'en puede usarse a los cambios en el indices de una suma o producto. Sin embargo, debe comprenderse que cuando un cambio es hecho en una suma o producto, este cambio debe ser un cambio, es decir I=J+..., no una funci@'on del grado m@'as alta. Por ejemplo 
+@example
+(C3) SUM(A[I]*X^(I-2),I,0,INF);  
+                               INF  
+                               == ==  
+                               \ YO - 2  
+(D3)> UN X  
+                               / YO  
+                               == ==  
+                               YO = 0  
+(C4) CHANGEVAR(%,I-2-N,N,I);  
+                              INF  
+                              == ==  
+                              \ N  
+(D4)> UN X  
+                              / N + 2  
+                              == ==  
+                              N = - 2  
+  
+  
+  
+   
+  
+@end example
+@end defun
+@c @node DBLINT, DEFINT, CHANGEVAR, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: DBLINT ('F, 'R, 'S,a,b)   
+
+una rutina doble-@'{@dotless{i}}ntegra que era escrito en el MAXIMA cima-nivelado y entonces tradujo y compil@'o para mecanizar el c@'odigo. Use LOAD(DBLINT); para acceder este paquete. Usa el m@'etodo de la Regla del Simpson en los x y direcciones de y calcular 
+/ B / S(X) 
+| | 
+| | F(X,Y) DY DX. 
+| | 
+/ Un / R(X) 
+La funci@'on F(X,Y) debe ser una funci@'on traducida o compil@'o de dos variables, y R(X) y S(X) deba cada uno sea una funci@'on traducida o compil@'o de uno inconstante, mientras un y b debe ser los n@'umeros del punto flotantes. La rutina tiene dos variables globales que determinan el n@'umero de divisiones de los x e intervalos de y: DBLINT_X y DBLINT_Y los dos de que son inicialmente 10 y pueden cambiarse independientemente a otros valores del entero (hay 2*DBLINT_X+1 puntos computados en la direcci@'on de x, y 2*DBLINT_Y+1 en la direcci@'on de y). La rutina subdivide el eje de X y entonces para cada valor de X computa R(X primero) y S(X); entonces el eje de Y entre R(X) y S(X) se subdivide y el integral a lo largo del eje de Y ha realizado usando la Regla de Simpson; entonces el integral a lo largo del eje de X que usa la Regla de Simpson con la funci@'on se hace valora al ser los Y-integrales. Este procedimiento puede ser num@'ericamente inestable para una gran variedad de razones, pero es bastante r@'apido: evite usarlo en las funciones muy oscilatorias y funciones con las singularidades (polos o puntos de la rama en la regi@'on). Los integrales de Y dependen adelante c@'omo R(X aparte lejano) y S(X) es, para que si la distancia S(X)-R(X) var@'{@dotless{i}}a r@'apidamente con X, puede haber errores sustanciales que se levantan del truncamiento con los paso-tama@~nos diferentes en los varios integrales de Y. Uno puede aumentar DBLINT_X y DBLINT_Y en un esfuerzo mejorar el fondos de la regi@'on, al gasto de tiempo del c@'omputo. Los valores de la funci@'on no se ahorran, para que si la funci@'on es el mismo tiempo-consumiendo, usted tendr@'a que esperar por el re-c@'omputo si usted cambia algo (afligido). se requiere que las funciones F, R, y S o se traduzcan o compilaron a prior a llamar DBLINT. ¡Esto producir@'a @'ordenes de mejora de velocidad de magnitud encima del c@'odigo interpretado en muchos casos! Preg@'untele a LPH (o GJC) sobre usar estas ayudas num@'ericas. El archivo que la DEMOSTRACIÓN de SHARE1;DBLINT puede ejecutarse en lote o modo de la demostraci@'on para ilustrar el uso en un problema de la muestra; el archivo SHARE1;DBLNT DEMO1 es una extensi@'on de la DEMOSTRACIÓN que tambi@'en hace uso de otras ayudas num@'ericas, FLOATDEFUNK y QUANC8. Por favor env@'{@dotless{i}}e todo el bicho nota y preguntas a LPH   
+  
+@end defun
+@c @node DEFINT, ERF, DBLINT, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: DEFINT (los exp, el var, mugen, alto)   
+
+La Integraci@'on definida, igual que INTEGRATE(exp,var,low,high). Esto usa los m@'etodos simb@'olicos, si usted desea usar una prueba del m@'etodo num@'erica ROMBERG(exp,var,low,high).   
+    
+@end defun
+@c @node ERF, ERFFLAG, DEFINT, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: ERF (X)   
+
+la funci@'on del error cuyo derivado es: 2*EXP(-X^2)/SQRT(%PI).   
+  
+  
+@end defun
+@c @node ERFFLAG, ERRINTSCE, ERF, Integration
+@c @unnumberedsec phony
+@defvar Inconstante: ERFFLAG   
+
+el valor predeterminado: [VERDADERO] si FALSO le impide a RISCH introducir el ERF funciona en la respuesta si no hab@'{@dotless{i}}a ninguno en el integrand empezar con.   
+  
+  
+@end defvar
+@c @node ERRINTSCE, ILT, ERFFLAG, Integration
+@c @unnumberedsec phony
+@defvar Inconstante: ERRINTSCE   
+
+el valor predeterminado: [VERDADERO] - Si una llamada a la rutina de INTSCE no es del formulario   
+  
+@example
+  EXP(A*X+B)*COS(C*X)^N*SIN(C*X)  
+@end example
+  
+  
+entonces el programa de la integraci@'on regular se invocar@'a si el interruptor ERRINTSCE[TRUE] es VERDAD. Si es entonces FALSO que INTSCE errar@'a fuera.   
+  
+@end defvar
+@c @node ILT, INTEGRATE, ERRINTSCE, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: ILT (el exp, el lvar, el ovar)   
+
+tomas que los Laplace inversos transforman de exp con respecto al lvar y ovar del par@'ametro. los exp deben ser una proporci@'on de polinomios cuyo denominador tiene s@'olo factores lineales y cuadr@'aticos. Usando las funciones LAPLACE e ILT junto con el RESUELVA o LINSOLVE funciona el usuario puede resolver un solo diferencial o circunvoluci@'on ecuaci@'on @'{@dotless{i}}ntegra o un juego de ellos.   
+@example
+(C1) 'INTEGRATE(SINH(A*X)*F(T-X),X,0,T)+B*F(T)=T**2;  
+              T  
+             /  
+             [2  
+(D1) yo (SINH(A X) F(T - X)) el dX + B F(T) = T  
+             ]  
+             /  
+             0  
+(C2) LAPLACE(%,T,S);  
+            UN LAPLACE(F(T), T, S)  
+(D2)---------------------  
+                    2 2  
+                   S - UN  
+                                          2  
+                + B LAPLACE(F(T), T, S) =--  
+                                           3  
+                                          S  
+(C3) LINSOLVE ([%], ['LAPLACE(F(T),T,S)]);  
+LA SOLUCIÓN  
+                                        2 2  
+                                     2 S - 2 UN  
+(E3) LAPLACE(F(T), T, S) =--------------------  
+                                    5 2 3  
+                                 B S + (UN - UN B) S  
+(D3) [E3]  
+(C4) ILT(E3,S,T);  
+¿UN B ES (UN B - 1) EL POSITIVO, EL NEGATIVO, EL CERO DE OREGÓN?  
+POS;  
+                                       2  
+                       SQRT(A) SQRT(A B - B) T  
+                2 COSH (------------------------)  
+                                  B  
+(D4) F(T) = ---------------------------------  
+                               Un  
+              2  
+           UN T 2  
+        +------- +------------------  
+          UN B - 1 3 2 2  
+                    UN B - 2 UN B + UN  
+  
+  
+  
+@end example
+@end defun
+@c @node INTEGRATE, INTEGRATION_CONSTANT_COUNTER, ILT, Integration
+@c @unnumberedsec phony
+@defun  La funci@'on: INTEGRE (el exp, var)   
+
+integra el exp con respecto a var o ingresos una expresi@'on @'{@dotless{i}}ntegra (el formulario del nombre) si no puede realizar la integraci@'on (vea nota 1 debajo). hablando tres fases Aproximadamente se usan:
+@itemize @bullet
+@item
+	(1) INTEGRE ve si el integrand es del formulario 
+F(G(X)) * DIFF(G(X),X) probando si el derivado de alg@'un subexpression (es decir G(X) en el caso anterior) divide el integrand. En ese caso busca F en una mesa de integrales y sustituye G(X) para X en el integral de F. Esto puede hacer uso de pendientes tomando el derivado. (Si una funci@'on desconocida aparece en el integrand que debe eliminarse en esta fase o el resto INTEGRA devolver@'a el formulario del nombre del integrand.)   
+@item
+	(2) INTEGRE intenta emparejar el integrand a un formulario para que un m@'etodo espec@'{@dotless{i}}fico puede usarse, por ejemplo las substituciones trigonom@'etricas.   
+@item
+	(3) si la primera dos falta de las fases usa el algoritmo de Risch. Deben representarse las relaciones funcionales expl@'{@dotless{i}}citamente para que INTEGRA para trabajar propiamente. INTEGRE no es afectado por DEPENDENCIAS puestas a con el DEPENDE el orden. INTEGRATE(exp, el var, mugen, alto) los hallazgos el integral definido de exp con respecto al var de bajo a alto o ingresos el formulario del nombre si no puede realizar la integraci@'on. Los l@'{@dotless{i}}mites no deben contener el var. Se usan varios m@'etodos, mientras incluyendo la substituci@'on directa en el integral indefinido e integraci@'on del contorno. Los integrales impropios pueden usar los nombres INF para la infinidad positiva y MINF para la infinidad negativa. Si un formulario @'{@dotless{i}}ntegro se desea para la manipulaci@'on (por ejemplo, un integral que no puede computarse hasta que algunos n@'umeros se sustituyan para algunos par@'ametros), el formulario del nombre 'INTEGRE puede usarse y esto desplegar@'a con una se@~nal @'{@dotless{i}}ntegra. (Vea Nota 1 debajo.) La funci@'on LDEFINT usa el LÍMITE para evaluar el integral a los m@'as bajo y superiores l@'{@dotless{i}}mites. A veces durante la integraci@'on el usuario puede preguntarse lo que la se@~nal de una expresi@'on es. Las contestaciones convenientes son POS;, CEROS;, o NEG;.   
+@end itemize
+@example
+  (C1) INTEGRATE(SIN(X)**3,X);  
+                    3  
+                 COS (X)  
+(D1)------- - COS(X)  
+                    3  
+(C2) INTEGRATE(X**A/(X+1)**(5/2),X,0,INF);  
+¿ES UN + 1 POSITIVO, EL NEGATIVO, EL CERO DE OREGÓN?  
+POS;  
+¿2 SON UN - 3 POSITIVO, EL NEGATIVO, EL CERO DE OREGÓN?  
+NEG;  
+                            3  
+(D2) BETA(A + 1, - - UN)  
+                            2  
+(C3) GRADEF(Q(X),SIN(X**2));  
+(D3) Q(X)  
+(C4) DIFF(LOG(Q(R(X))), X);  
+                           d 2  
+                          (--R(X)) SIN(R (X))  
+                           el dX  
+(D4)--------------------  
+                                Q(R(X))  
+(C5) INTEGRATE(%,X);  
+(D5) LOG(Q(R(X)))  
+  
+@end example
+   (Nota 1) El hecho que MAXIMA no realiza ciertos integrales que no siempre implica que el integral no existe en el formulario cerrado. En el ejemplo debajo de los ingresos de llamada de integraci@'on el formulario del nombre pero el integral puede encontrarse bastante f@'acilmente. Por ejemplo, uno puede computar las ra@'{@dotless{i}}ces de X^3+X+1 = 0 volver a escribir el integrand en la forma: 
+@example
+1/((X-A)*(X-B)*(X-C del formulario)) 
+@end example 
+  
+donde UN, B y C son las ra@'{@dotless{i}}ces. MAXIMA integrar@'a este formulario equivalente aunque el integral es bastante complicado.   
+@example
+(C6) INTEGRATE(1/(X^3+X+1),X);  
+                          /  
+                          [1  
+(D6) yo----------el dX  
+                          ] 3  
+                          / X + X + 1  
+  
+  
+  
+   
+  
+@end example
+@end defun
+@c @node INTEGRATION_CONSTANT_COUNTER, INTSCE, INTEGRATE, Integration
+@c @unnumberedsec phony
+@defvar Inconstante: INTEGRATION_CONSTANT_COUNTER   
+- un contador que se pone al d@'{@dotless{i}}a cada tiempo una constante de integraci@'on (llam@'o por MAXIMA, por ejemplo, "INTEGRATIONCONSTANT1") se introduce en una expresi@'on por la integraci@'on indefinida de una ecuaci@'on.   
+
+@end defvar
+@defvar Inconstante: INTEGRATE_USE_ROOTSOF   
+el valor predeterminado: [falso] Si no falso entonces cuando el denominador de una funci@'on racional no puede factorizarse, nosotros damos el integral en un formulario que es una suma encima de las ra@'{@dotless{i}}ces del denominador:   
+@example
+  (C4) el integrate(1/(1+x+x^5),x);  
+  
+      / 2  
+      [x - 4 x + 5  
+      Yo------------el dx 2 x + 1  
+      ] 3 2 2 5 ATAN (-------)  
+      / x - x + 1 LOG(x + x + 1) SQRT(3)  
+(D4)----------------- ---------------- +---------------  
+	      7 14 7 SQRT(3)  
+  
+@end example
+
+pero ahora nosotros pusimos la bandera para ser verdad y la primera parte del integral sufrir@'a la simplificaci@'on extensa.   
+@example
+
+(C5) INTEGRATE_USE_ROOTSOF:true;    
+(D5) VERDADERO  
+@end example
+@example
+     (C6) el integrate(1/(1+x+x^5),x);  
+  
+     == == 2  
+     \ (% R1 - 4% R1 + 5) LOG(x -% R1)  
+      >-------------------------------  
+     / 2  
+     == == 3% R1 - 2% R1  
+                     3 2  
+     % R1 en ROOTSOF(x - x + 1)  
+(D6)----------------------------------------------------------  
+              7  
+  
+                                                         2 x + 1  
+                                     2 5 ATAN (-------)  
+                                LOG(x + x + 1) SQRT(3)  
+                              ---------------- +---------------  
+                                      14 7 SQRT(3)  
+  
+@end example
+  
+Nota que puede ser que nosotros queremos aproximar las ra@'{@dotless{i}}ces en el avi@'on complejo, y entonces proporciona la funci@'on factorizada, desde que nosotros podremos entonces agruparse las ra@'{@dotless{i}}ces y su complejo conjuga, para para dar una respuesta buena.   
+  
+@end defvar
+
+
+@c @node INTSCE, LDEFINT, INTEGRATION_CONSTANT_COUNTER, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: INTSCE (el expr,var)   
+
+El CECEO de INTSCE contiene una rutina, escrita por Richard Bogen, por integrar productos de sines,cosines y exponentials del formulario 
+@example
+EXP(A*X+B)*COS(C*X)^N*SIN(C*X)^M,  
+@end example
+   
+La llamada es INTSCE(expr,var) los expr pueden ser cualquier expresi@'on, pero si no est@'a entonces en el formulario anterior que el programa de la integraci@'on regular se invocar@'a si el interruptor ERRINTSCE[TRUE] es VERDAD. Si es entonces FALSO que INTSCE errar@'a fuera.   
+   
+@end defun
+@c @node LDEFINT, POTENTIAL, INTSCE, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: LDEFINT (el exp,var,ll,ul)   
+los rendimientos el integral definido de exp usando el LÍMITE para evaluar el integral indefinido de exp con respecto al var al ul del l@'{@dotless{i}}mite superior y al m@'as bajo ll del l@'{@dotless{i}}mite.   
+  
+  
+@end defun
+@c @node POTENTIAL, QQ, LDEFINT, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: POTENCIAL (el givengradient)   
+El c@'alculo hace uso del 
+@example
+POTENTIALZEROLOC[0 inconstante global]  
+@end example
+   
+qu@'e debe ser NONLIST o del formulario   
+@example
+  [el indeterminatej=expressionj, el indeterminatek=expressionk,...]  
+@end example   
+el ser anterior equivalente a la expresi@'on del nonlist para los lados todo diestros en el @'ultimo. Los lados diestros indicados se usan como el m@'as bajo l@'{@dotless{i}}mite de integraci@'on. El @'exito de las integraciones puede depender en sus valores y orden. POTENTIALZEROLOC se pone inicialmente a 0.   
+  
+@end defun
+@c @node QQ, QUANC8, POTENTIAL, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: QQ   
+- El archivo SHARE1;QQ FASL (qu@'e puede cargarse con la CARGA ("QQ");) contiene una funci@'on QUANC8 que o puede tomar 3 o 4 argumentos. La 3 versi@'on del arg computa el integral de la funci@'on especificado como el primer argumento encima del intervalo del lo a hola como en QUANC8 ('el name,lo,hi de la funci@'on);. El nombre de la funci@'on debe citarse. La 4 versi@'on del arg computar@'a el integral de la funci@'on o expresi@'on (primero el arg) con respecto a la variable (segundo arg) encima del intervalo del lo a hola como en QUANC8(<f(x) o expresi@'on en el x>,x,lo,hi). El m@'etodo usado es el Newton-Cotes 8 orden la cuadratura polin@'omica, y la rutina es adaptable. Se pasar@'a tiempo que s@'olo divide el intervalo as@'{@dotless{i}} cuando necesario para lograr las condiciones del error especificadas por las variables globales QUANC8_RELERR (value=1.0e-4 predefinido) y QUANC8_ABSERR (value=1.0e-8 predefinido) qu@'e da la prueba del error relativa: 
+| integral(function)-comput@'o el valor | <el quanc8_relerr*|integral(function) | 
+y la prueba del error absoluta: 
+| integral(function)-comput@'o el value|<quanc8_abserr.
+Haga PRINTFILE(QQ,USAGE,SHARE1) para los detalles.   
+  
+  
+@end defun
+@c @node QUANC8, RESIDUE, QQ, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: QUANC8 ('el name,lo,hi de la funci@'on)   
+Un integrator adaptable, disponible en SHARE1;QQ FASL. Se proporcionan DEMOSTRACIÓN y archivos del USO. El m@'etodo es usar Newton-Cotes la regla de cuadratura de 8-tablero, del nombre de la funci@'on QUANC8, disponible en 3 o 4 versiones del arg. Se usan los cheques del error absolutos y relativos. Usarlo CARGAN ("QQ"); Para m@'as detalles DESCRIBE(QQ hacen);.   
+  
+  
+@end defun
+@c @node RESIDUE, RISCH, QUANC8, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: El RESIDUO (el exp, el var, el val)   
+computa el residuo en el avi@'on complejo del exp de la expresi@'on cuando el var inconstante asume el val de valor. El residuo es el coeficiente de (el var-val)**(-1) en el Laurent la serie para el exp.   
+@example
+(C1) RESIDUE(S/(S**2+A**2),S,A*%I);  
+                        1  
+(D1) -  
+                        2  
+(C2) RESIDUE(SIN(A*X)/X**4,X,0);  
+                        3  
+                       Un  
+(D2) ---  
+                       6  
+  
+  
+@end example
+@end defun
+@c @node RISCH, ROMBERG, RESIDUE, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: RISCH (el exp, var)   
+integra el exp con respecto a var que usa el caso transcendental del algoritmo de Risch. (El caso algebraico del algoritmo de Risch no se ha llevado a cabo.) Esto se ocupa de los casos de exponentials anidados y logaritmos actualmente que la parte principal de INTEGRE no puede hacer. INTEGRE aplicar@'a RISCH autom@'aticamente si dado estos casos. ERFFLAG[TRUE] - si FALSO le impide a RISCH introducir el ERF funciona en la respuesta si no hab@'{@dotless{i}}a ninguno en el integrand empezar con.   
+@example
+(C1) RISCH(X^2*ERF(X),X);  
+            2 2  
+         - X X 3 2  
+       % E (% E SQRT(%PI) X ERF(X) + X + 1)  
+(D1)------------------------------------------  
+                      3 SQRT(%PI)  
+(C2) DIFF(%,X),RATSIMP;  
+                                 2  
+(D2) X ERF(X)  
+@end example
+@end defun
+@c @node ROMBERG, ROMBERGABS, RISCH, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: ROMBERG (el exp,var,ll,ul)   
+o ROMBERG(exp,ll,ul) - la Integraci@'on de Romberg. Usted no necesita la carga en cualquier archivo usar ROMBERG, es el autoloading. Hay dos maneras de usar esta funci@'on. El primero es una manera ineficaz como la versi@'on @'{@dotless{i}}ntegra definida de INTEGRE: ROMBERG(<integrand>,<variable de l@'{@dotless{i}}mite del integration>,<lower>, <el l@'{@dotless{i}}mite superior>); 
+@example
+los Ejemplos:  
+        ROMBERG(SIN(Y),Y,1,%PI);  
+                TIEMPO = 39 MSEC.          1.5403023  
+        F(X):=1/(X^5+X+1);  
+        ROMBERG(F(X),X,1.5,0);  
+                TIEMPO = 162 MSEC.         - 0.75293843  
+  
+@end example
+ El segundo es que una manera eficaz como que se usa sigue:   
+@example
+ Los ROMBERG(<function name>,<lower limit>,<upper limitan>);  
+@end example
+@example
+El ejemplo:  
+F(X):=(MODE_DECLARE([FUNCTION(F),X],FLOAT),1/(X^5+X+1));  
+TRANSLATE(F);  
+ROMBERG(F,1.5,0);  
+        TIEMPO = 13 MSEC.          - 0.75293843  
+@end example
+   
+El primer argumento debe ser una funci@'on Traducida o compil@'o. (Si se compila que debe declararse para devolver un FLONUM.) Si el primer argumento ya no Se traduce, ROMBERG no intentar@'a TRADUCIRLO pero dar@'a un error. La exactitud de la integraci@'on se gobierna por las variables globales ROMBERGTOL (el valor 1.E-4 predefinido) y ROMBERGIT (el valor 11 predefinido). ROMBERG devolver@'a un resultado si la diferencia relativa en las aproximaciones sucesivas est@'a menos de ROMBERGTOL. Probar@'a la partici@'on por mitad el stepsize que ROMBERGIT cronometra antes de que se rinda. El n@'umero de iteraciones y evaluaciones de la funci@'on que ROMBERG har@'a se gobierna por ROMBERGABS y ROMBERGMIN, haga DESCRIBE(ROMBERGABS,ROMBERGMIN); para los detalles. ROMBERG puede llamarse el recursively y as@'{@dotless{i}} puede hacer doblarse y los integrales triples.   
+@example
+El ejemplo:  
+INTEGRATE(INTEGRATE(X*Y/(X+Y),Y,0,X/2),X,1,3);  
+                        13/3 (2 LOG(2/3) + 1)  
+%, NUMER;  
+                        0.81930233  
+DEFINE_VARIABLE(X,0.0,FLOAT, variable "Global en la funci@'on F") $  
+F(Y):=(MODE_DECLARE(Y,FLOAT), X*Y/(X+Y)) $  
+G(X):=ROMBERG ('F,0,X/2) $    
+ROMBERG(G,1,3);  
+                         0.8193023  
+  
+@end example
+La ventaja con esta manera es que la funci@'on que F puede usarse para otros prop@'ositos, como la trama. La desventaja es que usted tiene que pensar a un nombre para ambos la funci@'on F y su X. inconstante libre O, sin el global:
+@example
+        G1(X):=(MODE_DECLARE(X,FLOAT), ROMBERG(X*Y/(X+Y),Y,0,X/2)) $  
+        ROMBERG(G1,1,3);  
+                                0.8193023  
+@end example
+  
+La ventaja aqu@'{@dotless{i}} es la brevedad.          
+@example
+ Q(A,B):=ROMBERG(ROMBERG(X*Y/(X+Y),Y,0,X/2),X,A,B) $  
+        Q(1,3);  
+                                0.8193023  
+  
+@end example
+Es aun m@'as corto esta manera, y las variables no necesitan ser declaradas porque ellos est@'an en el contexto de ROMBERG. El uso de ROMBERG para los integrales m@'ultiples puede tener grandes desventajas, sin embargo. La cantidad de c@'alculo extra necesitada debido a la informaci@'on geom@'etrica tirada expresando los integrales m@'ultiples esta manera puede ser incre@'{@dotless{i}}ble. El usuario debe estar seguro entender y usar los ROMBERGTOL e interruptores de ROMBERGIT. (La versi@'on de IMSL de integraci@'on de Romberg est@'a ahora disponible en MAXIMA. Haga DESCRIBE(DCADRE); para m@'as informaci@'on.)   
+  
+@end defun
+@c @node ROMBERGABS, ROMBERGIT, ROMBERG, Integration
+@c @unnumberedsec phony
+@defvar  Inconstante: ROMBERGABS   
+
+el valor predeterminado: [0.0] (0.0B0) Asumiendo ese estimaciones sucesivas producidas por ROMBERG son Y[0], Y[1], Y[2] etc., entonces ROMBERG volver@'a despu@'es de las iteraciones de N si (hablando aproximadamente) (ABS(Y[N]-Y[N-1]) <= ROMBERGABS OREGÓN ABS(Y[N]-Y[N-1]) / (SI Y[N]=0.0 THEN 1.0 RESTO Y[N]) <= ROMBERGTOL) es VERDAD. (La condici@'on en el n@'umero de iteraciones dado por ROMBERGMIN tambi@'en debe satisfacerse.) As@'{@dotless{i}} si ROMBERGABS tiene 0.0 a@~nos (el valor predeterminado) usted apenas consigue la prueba del error relativa. La utilidad de la variable adicional viene cuando usted quiere realizar un integral d@'onde la contribuci@'on dominante viene de una regi@'on peque@~na. Entonces usted puede hacer el integral primero encima de la regi@'on dominante peque@~na, mientras usando el cheque de exactitud relativo, seguido por el integral encima del resto de la regi@'on que usa el cheque de exactitud absoluto. El ejemplo: Suponga usted quiere computar 
+@example
+Integral(exp(-x),x,0,50)  
+@end example   
+(num@'ericamente) con una exactitud relativa de 1 parte en 10000000. Defina la funci@'on. N es un contador, para que nosotros podemos ver cu@'antas evaluaciones de la funci@'on fueron necesitadas.   
+@example
+F(X):=(MODE_DECLARE(N,INTEGER,X,FLOAT),N:N+1,EXP(-X)) $  
+TRANSLATE(F) $  
+  / * En primer lugar prueba que hace el integral entero en seguida * /  
+BLOCK([ROMBERGTOL:1.E-6,ROMBERABS:0.], N:0,ROMBERG(F,0,50));  
+              ==> 1.00000003  
+N; ==> 257 / * el n@'umero de evaluaciones de la funci@'on * /  
+@end example
+
+Ahora haga el integral inteligentemente, haciendo Integral(exp(-x),x,0,10 primero) y poniendo ROMBERGABS entonces a 1.E-6*(this integral parcial). 
+@example
+BLOCK([ROMBERGTOL:1.E-6,ROMBERGABS:0.,SUM:0.],  
+  N:0,SUM:ROMBERG(F,0,10),ROMBERGABS:SUM*ROMBERGTOL,ROMBERGTOL:0.,  
+      SUM+ROMBERG(F,10,50)); ==> 1.00000001 / * Mismo como antes de * /  
+N;  ==> 130  
+@end example
+   
+As@'{@dotless{i}} si F(X) era una funci@'on que tom@'o un tiempo largo para computar, el segundo m@'etodo ser@'{@dotless{i}}a m@'as r@'apidamente aproximadamente 2 veces.   
+
+@end defvar
+@c @node ROMBERGIT, ROMBERGMIN, ROMBERGABS, Integration
+@c @unnumberedsec phony
+@defvarInconstante: ROMBERGIT   
+el valor predeterminado: [11] - la exactitud del ROMBERG integraci@'on orden se gobierna por las variables globales ROMBERGTOL[1.E-4] y ROMBERGIT[11]. ROMBERG devolver@'a un resultado si la diferencia relativa en las aproximaciones sucesivas est@'a menos de ROMBERGTOL. Probar@'a la partici@'on por mitad el stepsize que ROMBERGIT cronometra antes de que se rinda.   
+  
+@end defvar
+@c @node ROMBERGMIN, ROMBERGTOL, ROMBERGIT, Integration
+@c @unnumberedsec phony
+@defvar Inconstante: ROMBERGMIN   
+el valor predeterminado: [0] - gobierna el n@'umero m@'{@dotless{i}}nimo de evaluaciones de la funci@'on que ROMBERG har@'a. ROMBERG evaluar@'a sus primeros arg. por lo menos 2^(ROMBERGMIN+2)+1 veces. Esto es @'util para integrar las funciones oscilatorias, cuando el normal converge la prueba a veces podr@'{@dotless{i}}a pasar mal.   
+  
+  
+@end defvar
+@c @node ROMBERGTOL, TLDEFINT, ROMBERGMIN, Integration
+@c @unnumberedsec phony
+@defvar Inconstante: ROMBERGTOL   
+el valor predeterminado: [1.E-4] - La exactitud del ROMBERG integraci@'on orden se gobierna por las variables globales ROMBERGTOL[1.E-4] y ROMBERGIT[11]. ROMBERG devolver@'a un resultado si la diferencia relativa en las aproximaciones sucesivas est@'a menos de ROMBERGTOL. Probar@'a la partici@'on por mitad el stepsize que ROMBERGIT cronometra antes de que se rinda.   
+  
+  
+@end defvar
+@c @node TLDEFINT,  , ROMBERGTOL, Integration
+@c @unnumberedsec phony
+@defun La funci@'on: TLDEFINT (el exp,var,ll,ul)   
+es s@'olo LDEFINT con TLIMSWITCH ponga para ARREGLAR.   
+
+@end defun
+  

@@ -1,0 +1,1004 @@
+@menu
+* Introduction to Function Definition::  
+* FUNCTION::                    
+* MACROS::                      
+* OPTIMIZATION::                
+* Definitions for Function Definition::  
+@end menu
+
+@node Introduction to Function Definition, FUNCTION, Function Definition, Function Definition
+@section Introduction to Function Definition
+
+@node FUNCTION, MACROS, Introduction to Function Definition, Function Definition
+@section FUNCTION
+ - To define a function in MACSYMA you use the := operator.
+E.g.
+@example
+F(X):=SIN(X)
+@end example
+@noindent
+defines a function F.
+Anonmyous functions may also be created using LAMBDA.
+For example
+@example
+lambda([i,j], ... )
+@end example
+@noindent
+can be used instead of F
+where
+@example
+F(I,J):=BLOCK([], ... );
+MAP(LAMBDA([I],I+1),L)
+@end example
+@noindent
+would return a list with 1 added to each term.
+
+You may also define a function with a variable number of arguments,
+by having a final argument which is assigned to a list of the extra
+arguments:
+
+@example
+(C8) f([u]):=u;
+(C9) f(1,2,3,4);
+(D9) 				 [1, 2, 3, 4]
+(C11) f(a,b,[u]):=[a,b,u];
+(C12) f(1,2,3,4,5,6);
+(D12) 			     [1, 2, [3, 4, 5, 6]]
+@end example
+
+The right hand side of a function is an expression.  Thus
+if you want a sequence of expressions, you do
+
+
+@example
+f(x):=(expr1,expr2,....,exprn);
+@end example
+and the value of exprn is what is returned by the function.
+
+If you wish to make a @code{return} from some expression inside the
+function then you must use @code{block} and @code{return}.
+
+@example
+block([],expr1,...,if(a>10) then return(a),...exprn)
+@end example
+is itelf an expression, and so could take the place of the
+right hand side of a function definition.  Here it may happen
+that the return happens earlier than the last expression.
+
+The first @code{[]} in the block, may contain a list of variables and
+variable assignments, such as @code{[a:3,b,c:[]]}, which would cause the
+three variables @code{a},@code{b},and @code{c} to not refer to their
+global values, but rather have these special values for as long as the
+code executes inside the @code{block}, or inside functions called from
+inside the @code{block}.  This is called @i{dynamic} binding, since the
+variables last from the start of the block to the time it exits.  Once
+you return from the @code{block}, or throw out of it, the old values (if
+any) of the variables will be restored.   It is certainly a good idea
+to protect your variables in this way.   Note that the assignments
+in the block variables, are done in parallel.   This means, that if
+you had used @code{c:a} in the above, the value of @code{c} would
+have been the value of @code{a} at the time you just entered the block,
+but before @code{a} was bound.   Thus doing something like
+
+@example
+block([a:a],expr1,... a:a+3,...exprn)
+@end example
+will protect the external value of @code{a} from being altered, but
+would let you access what that value was.   Thus the right hand
+side of the assignments, is evaluated in the entering context, before
+any binding occurs.
+Using just @code{block([x],..} would cause the x to have itself
+as value, just as if it would have if you entered a fresh @b{MAXIMA}
+session.
+
+The actual arguments to a function are treated in exactly same way as
+the variables in a block.  Thus in
+
+@example
+f(x):=(expr1,...exprn);
+and
+f(1);
+@end example
+we would have a similar context for evaluation of the expressions
+as if we had done
+@example
+block([x:1],expr1,...exprn)
+@end example
+
+Inside functions, when the right hand side of a definition,
+may be computed at runtime, it is useful to use @code{define} and
+possibly @code{buildq}.  
+
+
+@node MACROS, OPTIMIZATION, FUNCTION, Function Definition
+@section MACROS
+
+
+@defun BUILDQ([varlist],expression);
+
+ EXPRESSION is any single MAXIMA expression and
+ VARLIST is a list of elements of the form @code{<atom>}
+or @code{<atom>:<value>}
+@end defun
+
+@subsection Semantics
+
+The <value>s in the <varlist> are evaluated left to right (the syntax
+<atom> is equivalent to <atom>:<atom>).  then these values are substituted
+into <expression> in parallel.  If any <atom> appears as a single 
+argument to the special form SPLICE (i.e. SPLICE(<atom>) ) inside
+<expression>, then the value associated with that <atom> must be a macsyma
+list, and it is spliced into <expression> instead of substituted.
+
+
+@subsection SIMPLIFICATION
+
+
+The arguments to BUILDQ need to be protected from simplification until
+the substitutions have been carried out.  This code should affect that
+by using @code{'}.
+
+@code{buildq} can be useful for building functions on the fly.  One
+of the powerful things about @b{MAXIMA} is that you can have your
+functions define other functions to help solve the problem.
+Further below we discuss building a recursive function, for a
+series solution.   This defining of functions inside functions
+usually uses @code{define}, which evaluates its arguments.
+A number of examples are included under @code{splice}.
+
+
+@defun SPLICE (atom)
+This is used with buildq to construct a list. This is handy
+for making argument lists, in conjunction with BUILDQ 
+
+@example
+MPRINT([X]) ::= BUILDQ([U : x],
+  if (debuglevel > 3) print(splice(u)));
+@end example
+
+Including a call like
+@example
+MPRINT("matrix is ",MAT,"with length",LENGTH(MAT))
+@end example
+is equivalent to putting in the line
+
+@example
+IF DEBUGLEVEL > 3
+  THEN PRINT("matrix is ",MAT,"with length",
+              LENGTH(MAT))
+@end example
+
+A more non trivial example would try to display the variable values
+AND their names.  
+@example
+MSHOW(A,B,C) 
+@end example
+
+should become
+
+@example
+PRINT('A,"=",A,",",'B,"=",B,", and",'C,"=",C)
+@end example
+
+so that if it occurs as a line in a program we can print values.
+
+@example
+(C101) foo(x,y,z):=mshow(x,y,z);
+(C102) foo(1,2,3);
+X = 1 , Y = 2 , and Z = 3
+@end example
+
+
+The actual definition of mshow is the following.   Note how buildq
+lets you build 'QUOTED' structure, so that the  @code{'u} lets
+you get the variable name.  Note that in macros, the RESULT is
+a piece of code which will then be substituted for the macro and evaluated.
+
+
+@example
+MSHOW([lis])::=BLOCK([ans:[],N:LENGTH(lis)],
+	   FOR i THRU N DO
+	       (ans:APPEND(ans,
+			   BUILDQ([u:lis[i]],
+				  ['u,"=",u])),
+		IF i < N
+		    THEN ans
+		    :APPEND(ans,
+			    IF i < N-1 THEN [","]
+			        ELSE [", and"])),
+	   BUILDQ([U:ans],PRINT(SPLICE(u))))
+@end example
+
+The splice also works to put arguments into algebraic operations:
+
+@example
+(C108) BUILDQ([A:'[B,C,D]],+SPLICE(A));
+(D108) D+C+B
+@end example
+Note how the simplification only occurs AFTER the substitution,
+The operation applying to the splice in the first cae is the @code{+}
+while in the second it is the @code{*}, yet logically you
+might thing @code{splice(a)+splice(A)} could be replaced by
+@code{2*splice(A)}.   No simplification takes place with the buildq
+To understand what SPLICE is doing with the algebra you must understand
+that for MAXIMA, a formula an operation like @code{A+B+C} is really
+internally similar to @code{+(A,B,C)}, and similarly for multiplication.
+Thus @code{*(2,B,C,D)} is @code{2*B*C*D}
+
+@example
+(C114) BUILDQ([A:'[B,C,D]],+SPLICE(A));
+(D114) D+C+B
+ 
+(C111) BUILDQ([A:'[B,C,D]],SPLICE(A)+SPLICE(A));
+(D111) 2*D+2*C+2*B
+  but
+(C112) BUILDQ([A:'[B,C,D]],2*SPLICE(A));
+(D112) 2*B*C*D
+@end example
+
+Finally the buildq can be invaluable for building recursive functions.
+Suppose your program is solving a differential equation using the
+series method, and has determined that it needs to build a
+recursion relation
+@example
+F[N]:=(-((N^2-2*N+1)*F[N-1]+F[N-2]+F[N-3])/(N^2-N))
+@end example
+and it must do this on the fly inside your function.  Now you
+would really like to add @code{expand}.
+@example
+F[N]:=EXPAND((-((N^2-2*N+1)*F[N-1]+F[N-2]+F[N-3])
+  /(N^2-N)));
+@end example
+but how do you build this code.  You want the @code{expand}
+to happen each time the function runs, NOT before it.
+@example
+kill(f),
+val:(-((N^2-2*N+1)*F[N-1]+F[N-2]+F[N-3])/(N^2-N)),
+define(f[n],buildq([u:val],expand(u))),
+@end example
+does the job.   This might be useful, since when you do
+@example
+With the Expand
+(C28) f[6];
+(D28) -AA1/8-13*AA0/180
+@end example
+where as without it is kept unsimplified, and even after 6 terms
+it becomes:
+@example
+(C25) f[6];
+(D25) (5*(-4*(-3*(-2*(AA1+AA0)+AA1+AA0)/2
+	    -(AA1+AA0)/2+AA1)
+	/3
+	-(-2*(AA1+AA0)+AA1+AA0)/6+(-AA1-AA0)/2)
+      /4
+      +(-3*(-2*(AA1+AA0)+AA1+AA0)/2
+       -(AA1+AA0)/2+AA1)
+       /12-(2*(AA1+AA0)-AA1-AA0)/6)
+      /30
+@end example
+The expression quickly becomes complicated if not simplified at
+each stage, so the simplification must be part of the definition.
+Hence the @code{buildq} is useful for building the form.
+@end defun
+
+
+@node OPTIMIZATION, Definitions for Function Definition, MACROS, Function Definition
+@section OPTIMIZATION
+
+When using TRANSLATE and generating code with MACSYMA,
+there are a number of techniques which can save time and be helpful.
+Do DEMO("optimu.dem") for a demonstration.  In particular, the
+function FLOATDEFUNK from TRANSL;OPTIMU FASL, creates a function
+definition from a math-like expression, but it optimizes it (with
+OPTIMIZE) and puts in the MODE_DECLAREations needed to COMPILE
+correctly. (This can be done by hand, of course).  The demo will only
+run in a fresh macsyma.
+
+@c end concepts Function Definition
+@node Definitions for Function Definition,  , OPTIMIZATION, Function Definition
+@section Definitions for Function Definition
+@c @node APPLY, BINDTEST, OPTIMIZATION, Function Definition
+@c @unnumberedsec phony
+@defun APPLY (function, list)
+gives the result of applying the function to
+the list of its arguments.  This is useful when it is desired to
+compute the arguments to a function before applying that function.
+For example, if L is the list [1, 5, -10.2, 4, 3], then APPLY(MIN,L)
+gives -10.2.  APPLY is also useful when calling functions which do not
+have their arguments evaluated if it is desired to cause evaluation of
+them.  For example, if FILESPEC is a variable bound to the list [TEST,
+CASE] then APPLY(CLOSEFILE,FILESPEC) is equivalent to
+CLOSEFILE(TEST,CASE).  In general the first argument to APPLY should
+be preceded by a ' to make it evaluate to itself.  Since some atomic
+variables have the same name as certain functions the values of the
+variable would be used rather than the function because APPLY has its
+first argument evaluated as well as its second.
+
+@end defun
+
+@c @node BINDTEST, BLOCK, APPLY, Function Definition
+@c @unnumberedsec phony
+@defun BINDTEST (ai)
+causes ai to signal an error if it ever is used in a
+computation unbound.
+
+@end defun
+@c @node BLOCK, BREAK, BINDTEST, Function Definition
+@c @unnumberedsec phony
+@defun BLOCK ([v1,...,vk], statement1,...,statementj)
+Blocks in MACSYMA are
+somewhat analogous to subroutines in FORTRAN or procedures in ALGOL or
+PL/I.  Blocks are like compound statements but also enable the user to
+label statements within the block and to assign "dummy" variables to
+values which are local to the block.  The vi are variables which are
+local to the BLOCK and the stmti are any MACSYMA expressions.  If no
+variables are to be made local then the list may be omitted.  A block
+uses these local variables to avoid conflict with variables having the
+same names used outside of the block (i.e. global to the block).  In
+this case, upon entry to the block, the global values are saved onto a
+stack and are inaccessible while the block is being executed.  The
+local variables then are unbound so that they evaluate to themselves.
+They may be bound to arbitrary values within the block but when the
+block is exited the saved values are restored to these variables.  The
+values created in the block for these local variables are lost.  Where
+a variable is used within a block and is not in the list of local
+variables for that block it will be the same as the variable used
+outside of the block.
+    If it is desired to save and restore other local properties
+besides VALUE, for example ARRAY (except for complete arrays),
+FUNCTION, DEPENDENCIES, ATVALUE, MATCHDECLARE, ATOMGRAD, CONSTANT, and
+NONSCALAR then the function LOCAL should be used inside of the block
+with arguments being the names of the variables.
+    The value of the block is the value of the last statement or the
+value of the argument to the function RETURN which may be used to exit
+explicitly from the block. The function GO may be used to transfer
+control to the statement of the block that is tagged with the argument
+to GO.  To tag a statement, precede it by an atomic argument as
+another statement in the BLOCK.  For example:
+BLOCK([X],X:1,LOOP,X:X+1,...,GO(LOOP),...).  The argument to GO must
+be the name of a tag appearing within the BLOCK.  One cannot use GO to
+transfer to a tag in a BLOCK other than the one containing the GO.
+    Blocks typically appear on the right side of a function definition
+but can be used in other places as well.
+
+@end defun
+@c @node BREAK, BUILDQ, BLOCK, Function Definition
+@c @unnumberedsec phony
+@defun BREAK (arg1, ...)
+will evaluate and print its arguments and will then
+cause a (MACSYMA-BREAK) at which point the user can examine and change
+his environment.  Upon typing EXIT; the computation resumes.
+Control-A (^A) will enter a MACSYMA-BREAK from any point
+interactively.  EXIT; will continue the computation.  Control-X may be
+used inside the MACSYMA-BREAK to quit locally, without quitting the
+main computation.
+
+@end defun
+@c @node BUILDQ, CATCH, BREAK, Function Definition
+@c @unnumberedsec phony
+@defmac BUILDQ
+ - See DESCRIBE(MACROS); .
+
+@end defmac
+@c @node CATCH, COMPFILE, BUILDQ, Function Definition
+@c @unnumberedsec phony
+@defun CATCH (exp1,...,expn)
+evaluates its arguments one by one; if the
+structure of the expi leads to the evaluation of an expression of the
+form THROW(arg), then the value of the CATCH is the value of
+THROW(arg).  This "non-local return" thus goes through any depth of
+nesting to the nearest enclosing CATCH.  There must be a CATCH
+corresponding to a THROW, else an error is generated.  If the
+evaluation of the expi does not lead to the evaluation of any THROW
+then the value of the CATCH is the value of expn.
+@example
+(C1) G(L):=CATCH(MAP(LAMBDA([X],
+       IF X<0 THEN THROW(X) ELSE F(X)),L));
+(C2) G([1,2,3,7]);
+(D2)                     [F(1), F(2), F(3), F(7)]
+(C3) G([1,2,-3,7]);
+(D3)                                - 3
+@end example
+
+The function G returns a list of F of each element of L if L
+consists only of non-negative numbers; otherwise, G "catches" the
+first negative element of L and "throws" it up.
+
+@end defun
+@c @node COMPFILE, COMPGRIND, CATCH, Function Definition
+@c @unnumberedsec phony
+@defun COMPFILE ([filespec], f1, f2, ..., fn)
+Compiles functions fi into
+the file "filespec".  For convenience, see the COMPILE function.
+
+@end defun
+@c @node COMPGRIND, COMPILE, COMPFILE, Function Definition
+@c @unnumberedsec phony
+@defvar COMPGRIND
+ default: [FALSE] when TRUE function definitions output by
+COMPFILE are pretty-printed.
+
+@end defvar
+@c @node COMPILE, COMPILE_LISP_FILE, COMPGRIND, Function Definition
+@c @unnumberedsec phony
+@defun COMPILE (f)
+The COMPILE command is a convenience feature in macsyma. It
+handles the calling of the function COMPFILE, which translates macsyma
+functions into lisp, the calling of the lisp compiler on the file
+produced by COMPFILE, and the loading of the output of the compiler,
+know as a FASL file, into the macsyma. It also checks the compiler
+comment listing output file for certain common errors.  Do
+PRINTFILE(MCOMPI,DOC,MAXDOC); for more details.
+COMPILE(); causes macsyma to prompt for arguments. 
+COMPILE(function1,function2,...); compiles the functions, it uses the name
+of function1 as the first name of the file to put the lisp output.
+COMPILE(ALL); or COMPILE(FUNCTIONS); will compile all functions.
+COMPILE([file-name],function1,function2,...); N.B. all arguments are
+evaluated, just like a normal function (it is a normal function!).
+Therefore, if you have variables with the same name as part of the
+file you can not ignore that fact.
+
+@end defun
+@c @node COMPILE_LISP_FILE, DEFINE, COMPILE, Function Definition
+@c @unnumberedsec phony
+@defun COMPILE_LISP_FILE ("input filename")
+which takes an optional second
+argument of "output filename," can be used in conjunction with
+
+@example
+TRANSLATE_FILE("filename").
+@end example
+For convenience you might define
+
+@example
+Compile_and_load(FILENAME):=
+    LOAD(COMPILE_LISP_FILE(TRANSLATE_FILE(FILENAME)[2]))[2]);
+@end example
+
+These file-oriented commands are to be preferred over the use of
+COMPILE, COMPFILE, and the TRANSLATE SAVE combination.
+
+@end defun
+@c @node DEFINE, DEFINE_VARIABLE, COMPILE_LISP_FILE, Function Definition
+@c @unnumberedsec phony
+@defun DEFINE (f(x1, ...), body)
+is equivalent to f(x1,...):=''body but when
+used inside functions it happens at execution time rather than at the
+time of definition of the function which contains it.
+
+@end defun
+@c @node DEFINE_VARIABLE, DISPFUN, DEFINE, Function Definition
+@c @unnumberedsec phony
+@defun DEFINE_VARIABLE (name,default-binding,mode,optional-documentation)
+
+introduces a global variable into the MACSYMA environment.  This is
+for user-written packages, which are often translated or compiled.
+Thus
+@example
+DEFINE_VARIABLE(FOO,TRUE,BOOLEAN);
+@end example
+does the following:
+
+(1) MODE_DECLARE(FOO,BOOLEAN); sets it up for the translator.
+
+(2) If the variable is unbound, it sets it:  FOO:TRUE.
+
+(3) DECLARE(FOO,SPECIAL); declares it special.
+
+(4) Sets up an assign property for it to make sure that it never 
+    gets set to a value of the wrong mode.
+    E.g.  FOO:44 would be an error once FOO is defined BOOLEAN.
+
+See DESCRIBE(MODE_DECLARE); for a list of the possible "modes".
+The optional 4th argument is a documentation string.  When
+TRANSLATE_FILE is used on a package which includes documentation
+strings, a second file is output in addition to the LISP file which
+will contain the documentation strings, formatted suitably for use in
+manuals, usage files, or (for instance) DESCRIBE.
+With any variable which has been DEFINE_VARIABLE'd with mode other
+than ANY, you can give a VALUE_CHECK property, which is a function of
+one argument called on the value the user is trying to set the
+variable to.
+
+@example
+PUT('G5,LAMBDA([U],IF U#'G5 THEN ERROR("Don't set G5")),
+       'VALUE_CHECK);
+@end example
+
+Use DEFINE_VARIABLE(G5,'G5,ANY_CHECK, "this ain't supposed to be set
+by anyone but me.")
+ANY_CHECK is a mode which means the same as ANY, but which keeps
+DEFINE_VARIABLE from optimizing away the assign property.
+
+@end defun
+@c @node DISPFUN, FUNCTIONS, DEFINE_VARIABLE, Function Definition
+@c @unnumberedsec phony
+@defun DISPFUN (f1, f2, ...)
+displays the definition of the user defined
+functions f1, f2, ... which may also be the names of array associated
+functions, subscripted functions, or functions with constant
+subscripts which are the same as those used when the functions were
+defined.  DISPFUN(ALL) will display all user defined functions as
+given on the FUNCTIONS and ARRAYS lists except subscripted functions
+with constant subscripts.  E.g. if the user has defined a function
+F(x), DISPFUN(F); will display the definition.
+
+@end defun
+@c @node FUNCTIONS, FUNDEF, DISPFUN, Function Definition
+@c @unnumberedsec phony
+@defvar FUNCTIONS
+ default: [] - all user defined functions (set up by
+f(x):=...).
+
+@end defvar
+@c @node FUNDEF, FUNMAKE, FUNCTIONS, Function Definition
+@c @unnumberedsec phony
+@defun FUNDEF (functionname)
+returns the function definition associated
+with "functionname".  FUNDEF(fnname); is similar to DISPFUN(fnname);
+except that FUNDEF does not invoke display.
+
+@end defun
+@c @node FUNMAKE, LOCAL, FUNDEF, Function Definition
+@c @unnumberedsec phony
+@defun FUNMAKE (name,[arg1,...,argn])
+returns name(arg1,...,argn) without
+calling the function name.
+
+@end defun
+@c @node LOCAL, MACROEXPANSION, FUNMAKE, Function Definition
+@c @unnumberedsec phony
+@defun LOCAL (v1, v2, ...)
+causes the variables v1,v2,... to be local with
+respect to all the properties in the statement in which this function
+is used.  LOCAL may only be used in BLOCKs, in the body of function
+definitions or LAMBDA expressions, or in the EV function and only one
+occurrence is permitted in each.  LOCAL is independent of CONTEXT.
+
+@end defun
+@c @node MACROEXPANSION, MODE_CHECKP, LOCAL, Function Definition
+@c @unnumberedsec phony
+@defvar MACROEXPANSION
+ default:[FALSE] - Controls advanced features which
+affect the efficiency of macros. Possible settings:
+ FALSE -- Macros expand normally each time they are called.
+ EXPAND -- The first time a particular call is evaluated, the
+expansion is "remembered" internally, so that it doesn't have to be
+recomputed on subsequent calls making subsequent calls faster.  The
+macro call still GRINDs and DISPLAYs normally, however extra memory is
+required to remember all of the expansions.
+ DISPLACE -- The first time a particular call is evaluated, the
+expansion is substituted for the call.  This requires slightly less
+storage than when MACROEXPANSION is set to EXPAND and is just as fast,
+but has the disadvantage that the original macro call is no longer
+remembered and hence the expansion will be seen if DISPLAY or GRIND is
+called.  See documentation for TRANSLATE and MACROS for more details.
+
+@end defvar
+@c @node MODE_CHECKP, MODE_CHECK_ERRORP, MACROEXPANSION, Function Definition
+@c @unnumberedsec phony
+@defvar MODE_CHECKP
+ default: [TRUE] - If TRUE, MODE_DECLARE checks the modes
+of bound variables.
+
+@end defvar
+@c @node MODE_CHECK_ERRORP, MODE_CHECK_WARNP, MODE_CHECKP, Function Definition
+@c @unnumberedsec phony
+@defvar MODE_CHECK_ERRORP
+ default: [FALSE] - If TRUE, MODE_DECLARE calls
+error.
+
+@end defvar
+@c @node MODE_CHECK_WARNP, MODE_DECLARE, MODE_CHECK_ERRORP, Function Definition
+@c @unnumberedsec phony
+@defvar MODE_CHECK_WARNP
+ default: [TRUE] - If TRUE, mode errors are
+described.
+
+@end defvar
+@c @node MODE_DECLARE, MODE_IDENTITY, MODE_CHECK_WARNP, Function Definition
+@c @unnumberedsec phony
+@defun MODE_DECLARE (y1, mode1, y2, mode2, ...)
+MODEDECLARE is a synonym
+for this.  MODE_DECLARE is used to declare the modes of variables and
+functions for subsequent translation or compilation of functions. Its
+arguments are pairs consisting of a variable yi, and a mode which is
+one of BOOLEAN, FIXNUM, NUMBER, RATIONAL, or FLOAT.  Each yi may also
+be a list of variables all of which are declared to have modei.
+If yi is an array, and if every element of the array which is
+referenced has a value then ARRAY(yi, COMPLETE, dim1, dim2, ...)
+rather than
+@example
+ARRAY(yi, dim1, dim2, ...)
+@end example
+should be used when first
+declaring the bounds of the array.  If all the elements of the array
+are of mode FIXNUM (FLOAT), use FIXNUM (FLOAT) instead of COMPLETE.
+Also if every element of the array is of the same mode, say m, then
+
+@example
+MODE_DECLARE(COMPLETEARRAY(yi),m))
+@end example
+should be used for efficient
+translation.  Also numeric code using arrays can be made to run faster
+by declaring the expected size of the array, as in:
+
+@example
+MODE_DECLARE(COMPLETEARRAY(A[10,10]),FLOAT)
+@end example
+
+for a floating point number array which is 10 x 10.
+Additionally one may declare the mode of the result of a function by
+using FUNCTION(F1,F2,...) as an argument; here F1,F2,... are the names
+of functions.  For example the expression,
+
+@example
+MODE_DECLARE([FUNCTION(F1,F2,...),X],FIXNUM,Q,
+                                COMPLETEARRAY(Q),FLOAT)
+@end example
+
+declares that X and the values returned by F1,F2,... are single-word
+integers and that Q is an array of floating point numbers.
+MODE_DECLARE is used either immediately inside of a function
+definition or at top-level for global variables.  Do
+PRINTFILE(MCOMPI,DOC,MAXDOC); for some examples of the use of
+MODE_DECLARE in translation and compilation.
+
+@end defun
+@c @node MODE_IDENTITY, TRANSBIND, MODE_DECLARE, Function Definition
+@c @unnumberedsec phony
+@defun MODE_IDENTITY (arg1,arg2)
+A special form used with MODE_DECLARE and
+MACROS to delcare, e.g., a list of lists of flonums, or other compound
+data object.  The first argument to MODE_IDENTITY is a primitive value
+mode name as given to MODE_DECLARE (i.e. [FLOAT,FIXNUM,NUMBER,
+LIST,ANY]), and the second argument is an expression which is
+evaluated and returned as the value of MODE_IDENTITY.  However, if the
+return value is not allowed by the mode declared in the first
+argument, an error or warning is signalled.  The important thing is
+that the MODE of the expression as determined by the MACSYMA to Lisp
+translator, will be that given as the first argument, independent of
+anything that goes on in the second argument.
+E.g. X:3.3; MODE_IDENTITY(FIXNUM,X); is an error.  MODE_IDENTITY(FLONUM,X) 
+returns 3.3 . 
+This has a number of uses, e.g., if you knew that FIRST(L) returned a
+number then you might write MODE_IDENTITY(NUMBER,FIRST(L)).  However,
+a more efficient way to do it would be to define a new primitive,
+
+@example
+FIRSTNUMB(X)::=BUILDQ([X],MODE_IDENTITY(NUMBER,X));
+@end example
+and use FIRSTNUMB
+every time you take the first of a list of numbers.
+
+@end defun
+@c @node TRANSBIND, TRANSCOMPILE, MODE_IDENTITY, Function Definition
+@c @unnumberedsec phony
+@defvar TRANSBIND
+ default: [FALSE] - if TRUE removes global declarations in
+the local context.  This applies to variables which are formal
+parameters to functions which one is TRANSLATE-ing from MACSYMA code
+to LISP.
+
+@end defvar
+@c @node TRANSCOMPILE, TRANSLATE, TRANSBIND, Function Definition
+@c @unnumberedsec phony
+@defvar TRANSCOMPILE
+ default:[FALSE] - if true, TRANSLATE will generate the
+declarations necessary for possible compilation.  The COMPFILE command
+uses TRANSCOMPILE:TRUE;.
+
+@end defvar
+@c @node TRANSLATE, TRANSLATE_FILE, TRANSCOMPILE, Function Definition
+@c @unnumberedsec phony
+@defun TRANSLATE (f1, f2, ...)
+translates the user defined functions
+f1,f2,... from the MACSYMA language to LISP (i.e. it makes them
+EXPRs).  This results in a gain in speed when they are called.  There
+is now a version of macsyma with the macsyma to lisp translator
+pre-loaded into it.  It is available by typing :TM (for
+TranslateMacsyma) at DDT level.  When given a file name, E.g. :TM
+GJC;TMTEST > , it gives that file to the function TRANSLATE_FILE, and
+proceeds without further user interaction.  If no file name is given,
+:TM gives a regular macsyma "(C1)" line.  P.s. A user init file with
+second name "TM" will be loaded if it exists.  You may just want to
+link this to your macsyma init file.
+Functions to be translated should include a call to MODE_DECLARE at the
+beginning when possible in order to produce more efficient code.  For
+example:
+@example
+
+F(X1,X2,...):=BLOCK([v1,v2,...],
+        MODE_DECLARE(v1,mode1,v2,mode2,...),...)
+@end example
+@noindent
+
+where the X1,X2,...  are the parameters to the function and the
+v1,v2,... are the local variables.  The names of translated functions
+are removed from the FUNCTIONS list if SAVEDEF is FALSE (see below)
+and are added to the PROPS lists.  Functions should not be translated
+unless they are fully debugged.  Also, expressions are assumed
+simplified; if they are not, correct but non- optimal code gets
+generated.  Thus, the user should not set the SIMP switch to FALSE
+which inhibits simplification of the expressions to be translated.
+The switch TRANSLATE, default: [FALSE], If TRUE, causes automatic
+translation of a user's function to LISP.  Note that translated
+functions may not run identically to the way they did before
+translation as certain incompatabilities may exist between the LISP
+and MACSYMA versions.  Principally, the RAT function with more than
+one argument and the RATVARS function should not be used if any
+variables are MODE_DECLAREd CRE.  Also the PREDERROR:FALSE setting
+will not translate.
+SAVEDEF[TRUE] - if TRUE will cause the MACSYMA version of a user
+function to remain when the function is TRANSLATEd.  This permits the
+definition to be displayed by DISPFUN and allows the function to be
+edited.
+TRANSRUN[TRUE] - if FALSE will cause the interpreted version of all
+functions to be run (provided they are still around) rather than the
+translated version.
+One can translate functions stored in a file by giving TRANSLATE an
+argument which is a file specification.  This is a list of the form
+[fn1,fn2,DSK,dir] where fn1 fn2 is the name of the file of MACSYMA
+functions, and dir is the name of a file directory.
+The result returned by TRANSLATE is a list of the names of the
+functions TRANSLATEd.  In the case of a file translation the
+corresponding element of the list is a list of the first and second
+new file names containing the LISP code resulting from the
+translation.  This will be fn1 LISP on the disk directory dir.  The
+file of LISP code may be read into MACSYMA by using the LOADFILE
+function.
+
+@end defun
+@c @node TRANSLATE_FILE, TRANSRUN, TRANSLATE, Function Definition
+@c @unnumberedsec phony
+@defun TRANSLATE_FILE (file)
+translates a file of MACSYMA code into a file
+of LISP code.  It takes one or two arguments.  The first argument is
+the name of the MACSYMA file, and the optional second argument is the
+name of the LISP file to produce.  The second argument defaults to the
+first argument with second file name the value of
+TR_OUTPUT_FILE_DEFAULT which defaults to TRLISP.  For example:
+TRANSLATE_FILE("test.mc")); will translate "test.mc" to "test.LISP".
+Also produced is a file of translator warning
+messages of various degrees of severity.  The second file name is
+always UNLISP.  This file contains valuable (albeit obsure for some)
+information for tracking down bugs in translated code.  Do
+APROPOS(TR_) to get a list of TR (for TRANSLATE) switches.  In
+summary, TRANSLATE_FILE("foo.mc"), LOADFILE("foo.LISP") is "=" to
+BATCH("foo.mc") modulo certain restrictions (the use of '' and % for
+example).
+
+@end defun
+@c @node TRANSRUN, TR_ARRAY_AS_REF, TRANSLATE_FILE, Function Definition
+@c @unnumberedsec phony
+@defvar TRANSRUN
+ default: [TRUE] - if FALSE will cause the interpreted
+version of all functions to be run (provided they are still around)
+rather than the translated version.
+
+@end defvar
+@c @node TR_ARRAY_AS_REF, TR_BOUND_FUNCTION_APPLYP, TRANSRUN, Function Definition
+@c @unnumberedsec phony
+@defvar TR_ARRAY_AS_REF
+ default: [TRUE] - If TRUE runtime code uses the value
+of the variable as the array.
+
+@end defvar
+@c @node TR_BOUND_FUNCTION_APPLYP, TR_FILE_TTY_MESSAGESP, TR_ARRAY_AS_REF, Function Definition
+@c @unnumberedsec phony
+@defvar TR_BOUND_FUNCTION_APPLYP
+ default: [TRUE] - Gives a warning if a bound
+variable is found being used as a function.
+
+@end defvar
+@c @node TR_FILE_TTY_MESSAGESP, TR_FLOAT_CAN_BRANCH_COMPLEX, TR_BOUND_FUNCTION_APPLYP, Function Definition
+@c @unnumberedsec phony
+@defvar TR_FILE_TTY_MESSAGESP
+ default: [FALSE] - Determines whether messages
+generated by TRANSLATE_FILE during translation of a file will be sent
+to the TTY.  If FALSE (the default), messages about translation of the
+file are only inserted into the UNLISP file.  If TRUE, the messages
+are sent to the TTY and are also inserted into the UNLISP file.
+
+@end defvar
+@c @node TR_FLOAT_CAN_BRANCH_COMPLEX, TR_FUNCTION_CALL_DEFAULT, TR_FILE_TTY_MESSAGESP, Function Definition
+@c @unnumberedsec phony
+@defvar TR_FLOAT_CAN_BRANCH_COMPLEX
+ default: [TRUE] - States whether the arc
+functions might return complex results.  The arc functions are SQRT,
+LOG, ACOS, etc.  e.g. When it is TRUE then ACOS(X) will be of mode ANY
+even if X is of mode FLOAT. When FALSE then ACOS(X) will be of mode
+FLOAT if and only if X is of mode FLOAT.
+
+@end defvar
+@c @node TR_FUNCTION_CALL_DEFAULT, TR_GEN_TAGS, TR_FLOAT_CAN_BRANCH_COMPLEX, Function Definition
+@c @unnumberedsec phony
+@defvar TR_FUNCTION_CALL_DEFAULT
+ default: [GENERAL] - FALSE means give up and
+call MEVAL, EXPR means assume Lisp fixed arg function.  GENERAL, the
+default gives code good for MEXPRS and MLEXPRS but not MACROS.
+GENERAL assures variable bindings are correct in compiled code.  In
+GENERAL mode, when translating F(X), if F is a bound variable, then it
+assumes that APPLY(F,[X]) is meant, and translates a such, with
+apropriate warning. There is no need to turn this off.  With the
+default settings, no warning messages implies full compatibility of
+translated and compiled code with the macsyma interpreter.
+
+@end defvar
+@c @node TR_GEN_TAGS, TR_NUMER, TR_FUNCTION_CALL_DEFAULT, Function Definition
+@c @unnumberedsec phony
+@defvar TR_GEN_TAGS
+ default: [FALSE] - If TRUE, TRANSLATE_FILE generates a
+TAGS file for use by the text editor.
+
+@end defvar
+@c @node TR_NUMER, TR_OPTIMIZE_MAX_LOOP, TR_GEN_TAGS, Function Definition
+@c @unnumberedsec phony
+@defvar TR_NUMER
+ default: [FALSE] - If TRUE numer properties are used for
+atoms which have them, e.g. %PI.
+
+@end defvar
+@c @node TR_OPTIMIZE_MAX_LOOP, TR_OUTPUT_FILE_DEFAULT, TR_NUMER, Function Definition
+@c @unnumberedsec phony
+@defvar TR_OPTIMIZE_MAX_LOOP
+ default: [100] - The maximum number of times the
+macro-expansion and optimization pass of the translator will loop in
+considering a form.  This is to catch MACRO expansion errors, and
+non-terminating optimization properties.
+
+@end defvar
+@c @node TR_OUTPUT_FILE_DEFAULT, TR_PREDICATE_BRAIN_DAMAGE, TR_OPTIMIZE_MAX_LOOP, Function Definition
+@c @unnumberedsec phony
+@defvar TR_OUTPUT_FILE_DEFAULT
+ default: [TRLISP] - This is the second file
+name to be used for translated lisp output.
+
+@end defvar
+@c @node TR_PREDICATE_BRAIN_DAMAGE, TR_SEMICOMPILE, TR_OUTPUT_FILE_DEFAULT, Function Definition
+@c @unnumberedsec phony
+@defvar TR_PREDICATE_BRAIN_DAMAGE
+ default: [FALSE] - If TRUE, output possible
+multiple evaluations in an attempt to interface to the COMPARE
+package.
+
+@end defvar
+@c @node TR_SEMICOMPILE, TR_STATE_VARS, TR_PREDICATE_BRAIN_DAMAGE, Function Definition
+@c @unnumberedsec phony
+@defvar TR_SEMICOMPILE
+ default: [FALSE] - If TRUE TRANSLATE_FILE and COMPFILE
+output forms which will be macroexpanded but not compiled into machine
+code by the lisp compiler.
+
+@end defvar
+@c @node TR_STATE_VARS, TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, TR_SEMICOMPILE, Function Definition
+@c @unnumberedsec phony
+@defvar TR_STATE_VARS
+ default:
+@example
+[TRANSCOMPILE, TR_SEMICOMPILE,
+TR_WARN_UNDECLARED, TR_WARN_MEVAL, TR_WARN_FEXPR, TR_WARN_MODE,
+TR_WARN_UNDEFINED_VARIABLE, TR_FUNCTION_CALL_DEFAULT,
+ TR_ARRAY_AS_REF,TR_NUMER]
+@end example
+The list of the switches that affect the form of the
+translated output.  This information is useful to system people when
+trying to debug the translator.  By comparing the translated product
+to what should have been produced for a given state, it is possible to
+track down bugs.
+
+@end defvar
+@c @node TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, TR_VERSION, TR_STATE_VARS, Function Definition
+@c @unnumberedsec phony
+@defvar TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED
+ default: [FALSE] is bound to
+the quoted string form of the true name of the file most recently
+translated by TRANSLATE_FILE.
+
+@end defvar
+@c @node TR_VERSION, TR_WARNINGS_GET, TR_TRUE_NAME_OF_FILE_BEING_TRANSLATED, Function Definition
+@c @unnumberedsec phony
+@defvar TR_VERSION
+ - The version number of the translator.
+
+@end defvar
+@c @node TR_WARNINGS_GET, TR_WARN_BAD_FUNCTION_CALLS, TR_VERSION, Function Definition
+@c @unnumberedsec phony
+@defun TR_WARNINGS_GET ()
+Prints a list of warnings which have been given by
+the translator during the current translation.
+
+@end defun
+@c @node TR_WARN_BAD_FUNCTION_CALLS, TR_WARN_FEXPR, TR_WARNINGS_GET, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WARN_BAD_FUNCTION_CALLS
+ default: [TRUE] - Gives a warning when
+when function calls are being made which may not be correct due to
+improper declarations that were made at translate time.
+
+@end defvar
+@c @node TR_WARN_FEXPR, TR_WARN_MEVAL, TR_WARN_BAD_FUNCTION_CALLS, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WARN_FEXPR
+ default: [COMPFILE] - Gives a warning if any FEXPRs are
+encountered.  FEXPRs should not normally be output in translated code,
+all legitimate special program forms are translated.
+
+@end defvar
+@c @node TR_WARN_MEVAL, TR_WARN_MODE, TR_WARN_FEXPR, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WARN_MEVAL
+ default: [COMPFILE] - Gives a warning if the function
+MEVAL gets called.  If MEVAL is called that indicates problems in the
+translation.
+
+@end defvar
+@c @node TR_WARN_MODE, TR_WARN_UNDECLARED, TR_WARN_MEVAL, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WARN_MODE
+ default: [ALL] - Gives a warning when variables are
+assigned values inappropriate for their mode.
+
+@end defvar
+@c @node TR_WARN_UNDECLARED, TR_WARN_UNDEFINED_VARIABLE, TR_WARN_MODE, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WARN_UNDECLARED
+ default: [COMPILE] - Determines when to send
+warnings about undeclared variables to the TTY.
+
+@end defvar
+@c @node TR_WARN_UNDEFINED_VARIABLE, TR_WINDY, TR_WARN_UNDECLARED, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WARN_UNDEFINED_VARIABLE
+ default: [ALL] - Gives a warning when
+undefined global variables are seen.
+
+@end defvar
+@c @node TR_WINDY, UNDECLAREDWARN, TR_WARN_UNDEFINED_VARIABLE, Function Definition
+@c @unnumberedsec phony
+@defvar TR_WINDY
+ default: [TRUE] - Generate "helpfull" comments and
+programming hints.
+
+@end defvar
+@c @node UNDECLAREDWARN, COMPILE_FILE, TR_WINDY, Function Definition
+@c @unnumberedsec phony
+@defvar UNDECLAREDWARN
+ default: [COMPFILE] - A switch in the Translator.
+There are four relevant settings:
+SETTING     | ACTION
+------------------------------------------------------------
+FALSE       | never print warning messages. 
+COMPFILE    | warn when in COMPFILE
+TRANSLATE   | warn when in TRANSLATE and when TRANSLATE:TRUE
+ALL         | warn in COMPFILE and TRANSLATE            
+------------------------------------------------------------
+Do MODE_DECLARE(<variable>,ANY) to declare a variable to be a general 
+macsyma variable (i.e. not limited to being FLOAT or FIXNUM).  The extra 
+work in declaring all your variables in code  to be compiled should pay 
+off.
+
+@end defvar
+@c @node COMPILE_FILE, DECLARE_TRANSLATED, UNDECLAREDWARN, Function Definition
+@c @unnumberedsec phony
+@defun COMPILE_FILE (filename,&optional-outfile)
+It takes filename which
+contains macsyma code, and translates this to lisp and then compiles the
+result.  It returns a list of four files (the original file,translation,
+notes on translation and the compiled code).
+
+
+@end defun
+@c @node DECLARE_TRANSLATED,  , COMPILE_FILE, Function Definition
+@c @unnumberedsec phony
+@defun DECLARE_TRANSLATED (FN1,FN2..)
+When translating a file of macsyma code
+to lisp, it is important for the translator to know which functions it
+sees in the file are to be called as translated or compiled functions,
+and which ones are just macsyma functions or undefined.  Putting this
+declaration at the top of the file, lets it know that although a symbol
+does which does not yet have a lisp function value, will have one at
+call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
+the translator does not know fn is going to be a lisp function.
+
+@end defun

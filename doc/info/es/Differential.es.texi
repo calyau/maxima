@@ -1,0 +1,135 @@
+@c end conceptos de Ecuaciones Diferenciales
+@menu
+* Definiciones para Ecuaciones Diferenciales::  
+@end menu
+
+@node Definiciones para Ecuaciones Diferenciales,  , Ecuaciones Diferenciales, Ecuaciones Diferenciales
+@section Definiciones para Ecuaciones Diferenciales
+@c @node DESOLVE
+@c @unnumberedsec phony
+@defun DESOLVE ([eq1,...,eqn],[var1,...,varn])
+donde los eq´s son
+Ecuaciones Diferenciales en la variables dependientes  var1,...,varn.  Las
+relaciones funcionales deben ser indicadas explicitamente en ambas ecuaciones y
+en las variables. Por ejemplo
+@example
+(C1) 'DIFF(F,X,2)=SIN(X)+'DIFF(G,X);
+(C2) 'DIFF(F,X)+X^2-F=2*'DIFF(G,X,2);
+NO es el formato debido. El modo correcto es:
+(C3) 'DIFF(F(X),X,2)=SIN(X)+'DIFF(G(X),X);
+(C4) 'DIFF(F(X),X)+X^2-F(X)=2*'DIFF(G(X),X,2);
+El llamado es entonces DESOLVE([D3,D4],[F(X),G(X)]);
+Si las condiciones iniciales en 0 son conocidas, ellas podr@'an ser suplidas
+antes llamando DESOLVE mediante ATVALUE.
+(C11) 'DIFF(F(X),X)='DIFF(G(X),X)+SIN(X);
+                        d         d
+(D11)                   -- F(X) = -- G(X) + SIN(X)
+                        dX        dX
+(C12) 'DIFF(G(X),X,2)='DIFF(F(X),X)-COS(X);
+                         2
+                        d          d
+(D12)                   --- G(X) = -- F(X) - COS(X)
+                          2        dX
+                        dX
+(C13) ATVALUE('DIFF(G(X),X),X=0,A);
+(D13)                                A
+(C14) ATVALUE(F(X),X=0,1);
+(D14)                                1
+(C15) DESOLVE([D11,D12],[F(X),G(X)]);
+                X                            X
+(D16) [F(X)=A %E  - A+1, G(X) = COS(X) + A %E  - A + G(0) - 1]
+/* VERIFICATION */
+(C17) [D11,D12],D16,DIFF;
+                  X       X      X                X
+(D17)        [A %E  = A %E , A %E  - COS(X) = A %E  - COS(X)]
+
+@end example
+@noindent
+Si DESOLVE no obtiene una soluci@'on, este retorna "FALSO".
+
+@end defun
+@c @node IC1
+@c @unnumberedsec phony
+@defun IC1 (exp,var,var)
+Para resolver problemas de valor inicial (PVI) y 
+problemas de valor limite (PVL), la rutina est@'a disponible en el
+paquete ODE2 para ecuaciones de primer orden, y IC2 y BC2 para
+PVI y PVL de primer y segundo orden, respectivamente. Haga LOAD(ODE2) para acceder a ellas.
+Ellas son usadas como en los siguientes ejemplos:
+@example
+(C3) IC1(D2,X=%PI,Y=0);
+                         COS(X) + 1
+(D3)               Y = - ----------
+                              3
+                             X
+(C4) 'DIFF(Y,X,2) + Y*'DIFF(Y,X)^3 = 0;
+                       2
+                      d Y      dY 3
+(D4)                  --- + Y (--)  = 0
+                        2      dX
+                      dX
+(C5) ODE2(%,Y,X);
+                 3
+                Y  - 6 %K1 Y - 6 X
+(D7)            ------------------ = %K2
+                        3
+(C8) RATSIMP(IC2(D7,X=0,Y=0,'DIFF(Y,X)=2));
+                     3
+                  2 Y  - 3 Y + 6 X
+(D9)            - ---------------- = 0
+                         3
+(C10) BC2(D7,X=0,Y=1,X=1,Y=3);
+                 3
+                Y  - 10 Y - 6 X
+(D11)           --------------- = - 3
+                       3
+
+@end example
+
+@end defun
+@c @node ODE
+@c @unnumberedsec phony
+@defun ODE (equation,y,x)
+un popurri de soluciones de Diferenciales Ordinarias 
+combinadas en cada modo para intentar m@'etodos m@'as y m@'as dif@'{@dotless{i}}ciles
+por cada fallo. Por ejemplo, el primer intento es con ODE2, por lo tanto
+un usuario usando ODE puede asumir que tenga todas las habilidades de
+ODE2 desde un inicio y si ha estado usando ODE2 en programas
+ellos podr@'an correr si el sustituye ODE(los valores retornados y
+la secuencia de llamado son identicos ).
+En adici@'on, ODE tiene un n@'umero de caracter@'{@dotless{i}}sticas de usuario que pueden asistir
+a un solucionador experimentado ODE si el sistema b@'asico no puede tomar la ecuaci@'on.
+Las ecuaciones son de la misma forma como son requeridas por ODE2 (que observa) y
+la x y y son variables dependientes e independientes, como con ODE2.
+Para m@'as detalles, haga PRINTFILE(ODE,USAGE,SHARE); .
+
+@end defun
+@c @node ODE2
+@c @unnumberedsec phony
+@defun ODE2 (exp,dvar,ivar)
+toam tres argumentos: un ODE de primer o segundo
+orden (el lado izquierdo solo es necesario si el lado derecho es 0),
+la variable dependiente y la variable independiente. Cuando
+es exitoso, este retorna o una soluci@'on expl@'{@dotless{i}}cita o impl@'{@dotless{i}}cita para
+la variable dependiente. %C es usado para representar la constante en el caso
+de ecuaciones de primer orden y %K1 y %K2 las constantes para ecuaciones de 
+segundo orden. Si ODE2 no obtiene una soluci@'on pro cualquier
+motivo, este retorna FALSO, despu@'es supone la impresi@'on de un mensaje de error.
+Los m@'etodos implementados para ecuaciones de primero orden en 
+los cuales son probados son: l@'{@dotless{i}}neal, separable, exacto - suponiendo
+que requiera un factor de integraci@'on, homog@'eneo, ecuaci@'on de Bernoulli,
+y un m@'etodo generalizado homog@'eneo.
+Para segundo orden: coeficiente constante, exacto, l@'{@dotless{i}}neal, homog@'eneo con
+coeficientes no constantes que pueden ser transformadaos en coeficientes
+constantes, la ecuaci@'on equidimensional de Euler, el m@'etodo de
+variaci@'on de par@'ametros y ecuaciones que son libres o de  la
+variable dependiente o independiente as@'{@dotless{i}} que pueden ser reducidas
+a ecuaciones lineales de primer orden para ser resueltas secuencialmente.
+En el trayecto de resoluci@'on de ODEs, muchas variables son programadas puramente
+para prop@'ositos informativos: METHOD denota el m@'etodo de soluci@'on usado
+e.g LINEAR, INFACTOR denota cualquier factor de integraci@'on usado, ODEINDEX
+denota el indice para  el m@'etodo de Bernoulli o para el m@'etodo homog@'eneo
+generalizado y YP denota la soluci@'on particular para la variaci@'on de 
+la t@'ecnica de par@'ametros.
+
+@end defun

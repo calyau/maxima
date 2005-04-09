@@ -1,0 +1,200 @@
+@menu
+* Introducci@'on a la Ayuda::        
+* Lisp y Maxima::            
+* El Recolector de Basura::          
+* Documentaci@'on::               
+* Definiciones para la Ayuda::        
+@end menu
+
+@node Introducci@'on a la Ayuda, Lisp y Maxima, Ayuda, Ayuda
+@section Introducci@'on a la Ayuda
+
+El comando de ayuda m@'as @'util es DESCRIBE, el cual obtiene ayuda de todos los comandos contenidos en una cadena particular, que se pasa como argumento. Aqu@'{@dotless{i}} por comando se da a entender como una secuencia de operadores tal como INTEGRATE o FACTOR, etc,. A manera de atajo, usted puede escribir ? @code{expresion} , en lugar de decir 
+@code{describe("expresion")}
+
+@example
+(C3) ? inte;
+
+
+ 0: (maxima.info)Integration.
+ 1: Introduction to Integration.
+ 2: Definitions for Integration.
+ 3: INTERRUPTS.
+ 4: ASKINTEGER :Definitions for Simplification.
+ 5: DISPLAY_FORMAT_INTERNAL :Definitions for Input and Output.
+ 6: INTEGERP :Definitions for Miscellaneous Options.
+ 7: INTEGRATE :Definitions for Integration.
+ 8: INTEGRATION_CONSTANT_COUNTER :Definitions for Integration.
+ 9: INTERPOLATE :Definitions for Numerical.
+Enter n, all, none, or multiple choices eg 1 3 : 7 8;
+
+Info from file /d/linux2/local/share/info/maxima.info:
+ - Function: INTEGRATE (EXP, VAR)
+     integrates exp with respect to var or returns an integral
+     expression (the noun form) if it cannot perform the integration
+     (see note 1 below).  Roughly speaking three stages are used:
+...
+@end example
+
+En la parte superior el usuario indic@'o que queria buscar los items 7 y 8. Note el @code{;} seguido de los n@'umeros. @'El pudo haber escrito @code{all}, para obtener ayuda en todos los items mostrados.
+
+
+@node Lisp y Maxima, Recolector de Basura, Introducci@'on a la Ayuda, Ayuda
+@section Lisp y Maxima
+
+Maxima fue escrito en Lisp, por supuesto. Existe una convenci@'on de nombres para funciones y variables. Todos los 
+s@'{@dotless{i}}mbolos que comienzan con un signo "$" en el nivel lisp, son leidos con el signo "$" pero en el nivel de Maxima, no se tiene en cuenta. Por ejemplo, hay dos funciones de lisp que son TRANSLATE y $TRANSLATE. Si en el nivel de Maxima usted ingresa TRANSLATE(FOO), la funci@'on que es llamada es la funci@'on $translate. Para accesar a otra funci@'on usted debe colocar el prefijo "?". Note que @i{no} se puede poner espacio despu@'es del signo de interrogaci@'on, ya que usted estar@'{@dotless{i}}a indicando que necesita ayuda acerca de esta funci@'on. 
+
+@example
+(C1) ?TRANSLATE(FOO); 
+@end example
+
+Por supuesto, esto puede que no haga lo que usted quiere, ella lo hace puesto que es una funci@'on completamente diferente.
+
+Para entrar comandos Lisp usted puede usar:
+@example
+(C1) :lisp (foo 1 2)
+@end example
+o se puede obtener un prompt de lisp usando la funci@'on @code{to_lisp();}, o alternativamente escriba @code{Ctrl-c} para ingresar en un corte de depuraci@'on. Esto ocasiona un corte en el ciclo (ejecuci@'on) de lisp cuando se ingresa. Usted puede ahora evaluar $d2 y ver el valor de la etiqueta D2, en el formato interno de lisp. Escribiendo @code{:q}, usted saldr@'a y pasar@'a a un nivel superior, si est@'a, desde luego en el modo de interrupci@'on de depuraci@'on al que haciamos referencia en la parte de arriba. Si usted ha salido de  maxima con @code{to_lisp();} entonces usted debe escribir: 
+@example
+MAXIMA>(run)
+@end example
+en el prompt de lisp, para reiniciar la sesi@'on de Maxima.
+
+Si usted tiene la intenci@'on de escribir funciones en lisp para llamarlas desde el nivel Maxima, debe tener en cuenta que los nombres se comienzan con un "$". Note que todos los s@'{@dotless{i}}mbolos digitados en el nivel de lisp son autom@'aticamente leidos en may@'usculas, a menos que usted haga algo como @code{|$odeSolve|} para forzar el respeto a este caso. Maxima interpreta los s@'{@dotless{i}}mbolos como una mezcla de casos, si el  s@'{@dotless{i}}mbolo ya ha sido le@'{@dotless{i}}do antes o en el momento en que fue le@'{@dotless{i}}do por primera vez no hab@'{@dotless{i}}a un s@'{@dotless{i}}mbolo existente con las mismas letras pero s@'olo en may@'usculas. As@'{@dotless{i}} si usted escribe: 
+
+@example
+(C1) Integrate;
+(D1) INTEGRATE
+(C2) Integ;
+(D2) Integ
+@end example
+
+El s@'{@dotless{i}}mbolo @code{Integrate} ya exist@'{@dotless{i}}a en may@'uscula desde los comienzos de Maxima, pero INTEG, no existe, as@'{@dotless{i}} el Integ es permitido. Esto puede parecer una peque@~na extravagancia, pero deseamos mantener el antiguo c@'odigo de maxima trabajando, el cual asume que las formas primitivas de Maxima puede ser en may@'usculas o min@'usculas. Una ventaja de este sistema es que si usted escribe en min@'uscula, usted inmediatamente ver@'a cuales son las palabras clave y funciones de maxima.
+
+Para ingresar formas Maxima en el  nivel lisp, se debe usar la macro @code{#$}.
+@example
+                          (setq $foo #$[x,y]$)
+@end example
+
+Esto tiene el mismo efecto si se ingresa: 
+@example
+
+(C1)FOO:[X,Y];
+@end example
+@noindent
+
+Excepto que foo no aparece en los valores de la lista. Para visualizar foo en el formato impreso de Maxima, puede escribir:
+@example
+(displa $foo)
+@end example
+
+En esta documentaci@'on cuando deseamos referirnos  al s@'{@dotless{i}}mbolo Maxima generalmente se omite el $ tal como se escribe cuando se est@'a en el nivel Maxima. Esto causar@'a confusi@'on cuando se desee hacer referencia al s@'{@dotless{i}}mbolo en Lisp. En este caso, se usar@'a usualmente las min@'usculas para el s@'{@dotless{i}}mbolo en Lisp y may@'usculas para el s@'{@dotless{i}}mbolo en Maxima. Por ejemplo LIST para $list y list para el s@'{@dotless{i}}mbolo lisp cuyo salida impresa  es "list".
+
+Puesto que las funciones definidas usando el lenguaje MAXIMA no son funciones ordinarias de lisp, usted debe usar @code{mfuncall} para llamarla. Por ejemplo:
+
+@example
+(D2)                        FOO(X, Y) := X + Y + 3
+@end example
+@noindent
+
+entonces en el nivel lisp:
+
+@example
+CL-MAXIMA>>(mfuncall '$foo 4 5)
+12
+@end example
+
+Un n@'umero de funciones lisp estan ubicadas en el paquete de maxima. Esto es porque su uso con maxima no es compatible con la definici@'on como un sistema de funciones. Por ejemplo @code{typep} se comporta diferente en common lisp que cuando esta en Maclisp. Si usted quiere referirse a zeta lisp typep mientras que en el paquete 
+maxima usted debe usar global:typep (o cl:typep para common lisp). de esta manera:
+
+@example
+
+  (macsyma:typep '(1 2)) ==> 'list
+  (lisp:typep '(1 2))==> error (lisp:type-of '(1 2))==> 'cons
+
+@end example
+
+Para mirar cuales s@'{@dotless{i}}mbolos estan empaquetados, mire en "src/maxima-package.lisp" 
+o haga una descripci@'on del paquete al nivel lisp.
+
+@node El Recolector de Basura, Documentaci@'on, Lisp y Maxima, Ayuda
+@section Recolector de Basura
+
+La computaci@'on simb@'olica tiende a crear una buena cantidad de basura, y un manejo efectivo de esto puede ser crucial al t@'ermino de esos programas. 
+
+Bajo GCL (GNU Common Lisp), en los sistemas UNIX donde la llamada al  sistema mprotect esta disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD) un recolector de basura estratificado est@'a disponibe. Estos l@'{@dotless{i}}mitantes de colecci@'on para memoria virtual, han sido escritos recientemente. Mire la documentaci@'on de GCL bajo ALLOCATE y GBC.  En el nivel lisp haga (setq si::*notify-gbc* t) eso le ayudar@'a a determinar cuales @'areas necesitan m@'as espacio.
+
+@node Documentaci@'on, Definiciones para la Ayuda, El Recolector de Basura, Ayuda
+@section Documentaci@'on
+
+Las fuentes de la documentaci@'on est@'an en formato texinfo (.texi). De este formato nosotros podemos producir  los archivos info usados por la l@'{@dotless{i}}nea de comandos: @code{?} y por @code{describe}.  Tambi@'en se pueden crear archivos en formato html y pdf.
+
+Adicionalmente all@'{@dotless{i}} hay ejemplos que usted puede realizar:
+@example
+example(integrate);
+(C4) example(integrate);
+(C5) test(f):=BLOCK([u],u:INTEGRATE(f,x),RATSIMP(f-DIFF(u,x)));
+(D5) test(f) := BLOCK([u], u :
+         INTEGRATE(f, x), RATSIMP(f - DIFF(u, x)));
+(C6) test(SIN(x));
+(D6) 						       0
+(C7) test(1/(x+1));
+(D7) 						       0
+(C8) test(1/(x^2+1));
+(D8) 						       0
+(C9) INTEGRATE(SIN(X)^3,X);
+...
+@end example	
+
+
+@node Definiciones para la Ayuda,  , Documentaci@'on, Ayuda
+@section Definiciones para la Ayuda
+@c @node DEMO
+@c @unnumberedsec phony
+@defun DEMO (archivo)
+Esta es el mismo BATCH pero es pausado despu@'es de cada comando y continua cuando la barra espaciadora es presionada (puede llegar a ser necesario escribir @code{;} seguido por una nueva linea, si esta corriendo
+bajo xmaxima). Los archivos de demostraci@'on tienen el sufijo @code{.dem}
+
+@end defun
+@c @node DESCRIBE
+@c @unnumberedsec phony
+@defun DESCRIBE (cmd)
+
+Este comando muestra la documentaci@'on de todos los comandos que contengan la subcadena "cmd".De esta 
+manera
+@example
+(C1) describe("integ");
+ 0: (maxima.info)Integration.
+ 1: Introduction to Integration.
+ 2: Definitions for Integration.
+ 3: ASKINTEGER :Definitions for Simplification.
+..
+Enter n, all, none, or multiple choices eg 1 3 : 2 3;
+Info from file /d/linux2/local/share/info/maxima.info:
+Definitions for Integration
+===========================
+
+ - Function: CHANGEVAR (EXP,F(X,Y),Y,X)
+...
+@end example
+@end defun
+
+@c @xref{Introducci@'on a la Ayuda}
+
+@c @node EXAMPLE
+@c @unnumberedsec phony
+
+@defun EXAMPLE (comando)
+Iniciar@'a una demostraci@'on de como trabaja el comando en algunas expresiones. Luego de cada comando este se esperar@'a hasta que se pulse la barra espaciadora, como en el comando @code{demo}.
+
+@end defun
+
+@c Traducido por: Juan Pablo Romero Bernal y Oscar Diaz 
+@c Revisado por	: Juan Pablo Romero Bernal
+@c correo-e	: jpromerobx@linuxmail.org
+@c Grupo Linux Universidad Distrital
+@c http://glud.udistrital.edu.co
+@c Proyecto GLUD-CLog
+@c http://glud.udistrital.edu.co/clog
+@c Bogota - Colombia

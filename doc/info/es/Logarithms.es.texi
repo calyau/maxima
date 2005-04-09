@@ -1,0 +1,106 @@
+@c end concepts Logarithms
+@menu
+* Definiciones para Logaritmos::  
+@end menu
+
+@node Definiciones para Logaritmos,  , Logaritmos, Logaritmos
+@section Definiciones para Logaritmos
+@c @node LOG
+@c @unnumberedsec phony
+@defun LOG (X)
+representa el logaritmo natural. 
+
+  LOGEXPAND[TRUE] - hace que LOG(A^B) sea tomado como B*LOG(A). Si se le asigna el valor ALL, LOG(A*B) ser@'a simplificado a LOG(A)+LOG(B). Si se le asigna el valor SUPER, entonces LOG(A/B) ser@'a simplificado a LOG(A)-LOG(B) para n@'umeros racionales a/b, a#1. (LOG(1/B), para B como un entero, siempre ser@'a simplificado). Si se le asigna el valor FALSE, todas las anteriores reglas de simplificaci@'on se desactivar@'an.  
+
+  LOGSIMP[TRUE] - si es FALSE entonces no se efectuar@'a la simplificaci@'on de exponenciales con potencias logar@'{i}tmicas.
+
+
+  LOGNUMER[FALSE] - Si su valor es TRUE entonces los n@'umeros negativos de coma flotante que sirvan de argumento de la funci@'on LOG siempre ser@'an convertidos a su valor absoluto antes de ser evaluados. Si la variable NUMER es tambi@'en TRUE, entonces los n@'umeros negativos de tipo entero que sirvan de argumento a LOG ser@'an convertidos a su valor absoluto.
+
+  LOGNEGINT[FALSE] - Si su valor es TRUE se implementa la regla LOG(-n) -> LOG(n)+%i*%pi, siendo n un entero positivo.
+
+  %E_TO_NUMLOG[FALSE] - cuando tiene el valor TRUE, siendo  "r" cualquier n@'umero racional y "x" una expresi@'on, %E^(r*LOG(x)) ser@'a simplificado a x^r. Cabe aclarar que el comando RADCAN tambi@'en efect@'ua @'esta transformaci@'on y transformaciones m@'as complicadas de @'esta @'{i} 
+ndole. El comando LOGCONTRACT "contrae" expresiones que contienen logar@'{i}tmos (LOG). 
+
+@end defun
+@c @node LOGABS
+@c @unnumberedsec phony
+@defvar LOGABS
+
+ por defecto: [FALSE] - cuando se realiza integraci@'on indefinida en donde se generan logar@'{i}tmos, e.g. INTEGRATE(1/X,X), la respuesta es dad en t@'erminos de LOG(ABS(...)) si LOGABS tiene el valor TRUE, pero en t@'erminos de LOG(...) si LOGABS tiene el valor FALSE. Para integraci@'on definida, LOGABS se configura a TRUE, porque aqu@'{i} la 
+"evaluaci@'on" de las integrales indefinidas en los l@'{i}mites inferiores y superiores, a menudo es necesaria. 
+
+@end defvar
+
+@c @node LOGARC
+@c @unnumberedsec phony
+@defvar LOGARC
+ 
+ por defecto: [FALSE] - si su valor es TRUE, causar@'a que las funciones trigonom@'etricas inversas e hiperb@'olicas inversas sean convertidas a formas logar@'{i}tmicas. LOGARC(exp) causar@'a esta conversi@'on para una expresi@'on particular sin configurar el "interruptor" o teniendo que reevaluar la expresi@'on con EV.
+ 
+@end defvar
+@c @node LOGCONCOEFFP
+@c @unnumberedsec phony
+@defvar LOGCONCOEFFP
+
+ por defecto: [FALSE] - controla cuales coeficientes son contra@'idos (o simplificados) cuando se usa LOGCONTRACT. Se puede asignar a esta variable el nombre del predicado de una funci@'on que tenga un s@'olo argumento. E.g. Si usted desea generar raices, puede hacer lo siguiente: LOGCONCOEFFP:'LOGCONFUN$ LOGCONFUN(M):=FEATUREP(M,INTEGER) OR RATNUMP(M)$ .  Entonces LOGCONTRACT(1/2*LOG(X)); generar@'a LOG(SQRT(X)).
+@end defvar
+@c @node LOGCONTRACT
+@c @unnumberedsec phony
+@defun LOGCONTRACT (exp)
+
+escanea rercursivamente una expresi@'on(exp), transformando subexpresiones de la forma a1*LOG(b1) + a2*LOG(b2) + c a LOG(RATSIMP(b1^a1 * b2^a2)) + c.   
+@example
+(C1) 2*(A*LOG(X) + 2*A*LOG(Y))$
+(C2) LOGCONTRACT(%);
+                                        2  4
+(D3)                             A LOG(X  Y )
+
+@end example
+Si usted hace: DECLARE(N,INTEGER); entonces LOGCONTRACT(2*A*N*LOG(X)); dar@'a como resultado A*LOG(X^(2*N)). Los coeficientes que se contraen en esta manera son, en este caso el 2 y la N, los cuales satisfacen DECLARE(coeff,INTEGER). El usuario puede controlar cuales coeficientes son contraidos por medio de la asignaci@'on a la variable LOGCONCONCOEFFP[FALSE] de el nombre del predicado de una funci@'on que tenga un s@'olo argumento. E.g. si usted desea generar raices (SQRTs), puede hacer lo siguiente: LOGCONCOEFFP:'LOGCONFUN$ LOGCONFUN(M):=FEATUREP(M,INTEGER) OR RATNUMP(M)$ .Entonces LOGCONTRACT(1/2*LOG(X)); generar@'a LOG(SQRT(X)).
+
+@end defun
+@c @node LOGEXPAND
+@c @unnumberedsec phony
+@defvar LOGEXPAND
+por defecto: [TRUE] -  hace que LOG(A^B) sea tomado como B*LOG(A). Si se le asigna el valor ALL, LOG(A*B) ser@'a simplificado a LOG(A)+LOG(B). Si se le asigna el valor SUPER, entonces LOG(A/B) ser@'a simplificado a LOG(A)-LOG(B) para n@'umeros racionales a/b, a#1. (LOG(1/B), para B como un entero, siempre ser@'a simplificado). Si se le asigna el valor FALSE, todas las anteriores reglas de simplificaci@'on se desactivar@'an.
+
+@end defvar
+@c @node LOGNEGINT
+@c @unnumberedsec phony
+@defvar LOGNEGINT
+por defecto: [FALSE] - Si su valor es TRUE se implementa la regla LOG(-n) -> LOG(n)+%i*%pi, siendo n un entero positivo.
+
+@end defvar
+@c @node LOGNUMER
+@c @unnumberedsec phony
+@defvar LOGNUMER
+ por defecto: [FALSE] -  Si su valor es TRUE entonces los n@'umeros negativos de coma flotante que sirvan de argumento de la funci@'on LOG siempre ser@'an convertidos a su valor absoluto antes de ser evaluados. Si la variable NUMER es tambi@'en TRUE, entonces los n@'umeros negativos de tipo entero que sirvan de argumento a LOG ser@'an convertidos a su valor absoluto.
+
+@end defvar
+@c @node LOGSIMP
+@c @unnumberedsec phony
+@defvar LOGSIMP
+ por defectto: [TRUE] -  si es FALSE entonces no se efectuar@'a la simplificaci@'on de exponenciales con potencias logar@'{i}tmicas.
+
+@end defvar
+@c @node PLOG
+@c @unnumberedsec phony
+@defun PLOG (X)
+El valor principal del valor complejo del logaritmo natural con -%PI < CARG(X) <= +%PI
+
+@end defun
+@c @node POLARFORM
+@c @unnumberedsec phony
+@defun POLARFORM (exp)
+retorna R*%E^(%I*THETA) donde R y THETA son simplemente n@'umeros reales.
+@end defun
+
+@c Traducido por: Juan Pablo Romero Bernal
+@c Revisado por	: Juan Pablo Romero Bernal
+@c correo-e	: jpromerobx@linuxmail.org
+@c Grupo Linux Universidad Distrital
+@c http://glud.udistrital.edu.co
+@c Proyecto GLUD-CLog
+@c http://glud.udistrital.edu.co/clog
+@c Bogota - Colombia

@@ -1,0 +1,701 @@
+@menu
+* n-arios::                        
+* no-fijos::                       
+* operadores::                    
+* postfijos::                     
+* prefijos::                      
+* Definiciones para Operadores::   
+@end menu
+
+@node n-arios, no-fijos, Operadores, Operadores
+
+@section n-arios
+
+Un operador de tipo @code{nary}(n-ario, en Maxima nary) es usado para denotar una funci@'on cuyo n@'umero de argumentos es arbitrario; cada argumento se separa por lo ocurrencia del operador, e.g. A+B o A+B+C. La funci@'on @code{nary("x")} es una extensi@'on de la funci@'on syntax para declarar a x como un operador n-ario. Las funciones pueden ser declaradas para ser @code{nary}. Si usted hace @code{declare(J,nary);}, se esta diciendo al simplificador que simplifique, e.g. @code{j(j(a,b),j(c,d))} a @code{j(a, b, c, d)}.
+
+Funciones relacionadas: @code{syntax}.
+
+@node no-fijos, operadores, n-arios, operadores
+
+@section no-fijos
+
+Los operadores de tipo @code{nofix} (no-fijos, en Maxima nofix) son usados para denotar funciones que no reciben argumentos. La mera presencia de tal operador en un comando causar@'a que la correspondiente funci@'on sea evaluada. Por ejemplo, cuando se escribe "exit;" para salir de una interrupci@'on de Maxima, "exit" se est@'a comportando de forma similar a un operador no-fijo (@code{nofix}). La funci@'on @code{nofix{"x"}} es una extensi@'on de la funci@'on syntax la cual declara a x como un operador @code{nofix}. 
+
+Funciones relacionadas @code{syntax}.
+
+
+@node operatores, postfijos, no-fijos, Operadores
+@section operadores
+Mirar @code{operadores}.
+
+@node postfijos, prefijos, operadores, Operadores
+@section postfijos
+
+Un operador de tipo @code{postfix} (postfijo) en contraparte de los de tipo @code{prefix} denota funciones de un s@'olo argumento, pero en este caso el argumento precede inmediatamente la ocurrencia del operador en la cadena de entrada, e.g. 3!. La funci@'on @code{postfix("x")} es una extensi@'on de la funci@'on syntax para declarar a x como un operador @code{postfix}. 
+
+Funciones relacionadas: @code{syntax}.   
+
+@node prefijos, Definiciones para Operadores, postfijos, Operadores
+@section prefijos
+Un operador de tipo @code{prefix} (prefijo, en Maxima prefix) indica una funci@'on de un (1) argumento, dicho argumento viene inmediatamente despu@'es de una ocurrencia del operador. La funci@'on @code{prefix("x")} es una extensi@'on de la funci@'on syntax para declarar a x como un operador de @code{prefix}. 
+
+Funciones relacionadas: @code{syntax}.
+
+@c end concepts Operators
+@node Definiciones para Operadores,  , prefijos, Operadores
+@section Definiciones para Operadores
+
+@deffn operador "!"
+El operador factorial. 
+Para cualquier n@'umero complejo @code{x} (incluyendo enteros, racionales, y n@'umeros reales) excepto para enteros negativos, @code{x!} se define como @code{gamma(x+1)}. 
+
+Para un entero @code{x}, @code{x!} simplifica el producto de los enteros desde 1 hasta @code{x}.
+@code{0!} simplifica a 1.
+Para a un n@'umero de punto flotante @code{x}, @code{x!} simplifica al valor de @code{gamma(x+1)}.
+Para @code{x} igual a @code{n/2} donde @code{n} es un entero impar,
+@code{x!} simplifica a un factor racional por @code{sqrt(%pi)}
+(donde @code{gamma(1/2)}) es igual a @code{sqrt(%pi)}). 
+Si @code{x} es cualquier otra cosa, @code{x!} no se simplifica. 
+
+Las variables 
+@code{factlim}, @code{minfactorial} y  @code{factcomb} controlan la simplificaci@'on de expresiones que contienen factoriales. 
+
+Las funciones @code{gamma}, @code{bffac} y @code{cbffac} son variaciones 
+la funci@'on gamma. 
+@code{makegamma} substituye a @code{gamma} para factoriales y funciones relacionadas. 
+
+Funciones relacionadas: @code{binomial} 
+
+@itemize @bullet
+@item
+El factorial de un entero, semi-entero o de punto flotante es simplificado a menos que el operando sea mayor que @code{factlim}. 
+
+@example
+(%i1) factlim: 10$
+(%i2) [0!, (7/2)!, 4.77!, 8!, 20!];
+          105 sqrt(%pi)
+(%o2) [1, -------------, 81.44668037931193, 40320, 20!]
+               16
+@end example
+
+@item
+El factorial de un n@'umero complejo, constante  conocida (por ejemplo %e) o una expresi@'on general no es simplificado. 
+
+Sin embargo puede ser posible simplificar el factorial despu@'es evaluar el operando. 
+
+@example
+(%i1) [(%i + 1)!, %pi!, %e!, (cos(1) + sin(1))!];
+(%o1)    [(%i + 1)!, %pi!, %e!, (sin(1) + cos(1))!]
+(%i2) ev (%, numer, %enumer);
+(%o2) [(%i + 1)!, 7.188082728976031, 4.260820476357003, 
+
+                                          1.227580202486819]
+@end example
+
+@item
+El factorial de un s@'{@dotless{i}}mbolo no se simplifica. 
+
+@example
+(%i1) kill (foo)$
+(%i2) foo!;
+(%o2)                       foo!
+@end example
+
+@item
+Los factoriales son simplificados no evaluados.
+As@'{@dotless{i}} @code{x!} puede ser reemplazado en una expresi@'on 
+antecedida por el operador comilla. 
+
+@example
+(%i1) '([0!, (7/2)!, 4.77!, 8!, 20!]);
+          105 sqrt(%pi)
+(%o1) [1, -------------, 81.44668037931193, 40320, 20!]
+               16
+@end example
+@end itemize
+
+@end deffn
+
+@deffn operador "!!"
+El operador doble factorial.
+
+Para un n@'umero entero, de punto flotante o racional @code{n},
+@code{n!!} se evaluar@'a como el producto de @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
+donde @code{k} es igual a @code{entier{n/2}}, que es, el mayor entero
+menor o igual a @code{n/2}. 
+Note que esta definici@'on no coincide con otras definciones publicadas para argumentos, los cuales no son enteros. 
+
+@c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
+
+Para un entero par (o impar) @code{n}, @code{n!} se evalua el producto de
+todos los enteros pares (o impares) consecutivos desde 2 (o 1) por @code{n}inclusive.  
+
+Para un argumento @code{n} el cual no es un n@'umero entero, punto flotante o racional, @code{n!!} produce una forma de nombre @code{genfact (n, n/2, 2)}. 
+
+@c n!! IS NEITHER SIMPLIFIED NOR EVALUATED IN THIS CASE -- MENTION THAT? OR TOO MUCH DETAIL ???
+
+@end deffn
+
+@deffn operador "#"
+El operador l@'ogico "No igual".
+
+@end deffn
+
+@deffn operador "."
+El operador punto, para multiplicaci@'on de matrices (no-conmutativo). 
+Cuando "." es usado en esta forma, los espacios estar@'{@dotless{i}}an dejados de
+ambos lados de @'este, e.g. @code{A . B}. Esto lo distingue de la forma
+del punto decimal en un n@'umero de punto flotante. 
+
+Mirar tambi@'en:
+@code{dot},
+@code{dot0nscsimp},
+@code{dot0simp},
+@code{dot1simp},
+@code{dotassoc},
+@code{dotconstrules},
+@code{dotdistrib},
+@code{dotexptsimp},
+@code{dotident},
+y
+@code{dotscrules}.
+
+@end deffn
+
+@deffn operador ":"
+El operador de asignaci@'on. E.g. A:3 se asigna a la variable A el valor de 3.
+@end deffn
+
+@deffn operador "::"
+Operador de asignaci@'on. :: asigna el valor de una expresi@'on
+en su derecha a el valor de la cantidad en su izquierda, la cual
+debe evaluarse a una variable de tipo at@'omica o una variable sub-escrita.
+
+@end deffn
+
+@deffn operador "::="
+El operador "::=" es usado en vez del ":=" para indicar que lo que
+sigue, es decir despu@'es del operador, es una definici@'on de macro, 
+m@'as que una definici@'on ordinaria de funci@'on.
+
+Mirar tambi@'en:  @code{macros}.
+
+@end deffn
+
+@deffn operador ":="
+El operador de definici@'on de funciones. E.g. @code{f(x):=sin(x)} define
+a una funci@'on @code{f}. 
+
+@end deffn
+
+@deffn operador "="
+denota una ecuaci@'on para Maxima. El patr@'on de emparejamiento
+en Maxima denota una relaci@'on total que se sostiene entre dos
+expresiones si y s@'olo si las expresiones son sint@'acticamente identicas.
+@end deffn
+
+@defun abs (exp)
+retorna el valor absoluto de exp. Si la expresi@'on es compleja, retorna
+el m@'odulo de exp.
+
+@end defun
+@c end concepts Operators
+
+@defvr {special symbol} additive
+Si @code{declate(f,additive)} ha sido ejecutado, entonces: 
+
+(1) Si @code{f} es univariado, cada vez que el simplificador encuentre
+@code{f} aplicada a una suma, @code{f} ser@'a distribuida bajo esta suma. I.e. @code{f(x+y)} ser@'a simplificado a @code{f(x)+f(y)}. 
+
+(2) Si @code{f} es una funci@'on de 2 o m@'as argumentos, aditivamente es definida como aditiva en el primer argumento de @code{f}, como en el caso de @code{sum} o @code{integrate}, i.e. @code{f(h(x)+g(x),x)} ser@'a simplificada a @code{f(h(x),x)+f(g(x),x)}. Esta simplificaci@'on no ocurre cuando @code{f} es aplicado a expresiones de la forma @code{sum(x[i],i,lower-limit,upper-limit)}.
+
+@end defvr
+
+@defvr keyword allbut
+trabaja con los comandos @code{part}(i.e. @code{part}, @code{inpart}, @code{substpart},
+@code{substinpart}, @code{dpart}, y @code{lpart}). Por ejemplo:
+
+@example
+(%i1) expr: e+d+c+b+a$
+(%i2) part (expr, [2, 5]);
+(%o2)                         d + a
+@end example
+
+mientras que: 
+
+@example
+(%i3) part (expr, allbut (2, 5));
+(%o3)                       e + c + b
+@end example
+
+Tambi@'en trabaja con el comando @code{kill}, 
+
+@example
+kill (allbut (name_1, ..., name_k))
+@end example
+
+lo cual har@'a un @code{kill(all)} excepto a aquellos nombres
+especificados a @code{kill}, en este caso. Nota: @code{name_i} significa
+un nombre tal como un nombre de funci@'on como @code{u}, @code{f}, @code{foo} o @code{g}, no una lista tal como @code{functions}. 
+
+@end defvr
+
+@defvr declaration antisymmetric
+Si @code{declare(h,antisymmetric)} es ejecutado, esto dice al 
+simplificador que @code{h} es antisim@'etrico. E.g. @code{h(x,z,y)} ser@'a simplificado a @code{-h(x,y,z)}. Que es, el producto de (-1)^n por el resultado dado por @code{symmetric} o @code{commutative}, donde n es el n@'umero de intercambios necesarios de dos argumentos para convertirle a esta forma.  
+
+@end defvr
+
+@defun cabs (exp)
+retorna el valor absoluto complejo (el m@'odulo complejo) de exp.
+
+@end defun
+
+@defvr declaration commutative
+Si @code{declare(h,commutative)} es ejecutado, esto dice al simplificador
+que @code{h} es una funci@'on conmutaiva. E.g. @code{h(x,z,y)} ser@'a simplificado a @code{h(x,y,z)}. Esto es lo mismo que @code{symmetric}. 
+
+@end defvr
+
+@defun entier (x)
+El entero mayor <= X donde X es numer@'erico. @code{fix} (como en 
+@code{fixnum}) es un sin@'onimo para este, as@'{@dotless{i}} @code{fix(x)} es
+precisamente lo mismo.   
+
+@end defun
+
+@defun equal (expr1,expr2)
+se usa con un @code{is}, retorna @code{true} (o @code{false}) si
+y s@'olo si expr1 y expr2 son iguales (o no iguales) para todos
+los posibles valores de sus variables (como determinado por @code{ratsimp}). 
+As@'{@dotless{i}} @code{is(equal((x+1)**2,x**2+2*x+1))} retorna @code{true} si X es no acotado @footnote{N.d.T: En este caso X denota el conjunto o espacio en el cual est@'a contenido x. En otras palabras @code{is(equal((x+1)**2,x**2+2*x+1))} siempre y cuando el espacio al cual pertenece x, que es X, sea no acotado, pues en el caso de que X tenga un l@'{@dotless{i}}mite, el resultado de (x+1)**2, puede estar fuera de X. Sobre este punto gracias a la Profesora Isabel Amaya @email{iamaya@@udistrital.edu.co}},   
+@code{is((x+1)**2=x**2+2*x+1)} retorna @code{false}. Note tambi@'en que @code{is(rat(0)=0)} da @code{falso} pero @code{is(equal(rat(0),0))} da @code{true}. Si una determinaci@'on no puede resolverse por medio de @code{equal} entonces una forma simplificada, pero equivalente, es retornada considerando que = siempre causa que se retorne @code{true} o @code{false}. 
+Todas las variables que se encuentran en exp suponen valores reales.
+@code{ev(exp,pred)} es equivalente a @code{is(exp)}.
+
+@example
+(%i1) is (x^2 >= 2*x - 1);
+(%o1)                         true
+(%i2) assume (a > 1);
+(%o2)                        [a > 1]
+(%i3) is (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
+(%o3)                         true
+@end example
+
+@end defun
+
+@defun eval
+causa una post-evaluaci@'on extra de la ocurrencia de exp. 
+
+@end defun
+
+@defun evenp (exp)
+retorna @code{true} si exp es una enterop para. Retorna @code{false} en
+cualquier otro caso.
+
+@end defun
+
+@defun fix (x)
+un sin@'onimo para @code{entier(x)} - el entero mayor <= X donde
+X es num@'erico. 
+
+@end defun
+
+@defun fullmap (fn, exp1, ...)
+es similar a @code{map} pero conservar@'a el mapeado
+descendente de todas las subexpresiones hasta que los operadores
+principales ya no sean los mismos. El usuario debe tener en cuenta
+que @code{fullmap} es usado por el simplificador de Maxima para ciertas
+manipulaciones matriciales; as@'{@dotless{i}}, el usuario podr@'{@dotless{i}}a observar
+un mensaje de error respecto a @code{fullmap} aunque @code{fullmap} no 
+haya sido llamada expl@'{@dotless{i}}citamente por el usuario. 
+@example
+(%i1) a + b*c$
+(%i2) fullmap (g, %);
+(%o2)                   g(b) g(c) + g(a)
+(%i3) map (g, %th(2));
+(%o3)                     g(b c) + g(a)
+@end example
+
+@end defun
+
+@defun fullmapl (fn, list1, ...)
+es similar a @code{fullmap} pero s@'olo hace mapeo
+sobre listas y matrices.
+
+@example
+(%i1) fullmapl ("+", [3, [4, 5]], [[a, 1], [0, -1.5]]);
+(%o1)                [[a + 3, 4], [4, 3.5]]
+@end example
+
+@end defun
+
+@defun is (exp)
+intenta determinar si exp (la cual debe evaluarse a un predicado) es
+demostrable partiendo de los datos en la base de datos actual. @code{is}
+retorna @code{true} si el predicado es verdadero para todos los valores
+de sus variables consistentes con la base de datos y retorna @code{false}
+si @'este es falso para tales valores. De lo contrario, su acci@'on 
+depende de la configuraci@'on de @code{prederror}. @code{is} retorna un 
+error si el valor de @code{prederror} es @code{true} y retorna @code{unknown} si @code{prederror} es @code{false}. 
+
+@end defun
+
+@defun isqrt (x)
+toma un entero como argumento y retorna "la raiz cuadrada entera" de
+su valor absoluto. 
+
+@end defun
+
+@defun max (x1, x2, ...)
+retorna el m@'aximo de sus argumentos (o retorna una
+forma simplificada si alguno de sus argumentos no son
+num@'ericos).  
+
+@end defun
+
+@defun min (x1, x2, ...)
+retorna el m@'{@dotless{i}}nimo de sus argumentos (o retorna una
+forma simplificada  si algunos de sus argumentos no son
+num@'ericos).
+
+@end defun
+
+@defun mod (poly)
+convierte el polinomio poly a una representaci@'on modular con
+respecto a el m@'odulo actual el cual es el valor de la variable
+@code{modulus}. 
+@code{mod(poly,m)} especifica a @code{modulus} m a ser usado para
+convertir a poly, si se desea sobreescribir el valor global actual de
+@code{modulus}. 
+Mirar @code{modulus}.
+
+@end defun
+
+@defun oddp (exp)
+retorna @code{true} si exp es un entero impar. Se retorna @code{false} en
+cualquier otro caso.
+
+@end defun
+
+@deffn operador pred
+Causa predicados (expresiones las cuales se evaluan a @code{true} 
+o a @code{false}) para ser evaluados.
+
+Mirar tambi@'en @code{evflag}.
+
+@end deffn
+
+@defun random (x)
+Retorna a n@'umero seudo-aleatorio. Si @code{x} es un entero, 
+@code{random (x)} retorna un entero desde 0 hasta @code{x-1}. Si 
+@code{x} es un n@'umero de punto flotante, @code{random (x)} retorna
+un n@'umero de punto flotante no negativo menor que @code{x}.
+@code{random} genera un error si @code{x} no es ni un entero, ni un n@'umero de punto flotante, o si @code{x} no es positivo.  
+
+La funci@'on @code{random} de Maxima llama a la funci@'on @code{RANDOM} de Lisp. Las diferentes implementaciones de Lisp pueden usar diferentes 
+generadores de n@'umeros seudo-aleatorios. 
+El estado del generador no es directamente accesible desde Maxima,
+aunque se puede accederse desde el prompt de Lisp usando las 
+funciones Lisp @code{MAKE-RANDOM-STATE} y @code{RANDOM} y la variable
+global @code{*RANDOM-STATE*}.
+
+@end defun
+
+@defun sign (exp)
+Intenta determinar el signo de su expresi@'on especificada con
+base en los datos de la base de datos actual. Retorna una de las
+siguientes respuestas: @code{pos} (positivo), @code{neg} (negativo), @code{zero}, @code{pz}
+(positivo o cero), @code{nz} (negativo o cero), @code{pn} (positivo o negativo), o @code{pnz} (positivo, negativo, o cero, i.e. desconocido).
+
+@end defun
+
+@defun signum (x)
+Si X<0 entonces retorna -1, entonces si X>0 retorna 1, de otra manera
+retorna 0. Si X no es num@'erica entonces se retorna una forma
+simplificada pero equivalente. Por ejmplo, @code{signum(-x)} da  @code{-signum(x)}.
+
+@end defun
+
+@defun sort (lista,predicado-opcional)
+ordena la lista usando un predicado opcional adecuado 
+de dos argumentos (tales como "<" or @code{orderlessp}). Si 
+el predicado opcional no es dado, entonces Maxima har@'a el ordenamiento
+con el predicado por defecto. 
+ 
+@end defun
+
+@defun sqrt (x)
+la ra@'{@dotless{i}}z cuadrada de X. Se representa internamente por
+X^(1/2). Mirar tambi@'en: @code{rootscontract}.
+Si @code{radexpand} es @code{true} causar@'a que las raices n-esimas de 
+los factores de un producto los cuales sean potencias de n sean sacadas
+fuera del radical, e.g., @code{sqrt(16*x^2)} retornar@'a  @code{4*x} s@'olo si @code{radexpand} es @code{true}.
+
+@end defun
+
+@defvar sqrtdispflag
+por defecto: @code{true} - si su valor es @code{false} causa que @code{sqrt} se muestre con el exponente 1/2. 
+
+@end defvar
+
+@defun sublis (list,expr)
+permite sustituciones multiples dentro de una expresia@'on en 
+paralelo. Ejemplo de muestra:
+
+@example
+(%i1) sublis ([a=b, b=a], sin(a) + cos(b));
+(%o1)                    sin(b) + cos(a)
+@end example
+
+La variable @code{sublis_apply_lambda} controla la simplificaci@'on 
+despu@'es de @code{sublis}.
+
+@end defun
+
+@defun sublist (l,f)
+retorna la lista de elementos de la lista @code{l} para los
+cuales la funci@'on @code{f} retorna @code{true}. E.g., @code{sublist([1,2,3,4],evenp)} retorna @code{[2,4]}.
+
+@end defun
+
+@defvar sublis_apply_lambda
+por defecto: @code{true} - controla si los @code{lambda} sustituidos son
+aplicados en la simplificaci@'on despu@'es de que @code{sublis} es usado o si se tiene que hacer un @code{ev} para obtener las cosas a aplicar. @code{true} significa hacer la aplicaci@'on.   
+
+@end defvar
+
+@defun subst (a, b, c)
+sustituye a por b en c. b debe ser un @'atomo, o una
+subexpresi@'on completa de c. Por ejemplo, X+Y+Z es una subexpresi@'on
+completa de 2*(X+Y+Z)/W, mientras que X+Y no lo es. Cuando b no tiene
+@'estas caracter@'{@dotless{i}}sticas, a veces se puede usar @code{substpart} 
+o @code{ratsubst} (mirar m@'as abajo). Alternativamente, si b es de la 
+forma e/f entonces se puede usar @code{subst(a*f,e,c)} mientras que
+si b es de la forma e**(1/f) entonces se puede usar @code{subst(a**f,e,c)}.
+El comando @code{subst} tambi@'en discierne el x^y en x^-y asi que
+@code{subst(a,sqrt(x),1/sqrt(x))} produce 1/a. a y b tambi@'en pueden
+ser operadores de una expresi@'on encerrados en comillas dobles (") o
+pueden ser nombres de funciones. Si se desea sustituir por la
+variable independiente en formas que contienen derivadas entonces la
+funci@'on @code{at} (mirar m@'as abajo) podr@'{@dotless{i}}a ser usada.
+
+Nota: @code{subst} es un alias para @code{substitute}. 
+@code{subst(eq1,exp)} o @code{subst([eq1,...,eqk],exp)} son otras
+formas permisibles. 
+La eqi son ecuaciones que indican sustituciones a ser hechas. 
+Para cada ecuaci@'on, el lado derecho ser@'a sustituido por el lado
+izquierdo en la expresi@'on exp. 
+
+Si @code{exptsubst} es @code{true} permite que sustituciones como Y por
+%E**X en %E**(A*X), tomen lugar. 
+
+Si @code{opsubst} es @code{false}, @code{subst} no intentar@'a sustituir dentro del operador de una expresi@'on. 
+
+E.g. @code{(opsubst:false, subst(x^2,r,r+r[0]));} trabajar@'a. 
+
+@example
+(%i1) subst (a, x+y, x + (x+y)^2 + y);
+                                    2
+(%o1)                      y + x + a
+(%i2) subst (-%i, %i, a + b*%i);
+(%o2)                       a - %i b
+@end example
+
+@noindent
+(Note que %i2 es una forma de obtener el conjugado complejo de una expresi@'on anal@'{@dotless{i}}tica). Para consultar m@'as ejemplos ejecute @code{example(subst)}.
+
+@end defun
+
+@defun substinpart (x, exp, n1, ...)
+es como @code{substpart} pero trabaja sobre
+la representaci@'on interna de exp. 
+@example
+(%i1) x . 'diff (f(x), x, 2);
+                              2
+                             D
+(%o1)                    x . --- (f(x))
+                               2
+                             dx
+(%i2) substinpart (d^2, %, 2);
+                                  2
+(%o2)                        x . d
+(%i3) substinpart (f1, f[1](x+1), 0);
+(%o3)                       f1(x + 1)
+@end example
+
+Si el @'ultimo argumento, de la funci@'on part, es una lista 
+de indices entonces varias sub-expresiones son recogidas, cada una
+en conrrespondencia a un indice de la lista. Asi: 
+@example
+(%i1) part (x+y+z, [1, 3]);
+(%o1)                         z + x
+@end example
+
+@code{piece} guarda el valor de la @'ultima expresi@'on seleccionada 
+usando la funci@'on part. Esta es asignada durante la ejecuci@'on de la 
+funci@'on y puede ser referida dentro de la funci@'on misma como
+se muestra m@'as abajo. 
+Si @code{partswitch} es configurado a @code{true} entonces @code{end} es 
+retornado cuando una parte seleccionada de una expresi@'on no existe, de 
+lo contrario se generar@'a un mensaje de error. 
+
+@example
+(%i1) expr: 27*y^3 + 54*x*y^2 + 36*x^2*y + y + 8*x^3 + x + 1;
+              3         2       2            3
+(%o1)     27 y  + 54 x y  + 36 x  y + y + 8 x  + x + 1
+(%i2) part (expr, 2, [1, 3]);
+                                  2
+(%o2)                         54 y
+(%i3) sqrt (piece/54);
+(%o3)                        abs(y)
+(%i4) substpart (factor (piece), expr, [1, 2, 3, 5]);
+                               3
+(%o4)               (3 y + 2 x)  + y + x + 1
+(%i5) expr: 1/x + y/x - 1/z;
+                             1   y   1
+(%o5)                      - - + - + -
+                             z   x   x
+(%i6) substpart (xthru (piece), expr, [2, 3]);
+                            y + 1   1
+(%o6)                       ----- - -
+                              x     z
+@end example
+
+Tambi@'en, configurando la opci@'on @code{inflag} a @code{true} y 
+llamando @code{part} o @code{substpart} es lo mismo que llamar
+@code{inpart} o @code{substinpart}. 
+
+@end defun
+
+@defun substpart (x, exp, n1, ..., nk)
+Sustituye x para la subexpresi@'on  con base en el resto de 
+los argumentos como en @code{part}. Retorna un nuevo
+valor de exp. x puede ser alg@'un operador a ser sustituido por 
+un operador de exp. En algunos casos es necesario encerrar dicho
+operador entre comillas dobles (e.g.
+@code{substpart("+",a*b,0)} produce B + A.
+
+@example
+(%i1) 1/(x^2 + 2);
+                               1
+(%o1)                        ------
+                              2
+                             x  + 2
+(%i2) substpart (3/2, %, 2, 1, 2);
+                               1
+(%o2)                       --------
+                             3/2
+                            x    + 2
+(%i3) a*x + f (b, y);
+(%o3)                     a x + f(b, y)
+(%i4) substpart ("+", %, 1, 0);
+(%o4)                    x + f(b, y) + a
+@end example
+
+Tambi@'en, configurando la opci@'on @code{inflag} a @code{true} y 
+llamando @code{part} o @code{substpart} es lo mismo que llamar
+@code{inpart} o @code{substinpart}. 
+
+@end defun
+
+@defun subvarp (exp)
+retorna @code{true} si exp es una variable con sub-indices, por ejemplo
+A[I]. 
+
+@end defun
+
+@defun symbolp (exp)
+retorna @code{true} si "exp" es un "simbolo" o "nombre", en otro caso
+retorna @code{false}.  I.e., para efectos pr@'acticos, @code{symbolp(x):=atom(x) and not numberp(x)}.
+
+@end defun
+
+@defun unorder ()
+registra los alias creados por el @'ultimo uso de los comandos
+de ordenamiento: @code{ordergreat} y @code{orderless}. @code{ordergreat} y @code{orderless} pueden no ser usados m@'as que una vez sin llamar a @code{unorder}. 
+Mirar tambi@'en @code{ordergreat} y @code{orderless}.
+
+@c HMM, IN THIS EXAMPLE, WHY ISN'T %o5 EQUAL TO ZERO ???
+@c Doing the experiment, I see that the variables in %o5 are
+@c variables not equals, well going the lisp level gets:
+@c ((MPLUS SIMP) ((MTIMES SIMP) -1 ((MEXPT SIMP) |$a| 2))
+@c ((MEXPT SIMP) |_101a| 2))
+@c I don't understand the problem !!!
+
+@example
+(%i1) unorder();
+(%o1)                          []
+(%i2) b*x + a^2;
+                                   2
+(%o2)                       b x + a
+(%i3) ordergreat (a);
+(%o3)                         done
+(%i4) b*x + a^2;
+                             2
+(%o4)                       a  + b x
+(%i5) %th(1) - %th(3);
+                              2    2
+(%o5)                        a  - a
+(%i6) unorder();
+(%o6)                          [a]
+@end example
+
+@end defun
+
+@defun vectorpotential (givencurl)
+Retorna el vector potencial de un vector rotacional, en el sistema
+de coordenadas actual. 
+@code{potentialzeroloc} tiene un rol similar como para @code{potential}, 
+pero el objetivo del lado derecho de las ecuaciones debe ser una
+permutaci@'on ciclica de las variables de coordenada. 
+
+@end defun
+
+@defun xthru (exp)
+combina todos los terminos de exp (los cuales podrian ser una suma)
+bajo un com@'un denominador sin hacer la expansi@'on de productos y 
+sumas con exponentes como @code{ratsimp} lo hace. @code{xthru} cancela
+factores comunes en el numerador y denominador de expresiones racionales
+pero s@'olo si los factores son expl@'{@dotless{i}}citos. Algunas veces es mejor
+usar @code{xthru} antes de @code{ratsimp} en una expresi@'on con el 
+objetivo de generar factores expl@'{@dotless{i}}citos de el gcd de el numerador
+y denominador a ser cancelados as@'{@dotless{i}} la expresi@'on se simplifica
+para ser tratada con @code{ratsimp}.  
+
+@example
+(%i1) ((x+2)^20 - 2*y)/(x+y)^20 + (x+y)^(-19) - x/(x+y)^20;
+                                20
+                 1       (x + 2)   - 2 y       x
+(%o1)        --------- + --------------- - ---------
+                    19             20             20
+             (y + x)        (y + x)        (y + x)
+(%i2) xthru (%);
+                                 20
+                          (x + 2)   - y
+(%o2)                     -------------
+                                   20
+                            (y + x)
+@end example
+
+@end defun
+
+@defun zeroequiv (exp,var)
+comprueba si la expresi@'on exp en la variable var es equivalente
+a cero. Retorna @code{true}, @code{false} o @code{dontknow}. Por ejemplo
+@code{zeroequiv(sin(2*x) - 2*sin(x)*cos(x),x)} returna
+@code{true} y @code{zeroequiv(%e^x+x,x)} returna @code{false}. En otro
+caso, por ejemplo, @code{zeroequiv(log(a*b) - log(a) - log(b),a)} retornar@'a @code{dontknow} a causa de la presencia de un par@'ametro extra. Las
+restricciones son:  
+
+(1) No usar funciones que Maxima no sabe como diferenciar y evaluar. 
+(2) Si la expresi@'on tiene polos en la recta real, pueden haber
+errores en el resultado (pero esto es muy poco probable)
+(3) Si la expresi@'on contiene funciones las cuales no sean soluciones de
+ecuaciones diferenciales de primer orden (e.g. Funciones de Bessel) los 
+resultados pueden ser incorrectos.
+(4) El algoritmo usa evaluaci@'on en puntos escogidos de forma aleatoria
+para subexpresiones seleccionadas cuidadosamente. Esto es siempre un poco
+arriesgado, aunque el algoritmo intenta minimizar el error potencial. 
+
+@end defun

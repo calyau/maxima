@@ -1,0 +1,473 @@
+@menu
+* Introducci@'on a Flujo de Programa::  
+* Definici@'on para Flujo de Programa::  
+@end menu
+
+@node Introducci@'on a Flujo de Programa, Definici@'on para Flujo de Programa, Flujo de Programa, Flujo de Programa
+@section Introducci@'on a Flujo de Programa
+
+MACSYMA provee un ciclo DO para iteraci@'on, as@'{@dotless{i}} bien como el constructor m@'as primitivo tal como GO.
+
+@c end concepts Flujo de Programa
+@node Definici@'on para Flujo de Programa,  , Introducci@'on a Flujo de Programa, Flujo de Programa
+@section Definici@'on para Flujo de Programa
+@c @node BACKTRACE, {operador especial}, ITERATION, Flujo de Programa
+@c @unnumberedsec phony
+@defvar BACKTRACE
+ por defecto: [] (cuando DEBUGMODE:ALL ha sido realizado) tiene como valor
+una lista de todas las funciones actualmente ingresadas.
+
+@end defvar
+@c @node DO
+@c @unnumberedsec phony
+@deffn {operador especial} DO
+ - La declaraci@'on DO es usada para el desarrollo de iteraciones, Debido a su
+gran generalidad, la declaraci@'on DO ser@'a descrita en dos partes.
+Primero la forma usual podr@'a ser dada ya que es analoga a este uso en
+multiples lenguajes de programaci@'on (FORTRAN, ALGOL, PL/I, etc.); entonces
+las otras caracteristicas ser@'an mencionadas.
+1.  Estas son tres variantes de esta forma que difiere solo en sus
+condiciones terminantes. Estas son:
+@itemize @bullet
+@item
+(a)  FOR variable : valor inicial STEP incremento
+      THRU limite DO cuerpo
+@item
+(b)  FOR variable : valor inicial STEP incremento
+      WHILE condici@'on DO cuerpo
+@item
+(c)  FOR variable : valor inicial STEP incremento
+      UNLESS condici@'on DO cuerpo
+@end itemize
+(Alternativamente, el STEP puede se dado despues de la condici@'on terminante
+o limite.)
+    El valor inicial, incremento, limite, y cuerpo puede ser cualquier
+expesi@'on. Si el incremento es 1 entonces "STEP 1" puede ser omitido.
+    La ejecuci@'on del ingreso en la declaraci@'on DO  primero asigna el
+valor inicial a la variable (hencefort llamada
+variable control). Entonces: (1) si la variable control ha excedido el 
+limite de la especificaci@'on TRHU, o si la condici@'on de UNLESS es
+VERDADERA, o si la condici@'on de WHILE es FALSO entonces DO
+termina. (2) El cuerpo es evaluado. (3) el incremento es a@~nadido a
+la variable control.  El proceso desde (1) a (3) es realizado
+repetidamente hasta que las condiciones de terminaci@'on sean satisfechas. Uno tambi@'en
+puede dar multiples condiciones de terminaci@'on en tal caso DO termina
+cuando cualquier termino es satisfecho.
+    En general el test TRHU es satisfecho cuando la variable control es
+mas grande que el limite si el incremento fue no-negativo, o cuando la
+variable control es menor que el limite si el incremento fue negativo.
+El incremento y limite puede ser expresiones no-numericas tan largo como
+esta desigualdad puede ser determinada. Asi mismo, a menos que el incremento sea
+sintacticamente negativo (e.g. es un n@'umero negativo) al mismo tiempo que
+la declaraci@'on DO es ingresada, MACSYMA asumir@'a que sea positivo cuando DO es
+ejecutado. Si este es no positivo, entonces DO puede no terminar
+correctamente.
+    Note que el limite, incremento, y la condici@'on terminal son
+evaluados cada vez a travez del lazo. As@'{@dotless{i}} si cualquier de estos involucra
+muchos computos,  y produce un resultado que no cambia durante toda
+la ejecuci@'on del cuerpo, entonces esto es mas eficiente para programar una
+variable a su valor  anterior para DO y usa esta variable en la
+forma DO.
+    El valor normalmente retornado por la declaraci@`on DO es el @'atomo DONE, como
+cada declaraci@`on en MACSYMA retorna un valor. Asi mismo, la funci@`on
+RETURN puede ser usada dentro del cuerpo para salir prematuramente de DO y dar
+alg@`un valor deseado. Note sin embargo que RETURN sin un DO que
+ocurre en un BLOCK saldr@'a solo al DO y no al BLOCK. Note tambi@'en
+que la funci@'on GO no puede ser usada para salida desde DO dentro de un
+BLOCK rodeado.
+    La variable control es siempre local para DO y as@'{@dotless{i}} cualquier
+variable puede ser usada sin afectar el valor de una variable con el
+mismo nombre fuera de DO. La variable control es ilimitada
+antes de que DO termine.
+@example
+(C1)   FOR A:-3 THRU 26 STEP 7 DO LDISPLAY(A)$
+(E1)          A = -3
+(E2)          A =  4
+(E3)          A = 11
+(E4)          A = 18
+(E5)          A = 25
+@end example
+La funcion LDISPLAY genera etiquetas intermedias; DISPLAY no lo hace.
+@example
+(C6)   S:0$
+(C7)   FOR I:1 WHILE I<=10 DO S:S+I;
+(D7)          DONE
+(C8)   S;
+(D8)          55
+@end example
+Nota que la condicion en C7 es equivalente a UNLESS I > 10 y tambien
+THRU 10
+@example
+(C9)   SERIES:1$
+(C10)  TERM:EXP(SIN(X))$
+(C11)  FOR P:1 UNLESS P>7 DO
+          (TERM:DIFF(TERM,X)/P,
+          SERIES:SERIES+SUBST(X=0,TERM)*X^P)$
+(C12)   SERIES;
+                7    6     5    4    2
+(D12)          X    X     X    X    X
+               -- - --- - -- - -- + -- + X + 1
+               96   240   15   8    2
+El cual da 8 terminos de la serie de Taylor para e^sin(x).
+(C13) POLY:0$
+(C14) FOR I:1 THRU 5 DO
+        FOR J:I STEP -1 THRU 1 DO
+           POLY:POLY+I*X^J$
+(C15) POLY;
+              5      4       3       2
+(D15)      5 X  + 9 X  + 12 X  + 14 X  + 15 X
+(C16) GUESS:-3.0$
+(C17) FOR I:1 THRU 10 DO (GUESS:SUBST(GUESS,X,.5*(X+10/X)),
+         IF ABS(GUESS^2-10)<.00005 THEN RETURN(GUESS));
+(D17)                  - 3.1622807
+@end example
+
+    Este ejemplo computa la raiz cuadrada negativa de 10 usando la
+iteracion Newton- Raphson un maximo de 10 veces. Teniendo el criterio 
+de convergencia no se ha conocido el valor retornado podr@`ia ser hecho "DONE".
+Formas Adicionales de la declaracion DO
+    En vez de a@~nadir siempre una cantidad a la variable-control uno
+puede algunas veces desear cambiar esto en otra manera para otra iteracion.
+En este caso uno puede usar "NEXT expressio" en vez de "STEP
+increment".  Esto causar@'a que la variable-control sera programada al
+resultado de la expresion evaluada cada vez a travez de la curva.
+@example
+
+(C1)  FOR COUNT:2 NEXT 3*COUNT THRU 20
+         DO DISPLAY(COUNT)$
+                    COUNT = 2
+                    COUNT = 6
+                    COUNT = 18
+@end example
+
+    Como una alternativa para FOR variable:valor ...DO... la sintaxis FOR
+variable FROM valor ...DO... puede ser usada. Esto permite el "FROM
+value" para ser reemplazado despues del paso o el siguiente valor o despues la
+condicion de terminacion. Si "FROM value" es omitido entonces 1 es usado como
+    Algunas veces uno puede estar interzado en desarrollar una iteracion donde
+la variable-control actualmente nunca es usada.  De esta manera esto es admisible
+para dar solamente las condiciones de terminacion omitiendo la inicializacion
+y actualizar informacion como en el siguiente ejemplo para computar la
+raiz-cuadrada de 5 usando un calculo inicial pobre.
+@example
+(C1) X:1000;
+(C2)  THRU 10 WHILE X#0.0 DO X:.5*(X+5.0/X)$
+(C3) X;
+(D3)               2.236068
+@end example
+    Si esto es deseado uno puede aun omitir las condiciones de terminacion
+enteramente y solo dar "DO body" el cual continuara evaluando el 
+cuerpo indefinidamente.En este caso la funcion RETURN podra ser usado para
+terminar la ejecucion del DO
+@example
+(C1) NEWTON(F,GUESS):=
+  BLOCK([NUMER,Y],
+        LOCAL(DF),
+        NUMER:TRUE,
+        DEFINE(DF(X),DIFF(F(X),X)),
+        DO (Y:DF(GUESS),
+            IF Y=0.0 THEN ERROR("Derivative at:",GUESS," is zero."),
+            GUESS:GUESS-F(GUESS)/Y,
+            IF ABS(F(GUESS))<5.0E-6 THEN RETURN(GUESS)))$
+(C2) SQR(X):=X^2-5.0$
+(C3) NEWTON(SQR,1000);
+(D3)                    2.236068
+@end example
+    (Note que RETURN, cuando es ejecutado, causa el valor corriente de
+GUESS para ser retornado como el valo de DO. El BLOCK es salido y
+este valor de DO es retornado como l valor de BLOCK porque el
+DO es la ultima declaracion en el bloque.)
+    Otra forma de DO esta disponible en MACSYMA. La sintaxis es:
+
+@example
+FOR variable IN list [end-tests] DO body
+@end example
+    Los miembros de la lista son algunas expresiones las cuales podran ser
+asignadas sucesivamentee a la variable en cada iteracion del cuerpo.
+El tests final-opcional puede ser usado para terminar la ejecucion del 
+DO; de otra manera este podra terminar cuando la lista esta exahusta o
+un RETURN es ejecutado en el cuerpo. ( De hecho, la lista puede ser cualquier
+expresion no atomica, y partes sucesivas son tomadas.)
+@example
+
+(C1)  FOR F IN [LOG, RHO, ATAN] DO LDISP(F(1))$
+(E1)                                  0
+(E2)                                RHO(1)
+                                     %PI
+(E3)                                 ---
+                                      4
+(C4) EV(E3,NUMER);
+(D4)                             0.78539816
+
+@end example
+@end deffn
+@c @node ERRCATCH, ERREXP, {special operator}, Program Flow
+@c @unnumberedsec phony
+@defun ERRCATCH (exp1, exp2, ...)
+evalua los argumentos uno por uno y
+retorna una lista de los valores del ultimo si no ocurre ningun error.  Si un
+error ocurre en la evaluacion de algunos argumentos, ERRCATC "atrapa"
+el error e inmediatamente retorna [] (la lista vacia). Esta funcion
+es util en los archivos BATCH donde se sospecha que un error puede ocurrir, el cual
+puede en otro caso haber terminado el BATCH si el error no fue capturado.
+
+@end defun
+@c @node ERREXP, ERROR, ERRCATCH, Flujo de Programa
+@c @unnumberedsec phony
+@defvar ERREXP
+ por defecto: [ERREXP] Cuando ocurre un error durante el transcurso del
+computo, MACSYMA imprime un mensaje de error y termina el 
+computo. ERREXP es programado para la expresion ofensiva y el 
+mansaje "ERREXP contains the offending expression" es impresa. El
+usuario puede entonces teclear ERREXP; para ver la expresion y encontrar el problema.
+
+@end defvar
+@c @node ERROR, ERRORFUN, ERREXP, Flujo de Programa
+@c @unnumberedsec phony
+@defun ERROR (arg1, arg2, ...)
+evaluara e imprimira los argumentos y
+luego causara un error retornandoal nivel superior de MACSYMA o al adjuntamiento mas
+cercano a ERRCATCH. Esto es util para romper la funciones anidadas
+si una condicion de error es detectada, uno no puede teclear control-^
+donde quiera.
+La variable ERROR es programada para una lista describiendo el error, el primero para
+esto sera una cadena de texto, y el retso los objetos en cuestion.
+ERRORMSG(); es el camino preferido para observar el ultimo mensaje de error.
+ERRORFUN por defecto: [FALSO] - Si es programado para el nombre de una funcion sin
+argumentos causara que la funcion sea ejecutada cuando ocurre un
+error. Esto es util en los archivos BATCH donde el usuario puede desear
+occurs.  This is useful in BATCH files where the user may want his
+MACSYMA killed or his terminal logged out if an error occurs.  En
+estos casos ERRORFUN podra ser programado par QUIT o LOGOUT.
+
+@end defun
+@c @node ERRORFUN, ERRORMSG, ERROR, Flujo de Programa
+@c @unnumberedsec phony
+@defvar ERRORFUN
+ por defecto: [FALSO] - si es programado para el nombre de una funcion sin
+argumentos causara que la funcion sea ejecutada cuando un error
+ocurre. Esto es util en los archivos BATCH donde el usuario puede desear
+occurs.  This is useful in BATCH files where the user may want his
+MACSYMA killed or his terminal logged out if an error occurs.  En
+estos casos ERRORFUN podra ser programado par QUIT o LOGOUT.
+
+@end defvar
+@c @node ERRORMSG, {special operator}, ERRORFUN, Flujo de Programa
+@c @unnumberedsec phony
+@defun ERRORMSG ()
+reimprime el ultimo mensaje de error. Esto es muy util si
+usted esta usando una consola y el mensaje se ha ido de
+la pantalla.  La variable ERROR es programada para una lista describiendo el error,
+donde el primero es una cadena de texto, y el resto son los objetos en 
+cuestion.
+TTYINTFUN:LAMBDA([],ERRORMSG(),PRINT(""))$ programara el caracter de
+ interrupcion-usuario (^U) para reimprimir el mensaje.
+
+@end defun
+@c @node FOR
+@c @unnumberedsec phony
+@deffn {special operator} FOR
+ - Usado en iteraciones, haga DESCRIBE("DO"); para una descripcion de
+las facilidades de iteracion de MACSYMA.
+
+@end deffn
+@c @node GO, {special operator}, {special operator}, Program Flow
+@c @unnumberedsec phony
+@defun GO (tag)
+es used sin un BLOCK para transferir el control paar la declaracion
+del bloque el cual es etiquetado con el argumento para GO. Para etiquetar una 
+declaracion, precedalo por un argumento atomico como otra declaracion en
+el BLOCK.  Por ejemplo:
+@example
+BLOCK([X],X:1,LOOP,X+1,...,GO(LOOP),...)
+@end example
+.
+El argumento para GO debe ser el nombre de una etiqueta que aparezca en el mismo
+BLOCK.  Uno no puede usar GO para transferir a una etiqueta en un BLOCK 
+BLOCK.  One cannot use GO to transfer to tag in a BLOCK other than the
+one containing the GO.
+
+@end defun
+@c @node IF
+@c @unnumberedsec phony
+@deffn {special operator} IF
+ - La declaracion IF es usada para la ejecucion condicional.  La sintaxis
+ es:
+@example
+    IF condition THEN expression1 ELSE expression2.
+@end example
+El resultado de una declaracion IF es expression1 si la condicion es verdadera y
+expression2 si esta es falsa.  expression1 y expression2 es cualquier
+expresion de MACSYMA (incluyendo las declaraciones IF anidadas), y la condicion es
+una expresion la cual evalua para VERDADERO o FALSO y es compuesta de 
+operadores relacionales y logicos como los siguientes:
+@example
+ 
+nombre del operador      Simbolo      Tipo
+mayor que       	 >           relational infix
+igual a          	 = , EQUAL   "  "
+diferente de        	#           "  "
+menor que           	<           "  "
+mayor o        		>=
+  igual que         	          "  "
+manor o           	<=
+  igual que             	      "  "
+y                 	AND         logical infix
+o                  	OR          "  "
+no                 	NOT         logical prefix
+
+@end example
+@end deffn
+@c @node LISPDEBUGMODE, MAP, {special operator}, Flujo de Programa
+@c @unnumberedsec phony
+@defun LISPDEBUGMODE ()
+LISPDEBUGMODE(); DEBUGPRINTMODE(); and DEBUG(); hace
+disponible para el usuario el depurado de caracter@'{@dotless{i}}stica usados por programadores de sistemas.
+Estas herramientas son poderosas, y aunque algunas convenciones son diferentes
+del nivel usual de macsyma, esto es sentir su uso es muy intuitivo. 
+[Algunas impresiones pueden ser verbosas para terminales lentas, hay opciones
+para controlar esto.] Estos comandos fueron dise@~nados para el usuario que
+debe dupurar c@'odigo traducido de macsyma, tal como es un favor. Observe
+MACDOC;TRDEBG USAGE para m@'as informaci@'on. Para m@'as ayuda, consulte GJC.
+
+@end defun
+@c @node MAP, MAPATOM, LISPDEBUGMODE, Flujo de Programa
+@c @unnumberedsec phony
+@defun MAP (fn, exp1, exp2, ...)
+retorna una expresi@'on cuyo operador principal
+es el mismo que el de expi pero cuyas subpartes son el resultado de la
+aplicaci@'on de fn a las subpartes sorrespondientes de expi. Fn es o
+el nombre de una funci@'on de n argumentos (donde n es n@'umero de expi)
+o es una forma LAMBDA de n argumentos.
+MAPERROR[VERDADERO] - si es FALSO causar@'a que todo el mapeado de las funciones
+(1) paren cuando ellas finalicen reduciendo la expresi@'on expi m@'as corta, sino
+todos los expi son del mismo tama@~no y (2) aplica fn a [exp1, exp2,...]
+si los expi no son del mismo tipo de objeto. Si MAPERROR es VERDADERO
+entonces un mensaje de error ser@'a dado en las anteriores dos instancias.
+Uno de los usos de esta funci@'on es para MAP(mapear) una funci@'on (e.g. PARTFRAC)
+en cada t@'ermino de una expresi@'on extensa donde no sea corrientemente
+posible el uso de funci@'on en la expresi@'on entera en la que una
+exhaustiva lista de espacio de almacenamiento en el proceso del computo.
+@example
+(C1) MAP(F,X+A*Y+B*Z);
+(D1)                        F(B Z) + F(A Y) + F(X)
+(C2) MAP(LAMBDA([U],PARTFRAC(U,X)),X+1/(X^3+4*X^2+5*X+2));
+                           1       1        1
+(D2)                     ----- - ----- + -------- + X
+                         X + 2   X + 1          2
+                                         (X + 1)
+(C3) MAP(RATSIMP, X/(X^2+X)+(Y^2+Y)/Y);
+                                      1
+(D3)                            Y + ----- + 1
+                                    X + 1
+(C4) MAP("=",[A,B],[-0.5,3]);
+(D4)                          [A = - 0.5, B = 3]
+
+
+@end example
+@end defun
+@c @node MAPATOM, MAPERROR, MAP, Flujo de Programa
+@c @unnumberedsec phony
+@defun MAPATOM (expr)
+es VERDADERO si y solo si expr es tratada para el MAPeado
+de rutinas como un "@'atomo", una unidad. "Mapear@'atomos" son @'atomos, n@'umeros
+(incluyendo n@'umeros racionales) y valiables suscritas.
+
+@end defun
+@c @node MAPERROR, MAPLIST, MAPATOM, Flujo de Programa
+@c @unnumberedsec phony
+@defvar MAPERROR
+ por defecto: [TRUE] - if FALSE will cause all of the mapping
+functions, for example
+@example
+MAP(fn,exp1,exp2,...))
+@end example
+
+para (1) paren cuando ellas finalicen reduciendo la expresi@'on expi m@'as corta, sino
+todos los expi son del mismo tama@~no y (2) aplica fn a [exp1, exp2,...]
+si los expi no son del mismo tipo de objeto. Si MAPERROR es VERDADERO
+entonces un mensaje de error ser@'a dado en las anteriores dos instancias.
+
+@end defvar
+@c @node MAPLIST, PREDERROR, MAPERROR, Flujo de Programa
+@c @unnumberedsec phony
+@defun MAPLIST (fn, exp1, exp2, ...)
+produce una lista de aplicaiones de fn
+para las partes de expi. Esto difiere de MAP(fn,exp1,exp2,...)
+que retorna una expresi@'on con el mismo operador principal como lo tiene expi 
+(excepto para simplificaiones y el caso donde MAP hace un APLLY). Fn
+es de la misma forma como en MAP.
+
+@end defun
+@c @node PREDERROR, RETURN, MAPLIST, Flujo de Programa
+@c @unnumberedsec phony
+@defvar PREDERROR
+ por defecto: [VERDADERO] - Si es VERDADERO, un mensaje de error es se@~nalado
+donde el predicado de una declaraci@'on IF o una funci@'on IS falla para
+evaluar o VERDADERO o FALSO. Si es FALSO, es retornado UNKNOWN
+en vez de este caso. El modo PREDERROR:FALSE no es soportado en
+c@'odigo traducido.
+
+@end defvar
+@c @node RETURN, SCANMAP, PREDERROR, Flujo de Programa
+@c @unnumberedsec phony
+@defun RETURN (value)
+puede ser usado para salir expl@'{@dotless{i}}citamente de un BLOCK, trayendo 
+sus argumentos. Haga DESCRIBE(BLOCK); para m@'as informaci@'on.
+
+@end defun
+@c @node SCANMAP, THROW, RETURN, Flujo de Programa
+@c @unnumberedsec phony
+@defun SCANMAP (function,exp)
+funci@'on recursiva aplicada a exp, en un modo "top
+down".  Este es m@'as @'util cuando es deseada la 
+factorizaci@'on "completa", por ejemplo:
+@example
+(C1) EXP:(A^2+2*A+1)*Y + X^2$
+(C2) SCANMAP(FACTOR,EXP);
+                                    2      2
+(D2)                         (A + 1)  Y + X
+@end example
+
+Note el modo en que SCANMAP aplica la funci@'on FACTOR dada a las subexpresiones
+componentes de exp; si otra forma de exp es presentada
+para SCANMAP entonces el resultado puede ser diferente. As@'{@dotless{i}}, D2 no es
+recuperado cuando SCANMAP es aplicado a la forma expandida de exp:
+@example
+(C3) SCANMAP(FACTOR,EXPAND(EXP));
+                           2                  2
+(D3)                      A  Y + 2 A Y + Y + X
+@end example
+
+He aqu@'{@dotless{i}} otro ejemplo de la manera en que SCANMAP aplica
+recursivamente una funci@'on dad a todas las subexpresiones, incluyendo exponentes:
+@example
+(C4) EXPR : U*V^(A*X+B) + C$
+(C5) SCANMAP('F, EXPR);
+                    F(F(F(A) F(X)) + F(B))
+(D5) F(F(F(U) F(F(V)                      )) + F(C))
+@end example
+SCANMAP(funci@'on,expresi@'on,BOTTOMUP) aplica funciones a exp en un
+modo "bottom-up".  E.g., para F indefinida,
+
+@example
+SCANMAP(F,A*X+B) ->
+   F(A*X+B) -> F(F(A*X)+F(B)) -> F(F(F(A)*F(X))+F(B))
+SCANMAP(F,A*X+B,BOTTOMUP) -> F(A)*F(X)+F(B)
+    -> F(F(A)*F(X))+F(B) ->
+     F(F(F(A)*F(X))+F(B))
+@end example
+
+En este caso, usted obtendra las respuestas de las dos
+formas.
+
+@end defun
+@c @node THROW,  , SCANMAP, Flujo de Programa
+@c @unnumberedsec phony
+@defun THROW (exp)
+evalua exp y devuelve el valor al CATCH mas 
+reciente. THROW es usado con CATCH como una salida no local
+del mecanismo.
+
+@end defun
+

@@ -1,0 +1,520 @@
+\input texinfo
+@c -*-texinfo-*-
+
+@c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
+@c info directory entry, reference to introduction chapter, and menu
+@c descriptions.  Rearranged chapters.
+
+@c to update the menus do: 
+@c (texinfo-multiple-files-update "maxima.texi" t t)
+@c
+@c texinfo-multiple-files-update will delete the detailed node listing!
+
+
+@c Respecto a la traducción al Español: 
+@c
+@c Este archivo define toda la estructura de la documentacion de Maxima. 
+@c En particular ha sido personalizado para la traducción de la 
+@c documentacion al castellano.  
+
+@c Traducido y adaptado  por: Juan Pablo Romero Bernal
+@c Correo-e: jpromerobx@linuxmail.org
+@c Grupo Linux Universidad Distrital
+@c http://glud.udistrital.edu.co
+@c Proyecto GLUD-CLog <glud-clog@listas.udistrital.edu.co>
+@c http://glud.udistrital.edu.co/clog
+
+
+
+@c %**start of header
+@setfilename  maxima.es.info
+@synindex fn vr 
+@settitle Manual oficial de Maxima
+@c %**end of header
+@setchapternewpage odd
+@ifinfo
+This is a Texinfo Maxima Manual
+
+Copyright 1994,2001 William F. Schelter
+
+@dircategory Matem@'aticas
+@format
+START-INFO-DIR-ENTRY
+* Maxima: (maxima).  Un sistema de @'Algebra Computacional
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
+
+@titlepage
+@sp 10
+@comment The title is printed in a large font.
+@title Manual Oficial de Maxima
+@author Traducidor por el Grupo Linux Universidad Distrital
+@author Proyecto GLUD-CLog @url{http://glud.udistrital.edu.co/clog}
+@end titlepage
+
+
+@node Top, Introducci@'on a MAXIMA, (dir), (dir)
+@top
+
+MAXIMA es un completo sistema de @'algebra computacional 
+
+
+
+El sistema Maxima es una implementaci@'on en COMMON LISP realizada por William F.Schelter y est@'a basada en la
+implementaci@'on original de Macsyma en el MIT(Instituto Tecnol@'ogico de Massachuttes, por sus siglas en ingl@'es), como una distribuci@'on para el Departamento de Energ@'iade los EEUU. Se han logrado los permisos necesarios de parte del DOE (Departament of Energy, Departamento de Energ@'ia, por sus siglas en ingl@'es) para elaborar copias derivadas de este sistema y en particular para ser distribuidas bajo la licencia p@'ublica general de GNU (GNU public license). Para m@'as informaci@'on puede consultar el  archivo COPIYING inclu@'{@dotless{i}}do en la distribuci@'on. De ahora en adelante estos archivos pueden ser redistribu@'{@dotless{i}}dos bajo los t@'erminos de la licencia p@'ublica general de GNU. 
+
+@c Incluir nota de la traducci@'on
+
+El siguiente Manual es una versi@'on beta de la traducci@'on al espa@~nol de la documentaci@'on oficial de Maxima, por lo tanto no constituye una versi@'on final del documento.  
+
+
+
+@c includes
+
+@menu
+Infraestructura de MAXIMA
+@c MAXIMA infrastructure
+
+* Introducci@'on a MAXIMA::     Sesiones de ejemplo con MAXIMA
+* Ayuda::                       Accediendo a la ayuda dentro de sesiones de MAXIMA
+* L@'{@dotless{i}}nea de Comandos::           Sintaxis de la l@'{@dotless{i}}nea de comandos MAXIMA.
+* Operadores::                  Operadores usados en expresiones MAXIMA.
+* Expresiones::                 Expresiones en MAXIMA.
+* Simplificaci@'on::            Simplificando expresiones
+* Graficaci@'on::               Generaci@'on de gr@'aficas 2D y 3D.
+* Entrada y Salida::            Entrada y salida de archivos
+* Puntos Flotantes::            Rutinas num@'ericas de bajo nivel.
+* Contextos::                   Configuraciones asumiendo ciertos datos
+
+Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
+
+
+* Polinomios::                  Formas est@'andar para polinomios y funciones para operarlos.
+* Constantes::                  Constantes num@'ericas.
+* Logaritmos::                  Manipulaci@'on de expresiones que involucran logaritmos.
+* Trigonometr@'{@dotless{i}}a::             Manipulaci@'on de expresiones que involucran funciones trigonom@'etricas y sus inversas.
+* Funciones Especiales::        Funciones especiales.
+* Polinomios Ortogonales::      Polinomios ortogonales y funciones especiales. 
+* L@'{@dotless{i}}mites::                 L@'{@dotless{i}}mites de expresiones.
+* Diferenciaci@'on::            C@'alculo diferencial
+* Integraci@'on::               C@'alculo integral.
+* Ecuaciones::                  Definiendo y resolviendo ecuaciones.
+* Ecuaciones Diferenciales::    Definiendo y resolviendo ecuaciones diferenciales.
+* Trabajo Num@'erico::          Integraci@'on num@'erica, transformadas de Fourier, etc,.
+* Estad@'{@dotless{i}}stica::             Funciones para estad@'{@dotless{i}}stica.
+* Tablas y Arreglos::           Creaci@'on y trabajo con arreglos.
+* Matrices y @'Algebra Lineal:: Operaciones con Matrices.
+* Affine::                      
+* Tensores::                    Paquete para manipulaci@'on de tensores.
+* Ctensores::                   Component Tensor Manipulation.
+* Series::                      Series de potencias y de Taylor.
+* Teor@'{@dotless{i}}a de N@'umeros::     Teor@'{@dotless{i}}a de n@'umeros.
+* Simetr@'{@dotless{i}}as::                  
+* Grupos::                      @'Algebra abstracta.
+
+Funcionalidades extras y programaci@'on
+
+@c Advanced facilities and programming
+
+* Entorno de Ejecuci@'on::      Personalizando el entorno de MAXIMA.
+* Opciones Miscel@'aneas::      Opciones con efecto global en MAXIMA.
+* Reglas y Patrones::           Conjunto de patrones y reglas de simplificaci@'on definidas por el usuario.
+* Listas::                      Manipulaci@'on de listas tipo Lisp.
+* Definici@'on de Funciones::   Definiendo funciones.
+* Programaci@'on::              Definiendo programas en MAXIMA.
+* Depuraci@'on::                Depurando programas en MAXIMA.
+
+Indice
+
+* Indice de Funciones y varibles:: Indice
+@comment @detailmenu
+ --- The Detailed Node Listing ---
+
+Introducci@'on
+
+* Introducci@'on a MAXIMA::
+
+Ayuda 
+
+* Introducci@'on a la Ayuda::        
+* Maxima y Lisp::            
+* Recolector de Basura::          
+* Documentaci@'on::               
+* Definiciones para la Ayuda::        
+
+L@'{@dotless{i}}nea de Comandos
+
+* Introducci@'on a la L@'{@dotless{i}}nea de Comandos::
+* Definiciones para la L@'{@dotless{i}}nea de Comandos::  
+
+Operadores
+
+* n-arios::                        
+* no-fijos::                       
+* operadores::                    
+* postfijos::                     
+* prefijos::                      
+* Definiciones para Operadores::   
+
+Expresiones
+
+* Introducci@'on a las Expresiones::  
+* Asignaci@'on::                  
+* Complejas::                     
+* Desigualdades::                  
+* Sintaxis::                      
+* Definiciones para Expresiones::  
+
+Simplificaci@'on
+
+* Definiciones para Simplificaci@'on::  
+
+Graficaci@'on
+
+* Definiciones para Graficaci@'on::    
+
+Entrada y Salida
+
+* Introducci@'on a la Entrada y Salida::  
+* Archivos::                       
+* Ejecuci@'on::                    
+* Definiciones para Entrada y Salida::  
+
+Puntos Flotantes
+
+* Definiciones para Puntos Flotantes::  
+
+Contextos
+
+* Definiciones para Contextos::    
+
+Polinomios
+
+* Introducci@'on a los Polinomios::  
+* Definiciones para los Polinomios::  
+
+Constantes
+
+* Definiciones para Constantes::   
+
+Logaritmos
+
+* Definiciones para Logaritmos::  
+
+Trigonometr@'{@dotless{i}}a
+
+* Introducci@'on a la Trigonometr@'{@dotless{i}}a::  
+* Definiciones para la Trigonometr@'{@dotless{i}}a::  
+
+Funciones Especiales
+
+* Introducci@'on a las Funciones Especiales::  
+* GAMALG::                      
+* SPECINT::                     
+* Definiciones para las Funciones Especiales::  
+
+Polinomios Ortogonales
+
+* Introducci@'on a los Polinomios Ortogonales
+* Definiciones para los Polinomios Ortogonales
+
+L@'{@dotless{i}}mites
+
+* Definiciones para L@'{@dotless{i}}mites::      
+
+Diferenciaci@'on
+
+* Definiciones para Diferenciaci@'on::  
+
+Integraci@'on
+
+* Introducci@'on a la Integraci@'on::  
+* Definiciones para Integraci@'on::  
+
+Ecuaciones
+
+* Definiciones para las Ecuaciones::   
+
+Ecuaciones Diferenciales
+
+* Definiciones para las Ecuaciones Diferenciales::  
+
+Trabajo Num@'erico
+
+* Introducci@'on al Trabajo Num@'erico::   
+* DCADRE::                      
+* ELLIPT::                      
+* FOURIER::                     
+* NDIFFQ::                      
+* Definiciones para el Trabajo Num@'erico::   
+
+Estad@'{@dotless{i}}stica
+
+* Definiciones para Estad@'{@dotless{i}}stica::  
+
+Tablas y Arreglos
+
+* Definiciones para Tablas y Arreglos
+
+Matrices y @'Algebra Lineal
+
+* Introducci@'on a las Matrices y el @'Algebra Lineal::
+* Operador Punto::                         
+* Vectores::                     
+* Definiciones para Matrices y @'Algebra Lineal::
+
+Affine
+
+* Definitions for Affine::      
+
+Tensores
+
+* Introducci@'on a los Tensores::      
+* Definiciones para Tensores::      
+
+CTensores
+
+* Introducci@'on a los CTensores::     
+* Definiciones para los CTensores::     
+
+Series
+
+* Introducci@'on a las Series::      
+* Definiciones para las Series::      
+
+Teor@'{@dotless{i}}a de N@'umeros
+
+* Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
+
+Simetr@'{@dotless{i}}as
+
+* Definiciones para Simetr@'{@dotless{i}}as::  
+
+Grupos
+
+* Definiciones para Grupos::      
+
+Entorno de Ejecuci@'on
+
+* Introducci@'on al Entorno de Ejecuci@'on::  
+* Interrupciones::                  
+* Definiciones para el Entorno de Ejecuci@'on ::  
+
+Opciones Miscel@'aneas
+
+* Introducci@'on a las Opciones Miscel@'aneas::  
+* Compartidas::                       
+* Definiciones para las Opciones Miscel@'aneas::  
+
+Patrones y Reglas
+
+* Intrducci@'on a las Reglas y Patrones::
+* Definiciones para Reglas y Patrones::
+
+Listas
+
+* Introducci@'on a las Listas::
+* Definiciones para Listas::
+
+Definici@'on de Funciones
+
+* Introducci@'on a la Definici@'on de Funciones::
+* Funciones::
+* Macros::
+* Optimizaci@'on::
+* Definiciones para la Definici@'on de Funciones::
+
+
+Programaci@'on
+
+* Introducci@'on a la Programaci@'on::
+* Definiciones para la Programaci@'on::
+
+Depuraci@'on
+
+* Definiciones para Depurado::   
+
+@comment @end detailmenu
+@end menu
+
+@c  Put the @node lines here, rather than in the @included files,
+@c  so emacs can automatically update them with C-c C-u C-e.
+@c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
+@c  the detailed node listing!
+
+@node Introducci@'on a MAXIMA, Ayuda, Top, Top
+@chapter Introducci@'on a MAXIMA
+@include Introduction.es.texi
+
+@node Ayuda, L@'{@dotless{i}}nea de Comandos, Introducci@'on a MAXIMA, Top
+@chapter Ayuda
+@include Help.es.texi
+
+@node L@'{@dotless{i}}nea de Comandos, Operadores, Ayuda, Top
+@chapter L@'{@dotless{i}}nea de Comandos
+@include Command.es.texi
+
+@node Operadores, Expresiones, L@'{@dotless{i}}nea de Comandos, Top
+@chapter Operadores
+@include Operators.es.texi
+
+@node Expresiones, Simplificaci@'on, Operadores, Top
+@chapter Expresiones
+@include Expressions.es.texi
+
+@node Simplificaci@'on, Graficaci@'on, Expresiones, Top
+@chapter Simplificaci@'on
+@include Simplification.es.texi
+
+@node Graficaci@'on, Entrada y Salida, Simplificaci@'on, Top
+@chapter Graficaci@'on
+@include Plotting.es.texi
+
+@node Entrada y Salida, Punto Flotante, Graficaci@'on, Top
+@chapter Entrada y Salida
+@include Input.es.texi
+
+@node Punto Flotante, Contextos, Entrada y Salida, Top
+@chapter Punto Flotante
+@include Floating.es.texi
+
+@node Contextos, Polinomios, Punto Flotante, Top
+@chapter Contextos
+@include Contexts.es.texi
+
+@node Polinomios, Constantes, Contextos, Top
+@chapter Polinomios
+@include Polynomials.es.texi
+
+@node Constantes, Logaritmos, Polinomios, Top
+@chapter Constantes
+@include Constants.es.texi
+
+@node Logaritmos, Trigonometr@'{@dotless{i}}a, Constantes, Top
+@chapter Logaritmos
+@include Logarithms.es.texi
+
+@node Trigonometr@'{@dotless{i}}a, Funciones Especiales, Logaritmos, Top
+@chapter Trigonometr@'{@dotless{i}}a
+@include Trigonometric.es.texi
+
+@node Funciones Especiales, Polinomios Ortogonales, Trigonometr@'{@dotless{i}}a, Top
+@chapter Funciones Especiales
+@include Special.es.texi
+
+@node Polinomios Ortogonales, L@'{@dotless{i}}mites, Funciones Especiales, Top
+@chapter Polinomios Ortogonales
+@include SpecfunII.es.texi
+
+
+@node L@'{@dotless{i}}mites, Diferenciaci@'on, Polinomios Ortogonales, Top
+@chapter L@'{@dotless{i}}mites
+@include Limits.es.texi
+
+@node Diferenciaci@'on, Integraci@'on, L@'{@dotless{i}}mites, Top
+@chapter Diferenciaci@'on
+@include Differentiation.es.texi
+
+@node Integraci@'on, Ecuaciones, Diferenciaci@'on, Top
+@chapter Integraci@'on
+@include Integration.es.texi
+
+@node Ecuaciones, Ecuaciones Diferenciales, Integraci@'on, Top
+@chapter Ecuaciones
+@include Equations.es.texi
+
+@node Ecuaciones Diferenciales, Trabajo Num@'erico, Ecuaciones, Top
+@chapter Ecuaciones Diferenciales
+@include Differential.es.texi
+
+@c @include NonCommutative.texi
+
+@node Trabajo Num@'erico, Estad@'{@dotless{i}}stico, Ecuaciones Diferenciales, Top
+@chapter Trabajo Num@'erico
+@include Numerical.es.texi
+
+@node Estad@'{@dotless{i}}stica, Tablas y Arreglos, Trabajo Num@'ericos, Top
+@chapter Estad@'{@dotless{i}}stica
+@include Statistics.es.texi
+
+@node Tablas y Arreglos, Matrices y @'Algebra Lineal, Estad@'{@dotless{i}}stica, Top
+@chapter Tablas y Arreglos
+@include Arrays.es.texi
+
+@node Matrices y @'Algebra Lineal, Afines, Tablas y Arreglos, Top
+@chapter @'Algebra Lineal y Matrices
+@include Matrices.es.texi
+
+@node Afines, Tensores, @'Algebra Lineal y Matrices, Top
+@chapter Afines
+@include Affine.es.texi
+
+@node Tensores, Ctensor, Afines, Top
+@chapter Tensores
+@include Tensor.es.texi
+
+@node Ctensor, Series, Tensores, Top
+@chapter Ctensor
+@include Ctensor.es.texi
+
+@node Series, Teor@'{@dotless{i}}a de N@'umeros, Ctensor, Top
+@chapter Series
+@include Series.es.texi
+
+@c @include None.texi
+
+@node Teor@'{@dotless{i}}a de N@'umeros, Simetr@'{@dotless{i}}as, Series, Top
+@chapter Teor@'{@dotless{i}}a de N@'umeros
+@include Number.es.texi
+
+@node Simetr@'{@dotless{i}}as, Grupos, Teor@'{@dotless{i}}a de N@'umeros, Top
+@chapter Simetr@'{@dotless{i}}as
+@include Symmetries.es.texi
+
+@node Grupos, Entorno de Ejecuci@'on, Simetr@'{@dotless{i}}as, Top
+@chapter Grupos
+@include Groups.es.texi
+
+@node Entornos de Ejecuci@'on, Opciones Miscel@'aneas, Grupos, Top
+@chapter Entorno de Ejecuci@'on
+@include Runtime.es.texi
+
+@node Opciones Miscel@'aneas, Patrones y Reglas, Entorno de Ejecuci@'on, Top
+@chapter Opciones Miscel@'aneas
+@include Miscellaneous.es.texi
+
+@node Patrones y Reglas, Listas, Opciones Miscel@'aneas, Top
+@chapter Patrones y Reglas
+@include Rules.es.texi
+
+@c @include xrefs.texi
+
+@node Listas, Definici@'on de Funciones, Reglas y Patrones, Top
+@chapter Listas
+@include Lists.es.texi
+
+@node Definici@'on de Funciones, Programaci@'on, Listas, Top
+@chapter Definici@'on de Funciones
+@include Function.es.texi
+
+@node Programaci@'on, Depurado, Definici@'on de Funciones, Top
+@chapter Programaci@'on
+@include Program.es.texi
+
+@node Depurado, Indice de Funciones y Variables, Programaci@'on, Top
+@chapter Depurado
+@include Debugging.es.texi
+
+@node Indice de Funciones y Variables,  , Depurado, Top
+@chapter Indices
+@include Indices.es.texi
+
+@c end includes
+
+
+@summarycontents
+@contents
+@bye
+
+

@@ -1,0 +1,12 @@
+@c end concepts Statistics
+@menu
+* Definiciones para Estad@'{@dotless{i}}stica::  
+@end menu
+
+@node Definiciones para Estad@'{@dotless{i}}stica,  , Estad@'{@dotless{i}}stica, Estad@'{@dotless{i}}stica
+@section Definiciones para Estad@'{@dotless{i}}stica
+@c @node GAUSS
+@c @unnumberedsec phony
+@defun GAUSS (mean,sd)
+retorna un n@'umero aleatorio de coma flotante de una distribuci@'on normal con media MEAN y desviaci@'on est@'andar SD. Hace parte del paquete de funciones BESSEL, hacer LOAD(BESSEL); para usar @'esta funci@'on. 
+@end defun

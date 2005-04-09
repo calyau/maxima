@@ -1,0 +1,94 @@
+@node xrefs
+@chapter xrefs
+@node Introducci@'on a xrefs
+@section Introduction to xrefs
+@section DILOGARITHM
+ - Observe POLYLOGARITHMS.
+
+@section DILOGS
+ - Observe POLYLOGARITHMS.
+
+@section EIGEN
+ - Observe EIGENVALUES.
+
+@section ETENSR
+ - Este paquete ha sido renombrado como CTENSR.
+
+@section HYPERGEOMETRIC
+ - Haga DESCRIBE(SPECINT); .
+HYPERGEOMETRIC_FUNCTIONS:HYPERGEOMETRIC_FUNCTIONS - Haga DESCRIBE(SPECINT); .
+
+@section HYPGEO
+ - Observe DESCRIBE(SPECINT); .
+
+@section IC2
+ - haga DESCRIBE(IC1);.
+
+@section INEQUALITIES
+ - Observe INEQUALITY.
+
+@section INTEGRATION
+ - Haga DESCRIBE(INTEGRALS);
+
+@section LI
+ - Esta es la notaci@'on que MACSYMA usa para Poliogaritmos y
+Dilogaritmos.  Observe POLYLOGARITHMS.
+
+@section LOGCGAMMA2
+ - Observe CGAMMA.
+
+@section MACRO
+ - Haga DESCRIBE(MACROS);
+
+@section MATRICES
+ - Observe DESCRIBE(MATRIX); .
+
+@section OPERATORS
+ - MACSYMA usa los operadores matem@'aticos estandar:
+  !  para factorial,
+  !! para doble factorial,
+  ^ o ** para exponenciaci@'on,
+  *  para multiplicaci@'on,
+  .  para multiplicaci@'on no conmutativa
+  /  para Division, 
+  +  para Adici@'on, y
+  -  para Sustracci@'on.
+  En adici@'on, este usa algunos otros operadores:
+  :  para asignaci@'on de variables (e.g. A:3 programa A para 3).
+  := para la definici@'on de funciones(e.g. F(X):=SIN(X) define una funci@'on F).
+Nota: el termino operador es usado cualquiera de los dos sentidos: sintactico
+(significando que este posee unas propiedades especiales de la sintaxis del lenguaje
+MACSYMA) o semantico (referiendose a su funcionalidad). En el 
+sentido sintactico usualmente comsiste en
+caracteres no alfanum@'ericos, e.g. "+" o "*" (incluye las excepciones
+"AND", "OR", y "NOT"). Semanticamente nos referimos a los
+ "operadores de una expresi@'on", significando que dicha cosa se encuentra en
+el operador parte de la expresi@'on, tal como "+" en "A+B" o SIN en
+"SIN(x)".  Nota: "+" en este ultimo ejemplo es tambi@'en un operador en el 
+sentido sint@'actico, mientras que SIN es una funci@'on matem@'atica.
+
+@section PLOTTING
+ - Observe plot3d,plot2d,plot2d_xgraph,psdraw_curve ..
+
+@section RICCI
+ - El tensor Ricci, haga DESCRIBE(RICCICOM);
+
+@section SIZE
+ - Observe DESCRIBE(NTERMS); y DESCRIBE(LENGTH); para dos caminos a
+obtener una idea acerca del tama@-no de una expresi@'on.
+
+@section TENSOR
+ - Haga DESCRIBE(TENSORS);
+
+@section VECT
+ - Observe VECTORS
+
+@section VECTOR
+ - Observe VECTORS
+
+@section STORAGE-- observe
+:gargbage_collection  (recolector de basura) 
+
+@c end concepts xrefs
+@node Definiciones for xrefs
+@section Definciones for xrefs

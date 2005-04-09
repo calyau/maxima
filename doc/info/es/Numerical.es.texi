@@ -1,0 +1,453 @@
+@menu
+* Introducci@'on a Num@'erico::   
+* DCADRE::                      
+* ELLIPT::                      
+* FOURIER::                     
+* NDIFFQ::                      
+* Definici@'on Num@'erica::   
+@end menu
+
+@node Introducci@'on a Num@'erico, DCADRE, Num@'erico, Num@'erico
+@section Introducci@'on a Num@'erico
+
+@node DCADRE, ELLIPT, Introducci@'on a Num@'erico, Num@'erico
+@section DCADRE
+El siguiente es obsoleto. Para hacer una interfaz para librer@'{@dotless{i}}as
+de fortran en el MAXIMA actual observe los ejemplos en
+"maxima/src/fortdef.lsp"
+ - La versi@'on de integraci@'on Romberg IMSL est@'a disponible ahora en
+Macsyma. Para documentaci@'on, Haga PRINTFILE(DCADRE,USAGE,IMSL1); .  Para
+una demostraci@'on, haga batch("dcadre.mc");
+Este es el paquete de integraci@'on num@'erica usando advertencias, excepcionalmente 
+adaptable a Romberg.
+El paquete DCADRE es escrito para llamar a la librer@'{@dotless{i}}a de fortran IMSL rutina
+DCADRE. Esta es documentaci@'on para este programa. Enviar errores/comentarios para
+KMP
+Para cargar este paquete, haga
+@example
+  LOADFILE("imsl")$
+@end example
+Para una demostraci@'on de este paquete, haga
+@example
+  batch("dcadre.mc");
+@end example
+La funci@'on trabajadora toma la siguiente sintaxis:
+IMSL_ROMBERG(fn,low,hi)
+donde fn es una funci@'on de 1 argumento; low y hi pueden ser los limites
+inferior y superior de la integraci@'on. fn deben retornar valores punto flotante.
+IMSL_ROMBERG(exp,var,low,hi)
+  donde exp puede ser integrado fuera del rango var=low para hi. El resultado
+  de la evaluaci@'on a exp debe ser siempre un n@'umero punto flotante.
+FAST_IMSL_ROMBERG(fn,low,hi)
+  Esta funci@'on no revisa errores pero puede alcanzar una ganacia de velocidad fuera
+  de la funci@'on IMSL_ROMBERG. Esta espera que fn sea una funci@'on Lisp ( o
+  funci@'on traducida de Macsyma) la cual acepta un argumento punto flotante
+  y que este retorna siempre un valor punto flotante.
+
+Retorna cualquiera de los dos
+ [SUCCESS, respuesta, error] donde la respuesta es el resultado de la integraci@'on y
+  error es el limite estimado sobre el error absoluto de la salida, DCADRE,
+  como se describe debajo en la funci@'on PURPOSE.
+o
+ [WARNING, n, respuesta, error] donde n es el c@'odigo de advertencia, respuesta es la respuesta,
+y error es el limite estimado sobre el error absoluto de la salida, DCADRE,
+  como se describe debajo en la funci@'on PURPOSE. La siguiente advertencia puede ocurrir:
+     65 = Una o m@'as singularidades fueron tomadas satisfactoriamente.
+     66 = En algun(os) subintervalo(s), el estimativo de la integral fue aceptado
+          s@'olo porque el error estimado fue peque@-no, aunque sean reconocidos comportamientos
+          irregulares.
+o
+ [ERROR, errorcode] donde el c@'odigo de error es c@'odigo de error IMSL- generado
+   El siguiente c@'odigo de error puede ocurrir:
+     131 = Fallo debido al trabajo de almacenamiento interno insuficiente.
+     132 = Fallo. Este puede ser debido a demasiado ruido en una funci@'on
+	   (relativo a los requerimientos de error obtenidos) o debido a un
+	   integrando con mal comportamiento-enfermo.
+     133 = RERR es mayor que 0.1 o menor que 0.0 o es demasiado peque@-no
+           para la presici@'on de la m@'aquina.
+
+Las siguientes banderas tienen una influencias fuera de las operaciones de IMSL_ROMBERG --
+
+ROMBERG_AERR [Default 1.0E-5] -- Error absoluto es deseado en la respuesta.
+
+ROMBERG_RERR [Default 0.0] -- Error relativo es deseado en la respuesta.
+
+Nota: Si IMSL se@-nala un error, un mensaje ser@'a impreso en la consola
+        de usuario declarando la naturaleza del error. (Este mensaje de error
+	puede ser suprimida mediante la programaci@'on de IMSLVERBOSE como FALSO.)
+
+Nota: Porque este usa rutinas de traducci@'on de Fortran, este no puede ser
+ 	invocado recursivamente. este no se llama a si mismo, pero el usuario puede
+	estar consiente que no puede teclear ^A en medio de un computo IMSL_ROMBERG,
+	iniicarndo otro calculo usando el mismo paquete,
+	y esperendo triunfar -- IMSL_ROMBERG se quejar@'a si este estaba 
+	realizando un proyecto cuando fue invocado. Esto puede causar problemas
+	m@'{@dotless{i}}nimos.
+
+Prop@'osito (Versi@'on modificada para la documentaci@'on de IMSL)
+----------------------------------------------------
+
+DCADRE consigue resolver el siguiente problema: Dada una funci@'on F
+evaluada-Real de un argumento, dos n@'umeros reales A y B, busque un n@'umero
+
+DCADRE de tal manera que:
+
+@example
+|   / B               |        [                              | / B      | ]
+|   [                 |        [                              | [        | ]
+|   I F(x)dx - DCADRE | <= max [ ROMBERG_AERR, ROMBERG_RERR * | I F(x)dx | ]
+|   ]                 |        [                              | ]        | ]
+|   / A               |        [                              | / A      | ]
+@end example
+Algortimo (Versi@'on modificada para la documentaci@'on de IMSL)
+
+Esta rutina usa un plan seg@'un DCADRE es computado como en la suma de
+estimados para la integral de F(x) fuera de los subintervalos de 
+los intervalos de interaci@'on dados, devidamente escogidos. Iniciando por si mismo con el intervalo de
+integraci@'on como el primer subintervalo,  advertencia, la extrapolarizaci@'on Romberg
+es usada para buscar una estimaci@'on aceptable en un subintervalo dado.
+Si este esfuerza falla, el subintervalo es dividido en dos
+subintervalos del mismo tama@-no, cada cual es considerado separadamente.
+Notas de Programaci@'on (Versi@'on modificada para la documentaci@'on de IMSL)
+
+@itemize @bullet
+@item
+1. DCADRE (la base traducida de Fortran para IMSL_ROMBERG) puede, el algunos casos,
+   tomar saltos discontinuos y ciertas discontinuidades algebr@'aicas, Observe
+   la referencia para lujo de detalles.
+@item
+2. El parametro de error relativo ROMBERG_RERR debe estar en el intervalo [0.0,0.1].
+   Por ejemplo, ROMBERG_RERR=0.1 indica que la estimaci@'on de la integral
+   es correcta para un d@'{@dotless{i}}gito, donde como ROMBERG_RERR=1.0E-4 llama por cuatro
+   d@'{@dotless{i}}gitos de exactitud. Si DCADRE determina que los requerimientos de exactitud 
+   relativa no satisfacen, IER es programado a 133 (ROMBERG_RERR puede ser 
+   lo bastante grande que, cuando adicionado a 100.0, el resultado es un n@'umero m@'as grande que
+   100.0 (este no ser@'a verdadero para n@'umeros punto flotante muy peque@-nos debido a
+   la naturaleza de la ar@'{@dotless{i}}tmetica de la maquina)).
+@item
+3. El parametro de error absoluto ROMBERG_AERR debe ser positivo. En
+   orden para dar un valor razonable para ROMBERG_AERR, el usuario debe conocer
+   la magnitud de aproximaci@'on de la integral que est@'a siendo computada. En algunos casos,
+   este es satisfactorio para usar AERR=0.0. En este caso, solo los requerimientos de error relativo
+   son satisfacidos en el computo.
+@item
+4. Citamos de la referencia, ``Un hombre muy cuidadoso puede aceptar DCADRE
+   solo si IER [la advertencia o codigo de error] es 0 o 65. Un hombre meramente razonable
+   puede guardar fe incluso si IER es 66. Un hombre aventurero es muy a menudo
+   correctamente en aceptar DCADRE incluso si IER es 131 o 132.'' Incluso cuando
+   IER no es 0, DCADRE retorna el mejor estimado que ha sido computado.
+@end itemize
+
+Para referencia sobre esta t@'ecnica, observe
+de Boor, Calr, ``CADRE: Un Algoritmo para Cuadratura Num@'erica,''
+  Software Matem@'atico (John R. Rice, Ed.), New York, Prensa Acad@'emica,
+  1971, Cap@'{@dotless{i}}tulo 7.
+
+@node ELLIPT, FOURIER, DCADRE, Num@'erico
+@section ELLIPT
+ - Un paqute en el directorio SHARE para rutinas Num@'ericas para
+funciones Elipticas e Integrales Elipticas Completas. (Notaci@'on de
+Abramowitz y Stegun, Caps. 16 y 17) Haga LOAD(ELLIPT); para usar este
+paquete. Al presentar todos los argumentos DEBEN estar en punto flotante. Usted lo obtendr@'a
+de otra manera sin sentido. Sea cuidadoso. Las funciones disponibles son:
+Funciones Elipticas Jacobianas 
+
+
+@example
+AM(U,M) - amplitud con m@'odulo M.
+AM1(U,M1) - amplitud con m@'odulo complementario M1.
+AM(U,M):=AM1(U,1-M); entonces use AM1 if M ~ 1
+SN(U,M):=SIN(AM(U,M));
+CN(U,M):=COS(AM(U,M));
+DN(U,M):=SQRT(1-M*SN(U,M)^2);
+(Estas funciones vienen definidas as@'{@dotless{i}}. Otras CD, NS, etc. pueden ser
+definidas similarmente.)
+Integrales Elipticas Completas
+ELLIPTK(M) - integral eliptica Completa de primer orden
+ELLIPTK1(M1) - lo mismo pero con m@'odulo complementario.
+ELLIPTK(M):=ELLIPTK1(1-M); entonces use if M ~ 1
+ELLIPTE(M) - integral eliptica Completa de segundo orden
+ELLIPTE1(M1) - lo mismo pero con m@'odulo complementario.
+ELLIPTE(M):=ELLIPTE1(1-M); entonces use if M ~ 1
+@end example
+
+@node FOURIER, NDIFFQ, ELLIPT, Num@'erico
+@section FOURIER
+ - Hay un paquete de Trasnformaciones R@'apidas de Fourier, haga DESCRIBE(FFT)
+para detalles. Tambi@'en existe un paquete de Series de Fourier. Este puede ser
+cargado con LOAD(FOURIE). Esta tambi@'en calcula coeficiente de la integral de
+Fourier y tiene otras funciones para realizar cosas tales como
+reemplazar todas las ocurrencias de F(ARG) en la expresi@'on (como cambiando
+ABS(a*x+b) por a*x+b). Haga PRINTFILE(FOURIE,USAGE,DSK,SHARE1); para
+una lista de las funciones inclu@'{@dotless{i}}das.
+
+
+@node NDIFFQ, Definici@'on Num@'erica, FOURIER, Num@'erico
+@section NDIFFQ
+un paquete residiendo en el direcvtorio SHARE para soluciones num@'ericas
+de ecuaciones diferenciales. LOAD("NDIFFQ"); lo cargar@'a
+para uso. Un ejemplo de este uso puede ser:
+
+@example
+Define_Variable(N,0.3,FLOAT);
+Define_Variable(H,0.175,FLOAT);
+F(X,E):=(Mode_Declare([X,E],FLOAT),N*EXP(X)/(E+X^(2*H)*EXP(H*X)));
+Compilar(F);
+Array([X,E],FLOAT,35);
+Init_Float_Array(X,1.0E-3,6.85); /* Llena X con el intervalo */
+E[0]:5.0;                        /* Condici@'on Inicial */
+Runge_Kutta(F,X,E);              /* Lo Resolvera */
+Grafica2(X,E);                     /* Grafica la soluci@'on */
+@end example
+p.s. Runge_Kutta(F,X,E,E_Prime) puede ser llamada para una ecuaci@'on de 
+segundo orden.
+
+@c end Conceptos Num@'ericos 
+ 
+@node Definici@'on Num@'erica,  , NDIFFQ, Num@'erico
+@section Definici@'on Num@'erica
+@c @node FFT
+@c @unnumberedsec phony
+@defun FFT (real-array, imag-array)
+Transformaci@'on R@'apida de Fourier. Este
+paquete puede ser cargado mediante LOAD(FFT); Tambi@'en hay un comando
+IFT, para Transformaciones Inversas de Fourier. Estas funciones desarrollan una
+(compleja) transformaci@'on r@'apida de fourier o 1 @'o 2 arreglos dimensionales
+PUNTO-FLOTANTE, obtenidos mediante:
+@example
+ARRAY(<ary>,FLOAT,<dim1>); or
+ARRAY(<ary>,FLOAT,<dim1>,<dim2>);
+@end example
+Para arreglos de 1D
+@example
+<dim1> = 2^n-1
+@end example
+Para arreglos de 2D
+@example
+<dim1>=<dim2>=2^n-1
+@end example
+(i.e. el arreglo es
+cuadrado). (Llamada que los arreglos de MACSYMA son indexados desde el origen 0 que
+habr@'an de ser elementos del arreglo 2^n y (2^n)^2 en los dos casos anteriores.)
+  Este paquete contiene tambi@'en otras dos funciones, POLARTORECT
+y RECTTOPOLAR. Haga DESCRIBE(cmd) para detalles. Para detalles acerca de la implementaci@'on,
+haga PRINTFILE(FFT,USAGE,SHARE); .
+
+@end defun
+@c @node FORTINDENT
+@c @unnumberedsec phony
+@defvar FORTINDENT
+ por defecto: [0] - controla el sangrado del margen izquierdo de
+la expresi@'on impresa por medio del comando FORTRAN. 0 da una impresion normal
+(i.e. 6 espacios), y valores positivos causar@'an que la expresi@'on
+sea impresa alineada a la derecha.
+
+@end defvar
+@c @node FORTMX
+@c @unnumberedsec phony
+@defun FORTMX (nombre,matriz)
+convierte una matriz MACSYMA en una secuencia de
+asignaciones de las declaraciones FORTRAN de la forma nombre(i,j)=<elemento
+correspondiente de la matriz>. Ahora este comando es obsoleto. FORTMX(nombre-matriz);
+ahora debe ser hacho as@'{@dotless{i}} FORTRAN(nombre=matriz);. (Si "nombre" es limite,
+FORTRAN('name=matrix); es necesario.) Por favor convierta el codigo que
+usa el comando FORTMX como debe ser vaciado alg@'un d@'{@dotless{i}}a.
+
+@end defun
+@c @node FORTRAN
+@c @unnumberedsec phony
+@defun FORTRAN (exp)
+convierte exp en una expresi@'on lineal FORTRAN en FORTRAN legal
+con 6 espacios insertados al inicio de cada l@'{@dotless{i}}nea,
+l@'{@dotless{i}}neas de continuaci@'on, y ** mejores que ^ para exponenciaci@'on. Ciando la
+opci@'on FORTSPACES[FALSO] es VERDADERA, el comando FORTRAN rellenar@'a 80
+columnas usando espacios. Si FORTRAN es llamada en un @'atomo l@'{@dotless{i}}mite simb@'olico, 
+e.g. FORTRAN(X); donde ha sido realizado X:A*B$, entonces X=@{valor de X@}, e.g.
+X=A*B ser@'a generado. En particular, si e.g. M:MATRIX(...); ha sido
+realizado, entonces FORTRAN(M); generar@'a la asignaci@'on de definiciones de la
+forma nombre()nombre(i,j)=<elemento correspondiente de la matriz>.
+FORTINDENT[0] controla el sangrado del margen izquierdo de
+la expresi@'on impresa por medio del comando FORTRAN. 0 da una impresion normal
+(i.e. 6 espacios), y valores positivos causar@'an que la expresi@'on
+sea impresa alineada a la derecha.
+
+
+@end defun
+@c @node FORTSPACES
+@c @unnumberedsec phony
+@defvar FORTSPACES
+ por defecto: [FALSO] - si es VERDADERO, el comando FORTRAN rellenara
+las 80 columnas usando espacios.
+
+@end defvar
+@c @node HORNER
+@c @unnumberedsec phony
+@defun HORNER (exp, var)
+convertir@'a exp en una representaci@'on reestructurada como
+en la regla Horner, usando var como la variable principal si esta es espec@'{@dotless{i}}fica.
+Var tambi@'en puede ser omitido en tal caso que la variable principal de la forma ERC
+de exp es usada. HORNER en algunas ocasiones mejora la estabilidad si expr 
+ser@'a evaluada Num@'ericamente. Esto es @'util si MACSYMA es usado para
+generar programas para ser ejecutados en FORTRAN (observe DESCRIBE(STRINGOUT);)
+@example
+(C1) 1.0E-20*X^2-5.5*X+5.2E20;
+                                2
+(D1)                   1.0E-20 X  - 5.5 X + 5.2E+20
+(C2) HORNER(%,X),KEEPFLOAT:TRUE;
+(D2)                  X (1.0E-20 X - 5.5) + 5.2E+20
+(C3) D1,X=1.0E20;
+SOBREFLUJO ARTIMETICO
+(C4) D2,X=1.0E20;
+(D4)                          6.9999999E+19
+
+
+@end example
+@end defun
+@c @node IFT
+@c @unnumberedsec phony
+@defun IFT (real-array, imag-array)
+Transformaci@'on Inversa de Fourier. Haga
+LOAD(FFT); para cargar es este paquete. Estas funciones (FFT y IFT)
+desarrolla una (compleja) transformaci@'on de fourier sobre 1 o 2
+arrelos dimensionales de PUNTO-FLOTANTE, obtenida mediante:
+ARRAY(<ary>,FLOAT,<dim1>); o ARRAY(<ary>,FLOAT,<dim1>,<dim2>); Para arreglos de 1D 
+<dim1> debe ser igual a 2^n-1, y para arreglos de 2D <dim1>=<dim2>=2^n-1
+(i.e. el arreglo es un cuadrado).  (Llamada que los arreglos de MACSYMA son 
+indexados desde el origen 0 que habr@'an de ser elementos del arreglo 2^n y (2^n)^2 
+en los dos casos anteriores.)  Para detalles acerca de la implementaci@'on,
+haga PRINTFILE(FFT,USAGE,SHARE); .
+
+@end defun
+@c @node INTERPOLATE
+@c @unnumberedsec phony
+@defun INTERPOLATE (func,x,a,b)
+busca el cero de func como varias x. Los @'ultimos
+dos argumentos son dados en el rango que aparezca. La funci@'on debe tener
+un signo diferente en cada puntofinal. Si esta condici@'on no es encontrada, la
+acci@'on de la funci@'on es manejada mediante INTPOLERROR[VERDADERO]). Si
+INTPOLERROR es VERDADERO entonces ocurrir@'a un error, de otra manera el valor de
+INTPOLERROR es retornadp (As@'{@dotless{i}} para graficado INTPOLERROR puede ser programado 
+0.0). De otra manera (dado que MACSYMA puede evaluar el primer argumento
+en el rango espec@'{@dotless{i}}fico, y que este sea continua) INTERPOLATE es
+garantizada para que surja con el xero (o uno de ellos si hay m@'as
+de un cero). La exactitud de INTERPOLATE es manejado mediante
+INTPOLABS[0.0] e INTPOLREL[0.0] los cuales deben ser n@'umeros punto flotante
+no-negativos. INTERPOLATE se detendr@'a cuando el primer argumento evaluado para
+algo menor  o igual a INTPOLABS o si aproximaciones sucesivas
+a la ra@'{@dotless{i}}z difiere por no m@'as que INTPOLREL * <una de
+las aproximaciones>. Los valores por defecto de INTPOLABS e INTPOLREL son
+0.0 para que INTERPOLATE tome una buena respuesta como sea posible con la
+presici@'on aritm@'etica sencilla que poseemos. El primer argumento debe ser una
+ecuaci@'on. El orden de los @'ultimos dos argumentos es irrelevante. As@'{@dotless{i}}
+
+@example
+INTERPOLATE(SIN(X)=X/2,X,%PI,.1);
+   es equivalente
+INTERPOLATE(SIN(X)=X/2,X,.1,%PI);
+@end example
+el m@'etodo usado es una b@'usqueda binaria en el rango especificado por los @'ultomos
+dos argumentos. Cuando este piensa la funci@'on es lo suficientemente cercana a ser
+lineal. este inicia usando interpolarizaci@'on lineal.
+Una sintaxis alternativa ha sido agregada para interpolarizar, esta reemplaza los
+dos primeros argumentos mediante una funci@'on nombre. La funci@ on debe ser 
+TRADUCIDA o compilada la funci@'on de un argumento. No se realiza la 
+revisi@'on del resultado, para que haya seguridad que la funci@'on retorna un
+n@'umero punto flotante.
+
+
+@example
+F(X):=(MODE_DECLARE(X,FLOAT),SIN(X)-X/2.0);
+INTERPOLATE(SIN(X)-X/2,X,0.1,%PI)       tiempo= 60 mseg
+INTERPOLATE(F(X),X,0.1,%PI);            tiempo= 68 mseg
+TRANSLATE(F);
+INTERPOLATE(F(X),X,0.1,%PI);            tiempo= 26 mseg
+INTERPOLATE(F,0.1,%PI);                 tiempo=  5 mseg
+@end example
+
+There is also a Newton method interpolation routine, do DESCRIBE(NEWTON); .
+
+@end defun
+@c @node INTPOLABS
+@c @unnumberedsec phony
+@defvar INTPOLABS
+ por defecto: [0.0] -  La exactitud de INTERPOLATE es manejado mediante
+INTPOLABS[0.0] e INTPOLREL[0.0] los cuales deben ser n@'umeros punto flotante
+no-negativos. INTERPOLATE se detendr@'a cuando el primer argumento evaluado para
+algo menor  o igual a INTPOLABS o si aproximaciones sucesivas
+a la ra@'{@dotless{i}}z difiere por no m@'as que INTPOLREL * <una de
+las aproximaciones>. Los valores por defecto de INTPOLABS e INTPOLREL son
+0.0 para que INTERPOLATE tome una buena respuesta como sea posible con la
+presici@'on aritm@'etica sencilla que poseemos. 
+
+@end defvar
+@c @node INTPOLERROR
+@c @unnumberedsec phony
+@defvar INTPOLERROR
+ por defecto: [VERDADERO] - maneja el comportamiento de INTERPOLATE.
+cuando INTERPOLATE es llamado, este determina si la funci@'on a ser interpolarizada satisface la
+condici@'on de que los valores de la funci@'on en los puntos finales del intervalo de interpolarizaci@'on
+sean opuesto en signo. si esllos lo son, se procede la interpolarizaci@'on.
+Si ellos son del mismo signo, e INTPOLERROR es VERDADERO, entonces un error es
+se@-nalado. Si ello son del mismo signo e INTPOLERROR no es VERDADERO, el
+valor de INTPOLERROR es retornado. As@'{@dotless{i}} para graficado, INTPOLERROR
+debe ser programado en 0.0.
+
+@end defvar
+@c @node INTPOLREL
+@c @unnumberedsec phony
+@defvar INTPOLREL
+ por defecto: [0.0] - La exactitud de INTERPOLATE es manejado mediante
+INTPOLABS[0.0] e INTPOLREL[0.0] los cuales deben ser n@'umeros punto flotante
+no-negativos. INTERPOLATE se detendr@'a cuando el primer argumento evaluado para
+algo menor  o igual a INTPOLABS o si aproximaciones sucesivas
+a la ra@'{@dotless{i}}z difiere por no m@'as que INTPOLREL * <una de
+las aproximaciones>. Los valores por defecto de INTPOLABS e INTPOLREL son
+0.0 para que INTERPOLATE tome una buena respuesta como sea posible con la
+presici@'on aritm@'etica sencilla que poseemos. 
+
+@end defvar
+@c @node NEWTON
+@c @unnumberedsec phony
+@defun NEWTON (exp,var,X0,eps)
+El archivo NEWTON 1 en el directorio SHARE
+contiene una funci@'on la cual har@'a interpolarizaci@'on usando el m@'etodo Newton.
+Este puede ser accedido mediante LOAD(NEWTON);. El m@'etodo Newton puede hacer cosas
+que INTERPOLATE se negar@'a  a tomar, desde INTERPOLATE  requiere
+que cada cosa evaluda para un flonum. As@'{@dotless{i}}
+NEWTON(x^2-a^2,x,a/2,a^2/100);
+dir@'a que no puede informar si flonum*a^2<a^2/100. Haciendo ASSUME(a>0);
+y entonces haciendo nuevamente NEWTON trabajar@'a. Usted toma x=a+<flonum peque@-no>*a el cual
+es simb@'olico de todas las maneras. INTERPOLATE (x^2-a^2,x,a/2,2*a); se queja de que
+.5*a no es flonum...
+Un integrando adaptativo el cual usa la regla de Cotas-Newton 8 paneles cuadraticos
+que est@'an disponibles en SHARE1;QQ FASL. Haga DESCRIBE(QQ) para detalles.
+
+@end defun
+@c @node POLARTORECT
+@c @unnumberedsec phony
+@defun POLARTORECT (magnitude-array, phase-array)
+convierte desde formas de magnitudes y fases en formas reales e imaginarias poniendo la parte real
+en el arreglo de magnitud y la parte imaginaria en el arreglo de fase.
+
+@example
+<real>=<magnitud>*COS(<fase>) ==>
+  <imaginario>=<magnitud>*SIN(<fase>
+@end example
+
+Esta funci@'on es parte del paquete
+FFT. Haga LOAD(FFT); para usarlo. Como con FFT y IFT esta
+funci@'on acepta arreglos de 1 o 2 dimensiones. Sin embargo, el arreglo
+dimensional necesita que no sea una potencia de 2, ni requiere que los arreglos de 2D sean cuadrados.
+
+@end defun
+@c @node RECTTOPOLAR
+@c @unnumberedsec phony
+@defun RECTTOPOLAR (real-array, imag-array)
+deshacePOLARTORECT. La
+fase de dada en el rango desde -%PI hasta %PI. Esta funci@'on es parte
+del paquete FFT. Haga LOAD(FFT); para usarlo. Como con FFT y IFT esta
+funci@'on acepta arreglos de 1 o 2 dimensiones. Sin embargo, el arreglo
+dimensional necesita que no sea una potencia de 2, ni requiere que los arreglos de 2D sean cuadrados.
+
+
+@end defun

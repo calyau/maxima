@@ -1,0 +1,421 @@
+@node None, Function and Variable Index, Ctensor, Top
+@chapter None
+@menu
+* Introducci@'on a None::        
+* Definiciones de None::        
+@end menu
+
+@node Introducci@'on a None, Definiciones de None, None, None
+@section Introducci@'on a None
+@section DILOGARITHMS
+ - Observe POLYLOGARITHMS.
+
+@section B
+ (D1)                             (N + 1)!
+
+@section FILE
+ - La especificaci@'on de un archivo es una cadena tal como "foo". Usted tambi@'en 
+puede especificar solo el s@'{@dotless{i}}mbolo foo. As@'{@dotless{i}} cargar("foo") y
+cargar(foo)pueden hacer las mismas cosas (a menos que foo posea un valor).
+S@'{@dotless{i}}mbolos pueden ser mapeados para min@'usculas, y las cadenas son dejadas aparte.
+Hay varias listas FILE_SEARCH. observe FILE_SEARCH.
+
+@section HACIJAN
+ - Una implementaci@'on del algortimo de programaci@'on lineal Hacijan
+est@'a disponible mediente BATCH("kach.mc")$. Detalles de su uso
+est@'an disponibles mediante BATCH("kach.dem");
+
+@section IMSL
+ - Para informaci@'on sobre paquetes MACSYMA-IMSL disponibles haga:
+PRINTFILE(IMSL,USAGE,SHARE2); IMSL-basado en actuales rutinas retornan
+[SUCCESS, ...] o [ERROR, ...].  Ellos pronto podr@'an ser cambiados para retornar 
+[SUCCESS, ...], [WARNING, ...] y [ERROR, ...].
+
+@section INDEX_FILE_DIM
+ ,s@'{@dotless{i}}mbolos-retornados-por-OPEN_INDEX_FILE) - retornan un
+entero indicando en n@'umero de expresiones en el archivo indexado.
+Observe DESCRIBE(OPEN_INDEX_FILE);.
+
+@section IRREDUCIBLE
+ - Este comando ha sido removido.
+
+@section ITS
+ - El sistema operativo bajo el cual MACSYMA corre en la m@'aquina
+MIT-MC. Este soporta el "Incopatibilidad de Tiempo Compartido del Sistema"
+
+
+@section MAP_OVER_INDEX_FILE
+ ,|funci@'on, objeto de archivo|) es conveniente para
+la generaci@'on de una lista indice de propiedades de los objetos en un archivo contra
+sus posici@'on en el archivo. Observe DESCRIBE(MAKE_INDEX_FILE);.
+
+@section MODRESULT
+ - Esta opci@'on est@'a obsoleta. La nueva opci@'on RESULTANT puede
+ser usada. Haga DESCRIBE(RESULTANT); para detalles.
+
+@section MORE
+ Procesamiento - El t@'ermino usado para describir la acci@'on de una consola 
+CRT cuando esta para en el fondo de la pantalla para permitir que el usuario
+finalice la lectura. Observe PAGEPAUSE y MOREWAIT para detalles.
+
+@section NTRIG
+ - SHARE1;NTRIG FASL permite a MACSYMA computar funciones trigonom@'eticas
+con argumentos de la forma N*%PI/10 para enteros N. Haga LOAD(NTRIG) para
+acceder a esto. Las funciones principales son USIN(N) y UCOS(N).
+
+@section NUMERICAL
+ - Hay un n@'umero de paquetes para m@'etodos num@'ericos en
+MACSYMA. Observe IMSL y los directorios SHARE.
+
+@section SET
+ - Observe Sets.
+
+@section STORENUM
+ - el valor de esta variable, un entero, es el segundo nombre
+del @'ultimo archivo escrito por el esquema de almacenamiento autom@'atico. (Observe
+DESCRIBE(DSKGC)). Cada vez que un archivo es escrito, STORENUM primero es
+incrementado en 1, as@'{@dotless{i}} este siempre ser@'a un entero. Este es inicialmente programado
+en 1000.
+
+@section UPDATE
+ - El archivo Actualizado ha sido movido al directorio MACDOC, as@'{@dotless{i}}
+usted puede hacer PRINTFILE(UPDATE,>,MACDOC); para leerlo. Tambi@'en, usted puede
+buscar informaci@'on de gran utilidad en este directorio, de manera que si usted desea
+enlistarlo (LISTFILES(MACDOC); en MACSYMA) e imprimir tambi@'{@dotless{i}}en algunos otros 
+archivos.
+
+A continuaci@'on una lista de cambios de MACSYMA desde el manual de la 
+Versi@'on 10. Haga DESCRIBE(cmd); para observar su documentaci@'on:
+Nuevas funciones o variables: LCM, RNCOMBINE.
+Nuevos paquetes SAHRE de interes: ATRIG1, NTRIG.
+Las siguientes funciones han sido removidas de MACSYMA: TRIGSUM.
+
+@section ---Begin
+ nuevo documento para wfs
+@section EDITOR-ZMACS
+ La versi@'on de m@'aquina lisp de macsyma contiene algunos
+editores de comandos @'utiles. La mejor manera para buscar acerca de ellos es hacer Meta-X
+Oportuno la cadena "macsyma" desde la mayor@'{@dotless{i}}a de los comandos implica este
+nombre. El Modo Macsyma es obtenido mediante el Modo de comando Extendido de
+Macsyma. Cuando en el modo macsyma los atajos como ctrl-shift-C se refieren al
+compilador de c@'odigo de macsyma en la regi@'on se@~nalada, o tambi@'en entre el $ o;
+delimitado si la regi@'on no est@'a marcada.
+
+Es posible evaluar expresiones dentro del buffer mediante el tecleo 
+de control-shift-I (por ejemplo una lq´inea D3 tiene un valor que usted desea 
+cambiar). El evaluador de macsyma puede ser llamado sobre la regiq´on actual y
+el resultado podr@'a ser establecido en el buffer. Este entonces puede ser alterado y
+reevaluado mediante control-shift-E para evaluarlo.
+
+@section FILENAMES--lispm
+   Desde los archivos fuente de Macsyma sobre m@'aquinas lisp
+ser@'a a menudo sobre diferentes m@'aquinas, esto es dif@'{@dotless{i}}cil para tener un buen
+mecanismo de b@'usqueda de archivos. La mejor cosa que un usuario puede hacer es especificar un 
+nombre de archivo como una cadena, tan completo como el busque necesario. La sintaxis
+puede ser la de la m@'aquina el la cual el archivo reside. Por ejemplo
+BATCH("/home/wfs/test.mac") o
+DEMO("/home/wfs/defint.dmo") son especificaciones v@'alidas, para el
+uso del editor de entradas, nombres de rutas extensos son ingresados con mucha facilidad,
+y por supuesto siempre hay la opci@'on de definici@'on para un numbre de ruta l@'ogico
+para establecerse en ellos.
+
+Los actuales nombres de rutas l@'ogicos para las fuentes pueden ser
+"Maxima-source:maxima;foo.lisp".
+
+@section FUNCTION-ARGUMENTS
+ Para buscar los argumentos de funci@'on de una funci@'on cuando en 
+el editor de entradas de un escucha de macsyma usted puede teclear Control-meta-A cuando
+el cursor es ubicado exactamente despu@'es del nombre de la funci@'on. Desfortunadamente
+lagunas funciones de macsyma usan nombres de variables los cuales no son muy sugestivos.
+Si una funci@'on toma argumentos de letras, estos pueden ser ingresados al nivel de
+macsyma tecleando ?:.. . Por ejemplo si usted desea llamar la funci@'on miembro del lisp com@'un
+que toma un test de letras que usted puede ingresar
+
+ AA:MAKE_HASH_TABLE(?:TEST,?EQL); 
+
+Este es el usp de la funci@'on eql para comparaci@'on de entradas en AA.
+AA[1]:2;
+AA[1]; ==> 2.
+
+@section MACSYMA-LISTENER
+ Seleccione A (o Sistema A) seleccione el escucha de macsyma m@'as
+actual. Usted tambi@'en puede dar clir en el men@'u de sistema y crear
+nuevos diferentes escuchas compartidos. La l@'{@dotless{i}}nea de etiquetas esta compartida entre
+los escuchas, as@'{@dotless{i}} que usted puede referirse a la l@'{@dotless{i}}nea de etiquetas definidas en una
+ventana, en otra ventana.
+
+Habilitando o inhabilitando m@'as-procesamiento (la pausa al final de la p@'agina 
+mostrada) es hecha como con los escuchas de lisp (eg. use la tecla de funci@'on).
+
+@section HELP--observe
+:documentaci@'on  
+
+@section  XXX
+
+@c end concepts None
+@node Definiciones de None,  , Introducci@'on a None, None
+@section Definiciones de None
+@defun COMPRESS
+ - Este comando ha sido retirado, observe COLLAPSE.
+
+@end defun
+@defun COMPRESS_FILE
+ - Este comando ha sido retirado, observe COLLAPSE.
+
+@end defun
+@defvar CURSOR
+ por defecto: [$] es el s@'{@dotless{i}}mbolo r@'apido del editor MACSYMA.
+
+@end defvar
+@defun DISKUSE
+(nombre de usuario) retorna el n@'umero total de bloques de disco en uso por
+un usario. El resultado es de la forma <n>*BLOCKS
+
+@end defun
+@defvar DOVARD_VIEWPORT 
+ por defecto: [1,7,1,7] determina la perspectiva de
+el ploteo de salidas Dover, similar a VIEWPT. Este acepta 4 argumentos,
+[XMIN,XMAX,YMIN,YMAX] en pulgadas sobre la p@'agina.
+
+@end defvar
+@defvar DSKGC
+ por defecto: [FALSO] si es VERDADERO causar@'a que el usuario defina valores,
+funciones, arreglos, y l@'{@dotless{i}}neas etiquetadas sean guardadas autom@'aticamente 
+en disco cuando el sistema determine que el espacio disponible en-centro
+est@'a tornandose bajo. (Por rasones hist@'oricas esta es tambi@'en una
+funci@'on, pero esta puede ser usada como un opci@'on, Por favor usela como
+es descrita aqu@'{@dotless{i}}, no como una funci@'on.)
+
+@end defvar
+@defvar DSKUSE
+ por defecto: [FALSO] si es VERDADERO, desde este punto en el computo
+de expresiones etiquetadas ser@'a escrita periodicamente sobre el
+disco. (Una expresi@'on etiquetada es la cual se refiere a una etiqueta de l@'{@dotless{i}}nea,
+e.g. D4, C7, E12.) Una vez es escrita una expresi@'on sobre el disco
+esta no residir@'a mucho en la memoria principal y la mayor@'{@dotless{i}}a del
+almacenamiento de memoria principal es tomado por el para luego liberarlo. Cuando el usuario se esfuerza
+por referenciar una expresi@'on que ha sido guardada en disco, MACSYMA
+recobrar@'a el valor correcto desde el archivo en disco.
+
+@end defvar
+@defvar DYNAMALLOC
+ por defecto: [FALSO] si es VERDADERO asignar@'a espacio adicional
+cuando sea necesario.
+
+@end defvar
+@defun ED 
+() - llama al editor NIL, que es llamado STEVE. STEVE es un editor
+para consolas CRT, que es el mejor a velocidad de 1200 baudios o superior.
+La interface que este presenta es cercana a la del editor EMACS usada 
+en el TOPS-20 y sistemas operativos ITS. Haciendo
+	TEACH_STEVE();
+correr@'a un tutorial sobre el editor. En este momento desafortunadamente
+esto no es para cualquiera de los dos o "zap" una expresi@'on de un comando de l@'{@dotless{i}}nea
+dentro del editor, t@'ampoco para "zap" una expresi@'on editada para MACSYMA para
+evaluaci@'on; sin embargo, el editor puede ser usada para edici@'on de archivos.
+DESCRIBE(EDITOR) para informaci@'on acerca del editor de l@'{@dotless{i}}neas de MACSYMA.
+
+@end defun
+@defun EDITOR
+ - Hay un editor de l@'{@dotless{i}}neas en MACSYMA, que usted puede ingresar mediante el tecleo
+de un modo alt (la tecla "esc" en la mayor@'{@dotless{i}}a de consolas) para versiones PDP-10 y NIL
+de MACSYMA, y & (ampersand) para Multics. Su l@'{@dotless{i}}nea de comando actual
+ser@'a tra@'{@dotless{i}}do autom@@'aticamente dentro de tu editor para edici@'on. Los comandos
+son terminados mediante dos modos alt (dos & en Multics). Dos modos alt adicionales
+le retornar@'an a MACSYMA con la cadena editada en su
+l@'{@dotless{i}}nea de comandos.
+Algunos comandos @'utiles:
+Comando         Acci@'on
+-------         ______
+nC              mueve el cursor pasando n car@'acteres.
+nR              mueve el cursor pasando n car@'acteres en la
+                 direcci@'on reversa (nR = -nC).
+nSstring<$>     mueve el corsor a la derecha (izquierda si n es
+                 negativo) de la n-@'esima ocurrencia de "cadena" en
+                 la cadena de salida.
+) o ]           mueve el cursor a la derecha desde la posici@'on actual
+                 fuera del siguiente par balanceado de par@'entesis (o
+                 corchetes).
+( or [          similar a ) o ] pero mueve a la izquierda.
+nD              borra n car@'acteres, y los guarda en el
+                 "registro de guardado" (observe el comando GR m@'as abajo).
+nK              borra todos los car@'acteres a trav@'es del n-@'esimo carruaje retorna
+                 (0K restantes eliminados), y los guarda en el "registro de guardado";
+                 e.g., K borra el remanente de esta l@'{@dotless{i}}nea.
+Istring<$>      inserta los car@'acteres "cadena" en la posici@'on de cursor
+                 actual.  El cursor es posicionado a la derecha del
+                 texto insertado.  Si no son dados argumentos entonces la
+                 cadena de los @'ultimos I comandos que poseen uno son usados.
+GR              inserta en la posici@'on actual del cursor los car@'acteres
+                 borrados mediante el @'ultimo uso de D @'o K
+                 en combinaci@'on con D @'o K para mover car@'acteres desde un
+                 lugar a otro en la cadena de entrada; o para recobrar
+                 desde un uso accidental de D @'o K. Hay un solo
+                 "registro de guardado".
+
+@end defun
+@defun EMACS
+() - llama el editor NIL. DESCRIBE(ED)  para m@'as informaci@'on. 
+El nombre EMACS deriva del editor de ese nombre usado sobre sistemas operativos
+ITS y TOPS-20.
+
+@end defun
+@defun FILEOP
+ - SHARE;FILEOP -- algunos archivos primitivos para usuarios de MC Macsyma.
+Ahora Macsyma provee algunos @'utiles archivos primitivos simples que fueron
+anteriormente solo disponibles en otros sistemas de programas.
+Para imprimir el contenido de un archivo en su terminal, haga
+PRINTFILE(archivo,nombre,dsk,me);
+Para enlistar su direcotio, haga LISTFILES(dsk,me). si usted usa un directorio
+compartido tal como USERS o PLASMA, solo sus archivos --los @'unicos
+con su nombre de identificaci@'on como primer nombre de archivo--podr@'an ser mostrados.
+El tama@~no y la fecha de creaci@'on de cada archivo son tambi@'en mostrados.
+Las funciones FILELENGTH retorna el tama@~no del argumento de archivo
+en bloques y bloques fraccionarios.
+En orden para enlista solo los nombres de sus archivos sin la
+informaci@'on de tama@~no y fecha, use QLISTFILES (Archivos R@'apidos LIST)
+con los mismos argumentos como LISTFILES.
+La funci@'on RENAMEFILE(nombre antiguo, nuevo nombre) renombra el archivo de un viejo nombre
+a un nuevo nombre.
+Detalles.
+el comando PRINTFILE toma la misma sintaxis de argumento como LOADFILE;
+los otros dos toman la sintaxis de WRITEFILE. LISTFILES indica
+si cada archivo es almacenado sobre un disco secundario y si este
+ha sido hecho copia de seguridad para grabar (un signo de admiraci@'on aparecer@'a
+si no lo tiene).
+El comando FILELENGTH retorna el tama@~no en bloques y bloques fraccionarios:
+hay cinco tipo de caracteres en una palabra y 1024 palabras en un bloque de disco.
+(entonces si este retorna 5.6, el archivo es 6 bloques de largo, pero el @'ultimo bloque
+est@'a lleno solo el 60%. En este archivo habr@'{@dotless{i}}an  5.6*1024*5 (= 28672) car@'acteres de
+largo.) Si el archivo llamado no existe, un mensaje de error es impreso,
+y es retornado Falso para permitir un recobro m@'as f@'acil en un programa.
+Archivos no pueden ser renombrados a traves de directorios o dispsitivos. Antiguo nombre y
+nuevo nombre, ambos deben estar en el emismo directorio. renombrandi un archivo para un nombre de archivo
+que ya exite produce un error. Primero usted debe hacer DELFILE expl@'{@dotless{i}}citamente al archivo 
+existente si esto es lo que usted desea. Antiguo nombre y
+nuevo nombre, ambos deben ser especificaciones de archivo tipo lista, ejemplo:
+RENAMEFILE([mi antiguo,archivo,dsk,foo],[mi nuevo,archivo]);
+
+@end defun
+@defvar FILESIZE
+ por defecto: [] - El valor de esta variable es el n@'umero de
+expresiones escritas dentro de cada archivo mediante el esquema de almacenamiento autom@'atico
+en disco. El valor por defecto es 16.
+
+@end defvar
+@defun FULLDISKUSE 
+(nombre de usuario) Si no es suplido el nombre, este es por defecto
+el usuario actual. retorna una larga lista de informaci@'on acerca del uso de disco
+del usuario de la forma:
+  [["TOTAL DE BLOQUES LIBRES", [<tipo-paquete>, <n@'umero-paquete>, <n> BLOQUES],
+                         [<tipo-paquete>, <n@'umero-paquete>, <n> BLOQUES], ...]
+   ["USO DE DIRECTORIOS DE BLOQUES", <directory-name>
+                             ["PRIMARIO", <n> BLOCKS],
+                             ["SECUNDARIO", <n> BLOCKS]]
+   ["USO DE BLOQUES DEL USUARIO", <nombre-usuario>,
+                        [PRIMARIO, <n> BLOQUES],
+                        [SECUNDARO, <n> BLOQUES]]]
+Si el usuario tiene su propio directorio, el @'ultimo elemento de la lista ("USO DE 
+BLOQUES DEL USUARIO") es omitido desde que este puede ser el mismo que "USO DE DIRECTORIOS 
+DE BLOQUES".
+        <tipo-paquete> ::= "PAQUETE PRIMARIO" o "PAQUETE SECONDARIO"
+        <n@'umero-paquete> ::= un n@'umero punto reparado
+        <n> ::= un n@'umero punto reparado
+Ocurrencias de `<n> BLOQUES' son de la forma de multiplicaci@'on de Macsyma
+entre un fixnum <n> y un BLOQUE s@'{@dotless{i}}mbolo de Macsyma.
+
+@end defun
+@defun DIRECTORY(path)
+Lista archivos en ruta. La ruta puede ser algo como "/home/wfs/*.mac"
+
+@end defun
+@defun LOGOUT 
+() - causa que el usuario se desconecte y todos los trabajos sean borrados.
+Esto es @'util cuando esto es deseado para BATCH en un archivo y tiene la
+terminal desconectada autom@'aticamente cuando los computos han sido finalizados.
+Esto causa que MACSYMA invoque procesos para ejecutar el comando
+LOGOUT.
+
+@end defun
+@defun MAIL 
+("mensaje") enviar@'a correro a MACSYMA. Esto puede ser usado para reportar
+problemas o errores.
+MAIL(nombre de usuario,"mensaje") enviar@'a correo a un usuario espec@'{@dotless{i}}fico.
+Pueden ser incluidas expresiones para referirse a ellos, fuera de la doble
+cita, cuando (y solo cuando) un nombre de usuario es dado, e.g.
+MAIL(ELLEN,"Estoy intentando integrar",D3,"pero esto me pregunta por m@'as lista de 
+espacio. ¿Qu@'e puedo hacer?");
+No soportado a@'un en Masyma NIL.
+
+@end defun
+@defun MAKE_INDEX_FILE 
+("nombre de archivo"); convertir@'a un archivo batch sin
+evaluarlo. Esto es @'util para depurar archivos init. Observe
+DESCRIBE(init); y DESCRIBE(OPEN_INDEX_FILE);.
+
+@end defun
+@defvar MOREWAIT
+ por defecto: [FALSO] - Controla la acci@'on de mayor procesamiento.
+Actualmente en Macsyma NIL, la programaci@'on de esto no tiene efecto.
+Cuando la salida es suspendida y una --Pausa-- o --M@'as Mostrada?--son emitidas
+sugerencias, uno puede teclear un espacio para continuar la salida. Tecleando alg@'un
+car@'acter diferente a espacio o robout (borrar) continuar@'a la salida,
+y deja el car@'acter alrededor para ser le@'{@dotless{i}}do como parte de la siguiente l@'{@dotless{i}}nea-c
+e interviniendo posiblemente --Pausa-- sugerencias.
+
+@end defvar
+
+
+@end defun
+
+@end defun
+@defvar PAGEPAUSE
+ por defecto: [] - Esta es programada por MACSYMA acordando que el
+sistema conoce acerca de su tipo de terminal. Si esto es programado VERDADERO, entonces
+"mayor" procesamiento, que involucran la impresi@'on de --M@'as mostrados?-- o
+--Pausa-- al final de su pantalla o despu@'es de algunas l@'{@dotless{i}}neas sobre
+una terminal de impresi@'on, y pausando, podr@'a ser habilitado. Esto puede ser programado
+FALSO para apagar el "mayor" procesamiento en una terminal mostrada.
+PAGEPAUSE es en algunas ocasiones @'util en archivos batch o l@'{@dotless{i}}neas lentas donde usted
+solo desea ver la salida corrida antes, y puede mantener con la velocidad suficiente de l@'{@dotless{i}}nea. 
+
+@end defvar
+@defun PAUSE 
+() - Causa el mostrado de "pausa", imprimiendo "--Pausa--" y
+esperando por el "espacio" usual para "si" para continuar la impresi@'on. Entonces este
+limpia la pantalla y continua. PAUSE("--Algo m@'as--"); usar@'a
+"--Algo m@'as" como la cadena impresa en cambio de "--Pausa--".
+PAUSE("--Algo m@'as--", "--Y algunos m@'as--"); usar@'a ""--Algo 
+m@'as--"" en vez de "--Pausa--" y "--Y algunos m@'as--" en vez de
+"--Continuado".
+
+@end defun
+
+@defun RENAMEFILE 
+(nombre antiguo de archivo,nombre nuevo de archivo) - Da un nuevo nombre a un archivo.
+Nombre antiguo de archivo puede nombrar cualquier archivo. Esta puede usar el formato de lista filename
+- eg, [MYOLD,FILE,DSK,USERS5]. Nombre nuevo de archivo debe ser un filename en el
+mismo dispositivo y directorio. Desde aqu@'{@dotless{i}} solo filename1 y filename2 pueden
+ser especificados. Por ejemplo, [MYNEW,FILE]. Esforz@'andose por cambiar el
+nombre de un archivo que no existe, o para renombrar un archivo para el nombre de
+un archivo que ya existe generar@'a un error; Desde aqu@'{@dotless{i}}, esto no es
+posible para destruir inadvertidamente un archivo usando este comando.
+
+@end defun
+
+@defun TAG_FILE_INSERT 
+(archivo-para-insertar-dentro, archivo-para-insertar) - Inserta un archivo
+creado por el traductor dentro de un archivo con multiples etiquetas de entrada.
+
+@end defun
+@defun TIMEDATE 
+() imprime la hora y fecha actual.
+
+@end defun
+
+@defvar VERSION
+ por defecto: [5,4,"Mi@@'er Oct ..."] - son las versiones mayores y menores de MAXIMA.
+Esto puede ser @'util si el usuario quiere etiquetar su salida, o para asociar
+errores con versiones particulares.
+
+@end defvar

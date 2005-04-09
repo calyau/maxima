@@ -1,0 +1,289 @@
+@menu
+* Introducci@'on a las Funciones Especiales::  
+* GAMALG::                      
+* SPECINT::                     
+* Definiciones para las Funciones Especiales::  
+@end menu
+
+@node Introducci@'on a las Funciones Especiales, GAMALG, Funciones Especiales, Funciones Especiales
+
+@section Introducci@'on a las Funciones Especiales
+@deffn %J
+ [index](expr) - Funci@'on Bessel de 1ra Clase (en SPECINT)
+
+@end deffn
+
+@deffn %K 
+ [index](expr) - Funci@'on Bessel de 2da Clase (en SPECINT)
+
+Constante en ODE2
+
+@end deffn
+
+@node GAMALG, SPECINT, Introducci@'on a Funciones Especiales, Funciones Especiales
+
+@section GAMALG
+
+Un programa de algebra para matrix gamma de Dirac que toma trazos
+y hace manipulaciones sobre matrices  gamma en n dimensiones. Esto puede ser
+cargado en MACSYMA mediante
+LOADFILE("gam");
+Un manual preliminar est@'a contenido en el archivo SHARE;GAM USAGE y puede ser impreso
+usando
+PRINTFILE(GAM,USAGE,SHARE);
+
+@node SPECINT, Deficiones para Funciones Especiales, GAMALG, Funciones Especiales
+@section SPECINT
+ - El paquete HYPGEO de funciones hipergeom@'etricas especiales est@'a
+aun en desarrollo. en este momento busca las transformadas de Laplace o mejor,
+la integral de 0 hasta INF de algunas funciones especiales o combinaciones de ellas.
+El factor, EXP(-P*var) debe ser
+declarado explicitamente. La sintaxis es la siguiente:
+SPECINT(EXP(-P*var)*expr,var);
+donde var es la variables de integraci@'on y expr puede ser
+cualquier expresi@'on conteniendo funciones especiales (bajo su propio riesgo).
+La notaciq¥on de funciones especiales es la siguiente:
+@example
+%J[index](expr)         Funct Bessel  1ra Clase
+%K[index](expr)           "     "    2da Clase
+%I[     ](    )          Bessel Modificada
+%HE[     ](  )        Hermite Poly
+%P[  ]( )               Funct Legendre 
+%Q[  ]( )               Legendre de segunda clase
+HSTRUVE[ ]( )          Funci@'on  Struve H
+LSTRUVE[ ]( )           Funci@'on         "    L 
+%F[ ]([],[],expr)        Funci@'on Hipergeom@'etrica 
+GAMMA()
+GAMMAGREEK()
+GAMMAINCOMPLETE()
+SLOMMEL
+%M[]()                  Whittaker Funct 1st Kind
+%W[]()                     "       "    2nd  "
+@end example
+@noindent
+Para un mejor conocimiento acerca de estas que puede hacer, haga DEMO(HYPGEO,DEMO,SHARE1); .
+
+@c end concepts Funciones Especiales
+@node Deficiones para Funciones Especiales,  , SPECINT, Funciones Especiales
+@section Deficiones para Funciones Especiales
+@c @node AIRY
+@c @unnumberedsec phony
+@defun AIRY (X)
+retorn la funci@'on Airy Ai de argumento real X.
+El archivo SHARE1;AIRY FASL contiene rutinas para evaluar las funciones Airy
+Ai(X), Bi(X) y sus derivadas dAi(X), dBi(X). Ai y Bi satisfacen la
+ecuaci@'on diferencial AIRY(y(x),x,2)-x*y(x)=0.. Lea SHARE1;AIRY USAGE para detalles.
+
+@end defun
+@c @node ASYMP
+@c @unnumberedsec phony
+@defun ASYMP
+ - Una versi@'on preliminar de un programa para buscar comportamiento asint@'otico
+de diagramas de Feynman que han sido instalados sobre el directorio SHARE1;
+Para mayor informaci@'on, observe el archivo SHARE1;ASYMP USAGE.
+(Para el An@'alisis Asist@'otico de funciones, observe ASYMPA.)
+
+@end defun
+@c @node ASYMPA
+@c @unnumberedsec phony
+@defun ASYMPA
+ - An@'alisis Asit@¥tico - El archivo SHASE1;ASYMPA > contiene
+la simplificaci@'on de funciones para an@'alisis asint@'otico, incluyendo las funciones big-0
+y little-o que son ampliamente usadas en an@'alisis complejos y
+an@'alisis num@'ericos. Haga BATCH("asympa.mc"); .
+(Para comportamiento asist@'otico de digramas de Feynman, observe ASYMP.)
+
+@end defun
+@c @node BESSEL
+@c @unnumberedsec phony
+@defun BESSEL (Z,A)
+retorna la funci@'on Bessel J para complejos Z y reales A >
+0.0 . Tambi@'en un arreglo BASSELARRAY es programado tal que BESSELARRAY[I] =
+J[I+A- ENTIER(A)](Z).
+
+@end defun
+@c @node BETA
+@c @unnumberedsec phony
+@defun BETA (X, Y)
+lo mismo que GAMMA(X)*GAMMA(Y)/GAMMA(X+Y).
+
+@end defun
+@c @node GAMMA
+@c @unnumberedsec phony
+@defun GAMMA (X)
+la funci@'on gamma. GAMMA(I)=(I-1)! para I siendo un entero
+positivo. Para la constante Euler-Mascheroni, observe %GAMMA. Tambi@'en observe la
+funci@'on MAKEGAMMA. La variable GAMALIN[1000000] (la que observa)
+controla la simplificaci@'on de la funci@'on gamma.
+
+@end defun
+@c @node GAMMALIM
+@c @unnumberedsec phony
+@defvar GAMMALIM
+ por defecto: [1000000] controla la simplificaci@'on de la funci@'on gamma
+para argumentos de integrales y n@'umeros racionales. Si el valor absoluto
+del argumento no es m@'ayor que GAMMALIN, entonces
+ocurrir@'a la simplificaci@'on. Note que la opci@'on controla
+la simplificaci@'on del resultado de GAMMA de un argumneto integral.
+
+@end defvar
+@c @node INTOPOIS
+@c @unnumberedsec phony
+@defun INTOPOIS (A)
+convierte A en un codificado Poisson.
+
+@end defun
+@c @node MAKEFACT
+@c @unnumberedsec phony
+@defun MAKEFACT (exp)
+transforma ocurrencias de funciones binomiales, gamma y beta
+en exp para funci@'ones factoriales.
+transforms occurrences of binomial,gamma, and beta
+functions in exp to factorials.
+
+@end defun
+@c @node MAKEGAMMA
+@c @unnumberedsec phony
+@defun MAKEGAMMA (exp)
+transforma ocurrencias de funciones binomiales, factoriales y beta
+en exp para funci@'ones gamma.
+
+@end defun
+@c @node NUMFACTOR
+@c @unnumberedsec phony
+@defun NUMFACTOR (exp)
+da el factor num@'erico multiplicando la expresi@'on
+exq que puede ser un t@'ermino sencillo. Si el gcd de todos los t@'erminos en una
+suma es deseado, la funci@'on CONTENT puede ser usada.
+@example
+(C1) GAMMA(7/2);
+(D1)               15 SQRT(%PI)
+                   ------------
+                        8
+(C2) NUMFACTOR(%);
+                    15
+(D2)                --
+                     8
+
+
+@end example
+@end defun
+@c @node OUTOFPOIS
+@c @unnumberedsec phony
+@defun OUTOFPOIS (A)
+convierte A desde codificado de Poisson a una representaci@'on
+general. Si A no es de la forma Poisson, podr@'a realizar la
+conversi@'on, i.e.  se ver@'a como el resultado de
+OUTOFPOIS(INTOPOIS(A)).  Esta funci@'on es as@'{@dotless{i}}, un simplificaci@'on can@'onica
+para sumas de potencias de SIN y COS de un tipo particular.
+
+@end defun
+@c @node POISDIFF
+@c @unnumberedsec phony
+@defun POISDIFF (A, B)
+deriva A con respecto a B. B debe ocurrir solo
+en los argumentos trigonom@'etricos o solo en los coeficientes.
+
+@end defun
+@c @node POISEXPT
+@c @unnumberedsec phony
+@defun POISEXPT (A, B)
+B es un entero positivo) es funcionalmente identico a
+INTOPOIS(A**B).
+
+@end defun
+@c @node POISINT
+@c @unnumberedsec phony
+@defun POISINT (A, B)
+integra en un sentido similar restringido (para
+POISDIFF). T@'erminos no peri@'odicos en B son botados si B est@'a en el
+argumento trigonom@'etrico.
+
+@end defun
+@c @node POISLIM
+@c @unnumberedsec phony
+@defvar POISLIM
+ default: [5] - determina el dominio de los coeficientes en
+los argumentos de las funciones trigonom@'etricas. El calor inicial de 5
+corresponde a la inversa [-2^(5-1)+1,2^(5-1)], o [-15,16], pero esta
+puede ser programada para [-2^(n-1)+1, 2^(n-1)].
+
+@end defvar
+@c @node POISMAP
+@c @unnumberedsec phony
+@defun POISMAP (series, sinfn, cosfn)
+puede mapear las funciones sinfn en los
+t@'erminos seno y cosfn en los t@'erminos coseno de la serie poisson dada.
+sinfn u cosfn son unciones de dos argumentos que son coeficientes
+y una parte trigonom@'etrica de un t@'ermino en series respectivamente.
+
+@end defun
+@c @node POISPLUS
+@c @unnumberedsec phony
+@defun POISPLUS (A, B)
+es funcionalmente identico a INTOPOIS(A+B).
+
+@end defun
+@c @node POISSIMP
+@c @unnumberedsec phony
+@defun POISSIMP (A)
+convierte a en una series de Poisson para A en una representaci@'on
+general.
+
+@end defun
+@c @node POISSON
+@c @unnumberedsec phony
+@defvr {special symbol} POISSON
+ - El s@'{@dotless{i}}mbolo /P/ sigue la etiqueta de l@'{@dotless{i}}nea de expresiones
+de series de Poisson.
+
+@end defvr
+@c @node POISSUBST
+@c @unnumberedsec phony
+@defun POISSUBST (A, B, C)
+sustituye A por B en C C es una series de Poisson.
+(1) Donde B  es una variable U, V, W, X, Y o Z entonces A debe ser una
+expresi@'on lineal en esas variables (e.g. 6*U+4*V).
+(2) Donde B es diferente a las otras variables, entonces A tambi@'en debe estar
+libre de esas variables, y adem@'as, libre de senos y cosenos.
+POISSUBST(A, B, C, D, N) es un tipo especial de sustituciones que
+operan sobre A y B como en el tipo (1) anterior, pero donde D es una series
+de Poisson, expande COS(D) y SIN(D) de orden N as@'{@dotless{i}} como provee el
+resultado de la sustituci@'on A+D para B en C. La idea es que D es una
+expansi@'on en t@'erminos de peque√±os par@'ametros. Por ejemplo,
+POISSUBST(U,V,COS(V),E,3) resulta en COS(U)*(1-E^2/2) -
+SIN(U)*(E-E^3/6).
+
+@end defun
+@c @node POISTIMES
+@c @unnumberedsec phony
+@defun POISTIMES (A, B)
+es funcionalmente identico a INTOPOIS(A*B).
+
+@end defun
+@c @node POISTRIM
+@c @unnumberedsec phony
+@defun POISTRIM ()
+es un nombre de funci@'on reservada que (si el usuario lo ha definido)
+es aplicado durante multiplicaci@'on de Poisson. Es una funci@'on predicada
+de 6 argumentos que son el coeficiente de U, V,..., Z
+en un t@'ermino. t@'erminos para los cuales POISTRIM es VERDADERO (para los coeficientes de
+ese t@'ermino) son eliminadas durante la multiplicaci@'on.
+
+@end defun
+@c @node PRINTPOIS
+@c @unnumberedsec phony
+@defun PRINTPOIS (A)
+imprime series de Poisson en un formato le@'{@dotless{i}}ble. En com@'un con
+OUTOFPOIS, esta puede convertir A en una codificaci@'on de Poisson primero,
+si es necesario.
+
+@end defun
+@c @node PSI
+@c @unnumberedsec phony
+@defun PSI (X)
+derivado de LOG(GAMMA(X)). En este momento, MACSYMAno posee capacidades
+de evaluaci@'on num@'erica para PSI. Para informaci@'on sobre la
+notaci@'on PSI[N](X), observe POLYGAMMA.
+
+@end defun

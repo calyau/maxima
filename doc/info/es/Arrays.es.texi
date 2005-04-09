@@ -1,0 +1,169 @@
+@c end concepts Arrays and Tables
+@menu
+* Definitions for Arrays and Tables::  
+@end menu
+
+@node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
+@section Definitions for Arrays and Tables
+@c @node ARRAY
+@c @unnumberedsec phony
+@defun ARRAY (name, dim1, dim2, ..., dimk)
+This sets up a k-dimensional
+array.  A maximum of five dimensions may be used.  The subscripts for
+the ith dimension are the integers running from 0 to dimi.  If the
+user assigns to a subscripted variable before declaring the
+corresponding array, an undeclared array is set up.  If the user has
+more than one array to be set up the same way, they may all be set up
+at the same time, by ARRAY([list-of-names],dim1, dim2, ..., dimk).
+Undeclared arrays, otherwise known as hashed arrays (because hash
+coding is done on the subscripts), are more general than declared
+arrays.  The user does not declare their maximum size, and they grow
+dynamically by hashing as more elements are assigned values.  The
+subscripts of undeclared arrays need not even be numbers.  However,
+unless an array is rather sparse, it is probably more efficient to
+declare it when possible than to leave it undeclared.  The ARRAY
+function can be used to transform an undeclared array into a declared
+array.
+
+@end defun
+@c @node ARRAYAPPLY
+@c @unnumberedsec phony
+@defun ARRAYAPPLY (array,[sub1, ... ,subk])
+is like APPLY except the first
+argument is an array.
+
+@end defun
+@c @node ARRAYINFO
+@c @unnumberedsec phony
+@defun ARRAYINFO (a)
+returns a list of information about the array a.  For
+hashed arrays it returns a list of "HASHED", the number of subscripts,
+and the subscripts of every element which has a value.  For declared
+arrays it returns a list of "DECLARED", the number of subscripts, and
+the bounds that were given the the ARRAY function when it was called
+on a.  Do EXAMPLE(ARRAYINFO); for an example.
+
+@end defun
+@c @node ARRAYMAKE
+@c @unnumberedsec phony
+@defun ARRAYMAKE (name,[i1,i2,...])
+returns name[i1,i2,...].
+
+@end defun
+@c @node ARRAYS
+@c @unnumberedsec phony
+@defvar ARRAYS
+ default: [] a list of all the arrays that have been allocated,
+both declared and undeclared.  Functions which deal with arrays are:
+ARRAY, ARRAYAPPLY, ARRAYINFO, ARRAYMAKE, FILLARRAY, LISTARRAY, and
+REARRAY.
+@end defvar
+
+@c @node BASHINDICES
+@c @unnumberedsec phony
+@defun BASHINDICES (expr)
+- transforms the expression expr by giving each
+summation and product a unique index. This gives CHANGEVAR greater
+precision when it is working with summations or products.  The form of
+the unique index is J<number>. The quantity <number> is determined by
+referring to GENSUMNUM, which can be changed by the user.  For
+example, GENSUMNUM:0$ resets it.
+
+@end defun
+@c @node FILLARRAY
+@c @unnumberedsec phony
+@defun FILLARRAY (array,list-or-array)
+fills array from list-or-array.  If
+array is a floating-point (integer) array then list-or-array should be
+either a list of floating-point (integer) numbers or another
+floating-point (integer) array.  If the dimensions of the arrays are
+different array is filled in row-major order.  If there are not enough
+elements in list-or-array the last element is used to fill out the
+rest of array.  If there are too many the remaining ones are thrown
+away.  FILLARRAY returns its first argument.
+
+@end defun
+@c @node GETCHAR
+@c @unnumberedsec phony
+@defun GETCHAR (a, i)
+returns the ith character of the quoted string or
+atomic name a.  This function is useful in manipulating the LABELS
+list.
+
+@end defun
+@c @node LISTARRAY
+@c @unnumberedsec phony
+@defun LISTARRAY (array)
+returns a list of the elements of a declared or
+hashed array.  the order is row-major.  Elements which you have not
+defined yet will be represented by #####.
+
+@end defun
+@c @node MAKE_ARRAY
+@c @unnumberedsec phony
+@defun MAKE_ARRAY (type,dim1,dim2,...,dimn)
+- creates an array.  "type" may
+be 'ANY, 'FLONUM, 'FIXNUM, 'HASHED or 'FUNCTIONAL.  This is similar to
+the ARRAY command, except that the created array is a functional array
+object.  The advantage of this over ARRAY is that it doesn't have a
+name, and once a pointer to it goes away, it will also go away.  e.g.
+Y:MAKE_ARRAY(....); Y now points to an object which takes up space,
+but do Y:FALSE, and Y no longer points to that object, so the object
+will get garbage collected.  Note: the "dimi" here are different from
+the ARRAY command, since they go from 0 to i-1, i.e.  a "dimension"
+of 10 means you have elements from 0 to 9.
+Y:MAKE_ARRAY('FUNCTIONAL,'F,'HASHED,1) - The second argument to
+MAKE_ARRAY in this case is the function to call to calculate array
+elements, and the rest of the arguments are passed recursively to
+MAKE_ARRAY to generate the "memory" for the array function object.
+
+@end defun
+@c @node REARRAY
+@c @unnumberedsec phony
+@defun REARRAY (array,dim1, ... ,dimk)
+can be used to change the size or
+dimensions of an array.  The new array will be filled with the
+elements of the old one in row-major order.  If the old array was too
+small, FALSE, 0.0 or 0 will be used to fill the remaining elements,
+depending on the type of the array.  The type of the array cannot be
+changed.
+
+@end defun
+@c @node REMARRAY
+@c @unnumberedsec phony
+@defun REMARRAY (name1, name2, ...)
+removes arrays and array associated
+functions and frees the storage occupied.  If name is ALL then all
+arrays are removed.  It may be necessary to use this function if it is
+desired to redefine the values in a hashed array.
+
+@end defun
+@c @node USE_FAST_ARRAYS
+@c @unnumberedsec phony
+@defvar USE_FAST_ARRAYS
+ [TRUE on Lispm] - If TRUE then only two types
+of arrays are recognized.  
+
+1) The art-q array (t in common lisp) which may have several dimensions
+indexed by integers, and may hold any lisp or macsyma object as an
+entry.  To construct such an array, enter A:MAKE_ARRAY(ANY,3,4); then A
+will have as value, an array with twelve slots, and the indexing is zero
+based.
+
+2) The Hash_table array which is the default type of array created if one
+does B[X+1]:Y^2 (and B is not already an array,a list, or a matrix-- if
+it were one of these an error would be caused since x+1 would not be a
+valid subscript for an art-q array,a list or a matrix ).  Its indices
+(also known as keys) may be any object.  It only takes ONE KEY at a time
+(B[X+1,U]:Y would ignore the u) Referencing is done by B[X+1]==> Y^2.  Of
+course the key may be a list, eg B[[x+1,u]]:y would be valid.  This is in-
+compatible with the old Macsyma hash arrays, but saves consing.
+
+An advantage of storing the arrays as values of the symbol is that the
+usual conventions about local variables of a function apply to arrays as
+well.  The Hash_table type also uses less consing and is more efficient
+than the old type of macsyma hashar.  To obtain consistent behaviour in
+translated and compiled code set TRANSLATE_FAST_ARRAYS [TRUE] to be
+TRUE.
+ 
+@end defvar

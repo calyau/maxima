@@ -1,0 +1,372 @@
+@menu
+* Introducci@'on a Reglas y Patrones::  
+* Definiciones de Reglas y Patrones::  
+@end menu
+
+@node Introducci@'on a Reglas y Patrones, Definiciones de Reglas y Patrones, Reglas y Patrones, Reglas y Patrones
+@section Introducci@'on a Reglas y Patrones
+   
+   Esta secci@'on discute que el usuario definio el emparejado de modelos
+y la simplificaci@'on de reglas (programadas por medio de TELLSIMP, TELLSIMPAFTER, DEFMATCH o
+DEFRULE.) Usted puede afectar los procedimientos de simplificaci@'on principal, o
+adem@'as que usted posee reglas aplicadas explicitamente usando APPLY1 y APPLY2.
+   Hay mecanismos adicionales para reglas de polinomios bajo TELLRAT,
+y para algebra conmutativa y no-conmutativa en el cap@'{@dotless{i}}tulo AFFINE. 
+
+
+@c end concepts Reglas y Patrones
+@node Definiciones de Reglas y Patrones,  , Introducci@'on a Reglas y Patrones, Reglas y Patrones
+@section Definiciones de Reglas y Patrones
+@c @node APPLY1
+@c @unnumberedsec phony
+@defun APPLY1 (exp, rule1, ..., rulen)
+aplica repetidamente la primera regla para
+exp hasta que este falla, entonces aplica la misma regla a todas las
+subexpresiones de exp, izquierda-a-derecha, hasta que la primera regla haya fallado
+en todas las subexpresiones. Llama el resultado de la transformaci@'on de exp en su 
+forma exp'. Entonces la segunda regla es aplicada en la misma forma
+iniciando en la parte superior de exp'. Cuando la regla final falla sobre la
+subexpresi@'on final, la aplicaci@'on est@'a terminada.
+
+@end defun
+@c @node APPLY2
+@c @unnumberedsec phony
+@defun APPLY2 (exp, rule1, ..., rulen)
+difiere de APPLY1 en que si la
+primera regla falla sobre una expresi@'on dada, entonces la segunda regla es
+aplicada repetidamente, etc. Solo si todas ellas fallan sobre una
+expresi@'on dada, la programaci@'on por completo de reglas es aplicadas repetidamente
+a la siguiente expresi@'on. Si una de las reglas tiene @'exito, entonces la misma
+subexpresi@'on es reporcesada, iniciando con la primera regla.
+MAXAPPLYDEPTH[10000] es el m@'aximo profundo que APPLY1 y APPLY2
+cavar@'an.
+
+@end defun
+@c @node APPLYB1
+@c @unnumberedsec phony
+@defun APPLYB1 (exp, rule1, ..., rulen)
+es similar a APPLY1 pero trabaja desde
+la "base superior" en vez de desde "cima inferior". As@'{@dotless{i}}, este procesa
+las expresiones m@'as peque@~nas de exp, seguida de la siguiente peque@~na, etc.
+MAXAPPLYHEIGHT[10000] - es el peso m@'aximo que APPLYB1
+alcanzar@'a antes de rendirse.
+
+@end defun
+@c @node CURRENT_LET_RULE_PACKAGE
+@c @unnumberedsec phony
+@defvar CURRENT_LET_RULE_PACKAGE
+ por defecto:[por defecto_LET_RULE_PACKAGE] - el
+nombre de este paquetes de reglas que actualmente est@'a siendo usado. El usuario puede
+resetear esta variable para el nombre de alg@'un paquete de reglas previamente definido
+mediante el comando LET. Sin embargo, el valor de cualquiera de las funciones comprendidas en el
+paquete let no son llamdas con el nombre del paqeute.
+@example
+CURRENT_LET_RULE_PACKAGE
+@end example
+es usado. Si una llamada como
+LETSIMP(expr,rule_pkg_name); es realizada, el pquete de reglas rule_pkg_name
+es usado solo para el comando LETSIMP, i.e. no es cambiado el valor de
+CURRENT_LET_RULE_PACKAGE.
+
+@end defvar
+@c @node por defecto_LET_RULE_PACKAGE
+@c @unnumberedsec phony
+@defvar por defecto_LET_RULE_PACKAGE
+ - el nombre del paquete de reglas usado cuando 
+no es explicito el programado por el usuario con LET o cambiado del valor de
+CURRENT_LET_RULE_PACKAGE.
+
+@end defvar
+@c @node DEFMATCH
+@c @unnumberedsec phony
+@defun DEFMATCH (progname, pattern, parm1, ..., parmn)
+crea una funci@'on de 
+n+1 argumentos con el nombre progname que prueba un expresi@'on para observar
+si esta puede combinar un modelo particular. El modelo es cualquier expresi@'on
+conteniendo variables y par@'ametros modelo.  Los par@'ametros son dados
+explicitamente como argumentos de DEFMATCH mientras que las variables modelo (si
+es suplido) fueron dadas implicitamente en una funci@'on previa MATCHDECLARE. 
+El primer argumento para la funci@'on creada progname, es una expresi@'on
+para ser combinada con el "modelo" y los otros n argumentos son las
+variables actuales ocurriendo en la expresi@'on que va a tomar el
+lugar de las variables dummy ocurriendo en el "modelo". As@'{@dotless{i}} los par@'ametros
+en DEFTMATCH son como los argumentos dummy para la declaraci@'on de la
+SUBROUTINE en FORTRAN. Cuando la funci@'on es "llamda" los argumentos actuales
+son sustituidos. Por ejemplo:
+@example
+(C1)  NONZEROANDFREEOF(X,E):=  IF E#0 AND FREEOF(X,E)
+            THEN TRUE ELSE FALSE$
+(IS(E#0 AND FREEOF(X,E)) es una funci@'on equivalente
+definici@'on)
+(C2)  MATCHDECLARE(A,NONZEROANDFREEOF(X),B,FREEOF(X))$
+(C3)  DEFMATCH(LINEAR,A*X+B,X)$
+    Esto ha causado que una funci@'on LINAR(exp,var1) sea definida. Esta
+@end example
+@noindent
+prueba exp para observar si este es de la forma A*var1+B donde A y B no
+contienen a var1 y A no es cero. funciones DEFMATCH(eadas) retornan (si el
+combinaci@'on es exitoso) una lista de ecuaciones cuyos lados izquierdos son las 
+variables modelo y los par@'ametros y cuyos lados derechos son las expresiones
+que las variables y par@'ametros modelo combinaron. Las variables
+modelo, pero no los par@'ametros, son programados para combinar expresiones.
+Si el emparejado falla, la funci@'on retorna FALSO. As@'{@dotless{i}}
+LINEAR(3*Z+(Y+1)*Z+Y**2,Z) podr@'{@dotless{i}}a retorna [B=Y**2, A=Y+4, X=Z].  Cualquier
+variable no declarada como variable modelo en MATCHDECLARE o como
+par@'ametro en DEFMATCH que ocurre en el modelo se combinar@'a solo
+consigo mismo as@'{@dotless{i}} que si el tercer argumento de DEFMATCH en (C4) ha
+sido omitido, entonces LINEAR podr@'{@dotless{i}}a solo combinar expresiones en x,
+no en alguna otra variable.
+    Un modelo que no contiene par@'ametros o variables modelo
+retorna VERDADERO si la combinaci@'on es @'exitosa.
+Haga EXAMPLE(DEFMATCH); para m@'as ejemplos.
+
+@end defun
+@c @node DEFRULE
+@c @unnumberedsec phony
+@defun DEFRULE (rulename, pattern, replacement)
+define y nombra una
+regla de sustituci@'on para el modelo dado. Si la regla llamada rulename es
+aplicada a una expresi@'on (mediante una de las funciones APPLY de m@'as adelante), cada
+subexpresi@'on combinando el modelo ser@'a reemplazada mediante la
+sustituci@'on. Todas las variables a las que en la sustituci@'on han sido
+asignados valores mediante el modelo match son asignados aquellos valores en la
+sustituci@'on que es entonces simplificada. Las reglas por si mismas pueden ser
+tratadas como funciones que tranformar@'an una expresi@'on mediante una
+operaci@'on de los modelos match y sustituci@'on. Si el modelo falla,
+la expresi@'on original es retornada.
+
+
+@end defun
+@c @node DISPRULE
+@c @unnumberedsec phony
+@defun DISPRULE (rulename1, rulename2, ...)
+mostrar@'a reglas con los nombres
+rulename1, rulename2, como fueron dados por DEFRULE, TELLSIMP o
+TELLSIMPAFTER o un modelo definido por DEFMATCH. Por ejemplo, la
+primera regla modificante de SIN ser@'a llamada SINRULE1. DISPRULE(ALL);
+mostrar@'a todas las reglas.
+
+@end defun
+@c @node LET
+@c @unnumberedsec phony
+@defun LET (prod, repl, predname, arg1, arg2, ..., argn)
+define una
+regla de subtituci@'on para LETSIMP tal que prod es reemplazada por repl.
+prod es un producto de potencias positivas o negativas del siguiente
+tipo de t@'erminos:
+@itemize @bullet
+@item
+    (1) @´Atomos que LETSIMP buscar@'a literalmente a menos que llame
+previamente LETSIMP, la funci@'on MATCHDECLARE es usada para asociar un
+predicado con el @'atomo. En este caso LETSIMP combinar@'a el @'atomo
+para cualquier t@'ermino de un producto satisfaciendo el predicado.
+@item
+    (2) N@'ucleos tal como SIN(X), N!, F(X,Y), etc.  Como con los @'atomos de arriba
+LETSIMP mirar@'a un un combinaci@'on literal a menos que MATCHDECLARE sea usado para
+asociar un predicado con el argumento del n@'ucleo.
+Un t@'ermino de una potencia positiva solo combinar@'a un t@'ermino a menos que
+la potencia en la expresi@'on sea LETSIMP(eada). Un t@'ermino para una potencia negativa
+por otro lado solo combinar@'a un t@'ermino con una potencia al menos como
+negativo.  En el caso de potencias negativas en "productos" la opci@'on
+LETRAT debe ser programada VERDADERO (Observelo m@'as abajo).
+Si un predicado es inclu@'{@dotless{i}}do en la funci@'on LET seguido por una lista de
+argumentos, un emparejameinto tentativo (i.e. uno que puede ser aceptado si el
+predicado fue omitido) ser@'a aceptado solo si
+predname(arg1',...,argn') evalua para VERDADERO donde argi' es el valor
+emparejado para argi. El argi puede ser el nombre de cualquier @'atomo o el argumento
+de alg@'un nucleo apareciendo en prod. repl puede ser cualquier expresi@'on racional.
+Si alguno de los @'atomos o argumentos de prod aparece en repl la
+sustituci@'on apropiada ser@'a realizada.
+@end itemize
+    
+    LETRAT[FALSO] cuando es FALSO, LETSIMP simplificar@'a el numerador y
+el denominador de expr independientemente y retornando el resultado.
+Sustituciones como N!/N va a (N-1)! fallar@'an. Para tomar cada situaci@'on
+LETRAT puede ser programado VERDADERO, entonces el numerador,
+denominador y su cociente ser@'a simplificado en ese orden.
+    Estas funciones sustituci@'on le permitiran trabajar con muchos
+paquetes de reglas enseguida. Cada paquete de reglas puede contener culaquier n@'umero de reglas
+LET(eadas) y es referido por el usuario cambiando el nombre. Para insertar una regla
+dentro del paquete de reglas name, haga LET([prod,repl,pred,arg1,...],name). Para
+aplicar las reglas en el paquete de reglas name, haga LETSIMP(expr, name). La
+funci@'on LETSIMP(expr,name1,name2,...) es equivalente a hacer
+LETSIMP(expr,name1) seguido por LETSIMP(%,name2) etc.
+CURRENT_LET_RULE_PACKAGE es el nombre del paquete regla que est@'a
+siendo usado actualmente. El usuario puede resetear esta variable para el nombre de cualquier
+paquete regla previamente definido por medio del comando LET. Siempre que alguna
+de las funciones formadas por el paquete let son llamadas sin el nombre de
+paquete, es usado el valor de CURRENT_LET_RULE_PACKAGE. Si una llamada como
+LETSIMP(expr,rule_pkg_name); es realizada, el paquete regla rule_pkg_name
+es usado para ese comando LETSIMP solamente, i.e. el valor de
+CURRENT_LET_RULE_PACKAGE no es cambiado.
+Hay un DEFAULT_LET_RULE_PACKAGE que es asumido cunado otro nombre no es
+suplido para alguna de la funciones. Siempre que LET incluya un paquete de reglas 
+name que es usado como el CURRENT_LET_RULE_PACKAGE.
+
+@end defun
+@c @node LETRAT
+@c @unnumberedsec phony
+@defvar LETRAT
+ por defecto: [FALSO] - cuando es FALSO, LETSIMP simplificar@'a 
+el numerador y el denominador de expr independientemente y retornando el resultado.
+Sustituciones como N!/N va a (N-1)! fallar@'an. Para tomar cada situaci@'on
+LETRAT puede ser programado VERDADERO, entonces el numerador,
+denominador y su cociente ser@'a simplificado en ese orden.
+
+@end defvar
+@c @node LETRULES
+@c @unnumberedsec phony
+@defun LETRULES ()
+muestra las reglas en el paquete de reglas actual.
+LETRULES(name) muestra las reglas en 
+el paquete de reglas llamado.
+El paquete de reglas actual es el valor de
+@example
+CURRENT_LET_RULE_PACKAGE
+@end example
+El valor inicial de las reglas es
+@example
+DEFAULT_LET_RULE_PACKAGE
+@end example
+
+@end defun
+@c @node LETSIMP
+@c @unnumberedsec phony
+@defun LETSIMP (exp)
+aplicar@'a continuamente la regla de sustituci@'on previamente
+definida por la funci@'on LET hasta que no se puedan realizar m@'as cambios a exp.
+LETSIMP(expr,rule_pkg_name); causar@'a que el paquete de reglas rule_pkg_name
+sea usada para el comando LETSIMP solamente, i.e. no es cambiado
+el valor de CURRENT_LET_RULE_PACKAGE .
+
+@end defun
+@c @node LET_RULE_PACKAGES
+@c @unnumberedsec phony
+@defvar LET_RULE_PACKAGES
+ por defecto:[DEFAULT_LET_RULE_PACKAGE] - El valor de
+LET_RULE_PACKAGES es una lista de todos los paquetes de reglas let definidos por el usuario
+m@'as el paquete especial.
+@example
+DEFAULT_LET_RULE_PACKAGE
+@end example
+Este es el nombre del paquete de reglas usado cuando uno
+no es programado expl@'{@dotless{i}}citamente por el usuario.
+
+@end defvar
+@c @node MATCHDECLARE
+@c @unnumberedsec phony
+@defun MATCHDECLARE (patternvar, predicate, ...)
+asocia un predicadp con
+una variable modelo as@'{@dotless{i}} la variable solo combinar@'a expresiones
+para las que el predicado no es FALSO. (El emparejamineto es consumado
+mediante una de las funciones descritas m@'as adelante). Por ejemplo despu@'es
+@example
+MATCHDECLARE(Q,FREEOF(X,%E))
+@end example
+es ejecutado, Q combinar@'a cualquier expresi@'on que no
+contenga X o %E. Si la compinaci@'on es exitosa entonces la variable es
+programada para la expresi@'on combinada. El predicado (en este caso FREEOF) es
+escrito sin el @'ultimo argumento que podr@'{@dotless{i}}a ser el @'unico contra
+el cual la variable modelo va a ser probada. Note que el patternvar
+y los argumentos para el predicado son evaluados al mismo tiempo que la
+combinaci@'on es desarrollada.
+El argumento numerado impar tambi@'en pueda ser una lista de variables modelo
+todas las que est@'an asociadas al predicado. Cualquier n@'umero de
+argumentos puede ser dado.
+Para combinaci@'on de modelos, los predicados se refieren a las funciones que son o
+FALSO o no FALSO (cualquier valor no FALSO actua como VERDADERO).
+MATCHDECLARE(var,TRUE) permitir@'a la combinaci@'on de cualquier expresi@'on.
+
+@end defun
+@c @node MATCHFIX (leftOperator, rightMatchingOperator, [BP 180], [ARGSPOS , $any] [POS,ANY]
+@c @unnumberedsec phony
+@defun MATCHFIX
+ - los operadores MATCHFIX son usados para denotar funciones de cualquier
+n@'umero de argumentos que son pasados a la funci@'on como una lista. Los
+argumentos aparecen entre el operador principal y su delimitador 
+de "combinaci@'on". La funci@'on MATCHFIX("x",...) es una funci@'on de extensi@'on de 
+sintaxis que declara x para ser un operador MATCHFIX. El enlazado de la potencia
+es por defecto 180, y los ARGS(argumentos) adentro pueden ser cualquiera.
+
+@example
+
+(C1) matchfix("|","|");
+
+(D1) 				      "|"
+(C2) |a|+b;
+
+(D2) 				   b + (|a|)
+(C3) |(a,b)|;
+
+(D3) 				      |b|
+(C4) |[a,b]|;
+
+(D4) 				   |[a, b]|
+
+(C9) |x|:=IF NUMBERP(x) THEN ABS(x)
+        ELSE (IF LISTP(x) AND APPLY("and",MAP(NUMBERP,x))
+		  THEN SUM(x[i]^2,i,1,LENGTH(x))^0.5 ELSE BUILDQ([u:x],|u|))$
+
+(C10) |[1,2,3]|;
+
+(D10) 			       3.741657386773941
+
+(C18) |-7|;
+
+(D18) 				       7
+(C19) |[a,b]|;
+
+(D19) 				   |[a, b]|
+
+@end example
+
+@end defun
+@c @node REMLET
+@c @unnumberedsec phony
+@defun REMLET (prod, name)
+borra la regla de sustituci@'on, prod --> repl, la mayor@'{@dotless{i}}a
+definida recientemente por la funci@'on LET. Si names es suplida. la regla es
+borrada del paquete de reglas name.  REMLET() y REMLET(ALL) borran
+todas las reglas de sustituci@'on del paquete de reglas actual. Si el nombre de un
+paquete de reglas es suplido, e.g. REMLET(ALL,name), el paquete de reglas y name
+son tambi@'en borrados. si una sustituci@'on es cambiada usando el mismo 
+producto, REMLET no necesita ser llamado, solo redefina la sustituci@'on usando
+el mismo producto (literalmente) con la funci@'on LET y el nuevo nombre
+de sustituci@'on y/o predicado. REMLET(producto) puede ahora ser 
+revivido por medio de la llamada la regla de sustituci@'on original. 
+
+@end defun
+@c @node REMRULE
+@c @unnumberedsec phony
+@defun REMRULE (function, rulename)
+remover@'a una regla con el nombre rulename
+de la funci@'on que fue ubicada all@'{@dotless{i}} por DEFRULE, DEFMATCH,
+TELLSIMP o TELLSIMPAFTER. Si nombre-regla es ALL(todo), entonces todos los valores 
+ser@'an removidos.
+
+@end defun
+@c @node TELLSIMP
+@c @unnumberedsec phony
+@defun TELLSIMP (pattern, replacement)
+es similar a TELLSIMPAFTER pero ubica
+nueva informaci@'on antes vieja as@'{@dotless{i}} que esto es aplicado antes del
+constructor-en de las reglas de simplificaci@'on. TELLSIMP es usado cuando este es importante para
+modificar la expresi@'on antes que el simplificador trabaje en ella, para instancia, si el
+simplificador "conoce" algo acerca de la expresi@'on, pero lo que retorna
+no es lo que usted desea. Si el simplificador "conoce" algo acerca del
+operador principal de la expresi@'on, pero es simplemente haciendo lo suficiente
+para usted, usted probablemente desee usar TELLSIMPAFTER. El modelo puede no ser
+una suma, producto, variable sencilla o n@'umero. RULES es una lista de nombres
+teniendo reglas de simplificaci@'on agregados a ella mediante DEFRULE, DEFMATCH,
+TELLSIMP o TELLSIMPAFTER. Haga EXAMPLE(TELLSIMP); para detalles.
+
+@end defun
+@c @node TELLSIMPAFTER
+@c @unnumberedsec phony
+@defun TELLSIMPAFTER (pattern, replacement)
+define una sustituci@'on para modelos
+que el simplificador de MACSYMA usa despu@'es de aplicar el contructor-en
+reglas de simplificaci@'on. El modelo puede ser cualquiera pero siendo una
+una variable sencilla o un n@'umero.
+
+@end defun

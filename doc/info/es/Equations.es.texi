@@ -1,0 +1,320 @@
+@c end concepts Equations
+@menu
+LAS ECUACIONES
+@end menu
+@node Definitions for Equations,  , Equations, Equations
+@section Las definiciones para las Ecuaciones
+
+@c @node %RNUM_LIST
+@c @unnumberedsec phony
+@defvar %RNUM_LIST
+Inconstante: % RNUM_LIST
+
+el valor predeterminado: [] - Cuando% se introducen las variables de R en las soluciones por el ALGSYS ordene, ellos se agregan a% RNUM_LIST en el orden ellos se crean. Esto es conveniente para hacer las substituciones despu@'es en la soluci@'on. Se recomendaba para usar esta lista en lugar de haciendo CONCAT ('% R,J).
+@end defvar
+
+@c @node ALGEXACT
+@c @unnumberedsec phony
+@defvar ALGEXACT
+Inconstante: ALGEXACT
+
+el valor predeterminado: [FALSO] afecta la conducta de ALGSYS como sigue: Si ALGEXACT es VERDAD, ALGSYS siempre las llamadas RESUELVEN y entonces usan REALROOTS adelante Resuelva los fracasos. Si ALGEXACT es FALSO, RESUELVA s@'olo se llama si el eliminant no fuera ning@'un univariate, o si fuera un cuadr@'atico o biquadratic. As@'{@dotless{i}} ALGEXACT:TRUE no garantiza s@'olo soluciones exactas, s@'olo ese ALGSYS intentar@'a primero tan duro como puede para dar las soluciones exactas, y s@'olo rendir@'a las aproximaciones cuando todas las faltas del resto.
+@end defvar
+
+@c @node ALGSYS
+@c @unnumberedsec phony
+@defun La funci@'on: ALGSYS ([el exp1, el exp2,...], [el var1, el var2,...])
+
+resuelve la lista de polinomios simult@'aneos o las ecuaciones polin@'omicas (qu@'e puede ser no-lineal) para la lista de variables. Los s@'{@dotless{i}}mbolos% R1,% R2, etc. se usar@'a para representar los par@'ametros arbitrarios cuando necesit@'o para la soluci@'on (la variable% RNUM_LIST sostiene @'estos). En el proceso descrito debajo, ALGSYS se entra en el recursively si es necesario. El m@'etodo es como sigue: (1) primero las ecuaciones se Factorizan y se hendieron en los subsistemas. (2) para cada subsistema Si, una ecuaci@'on se seleccionan E y un var inconstante (el var se escoge tener el grado del nonzero m@'as bajo). Entonces el resultante de E y Ej con respecto al var se computa para cada uno de las ecuaciones restantes Ej en el subsistema Si. Esto rinde un nuevo subsistema S'i en una menos variables (el var se ha eliminado). El proceso vuelve ahora a (1). (3) En el futuro, un subsistema que consiste en una sola ecuaci@'on se obtiene. Si la ecuaci@'on es multivariate y ninguna aproximaci@'on en el formulario de n@'umeros del punto flotantes se ha introducido, entonces RESUELVA se llama para encontrar una soluci@'on exacta. (El usuario debe comprender que eso RESUELVE no puede poder producir una soluci@'on o si hace que la soluci@'on puede ser una expresi@'on muy grande.) Si la ecuaci@'on es el univariate y o es lineal, cuadr@'atica, o bi-cuadr@'atica, entonces de nuevo RESUELVA se llama si ninguna aproximaci@'on se ha introducido. Si se han introducido las aproximaciones o la ecuaci@'on no es ning@'un univariate y ning@'un lineal, cuadr@'atica, o bi-cuadr@'atica, entonces si el interruptor REALONLY[FALSE] es VERDAD, la funci@'on REALROOTS se llama para encontrar las soluciones real-estimadas.
+Si REALONLY:FALSE entonces ALLROOTS se llama qui@'en busca el real y las soluciones complejas-estimadas. Si ALGSYS produce una soluci@'on que tiene menos de dos significantes que requiri@'o, el usuario puede cambiar el valor de ALGEPSILON[10^8] a un valor m@'as alto. Si ALGEXACT[FALSE] p@'ongase para ARREGLAR, RESUELVA siempre se llamar@'a. (4) finalmente, las soluciones obtuvieron en el paso (3) se re-inserta en los niveles anteriores y la soluci@'on procese los ingresos a (1). El usuario debe ser consciente de varias advertencias: Cuando ALGSYS encuentra una ecuaci@'on del multivariate que contiene las aproximaciones del punto flotantes (normalmente debido a su fracaso para encontrar las soluciones exactas en una fase m@'as temprana), entonces no intenta aplicar los m@'etodos exactos a las tales ecuaciones y en cambio las impresiones el mensaje: "ALGSYS no puede resolver - el sistema demasiado complicado." Las interacciones con RADCAN pueden producir las expresiones grandes o complicadas. En ese caso, el usuario puede usar PICKAPART o puede REVELAR para analizar la soluci@'on. De vez en cuando, RADCAN puede introducir un claro% yo en una soluci@'on que es realmente real-estimada. Haga EXAMPLE(ALGSYS); para los ejemplos.
+@end defun
+@c @node ALLROOTS
+@c @unnumberedsec phony
+@defun  La funci@'on: ALLROOTS (el poly)
+
+Hece los hallazgos de todas las ra@'{@dotless{i}}ces reales y complejas del poly polin@'omico real que debe ser los univariate y puede ser una ecuaci@'on, por ejemplo el poly=0. Para los polinomios complejos un algoritmo por Jenkins y Traub se usa (Algoritmo 419, Comm. ACM, vol. 15, (1972), p@'ag. 97).
+Para los polinomios reales el algoritmo usado es debido a Jenkins (Algoritmo 493, TOMS, vol. 1, (1975), p.178). La bandera POLYFACTOR[FALSE] cuando verdadero causa ALLROOTS para factorizar el polinomio encima de los n@'umeros reales si el polinomio es real, o encima de los n@'umeros complejos, si el polinomio es complejo. ALLROOTS puede dar los resultados inexactos en caso de las ra@'{@dotless{i}}ces m@'ultiples. (Si el poly es real y usted consigue las respuestas inexactas, usted puede querer probar ALLROOTS(%I*poly);) Haga EXAMPLE(ALLROOTS); para un ejemplo. ALLROOTS rechaza los non-polinomios. Requiere que el numerador despu@'es de Cazar ratas debe ser un polinomio, y requiere que el denominador es a lo sumo un n@'umero complejo. Como resultado de este ALLROOTS un equivalente volver@'a siempre (pero factoriz@'o) la expresi@'on, si POLYFACTOR es VERDAD.
+
+@end defun
+@c @node BACKSUBST
+@c @unnumberedsec phony
+@defvar Inconstante: BACKSUBST
+
+el valor predeterminado: [VERDADERO] si el juego a FALSO prevendr@'a la substituci@'on atr@'as despu@'es de las ecuaciones ha sido los triangularized. Esto puede ser necesario en los problemas muy grandes d@'onde atr@'as la substituci@'on causar@'{@dotless{i}}a la generaci@'on de expresiones sumamente grandes. (En el MAESTRO DE CEREMONIAS esto podr@'{@dotless{i}}a causar capacidad del almacenamiento ser excedido.)
+
+@end defvar
+@c @node BREAKUP
+@c @unnumberedsec phony
+@defvar Inconstante: LA DISOLUCIÓN
+
+el valor predeterminado: [VERDADERO] si FALSO causar@'a RESUELVA para expresar las soluciones de c@'ubico o ecuaciones del quartic como las solas expresiones en lugar de como hecho a de varios subexpressions com@'un que es el valor predeterminado. BREAKUP:TRUE s@'olo trabaja cuando PROGRAMMODE es FALSO.
+
+@end defvar
+@c @node DIMENSION
+@c @unnumberedsec phony
+@defun  La funci@'on: La DIMENSIÓN (ecuaci@'on o lista de ecuaciones)
+
+El archivo "share1/dimen.mc" contiene las funciones para el an@'alisis dimensional autom@'atico. LOAD(DIMEN); lo cargar@'a  para usted. Hay una demostraci@'on disponible en share1/dimen.dem. Haga la DEMOSTRACIÓN (el "dimen"); para ejecutarlo.
+
+@end defun
+@c @node DISPFLAG
+@c @unnumberedsec phony
+@defvar Inconstante: DISPFLAG
+
+el valor predeterminado: [VERDADERO] si el juego a FALSO dentro de un BLOQUE el despliegue de rendimiento generado por inhibir@'a el resuelva las funciones llamaron el BLOQUE desde dentro. La terminaci@'on del BLOQUE con un d@'olar la se@~nal, $, pone DISPFLAG a FALSO.
+
+@end defvar
+@c @node FUNCSOLVE
+@c @unnumberedsec phony
+@defun La funci@'on: FUNCSOLVE (el eqn,g(t))
+
+da [el g(t) =...] o [], dependiendo adelante si o no all@'{@dotless{i}} existe un g(t del fcn racionales) satisfaciendo eqn que debe ser un primer
+
+orden el polinomio lineal en (para este caso) el g(t) y g(t+1).
+@example
+(C1) FUNCSOLVE((N+1)*FOO(N)-(N+3)*FOO(N+1)/(N+1) =
+    (N-1)/(N+2),FOO(N));
+                                   N
+(D1)               FOO(N) = ---------------
+                            (N + 1) (N + 2)
+
+@end example
+
+@end defun
+@c @node GLOBALSOLVE
+@c @unnumberedsec phony
+@defvar Inconstante: GLOBALSOLVE
+
+el valor predeterminado: [FALSO] si el juego para ARREGLAR variables para que se Resuelven entonces se pondr@'a a la soluci@'on del juego de ecuaciones simult@'aneas.
+
+@end defvar
+@c @node IEQN
+@c @unnumberedsec phony
+@defun La funci@'on: IEQN (el ie,unk,tech,n,guess)
+
+Ecuaci@'on @'{@dotless{i}}ntegra que resuelve la rutina. Haga LOAD(INTEQN); para accederlo.
+ADVERTENCIA: Para librar alg@'un almacenamiento, un KILL(LABELS) es incluido en este archivo. Por consiguiente, antes de cargar el paquete de la ecuaci@'on @'{@dotless{i}}ntegro, el usuario debe dar los nombres a cualquier expresi@'on que @'el quiere guardar. el ie es la ecuaci@'on @'{@dotless{i}}ntegra; el unk es la funci@'on desconocida; la tecnolog@'{@dotless{i}}a es la t@'ecnica a ser intentada de aqu@'ellos dado sobre (la tecnolog@'{@dotless{i}}a = PRIMERO los medios: pruebe la primera t@'ecnica que encuentra una soluci@'on; la tecnolog@'{@dotless{i}}a = TODOS los medios: pruebe las t@'ecnicas todo aplicables); n es el n@'umero m@'aximo de condiciones para tomar para TAYLOR, NEUMANN, FIRSTKINDSERIES, o FREDSERIES (tambi@'en es la profundidad m@'axima de recursion por el m@'etodo de diferenciaci@'on); la suposici@'on es la suposici@'on inicial para NEUMANN o FIRSTKINDSERIES.
+Los valores de valor predeterminado para los 2 por 5 los par@'ametros son: el unk: P(X), d@'onde P es la primera funci@'on encontrada en un integrand que es desconocido a MAXYMA y X es la variable que ocurre como un argumento a la primera ocurrencia de P encontrada fuera de un integral en el caso de ecuaciones de SECONDKIND, o es la @'unica otra variable adem@'as de la variable de integraci@'on en las ecuaciones de FIRSTKIND. Si el esfuerzo por buscar X falla, el usuario se pedir@'a proporcionar la variable independiente; la tecnolog@'{@dotless{i}}a: PRIMERO; n: 1; la suposici@'on: NINGUNO que causar@'a NEUMANN y FIRSTKINDSERIES para usar F(X) como una suposici@'on inicial.
+
+@end defun
+@c @node IEQNPRINT
+@c @unnumberedsec phony
+@defvar Inconstante: IEQNPRINT
+
+el valor predeterminado: [VERDADERO] - gobierna la conducta del resultado vuelta por el orden de IEQN (qu@'e ve). Si IEQNPRINT se pone a FALSO, las listas vueltas por la funci@'on de IEQN son del formulario [la SOLUCIÓN, la TÉCNICA USÓ, NTERMS, BANDERA] donde la BANDERA est@'a ausente si la soluci@'on es exacta. Por otra parte, es la palabra el correspondiendo APROXIMADO o INCOMPLETO a una soluci@'on del formulario inexacta o non-cerrada, respectivamente. Si un m@'etodo de la serie fuera usado, NTERMS da el n@'umero de condiciones tomado (qu@'e podr@'{@dotless{i}}a estar menos del n dado a IEQN si un error previno generaci@'on de condiciones extensas).
+
+@end defvar
+@c @node LHS
+@c @unnumberedsec phony
+@defun La funci@'on: LHS (el eqn)
+
+el lado izquierdo del eqn de la ecuaci@'on.
+
+@end defun
+@c @node LINSOLVE
+@c @unnumberedsec phony
+@defun La funci@'on: LINSOLVE ([el exp1, el exp2,...], [el var1, el var2,...])
+
+resuelve la lista de ecuaciones lineales simult@'aneas para la lista de variables. Los expi debe ser los polinomios las variables  pueden ser las ecuaciones. Si GLOBALSOLVE[FALSE] p@'ongase para ARREGLAR variables para que se Resuelven entonces se pondr@'a a la soluci@'on del juego de ecuaciones simult@'aneas. BACKSUBST[TRUE] si el juego a FALSO prevendr@'a la substituci@'on atr@'as despu@'es de las ecuaciones ha sido los triangularized. Esto puede ser necesario en los problemas muy grandes d@'onde atr@'as la substituci@'on causar@'{@dotless{i}}a la generaci@'on de expresiones sumamente grandes. (En el MAESTRO DE CEREMONIAS esto podr@'{@dotless{i}}a causar la capacidad del almacenamiento a ser excedida.) LINSOLVE_PARAMS[TRUE] Si VERDADERO, LINSOLVE tambi@'en genera el% los s@'{@dotless{i}}mbolos de Ri representaban par@'ametros arbitrarios descritos en el manual bajo ALGSYS. Si FALSO, LINSOLVE se comporta como antes, es decir cuando se encuentra a con un sistema bajo-determinado de ecuaciones, resuelve para algunas de las variables por lo que se refiere a otros.
+@example
+(C1) X+Z=Y$
+(C2) 2*A*X-Y=2*A**2$
+(C3) Y-2*Z=2$
+(C4) LINSOLVE([D1,D2,D3],[X,Y,Z]),GLOBALSOLVE:TRUE;
+LA SOLUCIÓN
+(E4)                            X : A + 1
+(E5)                             Y : 2 A
+(E6)                            Z : A - 1
+(D6)                          [E4, E5, E6]
+
+@end example
+@end defun
+@c @node LINSOLVEWARN
+@c @unnumberedsec phony
+@defvar Inconstante: LINSOLVEWARN
+
+el valor predeterminado: [VERDADERO] - si FALSO causar@'a el mensaje las ecuaciones "Dependientes eliminaron" para ser suprimidas.
+
+@end defvar
+@c @node LINSOLVE_PARAMS
+@c @unnumberedsec phony
+@defvar Inconstante: LINSOLVE_PARAMS
+
+el valor predeterminado: [VERDADERO] - Si VERDADERO, LINSOLVE tambi@'en genera el% los s@'{@dotless{i}}mbolos de Ri representaban par@'ametros arbitrarios descritos en el manual bajo ALGSYS. Si FALSO, LINSOLVE se comporta como antes, es decir cuando se encuentra a con un sistema bajo-determinado de ecuaciones, resuelve para algunas de las variables por lo que se refiere a otros.
+
+@end defvar
+@c @node MULTIPLICITIES
+@c @unnumberedsec phony
+@defvar Inconstante: LAS MULTIPLICIDADES
+
+el valor predeterminado: [NOT_SET_YET] - se pondr@'a a una lista de las multiplicidades de las soluciones individuales vuelta por RESUELVA o REALROOTS.
+
+@end defvar
+@c @node NROOTS
+@c @unnumberedsec phony
+@defun La funci@'on: NROOTS (el poly, muja, alto)
+
+los hallazgos el n@'umero de ra@'{@dotless{i}}ces reales del univariate real el poly polin@'omico en el intervalo media abierto (el low,high]. Los endpoints del intervalo tambi@'en pueden ser respectivamente MINF,INF para la menos infinidad e infinidad de la ventaja. El m@'etodo de sucesiones de Sturm se usa.
+@example
+(C1) POLY1:X**10-2*X**4+1/2$
+(C2) NROOTS(POLY1,-6,9.1);
+RAT REPLACED 0.5 BY 1/2 = 0.5
+(D2)                               4
+
+@end example
+@end defun
+@c @node NTHROOT
+@c @unnumberedsec phony
+@defun La funci@'on: NTHROOT (el p,n)
+
+donde p es un polinomio con los coeficientes del entero y n es un entero positivo devuelve q, un polinomio encima de los enteros, tal ese q^n=p o impresiones un mensaje del error que indica ese p no es un poder del nth perfecto. Esta rutina es muy m@'as r@'apida que el FACTOR o SQFR igual.
+
+@end defun
+@c @node PROGRAMMODE
+@c @unnumberedsec phony
+@defvar Inconstante: PROGRAMMODE
+
+el valor predeterminado: [VERDADERO] - cuando FALSO causar@'a RESUELVA, REALROOTS, ALLROOTS, y LINSOLVE para imprimir las E-etiquetas (las etiquetas de l@'{@dotless{i}}nea de intermedio) para etiquetar las respuestas. Cuando VERDADERO, RESUELVA, respuestas del retorno etc. como los elementos en una lista. (Excepto cuando BACKSUBST se pone a FALSO en que el caso PROGRAMMODE:FALSE tambi@'en se usa.)
+
+@end defvar
+@c @node REALONLY
+@c @unnumberedsec phony
+@defvar Inconstante: REALONLY
+
+el valor predeterminado: [FALSO] - si VERDADERO causa ALGSYS para devolver s@'olo esas soluciones libre de que son% yo.
+
+@end defvar
+@c @node REALROOTS
+@c @unnumberedsec phony
+@defun La funci@'on: REALROOTS (el poly, l@'{@dotless{i}}mite)
+
+los hallazgos todas las ra@'{@dotless{i}}ces reales del univariate real el poly polin@'omico dentro de una tolerancia de l@'{@dotless{i}}mite que, si menos de 1, causas todas las ra@'{@dotless{i}}ces @'{@dotless{i}}ntegras a ser encontradas exactamente. El l@'{@dotless{i}}mite del par@'ametro puede ser arbitrariamente peque@~no para lograr cualquiera deseado la exactitud. El primer argumento tambi@'en puede ser una ecuaci@'on. REALROOTS pone las MULTIPLICIDADES, @'util en caso de las ra@'{@dotless{i}}ces m@'ultiples. REALROOTS(poly) es equivalente a REALROOTS(poly,ROOTSEPSILON). ROOTSEPSILON[1.0E-7] es un n@'umero real establec@'{@dotless{i}}a el intervalo de confianza para las ra@'{@dotless{i}}ces. Haga EXAMPLE(REALROOTS); para un ejemplo.
+
+@end defun
+@c @node RHS
+@c @unnumberedsec phony
+@defun La funci@'on: RHS (el eqn)
+
+el lado correcto del eqn de la ecuaci@'on.
+
+@end defun
+@c @node ROOTSCONMODE
+@c @unnumberedsec phony
+@defvar Inconstante: ROOTSCONMODE
+
+el valor predeterminado: [VERDADERO] - Determina la conducta del orden de ROOTSCONTRACT. Haga DESCRIBE(ROOTSCONTRACT); para los detalles.
+
+@end defvar
+@c @node ROOTSCONTRACT
+@c @unnumberedsec phony
+@defun La funci@'on: ROOTSCONTRACT (el exp)
+
+los productos de los convertido de ra@'{@dotless{i}}ces en las ra@'{@dotless{i}}ces de productos. Por ejemplo,
+@example
+ROOTSCONTRACT(SQRT(X)*Y^(3/2)) ==> SQRT(X*Y^3)
+@end example
+Cuando RADEXPAND es VERDAD y el DOMINIO es REAL (sus valores predeterminados), convertido de ROOTSCONTRACT ABS en SQRT, por ejemplo
+@example
+ROOTSCONTRACT(ABS(X)*SQRT(Y)) ==> SQRT(X^2*Y)
+@end example
+Hay una opci@'on ROOTSCONMODE (el valor predefinido VERDADERO), ROOTSCONTRACT conmovedor como sigue:
+
+@example
+
+Problem            Value of        Result of applying
+                  ROOTSCONMODE        ROOTSCONTRACT
+
+X^(1/2)*Y^(3/2)      FALSE          (X*Y^3)^(1/2)
+X^(1/2)*Y^(1/4)      FALSE          X^(1/2)*Y^(1/4)
+X^(1/2)*Y^(1/4)      TRUE           (X*Y^(1/2))^(1/2)
+X^(1/2)*Y^(1/3)      TRUE           X^(1/2)*Y^(1/3)
+X^(1/2)*Y^(1/4)      ALL            (X^2*Y)^(1/4)
+X^(1/2)*Y^(1/3)      ALL            (X^3*Y^2)^(1/6)
+
+@end example
+
+Los ejemplos anteriores y m@'as puede probarse tecleando
+@example
+EXAMPLE(ROOTSCONTRACT);
+@end example
+
+Cuando ROOTSCONMODE es FALSO, ROOTSCONTRACT acorta s@'olo wrt exponentes del n@'umero racionales cuyos denominadores son el mismo. La llave al ROOTSCONMODE:TRUE $los ejemplos simplemente son que 2 dividen en 4 pero no en 3. ROOTSCONMODE:ALL $involucra la toma el lcm (el m@'ultiplo com@'un) de los denominadores de los exponentes. ROOTSCONTRACT usa RATSIMP de una manera similar a LOGCONTRACT (vea el manual).
+
+@end defun
+@c @node ROOTSEPSILON
+@c @unnumberedsec phony
+@defvar Inconstante: ROOTSEPSILON
+
+el valor predeterminado: [1.0E-7] - un n@'umero real establec@'{@dotless{i}}a el intervalo de confianza para las ra@'{@dotless{i}}ces encontradas por la funci@'on de REALROOTS.
+
+@end defvar
+@c @node SOLVE
+@c @unnumberedsec phony
+@defun La funci@'on: RESUELVA (el exp, var)
+
+resuelve el exp de la ecuaci@'on algebraico para los var inconstantes e ingresos una lista de ecuaciones de la soluci@'on en el var. Si el exp no es una ecuaci@'on, se asume que es una expresi@'on para ser puesto igual poner a cero. Var puede ser una funci@'on (por ejemplo F(X)), u otra expresi@'on no-at@'omica excepto una suma o producto. Puede omitirse si el exp contiene s@'olo uno inconstante. Exp puede ser una expresi@'on racional, y puede contener funciones trigonom@'etricas, el exponenciales, el etc. El m@'etodo siguiente se usa: Permita a E ser la expresi@'on y X sea la variable. Si E es lineal en X que se resuelve trivialmente para X. si E es del formulario A*X**N+B que el resultado es (- B/A)**(1/N) las ra@'{@dotless{i}}ces de Nth de unidad. Si E no es entonces lineal en X el gcd de los exponentes de X en E (diga N) es dividido en los exponentes y la multiplicidad de las ra@'{@dotless{i}}ces se multiplica por N. Then RESUELVA se llama de nuevo en el resultado. Si E factoriza entonces RESUELVA se llama en cada uno de los factores. Finalmente RESUELVA usar@'a el cuadr@'atico, c@'ubico, o f@'ormulas del quartic d@'onde necesario. En el caso d@'onde E es un polinomio en alguna funci@'on de la variable ser resuelto para, diga F(X), entonces se resuelve primero para F(X) (llame el C del resultado),entonces la ecuaci@'on que F(X)=C puede resolverse para X proporcion@'o el lo inverso de la funci@'on F es conocido. BREAKUP[TRUE] si FALSO causar@'a RESUELVA para expresar las soluciones de c@'ubico o ecuaciones del quartic como las solas expresiones en lugar de como hecho a de varios subexpressions com@'un que es el valor predeterminado. MULTIPLICITIES[NOT_SET_YET] - se pondr@'a a una lista de las multiplicidades de las soluciones individuales vuelta por RESUELVA, REALROOTS, o ALLROOTS. Pruebe APROPOS(SOLVE) para los interruptores que afectan RESUELVA. DESCRIBA pueda entonces por us@'o en los nombres del interruptor individuales si su prop@'osito no est@'a claro. SOLVE([eq1,..., eqn], [el v1,..., vn]) resuelve un sistema de simult@'aneo (lineal o no-lineal) las ecuaciones polin@'omicas llamando LINSOLVE o ALGSYS e ingresos una lista de la soluci@'on listan en las variables. En el caso de LINSOLVE esta lista contendr@'{@dotless{i}}a una sola lista de soluciones. Toma dos listas como los argumentos. La primera lista (el eqi, el i=1,..., n) representa las ecuaciones a ser resueltas; la segunda lista es una lista de los desconocidos ser determinado. Si el n@'umero total de variables en las ecuaciones es igual al n@'umero de ecuaciones, el segundo argumento-lista puede omitirse. Para los sistemas lineales si las ecuaciones dadas no son compatibles, el mensaje INCOHERENTE se desplegar@'a (vea al SOLVE_INCONSISTENT_ERROR cambiar); si ninguna @'unica soluci@'on existe, entonces SINGULAR se desplegar@'a. Para los ejemplos, haga EXAMPLE(SOLVE);
+
+@end defun
+@c @node SOLVEDECOMPOSES
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVEDECOMPOSES
+
+el valor predeterminado: [VERDADERO] - si VERDADERO, inducir@'a RESUELVA para usar POLYDECOMP (vea POLYDECOMP) intentando resolver los polinomios.
+
+@end defvar
+@c @node SOLVEEXPLICIT
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVEEXPLICIT
+
+el valor predeterminado: [FALSO] - si VERDADERO, inhibe RESUELVA de devolver las soluciones impl@'{@dotless{i}}citas es decir del formulario F(x)=0.
+
+@end defvar
+@c @node SOLVEFACTORS
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVEFACTORS
+
+el valor predeterminado: [VERDADERO] - si FALSO entonces RESUELVA no intentar@'a factorizar la expresi@'on. La escena FALSA puede desearse en algunos casos d@'onde factorizan no es necesario.
+
+@end defvar
+@c @node SOLVENULLWARN
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVENULLWARN
+
+el valor predeterminado: [VERDADERO] - si VERDADERO el usuario se advertir@'a si @'el llama RESUELVA con una lista de la ecuaci@'on nula o una lista inconstante nula. Por ejemplo, RESUELVA ([], []); imprimir@'{@dotless{i}}a dos mensajes de la advertencia y retorno [].
+
+@end defvar
+@c @node SOLVERADCAN
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVERADCAN
+
+el valor predeterminado: [FALSO] - si ARREGLA entonces RESUELVA usar@'a RADCAN que har@'an RESUELVEN m@'as lentamente pero permitir@'an ciertos problemas que contienen los exponenciales y le@~nos ser resuelto.
+
+@end defvar
+@c @node SOLVETRIGWARN
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVETRIGWARN
+
+el valor predeterminado: [VERDADERO] - si el juego a FALSO inhibir@'a la impresi@'on por RESUELVE del mensaje de la advertencia que dice que est@'a usando las funciones trigonom@'etricas inversas para resolver la ecuaci@'on, y por eso las soluciones perdedoras.
+
+@end defvar
+@c @node SOLVE_INCONSISTENT_ERROR
+@c @unnumberedsec phony
+@defvar Inconstante: SOLVE_INCONSISTENT_ERROR
+
+el valor predeterminado: [VERDADERO] - Si VERDADERO, RESUELVA y LINSOLVE dan un error si ellos se encuentran a con un juego de ecuaciones lineales incoherentes, por ejemplo SOLVE([A+B=1,A+B=2]). Si FALSO, ellos vuelven [] en este caso. (Éste es el nuevo modo, previamente s@'olo sobrevivido llamar ALGSYS.)
+
+@end defvar
+@c @node ZRPOLY
+@c @unnumberedsec phony
+@defun La funci@'on: ZRPOLY
+
+- El IMSL la rutina de ZRPOLY por encontrar los ceros de polinomios simples (los solos coeficientes inconstantes, reales, los exponentes del entero non-negativos), usando la t@'ecnica de Jenkins-Traub. Para usarlo, haga: LOADFILE (el "imsl"); El orden es POLYROOTS(polynomial); Para m@'as info, haga: PRINTFILE ("zrpoly.usg"); Para una demostraci@'on haga: La DEMOSTRACIÓN ("zrpoly.dem"); Para el info general en MACSYMA-IMSL empaqueta, PRINTFILE(IMSL,USAGE,SHARE2);
+
+@end defun
+@c @node ZSOLVE
+@c @unnumberedsec phony
+@defun La funci@'on: ZSOLVE
+
+- Para aqu@'ellos que pueden hacer uso de soluciones num@'ericas aproximadas a los problemas, hay un paquete que llama una rutina que se ha traducido de la IMSL fortran biblioteca para resolver N las ecuaciones non-lineales simult@'aneas en los desconocidos de N. Usa t@'ecnicas del negro-caja que probablemente no son deseables si una soluci@'on exacta puede obtenerse de uno del solvers m@'as inteligente (LINSOLVE, ALGSYS, el etc). Pero para cosas que los otros solvers no intentan manejar, esto puede dar los resultados muy @'utiles probablemente a algunos. Para la documentaci@'on, haga PRINTFILE ("zsolve.usg");. Para una demostraci@'on haga el lote ("zsolve.mc") $
+
+@end defun

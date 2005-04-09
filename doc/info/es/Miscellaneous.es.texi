@@ -1,0 +1,322 @@
+@menu
+*  Introducci@'on a  Opciones Miscelaneas::  * SHARE::  * Definiciones
+para Opciones Miscelaneas::
+@end menu
+
+@node Introducci@'on a Opciones Miscelaneas, SHARE, Opciones Miscelaneas, Opciones Miscelaneas
+@section Introducci@'on a Opciones Miscelaneas::
+
+En esta  secci@'on varias opciones  son discussed which have  a global
+effect on the operation of  maxima.  Tambien varias listas such as the
+list of all user defined functions, are discussed.
+
+@node SHARE, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
+@section SHARE
+ -  El directorio  SHARE  en MC  o  en una  DEC20  version de  MACSYMA
+contiene  programas,  archivos de  informacion,  etc.   Los cuales  se
+consideran de  inter@'es para la  comunidad MACSYMA.  La  mayor@'{@dotless{i}}a de
+archivos en el directorio SHARE;  no son parte del sistema MACSYMA por
+el  y  deben  ser   cargados  individualmente  por  el  usuario,  e.g.
+LOADFILE("arreglo");. Muchos archivos en el directorio SHARE; fuer@'on
+contribuidos     por     los     usuarios    de     MACSYMA.      Haga
+PRINTFILE(SHARE,USAGE,SHARE); para mayores detalles y las convenciones
+para  contribuir al  directorio  SHARE.  para  una  anotaci@'on en  la
+"tabla de contenidos" del directorio, haga: PRINTFILE(SHARE,>,SHARE);
+
+@c end concepts Miscellaneous Options
+@node Definitions for Miscellaneous Options,  , SHARE, Miscellaneous Options
+@section Definitions for Miscellaneous Options
+@c @node ALIASES
+@c @unnumberedsec phony
+@defvar ALIASES
+ por  defecto:  []  atomos   que  tienen  un  usuario  definido  alias
+(programado   por  la   funciones  ALIAS,   ORDERGREAT,   ORDERLESS  o
+DECLARE(ando) el atomo a NOUN).
+@end defvar
+
+
+@c @node ALLSYM
+@c @unnumberedsec phony
+@defvar ALLSYM
+ por defecto: [VERDADERO] - Si es VERDADERO entonces todos los objetos
+puestos  en un  indice son  asumidos simetricos  en todos  sus indices
+covariantes y contravariantes. Si es FALSO entonces las no simetr@'{@dotless{i}}as
+de  cualquier  clase  son  asumidas  en  esos  indices.   Los  indices
+derivados son siempre tomados para ser simetricos.
+@end defvar
+
+@c @node declaration
+@c @unnumberedsec phony
+@defvr declaration ALPHABETIC
+Añade al alfabeto de MACSYMA  el cual inicialmente contiene las letras
+A-Z, % y _.  As@'{@dotless{i}}, DECLARE("~",ALPHABETIC) le habilita NEW~VALUE para
+ser usado como un nombre.
+
+@end defvr
+@c @node APROPOS
+@c @unnumberedsec phony
+@defun APROPOS (string)
+toma un caracter  de tipo string como argumento  y observa en absoluto
+los  nombres de  MACSYMA para  para los  @'unicos con  ese  string que
+aparecen  en cualquier  parte dentro  de ellos.   As@'{@dotless{i}}, APROPOS(EXP);
+retornar@'a  una larga  lista de  todas las  banderas y  funciones las
+cuales tienen  EXP como  una parte de  sus nombres, como  EXPAND, EXP,
+EXPONENTIALIZE.   As@'{@dotless{i}} si  usted  pude recordar  solo  una parte  del
+nombre o  algo usted puede usar  este comando para  encontrar el resto
+del  nombre.  Similarmente,  usted podr@'{@dotless{i}}a  decir  APROPOS(TR_); para
+encontrar una  lista de  muchas de las  opciones relacionando  para la
+funci@'on TRANSLATOR (la mayor@'{@dotless{i}}a de los cuales empiezan por TR_).
+
+@end defun
+@c @node ARGS
+@c @unnumberedsec phony
+@defun ARGS (exp)
+retorna  una  lista   de  los  arreglos  para  exp.    I.e.  estos  es
+esencialmente equivalente a
+@example
+SUBSTPART("[",exp,0)
+@end example
+Ambos ARGS y  SUBSTPART dependen de la programaci@'on  de la funci@'on
+INFLAG.
+
+@end defun
+@c @node DUMMY
+@c @unnumberedsec phony
+@defun DUMMY (i1,i2,...)
+programar@'a cada indice i1,i2,... para  nombre de la forma !n donde n
+es un  entero positivo. Estas  garant@'{@dotless{i}}as para los indices  mudos los
+cuales  son  nesecitados  en  la  formaci@'on de  expresiones  que  no
+estrar@'an en  conflicto con  indices que ya  est@'en en  uso. COUNTER
+[por defecto  1] determina el sufijo  num@'erico para ser  usado en la
+generaci@'on del proximo indice mudo. El prefijo es determinado por la
+opci@'on DUMMYX[!].
+
+@end defun
+@c @node GENINDEX
+@c @unnumberedsec phony
+@defvar GENINDEX
+ por  defecto: [I]  es el  prefijo  alfabetico usado  para generar  la
+siguiente variable de suma cuando sea necesario.
+
+@end defvar
+@c @node GENSUMNUM
+@c @unnumberedsec phony
+@defvar GENSUMNUM
+[0] es el  sufijo num@'erico usado para generar  la siguiente variable
+de  suma.  Si  este  es  programado  para  FALSO  entonces  el  indice
+concistir@'a  solamente  para  la  funci@'on GENINDEX  con  sufijo  no
+num@'erico.
+
+@end defvar
+@c @node INF
+@c @unnumberedsec phony
+@defvar INF
+ - infinito real positivo.
+
+@end defvar
+@c @node INFINITY
+@c @unnumberedsec phony
+@defvar INFINITY
+ -  infinidad compleja,  una  magnitud infinita  de  @'angulo de  fase
+arbitrario.  (Observe tambi@'en INF y MINF.)
+
+@end defvar
+@c @node INFOLISTS
+@c @unnumberedsec phony
+@defvar INFOLISTS
+ por  defecto: []  una lista  de  los nombre  de todas  las listas  de
+informaci@'on en MACSYMA. Estas son: LABELS - todos los l@'{@dotless{i}}mites C,D,
+y  las   etiquetas  E.   VALUES   -  todos  los   @'atomos  l@'{@dotless{i}}mites,
+i.e.  variables  de  usuario,  no  las opciones  u  opciones  MACSYMA,
+(programado por : , :: ,  o enlaces funcionales) FUNCTIONS - todas las
+funciones definidas por el usuario (programado por f(x):=...).  ARRAYS
+-  arreglos declarados  y no  declarados (programado  por :  , ::  , o
+:=...)  MACROS - culquier Macros definida por el usuario.  MYOPTIONS -
+todas las  opciones como  siempre reseteadas por  el usuario (si  o no
+ellos son  reestablecidas a  su valor definido).   RULES -  el usuario
+define los modelos de  emparejamiento y las reglas de simplificaci@'on
+(programados por  por TELLSIMP, TELLSIMPAFTER,  DEFMATCH, o, DEFRULE.)
+ALIASES - atomos  a los cuales el usuario  define un alias (programado
+por  las funciones  ALIAS,  ORDERGREAT, ORDERLESS  o DECLARE(ando)  el
+@'atomo  a NOUN).   DEPENDENCIES  - @'atomos  que tienen  dependencias
+funcionales (programadas por las funciones DEPENDS o GRADEF).  GRADEFS
+- funciones que tienen  derivadas definidas por el usuario (programado
+por  la funci@'on  GRADEF).   PROPS -  @'atomos  que tienen  cualquier
+propiedad  que  otros que  han  sido  mencionados anteriormente,  como
+atvalues,   matchdeclares,   etc.     as@'{@dotless{i}}   como   las   propiedades
+especificadas en la funci@'on  DECLARE.  LET_RULE_PACKAGES - una lista
+de  todos los paquetes  de reglas  definidas por  el usuario  m@'as el
+paquete  especial DEFAULT_LET_RULE_PACKAGE.  (DEFAULT_LET_RULE_PACKAGE
+es el nombre  del paquete de regla usado  cuando alguno programado por
+el usuario no es expl@'{@dotless{i}}cito.)
+
+@end defvar
+@c @node INTEGERP
+@c @unnumberedsec phony
+@defun INTEGERP (exp)
+es VERDADERO si exp es un entero si no es FALSO.
+
+@end defun
+@c @node M1PBRANCH
+@c @unnumberedsec phony
+@defvar M1PBRANCH
+ por  defecto: [FALSO]  - "rama  principal de  -1 para  una potencia".
+CAntidades  como  (-1)^(1/3)   [i.e.  "impar"  exponente  racional]  e
+(-1)^(1/4) [i.e. "even" rational exponent] are now handled as indicado
+en el siguiente mapa:
+@example
+             DOMAIN:REAL(por defecto)
+                            
+(-1)^(1/3): -1 (-1)^(1/4): (-1)^(1/4)
+
+                DOMAIN:COMPLEX       M1PBRANCH:FALSO(por      defecto)
+M1PBRANCH:VERDADERO     (-1)^(1/3)     1/2+%i*sqrt(3)/2     (-1)^(1/4)
+sqrt(2)/2+%i*sqrt(2)/2
+@end example
+@end defvar
+@c @node NUMBERP
+@c @unnumberedsec phony
+@defun NUMBERP (exp)
+es  VERDADERO si  exp es  un entero,  un n@'umero  racional,  un punto
+flotante o un granflotante si no es FALSO.
+
+@end defun
+@c @node PROPERTIES
+@c @unnumberedsec phony
+@defun PROPERTIES (a)
+rendir@á  una lista  mostrando los  nombres de  todas  las propiedades
+asociadas con el @átomo a.
+
+@end defun
+@c @node PROPS
+@c @unnumberedsec phony
+@defvr {special symbol} PROPS
+ - @'atomos  que toienen cualquier otra propiedad  que los mencionados
+expl@'{@dotless{i}}citamente   en   INFOLISTS,   como   atvalues,   matchdeclares,
+etc. As@'{@dotless{i}} como propiedades especificadas en la funci@'on DECLARE.
+
+@end defvr
+@c @node PROPVARS
+@c @unnumberedsec phony
+@defun PROPVARS (prop)
+rinde una  lista de los @'atomos  en la lista PROPS  los cuales tienen
+una  propiedad indicada por  prop.  As@'{@dotless{i}}  PROPVARS(ATVALUE) rendir@'a
+una lista de @'atomos que poseen atvalues.
+
+@end defun
+@c @node PUT
+@c @unnumberedsec phony
+@defun PUT (a, p, i)
+asocido con  el @'atomo a,  la propiedad p  con el indicador  i. Estos
+habilitan  al  usuario  para  dar  a un  @'atomo  cualquier  propiedad
+arbitraria.
+
+@end defun
+@c @node QPUT
+@c @unnumberedsec phony
+@defun QPUT (a, p, i)
+es similar a PUT este no tiene sus argumentos evaluados.
+
+@end defun
+@c @node REM
+@c @unnumberedsec phony
+@defun REM (a, i)
+remueve la propíedad indicada por i del @'atomo a.
+
+@end defun
+@c @node REMOVE
+@c @unnumberedsec phony
+@defun REMOVE (args)
+quitar@'a algunas  o todas las  propiedades asociadas con  variables o
+funciones.  REMOVE(a1, p1,  a2, p2, ...)  remueve la  propiedad pi del
+@'atomo ai.  Ai y pi pueden tambi@'en ser listas como con DECLARE.  Pi
+puede ser cualquier propiedad e.g.  FUNCTION, MODE_DECLARE, etc.  Este
+tambi@'en puede ser la  funci@'on TRANSFUN implicando que la versi@'on
+traducida de LISP  de la funci@'on ser@'a quitado.   Eston es @'util s
+se desea  tener la  versi@'on de MACSYMA  de la funci@ón  ejecutada en
+lugar de la versi@'on traducida.  Pi tambi@'en puede ser OP o OPERATOR
+para  remover una  extensi@'on de  sintaxis dada  para ai  (observe el
+apendice II).  Si  ai es "TODO" entonces la  propiedad indicada por pi
+es  removida de todos  los @'atomos  que la  posean. Al  contrario del
+m@'as  espec@'{@dotless{i}}fico  remueve   las  funci@'ones  (REMVALUE,  REMARRAY,
+REMFUNCTION, and  REMRULE) REMOVE no indica cuando  una propiedad dada
+es inexistente; esto siempre retorna "DONE".
+
+@end defun
+@c @node REMVALUE
+@c @unnumberedsec phony
+@defun REMVALUE (name1, name2, ...)
+remueve los  valores de las  variables del usuario (las  cuales pueden
+ser  subindicadas) del  sistema.  Si  el nombre  es TODO  entonces los
+valores de las variables definidas  por el usuario son removidas.  Los
+valores  son esos  art@'{@dotless{i}}culos que  fueron dados  por el  usuario como
+oposici@'on a esos,  los cuales fuer@'on autom@'aticamente etiquetados
+por MACSYMA como Ci, Di, o Ei.
+
+@end defun
+@c @node RENAME
+@c @unnumberedsec phony
+@defun RENAME (exp)
+returns an expression equivalent to  exp but with the dummy indices in
+each  term chosen from  the set  [!1,!2,...].  Each  dummy index  in a
+product will  be different;  for a  sum RENAME will  try to  make each
+dummy  index in  a sum  the same.   In addition,  the indices  will be
+sorted alphanumerically.
+
+@end defun
+@c @node RNCOMBINE
+@c @unnumberedsec phony
+@defun RNCOMBINE (exp)
+transforms  exp by  combining all  terms  of exp  that have  identical
+denominators or denominators that  differ from each other by numerical
+factors  only.   This  is  slightly  different from  the  behavior  of
+COMBINE,  which  collects  terms  that  have  identical  denominators.
+Setting PFEFORMAT:TRUE and using  COMBINE will achieve results similar
+to those that can be  obtained with RNCOMBINE, but RNCOMBINE takes the
+additional  step of  cross-multiplying numerical  denominator factors.
+This results in  neater forms, and the possiblity  of recognizing some
+cancellations.  Bugs to ASB.
+
+@end defun
+@c @node SCALARP
+@c @unnumberedsec phony
+@defun SCALARP (exp)
+is TRUE if exp is a  number, constant, or variable DECLAREd SCALAR, or
+composed entirely  of numbers, constants, and such  variables, but not
+containing matrices or lists.
+
+@end defun
+@c @node SCALEFACTORS
+@c @unnumberedsec phony
+@defun SCALEFACTORS (coordinatetransform)
+Here   coordinatetransform  evaluates   to  the   form  [[expression1,
+expression2,   ...],   indeterminate1,   indeterminat2,  ...],   where
+indeterminate1,  indeterminate2, etc.  are the  curvilinear coordinate
+variables and where a set of rectangular Cartesian components is given
+in terms of the  curvilinear coordinates by [expression1, expression2,
+...].    COORDINATES   is   set   to   the   vector   [indeterminate1,
+indeterminate2,...],  and  DIMENSION is  set  to  the  length of  this
+vector.  SF[1],  SF[2], ..., SF[DIMENSION]  are set to  the coordinate
+scale  factors,  and SFPROD  is  set to  the  product  of these  scale
+factors.  Initially,  COORDINATES is  [X, Y, Z],  DIMENSION is  3, and
+SF[1]=SF[2]=SF[3]=SFPROD=1, corresponding to 3-dimensional rectangular
+Cartesian  coordinates.    To  expand  an   expression  into  physical
+components in the current coordinate  system, there is a function with
+usage of the form
+
+@end defun
+@c @node SETUP_AUTOLOAD
+@c @unnumberedsec phony
+@defun SETUP_AUTOLOAD (file,func1,...,funcN)
+which takes  two or more arguments:  a file specification,  and one or
+more function  names, "funcI", and which  indicates that if  a call to
+"funcI" is made and "funcI" is not defined, that the file specified by
+"file" is  to be automatically loaded  in via LOAD,  which file should
+contain  a definition  for "funcI".   (This  is the  process by  which
+calling e.g.  INTEGRATE in a  fresh MACSYMA causes various files to be
+loaded in.)  As with the  other file-handling commands in MACSYMA, the
+arguments   to    SETUP_AUTOLOAD   are   not    evaluated.    Example:
+SETUP_AUTOLOAD("bessel")$  J1(0.0); .   Note: SETUP_AUTOLOAD  does not
+work for array functions.
+
+@end defun

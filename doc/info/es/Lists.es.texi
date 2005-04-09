@@ -1,0 +1,205 @@
+@menu
+* Introduccci@'on a las Listas::       
+* Definiciones para Listas::       
+@end menu
+
+@node Introducci@'on a las Listas, Definiciones para Listas, Listas, Listas
+@section Introducci@'on a las Listas
+Las Listas son bloques de construcci@'on b@'asica para maxima y lisp. Todos los tipos de datos
+diferentes a los arreglos, tablas mixtas, los n@'umeros son representados como lista lisp,
+estas listas lisp tiene una forma
+@example
+((mplus) $A 2)
+@end example
+@noindent
+para indicar una expresi@'on @code{A+2}. Como nivel m@'aximo es posible observar
+la notaci@'on no fija @code{A+2}. Maxima tambi@'en tiene lista que son impresas
+como
+@example
+[1, 2, 7, x+y]
+@end example
+@noindent
+para una lista de 4 elementos. Internamente esto corresponde a una lista lisp
+de la forma
+@example
+((mlist) 1  2  7  ((mplus)  $X $Y ))
+@end example
+@noindent
+La bandera denota que el tipo de campo de la m@'axima expresi@'on es una lista por si misma,
+despu@'es  de ser analizada y simplificada la lista se puede transformar
+@example
+((mlist simp) 1 2 7 ((mplus simp) $X $Y))
+@end example
+
+@c end conceptos de Lista
+
+@node Definiciones para Listas,  , Introducci@'on a las Listas, Listas
+@section Definiciones para Listas
+
+@c @node APPEND, ATOM, Listas, Listas
+@c @unnumberedsec 
+@defun APPEND (list1, list2, ...)
+retorna una lista sencilla de los elementos de
+la lista1 seguido por los elementos de la lista2,... APPEND trabaja tambi@'en con
+expresiones generales, e.g. APPEND(F(A,B), F(C,D,E)); -> F(A,B,C,D,E).
+Do EXAMPLE(APPEND); for an example.
+Realize EXAMPLE(APPEND); para ver un ejemplo.
+
+@end defun
+@c @node ATOM, CONS, APPEND, Listas
+@c @unnumberedsec 
+@defun ATOM (exp)
+Es VERDADERO si exp es at@'omico (i.e. un n@'umero o nombre) sino es
+FALSO. As@'{@dotless{i}} ATOM(5) es VERDADERO mientras ATOM(A[1]) y ATOM(SIN(X)) sean
+FALSOS. (Asumiendo que A[1] y X no tienen limite.)
+
+@end defun
+@c @node CONS, COPYLIST, ATOM, Listas
+@c @unnumberedsec 
+@defun CONS (exp, lista)
+retorna un nuevo constructor del elemento exp como
+su primer elemento, seguido por el elemento de la lista. CONS trabaja tambi@'en
+sobre otras expresiones, e,g. CONS(X, F(A,B,C));  ->  F(X,A,B,C).
+
+@end defun
+@c @node COPYLIST, DELETE, CONS, Listas
+@c @unnumberedsec 
+@defun COPYLIST (L)
+crea una copia de la lista L.
+
+@end defun
+@c @node DELETE, ENDCONS, COPYLIST, Listas
+@c @unnumberedsec 
+@defun DELETE (exp1, exp2)
+remueve todas las acciones desde exp1 hasta exp2.  Exp1
+puede ser un t@'ermino de exp2 (si este es una suma) o un factor de exp2 (si es un producto).
+@example
+(C1)  DELETE(SIN(X),X+SIN(X)+Y);
+(D1)               Y + X
+
+@end example
+DELETE(exp1, exp2, integral) remueve las primeras acciones del integrando desde
+exp1 hasta exp2.  Por supuesto, Si son m@'as peque@~nas que las acciones del integrando
+de exp1 en exp2 entonces todas las acciones ser@'an borradas.
+
+@end defun
+@c @node ENDCONS, FIRST, DELETE, Listas
+@c @unnumberedsec 
+@defun ENDCONS (exp, list)
+retorna una nueva lista compuesta por elementos de
+la lista seguida por exp. ENDCONS trabaja tambi@'en en expresiones generales, e.g.
+ENDCONS(X, F(A,B,C));  ->  F(A,B,C,X).
+
+@end defun
+@c @node FIRST, GET, ENDCONS, Listas
+@c @unnumberedsec 
+@defun FIRST (exp)
+Produce la primera parte de exp que puede resultar el primer
+elemento de la lista, la primera fila de la matriz, el primer t@'ermino de la suma,
+etc. Note que FIRST y las funciones relacionadas, REST y LAST, trabaja
+en la forma de exp que es mostrada y no en la forma que es ingresada.
+Si la variable INFLAG [FALSA] es programada VERDADERA sin embargo, estas
+funciones puedeb ser observadas como una forma interna de exp. Note que la
+expresi@'on simplificada reordenada. As@'{@dotless{i}} FIRST(X+Y) puede se X si INFLAG
+es VERDADERO y Y si INFLAG es FALSO. (FIRST(Y+X) da el mismo resultado).
+
+@end defun
+@c @node GET, LAST, FIRST, Listas
+@c @unnumberedsec 
+@defun GET (a, i)
+Retorna las propiedades de usuario indicadas por i asociadas con
+el atomo a o retorna FALSO si no tiene las propiedaddes de i.
+@example
+(C1) PUT(%E,'TRANSCENDENTAL,'TYPE);
+(D1) 			        TRANSCENDENTAL
+(C2) PUT(%PI,'TRANSCENDENTAL,'TYPE)$
+(C3) PUT(%I,'ALGEBRAIC,'TYPE)$
+(C4) TYPEOF(EXP) := BLOCK([Q],
+                        IF NUMBERP(EXP)
+                        THEN RETURN('ALGEBRAIC),
+                        IF NOT ATOM(EXP)
+                        THEN RETURN(MAPLIST('TYPEOF, EXP)),
+                        Q : GET(EXP, 'TYPE),
+                        IF Q=FALSE
+			THEN ERRCATCH(ERROR(EXP,"is not numeric.")) ELSE Q)$
+(C5) TYPEOF(2*%E+X*%PI);
+X is not numeric.
+(D5) 	     [[TRANSCENDENTAL, []], [ALGEBRAIC, TRANSCENDENTAL]]
+(C6) TYPEOF(2*%E+%PI);
+(D6) 	        [TRANSCENDENTAL, [ALGEBRAIC, TRANSCENDENTAL]]
+
+@end example
+@end defun
+@c @node LAST, LENGTH, GET, Listas
+@c @unnumberedsec 
+@defun LAST (exp)
+Produce la @'ultima parte (t@'ermino, fila, elemento, etc.) de exp.
+
+
+@end defun
+@c @node LENGTH, LISTARITH, LAST, Listas
+@c @unnumberedsec 
+@defun LENGTH (exp)
+Da (por defecto) el n@'umero de partes en la forma externa de exp (mostrada).
+Para listas hay el n@'umero de elementos, para matrices este es el n@'umero de filas, 
+y para sumas es el n@'umero de t@'erminos. (Observar DISPFROM). El comando LENGTH es afectado 
+por la opci@'on INFLAG [por defecto FALSO]. Como, e.g. LENGTH(A/(B*C)); da 2 si
+INFLAG es FALSO (Asuminedo EXPTDISPFLAG es verdadero), pero 3 si INFLAG es
+VERDADERO (La representaci@'on interna es esencialmente A*B^-1*C^-1).
+
+@end defun
+@c @node LISTARITH, LISTP, LENGTH, Listas
+@c @unnumberedsec 
+@defvar LISTARITH
+ por defecto: [VERDADERO] - Si es FALSO que las operaciones aritm@'eticas con listas
+sean suprimidas; cuando sea VERDADERO, las operaciones lista-matriz son contagiosas
+causando listas que ser@'an convertidas en matrices produciendo como resultado siempre
+una matriz. Sin embargo. las operaciones lista-lista tienen que dar por resultado listas.
+
+@end defvar
+@c @node LISTP, MAKELIST, LISTARITH, Listas
+@c @unnumberedsec 
+@defun LISTP (exp)
+Es VERDADERO si exp es una lista sino es FALSO.
+
+@end defun
+@c @node MAKELIST, MEMBER, LISTP, Lists
+@c @unnumberedsec 
+@defun MAKELIST (exp,var,lo,hi)
+retorna una lista como valor. MAKELIST puede ser activado mediante
+MAKELIST(exp,var,lo,hi) ["lo" y "hi" deben ser integrandos], o como
+MAKELIST(exp,var,list). En el primero de los casos MAKELIST es analogo con SUM,
+considerando que en el segundo de los casos MAKELIST es similar a MAP. Ejemplo:
+@example
+   MAKELIST(CONCAT(X,I),I,1,6) produce [X1,X2,X3,X4,X5,X6]
+   MAKELIST(X=Y,Y,[A,B,C]) produce [X=A,X=B,X=C]
+@end example
+
+@end defun
+@c @node MEMBER, REST, MAKELIST, Lists
+@c @unnumberedsec 
+@defun MEMBER (exp, list)
+retorna VERDADERO si exp concurre como  miembro de la lista (no dentro de uno de 
+los miembros). De otra manera ser@'a retornado FALSO. Los Miembros tambi@'en trabajan
+en las expresiones no-listas, e.g. MEMBER(B, F(A,B,C));  ->  VERDADERO.
+
+@end defun
+@c @node REST, REVERSE, MEMBER, Listas
+@c @unnumberedsec 
+@defun REST (exp, n)
+produce exp con su primer elemento n removido si n es
+positivo y su @'ultimo -n elemento removido si n es negativo. Si n es 1
+puede se omitido. Exp puede ser una lista, una matriz, u otra expresi@'on.
+
+@end defun
+@c @node REVERSE,  , REST, Listas
+@c @unnumberedsec  
+@defun REVERSE (list)
+Revierte el orden de los miembros de la lista (no
+los miembros mismos). REVERSE tambi@'en trabaja sobre expresiones generales,
+e.g.  REVERSE(A=B); da B=A.
+REVERSE por defecto: [FALSO] - en las funciones de Ploteado, si es VERDADERO causa
+que un sistema de coordenadas couadrante izquierdo sea asumido.
+
+@end defun
+

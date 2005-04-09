@@ -1,0 +1,242 @@
+@menu
+* Introducci@'on a Ctensor::     
+* Definiciones para Ctensor::     
+@end menu
+
+@node Introducci@'on a Ctensor, Definiciones para Ctensor, Ctensor, Ctensor
+@section Introducci@'on a Ctensor
+
+ - Paquete de Manipulaci@'on del Componente Tensor. Para usar el paquete
+CTENSR, escriba TSETUP(); que lo cargar@'a autom@'aticamente desde el alcance de
+MACSYMA (si no est@'a cargado actualmente) y entonces el usuario r@'apidamente
+ingresa su sistema de coordenadas. Al usuario se le pregunta primero para
+especificar la dimensi@'on del m@'ultiple. Si la dimensi@'on es 2,3 o 4 entonces la lista
+de coordenadas por defecto seran [X,Y], [X,Y,Z] o [X,Y,Z,T] respectivamente.
+Estos nombres son  cambiados mediante la asignaciq´on de una nueva lista de
+coordenadas para la variable OMEGA (descrita m@'as abajo) y el usuario es cuestionado
+sobre esto.
+** Debe tener cuidado para evitar que los nombres de coordenadas causen conflicto
+con otras definiciones de objetos **.
+Siguiente, el usuario ingresa la m@'etrica o directamente o desde un archivo mediante
+la especificaci@'on de su posici@'on ordinal. Como un ejemplo de un archivo de m@'etrica com@'un,
+observe TENSOR;METRIC FILE. La m@'etrica es guardada en la matriz LG.
+Finalmente, la m@'etrica inversa es computada y guardada en la matriz
+UG. Uno posee la opci@'on de llevar todos los calculos a una serie
+de potencia.
+Un protocolo simple es iniciado m@'as adelante para la est@'atica, simetr@'{@dotless{i}}a m@'etrica
+esf@'erica (coordenadas estandar) que podr@'an ser aplicada al problema de
+la derivaci@'on de la ecuaci@'on vacia de Einstein (que lidera la soluci@'on de
+Schwarzschild) como en un ejemplo. Algunas de la funciones en CTENSR ser@'an
+mostradas por la m@'etrica estandar como ejemplos.
+@example
+(C2) TSETUP();
+
+Ingrese la dimensi@'on del sistema de coordenadas:
+4;
+¿Desea cambiar el nombre de las coordenadas?
+N;
+Usted desea:
+1. ¿Ingresar una nueva m@'etrica?
+2. ¿Ingresar una m@'etrica desde archivo?
+3. ¿Aproximar una m@'etrica con series de Taylor?
+Ingrese 1, 2 o 3 
+1;
+Es la matriz  1. Diagonal  2. Sim@'etrico  3. Antisim@'etrico  4. General
+Responada 1, 2, 3 o 4
+1;
+Fila 1 Columna1: A;
+Fila 2 Columna 2:  X^2;
+Fila 3 Columna 3:  X^2*SIN(Y)^2;
+Fila 4 Columna 4:  -D;
+Matrix ingresada.
+Ingrese la dependencias funcionales con la funci@'on DEPENDS o 'N' so nada 
+DEPENDS([A,D],X);
+¿Desea observar la m@'etrica?
+Y;
+                          [ A  0       0        0  ]
+                          [                        ]
+                          [     2                  ]
+                          [ 0  X       0        0  ]
+                          [                        ]
+                          [         2    2         ]
+                          [ 0  0   X  SIN (Y)   0  ]
+                          [                        ]
+                          [ 0  0       0       - D ]
+¿Desea observar la m@'etrica inversa?
+N;
+
+
+@end example
+@c end concepts Ctensor
+@node Definiciones para Ctensor,  , Introducci@'on a Ctensor, Ctensor
+@section Definiciones para Ctensor
+@c @node CHR1
+@c @unnumberedsec phony
+@defun CHR1 ([i,j,k])
+produce el s@'{@dotless{i}}mbolo Chrsitoffel de primera clase por medio de la
+definici@'on
+@example
+       (g      + g      - g     )/2 .
+         ik,j     jk,i     ij,k
+@end example
+@noindent
+Para evaluar el s@'{@dotless{i}}mbolo Christoffel para una m@'atrica particular, la
+variable METRIC debe ser asignada a un nombre como es el ejemplo bajo CHR2.
+
+@end defun
+@c @node CHR2
+@c @unnumberedsec phony
+@defun CHR2 ([i,j],[k])
+produce el s@'{@dotless{i}}mbolo Chrsitoffel de segunda clase definido
+por la relaci@'on
+@example
+                       ks
+    CHR2([i,j],[k]) = g    (g      + g      - g     )/2
+                             is,j     js,i     ij,s
+@end example
+@end defun
+@c @node CHRISTOF
+@c @unnumberedsec phony
+@defun CHRISTOF (arg)
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on). Este computa el s@'{@dotless{i}}mbolo Christoffel en ambas
+clases. El argumento determina que resultados son mostrado inmediatamente. 
+Los s@'{@dotless{i}}mbolos Christoffel de primera y segunda clase son 
+almacenados en los arreglos LCS[i,j,k] y MCS[i,j,k] respectivamente y
+definido para ser sim@'etrico en los dos promeros indices. Si el argumento para
+CHRISTOF es LCS o MCS entonces los @'unicos valores no-cero de LCS[i,j,k]
+o MCS[i,j,k], respectivamente,ser@'an mostrados. Si el argumento es ALL
+entonces los @'unicos valores no-cero de LCS[i,j,k] o MCS[i,j,k] ser@'an 
+mostrados. Si el argumento es FALSO entonces el mostrado de los elementos 
+no ocurrir@'a. El arreglo de elementos MCS[i,j,k] es definido en tal
+modo que el indice final es contravariante.
+
+@end defun
+@c @node COVDIFF
+@c @unnumberedsec phony
+@defun COVDIFF (exp,v1,v2,...)
+produce la derivada contravariante de exp con
+respecto a las variables vi en t@'erminos del s@'{@dotless{i}}mbolo Christoffel de
+segunda clase (CHR2). Para evaluar estas, uno puede usar
+EV(exp,CHR2).
+
+@end defun
+@c @node CURVATURE
+@c @unnumberedsec phony
+@defun CURVATURE ([i,j,k],[h])
+Paquete de Tensor Inicial) produce el tensor
+curvatura de Riemman en t@'erminos del s@'{@dotless{i}}mbolo Christoffel de segunda
+clase (CHR2). Es usada la siguiente notaci@'on:
+@example
+               h            h           h        %1        h
+      CURVATURE     = - CHR2      - CHR2     CHR2    + CHR2
+               i j k        i k,j       %1 j     i k       i j,k
+                              h         %1
+                        + CHR2      CHR2
+                              %1 k      i j
+@end example
+@end defun
+@c @node DIAGMETRIC
+@c @unnumberedsec phony
+@defvar DIAGMETRIC
+ por defecto:[] - Una opci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on).  Si DIAGMETRIC es VERDADERO, rutinas especiales son computadas
+por todos los objetos geom@'etricos (que contienen el tensor m@'etrico explicitamente)
+mediante la toma en de la diagonalidad de la m@'etrica. Reducir
+el tiempo de corrido, por supuesto, resultar@'a. Nota: esta opci@'on es programada
+autom@'aticamente mediante TSETUP si la m@'etrica diagonal es especificada.
+
+@end defvar
+@c @node DIM
+@c @unnumberedsec phony
+@defvar DIM
+ por defecto:[4] - Una opci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on).  DIM es la dimensi@'on del m@'ultiple con por defecto 4.
+El comando DIM:N; resetear@'a la dimensi@'on de cualquier otro valor
+integral.
+
+@end defvar
+@c @node EINSTEIN
+@c @unnumberedsec phony
+@defun EINSTEIN (dis)
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on). EINSTEIN computa el tensor mixto Einstein
+despu@'es de que el s@'{@dotless{i}}mbolo Christofeel y el tensor Ricci han sido obtenidos
+(con las funciones CHRISTOF y RICCICOM). Si el argumento dis es
+VERDADERO, entonces los valores no-zero del tensor mixto Einstein G[i,j]
+ser@'an mostrado cuando j es el indice contravariante.
+RATEINSTEIN[VERDADERO] si es VERDADERO causar@'a la simplificaci@'on racional
+en estos componentes. Si RATFAC[FALSO] es VERDADERO entonces los componentes tambi@'en
+podr@'an ser factorizados.
+
+@end defun
+@c @node LRICCICOM
+@c @unnumberedsec phony
+@defun LRICCICOM (dis)
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on).  LRICCICOM computa la covariante (sim@'etrica)
+componentes LR[i,j] del tensor Ricci.  Si el argumento dis es VERDADERO,
+entonces los componentes no-cero son mostrados.
+
+@end defun
+@c @node MOTION
+@c @unnumberedsec phony
+@defun MOTION (dis)
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on).  MOTION computa la ecuaci@'on geod@'esica de
+movimiento para una m@'etrica dada. Ellas son almacenadas en el arreglo EM[i]. Si
+el argumento dis es VERDADERO entonces estas ecuaciones son mostradas.
+
+@end defun
+@c @node OMEGA
+@c @unnumberedsec phony
+@defvar OMEGA
+ por defecto:[] - Una opci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on).  OMEGA asigna una lista de coordenadas a la
+variable. Mientras sea normalmente definida cuando la funci@'on TSETUP es llamada,
+uno puede redefinir las coordenadas con la declaraci@'on 
+OMEGA:[j1,j2,...jn] donde los j(s) son los nuevos nombres de coordenadas. Un llamado a
+OMEGA retornar@'a la lista de nombres de coordenadas. Tambi@'en observe
+DESCRIBE(TSETUP); .
+
+@end defvar
+@c @node RIEMANN
+@c @unnumberedsec phony
+@defun RIEMANN (dis)
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on).  RIEMMAN computa el tensor de curvatura de Riemman
+desde la m@'etrica dada y los correspondientes s@'{@dotless{i}}mbolos Christoffel. Si
+dis es VERDADERO, los componentes no-cero R[i,j,k,l] ser@'an mostrados. Todos
+los indices indicados son covariantes. Como con el tensor Einstein,
+varias opciones programadas por el usuario controlan la simplificaci@'on de los
+componentes del tensor Riemman. Si RATRIEMAN[VERDADERO] es VERDADERO entonces
+ser@'a realizada la simplificaci@'on racional. Si RATFAC[FALSO] es VERDADERO entonces
+cada componente tambi@'en ser@'a factorizado.
+
+@end defun
+@c @node TRANSFORM
+@c @unnumberedsec phony
+@defun TRANSFORM
+ - El comando TRANSFORM en el paquete CTENSR ha sido 
+renombrado como TTRANSFORM.
+
+
+@end defun
+@c @node TSETUP
+@c @unnumberedsec phony
+@defun TSETUP ()
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on) que lo cargar@'a autom@'aticamente desde el alcance de
+MACSYMA (si no est@'a cargado actualmente) y entonces el usuario r@'apidamente
+hace uso de este. Haga DESCRIBE(CTENSR); para m@'a detalles.
+
+@end defun
+@c @node TTRANSFORM
+@c @unnumberedsec phony
+@defun TTRANSFORM (matrix)
+Una funci@'on en el paquete CTENSR (Tensor Componente
+de Manipulaci@'on) que desarrollar@'a una transformaci@'on coordinada
+desde una matriz sim@'etrica cuadrada arbitraria. El usuario debe ingresar
+las funciones que definen la transformaci@'on. (Formalmente llamada TRANSFORM.)
+
+@end defun

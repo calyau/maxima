@@ -1,0 +1,265 @@
+@c end conceptos de Depuraci@'on
+@menu
+* Nivel Fuente de Depuraci@'on::
+* Comandos Abreviados::
+* Definiciones para Depuraci@'on::
+@end menu
+
+@node Nivel Fuente de Depuraci@'on, Comados Abreviados, , Depuraci@'on
+@section Nivel Fuente de Depuraci@'on
+
+Maxima posee unas capacidades de nivel fuente. Un usuario puede programar un punto de ruptura en
+una l@'{@dotless{i}}nea en un archivo, y entonces realizar un paso l@'{@dotless{i}}nea por l@'{@dotless{i}}nea desde all@'{@dotless{i}}. La compliaci@'on
+debe ser examinada, junto con las variables limites de ese nivel.
+Si el usuario est@'a corriendo el c@'odigo bajo GNU emacs en una ventana
+dividida (dbl shell), o est@'a corriendo @code{xmaxima} la versi@'on de interfaz grafica,
+entonces si el usuario para el punto de ruptura, podr@'a observar su
+posici@'on actual en el archivo fuente el cual ser@'a mostrado en la
+otra mitad de la ventana,  o resaltada en rojo, o con una peque@~na
+flecha apuntando a la linea correcta. El usuario puede avanzar l@'{@dotless{i}}neas sencillas el mismo tiempo
+mediante el tecleo de M-n(Alt-n) o alternadamente mediante el ingreso de @code{:n}. Para
+observar los nombres de los comandos abreviados tecle@'e :help (or :h). En general,
+los comandos pueden ser abreviados se la abreviaci@'on es @'unica. Si no lo es
+la abreviaci@'on puede ser enlistada.
+
+Bajo Emacs usted puede correr en una mitad de ventana @code{dbl}, la cual requiere el
+archivo dbl.es en el directorio elisp.
+Asegurese que instala los archivos elisp o agrega el directorio elisp maxima a
+su ubicaci@'on:
+eg adiciona lo siguiente en su archivo @file{.emacs} o el @code{site-init.el}
+
+@example
+(setq load-path (cons "/usr/local/maxima-5.5/elisp" load-path))
+(autoload 'dbl "dbl")
+@end example
+entonces en emacs
+@example
+M-x dbl
+@end example
+puede iniciar una ventana dividida en la cual puede correr programas, por ejemplo
+maxima, gcl, gdb etc.   Esta ventana dividida tambi@'en conoce acerca de
+la depuraci@'on de nivel fuente, y muestra el c@'odigo fuente en otra ventana.
+
+@example
+maxima
+Maxima 5.5 Mie Abr 18 19:02:00 CDT 2001 (con perfeccionamientos por W. Schelter).
+Licencia bajo la Licencia Publica GNU (observe el archivo COPYING)
+(C1) batchload("/tmp/joe.mac");
+(D1) 				 /tmp/joe.mac
+(C2) :br joe
+Volviendose sobre el debugmode depuraci@'on(verdadero)
+Bkpt 0 for joe (in /tmp/joe.mac line 8) 
+(C2) foo(2,3);
+Bkpt 0:(joe.mac 8)
+(dbm:1) :bt                        <-- :bt tecleado aqu@'{@dotless{i}} da un backtrace?
+#0: joe(y=5)(joe.mac line 8)
+#1: foo(x=2,y=3)(joe.mac line 5)
+(joe.mac 9)                        <-- Aqu@'{@dotless{i}} tecle@'e M-n para avanzar l@'{@dotless{i}}nea
+(joe.mac 10)                       <-- Aqu@'{@dotless{i}} tecle@'e M-n para avanzar l@'{@dotless{i}}nea
+                                   En el otro buffer el c@'odigo fuente
+				   apracece con una flecha.	   
+(dbm:1) u;                         Investiga el valor de 'u
+28
+(dbm:1) u:33;                      Lo altera para se 33
+(dbm:1) :r                         :r Resume el computo
+(D3) 				     1094
+@end example
+
+El archivo /tmp/joe.mac actual es el siguiente:
+@example
+
+foo(x,y):=(
+  x:x+2,
+  y:y+2,
+  x:joe(y),
+  x+y);
+    
+joe(y):=block([u:y^2],
+  u:u+3,
+  u:u^2,
+   u);
+     
+@end example
+
+
+Si usted est@'a corriendo Gnu Emacs entonces si est@'a observando
+el archivo joe.mac, usted puede programar un punto de ruptura en cierta l@'{@dotless{i}}nea de
+ese archivo mediante el tecleo de @code{C-x space}. Este figura fuera de la funci@'on
+en la que su cursor se encuebtra, y entonces este mira en cual l@'{@dotless{i}}nea de esa funci@'on
+esta usted.   Si usted esta digamos en la l@'{@dotless{i}}nea 2 de joe, entonces esta insertar@'a
+en la otra ventana @code{:br joe 2} el comando para
+romper joe en su segunda l@'{@dotless{i}}nea. Para tener esto activo usted debe tener
+maxima-mode.el(modo-maxima.el) en la ventana en la cual el archivo joe.mac es visitado.
+Hay disponible un comando adicional en ese archivo de ventana, tal como
+evaluando la funci@'on en maxima, mediante el tecleo de @code{Alt-Control-x}
+
+
+@node Comandos Abreviados, Definiciones para Depuraci@'on, Nivel Fuente de Depuraci@'on, Depuraci@'on
+@section Comandos Abreviados
+
+Rompe comnados de salida con ':'. As@'{@dotless{i}} para evaluar una forma lisp usted
+debe teclear @code{:lisp } seguido por el argumento el cual est@'a de la forma
+que va a ser evaluada.
+@example
+(C3) :lisp (+ 2 3) 
+5
+@end example
+El n@'umero de argumentos tomados depende del comando particualr. Tambi@'en
+usted no necesita teclear todo el comando, solo lo suficiente para ser el @'unico entre
+los comandos abreviados. As@'{@dotless{i}} @code{:br} podr@'a bastar para @code{:break}.
+los comandos actuales son:
+
+@table @code
+@item :break
+Programa un punto de ruptura en la FUNCION especificada en la
+LINEA especificada desplaz@'andose desde el inicio de la funci@'on.
+Si la FUNCION es dada como una cadena, entonces es presumido que
+un ARCHIVO y una LINEA es desplazado desde el inicio del archivo.
+@item :bt
+Indocumentado
+@item :continuar
+Continua el computo.
+@item :borrar
+Borra todos los punto de ruptura, o si los argumentos son proporcionados borrando
+los puntos de ruptura especificados.
+@item :deshabilitar
+Deshabilita el punto de ruptura especificado, o todos si ninguno es especificado
+@item :habilitar
+Habilita el punto de ruptura especificado, o todos si ninguno es especificado
+@item :marco
+Con un argumento imprime el marco de pila seleccionado.
+De otra forma el marco actual.
+@item :ayuda
+Imprime la ayuda sobre un comando de ruptura o sin argumentos en todos los comandos de ruptura
+@item :informaci@'on
+Indocumentado
+@item :lisp
+Evalua la forma lisp seguida sobre la l@'{@dotless{i}}nea
+@item :lisp-quiet
+Evalua sus argumentos como una forma lisp sin imprimir sugerencias.
+
+@item :siguiente     Como :paso, excepto que la subrutina llamada es sobrescrita
+@item :salir
+Sale de este nivel
+@item :reasume
+continua el computo.
+@item :paso
+Corre programas hasta que alcance una nueva l@'{@dotless{i}}nea fuente
+@item :superior
+Lanza un nivel superior
+@end table 
+
+
+@node Definiciones para Depuraci@'on, , Comandos Abreviados, Depuraci@'on
+@section Definiciones para Depuraci@'on
+@c @node REFCHECK
+@c @unnumberedsec phony
+@defvar REFCHECK
+ por defecto: [FALSO] - si es VERDADERO causa que un mensaje sea impreso
+cada vez que una variable limite es usada la primera vez en un
+computo.
+
+
+@end defvar
+@c @node REMTRACE
+@c @unnumberedsec phony
+@defun REMTRACE ()
+Esta funci@'on no es usada extensamente con el nuevo paquete
+TRACE.
+
+@end defun
+@c @node SETCHECK
+@c @unnumberedsec phony
+@defvar SETCHECK
+ por defecto:[FALSO] - si programa una lista de variables (la cual puede
+ser subscrita) causar@'a una impresi@'on siempre que las variables, o
+ocurrencias subscritas de estas, son limite (con: o :: o funci@'on
+ligando argumentos). La impresi@'on consiste en las variables y el
+valor de limite de estas. SETCHECK puede ser programado para TODOS o VERDADERO para eso
+incluyendo todas las variables. Nota: No es generada impresi@'on cuando una
+variable SETCHECK(ada) es programada para si misma, e.g. X:'X.
+
+@end defvar
+@c @node SETCHECKBREAK
+@c @unnumberedsec phony
+@defvar SETCHECKBREAK
+ por defecto: [FALSO] - si es programado VERDADERO podr@'a causar un
+(MACSYMA-BREAK) para ocurrir siempre que las variables en la lista SETCHECK
+son l@'{@dotless{i}}mites. La ruptura ocurre antes que la ligadura es realizada. En este punto,
+SETVAL toma el valor para dicha variable que est@'a a punto de ser programada.
+Esto solo se puede cambiar este valor mediante el reseteado de SETVAL.
+
+@end defvar
+@c @node SETVAL
+@c @unnumberedsec phony
+@defvar SETVAL
+ - toma el valor de decha variable est@'a a punto de ser programada cuando
+ocurre un SETCHECKBREAK. 
+a SETCHECKBREAK occurs.  Esto solo se puede cambiar este valor mediante el 
+reseteado de SETVAL. (Observe SETCHECKBREAK).
+
+@end defvar
+@c @node TIMER
+@c @unnumberedsec phony
+@defun TIMER (F)
+pondr@'a una envoltura de tiempo sobre la funci@'on F, dentro del
+paquete TRACE, i.e. este imprimir@'a el tiempo gastado en el computo de F.
+
+@end defun
+@c @node TIMER_DEVALUE
+@c @unnumberedsec phony
+@defvar TIMER_DEVALUE
+ por defecto: [FALSO] - cuando es programado VERDADERO entonces el tiempo 
+cargado contra una funci@'on es el tiempo gastado dinamicamente dentro de
+la funci@'on devaluada por el tiempo gastado destro de otras funciones TIMED.
+
+@end defvar
+@c @node TIMER_INFO
+@c @unnumberedsec phony
+@defun TIMER_INFO (F)
+imprimir@'a la informaci@'on en cronometrado la cual es guardada
+tambi@'en como GET('F,'CALLS); GET('F,'RUNTIME); y GET('F,'GCTIME); . Esta
+es una funci@'on del paquete TRACE.
+
+@end defun
+@c @node TRACE
+@c @unnumberedsec phony
+@defun TRACE (name1, name2, ...)
+Provee un rastro de impresi@'on siempre que la
+funci@'on mencionado es llamada. TRACE() imprime una lista de las
+funciones actuales bajo TRACE. En MC observe MACDOC;TRACE USAGE para
+m@'as informaci@'on. Tambi@'en, DEMO("trace.dem");. Para remover el rastreo,
+observe UNTRACE.
+
+@end defun
+@c @node TRACE_OPTIONS
+@c @unnumberedsec phony
+@defun TRACE_OPTIONS (F,option1,option2,...)
+Provee la funci@'on F la
+opci@'on indicada. Una poci@'on es o una abreviatura o una expresi@'on.
+Las abreviaturas posibles son: 
+Abreviatura    Significado del valor retornado
+----------------------------------------
+ NOPRINT     Si es VERDADERO no imprime. 
+ BREAK       Si es VERDADERO provee un punto de ruptura.
+ LISP_PRINT  Si es VERDADERO usa impresi@'on lisp.
+ INFO        Informaci@'on extra para impresi@'on.
+ ERRORCATCH  Si es VERDADERO los errores son capturados.
+Una abreviatura significa que la opci@'on est@'a en efecto. Usando una abreviatura como una
+expresi@'on, e.g. NOPRINT(funci@'on predicada) recursos para aplicar la
+funci@'on predicada (las cual es definida por el usuario) para algunos argumentos
+determine si la opci@'on est@'a en efecto. La lista de argumentos para esta
+funci@'on predicada es siempre [NIVEL, DIRECCION, FUNCION, ITEM] donde
+NIVEL es el nivel de recurdi@'on para la funci@'on. DIRECCION es o
+ENTRADA o SALIDA. FUNCION es el nombre de la funci@'on. ITEM es o
+la lista de argumentos o el valor retornado. En MC observe
+DEMO("trace.dem"); para m@'as detalles.
+
+@end defun
+@c @node UNTRACE
+@c @unnumberedsec phony
+@defun UNTRACE (name1, ...)
+remueve el rastreo invocado por la funci@'on TRACE.
+UNTRACE() remueve el rastreo de toda la funci@'on.
+
+@end defun

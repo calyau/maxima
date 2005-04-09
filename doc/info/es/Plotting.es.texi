@@ -1,0 +1,330 @@
+@menu
+* Definiciones para Graficaci@'on::    
+@end menu
+@node Definciones para Graficaci@'on,  , Graficar, Graficar
+@section Definiciones para Graficaci@'on
+
+@defvar IN_NETMATH [FALSE]
+Si no es nula, entonces plot2d generar@'a una representaci@'on de la
+gr@'afica, la cual se satisface para funciones openplot.
+@end defvar
+
+@defun OPENPLOT_CURVES lista-opciones
+Toma una lista de curvas tales como:
+@example
+[[x1,y1,x2,y2,...],[u1,v1,u2,v2,...],..]
+o 
+ [[[x1,y1],[x2,y2],...],.. ]
+@end example
+y las dibuja.  Esto es similar a  xgraph_curves, pero usa las rutinas open plot. Argumentos y s@'{i}mbolos adicionales pueden ser dados, tal como
+@code{ "@{xrange -3 4@}" }
+El siguiente es un trazado de dos curvas, usando puntos grandes, rotulando la primera con la etiqueta 
+@code{jim} y la segunda con  @code{jane}.   
+@example
+openplot_curves([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
+      @{text @{xaxislabel @{joe is nice@}@}@}"] ,
+      [1,2,3,4,5,6,7,8],
+      ["@{label jane@} @{color pink @} "], [3,1,4,2,5,7]]);
+@end example
+
+Algunas otras claves  especiales son xfun, color, plotpoints, linecolors,
+pointsize, nolines, bargraph, labelposition, xaxislabel, y
+yaxislabel.
+
+@end defun
+
+@defun PLOT2D (expr,rango,...,opciones,..)
+@defunx PLOT2D ([expr1,expr2,..,exprn],rango_x,...,opciones,..)
+EXPR representa una expresión a ser dibujada sobre el eje y, tal como una funci@'on de una variable.
+RANGO es de la forma [var,min,max] y expr es asumida como la expresi@'on a ser dibujada en funci@'on de VAR. 
+
+En la segunda forma de la funci@'on, una lista de expresiones pueden ser dadas para su dibujado en funci@'on de VAR. Los l@'{i}mites en la direcci@'on de y, ser@'an interpretados, por el rango que y tiene por defecto. Este puede ser especificado como una opci@'on o tambi@'en usando SET_PLOT_OPTION.
+@example
+plot2d(sin(x),[x,-5,5]);
+plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
+@end example
+@end defun
+
+@defun xgraph_curves(list)
+grafica la lista de un conjunto de puntos, dados en dicha lista usando xgraph. 
+Un conjunto de puntos puede ser de la forma:
+@example
+[x0,y0,x1,y1,x2,y2,...] o
+[[x0,y0],[x1,y1],....]
+@end example
+
+Un punto tambi@'en puede contener s@'imbolos a los cuales dar etiquetas u otra informaci@'on.  
+
+@example
+ xgraph_curves([pt_set1,pt_set2,pt_set3]);
+@end example
+
+graficar@'{i}a el conjunto de los tres puntos como tres curvas.
+
+@example
+pt_set:append(["NoLines: True","LargePixels: true"],
+        [x0,y0,x1,y1,...])
+@end example
+
+@noindent
+
+causar@'{i}a que el conjunto de puntos [y los subsecuentes], no tengan
+lineas entre los puntos y usen pixeles grandes. Consulte la p@'agina
+man de xgraph para especificar m@'as opciones.
+
+@example
+pt_set:append([concat("\"","x^2+y")],[x0,y0,x1,y1,...])
+@end example
+@noindent
+
+generar@'{i}a all@'{i} una "etiqueta" como "x^2+y" para este conjunto
+particular de puntos. El car@'acter @code{"} en el principio le indica a 
+xgraph que esta es una etiqueta.
+
+@example
+pt_set:append([concat("TitleText: Datos de Muestra")],[x0,...])
+@end example
+@noindent
+
+causar@'{i}a que el t@'{i}tulo principal de la gr@'afica sea:
+"Datos de Muestra" en cambio de "Maxima PLot".
+
+Para elaborar una gr@'afico de barras con barras de 0.2 unidades y 
+dibujar dos posibles tipos de barras: 
+
+@example
+xgraph_curves(
+       [append(["BarGraph: true","NoLines: true","BarWidth: .2"],
+               create_list([i-.2,i^2],i,1,3)),
+        append(["BarGraph: true","NoLines: true","BarWidth: .2"],
+           create_list([i+.2,.7*i^2],i,1,3))
+]);
+@end example
+@noindent
+
+Un archivo temporal @file{xgraph-out} es usado. 
+
+
+@end defun
+
+
+
+@defvar PLOT_OPTIONS
+Los miembros de esta listas indica las opciones por defecto
+para la graficaci@'on. Ellos pueden ser alterados usando SET_PLOT_OPTION
+
+@example
+[X, - 3, 3]
+[Y, - 3, 3]
+@end example
+
+son el rango de x y de y respectivamente. 
+
+
+[TRANSFORM_XY, FALSE]
+
+si no es falso, la salida ser@'{i}a de: 
+
+@example
+make_transform([x,y,z], [f1(x,y,z),f2(x,y,z),f3(x,y,z)])
+@end example
+lo cual produce una transformati@'on desde el espacio tridimensional 
+al espacio tridemensional (de R3 a R3), la cual ser@'a aplicada
+a la gr@'afica. Una construcci@'ion para pasar de coordenadas
+polares a rectangulares, para x e y, podr@'ia ser:
+
+@example
+make_transform([r,th,z],[r*cos(th),r*sin(th),z])
+
+@end example
+
+[RUN_VIEWER,TRUE] si no es falsa, significa que es posible ejecutar un 
+software visualizador - no s@'olo de archivo de salida de datos. 
+
+
+[GRID,30,30] significa que plot3d dividir@'a el rango de x en intervalos
+de 30 unidades y similarmente con el rango de y. 
+
+
+[COLOUR_Z,false] aplica al coloramiento hecho con la opci@'on ps de plot_format. 
+
+
+[PLOT_FORMAT,OPENMATH] es para plot3d y actualmente OPENMATH, GNUPLOT, PS y GEOMVIEW son soportados.  
+
+
+Existen visores de dominio p@'ublico de excelente calidad para estos 
+formatos. Como por ejemplo openmath, izic, gnuplot, ghostview y geomview.
+
+
+El visor Openmath viene inclu@'{i}do en la distribuci@'on y esta basado en tcl/tk. El ejecutable es @file{maxima/bin/omplotdata}. El visor permite las opciones de zoom, desplazamiento a trav@'es de la gr@'afica y rotaci@'on (si es una gr@'afica de tres dimensiones). Este formato es tambi@'en usado por netmath, para realizar gr@'aficos con Netmath. (Consulte @file{http://www.ma.utexas.edu/users/wfs/netmath}). 
+
+
+Geomview pertenece al Centro de Geometria de la Universidad de Minnesota y esta disponible en: @file{http://www.geom.umn.edu/software/download/geomview.html} o desde un ftp an@'onimo en: @file{ftp://ftp.geom.umn.edu/pub/software/geomview}. 
+
+Actualmente no es tan sofisticado como izic, pero provee un excelente
+soporte para m@'ultimples objetos y aspectos.
+
+
+gnuplot esta en todas partes como esta ghostview. Proveemos mgnuplot, 
+una interfaz tcl para gnuplot, que permite rotar las gr@'aficas usando
+el rat@'on y una barra de escala.
+
+izic esta disponible por ftp desde zenon.inria.fr. Cont@'actese con uno
+de ellos @i{fournier,kajler,mourrain}@@sophia.inria.fr.
+
+@c <Por traducir>
+@c It has beautiful colour gouraud shading, and very fast wireframe.  It
+@c runs on X windows.
+
+
+
+
+@end defvar
+@c @node PLOT3D
+@c @unnumberedsec phony
+@defun PLOT3D (expr,xrange,yrange,...,options,..)
+@defunx PLOT3D ([expr1,expr2,expr3],xrange,yrange,...,options,..)
+
+@example
+plot3d(2^(-u^2+v^2),[u,-5,5],[v,-7,7]);
+@end example
+dibujar@'{i}a z = 2^(-u^2+v^2) con u y v variando entre [-5,5] y [-7,7]
+respectivamente y con u sobre el eje x y v sobre el eje y.
+
+
+Un ejemplo de un segundo patr@'on de argumentos es:
+@example
+plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],
+   [x,-%pi,%pi],[y,-1,1],['grid,50,15])
+@end example
+
+el cual graficar@'a la banda de moebius, parametrizada por 3 expresiones
+dadas como el primero argumento a plot3d. Un argumento adicional de car@'acter opcional es [grid,50,15] que da el n@'umero de rect@'angulos de la malla en la direcci@'on x y la direcci@'on y.
+
+@example
+/* REal part of z ^ 1/3 */
+ plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
+        ['grid,12,80],['PLOT_FORMAT,gnuplot],
+        ['TRANSFORM_XY,POLAR_TO_XY],['VIEW_DIRECTION,1,1,1.4],
+        ['COLOUR_Z,true])
+@end example
+@noindent
+Aqu@'{i} la opci@'on View_direction indica la direcci@'on desde la
+cual tomamos una proyecci@'on. Actualmente hacemos esto desde el infinito
+, pero paralelamente a la linea desde el valor de view_direction a el origen. Actualmente esto s@'olo se usa en la opci@'on 'ps' de plot_format, desde los otros visores se permite rotado interactivo del objeto. 
+
+Otro ejemplo es la banda de moebius:
+@example
+plot3d([cos(x)*(3+y*cos(x/2)),
+          sin(x)*(3+y*cos(x/2)),y*sin(x/2)],
+           [x,-%pi,%pi],[y,-1,1],['grid,50,15]);
+@end example
+
+o la botella de klein: 
+
+@example
+plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
+          -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
+           5*(-sin(x/2)*cos(y)+cos(x/2)*sin(2*y))],
+           [x,-%pi,%pi],[y,-%pi,%pi],['grid,40,40])
+@end example
+o un toro: 
+@example
+plot3d([cos(y)*(10.0+6*cos(x)),
+           sin(y)*(10.0+6*cos(x)),
+           -6*sin(x)], [x,0,2*%pi],[y,0,2*%pi],
+            ['grid,40,40])
+@end example
+Podemos obtener la salida con gnuplot:
+@example
+ plot3d(2^(x^2-y^2),[x,-1,1],[y,-2,2],[plot_format,gnuplot])
+@end example
+
+En ocasiones es necesario definir un funci@'on para graficar la expresi@'on. Todos los argumentos de plot3d son evaluados antes de ser pasados a plot3d, as@'{i} que intentar hacer una expresi@'on que haga s@'olo lo que tu quieras puede ser complicado, as@'{i} que es mucho m@'as f@'acil definiendo una funci@'on. 
+
+@example
+M:MATRIX([1,2,3,4],[1,2,3,2],[1,2,3,4],[1,2,3,3])$
+f(x,y):=float(M[?round(x),?round(y)]);
+plot3d(f,[x,1,4],[y,1,4],['grid,4,4]);
+@end example
+
+
+@end defun
+@c @node PLOT2D
+@c @unnumberedsec phony
+@defun PLOT2D_PS (expr,range)
+escribe a un flujo ps una secuencia de comandos postscript los
+cuales graficar@'an la EXPR para el rango especificado por RANGE.
+EXPR puede ser una expresi@'on de una variable.  
+RANGE puede ser de la forma [variable,min,max]
+bajo el cual se graficar@'a expr.
+Consulte CLOSEPS, para m@'as informaci@'on.
+
+@end defun
+
+
+@defun CLOSEPS ()
+Esta funci@'on usualmente se llama para finalizar la secuencia
+de comandos de graficaci@'on. Cierra la salida actual del flujo ps y
+lo establece null. Tambi@'en puede ser llamada al inicio del proceso
+de graficado, para asegurar si el flujo ps esta cerrado si
+este fue abierto. Todos los comandos que se escriben en el flujo
+ps, lo abren si es necesario. CLOSEPS esta separada de los otros
+comandos de graficaci@'on, puesto que podemos graficar dos rangos
+o superponer varias gr@'aficas, y as@'{i} debemos mantener el flujo
+abierto. 
+@end defun
+
+@defun SET_PLOT_OPTION (option)
+option especifica el formato de uno de los elementos la la lista
+de PLOT_OPTIONS. 
+De esta manera
+@example
+SET_PLOT_OPTION([grid,30,40])
+@end example
+cambiar@'ia el valor por defecto de la opci@'on grid de plot3d. Note que si el s@'{i}mbolo grid tiene un valor, entonces se puede citar de @'esta forma: 
+@example
+SET_PLOT_OPTION(['grid,30,40])
+@end example
+y el valor no ser@'a sustituido de forma general. 
+@end defun
+
+@c @node PSDRAW_CURVE
+@c @unnumberedsec phony
+@defun PSDRAW_CURVE (ptlist)
+Dibuja una curva que conecta los puntos contenidos en PTLIST. @'Esta
+puede ser de la forma [x0,y0,x1,y1,...] o [[x0,y0],[x1,y1],...]
+La funci@'on JOIN es @'util para tomar una lista de x's y una
+lista de y's y empalmarlas ambas. 
+PSDRAW_CURVE simplemente invoca una funci@'on m@'as primitiva:
+PSCURVE. Aqu@'{i} est@'a su definici@'on: 
+@example
+(defun $psdraw_curve (lis)
+  (p "newpath")
+  ($pscurve lis)
+  (p "stroke"))
+@end example
+ ?DRAW2D  puede tambi@'en ser usado para producir una lista.
+@example
+ points1:?draw2d(1/x,[.05,10],.03) 
+@end example
+@end defun
+@c @node PSCOM
+@c @unnumberedsec phony
+@defun PSCOM (com)
+
+COM ser@'a insertado en un archivo postscript eg:
+@example
+  pscom("4.5 72 mul 5.5 72 mul translate  14 14 scale");
+@end example
+@end defun
+
+
+
+@c Revisado y traducido por : Juan Pablo Romero Bernal
+@c correo-e	: jpromerobx@linuxmail.org
+@c Grupo Linux Universidad Distrital
+@c http://glud.udistrital.edu.co
+@c Proyecto GLUD-CLog
+@c http://glud.udistrital.edu.co/clog
+@c Bogota - Colombia
