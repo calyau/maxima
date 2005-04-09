@@ -581,10 +581,12 @@
   (cfratsimp  (let ($listarith)
 		(bind-status-divov-t (cfeval (meval (fexprcheck a)))))))
 
+;; Definition of cfratsimp as given in SF bug report # 620928.
 (defun cfratsimp (a)
-  (cond ((memq (car a) '(cf)) a)
-	(t
-	 (cons '(mlist cf simp)(apply 'find-cf (cf-back-recurrence (cdr a)))))))
+  (cond ((atom a) a)
+        ((memq 'cf (car a)) a)
+        (t (cons '(mlist cf simp)
+                 (apply 'find-cf (cf-back-recurrence (cdr a)))))))
 
 (defun cfeval (a)
   (let (temp $ratprint)
