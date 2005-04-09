@@ -335,18 +335,38 @@ if any of @var{function_1}, ..., @var{function_n} are referenced and not yet def
 @var{filename} usually contains definitions for the functions specified,
 although that is not enforced.
 
-@c SEEMS POSSIBLE THIS PARENTHETICAL REMARK IS OUT OF DATE
-(This is the process by which calling e.g.
-@code{integrate} in a fresh Maxima causes various files to be loaded in.)
-
 @code{setup_autoload} does not work for array functions.
 
 @code{setup_autoload} quotes its arguments.
 
-@c NEED A NEW EXAMPLE HERE,
-@c BUT setup_autoload APPEARS TO BE BROKEN AT THE MOMENT (CASE SENSITIVITY BUG)
-@c @example
-@c setup_autoload ("bessel")$ j1(0.0);
-@c @end example
+Example:
+
+@c EXAMPLE GENERATED FROM FOLLOWING INPUT
+@c legendre_p (1, %pi);
+@c setup_autoload ("specfun.mac", legendre_p, ultraspherical);
+@c ultraspherical (2, 1/2, %pi);
+@c legendre_p (1, %pi);
+@c legendre_q (1, %pi);
+@example
+(%i1) legendre_p (1, %pi);
+(%o1)                  legendre_p(1, %pi)
+(%i2) setup_autoload ("specfun.mac", legendre_p, ultraspherical);
+(%o2)                         done
+(%i3) ultraspherical (2, 1/2, %pi);
+Warning - you are redefining the Macsyma function ultraspherical
+Warning - you are redefining the Macsyma function legendre_p
+                            2
+                 3 (%pi - 1)
+(%o3)            ------------ + 3 (%pi - 1) + 1
+                      2
+(%i4) legendre_p (1, %pi);
+(%o4)                          %pi
+(%i5) legendre_q (1, %pi);
+                              %pi + 1
+                      %pi log(-------)
+                              1 - %pi
+(%o5)                 ---------------- - 1
+                             2
+@end example
 
 @end defun
