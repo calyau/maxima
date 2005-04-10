@@ -209,9 +209,9 @@ if and only if the expressions are syntactically identical.
 
 @end deffn
 
-@defun abs (exp)
-returns the absolute value exp.  If exp is complex, returns the complex
-modulus of exp.
+@defun abs (@var{expr})
+Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the complex
+modulus of @var{expr}.
 
 @end defun
 @c end concepts Operators
@@ -270,9 +270,9 @@ arguments necessary to convert it to that form.
 
 @end defvr
 
-@defun cabs (exp)
-returns the complex absolute value (the complex modulus) of
-exp.
+@defun cabs (@var{expr})
+Returns the complex absolute value (the complex modulus) of
+@var{expr}.
 
 @end defun
 
@@ -283,23 +283,29 @@ simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @end defvr
 
-@defun entier (x)
-largest integer <= X where X is numeric.  @code{fix} (as in
-@code{fixnum}) is a synonym for this, so @code{fix(x)} is precisely the same.
+@defun entier (@var{x})
+Returns the largest integer less than or equal to @var{x} where @var{x} is numeric.  @code{fix} (as in
+@code{fixnum}) is a synonym for this, so @code{fix(@var{x})} is precisely the same.
 
 @end defun
 
-@defun equal (expr1,expr2)
-used with an @code{is}, returns @code{true} (or @code{false}) if
-and only if expr1 and expr2 are equal (or not equal) for all possible
+@c NEEDS CLARIFICATION
+@defun equal (@var{expr_1}, @var{expr_2})
+Used with an @code{is}, returns @code{true} (or @code{false}) if
+and only if @var{expr_1} and @var{expr_2} are equal (or not equal) for all possible
 values of their variables (as determined by @code{ratsimp}).  Thus
-@code{is(equal((x+1)**2,x**2+2*x+1))} returns @code{true} whereas if X is unbound
-@code{is((x+1)**2=x**2+2*x+1)} returns @code{false}.  Note also that @code{is(rat(0)=0)}
-gives @code{false} but @code{is(equal(rat(0),0))} gives @code{true}.  If a determination
-can't be made with @code{equal} then a simplified but equivalent form is
-returned whereas = always causes either @code{true} or @code{false} to be returned.
-All variables occurring in exp are presumed to be real valued.
-@code{ev(exp,pred)} is equivalent to @code{is(exp)}.
+@code{is (equal ((x + 1)^2, x^2 + 2*x + 1))} returns @code{true} whereas if @code{x} is unbound
+@code{is ((x + 1)^2 = x^2 + 2*x + 1)} returns @code{false}.  Note also that @code{is(rat(0)=0)}
+yields @code{false} but @code{is (equal (rat(0), 0))} yields @code{true}.
+
+If a determination
+can't be made, then @code{is (equal (a, b))} returns a simplified but equivalent expression, 
+whereas @code{is (a=b)} always returns either @code{true} or @code{false}.
+
+All variables occurring in @var{expr_1} and @var{expr_2} are presumed to be real valued.
+
+@c COPY THIS TO DESCRIPTION OF is
+@code{ev (@var{expr}, pred)} is equivalent to @code{is (@var{expr})}.
 
 @example
 (%i1) is (x^2 >= 2*x - 1);
@@ -312,28 +318,35 @@ All variables occurring in exp are presumed to be real valued.
 
 @end defun
 
-@defun eval
-causes an extra post-evaluation of exp to occur.
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c NOTE THAT eval IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
+@c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
+@deffn operator eval
+As an argument in a call to @code{ev (@var{expr})},
+@code{eval} causes an extra evaluation of @var{expr}.
+See @code{ev}.
+
+@end deffn
+
+@defun evenp (@var{expr})
+Returns @code{true} if @var{expr} is an even integer.
+@c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+@code{false} is returned in all other cases.
 
 @end defun
 
-@defun evenp (exp)
-is @code{true} if exp is an even integer.  @code{false} is returned in
-all other cases.
+@defun fix (@var{x})
+A synonym for @code{entier (@var{x})}.
 
 @end defun
 
-@defun fix (x)
-a synonym for @code{entier(x)} - largest integer <= X where X is
-numeric.
-
-@end defun
-
-@defun fullmap (fn, exp1, ...)
-is similar to @code{map} but it will keep mapping
+@defun fullmap (@var{f}, @var{expr_1}, ...)
+Similar to @code{map}, but @code{fullmap} keeps mapping
 down all subexpressions until the main operators are no longer the
-same.  The user should be aware that @code{fullmap} is used by the Maxima
-simplifier for certain matrix manipulations; thus, the user might see
+same.
+
+@code{fullmap} is used by the Maxima
+simplifier for certain matrix manipulations; thus, Maxima sometimes generates
 an error message concerning @code{fullmap} even though @code{fullmap} was not
 explicitly called by the user.
 
@@ -347,8 +360,8 @@ explicitly called by the user.
 
 @end defun
 
-@defun fullmapl (fn, list1, ...)
-is similar to @code{fullmap} but it only maps onto
+@defun fullmapl (@var{f}, @var{list_1}, ...)
+Similar to @code{fullmap}, but @code{fullmapl} only maps onto
 lists and matrices.
 
 @example
@@ -358,8 +371,9 @@ lists and matrices.
 
 @end defun
 
-@defun is (exp)
-attempts to determine whether exp (which must evaluate to a
+@c NEEDS CLARIFICATION AND EXAMPLES
+@defun is (@var{expr})
+Attempts to determine whether @var{expr} (which must evaluate to a
 predicate) is provable from the facts in the current data base.  @code{is}
 returns @code{true} if the predicate is true for all values of its variables
 consistent with the data base and returns @code{false} if it is false for all
@@ -369,45 +383,53 @@ switch @code{prederror}. @code{is} errs out if the value of
 
 @end defun
 
-@defun isqrt (x)
-takes one integer argument and returns the "integer square root"
-of its absolute value.
+@defun isqrt (@var{x})
+Returns the "integer square root"
+of the absolute value of @var{x},
+which is an integer.
 
 @end defun
 
-@defun max (x1, x2, ...)
-yields the maximum of its arguments (or returns a
+@defun max (@var{x_1}, @var{x_2}, ...)
+Returns the maximum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
 @end defun
 
-@defun min (x1, x2, ...)
-yields the minimum of its arguments (or returns a
+@defun min (@var{x_1}, @var{x_2}, ...)
+Returns the minimum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
 @end defun
 
-@defun mod (poly)
-converts the polynomial poly to a modular representation
+@defun mod (@var{p})
+@defunx mod (@var{p}, @var{m})
+Converts the polynomial @var{p} to a modular representation
 with respect to the current modulus which is the value of the variable
 @code{modulus}.  
-@code{mod(poly,m)} specifies a @code{modulus} m to be used for converting poly, if
-it is desired to override the current global value of @code{modulus}.
+
+@code{mod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
+instead of the current value of @code{modulus}.
+
 See @code{modulus}.
 
 @end defun
 
-@defun oddp (exp)
-is @code{true} if exp is an odd integer.  @code{false} is returned in all
-other cases.
+@defun oddp (@var{expr})
+is @code{true} if @var{expr} is an odd integer.
+@c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
+@code{false} is returned in all other cases.
 
 @end defun
 
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c NOTE THAT pred IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
+@c BUT FOR SOME REASON pred DOES NOT HAVE THE evflag PROPERTY
 @deffn operator pred
-Causes predicates (expressions which evaluate to @code{true}
+As an argument in a call to @code{ev (@var{expr})},
+@code{pred} causes predicates (expressions which evaluate to @code{true}
 or @code{false}) to be evaluated.
-
-See also @code{evflag}.
+See @code{ev}.
 
 @end deffn
 
@@ -445,12 +467,12 @@ Copies @var{s} to the random number generator state.
 
 @end defun
 
-@defun random (x)
-Returns a pseudorandom number. If @code{x} is an integer, @code{random (x)} returns an
-integer from 0 through @code{x-1} inclusive. If @code{x} is a floating point number,
-@code{random (x)} returns a nonnegative floating point number less than @code{x}.
-@code{random} complains with an error if @code{x} is neither an integer nor a float,
-or if @code{x} is not positive.
+@defun random (@var{x})
+Returns a pseudorandom number. If @var{x} is an integer, @code{random (@var{x})} returns an
+integer from 0 through @code{@var{x} - 1} inclusive. If @var{x} is a floating point number,
+@code{random (@var{x})} returns a nonnegative floating point number less than @var{x}.
+@code{random} complains with an error if @var{x} is neither an integer nor a float,
+or if @var{x} is not positive.
 
 The functions @code{make_random_state} and @code{set_random_state}
 maintain the state of the random number generator.
@@ -502,8 +524,8 @@ Examples:
 
 @end defun
 
-@defun sign (exp)
-Attempts to determine the sign of its specified expression
+@defun sign (@var{expr})
+Attempts to determine the sign of @var{expr}
 on the basis of the facts in the current data base.  It returns one of
 the following answers: @code{pos} (positive), @code{neg} (negative), @code{zero}, @code{pz}
 (positive or zero), @code{nz} (negative or zero), @code{pn} (positive or negative),
@@ -511,24 +533,31 @@ or @code{pnz} (positive, negative, or zero, i.e. nothing known).
 
 @end defun
 
-@defun signum (x)
-if X<0 then -1 else if X>0 then 1 else 0.  If X is not
-numeric then a simplified but equivalent form is returned. For
-example, @code{signum(-x)} gives @code{-signum(x)}.
+@defun signum (@var{x})
+For numeric @var{x}, returns 0 if @var{x} is 0, otherwise returns -1 or +1
+as @var{x} is less than or greater than 0, respectively.
+
+If @var{x} is not numeric then a simplified but equivalent form is returned.
+For example, @code{signum(-x)} gives @code{-signum(x)}.
+@c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
 
 @end defun
 
-@defun sort (list,optional-predicate)
-sorts the list using a suitable
-optional-predicate of two arguments (such as "<" or @code{orderlessp}).  If
-the optional-predicate is not given, then Maxima's built-in ordering
-predicate is used.
+@defun sort (@var{list}, @var{p})
+@defunx sort (@var{list})
+Sorts @var{list} according to a predicate @code{p} of two arguments,
+such as @code{"<"} or @code{orderlessp}.
 
+@code{sort (@var{list})} sorts @var{list} according to Maxima's built-in ordering.
+
+@var{list} may contain numeric or nonnumeric items, or both.
+
+@c NEED EXAMPLES, ESPECIALLY SORTING NONNUMERIC ITEMS
 @end defun
 
-@defun sqrt (x)
-the square root of X. It is represented internally by
-X^(1/2).  See also @code{rootscontract}.
+@defun sqrt (@var{x})
+The square root of @var{x}. It is represented internally by
+@code{@var{x}^(1/2)}.  See also @code{rootscontract}.
 
 @code{radexpand} if @code{true} will cause nth roots of factors of a product
 which are powers of n to be pulled outside of the radical, e.g.
@@ -537,29 +566,42 @@ which are powers of n to be pulled outside of the radical, e.g.
 @end defun
 
 @defvar sqrtdispflag
-default: @code{true} - if @code{false} causes @code{sqrt} to display with
-exponent 1/2.
+Default value: @code{true}
+
+When @code{sqrtdispflag} is @code{false},
+causes @code{sqrt} to display with exponent 1/2.
+@c AND OTHERWISE ... ??
 
 @end defvar
 
-@defun sublis (list,expr)
-allows multiple substitutions into an expression in
-parallel.  Sample syntax:
+@c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
+@c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
+@defun sublis (@var{list}, @var{expr})
+Makes multiple parallel substitutions into an expression.
+
+The variable @code{sublis_apply_lambda} controls simplification after
+@code{sublis}.
+
+Example:
 
 @example
 (%i1) sublis ([a=b, b=a], sin(a) + cos(b));
 (%o1)                    sin(b) + cos(a)
 @end example
 
-The variable @code{sublis_apply_lambda} controls simplification after
-@code{sublis}.
-
 @end defun
 
-@defun sublist (l,f)
-returns the list of elements of the list @code{l} for which the
-function @code{f} returns @code{true}.  E.g., @code{sublist([1,2,3,4],evenp)} returns
-@code{[2,4]}.
+@defun sublist (@var{list}, @var{p})
+Returns the list of elements of @var{list} for which the
+predicate @code{p} returns @code{true}.
+
+Example:
+
+@example
+(%i1) L: [1, 2, 3, 4, 5, 6]$
+(%i2) sublist (L, evenp);
+(%o2)                       [2, 4, 6]
+@end example
 
 @end defun
 
@@ -571,31 +613,38 @@ application.
 
 @end defvar
 
-@defun subst (a, b, c)
-substitutes a for b in c.  b must be an atom, or a
-complete subexpression of c.  For example, X+Y+Z is a complete
-subexpression of 2*(X+Y+Z)/W while X+Y is not. When b does not have
+@c NEEDS CLARIFICATION, MORE EXAMPLES
+@defun subst (@var{a}, @var{b}, @var{c})
+Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
+complete subexpression of @var{c}.  For example, @code{x+y+z} is a complete
+subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not. When @var{b} does not have
 these characteristics, one may sometimes use @code{substpart} or @code{ratsubst}
-(see below).  Alternatively, if b is of the form e/f then one could
-use @code{subst(a*f,e,c)} while if b is of the form e**(1/f) then one could
-use @code{subst(a**f,e,c)}.  The @code{subst} command also discerns the x^y in x^-y
-so that @code{subst(a,sqrt(x),1/sqrt(x))} yields 1/a.  a and b may also be
-operators of an expression enclosed in "s or they may be function
+(see below).  Alternatively, if @var{b} is of the form @code{e/f} then one could
+use @code{subst (a*f, e, c)} while if @var{b} is of the form @code{e^(1/f)} then one could
+use @code{subst (a^f, e, c)}.  The @code{subst} command also discerns the @code{x^y} in @code{x^-y}
+so that @code{subst (a, sqrt(x), 1/sqrt(x))} yields @code{1/a}.  @var{a} and @var{b} may also be
+operators of an expression enclosed in double-quotes @code{"} or they may be function
 names.  If one wishes to substitute for the independent variable in
 derivative forms then the @code{at} function (see below) should be used.
 
-Note:  @code{subst} is an alias for @code{substitute}.
-@code{subst(eq1,exp)} or @code{subst([eq1,...,eqk],exp)} are other permissible
-forms.  The eqi are equations indicating substitutions to be made.
+@c UMM, REVERSE THIS AND MOVE IT TO substitute ??
+@code{subst} is an alias for @code{substitute}.
+
+@code{subst (@var{eq_1}, @var{expr})} or @code{subst ([@var{eq_1}, ..., @var{eq_k}], @var{expr})}
+are other permissible
+forms.  The @var{eq_i} are equations indicating substitutions to be made.
 For each equation, the right side will be substituted for the left in
-the expression exp.
+the expression @var{expr}.
 
-@code{exptsubst} if @code{true} permits substitutions like Y for %E**X in
-%E**(A*X) to take place.
+@code{exptsubst} if @code{true} permits substitutions
+like @code{y} for @code{%e^x} in @code{%e^(a*x)} to take place.
 
-@code{opsubst} if @code{false}, @code{subst} will not attempt to substitute into the
-operator of an expression.  E.g. @code{(opsubst:false, subst(x^2,r,r+r[0]));}
-will work.
+@c WHAT IS THIS ABOUT ??
+When @code{opsubst} is @code{false},
+@code{subst} will not attempt to substitute into the operator of an expression.
+E.g. @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
+
+Examples:
 
 @example
 (%i1) subst (a, x+y, x + (x+y)^2 + y);
@@ -606,14 +655,14 @@ will work.
 @end example
 
 @noindent
-(Note that %i2 is one way of obtaining the complex conjugate of an analytic
-expression.)  For further examples, do @code{example(subst)}.
+For further examples, do @code{example (subst)}.
 
 @end defun
 
-@defun substinpart (x, exp, n1, ...)
-is like @code{substpart} but works on the
-internal representation of exp.
+@c NEEDS CLARIFICATION
+@defun substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+Similar to @code{substpart}, but @code{substinpart} works on the
+internal representation of @var{expr}.
 
 @example
 (%i1) x . 'diff (f(x), x, 2);
@@ -672,12 +721,13 @@ the same as calling @code{inpart} or @code{substinpart}.
 
 @end defun
 
-@defun substpart (x, exp, n1, ..., nk)
-Substitutes x for the subexpression
+@c NEEDS CLARIFICATION
+@defun substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+Substitutes @var{x} for the subexpression
 picked out by the rest of the arguments as in @code{part}.  It returns the
-new value of exp.  x may be some operator to be substituted for an
-operator of exp.  In some cases it needs to be enclosed in "s (e.g.
-@code{substpart("+",a*b,0)} yields B + A.
+new value of @var{expr}.  @var{x} may be some operator to be substituted for an
+operator of @var{expr}.  In some cases @var{x} needs to be enclosed in double-quotes @code{"}
+(e.g.  @code{substpart ("+", a*b, 0)} yields @code{b + a}).
 
 @example
 (%i1) 1/(x^2 + 2);
@@ -701,20 +751,21 @@ the same as calling @code{inpart} or @code{substinpart}.
 
 @end defun
 
-@defun subvarp (exp)
-is @code{true} if exp is a subscripted variable, for example
-A[I].
+@c NEEDS EXPANSION AND EXAMPLES
+@defun subvarp (@var{expr})
+Returns @code{true} if @var{expr} is a subscripted variable, for example
+@code{a[i]}.
 
 @end defun
 
-@defun symbolp (exp)
-returns @code{true} if "exp" is a "symbol" or "name", else
-@code{false}.  I.e., in effect, @code{symbolp(x):=atom(x) and not numberp(x)}.
+@defun symbolp (@var{expr})
+Returns @code{true} if @var{expr} is a symbol, else @code{false}.
+In effect, @code{symbolp(x)} is equivalent to the predicate @code{atom(x) and not numberp(x)}.
 
 @end defun
 
 @defun unorder ()
-stops the aliasing created by the last use of the ordering
+Disables the aliasing created by the last use of the ordering
 commands @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} may not
 be used more than one time each without calling @code{unorder}. 
 See also @code{ordergreat} and @code{orderless}.
@@ -740,7 +791,9 @@ See also @code{ordergreat} and @code{orderless}.
 
 @end defun
 
-@defun vectorpotential (givencurl)
+@c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
+@c NEEDS EXAMPLES
+@defun vectorpotential (@var{givencurl})
 Returns the vector potential of a given
 curl vector, in the current coordinate system.
 @code{potentialzeroloc} has a similar role as for @code{potential}, but the order of
@@ -749,12 +802,15 @@ the coordinate variables.
 
 @end defun
 
-@defun xthru (exp)
-combines all terms of exp (which should be a sum) over a
+@defun xthru (@var{expr})
+Combines all terms of @var{expr} (which should be a sum) over a
 common denominator without expanding products and exponentiated sums
 as @code{ratsimp} does.  @code{xthru} cancels common factors in the numerator and
 denominator of rational expressions but only if the factors are
-explicit.  Sometimes it is better to use @code{xthru} before @code{ratsimp}ing an
+explicit.
+
+@c REPHRASE IN NEUTRAL TONE (GET RID OF "IT IS BETTER")
+Sometimes it is better to use @code{xthru} before @code{ratsimp}ing an
 expression in order to cause explicit factors of the gcd of the
 numerator and denominator to be canceled thus simplifying the
 expression to be @code{ratsimp}ed.
@@ -776,23 +832,35 @@ expression to be @code{ratsimp}ed.
 
 @end defun
 
-@defun zeroequiv (exp,var)
-tests whether the expression exp in the variable
-var is equivalent to zero.  It returns either @code{true}, @code{false}, or
-@code{dontknow}.  For example @code{zeroequiv(sin(2*x) - 2*sin(x)*cos(x),x)} returns
-@code{true} and @code{zeroequiv(%e^x+x,x)} returns @code{false}.  On the other hand
-@code{zeroequiv(log(a*b) - log(a) - log(b),a)} will return @code{dontknow} because
-of the presence of an extra parameter.  The restrictions are:
-(1) Do not use functions that Maxima does not know how to
+@c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
+@c DUNNO WHETHER WE CAN CLEAR THIS UP
+@defun zeroequiv (@var{expr}, @var{v})
+Tests whether the expression @var{expr} in the variable
+@var{v} is equivalent to zero, returning @code{true}, @code{false}, or
+@code{dontknow}.
+
+@code{zeroequiv} has these restrictions:
+@enumerate
+@item
+Do not use functions that Maxima does not know how to
 differentiate and evaluate.
-(2) If the expression has poles on the real line, there may be errors
+@item
+If the expression has poles on the real line, there may be errors
 in the result (but this is unlikely to occur).
-(3) If the expression contains functions which are not solutions to
+@item
+If the expression contains functions which are not solutions to
 first order differential equations (e.g.  Bessel functions) there may
 be incorrect results.
-(4) The algorithm uses evaluation at randomly chosen points for
+@item
+The algorithm uses evaluation at randomly chosen points for
 carefully selected subexpressions.  This is always a somewhat
 hazardous business, although the algorithm tries to minimize the
 potential for error.
+@end enumerate
+
+For example @code{zeroequiv (sin(2*x) - 2*sin(x)*cos(x), x)} returns
+@code{true} and @code{zeroequiv (%e^x + x, x)} returns @code{false}.
+On the other hand @code{zeroequiv (log(a*b) - log(a) - log(b), a)} returns @code{dontknow} because
+of the presence of an extra parameter @code{b}.
 
 @end defun
