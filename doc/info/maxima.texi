@@ -95,9 +95,9 @@ Support for specific areas of mathematics
 * Arrays and Tables::           Creating and working with arrays.
 * Matrices and Linear Algebra:: Matrix operations.
 * Affine::                      
-* Itensor::                     Indicial Tensor Manipulation.
-* Ctensor::                     Component Tensor Manipulation.
-* Atensor::                     Algebraic Tensor Manipulation.
+* itensor::                     Indicial Tensor Manipulation.
+* ctensor::                     Component Tensor Manipulation.
+* atensor::                     Algebraic Tensor Manipulation.
 * Series::                      Taylor and power series.
 * Number Theory::               Number theory.
 * Symmetries::                  
@@ -261,20 +261,20 @@ Affine
 
 * Definitions for Affine::      
 
-Iensor
+itensor
 
-* Introduction to Itensor::      
-* Definitions for Itensor::      
+* Introduction to itensor::      
+* Definitions for itensor::      
 
-Ctensor
+ctensor
 
-* Introduction to Ctensor::     
-* Definitions for Ctensor::     
+* Introduction to ctensor::     
+* Definitions for ctensor::     
 
-Atensor
+atensor
 
-* Introduction to Atensor::     
-* Definitions for Atensor::     
+* Introduction to atensor::     
+* Definitions for atensor::     
 
 Series
 
@@ -449,23 +449,23 @@ Debugging
 @chapter Matrices and Linear Algebra
 @include Matrices.texi
 
-@node Affine, Itensor, Matrices and Linear Algebra, Top
+@node Affine, itensor, Matrices and Linear Algebra, Top
 @chapter Affine
 @include Affine.texi
 
-@node Itensor, Ctensor, Affine, Top
-@chapter Itensor
+@node itensor, ctensor, Affine, Top
+@chapter itensor
 @include Itensor.texi
 
-@node Ctensor, Atensor, Itensor, Top
-@chapter Ctensor
+@node ctensor, atensor, itensor, Top
+@chapter ctensor
 @include Ctensor.texi
 
-@node Atensor, Series, Ctensor, Top
-@chapter Atensor
+@node atensor, Series, ctensor, Top
+@chapter atensor
 @include Atensor.texi
 
-@node Series, Number Theory, Atensor, Top
+@node Series, Number Theory, atensor, Top
 @chapter Series
 @include Series.texi
 

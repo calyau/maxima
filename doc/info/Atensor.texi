@@ -1,21 +1,21 @@
 @menu
-* Introduction to Atensor::
-* Definitions for Atensor::
+* Introduction to atensor::
+* Definitions for atensor::
 @end menu
 
-@node Introduction to Atensor, Definitions for Atensor, Atensor, Atensor
-@section Introduction to Atensor
+@node Introduction to atensor, Definitions for atensor, atensor, atensor
+@section Introduction to atensor
 
-Atensor is an algebraic tensor manipulation package. To use Atensor,
+@code{atensor} is an algebraic tensor manipulation package. To use @code{atensor},
 type @code{load(atensor)}, followed by a call to the @code{init_atensor}
 function.
 
-The essence of Atensor is a set of simplification rules for the
-noncommutative (dot) product operator ("@code{.}"). Atensor recognizes
+The essence of @code{atensor} is a set of simplification rules for the
+noncommutative (dot) product operator ("@code{.}"). @code{atensor} recognizes
 several algebra types; the corresponding simplification rules are put
 into effect when the @code{init_atensor} function is called.
 
-The capabilities of Atensor can be demonstrated by defining the
+The capabilities of @code{atensor} can be demonstrated by defining the
 algebra of quaternions as a Clifford-algebra Cl(0,2) with two basis
 vectors. The three quaternionic imaginary units are then the two
 basis vectors and their product, i.e.:
@@ -25,7 +25,7 @@ basis vectors and their product, i.e.:
          1         2         1    2
 @end example
 
-Although the Atensor package has a built-in definition for the
+Although the @code{atensor} package has a built-in definition for the
 quaternion algebra, it is not used in this example, in which we
 endeavour to build the quaternion multiplication table as a matrix:
 
@@ -71,7 +71,7 @@ endeavour to build the quaternion multiplication table as a matrix:
                    [  1    2      2          1            ]
 @end example
 
-Atensor recognizes as base vectors indexed symbols, where the symbol
+@code{atensor} recognizes as base vectors indexed symbols, where the symbol
 is that stored in @code{asymbol} and the index runs between 1 and @code{adim}.
 For indexed symbols, and indexed symbols only, the bilinear forms
 @code{sf()}, @code{af()}, and @code{av()} are evaluated. The evaluation
@@ -83,7 +83,7 @@ in place of @code{av(v[i],v[j])}.
 Needless to say, the functions @code{sf()}, @code{af()} and @code{av()}
 can be redefined.
 
-When the Atensor package is loaded, the following flags are set:
+When the @code{atensor} package is loaded, the following flags are set:
 
 @example
 dotscrules:true;
@@ -97,16 +97,16 @@ consider setting @code{dotassoc} to @code{false}. In this case, however,
 simplifications.
 
 
-@c end concepts Atensor
-@node Definitions for Atensor,  , Introduction to Atensor, Atensor
+@c end concepts atensor
+@node Definitions for atensor,  , Introduction to atensor, atensor
 
-@section Definitions for Atensor
+@section Definitions for atensor
 
 @c @node init_atensor
 @c @unnumberedsec phony
 @defun init_atensor (alg_type,[opt_dims])
 
-Initializes the Atensor package with the specified algebra type. @code{alg_type}
+Initializes the @code{atensor} package with the specified algebra type. @code{alg_type}
 can be one of the following:
 
 @code{universal}: The universal algebra has no commutation rules.
@@ -119,7 +119,7 @@ relation @code{u.v+v.u=-2*sf(u,v)} where @code{sf()} is a symmetric
 scalar-valued function. For this algebra, @code{opt_dims} can be up
 to three nonnegative integers, representing the number of positive,
 degenerate, and negative dimensions of the algebra, respectively. If
-any @code{opt_dims} values are supplied, Atensor will configure the
+any @code{opt_dims} values are supplied, @code{atensor} will configure the
 values of @code{adim} and @code{aform} appropriately. Otherwise,
 @code{adim} will default to 0 and @code{aform} will not be defined.
 
@@ -131,7 +131,7 @@ relation @code{u.v-v.u=2*af(u,v)} where @code{af()} is an antisymmetric
 scalar-valued function. For the symplectic algebra, @code{opt_dims} can
 be up to two nonnegative integers, representing the nondegenerate and
 degenerate dimensions, respectively. If any @code{opt_dims} values are
-supplied, Atensor will configure the values of @code{adim} and @code{aform}
+supplied, @code{atensor} will configure the values of @code{adim} and @code{aform}
 appropriately. Otherwise, @code{adim} will default to 0 and @code{aform}
 will not be defined.
 
@@ -187,7 +187,7 @@ The algebra type. Valid values are @code{universal}, @code{grassmann},
 @c @unnumberedsec phony
 @defvar adim
 
-The dimensionality of the algebra. Atensor uses the value of @code{adim}
+The dimensionality of the algebra. @code{atensor} uses the value of @code{adim}
 to determine if an indexed object is a valid base vector. Defaults to 0.
 
 @end defvar
@@ -267,7 +267,7 @@ For instance:
 @c @unnumberedsec phony
 @defun abasep (v)
 
-Checks if its argument is an Atensor base vector. That is, if it is
+Checks if its argument is an @code{atensor} base vector. That is, if it is
 an indexed symbol, with the symbol being the same as the value of
 @code{asymbol}, and the index having a numeric value between 1
 and @code{adim}.

@@ -1,10 +1,10 @@
 @menu
-* Introduction to Ctensor::     
-* Definitions for Ctensor::     
+* Introduction to ctensor::     
+* Definitions for ctensor::     
 @end menu
 
-@node Introduction to Ctensor, Definitions for Ctensor, Ctensor, Ctensor
-@section Introduction to Ctensor
+@node Introduction to ctensor, Definitions for ctensor, ctensor, ctensor
+@section Introduction to ctensor
 
  - Component Tensor Manipulation Package.  To use the CTENSOR
 package, type @code{load(ctensor)}.
@@ -114,10 +114,10 @@ y;
 
 @end example
 
-@c end concepts Ctensor
-@node Definitions for Ctensor,  , Introduction to Ctensor, Ctensor
+@c end concepts ctensor
+@node Definitions for ctensor,  , Introduction to ctensor, ctensor
 
-@section Definitions for Ctensor
+@section Definitions for ctensor
 
 @subsection Initialization and setup
 
@@ -458,12 +458,12 @@ factored as well.
 
 @subsection Taylor series expansion
 
-The Ctensor package has the ability to truncate results by assuming
+The @code{ctensor} package has the ability to truncate results by assuming
 that they are Taylor-series approximations. This behavior is controlled by
-the @code{ctayswitch} variable; when set to true, Ctensor makes use
+the @code{ctayswitch} variable; when set to true, @code{ctensor} makes use
 internally of the function @code{ctaylor()} when simplifying results.
 
-The @code{ctaylor()} function is invoked by the following Ctensor functions:
+The @code{ctaylor()} function is invoked by the following @code{ctensor} functions:
 
 @example
 
@@ -784,7 +784,7 @@ December 19, 2004, and is likely to contain errors.
 
 @subsection Torsion and nonmetricity
 
-Ctensor has the ability to compute and include torsion and nonmetricity
+@code{ctensor} has the ability to compute and include torsion and nonmetricity
 coefficients in the connection coefficients.
 
 The torsion coefficients are calculated from a user-supplied tensor
