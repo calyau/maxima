@@ -362,33 +362,42 @@ one containing the @code{go}.
 
 @end defun
 
+@c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @deffn {special operator} if
- - The @code{if} statement is used for conditional execution.  The syntax
+The @code{if} statement is used for conditional execution.  The syntax
 is:
+
 @example
-    if condition then expression1 else expression2.
+if <condition> then <expr_1> else <expr_2>
 @end example
-The result of an @code{if} statement is expression1 if condition is true and
-expression2 if it is false.  expression1 and expression2 are any
-Maxima expressions (including nested @code{if} statements), and condition is
+
+The result of an @code{if} statement is @var{expr_1} if condition is @code{true} and
+@var{expr_2} otherwise.  @var{expr_1} and @var{expr_2} are any
+Maxima expressions (including nested @code{if} statements), and @var{condition} is
 an expression which evaluates to @code{true} or @code{false} and is composed of
 relational and logical operators which are as follows:
-@example
- 
-Operator name       Symbol      Type
-greater than        >           relational infix
-equal to            = , equal   "  "
-not equal to        #           "  "
-less than           <           "  "
-greater than        >=
-  or equal to                   "  "
-less than           <=
-  or equal to                   "  "
-and                 and         logical infix
-or                  or          "  "
-not                 not         logical prefix
 
+@c - SEEMS LIKE THIS TABLE REALLY WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; THIS IS OK I GUESS
+@c - NEED TO FIGURE OUT WHETHER # IS "not =" OR "not equal"
+@c   WHEN WE HAVE AN ANSWER, MAKE A NOTE HERE AND ALSO IN DESCRIPTIONS OF = AND equal
+@c - REFORMAT THIS TABLE USING TEXINFO MARKUP
+@example
+Operation           Symbol      Type
+ 
+less than           <           relational infix
+less than           <=
+  or equal to                   relational infix
+syntactic equality  =           relational infix
+equivalence         equal       relational function
+not equal to        #           relational infix
+greater than        >=
+  or equal to                   relational infix
+greater than        >           relational infix
+and                 and         logical infix
+or                  or          logical infix
+not                 not         logical prefix
 @end example
+
 @end deffn
 
 @defun map (f, expr_1, expr_2, ...)
