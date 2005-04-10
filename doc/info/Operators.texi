@@ -209,12 +209,74 @@ if and only if the expressions are syntactically identical.
 
 @end deffn
 
+@c NEEDS EXAMPLES
+@deffn operator and
+The logical conjunction operator.
+@code{and} is an n-ary infix operator;
+its operands are Boolean expressions, and its result is a Boolean value.
+
+@code{and} forces evaluation (like @code{is}) of one or more operands,
+and may force evaluation of all operands.
+
+Operands are evaluated in the order in which they appear.
+@code{and} evaluates only as many of its operands as necessary to determine the result.
+If any operand is @code{false},
+the result is @code{false} and no further operands are evaluated.
+
+The global flag @code{prederror} governs the behavior of @code{and}
+when an evaluated operand cannot be determined to be @code{true} or @code{false}.
+@code{and} prints an error message when @code{prederror} is @code{true}.
+Otherwise, @code{and} returns @code{unknown}.
+
+@code{and} is not commutative:
+@code{a and b} might not be equal to @code{b and a} due to the treatment of indeterminate operands.
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn operator or
+The logical disjunction operator.
+@code{or} is an n-ary infix operator;
+its operands are Boolean expressions, and its result is a Boolean value.
+
+@code{or} forces evaluation (like @code{is}) of one or more operands,
+and may force evaluation of all operands.
+
+Operands are evaluated in the order in which they appear.
+@code{or} evaluates only as many of its operands as necessary to determine the result.
+If any operand is @code{true},
+the result is @code{true} and no further operands are evaluated.
+
+The global flag @code{prederror} governs the behavior of @code{or}
+when an evaluated operand cannot be determined to be @code{true} or @code{false}.
+@code{or} prints an error message when @code{prederror} is @code{true}.
+Otherwise, @code{or} returns @code{unknown}.
+
+@code{or} is not commutative:
+@code{a or b} might not be equal to @code{b or a} due to the treatment of indeterminate operands.
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn operator not
+The logical negation operator.
+@code{not} is a prefix operator;
+its operand is a Boolean expression, and its result is a Boolean value.
+
+@code{not} forces evaluation (like @code{is}) of its operand.
+
+The global flag @code{prederror} governs the behavior of @code{not}
+when its operand cannot be determined to be @code{true} or @code{false}.
+@code{not} prints an error message when @code{prederror} is @code{true}.
+Otherwise, @code{not} returns @code{unknown}.
+
+@end deffn
+
 @defun abs (@var{expr})
 Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the complex
 modulus of @var{expr}.
 
 @end defun
-@c end concepts Operators
 
 @defvr {special symbol} additive
 If @code{declare(f,additive)} has been executed, then:
