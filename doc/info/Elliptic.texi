@@ -40,66 +40,84 @@ Support for most of the other properties of elliptic functions and
 integrals other than derivatives has not yet been written.
 
 Some examples of elliptic functions:
-@example
-(%i1) jacobi_sn(u,m);
-(%o1)                            JACOBI_SN(u, m)
-(%i2) jacobi_sn(u,1);
-(%o2)                                TANH(u)
-(%i3) jacobi_sn(u,0);
-(%o3)                                SIN(u)
-(%i4) diff(jacobi_sn(u,m),u);
-(%o4)                    JACOBI_CN(u, m) JACOBI_DN(u, m)
-(%i5) diff(jacobi_sn(u,m),m);
-(%o5) JACOBI_CN(u, m) JACOBI_DN(u, m)
+@c GENERATED FROM THE FOLLOWING
+@c jacobi_sn (u, m);
+@c jacobi_sn (u, 1);
+@c jacobi_sn (u, 0);
+@c diff (jacobi_sn (u, m), u);
+@c diff (jacobi_sn (u, m), m);
 
-      ELLIPTIC_E(ASIN(JACOBI_SN(u, m)), m)
+@example
+(%i1) jacobi_sn (u, m);
+(%o1)                    jacobi_sn(u, m)
+(%i2) jacobi_sn (u, 1);
+(%o2)                        tanh(u)
+(%i3) jacobi_sn (u, 0);
+(%o3)                        sin(u)
+(%i4) diff (jacobi_sn (u, m), u);
+(%o4)            jacobi_cn(u, m) jacobi_dn(u, m)
+(%i5) diff (jacobi_sn (u, m), m);
+(%o5) jacobi_cn(u, m) jacobi_dn(u, m)
+
+      elliptic_e(asin(jacobi_sn(u, m)), m)
  (u - ------------------------------------)/(2 m)
                      1 - m
 
             2
-   JACOBI_CN (u, m) JACOBI_SN(u, m)
+   jacobi_cn (u, m) jacobi_sn(u, m)
  + --------------------------------
               2 (1 - m)
 @end example
 
 Some examples of elliptic integrals:
-@example
-(%i1) elliptic_f(phi,m);
-(%o1)                          ELLIPTIC_F(PHI, m)
-(%i2) elliptic_f(phi,0);
-(%o2)                                  PHI
-(%i3) elliptic_f(phi,1);
-                                      PHI   %PI
-(%o3)                          LOG(TAN(--- + ---))
-                                       2     4
-(%i4) elliptic_e(phi,1);
-(%o4)                               SIN(PHI)
-(%i5) elliptic_e(phi,0);
-(%o5)                                  PHI
-(%i6) elliptic_kc(1/2);
-                                            1
-(%o6)                            ELLIPTIC_KC(-)
-                                            2
-(%i7) makegamma(%);
-                                        2 1
-                                   GAMMA (-)
-                                          4
-(%o7)                              -----------
-                                  4 SQRT(%PI)
-(%i8) diff(elliptic_f(phi,m),phi);
-                                       1
-(%o8)                         ---------------------
-                                           2
-                             SQRT(1 - m SIN (PHI))
-(%i9) diff(elliptic_f(phi,m),m);
-      ELLIPTIC_E(PHI, m) - (1 - m) ELLIPTIC_F(PHI, m)
-(%o9) (-----------------------------------------------
-                             m
+@c GENERATED FROM THE FOLLOWING
+@c elliptic_f (phi, m);
+@c elliptic_f (phi, 0);
+@c elliptic_f (phi, 1);
+@c elliptic_e (phi, 1);
+@c elliptic_e (phi, 0);
+@c elliptic_kc (1/2);
+@c makegamma (%);
+@c diff (elliptic_f (phi, m), phi);
+@c diff (elliptic_f (phi, m), m);
 
-                            COS(PHI) SIN(PHI)
-                        - ---------------------)/(2 (1 - m))
-                                        2
-                          SQRT(1 - m SIN (PHI))
+@example
+(%i1) elliptic_f (phi, m);
+(%o1)                  elliptic_f(phi, m)
+(%i2) elliptic_f (phi, 0);
+(%o2)                          phi
+(%i3) elliptic_f (phi, 1);
+                               phi   %pi
+(%o3)                  log(tan(--- + ---))
+                                2     4
+(%i4) elliptic_e (phi, 1);
+(%o4)                       sin(phi)
+(%i5) elliptic_e (phi, 0);
+(%o5)                          phi
+(%i6) elliptic_kc (1/2);
+                                     1
+(%o6)                    elliptic_kc(-)
+                                     2
+(%i7) makegamma (%);
+                                 2 1
+                            gamma (-)
+                                   4
+(%o7)                      -----------
+                           4 sqrt(%pi)
+(%i8) diff (elliptic_f (phi, m), phi);
+                                1
+(%o8)                 ---------------------
+                                    2
+                      sqrt(1 - m sin (phi))
+(%i9) diff (elliptic_f (phi, m), m);
+       elliptic_e(phi, m) - (1 - m) elliptic_f(phi, m)
+(%o9) (-----------------------------------------------
+                              m
+
+                                 cos(phi) sin(phi)
+                             - ---------------------)/(2 (1 - m))
+                                             2
+                               sqrt(1 - m sin (phi))
 @end example
 
 Support for elliptic functions and integrals was written by Raymond
@@ -111,99 +129,99 @@ that governs the distribution of Maxima.
 
 @section Definitions for Elliptic Functions
 
-@defun JACOBI_SN (u, m)
+@defun jacobi_sn (u, m)
 The Jacobian elliptic function @math{sn(u,m)}.
 @end defun
 
-@defun JACOBI_CN (u, m)
+@defun jacobi_cn (u, m)
 The Jacobian elliptic function @math{cn(u,m)}.
 @end defun
 
-@defun JACOBI_DN (u, m)
+@defun jacobi_dn (u, m)
 The Jacobian elliptic function @math{dn(u,m)}.
 @end defun
 
-@defun JACOBI_NS (u, m)
+@defun jacobi_ns (u, m)
 The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
 @end defun
 
-@defun JACOBI_SC (u, m)
+@defun jacobi_sc (u, m)
 The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
 @end defun
 
-@defun JACOBI_SD (u, m)
+@defun jacobi_sd (u, m)
 The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
 @end defun
 
-@defun JACOBI_NC (u, m)
+@defun jacobi_nc (u, m)
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 @end defun
 
-@defun JACOBI_CS (u, m)
+@defun jacobi_cs (u, m)
 The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
 @end defun
 
-@defun JACOBI_CD (u, m)
+@defun jacobi_cd (u, m)
 The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
 @end defun
 
-@defun JACOBI_ND (u, m)
+@defun jacobi_nd (u, m)
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
 @end defun
 
-@defun JACOBI_DS (u, m)
+@defun jacobi_ds (u, m)
 The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
 @end defun
 
-@defun JACOBI_DC (u, m)
+@defun jacobi_dc (u, m)
 The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_SN (u, m)
+@defun inverse_jacobi_sn (u, m)
 The inverse of the Jacobian elliptic function @math{sn(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_CN (u, m)
+@defun inverse_jacobi_cn (u, m)
 The inverse of the Jacobian elliptic function @math{cn(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_DN (u, m)
+@defun inverse_jacobi_dn (u, m)
 The inverse of the Jacobian elliptic function @math{dn(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_NS (u, m)
+@defun inverse_jacobi_ns (u, m)
 The inverse of the Jacobian elliptic function @math{ns(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_SC (u, m)
+@defun inverse_jacobi_sc (u, m)
 The inverse of the Jacobian elliptic function @math{sc(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_SD (u, m)
+@defun inverse_jacobi_sd (u, m)
 The inverse of the Jacobian elliptic function @math{sd(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_NC (u, m)
+@defun inverse_jacobi_nc (u, m)
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_CS (u, m)
+@defun inverse_jacobi_cs (u, m)
 The inverse of the Jacobian elliptic function @math{cs(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_CD (u, m)
+@defun inverse_jacobi_cd (u, m)
 The inverse of the Jacobian elliptic function @math{cd(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_ND (u, m)
+@defun inverse_jacobi_nd (u, m)
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_DS (u, m)
+@defun inverse_jacobi_ds (u, m)
 The inverse of the Jacobian elliptic function @math{ds(u,m)}.
 @end defun
 
-@defun INVERSE_JACOBI_DC (u, m)
+@defun inverse_jacobi_dc (u, m)
 The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @end defun
 
@@ -213,8 +231,8 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 
 @section Definitions for Elliptic Integrals
 
-@anchor{ELLIPTIC_F}
-@defun ELLIPTIC_F (phi, m)
+@anchor{elliptic_f}
+@defun elliptic_f (phi, m)
 The incomplete elliptic integral of the first kind, defined as
 
 @ifinfo
@@ -225,20 +243,22 @@ The incomplete elliptic integral of the first kind, defined as
 $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-See also @ref{ELLIPTIC_E}, @ref{ELLIPTIC_KC}
+See also @ref{elliptic_e} and @ref{elliptic_kc}.
+
 @end defun
 
-@anchor{ELLIPTIC_E}
-@defun ELLIPTIC_E (phi, m)
+@anchor{elliptic_e}
+@defun elliptic_e (phi, m)
 The incomplete elliptic integral of the second kind, defined as
 @ifinfo
-@math{ELLIPTIC_E(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
-See also @ref{ELLIPTIC_E}, @ref{ELLIPTIC_EC}
+See also @ref{elliptic_e} and @ref{elliptic_ec}.
+
 @end defun
 
-@anchor{ELLIPTIC_EU}
-@defun ELLIPTIC_EU (u, m)
+@anchor{elliptic_eu}
+@defun elliptic_eu (u, m)
 The incomplete elliptic integral of the second kind, defined as
 @ifinfo
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
@@ -252,19 +272,19 @@ where $\tau = {\rm sn}(u, m)$
 @end tex
 
 
-This is related to @math{ELLIPTIC_E} by
+This is related to @math{elliptic_e} by
 @ifinfo
-@math{ELLIPTIC_EU(u, m) = ELLIPTIC_E(asin(sn(u,m)),m)}
+@math{elliptic_eu(u, m) = elliptic_e(asin(sn(u,m)),m)}
 @end ifinfo
 @tex
 $$E(u,m) = E(\phi, m)$$
 
 where $\phi = \sin^{-1} {\rm sn}(u, m),m)$
 @end tex
-See also @ref{ELLIPTIC_E}.
+See also @ref{elliptic_e}.
 @end defun
 
-@defun ELLIPTIC_PI (n, phi, m)
+@defun elliptic_pi (n, phi, m)
 The incomplete elliptic integral of the third kind, defined as
 @ifinfo
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -273,11 +293,11 @@ The incomplete elliptic integral of the third kind, defined as
 $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
-Only the derivative with respect to @math{phi} is known by MAXIMA.
+Only the derivative with respect to @math{phi} is known by Maxima.
 @end defun
 
-@anchor{ELLIPTIC_KC}
-@defun ELLIPTIC_KC (m)
+@anchor{elliptic_kc}
+@defun elliptic_kc (m)
 The complete elliptic integral of the first kind, defined as
 
 @ifinfo
@@ -288,11 +308,11 @@ The complete elliptic integral of the first kind, defined as
 $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 For certain values of @math{m}, the value of the integral is known in
-terms of @math{Gamma} functions.  Use MAKEGAMMA to evaluate them.
+terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 @end defun
 
-@anchor{ELLIPTIC_EC}
-@defun ELLIPTIC_EC (m)
+@anchor{elliptic_ec}
+@defun elliptic_ec (m)
 The complete elliptic integral of the second kind, defined as
 
 @ifinfo
@@ -303,6 +323,6 @@ The complete elliptic integral of the second kind, defined as
 $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 For certain values of @math{m}, the value of the integral is known in
-terms of @math{Gamma} functions.  Use MAKEGAMMA to evaluate them.
+terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 @end defun
 
