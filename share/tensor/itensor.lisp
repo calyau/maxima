@@ -85,7 +85,7 @@
 )
 
 (setq $idummyx '$%                   ;Prefix for dummy indices
-      $icounter 0.                   ;Dummy variable numeric indexs
+      $icounter 0.                   ;Dummy variable numeric index
       smlist '(mlist simp)           ;Simplified mlist header
       $vect_coords nil               ;Used when differentiating w.r.t. a number
       $coord '((mlist simp))         ;Objects treated liked coordinates in diff
@@ -1862,7 +1862,7 @@
 
 ;; simplification rules for the totally antisymmetric LC symbol
 (DEFUN $LC_L (E)
-    (PROG (L1 L2 L N)
+    (PROG (L1 L2 L NN)
 	(CATCH 'MATCH
 	  (COND ((ATOM E) (MATCHERR)))
 	  (COND ((ATOM (CAR E)) (MATCHERR)))
@@ -1870,19 +1870,19 @@
 	  (COND ((NOT ($LISTP (SETQ L1 (CADR E)))) (MATCHERR)))
 	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L2 (CADDR E)))) (MATCHERR)))
 	  (COND ((CDDDR E) (MATCHERR)))
-	  (SETQ N ($LENGTH L1))
+	  (SETQ NN ($LENGTH L1))
 	  (SETQ L NIL)
-	  (DO ((I N (1- I))) ((< I 1)) (SETQ l (CONS ($IDUMMY) L)))
+	  (DO ((I NN (1- I))) ((< I 1)) (SETQ L (CONS ($IDUMMY) L) N $ICOUNTER))
 	  (RETURN (LIST '(MTIMES SIMP) ($KDELTA L1 (CONS SMLIST L))
 	        (LIST (CONS (CAAR E) '(SIMP)) (CONS SMLIST L) (NCONS SMLIST))
-	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL N)) -1))
+	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL NN)) -1))
 	  )
 	)
     )
 )
 
 (DEFUN $LC_U (E)
-    (PROG (L1 L2 L N)
+    (PROG (L1 L2 L NN)
 	(CATCH 'MATCH
 	  (COND ((ATOM E) (MATCHERR)))
 	  (COND ((ATOM (CAR E)) (MATCHERR)))
@@ -1890,12 +1890,12 @@
 	  (COND ((NOT (ALIKE1 '((MLIST SIMP)) (SETQ L1 (CADR E)))) (MATCHERR)))
 	  (COND ((NOT ($LISTP (SETQ L2 (CADDR E)))) (MATCHERR)))
 	  (COND ((CDDDR E) (MATCHERR)))
-	  (SETQ N ($LENGTH L2))
+	  (SETQ NN ($LENGTH L2))
 	  (SETQ L NIL)
-	  (DO ((I N (1- I))) ((< I 1)) (SETQ l (CONS ($IDUMMY) L)))
+	  (DO ((I NN (1- I))) ((< I 1)) (SETQ L (CONS ($IDUMMY) L) N $ICOUNTER))
 	  (RETURN (LIST '(MTIMES SIMP) ($KDELTA (CONS SMLIST L) L2)
 	        (LIST (CONS (CAAR E) '(SIMP)) (NCONS SMLIST) (CONS SMLIST L))
-	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL N)) -1))
+	        (LIST '(MEXPT SIMP) (MEVAL (LIST 'MFACTORIAL NN)) -1))
 	  )
 	)
     )
@@ -2056,12 +2056,9 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 			      (mapcar (function
 				       (lambda (q) ($flushnd q name n)))
 				      (cdr e))) e))))
-
+
 (DECLARE-TOP (FIXNUM INDEX N) (SPECIAL INDEX N DUMX))
 
-;(DEFMFUN $RENAME NARGS ((LAMBDA (INDEX) (RENAME (ARG 1)))
-;       (COND ((= NARGS 1) 1) (T (ARG 2))))) ;Sets INDEX to 1 or 2nd argument of
-;                                            ;$RENAME
 (DEFMFUN $RENAME NARGS
  (cond ((= NARGS 1) (setq INDEX 1)) (t (setq INDEX (arg 2)))) (rename (arg 1)))
 
@@ -2140,43 +2137,12 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 (DEFUN ALLFIXED (L) 
        (AND L (FIXP (CAR L)) (OR (NULL (CDR L)) (ALLFIXED (CDR L))))) 
 
-;;(DEFUN TENSOREVAL (TENSOR INDXS)
-;;  ((LAMBDA (DER CON)
-;;    (AND (CDR INDXS) (SETQ CON (CDADR INDXS) DER (CDDR INDXS)))
-;;  (SETQ TENSOR (SELECT TENSOR (CDAR INDXS) CON))
-;;  (COND (DER (APPLY '$DIFF (CONS TENSOR (PUTINONES DER))))
-;;	(T TENSOR))) NIL NIL))
 (DEFUN TENSOREVAL (TENSOR INDXS)
   ((LAMBDA (DER CON)
     (AND (CDR INDXS) (SETQ CON (CDADR INDXS) DER (CDDR INDXS)))
   (SETQ TENSOR (SELECT TENSOR (CDAR INDXS) CON DER))
   ) NIL NIL))
 
-;;(DEFMFUN $COMPONENTS (TENSOR COMP)
-;;  ((LAMBDA (LEN1 LEN2 NAME PROP)
-;;    (COND ((OR (NOT (RPOBJ TENSOR))(CDDDR TENSOR))
-;;	   (merror "Improper 1st arg to COMPONENTS: ~M"
-;;		   TENSOR
-;;		   )))
-;;    (SETQ LEN1 (LENGTH (CDADR TENSOR)) LEN2 (LENGTH (CDADDR TENSOR)))
-;;    (AND (NOT (ATOM COMP))(EQ (CAAR COMP) '$MATRIX)
-;;	 (COND ((= (f+ LEN1 LEN2) 2)(SETQ NAME (GENSYM))
-;;		(SET NAME COMP)(SETQ COMP NAME))
-;;	       (T 
-;;		(merror "Needs two indices for COMPONENTS from matrix:~%~M"
-;;			TENSOR))))
-;;    (COND ((AND (EQ (ML-TYPEP COMP) 'SYMBOL) (> (f+ LEN1 LEN2) 0))
-;;	   (SETQ PROP 'CARRAYS))
-;;	  ((SAMELISTS (SETQ NAME (APPEND (CDADR TENSOR) (CDADDR TENSOR)))
-;;		      (CDADR ($INDICES COMP)))
-;;	   (SETQ PROP 'TEXPRS COMP (CONS COMP NAME)))
-;;	  (T (merror "Args to COMPONENTS do not have the same free indices")))
-;;    (SETQ TENSOR (CAAR TENSOR) LEN1 (CONS LEN1 LEN2))
-;;    (COND ((AND (SETQ NAME (ZL-GET TENSOR PROP))
-;;		(SETQ LEN2 (ZL-ASSOC LEN1 NAME))) (RPLACD LEN2 COMP))
-;;	  (T (PUTPROP TENSOR (CONS (CONS LEN1 COMP) NAME) PROP)))
-;;    (OR (ZL-GET TENSOR 'INDEXED) ($INDEXED_TENSOR TENSOR))
-;;    '$DONE) NIL NIL NIL NIL))
 (DEFMFUN $COMPONENTS (TENSOR COMP)
   ((LAMBDA (LEN1 LEN2 LEN3 NAME PROP)
     (COND ((NOT (RPOBJ TENSOR))
@@ -2202,56 +2168,6 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	  (T (PUTPROP TENSOR (CONS (CONS LEN1 COMP) NAME) PROP)))
     (OR (ZL-GET TENSOR 'INDEXED) ($INDEXED_TENSOR TENSOR))
     '$DONE) NIL NIL NIL NIL NIL))
-
-;;(DEFUN SELECT (TENSOR L1 L2)
-;;  ((LAMBDA (PROP SUBS INDEX)
-;;	(COND ((AND (ALLFIXED SUBS) (SETQ PROP (ZL-GET TENSOR 'CARRAYS))
-;;		    (SETQ PROP (ZL-ASSOC INDEX PROP)))
-;;	       (COND ((ALIKE1 (SETQ PROP (CONS (LIST (CDR PROP) 'ARRAY) SUBS))
-;;			      (SETQ SUBS (MEVAL PROP))) 0)
-;;		     (T SUBS)))
-;;	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
-;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
-;;	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
-;;	       (APPLY PROP (LIST (CONS SMLIST L1)(CONS SMLIST L2))))
-;;	      (T (LIST (LIST TENSOR 'SIMP)(CONS SMLIST L1)(CONS SMLIST L2)))))
-;;	NIL (APPEND L1 L2)(CONS (LENGTH L1)(LENGTH L2))))
-
-;;vtt: inconstant was an attempt to remove constant indices, but it really doesn't work out.
-;;(DEFUN INCONSTANT (L)
-;;  (COND 
-;;    ((EQ L NIL) NIL)
-;;    (($CONSTANTP (CAR L)) (AND (NOT (EQ NIL (CDR L))) (INCONSTANT (CDR L))))
-;;    (T (CONS (CAR L) (AND (NOT (EQ NIL (CDR L))) (INCONSTANT (CDR L)))))
-;;  )
-;;)
-
-;-(DEFUN SELECT (TENSOR L1 L2 L3)
-;-  ((LAMBDA (PROP SUBS INDEX)
-;-	(COND ((AND (ALLFIXED SUBS) (SETQ PROP (ZL-GET TENSOR 'CARRAYS))
-;-		    (SETQ PROP (ZL-ASSOC INDEX PROP)))
-;-	       (COND ((ALIKE1 (SETQ PROP (CONS (LIST (CDR PROP) 'ARRAY) SUBS))
-;-			      (SETQ SUBS (MEVAL PROP))) 0)
-;-		     (T SUBS)))
-;-	      ((SETQ PROP (ZL-ASSOC INDEX (ZL-GET TENSOR 'TEXPRS)))
-;-;;;VTT	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CADR PROP)))
-;-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
-;-;; VTT: What is this business with N instead of $ICOUNTER anyway?
-;-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER (1- N))) )))))
-;-;;;	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $ICOUNTER)) (COND ((BOUNDP 'N) (SETQ $ICOUNTER N)) )))))
-;-;;;        (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) (CAR (CONS ($RENAME (CADR PROP) (1+ $COUNTER)) (SETQ $COUNTER (1- (COND ((BOUNDP 'N) N) (T 1))))))))
-;-	       (SUBLIS (MAPCAR (FUNCTION CONS)(CDDR PROP) SUBS) ($RENAME (CADR PROP) (COND ((BOUNDP 'N) N) (T 1)))))
-;-
-;-
-;-	      ((SETQ PROP (ZL-GET TENSOR 'TSUBR))
-;-;;	       (APPLY PROP (LIST (CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))(CONS SMLIST L3))))
-;-;;	      ((NOT (EQ L3 NIL)) (APPLY '$DIFF (SELECT TENSOR (INCONSTANT L1) (INCONSTANT L2) (CDR L3)) (LIST (CAR L3))))
-;-;;	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST (INCONSTANT L1))(CONS SMLIST (INCONSTANT L2))) L3))))
-;-;;	NIL (APPEND (INCONSTANT L1) (INCONSTANT L2) L3)(LIST (LENGTH (INCONSTANT L1))(LENGTH (INCONSTANT L2))(LENGTH L3))))
-;-	       (APPLY PROP (LIST (CONS SMLIST L1)(CONS SMLIST L2)(CONS SMLIST L3))))
-;-	      ((NOT (EQ L3 NIL)) (APPLY '$IDIFF (SELECT TENSOR L1 L2 (CDR L3)) (LIST (CAR L3))))
-;-	      (T (APPEND (LIST (LIST TENSOR 'SIMP)(CONS SMLIST L1)(CONS SMLIST L2)) L3))))
-;-	NIL (APPEND L1 L2 L3)(LIST (LENGTH L1)(LENGTH L2)(LENGTH L3))))
 
 (defun select (tensor l1 l2 l3)
   (
