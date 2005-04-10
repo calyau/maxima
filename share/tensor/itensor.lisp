@@ -1111,8 +1111,8 @@
         ; We normalize the indices first
         (setq b (append (minusi a) b) a (plusi a))
 
-        ;We cannot contract with higher-order Kronecker deltas
-        (and (> (length b) 1) (return nil))
+        ;We cannot contract with higher-order or malformed Kronecker deltas
+        (and (or (/= (length a) 1) (/= (length b) 1 )) (return nil))
 
         (setq a (car a) b (car b))
         (return
@@ -1258,7 +1258,7 @@
             (j (car f))
             (k)
           )
-          ((null i) (setq c (reverse k) a j))
+          ((null i) (setq c (reverse k) a (append (plusi a) j)))
           (cond
             ((member (car i) (cdr f)) (setq k (cons (car i) k)))
             (
