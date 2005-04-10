@@ -687,7 +687,7 @@ Examples:
 @c h(%pi, %gamma);
 @c i: lambda ([a], lambda ([x], a*x));
 @c i(1/2);
-@c i2: lambda([a], block([x], funmake(lambda, [[x], a*x])));
+@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
 @c i2(1/2);
 @c i2(1/2)(%pi);
 @itemize @bullet
@@ -762,15 +762,15 @@ unless masked by local variables of the same names.
 @item
 Since @code{lambda} quotes its arguments, lambda expression @code{i} below 
 does not define a "multiply by @code{a}" function.
-Such a function can be defined via @code{funmake}, as in lambda expression @code{i2} below.
+Such a function can be defined via @code{buildq}, as in lambda expression @code{i2} below.
 @end itemize
 @example
 (%i16) i: lambda ([a], lambda ([x], a*x));
 (%o16)            lambda([a], lambda([x], a x))
 (%i17) i(1/2);
 (%o17)                  lambda([x], a x)
-(%i18) i2: lambda([a], block([x], funmake(lambda, [[x], a*x])));
-(%o18) lambda([a], block([x], funmake(lambda, [[x], a x])))
+(%i18) i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+(%o18)    lambda([a], buildq([a : a], lambda([x], a x)))
 (%i19) i2(1/2);
                                      x
 (%o19)                   lambda([x], -)
