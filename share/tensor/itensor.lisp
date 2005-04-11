@@ -840,27 +840,44 @@
 
 ;; Contract a single tensor with itself
 (defun contract5 (e)
-  (cond
-    ((memq (caar e) christoffels) e)
-    (
-      t
-      (prog (cov con)
-        (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
-        ; Calling contract2 here won't do the trick as it messes up the
-        ; order of indices. So we remove indices that appear both in cov
-        ; and in con the hard way, with a do loop.
+  (prog
+    (       ; See if e contracts with itself, find contraction symbol
+      (c (or (and (rpobj e) (getcon (caar e))) (return e)))
+      (
+        symbol
         (do
-          ((i cov (cdr i)))
-          ((null i))
-          (cond
-            ((not (atom (car i))))
-            (
-              (member (car i) con)
-              (setq con (delete (car i) con) cov (delete (car i) cov))
+          (
+            (c (getcon (caar e)) (cdr c))
+          )
+          ((or (eq (caar c) (caar e)) (null c)) (cond (c (cdar c)) (t nil)) )
+        )
+      )
+    )
+    (return
+      (cond
+        ((or (null symbol) (memq (caar e) christoffels)) e)
+        (
+          t
+          (prog (cov con f)
+;            (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
+            (setq cov (contractinside (derat ($covi e))) con (derat ($conti e)))
+            ; Calling contract2 here won't do the trick as it messes up the
+            ; order of indices. So we remove indices that appear both in cov
+            ; and in con the hard way, with a do loop.
+            (do
+              ((i cov (cdr i)))
+              ((null i))
+              (cond
+                ((not (atom (car i))))
+                (
+                  (member (car i) con)
+                  (setq f t con (delete (car i) con) cov (delete (car i) cov))
+                )
+              )
             )
+            (return (nconc (list (cond (f (list symbol)) (t (car e))) cov con) (cdddr e)))
           )
         )
-        (return (nconc (list (car e) cov con) (cdddr e)))
       )
     )
   )
