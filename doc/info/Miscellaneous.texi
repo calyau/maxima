@@ -13,18 +13,18 @@ user defined functions, are discussed.
 
 @node SHARE, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
 @section SHARE
-@c SHARE STILL EXISTS BUT THIS DESCRIPTION IS WAY WAY OUT OF DATE
- - The SHARE directory on MC or on a DEC20 version of Maxima
-contains programs, information files, etc.  which are considered to be
-of interest to the Maxima community.  Most files on SHARE; are not
-part of the Maxima system per se and must be loaded individually by
-the user, e.g.  LOADFILE("array");. Many files on SHARE;
-were contributed by Maxima users.  Do PRINTFILE(SHARE,USAGE,SHARE);
-for more details and the conventions for contributing to the SHARE
-directory.  For an annotated "table of contents" of the directory, do:
-PRINTFILE(SHARE,>,SHARE);
+The Maxima "share" directory contains programs and other files 
+of interest to Maxima users, but not part of the core implementation of Maxima.
+These programs are typically loaded via @code{load} or @code{setup_autoload}.
 
-@c end concepts Miscellaneous Options
+@code{:lisp *maxima-sharedir*} displays the location of the share directory
+within the user's file system.
+
+@c FIXME FIXME FIXME -- WE REALLY NEED AN UP-TO-DATE LIST OF SHARE PACKAGES !!
+@code{printfile ("share.usg")} prints an out-of-date list of share packages.
+Users may find it more informative to browse the share directory using a file system browser.
+
+
 @node Definitions for Miscellaneous Options,  , SHARE, Miscellaneous Options
 @section Definitions for Miscellaneous Options
 
@@ -38,43 +38,50 @@ the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring 
 
 
 @defvr declaration alphabetic
-Adds to Maxima's alphabet which initially contains
-the letters A-Z, % and _.
-Thus, DECLARE("~",ALPHABETIC) enables NEW~VALUE to be used as a name.
+@code{declare (@var{char}, alphabetic)} adds @code{char} to Maxima's alphabet,
+which initially contains
+the letters @code{A} through @code{Z}, @code{a} through @code{z}, @code{%} and @code{_}.
+@var{char} is specified as a string of length 1, e.g., @code{"~"}.
+
+@example
+(%i1) declare ("~", alphabetic);
+(%o1)                         done
+(%i2) foo~bar;  
+(%o2)                        foo~bar
+(%i3) atom (foo~bar);
+(%o3)                         true
+@end example
 
 @end defvr
 
-@defun apropos (string)
-takes a character string as argument and looks at all
-the Maxima names for ones with that string appearing anywhere within
-them.  Thus, APROPOS(EXP); will return a long list of all the flags
+@c REPHRASE
+@c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
+@defun apropos (@var{string})
+Searches for Maxima names which have @var{string} appearing anywhere within
+them.  Thus, @code{apropos (exp)} returns a list of all the flags
 and functions which have @code{exp} as part of their names, such as @code{expand},
-@code{exp}, @code{exponentialize}.  Thus if you can only remember part of the name
+@code{exp}, and @code{exponentialize}.  Thus if you can only remember part of the name
 of something you can use this command to find the rest of the name.
-Similarily, you could say APROPOS(TR_); to find a list of many of the
-switches relating to the @code{translator} (most of which begin with @code{tr_}).
+Similarily, you could say @code{apropos (tr_)} to find a list of many of the
+switches relating to the translator, most of which begin with @code{tr_}.
 
 @end defun
 
-@defun args (exp)
-returns a list of the args of exp.  I.e. it is
-essentially equivalent to
-@example
-SUBSTPART("[",exp,0)
-@end example
-Both @code{args} and
-@code{substpart} depend on the setting of @code{inflag}.
+@defun args (@var{expr})
+Returns the list of arguments of @code{expr},
+which may be any kind of expression other than an atom.
+Only the arguments of the top-level operator are extracted;
+subexpressions of @code{expr} appear as elements or subexpressions of elements
+of the list of arguments.
 
-@end defun
+The order of the items in the list may depend on the global flag @code{inflag}.
 
-@defun dummy (i1,i2,...)
-will set each index i1,i2,... to name of the form !n
-where n is a positive integer.  This guarantees that dummy indices
-which are needed in forming expressions will not conflict with indices
-already in use.  @code{counter}[default 1] determines the numerical suffix to
-be used in generating the next dummy index.  The prefix is determined
-by the option @code{dummyx}[!].
+@code{args (@var{expr})} is equivalent to @code{substpart ("[", @var{expr}, 0)}.
+See also @code{substpart}.
 
+See also @code{op}.
+
+@c NEEDS EXAMPLES
 @end defun
 
 @defvar genindex
@@ -94,11 +101,13 @@ of @code{genindex} with no numeric suffix.
 
 @end defvar
 
+@c NEEDS EXPANSION AND EXAMPLES
 @defvar inf
 Real positive infinity.
 
 @end defvar
 
+@c NEEDS EXPANSION AND EXAMPLES
 @defvar infinity
 Complex infinity, an infinite magnitude of arbitrary phase
 angle.  See also @code{inf} and @code{minf}.
@@ -152,9 +161,33 @@ one is not explicitly set by the user.)
 @end defvar
 
 @defun integerp (@var{expr})
-Returns @code{true} if @var{expr} is an integer, otherwise @code{false}.
-@c ACCORDING TO WHICH CRITERIA DOES MAXIMA JUDGE INTEGERNESS ??
-@c CAN YOU DECLARE A VARIABLE TO BE AN INTEGER ??
+Returns @code{true} if @var{expr} is a literal numeric integer, otherwise @code{false}.
+
+@code{integerp} returns false if its argument is a symbol,
+even if the argument is declared integer.
+
+Examples:
+
+@example
+(%i1) integerp (0);
+(%o1)                         true
+(%i2) integerp (1);
+(%o2)                         true
+(%i3) integerp (-17);
+(%o3)                         true
+(%i4) integerp (0.0);
+(%o4)                         false
+(%i5) integerp (1.0);
+(%o5)                         false
+(%i6) integerp (%pi);
+(%o6)                         false
+(%i7) integerp (n);
+(%o7)                         false
+(%i8) declare (n, integer);
+(%o8)                         done
+(%i9) integerp (n);
+(%o9)                         false
+@end example
 
 @end defun
 
@@ -180,19 +213,47 @@ m1pbranch:false          m1pbranch:true
 
 @end defvar
 
-@c DOES numberp RETURN true FOR ANY ARGUMENT OTHER THAN A LITERAL NUMBER ??
 @defun numberp (@var{expr})
-Returns @code{true} if @var{expr} is an integer, a rational number, a
-floating point number, or a bigfloat, otherwise @code{false}.
+Returns @code{true} if @var{expr} is a literal integer, rational number, 
+floating point number, or bigfloat, otherwise @code{false}.
+
+@code{numberp} returns false if its argument is a symbol,
+even if the argument is a symbolic number such as @code{%pi} or @code{%i},
+or declared to be 
+even, odd, integer, rational, irrational, real, imaginary, or complex.
+
+Examples:
+
+@example
+(%i1) numberp (42);
+(%o1)                         true
+(%i2) numberp (-13/19);
+(%o2)                         true
+(%i3) numberp (3.14159);
+(%o3)                         true
+(%i4) numberp (-1729b-4);
+(%o4)                         true
+(%i5) map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+(%o5)      [false, false, false, false, false, false]
+(%i6) declare (a, even, b, odd, c, integer, d, rational,
+     e, irrational, f, real, g, imaginary, h, complex);
+(%o6)                         done
+(%i7) map (numberp, [a, b, c, d, e, f, g, h]);
+(%o7) [false, false, false, false, false, false, false, false]
+@end example
 
 @end defun
 
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @defun properties (@var{a})
 Returns a list of the names of all the
 properties associated with the atom @var{a}.
 
 @end defun
 
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
 @defvr {special symbol} props
 @code{props} are atoms which have any property other than those explicitly
@@ -201,6 +262,8 @@ as properties specified in the @code{declare} function.
 
 @end defvr
 
+@c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @defun propvars (@var{prop})
 Returns a list of those atoms on the @code{props} list which
 have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
@@ -208,6 +271,10 @@ returns a list of atoms which have atvalues.
 
 @end defun
 
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
+@c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
 @defun put (@var{atom}, @var{value}, @var{indicator})
 Assigns @var{value} to the property (specified by @var{indicator}) of @var{atom}.
 @var{indicator} may be the name of any property, not just a system-defined property.
@@ -261,12 +328,19 @@ Example:
 
 @end defun
 
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
+@c HOW IS THIS DIFFERENT FROM remove ??
 @defun rem (@var{atom}, @var{indicator})
 Removes the property indicated by @var{indicator} from @var{atom}.
 
-@c NEED AN EXAMPLE HERE
 @end defun
 
+@c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
+@c HOW IS THIS DIFFERENT FROM rem ??
 @defun remove (@var{atom_1}, @var{property_1}, ..., @var{atom_n}, @var{property_n})
 @defunx remove ([@var{atom_1}, ..., @var{atom_m}], [@var{property_1}, ..., @var{property_n}], ...)
 Removes properties associated with atoms.
@@ -283,12 +357,19 @@ There may be more than one pair of lists.
 The removed properties may be system-defined properties such as
 @code{function} or @code{mode_declare}, or user-defined properties.
 
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+@c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
 A property may be @code{transfun} to remove
 the translated Lisp version of a function.
 After executing this, the Maxima version of the function is executed
 rather than the translated version.
 
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+@c ARE op AND operator PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
 A property may be @code{op} or @code{operator} to remove a syntax extension given to an atom.
+
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+@c SHOW SPECIAL CASE AS @defunx
 If an atom is "@code{all}" then the property is removed from
 all atoms which have it.
 
@@ -299,21 +380,28 @@ This behavior is unlike the more specific remove functions
 @c IN SERIOUS NEED OF EXAMPLES HERE
 @end defun
 
-@defun remvalue (name1, name2, ...)
-Removes the values of user variables
-(which can be subscripted) from the system.  If name is @code{all} then the
-values of all user variables are removed.  Values are those items
-given names by the user as opposed to those which are automatically
-labeled by Maxima as Ci, Di, or Ei.
+@c NEEDS EXAMPLES
+@defun remvalue (@var{name_1}, ..., @var{name_n})
+@defunx remvalue (all)
+Removes the values of user variables @var{name_1}, ..., @var{name_n}
+(which can be subscripted) from the system.
+
+@code{remvalue (all)} removes the values of all variables in @code{values},
+the list of all variables given names by the user
+(as opposed to those which are automatically assigned by Maxima).
+
+See also @code{values}.
 
 @end defun
 
+@c NEEDS EXAMPLES
 @defun rncombine (@var{expr})
-transforms @var{expr} by combining all terms of @var{expr} that have
+Transforms @var{expr} by combining all terms of @var{expr} that have
 identical denominators or denominators that differ from each other by
 numerical factors only.  This is slightly different from the behavior
 of @code{combine}, which collects terms that have identical denominators.
-Setting @code{pfeformat: true} and using @code{combine} will achieve results similar
+
+Setting @code{pfeformat: true} and using @code{combine} yields results similar
 to those that can be obtained with @code{rncombine}, but @code{rncombine} takes the
 additional step of cross-multiplying numerical denominator factors.
 This results in neater forms, and the possiblity of recognizing some
@@ -321,8 +409,9 @@ cancellations.
 
 @end defun
 
+@c NEEDS CLARIFICATION AND EXAMPLES
 @defun scalarp (@var{expr})
-is @code{true} if @var{expr} is a number, constant, or variable
+Returns @code{true} if @var{expr} is a number, constant, or variable
 declared @code{scalar} with @code{declare}, or composed entirely of numbers, constants, and such
 variables, but not containing matrices or lists.
 
