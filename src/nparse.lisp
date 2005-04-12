@@ -71,7 +71,11 @@
 	    (t ;(terpri)
 	       ))
       (format t "Incorrect syntax: ")
-      (apply 'format t sstring l)
+      (apply 'format t sstring (mapcar #'(lambda (x)
+					   (if (symbolp x)
+					       (print-invert-case x)
+					       x))
+				       l))
       (cond ((output-stream-p *standard-input*)
 	     (let ((n (get '*parse-window* 'length))
 		   some ch
@@ -318,18 +322,21 @@
 (defun read-command-token-aux (obj)
   (let* (result
 	 (ch (parse-tyipeek))
-	 (lis (if (eql ch -1) nil  (parser-assoc (char-upcase ch) obj))))
+	 (lis (if (eql ch -1)
+		  nil
+		  (parser-assoc ch
+				obj))))
     (cond ((null lis) 
 	   nil)
 	  (t
 	   (parse-tyi)
 	   (cond ((atom (cadr lis))
-	   ;; INFIX("ABC"); puts into macsyma-operators
-	   ;;something like: (#\A #\B #\C (ANS |$ABC|))
-	   ;; ordinary things are like:
-	   ;; (#\< (ANS $<) (#\= (ANS $<=)))
-	   ;; where if you fail at the #\< #\X
-	   ;; stage, then the previous step was permitted.
+		  ;; INFIX("ABC"); puts into macsyma-operators
+		  ;;something like: (#\A #\B #\C (ANS |$ABC|))
+		  ;; ordinary things are like:
+		  ;; (#\< (ANS $<) (#\= (ANS $<=)))
+		  ;; where if you fail at the #\< #\X
+		  ;; stage, then the previous step was permitted.
 		  (setq result (read-command-token-aux (list (cdr lis) ))))
 		 ((null (cddr lis))
 		  ;; lis something like (#\= (ANS $<=))
@@ -337,7 +344,7 @@
 		  ;; starting with this.
 		  (setq result
 			(and (eql (car (cadr lis)) 'ans)
-			      (cadr (cadr lis)))))
+			     (cadr (cadr lis)))))
 		 (t
 		  (let ((res   (and (eql (car (cadr lis)) 'ans)
 				    (cadr (cadr lis))))
@@ -345,7 +352,7 @@
 		    (setq result (or com-token res 
 				     (read-command-token-aux
 				      (list (cadr lis))))))
-		    ))
+		  ))
 	     (or result (unparse-tyi ch))
 	     result))))
 
@@ -729,15 +736,13 @@
 (defmacro def-led-fun (op-name op-l . body)
     (list* 'defun-prop (list* op-name 'led 'nil) op-l body))
 (defun led-call (op l)
-   
-    (let ((tem (and (symbolp op) (getl op '(led)))) res)
-	 (setq res
-      (if (null tem)
-          (mread-synerr "~A is not an infix operator" (mopstrip op))
-          (funcall (cadr tem) op l))
-      )
-	 res
-      ))
+  (let ((tem (and (symbolp op) (getl op '(led)))) res)
+    (setq res
+	  (if (null tem)
+	      (mread-synerr "~A is not an infix operator" (mopstrip op))
+	      (funcall (cadr tem) op l)))
+    res))
+
 ;;end expansion
 
 ;;; (DEF-NUD (op lbp rbp) bvl . body)
@@ -1722,51 +1727,48 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
   )
 
 ;;; User extensibility:
-(defmacro upcase (operator)
- `(setq operator (intern (string-upcase (string ,operator)))))
-
 (defmfun $prefix (operator &optional (rbp  180.)
 			             (rpos '$any)
 				     (pos  '$any))
-	 (upcase operator)
   (def-operator operator pos ()  ()     rbp rpos () t
-    '(nud . parse-prefix) 'msize-prefix 'dimension-prefix ()   ))
+		'(nud . parse-prefix) 'msize-prefix 'dimension-prefix ()   )
+  operator)
 
 (defmfun $postfix (operator &optional (lbp  180.)
 			             (lpos '$any)
 				     (pos  '$any))
-	 	 (upcase operator)
   (def-operator operator pos lbp lpos   ()  ()   t  ()
-    '(led . parse-postfix) 'msize-postfix 'dimension-postfix  ()   ))
+		'(led . parse-postfix) 'msize-postfix 'dimension-postfix  ()   )
+  operator)
 
 (defmfun $infix  (operator &optional (lbp  180.)
 			             (rbp  180.)
 				     (lpos '$any)
 				     (rpos '$any)
 				     (pos  '$any))
-	 	 (upcase operator)
   (def-operator operator pos lbp lpos   rbp rpos t t
-    '(led . parse-infix) 'msize-infix 'dimension-infix () ))
+		'(led . parse-infix) 'msize-infix 'dimension-infix () )
+  operator)
 
 (defmfun $nary   (operator &optional (bp     180.)
 			             (argpos '$any)
 				     (pos    '$any))
-	 	 (upcase operator)
   (def-operator operator pos bp  argpos bp  ()   t t
-    '(led . parse-nary) 'msize-nary 'dimension-nary () ))
+		'(led . parse-nary) 'msize-nary 'dimension-nary () )
+  operator)
 
 (defmfun $matchfix (operator
 		    match  &optional (argpos '$any)
 				     (pos    '$any))
   ;shouldn't MATCH be optional?
-	 	 (upcase operator)
   (def-operator operator pos ()  argpos ()  ()  () () 
-    '(nud . parse-matchfix) 'msize-matchfix 'dimension-match match))
+		'(nud . parse-matchfix) 'msize-matchfix 'dimension-match match)
+  operator)
 
 (defmfun $nofix  (operator &optional (pos '$any))
-	 	 (upcase operator)
   (def-operator operator pos ()  ()     ()  () () ()
-    '(nud . parse-nofix) 'msize-nofix 'dimension-nofix ()   ))
+		'(nud . parse-nofix) 'msize-nofix 'dimension-nofix ()   )
+  operator)
 
 ;;; (DEF-OPERATOR op pos lbp lpos rbp rpos sp1 sp2 
 ;;;	parse-data grind-fn dim-fn match)
