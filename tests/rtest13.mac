@@ -53,36 +53,3 @@ atvalue('diff(g(x),x),x = 0,a);
 a$
 atvalue(f(x),x = 0,1);
 1$
-/* the matchfix stuff seems to work but is difficult for batch to parse and check
- matchfix("{","}");
-"{"$
-infix("|");
-"|"$
-exp1:{x | x > 0};
-{x | x > 0}$
-exp2:{x | x < 2};
-{x | x < 2}$
-infix("ou");
-ou$
-infix("oi");
-oi$
-exp1 ou exp2;
-{x | x > 0} ou {x | x < 2}$
-exp1 ou exp2;
-{x | x > 0} ou {x | x < 2}$
-exp1:{1,2,3};
-{1,2,3}$
-{3,4,5};
-{3,4,5}$
-exp1 ou exp1 ou %;
-{1,2,3} ou {1,2,3} ou {3,4,5}$
-infix("ou",100,100);
-ou$
-exp2:infix("oi",120,120);
-oi$
-exp1 ou exp1 ou %;
-{1,2,3} ou {1,2,3} ou oi$
-remove("ou",operator);
-done$
-errcatch(exp1 ou exp2);
-[{1,2,3} ou oi]$  */
