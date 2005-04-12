@@ -947,8 +947,9 @@
 (defun $printfile (file)
   (setq file ($file_search1 file '((mlist) $file_search_usage)))
   (with-open-file (st file)
-    (loop while (setq tem (read-char st)) with tem
+    (loop while (setq tem (read-char st nil 'eof)) with tem
 	   do
+	   (if (eq tem 'eof) (return t))
 	   (princ tem))
     (namestring file)
     ))
