@@ -1004,12 +1004,8 @@ setrgbcolor} def
           (second minute hour date month year day-of-week dst-p tz)
         (get-decoded-time)
       (declare (ignore dst-p))
-      (format my-stream "%%CreatedDate: ~2,'0d:~2,'0d:~2,'0d ~a, ~d/~2,'0d/~d (G
-
-MT~@d)~%"
-              hour minute second (aref day-names day-of-week) month date year (-
-
-									       tz)))))
+      (format my-stream "%%CreatedDate: ~2,'0d:~2,'0d:~2,'0d ~a, ~d/~2,'0d/~d (GMT~@d)~%"
+              hour minute second (aref day-names day-of-week) month date year (- tz)))))
 
 
 (defun do-ps-trailer ()
