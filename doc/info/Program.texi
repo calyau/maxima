@@ -284,65 +284,45 @@ non-atomic expression, and successive parts are taken.)
 
 @end deffn
 
-@defun errcatch (expr_1, expr_2, ...)
-evaluates its arguments one by one and
-returns a list of the value of the last one if no error occurs.  If an
-error occurs in the evaluation of any arguments, @code{errcatch} "catches"
-the error and immediately returns [] (the empty list).  This function
+@defun errcatch (@var{expr_1}, ..., @var{expr_n})
+Evaluates @var{expr_1}, ..., @var{expr_n} one by one and
+returns @code{[@var{expr_n}]} (a list) if no error occurs.  If an
+error occurs in the evaluation of any argument, @code{errcatch} 
+prevents the error from propagating and
+returns the empty list @code{[]} without evaluating any more arguments.
+
+@code{errcatch}
 is useful in @code{batch} files where one suspects an error might occur which
-would otherwise have terminated the @code{batch} if the error weren't caught.
+would terminate the @code{batch} if the error weren't caught.
 
 @end defun
 
-@defvar errexp
- default: @code{errexp} When an error occurs in the course of a
-computation, Maxima prints out an error message and terminates the
-computation.  @code{errexp} is set to the offending expression and the
-message "@code{errexp contains the offending expression}" is printed.  The
-user can then type @code{errexp;} to see this and hopefully find the problem.
+@deffn {Function} error (@var{expr_1}, ..., @var{expr_n})
+@deffnx {Variable} error
+Evaluates and prints @var{expr_1}, ..., @var{expr_n},
+and then causes an error return to top level Maxima
+or to the nearest enclosing @code{errcatch}.
 
-@end defvar
+The variable @code{error} is set to a list describing the error.
+The first element of @code{error} is a format string,
+which merges all the strings among the arguments @var{expr_1}, ..., @var{expr_n},
+and the remaining elements are the values of any non-string arguments.
 
-@defun error (arg_1, arg_2, ...)
-will evaluate and print its arguments and
-then will cause an error return to top level Maxima or to the nearest
-enclosing @code{errcatch}.  This is useful for breaking out of nested
-functions if an error condition is detected.
-The variable @code{error} is set to a list describing the error, the first of
-it being a string of text, and the rest the objects in question.
-@code{errormsg();} is the preferred way to see the last error message.
+@code{errormsg()} formats and prints @code{error}.
+This is effectively reprinting the most recent error message.
 
-@code{errorfun} - if set to the name of a function of no
-arguments will cause that function to be executed whenever an error
-occurs.  This is useful in @code{batch} files where the user may want his
-Maxima killed or his terminal logged out if an error occurs.  In
-these cases @code{errorfun} would be set to @code{quit} or @code{logout}.
-
-@end defun
-
-@defvar errorfun
- default: @code{false} - if set to the name of a function of no
-arguments will cause that function to be executed whenever an error
-occurs.  This is useful in @code{batch} files where the user may want his
-Maxima killed or his terminal logged out if an error occurs.  In
-these cases @code{errorfun} would be set to @code{quit} or @code{logout}.
-
-@end defvar
+@end deffn
 
 @defun errormsg ()
-reprints the last error message.  This is very helpful if
-you are using a display console and the message has gone off the
-screen.  The variable @code{error} is set to a list describing the error,
-the first of it being a string of text, and the rest the objects in
-question.
-@code{ttyintfun:lambda([],errormsg(),print(""))$} will set up the user-interrupt
-character (^U) to reprint the message.
-@c ^U -- OBSOLETE
+Reprints the most recent error message.
+The variable @code{error} holds the message,
+and @code{errormsg} formats and prints it.
 
 @end defun
 
+@c REPHRASE
 @deffn {special operator} for
- - Used in iterations. See @code{do} for a description of
+Used in iterations. See @code{do} for a description of
 Maxima's iteration facilities.
 
 @end deffn
