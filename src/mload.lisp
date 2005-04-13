@@ -767,7 +767,7 @@
 	 (setq error-log
 	       (if (streamp *collect-errors*) *collect-errors*
 		   (open (alter-pathname filename :type "ERR")
-			 :direction :output :if-exists :overwrite)))
+			 :direction :output :if-exists :supersede)))
 	 (format t "~%Error log on ~a" error-log)
 	 (format error-log "~%/*    maxima-error log for testing of ~A" filename)
 	 (format error-log "*/~2%")))
