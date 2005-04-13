@@ -945,19 +945,30 @@
 	(prog
 	    (y a)
 	   (return
+	     ;; I (rtoy) think this is computing a continued fraction
+	     ;; expansion of the given float.
+	     ;;
+	     ;; FIXME?  CMUCL used to use this routine for its
+	     ;; RATIONALIZE function, but there were known bugs in
+	     ;; that implementation, where the result was not very
+	     ;; accurate.  Unfortunately, I can't find the example
+	     ;; that demonstrates this.  In any case, CMUCL replaced
+	     ;; it with an algorithm based on the code in Clisp, which
+	     ;; was much better.
 	     (do ((xx x (setq y (/ 1.0 (- xx (float a x)))))
 		  (num (setq a (fix x)) (plus (times (setq a (fix y)) num) onum))
 		  (den 1 (plus (times a den) oden))
 		  (onum 1 num)
 		  (oden 0 den))
-		 ((and (not (zerop den))
-		       (not (> (abs
-				(/
-				 (- x
-				    (/ (float num x)
-				       (float den x)))
-				 x))
-			       rateps)))
+		 ((or (zerop (- xx (float a x)))
+		      (and (not (zerop den))
+			   (not (> (abs
+				    (/
+				     (- x
+					(/ (float num x)
+					   (float den x)))
+				     x))
+				   rateps))))
 		  (cons num den))))))))
 
 (defun prepfloat (f)
