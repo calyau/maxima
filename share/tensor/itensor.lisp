@@ -859,8 +859,7 @@
         (
           t
           (prog (cov con f)
-;            (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
-            (setq cov (contractinside (derat ($covi e))) con (derat ($conti e)))
+            (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
             ; Calling contract2 here won't do the trick as it messes up the
             ; order of indices. So we remove indices that appear both in cov
             ; and in con the hard way, with a do loop.
