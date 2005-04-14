@@ -1277,7 +1277,7 @@ Return nil if no name or error in name."
       (set-buffer tmpbuf)
       (maxima-remove-kill-buffer-hooks)
       (insert string)
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (search-forward ":lisp")
       (forward-sexp)
       (setq end  (- (point) 1)))
@@ -1292,7 +1292,7 @@ Return nil if no name or error in name."
       (set-buffer tmpbuf)
       (maxima-remove-kill-buffer-hooks)
       (insert string)
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (maxima-goto-end-of-form)
       (setq end (- (point) 1)))
     (kill-buffer tmpbuf)
@@ -1302,9 +1302,9 @@ Return nil if no name or error in name."
   "Send the current cell's contents to Maxima, and return the results."
   (cond 
    ((emaxima-standard-cell-p)
-    (emaxima-update-standard-cell)))
+    (emaxima-update-standard-cell))
    ((emaxima-session-cell-p)
-    (emaxima-update-session-cell)))
+    (emaxima-update-session-cell))))
 
 (defun emaxima-tex-update-cell ()
   "Send the current cell's contents to Maxima, and return the results."
@@ -1321,7 +1321,7 @@ Return nil if no name or error in name."
         (cell (emaxima-get-cell-contents)))
     (goto-char (emaxima-cell-end))
     (forward-line 1)
-    (insert "\\maximaoutput\n")
+    (insert "\\maximaoutput\n\n")
     (while (or
             (string-match "[$;]" cell)
             (eq (string-match "[ \n]*:lisp" cell) 0))
@@ -1362,7 +1362,7 @@ Return nil if no name or error in name."
           (cell (emaxima-get-cell-contents)))
       (goto-char (emaxima-cell-end))
       (forward-line 1)
-      (insert "\\maximaoutput\n")
+      (insert "\\maximaoutput\n\n")
       (while (or
               (string-match "[$;]" cell)
               (eq (string-match "[ \n]*:lisp" cell) 0))
