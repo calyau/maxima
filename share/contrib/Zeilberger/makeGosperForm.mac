@@ -1,36 +1,7 @@
-/*
-       ***************************************************************
-       *                    Zeilberger Package                       *
-       *                                                             *
-       *      Zeilberger is a Maxima implementation of Gosper's      *
-       *      and Zeilberger's algorithm for proving and finding     *
-       *      indefinite and definite hypergeometric summation       *
-       *      identities, implementing Axel Riese's filtering        *
-       *      optimization. This is the code discussed in:           *
-       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
-       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
-       *      Kepler University, Linz, 1999.                         *
-       *                                                             *
-       *                 					     *
-       *                                                             *
-       *                        Version 2.0                          *
-       *                       March 15, 2004                        *
-       *             License:  GPL (version 2 or later)              *
-       *                                                             *
-       *                 --------------------------                  *
-       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
-       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
-       *                                                             *
-       *   Filename: makeGosperForm.mac                              *
-       *                                                             *
-       ***************************************************************
-*/
+/* Gosper form routine */
 
-/* Gosper form routine    */
-/* by Fabrizio Caruso     */
-                                                                                                                             
-/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
-/* Johannes Kepler Universitaet, Linz, Austria                        */
+/* RISC Institite, Linz, Austria */
+/* by Fabrizio Caruso            */
 
 
 /* List select wrt a criterion */
@@ -89,10 +60,10 @@ candSplit(list,coef,constCoef) :=
 /* with integer coefficients */
 integerLinear(expr,var) :=
   if not(operatorp(expr,"^")) then
-   (degree(expr,var) < 2) and
-   (integerp(coeff(expr,var,1)))
+    (degree(expr,var) < 2) and
+    (integerp(coeff(expr,var,1)))
   else
-   integerLinear(first(expr),var); 
+    integerLinear(first(expr),var); 
  
 
 /* Separate the constant and the normalized part of an integer linear*/
@@ -127,7 +98,7 @@ constSep(intLin) :=
 /* into irreducible factors */
 /* */
 /* The numerator is q(k) and the denominator is r(k) */
-makeGosperFormVerbose(expr,k) :=
+makeGosperFormVerboseOpt(expr,k,mode) :=
   block(
   /* Local variables */
   [num,den,numList,denList,lengthNumList,lengthDenList,
@@ -142,15 +113,18 @@ makeGosperFormVerbose(expr,k) :=
    numItem, denItem,
    numExp,denExp,minExp,diff,candListSplit,item],
   
-if(expr=1) then 
-  return([1,1,1]),
+  if(expr=1) then 
+    return([1,1,1]),
 
-  num:factor(num(expr)),
-  den:factor(denom(expr)),
+    num:factor(num(expr)),
+    den:factor(denom(expr)),
 
-print("STARTING WITH : "),
-print(num),
-print(den),
+
+  if mode>= VERBOSE then
+    (
+    print(num),
+    print(den)
+    ),
 
 negNumFlag : operatorp(num,"-"),
 negDenFlag : operatorp(den,"-"),
@@ -173,9 +147,11 @@ pPoly : 1,
 sepNumList:intLinSep(num,k),
 sepDenList:intLinSep(den,k),
 
-
+if mode >= VERBOSE then
+( 
 print("sepNumList : ", sepNumList),
-print("sepDenList : ", sepDenList),  
+print("sepDenList : ", sepDenList)
+),  
 
 nonIntLinNum : first(sepNumList),
 intLinNum : second(sepNumList),
@@ -191,25 +167,32 @@ rList:[],
 
 /* Non-integer linear computation */
 
-print("NON-INTEGER LINEAR COMPUTTATION"),
-
 numList : normList(nonIntLinNum,k),
 denList : normList(nonIntLinDen,k),
 
+if mode>= VERBOSE then
+(
 print("numList : ", numList),
-print("denList : ", denList),
+print("denList : ", denList)
+),
 
 constSep : constSep(numList),
 normNonIntLinNum : constSep[1],
 nonIntLinNumConst : constSep[2],
+if mode>= VERBOSE then
+(
 print("normIntLinNum : ", normNonIntLinNum),
-print("intLinNumConst : ", nonIntLinNumConst),
+print("intLinNumConst : ", nonIntLinNumConst)
+),
 
 constSep : constSep(denList),
 normNonIntLinDen : constSep[1],
 nonIntLinDenConst : constSep[2],
+if mode>= VERBOSE then
+(
 print("normIntLinDen : ", normNonIntLinDen),
-print("nonIntLinDenConst : ", nonIntLinDenConst),
+print("nonIntLinDenConst : ", nonIntLinDenConst)
+),
 
 q : q * nonIntLinNumConst,
 r : r * nonIntLinDenConst,
@@ -217,11 +200,7 @@ r : r * nonIntLinDenConst,
 numList : normNonIntLinNum,
 denList : normNonIntLinDen,
 
-
-print("-----------------------------------------------------------------"),
-print("entering outer loop"),
-print("-----------------------------------------------------------------"),
-
+/* entering outer loop */
 
 unless ((numList = []) or (denList = [])) do
   (
@@ -230,22 +209,20 @@ unless ((numList = []) or (denList = [])) do
   candListSplit : splitList(numList,
                             lambda([x],degreeSelect(x,k,degree(first(denItem),k)))
                            ),
-  print("candListSplit : ", candListSplit),
+ 
   candNumList : first(candListSplit),
 
 numList : second(candListSplit),
 candListSplit : splitList(denList,
                             lambda([x],degreeSelect(x,k,degree(first(denItem),k)))
                            ),
-  print("candListSplit : ", candListSplit),
-  candDenList : first(candListSplit),
+  
+candDenList : first(candListSplit),
 denList : second(candListSplit),
 
 
 
-
-  
-print("entering inner loop"),
+/*  inner loop */
   unless candDenList = [] do
      (
      denItem : first(candDenList),
@@ -254,34 +231,28 @@ print("entering inner loop"),
      unless tempList = [] do
         (
         
-        
-     print("BOGUS checking ", denItem ," against : ", first(tempList)),
+    
      shiftRes : resultant(norm2polyPower(first(tempList)),
                           expand(subst(k+j,k,norm2polyPower(denItem))),k),
-     print("shiftRes : ", shiftRes),
 
 
      factList : poly2list(factor(shiftRes)),
-     print("factList : ", factList),
+
      intFactList : first(splitList(factList, lambda([y],integerLinear(y,j)))),
-     print("intFactList : ", intFactList),
+
      solList : makeList(second(first(solve(part(intFactList,i),j))),i,1,length(intFactList)),
-     print("solList : ", solList),
+
      intSolList : first(splitList(solList,lambda([y],integerp(y) and (y>=0)))),
      
 
      if intSolList # [] then
          (
-
-         print("intSolList : ", intSolList),
          minSol : apply(min,intSolList), 
-         print("minSol : ", minSol),
-         
+ 
          numExp : second(first(tempList)),
          denExp : second(denItem),
          minExp : min(numExp,denExp),
-         print("numExp : ", numExp),
-         print("denExp : ", denExp),
+
          if numExp = denExp then
              (
              p : p * product(norm2polyPower(subst(k+j,k,denItem)),j,0,minSol-1),
@@ -311,7 +282,8 @@ print("entering inner loop"),
          )
      else
          (
-         print("no positive integer solutions"),
+         if mode>= VERBOSE then
+            print("no positive integer solutions"),
          candNumList : endcons(first(tempList),candNumList),
          tempList : rest(tempList)
          )
@@ -322,27 +294,30 @@ print("entering inner loop"),
 
      ),
 
-
-print("end of inner loop"),
-
+/* end of inner loop */
 q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList))
 
   ),
-
-print("end of outer loop"),
+/* end of outer loop */
+if mode>= VERBOSE then
+(
 print("numList : ", numList),
-print("denList : ", denList),
+print("denList : ", denList)
+),
 if numList # [] then
   q : q * product(norm2polyPower(part(numList,i)),i,1,length(numList)),
 if denList # [] then
   r : r * product(norm2polyPower(part(denList,i)),i,1,length(denList)),
 
+if mode>= VERBOSE then
+(
 print("q : ", q),
-print("r : ", r),
+print("r : ", r)
+),
 
 
 /* Interger linear computation */
-print("INTEGER LINEAR COMPUTATION"),
+
 numList : intLinNormList(intLinNum,k), 
 
 numList : sort(numList),
@@ -354,14 +329,20 @@ denList : sort(denList),
 constSep : intLinConstSep(numList),
 normIntLinNum : constSep[1],
 intLinNumConst : constSep[2],
+if mode>= VERBOSE then
+(
 print("normIntLinNum : ", normIntLinNum),
-print("intLinNumConst : ", intLinNumConst),
+print("intLinNumConst : ", intLinNumConst)
+),
 
 constSep : intLinConstSep(denList),
 normIntLinDen : constSep[1],
 intLinDenConst : constSep[2],
+if mode>= VERBOSE then
+(
 print("normIntLinDen : ", normIntLinDen),
-print("intLinDenConst : ", intLinDenConst),
+print("intLinDenConst : ", intLinDenConst)
+),
 
 numList : normIntLinNum,
 denList : normIntLinDen,
@@ -375,372 +356,76 @@ unless ((numList = []) or (denList = [])) do
 
 /* This is an adaptation of Schorn-Riese's Mathematica code */
 
+if mode>= VERBOSE then
+(
 print("denItem : ", denItem),
-
 print("numList : ", numList),
-print("denList : ", denList),
+print("denList : ", denList)
+),
 
 
 candListSplit : splitList(numList,
                 lambda([x],intDistance(first(x),first(denItem)))),
 
-print("NUM) candListSplit : ", candListSplit),
+if mode>= VERBOSE then
+  print("NUM) candListSplit : ", candListSplit),
 
 
 candNumList : first(candListSplit),
-print("candNumList : ", candNumList),
+
 numList : second(candListSplit),
 candListSplit : splitList(denList,
                  lambda([x],intDistance(first(x),first(denItem)))),
 
-print("DEN) candListSplit : ", candListSplit),
+if mode>= VERBOSE then
+  print("DEN) candListSplit : ", candListSplit),
 
 
 candDenList : first(candListSplit),
-print("candDenList : ", candDenList),
+
 denList : second(candListSplit),
      
 
 unless ((candNumList = []) or (candDenList = [])) do
     (
-    print("---"),
+
     diff : first(first(candNumList))-first(first(candDenList)),
-    print("diff : ", diff),
-    print("inner cycle) candNumList : ", candNumList),
-    print("inner cycle) candDenList : ", candDenList),
+    if mode>= VERBOSE then
+      (
+      print("diff : ", diff),
+      print("inner cycle) candNumList : ", candNumList),
+      print("inner cycle) candDenList : ", candDenList)
+      ),
     if not(integerp(diff)) or (integerp(diff) and (diff<0)) then
        (
        /* q must be updated here */
-       print("Gosper-condition satisfied."),
+       /* Gosper-condition satisfied */
+      
        q : q * norm2polyPower(first(candNumList)),
        candNumList : rest(candNumList)
        )
     else
        (
-       print("Gosper-condition NOT satisfied!"),
-       /* p must be updated here */
-       numExp:second(first(candNumList)),
-       denExp:second(first(candDenList)),
-       minExp:min(numExp,denExp),
-       print("minExp : ", minExp),
-       p : p * product(subst(k+i,k,norm2intLin(first(candDenList),k)^minExp),i,0,diff-1),
-       print("p computed : ", p),
-       if(numExp>denExp) then
-          (
-          item : [first(first(candNumList)),numExp-minExp],          
-          print("item : ", item),
-          candNumList : cons(item,rest(candNumList)),
-          print("remaining power : ", item),        
-          candDenList : rest(candDenList)
-          )
-       else
-          if(numExp<denExp) then
-             (
-             item : [first(first(candDenList)),denExp-minExp],
-             candNumList : rest(candNumList),
-             candDenList : cons(item,rest(candDenList))
-             )
-          else
-            (
-            candNumList : rest(candNumList),
-            candDenList : rest(candDenList)
-            )
-
-       )
-    ), /* end inner unless cycle */
-
-print("out of inner cycle!"),
-  
-if (candNumList # []) then
- q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList)),
-
-print("-----------------------"),
-if(candDenList # []) then
- r : r * product(norm2polyPower(part(candDenList,i)),i,1,length(candDenList)),
-
-print("end of between inner/outer cycle!")
-
- ), /* end unless */
-
-if (numList # []) then
-  q : q*product(norm2polyPower(part(numList,i)),i,1,length(numList)),
-
-if (denList # []) then
-  r : r*product(norm2polyPower(part(denList,i)),i,1,length(denList)),
-
-
-r : subst(k-1,k,r),
-
-return([p,q*formSign*intLinNumConst,r*intLinDenConst])
-
-
-); /* end block */
-
-
-/* Check Gosper's condition */
-/* We are assuming that the input is factored */
-/* into irreducible factors */
-/* */
-/* The numerator is q(k) and the denominator is r(k) */
-makeGosperForm(expr,k) :=
-  block(
-  /* Local variables */
-  [num,den,numList,denList,lengthNumList,lengthDenList,
-   test,
-   i,j,h,minExp,pulledPoly,pPoly,curExp,compPoly,formSign,
-   p,q,r,pList,qList,rList,
-   negNumFlag,negDenFlag,
-   intLinNum,nonIntLinNum,intLinDen,nonIntLinDen,
-   sepNumList,sepDenList,
-   constIntLinNum, constIntLinDen, constSep, 
-   normIntLinNum, normNonIntLinNum, normIntLinDen, normNonIntLinDen,
-   numItem, denItem,
-   numExp,denExp,minExp,diff,candListSplit,item],
-  
-if(expr=1) then 
-  return([1,1,1]),
-
-num:factor(num(expr)),
-den:factor(denom(expr)),
-
-
-negNumFlag : operatorp(num,"-"),
-negDenFlag : operatorp(den,"-"),
-
-if (negNumFlag) then
-  num : -1 * num,
-if (negDenFlag) then
-  den : -1 * den,
-
-if (negNumFlag and not(negDenFlag))or(not(negNumFlag) and negDenFlag) then
-   (
-   formSign : -1
-   )
-else
-   formSign : 1,
-
-pPoly : 1,
-
-
-sepNumList:intLinSep(num,k),
-sepDenList:intLinSep(den,k),
-
-nonIntLinNum : first(sepNumList),
-intLinNum : second(sepNumList),
-nonIntLinDen : first(sepDenList),
-intLinDen : second(sepDenList),
-
-p:1,
-q:1,
-r:1,
-pList:[],
-qList:[],
-rList:[],
-
-/* Non-integer linear computation */
-
-numList : normList(nonIntLinNum,k),
-denList : normList(nonIntLinDen,k),
-
-
-constSep : constSep(numList),
-normNonIntLinNum : constSep[1],
-nonIntLinNumConst : constSep[2],
-
-constSep : constSep(denList),
-normNonIntLinDen : constSep[1],
-nonIntLinDenConst : constSep[2],
-
-q : q * nonIntLinNumConst,
-r : r * nonIntLinDenConst,
-
-numList : normNonIntLinNum,
-denList : normNonIntLinDen,
-
-unless ((numList = []) or (denList = [])) do
-  (
-  denItem : first(denList),
-  
-  candListSplit : splitList(numList,
-                            lambda([x],degreeSelect(x,k,degree(first(denItem),k)))
-                           ),
-  
-  candNumList : first(candListSplit),
-
-  numList : second(candListSplit),
-  candListSplit : splitList(denList,
-                            lambda([x],degreeSelect(x,k,degree(first(denItem),k)))
-                           ),
-  
-  candDenList : first(candListSplit),
-  denList : second(candListSplit),
-
-
-
-  unless candDenList = [] do
-     (
-     denItem : first(candDenList),
-     tempList : candNumList,
-     candNumList : [],
-     unless tempList = [] do
-        (
-
-     shiftRes : resultant(norm2polyPower(first(tempList)),
-                          expand(subst(k+j,k,norm2polyPower(denItem))),k),
-
-     factList : poly2list(factor(shiftRes)),
-     
-     intFactList : first(splitList(factList, lambda([y],integerLinear(y,j)))),
-     
-     solList : makeList(second(first(solve(part(intFactList,i),j))),i,1,length(intFactList)),
-
-     intSolList : first(splitList(solList,lambda([y],integerp(y) and (y>=0)))),
-     
-
-     if intSolList # [] then
-         (
-
-         minSol : apply(min,intSolList), 
-        
-         numExp : second(first(tempList)),
-         denExp : second(denItem),
-         minExp : min(numExp,denExp),
-
-         if numExp = denExp then
-             (
-             p : p * product(norm2polyPower(subst(k+j,k,denItem)),j,0,minSol-1),
-             
-             denItem : [1,1],
-             tempList : []
-             
-             )
-         else
-             (
-             item : [first(denItem),minExp],
-             
-             p : p * product(norm2polyPower(subst(k+j,k,item)),j,0,minSol-1),
-
-             if numExp > denExp then
-                (
-                candNumList : endcons([first(first(tempList)),numExp-minExp],candNumList),
-                denItem : [1,1],
-                tempList : []
-                )
-             else
-                (
-                denItem : [first(denItem), denExp-minExp],
-                tempList : rest(tempList)
-                )
-             )
-         )
-     else
-         (
-         
-         candNumList : endcons(first(tempList),candNumList),
-         tempList : rest(tempList)
-         )
-
-        ),
-     r : r * norm2polyPower(denItem),
-     candDenList : rest(candDenList)
-
-     ),
-
-
-  q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList))
-
-  ),
-
-
-if numList # [] then
-  q : q * product(norm2polyPower(part(numList,i)),i,1,length(numList)),
-if denList # [] then
-  r : r * product(norm2polyPower(part(denList,i)),i,1,length(denList)),
-
-/* Interger linear computation */
-
-numList : intLinNormList(intLinNum,k), 
-
-numList : sort(numList),
-
-denList : intLinNormList(intLinDen,k),
-
-denList : sort(denList),
-
-constSep : intLinConstSep(numList),
-normIntLinNum : constSep[1],
-intLinNumConst : constSep[2],
-
-constSep : intLinConstSep(denList),
-normIntLinDen : constSep[1],
-intLinDenConst : constSep[2],
-
-numList : normIntLinNum,
-denList : normIntLinDen,
-
-  lengthNumList:length(numList),
-  lengthDenList:length(denList),
-
-unless ((numList = []) or (denList = [])) do
-  (
-  denItem : first(denList),
-
-/* This is a slight improvement of Schorn-Riese's Mathematica code */
-
-
-  candListSplit : splitList(numList,
-                lambda([x],intDistance(first(x),first(denItem)))),
-
-
-  candNumList : first(candListSplit),
-
-  numList : second(candListSplit),
-  
-
-
-  candListSplit : splitList(denList,
-                 lambda([x],intDistance(first(x),first(denItem)))),
-
-
-
-  candDenList : first(candListSplit),
-
-  denList : second(candListSplit),
-     
-
-  unless ((candNumList = []) or (candDenList = [])) do
-    (    
-    diff : first(first(candNumList))-first(first(candDenList)),
-    
-    if not(integerp(diff)) or (integerp(diff) and (diff<0)) then
-       (
-       /* q must be updated here */
-
-       q : q * norm2polyPower(first(candNumList)),
-       candNumList : rest(candNumList)
-       )
-    else
-       (
-       
+       /* Gosper-condition NOT satisfied */
        /* p must be updated here */
        numExp:second(first(candNumList)),
        denExp:second(first(candDenList)),
        minExp:min(numExp,denExp),
        
        p : p * product(subst(k+i,k,norm2intLin(first(candDenList),k)^minExp),i,0,diff-1),
-       
+       if mode>= VERBOSE then
+          print("p computed : ", p),
        if(numExp>denExp) then
           (
           item : [first(first(candNumList)),numExp-minExp],          
           
           candNumList : cons(item,rest(candNumList)),
-                  
+          
           candDenList : rest(candDenList)
           )
        else
           if(numExp<denExp) then
              (
-
              item : [first(first(candDenList)),denExp-minExp],
              candNumList : rest(candNumList),
              candDenList : cons(item,rest(candDenList))
@@ -754,8 +439,8 @@ unless ((numList = []) or (denList = [])) do
        )
     ), /* end inner unless cycle */
 
-
-  /* r must be updated here */  
+/* out of inner cycle */
+  
 if (candNumList # []) then
  q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList)),
 
@@ -763,7 +448,6 @@ if (candNumList # []) then
 if(candDenList # []) then
  r : r * product(norm2polyPower(part(candDenList,i)),i,1,length(candDenList))
 
-
  ), /* end unless */
 
 if (numList # []) then
@@ -773,13 +457,21 @@ if (denList # []) then
   r : r*product(norm2polyPower(part(denList,i)),i,1,length(denList)),
 
 
-
 r : subst(k-1,k,r),
 
 return([p,q*formSign*intLinNumConst,r*intLinDenConst])
+
+
 ); /* end block */
 
 
+
+
+makeGosperForm(expr,var) ::=
+  buildq([expr,var],makeGosperFormVerboseOpt(expr,var,NONVERBOSE));
+
+makeGosperFormVerbose(expr,var) ::=
+  buildq([expr,var],makeGosperFormVerboseOpt(expr,var,VERBOSE));
 
 
 

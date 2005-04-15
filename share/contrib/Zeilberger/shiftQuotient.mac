@@ -1,53 +1,23 @@
-/*
-       ***************************************************************
-       *                    Zeilberger Package                       *
-       *                                                             *
-       *      Zeilberger is a Maxima implementation of Gosper's      *
-       *      and Zeilberger's algorithm for proving and finding     *
-       *      indefinite and definite hypergeometric summation       *
-       *      identities, implementing Axel Riese's filtering        *
-       *      optimization. This is the code discussed in:           *
-       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
-       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
-       *      Kepler University, Linz, 1999.                         *
-       *                                                             *
-       *                 					     *
-       *                                                             *
-       *                        Version 2.0                          *
-       *                       March 15, 2004                        *
-       *             License:  GPL (version 2 or later)              *
-       *                                                             *
-       *                 --------------------------                  *
-       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
-       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
-       *                                                             *
-       *   Filename: shiftQuotient.mac                               *
-       *                                                             *
-       ***************************************************************
-*/
+/* Routines for computing:  */
+/* a) application of a lin. op. on a hyp. seq. */
+/* b) shift quotient of a hyp. seq. */
 
-/* Routines for computing:                                                 */
-/* i) application of a linear recurrence operator on a hypergeometric term */
-/* ii) shift quotient of a hypergeometric term                             */
-
-/* by Fabrizio Caruso                                                      */
-                                                                                                                             
-/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
-/* Johannes Kepler Universitaet, Linz, Austria                        */
+/* RISC Institute, Linz, Austria */
+/* by Fabrizio Caruso            */
 
 
 dependent(expr,var) :=
   block([res,count],
     if(expr=var) then
-      return(true)
+      return(TRUE)
     else
       if(atom(expr)) then
-        return(false)
+        return(FALSE)
       else
         (
-        res:false,
+        res:FALSE,
     
-        for count:1 unless (res=true)or(count>length(expr)) do
+        for count:1 unless (res=TRUE)or(count>length(expr)) do
            (
            res : dependent(part(expr,count),var)
 
@@ -171,20 +141,6 @@ shiftQuo(expr,k) :=
      else
        shiftFactPoly(expr,k,1)/expr; 
 
-
-testOld(hyp,ord) :=
-   frat(parShift(hyp,n,a,ord),k);
-
-
-testNewRaw(hyp,ord) :=
-   shiftQuo(niceForm(hyp,n,a,ord),k);
-
-testNew(hyp,ord) := 
-  block(
-
-  rs:testNewRaw(hyp,ord),
-  return(shiftQuo(hyp/denom(res),k))
-  );
 
 
 

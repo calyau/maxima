@@ -1,36 +1,15 @@
-/*
-       ***************************************************************
-       *                    Zeilberger Package                       *
-       *                                                             *
-       *      Zeilberger is a Maxima implementation of Gosper's      *
-       *      and Zeilberger's algorithm for proving and finding     *
-       *      indefinite and definite hypergeometric summation       *
-       *      identities, implementing Axel Riese's filtering        *
-       *      optimization. This is the code discussed in:           *
-       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
-       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
-       *      Kepler University, Linz, 1999.                         *
-       *                                                             *
-       *                                                             *
-       *                                                             *
-       *                        Version 2.0                          *
-       *                       March 15, 2004                        *
-       *             License:  GPL (version 2 or later)              *
-       *                                                             *
-       *                 --------------------------                  *
-       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
-       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
-       *                                                             *
-       *   Filename: Gosper.mac                                      *
-       *                                                             *
-       ***************************************************************
-*/
-
 /* Gosper's algorithm        */
-/* by Fabrizio Caruso        */
-                                                                                                                             
-/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
-/* Johannes Kepler Universitaet, Linz, Austria                        */
+
+/* RISC Institute, Linz, Austria */
+/* by Fabrizio Caruso            */
+
+
+/* Dependencies:             */
+/* makeGosperForm2.macsyma   */
+/*      poly2quint.macsyma   */
+/* GosperEq2.macsyma         */
+/*      AlgUtil2.macsyma     */
+
 
 
 /* PREPROCESSING ROUTINES */
@@ -88,6 +67,18 @@ zTelescopeSimplified(GSol,gfP,r,denNF) :=
    r*Gsol/(gfP*denNF); /* BOGUS */
 
 
+printGosperSummary(fRat,GosperForm,AnsatzDegree,Gpoly,GosperSol,mode) := 
+  block([],
+     print("--------------------------------"),
+     print("Gosper-related SUMMARY"),
+     print("(1) fRat : " , fRat),
+     print("(2) Gosper form : ", GosperForm),
+     print("(3) AnsatzDegree : ", AnsatzDegree),
+     print("(4) Gosper polynomial : " , Gpoly),
+     if mode>= VERBOSE then
+       print("(5) Gosper solution : ", GosperSol)
+     );
+
 
 
 /* GOSPER'S ALGORITHM - Main routine - VERBOSE */
@@ -101,80 +92,54 @@ GosperVerboseOpt(f,k,mode) :=
    Gpoly,
    sysSol,
    GosperSol,
-   tlscope],
+   tlscope,
+   constantPart],
   
-  /* Initialization of the flag that controls that simplification of factorials */
-  
-  
+ 
+
   /* Computation of the shift quotient */
-/*  
-fRat: fRat(f,k),
-*/
   fRat : shiftQuo(f,k),
 
-  if mode="normal" or mode="very" or mode="debugging" then
+  if mode>=VERBOSE then
      print("Shift quotient computed! : " , fRat),
 
-  /* Computation of the normalization sign */
-/* 
- if operatorp(fRat,"-") then
-     (
-     fRat: -fRat,
-     signFlag: -1
-     )
-  else
-     signFlag:1,
-*/
 
   /* Computation of the Gosper form */
-  if mode = "very" or mode = "debugging" then
-     GosperForm: makeGosperFormVerbose(fRat,k)
-  else
-     GosperForm: makeGosperForm(fRat,k),
-  
-  if mode="normal" or mode="very" or mode="debugging" then
-     print("GosperForm generated!"),
+  GosperForm: makeGosperFormVerboseOpt(fRat,k,mode-1),
+ 
 
   p: takeP(GosperForm),
   q: takeQ(GosperForm),
   r: takeR(GosperForm),
-  if mode="normal" or mode="very" or mode="debugging" then
+  if mode>=VERBOSE then
      print("p,q,r have been extracted! p: ", p, ", q: ", q, ", r: ", r),
 
   /* Solution of the Gosper equation */
-  if mode="very" or mode="debugging" then
-     AnsatzDegree: AnsatzDegreeVerbose(p,q,r,k)
-  else 
-     AnsatzDegree: AnsatzDegree(p,q,r,k),
-  if mode="normal" or mode="very" or mode="debugging" then
+  AnsatzDegree: AnsatzDegreeVerboseOpt(p,q,r,k,mode-1),
+
+  if mode>=VERBOSE then
      print("Ansatz degree computed ! : " , AnsatzDegree),
-  Gpoly: expand(GosperPoly(p,q,r,k,"c",AnsatzDegree)),
-  if mode="normal" or mode="very" or mode="debugging" then 
+
+  Gpoly : 0,
+
+  if AnsatzDegree >= 0 then
+    Gpoly: expand(GosperPoly(p,q,r,k,"c",AnsatzDegree)),
+  if mode>=VERBOSE then 
      print("Gosper polynomial created! : " , Gpoly),
-  if mode="linsys" or mode="very" or mode="debugging" then
-     sysSol: SolveSysVerbose(Gpoly,"c",AnsatzDegree+1,k)
-  else
-     sysSol: SolveSys(Gpoly,"c",AnsatzDegree+1,k),
-print("DONE!"),
-  if mode="normal" or mode="very" or mode="debugging" then
+  if Gpoly = 0 then
+     return(NO_HYP_SOL),
+  
+  sysSol: SolveSysVerboseOpt(Gpoly,"c",AnsatzDegree+1,k,mode-1),
+  
+  if mode>=VERY_VERBOSE then
      print("System of equations solved! :  " , sysSol),
   GosperSol: Gsol2Poly(first(sysSol),k),  
-  if mode="normal" or mode="very" or mode="debugging" then
+  if mode>=VERBOSE then
      print("Gosper solution created! : " , GosperSol),
 
-  if mode="summary" or mode="verbose" or mode="very" or mode="debugging" then 
-     (
-     print("--------------------------------"),
-     print("S U M M A R Y"),
-     print("(1) fRat : " , fRat),
-     print("(2) sign : " , signFlag),
-     print("(3) Gosper form : ", GosperForm),
-     print("(4) p, q, r : " , p , " , " , q , " , " , r),
-     print("(5) AnsatzDegree : ", AnsatzDegree),
-     print("(6) Gosper polynomial : " , Gpoly),
-     print("(7) Gosper sys. solution : " , sysSol),
-     print("(8) Gosper solution : ", GosperSol)
-     ),
+  if mode>=SUMMARY then 
+     printGosperSummary(fRat,GosperForm,AnsatzDegree,Gpoly,GosperSol,mode-1),
+
 
   /* Postprocessing : building the sol. to the telesc. probl. */    
   if GosperSol = 0 then 
@@ -182,204 +147,105 @@ print("DONE!"),
   else
     tlscope: telescope(GosperSol,p,r,k),
 
-/*
-     if OUTPUT_FORMAT = SIMPLIFIED then
-       tlscope:telescopeSlow(f,GosperSol,q,r,k)
-     else 
-       tlscope:telescopeFast(f,GosperSol,q,r,k),  
-*/
-  if mode="normal" or mode="very" or mode="debugging" then
-     print("Postprocessing of the solution done! : ", tlscope)
-  
+
+ if SIMPLIFIED_OUTPUT then
+    return(ratsimp(tlscope))
+ else
+    return(tlscope)
   );
 
 
 /* Macro for the normal verbose Gosper algorithm */
 GosperVerbose(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,"normal"));
+         GosperVerboseOpt(f,k,VERBOSE));
 
 /* Macro for the very verbose Gosper algorithm */
 GosperVeryVerbose(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,"very"));
+         GosperVerboseOpt(f,k,VERY_VERBOSE));
 
-/* Macro for the debugging version of the Gosper algorithm */
-GosperDebugging(f,k) ::=
+
+GosperExtra(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,"debugging"));
-
+         GosperVerboseOpt(f,k,EXTRA));
 
 /* Macro for the summary version of the Gosper algorithm */
 GosperSummary(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,"summary"));
-
-/* Macro for the linsys version of the Gosper algorithm */
-GosperLinSys(f,k) ::=
-  buildq([f,k],
-         GosperVerboseOpt(f,k,"linsys"));
-
-/* GOSPER'S ALGORITHM - Main routine - NON-VERBOSE */
-GosperNonVerbose(f,k) :=
-  block(
-  [fRat,
-   signFlag,
-   GosperForm,
-   p,q,r,
-   AnsatzDegree,
-   Gpoly,
-   sysSol,
-   GosperSol,
-   tlscope],
-  
-  /* Initialization of the flag that controls that simplification of factorials */
-  sumsplitfact: false,
-  
-  /* Computation of the shift quotient */
-/*  
-fRat: fRat(f,k),
- */
-  fRat : shiftQuo(f,k),
-
-  /* Computation of the normalization sign */
-/*  
-if operatorp(fRat,"-") then
-     (
-     fRat: -fRat,
-     signFlag: -1
-     )
-  else
-     signFlag:1,
- */
-
-  /* Computation of the Gosper form */
-  GosperForm: makeGosperForm(fRat,k),
- 
-
-  p: takeP(GosperForm),
-  q: takeQ(GosperForm),
-  r: takeR(GosperForm),
-
-
-  /* Solution of the Gosper equation */
-  AnsatzDegree: AnsatzDegree(p,q,r,k),
-
-  Gpoly: expand(GosperPoly(p,q,r,y,c,AnsatzDegree)),
- 
-  sysSol: SolveSys(Gpoly,c,AnsatzDegree+1,k),
-
-  GosperSol: Gsol2Poly(first(sysSol),k),  
-
-
-  /* Postprocessing : building the sol. to the telesc. probl. */    
-  if GosperSol = 0 then
-     tlscope: NO_HYP_SOL
-  else
-     tlscope:telescope(GosperSol,p,r,k)
-/*
-     if OUTPUT_FORMAT = SIMPLIFIED then
-       tlscope:telescopeSlow(f,GosperSol,q,r,k)
-     else 
-       tlscope:telescopeFast(f,GosperSol,q,r,k)
-  */
-  );
+         GosperVerboseOpt(f,k,SUMMARY));
 
 
 /* Short name for the non verbose mode */
 Gosper(f,k) ::=
    buildq([f,k],
-          GosperNonVerbose(f,k));
+          GosperVerboseOpt(f,k,NONVERBOSE));
+
+/* ----------------------------------------------------------------------- */
+/* Anti-difference : It finds the anti-difference of a hypergeometric term */
+
+AntiDifferenceVerboseOpt(f,k,mode) :=
+  block([gSol],
+  gSol : GosperVerboseOpt(f,k,mode),
+  if gSol=NO_HYP_SOL then
+    return(NO_HYP_ANTIDIFFERENCE)
+  else
+    if SIMPLIFIED_OUTPUT then
+       return(factor(f*gSol))
+    else
+       return(f*gSol)
+  );
+       
+
+AntiDifference(f,k) :=
+  AntiDifferenceVerboseOpt(f,k,NONVERBOSE);
+
+AntiDifferenceSummary(f,k) :=
+  AntiDifferenceVerboseOpt(f,k,SUMMARY);
+
+AntiDifferenceVerbose(f,k) :=
+  AntiDifferenceVerboseOpt(f,k,VERBOSE);
+
+AntiDifferenceVeryVerbose(f,k) :=
+  AntiDifferenceVerboseOpt(f,k,VERY_VERBOSE);
+
+AntiDifferenceExtra(f,k) :=
+  AntiDifferenceVerboseOpt(f,k,EXTRA);
 
 
+/* ------------------------------------------------------------------ */
+/* Gosper Sum : It sums Gosper-summable hypergeometric terms          */
+
+/* Gosper summation function - Summary mode */
+GosperSumVerboseOpt(f,k,a,b,mode) :=
+  block(
+        [antiDiff],
+        
+        antiDiff:AntiDifferenceVerboseOpt(f,k,mode),
+        if antiDiff=NO_HYP_ANTIDIFFERENCE then
+           return(NONGOSPER_SUMMABLE),
+        if mode>= VERBOSE then
+           print("Anti-difference : ", antiDiff),
+        return(subst(b+1,k,antiDiff)-subst(a,k,antiDiff))
+       );
 
 /* Gosper summation function */
-GosperSumNonVerbose(f,k,a,b) :=
-  block(
-        [telescope],
-     
-        telescope:factor(Gosper(f,k)),
-        /* OUTPUT */   
-        subst(b+1,k,telescope)-subst(a,k,telescope));
-
-  
-/* Gosper summation function - Verbose mode */
-GosperSumVerbose(f,k,a,b) :=
-  block(
-        [telescope],
-        
-        telescope:factor(GosperVerbose(f,k)),
-        subst(b+1,k,telescope)-subst(a,k,telescope));
+GosperSum(f,k,a,b) :=
+  GosperSumVerboseOpt(f,k,a,b,NONVERBOSE);
 
 
 /* Gosper summation function - Summary mode */
+GosperSumSummary(f,k,a,b) :=
+  GosperSumVerboseOpt(f,k,a,b,SUMMARY);
+
 GosperSumVerbose(f,k,a,b) :=
-  block(
-        [telescope],
-        
-        telescope:factor(GosperSummary(f,k)),
-        subst(b+1,k,telescope)-subst(a,k,telescope));
+  GosperSumVerboseOpt(f,k,a,b,VERBOSE);
 
-/* Gosper summation function - Dubugging mode */
 GosperSumVeryVerbose(f,k,a,b) :=
-  block(
-       [telescope],
-  
-       telescope:factor(GosperVeryVerbose(f,k)),
-       subst(b+1,k,telescope)-subst(a,k,telescope));
+  GosperSumVerboseOpt(f,k,a,b,VERY_VERBOSE);
 
-/* Gosper summation function - Summary mode */
-GosperSumVeryVerbose(f,k,a,b) :=
-  block(
-       [telescope],
-  
-       telescope:factor(GosperSummary(f,k)),
-       subst(b+1,k,telescope)-subst(a,k,telescope));
-
-/* Gosper summation function - LinSys mode */
-GosperSumVeryVerbose(f,k,a,b) :=
-  block(
-       [telescope],
-  
-       telescope:factor(GosperLinSys(f,k)),
-       subst(b+1,k,telescope)-subst(a,k,telescope));
-
-/* Different name macro for "GosperSumVeryVerbose"="GosperSumDebugging" */
-GosperSumDebugging(f,k,a,b) ::=
-  buildq([f,k,a,b],
-         GosperSumVeryVerbose(f,k,a,b));
-
-
-
-
-/* Short name macro for "GosperSumVerbose" */
-GosperSum(f,k,a,b) ::=
-   buildq([f,k,a,b],
-          GosperSumNonVerbose(f,k,a,b));
-
-
-/* Full-option GosperSum */
-GosperSumOpt(f,k,a,b,option) :=
-   if option="verbose" then
-      GosperSumVerbose(f,k,a,b)
-   else
-      if option="veryverbose" or option="debugging" then
-         GosperSumVeryVerbose(f,k,a,b)
-      else
-         if option="summary" then 
-            GosperSumSummary(f,k,a,b)
-         else
-            GosperSumNonVerbose(f,k,a,b); 
-
-         
-
-/* Not yet supported levels of verbosity */
-
-GosperSumLinSys(f,k,a,b) :=
-   GosperSumOpt(f,k,a,b,"non-verbose");
-
-
-
+GosperSumExtra(f,k,a,b) :=
+  GosperSumVerboseOpt(f,k,a,b,EXTRA);
 
 
 

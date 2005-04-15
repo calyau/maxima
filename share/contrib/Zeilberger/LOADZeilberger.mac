@@ -1,22 +1,39 @@
+/* dir : <directory where all package files are> */
 
-dir : "C:/maxima/Zeilberger/";
+/* Some examples */
+/*
+modLoad("testGosper.mac");
+modLoad("testZeilberger.mac");
+*/
 
 modLoad(modName) :=
   load(concat(dir,modName));
 
+
+modLoad("constants.mac");
+
+modLoad("numerical.mac");
+
 modLoad("settings.mac");
 
 modLoad("algUtil.mac");
+
+modLoad("linearAlgebra.mac");
+
 modLoad("shiftQuotient.mac");
+
 modLoad("compatible.mac");
 
 modLoad("norm.mac");
+
 modLoad("makeGosperForm.mac");
 
 modLoad("GosperEq.mac");
 
 modLoad("Gosper.mac");
+
 modLoad("Zeilberger.mac");
 
-modLoad("testZeilberger.mac");
+
+
 

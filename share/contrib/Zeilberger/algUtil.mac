@@ -1,36 +1,11 @@
-/*
-       ***************************************************************
-       *                    Zeilberger Package                       *
-       *                                                             *
-       *      Zeilberger is a Maxima implementation of Gosper's      *
-       *      and Zeilberger's algorithm for proving and finding     *
-       *      indefinite and definite hypergeometric summation       *
-       *      identities, implementing Axel Riese's filtering        *
-       *      optimization. This is the code discussed in:           *
-       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
-       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
-       *      Kepler University, Linz, 1999.                         *
-       *                                                             *
-       *                 					     *
-       *                                                             *
-       *                        Version 2.0                          *
-       *                       March 15, 2004                        *
-       *             License:  GPL (version 2 or later)              *
-       *                                                             *
-       *                 --------------------------                  *
-       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
-       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
-       *                                                             *
-       *   Filename:  algUtil.mac                                    *
-       *                                                             *
-       ***************************************************************
-*/
-
 /* Some algebraic/combinatorial auxiliary routines */
-/* by Fabrizio Caruso                              */
-                                                                                                                             
-/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
-/* Johannes Kepler Universitaet, Linz, Austria                        */
+
+/* RISC Institute, Linz, Austria */
+/* by Fabrizio Caruso            */
+
+
+/* Least common multiple */
+lcm(a,b) := a*b / gcd(a,b);
 
 
 /* Remove common gcd */
@@ -76,15 +51,6 @@ primitive(pol,var) :=
     return(res)
     );      
 
-
-/* Find integer solution */
-/*
-findIntRoots(pol,var) :=
-  block([constCoe],
-       constCoe : factor(coeff(pol,var,0)),
-       
-       );
-*/
 
 /* Make a list out of a product of powers of integers disregarding powers */
 factorsList(factors) :=

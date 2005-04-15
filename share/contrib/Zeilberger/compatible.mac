@@ -1,36 +1,7 @@
-/*
-       ***************************************************************
-       *                    Zeilberger Package                       *
-       *                                                             *
-       *      Zeilberger is a Maxima implementation of Gosper's      *
-       *      and Zeilberger's algorithm for proving and finding     *
-       *      indefinite and definite hypergeometric summation       *
-       *      identities, implementing Axel Riese's filtering        *
-       *      optimization. This is the code discussed in:           *
-       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
-       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
-       *      Kepler University, Linz, 1999.                         *
-       *                                                             *
-       *                 					     *
-       *                                                             *
-       *                        Version 2.0                          *
-       *                       March 15, 2004                        *
-       *             License:  GPL (version 2 or later)              *
-       *                                                             *
-       *                 --------------------------                  *
-       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
-       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
-       *                                                             *
-       *   Filename:  compatible.mac                                 *
-       *                                                             *
-       ***************************************************************
-*/
-
 /* Maxima-compatibility definitions */
+
+/* RISC Institute, Linz, Austria    */
 /* by Fabrizio Caruso               */
-                                                                                                                             
-/* Copyrighted to Fabrizio Caruso and to the RISC Combinatorics Group */
-/* Johannes Kepler Universitaet, Linz, Austria                        */
 
 
 op(expr) := 
@@ -39,34 +10,18 @@ op(expr) :=
   else 
      part(expr,0);
 
+
 operatorp(expr,operator) := 
     if op(expr)=operator then
-       true
+       TRUE
     else
-       false;
+       FALSE;
 
-/*
-second(expr) := part(expr,2);
-third(expr) := part(expr,3);
-fourth(expr) := part(expr,4);
-fifth(expr) := part(expr,5);
-sexth(expr) := part(expr,6);
-seventh(expr) := part(expr,7);
-eight(expr) := part(expr,8);
-ninth(expr) := part(expr,9);
-tenth(expr) := part(expr,10);
-*/
-
-union(a,b) := if length(a) = 0 then
-                b 
-              else 
-              if atom(a) then
-                cons(a,b)
-              else
-                cons(first(a),union(rest(a,1),b));
+SOLVE_INCONSISTENT_ERROR : FALSE;
 
 
-lcm(a,b) := a*b / gcd(a,b);
+
+
 
 
 

@@ -1,42 +1,46 @@
-/*
-       ***************************************************************
-       *                    Zeilberger Package                       *
-       *                                                             *
-       *      Zeilberger is a Maxima implementation of Gosper's      *
-       *      and Zeilberger's algorithm for proving and finding     *
-       *      indefinite and definite hypergeometric summation       *
-       *      identities, implementing Axel Riese's filtering        *
-       *      optimization. This is the code discussed in:           *
-       *      F. Caruso, A Macsyma Implementation of Zeilberger's    *
-       *      Fast Algorithm, RISC-Linz Report Series n. 99-21, J.   *
-       *      Kepler University, Linz, 1999.                         *
-       *                                                             *
-       *                 					     *
-       *                                                             *
-       *                        Version 2.0                          *
-       *                       March 15, 2004                        *
-       *             License:  GPL (version 2 or later)              *
-       *                                                             *
-       *                 --------------------------                  *
-       *   Copyright (C) Fabrizio Caruso and the RISC Combinatorics  *
-       *   Group, Johannes Kepler Universitaet, Linz, Austria        *
-       *                                                             *
-       *   Filename: settings.mac                                    *
-       *                                                             *
-       ***************************************************************
-*/
-
+/* --------------------------------------------------------------------- */ 
 /* Maxium order of the recurrence equation searched in Zeilberger's alg. */
 MAX_ORD: 5;
 
 
+/* --------------------------------------------------------------------- */
+/* Simplification */
 /* Constant values used to set OUTPUT_FORMAT */
-SIMPLIFIED: 1;
-
-NON_SIMPLIFIED: 0;
+SIMPLIFIED_OUTPUT : FALSE;
 
 
+/* --------------------------------------------------------------------- */
+/* Linear Solver */
+/* We are assuming that the independent variables in the solutions       */
+/* produced by the linear solver are stored in ind_vars(LINEAR_SOLVER)   */
+LINEAR_SOLVER : linsolve;
 
-/* Flag that controls the simplification of the output */
-OUTPUT_FORMAT: NON_SIMPLIFIED;
 
+/* --------------------------------------------------------------------- */
+/* Numerical test through evalution and modular computation              */
+/* Numerical test flag */
+MOD_TEST : FALSE;
+
+/* Modular linear solver */
+MODULAR_LINEAR_SOLVER : linsolve;
+
+/* Evaluation point used before MODULAR_LINEAR_SOLVER */
+EV_POINT : BIG_PRIMES[10];
+
+/* Big prime taken as the modulo in MODULAR_LINEAR_SOLVER */
+MOD_BIG_PRIME : BIG_PRIMES[1];
+
+/* Heuristic threshold for the modular approach */
+/* The modular test is not performed above this order */
+MOD_THRESHOLD:4;
+
+/* Warnings */
+WARNINGS : TRUE;
+
+/* Gosper tried as first attempt */
+GOSPER_IN_ZEILBERGER : TRUE;
+
+/* Trivial solutions flag */
+/* When it is set to FALSE solutions with zero certificate or */
+/* with all coefficients identically zero are excluded        */
+TRIVIAL_SOLUTIONS : TRUE;
