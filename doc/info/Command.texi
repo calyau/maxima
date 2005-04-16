@@ -26,7 +26,8 @@ means return the verb form of @code{f} applied to @code{[x]}.
 @node Definitions for Command Line,  , Introduction to Command Line, Command Line
 @section Definitions for Command Line
 
-@defun alias (newname1, oldname1, newname2, oldname2, ...)
+@c NEEDS WORK, ESPECIALLY EXAMPLES
+@defun alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 provides an
 alternate name for a (user or system) function, variable, array, etc.
 Any even number of arguments may be used.
@@ -46,9 +47,11 @@ Enabling @code{debugmode} will not catch Lisp errors.
 
 @end defvar
 
-@defun ev (expr, arg_1, arg_2, arg_3, ...)
-Evaluates the expression @code{expr} in the environment
-specified by the arguments @code{arg_1}, @code{arg_2}, @code{arg_3}, ....
+@c NEEDS CLARIFICATION
+@c VERY IMPORTANT !!
+@defun ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+Evaluates the expression @var{expr} in the environment
+specified by the arguments @var{arg_1}, ..., @var{arg_n}.
 The arguments are switches (Boolean flags), assignments, equations, and functions.
 @code{ev} returns the result (another expression) of the evaluation.
 
@@ -61,23 +64,23 @@ be any or all of the following.
 
 @itemize @bullet
 @item
-@code{simp} causes @code{expr} to be simplified regardless of the setting of the
+@code{simp} causes @var{expr} to be simplified regardless of the setting of the
 switch @code{simp} which inhibits simplification if @code{false}.
 @item
 @code{noeval} supresses the evaluation phase of @code{ev} (see step (4) below).
 This is useful in conjunction with the other switches and in causing
-@code{expr} to be resimplified without being reevaluated.
+@var{expr} to be resimplified without being reevaluated.
 @item
 @code{expand} causes expansion.
 @item
 @code{expand (m, n)} causes expansion, setting the values of @code{maxposex} and
 @code{maxnegex} to m and n respectively.
 @item
-@code{detout} causes any matrix inverses computed in @code{expr} to have their
+@code{detout} causes any matrix inverses computed in @var{expr} to have their
 determinant kept outside of the inverse rather than dividing through
 each element.
 @item
-@code{diff} causes all differentiations indicated in @code{expr} to be performed.
+@code{diff} causes all differentiations indicated in @var{expr} to be performed.
 @item
 @code{derivlist (x, y, z, ...)} causes only differentiations with respect to
 the indicated variables.
@@ -87,35 +90,35 @@ point.
 @item
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point.  It causes
-variables in @code{expr} which have been given numervals to be replaced by
+variables in @var{expr} which have been given numervals to be replaced by
 their values.  It also sets the @code{float} switch on.
 @item
 @code{pred} causes predicates (expressions which evaluate to @code{true} or @code{false})
 to be evaluated.
 @item
-@code{eval} causes an extra post-evaluation of @code{expr} to occur. (See step (5)
+@code{eval} causes an extra post-evaluation of @var{expr} to occur. (See step (5)
 below.)
 @item
 @code{A} where @code{A} is an atom declared to be an evaluation flag (see @code{evflag})
 causes @code{A} to be bound to
-@code{true} during the evaluation of @code{expr}.
+@code{true} during the evaluation of @var{expr}.
 @item
 @code{V: expression} (or alternately @code{V=expression}) causes @code{V} to be bound to the
-value of @code{expression} during the evaluation of @code{expr}.  Note that if @code{V} is a
+value of @code{expression} during the evaluation of @var{expr}.  Note that if @code{V} is a
 Maxima option, then @code{expression} is used for its value during the
-evaluation of @code{expr}.  If more than one argument to @code{ev} is of this type
+evaluation of @var{expr}.  If more than one argument to @code{ev} is of this type
 then the binding is done in parallel.  If @code{V} is a non-atomic expression
 then a substitution rather than a binding is performed.
 @item
 @code{F} where @code{F}, a function name, has been declared to be an evaluation function (see @code{evfun})
 causes @code{F}
-to be applied to @code{expr}.
+to be applied to @var{expr}.
 @item
 Any other function names (e.g., @code{sum}) cause evaluation of occurrences
-of those names in @code{expr} as though they were verbs.
+of those names in @var{expr} as though they were verbs.
 @item
-In addition a function occurring in @code{expr} (say @code{F(x)}) may be defined
-locally for the purpose of this evaluation of @code{expr} by giving
+In addition a function occurring in @var{expr} (say @code{F(x)}) may be defined
+locally for the purpose of this evaluation of @var{expr} by giving
 @code{F(x) := expression} as an argument to @code{ev}.
 @item
 If an atom not mentioned above or a subscripted variable or
@@ -130,14 +133,14 @@ or a list of names of equations (e.g., @code{[%t1, %t2]} where @code{%t1} and
 
 The arguments of @code{ev} may be given in any order with the exception of
 substitution equations which are handled in sequence, left to right,
-and evaluation functions which are composed, e.g., @code{ev (expr, ratsimp, realpart)} is
-handled as @code{realpart (ratsimp (expr))}.
+and evaluation functions which are composed, e.g., @code{ev (@var{expr}, ratsimp, realpart)} is
+handled as @code{realpart (ratsimp (@var{expr}))}.
 
 The @code{simp}, @code{numer}, @code{float}, and @code{pred} switches may also be set locally in a
 block, or globally in Maxima so that they will
 remain in effect until being reset.
 
-If @code{expr} is a canonical rational expression (CRE),
+If @var{expr} is a canonical rational expression (CRE),
 then the expression returned by @code{ev} is also a CRE,
 provided the @code{numer} and @code{float} switches are not both @code{true}.
 
@@ -146,9 +149,9 @@ During step (1), a list is made of the non-subscripted
 variables appearing on the left side of equations in the arguments or in
 the value of some arguments if the value is an equation.  The variables
 (subscripted variables which do not have associated array
-functions as well as non-subscripted variables) in the expression @code{expr} are
+functions as well as non-subscripted variables) in the expression @var{expr} are
 replaced by their global values, except for those appearing in this
-list.  Usually, @code{expr} is just a label or @code{%}
+list.  Usually, @var{expr} is just a label or @code{%}
 (as in @code{%i2} in the example below), so this
 step simply retrieves the expression named by the label, so that @code{ev}
 may work on it.
@@ -160,7 +163,7 @@ carried out now.
 @item
 The resulting expression is then re-evaluated (unless one of
 the arguments was @code{noeval}) and simplified according to the arguments.  Note that
-any function calls in @code{expr} will be carried out after the variables in
+any function calls in @var{expr} will be carried out after the variables in
 it are evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 
 @item
@@ -184,7 +187,7 @@ may just type in its arguments, without the @code{ev()}.  That is, one may
 write simply
 
 @example
-expr, arg_1, arg_2, arg_3, ...
+@var{expr}, @var{arg_1}, ..., @var{arg_n}
 @end example
 
 This is not permitted as part of
@@ -309,35 +312,38 @@ Equivalently, @code{foo (ev (%))} has the same effect.
 
 @end defvr
 
+@c NEEDS WORK
 @defvr {special symbol} infeval
- leads to an "infinite evaluation" mode.  @code{ev} repeatedly
+Enables "infinite evaluation" mode.  @code{ev} repeatedly
 evaluates an expression until it stops changing.  To prevent a
 variable, say @code{X}, from being evaluated away in this mode, simply
 include @code{X='X} as an argument to @code{ev}.  Of course expressions such as
-@code{ev (X, X=X+1, infeval)} will generate an infinite loop. @i{Caveat evaluator.}
+@code{ev (X, X=X+1, infeval)} will generate an infinite loop.
 
 @end defvr
 
-@defun kill (symbol_1, symbol_2, symbol_3, ...)
+@c REVIEW FOR ACCURACY AND COMPLETENESS
+@c THIS ITEM IS VERY IMPORTANT !!
+@c NEEDS EXAMPLES
+@defun kill (@var{symbol_1}, ..., @var{symbol_n})
 @defunx kill (labels)
 @defunx kill (clabels, dlabels, elabels)
-@defunx kill (n)
-@defunx kill ([m, n])
+@defunx kill (@var{n})
+@defunx kill ([@var{m}, @var{n}])
 @defunx kill (values, functions, arrays, ...)
 @defunx kill (all)
-@defunx kill (allbut (symbol_1, symbol_2, symbol_3, ...))
+@defunx kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
 
 Removes all bindings (value, function, array, or rule) from the arguments
-@code{symbol_1}, @code{symbol_2}, @code{symbol_3}, ....
+@var{symbol_1}, ..., @var{symbol_n}.
 An argument may be a single array element or subscripted function.
-
-@code{kill} always returns @code{done}, even if an argument has no binding.
 
 Several special arguments are recognized. 
 Different kinds of arguments
 may be combined, e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
 
-The special form @code{kill (labels)} unbinds
+@c MAYBE WE WANT TO CHANGE THE KEYWORDS clabels, dlabels, elabels TO ilabels, olabels, tlabels ??
+@code{kill (labels)} unbinds
 all input, output, and intermediate expression labels created so far.
 @code{kill (clabels)} unbinds only input labels
 which begin with the current value of @code{inchar}.
@@ -347,21 +353,22 @@ which begin with the current value of @code{outchar},
 and @code{kill (elabels)} unbinds only intermediate expression labels
 which begin with the current value of @code{linechar}.
 
-The special form @code{kill (n)}, where @code{n} is an integer,
-unbinds the @code{n} most recent input and output labels.
-The special form @code{kill ([m, n])} unbinds input and output labels @code{m} through @code{n}.
+@code{kill (@var{n})}, where @var{n} is an integer,
+unbinds the @var{n} most recent input and output labels.
 
-The special form @code{kill (infolist)}, where @code{infolist} is any item in @code{infolists}
+@code{kill ([@var{m}, @var{n}])} unbinds input and output labels @var{m} through @var{n}.
+
+@code{kill (@var{infolist})}, where @var{infolist} is any item in @code{infolists}
 (such as @code{values}, @code{functions}, or @code{arrays})
 unbinds all items in @code{infolist}.
 See also @code{infolists}.
 
-The special form @code{kill (all)} unbinds all items on all infolists.
+@code{kill (all)} unbinds all items on all infolists.
 
-The special form @code{kill (allbut (symbol_1, symbol_2, symbol_3, ...))}
-unbinds all items on all infolists except for @code{symbol_1}, @code{symbol_2}, @code{symbol_3}, ....
-@code{kill (allbut (infolist))} unbinds all items except for the ones on @code{infolist},
-where @code{infolist} is @code{values}, @code{functions}, @code{arrays}, etc.
+@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
+unbinds all items on all infolists except for @var{symbol_1}, ..., @var{symbol_n}.
+@code{kill (allbut (@var{infolist}))} unbinds all items except for the ones on @var{infolist},
+where @var{infolist} is @code{values}, @code{functions}, @code{arrays}, etc.
 
 The memory taken up by a bound property is not released until all symbols
 are unbound from it.
@@ -371,24 +378,25 @@ one unbinds the output label which shows the bound value, as well as unbinding t
 @code{kill} quotes its arguments.
 The double single quotes operator, @code{'@w{}'}, defeats the quotation.
 
-@code{kill (symbol)} unbinds all properties of @code{symbol}.
+@code{kill (@var{symbol})} unbinds all properties of @var{symbol}.
 In contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and @code{remrule}
 unbind a specific property.
-Those functions also differ in that they return a list of the symbols or @code{false}.
+
+@code{kill} always returns @code{done}, even if an argument has no binding.
 
 @end defun
 
-@defun labels (symbol)
-@defunx labels
-Returns the list of input, output, or intermediate expression labels which begin with @code{symbol}.
-Typically @code{symbol} is the value of @code{inchar}, @code{outchar}, or @code{linechar}.
+@deffn {Function} labels (@var{symbol})
+@deffnx {Variable} labels
+Returns the list of input, output, or intermediate expression labels which begin with @var{symbol}.
+Typically @var{symbol} is the value of @code{inchar}, @code{outchar}, or @code{linechar}.
 The label character may be given with or without a percent sign,
 so, for example, @code{i} and @code{%i} yield the same result.
 
-If no labels begin with @code{symbol}, @code{labels} returns an empty list.
+If no labels begin with @var{symbol}, @code{labels} returns an empty list.
 
 The function @code{labels} quotes its argument.
-The double single quotes operator @code{'@w{}'} defeats the quotation.
+The double single quotes operator @code{'@w{}'} defeats quotation.
 For example,
 @code{labels (''inchar)} returns the input labels which begin with the current input label character.
 
@@ -413,16 +421,20 @@ Some other functions, such as @code{ldisplay}, always generate intermediate expr
 
 See also @code{inchar}, @code{outchar}, @code{linechar}, and @code{infolists}.
 
-@end defun
+@end deffn
 
+@c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
 @defvar linenum
- - the line number of the last expression.
+The line number of the current pair of input and output expressions.
 
 @end defvar
 
+@c NEEDS WORK
 @defvar myoptions
- default: [] - all options ever reset by the user (whether
-or not they get reset to their default value).
+Default value: @code{[]}
+
+@code{myoptions} is the list of all options ever reset by the user,
+whether or not they get reset to their default value.
 
 @end defvar
 
@@ -430,17 +442,30 @@ or not they get reset to their default value).
 @c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
 @c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
 @defvar nolabels
- default: @code{false} - if @code{true} then no labels will be bound
-except for E lines generated by the solve functions.  This is most
-useful in the batch mode where it eliminates the need to do
-@code{kill (labels)} in order to free up storage.
+Default value: @code{false}
+
+@c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
+@c When @code{nolabels} is @code{true}, then no labels will be bound
+@c except for intermediate expression lines generated by the solve functions.  This is most
+@c useful in the batch mode where it eliminates the need to do
+@c @code{kill (labels)} in order to free up storage.
+
+When @code{nolabels} is @code{true}, input and output labels are generated
+but not appended to @code{labels}, the list of all input and output labels.
+@code{kill (labels)} kills the labels on the @code{labels} list,
+but does not kill any labels generated since @code{nolabels} was assigned @code{true}.
+It seems likely this behavior is simply broken.
+
 See also @code{batch}, @code{batchload}, and @code{labels}.
 @c PUT A CROSS REFERENCE IN DESCRIPTION OF labels WHEN STRANGE BEHAVIOR OF nolabels IS CLEARED UP !!!
 
 @end defvar
 
+@c NEEDS WORK
 @defvar optionset
- default: @code{false} - if @code{true}, Maxima will print out a
+Default value: @code{false}
+
+When @code{optionset} is @code{true}, Maxima prints out a
 message whenever a Maxima option is reset.  This is useful if the
 user is doubtful of the spelling of some option and wants to make sure
 that the variable he assigned a value to was truly an option variable.
@@ -448,8 +473,9 @@ that the variable he assigned a value to was truly an option variable.
 @end defvar
 
 @defun playback ()
-@defunx playback (n)
-@defunx playback ([m], [m, n])
+@defunx playback (@var{n})
+@defunx playback ([@var{m}, @var{n}])
+@defunx playback ([@var{m}])
 @defunx playback (input)
 @defunx playback (slow)
 @defunx playback (time)
@@ -457,12 +483,12 @@ that the variable he assigned a value to was truly an option variable.
 Displays input, output, and intermediate expressions,
 without recomputing them.
 @code{playback} only displays the expressions bound to labels;
-any other output (such as text printed by @code{describe}, or error messages)
+any other output (such as text printed by @code{print} or @code{describe}, or error messages)
 is not displayed.
 See also @code{labels}.
 
 @code{playback} quotes its arguments.
-The double single quotes operator, @code{'@w{}'}, defeats the quotation.
+The double single quotes operator, @code{'@w{}'}, defeats quotation.
 @code{playback} always returns @code{done}.
 
 @code{playback ()} (with no arguments) displays all input, output, and intermediate expressions
@@ -470,12 +496,13 @@ generated so far.
 An output expression is displayed even if it was suppressed by the @code{$} terminator
 when it was originally computed.
 
-@code{playback (n)} displays the most recent @code{n} expressions.
+@code{playback (@var{n})} displays the most recent @var{n} expressions.
 Each input, output, and intermediate expression counts as one.
 
-@code{playback ([m, n])} displays input, output, and intermediate expressions
-with numbers from @code{m} through @code{n}, inclusive.
-@code{playback ([m])} is equivalent to @code{playback ([m, m])};
+@code{playback ([@var{m}, @var{n}])} displays input, output, and intermediate expressions
+with numbers from @var{m} through @var{n}, inclusive.
+
+@code{playback ([@var{m}])} is equivalent to @code{playback ([@var{m}, @var{m}])};
 this usually prints one pair of input and output expressions.
 
 @code{playback (input)} displays all input expressions generated so far.
@@ -502,9 +529,13 @@ Arguments may be combined, e.g.,
 
 @end defun
 
-@defun printprops (a, i)
-will display the property with the indicator @code{i}
-associated with the atom @code{a}. @code{a} may also be a list of atoms or the atom
+@c NEEDS WORK ESPECIALLY EXAMPLES
+@c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
+@defun printprops (@var{a}, @var{i})
+@defunx printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@defunx printprops (all, @var{i})
+Displays the property with the indicator @var{i}
+associated with the atom @var{a}. @var{a} may also be a list of atoms or the atom
 @code{all} in which case all of the atoms with the given property will be
 used.  For example, @code{printprops ([f, g], atvalue)}.  @code{printprops} is for
 properties that cannot otherwise be displayed, i.e. for
@@ -534,19 +565,21 @@ See also @code{debugging}.
 
 @end defun
 
-@defun remfunction (f1, f2, f3, ...)
+@defun remfunction (@var{f_1}, ..., @var{f_n})
 @defunx remfunction (all)
 @c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
-Removes the user defined functions @code{f1}, @code{f2}, @code{f3}, ... from Maxima.
+Removes the user defined functions @var{f_1}, ..., @var{f_n} from Maxima.
 @code{remfunction (all)} removes all functions.
 
 @end defun
 
 @defun reset ()
-causes all Maxima options to be set to their default values.
-(Please note that this does not include features of terminals such as
-@code{linel} which can only be changed by assignment as they are not
-considered to be computational features of Maxima.)
+Resets many global variables and options, and some other variables, to their default values.
+
+@code{reset} processes the variables on the Lisp list @code{*variable-initial-values*}.
+The Lisp macro @code{defmvar} puts variables on this list (among other actions).
+Many, but not all, global variables and options are defined by @code{defmvar},
+and some variables defined by @code{defmvar} are not global variables or options.
 
 @end defun
 
@@ -560,17 +593,20 @@ See also @code{time}, @code{timer}, and @code{playback}.
 
 @end defvar
 
-@defun sstatus (feature, package)
-Sets the status of @code{feature} in @code{package}.
-After @code{sstatus (feature, hack_package)} is executed,
-@code{status (feature, hack_package)} returns @code{true}.
+@c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
+@c THIS REALLY SEEMS LIKE A HACK
+@defun sstatus (@var{feature}, @var{package})
+Sets the status of @var{feature} in @var{package}.
+After @code{sstatus (@var{feature}, @var{package})} is executed,
+@code{status (@var{feature}, @var{package})} returns @code{true}.
 This can be useful for package writers, to
 keep track of what features they have loaded in.
 
 @end defun
 
+@c NEEDS EXPANSION, EXAMPLES
 @defun to_lisp ()
-Enters the Lisp system under Maxima.
+Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
 
 @end defun
 
