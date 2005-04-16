@@ -6,8 +6,8 @@
 @node Definitions for Number Theory,  , Number Theory, Number Theory
 @section Definitions for Number Theory
 
-@defun bern (n)
-Returns the @var{n}'th Bernoulli number for integer @code{n}.
+@defun bern (@var{n})
+Returns the @var{n}'th Bernoulli number for integer @var{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
 Bernoulli numbers equal to zero are suppressed if @code{zerobern} is @code{false}.
@@ -29,13 +29,13 @@ See also @code{burn}.
 
 @end defun
 
-@defun bernpoly (v, n)
+@defun bernpoly (@var{x}, @var{n})
 Returns the @var{n}'th Bernoulli polynomial in the
-variable @var{v}.
+variable @var{x}.
 
 @end defun
 
-@defun bfzeta (s, n)
+@defun bfzeta (@var{s}, @var{n})
 Returns the Riemann zeta function for the argument @var{s}.
 The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
@@ -44,7 +44,7 @@ The return value is a big float (bfloat);
 
 @end defun
 
-@defun bfhzeta (s, h, n)
+@defun bfhzeta (@var{s}, @var{h}, @var{n})
 Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
 The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
@@ -59,20 +59,20 @@ sum ((k+h)^-s, k, 0, inf)
 
 @end defun
 
-@defun binomial (x, y)
-The binomial coefficient @code{(x + y)!/(x! y!)}.
-If @code{x} and @code{y} are integers, then the numerical value of the binomial
+@defun binomial (@var{x}, @var{y})
+The binomial coefficient @code{(@var{x} + @var{y})!/(@var{x}! @var{y}!)}.
+If @var{x} and @var{y} are integers, then the numerical value of the binomial
 coefficient is computed.
-If @code{y}, or @code{x - y}, is an integer,
+If @var{y}, or @var{x - y}, is an integer,
 the binomial coefficient is expressed as a polynomial.
 
 @end defun
 
-@defun burn (n)
-Returns the @var{n}'th Bernoulli number for integer @code{n}.
-@code{burn} may be more efficient than @code{bern} for large, isolated @code{n}
-(perhaps @code{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
-as @code{bern} computes all the Bernoulli numbers up to index @code{n} before returning.
+@defun burn (@var{n})
+Returns the @var{n}'th Bernoulli number for integer @var{n}.
+@code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
+(perhaps @var{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
+as @code{bern} computes all the Bernoulli numbers up to index @var{n} before returning.
 
 @c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
 @c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
@@ -91,7 +91,7 @@ approximated by (transcendental) zetas with tolerable efficiency.
 
 @end defun
 
-@defun cf (expr)
+@defun cf (@var{expr})
 Converts @var{expr} into a continued fraction.
 @var{expr} is an expression
 comprising continued fractions and square roots of integers.
@@ -171,7 +171,9 @@ Maxima does not know about operations on continued fractions outside of @code{cf
 @end itemize
 @end defun
 
-@defun cfdisrep (list)
+@c NEEDS CLARIFICATION -- MAKE EXPLICIT HOW list IS RELATED TO a, b, c, ...
+@c ALSO, CAN list CONTAIN ANYTHING OTHER THAN LITERAL INTEGERS ??
+@defun cfdisrep (@var{list})
 Constructs and returns an ordinary arithmetic expression
 of the form @code{a + 1/(b + 1/(c + ...))}
 from the list representation of a continued fraction @code{[a, b, c, ...]}.
@@ -191,9 +193,9 @@ from the list representation of a continued fraction @code{[a, b, c, ...]}.
 
 @end defun
 
-@defun cfexpand (x)
+@defun cfexpand (@var{x})
 Returns a matrix of the numerators and denominators of the
-last (column 1) and next-to-last (column 2) convergents of the continued fraction @code{x}.
+last (column 1) and next-to-last (column 2) convergents of the continued fraction @var{x}.
 
 @example
 (%i1) cf (rat (ev (%pi, numer)));
@@ -231,11 +233,13 @@ period.  Thus the default is to give one period.
 
 @end defvar
 
-@defun divsum (n, k)
-@defunx divsum (n)
-@code{divsum (n, k)} returns the sum of the divisors of @code{n}
-raised to the @code{k}'th power.
-@code{divsum (n)} returns the sum of the divisors of @code{n}.
+@defun divsum (@var{n}, @var{k})
+@defunx divsum (@var{n})
+
+@code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
+raised to the @var{k}'th power.
+
+@code{divsum (@var{n})} returns the sum of the divisors of @var{n}.
 
 @example
 (%i1) divsum (12);
@@ -250,8 +254,8 @@ raised to the @code{k}'th power.
 
 @end defun
 
-@defun euler (n)
-Returns the @code{n}'th Euler number for nonnegative integer @code{n}.
+@defun euler (@var{n})
+Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
 
 For the Euler-Mascheroni constant, see @code{%gamma}.
 
@@ -268,20 +272,20 @@ The Euler-Mascheroni constant, 0.5772156649015329 ....
 
 @end defvar
 
-@defun factorial (x)
-The factorial function. Maxima treats @code{factorial (x)} the same as @code{x!}.
+@defun factorial (@var{x})
+Represents the factorial function. Maxima treats @code{factorial (@var{x})} the same as @code{@var{x}!}.
 See @code{!}.
 
 @end defun
 
-@defun fib (n)
-Returns the @code{n}'th Fibonacci number.
+@defun fib (@var{n})
+Returns the @var{n}'th Fibonacci number.
 @code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
 and
-@code{fib (-n)} equal to @code{(-1)^(n+1) * fib(n)}.
+@code{fib (-@var{n})} equal to @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
 
 After calling @code{fib},
-@code{prevfib} is equal to @code{fib (x-1)},
+@code{prevfib} is equal to @code{fib (@var{x} - 1)},
 the Fibonacci number preceding the last one computed.
 
 @example
@@ -291,13 +295,13 @@ the Fibonacci number preceding the last one computed.
 
 @end defun
 
-@defun fibtophi (expr)
+@defun fibtophi (@var{expr})
 Expresses Fibonacci numbers in terms of the constant @code{%phi},
 which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
 
-@c SEEMS LIKE THIS WANTS TO BE UNDER %phi !!!
+@c SEEMS MISPLACED -- THIS WANTS TO BE UNDER %phi !!!
 By default, Maxima does not know about @code{%phi}.
-After executing @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
+After executing @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 @code{ratsimp} can simplify some expressions containing @code{%phi}.
 
 @example
@@ -314,8 +318,8 @@ After executing @code{tellrat(%phi^2 - %phi - 1)} and @code{algebraic: true},
 
 @end defun
 
-@defun inrt (x, n)
-Returns the integer @code{n}'th root of the absolute value of @code{x}.
+@defun inrt (@var{x}, @var{n})
+Returns the integer @var{n}'th root of the absolute value of @var{x}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -325,8 +329,8 @@ Returns the integer @code{n}'th root of the absolute value of @code{x}.
 
 @end defun
 
-@defun jacobi (p, q)
-Returns the Jacobi symbol of @code{p} and @code{q}.
+@defun jacobi (@var{p}, @var{q})
+Returns the Jacobi symbol of @var{p} and @var{q}.
 
 @example
 (%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
@@ -336,7 +340,7 @@ Returns the Jacobi symbol of @code{p} and @code{q}.
 
 @end defun
 
-@defun lcm (expr_1, expr_2, expr_3, ...)
+@defun lcm (@var{expr_1}, ..., @var{expr_n})
 Returns the least common multiple of its arguments.
 The arguments may be general expressions as well as integers.
 
@@ -344,7 +348,7 @@ The arguments may be general expressions as well as integers.
 
 @end defun
 
-@defun minfactorial (expr)
+@defun minfactorial (@var{expr})
 Examines @var{expr} for occurrences of two factorials
 which differ by an integer.
 @code{minfactorial} then turns one into a polynomial times the other.
@@ -368,7 +372,7 @@ which differ by an integer.
 
 @end defun
 
-@defun partfrac (expr, var)
+@defun partfrac (@var{expr}, @var{var})
 Expands the expression @var{expr} in partial fractions
 with respect to the main variable @var{var}.  @code{partfrac} does a complete
 partial fraction decomposition.  The algorithm employed is based on
@@ -397,16 +401,17 @@ the expansion falls out.
 
 @end defun
 
-@defun primep (n)
+@c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
+@defun primep (@var{n})
 Returns @code{true} if @code{n} is a prime, @code{false} if not.
 
 @end defun
 
-@defun qunit (n)
+@defun qunit (@var{n})
 Returns the principal unit of the real quadratic number field
-@code{sqrt(n)} where @code{n} is an integer,
+@code{sqrt (@var{n})} where @var{n} is an integer,
 i.e., the element whose norm is unity.
-This amounts to solving Pell's equation @code{a^2 - n b^2 = 1}.
+This amounts to solving Pell's equation @code{a^2 - @var{n} b^2 = 1}.
 
 @example
 (%i1) qunit (17);
@@ -417,9 +422,9 @@ This amounts to solving Pell's equation @code{a^2 - n b^2 = 1}.
 
 @end defun
 
-@defun totient (n)
-Returns the number of integers less than or equal to @code{n} which
-are relatively prime to @code{n}.
+@defun totient (@var{n})
+Returns the number of integers less than or equal to @var{n} which
+are relatively prime to @var{n}.
 
 @end defun
 
@@ -432,10 +437,10 @@ See @code{bern}.
 
 @end defvar
 
-@defun zeta (n)
-Returns the Riemann zeta function if @code{x} is a negative integer, 0, 1,
+@defun zeta (@var{n})
+Returns the Riemann zeta function if @var{x} is a negative integer, 0, 1,
 or a positive even number,
-and returns a noun form @code{zeta (n)} for all other arguments,
+and returns a noun form @code{zeta (@var{n})} for all other arguments,
 including rational noninteger, floating point, and complex arguments.
 
 See also @code{bfzeta} and @code{zeta%pi}.
