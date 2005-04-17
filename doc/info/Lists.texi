@@ -124,7 +124,7 @@ occurrences of @var{expr_1} in @var{expr_2} then all occurrences will be deleted
 
 @end deffn
 
-@deffn {function} eigth (@var{expr})
+@deffn {function} eighth (@var{expr})
 Returns the 8'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
