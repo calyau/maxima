@@ -167,9 +167,9 @@ begin with.
 @end defvar
 
 @c NEEDS WORK
-@defun ilt (@var{expr}, @var{lvar}, @var{ovar})
+@defun ilt (@var{expr}, @var{t}, @var{s})
 Computes the inverse Laplace transform of @var{expr} with
-respect to @var{lvar} and parameter @var{ovar}.  @var{expr} must be a ratio of
+respect to @var{t} and parameter @var{s}.  @var{expr} must be a ratio of
 polynomials whose denominator has only linear and quadratic factors.
 By using the functions @code{laplace} and @code{ilt} together with the @code{solve} or
 @code{linsolve} functions the user can solve a single differential or
@@ -214,13 +214,13 @@ pos;
 
 @end defun
 
-@defun integrate (@var{expr}, @var{var})
-@defunx integrate (@var{expr}, @var{var}, @var{a}, @var{b})
-Attempts to symbolically compute the integral of @var{expr} with respect to @var{var}.
-@code{integrate (@var{expr}, @var{var})} is an indefinite integral,
-while @code{integrate (@var{expr}, @var{var}, @var{a}, @var{b})} is a definite integral,
+@defun integrate (@var{expr}, @var{x})
+@defunx integrate (@var{expr}, @var{x}, @var{a}, @var{b})
+Attempts to symbolically compute the integral of @var{expr} with respect to @var{x}.
+@code{integrate (@var{expr}, @var{x})} is an indefinite integral,
+while @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} is a definite integral,
 with limits of integration @var{a} and @var{b}.
-The limits should not contain @var{var}, although @code{integrate} does not enforce this restriction.
+The limits should not contain @var{x}, although @code{integrate} does not enforce this restriction.
 @var{a} need not be less than @var{b}.
 If @var{b} is equal to @var{a}, @code{integrate} returns zero.
 
@@ -468,16 +468,16 @@ Sometimes this will help Maxima obtain a more useful result.
 @end defvar
 
 @c NEEDS EXAMPLES
-@defun ldefint (@var{expr}, @var{var}, @var{ll}, @var{ul})
+@defun ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Attempts to compute the definite integral of @var{expr} by using
-@code{limit} to evaluate the indefinite integral of @var{expr} with respect to @var{var}
-at the upper limit @var{ul} and at the lower limit @var{ll}.
+@code{limit} to evaluate the indefinite integral of @var{expr} with respect to @var{x}
+at the upper limit @var{b} and at the lower limit @var{a}.
 If it fails to compute the definite integral,
 @code{ldefint} returns an expression containing limits as noun forms.
 
 @code{ldefint} is not called from @code{integrate},
-so executing @code{ldefint (@var{expr}, @var{var}, @var{ll}, @var{ul})} may yield a different result than
-@code{integrate (@var{expr}, @var{var}, @var{ll}, @var{ul})}.
+so executing @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a different result than
+@code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
 @code{ldefint} always uses the same method to evaluate the definite integral,
 while @code{integrate} may employ various heuristics and may recognize some special cases.
 
@@ -535,7 +535,7 @@ and the absolute error test:
 
 @end defun
 
-@defun quanc8 (@var{f}, @var{lo}, @var{hi})
+@defun quanc8 (@var{expr}, @var{a}, @var{b})
 An adaptive integrator.
 Demonstration and usage files are provided.  The method is to
 use Newton-Cotes 8-panel quadrature rule, hence the function name
@@ -564,8 +564,8 @@ for @var{expr}.
 
 @end defun
 
-@defun risch (@var{expr}, @var{var})
-Integrates @var{expr} with respect to @var{var} using the
+@defun risch (@var{expr}, @var{x})
+Integrates @var{expr} with respect to @var{x} using the
 transcendental case of the Risch algorithm.  (The algebraic case of
 the Risch algorithm has not been implemented.)  This currently
 handles the cases of nested exponentials and logarithms which the main
@@ -592,8 +592,8 @@ with.
 
 @c NEEDS WORK BUT DON'T BOTHER TO CLEAN IT UP:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@defun romberg (@var{expr}, @var{var}, @var{ll}, @var{ul})
-@defunx romberg (@var{expr}, @var{ll}, @var{ul})
+@defun romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@defunx romberg (@var{expr}, @var{a}, @var{b})
 Romberg integration.
 There are two ways to use this function.  The first is an inefficient
 way like the definite integral version of @code{integrate}:
@@ -792,14 +792,14 @@ will try halving the stepsize @code{rombergit} times before it gives up.
 @end defvar
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@defun tldefint (@var{expr}, @var{var}, @var{ll}, @var{ul})
+@defun tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
 @end defun
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qag (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@defun quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Numerically evaluate the integral
 
 @ifinfo
@@ -812,7 +812,7 @@ $$\int_a^b {f(x) dx}$$
 using a simple adaptive integrator.
 
 The function to be integrated is @var{f(x)}, with dependent
-variable @var{var}, and the function is to be integrated between the
+variable @var{x}, and the function is to be integrated between the
 limits @var{a} and @var{b}.  @var{key} is the integrator to be used
 and should be an integer between 1 and 6, inclusive.  The value of
 @var{key} selects the order of the Gauss-Kronrod integration rule.
@@ -870,11 +870,11 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qags (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@defun quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically integrate the given function using adaptive quadrature with
 extrapolation.  The function to be integrated is @var{f(x)}, with
-dependent variable @var{var}, and the function is to be integrated
+dependent variable @var{x}, and the function is to be integrated
 between the limits @var{a} and @var{b}.
 
 The optional arguments @var{epsrel} and @var{limit} are the desired
@@ -928,7 +928,7 @@ Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} f
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qagi (@var{f(x)}, @var{var}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@defun quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
 
 Numerically evaluate one of the following integrals
 
@@ -954,7 +954,7 @@ $$\int_\infty^\infty {f(x) dx}$$
 @end tex
 
 using the Quadpack QAGI routine.  The function to be integrated is
-@var{f(x)}, with dependent variable @var{var}, and the function is to
+@var{f(x)}, with dependent variable @var{x}, and the function is to
 be integrated over an infinite range.
 
 The parameter @var{inftype} determines the integration interval as follows:
@@ -1022,7 +1022,7 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qawc (@var{f(x)}, @var{var}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@defun quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically compute the Cauchy principal value of
 
@@ -1034,7 +1034,7 @@ $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
 using the Quadpack QAWC routine.  The function to be integrated is
-@code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{var}, and the function
+@code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{x}, and the function
 is to be integrated over the interval @var{a} to @var{b}.
 
 The optional arguments @var{epsrel} and @var{limit} are the desired
@@ -1101,7 +1101,7 @@ Principal Value
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qawf (@var{f(x)}, @var{var}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@defun quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the a Fourier-type integral using the Quadpack QAWF
 routine.  The integral is
@@ -1190,7 +1190,7 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qawo (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@defun quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the integral using the Quadpack QAWO
 routine:
@@ -1280,7 +1280,7 @@ Examples:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qaws (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@defun quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
 
 Numerically compute the integral using the Quadpack QAWS
 routine:
