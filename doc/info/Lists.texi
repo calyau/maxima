@@ -43,18 +43,21 @@ itself, since after it has been through the simplifier the list would become
 @node Definitions for Lists,  , Introduction to Lists, Lists
 @section Definitions for Lists
 
-@deffn {function} append (list1, list2, ...)
-returns a single list of the elements of @var{list1} followed
-by the elements of @var{list2},...  @code{append} also works on
-general expressions, e.g. @code{append(f(a,b), f(c,d,e));} ->
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {function} append (@var{list_1}, ..., @var{list_n})
+Returns a single list of the elements of @var{list_1} followed
+by the elements of @var{list_2}, ...  @code{append} also works on
+general expressions, e.g. @code{append (f(a,b), f(c,d,e));} yields
 @code{f(a,b,c,d,e)}.
 
 Do @code{example(append);} for an example.
 
 @end deffn
 
-@deffn {function} assoc (key, list, default)
-@deffnx {function} assoc (key, list)
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {function} assoc (@var{key}, @var{list}, @var{default})
+@deffnx {function} assoc (@var{key}, @var{list})
 This function searches for the @var{key} in the left hand side of the input @var{list}
 of the form @code{[x,y,z,...]} where each of the @var{list} elements is an expression of
 a binary operand and 2 elements.  For example @code{x=1}, @code{2^3}, @code{[a,b]} etc.
@@ -65,29 +68,33 @@ and defaults to @code{false}.
 
 @end deffn
 
-@deffn {function} atom (exp)
-is @code{true} if @var{exp} is atomic (i.e. a number, name or string) else
+@c REPHRASE
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {function} atom (@var{expr})
+Returns @code{true} if @var{expr} is atomic (i.e. a number, name or string) else
 @code{false}.  Thus @code{atom(5)} is @code{true} while @code{atom(a[1])} and @code{atom(sin(x))} are
 @code{false} (asuming @code{a[1]} and @code{x} are unbound).
 
 @end deffn
 
-@deffn {function} cons (exp, list)
-returns a new list constructed of the element @var{exp} as
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {function} cons (@var{expr}, @var{list})
+Returns a new list constructed of the element @var{expr} as
 its first element, followed by the elements of @var{list}.  @code{cons} also works
 on other expressions, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end deffn
 
-@deffn {function} copylist (list)
-creates a copy of the list @var{list}.
+@deffn {function} copylist (@var{list})
+Returns a copy of the list @var{list}.
 
 @end deffn
 
-@deffn {function} delete (exp1, exp2)
-@deffnx {function} delete (exp1, exp2, n)
-removes all occurrences of @var{exp1} from @var{exp2}.  @var{exp1}
-may be a term of @var{exp2} (if it is a sum) or a factor of @var{exp2}
+@deffn {function} delete (@var{expr_1}, @var{expr_2})
+@deffnx {function} delete (@var{expr_1}, @var{expr_2}, @var{n})
+Removes all occurrences of @var{expr_1} from @var{expr_2}.  @var{expr_1}
+may be a term of @var{expr_2} (if it is a sum) or a factor of @var{expr_2}
 (if it is a product).
 
 @c ===beg===
@@ -99,9 +106,9 @@ may be a term of @var{exp2} (if it is a sum) or a factor of @var{exp2}
 
 @end example
 
-@code{delete(@var{exp1}, @var{exp2}, @var{n})} removes the first @var{n} occurrences of
-@var{exp1} from @var{exp2}.  If there are fewer than @var{n}
-occurrences of @var{exp1} in @var{exp2} then all occurrences will be deleted.
+@code{delete(@var{expr_1}, @var{expr_2}, @var{n})} removes the first @var{n} occurrences of
+@var{expr_1} from @var{expr_2}.  If there are fewer than @var{n}
+occurrences of @var{expr_1} in @var{expr_2} then all occurrences will be deleted.
 
 @c ===beg===
 @c delete(a, f(a,b,c,d,a));
@@ -117,38 +124,42 @@ occurrences of @var{exp1} in @var{exp2} then all occurrences will be deleted.
 
 @end deffn
 
-@deffn {function} eigth (exp)
-returns the 8'th item of expression or list @var{exp}.
+@deffn {function} eigth (@var{expr})
+Returns the 8'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} endcons (exp, list)
-returns a new list consisting of the elements of
-@code{list} followed by @var{exp}.  @code{endcons} also works on general expressions, e.g.
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {function} endcons (@var{expr}, @var{list})
+Returns a new list consisting of the elements of
+@code{list} followed by @var{expr}.  @code{endcons} also works on general expressions, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end deffn
 
-@deffn {function} every (exp)
+@c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
+@deffn {function} every (@var{expr})
 This function takes a list, or a positive number of arguments and returns
 @code{true} if all its arguments are not @code{false}.
 
 @end deffn
 
-@deffn {function} fifth (exp)
-returns the 5'th item of expression or list @var{exp}.
+@deffn {function} fifth (@var{expr})
+Returns the 5'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} first (exp)
-yields the first part of @var{exp} which may result in the first
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {function} first (@var{expr})
+Returns the first part of @var{expr} which may result in the first
 element of a list, the first row of a matrix, the first term of a sum,
 etc.  Note that @code{first} and its related functions, @code{rest} and @code{last}, work
-on the form of @var{exp} which is displayed not the form which is typed on
+on the form of @var{expr} which is displayed not the form which is typed on
 input.  If the variable @code{inflag} is set to @code{true} however, these
-functions will look at the internal form of @var{exp}.  Note that the
+functions will look at the internal form of @var{expr}.  Note that the
 simplifier re-orders expressions.  Thus @code{first(x+y)} will be @code{x} if @code{inflag}
 is @code{true} and @code{y} if @code{inflag} is @code{false} (@code{first(y+x)} gives the same
 results).  The functions @code{second} .. @code{tenth} yield the second through the
@@ -156,19 +167,20 @@ tenth part of their input argument.
 
 @end deffn
 
-@deffn {function} flatten (exp)
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {function} flatten (@var{expr})
 Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
 
 @end deffn
 
-@deffn {function} fourth (exp)
-returns the 4'th item of expression or list @var{exp}.
+@deffn {function} fourth (@var{expr})
+Returns the 4'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} get (a, i)
-retrieves the user property indicated by @var{i} associated with
+@deffn {function} get (@var{a}, @var{i})
+Retrieves the user property indicated by @var{i} associated with
 atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
 
 @c ===beg===
@@ -209,16 +221,21 @@ x is not numeric.
 
 @end deffn
 
-@deffn {function} last (exp)
-yields the last part (term, row, element, etc.) of the @var{exp}.
+@c NEEDS EXAMPLES
+@c HOW IS "LAST" PART DETERMINED ??
+@deffn {function} last (@var{expr})
+Returns the last part (term, row, element, etc.) of the @var{expr}.
 
 @end deffn
 
-@deffn {function} length (exp)
-gives (by default) the number of parts in the external
-(displayed) form of @var{exp}.  For lists this is the number of elements,
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {function} length (@var{expr})
+Returns (by default) the number of parts in the external
+(displayed) form of @var{expr}.  For lists this is the number of elements,
 for matrices it is the number of rows, and for sums it is the number
-of terms (see @code{dispform}).  The @code{length} command is affected by the
+of terms (see @code{dispform}).
+
+The @code{length} command is affected by the
 @code{inflag} switch.  So, e.g. @code{length(a/(b*c));} gives 2 if
 @code{inflag} is @code{false} (Assuming @code{exptdispflag} is @code{true}), but 3 if @code{inflag} is
 @code{true} (the internal representation is essentially @code{a*b^-1*c^-1}).
@@ -234,17 +251,24 @@ lists.
 
 @end defvr
 
-@deffn {function} listp (exp)
-is @code{true} if @var{exp} is a list else @code{false}.
+@deffn {function} listp (@var{expr})
+Returns @code{true} if @var{expr} is a list else @code{false}.
 
 @end deffn
 
-@deffn {function} makelist (exp,var,lo,hi)
-@deffnx {function} makelist (exp,var,list)
-returns a list as value.  @code{makelist} may be called as
-@code{makelist(@var{exp},@var{var},@var{lo},@var{hi})} (@var{lo} and @var{hi} must be integers), or as
-@code{makelist(@var{exp},@var{var},@var{list})}.  In the first case @code{makelist} is analogous to
-@code{sum}, whereas in the second case @code{makelist} is similar to @code{map}.
+@deffn {function} makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffnx {function} makelist (@var{expr}, @var{x}, @var{list})
+Constructs and returns a list,
+each element of which is generated from @var{expr}.
+
+@code{makelist (@var{expr}, @var{i}, @var{i_0}, @var{i_1})} returns a list,
+the @code{j}'th element of which is equal to @code{ev (@var{expr}, @var{i}=j)}
+for @code{j} equal to @var{i_0} through @var{i_1}.
+
+@code{makelist (@var{expr}, @var{x}, @var{list})} returns a list,
+the @code{j}'th element of which is equal to @code{ev (@var{expr}, @var{x}=@var{list}[j])}
+for @code{j} equal to 1 through @code{length (@var{list})}.
+
 Examples:
 
 @c ===beg===
@@ -261,60 +285,65 @@ Examples:
 
 @end deffn
 
-@deffn {function} member (exp, list)
-returns @code{true} if @var{exp} occurs as a member of @var{list} (not
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {function} member (@var{expr}, @var{list})
+Returns @code{true} if @var{expr} occurs as a member of @var{list} (not
 within a member).  Otherwise @code{false} is returned.  @code{member} also works on
 non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
 @end deffn
 
-@deffn {function} ninth (exp)
-returns the 9'th item of expression or list @var{exp}.
+@deffn {function} ninth (@var{expr})
+Returns the 9'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} rest (exp, n)
-@deffnx {function} rest (exp)
-yields @var{exp} with its first @var{n} elements removed if @var{n} is
-positive and its last @code{-@var{n}} elements removed if @var{n} is negative.  If @var{n} is 1
-it may be omitted.  @var{exp} may be a list, matrix, or other expression.
+@c NEEDS EXAMPLES
+@deffn {function} rest (@var{expr}, @var{n})
+@deffnx {function} rest (@var{expr})
+Returns @var{expr} with its first @var{n} elements removed if @var{n} is
+positive and its last @code{- @var{n}} elements removed if @var{n} is negative.  If @var{n} is 1
+it may be omitted.  @var{expr} may be a list, matrix, or other expression.
 
 @end deffn
 
-@deffn {function} reverse (list)
-reverses the order of the members of the @var{list} (not
+@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
+@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
+@deffn {function} reverse (@var{list})
+Reverses the order of the members of the @var{list} (not
 the members themselves).  @code{reverse} also works on general expressions,
 e.g.  @code{reverse(a=b);} gives @code{b=a}.
 
 @end deffn
 
-@deffn {function} second (exp)
-returns the 2'nd item of expression or list @var{exp}.
+@deffn {function} second (@var{expr})
+Returns the 2'nd item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} seventh (exp)
-returns the 7'th item of expression or list @var{exp}.
+@deffn {function} seventh (@var{expr})
+Returns the 7'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} sixth (exp)
-returns the 6'th item of expression or list @var{exp}.
+@deffn {function} sixth (@var{expr})
+Returns the 6'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} tenth (exp)
-returns the 10'th item of expression or list @var{exp}.
+@deffn {function} tenth (@var{expr})
+Returns the 10'th item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
 
-@deffn {function} third (exp)
-returns the 3'rd item of expression or list @var{exp}.
+@deffn {function} third (@var{expr})
+Returns the 3'rd item of expression or list @var{expr}.
 See @code{first} for more details.
 
 @end deffn
