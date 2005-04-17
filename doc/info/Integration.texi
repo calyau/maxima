@@ -26,10 +26,12 @@ integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 @node Definitions for Integration,  , Introduction to Integration, Integration
 @section Definitions for Integration
 
-@defun changevar (expr, f(x,y), y, x)
+@c NEEDS WORK
+@defun changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 Makes the change of variable given by
-@code{f(x,y) = 0} in all integrals occurring in @code{expr} with integration with
-respect to @code{x}; @code{y} is the new variable.
+@code{@var{f(x,y)} = 0} in all integrals occurring in @var{expr} with integration with
+respect to @var{x}.
+The new variable is @var{y}.
 
 @c HMM, THIS EXAMPLE YIELDS A CORRECT BUT SLIGHTLY STRANGE RESULT...
 @example
@@ -85,7 +87,9 @@ higher degree function.  E.g.,
 
 @end defun
 
-@defun dblint ('f, 'r, 's, a, b)
+@c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
+@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
+@defun dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 A double-integral routine which was written in
 top-level Maxima and then translated and compiled to machine code.
 Use @code{load (dblint)} to access this package.  It uses the Simpson's rule
@@ -99,31 +103,31 @@ method in both the x and y directions to calculate
 /a /r(x)
 @end example
 
-The function @code{f(x,y)} must be a translated or compiled function of two
-variables, and @code{r(x)} and @code{s(x)} must each be a translated or compiled
-function of one variable, while @code{a} and @code{b} must be floating point
+The function @var{f} must be a translated or compiled function of two
+variables, and @var{r} and @var{s} must each be a translated or compiled
+function of one variable, while @var{a} and @var{b} must be floating point
 numbers. The routine has two global variables which determine the
 number of divisions of the x and y intervals: @code{dblint_x} and @code{dblint_y},
 both of which are initially 10, and can be changed independently to
 other integer values (there are @code{2*dblint_x+1} points computed in the x
 direction, and @code{2*dblint_y+1} in the y direction).
 The routine subdivides the X axis and then for each value of X it
-first computes @code{r(x)} and @code{s(x)}; then the Y axis between @code{r(x)} and @code{s(x)} is
+first computes @code{@var{r}(x)} and @code{@var{s}(x)}; then the Y axis between @code{@var{r}(x)} and @code{@var{s}(x)} is
 subdivided and the integral along the Y axis is performed using
 Simpson's rule; then the integral along the X axis is done using
 Simpson's rule with the function values being the Y-integrals. This
 procedure may be numerically unstable for a great variety of reasons,
 but is reasonably fast: avoid using it on highly oscillatory functions
 and functions with singularities (poles or branch points in the
-region).  The Y integrals depend on how far apart @code{r(x)} and @code{s(x)} are,
-so if the distance @code{s(x)-r(x)} varies rapidly with X, there may be
+region).  The Y integrals depend on how far apart @code{@var{r}(x)} and @code{@var{s}(x)} are,
+so if the distance @code{@var{s}(x) - @var{r}(x)} varies rapidly with X, there may be
 substantial errors arising from truncation with different step-sizes
 in the various Y integrals. One can increase @code{dblint_x} and @code{dblint_y} in
 an effort to improve the coverage of the region, at the expense of
 computation time. The function values are not saved, so if the
 function is very time-consuming, you will have to wait for
 re-computation if you change anything (sorry).
-It is required that the functions @code{f}, @code{r}, and @code{s} be either translated or
+It is required that the functions @var{f}, @var{r}, and @var{s} be either translated or
 compiled prior to calling @code{dblint}. This will result in orders of
 magnitude speed improvement over interpreted code in many cases!
 
@@ -133,10 +137,10 @@ magnitude speed improvement over interpreted code in many cases!
 
 @end defun
 
-@defun defint (expr, var, low, high)
+@defun defint (@var{expr}, @var{x}, @var{a}, @var{b})
 Attempts to compute a definite integral.
 @code{defint} is called by @code{integrate} when limits of integration are specified,
-i.e., when @code{integrate} is called as @code{integrate (expr, var, low, high)}.
+i.e., when @code{integrate} is called as @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
 Thus from the user's point of view, it is sufficient to call @code{integrate}.
 @c SHOULD WE BOTHER TO DOCUMENT defint ??? NO FUNCTIONALITY HERE THAT IS NOT ALREADY PRESENT IN integrate !!!
 
@@ -146,10 +150,10 @@ See @code{quad_qag} and related functions for numerical approximation of definit
 
 @end defun
 
-@defun erf (x)
-The error function, whose derivative is:
+@c NEEDS EXPANSION AND EXAMPLES
+@defun erf (@var{x})
+Represents the error function, whose derivative is:
 @code{2*exp(-x^2)/sqrt(%pi)}.
-@c UMM, THAT IS AN INCOMPLETE DEFINITION !!!
 
 @end defun
 
@@ -162,9 +166,10 @@ begin with.
 
 @end defvar
 
-@defun ilt (expr, lvar, ovar)
-Takes the inverse Laplace transform of @code{expr} with
-respect to @code{lvar} and parameter @code{ovar}.  @code{expr} must be a ratio of
+@c NEEDS WORK
+@defun ilt (@var{expr}, @var{lvar}, @var{ovar})
+Computes the inverse Laplace transform of @var{expr} with
+respect to @var{lvar} and parameter @var{ovar}.  @var{expr} must be a ratio of
 polynomials whose denominator has only linear and quadratic factors.
 By using the functions @code{laplace} and @code{ilt} together with the @code{solve} or
 @code{linsolve} functions the user can solve a single differential or
@@ -209,15 +214,15 @@ pos;
 
 @end defun
 
-@defun integrate (expr, var)
-@defunx integrate (expr, var, a, b)
-Attempts to symbolically compute the integral of @code{expr} with respect to @code{var}.
-@code{integrate (expr, var)} is an indefinite integral,
-while @code{integrate (expr, var, a, b)} is a definite integral,
-with limits of integration @code{a} and @code{b}.
-The limits should not contain @code{var}, although @code{integrate} does not enforce this restriction.
-@code{a} need not be less than @code{b}.
-If @code{b} is equal to @code{a}, @code{integrate} returns zero.
+@defun integrate (@var{expr}, @var{var})
+@defunx integrate (@var{expr}, @var{var}, @var{a}, @var{b})
+Attempts to symbolically compute the integral of @var{expr} with respect to @var{var}.
+@code{integrate (@var{expr}, @var{var})} is an indefinite integral,
+while @code{integrate (@var{expr}, @var{var}, @var{a}, @var{b})} is a definite integral,
+with limits of integration @var{a} and @var{b}.
+The limits should not contain @var{var}, although @code{integrate} does not enforce this restriction.
+@var{a} need not be less than @var{b}.
+If @var{b} is equal to @var{a}, @code{integrate} returns zero.
 
 See @code{quad_qag} and related functions for numerical approximation of definite integrals.
 See @code{residue} for computation of residues (complex integration).
@@ -230,10 +235,10 @@ or an expression containing one or more noun forms.
 The noun form of @code{integrate} is displayed with an integral sign.
 
 In some circumstances it is useful to construct a noun form by hand,
-by quoting @code{integrate} with a single quote, e.g., @code{'integrate (expr, x)}.
+by quoting @code{integrate} with a single quote, e.g., @code{'integrate (@var{expr}, @var{x})}.
 For example, the integral may depend on some parameters which are not yet computed.
-The noun may be applied to its arguments by @code{ev (i, nouns)}
-where @code{i} is the noun form of interest.
+The noun may be applied to its arguments by @code{ev (@var{i}, nouns)}
+where @var{i} is the noun form of interest.
 
 @c BEGIN EXPOSITION ON HEURISTICS
 @code{integrate} handles definite integrals separately from indefinite,
@@ -266,7 +271,7 @@ If none of the preceding heuristics find the indefinite integral,
 the Risch algorithm is executed.
 The flag @code{risch} may be set as an @code{evflag},
 in a call to @code{ev} or on the command line,
-e.g., @code{ev (integrate (expr, x), risch)} or @code{integrate (expr, x), risch}.
+e.g., @code{ev (integrate (@var{expr}, @var{x}), risch)} or @code{integrate (@var{expr}, @var{x}), risch}.
 If @code{risch} is present, @code{integrate} calls the @code{risch} function
 without attempting heuristics first. See also @code{risch}.
 @c END EXPOSITION ON HEURISTICS
@@ -462,19 +467,25 @@ Sometimes this will help Maxima obtain a more useful result.
 
 @end defvar
 
-@defun ldefint (expr, var, ll, ul)
-Yields the definite integral of @code{expr} by using
-@code{limit} to evaluate the indefinite integral of @code{expr} with respect to @code{var}
-at the upper limit @code{ul} and at the lower limit @code{ll}.
+@c NEEDS EXAMPLES
+@defun ldefint (@var{expr}, @var{var}, @var{ll}, @var{ul})
+Attempts to compute the definite integral of @var{expr} by using
+@code{limit} to evaluate the indefinite integral of @var{expr} with respect to @var{var}
+at the upper limit @var{ul} and at the lower limit @var{ll}.
+If it fails to compute the definite integral,
+@code{ldefint} returns an expression containing limits as noun forms.
 
 @code{ldefint} is not called from @code{integrate},
-so executing @code{ldefint (expr, var, ll, ul)} may yield a different result than
-@code{integrate (expr, var, ll, ul)}.
+so executing @code{ldefint (@var{expr}, @var{var}, @var{ll}, @var{ul})} may yield a different result than
+@code{integrate (@var{expr}, @var{var}, @var{ll}, @var{ul})}.
+@code{ldefint} always uses the same method to evaluate the definite integral,
+while @code{integrate} may employ various heuristics and may recognize some special cases.
 
 @end defun
 
 @c UMM, IS THERE SOME TEXT MISSING HERE ???
-@defun potential (givengradient)
+@c WHAT IS THIS ABOUT EXACTLY ??
+@defun potential (@var{givengradient})
 The calculation makes use of the global variable @code{potentialzeroloc[0]}
 which must be @code{nonlist} or of the form
 
@@ -491,8 +502,10 @@ to 0.
 
 @end defun
 
+@c THIS ITEM IS A MESS BUT DON'T BOTHER TO FIX IT:
+@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
 @defun qq
- The package @code{qq} (which may be loaded with @code{load ("qq")})
+The package @code{qq} (which may be loaded with @code{load ("qq")})
 contains a function @code{quanc8} which can take either 3 or 4 arguments. The
 3 arg version computes the integral of the function specified as the
 first argument over the interval from lo to hi as in
@@ -522,7 +535,7 @@ and the absolute error test:
 
 @end defun
 
-@defun quanc8 ('function, lo, hi)
+@defun quanc8 (@var{f}, @var{lo}, @var{hi})
 An adaptive integrator.
 Demonstration and usage files are provided.  The method is to
 use Newton-Cotes 8-panel quadrature rule, hence the function name
@@ -531,11 +544,11 @@ checks are used.  To use it do @code{load ("qq")}.  See also @code{qq}.
 
 @end defun
 
-@defun residue (expr, var, val)
+@defun residue (@var{expr}, @var{z}, @var{z_0})
 Computes the residue in the complex plane of
-the expression @code{expr} when the variable @code{var} assumes the value @code{val}.  The
-residue is the coefficient of @code{(var-val)**(-1)} in the Laurent series
-for @code{expr}.
+the expression @var{expr} when the variable @var{z} assumes the value @var{z_0}.  The
+residue is the coefficient of @code{(@var{z} - @var{z_0})^(-1)} in the Laurent series
+for @var{expr}.
 
 @example
 (%i1) residue (s/(s**2+a**2), s, a*%i);
@@ -551,13 +564,14 @@ for @code{expr}.
 
 @end defun
 
-@defun risch (expr, var)
-Integrates @code{expr} with respect to @code{var} using the
+@defun risch (@var{expr}, @var{var})
+Integrates @var{expr} with respect to @var{var} using the
 transcendental case of the Risch algorithm.  (The algebraic case of
 the Risch algorithm has not been implemented.)  This currently
 handles the cases of nested exponentials and logarithms which the main
 part of @code{integrate} can't do.  @code{integrate} will automatically apply @code{risch}
 if given these cases.
+
 @code{erfflag}, if @code{false}, prevents @code{risch} from introducing the @code{erf}
 function in the answer if there were none in the integrand to begin
 with.
@@ -576,14 +590,17 @@ with.
 
 @end defun
 
-@defun romberg (expr, var, ll, ul)
-@defunx romberg (expr, ll, ul)
+@c NEEDS WORK BUT DON'T BOTHER TO CLEAN IT UP:
+@c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
+@defun romberg (@var{expr}, @var{var}, @var{ll}, @var{ul})
+@defunx romberg (@var{expr}, @var{ll}, @var{ul})
 Romberg integration.
 There are two ways to use this function.  The first is an inefficient
 way like the definite integral version of @code{integrate}:
 @code{romberg (<integrand>, <variable of integration>, <lower limit>, <upper limit>)}.
 
 Examples:
+
 @example
 (%i1) showtime: true$
 (%i2) romberg (sin(y), y, 0, %pi);
@@ -774,15 +791,19 @@ will try halving the stepsize @code{rombergit} times before it gives up.
 
 @end defvar
 
-@defun tldefint (expr, var, ll, ul)
-Is just @code{ldefint} with @code{tlimswitch} set to @code{true}.
+@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
+@defun tldefint (@var{expr}, @var{var}, @var{ll}, @var{ul})
+Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
 @end defun
-@defun quad_qag (fun, var, a, b, key, [epsrel, [limit]])
+
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qag (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Numerically evaluate the integral
 
 @ifinfo
-@math{integrate(f(x), x, a, b)}
+@math{integrate (f(x), x, a, b)}
 @end ifinfo
 @tex
 $$\int_a^b {f(x) dx}$$
@@ -790,21 +811,22 @@ $$\int_a^b {f(x) dx}$$
 
 using a simple adaptive integrator.
 
-The function to be integrated is @code{fun}, with dependent
-variable @code{var}, and the function is to be integrated between the
-limits @code{a} and @code{b}.  @code{key} is the integrator to be used
+The function to be integrated is @var{f(x)}, with dependent
+variable @var{var}, and the function is to be integrated between the
+limits @var{a} and @var{b}.  @var{key} is the integrator to be used
 and should be an integer between 1 and 6, inclusive.  The value of
-@code{key} selects the order of the Gauss-Kronrod integration rule.
+@var{key} selects the order of the Gauss-Kronrod integration rule.
 
 The numerical integration is done adaptively by subdividing the
 integration region into sub-intervals until the desired accuracy is
 achieved.
 
-The optional arguments @code{epsrel} and @code{limit} are the desired
+The optional arguments @var{epsrel} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
-A list is returned containing the following elements:  
+@code{quad_qag} returns a list of four elements:
+
 @itemize
 @item
 an approximation to the integral,
@@ -816,7 +838,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 if no problems were encountered; 
@@ -831,7 +854,10 @@ if the input is invalid.
 
 @end table
 
+@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
+
 Examples:
+
 @example
 (%i1) quad_qag (x^(1/2)*log(1/x), x, 0, 1, 3);
 (%o1)    [.4444444444492108, 3.1700968502883E-9, 961, 0]
@@ -842,18 +868,21 @@ Examples:
 @end example
 @end defun
 
-@defun quad_qags (fun, var, a, b, [epsrel, [limit]])
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qags (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically integrate the given function using adaptive quadrature with
-extrapolation.  The function to be integrated is @code{fun}, with
-dependent variable @code{var}, and the function is to be integrated
-between the limits @code{a} and @code{b}.
+extrapolation.  The function to be integrated is @var{f(x)}, with
+dependent variable @var{var}, and the function is to be integrated
+between the limits @var{a} and @var{b}.
 
-The optional arguments @code{epsrel} and @code{limit} are the desired
+The optional arguments @var{epsrel} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
-A list is returned containing the following elements:  
+@code{quad_qags} returns a list of four elements:
+
 @itemize
 @item
 an approximation to the integral,
@@ -865,7 +894,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 no problems were encountered; 
@@ -881,63 +911,69 @@ failed to converge
 integral is probably divergent or slowly convergent
 @item 6
 if the input is invalid.
-
 @end table
 
+@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
+
 Examples:
+
 @example
 (%i1) quad_qags (x^(1/2)*log(1/x), x, 0 ,1);
 (%o1)   [.4444444444444448, 1.11022302462516E-15, 315, 0]
 @end example
-We note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
+
+Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
 
 @end defun
 
-@defun quad_qagi (fun, var, a, inftype, [epsrel, [limit]])
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qagi (@var{f(x)}, @var{var}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
 
 Numerically evaluate one of the following integrals
 
 @ifinfo
-@math{integrate(f(x), x, a, inf)}
+@math{integrate (f(x), x, a, inf)}
 @end ifinfo
 @tex
 $$\int_a^\infty {f(x) dx}$$
 @end tex
 
 @ifinfo
-@math{integrate(f(x), x, minf, a)}
+@math{integrate (f(x), x, minf, a)}
 @end ifinfo
 @tex
 $$\int_\infty^a {f(x) dx}$$
 @end tex
 
 @ifinfo
-@math{integrate(f(x), x, a, minf, inf)}
+@math{integrate (f(x), x, a, minf, inf)}
 @end ifinfo
 @tex
 $$\int_\infty^\infty {f(x) dx}$$
 @end tex
 
 using the Quadpack QAGI routine.  The function to be integrated is
-@code{fun}, with dependent variable @code{var}, and the function is to
+@var{f(x)}, with dependent variable @var{var}, and the function is to
 be integrated over an infinite range.
 
-The parameter @code{inftype} determines the integration interval as
-follows:
+The parameter @var{inftype} determines the integration interval as follows:
+
 @table @code
 @item inf
-The interval is from @code{a} to positive infinity.
+The interval is from @var{a} to positive infinity.
 @item minf
-The interval is from negative infinity to @code{a}.
+The interval is from negative infinity to @var{a}.
 @item both
 The interval is the entire real line.
 @end table
 
-The optional arguments @code{epsrel} and @code{limit} are the desired
+The optional arguments @var{epsrel} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
-A list is returned containing the following elements:  
+@code{quad_qagi} returns a list of four elements:
+
 @itemize
 @item
 an approximation to the integral,
@@ -949,7 +985,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 no problems were encountered; 
@@ -968,7 +1005,10 @@ if the input is invalid.
 
 @end table
 
+@c NEED CROSS REFS HERE -- EITHER CROSS REF A QUADPACK OVERVIEW, OR CROSS REF EACH OF THE quad_* FUNCTIONS
+
 Examples:
+
 @example
 (%i1) quad_qagi (x^2*exp(-4*x), x, 0, inf);
 (%o1)        [0.03125, 2.95916102995002E-11, 105, 0]
@@ -980,27 +1020,29 @@ Examples:
 
 @end defun
 
-@defun quad_qawc (fun, var, c, a, b, [epsrel, [limit]])
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qawc (@var{f(x)}, @var{var}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically compute the Cauchy principal value of
 
 @ifinfo
-@math{integrate(f(x)/(x - c), x, a, b)}
+@math{integrate (f(x)/(x - c), x, a, b)}
 @end ifinfo
 @tex
 $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 @end tex
 
 using the Quadpack QAWC routine.  The function to be integrated is
-@code{fun/(x-c)}, with dependent variable @code{var}, and the function
-is to be integrated over the interval @code{a} to @code{b}.
+@code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{var}, and the function
+is to be integrated over the interval @var{a} to @var{b}.
 
-The optional arguments @code{epsrel} and @code{limit} are the desired
+The optional arguments @var{epsrel} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
+@code{quad_qawc} returns a list of four elements:
 
-A list is returned containing the following elements:  
 @itemize
 @item
 an approximation to the integral,
@@ -1012,7 +1054,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 no problems were encountered; 
@@ -1028,6 +1071,7 @@ if the input is invalid.
 @end table
 
 Examples:
+
 @example
 (%i1) quad_qawc (2^(-5)*((x-1)^2+4^(-5))^(-1), x, 2, 0, 5);
 (%o1)    [- 3.130120337415925, 1.306830140249558E-8, 495, 0]
@@ -1055,33 +1099,36 @@ Principal Value
 
 @end defun
 
-
-@defun quad_qawf (fun, var, a, omega, trig, [epsabs, limit, maxp1, limlst])
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qawf (@var{f(x)}, @var{var}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the a Fourier-type integral using the Quadpack QAWF
 routine.  The integral is
 
 @ifinfo
-@math{integrate(f(x)*w(x), x, a, inf)}
+@math{integrate (f(x)*w(x), x, a, inf)}
 @end ifinfo
 @tex
 $$\int_a^\infty f(x) w(x) dx$$
 @end tex
 
-The weight function w(x) is selected by @code{trig}:
+The weight function @math{w} is selected by @var{trig}:
+
 @table @code
 @item cos
-w(x) = cos(omega*x)
-@item sin
-w(x) = sin(omega*x)
+@math{w(x) = cos (omega x)}
+@item cos
+@math{w(x) = sin (omega x)}
 @end table
 
 The optional arguments are:
-@table @code
+
+@table @var
 @item epsabs
 Desired absolute error of approximation.  Default is 1d-10.
 @item limit
-Size of internal work array.  (@code{limit}-@code{limlst})/2 is the
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
 maximum number of subintervals to use.  Default is 200.
 @item maxp1
 Maximum number of Chebyshev moments.  Must be greater than 0.  Default
@@ -1090,12 +1137,14 @@ is 100.
 Upper bound on the number of cycles.  Must be greater than or equal to
 3.  Default is 10.
 @end table
-@code{epsabs} and @code{limit} are the desired
+
+@c MERGE THESE LINES INTO PRECEDING TABLE
+@var{epsabs} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
+@code{quad_qawf} returns a list of four elements:
 
-A list is returned containing the following elements:  
 @itemize
 @item
 an approximation to the integral,
@@ -1107,7 +1156,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 no problems were encountered; 
@@ -1123,6 +1173,7 @@ if the input is invalid.
 @end table
 
 Examples:
+
 @example
 (%i1) quad_qawf (exp(-x^2), x, 0, 1, 'cos);
 (%o1)   [.6901942235215714, 2.84846300257552E-11, 215, 0]
@@ -1137,32 +1188,36 @@ Examples:
 
 @end defun
 
-@defun quad_qawo (fun, var, a, b, omega, trig, [epsabs, limit, maxp1, limlst])
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qawo (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the integral using the Quadpack QAWO
 routine:
 
 @ifinfo
-@math{integrate(f(x)*w(x), x, a, b)}
+@math{integrate (f(x)*w(x), x, a, b)}
 @end ifinfo
 @tex
 $$\int_a^b f(x) w(x) dx$$
 @end tex
 
-The weight function w(x) is selected by @code{trig}:
+The weight function @math{w} is selected by @var{trig}:
+
 @table @code
 @item cos
-w(x) = cos(omega*x)
+@math{w(x) = cos (omega x)}
 @item sin
-w(x) = sin(omega*x)
+@math{w(x) = sin (omega x)}
 @end table
 
 The optional arguments are:
-@table @code
+
+@table @var
 @item epsabs
 Desired absolute error of approximation.  Default is 1d-10.
 @item limit
-Size of internal work array.  (@code{limit}-@code{limlst})/2 is the
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
 maximum number of subintervals to use.  Default is 200.
 @item maxp1
 Maximum number of Chebyshev moments.  Must be greater than 0.  Default
@@ -1171,12 +1226,14 @@ is 100.
 Upper bound on the number of cycles.  Must be greater than or equal to
 3.  Default is 10.
 @end table
-@code{epsabs} and @code{limit} are the desired
+
+@c MERGE THESE LINES INTO PRECEDING TABLE
+@var{epsabs} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
+@code{quad_qawo} returns a list of four elements:
 
-A list is returned containing the following elements:  
 @itemize
 @item
 an approximation to the integral,
@@ -1188,7 +1245,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 no problems were encountered; 
@@ -1204,6 +1262,7 @@ if the input is invalid.
 @end table
 
 Examples:
+
 @example
 (%i1) quad_qawo (x^(-1/2)*exp(-2^(-2)*x), x, 1d-8, 20*2^2, 1, cos);
 (%o1)     [1.376043389877692, 4.72710759424899E-11, 765, 0]
@@ -1219,44 +1278,50 @@ Examples:
 
 @end defun
 
-@defun quad_qaws (fun, var, a, b, alfa, beta, wfun, [epsabs, limit])
+@c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
+@c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
+@defun quad_qaws (@var{f(x)}, @var{var}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
 
 Numerically compute the integral using the Quadpack QAWS
 routine:
 
 @ifinfo
-@math{integrate(f(x)*w(x), x, a, b)}
+@math{integrate (f(x)*w(x), x, a, b)}
 @end ifinfo
 @tex
 $$\int_a^b f(x) w(x) dx$$
 @end tex
 
-The weight function w(x) is selected by @code{wfun}:
+The weight function @math{w} is selected by @var{wfun}:
+
 @table @code
 @item 1
-w(x) = (x-a)^alfa*(b-x)^beta
+@math{w(x) = (x - a)^alfa (b - x)^beta}
 @item 2
-w(x) = (x-a)^alfa*(b-x)^beta*log(x-a)
+@math{w(x) = (x - a)^alfa (b - x)^beta log(x - a)}
 @item 3
-w(x) = (x-a)^alfa*(b-x)^beta*log(b-x)
+@math{w(x) = (x - a)^alfa (b - x)^beta log(b - x)}
 @item 2
-w(x) = (x-a)^alfa*(b-x)^beta*log(x-a)*log(b-x)
+@math{w(x) = (x - a)^alfa (b - x)^beta log(x - a) log(b - x)}
 @end table
 
 The optional arguments are:
-@table @code
+
+@table @var
 @item epsabs
 Desired absolute error of approximation.  Default is 1d-10.
 @item limit
-Size of internal work array.  (@code{limit}-@code{limlst})/2 is the
+Size of internal work array.  (@var{limit} - @var{limlst})/2 is the
 maximum number of subintervals to use.  Default is 200.
 @end table
-@code{epsabs} and @code{limit} are the desired
+
+@c MERGE THESE LINES INTO PRECEDING TABLE
+@var{epsabs} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
-@code{epsrel} defaults to 1e-8 and @code{limit} is 200.
+@var{epsrel} defaults to 1e-8 and @var{limit} is 200.
 
+@code{quad_qaws} returns a list of four elements:
 
-A list is returned containing the following elements:  
 @itemize
 @item
 an approximation to the integral,
@@ -1268,7 +1333,8 @@ the number integrand evaluations,
 an error code.
 @end itemize
 
-The error code is 
+The error code (fourth element of the return value) can have the values:
+
 @table @code
 @item 0
 no problems were encountered; 
@@ -1284,6 +1350,7 @@ if the input is invalid.
 @end table
 
 Examples:
+
 @example
 (%i1) quad_qaws (1/(x+1+2^(-4)), x, -1, 1, -0.5, -0.5, 1);
 (%o1)     [8.750097361672832, 1.24321522715422E-10, 170, 0]
