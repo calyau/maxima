@@ -9,8 +9,9 @@
 @section Introduction to Function Definition
 
 @node Function, Macros, Introduction to Function Definition, Function Definition
+@c NEEDS WORK, THIS TOPIC IS IMPORTANT
 @section Function
- - To define a function in Maxima you use the := operator.
+To define a function in Maxima you use the := operator.
 E.g.
 
 @example
@@ -130,12 +131,12 @@ possibly @code{buildq}.
 @node Macros, Definitions for Function Definition, Function, Function Definition
 @section Macros
 
-@defun buildq (variables, expr);
+@c NEEDS CLARIFICATION AND EXAMPLES
+@defun buildq (@var{variables}, @var{expr})
 
 @var{expr} is any single Maxima expression and
 @var{variables} is a list of elements of the form @code{<atom>}
-or @code{<atom>:<value>}.
-@end defun
+or @code{<atom>: <value>}.
 
 @subsection Semantics
 
@@ -159,11 +160,12 @@ Further below we discuss building a recursive function, for a
 series solution.   This defining of functions inside functions
 usually uses @code{define}, which evaluates its arguments.
 A number of examples are included under @code{splice}.
+@end defun
 
-
-@defun splice (atom)
+@c NEEDS CLARIFICATION
+@defun splice (@var{atom})
 This is used with buildq to construct a list. This is handy
-for making argument lists, in conjunction with @code{buildq} 
+for making argument lists, in conjunction with @code{buildq}.
 
 @example
 mprint ([x]) ::= buildq ([u : x],
@@ -314,9 +316,13 @@ Hence the @code{buildq} is useful for building the form.
 @c end concepts Function Definition
 @node Definitions for Function Definition,  , Macros, Function Definition
 @section Definitions for Function Definition
-@defun apply (function, list)
-gives the result of applying the function to
-the list of its arguments.  This is useful when it is desired to
+@c NEEDS CLARIFICATION AND EXAMPLES
+@c IMPORTANT TOPIC
+@defun apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
+Returns the result of applying the function @var{f} to the list of arguments @var{x_1}, ..., @var{x_n}.
+@var{f} is the name of a function or a lambda expression.
+
+This is useful when it is desired to
 compute the arguments to a function before applying that function.
 For example, if @code{l} is the list @code{[1, 5, -10.2, 4, 3]}, then @code{apply (min, l)}
 gives -10.2.  @code{apply} is also useful when calling functions which do not
@@ -332,8 +338,8 @@ first argument evaluated as well as its second.
 @end defun
 
 
-@defun block ([v_1, ..., v_m], expr_1, ..., expr_n)
-@defunx block (expr_1, ..., expr_n)
+@defun block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@defunx block (@var{expr_1}, ..., @var{expr_n})
 @code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence
 and returns the value of the last expression evaluated.
 The sequence can be modified by the @code{go}, @code{throw}, and @code{return} functions.
@@ -381,21 +387,25 @@ but can be used in other places as well.
 
 @end defun
 
-@defun break (arg1, ...)
-will evaluate and print its arguments and will then
-cause a Maxima break at which point the user can examine and change
+@c REPHRASE, NEEDS EXAMPLE
+@defun break (@var{expr_1}, ..., @var{expr_n})
+Evaluates and prints @var{expr_1}, ..., @var{expr_n} and then
+causes a Maxima break at which point the user can examine and change
 his environment.  Upon typing @code{exit;} the computation resumes.
 
 @end defun
 
 @c FOR SOME REASON throw IS IN SOME OTHER FILE. MOVE throw INTO THIS FILE.
-@defun catch (expr_1, ..., expr_n)
-evaluates its arguments one by one; if the
-structure of the arguments leads to the evaluation of an expression of the
+@c NEEDS CLARIFICATION
+@defun catch (@var{expr_1}, ..., @var{expr_n})
+Evaluates @var{expr_1}, ..., @var{expr_n} one by one; if any
+leads to the evaluation of an expression of the
 form @code{throw (arg)}, then the value of the @code{catch} is the value of
-@code{throw (arg)}.  This "non-local return" thus goes through any depth of
+@code{throw (arg)}, and no further expressions are evaluated.
+This "non-local return" thus goes through any depth of
 nesting to the nearest enclosing @code{catch}.
 If there is no @code{catch} enclosing a @code{throw}, an error message is printed.
+
 If the evaluation of the arguments does not lead to the evaluation of any @code{throw}
 then the value of @code{catch} is the value of @var{expr_n}.
 
@@ -415,7 +425,7 @@ first negative element of @code{l} and "throws" it up.
 
 @end defun
 
-@defun compfile (filename, f_1, ..., f_n)
+@defun compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
 Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp 
 and writes the translated code into the file @var{filename}.
 
@@ -442,7 +452,7 @@ See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 @defun compile (@var{f_1}, ..., @var{f_n})
 @defunx compile (functions)
 @defunx compile (all)
-Translates Maxima functions into Lisp, evaluates the Lisp translations,
+Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp, evaluates the Lisp translations,
 and calls the Lisp function @code{COMPILE} on each translated function.
 @code{compile} returns a list of the names of the compiled functions.
 
@@ -453,21 +463,63 @@ the double-single-quotes operator @code{'@w{}'} defeats quotation.
 
 @end defun
 
-@defun define (f(x1, ...), body)
-is equivalent to f(x1,...):='@w{}'(body) but when
-used inside functions it happens at execution time rather than at the
+@defun define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
+
+@code{define} is similar to the function definition operator @code{:=}, but when
+@code{define} appears inside a function, the definition is created using the value
+of @code{expr} at execution time rather than at the
 time of definition of the function which contains it.
 
+All function definitions appear in the same namespace;
+defining a function @code{f} within another function @code{g}
+does not limit the scope of @code{f} to @code{g}.
+
+Examples:
+
+@example
+@end example
+(%i1) foo: 2^bar;
+                               bar
+(%o1)                         2
+(%i2) g(x) := (f_1 (y) :=   foo*x*y,
+               f_2 (y) := ''foo*x*y,
+       define (f_3 (y),     foo*x*y),
+       define (f_4 (y),   ''foo*x*y));
+                                             bar
+(%o2) g(x) := (f_1(y) := foo x y, f_2(y) := 2    x y, 
+                                                        bar
+               define(f_3(y), foo x y), define(f_4(y), 2    x y))
+(%i3) functions;
+(%o3)                        [g(x)]
+(%i4) g(a);
+                                    bar
+(%o4)                  f_4(y) := a 2    y
+(%i5) functions;
+(%o5)        [g(x), f_1(y), f_2(y), f_3(y), f_4(y)]
+(%i6) dispfun (f_1, f_2, f_3, f_4);
+(%t6)                   f_1(y) := foo x y
+
+                                  bar
+(%t7)                  f_2(y) := 2    x y
+
+                                    bar
+(%t8)                  f_3(y) := a 2    y
+
+                                    bar
+(%t9)                  f_4(y) := a 2    y
+
+(%o9)                         done
 @end defun
 
-@c THIS ITEM NEEDS TO BE REVISED
-@defun define_variable (name,default-binding,mode,optional-documentation)
+@c NEEDS CLARIFICATION AND EXAMPLES
+@defun define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 
-introduces a global variable into the Maxima environment.  This is
+Introduces a global variable into the Maxima environment.  This is
 for user-written packages, which are often translated or compiled.
 Thus
 @example
-DEFINE_VARIABLE(FOO,TRUE,BOOLEAN);
+define_variable (foo, true, boolean);
 @end example
 does the following:
 
@@ -481,20 +533,21 @@ does the following:
     gets set to a value of the wrong mode.
     E.g. @code{foo: 44} would be an error once @code{foo} is defined @code{boolean}.
 
-See @code{mode_declare} for a list of the possible "modes".
+See @code{mode_declare} for a list of the possible modes.
+
 The optional 4th argument is a documentation string.  When
 @code{translate_file} is used on a package which includes documentation
 strings, a second file is output in addition to the Lisp file which
 will contain the documentation strings, formatted suitably for use in
 manuals, usage files, or (for instance) @code{describe}.
+
 With any variable which has been @code{define_variable}'d with mode other
 than @code{any}, you can give a @code{value_check} property, which is a function of
 one argument called on the value the user is trying to set the
 variable to.
 
 @example
-PUT('G5,LAMBDA([U],IF U#'G5 THEN ERROR("Don't set G5")),
-       'VALUE_CHECK);
+put ('g5, lambda([u], if u # 'g5 then error("Don't set g5")), 'value_check);
 @end example
 
 Use @code{define_variable (g5, 'g5, any_check, "this ain't supposed to be set by anyone but me.")}
@@ -583,6 +636,8 @@ Lisp functions, however, are not added to @code{functions}.
 
 @defun fundef (@var{f})
 Returns the definition of the function @var{f}.
+
+@c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 The argument may be the name of a macro (defined with @code{::=}),
 an ordinary function (defined with @code{:=} or @code{define}),
 an array function (defined with @code{:=} or @code{define},
@@ -782,13 +837,17 @@ Such a function can be defined via @code{buildq}, as in lambda expression @code{
 @end example
 @end defun
 
-@defun local (v_1, v_2, ...)
-Declares the variables @var{v_1}, @var{v_2}, ... to be local with
+@c NEEDS CLARIFICATION AND EXAMPLES
+@defun local (@var{v_1}, ..., @var{v_n})
+Declares the variables @var{v_1}, ..., @var{v_n} to be local with
 respect to all the properties in the statement in which this function
-is used.  @code{local} may only be used in @code{block}, in the body of function
-definitions or @code{lambda} expressions, or in the @code{ev} function and only one
-occurrence is permitted in each.  @code{local} is independent of @code{context}.
-@c NEED SOME EXAMPLES HERE.
+is used.
+
+@code{local} may only be used in @code{block}, in the body of function
+definitions or @code{lambda} expressions, or in the @code{ev} function, and only one
+occurrence is permitted in each.
+
+@code{local} is independent of @code{context}.
 
 @end defun
 
@@ -849,7 +908,8 @@ described.
 
 @end defvar
 
-@defun mode_declare (y_1, mode_1, y_2, mode_2, ...)
+@c NEEDS CLARIFICATION AND EXAMPLES
+@defun mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
 @code{mode_declare} is used to declare the modes of variables and
 functions for subsequent translation or compilation of functions.
 @code{mode_declare} is typically placed at the beginning of a function
@@ -907,7 +967,8 @@ declares that the values returned by @code{f_1}, @code{f_2}, ... are single-word
 @end defun
 
 @c WHAT IS THIS ABOUT ??
-@defun mode_identity (arg_1, arg_2)
+@c NEEDS CLARIFICATION AND EXAMPLES
+@defun mode_identity (@var{arg_1}, @var{arg_2})
 A special form used with @code{mode_declare} and
 @code{macros} to declare, e.g., a list of lists of flonums, or other compound
 data object.  The first argument to @code{mode_identity} is a primitive value
@@ -1277,9 +1338,9 @@ programming hints.
 
 @end defvar
 
-@defun compile_file (filename)
-@defunx compile_file (filename, compiled_filename)
-@defunx compile_file (filename, compiled_filename, lisp_filename)
+@defun compile_file (@var{filename})
+@defunx compile_file (@var{filename}, @var{compiled_filename})
+@defunx compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
 Translates the Maxima file @var{filename} into Lisp,
 executes the Lisp compiler,
 and, if the translation and compilation succeed, loads the compiled code into Maxima.
@@ -1309,20 +1370,21 @@ assignments to the translation flags (@code{tr_numer}, etc.) have no effect on t
 @c the compilation succeeded. This is a bug. 
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@code{filename} may not contain @code{:lisp} statements.
+@var{filename} may not contain @code{:lisp} statements.
 
 @code{compile_file} evaluates its arguments.
 
 @end defun
 
-@defun declare_translated (f_1, f_2, ...)
+@c NEEDS CLARIFICATION
+@defun declare_translated (@var{f_1}, @var{f_2}, ...)
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it
 sees in the file are to be called as translated or compiled functions,
 and which ones are just Maxima functions or undefined.  Putting this
 declaration at the top of the file, lets it know that although a symbol
 does which does not yet have a Lisp function value, will have one at
-call time.  (MFUNCTION-CALL fn arg1 arg2.. ) is generated when
+call time. @code{(MFUNCTION-CALL fn arg1 arg2 ...)} is generated when
 the translator does not know fn is going to be a Lisp function.
 
 @end defun
