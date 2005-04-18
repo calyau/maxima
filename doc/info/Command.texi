@@ -6,11 +6,16 @@
 @node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
 @section Introduction to Command Line
 
+@c NEEDS EXAMPLES
+@c THIS ITEM IS VERY IMPORTANT !!
 @deffn operator "'"
-The @code{'} (single quote) operator has the effect of preventing evaluation.
+The single quote operator @code{'} prevents evaluation.
+
 E.g., @code{'(f(x))} means do not evaluate the expression @code{f(x)}.
 @code{'f(x)} (with the single quote applied to @code{f} instead of @code{f(x)})
 means return the noun form of @code{f} applied to @code{[x]}.
+
+The single quote does not prevent simplification.
 
 @end deffn
 
