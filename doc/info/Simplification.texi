@@ -20,27 +20,26 @@ At one time, it was possible for a user to inspect @code{askexp}
 by entering a Maxima break with control-A.
 @end defvar
 
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+@defun askinteger (@var{expr}, integer)
+@defunx askinteger (@var{expr})
+@defunx askinteger (@var{expr}, even)
+@defunx askinteger (@var{expr}, odd)
 
-
-@defun askinteger (expr, integer)
-@defunx askinteger (expr)
-@defunx askinteger (expr, even)
-@defunx askinteger (expr, odd)
-
-@code{askinteger (expr, integer)} attempts to determine from the @code{assume} database
-whether @code{expr} is an integer.
-@code{askinteger} will ask the user if it cannot tell otherwise,
+@code{askinteger (@var{expr}, integer)} attempts to determine from the @code{assume} database
+whether @var{expr} is an integer.
+@code{askinteger} prompts the user if it cannot tell otherwise,
 @c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume DATABASE !!!
 and attempt to install the information in the database if possible.
-@code{askinteger (expr)} is equivalent to @code{askinteger (expr, integer)}.
+@code{askinteger (@var{expr})} is equivalent to @code{askinteger (@var{expr}, integer)}.
 
-@code{askinteger (expr, even)} and @code{askinteger (expr, odd)}
-likewise attempt to determine if @code{expr} is an even integer or odd integer, respectively.
+@code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
+likewise attempt to determine if @var{expr} is an even integer or odd integer, respectively.
 
 @end defun
 
-
-@defun asksign (expr)
+@c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
+@defun asksign (@var{expr})
 First attempts to determine whether the specified
 expression is positive, negative, or zero.  If it cannot, it asks the
 user the necessary questions to complete its deduction.  The user's
@@ -50,26 +49,26 @@ or @code{zero}.
 
 @end defun
 
+@c NEEDS CLARIFICATION, EXAMPLES
+@deffn {Function} demoivre (@var{expr})
+@deffnx {Variable} demoivre
 
-@defvar demoivre
-@defvarx demoivre (expr)
-Default value: @code{false}
+The function @code{demoivre (expr)} converts one expression
+without setting the global variable @code{demoivre}.
 
-When @code{demoivre} is @code{true},
-complex exponentials are converted into equivalent expressions in terms of circular functions.
-In general,
-@code{exp (a + b*%i)} yields @code{%e^a * (cos(b) + %i*sin(b))}
+When the variable @code{demoivre} is @code{true},
+complex exponentials are converted into equivalent expressions in terms of circular functions:
+@code{exp (a + b*%i)} simplifies to @code{%e^a * (cos(b) + %i*sin(b))}
 if @code{b} is free of @code{%i}.
 @code{a} and @code{b} are not expanded.
 
-@code{demoivre (expr)} converts one expression
-without setting the global variable @code{demoivre}.
+The default value of @code{demoivre} is @code{false}.
 
 @code{exponentialize} converts circular and hyperbolic functions to exponential form.
 @code{demoivre} and @code{exponentialize} cannot
 both be true at the same time.
 
-@end defvar
+@end deffn
 
 
 @defvar domain
@@ -84,14 +83,15 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 
 @end defvar
 
-
-@defun expand (expr)
-Expand expression @code{expr}.
+@c NEEDS WORK
+@defun expand (@var{expr})
+@defunx expand (@var{expr}, @var{p}, @var{n})
+Expand expression @var{expr}.
 Products of sums and exponentiated sums are
 multiplied out, numerators of rational expressions which are sums are
 split into their respective terms, and multiplication (commutative
 and non-commutative) are distributed over addition at all levels of
-@code{expr}.
+@var{expr}.
 
 For polynomials one should usually use @code{ratexpand} which uses a
 more efficient algorithm.
@@ -99,8 +99,8 @@ more efficient algorithm.
 @code{maxnegex} and @code{maxposex} control the maximum negative and
 positive exponents, respectively, which will expand.
 
-@code{expand (expr, p, n)} expands @code{expr}, 
-using @code{p} for @code{maxposex} and @code{n} for @code{maxnegex}.
+@code{expand (@var{expr}, @var{p}, @var{n})} expands @var{expr}, 
+using @var{p} for @code{maxposex} and @var{n} for @code{maxnegex}.
 This is useful in order to expand part but not all of an expression.
 
 @code{expon} - the exponent of the largest negative power which is
@@ -123,19 +123,20 @@ The file @file{simplification/facexp.mac}
 contains several related functions (in particular @code{facsum}, @code{factorfacsum}
 and @code{collectterms}, which are autoloaded) and variables (@code{nextlayerfactor}
 and @code{facsum_combine}) that provide the user with the ability to structure
-expressions by controlled expansion.  Brief function descriptions are
-available in @file{simplification/facexp.usg}.  A demo is available by
-doing @code{demo("facexp")$}.
+expressions by controlled expansion.
+@c MERGE share/simplification/facexp.usg INTO THIS FILE OR CREATE NEW FILE facexp.texi
+Brief function descriptions are available in @file{simplification/facexp.usg}.
+A demo is available by doing @code{demo("facexp")}.
 
 @end defun
 
-
-@defun expandwrt (expr, var_1, var_2, var_3, ...)
-expands expression @code{expr} with respect to the 
-variables @code{var_1}, @code{var_2}, @code{var_3}, ....
+@c NEEDS EXAMPLES
+@defun expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+Expands expression @code{expr} with respect to the 
+variables @var{x_1}, ..., @var{x_n}.
 All products involving the variables appear explicitly.  The form returned
 will be free of products of sums of expressions that are not free of
-the variables.   @code{var_1}, @code{var_2}, @code{var_3}, ...
+the variables.   @var{x_1}, ..., @var{x_n}
 may be variables, operators, or expressions.
 
 By default, denominators are not expanded, but this can be controlled by
@@ -158,14 +159,15 @@ numerator will be expanded in that way.
 
 @end defvar
 
+@c NEEDS A STAND-ALONE DESCRIPTION (NOT "IS SIMILAR TO")
+@c NEEDS EXAMPLES
+@defun expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+is similar to @code{expandwrt}, but treats expressions that are products somewhat differently.
+@code{expandwrt_factored} expands only on those factors of @code{expr}
+that contain the variables @var{x_1}, ..., @var{x_n}.
 
-@defun expandwrt_factored (expr, var_1, var_2, var_3, ...)
-is similar to
-@code{expandwrt}, but treats expressions that are products somewhat
-differently.  @code{expandwrt_factored} will perform the required expansion
-only on those factors of @code{expr} that contain the variables in its argument list
-argument list.  This function is autoloaded from
-@file{simplification/stopex.mac}.
+@c NOT SURE WHY WE SHOULD MENTION THIS HERE
+This function is autoloaded from @file{simplification/stopex.mac}.
 
 @end defun
 
@@ -181,57 +183,62 @@ expanded.
 @end defvar
 
 
-@defvar exponentialize
-@defvarx exponentialize (expr)
-Default value: @code{false}
+@deffn {Function} exponentialize (@var{expr})
+@deffnx {Variable} exponentialize
 
-When @code{exponentialize} is @code{true},
-all circular and hyperbolic functions are converted to exponential form.
-
-@code{exponentialize (expr)} converts one expression
+The function @code{exponentialize (expr)} converts 
+circular and hyperbolic functions in @var{expr} to exponentials,
 without setting the global variable @code{exponentialize}.
+
+When the variable @code{exponentialize} is @code{true},
+all circular and hyperbolic functions are converted to exponential form.
+The default value is @code{false}.
 
 @code{demoivre} converts complex exponentials into circular functions.
 @code{exponentialize} and @code{demoivre} cannot
 both be true at the same time.
 
-@end defvar
+@end deffn
 
-
+@c NEEDS CLARIFICATION
+@c NEEDS EXAMPLES
 @defvar expop
 Default value: 0
 
 @code{expop} is the highest positive exponent which is
-automatically expanded.  Thus @code{(x+1)^3}, when typed, will be
+automatically expanded.  Thus @code{(x + 1)^3}, when typed, will be
 automatically expanded only if @code{expop} is greater than or equal to 3.
-If it is desired to have @code{(x+1)^n} expanded where @code{n} is greater than
-@code{expop} then executing @code{expand ((x+1)^n)} will work only if @code{maxposex} is
+If it is desired to have @code{(x + 1)^n} expanded where @code{n} is greater than
+@code{expop} then executing @code{expand ((x + 1)^n)} will work only if @code{maxposex} is
 not less than n.
 
 @end defvar
 
-
+@c NEEDS EXAMPLES
 @defvar factlim
 Default value: -1
 
-@code{factlim} gives the highest factorial which is
+@code{factlim} specifies the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
 
 @end defvar
 
-
-@defun intosum (expr)
-will take all things that a summation is multiplied
-by, and put them inside the summation. If the index is used in the
+@c NEEDS CLARIFICATION, EXAMPLES
+@defun intosum (@var{expr})
+Moves multiplicative factors outside a summation to inside.
+If the index is used in the
 outside expression, then the function tries to find a reasonable
 index, the same as it does for @code{sumcontract}.  This is essentially the
 reverse idea of the @code{outative} property of summations, but note that it
-does not remove this property, it only bypasses it.  In some cases, a
-@code{scanmap (multthru, expr)} may be necessary before the @code{intosum}.
+does not remove this property, it only bypasses it.
+
+@c WHAT ARE THESE CASES ??
+In some cases,
+a @code{scanmap (multthru, @var{expr})} may be necessary before the @code{intosum}.
 
 @end defun
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration lassociative
 @code{declare (g, lassociative)} tells the
 Maxima simplifier that @code{g} is left-associative.  E.g., @code{g (g (a, b), g (c, d))} will
@@ -239,22 +246,23 @@ simplify to @code{g (g (g (a, b), c), d)}.
 
 @end defvr
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
+@c WHAT'S UP WITH THE QUOTE MARKS ??
 @defvr declaration linear
 One of Maxima's operator properties.  For univariate @code{f} so
-declared, "expansion" @code{f(x+y)} yields @code{f(x)+f(y)},
+declared, "expansion" @code{f(x + y)} yields @code{f(x) + f(y)},
 @code{f(a*x)} yields @code{a*f(x)} takes
 place where @code{a} is a "constant".  For functions of two or more arguments,
 "linearity" is defined to be as in the case of @code{sum} or @code{integrate},
 i.e., @code{f (a*x + b, x)} yields @code{a*f(x,x) + b*f(1,x)}
 for @code{a} and @code{b} free of @code{x}.
 
-@code{linear} is equivalent to @code{additive} plus @code{outative}.
+@code{linear} is equivalent to @code{additive} and @code{outative}.
 See also @code{opproperties}.
 
 @end defvr
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration mainvar
 You may declare variables to be @code{mainvar}.  The ordering
 scale for atoms is essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) <
@@ -268,7 +276,7 @@ expression in which @code{x} is a @code{mainvar}, you probably should also save 
 
 @end defvr
 
-
+@c NEEDS EXAMPLES
 @defvar maxapplydepth
 Default value: 10000
 
@@ -277,7 +285,7 @@ and @code{apply2} will delve.
 
 @end defvar
 
-
+@c NEEDS EXAMPLES
 @defvar maxapplyheight
 Default value: 10000
 
@@ -286,7 +294,7 @@ will reach before giving up.
 
 @end defvar
 
-
+@c NEEDS EXAMPLES
 @defvar maxnegex
 Default value: 1000
 
@@ -295,7 +303,7 @@ be expanded by the @code{expand} command (see also @code{maxposex}).
 
 @end defvar
 
-
+@c NEEDS EXAMPLES
 @defvar maxposex
 Default value: 1000
 
@@ -304,19 +312,19 @@ expanded with the @code{expand} command (see also @code{maxnegex}).
 
 @end defvar
 
-
+@c NEEDS EXAMPLES
 @defvr declaration multiplicative
 @code{declare (f, multiplicative)} tells the Maxima simplifier that @code{f} is multiplicative.
 
 @enumerate
 @item
 If @code{f} is univariate, whenever the simplifier encounters @code{f} applied
-to a product, @code{f} will be distributed over that product.  E.g., @code{f(x*y)}
-will simplify to @code{f(x)*f(y)}.
+to a product, @code{f} distributes over that product.  E.g., @code{f(x*y)}
+simplifies to @code{f(x)*f(y)}.
 @item
 If @code{f} is a function of 2 or more arguments, multiplicativity is
 defined as multiplicativity in the first argument to @code{f}, e.g.,
-@code{f (g(x) * h(x), x)} will simplify to @code{f (g(x) ,x) * f (h(x), x)}.
+@code{f (g(x) * h(x), x)} simplifies to @code{f (g(x) ,x) * f (h(x), x)}.
 @end enumerate
 
 This simplification does not occur when @code{f} is applied to expressions of
@@ -324,32 +332,33 @@ the form @code{product (x[i], i, m, n)}.
 
 @end defvr
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvar negdistrib
 Default value: @code{true}
 
-When @code{negdistrib} is @code{true}, -1 will be distributed
-over an expression.  E.g., @code{-(x+y)} becomes @code{-y-x}.  Setting it to @code{false}
-will allow @code{-(x+y)} to be displayed like that.  This is sometimes useful
+When @code{negdistrib} is @code{true}, -1 distributes
+over an expression.  E.g., @code{-(x + y)} becomes @code{- y - x}.  Setting it to @code{false}
+will allow @code{- (x + y)} to be displayed like that.  This is sometimes useful
 but be very careful: like the @code{simp} flag, this is one flag you do not
 want to set to @code{false} as a matter of course or necessarily for other
 than local use in your Maxima.
 
 @end defvar
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvar negsumdispflag
 Default value: @code{true}
 
-When @code{negsumdispflag} is @code{true}, @code{x-y} displays as @code{x-y}
-instead of as @code{-y+x}.  Setting it to @code{false} causes the special check in
+When @code{negsumdispflag} is @code{true}, @code{x - y} displays as @code{x - y}
+instead of as @code{- y + x}.  Setting it to @code{false} causes the special check in
 display for the difference of two expressions to not be done.  One
 application is that thus @code{a + %i*b} and @code{a - %i*b} may both be displayed the
 same way.
 
 @end defvar
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
+@c NEED TO MENTION THIS IS AN evflag
 @defvr {special symbol} noeval
 @code{noeval} suppresses the evaluation phase of @code{ev}.  This is useful in
 conjunction with other switches and in causing expressions      
@@ -357,7 +366,7 @@ to be resimplified without being reevaluated.
 
 @end defvr
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration noun
 @code{noun} is one of the options of the @code{declare} command.  It makes a
 function so declared a "noun", meaning that it won't be evaluated
@@ -365,7 +374,7 @@ automatically.
 
 @end defvr
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvar noundisp
 Default value: @code{false}
 
@@ -375,7 +384,7 @@ definitions.
 
 @end defvar
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvr {special symbol} nouns
 @code{nouns} is an @code{evflag}. When used as an option to the @code{ev} command,
 @code{nouns} converts all
@@ -384,7 +393,10 @@ evaluates them.  See also @code{noun}, @code{nounify}, @code{verb}, and @code{ve
 
 @end defvr
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
+@c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
+@c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
+@c NEED TO MENTION THIS IS AN evflag
 @defvr {special symbol} numer
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point. It causes
@@ -394,22 +406,23 @@ their values.  It also sets the @code{float} switch on.
 @end defvr
 
 
-@c NEEDS CLARIFICATION !!!
-@defun numerval (var_1, expr_1, var_2, expr_2, ...)
-declares the variables @code{var_1}, @code{var_2}, ..., to have
-numeric values equal to @code{expr_1}, @code{expr_2}, ....
+@c NEEDS CLARIFICATION, EXAMPLES
+@c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
+@defun numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+Declares the variables @code{x_1}, ..., @var{x_n} to have
+numeric values equal to @code{expr_1}, ..., @code{expr_n}.
 The numeric value is is evaluated and substituted for the variable
 in any expressions in which the variable occurs if the @code{numer} flag is
 @code{true}. See also @code{ev}.
 
-The expressions @code{expr_1}, @code{expr_2}, ..., can be any expressions,
+The expressions @code{expr_1}, ..., @code{expr_n} can be any expressions,
 not necessarily numeric.
 @end defun
 
 
 @defvar opproperties
 
-@code{opproperties} is the list of the special operator properties handled by
+@code{opproperties} is the list of the special operator properties recognized by
 the Maxima simplifier:
 @code{linear}, @code{additive}, @code{multiplicative}, @code{outative}, @code{evenfun},
 @code{oddfun}, @code{commutative}, @code{symmetric}, @code{antisymmetric}, @code{nary}, 
@@ -418,16 +431,17 @@ the Maxima simplifier:
 @end defvar
 
 
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvar opsubst
 Default value: @code{true}
 
-When @code{opsubst} is @code{false}, @code{subst} will not attempt to
+When @code{opsubst} is @code{false}, @code{subst} does not attempt to
 substitute into the operator of an expression.  E.g., 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
 @end defvar
 
-
+@c NEEDS EXAMPLES
 @defvr declaration outative
 @code{declare (f, outative)} tells the Maxima simplifier that constant factors
 in the argument of @code{f} can be pulled out.
@@ -445,37 +459,36 @@ as in the case of @code{sum} or @code{integrate}, i.e., @code{f (a*g(x), x)} wil
 to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @end enumerate
 
-Initially, @code{sum}, @code{integrate}, and @code{limit} are declared to be @code{outative}.
+@code{sum}, @code{integrate}, and @code{limit} are all @code{outative}.
 
 @end defvr
 
-
+@c NEEDS EXAMPLES
 @defvr declaration posfun
 @code{declare (f, posfun)} declares @code{f} to be a positive function.
 @code{is (f(x) > 0)} yields @code{true}.
 
 @end defvr
 
-
+@c NEEDS EXAMPLES
 @defvar prodhack
 Default value: @code{false}
 
 When @code{prodhack} is @code{true}, the identity 
 @code{product (f(i), i, a, b) = 1/product (f(i), i, b+1, a-1)} is applied 
 if @code{a} is greater than @code{b}.
-For example, @code{product (f(i), i, 3, 1)} will yield @code{1/f(2)}.
+For example, @code{product (f(i), i, 3, 1)} yields @code{1/f(2)}.
 
 @end defvar
 
-
-@defun radcan (expr)
-Simplifies @code{expr}, which can contain logs, exponentials, and
+@defun radcan (@var{expr})
+Simplifies @var{expr}, which can contain logs, exponentials, and
 radicals, by converting it into a form which is canonical over a large
 class of expressions and a given ordering of variables; that is, all
 functionally equivalent forms are mapped into a unique form.  For a
 somewhat larger class of expressions, @code{radcan} produces a regular form.
-Two equivalent expressions in this class will not necessarily have the
-same appearance, but their difference will be simplified by @code{radcan} to
+Two equivalent expressions in this class do not necessarily have the
+same appearance, but their difference can be simplified by @code{radcan} to
 zero.
 
 For some expressions @code{radcan} is quite time consuming.  This
@@ -486,37 +499,41 @@ partial-fraction expansions of exponents.
 @c %e_to_numlog NEEDS ITS OWN @defvar !!!
 @c DOESN'T APPEAR TO AFFECT radcan !!!
 When @code{%e_to_numlog} is @code{true}, 
-@code{%e^(r*log(expr))} will be simplified into @code{expr^r} if @code{r} is a rational number.
+@code{%e^(r*log(expr))} simplifies to @code{expr^r} if @code{r} is a rational number.
 
 When @code{radexpand} is @code{false}, certain transformations are inhibited.
-@code{radcan (sqrt (1-x))} will remain @code{sqrt (1-x)} and will not
-become @code{%i sqrt (x-1)}. 
-@code{radcan (sqrt (x^2 - 2*x + 11))} will remain @code{sqrt (x^2 - 2*x + 1)}
-and will not be transformed to @code{x - 1}.
+@code{radcan (sqrt (1-x))} remains @code{sqrt (1-x)}
+and is not simplified to @code{%i sqrt (x-1)}. 
+@code{radcan (sqrt (x^2 - 2*x + 11))} remains @code{sqrt (x^2 - 2*x + 1)}
+and is not simplified to @code{x - 1}.
 
-@code{example (radcan)} will display some examples.
+@c MERGE EXAMPLES INTO THIS FILE
+@code{example (radcan)} displays some examples.
 
 @end defun
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvar radexpand
 Default value: @code{true}
 
-@code{radexpand}, if set to @code{all}, causes nth roots of
-factors of a product which are powers of n to be pulled outside of the
-radical.  E.g. if @code{radexpand} is @code{all}, @code{sqrt (16*x^2)} will become @code{4*x}.
+@code{radexpand} controls some simplifications of radicals.
 
+When @code{radexpand} is @code{all}, causes nth roots of
+factors of a product which are powers of n to be pulled outside of the
+radical.  E.g. if @code{radexpand} is @code{all}, @code{sqrt (16*x^2)} simplifies to @code{4*x}.
+
+@c EXPRESS SIMPLIFICATON RULES IN GENERAL CASE, NOT SPECIAL CASE
 More particularly, consider @code{sqrt (x^2)}.
 @itemize @bullet
 @item
 If @code{radexpand} is @code{all} or @code{assume (x > 0)} has been executed, 
-@code{sqrt(x^2)} will become @code{x}.
+@code{sqrt(x^2)} simplifies to @code{x}.
 @item
 If @code{radexpand} is @code{true} and @code{domain} is @code{real} (its default), 
-@code{sqrt(x^2)} will become @code{abs(x)}.
+@code{sqrt(x^2)} simplifies to @code{abs(x)}.
 @item
 If @code{radexpand} is @code{false}, or @code{radexpand} is @code{true} and @code{domain} is @code{complex}, 
-@code{sqrt(x^2)} will be returned.
+@code{sqrt(x^2)} is not simplified.
 @end itemize
 
 @c CORRECT STATEMENT HERE ???
@@ -533,7 +550,7 @@ substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
 @end defvar
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration rassociative
 @code{declare (g, rassociative)} tells the Maxima
 simplifier that @code{g} is right-associative.  E.g.,
@@ -541,18 +558,21 @@ simplifier that @code{g} is right-associative.  E.g.,
 
 @end defvr
 
-
-@defun scsimp (expr, rule_1, rule_2, rule_3, ...)
+@c NEEDS CLARIFICATION, EXAMPLES
+@defun scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Sequential Comparative Simplification (method due to Stoute).
-@code{scsimp} takes an expression (its first argument) and
-a set of identities, or rules (its other arguments) and tries
-simplifying.  If a smaller expression is obtained, the process
+@code{scsimp} attempts to simplify @var{expr}
+according to the rules @var{rule_1}, ..., @var{rule_n}.
+If a smaller expression is obtained, the process
 repeats.  Otherwise after all simplifications are tried, it returns
-the original answer.  @code{example (scsimp)} displays some examples.
+the original answer.
+
+@c MERGE EXAMPLES INTO THIS FILE
+@code{example (scsimp)} displays some examples.
 
 @end defun
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvar simpsum
 Default value: @code{false}
 
@@ -564,16 +584,18 @@ mathematics.
 
 @end defvar
 
-
-@defun sumcontract (expr)
-will combine all sums of an addition that have
-upper and lower bounds that differ by constants. The result will be an
+@c NEEDS CLARIFICATION, EXAMPLES
+@defun sumcontract (@var{expr})
+Combines all sums of an addition that have
+upper and lower bounds that differ by constants. The result is an
 expression containing one summation for each set of such summations
 added to all appropriate extra terms that had to be extracted to form
-this sum.  @code{sumcontract} will combine all compatible sums and use one of
+this sum.  @code{sumcontract} combines all compatible sums and uses one of
 the indices from one of the sums if it can, and then try to form a
-reasonable index if it cannot use any supplied.  It may be necessary
-to do an @code{intosum (expr)} before the @code{sumcontract}.
+reasonable index if it cannot use any supplied.
+
+@c WHEN IS intosum NECESSARY BEFORE sumcontract ??
+It may be necessary to do an @code{intosum (@var{expr})} before the @code{sumcontract}.
 
 @end defun
 
@@ -582,7 +604,11 @@ to do an @code{intosum (expr)} before the @code{sumcontract}.
 Default value: @code{false}
 
 When @code{sumexpand} is @code{true}, products of sums and
-exponentiated sums are converted into nested sums. For example:
+exponentiated sums simplify to nested sums.
+
+See also @code{cauchysum}.
+
+Examples:
 
 @example
 (%i1) sumexpand: true$
@@ -604,9 +630,6 @@ exponentiated sums are converted into nested sums. For example:
                     i3 = 0 i4 = 0
 @end example
 
-@noindent
-If @code{false}, they are left alone.  See also @code{cauchysum}.
-
 @end defvar
 
 
@@ -614,7 +637,9 @@ If @code{false}, they are left alone.  See also @code{cauchysum}.
 Default value: @code{false}
 
 When @code{sumhack} is @code{true}, 
-the identity @code{sum (f(i), i, a, b) = - sum (f(i), i, b+1, a-1)} is applied
+the identity @code{sum (f(i), i, a, b) = - sum (f(i), i, b+1, a-1)}
+@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ?? QUOTING/SIMPLIFICATION STRANGENESS OBSERVED HERE
+is applied
 if @code{a} is greater than @code{b}.
 For example, @code{(sumhack: true, sum (f(i), i, 3, 1))} yields @code{-f(2)}.
 
@@ -625,23 +650,24 @@ For example, @code{(sumhack: true, sum (f(i), i, 3, 1))} yields @code{-f(2)}.
 Default value: @code{true}
 
 When @code{sumsplitfact} is @code{false},
+@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
 @code{minfactorial} is applied after a @code{factcomb}.
 
 @end defvar
 
-
+@c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration symmetric
 @code{declare (h, symmetric)} tells the Maxima
-simplifier that @code{h} is a symmetric function.  E.g., @code{h (x, z, y)} will
-simplify to @code{h (x, y, z)}.
+simplifier that @code{h} is a symmetric function.  E.g., @code{h (x, z, y)} 
+simplifies to @code{h (x, y, z)}.
 
 @code{commutative} is synonymous with @code{symmetric}.
 
 @end defvr
 
 
-@defun unknown (expr)
-returns @code{true} iff @code{expr} contains an operator or function
-not known to the built-in simplifier.
+@defun unknown (@var{expr})
+Returns @code{true} if and only if @var{expr} contains an operator or function
+not recognized by the Maxima simplifier.
 
 @end defun
