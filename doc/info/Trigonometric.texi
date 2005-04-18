@@ -26,72 +26,74 @@ for details.
 @node Definitions for Trigonometric,  , Introduction to Trigonometric, Trigonometric
 @section Definitions for Trigonometric
 
-@deffn {function} acos (x)
+@deffn {function} acos (@var{x})
  - Arc Cosine.
 
 @end deffn
 
-@deffn {function} acosh (x)
+@deffn {function} acosh (@var{x})
  - Hyperbolic Arc Cosine.
 
 @end deffn
 
-@deffn {function} acot (x)
+@deffn {function} acot (@var{x})
  - Arc Cotangent.
 
 @end deffn
 
-@deffn {function} acoth (x)
+@deffn {function} acoth (@var{x})
  - Hyperbolic Arc Cotangent.
 
 @end deffn
 
-@deffn {function} acsc (x)
+@deffn {function} acsc (@var{x})
  - Arc Cosecant.
 
 @end deffn
 
-@deffn {function} acsch (x)
+@deffn {function} acsch (@var{x})
  - Hyperbolic Arc Cosecant.
 
 @end deffn
 
-@deffn {function} asec (x)
+@deffn {function} asec (@var{x})
  - Arc Secant.
 
 @end deffn
 
-@deffn {function} asech (x)
+@deffn {function} asech (@var{x})
  - Hyperbolic Arc Secant.
 
 @end deffn
 
-@deffn {function} asin (x)
+@deffn {function} asin (@var{x})
  - Arc Sine.
 
 @end deffn
 
-@deffn {function} asinh (x)
+@deffn {function} asinh (@var{x})
  - Hyperbolic Arc Sine.
 
 @end deffn
 
-@deffn {function} atan (x)
+@deffn {function} atan (@var{x})
  - Arc Tangent.
 
 @end deffn
 
-@deffn {function} atan2 (y, x)
+@deffn {function} atan2 (@var{y}, @var{x})
 - yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi} to
 @code{%pi}.
 
 @end deffn
 
-@deffn {function} atanh (x)
+@deffn {function} atanh (@var{x})
  - Hyperbolic Arc Tangent.
 
 @end deffn
 
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 @defvr {package} atrig1
 The @code{atrig1} package contains several additional simplification rules 
 for inverse trigonometric functions.  Together with rules
@@ -102,101 +104,116 @@ Do @code{load(atrig1);} to use them.
 
 @end defvr
 
-@deffn {function} cos (x)
+@deffn {function} cos (@var{x})
  - Cosine.
 
 @end deffn
 
-@deffn {function} cosh (x)
+@deffn {function} cosh (@var{x})
  - Hyperbolic Cosine.
 
 @end deffn
 
-@deffn {function} cot (x)
+@deffn {function} cot (@var{x})
  - Cotangent.
 
 @end deffn
 
-@deffn {function} coth (x)
+@deffn {function} coth (@var{x})
  - Hyperbolic Cotangent.
 
 @end deffn
 
-@deffn {function} csc (x)
+@deffn {function} csc (@var{x})
  - Cosecant.
 
 @end deffn
 
-@deffn {function} csch (x)
+@deffn {function} csch (@var{x})
  - Hyperbolic Cosecant.
 
 @end deffn
 
 @defvr {option variable} halfangles
-default value: @code{false} - if @code{true} causes half-angles to be
-simplified away.
+Default value: @code{false}
+
+When @code{halfangles} is @code{true},
+half-angles are simplified away.
+@c WHAT DOES THIS STATEMENT MEAN EXACTLY ??
+@c NEEDS EXAMPLES
 
 @end defvr
 
+@c IS THIS DESCRIPTION ACCURATE ??
+@c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
 @defvr {package} ntrig
 The @code{ntrig} package contains a set of simplification rules that are
 used to simplify trigonometric function whose arguments are of the form
-@code{@var{fun}(@var{n}*%pi/10)} where @var{fun} is any of the functions 
+@code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions 
 @code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} and @code{cot}.
+@c NEED TO LOAD THIS PACKAGE ??
 
 @end defvr
 
-@deffn {function} sec (x)
+@deffn {function} sec (@var{x})
  - Secant.
 
 @end deffn
 
-@deffn {function} sech (x)
+@deffn {function} sech (@var{x})
  - Hyperbolic Secant.
 
 @end deffn
 
-@deffn {function} sin (x)
+@deffn {function} sin (@var{x})
  - Sine.
 
 @end deffn
 
-@deffn {function} sinh (x)
+@deffn {function} sinh (@var{x})
  - Hyperbolic Sine.
 
 @end deffn
 
-@deffn {function} tan (x)
+@deffn {function} tan (@var{x})
  - Tangent.
 
 @end deffn
 
-@deffn {function} tanh (x)
+@deffn {function} tanh (@var{x})
  - Hyperbolic Tangent.
 
 @end deffn
 
-@deffn {function} trigexpand (exp)
-expands trigonometric and hyperbolic functions of
-sums of angles and of multiple angles occurring in @var{exp}.  For best
-results, @var{exp} should be expanded.  To enhance user control of
+@c NEEDS CLARIFICATION AND EXAMPLES
+@deffn {function} trigexpand (@var{expr})
+Expands trigonometric and hyperbolic functions of
+sums of angles and of multiple angles occurring in @var{expr}.  For best
+results, @var{expr} should be expanded.  To enhance user control of
 simplification, this function expands only one level at a time,
 expanding sums of angles or multiple angles.  To obtain full expansion
-into sines and cosines immediately, set the switch @code{trigexpand:true}.
+into sines and cosines immediately, set the switch @code{trigexpand: true}.
 
-@code{trigexpand} - if @code{true} causes expansion of all
+@code{trigexpand} is governed by the following global flags:
+
+@table @code
+@item trigexpand
+If @code{true} causes expansion of all
 expressions containing sin's and cos's occurring subsequently.
-
-@code{halfangles} - if @code{true} causes half-angles to be simplified
+@item halfangles
+If @code{true} causes half-angles to be simplified
 away.
-
-@code{trigexpandplus} - controls the "sum" rule for @code{trigexpand},
-expansion of sums (e.g. @code{sin(x+y)}) will take place only if
+@item trigexpandplus
+Controls the "sum" rule for @code{trigexpand},
+expansion of sums (e.g. @code{sin(x + y)}) will take place only if
 @code{trigexpandplus} is @code{true}.
-
-@code{trigexpandtimes} - controls the "product" rule for @code{trigexpand},
-expansion of products (e.g. @code{sin(2*x)}) will take place only if
+@item trigexpandtimes
+Controls the "product" rule for @code{trigexpand},
+expansion of products (e.g. @code{sin(2 x)}) will take place only if
 @code{trigexpandtimes} is @code{true}.
+@end table
+
+Examples:
 
 @c ===beg===
 @c x+sin(3*x)/sin(x),trigexpand=true,expand;
@@ -214,7 +231,9 @@ expansion of products (e.g. @code{sin(2*x)}) will take place only if
 @end deffn
 
 @defvr {option variable} trigexpandplus
-default value: @code{true} - controls the "sum" rule for
+Default value: @code{true}
+
+@code{trigexpandplus} controls the "sum" rule for
 @code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
 @code{trigexpand} switch set to @code{true}, expansion of sums 
 (e.g. @code{sin(x+y))} will take place only if @code{trigexpandplus} is 
@@ -223,7 +242,9 @@ default value: @code{true} - controls the "sum" rule for
 @end defvr
 
 @defvr {option variable} trigexpandtimes
-default value: @code{true} - controls the "product" rule for
+Default value: @code{true}
+
+@code{trigexpandtimes} controls the "product" rule for
 @code{trigexpand}.  Thus, when the @code{trigexpand} command is used or the
 @code{trigexpand} switch set to @code{true}, expansion of products (e.g. @code{sin(2*x)})
 will take place only if @code{trigexpandtimes} is @code{true}.
@@ -231,25 +252,33 @@ will take place only if @code{trigexpandtimes} is @code{true}.
 @end defvr
 
 @defvr {option variable} triginverses
-default value: @code{all} - controls the simplification of the
+Default value: @code{all}
+
+@code{triginverses} controls the simplification of the
 composition of trigonometric and hyperbolic functions with their inverse
-functions: If @code{all}, both e.g. @code{atan(tan(@var{x}))} 
+functions.
+
+If @code{all}, both e.g. @code{atan(tan(@var{x}))} 
 and @code{tan(atan(@var{x}))} simplify to @var{x}.  
+
 If @code{true}, the @code{@var{arcfun}(@var{fun}(@var{x}))} 
-simplification is turned off.  If @code{false}, both the 
+simplification is turned off.
+
+If @code{false}, both the 
 @code{@var{arcfun}(@var{fun}(@var{x}))} and 
 @code{@var{fun}(@var{arcfun}(@var{x}))}
 simplifications are turned off.
 
 @end defvr
 
-@deffn {function} trigreduce (exp, var)
-@deffnx {function} trigreduce (exp)
-combines products and powers of trigonometric
-and hyperbolic sin's and cos's of @var{var} into those of multiples of @var{var}.
+@deffn {function} trigreduce (@var{expr}, @var{x})
+@deffnx {function} trigreduce (@var{expr})
+Combines products and powers of trigonometric
+and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
 It also tries to eliminate these functions when they occur in
-denominators.  If @var{var} is omitted then all variables in @var{exp} are used.
-Also see @code{poissimp}.
+denominators.  If @var{x} is omitted then all variables in @var{expr} are used.
+
+See also @code{poissimp}.
 
 @c ===beg===
 @c trigreduce(-sin(x)^2+3*cos(x)^2+x);
@@ -283,28 +312,35 @@ used as follows, e.g.
 @end deffn
 
 @defvr {option variable} trigsign
-default value: @code{true} - if @code{true} permits simplification of negative
+Default value: @code{true}
+
+When @code{trigsign} is @code{true}, it permits simplification of negative
 arguments to trigonometric functions. E.g., @code{sin(-x)} will become
 @code{-sin(x)} only if @code{trigsign} is @code{true}.
 
 @end defvr
 
-@deffn {function} trigsimp (expr)
-employs the identities @code{sin(x)^2 + cos(x)^2 = 1} and
-@code{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
-etc. to @code{sin}, @code{cos}, @code{sinh}, @code{cosh} so that further simplification may be
-obtained by using @code{trigreduce} on the result.  Some examples may be seen
-by doing @code{demo("trgsmp.dem");}.  See also the @code{trigsum} function.
+@deffn {function} trigsimp (@var{expr})
+Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
+@math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
+etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh} so that further simplification may be
+obtained by using @code{trigreduce} on the result.
+
+@code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
+@c MERGE EXAMPLES INTO THIS ITEM
+
+See also @code{trigsum}.
 
 @end deffn
 
-@deffn {function} trigrat (trigexp)
-gives a canonical simplifyed quasilinear form of a
-trigonometrical expression; @var{trigexp} is a rational fraction of several @code{sin},
+@c NEEDS CLARIFICATION
+@deffn {function} trigrat (@var{expr})
+Gives a canonical simplifyed quasilinear form of a
+trigonometrical expression; @var{expr} is a rational fraction of several @code{sin},
 @code{cos} or @code{tan}, the arguments of them are linear forms in some variables (or
 kernels) and @code{%pi/@var{n}} (@var{n} integer) with integer coefficients. The result is a
-simplifyed fraction with numerator and denominator linear in @code{sin} and @code{cos}.
-Thus @code{trigrat} linearize always when it is possible.  (written by D. Lazard).
+simplified fraction with numerator and denominator linear in @code{sin} and @code{cos}.
+Thus @code{trigrat} linearize always when it is possible.
 
 @c ===beg===
 @c trigrat(sin(3*a)/sin(a+%pi/3));
@@ -315,9 +351,9 @@ Thus @code{trigrat} linearize always when it is possible.  (written by D. Lazard
 
 @end example
 
-Here is another example (for which the function was intended); see
-[Davenport, Siret, Tournier, Calcul Formel, Masson (or in english,
-Addison-Wesley), section 1.5.5, Morley theorem)].
+The following example is taken from
+Davenport, Siret, and Tournier, @i{Calcul Formel}, Masson (or in English,
+Addison-Wesley), section 1.5.5, Morley theorem.
 
 @c ===beg===
 @c c: %pi/3 - a - b;
