@@ -2,11 +2,11 @@
 ind_vars(solver) ::= 
   buildq([],
          if solver=linsolve then 
-           %RNUM_LIST
+           %rnum_list
          else 
             if solver=fast_linsolve then
-               %RNUM_LIST
+               %rnum_list
             else
-               %RNUM_LIST       
+               %rnum_list       
         );
 

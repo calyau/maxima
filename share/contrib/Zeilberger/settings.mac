@@ -1,46 +1,46 @@
 /* --------------------------------------------------------------------- */ 
 /* Maxium order of the recurrence equation searched in Zeilberger's alg. */
-MAX_ORD: 5;
+max_ord: 5;
 
 
 /* --------------------------------------------------------------------- */
 /* Simplification */
-/* Constant values used to set OUTPUT_FORMAT */
-SIMPLIFIED_OUTPUT : FALSE;
+/* Constant values used to set output_format */
+simplified_output : false;
 
 
 /* --------------------------------------------------------------------- */
 /* Linear Solver */
 /* We are assuming that the independent variables in the solutions       */
-/* produced by the linear solver are stored in ind_vars(LINEAR_SOLVER)   */
-LINEAR_SOLVER : linsolve;
+/* produced by the linear solver are stored in ind_vars(linear_solver)   */
+linear_solver : linsolve;
 
 
 /* --------------------------------------------------------------------- */
 /* Numerical test through evalution and modular computation              */
 /* Numerical test flag */
-MOD_TEST : FALSE;
+mod_test : false;
 
 /* Modular linear solver */
-MODULAR_LINEAR_SOLVER : linsolve;
+modular_linear_solver : linsolve;
 
-/* Evaluation point used before MODULAR_LINEAR_SOLVER */
-EV_POINT : BIG_PRIMES[10];
+/* Evaluation point used before modular_linear_solver */
+ev_point : big_primes[10];
 
-/* Big prime taken as the modulo in MODULAR_LINEAR_SOLVER */
-MOD_BIG_PRIME : BIG_PRIMES[1];
+/* Big prime taken as the modulo in modular_linear_solver */
+mod_big_prime : big_primes[1];
 
 /* Heuristic threshold for the modular approach */
 /* The modular test is not performed above this order */
-MOD_THRESHOLD:4;
+mod_threshold:4;
 
 /* Warnings */
-WARNINGS : TRUE;
+warnings : true;
 
 /* Gosper tried as first attempt */
-GOSPER_IN_ZEILBERGER : TRUE;
+Gosper_in_Zeilberger : true;
 
 /* Trivial solutions flag */
-/* When it is set to FALSE solutions with zero certificate or */
+/* When it is set to false solutions with zero certificate or */
 /* with all coefficients identically zero are excluded        */
-TRIVIAL_SOLUTIONS : TRUE;
+trivial_solutions : true;

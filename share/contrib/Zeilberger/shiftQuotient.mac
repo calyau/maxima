@@ -9,15 +9,15 @@
 dependent(expr,var) :=
   block([res,count],
     if(expr=var) then
-      return(TRUE)
+      return(true)
     else
       if(atom(expr)) then
-        return(FALSE)
+        return(false)
       else
         (
-        res:FALSE,
+        res:false,
     
-        for count:1 unless (res=TRUE)or(count>length(expr)) do
+        for count:1 unless (res=true)or(count>length(expr)) do
            (
            res : dependent(part(expr,count),var)
 

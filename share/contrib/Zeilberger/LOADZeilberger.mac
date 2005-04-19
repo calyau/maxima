@@ -6,8 +6,9 @@ modLoad("testGosper.mac");
 modLoad("testZeilberger.mac");
 */
 
-modLoad(modName) :=
-  load(concat(dir,modName));
+dir : '"Zeilberger/";
+
+modLoad(modName) := load(concat(dir,modName));
 
 
 modLoad("constants.mac");

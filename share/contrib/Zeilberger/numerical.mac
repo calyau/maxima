@@ -1,5 +1,5 @@
 /* Big primes with size smaller than 15 bits (one signed word) */
-BIG_PRIMES : [
+big_primes : [
 2^15-19,
 2^15-49,
 2^15-51,

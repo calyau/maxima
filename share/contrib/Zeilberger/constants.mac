@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------- */
 /* Verbosity levels definitions */
-NONVERBOSE: 0;
-SUMMARY : 1;
-VERBOSE : 2;
-VERY_VERBOSE : 3;
-EXTRA : 4;
+nonverbose: 0;
+summary : 1;
+verbose : 2;
+very_verbose : 3;
+extra : 4;

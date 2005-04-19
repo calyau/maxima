@@ -70,18 +70,18 @@ zTelescopeSimplified(GSol,gfP,r,denNF) :=
 printGosperSummary(fRat,GosperForm,AnsatzDegree,Gpoly,GosperSol,mode) := 
   block([],
      print("--------------------------------"),
-     print("Gosper-related SUMMARY"),
+     print("Gosper-related summary"),
      print("(1) fRat : " , fRat),
      print("(2) Gosper form : ", GosperForm),
      print("(3) AnsatzDegree : ", AnsatzDegree),
      print("(4) Gosper polynomial : " , Gpoly),
-     if mode>= VERBOSE then
+     if mode>= verbose then
        print("(5) Gosper solution : ", GosperSol)
      );
 
 
 
-/* GOSPER'S ALGORITHM - Main routine - VERBOSE */
+/* GOSPER'S ALGORITHM - Main routine - verbose */
 GosperVerboseOpt(f,k,mode) :=
   block(
   [fRat,
@@ -100,7 +100,7 @@ GosperVerboseOpt(f,k,mode) :=
   /* Computation of the shift quotient */
   fRat : shiftQuo(f,k),
 
-  if mode>=VERBOSE then
+  if mode>=verbose then
      print("Shift quotient computed! : " , fRat),
 
 
@@ -111,33 +111,33 @@ GosperVerboseOpt(f,k,mode) :=
   p: takeP(GosperForm),
   q: takeQ(GosperForm),
   r: takeR(GosperForm),
-  if mode>=VERBOSE then
+  if mode>=verbose then
      print("p,q,r have been extracted! p: ", p, ", q: ", q, ", r: ", r),
 
   /* Solution of the Gosper equation */
   AnsatzDegree: AnsatzDegreeVerboseOpt(p,q,r,k,mode-1),
 
-  if mode>=VERBOSE then
+  if mode>=verbose then
      print("Ansatz degree computed ! : " , AnsatzDegree),
 
   Gpoly : 0,
 
   if AnsatzDegree >= 0 then
     Gpoly: expand(GosperPoly(p,q,r,k,"c",AnsatzDegree)),
-  if mode>=VERBOSE then 
+  if mode>=verbose then 
      print("Gosper polynomial created! : " , Gpoly),
   if Gpoly = 0 then
      return(NO_HYP_SOL),
   
   sysSol: SolveSysVerboseOpt(Gpoly,"c",AnsatzDegree+1,k,mode-1),
   
-  if mode>=VERY_VERBOSE then
+  if mode>=very_verbose then
      print("System of equations solved! :  " , sysSol),
   GosperSol: Gsol2Poly(first(sysSol),k),  
-  if mode>=VERBOSE then
+  if mode>=verbose then
      print("Gosper solution created! : " , GosperSol),
 
-  if mode>=SUMMARY then 
+  if mode>=summary then 
      printGosperSummary(fRat,GosperForm,AnsatzDegree,Gpoly,GosperSol,mode-1),
 
 
@@ -148,7 +148,7 @@ GosperVerboseOpt(f,k,mode) :=
     tlscope: telescope(GosperSol,p,r,k),
 
 
- if SIMPLIFIED_OUTPUT then
+ if simplified_output then
     return(ratsimp(tlscope))
  else
     return(tlscope)
@@ -158,28 +158,28 @@ GosperVerboseOpt(f,k,mode) :=
 /* Macro for the normal verbose Gosper algorithm */
 GosperVerbose(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,VERBOSE));
+         GosperVerboseOpt(f,k,verbose));
 
 /* Macro for the very verbose Gosper algorithm */
 GosperVeryVerbose(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,VERY_VERBOSE));
+         GosperVerboseOpt(f,k,very_verbose));
 
 
 GosperExtra(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,EXTRA));
+         GosperVerboseOpt(f,k,extra));
 
 /* Macro for the summary version of the Gosper algorithm */
 GosperSummary(f,k) ::=
   buildq([f,k],
-         GosperVerboseOpt(f,k,SUMMARY));
+         GosperVerboseOpt(f,k,summary));
 
 
 /* Short name for the non verbose mode */
 Gosper(f,k) ::=
    buildq([f,k],
-          GosperVerboseOpt(f,k,NONVERBOSE));
+          GosperVerboseOpt(f,k,nonverbose));
 
 /* ----------------------------------------------------------------------- */
 /* Anti-difference : It finds the anti-difference of a hypergeometric term */
@@ -188,9 +188,9 @@ AntiDifferenceVerboseOpt(f,k,mode) :=
   block([gSol],
   gSol : GosperVerboseOpt(f,k,mode),
   if gSol=NO_HYP_SOL then
-    return(NO_HYP_ANTIDIFFERENCE)
+    return(no_hyp_antidifference)
   else
-    if SIMPLIFIED_OUTPUT then
+    if simplified_output then
        return(factor(f*gSol))
     else
        return(f*gSol)
@@ -198,19 +198,19 @@ AntiDifferenceVerboseOpt(f,k,mode) :=
        
 
 AntiDifference(f,k) :=
-  AntiDifferenceVerboseOpt(f,k,NONVERBOSE);
+  AntiDifferenceVerboseOpt(f,k,nonverbose);
 
 AntiDifferenceSummary(f,k) :=
-  AntiDifferenceVerboseOpt(f,k,SUMMARY);
+  AntiDifferenceVerboseOpt(f,k,summary);
 
 AntiDifferenceVerbose(f,k) :=
-  AntiDifferenceVerboseOpt(f,k,VERBOSE);
+  AntiDifferenceVerboseOpt(f,k,verbose);
 
 AntiDifferenceVeryVerbose(f,k) :=
-  AntiDifferenceVerboseOpt(f,k,VERY_VERBOSE);
+  AntiDifferenceVerboseOpt(f,k,very_verbose);
 
 AntiDifferenceExtra(f,k) :=
-  AntiDifferenceVerboseOpt(f,k,EXTRA);
+  AntiDifferenceVerboseOpt(f,k,extra);
 
 
 /* ------------------------------------------------------------------ */
@@ -222,30 +222,30 @@ GosperSumVerboseOpt(f,k,a,b,mode) :=
         [antiDiff],
         
         antiDiff:AntiDifferenceVerboseOpt(f,k,mode),
-        if antiDiff=NO_HYP_ANTIDIFFERENCE then
-           return(NONGOSPER_SUMMABLE),
-        if mode>= VERBOSE then
+        if antiDiff=no_hyp_antidifference then
+           return(nonGosper_summable),
+        if mode>= verbose then
            print("Anti-difference : ", antiDiff),
         return(subst(b+1,k,antiDiff)-subst(a,k,antiDiff))
        );
 
 /* Gosper summation function */
 GosperSum(f,k,a,b) :=
-  GosperSumVerboseOpt(f,k,a,b,NONVERBOSE);
+  GosperSumVerboseOpt(f,k,a,b,nonverbose);
 
 
 /* Gosper summation function - Summary mode */
 GosperSumSummary(f,k,a,b) :=
-  GosperSumVerboseOpt(f,k,a,b,SUMMARY);
+  GosperSumVerboseOpt(f,k,a,b,summary);
 
 GosperSumVerbose(f,k,a,b) :=
-  GosperSumVerboseOpt(f,k,a,b,VERBOSE);
+  GosperSumVerboseOpt(f,k,a,b,verbose);
 
 GosperSumVeryVerbose(f,k,a,b) :=
-  GosperSumVerboseOpt(f,k,a,b,VERY_VERBOSE);
+  GosperSumVerboseOpt(f,k,a,b,very_verbose);
 
 GosperSumExtra(f,k,a,b) :=
-  GosperSumVerboseOpt(f,k,a,b,EXTRA);
+  GosperSumVerboseOpt(f,k,a,b,extra);
 
 
 

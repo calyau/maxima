@@ -13,11 +13,11 @@ op(expr) :=
 
 operatorp(expr,operator) := 
     if op(expr)=operator then
-       TRUE
+       true
     else
-       FALSE;
+       false;
 
-SOLVE_INCONSISTENT_ERROR : FALSE;
+solve_inconsistent_error : false;
 
 
 

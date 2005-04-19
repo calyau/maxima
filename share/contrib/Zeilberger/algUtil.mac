@@ -41,7 +41,7 @@ clearGCD(pol,unkPar1,numUnkPar1,unkPar2,numUnkPar2) :=
 primitive(pol,var) :=
   block([polyList,coeGcd,i,res],
     pol : expand(pol),
-    polyList : makeList(coeff(pol,var,i),i,0,degree(pol,var)),
+    polyList : makelist(coeff(pol,var,i),i,0,degree(pol,var)),
     coeGcd : part(polyList,1),
     for i : 2 thru length(polyList) do
       coeGcd : gcd(coeGcd,part(polyList,i)),

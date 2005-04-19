@@ -120,7 +120,7 @@ makeGosperFormVerboseOpt(expr,k,mode) :=
     den:factor(denom(expr)),
 
 
-  if mode>= VERBOSE then
+  if mode>= verbose then
     (
     print(num),
     print(den)
@@ -147,7 +147,7 @@ pPoly : 1,
 sepNumList:intLinSep(num,k),
 sepDenList:intLinSep(den,k),
 
-if mode >= VERBOSE then
+if mode >= verbose then
 ( 
 print("sepNumList : ", sepNumList),
 print("sepDenList : ", sepDenList)
@@ -170,7 +170,7 @@ rList:[],
 numList : normList(nonIntLinNum,k),
 denList : normList(nonIntLinDen,k),
 
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("numList : ", numList),
 print("denList : ", denList)
@@ -179,7 +179,7 @@ print("denList : ", denList)
 constSep : constSep(numList),
 normNonIntLinNum : constSep[1],
 nonIntLinNumConst : constSep[2],
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("normIntLinNum : ", normNonIntLinNum),
 print("intLinNumConst : ", nonIntLinNumConst)
@@ -188,7 +188,7 @@ print("intLinNumConst : ", nonIntLinNumConst)
 constSep : constSep(denList),
 normNonIntLinDen : constSep[1],
 nonIntLinDenConst : constSep[2],
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("normIntLinDen : ", normNonIntLinDen),
 print("nonIntLinDenConst : ", nonIntLinDenConst)
@@ -240,7 +240,7 @@ denList : second(candListSplit),
 
      intFactList : first(splitList(factList, lambda([y],integerLinear(y,j)))),
 
-     solList : makeList(second(first(solve(part(intFactList,i),j))),i,1,length(intFactList)),
+     solList : makelist(second(first(solve(part(intFactList,i),j))),i,1,length(intFactList)),
 
      intSolList : first(splitList(solList,lambda([y],integerp(y) and (y>=0)))),
      
@@ -282,7 +282,7 @@ denList : second(candListSplit),
          )
      else
          (
-         if mode>= VERBOSE then
+         if mode>= verbose then
             print("no positive integer solutions"),
          candNumList : endcons(first(tempList),candNumList),
          tempList : rest(tempList)
@@ -299,7 +299,7 @@ q : q * product(norm2polyPower(part(candNumList,i)),i,1,length(candNumList))
 
   ),
 /* end of outer loop */
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("numList : ", numList),
 print("denList : ", denList)
@@ -309,7 +309,7 @@ if numList # [] then
 if denList # [] then
   r : r * product(norm2polyPower(part(denList,i)),i,1,length(denList)),
 
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("q : ", q),
 print("r : ", r)
@@ -329,7 +329,7 @@ denList : sort(denList),
 constSep : intLinConstSep(numList),
 normIntLinNum : constSep[1],
 intLinNumConst : constSep[2],
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("normIntLinNum : ", normIntLinNum),
 print("intLinNumConst : ", intLinNumConst)
@@ -338,7 +338,7 @@ print("intLinNumConst : ", intLinNumConst)
 constSep : intLinConstSep(denList),
 normIntLinDen : constSep[1],
 intLinDenConst : constSep[2],
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("normIntLinDen : ", normIntLinDen),
 print("intLinDenConst : ", intLinDenConst)
@@ -356,7 +356,7 @@ unless ((numList = []) or (denList = [])) do
 
 /* This is an adaptation of Schorn-Riese's Mathematica code */
 
-if mode>= VERBOSE then
+if mode>= verbose then
 (
 print("denItem : ", denItem),
 print("numList : ", numList),
@@ -367,8 +367,8 @@ print("denList : ", denList)
 candListSplit : splitList(numList,
                 lambda([x],intDistance(first(x),first(denItem)))),
 
-if mode>= VERBOSE then
-  print("NUM) candListSplit : ", candListSplit),
+if mode>= verbose then
+  print("num) candListSplit : ", candListSplit),
 
 
 candNumList : first(candListSplit),
@@ -377,8 +377,8 @@ numList : second(candListSplit),
 candListSplit : splitList(denList,
                  lambda([x],intDistance(first(x),first(denItem)))),
 
-if mode>= VERBOSE then
-  print("DEN) candListSplit : ", candListSplit),
+if mode>= verbose then
+  print("den) candListSplit : ", candListSplit),
 
 
 candDenList : first(candListSplit),
@@ -390,7 +390,7 @@ unless ((candNumList = []) or (candDenList = [])) do
     (
 
     diff : first(first(candNumList))-first(first(candDenList)),
-    if mode>= VERBOSE then
+    if mode>= verbose then
       (
       print("diff : ", diff),
       print("inner cycle) candNumList : ", candNumList),
@@ -413,7 +413,7 @@ unless ((candNumList = []) or (candDenList = [])) do
        minExp:min(numExp,denExp),
        
        p : p * product(subst(k+i,k,norm2intLin(first(candDenList),k)^minExp),i,0,diff-1),
-       if mode>= VERBOSE then
+       if mode>= verbose then
           print("p computed : ", p),
        if(numExp>denExp) then
           (
@@ -468,10 +468,10 @@ return([p,q*formSign*intLinNumConst,r*intLinDenConst])
 
 
 makeGosperForm(expr,var) ::=
-  buildq([expr,var],makeGosperFormVerboseOpt(expr,var,NONVERBOSE));
+  buildq([expr,var],makeGosperFormVerboseOpt(expr,var,nonverbose));
 
 makeGosperFormVerbose(expr,var) ::=
-  buildq([expr,var],makeGosperFormVerboseOpt(expr,var,VERBOSE));
+  buildq([expr,var],makeGosperFormVerboseOpt(expr,var,verbose));
 
 
 

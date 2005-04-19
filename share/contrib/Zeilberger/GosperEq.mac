@@ -24,7 +24,7 @@ AnsatzDegreeVerboseOpt(p,q,r,indet,mode) :=
   degqm : degree(expand(qm),indet),
   degp : degree(expand(p),indet),
   
-  if mode >= VERBOSE then
+  if mode >= verbose then
     (
     print("(Ansatz) Degree of qplus:" , degqp),
     print("(Ansatz) Degree of qminus: " , degqm),
@@ -34,7 +34,7 @@ AnsatzDegreeVerboseOpt(p,q,r,indet,mode) :=
   /* Case distinction */
   if degqm >= degqp then 
      (
-     if mode >= VERBOSE then
+     if mode >= verbose then
        (
        print("(Ansatz degree) Ordinary case (degqm>=degqp)"),
        print("(Ansatz degree) Degree : ", degp-degqm)
@@ -43,27 +43,27 @@ AnsatzDegreeVerboseOpt(p,q,r,indet,mode) :=
      )
   else
      (
-     if mode >= VERBOSE then
+     if mode >= verbose then
        print("(Ansatz degree) Non-ordinary case (degqm<degqp)"),
      qpCoeff : leadCoeff(qp,indet),
-     if mode >= VERBOSE then
+     if mode >= verbose then
        print("(Ansatz degree) Leading coeff. of qplus: ", qpCoeff),
      qmCoeff : leadCoeff(qm,indet),
-     if mode >= VERBOSE then
+     if mode >= verbose then
        print("(Ansatz degree) Leading coeff. of qminus: ", qmCoeff),
      alpha : -2*(qmCoeff/qpCoeff),
-     if mode >= VERBOSE then
+     if mode >= verbose then
        print("(Ansatz degree) alpha :", alpha),
      if integerp(alpha) then
         (
-        if mode >= VERBOSE then
+        if mode >= verbose then
           print("(Ansatz degree) Nasty case (int(-2*qmC/qpC))"),
         return(max(alpha,degp-degqp+1,0)) /* 0??? */
         )
      else
         (
-        if mode >= VERBOSE then
-          print("(Ansatz degree) Easy case (NOT(int(-2*qmC/qpC)))"),
+        if mode >= verbose then
+          print("(Ansatz degree) Easy case (not(int(-2*qmC/qpC)))"),
         return(max(degp-degqp+1,0)) /* 0??? */
         )
      )
@@ -100,22 +100,22 @@ GosperPoly(p,q,r,indet,coef,deg) :=
 SolveSysVerboseOpt(Gpoly,unkPar,numUnkPar,indet,mode) :=
    block([dim,base,baseElem,sol],
 
-   if mode >= VERBOSE then
+   if mode >= verbose then
      (
      print("(SolveSys) Poly2List: ", poly2List(Gpoly,indet)),
      print("(SolveSys) Variables: ", 
             makelist(unkPar[i],i,0,numUnkPar-1))
      ),
    
-  sol : LINEAR_SOLVER(poly2List(Gpoly,indet),
+  sol : linear_solver(poly2List(Gpoly,indet),
                       makelist(unkPar[i],i,0,numUnkPar-1)),
 
-  dim : length(ind_vars(LINEAR_SOLVER)),
-  if mode >= VERBOSE then
+  dim : length(ind_vars(linear_solver)),
+  if mode >= verbose then
     (
     print("mode : ", mode),
     print("dim : ", dim),
-    print("debug : ", ind_vars(LINEAR_SOLVER)),
+    print("debug : ", ind_vars(linear_solver)),
     print("sol : ", sol)
     ),   
 
@@ -127,9 +127,9 @@ SolveSysVerboseOpt(Gpoly,unkPar,numUnkPar,indet,mode) :=
        baseElem : sol,
        for j:1 thru dim do
           if j = i then
-             baseElem : subst(0,ind_vars(LINEAR_SOLVER)[j],baseElem)
+             baseElem : subst(0,ind_vars(linear_solver)[j],baseElem)
           else
-             baseElem : subst(1,ind_vars(LINEAR_SOLVER)[j],baseElem),
+             baseElem : subst(1,ind_vars(linear_solver)[j],baseElem),
        base : endcons(baseElem,base)
        ),
      return(base)
@@ -152,7 +152,7 @@ SolveZSysVerboseOpt(Gpoly,unkPar1,numUnkPar1,unkPar2,numUnkPar2,indet,
                     solver,mode) :=
    block([sol,dim,base,i,j,baseElem],
 
-   if mode>=VERBOSE then
+   if mode>=verbose then
      (
      print("inside : ", mode),
      print("(SolveZSys) Unknowns: ", unkPar1, unkPar2),
@@ -167,17 +167,17 @@ SolveZSysVerboseOpt(Gpoly,unkPar1,numUnkPar1,unkPar2,numUnkPar2,indet,
      ),
    sys : poly2List(Gpoly,indet),
    
-   if mode=VERBOSE then
+   if mode=verbose then
      print("sys : ", sys),
 
-   sys : makeList(clearGCD(part(sys,i),unkPar1,numUnkPar1,
+   sys : makelist(clearGCD(part(sys,i),unkPar1,numUnkPar1,
                                        unkPar2,numUnkPar2),i,1,length(sys)),
 
    sol : solver(poly2List(Gpoly,indet),
          append(
          makelist(unkPar1[i],i,0,numUnkPar1-1), 
          makelist(unkPar2[i],i,0,numUnkPar2-1))),
-   if mode=VERBOSE then
+   if mode=verbose then
      (
      print("sys : ", sys),
      print("sol : ", sol)
@@ -230,7 +230,7 @@ SolveZSysVerboseSys(Gpoly,unkPar1,numUnkPar1,unkPar2,numUnkPar2,indet) :=
    print("(SolveZSys) LINEAR SYSTEM OF EQUATIONS"), 
    showSys(Gpoly,indet),
 
-   [LINEAR_SOLVER(poly2List(Gpoly,indet),
+   [linear_solver(poly2List(Gpoly,indet),
          append(
          makelist(unkPar1[i],i,0,numUnkPar2-1), 
          makelist(unkPar2[i],i,0,numUnkPar1-1)))]
@@ -325,23 +325,23 @@ SolveZSys(Gpoly,unkPar1,numUnkPar1,unkPar2,numUnkPar2,indet) :=
    sys : poly2List(Gpoly,indet),
 
 
-   sys : makeList(clearGCD(part(sys,i),unkPar1,numUnkPar1,unkPar2,numUnkPar2),i,1,length(sys)),
+   sys : makelist(clearGCD(part(sys,i),unkPar1,numUnkPar1,unkPar2,numUnkPar2),i,1,length(sys)),
 
-   sol : LINEAR_SOLVER(sys,
+   sol : linear_solver(sys,
          append(
          makelist(unkPar1[i],i,0,numUnkPar1-1), 
          makelist(unkPar2[i],i,0,numUnkPar2-1))),
 
-   dim : length(ind_vars(LINEAR_SOLVER)),
+   dim : length(ind_vars(linear_solver)),
    base : [],
    for i:1 thru dim do
       (
       baseElem : sol,
       for j:1 thru dim do
          if j = i then
-            baseElem : subst(1,ind_vars(LINEAR_SOLVER)[j],baseElem)
+            baseElem : subst(1,ind_vars(linear_solver)[j],baseElem)
          else
-            baseElem : subst(0,ind_vars(LINEAR_SOLVER)[j],baseElem),
+            baseElem : subst(0,ind_vars(linear_solver)[j],baseElem),
       base : endcons(baseElem,base)
       ),
    return(base)

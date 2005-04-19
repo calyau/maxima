@@ -7,7 +7,7 @@
 
 /* It computes the norm of a non-trivial integer linear expression */
 intLinConst(intLin,k,n) :=
-   intLin - coeff(intLin,n,1)*n - coeff(intLin,k,1)*k;
+   intLin - ratcoeff(intLin,n,1)*n - ratcoeff(intLin,k,1)*k;
 
 /* It converts an intLinNorm into an integer linear */
 norm2intLin(norm,k) :=
@@ -23,14 +23,14 @@ intLinPolyNorm(expr,k) :=
    if(freeof(k,expr)) then
       [expr,1]
    else
-      [expand(expr/coeff(expr,k,1)),coeff(expr,k,1)];
+      [expand(expr/ratcoeff(expr,k,1)),ratcoeff(expr,k,1)];
 
 polyNorm(expr,k) :=
    if (freeof(k,expr)) then
       [expr,1]
    else
-      [expand(expr/coeff(expr,k,degree(expr,k))),
-       coeff(expr,k,degree(expr,k))];
+      [expand(expr/ratcoeff(expr,k,degree(expr,k))),
+       ratcoeff(expr,k,degree(expr,k))];
 
 intLinNorm(expr,k) :=
  block([polyNorm,res,constRes],
