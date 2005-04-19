@@ -65,13 +65,8 @@ Delta_k(t_k) := t_(k+1) - t_k.
 LOADING
 --------------------------------------------------------------------------
 
-In order to load the package 
-either load all the ".mc" files manually or 
-first edit the line of "LOADZeilberger.mc" defining 
-the directory ("dir") containing the
-package files, then load "LOADZeilberger.mc" 
-which will take care of loading and evalutating 
-all the necessary files.
+For a normal Maxima install, type the following:
+load("Zeilberger/LOADZeilberger.mac");
 
 --------------------------------------------------------------------------
 INSTRUCTIONS
