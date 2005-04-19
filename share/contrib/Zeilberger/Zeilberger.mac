@@ -227,7 +227,7 @@ p: gfP * numNF, /* Now we remember that we "forgot" the factor numNF and compute
 
 q: takeQ(GosperForm),
 
-r: third(GosperForm),
+r: takeR(GosperForm),
 
 if mode>= verbose then
   (

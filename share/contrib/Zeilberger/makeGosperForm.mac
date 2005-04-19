@@ -488,7 +488,7 @@ takeQ(GosperForm) ::=
 
 /* Macro that extracts r out of the Gosper form */
 takeR(GosperForm) ::=
-  buildQ([GosperForm],third(GosperForm));
+  buildq([GosperForm],third(GosperForm));
 
 
 
