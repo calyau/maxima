@@ -81,14 +81,14 @@ mnewton(FuncList, VarList, GuessList):=
     for k:1 thru NEWTONMAXITER do (
       Solutions:map("=", VarList, GuessList),
       numdet:float(sublis(Solutions, det)),
-      if abs(numdet) < NEWTONEPSILON then return(),
+      if abs(numdet) < NEWTONEPSILON then return(0),
       Increments:float(rectform(expand(sublis(Solutions, NewtonMatrix / numdet)))),
       if atom(Increments) then Increments:matrix([Increments]),
       GuessList:GuessList-makelist(Increments[i][1],i,1,nfunc),
       solved:true,
       for i:1 thru nfunc do
         solved:solved and (abs(Increments[i][1]) < NEWTONEPSILON),
-      if solved then return()
+      if solved then return(0)
     ),
 
     /* Return of solution or error */
