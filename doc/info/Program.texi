@@ -14,7 +14,7 @@ constructs such as @code{go}.
 @section Definitions for Program Flow
 
 @defun backtrace ()
-@defunx backtrace (n)
+@defunx backtrace (@var{n})
 Prints the call stack, that is, the list of functions which
 called the currently active function.
 
@@ -327,15 +327,16 @@ Maxima's iteration facilities.
 
 @end deffn
 
-@defun go (tag)
+@defun go (@var{tag})
 is used within a @code{block} to transfer control to the statement
 of the block which is tagged with the argument to @code{go}.  To tag a
 statement, precede it by an atomic argument as another statement in
 the @code{block}.  For example:
+
 @example
-block([x],x:1,loop,x+1,...,go(loop),...)
+block ([x], x:1, loop, x+1, ..., go(loop), ...)
 @end example
-.
+
 The argument to @code{go} must be the name of a tag appearing in the same
 @code{block}.  One cannot use @code{go} to transfer to tag in a @code{block} other than the
 one containing the @code{go}.
@@ -343,6 +344,7 @@ one containing the @code{go}.
 @end defun
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
+@c THIS ITEM IS IMPORTANT
 @deffn {special operator} if
 The @code{if} statement is used for conditional execution.  The syntax
 is:
@@ -380,21 +382,29 @@ not                 not         logical prefix
 
 @end deffn
 
-@defun map (f, expr_1, expr_2, ...)
-returns an expression whose leading operator
-is the same as that of the expi but whose subparts are the results of
-applying fn to the corresponding subparts of the expi.  Fn is either
-the name of a function of n arguments (where n is the number of expi)
-or is a @code{lambda} form of n arguments.
+@c NEEDS CLARIFICATION
+@c THIS ITEM IS IMPORTANT
+@defun map (@var{f}, @var{expr_1}, ..., @var{expr_n})
+Returns an expression whose leading operator
+is the same as that of the expressions
+@var{expr_1}, ..., @var{expr_n} but whose subparts are the results of
+applying @var{f} to the corresponding subparts of the expressions.  @var{f} is either
+the name of a function of @math{n} arguments
+or is a @code{lambda} form of @math{n} arguments.
+
 @code{maperror} - if @code{false} will cause all of the mapping functions to
 (1) stop when they finish going down the shortest expi if not all of
 the expi are of the same length and (2) apply fn to [exp1, exp2,...]
 if the expi are not all the same type of object. If @code{maperror} is @code{true}
 then an error message will be given in the above two instances.
+
 One of the uses of this function is to @code{map} a function (e.g. @code{partfrac})
 onto each term of a very large expression where it ordinarily wouldn't
 be possible to use the function on the entire expression due to an
 exhaustion of list storage space in the course of the computation.
+
+@c IN THESE EXAMPLES, SPELL OUT WHAT IS THE MAIN OPERATOR 
+@c AND SHOW HOW THE RESULT FOLLOWS FROM THE DESCRIPTION STATED IN THE FIRST PARAGRAPH
 @example
 (%i1) map(f,x+a*y+b*z);
 (%o1)                        f(b z) + f(a y) + f(x)
@@ -414,55 +424,73 @@ exhaustion of list storage space in the course of the computation.
 @end example
 @end defun
 
-@defun mapatom (expr)
-is @code{true} if and only if expr is treated by the mapping
-routines as an "atom", a unit.  "Mapatoms" are atoms, numbers
+@defun mapatom (@var{expr})
+Returns @code{true} if and only if @var{expr} is treated by the mapping
+routines as an atom.  "Mapatoms" are atoms, numbers
 (including rational numbers), and subscripted variables.
+@c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
 @end defun
 
+@c NEEDS CLARIFICATION
 @defvar maperror
- default: @code{true} - if @code{false} will cause all of the mapping
-functions, for example
+Default value: @code{true}
+
+When @code{maperror} is @code{false}, causes all of the mapping functions, for example
+
 @example
-map(f,expr_1,expr_2,...))
+map (f, expr_1, expr_2, ...))
 @end example
+
 to (1) stop when they finish
 going down the shortest expi if not all of the expi are of the same
-length and (2) apply fn to [exp1, exp2,...] if the expi are not all
-the same type of object.  If @code{maperror} is @code{true} then an error message
-will be given in the above two instances.
+length and (2) apply @code{f} to @code{[expr_1, expr_2, ...]} if the @code{expr_i} are not all
+the same type of object.
+
+If @code{maperror} is @code{true} then an error message
+is displayed in the above two instances.
 
 @end defvar
 
-@defun maplist (f, expr_1, expr_2, ...)
-yields a list of the applications of fn
-to the parts of the expi.  This differs from @code{map(f,expr_1,expr_2,...)}
-which returns an expression with the same main operator as expi has
-(except for simplifications and the case where @code{map} does an @code{apply}).  Fn
-is of the same form as in @code{map}.
+@c NEEDS CLARIFICATION
+@defun maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+Returns a list of the applications of @var{f}
+to the parts of the expressions @var{expr_1}, ..., @var{expr_n}.
+@var{f} is the name of a function, or a lambda expression.
+
+@code{maplist} differs from @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}
+which returns an expression with the same main operator as @var{expr_i} has
+(except for simplifications and the case where @code{map} does an @code{apply}).
 
 @end defun
 
+@c NEEDS CLARIFICATION
 @defvar prederror
- default: @code{true} - If @code{true}, an error message is signalled
+Default value: @code{true}
+
+When @code{prederror} is @code{true}, an error message is displayed
 whenever the predicate of an @code{if} statement or an @code{is} function fails to
-evaluate to either @code{true} or @code{false}.  If @code{false}, @code{unknown} is returned
+evaluate to either @code{true} or @code{false}.
+
+If @code{false}, @code{unknown} is returned
 instead in this case.  The @code{prederror:false} mode is not supported in
 translated code.
 
 @end defvar
 
 @defun return (value)
-may be used to exit explicitly from a block, bringing
+May be used to exit explicitly from a block, bringing
 its argument.  See @code{block} for more information.
 
 @end defun
 
-@defun scanmap (function,exp)
-recursively applies function to exp, in a "top
-down" manner.  This is most useful when "complete" factorization is
+@c NEEDS CLARIFICATION
+@defun scanmap (@var{f}, @var{expr})
+@defunx scanmap (@var{f}, @var{expr}, bottomup)
+Recursively applies @var{f} to @var{expr}, in a top
+down manner.  This is most useful when complete factorization is
 desired, for example:
+
 @example
 (%i1) exp:(a^2+2*a+1)*y + x^2$
 (%i2) scanmap(factor,exp);
@@ -471,9 +499,10 @@ desired, for example:
 @end example
 
 Note the way in which @code{scanmap} applies the given function @code{factor} to the
-constituent subexpressions of exp; if another form of exp is presented
-to @code{scanmap} then the result may be different.  Thus, %o2 is not
+constituent subexpressions of @var{expr}; if another form of @var{expr} is presented
+to @code{scanmap} then the result may be different.  Thus, @code{%o2} is not
 recovered when @code{scanmap} is applied to the expanded form of exp:
+
 @example
 (%i3) scanmap(factor,expand(exp));
                            2                  2
@@ -482,14 +511,16 @@ recovered when @code{scanmap} is applied to the expanded form of exp:
 
 Here is another example of the way in which @code{scanmap} recursively
 applies a given function to all subexpressions, including exponents:
+
 @example
 (%i4) expr : u*v^(a*x+b) + c$
 (%i5) scanmap('f, expr);
                     f(f(f(a) f(x)) + f(b))
 (%o5) f(f(f(u) f(f(v)                      )) + f(c))
 @end example
-@code{scanmap(@var{function},@var{expression},bottomup)} applies function to exp in a
-"bottom-up" manner.  E.g., for undefined @code{f},
+
+@code{scanmap (@var{f}, @var{expr}, bottomup)} applies @var{f} to @var{expr} in a
+bottom-up manner.  E.g., for undefined @code{f},
 
 @example
 scanmap(f,a*x+b) ->
@@ -504,9 +535,9 @@ ways.
 
 @end defun
 
-@defun throw (exp)
-evaluates exp and throws the value back to the most recent
-@code{catch}.  @code{throw} is used with @code{catch} as a structured nonlocal exit
+@defun throw (@var{expr})
+Evaluates @var{expr} and throws the value back to the most recent
+@code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
 
 @end defun
