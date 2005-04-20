@@ -351,13 +351,10 @@
       (let* ((system-object
 	      (cond ((and (atom user-object) (not (symbolp user-object)))
 		     user-object)
-		    ((and (symbolp user-object)
-			  (eql #\$ (getcharn user-object 1)))
-		     (string-downcase (fullstrip1 user-object)))
 		    ;; The following clause takes care of |&Foo|,
 		    ;; which comes from the Maxima string "Foo".
 		    ((atom user-object)	;hence a symbol in view of the
-		     (string (fullstrip1 user-object))) ; first clause
+		     (print-invert-case (fullstrip1 user-object))) ; first clause
 		    (($listp user-object)
 		     (fullstrip (cdr user-object)))
 		    (t
