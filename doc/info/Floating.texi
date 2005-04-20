@@ -1,3 +1,5 @@
+@c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
+
 @menu
 * Definitions for Floating Point::  
 @end menu
@@ -15,7 +17,7 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@defun bffac (expr, n)
+@defun bffac (@var{expr}, @var{n})
 Bigfloat version of the factorial (shifted gamma)
 function.  The second argument is how many digits to retain and return,
 it's a good idea to request a couple of extra.
@@ -32,25 +34,27 @@ Default value: 10^8
 
 @end defvar
 
-@defun bfloat (x)
+@defun bfloat (@var{expr})
 Converts all numbers and functions of numbers to bigfloat
 numbers.  Setting @code{fpprec} to @code{n}, sets the bigfloat precision to @code{n}
-digits.  If @code{float2bf} is @code{false} a warning message is printed when
+digits.  
+
+When @code{float2bf} is @code{false} a warning message is printed when
 a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
 @end defun
 
-@defun bfloatp (expr)
-Returns @code{true} if @code{expr} is a bigfloat number else @code{false}.
+@defun bfloatp (@var{expr})
+Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 
 @end defun
 
-@defun bfpsi (n, z, fpprec)
-@defunx bfpsi0 (z, fpprec)
+@defun bfpsi (@var{n}, @var{z}, @var{fpprec})
+@defunx bfpsi0 (@var{z}, @var{fpprec})
 @code{bfpsi} is the polygamma function of real argument @var{z} and integer order @var{n}.
 @code{bfpsi0} is the digamma function. 
-@code{bfpsi0 (z, fpprec)} is equivalent to @code{bfpsi (0, z, fpprec)}.
+@code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to @code{bfpsi (0, @var{z}, @var{fpprec})}.
 
 These functions return bigfloat values.
 @var{fpprec} is the bigfloat precision of the return value.
@@ -88,15 +92,15 @@ displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
 
 @end defvar
 
-@defun cbffac (z, fpprec)
+@defun cbffac (@var{z}, @var{fpprec})
 Complex bigfloat factorial.
 
 @code{load ("bffac")} loads this function.
 
 @end defun
 
-@defun float (expr)
-Converts integers, rational numbers and bigfloats in @code{expr}
+@defun float (@var{expr})
+Converts integers, rational numbers and bigfloats in @var{expr}
 to floating point numbers.  It is also an @code{evflag}, @code{float} causes
 non-integral rational numbers and bigfloat numbers to be converted to
 floating point.
@@ -112,14 +116,16 @@ this may lead to loss of precision).
 
 @end defvar
 
-@defun floatnump (expr)
-Returns @code{true} if @code{expr} is a floating point number else @code{false}.
+@defun floatnump (@var{expr})
+Returns @code{true} if @var{expr} is a floating point number, otherwise @code{false}.
 
 @end defun
 
 @defvar fpprec
 Default value: 16
 
+@c THIS EXPLANATION REALLY NEEDS SERIOUS CLARIFICATION. 
+@c AS IT STANDS THIS SEEMS TO IMPLY A CAPABILITY THAT MAXIMA ALMOST CERTAINLY DOESN'T HAVE
 @code{fpprec} is the Maxima floating point precision.  @code{fpprec} can be set to an
 integer representing the desired precision.
 
@@ -131,19 +137,25 @@ Default value: 0
 @code{fpprintprec} is the number of digits to print when
 printing a bigfloat number, making it possible to compute with a large
 number of digits of precision, but have the answer printed out with a
-smaller number of digits.  If @code{fpprintprec} is 0 (the default), or greater than or equal to
+smaller number of digits.
+
+When @code{fpprintprec} is 0, or greater than or equal to
 @code{fpprec}, then the value of @code{fpprec} controls the number of digits used
-for printing.  However, if @code{fpprintprec} has a value between 2 and
+for printing.
+
+When @code{fpprintprec} has a value between 2 and
 @code{fpprec - 1}, then it controls the number of digits used.  (The minimal
 number of digits used is 2, one to the left of the point and one to
-the right.  The value 1 for @code{fpprintprec} is illegal.)
+the right.
+
+The value 1 for @code{fpprintprec} is illegal.
 
 @end defvar
 
-@deffn {Lisp function} ?round (x)
-@deffnx {Lisp function} ?round (x, divisor)
-Round the floating point @code{x} to the nearest integer.   The argument
-must be a regular system float, not a bigfloat.   The @code{?} beginning the name
+@deffn {Lisp function} ?round (@var{x})
+@deffnx {Lisp function} ?round (@var{x}, @var{divisor})
+Round the floating point @var{x} to the nearest integer.   The argument
+must be an ordinary float, not a bigfloat.   The @code{?} beginning the name
 indicates this is a Lisp function.
 
 @example
@@ -153,10 +165,10 @@ indicates this is a Lisp function.
 
 @end deffn
 
-@deffn {Lisp function} ?truncate (x)
-@deffnx {Lisp function} ?truncate (x, divisor)
-Truncate the floating point @code{x} towards 0, to become an integer.   The argument
-must be a regular system float, not a bigfloat.  The @code{?} beginning the name
+@deffn {Lisp function} ?truncate (@var{x})
+@deffnx {Lisp function} ?truncate (@var{x}, @var{divisor})
+Truncate the floating point @var{x} towards 0, to become an integer.   The argument
+must be an ordinary float, not a bigfloat.  The @code{?} beginning the name
 indicates this is a Lisp function.
 
 @example
