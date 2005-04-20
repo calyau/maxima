@@ -1068,7 +1068,7 @@ removes this property from all indexed objects.
 
 @end defun
 
-@defun makebox (expr)
+@defun makebox (@var{expr})
 Display @var{expr} in the same manner as @code{show}; however,
 any tensor d'Alembertian occurring in @var{expr} will be indicated using the
 symbol @code{[]}.  For example, @code{[]p([m],[n])} represents
