@@ -7,7 +7,9 @@
 @section Definitions for Logarithms
 
 @defvr {option variable} %e_to_numlog
-when @code{true}, @code{r} some rational number, and
+Default value: @code{false}
+
+When @code{true}, @code{r} some rational number, and
 @code{x} some expression, @code{%e^(r*log(x))} will be simplified into @code{x^r} .  It
 should be noted that the @code{radcan} command also does this transformation,
 and more complicated transformations of this ilk as well.
@@ -15,8 +17,10 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 
 @end defvr
 
-@deffn {function} log (x)
-the natural logarithm.
+@deffn {function} log (@var{x})
+Represents the natural logarithm of @var{x}.
+
+Simplification and evaluation of logarithms is governed by several global flags:
 
 @code{logexpand} - causes @code{log(a^b)} to become @code{b*log(a)}.
 If it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.
@@ -44,7 +48,9 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 @end deffn
 
 @defvr {option variable} logabs
-default value: @code{false} - when doing indefinite integration where
+Default value: @code{false}
+
+When doing indefinite integration where
 logs are generated, e.g. @code{integrate(1/x,x)}, the answer is given in
 terms of @code{log(abs(...))} if @code{logabs} is @code{true}, but in terms of @code{log(...)} if
 @code{logabs} is @code{false}.  For definite integration, the @code{logabs:true} setting is
@@ -54,7 +60,9 @@ endpoints is often needed.
 @end defvr
 
 @defvr {option variable} logarc
-default value: @code{false} - if @code{true} will cause the inverse circular and
+Default value: @code{false}
+
+If @code{true} will cause the inverse circular and
 hyperbolic functions to be converted into logarithmic form.
 @code{logarc(@var{exp})} will cause this conversion for a particular
 expression @var{exp} without setting the switch or having to
@@ -63,7 +71,9 @@ re-evaluate the expression with @code{ev}.
 @end defvr
 
 @defvr {option variable} logconcoeffp
-default value: @code{false} - controls which coefficients are
+Default value: @code{false}
+
+Controls which coefficients are
 contracted when using @code{logcontract}.  It may be set to the name of a
 predicate function of one argument.  E.g. if you like to generate
 SQRTs, you can do @code{logconcoeffp:'logconfun$
@@ -72,8 +82,8 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 
 @end defvr
 
-@deffn {function} logcontract (exp)
-recursively scans an @var{exp}, transforming
+@deffn {function} logcontract (@var{expr})
+Recursively scans the expression @var{expr}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
 
@@ -102,7 +112,9 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 @end deffn
 
 @defvr {option variable} logexpand
-default value: @code{true} - causes @code{log(a^b)} to become @code{b*log(a)}.  If
+Default value: @code{true}
+
+Causes @code{log(a^b)} to become @code{b*log(a)}.  If
 it is set to @code{all}, @code{log(a*b)} will also simplify to @code{log(a)+log(b)}.  If it
 is set to @code{super}, then @code{log(a/b)} will also simplify to @code{log(a)-log(b)} for
 rational numbers @code{a/b}, @code{a#1}.  (@code{log(1/b)}, for integer @code{b}, always
@@ -112,13 +124,17 @@ be turned off.
 @end defvr
 
 @defvr {option variable} lognegint
-default value: @code{false} - if @code{true} implements the rule
+Default value: @code{false}
+
+If @code{true} implements the rule
 @code{log(-n)} -> @code{log(n)+%i*%pi} for @code{n} a positive integer.
 
 @end defvr
 
 @defvr {option variable} lognumer
-default value: @code{false} - if @code{true} then negative floating point
+Default value: @code{false}
+
+If @code{true} then negative floating point
 arguments to @code{log} will always be converted to their absolute value
 before the @code{log} is taken.  If @code{numer} is also @code{true}, then negative integer
 arguments to @code{log} will also be converted to their absolute value.
@@ -126,13 +142,15 @@ arguments to @code{log} will also be converted to their absolute value.
 @end defvr
 
 @defvr {option variable} logsimp
-default value: @code{true} - if @code{false} then no simplification of @code{%e} to a
+Default value: @code{true}
+
+If @code{false} then no simplification of @code{%e} to a
 power containing @code{log}'s is done.
 
 @end defvr
 
-@deffn {function} plog (x)
-the principal branch of the complex-valued natural
+@deffn {function} plog (@var{x})
+Represents the principal branch of the complex-valued natural
 logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 
 @end deffn
