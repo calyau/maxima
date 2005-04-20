@@ -6,21 +6,29 @@
 @node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
 @section Definitions for Arrays and Tables
 
-@deffn {function} array (name, dim1, dim2, ..., dimk)
-@deffnx {function} array (name, type, dim1, dim2, ..., dimk)
-This sets up a @var{k}-dimensional array.  
-A maximum of five dimensions may be used.  In the first form, a
-general array is created.  In the second form, an array meant to have
-elements of the specified type is created.  @var{type} can be @code{fixnum} for
+@deffn {function} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {function} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {function} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+
+Creates an @math{n}-dimensional array.  
+@math{n} may be less than or equal to 5.
+The subscripts for
+the @math{i}'th dimension are the integers running from 0 to @var{dim_i}.  
+
+@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} creates a general array.
+
+@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} creates
+an array, with elements of a specified type.
+@var{type} can be @code{fixnum} for
 integers of limited size or @code{flonum} for floating-point numbers.
 
-The subscripts for
-the @var{i}th dimension are the integers running from 0 to @var{dimi}.  
+@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+creates @math{m} arrays, all of the same dimensions.
+@c SAME TYPE AS WELL ??
+
+@c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
 If the user assigns to a subscripted variable before declaring the
-corresponding array, an undeclared array is set up.  If the user has
-more than one array to be set up the same way, they may all be set up
-at the same time, by 
-@code{array([@var{list-of-names}], @var{dim1}, @var{dim2}, ..., @var{dimk})}.
+corresponding array, an undeclared array is created.
 Undeclared arrays, otherwise known as hashed arrays (because hash
 coding is done on the subscripts), are more general than declared
 arrays.  The user does not declare their maximum size, and they grow
@@ -30,112 +38,143 @@ unless an array is rather sparse, it is probably more efficient to
 declare it when possible than to leave it undeclared.  The @code{array}
 function can be used to transform an undeclared array into a declared
 array.
+@c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
 @end deffn
 
-@deffn {function} arrayapply (array, [sub1, ..., subk])
-is like @code{apply} except the first argument is an array.
+@deffn {function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
+where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
+
+This is reminiscent of @code{apply}, except the first argument is an array instead of a function.
 
 @end deffn
 
-@deffn {function} arrayinfo (a)
-returns a list of information about the array @var{a}.  For
+@deffn {function} arrayinfo (@var{A})
+Returns a list of information about the array @var{A}.  For
 hashed arrays it returns a list of @code{hashed}, the number of subscripts,
 and the subscripts of every element which has a value.  For declared
 arrays it returns a list of @code{declared}, the number of subscripts, and
 the bounds that were given the the @code{array} function when it was called
-on @var{a}.  Do @code{example(arrayinfo);} for an example.
+on @var{A}.  Do @code{example(arrayinfo);} for an example.
 
 @end deffn
 
-@deffn {function} arraymake (name, [i1, i2, ...])
-returns @code{@var{name}[@var{i1}, @var{i2}, ...]}.
+@deffn {function} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
+Returns the expression @code{@var{name} [@var{i_1}, ..., @var{i_n}]}.
+
+This is reminiscent of @code{funmake},
+except the return value is an unevaluated array reference
+instead of an unevaluated function call.
 
 @end deffn
 
 @defvr {system variable} arrays
-default value: @code{[]} - a list of all the arrays that have been allocated,
-both declared and undeclared.  Functions which deal with arrays are:
+Default value: @code{[]}
+
+@code{arrays} is a list of all the arrays that have been allocated,
+both declared and undeclared.
+
+See also
 @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
 @code{fillarray}, @code{listarray}, and @code{rearray}.
+@c IS THIS AN EXHAUSTIVE LIST ??
 
 @end defvr
 
-@deffn {function} bashindices (expr)
-transforms the expression @var{expr} by giving each
+@deffn {function} bashindices (@var{expr})
+Transforms the expression @var{expr} by giving each
 summation and product a unique index. This gives @code{changevar} greater
 precision when it is working with summations or products.  The form of
-the unique index is j<number>. The quantity <number> is determined by
+the unique index is @code{j@var{number}}. The quantity @var{number} is determined by
 referring to @code{gensumnum}, which can be changed by the user.  For
 example, @code{gensumnum:0$} resets it.
 
 @end deffn
 
-@deffn {function} fillarray (array, list-or-array)
-fills array from @var{list-or-array}.  If @code{array} is a
-floating-point (integer) array then @var{list-or-array} should be
+@deffn {function} fillarray (@var{A}, @var{B})
+Fills array @var{A} from @var{B}, which is a list or an array.
+
+If @var{A} is a
+floating-point (integer) array then @var{B} should be
 either a list of floating-point (integer) numbers or another
-floating-point (integer) array.  If the dimensions of the arrays are
-different @var{array} is filled in row-major order.  If there are not enough
-elements in @var{list-or-array} the last element is used to fill out the
-rest of @var{array}.  If there are too many the remaining ones are thrown
-away.  @code{fillarray} returns its first argument.
+floating-point (integer) array.
+
+If the dimensions of the arrays are
+different @var{A} is filled in row-major order.  If there are not enough
+elements in @var{B} the last element is used to fill out the
+rest of @var{A}.  If there are too many the remaining ones are thrown
+away.
+
+@code{fillarray} returns its first argument.
 
 @end deffn
 
-@deffn {function} getchar (a, i)
-returns the @var{i}th character of the quoted string or
+@c NEEDS EXAMPLES
+@deffn {function} getchar (@var{a}, @var{i})
+Returns the @var{i}'th character of the quoted string or
 atomic name @var{a}.  This function is useful in manipulating the 
 @code{labels} list.
 
 @end deffn
 
-@deffn {function} listarray (array)
-returns a list of the elements of a declared or
-hashed array.  The order is row-major.  Elements which you have not
-defined yet will be represented by @code{#####}.
+@deffn {function} listarray (@var{A})
+Returns a list of the elements of a declared or
+hashed array @var{A}.  The order is row-major.  Elements which are not yet
+defined are represented by @code{#####}.
 
 @end deffn
 
-@deffn {function} make_array (type, dim1, dim2, ..., dimn)
-- creates an array.  @var{type} may
-be @code{'any}, @code{'flonum}, @code{'fixnum}, @code{'hashed} or 
-@code{'functional}.  This is similar to
-the @code{array} command, except that the created array is a functional array
-object.  The advantage of this over @code{array} is that it doesn't have a
-name, and once a pointer to it goes away, it will also go away.  For
-example if @code{y:make_array(...);} then @code{y} points to an object 
-which takes up space, but do @code{y:false}, and @code{y} no longer
-points to that object, so the object will get garbage collected.  
-Note: the @var{dimi} here are different from the @code{array} command, 
-since they go from 0 to i-1, i.e.  a "dimension"
-of 10 means you have elements from 0 to 9.
+@c NEEDS CLARIFICATION, EXAMPLES
+@deffn {function} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+Creates and returns a Lisp array.  @var{type} may
+be @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} or 
+@code{functional}.
+There are @math{n} indices,
+and the @math{i}'th index runs from from 0 to @math{@var{dim_i} - 1}.
 
-@code{y:make_array('functional,'f,'hashed,1)} - the second argument to
+The advantage of @code{make_array} over @code{array} is that the return value doesn't have a
+name, and once a pointer to it goes away, it will also go away.
+For example, if @code{y: make_array (...)} then @code{y} points to an object 
+which takes up space, but after @code{y: false}, @code{y} no longer
+points to that object, so the object can be garbage collected.  
+
+@c NEEDS CLARIFICATION HERE
+@code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
 @code{make_array} in this case is the function to call to calculate array
 elements, and the rest of the arguments are passed recursively to
 @code{make_array} to generate the "memory" for the array function object.
 
 @end deffn
 
-@deffn {function} rearray (array, dim1, ..., dimk)
-can be used to change the size or dimensions of an array.  
+@c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
+@deffn {function} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+Changes the dimensions of an array.  
 The new array will be filled with the elements of the old one in
 row-major order.  If the old array was too small, 
-@code{false}, @code{0.0} or @code{0} will be used to fill the remaining elements,
+the remaining elements are filled with
+@code{false}, @code{0.0} or @code{0},
 depending on the type of the array.  The type of the array cannot be
 changed.
 
 @end deffn
 
-@deffn {function} remarray (name1, name2, ...)
-removes arrays and array associated
-functions and frees the storage occupied.  If name is @code{all} then all
-arrays are removed.  It may be necessary to use this function if it is
+@deffn {function} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {function} remarray (all)
+Removes arrays and array associated
+functions and frees the storage occupied.
+
+@code{remarray (all)} removes all items in the global list @code{arrays}.
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+It may be necessary to use this function if it is
 desired to redefine the values in a hashed array.
+
+@code{remarray} returns the list of arrays removed.
 
 @end deffn
 
+@c THIS IS REALLY CONFUSING
 @defvr {option variable} use_fast_arrays
 - if @code{true} then only two types of arrays are recognized.  
 
