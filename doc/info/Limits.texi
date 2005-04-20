@@ -7,62 +7,69 @@
 @section Definitions for Limits
 
 @defvr {option variable} lhospitallim
-default: 4 - the maximum number of times L'Hospital's
+Default: 4
+
+@code{lhospitallim} is the maximum number of times L'Hospital's
 rule is used in @code{limit}.  This prevents infinite looping in cases like
-@code{limit(cot(x)/csc(x),x,0)}.
+@code{limit (cot(x)/csc(x), x, 0)}.
 
 @end defvr
 
-@deffn {function} limit (exp, var, val, dir)
-@deffnx {function} limit (exp, var, val)
-@deffnx {function} limit (exp)
-finds the limit of @var{exp} as the real variable
-@var{var} approaches the value @var{val} from the direction @var{dir}.  @var{dir} may have the
+@deffn {function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {function} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {function} limit (@var{expr})
+Computes the limit of @var{expr} as the real variable
+@var{x} approaches the value @var{val} from the direction @var{dir}.  @var{dir} may have the
 value @code{plus} for a limit from above, @code{minus} for a limit from below, or
-may be omitted (implying a two-sided limit is to be computed).  For
-the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
-Manipulation" - Ph.D. Thesis - MAC TR-92 October 1971.  @code{limit} uses the
+may be omitted (implying a two-sided limit is to be computed).
+
+@code{limit} uses the
 following special symbols: @code{inf} (positive infinity) and @code{minf} (negative
 infinity).  On output it may also use @code{und} (undefined), @code{ind} (indefinite
 but bounded) and @code{infinity} (complex infinity).
 
 @code{lhospitallim} is the maximum number of times L'Hospital's rule
 is used in @code{limit}.  This prevents infinite looping in cases like
-@code{limit(cot(x)/csc(x),x,0)}.
+@code{limit (cot(x)/csc(x), x, 0)}.
 
 @code{tlimswitch} when true will cause the limit package to use
 Taylor series when possible.
 
 @code{limsubst} prevents @code{limit} from attempting substitutions on
-unknown forms.  This is to avoid bugs like @code{limit(f(n)/f(n+1),n,inf);}
+unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
 
 @code{limit} with one argument is often called upon to simplify constant expressions,
-for example, @code{limit(inf-1);} .
+for example, @code{limit (inf-1)}.
 
-Do @code{example(limit);} for examples.
+@c MERGE EXAMPLES INTO THIS FILE
+@code{example (limit)} displays some examples.
+
+For the method see Wang, P., "Evaluation of Definite Integrals by Symbolic
+Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
 @end deffn
 
 @defvr {option variable} limsubst
 default value: @code{false} - prevents @code{limit} from attempting substitutions on
-unknown forms.  This is to avoid bugs like @code{limit(f(n)/f(n+1),n,inf);}
+unknown forms.  This is to avoid bugs like @code{limit (f(n)/f(n+1), n, inf)}
 giving 1.  Setting @code{limsubst} to @code{true} will allow such
 substitutions.
 
 @end defvr
 
-@deffn {function} tlimit (exp, var, val, dir)
-@deffnx {function} tlimit (exp, var, val)
-@deffnx {function} tlimit (exp)
-is just the function @code{limit} with @code{tlimswitch}
-set to @code{true}.
+@deffn {function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {function} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {function} tlimit (@var{expr})
+Returns @code{limit} with @code{tlimswitch} set to @code{true}.
 
 @end deffn
 
 @defvr {option variable} tlimswitch
-default: @code{false} - if @code{true} will cause the limit package to
+Default value: @code{false}
+
+When @code{tlimswitch} is @code{true}, it causes the limit package to
 use Taylor series when possible.
 
 @end defvr
