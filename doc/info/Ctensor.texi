@@ -889,7 +889,7 @@ user to choose the corresponding vector name as the example under
 
 Computes the contravariant gradient of a scalar function allowing
 @c "vector^F2name^F*" LOOKS LIKE IT NEEDS TO BE FIXED UP, NOT SURE HOW THOUGH
-the user to choose the corresponding vector^F2name^F* as the example
+the user to choose the corresponding vector name as the example
 below for the Schwarzschild metric illustrates:
 
 @example
@@ -1006,7 +1006,7 @@ Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
 @end defun
 @defun symmetricp (@var{M})
 
-Returns @code{true} if @var{m} is a symmetric matrix or (2D) array.
+Returns @code{true} if @var{M} is a symmetric matrix or (2D) array.
 
 @end defun
 @defun ntermst (@var{f})
