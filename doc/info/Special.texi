@@ -7,12 +7,14 @@
 @node Introduction to Special Functions, specint, Special Functions, Special Functions
 @section Introduction to Special Functions
 
-@c NEEDS EXPANSION OR EXPUNCTION
-@deffn %K [index](expr)
+@c CAN'T FIND ANY SIGN OF THIS FUNCTION 
+@c COMMENT OUT, CUT IT ON NEXT PASS THROUGH THIS FILE
+@c @deffn %K [@var{index}](@var{expr})
+@c 
+@c Constant, in ODE2
+@c 
+@c @end deffn
 
-Constant, in ODE2
-
-@end deffn
 @node specint, Definitions for Special Functions, Introduction to Special Functions, Special Functions
 
 @c OK, THIS IS A BIT OF A COMPLICATED SITUATION:
