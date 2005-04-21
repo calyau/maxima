@@ -318,7 +318,8 @@ Solution:
 
 @end defvar
 
-@defun dimension (equation or list of equations)
+@defun dimension (@var{eqn})
+@defunx dimension (@var{eqn_1}, ..., @var{eqn_n})
 @code{dimen} is a package for dimensional analysis.
 @code{load ("dimen")} loads this package.
 @code{demo ("dimen")} displays a short demonstration.
