@@ -858,8 +858,12 @@
         ((or (null symbol) (memq (caar e) christoffels)) e)
         (
           t
-          (prog (cov con f)
-            (setq cov (contractinside (derat (cadr e))) con (derat (caddr e)))
+          (prog (cov con f sgn)
+            (setq sgn (cond ((rpobj ($canform e)) 1) (t -1))
+                  cov (contractinside (derat (cadr e)))
+                  con (derat (caddr e))
+                  f (not (equal cov (derat (cadr e))))
+            )
             ; Calling contract2 here won't do the trick as it messes up the
             ; order of indices. So we remove indices that appear both in cov
             ; and in con the hard way, with a do loop.
@@ -874,32 +878,19 @@
                 )
               )
             )
-            (return (nconc (list (cond (f (list symbol)) (t (car e))) cov con) (cdddr e)))
+            (setq c
+              (nconc
+                (list (cond (f (list symbol)) (t (car e))) cov con)
+                (cdddr e)
+              )
+            )
+            (return (cond ((and f (eq sgn -1)) (list '(mtimes) sgn c)) (t c)))
           )
         )
       )
     )
   )
 )
-;  (
-;    (lambda (k)
-;      (cond
-;        (
-;          (and (not (memq (caar e) christoffels)) k)
-;          (nconc
-;            (list
-;              (car e)
-;              (cons smlist (car k))
-;              (cons smlist (cdr k))
-;            )
-;            (cdddr e)
-;          )
-;        )
-;        (t e)
-;      )
-;    )
-;    (contract2 (covi e) (conti e))
-;  )
 
 ;; Remove like members. Return (cons l1 l2) or nil if no like members found.
 (defun contract2 (l1 l2)
@@ -942,7 +933,7 @@
 	     (GO LOOP))) 
 
 (DEFUN CONTRACT4 (L)                                        ;Contracts products
-       (PROG (L1 L2 L3 F CL SF) 
+       (PROG (L1 L2 L3 F CL SF)
 	     (SETQ CL (CDR L)) ;Following loop sets up 3 lists from the factors
 		               ;on L: L1 - atoms or the contraction of non
 		               ;indexed objects (the contraction is to handle
@@ -953,8 +944,11 @@
 	AGAIN(SETQ F (CAR CL) CL (CDR CL))
 	     (COND ((ATOM F) (SETQ L1 (CONS F L1)))
 		   ((RPOBJ F)
+;;*** contract5 may return a negative result
 		    (SETQ F (CONTRACT5 F))
-;;		    (COND ((ZL-GET (CAAR F) 'CONTRACTIONS)
+(cond (
+ (and (or (eq (car f) '(mtimes)) (eq (car f) '(mtimes simp))) (eq (cadr f) -1))
+ (setq l1 (cons -1 l1) f (cddr f)) ))
 		    (COND ((GETCON (CAAR F))
 			   (SETQ L2 (CONS F L2)))
 			  (T (SETQ L3 (CONS F L3)))))
@@ -1115,7 +1109,7 @@
 ;; indices then it can't contract g. If f is Kronecker delta then see which of
 ;; the covariant, contravariant, or derivative indices matches those in g.
 (defun contract1 (f g)
-  (prog (a b c d e cf)
+  (prog (a b c d e cf sgn)
     (when (cdddr f) (return nil))
     (setq a (derat (cdadr f)) b (cdaddr f)
           c (derat (cadr g)) d (caddr g) e (cdddr g)
@@ -1202,6 +1196,13 @@
       (t (return nil))
     )
 
+    ; Determine the sign of the result based on the expression's symmetry
+    ; properties. We use CANFORM to sort indices in the canonical order
+    ; and then extract the resulting expression's sign.
+    (setq sgn
+      (cond ((eq -1 (cadr ($canform (list '(mtimes simp) f g)))) -1) (t 1))
+    )
+
     ;If g matches an a then use the b for name of result. If an a is a space
     ;use name of G for result.
     MORE
@@ -1274,7 +1275,16 @@
             (j (car f))
             (k)
           )
-          ((null i) (setq c (reverse k) a (append (plusi a) j)))
+;;          ((null i) (setq c (reverse k) a (append (plusi a) j)))
+          ((null i)
+            (setq
+              c (reverse k)
+              a (append
+                (plusi a)
+                (mapcar #'(lambda (x) (list '(mtimes simp) -1 x)) j)
+              )
+            )
+          )
           (cond
             ((member (car i) (cdr f)) (setq k (cons (car i) k)))
             (
@@ -1345,7 +1355,7 @@
         (setq f (idiff f (car e)))
       )
     )
-    (return f)
+    (return (cond ((eq sgn -1) (list '(mtimes) sgn f)) (t f)))
   )
 )
 
@@ -2165,7 +2175,8 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	   (merror "Improper 1st arg to COMPONENTS: ~M"
 		   TENSOR
 		   )))
-    (SETQ LEN1 (LENGTH (CDADR TENSOR)) LEN2 (LENGTH (CDADDR TENSOR)) LEN3 (LENGTH (CDDDR TENSOR)))
+;    (SETQ LEN1 (LENGTH (CDADR TENSOR)) LEN2 (LENGTH (CDADDR TENSOR)) LEN3 (LENGTH (CDDDR TENSOR)))
+    (SETQ LEN1 (LENGTH (COVI TENSOR)) LEN2 (LENGTH (CONTI TENSOR)) LEN3 (LENGTH (DERI TENSOR)))
     (AND (NOT (ATOM COMP))(EQ (CAAR COMP) '$MATRIX)
 	 (COND ((= (f+ (f+ LEN1 LEN2) LEN3) 2)(SETQ NAME (GENSYM))
 		(SET NAME COMP)(SETQ COMP NAME))
@@ -2174,7 +2185,8 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 			TENSOR))))
     (COND ((AND (EQ (ML-TYPEP COMP) 'SYMBOL) (> (f+ (f+ LEN1 LEN2) LEN3) 0))
 	   (SETQ PROP 'CARRAYS))
-	  ((SAMELISTS (SETQ NAME (APPEND (CDADR TENSOR) (CDADDR TENSOR) (CDDDR TENSOR)))
+;	  ((SAMELISTS (SETQ NAME (APPEND (CDADR TENSOR) (CDADDR TENSOR) (CDDDR TENSOR)))
+	  ((SAMELISTS (SETQ NAME (APPEND (COVI TENSOR) (CONTI TENSOR) (DERI TENSOR)))
 		      (CDADR ($INDICES COMP)))
 	   (SETQ PROP 'TEXPRS COMP (CONS COMP NAME)))
 	  (T (merror "Args to COMPONENTS do not have the same free indices")))
@@ -2186,46 +2198,61 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
     '$DONE) NIL NIL NIL NIL NIL))
 
 (defun select (tensor l1 l2 l3)
-  (
-    (lambda
-      (prop subs idx)
-      (cond
-        (
-          (and
-            (allfixed subs)
-            (setq prop (zl-get tensor 'carrays))
-            (setq prop (zl-assoc idx prop))
-          )
+  (prog
+    nil
+    (setq l2 (append (minusi l1) l2) l1 (plusi l1))
+    (return
+      (
+        (lambda
+          (prop subs idx)
           (cond
             (
-              (alike1
-                (setq prop (cons (list (cdr prop) 'array) subs))
-                (setq subs (meval prop))
+              (and
+                (allfixed subs)
+                (setq prop (zl-get tensor 'carrays))
+                (setq prop (zl-assoc idx prop))
               )
-              0
+              (cond
+                (
+                  (alike1
+                    (setq prop (cons (list (cdr prop) 'array) subs))
+                    (setq subs (meval prop))
+                  )
+                  0
+                )
+                (t subs)
+              )
             )
-            (t subs)
+            (
+              (setq prop (zl-assoc idx (zl-get tensor 'texprs)))
+              (sublis
+                (mapcar (function cons)(cddr prop) subs)
+                ($rename (cadr prop) (cond ((boundp 'n) n) (t 1)))
+              )
+            )
+            (
+              (setq prop (zl-get tensor 'tsubr))
+              (apply
+                prop
+                (list (cons smlist l1) (cons smlist l2) (cons smlist l3))
+              )
+            )
+            (
+              (not (eq l3 nil))
+              (apply '$idiff (select tensor l1 l2 (cdr l3)) (list (car l3)))
+            )
+            (
+              t
+              (append
+                (list (list tensor 'simp) (cons smlist l1) (cons smlist l2))
+                l3
+              )
+            )
           )
         )
-        (
-          (setq prop (zl-assoc idx (zl-get tensor 'texprs)))
-          (sublis
-            (mapcar (function cons)(cddr prop) subs)
-            ($rename (cadr prop) (cond ((boundp 'n) n) (t 1)))
-          )
-        )
-        (
-          (setq prop (zl-get tensor 'tsubr))
-          (apply prop (list (cons smlist l1) (cons smlist l2) (cons smlist l3)))
-        )
-        (
-          (not (eq l3 nil))
-          (apply '$idiff (select tensor l1 l2 (cdr l3)) (list (car l3)))
-        )
-        (t (append (list (list tensor 'simp) (cons smlist l1) (cons smlist l2)) l3))
+        nil (append l1 l2 l3) (list (length l1)(length l2)(length l3))
       )
     )
-    nil (append l1 l2 l3) (list (length l1)(length l2)(length l3))
   )
 )
 
