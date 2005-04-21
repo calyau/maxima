@@ -364,7 +364,7 @@ If @code{timer (f)} is in effect, then @code{trace (f)} has no effect; @code{tra
 @end defun
 
 @defun trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@defunx trace_options (@code{f})
+@defunx trace_options (@var{f})
 Sets the trace options for function @var{f}.
 Any previous options are superseded.
 @code{trace_options (@var{f}, ...)} has no effect unless

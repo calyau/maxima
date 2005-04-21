@@ -591,7 +591,7 @@ equation as first argument.
 
 @c GCD IS A VARIABLE AND A FUNCTION
 @c THIS ITEM NEEDS A LOT OF WORK
-@defun gcd (p_1, p_2, x_1, ...)
+@defun gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
 Returns the greatest common divisor of @var{p_1} and @var{p_2}.
 The flag @code{gcd} determines which algorithm is employed.
 Setting @code{gcd} to @code{ez}, @code{eez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd}, New

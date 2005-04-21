@@ -332,7 +332,7 @@ Voir e'galement : @code{lgtreillis}, @code{treillis} et @code{treinat}.
 @end defun
 
 @c NOT REALLY HAPPY ABOUT MATH NOTATION HERE
-@defun mon2schur (l)
+@defun mon2schur (@var{l})
 la liste @var{l} repre'sente la fonction de Schur S_@var{l}:
  On a @var{l} = [@var{i_1}, @var{i_2}, ..., @var{i_q}]
 avec @var{i_1} <= @var{i_2} <= ... <= @var{i_q}.
