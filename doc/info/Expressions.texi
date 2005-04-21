@@ -1101,7 +1101,7 @@ may be referred to in the function itself.
 @end defvar
 
 @c NEEDS EXAMPLES
-@deffn {function} polarform (@var{expr})
+@deffn {Function} polarform (@var{expr})
 Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr},
 such that @code{r} and @code{theta} are purely real.
 

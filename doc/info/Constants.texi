@@ -6,38 +6,38 @@
 @node Definitions for Constants,  , Constants, Constants
 @section Definitions for Constants
 
-@defvr {constant} %e
+@defvr {Constant} %e
  - The base of natural logarithms, e, is represented in Maxima
 as @code{%e}.
 
 @end defvr
 
-@defvr {constant} false
+@defvr {Constant} false
  - the Boolean constant, false. (NIL in Lisp)
 
 @end defvr
 
-@defvr {constant} %inf
+@defvr {Constant} %inf
  - real positive infinity.
 
 @end defvr
 
-@defvr {constant}  %infinity
+@defvr {Constant}  %infinity
  - complex infinity.
 
 @end defvr
 
-@defvr {constant} %minf
+@defvr {Constant} %minf
  - real minus infinity.
 
 @end defvr
 
-@defvr {constant} pi
+@defvr {Constant} pi
  - "pi" is represented in Maxima as @code{%pi}.
 
 @end defvr
 
-@defvr {constant} true
+@defvr {Constant} true
  - the Boolean constant, true. (T in Lisp)
 
 @end defvr

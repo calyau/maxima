@@ -6,9 +6,9 @@
 @node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
 @section Definitions for Arrays and Tables
 
-@deffn {function} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {function} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
-@deffnx {function} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+@deffn {Function} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Function} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Function} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
 
 Creates an @math{n}-dimensional array.  
 @math{n} may be less than or equal to 5.
@@ -42,7 +42,7 @@ array.
 
 @end deffn
 
-@deffn {function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Function} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
 Evaluates @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
 where @var{A} is an array and @var{i_1}, ..., @var{i_n} are integers.
 
@@ -50,7 +50,7 @@ This is reminiscent of @code{apply}, except the first argument is an array inste
 
 @end deffn
 
-@deffn {function} arrayinfo (@var{A})
+@deffn {Function} arrayinfo (@var{A})
 Returns a list of information about the array @var{A}.  For
 hashed arrays it returns a list of @code{hashed}, the number of subscripts,
 and the subscripts of every element which has a value.  For declared
@@ -60,7 +60,7 @@ on @var{A}.  Do @code{example(arrayinfo);} for an example.
 
 @end deffn
 
-@deffn {function} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
+@deffn {Function} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
 Returns the expression @code{@var{name} [@var{i_1}, ..., @var{i_n}]}.
 
 This is reminiscent of @code{funmake},
@@ -82,7 +82,7 @@ See also
 
 @end defvr
 
-@deffn {function} bashindices (@var{expr})
+@deffn {Function} bashindices (@var{expr})
 Transforms the expression @var{expr} by giving each
 summation and product a unique index. This gives @code{changevar} greater
 precision when it is working with summations or products.  The form of
@@ -92,7 +92,7 @@ example, @code{gensumnum:0$} resets it.
 
 @end deffn
 
-@deffn {function} fillarray (@var{A}, @var{B})
+@deffn {Function} fillarray (@var{A}, @var{B})
 Fills array @var{A} from @var{B}, which is a list or an array.
 
 If @var{A} is a
@@ -111,14 +111,14 @@ away.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn {function} getchar (@var{a}, @var{i})
+@deffn {Function} getchar (@var{a}, @var{i})
 Returns the @var{i}'th character of the quoted string or
 atomic name @var{a}.  This function is useful in manipulating the 
 @code{labels} list.
 
 @end deffn
 
-@deffn {function} listarray (@var{A})
+@deffn {Function} listarray (@var{A})
 Returns a list of the elements of a declared or
 hashed array @var{A}.  The order is row-major.  Elements which are not yet
 defined are represented by @code{#####}.
@@ -126,7 +126,7 @@ defined are represented by @code{#####}.
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@deffn {function} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Function} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
 Creates and returns a Lisp array.  @var{type} may
 be @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} or 
 @code{functional}.
@@ -148,7 +148,7 @@ elements, and the rest of the arguments are passed recursively to
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
-@deffn {function} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+@deffn {Function} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
 Changes the dimensions of an array.  
 The new array will be filled with the elements of the old one in
 row-major order.  If the old array was too small, 
@@ -159,8 +159,8 @@ changed.
 
 @end deffn
 
-@deffn {function} remarray (@var{A_1}, ..., @var{A_n})
-@deffnx {function} remarray (all)
+@deffn {Function} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Function} remarray (all)
 Removes arrays and array associated
 functions and frees the storage occupied.
 

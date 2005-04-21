@@ -7,7 +7,7 @@
 @section Definitions for Differential Equations
 
 
-@deffn {function} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
+@deffn {Function} bc2 (@var{solution}, @var{xval1}, @var{yval1}, @var{xval2}, @var{yval2})
 Solves boundary value problem for second order differential equation. 
 Here: @var{solution} is a general solution to the equation, as 
 found by @code{ode2}, @var{xval1} is an equation for the independent 
@@ -20,8 +20,8 @@ See @code{ode2} for example of usage.
 @end deffn
 
 
-@deffn {function} desolve (@var{eqn}, @var{x})
-@deffnx {function} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} desolve (@var{eqn}, @var{x})
+@deffnx {Function} desolve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 The function @code{dsolve} solves systems of linear 
 ordinary differential equations using Laplace transform.  
 Here the @var{eqn}'s are differential equations in 
@@ -86,7 +86,7 @@ If @code{desolve} cannot obtain a solution, it returns @code{false}.
 @end deffn
 
 
-@deffn {function} ic1 (@var{solution}, @var{xval}, @var{yval})
+@deffn {Function} ic1 (@var{solution}, @var{xval}, @var{yval})
 Solves initial value problem for first order differential equation. 
 Here: @var{solution} is a general solution to the equation, as 
 found by @code{ode2}, @var{xval} is an equation for the independent 
@@ -97,7 +97,7 @@ an equation for the dependent variable in the form
 @end deffn
 
 
-@deffn {function} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
+@deffn {Function} ic2 (@var{solution}, @var{xval}, @var{yval}, @var{dval})
 Solves initial value problem for second order differential equation. 
 Here: @var{solution} is a general solution to the equation, as 
 found by @code{ode2}, @var{xval} is an equation for the independent 
@@ -111,7 +111,7 @@ See @code{ode2} for example of usage.
 @end deffn
 
 
-@deffn {function} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
+@deffn {Function} ode2 (@var{eqn}, @var{dvar}, @var{ivar})
 The function @code{ode2} solves ordinary differential equations of first or second order.
 It takes three arguments: an ODE @var{eqn}, the dependent variable
 @var{dvar}, and the independent variable @var{ivar}.  

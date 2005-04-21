@@ -17,7 +17,7 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 
 @end defvr
 
-@deffn {function} log (@var{x})
+@deffn {Function} log (@var{x})
 Represents the natural logarithm of @var{x}.
 
 Simplification and evaluation of logarithms is governed by several global flags:
@@ -82,7 +82,7 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 
 @end defvr
 
-@deffn {function} logcontract (@var{expr})
+@deffn {Function} logcontract (@var{expr})
 Recursively scans the expression @var{expr}, transforming
 subexpressions of the form @code{a1*log(b1) + a2*log(b2) + c} into
 @code{log(ratsimp(b1^a1 * b2^a2)) + c}
@@ -149,7 +149,7 @@ power containing @code{log}'s is done.
 
 @end defvr
 
-@deffn {function} plog (@var{x})
+@deffn {Function} plog (@var{x})
 Represents the principal branch of the complex-valued natural
 logarithm with @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
 

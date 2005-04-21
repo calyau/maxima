@@ -15,9 +15,9 @@ rule is used in @code{limit}.  This prevents infinite looping in cases like
 
 @end defvr
 
-@deffn {function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {function} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {function} limit (@var{expr})
+@deffn {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Function} limit (@var{expr})
 Computes the limit of @var{expr} as the real variable
 @var{x} approaches the value @var{val} from the direction @var{dir}.  @var{dir} may have the
 value @code{plus} for a limit from above, @code{minus} for a limit from below, or
@@ -59,9 +59,9 @@ substitutions.
 
 @end defvr
 
-@deffn {function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {function} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {function} tlimit (@var{expr})
+@deffn {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Function} tlimit (@var{expr})
 Returns @code{limit} with @code{tlimswitch} set to @code{true}.
 
 @end deffn

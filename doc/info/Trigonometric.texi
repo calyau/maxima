@@ -26,75 +26,75 @@ for details.
 @node Definitions for Trigonometric,  , Introduction to Trigonometric, Trigonometric
 @section Definitions for Trigonometric
 
-@deffn {function} acos (@var{x})
+@deffn {Function} acos (@var{x})
  - Arc Cosine.
 
 @end deffn
 
-@deffn {function} acosh (@var{x})
+@deffn {Function} acosh (@var{x})
  - Hyperbolic Arc Cosine.
 
 @end deffn
 
-@deffn {function} acot (@var{x})
+@deffn {Function} acot (@var{x})
  - Arc Cotangent.
 
 @end deffn
 
-@deffn {function} acoth (@var{x})
+@deffn {Function} acoth (@var{x})
  - Hyperbolic Arc Cotangent.
 
 @end deffn
 
-@deffn {function} acsc (@var{x})
+@deffn {Function} acsc (@var{x})
  - Arc Cosecant.
 
 @end deffn
 
-@deffn {function} acsch (@var{x})
+@deffn {Function} acsch (@var{x})
  - Hyperbolic Arc Cosecant.
 
 @end deffn
 
-@deffn {function} asec (@var{x})
+@deffn {Function} asec (@var{x})
  - Arc Secant.
 
 @end deffn
 
-@deffn {function} asech (@var{x})
+@deffn {Function} asech (@var{x})
  - Hyperbolic Arc Secant.
 
 @end deffn
 
-@deffn {function} asin (@var{x})
+@deffn {Function} asin (@var{x})
  - Arc Sine.
 
 @end deffn
 
-@deffn {function} asinh (@var{x})
+@deffn {Function} asinh (@var{x})
  - Hyperbolic Arc Sine.
 
 @end deffn
 
-@deffn {function} atan (@var{x})
+@deffn {Function} atan (@var{x})
  - Arc Tangent.
 
 @end deffn
 
-@deffn {function} atan2 (@var{y}, @var{x})
+@deffn {Function} atan2 (@var{y}, @var{x})
 - yields the value of @code{atan(@var{y}/@var{x})} in the interval @code{-%pi} to
 @code{%pi}.
 
 @end deffn
 
-@deffn {function} atanh (@var{x})
+@deffn {Function} atanh (@var{x})
  - Hyperbolic Arc Tangent.
 
 @end deffn
 
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
-@defvr {package} atrig1
+@defvr {Package} atrig1
 The @code{atrig1} package contains several additional simplification rules 
 for inverse trigonometric functions.  Together with rules
 already known to Maxima, the following angles are fully implemented:
@@ -104,32 +104,32 @@ Do @code{load(atrig1);} to use them.
 
 @end defvr
 
-@deffn {function} cos (@var{x})
+@deffn {Function} cos (@var{x})
  - Cosine.
 
 @end deffn
 
-@deffn {function} cosh (@var{x})
+@deffn {Function} cosh (@var{x})
  - Hyperbolic Cosine.
 
 @end deffn
 
-@deffn {function} cot (@var{x})
+@deffn {Function} cot (@var{x})
  - Cotangent.
 
 @end deffn
 
-@deffn {function} coth (@var{x})
+@deffn {Function} coth (@var{x})
  - Hyperbolic Cotangent.
 
 @end deffn
 
-@deffn {function} csc (@var{x})
+@deffn {Function} csc (@var{x})
  - Cosecant.
 
 @end deffn
 
-@deffn {function} csch (@var{x})
+@deffn {Function} csch (@var{x})
  - Hyperbolic Cosecant.
 
 @end deffn
@@ -146,7 +146,7 @@ half-angles are simplified away.
 
 @c IS THIS DESCRIPTION ACCURATE ??
 @c LET'S BE EXPLICIT ABOUT EXACTLY WHAT ARE THE RULES IMPLEMENTED BY THIS PACKAGE
-@defvr {package} ntrig
+@defvr {Package} ntrig
 The @code{ntrig} package contains a set of simplification rules that are
 used to simplify trigonometric function whose arguments are of the form
 @code{@var{f}(@var{n} %pi/10)} where @var{f} is any of the functions 
@@ -155,38 +155,38 @@ used to simplify trigonometric function whose arguments are of the form
 
 @end defvr
 
-@deffn {function} sec (@var{x})
+@deffn {Function} sec (@var{x})
  - Secant.
 
 @end deffn
 
-@deffn {function} sech (@var{x})
+@deffn {Function} sech (@var{x})
  - Hyperbolic Secant.
 
 @end deffn
 
-@deffn {function} sin (@var{x})
+@deffn {Function} sin (@var{x})
  - Sine.
 
 @end deffn
 
-@deffn {function} sinh (@var{x})
+@deffn {Function} sinh (@var{x})
  - Hyperbolic Sine.
 
 @end deffn
 
-@deffn {function} tan (@var{x})
+@deffn {Function} tan (@var{x})
  - Tangent.
 
 @end deffn
 
-@deffn {function} tanh (@var{x})
+@deffn {Function} tanh (@var{x})
  - Hyperbolic Tangent.
 
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {function} trigexpand (@var{expr})
+@deffn {Function} trigexpand (@var{expr})
 Expands trigonometric and hyperbolic functions of
 sums of angles and of multiple angles occurring in @var{expr}.  For best
 results, @var{expr} should be expanded.  To enhance user control of
@@ -271,8 +271,8 @@ simplifications are turned off.
 
 @end defvr
 
-@deffn {function} trigreduce (@var{expr}, @var{x})
-@deffnx {function} trigreduce (@var{expr})
+@deffn {Function} trigreduce (@var{expr}, @var{x})
+@deffnx {Function} trigreduce (@var{expr})
 Combines products and powers of trigonometric
 and hyperbolic sin's and cos's of @var{x} into those of multiples of @var{x}.
 It also tries to eliminate these functions when they occur in
@@ -320,7 +320,7 @@ arguments to trigonometric functions. E.g., @code{sin(-x)} will become
 
 @end defvr
 
-@deffn {function} trigsimp (@var{expr})
+@deffn {Function} trigsimp (@var{expr})
 Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
 @math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
 etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh} so that further simplification may be
@@ -334,7 +334,7 @@ See also @code{trigsum}.
 @end deffn
 
 @c NEEDS CLARIFICATION
-@deffn {function} trigrat (@var{expr})
+@deffn {Function} trigrat (@var{expr})
 Gives a canonical simplifyed quasilinear form of a
 trigonometrical expression; @var{expr} is a rational fraction of several @code{sin},
 @code{cos} or @code{tan}, the arguments of them are linear forms in some variables (or
