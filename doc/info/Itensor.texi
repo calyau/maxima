@@ -464,6 +464,12 @@ contain dummy indices one must be careful to define these indices to
 avoid the generation of multiple dummy indices. Removal of this
 assignment is given to the function @code{remcomps}.
 
+It is important to keep in mind that @code{components} cares only about
+the valence of a tensor, not about any particular index ordering. Thus
+assigning components to, say, @code{x([i,-j],[])}, @code{x([-j,i],[])}, or
+@code{x([i],[j])} all produce the same result, namely components being
+assigned to a tensor named @code{x} with valence @code{(1,1)}.
+
 Components can be assigned to an indexed expression in four ways, two
 of which involve the use of the @code{components} command:
 
@@ -1904,18 +1910,3 @@ should not be redefined:
   _extlc
 @end example
 
-@c RECOMMEND MOVING THIS TO A README FILE
-@subsection Developer's Notes
-
-I added support for moving frames, torsion, and nonmetricity to @code{itensor}
-in November, 2004. I reconstructed this functionality based on the
-description found in the reference manual of commercial Macsyma, and
-the printed output of some Macsyma demos.
-
-This functionality should be considered untested for now. The documentation
-of commercial Macsyma contained several obvious errors (e.g., invalid
-index combinations) and the demos suggested that the Macsyma implementation
-was far from complete. My goal was not to slavishly reproduce Macsyma's
-features (and bugs!) but to create a mathematically correct implementation.
-It will be a while before I feel fully confident, though, that all
-the results produced by this package are valid.

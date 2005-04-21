@@ -1543,17 +1543,3 @@ package compatible with the commercial version of MACSYMA.
 
 @end example
 
-@section Developer's Notes
-
-I added support for moving frames to @code{ctensor} in November, 2004. This
-functionality was reconstructed on the basis of two things: code I
-developed earlier for computations in a tetrad base, and the documentation
-of commercial MACSYMA.
-
-The algorithms have been verified through several examples, some of
-which are included as demos: see @code{tetrad.dem} or @code{petrov.dem},
-for instance. That said, it'll be a while before I have full confidence
-in all the algorithms that I added to this package, especially
-@code{nptetrad()} and @code{petrov()}, and the computation of the
-connection coefficients in a frame base.
-
