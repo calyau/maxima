@@ -13,8 +13,8 @@ constructs such as @code{go}.
 @node Definitions for Program Flow,  , Introduction to Program Flow, Program Flow
 @section Definitions for Program Flow
 
-@defun backtrace ()
-@defunx backtrace (@var{n})
+@deffn {Function} backtrace ()
+@deffnx {Function} backtrace (@var{n})
 Prints the call stack, that is, the list of functions which
 called the currently active function.
 
@@ -69,7 +69,7 @@ functions, including the currently active function.
 @end example
 @end itemize
 
-@end defun
+@end deffn
 
 @deffn {special operator} do
 The @code{do} statement is used for performing iteration.  Due to its
@@ -284,7 +284,7 @@ non-atomic expression, and successive parts are taken.)
 
 @end deffn
 
-@defun errcatch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} errcatch (@var{expr_1}, ..., @var{expr_n})
 Evaluates @var{expr_1}, ..., @var{expr_n} one by one and
 returns @code{[@var{expr_n}]} (a list) if no error occurs.  If an
 error occurs in the evaluation of any argument, @code{errcatch} 
@@ -295,7 +295,7 @@ returns the empty list @code{[]} without evaluating any more arguments.
 is useful in @code{batch} files where one suspects an error might occur which
 would terminate the @code{batch} if the error weren't caught.
 
-@end defun
+@end deffn
 
 @deffn {Function} error (@var{expr_1}, ..., @var{expr_n})
 @deffnx {Variable} error
@@ -313,12 +313,12 @@ This is effectively reprinting the most recent error message.
 
 @end deffn
 
-@defun errormsg ()
+@deffn {Function} errormsg ()
 Reprints the most recent error message.
 The variable @code{error} holds the message,
 and @code{errormsg} formats and prints it.
 
-@end defun
+@end deffn
 
 @c REPHRASE
 @deffn {special operator} for
@@ -327,7 +327,7 @@ Maxima's iteration facilities.
 
 @end deffn
 
-@defun go (@var{tag})
+@deffn {Function} go (@var{tag})
 is used within a @code{block} to transfer control to the statement
 of the block which is tagged with the argument to @code{go}.  To tag a
 statement, precede it by an atomic argument as another statement in
@@ -341,7 +341,7 @@ The argument to @code{go} must be the name of a tag appearing in the same
 @code{block}.  One cannot use @code{go} to transfer to tag in a @code{block} other than the
 one containing the @code{go}.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @c THIS ITEM IS IMPORTANT
@@ -384,7 +384,7 @@ not                 not         logical prefix
 
 @c NEEDS CLARIFICATION
 @c THIS ITEM IS IMPORTANT
-@defun map (@var{f}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} map (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Returns an expression whose leading operator
 is the same as that of the expressions
 @var{expr_1}, ..., @var{expr_n} but whose subparts are the results of
@@ -422,18 +422,18 @@ exhaustion of list storage space in the course of the computation.
 
 
 @end example
-@end defun
+@end deffn
 
-@defun mapatom (@var{expr})
+@deffn {Function} mapatom (@var{expr})
 Returns @code{true} if and only if @var{expr} is treated by the mapping
 routines as an atom.  "Mapatoms" are atoms, numbers
 (including rational numbers), and subscripted variables.
 @c WHAT ARE "THE MAPPING ROUTINES", AND WHY DO THEY HAVE A SPECIALIZED NOTION OF ATOMS ??
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defvar maperror
+@defvr {Variable} maperror
 Default value: @code{true}
 
 When @code{maperror} is @code{false}, causes all of the mapping functions, for example
@@ -450,10 +450,10 @@ the same type of object.
 If @code{maperror} is @code{true} then an error message
 is displayed in the above two instances.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION
-@defun maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Returns a list of the applications of @var{f}
 to the parts of the expressions @var{expr_1}, ..., @var{expr_n}.
 @var{f} is the name of a function, or a lambda expression.
@@ -462,10 +462,10 @@ to the parts of the expressions @var{expr_1}, ..., @var{expr_n}.
 which returns an expression with the same main operator as @var{expr_i} has
 (except for simplifications and the case where @code{map} does an @code{apply}).
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defvar prederror
+@defvr {Variable} prederror
 Default value: @code{true}
 
 When @code{prederror} is @code{true}, an error message is displayed
@@ -476,17 +476,17 @@ If @code{false}, @code{unknown} is returned
 instead in this case.  The @code{prederror:false} mode is not supported in
 translated code.
 
-@end defvar
+@end defvr
 
-@defun return (value)
+@deffn {Function} return (value)
 May be used to exit explicitly from a block, bringing
 its argument.  See @code{block} for more information.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun scanmap (@var{f}, @var{expr})
-@defunx scanmap (@var{f}, @var{expr}, bottomup)
+@deffn {Function} scanmap (@var{f}, @var{expr})
+@deffnx {Function} scanmap (@var{f}, @var{expr}, bottomup)
 Recursively applies @var{f} to @var{expr}, in a top
 down manner.  This is most useful when complete factorization is
 desired, for example:
@@ -533,12 +533,12 @@ scanmap(f,a*x+b,bottomup) -> f(a)*f(x)+f(b)
 In this case, you get the same answer both
 ways.
 
-@end defun
+@end deffn
 
-@defun throw (@var{expr})
+@deffn {Function} throw (@var{expr})
 Evaluates @var{expr} and throws the value back to the most recent
 @code{catch}.  @code{throw} is used with @code{catch} as a nonlocal return
 mechanism.
 
-@end defun
+@end deffn
 

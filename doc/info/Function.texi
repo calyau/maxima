@@ -132,7 +132,7 @@ possibly @code{buildq}.
 @section Macros
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun buildq (@var{variables}, @var{expr})
+@deffn {Function} buildq (@var{variables}, @var{expr})
 
 @var{expr} is any single Maxima expression and
 @var{variables} is a list of elements of the form @code{<atom>}
@@ -160,10 +160,10 @@ Further below we discuss building a recursive function, for a
 series solution.   This defining of functions inside functions
 usually uses @code{define}, which evaluates its arguments.
 A number of examples are included under @code{splice}.
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun splice (@var{atom})
+@deffn {Function} splice (@var{atom})
 This is used with buildq to construct a list. This is handy
 for making argument lists, in conjunction with @code{buildq}.
 
@@ -310,7 +310,7 @@ it becomes:
 The expression quickly becomes complicated if not simplified at
 each stage, so the simplification must be part of the definition.
 Hence the @code{buildq} is useful for building the form.
-@end defun
+@end deffn
 
 
 @c end concepts Function Definition
@@ -318,7 +318,7 @@ Hence the @code{buildq} is useful for building the form.
 @section Definitions for Function Definition
 @c NEEDS CLARIFICATION AND EXAMPLES
 @c IMPORTANT TOPIC
-@defun apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
 Returns the result of applying the function @var{f} to the list of arguments @var{x_1}, ..., @var{x_n}.
 @var{f} is the name of a function or a lambda expression.
 
@@ -335,11 +335,11 @@ variables have the same name as certain functions the values of the
 variable would be used rather than the function because @code{apply} has its
 first argument evaluated as well as its second.
 
-@end defun
+@end deffn
 
 
-@defun block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
-@defunx block (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} block ([@var{v_1}, ..., @var{v_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} block (@var{expr_1}, ..., @var{expr_n})
 @code{block} evaluates @var{expr_1}, ..., @var{expr_n} in sequence
 and returns the value of the last expression evaluated.
 The sequence can be modified by the @code{go}, @code{throw}, and @code{return} functions.
@@ -385,19 +385,19 @@ transfer to a tag in a block other than the one containing the @code{go}.
 Blocks typically appear on the right side of a function definition
 but can be used in other places as well.
 
-@end defun
+@end deffn
 
 @c REPHRASE, NEEDS EXAMPLE
-@defun break (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} break (@var{expr_1}, ..., @var{expr_n})
 Evaluates and prints @var{expr_1}, ..., @var{expr_n} and then
 causes a Maxima break at which point the user can examine and change
 his environment.  Upon typing @code{exit;} the computation resumes.
 
-@end defun
+@end deffn
 
 @c FOR SOME REASON throw IS IN SOME OTHER FILE. MOVE throw INTO THIS FILE.
 @c NEEDS CLARIFICATION
-@defun catch (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} catch (@var{expr_1}, ..., @var{expr_n})
 Evaluates @var{expr_1}, ..., @var{expr_n} one by one; if any
 leads to the evaluation of an expression of the
 form @code{throw (arg)}, then the value of the @code{catch} is the value of
@@ -423,9 +423,9 @@ The function @code{g} returns a list of @code{f} of each element of @code{l} if 
 consists only of non-negative numbers; otherwise, @code{g} "catches" the
 first negative element of @code{l} and "throws" it up.
 
-@end defun
+@end deffn
 
-@defun compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
+@deffn {Function} compfile (@var{filename}, @var{f_1}, ..., @var{f_n})
 Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp 
 and writes the translated code into the file @var{filename}.
 
@@ -436,7 +436,7 @@ The Lisp translations are not evaluated, nor is the output file processed by the
 
 See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 
-@end defun
+@end deffn
 
 @c THIS VARIABLE IS OBSOLETE: ASSIGNING compgrind: true CAUSES compfile
 @c TO EVENTUALLY CALL AN OBSOLETE FUNCTION SPRIN1.
@@ -449,9 +449,9 @@ See also @code{translate}, @code{translate_file}, and @code{compile_file}.
 @c 
 @c @end defvar
 
-@defun compile (@var{f_1}, ..., @var{f_n})
-@defunx compile (functions)
-@defunx compile (all)
+@deffn {Function} compile (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} compile (functions)
+@deffnx {Function} compile (all)
 Translates Maxima functions @var{f_1}, ..., @var{f_n} into Lisp, evaluates the Lisp translations,
 and calls the Lisp function @code{COMPILE} on each translated function.
 @code{compile} returns a list of the names of the compiled functions.
@@ -461,9 +461,9 @@ and calls the Lisp function @code{COMPILE} on each translated function.
 @code{compile} quotes its arguments; 
 the double-single-quotes operator @code{'@w{}'} defeats quotation.
 
-@end defun
+@end deffn
 
-@defun define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
+@deffn {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
 Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
 
 @code{define} is similar to the function definition operator @code{:=}, but when
@@ -510,10 +510,10 @@ Examples:
 (%t9)                  f_4(y) := a 2    y
 
 (%o9)                         done
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 
 Introduces a global variable into the Maxima environment.  This is
 for user-written packages, which are often translated or compiled.
@@ -554,10 +554,10 @@ Use @code{define_variable (g5, 'g5, any_check, "this ain't supposed to be set by
 @code{any_check} is a mode which means the same as @code{any}, but which keeps
 @code{define_variable} from optimizing away the assign property.
 
-@end defun
+@end deffn
 
-@defun dispfun (@var{f_1}, ..., @var{f_n})
-@defunx dispfun (all)
+@deffn {Function} dispfun (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} dispfun (all)
 Displays the definition of the user-defined functions @var{f_1}, ..., @var{f_n}.
 Each argument may be the name of a macro (defined with @code{::=}),
 an ordinary function (defined with @code{:=} or @code{define}),
@@ -619,9 +619,9 @@ Examples:
                            8
 @end example
 
-@end defun
+@end deffn
 
-@defvar functions
+@defvr {Variable} functions
 Default value: []
 
 @code{functions} is the list of user-defined Maxima functions
@@ -632,9 +632,9 @@ A function may be defined at the Maxima prompt
 or in a Maxima file loaded by @code{load} or @code{batch}.
 Lisp functions, however, are not added to @code{functions}.
 
-@end defvar
+@end defvr
 
-@defun fundef (@var{f})
+@deffn {Function} fundef (@var{f})
 Returns the definition of the function @var{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
@@ -655,9 +655,9 @@ In contrast, @code{dispfun (@var{f})} creates an intermediate expression label
 and assigns the definition to the label.
 
 @c PROBABLY NEED SOME EXAMPLES HERE
-@end defun
+@end deffn
 
-@defun funmake (@var{name}, [@var{arg_1}, ..., @var{arg_n}])
+@deffn {Function} funmake (@var{name}, [@var{arg_1}, ..., @var{arg_n}])
 Returns an expression @code{@var{name} (@var{arg_1}, ..., @var{arg_n})}.
 The return value is simplified, but not evaluated,
 so the function is not called.
@@ -688,9 +688,9 @@ Maxima simplifies @code{funmake}'s return value.
 @end example
 @end itemize
 
-@end defun
+@end deffn
 
-@defun lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffn {Function} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
 Defines and returns a lambda expression (that is, an anonymous function)
 with arguments @var{x_1}, ..., @var{x_m} and return value @var{expr_n}.
 A lambda expression can be assigned to a variable and evaluated like an ordinary function.
@@ -835,10 +835,10 @@ Such a function can be defined via @code{buildq}, as in lambda expression @code{
 (%o20)                         ---
                                 2
 @end example
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun local (@var{v_1}, ..., @var{v_n})
+@deffn {Function} local (@var{v_1}, ..., @var{v_n})
 Declares the variables @var{v_1}, ..., @var{v_n} to be local with
 respect to all the properties in the statement in which this function
 is used.
@@ -849,9 +849,9 @@ occurrence is permitted in each.
 
 @code{local} is independent of @code{context}.
 
-@end defun
+@end deffn
 
-@defvar macroexpansion
+@defvr {Variable} macroexpansion
 Default value: @code{false}
 
 @code{macroexpansion} controls advanced features which
@@ -876,9 +876,9 @@ called.  See documentation for @code{translate} and @code{macros} for more detai
 @end itemize
 @c NEED SOME EXAMPLES HERE.
 
-@end defvar
+@end defvr
 
-@defvar mode_checkp
+@defvr {Variable} mode_checkp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -886,9 +886,9 @@ When @code{mode_checkp} is @code{true}, @code{mode_declare} checks the modes
 of bound variables.
 @c NEED SOME EXAMPLES HERE.
 
-@end defvar
+@end defvr
 
-@defvar mode_check_errorp
+@defvr {Variable} mode_check_errorp
 Default value: @code{false}
 
 @c WHAT DOES THIS MEAN ??
@@ -896,9 +896,9 @@ When @code{mode_check_errorp} is @code{true}, @code{mode_declare} calls
 error.
 @c NEED SOME EXAMPLES HERE.
 
-@end defvar
+@end defvr
 
-@defvar mode_check_warnp
+@defvr {Variable} mode_check_warnp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -906,10 +906,10 @@ When @code{mode_check_warnp} is @code{true}, mode errors are
 described.
 @c NEED SOME EXAMPLES HERE.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
+@deffn {Function} mode_declare (@var{y_1}, @var{mode_1}, ..., @var{y_n}, @var{mode_n})
 @code{mode_declare} is used to declare the modes of variables and
 functions for subsequent translation or compilation of functions.
 @code{mode_declare} is typically placed at the beginning of a function
@@ -964,11 +964,11 @@ declares that the values returned by @code{f_1}, @code{f_2}, ... are single-word
 
 @code{modedeclare} is a synonym for @code{mode_declare}.
 
-@end defun
+@end deffn
 
 @c WHAT IS THIS ABOUT ??
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun mode_identity (@var{arg_1}, @var{arg_2})
+@deffn {Function} mode_identity (@var{arg_1}, @var{arg_2})
 A special form used with @code{mode_declare} and
 @code{macros} to declare, e.g., a list of lists of flonums, or other compound
 data object.  The first argument to @code{mode_identity} is a primitive value
@@ -993,11 +993,11 @@ firstnumb (x) ::= buildq ([x], mode_identity (number, x));
 and use @code{firstnumb}
 every time you take the first of a list of numbers.
 
-@end defun
+@end deffn
 
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
-@defvar transcompile
+@defvr {Variable} transcompile
 Default value: @code{true}
 
 When @code{transcompile} is @code{true}, @code{translate} and @code{translate_file} generate
@@ -1006,11 +1006,11 @@ declarations to make the translated code more suitable for compilation.
 
 @code{compfile} sets @code{transcompile: true} for the duration.
 
-@end defvar
+@end defvr
 
-@defun translate (@var{f_1}, ..., @var{f_n})
-@defunx translate (functions)
-@defunx translate (all)
+@deffn {Function} translate (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} translate (functions)
+@deffnx {Function} translate (all)
 Translates the user-defined functions
 @var{f_1}, ..., @var{f_n} from the Maxima language into Lisp
 and evaluates the Lisp translations.
@@ -1068,10 +1068,10 @@ translated version.
 The result returned by @code{translate} is a list of the names of the
 functions translated.
 
-@end defun
+@end deffn
 
-@defun translate_file (@var{maxima_filename})
-@defunx translate_file (@var{maxima_filename}, @var{lisp_filename})
+@deffn {Function} translate_file (@var{maxima_filename})
+@deffnx {Function} translate_file (@var{maxima_filename}, @var{lisp_filename})
 Translates a file of Maxima code into a file of Lisp code.
 @code{translate_file} returns a list of three filenames:
 the name of the Maxima file, the name of the Lisp file, and the name of file
@@ -1135,20 +1135,20 @@ See also @code{tr_array_as_ref},
 @code{tr_warn_undefined_variable},
 and @code{tr_windy}.
 
-@end defun
+@end deffn
 
-@defvar transrun
+@defvr {Variable} transrun
 Default value: @code{true}
 
 When @code{transrun} is @code{false} will cause the interpreted
 version of all functions to be run (provided they are still around)
 rather than the translated version.
 
-@end defvar
+@end defvr
 
 @c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
 @c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
-@defvar tr_array_as_ref
+@defvr {Variable} tr_array_as_ref
 Default value: @code{true}
 
 If @code{translate_fast_arrays} is false, array references in
@@ -1159,11 +1159,11 @@ otherwise array names appear as literal symbols in translated code.
 
 @code{tr_array_as_ref} has no effect if @code{translate_fast_arrays} is @code{true}.
 
-@end defvar
+@end defvr
 
 @c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
 @c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
-@defvar tr_bound_function_applyp
+@defvr {Variable} tr_bound_function_applyp
 Default value: @code{true}
 
 When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a bound
@@ -1173,9 +1173,9 @@ variable (such as a function argument) is found being used as a function.
 For example, an expression such as @code{g (f, x) := f (x+1)} will trigger
 the warning message.
 
-@end defvar
+@end defvr
 
-@defvar tr_file_tty_messagesp
+@defvr {Variable} tr_file_tty_messagesp
 Default value: @code{false}
 
 When @code{tr_file_tty_messagesp} is @code{true},
@@ -1184,12 +1184,12 @@ on the console and inserted into the UNLISP file.
 When @code{false}, messages about translation of the
 file are only inserted into the UNLISP file.
 
-@end defvar
+@end defvr
 
 @c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
 @c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
 @c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
-@defvar tr_float_can_branch_complex
+@defvr {Variable} tr_float_can_branch_complex
 Default value: @code{true}
 
 Tells the Maxima-to-Lisp translator to assume that the functions 
@@ -1203,9 +1203,9 @@ even if @code{x} is of mode @code{float} (as set by @code{mode_declare}).
 When @code{false} then @code{acos(x)} is of mode
 @code{float} if and only if @code{x} is of mode @code{float}.
 
-@end defvar
+@end defvr
 
-@defvar tr_function_call_default
+@defvr {Variable} tr_function_call_default
 Default value: @code{general}
 
 @code{false} means give up and
@@ -1218,17 +1218,17 @@ apropriate warning. There is no need to turn this off.  With the
 default settings, no warning messages implies full compatibility of
 translated and compiled code with the Maxima interpreter.
 
-@end defvar
+@end defvr
 
-@defvar tr_numer
+@defvr {Variable} tr_numer
 Default value: @code{false}
 
 When @code{tr_numer} is @code{true} numer properties are used for
 atoms which have them, e.g. @code{%pi}.
 
-@end defvar
+@end defvr
 
-@defvar tr_optimize_max_loop
+@defvr {Variable} tr_optimize_max_loop
 Default value: 100
 
 @code{tr_optimize_max_loop} is the maximum number of times the
@@ -1236,19 +1236,19 @@ macro-expansion and optimization pass of the translator will loop in
 considering a form.  This is to catch macro expansion errors, and
 non-terminating optimization properties.
 
-@end defvar
+@end defvr
 
-@defvar tr_semicompile
+@defvr {Variable} tr_semicompile
 Default value: @code{false}
 
 When @code{tr_semicompile} is @code{true}, @code{translate_file} and @code{compfile}
 output forms which will be macroexpanded but not compiled into machine
 code by the Lisp compiler.
 
-@end defvar
+@end defvr
 
 @c ARE ANY OF THESE OBSOLETE ??
-@defvar tr_state_vars
+@defvr {Variable} tr_state_vars
 Default value:
 @example
 [transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
@@ -1264,83 +1264,83 @@ trying to debug the translator.  By comparing the translated product
 to what should have been produced for a given state, it is possible to
 track down bugs.
 
-@end defvar
+@end defvr
 
 @c tr_warnings_get EXISTS AND FUNCTIONS AS ADVERTISED (SORT OF) -- RETURNS *tr-runtime-warned*
 @c WHICH HAS ONLY A FEW KINDS OF WARNINGS PUSHED ONTO IT; IT'S CERTAINLY NOT COMPREHENSIVE
 @c DO WE REALLY NEED THIS SLIGHTLY WORKING FUNCTION ??
-@defun tr_warnings_get ()
+@deffn {Function} tr_warnings_get ()
 Prints a list of warnings which have been given by
 the translator during the current translation.
 
-@end defun
+@end deffn
 
-@defvar tr_warn_bad_function_calls
+@defvr {Variable} tr_warn_bad_function_calls
 Default value: @code{true}
 
 - Gives a warning when
 when function calls are being made which may not be correct due to
 improper declarations that were made at translate time.
 
-@end defvar
+@end defvr
 
-@defvar tr_warn_fexpr
+@defvr {Variable} tr_warn_fexpr
 Default value: @code{compfile}
 
 - Gives a warning if any FEXPRs are
 encountered.  FEXPRs should not normally be output in translated code,
 all legitimate special program forms are translated.
 
-@end defvar
+@end defvr
 
-@defvar tr_warn_meval
+@defvr {Variable} tr_warn_meval
 Default value: @code{compfile}
 
 - Gives a warning if the function
 @code{meval} gets called.  If @code{meval} is called that indicates problems in the
 translation.
 
-@end defvar
+@end defvr
 
-@defvar tr_warn_mode
+@defvr {Variable} tr_warn_mode
 Default value: @code{all}
 
 - Gives a warning when variables are
 assigned values inappropriate for their mode.
 
-@end defvar
+@end defvr
 
-@defvar tr_warn_undeclared
+@defvr {Variable} tr_warn_undeclared
 Default value: @code{compile}
 
 - Determines when to send
 warnings about undeclared variables to the TTY.
 
-@end defvar
+@end defvr
 
-@defvar tr_warn_undefined_variable
+@defvr {Variable} tr_warn_undefined_variable
 Default value: @code{all}
 
 - Gives a warning when
 undefined global variables are seen.
 
-@end defvar
+@end defvr
 
 @c $tr_windy IS USED IN EXACTLY ONE PLACE (def%tr $kill IN src/trans1.lisp)
 @c WHERE IT CAUSES A WARNING ABOUT USING kill. 
 @c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
 @c AND CUT OUT tr_windy FROM CODE AND DOCS.
-@defvar tr_windy
+@defvr {Variable} tr_windy
 Default value: @code{true}
 
 - Generate "helpfull" comments and
 programming hints.
 
-@end defvar
+@end defvr
 
-@defun compile_file (@var{filename})
-@defunx compile_file (@var{filename}, @var{compiled_filename})
-@defunx compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
+@deffn {Function} compile_file (@var{filename})
+@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename})
+@deffnx {Function} compile_file (@var{filename}, @var{compiled_filename}, @var{lisp_filename})
 Translates the Maxima file @var{filename} into Lisp,
 executes the Lisp compiler,
 and, if the translation and compilation succeed, loads the compiled code into Maxima.
@@ -1374,10 +1374,10 @@ assignments to the translation flags (@code{tr_numer}, etc.) have no effect on t
 
 @code{compile_file} evaluates its arguments.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun declare_translated (@var{f_1}, @var{f_2}, ...)
+@deffn {Function} declare_translated (@var{f_1}, @var{f_2}, ...)
 When translating a file of Maxima code
 to Lisp, it is important for the translator to know which functions it
 sees in the file are to be called as translated or compiled functions,
@@ -1387,5 +1387,5 @@ does which does not yet have a Lisp function value, will have one at
 call time. @code{(MFUNCTION-CALL fn arg1 arg2 ...)} is generated when
 the translator does not know fn is going to be a Lisp function.
 
-@end defun
+@end deffn
 

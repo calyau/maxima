@@ -87,24 +87,24 @@ and @code{similaritytransform}.
 @node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
 @section Definitions for Matrices and Linear Algebra
 
-@defun addcol (@var{M}, @var{list_1}, ..., @var{list_n})
+@deffn {Function} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
 Appends the column(s) given by the one
 or more lists (or matrices) onto the matrix @var{M}.
 
-@end defun
+@end deffn
 
-@defun addrow (@var{M}, @var{list_1}, ..., @var{list_n})
+@deffn {Function} addrow (@var{M}, @var{list_1}, ..., @var{list_n})
 Appends the row(s) given by the one or
 more lists (or matrices) onto the matrix @var{M}.
 
-@end defun
+@end deffn
 
-@defun adjoint (@var{M})
+@deffn {Function} adjoint (@var{M})
 Returns the adjoint of the matrix @var{M}.
 
-@end defun
+@end deffn
 
-@defun augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} augcoefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Returns the augmented coefficient
 matrix for the variables @var{x_1}, ..., @var{x_n} of the system of linear equations
 @var{eqn_1}, ..., @var{eqn_m}.  This is the coefficient matrix with a column adjoined for
@@ -119,9 +119,9 @@ the constant terms in each equation (i.e., those terms not dependent upon
                        [ a    b      c   ]
 @end example
 
-@end defun
+@end deffn
 
-@defun charpoly (@var{M}, @var{x})
+@deffn {Function} charpoly (@var{M}, @var{x})
 Returns the characteristic polynomial for the matrix @var{M}
 with respect to variable @var{x}.  That is,
 @code{determinant (@var{M} - diagmatrix (length (@var{M}), @var{x}))}.
@@ -159,25 +159,25 @@ with respect to variable @var{x}.  That is,
                                           sqrt(5)       sqrt(5)
 @end example
 
-@end defun
+@end deffn
 
-@defun coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
+@deffn {Function} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Returns the coefficient matrix for the
 variables @var{eqn_1}, ..., @var{eqn_m} of the system of linear equations 
 @var{x_1}, ..., @var{x_n}.
 @c AN EXAMPLE WOULD BE REALLY NICE HERE
 
-@end defun
+@end deffn
 
-@defun col (@var{M}, @var{i})
+@deffn {Function} col (@var{M}, @var{i})
 Returns the @var{i}'th column of the matrix @var{M}.
 The return value is a matrix.
 @c EXAMPLE HERE
 
-@end defun
+@end deffn
 
-@defun columnvector (@var{L})
-@defunx covect (@var{L})
+@deffn {Function} columnvector (@var{L})
+@deffnx {Function} covect (@var{L})
 Returns a matrix of one column and @code{length (@var{L})} rows,
 containing the elements of the list @var{L}.
 
@@ -207,10 +207,10 @@ Warning - you are redefining the Macsyma function eigenvectors
                              [ dd ]
 @end example
 
-@end defun
+@end deffn
 
-@defun conjugate (@var{x})
-@defunx conj (@var{x})
+@deffn {Function} conjugate (@var{x})
+@deffnx {Function} conj (@var{x})
 Substitutes @code{-%i} for @code{%i} in @var{x}.
 Depending on @var{x}, the result may be the complex conjugate of @var{x}.
 @c THIS DEFN IS JUST BROKEN. SEE SF BUG # 1045514.
@@ -219,9 +219,9 @@ Depending on @var{x}, the result may be the complex conjugate of @var{x}.
 
 @code{load ("eigen")} loads this function.
 
-@end defun
+@end deffn
 
-@defun copymatrix (@var{M})
+@deffn {Function} copymatrix (@var{M})
 Returns a copy of the matrix @var{M}.  This is the only way
 to make a copy aside from copying @var{M} element by element.
 
@@ -231,9 +231,9 @@ An assignment @code{m2 [i,j]: x} or @code{setelmx (x, i, j, m2} also modifies @c
 Creating a copy with @code{copymatrix} and then using assignment creates a separate, modified copy.
 
 @c NEED EXAMPLE HERE
-@end defun
+@end deffn
 
-@defun determinant (@var{M})
+@deffn {Function} determinant (@var{M})
 Computes the determinant of @var{M} by a method similar to
 Gaussian elimination.
 
@@ -247,9 +247,9 @@ sparse determinants which is called when the switches
 @code{ratmx} and @code{sparse} are both @code{true}.
 
 @c EXAMPLES NEEDED HERE
-@end defun
+@end deffn
 
-@defvar detout
+@defvr {Variable} detout
 Default value: @code{false}
 
 When @code{detout} is @code{true}, the determinant of a
@@ -279,9 +279,9 @@ Example:
 @c THERE'S MORE TO THIS STORY: detout: false$ invert (m); RETURNS THE SAME THING.
 @c IT APPEARS THAT doallmxops IS CRUCIAL HERE.
 
-@end defvar
+@end defvr
 
-@defun diagmatrix (@var{n}, @var{x})
+@deffn {Function} diagmatrix (@var{n}, @var{x})
 Returns a diagonal matrix of size @var{n} by @var{n} with the
 diagonal elements all equal to @var{x}.
 @code{diagmatrix (@var{n}, 1)} returns an identity matrix (same as @code{ident (@var{n})}).
@@ -292,9 +292,9 @@ diagonal elements all equal to @var{x}.
 If @var{x} is a matrix, it is not copied; all diagonal elements refer to the same instance, @var{x}.
 
 @c NEED EXAMPLE HERE
-@end defun
+@end deffn
 
-@defvar doallmxops
+@defvr {Variable} doallmxops
 Default value: @code{true}
 
 When @code{doallmxops} is @code{true},
@@ -304,9 +304,9 @@ When it is @code{false} then the setting of the
 individual @code{dot} switches govern which operations are performed.
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
-@defvar domxexpt
+@defvr {Variable} domxexpt
 Default value: @code{true}
 
 When @code{domxexpt} is @code{true},
@@ -341,9 +341,9 @@ Example:
                   [ (1 - c)       (1 - c)    ]
 @end example
 
-@end defvar
+@end defvr
 
-@defvar domxmxops
+@defvr {Variable} domxmxops
 Default value: @code{true}
 
 When @code{domxmxops} is @code{true}, all matrix-matrix or
@@ -352,9 +352,9 @@ operations); if this switch is @code{false} such operations are not carried out.
 @c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar domxnctimes
+@defvr {Variable} domxnctimes
 Default value: @code{false}
 
 When @code{domxnctimes} is @code{true}, non-commutative products of
@@ -362,9 +362,9 @@ matrices are carried out.
 @c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dontfactor
+@defvr {Variable} dontfactor
 Default value: []
 
 @code{dontfactor} may be set to a list of variables with respect
@@ -373,9 +373,9 @@ Factoring also will not take place with respect to any variables which
 are less important, according the variable ordering assumed for canonical rational expression (CRE) form,
 than those on the @code{dontfactor} list.
 
-@end defvar
+@end defvr
 
-@defvar doscmxops
+@defvr {Variable} doscmxops
 Default value: @code{false}
 
 When @code{doscmxops} is @code{true}, scalar-matrix operations are
@@ -383,9 +383,9 @@ carried out.
 @c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar doscmxplus
+@defvr {Variable} doscmxplus
 Default value: @code{false}
 
 When @code{doscmxplus} is @code{true}, scalar-matrix operations yield
@@ -393,9 +393,9 @@ a matrix result.  This switch is not subsumed under @code{doallmxops}.
 @c IS THIS AN EVALUATION OR A SIMPLIFICATION FLAG ??
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dot0nscsimp
+@defvr {Variable} dot0nscsimp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -403,9 +403,9 @@ When @code{dot0nscsimp} is @code{true}, a non-commutative product of zero
 and a nonscalar term is simplified to a commutative product.
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dot0simp
+@defvr {Variable} dot0simp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -414,9 +414,9 @@ a non-commutative product of zero and
 a scalar term is simplified to a commutative product.
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dot1simp
+@defvr {Variable} dot1simp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -425,9 +425,9 @@ a non-commutative product of one and
 another term is simplified to a commutative product.
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dotassoc
+@defvr {Variable} dotassoc
 Default value: @code{true}
 
 When @code{dotassoc} is @code{true}, an expression @code{(A.B).C} simplifies to
@@ -435,9 +435,9 @@ When @code{dotassoc} is @code{true}, an expression @code{(A.B).C} simplifies to
 @c "." MEANS NONCOMMUTATIVE MULTIPLICATION RIGHT ??
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dotconstrules
+@defvr {Variable} dotconstrules
 Default value: @code{true}
 
 When @code{dotconstrules} is @code{true}, a non-commutative product of a
@@ -447,34 +447,34 @@ Turning on this flag effectively turns on @code{dot0simp}, @code{dot0nscsimp}, a
 @code{dot1simp} as well.
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dotdistrib
+@defvr {Variable} dotdistrib
 Default value: @code{false}
 
 When @code{dotdistrib} is @code{true}, an expression @code{A.(B + C)} simplifies to @code{A.B + A.C}.
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dotexptsimp
+@defvr {Variable} dotexptsimp
 Default value: @code{true}
 
 When @code{dotexptsimp} is @code{true}, an expression @code{A.A} simplifies to @code{A^^2}.
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dotident
+@defvr {Variable} dotident
 Default value: 1
 
 @code{dotident} is the value returned by @code{X^^0}.
 @c "RETURNED" ?? IS THIS A SIMPLIFICATION OR AN EVALUATION ??
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defvar dotscrules
+@defvr {Variable} dotscrules
 Default value: @code{false}
 
 When @code{dotscrules} is @code{true}, an expression @code{A.SC} or @code{SC.A} simplifies
@@ -482,9 +482,9 @@ to @code{SC*A} and @code{A.(SC*B)} simplifies to @code{SC*(A.B)}.
 @c HMM, DOES "SC" MEAN "SCALAR" HERE ?? CLARIFY
 
 @c NEED EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defun echelon (@var{M})
+@deffn {Function} echelon (@var{M})
 Returns the echelon form of the matrix @var{M}.  The echelon form is computed from @var{M}
 by elementary row operations such that the first
 non-zero element in each row in the resulting matrix is a one and the
@@ -506,10 +506,10 @@ column elements under the first one in each row are all zero.
                   [             2 b + a  - a ]
 @end example
 
-@end defun
+@end deffn
 
-@defun eigenvalues (@var{M})
-@defunx eivals (@var{M})
+@deffn {Function} eigenvalues (@var{M})
+@deffnx {Function} eivals (@var{M})
 @c eigen.mac IS AUTOLOADED IF eigenvalues OR eigenvectors IS REFERENCED; EXTEND THAT TO ALL FUNCTIONS ??
 @c EACH FUNCTION INTENDED FOR EXTERNAL USE SHOULD HAVE ITS OWN DOCUMENTATION ITEM
 Returns a list of two lists containing the eigenvalues of the matrix @var{M}.
@@ -543,10 +543,10 @@ After loading, all functions and variables in the package are available.
 @c REFER TO OVERVIEW OF PACKAGE (INCLUDING LIST OF FUNCTIONS) HERE
 
 @c NEED EXAMPLES HERE
-@end defun
+@end deffn
 
-@defun eigenvectors (@var{M})
-@defunx eivects (@var{M})
+@deffn {Function} eigenvectors (@var{M})
+@deffnx {Function} eivects (@var{M})
 takes a matrix @var{M} as its argument and returns a list
 of lists the first sublist of which is the output of @code{eigenvalues}
 and the other sublists of which are the eigenvectors of the
@@ -585,16 +585,16 @@ to reduce them to something simpler.
 Following simplification, @code{eigenvectors} can be called again
 with the @code{knowneigvals} flag set to @code{true}.
 
-@end defun
+@end deffn
 
-@defun ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
+@deffn {Function} ematrix (@var{m}, @var{n}, @var{x}, @var{i}, @var{j})
 Returns an @var{m} by @var{n} matrix, all elements of which
 are zero except for the @code{[@var{i}, @var{j}]} element which is @var{x}.
 @c WOW, THAT SEEMS PRETTY SPECIALIZED ...
 
-@end defun
+@end deffn
 
-@defun entermatrix (@var{m}, @var{n})
+@deffn {Function} entermatrix (@var{m}, @var{n})
 Returns an @var{m} by @var{n} matrix, reading the elements interactively.
 
 If @var{n} is equal to @var{m},
@@ -634,11 +634,11 @@ Matrix entered.
                 [    0         0      (b + a)  ]
 @end example
 
-@end defun
+@end deffn
 
-@defun genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
-@defunx genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
-@defunx genmatrix (@var{a}, @var{i_2}, @var{j_2})
+@deffn {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
+@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
+@deffnx {Function} genmatrix (@var{a}, @var{i_2}, @var{j_2})
 Returns a matrix generated from @var{a},
 taking element @code{@var{a}[@var{i_1},@var{j_1}]}
 as the upper-left element and @code{@var{a}[@var{i_2},@var{j_2}]}
@@ -680,10 +680,10 @@ the matrix will contain a symbolic element @code{@var{a}[i,j]}.
                         [  2, 1        ]
 @end example
 
-@end defun
+@end deffn
 
-@defun gramschmidt (@var{x})
-@defunx gschmit (@var{x})
+@deffn {Function} gramschmidt (@var{x})
+@deffnx {Function} gschmit (@var{x})
 Carries out the Gram-Schmidt orthogonalization algorithm on @var{x},
 which is either a matrix or a list of lists.
 @var{x} is not modified by @code{gramschmidt}.
@@ -726,9 +726,9 @@ Warning - you are redefining the Macsyma function eigenvectors
 (%o5)                       [0, 0, 0]
 @end example
 
-@end defun
+@end deffn
 
-@defun hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
+@deffn {Function} hach (@var{a}, @var{b}, @var{m}, @var{n}, @var{l})
 @code{hach} is an implementation of Hacijan's linear programming algorithm.
 
 @code{load ("kach")} loads this function.
@@ -736,15 +736,15 @@ Warning - you are redefining the Macsyma function eigenvectors
 @c ACTUALLY BOTH kach.mac AND kach.dem APPEAR TO BE BROKEN AT THE MOMENT
 @c DUNNO WHAT WE SHOULD DO ABOUT THAT HERE
 
-@end defun
+@end deffn
 
-@defun ident (@var{n})
+@deffn {Function} ident (@var{n})
 Returns an @var{n} by @var{n} identity matrix.
 
-@end defun
+@end deffn
 
-@defun innerproduct (@var{x}, @var{y})
-@defunx inprod (@var{x}, @var{y})
+@deffn {Function} innerproduct (@var{x}, @var{y})
+@deffnx {Function} inprod (@var{x}, @var{y})
 Returns the inner product (also called the scalar product or dot product) of @var{x} and @var{y},
 which are lists of equal length, or both 1-column or 1-row matrices of equal length.
 The return value is @code{conjugate (x) . y},
@@ -755,10 +755,10 @@ where @code{.} is the noncommutative multiplication operator.
 @code{inprod} is a synonym for @code{innerproduct}.
 
 @c NEED EXAMPLE HERE
-@end defun
+@end deffn
 
 @c THIS DESCRIPTION NEEDS WORK
-@defun invert (@var{M})
+@deffn {Function} invert (@var{M})
 Returns the inverse of the matrix @var{M}.
 The inverse is computed by the adjoint method.
 
@@ -791,9 +791,9 @@ invert (m) := adjoint (m) / determinant (m)
 See @code{^^} (noncommutative exponent) for another method of inverting a matrix.
 
 @c NEED EXAMPLE HERE
-@end defun
+@end deffn
 
-@defvar lmxchar
+@defvr {Variable} lmxchar
 Default value: @code{[}
 
 @code{lmxchar} is the character displayed as the left
@@ -812,9 +812,9 @@ Example:
                            | g  h  i ]
 @end example
 
-@end defvar
+@end defvr
 
-@defun matrix (@var{row_1}, ..., @var{row_n})
+@deffn {Function} matrix (@var{row_1}, ..., @var{row_n})
 Returns a rectangular matrix which has the rows @var{row_1}, ..., @var{row_n}.
 Each row is a list of expressions.
 All rows must be the same length.
@@ -1005,22 +1005,22 @@ if it exists.
                             [ 0  1 ]
 @end example
 
-@end defun
+@end deffn
 
-@defun matrixmap (@var{f}, @var{M})
+@deffn {Function} matrixmap (@var{f}, @var{M})
 Returns a matrix with element @code{i,j} equal to @code{@var{f}(@var{M}[i,j])}.
 
 See also @code{map}, @code{fullmap}, @code{fullmapl}, and @code{apply}.
 
 @c NEED EXAMPLE HERE
-@end defun
+@end deffn
 
-@defun matrixp (@var{expr})
+@deffn {Function} matrixp (@var{expr})
 Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
 
-@end defun
+@end deffn
 
-@defvar matrix_element_add
+@defvr {Variable} matrix_element_add
 Default value: @code{+}
 
 @code{matrix_element_add} is the operation 
@@ -1054,9 +1054,9 @@ Example:
                      [ d  e  f   d  e  f  ]
 @end example
 
-@end defvar
+@end defvr
 
-@defvar matrix_element_mult
+@defvr {Variable} matrix_element_mult
 Default value: @code{*}
 
 @code{matrix_element_mult} is the operation 
@@ -1100,9 +1100,9 @@ Example:
                          [ sqrt((f - z)  + (e - y)  + (d - x) ) ]
 @end example
 
-@end defvar
+@end defvr
 
-@defvar matrix_element_transpose
+@defvr {Variable} matrix_element_transpose
 Default value: @code{false}
 
 @code{matrix_element_transpose} is the operation 
@@ -1153,10 +1153,10 @@ Examples:
                       [ 2 %i + 3    11   ]
 @end example
 
-@end defvar
+@end defvr
 
 @c IS THIS THE ONLY MATRIX TRACE FUNCTION ??
-@defun mattrace (@var{M})
+@deffn {Function} mattrace (@var{M})
 Returns the trace (that is, the sum of the elements on the main diagonal) of
 the square matrix @var{M}.  
 
@@ -1166,24 +1166,24 @@ an alternative to Maxima's @code{charpoly}.
 
 @code{load ("nchrpl")} loads this function.
 
-@end defun
+@end deffn
 
-@defun minor (@var{M}, @var{i}, @var{j})
+@deffn {Function} minor (@var{M}, @var{i}, @var{j})
 Returns the @var{i}, @var{j} minor of the matrix @var{M}.  That is, @var{M}
 with row @var{i} and column @var{j} removed.
 
-@end defun
+@end deffn
 
-@defun ncexpt (@var{a}, @var{b})
+@deffn {Function} ncexpt (@var{a}, @var{b})
 If a non-commutative exponential expression is too
 wide to be displayed as @code{@var{a}^^@var{b}} it appears as @code{ncexpt (@var{a},@var{b})}.
 
 @code{ncexpt} is not the name of a function or operator;
 the name only appears in output, and is not recognized in input.
 
-@end defun
+@end deffn
 
-@defun ncharpoly (@var{M}, @var{x})
+@deffn {Function} ncharpoly (@var{M}, @var{x})
 Returns the characteristic polynomial of the matrix @var{M}
 with respect to @var{x}.  This is an alternative to Maxima's @code{charpoly}.
 
@@ -1199,15 +1199,15 @@ since it avoids polynomial arithmetic altogether.
 
 @code{load ("nchrpl")} loads this file.
 
-@end defun
+@end deffn
 
-@defun newdet (@var{M}, @var{n})
+@deffn {Function} newdet (@var{M}, @var{n})
 Computes the determinant of the matrix or array @var{M} by the
 Johnson-Gentleman tree minor algorithm.
 @c UGH -- ARRAYS ARE SUCH A MESS
 The argument @var{n} is the order; it is optional if @var{M} is a matrix.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 @defvr declaration nonscalar
@@ -1216,19 +1216,19 @@ the dot operator.
 
 @end defvr
 
-@defun nonscalarp (@var{expr})
+@deffn {Function} nonscalarp (@var{expr})
 Returns @code{true} if @var{expr} is a non-scalar, i.e., it contains
 atoms declared as non-scalars, lists, or matrices.
 
-@end defun
+@end deffn
 
-@defun permanent (@var{M}, @var{n})
+@deffn {Function} permanent (@var{M}, @var{n})
 Computes the permanent of the matrix @var{M}.  A permanent
 is like a determinant but with no sign changes.
 
-@end defun
+@end deffn
 
-@defun rank (@var{M})
+@deffn {Function} rank (@var{M})
 Computes the rank of the matrix @var{M}.  That is, the order of the
 largest non-singular subdeterminant of @var{M}.
 
@@ -1237,9 +1237,9 @@ largest non-singular subdeterminant of @var{M}.
 wrong answer if it cannot determine that a matrix element that is
 equivalent to zero is indeed so.
 
-@end defun
+@end deffn
 
-@defvar ratmx
+@defvr {Variable} ratmx
 Default value: @code{false}
 
 When @code{ratmx} is @code{false}, determinant and matrix
@@ -1253,15 +1253,15 @@ result of matrix inverse is in CRE form.  Note that this may
 cause the elements to be expanded (depending on the setting of @code{ratfac})
 which might not always be desired.
 
-@end defvar
+@end defvr
 
-@defun row (@var{M}, @var{i})
+@deffn {Function} row (@var{M}, @var{i})
 Returns the @var{i}'th row of the matrix @var{M}.
 The return value is a matrix.
 
-@end defun
+@end deffn
 
-@defvar scalarmatrixp
+@defvr {Variable} scalarmatrixp
 Default value: @code{true}
 
 When @code{scalarmatrixp} is @code{true}, then whenever a 1 x 1 matrix
@@ -1273,10 +1273,10 @@ then all 1 x 1 matrices are simplified to scalars.
 
 When @code{scalarmatrixp} is @code{false}, 1 x 1 matrices are not simplified to scalars.
 
-@end defvar
+@end defvr
 
 @c I WONDER WHAT THIS IS ABOUT
-@defun scalefactors (@var{coordinatetransform})
+@deffn {Function} scalefactors (@var{coordinatetransform})
 Here coordinatetransform
 evaluates to the form [[expression1, expression2, ...],
 indeterminate1, indeterminat2, ...], where indeterminate1,
@@ -1293,19 +1293,19 @@ To expand an expression into physical components in the current
 coordinate system, there is a function with usage of the form
 @c SOME TEXT HAS GONE MISSING HERE
 
-@end defun
+@end deffn
 
-@defun setelmx (@var{x}, @var{i}, @var{j}, @var{M})
+@deffn {Function} setelmx (@var{x}, @var{i}, @var{j}, @var{M})
 Assigns @var{x} to the (@var{i}, @var{j})'th element of the matrix @var{M},
 and returns the altered matrix.
 
 @code{@var{M} [@var{i}, @var{j}]: @var{x}} has the same effect,
 but returns @var{x} instead of @var{M}.
 
-@end defun
+@end deffn
 
-@defun similaritytransform (@var{M})
-@defunx simtran (@var{M})
+@deffn {Function} similaritytransform (@var{M})
+@deffnx {Function} simtran (@var{M})
 @code{similaritytransform} computes a similarity transform of the matrix @code{M}.
 It returns a list which is the output of the
 @code{uniteigenvectors} command.  In addition if the flag @code{nondiagonalizable}
@@ -1329,25 +1329,25 @@ to be able to form @code{rightmatrix}.
 
 @code{simtran} is a synonym for @code{similaritytransform}.
 
-@end defun
+@end deffn
 
-@defvar sparse
+@defvr {Variable} sparse
 Default value: @code{false}
 
 When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then @code{determinant}
 will use special routines for computing sparse determinants.
 
-@end defvar
+@end defvr
 
-@defun submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
-@defunx submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
-@defunx submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
+@deffn {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
+@deffnx {Function} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
+@deffnx {Function} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
 Returns a new matrix composed of the
 matrix @var{M} with rows @var{i_1}, ..., @var{i_m} deleted, and columns @var{j_1}, ..., @var{j_n} deleted.
 
-@end defun
+@end deffn
 
-@defun transpose (@var{M})
+@deffn {Function} transpose (@var{M})
 Returns the transpose of @var{M}.
 
 If @var{M} is a matrix, the return value is another matrix @var{N}
@@ -1356,17 +1356,17 @@ such that @code{N[i,j] = M[j,i]}.
 Otherwise @var{M} is a list, and the return value is a matrix @var{N}
 of @code{length (m)} rows and 1 column, such that @code{N[i,1] = M[i]}.
 
-@end defun
+@end deffn
 
-@defun triangularize (@var{M})
+@deffn {Function} triangularize (@var{M})
 Returns the upper triangular form of the matrix @code{M}.
 
 @var{M} need not be square.
 
-@end defun
+@end deffn
 
-@defun uniteigenvectors (@var{M})
-@defunx ueivects (@var{M})
+@deffn {Function} uniteigenvectors (@var{M})
+@deffnx {Function} ueivects (@var{M})
 Computes unit eigenvectors of the matrix @var{M}.
 The return value is a list of lists, the first sublist of which is the
 output of the @code{eigenvalues} command, and the other sublists of which are
@@ -1394,10 +1394,10 @@ appropriate dimension.
 
 @code{ueivects} is a synonym for @code{uniteigenvectors}.
 
-@end defun
+@end deffn
 
-@defun unitvector (@var{x})
-@defunx uvect (@var{x})
+@deffn {Function} unitvector (@var{x})
+@deffnx {Function} uvect (@var{x})
 Returns @math{@var{x}/norm(@var{x})};
 this is a unit vector in the same direction as @var{x}.
 
@@ -1405,10 +1405,10 @@ this is a unit vector in the same direction as @var{x}.
 
 @code{uvect} is a synonym for @code{unitvector}.
 
-@end defun
+@end deffn
 
 @c NEEDS A LOT OF WORK: MAKE SURE THAT ALL VECTOR SIMPLIFICATION FLAGS HAVE A DESCRIPTION HERE
-@defun vectorsimp (@var{expr})
+@deffn {Function} vectorsimp (@var{expr})
 Applies simplifications and expansions according
 to the following global flags:
 
@@ -1447,21 +1447,21 @@ These flags have all been declared @code{evflag}.
 @c COORDINATES[[X,Y,Z]], DIMENSION[3], SF[[1,1,1]], and SFPROD[1] are set
 @c by the function invocation
 
-@end defun
+@end deffn
 
-@defvar vect_cross
+@defvr {Variable} vect_cross
 Default value: @code{false}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 When @code{vect_cross} is @code{true}, it allows DIFF(X~Y,T) to work where
 ~ is defined in SHARE;VECT (where VECT_CROSS is set to @code{true}, anyway.)
 
-@end defvar
+@end defvr
 
-@defun zeromatrix (@var{m}, @var{n})
+@deffn {Function} zeromatrix (@var{m}, @var{n})
 Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
-@end defun
+@end deffn
 
 @defvr {special symbol} "["
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.

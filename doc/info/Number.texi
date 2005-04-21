@@ -6,7 +6,7 @@
 @node Definitions for Number Theory,  , Number Theory, Number Theory
 @section Definitions for Number Theory
 
-@defun bern (@var{n})
+@deffn {Function} bern (@var{n})
 Returns the @var{n}'th Bernoulli number for integer @var{n}.
 @c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
 @c OR JUST PRETEND IT'S "RETURNED" ???
@@ -27,24 +27,24 @@ See also @code{burn}.
             2  6    30  66    2730  6    510    798
 @end example
 
-@end defun
+@end deffn
 
-@defun bernpoly (@var{x}, @var{n})
+@deffn {Function} bernpoly (@var{x}, @var{n})
 Returns the @var{n}'th Bernoulli polynomial in the
 variable @var{x}.
 
-@end defun
+@end deffn
 
-@defun bfzeta (@var{s}, @var{n})
+@deffn {Function} bfzeta (@var{s}, @var{n})
 Returns the Riemann zeta function for the argument @var{s}.
 The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
 
 @code{load ("bffac")} loads this function.
 
-@end defun
+@end deffn
 
-@defun bfhzeta (@var{s}, @var{h}, @var{n})
+@deffn {Function} bfhzeta (@var{s}, @var{h}, @var{n})
 Returns the Hurwitz zeta function for the arguments @var{s} and @var{h}.
 The return value is a big float (bfloat);
 @var{n} is the number of digits in the return value.
@@ -57,18 +57,18 @@ sum ((k+h)^-s, k, 0, inf)
 
 @code{load ("bffac")} loads this function.
 
-@end defun
+@end deffn
 
-@defun binomial (@var{x}, @var{y})
+@deffn {Function} binomial (@var{x}, @var{y})
 The binomial coefficient @code{(@var{x} + @var{y})!/(@var{x}! @var{y}!)}.
 If @var{x} and @var{y} are integers, then the numerical value of the binomial
 coefficient is computed.
 If @var{y}, or @var{x - y}, is an integer,
 the binomial coefficient is expressed as a polynomial.
 
-@end defun
+@end deffn
 
-@defun burn (@var{n})
+@deffn {Function} burn (@var{n})
 Returns the @var{n}'th Bernoulli number for integer @var{n}.
 @code{burn} may be more efficient than @code{bern} for large, isolated @var{n}
 (perhaps @var{n} greater than 105 or so), @c CLAIM MADE IN bffac.usg !!!
@@ -89,9 +89,9 @@ approximated by (transcendental) zetas with tolerable efficiency.
 
 @code{load ("bffac")} loads this function.
 
-@end defun
+@end deffn
 
-@defun cf (@var{expr})
+@deffn {Function} cf (@var{expr})
 Converts @var{expr} into a continued fraction.
 @var{expr} is an expression
 comprising continued fractions and square roots of integers.
@@ -169,11 +169,11 @@ Maxima does not know about operations on continued fractions outside of @code{cf
 @end example
 
 @end itemize
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION -- MAKE EXPLICIT HOW list IS RELATED TO a, b, c, ...
 @c ALSO, CAN list CONTAIN ANYTHING OTHER THAN LITERAL INTEGERS ??
-@defun cfdisrep (@var{list})
+@deffn {Function} cfdisrep (@var{list})
 Constructs and returns an ordinary arithmetic expression
 of the form @code{a + 1/(b + 1/(c + ...))}
 from the list representation of a continued fraction @code{[a, b, c, ...]}.
@@ -191,9 +191,9 @@ from the list representation of a continued fraction @code{[a, b, c, ...]}.
                                       2
 @end example
 
-@end defun
+@end deffn
 
-@defun cfexpand (@var{x})
+@deffn {Function} cfexpand (@var{x})
 Returns a matrix of the numerators and denominators of the
 last (column 1) and next-to-last (column 2) convergents of the continued fraction @var{x}.
 
@@ -210,9 +210,9 @@ last (column 1) and next-to-last (column 2) convergents of the continued fractio
 (%o3)                   3.141592653011902
 @end example
 
-@end defun
+@end deffn
 
-@defvar cflength
+@defvr {Variable} cflength
 Default value: 1
 
 @code{cflength} controls the number of terms of the continued
@@ -231,10 +231,10 @@ period.  Thus the default is to give one period.
 (%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
 @end example
 
-@end defvar
+@end defvr
 
-@defun divsum (@var{n}, @var{k})
-@defunx divsum (@var{n})
+@deffn {Function} divsum (@var{n}, @var{k})
+@deffnx {Function} divsum (@var{n})
 
 @code{divsum (@var{n}, @var{k})} returns the sum of the divisors of @var{n}
 raised to the @var{k}'th power.
@@ -252,9 +252,9 @@ raised to the @var{k}'th power.
 (%o4)                          210
 @end example
 
-@end defun
+@end deffn
 
-@defun euler (@var{n})
+@deffn {Function} euler (@var{n})
 Returns the @var{n}'th Euler number for nonnegative integer @var{n}.
 
 For the Euler-Mascheroni constant, see @code{%gamma}.
@@ -264,21 +264,21 @@ For the Euler-Mascheroni constant, see @code{%gamma}.
 (%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
 @end example
 
-@end defun
+@end deffn
 
-@defvar %gamma
+@defvr {Variable} %gamma
 The Euler-Mascheroni constant, 0.5772156649015329 ....
 @c DOUBTLESS THERE IS MORE TO SAY HERE.
 
-@end defvar
+@end defvr
 
-@defun factorial (@var{x})
+@deffn {Function} factorial (@var{x})
 Represents the factorial function. Maxima treats @code{factorial (@var{x})} the same as @code{@var{x}!}.
 See @code{!}.
 
-@end defun
+@end deffn
 
-@defun fib (@var{n})
+@deffn {Function} fib (@var{n})
 Returns the @var{n}'th Fibonacci number.
 @code{fib(0)} equal to 0 and @code{fib(1)} equal to 1,
 and
@@ -293,9 +293,9 @@ the Fibonacci number preceding the last one computed.
 (%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 @end example
 
-@end defun
+@end deffn
 
-@defun fibtophi (@var{expr})
+@deffn {Function} fibtophi (@var{expr})
 Expresses Fibonacci numbers in terms of the constant @code{%phi},
 which is @code{(1 + sqrt(5))/2}, approximately 1.61803399.
 
@@ -316,9 +316,9 @@ After executing @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 (%o3)                           0
 @end example
 
-@end defun
+@end deffn
 
-@defun inrt (@var{x}, @var{n})
+@deffn {Function} inrt (@var{x}, @var{n})
 Returns the integer @var{n}'th root of the absolute value of @var{x}.
 
 @example
@@ -327,9 +327,9 @@ Returns the integer @var{n}'th root of the absolute value of @var{x}.
 (%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
 @end example
 
-@end defun
+@end deffn
 
-@defun jacobi (@var{p}, @var{q})
+@deffn {Function} jacobi (@var{p}, @var{q})
 Returns the Jacobi symbol of @var{p} and @var{q}.
 
 @example
@@ -338,17 +338,17 @@ Returns the Jacobi symbol of @var{p} and @var{q}.
 (%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
 @end example
 
-@end defun
+@end deffn
 
-@defun lcm (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} lcm (@var{expr_1}, ..., @var{expr_n})
 Returns the least common multiple of its arguments.
 The arguments may be general expressions as well as integers.
 
 @code{load ("functs")} loads this function.
 
-@end defun
+@end deffn
 
-@defun minfactorial (@var{expr})
+@deffn {Function} minfactorial (@var{expr})
 Examines @var{expr} for occurrences of two factorials
 which differ by an integer.
 @code{minfactorial} then turns one into a polynomial times the other.
@@ -370,9 +370,9 @@ which differ by an integer.
                          (n + 1) (n + 2)
 @end example
 
-@end defun
+@end deffn
 
-@defun partfrac (@var{expr}, @var{var})
+@deffn {Function} partfrac (@var{expr}, @var{var})
 Expands the expression @var{expr} in partial fractions
 with respect to the main variable @var{var}.  @code{partfrac} does a complete
 partial fraction decomposition.  The algorithm employed is based on
@@ -399,15 +399,15 @@ the expansion falls out.
                                     (x + 1)
 @end example
 
-@end defun
+@end deffn
 
 @c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
-@defun primep (@var{n})
+@deffn {Function} primep (@var{n})
 Returns @code{true} if @code{n} is a prime, @code{false} if not.
 
-@end defun
+@end deffn
 
-@defun qunit (@var{n})
+@deffn {Function} qunit (@var{n})
 Returns the principal unit of the real quadratic number field
 @code{sqrt (@var{n})} where @var{n} is an integer,
 i.e., the element whose norm is unity.
@@ -420,24 +420,24 @@ This amounts to solving Pell's equation @code{a^2 - @var{n} b^2 = 1}.
 (%o2)                           1
 @end example
 
-@end defun
+@end deffn
 
-@defun totient (@var{n})
+@deffn {Function} totient (@var{n})
 Returns the number of integers less than or equal to @var{n} which
 are relatively prime to @var{n}.
 
-@end defun
+@end deffn
 
-@defvar zerobern
+@defvr {Variable} zerobern
 Default value: @code{true}
 
 When @code{zerobern} is @code{false},
 @code{bern} excludes the Bernoulli numbers which are equal to zero. 
 See @code{bern}.
 
-@end defvar
+@end defvr
 
-@defun zeta (@var{n})
+@deffn {Function} zeta (@var{n})
 Returns the Riemann zeta function if @var{x} is a negative integer, 0, 1,
 or a positive even number,
 and returns a noun form @code{zeta (@var{n})} for all other arguments,
@@ -453,9 +453,9 @@ See also @code{bfzeta} and @code{zeta%pi}.
           120       12    2        6              90
 @end example
 
-@end defun
+@end deffn
 
-@defvar zeta%pi
+@defvr {Variable} zeta%pi
 Default value: @code{true}
 
 When @code{zeta%pi} is @code{true}, @code{zeta} returns an expression
@@ -475,4 +475,4 @@ for even integer @code{n}.
 (%o4)                        zeta(4)
 @end example
 
-@end defvar
+@end defvr

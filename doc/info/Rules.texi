@@ -17,7 +17,7 @@ and for commutative and non commutative algebra in chapter on @code{affine}.
 @node Definitions for Rules and Patterns,  , Introduction to Rules and Patterns, Rules and Patterns
 @section Definitions for Rules and Patterns
 
-@defun apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Function} apply1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 repeatedly applies the first rule to
 exp until it fails, then repeatedly applies the same rule to all
 subexpressions of exp, left-to-right, until the first rule has failed
@@ -26,9 +26,9 @@ manner exp'.  Then the second rule is applied in the same fashion
 starting at the top of exp'.  When the final rule fails on the final
 subexpression, the application is finished.
 
-@end defun
+@end deffn
 
-@defun apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Function} apply2 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 differs from @code{apply1} in that if the
 first rule fails on a given subexpression, then the second rule is
 repeatedly applied, etc.  Only if they all fail on a given
@@ -38,18 +38,18 @@ subexpression is reprocessed, starting with the first rule.
 @code{maxapplydepth} is the maximum depth to which @code{apply1} and @code{apply2}
 will delve.
 
-@end defun
+@end deffn
 
-@defun applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Function} applyb1 (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 is similar to @code{apply1} but works from
 the "bottom up" instead of from the "top down".  That is, it processes
 the smallest subexpression of exp, then the next smallest, etc.
 @code{maxapplyheight} is the maximum height to which @code{applyb1} will
 reach before giving up.
 
-@end defun
+@end deffn
 
-@defvar current_let_rule_package
+@defvr {Variable} current_let_rule_package
  default:[@code{default_let_rule_package}] - the
 name of the rule package that is presently being used.  The user may
 reset this variable to the name of any rule package previously defined
@@ -63,16 +63,16 @@ is used.  If a call such as
 is used for that @code{letsimp} command only, i.e.  the value of
 @code{current_let_rule_package} is not changed.
 
-@end defvar
+@end defvr
 
-@defvar default_let_rule_package
+@defvr {Variable} default_let_rule_package
  - the name of the rule package used when one
 is not explicitly set by the user with @code{let} or by changing the value of
 @code{current_let_rule_package}.
 
-@end defvar
+@end defvr
 
-@defun defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} defmatch (@var{progname}, @var{pattern}, @var{x_1}, ..., @var{x_n})
 Creates a function @code{@var{progname} (@var{expr}, @var{y_1}, ..., @var{y_n})}
 which tests @var{expr} to see if it matches @var{pattern}.
 
@@ -160,9 +160,9 @@ not in any other variable.
 (%o11)                          t
 @end example
 
-@end defun
+@end deffn
 
-@defun defrule (@var{rulename}, @var{pattern}, @var{replacement})
+@deffn {Function} defrule (@var{rulename}, @var{pattern}, @var{replacement})
 defines and names a
 replacement rule for the given pattern.  If the rule named rulename is
 applied to an expression (by one of the @code{apply} functions below), every
@@ -174,19 +174,19 @@ treated as functions which will transform an expression by one
 operation of the pattern match and replacement.  If the pattern fails,
 the original expression is returned.
 
-@end defun
+@end deffn
 
-@defun disprule (@var{rulename_1}, @var{rulename_2}, ...)
+@deffn {Function} disprule (@var{rulename_1}, @var{rulename_2}, ...)
 will display rules with the names
 rulename1, rulename2, as were given by @code{defrule}, @code{tellsimp}, or
 @code{tellsimpafter} or a pattern defined by @code{defmatch}.  For example, the
 first rule modifying @code{sin} will be called @code{sinrule1}.  @code{disprule (all)}
 will display all rules.
 
-@end defun
+@end deffn
 
-@defun let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
-@defunx let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
+@deffn {Function} let (@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n})
+@deffnx {Function} let ([@var{prod}, @var{repl}, @var{predname}, @var{arg_1}, ..., @var{arg_n}], @var{package_name})
 Defines a substitution rule for @code{letsimp} such that @var{prod} is replaced by @var{repl}.
 @var{prod} is a product of positive or negative powers of the following terms:
 
@@ -267,9 +267,9 @@ If not otherwise specified,
 (%o8)                cos (x) - 2 cos (x) + 1
 @end example
 
-@end defun
+@end deffn
 
-@defvar letrat
+@defvr {Variable} letrat
 Default value: @code{false}
 
 When @code{letrat} is @code{false}, @code{letsimp} simplifies the
@@ -295,10 +295,10 @@ the numerator, denominator, and their quotient will be simplified in that order.
 (%o6)                       (a - 1)!
 @end example
 
-@end defvar
+@end defvr
 
-@defun letrules ()
-@defunx letrules (@var{package_name})
+@deffn {Function} letrules ()
+@deffnx {Function} letrules (@var{package_name})
 Displays the rules in a rule package.
 @code{letrules ()} displays the rules in the current rule package.
 @code{letrules (@var{package_name})} displays the rules in @code{package_name}.
@@ -307,10 +307,10 @@ The current rule package is named by @code{current_let_rule_package}.
 If not otherwise specified, @code{current_let_rule_package}
 defaults to @code{default_let_rule_package}.
 
-@end defun
+@end deffn
 
-@defun letsimp (@var{expr})
-@defunx letsimp (@var{expr}, @var{package_name})
+@deffn {Function} letsimp (@var{expr})
+@deffnx {Function} letsimp (@var{expr}, @var{package_name})
 Applies the substitution rules previously
 defined by the function @code{let} until no further change is made to @var{expr}.
 
@@ -319,18 +319,18 @@ defined by the function @code{let} until no further change is made to @var{expr}
 @code{letsimp (@var{expr}, @var{package_name})} uses the rules from @var{package_name}
 without changing @code{current_let_rule_package}.
 
-@end defun
+@end deffn
 
-@defvar let_rule_packages
+@defvr {Variable} let_rule_packages
 default: @code{[default_let_rule_package]}
 
 @code{let_rule_packages} is a list of all the user-defined let rule packages
 plus the special package @code{default_let_rule_package},
 which is the rule package used when a rule package is not otherwise specified.
 
-@end defvar
+@end defvr
 
-@defun matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
+@deffn {Function} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
 Associates a predicate @var{pred_k} 
 with a variable or list of variables @var{a_k}
 so that @var{a_k} matches expressions
@@ -363,10 +363,10 @@ Examples:
 (%i1) matchdeclare (q, freeof (x, %e))$
 @end example
 
-@end defun
+@end deffn
 
-@defun matchfix (@var{ldelimiter}, @var{rdelimiter})
-@defunx matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
+@deffn {Function} matchfix (@var{ldelimiter}, @var{rdelimiter})
+@deffnx {Function} matchfix (@var{ldelimiter}, @var{rdelimiter}, @var{arg_pos}, @var{pos})
 Declares a matchfix operator with left and right delimiters @var{ldelimiter} and @var{rdelimiter}.
 The delimiters are specified as strings.
 
@@ -480,9 +480,9 @@ Matchfix operators are ordinary user-defined functions.
                                 15
 @end example
 
-@end defun
+@end deffn
 
-@defun remlet (@var{prod}, @var{name})
+@deffn {Function} remlet (@var{prod}, @var{name})
 deletes the substitution rule, prod --> repl, most
 recently defined by the @code{let} function.  If name is supplied the rule is
 deleted from the rule package name.  REMLET() and REMLET(ALL) delete
@@ -494,17 +494,17 @@ using the same product (literally) with the @code{let} function and the new
 replacement and/or predicate name.  Should REMLET(product) now be
 called the original substitution rule will be revived.
 
-@end defun
+@end deffn
 
-@defun remrule (@var{function}, @var{rulename})
+@deffn {Function} remrule (@var{function}, @var{rulename})
 will remove a rule with the name rulename
 from the function which was placed there by @code{defrule}, @code{defmatch},
 @code{tellsimp}, or @code{tellsimpafter}.  If rule-name is @code{all}, then all rules will
 be removed.
 
-@end defun
+@end deffn
 
-@defun tellsimp (@var{pattern}, @var{replacement})
+@deffn {Function} tellsimp (@var{pattern}, @var{replacement})
 is similar to @code{tellsimpafter} but places
 new information before old so that it is applied before the built-in
 simplification rules.
@@ -567,12 +567,12 @@ Examples:
 (%o17)                     1 - cos (y)
 @end example
 
-@end defun
+@end deffn
 
-@defun tellsimpafter (@var{pattern}, @var{replacement})
+@deffn {Function} tellsimpafter (@var{pattern}, @var{replacement})
 defines a replacement for pattern
 which the Maxima simplifier uses after it applies the built-in
 simplification rules.  The pattern may be anything but a single
 variable or a number.
 
-@end defun
+@end deffn

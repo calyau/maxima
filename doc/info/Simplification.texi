@@ -12,19 +12,19 @@
 @c work as advertised, except that it doesn't appear to be possible
 @c to open a break prompt with ^A or any other character.
 @c What should we do about askexp ???
-@defvar askexp
+@defvr {Variable} askexp
 When @code{asksign} is called,
 @code{askexp} is the expression @code{asksign} is testing.
 
 At one time, it was possible for a user to inspect @code{askexp}
 by entering a Maxima break with control-A.
-@end defvar
+@end defvr
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-@defun askinteger (@var{expr}, integer)
-@defunx askinteger (@var{expr})
-@defunx askinteger (@var{expr}, even)
-@defunx askinteger (@var{expr}, odd)
+@deffn {Function} askinteger (@var{expr}, integer)
+@deffnx {Function} askinteger (@var{expr})
+@deffnx {Function} askinteger (@var{expr}, even)
+@deffnx {Function} askinteger (@var{expr}, odd)
 
 @code{askinteger (@var{expr}, integer)} attempts to determine from the @code{assume} database
 whether @var{expr} is an integer.
@@ -36,10 +36,10 @@ and attempt to install the information in the database if possible.
 @code{askinteger (@var{expr}, even)} and @code{askinteger (@var{expr}, odd)}
 likewise attempt to determine if @var{expr} is an even integer or odd integer, respectively.
 
-@end defun
+@end deffn
 
 @c THERE IS PROBABLY MORE TO THE STORY THAN WHAT IS INDICATED HERE ...
-@defun asksign (@var{expr})
+@deffn {Function} asksign (@var{expr})
 First attempts to determine whether the specified
 expression is positive, negative, or zero.  If it cannot, it asks the
 user the necessary questions to complete its deduction.  The user's
@@ -47,7 +47,7 @@ answer is recorded in the data base for the duration of the current
 computation. The return value of @code{asksign} is one of @code{pos}, @code{neg},
 or @code{zero}.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Function} demoivre (@var{expr})
@@ -71,7 +71,7 @@ both be true at the same time.
 @end deffn
 
 
-@defvar domain
+@defvr {Variable} domain
 Default value: @code{real}
 
 When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
@@ -81,11 +81,11 @@ When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
 @c The notion of a "domain" of simplification is still in its infancy,
 @c and controls little more than this at the moment.
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
-@defun expand (@var{expr})
-@defunx expand (@var{expr}, @var{p}, @var{n})
+@deffn {Function} expand (@var{expr})
+@deffnx {Function} expand (@var{expr}, @var{p}, @var{n})
 Expand expression @var{expr}.
 Products of sums and exponentiated sums are
 multiplied out, numerators of rational expressions which are sums are
@@ -128,10 +128,10 @@ expressions by controlled expansion.
 Brief function descriptions are available in @file{simplification/facexp.usg}.
 A demo is available by doing @code{demo("facexp")}.
 
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLES
-@defun expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
 Expands expression @code{expr} with respect to the 
 variables @var{x_1}, ..., @var{x_n}.
 All products involving the variables appear explicitly.  The form returned
@@ -145,10 +145,10 @@ means of the switch @code{expandwrt_denom}.
 This function is autoloaded from
 @file{simplification/stopex.mac}.
 
-@end defun
+@end deffn
 
 
-@defvar expandwrt_denom
+@defvr {Variable} expandwrt_denom
 Default value: @code{false}
 
 @code{expandwrt_denom} controls the treatment of rational
@@ -157,11 +157,11 @@ denominator of the expression will be expanded according to the
 arguments of @code{expandwrt}, but if @code{expandwrt_denom} is @code{false}, then only the
 numerator will be expanded in that way.
 
-@end defvar
+@end defvr
 
 @c NEEDS A STAND-ALONE DESCRIPTION (NOT "IS SIMILAR TO")
 @c NEEDS EXAMPLES
-@defun expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} expandwrt_factored (@var{expr}, @var{x_1}, ..., @var{x_n})
 is similar to @code{expandwrt}, but treats expressions that are products somewhat differently.
 @code{expandwrt_factored} expands only on those factors of @code{expr}
 that contain the variables @var{x_1}, ..., @var{x_n}.
@@ -169,10 +169,10 @@ that contain the variables @var{x_1}, ..., @var{x_n}.
 @c NOT SURE WHY WE SHOULD MENTION THIS HERE
 This function is autoloaded from @file{simplification/stopex.mac}.
 
-@end defun
+@end deffn
 
 
-@defvar expon
+@defvr {Variable} expon
 Default value: 0
 
 @code{expon} is the exponent of the largest negative power which
@@ -180,7 +180,7 @@ is automatically expanded (independent of calls to @code{expand}).  For
 example, if @code{expon} is 4 then @code{(x+1)^(-5)} will not be automatically
 expanded.
 
-@end defvar
+@end defvr
 
 
 @deffn {Function} exponentialize (@var{expr})
@@ -202,7 +202,7 @@ both be true at the same time.
 
 @c NEEDS CLARIFICATION
 @c NEEDS EXAMPLES
-@defvar expop
+@defvr {Variable} expop
 Default value: 0
 
 @code{expop} is the highest positive exponent which is
@@ -212,19 +212,19 @@ If it is desired to have @code{(x + 1)^n} expanded where @code{n} is greater tha
 @code{expop} then executing @code{expand ((x + 1)^n)} will work only if @code{maxposex} is
 not less than n.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defvar factlim
+@defvr {Variable} factlim
 Default value: -1
 
 @code{factlim} specifies the highest factorial which is
 automatically expanded.  If it is -1 then all integers are expanded.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defun intosum (@var{expr})
+@deffn {Function} intosum (@var{expr})
 Moves multiplicative factors outside a summation to inside.
 If the index is used in the
 outside expression, then the function tries to find a reasonable
@@ -236,7 +236,7 @@ does not remove this property, it only bypasses it.
 In some cases,
 a @code{scanmap (multthru, @var{expr})} may be necessary before the @code{intosum}.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration lassociative
@@ -277,40 +277,40 @@ expression in which @code{x} is a @code{mainvar}, you probably should also save 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvar maxapplydepth
+@defvr {Variable} maxapplydepth
 Default value: 10000
 
 @code{maxapplydepth} is the maximum depth to which @code{apply1}
 and @code{apply2} will delve.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defvar maxapplyheight
+@defvr {Variable} maxapplyheight
 Default value: 10000
 
 @code{maxapplyheight} is the maximum height to which @code{applyb1}
 will reach before giving up.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defvar maxnegex
+@defvr {Variable} maxnegex
 Default value: 1000
 
 @code{maxnegex} is the largest negative exponent which will
 be expanded by the @code{expand} command (see also @code{maxposex}).
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defvar maxposex
+@defvr {Variable} maxposex
 Default value: 1000
 
 @code{maxposex} is the largest exponent which will be
 expanded with the @code{expand} command (see also @code{maxnegex}).
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
 @defvr declaration multiplicative
@@ -333,7 +333,7 @@ the form @code{product (x[i], i, m, n)}.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvar negdistrib
+@defvr {Variable} negdistrib
 Default value: @code{true}
 
 When @code{negdistrib} is @code{true}, -1 distributes
@@ -343,10 +343,10 @@ but be very careful: like the @code{simp} flag, this is one flag you do not
 want to set to @code{false} as a matter of course or necessarily for other
 than local use in your Maxima.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvar negsumdispflag
+@defvr {Variable} negsumdispflag
 Default value: @code{true}
 
 When @code{negsumdispflag} is @code{true}, @code{x - y} displays as @code{x - y}
@@ -355,7 +355,7 @@ display for the difference of two expressions to not be done.  One
 application is that thus @code{a + %i*b} and @code{a - %i*b} may both be displayed the
 same way.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c NEED TO MENTION THIS IS AN evflag
@@ -375,14 +375,14 @@ automatically.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvar noundisp
+@defvr {Variable} noundisp
 Default value: @code{false}
 
 When @code{noundisp} is @code{true}, nouns display with
 a single quote.  This switch is always @code{true} when displaying function
 definitions.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @defvr {special symbol} nouns
@@ -408,7 +408,7 @@ their values.  It also sets the @code{float} switch on.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c HOW TO FIND ALL VARIABLES WHICH HAVE NUMERVALS ??
-@defun numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
+@deffn {Function} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
 Declares the variables @code{x_1}, ..., @var{x_n} to have
 numeric values equal to @code{expr_1}, ..., @code{expr_n}.
 The numeric value is is evaluated and substituted for the variable
@@ -417,10 +417,10 @@ in any expressions in which the variable occurs if the @code{numer} flag is
 
 The expressions @code{expr_1}, ..., @code{expr_n} can be any expressions,
 not necessarily numeric.
-@end defun
+@end deffn
 
 
-@defvar opproperties
+@defvr {Variable} opproperties
 
 @code{opproperties} is the list of the special operator properties recognized by
 the Maxima simplifier:
@@ -428,18 +428,18 @@ the Maxima simplifier:
 @code{oddfun}, @code{commutative}, @code{symmetric}, @code{antisymmetric}, @code{nary}, 
 @code{lassociative}, @code{rassociative}.
 
-@end defvar
+@end defvr
 
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvar opsubst
+@defvr {Variable} opsubst
 Default value: @code{true}
 
 When @code{opsubst} is @code{false}, @code{subst} does not attempt to
 substitute into the operator of an expression.  E.g., 
 @code{(opsubst: false, subst (x^2, r, r+r[0]))} will work.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
 @defvr declaration outative
@@ -471,7 +471,7 @@ to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvar prodhack
+@defvr {Variable} prodhack
 Default value: @code{false}
 
 When @code{prodhack} is @code{true}, the identity 
@@ -479,9 +479,9 @@ When @code{prodhack} is @code{true}, the identity
 if @code{a} is greater than @code{b}.
 For example, @code{product (f(i), i, 3, 1)} yields @code{1/f(2)}.
 
-@end defvar
+@end defvr
 
-@defun radcan (@var{expr})
+@deffn {Function} radcan (@var{expr})
 Simplifies @var{expr}, which can contain logs, exponentials, and
 radicals, by converting it into a form which is canonical over a large
 class of expressions and a given ordering of variables; that is, all
@@ -510,10 +510,10 @@ and is not simplified to @code{x - 1}.
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (radcan)} displays some examples.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvar radexpand
+@defvr {Variable} radexpand
 Default value: @code{true}
 
 @code{radexpand} controls some simplifications of radicals.
@@ -539,16 +539,16 @@ If @code{radexpand} is @code{false}, or @code{radexpand} is @code{true} and @cod
 @c CORRECT STATEMENT HERE ???
 Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 
-@end defvar
+@end defvr
 
 
-@defvar radsubstflag
+@defvr {Variable} radsubstflag
 Default value: @code{false}
 
 @code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make
 substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration rassociative
@@ -559,7 +559,7 @@ simplifier that @code{g} is right-associative.  E.g.,
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defun scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
+@deffn {Function} scsimp (@var{expr}, @var{rule_1}, ..., @var{rule_n})
 Sequential Comparative Simplification (method due to Stoute).
 @code{scsimp} attempts to simplify @var{expr}
 according to the rules @var{rule_1}, ..., @var{rule_n}.
@@ -570,10 +570,10 @@ the original answer.
 @c MERGE EXAMPLES INTO THIS FILE
 @code{example (scsimp)} displays some examples.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvar simpsum
+@defvr {Variable} simpsum
 Default value: @code{false}
 
 When @code{simpsum} is @code{true}, the result of a @code{sum} is
@@ -582,10 +582,10 @@ closed form.  If @code{simpsum} is @code{false} or if the quoted form @code{'sum
 sum noun form which is a representation of the sigma notation used in
 mathematics.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defun sumcontract (@var{expr})
+@deffn {Function} sumcontract (@var{expr})
 Combines all sums of an addition that have
 upper and lower bounds that differ by constants. The result is an
 expression containing one summation for each set of such summations
@@ -597,10 +597,10 @@ reasonable index if it cannot use any supplied.
 @c WHEN IS intosum NECESSARY BEFORE sumcontract ??
 It may be necessary to do an @code{intosum (@var{expr})} before the @code{sumcontract}.
 
-@end defun
+@end deffn
 
 
-@defvar sumexpand
+@defvr {Variable} sumexpand
 Default value: @code{false}
 
 When @code{sumexpand} is @code{true}, products of sums and
@@ -630,10 +630,10 @@ Examples:
                     i3 = 0 i4 = 0
 @end example
 
-@end defvar
+@end defvr
 
 
-@defvar sumhack
+@defvr {Variable} sumhack
 Default value: @code{false}
 
 When @code{sumhack} is @code{true}, 
@@ -643,17 +643,17 @@ is applied
 if @code{a} is greater than @code{b}.
 For example, @code{(sumhack: true, sum (f(i), i, 3, 1))} yields @code{-f(2)}.
 
-@end defvar
+@end defvr
 
 
-@defvar sumsplitfact
+@defvr {Variable} sumsplitfact
 Default value: @code{true}
 
 When @code{sumsplitfact} is @code{false},
 @c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ??
 @code{minfactorial} is applied after a @code{factcomb}.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @defvr declaration symmetric
@@ -666,8 +666,8 @@ simplifies to @code{h (x, y, z)}.
 @end defvr
 
 
-@defun unknown (@var{expr})
+@deffn {Function} unknown (@var{expr})
 Returns @code{true} if and only if @var{expr} contains an operator or function
 not recognized by the Maxima simplifier.
 
-@end defun
+@end deffn

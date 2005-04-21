@@ -10,7 +10,7 @@
 @c AND ONLY EFFECT ON plot3d IS TO CAUSE OPENMATH OUTPUT TO BE WRITTEN TO CONSOLE
 @c WHEN [plot_format, openmath] IS SET.
 @c NOT CONVINCED WE REALLY WANT TO DOCUMENT THIS VARIABLE
-@defvar in_netmath
+@defvr {Variable} in_netmath
 Default value: @code{false}
 
 When @code{in_netmath} is @code{true},
@@ -19,11 +19,11 @@ otherwise @code{in_netmath} (even if @code{true}) has no effect.
 
 @code{in_netmath} has no effect on @code{plot2d}.
 
-@end defvar
+@end defvr
 
 @c THIS DESCRIPTION IS IN NEED OF HEAVY REVISION (BUT ONLY IF OPENPLOT IS STILL SUPPORTED)
 @c EXAMPLE DOESN'T WORK -- YIELDS ERROR MESSAGE, NOTHING HAPPENS
-@defun openplot_curves (@var{list}, @var{rest_options})
+@deffn {Function} openplot_curves (@var{list}, @var{rest_options})
 Takes a list of curves such as
 @example
 [[x1, y1, x2, y2, ...], [u1, v1, u2, v2, ...], ..]
@@ -49,18 +49,18 @@ Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @c
 @code{pointsize}, @code{nolines}, @code{bargraph}, @code{labelposition}, @code{xaxislabel}, and
 @code{yaxislabel}.
 
-@end defun
+@end deffn
 
 
 
-@defun plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
+@deffn {Function} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
 @c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
-@defunx plot2d (@var{parametric_expr})
+@deffnx {Function} plot2d (@var{parametric_expr})
 @c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
-@defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
-@defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
-@defunx plot2d (@var{expr}, @var{x_range}, @var{y_range})
-@defunx plot2d (@var{expr}, @var{x_range})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
+@deffnx {Function} plot2d (@var{expr}, @var{x_range}, @var{y_range})
+@deffnx {Function} plot2d (@var{expr}, @var{x_range})
 
 Displays a plot of one or more expressions
 as a function of one variable.
@@ -146,9 +146,9 @@ Plot a cubic polynomial with an ordinary plot and a circle with a parametric plo
 
 See also @code{plot_options}, which describes plotting options and has more examples.
 
-@end defun
+@end deffn
 
-@defun xgraph_curves (@var{list})
+@deffn {Function} xgraph_curves (@var{list})
 graphs the list of `point sets' given in list by using xgraph.
 
 A point set may be of the form
@@ -207,11 +207,11 @@ xgraph_curves ([append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
 
 A temporary file @file{xgraph-out} is used.
 
-@end defun
+@end deffn
 
 
 
-@defvar plot_options
+@defvr {Variable} plot_options
 Elements of this list state the default options for plotting.
 If an option is present in a @code{plot2d} or @code{plot3d} call,
 that value takes precedence over the default option.
@@ -549,10 +549,10 @@ plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
     [gnuplot_preamble, "set view map; unset surface"], [gnuplot_pm3d, true], [grid, 150, 150])$
 @end example
 
-@end defvar
+@end defvr
 
-@defun plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
-@defunx plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffn {Function} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 
 @example
 plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
@@ -624,19 +624,19 @@ plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
 
 See @code{plot_options} for more examples.
 
-@end defun
+@end deffn
 
 
-@defun make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
+@deffn {Function} make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
 Returns a function suitable for the transform function in plot3d. Use
 with the plot option @code{transform_xy}.
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
 is a transformation to polar coordinates.
-@end defun
+@end deffn
 
-@defun plot2d_ps (@var{expr}, @var{range})
+@deffn {Function} plot2d_ps (@var{expr}, @var{range})
 Writes to pstream a sequence of PostScript commands which
 plot @var{expr} over @var{range}.
 
@@ -646,10 +646,10 @@ in which @var{x} is a variable which appears in @var{expr}.
 
 See also @code{closeps}.
 
-@end defun
+@end deffn
 
 
-@defun closeps ()
+@deffn {Function} closeps ()
 This should usually becalled at the end of a sequence of plotting
 commands.   It closes the current output stream @var{pstream}, and sets
 it to nil.   It also may be called at the start of a plot, to ensure
@@ -657,9 +657,9 @@ pstream is closed if it was open.    All commands which write to
 pstream, open it if necessary.   @code{closeps} is separate from the other
 plotting commands, since we may want to plot 2 ranges or superimpose
 several plots, and so must keep the stream open.
-@end defun
+@end deffn
 
-@defun set_plot_option (@var{option})
+@deffn {Function} set_plot_option (@var{option})
 option is of the format of one of the elements of the @code{plot_options}
 list.
 Thus @code{set_plot_option ([grid, 30, 40])}
@@ -667,9 +667,9 @@ would change the default grid used by @code{plot3d}.   Note that if the symbol
 @code{grid} has a value, then you should quote it here:
 @code{set_plot_option (['grid, 30, 40])}
 so that the value will not be substituted.
-@end defun
+@end deffn
 
-@defun psdraw_curve (@var{ptlist})
+@deffn {Function} psdraw_curve (@var{ptlist})
 
 Draws a curve connecting the points in @var{ptlist}.   The latter
 may be of the form @code{[x0, y0, x1, y1, ...]} or @code{[[x0, y0], [x1, y1], ...]}
@@ -694,9 +694,9 @@ list of y's and splicing them together.
 @c @end example
 
 
-@end defun
+@end deffn
 
-@defun pscom (@var{cmd})
+@deffn {Function} pscom (@var{cmd})
 
 @var{cmd} is inserted in the PostScript file.
 Example:
@@ -704,7 +704,7 @@ Example:
 pscom ("4.5 72 mul 5.5 72 mul translate 14 14 scale");
 @end example
 
-@end defun
+@end deffn
 
 
 

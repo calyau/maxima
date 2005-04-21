@@ -157,7 +157,7 @@ also be removed.
 
 @c NEEDS CLARIFICATION AND EXAMPLES
 @c CONTRAST at WITH ev AND subst !!!
-@defun at (@var{expr}, @var{list})
+@deffn {Function} at (@var{expr}, @var{list})
 Evaluates @var{expr} (which may be any expression) with
 the variables assuming the values as specified for them in the list of
 equations or the single equation similar to that given to the @code{atvalue}
@@ -166,11 +166,11 @@ but it hasn't had an atvalue specified and it can't be evaluated then
 a noun form of the @code{at} will be returned which will display in a
 two-dimensional form.  @code{example ("at")} displays some examples of @code{at}.
 
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLES
-@defun box (@var{expr})
-@defunx box (@var{expr}, @var{label})
+@deffn {Function} box (@var{expr})
+@deffnx {Function} box (@var{expr}, @var{label})
 Returns @var{expr} enclosed in a box.  The box is actually part
 of the expression. @code{box (@var{expr}, @var{label})}
 encloses @var{expr} in a labelled box.
@@ -179,17 +179,17 @@ encloses @var{expr} in a labelled box.
 @code{boxchar} is the character used to draw the box in this and in
 the @code{dpart} and @code{lpart} functions.
 
-@end defun
+@end deffn
 
-@defvar boxchar
+@defvr {Variable} boxchar
 Default value: ["]
 
 @code{boxchar} is the character used to draw the box in the @code{box}
 and in the @code{dpart} and @code{lpart} functions.
 
-@end defvar
+@end defvr
 
-@defun carg (@var{z})
+@deffn {Function} carg (@var{z})
 Returns the complex argument of @var{z}.
 The complex argument is an angle @code{theta} in @code{[-%pi, %pi]}
 such that @code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
@@ -197,7 +197,7 @@ such that @code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @
 See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
 @code{realpart}, and @code{imagpart}.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
@@ -207,17 +207,17 @@ Makes ai a constant as is @code{%pi}.
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@defun constantp (@var{expr})
+@deffn {Function} constantp (@var{expr})
 Returns @code{true} if @var{expr} is a constant (i.e.  composed of
 numbers and @code{%pi}, @code{%e}, @code{%i} or any variables bound to a constant or
 declared constant by @code{declare}) else @code{false}.  Any function whose arguments are
 constant is also considered to be a constant.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c THIS ITEM IS EXTREMELY IMPORTANT
-@defun declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
+@deffn {Function} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
 Assigns the atom @var{a_i} the flag @var{f_i}.
 The @var{a_i}'s and @var{f_i}'s may also be lists of atoms and flags respectively in which
 case each of the atoms gets all of the properties.
@@ -272,10 +272,10 @@ The @var{a_i} and @var{f_i} may also be lists of objects or features.
 @code{featurep (object, feature)}
 determines if an object has been declared to have @var{feature}.  See also @code{features}.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
+@deffn {Function} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 is similar to @code{isolate (@var{expr}, @var{x})}
 except that it enables the user to isolate
 more than one variable simultaneously.  This might be useful, for
@@ -285,10 +285,10 @@ integration variables.  This function is autoloaded from
 @file{simplification/disol.mac}.  A demo is available by
 @code{demo("disol")$}.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun dispform (@var{expr})
+@deffn {Function} dispform (@var{expr})
 Returns the external representation of @var{expr} with respect to its
 main operator.  This should be useful in conjunction with @code{part} which
 also deals with the external representation.  Suppose @var{expr} is -A .
@@ -299,10 +299,10 @@ example, if @code{expr: sin (sqrt (x))}, then @code{freeof (sqrt, expr)} and
 @code{freeof (sqrt, dispform (expr))} give @code{true}, while
 @code{freeof (sqrt, dispform (expr, all))} gives @code{false}.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun distrib (@var{expr})
+@deffn {Function} distrib (@var{expr})
 Distributes sums over products.  It differs from @code{expand}
 in that it works at only the top level of an expression, i.e., it doesn't
 recurse and it is faster than @code{expand}.  It differs from @code{multthru} in
@@ -325,10 +325,10 @@ Examples:
                       b d + a d + b c + a c
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Function} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 Selects the same subexpression as @code{part}, but
 instead of just returning that subexpression as its value, it returns
 the whole expression with the selected subexpression displayed inside
@@ -344,10 +344,10 @@ a box.  The box is actually part of the expression.
                             """
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun exp (@var{x})
+@deffn {Function} exp (@var{x})
 The exponential function.  
 Instances of @code{exp (@var{x})} in input are simplified to @code{%e^@var{x}};
 @code{exp} does not appear in simplified expressions.
@@ -361,9 +361,9 @@ causes @code{%e^(%pi %i x)} to be simplified. See @code{%emode}.
 @code{%enumer}, when @code{true} will cause @code{%e} to be replaced by
 2.718...  whenever @code{numer} is @code{true}. See @code{%enumer}.
 
-@end defun
+@end deffn
 
-@defvar %emode
+@defvr {Variable} %emode
 Default value: @code{true}
 
 When @code{%emode} is @code{true},
@@ -377,9 +377,9 @@ for some integer @code{k} such that @code{abs(y) < 1}.
 When @code{%emode} is @code{false}, no
 special simplification of @code{%e^(%pi %i x)} is carried out.
 
-@end defvar
+@end defvr
 
-@defvar %enumer
+@defvr {Variable} %enumer
 Default value: @code{false}
 
 When @code{%enumer} is @code{true},
@@ -391,25 +391,25 @@ only if the exponent in @code{%e^x} evaluates to a number.
 
 See also @code{ev} and @code{numer}.
 
-@end defvar
+@end defvr
 
-@defvar exptisolate
+@defvr {Variable} exptisolate
 Default value: @code{false}
 
 When @code{exptisolate} is @code{true}, will cause @code{isolate (expr, var)} to
 examine exponents of atoms (like @code{%e}) which contain @code{var}.
 
-@end defvar
+@end defvr
 
-@defvar exptsubst
+@defvr {Variable} exptsubst
 Default value: @code{false}
 
 When @code{exptsubst} is @code{true}, permits substitutions such as @code{y}
 for @code{%e^x} in @code{%e^(a x)} to take place.
 
-@end defvar
+@end defvr
 
-@defun freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
+@deffn {Function} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 @code{freeof (@var{x_1}, @var{expr})}
 returns @code{true}
 if no subexpression of @var{expr} is equal to @var{x_1}
@@ -511,31 +511,31 @@ An indefinite integral is not free of its variable of integration.
 @end example
 @end itemize
 
-@end defun
+@end deffn
 
 @c IS THIS DEFINITION CORRECT ??
-@defun genfact (@var{x}, @var{y}, @var{z})
+@deffn {Function} genfact (@var{x}, @var{y}, @var{z})
 Returns the generalized factorial, defined as
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Thus, for integral @var{x},
 @code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
 
-@end defun
+@end deffn
 
-@defun imagpart (@var{expr})
+@deffn {Function} imagpart (@var{expr})
 Returns the imaginary part of the expression @var{expr}.
 
-@end defun
+@end deffn
 
-@defun indices (@var{expr})
+@deffn {Function} indices (@var{expr})
 Returns a list of two elements.  The first is a list of
 the free indices in @var{expr} (those that occur only once); the second is
 the list of dummy indices in @var{expr} (those that occur exactly twice).
 
-@end defun
+@end deffn
 
-@defun infix (@var{op})
-@defunx infix (@var{op}, @var{lbp}, @var{rbp})
-@defunx infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
+@deffn {Function} infix (@var{op})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp})
+@deffnx {Function} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 Declares @var{op} to be an infix operator.
 An infix operator is a function of two arguments,
 with the name of the function written between the arguments.
@@ -610,9 +610,9 @@ while greater @var{rbp} makes @var{op} left-associative.
 (%o5)                    ((foo,bar),baz)
 @end example
 
-@end defun
+@end deffn
 
-@defvar inflag
+@defvr {Variable} inflag
 Default value: @code{false}
 
 When @code{inflag} is @code{true}, the functions for part
@@ -624,10 +624,10 @@ the same as calling @code{inpart}/@code{substinpart}.  Functions affected by the
 setting of @code{inflag} are: @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length}, the
 @code{for} ... @code{in} construct, @code{map}, @code{fullmap}, @code{maplist}, @code{reveal} and @code{pickapart}.
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
-@defun inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Function} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
 is similar to @code{part} but works on the internal
 representation of the expression rather than the displayed form and
 thus may be faster since no formatting is done.  Care should be taken
@@ -656,10 +656,10 @@ Examples:
 (%o5)                       g(x + 1)
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun isolate (@var{expr}, @var{x})
+@deffn {Function} isolate (@var{expr}, @var{x})
 Returns @var{expr} with subexpressions which are sums and
 which do not contain var replaced by intermediate expression labels
 (these being atomic symbols like @code{%t1}, @code{%t2}, ...).  This is often useful
@@ -676,10 +676,10 @@ products. See @code{isolate_wrt_times}.
 
 Do @code{example (isolate)} for examples.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defvar isolate_wrt_times
+@defvr {Variable} isolate_wrt_times
 Default value: @code{false}
 
 When @code{isolate_wrt_times} is @code{true}, @code{isolate}
@@ -707,10 +707,10 @@ switch on
 (%o5)               c  + 2 b c + 2 a c + %t4
 @end example
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defvar listconstvars
+@defvr {Variable} listconstvars
 Default value: @code{false}
 
 When @code{listconstvars} is @code{true}, it will cause @code{listofvars} to
@@ -718,9 +718,9 @@ include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in
 it returns if they appear in the expression @code{listofvars} is called on.
 The default is to omit these.
 
-@end defvar
+@end defvr
 
-@defvar listdummyvars
+@defvr {Variable} listdummyvars
 Default value: @code{true}
 
 When @code{listdummyvars} is @code{false}, "dummy variables" in the
@@ -739,10 +739,10 @@ Example:
 (%o4)                          [n]
 @end example
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
-@defun listofvars (@var{expr})
+@deffn {Function} listofvars (@var{expr})
 Returns a list of the variables in @var{expr}.
 
 @code{listconstvars} if @code{true} causes @code{listofvars} to include @code{%e}, @code{%pi},
@@ -755,15 +755,15 @@ appear in @var{expr}.  The default is to omit these.
                                   1
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun lfreeof (@var{list}, @var{expr})
+@deffn {Function} lfreeof (@var{list}, @var{expr})
 For each member @var{m} of list, calls @code{freeof (@var{m}, @var{expr})}.
 It returns @code{false} if any call to @code{freeof} does and @code{true} otherwise.
-@end defun
+@end deffn
 
-@defun lopow (@var{expr}, @var{x})
+@deffn {Function} lopow (@var{expr}, @var{x})
 Returns the lowest exponent of @var{x} which explicitly appears in
 @var{expr}.  Thus
 
@@ -772,19 +772,19 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 (%o1)                       min(a, 2)
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Function} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
 is similar to @code{dpart} but uses a
 labelled box. A labelled box is similar to the one produced by @code{dpart}
 but it has a name in the top line.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun multthru (@var{expr})
-@defunx multthru (@var{expr_1}, @var{expr_2})
+@deffn {Function} multthru (@var{expr})
+@deffnx {Function} multthru (@var{expr_1}, @var{expr_2})
 Multiplies a factor (which should be a sum) of @var{expr} by
 the other factors of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
 where at least
@@ -829,20 +829,20 @@ form is equivalent to @code{multthru (@var{expr_1}*@var{expr_2})}.
 (%o7)         a . f + a . c . e + a . c . d + a . b
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun nounify (@var{f})
+@deffn {Function} nounify (@var{f})
 Returns the noun form of the function name @var{f}.  This is
 needed if one wishes to refer to the name of a verb function as if it
 were a noun.  Note that some verb functions will return their noun
 forms if they can't be evaluated for certain arguments.  This is also
 the form returned if a function call is preceded by a quote.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun nterms (@var{expr})
+@deffn {Function} nterms (@var{expr})
 Returns the number of terms that @var{expr} would have if it were
 fully expanded out and no cancellations or combination of terms
 occurred.
@@ -850,18 +850,18 @@ Note that expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @c
 count as just one term regardless of how many terms @var{expr} has (if it is a
 sum).
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun op (@var{expr})
+@deffn {Function} op (@var{expr})
 Returns the operator of the expression, and functions the same way as
 @code{part (expr, 0)}.  It observes the setting of the @code{inpart} flag.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun operatorp (@var{expr}, @var{op})
-@defunx operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
+@deffn {Function} operatorp (@var{expr}, @var{op})
+@deffnx {Function} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
 @code{operatorp (@var{expr}, @var{op})} returns @code{true}
 if @var{op} is equal to the operator of @var{expr}.
@@ -869,10 +869,10 @@ if @var{op} is equal to the operator of @var{expr}.
 @code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} returns @code{true}
 if some element @var{op_1}, ..., @var{op_n} is equal to the operator of @var{expr}.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun optimize (@var{expr})
+@deffn {Function} optimize (@var{expr})
 Returns an expression that produces the same value and
 side effects as @var{expr} but does so more efficiently by avoiding the
 recomputation of common subexpressions.  @code{optimize} also has the side
@@ -880,19 +880,19 @@ effect of "collapsing" its argument so that all common subexpressions
 are shared.
 Do @code{example (optimize)} for examples.
 
-@end defun
+@end deffn
 
-@defvar optimprefix
+@defvr {Variable} optimprefix
 Default value: [%]
 
 @code{optimprefix} is the prefix used for generated symbols by
 the @code{optimize} command.
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
 @c WHAT DOES ">" MEAN IN THIS CONTEXT ??
-@defun ordergreat (@var{v_1}, ..., @var{v_n})
+@deffn {Function} ordergreat (@var{v_1}, ..., @var{v_n})
 Sets up aliases for the variables @var{v_1}, ..., @var{v_n}
 such that @var{v_1} > @var{v_2} > ...  > @var{v_n},
 and @var{v_n} > any other variable not mentioned as an
@@ -900,19 +900,19 @@ argument.
 
 See also @code{orderless}.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@defun ordergreatp (@var{expr_1}, @var{expr_2})
+@deffn {Function} ordergreatp (@var{expr_1}, @var{expr_2})
 Returns @code{true} if @var{expr_2} precedes @var{expr_1} in the
 ordering set up with the @code{ordergreat} function.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "<" MEAN IN THIS CONTEXT ??
-@defun orderless (@var{v_1}, ..., @var{v_n})
+@deffn {Function} orderless (@var{v_1}, ..., @var{v_n})
 Sets up aliases for the variables @var{v_1}, ..., @var{v_n}
 such that @var{v_1} < @var{v_2} < ...  < @var{v_n},
 and @var{v_n} < any other variable not mentioned as an
@@ -927,18 +927,18 @@ declared constants < declared scalars < first argument to @code{orderless} <
 
 See also @code{ordergreat} and @code{mainvar}.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
-@defun orderlessp (@var{expr_1}, @var{expr_2})
+@deffn {Function} orderlessp (@var{expr_1}, @var{expr_2})
 Returns @code{true} if @var{expr_1} precedes @var{expr_2} in the
 ordering set up by the @code{orderless} command.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun part (@var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Function} part (@var{expr}, @var{n_1}, ..., @var{n_k})
 Returns parts of the displayed form of @code{expr}. It
 obtains the part of @code{expr} as specified by the indices @var{n_1}, ..., @var{n_k}.  First
 part @var{n_1} of @code{expr} is obtained, then part @var{n_2} of that, etc.  The result is
@@ -967,10 +967,10 @@ Example: @code{part (z+2*y, 2, 1)} yields 2.
 @c MERGE IN example (part) OUTPUT HERE
 @code{example (part)} displays additional examples.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun partition (@var{expr}, @var{x})
+@deffn {Function} partition (@var{expr}, @var{x})
 Returns a list of two expressions.  They are (1)
 the factors of @var{expr} (if it is a product), the terms of @var{expr} (if it is a
 sum), or the list (if it is a list) which don't contain var and, (2)
@@ -985,19 +985,19 @@ the factors, terms, or list which do.
 (%o3)                  [[b, c], [a, f(a)]]
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLE
-@defvar partswitch
+@defvr {Variable} partswitch
 Default value: @code{false}
 
 When @code{partswitch} is @code{true}, @code{end} is returned
 when a selected part of an expression doesn't exist, otherwise an
 error message is given.
 
-@end defvar
+@end defvr
 
-@defun pickapart (@var{expr}, @var{n})
+@deffn {Function} pickapart (@var{expr}, @var{n})
 Assigns intermediate expression labels to subexpressions of
 @var{expr} at depth @var{n}, an integer.
 Subexpressions at greater or lesser depths are not assigned labels.
@@ -1086,10 +1086,10 @@ Examples:
                 3        2
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defvar piece
+@defvr {Variable} piece
 Holds the last expression selected when using the @code{part}
 functions.
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -1098,7 +1098,7 @@ may be referred to in the function itself.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
 @deffn {Function} polarform (@var{expr})
@@ -1109,7 +1109,7 @@ such that @code{r} and @code{theta} are purely real.
 
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
-@defun powers (@var{expr}, @var{x})
+@deffn {Function} powers (@var{expr}, @var{x})
 Gives the powers of @var{x} occuring in @var{expr}.
 
 @code{load (powers)} loads this function.
@@ -1127,10 +1127,10 @@ Gives the powers of @var{x} occuring in @var{expr}.
 @c MAP(LAMBDA([POW],COEFF(POLY,X,POW)),POWERS(POLY,X));
 @c AND MANY OTHER SIMILAR USEFUL HACKS.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
-@defun product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Function} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Returns the product of the values of @code{expr} as
 the index @var{i} varies from @var{i_0} to @var{i_1}.
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -1149,28 +1149,28 @@ Example:
 (%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLES
-@defun realpart (@var{expr})
+@deffn {Function} realpart (@var{expr})
 Returns the real part of @var{expr}. @code{realpart} and @code{imagpart} will
 work on expressions involving trigonometic and hyperbolic functions,
 as well as square root, logarithm, and exponentiation.
 
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLES
-@defun rectform (@var{expr})
+@deffn {Function} rectform (@var{expr})
 Returns an expression @code{a + b %i} equivalent to @var{expr},
 such that @var{a} and @var{b} are purely real.
 
-@end defun
+@end deffn
 
 @c HOW ARE BOXES ESTABLISHED TO BEGIN WITH ??
 @c NEEDS EXAMPLES
-@defun rembox (@var{expr}, unlabelled)
-@defunx rembox (@var{expr}, @var{label})
-@defunx rembox (@var{expr})
+@deffn {Function} rembox (@var{expr}, unlabelled)
+@deffnx {Function} rembox (@var{expr}, @var{label})
+@deffnx {Function} rembox (@var{expr})
 Removes boxes from @var{expr}.
 
 @code{rembox (@var{expr}, unlabelled)} removes all unlabelled boxes from @var{expr}.
@@ -1179,12 +1179,12 @@ Removes boxes from @var{expr}.
 
 @code{rembox (@var{expr})} removes all boxes, labelled and unlabelled.
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
 @c NEEDS EXAMPLES
 @c VERY IMPORTANT !!
-@defun sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
+@deffn {Function} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Represents a summation of the values of @var{expr} as
 the index @var{i} varies from @var{i_0} to @var{i_1}.  If the upper and lower limits
 differ by an integer then each term in the sum is evaluated and added
@@ -1219,9 +1219,9 @@ See also @code{sumcontract}, @code{intosum},
 
 @code{example (sum)} displays some examples.
 
-@end defun
+@end deffn
 
-@defun lsum (@var{expr}, @var{i}, @var{list})
+@deffn {Function} lsum (@var{expr}, @var{i}, @var{list})
 Represents the sum of @var{expr} for each element @var{i} in @var{list}.
 
 @example
@@ -1244,7 +1244,7 @@ evaluate to a Maxima list then the answer is left in noun form
                      i in rootsof(x  - 1)
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK
 @defvr {special symbol} verb
@@ -1257,9 +1257,9 @@ See also @code{noun}, @code{nounify}, @code{verbify}.
 
 @end defvr
 
-@defun verbify (@var{f})
+@deffn {Function} verbify (@var{f})
 Returns the function name @var{f} in its verb form.
 
 See also @code{verb}, @code{noun}, and @code{nounify}.
 
-@end defun
+@end deffn

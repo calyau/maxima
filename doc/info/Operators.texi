@@ -272,11 +272,11 @@ Otherwise, @code{not} returns @code{unknown}.
 
 @end deffn
 
-@defun abs (@var{expr})
+@deffn {Function} abs (@var{expr})
 Returns the absolute value @var{expr}.  If @var{expr} is complex, returns the complex
 modulus of @var{expr}.
 
-@end defun
+@end deffn
 
 @defvr {special symbol} additive
 If @code{declare(f,additive)} has been executed, then:
@@ -332,11 +332,11 @@ arguments necessary to convert it to that form.
 
 @end defvr
 
-@defun cabs (@var{expr})
+@deffn {Function} cabs (@var{expr})
 Returns the complex absolute value (the complex modulus) of
 @var{expr}.
 
-@end defun
+@end deffn
 
 @defvr declaration commutative
 If @code{declare(h,commutative)} is done, this tells the
@@ -345,14 +345,14 @@ simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @end defvr
 
-@defun entier (@var{x})
+@deffn {Function} entier (@var{x})
 Returns the largest integer less than or equal to @var{x} where @var{x} is numeric.  @code{fix} (as in
 @code{fixnum}) is a synonym for this, so @code{fix(@var{x})} is precisely the same.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun equal (@var{expr_1}, @var{expr_2})
+@deffn {Function} equal (@var{expr_1}, @var{expr_2})
 Used with an @code{is}, returns @code{true} (or @code{false}) if
 and only if @var{expr_1} and @var{expr_2} are equal (or not equal) for all possible
 values of their variables (as determined by @code{ratsimp}).  Thus
@@ -378,7 +378,7 @@ All variables occurring in @var{expr_1} and @var{expr_2} are presumed to be real
 (%o3)                         true
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c NOTE THAT eval IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
@@ -390,19 +390,19 @@ See @code{ev}.
 
 @end deffn
 
-@defun evenp (@var{expr})
+@deffn {Function} evenp (@var{expr})
 Returns @code{true} if @var{expr} is an even integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} is returned in all other cases.
 
-@end defun
+@end deffn
 
-@defun fix (@var{x})
+@deffn {Function} fix (@var{x})
 A synonym for @code{entier (@var{x})}.
 
-@end defun
+@end deffn
 
-@defun fullmap (@var{f}, @var{expr_1}, ...)
+@deffn {Function} fullmap (@var{f}, @var{expr_1}, ...)
 Similar to @code{map}, but @code{fullmap} keeps mapping
 down all subexpressions until the main operators are no longer the
 same.
@@ -420,9 +420,9 @@ explicitly called by the user.
 (%o3)                     g(b c) + g(a)
 @end example
 
-@end defun
+@end deffn
 
-@defun fullmapl (@var{f}, @var{list_1}, ...)
+@deffn {Function} fullmapl (@var{f}, @var{list_1}, ...)
 Similar to @code{fullmap}, but @code{fullmapl} only maps onto
 lists and matrices.
 
@@ -431,10 +431,10 @@ lists and matrices.
 (%o1)                [[a + 3, 4], [4, 3.5]]
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun is (@var{expr})
+@deffn {Function} is (@var{expr})
 Attempts to determine whether @var{expr} (which must evaluate to a
 predicate) is provable from the facts in the current data base.  @code{is}
 returns @code{true} if the predicate is true for all values of its variables
@@ -443,29 +443,29 @@ such values.  Otherwise, its action depends on the setting of the
 switch @code{prederror}. @code{is} errs out if the value of
 @code{prederror} is @code{true} and returns @code{unknown} if @code{prederror} is @code{false}.
 
-@end defun
+@end deffn
 
-@defun isqrt (@var{x})
+@deffn {Function} isqrt (@var{x})
 Returns the "integer square root"
 of the absolute value of @var{x},
 which is an integer.
 
-@end defun
+@end deffn
 
-@defun max (@var{x_1}, @var{x_2}, ...)
+@deffn {Function} max (@var{x_1}, @var{x_2}, ...)
 Returns the maximum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
-@end defun
+@end deffn
 
-@defun min (@var{x_1}, @var{x_2}, ...)
+@deffn {Function} min (@var{x_1}, @var{x_2}, ...)
 Returns the minimum of its arguments (or returns a
 simplified form if some of its arguments are non-numeric).
 
-@end defun
+@end deffn
 
-@defun mod (@var{p})
-@defunx mod (@var{p}, @var{m})
+@deffn {Function} mod (@var{p})
+@deffnx {Function} mod (@var{p}, @var{m})
 Converts the polynomial @var{p} to a modular representation
 with respect to the current modulus which is the value of the variable
 @code{modulus}.  
@@ -475,14 +475,14 @@ instead of the current value of @code{modulus}.
 
 See @code{modulus}.
 
-@end defun
+@end deffn
 
-@defun oddp (@var{expr})
+@deffn {Function} oddp (@var{expr})
 is @code{true} if @var{expr} is an odd integer.
 @c THIS IS STRANGE -- SHOULD RETURN NOUN FORM IF INDETERMINATE
 @code{false} is returned in all other cases.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c NOTE THAT pred IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
@@ -495,11 +495,11 @@ See @code{ev}.
 
 @end deffn
 
-@defun make_random_state (@var{n})
+@deffn {Function} make_random_state (@var{n})
 @c @defunx make_random_state (@var{a})
-@defunx make_random_state (@var{s})
-@defunx make_random_state (true)
-@defunx make_random_state (false)
+@deffnx {Function} make_random_state (@var{s})
+@deffnx {Function} make_random_state (true)
+@deffnx {Function} make_random_state (false)
 
 A random state object represents the state of the random number generator.
 The state comprises 627 32-bit words.
@@ -520,16 +520,16 @@ using the current computer clock time as the seed.
 @code{make_random_state (false)} returns a copy of the current state
 of the random number generator.
 
-@end defun
+@end deffn
 
-@defun set_random_state (@var{s})
+@deffn {Function} set_random_state (@var{s})
 Copies @var{s} to the random number generator state.
 
 @code{set_random_state} always returns @code{done}.
 
-@end defun
+@end deffn
 
-@defun random (@var{x})
+@deffn {Function} random (@var{x})
 Returns a pseudorandom number. If @var{x} is an integer, @code{random (@var{x})} returns an
 integer from 0 through @code{@var{x} - 1} inclusive. If @var{x} is a floating point number,
 @code{random (@var{x})} returns a nonnegative floating point number less than @var{x}.
@@ -584,18 +584,18 @@ Examples:
 (%o13)                  32.28666704056853
 @end example
 
-@end defun
+@end deffn
 
-@defun sign (@var{expr})
+@deffn {Function} sign (@var{expr})
 Attempts to determine the sign of @var{expr}
 on the basis of the facts in the current data base.  It returns one of
 the following answers: @code{pos} (positive), @code{neg} (negative), @code{zero}, @code{pz}
 (positive or zero), @code{nz} (negative or zero), @code{pn} (positive or negative),
 or @code{pnz} (positive, negative, or zero, i.e. nothing known).
 
-@end defun
+@end deffn
 
-@defun signum (@var{x})
+@deffn {Function} signum (@var{x})
 For numeric @var{x}, returns 0 if @var{x} is 0, otherwise returns -1 or +1
 as @var{x} is less than or greater than 0, respectively.
 
@@ -603,10 +603,10 @@ If @var{x} is not numeric then a simplified but equivalent form is returned.
 For example, @code{signum(-x)} gives @code{-signum(x)}.
 @c UMM, THIS ISN'T THE WHOLE STORY, AS IT APPEARS signum CONSULTS THE assume DATABASE FOR SYMBOLIC ARGUMENT
 
-@end defun
+@end deffn
 
-@defun sort (@var{list}, @var{p})
-@defunx sort (@var{list})
+@deffn {Function} sort (@var{list}, @var{p})
+@deffnx {Function} sort (@var{list})
 Sorts @var{list} according to a predicate @code{p} of two arguments,
 such as @code{"<"} or @code{orderlessp}.
 
@@ -615,9 +615,9 @@ such as @code{"<"} or @code{orderlessp}.
 @var{list} may contain numeric or nonnumeric items, or both.
 
 @c NEED EXAMPLES, ESPECIALLY SORTING NONNUMERIC ITEMS
-@end defun
+@end deffn
 
-@defun sqrt (@var{x})
+@deffn {Function} sqrt (@var{x})
 The square root of @var{x}. It is represented internally by
 @code{@var{x}^(1/2)}.  See also @code{rootscontract}.
 
@@ -625,20 +625,20 @@ The square root of @var{x}. It is represented internally by
 which are powers of n to be pulled outside of the radical, e.g.
 @code{sqrt(16*x^2)} will become @code{4*x} only if @code{radexpand} is @code{true}.
 
-@end defun
+@end deffn
 
-@defvar sqrtdispflag
+@defvr {Variable} sqrtdispflag
 Default value: @code{true}
 
 When @code{sqrtdispflag} is @code{false},
 causes @code{sqrt} to display with exponent 1/2.
 @c AND OTHERWISE ... ??
 
-@end defvar
+@end defvr
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 @c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
-@defun sublis (@var{list}, @var{expr})
+@deffn {Function} sublis (@var{list}, @var{expr})
 Makes multiple parallel substitutions into an expression.
 
 The variable @code{sublis_apply_lambda} controls simplification after
@@ -651,9 +651,9 @@ Example:
 (%o1)                    sin(b) + cos(a)
 @end example
 
-@end defun
+@end deffn
 
-@defun sublist (@var{list}, @var{p})
+@deffn {Function} sublist (@var{list}, @var{p})
 Returns the list of elements of @var{list} for which the
 predicate @code{p} returns @code{true}.
 
@@ -665,18 +665,18 @@ Example:
 (%o2)                       [2, 4, 6]
 @end example
 
-@end defun
+@end deffn
 
-@defvar sublis_apply_lambda
+@defvr {Variable} sublis_apply_lambda
 default: @code{true} - controls whether @code{lambda}'s
 substituted are applied in simplification after @code{sublis} is used or
 whether you have to do an @code{ev} to get things to apply. @code{true} means do the
 application.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION, MORE EXAMPLES
-@defun subst (@var{a}, @var{b}, @var{c})
+@deffn {Function} subst (@var{a}, @var{b}, @var{c})
 Substitutes @var{a} for @var{b} in @var{c}.  @var{b} must be an atom or a
 complete subexpression of @var{c}.  For example, @code{x+y+z} is a complete
 subexpression of @code{2*(x+y+z)/w} while @code{x+y} is not. When @var{b} does not have
@@ -719,10 +719,10 @@ Examples:
 @noindent
 For further examples, do @code{example (subst)}.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Function} substinpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 Similar to @code{substpart}, but @code{substinpart} works on the
 internal representation of @var{expr}.
 
@@ -781,10 +781,10 @@ message is given.
 Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
 the same as calling @code{inpart} or @code{substinpart}.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@deffn {Function} substpart (@var{x}, @var{expr}, @var{n_1}, ..., @var{n_k})
 Substitutes @var{x} for the subexpression
 picked out by the rest of the arguments as in @code{part}.  It returns the
 new value of @var{expr}.  @var{x} may be some operator to be substituted for an
@@ -811,22 +811,22 @@ operator of @var{expr}.  In some cases @var{x} needs to be enclosed in double-qu
 Also, setting the option @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is 
 the same as calling @code{inpart} or @code{substinpart}.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defun subvarp (@var{expr})
+@deffn {Function} subvarp (@var{expr})
 Returns @code{true} if @var{expr} is a subscripted variable, for example
 @code{a[i]}.
 
-@end defun
+@end deffn
 
-@defun symbolp (@var{expr})
+@deffn {Function} symbolp (@var{expr})
 Returns @code{true} if @var{expr} is a symbol, else @code{false}.
 In effect, @code{symbolp(x)} is equivalent to the predicate @code{atom(x) and not numberp(x)}.
 
-@end defun
+@end deffn
 
-@defun unorder ()
+@deffn {Function} unorder ()
 Disables the aliasing created by the last use of the ordering
 commands @code{ordergreat} and @code{orderless}. @code{ordergreat} and @code{orderless} may not
 be used more than one time each without calling @code{unorder}. 
@@ -851,20 +851,20 @@ See also @code{ordergreat} and @code{orderless}.
 (%o6)                          [a]
 @end example
 
-@end defun
+@end deffn
 
 @c THIS ITEM SEEMS OUT OF PLACE -- IS IT FROM A SHARE PACKAGE ??
 @c NEEDS EXAMPLES
-@defun vectorpotential (@var{givencurl})
+@deffn {Function} vectorpotential (@var{givencurl})
 Returns the vector potential of a given
 curl vector, in the current coordinate system.
 @code{potentialzeroloc} has a similar role as for @code{potential}, but the order of
 the left-hand sides of the equations must be a cyclic permutation of
 the coordinate variables.
 
-@end defun
+@end deffn
 
-@defun xthru (@var{expr})
+@deffn {Function} xthru (@var{expr})
 Combines all terms of @var{expr} (which should be a sum) over a
 common denominator without expanding products and exponentiated sums
 as @code{ratsimp} does.  @code{xthru} cancels common factors in the numerator and
@@ -892,11 +892,11 @@ expression to be @code{ratsimp}ed.
                             (y + x)
 @end example
 
-@end defun
+@end deffn
 
 @c THIS FUNCTION APPEARS TO BE A HACK; SEE 4'TH ITEM BELOW
 @c DUNNO WHETHER WE CAN CLEAR THIS UP
-@defun zeroequiv (@var{expr}, @var{v})
+@deffn {Function} zeroequiv (@var{expr}, @var{v})
 Tests whether the expression @var{expr} in the variable
 @var{v} is equivalent to zero, returning @code{true}, @code{false}, or
 @code{dontknow}.
@@ -925,4 +925,4 @@ For example @code{zeroequiv (sin(2*x) - 2*sin(x)*cos(x), x)} returns
 On the other hand @code{zeroequiv (log(a*b) - log(a) - log(b), a)} returns @code{dontknow} because
 of the presence of an extra parameter @code{b}.
 
-@end defun
+@end deffn

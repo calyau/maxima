@@ -6,8 +6,8 @@
 @node Definitions for Statistics,  , Statistics, Statistics
 @section Definitions for Statistics
 
-@defun gauss (@var{mean}, @var{sd})
+@deffn {Function} gauss (@var{mean}, @var{sd})
 Returns a random floating point number from a normal
 distribution with mean @var{mean} and standard deviation @var{sd}.
 
-@end defun
+@end deffn

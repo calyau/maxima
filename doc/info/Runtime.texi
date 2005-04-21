@@ -80,7 +80,7 @@ See also @code{features} and @code{featurep} for information about mathematical 
 
 @c NEEDS CLARIFICATION, ESPECIALLY WRT THE EXTENT OF THE FEATURE SYSTEM
 @c (I.E. WHAT KINDS OF THINGS ARE FEATURES ACCORDING TO featurep)
-@defun featurep (@var{a}, @var{f})
+@deffn {Function} featurep (@var{a}, @var{f})
 Attempts to determine whether the object @var{a} has the
 feature @var{f} on the basis of the facts in the current database.  If so,
 it returns @code{true}, else @code{false}.  See also @code{features}.
@@ -91,11 +91,11 @@ it returns @code{true}, else @code{false}.  See also @code{features}.
 (%o2)                           true
 @end example
 
-@end defun
+@end deffn
 
-@defun room ()
-@defunx room (true)
-@defunx room (false)
+@deffn {Function} room ()
+@deffnx {Function} room (true)
+@deffnx {Function} room (false)
 Prints out a description of the state of storage and
 stack management in Maxima. @code{room} calls the Lisp function of 
 the same name.
@@ -109,11 +109,11 @@ the same name.
 @code{room (false)} prints out a terse description.
 @end itemize
 
-@end defun
+@end deffn
 
-@defun status (feature)
-@defunx status (feature, @var{putative_feature})
-@defunx status (status)
+@deffn {Function} status (feature)
+@deffnx {Function} status (feature, @var{putative_feature})
+@deffnx {Function} status (status)
 Returns information about the presence or absence of certain
 system-dependent features.
 
@@ -138,9 +138,9 @@ it is unclear if this list has additional significance.
 The variable @code{features} contains a list of features which apply to 
 mathematical expressions. See @code{features} and @code{featurep} for more information.
 
-@end defun
+@end deffn
 
-@defun time (%o1, %o2, %o3, ...)
+@deffn {Function} time (%o1, %o2, %o3, ...)
 Returns a list of the times, in seconds, taken to compute the output
 lines @code{%o1}, @code{%o2}, @code{%o3}, .... The time returned is Maxima's estimate of
 the internal computation time, not the elapsed time. @code{time} can only
@@ -150,4 +150,4 @@ returns @code{unknown}.
 Set @code{showtime: true} to make Maxima print out the computation time 
 and elapsed time with each output line.
 
-@end defun
+@end deffn

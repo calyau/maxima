@@ -12,7 +12,7 @@ capable of finding the closed form of some series.   Operations such as addition
 @node Definitions for Series,  , Introduction to Series, Series
 @section Definitions for Series
 
-@defvar cauchysum
+@defvr {Variable} cauchysum
 Default value: @code{false}
 
 @c REPHRASE
@@ -49,9 +49,9 @@ Example:
                  i1 = 0 i2 = 0
 @end example
 
-@end defvar
+@end defvr
 
-@defun deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+@deffn {Function} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
 For each function @var{f_i} of one variable @var{x_i}, 
 @code{deftaylor} defines @var{expr_i} as the Taylor series about zero.
 @var{expr_i} is typically a polynomial in @var{x_i} or a summation;
@@ -84,9 +84,9 @@ Example:
                      2     18432     307200
 @end example
 
-@end defun
+@end deffn
 
-@defvar maxtayorder
+@defvr {Variable} maxtayorder
 Default value: @code{true}
 
 @c REPHRASE
@@ -94,9 +94,9 @@ When @code{maxtayorder} is @code{true}, then during algebraic
 manipulation of (truncated) Taylor series, @code{taylor} tries to retain
 as many terms as are known to be correct.
 
-@end defvar
+@end defvr
 
-@defun niceindices (@var{expr})
+@deffn {Function} niceindices (@var{expr})
 Renames the indices of sums and products in @var{expr}.
 @code{niceindices} attempts to rename each index to the value of @code{niceindicespref[1]},
 unless that name appears in the summand or multiplicand,
@@ -132,9 +132,9 @@ Example:
                           k = 1
 @end example
 
-@end defun
+@end deffn
 
-@defvar niceindicespref
+@defvr {Variable} niceindicespref
 Default value: @code{[i, j, k, l, m, n]}
 
 @code{niceindicespref} is the list from which @code{niceindices}
@@ -165,9 +165,9 @@ Example:
                           p = 1
 @end example
 
-@end defvar
+@end defvr
 
-@defun nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+@deffn {Function} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
 Carries out indefinite hypergeometric summation of @var{expr} with
 respect to @var{x} using a decision procedure due to R.W. Gosper.
 @var{expr} and the result must be expressible as products of integer powers,
@@ -221,10 +221,10 @@ Dependent equations eliminated:  (2 3)
                           i = 1
 @end example
 
-@end defun
+@end deffn
 
 @c THIS ITEM NEEDS SERIOUS WORK
-@defun pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+@deffn {Function} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
 Returns a list of
 all rational functions which have the given Taylor series expansion
 where the sum of the degrees of the numerator and the denominator is
@@ -290,9 +290,9 @@ in order to have enough unknown coefficients to solve.
  + 2856700692480 x  + 3370143559680 x + 2386516803584)]
 @end example
 
-@end defun
+@end deffn
 
-@defvar powerdisp
+@defvr {Variable} powerdisp
 Default value: @code{false}
 
 When @code{powerdisp} is @code{true},
@@ -303,9 +303,9 @@ with the constant term first and the highest power last.
 By default, terms of a sum are displayed in order of decreasing power.
 
 @c NEED AN EXAMPLE HERE
-@end defvar
+@end defvr
 
-@defun powerseries (@var{expr}, @var{x}, @var{a})
+@deffn {Function} powerseries (@var{expr}, @var{x}, @var{a})
 Returns the general form of the power series expansion for @var{expr}
 in the variable @var{x} about the point @var{a} (which may be @code{inf} for infinity).
 
@@ -344,9 +344,9 @@ in the first simplification we have returned:
                                       2
 @end example
 
-@end defun
+@end deffn
 
-@defvar psexpand
+@defvr {Variable} psexpand
 Default value: @code{false}
 
 When @code{psexpand} is @code{true},
@@ -361,10 +361,10 @@ a multivariate expression is displayed just as in the rational function package.
 When @code{psexpand} is  @code{multi},
 then terms with the same total degree in the variables are grouped together.
 
-@end defvar
+@end defvr
 
-@defun revert (@var{expr}, @var{x})
-@defunx revert2 (@var{expr}, @var{x}, @var{n})
+@deffn {Function} revert (@var{expr}, @var{x})
+@deffnx {Function} revert2 (@var{expr}, @var{x}, @var{n})
 These functions return the reversion of @var{expr}, a Taylor series about zero in the variable @var{x}.
 @code{revert} returns a polynomial of degree equal to the highest power in @var{expr}.
 @code{revert2} returns a polynomial of degree @var{n},
@@ -405,7 +405,7 @@ Examples:
                          4    3    2
 @end example
 
-@end defun
+@end deffn
 
 @c OBSOLETE AS ADVERTISED; NOT CALLED FROM ANY USER-LEVEL FILE (.mac OR .dem)
 @c CUT THIS OUT ON NEXT PASS
@@ -414,14 +414,14 @@ Examples:
 @c 
 @c @end defun
 
-@defun taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@deffn {Function} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
 @c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
 @c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
 @c @defunx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
-@defunx taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
-@defunx taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@deffnx {Function} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
 @c THIS ONE IS LONG TOO, BUT APPARENTLY IT IS OK IF THE LAST @defunx IS LONG
-@defunx taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
 
 @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expands the expression @var{expr}
 in a truncated Taylor or Laurent series in the variable @var{x}
@@ -595,9 +595,9 @@ Examples:
           x + y     6                   360
 @end example
 
-@end defun
+@end deffn
 
-@defvar taylordepth
+@defvr {Variable} taylordepth
 Default value: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
@@ -605,9 +605,9 @@ If there are still no nonzero terms, @code{taylor} doubles the
 degree of the expansion of @code{@var{g}(@var{x})}
 so long as the degree of the expansion is less than or equal to @code{@var{n} 2^taylordepth}.
 
-@end defvar
+@end defvr
 
-@defun taylorinfo (@var{expr})
+@deffn {Function} taylorinfo (@var{expr})
 Returns information about the Taylor series @var{expr}.
 The return value is a list of lists.
 Each list comprises the name of a variable,
@@ -634,16 +634,16 @@ Example:
 (%o2)               [[y, a, inf], [x, 0, 3]]
 @end example
 
-@end defun
+@end deffn
 
-@defun taylorp (@var{expr})
+@deffn {Function} taylorp (@var{expr})
 Returns @code{true} if @var{expr} is a Taylor series,
 and @code{false} otherwise.
 
-@end defun
+@end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defvar taylor_logexpand
+@defvr {Variable} taylor_logexpand
 Default value: @code{true}
 
 @code{taylor_logexpand} controls expansions of logarithms in
@@ -658,9 +658,9 @@ When @code{taylor_logexpand} is set to @code{false}, then the only expansion of 
 that occur is that necessary to obtain a formal power series.
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
-@defvar taylor_order_coefficients
+@defvr {Variable} taylor_order_coefficients
 Default value: @code{true}
 
 @code{taylor_order_coefficients} controls the ordering of
@@ -672,15 +672,15 @@ coefficients of taylor series are ordered canonically.
 @c AND WHAT HAPPENS WHEN IT IS FALSE ??
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
-@defun taylor_simplifier (@var{expr})
+@deffn {Function} taylor_simplifier (@var{expr})
 Simplifies coefficients of the power series @var{expr}.
 @code{taylor} calls this function.
 
-@end defun
+@end deffn
 
-@defvar taylor_truncate_polynomials
+@defvr {Variable} taylor_truncate_polynomials
 Default value: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
@@ -691,15 +691,15 @@ Otherwise,
 polynomials input to @code{taylor} are considered to have infinite precison.
 @c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
 
-@end defvar
+@end defvr
 
-@defun taytorat (@var{expr})
+@deffn {Function} taytorat (@var{expr})
 Converts @var{expr} from @code{taylor} form to canonical rational expression (CRE) form.
 The effect is the same as @code{rat (ratdisrep (@var{expr}))}, but faster.
 
-@end defun
+@end deffn
 
-@defun trunc (@var{expr})
+@deffn {Function} trunc (@var{expr})
 Annotates the internal representation of the general expression @var{expr}
 so that it is displayed as if its sums were truncated Taylor series.
 @var{expr} is not otherwise modified.
@@ -717,9 +717,9 @@ Example:
 (%o3)                         true
 @end example
 
-@end defun
+@end deffn
 
-@defun unsum (@var{f}, @var{n})
+@deffn {Function} unsum (@var{f}, @var{n})
 Returns the first backward difference @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}.
 Thus @code{unsum} in a sense is the inverse of @code{sum}.
 
@@ -755,12 +755,12 @@ Examples:
                         binomial(2 n, n)
 @end example
 
-@end defun
+@end deffn
 
-@defvar verbose
+@defvr {Variable} verbose
 Default value: @code{false}
 
 When @code{verbose} is @code{true},
 @code{powerseries} prints progress messages.
 
-@end defvar
+@end defvr

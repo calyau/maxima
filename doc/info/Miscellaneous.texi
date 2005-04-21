@@ -28,13 +28,13 @@ Users may find it more informative to browse the share directory using a file sy
 @node Definitions for Miscellaneous Options,  , SHARE, Miscellaneous Options
 @section Definitions for Miscellaneous Options
 
-@defvar aliases
+@defvr {Variable} aliases
 Default value: []
 
 @code{aliases} is the list of atoms which have a user defined alias (set up by
 the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring the atom a
 @code{noun} with @code{declare}).
-@end defvar
+@end defvr
 
 
 @defvr declaration alphabetic
@@ -56,7 +56,7 @@ the letters @code{A} through @code{Z}, @code{a} through @code{z}, @code{%} and @
 
 @c REPHRASE
 @c DOES apropos RETURN THE SAME THING AS THE LIST SHOWN BY describe ??
-@defun apropos (@var{string})
+@deffn {Function} apropos (@var{string})
 Searches for Maxima names which have @var{string} appearing anywhere within
 them.  Thus, @code{apropos (exp)} returns a list of all the flags
 and functions which have @code{exp} as part of their names, such as @code{expand},
@@ -65,9 +65,9 @@ of something you can use this command to find the rest of the name.
 Similarily, you could say @code{apropos (tr_)} to find a list of many of the
 switches relating to the translator, most of which begin with @code{tr_}.
 
-@end defun
+@end deffn
 
-@defun args (@var{expr})
+@deffn {Function} args (@var{expr})
 Returns the list of arguments of @code{expr},
 which may be any kind of expression other than an atom.
 Only the arguments of the top-level operator are extracted;
@@ -82,39 +82,39 @@ See also @code{substpart}.
 See also @code{op}.
 
 @c NEEDS EXAMPLES
-@end defun
+@end deffn
 
-@defvar genindex
+@defvr {Variable} genindex
 Default value: @code{i}
 
 @code{genindex} is the alphabetic prefix used to generate the
 next variable of summation when necessary.
 
-@end defvar
+@end defvr
 
-@defvar gensumnum
+@defvr {Variable} gensumnum
 Default value: 0
 
 @code{gensumnum} is the numeric suffix used to generate the next variable
 of summation.  If it is set to @code{false} then the index will consist only
 of @code{genindex} with no numeric suffix.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defvar inf
+@defvr {Variable} inf
 Real positive infinity.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defvar infinity
+@defvr {Variable} infinity
 Complex infinity, an infinite magnitude of arbitrary phase
 angle.  See also @code{inf} and @code{minf}.
 
-@end defvar
+@end defvr
 
-@defvar infolists
+@defvr {Variable} infolists
 Default value: []
 
 @code{infolists} is a list of the names of all of the information
@@ -158,9 +158,9 @@ plus the special package @code{default_let_rule_package}.
 (@code{default_let_rule_package} is the name of the rule package used when
 one is not explicitly set by the user.)
 
-@end defvar
+@end defvr
 
-@defun integerp (@var{expr})
+@deffn {Function} integerp (@var{expr})
 Returns @code{true} if @var{expr} is a literal numeric integer, otherwise @code{false}.
 
 @code{integerp} returns false if its argument is a symbol,
@@ -189,9 +189,9 @@ Examples:
 (%o9)                         false
 @end example
 
-@end defun
+@end deffn
 
-@defvar m1pbranch
+@defvr {Variable} m1pbranch
 Default value: @code{false}
 
 @code{m1pbranch} is the principal branch for @code{-1} to a power.
@@ -211,9 +211,9 @@ m1pbranch:false          m1pbranch:true
 (-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
 @end example
 
-@end defvar
+@end defvr
 
-@defun numberp (@var{expr})
+@deffn {Function} numberp (@var{expr})
 Returns @code{true} if @var{expr} is a literal integer, rational number, 
 floating point number, or bigfloat, otherwise @code{false}.
 
@@ -242,15 +242,15 @@ Examples:
 (%o7) [false, false, false, false, false, false, false, false]
 @end example
 
-@end defun
+@end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@defun properties (@var{a})
+@deffn {Function} properties (@var{a})
 Returns a list of the names of all the
 properties associated with the atom @var{a}.
 
-@end defun
+@end deffn
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -264,18 +264,18 @@ as properties specified in the @code{declare} function.
 
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@defun propvars (@var{prop})
+@deffn {Function} propvars (@var{prop})
 Returns a list of those atoms on the @code{props} list which
 have the property indicated by @var{prop}.  Thus @code{propvars (atvalue)}
 returns a list of atoms which have atvalues.
 
-@end defun
+@end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c ARE PROPERTIES ESTABLISHED BY put THE SAME AS PROPERTIES ESTABLISHED BY declare OR OTHER FUNCTIONS ??
 @c IS put (foo, true, integer) EQUIVALENT TO declare (foo, integer) FOR EXAMPLE ??
-@defun put (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} put (@var{atom}, @var{value}, @var{indicator})
 Assigns @var{value} to the property (specified by @var{indicator}) of @var{atom}.
 @var{indicator} may be the name of any property, not just a system-defined property.
 
@@ -299,9 +299,9 @@ Examples:
 (%o5)                         Hello
 @end example
 
-@end defun
+@end deffn
 
-@defun qput (@var{atom}, @var{value}, @var{indicator})
+@deffn {Function} qput (@var{atom}, @var{value}, @var{indicator})
 Assigns @var{value} to the property (specified by @var{indicator}) of @var{atom}.
 This is the same as @code{put},
 except that the arguments are quoted.
@@ -326,23 +326,23 @@ Example:
 (%o9)                          bar
 @end example
 
-@end defun
+@end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM remove ??
-@defun rem (@var{atom}, @var{indicator})
+@deffn {Function} rem (@var{atom}, @var{indicator})
 Removes the property indicated by @var{indicator} from @var{atom}.
 
-@end defun
+@end deffn
 
 @c CROSS REF TO OTHER FUNCTIONS WHICH PUT/GET PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c HOW DOES THIS INTERACT WITH declare OR OTHER PROPERTY-ESTABLISHING FUNCTIONS ??
 @c HOW IS THIS DIFFERENT FROM rem ??
-@defun remove (@var{atom_1}, @var{property_1}, ..., @var{atom_n}, @var{property_n})
-@defunx remove ([@var{atom_1}, ..., @var{atom_m}], [@var{property_1}, ..., @var{property_n}], ...)
+@deffn {Function} remove (@var{atom_1}, @var{property_1}, ..., @var{atom_n}, @var{property_n})
+@deffnx {Function} remove ([@var{atom_1}, ..., @var{atom_m}], [@var{property_1}, ..., @var{property_n}], ...)
 Removes properties associated with atoms.
 
 @code{remove (@var{atom_1}, @var{property_1}, ..., @var{atom_n}, @var{property_n})}
@@ -378,11 +378,11 @@ This behavior is unlike the more specific remove functions
 (@code{remvalue}, @code{remarray}, @code{remfunction}, and @code{remrule}).
 
 @c IN SERIOUS NEED OF EXAMPLES HERE
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLES
-@defun remvalue (@var{name_1}, ..., @var{name_n})
-@defunx remvalue (all)
+@deffn {Function} remvalue (@var{name_1}, ..., @var{name_n})
+@deffnx {Function} remvalue (all)
 Removes the values of user variables @var{name_1}, ..., @var{name_n}
 (which can be subscripted) from the system.
 
@@ -392,10 +392,10 @@ the list of all variables given names by the user
 
 See also @code{values}.
 
-@end defun
+@end deffn
 
 @c NEEDS EXAMPLES
-@defun rncombine (@var{expr})
+@deffn {Function} rncombine (@var{expr})
 Transforms @var{expr} by combining all terms of @var{expr} that have
 identical denominators or denominators that differ from each other by
 numerical factors only.  This is slightly different from the behavior
@@ -407,17 +407,17 @@ additional step of cross-multiplying numerical denominator factors.
 This results in neater forms, and the possiblity of recognizing some
 cancellations.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun scalarp (@var{expr})
+@deffn {Function} scalarp (@var{expr})
 Returns @code{true} if @var{expr} is a number, constant, or variable
 declared @code{scalar} with @code{declare}, or composed entirely of numbers, constants, and such
 variables, but not containing matrices or lists.
 
-@end defun
+@end deffn
 
-@defun setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
+@deffn {Function} setup_autoload (@var{filename}, @var{function_1}, ..., @var{function_n})
 Specifies that
 if any of @var{function_1}, ..., @var{function_n} are referenced and not yet defined,
 @var{filename} is loaded via @code{load}.
@@ -458,4 +458,4 @@ Warning - you are redefining the Macsyma function legendre_p
                              2
 @end example
 
-@end defun
+@end deffn

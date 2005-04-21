@@ -6,7 +6,7 @@
 @node Definitions for Differentiation,  , Differentiation, Differentiation
 @section Definitions for Differentiation
 
-@defun antid (@var{expr}, @var{x}, @var{u(x)}) 
+@deffn {Function} antid (@var{expr}, @var{x}, @var{u(x)}) 
 Returns a two-element list,
 such that an antiderivative of @var{expr} with respect to @var{x}
 can be constructed from the list.
@@ -74,9 +74,9 @@ Examples:
                   /
 @end example
 
-@end defun
+@end deffn
 
-@defun antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+@deffn {Function} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
 Returns an antiderivative of @var{expr} with respect to @var{x}.
 The expression @var{expr} may contain an unknown function @var{u} and its derivatives.
 
@@ -138,7 +138,7 @@ Examples:
                   /
 @end example
 
-@end defun
+@end deffn
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
 @defvr property atomgrad
@@ -149,8 +149,8 @@ This property is assigned by @code{gradef}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defun atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
-@defunx atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+@deffn {Function} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffnx {Function} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
 Assigns the value @var{c} to @var{expr} at the point @code{@var{x} = @var{a}}.
 Typically boundary values are established by this mechanism.
 
@@ -217,12 +217,12 @@ Examples:
                                          !x = 0, y = 1
 @end example
 
-@end defun
+@end deffn
 
 @c LOOKS LIKE cartan IS THE NAME OF A PACKAGE AND NOT A FUNCTION OR VARIABLE
 @c PROBABLY SHOULD SPLIT OUT cartan AND ITS CONTENTS INTO ITS OWN TEXINFO FILE
 @c ext_diff AND lie_diff NOT DOCUMENTED (OTHER THAN HERE)
-@defun cartan  -
+@deffn {Function} cartan  -
 The exterior calculus of differential forms is a basic tool
 of differential geometry developed by Elie Cartan and has important
 applications in the theory of partial differential equations.
@@ -235,9 +235,9 @@ description of these commands along with examples.
 
 @code{cartan} was implemented by F.B. Estabrook and H.D. Wahlquist.
 
-@end defun
+@end deffn
 
-@defun del (@var{x})
+@deffn {Function} del (@var{x})
 @code{del (@var{x})} represents the differential of the variable @math{x}.
 
 @code{diff} returns an expression containing @code{del}
@@ -262,9 +262,9 @@ Examples:
 (%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
 
-@end defun
+@end deffn
 
-@defun delta (@var{t})
+@deffn {Function} delta (@var{t})
 The Dirac Delta function.
 
 Currently only @code{laplace} knows about the @code{delta} function.
@@ -280,9 +280,9 @@ p;
 (%o1)                   sin(a b) %e
 @end example
 
-@end defun
+@end deffn
 
-@defvar dependencies
+@defvr {Variable} dependencies
 Default value: []
 
 @code{dependencies} is the list of atoms which have functional
@@ -292,9 +292,9 @@ each call to @code{depends} or @code{gradef} appends additional items.
 
 See @code{depends} and @code{gradef}.
 
-@end defvar
+@end defvr
 
-@defun depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+@deffn {Function} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
 Declares functional dependencies among variables for the purpose of computing derivatives.
 In the absence of declared dependence,
 @code{diff (f, x)} yields zero.
@@ -366,9 +366,9 @@ unless explicitly represented as @code{integrate (f(x), x)}.
                                 du dt
 @end example
 
-@end defun
+@end deffn
 
-@defvar derivabbrev
+@defvr {Variable} derivabbrev
 Default value: @code{false}
 
 When @code{derivabbrev} is @code{true},
@@ -376,10 +376,10 @@ symbolic derivatives (that is, @code{diff} nouns) are displayed as subscripts.
 Otherwise, derivatives are displayed in the Leibniz notation @code{dy/dx}.
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
 @c SEEMS LIKE THIS STATEMENT COULD BE LESS CLUMSY
-@defun derivdegree (@var{expr}, @var{y}, @var{x})
+@deffn {Function} derivdegree (@var{expr}, @var{y}, @var{x})
 Returns the highest degree of the derivative
 of the dependent variable @var{y} with respect to the independent variable
 @var{x} occuring in @var{expr}.
@@ -399,27 +399,27 @@ Example:
 (%o2)                           2
 @end example
 
-@end defun
+@end deffn
 
 @c I HAVE NO IDEA WHAT THIS DOES
-@defun derivlist (@var{var_1}, ..., @var{var_k})
+@deffn {Function} derivlist (@var{var_1}, ..., @var{var_k})
 Causes only differentiations with respect to
 the indicated variables, within the @code{ev} command.
 
-@end defun
+@end deffn
 
-@defvar derivsubst
+@defvr {Variable} derivsubst
 Default value: @code{false}
 
 When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
 @code{subst (x, 'diff (y, t), 'diff (y, t, 2))} yields @code{'diff (x, t)}.
 
-@end defvar
+@end defvr
 
-@defun diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
-@defunx diff (@var{expr}, @var{x}, @var{n})
-@defunx diff (@var{expr}, @var{x})
-@defunx diff (@var{expr})
+@deffn {Function} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@deffnx {Function} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {Function} diff (@var{expr}, @var{x})
+@deffnx {Function} diff (@var{expr})
 Returns the derivative or differential of @var{expr} with respect to some or all variables in @var{expr}.
 
 @code{diff (@var{expr}, @var{x}, @var{n})} returns the @var{n}'th derivative of @var{expr}
@@ -499,7 +499,7 @@ not been assigned a value, then the variables will be treated as in (1)
 above.
 
 @c NEED EXAMPLES FOR TENSOR STUFF
-@end defun
+@end deffn
 
 @c MERGE THIS INTO @defun diff
 @defvr {special symbol} diff
@@ -511,7 +511,7 @@ all differentiations indicated in @code{expr} are carried out.
 @end defvr
 
 @c NOT SURE HOW THIS IS SUPPOSED TO WORK
-@defun dscalar (@var{f})
+@deffn {Function} dscalar (@var{f})
 Applies the scalar d'Alembertian to the scalar function @var{f}.
 
 @c APPARENTLY dscalar DOESN'T EXIST IN THE CORE FILES ANYMORE
@@ -536,9 +536,9 @@ Applies the scalar d'Alembertian to the scalar function @var{f}.
 @c                              2 r
 @c @end example
 
-@end defun
+@end deffn
 
-@defun express (@var{expr})
+@deffn {Function} express (@var{expr})
 @c HERE IS THE PREVIOUS TEXT. WHAT IS THE POINT ABOUT depends ?? I'M NOT GETTING IT
 @c The result uses the noun form of any
 @c derivatives arising from expansion of the vector differential
@@ -623,7 +623,7 @@ Examples:
 (%o15)          [b z - c y, c x - a z, a y - b x]
 @end example
 
-@end defun
+@end deffn
 
 @c COMMENTING OUT THIS TEXT PENDING RESOLUTION OF BUG REPORT # 836704:
 @c "gendiff is all bugs: should be deprecated"
@@ -647,8 +647,8 @@ Examples:
 @c
 @c @end defun
 
-@defun gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
-@defunx gradef (@var{a}, @var{x}, @var{expr})
+@deffn {Function} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffnx {Function} gradef (@var{a}, @var{x}, @var{expr})
 Defines the partial derivatives (i.e., the components of the gradient) of the function @var{f}
 or variable @var{a}.
 
@@ -688,9 +688,9 @@ explicitly but its first derivatives are and it is desired to obtain
 higher order derivatives.
 
 @c NEED EXAMPLES HERE
-@end defun
+@end deffn
 
-@defvar gradefs
+@defvr {Variable} gradefs
 Default value: []
 
 @code{gradefs} is the list of the functions
@@ -698,9 +698,9 @@ for which partial derivatives have been defined by @code{gradef}.
 @code{gradefs} does not include any variables
 for which partial derivatives have been defined by @code{gradef}.
 
-@end defvar
+@end defvr
 
-@defun laplace (@var{expr}, @var{t}, @var{s})
+@deffn {Function} laplace (@var{expr}, @var{t}, @var{s})
 Attempts to compute the Laplace transform of @var{expr} with respect to the variable @var{t}
 and transform parameter @var{s}.
 If @code{laplace} cannot find a solution, a noun @code{'laplace} is returned.
@@ -762,4 +762,4 @@ Examples:
                             !t = 0
 @end example
 
-@end defun
+@end deffn

@@ -236,7 +236,7 @@ and the @code{specfun} version, as reported by @code{get ('specfun, 'version)}.
 @section Definitions for Orthogonal Polynomials
 
 @anchor{assoc_legendre_p}
-@defun assoc_legendre_p (@var{n}, @var{m}, @var{x})
+@deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
 Returns the associated Legendre function
 of the first kind for  integers @math{ n > -1 } and 
 @math{ m > -1}.  When @math{ | m | > n } and @math{ n >= 0},
@@ -247,10 +247,10 @@ equation) page 334, and A&S 8.2.5 page 333.
 @code{load ("specfun")} loads this function.
 
 See @ref{assoc_legendre_q}, @ref{legendre_p}, and @ref{legendre_q}.
-@end defun
+@end deffn
 
 @anchor{assoc_legendre_q}
-@defun assoc_legendre_q (@var{n}, @var{m}, @var{x})
+@deffn {Function} assoc_legendre_q (@var{n}, @var{m}, @var{x})
 
 Returns the associated Legendre function
 of the second kind for  integers @math{ n > -1 } and 
@@ -261,10 +261,10 @@ Reference: Gradshteyn and Ryzhik  8.706 page 1000.
 @code{load ("specfun")} loads this function.
 
 See also @ref{assoc_legendre_p}, @ref{legendre_p}, and @ref{legendre_q}.
-@end defun
+@end deffn
 
 @anchor{chebyshev_t}
-@defun   chebyshev_t (@var{n}, @var{x})
+@deffn {Function}   chebyshev_t (@var{n}, @var{x})
 
 Returns the Chebyshev function of the first kind
 for  integers @math{ n > -1}.
@@ -275,10 +275,10 @@ Reference: A&S 22.5.31 page 778 and A&S 6.1.22 page 256.
 
 See also @ref{chebyshev_u}.
 
-@end defun
+@end deffn
 
 @anchor{chebyshev_u}
-@defun   chebyshev_u (@var{n}, @var{x})
+@deffn {Function}   chebyshev_u (@var{n}, @var{x})
 
 Returns the Chebyshev function of the 
 second kind for integers @math{ n > -1}.
@@ -289,10 +289,10 @@ Reference: A&S, 22.8.3 page 783  and A&S 6.1.22 page 256.
 
 See also @ref{chebyshev_t}.
 
-@end defun
+@end deffn
 
 @anchor{gen_laguerre}
-@defun   gen_laguerre (@var{n}, @var{a}, @var{x})
+@deffn {Function}   gen_laguerre (@var{n}, @var{a}, @var{x})
 
 Returns the generalized Laguerre polynomial
 for  integers @math{ n > -1}.
@@ -300,10 +300,10 @@ for  integers @math{ n > -1}.
 @code{load ("specfun")} loads this function.
 
 Reference: table on page 789 in A&S.
-@end defun
+@end deffn
 
 @anchor{hermite}
-@defun hermite (@var{n}, @var{x})
+@deffn {Function} hermite (@var{n}, @var{x})
 
 Returns the Hermite polynomial for
 integers @math{ n > -1}.
@@ -312,10 +312,10 @@ integers @math{ n > -1}.
 
 Reference:  A&S 22.5.40 and 22.5.41, page 779.
 
-@end defun
+@end deffn
 
 @anchor{jacobi_p}
-@defun  jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
+@deffn {Function}  jacobi_p (@var{n}, @var{a}, @var{b}, @var{x})
 
 Returns the Jacobi polynomial for
 integers @math{ n > -1 } and @math{ a } and @math{ b }
@@ -344,10 +344,10 @@ added outside the summation.
 Reference:  table on page 789 in A&S.
 
 @c NEEDS EXAMPLES
-@end defun
+@end deffn
 
 @anchor{laguerre}
-@defun  laguerre (@var{n}, @var{x})
+@deffn {Function}  laguerre (@var{n}, @var{x})
 
 Returns the Laguerre polynomial for 
 integers @math{ n > -1}.  
@@ -358,10 +358,10 @@ Reference: A&S 22.5.16, page 778 and A&S page 789.
 
 See also @ref{gen_laguerre}.
 
-@end defun
+@end deffn
 
 @anchor{legendre_p}
-@defun  legendre_p (@var{n}, @var{x})
+@deffn {Function}  legendre_p (@var{n}, @var{x})
 
 Returns the Legendre polynomial of the 
 first kind for  integers @math{ n > -1}.  
@@ -372,10 +372,10 @@ Reference: A&S 22.5.35 page 779.
 
 See @ref{legendre_q}.
 
-@end defun
+@end deffn
 
 @anchor{legendre_q}
-@defun  legendre_q (@var{n}, @var{x})
+@deffn {Function}  legendre_q (@var{n}, @var{x})
 
 Returns the Legendre polynomial of the 
 first kind for  integers @math{ n > -1}.  
@@ -386,10 +386,10 @@ Reference: A&S 8.6.19 page 334.
 
 See also @ref{legendre_p}.
 
-@end defun
+@end deffn
 
 @anchor{spherical_bessel_j}
-@defun spherical_bessel_j (@var{n}, @var{x})
+@deffn {Function} spherical_bessel_j (@var{n}, @var{x})
 
 Returns the spherical Bessel function of
 the first kind for  integers @math{ n > -1}.  
@@ -401,10 +401,10 @@ Reference: A&S 10.1.8 page 437 and A&S 10.1.15 page 439.
 See also @ref{spherical_hankel1}, @ref{spherical_hankel2}, 
 and @ref{spherical_bessel_y}.
 
-@end defun
+@end deffn
 
 @anchor{spherical_bessel_y}
-@defun spherical_bessel_y (@var{n}, @var{x})
+@deffn {Function} spherical_bessel_y (@var{n}, @var{x})
 
 Returns the spherical Bessel function of
 the second kind for  integers @math{ n > -1}.  
@@ -416,10 +416,10 @@ Reference: A&S 10.1.9 page 437 and 10.1.15 page 439.
 See also @ref{spherical_hankel1}, @ref{spherical_hankel2}, 
 and @ref{spherical_bessel_y}.
 
-@end defun
+@end deffn
 
 @anchor{spherical_hankel1}
-@defun spherical_hankel1 (@var{n}, @var{x})
+@deffn {Function} spherical_hankel1 (@var{n}, @var{x})
 
 Returns the spherical hankel function  of the
 first kind for  integers @math{ n > -1}.  
@@ -431,10 +431,10 @@ Reference: A&S 10.1.36 page 439.
 See also @ref{spherical_hankel2}, @ref{spherical_bessel_j}, and
 @ref{spherical_bessel_y}.
 
-@end defun
+@end deffn
 
 @anchor{spherical_hankel2}
-@defun spherical_hankel2 (@var{n}, @var{x})
+@deffn {Function} spherical_hankel2 (@var{n}, @var{x})
 
 Returns the spherical hankel function  of the
 second kind for  integers @math{ n > -1}.  
@@ -446,10 +446,10 @@ Reference:  A&S 10.1.17 page 439.
 See also @ref{spherical_hankel1}, @ref{spherical_bessel_j}, and
 @ref{spherical_bessel_y}.
 
-@end defun
+@end deffn
 
 @anchor{spherical_harmonic}
-@defun spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
+@deffn {Function} spherical_harmonic (@var{n}, @var{m}, @var{x}, @var{y})
 
 Returns the spherical harmonic function
 for integers @math{ n > -1} and @math{ | m | <= n }.
@@ -460,10 +460,10 @@ Reference:  Merzbacher 9.64.
 
 See also @ref{assoc_legendre_p}.
 
-@end defun
+@end deffn
 
 @anchor{ultraspherical}
-@defun ultraspherical (@var{n}, @var{a}, @var{x})
+@deffn {Function} ultraspherical (@var{n}, @var{a}, @var{x})
 
 Returns the ultraspherical polynomials for  
 integers @math{ n > -1}.  The ultraspherical polynomials are
@@ -475,5 +475,5 @@ Reference: A&S 22.5.27
 
 See also @ref{jacobi_p}.
 
-@end defun
+@end deffn
 

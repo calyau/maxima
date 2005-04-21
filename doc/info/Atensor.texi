@@ -102,8 +102,8 @@ simplifications.
 
 @section Definitions for atensor
 
-@defun init_atensor (@var{alg_type}, @var{opt_dims})
-@defunx init_atensor (@var{alg_type})
+@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Function} init_atensor (@var{alg_type})
 
 Initializes the @code{atensor} package with the specified algebra type. @var{alg_type}
 can be one of the following:
@@ -157,10 +157,10 @@ Cl(3,0). A call to @code{init_atensor(pauli)} is equivalent to
 Cl(3,1). A call to @code{init_atensor(dirac)} is equivalent to
 @code{init_atensor(clifford,3,0,1)}.
 
-@end defun
+@end deffn
 
 
-@defun atensimp (@var{expr})
+@deffn {Function} atensimp (@var{expr})
 
 Simplifies an algebraic tensor expression @var{expr} according to the rules
 configured by a call to @code{init_atensor}. Simplification includes
@@ -169,54 +169,54 @@ to @code{sf}, @code{af}, and @code{av} where applicable. A
 safeguard is used to ensure that the function always terminates, even
 for complex expressions.
 
-@end defun
+@end deffn
 
-@defun alg_type
+@deffn {Function} alg_type
 
 The algebra type. Valid values are @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
 
-@end defun
+@end deffn
 
-@defvar adim
+@defvr {Variable} adim
 
 The dimensionality of the algebra. @code{atensor} uses the value of @code{adim}
 to determine if an indexed object is a valid base vector. Defaults to 0.
 
-@end defvar
+@end defvr
 
-@defvar aform
+@defvr {Variable} aform
 
 Default values for the bilinear forms @code{sf}, @code{af}, and
 @code{av}. The default is the identity matrix @code{ident(3)}.
 
-@end defvar
+@end defvr
 
-@defvar asymbol
+@defvr {Variable} asymbol
 
 The symbol for base vectors. Defaults to @code{v}.
 
-@end defvar
+@end defvr
 
-@defun sf (@var{u}, @var{v})
+@deffn {Function} sf (@var{u}, @var{v})
 
 A symmetric scalar function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
 using @code{abasep} and if that is the case, substitutes the
 corresponding value from the matrix @code{aform}.
 
-@end defun
+@end deffn
 
-@defun af (@var{u}, @var{v})
+@deffn {Function} af (@var{u}, @var{v})
 
 An antisymmetric scalar function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
 using @code{abasep} and if that is the case, substitutes the
 corresponding value from the matrix @code{aform}.
 
-@end defun
+@end deffn
 
-@defun av (@var{u}, @var{v})
+@deffn {Function} av (@var{u}, @var{v})
 
 An antisymmetric function that is used in commutation relations.
 The default implementation checks if both arguments are base vectors
@@ -243,14 +243,14 @@ For instance:
                                        3
 @end example
 
-@end defun
+@end deffn
 
 
-@defun abasep (@var{v})
+@deffn {Function} abasep (@var{v})
 
 Checks if its argument is an @code{atensor} base vector. That is, if it is
 an indexed symbol, with the symbol being the same as the value of
 @code{asymbol}, and the index having a numeric value between 1
 and @code{adim}.
 
-@end defun
+@end deffn

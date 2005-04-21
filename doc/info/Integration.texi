@@ -27,7 +27,7 @@ integrals in terms of unknown functions such as @code{g(x)} and @code{h(x)}.
 @section Definitions for Integration
 
 @c NEEDS WORK
-@defun changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
+@deffn {Function} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 Makes the change of variable given by
 @code{@var{f(x,y)} = 0} in all integrals occurring in @var{expr} with integration with
 respect to @var{x}.
@@ -85,11 +85,11 @@ higher degree function.  E.g.,
                         n = - 2
 @end example
 
-@end defun
+@end deffn
 
 @c THIS ITEM IS A MESS, BUT DON'T BOTHER TO CLEAN IT UP:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@defun dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
+@deffn {Function} dblint (@var{f}, @var{r}, @var{s}, @var{a}, @var{b})
 A double-integral routine which was written in
 top-level Maxima and then translated and compiled to machine code.
 Use @code{load (dblint)} to access this package.  It uses the Simpson's rule
@@ -135,9 +135,9 @@ magnitude speed improvement over interpreted code in many cases!
 @c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT. !!!
 @c @code{demo (dblint_1)} executes another demonstration.
 
-@end defun
+@end deffn
 
-@defun defint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} defint (@var{expr}, @var{x}, @var{a}, @var{b})
 Attempts to compute a definite integral.
 @code{defint} is called by @code{integrate} when limits of integration are specified,
 i.e., when @code{integrate} is called as @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})}.
@@ -148,26 +148,26 @@ Thus from the user's point of view, it is sufficient to call @code{integrate}.
 either the computed integral or the noun form of the integral.
 See @code{quad_qag} and related functions for numerical approximation of definite integrals.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defun erf (@var{x})
+@deffn {Function} erf (@var{x})
 Represents the error function, whose derivative is:
 @code{2*exp(-x^2)/sqrt(%pi)}.
 
-@end defun
+@end deffn
 
-@defvar erfflag
+@defvr {Variable} erfflag
 Default value: @code{true}
 
 When @code{erfflag} is @code{false}, prevents @code{risch} from introducing the
 @code{erf} function in the answer if there were none in the integrand to
 begin with.
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
-@defun ilt (@var{expr}, @var{t}, @var{s})
+@deffn {Function} ilt (@var{expr}, @var{t}, @var{s})
 Computes the inverse Laplace transform of @var{expr} with
 respect to @var{t} and parameter @var{s}.  @var{expr} must be a ratio of
 polynomials whose denominator has only linear and quadratic factors.
@@ -212,10 +212,10 @@ pos;
                                                a  b  - 2 a  b + a
 @end example
 
-@end defun
+@end deffn
 
-@defun integrate (@var{expr}, @var{x})
-@defunx integrate (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} integrate (@var{expr}, @var{x})
+@deffnx {Function} integrate (@var{expr}, @var{x}, @var{a}, @var{b})
 Attempts to symbolically compute the integral of @var{expr} with respect to @var{x}.
 @code{integrate (@var{expr}, @var{x})} is an indefinite integral,
 while @code{integrate (@var{expr}, @var{x}, @var{a}, @var{b})} is a definite integral,
@@ -401,9 +401,9 @@ and the result becomes the body of @code{f_2}.
 @end example
 @end itemize
 
-@end defun
+@end deffn
 
-@defvar integration_constant_counter
+@defvr {Variable} integration_constant_counter
 Default value: 0
 
 @c WHEN DOES integrationconstant1 SHOW UP IN THE OUTPUT OF integrate ???
@@ -412,9 +412,9 @@ Default value: 0
 constant of integration (named by Maxima, e.g., @code{integrationconstant1})
 is introduced into an expression by indefinite integration of an equation.
 
-@end defvar
+@end defvr
 
-@defvar integrate_use_rootsof
+@defvr {Variable} integrate_use_rootsof
 Default value: @code{false}
 
 When @code{integrate_use_rootsof} is @code{true} and the denominator of
@@ -465,10 +465,10 @@ e.g., @code{1/((x - a)*(x - b)*(x - c))} or @code{1/((x^2 - (a+b)*x + a*b)*(x - 
 if the denominator is a cubic polynomial.
 Sometimes this will help Maxima obtain a more useful result.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defun ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} ldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Attempts to compute the definite integral of @var{expr} by using
 @code{limit} to evaluate the indefinite integral of @var{expr} with respect to @var{x}
 at the upper limit @var{b} and at the lower limit @var{a}.
@@ -481,11 +481,11 @@ so executing @code{ldefint (@var{expr}, @var{x}, @var{a}, @var{b})} may yield a 
 @code{ldefint} always uses the same method to evaluate the definite integral,
 while @code{integrate} may employ various heuristics and may recognize some special cases.
 
-@end defun
+@end deffn
 
 @c UMM, IS THERE SOME TEXT MISSING HERE ???
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defun potential (@var{givengradient})
+@deffn {Function} potential (@var{givengradient})
 The calculation makes use of the global variable @code{potentialzeroloc[0]}
 which must be @code{nonlist} or of the form
 
@@ -500,11 +500,11 @@ lower limit of integration.  The success of the integrations may
 depend upon their values and order. @code{potentialzeroloc} is initially set
 to 0.
 
-@end defun
+@end deffn
 
 @c THIS ITEM IS A MESS BUT DON'T BOTHER TO FIX IT:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@defun qq
+@deffn {Function} qq
 The package @code{qq} (which may be loaded with @code{load ("qq")})
 contains a function @code{quanc8} which can take either 3 or 4 arguments. The
 3 arg version computes the integral of the function specified as the
@@ -533,18 +533,18 @@ and the absolute error test:
 
 @code{printfile ("qq.usg")} yields additional information.
 
-@end defun
+@end deffn
 
-@defun quanc8 (@var{expr}, @var{a}, @var{b})
+@deffn {Function} quanc8 (@var{expr}, @var{a}, @var{b})
 An adaptive integrator.
 Demonstration and usage files are provided.  The method is to
 use Newton-Cotes 8-panel quadrature rule, hence the function name
 @code{quanc8}, available in 3 or 4 arg versions.  Absolute and relative error
 checks are used.  To use it do @code{load ("qq")}.  See also @code{qq}.
 
-@end defun
+@end deffn
 
-@defun residue (@var{expr}, @var{z}, @var{z_0})
+@deffn {Function} residue (@var{expr}, @var{z}, @var{z_0})
 Computes the residue in the complex plane of
 the expression @var{expr} when the variable @var{z} assumes the value @var{z_0}.  The
 residue is the coefficient of @code{(@var{z} - @var{z_0})^(-1)} in the Laurent series
@@ -562,9 +562,9 @@ for @var{expr}.
                                 6
 @end example
 
-@end defun
+@end deffn
 
-@defun risch (@var{expr}, @var{x})
+@deffn {Function} risch (@var{expr}, @var{x})
 Integrates @var{expr} with respect to @var{x} using the
 transcendental case of the Risch algorithm.  (The algebraic case of
 the Risch algorithm has not been implemented.)  This currently
@@ -588,12 +588,12 @@ with.
 (%o2)                       x  erf(x)
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS WORK BUT DON'T BOTHER TO CLEAN IT UP:
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
-@defun romberg (@var{expr}, @var{x}, @var{a}, @var{b})
-@defunx romberg (@var{expr}, @var{a}, @var{b})
+@deffn {Function} romberg (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffnx {Function} romberg (@var{expr}, @var{a}, @var{b})
 Romberg integration.
 There are two ways to use this function.  The first is an inefficient
 way like the definite integral version of @code{integrate}:
@@ -693,9 +693,9 @@ geometric information thrown away by expressing multiple integrals
 this way can be incredible.  The user should be sure to understand and
 use the @code{rombergtol} and @code{rombergit} switches.
 
-@end defun
+@end deffn
 
-@defvar rombergabs
+@defvr {Variable} rombergabs
 Default value: 0.0
 
 Assuming that successive estimates
@@ -756,9 +756,9 @@ This approach takes only 130 function evaluations.
 So if @code{f(x)} were a function that took a long time to compute, the
 second method would be about 2 times quicker.
 
-@end defvar
+@end defvr
 
-@defvar rombergit
+@defvr {Variable} rombergit
 Default value: 11
 
 The accuracy of the @code{romberg} integration
@@ -767,9 +767,9 @@ command is governed by the global variables @code{rombergtol} and
 difference in successive approximations is less than @code{rombergtol}.  It
 will try halving the stepsize @code{rombergit} times before it gives up.
 
-@end defvar
+@end defvr
 
-@defvar rombergmin
+@defvr {Variable} rombergmin
 Default value: 0
 
 @code{rombergmin} governs the minimum number of function
@@ -778,9 +778,9 @@ arg. at least @code{2^(rombergmin+2)+1} times.  This is useful for
 integrating oscillatory functions, when the normal converge test might
 sometimes wrongly pass.
 
-@end defvar
+@end defvr
 
-@defvar rombergtol
+@defvr {Variable} rombergtol
 Default value: 1e-4
 
 The accuracy of the @code{romberg} integration
@@ -789,17 +789,17 @@ command is governed by the global variables @code{rombergtol} and
 difference in successive approximations is less than @code{rombergtol}.  It
 will try halving the stepsize @code{rombergit} times before it gives up.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@defun tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
+@deffn {Function} tldefint (@var{expr}, @var{x}, @var{a}, @var{b})
 Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Numerically evaluate the integral
 
 @ifinfo
@@ -866,11 +866,11 @@ Examples:
 (%o2)                           -
                                 9
 @end example
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically integrate the given function using adaptive quadrature with
 extrapolation.  The function to be integrated is @var{f(x)}, with
@@ -924,11 +924,11 @@ Examples:
 
 Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} for this integrand.
 
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
 
 Numerically evaluate one of the following integrals
 
@@ -1018,11 +1018,11 @@ Examples:
                                32
 @end example
 
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically compute the Cauchy principal value of
 
@@ -1097,11 +1097,11 @@ Principal Value
 (%o3)                    - 3.130120337415917
 @end example
 
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the a Fourier-type integral using the Quadpack QAWF
 routine.  The integral is
@@ -1186,11 +1186,11 @@ Examples:
 (%o3)                   .6901942235215714
 @end example
 
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the integral using the Quadpack QAWO
 routine:
@@ -1276,11 +1276,11 @@ Examples:
 (%o3)                     1.376043390090716
 @end example
 
-@end defun
+@end deffn
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@defun quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffn {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
 
 Numerically compute the integral using the Quadpack QAWS
 routine:
@@ -1368,5 +1368,5 @@ pos;
 (%o3)                     8.750097361672829
 @end example
 
-@end defun
+@end deffn
 

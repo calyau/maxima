@@ -129,101 +129,101 @@ that governs the distribution of Maxima.
 
 @section Definitions for Elliptic Functions
 
-@defun jacobi_sn (@var{u}, @var{m})
+@deffn {Function} jacobi_sn (@var{u}, @var{m})
 The Jacobian elliptic function @math{sn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_cn (@var{u}, @var{m})
+@deffn {Function} jacobi_cn (@var{u}, @var{m})
 The Jacobian elliptic function @math{cn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_dn (@var{u}, @var{m})
+@deffn {Function} jacobi_dn (@var{u}, @var{m})
 The Jacobian elliptic function @math{dn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_ns (@var{u}, @var{m})
+@deffn {Function} jacobi_ns (@var{u}, @var{m})
 The Jacobian elliptic function @math{ns(u,m) = 1/sn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_sc (@var{u}, @var{m})
+@deffn {Function} jacobi_sc (@var{u}, @var{m})
 The Jacobian elliptic function @math{sc(u,m) = sn(u,m)/cn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_sd (@var{u}, @var{m})
+@deffn {Function} jacobi_sd (@var{u}, @var{m})
 The Jacobian elliptic function @math{sd(u,m) = sn(u,m)/dn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_nc (@var{u}, @var{m})
+@deffn {Function} jacobi_nc (@var{u}, @var{m})
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_cs (@var{u}, @var{m})
+@deffn {Function} jacobi_cs (@var{u}, @var{m})
 The Jacobian elliptic function @math{cs(u,m) = cn(u,m)/sn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_cd (@var{u}, @var{m})
+@deffn {Function} jacobi_cd (@var{u}, @var{m})
 The Jacobian elliptic function @math{cd(u,m) = cn(u,m)/dn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_nd (@var{u}, @var{m})
+@deffn {Function} jacobi_nd (@var{u}, @var{m})
 The Jacobian elliptic function @math{nc(u,m) = 1/cn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_ds (@var{u}, @var{m})
+@deffn {Function} jacobi_ds (@var{u}, @var{m})
 The Jacobian elliptic function @math{ds(u,m) = dn(u,m)/sn(u,m)}.
-@end defun
+@end deffn
 
-@defun jacobi_dc (@var{u}, @var{m})
+@deffn {Function} jacobi_dc (@var{u}, @var{m})
 The Jacobian elliptic function @math{dc(u,m) = dn(u,m)/cn(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_sn (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_sn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sn(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_cn (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_cn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cn(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_dn (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_dn (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{dn(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_ns (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_ns (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{ns(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_sc (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_sc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sc(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_sd (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_sd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{sd(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_nc (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_nc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_cs (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_cs (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cs(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_cd (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_cd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{cd(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_nd (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_nd (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{nc(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_ds (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_ds (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{ds(u,m)}.
-@end defun
+@end deffn
 
-@defun inverse_jacobi_dc (@var{u}, @var{m})
+@deffn {Function} inverse_jacobi_dc (@var{u}, @var{m})
 The inverse of the Jacobian elliptic function @math{dc(u,m)}.
-@end defun
+@end deffn
 
 
 @node Definitions for Elliptic Integrals, , Definitions for Elliptic Functions, top
@@ -232,7 +232,7 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @section Definitions for Elliptic Integrals
 
 @anchor{elliptic_f}
-@defun elliptic_f (@var{phi}, @var{m})
+@deffn {Function} elliptic_f (@var{phi}, @var{m})
 The incomplete elliptic integral of the first kind, defined as
 
 @ifinfo
@@ -245,20 +245,20 @@ $$\int_0^\phi {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 
 See also @ref{elliptic_e} and @ref{elliptic_kc}.
 
-@end defun
+@end deffn
 
 @anchor{elliptic_e}
-@defun elliptic_e (@var{phi}, @var{m})
+@deffn {Function} elliptic_e (@var{phi}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 @ifinfo
 @math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
 See also @ref{elliptic_e} and @ref{elliptic_ec}.
 
-@end defun
+@end deffn
 
 @anchor{elliptic_eu}
-@defun elliptic_eu (@var{u}, @var{m})
+@deffn {Function} elliptic_eu (@var{u}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
 @ifinfo
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
@@ -282,9 +282,9 @@ $$E(u,m) = E(\phi, m)$$
 where $\phi = \sin^{-1} {\rm sn}(u, m),m)$
 @end tex
 See also @ref{elliptic_e}.
-@end defun
+@end deffn
 
-@defun elliptic_pi (@var{n}, @var{phi}, @var{m})
+@deffn {Function} elliptic_pi (@var{n}, @var{phi}, @var{m})
 The incomplete elliptic integral of the third kind, defined as
 @ifinfo
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
@@ -294,10 +294,10 @@ $$\int_0^\phi {{d\theta}\over{(1-n\sin^2 \theta)\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 
 Only the derivative with respect to @math{phi} is known by Maxima.
-@end defun
+@end deffn
 
 @anchor{elliptic_kc}
-@defun elliptic_kc (@var{m})
+@deffn {Function} elliptic_kc (@var{m})
 The complete elliptic integral of the first kind, defined as
 
 @ifinfo
@@ -309,10 +309,10 @@ $$\int_0^{{\pi}\over{2}} {{d\theta}\over{\sqrt{1 - m\sin^2\theta}}}$$
 @end tex
 For certain values of @math{m}, the value of the integral is known in
 terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
-@end defun
+@end deffn
 
 @anchor{elliptic_ec}
-@defun elliptic_ec (@var{m})
+@deffn {Function} elliptic_ec (@var{m})
 The complete elliptic integral of the second kind, defined as
 
 @ifinfo
@@ -324,5 +324,5 @@ $$\int_0^{{\pi}\over{2}} \sqrt{1 - m\sin^2\theta} d\theta$$
 @end tex
 For certain values of @math{m}, the value of the integral is known in
 terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
-@end defun
+@end deffn
 

@@ -231,7 +231,7 @@ and additional output.
 @node Definitions for Help,  , Documentation, Help
 @section Definitions for Help
 
-@defun demo (@var{filename})
+@deffn {Function} demo (@var{filename})
 Evaluates Maxima expressions in @var{filename} and displays the results.
 @code{demo} pauses after evaluating each expression
 and continues after the user enters a carriage return.
@@ -319,9 +319,9 @@ _
 (%i13) 
 @end example
 
-@end defun
+@end deffn
 
-@defun describe (@var{string})
+@deffn {Function} describe (@var{string})
 Finds all documented items which contain @var{string} in their titles.
 If there is more than one such item, Maxima asks the user to select
 an item or items to display.
@@ -364,10 +364,10 @@ which can be abbreviated @code{a} or @code{n}, respectively.
 
 @pxref{Introduction to Help}
 
-@end defun
+@end deffn
 
-@defun example (@var{topic})
-@defunx example ()
+@deffn {Function} example (@var{topic})
+@deffnx {Function} example ()
 @code{example (@var{topic})} displays some examples of @var{topic},
 which is a symbol (not a string).
 Most topics are function names.
@@ -396,5 +396,5 @@ Examples:
 (%o5)                         done
 @end example
 
-@end defun
+@end deffn
 

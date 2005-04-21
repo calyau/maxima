@@ -191,16 +191,16 @@ completing the computation
 @node Definitions for Debugging, , Keyword Commands, Debugging
 @section Definitions for Debugging
 
-@defvar refcheck
+@defvr {Variable} refcheck
 Default value: @code{false}
 
 When @code{refcheck} is @code{true}, Maxima prints a message
 each time a bound variable is used for the first time in a
 computation.
 
-@end defvar
+@end defvr
 
-@defvar setcheck
+@defvr {Variable} setcheck
 Default value: @code{false}
 
 If @code{setcheck} is set to a list of variables (which can
@@ -233,9 +233,9 @@ to put them on the list of variables to check.
 No printout is generated when a
 variable on the @code{setcheck} list is assigned to itself, e.g., @code{X: 'X}.
 
-@end defvar
+@end defvr
 
-@defvar setcheckbreak
+@defvr {Variable} setcheckbreak
 Default value: @code{false}
 
 When @code{setcheckbreak} is @code{true},
@@ -248,19 +248,19 @@ Hence, one may assign a different value by assigning to @code{setval}.
 
 See also @code{setcheck} and @code{setval}.
 
-@end defvar
+@end defvr
 
-@defvar setval
+@defvr {Variable} setval
 Holds the value to which a variable is about to be set when
 a @code{setcheckbreak} occurs.
 Hence, one may assign a different value by assigning to @code{setval}.
 
 See also @code{setcheck} and @code{setcheckbreak}.
 
-@end defvar
+@end defvr
 
-@defun timer (@var{f_1}, ..., @var{f_n})
-@defunx timer ()
+@deffn {Function} timer (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} timer ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{timer} puts each one on the list of functions for which timing statistics are collected.
 @code{timer(f)$ timer(g)$} puts @code{f} and then @code{g} onto the list;
@@ -284,9 +284,9 @@ If @code{trace(f)} is in effect, then @code{timer(f)} has no effect; @code{trace
 
 See also @code{timer_devalue}.
 
-@end defun
-@defun untimer (@var{f_1}, ..., @var{f_n})
-@defunx untimer ()
+@end deffn
+@deffn {Function} untimer (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} untimer ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{untimer} removes each function from the timer list.
 
@@ -299,9 +299,9 @@ return information about any function not currently on the timer list.
 @code{timer (f)} resets all timing statistics to zero
 and puts @code{f} on the timer list again.
 
-@end defun
+@end deffn
 
-@defvar timer_devalue
+@defvr {Variable} timer_devalue
 Default value: @code{false}
 
 When @code{timer_devalue} is @code{true}, Maxima subtracts from each timed function
@@ -312,10 +312,10 @@ total time.
 
 See also @code{timer} and @code{timer_info}.
 
-@end defvar
+@end defvr
 
-@defun timer_info (@var{f_1}, ..., @var{f_n})
-@defunx timer_info ()
+@deffn {Function} timer_info (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} timer_info ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{timer_info} returns a matrix containing timing information for each function.
 With no arguments, @code{timer_info} returns timing information for
@@ -335,10 +335,10 @@ get(f, 'calls);  get(f, 'runtime);  get(f, 'gctime);
 
 See also @code{timer}.
 
-@end defun
+@end deffn
 
-@defun trace (@var{f_1}, ..., @var{f_n})
-@defunx trace ()
+@deffn {Function} trace (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} trace ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{trace} instructs Maxima to print out
 debugging information whenever those functions are called.
@@ -361,10 +361,10 @@ function @code{f} is no longer on the timer list.
 If @code{timer (f)} is in effect, then @code{trace (f)} has no effect; @code{trace} and
 @code{timer} can't both be in effect for the same function.
 
-@end defun
+@end deffn
 
-@defun trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
-@defunx trace_options (@var{f})
+@deffn {Function} trace_options (@var{f}, @var{option_1}, ..., @var{option_n})
+@deffnx {Function} trace_options (@var{f})
 Sets the trace options for function @var{f}.
 Any previous options are superseded.
 @code{trace_options (@var{f}, ...)} has no effect unless
@@ -431,10 +431,10 @@ on a predicate:
 (%i7) ff(6);
 @end example
 
-@end defun
+@end deffn
 
-@defun untrace (@var{f_1}, ..., @var{f_n})
-@defunx untrace ()
+@deffn {Function} untrace (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} untrace ()
 Given functions @var{f_1}, ..., @var{f_n},
 @code{untrace} disables tracing enabled by the @code{trace} function.
 With no arguments, @code{untrace} disables tracing for all functions.
@@ -442,4 +442,4 @@ With no arguments, @code{untrace} disables tracing for all functions.
 @code{untrace} returns a list of the functions for which 
 it disabled tracing.
 
-@end defun
+@end deffn

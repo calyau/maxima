@@ -6,7 +6,7 @@
 @node Definitions for Contexts,  , Contexts, Contexts
 @section Definitions for Contexts
 
-@defun activate (@var{context_1}, ..., @var{context_n})
+@deffn {Function} activate (@var{context_1}, ..., @var{context_n})
 Activates the contexts @var{context_1}, ..., @var{context_n}.
 The facts in these contexts are then available to
 make deductions and retrieve information.
@@ -15,19 +15,19 @@ The facts in these contexts are not listed by @code{facts ()}.
 The variable @code{activecontexts} is the list
 of contexts which are active by way of the @code{activate} function.
 
-@end defun
+@end deffn
 
-@defvar activecontexts
+@defvr {Variable} activecontexts
 Default value: @code{[]}
 
 @code{activecontexts} is a list of the contexts which are active
 by way of the @code{activate} function, as opposed to being active because
 they are subcontexts of the current context.
 
-@end defvar
+@end defvr
 
 
-@defun assume (@var{pred_1}, ..., @var{pred_n})
+@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
 Adds predicates @var{pred_1}, ..., @var{pred_n} to the current database,
 after checking for redundancy and inconsistency.
 If the predicates are consistent and non-redundant, they are added to the
@@ -36,9 +36,9 @@ data base; if inconsistent or redundant, no action is taken.
 @code{assume} returns a list whose elements are the predicates added to the database
 and the atoms @code{redundant} or @code{inconsistent} where applicable.
 
-@end defun
+@end deffn
 
-@defvar assumescalar
+@defvr {Variable} assumescalar
 Default value: @code{true}
 
 @code{assumescalar} helps govern whether expressions @code{expr}
@@ -63,10 +63,10 @@ When @code{assumescalar} is @code{all},
 such expressions will behave like scalars for all the operators listed
 above.
 
-@end defvar
+@end defvr
 
 
-@defvar assume_pos
+@defvr {Variable} assume_pos
 Default value: @code{false}
 
 When @code{assume_pos} is @code{true}
@@ -93,10 +93,10 @@ even when @code{assume_pos} is @code{true} and @code{assume_pos_pred} is
 a function which returns @code{true} for all arguments.
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
 
-@defvar assume_pos_pred
+@defvr {Variable} assume_pos_pred
 Default value: @code{false}
 
 When @code{assume_pos_pred} is assigned the name of a function
@@ -178,10 +178,10 @@ p;
 (%o11)                         neg
 @end example
 
-@end defvar
+@end defvr
 
 
-@defvar context
+@defvr {Variable} context
 Default value: @code{initial}
 
 @code{context} names the collection of facts maintained by @code{assume} and @code{forget}.
@@ -196,11 +196,11 @@ The specified context is activated automatically.
 
 See @code{context} for a general description of the context mechanism.
 
-@end defvar
+@end defvr
 
 @c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
 @c SOME EXAMPLES WILL HELP A LOT HERE
-@defvar contexts
+@defvr {Variable} contexts
 Default value: @code{[initial, global]}
 
 @code{contexts} is a list of the contexts which
@@ -229,15 +229,15 @@ context called @code{initial}, which has @code{global} as a subcontext.
 See also @code{facts}, @code{newcontext},
 @code{supcontext}, @code{killcontext}, @code{activate}, @code{deactivate}, @code{assume}, and @code{forget}.
 
-@end defvar
+@end defvr
 
-@defun deactivate (@var{context_1}, ..., @var{context_n})
+@deffn {Function} deactivate (@var{context_1}, ..., @var{context_n})
 Deactivates the specified contexts @var{context_1}, ..., @var{context_n}.
 
-@end defun
+@end deffn
 
-@defun facts (@var{item})
-@defunx facts ()
+@deffn {Function} facts (@var{item})
+@deffnx {Function} facts ()
 If @var{item} is the name of a context,
 @code{facts (@var{item})} returns a list
 of the facts in the specified context.
@@ -248,7 +248,7 @@ context.  Facts that are active, but in a different context, are not listed.
 
 @code{facts ()} (i.e., without an argument) lists the current context.
 
-@end defun
+@end deffn
 
 @defvr declaration features
 Maxima recognizes certain mathematical properties of functions and variables.
@@ -278,8 +278,8 @@ There is also a list of non-mathematical, system-dependent features. See @code{s
 
 @end defvr
 
-@defun forget (@var{pred_1}, ..., @var{pred_n})
-@defunx forget (@var{L})
+@deffn {Function} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Function} forget (@var{L})
 Removes predicates established by @code{assume}.
 The predicates may be expressions equivalent to (but not necessarily identical to)
 those previously assumed.
@@ -287,9 +287,9 @@ those previously assumed.
 @code{forget (@var{L})}, where @var{L} is a list of predicates,
 forgets each item on the list.
 
-@end defun
+@end deffn
 
-@defun killcontext (@var{context_1}, ..., @var{context_n})
+@deffn {Function} killcontext (@var{context_1}, ..., @var{context_n})
 Kills the contexts @var{context_1}, ..., @var{context_n}.
 
 If one of the contexts is the current context, the new current
@@ -302,21 +302,21 @@ context is killed, a new, empty @code{initial} context is created.
 currently active, either because it is a subcontext of the current
 context, or by use of the function @code{activate}.
 
-@end defun
+@end deffn
 
-@defun newcontext (@var{name})
+@deffn {Function} newcontext (@var{name})
 Creates a new, empty context, called @var{name}, which
 has @code{global} as its only subcontext.  The newly-created context
 becomes the currently active context.
 
-@end defun
+@end deffn
 
-@defun supcontext (@var{name}, @var{context})
-@defunx supcontext (@var{name})
+@deffn {Function} supcontext (@var{name}, @var{context})
+@deffnx {Function} supcontext (@var{name})
 Creates a new context, called @var{name},
 which has @var{context} as a subcontext.
 @var{context} must exist.
 
 If @var{context} is not specified, the current context is assumed.
 
-@end defun
+@end deffn

@@ -32,14 +32,14 @@ means return the verb form of @code{f} applied to @code{[x]}.
 @section Definitions for Command Line
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
-@defun alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
 provides an
 alternate name for a (user or system) function, variable, array, etc.
 Any even number of arguments may be used.
 
-@end defun
+@end deffn
 
-@defvar debugmode
+@defvr {Variable} debugmode
 Default value: @code{false}
 
 When a Maxima error occurs, Maxima will start the debugger if @code{debugmode} is @code{true}.
@@ -50,11 +50,11 @@ Enabling @code{debugmode} will not catch Lisp errors.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION
 @c VERY IMPORTANT !!
-@defun ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+@deffn {Function} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
 Evaluates the expression @var{expr} in the environment
 specified by the arguments @var{arg_1}, ..., @var{arg_n}.
 The arguments are switches (Boolean flags), assignments, equations, and functions.
@@ -230,7 +230,7 @@ Solution
 (%o11)                               true
 @end example
 
-@end defun
+@end deffn
 
 @defvr property evflag
 Some Boolean flags have the @code{evflag} property.
@@ -330,14 +330,14 @@ include @code{X='X} as an argument to @code{ev}.  Of course expressions such as
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@defun kill (@var{symbol_1}, ..., @var{symbol_n})
-@defunx kill (labels)
-@defunx kill (clabels, dlabels, elabels)
-@defunx kill (@var{n})
-@defunx kill ([@var{m}, @var{n}])
-@defunx kill (values, functions, arrays, ...)
-@defunx kill (all)
-@defunx kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+@deffn {Function} kill (@var{symbol_1}, ..., @var{symbol_n})
+@deffnx {Function} kill (labels)
+@deffnx {Function} kill (clabels, dlabels, elabels)
+@deffnx {Function} kill (@var{n})
+@deffnx {Function} kill ([@var{m}, @var{n}])
+@deffnx {Function} kill (values, functions, arrays, ...)
+@deffnx {Function} kill (all)
+@deffnx {Function} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
 
 Removes all bindings (value, function, array, or rule) from the arguments
 @var{symbol_1}, ..., @var{symbol_n}.
@@ -389,7 +389,7 @@ unbind a specific property.
 
 @code{kill} always returns @code{done}, even if an argument has no binding.
 
-@end defun
+@end deffn
 
 @deffn {Function} labels (@var{symbol})
 @deffnx {Variable} labels
@@ -429,24 +429,24 @@ See also @code{inchar}, @code{outchar}, @code{linechar}, and @code{infolists}.
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
-@defvar linenum
+@defvr {Variable} linenum
 The line number of the current pair of input and output expressions.
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
-@defvar myoptions
+@defvr {Variable} myoptions
 Default value: @code{[]}
 
 @code{myoptions} is the list of all options ever reset by the user,
 whether or not they get reset to their default value.
 
-@end defvar
+@end defvr
 
 @c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
 @c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
 @c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
-@defvar nolabels
+@defvr {Variable} nolabels
 Default value: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
@@ -464,10 +464,10 @@ It seems likely this behavior is simply broken.
 See also @code{batch}, @code{batchload}, and @code{labels}.
 @c PUT A CROSS REFERENCE IN DESCRIPTION OF labels WHEN STRANGE BEHAVIOR OF nolabels IS CLEARED UP !!!
 
-@end defvar
+@end defvr
 
 @c NEEDS WORK
-@defvar optionset
+@defvr {Variable} optionset
 Default value: @code{false}
 
 When @code{optionset} is @code{true}, Maxima prints out a
@@ -475,16 +475,16 @@ message whenever a Maxima option is reset.  This is useful if the
 user is doubtful of the spelling of some option and wants to make sure
 that the variable he assigned a value to was truly an option variable.
 
-@end defvar
+@end defvr
 
-@defun playback ()
-@defunx playback (@var{n})
-@defunx playback ([@var{m}, @var{n}])
-@defunx playback ([@var{m}])
-@defunx playback (input)
-@defunx playback (slow)
-@defunx playback (time)
-@defunx playback (grind)
+@deffn {Function} playback ()
+@deffnx {Function} playback (@var{n})
+@deffnx {Function} playback ([@var{m}, @var{n}])
+@deffnx {Function} playback ([@var{m}])
+@deffnx {Function} playback (input)
+@deffnx {Function} playback (slow)
+@deffnx {Function} playback (time)
+@deffnx {Function} playback (grind)
 Displays input, output, and intermediate expressions,
 without recomputing them.
 @code{playback} only displays the expressions bound to labels;
@@ -532,13 +532,13 @@ Arguments may be combined, e.g.,
 @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
-@end defun
+@end deffn
 
 @c NEEDS WORK ESPECIALLY EXAMPLES
 @c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
-@defun printprops (@var{a}, @var{i})
-@defunx printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
-@defunx printprops (all, @var{i})
+@deffn {Function} printprops (@var{a}, @var{i})
+@deffnx {Function} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Function} printprops (all, @var{i})
 Displays the property with the indicator @var{i}
 associated with the atom @var{a}. @var{a} may also be a list of atoms or the atom
 @code{all} in which case all of the atoms with the given property will be
@@ -546,17 +546,17 @@ used.  For example, @code{printprops ([f, g], atvalue)}.  @code{printprops} is f
 properties that cannot otherwise be displayed, i.e. for
 @code{atvalue}, @code{atomgrad}, @code{gradef}, and @code{matchdeclare}.
 
-@end defun
+@end deffn
 
-@defvar prompt
+@defvr {Variable} prompt
 Default value: @code{_}
 
 @code{prompt} is the prompt symbol of the @code{demo} function,
 @code{playback (slow)} mode, and the Maxima break loop (as invoked by @code{break}).
 
-@end defvar
+@end defvr
 
-@defun quit ()
+@deffn {Function} quit ()
 Terminates the Maxima session.
 Note that the function must be invoked as @code{quit();} or @code{quit()$},
 not @code{quit} by itself.
@@ -568,17 +568,17 @@ If @code{*debugger-hook*} is @code{nil},
 @code{control-C} opens the Lisp debugger.
 See also @code{debugging}.
 
-@end defun
+@end deffn
 
-@defun remfunction (@var{f_1}, ..., @var{f_n})
-@defunx remfunction (all)
+@deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} remfunction (all)
 @c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
 Removes the user defined functions @var{f_1}, ..., @var{f_n} from Maxima.
 @code{remfunction (all)} removes all functions.
 
-@end defun
+@end deffn
 
-@defun reset ()
+@deffn {Function} reset ()
 Resets many global variables and options, and some other variables, to their default values.
 
 @code{reset} processes the variables on the Lisp list @code{*variable-initial-values*}.
@@ -586,9 +586,9 @@ The Lisp macro @code{defmvar} puts variables on this list (among other actions).
 Many, but not all, global variables and options are defined by @code{defmvar},
 and some variables defined by @code{defmvar} are not global variables or options.
 
-@end defun
+@end deffn
 
-@defvar showtime
+@defvr {Variable} showtime
 Default value: @code{false}
 
 When @code{showtime} is @code{true}, the computation time and elapsed time is
@@ -596,29 +596,29 @@ printed with each output expression.
 
 See also @code{time}, @code{timer}, and @code{playback}.
 
-@end defvar
+@end defvr
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@defun sstatus (@var{feature}, @var{package})
+@deffn {Function} sstatus (@var{feature}, @var{package})
 Sets the status of @var{feature} in @var{package}.
 After @code{sstatus (@var{feature}, @var{package})} is executed,
 @code{status (@var{feature}, @var{package})} returns @code{true}.
 This can be useful for package writers, to
 keep track of what features they have loaded in.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION, EXAMPLES
-@defun to_lisp ()
+@deffn {Function} to_lisp ()
 Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
 
-@end defun
+@end deffn
 
-@defvar values
+@defvr {Variable} values
 Initial value: @code{[]}
 
 @code{values} is a list of all bound user variables (not Maxima options or switches).
 The list comprises symbols bound by @code{:} , @code{::}, or @code{:=}.
 
-@end defvar
+@end defvr

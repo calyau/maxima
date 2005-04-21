@@ -27,15 +27,15 @@ and
 @node Definitions for Input and Output,  , FILES, Input and Output
 @section Definitions for Input and Output
 
-@defvar %
+@defvr {Variable} %
 @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 most recently computed by Maxima,
 whether or not it was displayed.
 See also @code{%%} and @code{%th}.
 
-@end defvar
+@end defvr
 
-@defvar %%
+@defvr {Variable} %%
 In a compound statement comprising two or more statements,
 @code{%%} is the value of the previous statement.
 For example,
@@ -72,18 +72,18 @@ At the first statement in a compound statement,
 or outside of a compound statement,
 @code{%%} is undefined.
 
-@end defvar
+@end defvr
 
-@defvar %edispflag
+@defvr {Variable} %edispflag
 Default value: @code{false}
 
 When @code{%edispflag} is @code{true},
 Maxima displays @code{%e} to a negative exponent as a quotient.
 For example, @code{%e^-x} is displayed as @code{1/%e^x}.
 
-@end defvar
+@end defvr
 
-@defun %th (@var{i})
+@deffn {Function} %th (@var{i})
 The value of the @var{i}'th previous output expression.
 That is, if the next expression to be computed is the @var{n}'th output,
 @code{%th (@var{m})} is the (@var{n} - @var{m})'th output.
@@ -97,7 +97,7 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 sets @code{s} to the sum of the last ten output expressions.
 
-@end defun
+@end deffn
 
 @deffn {special symbol} "?"
 As prefix to a function or variable name, @code{?} signifies that the
@@ -109,28 +109,28 @@ is equivalent to @code{describe ("word")}.
 
 @end deffn
 
-@defvar absboxchar
+@defvr {Variable} absboxchar
 Default value: @code{!}
 
 @code{absboxchar} is the character used to draw absolute value
 signs around expressions which are more than one line tall.
 
-@end defvar
+@end defvr
 
 
-@defun appendfile (@var{filename})
+@deffn {Function} appendfile (@var{filename})
 Appends a console transcript to @var{filename}.
 @code{appendfile} is the same as @code{writefile}, 
 except that the transcript file, if it exists, is always appended.
 
 @code{closefile} closes the transcript file opened by @code{appendfile} or @code{writefile}.
 
-@end defun
+@end deffn
 
 @c batch CAN TAKE 'test AS AN OPTIONAL ARGUMENT IN WHICH CASE IT CALLS test-batch
 @c (SAME AS run_testsuite) -- SHOULD DOCUMENT batch (file, 'test)
 @c FIX BUG WHICH CAUSES batch (<file>, 'test) TO FAIL, THEN DOCUMENT IT HERE
-@defun batch (@var{filename})
+@deffn {Function} batch (@var{filename})
 Reads Maxima expressions from @var{filename} and evaluates them.
 @code{batch} searches for @var{filename} in the list @code{file_search_maxima}.
 See @code{file_search}.
@@ -170,10 +170,10 @@ or to help organize one's thinking in solving complex problems.
 
 See also @code{load}, @code{batchload}, and @code{demo}.
 
-@end defun
+@end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF batchload
-@defun batchload (@var{filename})
+@deffn {Function} batchload (@var{filename})
 Reads Maxima expressions from @var{filename} and evaluates them,
 without displaying the input or output expressions
 and without assigning labels to output expressions.
@@ -191,15 +191,15 @@ The file cannot include @code{:lisp} constructs.
 See also @code{batch} and @code{load}.
 @c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
 
-@end defun
+@end deffn
 
-@defun closefile ()
+@deffn {Function} closefile ()
 Closes the transcript file opened by @code{writefile} or @code{appendfile}.
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION !!!
-@defun collapse (@var{expr})
+@deffn {Function} collapse (@var{expr})
 Collapses @var{expr} by causing all of its
 common (i.e., equal) subexpressions to share (i.e., use the same cells),
 thereby saving space.  (@code{collapse} is a subroutine used by the @code{optimize}
@@ -209,9 +209,9 @@ together by using @code{collapse ([@var{expr_1}, ..., @var{expr_n}])}.  Similarl
 collapse the elements of the array @code{A} by doing
 @code{collapse (listarray ('A))}.
 
-@end defun
+@end deffn
 
-@defun concat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Function} concat (@var{arg_1}, @var{arg_2}, ...)
 Concatenates its arguments.
 The arguments must evaluate to atoms.
 The return value is a symbol if the first argument is a symbol
@@ -255,9 +255,9 @@ Note that although @code{concat (1, 2)} looks like a number, it is a Maxima stri
 (%o10)                       12 + 3
 @end example
 
-@end defun
+@end deffn
 
-@defun sconcat (@var{arg_1}, @var{arg_2}, ...)
+@deffn {Function} sconcat (@var{arg_1}, @var{arg_2}, ...)
 
 Concatenates its arguments into a string.
 Unlike @code{concat}, the arguments do @i{not} need to be atoms.
@@ -270,7 +270,7 @@ The result is a Lisp string.
 (%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
 @end example
 
-@end defun
+@end deffn
 
 @c AFTER REVIEWING src/displa.lisp, IT LOOKS LIKE THIS VARIABLE HAS NO EFFECT
 @c CUT IT ON THE NEXT PASS
@@ -288,26 +288,26 @@ The result is a Lisp string.
 @c @end defvar
 
 @c REPHRASE, NEEDS EXAMPLES
-@defun disp (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Function} disp (@var{expr_1}, @var{expr_2}, ...)
 is like @code{display} but only the value of the
 arguments are displayed rather than equations.  This is useful for
 complicated arguments which don't have names or where only the value
 of the argument is of interest and not the name.
 
-@end defun
+@end deffn
 
 @c HMM, THIS NEXT ITEM IS DEFINED IN A SHARE FILE (itensor.lisp); 
 @c DOES ITS DESCRIPTION WANT TO BE ELSEWHERE ???
-@defun dispcon (@var{tensor_1}, @var{tensor_2}, ...)
-@defunx dispcon (all)
+@deffn {Function} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Function} dispcon (all)
 Displays the contraction properties of
 its arguments as were given to @code{defcon}.  @code{dispcon (all)} displays all the
 contraction properties which were defined.
 
-@end defun
+@end deffn
 
 @c REPHRASE, MORE EXAMPLES
-@defun display (@var{expr_1}, @var{expr_2}, ...)
+@deffn {Function} display (@var{expr_1}, @var{expr_2}, ...)
 Displays equations whose left side is
 @var{expr_i} unevaluated, and whose right side is the value of the expression
 centered on the line.  This function is useful in blocks and @code{for}
@@ -323,18 +323,18 @@ function calls.  See also @code{disp}.
 (%o1)                            done
 @end example
 
-@end defun
+@end deffn
 
-@defvar display2d
+@defvr {Variable} display2d
 Default value: @code{true}
 
 When @code{display2d} is @code{false},
 the console display is a string (1-dimensional) form rather than a display
 (2-dimensional) form.
 
-@end defvar
+@end defvr
 
-@defvar display_format_internal
+@defvr {Variable} display_format_internal
 Default value: @code{false}
 
 When @code{display_format_internal} is @code{true},
@@ -359,11 +359,11 @@ X*4/3;    ---        - X
            3         3
 @end example
 
-@end defvar
+@end defvr
 
 @c IS THIS FUNCTION STILL USEFUL ???
 @c REPHRASE, NEEDS EXAMPLES
-@defun dispterms (@var{expr})
+@deffn {Function} dispterms (@var{expr})
 Displays @var{expr} in parts one below the other.
 That is, first the operator of @var{expr} is displayed, then each term in
 a sum, or factor in a product, or part of a more general expression is
@@ -376,9 +376,9 @@ using @code{dispterms}, if an exponential expression is too wide to be
 displayed as @code{A^B} it appears as @code{expt (A, B)} (or as @code{ncexpt (A, B)} in
 the case of @code{A^^B}).
 
-@end defun
+@end deffn
 
-@defvar error_size
+@defvr {Variable} error_size
 Default value: 10
 
 @code{error_size} modifies error messages according to the size of expressions which appear in them.
@@ -431,9 +431,9 @@ Example expression is --------------
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
 
-@end defvar
+@end defvr
 
-@defvar error_syms
+@defvr {Variable} error_syms
 Default value: @code{[errexp1, errexp2, errexp3]}
 
 In error messages,
@@ -449,9 +449,9 @@ with the @var{n}-th symbol equivalent to @code{concat ('errexp, @var{n})}.
 
 See also @code{error} and @code{error_size}.
 
-@end defvar
+@end defvr
 
-@defun expt (@var{a}, @var{b})
+@deffn {Function} expt (@var{a}, @var{b})
 If an exponential expression is too wide to be displayed
 as @code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as @code{ncexpt (@var{a}, @var{b})} in the case of
 @code{@var{a}^^@var{b}}).
@@ -460,18 +460,18 @@ as @code{@var{a}^@var{b}} it appears as @code{expt (@var{a}, @var{b})} (or as @c
 @c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
 @code{expt} and @code{ncexpt} are not recognized in input.
 
-@end defun
+@end deffn
 
-@defvar exptdispflag
+@defvr {Variable} exptdispflag
 Default value: @code{true}
 
 When @code{exptdispflag} is @code{true}, Maxima displays expressions
 with negative exponents using quotients, e.g., @code{X^(-1)} as @code{1/X}.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defun filename_merge (@var{path}, @var{filename})
+@deffn {Function} filename_merge (@var{path}, @var{filename})
 Constructs a modified path from @var{path} and @var{filename}.
 If the final component of @var{path} is of the form @code{###.@var{something}},
 the component is replaced with @code{@var{filename}.@var{something}}.
@@ -479,10 +479,10 @@ Otherwise, the final component is simply replaced by @var{filename}.
 
 @c SAY SOMETHING ABOUT ARG TYPE -- LISP STRINGS WORK BETTER THAN MAXIMA STRINGS
 @c SAY SOMETHING ABOUT RETURN TYPE
-@end defun
+@end deffn
 
-@defun file_search (@var{filename})
-@defunx file_search (@var{filename}, @var{pathlist})
+@deffn {Function} file_search (@var{filename})
+@deffnx {Function} file_search (@var{filename}, @var{pathlist})
 
 @code{file_search} searches for the file @var{filename} and returns the path to the file
 (as a string) if it can be found; otherwise @code{file_search} returns @code{false}.
@@ -520,11 +520,11 @@ The user may modify the default search directories. See @code{file_search_maxima
 @code{file_search} is invoked by @code{load} with @code{file_search_maxima} and @code{file_search_lisp}
 as the search directories.
 
-@end defun
+@end deffn
 
-@defvar file_search_maxima
-@defvarx file_search_lisp
-@defvarx file_search_demo
+@defvr {Variable} file_search_maxima
+@defvrx {Variable} file_search_lisp
+@defvrx {Variable} file_search_demo
 These variables specify lists of directories to be searched
 by @code{load}, @code{demo}, and some other Maxima functions.
 The default values of these variables
@@ -564,9 +564,9 @@ For example, supposing the sought-after name is @code{neumann},
 
 expands into @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac}, and @code{/home/gcj/neumann.mac}.
 
-@end defvar
+@end defvr
 
-@defun file_type (@var{filename})
+@deffn {Function} file_type (@var{filename})
 Returns a guess about the content of @var{filename},
 based on the filename extension.
 @var{filename} need not refer to an actual file;
@@ -577,7 +577,7 @@ If the extension starts with @code{m} or @code{d}, @code{file_type} returns @cod
 If the extension starts with @code{l}, @code{file_type} returns @code{lisp}.
 If none of the above, @code{file_type} returns @code{object}.
 
-@end defun
+@end deffn
 
 @deffn {Function} grind (@var{expr})
 @deffnx {Variable} grind
@@ -601,7 +601,7 @@ Otherwise, no attempt is made to specially format input expressions.
 
 @end deffn
 
-@defvar ibase
+@defvr {Variable} ibase
 Default value: 10
 
 Integers entered into Maxima are interpreted
@@ -621,9 +621,9 @@ comprise 0 through 9 and A through Y.
 See also @code{obase}.
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
-@defvar inchar
+@defvr {Variable} inchar
 Default value: @code{%i}
 
 @code{inchar} is the prefix of the labels of expressions entered by the user.
@@ -642,9 +642,9 @@ by concatenating @code{inchar} and @code{linenum}.
 
 See also @code{labels}.
 
-@end defvar
+@end defvr
 
-@defun ldisp (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} ldisp (@var{expr_1}, ..., @var{expr_n})
 Displays expressions @var{expr_1}, ..., @var{expr_n} to the console
 as printed output.
 @code{ldisp} assigns an intermediate expression label to each argument
@@ -675,9 +675,9 @@ See also @code{disp}.
 (%o5)               b  + 3 a b  + 3 a  b + a
 @end example
 
-@end defun
+@end deffn
 
-@defun ldisplay (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} ldisplay (@var{expr_1}, ..., @var{expr_n})
 Displays expressions @var{expr_1}, ..., @var{expr_n} to the console
 as printed output.
 Each expression is printed as an equation of the form @code{lhs = rhs}
@@ -712,9 +712,9 @@ See also @code{display}.
 (%o5)             f = b  + 3 a b  + 3 a  b + a
 @end example
 
-@end defun
+@end deffn
 
-@defvar linechar
+@defvr {Variable} linechar
 Default value: @code{%t}
 
 @code{linechar} is the prefix of the labels of intermediate expressions generated by Maxima.
@@ -725,9 +725,9 @@ by concatenating @code{linechar} and @code{linenum}.
 Intermediate expressions might or might not be displayed.
 See @code{programmode} and @code{labels}.
 
-@end defvar
+@end defvr
 
-@defvar linel
+@defvr {Variable} linel
 Default value: 79
 
 @code{linel} is the assumed width (in characters) of the console display
@@ -737,9 +737,9 @@ although very small or very large values may be impractical.
 Text printed by built-in Maxima functions, such as error messages and the output of @code{describe},
 is not affected by @code{linel}.
 
-@end defvar
+@end defvr
 
-@defun load (@var{filename})
+@deffn {Function} load (@var{filename})
 Evaluates expressions in @var{filename}, 
 thus bringing variables, functions, and other objects into Maxima.
 The binding of any existing object is clobbered by the binding recovered from @var{filename}. 
@@ -763,10 +763,10 @@ See @code{file_search} for more detail about the file search mechanism.
 
 @code{load} evaluates its argument.
 
-@end defun
+@end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@defun loadfile (@var{filename})
+@deffn {Function} loadfile (@var{filename})
 Evaluates Lisp expressions in @var{filename}.
 @code{loadfile} does not invoke @code{file_search}, so @code{filename} must include
 the file extension and as much of the path as needed to find the file.
@@ -778,11 +778,11 @@ The user may find it more convenient to use @code{load} instead of @code{loadfil
 not a string variable.
 The double-single-quote operator defeats quotation.
 
-@end defun
+@end deffn
 
 @c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
 @c I GUESS THIS COULD BE UPDATED TO DESCRIBE THE WAY IT ACTUALLY WORKS
-@defvar loadprint
+@defvr {Variable} loadprint
 Default value: @code{true}
 
 @code{loadprint} tells whether to print a message when a file is loaded.
@@ -801,9 +801,9 @@ See @code{setup_autoload}.
 When @code{loadprint} is @code{false}, never print a message.
 @end itemize
 
-@end defvar
+@end defvr
 
-@defvar obase
+@defvr {Variable} obase
 Default value: 10
 
 @code{obase} is the base for integers displayed by Maxima.
@@ -818,9 +818,9 @@ comprise 0 through 9, and A through Y.
 See also @code{ibase}.
 
 @c NEED EXAMPLES HERE
-@end defvar
+@end defvr
 
-@defvar outchar
+@defvr {Variable} outchar
 Default value: @code{%o}
 
 @code{outchar} is the prefix of the labels of expressions computed by Maxima.
@@ -839,10 +839,10 @@ by concatenating @code{outchar} and @code{linenum}.
 
 See also @code{labels}.
 
-@end defvar
+@end defvr
 
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
-@defvar packagefile
+@defvr {Variable} packagefile
 Default value: @code{false}
 
 Package designers who use @code{save}
@@ -857,9 +857,9 @@ the flag simply affects what is output to the package file.
 Setting the flag to @code{true} is also useful for creating Maxima
 init files.
 
-@end defvar
+@end defvr
 
-@defvar pfeformat
+@defvr {Variable} pfeformat
 Default value: @code{false}
 
 When @code{pfeformat} is @code{true}, a ratio of integers is
@@ -884,9 +884,9 @@ is displayed as a leading multiplicative term @code{1/n}.
 (%o6)                      1/8 (b + a)
 @end example
 
-@end defvar
+@end defvr
 
-@defun print (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} print (@var{expr_1}, ..., @var{expr_n})
 Evaluates and displays @var{expr_1}, ..., @var{expr_n}
 one after another, from left to right,
 starting at the left edge of the console display.
@@ -919,16 +919,16 @@ To display the contents of a file, see @code{printfile}.
                        10 log(a) - log(b)
 @end example
 
-@end defun
+@end deffn
 
 @c RECOMMEND CUTTING THIS ITEM AND CUTTING $tcl_output IN src/plot.lisp
 @c THIS REALLY, REALLY SEEMS LIKE CRUFT:
 @c $tcl_output IS NEVER CALLED WITHIN MAXIMA SOURCE,
 @c AND THIS EXTREMELY NARROW, LIMITED FUNCTIONALITY ISN'T USEFUL TO USERS
 @c AND IT'S BROKEN: INCORRECT OUTPUT FOR CLISP, DIES ON GCL
-@defun tcl_output (@var{list}, @var{i0}, @var{skip})
-@defunx tcl_output (@var{list}, @var{i0})
-@defunx tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
+@deffn {Function} tcl_output (@var{list}, @var{i0}, @var{skip})
+@deffnx {Function} tcl_output (@var{list}, @var{i0})
+@deffnx {Function} tcl_output ([@var{list_1}, ..., @var{list_n}], @var{i})
 
 Prints elements of a list enclosed by curly braces @code{@{ @}},
 suitable as part of a program in the Tcl/Tk language.
@@ -978,9 +978,9 @@ Examples:
  @}
 @end example
 
-@end defun
+@end deffn
 
-@defun read (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} read (@var{expr_1}, ..., @var{expr_n})
 Prints @var{expr_1}, ..., @var{expr_n}, then reads one expression from the console
 and returns the evaluated expression.
 The expression is terminated with a semicolon @code{;} or dollar sign @code{$}.
@@ -997,9 +997,9 @@ foo is 42  -- enter new value.
 (%o3)                         (b + a)
 @end example
 
-@end defun
+@end deffn
 
-@defun readonly (@var{expr_1}, ..., @var{expr_n})
+@deffn {Function} readonly (@var{expr_1}, ..., @var{expr_n})
 Prints @var{expr_1}, ..., @var{expr_n}, then reads one expression from the console
 and returns the expression (without evaluation).
 The expression is terminated with a @code{;} (semicolon) or @code{$} (dollar sign).
@@ -1019,9 +1019,9 @@ Enter an expression:
 
 See also @code{read}.
 
-@end defun
+@end deffn
 
-@defun reveal (@var{expr}, @var{depth})
+@deffn {Function} reveal (@var{expr}, @var{depth})
 Replaces parts of @var{expr} at the specified integer @var{depth}
 with descriptive summaries.
 
@@ -1085,25 +1085,25 @@ Example:
                     2 %e      + %e    + %e
 @end example
 
-@end defun
+@end deffn
 
-@defvar rmxchar
+@defvr {Variable} rmxchar
 Default value: @code{]}
 
 @code{rmxchar} is the character drawn on the right-hand side of a matrix.
 
 See also @code{lmxchar}.
 
-@end defvar
+@end defvr
 
 @c NEEDS EXAMPLES
-@defun save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@defunx save (@var{filename}, values, functions, labels, ...)
-@defunx save (@var{filename}, [@var{m}, @var{n}])
+@deffn {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
+@deffnx {Function} save (@var{filename}, values, functions, labels, ...)
+@deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
 @c @defunx save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
 @c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORKAROUND:
-@defunx save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
-@defunx save (@var{filename}, all)
+@deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Function} save (@var{filename}, all)
 Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, ..., in @var{filename}.
 The arguments must be names of variables, functions, or other objects.
 @code{save} returns @var{filename}.
@@ -1159,10 +1159,10 @@ and integer variables to their integer values, e.g., @code{m: 5$ n: 12$ save ("f
 @c l: ['aa, 'bb, 'cc, 'dd]$
 @c apply (save, append ([s], l))$
 @c @end example
-@end defun
+@end deffn
 
 @c NEEDS MORE WORK !!!
-@defvar savedef
+@defvr {Variable} savedef
 Default value: @code{true}
 
 When @code{savedef} is @code{true}, the Maxima version of a
@@ -1173,48 +1173,48 @@ be edited.
 When @code{savedef} is @code{false}, the names of translated functions are
 removed from the @code{functions} list.
 
-@end defvar
+@end defvr
 
 @c THIS FUNCTION IS IN THE SHARE PACKAGE itensor.lisp
 @c MOVE THIS DESCRIPTION TO Itensor.texi
-@defun show (@var{expr})
+@deffn {Function} show (@var{expr})
 Displays @code{expr} with the indexed objects in it shown
 having covariant indices as subscripts, contravariant indices as
 superscripts.  The derivative indices are displayed as subscripts,
 separated from the covariant indices by a comma.
 
-@end defun
+@end deffn
 
-@defun showratvars (@var{expr})
+@deffn {Function} showratvars (@var{expr})
 Returns a list of the canonical rational expression (CRE) variables in expression @code{expr}.
 
 See also @code{ratvars}.
 
-@end defun
+@end deffn
 
-@defvar stardisp
+@defvr {Variable} stardisp
 Default value: @code{false}
 
 When @code{stardisp} is @code{true}, multiplication is
 displayed with an asterisk @code{*} between operands.
 
-@end defvar
+@end defvr
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defun string (@var{expr})
+@deffn {Function} string (@var{expr})
 Converts @code{expr} to Maxima's linear notation
 just as if it had been typed in.
 
 The return value of @code{string} is a string,
 and thus it cannot be used in a computation.
 
-@end defun
+@end deffn
 
-@defun stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
-@defunx stringout (@var{filename}, [@var{m}, @var{n}])
-@defunx stringout (@var{filename}, input)
-@defunx stringout (@var{filename}, functions)
-@defunx stringout (@var{filename}, values)
+@deffn {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Function} stringout (@var{filename}, input)
+@deffnx {Function} stringout (@var{filename}, functions)
+@deffnx {Function} stringout (@var{filename}, values)
 
 @code{stringout} writes expressions to a file in the same form the
 expressions would be typed for input. The file can then be used
@@ -1246,12 +1246,12 @@ assignment statement, with the name of the variable, a colon, and its
 value. Note that the general form of @code{stringout} does not print 
 variables as assignment statements.
 
-@end defun
+@end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
-@defun tex (@var{expr})
-@defunx tex (@var{expr}, @var{filename})
-@defunx tex (@var{label}, @var{filename})
+@deffn {Function} tex (@var{expr})
+@deffnx {Function} tex (@var{expr}, @var{filename})
+@deffnx {Function} tex (@var{label}, @var{filename})
 
 In the case of a label,
 a left-equation-number is produced.
@@ -1277,10 +1277,10 @@ $$-\cos x$$
 (%o4)                          (\%o1)
 @end example
 
-@end defun
+@end deffn
 
 @c NEEDS CLARIFICATION
-@defun system (@var{command})
+@deffn {Function} system (@var{command})
 Executes @var{command} as a separate process.
 The command is passed to the default shell for execution.
 @code{system} is not supported by all operating
@@ -1304,9 +1304,9 @@ and remove the temporary file after it is done do:
 system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 @end example
 
-@end defun
+@end deffn
 
-@defvar ttyoff
+@defvr {Variable} ttyoff
 Default value: @code{false}
 
 When @code{ttyoff} is @code{true}, output expressions are not displayed.
@@ -1315,7 +1315,7 @@ Output expressions are still computed and assigned labels. See @code{labels}.
 Text printed by built-in Maxima functions, such as error messages and the output of @code{describe},
 is not affected by @code{ttyoff}.
 
-@end defvar
+@end defvr
 
 @deffn {Macro} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 Opens @var{filename} and then evaluates @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
@@ -1356,7 +1356,7 @@ See also @code{writefile}.
 
 @end deffn
 
-@defun writefile (@var{filename})
+@deffn {Function} writefile (@var{filename})
 Begins writing a transcript of the Maxima session to @var{filename}.
 All interaction between the user and Maxima is then recorded in this file,
 @c FOLLOWING CLAIM PROBABLY NEEDS TO BE QUALIFIED
@@ -1381,4 +1381,4 @@ any output generated by a print statement in a function
 
 @code{closefile} closes the transcript file opened by @code{writefile} or @code{appendfile}.
 
-@end defun
+@end deffn

@@ -17,24 +17,24 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@defun bffac (@var{expr}, @var{n})
+@deffn {Function} bffac (@var{expr}, @var{n})
 Bigfloat version of the factorial (shifted gamma)
 function.  The second argument is how many digits to retain and return,
 it's a good idea to request a couple of extra.
 
 @code{load ("bffac")} loads this function.
 
-@end defun
+@end deffn
 
-@defvar algepsilon
+@defvr {Variable} algepsilon
 Default value: 10^8
 
 @c WHAT IS algepsilon, EXACTLY ??? describe ("algsys") IS NOT VERY INFORMATIVE !!!
 @code{algepsilon} is used by @code{algsys}.
 
-@end defvar
+@end defvr
 
-@defun bfloat (@var{expr})
+@deffn {Function} bfloat (@var{expr})
 Converts all numbers and functions of numbers to bigfloat
 numbers.  Setting @code{fpprec} to @code{n}, sets the bigfloat precision to @code{n}
 digits.  
@@ -43,15 +43,15 @@ When @code{float2bf} is @code{false} a warning message is printed when
 a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
-@end defun
+@end deffn
 
-@defun bfloatp (@var{expr})
+@deffn {Function} bfloatp (@var{expr})
 Returns @code{true} if @var{expr} is a bigfloat number, otherwise @code{false}.
 
-@end defun
+@end deffn
 
-@defun bfpsi (@var{n}, @var{z}, @var{fpprec})
-@defunx bfpsi0 (@var{z}, @var{fpprec})
+@deffn {Function} bfpsi (@var{n}, @var{z}, @var{fpprec})
+@deffnx {Function} bfpsi0 (@var{z}, @var{fpprec})
 @code{bfpsi} is the polygamma function of real argument @var{z} and integer order @var{n}.
 @code{bfpsi0} is the digamma function. 
 @code{bfpsi0 (@var{z}, @var{fpprec})} is equivalent to @code{bfpsi (0, @var{z}, @var{fpprec})}.
@@ -65,9 +65,9 @@ These functions return bigfloat values.
 
 @code{load ("bffac")} loads these functions.
 
-@end defun
+@end deffn
 
-@defvar bftorat
+@defvr {Variable} bftorat
 Default value: @code{false}
 
 @code{bftorat} controls the conversion of bfloats to
@@ -80,9 +80,9 @@ When @code{bftorat} is @code{true},
 the rational number generated will
 accurately represent the bfloat.
 
-@end defvar
+@end defvr
 
-@defvar bftrunc
+@defvr {Variable} bftrunc
 Default value: @code{true}
 
 @code{bftrunc} causes trailing zeroes in non-zero bigfloat
@@ -90,38 +90,38 @@ numbers not to be displayed.  Thus, if @code{bftrunc} is @code{false}, @code{bfl
 displays as @code{1.000000000000000B0}. Otherwise, this is displayed as
 @code{1.0B0}.
 
-@end defvar
+@end defvr
 
-@defun cbffac (@var{z}, @var{fpprec})
+@deffn {Function} cbffac (@var{z}, @var{fpprec})
 Complex bigfloat factorial.
 
 @code{load ("bffac")} loads this function.
 
-@end defun
+@end deffn
 
-@defun float (@var{expr})
+@deffn {Function} float (@var{expr})
 Converts integers, rational numbers and bigfloats in @var{expr}
 to floating point numbers.  It is also an @code{evflag}, @code{float} causes
 non-integral rational numbers and bigfloat numbers to be converted to
 floating point.
 
-@end defun
+@end deffn
 
-@defvar float2bf
+@defvr {Variable} float2bf
 Default value: @code{false}
  
 When @code{float2bf} is @code{false}, a warning message is printed when
 a floating point number is converted into a bigfloat number (since
 this may lead to loss of precision).
 
-@end defvar
+@end defvr
 
-@defun floatnump (@var{expr})
+@deffn {Function} floatnump (@var{expr})
 Returns @code{true} if @var{expr} is a floating point number, otherwise @code{false}.
 
-@end defun
+@end deffn
 
-@defvar fpprec
+@defvr {Variable} fpprec
 Default value: 16
 
 @c THIS EXPLANATION REALLY NEEDS SERIOUS CLARIFICATION. 
@@ -129,9 +129,9 @@ Default value: 16
 @code{fpprec} is the Maxima floating point precision.  @code{fpprec} can be set to an
 integer representing the desired precision.
 
-@end defvar
+@end defvr
 
-@defvar fpprintprec
+@defvr {Variable} fpprintprec
 Default value: 0
 
 @code{fpprintprec} is the number of digits to print when
@@ -150,7 +150,7 @@ the right.
 
 The value 1 for @code{fpprintprec} is illegal.
 
-@end defvar
+@end defvr
 
 @deffn {Lisp function} ?round (@var{x})
 @deffnx {Lisp function} ?round (@var{x}, @var{divisor})

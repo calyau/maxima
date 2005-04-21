@@ -89,7 +89,7 @@ This is a work in progress.  Some of the function names may change.
 @section Definitions for Special Functions
 
 @c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
-@defun airy (@var{x})
+@deffn {Function} airy (@var{x})
 The Airy function Ai.
 If the argument @var{x} is a number,
 the numerical value of @code{airy (@var{x})} is returned.
@@ -139,10 +139,10 @@ For details, see Abramowitz and Stegun,
 floating point Taylor expansions of the function @code{ai}.
 A similar expression can be constructed for @code{bi}.
 
-@end defun
+@end deffn
 
 
-@defun asympa
+@deffn {Function} asympa
 @code{asympa} is a package for asymptotic analysis. The package contains
 simplification functions for asymptotic analysis, including the ``big O''
 and ``little o'' functions that are widely used in complexity analysis and
@@ -150,17 +150,17 @@ numerical analysis.
 
 @code{load ("asympa")} loads this package.
 
-@end defun
+@end deffn
 
-@defun bessel (@var{z}, @var{a}) 
+@deffn {Function} bessel (@var{z}, @var{a}) 
 The Bessel function of the first kind.
 
 This function is deprecated.  Write @code{bessel_j (@var{z}, @var{a})} instead.
 
-@end defun
+@end deffn
 
 
-@defun bessel_j (@var{v}, @var{z})
+@deffn {Function} bessel_j (@var{v}, @var{z})
 The Bessel function of the first kind of order @math{v} and argument @math{z}.
 
 @code{bessel_j} computes the array @code{besselarray} such that
@@ -186,10 +186,10 @@ $$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
 
 although the infinite series is not used for computations.
 
-@end defun
+@end deffn
 
 
-@defun bessel_y (@var{v}, @var{z})
+@deffn {Function} bessel_y (@var{v}, @var{z})
 The Bessel function of the second kind of order @math{v} and argument @math{z}.
 
 @code{bessel_y} computes the array @code{besselarray} such that
@@ -212,10 +212,10 @@ $${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
 when @math{v} is not an integer.  When @math{v} is an integer @math{n},
 the limit as @math{v} approaches @math{n} is taken.
 
-@end defun
+@end deffn
 
 
-@defun bessel_i (@var{v}, @var{z})
+@deffn {Function} bessel_i (@var{v}, @var{z})
 The modified Bessel function of the first kind of order @math{v} and argument @math{z}.
 
 @code{bessel_i} computes the array @code{besselarray} such that
@@ -241,10 +241,10 @@ $$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
 
 although the infinite series is not used for computations.
 
-@end defun
+@end deffn
 
 
-@defun bessel_k (@var{v}, @var{z})
+@deffn {Function} bessel_k (@var{v}, @var{z})
 The modified Bessel function of the second kind of order @math{v} and argument @math{z}.
 
 @code{bessel_k} computes the array @code{besselarray} such that
@@ -265,9 +265,9 @@ $${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
 when @math{v} is not an integer.  If @math{v} is an integer @math{n},
 then the limit as @math{v} approaches @math{n} is taken.
 
-@end defun
+@end deffn
 
-@defvar besselexpand
+@defvr {Variable} besselexpand
 Default value: @code{false}
 
 @c REPHRASE
@@ -289,55 +289,55 @@ the Bessel function is expanded.
                           %pi      2       z
                                   z
 @end example
-@end defvar
+@end defvr
 
 
-@defun j0 (@var{x})
+@deffn {Function} j0 (@var{x})
 The Bessel function of the first kind of order 0.
 
 This function is deprecated.  Write @code{bessel_j (0, @var{x})} instead.
 
-@end defun
+@end deffn
 
 
-@defun j1 (@var{x})
+@deffn {Function} j1 (@var{x})
 The Bessel function of the first kind of order 1.
 
 This function is deprecated.  Write @code{bessel_j (1, @var{x})} instead.
 
-@end defun
+@end deffn
 
 
-@defun jn (@var{x}, @var{n})
+@deffn {Function} jn (@var{x}, @var{n})
 The Bessel function of the first kind of order @var{n}.
 
 This function is deprecated.  Write @code{bessel_j (@var{n}, @var{x})} instead.
 
-@end defun
+@end deffn
 
-@defun i0 (@var{x})
+@deffn {Function} i0 (@var{x})
 The modified Bessel function of the first kind of order 0.
 
 This function is deprecated.  Write @code{bessel_i (0, @var{x})} instead.
 
-@end defun
+@end deffn
 
 
-@defun i1 (@var{x})
+@deffn {Function} i1 (@var{x})
 The modified Bessel function of the first kind of order 1.
 
 This function is deprecated.  Write @code{bessel_i (1, @code{x})} instead.
 
-@end defun
+@end deffn
 
-@defun beta (@var{x}, @var{y})
+@deffn {Function} beta (@var{x}, @var{y})
 The beta function, defined as @code{gamma(x) gamma(y)/gamma(x + y)}.
 @c SEEMS LIKE THERE SHOULD BE MORE TO SAY HERE
 @c ANY SIMPLIFICATION RULES FOR THIS FUNCTION ??
 
-@end defun
+@end deffn
 
-@defun gamma (@var{x})
+@deffn {Function} gamma (@var{x})
 The gamma function.
 
 @c SEEMS POINTLESS TO MENTION THE FOLLOWING IDENTITY, 
@@ -350,9 +350,9 @@ The variable @code{gammalim} controls simplification of the gamma function.
 
 The Euler-Mascheroni constant is @code{%gamma}.
 
-@end defun
+@end deffn
 
-@defvar gammalim
+@defvr {Variable} gammalim
 Default value: 1000000
 
 @c REPHRASE
@@ -362,36 +362,36 @@ value of the argument is not greater than @code{gammalim}, then
 simplification will occur.  Note that the @code{factlim} switch controls
 simplification of the result of @code{gamma} of an integer argument as well.
 
-@end defvar
+@end defvr
 
 @c NEED EXAMPLES HERE
-@defun intopois (@var{a})
+@deffn {Function} intopois (@var{a})
 Converts @var{a} into a Poisson encoding.
 
-@end defun
+@end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@defun makefact (@var{expr})
+@deffn {Function} makefact (@var{expr})
 Transforms instances of binomial, gamma, and beta
 functions in @var{expr} into factorials.
 
 See also @code{makegamma}.
 
-@end defun
+@end deffn
 
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
-@defun makegamma (@var{expr})
+@deffn {Function} makegamma (@var{expr})
 Transforms instances of binomial, factorial, and beta
 functions in @var{expr} into gamma functions.
 
 See also @code{makefact}.
 
-@end defun
+@end deffn
 
 @c AREN'T THERE OTHER FUNCTIONS THAT DO ESSENTIALLY THE SAME THING ??
-@defun numfactor (@var{expr})
+@deffn {Function} numfactor (@var{expr})
 Returns the numerical factor multiplying the expression
 @var{expr}, which should be a single term.
 
@@ -409,44 +409,44 @@ Returns the numerical factor multiplying the expression
                                8
 @end example
 
-@end defun
+@end deffn
 
 @c NEED EXAMPLES HERE
-@defun outofpois (@var{a})
+@deffn {Function} outofpois (@var{a})
 Converts @var{a} from Poisson encoding to general
 representation.  If @var{a} is not in Poisson form, @code{outofpois} carries out the conversion,
 i.e., the return value is @code{outofpois (intopois (@var{a}))}.
 This function is thus a canonical simplifier
 for sums of powers of sine and cosine terms of a particular type.
 
-@end defun
+@end deffn
 
 @c NEED MORE INFO HERE
 @c NEED EXAMPLES HERE
-@defun poisdiff (@var{a}, @var{b})
+@deffn {Function} poisdiff (@var{a}, @var{b})
 Differentiates @var{a} with respect to @var{b}. @var{b} must occur only
 in the trig arguments or only in the coefficients.
 
-@end defun
+@end deffn
 
 @c LOOKING AT THE CODE IN src/pois3.lisp, THIS FCN SEEMS TO COMPUTE THE EXPONENT BY MULTIPLYING IN A LOOP
 @c DUNNO HOW WE WANT TO EXPLAIN THAT
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@defun poisexpt (@var{a}, @var{b})
+@deffn {Function} poisexpt (@var{a}, @var{b})
 Functionally identical to @code{intopois (@var{a}^@var{b})}.
 @var{b} must be a positive integer.
 
-@end defun
+@end deffn
 
 @c WHAT IS THIS ABOUT ??
-@defun poisint (@var{a}, @var{b})
+@deffn {Function} poisint (@var{a}, @var{b})
 Integrates in a similarly restricted sense (to
 @code{poisdiff}).  Non-periodic terms in @var{b} are dropped if @var{b} is in the trig
 arguments.
 
-@end defun
+@end deffn
 
-@defvar poislim
+@defvr {Variable} poislim
 Default value: 5
 
 @code{poislim} determines the domain of the coefficients in
@@ -454,28 +454,28 @@ the arguments of the trig functions.  The initial value of 5
 corresponds to the interval [-2^(5-1)+1,2^(5-1)], or [-15,16], but it
 can be set to [-2^(n-1)+1, 2^(n-1)].
 
-@end defvar
+@end defvr
 
 @c UMM, WHAT IS THIS ABOUT EXACTLY ?? EXAMPLES NEEDED
-@defun poismap (@var{series}, @var{sinfn}, @var{cosfn})
+@deffn {Function} poismap (@var{series}, @var{sinfn}, @var{cosfn})
 will map the functions @var{sinfn} on the
 sine terms and @var{cosfn} on the cosine terms of the Poisson series given.
 @var{sinfn} and @var{cosfn} are functions of two arguments which are a coefficient
 and a trigonometric part of a term in series respectively.
 
-@end defun
+@end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@defun poisplus (@var{a}, @var{b})
+@deffn {Function} poisplus (@var{a}, @var{b})
 Is functionally identical to @code{intopois (a + b)}.
 
-@end defun
+@end deffn
 
-@defun poissimp (@var{a})
+@deffn {Function} poissimp (@var{a})
 Converts @var{a} into a Poisson series for @var{a} in general
 representation.
 
-@end defun
+@end deffn
 
 @c MORE INFO NEEDED HERE
 @defvr {special symbol} poisson
@@ -484,7 +484,7 @@ expressions.
 
 @end defvr
 
-@defun poissubst (@var{a}, @var{b}, @var{c})
+@deffn {Function} poissubst (@var{a}, @var{b}, @var{c})
 Substitutes @var{a} for @var{b} in @var{c}.  @var{c} is a Poisson series.
 
 (1) Where @var{B} is a variable @var{u}, @var{v}, @var{w}, @var{x}, @var{y}, or @var{z},
@@ -501,37 +501,37 @@ result of substituting @code{@var{a} + @var{d}} for @var{b} in @var{c}.  The ide
 expansion in terms of a small parameter.  For example,
 @code{poissubst (u, v, cos(v), %e, 3)} yields @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
-@end defun
+@end deffn
 
 @c REPHRASE WITHOUT USING THE TERM "FUNCTIONALLY IDENTICAL"
-@defun poistimes (@var{a}, @var{b})
+@deffn {Function} poistimes (@var{a}, @var{b})
 Is functionally identical to @code{intopois (@var{a}*@var{b})}.
 
-@end defun
+@end deffn
 
 @c HOW DOES THIS WORK ?? NEED MORE INFO AND EXAMPLES
-@defun poistrim ()
+@deffn {Function} poistrim ()
 is a reserved function name which (if the user has defined
 it) gets applied during Poisson multiplication.  It is a predicate
 function of 6 arguments which are the coefficients of the @var{u}, @var{v}, ..., @var{z}
 in a term.  Terms for which @code{poistrim} is @code{true} (for the coefficients of
 that term) are eliminated during multiplication.
 
-@end defun
+@end deffn
 
-@defun printpois (@var{a})
+@deffn {Function} printpois (@var{a})
 Prints a Poisson series in a readable format.  In common
 with @code{outofpois}, it will convert @var{a} into a Poisson encoding first, if
 necessary.
 
-@end defun
+@end deffn
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
-@defun psi (@var{x})
-@defunx psi [@var{n}](@var{x})
+@deffn {Function} psi (@var{x})
+@deffnx {Function} psi [@var{n}](@var{x})
 The derivative of @code{log (gamma (x))}.
 
 Maxima does not know how to compute a numerical value of @code{psi}.
 However, the function @code{bfpsi} in the @code{bffac} package can compute numerical values.
 
-@end defun
+@end deffn
