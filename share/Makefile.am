@@ -557,6 +557,7 @@ tensor/petrov.dem\
 tensor/plasma.dem\
 tensor/reissner.dem\
 tensor/schwarz.dem\
+tensor/spinor.dem\
 tensor/symtry.lisp\
 tensor/taubnut.dem\
 tensor/tendemo.mac\
