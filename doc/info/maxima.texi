@@ -45,15 +45,19 @@ END-INFO-DIR-ENTRY
 @node Top, Introduction to Maxima, (dir), (dir)
 @top
 
-Maxima is a fairly complete computer algebra system.
+Maxima is a computer algebra system, implemented in Lisp.
 
-This system Maxima is a Common Lisp implementation due to William F.
-Schelter, and is based on the original implementation of Macsyma at
-MIT, as distributed by the Department of Energy.  I now have
-permission from DOE to make derivative copies, and in particular to
-distribute it under the GNU public license.  See the file COPYING
-included in the distribution.   Thus these files may now be redistributed
-under the terms of GNU public license.
+Maxima is derived from the Macsyma system,
+developed at MIT in the years 1968 through 1982 as part of Project MAC.
+MIT turned over a copy of the Macsyma source code to the Department of Energy
+in 1982; that version is now known as DOE Macsyma.
+A copy of DOE Macsyma was maintained by Professor William F. Schelter
+of the University of Texas from 1982 until his death in 2001.
+In 1998, Schelter obtained permission from the Department of Energy
+to release the DOE Macsyma source code under the GNU Public License,
+and in 2000 he initiated the Maxima project at SourceForge to maintain
+and develop DOE Macsyma, now called Maxima.
+
 
 @c includes
 
@@ -150,10 +154,10 @@ Operators
 Expressions
 
 * Introduction to Expressions::  
-* ASSIGNMENT::                  
-* COMPLEX::                     
-* INEQUALITY::                  
-* SYNTAX::                      
+* Assignment::                  
+* Complex::                     
+* Inequality::                  
+* Syntax::                      
 * Definitions for Expressions::  
 
 Simplification
@@ -167,7 +171,7 @@ Plotting
 Input and Output
 
 * Introduction to Input and Output::  
-* FILES::                       
+* Files::                       
 * Definitions for Input and Output::  
 
 Floating Point
@@ -252,8 +256,8 @@ Arrays and Tables
 Matrices and Linear Algebra
 
 * Introduction to Matrices and Linear Algebra::  
-* DOT::                         
-* VECTORS::                     
+* Dot::                         
+* Vectors::                     
 * eigen::
 * Definitions for Matrices and Linear Algebra::  
 
@@ -302,7 +306,7 @@ Runtime Environment
 Miscellaneous Options
 
 * Introduction to Miscellaneous Options::  
-* SHARE::                       
+* Share::                       
 * Definitions for Miscellaneous Options::  
 
 Rules and Patterns
