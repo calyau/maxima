@@ -438,6 +438,7 @@ baserules(currentunitlist,unitlistname,baseunitrules):=
    nonfinalunitlistd : append([unitlistname[i][1][j]],nonfinalunitlistd)))
 );
 
+
 /*--------------------Derived Quantity rank assignment ----------------------*/
 
 /* This set of functions assigns ranks to all derived quantities, with higher
@@ -568,40 +569,59 @@ derivedrules(currentunitlist):= block([letrat:true,i,j,a,b,fakerule],
 as its arguments either a single unit or a list of units.  Checks to
 make sure the list contains only one unit per quantity.  Will need to
 update to handle derived quantities - map won't work.*/
+
 dosetunits(units):= block([letrat:true,unittype,unitlistname,
                          unitrules,currentunitlist, flag, i, derivedunits],
-derivedunits : [],
-if listp(units) then (
-  if (checkforuniqueness(makequantlist(units))) then (
-    for i : 1 thru length(units) do (
-      if (not(isbase(units[i])) and (isunit(units[i]))) then ( 
-	 derivedunits : append([units[i]],derivedunits)
-      ) else (
-	dosetunits(units[i])
-      )),
-    if (not(?equal(length(derivedunits),0))) then (
-	derivedrules(derivedunits))
-  ) else (
-  error ("Error - two or more of these units describe the same quantity."))
- ) else (
-  isunit(units),
-  unittype : letsimp(units,toquantities),
-  unitlistname : concat(unittype,listing_use),
-  unitrules : concat(unittype,'rules),
-  flag : 0, i:0,
-  while ?equal(flag,0) do (
-     i : i+1,
-     if not(lfreeof(unitlistname[i][1],units)) then (
-        currentunitlist : unitlistname[i],
-        flag : 1),
-     if ?equal(i, length(ev(unitlistname))) then (flag : 1)
-  ),
-  baserules(currentunitlist,unitlistname,unitrules)
-  )
+  derivedunits : [],
+  if listp(units) then (
+    if (checkforuniqueness(makequantlist(units))) then (
+      for i : 1 thru length(units) do (
+	if (not(isbase(units[i])) and (isunit(units[i]))) then ( 
+	   derivedunits : append([units[i]],derivedunits)
+	) else (
+	  dosetunits(units[i])
+	)),
+      if (not(?equal(length(derivedunits),0))) then (
+	  derivedrules(derivedunits))
+    ) else (
+    error ("Error - two or more of these units describe the same quantity."))
+   ) else (
+    isunit(units),
+    unittype : letsimp(units,toquantities),
+    unitlistname : concat(unittype,listing_use),
+    unitrules : concat(unittype,'rules),
+    flag : 0, i:0,
+    while ?equal(flag,0) do (
+       i : i+1,
+       if not(lfreeof(unitlistname[i][1],units)) then (
+          currentunitlist : unitlistname[i],
+          flag : 1),
+       if ?equal(i, length(ev(unitlistname))) then (flag : 1)
+    ),
+    baserules(currentunitlist,unitlistname,unitrules)
+    )
+  );
+
+/* Create general MKS rulesets for base units*/
+mksbaserules():= block([letrat:true],
+   baserules(%lengthlisting_use[1],%lengthlisting_use,%lengthrules_toMKS),
+   baserules(%masslisting_use[1],%masslisting_use,%massrules_toMKS),
+   baserules(%timelisting_use[1],%timelisting_use,%timerules_toMKS),
+   baserules(%currentlisting_use[1],%currentlisting_use,%currentrules_toMKS),
+   baserules(%temperaturelisting_use[1],%temperaturelisting_use,%temperaturerules_toMKS),
+   baserules(%amount_of_substancelisting_use[1],%amount_of_substancelisting_use,%amount_of_substancerules_toMKS),
+   baserules(%luminous_intensitylisting_use[1],%luminous_intensitylisting_use,%luminous_intensityrules_toMKS)
 );
 
 processunits(expression) := block([letrat:true,result1],
    result1 : letsimp(expression,derivedsimpunitrules),
+   result1 : letsimp(result1,%lengthrules_toMKS),
+   result1 : letsimp(result1,%massrules_toMKS),
+   result1 : letsimp(result1,%timerules_toMKS),
+   result1 : letsimp(result1,%currentrules_toMKS),
+   result1 : letsimp(result1,%temperaturerules_toMKS),
+   result1 : letsimp(result1,%amount_of_substancerules_toMKS),
+   result1 : letsimp(result1,%luminous_intensityrules_toMKS),
    result1 : letsimp(result1,derivedexpandunitrules),
    result1 : letsimp(result1,%lengthrules),
    result1 : letsimp(result1,%massrules),
@@ -610,6 +630,7 @@ processunits(expression) := block([letrat:true,result1],
    result1 : letsimp(result1,%temperaturerules),
    result1 : letsimp(result1,%amount_of_substancerules),
    result1 : letsimp(result1,%luminous_intensityrules),
+   if ?equal(false,result1) then (result1 : expression),
  result1);
 
 /*====================== User Functions ======================*/ 
@@ -617,9 +638,7 @@ processunits(expression) := block([letrat:true,result1],
 /* Returns the Maxima abbreviation used for fullunitname */
 showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
                          currentunitlist,flag,return1],
-   if not(isunit(fullunitname)) then (
-     (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
-   ) else (
+      isunit(fullunitname);
       unittype : letsimp(fullunitname,toquantities),
       unitlistname : concat(unittype,listing_use),
       flag : 0, i:0,
@@ -630,15 +649,13 @@ showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
            return1 : unitlistname[i][1][1],
 	   flag : 1),
 	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
-      )),
+      ),
    return1);
 
 /* Returns all the full names of the unit abbr */
 showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
                          currentunitlist,flag,return1],
-   if not(isunit(abbr)) then (
-     (error ("Input is not a unit.  To define your own unit, use the addunit command."),unit)
-   ) else (
+      isunit(abbr);
       unittype : letsimp(abbr,toquantities),
       unitlistname : concat(unittype,listing_use),
       flag : 0, i:0,
@@ -649,7 +666,7 @@ showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
            return1 : rest(unitlistname[i][1],1),
 	   flag : 1),
 	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
-      )),
+      ),
    return1);
 
 /* Prints out information about a unit */
@@ -660,7 +677,8 @@ the user level command to set up unit definitions. */
 setunits(units) := block([letrat:true],
   nonfinalunitlist : [],
   nonfinalunitlistd : [],
-  dosetunits(units));
+  dosetunits(units),
+  mksbaserules());
 
 /*  Allows the user to create their own units */
 addunits([[unitname(s)],definition,0]):=
@@ -698,16 +716,9 @@ abbrevsimp : 0;
 /* Create default toquantities ruleset*/
 maketoquantitiesruleset();
 
-/* Instruct the global simplification routines to call the simplification
-   function defined in this package, to allow automatic unit conversion
-   without the user having to explicitly call a function.*/
-freeofunitspd([x]) := lfreeof(nonfinalunitlistd,x);
-notfreeofunitspd([x]) := not(freeofunitspd(x));
-freeofunitsp([x]) := lfreeof(nonfinalunitlist,x);
-notfreeofunitsp([x]) := not(freeofunitsp(x));
-matchdeclare(a,freeofunitspd(a),b,notfreeofunitspd(b));
-matchdeclare(c,freeofunitsp(c),d,notfreeofunitsp(d));
-tellsimpafter(a*b,a*processunits(b));
-tellsimpafter(c*d,c*processunits(d));
+/* Activate processunits as a post_eval_function in order to enable
+   automatic simplification of all unit output */
+post_eval_functions : [processunits];
+
 
 ttyoff: nolabels, false$
