@@ -7,13 +7,13 @@
 @section Introduction to Matrices and Linear Algebra
 
 @menu
-* DOT::                         
-* VECTORS::                     
+* Dot::                         
+* Vectors::                     
 * eigen::
 @end menu
 
-@node DOT, VECTORS, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
-@subsection DOT
+@node Dot, Vectors, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
+@subsection Dot
 The operator @code{.} represents noncommutative multiplication and scalar product.
 When the operands are 1-column or 1-row matrices @code{a} and @code{b},
 the expression @code{a.b} is equivalent to @code{sum (a[i]*b[i], i, 1, length(a))}.
@@ -39,8 +39,8 @@ expressions involving @code{.}, namely
 @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
 and @code{dotscrules}.
 
-@node VECTORS, eigen, DOT, Introduction to Matrices and Linear Algebra
-@subsection VECTORS
+@node Vectors, eigen, Dot, Introduction to Matrices and Linear Algebra
+@subsection Vectors
 @code{vect} is a package of functions for vector analysis.
 @code{load ("vect")} loads this package, and @code{demo ("vect")} displays a demonstration.
 @c find maxima -name \*orth\* YIELDS NOTHING; ARE THESE FUNCTIONS IN ANOTHER FILE NOW ??
@@ -64,7 +64,7 @@ The @code{vect} package contains these functions:
 Warning: the @code{vect} package declares the dot operator @code{.}
 to be a commutative operator.
 
-@node eigen, , VECTORS, Introduction to Matrices and Linear Algebra
+@node eigen, , Vectors, Introduction to Matrices and Linear Algebra
 @subsection eigen
 
 The package @code{eigen} contains several functions devoted to the

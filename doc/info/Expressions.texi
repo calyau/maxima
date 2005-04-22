@@ -1,13 +1,13 @@
 @menu
 * Introduction to Expressions::  
-* ASSIGNMENT::                  
-* COMPLEX::                     
-* INEQUALITY::                  
-* SYNTAX::                      
+* Assignment::                  
+* Complex::                     
+* Inequality::                  
+* Syntax::                      
 * Definitions for Expressions::  
 @end menu
 
-@node Introduction to Expressions, ASSIGNMENT, Expressions, Expressions
+@node Introduction to Expressions, Assignment, Expressions, Expressions
 @section Introduction to Expressions
 
 There are a number of reserved words which cannot be used as
@@ -57,15 +57,15 @@ term in the @i{comma expression} which actually gives back the value.
 
 
 
-@node ASSIGNMENT, COMPLEX, Introduction to Expressions, Expressions
-@section ASSIGNMENT
+@node Assignment, Complex, Introduction to Expressions, Expressions
+@section Assignment
 There are two assignment operators in Maxima, @code{:} and @code{::}.
 E.g., @code{a: 3} sets the variable @code{a} to 3. @code{::} assigns the value of the
 expression on its right to the value of the quantity on its left,
 which must evaluate to an atomic variable or subscripted variable.
 
-@node COMPLEX, INEQUALITY, ASSIGNMENT, Expressions
-@section COMPLEX
+@node Complex, Inequality, Assignment, Expressions
+@section Complex
 A complex expression is specified in Maxima by adding the
 real part of the expression to @code{%i} times the imaginary part.  Thus the
 roots of the equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%I} and @code{2 - 3*%i}.  Note that
@@ -74,8 +74,8 @@ expanding the product.  Simplification of quotients, roots, and other
 functions of complex expressions can usually be accomplished by using
 the @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg} functions.
 
-@node INEQUALITY, SYNTAX, COMPLEX, Expressions
-@section INEQUALITY
+@node Inequality, Syntax, Complex, Expressions
+@section Inequality
 Maxima has the usual inequality operators:
 
 @example
@@ -85,8 +85,8 @@ greater than or equal to:  >=
 less than or equal to:  <=
 @end example
 
-@node SYNTAX, Definitions for Expressions, INEQUALITY, Expressions
-@section SYNTAX
+@node Syntax, Definitions for Expressions, Inequality, Expressions
+@section Syntax
 It is possible to add new operators to Maxima (infix,
 prefix, postfix, unary, or matchfix with given precedences), to remove
 existing operators, or to redefine the precedence of existing
@@ -152,7 +152,7 @@ also be removed.
 (%o4)                            12
 @end example
 
-@node Definitions for Expressions,  , SYNTAX, Expressions
+@node Definitions for Expressions,  , Syntax, Expressions
 @section Definitions for Expressions
 
 @c NEEDS CLARIFICATION AND EXAMPLES

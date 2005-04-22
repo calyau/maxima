@@ -1,14 +1,14 @@
 @menu
 * Introduction to Input and Output::  
-* FILES::                       
+* Files::                       
 * Definitions for Input and Output::  
 @end menu
 
-@node Introduction to Input and Output, FILES, Input and Output, Input and Output
+@node Introduction to Input and Output, Files, Input and Output, Input and Output
 @section Introduction to Input and Output
 
-@node FILES, Definitions for Input and Output, Introduction to Input and Output, Input and Output
-@section FILES
+@node Files, Definitions for Input and Output, Introduction to Input and Output, Input and Output
+@section Files
 A file is simply an area on a particular storage device which contains data or text.
 Files on the disks are figuratively grouped into "directories".
 A directory is just a list of files.
@@ -24,7 +24,7 @@ Commands which deal with files are:
 and
 @code{appendfile}.
 
-@node Definitions for Input and Output,  , FILES, Input and Output
+@node Definitions for Input and Output,  , Files, Input and Output
 @section Definitions for Input and Output
 
 @defvr {Variable} %
