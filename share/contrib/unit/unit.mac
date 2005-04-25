@@ -547,6 +547,34 @@ setunits(units):= block([letrat:true,unittype,unitlistname,
     error ("Error - argument to setunits must be a list, e.g. [N] instead of N."))
 );
 
+/* These two functions control the dontuselist array.  usequantity will remove
+a quantity from the do not use list*/
+usequantity(input1):= block([letrat:true,unittype,unitlistname,
+                         unitrules,currentunitlist, flag, i, j, derivedunits],
+   if ?equal(input1,letsimp(input1,toquantities)) then (
+      dontuselist : delete(input1,dontuselist))
+   else (
+      temp : letsimp(input1,toquantities),
+      dontuselist : delete(temp,dontuselist),
+      unitrules : concat(temp,'rules),
+      killruleset(unitrules)
+   ));
+dontusequantity(input1):= block([letrat:true,unittype,unitlistname,
+                         unitrules,currentunitlist, temp, i, j, derivedunits],
+   if ?equal(input1,letsimp(input1,toquantities)) then (
+      unitrules : concat(input1,'rules),
+      killruleset(unitrules),
+      dontuselist : append([input1],dontuselist)
+   ) else (
+      temp : letsimp(input1,toquantities),
+      unitrules : concat(temp,'rules),
+      killruleset(unitrules),
+      dontuselist : append([temp],dontuselist)
+   ));
+
+/* This function returns the quantity described by a unit */
+quantity(input1) := letsimp(input1,toquantities);
+
 /*  Not yet implimented
 
 /* Prints out information about a unit */
@@ -561,6 +589,17 @@ convert(expression,desiredunits):=
 */
 
 /*====================== Initilization =======================*/
+
+/* Startup Message */
+print("*******************************************************************");
+print("*                       Units version 0.10                        *");
+print("*          Definitions based on the NIST Reference on             *");
+print("*              Constants, Units, and Uncertainty                  *");
+print("*       Conversion factors from various sources including         *");
+print("*                   NIST and the GNU units package                *");
+print("*******************************************************************");
+print("");
+print("Initializing unit arrays...");
 
 /* This variable controls how many of the metric prefixes are added
    on to the default lists*/
@@ -614,5 +653,6 @@ makederivedtoMKSrules();
    automatic simplification of all unit output */
 post_eval_functions : [processunits];
 
+print("Done.");
 
 ttyoff: nolabels, false$
