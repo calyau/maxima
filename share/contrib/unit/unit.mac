@@ -105,16 +105,16 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 %timelisting : [[[s,second,seconds],1,m],[[%min,minute,minutes],1/60,e]];
 
 /*Electric Current*/
-%current : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%currentlisting : [[[A,ampere,amperes],1,m]];
 
 /*Thermodynamic Temperature*/
-%temperature : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%temperaturelisting : [[[K,kelvin,kelvins],1,m]];
 
 /*Amount of Substance*/
-%amount_of_substance : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%amount_of_substancelisting : [[[mol,mole,moles],1,m]];
 
 /*Luminous Intensity*/
-%luminous_intensity : [[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%luminous_intensitylisting: [[[cd,lm,lumen,candela],1,m]];
 
 
 /* Derived Units
@@ -126,17 +126,12 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
    units and fullnames. After that, the structure is the same as Base Quantity
    lists. globalderivedunitslisting lists all derived quantities known to
    Maxima.  A second global listing, called globalderivedunitlisting_use, is
-   defined using the following structure:  [rank,quanitiy].  rank is
-   a numerical value which allows globalderivedunitlisting to be sorted. This
-   is necessary in order to ensure that the simplification rules are defined
-   in the correct order.  This list is created automatically on package
-   load, and updated if a user defines a new quantity.*/
+   used to define the search order for substitution in unit processing.*/
 
 globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 %energy,%power,%electric_charge,%electric_potential_difference,
 %capacitance,%resistance,%conductance,%magnetic_flux,
-%magnetic_flux_%density,%inductance,%luminous_flux,%illuminance,
-%radionuclide_activity,%absorbed_dose,%dose_equivalent,
+%magnetic_flux_density,%inductance,%illuminance,%absorbed_dose,
 %catalytic_activity];
 
 /*Volume*/
@@ -170,51 +165,40 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 [[eV,electron_volt,electron_volts],1.6021765*10^-19,m]];
 
 /*Power, Radiant */
-%powerlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%powerlisting : [kg*m^2/s^3,[[W,watt,watts],1,m]];
 
 /*Electric Charge, Quantity of Electricity*/
-%electric_chargelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%electric_chargelisting : [s*A,[[C,coulomb,coulombs],1,m]];
 
 /*Electric Potential Difference, Electromotive Force */	
-%electric_potential_differencelisting : [baseunitexpr,[[a,aa,aaa],0,eee],
-[[b,bb,bbb],0,eee]];
+%electric_potential_differencelisting : [kg*m^2/(s^3*A),[[V,volt,volts],1,m]];
 
 /*Capacitance*/
-%capacitancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%capacitancelisting : [s^4*A^2/(m^2*kg),[[F,farad,farads],1,m]];
 
 /*Electric Resistance*/
-%resistancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%resistancelisting : [m^2*kg/(s^3*A^2),[[Ohm,ohm,ohms],1,m]];
 
 /*Electric Conductance*/
-%conductancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%conductancelisting : [s^3*A^2/(m^2*kg),[[S,siemens],1,m]];
 
 /*Magnetic Flux*/
-%magnetic_fluxlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%magnetic_fluxlisting : [m^2*kg/(s^2*A),[[Wb,weber,webers],1,m]];
 
 /*Magnetic Flux Density*/
-%magnetic_flux_densitylisting : [baseunitexpr,[[a,aa,aaa],0,eee],
-[[b,bb,bbb],0,eee]];
+%magnetic_flux_densitylisting : [kg/(s^2*A),[[T,tesla],1,m]];
 
 /*Inductance*/
-%inductancelisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
-
-/*Luminous Flux*/
-%luminous_fluxlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%inductancelisting : [m^2*kg/(s^2*A^2),[[H,henry,henries],1,m]];
 
 /*Illuminance */
-%illuminance_listing : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
-
-/*Activity (of a radionuclide)*/
-%radionuclide_activitylisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%illuminancelisting : [cd/m^2,[[lx,lux],1,m]];
 
 /*Absorbed Dose, Specific Energy (imparted), Kerma */
-%absorbed_doselisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
-
-/*Dose Equivalent*/
-%dose_equivalentlisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%absorbed_doselisting : [m^2/s^2,[[Gy,gray,grays],1,m]];
 
 /*Catalytic Activity */
-%catalytic_activitylisting : [baseunitexpr,[[a,aa,aaa],0,eee],[[b,bb,bbb],0,eee]];
+%catalytic_activitylisting : [mol/s,[[kat,katal,katals],1,m]];
 
 
 /*===================== Package Functions ====================*/ 
@@ -328,10 +312,10 @@ maketoquantitiesruleset() := block([i,j,k,b,unitlistname],
     
     /* j needs to start at the second entry for Derived Quantity Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
-     unitlistname : concat(globalderivedunitlisting_use[i][2],listing_use),
+     unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
        for k : 1 thru length(unitlistname[j][1]) do (
-         unitlet([unitlistname[j][1][k],globalderivedunitlisting_use[i][2]],
+         unitlet([unitlistname[j][1][k],globalderivedunitlisting_use[i]],
 	         toquantities)
     )))
     );
@@ -448,81 +432,6 @@ makeMKStobaserules(currentunitlist,unitlistname,baseunitrules):=
 	))))
 );
 
-/*--------------------Derived Quantity rank assignment ----------------------*/
-
-/* This set of functions assigns ranks to all derived quantities, with higher
-rankings corresponding to more complex quantities.  This is essential in order
-to ensure that the simplification rules check for quantities in the
-proper order.  For example, if the rules do not recognize J before N, J
-will never be resolved unless the rules know to look for an expression
-containing N.  This can be done, but the cleaner way (particularly in
-the case of user defined quantities) is to assign rank numbers in such
-a way that the check for each is done in the proper order.  This is
-accomplished by checking each new quantity's MKS definition to see what
-units contain it.  If a quantity of a given rank DOES contain the new quanity
-as part of its definiton, simplification of the higher rank unit using the
-simprule for the new unit will result in a changed expression.  So for each
-new quantity this check is performed until a rank is found where this does
-not happen.  In that case, the new quantity is assigned the rank at which
-no changes occurred due to substitution.  If the highest ranking quantity in the
-array is contained in the new quantity, the new quantity is assigned rank+1 and
-becomes the new highest ranking unit.  Call metricexpandall first.*/
-
-rankquant(newquantity, listsanshighranks) := block([letrat : true,
-   i,j,highnum,lower,lowerin,return1,lowerpart,higherpart,
-   highestrank],
-   kill(testfornew),
-   unitlet([quanttomks(newquantity),newquantity],testfornew),
-   listsanshighranks : reverse(sort(listsanshighranks)),
-   highestrank : listsanshighranks[1][1],
-   i : 1,
-   highnum : 0,
-   lower : true,
-   while (?is(i<=length(listsanshighranks)) and 
-          ?equal(listsanshighranks[i][1],highestrank)) do (
-      highnum : highnum + 1,
-      i : i + 1),
-   for i : 1 thru highnum do (
-     if (?equal(ratsimp(letsimp(quanttomks(listsanshighranks[i][2]),testfornew)/
-                        quanttomks(listsanshighranks[i][2])),1)) then (
-         lower : false)
-   ),
-   if (lower and ?equal(highestrank,1)) then (
-     for i : 1 thru length(listsanshighranks) do(
-        listsanshighranks[i][1] : listsanshighranks[i][1] + 1),
-      return1 : append(listsanshighranks,[[1,newquantity]])
-   ) else (
-   if lower then (
-      lowerpart : rankquant(newquantity,rest(listsanshighranks,highnum)),
-      higherpart : rest(listsanshighranks,highnum-length(listsanshighranks)),
-      if ?equal(lowerpart[1][1],last(higherpart)[1]) then (
-        for i : 1 thru length(higherpart) do (
-	  higherpart[i][1] : higherpart[i][1] + 1)),
-      return1 : append(higherpart,lowerpart)
-   ) else (
-   if not(lower) then (
-      i : 1,
-      lowerin : true,
-      for i : 1 thru highnum do (
-          if (?equal(ratsimp(ratsubst('test,quanttomks(listsanshighranks[i][2]),quanttomks(newquantity))/
-	           quanttomks(newquantity)),1)) then (
-           lowerin : false)),
-      if lowerin then (
-         return1 : append([[highestrank+1,newquantity]],listsanshighranks)
-      ) else (
-         return1 : append([[highestrank,newquantity]],listsanshighranks))
-    ))),
-    return1);
-    
-      
-rankquants(quantityarray) := block([letrat : true, ranknew, rankmax, 
-                                   currentrank,i,j,returna],
-   returna : [[1,quantityarray[1]]],
-   quantityarray : rest(quantityarray,1),
-   while ?is(length(quantityarray) > 0) do (
-      returna : rankquant(quantityarray[1],returna),
-      quantityarray : rest(quantityarray,1)),
-   returna);
 	
 /* This defines rules for converting all derived units to MKS.  This is only
 updated when a new derived unit is added - otherwise these rules are constant. */
@@ -530,7 +439,7 @@ makederivedtoMKSrules():= block([letrat:true,i,j,a,b,fakerule],
    killruleset(derivedtoMKSrules),
    unitlet([fakerule,fakerule],derivedtoMKSrules),
    for a : 1 thru length(globalderivedunitlisting_use) do (
-    unitlistname : concat(globalderivedunitlisting_use[a][2],listing_use),
+    unitlistname : concat(globalderivedunitlisting_use[a],listing_use),
     for i : 2 thru length(ev(unitlistname)) do (
       for j : 1 thru length(unitlistname[i][1]) do (
       unitlet([unitlistname[i][1][j], base(unitlistname[i][1][j])],derivedtoMKSrules)
@@ -556,7 +465,7 @@ processunits(expression) := block([letrat:true,unitrules,result1],
    result1 : letsimp(expression,derivedtoMKSrules),
    result1 : letsimp(result1,basetoMKSrules),
    for i : 1 thru length(globalderivedunitlisting_use) do (
-   	unitrules : concat(globalderivedunitlisting_use[i][2],'rules),
+   	unitrules : concat(globalderivedunitlisting_use[i],'rules),
 	result1 : unitletsimp(result1,unitrules),
 	ratsimp(result1)
    ), 
@@ -664,11 +573,29 @@ dontuselist : [];
 /* Places all relevant metric definitons into the %quantitylist lists.*/
 metricexpandall(%unitexpand);
 
-/* Creates global list of derived quantities with rank assigned to each
-quantity to allow for proper simplification.  Remember for addunit command
-and any similar commands to add a new quantity to the globalderivedunitlist,
-then recreate the use list. */
-globalderivedunitlisting_use : rankquants(globalderivedunitlisting);
+/* This list dictates in what order Maxima will look for derived units.
+Initially an attempt was made to automate this process, but it proved
+rather difficult to automate.  (For example, given an expression:
+         3
+     kg m
+     -----
+        2
+       s
+this can be simplified to:
+     kg L	   2 		2
+     ----   or  N m   or kg*L*Hz
+       2
+      s     					   2
+Normal practice would of course be to adopt the N m  answer, but
+this convention cannot be readily expressed in an algorithmic fashion
+for all cases delt with in this package. Hence, for the time being a 
+manual definition of the simplification order has been adopted.*/
+
+globalderivedunitlisting_use : [%capacitance,%resistance,%conductance,
+%electric_potential_difference,%magnetic_flux,
+%magnetic_flux_density,%inductance,%electric_charge,%power,
+%energy,%force,%pressure,%volume,%frequency,%illuminance,%absorbed_dose,
+%catalytic_activity];
 
 /* Variable to control how simplification behaves with respect to 
    fullnames and abbreviations.  The default, 0, simplifies abbrev. to
