@@ -552,6 +552,7 @@ makeMKStoderivedrules(currentunit,unitlistname,derivedunitrules):=
 
 /* This command is used to do final global simplification of units */
 processunits(expression) := block([letrat:true,unitrules,result1],
+   if ?equal(currentdoeval,true) then (
    result1 : letsimp(expression,derivedtoMKSrules),
    result1 : letsimp(result1,basetoMKSrules),
    for i : 1 thru length(globalderivedunitlisting_use) do (
@@ -561,11 +562,10 @@ processunits(expression) := block([letrat:true,unitrules,result1],
    ), 
    result1 : letsimp(result1,%lengthrules),
    result1 : letsimp(result1,%massrules),
-   result1 : letsimp(result1,%timerules),
-   result1 : letsimp(result1,%currentrules),
-   result1 : letsimp(result1,%temperaturerules),
-   result1 : letsimp(result1,%amount_of_substancerules),
-   result1 : letsimp(result1,%luminous_intensityrules),
+   result1 : letsimp(result1,%timerules)
+   ) else (
+   result1 : expression),
+   currentdoeval : true,
  result1);
 
 /*====================== User Functions ======================*/ 
@@ -585,7 +585,10 @@ showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
 	   flag : 1),
 	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
       ),
+   currentdoeval : false, /* This tells processunits not to simplify 
+   			     for this operation only */
    return1);
+
 
 /* Returns all the full names of the unit abbr */
 showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
@@ -597,11 +600,13 @@ showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
       if not(isbase(abbr)) then (i : i+1),
       while ?equal(flag,0) do(
         i : i+1,
-        if not(lfreeof(unitlistname[i][1],fullunitname)) then (
+        if not(lfreeof(unitlistname[i][1],abbr)) then (
            return1 : rest(unitlistname[i][1],1),
 	   flag : 1),
 	if ?equal(i, length(ev(unitlistname))) then (flag : 1)
       ),
+   currentdoeval : false, /* This tells processunits not to simplify 
+   			     for this operation only */
    return1);
 
 /* Command to set user selected units as defaults.  Checks to ensure the
