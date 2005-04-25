@@ -555,9 +555,7 @@ usequantity(input1):= block([letrat:true,unittype,unitlistname,
       dontuselist : delete(input1,dontuselist))
    else (
       temp : letsimp(input1,toquantities),
-      dontuselist : delete(temp,dontuselist),
-      unitrules : concat(temp,'rules),
-      killruleset(unitrules)
+      dontuselist : delete(temp,dontuselist)
    ));
 dontusequantity(input1):= block([letrat:true,unittype,unitlistname,
                          unitrules,currentunitlist, temp, i, j, derivedunits],
