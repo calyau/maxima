@@ -227,7 +227,7 @@ APPLY means like APPLY.")
 		  (dolist (v *translation-msgs-files*) (terpri v))
 		  (setq tp nil)))
 	   (dolist (v *translation-msgs-files*)
-	     (princ (print-invert-case (stripdollar (car x)) v))))
+	     (princ (print-invert-case (stripdollar (car x))) v)))
 	  (t
 	   (dolist (v *translation-msgs-files*) (mgrind (car x) v))))))
 
