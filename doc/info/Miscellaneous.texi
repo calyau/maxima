@@ -29,7 +29,7 @@ Users may find it more informative to browse the share directory using a file sy
 @section Definitions for Miscellaneous Options
 
 @defvr {Variable} aliases
-Default value: []
+Default value: @code{[]}
 
 @code{aliases} is the list of atoms which have a user defined alias (set up by
 the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring the atom a
@@ -115,7 +115,7 @@ angle.  See also @code{inf} and @code{minf}.
 @end defvr
 
 @defvr {Variable} infolists
-Default value: []
+Default value: @code{[]}
 
 @code{infolists} is a list of the names of all of the information
 lists in Maxima. These are:

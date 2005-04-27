@@ -622,7 +622,7 @@ Examples:
 @end deffn
 
 @defvr {Variable} functions
-Default value: []
+Default value: @code{[]}
 
 @code{functions} is the list of user-defined Maxima functions
 in the current session.

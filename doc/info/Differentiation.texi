@@ -283,7 +283,7 @@ p;
 @end deffn
 
 @defvr {Variable} dependencies
-Default value: []
+Default value: @code{[]}
 
 @code{dependencies} is the list of atoms which have functional
 dependencies, assigned by @code{depends} or @code{gradef}.
@@ -691,7 +691,7 @@ higher order derivatives.
 @end deffn
 
 @defvr {Variable} gradefs
-Default value: []
+Default value: @code{[]}
 
 @code{gradefs} is the list of the functions
 for which partial derivatives have been defined by @code{gradef}.

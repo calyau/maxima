@@ -365,7 +365,7 @@ matrices are carried out.
 @end defvr
 
 @defvr {Variable} dontfactor
-Default value: []
+Default value: @code{[]}
 
 @code{dontfactor} may be set to a list of variables with respect
 to which factoring is not to occur.  (The list is initially empty.)

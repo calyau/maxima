@@ -182,7 +182,7 @@ the @code{dpart} and @code{lpart} functions.
 @end deffn
 
 @defvr {Variable} boxchar
-Default value: ["]
+Default value: @code{"}
 
 @code{boxchar} is the character used to draw the box in the @code{box}
 and in the @code{dpart} and @code{lpart} functions.
@@ -883,7 +883,7 @@ Do @code{example (optimize)} for examples.
 @end deffn
 
 @defvr {Variable} optimprefix
-Default value: [%]
+Default value: @code{%}
 
 @code{optimprefix} is the prefix used for generated symbols by
 the @code{optimize} command.
