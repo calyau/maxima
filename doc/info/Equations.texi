@@ -8,7 +8,7 @@
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
 @defvr {Variable} %rnum_list
-Default value: []
+Default value: @code{[]}
 
 @code{%rnum_list} is the list of variables introduced in solutions
 by @code{algsys}.
@@ -641,7 +641,9 @@ Example:
 @end deffn
 
 @defvr {Variable} rootsconmode
-Default value: @code{true} - Determines the behavior of the
+Default value: @code{true}
+
+@code{rootsconmode} governs the behavior of the
 @code{rootscontract} command.  See @code{rootscontract} for details.
 
 @end defvr
