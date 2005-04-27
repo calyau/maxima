@@ -9,13 +9,13 @@
        *         given property (mass, for example) in terms of	     *
        *	 a base unit, and various other abilities. 	     *
        *         						     *
-       *         	       Version 0.10			     *
+       *         	       Version 0.11			     *
        *                       March 9, 2005			     *
        *		       License:  GPL			     *
        *							     *
        *          ------------------------------------------         *
        *          Programmed by Cliff Yapp and Barton Willis         *
-       *            	     					     *
+       *       with thanks to Robert Dodier and the Maxima list      *
        ***************************************************************
        
        
@@ -27,6 +27,9 @@
 
      Changes:
 
+       0.11  -  As of this version, setunits and convert should be
+       		fully operational, although definitions are still
+		somewhat lacking.
        0.10  -  total rewrite using more advanced rule based
                 techniques for handling units has begun.
        0.03  -  fixed unitfactor so it would work on standard unit
@@ -84,8 +87,8 @@ metricpre : 	[[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
       make the following assumptions:
       	- The first unit name is the abbreviation of the unit's full name, 
 	  and will append the metric abbreviation prefix.  In the case of a 
-	  % at the beginning of the name, this is moved to the beginning of 
-	  the new metric quantity's name.	
+	  % at the beginning of the name, this is removed before appending
+	  the prefix.	
 	- All other unit names in the list are assumed to be full names, and 
 	  will have the full metric prefix appended to them.
 
@@ -99,10 +102,10 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 
 /*Mass*/
 %masslisting : [[[kg,kilogram,kilograms],1,0],[[g,gram,grams],1/1000,m],
-[[gr,grain,grains],0.06479891,e]];
+[[gr,grain,grains],6.479891*10^-5,e]];
 
 /*Time*/
-%timelisting : [[[s,second,seconds],1,m],[[%min,minute,minutes],1/60,e]];
+%timelisting : [[[s,second,seconds],1,m],[[%min,minute,minutes],60,e]];
 
 /*Electric Current*/
 %currentlisting : [[[A,ampere,amperes],1,m]];
@@ -114,17 +117,17 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 %amount_of_substancelisting : [[[mol,mole,moles],1,m]];
 
 /*Luminous Intensity*/
-%luminous_intensitylisting: [[[cd,lm,lumen,candela],1,m]];
+%luminous_intensitylisting: [[[cd,candela],1,m],[[lm,lumen],1,m]];
 
 
 /* Derived Units
  
    The structure of these lists is slightly different from the Base
-   Quantities.  The first entry in eacy list describes the Derived Quantity 
+   Quantities.  The first entry in each list describes the Derived Quantity 
    in terms of the relevant Base Quantities, using the pivot unit of the
    Base Quantities. It is a list of two entries, the definition in abbreviated
    units and fullnames. After that, the structure is the same as Base Quantity
-   lists. globalderivedunitslisting lists all derived quantities known to
+   lists. globalderivedunitlisting lists all derived quantities known to
    Maxima.  A second global listing, called globalderivedunitlisting_use, is
    used to define the search order for substitution in unit processing.*/
 
@@ -144,7 +147,7 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
    because they have a unique name associated with them in SI the policy
    is to have the first entry after the base quantity definition be the
    SI unit.  Overall structure is the same.  These are listed in the same
-   globalderivedunitslisting as the previous Derived Units.
+   globalderivedunitlisting as the previous Derived Units.
    
    Note - depending on circumstances, it is sometimes of interest to
           have energy reported as work or heat in dimensional analysis.
@@ -154,11 +157,11 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 %frequencylisting : [1/s,[[Hz,hertz],1,m]];
 
 /*Force*/
-%forcelisting : [kg*m/s^2,[[N,%Newton,Newtons],1,d],
+%forcelisting : [kg*m/s^2,[[N,%Newton,Newtons],1,m],
 [[dyn,dyne,dynes],1*10^-5,d]];
 
 /*Pressure*/
-%pressurelisting : [kg/(m*s^2),[[Pa,pascal,pascals],1,d],[[torr],133.32239,d]];
+%pressurelisting : [kg/(m*s^2),[[Pa,pascal,pascals],1,m],[[torr],133.32239,m]];
 
 /*Energy, Work, Quantity of Heat */
 %energylisting : [kg*m^2/s^2,[[J,joule,joules],1,m],
@@ -207,7 +210,7 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
   package, so we define unitlet here using Jeff Golden's trick of
   having apply evaluate the inputs.  (Thanks to Barton Willis
   for an elegant solution.) A source level fix to let is also
-  possible but does cause a default behavior change in let:
+  possible but causes a default behavior change in let:
   
   nisimp.lisp, line 66
   <              (setq replacement (cdr l))
@@ -236,11 +239,15 @@ checkforuniqueness(list1) := block([i,j,return],
 	 )),
    return);
 
+/* This function is used to remove up to two preceding % from 
+a name when doing the concat operation (thanks to Dr. Willis)*/
+unitconcat(a,b) := concat(a,(?stripdollar(?stripdollar(b))));
+
 /* Add all desired metric quantities into %quantitylisting_use lists.  
    %quantitylisting_use lists are the one actually used in functions.  This allows
    the program to regenerate a new metric list from "original" package lists
-   in order to avoid multiple definitons of metric prefix quantities.  An
-   exception is made for kg, kilogram, and kilograms becasue they are defined
+   in order to avoid multiple definitions of metric prefix quantities.  An
+   exception is made for kg, kilogram, and kilograms because they are defined
    already as the pivot unit for mass.  This is a consequence of the nature of
    the SI system.*/
 
@@ -258,14 +265,14 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 	  if is(metricpre[k][3] <= %limit) then (
 	    if (not(?equal(metricpre[k][1],'k) and 
 	        ?equal(unitlistname[j][1][1],g))) then (
-	      tempentry[1][1] : concat(metricpre[k][1],unitlistname[j][1][1]),
+	      tempentry[1][1] : unitconcat(metricpre[k][1],unitlistname[j][1][1]),
 	      tempentry[2] : metricpre[k][2]*unitlistname[j][2])),
 	    if is(metricprefull[k][3] <= %limit) then (
 	      for l : 2 thru length(unitlistname[j][1]) do(
 	      if (not(?equal(metricprefull[k][1],kilo) and 
 	             (?equal(unitlistname[j][1][l],gram) or
 		      ?equal(unitlistname[j][1][l],grams)))) then (
-	      tempentry[1] : append(tempentry[1],[concat(metricprefull[k][1],
+	      tempentry[1] : append(tempentry[1],[unitconcat(metricprefull[k][1],
 		                      unitlistname[j][1][l])])
 	      ))),
 	  if not(?equal(tempentry[1][1],0)) then (    
@@ -280,11 +287,11 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 	  for k : 1 thru length(metricpre) do (
 	  tempentry : [[0],0,expanded],
 	  if is(metricpre[k][3] <= %limit) then (
-	      tempentry[1][1] : concat(metricpre[k][1],unitlistname[j][1][1]),
+	      tempentry[1][1] : unitconcat(metricpre[k][1],unitlistname[j][1][1]),
 	      tempentry[2] : metricpre[k][2]*unitlistname[j][2]),
 	    if is(metricprefull[k][3] <= %limit) then (
 	      for l : 2 thru length(unitlistname[j][1]) do(
-	        tempentry[1] : append(tempentry[1],[concat(metricprefull[k][1],
+	        tempentry[1] : append(tempentry[1],[unitconcat(metricprefull[k][1],
 		                      unitlistname[j][1][l])])),
 		unitlistusename :: append(ev(unitlistusename),[tempentry]))))))
    );
@@ -448,7 +455,7 @@ makederivedtoMKSrules():= block([letrat:true,i,j,a,b,fakerule],
 
 
 /* This routine takes a list of definitions for a derived unit, and makes a
-ruleset for coverting from MKS to the derived quantitiy.*/
+ruleset for converting from MKS to the derived quantity.*/
 makeMKStoderivedrules(currentunit,unitlistname,derivedunitrules):= 
  block([letrat:true,i,j,fakerule],
    killruleset(derivedunitrules),
@@ -471,7 +478,11 @@ processunits(expression) := block([letrat:true,unitrules,result1],
    ), 
    result1 : letsimp(result1,%lengthrules),
    result1 : letsimp(result1,%massrules),
-   result1 : letsimp(result1,%timerules)
+   result1 : letsimp(result1,%timerules),
+   result1 : letsimp(result1,%currentrules),
+   result1 : letsimp(result1,%temperaturerules),
+   result1 : letsimp(result1,%amount_of_substancerules),
+   result1 : letsimp(result1,%luminous_intensityrules)   
    ) else (
    result1 : expression),
    currentdoeval : true,
@@ -573,24 +584,60 @@ dontusequantity(input1):= block([letrat:true,unittype,unitlistname,
 /* This function returns the quantity described by a unit */
 quantity(input1) := letsimp(input1,toquantities);
 
-/*  Not yet implimented
+/*  Not yet implemented
 
 /* Prints out information about a unit */
 unitinfo(unit):= block([letrat:true,result,quantity],
 
 /*  Allows the user to create their own units */
 addunits([[unitname(s)],definition,0]):=
-
-/*  Converts an expression into one using the specified units */
-convert(expression,desiredunits):=
-
 */
 
-/*====================== Initilization =======================*/
+/*  Converts an expression into one using the specified units. Or the
+user can specify MKS instead of a list of units, to have all units
+rendered in terms of the seven base quantities and their associated MKS
+units. */
+convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
+					  currentunitlist,flag,i,j],
+   if (?equal(desiredunits,MKS) or ?equal(desiredunits,mks)) then (
+    result1 : letsimp(expression,derivedtoMKSrules),
+    result1 : letsimp(result1,basetoMKSrules)
+   ) else (
+   if listp(desiredunits) then (
+    if (checkforuniqueness(makequantlist(desiredunits))) then (
+      for i : 1 thru length(desiredunits) do (
+	unittype : letsimp(desiredunits[i],toquantities),
+	unitlistname : concat(unittype,listing_use),
+	if (not(isbase(desiredunits[i])) and (isunit(desiredunits[i]))) then (
+	   makeMKStoderivedrules(desiredunits[i],unitlistname,convertrules)
+	) else (
+	flag : 0, j:0,
+        while ?equal(flag,0) do (
+          j : j+1,
+          if not(lfreeof(unitlistname[j][1],desiredunits)) then (
+            currentunitlist : unitlistname[j],
+            flag : 1),
+          if ?equal(j, length(ev(unitlistname))) then (flag : 1)
+          ),
+        makeMKStobaserules(currentunitlist,unitlistname,convertrules)
+	)),
+     result1 : letsimp(expression,convertrules)
+    ) else (                                
+    error ("Error - two or more of these units describe the same quantity."))
+    ) else (
+    error ("Error - argument to setunits must be a list of units or the argument MKS."))),
+ currentdoeval : false, /* This tells processunits not to simplify 
+			   for this operation only */
+ result1);    
+
+
+
+
+/*====================== Initialization =======================*/
 
 /* Startup Message */
 print("*******************************************************************");
-print("*                       Units version 0.10                        *");
+print("*                       Units version 0.11                        *");
 print("*          Definitions based on the NIST Reference on             *");
 print("*              Constants, Units, and Uncertainty                  *");
 print("*       Conversion factors from various sources including         *");
@@ -607,7 +654,7 @@ print("Initializing unit arrays...");
 simplified by the derived units simplifier.  Default is empty. */
 dontuselist : [];
 
-/* Places all relevant metric definitons into the %quantitylist lists.*/
+/* Places all relevant metric definitions into the %quantitylist lists.*/
 metricexpandall(%unitexpand);
 
 /* This list dictates in what order Maxima will look for derived units.
@@ -625,7 +672,7 @@ this can be simplified to:
       s     					   2
 Normal practice would of course be to adopt the N m  answer, but
 this convention cannot be readily expressed in an algorithmic fashion
-for all cases delt with in this package. Hence, for the time being a 
+for all cases dealt with in this package. Hence, for the time being a 
 manual definition of the simplification order has been adopted.*/
 
 globalderivedunitlisting_use : [%capacitance,%resistance,%conductance,
