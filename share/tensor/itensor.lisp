@@ -976,7 +976,7 @@
 (setq sf (mapcar #'(lambda (x)
 (cond ((atom x) x) (
  (and (or (equal (car x) '(mtimes)) (equal (car x) '(mtimes simp))) (eq (cadr x) -1))
- (print 1) (setq l1 (cons -1 l1)) (caddr x)) (t x))
+ (setq l1 (cons -1 l1)) (caddr x)) (t x))
 ) sf ) )
 
  (SETQ L2 (CDR SF) SF (CAR SF))
@@ -1018,7 +1018,7 @@
 (setq sf (mapcar #'(lambda (x)
 (cond ((atom x) x) (
  (and (or (equal (car x) '(mtimes)) (equal (car x) '(mtimes simp))) (eq (cadr x) -1))
- (print 1) (setq l1 (cons -1 l1)) (caddr x)) (t x))
+ (setq l1 (cons -1 l1)) (caddr x)) (t x))
 ) sf ) )
 
  (SETQ L3 SF))
