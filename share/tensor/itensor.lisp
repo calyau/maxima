@@ -948,7 +948,7 @@
 		    (SETQ F (CONTRACT5 F))
 (cond (
  (and (or (eq (car f) '(mtimes)) (eq (car f) '(mtimes simp))) (eq (cadr f) -1))
- (setq l1 (cons -1 l1) f (cddr f)) ))
+ (setq l1 (cons -1 l1) f (caddr f)) ))
 		    (COND ((GETCON (CAAR F))
 			   (SETQ L2 (CONS F L2)))
 			  (T (SETQ L3 (CONS F L3)))))
@@ -971,7 +971,15 @@
 	LOOP1(SETQ F (CAR L2) L2 (CDR L2))
 	     (COND ((NULL (SETQ SF (CONTRACT3 F L2)))
 		    (SETQ CL (CONS F CL)))
-		   (T (SETQ L2 (CDR SF) SF (CAR SF))
+		   (T
+;;*** contract3 may also return a negative result
+(setq sf (mapcar #'(lambda (x)
+(cond (
+ (and (or (equal (car x) '(mtimes)) (equal (car x) '(mtimes simp))) (eq (cadr x) -1))
+ (print 1) (setq l1 (cons -1 l1)) (caddr x)) (t x))
+) sf ) )
+
+ (SETQ L2 (CDR SF) SF (CAR SF))
 		      (COND ((ATOM SF) (SETQ L1 (CONS SF L1)))
 			    ((RPOBJ SF)
 ;;			     (COND ((ZL-GET (CAAR SF)
@@ -1005,7 +1013,15 @@
 	LOOP2+1
 	     (AND (NULL L3) (RETURN (NCONC L1 CL)))
 	     (SETQ F (CAR CL) CL (CDR CL))
-	     (COND ((SETQ SF (CONTRACT3 F L3)) (SETQ L3 SF))
+	     (COND ((SETQ SF (CONTRACT3 F L3))
+;;*** contract3 may also return a negative result
+(setq sf (mapcar #'(lambda (x)
+(cond (
+ (and (or (equal (car x) '(mtimes)) (equal (car x) '(mtimes simp))) (eq (cadr x) -1))
+ (print 1) (setq l1 (cons -1 l1)) (caddr x)) (t x))
+) sf ) )
+
+ (SETQ L3 SF))
 		   (T (SETQ L3 (CONS F L3))))
 	     (GO LOOP2))) 
 
