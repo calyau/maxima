@@ -974,7 +974,7 @@
 		   (T
 ;;*** contract3 may also return a negative result
 (setq sf (mapcar #'(lambda (x)
-(cond (
+(cond ((atom x) x) (
  (and (or (equal (car x) '(mtimes)) (equal (car x) '(mtimes simp))) (eq (cadr x) -1))
  (print 1) (setq l1 (cons -1 l1)) (caddr x)) (t x))
 ) sf ) )
@@ -1016,7 +1016,7 @@
 	     (COND ((SETQ SF (CONTRACT3 F L3))
 ;;*** contract3 may also return a negative result
 (setq sf (mapcar #'(lambda (x)
-(cond (
+(cond ((atom x) x) (
  (and (or (equal (car x) '(mtimes)) (equal (car x) '(mtimes simp))) (eq (cadr x) -1))
  (print 1) (setq l1 (cons -1 l1)) (caddr x)) (t x))
 ) sf ) )
