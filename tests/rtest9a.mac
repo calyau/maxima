@@ -47,9 +47,10 @@ b*laplace(f(t),t,s)+a*laplace(f(t),t,s)/(s^2-a^2) = 2/s^3$
 linsolve([%],['laplace(f(t),t,s)]);
 exp:['laplace(f(t),t,s) = (2*s^2-2*a^2)/(b*s^5+(a-a^2*b)*s^3)]$
 
-/* this is ok but needs a response */
-/*
-("respond positive to a*b(a*b-1) positive,negative,or zero", ilt(ev(exp[1]),s,t));
-f(t) = -2*cosh(sqrt(a*b*(a*b-1))*t/b)/(a^3*b^2-2*a^2*b+a)
-     +a*t^2/(a*b-1)+2/(a^3*b^2-2*a^2*b+a)$
-*/
+assume(a>0,b>0,a*b>1);
+[a>0,b>0,a*b>1];
+ilt(ev(exp[1]),s,t);
+f(t)=-2*cosh(sqrt(a*b*(a*b-1))*t/b)/(a^3*b^2-2*a^2*b+a)+a*t^2/(a*b-1)+2/(a^3*b^2-2*a^2*b+a)$
+forget(a>0,b>0,a*b>1);
+[a>0,b>0,a*b>1];
+
