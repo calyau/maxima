@@ -196,25 +196,27 @@
 		  nisrules (mget treename 'letrules))
 	    (apply #'$disp nisrules)))
 
-(defmspec $letsimp (x) (setq x (cdr x))	; LETSIMP(EXPR,TREE1,...,TREEN)
-	  (let ((varlist varlist) (genvar genvar))
-	    (prog (expr sw $ratfac) 
-	       (setq expr (meval (car x)))
-	       (cond ((atom expr))
-		     ((eq (caar expr) 'mrat)
-		      (cond ((memq 'trunc (cdar expr)) (setq expr ($taytorat expr))))
-		      (setq sw t))
-		     (t (setq expr (ratf expr))))
-	       (cond ((null (cdr x))
-		      (setq nistree (mget $current_let_rule_package 'letsimptree))
-		      (setq expr (nisletsimp expr))
-		      (return (if sw (ratf expr) expr))))
-	       a  
-	       (setq x (cdr x))
-	       (if (not (symbolp (car x))) (improper-arg-err (car x) '$letsimp))
-	       (setq nistree (mget (car x) 'letsimptree))
-	       (if nistree (setq expr (nisletsimp expr)))
-	       (if (cdr x) (go a) (return (if sw (ratf expr) expr))))))
+(defmspec $letsimp (form)		;letsimp(expr,tree1,...,treen)
+  (setq form (cdr form))
+  (let* ((expr (meval (pop form)))
+	 (sw ($ratp expr))
+	 $ratfac)
+    (progv (unless sw '(varlist genvar))
+	(unless sw (list varlist genvar))
+      (when (and sw (memq 'trunc (cdar expr)))
+	(setq expr ($taytorat expr)))
+      (dolist (rulepackage (or form (list $current_let_rule_package))
+	       (if sw (ratf expr) expr))
+	(unless (symbolp rulepackage)
+	  (improper-arg-err rulepackage '$letsimp))
+	(when (setq nistree (mget rulepackage 'letsimptree))
+	  ;; Whereas nisletsimp returns an expression in general
+	  ;; representation, the original expr might be in CRE form.
+	  ;; Regardless, we use ratf to make sure varlist and genvar
+	  ;; know of expr's kernels.
+	  (setq expr (nisletsimp (if (atom expr)
+				     expr
+				     (ratf expr)))))))))
 
 (defun nisletsimp (e) 
   (let (x)
