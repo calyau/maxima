@@ -486,7 +486,7 @@ processunits(expression) := block([letrat:true,unitrules,result1],
    ) else (
    result1 : expression),
    currentdoeval : true,
- result1);
+  ratdisrep(result1));
 
 /*====================== User Functions ======================*/ 
 
