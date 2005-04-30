@@ -553,6 +553,7 @@ tensor/itensor9.dem\
 tensor/kaluza.dem\
 tensor/lckdt.mac\
 tensor/mail-archive.txt\
+tensor/maxwell.dem\
 tensor/petrov.dem\
 tensor/plasma.dem\
 tensor/reissner.dem\

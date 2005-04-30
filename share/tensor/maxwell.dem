@@ -1,0 +1,90 @@
+/*
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * Maxwell's equations
+ */
+
+load(itensor);
+imetric(g);
+("We need to declare some properties of the Levi-Civita symbol")$
+declare(nounify(levi_civita),constant);
+decsym(nounify(levi_civita),4,0,[anti(all)],[]);
+decsym(nounify(levi_civita),0,4,[],[anti(all)]);
+decsym(g,2,0,[sym(all)],[]);
+decsym(g,0,2,[],[sym(all)]);
+("The EM field tensor is the exterior derivative of a vector field")$
+components(F([i,j],[]),extdiff(A([i],[]),j));
+components(F([],[i,j]),F([k,l],[])*g([],[i,k])*g([],[j,l]));
+showcomps(F([i,j],[]));
+("Two of Maxwell's equations reduce to simple geometric identities")$
+ishow('extdiff('F([i,j],[]),k)=extdiff(F([i,j],[]),k))$
+("The other two Maxwell equations define the 4-current")$
+components(J([],[i]),idiff(F([],[i,j]),j));
+("We limit ourselves to the constant metric of special relativity...")$
+declare(g,constant);
+("Here, the 4-current satisfies a conservation equation")$
+covdiff(J([],[i]),i)$
+%,ichr2$
+undiff(%)$
+%,idiff$
+canform(%)$
+rename(%);
+("The EM field tensor is invariant under a gauge transformation.")$
+("We can add the gradient of an arbitrary scalar function to A:")$
+extdiff(A([i],[])+f([],[],i),j)-F([i,j],[]);
+("The dual of the EM field tensor shall be denoted xF here:")$
+components(xF([a,b],[]),'levi_civita([a,b,c,d],[])*F([],[c,d]));
+("We also define mixed-index components")$
+components(F([a],[b]),F([a,c],[])*g([],[b,c]));
+components(xF([a],[b]),xF([a,c],[])*g([],[b,c]));
+("This is what we need to define the energy-momentum tensor")$
+components(T([a,b],[]),(F([a,c],[])*F([b],[c])+xF([a,c],[])*xF([b],[c]))/8/%pi);
+components(T([a],[b]),T([a,c],[])*g([],[b,c]));
+components(T([],[a,b]),T([c],[b])*g([],[a,c]));
+("T satisfies the equation T_[a,b;c] = 0")$
+covdiff(canform(T([a,b],[])),c)-
+covdiff(canform(T([b,a],[])),c)+
+covdiff(canform(T([b,c],[])),a)-
+covdiff(canform(T([c,b],[])),a)+
+covdiff(canform(T([c,a],[])),b)-
+covdiff(canform(T([a,c],[])),b)$
+%,ichr2$
+undiff(%)$
+%,idiff$
+canform(%);
+("The energy-momentum tensor is symmetric in its indices")$
+T([a,b],[])-T([b,a],[])$
+canform(%)$
+canten(%);
+("Let us examine the 4-current again")$
+rename(J([],[a]))$
+undiff(%)$
+%,idiff$
+ishow(rename(%))$
+("In empty space, the 4-current is identically zero.")$
+("This can only happen if A([a],[],b,c)-A([b],[],a,c)=0.")$
+("In this case, the energy-momentum tensor should be conserved")$
+covdiff(T([a],[b]),b)$
+%,ichr2$
+undiff(%)$
+%,idiff$
+canform(%)$
+ishow(rename(canten(rename(%))))$
+("Let us apply what we learned about the 4-current:")$
+%th(2),A([%4],[],%1,%2)=A([%2],[],%1,%4)$
+(flipflag:true,ishow(canten(rename(%))))$
+("and apply it again, this time only to the first subexpression")$
+subst(A([%2],[],%1,a),A([%1],[],%2,a),part(%th(2),1))+part(%th(2),2)$
+("and we find that energy is, indeed, conserved for a free EM field:")$
+canten(%th(2));
+
+
+/* End of demo -- comment line needed by MAXIMA to resume demo menu */

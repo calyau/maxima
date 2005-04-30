@@ -88,6 +88,7 @@ print("4. The double divergence of R       14. Using a tetrad base"),
 print("5. Helicity in hydrodynamics"),
 print("6. Magnetic field in plasma"),
 print("7. Spinor algebra"),
+print("8. The EM field tensor"),
 print(""),
 print("X. Return to main menu"),
 print(""),
@@ -99,6 +100,7 @@ sel:read("Select an option by its number followed by a semicolon (;)"),
    else if sel=5 then demo(helicity)
    else if sel=6 then demo(plasma)
    else if sel=7 then demo(spinor)
+   else if sel=8 then demo(maxwell)
    else if sel=11 then demo(schwarz)
    else if sel=12 then demo(reissner)
    else if sel=13 then
