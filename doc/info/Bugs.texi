@@ -31,7 +31,7 @@ Typically a test script executes @code{kill} to establish a known environment
 (namely one without user-defined functions and variables)
 and then defines functions and variables appropriate to the test.
 
-@code{run_testsuite} returns @code{false}.
+@code{run_testsuite} returns @code{done}.
 @end deffn
 
 @deffn {Function} bug_report ()
