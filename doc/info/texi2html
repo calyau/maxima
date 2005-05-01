@@ -711,7 +711,11 @@ while ($_ = &next_line) {
 	    &html_push_if($format_map{$tag});
 	    push(@lines, &html_debug("\n", __LINE__));
 	    $in_list++ if $format_map{$tag} eq 'UL' || $format_map{$tag} eq 'OL' ;
-	    push(@lines, &debug("<$format_map{$tag}>\n", __LINE__));
+        if ($tag eq 'example') {
+	        push(@lines, &debug("<div class=examplebox>\n<pre>\n", __LINE__));
+        } else {
+	        push(@lines, &debug("<$format_map{$tag}>\n", __LINE__));
+        }
 	    next;
 	} elsif ($tag eq 'table') {
 	    if (/^\@[fv]?table\s+\@(\w+)\s*$/) {
@@ -860,7 +864,11 @@ while ($_ = &next_line) {
 	    $in_list-- if $format_map{$end_tag} eq 'UL' || $format_map{$end_tag} eq 'OL' ;
 	    &html_pop_if('LI', 'P');
 	    &html_pop_if();
-	    push(@lines, &debug("</$format_map{$end_tag}>\n", __LINE__));
+        if ($end_tag eq 'example') {
+	        push(@lines, &debug("</pre>\n</div>\n", __LINE__));
+        } else {
+	        push(@lines, &debug("</$format_map{$end_tag}>\n", __LINE__));
+        }
 	    push(@lines, &html_debug("\n", __LINE__));
 	} elsif ($end_tag eq 'table' ||
 		 $end_tag eq 'ftable' ||
@@ -1906,6 +1914,9 @@ sub print_header {
 <HEAD>
 $header
 <TITLE>$_</TITLE>
+<style type="text/css">
+    \@import "manual.css";
+</style>
 $links
 </HEAD>
 <BODY>
