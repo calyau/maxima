@@ -21,12 +21,14 @@ decsym(nounify(levi_civita),0,4,[],[anti(all)]);
 decsym(g,2,0,[sym(all)],[]);
 decsym(g,0,2,[],[sym(all)]);
 ("The EM field tensor is the exterior derivative of a vector field")$
+remcomps(F);
 components(F([i,j],[]),extdiff(A([i],[]),j));
 components(F([],[i,j]),F([k,l],[])*g([],[i,k])*g([],[j,l]));
 showcomps(F([i,j],[]));
 ("Two of Maxwell's equations reduce to simple geometric identities")$
 ishow('extdiff('F([i,j],[]),k)=extdiff(F([i,j],[]),k))$
 ("The other two Maxwell equations define the 4-current")$
+remcomps(J);
 components(J([],[i]),idiff(F([],[i,j]),j));
 ("We limit ourselves to the constant metric of special relativity...")$
 declare(g,constant);
@@ -41,11 +43,13 @@ rename(%);
 ("We can add the gradient of an arbitrary scalar function to A:")$
 extdiff(A([i],[])+f([],[],i),j)-F([i,j],[]);
 ("The dual of the EM field tensor shall be denoted xF here:")$
+remcomps(xF);
 components(xF([a,b],[]),'levi_civita([a,b,c,d],[])*F([],[c,d]));
 ("We also define mixed-index components")$
 components(F([a],[b]),F([a,c],[])*g([],[b,c]));
 components(xF([a],[b]),xF([a,c],[])*g([],[b,c]));
 ("This is what we need to define the energy-momentum tensor")$
+remcomps(T);
 components(T([a,b],[]),(F([a,c],[])*F([b],[c])+xF([a,c],[])*xF([b],[c]))/8/%pi);
 components(T([a],[b]),T([a,c],[])*g([],[b,c]));
 components(T([],[a,b]),T([c],[b])*g([],[a,c]));

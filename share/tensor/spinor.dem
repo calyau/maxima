@@ -38,6 +38,7 @@ ishow(LHS:contract(%))$
 ("We split h into symmetric and antisymmetric parts:")$
 decsym(f,2,0,[sym(all)],[]);
 decsym(f,0,2,[],[sym(all)]);
+remcomps(h);
 components(h([A,B],[]),a*e([A,B],[])+f([A,B],[]));
 
 ("Now we compute the upper-index components of h")$
