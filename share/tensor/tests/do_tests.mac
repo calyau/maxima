@@ -1,0 +1,3 @@
+:lisp(setq *maxima-testsdir* "share/tensor/tests")
+run_testsuite();
+

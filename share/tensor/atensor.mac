@@ -203,7 +203,7 @@ sf(u,v):=if abasep(u) and abasep(v) then aform[part(u,1),part(v,1)]
 av(%u,%v):=if abasep(%u) and abasep(%v) then block
            (
              [i:aform[part(%u,1),part(%v,1)]],
-             if i>0 and i<=adim then asymbol[i] else 0
+             if abs(i)>0 and abs(i)<=adim then asymbol[abs(i)]*signum(i) else 0
            )
            else 'av(%u,%v);
 
