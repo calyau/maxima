@@ -352,7 +352,7 @@ ct_coordsys(coordinate_system, [extra_args]):=
                  [e*cosh(u)*sin(v), e*sinh(u)*cos(v)]),
       lfg:ident(2)
     )
-    else lg:matrix([e^2*(cosh(u)^2-cos(v)^2),                         0]
+    else lg:matrix([e^2*(cosh(u)^2-cos(v)^2),                         0],
                    [                       0,  e^2*(cosh(u)^2-cos(v)^2)])
   )
   else if coordinate_system='confocalelliptic then

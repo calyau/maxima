@@ -12,8 +12,9 @@
  * Maxwell's equations
  */
 
-load(itensor);
+if get('itensor,'version)=false then load(itensor);
 imetric(g);
+dim:4;
 ("We need to declare some properties of the Levi-Civita symbol")$
 declare(nounify(levi_civita),constant);
 decsym(nounify(levi_civita),4,0,[anti(all)],[]);
