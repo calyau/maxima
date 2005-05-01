@@ -87,9 +87,12 @@ ishow(rename(canten(rename(%))))$
 %th(2),A([%4],[],%1,%2)=A([%2],[],%1,%4)$
 (flipflag:true,ishow(canten(rename(%))))$
 ("and apply it again, this time only to the first subexpression")$
-subst(A([%2],[],%1,a),A([%1],[],%2,a),part(%th(2),1))+part(%th(2),2)$
+/*subst(A([%2],[],%1,a),A([%1],[],%2,a),part(%th(2),1))+part(%th(2),2)$*/
+ishow((flipflag:true,rename(part(%th(2),1)))+
+      (flipflag:false,rename(part(%th(2),2))))$
+%,A([%1],[],%2,a)=A([%2],[],%1,a)$
 ("and we find that energy is, indeed, conserved for a free EM field:")$
-canten(%th(2));
+canform(%th(2));
 
 
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */
