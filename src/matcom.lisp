@@ -20,6 +20,8 @@
 
 (setq *afterflag nil)
 
+(defmvar $announce_rules_firing nil)
+
 (defmspec $matchdeclare (form)
   (let ((meta-prop-p nil))
     (proc-$matchdeclare (cdr form))))
@@ -509,8 +511,11 @@
 					      #+cl
 					      `((declare (special ,@ tem)))
 					      program
-					      (list (list 'return
-							  (memqargs rhs)))))))
+                          (cond
+                            ($announce_rules_firing
+                              (list (list 'return (list 'announce-rule-firing `',pgname 'x (memqargs rhs)))))
+                            (t
+                              (list (list 'return (memqargs rhs)))))))))
 		     (list '(return (or ans (eqtest x x)))))))))
      (meta-mputprop pgname (list '(mequal) pt rhs) '$rule)
      (cond ((null (mget name 'oldrules))
@@ -520,6 +525,11 @@
 		   (meta-mputprop name
 				  (cons pgname (mget name 'oldrules))
 				  'oldrules)))))
+
+(defun announce-rule-firing (rulename expr simplified-expr)
+  (let (($display2d nil) (stringdisp nil))
+    ($print '|&By| rulename '|&,| expr '|&-->| simplified-expr))
+  simplified-expr)
 
 (defmspec $defrule (form)
   (let ((meta-prop-p nil))
