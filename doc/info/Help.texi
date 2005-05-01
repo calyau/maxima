@@ -252,7 +252,7 @@ Example:
 @example
 (%i1) demo ("disol");
 
-batching /home/robert/maxima/sandbox/maxima/share/simplification/disol.dem
+batching /home/wfs/maxima/share/simplification/disol.dem
  At the _ prompt, type ';' followed by enter to get next demo
 (%i2)                      load(disol)
 
@@ -271,7 +271,7 @@ _
 _
 (%i5) demo ("rncomb");
 
-batching /home/robert/maxima/sandbox/maxima/share/simplification/rncomb.dem
+batching /home/wfs/maxima/share/simplification/rncomb.dem
  At the _ prompt, type ';' followed by enter to get next demo
 (%i6)                     load(rncomb)
 
