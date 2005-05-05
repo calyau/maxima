@@ -323,8 +323,10 @@ arguments to trigonometric functions. E.g., @code{sin(-x)} will become
 @deffn {Function} trigsimp (@var{expr})
 Employs the identities @math{sin(x)^2 + cos(x)^2 = 1} and
 @math{cosh(x)^2 - sinh(x)^2 = 1} to simplify expressions containing @code{tan}, @code{sec},
-etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh} so that further simplification may be
-obtained by using @code{trigreduce} on the result.
+etc., to @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+
+@code{trigreduce}, @code{ratsimp}, and @code{radcan} may be
+able to further simplify the result.
 
 @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
