@@ -76,6 +76,10 @@ switch @code{simp} which inhibits simplification if @code{false}.
 This is useful in conjunction with the other switches and in causing
 @var{expr} to be resimplified without being reevaluated.
 @item
+@code{nouns} causes the evaluation of noun forms
+(typically unevaluated functions such as @code{'integrate} or @code{'diff})
+in @var{expr}.
+@item
 @code{expand} causes expansion.
 @item
 @code{expand (m, n)} causes expansion, setting the values of @code{maxposex} and
