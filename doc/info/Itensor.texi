@@ -795,6 +795,10 @@ products in which no derivatives are present. As such it is limited
 and should only be used if @code{canform} is not capable of carrying out the
 required simplification.
 
+NB: @code{canten} must only be used on expressions that are fully symmetric
+in all indices! For all other expressions, @code{canten} will produce
+incorrect results.
+
 @end deffn
 
 @subsection Tensor symmetries
