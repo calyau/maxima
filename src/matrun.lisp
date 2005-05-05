@@ -145,119 +145,68 @@
      (go a)))
 
 (defmfun part+ (e p preds) 
-  (prog
-    (flag saved val)
-
-    (cond
-      ((> (length p) (length preds))
-       (setq p (reverse p))
-       (setq p (nthkdr p (f- (length p) (length preds))))
-       (setq p (nreverse p))))
-
-    ;; NEXT LINE USED TO BE: (setq e ($ratexpand e))
-    ;; BUT $RATEXPAND CAN CHANGE THE EXPRESSION IN A SERIOUS WAY,
-    ;; PLUS IT'S AN EXPENSIVE OPERATION. 
-    ;; SO JUST COPY E (TO PROTECT IT FROM NCONS)
-    (setq e (copy e))
-
-    (setq e (cond ((not (mplusp e)) (ncons e)) (t (cdr e))))
-
-    a
-    (cond
-      ((null p)
-       (cond
-         ((null e) (return t))
-         (t (matcherr))))
-      ((and (cdr preds) (memq (car (caddar preds)) '(msetq setq)))
-       (cond
-         (flag (merror "Two or more pattern variables `true'"))
-         (t
-           (setq flag t p (reverse p) preds (reverse preds))
-           (go a))))
-      (t
-        (mset (car p) 0)))
-    
-    (setq saved 0)
-
-    (mapc
-      #'(lambda (z)
-          (cond
-            ((null (car preds)) nil)
-            ((null (setq val (catch 'match (mcall (car preds) z)))) nil)
-            (t
-              (setq saved (add2* saved val))
-              (let ((var (cadr (cadadr (cadddr (car preds))))))
-                (setq p (zl-delete var p 1))
-                (setq preds (cdr preds)))
-              (setq e (zl-delete z e 1)))))
+  (prog (flag saved val) 
+     (cond ((> (length p) (length preds))
+	    (setq p (reverse p))
+	    (setq p (nthkdr p (f- (length p) (length preds))))
+	    (setq p (nreverse p))))
+     (setq e ($ratexpand e))
+     (setq e (cond ((not (mplusp e)) (ncons e)) (t (cdr e))))
+     a    (cond ((null p) (cond ((null e) (return t)) (t (matcherr))))
+		((and (cdr preds) (memq (car (caddar preds)) '(msetq setq)))
+		 (cond (flag (merror "Two or more pattern variables `true'"))
+		       (t (setq flag t p (reverse p) preds (reverse preds))
+			  (go a))))
+		(t (mset (car p) 0)))
+     (setq saved 0)
+     (mapc 
+      #'(lambda (z) 
+	  (cond ((null (setq val (catch 'match (mcall (car preds) z)))) nil)
+		(t (setq saved (add2* saved val))
+		   (setq e (zl-delete z e 1)))))
       e)
-    
-    (cond
-      ((equal saved 0)
-       (cond
-         ((null (setq val (catch 'match (mcall (car preds) 0)))) (matcherr))
-         (t
-           (let ((var (cadr (cadadr (cadddr (car preds))))))
-             ; (format t "PART+: impute 0 for ~S~%" var)
-             (setq p (zl-delete var p 1))
-             (setq preds (cdr preds)))))))
+     (cond ((and (equal saved 0)
+		 (null (setq val (catch 'match (mcall (car preds) 0)))))
+	    (matcherr)))
+     (mset (car p) saved)
+     (setq preds (cdr preds) p (cdr p))
+     (go a)))
 
-    (go a)))
-
-(defmfun part* (e p preds)
-  (prog
-    (flag saved val $factorflag)
-    (cond
-      ((> (length p) (length preds))
-       (setq p (reverse p))
-       (setq p (nthkdr p (f- (length p) (length preds))))
-       (setq p (nreverse p))))
-    
-    ;; NEXT LINE USED TO BE: (setq e ($factor e))
-    ;; BUT $FACTOR CAN CHANGE THE EXPRESSION IN A SERIOUS WAY,
-    ;; PLUS IT'S AN EXPENSIVE OPERATION. 
-    ;; SO JUST COPY E (TO PROTECT IT FROM NCONS)
-    (setq e (copy e))
-
-    (setq e (cond ((not (mtimesp e)) (ncons e)) (t (cdr e))))
-    
-    a
-    (cond
-      ((null p) (cond ((null e) (return t)) (t (matcherr))))
-      ((and (cdr preds) (memq (car (caddar preds)) '(msetq setq)))
-       (cond
-         (flag (merror "Two or more pattern variables `true'"))
-         (t
-           (setq flag t p (reverse p) preds (reverse preds))
-           (go a))))
-      (t
-        (mset (car p) 1)))
-
-    (setq saved 1)
-
-    (mapc
-      #'(lambda (z)
-          (cond
-            ((null (car preds)) nil)
-            ((null (setq val (catch 'match (mcall (car preds) z)))) nil)
-            (t
-              (setq saved (mul2* saved val))
-              (let ((var (cadr (cadadr (cadddr (car preds))))))
-                (setq p (zl-delete var p 1))
-                (setq preds (cdr preds)))
-              (setq e (zl-delete z e 1)))))
+(defmfun part* (e p preds) 
+  (prog (flag saved val $factorflag) 
+     (cond ((> (length p) (length preds))
+	    (setq p (reverse p))
+	    (setq p (nthkdr p (f- (length p) (length preds))))
+	    (setq p (nreverse p))))
+     (setq e ($factor e))
+     (setq e (cond ((not (mtimesp e)) (ncons e)) (t (cdr e))))
+     a    (cond ((null p) (cond ((null e) (return t)) (t (matcherr))))
+		((and (cdr preds) (memq (car (caddar preds)) '(msetq setq)))
+		 (cond (flag (merror "Two or more pattern variables `true'"))
+		       (t (setq flag t p (reverse p) preds (reverse preds))
+			  (go a))))
+		((not (atom (car p)))
+		 (prog (mye) 
+		    (setq mye e)
+		    loop (cond ((null mye) (matcherr)))
+		    (setq val (catch 'match (mcall (car preds) (car mye))))
+		    (cond ((null val)
+			   (setq mye (cdr mye)) (go loop))
+			  (t (return (setq e (zl-delete (car mye) e 1))))))
+		 (go b))
+		(t (mset (car p) 1)))
+     (setq saved 1)
+     (mapc 
+      #'(lambda (z) (setq val (catch 'match (mcall (car preds) z)))
+		(cond ((null val) nil)
+		      (t (setq saved (mul2* saved val))
+			 (setq e (zl-delete z e 1)))))
       e)
-
-    (cond
-      ((equal saved 1)
-       (cond
-         ((null (setq val (catch 'match (mcall (car preds) 1)))) (matcherr))
-         (t
-           (let ((var (cadr (cadadr (cadddr (car preds))))))
-             ; (format t "PART*: impute 1 for ~S~%" var)
-             (setq p (zl-delete var p 1))
-             (setq preds (cdr preds)))))))
-
+     (cond ((and (equal saved 1)
+		 (null (setq val (catch 'match (mcall (car preds) 1)))))
+	    (matcherr)))
+     (mset (car p) saved)
+     b    (setq preds (cdr preds) p (cdr p))
      (go a)))
 
 ;;; TRANSLATE property in MAXSRC;TRANS5 >
