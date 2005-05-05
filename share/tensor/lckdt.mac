@@ -26,7 +26,7 @@ lc2kdt(exp):=block([i1,tem],
 );
 */
 lc2kdt(exp):=block(
-  [n:nterms(exp)],
+  [exp:expand(exp),n:nterms(exp)],
   sum(_lc2kdt0(if n>1 then part(exp,i) else exp),i,1,n)
 );
 

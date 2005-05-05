@@ -67,8 +67,9 @@ undiff(%)$
 canform(%);
 ("The energy-momentum tensor is symmetric in its indices")$
 T([a,b],[])-T([b,a],[])$
-canform(%)$
-canten(%);
+canform(lc2kdt(%))$
+%,kdelta$
+canform(rename(contract(expand(%))));
 ("Let us examine the 4-current again")$
 rename(J([],[a]))$
 undiff(%)$
@@ -81,18 +82,22 @@ covdiff(T([a],[b]),b)$
 %,ichr2$
 undiff(%)$
 %,idiff$
+canform(lc2kdt(%))$
+%,kdelta$
 canform(%)$
-ishow(rename(canten(rename(%))))$
+ishow(canform(rename(contract(expand(%)))))$
 ("Let us apply what we learned about the 4-current:")$
-%th(2),A([%4],[],%1,%2)=A([%2],[],%1,%4)$
-(flipflag:true,ishow(canten(rename(%))))$
-("and apply it again, this time only to the first subexpression")$
-/*subst(A([%2],[],%1,a),A([%1],[],%2,a),part(%th(2),1))+part(%th(2),2)$*/
-ishow((flipflag:true,rename(part(%th(2),1)))+
-      (flipflag:false,rename(part(%th(2),2))))$
-%,A([%1],[],%2,a)=A([%2],[],%1,a)$
+subst(A([%2],[],a,%1),A([a],[],%1,%2),%th(2))$
+canform(%)$
+ishow(contract(%))$
+("and apply it again, resolving subexpressions 'by hand'")$
+ratsubst(A([],[%3],%2,a)*g([],[%1,%2]),A([],[%1],%2,a)*g([],[%2,%3]),%th(2))$
+ishow(canform(contract(expand(%))))$
+ratsubst(A([],[%3],%2,%3)*g([],[%1,%2]),A([],[%1],%2,%3)*g([],[%2,%3]),%)$
+ishow(canform(contract(expand(%))))$
+subst(A([%2],[],%1,a),A([%1],[],%2,a),%)$
+subst(A([%2],[],%1,%3),A([%1],[],%2,%3),%)$
 ("and we find that energy is, indeed, conserved for a free EM field:")$
-canform(%th(2));
-
+canform(contract(%th(2)));
 
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */
