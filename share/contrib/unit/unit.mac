@@ -102,7 +102,7 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 
 /*Mass*/
 %masslisting : [[[kg,kilogram,kilograms],1,0],[[g,gram,grams],1/1000,m],
-[[gr,grain,grains],6.479891*10^-5,e]];
+[[gr,grain,grains],6.479891*10^-5,e],[[slug,slugs],1.459390,e]];
 
 /*Time*/
 %timelisting : [[[s,second,seconds],1,m],[[%min,minute,minutes],60,e]];
@@ -295,6 +295,46 @@ metricexpandall(%limit) := block([i,j,k,l,unitlistname,
 		                      unitlistname[j][1][l])])),
 		unitlistusename :: append(ev(unitlistusename),[tempentry]))))))
    );
+
+/* This function creats a list of all defined units */
+makeallunitslist() := block([i,j,k,b,allunitslisttemp],
+    allunitslisttemp : [],
+    modedeclare([i,j,k], fixnum),
+    for i : 1 thru length(globalbaseunitlisting) do  (
+     unitlistname : concat(globalbaseunitlisting[i],listing_use),
+     for j : 1 thru length(ev(unitlistname)) do  (
+       for k : 1 thru length(unitlistname[j][1]) do (
+         allunitslisttemp : append([unitlistname[j][1][k]],allunitslisttemp)
+    ))),
+    
+    /* j needs to start at the second entry for Derived Quantity Arrays */
+    for i : 1 thru length(globalderivedunitlisting_use) do  (
+     unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
+     for j : 2 thru length(ev(unitlistname)) do  (
+       for k : 1 thru length(unitlistname[j][1]) do (
+         allunitslisttemp : append([unitlistname[j][1][k]],allunitslisttemp)
+    ))),
+    reverse(sort(allunitslisttemp))
+    );
+
+/* This function creates a ruleset converting all quantities to one */
+makequanttoonerules() := block([i,j,k,b,allunitslisttemp],
+    allunitslisttemp : [],
+    modedeclare([i,j,k], fixnum),
+    for i : 1 thru length(globalbaseunitlisting) do  (
+     unitlet([globalbaseunitlisting[i],1],quanttoone)
+    ),
+    
+    /* j needs to start at the second entry for Derived Quantity Arrays */
+    for i : 1 thru length(globalderivedunitlisting_use) do  (
+     unitlet([globalderivedunitlisting[i],1],quanttoone)    
+    ));
+
+/* This command is used to define the display order of units, in order to
+ensure that units appear at the end of an expression when possible.  Uses
+the array created by makeallunitslist */
+unitgreat(list1) := apply('ordergreat, list1);    
+
 	  
 /* Create unitsimplify ruleset
 
@@ -629,7 +669,30 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
 			   for this operation only */
  result1);    
 
+/* Associates a variable and a quantity/dimension, e.g. t and %time */
+assignquantity(exp,quantity) := block([],
+     if (not(lfreeof(globalbaseunitlisting,quantity)) or 
+     		not(lfreeof(globalderivedunitlisting))) then (
+     variablequantitieslist : append([[exp,quantity]],variablequantitieslist),
+     apply('qput,[exp,quantity,%quantity])
+     ) else (
+     (error ("Invalid quantity.  Valid entries are:")),
+     print(globalbaseunitlisting),
+     print(globalderivedunitlisting)));
 
+/* Basic dimensional function.  This doesn't have the power of dimension.mac but
+it will work for basic cases */
+dimension(exp) := block([letrat:true,tmp1,tmp2,a1,a2,result1,i,j],
+     killruleset(quantrules),
+     unitlet([fakerule,fakerule],quantrules),
+     unitlet([fakerule,fakerule],quanttoone),
+     for i:1 thru length(variablequantitieslist) do (
+        unitlet([variablequantitieslist[i][1],variablequantitieslist[i][2]],quantrules)),
+     processunits(exp),
+     tmp1 : letsimp(letsimp(exp,quantrules),toquantities),
+     tmp2 : letsimp(letsimp(letsimp(exp,toquantities),quantrules),quanttoone),
+     result1 : tmp1/tmp2,
+     result1);
 
 
 /*====================== Initialization =======================*/
@@ -688,10 +751,17 @@ globalderivedunitlisting_use : [%capacitance,%resistance,%conductance,
       2 : abbreviation -> fullname (will use plural form) */
 abbrevsimp : 0;
       
-/* Create default toquantities ruleset*/
+/* Create default rulesets*/
 maketoquantitiesruleset();
 makebasetoMKSrules();
 makederivedtoMKSrules();
+makequanttoonerules();
+
+/* Create a list of all units */
+allunitslist : makeallunitslist();
+
+/* Basic dimension functionality - initialize list of quantities in use */    
+variablequantitieslist : [];
 
 /* Activate processunits as a post_eval_function in order to enable
    automatic simplification of all unit output */
