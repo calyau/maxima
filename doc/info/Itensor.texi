@@ -802,7 +802,7 @@ set to @code{true}.
 
 @end deffn
 
-@deffn {Function} concan (@car{expr})
+@deffn {Function} concan (@var{expr})
 Similar to @code{canten} but also performs index contraction.
 
 @end deffn
