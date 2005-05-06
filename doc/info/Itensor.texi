@@ -1800,6 +1800,49 @@ For instance:
 
 @end deffn
 
+@deffn {Function} hodge (@var{expr})
+
+Compute the Hodge-dual of @var{expr}. For instance:
+
+@example
+
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
+(%i2) imetric(g);
+(%o2)                            done
+(%i3) idim(4);
+(%o3)                            done
+(%i4) icounter:100;
+(%o4)                             100
+(%i5) decsym(A,3,0,[anti(all)],[])$
+
+(%i6) ishow(A([i,j,k],[]))$
+(%t6)                           A
+                                 i j k
+(%i7) ishow(canform(hodge(%)))$
+                          %1 %2 %3 %4
+               levi_civita            g        A
+                                       %1 %102  %2 %3 %4
+(%t7)          -----------------------------------------
+                                   6
+(%i8) ishow(canform(hodge(%)))$
+                 %1 %2 %3 %8            %4 %5 %6 %7
+(%t8) levi_civita            levi_civita            g        g
+                                                     %1 %106  %2 %107
+                                            g        g      A        /6
+                                             %3 %108  %4 %8  %5 %6 %7
+(%i9) lc2kdt(%)$
+
+(%i10) %,kdelta$
+
+(%i11) ishow(canform(contract(expand(%))))$
+(%t11)                     - A
+                              %106 %107 %108
+
+@end example
+
+@end deffn
+
 @defvr {Variable} igeowedge_flag
 
 Controls the behavior of the wedge product and exterior derivative. When
