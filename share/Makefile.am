@@ -540,6 +540,7 @@ tensor/ex_calc.mac\
 tensor/gener.lisp\
 tensor/godel.dem\
 tensor/helicity.dem\
+tensor/hodge.dem\
 tensor/iframe.mac\
 tensor/itensor.lisp\
 tensor/itensor1.dem\
