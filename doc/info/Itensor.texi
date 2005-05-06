@@ -795,9 +795,15 @@ products in which no derivatives are present. As such it is limited
 and should only be used if @code{canform} is not capable of carrying out the
 required simplification.
 
-NB: @code{canten} must only be used on expressions that are fully symmetric
-in all indices! For all other expressions, @code{canten} will produce
-incorrect results.
+The @code{canten} function returns a mathematically correct result only
+if its argument is an expression that is fully symmetric in its indices.
+For this reason, @code{canten} returns an error if @code{allsym} is not
+set to @code{true}.
+
+@end deffn
+
+@deffn {Function} concan (@car{expr})
+Similar to @code{canten} but also performs index contraction.
 
 @end deffn
 
@@ -1124,6 +1130,12 @@ addition, the contraction properties of the metric @var{g} are set up by
 executing the commands @code{defcon(@var{g}),defcon(@var{g},@var{g},kdelta)}.
 The variable @code{imetric}, default: [], is bound to the metric, assigned by
 the @code{imetric(@var{g})} command.
+
+@end deffn
+
+@deffn {Function} idim (@var{n})
+Sets the dimensions of the metric. Also initializes the antisymmetry
+properties of the Levi-Civita symbols for the given dimension.
 
 @end deffn
 
