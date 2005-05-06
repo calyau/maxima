@@ -167,7 +167,10 @@
 ;KDELTA has special contraction property because it contracts with any indexed
 ;object.
 
-(meval '(($DECLARE) %KDELTA $CONSTANT))                        ;So derivative will be zero
+(meval '(($DECLARE) %KDELTA $CONSTANT))          ;So derivative will be zero
+(meval '(($DECLARE) $KDELTA $CONSTANT))          ;So derivative will be zero
+(meval '(($DECLARE) %LEVI_CIVITA $CONSTANT))
+(meval '(($DECLARE) $LEVI_CIVITA $CONSTANT))
 
 (SETQ $DIM 4. $CONTRACTIONS '((MLIST SIMP))) 
 
@@ -2453,6 +2456,92 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 	(T (MAPCAR (LAMBDA (I)  ($SHOWCOMPS ($SUBSTITUTE I (CAR (LAST IND)) E)) (AND (> 4 (LENGTH IND)) (< I $DIM) (SETQ $LINENUM (1+ $LINENUM)))) (NUMLIST)))
   )
  )
+)
+
+; Implementation of the Hodge star operator. Based on the following
+; MAXIMA-language implementation:
+;
+; hodge(e):=
+; (
+;     [
+;         len:length(indices(e)[1]),
+;         idx1:makelist(idummy(),i,len+1,dim),
+;         idx2:makelist(idummy(),i,len+1,dim)
+;     ],
+;     funmake("*",makelist(funmake(imetric,[[idx1[i],idx2[i]]]),i,1,dim-len))*
+;                 funmake(levi_civita,[[],append(idx1,indices(e)[1])])*e/len!
+; )$
+
+(defmfun $hodge (e)
+  (prog (len idx1 idx2)
+    (setq
+      len ($length (cadr ($indices e)))
+      idx1 (do ((i $dim (1- i)) l) ((eq i len) l) (setq l (cons ($idummy) l)))
+      idx2 (do ((i $dim (1- i)) l) ((eq i len) l) (setq l (cons ($idummy) l)))
+    )
+    (return
+      (append
+        (list
+          '(mtimes)
+          e
+          (list '(rat) 1 (factorial len))
+          (list
+            '($levi_civita)
+            '((mlist simp))
+            (cons '(mlist simp) (append (reverse idx1) (cdadr ($indices e))))
+          )
+        )
+        (do
+          (l)
+          ((not idx1) l)
+          (setq l (cons (list (list $imetric)
+                              (cons '(mlist) (list (car idx1) (car idx2)))) l)
+                idx1 (cdr idx1)
+                idx2 (cdr idx2)
+          )
+        )
+      )
+    )
+  )
+)
+
+; This version of remsym remains silent when an attempt is made to remove
+; non-existent symmetries. Used by $idim below.
+
+(defun remsym (name ncov ncontr)
+  (prog (tensor)
+    (setq tensor (implode (nconc (exploden name) (ncons 45)
+                                 (exploden ncov) (ncons 45)
+                                 (exploden ncontr)
+                          )
+                 )
+    )
+    (cond
+      ((zl-member tensor (cdr $symmetries))
+       (zl-delete tensor $symmetries)
+       (zl-remprop tensor '$sym) (zl-remprop tensor '$anti)
+       (zl-remprop tensor '$cyc)
+      )
+    )
+  )
+)
+
+; This function sets the metric dimensions and Levi-Civita symmetries.
+
+(defmfun $idim (n)
+  (remsym '%levi_civita $dim 0)
+  (remsym '%levi_civita 0 $dim)
+  (remsym '$levi_civita $dim 0)
+  (remsym '$levi_civita 0 $dim)
+  (setq $dim n)
+  (remsym '%levi_civita $dim 0)
+  (remsym '%levi_civita 0 $dim)
+  (remsym '$levi_civita $dim 0)
+  (remsym '$levi_civita 0 $dim)
+  ($decsym '%levi_civita n 0 '((mlist) (($anti) $all)) '((mlist)))
+  ($decsym '%levi_civita 0 n '((mlist)) '((mlist) (($anti) $all)))
+  ($decsym '$levi_civita n 0 '((mlist) (($anti) $all)) '((mlist)))
+  ($decsym '$levi_civita 0 n '((mlist)) '((mlist) (($anti) $all)))
 )
 
 ($load '$ex_calc)

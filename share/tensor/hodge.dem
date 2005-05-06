@@ -13,18 +13,8 @@
  * Demonstrating the Hodge star operation
  *
 */
+("Using the hodge() function")$
 if get('itensor,'version)=false then load(itensor);
-("We can create a function to implement the Hodge star operator")$
-hodge(e):=
-(
-    [
-        len:length(indices(e)[1]),
-        idx1:makelist(idummy(),i,len+1,dim),
-        idx2:makelist(idummy(),i,len+1,dim)
-    ],
-    funmake("*",makelist(funmake(imetric,[[idx1[i],idx2[i]]]),i,1,dim-len))*
-                funmake(levi_civita,[[],append(idx1,indices(e)[1])])*e/len!
-)$
 ("We set up a standard metric")$
 imetric(g);
 dim:4;

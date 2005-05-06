@@ -486,14 +486,16 @@ A   (COND ((NULL A)
 
      
  
-(DEFUN $CANTEN (X)  (DO ((I ($NTERMS X) ($NTERMS L))
+(DEFUN $CANTEN (X)  (cond ((not $allsym) (merror "canten works only if allsym:true has been set")) (t  (DO ((I ($NTERMS X) ($NTERMS L))
                       (L (CANFORM X) (CANFORM L)) )
                      ((= I ($NTERMS L))  L) 
 		      (COND ((EQ $CANTERM T) (PRINT I))) ))
+                    ))
 
-(DEFUN $CONCAN (X) (DO ((I ($NTERMS X) ($NTERMS L))
+(DEFUN $CONCAN (X) (cond ((not $allsym) (merror "concan works only if allsym:true has been set")) (t  (DO ((I ($NTERMS X) ($NTERMS L))
 			(L (CANFORM X) ($CONTRACT (CANFORM L))))
 		       ((= I ($NTERMS L)) L)
 		       (COND ((EQ $CANTERM T) (PRINT I))) ))
+                    ))
 
 
