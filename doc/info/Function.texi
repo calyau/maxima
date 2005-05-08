@@ -478,7 +478,6 @@ does not limit the scope of @code{f} to @code{g}.
 Examples:
 
 @example
-@end example
 (%i1) foo: 2^bar;
                                bar
 (%o1)                         2
@@ -510,6 +509,7 @@ Examples:
 (%t9)                  f_4(y) := a 2    y
 
 (%o9)                         done
+@end example
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
