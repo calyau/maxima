@@ -180,7 +180,7 @@
 	    *print-gensym*
 	    list fasdeqlist fasdnoneqlist maxima-error #+pdp10 length #+pdp10 oint)
     #+cl
-    (setq savefile (open (nsubstring (string (car x)) 1) :direction :output))
+    (setq savefile (open (nsubstring (print-invert-case (car x)) 1) :direction :output))
     #+nil
     (setq savefile (open ($filename_merge (car x)) :out))
     (setq file (list (car x)))

@@ -489,7 +489,7 @@
  
   (defun nsubstring (x y) (subseq x y)) 
  
-  (defun filestrip (x) (subseq (string (car x)) 1)) 
+  (defun filestrip (x) (subseq (print-invert-case (car x)) 1)) 
   )
 
 (defmspec $with_stdout ( arg) (setq arg (cdr arg))
