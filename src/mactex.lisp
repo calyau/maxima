@@ -83,12 +83,12 @@
 	  (t (apply 'tex1  args)))))
 
 (defun quote-% (sym)
-  (let ((strsym (string sym)))
-    (cond ((position (character "%") strsym)
-	   (let ((pos (position (character "%") strsym)))
-	     (concatenate 'string (subseq strsym 0 pos) "\\%" 
-			  (quote-% (subseq strsym (+ pos 1))))))
-	  (t strsym))))
+  (let* ((strsym (string sym))
+         (pos (position-if #'(lambda (c) (find c "%_")) strsym)))
+    (if pos
+      (concatenate 'string (subseq strsym 0 pos) "\\" (subseq strsym pos (1+ pos))
+                           (quote-% (subseq strsym (1+ pos))))
+      strsym)))
 
 (defun tex1 (mexplabel &optional filename ) ;; mexplabel, and optional filename
   (prog (mexp  texport $gcprint ccol x y itsalabel)
@@ -236,7 +236,7 @@
 
 (defun tex-stripdollar(sym &aux )
   (or (symbolp sym) (return-from tex-stripdollar sym))
-  (let* ((pname (symbol-name sym))
+  (let* ((pname (quote-% sym))
 	 (l (length pname))
 	 (begin-sub
 	  (loop for i downfrom (1- l)
@@ -263,16 +263,6 @@
 	   (cond ((eql begin-sub t)
 		  (vector-push #\} tem))))
     (intern tem)))
-
-;; A.G. 2001: I prefer the following version:
-;;(defun tex-stripdollar (sym)
-;;  (or (symbolp sym) (return-from tex-stripdollar sym))
-;;  (let* ((name (symbol-name sym))
-;;      (pname (if (eql (elt name 0) #\$) (subseq name 1) name))
-;;      (l (length pname)))
-;;    (cond
-;;      ((eql l 1) pname)
-;;      (t (concatenate 'string "\\mathrm{" pname "}")))))
 
 (defun strcat (&rest args)
   (apply #'concatenate 'string (mapcar #'string args)))
@@ -432,6 +422,17 @@
 (defprop $chi "\\chi" texword)
 (defprop $psi "\\psi" texword)
 (defprop $omega "\\omega" texword)
+(defprop |$Gamma| "\\Gamma" texword)
+(defprop |$Delta| "\\Delta" texword)
+(defprop |$Theta| "\\Theta" texword)
+(defprop |$Lambda| "\\Lambda" texword)
+(defprop |$Xi| "\\Xi" texword)
+(defprop |$Pi| "\\Pi" texword)
+(defprop |$Sigma| "\\Sigma" texword)
+(defprop |$Upsilon| "\\Upsilon" texword)
+(defprop |$Phi| "\\Phi" texword)
+(defprop |$Psi| "\\Psi" texword)
+(defprop |$Omega| "\\Omega" texword)
 
 (defprop mquote tex-prefix tex)
 (defprop mquote ("'") texsym)
@@ -817,7 +818,7 @@
 (defun tex-derivative (x l r)
   (tex (if $derivabbrev
 	   (tex-dabbrev x)
-	   (tex-d x '$|d|)) l r lop rop ))
+	   (tex-d x '$d)) l r lop rop ))
 
 (defun tex-d(x dsym)		    ;dsym should be $d or "$\\partial"
   ;; format the macsyma derivative form so it looks
@@ -920,7 +921,7 @@
 ;; This stuff handles setting of LET rules
 
 (defprop | --> | "\\longrightarrow " texsym)
-(defprop | WHERE | "\\;\\mathbf{where}\\;}" texsym)
+(defprop | WHERE | "\\;\\mathbf{where}\\;" texsym)
 
 (defprop &>= ("\\ge ") texsym)
 (defprop &>= tex-infix tex)
@@ -940,22 +941,15 @@
 (defprop |&#| ("\\ne ") texsym)
 (defprop |&#| tex-infix tex)
 
-;; handles portrayal of rules, e.g.
-;; let(abs(x),x, ">" , x, 0);
-;; results in
-;; ((MTEXT SIMP) ((MABS SIMP) |$x|) | --> | |$x| | WHERE | ((&> SIMP) |$x| 0))
+;; end of additions by Marek Rychlik
+
+(defun tex-try-sym (x)
+  (if (symbolp x)
+      (let ((tx (get x 'texsym))) (if tx tx x))
+      x))
 
 (defun tex-mtext (x l r)
-  (tex-list (list* (cadr x)
-		   (texsym (caddr x))
-		   (cadddr x)
-		   (cond ((cddddr x)
-			  (list*
-			   (texsym (caddddr x))
-			   (cdddddr x)))))
-	    l r ""))
-
-;; end of additions by Marek Rychlik
+  (tex-list (map 'list #'tex-try-sym (cdr x)) l r ""))
 
 (defun tex-mlable (x l r)
   (tex (caddr x)
@@ -966,7 +960,7 @@
        r 'mparen 'mparen))
 
 (defun tex-spaceout (x l r)
-  (append l (list "\\mbox{\\verb|" (make-string (cadr x) :initial-element #\space) "|}") r))
+  (append l (cons (format nil "\\hspace{~dmm}" (* 3 (cadr x))) r)))
 
 ;; initialize a file so that c-lines will look ok in verbatim mode
 ;; run this first before tex(<whatever>, file);
