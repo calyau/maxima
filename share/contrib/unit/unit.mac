@@ -688,7 +688,7 @@ dimension(exp) := block([letrat:true,tmp1,tmp2,a1,a2,result1,i,j],
      unitlet([fakerule,fakerule],quanttoone),
      for i:1 thru length(variablequantitieslist) do (
         unitlet([variablequantitieslist[i][1],variablequantitieslist[i][2]],quantrules)),
-     processunits(exp),
+     exp : processunits(exp),
      tmp1 : letsimp(letsimp(exp,quantrules),toquantities),
      tmp2 : letsimp(letsimp(letsimp(exp,toquantities),quantrules),quanttoone),
      result1 : tmp1/tmp2,
@@ -706,6 +706,12 @@ print("*       Conversion factors from various sources including         *");
 print("*                   NIST and the GNU units package                *");
 print("*******************************************************************");
 print("");
+print("Redefining necessary functions...");
+
+/* This file contains the lisp level definitions required to properly
+work with units */
+load("contrib/unit/unit-functions.lisp")$
+
 print("Initializing unit arrays...");
 
 /* This variable controls how many of the metric prefixes are added
