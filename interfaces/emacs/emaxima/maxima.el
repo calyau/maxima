@@ -156,11 +156,15 @@
 ;;   the regexps `maxima-minor-prefix' and `maxima-minor-postfix' (currently
 ;;   both blank lines) to the Maxima process and insert the result in the
 ;;   minibuffer.  With an argument, `maxima-minibuffer-in-determined-region'
-;;   will also insert the output into the current buffer, after ` ==> '
-;;   and before `//'.  (The symbol ` ==> ' is the value of the customizable 
-;;   variable `maxima-minor-output' and '//' is the value of 
+;;   will also insert the output into the current buffer, after " ==> "
+;;   and before "//".  (The symbol ` ==> ' is the value of the customizable 
+;;   variable `maxima-minor-output' and "//" is the value of 
 ;;   `maxima-minor-output-end'.  The new output is inserted, these strings 
 ;;   will be used to delete the old output.
+;;   Outside of comments in maxima-mode, the opening and closing indicators 
+;;   are the values of `maxima-mode-minor-output' and 
+;;   `maxima-mode-minor-output-end', which by default are " /*==>" and 
+;;   " <==*/", respectively.
 ;; The commands `maxima-minibuffer-on-region', `maxima-minibuffer-on-line'
 ;; and `maxima-minibuffer-on-form' work similarly to 
 ;; `maxima-minibuffer-on-determined-region', but send the current region
@@ -372,7 +376,7 @@ in maxima minor mode."
   :group 'maxima
   :type 'string)
 
-(defcustom maxima-minor-output " ==>"
+(defcustom maxima-minor-output "==>"
   "*A string to insert in the buffer right before the output."
   :group 'maxima
   :type 'string)
@@ -381,6 +385,35 @@ in maxima minor mode."
   "*A string to insert in the buffer right after the output."
   :group 'maxima
   :type 'string)
+
+(defcustom maxima-mode-minor-output "/*==>"
+  "*A string to insert in the buffer right before the output."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-mode-minor-output-end " <==*/"
+  "*A string to insert in the buffer right after the output."
+  :group 'maxima
+  :type 'string)
+
+(defcustom maxima-minor-mode-check-input t
+  "*Non-nil means check the input in Maxima minor mode before sending it."
+  :group 'maxima
+  :type 'boolean)
+
+(defun maxima-minor-output-mark ()
+  (if (and
+       (eq major-mode 'maxima-mode)
+       (not (maxima-in-comment-p)))
+      maxima-mode-minor-output
+    maxima-minor-output))
+
+(defun maxima-minor-output-mark-end ()
+  (if (and
+       (eq major-mode 'maxima-mode)
+       (not (maxima-in-comment-p)))
+      maxima-mode-minor-output-end
+    maxima-minor-output-end))
 
 ;;;; The other variables
 
@@ -428,6 +461,8 @@ in maxima minor mode."
 (defvar maxima-minor-mode-region-end nil)
 
 (defvar maxima-minor-mode-highlight nil)
+
+(defvar maxima-minor-mode-bad-delimiter-regexp "\\([ \t\n]+\\|[0-9]+\\)")
 
 ;;;; Utility functions
 
@@ -521,10 +556,71 @@ in maxima minor mode."
   (unless (or
            (string= string "")
            (and (>= (length string) 5)
-                (string-match (substring string 0 5) ":lisp"))
-           (string-match (substring string -1) ";$"))
+                (string= (substring string 0 5) ":lisp"))
+           (string= (substring string -1) ";")
+           (string= (substring string -1) "$"))
     (setq string (concat string ";")))
   string)
+
+(defun maxima-remove-whitespace-from-ends (string)
+  "Return STRING with whitespace from the ends."
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (str string)
+         (out)
+         (beg)
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (maxima-remove-kill-buffer-hooks)
+      (insert str)
+      (goto-char (point-min))
+      (skip-chars-forward " \t\n")
+      (setq beg (point))
+      (goto-char (point-max))
+      (skip-chars-backward " \t\n")
+      (setq end (point))
+      (setq out (buffer-substring-no-properties beg end)))
+    (kill-buffer tmpbuf)
+    out))
+
+(defun maxima-remove-whitespace-from-beg (string)
+  "Return STRING with whitespace removed from the beginning."
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (out)
+         (str string)
+         (beg)
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (maxima-remove-kill-buffer-hooks)
+      (insert str)
+      (goto-char (point-min))
+      (skip-chars-forward " \t\n")
+      (setq beg (point))
+      (setq out (buffer-substring-no-properties beg (point-max))))
+    (kill-buffer tmpbuf)
+    out))
+
+(defun maxima-remove-whitespace-from-end (string)
+  "Return STRING with whitespace removed from the end."
+  (let* ((tmpfile (maxima-make-temp-name))
+         (tmpbuf (get-buffer-create tmpfile))
+         (out)
+         (str string)
+         (beg)
+         (end))
+    (save-excursion
+      (set-buffer tmpbuf)
+      (maxima-remove-kill-buffer-hooks)
+      (insert str)
+      (goto-char (point-max))
+      (skip-chars-backward " \t\n")
+      (setq end (point))
+      (setq out (buffer-substring-no-properties (point-min) end)))
+    (kill-buffer tmpbuf)
+    out))
 
 ;;;; Functions that query position
 (defun maxima-in-comment-p ()
@@ -534,6 +630,14 @@ in maxima minor mode."
       (and
        (search-backward "/*" nil t)
        (not (search-forward "*/" pt t))))))
+
+(defun maxima-in-output-p ()
+  "Non-nil means that the point is in minibuffer output."
+  (let ((pt (point)))
+    (save-excursion
+      (and
+       (search-backward (maxima-minor-output-mark) nil t)
+       (not (search-forward (maxima-minor-output-mark-end) pt t))))))
 
 ;;; Functions that search
 
@@ -1009,11 +1113,27 @@ or nil."
 ;;;; Functions that move the position
 (defun maxima-forward-over-comment-whitespace ()
   "Move forward over comments and whitespace."
-  (forward-comment (buffer-size)))
+  (forward-comment (buffer-size))
+  (let ((mmo (maxima-remove-whitespace-from-beg (maxima-minor-output-mark))))
+    (when (and (> (- (point-max) (point)) (length mmo))
+               (string= 
+                (buffer-substring-no-properties 
+                 (point) (+ (point) (length mmo)))
+                mmo))
+      (search-forward (maxima-minor-output-mark-end))
+      (forward-comment (buffer-size)))))
 
 (defun maxima-back-over-comment-whitespace ()
   "Move backward over comments and whitespace."
-  (forward-comment (- (buffer-size))))
+  (forward-comment (- (buffer-size)))
+  (let ((mme (maxima-remove-whitespace-from-end (maxima-minor-output-mark-end))))
+    (when (and (> (- (point) (point-min)) (length mme))
+               (string= 
+                (buffer-substring-no-properties 
+                 (- (point) (length mme)) (point))
+                mme))
+      (search-backward (maxima-minor-output-mark))
+      (forward-comment (- (buffer-size))))))
 
 (defun maxima-standard-goto-beginning-of-form ()
   "Move to the beginning of the form."
@@ -1339,7 +1459,7 @@ Assumes the point is right before the open parenthesis."
             nil
           (forward-char -5)
           (if (looking-at ":lisp")
-              (setq val (current-column))
+              (current-column)
             nil))))))
 
 (defun maxima-standard-perhaps-smart-calculate-indent ()
@@ -1390,6 +1510,9 @@ Returns an integer: the column to indent to."
        ;; If the current point is the beginning of the form, the level is 0
        ((= (point) pmin)
         (setq indent 0))
+       ;; If the current point is in maxima minor output, don't reindent it
+       ((maxima-in-output-p)
+        (setq indent -1))
        ;; A line beginning "then" is indented like the opening "if"
        ((and
          (looking-at "[ \t]*\\<then\\>")
@@ -1513,7 +1636,7 @@ Returns an integer: the column to indent to."
           (maxima-back-over-comment-whitespace)
           (when (not (looking-at "^"))
             (forward-char -1)
-            (if (not (or le (looking-at "[,;$(]")))
+            (if (not (or le (looking-at "[,;$]")))
                 (setq indent (+ maxima-continuation-indent-amount indent))))))))
     indent))
 
@@ -2611,9 +2734,10 @@ The variable `tab-width' controls the spacing of tab stops."
   (if (processp inferior-maxima-process)
       (unless (eq (process-status inferior-maxima-process) 'run)
         (delete-process inferior-maxima-process)
-        (save-excursion
-          (set-buffer "*maxima*")
-          (erase-buffer))
+        (if (get-buffer "*maxima*")
+            (save-excursion
+              (set-buffer "*maxima*")
+              (erase-buffer)))
         (setq inferior-maxima-process nil)))
   (unless (processp inferior-maxima-process)
     (setq inferior-maxima-input-end 0)
@@ -2626,7 +2750,6 @@ The variable `tab-width' controls the spacing of tab stops."
                               nil) (split-string maxima-args))) 
         (setq cmd (list 'make-comint "maxima" maxima-command)))
       (setq mbuf (eval cmd))
-      (setq comint-input-ring-size maxima-input-history-length)
       (save-excursion
         (set-buffer mbuf)
         (setq inferior-maxima-process (get-buffer-process mbuf))
@@ -2699,7 +2822,7 @@ With an argument, use maxima-block-wait instead of maxima-block."
       (if arg
           (insert maxima-block-wait)
         (insert maxima-block))
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (maxima-forward-over-comment-whitespace)
       (setq pt (point))
       (if (string-match "[$;]\\|:lisp"
@@ -3125,6 +3248,7 @@ To scroll through previous commands,
                      (delete-process inferior-maxima-process))
                  (setq inferior-maxima-process nil)
                  (run-hooks 'inferior-maxima-exit-hook))) t t))
+  (setq comint-input-ring-size maxima-input-history-length)
   (if maxima-save-input-history
       (progn
         (setq comint-input-ring-file-name maxima-input-history-file)
@@ -3189,7 +3313,7 @@ To scroll through previous commands,
     (setq output (maxima-last-output-noprompt))
     (maxima-single-string-wait "block(display2d:emacsdisplay,linenum:linenum-1,%);")
     (if (not twod)
-        (setq output (maxima-strip-string output))
+        (setq output (maxima-remove-whitespace-from-ends output))
       ;; Strip the beginning and trailing newline
       (while (string-match "\\` *\n" output)
         (setq output (substring output (match-end 0))))
@@ -3199,26 +3323,34 @@ To scroll through previous commands,
     (message output)))
 
 (defun maxima-minibuffer-delete-output (beg end)
-  (let (pt)
-    (save-excursion
-      (goto-char beg)
-      (if (re-search-forward maxima-minor-output end t)
-          (progn
-            (setq pt (match-beginning 0))
-            (re-search-forward maxima-minor-output-end)
-            (kill-region pt (point)))
-        (goto-char end)
-        (if (looking-at (concat " *" maxima-minor-output))
-          (progn
-            (re-search-forward maxima-minor-output-end)
-            (kill-region end (point)))))
-      (point))))
+  (let ((mmom (maxima-minor-output-mark))
+        (mmoe (maxima-minor-output-mark-end)))
+    (if (or 
+         (and (string-match maxima-minor-mode-bad-delimiter-regexp mmom)
+              (string= (match-string 0 mmom) mmom))
+         (and (string-match maxima-minor-mode-bad-delimiter-regexp mmoe)
+              (string= (match-string 0 mmoe) mmoe)))
+        (message "Old output not deleted (improper delimiter).")
+      (let (pt)
+        (save-excursion
+          (goto-char beg)
+          (if (search-forward mmom end t)
+              (progn
+                (setq pt (match-beginning 0))
+                (search-forward mmoe)
+                (kill-region pt (point)))
+            (goto-char end)
+            (if (looking-at (concat "[ \n]*" (regexp-quote mmom)))
+                (progn
+                  (search-forward mmoe)
+                  (kill-region end (point)))))
+          (point))))))
 
 (defun maxima-minibuffer-on-region (beg end &optional arg)
   "Send the current region to Maxima; display last output in minibuffer.
 With an argument, insert \" ==> \" into the current buffer,
-followed by the output.  In this case, anything in the region
-after any occurrence of \" ==> \" will be deleted."
+followed by the output, followed by \"\\\".  In this case, any previous output 
+will be deleted."
   (interactive "r\nP")
   (let ((output nil)
         (minibufferoutput)
@@ -3234,19 +3366,21 @@ after any occurrence of \" ==> \" will be deleted."
       (goto-char beg)
       (maxima-forward-over-comment-whitespace)
       (setq realbeg (point))
-      (if (re-search-forward maxima-minor-output end t)
+      (if (re-search-forward (maxima-minor-output-mark) end t)
           (setq realend (match-beginning 0))
-        (setq realend end)))
+        (goto-char end)
+        (maxima-back-over-comment-whitespace)
+        (setq realend (point))))
     (setq input (maxima-strip-string-add-semicolon
                  (buffer-substring-no-properties realbeg realend)))
     (if arg
-        (setq realend
-              (maxima-minibuffer-delete-output beg end)))
+        (maxima-minibuffer-delete-output beg end))
     (setq maxima-minor-mode-region-begin realbeg)
     (setq maxima-minor-mode-region-end realend)
-    (when (and
-           (maxima-check-parens realbeg realend)
-           (maxima-check-commas realbeg realend))
+    (when (or (not maxima-minor-mode-check-input)
+              (and
+               (maxima-check-parens realbeg realend)
+               (maxima-check-commas realbeg realend)))
       (maxima-start)
       (if twod
           (maxima-single-string-wait 
@@ -3257,14 +3391,15 @@ after any occurrence of \" ==> \" will be deleted."
       (setq output (maxima-last-output-noprompt))
       (maxima-single-string-wait "block(display2d:emacsdisplay,linenum:linenum-1,%);")
       (if (not twod)
-          (setq output (maxima-strip-string output))
+          (setq output (maxima-remove-whitespace-from-ends output))
         ;; Strip the beginning and trailing newline
         (while (string-match "\\` *\n" output)
           (setq output (substring output (match-end 0))))
         (while (string-match "\n *\\'" output)
           (setq output (substring output 0 (match-beginning 0)))))
-      (setq minibufferoutput (maxima-replace-in-string "%" "%%" output))
-      (message minibufferoutput)
+      (unless arg
+        (setq minibufferoutput (maxima-replace-in-string "%" "%%" output))
+        (message minibufferoutput))
       (if (and arg
                (not twod))
           (save-excursion
@@ -3292,11 +3427,19 @@ after any occurrence of \" ==> \" will be deleted."
                          (current-column)))
                   (here (point))
                   (there (make-marker)))
-              (insert maxima-minor-output " " output maxima-minor-output-end)
+              (if (or
+                   (string-match "\n" output)
+                   (> (+ (current-column) (length output)) fill-column))
+                  (progn
+                    (insert "\n")
+                    (setq here (point)))
+                (insert " "))
+              (insert (maxima-minor-output-mark) " " output 
+                      (maxima-minor-output-mark-end))
               (set-marker there (point))
               (goto-char here)
               (goto-char (line-end-position))
-              (fill-region (line-beginning-position) (point))
+;              (fill-region (line-beginning-position) (point))
               (if (string-match 
                    "\n" 
                    (buffer-substring-no-properties here (point)))
@@ -3310,9 +3453,9 @@ after any occurrence of \" ==> \" will be deleted."
                   (here))
               (save-excursion
                 (goto-char realend)
-                (insert maxima-minor-output "\n")
+                (insert (maxima-minor-output-mark) "\n")
                 (setq here (point))
-                (insert output maxima-minor-output-end)
+                (insert output (maxima-minor-output-mark-end))
                 (indent-region here (point) ind))))))))
 
 (defun maxima-minibuffer-on-line (&optional arg)
@@ -3364,7 +3507,7 @@ after any occurrence of \" ==> \" will be deleted."
             "block(emacsdisplay:display2d,display2d:false,linenum:linenum-1,%);")
   (let ((output (maxima-last-output-noprompt)))
     (maxima-single-string "block(display2d:emacsdisplay,linenum:linenum-1,%);")
-    (insert (maxima-strip-string output))))
+    (insert (maxima-remove-whitespace-from-ends output))))
 
 (defun maxima-insert-last-output-tex ()
   (interactive)
@@ -3421,7 +3564,8 @@ buffer, preceded by \" ==> \" (customizable with `maxima-minor-output').
   ;; The initial value.;  :initial-value
   nil
   ;; The indicator for the mode line.;  :lighter 
-  " maxima")
+  " maxima"
+  nil)
 
 ;;; For highlighting the region being sent
 
