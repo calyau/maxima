@@ -21,7 +21,7 @@
    "ZBESH"
    
    ;; Airy functions
-   "DAI"
+   "DAI" "ZAIRY" "DJAIRY" "DBI" "ZBIRY" "DYAIRY"
 
    ;; Exponential integrals
    "DE1")
