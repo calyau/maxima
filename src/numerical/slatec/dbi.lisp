@@ -109,7 +109,7 @@
       (setf z 0.0)
       (if (> (abs x) x3sml) (setf z (expt x 3)))
       (setf dbi
-              (+ 0.625f0
+              (+ 0.625
                  (dcsevl z bifcs nbif)
                  (* x (+ 0.4375 (dcsevl z bigcs nbig)))))
       (go end_label)

@@ -129,7 +129,7 @@ C
  20   IF (X.GT.1.0D0) GO TO 30
       Z = 0.D0
       IF (ABS(X).GT.X3SML) Z = X**3
-      DBI = 0.625 + DCSEVL (Z, BIFCS, NBIF) + X*(0.4375D0 +
+      DBI = 0.625D0 + DCSEVL (Z, BIFCS, NBIF) + X*(0.4375D0 +
      1  DCSEVL (Z, BIGCS, NBIG))
       RETURN
 C
