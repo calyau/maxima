@@ -423,6 +423,8 @@ numerical/slatec/dbesk.lisp \
 numerical/slatec/dbesy0.lisp \
 numerical/slatec/dbesy1.lisp \
 numerical/slatec/dbesy.lisp \
+numerical/slatec/dbi.lisp \
+numerical/slatec/dbie.lisp \
 numerical/slatec/dbsi0e.lisp \
 numerical/slatec/dbsi1e.lisp \
 numerical/slatec/dbsk0e.lisp \
@@ -500,6 +502,7 @@ numerical/slatec/zbesj.lisp \
 numerical/slatec/zbesk.lisp \
 numerical/slatec/zbesy.lisp \
 numerical/slatec/zbinu.lisp \
+numerical/slatec/zbiry.lisp \
 numerical/slatec/zbknu.lisp \
 numerical/slatec/zbuni.lisp \
 numerical/slatec/zbunk.lisp \
