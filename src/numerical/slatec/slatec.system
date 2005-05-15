@@ -198,7 +198,13 @@
 		    :depends-on ("d9aimp" "dcsevl" "initds"))
 	     (:file "dai"
 		    :depends-on ("d9aimp" "daie" "dcsevl" "initds" "xermsg"))
-	     
+	     (:file "dbie"
+		    :depends-on ("d9aimp" "dcsevl" "initds"))
+	     (:file "dbi"
+		    :depends-on ("d9aimp" "dbie" "dcsevl" "initds" "xermsg"))
+	     (:file "zbiry"
+		    :depends-on ("zabs" "zbinu" "zdiv" "zsqrt"))
+
 	     ;; Error functions
 	     (:file "derf"
 		    :depends-on ("dcsevl" "derfc" "initds"))
