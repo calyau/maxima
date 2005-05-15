@@ -334,24 +334,73 @@ which is the rule package used when a rule package is not otherwise specified.
 Associates a predicate @var{pred_k} 
 with a variable or list of variables @var{a_k}
 so that @var{a_k} matches expressions
-for which the predicate is not @code{false}.
-@c REPLACE NEXT SENTENCE WITH EXHAUSTIVE LIST
-Pattern matches are evaluated by one of the functions described below.
+for which the predicate returns anything other than @code{false}.
 
-If the match succeeds then the variable is
-set to the matched expression.
-The predicate (in this case @code{freeof}) is
-written without the last argument which should be the one against
-which the pattern variable is to be tested.
-Note that the variable
-and the arguments to the predicate are evaluated at the time the match
-is evaluated.
+The predicate is the name of a function,
+a function call missing the last argument,
+or @code{true}.
+Any expression matches @code{true}.
+If the predicate is specified as a function call,
+the expression to be tested is appended to the list of arguments;
+the arguments are evaluated at the time the match is evaluated.
+Otherwise, the predicate is specified as a function name,
+and the expression to be tested is the sole argument.
+A predicate function need not be defined when @code{matchdeclare} is called;
+the predicate is not evaluated until a match is attempted.
 
-For pattern matching, predicates refer to functions which are either
-@code{false} or not @code{false}. 
-Any non @code{false} value acts like @code{true}.
+A @code{matchdeclare} predicate cannot be any other kind of expression.
+In particular, a predicate cannot be a @code{lambda} or @code{block}.
+@c defrule, defmatch, tellsimp/tellsimpafter, let ALL BARF ON LAMBDAS AND OTHER EXPRESSIONS
+@c BUT NOT ENFORCED BY matchdeclare -- THIS IS A BUG
 
-@code{matchdeclare (@var{a}, true)} permits @var{a} to match any expression.
+If an expression satisfies a match predicate,
+the match variable is assigned the expression,
+except for match variables which are operands of addition @code{+} or multiplication @code{*}.
+Only addition and multiplication are handled specially;
+other n-ary operators (both built-in and user-defined) are treated like ordinary functions.
+@c WOULD BE GREAT TO EXTEND PART+/PART* PROCESSING TO ALL N-ARY OPERATORS
+
+In the case of addition and multiplication,
+the match variable may be assigned a single expression which satisfies the match predicate,
+or a sum or product (respectively) of such expressions.
+Such multiple-term matching is greedy:
+predicates are evaluated in the order in which their associated variables
+appear in the match pattern,
+and a term which satisfies more than one predicate is taken by the first
+predicate which it satisfies.
+Each predicate is tested against all operands of the sum or product before the next predicate is evaluated.
+In addition,
+if 0 or 1 (respectively) satisfies a match predicate,
+and there are no other terms which satisfy the predicate,
+0 or 1 is assigned to the match variable associated with the predicate.
+
+The algorithm for processing addition and multiplication patterns makes some match results
+(for example, a pattern in which a "match anything" variable appears)
+dependent on the ordering of terms in the match pattern and in the expression to be matched.
+However,
+if all match predicates are mutually exclusive,
+the match result is insensitive to ordering,
+as one match predicate cannot take terms from another.
+
+Calling @code{matchdeclare} with a variable @var{a} as an argument
+changes the @code{matchdeclare} property for @var{a}, if one was already declared;
+only the most recent @code{matchdeclare} is in effect when a rule is defined,
+Later changes to the @code{matchdeclare} property
+(via @code{matchdeclare} or @code{remove})
+do not affect existing rules.
+
+@code{propvars (matchdeclare)} returns the list of all variables
+for which there is a @code{matchdeclare} property.
+@code{printprops (@var{a}, matchdeclare)} returns the predicate for variable @code{a}.
+@code{printprops (all, matchdeclare)} returns the list of predicates for all @code{matchdeclare} variables.
+@code{remove (@var{a}, matchdeclare)} removes the @code{matchdeclare} property from @var{a}.
+
+The functions
+@code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpafter}, and @code{let}
+construct rules which test expressions against patterns.
+
+@code{matchdeclare} quotes its arguments.
+@code{matchdeclare} always returns @code{done}.
 
 Examples:
 
