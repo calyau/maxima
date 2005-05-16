@@ -35,7 +35,7 @@
 (progn)
 (defun $permut (nuplet)
   (cons '(mlist)
-        (mapcar '(lambda (permu) (cons '(mlist) permu))
+        (mapcar #'(lambda (permu) (cons '(mlist) permu))
                 (permut (cdr nuplet)))))
 ;cas particulier de permut avec les elem. de L 2 a 2 <>(pour voir) 
 ;On place le car
