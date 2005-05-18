@@ -721,3 +721,9 @@ Examples:
 @end example
 
 @end deffn
+
+@deffn {Function} clear_rules ()
+Executes @code{kill (rules)} and then resets the next rule number to 1
+for addition @code{+}, multiplication @code{*}, and exponentiation @code{^}.
+
+@end deffn
