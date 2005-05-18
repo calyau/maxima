@@ -348,7 +348,7 @@ and the expression to be tested is the sole argument.
 A predicate function need not be defined when @code{matchdeclare} is called;
 the predicate is not evaluated until a match is attempted.
 
-A @code{matchdeclare} predicate cannot be any other kind of expression.
+A @code{matchdeclare} predicate cannot be any kind of expression other than a function name or function call.
 In particular, a predicate cannot be a @code{lambda} or @code{block}.
 @c defrule, defmatch, tellsimp/tellsimpafter, let ALL BARF ON LAMBDAS AND OTHER EXPRESSIONS
 @c BUT NOT ENFORCED BY matchdeclare -- THIS IS A BUG
@@ -380,7 +380,7 @@ dependent on the ordering of terms in the match pattern and in the expression to
 However,
 if all match predicates are mutually exclusive,
 the match result is insensitive to ordering,
-as one match predicate cannot take terms from another.
+as one match predicate cannot accept terms matched by another.
 
 Calling @code{matchdeclare} with a variable @var{a} as an argument
 changes the @code{matchdeclare} property for @var{a}, if one was already declared;
@@ -631,15 +631,15 @@ in which the main operator is not a pattern variable;
 the simplification rule is associated with the main operator.
 The names of functions (with one exception, described below), lists, and arrays
 may appear in @var{pattern} as the main operator only as literals (not pattern variables);
-this rules out expressions such as @code{foo(x)} and @code{bar[y]} as patterns,
-if @code{foo} and @code{bar} are pattern variables.
+this rules out expressions such as @code{aa(x)} and @code{bb[y]} as patterns,
+if @code{aa} and @code{bb} are pattern variables.
 Names of functions, lists, and arrays which are pattern variables may appear as operators
 other than the main operator in @var{pattern}.
 
 There is one exception to the above rule concerning names of functions.
-The name of a subscripted function in an expression such as @code{foo[a](x)}
+The name of a subscripted function in an expression such as @code{aa[x](y)}
 may be a pattern variable,
-because the main operator is not @code{foo} but rather the Lisp atom @code{mqapply}.
+because the main operator is not @code{aa} but rather the Lisp atom @code{mqapply}.
 This is a consequence of the representation of expressions involving subscripted functions.
 
 @c LET'S NOT GO INTO DETAILS ABOUT MAIN OPERATORS HERE; BUT PRESERVE THIS FOR REFERENCE
@@ -655,13 +655,27 @@ Simplification rules are applied after evaluation
 Rules established by @code{tellsimpafter} are applied in the order they were defined,
 and after any built-in rules.
 Rules are applied bottom-up, that is,
-applied first to parts of an expression before application to the whole expression.
+applied first to subexpressions before application to the whole expression.
+For a given expression,
+at most one rule per operator is applied;
+it may be necessary to repeatedly simplify a result to ensure that all rules are applied.
 
 Pattern variables are treated as local variables in simplification rules.
 Once a rule is defined, the value and other properties of a pattern variable
 do not affect the rule, and are not affected by the rule.
-An assignment to a pattern variables which results from a successful rule match
+An assignment to a pattern variable which results from a successful rule match
 does not affect the current assignment (or lack of it) of the pattern variable.
+
+The rule constructed by @code{tellsimpafter} is named after the main operator of @code{pattern}.
+Rules for built-in operators, 
+and user-defined operators 
+defined by @code{infix}, @code{prefix}, @code{postfix}, @code{matchfix}, and @code{nofix},
+have names which are Maxima strings.
+@c SLIGHTLY TOO MUCH DETAIL
+@c (that is, the name begins with ampersand @code{&}).
+Rules for other functions have names which are ordinary Maxima identifiers.
+@c SLIGHTLY TOO MUCH DETAIL
+@c (that is, the name begins with dollar sign @code{$}).
 
 The treatment of noun and verb forms is slightly confused. @c THIS IS A BUG.
 If a rule is defined for a noun (or verb) form
@@ -670,18 +684,39 @@ the newly-defined rule applies to both forms (noun and verb).
 If a rule for the corresponding verb (or noun) form does not exist,
 the newly-defined rule applies only to the noun (or verb) form.
 
-See also @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp}, and @code{let}.
+The rule constructed by @code{tellsimpafter} is an ordinary Lisp function.
+If the name of the rule is @code{$foorule1},
+the construct @code{:lisp (trace $foorule1)} traces the function,
+and @code{:lisp (symbol-function '$foorule1} displays its definition.
 
 @code{tellsimpafter} quotes its arguments.
 @code{tellsimpafter} returns the list of rules for the main operator of @var{pattern},
 including the newly established rule.
 @c WHAT IS simpfoo THAT SOMETIMES APPEARS, AND WHY DOES false SOMETIMES APPEAR IN RETURN VALUE ??
 
+See also @code{matchdeclare}, @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{let},
+@code{kill}, @code{remrule}, and @code{clear_rules}.
+
 Examples:
 @c GENERATED BY:
 @c matchdeclare (aa, atom, bb, atom_not0, [ll, mm], listp, [xx, yy], true)$
 @c tellsimpafter (ll^mm, map ("^", ll, mm));
 @c [a, b, c]^[1, 2, 3];
+@example
+@end example
+
+@example
+@end example
+
+@example
+@end example
+
+@example
+@end example
+
+@example
+@end example
+
 @example
 @end example
 
