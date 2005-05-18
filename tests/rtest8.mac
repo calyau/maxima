@@ -56,8 +56,8 @@ algsys([f1,f2],[x,y]);
  [x = -1/3,y = -1/3],[x = 1,y = 1]]$
 solve(asin(cos(3*x))*(f(x)-1),x);
 [x = %pi/6,f(x) = 1]$
-ev(solve(5^f(x) = 125,f(x)),solveradcan);
-[f(x) = log(125)/log(5)]$
+ev(solve(5^f(x) = 125,f(x)),solveradcan:true);
+[f(x) = 3]$
 [4*x^2-y^2 = 12,x*y-x = 2];
 [4*x^2-y^2 = 12,x*y-x = 2]$
 solve(%,[x,y]);
