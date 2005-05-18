@@ -542,3 +542,52 @@ mechanism.
 
 @end deffn
 
+@deffn {Function} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
+Applies the function @var{f} to each one of the elements of the outer product
+@var{a_1} cross @var{a_2} ... cross @var{a_n}.
+
+@var{f} is be the name of a function of @math{n} arguments
+or a lambda expression of @math{n} arguments.
+The arguments @var{a_1}, ..., @var{a_n} may be lists or nonlists.
+List arguments may have different lengths.
+Arguments other than lists are treated as lists of length 1 for the purpose of constructing
+the outer product.
+
+The result of applying @var{f} to the outer product is organized as a nested list.
+The depth of nesting is equal to the number of list arguments
+(arguments other than lists do not contribute a nesting level).
+A list at nesting depth @math{k} has the same length as the @math{k}'th list argument.
+
+@code{outermap} evaluates its arguments.
+
+See also @code{map}, @code{maplist}, and @code{apply}.
+@c CROSS REF OTHER FUNCTIONS HERE ??
+
+Examples:
+@c GENERATED FROM:
+@c f (x, y) := x - y$
+@c outermap (f, [2, 3, 5], [a, b, c, d]);
+@c outermap (lambda ([x, y], y/x), [55, 99], [Z, W]);
+@c g: lambda ([x, y, z], x + y*z)$
+@c outermap (g, [a, b, c], %pi, [11, 17]);
+@c flatten (%);
+
+@example
+(%i1) f (x, y) := x - y$
+(%i2) outermap (f, [2, 3, 5], [a, b, c, d]);
+(%o2) [[2 - a, 2 - b, 2 - c, 2 - d], 
+      [3 - a, 3 - b, 3 - c, 3 - d], [5 - a, 5 - b, 5 - c, 5 - d]]
+(%i3) outermap (lambda ([x, y], y/x), [55, 99], [Z, W]);
+                        Z   W     Z   W
+(%o3)                 [[--, --], [--, --]]
+                        55  55    99  99
+(%i4) g: lambda ([x, y, z], x + y*z)$
+(%i5) outermap (g, [a, b, c], %pi, [11, 17]);
+(%o5) [[a + 11 %pi, a + 17 %pi], [b + 11 %pi, b + 17 %pi], 
+                                        [c + 11 %pi, c + 17 %pi]]
+(%i6) flatten (%);
+(%o6) [a + 11 %pi, a + 17 %pi, b + 11 %pi, b + 17 %pi, 
+                                          c + 11 %pi, c + 17 %pi]
+@end example
+
+@end deffn
