@@ -525,7 +525,9 @@ processunits(expression) := block([letrat:true,ratprint:false,unitrules,result1]
    ) else (
    result1 : expression),
    currentdoeval : true,
- result1);
+   if ?equal(unitsimpadd,true) then (
+    result1 : ?groupadd(result1)),
+   result1);
 
 /*====================== User Functions ======================*/ 
 
@@ -694,7 +696,6 @@ dimension(exp) := block([letrat:true,tmp1,tmp2,a1,a2,result1,i,j],
      result1 : tmp1/tmp2,
      result1);
 
-
 /*====================== Initialization =======================*/
 
 /* Startup Message */
@@ -721,6 +722,10 @@ print("Initializing unit arrays...");
 /* This is a list which contains quantities the user doesn't want
 simplified by the derived units simplifier.  Default is empty. */
 dontuselist : [];
+
+/* By default, we want to simplify addition of terms with units.  Currently
+this is disabled due to bugs */
+unitsimpadd : false;
 
 /* Places all relevant metric definitions into the %quantitylist lists.*/
 metricexpandall(%unitexpand);

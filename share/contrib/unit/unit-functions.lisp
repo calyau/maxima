@@ -116,7 +116,65 @@
    nil))
 
 
-;; Code to enable correct display of units via nformat
+;; Code to optionally group units by common unit
+
+(defun unitmember (form list1)
+   (cond ((equal (car list1) nil) t)
+         ((equal form (car list1)) (unitmember form (cdr list1)))))
+   	 
+(defun readyforunits1 (form)
+    (cond ((and (not (atom (car form))) (equal (cdr form) nil))
+            (readyforunits1 (car form)))
+	   ((atom (cadr form))
+	    (list (cadr form)))
+	   ((not (atom (cadr form)))
+	    (cdr (cadr form)))))
+
+(defun readyforunits2 (form)
+    (cond ((and (not (atom (car form))) (equal (cdr form) nil) (atom (cadr (car form))))
+            (list (cadr(car form))))
+	   ((not (atom (cadr form)))
+	    (cdr (cadr (car form))))
+	   ((not (atom (car form)))
+	    (cdr (cadar form)))
+	    ))
+
+(defun readyforunits3 (form)
+    (cond ((atom form)
+	    (list form))
+	  (t form)))
+	       
+(defun readyforunits4 (form)
+    (cond ((atom form)
+	    (list form))
+	   ((not (atom form))
+	    form)))
+	       
+(defun groupunitsadd (seed form havedone)
+  ;;returns form with common unit terms grouped
+  (setq unitaddtemp1 (caddr seed))
+  (setq unitaddtemp2 (caddr (car form)))
+  (cond ((null (car form)) seed)
+        ((equal 
+	 (meval '((mplus simp) unitaddtemp1 
+	 ((mtimes simp) -1 unitaddtemp2))) 0)
+          (groupunitsadd (list '(mtimes) (cons '(mplus simp) (append (readyforunits1 seed) (readyforunits2 form)))
+	 		   (car (cddr seed)))
+	                   (cdr form)
+	 	      (union (readyforunits3 unitaddtemp1) havedone)))
+	 ((and (not (equal 
+	  (meval '((mplus simp) unitaddtemp1 
+	  ((mtimes simp) -1 unitaddtemp2))) 0)) (not (unitmember unitaddtemp2 havedone)))
+	  (list '(mplus) seed (groupunitsadd (car form) (cdr form) (union unitaddtemp1 havedone))))
+	 (t 
+	  (groupunitsadd seed (cdr form) havedone))))
+
+(defun groupadd (form) 
+   (if (and (not (atom form)) (notunitfree form) (or (equal (car form) 'mplus) (equal (caar form) 'mplus)))
+       (groupunitsadd (cadr (nformat form)) (cddr (nformat form)) '())
+    form))
+
+;; Code to enable correct display of multiplication by units via nformat
 (defun notunitfree (form)
   ;;returns t if expression contains units, nil otherwise
   (cond ((null (car form)) nil)
