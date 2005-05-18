@@ -126,17 +126,17 @@
     (cond ((and (not (atom (car form))) (equal (cdr form) nil))
             (readyforunits1 (car form)))
 	   ((atom (cadr form))
-	    (list (cadr form)))
+	    (cadr form))
 	   ((not (atom (cadr form)))
-	    (cdr (cadr form)))))
+	    (cadr form))))
 
 (defun readyforunits2 (form)
     (cond ((and (not (atom (car form))) (equal (cdr form) nil) (atom (cadr (car form))))
-            (list (cadr(car form))))
+            (list '(mtimes simp) (cadr(car form))))
 	   ((not (atom (cadr form)))
-	    (cdr (cadr (car form))))
+	     (cadr (car form)))
 	   ((not (atom (car form)))
-	    (cdr (cadar form)))
+	    (cadar form))
 	    ))
 
 (defun readyforunits3 (form)
@@ -158,7 +158,7 @@
         ((equal 
 	 (meval '((mplus simp) unitaddtemp1 
 	 ((mtimes simp) -1 unitaddtemp2))) 0)
-          (groupunitsadd (list '(mtimes) (cons '(mplus simp) (append (readyforunits1 seed) (readyforunits2 form)))
+          (groupunitsadd (list '(mtimes) (meval (cons '(mplus simp) (list (readyforunits1 seed) (readyforunits2 form))))
 	 		   (car (cddr seed)))
 	                   (cdr form)
 	 	      (union (readyforunits3 unitaddtemp1) havedone)))
@@ -173,7 +173,7 @@
    (if (and (not (atom form)) (notunitfree form) (or (equal (car form) 'mplus) (equal (caar form) 'mplus)))
        (groupunitsadd (cadr (nformat form)) (cddr (nformat form)) '())
     form))
-
+    
 ;; Code to enable correct display of multiplication by units via nformat
 (defun notunitfree (form)
   ;;returns t if expression contains units, nil otherwise
