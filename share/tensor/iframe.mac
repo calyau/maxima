@@ -91,7 +91,7 @@ inmc2(l1,l2,[ld]):=if not inonmet_flag then 0
                            _inm([l1[2]])*'kdelta([l1[1]],[l2[1]])+
                            _g([],[l2[1],m])*_inm([m])*_g([l1[1],l1[2]]))/2);
 
-/* Contorsion */
+/* Contortion */
 ikt1(l,[ld]):=if not itorsion_flag then 0
   else if length(ld)>0 and rest(ld)#[] then
   apply('idiff,cons(ikt1(l),rest((?putinones)(rest(ld)))))
@@ -100,6 +100,107 @@ ikt1(l,[ld]):=if not itorsion_flag then 0
 ikt2(l1,l2,[ld]):=if not itorsion_flag then 0
   else if ld#[] then apply('idiff,cons(ikt2(l1,l2),rest((?putinones)(ld))))
   else block([e:idummy()],_g([],[l2[1],e])*'ikt1([l1[1],l1[2],e]));
+
+/* Simplify expressions containing the metric tensor's derivatives */
+/* v1
+simpmetderiv(exp):=
+(
+    if atom(exp) then exp
+    else if op(exp)="-" then -simpmetderiv(-exp)
+    else if op(exp)="+" then funmake("+", map(simpmetderiv, args(exp)))
+    else if op(exp)="//" then
+        simpmetderiv(part(exp,1))/simpmetderiv(part(exp,2))
+    else if op(exp)="*" then
+    block([sign:1,args:args(exp)],
+        for i thru length(args) do
+            for j thru length(args) do
+        (
+            if i#j and ?rpobj(args[i]) and ?rpobj(args[j]) and
+                   op(args[i])=imetric and op(args[j])=imetric then
+            block(
+                [a:if length(covi(args[i]))>0 then args[i] else args[j],
+                 b:if length(covi(args[i]))>0 then args[j] else args[i]],
+                if length(covi(a)) = 2 and length(conti(a)) = 0 and
+                   length(covi(b)) = 0 and length(conti(b)) = 2 and
+                   length(?intersect(covi(a),conti(b))) = 1 then
+                (
+                    if (flipflag and length(deri(a)) = 1 and
+                                     length(deri(b)) = 0) or
+                       (not flipflag and length(deri(a)) = 0 and
+                                         length(deri(b)) = 1) then
+                    block(
+                        [tmp:deri(a)],
+                        args[i]:funmake(op(a),
+                                        append([covi(a),conti(a)],deri(b))),
+                        args[j]:funmake(op(b),append([covi(b),conti(b)],tmp)),
+                        sign:-sign
+                    )
+                )
+            )
+        ),
+        sign*funmake("*",args)
+    )
+    else exp
+); */
+
+simpmetderiv(exp,[stop]):=
+(
+    if atom(exp) then exp
+    else if op(exp)="-" then -apply(simpmetderiv,cons(-exp,stop))
+    else if op(exp)="+" then
+      funmake("+", map(lambda([x],apply(simpmetderiv,cons(x,stop))), args(exp)))
+    else if op(exp)="//" then apply(simpmetderiv,cons(part(exp,1),stop))/
+                              apply(simpmetderiv,cons(part(exp,2),stop))
+    else if op(exp)="*" then
+    block([sign:1,args:args(exp)],
+        for i thru length(args) do
+            for j thru length(args) do
+        (
+            if i#j and ?rpobj(args[i]) and ?rpobj(args[j]) and
+                   op(args[i])=imetric and op(args[j])=imetric then
+            block(
+                [a:if length(covi(args[i]))>0 then args[i] else args[j],
+                 b:if length(covi(args[i]))>0 then args[j] else args[i]],
+                if length(covi(a)) = 2 and length(conti(a)) = 0 and
+                   length(covi(b)) = 0 and length(conti(b)) = 2 and
+                    (
+                        (
+                            sort(covi(a)) = sort(conti(b)) and
+                            length(deri(a)) = 1 and length(deri(b)) = 1 and
+                            (
+                                (flipflag and
+                                 ordergreatp(deri(a)[1], deri(b)[1])) or
+                                (not flipflag and
+                                 ordergreatp(deri(b)[1], deri(a)[1]))
+                            )
+                        ) or
+                        (
+                            length(covi(a)) = 2 and length(conti(a)) = 0 and
+                            length(covi(b)) = 0 and length(conti(b)) = 2 and
+                            length(?intersect(covi(a),conti(b))) >= 1 and
+                            (
+                                (flipflag and length(deri(a)) = 1 and
+                                 length(deri(b)) = 0) or
+                                (not flipflag and length(deri(a)) = 0 and
+                                 length(deri(b)) = 1)
+                            ) and (sign:-sign) # 0
+                        )
+                    ) then
+
+                block(
+                    [tmp:deri(a)],
+                    args[i]:funmake(op(a),
+                                    append([covi(a),conti(a)],deri(b))),
+                    args[j]:funmake(op(b),append([covi(b),conti(b)],tmp)),
+                    if stop#[] then i:j:length(args)
+                )
+            )
+        ),
+        sign*funmake("*",args)
+    )
+    else exp
+);
+
 
 /* Always true symmetries */
 decsym(ichr1,3,0,[sym(1,2)],[]);

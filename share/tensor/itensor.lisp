@@ -895,11 +895,15 @@
   )
 )
 
+(defun head (x) (cond ((atom x) nil) (t (cons (car x) nil))))
+
+(defun firstintersect (l1 l2) (head (intersect l1 l2)))
+
 ;; Remove like members. Return (cons l1 l2) or nil if no like members found.
 (defun contract2 (l1 l2)
   (
     (lambda (i) (and i (cons (setdiff l1 i) (setdiff l2 i))))
-    (intersect l1 l2)
+    (firstintersect l1 l2)
   )
 )
 
@@ -1202,6 +1206,7 @@
     (and
       (or (eq (caar g) '$kdelta) (eq (caar g) '%kdelta)
           (eq (caar g) '$levi_civita) (eq (caar g) '%levi_civita)
+          (eq (caar g) '$icurvature) (eq (caar g) '%icurvature)
       )
       (return nil)
     )
@@ -1319,8 +1324,8 @@
     (and d (setq b (append b d)))
     (and c (setq a (append c a)))
     ;Zl-remove repeated indices
-    (and (setq f (contract2 a b)) (setq a (car f) b (cdr f)))
-    (setq a (contractinside a))
+;;    (and (setq f (contract2 a b)) (setq a (car f) b (cdr f)))
+;;    (setq a (contractinside a))
 
     ;VTT: Special handling of Christoffel symbols. We can only contract them
     ;when we turn ICHR1 into ICHR2 or vice versa; other index combinations are

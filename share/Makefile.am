@@ -566,6 +566,7 @@ tensor/tendemo.mac\
 tensor/tensor.dem\
 tensor/tentex.lisp\
 tensor/tetrad.dem\
+tensor/weyl.dem\
 trigonometry/atrig1.mac\
 trigonometry/atrig1.usg\
 trigonometry/ntrig.mac\
