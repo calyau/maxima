@@ -730,7 +730,8 @@ this results in an error.
 (%i8) ishow(lc2kdt(expr))$
 Maxima encountered a Lisp error:
 
- Error in $IMETRIC [or a callee]: $IMETRIC [or a callee] requires less than two arguments.
+ Error in $IMETRIC [or a callee]:
+ $IMETRIC [or a callee] requires less than two arguments.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
@@ -986,7 +987,8 @@ causes an error:
 (%i2) icurvature([i,j,k],[l],m);
 Maxima encountered a Lisp error:
 
- Error in $ICURVATURE [or a callee]: $ICURVATURE [or a callee] requires less than three arguments.
+ Error in $ICURVATURE [or a callee]:
+ $ICURVATURE [or a callee] requires less than three arguments.
 
 Automatically continuing.
 To reenable the Lisp debugger set *debugger-hook* to nil.
