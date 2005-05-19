@@ -130,12 +130,12 @@ is not included")
 	  ((endp d)
 	   idx)
 	(setf idx `(the fixnum (+ ,(get-offset (first n) (first d))
-				(the fixnum (* ,(get-size (first d)) ,idx)))))))))
+				  (the fixnum (* ,(get-size (first d)) ,idx)))))))))
 
 (defun check-array-bounds (indices bounds)
   `(and ,@(mapcar #'(lambda (idx dim)
-		      `(<= ,(first dim) ,idx ,(second dim)))
-		  indices bounds)))
+		     `(<= ,(first dim) ,idx ,(second dim)))
+		 indices bounds)))
 
 (defmacro fref (arr indices bounds &optional offset)
   (if *check-array-bounds*
@@ -177,7 +177,7 @@ is not included")
 (defmacro with-array-data ((data-var offset-var array) &rest body)
   `(multiple-value-bind (,data-var ,offset-var)
     (find-array-data ,array)
-    ,@body))
+     ,@body))
 
 (defun multi-array-data-aux (array-info body)
   (let ((results body))
@@ -245,15 +245,15 @@ is not included")
 	(total-length (gensym)))
     `(let* ((,data-list ',data)
 	    (,total-length (reduce #'* (list ,@dims))))
-      (cond ((< ,data-len ,total-length)
-	     ;; Need to append some data.
-	     (append ,data-list (make-list (- ,total-length ,data-len)
-					   :initial-element (coerce 0 ',type))))
-	    ((> ,data-len ,total-length)
-	     ;; Need to truncate some data
-	     (subseq ,data-list 0 ,total-length))
-	    (t
-	     ,data-list)))))  
+       (cond ((< ,data-len ,total-length)
+	      ;; Need to append some data.
+	      (append ,data-list (make-list (- ,total-length ,data-len)
+					    :initial-element (coerce 0 ',type))))
+	     ((> ,data-len ,total-length)
+	      ;; Need to truncate some data
+	      (subseq ,data-list 0 ,total-length))
+	     (t
+	      ,data-list)))))  
 
 ;;----------------------------------------------------------------------------
 
@@ -394,11 +394,17 @@ is not included")
 ;; macro for a lisp equivalent of Fortran assigned GOTOs
 #+nil
 (defmacro assigned-goto (i &optional tag-lst)
-  `(if ,tag-lst
-    (if (member ,i ,tag-lst) 
-	(go ,i)
-	(error "bad statement number in assigned goto"))
-    (go ,i)))
+   `(if ,tag-lst
+        (if (member ,i ,tag-lst) 
+            (go ,i)
+            (error "bad statement number in assigned goto"))
+        (go ,i)))
+
+
+(eval-when (:load-toplevel :compile-toplevel :execute)
+(defun make-label (n) 
+  (read-from-string (concatenate 'string (symbol-name :label) (princ-to-string n))))
+
 
 (defun assigned-goto-aux (tag-list)
   (let ((cases nil))
@@ -407,10 +413,12 @@ is not included")
 	    cases))
     (push `(t (error "Unknown label for assigned goto")) cases)
     (nreverse cases)))
+)
+
 
 (defmacro assigned-goto (var tag-list)
   `(case ,var
-    ,@(assigned-goto-aux tag-list)))
+     ,@(assigned-goto-aux tag-list)))
 
 ;;-----------------------------------------------------------------------------
 ;;
@@ -459,7 +467,8 @@ is not included")
        (truncate (the (double-float #.(float (- (ash 1 31)) 1d0)
 				    #.(float (1- (ash 1 31)) 1d0))
 		   x))))))
-  
+
+
 (defun ifix (x)
   (int x))
 (defun idfix (x)
@@ -512,13 +521,13 @@ is not included")
     (single-float
      (let ((const (scale-float 1f0 24)))
        (if (>= x 0)
-	   (+ (- (- x 0.5f0) const) const)
-	   (- (+ (+ x 0.5f0) const) const))))
+	 (+ (- (- x 0.5f0) const) const)
+	 (- (+ (+ x 0.5f0) const) const))))
     (double-float
      (let ((const (scale-float 1d0 53)))
        (if (>= x 0)
-	   (+ (- (- x 0.5d0) const) const)
-	   (- (+ (+ x 0.5d0) const) const))))))
+	 (+ (- (- x 0.5d0) const) const)
+	 (- (+ (+ x 0.5d0) const) const))))))
 
 #+(and cmu x86)
 (let ((junks (make-array 1 :element-type 'single-float))
@@ -551,11 +560,11 @@ is not included")
   (etypecase x
     (single-float
      (locally 
-	 (declare (optimize (space 0) (speed 3)))
+       (declare (optimize (space 0) (speed 3)))
        (values (ftruncate (the single-float x)))))
     (double-float
      (locally 
-	 (declare (optimize (space 0) (speed 3)))
+       (declare (optimize (space 0) (speed 3)))
        (values (ftruncate (the double-float x)))))))
 
 (defun dint (x)
@@ -715,31 +724,31 @@ is not included")
 ;; Define some compile macros for these max/min functions.
 #+(or cmu scl)
 (progn
-  (define-compiler-macro max0 (&rest args)
-    `(max ,@args))
-  (define-compiler-macro amax1 (&rest args)
-    `(max ,@args))
-  (define-compiler-macro dmax1 (&rest args)
-    `(max ,@args))
-  (define-compiler-macro min0 (&rest args)
-    `(min ,@args))
-  (define-compiler-macro amin1 (&rest args)
-    `(min ,@args))
-  (define-compiler-macro dmin1 (&rest args)
-    `(min ,@args))
-  (define-compiler-macro min1 (&rest args)
-    `(nint (min ,@args)))
+(define-compiler-macro max0 (&rest args)
+  `(max ,@args))
+(define-compiler-macro amax1 (&rest args)
+  `(max ,@args))
+(define-compiler-macro dmax1 (&rest args)
+  `(max ,@args))
+(define-compiler-macro min0 (&rest args)
+  `(min ,@args))
+(define-compiler-macro amin1 (&rest args)
+  `(min ,@args))
+(define-compiler-macro dmin1 (&rest args)
+  `(min ,@args))
+(define-compiler-macro min1 (&rest args)
+  `(nint (min ,@args)))
 
-  (define-compiler-macro amax0 (&rest args)
-    `(float (max ,@args)))
-  (define-compiler-macro max1 (&rest args)
-    `(nint (max ,@args)))
+(define-compiler-macro amax0 (&rest args)
+  `(float (max ,@args)))
+(define-compiler-macro max1 (&rest args)
+  `(nint (max ,@args)))
 
-  (define-compiler-macro amin0 (&rest args)
-    `(float (min ,@args)))
-  (define-compiler-macro min1 (&rest args)
-    `(nint (min ,@args)))
-  )					; end progn
+(define-compiler-macro amin0 (&rest args)
+  `(float (min ,@args)))
+(define-compiler-macro min1 (&rest args)
+  `(nint (min ,@args)))
+) ; end progn
 
 (defun len (s)
   (length s))
@@ -880,7 +889,7 @@ is not included")
   (declare (type double-float x))
   (atan x))
 (defun atan2 (x y)
-  (declare (type double-float x))
+  (declare (type single-float x))
   (atan x y))
 (defun datan2 (x y)
   (declare (type double-float x y))
@@ -935,10 +944,10 @@ is not included")
 		       `(fset (fref ,(first x) ,(second x) ((,b)))
 			 ,(convert-type vt)))
 		   v low-bnds var-types)))
-      `(do ((,index-var ,start (+ ,index-var ,(or step 1))))
-	((> ,index-var ,end))
-	,@(map-vars data-vars))
-      )))
+    `(do ((,index-var ,start (+ ,index-var ,(or step 1))))
+         ((> ,index-var ,end))
+       ,@(map-vars data-vars))
+    )))
 
 
 ;; Process implied do loops for data statements
@@ -1007,7 +1016,7 @@ causing all pending operations to be flushed"
 	       (when (and (streamp val) (not (member key '(5 6 t))))
 		 (format t "Closing unit ~A: ~A~%" key val)
 		 (close val)))
-	   *lun-hash*))
+	       *lun-hash*))
 
 #-gcl
 (declaim (ftype (function (t) stream) lun->stream))
@@ -1047,13 +1056,13 @@ causing all pending operations to be flushed"
 	   (setf formats (rest formats))
 	   ;;(format t "  cont with format = ~S~%" formats)
 	   )
-	  ((eq (first formats) t)
-	   ;; Repeat "forever" (until we run out of data)
-	   (loop while arg-list do
-		 (setf arg-list
-		       (execute-format nil stream (second formats) arg-list))
-		 ;; Output a newline after the repeat (I think Fortran says this)
-		 (format stream "~%")))
+	   ((eq (first formats) t)
+	    ;; Repeat "forever" (until we run out of data)
+	    (loop while arg-list do
+		  (setf arg-list
+			(execute-format nil stream (second formats) arg-list))
+		  ;; Output a newline after the repeat (I think Fortran says this)
+		  (format stream "~%")))
 	  (t
 	   (format stream (car formats))))))
 	   
@@ -1071,7 +1080,7 @@ causing all pending operations to be flushed"
     (execute-format t stream format-list arg-list)))
 
 
-					#||
+#||
 (defmacro fformat1 (dest directive arg)
   (let ((val (gensym)))
     `(let ((,val ,arg))
@@ -1090,9 +1099,9 @@ causing all pending operations to be flushed"
 (defun expand-format (dest cilist args)
   (if (equal cilist '("~A~%"))
       (append (mapcar #'(lambda (arg) `(fformat1 ,dest "~A " ,arg)) args)
-	      `((format ,dest "~%")))
+	   `((format ,dest "~%")))
 
-					;loop through directives, consume arguments
+      ;loop through directives, consume arguments
       (do ((res '())
 	   (directives cilist (cdr directives))
 	   (arglist args arglist))
@@ -1125,12 +1134,12 @@ causing all pending operations to be flushed"
 		      `',dims
 		      `(list ,@dims))))
     `(let ((,init (make-array ,new-dims
-			      :element-type `(simple-array base-char (,',@len))
+			      :element-type `(simple-array character (,',@len))
 			      :initial-element (make-string ,@len))))
-      (dotimes (k (array-total-size ,init))
-	(setf (aref ,init k)
-	      (make-string ,@len :initial-element #\Space)))
-      ,init)))
+       (dotimes (k (array-total-size ,init))
+	 (setf (aref ,init k)
+	       (make-string ,@len :initial-element #\Space)))
+       ,init)))
 
 ;; This macro is supposed to set LHS to the RHS assuming that the LHS
 ;; is a Fortran CHARACTER type of length LEN.
@@ -1317,35 +1326,84 @@ causing all pending operations to be flushed"
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.6 2004-10-04 02:25:54 amundson Exp $
+;;; $Id: f2cl-lib.lisp,v 1.7 2005-05-19 12:40:27 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.6  2004-10-04 02:25:54  amundson
-;;; Downcasing of source complete. Code compiles and passes tests with
-;;; clisp, cmucl, gcl and sbcl.
+;;; Revision 1.7  2005-05-19 12:40:27  rtoy
+;;; Update and merge to current version of macros.l from the f2cl
+;;; distribution.  Most of the changes done for maxima have been merged to
+;;; the f2cl version, and we're just picking up the changes in the f2cl
+;;; version.
 ;;;
-;;; Revision 1.5  2003/11/26 17:27:16  rtoy
-;;; Synchronize to the current versions of f2cl.
-;;;
-;;; Revision 1.4  2003/07/24 18:46:30  rtoy
-;;; Correct a declaration in amax0.
-;;;
-;;; Revision 1.3  2002/05/19 20:24:22  rtoy
-;;; o GCL doesn't like the declarations in our max functions, so don't
-;;;   declare the variables.
-;;; o GCL doesn't like our defparameter for *lun-hash*.  Make it defvar.
-;;; o GCL doesn't have least-positive-normalized-double-float, so
-;;;   make it the same as least-positive-double-float.  Do likewise for
+;;; Revision 1.62  2005/05/16 15:50:25  rtoy
+;;; o Replace single semicolons with multiple semicolons as appropriate.
+;;; o GCL apparently doesn't like some declarations, so comment them out
+;;;   for GCL.
+;;; o GCL doesn't like the defparameter for *lun-hash*.
+;;; o GCL doesn't seem to have least-positive-normalized-double-float, so
+;;;   make it the same as least-positive-double-float.  Likewise for
 ;;;   single-float.
 ;;;
-;;; Revision 1.2  2002/05/05 23:44:35  rtoy
-;;; Update to latest version of macros.l:
-;;; o Fixes bug in int-sub.
-;;; o GCL doesn't have least-positive-normalized float constants
-;;; o d1mach(5)/r1mach(5) wasn't being computed as accurately as it should
-;;;   have.
+;;; These changes come from maxima.
 ;;;
-;;; Revision 1.1  2002/04/26 13:03:40  rtoy
-;;; Initial revision.
+;;; Revision 1.61  2005/03/28 20:38:18  rtoy
+;;; Make strings with an element-type of character instead of base-char,
+;;; in case the Lisp implementation has unicode support.
+;;;
+;;; Revision 1.60  2004/09/01 14:17:57  rtoy
+;;; atan2 takes single-float args, not double-float.
+;;;
+;;; Revision 1.59  2004/08/14 22:29:16  marcoxa
+;;; Added an EVAL-WHEN to silence the LW compiler.
+;;;
+;;; Revision 1.58  2004/08/14 04:17:45  rtoy
+;;; Need a definition for MAKE-LABEL.
+;;;
+;;; Revision 1.57  2003/11/23 14:10:11  rtoy
+;;; FDO should not call function that are not in the F2CL-LIB package.
+;;; Macros.l should be self-contained.
+;;;
+;;; Revision 1.56  2003/11/13 05:37:11  rtoy
+;;; Add macro WITH-MULTI-ARRAY-DATA.  Basically like WITH-ARRAY-DATA, but
+;;; takes a list of array info so we don't get deeply nested code when
+;;; there are lots of arrays.
+;;;
+;;; Keep WITH-ARRAY-DATA around for backward compatibility.
+;;;
+;;; Revision 1.55  2003/11/12 05:33:22  rtoy
+;;; Macro to handle assigned gotos was wrong.  Fix it.
+;;;
+;;; Revision 1.54  2003/09/25 03:43:43  rtoy
+;;; Need to check for reserved names in the fdo macro.  (I think.)
+;;;
+;;; Revision 1.53  2003/01/07 18:44:52  rtoy
+;;; Add new implementations of aint.  Speeds up mpnorm by a factor of 5 on
+;;; CMUCL/sparc!
+;;;
+;;; Revision 1.52  2002/09/13 17:50:19  rtoy
+;;; From Douglas Crosher:
+;;;
+;;; o Make this work with lower-case Lisps
+;;; o Fix a few typos
+;;; o Make a safer fortran reader.
+;;;
+;;; Revision 1.51  2002/06/30 13:08:51  rtoy
+;;; Add some declarations to AINT so that CMUCL can completely inline the
+;;; call to ftruncate.
+;;;
+;;; Revision 1.50  2002/05/05 23:41:17  rtoy
+;;; Typo: extra paren.
+;;;
+;;; Revision 1.49  2002/05/05 23:38:47  rtoy
+;;; The int-sub macro didn't handle things like (- 3 m m) correctly.  It
+;;; was returning (- 3 (- m m)) instead of (- (- 3 m) m)!
+;;;
+;;; Revision 1.48  2002/05/03 17:48:06  rtoy
+;;; GCL doesn't have least-positive-normalized-{single/double}-float, so
+;;; use just least-positive-{single/double}-float.
+;;;
+;;; Revision 1.47  2002/05/03 17:44:36  rtoy
+;;; Replace row-major-aref with just aref because we don't need it and
+;;; because gcl doesn't have it.
 ;;;
 ;;; Revision 1.46  2002/03/19 02:23:09  rtoy
 ;;; According to the rules of Fortran, the initializers in a DATA
