@@ -1,23 +1,35 @@
 ;;; -*- Mode: lisp -*-
 
-(eval-when (load eval compile)
-  ;; You need to define a logical pathname translation for maxima for
-  ;; this to work.
-  (setf (logical-pathname-translations "slatec")
-	'(("**;*.*.*" "maxima:src;numerical;slatec;**;*.*"))))
+;;; This defsystem is used to convert the Fortran code to lisp.
+;;;
+;;; You need a copy of f2cl (see clocc.sourceforge.net) for this to
+;;; work, of course.  Once you have that, you can convert the Fortran
+;;; code to Lisp.
+;;;
+;;; If you add or modify any Fortran file, it is probably best to use
+;;; (mk:oos "slatec" :compile :force t) to convert the code.  This is
+;;; because f2cl uses knowledge of calling conventions of a known
+;;; function to generate the call to that function.  If the function
+;;; is not known, then the call could inefficient at best or erroneous
+;;; at worst.
+;;;
+;;; This also means that you should get the file dependencies right so
+;;; that mk:defsys will at compile the files in the right order.
 
+;;; Define a new language for defsys to use.
 (mk:define-language :f2cl
     :compiler #'f2cl:f2cl
     :loader #'identity
-    :source-extension "f")
+    :source-extension "f"
+    :binary-extension "lisp")
 
 (mk:defsystem "slatec"
   :source-extension "f"
   :binary-extension "lisp"
   :components
-  ((:module fortran
-	    :source-pathname (translate-logical-pathname "slatec:fortran;")
-	    :binary-pathname (translate-logical-pathname "slatec:")
+  ((:module xermsg
+	    :source-pathname "fortran"
+	    :binary-pathname "."
 	    :language :f2cl
 	    :compiler-options (:array-slicing nil
 			       :array-type :simple-array
@@ -28,8 +40,6 @@
 	    (
 	     (:file "fdump")
 	     (:file "j4save")
-	     (:file "initds"
-		    :depends-on ("xermsg"))
 	     (:file "xgetua")
 	     (:file "xermsg"
 		    :depends-on ("fdump" "j4save" "xercnt" "xerhlt" "xerprn" "xersve"))
@@ -38,30 +48,41 @@
 	     (:file "xerprn"
 		    :depends-on ("xgetua"))
 	     (:file "xersve"
-		    :depends-on ("j4save"))
-	     (:file "dcsevl"
-		    :depends-on ("xermsg"))
+		    :depends-on ("j4save"))))
+   (:module fortran
+	    :source-pathname "fortran"
+	    :binary-pathname "."
+	    :language :f2cl
+	    :compiler-options (:array-slicing nil
+			       :array-type :simple-array
+			       :float-format double-float
+			       :package "SLATEC")
+	    :depends-on ("xermsg")
+	    :compile-only t
+	    :components
+	    (
+	     (:file "initds")
+	     (:file "dcsevl")
 	     
 	     ;; Gamma function
 	     (:file "d9lgmc"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
-	     (:file "dgamlm"
-		    :depends-on ("xermsg"))
+		    :depends-on ("dcsevl" "initds"))
+	     (:file "dgamlm")
 	     (:file "dgamma"
-		    :depends-on ("d9lgmc" "dcsevl" "dgamlm" "initds" "xermsg"))
+		    :depends-on ("d9lgmc" "dcsevl" "dgamlm" "initds"))
 	     (:file "dgamln")
 	     (:file "dlngam"
-		    :depends-on ("d9lgmc" "dgamma" "xermsg"))
+		    :depends-on ("d9lgmc" "dgamma"))
 	     
 	     ;; Bessel J functions for real arg and order
 	     (:file "d9b0mp"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
+		    :depends-on ("dcsevl" "initds"))
 	     (:file "d9b1mp"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
+		    :depends-on ("dcsevl" "initds"))
 	     (:file "dbesj0"
 		    :depends-on ("d9b0mp" "dcsevl" "initds"))
 	     (:file "dbesj1"
-		    :depends-on ("d9b1mp" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("d9b1mp" "dcsevl" "initds"))
 	     (:file "djairy")
 	     (:file "dasyjy"
 		    :compiler-options (:array-slicing nil
@@ -69,13 +90,13 @@
 				       :float-format double-float
 				       :package "SLATEC"))
 	     (:file "dbesj"
-		    :depends-on ("dasyjy" "djairy" "dlngam" "xermsg")
+		    :depends-on ("dasyjy" "djairy" "dlngam")
 		    :compiler-options (:array-slicing t
 				       :array-type :simple-array
 				       :float-format double-float
 				       :package "SLATEC"))
 	     (:file "dbsynu"
-		    :depends-on ("dgamma" "xermsg"))
+		    :depends-on ("dgamma"))
 
 	     (:file "dyairy")
 
@@ -130,13 +151,13 @@
 
 	     ;; Bessel Y functions for real or complex arg and real order
 	     (:file "dbesy0"
-		    :depends-on ("d9b0mp" "dbesj0" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("d9b0mp" "dbesj0" "dcsevl" "initds"))
 	     (:file "dbesy1"
-		    :depends-on ("d9b1mp" "dbesj1" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("d9b1mp" "dbesj1" "dcsevl" "initds"))
 	     (:file "dbesy"
-		    :depends-on ("dasyjy" "dbesy0" "dbesy1" "dbsynu" "dyairy" "xermsg"))
+		    :depends-on ("dasyjy" "dbesy0" "dbesy1" "dbsynu" "dyairy"))
 	     (:file "dbsynu"
-		    :depends-on ("dgamma" "xermsg"))
+		    :depends-on ("dgamma"))
 	     (:file "dyairy")
 	     
 	     (:file "zbesy"
@@ -156,18 +177,18 @@
 	     (:file "dbsi0e"
 		    :depends-on ("dcsevl" "initds"))
 	     (:file "dbsi1e"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
+		    :depends-on ("dcsevl" "initds"))
 	     (:file "dbesi0"
-		    :depends-on ("dbsi0e" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("dbsi0e" "dcsevl" "initds"))
 	     (:file "dbesi1"
-		    :depends-on ("dbsi1e" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("dbsi1e" "dcsevl" "initds"))
 	     (:file "dasyik"
 		    :compiler-options (:array-slicing nil
 				       :array-type :array
 				       :float-format double-float
 				       :package "SLATEC"))
 	     (:file "dbesi"
-		    :depends-on ("dasyik" "dlngam" "xermsg")
+		    :depends-on ("dasyik" "dlngam")
 		    :compiler-options (:array-slicing t
 				       :array-type :array
 				       :float-format double-float
@@ -177,31 +198,31 @@
 
 	     ;; Bessel K functions
 	     (:file "dbesk0"
-		    :depends-on ("dbesi0" "dbsk0e" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("dbesi0" "dbsk0e" "dcsevl" "initds"))
 	     (:file "dbsk0e"
-		    :depends-on ("dbesi0" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("dbesi0" "dcsevl" "initds"))
 	     (:file "dbesk1"
-		    :depends-on ("dbesi1" "dbsk1e" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("dbesi1" "dbsk1e" "dcsevl" "initds"))
 	     (:file "dbsk1e"
-		    :depends-on ("dbesi1" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("dbesi1" "dcsevl" "initds"))
 	     (:file "dbesk"
-		    :depends-on ("dasyik" "dbesk0" "dbesk1" "dbsk0e" "dbsk1e" "dbsknu" "xermsg"))
+		    :depends-on ("dasyik" "dbesk0" "dbesk1" "dbsk0e" "dbsk1e" "dbsknu"))
 	     (:file "dbsknu"
-		    :depends-on ("dgamma" "xermsg"))
+		    :depends-on ("dgamma"))
 	     (:file "zbesk"
 		    :depends-on ("zabs" "zacon" "zbknu" "zbunk" "zuoik"))
 	     
 	     ;; Airy functions
 	     (:file "d9aimp"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
+		    :depends-on ("dcsevl" "initds"))
 	     (:file "daie"
 		    :depends-on ("d9aimp" "dcsevl" "initds"))
 	     (:file "dai"
-		    :depends-on ("d9aimp" "daie" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("d9aimp" "daie" "dcsevl" "initds"))
 	     (:file "dbie"
 		    :depends-on ("d9aimp" "dcsevl" "initds"))
 	     (:file "dbi"
-		    :depends-on ("d9aimp" "dbie" "dcsevl" "initds" "xermsg"))
+		    :depends-on ("d9aimp" "dbie" "dcsevl" "initds"))
 	     (:file "zbiry"
 		    :depends-on ("zabs" "zbinu" "zdiv" "zsqrt"))
 
@@ -209,10 +230,121 @@
 	     (:file "derf"
 		    :depends-on ("dcsevl" "derfc" "initds"))
 	     (:file "derfc"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
+		    :depends-on ("dcsevl" "initds"))
 	     
 	     ;; Exponential integrals
 	     (:file "de1"
-		    :depends-on ("dcsevl" "initds" "xermsg"))
+		    :depends-on ("dcsevl" "initds"))
 	     (:file "dei"
-		    :depends-on ("de1"))))))
+		    :depends-on ("de1"))))
+   (:module quadpack
+	    :source-pathname "fortran"
+	    :binary-pathname "."
+	    :language :f2cl
+	    ;; These are appropriate defaults for quadpack because
+	    ;; some of the routines slice an array and pass it as an
+	    ;; argument to other routines.
+	    ;;
+	    ;; If we want to make the routines faster, array-slicing
+	    ;; and array-type should be overridden in the individual
+	    ;; files.
+	    :compiler-options (:array-slicing t
+			       :array-type :array
+			       :float-format double-float
+			       :package "SLATEC")
+	    :compile-only t
+	    :depends-on ("xermsg")
+	    :components
+	      (
+	       ;; Support
+	       (:file "dqwgtf")
+	       (:file "dqcheb")
+	       (:file "dqk15w")
+	       (:file "dqwgts")
+	       (:file "dqwgtc")
+	       (:file "dgtsl")
+	       ;;(:file "xermsg")
+	       
+	       ;; Core integration routines
+	       (:file "dqk15")
+	       (:file "dqk31")
+	       (:file "dqk41")
+	       (:file "dqk51")
+	       (:file "dqk61")
+	       (:file "dqk21")
+	       (:file "dqk15i")
+	       (:file "dqelg")
+	       (:file "dqpsrt")
+	       (:file "dqc25s"
+		      :depends-on ("dqcheb" "dqk15w"))
+	       (:file "dqmomo")
+	       (:file "dqc25c"
+		      :depends-on ("dqcheb"
+				   "dqk15w"))
+	       (:file "dqc25f"
+		      :depends-on ("dgtsl"
+				   "dqcheb"
+				   "dqk15w"
+				   "dqwgtf"))
+	       ;; Basic integrators
+	       (:file "dqage"
+		      :depends-on ("dqk15"
+				   "dqk31"
+				   "dqk41"
+				   "dqk51"
+				   "dqk61"
+				   "dqk21"
+				   "dqpsrt"))
+	       (:file "dqagie"
+		      :depends-on ("dqelg"
+				   "dqk15i"
+				   "dqpsrt"))
+	       (:file "dqagpe"
+		      :depends-on ("dqelg"
+				   "dqpsrt"
+				   "dqk21"
+				   ))
+	       (:file "dqagse"
+		      :depends-on ("dqk21"
+				   "dqelg"
+				   "dqpsrt"))
+	       (:file "dqawfe"
+		      :depends-on ("dqagie"
+				   "dqawoe"
+				   "dqelg")
+		      ;; If your defsystem doesn't support :compiler-options, use this:
+		      ;; :language :f2cl-no-slice
+		      ;; If your defsystem does support :compiler-options, use this:
+		      :compiler-options (:array-slicing nil
+					 :array-type :array
+					 :float-format double-float
+					 :package "SLATEC")
+		      )
+	       (:file "dqawoe"
+		      :depends-on ("dqc25f"
+				   "dqpsrt"
+				   "dqelg"))
+	       (:file "dqawse"
+		      :depends-on ("dqc25s"
+				   "dqmomo"
+				   "dqpsrt"))
+	       (:file "dqawce"
+		      :depends-on ("dqc25c"
+				   "dqpsrt"))
+	       ;; Simplified interface routines
+	       (:file "dqng")
+	       (:file "dqag"
+		      :depends-on ("dqage"))
+	       (:file "dqags"
+		      :depends-on ("dqagse"))
+	       (:file "dqagi"
+		      :depends-on ("dqagie"))
+	       (:file "dqawf"
+		      :depends-on ("dqawfe"))
+	       (:file "dqawo"
+		      :depends-on ("dqawoe"))
+	       (:file "dqaws"
+		      :depends-on ("dqawse"))
+	       (:file "dqawc"
+		      :depends-on ("dqawce")))
+	    )))
