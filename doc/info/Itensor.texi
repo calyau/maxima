@@ -1115,6 +1115,94 @@ symbols as seen from the following:
 @end example
 @end deffn
 
+@deffn {Function} simpmetderiv (@var{expr}[, @var{stop}])
+
+Simplifies expressions containing products of the derivatives of the
+metric tensor. Specifically, @code{simpmetderiv} recognizes two identities:
+
+@example
+
+   ab        ab           ab                 a
+  g   g   + g   g     = (g   g  )   = (kdelta )   = 0
+   ,d  bc        bc,d         bc ,d          c ,d
+
+@end example
+
+hence
+
+@example
+
+   ab          ab
+  g   g   = - g   g
+   ,d  bc          bc,d
+@end example
+
+and
+
+@example
+
+  ab          ab
+ g   g     = g   g
+  ,j  ab,i    ,i  ab,j
+
+@end example
+
+which follows from the symmetries of the Christoffel symbols.
+
+The @code{simpmetderiv} function takes one optional parameter which, when
+present, causes the function to stop after the first successful
+substitution in a product expression. The @code{simpmetderiv} function
+also makes use of the global variable @var{flipflag} which determines
+how to apply a ``canonical'' ordering to the product indices.
+
+Put together, these capabilities can be used to achieve powerful
+simplifications that are difficult or impossible to accomplish otherwise.
+This is demonstrated through the following example that explicitly uses the
+partial simplification features of @code{simpmetderiv} to obtain a
+contractible expression:
+
+@example
+
+(%i1) load(itensor);
+(%o1)      /share/tensor/itensor.lisp
+(%i2) imetric(g);
+(%o2)                                done
+(%i3) ishow(g([],[a,b])*g([],[b,c])*g([a,b],[],d)*g([b,c],[],e))$
+                             a b  b c
+(%t3)                       g    g    g      g
+                                       a b,d  b c,e
+(%i4) ishow(canform(%))$
+
+errexp1 has improper indices
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) ishow(simpmetderiv(%))$
+                             a b  b c
+(%t5)                       g    g    g      g
+                                       a b,d  b c,e
+(%i6) flipflag:not flipflag;
+(%o6)                                true
+(%i7) ishow(simpmetderiv(%th(2)))$
+                               a b  b c
+(%t7)                         g    g    g    g
+                               ,d   ,e   a b  b c
+(%i8) flipflag:not flipflag;
+(%o8)                                false
+(%i9) ishow(simpmetderiv(%th(2),stop))$
+                               a b  b c
+(%t9)                       - g    g    g      g
+                                    ,e   a b,d  b c
+(%i10) ishow(contract(%))$
+                                    b c
+(%t10)                           - g    g
+                                    ,e   c b,d
+
+@end example
+
+See also @code{weyl.dem} for an example that uses @code{simpmetderiv}
+and @code{conmetderiv} together to simplify contractions of the Weyl tensor.
+
+@end deffn
+
 @deffn {Function} flush1deriv (@var{expr}, @var{tensor})
 
 Set to zero, in @code{expr}, all occurrences of @code{tensor} that have
