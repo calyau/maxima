@@ -119,66 +119,35 @@
 ;; Code to optionally group units by common unit
 
 (defun unitmember (form list1)
-   (cond ((equal (car list1) nil) t)
-         ((equal form (car list1)) (unitmember form (cdr list1)))))
+   (cond ((equal (car list1) nil) nil)
+         ((equal form (car list1)) t) 
+	 (t (unitmember form (cdr list1)))))
    	 
-(defun readyforunits1 (form)
-    (cond ((and (not (atom (car form))) (equal (cdr form) nil))
-            (readyforunits1 (car form)))
-	   ((atom (cadr form))
-	    (cadr form))
-	   ((not (atom (cadr form)))
-	    (cadr form))))
-
-(defun readyforunits2 (form)
-    (cond ((and (not (atom (car form))) (equal (cdr form) nil) (atom (cadr (car form))))
-            (list '(mtimes simp) (cadr(car form))))
-	   ((not (atom (cadr form)))
-	     (cadr (car form)))
-	   ((not (atom (car form)))
-	    (cadar form))
-	    ))
-
-(defun readyforunits3 (form)
-    (cond ((atom form)
-	    (list form))
-	  (t form)))
-	       
-(defun readyforunits4 (form)
-    (cond ((atom form)
-	    (list form))
-	   ((not (atom form))
-	    form)))
-	       
-(defun groupunitsadd (seed form havedone)
-  ;;returns form with common unit terms grouped
-  (setq unitaddtemp1 (caddr seed))
-  (setq unitaddtemp2 (caddr (car form)))
-  (cond ((null (car form)) seed)
-        ((equal 
-	 (meval '((mplus simp) unitaddtemp1 
-	 ((mtimes simp) -1 unitaddtemp2))) 0)
-          (groupunitsadd (list '(mtimes) (meval (cons '(mplus simp) (list (readyforunits1 seed) (readyforunits2 form))))
-	 		   (car (cddr seed)))
-	                   (cdr form)
-	 	      (union (readyforunits3 unitaddtemp1) havedone)))
-	 ((and (not (equal 
-	  (meval '((mplus simp) unitaddtemp1 
-	  ((mtimes simp) -1 unitaddtemp2))) 0)) (not (unitmember unitaddtemp2 havedone)))
-	  (list '(mplus) seed (groupunitsadd (car form) (cdr form) (union unitaddtemp1 havedone))))
-	 (t 
-	  (groupunitsadd seed (cdr form) havedone))))
-
+(defun groupbyaddlisp (form)
+    (cond ((or (not(notunitfree (car form))) (not(notunitfree (cadr form))))
+            form)
+    	  ((and (null (cddr form))(equal (meval (list '(mplus simp) (caddr (car form)) (list '(mtimes simp) -1 (caddr (cadr form))))) 0))
+              (list (list '(mtimes) (meval (list '(mplus simp) (cadr (car form)) (cadr (cadr form)))) (caddr (car form)))))
+	  ((null (cddr form)) form)
+          ((equal (meval (list '(mplus simp) (caddr (car form)) (list '(mtimes simp) -1 (caddr (cadr form))))) 0)
+	       (groupbyaddlisp (cons (list '(mtimes) (meval (list '(mplus simp) (cadr (car form)) (cadr (cadr form)))) (caddr (car form)))
+	              (cddr form))))
+	  (t (cons (list '(mtimes) (cadr (car form)) (caddr (car form))) (groupbyaddlisp (cdr form))))))	     
+	   
 (defun groupadd (form) 
-   (if (and (not (atom form)) (notunitfree form) (or (equal (car form) 'mplus) (equal (caar form) 'mplus)))
-       (groupunitsadd (cadr (nformat form)) (cddr (nformat form)) '())
-    form))
+   (cond ((and (not (atom form)) (notunitfree form))
+           (let ((temp1 (groupbyaddlisp (cdr (nformat form)))))
+           (cond ((or (not (equal (cdr temp1) nil)) (and (atom (cadr temp1)) (not (equal (cadr temp1) nil))))
+                  (cons '(mplus) temp1))
+		 ((equal (cdr temp1) nil) (car temp1))))) 
+         (t form)))
     
 ;; Code to enable correct display of multiplication by units via nformat
 (defun notunitfree (form)
   ;;returns t if expression contains units, nil otherwise
-  (cond ((null (car form)) nil)
-        ((atom (car form))(or ($member (car form) $allunitslist)
+  (cond ((atom form) ($member form $allunitslist))
+        ((null (car form)) nil)
+  	((atom (car form))(or ($member (car form) $allunitslist)
 			      (notunitfree (cdr form))))
 	(t (or (notunitfree (cdr (car form)))
 	       (notunitfree (cdr form))))))
@@ -256,3 +225,11 @@
 	     (list '(mminus) (list (car form) (minus (cadr form)) (caddr form)))
 	     (cons (car form) (cdr form))))
 	(t form)))
+(defun testing1 (form)
+   (destructuring-bind ((mplus) ((mtimes1) (val1) (temp1)) 
+                                ((mtimes2) (val2) (temp2)) &rest more) form 
+			(print val1)
+			(print val2)
+			(print temp1)
+			(print temp2)
+			))
