@@ -427,7 +427,8 @@
 	       (:module numerical-functions :source-pathname ""
 			:components ((:file "bessel")
 				     ;;#+gcl(:file "parse-body")
-				     (:file "ellipt") 
+				     (:file "ellipt")
+				     (:file "airy")
 				     (:file "numer") 
 				     (:file "intpol") 
 				     (:file "rombrg")))

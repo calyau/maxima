@@ -229,6 +229,7 @@ echo_%:
 
 genericdir = $(instsrcdir)
 real_lisp_sources = acall.lisp \
+airy.lisp \
 algfac.lisp \
 algsys.lisp \
 ar.lisp \

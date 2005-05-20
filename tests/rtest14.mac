@@ -865,4 +865,99 @@ hgfred([s+2,s+1/2],[2*s+1],z)
   - z^(1-s)/s/(s+1)*diff(z^(s+1)*hgfred([s,s+1/2],[2*s+1],z),z,2);
 0$
 
+/* Tests for Airy functions */
+closeto(exp,tol):=block([e:float(exp)],if(abs(e)<tol) then true else e);
+closeto(exp,tol):=block([e:float(exp)],if(abs(e)<tol) then true else e);
 
+/* Derivatives of Airy functions */
+diff(airy_ai(x),x);
+airy_dai(x);
+diff(airy_dai(x),x);
+x*airy_ai(x);
+diff(airy_bi(x),x);
+airy_dbi(x);
+diff(airy_dbi(x),x);
+x*airy_bi(x);
+
+/* A&S 10.4.1  Airy functions satisfy the Airy differential equation */
+diff(airy_ai(x),x,2)-x*airy_ai(x);
+0;
+diff(airy_bi(x),x,2)-x*airy_bi(x);
+0;
+
+/* A&S 10.4.4  Normalization of Airy Ai function */
+(c1:3^(-2/3)/gamma(2/3), closeto(airy_ai(0)-c1,1.0e-15));
+true;
+closeto(airy_bi(0)/sqrt(3)-c1,1.0e-15);
+true;
+
+/* A&S 10.4.5  Normalization of Airy Bi function */
+(c2:3^(-1/3)/gamma(1/3),closeto(-airy_dai(0)-c2,1.0e-15));
+true;
+closeto(airy_dbi(0)/sqrt(3)-c2,1.0e-14);
+true;
+
+/* A&S 10.4.10 - Wronskian */
+AS_10_4_10(z):=expand(airy_ai(z)*airy_dbi(z)-airy_bi(z)*airy_dai(z)-1/%pi);
+AS_10_4_10(z):=expand(airy_ai(z)*airy_dbi(z)-airy_bi(z)*airy_dai(z)-1/%pi);
+closeto(AS_10_4_10(1),1.0e-15);
+true;
+closeto(AS_10_4_10(%i),1.0e-15),numer;  /* FIXME: float(%i) => %i */
+true;
+closeto(AS_10_4_10(-1),1.0e-15);
+true;
+closeto(AS_10_4_10(%i),1.0e-15),numer;  /* FIXME: float(%i) => %i */
+true;
+
+/* A&S 10.4.14 - only for z>0 ? */
+AS_10_4_14(z):=block([y:(2/3)*(z)^(3/2)],airy_ai(z)-(sqrt(z/3)*bessel_k(1/3,y)/%pi));
+AS_10_4_14(z):=block([y:(2/3)*(z)^(3/2)],airy_ai(z)-(sqrt(z/3)*bessel_k(1/3,y)/%pi));
+closeto(AS_10_4_14(1),1.0e-15);
+true;
+closeto(AS_10_4_14(2),1.0e-15);
+true;
+closeto(AS_10_4_14(5),1.0e-15);
+true;
+closeto(AS_10_4_14(10),1.0e-15);
+true;
+
+/* A&S 10.4.15 - only for z<0 ? */
+AS_10_4_15(z):=block([y:(2/3)*(-z)^(3/2)],airy_ai(z)-(1/3)*sqrt(-z)*(bessel_j(1/3,y)+bessel_j(-1/3,y)));
+AS_10_4_15(z):=block([y:(2/3)*(-z)^(3/2)],airy_ai(z)-(1/3)*sqrt(-z)*(bessel_j(1/3,y)+bessel_j(-1/3,y)));
+closeto(AS_10_4_15(-1),1.0e-15);
+true;
+closeto(AS_10_4_15(-2),1.0e-15);
+true;
+closeto(AS_10_4_15(-5),1.0e-14);
+true;
+closeto(AS_10_4_15(-10),1.0e-15);
+true;
+
+/* A&S 10.4.16 - only for z>0 ? */
+AS_10_4_16(z):=block([y:(2/3)*(z)^(3/2)],airy_dai(z)+(z/sqrt(3))*bessel_k(2/3,y)/%pi);
+AS_10_4_16(z):=block([y:(2/3)*(z)^(3/2)],airy_dai(z)+(z/sqrt(3))*bessel_k(2/3,y)/%pi);
+closeto(AS_10_4_16(1),1.0e-15);
+true;
+closeto(AS_10_4_16(2),1.0e-15);
+true;
+closeto(AS_10_4_16(5),1.0e-15);
+true;
+closeto(AS_10_4_16(10),1.0e-15);
+true;
+
+/* A&S 10.4.17 - only for z<0 ?, Appears to be a sign error in A&S */
+AS_10_4_17(z):=block([y:(2/3)*(-z)^(3/2)],airy_dai(z)-(z/3)*(bessel_j(-2/3,y)-bessel_j(2/3,y)));
+AS_10_4_17(z):=block([y:(2/3)*(-z)^(3/2)],airy_dai(z)-(z/3)*(bessel_j(-2/3,y)-bessel_j(2/3,y)));
+closeto(AS_10_4_17(-1),1.0e-15);
+true;
+closeto(AS_10_4_17(-2),1.0e-15);
+true;
+closeto(AS_10_4_17(-5),1.0e-14);
+true;
+closeto(AS_10_4_17(-10),1.0e-15);
+true;
+
+kill(c1,c2,closeto,AS_10_4_10,AS_10_4_14,AS_10_4_15,AS_10_4_16,AS_10_4_17);
+done;
+
+/* End of Airy function tests */

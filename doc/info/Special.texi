@@ -142,6 +142,50 @@ A similar expression can be constructed for @code{bi}.
 @end deffn
 
 
+@deffn {Function} airy_ai (@var{x})
+The Airy function Ai, as defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 10.4. 
+
+The Airy equation @code{diff (y(x), x, 2) - x y(x) = 0} has two 
+linearly independent solutions, @code{y = Ai(x)} and @code{y = Bi(x)}.
+The derivative @code{diff (airy_ai(x), x)} is @code{airy_dai(x)}.
+
+If the argument @code{x} is a real or complex floating point 
+number, the numerical value of @code{airy_ai} is returned 
+when possible.
+
+See also @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
+@end deffn
+
+
+@deffn {Function} airy_dai (@var{x})
+The derivative of the Airy function Ai @code{airy_ai(x)}. 
+
+See @code{airy_ai}.
+@end deffn
+
+@deffn {Function} airy_bi (@var{x})
+The Airy function Bi, as defined in Abramowitz and Stegun,
+@i{Handbook of Mathematical Functions}, Section 10.4, 
+is the second solution of the Airy equation 
+@code{diff (y(x), x, 2) - x y(x) = 0}.
+
+If the argument @code{x} is a real or complex floating point number,
+the numerical value of @code{airy_bi} is returned when possible.
+In other cases the unevaluated expression is returned.
+
+The derivative @code{diff (airy_bi(x), x)} is @code{airy_dbi(x)}.
+
+See @code{airy_ai}, @code{airy_dbi}.
+@end deffn
+
+
+@deffn {Function} airy_dbi (@var{x})
+The derivative of the Airy Bi function @code{airy_bi(x)}.
+
+See @code{airy_ai} and @code{airy_bi}.
+@end deffn
+
 @deffn {Function} asympa
 @code{asympa} is a package for asymptotic analysis. The package contains
 simplification functions for asymptotic analysis, including the ``big O''
