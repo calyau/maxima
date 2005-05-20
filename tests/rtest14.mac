@@ -866,8 +866,8 @@ hgfred([s+2,s+1/2],[2*s+1],z)
 0$
 
 /* Tests for Airy functions */
-closeto(exp,tol):=block([e:float(exp)],if(abs(e)<tol) then true else e);
-closeto(exp,tol):=block([e:float(exp)],if(abs(e)<tol) then true else e);
+closeto(e,tol):=block([numer:true],if(abs(e)<tol) then true else e);
+closeto(e,tol):=block([numer:true],if(abs(e)<tol) then true else e);
 
 /* Derivatives of Airy functions */
 diff(airy_ai(x),x);
@@ -902,11 +902,19 @@ AS_10_4_10(z):=expand(airy_ai(z)*airy_dbi(z)-airy_bi(z)*airy_dai(z)-1/%pi);
 AS_10_4_10(z):=expand(airy_ai(z)*airy_dbi(z)-airy_bi(z)*airy_dai(z)-1/%pi);
 closeto(AS_10_4_10(1),1.0e-15);
 true;
-closeto(AS_10_4_10(%i),1.0e-15),numer;  /* FIXME: float(%i) => %i */
+closeto(AS_10_4_10(1+%i),1.0e-15);
+true;
+closeto(AS_10_4_10(%i),1.0e-15);
+true;
+closeto(AS_10_4_10(-1+%i),1.0e-15);
 true;
 closeto(AS_10_4_10(-1),1.0e-15);
 true;
-closeto(AS_10_4_10(%i),1.0e-15),numer;  /* FIXME: float(%i) => %i */
+closeto(AS_10_4_10(-1-%i),1.0e-15);
+true;
+closeto(AS_10_4_10(-%i),1.0e-15);
+true;
+closeto(AS_10_4_10(1-%i),1.0e-15);
 true;
 
 /* A&S 10.4.14 - only for z>0 ? */
