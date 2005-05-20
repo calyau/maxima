@@ -91,7 +91,7 @@
     (cond
       ((and (numberp zi) (zerop zi)
 	    (or (floatp zr) (and $numer (integerp zr))))
-        (airy-dai-real (float z 1.0d0)))
+        (airy-dai-real (float zr 1.0d0)))
       ((evalate-complex-airy zr zi)
         (airy-dai-complex (float zr 1.0d0) (float zi 1.0d0)))
       (t 
@@ -148,46 +148,44 @@
 (defun airy-ai-complex (zr zi)
   "Airy function Ai(z) for complex z=zr+i*zi"
   (declare (type double-float zr zi))
-  (let (air aii nz ierr var-0 var-1 var-2 var-3)
+  (multiple-value-bind (var-0 var-1 var-2 var-3 air aii nz ierr)
+      (slatec:zairy zr zi 0 1 0d0 0d0 0 0)
     (declare (type double-float air aii)
-	     (type f2cl-lib:integer4 nz ierr))
-    (multiple-value-setq 
-      (var-0 var-1 var-2 var-3 air aii nz ierr)
-      (slatec:zairy zr zi 0 1 air aii nz ierr))
+	     (type f2cl-lib:integer4 nz ierr)
+	     (ignore var-0 var-1 var-2 var-3))
     ;; Check nz and ierr for errors
     (if (and (= nz 0) (= ierr 0))
-      ;; No errors.  Return solution
-      (m-complex air aii) 
-      ;; zbiry shows errors or loss of precision.  Return unevaluated
-      (list '(%airy_ai simp) (m-complex zr zi)))))
+	;; No errors.  Return solution
+	(m-complex air aii) 
+	;; zbiry shows errors or loss of precision.  Return unevaluated
+	(list '(%airy_ai simp) (m-complex zr zi)))))
 
 (defun airy-dai-real (z)
   "Derivative dAi/dz of Airy function Ai(z) for real z"
   (declare (type double-float z))
-  (let (rz c ai dai var-0 var-1 var-2)
-    (declare (type double-float rz c ai dai))
-    (setq rz (sqrt (abs z)))
-    (setq c (times 2.0 (expt (abs z) 3/2) (/ 3.0)))
-    (multiple-value-setq 
-      (var-0 var-1 var-2 ai dai)
-      (slatec:djairy z rz c ai dai))
-    dai))
+  (let ((rz (sqrt (abs z)))
+	(c (* 2 (expt (abs z) 3/2) (/ 3.0))))
+    (declare (type double-float rz c))
+    (multiple-value-bind (var-0 var-1 var-2 ai dai)
+	(slatec:djairy z rz c 0d0 0d0)
+      (declare (ignore var-0 var-1 var-2 ai))
+      dai)))
 
 (defun airy-dai-complex (zr zi)
   "Derivative dAi/dz of Airy function Ai(z) for complex z=zr+i*zi"
   (declare (type double-float zr zi))
-  (let (air aii nz ierr var-0 var-1 var-2 var-3)
+  (multiple-value-bind (var-0 var-1 var-2 var-3 air aii nz ierr)
+      (slatec:zairy zr zi 1 1 0d0 0d0 0 0)
     (declare (type double-float air aii)
-	     (type f2cl-lib:integer4 nz ierr))
-    (multiple-value-setq 
-      (var-0 var-1 var-2 var-3 air aii nz ierr)
-      (slatec:zairy zr zi 1 1 air aii nz ierr))
+	     (type f2cl-lib:integer4 nz ierr)
+	     (ignore var-0 var-1 var-2 var-3))
     ;; Check nz and ierr for errors
-    (if (and (= nz 0) (= ierr 0))
-      ;; No errors.  Return solution
-      (m-complex air aii) 
-      ;; zbiry shows errors or loss of precision.  Return unevaluated
-      (list '(%airy_dai simp) (m-complex zr zi)))))
+    (if (and (= nz 0)
+	     (= ierr 0))
+	;; No errors.  Return solution
+	(m-complex air aii) 
+	;; zbiry shows errors or loss of precision.  Return unevaluated
+	(list '(%airy_dai simp) (m-complex zr zi)))))
 
 (defun airy-bi-real (z)
   "Airy function Bi(z) for real z"
@@ -204,18 +202,17 @@
 (defun airy-bi-complex (zr zi)
   "Airy function Bi(z) for complex z=zr+i*zi"
   (declare (type double-float zr zi))
-  (let (bir bii ierr var-0 var-1 var-2 var-3)
+  (multiple-value-bind (var-0 var-1 var-2 var-3 bir bii ierr)
+      (slatec:zbiry zr zi 0 1 0d0 0d0 0)
     (declare (type double-float bir bii)
-	     (type f2cl-lib:integer4 ierr))
-    (multiple-value-setq 
-      (var-0 var-1 var-2 var-3 bir bii ierr)
-      (slatec:zbiry zr zi 0 1 bir bii ierr))
+	     (type f2cl-lib:integer4 ierr)
+	     (ignore var-0 var-1 var-2 var-3))
     ;; Check ierr for errors
     (if (= ierr 0)
-      ;; No errors.  Return solution
-      (m-complex bir bii) 
-      ;; zbiry shows errors or loss of precision.  Return unevaluated
-      (list '(%airy_bi simp) (m-complex zr zi)))))
+	;; No errors.  Return solution
+	(m-complex bir bii) 
+	;; zbiry shows errors or loss of precision.  Return unevaluated
+	(list '(%airy_bi simp) (m-complex zr zi)))))
 
 (defun airy-dbi-real (z)
   "Derivative dBi/dz of Airy function Bi(z) for real z"
@@ -225,29 +222,28 @@
   (let ((zmax 104.1525d0))
     (declare (type double-float zmax))
     (if (< z zmax)
-	(let (bi dbi var-0 var-1 var-2
-	     (rz (sqrt (abs z)))
-	     (c (times 2.0 (expt (abs z) 3/2) (/ 3.0))))
-        (declare (type double-float rz c bi dbi))
-        (multiple-value-setq 
-          (var-0 var-1 var-2 bi dbi)
-          (slatec:dyairy z rz c bi dbi))
-	dbi)
+	(let ((rz (sqrt (abs z)))
+	      (c (times 2.0 (expt (abs z) 3/2) (/ 3.0))))
+        (declare (type double-float rz c))
+        (multiple-value-bind (var-0 var-1 var-2 bi dbi)
+	    (slatec:dyairy z rz c 0d0 0d0)
+	  (declare (double-float bi dbi)
+		   (ignore var-0 var-1 var-2 bi))
+	  dbi))
       ;; Will overflow.  Return unevaluated.
       (list '(%airy_dbi simp) z))))
 
 (defun airy-dbi-complex (zr zi)
   "Derivative dBi/dz of Airy function Bi(z) for complex z=zr+i*zi"
   (declare (type double-float zr zi))
-  (let (bir bii ierr var-0 var-1 var-2 var-3)
+  (multiple-value-bind (var-0 var-1 var-2 var-3 bir bii ierr)
+      (slatec:zbiry zr zi 1 1 0d0 0d0 0)
     (declare (type double-float bir bii)
-	     (type f2cl-lib:integer4 ierr))
-    (multiple-value-setq 
-      (var-0 var-1 var-2 var-3 bir bii ierr)
-      (slatec:zbiry zr zi 1 1 bir bii ierr))
+	     (type f2cl-lib:integer4 ierr)
+	     (ignore var-0 var-1 var-2 var-3))
     ;; Check ierr for errors
     (if (= ierr 0)
-      ;; No errors.  Return solution
-      (m-complex bir bii) 
-      ;; zbiry shows errors or loss of precision.  Return unevaluated
-      (list '(%airy_dbi simp) (m-complex zr zi)))))
+	;; No errors.  Return solution
+	(m-complex bir bii) 
+	;; zbiry shows errors or loss of precision.  Return unevaluated
+	(list '(%airy_dbi simp) (m-complex zr zi)))))
