@@ -965,7 +965,28 @@ true;
 closeto(AS_10_4_17(-10),1.0e-15);
 true;
 
-kill(c1,c2,closeto,AS_10_4_10,AS_10_4_14,AS_10_4_15,AS_10_4_16,AS_10_4_17);
+kill(c1,c2,AS_10_4_10,AS_10_4_14,AS_10_4_15,AS_10_4_16,AS_10_4_17);
 done;
 
 /* End of Airy function tests */
+
+/* Numerical tests of gamma function. */
+
+/* A&S Table 1.1, to 15 DP */
+closeto(gamma(1/2)-1.772453850905516,2e-15);
+true;
+closeto(gamma(1/3)-2.678938534707748,2e-15);
+true;
+closeto(gamma(7/4)-0.919062526848883,1e-15);
+true;
+
+/* Complex values.  Checked against A&S Table 6.7 to 12 DP */
+closeto(gamma(1+%i)-(0.49801566811836-0.15494982830181*%i),1e-14);
+true;
+closeto(gamma(1+5*%i)-(-0.00169966449436-0.00135851941753*%i),1e-14);
+true;
+closeto(gamma(2+3*%i)-(-0.08239527266561+0.09177428743526*%i),1e-14);
+true;
+
+kill(closeto);
+done;
