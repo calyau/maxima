@@ -190,7 +190,7 @@
 
 (defun unitmtimeswrapper (form)
    (setq form1 (mfuncall '$processunits form))
-   (cond ((and (notunitfree form) (not(onlyunits (cdr form))))
+   (cond ((and (notunitfree form) (not(onlyunits (cdr form))) (not (equal '(-1) (nonunits form))))
 	 (list '(mtimes) 
 	       (cons '(mtimes simp) (nonunits form1))
 	       (cons '(mtimes simp) (getunits form1))))
