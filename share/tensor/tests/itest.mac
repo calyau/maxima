@@ -88,7 +88,7 @@ a([i])~b([j]);
 (a([i],[])*b([j],[])-a([j],[])*b([i],[]))/2;
 decsym(p,2,0,[anti(all)],[]);
 done;
-extdiff(p([j,k]),i);
+canform(extdiff(p([j,k]),i));
 (p([j,k],[],i)-p([i,k],[],j)+p([i,j],[],k))/3;
 extdiff(a([j])~b([k]),k);
 0;

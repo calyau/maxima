@@ -28,6 +28,7 @@ declare(e,constant);
 defcon(e,e,kdelta);
 defcon(e,p,p);
 defcon(p,e,p);
+remsym(e,0,2);
 decsym(e,0,2,[],[sym(all)]);
 (ratfac:false,ratvars(l),ratweight(l,1),ratwtlvl:1);
 components(g([i,j],[]),e([i,j],[])+2*l*p([i,j],[]));

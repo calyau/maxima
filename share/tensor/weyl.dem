@@ -16,6 +16,7 @@
 ("Exploring the Riemann and Weyl tensors")$
 if get('itensor,'version)=false then load(itensor);
 ("Define a standard metric")$
+remcomps(g);
 imetric(g);
 decsym(g,2,0,[sym(all)],[]);
 decsym(g,0,2,[],[sym(all)]);
@@ -26,6 +27,8 @@ ishow(icurvature([i,j,k],[l])+icurvature([j,k,i],[l])+icurvature([k,i,j],[l]))$
 %,ichr2$
 canform(%);
 ("Now define the covariant Riemann-tensor")$
+remcomps(R);
+kill(R);
 components(R([i,j,k,l],[]),'icurvature([i,j,k],[m])*g([l,m],[]));
 ("which is antisymmetric in its middle two indices")$
 R([i,j,k,l],[])+R([i,k,j,l],[])$
@@ -106,6 +109,7 @@ R(cov,con):=
     else funmake(R,append([[cov,con]], der))
 )$
 ("Now we can define the Weyl tensor itself")$
+remcomps(W);
 components(W([i,j,k,l],[]),'R([i,j,k,l],[])+1/('dim-1)/('dim-2)*'R([],[])*(g([j,i],[])*g([l,k],[])-g([j,l],[])*g([i,k],[]))+1/('dim-2)*(g([k,i],[])*'R([l,j],[])-g([k,l],[])*'R([i,j],[])-g([j,i],[])*'R([l,k],[])+g([j,l],[])*'R([i,k],[])));
 ("Let us prove that the Weyl-tensor is trace free in all its indices")$
 ("We work in arbitrary dimensions")$

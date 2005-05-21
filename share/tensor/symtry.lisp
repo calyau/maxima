@@ -257,7 +257,7 @@
 					       (rename1 q
 						       (NONUMBER (cdaddr
 						        ($indices2
-						         (cons '(MTIMES) q))))))
+						         (cons '(MTIMES) (reverse q)))))))
 				       (mapcar 'cdr
 					       (sortcar
 						(progn
@@ -265,14 +265,18 @@
 						       (NONUMBER (cdadr ($indices e))))
 						 (mapcar 'describe-tensor
 							 indexed))
-						'tensorpred))))))))))
+						#'tensorpred))))))))))
 
+
 (defun TENSORPRED (x y)
        (do ((x x (cdr x)) (y y (cdr y)) (a) (b))
 	   ((null x))
 	   (setq a (car x) b (car y))
 	   (and (not (equal a b)) (return
-				   (cond ((eq (ml-typep a) 'FIXNUM) (> a b))
+				   (cond ((eq (ml-typep a) 'FIXNUM) (< a b))
+					 ((and (listp a) (listp b)) (tensorpred a b))
+					 ((null a) t)
+					 ((null b) nil)
 					 (t (alphalessp a b)))))))
 
 (defun DESCRIBE-TENSOR (f)
@@ -282,9 +286,14 @@
        (prog (name indices lcov lcontr lderiv)
 	     (setq name (caar f)
 		   indices (append (cdadr f) (cdaddr f) (cdddr f))
+;;		   indices (append (cdadr f) (cdaddr f)          )
 		   lcov (length (cdadr f))
 		   lcontr (length (cdaddr f))
 		   lderiv (length (cdddr f)))
+;(cond ((null (intersect indices free-indices))
+;       (setq indices (append (cdadr f) (cdaddr f) (cdddr f)))
+;      )
+;)
 	     (return (list (car (least (intersect indices free-indices)))
 		           (f+ lcov (f+ lcontr lderiv) )
 			   lderiv lcov name))))

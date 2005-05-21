@@ -57,4 +57,6 @@ icounter;
 icounter:100;
 ishow(Eu([i],[]))$
 
+idummyx:"%"$
+
 /* End of demo -- comment line needed by MAXIMA to resume demo menu */

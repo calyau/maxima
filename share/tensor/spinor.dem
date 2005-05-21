@@ -18,6 +18,8 @@ dim:2;
 ("The epsilon-spinor is antisymmetric and contracts to the Kronecker-delta")$
 defcon(e);
 defcon(e,e,kdelta);
+remsym(e,2,0);
+remsym(e,0,2);
 decsym(e,2,0,[anti(all)],[]);
 decsym(e,0,2,[],[anti(all)]);
 
