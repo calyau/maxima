@@ -96,5 +96,23 @@ factor(a([i1])~b([i2])|a+a([i2])~b([i1])|a);
 0;
 canform(liediff(v,extdiff(a([i1]),i2))-extdiff(liediff(v,a([i1])),i2));
 0;
+decsym(g,2,0,[sym(all)],[]);
+done;
+decsym(g,0,2,[],[sym(all)]);
+done;
+canform(g([],[a,d])*g([],[b,e])*g([b,a],[],c));
+g([],[%1,e])*g([],[%2,d])*g([%1,%2],[],c);
+canform(g([],[a,d])*g([],[b,e])*g([b,a],[]));
+g([],[%1,e])*g([],[%2,d])*g([%1,%2],[]);
+canform(g([],[a,b])*A([a],[],c)*A([b],[],d));
+g([],[%1,%2])*A([%1],[],d)*A([%2],[],c);
+canform(g([],[a,b])*A([a],[],d)*A([b],[],c));
+g([],[%1,%2])*A([%1],[],d)*A([%2],[],c);
+decsym(a,0,2,[],[anti(all)]);
+done;
+canform(a([A,B],[])*a([],[B,C]));
+-a([],[%1,C])*a([%1,A],[]);
+canform(a([A,B],[])*a([],[C,B]));
+a([],[%1,C])*a([%1,A],[]);
 /* TODO: ic_convert */
 /* TODO: torsion, nonmetricity tensors, connection coeffs */

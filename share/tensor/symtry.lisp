@@ -229,44 +229,69 @@
 
 (declare-top (special free-indices))
 
-(defun CANPROD (e)
-       (prog (scalars indexed)
-	     (cond ((catch 'foo (do ((f (cdr e) (cdr f)) (obj))
-			       ((null f)
-				(setq scalars (nreverse scalars)
-				      indexed (nreverse indexed))
-				nil)
-			       (setq obj (car f))
-			       (cond ((atom obj)
-				      (setq scalars (cons obj scalars)))
-				     ((rpobj obj)
-				      (setq indexed (cons obj indexed)))
-				     ((eq (caar obj) 'MPLUS) (throw 'foo t))
-				     (t (setq scalars (cons obj scalars))))))
-		    (return ($canform ($expand e))))
-		   ((null indexed) (return e))
-		   ((null (cdr indexed))
-		    (return (nconc (ncons '(MTIMES))
-				   scalars
-				   (ncons (canten (car indexed) t)))))
-		   (t (return
-		       (nconc (ncons '(MTIMES))
-			      scalars
-			      (mapcar (function (lambda (z) (canten z nil)))
-				      ((lambda (q)
-					       (rename1 q
-						       (NONUMBER (cdaddr
-						        ($indices2
-						         (cons '(MTIMES) (reverse q)))))))
-				       (mapcar 'cdr
-					       (sortcar
-						(progn
-						 (setq free-indices
-						       (NONUMBER (cdadr ($indices e))))
-						 (mapcar 'describe-tensor
-							 indexed))
-						#'tensorpred))))))))))
-
+(defun canprod (e)
+  (prog (scalars indexed)
+    (cond
+      (
+        (catch 'foo
+          (do
+            ((f (cdr e) (cdr f)) (obj))
+            (
+              (null f)
+              (setq scalars (nreverse scalars)
+                    indexed (nreverse indexed)
+              )
+              nil
+            )
+            (setq obj (car f))
+            (cond
+              ((atom obj) (setq scalars (cons obj scalars)))
+              ((rpobj obj) (setq indexed (cons obj indexed)))
+              ((eq (caar obj) 'mplus) (throw 'foo t))
+              (t (setq scalars (cons obj scalars)))
+            )
+          )
+        )
+        (return ($canform ($expand e)))
+      )
+      ((null indexed) (return e))
+      (
+        (null (cdr indexed))
+        (return
+          (nconc (ncons '(mtimes)) scalars (ncons (canten (car indexed) t)))
+        )
+      )
+      (t
+        (return
+          (nconc
+            (ncons '(mtimes))
+            scalars
+            (mapcar
+              (function (lambda (z) (canten z nil)))
+              (
+                (lambda (q)
+                  (rename1 q
+                    (nonumber (cdaddr ($indices2 (cons '(mtimes) (reverse q)))))
+                  )
+                )
+                (mapcar
+                  #'cdr
+                  (sortcar
+                    (progn
+                      (setq free-indices (nonumber (cdadr ($indices e))))
+                      (mapcar 'describe-tensor indexed)
+                    )
+                    #'tensorpred
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  )
+)
 
 (defun TENSORPRED (x y)
        (do ((x x (cdr x)) (y y (cdr y)) (a) (b))
