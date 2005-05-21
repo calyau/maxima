@@ -225,11 +225,3 @@
 	     (list '(mminus) (list (car form) (minus (cadr form)) (caddr form)))
 	     (cons (car form) (cdr form))))
 	(t form)))
-(defun testing1 (form)
-   (destructuring-bind ((mplus) ((mtimes1) (val1) (temp1)) 
-                                ((mtimes2) (val2) (temp2)) &rest more) form 
-			(print val1)
-			(print val2)
-			(print temp1)
-			(print temp2)
-			))
