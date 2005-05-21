@@ -1,9 +1,12 @@
 ;; Redefining toplevel-macsyma-eval for post_eval_functions 
 ;; Define the finaleval list
+(defmvar $pre_eval_functions `((mlist)))
 (defmvar $post_eval_functions `((mlist)))
 
 (defun toplevel-macsyma-eval (x)
 ;; Functional definition of toplevel-macsyma-eval
+  (dolist (fi (margs $pre_eval_functions) x)
+    (setq x (mfuncall fi x)))
   (setq x (meval* x))
   (dolist (fi (margs $post_eval_functions) x)
     (setq x (mfuncall fi x))))
@@ -56,7 +59,9 @@
 	((eq x '$post_eval_functions) 
          (if (not (and ($listp y) (every 'symbolp (margs y))))
              (mseterr x y)))
-))
+	((eq x '$pre_eval_functions) 
+         (if (not (and ($listp y) (every 'symbolp (margs y))))
+             (mseterr x y)))))
 
 
 ;; Redefine kill1 in order to be able to properly reset post_eval_functions
@@ -85,8 +90,10 @@
 	      (cond ((not (equal (cdr $features) featurel))
 		     (setq $features (cons '(mlist simp) 
 					   (copy-top-level featurel ))))))
+	     ((eq x '$pre_eval_functions) (setq $pre_eval_functions '((mlist)) ))
 	     ((eq x '$post_eval_functions) (setq $post_eval_functions '((mlist)) ))
 	     ((or (eq x t) (eq x '$all))
+	      (setq $pre_eval_functions '((mlist)))
 	      (setq $post_eval_functions '((mlist)))
 	      (mapc #'kill1 (cdr $infolists))
 	      (setq $ratvars '((mlist simp)) varlist nil genvar nil
@@ -189,8 +196,9 @@
 	     (nonunits (cons (car form) (cdr (cdr form))))))))
 
 (defun unitmtimeswrapper (form)
-   (setq form1 (mfuncall '$processunits form))
-   (cond ((and (notunitfree form) (not(onlyunits (cdr form))) (not (equal '(-1) (nonunits form))))
+   (setq form1 form)
+   (cond ((and (notunitfree form) (not(onlyunits (cdr form))) 
+               (not (equal '(-1) (nonunits form))) (equal $unitformatresults t))
 	 (list '(mtimes) 
 	       (cons '(mtimes simp) (nonunits form1))
 	       (cons '(mtimes simp) (getunits form1))))

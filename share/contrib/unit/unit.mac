@@ -508,6 +508,7 @@ makeMKStoderivedrules(currentunit,unitlistname,derivedunitrules):=
 
 /* This command is used to do final global simplification of units */
 processunits(expression) := block([letrat:true,ratprint:false,unitrules,result1],
+   unitformatresults:true,
    if ?equal(currentdoeval,true) then (
    result1 : letsimp(expression,derivedtoMKSrules),
    result1 : letsimp(result1,basetoMKSrules),
@@ -525,9 +526,10 @@ processunits(expression) := block([letrat:true,ratprint:false,unitrules,result1]
    ) else (
    result1 : expression),
    currentdoeval : true,
-   if ?equal(unitsimpadd,true) then (
-    result1 : ?groupadd(result1)),
    result1);
+
+/* This function is used to reset variables for the next calculation */
+resetunitvars(args) := block(unitformatresults:false,args);
 
 /*====================== User Functions ======================*/ 
 
@@ -696,6 +698,10 @@ dimension(exp) := block([letrat:true,tmp1,tmp2,a1,a2,result1,i,j],
      result1 : tmp1/tmp2,
      result1);
 
+/* These functions turn on and off grouping common units over addition */
+enablegroupbyadd() := block(post_eval_functions : [processunits,?groupadd]);
+disablegroupbyadd() := block(post_eval_functions : [processunits]);
+
 /*====================== Initialization =======================*/
 
 /* Startup Message */
@@ -773,6 +779,15 @@ allunitslist : makeallunitslist();
 
 /* Basic dimension functionality - initialize list of quantities in use */    
 variablequantitieslist : [];
+
+/* This variable is used to ensure Maxima only formats units at the end
+of an evaluation */
+unitformatresults : false;
+
+/* Use pre eval to reset unitformatresults to false after a calculation - this
+is necessary because if it is reset at the end of the earlier calculation the
+unit formatting will be undone in the display process */
+pre_eval_functions : [resetunitvars];
 
 /* Activate processunits as a post_eval_function in order to enable
    automatic simplification of all unit output */
