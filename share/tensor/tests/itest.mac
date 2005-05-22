@@ -114,5 +114,13 @@ canform(a([A,B],[])*a([],[B,C]));
 -a([],[%1,C])*a([%1,A],[]);
 canform(a([A,B],[])*a([],[C,B]));
 a([],[%1,C])*a([%1,A],[]);
+det(H):=block([idx1:makelist(idummy(),i,1,dim),idx2:makelist(idummy(),i,1,dim)],'kdelta(idx1,idx2)*product(H([idx2[i]],[idx1[i]]),i,1,dim)/dim!);
+det(H):=block([idx1:makelist(idummy(),i,1,dim),idx2:makelist(idummy(),i,1,dim)],'kdelta(idx1,idx2)*product(H([idx2[i]],[idx1[i]]),i,1,dim)/dim!);
+components(H([],[]),H([i],[i]));
+done;
+defcon(H,H,kdelta);
+done;
+apply(ev,[contract(apply(ev,[contract(apply(ev,[det(H),nouns,expand])),nouns])),nouns]);
+1;
 /* TODO: ic_convert */
 /* TODO: torsion, nonmetricity tensors, connection coeffs */
