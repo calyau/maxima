@@ -866,8 +866,8 @@ hgfred([s+2,s+1/2],[2*s+1],z)
 0$
 
 /* Tests for Airy functions */
-closeto(e,tol):=block([numer:true],if(abs(e)<tol) then true else e);
-closeto(e,tol):=block([numer:true],if(abs(e)<tol) then true else e);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
+closeto(e,tol):=block([numer:true,abse],abse:abs(e),if(abse<tol) then true else abse);
 
 /* Derivatives of Airy functions */
 diff(airy_ai(x),x);
@@ -906,11 +906,11 @@ closeto(AS_10_4_10(1+%i),1.0e-15);
 true;
 closeto(AS_10_4_10(%i),1.0e-15);
 true;
-closeto(AS_10_4_10(-1+%i),1.0e-15);
+closeto(AS_10_4_10(-1+%i),2.0e-15);
 true;
 closeto(AS_10_4_10(-1),1.0e-15);
 true;
-closeto(AS_10_4_10(-1-%i),1.0e-15);
+closeto(AS_10_4_10(-1-%i),2.0e-15);
 true;
 closeto(AS_10_4_10(-%i),1.0e-15);
 true;
