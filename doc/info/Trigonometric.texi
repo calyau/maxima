@@ -331,8 +331,6 @@ able to further simplify the result.
 @code{demo ("trgsmp.dem")} displays some examples of @code{trigsimp}.
 @c MERGE EXAMPLES INTO THIS ITEM
 
-See also @code{trigsum}.
-
 @end deffn
 
 @c NEEDS CLARIFICATION
