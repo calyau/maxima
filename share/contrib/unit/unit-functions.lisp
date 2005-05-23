@@ -1,3 +1,9 @@
+;; Definitions to avoid undefined variable warnings
+(defvar allbutl nil)
+(defvar dcount 0)
+(defvar greatorder nil)
+(defvar lessorder nil)
+
 ;; Redefining toplevel-macsyma-eval for post_eval_functions 
 ;; Define the finaleval list
 (defmvar $pre_eval_functions `((mlist)))
@@ -12,8 +18,9 @@
     (setq x (mfuncall fi x))))
 
 
-;; Redefine msetchk to protect post_eval_functions from improper assignments
 (defmfun msetchk (x y)
+;; Redefine msetchk to protect pre_eval_functions and post_eval_functions
+;; from improper assignments
   (cond ((memq x '(*read-base* *print-base*))
 	 (cond #-nil ((eq y 'roman))
 	       ((or (not (fixnump y)) (< y 2) (> y 35)) (mseterr x y))
@@ -64,9 +71,9 @@
              (mseterr x y)))))
 
 
+(defmfun kill1 (x)
 ;; Redefine kill1 in order to be able to properly reset post_eval_functions
 ;; with kill(all) and kill(post_eval_functions)
-(defmfun kill1 (x)
   (funcall 
    #'(lambda (z)
        (cond ((and allbutl (memq x allbutl)))
@@ -122,6 +129,20 @@
 	     (t (improper-arg-err x '$kill))))
    nil))
 
+;; Define a couple variables specific to this code
+(defmvar $allunitslist `((mlist)))
+(defmvar $unitformatresults t)
+
+;; Code to enable correct display of multiplication by units via nformat
+(defun notunitfree (form)
+  ;;returns t if expression contains units, nil otherwise
+  (cond ((atom form) ($member form $allunitslist))
+        ((null (car form)) nil)
+  	((atom (car form))(or ($member (car form) $allunitslist)
+			      (notunitfree (cdr form))))
+	(t (or (notunitfree (cdr (car form)))
+	       (notunitfree (cdr form))))))
+
 
 ;; Code to optionally group units by common unit
 
@@ -149,16 +170,6 @@
 		 ((equal (cdr temp1) nil) (car temp1))))) 
          (t form)))
     
-;; Code to enable correct display of multiplication by units via nformat
-(defun notunitfree (form)
-  ;;returns t if expression contains units, nil otherwise
-  (cond ((atom form) ($member form $allunitslist))
-        ((null (car form)) nil)
-  	((atom (car form))(or ($member (car form) $allunitslist)
-			      (notunitfree (cdr form))))
-	(t (or (notunitfree (cdr (car form)))
-	       (notunitfree (cdr form))))))
-
 (defun onlyunits (form)
   ;;returns t if expression contains only units, nil otherwise
   (cond ((null (car form)) t)
@@ -196,12 +207,11 @@
 	     (nonunits (cons (car form) (cdr (cdr form))))))))
 
 (defun unitmtimeswrapper (form)
-   (setq form1 form)
    (cond ((and (notunitfree form) (not(onlyunits (cdr form))) 
                (not (equal '(-1) (nonunits form))) (equal $unitformatresults t))
 	 (list '(mtimes) 
-	       (cons '(mtimes simp) (nonunits form1))
-	       (cons '(mtimes simp) (getunits form1))))
+	       (cons '(mtimes simp) (nonunits form))
+	       (cons '(mtimes simp) (getunits form))))
          ((onlyunits (cdr form)) (form-mtimes form))
          (t (form-mtimes form))))
 
