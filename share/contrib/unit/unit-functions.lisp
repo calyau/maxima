@@ -142,7 +142,7 @@
 	  (t (cons (list '(mtimes) (cadr (car form)) (caddr (car form))) (groupbyaddlisp (cdr form))))))	     
 	   
 (defun groupadd (form) 
-   (cond ((and (not (atom form)) (notunitfree form))
+   (cond ((and (not (atom form)) (notunitfree form) (equal (caar form) 'mplus))
            (let ((temp1 (groupbyaddlisp (cdr (nformat form)))))
            (cond ((or (not (equal (cdr temp1) nil)) (and (atom (cadr temp1)) (not (equal (cadr temp1) nil))))
                   (cons '(mplus) temp1))
