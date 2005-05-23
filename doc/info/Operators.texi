@@ -152,7 +152,35 @@ For an argument @code{n} which is not an integer, float, or rational,
 @end deffn
 
 @deffn operator "#"
-The logical operator "Not equals".
+Represents the negation of syntactic equality @code{=}.
+
+Note that because of the rules for evaluation of predicate expressions
+(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@code{not @var{a} = @var{b}} is not equivalent to @code{@var{a} # @var{b}} in some cases.
+
+Examples:
+@c GENERATED FROM:
+@c a = b;
+@c is (a = b);
+@c a # b;
+@c not a = b;
+@c is (a # b);
+@c is (not a = b);
+
+@example
+(%i1) a = b;
+(%o1)                         a = b
+(%i2) is (a = b);
+(%o2)                         false
+(%i3) a # b;
+(%o3)                         a # b
+(%i4) not a = b;
+(%o4)                         true
+(%i5) is (a # b);
+(%o5)                         true
+(%i6) is (not a = b);
+(%o6)                         true
+@end example
 
 @end deffn
 
@@ -206,6 +234,11 @@ a function @code{f}.
 denotes an equation to Maxima.  To the pattern matcher in
 Maxima it denotes a total relation that holds between two expressions
 if and only if the expressions are syntactically identical.
+
+The negation of @code{=} is represented by @code{#}.
+Note that because of the rules for evaluation of predicate expressions
+(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@code{not @var{a} = @var{b}} is not equivalent to @code{@var{a} # @var{b}} in some cases.
 
 @end deffn
 
@@ -366,6 +399,11 @@ whereas @code{is (a=b)} always returns either @code{true} or @code{false}.
 
 All variables occurring in @var{expr_1} and @var{expr_2} are presumed to be real valued.
 
+The negation of @code{equal} is @code{notequal}.
+Note that because of the rules for evaluation of predicate expressions
+(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@code{notequal} is not equivalent to @code{not equal} in some cases.
+
 @c COPY THIS TO DESCRIPTION OF is
 @code{ev (@var{expr}, pred)} is equivalent to @code{is (@var{expr})}.
 
@@ -376,6 +414,62 @@ All variables occurring in @var{expr_1} and @var{expr_2} are presumed to be real
 (%o2)                        [a > 1]
 (%i3) is (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
 (%o3)                         true
+@end example
+
+@end deffn
+
+@deffn {Function} notequal (@var{expr_1}, @var{expr_2})
+Represents the negation of @code{equal (@var{expr_1}, @var{expr_2})}.
+
+Note that because of the rules for evaluation of predicate expressions
+(in particular because @code{not @var{expr}} causes evaluation of @var{expr}),
+@code{notequal} is not equivalent to @code{not equal} in some cases.
+
+Examples:
+@c GENERATED FROM:
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c not equal (a, b);
+@c maybe (notequal (a, b));
+@c maybe (not equal (a, b));
+@c assume (a > b);
+@c equal (a, b);
+@c maybe (equal (a, b));
+@c notequal (a, b);
+@c not equal (a, b);
+@c maybe (notequal (a, b));
+@c maybe (not equal (a, b));
+
+@example
+(%i1) equal (a, b);
+(%o1)                      equal(a, b)
+(%i2) maybe (equal (a, b));
+(%o2)                        unknown
+(%i3) notequal (a, b);
+(%o3)                    notequal(a, b)
+(%i4) not equal (a, b);
+`macsyma' was unable to evaluate the predicate:
+equal(a, b)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) maybe (notequal (a, b));
+(%o5)                        unknown
+(%i6) maybe (not equal (a, b));
+(%o6)                        unknown
+(%i7) assume (a > b);
+(%o7)                        [a > b]
+(%i8) equal (a, b);
+(%o8)                      equal(a, b)
+(%i9) maybe (equal (a, b));
+(%o9)                         false
+(%i10) notequal (a, b);
+(%o10)                   notequal(a, b)
+(%i11) not equal (a, b);
+(%o11)                        true
+(%i12) maybe (notequal (a, b));
+(%o12)                        true
+(%i13) maybe (not equal (a, b));
+(%o13)                        true
 @end example
 
 @end deffn
@@ -433,15 +527,105 @@ lists and matrices.
 
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Function} is (@var{expr})
-Attempts to determine whether @var{expr} (which must evaluate to a
-predicate) is provable from the facts in the current data base.  @code{is}
-returns @code{true} if the predicate is true for all values of its variables
-consistent with the data base and returns @code{false} if it is false for all
-such values.  Otherwise, its action depends on the setting of the
-switch @code{prederror}. @code{is} errs out if the value of
-@code{prederror} is @code{true} and returns @code{unknown} if @code{prederror} is @code{false}.
+Attempts to determine whether the predicate @var{expr} 
+is provable from the facts in the @code{assume} database.
+
+If the predicate is provably @code{true} or @code{false},
+@code{is} returns @code{true} or @code{false}, respectively.
+Otherwise, the return value is controlled by the global flag @code{prederror}.
+When @code{prederror} is @code{false}, @code{is} returns @code{unknown} for
+a predicate which cannot be proven nor disproven,
+and reports an error otherwise.
+
+See also @code{assume}, @code{facts}, and @code{maybe}.
+
+Examples:
+
+@code{is} causes evaluation of predicates.
+@c GENERATED FROM:
+@c %pi > %e;
+@c is (%pi > %e);
+
+@example
+(%i1) %pi > %e;
+(%o1)                       %pi > %e
+(%i2) is (%pi > %e);
+(%o2)                         true
+@end example
+
+@code{is} attempts to derive predicates from the @code{assume} database.
+@c GENERATED FROM:
+@c assume (a > b);
+@c assume (b > c);
+@c is (a < b);
+@c is (a > c);
+@c is (equal (a, c));
+
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) assume (b > c);
+(%o2)                        [b > c]
+(%i3) is (a < b);
+(%o3)                         false
+(%i4) is (a > c);
+(%o4)                         true
+(%i5) is (equal (a, c));
+(%o5)                         false
+@end example
+
+If @code{is} can neither prove nor disprove a predicate from the @code{assume} database,
+the global flag @code{prederror} governs the behavior of @code{is}.
+@c GENERATED FROM:
+@c assume (a > b);
+@c prederror: true$
+@c is (a > 0);
+@c prederror: false$
+@c is (a > 0);
+
+@example
+(%i1) assume (a > b);
+(%o1)                        [a > b]
+(%i2) prederror: true$
+(%i3) is (a > 0);
+`macsyma' was unable to evaluate the predicate:
+a > 0
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) prederror: false$
+(%i5) is (a > 0);
+(%o5)                        unknown
+@end example
+
+@end deffn
+
+@deffn {Function} maybe (@var{expr})
+Attempts to determine whether the predicate @var{expr} 
+is provable from the facts in the @code{assume} database.
+
+If the predicate is provably @code{true} or @code{false},
+@code{maybe} returns @code{true} or @code{false}, respectively.
+Otherwise, @code{maybe} returns @code{unknown}.
+
+@code{maybe} is functionally equivalent to @code{is} with @code{prederror: false},
+but the result is computed without actually assigning a value to @code{prederror}.
+
+See also @code{assume}, @code{facts}, and @code{is}.
+
+Examples:
+@c GENERATED FROM:
+@c maybe (x > 0);
+@c assume (x > 1);
+@c maybe (x > 0);
+
+@example
+(%i1) maybe (x > 0);
+(%o1)                        unknown
+(%i2) assume (x > 1);
+(%o2)                        [x > 1]
+(%i3) maybe (x > 0);
+(%o3)                         true
+@end example
 
 @end deffn
 

@@ -359,25 +359,24 @@ Maxima expressions (including nested @code{if} statements), and @var{condition} 
 an expression which evaluates to @code{true} or @code{false} and is composed of
 relational and logical operators which are as follows:
 
-@c - SEEMS LIKE THIS TABLE REALLY WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; THIS IS OK I GUESS
-@c - NEED TO FIGURE OUT WHETHER # IS "not =" OR "not equal"
-@c   WHEN WE HAVE AN ANSWER, MAKE A NOTE HERE AND ALSO IN DESCRIPTIONS OF = AND equal
-@c - REFORMAT THIS TABLE USING TEXINFO MARKUP
+@c - SEEMS LIKE THIS TABLE WANTS TO BE IN A DISCUSSION OF PREDICATE FUNCTIONS; PRESENT LOCATION IS OK I GUESS
+@c - REFORMAT THIS TABLE USING TEXINFO MARKUP (MAYBE)
 @example
-Operation           Symbol      Type
+Operation            Symbol      Type
  
-less than           <           relational infix
-less than           <=
-  or equal to                   relational infix
-syntactic equality  =           relational infix
-equivalence         equal       relational function
-not equal to        #           relational infix
-greater than        >=
-  or equal to                   relational infix
-greater than        >           relational infix
-and                 and         logical infix
-or                  or          logical infix
-not                 not         logical prefix
+less than            <           relational infix
+less than            <=
+  or equal to                    relational infix
+equality (syntactic) =           relational infix
+negation of =        #           relational infix
+equality (value)     equal       relational function
+negation of equal    notequal    relational function
+greater than         >=
+  or equal to                    relational infix
+greater than         >           relational infix
+and                  and         logical infix
+or                   or          logical infix
+not                  not         logical prefix
 @end example
 
 @end deffn
@@ -473,8 +472,11 @@ whenever the predicate of an @code{if} statement or an @code{is} function fails 
 evaluate to either @code{true} or @code{false}.
 
 If @code{false}, @code{unknown} is returned
-instead in this case.  The @code{prederror:false} mode is not supported in
-translated code.
+instead in this case.  The @code{prederror: false} mode is not supported in
+translated code;
+however, @code{maybe} is supported in translated code.
+
+See also @code{is} and @code{maybe}.
 
 @end defvr
 
