@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,13 +11,14 @@
 (let ((zeror 0.0) (zeroi 0.0))
   (declare (type double-float zeroi zeror))
   (defun zbinu (zr zi fnu kode n cyr cyi nz rl fnul tol elim alim)
-    (declare (type (simple-array double-float (*)) cyr cyi)
-             (type f2cl-lib:integer4 kode n nz)
-             (type double-float zr zi fnu rl fnul tol elim alim))
+    (declare (type (simple-array double-float (*)) cyi cyr)
+             (type f2cl-lib:integer4 nz n kode)
+             (type double-float alim elim tol fnul rl fnu zi zr))
     (prog ((cwr (make-array 2 :element-type 'double-float))
            (cwi (make-array 2 :element-type 'double-float)) (i 0) (inw 0)
-           (nlast 0) (nn 0) (nui 0) (nw 0) (az 0.0) (dfnu 0.0))
-      (declare (type (simple-array double-float (2)) cwr cwi)
+           (nlast 0) (nn 0) (nui 0) (nw 0) (az 0.0) (dfnu 0.0) (abs$ 0.0f0))
+      (declare (type single-float abs$)
+               (type (simple-array double-float (2)) cwr cwi)
                (type double-float dfnu az)
                (type f2cl-lib:integer4 nw nui nn nlast inw i))
       (setf nz 0)
@@ -28,10 +29,11 @@
       (if (> (* az az 0.25) (+ dfnu 1.0)) (go label20))
      label10
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
+             var-10)
           (zseri zr zi fnu kode nn cyr cyi nw tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10))
         (setf nw var-7))
       (setf inw (f2cl-lib:int (abs nw)))
       (setf nz (f2cl-lib:int-add nz inw))
@@ -45,12 +47,11 @@
       (if (< (+ az az) (* dfnu dfnu)) (go label50))
      label30
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11)
           (zasyi zr zi fnu kode nn cyr cyi nw rl tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10
-          var-11))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10 var-11))
         (setf nw var-7))
       (if (< nw 0) (go label130))
       (go label120)
@@ -58,12 +59,11 @@
       (if (<= dfnu 1.0) (go label70))
      label50
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11)
           (zuoik zr zi fnu kode 1 nn cyr cyi nw tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-9 var-10
-          var-11))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-9
+                         var-10 var-11))
         (setf nw var-8))
       (if (< nw 0) (go label130))
       (setf nz (f2cl-lib:int-add nz nw))
@@ -76,7 +76,7 @@
       (if (> az rl) (go label80))
      label70
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8)
           (zmlri zr zi fnu kode nn cyr cyi nw tol)
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8))
         (setf nw var-7))
@@ -84,12 +84,11 @@
       (go label120)
      label80
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11)
           (zuoik zr zi fnu kode 2 2 cwr cwi nw tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-9 var-10
-          var-11))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-9
+                         var-10 var-11))
         (setf nw var-8))
       (if (>= nw 0) (go label100))
       (setf nz nn)
@@ -103,12 +102,11 @@
      label100
       (if (> nw 0) (go label130))
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11 var-12)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11 var-12)
           (zwrsk zr zi fnu kode nn cyr cyi nw cwr cwi tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10
-          var-11 var-12))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10 var-11 var-12))
         (setf nw var-7))
       (if (< nw 0) (go label130))
       (go label120)
@@ -116,12 +114,11 @@
       (setf nui (f2cl-lib:int (+ (- fnul dfnu) 1)))
       (setf nui (max (the f2cl-lib:integer4 nui) (the f2cl-lib:integer4 0)))
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11 var-12 var-13)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11 var-12 var-13)
           (zbuni zr zi fnu kode nn cyr cyi nw nui nlast fnul tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-10 var-11
-          var-12 var-13))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-10
+                         var-11 var-12 var-13))
         (setf nw var-7)
         (setf nlast var-9))
       (if (< nw 0) (go label130))

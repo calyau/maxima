@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,9 +11,9 @@
 (let ((zeror 0.0) (zeroi 0.0) (coner 1.0) (conei 0.0))
   (declare (type double-float conei coner zeroi zeror))
   (defun zmlri (zr zi fnu kode n yr yi nz tol)
-    (declare (type (simple-array double-float (*)) yr yi)
-             (type f2cl-lib:integer4 kode n nz)
-             (type double-float zr zi fnu tol))
+    (declare (type (simple-array double-float (*)) yi yr)
+             (type f2cl-lib:integer4 nz n kode)
+             (type double-float tol fnu zi zr))
     (prog ((i 0) (iaz 0) (idum 0) (ifnu 0) (inu 0) (itime 0) (k 0) (kk 0)
            (km 0) (m 0) (ack 0.0) (ak 0.0) (ap 0.0) (at 0.0) (az 0.0) (bk 0.0)
            (cki 0.0) (ckr 0.0) (cnormi 0.0) (cnormr 0.0) (fkap 0.0) (fkk 0.0)
@@ -21,11 +21,11 @@
            (p2i 0.0) (p2r 0.0) (raz 0.0) (rho 0.0) (rho2 0.0) (rzi 0.0)
            (rzr 0.0) (scle 0.0) (sti 0.0) (str 0.0) (sumi 0.0) (sumr 0.0)
            (tfnf 0.0) (tst 0.0))
-      (declare
-       (type double-float tst tfnf sumr sumi str sti scle rzr rzi rho2 rho raz
-        p2r p2i p1r p1i ptr pti fnf flam fkk fkap cnormr cnormi ckr cki bk az
-        at ap ak ack)
-       (type f2cl-lib:integer4 m km kk k itime inu ifnu idum iaz i))
+      (declare (type double-float tst tfnf sumr sumi str sti scle rzr rzi rho2
+                                  rho raz p2r p2i p1r p1i ptr pti fnf flam fkk
+                                  fkap cnormr cnormi ckr cki bk az at ap ak
+                                  ack)
+               (type f2cl-lib:integer4 m km kk k itime inu ifnu idum iaz i))
       (setf scle (/ (f2cl-lib:d1mach 1) tol))
       (setf nz 0)
       (setf az (zabs zr zi))
@@ -118,20 +118,17 @@
       (setf tfnf (+ fnf fnf))
       (setf bk
               (-
-               (multiple-value-bind
-                   (ret-val var-0 var-1)
+               (multiple-value-bind (ret-val var-0 var-1)
                    (dgamln (+ fkk tfnf 1.0) idum)
                  (declare (ignore var-0))
                  (setf idum var-1)
                  ret-val)
-               (multiple-value-bind
-                   (ret-val var-0 var-1)
+               (multiple-value-bind (ret-val var-0 var-1)
                    (dgamln (+ fkk 1.0) idum)
                  (declare (ignore var-0))
                  (setf idum var-1)
                  ret-val)
-               (multiple-value-bind
-                   (ret-val var-0 var-1)
+               (multiple-value-bind (ret-val var-0 var-1)
                    (dgamln (+ tfnf 1.0) idum)
                  (declare (ignore var-0))
                  (setf idum var-1)
@@ -200,8 +197,7 @@
       (setf ptr zr)
       (setf pti zi)
       (if (= kode 2) (setf ptr zeror))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
           (zlog rzr rzi str sti idum)
         (declare (ignore var-0 var-1))
         (setf str var-2)
@@ -210,8 +206,7 @@
       (setf p1r (+ (* (- fnf) str) ptr))
       (setf p1i (+ (* (- fnf) sti) pti))
       (setf ap
-              (multiple-value-bind
-                  (ret-val var-0 var-1)
+              (multiple-value-bind (ret-val var-0 var-1)
                   (dgamln (+ 1.0 fnf) idum)
                 (declare (ignore var-0))
                 (setf idum var-1)
@@ -222,8 +217,7 @@
       (setf p2i (+ p2i sumi))
       (setf ap (zabs p2r p2i))
       (setf p1r (/ 1.0 ap))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3)
+      (multiple-value-bind (var-0 var-1 var-2 var-3)
           (zexp ptr pti str sti)
         (declare (ignore var-0 var-1))
         (setf str var-2)
@@ -232,8 +226,7 @@
       (setf cki (* sti p1r))
       (setf ptr (* p2r p1r))
       (setf pti (* (- p2i) p1r))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt ckr cki ptr pti cnormr cnormi)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf cnormr var-4)

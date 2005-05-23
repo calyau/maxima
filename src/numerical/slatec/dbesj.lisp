@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -9,8 +9,8 @@
 
 
 (let ((rtwo 1.34839972492648)
-      (pdf 0.7853981633974481)
-      (rttp 0.7978845608028651)
+      (pdf 0.785398163397448)
+      (rttp 0.797884560802865)
       (pidt 1.5707963267949)
       (pp (make-array 4 :element-type 'double-float))
       (inlim 150)
@@ -22,13 +22,13 @@
   (f2cl-lib:fset (f2cl-lib:fref pp (1) ((1 4))) 8.72909153935547)
   (f2cl-lib:fset (f2cl-lib:fref pp (2) ((1 4))) 0.26569393226503)
   (f2cl-lib:fset (f2cl-lib:fref pp (3) ((1 4))) 0.124578576865586)
-  (f2cl-lib:fset (f2cl-lib:fref pp (4) ((1 4))) 7.701337474303881e-4)
+  (f2cl-lib:fset (f2cl-lib:fref pp (4) ((1 4))) 7.70133747430388e-4)
   (f2cl-lib:fset (f2cl-lib:fref fnulim (1) ((1 2))) 100.0)
   (f2cl-lib:fset (f2cl-lib:fref fnulim (2) ((1 2))) 60.0)
   (defun dbesj (x alpha n y nz)
-    (declare (type double-float x alpha)
-             (type (array double-float (*)) y)
-             (type f2cl-lib:integer4 n nz))
+    (declare (type (array double-float (*)) y)
+             (type f2cl-lib:integer4 nz n)
+             (type double-float alpha x))
     (prog ((temp (make-array 3 :element-type 'double-float))
            (wk (make-array 7 :element-type 'double-float)) (ak 0.0) (akm 0.0)
            (ans 0.0) (ap 0.0) (arg 0.0) (coef 0.0) (dalpha 0.0) (dfn 0.0)
@@ -39,19 +39,22 @@
            (tfn 0.0) (tm 0.0) (tol 0.0) (tolln 0.0) (trx 0.0) (tx 0.0) (t1 0.0)
            (t2 0.0) (xo2 0.0) (xo2l 0.0) (slim 0.0) (rtol 0.0) (i 0) (ialp 0)
            (idalp 0) (iflw 0) (in 0) (is 0) (i1 0) (i2 0) (k 0) (kk 0) (km 0)
-           (kt 0) (nn 0) (ns 0) (t_ 0.0))
-      (declare
-       (type f2cl-lib:integer4 ns nn kt km kk k i2 i1 is in iflw idalp ialp i)
-       (type (simple-array double-float (7)) wk)
-       (type (simple-array double-float (3)) temp)
-       (type double-float t_ rtol slim xo2l xo2 t2 t1 tx trx tolln tol tm tfn
-        tb tau ta s2 s1 sxo2 sb sa s rzden rtx relb rden gln fnu fnp1 fni fnf
-        fn flgjy fidal etx elim1 earg dtm dfn dalpha coef arg ap ans akm ak))
+           (kt 0) (nn 0) (ns 0) (t$ 0.0) (abs$ 0.0f0))
+      (declare (type single-float abs$)
+               (type f2cl-lib:integer4 ns nn kt km kk k i2 i1 is in iflw idalp
+                                       ialp i)
+               (type (simple-array double-float (7)) wk)
+               (type (simple-array double-float (3)) temp)
+               (type double-float t$ rtol slim xo2l xo2 t2 t1 tx trx tolln tol
+                                  tm tfn tb tau ta s2 s1 sxo2 sb sa s rzden rtx
+                                  relb rden gln fnu fnp1 fni fnf fn flgjy fidal
+                                  etx elim1 earg dtm dfn dalpha coef arg ap ans
+                                  akm ak))
       (setf nz 0)
       (setf kt 1)
       (setf ns 0)
       (setf ta (f2cl-lib:d1mach 3))
-      (setf tol (max ta 1.0000000000000002e-15))
+      (setf tol (max ta 1.0e-15))
       (setf i1 (f2cl-lib:int-add (f2cl-lib:i1mach 14) 1))
       (setf i2 (f2cl-lib:i1mach 15))
       (setf tb (f2cl-lib:d1mach 5))
@@ -138,8 +141,7 @@
       (setf i1 (f2cl-lib:int (abs (f2cl-lib:int-sub 3 is))))
       (setf i1 (max (the f2cl-lib:integer4 i1) (the f2cl-lib:integer4 1)))
       (setf flgjy 1.0)
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
           (dasyjy #'djairy x fn flgjy i1
            (f2cl-lib:array-slice temp double-float (is) ((1 3))) wk iflw)
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6))
@@ -167,15 +169,15 @@
       (if (< x tol) (go label360))
       (setf ak 3.0)
       (setf t2 1.0)
-      (setf t_ 1.0)
+      (setf t$ 1.0)
       (setf s1 fn)
       (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
                     ((> k 17) nil)
         (tagbody
           (setf s2 (+ t2 s1))
-          (setf t_ (/ (* (- t_) sxo2) s2))
-          (setf s (+ s t_))
-          (if (< (abs t_) tol) (go label360))
+          (setf t$ (/ (* (- t$) sxo2) s2))
+          (setf s (+ s t$))
+          (if (< (abs t$) tol) (go label360))
           (setf t2 (+ t2 ak))
           (setf ak (+ ak 2.0))
           (setf s1 (+ s1 fn))

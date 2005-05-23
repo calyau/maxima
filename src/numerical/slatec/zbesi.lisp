@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -8,20 +8,22 @@
 (in-package "SLATEC")
 
 
-(let ((pi_ 3.141592653589793) (coner 1.0) (conei 0.0))
-  (declare (type double-float conei coner pi_))
+(let ((pi$ 3.141592653589793) (coner 1.0) (conei 0.0))
+  (declare (type double-float conei coner pi$))
   (defun zbesi (zr zi fnu kode n cyr cyi nz ierr)
-    (declare (type double-float zr zi fnu)
-             (type (simple-array double-float (*)) cyr cyi)
-             (type f2cl-lib:integer4 kode n nz ierr))
+    (declare (type (simple-array double-float (*)) cyi cyr)
+             (type f2cl-lib:integer4 ierr nz n kode)
+             (type double-float fnu zi zr))
     (prog ((i 0) (inu 0) (k 0) (k1 0) (k2 0) (nn 0) (aa 0.0) (alim 0.0)
            (arg 0.0) (csgni 0.0) (csgnr 0.0) (dig 0.0) (elim 0.0) (fnul 0.0)
            (rl 0.0) (r1m5 0.0) (str 0.0) (tol 0.0) (zni 0.0) (znr 0.0) (az 0.0)
-           (bb 0.0) (fn 0.0) (ascle 0.0) (rtol 0.0) (atol 0.0) (sti 0.0))
-      (declare
-       (type double-float sti atol rtol ascle fn bb az znr zni tol str r1m5 rl
-        fnul elim dig csgnr csgni arg alim aa)
-       (type f2cl-lib:integer4 nn k2 k1 k inu i))
+           (bb 0.0) (fn 0.0) (ascle 0.0) (rtol 0.0) (atol 0.0) (sti 0.0)
+           (abs$ 0.0f0))
+      (declare (type single-float abs$)
+               (type double-float sti atol rtol ascle fn bb az znr zni tol str
+                                  r1m5 rl fnul elim dig csgnr csgni arg alim
+                                  aa)
+               (type f2cl-lib:integer4 nn k2 k1 k inu i))
       (setf ierr 0)
       (setf nz 0)
       (if (< fnu 0.0) (setf ierr 1))
@@ -59,7 +61,7 @@
       (setf znr (- zr))
       (setf zni (- zi))
       (setf inu (f2cl-lib:int fnu))
-      (setf arg (* (- fnu inu) pi_))
+      (setf arg (* (- fnu inu) pi$))
       (if (< zi 0.0) (setf arg (- arg)))
       (setf csgnr (cos arg))
       (setf csgni (sin arg))
@@ -68,12 +70,11 @@
       (setf csgni (- csgni))
      label40
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11 var-12)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11 var-12)
           (zbinu znr zni fnu kode n cyr cyi nz rl fnul tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10
-          var-11 var-12))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10 var-11 var-12))
         (setf nz var-7))
       (if (< nz 0) (go label120))
       (if (>= zr 0.0) (go end_label))

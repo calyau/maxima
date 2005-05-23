@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,9 +11,9 @@
 (let ((zeror 0.0) (zeroi 0.0))
   (declare (type double-float zeroi zeror))
   (defun zkscl (zrr zri fnu n yr yi nz rzr rzi ascle tol elim)
-    (declare (type (simple-array double-float (*)) yr yi)
-             (type f2cl-lib:integer4 n nz)
-             (type double-float zrr zri fnu rzr rzi ascle tol elim))
+    (declare (type (simple-array double-float (*)) yi yr)
+             (type f2cl-lib:integer4 nz n)
+             (type double-float elim tol ascle rzi rzr fnu zri zrr))
     (prog ((cyr (make-array 2 :element-type 'double-float))
            (cyi (make-array 2 :element-type 'double-float)) (i 0) (ic 0)
            (idum 0) (kk 0) (nn 0) (nw 0) (acs 0.0) (as 0.0) (cki 0.0) (ckr 0.0)
@@ -22,7 +22,7 @@
            (alas 0.0))
       (declare (type (simple-array double-float (2)) cyr cyi)
                (type double-float alas helim elm celmr zdi zdr s2r s2i s1r s1i
-                str fn csr csi ckr cki as acs)
+                                  str fn csr csi ckr cki as acs)
                (type f2cl-lib:integer4 nw nn kk idum ic i))
       (setf nz 0)
       (setf ic 0)
@@ -40,8 +40,7 @@
           (f2cl-lib:fset (f2cl-lib:fref yr (i) ((1 n))) zeror)
           (f2cl-lib:fset (f2cl-lib:fref yi (i) ((1 n))) zeroi)
           (if (< acs (- elim)) (go label10))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zlog s1r s1i csr csi idum)
             (declare (ignore var-0 var-1))
             (setf csr var-2)
@@ -52,8 +51,7 @@
           (setf str (/ (exp csr) tol))
           (setf csr (* str (cos csi)))
           (setf csi (* str (sin csi)))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zuchk csr csi nw ascle tol)
             (declare (ignore var-0 var-1 var-3 var-4))
             (setf nw var-2))
@@ -102,8 +100,7 @@
           (f2cl-lib:fset (f2cl-lib:fref yr (i) ((1 n))) zeror)
           (f2cl-lib:fset (f2cl-lib:fref yi (i) ((1 n))) zeroi)
           (if (< acs (- elim)) (go label25))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zlog s2r s2i csr csi idum)
             (declare (ignore var-0 var-1))
             (setf csr var-2)
@@ -114,8 +111,7 @@
           (setf str (/ (exp csr) tol))
           (setf csr (* str (cos csi)))
           (setf csi (* str (sin csi)))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zuchk csr csi nw ascle tol)
             (declare (ignore var-0 var-1 var-3 var-4))
             (setf nw var-2))

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -12,8 +12,8 @@
   (declare (type single-float eta)
            (type f2cl-lib:integer4 nos)
            (type (simple-array double-float (*)) os))
-  (prog ((initds 0) (i 0) (ii 0) (err 0.0f0))
-    (declare (type single-float err) (type f2cl-lib:integer4 ii i initds))
+  (prog ((initds 0) (abs$ 0.0f0) (i 0) (ii 0) (err 0.0f0))
+    (declare (type single-float err abs$) (type f2cl-lib:integer4 ii i initds))
     (if (< nos 1)
         (xermsg "SLATEC" "INITDS" "Number of coefficients is less than 1" 2 1))
     (setf err 0.0f0)

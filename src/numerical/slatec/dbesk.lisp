@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -18,13 +18,13 @@
              (type double-float fnu x))
     (prog ((w (make-array 2 :element-type 'double-float)) (cn 0.0) (dnu 0.0)
            (elim 0.0) (etx 0.0) (flgik 0.0) (fn 0.0) (fnn 0.0) (gln 0.0)
-           (gnu 0.0) (rtz 0.0) (s 0.0) (s1 0.0) (s2 0.0) (t_ 0.0) (tm 0.0)
+           (gnu 0.0) (rtz 0.0) (s 0.0) (s1 0.0) (s2 0.0) (t$ 0.0) (tm 0.0)
            (trx 0.0) (xlim 0.0) (zn 0.0) (i 0) (j 0) (k 0) (mz 0) (nb 0) (nd 0)
-           (nn 0) (nud 0))
-      (declare (type f2cl-lib:integer4 nud nn nd nb mz k j i)
+           (nn 0) (nud 0) (log$ 0))
+      (declare (type f2cl-lib:integer4 log$ nud nn nd nb mz k j i)
                (type (simple-array double-float (2)) w)
-               (type double-float zn xlim trx tm t_ s2 s1 s rtz gnu gln fnn fn
-                flgik etx elim dnu cn))
+               (type double-float zn xlim trx tm t$ s2 s1 s rtz gnu gln fnn fn
+                                  flgik etx elim dnu cn))
       (setf nn (f2cl-lib:int-sub (f2cl-lib:i1mach 15)))
       (setf elim (* 2.303 (- (* nn (f2cl-lib:d1mach 5)) 3.0)))
       (setf xlim (* (f2cl-lib:d1mach 1) 1000.0))
@@ -49,8 +49,8 @@
       (if (= zn 0.0) (go label320))
       (setf rtz (f2cl-lib:fsqrt (+ 1.0 (* zn zn))))
       (setf gln (f2cl-lib:flog (/ (+ 1.0 rtz) zn)))
-      (setf t_ (+ (* rtz (- 1.0 etx)) (/ etx (+ zn rtz))))
-      (setf cn (* (- fn) (- t_ gln)))
+      (setf t$ (+ (* rtz (- 1.0 etx)) (/ etx (+ zn rtz))))
+      (setf cn (* (- fn) (- t$ gln)))
       (if (> cn elim) (go label320))
       (if (< nud (f2cl-lib:fref nulim (nn) ((1 2)))) (go label30))
       (if (= nn 1) (go label20))
@@ -59,13 +59,12 @@
       (setf zn (/ x fn))
       (setf rtz (f2cl-lib:fsqrt (+ 1.0 (* zn zn))))
       (setf gln (f2cl-lib:flog (/ (+ 1.0 rtz) zn)))
-      (setf t_ (+ (* rtz (- 1.0 etx)) (/ etx (+ zn rtz))))
-      (setf cn (* (- fn) (- t_ gln)))
+      (setf t$ (+ (* rtz (- 1.0 etx)) (/ etx (+ zn rtz))))
+      (setf cn (* (- fn) (- t$ gln)))
      label20
       (if (< cn (- elim)) (go label230))
       (setf flgik -1.0)
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
           (dasyik x gnu kode flgik rtz cn nn y)
         (declare (ignore var-0 var-1 var-2 var-3 var-6 var-7))
         (setf rtz var-4)
@@ -95,8 +94,7 @@
      label80
       (setf nb 2)
       (if (and (= nud 0) (= nd 1)) (setf nb 1))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (dbsknu x dnu kode nb w nz)
         (declare (ignore var-0 var-1 var-2 var-3 var-4))
         (setf nz var-5))
@@ -148,8 +146,7 @@
       (if (> (* (- fn) (- (f2cl-lib:flog x) 0.693)) elim) (go label320))
      label170
       (if (= dnu 0.0) (go label180))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (dbsknu x fnu kode nd y mz)
         (declare (ignore var-0 var-1 var-2 var-3 var-4))
         (setf mz var-5))

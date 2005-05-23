@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,24 +10,24 @@
 
 (let ((x1 3.0)
       (x2 20.0)
-      (pi_ 3.14159265358979)
-      (rthpi 0.7978845608028651)
+      (pi$ 3.14159265358979)
+      (rthpi 0.797884560802865)
       (hpi 1.5707963267949)
       (cc (make-array 8 :element-type 'double-float)))
   (declare (type (simple-array double-float (8)) cc)
-           (type double-float hpi rthpi pi_ x2 x1))
-  (f2cl-lib:fset (f2cl-lib:fref cc (1) ((1 8))) 0.5772156649015331)
+           (type double-float hpi rthpi pi$ x2 x1))
+  (f2cl-lib:fset (f2cl-lib:fref cc (1) ((1 8))) 0.577215664901533)
   (f2cl-lib:fset (f2cl-lib:fref cc (2) ((1 8))) -0.0420026350340952)
   (f2cl-lib:fset (f2cl-lib:fref cc (3) ((1 8))) -0.0421977345555443)
   (f2cl-lib:fset (f2cl-lib:fref cc (4) ((1 8))) 0.007218943246663)
   (f2cl-lib:fset (f2cl-lib:fref cc (5) ((1 8))) -2.152416741149e-4)
-  (f2cl-lib:fset (f2cl-lib:fref cc (6) ((1 8))) -2.0134854780699998e-5)
-  (f2cl-lib:fset (f2cl-lib:fref cc (7) ((1 8))) 1.1330272320000001e-6)
-  (f2cl-lib:fset (f2cl-lib:fref cc (8) ((1 8))) 6.116094999999999e-9)
+  (f2cl-lib:fset (f2cl-lib:fref cc (6) ((1 8))) -2.01348547807e-5)
+  (f2cl-lib:fset (f2cl-lib:fref cc (7) ((1 8))) 1.133027232e-6)
+  (f2cl-lib:fset (f2cl-lib:fref cc (8) ((1 8))) 6.116095e-9)
   (defun dbsynu (x fnu n y)
-    (declare (type double-float x fnu)
+    (declare (type (simple-array double-float (*)) y)
              (type f2cl-lib:integer4 n)
-             (type (simple-array double-float (*)) y))
+             (type double-float fnu x))
     (prog ((a (make-array 120 :element-type 'double-float))
            (rb (make-array 120 :element-type 'double-float))
            (cb (make-array 120 :element-type 'double-float)) (ak 0.0) (arg 0.0)
@@ -39,15 +39,18 @@
            (rck 0.0) (relb 0.0) (rpt 0.0) (rp1 0.0) (rp2 0.0) (rs 0.0)
            (rs1 0.0) (rs2 0.0) (rx 0.0) (s 0.0) (sa 0.0) (sb 0.0) (smu 0.0)
            (ss 0.0) (st 0.0) (s1 0.0) (s2 0.0) (tb 0.0) (tm 0.0) (tol 0.0)
-           (t1 0.0) (t2 0.0) (i 0) (inu 0) (j 0) (k 0) (kk 0) (nn 0))
-      (declare (type f2cl-lib:integer4 nn kk k j inu i)
+           (t1 0.0) (t2 0.0) (i 0) (inu 0) (j 0) (k 0) (kk 0) (nn 0)
+           (abs$ 0.0f0))
+      (declare (type single-float abs$)
+               (type f2cl-lib:integer4 nn kk k j inu i)
                (type double-float t2 t1 tol tm tb s2 s1 st ss smu sb sa s rx
-                rs2 rs1 rs rp2 rp1 rpt relb rck rbk q pt p g2 g1 g fx fn fmu
-                flrx fks fk fhs fc f etx etest dnu2 dnu cx cs2 cs1 cs cp2 cp1
-                cpt coef ck cck cbk bk a2 a1 arg ak)
+                                  rs2 rs1 rs rp2 rp1 rpt relb rck rbk q pt p g2
+                                  g1 g fx fn fmu flrx fks fk fhs fc f etx etest
+                                  dnu2 dnu cx cs2 cs1 cs cp2 cp1 cpt coef ck
+                                  cck cbk bk a2 a1 arg ak)
                (type (simple-array double-float (120)) rb cb a))
       (setf ak (f2cl-lib:d1mach 3))
-      (setf tol (max ak 1.0000000000000002e-15))
+      (setf tol (max ak 1.0e-15))
       (if (<= x 0.0) (go label270))
       (if (< fnu 0.0) (go label280))
       (if (< n 1) (go label290))
@@ -83,14 +86,14 @@
      label50
       (setf g2 (+ t1 t2))
       (setf smu 1.0)
-      (setf fc (/ 1.0 pi_))
+      (setf fc (/ 1.0 pi$))
       (setf flrx (f2cl-lib:flog rx))
       (setf fmu (* dnu flrx))
       (setf tm 0.0)
       (if (= dnu 0.0) (go label60))
       (setf tm (/ (sin (* dnu hpi)) dnu))
       (setf tm (* (+ dnu dnu) tm tm))
-      (setf fc (/ dnu (sin (* dnu pi_))))
+      (setf fc (/ dnu (sin (* dnu pi$))))
       (if (/= fmu 0.0) (setf smu (/ (sinh fmu) fmu)))
      label60
       (setf f (* fc (+ (* g1 (cosh fmu)) (* g2 flrx smu))))
@@ -145,7 +148,7 @@
      label120
       (setf coef (/ rthpi (f2cl-lib:fsqrt x)))
       (if (> x x2) (go label210))
-      (setf etest (/ (cos (* pi_ dnu)) (* pi_ x tol)))
+      (setf etest (/ (cos (* pi$ dnu)) (* pi$ x tol)))
       (setf fks 1.0)
       (setf fhs 0.25)
       (setf fk 0.0)

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -12,44 +12,43 @@
   (declare (type f2cl-lib:integer4 level nerr)
            (type (simple-array character (*)) messg subrou librar))
   (prog ((lfirst
-          (make-array '(20) :element-type 'character :initial-element #\Space))
+          (make-array '(20) :element-type 'character :initial-element #\ ))
          (temp
-          (make-array '(72) :element-type 'character :initial-element #\Space))
+          (make-array '(72) :element-type 'character :initial-element #\ ))
          (xlibr
-          (make-array '(8) :element-type 'character :initial-element #\Space))
+          (make-array '(8) :element-type 'character :initial-element #\ ))
          (xsubr
-          (make-array '(8) :element-type 'character :initial-element #\Space))
-         (ltemp 0) (mkntrl 0) (llevel 0) (lerr 0) (kount 0) (i 0) (kdummy 0)
-         (f2cl-lib:f2cl-// 0.0f0) (maxmes 0) (lkntrl 0))
-    (declare (type single-float f2cl-lib:f2cl-//)
+          (make-array '(8) :element-type 'character :initial-element #\ ))
+         (ltemp 0) (abs$ 0.0f0) (mkntrl 0) (llevel 0) (lerr 0) (kount 0) (i 0)
+         (kdummy 0) (f2cl-lib:f2cl-// 0.0f0) (maxmes 0) (lkntrl 0))
+    (declare (type single-float f2cl-lib:f2cl-// abs$)
              (type f2cl-lib:integer4 lkntrl maxmes kdummy i kount lerr llevel
-              mkntrl ltemp)
+                                     mkntrl ltemp)
              (type (simple-array character (8)) xsubr xlibr)
              (type (simple-array character (72)) temp)
              (type (simple-array character (20)) lfirst))
     (setf lkntrl (j4save 2 0 f2cl-lib:%false%))
     (setf maxmes (j4save 4 0 f2cl-lib:%false%))
     (cond
-     ((or (< nerr (f2cl-lib:int-sub 9999999))
-          (> nerr 99999999)
-          (= nerr 0)
-          (< level (f2cl-lib:int-sub 1))
-          (> level 2))
-      (xerprn " ***" -1
-       (f2cl-lib:f2cl-//
-        (f2cl-lib:f2cl-// "FATAL ERROR IN...$$ "
-                          "XERMSG -- INVALID ERROR NUMBER OR LEVEL$$ ")
-        "JOB ABORT DUE TO FATAL ERROR.")
-       72)
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
-          (xersve " " " " " " 0 0 0 kdummy)
-        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5))
-        (setf kdummy var-6))
-      (xerhlt " ***XERMSG -- INVALID INPUT") (go end_label)))
+      ((or (< nerr (f2cl-lib:int-sub 9999999))
+           (> nerr 99999999)
+           (= nerr 0)
+           (< level (f2cl-lib:int-sub 1))
+           (> level 2))
+       (xerprn " ***" -1
+        (f2cl-lib:f2cl-//
+         (f2cl-lib:f2cl-// "FATAL ERROR IN...$$ "
+                           "XERMSG -- INVALID ERROR NUMBER OR LEVEL$$ ")
+         "JOB ABORT DUE TO FATAL ERROR.")
+        72)
+       (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
+           (xersve " " " " " " 0 0 0 kdummy)
+         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5))
+         (setf kdummy var-6))
+       (xerhlt " ***XERMSG -- INVALID INPUT")
+       (go end_label)))
     (setf i (j4save 1 nerr f2cl-lib:%true%))
-    (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
+    (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
         (xersve librar subrou messg 1 nerr level kount)
       (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5))
       (setf kount var-6))
@@ -75,105 +74,113 @@
              (max (the f2cl-lib:integer4 1) (the f2cl-lib:integer4 maxmes))))
      (go label30))
     (cond
-     ((/= lkntrl 0)
-      (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 21))
-                            "MESSAGE FROM ROUTINE ")
-      (setf i
-              (min (the f2cl-lib:integer4 (f2cl-lib:len subrou))
-                   (the f2cl-lib:integer4 16)))
-      (f2cl-lib:fset-string
-       (f2cl-lib:fref-string temp (22 (f2cl-lib:int-add 21 i)))
-       (f2cl-lib:fref-string subrou (1 i)))
-      (f2cl-lib:fset-string
-       (f2cl-lib:fref-string temp ((+ 22 i) (f2cl-lib:int-add 33 i)))
-       " IN LIBRARY ")
-      (setf ltemp (f2cl-lib:int-add 33 i))
-      (setf i
-              (min (the f2cl-lib:integer4 (f2cl-lib:len librar))
-                   (the f2cl-lib:integer4 16)))
-      (f2cl-lib:fset-string
-       (f2cl-lib:fref-string temp ((+ ltemp 1) (f2cl-lib:int-add ltemp i)))
-       (f2cl-lib:fref-string librar (1 i)))
-      (f2cl-lib:fset-string
-       (f2cl-lib:fref-string temp ((+ ltemp i 1) (f2cl-lib:int-add ltemp i 1)))
-       ".")
-      (setf ltemp (f2cl-lib:int-add ltemp i 1))
-      (xerprn " ***" -1 (f2cl-lib:fref-string temp (1 ltemp)) 72)))
+      ((/= lkntrl 0)
+       (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 21))
+                             "MESSAGE FROM ROUTINE ")
+       (setf i
+               (min (the f2cl-lib:integer4 (f2cl-lib:len subrou))
+                    (the f2cl-lib:integer4 16)))
+       (f2cl-lib:fset-string
+        (f2cl-lib:fref-string temp (22 (f2cl-lib:int-add 21 i)))
+        (f2cl-lib:fref-string subrou (1 i)))
+       (f2cl-lib:fset-string
+        (f2cl-lib:fref-string temp ((+ 22 i) (f2cl-lib:int-add 33 i)))
+        " IN LIBRARY ")
+       (setf ltemp (f2cl-lib:int-add 33 i))
+       (setf i
+               (min (the f2cl-lib:integer4 (f2cl-lib:len librar))
+                    (the f2cl-lib:integer4 16)))
+       (f2cl-lib:fset-string
+        (f2cl-lib:fref-string temp ((+ ltemp 1) (f2cl-lib:int-add ltemp i)))
+        (f2cl-lib:fref-string librar (1 i)))
+       (f2cl-lib:fset-string
+        (f2cl-lib:fref-string temp
+                              ((+ ltemp i 1) (f2cl-lib:int-add ltemp i 1)))
+        ".")
+       (setf ltemp (f2cl-lib:int-add ltemp i 1))
+       (xerprn " ***" -1 (f2cl-lib:fref-string temp (1 ltemp)) 72)))
     (cond
-     ((> lkntrl 0)
-      (cond
-       ((<= level 0)
-        (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 20))
-                              "INFORMATIVE MESSAGE,")
-        (setf ltemp 20))
-       ((= level 1)
-        (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 30))
-                              "POTENTIALLY RECOVERABLE ERROR,")
-        (setf ltemp 30))
-       (t
-        (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 12))
-                              "FATAL ERROR,")
-        (setf ltemp 12)))
-      (cond
-       ((or (and (= mkntrl 2) (>= level 1)) (and (= mkntrl 1) (= level 2)))
-        (f2cl-lib:fset-string
-         (f2cl-lib:fref-string temp ((+ ltemp 1) (f2cl-lib:int-add ltemp 14)))
-         " PROG ABORTED,")
-        (setf ltemp (f2cl-lib:int-add ltemp 14)))
-       (t
-        (f2cl-lib:fset-string
-         (f2cl-lib:fref-string temp ((+ ltemp 1) (f2cl-lib:int-add ltemp 16)))
-         " PROG CONTINUES,")
-        (setf ltemp (f2cl-lib:int-add ltemp 16))))
-      (cond
-       ((> lkntrl 0)
-        (f2cl-lib:fset-string
-         (f2cl-lib:fref-string temp ((+ ltemp 1) (f2cl-lib:int-add ltemp 20)))
-         " TRACEBACK REQUESTED")
-        (setf ltemp (f2cl-lib:int-add ltemp 20)))
-       (t
-        (f2cl-lib:fset-string
-         (f2cl-lib:fref-string temp ((+ ltemp 1) (f2cl-lib:int-add ltemp 24)))
-         " TRACEBACK NOT REQUESTED")
-        (setf ltemp (f2cl-lib:int-add ltemp 24))))
-      (xerprn " ***" -1 (f2cl-lib:fref-string temp (1 ltemp)) 72)))
+      ((> lkntrl 0)
+       (cond
+         ((<= level 0)
+          (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 20))
+                                "INFORMATIVE MESSAGE,")
+          (setf ltemp 20))
+         ((= level 1)
+          (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 30))
+                                "POTENTIALLY RECOVERABLE ERROR,")
+          (setf ltemp 30))
+         (t
+          (f2cl-lib:fset-string (f2cl-lib:fref-string temp (1 12))
+                                "FATAL ERROR,")
+          (setf ltemp 12)))
+       (cond
+         ((or (and (= mkntrl 2) (>= level 1)) (and (= mkntrl 1) (= level 2)))
+          (f2cl-lib:fset-string
+           (f2cl-lib:fref-string temp
+                                 ((+ ltemp 1) (f2cl-lib:int-add ltemp 14)))
+           " PROG ABORTED,")
+          (setf ltemp (f2cl-lib:int-add ltemp 14)))
+         (t
+          (f2cl-lib:fset-string
+           (f2cl-lib:fref-string temp
+                                 ((+ ltemp 1) (f2cl-lib:int-add ltemp 16)))
+           " PROG CONTINUES,")
+          (setf ltemp (f2cl-lib:int-add ltemp 16))))
+       (cond
+         ((> lkntrl 0)
+          (f2cl-lib:fset-string
+           (f2cl-lib:fref-string temp
+                                 ((+ ltemp 1) (f2cl-lib:int-add ltemp 20)))
+           " TRACEBACK REQUESTED")
+          (setf ltemp (f2cl-lib:int-add ltemp 20)))
+         (t
+          (f2cl-lib:fset-string
+           (f2cl-lib:fref-string temp
+                                 ((+ ltemp 1) (f2cl-lib:int-add ltemp 24)))
+           " TRACEBACK NOT REQUESTED")
+          (setf ltemp (f2cl-lib:int-add ltemp 24))))
+       (xerprn " ***" -1 (f2cl-lib:fref-string temp (1 ltemp)) 72)))
     (xerprn " *  " -1 messg 72)
     (cond
-     ((> lkntrl 0)
-      (tagbody
-        (f2cl-lib:fformat temp ("ERROR NUMBER = " 1 (("~8D")) "~%") nerr)
-        (f2cl-lib:fdo (i 16 (f2cl-lib:int-add i 1))
-                      ((> i 22) nil)
-          (tagbody
-            (if (f2cl-lib:fstring-/= (f2cl-lib:fref-string temp (i i)) " ")
-                (go label20))
-           label10))
-       label20
-        (xerprn " *  " -1
-         (f2cl-lib:f2cl-// (f2cl-lib:fref-string temp (1 15))
-                           (f2cl-lib:fref-string temp (i 23)))
-         72)
-        (fdump))))
+      ((> lkntrl 0)
+       (tagbody
+         (f2cl-lib:fformat temp ("ERROR NUMBER = " 1 (("~8D")) "~%") nerr)
+         (f2cl-lib:fdo (i 16 (f2cl-lib:int-add i 1))
+                       ((> i 22) nil)
+           (tagbody
+             (if (f2cl-lib:fstring-/= (f2cl-lib:fref-string temp (i i)) " ")
+                 (go label20))
+            label10))
+        label20
+         (xerprn " *  " -1
+          (f2cl-lib:f2cl-// (f2cl-lib:fref-string temp (1 15))
+                            (f2cl-lib:fref-string temp (i 23)))
+          72)
+         (fdump))))
     (cond
-     ((/= lkntrl 0) (xerprn " *  " -1 " " 72)
-      (xerprn " ***" -1 "END OF MESSAGE" 72) (xerprn "    " 0 " " 72)))
+      ((/= lkntrl 0)
+       (xerprn " *  " -1 " " 72)
+       (xerprn " ***" -1 "END OF MESSAGE" 72)
+       (xerprn "    " 0 " " 72)))
    label30
     (if (or (<= level 0) (and (= level 1) (<= mkntrl 1))) (go end_label))
     (cond
-     ((and (> lkntrl 0)
-           (< kount
-              (max (the f2cl-lib:integer4 1) (the f2cl-lib:integer4 maxmes))))
-      (cond
-       ((= level 1)
-        (xerprn " ***" -1 "JOB ABORT DUE TO UNRECOVERED ERROR." 72))
-       (t (xerprn " ***" -1 "JOB ABORT DUE TO FATAL ERROR." 72)))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
-          (xersve " " " " " " -1 0 0 kdummy)
-        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5))
-        (setf kdummy var-6))
-      (xerhlt " "))
-     (t (xerhlt messg)))
+      ((and (> lkntrl 0)
+            (< kount
+               (max (the f2cl-lib:integer4 1) (the f2cl-lib:integer4 maxmes))))
+       (cond
+         ((= level 1)
+          (xerprn " ***" -1 "JOB ABORT DUE TO UNRECOVERED ERROR." 72))
+         (t
+          (xerprn " ***" -1 "JOB ABORT DUE TO FATAL ERROR." 72)))
+       (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6)
+           (xersve " " " " " " -1 0 0 kdummy)
+         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5))
+         (setf kdummy var-6))
+       (xerhlt " "))
+      (t
+       (xerhlt messg)))
     (go end_label)
    end_label
     (return (values nil nil nil nil nil))))

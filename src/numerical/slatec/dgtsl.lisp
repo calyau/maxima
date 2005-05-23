@@ -1,8 +1,8 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
-;;;           (:array-slicing nil) (:declare-common nil)
+;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
 (in-package "SLATEC")
@@ -10,7 +10,7 @@
 
 (defun dgtsl (n c d e b info)
   (declare (type (array double-float (*)) b e d c)
-   (type f2cl-lib:integer4 info n))
+           (type f2cl-lib:integer4 info n))
   (f2cl-lib:with-multi-array-data
       ((c double-float c-%data% c-%offset%)
        (d double-float d-%data% d-%offset%)
@@ -18,7 +18,8 @@
        (b double-float b-%data% b-%offset%))
     (prog ((t$ 0.0) (k 0) (kb 0) (kp1 0) (nm1 0) (nm2 0) (abs$ 0.0f0))
       (declare (type single-float abs$)
-       (type f2cl-lib:integer4 nm2 nm1 kp1 kb k) (type double-float t$))
+               (type f2cl-lib:integer4 nm2 nm1 kp1 kb k)
+               (type double-float t$))
       (setf info 0)
       (f2cl-lib:fset (f2cl-lib:fref c-%data% (1) ((1 *)) c-%offset%)
                      (f2cl-lib:fref d-%data% (1) ((1 *)) d-%offset%))

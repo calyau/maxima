@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -15,20 +15,19 @@
       (rt2 1.4142135623730951))
   (declare (type double-float rt2 conei coner czeroi czeror))
   (defun zrati (zr zi fnu n cyr cyi tol)
-    (declare (type f2cl-lib:integer4 n)
-             (type (simple-array double-float (*)) cyr cyi)
-             (type double-float zr zi fnu tol))
+    (declare (type (simple-array double-float (*)) cyi cyr)
+             (type f2cl-lib:integer4 n)
+             (type double-float tol fnu zi zr))
     (prog ((i 0) (id 0) (idnu 0) (inu 0) (itime 0) (k 0) (kk 0) (magz 0)
            (ak 0.0) (amagz 0.0) (ap1 0.0) (ap2 0.0) (arg 0.0) (az 0.0)
            (cdfnui 0.0) (cdfnur 0.0) (dfnu 0.0) (fdnu 0.0) (flam 0.0)
            (fnup 0.0) (pti 0.0) (ptr 0.0) (p1i 0.0) (p1r 0.0) (p2i 0.0)
            (p2r 0.0) (rak 0.0) (rap1 0.0) (rho 0.0) (rzi 0.0) (rzr 0.0)
            (test 0.0) (test1 0.0) (tti 0.0) (ttr 0.0) (t1i 0.0) (t1r 0.0))
-      (declare
-       (type double-float t1r t1i ttr tti test1 test rzr rzi rho rap1 rak p2r
-        p2i p1r p1i ptr pti fnup flam fdnu dfnu cdfnur cdfnui az arg ap2 ap1
-        amagz ak)
-       (type f2cl-lib:integer4 magz kk k itime inu idnu id i))
+      (declare (type double-float t1r t1i ttr tti test1 test rzr rzi rho rap1
+                                  rak p2r p2i p1r p1i ptr pti fnup flam fdnu
+                                  dfnu cdfnur cdfnui az arg ap2 ap1 amagz ak)
+               (type f2cl-lib:integer4 magz kk k itime inu idnu id i))
       (setf az (zabs zr zi))
       (setf inu (f2cl-lib:int fnu))
       (setf idnu (f2cl-lib:int-sub (f2cl-lib:int-add inu n) 1))
@@ -112,8 +111,7 @@
       (setf p1r tol)
       (setf p1i tol)
      label40
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zdiv p2r p2i p1r p1i (f2cl-lib:fref cyr (n) ((1 n)))
            (f2cl-lib:fref cyi (n) ((1 n))))
         (declare (ignore var-0 var-1 var-2 var-3))

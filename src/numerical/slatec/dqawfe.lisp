@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -14,9 +14,10 @@
          (f a omega integr epsabs limlst limit maxp1 result abserr neval ier
           rslst erlst ierlst lst alist blist rlist elist iord nnlog chebmo)
     (declare (type (array f2cl-lib:integer4 (*)) nnlog iord ierlst)
-     (type (array double-float (*)) chebmo elist rlist blist alist erlst rslst)
-     (type f2cl-lib:integer4 lst ier neval maxp1 limit limlst integr)
-     (type double-float abserr result epsabs omega a))
+             (type (array double-float (*)) chebmo elist rlist blist alist
+                                            erlst rslst)
+             (type f2cl-lib:integer4 lst ier neval maxp1 limit limlst integr)
+             (type double-float abserr result epsabs omega a))
     (f2cl-lib:with-multi-array-data
         ((rslst double-float rslst-%data% rslst-%offset%)
          (erlst double-float erlst-%data% erlst-%offset%)
@@ -35,11 +36,12 @@
              (ep 0.0) (eps 0.0) (epsa 0.0) (errsum 0.0) (fact 0.0) (p1 0.0)
              (reseps 0.0) (uflow 0.0) (abs$ 0.0f0) (last$ 0))
         (declare (type single-float abs$)
-         (type (array double-float (3)) res3la)
-         (type (array double-float (52)) psum)
-         (type double-float uflow reseps p1 fact errsum epsa eps ep drl dl c2
-          c1 cycle correc abseps)
-         (type f2cl-lib:integer4 last$ numrl2 nres nev momcom ll l ktmin))
+                 (type (array double-float (3)) res3la)
+                 (type (array double-float (52)) psum)
+                 (type double-float uflow reseps p1 fact errsum epsa eps ep drl
+                                    dl c2 c1 cycle correc abseps)
+                 (type f2cl-lib:integer4 last$ numrl2 nres nev momcom ll l
+                                         ktmin))
         (setf result 0.0)
         (setf abserr 0.0)
         (setf neval 0)
@@ -51,13 +53,12 @@
         (if (/= omega 0.0) (go label10))
         (if (= integr 1)
             (multiple-value-bind
-                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
-                 var-10 var-11 var-12 var-13 var-14 var-15)
+                  (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
+                   var-10 var-11 var-12 var-13 var-14 var-15)
                 (dqagie f a 1 epsabs 0.0 limit result abserr neval ier alist
                  blist rlist elist iord last$)
-              (declare
-               (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-10 var-11 var-12
-                var-13 var-14))
+              (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-10
+                               var-11 var-12 var-13 var-14))
               (setf result var-6)
               (setf abserr var-7)
               (setf neval var-8)
@@ -101,17 +102,17 @@
           (tagbody
             (setf epsa (* eps fact))
             (multiple-value-bind
-                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
-                 var-10 var-11 var-12 var-13 var-14 var-15 var-16 var-17 var-18
-                 var-19 var-20 var-21 var-22)
+                  (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
+                   var-10 var-11 var-12 var-13 var-14 var-15 var-16 var-17
+                   var-18 var-19 var-20 var-21 var-22)
                 (dqawoe f c1 c2 omega integr epsa 0.0 limit lst maxp1
                  (f2cl-lib:fref rslst-%data% (lst) ((1 *)) rslst-%offset%)
                  (f2cl-lib:fref erlst-%data% (lst) ((1 *)) erlst-%offset%) nev
                  (f2cl-lib:fref ierlst-%data% (lst) ((1 *)) ierlst-%offset%)
                  last$ alist blist rlist elist iord nnlog momcom chebmo)
-              (declare
-               (ignore var-0 var-1 var-2 var-3 var-5 var-6 var-7 var-8 var-9
-                var-15 var-16 var-17 var-18 var-19 var-20 var-22))
+              (declare (ignore var-0 var-1 var-2 var-3 var-5 var-6 var-7 var-8
+                               var-9 var-15 var-16 var-17 var-18 var-19 var-20
+                               var-22))
               (setf integr var-4)
               (f2cl-lib:fset
                (f2cl-lib:fref rslst-%data% (lst) ((1 *)) rslst-%offset%)
@@ -172,8 +173,7 @@
                                              rslst-%offset%)))
             (if (= lst 2) (go label40))
             (if (= lst limlst) (setf ier 1))
-            (multiple-value-bind
-                (var-0 var-1 var-2 var-3 var-4 var-5)
+            (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
                 (dqelg numrl2 psum reseps abseps res3la nres)
               (declare (ignore var-1 var-4))
               (setf numrl2 var-0)

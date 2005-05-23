@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -8,12 +8,12 @@
 (in-package "SLATEC")
 
 
-(let ((pi_ 3.141592653589793) (zeror 0.0) (coner 1.0))
-  (declare (type double-float coner zeror pi_))
+(let ((pi$ 3.141592653589793) (zeror 0.0) (coner 1.0))
+  (declare (type double-float coner zeror pi$))
   (defun zacon (zr zi fnu kode mr n yr yi nz rl fnul tol elim alim)
-    (declare (type (simple-array double-float (*)) yr yi)
-             (type f2cl-lib:integer4 kode mr n nz)
-             (type double-float zr zi fnu rl fnul tol elim alim))
+    (declare (type (simple-array double-float (*)) yi yr)
+             (type f2cl-lib:integer4 nz n mr kode)
+             (type double-float alim elim tol fnul rl fnu zi zr))
     (prog ((cyr (make-array 2 :element-type 'double-float))
            (cyi (make-array 2 :element-type 'double-float))
            (cssr (make-array 3 :element-type 'double-float))
@@ -26,47 +26,48 @@
            (pti 0.0) (ptr 0.0) (razn 0.0) (rzi 0.0) (rzr 0.0) (sc1i 0.0)
            (sc1r 0.0) (sc2i 0.0) (sc2r 0.0) (sgn 0.0) (spn 0.0) (sti 0.0)
            (str 0.0) (s1i 0.0) (s1r 0.0) (s2i 0.0) (s2r 0.0) (yy 0.0) (zni 0.0)
-           (znr 0.0))
-      (declare (type (simple-array double-float (2)) cyr cyi)
+           (znr 0.0) (abs$ 0.0f0))
+      (declare (type single-float abs$)
+               (type (simple-array double-float (2)) cyr cyi)
                (type (simple-array double-float (3)) cssr csrr bry)
                (type double-float znr zni yy s2r s2i s1r s1i str sti spn sgn
-                sc2r sc2i sc1r sc1i rzr rzi razn ptr pti fn fmr c2r c2i c1r c1m
-                c1i csr cspnr cspni csgnr csgni cscr cscl cpn ckr cki bscle azn
-                as2 ascle arg)
+                                  sc2r sc2i sc1r sc1i rzr rzi razn ptr pti fn
+                                  fmr c2r c2i c1r c1m c1i csr cspnr cspni csgnr
+                                  csgni cscr cscl cpn ckr cki bscle azn as2
+                                  ascle arg)
                (type f2cl-lib:integer4 nw nn kflag iuf inu i))
       (setf nz 0)
       (setf znr (- zr))
       (setf zni (- zi))
       (setf nn n)
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11 var-12)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11 var-12)
           (zbinu znr zni fnu kode nn yr yi nw rl fnul tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10
-          var-11 var-12))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10 var-11 var-12))
         (setf nw var-7))
       (if (< nw 0) (go label90))
       (setf nn (min (the f2cl-lib:integer4 2) (the f2cl-lib:integer4 n)))
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
+             var-10)
           (zbknu znr zni fnu kode nn cyr cyi nw tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10))
         (setf nw var-7))
       (if (/= nw 0) (go label90))
       (setf s1r (f2cl-lib:fref cyr (1) ((1 2))))
       (setf s1i (f2cl-lib:fref cyi (1) ((1 2))))
       (setf fmr (coerce (the f2cl-lib:integer4 mr) 'double-float))
-      (setf sgn (coerce (- (f2cl-lib:dsign pi_ fmr)) 'double-float))
+      (setf sgn (coerce (- (f2cl-lib:dsign pi$ fmr)) 'double-float))
       (setf csgnr zeror)
       (setf csgni sgn)
       (if (= kode 1) (go label10))
       (setf yy (- zni))
       (setf cpn (cos yy))
       (setf spn (sin yy))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt csgnr csgni cpn spn csgnr csgni)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf csgnr var-4)
@@ -90,7 +91,7 @@
       (setf ascle (/ (* 1000.0 (f2cl-lib:d1mach 1)) tol))
       (if (= kode 1) (go label30))
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
           (zs1s2 znr zni c1r c1i c2r c2i nw ascle alim iuf)
         (declare (ignore var-0 var-1 var-7 var-8))
         (setf c1r var-2)
@@ -103,14 +104,12 @@
       (setf sc1r c1r)
       (setf sc1i c1i)
      label30
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt cspnr cspni c1r c1i str sti)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf str var-4)
         (setf sti var-5))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt csgnr csgni c2r c2i ptr pti)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf ptr var-4)
@@ -128,7 +127,7 @@
       (setf c2i (f2cl-lib:fref yi (2) ((1 n))))
       (if (= kode 1) (go label40))
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
           (zs1s2 znr zni c1r c1i c2r c2i nw ascle alim iuf)
         (declare (ignore var-0 var-1 var-7 var-8))
         (setf c1r var-2)
@@ -141,14 +140,12 @@
       (setf sc2r c1r)
       (setf sc2i c1i)
      label40
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt cspnr cspni c1r c1i str sti)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf str var-4)
         (setf sti var-5))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt csgnr csgni c2r c2i ptr pti)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf ptr var-4)
@@ -211,7 +208,7 @@
           (if (= kode 1) (go label70))
           (if (< iuf 0) (go label70))
           (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
               (zs1s2 znr zni c1r c1i c2r c2i nw ascle alim iuf)
             (declare (ignore var-0 var-1 var-7 var-8))
             (setf c1r var-2)

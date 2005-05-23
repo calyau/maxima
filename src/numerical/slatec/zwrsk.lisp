@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -9,23 +9,22 @@
 
 
 (defun zwrsk (zrr zri fnu kode n yr yi nz cwr cwi tol elim alim)
-  (declare (type (simple-array double-float (*)) yr yi)
-           (type f2cl-lib:integer4 kode n nz)
-           (type (simple-array double-float (*)) cwr cwi)
-           (type double-float zrr zri fnu tol elim alim))
+  (declare (type (simple-array double-float (*)) cwi cwr)
+           (type (simple-array double-float (*)) yi yr)
+           (type f2cl-lib:integer4 nz n kode)
+           (type double-float alim elim tol fnu zri zrr))
   (prog ((i 0) (nw 0) (act 0.0) (acw 0.0) (ascle 0.0) (cinui 0.0) (cinur 0.0)
          (csclr 0.0) (cti 0.0) (ctr 0.0) (c1i 0.0) (c1r 0.0) (c2i 0.0)
          (c2r 0.0) (pti 0.0) (ptr 0.0) (ract 0.0) (sti 0.0) (str 0.0))
-    (declare
-     (type double-float str sti ract ptr pti c2r c2i c1r c1i ctr cti csclr
-      cinur cinui ascle acw act)
-     (type f2cl-lib:integer4 nw i))
+    (declare (type double-float str sti ract ptr pti c2r c2i c1r c1i ctr cti
+                                csclr cinur cinui ascle acw act)
+             (type f2cl-lib:integer4 nw i))
     (setf nz 0)
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10)
         (zbknu zrr zri fnu kode 2 cwr cwi nw tol elim alim)
-      (declare
-       (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10))
+      (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                       var-10))
       (setf nw var-7))
     (if (/= nw 0) (go label50))
     (zrati zrr zri fnu n yr yi tol)

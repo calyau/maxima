@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,9 +11,9 @@
 (let ((zeror 0.0) (zeroi 0.0) (coner 1.0) (conei 0.0))
   (declare (type double-float conei coner zeroi zeror))
   (defun zseri (zr zi fnu kode n yr yi nz tol elim alim)
-    (declare (type (simple-array double-float (*)) yr yi)
-             (type f2cl-lib:integer4 kode n nz)
-             (type double-float zr zi fnu tol elim alim))
+    (declare (type (simple-array double-float (*)) yi yr)
+             (type f2cl-lib:integer4 nz n kode)
+             (type double-float alim elim tol fnu zi zr))
     (prog ((wr (make-array 2 :element-type 'double-float))
            (wi (make-array 2 :element-type 'double-float)) (i 0) (ib 0)
            (idum 0) (iflag 0) (il 0) (k 0) (l 0) (m 0) (nn 0) (nw 0) (aa 0.0)
@@ -25,8 +25,9 @@
            (s2r 0.0))
       (declare (type (simple-array double-float (2)) wr wi)
                (type double-float s2r s2i s1r s1i str sti ss s rzr rzi rtr1 rs
-                raz hzr hzi fnup dfnu czr czi crscr coefr coefi ckr cki az atol
-                ascle arm ak1r ak1i ak acz aa)
+                                  raz hzr hzi fnup dfnu czr czi crscr coefr
+                                  coefi ckr cki az atol ascle arm ak1r ak1i ak
+                                  acz aa)
                (type f2cl-lib:integer4 nw nn m l k il iflag idum ib i))
       (setf nz 0)
       (setf az (zabs zr zi))
@@ -41,8 +42,7 @@
       (setf czr zeror)
       (setf czi zeroi)
       (if (<= az rtr1) (go label10))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
           (zmlt hzr hzi hzr hzi czr czi)
         (declare (ignore var-0 var-1 var-2 var-3))
         (setf czr var-4)
@@ -50,8 +50,7 @@
      label10
       (setf acz (zabs czr czi))
       (setf nn n)
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
           (zlog hzr hzi ckr cki idum)
         (declare (ignore var-0 var-1))
         (setf ckr var-2)
@@ -63,8 +62,7 @@
       (setf ak1r (* ckr dfnu))
       (setf ak1i (* cki dfnu))
       (setf ak
-              (multiple-value-bind
-                  (ret-val var-0 var-1)
+              (multiple-value-bind (ret-val var-0 var-1)
                   (dgamln fnup idum)
                 (declare (ignore var-0))
                 (setf idum var-1)
@@ -124,8 +122,7 @@
           (f2cl-lib:fset (f2cl-lib:fref wr (i) ((1 2))) s2r)
           (f2cl-lib:fset (f2cl-lib:fref wi (i) ((1 2))) s2i)
           (if (= iflag 0) (go label80))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zuchk s2r s2i nw ascle tol)
             (declare (ignore var-0 var-1 var-3 var-4))
             (setf nw var-2))
@@ -135,8 +132,7 @@
           (f2cl-lib:fset (f2cl-lib:fref yr (m) ((1 n))) (* s2r crscr))
           (f2cl-lib:fset (f2cl-lib:fref yi (m) ((1 n))) (* s2i crscr))
           (if (= i il) (go label90))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5)
               (zdiv coefr coefi hzr hzi str sti)
             (declare (ignore var-0 var-1 var-2 var-3))
             (setf str var-4)

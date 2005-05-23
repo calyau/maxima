@@ -1,7 +1,7 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
-;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
+;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
@@ -19,14 +19,14 @@
       (x4 (make-array 22 :element-type 'double-float))
       (w87a (make-array 21 :element-type 'double-float))
       (w87b (make-array 23 :element-type 'double-float)))
-  (declare (type (simple-array double-float (23)) w87b)
-   (type (simple-array double-float (21)) w87a)
-   (type (simple-array double-float (22)) x4)
-   (type (simple-array double-float (12)) w43b)
-   (type (simple-array double-float (10)) w43a)
-   (type (simple-array double-float (11)) x3)
-   (type (simple-array double-float (6)) w21b)
-   (type (simple-array double-float (5)) w21a x2 w10 x1))
+  (declare (type (array double-float (23)) w87b)
+           (type (array double-float (21)) w87a)
+           (type (array double-float (22)) x4)
+           (type (array double-float (12)) w43b)
+           (type (array double-float (10)) w43a)
+           (type (array double-float (11)) x3)
+           (type (array double-float (6)) w21b)
+           (type (array double-float (5)) w21a x2 w10 x1))
   (f2cl-lib:fset (f2cl-lib:fref x1 (1) ((1 5))) 0.9739065285171717)
   (f2cl-lib:fset (f2cl-lib:fref x1 (2) ((1 5))) 0.8650633666889845)
   (f2cl-lib:fset (f2cl-lib:fref x1 (3) ((1 5))) 0.6794095682990244)
@@ -118,7 +118,7 @@
   (f2cl-lib:fset (f2cl-lib:fref w87a (8) ((1 21))) 0.02328041350288831)
   (f2cl-lib:fset (f2cl-lib:fref w87a (9) ((1 21))) 0.03087249761171336)
   (f2cl-lib:fset (f2cl-lib:fref w87a (10) ((1 21))) 0.03569363363941877)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (11) ((1 21))) 9.152833452022413e-4)
+  (f2cl-lib:fset (f2cl-lib:fref w87a (11) ((1 21))) 9.152833452022414e-4)
   (f2cl-lib:fset (f2cl-lib:fref w87a (12) ((1 21))) 0.005399280219300471)
   (f2cl-lib:fset (f2cl-lib:fref w87a (13) ((1 21))) 0.01094767960111893)
   (f2cl-lib:fset (f2cl-lib:fref w87a (14) ((1 21))) 0.016298731696787336)
@@ -129,7 +129,7 @@
   (f2cl-lib:fset (f2cl-lib:fref w87a (19) ((1 21))) 0.034783098950365146)
   (f2cl-lib:fset (f2cl-lib:fref w87a (20) ((1 21))) 0.03641222073135179)
   (f2cl-lib:fset (f2cl-lib:fref w87a (21) ((1 21))) 0.037253875503047706)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (1) ((1 23))) 2.7414556376207233e-4)
+  (f2cl-lib:fset (f2cl-lib:fref w87b (1) ((1 23))) 2.7414556376207234e-4)
   (f2cl-lib:fset (f2cl-lib:fref w87b (2) ((1 23))) 0.0018071241550579428)
   (f2cl-lib:fset (f2cl-lib:fref w87b (3) ((1 23))) 0.0040968692827591646)
   (f2cl-lib:fset (f2cl-lib:fref w87b (4) ((1 23))) 0.006758290051847379)
@@ -154,174 +154,182 @@
   (f2cl-lib:fset (f2cl-lib:fref w87b (23) ((1 23))) 0.037361073762679026)
   (defun dqng (f a b epsabs epsrel result abserr neval ier)
     (declare (type f2cl-lib:integer4 ier neval)
-     (type double-float abserr result epsrel epsabs b a)
-     (type (function (double-float) (values double-float &rest t)) f))
-    (prog ((fv1 (make-array 5 :element-type 'double-float))
-           (fv2 (make-array 5 :element-type 'double-float))
-           (fv3 (make-array 5 :element-type 'double-float))
-           (fv4 (make-array 5 :element-type 'double-float))
-           (savfun (make-array 21 :element-type 'double-float)) (ipx 0) (k 0)
-           (l 0) (absc 0.0) (centr 0.0) (dhlgth 0.0) (epmach 0.0) (fcentr 0.0)
-           (fval 0.0) (fval1 0.0) (fval2 0.0) (hlgth 0.0) (res10 0.0)
-           (res21 0.0) (res43 0.0) (res87 0.0) (resabs 0.0) (resasc 0.0)
-           (reskh 0.0) (uflow 0.0) (abs$ 0.0f0))
-      (declare (type single-float abs$)
-       (type (simple-array double-float (21)) savfun)
-       (type (simple-array double-float (5)) fv4 fv3 fv2 fv1)
-       (type double-float uflow reskh resasc resabs res87 res43 res21 res10
-        hlgth fval2 fval1 fval fcentr epmach dhlgth centr absc)
-       (type f2cl-lib:integer4 l k ipx))
-      (setf epmach (f2cl-lib:d1mach 4))
-      (setf uflow (f2cl-lib:d1mach 1))
-      (setf result 0.0)
-      (setf abserr 0.0)
-      (setf neval 0)
-      (setf ier 6)
-      (if (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.0e-29)))
-          (go label80))
-      (setf hlgth (* 0.5 (- b a)))
-      (setf dhlgth (coerce (abs hlgth) 'double-float))
-      (setf centr (* 0.5 (+ b a)))
-      (setf fcentr
-              (multiple-value-bind
-                  (ret-val var-0)
-                  (funcall f centr)
-                (declare (ignore))
-                (when var-0 (setf centr var-0))
-                ret-val))
-      (setf neval 21)
-      (setf ier 1)
-      (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
-                    ((> l 3) nil)
-        (tagbody
-          (f2cl-lib:computed-goto (label5 label25 label45) l)
-         label5
-          (setf res10 0.0)
-          (setf res21 (* (f2cl-lib:fref w21b (6) ((1 6))) fcentr))
-          (setf resabs (* (f2cl-lib:fref w21b (6) ((1 6))) (abs fcentr)))
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 5) nil)
-            (tagbody
-              (setf absc (* hlgth (f2cl-lib:fref x1 (k) ((1 5)))))
-              (setf fval1 (funcall f (+ centr absc)))
-              (setf fval2 (funcall f (- centr absc)))
-              (setf fval (+ fval1 fval2))
-              (setf res10 (+ res10 (* (f2cl-lib:fref w10 (k) ((1 5))) fval)))
-              (setf res21 (+ res21 (* (f2cl-lib:fref w21a (k) ((1 5))) fval)))
-              (setf resabs
-                      (+ resabs
-                         (* (f2cl-lib:fref w21a (k) ((1 5)))
-                            (+ (abs fval1) (abs fval2)))))
-              (f2cl-lib:fset (f2cl-lib:fref savfun (k) ((1 21))) fval)
-              (f2cl-lib:fset (f2cl-lib:fref fv1 (k) ((1 5))) fval1)
-              (f2cl-lib:fset (f2cl-lib:fref fv2 (k) ((1 5))) fval2)
-             label10))
-          (setf ipx 5)
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 5) nil)
-            (tagbody
-              (setf ipx (f2cl-lib:int-add ipx 1))
-              (setf absc (* hlgth (f2cl-lib:fref x2 (k) ((1 5)))))
-              (setf fval1 (funcall f (+ centr absc)))
-              (setf fval2 (funcall f (- centr absc)))
-              (setf fval (+ fval1 fval2))
-              (setf res21 (+ res21 (* (f2cl-lib:fref w21b (k) ((1 6))) fval)))
-              (setf resabs
-                      (+ resabs
-                         (* (f2cl-lib:fref w21b (k) ((1 6)))
-                            (+ (abs fval1) (abs fval2)))))
-              (f2cl-lib:fset (f2cl-lib:fref savfun (ipx) ((1 21))) fval)
-              (f2cl-lib:fset (f2cl-lib:fref fv3 (k) ((1 5))) fval1)
-              (f2cl-lib:fset (f2cl-lib:fref fv4 (k) ((1 5))) fval2)
-             label15))
-          (setf result (* res21 hlgth))
-          (setf resabs (* resabs dhlgth))
-          (setf reskh (* 0.5 res21))
-          (setf resasc
-                  (* (f2cl-lib:fref w21b (6) ((1 6))) (abs (- fcentr reskh))))
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 5) nil)
-            (tagbody
-              (setf resasc
-                      (+ resasc
-                         (* (f2cl-lib:fref w21a (k) ((1 5)))
-                            (+ (abs (- (f2cl-lib:fref fv1 (k) ((1 5))) reskh))
+             (type double-float abserr result epsrel epsabs b a)
+             (type (function (double-float) (values double-float &rest t)) f))
+    (f2cl-lib:with-multi-array-data
+        nil
+      (prog ((fv1 (make-array 5 :element-type 'double-float))
+             (fv2 (make-array 5 :element-type 'double-float))
+             (fv3 (make-array 5 :element-type 'double-float))
+             (fv4 (make-array 5 :element-type 'double-float))
+             (savfun (make-array 21 :element-type 'double-float)) (ipx 0) (k 0)
+             (l 0) (absc 0.0) (centr 0.0) (dhlgth 0.0) (epmach 0.0)
+             (fcentr 0.0) (fval 0.0) (fval1 0.0) (fval2 0.0) (hlgth 0.0)
+             (res10 0.0) (res21 0.0) (res43 0.0) (res87 0.0) (resabs 0.0)
+             (resasc 0.0) (reskh 0.0) (uflow 0.0) (abs$ 0.0f0))
+        (declare (type single-float abs$)
+                 (type (array double-float (21)) savfun)
+                 (type (array double-float (5)) fv4 fv3 fv2 fv1)
+                 (type double-float uflow reskh resasc resabs res87 res43 res21
+                                    res10 hlgth fval2 fval1 fval fcentr epmach
+                                    dhlgth centr absc)
+                 (type f2cl-lib:integer4 l k ipx))
+        (setf epmach (f2cl-lib:d1mach 4))
+        (setf uflow (f2cl-lib:d1mach 1))
+        (setf result 0.0)
+        (setf abserr 0.0)
+        (setf neval 0)
+        (setf ier 6)
+        (if (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.0e-29)))
+            (go label80))
+        (setf hlgth (* 0.5 (- b a)))
+        (setf dhlgth (coerce (abs hlgth) 'double-float))
+        (setf centr (* 0.5 (+ b a)))
+        (setf fcentr
+                (multiple-value-bind (ret-val var-0)
+                    (funcall f centr)
+                  (declare (ignore))
+                  (when var-0
+                    (setf centr var-0))
+                  ret-val))
+        (setf neval 21)
+        (setf ier 1)
+        (f2cl-lib:fdo (l 1 (f2cl-lib:int-add l 1))
+                      ((> l 3) nil)
+          (tagbody
+            (f2cl-lib:computed-goto (label5 label25 label45) l)
+           label5
+            (setf res10 0.0)
+            (setf res21 (* (f2cl-lib:fref w21b (6) ((1 6))) fcentr))
+            (setf resabs (* (f2cl-lib:fref w21b (6) ((1 6))) (abs fcentr)))
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 5) nil)
+              (tagbody
+                (setf absc (* hlgth (f2cl-lib:fref x1 (k) ((1 5)))))
+                (setf fval1 (funcall f (+ centr absc)))
+                (setf fval2 (funcall f (- centr absc)))
+                (setf fval (+ fval1 fval2))
+                (setf res10 (+ res10 (* (f2cl-lib:fref w10 (k) ((1 5))) fval)))
+                (setf res21
+                        (+ res21 (* (f2cl-lib:fref w21a (k) ((1 5))) fval)))
+                (setf resabs
+                        (+ resabs
+                           (* (f2cl-lib:fref w21a (k) ((1 5)))
+                              (+ (abs fval1) (abs fval2)))))
+                (f2cl-lib:fset (f2cl-lib:fref savfun (k) ((1 21))) fval)
+                (f2cl-lib:fset (f2cl-lib:fref fv1 (k) ((1 5))) fval1)
+                (f2cl-lib:fset (f2cl-lib:fref fv2 (k) ((1 5))) fval2)
+               label10))
+            (setf ipx 5)
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 5) nil)
+              (tagbody
+                (setf ipx (f2cl-lib:int-add ipx 1))
+                (setf absc (* hlgth (f2cl-lib:fref x2 (k) ((1 5)))))
+                (setf fval1 (funcall f (+ centr absc)))
+                (setf fval2 (funcall f (- centr absc)))
+                (setf fval (+ fval1 fval2))
+                (setf res21
+                        (+ res21 (* (f2cl-lib:fref w21b (k) ((1 6))) fval)))
+                (setf resabs
+                        (+ resabs
+                           (* (f2cl-lib:fref w21b (k) ((1 6)))
+                              (+ (abs fval1) (abs fval2)))))
+                (f2cl-lib:fset (f2cl-lib:fref savfun (ipx) ((1 21))) fval)
+                (f2cl-lib:fset (f2cl-lib:fref fv3 (k) ((1 5))) fval1)
+                (f2cl-lib:fset (f2cl-lib:fref fv4 (k) ((1 5))) fval2)
+               label15))
+            (setf result (* res21 hlgth))
+            (setf resabs (* resabs dhlgth))
+            (setf reskh (* 0.5 res21))
+            (setf resasc
+                    (* (f2cl-lib:fref w21b (6) ((1 6)))
+                       (abs (- fcentr reskh))))
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 5) nil)
+              (tagbody
+                (setf resasc
+                        (+ resasc
+                           (* (f2cl-lib:fref w21a (k) ((1 5)))
+                              (+
+                               (abs (- (f2cl-lib:fref fv1 (k) ((1 5))) reskh))
                                (abs
                                 (- (f2cl-lib:fref fv2 (k) ((1 5))) reskh))))
-                         (* (f2cl-lib:fref w21b (k) ((1 6)))
-                            (+ (abs (- (f2cl-lib:fref fv3 (k) ((1 5))) reskh))
+                           (* (f2cl-lib:fref w21b (k) ((1 6)))
+                              (+
+                               (abs (- (f2cl-lib:fref fv3 (k) ((1 5))) reskh))
                                (abs
                                 (- (f2cl-lib:fref fv4 (k) ((1 5))) reskh))))))
-             label20))
-          (setf abserr (coerce (abs (* (- res21 res10) hlgth)) 'double-float))
-          (setf resasc (* resasc dhlgth))
-          (go label65)
-         label25
-          (setf res43 (* (f2cl-lib:fref w43b (12) ((1 12))) fcentr))
-          (setf neval 43)
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 10) nil)
-            (tagbody
-              (setf res43
-                      (+ res43
-                         (* (f2cl-lib:fref savfun (k) ((1 21)))
-                            (f2cl-lib:fref w43a (k) ((1 10))))))
-             label30))
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 11) nil)
-            (tagbody
-              (setf ipx (f2cl-lib:int-add ipx 1))
-              (setf absc (* hlgth (f2cl-lib:fref x3 (k) ((1 11)))))
-              (setf fval
-                      (+ (funcall f (+ absc centr))
-                         (funcall f (- centr absc))))
-              (setf res43 (+ res43 (* fval (f2cl-lib:fref w43b (k) ((1 12))))))
-              (f2cl-lib:fset (f2cl-lib:fref savfun (ipx) ((1 21))) fval)
-             label40))
-          (setf result (* res43 hlgth))
-          (setf abserr (coerce (abs (* (- res43 res21) hlgth)) 'double-float))
-          (go label65)
-         label45
-          (setf res87 (* (f2cl-lib:fref w87b (23) ((1 23))) fcentr))
-          (setf neval 87)
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 21) nil)
-            (tagbody
-              (setf res87
-                      (+ res87
-                         (* (f2cl-lib:fref savfun (k) ((1 21)))
-                            (f2cl-lib:fref w87a (k) ((1 21))))))
-             label50))
-          (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
-                        ((> k 22) nil)
-            (tagbody
-              (setf absc (* hlgth (f2cl-lib:fref x4 (k) ((1 22)))))
-              (setf res87
-                      (+ res87
-                         (* (f2cl-lib:fref w87b (k) ((1 23)))
-                            (+ (funcall f (+ absc centr))
-                               (funcall f (- centr absc))))))
-             label60))
-          (setf result (* res87 hlgth))
-          (setf abserr (coerce (abs (* (- res87 res43) hlgth)) 'double-float))
-         label65
-          (if (and (/= resasc 0.0) (/= abserr 0.0))
-              (setf abserr
-                      (* resasc
-                         (min 1.0 (expt (/ (* 200.0 abserr) resasc) 1.5)))))
-          (if (> resabs (/ uflow (* 50.0 epmach)))
-              (setf abserr (max (* epmach 50.0 resabs) abserr)))
-          (if (<= abserr (max epsabs (* epsrel (abs result)))) (setf ier 0))
-          (if (= ier 0) (go label999))
-         label70))
-     label80
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4)
-          (xermsg "SLATEC" "DQNG" "ABNORMAL RETURN" ier 0)
-        (declare (ignore var-0 var-1 var-2 var-4))
-        (when var-3 (setf ier var-3)))
-     label999
-      (go end_label)
-     end_label
-      (return (values nil nil nil nil nil result abserr neval ier)))))
+               label20))
+            (setf abserr
+                    (coerce (abs (* (- res21 res10) hlgth)) 'double-float))
+            (setf resasc (* resasc dhlgth))
+            (go label65)
+           label25
+            (setf res43 (* (f2cl-lib:fref w43b (12) ((1 12))) fcentr))
+            (setf neval 43)
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 10) nil)
+              (tagbody
+                (setf res43
+                        (+ res43
+                           (* (f2cl-lib:fref savfun (k) ((1 21)))
+                              (f2cl-lib:fref w43a (k) ((1 10))))))
+               label30))
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 11) nil)
+              (tagbody
+                (setf ipx (f2cl-lib:int-add ipx 1))
+                (setf absc (* hlgth (f2cl-lib:fref x3 (k) ((1 11)))))
+                (setf fval
+                        (+ (funcall f (+ absc centr))
+                           (funcall f (- centr absc))))
+                (setf res43
+                        (+ res43 (* fval (f2cl-lib:fref w43b (k) ((1 12))))))
+                (f2cl-lib:fset (f2cl-lib:fref savfun (ipx) ((1 21))) fval)
+               label40))
+            (setf result (* res43 hlgth))
+            (setf abserr
+                    (coerce (abs (* (- res43 res21) hlgth)) 'double-float))
+            (go label65)
+           label45
+            (setf res87 (* (f2cl-lib:fref w87b (23) ((1 23))) fcentr))
+            (setf neval 87)
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 21) nil)
+              (tagbody
+                (setf res87
+                        (+ res87
+                           (* (f2cl-lib:fref savfun (k) ((1 21)))
+                              (f2cl-lib:fref w87a (k) ((1 21))))))
+               label50))
+            (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
+                          ((> k 22) nil)
+              (tagbody
+                (setf absc (* hlgth (f2cl-lib:fref x4 (k) ((1 22)))))
+                (setf res87
+                        (+ res87
+                           (* (f2cl-lib:fref w87b (k) ((1 23)))
+                              (+ (funcall f (+ absc centr))
+                                 (funcall f (- centr absc))))))
+               label60))
+            (setf result (* res87 hlgth))
+            (setf abserr
+                    (coerce (abs (* (- res87 res43) hlgth)) 'double-float))
+           label65
+            (if (and (/= resasc 0.0) (/= abserr 0.0))
+                (setf abserr
+                        (* resasc
+                           (min 1.0 (expt (/ (* 200.0 abserr) resasc) 1.5)))))
+            (if (> resabs (/ uflow (* 50.0 epmach)))
+                (setf abserr (max (* epmach 50.0 resabs) abserr)))
+            (if (<= abserr (max epsabs (* epsrel (abs result)))) (setf ier 0))
+            (if (= ier 0) (go label999))
+           label70))
+       label80
+        (xermsg "SLATEC" "DQNG" "ABNORMAL RETURN" ier 0)
+       label999
+        (go end_label)
+       end_label
+        (return (values nil nil nil nil nil result abserr neval ier))))))
 

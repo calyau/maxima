@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,8 +11,8 @@
 (let ((zeror 0.0) (zeroi 0.0))
   (declare (type double-float zeroi zeror))
   (defun zs1s2 (zrr zri s1r s1i s2r s2i nz ascle alim iuf)
-    (declare (type double-float zrr zri s1r s1i s2r s2i ascle alim)
-             (type f2cl-lib:integer4 nz iuf))
+    (declare (type f2cl-lib:integer4 iuf nz)
+             (type double-float alim ascle s2i s2r s1i s1r zri zrr))
     (prog ((idum 0) (aa 0.0) (aln 0.0) (as1 0.0) (as2 0.0) (c1i 0.0) (c1r 0.0)
            (s1di 0.0) (s1dr 0.0))
       (declare (type double-float s1dr s1di c1r c1i as2 as1 aln aa)
@@ -29,8 +29,7 @@
       (setf s1i zeroi)
       (setf as1 zeror)
       (if (< aln (- alim)) (go label10))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
           (zlog s1dr s1di c1r c1i idum)
         (declare (ignore var-0 var-1))
         (setf c1r var-2)
@@ -38,8 +37,7 @@
         (setf idum var-4))
       (setf c1r (- c1r zrr zrr))
       (setf c1i (- c1i zri zri))
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3)
+      (multiple-value-bind (var-0 var-1 var-2 var-3)
           (zexp c1r c1i s1r s1i)
         (declare (ignore var-0 var-1))
         (setf s1r var-2)

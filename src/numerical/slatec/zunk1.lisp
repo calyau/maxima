@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -8,12 +8,12 @@
 (in-package "SLATEC")
 
 
-(let ((zeror 0.0) (zeroi 0.0) (coner 1.0) (pi_ 3.141592653589793))
-  (declare (type double-float pi_ coner zeroi zeror))
+(let ((zeror 0.0) (zeroi 0.0) (coner 1.0) (pi$ 3.141592653589793))
+  (declare (type double-float pi$ coner zeroi zeror))
   (defun zunk1 (zr zi fnu kode mr n yr yi nz tol elim alim)
-    (declare (type (simple-array double-float (*)) yr yi)
-             (type f2cl-lib:integer4 kode mr n nz)
-             (type double-float zr zi fnu tol elim alim))
+    (declare (type (simple-array double-float (*)) yi yr)
+             (type f2cl-lib:integer4 nz n mr kode)
+             (type double-float alim elim tol fnu zi zr))
     (prog ((bry (make-array 3 :element-type 'double-float))
            (init (make-array 2 :element-type 'f2cl-lib:integer4))
            (sumr (make-array 2 :element-type 'double-float))
@@ -38,19 +38,21 @@
            (phidi 0.0) (phidr 0.0) (rast 0.0) (razr 0.0) (rs1 0.0) (rzi 0.0)
            (rzr 0.0) (sgn 0.0) (sti 0.0) (str 0.0) (sumdi 0.0) (sumdr 0.0)
            (s1i 0.0) (s1r 0.0) (s2i 0.0) (s2r 0.0) (zet1di 0.0) (zet1dr 0.0)
-           (zet2di 0.0) (zet2dr 0.0) (zri 0.0) (zrr 0.0))
-      (declare
-       (type (simple-array double-float (2)) zeta2r zeta2i zeta1r zeta1i sumr
-        sumi phir phii cyr cyi)
-       (type (simple-array double-float (48)) cwrkr cwrki)
-       (type (simple-array double-float (3)) cssr csrr bry)
-       (type double-float zrr zri zet2dr zet2di zet1dr zet1di s2r s2i s1r s1i
-        sumdr sumdi str sti sgn rzr rzi rs1 razr rast phidr phidi fnf fn fmr
-        c2r c2m c2i c1r c1i csr cspnr cspni csgni cscl crsc ckr cki ascle asc
-        aphi ang)
-       (type (simple-array f2cl-lib:integer4 (2)) init)
-       (type f2cl-lib:integer4 m j ipard ic initd nw kk kflag kdflg k iuf inu
-        il ifn iflag ib i))
+           (zet2di 0.0) (zet2dr 0.0) (zri 0.0) (zrr 0.0) (abs$ 0.0f0))
+      (declare (type single-float abs$)
+               (type (simple-array double-float (2)) zeta2r zeta2i zeta1r
+                                                     zeta1i sumr sumi phir phii
+                                                     cyr cyi)
+               (type (simple-array double-float (48)) cwrkr cwrki)
+               (type (simple-array double-float (3)) cssr csrr bry)
+               (type double-float zrr zri zet2dr zet2di zet1dr zet1di s2r s2i
+                                  s1r s1i sumdr sumdi str sti sgn rzr rzi rs1
+                                  razr rast phidr phidi fnf fn fmr c2r c2m c2i
+                                  c1r c1i csr cspnr cspni csgni cscl crsc ckr
+                                  cki ascle asc aphi ang)
+               (type (simple-array f2cl-lib:integer4 (2)) init)
+               (type f2cl-lib:integer4 m j ipard ic initd nw kk kflag kdflg k
+                                       iuf inu il ifn iflag ib i))
       (setf kdflg 1)
       (setf nz 0)
       (setf cscl (/ 1.0 tol))
@@ -80,8 +82,8 @@
           (setf fn (+ fnu (f2cl-lib:int-sub i 1)))
           (f2cl-lib:fset (f2cl-lib:fref init (j) ((1 2))) 0)
           (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
-               var-10 var-11 var-12 var-13 var-14 var-15 var-16)
+                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
+                 var-10 var-11 var-12 var-13 var-14 var-15 var-16)
               (zunik zrr zri fn 2 0 tol (f2cl-lib:fref init (j) ((1 2)))
                (f2cl-lib:fref phir (j) ((1 2)))
                (f2cl-lib:fref phii (j) ((1 2)))
@@ -93,8 +95,8 @@
                (f2cl-lib:fref sumi (j) ((1 2)))
                (f2cl-lib:fref cwrkr (1 j) ((1 16) (1 3)))
                (f2cl-lib:fref cwrki (1 j) ((1 16) (1 3))))
-            (declare
-             (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15 var-16))
+            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15
+                             var-16))
             (f2cl-lib:fset (f2cl-lib:fref init (j) ((1 2))) var-6)
             (f2cl-lib:fset (f2cl-lib:fref phir (j) ((1 2))) var-7)
             (f2cl-lib:fset (f2cl-lib:fref phii (j) ((1 2))) var-8)
@@ -153,8 +155,7 @@
           (setf s2i (+ (* s1r s2i) (* s2r s1i)))
           (setf s2r str)
           (if (/= kflag 1) (go label50))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zuchk s2r s2i nw (f2cl-lib:fref bry (1) ((1 3))) tol)
             (declare (ignore var-0 var-1 var-3 var-4))
             (setf nw var-2))
@@ -203,8 +204,8 @@
       (if (/= mr 0) (setf ipard 0))
       (setf initd 0)
       (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-           var-11 var-12 var-13 var-14 var-15 var-16)
+            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+             var-11 var-12 var-13 var-14 var-15 var-16)
           (zunik zrr zri fn 2 ipard tol initd phidr phidi zet1dr zet1di zet2dr
            zet2di sumdr sumdi (f2cl-lib:fref cwrkr (1 3) ((1 16) (1 3)))
            (f2cl-lib:fref cwrki (1 3) ((1 16) (1 3))))
@@ -291,7 +292,7 @@
       (if (= mr 0) (go end_label))
       (setf nz 0)
       (setf fmr (coerce (the f2cl-lib:integer4 mr) 'double-float))
-      (setf sgn (coerce (- (f2cl-lib:dsign pi_ fmr)) 'double-float))
+      (setf sgn (coerce (- (f2cl-lib:dsign pi$ fmr)) 'double-float))
       (setf csgni sgn)
       (setf inu (f2cl-lib:int fnu))
       (setf fnf (- fnu inu))
@@ -334,13 +335,13 @@
           (setf initd 0)
          label180
           (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
-               var-10 var-11 var-12 var-13 var-14 var-15 var-16)
+                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
+                 var-10 var-11 var-12 var-13 var-14 var-15 var-16)
               (zunik zrr zri fn 1 0 tol initd phidr phidi zet1dr zet1di zet2dr
                zet2di sumdr sumdi (f2cl-lib:fref cwrkr (1 m) ((1 16) (1 3)))
                (f2cl-lib:fref cwrki (1 m) ((1 16) (1 3))))
-            (declare
-             (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15 var-16))
+            (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15
+                             var-16))
             (setf initd var-6)
             (setf phidr var-7)
             (setf phidi var-8)
@@ -385,8 +386,7 @@
           (setf s2i (+ (* s2r s1i) (* s2i s1r)))
           (setf s2r str)
           (if (/= iflag 1) (go label230))
-          (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4)
+          (multiple-value-bind (var-0 var-1 var-2 var-3 var-4)
               (zuchk s2r s2i nw (f2cl-lib:fref bry (1) ((1 3))) tol)
             (declare (ignore var-0 var-1 var-3 var-4))
             (setf nw var-2))
@@ -404,7 +404,7 @@
           (setf s1i (f2cl-lib:fref yi (kk) ((1 n))))
           (if (= kode 1) (go label250))
           (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
               (zs1s2 zrr zri s1r s1i s2r s2i nw asc alim iuf)
             (declare (ignore var-0 var-1 var-7 var-8))
             (setf s1r var-2)
@@ -466,7 +466,7 @@
           (setf c1i (f2cl-lib:fref yi (kk) ((1 n))))
           (if (= kode 1) (go label280))
           (multiple-value-bind
-              (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+                (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
               (zs1s2 zrr zri c1r c1i c2r c2i nw asc alim iuf)
             (declare (ignore var-0 var-1 var-7 var-8))
             (setf c1r var-2)

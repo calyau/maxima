@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -9,20 +9,21 @@
 
 
 (defun zbuni (zr zi fnu kode n yr yi nz nui nlast fnul tol elim alim)
-  (declare (type (simple-array double-float (*)) yr yi)
-           (type f2cl-lib:integer4 kode n nz nui nlast)
-           (type double-float zr zi fnu fnul tol elim alim))
+  (declare (type (simple-array double-float (*)) yi yr)
+           (type f2cl-lib:integer4 nlast nui nz n kode)
+           (type double-float alim elim tol fnul fnu zi zr))
   (prog ((cyr (make-array 2 :element-type 'double-float))
          (cyi (make-array 2 :element-type 'double-float))
          (bry (make-array 3 :element-type 'double-float)) (i 0) (iflag 0)
          (iform 0) (k 0) (nl 0) (nw 0) (ax 0.0) (ay 0.0) (csclr 0.0)
          (cscrr 0.0) (dfnu 0.0) (fnui 0.0) (gnu 0.0) (raz 0.0) (rzi 0.0)
          (rzr 0.0) (sti 0.0) (str 0.0) (s1i 0.0) (s1r 0.0) (s2i 0.0) (s2r 0.0)
-         (ascle 0.0) (c1r 0.0) (c1i 0.0) (c1m 0.0))
-    (declare (type (simple-array double-float (3)) bry)
+         (ascle 0.0) (c1r 0.0) (c1i 0.0) (c1m 0.0) (abs$ 0.0f0))
+    (declare (type single-float abs$)
+             (type (simple-array double-float (3)) bry)
              (type (simple-array double-float (2)) cyr cyi)
              (type double-float c1m c1i c1r ascle s2r s2i s1r s1i str sti rzr
-              rzi raz gnu fnui dfnu cscrr csclr ay ax)
+                                rzi raz gnu fnui dfnu cscrr csclr ay ax)
              (type f2cl-lib:integer4 nw nl k iform iflag i))
     (setf nz 0)
     (setf ax (* (abs zr) 1.7321))
@@ -35,23 +36,21 @@
     (setf gnu (+ dfnu fnui))
     (if (= iform 2) (go label10))
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-         var-11 var-12)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+           var-11 var-12)
         (zuni1 zr zi gnu kode 2 cyr cyi nw nlast fnul tol elim alim)
-      (declare
-       (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10 var-11
-        var-12))
+      (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10
+                       var-11 var-12))
       (setf nw var-7)
       (setf nlast var-8))
     (go label20)
    label10
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-         var-11 var-12)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+           var-11 var-12)
         (zuni2 zr zi gnu kode 2 cyr cyi nw nlast fnul tol elim alim)
-      (declare
-       (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10 var-11
-        var-12))
+      (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10
+                       var-11 var-12))
       (setf nw var-7)
       (setf nlast var-8))
    label20
@@ -167,23 +166,21 @@
    label60
     (if (= iform 2) (go label70))
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-         var-11 var-12)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+           var-11 var-12)
         (zuni1 zr zi fnu kode n yr yi nw nlast fnul tol elim alim)
-      (declare
-       (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10 var-11
-        var-12))
+      (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10
+                       var-11 var-12))
       (setf nw var-7)
       (setf nlast var-8))
     (go label80)
    label70
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
-         var-11 var-12)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
+           var-11 var-12)
         (zuni2 zr zi fnu kode n yr yi nw nlast fnul tol elim alim)
-      (declare
-       (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10 var-11
-        var-12))
+      (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-9 var-10
+                       var-11 var-12))
       (setf nw var-7)
       (setf nlast var-8))
    label80

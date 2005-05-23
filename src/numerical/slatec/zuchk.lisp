@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,8 +10,8 @@
 
 (defun zuchk (yr yi nz ascle tol)
   (declare (type f2cl-lib:integer4 nz) (type double-float tol ascle yi yr))
-  (prog ((ss 0.0) (st 0.0) (wr 0.0) (wi 0.0))
-    (declare (type double-float wi wr st ss))
+  (prog ((ss 0.0) (st 0.0) (wr 0.0) (wi 0.0) (abs$ 0.0f0))
+    (declare (type single-float abs$) (type double-float wi wr st ss))
     (setf nz 0)
     (setf wr (coerce (abs yr) 'double-float))
     (setf wi (coerce (abs yi) 'double-float))

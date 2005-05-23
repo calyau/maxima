@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -13,19 +13,19 @@
   (f2cl-lib:fset (f2cl-lib:fref nulim (1) ((1 2))) 70)
   (f2cl-lib:fset (f2cl-lib:fref nulim (2) ((1 2))) 100)
   (defun dbesy (x fnu n y)
-    (declare (type double-float x fnu)
+    (declare (type (simple-array double-float (*)) y)
              (type f2cl-lib:integer4 n)
-             (type (simple-array double-float (*)) y))
+             (type double-float fnu x))
     (prog ((w (make-array 2 :element-type 'double-float))
            (wk (make-array 7 :element-type 'double-float)) (azn 0.0) (cn 0.0)
            (dnu 0.0) (elim 0.0) (flgjy 0.0) (fn 0.0) (ran 0.0) (s 0.0) (s1 0.0)
            (s2 0.0) (tm 0.0) (trx 0.0) (w2n 0.0) (xlim 0.0) (xxn 0.0) (i 0)
-           (iflw 0) (j 0) (nb 0) (nd 0) (nn 0) (nud 0))
-      (declare (type f2cl-lib:integer4 nud nn nd nb j iflw i)
+           (iflw 0) (j 0) (nb 0) (nd 0) (nn 0) (nud 0) (log$ 0))
+      (declare (type f2cl-lib:integer4 log$ nud nn nd nb j iflw i)
                (type (simple-array double-float (7)) wk)
                (type (simple-array double-float (2)) w)
                (type double-float xxn xlim w2n trx tm s2 s1 s ran fn flgjy elim
-                dnu cn azn))
+                                  dnu cn azn))
       (setf nn (f2cl-lib:int-sub (f2cl-lib:i1mach 15)))
       (setf elim (* 2.303 (- (* nn (f2cl-lib:d1mach 5)) 3.0)))
       (setf xlim (* (f2cl-lib:d1mach 1) 1000.0))
@@ -49,8 +49,7 @@
      label10
       (if (< nud (f2cl-lib:fref nulim (nn) ((1 2)))) (go label20))
       (setf flgjy -1.0)
-      (multiple-value-bind
-          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
+      (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
           (dasyjy #'dyairy x fnu flgjy nn y wk iflw)
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6))
         (setf iflw var-7))

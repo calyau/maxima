@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -8,16 +8,14 @@
 (in-package "SLATEC")
 
 
-(let ((rttpi 0.39894228040143304) (inlim 80))
+(let ((rttpi 0.398942280401433) (inlim 80))
   (declare (type f2cl-lib:integer4 inlim) (type double-float rttpi))
   (defun dbesi (x alpha kode n y nz)
     (declare (type (array double-float (*)) y)
              (type f2cl-lib:integer4 nz n kode)
              (type double-float alpha x))
-    (f2cl-lib:with-array-data (y-%data% y-%offset% y)
-      (declare (type f2cl-lib:integer4 y-%offset%)
-               (type (simple-array double-float (*)) y-%data%)
-               (ignorable y-%offset% y-%data%))
+    (f2cl-lib:with-multi-array-data
+        ((y double-float y-%data% y-%offset%))
       (prog ((temp (make-array 3 :element-type 'double-float)) (ain 0.0)
              (ak 0.0) (akm 0.0) (ans 0.0) (ap 0.0) (arg 0.0) (atol 0.0)
              (tolln 0.0) (dfn 0.0) (dtm 0.0) (dx 0.0) (earg 0.0) (elim 0.0)
@@ -25,16 +23,19 @@
              (fnu 0.0) (gln 0.0) (ra 0.0) (s 0.0) (sx 0.0) (sxo2 0.0) (s1 0.0)
              (s2 0.0) (ta 0.0) (tb 0.0) (tfn 0.0) (tm 0.0) (tol 0.0) (trx 0.0)
              (t2 0.0) (xo2 0.0) (xo2l 0.0) (z 0.0) (i 0) (ialp 0) (in 0) (is 0)
-             (i1 0) (k 0) (kk 0) (km 0) (kt 0) (nn 0) (ns 0) (t_ 0.0))
-        (declare (type f2cl-lib:integer4 ns nn kt km kk k i1 is in ialp i)
+             (i1 0) (k 0) (kk 0) (km 0) (kt 0) (nn 0) (ns 0) (t$ 0.0)
+             (abs$ 0.0f0))
+        (declare (type single-float abs$)
+                 (type f2cl-lib:integer4 ns nn kt km kk k i1 is in ialp i)
                  (type (array double-float (3)) temp)
-                 (type double-float t_ z xo2l xo2 t2 trx tol tm tfn tb ta s2 s1
-                  sxo2 sx s ra gln fnu fnp1 fni fnf fn flgik etx elim earg dx
-                  dtm dfn tolln atol arg ap ans akm ak ain))
+                 (type double-float t$ z xo2l xo2 t2 trx tol tm tfn tb ta s2 s1
+                                    sxo2 sx s ra gln fnu fnp1 fni fnf fn flgik
+                                    etx elim earg dx dtm dfn tolln atol arg ap
+                                    ans akm ak ain))
         (setf nz 0)
         (setf kt 1)
         (setf ra (f2cl-lib:d1mach 3))
-        (setf tol (max ra 1.0000000000000002e-15))
+        (setf tol (max ra 1.0e-15))
         (setf i1 (f2cl-lib:int-sub (f2cl-lib:i1mach 15)))
         (setf gln (f2cl-lib:d1mach 5))
         (setf elim (* 2.303 (- (* i1 gln) 3.0)))
@@ -124,16 +125,16 @@
         (setf z (/ x alpha))
         (setf ra (f2cl-lib:fsqrt (+ 1.0 (* z z))))
         (setf gln (f2cl-lib:flog (/ (+ 1.0 ra) z)))
-        (setf t_ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
-        (setf arg (* alpha (- t_ gln)))
+        (setf t$ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
+        (setf arg (* alpha (- t$ gln)))
         (if (> arg elim) (go label610))
         (if (= km 0) (go label140))
        label130
         (setf z (/ x fn))
         (setf ra (f2cl-lib:fsqrt (+ 1.0 (* z z))))
         (setf gln (f2cl-lib:flog (/ (+ 1.0 ra) z)))
-        (setf t_ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
-        (setf arg (* fn (- t_ gln)))
+        (setf t$ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
+        (setf arg (* fn (- t$ gln)))
        label140
         (if (< arg (- elim)) (go label280))
         (go label190)
@@ -160,14 +161,13 @@
         (setf z (/ x fn))
         (setf ra (f2cl-lib:fsqrt (+ 1.0 (* z z))))
         (setf gln (f2cl-lib:flog (/ (+ 1.0 ra) z)))
-        (setf t_ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
-        (setf arg (* fn (- t_ gln)))
+        (setf t$ (+ (* ra (- 1.0 etx)) (/ etx (+ z ra))))
+        (setf arg (* fn (- t$ gln)))
        label190
         (setf i1 (f2cl-lib:int (abs (f2cl-lib:int-sub 3 is))))
         (setf i1 (max (the f2cl-lib:integer4 i1) (the f2cl-lib:integer4 1)))
         (setf flgik 1.0)
-        (multiple-value-bind
-            (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
+        (multiple-value-bind (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7)
             (dasyik x fn kode flgik ra arg i1
              (f2cl-lib:array-slice temp double-float (is) ((1 3))))
           (declare (ignore var-0 var-1 var-2 var-3 var-6 var-7))
@@ -184,15 +184,15 @@
         (if (< x tol) (go label260))
         (setf ak 3.0)
         (setf t2 1.0)
-        (setf t_ 1.0)
+        (setf t$ 1.0)
         (setf s1 fn)
         (f2cl-lib:fdo (k 1 (f2cl-lib:int-add k 1))
                       ((> k 17) nil)
           (tagbody
             (setf s2 (+ t2 s1))
-            (setf t_ (/ (* t_ sxo2) s2))
-            (setf s (+ s t_))
-            (if (< (abs t_) tol) (go label260))
+            (setf t$ (/ (* t$ sxo2) s2))
+            (setf s (+ s t$))
+            (if (< (abs t$) tol) (go label260))
             (setf t2 (+ t2 ak))
             (setf ak (+ ak 2.0))
             (setf s1 (+ s1 fn))
@@ -323,7 +323,7 @@
         (setf s1 etx)
         (setf trx (- dtm 1.0))
         (setf dx (/ (- (+ trx tm)) etx))
-        (setf t_ dx)
+        (setf t$ dx)
         (setf s (+ 1.0 dx))
         (setf atol (* tol (abs s)))
         (setf s2 1.0)
@@ -335,9 +335,9 @@
             (setf s2 (+ s2 ak))
             (setf dx (- dtm s2))
             (setf ap (+ dx tm))
-            (setf t_ (/ (* (- t_) ap) s1))
-            (setf s (+ s t_))
-            (if (<= (abs t_) atol) (go label480))
+            (setf t$ (/ (* (- t$) ap) s1))
+            (setf s (+ s t$))
+            (if (<= (abs t$) atol) (go label480))
             (setf ak (+ ak 8.0))
            label470))
        label480
@@ -364,11 +364,11 @@
         (setf in (f2cl-lib:int-add in km))
         (go label520)
        label510
-        (setf t_ (/ 1.0 (* fn ra)))
+        (setf t$ (/ 1.0 (* fn ra)))
         (setf ain
                 (+
                  (/ tolln
-                    (+ gln (f2cl-lib:fsqrt (+ (* gln gln) (* t_ tolln)))))
+                    (+ gln (f2cl-lib:fsqrt (+ (* gln gln) (* t$ tolln)))))
                  1.5))
         (setf in (f2cl-lib:int ain))
         (if (> in inlim) (go label160))

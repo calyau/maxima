@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -15,11 +15,11 @@
   (prog ((i 0) (k 0) (k1 0) (k2 0) (nz1 0) (nz2 0) (c1i 0.0) (c1r 0.0)
          (c2i 0.0) (c2r 0.0) (elim 0.0) (exi 0.0) (exr 0.0) (ey 0.0) (hcii 0.0)
          (sti 0.0) (str 0.0) (tay 0.0) (ascle 0.0) (rtol 0.0) (atol 0.0)
-         (aa 0.0) (bb 0.0) (tol 0.0) (r1m5 0.0))
-    (declare
-     (type double-float r1m5 tol bb aa atol rtol ascle tay str sti hcii ey exr
-      exi elim c2r c2i c1r c1i)
-     (type f2cl-lib:integer4 nz2 nz1 k2 k1 k i))
+         (aa 0.0) (bb 0.0) (tol 0.0) (r1m5 0.0) (abs$ 0.0f0))
+    (declare (type single-float abs$)
+             (type double-float r1m5 tol bb aa atol rtol ascle tay str sti hcii
+                                ey exr exi elim c2r c2i c1r c1i)
+             (type f2cl-lib:integer4 nz2 nz1 k2 k1 k i))
     (setf ierr 0)
     (setf nz 0)
     (if (and (= zr 0.0) (= zi 0.0)) (setf ierr 1))
@@ -29,14 +29,14 @@
     (if (/= ierr 0) (go end_label))
     (setf hcii 0.5)
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
         (zbesh zr zi fnu kode 1 n cyr cyi nz1 ierr)
       (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7))
       (setf nz1 var-8)
       (setf ierr var-9))
     (if (and (/= ierr 0) (/= ierr 3)) (go label170))
     (multiple-value-bind
-        (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
+          (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9)
         (zbesh zr zi fnu kode 2 n cwrkr cwrki nz2 ierr)
       (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7))
       (setf nz2 var-8)

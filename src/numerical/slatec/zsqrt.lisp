@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -11,9 +11,9 @@
 (let ((drt 0.7071067811865476) (dpi 3.141592653589793))
   (declare (type double-float dpi drt))
   (defun zsqrt (ar ai br bi)
-    (declare (type double-float ar ai br bi))
-    (prog ((zm 0.0) (dtheta 0.0))
-      (declare (type double-float dtheta zm))
+    (declare (type double-float bi br ai ar))
+    (prog ((zm 0.0) (dtheta 0.0) (abs$ 0.0f0))
+      (declare (type single-float abs$) (type double-float dtheta zm))
       (setf zm (zabs ar ai))
       (setf zm (f2cl-lib:fsqrt zm))
       (if (= ar 0.0) (go label10))

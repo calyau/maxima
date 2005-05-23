@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2004/11/09 18:37:12 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -18,7 +18,7 @@
   (declare (type double-float conei coner pi$ coef c2 c1 tth))
   (defun zbiry (zr zi id kode bir bii ierr)
     (declare (type f2cl-lib:integer4 ierr kode id)
-     (type double-float bii bir zi zr))
+             (type double-float bii bir zi zr))
     (prog ((cyr (make-array 2 :element-type 'double-float))
            (cyi (make-array 2 :element-type 'double-float)) (k 0) (k1 0) (k2 0)
            (nz 0) (aa 0.0) (ad 0.0) (ak 0.0) (alim 0.0) (atrm 0.0) (az 0.0)
@@ -29,11 +29,12 @@
            (tol 0.0) (trm1i 0.0) (trm1r 0.0) (trm2i 0.0) (trm2r 0.0) (ztai 0.0)
            (ztar 0.0) (z3i 0.0) (z3r 0.0) (abs$ 0.0f0))
       (declare (type single-float abs$)
-       (type (simple-array double-float (2)) cyr cyi)
-       (type double-float z3r z3i ztar ztai trm2r trm2i trm1r trm1i tol s2r s2i
-        s1r s1i str sti sfac r1m5 rl fnul fnu fmr fid elim eaa d2 d1 dk dig
-        csqr csqi ck cc bk bb az3 az atrm alim ak ad aa)
-       (type f2cl-lib:integer4 nz k2 k1 k))
+               (type (simple-array double-float (2)) cyr cyi)
+               (type double-float z3r z3i ztar ztai trm2r trm2i trm1r trm1i tol
+                                  s2r s2i s1r s1i str sti sfac r1m5 rl fnul fnu
+                                  fmr fid elim eaa d2 d1 dk dig csqr csqi ck cc
+                                  bk bb az3 az atrm alim ak ad aa)
+               (type f2cl-lib:integer4 nz k2 k1 k))
       (setf ierr 0)
       (setf nz 0)
       (if (or (< id 0) (> id 1)) (setf ierr 1))
@@ -191,9 +192,8 @@
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
              var-11 var-12)
           (zbinu ztar ztai fnu kode 1 cyr cyi nz rl fnul tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10
-          var-11 var-12))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10 var-11 var-12))
         (setf nz var-7))
       (if (< nz 0) (go label200))
       (setf aa (* fmr fnu))
@@ -215,9 +215,8 @@
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
              var-11 var-12)
           (zbinu ztar ztai fnu kode 2 cyr cyi nz rl fnul tol elim alim)
-        (declare
-         (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9 var-10
-          var-11 var-12))
+        (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-8 var-9
+                         var-10 var-11 var-12))
         (setf nz var-7))
       (f2cl-lib:fset (f2cl-lib:fref cyr (1) ((1 2)))
                      (* (f2cl-lib:fref cyr (1) ((1 2))) z3r))

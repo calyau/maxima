@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2004/11/09 18:37:12 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -20,10 +20,10 @@
       (big2cs (make-array 15 :element-type 'double-float))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
-   (type (simple-array double-float (15)) big2cs bif2cs)
-   (type (simple-array double-float (13)) bigcs bifcs)
-   (type double-float xmax x3sml)
-   (type f2cl-lib:integer4 nbig2 nbif2 nbig nbif))
+           (type (simple-array double-float (15)) big2cs bif2cs)
+           (type (simple-array double-float (13)) bigcs bifcs)
+           (type double-float xmax x3sml)
+           (type f2cl-lib:integer4 nbig2 nbif2 nbig nbif))
   (f2cl-lib:fset (f2cl-lib:fref bifcs (1) ((1 13))) -0.01673021647198665)
   (f2cl-lib:fset (f2cl-lib:fref bifcs (2) ((1 13))) 0.10252335834249446)
   (f2cl-lib:fset (f2cl-lib:fref bifcs (3) ((1 13))) 0.0017083092507381517)

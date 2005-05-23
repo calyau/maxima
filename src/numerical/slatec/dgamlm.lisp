@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -10,8 +10,9 @@
 
 (defun dgamlm (xmin xmax)
   (declare (type double-float xmax xmin))
-  (prog ((alnbig 0.0) (alnsml 0.0) (xln 0.0) (xold 0.0) (i 0))
+  (prog ((alnbig 0.0) (alnsml 0.0) (xln 0.0) (xold 0.0) (abs$ 0.0f0) (i 0))
     (declare (type f2cl-lib:integer4 i)
+             (type single-float abs$)
              (type double-float xold xln alnsml alnbig))
     (setf alnsml (f2cl-lib:flog (f2cl-lib:d1mach 1)))
     (setf xmin (- alnsml))

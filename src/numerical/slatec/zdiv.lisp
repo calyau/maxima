@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta 2002-05-06
+;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
@@ -9,7 +9,7 @@
 
 
 (defun zdiv (ar ai br bi cr ci)
-  (declare (type double-float ar ai br bi cr ci))
+  (declare (type double-float ci cr bi br ai ar))
   (prog ((bm 0.0) (ca 0.0) (cb 0.0) (cc 0.0) (cd 0.0))
     (declare (type double-float cd cc cb ca bm))
     (setf bm (/ 1.0 (zabs br bi)))
