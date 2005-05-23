@@ -1,0 +1,204 @@
+@c /Arrays.texi/1.8/Thu Apr 21 04:26:33 2005/-ko/
+@menu
+* Definitions for Arrays and Tables::  
+@end menu
+
+@node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
+@section Definitions for Arrays and Tables
+
+@deffn {Fun@,{c}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@,{c}@~ao} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Fun@,{c}@~ao} array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})
+
+Cria um array @math{n}-dimensional.  
+@math{n} pode ser menor ou igual a 5.
+Os subscritos para
+a @math{i}'@'esima dimens@~ao s@~ao inteiros no intervalo de 0 a @var{dim_i}.  
+
+@code{array (@var{name}, @var{dim_1}, ..., @var{dim_n})} cria um array gen@'erico.
+
+@code{array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})} cria
+um array, com elementos de um tipo especificado.
+@var{type} pode ser @code{fixnum} para
+inteiros de tamanho limitado ou @code{flonum} para n@'umeros em ponto flutuante.
+
+@code{array ([@var{name_1}, ..., @var{name_m}], @var{dim_1}, ..., @var{dim_n})}
+cria @math{m} arrays, todos da mesma dimens@~ao.
+@c SAME TYPE AS WELL ??
+
+@c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
+Se o usu@'ario atribui a uma vari@'avel subscrita antes de declarar o
+array correspondente, um array n@~ao declarado @'e criado.
+Arrays n@~ao declarados, tamb@'em conhecidos como array desordenado (porque
+o codigo desordenado termina nos subscritos), s@~ao mais gerais que arrays
+declarados.  O usu@'ario n@~ao declara seu tamanho m@'aximo, e ele cresce
+dinamicamente e desordenadamente @`a medida que s@~ao atribu@'idos valores a mais elementos.  Os
+subscritos de um array n@~ao declarado n@~ao precisam sempre ser n@'umeros.  Todavia,
+exceto para um array um tanto quanto esparso, @'e provavelmente mais eficiente
+declarar isso quando poss@'ivel que deixar n@~ao declarado.  A fun@,{c}@~ao @code{array}
+pode ser usada para transformar um array n@~ao declarado em um array
+declarado.
+@c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Avalia @code{@var{A} [@var{i_1}, ..., @var{i_n}]},
+quando @var{A} for um array e @var{i_1}, ..., @var{i_n} s@~ao inteiros.
+
+Ela @'e remanescente de @code{apply}, exceto o primeiro argumento que @'e um array ao inv@'es de uma fun@,{c}@~ao.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} arrayinfo (@var{A})
+Retorna uma lista de informa@,{c}@~oes sobre o array @var{A}.  Para
+arrays desordenados ela retorna uma lista de @code{hashed}, o n@'umeros de subscritos,
+e os subscritos de cada elemento que tem um valor.  Para arrays
+declarados ela retorna uma lista de @code{declared}, o n@'umero de subscritos, e
+os limites que foram dados @`a fun@,{c}@~ao @code{array} quando ela foi chamada
+sobre @var{A}.  Fazer @code{example(arrayinfo);} por exemplo.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
+Retorna a express@~ao @code{@var{name} [@var{i_1}, ..., @var{i_n}]}.
+
+Isso @'e um c@'odigo remanescente de @code{funmake},
+exceto o valor retornado @'e um array de refer@^encia n@~ao avaliado
+ao inv@'es de uma chamada de fun@,{c}@~ao n@~ao avaliada.
+
+@end deffn
+
+@defvr {vari@'avel de sistema} arrays
+Valor padr@~ao: @code{[]}
+
+@code{arrays} @'e uma lista de todas os arrays que foram alocadas,
+tanto declarados como n@~ao declarados.
+
+Veja tamb@'em
+@code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
+@code{fillarray}, @code{listarray}, and @code{rearray}.
+@c IS THIS AN EXHAUSTIVE LIST ??
+
+@end defvr
+
+@deffn {Fun@,{c}@~ao} bashindices (@var{expr})
+Transforma a express@~ao @var{expr} dando a cada
+somat@'orio e a cada produto um @'unico @'indice. Isso d@'a a @code{changevar} grande
+precis@~ao quando se est@'a trabalhando com somat@'orios e produtos.  A forma do
+@'unico @'indice @'e @code{j@var{number}}. A quantidade @var{number} @'e determindad por
+refer@^encia a @code{gensumnum}, que pode ser alterada pelo usu@'ario.  Por
+exemplo, @code{gensumnum:0$} reseta isso.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} fillarray (@var{A}, @var{B})
+Preenche o array @var{A} com @var{B}, que @'e uma lista ou um array.
+
+Se @var{A} for  
+um array de ponto flutuante (inteiro) ent@~ao @var{B} poder@'a ser
+ou uma lista de n@u'meros (inteiros) em ponto flutuante ou outro
+array em ponto flutuante (inteiro).
+
+Se as dimens@~oes do array forem 
+diferentes @var{A} @'e preenchida na ordem da maior linha.  Se n@~ao existem elementos
+livres em @var{B} o @'ultimo elemento @'e usado para preencher todo o 
+resto de @var{A}.  Se existirem muitos os restantes ser@~ao 
+descartados.
+
+@code{fillarray} retorna esse primeiro argumento.
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Fun@,{c}@~ao} getchar (@var{a}, @var{i})
+Retorna o @var{i}'@'esimo caractere da string quotada ou
+o nome at@^omico @var{a}.  Essa fun@,{c}@~ao @'e @'util em manipula@,{c}@~ao da 
+lista @code{labels}.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} listarray (@var{A})
+Retorna uma lista dos elementos  de um array declarado ou 
+desordenado @var{A}.  A ordem @'e da maior-linha.  Elementos que n@~ao est@~ao ainda
+definidos s@~ao representados por @code{#####}.
+
+@end deffn
+
+@c NEEDS CLARIFICATION, EXAMPLES
+@deffn {Fun@,{c}@~ao} make_array (@var{type}, @var{dim_1}, ..., @var{dim_n})
+Cria e retorna um array de Lisp.  @var{type} pode
+ser @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} ou
+@code{functional}.
+Existem @math{n} indices,
+e o @math{i}'en@'esimo indice est@'a no intervalo de 0 a @math{@var{dim_i} - 1}.
+
+A vantagem de @code{make_array} sobre @code{array} @'e que o valor de retorno n@~ao tem 
+um nome, e uma vez que um ponteiro a ele vai, ele ir@'a tamb@'em.
+Por exemplo, se @code{y: make_array (...)} ent@~ao @code{y} aponta para um objeto 
+que ocupa espa@,{c}o, mas depois de @code{y: false}, @code{y} n@~ao mais
+aponta para aquele objeto, ent@~ao o objeto pode ser descartado.  
+
+@c NEEDS CLARIFICATION HERE
+@code{y: make_array ('functional, 'f, 'hashed, 1)} - o segundo argumento para
+@code{make_array} nesse caso @'e a fun@,{c}@~ao que chama o c@'alculo dos elementos
+do array, e os argumentos restantes s@~ao passados recursivamente a
+@code{make_array} para gerar a "memoria" para a fun@,{c}@~ao array objeto.
+
+@end deffn
+
+@c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
+@deffn {Fun@,{c}@~ao} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+Altera as dimen@,{c}@~oes de um array.  
+O novo array ser@'a preenchido com os elementos do antigo em
+ordem da maior linha.  Se o array antigo era muito pequeno, 
+os elementos restantes ser@~ao preenchidos com
+@code{false}, @code{0.0} ou @code{0},
+dependendo do tipo do array.  O tipo do array n@~ao pode ser
+alterado.
+
+@end deffn
+
+@deffn {Fun@,{c}@~ao} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Fun@,{c}@~ao} remarray (all)
+Remove arrays e fun@,{c}@~oes associadas
+a arrays e libera o espa@,{c}o ocupado.
+
+@code{remarray (all)} remove todos os itens na lista global @code{arrays}.
+
+@c WHAT DOES THIS MEAN EXACTLY ??
+Isso pode ser necess@'ario para usar essa fun@,{c}@~ao se isso @'e
+desejado para redefinir os valores em um array desordenado.
+
+@code{remarray} retorna a lista dos arrays removidos.
+
+@end deffn
+
+@c THIS IS REALLY CONFUSING
+@defvr {vari@'avel de p@,{c}@~ao} use_fast_arrays
+- Se @code{true} somente dois tipos de arrays s@~ao reconhecidos.  
+
+1) O array art-q (t no Lisp Comum) que pode ter muitas dimens@~oes
+indexadas por inteiros, e pode aceitar qualquer objeto do Lisp ou do Maxima como uma
+entrada.  Para construir assim um array, insira @code{a:make_array(any,3,4);} 
+ent@~ao @code{a} ter@'a como valor, um array com doze posi@,{c}@~oes, e o 
+@'indice @'e baseado em zero.
+
+2) O array Hash_table que @'e o tipo padr@~ao de array criado se um
+faz @code{b[x+1]:y^2} (e @code{b} n@~ao @'e ainda um array, uma lista, ou uma
+matriz -- se isso ou um desses ocorrer um erro pode ser causado desde
+@code{x+1} n@~ao poder@'a ser um subscrito v@'alido para um array art-q, uma lista ou
+uma matriz). Esses @'indices (tamb@'em conhecidos como chaves) podem ser quaisquer objetos.  
+Isso somente pega uma chave por vez a cada vez (@code{b[x+1,u]:y} ignorar@'a o @code{u}). 
+A refer@^encia termina em @code{b[x+1] ==> y^2}.  Certamente a chave poe ser uma lista
+, e.g. @code{b[[x+1,u]]:y} poder@'a ser v@'alido.  Isso @'e incompat@'ivel 
+com os arrays antigos do Maxima, mas poupa recursos.
+
+Uma vantagem de armazenar os arrays como valores de s@'imbolos @'e que as
+conven@,{c}@~oes usuais sobre vari@'aveis locais de uma fun@,{c}@~ao aplicam-se a arrays
+tamb@'em.  O tipo Hash_table tamb@'em usa menos recursos e @'e mais eficiente
+que o velho tipo hashar do Maxima.  Para obter comportamento consistente em
+c@'odigos traduzidos e compilados posicione @code{translate_fast_arrays} para ser
+@code{true}.
+ 
+@end defvr

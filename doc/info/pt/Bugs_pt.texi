@@ -1,0 +1,52 @@
+@c /Bugs.texi/1.7/Sun May  1 17:52:16 2005//
+@menu
+* Introduction to Bug Detection and Reporting::  
+* Definitions for Bug Detection and Reporting::  
+@end menu
+
+@node Introduction to Bug Detection and Reporting
+@section Introduction to Bug Detection and Reporting
+Como todos os grandes programas, Maxima cont@'em erros conhecidos e erros desconhecidos.
+Esse cap@'itulo descreve as facilidades internas para executar o conjunto de
+testes do Maxima bem como informar novos erros.
+
+@node Definitions for Bug Detection and Reporting
+@section Definitions for Bug Detection and Reporting
+@deffn {Function} run_testsuite ()
+@deffnx {Function} run_testsuite (boolean)
+@deffnx {Function} run_testsuite (boolean, boolean)
+Executa o conjunto de testes do Maxima. Testes que produzem a resposta desejada s@~ao
+considerados ``passes,'' e testes que n@~ao produzem a resposta
+desejada, s@~ao marcados como erros conhecidos.
+
+@code{run_testsuite ()} mostra somente testes que n@~ao s@~ao aprovados.
+
+@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como bugs conhecidos, bem
+como as falhas.
+
+@code{run_testsuite (true, true)} mostra todos os testes.
+
+@code{run_testsuite} altera a vari@'avel de ambiente Maxima.
+Tipicamente um script de teste executa @code{kill} para estabelecer uma vari@'avel de ambiente
+(uma a saber sem fun@,{c}@~oes definidas pelo usu@'ario e vari@'aveis)
+e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
+
+@code{run_testsuite} retorna @code{done}.
+@end deffn
+
+@deffn {Function} bug_report ()
+Imprime os n@'umeros de vers@~ao do Maxima e do Lisp, e chama o link
+para a p@'agina web de informa@,{c}@~ao de erros do projeto Maxima.
+A informa@,{c}@~ao da vers@~ao @'e a mesma reportada por @code{build_info}.
+
+Quando um erro @'e informado, @'e muito @'util copiar a vers@~ao do Maxima
+e do Lisp dentro da informa@,{c}@~ao do erro.
+
+@code{bug_report} retorna uma string vazia @code{""}.
+@end deffn
+
+@deffn {Function} build_info ()
+Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
+
+@code{build_info} retorna uma strng vazia @code{""}.
+@end deffn

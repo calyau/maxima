@@ -1,0 +1,259 @@
+@c /Atensor.texi/1.7/Sun May  1 20:31:14 2005//
+@menu
+* Introduction to atensor::
+* Definitions for atensor::
+@end menu
+
+@node Introduction to atensor, Definitions for atensor, atensor, atensor
+@section Introduction to atensor
+
+@code{atensor} @'e um pacote de manipul@,{c}@~ao de tensores alg@'ebricos. Para usar @code{atensor},
+digite @code{load(atensor)}, seguido por uma chamada @`a fun@,{c}@~ao 
+@code{init_atensor}.
+
+A ess@^encia de @code{atensor} @'e um conjunto de regras de simplifica@,{c}@~ao para o operador
+de produto (ponto) n@~ao comutativo ("@code{.}"). @code{atensor} reconhece
+muitos tipos de @'algebra; as regras de simplifica@,{c}@~ao correspondentes s@~ao ativadas quando
+a fun@,{c}@~ao @code{init_atensor} @'e chamada.
+
+A compatibilidade de @code{atensor} pode ser demonstrada pela defini@,{c}@~ao da
+@'algebra de quat@'ernios como uma @'algera-Clifford Cl(0,2) com dois vetores
+fundamentais. As tr@^es unidades quaterni@^onicas imagin@'arias fundamentais s@~ao ent@~ao os dois
+vetores base  e seu produto, i.e.:
+
+@example
+    i = v     j = v     k = v  . v
+         1         2         1    2
+@end example
+
+Embora o pacote @code{atensor} tenha uma defini@,{c}@~ao interna para a
+@'algebra dos quat@'ernios, isso n@~ao foi usado nesse exemplo, no qual n@'os
+nos esfor@,{c}amos para construir a tabela de multiplica@,{c}@~ao dos quat@'ernios como uma matriz:
+
+@example
+
+(%i1) load(atensor);
+(%o1)       /share/tensor/atensor.mac
+(%i2) init_atensor(clifford,0,0,2);
+(%o2)                                done
+(%i3) atensimp(v[1].v[1]);
+(%o3)                                 - 1
+(%i4) atensimp((v[1].v[2]).(v[1].v[2]));
+(%o4)                                 - 1
+(%i5) q:zeromatrix(4,4);
+                                [ 0  0  0  0 ]
+                                [            ]
+                                [ 0  0  0  0 ]
+(%o5)                           [            ]
+                                [ 0  0  0  0 ]
+                                [            ]
+                                [ 0  0  0  0 ]
+(%i6) q[1,1]:1;
+(%o6)                                  1
+(%i7) for i thru adim do q[1,i+1]:q[i+1,1]:v[i];
+(%o7)                                done
+(%i8) q[1,4]:q[4,1]:v[1].v[2];
+(%o8)                               v  . v
+                                     1    2
+(%i9) for i from 2 thru 4 do for j from 2 thru 4 do
+      q[i,j]:atensimp(q[i,1].q[1,j]);
+(%o9)                                done
+(%i10) q;
+                   [    1        v         v      v  . v  ]
+                   [              1         2      1    2 ]
+                   [                                      ]
+                   [   v         - 1     v  . v    - v    ]
+                   [    1                 1    2      2   ]
+(%o10)             [                                      ]
+                   [   v      - v  . v     - 1      v     ]
+                   [    2        1    2              1    ]
+                   [                                      ]
+                   [ v  . v      v        - v       - 1   ]
+                   [  1    2      2          1            ]
+@end example
+
+@code{atensor} reconhece como bases vetoriais s@'imbolos indexados, onde o s@'imbolo 
+@'e aquele armazenado em @code{asymbol} e o i@'indice est@'a entre 1 e @code{adim}.
+Para s@'imbolos indexado, e somente para s@'imbolos indexados, as formas bilineares
+@code{sf}, @code{af}, e @code{av} s@~ao avaliadas. A avalia@,{c}@~ao
+substitue os valores  de @code{aform[i,j]} em lugar de @code{fun(v[i],v[j])}
+onde @code{v} representa o valor de @code{asymbol} e @code{fun} @'e
+ainda @code{af} ou @code{sf}; ou, isso substitui @code{v[aform[i,j]]}
+em lugar de @code{av(v[i],v[j])}.
+
+Desnecess@'ario dizer, as fun@,{c}@~oes @code{sf}, @code{af} e @code{av}
+podem ser redefinidas.
+
+Quando o pacote @code{atensor} @'e chamado, os seguintes sinalizadores s@~ao configurados:
+
+@example
+dotscrules:true;
+dotdistrib:true;
+dotexptsimp:false;
+@end example
+
+Se voc@^e deseja experimentar com uma @'algebra n@~ao associativa, voc@^e pode tamb@'em
+considerar a configura@,{c}@~ao de @code{dotassoc} para @code{false}. Nesse caso, todavia,
+@code{atensimp} n@~ao star@'a sempre habilitado a obter as simplifica@,{c}@~oes
+desejadas.
+
+
+@c end concepts atensor
+@node Definitions for atensor,  , Introduction to atensor, atensor
+
+@section Definitions for atensor
+
+@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Function} init_atensor (@var{alg_type})
+
+Inicializa o pacote @code{atensor} com o tipo especificado de @'algebra. @var{alg_type}
+pode ser um dos seguintes:
+
+@code{universal}: A @'algebra universal tendo regras n@~ao comutativas.
+
+@code{grassmann}: A @'algebra de Grassman @'e definida pela rela@,{c}@~ao de 
+comuta@,{c}@~ao @code{u.v+v.u=0}.
+
+@code{clifford}: A @'algebra de Clifford @'e definida pela rela@,{c}@~ao
+de comuta@,{c}@~ao @code{u.v+v.u=-2*sf(u,v)} onde @code{sf} @'e a fun@,{c}@~ao
+valor-escalar sim@'etrico. Para essa @'algebra, @var{opt_dims} pode ser acima de tr@^es 
+inteiros n@~ao negativos, representando o n@'umero de dimens@~oes positivas,
+dimens@~oes degeneradas, e dimens@~oes negativas da @'algebra, respectivamente. Se
+quaisquer valores @var{opt_dims} s@~ao fornecidos, @code{atensor} ir@'a configurar os
+valores de @code{adim} e @code{aform} apropriadamente. Caso contr@'ario,
+@code{adim} ir@'a por padr@~ao para 0 e @code{aform} n@~ao ser@'a definida.
+
+@code{symmetric}: The @'algebra sim@'etrica @'e definida pela rela@,{c}@~ao de 
+comuta@,{c}@~ao @code{u.v-v.u=0}.
+
+@code{symplectic}: The @'algebra simpl@'etica @'e definida pela rela@,{c}@~ao de 
+comuta@,{c}@~ao @code{u.v-v.u=2*af(u,v)} onde @code{af} @'e uma fun@,{c}@~ao valor-escalar 
+antisim@'etrica. Para a @'algebra simpl@'etica, @var{opt_dims} pode
+mais de dois inteiros n@~ao negativos, representando a dimens@~ao n@~ao degenerada e
+e a dimens@~ao degenerada, respectivamente. Se quaisquer valores @var{opt_dims} s@~ao
+fornecidos, @code{atensor} ir@'a configurar os valores de @code{adim} e @code{aform}
+apropriadamente. Caso contr@'ario, @code{adim} ir@'a por padr@~ao para 0 e @code{aform}
+n@~ao ser@'a definida.
+
+@code{lie_envelop}: O inv@'olucro da @'algebra de Lie @'e definido pela 
+rela@,{c}@~ao de comuta@,{c}@~ao @code{u.v-v.u=2*av(u,v)} onde @code{av} @'e
+uma fun@,{c}@~ao antisim@'etrica.
+
+A fun@,{c}@~ao @code{init_atensor} tamb@'em reconhece muitos tipos pr@'e-definidos de 
+@'algebra:
+
+@code{complex} implementa a @'algebra de n@'umeros complexos como a
+@'algebra de Clifford Cl(0,1). A chamada @code{init_atensor(complex)} @'e
+equivalente a @code{init_atensor(clifford,0,0,1)}.
+
+@code{quaternion} implementa a @'algebra de quat@'ernios. A chamada
+@code{init_atensor(quaternion)} @'e equivalente a 
+@code{init_atensor(clifford,0,0,2)}.
+
+@code{pauli} implementa a @'algebra de Pauli-spinors como a Clifford-@'algebra
+Cl(3,0). Uma chamada a @code{init_atensor(pauli)} @'e equivalente a
+@code{init_atensor(clifford,3)}.
+
+@code{dirac} implementa a @'algebra de Dirac-spinors como a Clifford-@'algebra
+Cl(3,1). Uma chamada a @code{init_atensor(dirac)} @'e equivalente a
+@code{init_atensor(clifford,3,0,1)}.
+
+@end deffn
+
+
+@deffn {Function} atensimp (@var{expr})
+
+Simplifica a express@~ao alg@'ebrica de tensores @var{expr} conforme as regras
+configuradas por uma chamada a @code{init_atensor}. Simplifica@,{c}@~oes incluem
+aplica@,{c}@~ao recursiva de rela@,{c}@~oes comutativas e resolu@,{c}@~oes de chamadas a
+@code{sf}, @code{af}, e @code{av} onde for aplic@'avel. Uma
+salvaguarda @'e usada para garantir que a fun@,{c}@~ao sempre termine, mesmo para
+express@~oes complexas.
+
+@end deffn
+
+@deffn {Function} alg_type
+
+O tipo de @'algebra. Valores v@'alidos s@'ao @code{universal}, @code{grassmann},
+@code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
+
+@end deffn
+
+@defvr {Variable} adim
+
+A dimensionalidade da @'algebra. @code{atensor} usa o valor de @code{adim}
+para determinar se um objeto indexado @'e uma base vetorial v@'alida. Por padr@~ao para 0.
+
+@end defvr
+
+@defvr {Variable} aform
+
+Valor padr@~ao para as formas bilineares @code{sf}, @code{af}, e
+@code{av}. O padr@~ao @'e a matriz identidade @code{ident(3)}.
+
+@end defvr
+
+@defvr {Variable} asymbol
+
+O s@'imbolo para bases vetoriais. O padr@~ao @'e @code{v}.
+
+@end defvr
+
+@deffn {Function} sf (@var{u}, @var{v})
+
+@'E uma fun@,{c}@~ao escalar sim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
+A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
+usando @code{abasep} e se esse for o caso, substitue o valor 
+correspondente da matriz @code{aform}.
+
+@end deffn
+
+@deffn {Function} af (@var{u}, @var{v})
+
+@'E uma fun@,{c}@~ao escalar antisim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
+A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
+usando @code{abasep} e se esse for o caso, substitue o
+valor correspondente da matriz @code{aform}.
+
+@end deffn
+
+@deffn {Function} av (@var{u}, @var{v})
+
+@'E uma fun@,{c}@~ao antisim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
+A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
+usando @code{abasep} e se esse for o caso, substitue o
+valor correspondente da matriz @code{aform}.
+
+Por exemplo:
+
+@example
+(%i1) load(atensor);
+(%o1)       /share/tensor/atensor.mac
+(%i2) adim:3;
+(%o2)                                  3
+(%i3) aform:matrix([0,3,-2],[-3,0,1],[2,-1,0]);
+                               [  0    3   - 2 ]
+                               [               ]
+(%o3)                          [ - 3   0    1  ]
+                               [               ]
+                               [  2   - 1   0  ]
+(%i4) asymbol:x;
+(%o4)                                  x
+(%i5) av(x[1],x[2]);
+(%o5)                                 x
+                                       3
+@end example
+
+@end deffn
+
+
+@deffn {Function} abasep (@var{v})
+
+Verifica se esse argumento @'e uma base vetorial @code{atensor} . 
+
+E ser@'a, se ele for
+um s@'imbolo indexado, com o s@'imbolo sendo o mesmo que o valor de
+@code{asymbol}, e o @'indice tiver o mesmo valor num@'erico entre 1
+e @code{adim}.
+
+@end deffn
