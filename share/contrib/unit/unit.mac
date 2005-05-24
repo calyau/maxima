@@ -68,17 +68,17 @@ metricpre : 	[[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
 
 /*============================ Unit Information ============================*/ 
 
-/* Seven Mutually Independent Base dimensions 
+/* Seven Mutually Independent Base Dimensions 
 
   The globalbaseunitlisting maintains a list of all dimensions considered to be
-  Base dimensions.  This means all other units result from combinations of 
+  Base Dimensions.  This means all other units result from combinations of 
   these units.  The list associated with each dimension is named %dimensionlisting
   and is structured as follows:
    
    -  The first unit in each list is called the pivot unit. All other units
-      for this dimension, and all derived units using this dimension, will be 
+      for this dimension, and all derived units containing this dimension, will be 
       defined in terms of this unit.  The pivot unit is also the standard SI
-      unit in the case of Base dimensions
+      unit in the case of Base Dimensions
       
    -  Each entry in the top level list is itself a list, containing as its 
       first entry a list of the names to be associated with this unit.  The 
@@ -127,11 +127,11 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 /* Derived Units
  
    The structure of these lists is slightly different from the Base
-   dimensions.  The first entry in each list describes the Derived dimension 
-   in terms of the relevant Base dimensions, using the pivot unit of the
-   Base dimensions. It is a list of two entries, the definition in abbreviated
-   units and fullnames. After that, the structure is the same as Base dimension
-   lists. globalderivedunitlisting lists all derived dimensions known to
+   Dimensions.  The first entry in each list describes the Derived Dimension 
+   in terms of the relevant Base Dimensions, using the pivot unit of the
+   Base Dimensions. It is a list of two entries, the definition in abbreviated
+   units and fullnames. After that, the structure is the same as Base Dimension
+   lists. globalderivedunitlisting lists all Derived Dimensions known to
    Maxima.  A second global listing, called globalderivedunitlisting_use, is
    used to define the search order for substitution in unit processing.*/
 
@@ -167,14 +167,14 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 /*Pressure*/
 %pressurelisting : [kg/(m*s^2),[[Pa,pascal,pascals],1,m],[[torr],133.32239,m]];
 
-/*Energy, Work, dimension of Heat */
+/*Energy, Work, Quantity of Heat */
 %energylisting : [kg*m^2/s^2,[[J,joule,joules],1,m],
 [[eV,electron_volt,electron_volts],1.6021765*10^-19,m]];
 
 /*Power, Radiant */
 %powerlisting : [kg*m^2/s^3,[[W,watt,watts],1,m]];
 
-/*Electric Charge, dimension of Electricity*/
+/*Electric Charge, Quantity of Electricity*/
 %electric_chargelisting : [s*A,[[C,coulomb,coulombs],1,m]];
 
 /*Electric Potential Difference, Electromotive Force */	
@@ -311,7 +311,7 @@ makeallunitslist() := block([i,j,k,b,allunitslisttemp],
          allunitslisttemp : append([unitlistname[j][1][k]],allunitslisttemp)
     ))),
     
-    /* j needs to start at the second entry for Derived dimension Arrays */
+    /* j needs to start at the second entry for Derived Dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
      unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
@@ -330,7 +330,7 @@ makedimentoonerules() := block([i,j,k,b,allunitslisttemp],
      unitlet([globalbaseunitlisting[i],1],dimentoone)
     ),
     
-    /* j needs to start at the second entry for Derived dimension Arrays */
+    /* j needs to start at the second entry for Derived Dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
      unitlet([globalderivedunitlisting[i],1],dimentoone)    
     ));
@@ -362,7 +362,7 @@ maketodimensionruleset() := block([i,j,k,b,unitlistname],
 	         todimension)
     ))),
     
-    /* j needs to start at the second entry for Derived dimension Arrays */
+    /* j needs to start at the second entry for Derived Dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
      unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
@@ -393,7 +393,7 @@ isunit(candidate) := block([letrat:true,result],
 	else (
 	true)));
 
-/* Determines if a unit is a Base dimension */
+/* Determines if a unit is a Base Dimension */
 isbase(unit) :=  block([letrat:true,result,dimension],
 	/*Uses the simplify to dimension ruleset and checks if the dimension
 	  is present in the base list.*/
@@ -657,7 +657,7 @@ setunitprefix(prefix) := block([i,j,k,b],
          unitlistname[j][1][k] : unitconcat(prefix,unitlistname[j][1][k])
     ))),
     
-    /* j needs to start at the second entry for Derived dimension Arrays */
+    /* j needs to start at the second entry for Derived Dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
      unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
