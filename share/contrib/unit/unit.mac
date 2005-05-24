@@ -9,13 +9,13 @@
        *         given property (mass, for example) in terms of	     *
        *	 a base unit, and various other abilities. 	     *
        *         						     *
-       *         	       Version 0.11			     *
-       *                       March 9, 2005			     *
+       *         	       Version 0.40			     *
+       *                       May 23, 2005			     *
        *		       License:  GPL			     *
        *							     *
        *          ------------------------------------------         *
-       *          Programmed by Cliff Yapp and Barton Willis         *
-       *       with thanks to Robert Dodier and the Maxima list      *
+       *      Programmed by Cliff Yapp with invaluable help from     *
+       *       Barton Willis, Robert Dodier and the Maxima list      *
        ***************************************************************
        
        
@@ -27,6 +27,10 @@
 
      Changes:
 
+       0.40  -  Display of units has been fixed, with optional settings
+                to allow grouping over the plus operator as well.  A
+		variety of improvements, not all of them fully functional
+		as yet.
        0.11  -  As of this version, setunits and convert should be
        		fully operational, although definitions are still
 		somewhat lacking.
@@ -64,17 +68,17 @@ metricpre : 	[[Y,10^24,4],[Z,10^21,4],[E,10^18,4],[P,10^15,3],[T,10^12,3],
 
 /*============================ Unit Information ============================*/ 
 
-/* Seven Mutually Independent Base Quantities 
+/* Seven Mutually Independent Base dimensions 
 
-  The globalbaseunitlisting maintains a list of all quantities considered to be
-  Base Quantities.  This means all other units result from combinations of 
-  these units.  The list associated with each quantity is named %quantitylisting
+  The globalbaseunitlisting maintains a list of all dimensions considered to be
+  Base dimensions.  This means all other units result from combinations of 
+  these units.  The list associated with each dimension is named %dimensionlisting
   and is structured as follows:
    
    -  The first unit in each list is called the pivot unit. All other units
-      for this quantity, and all derived units using this quantity, will be 
+      for this dimension, and all derived units using this dimension, will be 
       defined in terms of this unit.  The pivot unit is also the standard SI
-      unit in the case of Base Quantities
+      unit in the case of Base dimensions
       
    -  Each entry in the top level list is itself a list, containing as its 
       first entry a list of the names to be associated with this unit.  The 
@@ -123,11 +127,11 @@ globalbaseunitlisting : [%length,%mass,%time,%current,%temperature,
 /* Derived Units
  
    The structure of these lists is slightly different from the Base
-   Quantities.  The first entry in each list describes the Derived Quantity 
-   in terms of the relevant Base Quantities, using the pivot unit of the
-   Base Quantities. It is a list of two entries, the definition in abbreviated
-   units and fullnames. After that, the structure is the same as Base Quantity
-   lists. globalderivedunitlisting lists all derived quantities known to
+   dimensions.  The first entry in each list describes the Derived dimension 
+   in terms of the relevant Base dimensions, using the pivot unit of the
+   Base dimensions. It is a list of two entries, the definition in abbreviated
+   units and fullnames. After that, the structure is the same as Base dimension
+   lists. globalderivedunitlisting lists all derived dimensions known to
    Maxima.  A second global listing, called globalderivedunitlisting_use, is
    used to define the search order for substitution in unit processing.*/
 
@@ -145,7 +149,7 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 
    These are similar in structure to the Derived Unit lists above, but
    because they have a unique name associated with them in SI the policy
-   is to have the first entry after the base quantity definition be the
+   is to have the first entry after the base dimension definition be the
    SI unit.  Overall structure is the same.  These are listed in the same
    globalderivedunitlisting as the previous Derived Units.
    
@@ -163,14 +167,14 @@ globalderivedunitlisting:[%volume,%frequency,%force,%pressure,
 /*Pressure*/
 %pressurelisting : [kg/(m*s^2),[[Pa,pascal,pascals],1,m],[[torr],133.32239,m]];
 
-/*Energy, Work, Quantity of Heat */
+/*Energy, Work, dimension of Heat */
 %energylisting : [kg*m^2/s^2,[[J,joule,joules],1,m],
 [[eV,electron_volt,electron_volts],1.6021765*10^-19,m]];
 
 /*Power, Radiant */
 %powerlisting : [kg*m^2/s^3,[[W,watt,watts],1,m]];
 
-/*Electric Charge, Quantity of Electricity*/
+/*Electric Charge, dimension of Electricity*/
 %electric_chargelisting : [s*A,[[C,coulomb,coulombs],1,m]];
 
 /*Electric Potential Difference, Electromotive Force */	
@@ -243,10 +247,10 @@ checkforuniqueness(list1) := block([i,j,return],
 a name when doing the concat operation (thanks to Dr. Willis)*/
 unitconcat(a,b) := concat(a,(?stripdollar(?stripdollar(b))));
 
-/* Add all desired metric quantities into %quantitylisting_use lists.  
-   %quantitylisting_use lists are the one actually used in functions.  This allows
+/* Add all desired metric dimensions into %dimensionlisting_use lists.  
+   %dimensionlisting_use lists are the one actually used in functions.  This allows
    the program to regenerate a new metric list from "original" package lists
-   in order to avoid multiple definitions of metric prefix quantities.  An
+   in order to avoid multiple definitions of metric prefix dimensions.  An
    exception is made for kg, kilogram, and kilograms because they are defined
    already as the pivot unit for mass.  This is a consequence of the nature of
    the SI system.*/
@@ -307,7 +311,7 @@ makeallunitslist() := block([i,j,k,b,allunitslisttemp],
          allunitslisttemp : append([unitlistname[j][1][k]],allunitslisttemp)
     ))),
     
-    /* j needs to start at the second entry for Derived Quantity Arrays */
+    /* j needs to start at the second entry for Derived dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
      unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
@@ -317,17 +321,18 @@ makeallunitslist() := block([i,j,k,b,allunitslisttemp],
     reverse(sort(allunitslisttemp))
     );
 
-/* This function creates a ruleset converting all quantities to one */
-makequanttoonerules() := block([i,j,k,b,allunitslisttemp],
+    
+/* This function creates a ruleset converting all dimensions to one */
+makedimentoonerules() := block([i,j,k,b,allunitslisttemp],
     allunitslisttemp : [],
     modedeclare([i,j,k], fixnum),
     for i : 1 thru length(globalbaseunitlisting) do  (
-     unitlet([globalbaseunitlisting[i],1],quanttoone)
+     unitlet([globalbaseunitlisting[i],1],dimentoone)
     ),
     
-    /* j needs to start at the second entry for Derived Quantity Arrays */
+    /* j needs to start at the second entry for Derived dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
-     unitlet([globalderivedunitlisting[i],1],quanttoone)    
+     unitlet([globalderivedunitlisting[i],1],dimentoone)    
     ));
 
 /* This command is used to define the display order of units, in order to
@@ -339,31 +344,31 @@ unitgreat(list1) := apply('ordergreat, list1);
 /* Create unitsimplify ruleset
 
    This ruleset is used to simplify unit processing.  When a unit is processed
-   a simplification of that unit using toquantities will return the 
-   quantity it represents.  This enables subsequent operations on the unit to 
+   a simplification of that unit using todimension will return the 
+   dimension it represents.  This enables subsequent operations on the unit to 
    know what list to look at for conversions and at the same time simplifies 
    the programming of dimensional analysis functionality.  The addunit command
    will automatically add on information to this list in order to maintain the 
    validity of the operation.  The metricexpandall function must be called 
    before this command is run.*/
    
-maketoquantitiesruleset() := block([i,j,k,b,unitlistname],
+maketodimensionruleset() := block([i,j,k,b,unitlistname],
     modedeclare([i,j,k], fixnum),
     for i : 1 thru length(globalbaseunitlisting) do  (
      unitlistname : concat(globalbaseunitlisting[i],listing_use),
      for j : 1 thru length(ev(unitlistname)) do  (
        for k : 1 thru length(unitlistname[j][1]) do (
          unitlet([unitlistname[j][1][k],globalbaseunitlisting[i]],
-	         toquantities)
+	         todimension)
     ))),
     
-    /* j needs to start at the second entry for Derived Quantity Arrays */
+    /* j needs to start at the second entry for Derived dimension Arrays */
     for i : 1 thru length(globalderivedunitlisting_use) do  (
      unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
      for j : 2 thru length(ev(unitlistname)) do  (
        for k : 1 thru length(unitlistname[j][1]) do (
          unitlet([unitlistname[j][1][k],globalderivedunitlisting_use[i]],
-	         toquantities)
+	         todimension)
     )))
     );
 
@@ -377,33 +382,33 @@ isunit(candidate) := block([letrat:true,result],
 	   (error ("Argument to isunit was not an atom.  Maxima requires units to be atoms.  Erroneous input: ",candidate))
 	) else (
 	/* This test simply checks if the candidate will return
-	   a quantity under the previously defined rules.  If it
+	   a dimension under the previously defined rules.  If it
 	   does, then it is a unit.  If it does not, then it will
 	   not be impacted by those simplification rules and the
 	   condition of equality will be satisfied.  In such a
 	   case the result is that candidate is not a unit. */
-	if ?equal(candidate,letsimp(candidate,toquantities)) then (
+	if ?equal(candidate,letsimp(candidate,todimension)) then (
 	     /*Error if input isn't a unit - mentions the addunit command.*/
 	   (error ("Input is not a unit.  To define your own unit, use the addunit command."),candidate)) 
 	else (
 	true)));
 
-/* Determines if a unit is a Base Quantity */
-isbase(unit) :=  block([letrat:true,result,quantity],
-	/*Uses the simplify to quantity ruleset and checks if the quantity
+/* Determines if a unit is a Base dimension */
+isbase(unit) :=  block([letrat:true,result,dimension],
+	/*Uses the simplify to dimension ruleset and checks if the dimension
 	  is present in the base list.*/
 	if not(lfreeof(globalbaseunitlisting,
-	                       letsimp(unit,toquantities))) then (
+	                       letsimp(unit,todimension))) then (
 		result : true)
 	else (
 	if isunit(unit) then (result : false)),
 	result);
 
-/* Returns the definition of a unit in terms of the seven base quantities.*/
+/* Returns the definition of a unit in terms of the seven base dimensions.*/
 base(unit):= block([letrat:true,result,i,j,listname],
   	modedeclare([i,j], fixnum),
 	if not(isbase(unit)) then (
-	   listname:concat(letsimp(unit,toquantities),listing_use),
+	   listname:concat(letsimp(unit,todimension),listing_use),
 	   for i:1 thru length(ev(listname)) do (
 	     for j:1 thru length(listname[i][1]) do (
 	        if (?equal(unit,listname[i][1][j])) then (
@@ -413,22 +418,22 @@ base(unit):= block([letrat:true,result,i,j,listname],
 	result : unit),
 	result);
 
-/* Returns the mks base units for a quantity.*/
-quanttomks(quantity):= block([letrat:true,result,listname],
-	listname:concat(quantity,listing_use),
-	if not(lfreeof(globalbaseunitlisting,quantity)) then (
+/* Returns the mks base units for a dimension.*/
+dimentomks(dimension):= block([letrat:true,result,listname],
+	listname:concat(dimension,listing_use),
+	if not(lfreeof(globalbaseunitlisting,dimension)) then (
             result : listname[1][1])
 	else (
-	if not(lfreeof(globalderivedunitlisting,quantity)) then (
+	if not(lfreeof(globalderivedunitlisting,dimension)) then (
 	    result : listname[1])
 	else (
-	error ("Quantity not found"))),
+	error ("dimension not found"))),
 	result);
 
-/* This utility makes a list of quantities from a list of units.  It is
-   used to validate input for setunits, and also in the derived quantity
+/* This utility makes a list of dimensions from a list of units.  It is
+   used to validate input for setunits, and also in the derived dimension
    ruleset process. */
-makequantlist(unitlist) := block([current_let_rule_package : toquantities, 
+makedimenlist(unitlist) := block([current_let_rule_package : todimension, 
                                   return1], 
          return1 : map('letsimp,unitlist));
 
@@ -495,16 +500,26 @@ makederivedtoMKSrules():= block([letrat:true,i,j,a,b,fakerule],
 
 
 /* This routine takes a list of definitions for a derived unit, and makes a
-ruleset for converting from MKS to the derived quantity.*/
+ruleset for converting from MKS to the derived dimension.*/
 makeMKStoderivedrules(currentunit,unitlistname,derivedunitrules):= 
  block([letrat:true,i,j,fakerule],
    killruleset(derivedunitrules),
    unitlet([fakerule,fakerule],derivedunitrules),
-   if lfreeof(dontuselist,letsimp(currentunit,toquantities)) then (
+   if lfreeof(dontuselist,letsimp(currentunit,todimension)) then (
     for i : 2 thru length(ev(unitlistname)) do (
       if not(lfreeof(unitlistname[i][1],currentunit)) then (
         unitlet([unitlistname[1],unitlistname[i][1][1]/unitlistname[i][2]],derivedunitrules)
       ))));
+
+/* Sets rad, deg, Rad, Deg, RAD, and DEG to the appropriate values to do
+what the user expects.  Maxima normally calculates in radians, hence rad is 1.*/
+rad : 1;
+Rad : 1;
+RAD : 1;
+deg : %pi/180;
+Deg : %pi/180;
+DEG : %pi/180;
+
 
 /* This command is used to do final global simplification of units */
 processunits(expression) := block([letrat:true,ratprint:false,unitrules,result1],
@@ -537,7 +552,7 @@ resetunitvars(args) := block(unitformatresults:false,args);
 showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
                          currentunitlist,flag,return1],
       isunit(fullunitname),
-      unittype : letsimp(fullunitname,toquantities),
+      unittype : letsimp(fullunitname,todimension),
       unitlistname : concat(unittype,listing_use),
       flag : 0, i:0,
       if not(isbase(fullunitname)) then (i : i+1),
@@ -557,7 +572,7 @@ showabbr(fullunitname):= block([letrat:true,i,j,unittype,unitlistname,
 showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
                          currentunitlist,flag,return1],
       isunit(abbr),
-      unittype : letsimp(abbr,toquantities),
+      unittype : letsimp(abbr,todimension),
       unitlistname : concat(unittype,listing_use),
       flag : 0, i:0,
       if not(isbase(abbr)) then (i : i+1),
@@ -573,13 +588,13 @@ showfullname(abbr):= block([letrat:true,i,j,unittype,unitlistname,
    return1);
 
 /* Command to set user selected units as defaults.  Checks to ensure the
-selected units don't contain two units of the same quantity. */
+selected units don't contain two units of the same dimension. */
 setunits(units):= block([letrat:true,unittype,unitlistname,
                          unitrules,currentunitlist, flag, i, j, derivedunits],
   if listp(units) then (
-    if (checkforuniqueness(makequantlist(units))) then (
+    if (checkforuniqueness(makedimenlist(units))) then (
       for i : 1 thru length(units) do (
-	unittype : letsimp(units[i],toquantities),
+	unittype : letsimp(units[i],todimension),
 	unitlistname : concat(unittype,listing_use),
 	unitrules : concat(unittype,'rules),
 	if (not(isbase(units[i])) and (isunit(units[i]))) then (
@@ -596,41 +611,88 @@ setunits(units):= block([letrat:true,unittype,unitlistname,
         makeMKStobaserules(currentunitlist,unitlistname,unitrules)
 	))
     ) else (                                
-    error ("Error - two or more of these units describe the same quantity."))
+    error ("Error - two or more of these units describe the same dimension."))
     ) else (
     error ("Error - argument to setunits must be a list, e.g. [N] instead of N."))
 );
 
-/* These two functions control the dontuselist array.  usequantity will remove
-a quantity from the do not use list*/
-usequantity(input1):= block([letrat:true,unittype,unitlistname,
+/* These two functions control the dontuselist array.  usedimension will remove
+a dimension from the do not use list*/
+usedimension(input1):= block([letrat:true,unittype,unitlistname,
                          unitrules,currentunitlist, flag, i, j, derivedunits],
-   if ?equal(input1,letsimp(input1,toquantities)) then (
+   if ?equal(input1,letsimp(input1,todimension)) then (
       dontuselist : delete(input1,dontuselist))
    else (
-      temp : letsimp(input1,toquantities),
+      temp : letsimp(input1,todimension),
       dontuselist : delete(temp,dontuselist)
-   ));
-dontusequantity(input1):= block([letrat:true,unittype,unitlistname,
+   ),
+   print("Done.  To have Maxima simplify to this dimension, use setunits([unit])"),
+   print("to select a unit."),
+   true);
+dontusedimension(input1):= block([letrat:true,unittype,unitlistname,
                          unitrules,currentunitlist, temp, i, j, derivedunits],
-   if ?equal(input1,letsimp(input1,toquantities)) then (
+   if ?equal(input1,letsimp(input1,todimension)) then (
       unitrules : concat(input1,'rules),
       killruleset(unitrules),
       dontuselist : append([input1],dontuselist)
    ) else (
-      temp : letsimp(input1,toquantities),
+      temp : letsimp(input1,todimension),
       unitrules : concat(temp,'rules),
       killruleset(unitrules),
       dontuselist : append([temp],dontuselist)
    ));
 
-/* This function returns the quantity described by a unit */
-quantity(input1) := letsimp(input1,toquantities);
+/* This function returns the dimension described by a unit */
+dimension(input1) := letsimp(input1,todimension);
+
+/* This function allows a user to set a common prefix for all unit names,
+e.g. unit_m */
+setunitprefix(prefix) := block([i,j,k,b],
+    print("Renaming units..."),
+    modedeclare([i,j,k], fixnum),
+    for i : 1 thru length(globalbaseunitlisting) do  (
+     unitlistname : concat(globalbaseunitlisting[i],listing_use),
+     for j : 1 thru length(ev(unitlistname)) do  (
+       for k : 1 thru length(unitlistname[j][1]) do (
+         unitlistname[j][1][k] : unitconcat(prefix,unitlistname[j][1][k])
+    ))),
+    
+    /* j needs to start at the second entry for Derived dimension Arrays */
+    for i : 1 thru length(globalderivedunitlisting_use) do  (
+     unitlistname : concat(globalderivedunitlisting_use[i],listing_use),
+     for j : 2 thru length(ev(unitlistname)) do  (
+       for k : 1 thru length(unitlistname[j][1]) do (
+        unitlistname[j][1][k] : unitconcat(prefix,unitlistname[j][1][k]) 
+    ))),
+    print("Rebuilding unit conversion rules..."),
+    maketodimensionruleset(),
+    makebasetoMKSrules(),
+    makederivedtoMKSrules(),
+    makedimentoonerules(),
+    allunitslist : makeallunitslist(),
+    currentunitprefix : prefix,
+    print("done")
+);
+
+/* Undoes setunitprefix, or more properly resets things to their
+initial state */
+clearunitprefix():= block([i,j,k,b],
+    print("Renaming units..."),
+    metricexpandall(%unitexpand),
+    print("Rebuilding unit conversion rules..."),
+    maketodimensionruleset(),
+    makebasetoMKSrules(),
+    makederivedtoMKSrules(),
+    makedimentoonerules(),
+    allunitslist : makeallunitslist(),
+    currentunitprefix : "",
+    print("done")
+);    
 
 /*  Not yet implemented
 
 /* Prints out information about a unit */
-unitinfo(unit):= block([letrat:true,result,quantity],
+unitinfo(unit):= block([letrat:true,result,dimension],
 
 /*  Allows the user to create their own units */
 addunits([[unitname(s)],definition,0]):=
@@ -638,7 +700,7 @@ addunits([[unitname(s)],definition,0]):=
 
 /*  Converts an expression into one using the specified units. Or the
 user can specify MKS instead of a list of units, to have all units
-rendered in terms of the seven base quantities and their associated MKS
+rendered in terms of the seven base dimensions and their associated MKS
 units. */
 convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
 					  currentunitlist,flag,i,j],
@@ -647,9 +709,9 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
     result1 : letsimp(result1,basetoMKSrules)
    ) else (
    if listp(desiredunits) then (
-    if (checkforuniqueness(makequantlist(desiredunits))) then (
+    if (checkforuniqueness(makedimenlist(desiredunits))) then (
       for i : 1 thru length(desiredunits) do (
-	unittype : letsimp(desiredunits[i],toquantities),
+	unittype : letsimp(desiredunits[i],todimension),
 	unitlistname : concat(unittype,listing_use),
 	if (not(isbase(desiredunits[i])) and (isunit(desiredunits[i]))) then (
 	   makeMKStoderivedrules(desiredunits[i],unitlistname,convertrules)
@@ -666,35 +728,35 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
 	)),
      result1 : letsimp(expression,convertrules)
     ) else (                                
-    error ("Error - two or more of these units describe the same quantity."))
+    error ("Error - two or more of these units describe the same dimension."))
     ) else (
     error ("Error - argument to setunits must be a list of units or the argument MKS."))),
  currentdoeval : false, /* This tells processunits not to simplify 
 			   for this operation only */
  result1);    
 
-/* Associates a variable and a quantity/dimension, e.g. t and %time */
-assignquantity(exp,quantity) := block([],
-     if (not(lfreeof(globalbaseunitlisting,quantity)) or 
+/* Associates a variable and a dimension/dimension, e.g. t and %time */
+assigndimension(exp,dimension) := block([],
+     if (not(lfreeof(globalbaseunitlisting,dimension)) or 
      		not(lfreeof(globalderivedunitlisting))) then (
-     variablequantitieslist : append([[exp,quantity]],variablequantitieslist),
-     apply('qput,[exp,quantity,%quantity])
+     variabledimensionslist : append([[exp,dimension]],variabledimensionslist),
+     apply('qput,[exp,dimension,%dimension])
      ) else (
-     (error ("Invalid quantity.  Valid entries are:")),
+     (error ("Invalid dimension.  Valid entries are:")),
      print(globalbaseunitlisting),
      print(globalderivedunitlisting)));
 
 /* Basic dimensional function.  This doesn't have the power of dimension.mac but
 it will work for basic cases */
 dimension(exp) := block([letrat:true,tmp1,tmp2,a1,a2,result1,i,j],
-     killruleset(quantrules),
-     unitlet([fakerule,fakerule],quantrules),
-     unitlet([fakerule,fakerule],quanttoone),
-     for i:1 thru length(variablequantitieslist) do (
-        unitlet([variablequantitieslist[i][1],variablequantitieslist[i][2]],quantrules)),
+     killruleset(dimenrules),
+     unitlet([fakerule,fakerule],dimenrules),
+     unitlet([fakerule,fakerule],dimentoone),
+     for i:1 thru length(variabledimensionslist) do (
+        unitlet([variabledimensionslist[i][1],variabledimensionslist[i][2]],dimenrules)),
      exp : processunits(exp),
-     tmp1 : letsimp(letsimp(exp,quantrules),toquantities),
-     tmp2 : letsimp(letsimp(letsimp(exp,toquantities),quantrules),quanttoone),
+     tmp1 : letsimp(letsimp(exp,dimenrules),todimension),
+     tmp2 : letsimp(letsimp(letsimp(exp,todimension),dimenrules),dimentoone),
      result1 : tmp1/tmp2,
      result1);
 
@@ -706,7 +768,7 @@ disablegroupbyadd() := block(post_eval_functions : [processunits]);
 
 /* Startup Message */
 print("*******************************************************************");
-print("*                       Units version 0.11                        *");
+print("*                       Units version 0.40                        *");
 print("*          Definitions based on the NIST Reference on             *");
 print("*              Constants, Units, and Uncertainty                  *");
 print("*       Conversion factors from various sources including         *");
@@ -725,7 +787,7 @@ print("Initializing unit arrays...");
    on to the default lists*/
 %unitexpand : 2;
 
-/* This is a list which contains quantities the user doesn't want
+/* This is a list which contains dimensions the user doesn't want
 simplified by the derived units simplifier.  Default is empty. */
 dontuselist : [];
 
@@ -733,7 +795,7 @@ dontuselist : [];
 this is disabled due to bugs */
 unitsimpadd : false;
 
-/* Places all relevant metric definitions into the %quantitylist lists.*/
+/* Places all relevant metric definitions into the %dimensionlist lists.*/
 metricexpandall(%unitexpand);
 
 /* This list dictates in what order Maxima will look for derived units.
@@ -769,16 +831,16 @@ globalderivedunitlisting_use : [%capacitance,%resistance,%conductance,
 abbrevsimp : 0;
       
 /* Create default rulesets*/
-maketoquantitiesruleset();
+maketodimensionruleset();
 makebasetoMKSrules();
 makederivedtoMKSrules();
-makequanttoonerules();
+makedimentoonerules();
 
 /* Create a list of all units */
 allunitslist : makeallunitslist();
 
-/* Basic dimension functionality - initialize list of quantities in use */    
-variablequantitieslist : [];
+/* Basic dimension functionality - initialize list of dimensions in use */    
+variabledimensionslist : [];
 
 /* This variable is used to ensure Maxima only formats units at the end
 of an evaluation */
@@ -790,8 +852,9 @@ unit formatting will be undone in the display process */
 pre_eval_functions : [resetunitvars];
 
 /* Activate processunits as a post_eval_function in order to enable
-   automatic simplification of all unit output */
-post_eval_functions : [processunits];
+   automatic simplification of all unit output, and groupadd to enable
+   sorting by common unit. */
+post_eval_functions : [processunits,?groupadd];
 
 /* This will ensure processunits starts out in working mode. */
 currentdoeval : true;
