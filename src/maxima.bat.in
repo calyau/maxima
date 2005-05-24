@@ -19,6 +19,12 @@ set package=@PACKAGE@
 set verbose=false
 set path=%maxima_prefix%\bin;%path%
 
+if "%USERPROFILE%" == "" goto win9x
+set MAXIMA_USERDIR=%USERPROFILE%\maxima
+goto startparseargs
+:win9x
+set MAXIMA_USERDIR=%maxima_prefix\user
+
 :startparseargs
 if "%1" == "-l" goto foundlisp
 if "%1" == "--lisp" goto foundlisp
