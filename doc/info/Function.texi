@@ -466,6 +466,13 @@ the double-single-quotes operator @code{'@w{}'} defeats quotation.
 @deffn {Function} define (@var{f}(@var{x_1}, ..., @var{x_n}), @var{expr})
 Defines a function named @var{f} with arguments @var{x_1}, ..., @var{x_n} and function body @var{expr}.
 
+@code{define} quotes its first argument in most cases,
+and evaluates its second argument unless explicitly quoted.
+However, if the first argument is an expression of the form
+@code{ev (@var{expr})}, @code{funmake (@var{expr})}, or @code{arraymake (@var{expr})},
+the first argument is evaluated;
+this allows for the function name to be computed, as well as the body.
+
 @code{define} is similar to the function definition operator @code{:=}, but when
 @code{define} appears inside a function, the definition is created using the value
 of @code{expr} at execution time rather than at the
@@ -512,47 +519,140 @@ Examples:
 @end example
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
+@c @deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@deffn {Function} define_variable (@var{name}, @var{default_value}, @var{mode})
 
-Introduces a global variable into the Maxima environment.  This is
-for user-written packages, which are often translated or compiled.
-Thus
-@example
-define_variable (foo, true, boolean);
-@end example
-does the following:
+Introduces a global variable into the Maxima environment.
+@c IMPORT OF FOLLOWING STATEMENT UNCLEAR: IN WHAT WAY IS define_variable MORE USEFUL IN TRANSLATED CODE ??
+@code{define_variable} is useful in user-written packages, which are often translated or compiled.
 
-(1) @code{mode_declare (foo, boolean)} sets it up for the translator.
+@code{define_variable} carries out the following steps:
 
-(2) If the variable is unbound, it sets it: @code{foo: true}.
-
-(3) @code{declare (foo, special)} declares it special.
-
-(4) Sets up an assign property for it to make sure that it never 
-    gets set to a value of the wrong mode.
-    E.g. @code{foo: 44} would be an error once @code{foo} is defined @code{boolean}.
-
+@enumerate
+@item
+@code{mode_declare (@var{name}, @var{mode})} declares the mode of @var{name} to the translator.
 See @code{mode_declare} for a list of the possible modes.
 
-The optional 4th argument is a documentation string.  When
-@code{translate_file} is used on a package which includes documentation
-strings, a second file is output in addition to the Lisp file which
-will contain the documentation strings, formatted suitably for use in
-manuals, usage files, or (for instance) @code{describe}.
+@item
+If the variable is unbound, @var{default_value} is assigned to @var{name}.
 
-With any variable which has been @code{define_variable}'d with mode other
-than @code{any}, you can give a @code{value_check} property, which is a function of
-one argument called on the value the user is trying to set the
-variable to.
+@item
+@code{declare (@var{name}, special)} declares it special.
+@c CLARIFY THE MEANING OF SPECIAL FOR THE BENEFIT OF READERS OTHER THAN LISP PROGRAMMERS
+
+@item
+Associates @var{name} with a test function
+to ensure that @var{name} is only assigned values of the declared mode.
+@end enumerate
+
+
+@c FOLLOWING STATEMENT APPEARS TO BE OUT OF DATE.
+@c EXAMINING DEFMSPEC $DEFINE_VARIABLE AND DEF%TR $DEFINE_VARIABLE IN src/trmode.lisp,
+@c IT APPEARS THAT THE 4TH ARGUMENT IS NEVER REFERRED TO.
+@c EXECUTING translate_file ON A MAXIMA BATCH FILE WHICH CONTAINS
+@c define_variable (foo, 2222, integer, "THIS IS FOO");
+@c DOES NOT PUT "THIS IS FOO" INTO THE LISP FILE NOR THE UNLISP FILE.
+@c The optional 4th argument is a documentation string.  When
+@c @code{translate_file} is used on a package which includes documentation
+@c strings, a second file is output in addition to the Lisp file which
+@c will contain the documentation strings, formatted suitably for use in
+@c manuals, usage files, or (for instance) @code{describe}.
+
+The @code{value_check} property can be assigned to any variable which has been defined
+via @code{define_variable} with a mode other than @code{any}.
+The @code{value_check} property is a lambda expression or the name of a function of one variable,
+which is called when an attempt is made to assign a value to the variable.
+The argument of the @code{value_check} function is the would-be assigned value.
+
+@code{define_variable} evaluates @code{default_value}, and quotes @code{name} and @code{mode}.
+@code{define_variable} returns the current value of @code{name},
+which is @code{default_value} if @code{name} was unbound before,
+and otherwise it is the previous value of @code{name}.
+
+Examples:
+
+@code{foo} is a Boolean variable, with the initial value @code{true}.
+@c GENERATED FROM:
+@c define_variable (foo, true, boolean);
+@c foo;
+@c foo: false;
+@c foo: %pi;
+@c foo;
 
 @example
-put ('g5, lambda([u], if u # 'g5 then error("Don't set g5")), 'value_check);
+(%i1) define_variable (foo, true, boolean);
+(%o1)                         true
+(%i2) foo;
+(%o2)                         true
+(%i3) foo: false;
+(%o3)                         false
+(%i4) foo: %pi;
+Error: foo was declared mode boolean, has value: %pi
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) foo;
+(%o5)                         false
 @end example
 
-Use @code{define_variable (g5, 'g5, any_check, "this ain't supposed to be set by anyone but me.")}
-@code{any_check} is a mode which means the same as @code{any}, but which keeps
-@code{define_variable} from optimizing away the assign property.
+@code{bar} is an integer variable, which must be prime.
+@c GENERATED FROM:
+@c define_variable (bar, 2, integer);
+@c qput (bar, prime_test, value_check);
+@c prime_test (y) := if not primep(y) then error (y, "is not prime.");
+@c bar: 1439;
+@c bar: 1440;
+@c bar;
+
+@example
+(%i1) define_variable (bar, 2, integer);
+(%o1)                           2
+(%i2) qput (bar, prime_test, value_check);
+(%o2)                      prime_test
+(%i3) prime_test (y) := if not primep(y) then error (y, "is not prime.");
+(%o3) prime_test(y) := if not primep(y)
+
+                                   then error(y, "is not prime.")
+(%i4) bar: 1439;
+(%o4)                         1439
+(%i5) bar: 1440;
+1440 is not prime.
+#0: prime_test(y=1440)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) bar;
+(%o6)                         1439
+@end example
+
+@code{baz_quux} is a variable which cannot be assigned a value.
+The mode @code{any_check} is like @code{any}, 
+but @code{any_check} enables the @code{value_check} mechanism, and @code{any} does not.
+@c GENERATED FROM:
+@c define_variable (baz_quux, 'baz_quux, any_check);
+@c F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+@c qput (baz_quux, ''F, value_check);
+@c baz_quux: 'baz_quux;
+@c baz_quux: sqrt(2);
+@c baz_quux;
+
+@example
+(%i1) define_variable (baz_quux, 'baz_quux, any_check);
+(%o1)                       baz_quux
+(%i2) F: lambda ([y], if y # 'baz_quux then error ("Cannot assign to `baz_quux'."));
+(%o2) lambda([y], if y # 'baz_quux
+
+                        then error(Cannot assign to `baz_quux'.))
+(%i3) qput (baz_quux, ''F, value_check);
+(%o3) lambda([y], if y # 'baz_quux
+
+                        then error(Cannot assign to `baz_quux'.))
+(%i4) baz_quux: 'baz_quux;
+(%o4)                       baz_quux
+(%i5) baz_quux: sqrt(2);
+Cannot assign to `baz_quux'.
+#0: lambda([y],if y # 'baz_quux then error("Cannot assign to `baz_quux'."))(y=sqrt(2))
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i6) baz_quux;
+(%o6)                       baz_quux
+@end example
 
 @end deffn
 
