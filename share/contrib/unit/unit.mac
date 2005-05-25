@@ -522,7 +522,8 @@ DEG : %pi/180;
 
 
 /* This command is used to do final global simplification of units */
-processunits(expression) := block([letrat:true,ratprint:false,unitrules,result1],
+processunits(expression) := block([letrat:true,unitrules,result1],
+   if ?equal(unitverbose,off) then (ratprint:false),
    unitformatresults:true,
    if ?equal(currentdoeval,true) then (
    result1 : letsimp(expression,derivedtoMKSrules),
@@ -544,7 +545,7 @@ processunits(expression) := block([letrat:true,ratprint:false,unitrules,result1]
    result1);
 
 /* This function is used to reset variables for the next calculation */
-resetunitvars(args) := block(unitformatresults:false,args);
+resetunitvars(args) := block(unitformatresults:false,ratprint:true,args);
 
 /*====================== User Functions ======================*/ 
 
@@ -641,6 +642,20 @@ dontusedimension(input1):= block([letrat:true,unittype,unitlistname,
       killruleset(unitrules),
       dontuselist : append([temp],dontuselist)
    ));
+
+/* This function will reset a particular dimension to its default state, but
+not place it on the dontuse list */   
+forget(input1) := block([letrat:true,unittype,unitlistname,
+                         unitrules,currentunitlist, temp, i, j, derivedunits],
+   if listp(input1) then (map('forget,input1)) else (
+   if ?equal(input1,letsimp(input1,todimension)) then (
+      unitrules : concat(input1,'rules),
+      killruleset(unitrules)
+   ) else (
+      temp : letsimp(input1,todimension),
+      unitrules : concat(temp,'rules),
+      killruleset(unitrules)
+   )));
 
 /* This function returns the dimension described by a unit */
 dimension(input1) := letsimp(input1,todimension);
@@ -779,6 +794,7 @@ print("Redefining necessary functions...");
 
 /* This file contains the lisp level definitions required to properly
 work with units */
+/*load("contrib/unit/unit-functions.lisp")$*/
 load("contrib/unit/unit-functions.lisp")$
 
 print("Initializing unit arrays...");
@@ -845,6 +861,11 @@ variabledimensionslist : [];
 /* This variable is used to ensure Maxima only formats units at the end
 of an evaluation */
 unitformatresults : false;
+
+/* This option controls the reporting of numerical warning messages in rat
+substitutions during unit processing.  Default is off since this output is
+rather verbose and normally not needed. */
+unitverbose : off;
 
 /* Use pre eval to reset unitformatresults to false after a calculation - this
 is necessary because if it is reset at the end of the earlier calculation the
