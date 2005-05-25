@@ -738,6 +738,8 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
     result1 : letsimp(expression,derivedtoMKSrules),
     result1 : letsimp(result1,basetoMKSrules)
    ) else (
+   result1 : letsimp(expression,derivedtoMKSrules),
+   result1 : letsimp(result1,basetoMKSrules),
    if listp(desiredunits) then (
     if (checkforuniqueness(makedimenlist(desiredunits))) then (
       for i : 1 thru length(desiredunits) do (
@@ -758,10 +760,8 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
         makeMKStobaserules(currentunitlist,unitlistname,convertrules)
 	) else (
         error("Non unit argument to convert"))
-	)),
-     result1 : letsimp(expression,derivedtoMKSrules),
-     result1 : letsimp(result1,basetoMKSrules),
-     result1 : letsimp(result1,convertrules)
+	),
+	result1 : letsimp(result1,convertrules))
     ) else (                                
     error ("Error - two or more of these units describe the same dimension."))
     ) else (
