@@ -522,8 +522,10 @@ DEG : %pi/180;
 
 
 /* This command is used to do final global simplification of units */
-processunits(expression) := block([letrat:true,unitrules,result1],
+processunits(expression) := block([letrat:true,unitrules,rattemp,result1],
+   rattemp : ratprint,
    if ?equal(unitverbose,off) then (ratprint:false),
+   if ?equal(unitverbose,on) then (ratprint:true),
    unitformatresults:true,
    if ?equal(currentdoeval,true) then (
    result1 : letsimp(expression,derivedtoMKSrules),
@@ -542,10 +544,11 @@ processunits(expression) := block([letrat:true,unitrules,result1],
    ) else (
    result1 : expression),
    currentdoeval : true,
+   ratprint : rattemp,
    result1);
 
 /* This function is used to reset variables for the next calculation */
-resetunitvars(args) := block(unitformatresults:false,ratprint:true,args);
+resetunitvars(args) := block(unitformatresults:false,args);
 
 /*====================== User Functions ======================*/ 
 
@@ -731,6 +734,7 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
 	if (not(isbase(desiredunits[i])) and (isunit(desiredunits[i]))) then (
 	   makeMKStoderivedrules(desiredunits[i],unitlistname,convertrules)
 	) else (
+	if isunit(desiredunits[i]) then (
 	flag : 0, j:0,
         while ?equal(flag,0) do (
           j : j+1,
@@ -740,12 +744,16 @@ convert(expression,desiredunits):= block([letrat:true,convertrules,result1,
           if ?equal(j, length(ev(unitlistname))) then (flag : 1)
           ),
         makeMKStobaserules(currentunitlist,unitlistname,convertrules)
+	) else (
+        error("Non unit argument to convert"))
 	)),
-     result1 : letsimp(expression,convertrules)
+     result1 : letsimp(expression,derivedtoMKSrules),
+     result1 : letsimp(result1,basetoMKSrules),
+     result1 : letsimp(result1,convertrules)
     ) else (                                
     error ("Error - two or more of these units describe the same dimension."))
     ) else (
-    error ("Error - argument to setunits must be a list of units or the argument MKS."))),
+    result1 : convert(expression,[desiredunits]))),
  currentdoeval : false, /* This tells processunits not to simplify 
 			   for this operation only */
  result1);    
@@ -794,7 +802,6 @@ print("Redefining necessary functions...");
 
 /* This file contains the lisp level definitions required to properly
 work with units */
-/*load("contrib/unit/unit-functions.lisp")$*/
 load("contrib/unit/unit-functions.lisp")$
 
 print("Initializing unit arrays...");
