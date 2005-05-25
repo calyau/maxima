@@ -9,8 +9,8 @@
        *         given property (mass, for example) in terms of	     *
        *	 a base unit, and various other abilities. 	     *
        *         						     *
-       *         	       Version 0.40			     *
-       *                       May 23, 2005			     *
+       *         	       Version 0.50			     *
+       *                       May 25, 2005			     *
        *		       License:  GPL			     *
        *							     *
        *          ------------------------------------------         *
@@ -27,6 +27,10 @@
 
      Changes:
 
+       0.50  -  convert now works on derived units, added usersetunits
+                option to allow user to change default behavior.  New 
+		command forget will respect usersetunits.  Other misc
+		changes.  Still in flux, but it's coming together.
        0.40  -  Display of units has been fixed, with optional settings
                 to allow grouping over the plus operator as well.  A
 		variety of improvements, not all of them fully functional
@@ -617,7 +621,7 @@ setunits(units):= block([letrat:true,unittype,unitlistname,
     ) else (                                
     error ("Error - two or more of these units describe the same dimension."))
     ) else (
-    error ("Error - argument to setunits must be a list, e.g. [N] instead of N."))
+    setunits([units]))
 );
 
 /* These two functions control the dontuselist array.  usedimension will remove
@@ -653,11 +657,19 @@ forget(input1) := block([letrat:true,unittype,unitlistname,
    if listp(input1) then (map('forget,input1)) else (
    if ?equal(input1,letsimp(input1,todimension)) then (
       unitrules : concat(input1,'rules),
-      killruleset(unitrules)
+      killruleset(unitrules),
+      if listp(usersetunits) then (
+      for i : 1 thru length(usersetunits) do (
+        if ?equal(input1,letsimp(usersetunits[i],todimension)) then (
+           setunits([usersetunits[i]]))))
    ) else (
       temp : letsimp(input1,todimension),
       unitrules : concat(temp,'rules),
-      killruleset(unitrules)
+      killruleset(unitrules),
+      if listp(usersetunits) then (
+      for i : 1 thru length(usersetunits) do (
+        if ?equal(temp,letsimp(usersetunits[i],todimension)) then (
+           setunits([usersetunits[i]]))))
    )));
 
 /* This function returns the dimension described by a unit */
@@ -791,7 +803,7 @@ disablegroupbyadd() := block(post_eval_functions : [processunits]);
 
 /* Startup Message */
 print("*******************************************************************");
-print("*                       Units version 0.40                        *");
+print("*                       Units version 0.50                        *");
 print("*          Definitions based on the NIST Reference on             *");
 print("*              Constants, Units, and Uncertainty                  *");
 print("*       Conversion factors from various sources including         *");
@@ -861,6 +873,7 @@ makedimentoonerules();
 
 /* Create a list of all units */
 allunitslist : makeallunitslist();
+print("Done.");
 
 /* Basic dimension functionality - initialize list of dimensions in use */    
 variabledimensionslist : [];
@@ -874,6 +887,14 @@ substitutions during unit processing.  Default is off since this output is
 rather verbose and normally not needed. */
 unitverbose : off;
 
+/* This routine will create a default user environment according to pre-set
+user requests.  Forget will also revert to this state. */
+if listp(usersetunits) then (
+  print("User defaults found..."),
+  setunits(usersetunits),
+  print("User defaults initialized.")
+);
+
 /* Use pre eval to reset unitformatresults to false after a calculation - this
 is necessary because if it is reset at the end of the earlier calculation the
 unit formatting will be undone in the display process */
@@ -886,7 +907,5 @@ post_eval_functions : [processunits,?groupadd];
 
 /* This will ensure processunits starts out in working mode. */
 currentdoeval : true;
-
-print("Done.");
 
 ttyoff: nolabels, false$
