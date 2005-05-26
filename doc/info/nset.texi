@@ -6,8 +6,8 @@
 @end menu
 
 The @emph{nset} package provides set functions, such as intersection and 
-union, for finite sets that are defined by explicit enumeration. Unlike 
-the package @emph{set} in Maxima's share library, @emph{nset} treats 
+union, for finite sets that are defined by explicit enumeration.
+@emph{nset} treats 
 lists and sets as distinct objects. This feature makes it possible to
 work with sets that have members that are either lists or sets.
 
@@ -15,75 +15,44 @@ In addition to functions for finite sets, @emph{nset} provides some
 functions related to combinatorics; these include the Stirling
 numbers, the Bell numbers, and several others.
 
-@subsubsection Installation
+@c THIS DOCUMENT SHOULD MENTION nset-init.lisp AND test-nset.mac IN SOME WAY
 
-Download the archive nset-x.tar.gz, where x is the release identifier,
-from http://www.unk.edu/acad/math/people/willisb.  Under Linux, unpack it using
+@c This will create a directory @emph{nset-x} (again x is the release identifier)
+@c that contains the source file @emph{nset.lisp}, user documentation in html 
+@c and texi formats, a sample maxima initialization file @emph{nset-init.lisp}, 
+@c a README file, and a testing  routine @emph{test-nset.mac}.
 
-   gzip -d nset-x.tar.gz
+@c FOLLOWING TEXT LIKELY OBSOLETE NOW THAT nset.lisp IS IN src/, PRESERVE PENDING FINAL DETERMINATION
 
-   tar -xvf nset-x.tar 
+@c If you are using Maxima version 5.9.0 or higher, finish the installation
+@c by appending the contents of @emph{nset-init.lisp} to your own
+@c @emph{maxima-init.lisp} file. The Lisp file @emph{nset-init.lisp} 
+@c contains replacements for the Maxima functions @emph{setup_autoload}
+@c and @emph{generic_autoload}. Unlike Maxima's @emph{setup_autoload} function,
+@c the version in @emph{nset-init.lisp} uses @emph{file_search}. Without this
+@c change, a full pathname must be given to @emph{setup_autoload}. The
+@c autoload function in Maxima 5.9.0 and lower does not recognize some
+@c file extensions, such as .x86f and .fasl, as valid extensions for
+@c compiled code. The version of @emph{generic_autoload} in @emph{nset-init}
+@c fixes this problem. Additionally, @emph{nset-init.lisp} contains 
+@c autoload statements for all user-level functions in @emph{nset}.
 
-This will create a directory @emph{nset-x} (again x is the release identifier)
-that contains the source file @emph{nset.lisp}, user documentation in html 
-and texi formats, a sample maxima initialization file @emph{nset-init.lisp}, 
-a README file, and a testing  routine @emph{test-nset.mac}. From the
-@emph{nset-x} directory,start Maxima and compile @emph{nset} using
-@example
-(C1) compile_file("nset.lisp")$
-@end example
-This will create a file @emph{nset.xxx} in 
-the @emph{nset-x} directory. The file extension @emph{xxx} depends on
- which Lisp your Maxima uses;  under gcl, the extension is "o".
+@c NEED TO MOVE test-nset.mac TO tests/
 
-Copy @emph{nset.lisp} and its compiled forms 
-to a directory that  Maxima can find.  A good location is Maxima's /share/combinatorics 
-directory. If you don't have write permission for this directory,  
-or if you want to install @emph{nset} in a different location, that is 
-fine as long as you place it in a directory that Maxima can find.
-
-If you are using Maxima version 5.9.0 or higher, finish the installation
-by appending the contents of @emph{nset-init.lisp} to your own
-@emph{maxima-init.lisp} file. The Lisp file @emph{nset-init.lisp} 
-contains replacements for the Maxima functions @emph{setup_autoload}
-and @emph{generic_autoload}. Unlike Maxima's @emph{setup_autoload} function,
-the version in @emph{nset-init.lisp} uses @emph{file_search}. Without this
-change, a full pathname must be given to @emph{setup_autoload}. The
-autoload function in Maxima 5.9.0 and lower does not recognize some
-file extensions, such as .x86f and .fasl, as valid extensions for
-compiled code. The version of @emph{generic_autoload} in @emph{nset-init}
-fixes this problem. Additionally, @emph{nset-init.lisp} contains 
-autoload statements for all user-level functions in @emph{nset}.
-
-Maxima versions prior to 5.9.0 do not support initialization files. You
-may still use @emph{nset} under these versions of Maxima; you must,
-however, manually load @emph{nset} @emph{before} you use 
-any functions (especially the @emph{set} function) that are in @emph{nset}. 
-
-Once @emph{nset} is installed, run its testing code. Do this from a Maxima 
-prompt using the command
-@example
-(C1) batch("test-nset.mac",'test);
-@end example
-You may need to use the full pathname for the file. The test should 
-end with the statement
-@example
-..Which was correct
-Congratulations: No differences!
-@end example
-Please report any errors to the Maxima list.
+@c Once @emph{nset} is installed, run its testing code. Do this from a Maxima 
+@c prompt using the command
+@c @example
+@c (C1) batch("test-nset.mac",'test);
+@c @end example
+@c You may need to use the full pathname for the file. The test should 
+@c end with the statement
+@c @example
+@c ..Which was correct
+@c Congratulations: No differences!
+@c @end example
+@c Please report any errors to the Maxima list.
 
 @subsubsection Usage
-
-To use the set functions, begin by loading  @emph{nset}. Provided you 
-have installed the package correctly, load it with the command
-@example
-(C1) load("nset")$
-@end example
-If Maxima is unable to find @emph{nset}, use its full pathname. If you have 
-included an autoload statement for all functions in @emph{nset} in your 
-@emph{maxima-init.lisp} file, you will not have to manually load
-@emph{nset}.
 
 To construct a set with members @emph{a1,a2,...,an}, use the
 command @emph{set(a1,a2,...,an)}; to construct the empty
@@ -140,7 +109,7 @@ simplification functions.  Here is an example that uses @emph{trigsimp}
 @end example
 
 A set is simplified when its members are non-redundant and
-sorted. @emph{Nset} version 1.2 uses the Maxima function
+sorted. The current version of @emph{nset} uses the Maxima function
 @emph{orderlessp} to order sets; however, @emph{future versions of 
 @emph{nset} might use a different ordering function.  
 Robust application code that uses nset must not depend on a 
@@ -180,7 +149,7 @@ in a given set that do not depend on a variable @emph{z}, use
 (D1) 				   {- y + x + 4, y + x - 5}
 @end example
 The section @emph{Definitions for Sets} has a complete list of
-the functions in @emph{nset}
+the functions in @emph{nset}.
 
 @subsubsection Set Member Iteration
 
@@ -205,10 +174,12 @@ displayed element of a set; which element that is may be
 implementation-dependent. If @emph{s} is a set, then 
 @emph{rest(s)} is equivalent to @emph{disjoin(first(s),s)}.  
 Currently, there are other Maxima functions that work correctly
-on sets; however, for future versions of nset, they may function
+on sets; however, for future versions of @emph{nset}, they may function
 differently or not at all.
 
 @subsubsection Bugs
+@c AT THIS POINT (2005/05) I DON'T KNOW IF IT'S NECESSARY TO GO INTO DETAILS
+@c ABOUT BUGS IN MAXIMA REVISIONS 5.9.0 AND EARLIER
 
 The @emph{nset} package uses the Maxima function @emph{orderlessp} to 
 order set members and the (Lisp-level) function @emph{like} to test for set
@@ -647,7 +618,8 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 (D3) 		  {[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7,
 3]}
 @end example
-(Notice that @math{primep(1)} is true in Maxima 5.9.0. This disagrees with
+@c SEE SF BUG REPORT # 779053
+(Notice that @math{primep(1)} is true in Maxima. This disagrees with
 most definitions of prime.)
 @end defun
 
