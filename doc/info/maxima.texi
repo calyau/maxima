@@ -113,7 +113,8 @@ Advanced facilities and programming
 * Miscellaneous Options::       Options with a global effect on Maxima.
 * Rules and Patterns::          User defined pattern matching and
                                 simplification rules.
-* Lists::                       Manipulation of Lisp lists.
+* Lists::                       Manipulation of lists.
+* Sets::                        Manipulation of sets.
 * Function Definition::         Defining functions.
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
@@ -319,6 +320,11 @@ Lists
 * Introduction to Lists::       
 * Definitions for Lists::       
 
+Sets
+
+* Introduction to Sets::       
+* Definitions for Sets::       
+
 Function Definition
 
 * Introduction to Function Definition::  
@@ -499,11 +505,15 @@ Debugging
 @include Rules.texi
 
 
-@node Lists, Function Definition, Rules and Patterns, Top
+@node Lists, Sets, Rules and Patterns, Top
 @chapter Lists
 @include Lists.texi
 
-@node Function Definition, Program Flow, Lists, Top
+@node Sets, Function Definition, Lists, Top
+@chapter Sets
+@include nset.texi
+
+@node Function Definition, Program Flow, Sets, Top
 @chapter Function Definition
 @include Function.texi
 

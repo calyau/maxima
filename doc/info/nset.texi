@@ -1,9 +1,10 @@
-@node Introduction to Sets, Definitions for Finite Sets, Sets, Sets
-@section Introduction to Finite Sets
 @menu
-* Introduction to Finite Sets::       
-* Definitions for Finite Sets::       
+* Introduction to Sets::       
+* Definitions for Sets::       
 @end menu
+
+@node Introduction to Sets, Definitions for Sets, Sets, Sets
+@section Introduction to Sets
 
 The @emph{nset} package provides set functions, such as intersection and 
 union, for finite sets that are defined by explicit enumeration.
@@ -60,13 +61,13 @@ set, use @emph{set()}.  If a member is listed more than
 once, the simplification process eliminates the redundant member.
 @example
 (C1) set();
-(D1) 				      {}
+(D1) 				      @{@}
 (C2) set(a,b,a);
-(D2) 				    {a, b}
+(D2) 				    @{a, b@}
 (C3) set(a,set(b));
-(D3) 				   {a, {b}}
+(D3) 				   @{a, @{b@}@}
 (C4) set(a,[b]);
-(D4) 				   {a, [b]}
+(D4) 				   @{a, [b]@}
 @end example
 Sets are displayed as brace delimited lists; if you would like to
 be able to  @emph{input} a set using braces, see the section 
@@ -75,7 +76,7 @@ be able to  @emph{input} a set using braces, see the section
 To construct a set from the elements of a list, use  @emph{setify}
 @example
 (C4) setify([b,a]);
-(D4) 		     {a,b}
+(D4) 		     @{a,b@}
 @end example 
 
 Set members @emph{x} and @emph{y} are equal provided @emph{is(x = y)} 
@@ -83,29 +84,29 @@ evaluates to true. Thus @emph{rat(x)} and @emph{x} are equal as set members;
 consequently, 
 @example
 (C1) set(x,rat(x));
-(D1) 				      {x}
+(D1) 				      @{x@}
 @end example
 Further, since @emph{is((x-1)*(x+1) = x^2 - 1)} evaluates to false, 
 @emph{(x-1)*(x+1)} and @emph{x^2-1} are distinct set members; thus 
 @example
 (C2) set((x-1)*(x+1),x^2-1);
 					      2
-(D2) 			   {(x - 1) (x + 1), x  - 1}
+(D2) 			   @{(x - 1) (x + 1), x  - 1@}
 @end example
 To reduce this set to a singleton set, apply @emph{rat} to each set member
 @example
 (C3) map(rat,%);
 				     2
-(D3) 				   {x  - 1}
+(D3) 				   @{x  - 1@}
 @end example
 To remove redundancies from other sets, you may need to use other
 simplification functions.  Here is an example that uses @emph{trigsimp}
 @example
 (C1) set(1, cos(x)^2 + sin(x)^2);
 				   2	     2
-(D1) 			    {1, SIN (x) + COS (x)}
+(D1) 			    @{1, SIN (x) + COS (x)@}
 (C2) map(trigsimp,%);
-(D2) 				      {1}
+(D2) 				      @{1@}
 @end example
 
 A set is simplified when its members are non-redundant and
@@ -120,11 +121,11 @@ re-simplification; for  example,
 @example
 (C1) s : set(a,b,c)$
 (C2) subst(c=a,s);
-(D2) 				    {a, b}
+(D2) 				    @{a, b@}
 (C3) subst([a=x,b=x,c=x],s);
-(D3) 				      {x}
+(D3) 				      @{x@}
 (C4) map(lambda([x],x^2), set(-1,0,1));
-(D4) 				    {0, 1}
+(D4) 				    @{0, 1@}
 @end example
 
 The @emph{nset} package treats lists and sets as distinct objects;
@@ -137,7 +138,7 @@ to a set.  Thus
 Function union expects a set, instead found [1,2]
  -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
 (C2) union(setify([1,2]),set(a,b));
-(D2) 					 {1, 2, a, b}
+(D2) 					 @{1, 2, a, b@}
 @end example
 
 To extract all set elements of a set @emph{s} that satisfy a predicate
@@ -146,7 +147,7 @@ boolean-valued function.) For example, to find the equations
 in a given set that do not depend on a variable @emph{z}, use
 @example 
 (C1) subset(set(x+y+z,x-y+4,x+y-5),lambda([e],freeof(z,e)));
-(D1) 				   {- y + x + 4, y + x - 5}
+(D1) 				   @{- y + x + 4, y + x - 5@}
 @end example
 The section @emph{Definitions for Sets} has a complete list of
 the functions in @emph{nset}.
@@ -157,12 +158,12 @@ There two ways to to iterate over set members.  One way is the use
 @emph{map}; for example
 @example
 (C1) map(f,set(a,b,c));
-(D1) 				      {f(a), f(b), f(C)}
+(D1) 				      @{f(a), f(b), f(C)@}
 @end example
 The other way is to use @emph{for in do}
 @example
 (C1) s : set(a,b,c);
-(D1) 					  {a, b, C}
+(D1) 					  @{a, b, C@}
 (C2) for si in s do print(concat(si,1));
 a1 
 b1 
@@ -207,7 +208,7 @@ are lists or matrices containing expressions in CRE form; a set with a
 member in CRE form, however, shouldn't be a problem
 @example
 (C1) set(x,rat(x));
-(D1)/R/ 			      {x}
+(D1)/R/ 			      @{x@}
 @end example
 
 Maxima's @emph{orderlessp} has another bug that can cause problems
@@ -263,18 +264,18 @@ If you'd like to be able to input sets using braces, you may do
 so by declaring the left brace to be a matchfix operator; this
 is done using the commands
 @example
-(C1)  matchfix("{","}")$
+(C1)  matchfix("@{","@}")$
 
-(C2)  "{"([a]) := apply(set,a)$
+(C2)  "@{"([a]) := apply(set,a)$
 @end example
 Now we can define sets using braces; thus
 @example
-(C3) {};
+(C3) @{@};
 
-(D3) 				      {}
-(C4) {a,{a,b}};
+(D3) 				      @{@}
+(C4) @{a,@{a,b@}@};
 
-(D4) 				  {a, {a, b}}
+(D4) 				  @{a, @{a, b@}@}
 @end example
 To always allow this form of set input, place the two commands in lines 
 (c1) and (c2) in your @emph{maxima-init.mac} file.
@@ -305,9 +306,9 @@ may be somewhat faster than using @emph{union}. If @emph{a} isn't a list or a
 set, signal an error.
 @example
 (C1) adjoin(c,set(a,b));
-(D1) 				   {a, b, c}
+(D1) 				   @{a, b, c@}
 (C2) adjoin(a,set(a,b));
-(D2) 				    {a, b}
+(D2) 				    @{a, b@}
 @end example
 See also @math{disjoin}.
 @end defun
@@ -361,13 +362,13 @@ Return a set of lists of the form @emph{[x1,...,xn]}, where
 Signal an error when any @emph{b} isn't a list or a set.
 @example
 (C1) cartesian_product(set(0,1));
-(D1) 				  {[0], [1]}
+(D1) 				  @{[0], [1]@}
 (C2) cartesian_product(set(0,1),set(0,1));
-(D2) 		       {[0, 0], [0, 1], [1, 0], [1, 1]}
+(D2) 		       @{[0, 0], [0, 1], [1, 0], [1, 1]@}
 (C3) cartesian_product(set(x),set(y),set(z));
-(D3) 				  {[x, y, z]}
+(D3) 				  @{[x, y, z]@}
 (C4) cartesian_product(set(x),set(-1,0,1));
-(D4) 			  {[x, - 1], [x, 0], [x, 1]}
+(D4) 			  @{[x, - 1], [x, 0], [x, 1]@}
 @end example
 @end defun
 
@@ -397,7 +398,7 @@ The divisors of a  negative integer are the divisors of its absolute value.
 We can show that 28 is a perfect number using
 @example
 (C1) s : divisors(28);
-(D1) 			     {1, 2, 4, 7, 14, 28}
+(D1) 			     @{1, 2, 4, 7, 14, 28@}
 (C2) lreduce("+",s)-28;
 (D2) 				      28
 @end example
@@ -407,7 +408,7 @@ manually re-evaluate after a substitution. For example
 (C3) divisors(a);
 (D3) 				  DIVISORS(a)
 (C4) subst(8,a,%);
-(D4) 				 {1, 2, 4, 8}
+(D4) 				 @{1, 2, 4, 8@}
 @end example
 The function divisors threads over equalities, lists, matrices, and 
 sets. Here is an example of threading over a list and an equality.
@@ -447,19 +448,19 @@ be an equivalence relation; @emph{equiv_classes}, however, doesn't
 check that it is. 
 @example
 (C1) equiv_classes(set(a,b,c),lambda([x,y],is(x=y)));
-(D1) 			        {{a}, {b}, {c}}
+(D1) 			        @{@{a@}, @{b@}, @{c@}@}
 @end example
 Actually, @emph{equiv_classes(s,f)} automatically applies the Maxima 
 function @emph{is} after applying the function @emph{f}; accordingly,
 we can re-work the previous example with the command
 @example
 (C2) equiv_classes(set(a,b,c),"=");
-(D2) 			        {{a}, {b}, {c}}
+(D2) 			        @{@{a@}, @{b@}, @{c@}@}
 @end example 
 Here is another example
 @example
 (C3) equiv_classes(set(1,2,3,4,5,6,7),lambda([x,y],remainder(x-y,3)=0));
-(D3) 			  {{1, 4, 7}, {2, 5}, {3, 6}}
+(D3) 			  @{@{1, 4, 7@}, @{2, 5@}, @{3, 6@}@}
 @end example
 @end defun
 
@@ -506,9 +507,9 @@ on its greatest value; when the third argument is min, return the
 subset for which @emph{f} takes on its least value.
 @example
 (C1) extremal_subset(set(-2,-1,0,1,2),abs, max);
-(D1) 				   {- 2, 2}
+(D1) 				   @{- 2, 2@}
 (C2) extremal_subset(set(sqrt(2), 1.57, %pi/2),sin,min);
-(D2) 				   {SQRT(2)}
+(D2) 				   @{SQRT(2)@}
 @end example
 @end defun
 
@@ -531,9 +532,9 @@ are sets; for example
 
 @example
 (C1) flatten(set(a, set(b), set(set(c))));
-(D1) 				   {a, b, c}
+(D1) 				   @{a, b, c@}
 (C2) flatten(set(a,set([a],set(a))));
-(D2) 				   {a, [a]}
+(D2) 				   @{a, [a]@}
 @end example
 Flatten works correctly when the main operator is a subscripted function
 @example
@@ -561,9 +562,9 @@ If @emph{a} is a list, convert @emph{a} to a set and apply
 @emph{fullsetify} to each set member. 
 @example
 (C1) fullsetify([a,[a]]);
-(D1) 				   {a, {a}}
+(D1) 				   @{a, @{a@}@}
 (C2) fullsetify([a,f([b])]);
-(D2) 				  {a, f([b])}
+(D2) 				  @{a, f([b])@}
 (C3) 
 @end example
 In line (C2), the argument of @emph{f} isn't converted to a set
@@ -598,16 +599,16 @@ We say  a list @math{[a1,a2,...,am]} is a partition of a nonnegative integer
 @math{a1 + a2 + ... + am  = n.}  Thus 0 has no partitions.  
 @example
 (C1) integer_partitions(3);
-(D1) 			   {[1, 1, 1], [1, 2], [3]}
+(D1) 			   @{[1, 1, 1], [1, 2], [3]@}
 (C2) s : integer_partitions(25)$
 (C3) cardinality(s);
 (D3) 				     1958
 (C4) map(lambda([x],apply("+",x)),s);
-(D4) 				     {25}
+(D4) 				     @{25@}
 (C5) integer_partitions(5,3);
-(D5) 	    {[2, 2, 1], [3, 1, 1], [3, 2, 0], [4, 1, 0], [5, 0, 0]}
+(D5) 	    @{[2, 2, 1], [3, 1, 1], [3, 2, 0], [4, 1, 0], [5, 0, 0]@}
 (C6) integer_partitions(5,2);
-(D6) 			   {[3, 2], [4, 1], [5, 0]}
+(D6) 			   @{[3, 2], [4, 1], [5, 0]@}
 @end example
 To find all partitions that satisfy a condition, use the function @math{subset};
 here is an example that finds all partitions of 10 that consist of prime numbers
@@ -615,8 +616,8 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 (C1) s : integer_partitions(10)$
 (C2) xprimep(x) := integerp(x) and (x > 1) and primep(x)$
 (C3) subset(s,lambda([x],every(xprimep,x)));
-(D3) 		  {[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7,
-3]}
+(D3) 		  @{[2, 2, 2, 2, 2], [3, 3, 2, 2], [5, 3, 2], [5, 5], [7,
+3]@}
 @end example
 @c SEE SF BUG REPORT # 779053
 (Notice that @math{primep(1)} is true in Maxima. This disagrees with
@@ -695,8 +696,8 @@ of its members to lists, see @ref{full_listify}
 @end example
 @end defun
 
-@anchor {lreduce}
-@defun lreduce (f, s, {init})
+@anchor{lreduce}
+@defun lreduce (f, s, @{init@})
 The function @math{lreduce} (left reduce) extends a 2-arity 
 function to an n-arity function by composition; an example should 
 make this clear. When the optional argument @math{init} isn't defined, we have
@@ -722,7 +723,7 @@ sum of the elements of a set or list
 (C5) lreduce("*",set(1,2,3,4,5));
 (D5) 				      120
 @end example
-Unlike most nset functions, when the second argument to @amth{lreduce} is a list, 
+Unlike most @emph{nset} functions, when the second argument to @math{lreduce} is a list, 
 the list isn't coerced to a set.  For example
 @example
 (C6) lreduce(f,[a,a,a]);
@@ -743,15 +744,15 @@ z = substitute(v -> si) and si in s}}.
 @example
 (C1) makeset(i/j,[i,j],[[a,b],[c,d]]);
 				     a  c
-(D1) 				    {-, -}
+(D1) 				    @{-, -@}
 				     b  d
 (C2) ind : [0,1,2,3]$
 (C3) makeset(i^2 + j^2 + k^2, [i,j,k], cartesian_product(ind,ind,ind));
-(D3)  {0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 22, 27}
+(D3)  @{0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19, 22, 27@}
 @end example
 @end defun
 
-@anchor {moebius}
+@anchor{moebius}
 @defun moebius (n)
 The Moebius function; when @math{n} is product of @math{k} distinct
 primes, @emph{moebius(n)} evaluates to @math{(-1)^k}; it evaluates to 1 when
@@ -833,9 +834,9 @@ the predicate @emph{f} evaluates to false and the second is the subset of
 or a set, signal an error. See also @ref{subset}.
 @example
 (C1)  partition_set(set(2,7,1,8,2,8),evenp);
-(D1) 			       [{1, 7}, {2, 8}]
+(D1) 			       [@{1, 7@}, @{2, 8@}]
 (C2) partition_set(set(x,rat(y),rat(y)+z,1),lambda([x], ratp(x)));
-(D2)/R/ 		     [{1, x}, {y, y + z}]
+(D2)/R/ 		     [@{1, x@}, @{y, y + z@}]
 @end example
 @end defun
 
@@ -847,9 +848,9 @@ When @emph{a} is a list, duplicate members of @emph{a} are @emph{not} deleted
 before finding the permutations. Thus
 @example
 (C1) permutations([a,a]);
-(D1) 				   {[a, a]}
+(D1) 				   @{[a, a]@}
 (C2) permutations([a,a,b]);
-(D2) 		       {[a, a, b], [a, b, a], [b, a, a]}
+(D2) 		       @{[a, a, b], [a, b, a], [b, a, a]@}
 (C3) 
 @end example
 If @emph{a} isn't a list or set, signal an error.
@@ -865,8 +866,8 @@ cardinality @emph{n}. Signal an error if @emph{a} isn't a list or a set;
 additionally signal an error if @math{n} isn't a positive integer.
 @end defun
 
-@anchor {rreduce}
-@defun rreduce (f, s, {init})
+@anchor{rreduce}
+@defun rreduce (f, s, @{init@})
 The function @math{rreduce} (right reduce) extends a 2-arity 
 function to an n-arity function by composition; an example should 
 make this clear. When the optional argument @math{init} isn't defined, we have
@@ -949,7 +950,7 @@ The empty set is a partition of itself (the conditions 1 and 2 being
 vacuously true); thus
 @example
 (C1) set_partitions(set());
-(D1) 				     {{}}
+(D1) 				     @{@{@}@}
 @end example
 A few additional examples
 @example
@@ -964,13 +965,13 @@ The cardinality of @math{p} can be found using @emph{stirling2}; thus
 Each member of @math{p} should have 3 members; let's check
 @example
 (C4) map(cardinality,p);
-(D4) 				      {3}
+(D4) 				      @{3@}
 @end example
 Finally, for each member of @math{p}, the union of its members should 
 equal @math{s}; again let's check
 @example
 (C5)  map(lambda([x],apply(union,listify(x))),p);
-(D5) 			     {{0, 1, 2, 3, 4, 5}}
+(D5) 			     @{@{0, 1, 2, 3, 4, 5@}@}
 @end example
 @end defun
 
@@ -1089,9 +1090,9 @@ Return the subset of the set @emph{a} that satisfies the predicate @emph{f}.
 For example
 @example
 (C1) subset(set(1,2,x,x+y,z,x+y+z),atom);
-(D1) {1,2,z}
+(D1) @{1,2,z@}
 (C2) subset(set(1,2,7,8,9,14),evenp);
-(D2) {2,8,14}
+(D2) @{2,8,14@}
 @end example
 The second argument to @emph{subset} must be a Maxima predicate
 (a boolean-valued function of one argument) if the first argument to 
@@ -1114,7 +1115,7 @@ the same as @math{union(setdifference(a,b),setdifference(b,a))}.
 @end defun
 
 @anchor{tree_reduce}
-@defun tree_reduce (f, s, {init})
+@defun tree_reduce (f, s, @{init@})
 
 The function @math{tree_reduce} extends a associative binary operator @math{f : S x
 S -> S} from two arguments to any number of arguments using a minimum
@@ -1144,7 +1145,7 @@ empty set. Signal an error when one or more arguments to
 @end defun
 
 @anchor{xreduce}
-@defun xreduce (f, s, {init})
+@defun xreduce (f, s, @{init@})
 
 This function is similar to both @math{lreduce} and @math{rreduce} except
 that @math{xreduce} is free to use either left or right associativity; 
