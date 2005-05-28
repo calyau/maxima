@@ -805,7 +805,7 @@ a positive integer; instead found ~:M" n))))
 ;; integer, return a noun form.
 
 (defun $num_partitions (n &optional lst)
-  (cond ((= n 0) 0)
+  (cond ((equal n 0) 0)
 	((and (integerp n) (> n -1))
 	 (let ((p (make-array (+ n 1)))
 	       (s (make-array (+ n 1)))
