@@ -342,9 +342,9 @@ fi
 
 if test x"${cmucl}" = xtrue; then
     if test x"${CMUCL_RUNTIME_PATH}" = x"" ; then
-        CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -noinit -nositeinit -quiet -batch -eval '#+cmu19 (progn (setf (search-list "cmuclbin:") (lisp::parse-unix-search-path lisp::*cmucl-lib*)) (enumerate-search-list (s "cmuclbin:lisp") (when (probe-file s) (format t "~A~%" s) (quit)))) #+cmu18 (format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
+        CMUCL_RUNTIME_PATH=`${CMUCL_NAME} -noinit -nositeinit -quiet -batch -eval '#+cmu19 (progn (setf (search-list "cmuclbin:") (append (lisp::parse-unix-search-path lisp::*cmucl-lib*) (mapcar (function (lambda (p) (concatenate (quote string) p "../bin/"))) (lisp::parse-unix-search-path lisp::*cmucl-lib*))))(enumerate-search-list (s "cmuclbin:lisp") (when (probe-file s) (format t "~A~%" s) (quit)))) #+cmu18 (format t "~a/../bin/lisp~%" common-lisp::*cmucl-lib*)(quit)'`
     fi
-    if test -f ${CMUCL_RUNTIME_PATH} ; then
+    if test -x "${CMUCL_RUNTIME_PATH}" ; then
         echo "cmucl runtime is \"${CMUCL_RUNTIME_PATH}\""
     else
 dnl last chance: find CMUCL_NAME in path. Use it if it doesn't appear to
@@ -353,15 +353,44 @@ dnl be a shell script.
 	if test x"`grep -c '#!.*bin.*sh.*' ${cmucl_path}`" = x"0" ; then
 	   	CMUCL_RUNTIME_PATH="${cmucl_path}"
 	else
-		AC_MSG_ERROR(Unable to determine CMUCL runtime path.
-The best guess for CMUCL runtime \"${CMUCL_RUNTIME_PATH}\" is not
+		AC_MSG_ERROR([Unable to determine CMUCL runtime path.
+The best guess for CMUCL runtime, \"${CMUCL_RUNTIME_PATH}\", is not
 an executable. Use the argument
    --with-cmucl-runtime=<path>
 to set the actual CMUCL executable. If the CMUCL lisp command is a shell
-script the CMUCL executable is the program exec'd by that shell script.)
+script the CMUCL executable is the program exec'd by that shell script.])
 	fi
     fi
     CMUCL_RUNTIME=`basename ${CMUCL_RUNTIME_PATH}`
+
+dnl cmucl final check
+   result=`"${CMUCL_RUNTIME_PATH}" -quiet -eval '(format t "MAXIMA_CMUCL_TEST_SUCCESS%")(quit)'`
+   retval=$?
+   if test ! x"${retval}" = x"0" ; then
+      AC_MSG_ERROR(unable to run cmucl runtime = "${CMUCL_RUNTIME_PATH}". 
+Please specify the full path the the cmucl runtime using the 
+    --with-cmucl-runtime=<path>
+flag.)
+   fi
+   count=`echo "${result}" | grep -c "MAXIMA_CMUCL_TEST_SUCCESS"`
+   if test ! "${count}" = "1" ; then
+      AC_MSG_ERROR(an error occured while checking cmucl runtime)
+   fi
+fi
+
+if test x"${gcl}" = xtrue; then
+   result=`"${GCL_NAME}" -batch -eval '#+ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_SUCCESS~%") #-ansi-cl (format t "MAXIMA_GCL_ANSI_TEST_FAILURE~%")'`
+   retval=$?
+   if test ! x"${retval}" = x"0" ; then
+      AC_MSG_ERROR(unable to run gcl executable \"${GCL_NAME}\".)
+   fi
+   count=`echo "${result}" | grep -c "MAXIMA_GCL_ANSI_TEST_SUCCESS"`
+   if test ! "${count}" = "1" ; then
+      AC_MSG_ERROR([The gcl executable \"${GCL_NAME}\" was not compiled with
+the --enable-ansi flag, which is required for Maxima.
+The gcl ANSI-CL check returned
+\"${result}\".])
+   fi
 fi
 
 AC_ARG_ENABLE(gcl-alt-link,
