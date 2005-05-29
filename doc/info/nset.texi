@@ -171,6 +171,7 @@ re-simplification; for  example,
 (%o4)                        @{0, 1@}
 @end example
 
+@c NAME HERE ANY FUNCTIONS WHICH AUTOMATICALLY COERCE SETS TO LISTS OR VV
 The @emph{nset} package treats lists and sets as distinct objects;
 functions such as @emph{union} and @emph{intersection} will signal
 an error if any argument is a list.  If you need to apply a set
@@ -437,7 +438,7 @@ documentation.
 @defun adjoin (x, a) 
 Adjoin @emph{x} to the set @emph{a} and return a set. Thus @emph{adjoin(x,a)} 
 and @emph{union(set(x),a)} are equivalent; however, using @emph{adjoin}
-may be somewhat faster than using @emph{union}. If @emph{a} isn't a list or a 
+may be somewhat faster than using @emph{union}. If @emph{a} isn't a 
 set, signal an error.
 
 @c ===beg===
@@ -515,7 +516,7 @@ has been turned off.
 @defun cartesian_product (b1, b2, ... , bn)
 Return a set of lists of the form @emph{[x1,...,xn]}, where
 @emph{x1 in b1}, @emph{x2 in b2}, ..., and @emph{xn in bn}. 
-Signal an error when any @emph{b} isn't a list or a set.
+Signal an error when any @emph{b} isn't a set.
 
 @c ===beg===
 @c cartesian_product (set (0, 1));
@@ -538,18 +539,18 @@ Signal an error when any @emph{b} isn't a list or a set.
 
 @anchor{disjoin}
 @defun disjoin (x a)
-Remove @math{x} from the set or list @math{a} and return a @emph{set}. 
+Remove @math{x} from the set @math{a} and return a @emph{set}. 
 If @math{x} isn't a member of @math{a}, return @math{a}. Each of the 
 following do the same thing: @math{disjoin(x,a)}, @math{delete(x,a)}, and
 @math{setdifference(a,set(x))}; however, @math{disjoin} is generally
 the fastest way to remove a member from a set.
-Signal an error if @math{a} isn't a list or set.
+Signal an error if @math{a} isn't a set.
 @end defun
 
 @anchor{disjointp}
 @defun disjointp (a, b) 
 Return @emph{true} if the sets @emph{a} and @emph{b} are disjoint. Signal an 
-error if either @emph{a} or @emph{b} isn't a list or a set.
+error if either @emph{a} or @emph{b} isn't a set.
 @end defun
 
 @anchor{divisors}
@@ -600,7 +601,7 @@ sets. Here is an example of threading over a list and an equality.
 @anchor{elementp}
 @defun elementp (x, a)          
 Return @emph{true} if and only if  @emph{x} is a member of the 
-set @emph{a}.  Signal an error if @emph{a} isn't a list or a set.  
+set @emph{a}.  Signal an error if @emph{a} isn't a set.  
 @end defun
 
 @anchor{emptyp}
@@ -870,12 +871,13 @@ here is an example that finds all partitions of 10 that consist of prime numbers
 most definitions of prime.)
 @end defun
 
+@c intersect IS AN ALIAS FOR intersection -- JUST REFER TO THE LATTER HERE
 @anchor{intersect}
 @defun intersect (a1,a2,...,an)
 Return a set containing  the elements that are common to the
 sets @emph{a1} through @emph{an}. The function @emph{intersect}
 must receive one or more arguments. Signal an error if any of
-@emph{a1} through @emph{an} isn't a list or a set.  See also @ref{intersection}.
+@emph{a1} through @emph{an} isn't a set.  See also @ref{intersection}.
 @end defun
 
 @anchor{intersection}
@@ -883,7 +885,7 @@ must receive one or more arguments. Signal an error if any of
 Return a set containing  the elements that are common to the 
 sets @emph{a1} through @emph{an}. The function @emph{intersection}
 must receive one or more arguments. Signal an error if any of
-@emph{a1} through @emph{an} isn't a list or a set.  See also @ref{intersect}.
+@emph{a1} through @emph{an} isn't a set.  See also @ref{intersect}.
 @end defun
 
 @defun kron_delta (i, j)
@@ -1004,7 +1006,7 @@ evaluation is @math{init}; for example
 @end example
 
 The function @math{lreduce} makes it easy to find the product or
-sum of the elements of a set or list
+sum of the elements of a list
 
 @c ===beg===
 @c lreduce ("+", args (set (a, b)));
@@ -1015,17 +1017,6 @@ sum of the elements of a set or list
 (%o1)                         b + a
 (%i2) lreduce ("*", args (set (1, 2, 3, 4, 5)));
 (%o2)                          120
-@end example
-
-Unlike most @emph{nset} functions, when the second argument to @math{lreduce} is a list, 
-the list isn't coerced to a set.  For example
-
-@c ===beg===
-@c lreduce (f, [a, a, a]);
-@c ===end===
-@example
-(%i1) lreduce (f, [a, a, a]);
-(%o1)                     f(f(a, a), a)
 @end example
 
 See also @math{rreduce}, @math{xreduce}, and @math{tree_reduce}
@@ -1149,8 +1140,9 @@ is much faster.
 @defun partition_set (a,f)
 Return a list of two sets; the first set is the subset of @emph{a} for which
 the predicate @emph{f} evaluates to false and the second is the subset of 
-@emph{a} for which @emph{f} evaluates to true.  If @emph{a} isn't a list 
-or a set, signal an error. See also @ref{subset}.
+@emph{a} for which @emph{f} evaluates to true.
+If @emph{a} isn't a set, signal an error.
+See also @ref{subset}.
 
 @c ===beg===
 @c partition_set (set (2, 7, 1, 8, 2, 8), evenp);
@@ -1191,7 +1183,7 @@ When the optional second argument @math{n} isn't defined, return the set
 of all subsets of the set @emph{a}. If @emph{a} has @emph{n} elements, 
 @math{powerset(a)} has @emph{2^n} members.  Given a second argument,
 @math{powerset(a,n)} returns the set of all subsets of @emph{a} that have 
-cardinality @emph{n}. Signal an error if @emph{a} isn't a list or a set;
+cardinality @emph{n}. Signal an error if @emph{a} isn't a set;
 additionally signal an error if @math{n} isn't a positive integer.
 @end defun
 
@@ -1226,7 +1218,7 @@ evaluation is @math{init}; for example
 @end example
 
 The function @math{rreduce} makes it easy to find the product or
-sum of the elements of a set or list
+sum of the elements of a list
 
 @c ===beg===
 @c rreduce ("+", args (set (a, b)));
@@ -1237,17 +1229,6 @@ sum of the elements of a set or list
 (%o1)                         b + a
 (%i2) rreduce ("*", args (set (1, 2, 3, 4, 5)));
 (%o2)                          120
-@end example
-
-Unlike most nset functions, when the second argument to @math{rreduce} is a list, 
-the list isn't coerced to a set.  For example
-
-@c ===beg===
-@c rreduce (f, [a, a, a]);
-@c ===end===
-@example
-(%i1) rreduce (f, [a, a, a]);
-(%o1)                     f(a, f(a, a))
 @end example
 
 See also @math{lreduce}, @math{tree_reduce}, and @math{xreduce}.
@@ -1531,24 +1512,25 @@ For example
 
 The second argument to @emph{subset} must be a Maxima predicate
 (a boolean-valued function of one argument) if the first argument to 
-@emph{subset} isn't a list or a set, signal an error. See also
+@emph{subset} isn't a set, signal an error. See also
 @ref{partition_set}.
 @end defun
 
 @anchor{subsetp}
 @defun subsetp (a, b)
 Return true if and only if the set @emph{a} is a subset of @emph{b}.
-Signal an error if @emph{a} or @emph{b} aren't lists or sets.
+Signal an error if @emph{a} or @emph{b} aren't sets.
 @end defun
 
 @anchor{symmdifference}
 @defun symmdifference (a1,a2, ..., an)
 Return the set of members that occur in @emph{exactly} one
-set @math{ai}. Signal an error if any argument @math{ai} isn't a list or
+set @math{ai}. Signal an error if any argument @math{ai} isn't a
 set. Given two arguments, @math{symmdifference(a,b)} is
 the same as @math{union(setdifference(a,b),setdifference(b,a))}.
 @end defun
 
+@c tree_reduce ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT rreduce AND lreduce WANT ONLY LISTS; STRANGE
 @anchor{tree_reduce}
 @defun tree_reduce (f, s, @{init@})
 
@@ -1585,9 +1567,10 @@ give a sum that has a smaller rounding error than using either
 Return the union of the sets @emph{a1} through @emph{an}. 
 When @emph{union} receives no arguments, it returns the
 empty set. Signal an error when one or more arguments to 
-@emph{union} is not a list or a set.
+@emph{union} is not a set.
 @end defun
 
+@c xreduce ACCEPTS A SET OR LIST AS AN ARGUMENT, BUT rreduce AND lreduce WANT ONLY LISTS; STRANGE
 @anchor{xreduce}
 @defun xreduce (f, s, @{init@})
 
