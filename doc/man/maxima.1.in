@@ -299,12 +299,19 @@ used, \fIe.g.\fR, to change the user's default lisp implementation
 choice to CMUCL by including the line "MAXIMA_LISP=cmucl".
 .TP
 \fBmaxima-init.lisp\fR
-At startup, maxima will load the lisp file \fBmaxima-init.lisp\fR if it is
-found in the search path.
+At startup, maxima will load the lisp file \fBmaxima-init.lisp\fR if
+it is found in the search path. For user customization,
+\fBmaxima-init.lisp\fR should be placed in the \fB$MAXIMA_USERDIR\fR
+(see above). Since maxima typically has a system
+\fBmaxima-init.lisp\fR in the Maxima share directory, the user may
+want to copy the contents of the system \fBmaxima-init.lisp\fR into
+his/her custom file.
 .TP
 \fBmaxima-init.mac\fR
-At startup, maxima will load the maxima file \fBmaxima-init.mac\fR if it is
-found in the search path.
+At startup, maxima will load the maxima file \fBmaxima-init.mac\fR if
+it is found in the search path.  For user customization,
+\fBmaxima-init.mac\fR should be placed in the \fB$MAXIMA_USERDIR\fR
+(see above).
 .SH REFERENCES
 Old Reference:  
 .I "MACSYMA Reference Manual"
