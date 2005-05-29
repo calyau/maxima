@@ -14,13 +14,6 @@
 ;; Acknowledgement: Dan Stanger helped find and correct bugs.  He
 ;; also wrote user documentation and a test routine. 
 
-;; emptyp(e) returns true iff e is an empty Maxima list. This function 
-;; is identical to is(e = []).  This function isn't used by any functions 
-;; in powers; it could be expunged.
-
-(defun $emptyp (e)
-  (like e '((mlist))))
-
 ;; posintp(x) returns true iff x is a positive integer or if x has been declared 
 ;; to be an integer and has been assumed to be greater than zero. Thus
 
