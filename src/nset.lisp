@@ -14,7 +14,7 @@
 (in-package "MAXIMA")
 (macsyma-module nset)
 
-;($put '$nset '1.2.03 '$version)
+($put '$nset 1.203 '$version)
 
 (defmacro while (cond &rest body)
   `(do ()
