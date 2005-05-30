@@ -57,6 +57,7 @@ Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @c
 @c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
 @deffnx {Function} plot2d (@var{parametric_expr})
 @c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
+@deffnx {Function} plot2d (@var{discrete_expr})
 @deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 @deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
 @deffnx {Function} plot2d (@var{expr}, @var{x_range}, @var{y_range})
@@ -141,6 +142,52 @@ Plot a cubic polynomial with an ordinary plot and a circle with a parametric plo
 @example
 (%i3) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],
         [nticks, 80]]], [x, -3, 3])$
+@end example
+@end itemize
+
+Discrete expressions may also be used instead or ordinary or
+parametric expressions:
+@var{discrete_expr} is a list of the form
+@code{[discrete, @var{x_list}, @var{y_list}]}
+or
+@code{[discrete, @var{xy_list}]},
+where @var{xy_list} is a list of @code{[@var{x},@var{y}]} pairs.
+
+Examples:
+@c PUT DISCRETE EXAMPLES HERE
+
+@itemize @bullet
+@item
+Create some lists.
+@example
+(%i1) xx:makelist(x,x,0,10)$
+(%i2) yy:makelist(exp(-x*1.0),x,0,10)$
+(%i3) xy:makelist([x,x*x],x,0,5)$
+@end example
+
+@item
+Plot with line segments.
+@example
+(%i4) plot2d([discrete,xx,yy])$
+@end example
+
+@item
+Plot with line segments, using a list of pairs.
+@example
+(%i5) plot2d([discrete,xy])$
+@end example
+
+@item
+Plot with points.
+@example
+(%i6) plot2d([discrete,xx,yy],[gnuplot_curve_styles,["with points"]])$
+@end example
+
+@item
+Plot the curve @code{cos(@var{x})} using lines and (@var{xx},@var{yy})
+using points.
+@example
+plot2d([cos(x),[discrete,xx,yy]],[x,0,10],[gnuplot_curve_styles,["with lines","with points pointsize 3"]])$
 @end example
 @end itemize
 
