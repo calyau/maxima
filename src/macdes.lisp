@@ -57,6 +57,7 @@
 		   doit
 		   (setq tem (peek-char nil st nil))
 		   (cond ((or (null tem) (eql tem #\&))
+			  (setf *need-prompt* t)
 			  (return-from $example '$done)))
 		   (setq tem (dbm-read st nil nil))
 		   (setq $linenum (+ 1 $linenum))
@@ -74,6 +75,7 @@
 
 		   notfound
 		   (format t "Not Found.  You can look at:")
+		   (setf *need-prompt* t)
 		   (return-from $example
 		     `((mlist) ,@ (nreverse all)))
 		   ))))))
