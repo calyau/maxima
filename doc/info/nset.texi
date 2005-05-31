@@ -6,13 +6,13 @@
 @node Introduction to Sets, Definitions for Sets, Sets, Sets
 @section Introduction to Sets
 
-The @emph{nset} package provides set functions, such as intersection and 
+Maxima provides set functions, such as intersection and 
 union, for finite sets that are defined by explicit enumeration.
-@emph{nset} treats 
+Maxima treats 
 lists and sets as distinct objects. This feature makes it possible to
 work with sets that have members that are either lists or sets.
 
-In addition to functions for finite sets, @emph{nset} provides some
+In addition to functions for finite sets, Maxima provides some
 functions related to combinatorics; these include the Stirling
 numbers, the Bell numbers, and several others.
 
@@ -38,25 +38,10 @@ numbers, the Bell numbers, and several others.
 @c fixes this problem. Additionally, @emph{nset-init.lisp} contains 
 @c autoload statements for all user-level functions in @emph{nset}.
 
-@c NEED TO MOVE test-nset.mac TO tests/
-
-@c Once @emph{nset} is installed, run its testing code. Do this from a Maxima 
-@c prompt using the command
-@c @example
-@c (C1) batch("test-nset.mac",'test);
-@c @end example
-@c You may need to use the full pathname for the file. The test should 
-@c end with the statement
-@c @example
-@c ..Which was correct
-@c Congratulations: No differences!
-@c @end example
-@c Please report any errors to the Maxima list.
-
 @subsection Usage
 
 To construct a set with members @code{a_1, ..., a_n}, use the
-command @code{set(a_1, ,..., a_n)}; to construct the empty
+command @code{set(a_1, ..., a_n)}; to construct the empty
 set, use @code{set()}.  If a member is listed more than
 once, the simplification process eliminates the redundant member.
 
@@ -145,11 +130,9 @@ simplification functions.  Here is an example that uses @code{trigsimp}:
 @end example
 
 A set is simplified when its members are non-redundant and
-sorted. The current version of @emph{nset} uses the Maxima function
-@code{orderlessp} to order sets; however, @emph{future versions of 
-@emph{nset} might use a different ordering function.  
-Robust application code that uses nset must not depend on a 
-particular ordering.}
+sorted. The current version of the set functions uses the Maxima function
+@code{orderlessp} to order sets; however, @i{future versions of 
+the set functions might use a different ordering function}.
 
 Some operations on sets, such as substitution, automatically force a 
 re-simplification; for  example,
@@ -171,7 +154,7 @@ re-simplification; for  example,
 @end example
 
 @c NAME HERE ANY FUNCTIONS WHICH AUTOMATICALLY COERCE SETS TO LISTS OR VV
-The @emph{nset} package treats lists and sets as distinct objects;
+Maxima treats lists and sets as distinct objects;
 functions such as @code{union} and @code{intersection} will signal
 an error if any argument is a list.  If you need to apply a set
 function to a list, use the @code{setify} function to convert it
@@ -203,7 +186,7 @@ in a given set that do not depend on a variable @code{z}, use
 @end example
 
 The section @ref{Definitions for Sets} has a complete list of
-the functions in @emph{nset}.
+the set functions in Maxima.
 
 @subsection Set Member Iteration
 
@@ -238,19 +221,20 @@ The Maxima functions @code{first} and @code{rest} work
 correctly on sets.  Applied to a set, @code{first} returns the first
 displayed element of a set; which element that is may be
 implementation-dependent. If @code{s} is a set, then 
-@code{rest(s)} is equivalent to @code{disjoin(first(s),s)}.  
+@code{rest(s)} is equivalent to @code{disjoin (first(s), s)}.  
 Currently, there are other Maxima functions that work correctly
-on sets; however, for future versions of @emph{nset}, they may function
-differently or not at all.
+on sets.
+In future versions of the set functions,
+@code{first} and @code{rest} may function differently or not at all.
 
 @subsection Bugs
 @c AT THIS POINT (2005/05) I DON'T KNOW IF IT'S NECESSARY TO GO INTO DETAILS
 @c ABOUT BUGS IN MAXIMA REVISIONS 5.9.0 AND EARLIER
 
-The @emph{nset} package uses the Maxima function @code{orderlessp} to 
+The set functions use the Maxima function @code{orderlessp} to 
 order set members and the (Lisp-level) function @code{like} to test for set
 member equality.  Both of these functions have known bugs (versions
-5.9.0 and earlier) that may manifest if you attempt to use
+5.9.2 and earlier) that may manifest if you attempt to use
 sets with members that are lists or matrices that contain expressions
 in CRE form. An example is
 
@@ -285,7 +269,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end example
 
 These bugs are caused by bugs in @code{orderlessp} and @code{like}; they
-are not caused by bugs in @emph{nset}. To illustrate, try the commands
+are not caused by bugs in the set functions. To illustrate, try the commands
 
 @c ===beg===
 @c orderlessp ([rat(a)], [rat(b)]);
@@ -316,7 +300,7 @@ member in CRE form, however, shouldn't be a problem
 @end example
 
 Maxima's @code{orderlessp} has another bug that can cause problems
-with @emph{nset } functions; the ordering predicate @code{orderlessp} is
+with set functions, namely that the ordering predicate @code{orderlessp} is
 not transitive. The simplest known example that shows this is
 
 @c ===beg===
@@ -339,22 +323,23 @@ not transitive. The simplest known example that shows this is
 (%o6)                         false
 @end example
 
-This bug can cause trouble will all @emph{nset} functions as well as with
+This bug can cause trouble will all set functions as well as with
 Maxima functions in general. It's likely, but not certain, that 
 if all set members are either in CRE form or have been simplified
 using @code{ratsimp}, this bug will not manifest.
 
+@c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
 Maxima's @code{orderless} and @code{ordergreat} mechanisms are 
-incompatible with @math{nset}. If you need to use either @code{orderless}
-or @code{ordergreat},  issue these commands before loading @emph{nset}
+incompatible with the set functions. If you need to use either @code{orderless}
+or @code{ordergreat}, issue these commands before constructing any sets
 and do not use the @code{unorder} command. 
 
-You may encounter two other minor bugs while using @emph{nset}.
+You may encounter two other minor bugs.
 Maxima versions 5.5 and earlier had a bug in the @code{tex} function that
 makes the empty set incorrectly translate to TeX; this bug is fixed in
 the Maxima 5.9.0. Additionally, the @code{setup_autoload} function in
-Maxima 5.9.0 is broken; a fix is in the @emph{nset-init.lisp} file
-located in the @emph{nset} distribution.
+Maxima 5.9.0 is broken; a fix is in the @code{nset-init.lisp} file
+located in the directory @code{maxima/share/contrib/nset}.
 
 Maxima's sign function has a bug that may cause the Kronecker
 delta function to misbehave; for example
@@ -377,8 +362,8 @@ The correct value is 1; the bug is related to the @code{sign} bug
 (%o1)                          pos
 @end example
 
-If you find something that you think might be a @emph{nset} bug, please 
-report  it to the Maxima bug database.
+If you find something that you think might be a set function bug, please 
+report it to the Maxima bug database. See @code{bug_report}.
 
 @anchor{Defining sets with braces}
 @subsection Defining sets with braces
@@ -418,17 +403,17 @@ To always allow this form of set input, place the two commands in lines
 
 @subsection Combinatorial and Miscellaneous Functions
 
-In addition to functions for finite sets, @emph{nset} provides some
+In addition to functions for finite sets, Maxima provides some
 functions related to combinatorics; these include the Stirling
 numbers of the first and second kind, the Bell numbers, multinomial
 coefficients, partitions of nonnegative integers, and a few others. 
-The @emph{nset} package also defines a Kronecker delta function.
+Maxima also defines a Kronecker delta function.
 
 
 @subsection Authors
 
 Stavros Macrakis of Cambridge, Massachusetts and Barton Willis of the
-University of Nebraska at Kearney (UNK) wrote the nset package and its
+University of Nebraska at Kearney (UNK) wrote the Maxima set functions and their
 documentation. 
 
 @node Definitions for Sets,  , Introduction to Sets, Sets
@@ -556,7 +541,7 @@ error if either @var{a} or @var{b} isn't a set.
 
 @anchor{divisors}
 @deffn {Function} divisors (@var{n})
-When @emph{n} is a nonzero integer, return the set of its divisors. 
+When @var{n} is a nonzero integer, return the set of its divisors. 
 The set of divisors includes the members 1 and @var{n}.
 The divisors of a  negative integer are the divisors of its absolute value.
 
@@ -1113,12 +1098,12 @@ for example
 @deffn {Function} num_distinct_partitions (@var{n})
 @deffnx {Function} num_distinct_partitions (@var{n}, @var{a})
 
-When @emph{n} is a nonnegative integer, return the number of 
-distinct integer partitions of @emph{n}.
+When @var{n} is a nonnegative integer, return the number of 
+distinct integer partitions of @var{n}.
 
 If the optional parameter @var{a} has the value @code{list}, return a 
 list of the number of distinct partitions of 1,2,3, ... , n. 
-If @emph{n} isn't a nonnegative integer, return a noun form.
+If @var{n} isn't a nonnegative integer, return a noun form.
 
 Definition: If @math{@var{n} = k_1 + ... + k_m}, where @math{k_1} 
 through @math{k_m}  are distinct positive integers, we call 
@@ -1128,9 +1113,9 @@ through @math{k_m}  are distinct positive integers, we call
 @anchor{num_partitions}
 @deffn {Function} num_partitions (@var{n})
 @deffnx {Function} num_partitions (@var{n}, @var{a})
-When @emph{n} is a nonnegative integer, return the number of partitions 
-of @emph{n}. If the optional parameter @var{a} has the value @code{list}, 
-return a list of the number of partitions of 1,2,3, ... , n.  If @emph{n} 
+When @var{n} is a nonnegative integer, return the number of partitions 
+of @var{n}. If the optional parameter @var{a} has the value @code{list}, 
+return a list of the number of partitions of 1,2,3, ... , n.  If @var{n} 
 isn't a nonnegative integer, return a noun form.
 
 @c ===beg===
@@ -1178,7 +1163,7 @@ See also @ref{subset}.
 @deffn {Function} permutations (@var{a})
 Return a set of all @i{distinct} permutations of the members of 
 the list or set @var{a}. (Each permutation is a list, not a set.) 
-When @var{a} is a list, duplicate members of @var{a} are @emph{not} deleted 
+When @var{a} is a list, duplicate members of @var{a} are @i{not} deleted 
 before finding the permutations. Thus
 
 @c ===beg===
@@ -1202,7 +1187,7 @@ When the optional second argument @var{n} isn't defined, return the set
 of all subsets of the set @var{a}.
 @code{powerset(@var{a})} has @code{2^cardinality(@var{a})} members.  Given a second argument,
 @code{powerset(@var{a},@var{n})} returns the set of all subsets of @var{a} that have 
-cardinality @emph{n}. Signal an error if @var{a} isn't a set;
+cardinality @var{n}. Signal an error if @var{a} isn't a set;
 additionally signal an error if @var{n} isn't a positive integer.
 @end deffn
 
@@ -1293,7 +1278,7 @@ The function @code{setp} could be coded in Maxima as
 @deffn {Function} set_partitions (@var{a})
 @deffnx {Function} set_partitions (@var{a}, @var{n})
 When the optional argument @var{n} is defined, return a set of all
-decompositions of @var{a} into @var{n} @emph{nonempty} disjoint 
+decompositions of @var{a} into @var{n} @var{nonempty} disjoint 
 subsets. When @var{n} isn't defined, return the set of all partitions.
 
 We say a set @math{P} is a partition of a set @math{S} provided
