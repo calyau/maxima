@@ -65,7 +65,7 @@ once, the simplification process eliminates the redundant member.
 Sets are always displayed as brace delimited lists; if you would like to
 be able to  @i{input} a set using braces, see @ref{Defining sets with braces}.
 
-To construct a set from the elements of a list, use  @code{setify}
+To construct a set from the elements of a list, use  @code{setify}.
 
 @c ===beg===
 @c setify([b, a]);
@@ -135,7 +135,7 @@ sorted. The current version of the set functions uses the Maxima function
 the set functions might use a different ordering function}.
 
 Some operations on sets, such as substitution, automatically force a 
-re-simplification; for  example,
+re-simplification; for example,
 
 @c ===beg===
 @c s: set (a, b, c)$
@@ -173,7 +173,7 @@ Function union expects a set, instead found [1,2]
 @end example
 
 To extract all set elements of a set @code{s} that satisfy a predicate
-@code{f}, use @code{subset(s,f)}. (In  Maxima, a @i{predicate} is a 
+@code{f}, use @code{subset(s,f)}. (A @i{predicate} is a 
 boolean-valued function.) For example, to find the equations 
 in a given set that do not depend on a variable @code{z}, use
 
@@ -191,7 +191,7 @@ the set functions in Maxima.
 @subsection Set Member Iteration
 
 There two ways to to iterate over set members.  One way is the use
-@code{map}; for example
+@code{map}; for example:
 
 @c ===beg===
 @c map (f, set (a, b, c));
@@ -289,7 +289,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 Until these bugs are fixed, do not construct sets with members that
 are lists or matrices containing expressions in CRE form; a set with a 
-member in CRE form, however, shouldn't be a problem
+member in CRE form, however, shouldn't be a problem:
 
 @c ===beg===
 @c set (x, rat (x));
@@ -342,7 +342,7 @@ Maxima 5.9.0 is broken; a fix is in the @code{nset-init.lisp} file
 located in the directory @code{maxima/share/contrib/nset}.
 
 Maxima's sign function has a bug that may cause the Kronecker
-delta function to misbehave; for example
+delta function to misbehave; for example:
 
 @c ===beg===
 @c kron_delta (1/sqrt(2), sqrt(2)/2);
@@ -399,7 +399,7 @@ Now we can define sets using braces; thus
 @end example
 
 To always allow this form of set input, place the two commands in lines 
-(c1) and (c2) in your @code{maxima-init.mac} file.
+(%i1) and (%i2) in your @code{maxima-init.mac} file.
 
 @subsection Combinatorial and Miscellaneous Functions
 
@@ -444,7 +444,7 @@ See also @code{disjoin}.
 @deffn {Function} belln (@var{n})
 For nonnegative integers @var{n}, return the n-th Bell number. If
 @code{s} is a set with @code{n} members,  @code{belln(n)} is the number 
-of partitions of @code{s}.  For example
+of partitions of @code{s}.  For example:
 
 @c ===beg===
 @c makelist (belln (i), i, 0, 6);
@@ -461,7 +461,7 @@ of partitions of @code{s}.  For example
 @end example
 
 When @var{n} isn't a nonnegative integer, @code{belln(n)} doesn't
-simplify
+simplify.
 
 @c ===beg===
 @c [belln (x), belln (sqrt(3)), belln (-9)];
@@ -494,7 +494,7 @@ Return the number of distinct elements of the set @var{a}.
 (%o3)                           3
 @end example
 
-In line (c3), we see that cardinality works correctly even when simplification
+In line (%o3), we see that cardinality works correctly even when simplification
 has been turned off. 
 @end deffn
 
@@ -543,9 +543,9 @@ error if either @var{a} or @var{b} isn't a set.
 @deffn {Function} divisors (@var{n})
 When @var{n} is a nonzero integer, return the set of its divisors. 
 The set of divisors includes the members 1 and @var{n}.
-The divisors of a  negative integer are the divisors of its absolute value.
+The divisors of a negative integer are the divisors of its absolute value.
 
-We can show that 28 is a perfect number using
+We can verify that 28 is a perfect number.
 
 @c ===beg===
 @c s: divisors(28);
@@ -559,7 +559,7 @@ We can show that 28 is a perfect number using
 @end example
 
 The function divisors works by simplification; you shouldn't need to
-manually re-evaluate after a substitution. For example
+manually re-evaluate after a substitution. For example:
 
 @c ===beg===
 @c divisors (a);
@@ -572,6 +572,7 @@ manually re-evaluate after a substitution. For example
 (%o2)                     @{1, 2, 4, 8@}
 @end example
 
+@c WHAT DOES "THREADING" MEAN IN THIS CONTEXT ??
 The function divisors threads over equalities, lists, matrices, and 
 sets. Here is an example of threading over a list and an equality.
 
@@ -626,7 +627,7 @@ check that it is.
 
 Actually, @code{equiv_classes (@var{s}, @var{f})} automatically applies the Maxima 
 function @code{is} after applying the function @var{f}; accordingly,
-we can re-work the previous example with the command
+we can restate the previous example more briefly.
 
 @c ===beg===
 @c equiv_classes (set (a, b, c), "=");
@@ -636,7 +637,7 @@ we can re-work the previous example with the command
 (%o1)                    @{@{a@}, @{b@}, @{c@}@}
 @end example
 
-Here is another example
+Here is another example.
 
 @c ===beg===
 @c equiv_classes (set (1, 2, 3, 4, 5, 6, 7), lambda ([x, y], remainder (x - y, 3) = 0));
@@ -654,7 +655,7 @@ Here is another example
 The first argument @var{f} should be a predicate (a function that evaluates to
 true, false, or unknown). 
 
-Given one set as the second  argument, 
+Given one set as the second argument, 
 @code{every (@var{f}, @var{a})} returns @code{true}
 if @code{@var{f}(@var{a_i})} returns @code{true} for all @var{a_i} in @var{a}.
 Since sets are unordered, @code{every} is free to evaluate @code{@var{f}(@var{a_i})} in any
@@ -669,10 +670,10 @@ for all @var{x_1}, ..., @var{x_n} in @var{L_1}, ..., @var{L_n}, respectively.
 @code{every} may or may not evaluate 
 @var{f} for every combination @var{x_1}, ..., @var{x_n}.
 @c FOLLOWING STATEMENT IS AMBIGUOUS: IS f(L_1[1], L_2[2]) EVALUATED BEFORE OR AFTER f(L_1[2], L_2[2]) ??
-Since  lists are ordered, @code{every} evaluates in the order of increasing index.
+Since lists are ordered, @code{every} evaluates in the order of increasing index.
 
 To use @code{every} on multiple set arguments, they should first be converted
-to an ordered  sequence so that their relative alignment becomes well-defined.
+to an ordered sequence so that their relative alignment becomes well-defined.
 
 If the global flag @code{maperror} is @code{true} (the default), all lists 
 @var{L_1}, ..., @var{L_n} must have equal lengths -- otherwise, @code{every} signals an error.
@@ -680,7 +681,7 @@ When @code{maperror} is false, the list arguments are
 effectively truncated each to the length of the shortest list. 
 
 The Maxima function @code{is} automatically applied after evaluating the
-predicate @var{f}; thus the following work correctly
+predicate @var{f}.
 
 @c ===beg===
 @c every ("=", [a, b], [a, b]);
@@ -716,9 +717,9 @@ subset for which @var{f} takes on its least value.
 
 @anchor{flatten}
 @deffn {Function} flatten (@var{e})
-Flatten essentially evaluates an  expression as if its main operator had 
+Flatten essentially evaluates an expression as if its main operator had 
 been declared n-ary; there is, however, one difference -- flatten doesn't 
-recurse into other function arguments.  Consider
+recurse into other function arguments.  For example:
 
 @c ===beg===
 @c expr: flatten (f (g (f (f (x)))));
@@ -735,7 +736,7 @@ recurse into other function arguments.  Consider
 @end example
 
 Applied to a set, flatten gathers all members of set elements that
-are sets; for example
+are sets; for example:
 
 @c ===beg===
 @c flatten (set (a, set (b), set (set (c))));
@@ -791,7 +792,7 @@ If @var{a} is a list, convert @var{a} to a set and apply
 (%o2)                      @{a, f([b])@}
 @end example
 
-In line (C2), the argument of @code{f} isn't converted to a set
+In line (%o2), the argument of @code{f} isn't converted to a set
 because the main operator of @code{f([b])} isn't a list.
 
 To convert just the top-level operator of a list to a set, see
@@ -823,7 +824,7 @@ case, zeros are appended to each partition with fewer than @var{len}
 terms to make each partition have exactly @var{len} terms.  In either
 case, each partition is a list sorted from greatest to least.
 
-We say  a list @math{[a_1, ..., a_m]} is a partition of a nonnegative integer
+We say a list @math{[a_1, ..., a_m]} is a partition of a nonnegative integer
 @math{n} provided (1) each @math{a_i} is a nonzero integer and (2) 
 @math{a_1 + ... + a_m  = n.}  Thus 0 has no partitions.  
 
@@ -850,7 +851,7 @@ We say  a list @math{[a_1, ..., a_m]} is a partition of a nonnegative integer
 @end example
 
 To find all partitions that satisfy a condition, use the function @code{subset};
-here is an example that finds all partitions of 10 that consist of prime numbers
+here is an example that finds all partitions of 10 that consist of prime numbers.
 
 @c ===beg===
 @c s: integer_partitions (10)$
@@ -872,7 +873,7 @@ most definitions of prime.)
 @c intersect IS AN ALIAS FOR intersection -- JUST REFER TO THE LATTER HERE
 @anchor{intersect}
 @deffn {Function} intersect (@var{a_1}, ..., @var{a_n})
-Return a set containing  the elements that are common to the
+Return a set containing the elements that are common to the
 sets @var{a_1} through @var{a_n}. The function @code{intersect}
 must receive one or more arguments. Signal an error if any of
 @var{a_1} through @var{a_n} isn't a set.  See also @ref{intersection}.
@@ -880,7 +881,7 @@ must receive one or more arguments. Signal an error if any of
 
 @anchor{intersection}
 @deffn {Function} intersection (@var{a_1}, ..., @var{a_n})
-Return a set containing  the elements that are common to the 
+Return a set containing the elements that are common to the 
 sets @var{a_1} through @var{a_n}. The function @code{intersection}
 must receive one or more arguments. Signal an error if any of
 @var{a_1} through @var{a_n} isn't a set.  See also @ref{intersect}.
@@ -897,7 +898,7 @@ The function, @code{kron_delta} is declared to be
 symmetric; thus, for example, @code{kron_delta(x, y) - kron_delta(y, x)} 
 simplifies to zero.
 
-Here are a few examples,
+Here are a few examples.
 
 @c ===beg===
 @c [kron_delta (a, a), kron_delta (a + 1, a)];
@@ -949,7 +950,7 @@ number, we have
                                   10
 @end example
 
-If you want (D7) to evaluate to 1, apply @code{float}
+If you want @code{kron_delta (1/10, 0.1)} to evaluate to 1, apply @code{float}.
 
 @c ===beg===
 @c float (kron_delta (1/10, 0.1));
@@ -964,7 +965,7 @@ If you want (D7) to evaluate to 1, apply @code{float}
 @deffn {Function} listify (@var{a})
 If @var{a} is a set, return a list containing the members of @var{a};
 when @var{a} isn't a set, return @var{a}.  To convert a set and all
-of its members to lists, see @ref{full_listify}
+of its members to lists, see @ref{full_listify}.
 
 @c NEED TO PUT SOMETHING HERE
 @c ===beg===
@@ -994,7 +995,7 @@ make this clear. When the optional argument @var{init} isn't defined, we have
 Notice that the function @var{f} is first applied to the
 @code{leftmost} list elements (thus the name lreduce). 
 When @var{init} is defined, the second argument to the inner most function 
-evaluation is @var{init}; for example
+evaluation is @var{init}; for example:
 
 @c ===beg===
 @c lreduce (f, [1, 2, 3], 4);
@@ -1005,7 +1006,7 @@ evaluation is @var{init}; for example
 @end example
 
 The function @code{lreduce} makes it easy to find the product or
-sum of the elements of a list
+sum of the elements of a list.
 
 @c ===beg===
 @c lreduce ("+", args (set (a, b)));
@@ -1068,7 +1069,7 @@ distinct objects into @math{n} boxes with @var{a_k} elements in the
 evaluates to @code{(@var{a_1} + ... + @var{a_n})!/(@var{a_1}! ... @var{a_n}!)}. Given no
 arguments, @code{multinomial()} evaluates to 1. A user may use
 @code{minfactorial} to simplify the value returned by @code{multinomial_coeff};
-for example
+for example:
 
 @c ===beg===
 @c multinomial_coeff (1, 2, x);
@@ -1212,7 +1213,7 @@ make this clear. When the optional argument @var{init} isn't defined, we have
 Notice that the function @var{f} is first applied to the rightmost list
 elements (thus the name rreduce). When @var{init} is defined, the
 second argument to the inner most function 
-evaluation is @var{init}; for example
+evaluation is @var{init}; for example:
 
 @c ===beg===
 @c rreduce (f, [1, 2, 3], 4);
@@ -1223,7 +1224,7 @@ evaluation is @var{init}; for example
 @end example
 
 The function @code{rreduce} makes it easy to find the product or
-sum of the elements of a list
+sum of the elements of a list.
 
 @c ===beg===
 @c rreduce ("+", args (set (a, b)));
@@ -1282,6 +1283,7 @@ decompositions of @var{a} into @var{n} @var{nonempty} disjoint
 subsets. When @var{n} isn't defined, return the set of all partitions.
 
 We say a set @math{P} is a partition of a set @math{S} provided
+
 @enumerate
 @item
 each member of @math{P} is a nonempty set,
@@ -1290,6 +1292,7 @@ distinct members of @math{P} are disjoint,
 @item
 the union of the members of @math{P} equals @math{S}.
 @end enumerate
+
 The empty set is a partition of itself (the conditions 1 and 2 being
 vacuously true); thus
 
@@ -1300,8 +1303,6 @@ vacuously true); thus
 (%i1) set_partitions (set ());
 (%o1)                         @{@{@}@}
 @end example
-
-A few additional examples
 
 The cardinality of the set of partitions of a set can be found using @code{stirling2}; thus
 
@@ -1317,7 +1318,7 @@ The cardinality of the set of partitions of a set can be found using @code{stirl
 (%i4) cardinality(p) = stirling2 (6, 3);
 @end example
 
-Each member of @code{p} should have 3 members; let's check
+Each member of @code{p} should have 3 members; let's check.
 
 @c ===beg===
 @c s: set (0, 1, 2, 3, 4, 5)$
@@ -1332,7 +1333,7 @@ Each member of @code{p} should have 3 members; let's check
 @end example
 
 Finally, for each member of @code{p}, the union of its members should 
-equal @code{s}; again let's check
+equal @code{s}; again let's check.
 
 @c ===beg===
 @c s: set (0, 1, 2, 3, 4, 5)$
@@ -1354,15 +1355,15 @@ equal @code{s}; again let's check
 The first argument @var{f} should be a predicate (a function that evaluates to
 true, false, or unknown). 
 
-Given one set as the second  argument, 
+Given one set as the second argument, 
 @code{some (@var{f}, @var{a})} returns @code{true}
 if @code{@var{f}(@var{a_i})} returns @code{true} for at least one @var{a_i} in @var{a}.
 Since sets are unordered, @code{some} is free to evaluate @code{@var{f}(@var{a_i})} in any
 order. @code{some} may or may not evaluate  @var{f} for all @var{a_i} in @var{a}. Because the
-order of  evaluation isn't specified, the predicate @var{f} should
+order of evaluation isn't specified, the predicate @var{f} should
 not have side-effects or signal errors for any input. 
 To use @code{some} on multiple set arguments, they should first be converted
-to an ordered  sequence so that their relative alignment becomes well-defined.
+to an ordered sequence so that their relative alignment becomes well-defined.
 
 Given one or more lists as arguments,
 @code{some (@var{f}, @var{L_1}, ..., @var{L_n})} returns @code{true}
@@ -1379,7 +1380,7 @@ When @code{maperror} is false, the list arguments are
 effectively truncated each to the length of the shortest list. 
 
 The Maxima function @code{is} is automatically applied after evaluating the
-predicate @var{f}; thus the following work correctly
+predicate @var{f}.
 
 @c ===beg===
 @c some ("<", [a, b, 5], [1, 2, 8]);
@@ -1407,7 +1408,7 @@ The function @code{stirling1} works by simplification; it knows the
 basic special values (see Donald Knuth, @i{The Art of Computer Programming,}
 third edition, Volume 1,  Section 1.2.6, Equations 48, 49, and 50).  
 For Maxima to apply these rules, the arguments must be declared to 
-be integer and the first argument must nonnegative. Here's an example
+be integer and the first argument must nonnegative. For example:
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1421,7 +1422,7 @@ be integer and the first argument must nonnegative. Here's an example
 (%o3)                           1
 @end example
 
-With a non-integer argument, this simplification isn't made
+@code{stirling1} does not simplify for non-integer arguments.
 
 @c ===beg===
 @c stirling1 (sqrt(2), sqrt(2));
@@ -1431,7 +1432,7 @@ With a non-integer argument, this simplification isn't made
 (%o1)              stirling1(sqrt(2), sqrt(2))
 @end example
 
-Maxima knows a few other special values; for example
+Maxima knows a few other special values; for example:
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1464,7 +1465,7 @@ The function @code{stirling2} works by simplification; it knows the
 basic special values (see Donald Knuth, @i{The Art of Computer Programming,}
 third edition, Volume 1,  Section 1.2.6, Equations 48, 49, and 50).  
 For Maxima to apply these rules, the arguments must be declared to 
-be integer and the first argument must nonnegative. Here's an example
+be integer and the first argument must nonnegative. For example:
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1478,7 +1479,7 @@ be integer and the first argument must nonnegative. Here's an example
 (%o3)                           1
 @end example
 
-With a non-integer argument, this simplification isn't made
+@code{stirling2} does not simplify for non-integer arguments.
 
 @c ===beg===
 @c stirling2 (%pi, %pi);
@@ -1488,7 +1489,8 @@ With a non-integer argument, this simplification isn't made
 (%o1)                  stirling2(%pi, %pi)
 @end example
 
-Maxima knows a few other special values; for example
+@c ENUMERATE OR OTHERWISE DESCRIBE LIST OF KNOWN SPECIAL VALUES
+Maxima knows a few other special values.
 
 @c ===beg===
 @c declare (n, integer)$
@@ -1512,7 +1514,7 @@ Maxima knows a few other special values; for example
 @anchor{subset}
 @deffn {Function} subset (@var{a}, @var{f})
 Return the subset of the set @var{a} that satisfies the predicate @var{f}. 
-For example
+For example:
 
 @c ===beg===
 @c subset (set (1, 2, x, x + y, z, x + y + z), atom);
@@ -1525,7 +1527,7 @@ For example
 (%o2)                      @{2, 8, 14@}
 @end example
 
-The second argument to @code{subset} must be a Maxima predicate
+The second argument to @code{subset} must be a predicate
 (a boolean-valued function of one argument) if the first argument to 
 @code{subset} isn't a set, signal an error. See also
 @ref{partition_set}.
@@ -1552,7 +1554,7 @@ the same as @code{union (setdifference (@var{a}, @var{b}), setdifference (@var{b
 
 The function @code{tree_reduce} extends a associative binary operator @math{f : S x S -> S}
 from two arguments to any number of arguments using a minimum
-depth tree.  An example should make this clear
+depth tree.  An example should make this clear.
 
 @c ===beg===
 @c tree_reduce (f, [a, b, c, d]);
@@ -1563,7 +1565,7 @@ depth tree.  An example should make this clear
 @end example
 
 Given an odd number of arguments, @code{tree_reduce} favors the left
-side of the tree; for example
+side of the tree; for example:
 
 @c ===beg===
 @c tree_reduce (f, [a, b, c, d, e]);
