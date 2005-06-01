@@ -94,17 +94,19 @@
 (defun $read_hashed_array (file-name A &optional sep-ch-flag)
   (setq file-name (require-string file-name))
   (with-open-file (in file-name :if-does-not-exist nil)
-    (cond ((not (null in))
-        (let ((sep-ch (get-sep-ch sep-ch-flag file-name)) (local-table (copy-readtable nil)))
-          (setf (readtable-case local-table) :invert)
+    (cond
+      ((not (null in))
+        (let ((sep-ch (get-sep-ch sep-ch-flag file-name)))
           (loop
-            (let ((*readtable* local-table))
-              (let ((key (read in nil 'eof)) (L))
-                (if (eq key 'eof) (return t))
-                (if (symbolp key) (setq key (makealias key)))
-                (setq L (read-line in nil 'eof))
-                (setq L (make-mlist-from-string L sep-ch))
-                (arrstore (list (list A 'simp 'array) key) L))))))
+            (setq L (read-line in nil 'eof))
+            (if (eq L 'eof) (return))
+            (setq L (make-mlist-from-string L sep-ch))
+            (cond
+              ((> ($length L) 0)
+               (setq key ($first L))
+               (if (= ($length L) 1)
+                 (arrstore (list (list A 'array) key) nil)
+                 (arrstore (list (list A 'array) key) ($rest L))))))))
       (t (merror "read_hashed_array: ~S: no such file" file-name))))
   '$done)
 
@@ -137,42 +139,48 @@
 
 ;; Usage: (make-mlist-from-string "1 2 3 foo bar baz")
 
-(defun make-mlist-from-string (s sep-ch) 
+(defun make-mlist-from-string (s sep-ch)
+  ; scan-one-token-g isn't happy with symbol at end of string.
+  (setq s (concatenate 'string s " "))
 
-  ;; Append a separator at the end to make read-delimited-list happy. Ugh.
-  ;; But not if the line is emtpy -- otherwise pasting on a delimiter has
-  ;; the effect of creating an null element. Double ugh.
+  (with-input-from-string (*parse-stream* s)
+    (let ((token) (L) (LL) (sign))
+      (loop
+        (setq token (scan-one-token-g t 'eof))
+        (cond
+          ((eq token 'eof)
+           (cond
+             ((not (null sign))
+              (format t "numericalio: trailing sign (~S) at end of line; strange, but just eat it." sign)))
+           (cond
+             ((eq sep-ch #\space)
+              (return (cons '(mlist) LL)))
+             (t
+               (return (cons '(mlist) (appropriate-append L LL)))))))
+        (cond
+          ((or (eq token '|$-|) (eq token '|$+|))
+           (setq sign (cond ((eq token '|$-|) -1) (t 1))))
+          (t
+            (cond
+              ((eq sign -1)
+               (setq token (m* -1 token))
+               (setq sign nil)))
+            (cond
+              ((eq sep-ch #\space)
+               (setq LL (append LL (list token))))
+              (t
+                (cond
+                  ((eq token sep-ch)
+                   (setq L (appropriate-append L LL))
+                   (setq LL nil))
+                  (t
+                    (setq LL (append LL (list token)))))))))))))
 
-  (cond ((> (length (string-trim '(#\space #\tab) s)) 0)
-      (setq s (concatenate 'string s (string sep-ch)))))
-
-  (let ((L '()) (in (make-string-input-stream s)) (x) (pc) (local-table (copy-readtable nil)))
-    (setf (readtable-case local-table) :invert)
-    (let ((*readtable* local-table))
-      
-      (loop 
-
-      ;; Two different methods of reading are needed, because:
-      ;; read-delimited-list is undefined if sep-ch is whitespace,
-      ;; plus it wants to see a delimiter character at the end,
-      ;; plus it throws an error at eof instead of returning 'eof. (sigh)
-
-      (cond ((eq sep-ch '#\space)
-          (setq x (read in nil 'eof)))
-        (t 
-          (setq pc (peek-char t in nil 'eof))
-          (cond ((eq (peek-char t in nil 'eof) 'eof)
-              (setq x 'eof))
-            (t
-
-              ;; Ugh. GCL needs to see the "si::" bit, Clisp needs to not see it.
-              #+gcl (setq x (car (si::ignore-errors (read-delimited-list sep-ch in))))
-              #-gcl (setq x (car (ignore-errors (read-delimited-list sep-ch in))))))))
-
-      (if (eq x 'eof) (return  (cons '(mlist simp) L)))
-      (setq x (lisp-to-maxima x))
-      (setq L (append L (list x)))))))
-
+(defun appropriate-append (L LL)
+  (cond
+    ((null LL) (append L '(nil)))
+    ((= (length LL) 1) (append L LL))
+    (t (append L (list (append '((mlist)) LL))))))
 
 (defun lisp-to-maxima (x)
   (cond ((null x) x)
@@ -255,6 +263,7 @@
 
 
 (defun write-list-lowlevel (L stream sep-ch)
+  (setq sep-ch (cond ((symbolp sep-ch) (cadr (exploden sep-ch))) (t sep-ch)))
   (cond ((not (null L))
       (loop 
         (if (not L) (return))
@@ -297,14 +306,15 @@
 
 (defun get-sep-ch (sep-ch-flag file-name)
   (cond
-    ((eq sep-ch-flag '$CSV) '#\,)
-    ((eq sep-ch-flag '$SPACE) '#\space)
+    ((eq sep-ch-flag '$csv) '|$,|)
+    ((eq sep-ch-flag '$pipe) '$\|)
+    ((eq sep-ch-flag '$space) '#\space)
 
     ((null sep-ch-flag)
-      (cond ((equal (pathname-type file-name) "csv") '#\,)
+      (cond ((equal (pathname-type file-name) "csv") '|$,|)
         (t '#\space)))
     (t
-      (format t "numericalio: separator flag ~S not recognized; assume SPACE" (stripdollar sep-ch-flag))
+      (format t "numericalio: separator flag ~S not recognized; assume ``space''" (stripdollar sep-ch-flag))
       '#\space)))
 
 

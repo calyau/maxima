@@ -12,14 +12,14 @@ prederror: false$
 
 l_nested: [[KEY, XX, YY, ZZ, FOO, Bar, baz],
   [aa46, 7, 7, 16, FOO3, 2.71, 2.88],
-  [aA31, 31, 61, 25, 9/16, 6.10, 7/41],
-  [AA22, 61, 40, 13, 3/2+6/7*%i, Bar2, 9.12],
-  [AA16, 19, 25, 31, FOO7, 4.80, 6/97],
+  [aA31, 31, 61, 25, 916, 6.10, 741],
+  [AA22, 61, 40, 13, 32.75, Bar2, 9.12],
+  [AA16, 19, 25, 31, FOO7, 4.80, 697],
   [AA16, 13, 49, 7, 5.67, 2.54, 4.54],
   [AA58, 19, 28, 43, 4.04, 0.90, baz8],
   [AA34, 16, 22, 19, 4.87, 4.90, 2.85],
-  [AA52, 28, 34, 7, FOO9, Bar4, 2/93],
-  [AA52, 10, 43, 13, 1/2+1/7*%i, 5.69, 0.00],
+  [AA52, 28, 34, 7, FOO9, Bar4, 293],
+  [AA52, 10, 43, 13, 12.125, 5.69, 0.00],
   [AA40, 7, 25, 40, 3.15, 7.54, 6.11]]$
 
 m: apply(matrix, l_nested)$
@@ -62,11 +62,11 @@ if is(equal(m2, m7)) = true
   then print("success: wrote .csv file (using 'space flag), read again as matrix")
   else print("FAILED to write .csv file (using 'space flag), read again as matrix")$
 
-array(a, 2, 3, 4)$
-read_maxima_array("array.data", a)$
+array(a, 10, 6)$
+read_maxima_array("rectangular.data", a)$
 write_data(a, "tmp-array.csv")$
 
-array(a2, 2, 3, 4)$
+array(a2, 10, 6)$
 read_maxima_array("tmp-array.csv", a2)$
 
 if is_equal_array(a, a2) = true
