@@ -1,4 +1,5 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/05/19 15:09:32 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
@@ -558,7 +559,6 @@
     (declare (type (array double-float (*)) wk y)
              (type f2cl-lib:integer4 iflw in)
              (type double-float flgjy fnu x)
-             (type single-float funjy)
              (type (function
                     (double-float double-float double-float double-float
                      double-float)
