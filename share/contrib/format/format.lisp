@@ -12,7 +12,7 @@
 ;(in-package 'climax)				; for Macsyma Inc, Macsyma
 
 ;;; To run in Schelter's Maxima comment the above and uncomment these:
-(in-package 'maxima)
+(in-package "MAXIMA")
 (defmacro mlist* (arg1 &rest more-args) `(list* '(mlist simp) ,arg1 ,@more-args))
 (defun mrelationp (expr)
   (and (listp expr)(member (caar expr) '(MEQUAL MNOTEQUAL MGREATERP MLESSP MGEQP MLEQP))))
