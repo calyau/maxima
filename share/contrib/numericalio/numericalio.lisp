@@ -162,8 +162,8 @@
            (setq sign (cond ((eq token '|$-|) -1) (t 1))))
           (t
             (cond
-              ((eq sign -1)
-               (setq token (m* -1 token))
+              ((not (null sign))
+               (setq token (m* sign token))
                (setq sign nil)))
             (cond
               ((eq sep-ch #\space)
