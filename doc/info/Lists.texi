@@ -139,13 +139,6 @@ Returns a new list consisting of the elements of
 
 @end deffn
 
-@c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
-@deffn {Function} every (@var{expr})
-This function takes a list, or a positive number of arguments and returns
-@code{true} if all its arguments are not @code{false}.
-
-@end deffn
-
 @deffn {Function} fifth (@var{expr})
 Returns the 5'th item of expression or list @var{expr}.
 See @code{first} for more details.
@@ -167,12 +160,6 @@ tenth part of their input argument.
 
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} flatten (@var{expr})
-Takes a list of the form [[1,2],[3,4]] and returns [1,2,3,4].
-
-@end deffn
-
 @deffn {Function} fourth (@var{expr})
 Returns the 4'th item of expression or list @var{expr}.
 See @code{first} for more details.
@@ -182,6 +169,8 @@ See @code{first} for more details.
 @deffn {Function} get (@var{a}, @var{i})
 Retrieves the user property indicated by @var{i} associated with
 atom @var{a} or returns @code{false} if a doesn't have property @var{i}.
+
+@code{get} evaluates its arguments.
 
 @c ===beg===
 @c put (%e, 'transcendental, 'type);
