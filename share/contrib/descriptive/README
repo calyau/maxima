@@ -1,0 +1,24 @@
+This is the README file for
+
+descriptive.mac
+
+A Maxima GPL-package for descriptive statistics 
+
+Files:
+   descriptive.mac: the Maxima code
+   pidigits.data: sample data
+   wind.data: sample data
+   biomed.data: sample data
+   doc/descriptive_en.tex: latex documentation in English
+   doc/*.eps : postscript graphics to be included in the documentation
+
+For a pdf version of the documentation and more:
+
+http://www.telefonica.net/web2/biomates/maxima/descriptive/descriptive.htm
+
+For comments, suggestions or bug reports, please contact me at
+
+Mario Rodriguez Riotorto
+mario@biomates.net
+www.biomates.net
+
