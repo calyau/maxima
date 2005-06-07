@@ -81,7 +81,7 @@ muitas outras linguagens de programa@,{c}@~ao (Fortran, Algol, PL/I, etc.); em s
 os outros recursos ser@~ao mencionados.
 
 Existem tr@^es variantes do operador especial @code{do} que diferem somente por suas
-condi@,{c}@~oes de encerramento.  Elas s@~ao:
+condi@,{c}@~oes de encerramento.  S@~ao elas:
 
 @itemize @bullet
 @item
