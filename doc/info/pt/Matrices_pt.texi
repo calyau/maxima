@@ -47,7 +47,7 @@ e @code{dotscrules}.
 @c and SHARE;VECT ORTH contains definitions of various orthogonal curvilinear coordinate systems.
 
 O pacote de an@'alise vetorial pode combinar e simplificar expres@~oes
-simb@'olicas incluindo produtos dos pontos e productos cruzados, juntamente com
+simb@'olicas incluindo produtos dos pontos e productos dos x, juntamente com
 o gradiente, divergencia, tor@,{c}@~ao, e operadores Laplacianos.  A 
 distribui@,{c}@~ao desses operadores sobre adi@,{c}@~oes ou produtos @'e governada
 por muitos sinalizadores, como s@~ao v@'arias outras expans@~oes, incluindo expans@~ao
