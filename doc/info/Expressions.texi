@@ -64,11 +64,12 @@ E.g., @code{a: 3} sets the variable @code{a} to 3. @code{::} assigns the value o
 expression on its right to the value of the quantity on its left,
 which must evaluate to an atomic variable or subscripted variable.
 
+@c THIS REALLY NEEDS EXPANSION
 @node Complex, Inequality, Assignment, Expressions
 @section Complex
 A complex expression is specified in Maxima by adding the
 real part of the expression to @code{%i} times the imaginary part.  Thus the
-roots of the equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%I} and @code{2 - 3*%i}.  Note that
+roots of the equation @code{x^2 - 4*x + 13 = 0} are @code{2 + 3*%i} and @code{2 - 3*%i}.  Note that
 simplification of products of complex expressions can be effected by
 expanding the product.  Simplification of quotients, roots, and other
 functions of complex expressions can usually be accomplished by using
@@ -76,80 +77,130 @@ the @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{a
 
 @node Inequality, Syntax, Complex, Expressions
 @section Inequality
-Maxima has the usual inequality operators:
-
-@example
-less than:  <
-greater than:  >
-greater than or equal to:  >=
-less than or equal to:  <=
-@end example
+Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, and @code{notequal}.
+See @code{if} for a description of conditional expressions.
 
 @node Syntax, Definitions for Expressions, Inequality, Expressions
 @section Syntax
-It is possible to add new operators to Maxima (infix,
-prefix, postfix, unary, or matchfix with given precedences), to remove
-existing operators, or to redefine the precedence of existing
-operators.  While Maxima's syntax should be adequate for most
-ordinary applications, it is possible to define new operators or
-eliminate predefined ones that get in the user's way.  The extension
-mechanism is rather straightforward and should be evident from the
-examples below.
+It is possible to define new operators with specified precedence,
+to undefine existing operators,
+or to redefine the precedence of existing operators.  
+An operator may be unary prefix or unary postfix, binary infix, n-ary infix, matchfix, or nofix.
+"Matchfix" means a pair of symbols which enclose their argument or arguments,
+and "nofix" means an operator which takes no arguments.
+As examples of the different types of operators, there are the following.
 
+@itemize @bullet
+@item Unary prefix: negation @code{- a}
+@item Unary postfix: factorial @code{a!}
+@item Binary infix: exponentiation @code{a^b}
+@item N-ary infix: addition @code{a + b}
+@item Matchfix: list construction @code{[a, b]}
+@end itemize
+
+(There are no built-in nofix operators;
+for an example of such an operator, see @code{nofix}.)
+
+The mechanism to define a new operator is straightforward.
+It is only necessary to declare a function as an operator;
+the operator function might or might not be defined.
+
+An example of user-defined operators is the following.
+Note that the explicit function call @code{"dd" (a)} is equivalent to @code{dd a},
+likewise @code{"<-" (a, b)} is equivalent to @code{a <- b}.
+Note also that the functions @code{"dd"} and @code{"<-"} are undefined in this example.
+
+@c ===beg===
+@c prefix ("dd");
+@c dd a;
+@c "dd" (a);
+@c infix ("<-");
+@c a <- dd b;
+@c "<-" (a, "dd" (b));
+@c ===end===
 @example
-(%i1) prefix ("ddx")$
-(%i2) ddx y$        /* equivalent to "ddx"(y) */
-(%i3) infix ("<-")$
-(%i4) a <- ddx y$   /* equivalent to "<-"(a, "ddx"(y)) */
+(%i1) prefix ("dd");
+(%o1)                          dd
+(%i2) dd a;
+(%o2)                         dd a
+(%i3) "dd" (a);
+(%o3)                         dd a
+(%i4) infix ("<-");
+(%o4)                          <-
+(%i5) a <- dd b;
+(%o5)                      a <- dd b
+(%i6) "<-" (a, "dd" (b));
+(%o6)                      a <- dd b
 @end example
 
-For each of the types of operator except @code{special}, there is a
-corresponding creation function that will give the lexeme specified
-the corresponding parsing properties.  Thus @code{prefix ("ddx")} will make
-@code{ddx} a prefix operator just like @code{-} or @code{not}.  Of course, certain
-extension functions require additional information such as the
-matching keyword for a matchfix operator.  In addition, binding powers
-and parts of speech must be specified for all keywords defined.  This
-is done by passing additional arguments to the extension functions.
-If a user does not specify these additional parameters, Maxima will
-assign default values.  The six extension functions with binding
-powers and parts of speech defaults (enclosed in brackets) are
-summarized below.
+The Maxima functions which define new operators are summarized in this table,
+with the default binding power (i.e., operator precedence) stated.
+Some of the operation definition functions take additional arguments;
+see the function descriptions for details.
 
+@c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
+@table @code
+@item prefix
+right binding power = 180
+@item postfix
+left binding power = 180
+@item infix
+left binding power = 180, right binding power = 180
+@item nary
+binding power = 180
+@item matchfix
+(binding power not applicable)
+@item nofix
+(binding power not applicable)
+@end table
+
+@code{remove} and @code{kill} remove operator properties from an atom.
+@code{remove ("@var{a}", op)} removes only the operator properties of @var{a}.
+@code{kill ("@var{a}")} removes all properties of @var{a}, including the operator properties.
+Note that the name of the operator must be enclosed in quotation marks.
+
+@c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
+@c ===beg===
+@c infix ("@");
+@c "@" (a, b) := a^b;
+@c 5 @ 3;
+@c remove ("@", op);
+@c 5 @ 3;
+@c "@" (5, 3);
+@c infix ("@");
+@c 5 @ 3;
+@c kill ("@");
+@c 5 @ 3;
+@c "@" (5, 3);
+@c ===end===
 @example
-prefix (operator, rbp[180], rpos[any], pos[any])
-postfix (operator, lbp[180], lpos[any], pos[any])
-infix (operator, lbp[180], rbp[180], lpos[any], rpos[any], pos[any])
-nary (operator, bp[180], argpos[any], pos[any])
-nofix (operator, pos[any])
-matchfix (operator, match, argpos[any], pos[any])
-@end example
-
-The defaults have been provided so that a user who does not wish
-to concern himself with parts of speech or binding powers may simply
-omit those arguments to the extension functions.  Thus the following
-are all equivalent.
-
-@example
-prefix ("ddx", 180, any, any)$
-prefix ("ddx", 180)$
-prefix ("ddx")$
-@end example
-
-It is also possible to remove the syntax properties of an operator
-by using the functions @code{remove} or @code{kill}.  Specifically,
-@code{remove ("ddx", op)} or @code{kill ("ddx")} will return @code{ddx} to operand
-status; but in the second case all the other properties of @code{ddx} will
-also be removed.
-
-@example
-(%i1) prefix ("ddx", 180, any, any)$
-(%i2) ddx yz;
-(%o2)                          yz + 4
-(%i3) "ddx"(u) := u+4;
-(%o3)                      ddx u := u + 4
-(%i4) ddx 8;
-(%o4)                            12
+(%i1) infix ("@@");
+(%o1)                           @@
+(%i2) "@@" (a, b) := a^b;
+                                     b
+(%o2)                      a @@ b := a
+(%i3) 5 @@ 3;
+(%o3)                          125
+(%i4) remove ("@@", op);
+(%o4)                         done
+(%i5) 5 @@ 3;
+Incorrect syntax: @@ is not an infix operator
+5 @@
+ ^
+(%i5) "@@" (5, 3);
+(%o5)                          125
+(%i6) infix ("@@");
+(%o6)                           @@
+(%i7) 5 @@ 3;
+(%o7)                          125
+(%i8) kill ("@@");
+(%o8)                         done
+(%i9) 5 @@ 3;
+Incorrect syntax: @@ is not an infix operator
+5 @@
+ ^
+(%i9) "@@" (5, 3);
+(%o9)                        @@(5, 3)
 @end example
 
 @node Definitions for Expressions,  , Syntax, Expressions
