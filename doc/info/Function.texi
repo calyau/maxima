@@ -70,7 +70,7 @@ function then you must use @code{block} and @code{return}.
 block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
 @end example
 
-is itelf an expression, and so could take the place of the
+is itself an expression, and so could take the place of the
 right hand side of a function definition.  Here it may happen
 that the return happens earlier than the last expression.
 
@@ -227,7 +227,7 @@ The splice also works to put arguments into algebraic operations:
 @end example
 
 Note how the simplification only occurs @i{after} the substitution,
-The operation applying to the splice in the first cae is the @code{+}
+The operation applying to the splice in the first case is the @code{+}
 while in the second it is the @code{*}, yet logically you
 might think @code{splice(a)+splice(a)} could be replaced by
 @code{2*splice(a)}.   No simplification takes place with the @code{buildq}.
