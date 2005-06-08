@@ -90,13 +90,18 @@ An operator may be unary prefix or unary postfix, binary infix, n-ary infix, mat
 and "nofix" means an operator which takes no arguments.
 As examples of the different types of operators, there are the following.
 
-@itemize @bullet
-@item Unary prefix: negation @code{- a}
-@item Unary postfix: factorial @code{a!}
-@item Binary infix: exponentiation @code{a^b}
-@item N-ary infix: addition @code{a + b}
-@item Matchfix: list construction @code{[a, b]}
-@end itemize
+@table @asis
+@item unary prefix
+negation @code{- a}
+@item unary postfix
+factorial @code{a!}
+@item binary infix
+exponentiation @code{a^b}
+@item n-ary infix
+addition @code{a + b}
+@item matchfix
+list construction @code{[a, b]}
+@end table
 
 (There are no built-in nofix operators;
 for an example of such an operator, see @code{nofix}.)
@@ -134,25 +139,60 @@ Note also that the functions @code{"dd"} and @code{"<-"} are undefined in this e
 @end example
 
 The Maxima functions which define new operators are summarized in this table,
-with the default binding power (i.e., operator precedence) stated.
+stating the default left and right binding powers (lbp and rbp, respectively).
+@c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
+(Binding power determines operator precedence. However, since left and right
+binding powers can differ, binding power is somewhat more complicated than precedence.)
 Some of the operation definition functions take additional arguments;
 see the function descriptions for details.
 
 @c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
 @table @code
 @item prefix
-right binding power = 180
+rbp=180
 @item postfix
-left binding power = 180
+lbp=180
 @item infix
-left binding power = 180, right binding power = 180
+lbp=180, rbp=180
 @item nary
-binding power = 180
+lbp=180, rbp=180
 @item matchfix
 (binding power not applicable)
 @item nofix
 (binding power not applicable)
 @end table
+
+For comparison,
+here are some built-in operators and their left and right binding powers.
+
+@example
+Operator   lbp     rbp
+
+  :        180     20 
+  ::       180     20 
+  :=       180     20 
+  ::=      180     20 
+  !        160
+  !!       160
+  ^        140     139 
+  .        130     129 
+  *        120
+  /        120     120 
+  +        100     100 
+  -        100     134 
+  =        80      80 
+  #        80      80 
+  >        80      80 
+  >=       80      80 
+  <        80      80 
+  <=       80      80 
+  not              70 
+  and      65
+  or       60
+  ,        10
+  $        -1
+  ;        -1
+@end example
 
 @code{remove} and @code{kill} remove operator properties from an atom.
 @code{remove ("@var{a}", op)} removes only the operator properties of @var{a}.
