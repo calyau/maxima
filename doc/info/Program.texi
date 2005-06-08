@@ -28,6 +28,8 @@ functions, including the currently active function.
 @code{backtrace} can be called from a script, a function, or the interactive prompt
 (not only in a debugging context).
 
+Examples:
+
 @itemize @bullet
 @item
 @code{backtrace()} prints the entire call stack.
@@ -199,7 +201,6 @@ which gives 8 terms of the Taylor series for @code{e^sin(x)}.
 This example computes the negative square root of 10 using the
 Newton- Raphson iteration a maximum of 10 times.  Had the convergence
 criterion not been met the value returned would have been @code{done}.
-Additional Forms of the @code{do} Statement
 
 Instead of always adding a quantity to the control-variable one
 may sometimes wish to change it in some other way for each iteration.
