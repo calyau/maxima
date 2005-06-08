@@ -343,6 +343,9 @@ Removes the property indicated by @var{indicator} from @var{atom}.
 @c HOW IS THIS DIFFERENT FROM rem ??
 @deffn {Function} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
 @deffnx {Function} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Function} remove ("@var{a}", operator)
+@deffnx {Function} remove (@var{a}, transfun)
+@deffnx {Function} remove (all, @var{p})
 Removes properties associated with atoms.
 
 @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
@@ -354,9 +357,7 @@ from atoms @var{a_1}, ..., @var{a_m}.
 There may be more than one pair of lists.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
-@c SHOW SPECIAL CASE AS @defunx
-If an atom is @code{all} then the property is removed from
-all atoms which have it.
+@code{remove (all, @var{p})} removes the property @var{p} from all atoms which have it.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 The removed properties may be system-defined properties such as
@@ -369,9 +370,10 @@ the translated Lisp version of a function.
 After executing this, the Maxima version of the function is executed
 rather than the translated version.
 
-@c VERIFY THAT THIS WORKS AS ADVERTISED
-@c ARE op AND operator PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
-A property may be @code{op} or @code{operator} to remove a syntax extension given to an atom.
+@code{remove ("@var{a}", operator)} or, equivalently, @code{remove ("@var{a}", op)}
+removes from @var{a} the operator properties declared by
+@code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, or @code{nofix}.
+Note that the name of the operator must be written as a quoted string.
 
 @code{remove} always returns @code{done} whether or not an atom has a specified property.
 This behavior is unlike the more specific remove functions
