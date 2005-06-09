@@ -7,7 +7,7 @@
 @section Definitions for Equations
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
-@defvr {Variable} %rnum_list
+@defvr {System variable} %rnum_list
 Default value: @code{[]}
 
 @code{%rnum_list} is the list of variables introduced in solutions
@@ -23,7 +23,7 @@ doing @code{concat ('%r, j)}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} algexact
+@defvr {Option variable} algexact
 Default value: @code{false}
 
 @code{algexact} affects the behavior of @code{algsys} as follows:
@@ -231,7 +231,7 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @end deffn
 
-@defvr {Variable} backsubst
+@defvr {Option variable} backsubst
 Default value: @code{true}
 
 @c WHAT IS THE CONTEXT HERE ?? (TO WHICH OTHER FUNCTION DOES THIS APPLY ??)
@@ -242,7 +242,7 @@ the generation of extremely large expressions.
 
 @end defvr
 
-@defvr {Variable} breakup
+@defvr {Option variable} breakup
 Default value: @code{true}
 
 When @code{breakup} is @code{true}, @code{solve} expresses solutions
@@ -327,7 +327,7 @@ Solution:
 
 @end deffn
 
-@defvr {Variable} dispflag
+@defvr {Option variable} dispflag
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -363,7 +363,7 @@ and obvious generalizations are missing.
 
 @end deffn
 
-@defvr {Variable} globalsolve
+@defvr {Option variable} globalsolve
 Default value: @code{false}
 
 When @code{globalsolve} is @code{true}, solved-for variables
@@ -523,7 +523,7 @@ equations with some variables expressed in terms of others.
 @end deffn
 
 @c DO ANY FUNCTIONS OTHER THAN linsolve RESPECT linsolvewarn ??
-@defvr {Variable} linsolvewarn
+@defvr {Option variable} linsolvewarn
 Default value: @code{true}
 
 When @code{linsolvewarn} is @code{true},
@@ -531,7 +531,7 @@ When @code{linsolvewarn} is @code{true},
 
 @end defvr
 
-@defvr {Variable} linsolve_params
+@defvr {Option variable} linsolve_params
 Default value: @code{true}
 
 When @code{linsolve_params} is @code{true}, @code{linsolve} also generates
@@ -542,7 +542,7 @@ equations with some variables expressed in terms of others.
 
 @end defvr
 
-@defvr {Variable} multiplicities
+@defvr {System variable} multiplicities
 Default value: @code{not_set_yet}
 
 @code{multiplicities} is set to a list of the
@@ -578,7 +578,7 @@ nth power. This routine is much faster than @code{factor} or even @code{sqfr}.
 
 @end deffn
 
-@defvr {Variable} programmode
+@defvr {Option variable} programmode
 Default value: @code{true}
 
 When @code{programmode} is @code{true},
@@ -595,7 +595,7 @@ create intermediate expression labels
 
 @end defvr
 
-@defvr {Variable} realonly
+@defvr {Option variable} realonly
 Default value: @code{false}
 
 When @code{realonly} is @code{true}, @code{algsys} returns only
@@ -730,7 +730,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} rootsepsilon
+@defvr {Option variable} rootsepsilon
 Default value: 1.0e-7
 
 @code{rootsepsilon} is the tolerance which establishes the
@@ -903,7 +903,7 @@ y = - .1535675710019696]]
 
 @end deffn
 
-@defvr {Variable} solvedecomposes
+@defvr {Option variable} solvedecomposes
 Default value: @code{true}
 
 When @code{solvedecomposes} is @code{true}, @code{solve} calls
@@ -912,7 +912,7 @@ When @code{solvedecomposes} is @code{true}, @code{solve} calls
 
 @end defvr
 
-@defvr {Variable} solveexplicit
+@defvr {Option variable} solveexplicit
 Default value: @code{false}
 
 When @code{solveexplicit} is @code{true}, inhibits @code{solve} from
@@ -922,7 +922,7 @@ where @code{F} is some function.
 
 @end defvr
 
-@defvr {Variable} solvefactors
+@defvr {Option variable} solvefactors
 Default value: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -933,7 +933,7 @@ where factoring is not necessary.
 
 @end defvr
 
-@defvr {Variable} solvenullwarn
+@defvr {Option variable} solvenullwarn
 Default value: @code{true}
 
 When @code{solvenullwarn} is @code{true}, 
@@ -942,7 +942,7 @@ For example, @code{solve ([], [])} would print two warning messages and return @
 
 @end defvr
 
-@defvr {Variable} solveradcan
+@defvr {Option variable} solveradcan
 Default value: @code{false}
 
 When @code{solveradcan} is @code{true}, @code{solve} calls @code{radcan}
@@ -952,7 +952,7 @@ containing exponentials and logarithms to be solved.
 
 @end defvr
 
-@defvr {Variable} solvetrigwarn
+@defvr {Option variable} solvetrigwarn
 Default value: @code{true}
 
 @c MAYBE THIS CAN BE CLARIFIED
@@ -964,7 +964,7 @@ solutions.
 
 @end defvr
 
-@defvr {Variable} solve_inconsistent_error
+@defvr {Option variable} solve_inconsistent_error
 Default value: @code{true}
 
 When @code{solve_inconsistent_error} is @code{true}, @code{solve} and

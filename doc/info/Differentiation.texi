@@ -141,7 +141,7 @@ Examples:
 @end deffn
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
-@defvr property atomgrad
+@defvr {Property} atomgrad
 
 @code{atomgrad} is the atomic gradient property of an expression.
 This property is assigned by @code{gradef}.
@@ -282,7 +282,7 @@ p;
 
 @end deffn
 
-@defvr {Variable} dependencies
+@defvr {System variable} dependencies
 Default value: @code{[]}
 
 @code{dependencies} is the list of atoms which have functional
@@ -368,7 +368,7 @@ unless explicitly represented as @code{integrate (f(x), x)}.
 
 @end deffn
 
-@defvr {Variable} derivabbrev
+@defvr {Option variable} derivabbrev
 Default value: @code{false}
 
 When @code{derivabbrev} is @code{true},
@@ -408,7 +408,7 @@ the indicated variables, within the @code{ev} command.
 
 @end deffn
 
-@defvr {Variable} derivsubst
+@defvr {Option variable} derivsubst
 Default value: @code{false}
 
 When @code{derivsubst} is @code{true}, a non-syntactic substitution such as
@@ -502,7 +502,7 @@ above.
 @end deffn
 
 @c MERGE THIS INTO @defun diff
-@defvr {special symbol} diff
+@defvr {Special symbol} diff
 
 When @code{diff} is present as an @code{evflag} in call to @code{ev},
 all differentiations indicated in @code{expr} are carried out.
@@ -690,7 +690,7 @@ higher order derivatives.
 @c NEED EXAMPLES HERE
 @end deffn
 
-@defvr {Variable} gradefs
+@defvr {System variable} gradefs
 Default value: @code{[]}
 
 @code{gradefs} is the list of the functions

@@ -8,7 +8,7 @@
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
-@deffn operator "'"
+@deffn {Operator} "'"
 The single quote operator @code{'} prevents evaluation.
 
 Applied to a symbol,
@@ -125,7 +125,7 @@ The single quote does not prevent simplification.
 
 @end deffn
 
-@deffn operator "'@w{}'"
+@deffn {Operator} "'@w{}'"
 The @code{'@w{}'} (double single quotes) operator causes an extra evaluation to occur.
 E.g., @code{'@w{}'%i4} will re-evaluate input line @code{%i4}.
 @code{'@w{}'(f(x))} means evaluate the expression @code{f(x)} an extra time.
@@ -145,7 +145,7 @@ Any even number of arguments may be used.
 
 @end deffn
 
-@defvr {Variable} debugmode
+@defvr {Option variable} debugmode
 Default value: @code{false}
 
 When a Maxima error occurs, Maxima will start the debugger if @code{debugmode} is @code{true}.
@@ -342,7 +342,7 @@ Solution
 
 @end deffn
 
-@defvr property evflag
+@defvr {Property} evflag
 Some Boolean flags have the @code{evflag} property.
 @code{ev} treats such flags specially.
 A flag with the @code{evflag} property will be bound to @code{true}
@@ -395,7 +395,7 @@ Equivalently, @code{ev (%, foo:true)} has the same effect.
 
 @end defvr
 
-@defvr property evfun
+@defvr {Property} evfun
 Some functions have the @code{evfun} property.
 @code{ev} treats such functions specially.
 A function with the @code{evfun} property will be applied
@@ -428,7 +428,7 @@ Equivalently, @code{foo (ev (%))} has the same effect.
 @end defvr
 
 @c NEEDS WORK
-@defvr {special symbol} infeval
+@defvr {Option variable} infeval
 Enables "infinite evaluation" mode.  @code{ev} repeatedly
 evaluates an expression until it stops changing.  To prevent a
 variable, say @code{X}, from being evaluated away in this mode, simply
@@ -502,7 +502,7 @@ unbind a specific property.
 @end deffn
 
 @deffn {Function} labels (@var{symbol})
-@deffnx {Variable} labels
+@deffnx {System variable} labels
 Returns the list of input, output, or intermediate expression labels which begin with @var{symbol}.
 Typically @var{symbol} is the value of @code{inchar}, @code{outchar}, or @code{linechar}.
 The label character may be given with or without a percent sign,
@@ -539,13 +539,13 @@ See also @code{inchar}, @code{outchar}, @code{linechar}, and @code{infolists}.
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
-@defvr {Variable} linenum
+@defvr {System variable} linenum
 The line number of the current pair of input and output expressions.
 
 @end defvr
 
 @c NEEDS WORK
-@defvr {Variable} myoptions
+@defvr {System variable} myoptions
 Default value: @code{[]}
 
 @code{myoptions} is the list of all options ever reset by the user,
@@ -556,7 +556,7 @@ whether or not they get reset to their default value.
 @c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
 @c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
 @c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
-@defvr {Variable} nolabels
+@defvr {Option variable} nolabels
 Default value: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
@@ -577,7 +577,7 @@ See also @code{batch}, @code{batchload}, and @code{labels}.
 @end defvr
 
 @c NEEDS WORK
-@defvr {Variable} optionset
+@defvr {Option variable} optionset
 Default value: @code{false}
 
 When @code{optionset} is @code{true}, Maxima prints out a
@@ -698,7 +698,7 @@ and some variables defined by @code{defmvar} are not global variables or options
 
 @end deffn
 
-@defvr {Variable} showtime
+@defvr {Option variable} showtime
 Default value: @code{false}
 
 When @code{showtime} is @code{true}, the computation time and elapsed time is
@@ -725,7 +725,7 @@ Enters the Lisp system under Maxima. @code{(to-maxima)} returns to Maxima.
 
 @end deffn
 
-@defvr {Variable} values
+@defvr {System variable} values
 Initial value: @code{[]}
 
 @code{values} is a list of all bound user variables (not Maxima options or switches).

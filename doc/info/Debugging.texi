@@ -191,7 +191,7 @@ completing the computation
 @node Definitions for Debugging, , Keyword Commands, Debugging
 @section Definitions for Debugging
 
-@defvr {Variable} refcheck
+@defvr {Option variable} refcheck
 Default value: @code{false}
 
 When @code{refcheck} is @code{true}, Maxima prints a message
@@ -200,7 +200,7 @@ computation.
 
 @end defvr
 
-@defvr {Variable} setcheck
+@defvr {Option variable} setcheck
 Default value: @code{false}
 
 If @code{setcheck} is set to a list of variables (which can
@@ -235,7 +235,7 @@ variable on the @code{setcheck} list is assigned to itself, e.g., @code{X: 'X}.
 
 @end defvr
 
-@defvr {Variable} setcheckbreak
+@defvr {Option variable} setcheckbreak
 Default value: @code{false}
 
 When @code{setcheckbreak} is @code{true},
@@ -250,7 +250,7 @@ See also @code{setcheck} and @code{setval}.
 
 @end defvr
 
-@defvr {Variable} setval
+@defvr {Ssyetm variable} setval
 Holds the value to which a variable is about to be set when
 a @code{setcheckbreak} occurs.
 Hence, one may assign a different value by assigning to @code{setval}.
@@ -301,7 +301,7 @@ and puts @code{f} on the timer list again.
 
 @end deffn
 
-@defvr {Variable} timer_devalue
+@defvr {Option variable} timer_devalue
 Default value: @code{false}
 
 When @code{timer_devalue} is @code{true}, Maxima subtracts from each timed function

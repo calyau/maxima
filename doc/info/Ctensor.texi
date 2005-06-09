@@ -971,6 +971,7 @@ The components of the second rank covariant field tensor are
 represented by the array @code{bd}.
 
 @end deffn
+
 @deffn {Function} invariant1 ()
 
 generates the mixed Euler- Lagrange tensor (field equations) for the
@@ -978,6 +979,7 @@ invariant density of R^2. The field equations are the components of an
 array named @code{inv1}.
 
 @end deffn
+
 @deffn {Function} invariant2 ()
 
 *** NOT YET IMPLEMENTED ***
@@ -1004,11 +1006,13 @@ equations are the components of an array named @code{rosen}.
 Returns @code{true} if @var{M} is a diagonal matrix or (2D) array.
 
 @end deffn
+
 @deffn {Function} symmetricp (@var{M})
 
 Returns @code{true} if @var{M} is a symmetric matrix or (2D) array.
 
 @end deffn
+
 @deffn {Function} ntermst (@var{f})
 gives the user a quick picture of the "size" of the doubly subscripted
 tensor (array) @var{f}.  It prints two element lists where the second
@@ -1017,6 +1021,7 @@ elements.  In this way, it is possible to quickly find the non-zero
 expressions and attempt simplification.
 
 @end deffn
+
 @deffn {Function} cdisplay (@var{ten})
 displays all the elements of the tensor @var{ten}, as represented by
 a multidimensional array. Tensors of rank 0 and 1, as well as other types
@@ -1234,6 +1239,7 @@ the Schwarzschild metric can be viewed as:
 
 @end example
 @end deffn
+
 @deffn {Function} deleten (@var{L}, @var{n})
 Returns a new list consisting of @var{L} with the @var{n}'th element
 deleted.
@@ -1242,7 +1248,7 @@ deleted.
 @subsection Variables used by @code{ctensor}
 
 
-@defvr {Variable} dim
+@defvr {Option variable} dim
 Default value: 4
 
 An option in the @code{ctensor} (component tensor)
@@ -1251,7 +1257,8 @@ default 4. The command @code{dim: n} will reset the dimension to any other
 value @code{n}.
 
 @end defvr
-@defvr {Variable} diagmetric
+
+@defvr {Option variable} diagmetric
 Default value: @code{false}
 
 An option in the @code{ctensor} (component tensor)
@@ -1263,14 +1270,14 @@ automatically by @code{csetup} if a diagonal metric is specified.
 
 @end defvr
 
-@defvr {Variable} ctrgsimp
+@defvr {Option variable} ctrgsimp
 
 Causes trigonometric simplifications to be used when tensors are computed. Presently,
 @code{ctrgsimp} affects only computations involving a moving frame.
 
 @end defvr
 
-@defvr {Variable} cframe_flag
+@defvr {Option variable} cframe_flag
 
 Causes computations to be performed relative to a moving frame as opposed to
 a holonomic metric. The frame is defined by the inverse frame array @code{fri}
@@ -1281,7 +1288,7 @@ signature.
 
 @end defvr
 
-@defvr {Variable} ctorsion_flag
+@defvr {Option variable} ctorsion_flag
 
 Causes the contortion tensor to be included in the computation of the
 connection coefficients. The contortion tensor itself is computed by
@@ -1289,7 +1296,7 @@ connection coefficients. The contortion tensor itself is computed by
 
 @end defvr
 
-@defvr {Variable} cnonmet_flag
+@defvr {Option variable} cnonmet_flag
 
 Causes the nonmetricity coefficients to be included in the computation of
 the connection coefficients. The nonmetricity coefficients are computed
@@ -1298,7 +1305,7 @@ from the user-supplied nonmetricity vector @code{nm} by the function
 
 @end defvr
 
-@defvr {Variable} ctayswitch
+@defvr {Option variable} ctayswitch
 
 If set to @code{true}, causes some @code{ctensor} computations to be carried out using
 Taylor-series expansions. Presently, @code{christof}, @code{ricci},
@@ -1307,41 +1314,41 @@ setting.
 
 @end defvr
 
-@defvr {Variable} ctayvar
+@defvr {Option variable} ctayvar
 
 Variable used for Taylor-series expansion if @code{ctayswitch} is set to
 @code{true}.
 
 @end defvr
 
-@defvr {Variable} ctaypov
+@defvr {Option variable} ctaypov
 
 Maximum power used in Taylor-series expansion when @code{ctayswitch} is
 set to @code{true}.
 
 @end defvr
 
-@defvr {Variable} ctaypt
+@defvr {Option variable} ctaypt
 
 Point around which Taylor-series expansion is carried out when
 @code{ctayswitch} is set to @code{true}.
 
 @end defvr
 
-@defvr {Variable} gdet
+@defvr {System variable} gdet
 
 The determinant of the metric tensor @code{lg}. Computed by @code{cmetric} when
 @code{cframe_flag} is set to @code{false}.
 
 @end defvr
 
-@defvr {Variable} ratchristof
+@defvr {Option variable} ratchristof
 
 Causes rational simplification to be applied by @code{christof}.
 
 @end defvr
 
-@defvr {Variable} rateinstein
+@defvr {Option variable} rateinstein
 Default value: @code{true}
 
 If @code{true} rational simplification will be
@@ -1349,7 +1356,7 @@ performed on the non-zero components of Einstein tensors; if
 @code{ratfac} is @code{true} then the components will also be factored.
 
 @end defvr
-@defvr {Variable} ratriemann
+@defvr {Option variable} ratriemann
 Default value: @code{true}
 
 One of the switches which controls
@@ -1359,7 +1366,7 @@ components will also be factored.
 
 @end defvr
 
-@defvr {Variable} ratweyl
+@defvr {Option variable} ratweyl
 Default value: @code{true}
 
 If @code{true}, this switch causes the @code{weyl} function
@@ -1482,14 +1489,14 @@ The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity}.
 
 @end defvr
 
-@defvr {Variable} tensorkill
+@defvr {Sysetm variable} tensorkill
 
 Variable indicating if the tensor package has been initialized. Set and used by
 @code{csetup}, reset by @code{init_ctensor}.
 
 @end defvr
 
-@defvr {Variable} ct_coords
+@defvr {Option variable} ct_coords
 Default value: @code{[]}
 
 An option in the @code{ctensor} (component tensor)

@@ -208,7 +208,7 @@ depend on the current value of @var{i}.
 
 @end deffn
 
-@defvr {Variable} all_dotsimp_denoms
+@defvr {Option variable} all_dotsimp_denoms
 Default value: @code{false}
 
 When @code{all_dotsimp_denoms} is a list,

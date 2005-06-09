@@ -292,7 +292,7 @@ See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
-@deffn {special operator} constant
+@deffn {Special operator} constant
 Makes ai a constant as is @code{%pi}.
 
 @end deffn
@@ -454,7 +454,7 @@ causes @code{%e^(%pi %i x)} to be simplified. See @code{%emode}.
 
 @end deffn
 
-@defvr {Variable} %emode
+@defvr {Option variable} %emode
 Default value: @code{true}
 
 When @code{%emode} is @code{true},
@@ -470,7 +470,7 @@ special simplification of @code{%e^(%pi %i x)} is carried out.
 
 @end defvr
 
-@defvr {Variable} %enumer
+@defvr {Option variable} %enumer
 Default value: @code{false}
 
 When @code{%enumer} is @code{true},
@@ -484,7 +484,7 @@ See also @code{ev} and @code{numer}.
 
 @end defvr
 
-@defvr {Variable} exptisolate
+@defvr {Option variable} exptisolate
 Default value: @code{false}
 
 When @code{exptisolate} is @code{true}, will cause @code{isolate (expr, var)} to
@@ -492,7 +492,7 @@ examine exponents of atoms (like @code{%e}) which contain @code{var}.
 
 @end defvr
 
-@defvr {Variable} exptsubst
+@defvr {Option variable} exptsubst
 Default value: @code{false}
 
 When @code{exptsubst} is @code{true}, permits substitutions such as @code{y}
@@ -703,7 +703,7 @@ while greater @var{rbp} makes @var{op} left-associative.
 
 @end deffn
 
-@defvr {Variable} inflag
+@defvr {Option variable} inflag
 Default value: @code{false}
 
 When @code{inflag} is @code{true}, the functions for part
@@ -770,7 +770,7 @@ Do @code{example (isolate)} for examples.
 @end deffn
 
 @c NEEDS WORK
-@defvr {Variable} isolate_wrt_times
+@defvr {Option variable} isolate_wrt_times
 Default value: @code{false}
 
 When @code{isolate_wrt_times} is @code{true}, @code{isolate}
@@ -801,7 +801,7 @@ switch on
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} listconstvars
+@defvr {Option variable} listconstvars
 Default value: @code{false}
 
 When @code{listconstvars} is @code{true}, it will cause @code{listofvars} to
@@ -811,7 +811,7 @@ The default is to omit these.
 
 @end defvr
 
-@defvr {Variable} listdummyvars
+@defvr {Option variable} listdummyvars
 Default value: @code{true}
 
 When @code{listdummyvars} is @code{false}, "dummy variables" in the
@@ -973,7 +973,7 @@ Do @code{example (optimize)} for examples.
 
 @end deffn
 
-@defvr {Variable} optimprefix
+@defvr {Option variable} optimprefix
 Default value: @code{%}
 
 @code{optimprefix} is the prefix used for generated symbols by
@@ -1180,7 +1180,7 @@ Examples:
 @end deffn
 
 @c NEEDS WORK
-@defvr {Variable} piece
+@defvr {System variable} piece
 Holds the last expression selected when using the @code{part}
 functions.
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -1338,7 +1338,7 @@ evaluate to a Maxima list then the answer is left in noun form
 @end deffn
 
 @c NEEDS WORK
-@defvr {special symbol} verb
+@defvr {Special symbol} verb
 @code{verb} is the opposite of "noun", i.e., a function form which "does
 something" ("action" - for most functions the usual case).  E.g.
 @code{integrate} integrates a function, unless it is declared to be a "noun",

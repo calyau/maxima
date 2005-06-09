@@ -17,7 +17,7 @@ of contexts which are active by way of the @code{activate} function.
 
 @end deffn
 
-@defvr {Variable} activecontexts
+@defvr {System variable} activecontexts
 Default value: @code{[]}
 
 @code{activecontexts} is a list of the contexts which are active
@@ -38,7 +38,7 @@ and the atoms @code{redundant} or @code{inconsistent} where applicable.
 
 @end deffn
 
-@defvr {Variable} assumescalar
+@defvr {Option variable} assumescalar
 Default value: @code{true}
 
 @code{assumescalar} helps govern whether expressions @code{expr}
@@ -66,7 +66,7 @@ above.
 @end defvr
 
 
-@defvr {Variable} assume_pos
+@defvr {Option variable} assume_pos
 Default value: @code{false}
 
 When @code{assume_pos} is @code{true}
@@ -181,7 +181,7 @@ p;
 @end defvr
 
 
-@defvr {Variable} context
+@defvr {Option variable} context
 Default value: @code{initial}
 
 @code{context} names the collection of facts maintained by @code{assume} and @code{forget}.
@@ -200,7 +200,7 @@ See @code{context} for a general description of the context mechanism.
 
 @c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
 @c SOME EXAMPLES WILL HELP A LOT HERE
-@defvr {Variable} contexts
+@defvr {Option variable} contexts
 Default value: @code{[initial, global]}
 
 @code{contexts} is a list of the contexts which
@@ -250,7 +250,7 @@ context.  Facts that are active, but in a different context, are not listed.
 
 @end deffn
 
-@defvr declaration features
+@defvr {Declaration} features
 Maxima recognizes certain mathematical properties of functions and variables.
 These are called "features".
 

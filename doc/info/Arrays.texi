@@ -69,7 +69,7 @@ instead of an unevaluated function call.
 
 @end deffn
 
-@defvr {system variable} arrays
+@defvr {System variable} arrays
 Default value: @code{[]}
 
 @code{arrays} is a list of all the arrays that have been allocated,
@@ -175,7 +175,7 @@ desired to redefine the values in a hashed array.
 @end deffn
 
 @c THIS IS REALLY CONFUSING
-@defvr {option variable} use_fast_arrays
+@defvr {Option variable} use_fast_arrays
 - if @code{true} then only two types of arrays are recognized.  
 
 1) The art-q array (t in Common Lisp) which may have several dimensions
