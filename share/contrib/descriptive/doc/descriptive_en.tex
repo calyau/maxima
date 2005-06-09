@@ -23,7 +23,7 @@
 	\newcommand{\Q}{\mathbb{Q}}
 	\newcommand{\R}{\mathbb{R}}
 
-
+% version: 10-06-05
 
 \begin{document}
 \maketitle
@@ -732,7 +732,7 @@ Function \verb|dataplot| can be used to plot two dimensional points. The next ex
 \end{verbatim}
 The output in part \emph{a)} of Figure~\ref{fig2}
 
-If points are stored in a two column matrix, \verb|dataplot| can plot them directly, but if they are formatted as a list of pairs, function \verb|tomatrix| can be used as in the following example. The output is in part \emph{b)} of Figure~\ref{fig2}
+If points are stored in a two column matrix, \verb|dataplot| can plot them directly, but if they are formatted as a list of pairs, their must be transformed to a matrix as in the following example. The output is in part \emph{b)} of Figure~\ref{fig2}
 \begin{verbatim}
 (%i9) bs:[[64,-104], [64,-99], [61,-95], [57,-95], [55,-94],
           [55,-90], [72,-89], [80,-88], [77,-86], [80,-88], 
@@ -818,12 +818,12 @@ For more than three dimensions only multivariate scatterplots are possible, as i
 \item \verb|'axisnames|, default \verb|["x", "Fr."]|, is a list with the names for axis $x$ and $y$.
 \item \verb|'picturescales|, default \verb|[1.0, 1.0]|, scaling factors for the size of the plot.
 \item \verb|'nclasses|, default \verb|10|, is the number of classes or bars.
-\item \verb|'relbarwidth|, default \verb|0.9|, a decimal number between 0 an 1 to control bar width.
+\item \verb|'relbarwidth|, default \verb|0.9|, a decimal number between 0 and 1 to control bar width.
 \item \verb|'barcolor|, default \verb|1|, an integer to indicate bars color.
-\item \verb|'colorintensity|, default \verb|1|, a decimal number between 0 an 1 to fix color intensity.
+\item \verb|'colorintensity|, default \verb|1|, a decimal number between 0 and 1 to fix color intensity.
 \end{enumerate}
 
-In the next two examples, histograms are requested for the first 5000 digits of number $\pi$ and for the wind speeds in the third meteorological station. Both histograms are reproduced in Figure~\ref{fig4}.
+In the next two examples, histograms are requested for the first 100 digits of number $\pi$ and for the wind speeds in the third meteorological station. Both histograms are reproduced in Figure~\ref{fig4}.
 \begin{verbatim}
 (%i14) histogram(s1,'maintitle="pi digits",
                  'axisnames=["","Absolute frequency"],
@@ -852,9 +852,9 @@ Note that in the first case, \verb|s1| is a list and in the second example, \ver
 \item \verb|'maintitle|, default \verb|""|, is the main title between double quotes.
 \item \verb|'axisnames|, default \verb|["x", "Fr."]|, is a list with the names for axis $x$ and $y$.
 \item \verb|'picturescales|, default \verb|[1.0, 1.0]|, scaling factors for the size of the plot.
-\item \verb|'relbarwidth|, default \verb|0.9|, a decimal number between 0 an 1 to control bar width.
+\item \verb|'relbarwidth|, default \verb|0.9|, a decimal number between 0 and 1 to control bar width.
 \item \verb|'barcolor|, default \verb|1|, an integer to indicate bars color.
-\item \verb|'colorintensity|, default \verb|1|, a decimal number between 0 an 1 to fix color intensity.
+\item \verb|'colorintensity|, default \verb|1|, a decimal number between 0 and 1 to fix color intensity.
 \end{enumerate}
 
 First, let's obtain the barchart for groups \verb|A| and \verb|B| of patients in sample \verb|s3|,
