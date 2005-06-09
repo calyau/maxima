@@ -45,7 +45,7 @@ Valor padr@~ao: @code{false}
 
 Quando um erro do Maxima ocorre, Maxima iniciar@'a o depurador se @code{debugmode} @'e @code{true}.
 O usu@'ario pode informar comandos para examinar o hist@'orico de chamadas, marcar pontos de parada, percorrer uma linha por vez
-o c@'odigo do Maxima, e assim por diante. Veja @code{debugging} para uma lista de op@,{c}@~oes do depurador.
+o c@'odigo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de op@,{c}@~oes do depurador.
 
 Habilitando @code{debugmode} n@~ao ser@~ao capturados erros do Lisp.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
@@ -106,7 +106,7 @@ seus valores.  Isso tamb@'em modifica o comutador @code{float} para ativado.
 @code{pred} faz com que predicados (express@~oes que podem ser avaliados em @code{true} ou @code{false})
 sejam avaliadas.
 @item
-@code{eval} faz com que uma avalia@,{c}@~ao posterior de @var{expr} ocorra. (Veja passo (5)
+@code{eval} faz com que uma avalia@,{c}@~ao posterior de @var{expr} ocorra.  (Veja passo (5)
 adiante.)
 @item
 @code{A} onde @code{A} @'e um @'atomo declarado seja um sinalizador de avalia@,{c}@~ao (veja @code{evflag})
@@ -136,7 +136,7 @@ express@~ao subscrita for dada como um argumento, isso @'e avaliado e
 se o resultado @'e uma equa@,{c}@~ao ou uma atribui@,{c}@~ao ent@~ao a associa@,{c}@~ao indicada
 ou substitui@,{c}@~ao @'e executada.  Se o resultado @'e uma lista ent@~ao os
 membros da lista ser@~ao tratados  como se eles fossem argumentos adicionais
-dados para @code{ev}. Isso permite uma lista de equa@,{c}@~oes seja dada (e.g. @code{[X=1, Y=A**2]})
+dados para @code{ev}.  Isso permite uma lista de equa@,{c}@~oes seja dada (e.g. @code{[X=1, Y=A**2]})
 ou uma lista de nomes de equa@,{c}@~oes (e.g., @code{[%t1, %t2]} onde @code{%t1} e
 @code{%t2} s@~ao equa@,{c}@~oes) tais como aquelas retornadas por @code{solve}.
 @end itemize
@@ -157,7 +157,7 @@ provida a comutadores @code{numer} e @code{float} n@~ao sejam ambos @code{true}.
 @item
 Durante o passo (1), uma lista @'e feita de vari@'aveis n@~ao subscritas
 aparecendo do lado esquerdo das equa@,{c}@~oes nos argumentos ou nos
-valores de alguns argumentos se o valor @'e uma equa@,{c}@~ao. As vari@'aveis
+valores de alguns argumentos se o valor @'e uma equa@,{c}@~ao.  As vari@'aveis
 (vari@'aveis subscritas que n@~ao possuem fun@,{c}@~oes array
 associadas bem como vari@'aveis n@~ao subscritas) na express@~ao @var{expr} s@~ao
 substitu@'idas por seus valores globais, exceto para esse aparecendo nessa 
@@ -348,7 +348,7 @@ Remove todas as associa@,{c}@~oes (valor, fun@,{c}@~oes, array, ou regra) dos ar
 @var{symbol_1}, ..., @var{symbol_n}.
 Um argumento pode ser um elemento simples de um array ou uma fun@,{c}@~ao subscrita.
 
-Muitos argumentos especiais s@~ao reconhecidos. 
+Muitos argumentos especiais s@~ao reconhecidos.  
 Diferentes fam@'ilias de argumentos 
 podem ser combinadas, e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
 
@@ -536,7 +536,7 @@ Veja @code{grind}.
 
 Argumentos podem ser combinados, e.g., 
 @code{playback ([5, 10], grind, time, slow)}.
-@c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
+@c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS).  CORRECT ???
 
 @end deffn
 
@@ -546,7 +546,7 @@ Argumentos podem ser combinados, e.g.,
 @deffnx {Fun@,{c}@~ao} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
 @deffnx {Fun@,{c}@~ao} printprops (all, @var{i})
 Mostra a propriedade como o indicador @var{i}
-associada com o @'atomo @var{a}. @var{a} pode tamb@'em ser uma lista de @'atomos ou o @'atomo
+associada com o @'atomo @var{a}.  @var{a} pode tamb@'em ser uma lista de @'atomos ou o @'atomo
 @code{all} nesse caso todos os @'atomos com a propriedade dada ser@~ao
 usados.  Por exemplo, @code{printprops ([f, g], atvalue)}.  @code{printprops} @'e para
 propriedades que n@~ao podem  ser mostradas de outra forma, i.e. para
@@ -617,7 +617,7 @@ manter um rastro de quais recursos os pacotes usam.
 
 @c NEEDS EXPANSION, EXAMPLES
 @deffn {Fun@,{c}@~ao} to_lisp ()
-Insere o sistema Lisp dentro do Maxima. @code{(to-maxima)} retorna para o Maxima.
+Insere o sistema Lisp dentro do Maxima.  @code{(to-maxima)} retorna para o Maxima.
 
 @end deffn
 
