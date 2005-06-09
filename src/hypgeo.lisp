@@ -1590,7 +1590,8 @@
 ;; EXP = t, POW = v.
 (defun lt-arbpow (exp pow)
   (cond ((or (eq exp var) (zerp pow))
-	 (f1p137test pow))))
+	 (f1p137test pow))
+	(t 'lt-arbpow-failed)))
 
 ;; Laplace transform of a product of Bessel functions.  A1, A2 are
 ;; the args of the two functions. I1, I2 are the indices of each
