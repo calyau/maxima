@@ -11,11 +11,117 @@
 @deffn operator "'"
 The single quote operator @code{'} prevents evaluation.
 
+Applied to a symbol,
+the single quote prevents evaluation of the symbol.
+
+Applied to a function call,
+the single quote prevents evaluation of the function call,
+although the arguments of the function are still evaluated (if evaluation is not otherwise prevented).
+The result is the noun form of the function call.
+
+Applied to a parenthesized expression,
+the single quote prevents evaluation of all symbols and function calls in the expression.
+@c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
 E.g., @code{'(f(x))} means do not evaluate the expression @code{f(x)}.
 @code{'f(x)} (with the single quote applied to @code{f} instead of @code{f(x)})
 means return the noun form of @code{f} applied to @code{[x]}.
 
 The single quote does not prevent simplification.
+
+See also the quote-quote operator @code{''} and @code{nouns}.
+
+Examples:
+
+Applied to a symbol,
+the single quote prevents evaluation of the symbol.
+
+@c ===beg===
+@c aa: 1024;
+@c aa^2;
+@c 'aa^2;
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) aa^2;
+(%o2)                        1048576
+(%i3) 'aa^2;
+                                 2
+(%o3)                          aa
+(%i4) ''%;
+(%o4)                        1048576
+@end example
+
+Applied to a function call,
+the single quote prevents evaluation of the function call.
+The result is the noun form of the function call.
+
+@c ===beg===
+@c x0: 5;
+@c x1: 7;
+@c integrate (x^2, x, x0, x1);
+@c 'integrate (x^2, x, x0, x1);
+@c %, nouns;
+@c ===end===
+@example
+(%i1) x0: 5;
+(%o1)                           5
+(%i2) x1: 7;
+(%o2)                           7
+(%i3) integrate (x^2, x, x0, x1);
+                               218
+(%o3)                          ---
+                                3
+(%i4) 'integrate (x^2, x, x0, x1);
+                             7
+                            /
+                            [   2
+(%o4)                       I  x  dx
+                            ]
+                            /
+                             5
+(%i5) %, nouns;
+                               218
+(%o5)                          ---
+                                3
+@end example
+
+Applied to a parenthesized expression,
+the single quote prevents evaluation of all symbols and function calls in the expression.
+
+@c ===beg===
+@c aa: 1024;
+@c bb: 19;
+@c sqrt(aa) + bb;
+@c '(sqrt(aa) + bb);
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) bb: 19;
+(%o2)                          19
+(%i3) sqrt(aa) + bb;
+(%o3)                          51
+(%i4) '(sqrt(aa) + bb);
+(%o4)                     bb + sqrt(aa)
+(%i5) ''%;
+(%o5)                          51
+@end example
+
+The single quote does not prevent simplification.
+
+@c ===beg===
+@c sin (17 * %pi) + cos (17 * %pi);
+@c '(sin (17 * %pi) + cos (17 * %pi));
+@c ===end===
+@example
+(%i1) sin (17 * %pi) + cos (17 * %pi);
+(%o1)                          - 1
+(%i2) '(sin (17 * %pi) + cos (17 * %pi));
+(%o2)                          - 1
+@end example
 
 @end deffn
 
