@@ -95,7 +95,7 @@ condi@,{c}@~oes de encerramento.  S@~ao elas:
       unless @var{condition} do @var{corpo}}
 @end itemize
 
-@c UGH. DO WE REALLY NEED TO MENTION THIS??
+@c UGH.  DO WE REALLY NEED TO MENTION THIS??
 (Alternativamente, o @code{step} pode ser dado ap@'os a condi@,{c}@~ao de encerramento
 ou limite.)
 
@@ -104,10 +104,10 @@ express@~oes.  Se o incremento for 1 ent@~ao "@code{step 1}" pode ser omitido.
 
 A execu@,{c}@~ao da declara@,{c}@~ao @code{do} processa-se primeiro atribuindo o
 valor_inicial para a vari@'avel (daqui em diante chamada a
-vari@'avel de controle). Ent@~ao: (1) Se a vari@'avel de controle excede
+vari@'avel de controle).  Ent@~ao: (1) Se a vari@'avel de controle excede
 o limite de uma especifica@,{c}@~ao @code{thru}, ou se a condi@,{c}@~ao de @code{unless} for
 @code{true}, ou se a condi@,{c}@~ao de @code{while} for @code{false} ent@~ao o @code{do}
-ser@'a encerrado. (2) O corpo @'e avaliado.  (3) O incremento @'e adicionado @`a
+ser@'a encerrado.  (2) O corpo @'e avaliado.  (3) O incremento @'e adicionado @`a
 vari@'avel de controle.  O processo de (1) a (3) @'e executado
 repetidamente at@'e que a condi@,{c}@~ao de encerramento seja satisfeita.  Pode-se tamb@'em
 dar muitas condi@,{c}@~oes de encerramento e nesse caso o @code{do} termina
@@ -216,7 +216,7 @@ resultado da express@~ao de avalia@,{c}@~ao cada vez que o ciclo de repeti@,{c}@
                            count = 18
 @end example
 
-@c UGH. DO WE REALLY NEED TO MENTION THIS??
+@c UGH.  DO WE REALLY NEED TO MENTION THIS??
 Como uma alternativa para @code{for @var{Vari@'avel}: @var{valor} ...do...} a sintaxe
 @code{for @var{Vari@'avel} from @var{valor} ...do...}  pode ser usada.  Isso permite o
 @code{from @var{valor}} ser colocado ap@'os o @code{step} ou proximo valor ou ap@'os a
@@ -322,7 +322,7 @@ e @code{errormsg} formata e imprime essa mensagem.
 
 @c REPHRASE
 @deffn {operador especial} for
-Usado em itera@,{c}@~oes. Veja @code{do} para uma descri@,{c}@~ao das
+Usado em itera@,{c}@~oes.  Veja @code{do} para uma descri@,{c}@~ao das
 facilidades de itera@,{c}@~ao do Maxima.
 
 @end deffn
@@ -396,7 +396,7 @@ ou @'e uma forma @code{lambda} de @math{n} argumentos.
 @code{maperror} - se @code{false} far@'a com que todas as fun@,{c}@~oes mapeadas
 (1) parem quando elas terminarem retornando a menor expi se n@~ao forem todas as
 expi do mesmo comprimento e (2) aplique fn a [exp1, exp2,...]
-se expi n@~ao forem todas do mesmo tipo de objeto. Se @code{maperror} for @code{true}
+se expi n@~ao forem todas do mesmo tipo de objeto.  Se @code{maperror} for @code{true}
 ent@~ao uma mensagem de erro ser@'a dada nas duas inst@^ancias acima.
 
 Um dos usos dessa fun@,{c}@~ao @'e para mapear (@code{map}) uma fun@,{c}@~ao (e.g. @code{partfrac})

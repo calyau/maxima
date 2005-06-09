@@ -190,7 +190,7 @@ O arquivo n@~ao pode incluir constru@,{c}@~oes @code{:lisp}.
 @code{batchload} avalia seu argumento.
 
 Veja tamb@'em @code{batch} e @code{load}.
-@c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
+@c batchload APPEARS TO HAVE THE SAME EFFECT AS load.  WHY NOT GET RID OF batchload ???
 
 @end deffn
 
@@ -456,8 +456,8 @@ Se uma express@~ao exponencial @'e muito alta para ser mostrada
 cmo @code{@var{a}^@var{b}} isso aparece como @code{expt (@var{a}, @var{b})} (ou como @code{ncexpt (@var{a}, @var{b})} no caso de
 @code{@var{a}^^@var{b}}).
 
-@c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
-@c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
+@c THIS SEEMS LIKE A BUG TO ME.  expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
+@c ITSELF PRINTS THEM SOMETIMES.  THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
 @code{expt} e @code{ncexpt} n@~ao s@~ao reconhecidas em entradas.
 
 @end deffn
@@ -515,7 +515,7 @@ ent@~ao se a lista do caminho @'e dada, @code{file_search} procura somente nesse
 e n@~ao qualquer dos diret@'orios padr@~ao de busca.
 Mesmo se existe somente um diret@'orio em @var{pathlist}, esse deve ainda ser dado como uma lista de um @'unico elemento.
 
-O usu@'ario pode modificar o diret@'orio de busca padr@~ao. Veja @code{file_search_maxima}.
+O usu@'ario pode modificar o diret@'orio de busca padr@~ao.  Veja @code{file_search_maxima}.
 
 @code{file_search} @'e invocado por @code{load} com @code{file_search_maxima} e @code{file_search_lisp}
 como diret@'orios de busca.
@@ -742,7 +742,7 @@ n@~ao s@~ao afetadas por @code{linel}.
 @deffn {Fun@,{c}@~ao} load (@var{filename})
 Avalia express@~oes em @var{filename}, 
 dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objetos dentro do Maxima.
-A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{filename}. 
+A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{filename}.  
 Para achar o arquivo,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
 como diret@'orios de busca.
@@ -990,7 +990,7 @@ Veja tamb@'em @code{readonly}.
 @example
 (%i1) foo: 42$ 
 (%i2) foo: read ("foo is", foo, " -- enter new value.")$
-foo is 42  -- enter new value. 
+foo is 42  -- enter new value.  
 (a+b)^3;
 (%i3) foo;
                                      3
@@ -1033,14 +1033,14 @@ onde @var{n} @'e o n@'umero de operandos da adi@,{c}@~ao.
 Produtos s@~ao substitu@'idos por @code{product(@var{n})}
 onde @var{n} @'e o n@'umero de operandos da multiplica@,{c}@~ao.
 @item
-Exponenciais s@~ao substitu@'idos por @code{expt}. 
+Exponenciais s@~ao substitu@'idos por @code{expt}.  
 @item
 Quocientes s@~ao substitu@'idos por @code{quotient}.
 @item
 Nega@,{c}@~ao un@'aria @'e substitu@'ida por @code{negterm}.
 @end itemize
 
-Quando @var{depth} @'e maior que ou igual @`a maxima intensidade de @var{expr},
+Quando @var{depth} @'e maior que ou igual @`a m@'axima intensidade de @var{expr},
 @code{reveal (@var{expr}, @var{depth})} retornam @var{expr} sem modifica@,{c}@~oes.
 
 @code{reveal} avalia seus argumentos.
@@ -1144,7 +1144,7 @@ Os @'ites salvos incluem vari@'aveis de sistema,
 tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido atribu@'idos novos valores pelo usu@'ario;
 veja @code{myoptions}.
 
-@code{save} avalia seus argumentos. 
+@code{save} avalia seus argumentos.  
 @var{filename} deve obrigat@'oriamente ser uma string, n@~ao uma vari@'avel string.
 O primeiro e o @'ultimo r@'otulos a salvar, se especificado, devem obrigat@'oriamente serem inteiros.
 O operador aspas duplas avalia uma vari@'avel string para seu valor string,
@@ -1217,21 +1217,21 @@ e dessa forma n@~ao pode ser usada em um c@'alculo.
 @deffnx {Fun@,{c}@~ao} stringout (@var{filename}, values)
 
 @code{stringout} escreve express@~oes para um arquivo na mesma forma de
-express@~oes que foram digitadas para entrada. O arquivo pode ent@~ao ser usado
+express@~oes que foram digitadas para entrada.  O arquivo pode ent@~ao ser usado
 como entrada para comandos @code{batch} ou @code{demo}, e isso pode ser editado para
-qualquer prop@'osito. @code{stringout} pode ser executado enquanto @code{writefile} est@'a em progresso.
+qualquer prop@'osito.  @code{stringout} pode ser executado enquanto @code{writefile} est@'a em progresso.
 
 A forma geral de @code{stringout} escreve os valores de um ou mais 
-express@~oes para o arquivo de sa@'ida. Note que se uma express@~ao @'e uma
+express@~oes para o arquivo de sa@'ida.  Note que se uma express@~ao @'e uma
 vari@'avel, somente o valor da vari@'avel @'e escrito e n@~ao o nome
-da vari@'avel. Como um @'util caso especial, as express@~oes podem ser
+da vari@'avel.  Como um @'util caso especial, as express@~oes podem ser
 r@'otulos de entrada (@code{%i1}, @code{%i2}, @code{%i3}, ...) ou r@'otulos de sa@'ida (@code{%o1}, @code{%o2}, @code{%o3}, ...).
 
 Se @code{grind} @'e @code{true}, @code{stringout} formata a sa@'ida usando o formato 
-@code{grind}. De outra forma o formato @code{string} @'e usado. Veja @code{grind} e @code{string}.
+@code{grind}.  De outra forma o formato @code{string} @'e usado.  Veja @code{grind} e @code{string}.
 
 A forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escreve os
-valores dos r@'otulos de entrada de m at@'e n, inclusive. 
+valores dos r@'otulos de entrada de m at@'e n, inclusive.  
 
 A forma especial @code{stringout (@var{filename}, input)} escreve todos
 os r@'otulos de entrada para o arquivo.
@@ -1241,9 +1241,9 @@ as fun@,{c}@~oes definidas pelo usu@'ario (nomeadas pela lista global @code{fun@
 
 A forma especial @code{stringout (@var{filename}, values)} escreve todas as
 vari@'aveis atribu@'idas pelo usu@'ario (nomeadas pela lista global @code{values})
-para o arquivo. Cada vari@'avel @'e impressa como uma
+para o arquivo.  Cada vari@'avel @'e impressa como uma
 declara@,{c}@~ao de atribui@,{c}@~ao, com o nome da vari@'avel seguida de dois pontos, e seu
-valor. Note que a forma geral de @code{stringout} n@~ao imprime 
+valor.  Note que a forma geral de @code{stringout} n@~ao imprime 
 vari@'aveis como declara@,{c}@~oes de atribui@,{c}@~ao.
 
 @end deffn
@@ -1288,7 +1288,7 @@ operacionais, mas geralmente existe em ambientes Unix e Unix-like.
 
 Supondo que @code{_hist.out}
 @'e uma lista de freq@"u@^encia que voc@^e deseja imprimir como um gr@'afico em barras
-usando @code{xgraph}. 
+usando @code{xgraph}.  
 
 @example
 (%i1) (with_stdout("_hist.out",
@@ -1310,7 +1310,7 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 Valor padr@~ao: @code{false}
 
 Quando @code{ttyoff} @'e @code{true}, express@~oes de sa@'ida n@~ao s@~ao mostradas.
-Express@~oes de sa@'ida s@~ao ainda calculadas e atribu@'idas r@'otulos. Veja @code{labels}.
+Express@~oes de sa@'ida s@~ao ainda calculadas e atribu@'idas r@'otulos.  Veja @code{labels}.
 
 Textos impresso por fun@,{c}@~oes internas do Maxima, tais como mensagens de erro e a sa@'ida de @code{describe},
 n@~ao s@~ao afetadas por @code{ttyoff}.

@@ -185,7 +185,7 @@ pt_set: append ([concat ("\"", "x^2+y")], [x0, y0, x1, y1, ...]);
 
 @noindent
 fizemos a@'i aparecer um "r@'otulo" de "x^2+y" para esse grupo de pontos
-em particular. As aspas, @code{"}, no in@'icio @'e que dizem
+em particular.  As aspas, @code{"}, no in@'icio @'e que dizem
 ao xgraph isso @'e um r@'otulo.
 
 @example
@@ -233,23 +233,23 @@ Op@,{c}@~ao: @code{plot_format} determina qual pacote de montagem de gr@'afico @
 @itemize @bullet
 @item
 Valor padr@~ao: @code{gnuplot}
-Gnuplot @'e o padr@~ao, e mais avan@,{c}ado, pacote de montagem de gr@'afico. Esse
+Gnuplot @'e o padr@~ao, e mais avan@,{c}ado, pacote de montagem de gr@'afico.  Esse
 requer uma instala@,{c}@~ao externa do gnuplot.
 @item
 Valor: @code{mgnuplot}
-Mgnuplot @'e um inv@'olucro em torno do gnuplot baseado no Tk. Isso est@'a inclu@'ido na
-distribu@'i@,{c}@~ao do Maxima. Mgnuplot oferece uma GUI rudimentar para o gnuplot,
+Mgnuplot @'e um inv@'olucro em torno do gnuplot baseado no Tk.  Isso est@'a inclu@'ido na
+distribu@'i@,{c}@~ao do Maxima.  Mgnuplot oferece uma GUI rudimentar para o gnuplot,
 mas tem menos recursos em geral que a interface 
-texto. Mgnuplot requer uma instala@,{c}@~ao externa do gnuplot e
+texto.  Mgnuplot requer uma instala@,{c}@~ao externa do gnuplot e
 Tcl/Tk.
 @item
 Valor: @code{openmath}
-Openmath @'e um programa-GUI para montagem de gr@'afico baseado no Tcl/Tk. Isso est@'a inclu@'ido na
+Openmath @'e um programa-GUI para montagem de gr@'afico baseado no Tcl/Tk.  Isso est@'a inclu@'ido na
 distribu@'i@,{c}@~ao do Maxima.
 @item
 Valor: @code{ps}
 Gera arquivos Postscript simples diretamente do
-Maxima. Sa@'idas Postscript mais sofisticadas podem ser geradas pelo gnuplot,
+Maxima.  Sa@'idas Postscript mais sofisticadas podem ser geradas pelo gnuplot,
 deixando a op@,{c}@~ao @code{plot_format} n@~ao especificada (para aceitar o padr@~ao),
 e posicionando a op@,{c}@~ao @code{gnuplot_term} para @code{ps}.
 @end itemize
@@ -348,7 +348,7 @@ para montagem de gr@'aficos tridimensionais.
 @example
 [grid, 50, 50]
 @end example
-Escolhe a grade para 50 por 50 pontos. A grade padr@~ao @'e 30 por 30.
+Escolhe a grade para 50 por 50 pontos.  A grade padr@~ao @'e 30 por 30.
 
 @item
 Op@,{c}@~ao: @code{transform_xy}
@@ -356,12 +356,12 @@ Permite que transforma@,{c}@~oes sejam aplicadas @`a montagem de gr@'aficos trid
 @example
 [transform_xy, false]
 @end example
-O padr@~ao @code{transform_xy} @'e @code{false}. Se isso n@~ao @'e @code{false}, pode ser
+O padr@~ao @code{transform_xy} @'e @code{false}.  Se isso n@~ao @'e @code{false}, pode ser
 a sa@'ida de
 @example
 make_transform ([x, y, z], f1(x, y, z), f2(x, y, z), f3(x, y, z))$
 @end example
-A transforma@,{c}@~ao @code{polar_xy} @'e previamente definida no Maxima. Isso fornece a mesma
+A transforma@,{c}@~ao @code{polar_xy} @'e previamente definida no Maxima.  Isso fornece a mesma
 transforma@,{c}@~ao que
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
@@ -386,12 +386,12 @@ O padr@~ao @code{view_direction} @'e [1, 1, 1].
 
 Existem muitas op@,{c}@~oes de montagem de gr@'aficos espec@'ificas para gnuplot.
 Todas essas op@,{c}@~oes (exceto @code{gnuplot_pm3d}) s@~ao comandos gnuplot
-em estado natural, especificados como strings. Consulte a documenta@,{c}@~ao do gnuplot para maiores detalhes.
+em estado natural, especificados como strings.  Consulte a documenta@,{c}@~ao do gnuplot para maiores detalhes.
 
 @itemize @bullet
 @item
 Op@,{c}@~ao: @code{gnuplot_pm3d} Controla o uso do modo PM3D, que possue recursos
-avan@,{c}ados em 3D. PM3D est@'a somente dispon@'ivel no gnuplot em vers@~oes ap@'os a 3.7. O
+avan@,{c}ados em 3D.  PM3D est@'a somente dispon@'ivel no gnuplot em vers@~oes ap@'os a 3.7.  O
 valor padr@~ao para @code{gnuplot_pm3d} @'e @code{false}.
 
 Exemplo:
@@ -402,9 +402,9 @@ Exemplo:
 
 @item
 Op@,{c}@~ao: @code{gnuplot_preamble} Insere comandos antes que o gr@'afico seja
-desenhado. Quaisquer comandos v@'alidos para o gnuplot podem ser usados. Multiplos comandos
-podem ser separados com um ponto e v@'irgula. O exemplo mostrado produz uma
-escala num@'erica na montagem do gr@'afico. O valor padr@~ao para @code{gnuplot_preamble} @'e uma string vazia @code{""}.
+desenhado.  Quaisquer comandos v@'alidos para o gnuplot podem ser usados.  Multiplos comandos
+podem ser separados com um ponto e v@'irgula.  O exemplo mostrado produz uma
+escala num@'erica na montagem do gr@'afico.  O valor padr@~ao para @code{gnuplot_preamble} @'e uma string vazia @code{""}.
 
 Exemplo:
 
@@ -413,10 +413,10 @@ Exemplo:
 @end example
 
 @item
-Op@,{c}@~ao: @code{gnuplot_curve_titles} Controla os t@'itulos dados na chave da montagem do gr@'afico. O
+Op@,{c}@~ao: @code{gnuplot_curve_titles} Controla os t@'itulos dados na chave da montagem do gr@'afico.  O
 valor padr@~ao @'e @code{default}, que automaticamente escolhe o t@'itulo de cada
-curva para a fun@,{c}@~ao cujo gr@'afico est@'a sendo montado. Se n@~ao @code{default}, @code{gnuplot_curve_titles}
-conter@'a uma lista de strings. (Para desabilitar a chave de montagem do gr@'afico inteiramente,
+curva para a fun@,{c}@~ao cujo gr@'afico est@'a sendo montado.  Se n@~ao @code{default}, @code{gnuplot_curve_titles}
+conter@'a uma lista de strings.  (Para desabilitar a chave de montagem do gr@'afico inteiramente,
 adicione @code{"set nokey"} em @code{gnuplot_preamble}.)
 
 Exemplo:
@@ -428,8 +428,8 @@ Exemplo:
 @item
 Op@,{c}@~ao: @code{gnuplot_curve_styles} Uma lista de strings controlando a apar@^encia
 das curvas, i.e., cor, largura, brilho, etc., para serem enviadas para o
-comando de montagem do gr@'afico do gnuplot. O valor padr@~ao @'e
-@code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, que circula atrav@'es de diferentes cores. Veja a
+comando de montagem do gr@'afico do gnuplot.  O valor padr@~ao @'e
+@code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, que circula atrav@'es de diferentes cores.  Veja a
 documenta@,{c}@~ao do gnuplot de @code{plot} para maiores informa@,{c}@~oes.
 
 Exemplo:
@@ -440,7 +440,7 @@ Exemplo:
 
 @item
 Op@,{c}@~ao: @code{gnuplot_default_term_command} O comando gnuplot para escolher o
-tipo de terminal para o terminal padr@~ao. O valor padr@~ao @'e a string vazia @code{""},
+tipo de terminal para o terminal padr@~ao.  O valor padr@~ao @'e a string vazia @code{""},
 i.e., usa os padr@~oes do gnuplot.
 
 Exemplo:
@@ -451,7 +451,7 @@ Exemplo:
 
 @item
 Op@,{c}@~ao: @code{gnuplot_dumb_term_command} O comando gnuplot para escolher o
-tipo de terminal para o terminal dumb. O valor padr@~ao @'e @code{"set term dumb 79 22"},
+tipo de terminal para o terminal dumb.  O valor padr@~ao @'e @code{"set term dumb 79 22"},
 que faz a sa@'ida texto com 79 caracteres por 22
 caracteres.
 
@@ -463,11 +463,11 @@ Exemplo:
 
 @item
 Op@,{c}@~ao: @code{gnuplot_ps_term_command} O comando gnuplot para escolher o tipo
-de terminal para o terminal PostScript. O valor padr@~ao @'e 
+de terminal para o terminal PostScript.  O valor padr@~ao @'e 
 @code{"set size 1.5, 1.5;set term postscript eps enhanced color solid 24"},
 que escolhe o
 tamanho para 1.5 vezes o padr@~ao do gnuplot, e o tamanho da fonte para 24, al@'em de
-outras coisas. Veja a documenta@,{c}@~ao do gnuplot de @code{set term postscript} para mais informa@,{c}@~ao.
+outras coisas.  Veja a documenta@,{c}@~ao do gnuplot de @code{set term postscript} para mais informa@,{c}@~ao.
 
 Exemplo:
 
@@ -612,7 +612,7 @@ Podemos tamb@'em enviar sa@'idas para o gnuplot:
 plot3d (2^(x^2 - y^2), [x, -1, 1], [y, -2, 2], [plot_format, gnuplot]);
 @end example
 
-Algumas vezes voc@^e precisa definir uma fun@,{c}@~ao para mortar o gr@'afico de uma express@~ao. Todos
+Algumas vezes voc@^e precisa definir uma fun@,{c}@~ao para mortar o gr@'afico de uma express@~ao.  Todos
 os argumentos para plot3d s@~ao avaliados antes de serem passados para plot3d, e
 ent@~ao tentando fazer um express@~ao que faz apenas o que voc@^e que pode ser 
 dif@'icil, e @'e apenas mais f@'acil fazer uma fun@,{c}@~ao.   
@@ -629,7 +629,7 @@ Veja @code{plot_options} para mais exemplos.
 
 
 @deffn {Fun@,{c}@~ao}  make_transform (@var{vars}, @var{fx}, @var{fy}, @var{fz})
-Retornam uma fun@,{c}@~ao adequada para a fun@,{c}@~ao transforma@,{c}@~ao em plot3d. Use
+Retornam uma fun@,{c}@~ao adequada para a fun@,{c}@~ao transforma@,{c}@~ao em plot3d.  Use
 com a op@,{c}@~ao de montagem de gr@'afico @code{transform_xy}.
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
