@@ -84,9 +84,9 @@ Veja tamb@'em
 
 @deffn {Fun@,{c}@~ao} bashindices (@var{expr})
 Transforma a express@~ao @var{expr} dando a cada
-somat@'orio e a cada produto um @'unico @'indice. Isso d@'a a @code{changevar} grande
+somat@'orio e a cada produto um @'unico @'indice.  Isso d@'a a @code{changevar} grande
 precis@~ao quando se est@'a trabalhando com somat@'orios e produtos.  A forma do
-@'unico @'indice @'e @code{j@var{number}}. A quantidade @var{number} @'e determindad por
+@'unico @'indice @'e @code{j@var{number}}.  A quantidade @var{number} @'e determindad por
 refer@^encia a @code{gensumnum}, que pode ser alterada pelo usu@'ario.  Por
 exemplo, @code{gensumnum:0$} reseta isso.
 
@@ -188,10 +188,10 @@ ent@~ao @code{a} ter@'a como valor, um array com doze posi@,{c}@~oes, e o
 faz @code{b[x+1]:y^2} (e @code{b} n@~ao @'e ainda um array, uma lista, ou uma
 matriz -- se isso ou um desses ocorrer um erro pode ser causado desde
 @code{x+1} n@~ao poder@'a ser um subscrito v@'alido para um array art-q, uma lista ou
-uma matriz). Esses @'indices (tamb@'em conhecidos como chaves) podem ser quaisquer objetos.  
-Isso somente pega uma chave por vez a cada vez (@code{b[x+1,u]:y} ignorar@'a o @code{u}). 
+uma matriz).  Esses @'indices (tamb@'em conhecidos como chaves) podem ser quaisquer objetos.  
+Isso somente pega uma chave por vez a cada vez (@code{b[x+1,u]:y} ignorar@'a o @code{u}).  
 A refer@^encia termina em @code{b[x+1] ==> y^2}.  Certamente a chave poe ser uma lista
-, e.g. @code{b[[x+1,u]]:y} poder@'a ser v@'alido.  Isso @'e incompat@'ivel 
+, e.g.  @code{b[[x+1,u]]:y} poder@'a ser v@'alido.  Isso @'e incompat@'ivel 
 com os arrays antigos do Maxima, mas poupa recursos.
 
 Uma vantagem de armazenar os arrays como valores de s@'imbolos @'e que as
