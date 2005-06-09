@@ -10,6 +10,7 @@ Files:
    wind.data: sample data
    biomed.data: sample data
    doc/descriptive_en.tex: latex documentation in English
+   doc/descriptive_es.tex: latex documentation in Spanish
    doc/*.eps : postscript graphics to be included in the documentation
 
 For a pdf version of the documentation and more:
@@ -19,6 +20,6 @@ http://www.telefonica.net/web2/biomates/maxima/descriptive/descriptive.htm
 For comments, suggestions or bug reports, please contact me at
 
 Mario Rodriguez Riotorto
-mario@biomates.net
+mario AT biomates DOT net
 www.biomates.net
 
