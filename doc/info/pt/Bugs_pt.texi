@@ -15,7 +15,7 @@ testes do Maxima bem como informar novos erros.
 @deffn {Function} run_testsuite ()
 @deffnx {Function} run_testsuite (boolean)
 @deffnx {Function} run_testsuite (boolean, boolean)
-Executa o conjunto de testes do Maxima. Testes que produzem a resposta desejada s@~ao
+Executa o conjunto de testes do Maxima.  Testes que produzem a resposta desejada s@~ao
 considerados ``passes,'' e testes que n@~ao produzem a resposta
 desejada, s@~ao marcados como erros conhecidos.
 
@@ -48,5 +48,5 @@ e do Lisp dentro da informa@,{c}@~ao do erro.
 @deffn {Function} build_info ()
 Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
 
-@code{build_info} retorna uma strng vazia @code{""}.
+@code{build_info} retorna uma string vazia @code{""}.
 @end deffn
