@@ -107,7 +107,7 @@ Simpson em ambas as dire@,{c}@~oes x e y para calcular
 A fun@,{c}@~ao @var{f} deve ser uma fun@,{c}@~ao traduzida ou compilada de duas
 vari@'aveis, e @var{r} e @var{s} devem cada uma ser uma fun@,{c}@~ao traduzida ou
 compilada de uma vari@'avel, enquanto @var{a} e @var{b} devem ser n@'umeros em ponto
-flutuante. A rotina tem duas vari@'aveis globais que determinam o
+flutuante.  A rotina tem duas vari@'aveis globais que determinam o
 n@'umero de divis@~oes dos intervalos x e y: @code{dblint_x} e @code{dblint_y},
 ambas as quais s@~ao inicialmente 10, e podem ser alteradas independentemente para
 outros valores inteiros (existem @code{2*dblint_x+1} pontos calculados na
@@ -116,24 +116,24 @@ A rotina subdivide o eixo X e ent@~ao para cada valor de X isso
 primeiro calcula @code{@var{r}(x)} e @code{@var{s}(x)}; ent@~ao o eixo Y entre @code{@var{r}(x)} e @code{@var{s}(x)} @'e
 subdividido e a integral ao longo do eixo Y @'e executada usando
 a regra de Simpson; ent@~ao a integral ao longo do eixo X @'e conclu@'ida usando
-a regra de Simpson com os valores da fun@,{c}@~ao sendo as integrais-Y. Esse
+a regra de Simpson com os valores da fun@,{c}@~ao sendo as integrais-Y.  Esse
 procedimento pode ser numericamente inst@'avel por uma grande variedade raz@~oes,
 mas razo@'avelmente r@'apido: evite usar isso sobre fun@,{c}@~oes altamente oscilat@'orias
 e fun@,{c}@~oes com singularidades (postes ou pontos de ramifica@,{c}@~ao na
 regi@~ao).  As integrais Y dependem de quanto fragmentados @code{@var{r}(x)} e @code{@var{s}(x)} s@~ao,
 ent@~ao se a dit@^ancia @code{@var{s}(x) - @var{r}(x)} varia rapidamente com X, nesse ponto pode ter
 erros substanciais provenientes de trunca@,{c}@~ao com diferentes saltos-tamanhos
-nas v@'arias integrais Y. Um pode incrementar @code{dblint_x} e @code{dblint_y} em
+nas v@'arias integrais Y.  Um pode incrementar @code{dblint_x} e @code{dblint_y} em
 uma tentativa para melhorar a converg@^encia da rei@~ao, com sacrif@'icio do
-tempo de computa@,{c}@~ao. Os valores da fun@,{c}@~ao n@~ao s@~ao salvos, ent@~ao se a
+tempo de computa@,{c}@~ao.  Os valores da fun@,{c}@~ao n@~ao s@~ao salvos, ent@~ao se a
 fun@,{c}@~ao @'e muito desperdi@,{c}adora de tempo,voc@^e ter@'a de esperar por
 re-computa@,{c}@~ao se voc@^e mudar qualquer coisa (desculpe).
 Isso @'e requerido que as fun@,{c}@~oes @var{f}, @var{r}, e @var{s} sejam ainda traduzidas
-ou compiladas previamente chamando @code{dblint}. Isso resultar@'a em ordens de
+ou compiladas previamente chamando @code{dblint}.  Isso resultar@'a em ordens de
 magnitude de melhoramentos de velocidade sobre o c@'odigo interpretado em muitos casos!
 
 @code{demo (dblint)} executa uma demonstra@,{c}@~ao de @code{dblint} aplicado a um problema exemplo.
-@c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT. !!!
+@c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT.  !!!
 @c @code{demo (dblint_1)} executa outra demonstra@,{c}@~ao.
 
 @end deffn
@@ -274,7 +274,7 @@ O sinalizador @code{risch} pode ser escolhido como um @code{evflag},
 na chamada para @code{ev} ou na linha de comando,
 e.g., @code{ev (integrate (@var{expr}, @var{x}), risch)} ou @code{integrate (@var{expr}, @var{x}), risch}.
 Se @code{risch} est@'a presente, @code{integrate} chama a fun@,{c}@~ao @code{risch}
-sem tentar heur@'isticas primeiro. Veja tamb@'em @code{risch}.
+sem tentar heur@'isticas primeiro.  Veja tamb@'em @code{risch}.
 @c END EXPOSITION ON HEURISTICS
 
 @code{integrate} trabalha somente com rela@,{c}@~oes funcionais representadas explicitamente com a nota@,{c}@~ao @code{f(x)}.
@@ -287,7 +287,7 @@ Dependendo da pergunta,
 respostas adequadas s@~ao @code{yes;} ou @code{no;},
 ou @code{pos;}, @code{zero;}, ou @code{neg;}.
 
-@code{integrate} n@~ao @'e, por padr@~ao, declarada ser linear. Veja @code{declare} e @code{linear}.
+@code{integrate} n@~ao @'e, por padr@~ao, declarada ser linear.  Veja @code{declare} e @code{linear}.
 
 @code{integrate} tenta integra@,{c}@~ao por partes somente em uns poucos casos especiais.
 
@@ -337,7 +337,7 @@ neg;
 @end example
 
 @item
-Mudan@,{c}a de vari@'avel. Existem duas mudan@,{c}as de vari@'avel nesse exemplo:
+Mudan@,{c}a de vari@'avel.  Existem duas mudan@,{c}as de vari@'avel nesse exemplo:
 uma usando a derivada estabelecida por @code{gradef},
 e uma usando a deriva@,{c}@~ao @code{diff(r(x))} de uma fun@,{c}@~ao n@~ao especificada @code{r(x)}.
 
@@ -497,7 +497,7 @@ O
 formador sendo equivalente para a express@~ao nonlist para todos os lados
 direitos-manuseados mais tarde.  Os lados direitos indicados s@~ao usados como o
 limite inferior de integra@,{c}@~ao.  O sucesso das integra@,{c}@~oes pode
-depender de seus valores e de sua ordem. @code{potentialzeroloc} @'e inicialmente escolhido
+depender de seus valores e de sua ordem.  @code{potentialzeroloc} @'e inicialmente escolhido
 para 0.
 
 @end deffn
@@ -506,7 +506,7 @@ para 0.
 @c THE GAUSS-KRONROD FUNCTIONS (QUADPACK) MAKE THIS OBSOLETE
 @deffn {Fun@,{c}@~ao} qq
 O pacote @code{qq} (que pode ser carregado com @code{load ("qq")})
-cont@'em uma fun@,{c}@~ao @code{quanc8} que pode pegar ou 3 ou 4 arguments. A
+cont@'em uma fun@,{c}@~ao @code{quanc8} que pode pegar ou 3 ou 4 arguments.  A
 vers@~ao de 3 argumentos calcula a integral da fun@,{c}@~ao especificada como
 primeiro argumento sobre o intervalo de lo a hi como em
 @code{quanc8 ('fun@,{c}@~ao, lo, hi)}.
@@ -515,7 +515,7 @@ a integral da fun@,{c}@~ao ou express@~ao (primeiro argumento) em rela@,{c}@~ao
 @`a vari@'avel (segundo argumento) no intervalo de @code{lo} a @code{hi} como em
 @code{quanc8(<f(x) or express@~ao in x>, x, lo, hi)}.
 O m@'etodo usado @'e o da quadratura dos currais de Newton,
-e a rotina @'e adaptativa. Isso ir@'a dessa forma gastar tempo dividindo o
+e a rotina @'e adaptativa.  Isso ir@'a dessa forma gastar tempo dividindo o
 intervalo somente quando necess@'ario para completar as condi@,{c}@~oes de erro especificadas
 pelas vari@'aveis @code{quanc8_relerr} (valor padr@~ao=1.0e-4) e
 @code{quanc8_abserr} (valor padr@~ao=1.0e-8) que d@~ao o teste de erro
@@ -667,7 +667,7 @@ Exemplo:
 @end example
 
 A vantagem com esse caminho @'e que a fun@,{c}@~ao @code{f} pode ser usada para outros
-prop@'ositos, como imprimir gr@'aficos. A desvantagem @'e que voc@^e tem que inventar
+prop@'ositos, como imprimir gr@'aficos.  A desvantagem @'e que voc@^e tem que inventar
 um nome para ambas a fun@,{c}@~ao @code{f} e sua vari@'avel independente @code{x}.
 Ou, sem a vari@'avel global:
 
@@ -1135,7 +1135,7 @@ O n@'umero m@'aximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padr@~a
 @'e 100.
 @item limlst
 Limite superior sobre n@'umero de ciclos.  Deve ser maior ou igual a
-3. O padr@~ao @'e 10.
+3.  O padr@~ao @'e 10.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
@@ -1312,7 +1312,7 @@ O argumentos opcionais s@~ao:
 Erro absoluto desejado de aproxima@{c}@~ao.  O padr@~ao @'e 1d-10.
 @item limit
 Tamanho do array interno de trabalho.  (@var{limit} - @var{limlst})/2 @'e o
-n@'umero m@'aximo de subintervalos para usar.  o padr@~ao @'e 200.
+n@'umero m@'aximo de subintervalos para usar.  O padr@~ao @'e 200.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE

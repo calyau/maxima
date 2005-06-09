@@ -185,7 +185,7 @@ contendo os elementos da lista @var{L}.
 
 @code{load ("eigen")} chama essa fun@,{c}@~ao.
 
-@c FOLLOWING COMMENT PRESERVED. WHAT DOES THIS MEAN ??
+@c FOLLOWING COMMENT PRESERVED.  WHAT DOES THIS MEAN ??
 Isso @'e @'util se voc@^e quer usar partes das sa@'idas das
 fun@,{c}@~oes nesse pacote em c@'alculos matriciais.
 
@@ -213,7 +213,7 @@ Warning - you are redefining the Macsyma function autovetores
 @deffnx {Fun@,{c}@~ao} conj (@var{x})
 Substitui @code{-%i} por @code{%i} em @var{x}.
 Dependendo do valor de @var{x}, o resultado pode ser um complexo conjugado de @var{x}.
-@c THIS DEFN IS JUST BROKEN. SEE SF BUG # 1045514.
+@c THIS DEFN IS JUST BROKEN.  SEE SF BUG # 1045514.
 
 @code{conj} @'e um sin@^onimo para @code{conjugate}.
 
@@ -577,7 +577,7 @@ autovalores da matriz s@~ao conhecidos para o usu@'ario e armazenados sob o
 nome global @code{listeigvals}.  @code{listeigvals} poder@'a ser escolhido para uma lista similar
 @`a sa@'ida de @code{eigenvalues}.
 
-A fun@,{c}@~ao @code{algsys} @'e usada aqui para resolver em rela@,{c}@~ao aos autovetores. Algumas vezes se os
+A fun@,{c}@~ao @code{algsys} @'e usada aqui para resolver em rela@,{c}@~ao aos autovetores.  Algumas vezes se os
 autovalores est@~ao aus@^entes, @code{algsys} pode n@~ao estar habilitado a achar uma solu@,{c}@~ao.
 Em alguns casos, isso pode ser poss@'ivel para simplificar os autovalores por
 primeiro achando e ent@~ao usando o comando @code{eigenvalues} e ent@~ao usando outras fun@,{c}@~oes
@@ -612,7 +612,7 @@ Os elementos podem ser quaisquer express@~oes, que s@~ao avaliadas.
 (%i1) n: 3$
 (%i2) m: entermatrix (n, n)$
 
-Is the matriz  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
+Is the matriz  1.  Diagonal  2.  Symmetric  3.  Antisymmetric  4.  General
 Answer 1, 2, 3 or 4 : 
 1$
 Row 1 Column 1: 
@@ -644,8 +644,8 @@ pegando o elemento @code{@var{a}[@var{i_1},@var{j_1}]}
 como o elemento do canto superior esquerdo e @code{@var{a}[@var{i_2},@var{j_2}]}
 como o elemento do canto inferior direto da matriz.
 Aqui @var{a} @'e um array (criado por @code{array} mas n@~ao por @code{make_array})
-ou por uma fun@,{c}@~ao array. 
-(Uma fun@,{c}@~ao array @'e criada como outras fun@,{c}@~oes com @code{:=} ou @code{define},
+ou por uma fun@,{c}@~ao array.**
+(Uma fun@,{c}@~aO array @'e criado como outras fun@,{c}@~oes com @code{:=} ou @code{define},
 mas os argumentos s@~ao colocados entre colch@^etes em lugar de par@^entesis.)
 
 Se @var{j_1} @'e omitido, isso @'e assumido ser igual a @var{i_1}.
@@ -842,7 +842,7 @@ S@~ao eles
 @code{domxmxops}, @code{doscmxops}, e @code{doscmxplus}.
 @c CHECK -- WE PROBABLY WANT EXHAUSTIVE LIST HERE
 
-Existem op@,{c}@~oes adicionais que s@~ao relacionadas a matrizes. S@~ao elas:
+Existem op@,{c}@~oes adicionais que s@~ao relacionadas a matrizes.  S@~ao elas:
 @code{lmxchar}, @code{rmxchar}, @code{ratmx}, @code{listarith}, @code{detout},
 @code{scalarmatrix},
 e @code{sparse}.
@@ -941,7 +941,7 @@ Base escalar para um expoente matriz, elemento por elemento.
 @end example
 @itemize @bullet
 @item
-Base matriz para um expoente matriz. Essa n@~ao @'e realizada elemento por elemento.
+Base matriz para um expoente matriz.  Essa n@~ao @'e realizada elemento por elemento.
 @c WHAT IS THIS ??
 @end itemize
 @example
@@ -1280,7 +1280,7 @@ Quando @code{scalarmatrixp} @'e @code{false}, matrizes 1 x 1 n@~ao s@~ao simplif
 Aqui coordinatetransform
 avalia para a forma [[expres@~ao1, expres@~ao2, ...],
 indetermina@,{c}@~ao1, indetermina@,{c}@~ao2, ...], onde indetermina@,{c}@~ao1,
-indetermina@,{c}@~ao2, etc. s@~ao as vari@'aveis de coordenadas curvil@'ineas e
+indetermina@,{c}@~ao2, etc.  s@~ao as vari@'aveis de coordenadas curvil@'ineas e
 onde a escolha de componentes cartesianas retangulares @'e dada em termos das
 coordenadas curvil@'ineas por [expres@~ao1, expres@~ao2, ...].
 @code{coordinates} @'e escolhida para o vetor [indetermina@,{c}@~ao1, indetermina@,{c}@~ao2,...],
@@ -1418,8 +1418,8 @@ os seguintes sinalizadores globais:
 @code{expandcurlcurl}, @code{expandlaplacian}, @code{expandlaplacianplus},
 e @code{expandlaplacianprod}.
 
-Todos esses sinalizadores possuem valor padr@~ao @code{false}. O sufixo @code{plus} refere-se a
-utiliza@,{c}@~ao aditivamente ou distribuitivamente.  o sufixo @code{prod} refere-se a
+Todos esses sinalizadores possuem valor padr@~ao @code{false}.  O sufixo @code{plus} refere-se a
+utiliza@,{c}@~ao aditivamente ou distribuitivamente.  O sufixo @code{prod} refere-se a
 expans@~ao para um operando que @'e qualquer tipo de produto.
 
 @table @code
