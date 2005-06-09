@@ -1,0 +1,44 @@
+/Contexts.texi/1.6/Thu Apr 21 04:58:24 2005/-ko/
+@menu
+* Definitions for Constants::
+@end menu
+
+@node Definitions for Constants,  , Constants, Constants
+@section Definitions for Constants
+
+@defvr {Constant} %e
+ - A base dos logar@'itmos naturais, e, @'e representada no Maxima
+como @code{%e}.
+
+@end defvr
+
+@defvr {Constant} false
+ - a contante Booleana, falso.  (NIL em Lisp)
+
+@end defvr
+
+@defvr {Constant} %inf
+ - infinito positivo real.
+
+@end defvr
+
+@defvr {Constant}  %infinity
+ - infinito complexo.
+
+@end defvr
+
+@defvr {Constant} %minf
+ - menos infinito real.
+
+@end defvr
+
+@defvr {Constant} pi
+ - "pi" @'e representado no Maxima como @code{%pi}.
+
+@end defvr
+
+@defvr {Constant} true
+ - a constante Booleana, verdadeiro.  (T em Lisp)
+
+@end defvr
+
