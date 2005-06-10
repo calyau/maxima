@@ -25,7 +25,7 @@
 
 (eval-when #-gcl(:compile-toplevel :load-toplevel :execute) 
 	   #+gcl(load compile eval)
-	   (defpackage "NREGEX"
+	   (defpackage "MAXIMA-NREGEX"
 	     (:use "COMMON-LISP")
 	     (:export
 	      ;; Vars
@@ -35,7 +35,7 @@
 	      ))
 	   )
 
-(in-package "NREGEX")
+(in-package "MAXIMA-NREGEX")
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defvar *regex-debug* nil)	    ; Set to nil for no debugging code

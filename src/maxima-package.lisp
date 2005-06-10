@@ -1,7 +1,16 @@
 (in-package "COMMON-LISP-USER")
 
-(defpackage "CL-INFO"
+(defpackage "MAXIMA-NREGEX"
   (:use "COMMON-LISP")
+  (:export
+   ;; Vars
+   "*REGEX-DEBUG*" "*REGEX-GROUPS*" "*REGEX-GROUPINGS*"
+   ;; Functions
+   "REGEX-COMPILE"
+   ))
+
+(defpackage "CL-INFO"
+  (:use "COMMON-LISP" "MAXIMA-NREGEX")
   (:export "INFO" "*INFO-PATHS*"))
 
 (defpackage "COMMAND-LINE"

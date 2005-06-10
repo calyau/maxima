@@ -48,17 +48,17 @@
 			(code-char 10)))
        (precomp-nil-string1
 	(compile nil
-		 (nregex:regex-compile 
+		 (regex-compile 
 		  string1
 		  :case-sensitive nil)))
        (precomp-t-string2
 	(compile nil
-		 (nregex:regex-compile 
+		 (regex-compile 
 		  string2
 		  :case-sensitive t)))
        (precomp-t-string3
 	(compile nil
-		 (nregex:regex-compile 
+		 (regex-compile 
 		  string3
 		  :case-sensitive t))))
   (defun compile-regex (pat &key (case-sensitive t))
@@ -83,7 +83,7 @@
 	     (compiler:*compile-verbose* nil)
 	     )
 	 (compile nil
-		  (nregex:regex-compile 
+		  (regex-compile 
 		   pat 
 		   :case-sensitive case-sensitive))))))
   )
@@ -99,9 +99,9 @@
     (setf pat (compile-regex pat :case-sensitive (not *case-fold-search*))))
   (if (funcall pat string :start start :end end)
       (progn
-	(setf *match-data* (make-array nregex:*regex-groupings*))
-	(dotimes (k nregex:*regex-groupings*)
-	  (setf (aref *match-data* k) (aref nregex:*regex-groups* k)))
+	(setf *match-data* (make-array *regex-groupings*))
+	(dotimes (k *regex-groupings*)
+	  (setf (aref *match-data* k) (aref *regex-groups* k)))
 	(match-start 0))
       -1))
 
