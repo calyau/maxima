@@ -34,6 +34,7 @@
 
 	\hyphenation{Ruf-fi-ni e-xer-ci-cios}
 
+%versi'on: 11-06-05
 
 \begin{document}
 \maketitle
@@ -132,8 +133,8 @@ En cuanto a Windows, tambi'en desde la p'agina del proyecto se puede descargar u
 
 Una vez accedemos a Maxima, lo primero que vamos a ver ser'a la siguiente informaci'on:
 \begin{verbatim}
-Maxima 5.9.1 http://maxima.sourceforge.net
-Using Lisp CMU Common Lisp 19a
+Maxima 5.9.2 http://maxima.sourceforge.net
+Using Lisp CLISP 2.33.2 (2004-06-02)
 Distributed under the GNU Public License. See the file COPYING.
 Dedicated to the memory of William Schelter.
 This is a development version of Maxima. The function bug_report()
@@ -155,12 +156,9 @@ indicando \verb|(%i2)| que Maxima espera nuestra segunda instrucci'on.
 El punto y coma act'ua tambi'en como un separador cuando escribimos varias instrucciones en un mismos rengl'on. Nuestra siguiente operaci'on consistir'a en asignar el valor 34578 a la variable \verb|x| y el 984003 a la \verb|y|, solicitando luego su producto,
 \begin{verbatim}
 (%i2) x:34578; y:984003; x*y;
-
-(%o2)                      34578
-(%i3)
-(%o3)                      984003
-(%i4)
-(%o4)                   34024855734
+(%o2)                     34578
+(%o3)                     984003
+(%o4)                  34024855734
 (%i5)
 \end{verbatim}
 conviene prestar atenci'on al hecho de que la asignaci'on de un valor a una variable se hace con los dos puntos, no con el signo de igualdad, que se reserva para las ecuaciones.
@@ -168,31 +166,24 @@ conviene prestar atenci'on al hecho de que la asignaci'on de un valor a una vari
 Es posible que no deseemos los resultados intermedios que Maxima va calculando o, como en este caso, las asignaciones a las variables que va haciendo; en tales situaciones conviene hacer uso del delimitador \verb|$|\index{3@\$}, que no devuelve a la consola los resultados que va calculando. Repitiendo el c'alculo de la forma 
 \begin{verbatim}
 (%i5) x:34578$ y:984003$ x*y;
-
-(%i6)
-(%i7)
-(%o7)                   34024855734
+(%o7)                  34024855734
 \end{verbatim}
 podemos conseguir una salida m'as limpia. Las asignaciones a variables se mantienen activas mientras dure la sesi'on con Maxima, por lo que podemos restar las variables \verb|x| e \verb|y| anteriores
 \begin{verbatim}
 (%i8) x-y;
-
-(%o8)                     - 949425
+(%o8)                    - 949425
 \end{verbatim}
 Esto tiene un riesgo; si queremos resolver la ecuaci'on $x^2-3x+1=0$,
 \begin{verbatim}
 (%i9) solve(x^2-3*x+1=0,x);
-
-A number was found where a variable was expected -SOLVE
- -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);
+A number was found where a variable was expected -`solve'
+ -- an error.  Quitting.  To debug this try debugmode(true);
 \end{verbatim}
 nos devuelve un mensaje de error, ya que donde se supone que hay una inc'ognita, lo que realmente encuentra es un n'umero, en este caso 34578. El problema se resuelve vaciando el contenido de la variable \verb|x| mediante la funci'on \verb|kill|\index{kill},
 \begin{verbatim}
 (%i10) kill(x)$
-
 (%i11) solve(x^2-3*x+1=0,x);
-
-                   SQRT(5) - 3      SQRT(5) + 3
+                   sqrt(5) - 3      sqrt(5) + 3
 (%o11)      [x = - -----------, x = -----------]
                         2                2
 \end{verbatim}
@@ -201,7 +192,6 @@ luego las soluciones de la ecuaci'on forman el conjunto $\{-\frac{\sqrt{5}-3}{2}
 Las etiquetas \verb|(%ix)|\index{7@\%ix} y \verb|(%ox)|\index{8@\%ox}, siendo \verb|x| un n'umero entero, pueden ser utilizadas a lo largo de una sesi'on a fin de evitar tener que volver a escribir expresiones; as'i, si queremos calcular el cociente $\frac{x y}/{x-y}$, con $x=34578$ y $y=984003$, podemos aprovechar los resultados \verb|(%o7)| y \verb|(%o8)| y hacer
 \begin{verbatim}
 (%i12) %o7/%o8;
-
                          11341618578
 (%o12)                 - -----------
                            316475
@@ -210,121 +200,76 @@ Las etiquetas \verb|(%ix)|\index{7@\%ix} y \verb|(%ox)|\index{8@\%ox}, siendo \v
 Las etiquetas que indican las entradas y salidas pueden ser modificadas a voluntad haciendo uso de las variables \verb|inchar|\index{inchar} y \verb|outchar|\index{outchar},
 \begin{verbatim}
 (%i13) inchar;
-
 (%o13)                       %i
 (%i14) outchar;
-
 (%o14)                       %o
 (%i15) inchar: "menda";
-
 (%o15)                     menda
 (menda15) outchar: "lerenda";
-
 (lerenda15)               lerenda
 (menda16) 2+6;
-
 (lerenda16)                  8
 (menda17) inchar:"%i"$ outchar:"%o"$
-
 (%i17)
-(%i18)
 \end{verbatim}
 
 En caso de que se pretenda realizar nuevamente un c'alculo ya indicado deber'a escribirse dos comillas simples (\verb|''|)\index{5@''}, no comilla doble, junto con la etiqueta de la instrucci'on deseada
 \begin{verbatim}
 (%i18) ''%i9;
-
 (%o18)                   x - 984003
 \end{verbatim}
 Obs'ervese que al haber dejado a \verb|x| sin valor num'erico, ahora el resultado es otro. Cuando se quiera hacer referencia al 'ultimo resultado calculado por Maxima puede ser m'as sencillo hacer uso del s'imbolo  \verb|%|\index{6@\%}, de forma que si queremos restarle la \verb|x| a la 'ultima expresi'on podemos hacer
 \begin{verbatim}
 (%i19) %-x;
-
 (%o19)                    - 984003
 \end{verbatim}
 
 Ciertas constantes matem'aticas de uso frecuente tienen un s'imbolo especial en Maxima: la base de los logaritmos naturales ($e$), el cociente entre la longitud de una circunferencia y su di'ametro ($\pi$), la unidad imaginaria ($i=\sqrt{-1}$) y la constante de Euler-Mascheroni ($\gamma=-\int_0^\infty e^{-x} \ln x dx$), se representar'an por \verb|%e|\index{9@\%e}, \verb|%pi|\index{11@\%pi}, \verb|%i|\index{10@\%i} y \verb|%gamma|\index{12@\%gamma}, respectivamente.
 
-Conviene indicar que Maxima no hace distinciones entre min'usculas y may'usculas,
-\begin{verbatim}
-(%i20) sQrT(25);
-
-(%o20)                       5
-\end{verbatim}
-
 Es muy sencillo solicitar a Maxima que nos informe sobre alguna funci'on de su lenguaje; la t'ecnica nos servir'a para ampliar informaci'on sobre cualquier instrucci'on a la que se haga referencia en este manual, por ejemplo,
 \begin{verbatim}
-(%i21) describe(sqrt);
+(%i20) describe(sqrt);
 
+ 0: isqrt :(maxima.info)Definitions for Operators.
+ 1: sqrt :Definitions for Operators.
+ 2: sqrtdispflag :Definitions for Operators.
+Enter space-separated numbers, `all' or `none': 1
 
- 0: ISQRT :(maxima.info)Definitions for Operators.
- 1: SQRT :Definitions for Operators.
- 2: SQRTDISPFLAG :Definitions for Operators.
-Enter space-separated numbers, ALL or NONE: 1
+Info from file /usr/local/info/maxima.info:
+ - Function: sqrt (<x>)
+     The square root of <x>. It is represented internally by
+     `<x>^(1/2)'.  See also `rootscontract'.
 
-Info from file /usr/share/info/maxima.info:
- - Function: SQRT (X)
-     the square root of X. It is represented internally by X^(1/2).
-     Also see ROOTSCONTRACT.  RADEXPAND[TRUE] - if TRUE will cause nth
-     roots of factors of a product which are powers of n to be pulled
-     outside of the radical, e.g.  SQRT(16*X^2) will become 4*X only if
-     RADEXPAND is TRUE.
+     `radexpand' if `true' will cause nth roots of factors of a product
+     which are powers of n to be pulled outside of the radical, e.g.
+     `sqrt(16*x^2)' will become `4*x' only if `radexpand' is `true'.
 
-(%o21)                     FALSE
+(%o20)                     false
 \end{verbatim}
 Inicialmente muestra un sencillo men'u en el que debemos seleccionar qu'e informaci'on concreta deseamos; en esta ocasi'on se opt'o por \verb|1| que es el n'umero asociado a la funci'on que interesaba.
-
-Otra forma de obtener m'as informaci'on es pedirle a Maxima que nos d'e ejemplos; si queremos ver algunas de las cosas que el programa puede hacer con los n'umeros complejos, podemos hacerlo mediante
-\index{example}\index{expand}\begin{verbatim}
-(%i22) example(complex);
-
-(%i23) (SQRT(2.25)+SQRT(-4))^2
-                                   2
-(%o23)                 (2 %I + 1.5)
-(%i24) EXPAND(%)
-(%o24)                 6.0 %I - 1.75
-(%i25) EXPAND(SQRT(2*%I))
-                           1/4
-(%o25)                (- 1)    SQRT(2)
-(%o25)                      DONE
-\end{verbatim}
-Para saber qu'e ejemplos tenemos a nuestra disposici'on, hagamos
-\begin{verbatim}
-(%i26) example();
-\end{verbatim}
-con lo que obtendremos una lista de los que podemos invocar utiliz'andolos como argumentos de la funci'on \verb|example|.
-
-Tambi'en hay algunos archivos de extensi'on \verb|dem| que son demostraciones; para verlas haremos
-\index{demo}\begin{verbatim}
-(%i27) demo("archivo.dem");
-\end{verbatim}
 
 A fin de no perder los resultados de una sesi'on con Maxima, quiz'as con el objeto de continuar el trabajo en pr'oximas jornadas, podemos guardar en un archivo aquellos valores que nos puedan interesar; supongamos que necesitamos almacenar el contenido de la variable \verb|y|, tal como lo definimos en la entrada \verb|(%i5)|, as'i como el resultado de la salida 
 \verb|(%o11)|, junto con la instrucci'on que la gener'o, la entrada \verb|(%i11)|,
 \begin{verbatim}
-(%i28) save("mi.sesion",y,resultado=%o11,ecuacion=%i11)$
+(%i21) save("mi.sesion",y,resultado=%o11,ecuacion=%i11)$
 \end{verbatim}
 Compru'ebese que el primer argumento de \verb|save|\index{save} es el nombre del archivo, junto con su ruta si se considera necesario, que la variable \verb|y| se escribe tal cual, pero que a las referencias de las entradas y salidas deben ir acompa~nadas de un nombre que las haga posteriormente reconocibles.
 
 Por 'ultimo, la forma correcta de abandonar la sesi'on de Maxima es mediante
 \index{quit}\begin{verbatim}
-(%o28) quit();
+(%i22) quit();
 \end{verbatim}
 
 Abramos ahora una nueva sesi'on con Maxima y carguemos en memoria los resultados de la anterior sesi'on,
 \index{load}\begin{verbatim}
 (%i1) load("mi.sesion")$
-
 (%i2) y;
-
 (%o2)                      984003
 (%i3) ecuacion;
-
                         2
-(%o3)            SOLVE(x  - 3 x + 1 = 0, x)
+(%o3)            solve(x  - 3 x + 1 = 0, x)
 (%i4) resultado;
-
-                   SQRT(5) - 3      SQRT(5) + 3
+                   sqrt(5) - 3      sqrt(5) + 3
 (%o4)       [x = - -----------, x = -----------]
                         2                2
 \end{verbatim}
@@ -332,12 +277,10 @@ Abramos ahora una nueva sesi'on con Maxima y carguemos en memoria los resultados
 Si ahora quisi'eramos recalcular las soluciones de la ecuaci'on, modific'andola previamente de manera que el coeficiente de primer grado se sustituyese por otro n'umero, simplemente har'iamos
 \index{subst}\index{ev}\begin{verbatim}
 (%i5) subst(5,3,ecuacion);
-
                         2
-(%o5)           SOLVE(x  - 5 x + 1 = 0, x)
+(%o5)           solve(x  - 5 x + 1 = 0, x)
 (%i6) ev(%);
-
-                  SQRT(21) - 5      SQRT(21) + 5
+                  sqrt(21) - 5      sqrt(21) + 5
 (%o6)      [x = - ------------, x = ------------]
                        2                 2
 \end{verbatim}
@@ -366,7 +309,6 @@ Maxima devuelve los resultados de forma exacta, sin aproximaciones decimales; as
 haremos
 \begin{verbatim}
 (%i1) ((3^7/(4+3/5))^(-1)+7/9)^3;
-
                        620214013952
 (%o1)                  -------------
                        1307544150375
@@ -376,17 +318,13 @@ obteniendo el resultado en forma de fracci'on simplificada.
 De todos modos podemos solicitar el resultado en forma decimal; por ejemplo, si queremos la expresi'on decimal del 'ultimo resultado,
 \index{numer}\begin{verbatim}
 (%i2) %,numer;
-
 (%o2)               .4743350454163436
 \end{verbatim}
 
 Maxima puede trabajar con precisi'on arbitraria. Para calcular el valor del cociente $\frac{e}{\pi}$ con 100 cifras decimales, deberemos especificar primero la precisi'on requerida asign'andole a la variable \verb|fpprec|\index{fpprec} el valor 100 y a continuaci'on realizar el c'alculo, solicitando la expresi'on decimal con una llamada a la funci'on \verb|bfloat|\index{bfloat}:
 \begin{verbatim}
 (%i3) fpprec:100$  bfloat(%e/%pi);
-
-(%i4)
 (%o4) 8.65255979432265087217774789646089617428744623908515#
-
 5394543302889480450445706770586319246625161845173B-1
 \end{verbatim}
 N'otese que cuando un resultado es devuelto en el formato \verb|bfloat| se escribe la letra \verb|B|\index{B} en lugar de la cl'asica \verb|E|\index{E} para indicar el exponente.
@@ -396,7 +334,6 @@ En la instrucci'on \verb|%i3| se establece la precisi'on deseada y luego se tran
 La factorizaci'on de un n'umero entero en factores primos es un problema dif'icil de resolver para cantidades grandes; de hecho, algunos algoritmos de encriptaci'on se basan en esta dificultad. 
 \index{factor}\begin{verbatim}
 (%i5) factor(1303948800000);
-
                        12  3  5  3
 (%o5)                2   3  5  7  11
 \end{verbatim}
@@ -404,16 +341,12 @@ La factorizaci'on de un n'umero entero en factores primos es un problema dif'ici
 En la siguiente factorizaci'on hacemos uso de la variable global \verb|showtime|\index{showtime} para saber el tiempo que le lleva ejecutar el c'alculo,
 \index{33@/*...*/}\begin{verbatim}
 (%i6) showtime:true$    /* activamos el contador de tiempo */
-
 Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
 (%i7) factor(2^300-1);
-
 Evaluation took 349.35 seconds (352.10 elapsed) using 21866187.852 KB.
         2  3
 (%o7) 3  5  7 11 13 31 41 61 101 151 251 331 601 1201 1321
-
  1801 4051 8101 63901 100801 268501 10567201 13334701
-
  1182468601 1133836730401
 (%i8) showtime:false$  /* desactivamos contador */
 \end{verbatim}
@@ -422,18 +355,29 @@ El texto que se escribe entre \verb|/*| y \verb|*/| son comentarios que Maxima i
 En relaci'on con los n'umeros primos, para saber si un n'umero lo es o no,
 \index{primep}\begin{verbatim}
 (%i9) primep(3^56-1);
+(%o9)                      false
+\end{verbatim}
+Y para solicitarle a Maxima que compruebe si un n'umero es par o impar necesitamos echar mano de las funciones \verb|evenp|\index{evenp} or \verb|oddp|\index{oddp}, respectivamente,
+\begin{verbatim}
+(%i10) evenp(42);
+(%o10)                      true
+(%i11) oddp(31);
+(%o11)                      true
+\end{verbatim}
 
-(%o9)                      FALSE
+
+Le solicitamos a Maxima que nos haga una lista con todos los divisores de un n'umero,
+\index{divisors}\begin{verbatim}
+(%i12) divisors(100);
+(%o12)       {1, 2, 4, 5, 10, 20, 25, 50, 100}
 \end{verbatim}
 
 En lo que concierne a la divisi'on, puede ser necesario conocer el cociente entero y el resto correspondiente; para ello se dispone de las funciones \verb|quotient|\index{quotient} y \verb|remainder|\index{remainder},
 \begin{verbatim}
-(%i10) quotient(5689,214);
-
-(%o10)                       26
-(%i11) remainder(5689,214);
-
-(%o11)                      125
+(%i13) quotient(5689,214);
+(%o13)                       26
+(%i14) remainder(5689,214);
+(%o14)                      125
 \end{verbatim}
 
 
@@ -443,50 +387,40 @@ En lo que concierne a la divisi'on, puede ser necesario conocer el cociente ente
 Como ya se coment'o m'as arriba, la unidad imaginaria $\sqrt{-1}$ se representa en Maxima mediante el s'imbolo \verb|%i|\index{i},
 \begin{verbatim}
 (%i1) %i^2;
-
 (%o1)                      - 1
 \end{verbatim}
 
 Se soportan las operaciones b'asicas con n'umeros complejos,
 \begin{verbatim}
 (%i2) z1:3+5*%i$ z2:1/2-4*%i$  /*z1 y z2*/
-
-(%i3)
 (%i4) z1 + z2;     /*suma*/
-
                                 7
-(%o4)                      %I + -
+(%o4)                      %i + -
                                 2
 (%i5) z1 - z2;     /*resta*/
-
                                  5
-(%o5)                     9 %I + -
+(%o5)                     9 %i + -
                                  2
 (%i6) z1 * z2;     /*multiplicacion*/
-
                     1
-(%o6)              (- - 4 %I) (5 %I + 3)
+(%o6)              (- - 4 %i) (5 %i + 3)
                     2
 (%i7) z1 / z2;     /* division */
-
-                          5 %I + 3
+                          5 %i + 3
 (%o7)                     --------
                           1
-                          - - 4 %I
+                          - - 4 %i
                           2
-
 \end{verbatim}
 
 Es posible que estos dos 'ultimos resultados nos parezcan frustrantes y los deseemos en otro formato, resultado de las operaciones indicadas; a tal efecto podemos pedir a Maxima que nos devuelva \verb|(%o6)| y \verb|(%o7)| en forma cartesiana,
 \index{rectform}\begin{verbatim}
 (%i8) rectform(%o6);
-
-                        43   19 %I
+                        43   19 %i
 (%o8)                   -- - -----
                         2      2
 (%i9) rectform(%o7);
-
-                        58 %I   74
+                        58 %i   74
 (%o9)                   ----- - --
                          65     65
 \end{verbatim}
@@ -494,12 +428,10 @@ Es posible que estos dos 'ultimos resultados nos parezcan frustrantes y los dese
 Las funciones \verb|realpart|\index{realpart} y \verb|imagpart|\index{imagpart} extraen del n'umero complejo sus partes real e imaginaria, respectivamente. Podemos utilizarlas para comprobar que el resultado obtenido en \verb|(%o9)| es el correcto,
 \begin{verbatim}
 (%i10) realpart(%o7);
-
                               74
 (%o10)                      - --
                               65
 (%i11) imagpart(%o7);
-
                              58
 (%o11)                       --
                              65
@@ -508,49 +440,39 @@ Las funciones \verb|realpart|\index{realpart} y \verb|imagpart|\index{imagpart} 
 Antes hemos optado por los resultados en formato cartesiano; pero tambi'en es posible solicitarlos en su forma polar,
 \index{polarform}\begin{verbatim}
 (%i12) polarform(%o7);
-
-                         %I (%PI - ATAN(29/37))
-            2 SQRT(34) %E
+                         %i (%pi - atan(29/37))
+            2 sqrt(34) %e
 (%o12)      -----------------------------------
-                         SQRT(65)
+                         sqrt(65)
 (%i13) %,numer;   /*radio y argumento reales*/
-
-                              2.4768181587724474 %I
-(%o13)   1.4464811413591583 %E
+                              2.4768181587724474 %i
+(%o13)   1.4464811413591583 %e
 \end{verbatim}
 
 La norma de un n'umero complejo se calcula con la funci'on \verb|abs|\index{abs} y admite el argumento tanto en forma cartesiana como polar,
 \begin{verbatim}
 (%i14) abs(%o9);
-
-                         2 SQRT(34)
+                         2 sqrt(34)
 (%o14)                   ----------
-                          SQRT(65)
+                          sqrt(65)
 (%i15) abs(%o12);
-
-                         2 SQRT(34)
+                         2 sqrt(34)
 (%o15)                   ----------
-                          SQRT(65)
+                          sqrt(65)
 \end{verbatim}
 
 Por 'ultimo, el conjugado de un n'umero complejo se calcula con la funci'on \verb|conjugate|\index{conjugate}, pero su uso requiere la carga previa del archivo \verb|eigen|. Como se ve en este ejemplo, el resultado depender'a del formato del argumento, cartesiano o polar,
 \begin{verbatim}
-(%i16) load(eigen);
-
-Warning - you are redefining the MACSYMA function EIGENVALUES
-Warning - you are redefining the MACSYMA function EIGENVECTORS
-(%o16)            /usr/share/maxima/5.9.0/share/matrix/eigen.mac
+(%i16) load(eigen)$
 (%i17) conjugate(%o9);       /*forma cartesiana*/
-
-                           58 %I   74
+                           58 %i   74
 (%o17)                   - ----- - --
                             65     65
 (%i18) conjugate(%o12);      /*forma polar*/
-
-                              %I ATAN(29/37)
-                 2 SQRT(34) %E
+                              %i atan(29/37)
+                 2 sqrt(34) %e
 (%o18)         - ---------------------------
-                          SQRT(65)
+                          sqrt(65)
 \end{verbatim}
 
 
@@ -560,7 +482,6 @@ Warning - you are redefining the MACSYMA function EIGENVECTORS
 Sin duda una de las capacidades m'as destacables de Maxima es su habilidad para manipular expresiones algebraicas. Desarrollemos un ejemplo que empieza por asignar a la variable \verb|q| una expresi'on literal:
 \begin{verbatim}
 (%i1) q: (x+3)^5-(x-a)^3+(x+b)^(-1)+(x-1/4)^(-5);
-
              1            3          5      1
 (%o1)      ----- - (x - a)  + (x + 3)  + --------
            x + b                              1 5
@@ -570,32 +491,24 @@ Sin duda una de las capacidades m'as destacables de Maxima es su habilidad para 
 Se observa que en principio Maxima no realiza ning'un c'alculo. La funci'on \verb|expand|\index{expand} se encarga de desarrollar las potencias,
 \begin{verbatim}
 (%i2) expand(q);
-
                         1                       1      5
 (%o2)  ------------------------------------ + ----- + x
                4      3      2                x + b
         5   5 x    5 x    5 x    5 x    1
        x  - ---- + ---- - ---- + --- - ----
              4      8      32    256   1024
-
        4       3        2        2      2              3
  + 15 x  + 89 x  + 3 a x  + 270 x  - 3 a  x + 405 x + a
-
  + 243
 \end{verbatim}
 No obstante es posible que no nos interese desplegar toda la expresi'on, entre otras cosas para evitar una respuesta farragosa y dif'icil de interpretar; en tal caso podemos utilizar \verb|expand|\index{expand} a~nadi'endole dos argumentos y operar de la manera siguiente
 \begin{verbatim}
 (%i3) q,expand(3,2);
-\end{verbatim}
-\newpage
-\begin{verbatim}
-
           1            5    3        2      2        1
 (%o3)   ----- + (x + 3)  - x  + 3 a x  - 3 a  x + --------
         x + b                                          1 5
                                                   (x - -)
                                                        4
-
                                                            3
                                                         + a
 \end{verbatim}
@@ -604,7 +517,6 @@ Con el primer argumento indicamos que queremos la expansi'on de todas aquellas p
 Dada una expresi'on con valores literales, podemos desear sustituir alguna letra por otra expresi'on; por ejemplo, si queremos hacer los cambios $a=2$, $b=2c$ en el 'ultimo resultado obtenido,
 \begin{verbatim}
 (%i4) %,a=2,b=2*c;
-
            1             5    3      2             1
 (%o4)   ------- + (x + 3)  - x  + 6 x  - 12 x + -------- + 8
         x + 2 c                                      1 5
@@ -615,7 +527,6 @@ Dada una expresi'on con valores literales, podemos desear sustituir alguna letra
 En estos dos 'ultimos ejemplos (\verb|%i3| y \verb|%i4|) se presentaron sentencias en las que hab'ia elementos separados por comas (\verb|,|)\index{2@, (coma)}. Esta es una forma simplificada de utilizar la funci'on \verb|ev|, que eval'ua la primera expresi'on asignando los valores que se le van indicando a continuaci'on; por ejemplo, \verb|(%i3)| se pod'ia haber escrito de la forma \verb|ev(q,expand(3,2))| y \verb|(%i4)| como \verb|ev(%,a=2,b=2*c)|. El uso de la variante con \verb|ev|\index{ev} est'a m'as indicado para ser utilizado dentro de expresiones m'as amplias. Obs'ervese el resultado siguiente
 \begin{verbatim}
 (%i5) 3*x^2 + ev(x^4,x=5);
-
                             2
 (%o5)                    3 x  + 625
 \end{verbatim}
@@ -624,12 +535,10 @@ donde la sustituci'on $x=5$ se ha realizado exclusivamente dentro del entorno de
 De forma m'as general, la funci'on \verb|subst|\index{subst} sustituye subexpresiones enteras. En el siguiente ejemplo, introducimos una expresi'on algebraica y a continuaci'on sustituimos todos los binomios \verb|x+y| por la letra \verb|k|,
 \begin{verbatim}
 (%i6) 1/(x+y)-(y+x)/z+(x+y)^2;
-
                    y + x          2     1
 (%o6)            - ----- + (y + x)  + -----
                      z                y + x
 (%i7) subst(k,x+y,%);
-
                           k    2   1
 (%o7)                   - - + k  + -
                           z        k
@@ -637,39 +546,28 @@ De forma m'as general, la funci'on \verb|subst|\index{subst} sustituye subexpres
 No obstante, el siguiente resultado nos sugiere que debemos ser precavidos con el uso de esta funci'on, ya que Maxima no siempre interpretar'a como subexpresi'on aquella que para nosotros s'i lo es:
 \index{subst}\begin{verbatim}
 (%i8) subst(sqrt(k),x+y,(x+y)^2+(x+y));
-
 (%o8)                   y + x + k
 \end{verbatim}
 Como una aplicaci'on pr'actica de \verb|subst|, veamos c'omo podemos utilizarla para obtener el conjugado de un n'umero complejo,
 \begin{verbatim}
 (%i9) subst(-%i,%i,a+b*%i);
-
-(%o9)                    a - %I b
+(%o9)                    a - %i b
 \end{verbatim}
 
 La operaci'on inversa de la expansi'on es la factorizaci'on. Expandamos y factoricemos sucesivamente un polinomio para comprobar los resultados,
 \index{expand}\index{factor}\begin{verbatim}
 (%i10) expand((a-2)*(b+1)^2*(a+b)^5);
-
            7      7      2  6        6      6       3  5
 (%o10)  a b  - 2 b  + 5 a  b  - 8 a b  - 4 b  + 10 a  b
-
        2  5         5      5       4  4       2  4         4
  - 10 a  b  - 19 a b  - 2 b  + 10 a  b  - 35 a  b  - 10 a b
-\end{verbatim}
-
-\newpage
-\begin{verbatim}
       5  3       4  3       3  3       2  3    6  2
  + 5 a  b  + 10 a  b  - 30 a  b  - 20 a  b  + a  b
-
       5  2       4  2       3  2      6      5         4
  + 8 a  b  - 10 a  b  - 20 a  b  + 2 a  b + a  b - 10 a  b
-
     6      5
  + a  - 2 a
 (%i11) factor(%);
-
                                 2        5
 (%o11)          (a - 2) (b + 1)  (b + a)
 \end{verbatim}
@@ -677,25 +575,21 @@ La operaci'on inversa de la expansi'on es la factorizaci'on. Expandamos y factor
 La funci'on \verb|ratsimp|\index{ratsimp} simplifica cualquier expresi'on racional, as'i como las subexpresiones racionales que son argumentos de funciones cualesquiera. El resultado se devuelve como el cociente de dos polinomios. En ocasiones no es suficiente con una sola ejecuci'on de \verb|ratsimp|, por lo que ser'a necesario aplicarla m'as veces, esto es lo que hace precisamente la funci'on \verb|fullratsimp|\index{fullratsimp}; concretemos esto con un ejemplo:
 \begin{verbatim}
 (%i12) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
-
                     a/2     2   a/2     2
                   (x    - 1)  (x    + 1)
 (%o12)            -----------------------
                            a
                           x  - 1
 (%i13) ratsimp(%);  /* simplificamos una vez */
-
                        2 a      a
                       x    - 2 x  + 1
 (%o13)                ---------------
                            a
                           x  - 1
 (%i14) ratsimp(%);  /* simplificamos otra vez */
-
                             a
 (%o14)                     x  - 1
 (%i15) fullratsimp(%o12);   /* simplificamos todo de una vez! */
-
                             a
 (%o15)                     x  - 1
 \end{verbatim}
@@ -703,18 +597,15 @@ La funci'on \verb|ratsimp|\index{ratsimp} simplifica cualquier expresi'on racion
 Dada una fracci'on algebraica, podemos obtener separadamente el numerador y el denominador,
 \index{num}\index{denom}\begin{verbatim}
 (%i16) fr: (x^3-4*x^2+4*x-2)/(x^2+x+1);
-
                      3      2
                     x  - 4 x  + 4 x - 2
 (%o16)              -------------------
                          2
                         x  + x + 1
 (%i17) num(fr);
-
                      3      2
 (%o17)              x  - 4 x  + 4 x - 2
 (%i18) denom(fr);
-
                           2
 (%o18)                   x  + x + 1
 \end{verbatim}
@@ -722,33 +613,22 @@ Dada una fracci'on algebraica, podemos obtener separadamente el numerador y el d
 El m'aximo com'un divisor de un conjunto de polinomios se calcula con la funci'on \verb|gcd|\index{gcd} y el m'inimo com'un m'ultiplo con \verb|lcm|\index{lcm}
 \begin{verbatim}
 (%i19) p1: x^7-4*x^6-7*x^5+8*x^4+11*x^3-4*x^2-5*x;
-
          7      6      5      4       3      2
 (%o19)  x  - 4 x  - 7 x  + 8 x  + 11 x  - 4 x  - 5 x
 (%i20) p2: x^4-2*x^3-4*x^2+2*x+3;
-
                   4      3      2
 (%o20)           x  - 2 x  - 4 x  + 2 x + 3
 (%i21) gcd(p1,p2);
-
                        3    2
 (%o21)                x  + x  - x - 1
-(%i22) load(functs);
-
-Warning - you are redefining the MACSYMA function ODDP
-Warning - you are redefining the MACSYMA function EVENP
-(%o22)
-
-     /usr/share/maxima/5.9.1/share/simplification/functs.mac
+(%i22) load(functs)$
 (%i23) lcm(p1,p2);
-
                                    2          3
 (%o23)      (x - 5) (x - 3) (x - 1)  x (x + 1)
 \end{verbatim}
 En \verb|(%i19)| y \verb|(%i20)| definimos los polinomios \verb|p1| y \verb|p2|, a continuaci'on calculamos su m'aximo com'un divisor (mcd) en \verb|(%i21)| y antes de pedir el m'inimo com'un m'ultiplo en \verb|(%i23)| cargamos el archivo \verb|functs.mac| en el que se encuentra definida la funci'on \verb|lcm|. Es posible que deseemos disponer del mcd factorizado, por lo que hacemos
 \index{factor}\begin{verbatim}
 (%i24) factor(%o21);
-
                                      2
 (%o24)                (x - 1) (x + 1)
 \end{verbatim}
@@ -760,17 +640,14 @@ En \verb|(%i19)| y \verb|(%i20)| definimos los polinomios \verb|p1| y \verb|p2|,
 Asignarle una etiqueta a una ecuaci'on es tan simple como hacer
 \begin{verbatim}
 (%i1) ec: 3 * x = 1 + x;
-
 (%o1)                  3 x = x + 1
 \end{verbatim}
 
 A partir de ah'i, aquellas operaciones en las que intervenga la etiqueta ser'an realizadas a ambos miembros de la igualdad; restamos \verb|x| en los dos lados y a continuaci'on dividimos lo que queda entre \verb|2|,
 \begin{verbatim}
 (%i2) %-x;
-
 (%o2)                    2 x = 1
 (%i3) %/2;
-
                                1
 (%o3)                      x = -
                                2
@@ -780,7 +657,6 @@ obteniendo de esta manera la soluci'on de la ecuaci'on como si hubi'esemos opera
 Ni qu'e decir tiene que la ecuaci'on anterior se pudo haber resuelto de un modo m'as inmediato,
 \index{solve}\begin{verbatim}
 (%i4) solve(ec);
-
                                1
 (%o4)                     [x = -]
                                2
@@ -789,25 +665,21 @@ Ni qu'e decir tiene que la ecuaci'on anterior se pudo haber resuelto de un modo 
 La instrucci'on \verb|solve| puede admitir como segundo argumento la inc'ognita que se pretende calcular, lo que resultar'a de utilidad cuando en la ecuaci'on aparezcan constantes literales,
 \begin{verbatim}
 (%i5) solve((2-a)/x-3=b*x+1/x,x);
-
-              SQRT((4 - 4 a) b + 9) + 3
+              sqrt((4 - 4 a) b + 9) + 3
 (%o5)  [x = - -------------------------,
                          2 b
-
-                                  SQRT((4 - 4 a) b + 9) - 3
+                                  sqrt((4 - 4 a) b + 9) - 3
                               x = -------------------------]
                                              2 b
 \end{verbatim}
 Las soluciones de las ecuaciones ser'an probablemente utilizadas en c'alculos posteriores, por lo que nos interesar'a poder extraerlas de la lista anterior; a continuaci'on tomamos el primer resultado calculado por Maxima mediante la funci'on \verb|part|\index{part} y despu'es asignamos a la variable \verb|sol| el resultado num'erico,
 \begin{verbatim}
 (%i6) part(%,1);
-
-                    SQRT((4 - 4 a) b + 9) + 3
+                    sqrt((4 - 4 a) b + 9) + 3
 (%o6)         x = - -------------------------
                                2 b
 (%i7) sol: rhs(%);
-
-                  SQRT((4 - 4 a) b + 9) + 3
+                  sqrt((4 - 4 a) b + 9) + 3
 (%o7)           - -------------------------
                              2 b
 \end{verbatim}
@@ -816,7 +688,6 @@ La funci'on \verb|rhs|\index{rhs} devuelve el miembro derecho de la igualdad, mi
 Es posible resolver ecuaciones polin'omicas de grado $\leq 4$, pero desgraciadamente, como es de esperar, Maxima no dispone de un m'etodo algebraico que permita resolver ecuaciones polin'omicas de grado mayor que cuatro,
 \begin{verbatim}
 (%i8) solve(x^5 - 3*x^4 + 2*x^3 -2*x^2 - x + 4 = 0);
-
                  5      4      3      2
 (%o8)      [0 = x  - 3 x  + 2 x  - 2 x  - x + 4]
 \end{verbatim}
@@ -825,23 +696,16 @@ por lo que \verb|solve| devolver'a la misma ecuaci'on sin resolver.
 Maxima dispone de otra funci'on para resolver ecuaciones y sistemas, que en ocasiones ser'a m'as util que \verb|solve|. Veamos c'omo trata la instrucci'on \verb|algsys|\index{algsys} la ecuaci'on polin'omica anterior,
 \begin{verbatim}
 (%i9) algsys([x^5 - 3*x^4 + 2*x^3 -2*x^2 - x + 4 = 0],[x]);
-
 (%o9) [[x = 2.478283086356668],
-
-[x = .1150057557117294 - 1.27155810694299 %I],
-
-[x = 1.27155810694299 %I + .1150057557117294],
-
+[x = .1150057557117294 - 1.27155810694299 %i],
+[x = 1.27155810694299 %i + .1150057557117294],
 [x = - .8598396689940523], [x = 1.151545166402536]]
 \end{verbatim}
 Como se ve, al no ser capaz de resolverla algebraicamente, nos brinda la oportunidad de conocer una aproximaci'on num'erica de la soluci'on. La funci'on \verb|algsys| reconoce la variable global \verb|realonly|\index{realonly}, que cuando toma el valor \verb|true|, har'a que se ignoren las soluciones complejas,
 \begin{verbatim}
 (%i10) realonly:true$
-
 (%i11) ''%i9;  /* recalcula la entrada %i9 */
-
 (%o12) [[x = 2.478283086356668], [x = 1.151545166402536],
-
                                   [x = - .8598396689940523]]
 (%i13) realonly:false$  /* le devolvemos el valor por defecto */
 \end{verbatim}
@@ -849,16 +713,12 @@ Como se ve, al no ser capaz de resolverla algebraicamente, nos brinda la oportun
 Trat'andose de ecuaciones polin'omicas, para forzar el c'alculo num'erico de sus ra'ices se puede hacer uso tambi'en de la instrucci'on \verb|allroots|\index{allroots}, que obtiene tanto las ra'ices reales como complejas,
 \begin{verbatim}
 (%i14) allroots(x^5 - 3*x^4 + 2*x^3 -2*x^2 - x + 4 = 0);
-
 (%o14) [x = 1.151545173424091, x = - .8598397137271315,
-
-x = 1.27155810694299 %I + .1150057557117294,
-
-x = .1150057557117294 - 1.27155810694299 %I,
-
+x = 1.27155810694299 %i + .1150057557117294,
+x = .1150057557117294 - 1.27155810694299 %i,
 x = 2.478283028879582]
 \end{verbatim}
-donde se recordar'a que el s'imbolo \verb|%I| representa la unidad imaginaria $i = \sqrt{-1}$.
+donde se recordar'a que el s'imbolo \verb|%i| representa la unidad imaginaria $i = \sqrt{-1}$.
 
 Vemos a continuaci'on c'omo resolver un sistema lineal de ecuaciones mediante \verb|algsys|. Sean las ecuaciones
 \[
@@ -875,14 +735,12 @@ se har'a
                1/3* x + 2 * y + 9 * z = x + y,
                -4 * x + sqrt(2) * y + z = 3 * y],
          [x,y,z]);
-
-               27 SQRT(2) - 84               106
+               27 sqrt(2) - 84               106
 (%o15) [[x = - ----------------, y = - ----------------,
-               29 SQRT(2) - 314        29 SQRT(2) - 314
-
-                                       575 SQRT(2) - 2884
+               29 sqrt(2) - 314        29 sqrt(2) - 314
+                                       575 sqrt(2) - 2884
                                 z = - --------------------]]
-                                      9106 SQRT(2) - 50139
+                                      9106 sqrt(2) - 50139
 \end{verbatim}
 n'otese que las ecuaciones se encerrar'an entre corchetes y se separar'an por comas y que lo mismo se debe hacer con los nombres de las inc'ognitas. 
 
@@ -897,28 +755,23 @@ Tambi'en la funci'on \verb|algsys|\index{algsys} permite la resoluci'on de siste
 Podemos proceder como se indica a continuaci'on,
 \begin{verbatim}
 (%i16) algsys([3*x^2-y=2*y^2+4, 5*x+7*y=1],[x,y]);
-
-               7 SQRT(1685) + 55
+               7 sqrt(1685) + 55
 (%o16) [[x = - -----------------,
                       194
-
-    5 SQRT(5) SQRT(337) + 67
+    5 sqrt(5) sqrt(337) + 67
 y = ------------------------],
               194
-
-     7 SQRT(1685) - 55        5 SQRT(5) SQRT(337) - 67
+     7 sqrt(1685) - 55        5 sqrt(5) sqrt(337) - 67
 [x = -----------------, y = - ------------------------]]
             194                         194
 \end{verbatim}
 cuyo resultado es una lista con dos pares ordenados, soluciones ambos del sistema propuesto. Una manera alternativa de proceder en este caso podr'ia consistir en solicitarle primero a Maxima que nos eliminase una de las variables y resolver a continuaci'on para la otra, tal como indica el siguiente c'odigo,
 \index{eliminate}\begin{verbatim}
 (%i17) eliminate([3*x^2-y=2*y^2+4, 5*x+7*y=1],[y]);
-
                          2
 (%o17)              [97 x  + 55 x - 205]
 (%i18) algsys(%,[x]);
-
-             7 SQRT(1685) - 55          7 SQRT(1685) + 55
+             7 sqrt(1685) - 55          7 sqrt(1685) + 55
 (%o18) [[x = -----------------], [x = - -----------------]]
                     194                        194
 \end{verbatim}
@@ -927,13 +780,11 @@ En \verb|(%i17)| pedimos que nos elimine la inc'ognita $y$, obteniendo como resu
 Ya para terminar, resolvamos una ecuaci'on indeterminada obteniendo la soluci'on en forma param'etrica,
 \begin{verbatim}
 (%i19) algsys([3*x^2-5*y=x],[x,y]);
-
                                    2
-                              3 %R1  - %R1
-(%o19)         [[x = %R1, y = ------------]]
+                              3 %r1  - %r1
+(%o19)         [[x = %r1, y = ------------]]
                                    5
 (%i20) %, %r1:1;
-
                                    2
 (%o20)                [[x = 1, y = -]]
                                    5
@@ -947,7 +798,6 @@ Maxima nombra los par'ametros siguiendo el esquema \verb|%Rx|\index{13@\%Rx}, si
 La definici'on de una matriz es extremadamente simple en Maxima,
 \index{matrix}\begin{verbatim}
 (%i1) m1: matrix([3,4,0],[6,0,-2],[0,6,a]);
-
                        [ 3  4   0  ]
                        [           ]
 (%o1)                  [ 6  0  - 2 ]
@@ -958,7 +808,6 @@ La definici'on de una matriz es extremadamente simple en Maxima,
 Tambi'en es posible definir una matriz de forma interactiva tal y como muestra el siguiente ejemplo,
 \index{entermatrix}\begin{verbatim}
 (%i2) entermatrix(2,3);
-
 Row 1 Column 1:
 4/7;
 Row 1 Column 2:
@@ -974,19 +823,16 @@ Row 2 Column 3:
 
 Matrix entered.
                   [    4                 ]
-                  [    -       0     %PI ]
+                  [    -       0     %pi ]
 (%o2)             [    7                 ]
                   [                      ]
-                  [ SQRT(2)  LOG(3)  - 9 ]
-
+                  [ sqrt(2)  log(3)  - 9 ]
 \end{verbatim}
 
 Existe un tercer m'etodo para construir matrices que es 'util cuando el elemento $(i,j)$-'esimo de la misma es funci'on de su posici'on dentro de la matriz. A continuaci'on, se fija en primer lugar la regla que permite definir un elemento cualquiera y luego en base a ella se construye una matriz de dimensiones $2 \times 5$
 \index{28@:=}\index{genmatrix}\begin{verbatim}
 (%i3) a[i,j]:=i+j$
-
 (%i4) genmatrix(a,2,5);
-
                      [ 2  3  4  5  6 ]
 (%o4)                [               ]
                      [ 3  4  5  6  7 ]
@@ -997,14 +843,12 @@ Obs'ervese que el s'imbolo de asignaci'on para el elemento gen'erico es \verb|:=
 Podemos acceder a los diferentes elementos de la matriz haciendo referencia a sus sub'indices, indicando primero la fila y despu'es la columna:
 \begin{verbatim}
 (%i5) m1[3,1];
-
 (%o5)                        0
 \end{verbatim}
 
 Se puede extraer una submatriz con la funci'on \verb|submatrix|\index{submatrix}, teniendo en cuenta que los enteros que preceden al nombre de la matriz original son las filas a eliminar y los que se colocan detr'as indican las columnas que no interesan; en el siguiente ejemplo, queremos la submatriz que nos queda de \verb|m1| despu'es de extraer la primera fila y la segunda columna,
 \begin{verbatim}
 (%i5) submatrix(1,m1,2);
-
                          [ 6  - 2 ]
 (%o5)                    [        ]
                          [ 0   a  ]
@@ -1012,7 +856,6 @@ Se puede extraer una submatriz con la funci'on \verb|submatrix|\index{submatrix}
 Otro ejemplo es el siguiente,
 \begin{verbatim}
 (%i6) submatrix(1,2,m1,3);
-
 (%o6)                     [ 0  6 ]
 \end{verbatim}
 en el que eliminamos las dos primeras filas y la 'ultima columna, ?`se pilla el truco?
@@ -1020,7 +863,6 @@ en el que eliminamos las dos primeras filas y la 'ultima columna, ?`se pilla el 
 Al igual que se extraen submatrices, es posible a~nadir filas y columnas a una matriz dada; por ejemplo,
 \index{addrow}\index{addcol}\begin{verbatim}
 (%i7) addrow(m1,[1,1,1],[2,2,2]);
-
                        [ 3  4   0  ]
                        [           ]
                        [ 6  0  - 2 ]
@@ -1031,7 +873,6 @@ Al igual que se extraen submatrices, es posible a~nadir filas y columnas a una m
                        [           ]
                        [ 2  2   2  ]
 (%i8) addcol(%,[7,7,7,7,7]);
-
                       [ 3  4   0   7 ]
                       [              ]
                       [ 6  0  - 2  7 ]
@@ -1046,7 +887,6 @@ Al igual que se extraen submatrices, es posible a~nadir filas y columnas a una m
 La matriz identidad es m'as f'acil construirla mediante la funci'on \verb|ident|\index{ident},
 \begin{verbatim}
 (%i9) ident(3);
-
                         [ 1  0  0 ]
                         [         ]
 (%o9)                   [ 0  1  0 ]
@@ -1056,7 +896,6 @@ La matriz identidad es m'as f'acil construirla mediante la funci'on \verb|ident|
 y la matriz con todos sus elementos iguales a cero,
 \index{zeromatrix}\begin{verbatim}
 (%i10) zeromatrix(2,4);
-
                        [ 0  0  0  0 ]
 (%o10)                 [            ]
                        [ 0  0  0  0 ]
@@ -1064,50 +903,42 @@ y la matriz con todos sus elementos iguales a cero,
 Tambi'en, una matriz diagonal con todos los elementos de la diagonal principal iguales puede construirse con una llamada a la funci'on \verb|diagmatrix|\index{diagmatrix},
 \begin{verbatim}
 (%i11) diagmatrix(4,%e);
-
-                     [ %E  0   0   0  ]
+                     [ %e  0   0   0  ]
                      [                ]
-                     [ 0   %E  0   0  ]
+                     [ 0   %e  0   0  ]
 (%o11)               [                ]
-                     [ 0   0   %E  0  ]
+                     [ 0   0   %e  0  ]
                      [                ]
-                     [ 0   0   0   %E ]
+                     [ 0   0   0   %e ]
 \end{verbatim}
 
 En todo caso, debe tenerse cuidado en que si la matriz no se construye de forma apropiada, Maxima no la reconoce como tal. Para saber si una expresi'on es reconocida como una matriz se utiliza la funci'on \verb|matrixp|\index{matrixp}; la siguiente secuencia permite aclarar lo que se pretende decir,
 \begin{verbatim}
 (%i12) matrix([[1,2,3],[4,5,6]]);  /* construccion correcta */
-
 (%o12)            [ [1, 2, 3]  [4, 5, 6] ]
 (%i13) matrixp(%);  /* es la anterior realmente una matriz? */
-
 (%o13)                      TRUE
 (%i14) [[7,8,9],[0,1,2]];    /* otra matriz */
-
 (%o14)             [[7, 8, 9], [0, 1, 2]]
 (%i15) matrixp(%);   /* sera una matriz? */
-
 (%o15)                     FALSE
 \end{verbatim}
 
 Casos particulares de submatrices son las filas y las columnas; los ejemplos se explican por s'i solos:
 \index{col}\index{row}\begin{verbatim}
 (%i16) col(m1,3);
-
                           [  0  ]
                           [     ]
 (%o16)                    [ - 2 ]
                           [     ]
                           [  a  ]
 (%i17) row(m1,2);
-
 (%o17)                 [ 6  0  - 2 ]
 \end{verbatim}
 
 Con las matrices se pueden realizar m'ultiples operaciones. Empezamos por el c'alculo de la potencia de una matriz:
 \index{20@\^\ \^\ }\begin{verbatim}
 (%i18) m1^^2;
-
                     [ 33  12     - 8   ]
                     [                  ]
 (%o18)              [ 18  12    - 2 a  ]
@@ -1118,7 +949,6 @@ Con las matrices se pueden realizar m'ultiples operaciones. Empezamos por el c'a
 N'otese que se utiliza dos veces el s'imbolo \verb|^| antes del exponente; en caso de escribirlo una sola vez se calcular'ian las potencias de cada uno de los elementos de la matriz independientemente, como se indica en el siguiente ejemplo,
 \index{18@\^\ }\begin{verbatim}
 (%i19) m2:m1^2;
-
                        [ 9   16  0  ]
                        [            ]
 (%o19)                 [ 36  0   4  ]
@@ -1131,7 +961,6 @@ N'otese que se utiliza dos veces el s'imbolo \verb|^| antes del exponente; en ca
 Para la suma, resta y producto matriciales se utilizan los operadores \verb|+|, \verb|-| y \verb|.|, respectivamente,
 \index{14@+}\index{15@-}\index{17@/}\index{17@.}\begin{verbatim}
 (%i20) m1+m2;
-
                      [ 12  20    0    ]
                      [                ]
 (%o20)               [ 42  0     2    ]
@@ -1139,7 +968,6 @@ Para la suma, resta y producto matriciales se utilizan los operadores \verb|+|, 
                      [          2     ]
                      [ 0   42  a  + a ]
 (%i21) m1-m2;
-
                    [ - 6   - 12    0    ]
                    [                    ]
 (%o21)             [ - 30   0     - 6   ]
@@ -1147,7 +975,6 @@ Para la suma, resta y producto matriciales se utilizan los operadores \verb|+|, 
                    [                  2 ]
                    [  0    - 30  a - a  ]
 (%i22) m1.m2;
-
                    [ 171   48     16    ]
                    [                    ]
                    [                 2  ]
@@ -1160,7 +987,6 @@ Para la suma, resta y producto matriciales se utilizan los operadores \verb|+|, 
 Sin embargo, tanto el producto elemento a elemento de dos matrices, como la multiplicaci'on por un escalar se realizan mediante el operador \verb|*|, como indican los siguientes dos ejemplos,
 \index{16@*}\begin{verbatim}
 (%i23) m1*m2;
-
                      [ 27   64    0  ]
                      [               ]
 (%o23)               [ 216   0   - 8 ]
@@ -1168,29 +994,24 @@ Sin embargo, tanto el producto elemento a elemento de dos matrices, como la mult
                      [            3  ]
                      [  0   216  a   ]
 (%i24) 4*m1;
-
                       [ 12  16   0  ]
                       [             ]
 (%o24)                [ 24  0   - 8 ]
                       [             ]
                       [ 0   24  4 a ]
-
 \end{verbatim}
 
 Otros c'alculos frecuentes con matrices son la transposici'on, el determinante, la inversi'on, el polinomio caracter'istico, as'i como los valores y vectores propios; para todos ellos hay funciones en Maxima:
 \index{transpose}\index{determinant}\index{invert}\index{detout}\index{charpoly}\begin{verbatim}
 (%i25) transpose(m1);    /*la transpuesta*/
-
                        [ 3   6   0 ]
                        [           ]
 (%o25)                 [ 4   0   6 ]
                        [           ]
                        [ 0  - 2  a ]
 (%i26) determinant(m1);  /*el determinante*/
-
 (%o26)                   36 - 24 a
 (%i27) invert(m1);       /*la inversa*/
-
          [     12            4 a           8     ]
          [  ---------   - ---------  - --------- ]
          [  36 - 24 a     36 - 24 a    36 - 24 a ]
@@ -1203,7 +1024,6 @@ Otros c'alculos frecuentes con matrices son la transposici'on, el determinante, 
          [  ---------   - ---------  - --------- ]
          [  36 - 24 a     36 - 24 a    36 - 24 a ]
 (%i28) invert(m1),detout;  /*la inversa, con el determinante fuera*/
-
                    [  12    - 4 a  - 8  ]
                    [                    ]
                    [ - 6 a   3 a    6   ]
@@ -1212,27 +1032,22 @@ Otros c'alculos frecuentes con matrices son la transposici'on, el determinante, 
 (%o28)             ----------------------
                          36 - 24 a
 (%i29) charpoly(m1,x); /*pol.  caract. con variable x*/
-
 (%o29)     (3 - x) (12 - (a - x) x) - 24 (a - x)
 (%i30) expand(%);     /*pol. caract. expandido*/
-
           3      2      2
 (%o30) - x  + a x  + 3 x  - 3 a x + 12 x - 24 a + 36
-
 \end{verbatim}
 
 Vamos a suponer ahora que \verb|a| vale cero y calculemos los valores propios de la matriz,
 \index{eigenvalues}\begin{verbatim}
 (%i31) m1,a:0;
-
                        [ 3  4   0  ]
                        [           ]
 (%o31)                 [ 6  0  - 2 ]
                        [           ]
                        [ 0  6   0  ]
 (%i32) eigenvalues(%o31);
-
-           SQRT(15) %I + 3  SQRT(15) %I - 3
+           sqrt(15) %i + 3  sqrt(15) %i - 3
 (%o32) [[- ---------------, ---------------, 6], [1, 1, 1]]
                   2                2
 \end{verbatim}
@@ -1242,19 +1057,19 @@ Para el c'alculo de los vectores propios,
 \index{eigenvectors}\begin{verbatim}
 (%i33) eigenvectors(%o31);
 
-            SQRT(15) %I + 3  SQRT(15) %I - 3
+            sqrt(15) %i + 3  sqrt(15) %i - 3
 (%o33) [[[- ---------------, ---------------, 6],
                    2                2
 
-                  SQRT(15) %I + 9
+                  sqrt(15) %i + 9
 [1, 1, 1]], [1, - ---------------,
                          8
 
-  3 SQRT(3) SQRT(5) %I - 21
+  3 sqrt(3) sqrt(5) %i - 21
 - -------------------------],
               8
 
-    SQRT(15) %I - 9  3 SQRT(3) SQRT(5) %I + 21       3  3
+    sqrt(15) %i - 9  3 sqrt(3) sqrt(5) %i + 21       3  3
 [1, ---------------, -------------------------], [1, -, -]]
            8                     8                   4  4
 \end{verbatim}
@@ -1263,20 +1078,17 @@ Lo que se obtiene es, en primer lugar, los valores propios junto con sus multipl
 Otros c'alculos posibles con matrices,
 \index{minor}\index{rank}\index{matrixmap}\begin{verbatim}
 (%i34) minor(%o31,2,1);  /* el menor de un elemento */
-
                           [ 4  0 ]
 (%o34)                    [      ]
                           [ 6  0 ]
 (%i35) rank(%o31);   /* el rango de la matriz*/
-
 (%o35)                       3
 (%i36) matrixmap(sin,%o31);
-
-                [ SIN(3)  SIN(4)     0     ]
+                [ sin(3)  sin(4)     0     ]
                 [                          ]
-(%o36)          [ SIN(6)    0     - SIN(2) ]
+(%o36)          [ sin(6)    0     - sin(2) ]
                 [                          ]
-                [   0     SIN(6)     0     ]
+                [   0     sin(6)     0     ]
 \end{verbatim}
 En este 'ultimo ejemplo, aplicamos la funci'on seno a todos los elementos de la matriz.
 
@@ -1335,16 +1147,13 @@ Figura~\ref{fig:funciones}. A continuaci'on se desarrollan algunos ejemplos sobr
 Las funciones exponenciales siempre son positivas, independientemente del argumento $x$,
 \index{limit}\begin{verbatim}
 (%i1) limit(1/(x-1),x,1,minus);
-
-(%o1)                      MINF
+(%o1)                      minf
 (%i2) abs(3^-x);
-
                              1
 (%o2)                        --
                               x
                              3
 (%i3) signum(3^-x);
-
 (%o3)                        1
 \end{verbatim}
 
@@ -1352,13 +1161,11 @@ Las funciones exponenciales siempre son positivas, independientemente del argume
 La funci'on \verb|genfact(m,n,p)|\index{genfact} es el factorial generalizado, de forma que \verb|genfact(m,m,1)| coincide con $m!$,
 \begin{verbatim}
 (%i4) genfact(5,5,1)-5!;
-
 (%o4)                        0
 \end{verbatim}
 y \verb|genfact(m,m/2,2)| es igual a $m!!$,
 \begin{verbatim}
 (%i5) genfact(5,5/2,2)-5!!;
-
 (%o5)                        0
 \end{verbatim}
 
@@ -1366,21 +1173,16 @@ y \verb|genfact(m,m/2,2)| es igual a $m!!$,
 Maxima siempre devuelve resultados exactos, que nosotros podemos solicitar en formato decimal,
 \index{asin}\begin{verbatim}
 (%i6) asin(1);
-
-                            %PI
+                            %pi
 (%o6)                       ---
                              2
 (%i7) %,numer;
-
 (%o7)               1.570796326794897
 \end{verbatim}
 Recordemos que el formato decimal lo podemos pedir con precisi'on arbitraria,
 \begin{verbatim}
-(%i8) fpprec:50$ bfloat(%o7);
-
-(%i9)
-Warning:  Float to bigfloat conversion of 1.5707963267948966
-(%o9) 1.5707963267948965801416385921020337420225281697321B0
+(%i8) fpprec:50$ bfloat(%o6);
+(%o9) 1.5707963267948966192313216916397514420985846996876B0
 \end{verbatim}
 
 La funci'on de error est'a relacionada con la funci'on de distribuci'on de la variable aleatoria normal $X \sim \normal(0,1)$ de la forma
@@ -1390,16 +1192,13 @@ La funci'on de error est'a relacionada con la funci'on de distribuci'on de la va
 por lo que la probabilidad de que esta variable tome un valor menor que $1.5$ es
 \index{erf}\begin{verbatim}
 (%i10) 0.5+0.5*erf(1.5/sqrt(2)),numer;
-
 (%o10)               0.9331927987311419
 \end{verbatim}
 
 Una forma m'as elegante de hacer lo anterior es definir nuestra propia funci'on de distribuci'on a partir de la de error, para lo que se hace uso del s'imbolo \verb|:=|,
 \index{28@:=}\begin{verbatim}
 (%i11) F(x):=1/2+erf(x/sqrt(2))/2$
-
 (%i12) F(1.5),numer;
-
 (%o12)               0.9331927987311419
 \end{verbatim}
 
@@ -1407,16 +1206,27 @@ No terminan aqu'i las funciones de Maxima; junto a las ya expuestas habr'ia que 
 \begin{verbatim}
 (%i13) describe(airy);
 
+ 0: airy :(maxima.info)Definitions for Special Functions.
+ 1: airy_ai :Definitions for Special Functions.
+ 2: airy_bi :Definitions for Special Functions.
+ 3: airy_dai :Definitions for Special Functions.
+ 4: airy_dbi :Definitions for Special Functions.
+Enter space-separated numbers, `all' or `none': 1
 
-Info from file /usr/share/info/maxima.info:
- - Function: AIRY (X)
-     returns the Airy function Ai of real argument X.  The file
-     SHARE1;AIRY FASL contains routines to evaluate the Airy functions
-     Ai(X), Bi(X), and their derivatives dAi(X), dBi(X).  Ai and Bi
-     satisfy the AIRY eqn diff(y(x),x,2)-x*y(x)=0.  Read SHARE1;AIRY
-     USAGE for details.
+Info from file /usr/local/info/maxima.info:
+ - Function: airy_ai (<x>)
+     The Airy function Ai, as defined in Abramowitz and Stegun,
+     Handbook of Mathematical Functions, Section 10.4.
 
-(%o13)                     FALSE
+     The Airy equation `diff (y(x), x, 2) - x y(x) = 0' has two
+     linearly independent solutions, `y = Ai(x)' and `y = Bi(x)'.  The
+     derivative `diff (airy_ai(x), x)' is `airy_dai(x)'.
+
+     If the argument `x' is a real or complex floating point number,
+     the numerical value of `airy_ai' is returned when possible.
+
+     See also `airy_bi', `airy_dai', `airy_dbi'.
+(%o13)                     false
 \end{verbatim}
 
 
@@ -1426,10 +1236,8 @@ Info from file /usr/share/info/maxima.info:
 Sin m'as pre'ambulos, veamos algunos ejemplos de c'omo calcular l'imites con la asistencia de Maxima. En primer lugar vemos que es posible hacer que la variable se aproxime al infinito ($x \rightarrow \infty$) haciendo uso del s'imbolo \verb|inf|\index{inf}, o que se aproxime al menos infinito ($x \rightarrow -\infty$) haciendo uso de \verb|minf|\index{minf},
 \index{limit}\begin{verbatim}
 (%i1) limit(1/sqrt(x),x,inf);
-
 (%o1)                       0
 (%i2) limit((exp(x)-exp(-x))/(exp(x)+exp(-x)),x,minf);
-
 (%o2)                      - 1
 \end{verbatim}
 que nos permite calcular $\lim_{x \rightarrow \infty} \frac{1}{\sqrt{x}}$ y 
@@ -1438,13 +1246,11 @@ $\lim_{x \rightarrow -\infty} \frac{e^x-e^{-x}}{e^x+e^{-x}}$, respectivamente.
 Los siguientes ejemplos muestran l'imites en los que la variable $x$ se aproxima a puntos de discontinuidad,
 \begin{verbatim}
 (%i3) limit((x^2-x/3-2/3)/(5*x^2-11*x+6),x,1);
-
                               5
 (%o3)                       - -
                               3
 (%i4) limit(1/(x-1)^2,x,1);
-
-(%o4)                      INF
+(%o4)                      inf
 \end{verbatim}
 donde hemos obtenido los resultados
 \[
@@ -1459,17 +1265,14 @@ Sin embargo, ciertos l'imites no se pueden resolver sin aportar informaci'on adi
 $\lim_{x \rightarrow 1} \frac{1}{x-1}$, para el que podemos hacer
 \begin{verbatim}
 (%i5) limit(1/(x-1),x,1);
-
-(%o5)                      UND
+(%o5)                      und
 \end{verbatim}
-donde Maxima nos responde con el s'imbolo \verb|UND|\index{UND} de \emph{undefined} o indefinido. En tales situaciones podemos indicarle al asistente que la variable $x$ se aproxima a 1 por la derecha ($x \rightarrow 1^+$) o por la izquierda ($x \rightarrow 1^-$),
+donde Maxima nos responde con el s'imbolo \verb|und|\index{und} de \emph{undefined} o indefinido. En tales situaciones podemos indicarle al asistente que la variable $x$ se aproxima a 1 por la derecha ($x \rightarrow 1^+$) o por la izquierda ($x \rightarrow 1^-$),
 \index{plus}\index{minus}\begin{verbatim}
 (%i6) limit(1/(x-1),x,1,plus);
-
-(%o6)                      INF
+(%o6)                      inf
 (%i7) limit(1/(x-1),x,1,minus);
-
-(%o7)                      MINF
+(%o7)                      minf
 \end{verbatim}
 
 
@@ -1479,42 +1282,34 @@ donde Maxima nos responde con el s'imbolo \verb|UND|\index{UND} de \emph{undefin
 Maxima controla el c'alculo de derivadas mediante la instrucci'on \verb|diff|\index{diff}. A continuaci'on se presentan algunos ejemplos sobre su uso,
 \begin{verbatim}
 (%i1) diff(x^log(a*x),x);
-
-                LOG(a x)  LOG(a x)   LOG(x)
+                log(a x)  log(a x)   log(x)
 (%o1)          x         (-------- + ------)
                              x         x
 (%i2) diff(x^log(a*x),x,2); /*derivada segunda*/
-
-       LOG(a x)  LOG(a x)   LOG(x) 2
+       log(a x)  log(a x)   log(x) 2
 (%o2) x         (-------- + ------)
                     x         x
-
-                         LOG(a x)    LOG(a x)   LOG(x)   2
+                         log(a x)    log(a x)   log(x)   2
                       + x         (- -------- - ------ + --)
                                          2         2      2
                                         x         x      x
 (%i3) factor(%);
-
-       LOG(a x) - 2     2
-(%o3) x             (LOG (a x) + 2 LOG(x) LOG(a x)
-
+       log(a x) - 2     2
+(%o3) x             (log (a x) + 2 log(x) log(a x)
                                           2
-                          - LOG(a x) + LOG (x) - LOG(x) + 2)
+                          - log(a x) + log (x) - log(x) + 2)
 \end{verbatim}
 donde se han calculado la primera y segunda derivadas de la funci'on $y=x^{\ln(ax)}$. N'otese que en la entrada \verb|(%i3)| se le ha pedido al asistente que simplificase la salida \verb|(%o2)|.
 
 Tambi'en se pueden calcular derivadas parciales, tal como se muestra a continuaci'on,
 \begin{verbatim}
 (%i4) diff(x*cos(y)+y*sin(x*y),x,1,y,2);
-
                           2  2
-(%o4) - 4 x y SIN(x y) - x  y  COS(x y) + 2 COS(x y)
-
-                                                    - COS(y)
+(%o4) - 4 x y sin(x y) - x  y  cos(x y) + 2 cos(x y)
+                                                    - cos(y)
 (%i5) diff(exp(x)*sin(y)*tan(z),x,3,y,5,z,2);
-
                     x           2
-(%o5)           2 %E  COS(y) SEC (z) TAN(z)
+(%o5)           2 %e  cos(y) sec (z) tan(z)
 \end{verbatim}
 donde se han obtenido los resultados
 \[
@@ -1531,28 +1326,23 @@ Maxima tambi'en nos puede ayudar a la hora de aplicar la regla de la cadena en e
 $\frac{\vartheta z}{\vartheta v}$, $\frac{\vartheta z^2}{\vartheta y \vartheta v}$ o $\frac{\vartheta z^2}{\vartheta u \vartheta v}$.
 \index{depends}\begin{verbatim}
 (%i6) depends(z,[x,y],[x,y],[u,v]);
-
 (%o6)           [z(x, y), x(u, v), y(u, v)]
 (%i7) diff(z,v,1);
-
                        dy dz   dx dz
 (%o7)                  -- -- + -- --
                        dv dy   dv dx
 (%i8) diff(z,y,1,v,1);
-
                          2         2
                      dy d z   dx  d z
 (%o8)                -- --- + -- -----
                      dv   2   dv dx dy
                         dy
 (%i9) diff(z,u,1,v,1);
-
                2         2        2
        dy  dy d z   dx  d z      d y  dz
 (%o9)  -- (-- --- + -- -----) + ----- --
        du  dv   2   dv dx dy    du dv dy
               dy
-
                                    2         2        2
                            dx  dx d z   dy  d z      d x  dz
                          + -- (-- --- + -- -----) + ----- --
@@ -1563,19 +1353,15 @@ $\frac{\vartheta z}{\vartheta v}$, $\frac{\vartheta z^2}{\vartheta y \vartheta v
 En cualquier momento podemos solicitarle a Maxima que nos recuerde el cuadro de dependencias,
 \index{dependencies}\begin{verbatim}
 (%i10) dependencies;
-
 (%o10)          [z(x, y), x(u, v), y(u, v)]
 \end{verbatim}
 o tambi'en podemos eliminar dependencias,
 \index{remove}\begin{verbatim}
 (%i11) remove(x,dependency);
-
-(%o11)                      DONE
+(%o11)                      done
 (%i12) dependencies;
-
 (%o12)               [z(x, y), y(u, v)]
 (%i13) diff(z,y,1,v,1);
-
                                2
                            dy d z
 (%o13)                     -- ---
@@ -1586,9 +1372,7 @@ o tambi'en podemos eliminar dependencias,
 Veamos c'omo deriva Maxima funciones definidas impl'icitamente. En el siguiente ejemplo, para evitar que \verb|y| sea considerada una constante, le declararemos una dependencia respecto de \verb|x|,
 \begin{verbatim}
 (%i14) depends(y,x)$
-
 (%i15) diff(x^2+y^3=2*x*y,x);
-
                    2 dy             dy
 (%o15)          3 y  -- + 2 x = 2 x -- + 2 y
                      dx             dx
@@ -1597,19 +1381,16 @@ Veamos c'omo deriva Maxima funciones definidas impl'icitamente. En el siguiente 
 Cuando se solicita el c'alculo de una derivada sin especificar la variable respecto de la cual se deriva, Maxima utilizar'a el s'imbolo \verb|del|\index{del} para representar las diferenciales, 
 \begin{verbatim}
 (%i16) diff(x^2);
-
-(%o16)                    2 x DEL(x)
+(%o16)                    2 x del(x)
 \end{verbatim}
 lo que se interpretar'a como $2x dx$. Si en la expresi'on a derivar hay m'as de una variable, habr'a diferenciales para todas,
 \begin{verbatim}
 (%i17) diff(x^2+y^3=2*x*y);
-
           2              2 dy
-(%o17) 3 y  DEL(y) + (3 y  -- + 2 x) DEL(x) =
+(%o17) 3 y  del(y) + (3 y  -- + 2 x) del(x) =
                            dx
-
                                             dy
-                          2 x DEL(y) + (2 x -- + 2 y) DEL(x)
+                          2 x del(y) + (2 x -- + 2 y) del(x)
                                             dx
 \end{verbatim}
 Recu'erdese que durante este c'alculo estaba todav'ia activa la dependencia declarada en la entrada \verb|(%i14)|.
@@ -1621,13 +1402,11 @@ y=\frac{x \ln x}{x^2-1}
 en el entorno de $x=1$,
 \index{taylor}\begin{verbatim}
 (%i18) taylor((x*log(x))/(x^2-1),x,1,3);
-
                          2          3
               1   (x - 1)    (x - 1)
 (%o18)/T/     - - -------- + -------- + . . .
               2      12         12
 (%i19) expand(%);
-
                       3    2
                      x    x    5 x   1
 (%o19)               -- - -- + --- + -
@@ -1637,20 +1416,15 @@ en el entorno de $x=1$,
 A continuaci'on un ejemplo de desarrollo multivariante de la funci'on $y=\exp(x^2 \sin(x y))$ alrededor del punto $(2,0)$ hasta grado 2 respecto de cada variable,
 \begin{verbatim}
 (%i20) taylor(exp(x^2*sin(x*y)),[x,2,2],[y,0,2]);
-
                         2
 (%o20)/T/ 1 + 8 y + 32 y  + . . .
-
                2
  + (12 y + 96 y  + . . .) (x - 2)
-
                2                 2
  + (6 y + 120 y  + . . .) (x - 2)  + . . .
 (%i21) expand(%);
-
             2  2          2        2      2
 (%o21) 120 x  y  - 384 x y  + 320 y  + 6 x  y - 12 x y + 8 y
-
                                                          + 1
 \end{verbatim}
 
@@ -1661,14 +1435,12 @@ A continuaci'on un ejemplo de desarrollo multivariante de la funci'on $y=\exp(x^
 La funci'on de Maxima que controla el c'alculo de integrales es \verb|integrate|\index{integrate}, tanto para las definidas como indefinidas; empecemos por estas 'ultimas,
 \begin{verbatim}
 (%i1) integrate(cos(x)^3/sin(x)^4,x);
-
                            2
-                      3 SIN (x) - 1
+                      3 sin (x) - 1
 (%o1)                 -------------
                              3
-                        3 SIN (x)
+                        3 sin (x)
 (%i2) integrate(a[3]*x^3+a[2]*x^2+a[1]*x+a[0],x);
-
                    4       3       2
                a  x    a  x    a  x
                 3       2       1
@@ -1688,20 +1460,17 @@ Adem'as, este 'ultimo ejemplo nos ofrece la oportunidad de ver c'omo escribir co
 Ahora un par de ejemplos sobre la integral definida,
 \index{positive}\index{negative}\index{zero}\begin{verbatim}
 (%i3) integrate(2*x/((x-1)*(x+2)),x,3,5);
-
-            2 LOG(7) + LOG(4)   2 LOG(5) + LOG(2)
+            2 log(7) + log(4)   2 log(5) + log(2)
 (%o3)   2 (----------------- - -----------------)
                     3                   3
 (%i4) %,numer;   /*aproximacion decimal*/
-
 (%o4)                 0.91072776920158
 (%i5) integrate(asin(x),x,0,u);
-
 Is  u  positive, negative, or zero?
 
 positive;
                                       2
-(%o5)           u ASIN(u) + SQRT(1 - u ) - 1
+(%o5)           u asin(u) + sqrt(1 - u ) - 1
 \end{verbatim}
 esto es,
 \[
@@ -1720,7 +1489,6 @@ L(p)=\int_0^\infty f(x) e^{-p x} dx,
 siendo $p$ un n'umero complejo. As'i, la transformada de Laplace de $f(x)=k e^{-k x}$ es
 \index{laplace}\begin{verbatim}
 (%i6) laplace(k*exp(-k*x),x,p);
-
                              k
 (%o6)                      -----
                            p + k
@@ -1728,9 +1496,8 @@ siendo $p$ un n'umero complejo. As'i, la transformada de Laplace de $f(x)=k e^{-
 y calculando la transformada inversa volvemos al punto de partida,
 \index{ilt}\begin{verbatim}
 (%i7) ilt(%,p,x);
-
                              - k x
-(%o7)                    k %E
+(%o7)                    k %e
 \end{verbatim}
 
 La transformada de Fourier de una funci'on se reduce a la de Laplace cuando el argumento $p=-i t$, siendo $i$ la unidad imaginaria y $t \in \R$,
@@ -1740,27 +1507,24 @@ F(t)=\int_0^\infty f(x) e^{i t x} dx.
 De esta manera, la transformada de Fourier de $f(x)=k e^{-k x}$ es
 \begin{verbatim}
 (%i8) laplace(k*exp(-k*x),x,-%i*t);
-
                              k
 (%o8)                     --------
-                          k - %I t
+                          k - %i t
 \end{verbatim}
 N'otese que si $x>0$, la $f(x)$ anterior es precisamente la funci'on de densidad de una variable aleatoria exponencial de par'ametro $k$, por lo que este 'ultimo resultado coincide precisamente con la funci'on caracter'istica de esta misma distribuci'on. T'engase en cuenta que Maxima calcula la transformada de Laplace integrando en la semirecta positiva, por lo que el c'alculo anterior no es v'alido para calcular funciones caracter'isticas de variables aleatorias que puedan tomar valores negativos, como por ejemplo la distribuci'on normal. Una posible soluci'on a esta situaci'on es integrar directamente para calcular la funci'on caracter'istica de la distribuci'on normal $X \sim \normal(0,1)$,
 \index{ratsimp}\begin{verbatim}
 (%i9) integrate(1/sqrt(2*%pi)*exp(-x^2/2)*exp(%i*t*x),x,minf,inf);
-
                               2  2
-                            %I  t
+                            %i  t
                             ------
                               2
-(%o9)                     %E
+(%o9)                     %e
 (%i10) ratsimp(%);  /* Ojo: %i^2=-1 */
-
                                 2
                                t
                              - --
                                2
-(%o10)                     %E
+(%o10)                     %e
 \end{verbatim}
 
 
@@ -1773,7 +1537,6 @@ Una ecuaci'on diferencial de primer orden tiene la forma general $F(x,y,y')=0$, 
 \begin{verbatim}
 (%i1) /* ecuacion de variables separadas */
       ec:(x-1)*y^3+(y-1)*x^3*'diff(y,x)=0;
-
                 3         dy            3
 (%o1)          x  (y - 1) -- + (x - 1) y = 0
                           dx
@@ -1781,16 +1544,14 @@ Una ecuaci'on diferencial de primer orden tiene la forma general $F(x,y,y')=0$, 
 siendo obligatorio el uso del ap'ostrofo (\verb|'|) antes de \verb|diff| al objeto de evitar el c'alculo de la derivada, que por otro lado dar'ia cero al no haberse declarado la variable \verb|y| como dependiente de \verb|x|. Para la resoluci'on de esta ecuaci'on tan solo habr'a que hacer
 \begin{verbatim}
 (%i2) ode2(ec,y,x);
-
                    2 y - 1        2 x - 1
-(%o2)              ------- = %C - -------
+(%o2)              ------- = %c - -------
                        2              2
                     2 y            2 x
 \end{verbatim}
 donde \verb|%C| representa una constante, que se ajustar'a de acuerdo a la condici'on inicial que se le imponga a la ecuaci'on. Sup'ongase que se sabe que cuando $x=2$, debe verificarse que $y=-3$, lo cual haremos saber a Maxima a trav'es de la funci'on \verb|ic1|\index{ic1},
 \begin{verbatim}
 (%i3) ic1(%o2,x=2,y=-3);
-
                               2
                  2 y - 1     x  + 72 x - 36
 (%o3)            ------- = - --------------
@@ -1802,10 +1563,9 @@ Veamos ejemplos de otros tipos de ecuaciones diferenciales que puede resolver Ma
 \begin{verbatim}
 (%i4) /* ecuacion homogenea */
       ode2(x^3+y^3+3*x*y^2*'diff(y,x),y,x);
-
                            3    4
                       4 x y  + x
-(%o4)                 ----------- = %C
+(%o4)                 ----------- = %c
                            4
 \end{verbatim}
 En este caso, cuando no se incluye el s'imbolo de igualdad, se da por hecho que la expresi'on es igual a cero.
@@ -1813,48 +1573,41 @@ En este caso, cuando no se incluye el s'imbolo de igualdad, se da por hecho que 
 \begin{verbatim}
 (%i5) /* reducible a homogénea */
       ode2('diff(y,x)=(x+y-1)/(x-y-1),y,x);
-
              2    2                     x - 1
-        LOG(y  + x  - 2 x + 1) + 2 ATAN(-----)
+        log(y  + x  - 2 x + 1) + 2 atan(-----)
                                           y
-(%o5)   -------------------------------------- = %C
+(%o5)   -------------------------------------- = %c
                           4
 (%i6) /* ecuacion exacta */
        ode2((4*x^3+8*y)+(8*x-4*y^3)*'diff(y,x),y,x);
-
                      4            4
-(%o6)             - y  + 8 x y + x  = %C
+(%o6)             - y  + 8 x y + x  = %c
 (%i7) /* Bernoulli */
        ode2('diff(y,x)-y+sqrt(y),y,x);
-
-(%o7)          2 LOG(SQRT(y) - 1) = x + %C
+(%o7)          2 log(sqrt(y) - 1) = x + %c
 (%i8) solve(%,y);
-
-                  x + %C       x/2 + %C/2
-(%o8)      [y = %E       + 2 %E           + 1]
+                  x + %c       x/2 + %c/2
+(%o8)      [y = %e       + 2 %e           + 1]
 \end{verbatim}
 En este 'ultimo caso, optamos por obtener la soluci'on en su forma expl'icita. 
 
 Una ecuaci'on diferencial ordinaria de segundo orden tiene la forma general $F(x,y,y',y'')=0$, siendo $y''$ la segunda derivada de $y$ respecto de $x$. Como ejemplo,
 \begin{verbatim}
 (%i9) 'diff(y,x)=x+'diff(y,x,2);
-
                              2
                        dy   d y
 (%o9)                  -- = --- + x
                        dx     2
                             dx
 (%i10) ode2(%,y,x);
-
                              2
                         x   x  + 2 x + 2
-(%o10)        y = %K1 %E  + ------------ + %K2
+(%o10)        y = %k1 %e  + ------------ + %k2
                                  2
 \end{verbatim}
 Maxima nos devuelve un resultado que depende de dos par'ametros, \verb|%k1| y \verb|%k2|, que para ajustarlos necesitaremos proporcionar ciertas condiciones iniciales; si sabemos que cuando $x=1$ entonces $y=-1$ y $y'=\left.\frac{dy}{dx}\right|_{x=1}=2$, haremos uso de la instrucci'on \verb|ic2|\index{ic2},
 \begin{verbatim}
 (%i11) ic2(%,x=1,y=-1,diff(y,x)=2);
-
                          2
                         x  + 2 x + 2   7
 (%o11)              y = ------------ - -
@@ -1863,12 +1616,11 @@ Maxima nos devuelve un resultado que depende de dos par'ametros, \verb|%k1| y \v
 En el caso de las ecuaciones de segundo orden, tambi'en es posible ajustar los par'ametros de la soluci'on especificando condiciones de contorno, esto es, fijando dos puntos del plano por los que pase la soluci'on; as'i, si la soluci'on obtenida en \verb|(%o10)| debe pasar por los puntos $(-1,3)$ y $(2,\frac{5}{3})$, hacemos
 \index{bc2}\begin{verbatim}
 (%i12) bc2(%o10,x=-1,y=3,x=2,y=5/3);
-
                   x + 1    2                  3
-             35 %E        x  + 2 x + 2   15 %E  + 20
+             35 %e        x  + 2 x + 2   15 %e  + 20
 (%o12) y = - ---------- + ------------ + -----------
                  3             2              3
-             6 %E  - 6                    6 %E  - 6
+             6 %e  - 6                    6 %e  - 6
 \end{verbatim}
 N'otese que este c'alculo se le solicita a Maxima con \verb|bc2|.
 
@@ -1885,19 +1637,16 @@ La resoluci'on de sistemas de ecuaciones diferenciales se hace con llamadas a la
 (%i13) desolve(['diff(f(x),x)=3*f(x)-2*g(x),
                 'diff(g(x),x)=2*f(x)-2*g(x)],
                [f(x),g(x)]);
-
                                  - x
-               (2 g(0) - f(0)) %E
+               (2 g(0) - f(0)) %e
 (%o13) [f(x) = ---------------------
                          3
-
                        2 x
-   (2 g(0) - 4 f(0)) %E
+   (2 g(0) - 4 f(0)) %e
  - -----------------------, g(x) =
               3
-
                     - x                     2 x
-(4 g(0) - 2 f(0)) %E      (g(0) - 2 f(0)) %E
+(4 g(0) - 2 f(0)) %e      (g(0) - 2 f(0)) %e
 ----------------------- - ---------------------]
            3                        3
 \end{verbatim}
@@ -1916,23 +1665,17 @@ En este 'ultimo ejemplo, supongamos que queremos resolver el sistema de ecuacion
 bajo las condiciones $f(0)=-1$, $g(0)=3$ y $f(0)=1$. En primer lugar introduciremos estas condiciones con la funci'on \verb|atvalue|\index{atvalue}, para posteriormente solicitar la resoluci'on del sistema,
 \begin{verbatim}
 (%i14) atvalue(f(x),x=0,-1)$
-
 (%i15) atvalue(g(x),x=0,3)$
-
 (%i16) atvalue(h(x),x=0,1)$
-
 (%i17) desolve(['diff(f(x),x)=f(x)+g(x)+3*h(x),
          'diff(g(x),x)=g(x)-2*h(x),
          'diff(h(x),x)=f(x)+h(x)], [f(x),g(x),h(x)]);
-
                    2 x     2 x       - x
-(%o17) [f(x) = x %E    + %E    - 2 %E   ,
-
+(%o17) [f(x) = x %e    + %e    - 2 %e   ,
                2 x       2 x     - x
-g(x) = - 2 x %E    + 2 %E    + %E   ,
-
+g(x) = - 2 x %e    + 2 %e    + %e   ,
            2 x     - x
-h(x) = x %E    + %E   ]
+h(x) = x %e    + %e   ]
 \end{verbatim}
 
 
@@ -1942,33 +1685,23 @@ h(x) = x %E    + %E   ]
 La funci'on \verb|random(n)|\index{random} genera un n'umero seudoaleatorio con distribuci'on uniforme discreta entre $0$ y $n-1$, ambos inclusive; as'i, una simulaci'on del lanzamiento de un dado ser'ia
 \begin{verbatim}
 (%i1) random(6)+1;
-
 (%o1)                        5
 \end{verbatim}
 y una serie de 100 lanzamientos de una moneda,
 \index{makelist}\begin{verbatim}
 (%i2) makelist(random(2),i,1,100);
-
 (%o2) [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1,
-
 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0,
-
 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0,
-
 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1,
-
 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1,
-
 1, 1, 1]
 \end{verbatim}
 
 Otra variable aleatoria que suele interesar simular es la normal o gaussiana con media $\mu=m \in \R$ y desviaci'on t'ipica $\sigma=s>0$, para lo cual se dispone de la funci'on \verb|gauss(m,s)|\index{gauss},
 \begin{verbatim}
-(%i3) load(bessel);
-
-(%o3)     /usr/share/maxima/5.9.1/src/bessel.lisp
+(%i3) load(bessel)$
 (%i4) gauss(31.45,1.23);
-
 (%o4)                 32.2873298461951
 \end{verbatim}
 como se ve en el ejemplo, antes de hacer uso de esta funci'on es necesario cargar el archivo \verb|bessel.lisp|.
@@ -2071,31 +1804,18 @@ El control de las opciones gr'aficas se consigue manipulando la variable global 
 \begin{verbatim}
 (%i10) plot_options;
 (%o10) [[x, - 1.755559702014e+305, 1.755559702014e+305], 
-
 [y, - 1.755559702014e+305, 1.755559702014e+305], 
-
 [t, - 3, 3], [GRID, 30, 30], [VIEW_DIRECTION, 1, 1, 1], 
-
 [COLOUR_Z, FALSE], [TRANSFORM_XY, FALSE], 
-
 [RUN_VIEWER, TRUE], [PLOT_FORMAT, GNUPLOT], 
-
 [GNUPLOT_TERM, DEFAULT], [GNUPLOT_OUT_FILE, FALSE], 
-
 [NTICKS, 10], [ADAPT_DEPTH, 10], [GNUPLOT_PM3D, FALSE], 
-
 [GNUPLOT_PREAMBLE, ], [GNUPLOT_CURVE_TITLES, [DEFAULT]], 
-
 [GNUPLOT_CURVE_STYLES, [with lines 3, with lines 1, 
-
 with lines 2, with lines 5, with lines 4, with lines 6, 
-
 with lines 7]], [GNUPLOT_DEFAULT_TERM_COMMAND, ], 
-
 [GNUPLOT_DUMB_TERM_COMMAND, set term dumb 79 22], 
-
 [GNUPLOT_PS_TERM_COMMAND, set size 1.5, 1.5;set term postsc#
-
 ript eps enhanced color solid 24]]
 \end{verbatim}
 Para mayor informaci'on sobre el significado de cada uno de los elementos de esta lista ser'ia aconsejable ejecutar el comando \verb|describe(plot_options)|.
@@ -2103,7 +1823,6 @@ Para mayor informaci'on sobre el significado de cada uno de los elementos de est
 Ya se ha comentado que a menos que se le indique lo contrario, Maxima invocar'a al programa Gnuplot para la representaci'on de un gr'afico, pero quiz'as prefiramos el programa Openmath, que forma parte de la distribuci'on de Maxima; en tal caso tendr'iamos que modificar previamente las opciones guardadas en \verb|plot_options| y a continuaci'on solicitar el gr'afico deseado, como en este caso en el que se representa la funci'on gamma y su inversa, cuyo resultado se observa en el apartado \emph{a)} de la Figura~\ref{fig:gp5}
 \index{set\_plot\_option}\begin{verbatim}
 (%i11) set_plot_option([plot_format, openmath])$
-
 (%i12) plot2d([gamma(x),1/gamma(x)],[x,-4.5,5],[y,-10,10])$
 \end{verbatim}
 Tambi'en Openmath es capaz de realizar gr'aficos en tres dimensiones definidos en coordenadas polares y que se representa en el apartado \emph{b)} de la Figura~\ref{fig:gp5}. N'otese c'omo desde la propia funci'on es posible alterar las opciones gr'aficas; sin embargo, hecho de esta manera los cambios s'olo tienen lugar para la realizaci'on del gr'afico presente, sin alterar las opciones globales.
@@ -2126,7 +1845,6 @@ Tambi'en Openmath es capaz de realizar gr'aficos en tres dimensiones definidos e
 Las Figuras que se han representado hasta ahora en esta secci'on son capturas de pantalla de la ventana generada por Gnuplot o por Openmath y guardadas en disco en formato PNG. Sin embargo, podemos hacer que el programa gr'afico genere directamente un archivo PNG en lugar de mostrarlo en pantalla. Volvamos a Gnuplot y obtengamos directamente de este programa un archivo con este formato de uno de los gr'aficos que ya realizamos anteriormente,
 \index{gnuplot\_preamble}\begin{verbatim}
 (%i14) set_plot_option([plot_format, gnuplot])$
-
 (%i15) plot3d(exp(-x^2-y^2),[x,-2,2],[y,-2,0],
               [gnuplot_preamble,"set terminal png size 420,320;
                                  set out 'grafico.png'"])$
@@ -2156,21 +1874,20 @@ Puesto que estamos hablando de \LaTeX, este es un buen lugar para hacer referenc
 \index{4@'}\index{tex}\begin{verbatim}
 (%i17) 'diff(sin(x^x)*sqrt(log(x)),x)=
            diff(sin(x^x)*sqrt(log(x)),x);
-
        d                     x
-(%o17) -- (SQRT(LOG(x)) SIN(x )) =
+(%o17) -- (sqrt(log(x)) sin(x )) =
        dx
 
               x
-         SIN(x )         x                                x
-     ---------------- + x  SQRT(LOG(x)) (LOG(x) + 1) COS(x )
-     2 x SQRT(LOG(x))
+         sin(x )         x                                x
+     ---------------- + x  sqrt(log(x)) (log(x) + 1) cos(x )
+     2 x sqrt(log(x))
 (%i18) tex(%);
 
 $${{d}\over{d\,x}}\,\left(\sqrt{\log x}\,\sin x^{x}\right)={{\sin x^{
  x}}\over{2\,x\,\sqrt{\log x}}}+x^{x}\,\sqrt{\log x}\,\left(\log x+1
  \right)\,\cos x^{x}$$
-(%o18)                      FALSE
+(%o18)                      false
 \end{verbatim}
 El ap'ostrofo que se coloca en la entrada \verb|(%i17)| antes de la funci'on \verb|diff| sirve para devolver la expresi'on sin evaluarla, tal como aparece en el miembro izquierdo de la igualdad \verb|(%o17)|. Una vez copiada y pegada la respuesta de la entrada \verb|(%i18)| en una fuente \LaTeX, su compilaci'on dar'a como resultado la expresi'on
 \[
@@ -2187,7 +1904,6 @@ m'as f'acil de interpretar por un humano.
 Las listas son objetos muy potentes a la hora de representar estructuras de datos; de hecho, toda expresi'on de Maxima se representa internamente como una lista, lo que no es de extra~nar habida cuenta de que Maxima est'a programado en Lisp (\emph{List Processing}). Veamos c'omo podemos ver la representaci'on interna, esto es en Lisp, de una sencilla expresi'on tal como $1+3a$,
 \index{31@:lisp}\begin{verbatim}
 (%i1) :lisp #$1+3*a$
-
 ((MPLUS SIMP) 1 ((MTIMES SIMP) 3 $a))
 \end{verbatim}
 N'otese que el formato general es de la forma \verb|:lisp #$expr$|, siendo \verb|expr| una expresi'on cualquiera en Maxima.
@@ -2195,73 +1911,54 @@ N'otese que el formato general es de la forma \verb|:lisp #$expr$|, siendo \verb
 Pero al nivel del usuario que no est'a interesado en las interioridades de Maxima, tambi'en se puede trabajar con listas como las definidas a continuaci'on, simpre encerradas entre corchetes,
 \index{34@[...]}\index{32@``...''}\begin{verbatim}
 (%i2) q:[b,5,a,d,1,3,7]$
-
 (%i3) r:[1,[a,3],sqrt(3)/2,"Don Quijote"];
-
-                         SQRT(3)
+                         sqrt(3)
 (%o3)        [1, [a, 3], -------, Don Quijote]
                             2
 \end{verbatim}
 Vemos que los elementos de una lista pueden a su vez ser tambi'en listas, expresiones matem'aticas o cadenas de caracteres incluidas entre comillas dobles, lo que puede ser aprovechado para la construcci'on y manipulaci'on de estructuras m'as o menos complejas. Extraigamos a continuaci'on alguna informaci'on de las listas anteriores,
 \index{listp}\index{first}\index{second}\index{third}\index{last}\index{rest}\index{part}\index{length}\index{reverse}\index{member}\index{sort}\index{delete}\begin{verbatim}
 (%i4) listp(r); /* es r una lista? */
-
-(%o4)                       TRUE
+(%o4)                       true
 (%i5) first(r); /* primer elemento */
-
 (%o5)                        1
 (%i6) second(r); /* segundo elemento */
-
 (%o6)                      [a, 3]
 (%i7) third(r); /* ...hasta tenth */
-
-                          SQRT(3)
+                          sqrt(3)
 (%o7)                     -------
                              2
 (%i8) last(r); /* el ultimo de la lista */
-
 (%o8)                   Don Quijote
 (%i9) rest(r); /* todos menos el primero */
-
-                        SQRT(3)
+                        sqrt(3)
 (%o9)         [[a, 3], -------, Don Quijote]
                            2
 (%i10) part(r,3); /* pido el que quiero */
-
-                          SQRT(3)
+                          sqrt(3)
 (%o10)                    -------
                              2
 (%i11) length(r); /* cuantos hay? */
-
 (%o11)                       4
 (%i12) reverse(r); /* le damos la vuelta */
-
-                           SQRT(3)
+                           sqrt(3)
 (%o12)       [Don Quijote, -------, [a, 3], 1]
                               2
 (%i13) member(a,r); /* es a un elemento?*/
-
-(%o13)                     FALSE
+(%o13)                     false
 (%i14) member([a,3],r); /* lo es [a,3]? */
-
-(%o14)                      TRUE
+(%o14)                      true
 (%i15) sort(q); /* ordeno */
-
 (%o15)             [1, 3, 5, 7, a, b, d]
 (%i16) delete([a,3],r); /* borro elemento */
-\end{verbatim}
-
-\newpage
-\begin{verbatim}
-                     SQRT(3)
+                     sqrt(3)
 (%o16)           [1, -------, Don Quijote]
                         2
 \end{verbatim}
 N'otese que en todo este tiempo la lista \verb|r| no se ha visto alterada,
 \begin{verbatim}
 (%i17) r;
-
-                         SQRT(3)
+                         sqrt(3)
 (%o18)       [1, [a, 3], -------, Don Quijote]
                             2
 \end{verbatim}
@@ -2269,26 +1966,21 @@ N'otese que en todo este tiempo la lista \verb|r| no se ha visto alterada,
 Algunas funciones de Maxima permiten a~nadir nuevos elementos a una lista, tanto al principio como al final,
 \index{cons}\index{endcons}\begin{verbatim}
 (%i19) cons(1+2,q);
-
 (%o19)            [3, b, 5, a, d, 1, 3, 7]
 (%i20) endcons(x,q);
-
 (%o20)            [b, 5, a, d, 1, 3, 7, x]
 \end{verbatim}
 En este ejemplo observamos tambi'en que la lista \verb|q| no ha cambiado; si lo que queremos es actualizar su contenido,
 \begin{verbatim}
 (%i26) q: endcons(x,cons(1+2,q))$
-
 (%i27) q;
-
 (%o27)          [3, b, 5, a, d, 1, 3, 7, x]
 \end{verbatim}
 
 Es posible unir dos listas,
 \index{append}\begin{verbatim}
 (%i28) append(r,q);
-
-                   SQRT(3)
+                   sqrt(3)
 (%o28) [1, [a, 3], -------, Don Quijote, 3, b, 5, a, d, 1,
                       2
 
@@ -2298,7 +1990,6 @@ Es posible unir dos listas,
 Cuando los elementos de una lista van a obedecer un cierto criterio de construcci'on, podemos utilizar la funci'on \verb|makelist|\index{makelist},
 \begin{verbatim}
 (%i29) s:makelist(2+k*2,k,0,10);
-
 (%o29)    [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22]
 \end{verbatim}
 donde le hemos indicado a Maxima que nos construya una lista con elementos de la forma \verb|2+2*k|, de modo que \verb|k| tome valores enteros de 0 a 10.
@@ -2306,10 +1997,8 @@ donde le hemos indicado a Maxima que nos construya una lista con elementos de la
 La funci'on \verb|apply|\index{apply} permite suministrar a otra funci'on todos los elementos de una lista como argumentos, as'i podemos sumar o multiplicar todos los elementos de la lista \verb|s| reci'en creada,
 \index{14@+}\index{16@*}\begin{verbatim}
 (%i30) apply("+",s);
-
 (%o30)                      132
 (%i31) apply("*",s);
-
 (%o31)                  81749606400
 \end{verbatim}
 aunque estas dos operaciones hubiese sido quiz'as mejor haberlas realizado con las funciones \verb|sum|\index{sum} y \verb|product|\index{product}.
@@ -2317,46 +2006,190 @@ aunque estas dos operaciones hubiese sido quiz'as mejor haberlas realizado con l
 A veces interesar'a aplicar una misma funci'on a varios elementos de una lista de forma independiente, para lo que haremos uso de \verb|map|\index{map}; a continuaci'on un ejemplo de c'alculo de factoriales y otro trigonom'etrico,
 \begin{verbatim}
 (%i32) map("!",s);
-
 (%o32) [2, 24, 720, 40320, 3628800, 479001600, 87178291200,
-
 20922789888000, 6402373705728000, 2432902008176640000,
-
 1124000727777607680000]
 (%i33) map(sin,s);
+(%o33) [sin(2), sin(4), sin(6), sin(8), sin(10), sin(12),
 
-(%o33) [SIN(2), SIN(4), SIN(6), SIN(8), SIN(10), SIN(12),
-
-                SIN(14), SIN(16), SIN(18), SIN(20), SIN(22)]
+                sin(14), sin(16), sin(18), sin(20), sin(22)]
 \end{verbatim}
 
 Por 'ultimo, las listas tambi'en pueden ser utilizadas en operaciones aritm'eticas,
 \index{14@+}\index{15@-}\index{16@*}\index{17@/}\index{18@\^\ }\index{21@.}\begin{verbatim}
 (%i34) [1,2,3]+[a,b,c];
-
 (%o34)             [a + 1, b + 2, c + 3]
 (%i35) [1,2,3]*[a,b,c];
-
 (%o35)                 [a, 2 b, 3 c]
 (%i36) [1,2,3]/[a,b,c];
-
                           1  2  3
 (%o36)                   [-, -, -]
                           a  b  c
 (%i37) [1,2,3]-[a,b,c];
-
 (%o37)             [1 - a, 2 - b, 3 - c]
 (%i38) [1,2,3].[a,b,c]; /* producto escalar */
-
 (%o38)                 3 c + 2 b + a
 (%i39) [a,b,c]^3;
-
                           3   3   3
 (%o39)                  [a , b , c ]
 (%i40) 3^[a,b,c];
-
                           a   b   c
 (%o40)                  [3 , 3 , 3 ]
+\end{verbatim}
+Para que estas operaciones puedan realizarse sin problemas, la variable global \verb|listarith|\index{listarith} debe tomar el valor \verb|true|, en caso contrario el resultado ser'a bien distinto,
+\begin{verbatim}
+(%i41) listarith:false$
+(%i42) [1,2,3]+[4,5,6];
+(%o42)             [4, 5, 6] + [1, 2, 3]
+(%i43) listarith:true$
+\end{verbatim}
+
+Como ya se vi'o al comienzo de esta secci'on, una lista puede ser elemento de otra lista, si queremos deshacer todas las listas interiores para que sus elementos pasen a formar parte de la exterior,
+\index{flatten}\begin{verbatim}
+(%i44) flatten([1,[a,b],2,3,[c,[d,e]]]);
+(%o44)            [1, a, b, 2, 3, c, d, e]
+\end{verbatim}
+
+
+\newpage
+\section{Operaciones con conjuntos}
+
+Se define a continuaci'on un conjunto mediante la funci'on \verb|set|\index{set},
+\begin{verbatim}
+(%i1) c1:set(a,[2,k],b,sqrt(2),a,set(a,b),
+             3,"Sancho",set(),b,sqrt(2),a);
+(%o1)  {3, sqrt(2), {}, [2, k], a, {a, b}, b, Sancho}
+\end{verbatim}
+Como se ve, se admiten objetos de muy diversa naturaleza como elementos de un conjunto: n'umeros, expresiones, el conjunto vac'io (\verb|{}|), listas, otros conjuntos o cadenas de caracteres. Cuando se trabaja con listas, puede ser de utilidad considerar sus componentes como elementos de un conjunto, luego se necesita una funci'on que nos transforme una lista en conjunto,
+\index{setify}\begin{verbatim}
+(%i2) [[2,k],sqrt(2),set(b,a),[k,2],"Panza"];
+(%o2)     [[2, k], sqrt(2), {a, b}, [k, 2], Panza]
+(%i3) c2:setify(%);
+(%o3)     {sqrt(2), [2, k], {a, b}, [k, 2], Panza}
+\end{verbatim}
+el cambio en la naturaleza de estas dos colecciones de objetos se aprecia en la presencia de llaves frente a los corchetes. De igual manera, podemos transformar un conjunto en lista,
+\index{listify}\begin{verbatim}
+(%i4) listify(%o1);
+(%o4)  [3, sqrt(2), {}, [2, k], a, {a, b}, b, Sancho]
+\end{verbatim}
+Comprobemos de paso que \verb|{}| representa al conjunto vac'io,
+\index{emptyp}\begin{verbatim}
+(%i5) emptyp(%[3]);
+(%o5)                      true
+\end{verbatim}
+Recu'erdese que \verb|%| sustituye a la 'ultima respuesta dada por Maxima, que en este caso hab'ia sido una lista, por lo que \verb|%[3]| hace referencia a su tercera componente.
+
+Para comprobar si un cierto objeto forma parte de un conjunto hacemos uso de la instrucci'on \verb|elementp|\index{elementp},
+\begin{verbatim}
+(%i6) elementp(sqrt(2),c1);
+(%o6)                      true
+\end{verbatim}
+Es posible extraer un elemento de un conjunto y luego a~nadirle otro distinto
+\index{disjoin}\index{adjoion}\begin{verbatim}
+(%i7) c1: disjoin(sqrt(2),c1);  /* sqrt(2) fuera */
+(%o7)     {3, {}, [2, k], a, {a, b}, b, Sancho}
+(%i8) c1: adjoin(sqrt(3),c1);  /* sqrt(3) dentro */
+(%o8) {3, sqrt(3), {}, [2, k], a, {a, b}, b, Sancho}
+\end{verbatim}
+La sustituci'on que se acaba de realizar se pudo haber hecho con la funci'on \verb|subst|\index{subst},
+\begin{verbatim}
+(%i9) /* nuevamente a poner sqrt(2) */
+      subst(sqrt(2),sqrt(3),c1);
+(%o9) {3, sqrt(2), {}, [2, k], a, {a, b}, b, Sancho}
+\end{verbatim}
+
+La comprobaci'on de si un conjunto es subconjunto de otro se hace con la fuci'on \verb|subsetp|\index{subsetp},
+\begin{verbatim}
+(%i10) subsetp(set([k,2],"Panza"),c2);
+(%o10)                      true
+\end{verbatim}
+
+A continuaci'on algunos ejemplos de operaciones con conjuntos,
+\index{union}\index{intersection}\index{setdifference}\index{cardinality}\begin{verbatim}
+(%i11) union(c1,c2);
+(%o11) {3, sqrt(2), sqrt(3), {}, [2, k], a, {a, b}, b,
+                                      [k, 2], Panza, Sancho}
+(%i12) intersection(c1,c2);
+(%o12)                {[2, k], {a, b}}
+(%i13) setdifference(c1,c2);
+(%o13)         {3, sqrt(3), {}, a, b, Sancho}
+(%i14) cardinality(%);
+(%o14)                       6
+\end{verbatim}
+Vemos aqu'i tambi'en c'omo pedir el cardinal de un conjunto.
+
+Igual que se ha visto como aplicar una funci'on a todos los elementos de una lista, podemos hacer lo mismo con los de un conjunto,
+\index{map}\begin{verbatim}
+(%i15) map(sin,set(1,2,3,4,5));
+(%o15)    {sin(1), sin(2), sin(3), sin(4), sin(5)}
+\end{verbatim}
+
+Por 'ultimo ya, el producto cartesiano de tres conjuntos,
+\index{cartesianproduct@cartesian\_product}\begin{verbatim}
+(%i16) cartesian_product(set(1,2),set(a,b,c),set(x,y));
+(%o16) {[1, a, x], [1, a, y], [1, b, x], [1, b, y],
+[1, c, x], [1, c, y], [2, a, x], [2, a, y], [2, b, x],
+[2, b, y], [2, c, x], [2, c, y]}
+\end{verbatim}
+
+\newpage
+\section{Operaciones l'ogicas}
+
+Como cualquier otro int'erprete o entorno de programaci'on, Maxima dispone tambi'en de la capacidad de evaluar predicados l'ogicos, aqu'ellos que pueden ser o bien verdaderos (\verb|true|)\index{true}, o bien falsos (\verb|false|)\index{false}. Los predicados m'as simples son funciones que devuelven uno de estos dos valores de verdad; ejemplos de ellos ya han aparecido en secciones anteriores,
+\begin{verbatim}
+(%i1) listp([[1,2],[a,b]]);
+(%o1)                       true
+(%i2) matrixp([[1,2],[a,b]]);
+(%o2)                      false
+(%i3) evenp(2^3);
+(%o3)                       true
+\end{verbatim}
+
+Puesto que Maxima es un entorno de procesamiento matem'atico, es frecuente tener que comparar dos cantidades. Los operadores de comparaci'on se resumen en la siguiente tabla,
+\index{22@=}\index{23@\#}\index{24@$>$}\index{25@$<$}\index{26@$>=$}\index{27@$=<$}\begin{center}
+\begin{tabular}{|c|c|} \hline
+\verb|=|  &  ...igual que...         \\ \hline
+\verb|#| &  ...diferente de...     \\ \hline
+\verb|>|  &  ...mayor que...         \\ \hline
+\verb|<|  &  ...menor que...         \\ \hline
+\verb|>=| &  ...mayor o igual que... \\ \hline
+\verb|=<| &  ...menor o igual que... \\ \hline
+\end{tabular}
+\end{center}
+
+Si se quiere saber si un n'umero es menor que otro podemos hacer uso de la funci'on \verb|is|\index{is},
+\begin{verbatim}
+(%i4) is(sqrt(7895)<85);
+(%o4)                      false
+(%i5) is(4^12#16777216);
+(%o5)                      false
+\end{verbatim}
+En el primer caso comprobamos si $\sqrt{7895}$ es estrictamente menor que 85 y en el segundo si la potencia $4^{12}$ es diferente de 16777216.
+
+Junto con estos predicados simples, los conectores \verb|and|\index{and}, \verb|or|\index{or} y \verb|not|\index{not} permiten construir formas m'as complejas. La tabla adjunta resume el comportamiento de estos operadores,
+\begin{center}
+\begin{tabular}{|c|c||c|c|c|} \hline
+     p       &       q      & p \verb|and| q & p \verb|or| q & \verb|not| p  \\ \hline
+\verb|false| & \verb|false| & \verb|false|   & \verb|false|  & \verb|true|  \\
+\verb|false| & \verb|true|  & \verb|false|   & \verb|true|   & \verb|true|  \\
+\verb|true|  & \verb|false| & \verb|false|   & \verb|true|   & \verb|false|  \\
+\verb|true|  & \verb|true|  & \verb|true|    & \verb|true|   & \verb|false|  \\ \hline
+\end{tabular}
+\end{center}
+
+A la hora de escribir expresiones l'ogicas conviene tener en cuenta el orden de precedencia; primero se eval'ua \verb|not|, a continuaci'on \verb|and| y, finalmente, \verb|or|; en caso de duda siempre se puede recurrir a los par'entesis. Un ejemplo,
+\begin{verbatim}
+(%i6) is(not 3<4 or 5<5);
+(%o6)                      false
+\end{verbatim}
+Aqu'i, primero se eval'ua \verb|not 3<4|, que da como resultado \verb|false|; a continuaci'on, se eval'ua si es cierto o no que \verb|5<5|, lo cual es tambi'en falso, finalmente se obtiene el resultado correspondiente a \verb|false or false|.
+
+El lector deber'ia ser capaz de justificar las siguientes respuestas,
+\begin{verbatim}
+(%i7) is(3#4 and not 7<=2);
+(%o7)                       true
+(%i8) is((5<8 or 8<2) and oddp(3) and evenp(sqrt(16)));
+(%o8)                       true
 \end{verbatim}
 
 
@@ -2374,24 +2207,11 @@ Un elemento imprescindible en el control del flujo es la sentencia condicional \
 tal como en
 \begin{verbatim}
 (%i1) x:30!$ y:exp(30)$
-
-(%i2)
 (%i3) if (x>y) then 0 else 1;
-
 (%o3)                       0
 \end{verbatim}
 
-La condici'on \verb|<cond>| es una expresi'on l'ogica que admite los operadores \verb|and|\index{and}, \verb|or|\index{or} y \verb|not|\index{not}, siendo sus predicados expresiones de comparaci'on, cuyo valor s'olo puede ser \emph{verdadero} o \emph{falso},
-\index{22@=}\index{23@\#}\index{24@$>$}\index{25@$<$}\index{26@$>=$}\index{27@$=<$}\begin{center}
-\begin{tabular}{|c|c|} \hline
-\verb|=|  &  ...igual que...         \\ \hline
-\verb|#| &  ...diferente de...     \\ \hline
-\verb|>|  &  ...mayor que...         \\ \hline
-\verb|<|  &  ...menor que...         \\ \hline
-\verb|>=| &  ...mayor o igual que... \\ \hline
-\verb|=<| &  ...menor o igual que... \\ \hline
-\end{tabular}
-\end{center}
+La condici'on \verb|<cond>| es una expresi'on l'ogica que admite los operadores \verb|and|\index{and}, \verb|or|\index{or} y \verb|not|\index{not}, siendo sus argumentos predicados l'ogicos, cuyo valor s'olo puede ser \emph{verdadero} o \emph{falso},
 
 Otra sentencia que nunca falta en un lenguaje de programaci'on es la que controla las iteraciones y los bucles. Maxima ofrece aqu'i varias posibilidades. En primer lugar,
 \index{for}\begin{verbatim}
@@ -2400,13 +2220,12 @@ Otra sentencia que nunca falta en un lenguaje de programaci'on es la que control
 El siguiente ejemplo escribe, haciendo uso de la funci'on \verb|print|\index{print}, los cinco primeros cubos enteros positivos,
 \begin{verbatim}
 (%i4) for i:1 thru 5 do print(i^3);
-
 1
 8
 27
 64
 125
-(%o4)                      DONE
+(%o4)                      done
 \end{verbatim}
 
 Otra posibilidad de controlar las iteraciones es con la versi'on
@@ -2416,7 +2235,6 @@ Otra posibilidad de controlar las iteraciones es con la versi'on
 que en el siguiente ejemplo se utiliza para calcular las quintas potencias de todos los n'umeros impares menores que 20; n'otese c'omo tras la sentencia \verb|do| se pueden escribir varias expresiones separadas por comas (\verb|,|)\index{2@, (coma)} y encerradas entre par'entesis,
 \begin{verbatim}
 (%i5) for i:1 step 2 while i<20 do(j:i^5,print(j));
-
 1
 243
 3125
@@ -2427,7 +2245,7 @@ que en el siguiente ejemplo se utiliza para calcular las quintas potencias de to
 759375
 1419857
 2476099
-(%o5)                      DONE
+(%o5)                      done
 \end{verbatim}
 
 Tambi'en hay una versi'on de la sentencia \verb|for| muy a prop'osito para trabajar con listas,
@@ -2437,10 +2255,8 @@ Tambi'en hay una versi'on de la sentencia \verb|for| muy a prop'osito para traba
 como se muestra en el siguiente ejemplo, donde se imprimen todos los elementos de una muestra simulada de n'umeros aleatorios, aumentados en una unidad,
 \begin{verbatim}
 (%i7) m:makelist(random(4),i,1,10);
-
 (%o7)         [2, 0, 3, 2, 2, 3, 0, 1, 1, 3]
 (%i8) for i in m do print(i+1);
-
 3
 1
 4
@@ -2451,7 +2267,7 @@ como se muestra en el siguiente ejemplo, donde se imprimen todos los elementos d
 2
 2
 4
-(%o8)                      DONE
+(%o8)                      done
 \end{verbatim}
 
 En general, la definici'on de una nueva funci'on en Maxima tiene la estructura
@@ -2461,14 +2277,11 @@ En general, la definici'on de una nueva funci'on en Maxima tiene la estructura
 donde \verb|<argi>| son los argumentos y \verb|<expr>| es una expresi'on sint'acticamente v'alida. Por ejemplo, ya que Maxima no dispone de la funci'on logaritmo en base arbitraria, la podemos definir por nuestra cuenta,
 \index{28@:=}\begin{verbatim}
 (%i9) logb(x,b):=log(x)/log(b)$
-
 (%i10) logb(234,10);
-
-                          LOG(234)
+                          log(234)
 (%o10)                    --------
-                          LOG(10)
+                          log(10)
 (%i11) %,numer;
-
 (%o11)                    2.3692157
 \end{verbatim}
 
@@ -2488,20 +2301,16 @@ siendo el resultado devuelto el de la 'ultima expresi'on evaluada (\verb|<exprm>
       then return("Ojo: no es una lista"),
    suma: sum(lista[k],k,1,n),
    suma/n )$
-
 (%i13) media([45,25,87,23,65,31]);
-
 (%o13)                       46
 (%i14) media([[2,3],[6,3],[4,7],[2,6]]);
-
                            7  19
 (%o14)                    [-, --]
                            2  4
 (%i15) media([1/3,sqrt(5),logb(5,2),x]);
-
-                      LOG(5)             1
-                  x + ------ + SQRT(5) + -
-                      LOG(2)             3
+                      log(5)             1
+                  x + ------ + sqrt(5) + -
+                      log(2)             3
 (%o15)            ------------------------
                              4
 (%i16) solve(%=10,x);  /* cuanto vale x para una media de 10? */
@@ -2509,9 +2318,9 @@ siendo el resultado devuelto el de la 'ultima expresi'on evaluada (\verb|<exprm>
 
 \newpage
 \begin{verbatim}
-               3 LOG(5) + (3 SQRT(5) - 119) LOG(2)
+               3 log(5) + (3 sqrt(5) - 119) log(2)
 (%o16)  [x = - -----------------------------------]
-                            3 LOG(2)
+                            3 log(2)
 \end{verbatim}
 Este 'ultimo c'alculo no tiene nada que ver con lo que se comenta en esta secci'on, pero muestra c'omo integrar nuestra funci'on en una sesi'on rutinaria. Examinando el c'odigo de la funci'on \verb|media| reparamos en la presencia de la instrucci'on \verb|return|, que es una forma alternativa de salir del contexto marcado por \verb|block|; en este caso, el resultado que devuelve la funci'on es el indicado por el argumento de \verb|return|\index{return}, es decir la cadena \verb|"Ojo: no es una lista"|. Tambi'en se observa que se declaran dos variables locales, \verb|n| y \verb|suma|, asign'andole a la primera el n'umero de elementos de la lista; junto con 'estas existe otra variable local, la \verb|k| de la instrucci'on \verb|sum|, que s'olo est'a activa durante el c'alculo de esta suma, no siendo necesario declararla en todo el contexto del bloque.
 
@@ -2523,9 +2332,7 @@ A veces es necesario definir funciones cuyo n'umero de argumentos no se conoce a
    if n>0 then
       for i in c do r: gcd(r,i),
    r )$
-
 (%i18) mcd(120,300,480,825);
-
 (%o18)                       15
 \end{verbatim}
 
@@ -2549,9 +2356,7 @@ transafin(pts, a, b, c, d, e, f):=
 La funci'on \verb|transafin|, y cualquier otra dentro de esta secci'on, se puede escribir en Maxima y luego llamarla para que realice su cometido; sin embargo, quiz'as sea mejor escribirla directamente con un editor de texto cualquiera y guardarla en un archivo, pongamos de nombre \verb|tf.mac|, para hacer uso de ella en el futuro; as'i, una vez dentro de Maxima ejecutar'iamos la instrucci'on \verb|batch("tf.mac")| y luego har'iamos
 \begin{verbatim}
 (%i19) cuadrado:[[0,0],[1,0],[1,1],[0,1]]$
-
 (%i20) transafin(cuadrado,-1,0,-1,0,1,1);
-
 (%o20)      [[- 1, 1], [- 2, 1], [- 2, 2], [- 1, 2]]
 \end{verbatim}
 obteniendo as'i el resultado de aplicarle a los v'ertices del cuadrado unidad una simetr'ia respecto del eje de ordenadas seguida de una traslaci'on a lo largo del vector $\vec{v}=(-1,1)$.
