@@ -1,4 +1,4 @@
-@c /Bugs.texi/1.7/Sun May  1 17:52:16 2005//
+@c /Bugs.texi/1.7/Sun May  1 17:52:16 2005/
 @menu
 * Introduction to Bug Detection and Reporting::  
 * Definitions for Bug Detection and Reporting::  

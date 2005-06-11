@@ -1,4 +1,4 @@
-@c /Atensor.texi/1.7/Sun May  1 20:31:14 2005//
+@c /Atensor.texi/1.7/Sun May  1 20:31:14 2005/
 @menu
 * Introduction to atensor::
 * Definitions for atensor::
