@@ -1,4 +1,4 @@
-@c /Input.texi/1.32/Fri Apr 22 14:12:40 2005/-ko/
+@c /Input.texi/1.32/Fri Apr 22 14:12:40 2005/-ko//
 @menu
 * Introduction to Input and Output::  
 * Files::                       

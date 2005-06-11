@@ -1,4 +1,4 @@
-@c /Command.texi/1.28/Thu May  5 14:42:44 2005/-ko/
+@c /Command.texi/1.28/Thu May  5 14:42:44 2005/-ko//
 @menu
 * Introduction to Command Line::  
 * Definitions for Command Line::  

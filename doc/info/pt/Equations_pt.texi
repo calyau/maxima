@@ -1,4 +1,4 @@
-@c /Equations.texi/1.17/Wed Apr 27 14:39:39 2005/-ko/
+@c /Equations.texi/1.17/Wed Apr 27 14:39:39 2005/-ko//
 @c end concepts Equations
 @menu
 * Definitions for Equations::   

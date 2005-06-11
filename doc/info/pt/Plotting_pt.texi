@@ -1,4 +1,4 @@
-@c /Plotting.texi/1.15/Thu Apr 21 04:58:34 2005/-ko/
+@c /Plotting.texi/1.15/Thu Apr 21 04:58:34 2005/-ko//
 @menu
 * Definitions for Plotting::    
 @end menu
