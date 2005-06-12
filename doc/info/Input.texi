@@ -102,7 +102,8 @@ sets @code{s} to the sum of the last ten output expressions.
 @deffn {special symbol} "?"
 As prefix to a function or variable name, @code{?} signifies that the
 name is a Lisp name, not a Maxima name.
-For example, @code{?round} is a Lisp function.
+For example, @code{?round} signifies the Lisp function @code{ROUND}.
+See @ref{Lisp and Maxima} for more on this point.
 
 The notation @code{? word} (a question mark followed a word, separated by whitespace)
 is equivalent to @code{describe ("word")}.
@@ -739,6 +740,33 @@ is not affected by @code{linel}.
 
 @end defvr
 
+@defvr {Variable} lispdisp
+Default value: @code{false}
+
+When @code{lispdisp} is @code{true},
+Lisp symbols are displayed with a leading question mark @code{?}.
+Otherwise,
+Lisp symbols are displayed with no leading mark.
+
+Examples:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
+
+@end defvr
+
 @deffn {Function} load (@var{filename})
 Evaluates expressions in @var{filename}, 
 thus bringing variables, functions, and other objects into Maxima.
@@ -1209,6 +1237,44 @@ The return value of @code{string} is a string,
 and thus it cannot be used in a computation.
 
 @end deffn
+
+@c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
+@c @defvr {Lisp variable} ?stringdisp
+@defvr {Lisp variable} stringdisp
+Default value: @code{false}
+
+When @code{?stringdisp} is @code{true},
+strings are displayed enclosed in double quote marks.
+Otherwise,
+quote marks are not displayed.
+
+@code{?stringdisp} is always @code{true} when displaying a function definition.
+
+@code{?stringdisp} is a Lisp variable,
+so it must be written with a leading question mark @code{?}.
+
+Examples:
+
+@c ===beg===
+@c ?stringdisp: false$
+@c "This is an example string.";
+@c foo () := print ("This is a string in a function definition.");
+@c ?stringdisp: true$
+@c "This is an example string.";
+@c ===end===
+@example
+(%i1) ?stringdisp: false$
+(%i2) "This is an example string.";
+(%o2)              This is an example string.
+(%i3) foo () := print ("This is a string in a function definition.");
+(%o3) foo() := 
+              print("This is a string in a function definition.")
+(%i4) ?stringdisp: true$
+(%i5) "This is an example string.";
+(%o5)             "This is an example string."
+@end example
+
+@end defvr
 
 @deffn {Function} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 @deffnx {Function} stringout (@var{filename}, [@var{m}, @var{n}])
