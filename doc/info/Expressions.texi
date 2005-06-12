@@ -2,6 +2,7 @@
 * Introduction to Expressions::  
 * Assignment::                  
 * Complex::                     
+* Identifiers::
 * Inequality::                  
 * Syntax::                      
 * Definitions for Expressions::  
@@ -65,7 +66,7 @@ expression on its right to the value of the quantity on its left,
 which must evaluate to an atomic variable or subscripted variable.
 
 @c THIS REALLY NEEDS EXPANSION
-@node Complex, Inequality, Assignment, Expressions
+@node Complex, Identifiers, Assignment, Expressions
 @section Complex
 A complex expression is specified in Maxima by adding the
 real part of the expression to @code{%i} times the imaginary part.  Thus the
@@ -75,7 +76,76 @@ expanding the product.  Simplification of quotients, roots, and other
 functions of complex expressions can usually be accomplished by using
 the @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg} functions.
 
-@node Inequality, Syntax, Complex, Expressions
+@node Identifiers, Inequality, Complex, Expressions
+@section Identifiers
+Maxima identifiers may comprise alphabetic characters,
+plus the numerals 0 through 9,
+plus any special character preceded by the backslash @code{\} character.
+
+A numeral may be the first character of an identifier
+if it is preceded by a backslash.
+Numerals which are the second or later characters need not be preceded by a backslash.
+
+A special character may be declared alphabetic by the @code{declare} function.
+If so declared, it need not be preceded by a backslash in an identifier.
+The alphabetic characters are initially 
+@code{A} through @code{Z}, @code{a} through @code{z}, @code{%}, and @code{_}.
+
+Maxima is case-sensitive. The identifiers @code{foo}, @code{FOO}, and @code{Foo} are distinct.
+See @ref{Lisp and Maxima} for more on this point.
+
+A Maxima identifier is a Lisp symbol which begins with a dollar sign @code{$}.
+Any other Lisp symbol is preceded by a question mark @code{?} when it appears in Maxima.
+See @ref{Lisp and Maxima} for more on this point.
+
+Examples:
+
+@c ===beg===
+@c %an_ordinary_identifier42;
+@c embedded\ spaces\ in\ an\ identifier;
+@c symbolp (%);
+@c [foo+bar, foo\+bar];
+@c [1729, \1729];
+@c [symbolp (foo\+bar), symbolp (\1729)];
+@c [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+@c baz\~quux;
+@c declare ("~", alphabetic);
+@c baz~quux;
+@c [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+@c :lisp (defvar *my-lisp-variable* '$foo)
+@c ?\*my\-lisp\-variable\*;
+@c ===end===
+
+@example
+(%i1) %an_ordinary_identifier42;
+(%o1)               %an_ordinary_identifier42
+(%i2) embedded\ spaces\ in\ an\ identifier;
+(%o2)           embedded spaces in an identifier
+(%i3) symbolp (%);
+(%o3)                         true
+(%i4) [foo+bar, foo\+bar];
+(%o4)                 [foo + bar, foo+bar]
+(%i5) [1729, \1729];
+(%o5)                     [1729, 1729]
+(%i6) [symbolp (foo\+bar), symbolp (\1729)];
+(%o6)                     [true, true]
+(%i7) [is (foo\+bar = foo+bar), is (\1729 = 1729)];
+(%o7)                    [false, false]
+(%i8) baz\~quux;
+(%o8)                       baz~quux
+(%i9) declare ("~", alphabetic);
+(%o9)                         done
+(%i10) baz~quux;
+(%o10)                      baz~quux
+(%i11) [is (foo = FOO), is (FOO = Foo), is (Foo = foo)];
+(%o11)                [false, false, false]
+(%i12) :lisp (defvar *my-lisp-variable* '$foo)
+*MY-LISP-VARIABLE*
+(%i12) ?\*my\-lisp\-variable\*;
+(%o12)                         foo
+@end example
+
+@node Inequality, Syntax, Identifiers, Expressions
 @section Inequality
 Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, and @code{notequal}.
 See @code{if} for a description of conditional expressions.
@@ -246,29 +316,91 @@ Incorrect syntax: @@ is not an infix operator
 @node Definitions for Expressions,  , Syntax, Expressions
 @section Definitions for Expressions
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@c CONTRAST at WITH ev AND subst !!!
-@deffn {Function} at (@var{expr}, @var{list})
-Evaluates @var{expr} (which may be any expression) with
+@deffn {Function} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
+@deffnx {Function} at (@var{expr}, @var{eqn})
+Evaluates the expression @var{expr} with
 the variables assuming the values as specified for them in the list of
-equations or the single equation similar to that given to the @code{atvalue}
-function.  If a subexpression depends on any of the variables in list
-but it hasn't had an atvalue specified and it can't be evaluated then
-a noun form of the @code{at} will be returned which will display in a
-two-dimensional form.  @code{example ("at")} displays some examples of @code{at}.
+equations @code{[@var{eqn_1}, ..., @var{eqn_n}]} or the single equation @var{eqn}.
+
+If a subexpression depends on any of the variables for which a value is specified
+but there is no atvalue specified and it can't be otherwise evaluated,
+then a noun form of the @code{at} is returned which displays in a two-dimensional form.
+
+@code{at} carries out multiple substitutions in series, not parallel.
+
+See also @code{atvalue}.
+For other functions which carry out substitutions,
+see also @code{subst} and @code{ev}.
+
+Examples:
+@c COPIED FROM example(at)
+
+@c ===beg===
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x, y)^2 - u(x, y)^2, x);
+@c at (%, [x = 0, y = 1]);
+@c ===end===
+@example
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x, y)^2 - u(x, y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
+@end example
 
 @end deffn
 
 @c NEEDS EXAMPLES
 @deffn {Function} box (@var{expr})
-@deffnx {Function} box (@var{expr}, @var{label})
-Returns @var{expr} enclosed in a box.  The box is actually part
-of the expression. @code{box (@var{expr}, @var{label})}
-encloses @var{expr} in a labelled box.
-@var{label} is a name which will be truncated in display if it is too long.
+@deffnx {Function} box (@var{expr}, @var{a})
+Returns @var{expr} enclosed in a box.
+The return value is an expression with @code{box} as the operator and @var{expr} as the argument.
+A box is drawn on the display when @code{display2d} is @code{true}.
 
-@code{boxchar} is the character used to draw the box in this and in
-the @code{dpart} and @code{lpart} functions.
+@code{box (@var{expr}, @var{a})}
+encloses @var{expr} in a box labelled by the symbol @var{a}.
+The label is truncated if it is longer than the width of the box.
+
+A boxed expression does not evaluate to its content,
+so boxed expressions are effectively excluded from computations.
+
+@code{boxchar} is the character used to draw the box in @code{box}
+and in the @code{dpart} and @code{lpart} functions.
+
+Examples:
+
+@c ===beg===
+@c box (a^2 + b^2);
+@c box (a^2 + b^2, term_1);
+@c 1729 - box (1729);
+@c boxchar: "-";
+@c box (sin(x) + cos(y));
+@c ===end===
+@example
+@end example
 
 @end deffn
 
