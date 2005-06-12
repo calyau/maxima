@@ -1,4 +1,4 @@
-@c /Arrays.texi/1.8/Thu Apr 21 04:26:33 2005/-ko/
+@c /Arrays.texi/1.9/Sun Jun 12 19:13:46 2005/-ko/
 @menu
 * Definitions for Arrays and Tables::  
 @end menu
@@ -69,7 +69,7 @@ ao inv@'es de uma chamada de fun@,{c}@~ao n@~ao avaliada.
 
 @end deffn
 
-@defvr {vari@'avel de sistema} arrays
+@defvr {Vari@'avel de sistema} arrays
 Valor padr@~ao: @code{[]}
 
 @code{arrays} @'e uma lista de todas os arrays que foram alocadas,
@@ -175,7 +175,7 @@ desejado para redefinir os valores em um array desordenado.
 @end deffn
 
 @c THIS IS REALLY CONFUSING
-@defvr {vari@'avel de p@,{c}@~ao} use_fast_arrays
+@defvr {Vari@'avel de p@,{c}@~ao} use_fast_arrays
 - Se @code{true} somente dois tipos de arrays s@~ao reconhecidos.  
 
 1) O array art-q (t no Lisp Comum) que pode ter muitas dimens@~oes

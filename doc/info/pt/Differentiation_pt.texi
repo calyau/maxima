@@ -1,3 +1,4 @@
+@c /Differentiation.texi/1.19/Sun Jun 12 19:13:47 2005/-ko/
 @c end concepts Differentiation
 @menu
 * Definitions for Differentiation::  
@@ -368,7 +369,7 @@ a menos que explicitamente representada como @code{integrate (f(x), x)}.
 
 @end deffn
 
-@defvr {Vari@'avel} derivabbrev
+@defvr {Vari@'avel de op@,{c}@~ao} derivabbrev
 Valor padr@~ao: @code{false}
 
 Quando @code{derivabbrev} for @code{true},
@@ -408,7 +409,7 @@ vari@'aveis indicadas, dentro do comando @code{ev}.
 
 @end deffn
 
-@defvr {Vari@'avel} derivsubst
+@defvr {Vari@'avel de op@,{c}@~ao} derivsubst
 Valor padr@~ao: @code{false}
 
 Quando @code{derivsubst} for @code{true}, uma substiru@'i@,{c}@~ao n@~ao sint@'atica tais como
@@ -502,7 +503,7 @@ acima.
 @end deffn
 
 @c MERGE THIS INTO @defun diff
-@defvr {s@'imbolo especial} diff
+@defvr {S@'imbolo especial} diff
 
 Quando @code{diff} est@'a presente como um @code{evflag} em chamadas para @code{ev},
 Todas as diferencia@,{c}@~oes indicadas em @code{expr} s@~ao realizdas.
@@ -690,7 +691,7 @@ derivadas de ordem superior.
 @c NEED EXAMPLES HERE
 @end deffn
 
-@defvr {Vari@'avel} gradefs
+@defvr {Vari@'avel de sistema} gradefs
 Valor padr@~ao: @code{[]}
 
 @code{gradefs} @'e a lista de fun@,{c}@~oes

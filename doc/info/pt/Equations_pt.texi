@@ -1,4 +1,4 @@
-@c /Equations.texi/1.17/Wed Apr 27 14:39:39 2005/-ko/
+@c /Equations.texi/1.18/Sun Jun 12 19:13:47 2005/-ko/
 @c end concepts Equations
 @menu
 * Definitions for Equations::   
@@ -731,7 +731,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} rootsepsilon
+@defvr {Vari@'avel de op@,{c}@~ao} rootsepsilon
 Valor padr@~ao: 1.0e-7
 
 @code{rootsepsilon} @'e a toler@^ancia que estabelece o
@@ -904,7 +904,7 @@ y = - .1535675710019696]]
 
 @end deffn
 
-@defvr {Vari@'avel} solvedecomposes
+@defvr {Vari@'avel de op@,{c}@~ao} solvedecomposes
 Valor padr@~ao: @code{true}
 
 Quando @code{solvedecomposes} @'e @code{true}, @code{solve} chama
@@ -913,7 +913,7 @@ Quando @code{solvedecomposes} @'e @code{true}, @code{solve} chama
 
 @end defvr
 
-@defvr {Vari@'avel} solveexplicit
+@defvr {Vari@'avel de op@,{c}@~ao} solveexplicit
 Valor padr@~ao: @code{false}
 
 Quando @code{solveexplicit} @'e @code{true}, inibe @code{solve} de
@@ -923,7 +923,7 @@ onde @code{F} @'e alguma fun@,{c}@~ao.
 
 @end defvr
 
-@defvr {Vari@'avel} solvefactors
+@defvr {Vari@'avel de op@,{c}@~ao} solvefactors
 Valor padr@~ao: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -934,7 +934,7 @@ onde a fatora@,{c}@~ao n@~ao @'e necess@'aria.
 
 @end defvr
 
-@defvr {Vari@'avel} solvenullwarn
+@defvr {Vari@'avel de op@,{c}@~ao} solvenullwarn
 Valor padr@~ao: @code{true}
 
 Quando @code{solvenullwarn} @'e @code{true}, 
@@ -943,7 +943,7 @@ Por exemplo, @code{solve ([], [])} imprimir@'a duas mensagens de alerta e retorn
 
 @end defvr
 
-@defvr {Vari@'avel} solveradcan
+@defvr {Vari@'avel de op@,{c}@~ao} solveradcan
 Valor padr@~ao: @code{false}
 
 Quando @code{solveradcan} @'e @code{true}, @code{solve} chama @code{radcan}
@@ -953,7 +953,7 @@ contendo exponeniais e logar@'itmos sejam resolvidos.
 
 @end defvr
 
-@defvr {Vari@'avel} solvetrigwarn
+@defvr {Vari@'avel de op@,{c}@~ao} solvetrigwarn
 Valor padr@~ao: @code{true}
 
 @c MAYBE THIS CAN BE CLARIFIED
@@ -965,7 +965,7 @@ solu@,{c}@~oes.
 
 @end defvr
 
-@defvr {Vari@'avel} solve_inconsistent_error
+@defvr {Vari@'avel de op@,{c}@~ao} solve_inconsistent_error
 Valor padr@~ao: @code{true}
 
 Quando @code{solve_inconsistent_error} @'e 

@@ -1,4 +1,4 @@
-@c /Command.texi/1.28/Thu May  5 14:42:44 2005/-ko/
+@c /Command.texi/1.30/Sun Jun 12 19:13:47 2005/-ko/
 @menu
 * Introduction to Command Line::  
 * Definitions for Command Line::  
@@ -12,15 +12,122 @@
 @deffn operador "'"
 O operador ap@'ostrofo @code{'} evita avalia@,{c}@~ao.
 
+Aplicado a um s@'imbolo,
+o ap@'ostrofo evita avalia@,{c}@~ao do s@'imbolo.
+
+Aplicado a uma chamada de fun@,{c}@~ao,
+o ap@'ostrofo evita avalia@,{c}@~ao da chamada de fun@,{c}@~ao,
+embora os argumentos da fun@,{c}@~ao sejam ainda avaliados (se a avalia@,{c}@~ao n@`ao for de outra forma evitada).
+O resultado @'e a forma substantiva da chamada de fun@,{c}@~ao.
+
+Aplicada a uma espress@~ao com par@^entesis,
+o ap@'ostrofo evita avalia@,{c}@~ao de todos os s@'imbolos e chamadas de fun@,{c}@~ao na express@~ao.
+@c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
 E.g., @code{'(f(x))} significa n@~ao avalie a express@~ao @code{f(x)}.
 @code{'f(x)} (com ap@'ostrofo aplicado a @code{f} em lugar de @code{f(x)})
 retorna a forma substantiva de @code{f} aplicada a @code{[x]}.
 
 O ap@'ostrofo nao evita simplifica@,{c}@~ao.
 
+Veja tamb@'em operador ap@'ostrofo-ap@'ostrofo @code{''} e @code{nouns}.
+
+Exemplos:
+
+Aplicado a um s@'imbolo,
+o ap@'ostrofo evita avalia@,{c}@~ao do s@'imbolo.
+
+@c ===beg===
+@c aa: 1024;
+@c aa^2;
+@c 'aa^2;
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) aa^2;
+(%o2)                        1048576
+(%i3) 'aa^2;
+                                 2
+(%o3)                          aa
+(%i4) ''%;
+(%o4)                        1048576
+@end example
+
+Aplicado a uma chamada de fun@,{c}@~ao,
+o ap@'ostrofo evita avalia@,{c}@~ao da chamada de fun@,{c}@~ao.
+O resultado @'e a forma substantiva da chamada de fun@,{c}@~ao.
+
+@c ===beg===
+@c x0: 5;
+@c x1: 7;
+@c integrate (x^2, x, x0, x1);
+@c 'integrate (x^2, x, x0, x1);
+@c %, nouns;
+@c ===end===
+@example
+(%i1) x0: 5;
+(%o1)                           5
+(%i2) x1: 7;
+(%o2)                           7
+(%i3) integrate (x^2, x, x0, x1);
+                               218
+(%o3)                          ---
+                                3
+(%i4) 'integrate (x^2, x, x0, x1);
+                             7
+                            /
+                            [   2
+(%o4)                       I  x  dx
+                            ]
+                            /
+                             5
+(%i5) %, nouns;
+                               218
+(%o5)                          ---
+                                3
+@end example
+
+Aplicado a uma express@~ao com par@^entesis,
+o ap@'ostrofo evita avalia@,{c}@~ao de todos os s@'imbolos e chamadas de fun@,{c}@~ao na express@~ao.
+
+@c ===beg===
+@c aa: 1024;
+@c bb: 19;
+@c sqrt(aa) + bb;
+@c '(sqrt(aa) + bb);
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) bb: 19;
+(%o2)                          19
+(%i3) sqrt(aa) + bb;
+(%o3)                          51
+(%i4) '(sqrt(aa) + bb);
+(%o4)                     bb + sqrt(aa)
+(%i5) ''%;
+(%o5)                          51
+@end example
+
+O ap@'ostrof n@~ao evita simplifica@,{c}@~ao.
+
+@c ===beg===
+@c sin (17 * %pi) + cos (17 * %pi);
+@c '(sin (17 * %pi) + cos (17 * %pi));
+@c ===end===
+@example
+(%i1) sin (17 * %pi) + cos (17 * %pi);
+(%o1)                          - 1
+(%i2) '(sin (17 * %pi) + cos (17 * %pi));
+(%o2)                          - 1
+@end example
+
+
 @end deffn
 
-@deffn operador "'@w{}'"
+@deffn {Operador} "'@w{}'"
 O operador @code{'@w{}'} (aspas simples) faz com que ocorra uma avalia@,{c}@~ao extra.
 E.g., @code{'@w{}'%i4} ir@'a reavaliar a linha de entrada @code{%i4}.
 @code{'@w{}'(f(x))} significa avalie a express@~ao @code{f(x)} novamente.
@@ -40,7 +147,7 @@ Qualquer n@'umero de argumentos pode ser usado.
 
 @end deffn
 
-@defvr {Vari@'avel} debugmode
+@defvr {Vari@'avel de op@,{c}@~ao} debugmode
 Valor padr@~ao: @code{false}
 
 Quando um erro do Maxima ocorre, Maxima iniciar@'a o depurador se @code{debugmode} @'e @code{true}.
@@ -237,7 +344,7 @@ Solution
 
 @end deffn
 
-@defvr propriedade evflag
+@defvr {Propriedade} evflag
 Alguns sinalizadores Booleanos possuem a propriedae @code{evflag}.
 @code{ev} trata tais sinalizadores especialmente.
 Um sinalizador com a propriedade @code{evflag} n@~ao ser@'a associado a @code{true}
@@ -290,7 +397,7 @@ Equivalentemente, @code{ev (%, foo:true)} tem o mesmo efeito.
 
 @end defvr
 
-@defvr propriedade  evfun
+@defvr {Propriedade}  evfun
 Agumas fun@,{c}@~oes possuem a proriedade @code{evfun}.
 @code{ev} trata cada fun@,{c}@~ao especialmente.
 Uma fun@,{c}@~ao com a propriedade @code{evfun} ser@'a aplicada
@@ -323,7 +430,7 @@ Equivalentemente, @code{foo (ev (%))} tem o mesmo efeito.
 @end defvr
 
 @c NEEDS WORK
-@defvr {s@'imbolo especial} infeval
+@defvr {Vari@'avel de op@,{c}@~ao} infeval
 Habilita o modo "avalia@,{c}@~ao infinita".  @code{ev} repetidamente avalia
 uma express@~ao at@'e que ela permane@,{c}a invariante.  Para prevenir uma
 vari@'avel, digamos @code{X}, seja demoradamente avaliada nesso modo, simplesmente
@@ -397,7 +504,7 @@ liberam uma propriedade espec@'ifica.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} labels (@var{symbol})
-@deffnx {Vari@'avel} labels
+@deffnx {Vari@'avel de sistema} labels
 Retorna a lista de r@'otulos de entradas, de sa@'ida, de express@~oes intermedi@'arias que come@,{c}am com @var{symbol}.
 Tipicamente @var{symbol} @'e o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
 O caracter r@'otulo pode ser dado com ou sem o sinal de porcentagem,
@@ -434,13 +541,13 @@ Veja tamb@'em @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
-@defvr {Vari@'avel} linenum
+@defvr {Vari@'avel de sistema} linenum
 Retorna o n@'umero da linha do par corrente de express@~oes de entrada e sa@'ida.
 
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari@'avel} myoptions
+@defvr {Vari@'avel de sistema} myoptions
 Valor padr@~ao: @code{[]}
 
 @code{myoptions} @'e a lista de todas as op@,{c}@~oes alguma vez alteradas pelo usu@'ario,
@@ -451,7 +558,7 @@ tenha ou n@~ao ele retornado a altera@,{c}@~ao para o seu valor padr@~ao.
 @c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
 @c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
 @c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
-@defvr {Vari@'avel} nolabels
+@defvr {Vari@'avel de op@,{c}@~ao} nolabels
 Valor padr@~ao: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
@@ -472,7 +579,7 @@ Veja tamb@'em @code{batch}, @code{batchload}, e @code{labels}.
 @end defvr
 
 @c NEEDS WORK
-@defvr {Vari@'avel} optionset
+@defvr {Vari@'avel de op@,{c}@~ao} optionset
 Valor padr@~ao: @code{false}
 
 Quando @code{optionset} @'e @code{true}, Maxima mostra uma
@@ -594,7 +701,7 @@ Muitas, mas n@~ao todas, vari@'aveis globais e op@,{c}@~oes s@~ao definidas por 
 
 @end deffn
 
-@defvr {Vari@'avel} showtime
+@defvr {Vari@'avel de op@,{c}@~ao} showtime
 Valor padr@~ao: @code{false}
 
 Quando @code{showtime} @'e @code{true}, o tempo de computa@,{c}@~ao e o tempo decorrido s@~ao
@@ -621,7 +728,7 @@ Insere o sistema Lisp dentro do Maxima.  @code{(to-maxima)} retorna para o Maxim
 
 @end deffn
 
-@defvr {Vari@'avel} values
+@defvr {Vari@'avel de sistema} values
 Valor inicial: @code{[]}
 
 @code{values} @'e uma lista de todas as var@'aveis de usu@'ario associadas (n@~ao op@,{c}@~oes Maxima ou comutadores).

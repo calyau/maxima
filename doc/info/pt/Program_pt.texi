@@ -1,4 +1,4 @@
-/Program.texi/1.18/Mon May 23 05:43:28 2005/-ko/
+@c /Program.texi/1.19/Sun Jun 12 19:13:48 2005/-ko/
 @menu
 * Introduction to Program Flow::  
 * Definitions for Program Flow::  
@@ -30,6 +30,7 @@ fun@,{c}@~oes, incluindo a fun@,{c}@~ao correntemente ativa.
 (n@~ao somente em um contexto de depura@,{c}@~ao).
 
 Exemplos:
+
 @itemize @bullet
 @item
 @code{backtrace()} imprime toda a pilha de chamadas.

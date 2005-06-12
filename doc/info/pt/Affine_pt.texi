@@ -1,4 +1,4 @@
-@c /Affine.texi/1.9/Thu Apr 21 04:58:23 2005/-ko/
+@c /Affine.texi/1.10/Sun Jun 12 19:13:46 2005/-ko/
 @c end concepts Affine
 @menu
 * Definitions for Affine::      
@@ -209,7 +209,7 @@ depender do valor corrente de @var{i}.
 
 @end deffn
 
-@defvr {Variable} all_dotsimp_denoms
+@defvr {Vari@'avel de op@,{c}@~ao} all_dotsimp_denoms
 Valor padr@~ao: @code{false}
 
 Quando @code{all_dotsimp_denoms} @'e uma lista,
