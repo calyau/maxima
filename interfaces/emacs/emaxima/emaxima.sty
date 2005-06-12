@@ -79,7 +79,14 @@
 %%%% Initial Code
 \RequirePackage{ifthen}
 \RequirePackage{alltt}
-\RequirePackage{color}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[pdftex]{color}
+\usepackage{pdfcolmk}
+\color{black}
+\else
+\usepackage{color}
+\fi
 \newboolean{m@ximapreview}
 \setboolean{m@ximapreview}{false}
 \newboolean{m@ximabreqn}
