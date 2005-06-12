@@ -28,6 +28,10 @@ means return the noun form of @code{f} applied to @code{[x]}.
 
 The single quote does not prevent simplification.
 
+When the global flag @code{noundisp} is @code{true},
+nouns display with a single quote.
+This switch is always @code{true} when displaying function definitions.
+
 See also the quote-quote operator @code{''} and @code{nouns}.
 
 Examples:
@@ -479,6 +483,8 @@ unbinds all items in @code{infolist}.
 See also @code{infolists}.
 
 @code{kill (all)} unbinds all items on all infolists.
+@code{kill (all)} does not reset global variables to their default values;
+see @code{reset} on this point.
 
 @code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
 unbinds all items on all infolists except for @var{symbol_1}, ..., @var{symbol_n}.
