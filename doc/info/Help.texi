@@ -65,10 +65,9 @@ while the Maxima symbol @code{?foo} corresponds to the Lisp symbol @code{foo},
 Note that @code{?foo} is written without a space between @code{?} and @code{foo};
 otherwise it might be mistaken for @code{describe ("foo")}.
 
-Lisp symbols appearing in Maxima code must follow the rules for Maxima
-identifiers (apart from beginning with a question mark).
-In particular, symbols containing hyphen @code{-} or other special characters
-cannot appear in Maxima code.
+Hyphen @code{-}, asterisk @code{*}, or other special characters in Lisp symbols
+must be escaped by backslash @code{\} if the are to appear in Maxima code.
+For example, the Lisp identifier @code{*foo-bar*} is written @code{?\*foo\-bar\*} in Maxima.
 
 Lisp code may be executed from within a Maxima session.
 A single line of Lisp (containing one or more forms) may be executed
