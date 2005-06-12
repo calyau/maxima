@@ -34,7 +34,7 @@
 
 	\hyphenation{Ruf-fi-ni e-xer-ci-cios}
 
-%versi'on: 11-06-05
+%versi'on: 12-06-05
 
 \begin{document}
 \maketitle
@@ -420,6 +420,8 @@ Es posible que estos dos 'ultimos resultados nos parezcan frustrantes y los dese
 (%o8)                   -- - -----
                         2      2
 (%i9) rectform(%o7);
+\end{verbatim}
+\begin{verbatim}
                         58 %i   74
 (%o9)                   ----- - --
                          65     65
@@ -575,6 +577,9 @@ La operaci'on inversa de la expansi'on es la factorizaci'on. Expandamos y factor
 La funci'on \verb|ratsimp|\index{ratsimp} simplifica cualquier expresi'on racional, as'i como las subexpresiones racionales que son argumentos de funciones cualesquiera. El resultado se devuelve como el cociente de dos polinomios. En ocasiones no es suficiente con una sola ejecuci'on de \verb|ratsimp|, por lo que ser'a necesario aplicarla m'as veces, esto es lo que hace precisamente la funci'on \verb|fullratsimp|\index{fullratsimp}; concretemos esto con un ejemplo:
 \begin{verbatim}
 (%i12) (x^(a/2)-1)^2*(x^(a/2)+1)^2 / (x^a-1);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                     a/2     2   a/2     2
                   (x    - 1)  (x    + 1)
 (%o12)            -----------------------
@@ -755,6 +760,9 @@ Tambi'en la funci'on \verb|algsys|\index{algsys} permite la resoluci'on de siste
 Podemos proceder como se indica a continuaci'on,
 \begin{verbatim}
 (%i16) algsys([3*x^2-y=2*y^2+4, 5*x+7*y=1],[x,y]);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                7 sqrt(1685) + 55
 (%o16) [[x = - -----------------,
                       194
@@ -863,6 +871,9 @@ en el que eliminamos las dos primeras filas y la 'ultima columna, ?`se pilla el 
 Al igual que se extraen submatrices, es posible a~nadir filas y columnas a una matriz dada; por ejemplo,
 \index{addrow}\index{addcol}\begin{verbatim}
 (%i7) addrow(m1,[1,1,1],[2,2,2]);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                        [ 3  4   0  ]
                        [           ]
                        [ 6  0  - 2 ]
@@ -903,6 +914,9 @@ y la matriz con todos sus elementos iguales a cero,
 Tambi'en, una matriz diagonal con todos los elementos de la diagonal principal iguales puede construirse con una llamada a la funci'on \verb|diagmatrix|\index{diagmatrix},
 \begin{verbatim}
 (%i11) diagmatrix(4,%e);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                      [ %e  0   0   0  ]
                      [                ]
                      [ 0   %e  0   0  ]
@@ -939,6 +953,9 @@ Casos particulares de submatrices son las filas y las columnas; los ejemplos se 
 Con las matrices se pueden realizar m'ultiples operaciones. Empezamos por el c'alculo de la potencia de una matriz:
 \index{20@\^\ \^\ }\begin{verbatim}
 (%i18) m1^^2;
+\end{verbatim}
+\newpage
+\begin{verbatim}
                     [ 33  12     - 8   ]
                     [                  ]
 (%o18)              [ 18  12    - 2 a  ]
@@ -975,6 +992,9 @@ Para la suma, resta y producto matriciales se utilizan los operadores \verb|+|, 
                    [                  2 ]
                    [  0    - 30  a - a  ]
 (%i22) m1.m2;
+\end{verbatim}
+\newpage
+\begin{verbatim}
                    [ 171   48     16    ]
                    [                    ]
                    [                 2  ]
@@ -1012,6 +1032,9 @@ Otros c'alculos frecuentes con matrices son la transposici'on, el determinante, 
 (%i26) determinant(m1);  /*el determinante*/
 (%o26)                   36 - 24 a
 (%i27) invert(m1);       /*la inversa*/
+\end{verbatim}
+\newpage
+\begin{verbatim}
          [     12            4 a           8     ]
          [  ---------   - ---------  - --------- ]
          [  36 - 24 a     36 - 24 a    36 - 24 a ]
@@ -1084,6 +1107,9 @@ Otros c'alculos posibles con matrices,
 (%i35) rank(%o31);   /* el rango de la matriz*/
 (%o35)                       3
 (%i36) matrixmap(sin,%o31);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                 [ sin(3)  sin(4)     0     ]
                 [                          ]
 (%o36)          [ sin(6)    0     - sin(2) ]
@@ -1563,6 +1589,9 @@ Veamos ejemplos de otros tipos de ecuaciones diferenciales que puede resolver Ma
 \begin{verbatim}
 (%i4) /* ecuacion homogenea */
       ode2(x^3+y^3+3*x*y^2*'diff(y,x),y,x);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                            3    4
                       4 x y  + x
 (%o4)                 ----------- = %c
@@ -1600,6 +1629,9 @@ Una ecuaci'on diferencial ordinaria de segundo orden tiene la forma general $F(x
                        dx     2
                             dx
 (%i10) ode2(%,y,x);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                              2
                         x   x  + 2 x + 2
 (%o10)        y = %k1 %e  + ------------ + %k2
@@ -1637,6 +1669,9 @@ La resoluci'on de sistemas de ecuaciones diferenciales se hace con llamadas a la
 (%i13) desolve(['diff(f(x),x)=3*f(x)-2*g(x),
                 'diff(g(x),x)=2*f(x)-2*g(x)],
                [f(x),g(x)]);
+\end{verbatim}
+\newpage
+\begin{verbatim}
                                  - x
                (2 g(0) - f(0)) %e
 (%o13) [f(x) = ---------------------
@@ -2011,7 +2046,6 @@ A veces interesar'a aplicar una misma funci'on a varios elementos de una lista d
 1124000727777607680000]
 (%i33) map(sin,s);
 (%o33) [sin(2), sin(4), sin(6), sin(8), sin(10), sin(12),
-
                 sin(14), sin(16), sin(18), sin(20), sin(22)]
 \end{verbatim}
 
@@ -2286,7 +2320,6 @@ donde \verb|<argi>| son los argumentos y \verb|<expr>| es una expresi'on sint'ac
 \end{verbatim}
 
 En ocasiones, la funci'on es lo suficientemente compleja como para necesitar tanto de variables locales que guarden valores temporales, como de expresiones que los calculen; en tales casos habr'a que echar mano del entorno de boque con la instrucci'on \verb|block|\index{block}, cuya estructura es
-\newpage
 \begin{verbatim}
           f(<arg1>,<arg2>,...):=block([<varloc1>,<varloc2>,...],
              <expr1>,
@@ -2314,10 +2347,6 @@ siendo el resultado devuelto el de la 'ultima expresi'on evaluada (\verb|<exprm>
 (%o15)            ------------------------
                              4
 (%i16) solve(%=10,x);  /* cuanto vale x para una media de 10? */
-\end{verbatim}
-
-\newpage
-\begin{verbatim}
                3 log(5) + (3 sqrt(5) - 119) log(2)
 (%o16)  [x = - -----------------------------------]
                             3 log(2)
