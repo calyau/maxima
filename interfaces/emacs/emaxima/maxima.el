@@ -1452,7 +1452,9 @@ Assumes the point is right before the open parenthesis."
     (save-excursion
       (maxima-back-over-comment-whitespace)
       (setq pt (point))
-      (forward-sexp -1)
+      (condition-case nil
+          (backward-sexp)
+        (error t))
       (when (< (point) pt)
         (maxima-back-over-comment-whitespace)
         (if (< (point) (+ 5 pm))
