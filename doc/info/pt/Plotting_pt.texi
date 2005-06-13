@@ -4,6 +4,7 @@
 @end menu
 
 @node Definitions for Plotting,  , Plotting, Plotting
+@c PT = Defini@,{c}@~oes para Imprimindo
 @section Definitions for Plotting
 
 @c INSPECTING src/plot.lisp AND TRYING SOME EXAMPLES,

@@ -4,6 +4,7 @@
 @end menu
 
 @node Introduction to Matrices and Linear Algebra, Definitions for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
+@c PT = Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
 @section Introduction to Matrices and Linear Algebra
 
 @menu
@@ -85,6 +86,7 @@ e @code{similaritytransform}.
 
 @c end concepts Matrices and Linear Algebra
 @node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
+@c PT = Defini@,{c}@~oes para Matrizes e @'Algebra Linear
 @section Definitions for Matrices and Linear Algebra
 
 @deffn {Fun@,{c}@~ao} addcol (@var{M}, @var{list_1}, ..., @var{list_n})

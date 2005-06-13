@@ -5,6 +5,7 @@
 @end menu
 
 @node Introduction to Integration, Definitions for Integration, Integration, Integration
+@c PT = Introdu@,{c}@~ao a Integra@,{c}@~ao
 @section Introduction to Integration
 
 Maxima tem muitas rotinas para manusear integra@,{c}@~ao.
@@ -25,8 +26,8 @@ integrais em termos de fun@,{c}@~oes desconhecidas tais como @code{g(x)} e @code
 
 @c end concepts Integration
 @node Definitions for Integration,  , Introduction to Integration, Integration
+@c PT = Defini@,{c}@~oes para Integra@,{c}@~ao
 @section Definitions for Integration
-
 @c NEEDS WORK
 @deffn {Fun@,{c}@~ao} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 Faz a mudan@,{c}a de vari@'avel dada por

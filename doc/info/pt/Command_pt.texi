@@ -5,6 +5,7 @@
 @end menu
 
 @node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
+@c PT = Introdu@,{c}@~ao a Linha de Comando
 @section Introduction to Command Line
 
 @c NEEDS EXAMPLES
@@ -137,6 +138,7 @@ significa retorne a forma verbal de @code{f} aplicada a @code{[x]}.
 @end deffn
 @c end concepts Command Line
 @node Definitions for Command Line,  , Introduction to Command Line, Command Line
+@c PT = Defini@,{c}@~oes para Linha de Comando
 @section Definitions for Command Line
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES

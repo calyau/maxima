@@ -5,6 +5,7 @@
 @end menu
 
 @node Introduction to Lists, Definitions for Lists, Lists, Lists
+@c PT = Introdu@,{c}@~ao a Listas
 @section Introduction to Lists
 
 Listas s@~ao o bloco b@'asico de constru@,{c}@~ao para Maxima e Lisp.**Todos os outros tipos
@@ -41,6 +42,7 @@ em si mesmo, ap@'os ter sido adicionado o simplificador a lista poder@'a transfo
 @end example
 
 @node Definitions for Lists,  , Introduction to Lists, Lists
+@c PT = Defini@,{c}@~oes para Listas
 @section Definitions for Lists
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS

@@ -5,6 +5,7 @@
 @end menu
 
 @node Definitions for Affine,  , Affine, Affine
+@c PT = Defini@,{c}@~oes para Afim
 @section Definitions for Affine
 
 @deffn {Fun@,{c}@~ao} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])

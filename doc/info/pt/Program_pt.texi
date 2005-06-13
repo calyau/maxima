@@ -5,6 +5,7 @@
 @end menu
 
 @node Introduction to Program Flow, Definitions for Program Flow, Program Flow, Program Flow
+@c PT = Introdu@,{c}@~ao ao Fluxo do Programa
 @section Introduction to Program Flow
 
 Maxima fornece um @code{do} para ciclos iterativos, tamb@'em contru@,{c}@~oes mais
@@ -12,6 +13,7 @@ primitivas tais como @code{go}.
 
 @c end concepts Program Flow
 @node Definitions for Program Flow,  , Introduction to Program Flow, Program Flow
+@c PT = Defini@,{c}@~oes para Fluxo do Programa
 @section Definitions for Program Flow
 
 @deffn {Fun@,{c}@~ao} backtrace ()

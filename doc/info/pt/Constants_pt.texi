@@ -4,6 +4,7 @@
 @end menu
 
 @node Definitions for Constants,  , Constants, Constants
+@c PT = Defini@,{c}@~oes para Constantes
 @section Definitions for Constants
 
 @defvr {Constant} %e

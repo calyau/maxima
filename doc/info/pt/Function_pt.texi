@@ -7,10 +7,12 @@
 @end menu
 
 @node Introduction to Function Definition, Function, Function Definition, Function Definition
+@c PT = Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~oes
 @section Introduction to Function Definition
 
 @node Function, Macros, Introduction to Function Definition, Function Definition
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
+@c PT = Fun@,{c}@~ao
 @section Function
 Para definir uma fun@,{c}@~ao no Maxima voc@^e usa o operador :=.
 E.g.
@@ -130,6 +132,7 @@ possivelmente @code{buildq}.
 
 
 @node Macros, Definitions for Function Definition, Function, Function Definition
+@c PT = Macros
 @section Macros
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -316,6 +319,7 @@ Da@'i o @code{buildq} ser @'util para construir a forma.
 
 @c end concepts Function Definition
 @node Definitions for Function Definition,  , Macros, Function Definition
+@c PT = Defini@,{c}@~oes para Defini@,{c}@~ao de Fun@,{c}@~ao
 @section Definitions for Function Definition
 @c NEEDS CLARIFICATION AND EXAMPLES
 @c IMPORTANT TOPIC

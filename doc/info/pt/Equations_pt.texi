@@ -5,6 +5,7 @@
 @end menu
 
 @node Definitions for Equations,  , Equations, Equations
+@c PT = Defini@,{c}@~oes para Equa@,{c}@~oes
 @section Definitions for Equations
 
 @c NEED A DESCRIPTION OF %rnum AS WELL

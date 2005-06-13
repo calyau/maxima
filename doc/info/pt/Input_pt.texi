@@ -6,9 +6,11 @@
 @end menu
 
 @node Introduction to Input and Output, Files, Input and Output, Input and Output
+@c PT = Introdu@,{c}@~ao a Entrada e Sa@'ida de Dados
 @section Introduction to Input and Output
 
 @node Files, Definitions for Input and Output, Introduction to Input and Output, Input and Output
+@c PT = Arquivos
 @section Files
 Um arquivo @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
 Arquivos em disco s@~ao figurativamente agrupados dentro de "diret@'orios".
@@ -26,6 +28,7 @@ and
 @code{appendfile}.
 
 @node Definitions for Input and Output,  , Files, Input and Output
+@c PT = Defini@,{c}@~oes para Entrada e Sa@'ida de Dados
 @section Definitions for Input and Output
 
 @defvr {Vari@'avel} %

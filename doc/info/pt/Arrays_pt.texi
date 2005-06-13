@@ -4,6 +4,7 @@
 @end menu
 
 @node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
+@c PT = Defini@,{c}@~oes para Arrays e Tabelas
 @section Definitions for Arrays and Tables
 
 @deffn {Fun@,{c}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})

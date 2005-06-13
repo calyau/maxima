@@ -5,6 +5,7 @@
 @end menu
 
 @node Definitions for Differentiation,  , Differentiation, Differentiation
+@c PT = Defini@,{c}@~oes para Diferencia@,{c}@~ao
 @section Definitions for Differentiation
 
 @deffn {Fun@,{c}@~ao} antid (@var{expr}, @var{x}, @var{u(x)}) 
