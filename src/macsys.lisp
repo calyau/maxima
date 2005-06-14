@@ -42,7 +42,11 @@
 ;; they are caught by the macsyma-listener window process on
 ;; the lisp machine, or by setting the single toplevel process in Maclisp. -gjc
 
-(defmacro toplevel-macsyma-eval (x) `(meval* ,x))
+;; Replacing the defmacro definition with a defun version, in order to
+;; allow more flexibility with evaluation order via redefinition
+;;(defmacro toplevel-macsyma-eval (x) `(meval* ,x))
+
+(defun toplevel-macsyma-eval (x) (meval* x))
 
 (defmvar $_ '$_ "last thing read in, cooresponds to lisp +")
 ;;Also defined in JPG;SUPRV
