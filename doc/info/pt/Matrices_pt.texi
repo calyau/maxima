@@ -372,7 +372,7 @@ Valor padr@~ao: @code{[]}
 @code{dontfactor} pode ser escolhido para uma lista de vari@'aveis em rela@,{c}@~ao
 a qual fatora@,{c}@~ao n@~ao @'e para ocorrer.  (A lista @'e inicialmente vazia.)
 Fatora@,{c}@~ao tamb@'em n@~ao pegar@'a lugares com rela@,{c}@~ao a quaisquer vari@'aveis que
-s@~ao menos importantes, conforme a hierarqu@'ia de vari@'avel assumida para a forma expres@~ao rotacional can@^onica (CRE),
+s@~ao menos importantes, conforme a hierarqu@'ia de vari@'avel assumida para a forma expres@~ao racional can@^onica (CRE),
 que essas na lista @code{dontfactor}.
 
 @end defvr

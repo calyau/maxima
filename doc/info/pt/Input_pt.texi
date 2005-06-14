@@ -1189,7 +1189,7 @@ separados dos @'indices covariantes por uma v@'irgula.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} showratvars (@var{expr})
-Retorna uma lista de vari@'aveis express@~ao rotacional can@^onica (CRE) na express@~ao @code{expr}.
+Retorna uma lista de vari@'aveis express@~ao racional can@^onica (CRE) na express@~ao @code{expr}.
 
 Veja tamb@'em @code{ratvars}.
 
