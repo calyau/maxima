@@ -2,6 +2,7 @@
 * Introduction to Expressions::  
 * Assignment::                  
 * Complex::                     
+* Nouns and Verbs::
 * Identifiers::
 * Inequality::                  
 * Syntax::                      
@@ -66,7 +67,7 @@ expression on its right to the value of the quantity on its left,
 which must evaluate to an atomic variable or subscripted variable.
 
 @c THIS REALLY NEEDS EXPANSION
-@node Complex, Identifiers, Assignment, Expressions
+@node Complex, Nouns and Verbs, Assignment, Expressions
 @section Complex
 A complex expression is specified in Maxima by adding the
 real part of the expression to @code{%i} times the imaginary part.  Thus the
@@ -76,7 +77,81 @@ expanding the product.  Simplification of quotients, roots, and other
 functions of complex expressions can usually be accomplished by using
 the @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg} functions.
 
-@node Identifiers, Inequality, Complex, Expressions
+@node Nouns and Verbs, Identifiers, Complex, Expressions
+@section Nouns and Verbs
+Maxima distinguishes between operators which are "nouns" and operators which are "verbs".
+A verb is an operator which can be executed.
+A noun is an operator which appears as a symbol in an expression, without being executed.
+By default, function names are verbs.
+A verb can be changed into a noun by quoting the function name
+or applying the @code{nounify} function.
+A noun can be changed into a verb by applying the @code{verbify} function.
+The evaluation flag @code{nouns} causes @code{ev} to evaluate nouns in an expression.
+
+The verb form is distinguished by 
+a leading dollar sign @code{$} on the corresponding Lisp symbol.
+In contrast,
+the noun form is distinguished by 
+a leading percent sign @code{%} on the corresponding Lisp symbol.
+Some nouns have special display properties, such as @code{'integrate} and @code{'derivative}
+(returned by @code{diff}), but most do not.
+By default, the noun and verb forms of a function are identical when displayed.
+The global flag @code{noundisp} causes Maxima to display nouns with a leading quote mark @code{'}.
+
+See also @code{noun}, @code{nouns}, @code{nounify}, and @code{verbify}.
+
+Examples:
+
+@c ===beg===
+@c foo (x) := x^2;
+@c foo (42);
+@c 'foo (42);
+@c 'foo (42), nouns;
+@c declare (bar, noun);
+@c bar (x) := x/17;
+@c bar (52);
+@c bar (52), nouns;
+@c integrate (1/x, x, 1, 42);
+@c 'integrate (1/x, x, 1, 42);
+@c ev (%, nouns);
+@c ===end===
+@example
+(%i1) foo (x) := x^2;
+                                     2
+(%o1)                     foo(x) := x
+(%i2) foo (42);
+(%o2)                         1764
+(%i3) 'foo (42);
+(%o3)                        foo(42)
+(%i4) 'foo (42), nouns;
+(%o4)                         1764
+(%i5) declare (bar, noun);
+(%o5)                         done
+(%i6) bar (x) := x/17;
+                                     x
+(%o6)                    ''bar(x) := --
+                                     17
+(%i7) bar (52);
+(%o7)                        bar(52)
+(%i8) bar (52), nouns;
+                               52
+(%o8)                          --
+                               17
+(%i9) integrate (1/x, x, 1, 42);
+(%o9)                        log(42)
+(%i10) 'integrate (1/x, x, 1, 42);
+                             42
+                            /
+                            [   1
+(%o10)                      I   - dx
+                            ]   x
+                            /
+                             1
+(%i11) ev (%, nouns);
+(%o11)                       log(42)
+@end example
+
+@node Identifiers, Inequality, Nouns and Verbs, Expressions
 @section Identifiers
 Maxima identifiers may comprise alphabetic characters,
 plus the numerals 0 through 9,
@@ -1625,23 +1700,6 @@ Examples:
 @end example
 
 @end deffn
-
-@c NEEDS WORK
-@defvr {Special symbol} verb
-@code{verb} is the opposite of "noun", i.e., a function form which "does
-something" ("action" - for most functions the usual case).  E.g.
-@code{integrate} integrates a function, unless it is declared to be a "noun",
-in which case it represents the integral of the function.
-
-The verb form is distinguished by 
-a leading dollar sign @code{$} on the corresponding Lisp symbol.
-In contrast,
-the noun form is distinguished by 
-a leading percent sign @code{%} on the corresponding Lisp symbol.
-
-See also @code{noun}, @code{nounify}, @code{verbify}.
-
-@end defvr
 
 @deffn {Function} verbify (@var{f})
 Returns the verb form of the function name @var{f}.
