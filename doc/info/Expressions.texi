@@ -373,7 +373,6 @@ Examples:
 
 @end deffn
 
-@c NEEDS EXAMPLES
 @deffn {Function} box (@var{expr})
 @deffnx {Function} box (@var{expr}, @var{a})
 Returns @var{expr} enclosed in a box.
@@ -410,6 +409,9 @@ Default value: @code{"}
 @code{boxchar} is the character used to draw the box in the @code{box}
 and in the @code{dpart} and @code{lpart} functions.
 
+All boxes in an expression are drawn with the current value of @code{boxchar};
+the drawing character is not stored with the box expression.
+
 @end defvr
 
 @deffn {Function} carg (@var{z})
@@ -417,25 +419,42 @@ Returns the complex argument of @var{z}.
 The complex argument is an angle @code{theta} in @code{[-%pi, %pi]}
 such that @code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
 
+@code{carg} is a computational function,
+not a simplifying function.
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
+
+@code{carg} ignores the declaration @code{declare (@var{x}, complex)},
+and treats @var{x} as a real variable.
+This is a bug. @c SEE SF BUG REPORT # 620246
+
 See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
 @code{realpart}, and @code{imagpart}.
 
+@c NEED EXAMPLES HERE
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c CROSS REF declare, properties, ETC
 @deffn {Special operator} constant
-Makes ai a constant as is @code{%pi}.
+@code{declare (@var{a}, constant)} declares @var{a} to be a constant.
+See @code{declare}.
+@c WHAT EXACTLY ARE THE CONSEQUENCES OF DECLARING AN ATOM TO BE CONSTANT ??
 
 @end deffn
 
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Function} constantp (@var{expr})
-Returns @code{true} if @var{expr} is a constant (i.e.  composed of
-numbers and @code{%pi}, @code{%e}, @code{%i} or any variables bound to a constant or
-declared constant by @code{declare}) else @code{false}.  Any function whose arguments are
-constant is also considered to be a constant.
+Returns @code{true} if @var{expr} is a constant expression,
+otherwise returns @code{false}.
+@c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
+An expression is considered a constant expression if its arguments are
+numbers,
+symbolic constants such as @code{%pi}, @code{%e}, and @code{%i},
+variables bound to a constant or declared constant by @code{declare},
+or functions whose arguments are constant.
+
+@c NEED EXAMPLES HERE
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -482,9 +501,9 @@ and complex
 
 The useful features of functions include:
 
-@c NEED TO CHECK THIS LIST !!!
+@c NEED TO CHECK THIS LIST !! IS IT COMPREHENSIVE ??
 @example
- increasing,
+increasing,
 decreasing, oddfun (odd function), evenfun (even function),
 commutative (or symmetric), antisymmetric, lassociative and
 rassociative
@@ -492,8 +511,11 @@ rassociative
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 The @var{a_i} and @var{f_i} may also be lists of objects or features.
-@code{featurep (object, feature)}
-determines if an object has been declared to have @var{feature}.  See also @code{features}.
+
+@code{featurep (@var{object}, @var{feature})}
+determines if @var{object} has been declared to have @var{feature}.
+
+See also @code{features}.
 
 @end deffn
 
@@ -569,21 +591,22 @@ a box.  The box is actually part of the expression.
 
 @end deffn
 
-@c NEEDS WORK
+@c PROBABLY MORE TO BE SAID HERE
 @deffn {Function} exp (@var{x})
-The exponential function.  
+Represents the exponential function.  
 Instances of @code{exp (@var{x})} in input are simplified to @code{%e^@var{x}};
 @code{exp} does not appear in simplified expressions.
 
-@code{demoivre} if @code{true} will cause @code{%e^(a + b %i)} to become
+@code{demoivre} if @code{true} causes @code{%e^(a + b %i)} to simplify to
 @code{%e^(a (cos(b) + %i sin(b)))} if @code{b} is free of @code{%i}. See @code{demoivre}.
 
 @code{%emode}, when @code{true}, 
 causes @code{%e^(%pi %i x)} to be simplified. See @code{%emode}.
 
-@code{%enumer}, when @code{true} will cause @code{%e} to be replaced by
+@code{%enumer}, when @code{true} causes @code{%e} to be replaced by
 2.718...  whenever @code{numer} is @code{true}. See @code{%enumer}.
 
+@c NEED EXAMPLES HERE
 @end deffn
 
 @defvr {Option variable} %emode
@@ -591,15 +614,19 @@ Default value: @code{true}
 
 When @code{%emode} is @code{true},
 @code{%e^(%pi %i x)} is simplified as
-follows: it is expressed as @code{cos (%pi x) + %i sin (%pi x)} if @code{x} is an integer or
-a multiple of 1/2, 1/3, 1/4, or 1/6, and thus further simplified.
+follows.
+
+@code{%e^(%pi %i x)} simplifies to @code{cos (%pi x) + %i sin (%pi x)} if @code{x} is an integer or
+a multiple of 1/2, 1/3, 1/4, or 1/6, and then further simplified.
+
 For other numerical @code{x},
-it is expressed as @code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k}
+@code{%e^(%pi %i x)} simplifies to @code{%e^(%pi %i y)} where @code{y} is @code{x - 2 k}
 for some integer @code{k} such that @code{abs(y) < 1}.  
 
 When @code{%emode} is @code{false}, no
 special simplification of @code{%e^(%pi %i x)} is carried out.
 
+@c NEED EXAMPLES HERE
 @end defvr
 
 @defvr {Option variable} %enumer
@@ -614,27 +641,31 @@ only if the exponent in @code{%e^x} evaluates to a number.
 
 See also @code{ev} and @code{numer}.
 
+@c NEED EXAMPLES HERE
 @end defvr
 
 @defvr {Option variable} exptisolate
 Default value: @code{false}
 
-When @code{exptisolate} is @code{true}, will cause @code{isolate (expr, var)} to
-examine exponents of atoms (like @code{%e}) which contain @code{var}.
+@c WHAT DOES THIS MEAN EXACTLY ??
+@code{exptisolate}, when @code{true}, causes @code{isolate (expr, var)} to
+examine exponents of atoms (such as @code{%e}) which contain @code{var}.
 
+@c NEED EXAMPLES HERE
 @end defvr
 
 @defvr {Option variable} exptsubst
 Default value: @code{false}
 
-When @code{exptsubst} is @code{true}, permits substitutions such as @code{y}
-for @code{%e^x} in @code{%e^(a x)} to take place.
+@code{exptsubst}, when @code{true}, permits substitutions such as @code{y}
+for @code{%e^x} in @code{%e^(a x)}.
 
+@c NEED EXAMPLES HERE
 @end defvr
 
 @deffn {Function} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 @code{freeof (@var{x_1}, @var{expr})}
-returns @code{true}
+Returns @code{true}
 if no subexpression of @var{expr} is equal to @var{x_1}
 or if @var{x_1} occurs only as a dummy variable in @var{expr},
 and returns @code{false} otherwise.
@@ -747,13 +778,15 @@ Returns the generalized factorial, defined as
 @deffn {Function} imagpart (@var{expr})
 Returns the imaginary part of the expression @var{expr}.
 
-@end deffn
+@code{imagpart} is a computational function,
+not a simplifying function.
+@c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
+@c SEE ALSO SF BUG REPORT # 902290
 
-@deffn {Function} indices (@var{expr})
-Returns a list of two elements.  The first is a list of
-the free indices in @var{expr} (those that occur only once); the second is
-the list of dummy indices in @var{expr} (those that occur exactly twice).
+See also @code{abs}, @code{carg}, @code{polarform}, @code{rectform},
+and @code{realpart}.
 
+@c NEED EXAMPLES HERE
 @end deffn
 
 @deffn {Function} infix (@var{op})
@@ -838,15 +871,23 @@ while greater @var{rbp} makes @var{op} left-associative.
 @defvr {Option variable} inflag
 Default value: @code{false}
 
-When @code{inflag} is @code{true}, the functions for part
-extraction will look at the internal form of @code{expr}.  Note that the
-simplifier re-orders expressions.  Thus @code{first (x+y)} will be @code{x} if @code{inflag}
-is @code{true} and Y if @code{inflag} is @code{false}.  (@code{first (y+x)} gives the same
-results).  Also, setting @code{inflag} to @code{true} and calling @code{part}/@code{substpart} is
-the same as calling @code{inpart}/@code{substinpart}.  Functions affected by the
-setting of @code{inflag} are: @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length}, the
-@code{for} ... @code{in} construct, @code{map}, @code{fullmap}, @code{maplist}, @code{reveal} and @code{pickapart}.
+When @code{inflag} is @code{true}, functions for part
+extraction inspect the internal form of @code{expr}.
 
+Note that the simplifier re-orders expressions.
+Thus @code{first (x + y)} returns @code{x} if @code{inflag}
+is @code{true} and @code{y} if @code{inflag} is @code{false}.
+(@code{first (y + x)} gives the same results.)
+
+Also, setting @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is
+the same as calling @code{inpart} or @code{substinpart}.
+
+Functions affected by the setting of @code{inflag} are:
+@code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
+the @code{for} ... @code{in} construct,
+@code{map}, @code{fullmap}, @code{maplist}, @code{reveal} and @code{pickapart}.
+
+@c NEED EXAMPLES HERE
 @end defvr
 
 @c NEEDS WORK
@@ -1389,8 +1430,6 @@ such that @var{a} and @var{b} are purely real.
 
 @end deffn
 
-@c HOW ARE BOXES ESTABLISHED TO BEGIN WITH ??
-@c NEEDS EXAMPLES
 @deffn {Function} rembox (@var{expr}, unlabelled)
 @deffnx {Function} rembox (@var{expr}, @var{label})
 @deffnx {Function} rembox (@var{expr})
@@ -1402,6 +1441,72 @@ Removes boxes from @var{expr}.
 
 @code{rembox (@var{expr})} removes all boxes, labelled and unlabelled.
 
+Boxes are drawn by the @code{box}, @code{dpart}, and @code{lpart} functions.
+
+Examples:
+
+@c ===beg===
+@c expr: (a*d - b*c)/h^2 + sin(%pi*x);
+@c dpart (dpart (expr, 1, 1), 2, 2);
+@c expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+@c rembox (expr2, unlabelled);
+@c rembox (expr2, FOO);
+@c rembox (expr2, BAR);
+@c rembox (expr2);
+@c ===end===
+@example
+(%i1) expr: (a*d - b*c)/h^2 + sin(%pi*x);
+                                  a d - b c
+(%o1)                sin(%pi x) + ---------
+                                      2
+                                     h
+(%i2) dpart (dpart (expr, 1, 1), 2, 2);
+                        """""""    a d - b c
+(%o2)               sin("%pi x") + ---------
+                        """""""      """"
+                                     " 2"
+                                     "h "
+                                     """"
+(%i3) expr2: lpart (BAR, lpart (FOO, %, 1), 2);
+                  FOO"""""""""""   BAR""""""""
+                  "    """"""" "   "a d - b c"
+(%o3)             "sin("%pi x")" + "---------"
+                  "    """"""" "   "  """"   "
+                  """"""""""""""   "  " 2"   "
+                                   "  "h "   "
+                                   "  """"   "
+                                   """""""""""
+(%i4) rembox (expr2, unlabelled);
+                                  BAR""""""""
+                   FOO"""""""""   "a d - b c"
+(%o4)              "sin(%pi x)" + "---------"
+                   """"""""""""   "    2    "
+                                  "   h     "
+                                  """""""""""
+(%i5) rembox (expr2, FOO);
+                                  BAR""""""""
+                       """""""    "a d - b c"
+(%o5)              sin("%pi x") + "---------"
+                       """""""    "  """"   "
+                                  "  " 2"   "
+                                  "  "h "   "
+                                  "  """"   "
+                                  """""""""""
+(%i6) rembox (expr2, BAR);
+                   FOO"""""""""""
+                   "    """"""" "   a d - b c
+(%o6)              "sin("%pi x")" + ---------
+                   "    """"""" "     """"
+                   """"""""""""""     " 2"
+                                      "h "
+                                      """"
+(%i7) rembox (expr2);
+                                  a d - b c
+(%o7)                sin(%pi x) + ---------
+                                      2
+                                     h
+@end example
+
 @end deffn
 
 @c NEEDS WORK
@@ -1409,55 +1514,107 @@ Removes boxes from @var{expr}.
 @c VERY IMPORTANT !!
 @deffn {Function} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
 Represents a summation of the values of @var{expr} as
-the index @var{i} varies from @var{i_0} to @var{i_1}.  If the upper and lower limits
-differ by an integer then each term in the sum is evaluated and added
-together.  Otherwise, if the @code{simpsum} is @code{true} the result is
-simplified.  This simplification may sometimes be able to produce a
-closed form.
+the index @var{i} varies from @var{i_0} to @var{i_1}.
 Sums may be differentiated, added, subtracted, or multiplied with some
 automatic simplification being performed.
+The noun form @code{'sum} is displayed in sigma notation.
 
-If @code{simpsum} is @code{false} or if @code{'sum} is used, the value is a
-sum noun form which is a representation of the sigma notation used in
-mathematics.
+If the upper and lower limits differ by an integer,
+the summand @var{expr} is evaluated for each value of the summation index @var{i},
+and the results are added together.
 
-If @var{i_1} is one less than @var{i_0}, the sum is an "empty sum" and @code{sum} returns 0 
+Otherwise, if the @code{simpsum} is @code{true} the summation is simplified.
+Simplification may sometimes yield a closed form.
+If the evaluation flag @code{simpsum} is @code{false} or simplification fails,
+the result is a noun form @code{'sum}.
+
+@code{sum} evaluates @var{i_0} and @var{i_1} and quotes @var{i}.
+@c EVALUATION OF THE SUMMAND IS A MESS !!
+The summand @var{expr} is quoted under some circumstances,
+or evaluated to greater or lesser degree in others.
+
+If @var{i_1} is one less than @var{i_0}, the sum is a considered an "empty sum" and @code{sum} returns 0 
 rather than reporting an error.
 See also @code{sumhack}.
 
-@code{cauchysum} when @code{true} causes the Cauchy product to be used when
-multiplying sums together rather than the usual product.  In the
-Cauchy product the index of the inner summation is a function of the
-index of the outer one rather than varying independently.
+When the evaluation flag @code{cauchysum} is @code{true},
+the product of summations is expressed as a Cauchy product,
+in which the index of the inner summation is a function of the
+index of the outer one, rather than varying independently.
 
-@code{genindex} is the alphabetic prefix used to generate the next
-variable of summation.
+The global variable @code{genindex} is the alphabetic prefix used to generate the next index of summation,
+when an automatically generated index is needed.
 
-@code{gensumnum} is the numeric suffix used to generate the next variable
-of summation.  If it is set to @code{false} then the index will consist only
-of @code{genindex} with no numeric suffix.
+@code{gensumnum} is the numeric suffix used to generate the next index of summation,
+when an automatically generated index is needed.
+When @code{gensumnum} is @code{false}, an automatically-generated index is only
+@code{genindex} with no numeric suffix.
 
 See also @code{sumcontract}, @code{intosum},
-@code{bashindices}, and @code{niceindices}.
+@code{bashindices}, @code{niceindices},
+@code{nouns}, and @code{evflag}.
 
-@code{example (sum)} displays some examples.
+Examples:
+
+@c ===beg===
+@c sum (i^2, i, 1, 7);
+@c sum (a[i], i, 1, 7);
+@c sum (a(i), i, 1, 7);
+@c sum (a(i), i, 1, n);
+@c ev (sum (2^i + i^2, i, 0, n), simpsum);
+@c ev (sum (1/3^i, i, 1, inf), simpsum);
+@c ev (sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum);
+@c ===end===
+
+@example
+(%i1) sum (i^2, i, 1, 7);
+(%o1)                          140
+(%i2) sum (a[i], i, 1, 7);
+(%o2)           a  + a  + a  + a  + a  + a  + a
+                 7    6    5    4    3    2    1
+(%i3) sum (a(i), i, 1, 7);
+(%o3)    a(7) + a(6) + a(5) + a(4) + a(3) + a(2) + a(1)
+(%i4) sum (a(i), i, 1, n);
+                            n
+                           ====
+                           \
+(%o4)                       >    a(i)
+                           /
+                           ====
+                           i = 1
+(%i5) ev (sum (2^i + i^2, i, 0, n), simpsum);
+                              3      2
+                   n + 1   2 n  + 3 n  + n
+(%o5)             2      + --------------- - 1
+                                  6
+(%i6) ev (sum (1/3^i, i, 1, inf), simpsum);
+                                1
+(%o6)                           -
+                                2
+(%i7) ev (sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum);
+                                  2
+(%o7)                        5 %pi
+@end example
 
 @end deffn
 
-@deffn {Function} lsum (@var{expr}, @var{i}, @var{list})
-Represents the sum of @var{expr} for each element @var{i} in @var{list}.
+@deffn {Function} lsum (@var{expr}, @var{x}, @var{L})
+Represents the sum of @var{expr} for each element @var{x} in @var{L}.
 
+A noun form @code{'lsum} is returned
+if the argument @var{L} does not evaluate to a list.
+
+Examples:
+
+@c ===beg===
+@c lsum (x^i, i, [1, 2, 7]);
+@c lsum (i^2, i, rootsof (x^3 - 1));
+@c ===end===
 @example
 (%i1) lsum (x^i, i, [1, 2, 7]);
                             7    2
 (%o1)                      x  + x  + x
-@end example
-
-If the last element @code{list} argument does not evaluate, or does not
-evaluate to a Maxima list then the answer is left in noun form
-
-@example
-(%i2) lsum (i^2, i, rootsof (x^3-1));
+(%i2) lsum (i^2, i, rootsof (x^3 - 1));
                      ====
                      \      2
 (%o2)                 >    i
@@ -1476,13 +1633,38 @@ something" ("action" - for most functions the usual case).  E.g.
 @code{integrate} integrates a function, unless it is declared to be a "noun",
 in which case it represents the integral of the function.
 
+The verb form is distinguished by 
+a leading dollar sign @code{$} on the corresponding Lisp symbol.
+In contrast,
+the noun form is distinguished by 
+a leading percent sign @code{%} on the corresponding Lisp symbol.
+
 See also @code{noun}, @code{nounify}, @code{verbify}.
 
 @end defvr
 
 @deffn {Function} verbify (@var{f})
-Returns the function name @var{f} in its verb form.
+Returns the verb form of the function name @var{f}.
 
 See also @code{verb}, @code{noun}, and @code{nounify}.
+
+Examples:
+
+@c ===beg===
+@c verbify ('foo);
+@c :lisp $%
+@c nounify (foo);
+@c :lisp $%
+@c ===end===
+@example
+(%i1) verbify ('foo);
+(%o1)                          foo
+(%i2) :lisp $%
+$FOO
+(%i2) nounify (foo);
+(%o2)                          foo
+(%i3) :lisp $%
+%FOO
+@end example
 
 @end deffn
