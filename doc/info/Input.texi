@@ -27,6 +27,63 @@ and
 @node Definitions for Input and Output,  , Files, Input and Output
 @section Definitions for Input and Output
 
+@defvr {Variable} _
+
+@code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
+
+@code{_} is assigned the input before the input is simplified or evaluated.
+However, the value of @code{_} is simplified (but not evaluated) when it is displayed.
+
+@code{_} is recognized by @code{batch}, but not by @code{load}.
+
+See also @code{%} and @code{%%}.
+
+Examples:
+
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@end defvr
+
 @defvr {Variable} %
 @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 most recently computed by Maxima,
