@@ -6,7 +6,7 @@
 @node Definitions for Logarithms,  , Logarithms, Logarithms
 @section Definitions for Logarithms
 
-@defvr {option variable} %e_to_numlog
+@defvr {Option variable} %e_to_numlog
 Default value: @code{false}
 
 When @code{true}, @code{r} some rational number, and
@@ -47,7 +47,7 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 
 @end deffn
 
-@defvr {option variable} logabs
+@defvr {Option variable} logabs
 Default value: @code{false}
 
 When doing indefinite integration where
@@ -59,7 +59,7 @@ endpoints is often needed.
 
 @end defvr
 
-@defvr {option variable} logarc
+@defvr {Option variable} logarc
 Default value: @code{false}
 
 If @code{true} will cause the inverse circular and
@@ -70,7 +70,7 @@ re-evaluate the expression with @code{ev}.
 
 @end defvr
 
-@defvr {option variable} logconcoeffp
+@defvr {Option variable} logconcoeffp
 Default value: @code{false}
 
 Controls which coefficients are
@@ -111,7 +111,7 @@ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Then
 
 @end deffn
 
-@defvr {option variable} logexpand
+@defvr {Option variable} logexpand
 Default value: @code{true}
 
 Causes @code{log(a^b)} to become @code{b*log(a)}.  If
@@ -123,7 +123,7 @@ be turned off.
 
 @end defvr
 
-@defvr {option variable} lognegint
+@defvr {Option variable} lognegint
 Default value: @code{false}
 
 If @code{true} implements the rule
@@ -131,7 +131,7 @@ If @code{true} implements the rule
 
 @end defvr
 
-@defvr {option variable} lognumer
+@defvr {Option variable} lognumer
 Default value: @code{false}
 
 If @code{true} then negative floating point
@@ -141,7 +141,7 @@ arguments to @code{log} will also be converted to their absolute value.
 
 @end defvr
 
-@defvr {option variable} logsimp
+@defvr {Option variable} logsimp
 Default value: @code{true}
 
 If @code{false} then no simplification of @code{%e} to a

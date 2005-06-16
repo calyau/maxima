@@ -166,7 +166,7 @@ to the form @code{a + b %i}. See @code{polartorect}.
 
 @end deffn
 
-@defvr {Variable} fortindent
+@defvr {Option variable} fortindent
 Default value: 0
 
 @code{fortindent} controls the left margin indentation of
@@ -232,7 +232,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} fortspaces
+@defvr {Option variable} fortspaces
 Default value: @code{false}
 
 When @code{fortspaces} is @code{true}, @code{fortran} fills out
@@ -339,7 +339,7 @@ There is also a Newton method interpolation routine. See @code{newton}.
 
 @end deffn
 
-@defvr {Variable} intpolabs
+@defvr {Option variable} intpolabs
 Default value: 0.0
 
 @code{intpolabs} is the accuracy of the @code{interpolate} command is
@@ -353,7 +353,7 @@ with the single precision arithmetic we have.
 
 @end defvr
 
-@defvr {Variable} intpolerror
+@defvr {Option variable} intpolerror
 Default value: @code{true}
 
 @code{intpolerror} governs the behavior of @code{interpolate}.
@@ -368,7 +368,7 @@ might be set to 0.0.
 
 @end defvr
 
-@defvr {Variable} intpolrel
+@defvr {Option variable} intpolrel
 Default value: 0.0
 
 @code{intpolrel} is the accuracy of the @code{interpolate} command is
@@ -478,14 +478,14 @@ Simplifies @code{sin (n %pi)} to 0 if @code{sinnpiflag} is @code{true} and
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Variable} sinnpiflag
+@defvr {Option variable} sinnpiflag
 Default value: @code{true}
 
 See @code{foursimp}.
 
 @end defvr
 
-@defvr {Variable} cosnpiflag
+@defvr {Option variable} cosnpiflag
 Default value: @code{true}
 
 See @code{foursimp}.

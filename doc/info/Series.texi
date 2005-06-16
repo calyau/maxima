@@ -12,7 +12,7 @@ capable of finding the closed form of some series.   Operations such as addition
 @node Definitions for Series,  , Introduction to Series, Series
 @section Definitions for Series
 
-@defvr {Variable} cauchysum
+@defvr {Option variable} cauchysum
 Default value: @code{false}
 
 @c REPHRASE
@@ -86,7 +86,7 @@ Example:
 
 @end deffn
 
-@defvr {Variable} maxtayorder
+@defvr {Option variable} maxtayorder
 Default value: @code{true}
 
 @c REPHRASE
@@ -134,7 +134,7 @@ Example:
 
 @end deffn
 
-@defvr {Variable} niceindicespref
+@defvr {Option variable} niceindicespref
 Default value: @code{[i, j, k, l, m, n]}
 
 @code{niceindicespref} is the list from which @code{niceindices}
@@ -292,7 +292,7 @@ in order to have enough unknown coefficients to solve.
 
 @end deffn
 
-@defvr {Variable} powerdisp
+@defvr {Option variable} powerdisp
 Default value: @code{false}
 
 When @code{powerdisp} is @code{true},
@@ -346,7 +346,7 @@ in the first simplification we have returned:
 
 @end deffn
 
-@defvr {Variable} psexpand
+@defvr {Option variable} psexpand
 Default value: @code{false}
 
 When @code{psexpand} is @code{true},
@@ -597,7 +597,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} taylordepth
+@defvr {Option variable} taylordepth
 Default value: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
@@ -643,7 +643,7 @@ and @code{false} otherwise.
 @end deffn
 
 @c WHAT IS THIS ABOUT EXACTLY ??
-@defvr {Variable} taylor_logexpand
+@defvr {Option variable} taylor_logexpand
 Default value: @code{true}
 
 @code{taylor_logexpand} controls expansions of logarithms in
@@ -660,7 +660,7 @@ that occur is that necessary to obtain a formal power series.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variable} taylor_order_coefficients
+@defvr {Option variable} taylor_order_coefficients
 Default value: @code{true}
 
 @code{taylor_order_coefficients} controls the ordering of
@@ -680,7 +680,7 @@ Simplifies coefficients of the power series @var{expr}.
 
 @end deffn
 
-@defvr {Variable} taylor_truncate_polynomials
+@defvr {Option variable} taylor_truncate_polynomials
 Default value: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
@@ -757,7 +757,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} verbose
+@defvr {Option variable} verbose
 Default value: @code{false}
 
 When @code{verbose} is @code{true},

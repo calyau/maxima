@@ -388,7 +388,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @end deffn
 
-@defvr {Variable} flipflag
+@defvr {Option variable} flipflag
 
 Default: @code{false}. if @code{false} then the indices will be
 renamed according to the order of the contravariant indices,
@@ -622,7 +622,7 @@ Is the prefix for dummy indices (see the example under @code{indices}).
 
 @end defvr
 
-@defvr {Variable} icounter
+@defvr {Option variable} icounter
  default: [1] determines the numerical suffix to be used in
 generating the next dummy index in the tensor package.  The prefix is
 determined by the option @code{idummy} (default: %).
@@ -810,7 +810,7 @@ Similar to @code{canten} but also performs index contraction.
 
 @subsection Tensor symmetries
 
-@defvr {Variable} allsym
+@defvr {Option variable} allsym
 
 Default: @code{false}. if @code{true} then all indexed objects
 are assumed symmetric in all of their covariant and contravariant
@@ -1569,7 +1569,7 @@ to @code{kdelta}.
 
 @end defvr
 
-@defvr {Variable} iframe_bracket_form
+@defvr {Option variable} iframe_bracket_form
 
 Specifies how the frame bracket (@code{ifb}) is computed. Default is
 @code{true}.
@@ -1785,7 +1785,7 @@ implemented that controls the behavior of the wedge product: if
 definition is used, otherwise the second, "geometric" definition will
 be applied.
 
-@defvr {special symbol} "~"
+@defvr {Operator} "~"
 
 The wedge product operator is denoted by the tilde @code{~}. This is
 a binary operator. Its arguments should be expressions involving scalars,
@@ -1822,7 +1822,7 @@ The behavior of the wedge product operator is controlled by the
 
 @end defvr
 
-@defvr {special symbol} "|"
+@defvr {Operator} "|"
 
 The vertical bar @code{|} denotes the "contraction with a vector" binary
 operation. When a totally antisymmetric covariant tensor is contracted
@@ -1933,7 +1933,7 @@ Compute the Hodge-dual of @var{expr}. For instance:
 
 @end deffn
 
-@defvr {Variable} igeowedge_flag
+@defvr {Option variable} igeowedge_flag
 
 Controls the behavior of the wedge product and exterior derivative. When
 set to @code{false} (the default), the notion of differential forms will

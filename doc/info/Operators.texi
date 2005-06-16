@@ -58,7 +58,7 @@ See also @code{syntax}.
 @node Definitions for Operators,  , prefix, Operators
 @section Definitions for Operators
 
-@deffn operator "!"
+@deffn {Operator} "!"
 The factorial operator.
 For any complex number @code{x} (including integer, rational, and real numbers) except for
 negative integers, @code{x!} is defined as @code{gamma(x+1)}.
@@ -131,7 +131,7 @@ Thus @code{x!} may be replaced even in a quoted expression.
 
 @end deffn
 
-@deffn operator "!!"
+@deffn {Operator} "!!"
 The double factorial operator.
 
 For an integer, float, or rational number @code{n},
@@ -151,7 +151,7 @@ For an argument @code{n} which is not an integer, float, or rational,
 
 @end deffn
 
-@deffn operator "#"
+@deffn {Operator} "#"
 Represents the negation of syntactic equality @code{=}.
 
 Note that because of the rules for evaluation of predicate expressions
@@ -184,7 +184,7 @@ Examples:
 
 @end deffn
 
-@deffn operator "."
+@deffn {Operator} "."
 The dot operator, for matrix (non-commutative) multiplication.
 When "." is used in this way, spaces should be left on both sides of
 it, e.g. A . B.  This distinguishes it plainly from a decimal point in
@@ -205,32 +205,32 @@ and
 
 @end deffn
 
-@deffn operator ":"
+@deffn {Operator} ":"
 The assignment operator.  E.g. A:3 sets the variable A to 3.
 
 @end deffn
 
-@deffn operator "::"
+@deffn {Operator} "::"
 Assignment operator.  :: assigns the value of the expression
 on its right to the value of the quantity on its left, which must
 evaluate to an atomic variable or subscripted variable.
 
 @end deffn
 
-@deffn operator "::="
+@deffn {Operator} "::="
 The "::=" is used instead of ":=" to indicate that what
 follows is a macro definition, rather than an ordinary functional
 definition.  See @code{macros}.
 
 @end deffn
 
-@deffn operator ":="
+@deffn {Operator} ":="
 The function definition operator.  E.g. @code{f(x):=sin(x)} defines
 a function @code{f}.
 
 @end deffn
 
-@deffn operator "="
+@deffn {Operator} "="
 denotes an equation to Maxima.  To the pattern matcher in
 Maxima it denotes a total relation that holds between two expressions
 if and only if the expressions are syntactically identical.
@@ -243,7 +243,7 @@ Note that because of the rules for evaluation of predicate expressions
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn operator and
+@deffn {Operator} and
 The logical conjunction operator.
 @code{and} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
@@ -267,7 +267,7 @@ Otherwise, @code{and} returns @code{unknown}.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn operator or
+@deffn {Operator} or
 The logical disjunction operator.
 @code{or} is an n-ary infix operator;
 its operands are Boolean expressions, and its result is a Boolean value.
@@ -291,7 +291,7 @@ Otherwise, @code{or} returns @code{unknown}.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn operator not
+@deffn {Operator} not
 The logical negation operator.
 @code{not} is a prefix operator;
 its operand is a Boolean expression, and its result is a Boolean value.
@@ -311,7 +311,7 @@ modulus of @var{expr}.
 
 @end deffn
 
-@defvr {special symbol} additive
+@defvr {Keyword} additive
 If @code{declare(f,additive)} has been executed, then:
 
 (1) If @code{f} is univariate, whenever the simplifier encounters @code{f} applied
@@ -326,7 +326,7 @@ the form @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
 
-@defvr keyword allbut
+@defvr {Keyword} allbut
 works with the @code{part} commands (i.e. @code{part}, @code{inpart}, @code{substpart},
 @code{substinpart}, @code{dpart}, and @code{lpart}).  For example,
 
@@ -356,7 +356,7 @@ name such as @code{u}, @code{f}, @code{foo}, or @code{g}, not an infolist such a
 
 @end defvr
 
-@defvr declaration antisymmetric
+@defvr {Declaration} antisymmetric
 If @code{declare(h,antisymmetric)} is done, this tells the
 simplifier that @code{h} is antisymmetric.  E.g. @code{h(x,z,y)} will simplify to
 @code{- h(x, y, z)}.  That is, it will give (-1)^n times the result given by
@@ -371,7 +371,7 @@ Returns the complex absolute value (the complex modulus) of
 
 @end deffn
 
-@defvr declaration commutative
+@defvr {Declaration} commutative
 If @code{declare(h,commutative)} is done, this tells the
 simplifier that @code{h} is a commutative function.  E.g. @code{h(x,z,y)} will
 simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
@@ -477,7 +477,7 @@ equal(a, b)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c NOTE THAT eval IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
 @c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
-@deffn operator eval
+@deffn {Operator} eval
 As an argument in a call to @code{ev (@var{expr})},
 @code{eval} causes an extra evaluation of @var{expr}.
 See @code{ev}.
@@ -671,7 +671,7 @@ is @code{true} if @var{expr} is an odd integer.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c NOTE THAT pred IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
 @c BUT FOR SOME REASON pred DOES NOT HAVE THE evflag PROPERTY
-@deffn operator pred
+@deffn {Operator} pred
 As an argument in a call to @code{ev (@var{expr})},
 @code{pred} causes predicates (expressions which evaluate to @code{true}
 or @code{false}) to be evaluated.
@@ -811,7 +811,7 @@ which are powers of n to be pulled outside of the radical, e.g.
 
 @end deffn
 
-@defvr {Variable} sqrtdispflag
+@defvr {Option variable} sqrtdispflag
 Default value: @code{true}
 
 When @code{sqrtdispflag} is @code{false},
@@ -851,8 +851,8 @@ Example:
 
 @end deffn
 
-@defvr {Variable} sublis_apply_lambda
-default: @code{true} - controls whether @code{lambda}'s
+@defvr {Option variable} sublis_apply_lambda
+Default value: @code{true} - controls whether @code{lambda}'s
 substituted are applied in simplification after @code{sublis} is used or
 whether you have to do an @code{ev} to get things to apply. @code{true} means do the
 application.

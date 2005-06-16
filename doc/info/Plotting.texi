@@ -10,7 +10,7 @@
 @c AND ONLY EFFECT ON plot3d IS TO CAUSE OPENMATH OUTPUT TO BE WRITTEN TO CONSOLE
 @c WHEN [plot_format, openmath] IS SET.
 @c NOT CONVINCED WE REALLY WANT TO DOCUMENT THIS VARIABLE
-@defvr {Variable} in_netmath
+@defvr {Option variable} in_netmath
 Default value: @code{false}
 
 When @code{in_netmath} is @code{true},
@@ -258,7 +258,7 @@ A temporary file @file{xgraph-out} is used.
 
 
 
-@defvr {Variable} plot_options
+@defvr {System variable} plot_options
 Elements of this list state the default options for plotting.
 If an option is present in a @code{plot2d} or @code{plot3d} call,
 that value takes precedence over the default option.

@@ -721,7 +721,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} functions
+@defvr {System variable} functions
 Default value: @code{[]}
 
 @code{functions} is the list of user-defined Maxima functions
@@ -951,7 +951,7 @@ occurrence is permitted in each.
 
 @end deffn
 
-@defvr {Variable} macroexpansion
+@defvr {Option variable} macroexpansion
 Default value: @code{false}
 
 @code{macroexpansion} controls advanced features which
@@ -978,7 +978,7 @@ called.  See documentation for @code{translate} and @code{macros} for more detai
 
 @end defvr
 
-@defvr {Variable} mode_checkp
+@defvr {Option variable} mode_checkp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -988,7 +988,7 @@ of bound variables.
 
 @end defvr
 
-@defvr {Variable} mode_check_errorp
+@defvr {Option variable} mode_check_errorp
 Default value: @code{false}
 
 @c WHAT DOES THIS MEAN ??
@@ -998,7 +998,7 @@ error.
 
 @end defvr
 
-@defvr {Variable} mode_check_warnp
+@defvr {Option variable} mode_check_warnp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -1097,7 +1097,7 @@ every time you take the first of a list of numbers.
 
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
-@defvr {Variable} transcompile
+@defvr {Option variable} transcompile
 Default value: @code{true}
 
 When @code{transcompile} is @code{true}, @code{translate} and @code{translate_file} generate
@@ -1237,7 +1237,7 @@ and @code{tr_windy}.
 
 @end deffn
 
-@defvr {Variable} transrun
+@defvr {Option variable} transrun
 Default value: @code{true}
 
 When @code{transrun} is @code{false} will cause the interpreted
@@ -1248,7 +1248,7 @@ rather than the translated version.
 
 @c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
 @c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
-@defvr {Variable} tr_array_as_ref
+@defvr {Option variable} tr_array_as_ref
 Default value: @code{true}
 
 If @code{translate_fast_arrays} is false, array references in
@@ -1263,7 +1263,7 @@ otherwise array names appear as literal symbols in translated code.
 
 @c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
 @c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
-@defvr {Variable} tr_bound_function_applyp
+@defvr {Option variable} tr_bound_function_applyp
 Default value: @code{true}
 
 When @code{tr_bound_function_applyp} is @code{true}, Maxima gives a warning if a bound
@@ -1275,7 +1275,7 @@ the warning message.
 
 @end defvr
 
-@defvr {Variable} tr_file_tty_messagesp
+@defvr {Option variable} tr_file_tty_messagesp
 Default value: @code{false}
 
 When @code{tr_file_tty_messagesp} is @code{true},
@@ -1289,7 +1289,7 @@ file are only inserted into the UNLISP file.
 @c THIS FLAG APPEARS TO HAVE NO EFFECT. SHOULD CUT OUT THIS ITEM AND RELATED CODE.
 @c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
 @c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
-@defvr {Variable} tr_float_can_branch_complex
+@defvr {Option variable} tr_float_can_branch_complex
 Default value: @code{true}
 
 Tells the Maxima-to-Lisp translator to assume that the functions 
@@ -1305,7 +1305,7 @@ When @code{false} then @code{acos(x)} is of mode
 
 @end defvr
 
-@defvr {Variable} tr_function_call_default
+@defvr {Option variable} tr_function_call_default
 Default value: @code{general}
 
 @code{false} means give up and
@@ -1320,7 +1320,7 @@ translated and compiled code with the Maxima interpreter.
 
 @end defvr
 
-@defvr {Variable} tr_numer
+@defvr {Option variable} tr_numer
 Default value: @code{false}
 
 When @code{tr_numer} is @code{true} numer properties are used for
@@ -1328,7 +1328,7 @@ atoms which have them, e.g. @code{%pi}.
 
 @end defvr
 
-@defvr {Variable} tr_optimize_max_loop
+@defvr {Option variable} tr_optimize_max_loop
 Default value: 100
 
 @code{tr_optimize_max_loop} is the maximum number of times the
@@ -1338,7 +1338,7 @@ non-terminating optimization properties.
 
 @end defvr
 
-@defvr {Variable} tr_semicompile
+@defvr {Option variable} tr_semicompile
 Default value: @code{false}
 
 When @code{tr_semicompile} is @code{true}, @code{translate_file} and @code{compfile}
@@ -1348,7 +1348,7 @@ code by the Lisp compiler.
 @end defvr
 
 @c ARE ANY OF THESE OBSOLETE ??
-@defvr {Variable} tr_state_vars
+@defvr {System variable} tr_state_vars
 Default value:
 @example
 [transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
@@ -1375,7 +1375,7 @@ the translator during the current translation.
 
 @end deffn
 
-@defvr {Variable} tr_warn_bad_function_calls
+@defvr {Option variable} tr_warn_bad_function_calls
 Default value: @code{true}
 
 - Gives a warning when
@@ -1384,7 +1384,7 @@ improper declarations that were made at translate time.
 
 @end defvr
 
-@defvr {Variable} tr_warn_fexpr
+@defvr {Option variable} tr_warn_fexpr
 Default value: @code{compfile}
 
 - Gives a warning if any FEXPRs are
@@ -1393,7 +1393,7 @@ all legitimate special program forms are translated.
 
 @end defvr
 
-@defvr {Variable} tr_warn_meval
+@defvr {Option variable} tr_warn_meval
 Default value: @code{compfile}
 
 - Gives a warning if the function
@@ -1402,7 +1402,7 @@ translation.
 
 @end defvr
 
-@defvr {Variable} tr_warn_mode
+@defvr {Option variable} tr_warn_mode
 Default value: @code{all}
 
 - Gives a warning when variables are
@@ -1410,7 +1410,7 @@ assigned values inappropriate for their mode.
 
 @end defvr
 
-@defvr {Variable} tr_warn_undeclared
+@defvr {Option variable} tr_warn_undeclared
 Default value: @code{compile}
 
 - Determines when to send
@@ -1418,7 +1418,7 @@ warnings about undeclared variables to the TTY.
 
 @end defvr
 
-@defvr {Variable} tr_warn_undefined_variable
+@defvr {Option variable} tr_warn_undefined_variable
 Default value: @code{all}
 
 - Gives a warning when
@@ -1430,7 +1430,7 @@ undefined global variables are seen.
 @c WHERE IT CAUSES A WARNING ABOUT USING kill. 
 @c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
 @c AND CUT OUT tr_windy FROM CODE AND DOCS.
-@defvr {Variable} tr_windy
+@defvr {Option variable} tr_windy
 Default value: @code{true}
 
 - Generate "helpfull" comments and

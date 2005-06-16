@@ -28,7 +28,7 @@ Users may find it more informative to browse the share directory using a file sy
 @node Definitions for Miscellaneous Options,  , Share, Miscellaneous Options
 @section Definitions for Miscellaneous Options
 
-@defvr {Variable} aliases
+@defvr {System variable} aliases
 Default value: @code{[]}
 
 @code{aliases} is the list of atoms which have a user defined alias (set up by
@@ -37,7 +37,7 @@ the @code{alias}, @code{ordergreat}, @code{orderless} functions or by declaring 
 @end defvr
 
 
-@defvr declaration alphabetic
+@defvr {Declaration} alphabetic
 @code{declare (@var{char}, alphabetic)} adds @code{char} to Maxima's alphabet,
 which initially contains
 the letters @code{A} through @code{Z}, @code{a} through @code{z}, @code{%} and @code{_}.
@@ -84,7 +84,7 @@ See also @code{op}.
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Variable} genindex
+@defvr {Option variable} genindex
 Default value: @code{i}
 
 @code{genindex} is the alphabetic prefix used to generate the
@@ -92,7 +92,7 @@ next variable of summation when necessary.
 
 @end defvr
 
-@defvr {Variable} gensumnum
+@defvr {Option variable} gensumnum
 Default value: 0
 
 @code{gensumnum} is the numeric suffix used to generate the next variable
@@ -102,19 +102,19 @@ of @code{genindex} with no numeric suffix.
 @end defvr
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defvr {Variable} inf
+@defvr {Constant} inf
 Real positive infinity.
 
 @end defvr
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defvr {Variable} infinity
+@defvr {Constant} infinity
 Complex infinity, an infinite magnitude of arbitrary phase
 angle.  See also @code{inf} and @code{minf}.
 
 @end defvr
 
-@defvr {Variable} infolists
+@defvr {System variable} infolists
 Default value: @code{[]}
 
 @code{infolists} is a list of the names of all of the information
@@ -191,7 +191,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} m1pbranch
+@defvr {Option variable} m1pbranch
 Default value: @code{false}
 
 @code{m1pbranch} is the principal branch for @code{-1} to a power.
@@ -255,7 +255,7 @@ properties associated with the atom @var{a}.
 @c CROSS REF TO WHICH FUNCTION OR FUNCTIONS ESTABLISH PROPERTIES !! (VERY IMPORTANT)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c WHAT IS HIDDEN IN THE "etc" HERE ??
-@defvr {special symbol} props
+@defvr {Special symbol} props
 @code{props} are atoms which have any property other than those explicitly
 mentioned in @code{infolists}, such as atvalues, matchdeclares, etc., as well
 as properties specified in the @code{declare} function.

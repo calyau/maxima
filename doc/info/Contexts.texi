@@ -96,7 +96,7 @@ a function which returns @code{true} for all arguments.
 @end defvr
 
 
-@defvr {Variable} assume_pos_pred
+@defvr {Option variable} assume_pos_pred
 Default value: @code{false}
 
 When @code{assume_pos_pred} is assigned the name of a function

@@ -77,7 +77,7 @@ See also @code{apply1}, @code{apply2}, and @code{let}.
 
 @end deffn
 
-@defvr {Variable} current_let_rule_package
+@defvr {Option variable} current_let_rule_package
 Default value: @code{default_let_rule_package}
 
 @code{current_let_rule_package} is the name of the rule package that is used by
@@ -92,7 +92,7 @@ and the value of @code{current_let_rule_package} is not changed.
 
 @end defvr
 
-@defvr {Variable} default_let_rule_package
+@defvr {Option variable} default_let_rule_package
 @c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
 Default value: @code{default_let_rule_package}
 
@@ -313,7 +313,7 @@ If not otherwise specified,
 @c NEEDS ADDITIONAL EXAMPLES
 @end deffn
 
-@defvr {Variable} letrat
+@defvr {Option variable} letrat
 Default value: @code{false}
 
 When @code{letrat} is @code{false}, @code{letsimp} simplifies the
@@ -375,8 +375,8 @@ followed by @code{letsimp (%, @var{package_name_2})}, and so on.
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Variable} let_rule_packages
-default: @code{[default_let_rule_package]}
+@defvr {Option variable} let_rule_packages
+Default value: @code{[default_let_rule_package]}
 
 @code{let_rule_packages} is a list of all user-defined let rule packages
 plus the default package @code{default_let_rule_package}.

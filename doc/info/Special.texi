@@ -311,7 +311,7 @@ then the limit as @math{v} approaches @math{n} is taken.
 
 @end deffn
 
-@defvr {Variable} besselexpand
+@defvr {Option variable} besselexpand
 Default value: @code{false}
 
 @c REPHRASE
@@ -396,7 +396,7 @@ The Euler-Mascheroni constant is @code{%gamma}.
 
 @end deffn
 
-@defvr {Variable} gammalim
+@defvr {Option variable} gammalim
 Default value: 1000000
 
 @c REPHRASE
@@ -490,7 +490,7 @@ arguments.
 
 @end deffn
 
-@defvr {Variable} poislim
+@defvr {Option variable} poislim
 Default value: 5
 
 @code{poislim} determines the domain of the coefficients in
@@ -522,7 +522,7 @@ representation.
 @end deffn
 
 @c MORE INFO NEEDED HERE
-@defvr {special symbol} poisson
+@defvr {Special symbol} poisson
 The symbol @code{/P/} follows the line label of Poisson series
 expressions.
 

@@ -1489,7 +1489,7 @@ The nonmetricity coefficients, computed from @code{nm} by @code{nonmetricity}.
 
 @end defvr
 
-@defvr {Sysetm variable} tensorkill
+@defvr {System variable} tensorkill
 
 Variable indicating if the tensor package has been initialized. Set and used by
 @code{csetup}, reset by @code{init_ctensor}.

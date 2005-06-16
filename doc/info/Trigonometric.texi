@@ -134,7 +134,7 @@ Do @code{load(atrig1);} to use them.
 
 @end deffn
 
-@defvr {option variable} halfangles
+@defvr {Option variable} halfangles
 Default value: @code{false}
 
 When @code{halfangles} is @code{true},
@@ -230,7 +230,7 @@ Examples:
 
 @end deffn
 
-@defvr {option variable} trigexpandplus
+@defvr {Option variable} trigexpandplus
 Default value: @code{true}
 
 @code{trigexpandplus} controls the "sum" rule for
@@ -241,7 +241,7 @@ Default value: @code{true}
 
 @end defvr
 
-@defvr {option variable} trigexpandtimes
+@defvr {Option variable} trigexpandtimes
 Default value: @code{true}
 
 @code{trigexpandtimes} controls the "product" rule for
@@ -251,7 +251,7 @@ will take place only if @code{trigexpandtimes} is @code{true}.
 
 @end defvr
 
-@defvr {option variable} triginverses
+@defvr {Option variable} triginverses
 Default value: @code{all}
 
 @code{triginverses} controls the simplification of the
@@ -311,7 +311,7 @@ used as follows, e.g.
 
 @end deffn
 
-@defvr {option variable} trigsign
+@defvr {Option variable} trigsign
 Default value: @code{true}
 
 When @code{trigsign} is @code{true}, it permits simplification of negative

@@ -664,7 +664,7 @@ properties that cannot otherwise be displayed, i.e. for
 
 @end deffn
 
-@defvr {Variable} prompt
+@defvr {Option variable} prompt
 Default value: @code{_}
 
 @code{prompt} is the prompt symbol of the @code{demo} function,

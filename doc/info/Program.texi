@@ -73,7 +73,7 @@ functions, including the currently active function.
 
 @end deffn
 
-@deffn {special operator} do
+@deffn {Special operator} do
 The @code{do} statement is used for performing iteration.  Due to its
 great generality the @code{do} statement will be described in two parts.
 First the usual form will be given which is analogous to that used in
@@ -299,7 +299,7 @@ would terminate the @code{batch} if the error weren't caught.
 @end deffn
 
 @deffn {Function} error (@var{expr_1}, ..., @var{expr_n})
-@deffnx {Variable} error
+@deffnx {System variable} error
 Evaluates and prints @var{expr_1}, ..., @var{expr_n},
 and then causes an error return to top level Maxima
 or to the nearest enclosing @code{errcatch}.
@@ -322,7 +322,7 @@ and @code{errormsg} formats and prints it.
 @end deffn
 
 @c REPHRASE
-@deffn {special operator} for
+@deffn {Special operator} for
 Used in iterations. See @code{do} for a description of
 Maxima's iteration facilities.
 
@@ -346,7 +346,7 @@ one containing the @code{go}.
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @c THIS ITEM IS IMPORTANT
-@deffn {special operator} if
+@deffn {Special operator} if
 The @code{if} statement is used for conditional execution.  The syntax
 is:
 
@@ -433,7 +433,7 @@ routines as an atom.  "Mapatoms" are atoms, numbers
 @end deffn
 
 @c NEEDS CLARIFICATION
-@defvr {Variable} maperror
+@defvr {Option variable} maperror
 Default value: @code{true}
 
 When @code{maperror} is @code{false}, causes all of the mapping functions, for example
@@ -465,7 +465,7 @@ which returns an expression with the same main operator as @var{expr_i} has
 @end deffn
 
 @c NEEDS CLARIFICATION
-@defvr {Variable} prederror
+@defvr {Option variable} prederror
 Default value: @code{true}
 
 When @code{prederror} is @code{true}, an error message is displayed

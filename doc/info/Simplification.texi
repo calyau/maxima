@@ -12,7 +12,7 @@
 @c work as advertised, except that it doesn't appear to be possible
 @c to open a break prompt with ^A or any other character.
 @c What should we do about askexp ???
-@defvr {Variable} askexp
+@defvr {System variable} askexp
 When @code{asksign} is called,
 @code{askexp} is the expression @code{asksign} is testing.
 
@@ -51,7 +51,7 @@ or @code{zero}.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Function} demoivre (@var{expr})
-@deffnx {Variable} demoivre
+@deffnx {Option variable} demoivre
 
 The function @code{demoivre (expr)} converts one expression
 without setting the global variable @code{demoivre}.
@@ -71,7 +71,7 @@ both be true at the same time.
 @end deffn
 
 
-@defvr {Variable} domain
+@defvr {Option variable} domain
 Default value: @code{real}
 
 When @code{domain} is set to @code{complex}, @code{sqrt (x^2)} will remain
@@ -148,7 +148,7 @@ This function is autoloaded from
 @end deffn
 
 
-@defvr {Variable} expandwrt_denom
+@defvr {Option variable} expandwrt_denom
 Default value: @code{false}
 
 @code{expandwrt_denom} controls the treatment of rational
@@ -172,7 +172,7 @@ This function is autoloaded from @file{simplification/stopex.mac}.
 @end deffn
 
 
-@defvr {Variable} expon
+@defvr {Option variable} expon
 Default value: 0
 
 @code{expon} is the exponent of the largest negative power which
@@ -184,7 +184,7 @@ expanded.
 
 
 @deffn {Function} exponentialize (@var{expr})
-@deffnx {Variable} exponentialize
+@deffnx {Option variable} exponentialize
 
 The function @code{exponentialize (expr)} converts 
 circular and hyperbolic functions in @var{expr} to exponentials,
@@ -202,7 +202,7 @@ both be true at the same time.
 
 @c NEEDS CLARIFICATION
 @c NEEDS EXAMPLES
-@defvr {Variable} expop
+@defvr {Option variable} expop
 Default value: 0
 
 @code{expop} is the highest positive exponent which is
@@ -215,7 +215,7 @@ not less than n.
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} factlim
+@defvr {Option variable} factlim
 Default value: -1
 
 @code{factlim} specifies the highest factorial which is
@@ -239,7 +239,7 @@ a @code{scanmap (multthru, @var{expr})} may be necessary before the @code{intosu
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr declaration lassociative
+@defvr {Declaration} lassociative
 @code{declare (g, lassociative)} tells the
 Maxima simplifier that @code{g} is left-associative.  E.g., @code{g (g (a, b), g (c, d))} will
 simplify to @code{g (g (g (a, b), c), d)}.
@@ -248,7 +248,7 @@ simplify to @code{g (g (g (a, b), c), d)}.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c WHAT'S UP WITH THE QUOTE MARKS ??
-@defvr declaration linear
+@defvr {Declaration} linear
 One of Maxima's operator properties.  For univariate @code{f} so
 declared, "expansion" @code{f(x + y)} yields @code{f(x) + f(y)},
 @code{f(a*x)} yields @code{a*f(x)} takes
@@ -263,7 +263,7 @@ See also @code{opproperties}.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr declaration mainvar
+@defvr {Declaration} mainvar
 You may declare variables to be @code{mainvar}.  The ordering
 scale for atoms is essentially: numbers < constants (e.g., @code{%e}, @code{%pi}) <
 scalars < other variables < mainvars.  E.g., compare @code{expand ((X+Y)^4)}
@@ -277,7 +277,7 @@ expression in which @code{x} is a @code{mainvar}, you probably should also save 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} maxapplydepth
+@defvr {Option variable} maxapplydepth
 Default value: 10000
 
 @code{maxapplydepth} is the maximum depth to which @code{apply1}
@@ -286,7 +286,7 @@ and @code{apply2} will delve.
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} maxapplyheight
+@defvr {Option variable} maxapplyheight
 Default value: 10000
 
 @code{maxapplyheight} is the maximum height to which @code{applyb1}
@@ -295,7 +295,7 @@ will reach before giving up.
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} maxnegex
+@defvr {Option variable} maxnegex
 Default value: 1000
 
 @code{maxnegex} is the largest negative exponent which will
@@ -304,7 +304,7 @@ be expanded by the @code{expand} command (see also @code{maxposex}).
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} maxposex
+@defvr {Option variable} maxposex
 Default value: 1000
 
 @code{maxposex} is the largest exponent which will be
@@ -313,7 +313,7 @@ expanded with the @code{expand} command (see also @code{maxnegex}).
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr declaration multiplicative
+@defvr {Declaration} multiplicative
 @code{declare (f, multiplicative)} tells the Maxima simplifier that @code{f} is multiplicative.
 
 @enumerate
@@ -333,7 +333,7 @@ the form @code{product (x[i], i, m, n)}.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable} negdistrib
+@defvr {Option variable} negdistrib
 Default value: @code{true}
 
 When @code{negdistrib} is @code{true}, -1 distributes
@@ -346,7 +346,7 @@ than local use in your Maxima.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable} negsumdispflag
+@defvr {Option variable} negsumdispflag
 Default value: @code{true}
 
 When @code{negsumdispflag} is @code{true}, @code{x - y} displays as @code{x - y}
@@ -359,7 +359,7 @@ same way.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c NEED TO MENTION THIS IS AN evflag
-@defvr {special symbol} noeval
+@defvr {Special symbol} noeval
 @code{noeval} suppresses the evaluation phase of @code{ev}.  This is useful in
 conjunction with other switches and in causing expressions      
 to be resimplified without being reevaluated.
@@ -367,7 +367,7 @@ to be resimplified without being reevaluated.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr declaration noun
+@defvr {Declaration} noun
 @code{noun} is one of the options of the @code{declare} command.  It makes a
 function so declared a "noun", meaning that it won't be evaluated
 automatically.
@@ -375,7 +375,7 @@ automatically.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable} noundisp
+@defvr {Option variable} noundisp
 Default value: @code{false}
 
 When @code{noundisp} is @code{true}, nouns display with
@@ -385,7 +385,7 @@ definitions.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {special symbol} nouns
+@defvr {Special symbol} nouns
 @code{nouns} is an @code{evflag}. When used as an option to the @code{ev} command,
 @code{nouns} converts all
 "noun" forms occurring in the expression being @code{ev}'d to "verbs", i.e.,
@@ -397,7 +397,7 @@ evaluates them.  See also @code{noun}, @code{nounify}, @code{verb}, and @code{ve
 @c WHAT ARE THE FUNCTIONS WHICH ARE EVALUATED IN FLOATING POINT ??
 @c WHAT IS A "NUMERVAL" ?? (SOMETHING DIFFERENT FROM A NUMERIC VALUE ??)
 @c NEED TO MENTION THIS IS AN evflag
-@defvr {special symbol} numer
+@defvr {Special symbol} numer
 @code{numer} causes some mathematical functions (including exponentiation)
 with numerical arguments to be evaluated in floating point. It causes
 variables in @code{expr} which have been given numervals to be replaced by
@@ -420,7 +420,7 @@ not necessarily numeric.
 @end deffn
 
 
-@defvr {Variable} opproperties
+@defvr {System variable} opproperties
 
 @code{opproperties} is the list of the special operator properties recognized by
 the Maxima simplifier:
@@ -432,7 +432,7 @@ the Maxima simplifier:
 
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable} opsubst
+@defvr {Option variable} opsubst
 Default value: @code{true}
 
 When @code{opsubst} is @code{false}, @code{subst} does not attempt to
@@ -442,7 +442,7 @@ substitute into the operator of an expression.  E.g.,
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr declaration outative
+@defvr {Declaration} outative
 @code{declare (f, outative)} tells the Maxima simplifier that constant factors
 in the argument of @code{f} can be pulled out.
 
@@ -464,14 +464,14 @@ to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr declaration posfun
+@defvr {Declaration} posfun
 @code{declare (f, posfun)} declares @code{f} to be a positive function.
 @code{is (f(x) > 0)} yields @code{true}.
 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable} prodhack
+@defvr {Option variable} prodhack
 Default value: @code{false}
 
 When @code{prodhack} is @code{true}, the identity 
@@ -513,7 +513,7 @@ and is not simplified to @code{x - 1}.
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable} radexpand
+@defvr {Option variable} radexpand
 Default value: @code{true}
 
 @code{radexpand} controls some simplifications of radicals.
@@ -542,7 +542,7 @@ Note that @code{domain} only matters when @code{radexpand} is @code{true}.
 @end defvr
 
 
-@defvr {Variable} radsubstflag
+@defvr {Option variable} radsubstflag
 Default value: @code{false}
 
 @code{radsubstflag}, if @code{true}, permits @code{ratsubst} to make
@@ -551,7 +551,7 @@ substitutions such as @code{u} for @code{sqrt (x)} in @code{x}.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr declaration rassociative
+@defvr {Declaration} rassociative
 @code{declare (g, rassociative)} tells the Maxima
 simplifier that @code{g} is right-associative.  E.g.,
 @code{g(g(a, b), g(c, d))} simplifies to @code{g(a, g(b, g(c, d)))}.
@@ -573,7 +573,7 @@ the original answer.
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable} simpsum
+@defvr {Option variable} simpsum
 Default value: @code{false}
 
 When @code{simpsum} is @code{true}, the result of a @code{sum} is
@@ -600,7 +600,7 @@ It may be necessary to do an @code{intosum (@var{expr})} before the @code{sumcon
 @end deffn
 
 
-@defvr {Variable} sumexpand
+@defvr {Option variable} sumexpand
 Default value: @code{false}
 
 When @code{sumexpand} is @code{true}, products of sums and
@@ -633,7 +633,7 @@ Examples:
 @end defvr
 
 
-@defvr {Variable} sumhack
+@defvr {Option variable} sumhack
 Default value: @code{false}
 
 When @code{sumhack} is @code{true}, 
@@ -646,7 +646,7 @@ For example, @code{(sumhack: true, sum (f(i), i, 3, 1))} yields @code{-f(2)}.
 @end defvr
 
 
-@defvr {Variable} sumsplitfact
+@defvr {Option variable} sumsplitfact
 Default value: @code{true}
 
 When @code{sumsplitfact} is @code{false},
@@ -656,7 +656,7 @@ When @code{sumsplitfact} is @code{false},
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr declaration symmetric
+@defvr {Declaration} symmetric
 @code{declare (h, symmetric)} tells the Maxima
 simplifier that @code{h} is a symmetric function.  E.g., @code{h (x, z, y)} 
 simplifies to @code{h (x, y, z)}.

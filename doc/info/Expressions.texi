@@ -478,7 +478,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} boxchar
+@defvr {Option variable} boxchar
 Default value: @code{"}
 
 @code{boxchar} is the character used to draw the box in the @code{box}
@@ -1327,7 +1327,7 @@ the factors, terms, or list which do.
 @end deffn
 
 @c NEEDS EXAMPLE
-@defvr {Variable} partswitch
+@defvr {Option variable} partswitch
 Default value: @code{false}
 
 When @code{partswitch} is @code{true}, @code{end} is returned

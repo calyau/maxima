@@ -448,7 +448,7 @@ guess: @code{none} which will cause @code{neumann} and @code{firstkindseries} to
 
 @end deffn
 
-@defvr {Variable} ieqnprint
+@defvr {Option variable} ieqnprint
 Default value: @code{true}
 
 @code{ieqnprint} governs the behavior of the result
@@ -640,7 +640,7 @@ Example:
 
 @end deffn
 
-@defvr {Variable} rootsconmode
+@defvr {Option variable} rootsconmode
 Default value: @code{true}
 
 @code{rootsconmode} governs the behavior of the

@@ -55,7 +55,7 @@ symbol /T/ follows the line label of such expressions.
 @node Definitions for Polynomials,  , Introduction to Polynomials, Polynomials
 @section Definitions for Polynomials
 
-@defvr {Variable} algebraic
+@defvr {Option variable} algebraic
 Default value: @code{false}
 
 @code{algebraic} must be set to @code{true} in order for the
@@ -63,7 +63,7 @@ simplification of algebraic integers to take effect.
 
 @end defvr
 
-@defvr {Variable} berlefact
+@defvr {Option variable} berlefact
 Default value: @code{true}
 
 When @code{berlefact} is @code{false} then the Kronecker factoring
@@ -226,7 +226,7 @@ algorithm.
 
 @end deffn
 
-@defvr {Variable} facexpand
+@defvr {Option variable} facexpand
 Default value: @code{true}
 
 @code{facexpand} controls whether the irreducible factors
@@ -399,7 +399,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} factorflag
+@defvr {Option variable} factorflag
 Default value: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -728,7 +728,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} intfaclim
+@defvr {Option variable} intfaclim
 Default value: 1000
 
 @c NEED A LINK TO DESCRIPTION OF "BIGNUM"
@@ -752,7 +752,7 @@ time spent factoring large integers.
 
 @end defvr
 
-@defvr {Variable} keepfloat
+@defvr {Option variable} keepfloat
 Default value: @code{false}
 
 When @code{keepfloat} is @code{true}, prevents floating
@@ -810,7 +810,7 @@ equation may be given as first argument.
 
 @end deffn
 
-@defvr {Variable} modulus
+@defvr {Option variable} modulus
 Default value: @code{false}
 
 When @code{modulus} is a positive number @var{p},
@@ -931,7 +931,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} ratalgdenom
+@defvr {Option variable} ratalgdenom
 Default value: @code{true}
 
 When @code{ratalgdenom} is @code{true}, allows rationalization of
@@ -1001,7 +1001,7 @@ are not considered ratios by @code{denom}.
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@defvr {Variable} ratdenomdivide
+@defvr {Option variable} ratdenomdivide
 Default value: @code{true}
 
 When @code{ratdenomdivide} is @code{true},
@@ -1124,7 +1124,7 @@ See also @code{totaldisrep}.
 
 @end deffn
 
-@defvr {Variable} ratepsilon
+@defvr {Option variable} ratepsilon
 Default value: 2.0e-8
 
 @code{ratepsilon} is the tolerance used in the conversion
@@ -1133,8 +1133,8 @@ of floating point numbers to rational numbers.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Function} ratexpand (@var{expr})
-@defvrx {Variable} ratexpand
+@deffn {Function} ratexpand (@var{expr})
+@deffnx {Option variable} ratexpand
 Expands @var{expr} by multiplying out products of sums and
 exponentiated sums, combining fractions over a common denominator,
 cancelling the greatest common divisor of the numerator and
@@ -1191,9 +1191,9 @@ Examples:
                 x  + x  - x - 1   x  + x  - x - 1
 @end example
 
-@end defvr
+@end deffn
 
-@defvr {Variable} ratfac
+@defvr {Option variable} ratfac
 Default value: @code{false}
 
 When @code{ratfac} is @code{true},
@@ -1253,7 +1253,7 @@ Extended CRE are created by @code{taylor} and related functions.
 
 @end deffn
 
-@defvr {Variable} ratprint
+@defvr {Option variable} ratprint
 Default value: @code{true}
 
 When @code{ratprint} is @code{true},
@@ -1321,7 +1321,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} ratsimpexpons
+@defvr {Option variable} ratsimpexpons
 Default value: @code{false}
 
 When @code{ratsimpexpons} is @code{true},
@@ -1381,9 +1381,9 @@ Examples:
 
 @end deffn
 
-@defvr {Function} ratvars (@var{x_1}, ..., @var{x_n})
-@defvrx {Function} ratvars ()
-@defvrx {Variable} ratvars
+@deffn {Function} ratvars (@var{x_1}, ..., @var{x_n})
+@deffnx {Function} ratvars ()
+@deffnx {System variable} ratvars
 Declares main variables @var{x_1}, ..., @var{x_n} for rational expressions.
 @var{x_n}, if present in a rational expression, is considered the main variable.
 Otherwise, @var{x_[n-1]} is considered the main variable if present,
@@ -1402,7 +1402,7 @@ Each call to the function @code{ratvars} resets the list.
 @code{ratvars ()} clears the list.
 
 @c NEED EXAMPLES HERE
-@end defvr
+@end deffn
 
 @deffn {Function} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 @deffnx {Function} ratweight ()
@@ -1442,7 +1442,7 @@ Examples:
 
 @end deffn
 
-@defvr {Variable} ratweights
+@defvr {System variable} ratweights
 Default value: @code{[]}
 
 @code{ratweights} is the list of weights assigned by @code{ratweight}.
@@ -1454,7 +1454,7 @@ each call to @code{ratweight} places additional items in the list.
 
 @end defvr
 
-@defvr {Variable} ratwtlvl
+@defvr {Option variable} ratwtlvl
 Default value: @code{false}
 
 @code{ratwtlvl} is used in combination with the @code{ratweight}
@@ -1475,8 +1475,8 @@ of the two-element list returned by @code{divide}.
 @end deffn
 
 @c CAN PROBABLY BE CLARIFIED
-@defvr {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
-@defvrx {Variable} resultant
+@deffn {Function} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffnx {Variable} resultant
 Computes the resultant of the two polynomials @var{p_1} and @var{p_2},
 eliminating the variable @var{x}.
 The resultant is a determinant of the coefficients of @var{x}
@@ -1500,9 +1500,9 @@ The function @code{bezout} takes the same arguments as @code{resultant} and retu
 a matrix.  The determinant of the return value is the desired resultant.
 
 @c NEED AN EXAMPLE HERE
-@end defvr
+@end deffn
 
-@defvr {Variable} savefactors
+@defvr {Option variable} savefactors
 Default value: @code{false}
 
 @c "certain functions" -- WHICH ONES ??

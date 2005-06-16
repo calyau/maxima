@@ -249,7 +249,7 @@ sparse determinants which is called when the switches
 @c EXAMPLES NEEDED HERE
 @end deffn
 
-@defvr {Variable} detout
+@defvr {Option variable} detout
 Default value: @code{false}
 
 When @code{detout} is @code{true}, the determinant of a
@@ -294,7 +294,7 @@ If @var{x} is a matrix, it is not copied; all diagonal elements refer to the sam
 @c NEED EXAMPLE HERE
 @end deffn
 
-@defvr {Variable} doallmxops
+@defvr {Option variable} doallmxops
 Default value: @code{true}
 
 When @code{doallmxops} is @code{true},
@@ -306,7 +306,7 @@ individual @code{dot} switches govern which operations are performed.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variable} domxexpt
+@defvr {Option variable} domxexpt
 Default value: @code{true}
 
 When @code{domxexpt} is @code{true},
@@ -343,7 +343,7 @@ Example:
 
 @end defvr
 
-@defvr {Variable} domxmxops
+@defvr {Option variable} domxmxops
 Default value: @code{true}
 
 When @code{domxmxops} is @code{true}, all matrix-matrix or
@@ -354,7 +354,7 @@ operations); if this switch is @code{false} such operations are not carried out.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} domxnctimes
+@defvr {Option variable} domxnctimes
 Default value: @code{false}
 
 When @code{domxnctimes} is @code{true}, non-commutative products of
@@ -364,7 +364,7 @@ matrices are carried out.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dontfactor
+@defvr {Option variable} dontfactor
 Default value: @code{[]}
 
 @code{dontfactor} may be set to a list of variables with respect
@@ -375,7 +375,7 @@ than those on the @code{dontfactor} list.
 
 @end defvr
 
-@defvr {Variable} doscmxops
+@defvr {Option variable} doscmxops
 Default value: @code{false}
 
 When @code{doscmxops} is @code{true}, scalar-matrix operations are
@@ -385,7 +385,7 @@ carried out.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} doscmxplus
+@defvr {Option variable} doscmxplus
 Default value: @code{false}
 
 When @code{doscmxplus} is @code{true}, scalar-matrix operations yield
@@ -395,7 +395,7 @@ a matrix result.  This switch is not subsumed under @code{doallmxops}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dot0nscsimp
+@defvr {Option variable} dot0nscsimp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -405,7 +405,7 @@ and a nonscalar term is simplified to a commutative product.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dot0simp
+@defvr {Option variable} dot0simp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -416,7 +416,7 @@ a scalar term is simplified to a commutative product.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dot1simp
+@defvr {Option variable} dot1simp
 Default value: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -427,7 +427,7 @@ another term is simplified to a commutative product.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dotassoc
+@defvr {Option variable} dotassoc
 Default value: @code{true}
 
 When @code{dotassoc} is @code{true}, an expression @code{(A.B).C} simplifies to
@@ -437,7 +437,7 @@ When @code{dotassoc} is @code{true}, an expression @code{(A.B).C} simplifies to
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dotconstrules
+@defvr {Option variable} dotconstrules
 Default value: @code{true}
 
 When @code{dotconstrules} is @code{true}, a non-commutative product of a
@@ -449,7 +449,7 @@ Turning on this flag effectively turns on @code{dot0simp}, @code{dot0nscsimp}, a
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dotdistrib
+@defvr {Option variable} dotdistrib
 Default value: @code{false}
 
 When @code{dotdistrib} is @code{true}, an expression @code{A.(B + C)} simplifies to @code{A.B + A.C}.
@@ -457,7 +457,7 @@ When @code{dotdistrib} is @code{true}, an expression @code{A.(B + C)} simplifies
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dotexptsimp
+@defvr {Option variable} dotexptsimp
 Default value: @code{true}
 
 When @code{dotexptsimp} is @code{true}, an expression @code{A.A} simplifies to @code{A^^2}.
@@ -465,7 +465,7 @@ When @code{dotexptsimp} is @code{true}, an expression @code{A.A} simplifies to @
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dotident
+@defvr {Option variable} dotident
 Default value: 1
 
 @code{dotident} is the value returned by @code{X^^0}.
@@ -474,7 +474,7 @@ Default value: 1
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable} dotscrules
+@defvr {Option variable} dotscrules
 Default value: @code{false}
 
 When @code{dotscrules} is @code{true}, an expression @code{A.SC} or @code{SC.A} simplifies
@@ -793,7 +793,7 @@ See @code{^^} (noncommutative exponent) for another method of inverting a matrix
 @c NEED EXAMPLE HERE
 @end deffn
 
-@defvr {Variable} lmxchar
+@defvr {Option variable} lmxchar
 Default value: @code{[}
 
 @code{lmxchar} is the character displayed as the left
@@ -1020,7 +1020,7 @@ Returns @code{true} if @var{expr} is a matrix, otherwise @code{false}.
 
 @end deffn
 
-@defvr {Variable} matrix_element_add
+@defvr {Option variable} matrix_element_add
 Default value: @code{+}
 
 @code{matrix_element_add} is the operation 
@@ -1056,7 +1056,7 @@ Example:
 
 @end defvr
 
-@defvr {Variable} matrix_element_mult
+@defvr {Option variable} matrix_element_mult
 Default value: @code{*}
 
 @code{matrix_element_mult} is the operation 
@@ -1102,7 +1102,7 @@ Example:
 
 @end defvr
 
-@defvr {Variable} matrix_element_transpose
+@defvr {Option variable} matrix_element_transpose
 Default value: @code{false}
 
 @code{matrix_element_transpose} is the operation 
@@ -1210,7 +1210,7 @@ The argument @var{n} is the order; it is optional if @var{M} is a matrix.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defvr declaration nonscalar
+@defvr {Declaration} nonscalar
 Makes atoms behave as does a list or matrix with respect to
 the dot operator.
 
@@ -1239,7 +1239,7 @@ equivalent to zero is indeed so.
 
 @end deffn
 
-@defvr {Variable} ratmx
+@defvr {Option variable} ratmx
 Default value: @code{false}
 
 When @code{ratmx} is @code{false}, determinant and matrix
@@ -1261,7 +1261,7 @@ The return value is a matrix.
 
 @end deffn
 
-@defvr {Variable} scalarmatrixp
+@defvr {Option variable} scalarmatrixp
 Default value: @code{true}
 
 When @code{scalarmatrixp} is @code{true}, then whenever a 1 x 1 matrix
@@ -1331,7 +1331,7 @@ to be able to form @code{rightmatrix}.
 
 @end deffn
 
-@defvr {Variable} sparse
+@defvr {Option variable} sparse
 Default value: @code{false}
 
 When @code{sparse} is @code{true}, and if @code{ratmx} is @code{true}, then @code{determinant}
@@ -1449,7 +1449,7 @@ These flags have all been declared @code{evflag}.
 
 @end deffn
 
-@defvr {Variable} vect_cross
+@defvr {Option variable} vect_cross
 Default value: @code{false}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -1463,7 +1463,8 @@ Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
 @end deffn
 
-@defvr {special symbol} "["
+@defvr {Special symbol} "["
+@defvrx {Special symbol} "]"
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
 @code{[} and @code{]} also enclose the subscripts of

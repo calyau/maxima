@@ -157,7 +157,7 @@ Represents the error function, whose derivative is:
 
 @end deffn
 
-@defvr {Variable} erfflag
+@defvr {Option variable} erfflag
 Default value: @code{true}
 
 When @code{erfflag} is @code{false}, prevents @code{risch} from introducing the
@@ -403,7 +403,7 @@ and the result becomes the body of @code{f_2}.
 
 @end deffn
 
-@defvr {Variable} integration_constant_counter
+@defvr {System variable} integration_constant_counter
 Default value: 0
 
 @c WHEN DOES integrationconstant1 SHOW UP IN THE OUTPUT OF integrate ???
@@ -414,7 +414,7 @@ is introduced into an expression by indefinite integration of an equation.
 
 @end defvr
 
-@defvr {Variable} integrate_use_rootsof
+@defvr {Option variable} integrate_use_rootsof
 Default value: @code{false}
 
 When @code{integrate_use_rootsof} is @code{true} and the denominator of
@@ -695,7 +695,7 @@ use the @code{rombergtol} and @code{rombergit} switches.
 
 @end deffn
 
-@defvr {Variable} rombergabs
+@defvr {Option variable} rombergabs
 Default value: 0.0
 
 Assuming that successive estimates
@@ -758,7 +758,7 @@ second method would be about 2 times quicker.
 
 @end defvr
 
-@defvr {Variable} rombergit
+@defvr {Option variable} rombergit
 Default value: 11
 
 The accuracy of the @code{romberg} integration
@@ -769,7 +769,7 @@ will try halving the stepsize @code{rombergit} times before it gives up.
 
 @end defvr
 
-@defvr {Variable} rombergmin
+@defvr {Option variable} rombergmin
 Default value: 0
 
 @code{rombergmin} governs the minimum number of function
@@ -780,7 +780,7 @@ sometimes wrongly pass.
 
 @end defvr
 
-@defvr {Variable} rombergtol
+@defvr {Option variable} rombergtol
 Default value: 1e-4
 
 The accuracy of the @code{romberg} integration

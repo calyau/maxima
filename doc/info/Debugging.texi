@@ -250,7 +250,7 @@ See also @code{setcheck} and @code{setval}.
 
 @end defvr
 
-@defvr {Ssyetm variable} setval
+@defvr {System variable} setval
 Holds the value to which a variable is about to be set when
 a @code{setcheckbreak} occurs.
 Hence, one may assign a different value by assigning to @code{setval}.

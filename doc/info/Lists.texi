@@ -231,7 +231,7 @@ The @code{length} command is affected by the
 
 @end deffn
 
-@defvr {option variable} listarith
+@defvr {Option variable} listarith
 default value: @code{true} - if @code{false} causes any arithmetic operations
 with lists to be suppressed; when @code{true}, list-matrix operations are
 contagious causing lists to be converted to matrices yielding a result
