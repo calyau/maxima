@@ -1,4 +1,4 @@
-@c /Equations.texi/1.18/Sun Jun 12 19:13:47 2005/-ko/
+@c /Equations.texi/1.19/Fri Jun 17 00:57:31 2005/-ko/
 @c end concepts Equations
 @menu
 * Definitions for Equations::   
@@ -450,7 +450,7 @@ guess: @code{none} o que far@'a com que @code{neumann} e @code{firstkindseries} 
 
 @end deffn
 
-@defvr {Vari@'avel} ieqnprint
+@defvr {Vari@'avel de op@,{c}@~ao} ieqnprint
 Valor padr@~ao: @code{true}
 
 @code{ieqnprint} governa o comportamento do resultado
@@ -642,7 +642,7 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'avel} rootsconmode
+@defvr {Vari@'avel de op@,{c}@~ao} rootsconmode
 Valor padr@~ao: @code{true}
 
 @code{rootsconmode} governa o comportamento do comando

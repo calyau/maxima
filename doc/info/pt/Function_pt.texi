@@ -1,4 +1,4 @@
-@c /Function.texi/1.32/Sun Jun 12 19:13:48 2005/-ko/
+@c /Function.texi/1.33/Fri Jun 17 00:57:33 2005/-ko/
 @menu
 * Introduction to Function Definition::  
 * Function::                    
@@ -726,7 +726,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} functions
+@defvr {Vari@'avel de sistema} functions
 Valor padr@~ao: @code{[]}
 
 @code{functions} @'e uma lista de todas as fun@,{c}@~oes Maxima definidas pelo usu@'ario
@@ -956,7 +956,7 @@ ocorr@^ecia @'e permitida em cada.
 
 @end deffn
 
-@defvr {Vari@'avel} macroexpansion
+@defvr {Vari@'avel de op@,{c}@~ao} macroexpansion
 Valor padr@~ao: @code{false}
 
 @code{macroexpansion} controla recursos avan@,{c}ados que
@@ -983,7 +983,7 @@ chamada.  Veja a documenta@,{c}@~ao para @code{translate} e @code{macros} para m
 
 @end defvr
 
-@defvr {Vari@'avel} mode_checkp
+@defvr {Vari@'avel de op@,{c}@~ao} mode_checkp
 Valor padr@~ao: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -993,7 +993,7 @@ de associa@,{c}@~ao de vari@'aveis.
 
 @end defvr
 
-@defvr {Vari@'avel} mode_check_errorp
+@defvr {Vari@'avel de op@,{c}@~ao} mode_check_errorp
 Valor padr@~ao: @code{false}
 
 @c WHAT DOES THIS MEAN ??
@@ -1003,7 +1003,7 @@ a fun@,{c}@~ao "error".
 
 @end defvr
 
-@defvr {Vari@'avel} mode_check_warnp
+@defvr {Vari@'avel de op@,{c}@~ao} mode_check_warnp
 Valor padr@~ao: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -1102,7 +1102,7 @@ toda vez que voc@^e pegar o primeiro de uma lista de n@'umeros.
 
 @c IS THERE ANY REASON TO SET transcompile: false ??
 @c MAYBE THIS VARIABLE COULD BE PERMANENTLY SET TO true AND STRUCK FROM THE DOCUMENTATION.
-@defvr {Vari@'avel} transcompile
+@defvr {Vari@'avel de op@,{c}@~ao} transcompile
 Valor padr@~ao: @code{true}
 
 Quando @code{transcompile} @'e @code{true}, @code{translate} e @code{translate_file} geram
@@ -1242,7 +1242,7 @@ and @code{tr_windy}.
 
 @end deffn
 
-@defvr {Vari@'avel} transrun
+@defvr {Vari@'avel de op@,{c}@~ao} transrun
 Valor padr@~ao: @code{true}
 
 Quando @code{transrun} @'e @code{false} far@'a com que a vers@~ao
@@ -1253,7 +1253,7 @@ em lugar de vers@~ao traduzidas.
 
 @c IN WHAT CONTEXT IS tr_array_as_ref: false APPROPRIATE ??? NOT SEEING THE USEFULNESS HERE.
 @c ALSO, I GUESS WE SHOULD HAVE AN ITEM FOR translate_fast_arrays, ANOTHER CONFUSING FLAG ...
-@defvr {Vari@'avel} tr_array_as_ref
+@defvr {Vari@'avel de op@,{c}@~ao} tr_array_as_ref
 Valor padr@~ao: @code{true}
 
 Se @code{translate_fast_arrays} for @code{false}, refer@^encias a arrays no
@@ -1268,7 +1268,7 @@ de outra forma nomes de arrays aparecem como s@'imbolos literais no c@'odigo tra
 
 @c WHY IS THIS FLAG NEEDED ??? UNDER WHAT CIRCUMSTANCES CAN TRANSLATION
 @c OF A BOUND VARIABLE USED AS A FUNCTION GO WRONG ???
-@defvr {Vari@'avel} tr_bound_function_applyp
+@defvr {Vari@'avel de op@,{c}@~ao} tr_bound_function_applyp
 Valor padr@~ao: @code{true}
 
 Quando @code{tr_bound_function_applyp} for @code{true}, Maxima emite um alerta se uma associa@,{c}@~ao
@@ -1280,7 +1280,7 @@ a mensagem de alerta.
 
 @end defvr
 
-@defvr {Vari@'avel} tr_file_tty_messagesp
+@defvr {Vari@'avel de op@,{c}@~ao} tr_file_tty_messagesp
 Valor padr@~ao: @code{false}
 
 Quando @code{tr_file_tty_messagesp} @'e @code{true},
@@ -1294,7 +1294,7 @@ arquivos s@~ao somente inseridas dentro do arquivo UNLISP.
 @c THIS FLAG APPEARS TO HAVE NO EFFECT.  SHOULD CUT OUT THIS ITEM AND RELATED CODE.
 @c NOTE THAT THERE IS CODE IN src/transf.lisp WHICH USES THIS FLAG BUT THE MODE
 @c FLAG IS LOST SOMEWHERE ALONG THE WAY TO THE LISP OUTPUT FILE.
-@defvr {Vari@'avel} tr_float_can_branch_complex
+@defvr {Vari@'avel de op@,{c}@~ao} tr_float_can_branch_complex
 Valor padr@~ao: @code{true}
 
 Diz ao tradutor Maxima-para-Lisp assumir que as fun@,{c}@~oes 
@@ -1310,7 +1310,7 @@ Quando @code{false} ent@~ao @code{acos(x)} ser@'a do modo
 
 @end defvr
 
-@defvr {Vari@'avel} tr_function_call_default
+@defvr {Vari@'avel de op@,{c}@~ao} tr_function_call_default
 Valor padr@~ao: @code{general}
 
 @code{false} significa abandonando e
@@ -1325,7 +1325,7 @@ c@'odigo traduzido e compilado com o interpretador Maxima.
 
 @end defvr
 
-@defvr {Vari@'avel} tr_numer
+@defvr {Vari@'avel de op@,{c}@~ao} tr_numer
 Valor padr@~ao: @code{false}
 
 Quando @code{tr_numer} for @code{true} propriedades @code{numer} s@~ao usadas para
@@ -1333,7 +1333,7 @@ Quando @code{tr_numer} for @code{true} propriedades @code{numer} s@~ao usadas pa
 
 @end defvr
 
-@defvr {Vari@'avel} tr_optimize_max_loop
+@defvr {Vari@'avel de op@,{c}@~ao} tr_optimize_max_loop
 Valor padr@~ao: 100
 
 @code{tr_optimize_max_loop} @'e n@'umero m@'aximo de vezes do
@@ -1343,7 +1343,7 @@ propriedades de otimiza@,{c}@~ao n@~ao terminadas.
 
 @end defvr
 
-@defvr {Vari@'avel} tr_semicompile
+@defvr {Vari@'avel de op@,{c}@~ao} tr_semicompile
 Valor padr@~ao: @code{false}
 
 Quando @code{tr_semicompile} for @code{true}, as formas de sa@'ida de @code{translate_file}
@@ -1353,7 +1353,7 @@ de m@'aquina pelo compilador Lisp.
 @end defvr
 
 @c ARE ANY OF THESE OBSOLETE ??
-@defvr {Vari@'avel} tr_state_vars
+@defvr {Vari@'avel de sistema} tr_state_vars
 Valor padr@~ao:
 @example
 [transcompile, tr_semicompile, tr_warn_undeclared, tr_warn_meval,
@@ -1380,7 +1380,7 @@ tradutor durante a tradu@,{c}@~ao corrente.
 
 @end deffn
 
-@defvr {Vari@'avel} tr_warn_bad_function_calls
+@defvr {Vari@'avel de op@,{c}@~ao} tr_warn_bad_function_calls
 Valor padr@~ao: @code{true}
 
 - Emite um alerta quando
@@ -1389,7 +1389,7 @@ a declara@,{c}@~oes impr@'oprias que foram feitas em tempo de tradu@,{c}@~ao.
 
 @end defvr
 
-@defvr {Vari@'avel} tr_warn_fexpr
+@defvr {Vari@'avel de op@,{c}@~ao} tr_warn_fexpr
 Valor padr@~ao: @code{compfile}
 
 - Emite um alerta se quaisquer FEXPRs forem
@@ -1415,7 +1415,7 @@ atribu@'idos valores inapropriados para seu modo.
 
 @end defvr
 
-@defvr {Vari@'avel} tr_warn_undeclared
+@defvr {Vari@'avel de op@,{c}@~ao} tr_warn_undeclared
 Valor padr@~ao: @code{compile}
 
 - Determina quando enviar
@@ -1423,7 +1423,7 @@ alertas sobre vari@'aveis n@~ao declaradas para o TTY.
 
 @end defvr
 
-@defvr {Vari@'avel} tr_warn_undefined_variable
+@defvr {Vari@'avel de op@,{c}@~ao} tr_warn_undefined_variable
 Valor padr@~ao: @code{all}
 
 - Emite um alerta quando
@@ -1435,7 +1435,7 @@ vari@'aveis globais indefinidas forem vistas.
 @c WHERE IT CAUSES A WARNING ABOUT USING kill.  
 @c HOW ABOUT IF WE PERMANENTLY ENABLE THE WARNING MESSAGE
 @c AND CUT OUT tr_windy FROM CODE AND DOCS.
-@defvr {Vari@'avel} tr_windy
+@defvr {Vari@'avel de op@,{c}@~ao} tr_windy
 Valor padr@~ao: @code{true}
 
 - Gera coment@'arios "de grande ajuda" e

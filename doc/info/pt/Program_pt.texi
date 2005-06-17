@@ -1,4 +1,4 @@
-@c /Program.texi/1.19/Sun Jun 12 19:13:48 2005/-ko/
+@c /Program.texi/1.20/Fri Jun 17 00:57:34 2005/-ko/
 @menu
 * Introduction to Program Flow::  
 * Definitions for Program Flow::  
@@ -76,7 +76,7 @@ fun@,{c}@~oes, incluindo a fun@,{c}@~ao correntemente ativa.
 
 @end deffn
 
-@deffn {operador especial} do
+@deffn {Operador especial} do
 A declara@,{c}@~ao @code{do} @'e usada para executar itera@,{c}@~ao.  Devido @`a sua
 grande generalidade a declara@,{c}@~ao @code{do} ser@'a  descrita em duas partes.
 Primeiro a forma usual ser@'a dada que @'e an@'aloga @`a forma que @'e usada em
@@ -301,7 +301,7 @@ terminar@'a o @code{batch} se o erro n@~ao for detectado.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} error (@var{expr_1}, ..., @var{expr_n})
-@deffnx {Vari@'avel} error
+@deffnx {Vari@'avel de sistema} error
 Avalia e imprime @var{expr_1}, ..., @var{expr_n},
 e ent@~ao causa um retorno de erro para o n@'ivel mais alto do Maxima
 ou para o mais pr@'oximo contendo @code{errcatch}.
@@ -324,7 +324,7 @@ e @code{errormsg} formata e imprime essa mensagem.
 @end deffn
 
 @c REPHRASE
-@deffn {operador especial} for
+@deffn {Operador especial} for
 Usado em itera@,{c}@~oes.  Veja @code{do} para uma descri@,{c}@~ao das
 facilidades de itera@,{c}@~ao do Maxima.
 
@@ -348,7 +348,7 @@ o pr@'oprio contendo o @code{go}.
 
 @c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
 @c THIS ITEM IS IMPORTANT
-@deffn {operador especial} if
+@deffn {Operador especial} if
 A declara@,{c}@~ao @code{if} @'e usada para execu@,{c}@~ao condicional.  A sintaxe
 @'e:
 
@@ -437,7 +437,7 @@ mapeamento como um @'atomo.  "Mapatoms" s@~ao @'atomos, n@'umeros
 @end deffn
 
 @c NEEDS CLARIFICATION
-@defvr {Vari@'avel} maperror
+@defvr {Vari@'avel de op@,{c}@~ao} maperror
 Valor padr@~ao: @code{true}
 
 Quando @code{maperror} @'e @code{false}, faz com que todas as fun@,{c}@~oes mapeadas, por exemplo
@@ -469,7 +469,7 @@ que retorna uma express@~ao com o mesmo operador principal que @var{expr_i} tem
 @end deffn
 
 @c NEEDS CLARIFICATION
-@defvr {Vari@'avel} prederror
+@defvr {Vari@'avel de op@,{c}@~ao} prederror
 Valor padr@~ao: @code{true}
 
 Quando @code{prederror} for @code{true}, uma mensagem de erro @'e mostrada

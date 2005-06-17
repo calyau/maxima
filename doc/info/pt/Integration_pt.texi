@@ -1,4 +1,4 @@
-@c /Integration.texi/1.22/Thu Apr 21 04:58:28 2005/-ko/
+@c /Integration.texi/1.23/Fri Jun 17 00:57:33 2005/-ko/
 @menu
 * Introduction to Integration::  
 * Definitions for Integration::  
@@ -159,7 +159,7 @@ Representa a fun@,{c}@~ao de erro, cuja derivada @'e:
 
 @end deffn
 
-@defvr {Vari@'avel} erfflag
+@defvr {Vari@'avel de op@,{c}@~ao} erfflag
 Valor padr@~ao: @code{true}
 
 Quando @code{erfflag} @'e @code{false}, previne @code{risch} da introdu@,{c}@~ao da
@@ -404,7 +404,7 @@ e o resultado transforme-se no corpo de @code{f_2}.
 
 @end deffn
 
-@defvr {Vari@'avel} integration_constant_counter
+@defvr {Vari@'avel de sistema} integration_constant_counter
 Valor padr@~ao: 0
 
 @c WHEN DOES integra@,{c}@~aoconstant1 SHOW UP IN THE OUTPUT OF integrate ???
@@ -415,7 +415,7 @@ constante de integra@,{c}@~ao (nomeada pelo Maxima, e.g., @code{integrationconst
 
 @end defvr
 
-@defvr {Vari@'avel} integrate_use_rootsof
+@defvr {Vari@'avel de op@,{c}@~ao} integrate_use_rootsof
 Valor padr@~ao: @code{false}
 
 Quando @code{integrate_use_rootsof} @'e @code{true} e o denominador de
@@ -696,7 +696,7 @@ usar os comutadores @code{rombergtol} e @code{rombergit}.
 
 @end deffn
 
-@defvr {Vari@'avel} rombergabs
+@defvr {Vari@'avel de op@,{c}@~ao} rombergabs
 Valor padr@~ao: 0.0
 
 Assumindo que estimativas sucessivas
@@ -759,7 +759,7 @@ segundo m@'etodo fez a mesma tarefa 2 vezes mais r@'apido.
 
 @end defvr
 
-@defvr {Vari@'avel} rombergit
+@defvr {Vari@'avel de op@,{c}@~ao} rombergit
 Valor padr@~ao: 11
 
 A precis@~ao do comando @code{romberg} de
@@ -770,7 +770,7 @@ tentar@'a dividir ao meio o tamanho do passoe @code{rombergit} vezes antes disso
 
 @end defvr
 
-@defvr {Vari@'avel} rombergmin
+@defvr {Vari@'avel de op@,{c}@~ao} rombergmin
 Valor padr@~ao: 0
 
 @code{rombergmin} governa o n@'umero m@'inimo de avalia@,{c}@~oes de
@@ -781,7 +781,7 @@ lgumas vezes inadequadamente passar.
 
 @end defvr
 
-@defvr {Vari@'avel} rombergtol
+@defvr {Vari@'avel de op@,{c}@~ao} rombergtol
 Valor padr@~ao: 1e-4
 
 A precis@~ao do comando de integra@,{c}@~ao de @code{romberg} 

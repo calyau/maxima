@@ -1,4 +1,4 @@
-@c /Command.texi/1.30/Sun Jun 12 19:13:47 2005/-ko/
+@c /Command.texi/1.32/Fri Jun 17 00:57:31 2005/-ko
 @menu
 * Introduction to Command Line::  
 * Definitions for Command Line::  
@@ -29,6 +29,10 @@ E.g., @code{'(f(x))} significa n@~ao avalie a express@~ao @code{f(x)}.
 retorna a forma substantiva de @code{f} aplicada a @code{[x]}.
 
 O ap@'ostrofo nao evita simplifica@,{c}@~ao.
+
+Quando o sinalizador global @code{noundisp} for @code{true},
+substantivos s@~ao mostrados com um ap@'ostrofo.
+Ess comutador @'e sempre @code{true} quando mostrando defini@,{c}@~oes de fun@,{c}@~oes.
 
 Veja tamb@'em operador ap@'ostrofo-ap@'ostrofo @code{''} e @code{nouns}.
 
@@ -483,6 +487,8 @@ libera todos os @'itens em @code{infolist}.
 Veja tamb@'em @code{infolists}.
 
 @code{kill (all)} liberar todos os @'itens em todas as infolists.
+@code{kill (all)} n@~ao retorna vari@'aveis globais para seus valores padr@~oes;
+Veja @code{reset} sobre esse ponto.
 
 @code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
 libera todos os @'itens em todas as infolists exceto para @var{symbol_1}, ..., @var{symbol_n}.
@@ -663,7 +669,7 @@ propriedades que n@~ao podem  ser mostradas de outra forma, i.e. para
 
 @end deffn
 
-@defvr {Vari@'avel} prompt
+@defvr {Vari@'avel de op@,{c}@~ao} prompt
 Valor padr@~ao: @code{_}
 
 @code{prompt} @'e o s@'imbolo de prompt da fun@,{c}@~ao @code{demo},

@@ -1,4 +1,4 @@
-@c /Lists.texi/1.21/Thu Apr 21 04:26:33 2005/-ko/
+@c /Lists.texi/1.23/Fri Jun 17 00:57:34 2005/-ko/
 @menu
 * Introduction to Lists::
 * Definitions for Lists::
@@ -141,13 +141,6 @@ Retorna uma nova lista consistindo de elementos de
 
 @end deffn
 
-@c NEEDS CLARIFICATION, EXPANSION, EXAMPLES
-@deffn {Fun@,{c}@~ao} every (@var{expr})
-Essa fun@,{c}@~ao pega uma lista , ou um n@'umero positivo de argumentos e retorna
-@code{true} se todos esses argumentos n@~ao forem @code{false}.
-
-@end deffn
-
 @deffn {Fun@,{c}@~ao} fifth (@var{expr})
 Retorna o quinto item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
@@ -169,12 +162,6 @@ d@'ecima parte do seu argumento.
 
 @end deffn
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} flatten (@var{expr})
-Pega uma lista da forma [[1,2],[3,4]] e retorna [1,2,3,4].
-
-@end deffn
-
 @deffn {Fun@,{c}@~ao} fourth (@var{expr})
 Retorna o quarto item da express@~o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
@@ -184,6 +171,8 @@ Veja @code{first} para maiores detalhes.
 @deffn {Fun@,{c}@~ao} get (@var{a}, @var{i})
 Recupera a propriedade de usu@'ario indicada por @var{i} associada com
 o @'atomo @var{a} ou retorna @code{false} se "a" n@~ao tem a propriedade @var{i}.
+
+@code{get} avalia seus argumentos.
 
 @c ===beg===
 @c put (%e, 'transcendental, 'type);
@@ -244,7 +233,7 @@ O comando @code{length} @'e afetado pelo comutador
 
 @end deffn
 
-@defvr {option variable} listarith
+@defvr {option variable de op@,{c}@~ao} listarith
 Valor padr@~ao: @code{true} - se @code{false} faz com que quaisquer opera@,{c}@~oes aritm@'eticas
 com listas sejam suprimidas; quando @code{true}, opera@,{c}@~oes lista-matriz s@~ao
 contagiosas fazendo com que listas sejam convertidas para matrizes retornando um resultado

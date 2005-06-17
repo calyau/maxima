@@ -1,3 +1,4 @@
+@c /Operators.texi/1.19/Fri Jun 17 00:57:34 2005/-ko/
 @menu
 * nary::                        
 * nofix::                       
@@ -64,7 +65,7 @@ Veja tamb@'em @code{syntax}.
 @c PT = Defini@,{c}@~oes para Operadores
 @section Definitions for Operators
 
-@deffn operador "!"
+@deffn {Operador} "!"
 O operador fatorial.
 Para qualquer n@'umero complexo @code{x} (inclu@'indo n@'umeros inteiros, racionais, e reais) exceto para
 inteiros negativos, @code{x!} @'e definido como @code{gamma(x+1)}.
@@ -137,7 +138,7 @@ Dessa forma @code{x!} pode ser substitu@'ido mesmo em uma express@~ao com ap@'os
 
 @end deffn
 
-@deffn operador "!!"
+@deffn {Operador} "!!"
 O operador de duplo fatorial.
 
 Para um n@'umero inteiro, n@'umero em ponto flutuante, ou n@'umero racional @code{n},
@@ -157,7 +158,7 @@ Para um argumento @code{n} que n@~ao @'e um n@'umero inteiro, um n@'umero em pon
 
 @end deffn
 
-@deffn operador "#"
+@deffn {Operador} "#"
 Representa a nega@,{c}@~ao da igualdade sint@'atica @code{=}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas
@@ -190,7 +191,7 @@ Exemplos:
 
 @end deffn
 
-@deffn operador "."
+@deffn {Operador} "."
 O operador ponto, para multiplica@,{c}@~ao (n@~ao comutativa) de matrizes.
 Quando "." @'e usado com essa finalidade, espa@,{c}os devem ser colocados em ambos os lados desse
 operador, e.g. A . B.  Isso disting@"ue o operador ponto plenamente de um ponto decimal em
@@ -211,32 +212,32 @@ e
 
 @end deffn
 
-@deffn operador ":"
+@deffn {Operador} ":"
 O operador de atribui@,{c}@~ao.  E.g. A:3 escolhe a vari@'avel A para 3.
 
 @end deffn
 
-@deffn operador "::"
+@deffn {Operador} "::"
 Operador de atribui@,{c}@~ao.  :: atribui o valor da express@~ao
 em seu lado direito para o valor da quantidade na sua esquerda, que pode
 avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
 
 @end deffn
 
-@deffn operador "::="
+@deffn {Operador} "::="
 O operador "::=" @'e usado em lugar de ":=" para indicar que o que
 segue @'e uma defini@,{c}@~ao de macro, em lugar de uma defini@,{c}@~ao fun@,{c}@~ao
 ordin@'aria.  Veja @code{macros}.
 
 @end deffn
 
-@deffn operador ":="
+@deffn {Operador} ":="
 O operador de defini@,{c}@~ao de fun@,{c}@~ao.  E.g. @code{f(x):=sin(x)} define
 uma fun@,{c}@~ao @code{f}.
 
 @end deffn
 
-@deffn operador "="
+@deffn {Operador} "="
 denota uma equa@,{c}@~ao para o Maxima.  Para o verificador de modelos no
 Maxima isso denota uma rela@,{c}@~ao total que prende duas express@~oes
 se e somente se as express@~oes s@~ao sintaticamente id@^enticas.
@@ -250,7 +251,7 @@ a forma @code{not @var{a} = @var{b}} n@~ao @'e equivalente @`a forma @code{@var{
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn operador and
+@deffn {Operador} and
 O operador l@'ogico de conjun@,{c}@~ao.
 @code{and} @'e um operador n-@'ario infixo;
 seus operandos s@~ao express@~oes Booleanas, e seu resultado @'e um valor Booleano.
@@ -274,7 +275,7 @@ De outra forma, @code{and} retorna @code{unknown} (desconhecido).
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn operador or
+@deffn {Operador} or
 O operador l@'ogico de disjun@,{c}@~ao.
 @code{or} @'e um operador n-@'ario infixo;
 seus operandos s@~ao express@~oes Booleanas, e seu resultado @'e um valor Booleano.
@@ -298,7 +299,7 @@ De outra forma, @code{or} retorna @code{unknown}.
 @end deffn
 
 @c NEEDS EXAMPLES
-@deffn operador not
+@deffn {Operador} not
 O operador l@'ogico de nega@,{c}@~ao.
 @code{not} @'e operador prefixo;
 Seu operando @'e uma express@~ao Booleana, e seu resultado @'e um valor Booleano.
@@ -318,7 +319,7 @@ complexo de @var{expr}.
 
 @end deffn
 
-@defvr {s@'imbolo especial} additive
+@defvr {Palavra chave} additive
 Se @code{declare(f,additive)} tiver sido executado, ent@~ao:
 
 (1) Se @code{f} for uma fun@,{c}@~ao de uma @'unica vari@'avel, sempre que o simplificador encontrar @code{f} aplicada
@@ -333,7 +334,7 @@ forma @code{sum(x[i],i,lower-limit,upper-limit)}.
 
 @end defvr
 
-@defvr keyword allbut
+@defvr {Palavra chave} allbut
 trabalha com os comandos @code{part} (i.e. @code{part}, @code{inpart}, @code{substpart},
 @code{substinpart}, @code{dpart}, e @code{lpart}).  Por exemplo,
 
@@ -363,7 +364,7 @@ fun@,{c}@~ao @code{u}, @code{f}, @code{foo}, ou @code{g}, n@~ao um @code{infolis
 
 @end defvr
 
-@defvr {declara@,{c}@~ao} antisymmetric
+@defvr {Declara@,{c}@~ao} antisymmetric
 Se @code{declare(h,antisymmetric)} @'e conclu@'ida, diz ao
 simplicador que @code{h} @'e uma fun@,{c}@~ao antisim@'etrica.  E.g. @code{h(x,z,y)} simplificar@'a para
 @code{- h(x, y, z)}.  Isto @'e, dar@'a (-1)^n vezes o resultado dado por
@@ -378,7 +379,7 @@ Retorna o valor absoluto complexo (o m@'odulo complexo) de
 
 @end deffn
 
-@defvr {declara@,{c}@~ao} commutative
+@defvr {Declara@,{c}@~ao} commutative
 Se @code{declare(h,commutative)} @'e conclu@'ida, diz ao
 simplicador que @code{h} @'e uma fun@,{c}@~ao comutativa.  E.g. @code{h(x,z,y)} ir@'a
 simplificar para @code{h(x, y, z)}.  Isto @'e o mesmo que @code{symmetric}.
@@ -484,7 +485,7 @@ equal(a, b)
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c NOTE THAT eval IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
 @c BUT FOR SOME REASON eval DOES NOT HAVE THE evflag PROPERTY
-@deffn operador eval
+@deffn {Operador} eval
 Como um argumento em uma chamada a @code{ev (@var{expr})},
 @code{eval} causa uma avalia@,{c}@~ao extra de @var{expr}.
 Veja @code{ev}.
@@ -678,7 +679,7 @@ Veja @code{modulus}.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c NOTE THAT pred IS RECOGNIZED ONLY AS AN ARGUMENT TO ev,
 @c BUT FOR SOME REASON pred DOES NOT HAVE THE evflag PROPERTY
-@deffn operador pred
+@deffn {Operador} pred
 Como um argumento em uma chamada a @code{ev (@var{expr})},
 @code{pred} faz com que predicados (express@~oes que avaliam para @code{true}
 ou @code{false}) sejam avaliados.
@@ -818,7 +819,7 @@ que forem pot@^encias de n sejam colocados fora do radical, e.g.
 
 @end deffn
 
-@defvr {Vari@'avel} sqrtdispflag
+@defvr {Vari@'avel de op@,{c}@~ao} sqrtdispflag
 Valor padr@~ao: @code{true}
 
 Quando @code{sqrtdispflag} for @code{false},
@@ -858,8 +859,8 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'avel} sublis_apply_lambda
-padr@~ao: @code{true} - controla se os substitutos de
+@defvr {Vari@'avel de op@,{c}@~ao} sublis_apply_lambda
+Valor padr@~ao: @code{true} - controla se os substitutos de
 @code{lambda} s@~ao aplicados na simplifica@,{c}@~ao ap@'os as @code{sublis} serem usadas ou
 se voc@^e tem que fazer um @code{ev} para pegar coisas para aplicar.  @code{true} significa fa@,{c}a a
 aplica@,{c}@~ao.

@@ -1,4 +1,4 @@
-@c /Input.texi/1.32/Fri Apr 22 14:12:40 2005/-ko/
+@c /Input.texi/1.35/Fri Jun 17 00:57:33 2005/-ko/
 @menu
 * Introduction to Input and Output::  
 * Files::                       
@@ -31,7 +31,65 @@ and
 @c PT = Defini@,{c}@~oes para Entrada e Sa@'ida de Dados
 @section Definitions for Input and Output
 
-@defvr {Vari@'avel} %
+@defvr {Vari@'avel de sistema} _
+
+@code{_} @'e a mais recente express@~ao de  entrada (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
+
+A @code{_} @'e atribu@'ida a entrada antes dela ser simplificada ou avaliada.
+Todavia, o valor de @code{_} @'e simplificado (mas n@~ao avaliado) quando for mostrado.
+
+@code{_} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+
+Veja tamb@'em @code{%} e @code{%%}.
+
+Exemplos:
+
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@end defvr
+
+@defvr {System variable} %
+
 @code{%} @'e a express@~ao de sa@'ida (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 mais recentemente calculada pelo Maxima,
 pode ou n@~ao ser mostrada.
@@ -39,7 +97,7 @@ Veja tamb@'em @code{%%} e @code{%th}.
 
 @end defvr
 
-@defvr {Vari@'avel} %%
+@defvr {Vari@'avel de sistema} %%
 Uma declara@,{c}@~ao composta compreende duas ou mais declara@,{c}@~oes,
 @code{%%} @'e os valor da declara@,{c}@~ao anterior.
 Por exemplo,
@@ -78,7 +136,7 @@ ou fora de uma declara@,{c}@~ao composta,
 
 @end defvr
 
-@defvr {Vari@'avel} %edispflag
+@defvr {Vari@'avel de op@,{c}@~ao} %edispflag
 Valor padr@~ao: @code{false}
 
 Quando @code{%edispflag} @'e @code{true},
@@ -103,17 +161,18 @@ escolhe @code{s} para a soma das @'ultimas dez express@~oes de sa@'ida.
 
 @end deffn
 
-@deffn {s@'imbolo especial} "?"
+@deffn {S@'imbolo especial} "?"
 Como prefixo para uma fun@,{c}@~ao ou nome de vari@'avel, @code{?} significa que
 o nome @'e um nome Lisp, n@~ao um nome Maxima.
-Por exemplo, @code{?round} @'e uma fun@,{c}@~ao Lisp.
+Por exemplo, @code{?round} significa a fun@,{c}@~ao Lisp @code{ROUND}.
+Veja @ref{Lisp and Maxima} para mais sobre esse ponto.
 
 A nota@,{c}@~ao @code{? word} (um ponto de interroga@,{c}@~ao seguido de uma palavra e separado desta por um espa@,{c}o em branco)
 @'e equivalente a @code{describe ("word")}.
 
 @end deffn
 
-@defvr {Vari@'avel} absboxchar
+@defvr {Vari@'avel de op@,{c}@~ao} absboxchar
 Valor padr@~ao: @code{!}
 
 @code{absboxchar} @'e o caracter usado para para desenhar o sinal de valor
@@ -329,7 +388,7 @@ chamadas de fun@,{c}@~ao.  Veja tamb@'em @code{disp}.
 
 @end deffn
 
-@defvr {Vari@'avel} display2d
+@defvr {Vari@'avel de op@,{c}@~ao} display2d
 Valor padr@~ao: @code{true}
 
 Quando @code{display2d} @'e @code{false},
@@ -337,7 +396,7 @@ O console visualizador @'e unidimensional ao inv@'es de bidimensional.
 
 @end defvr
 
-@defvr {Vari@'avel} display_format_internal
+@defvr {Vari@'avel de op@,{c}@~ao} display_format_internal
 Valor padr@~ao: @code{false}
 
 Quando @code{display_format_internal} @'e @code{true},
@@ -381,7 +440,7 @@ caso de @code{A^^B}).
 
 @end deffn
 
-@defvr {Vari@'avel} error_size
+@defvr {Vari@'avel de op@,{c}@~ao} error_size
 Valor padr@~ao: 10
 
 @code{error_size} modifica mensagens de erro conforme o tamanho das express@~oes que aparecem nelas.
@@ -436,7 +495,7 @@ Express@~ao exemplo @'e --------------
 
 @end defvr
 
-@defvr {Vari@'avel} error_syms
+@defvr {Vari@'avel de op@,{c}@~ao} error_syms
 Valor padr@~ao: @code{[errexp1, errexp2, errexp3]}
 
 Em mensagens de erro,
@@ -465,7 +524,7 @@ cmo @code{@var{a}^@var{b}} isso aparece como @code{expt (@var{a}, @var{b})} (ou 
 
 @end deffn
 
-@defvr {Vari@'avel} exptdispflag
+@defvr {Vari@'avel de op@,{c}@~ao} exptdispflag
 Valor padr@~ao: @code{true}
 
 Quando @code{exptdispflag} @'e @code{true}, Maxima mostra express@~oes
@@ -525,9 +584,9 @@ como diret@'orios de busca.
 
 @end deffn
 
-@defvr {Vari@'avel} file_search_maxima
-@defvrx {Vari@'avel} file_search_lisp
-@defvrx {Vari@'avel} file_search_demo
+@defvr {Vari@'avel de op@,{c}@~ao} file_search_maxima
+@defvrx {Vari@'avel de op@,{c}@~ao} file_search_lisp
+@defvrx {Vari@'avel de op@,{c}@~ao} file_search_demo
 Essas vari@'aveis especificam listas de diret@'orios a serem procurados
 por @code{load}, @code{demo}, e algumas outras fun@,{c}@~oes do Maxima.
 O valor padr@~ao dessas vari@'aveis
@@ -583,7 +642,7 @@ Se nenhum dos acima, @code{file_type} retorna @code{object}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} grind (@var{expr})
-@deffnx {Vari@'avel} grind
+@deffnx {Vari@'avel de op@,{c}@~ao} grind
 A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
@@ -604,7 +663,7 @@ De outra forma, nenhuma tentativa @'e feita para formatar especialmente as expre
 
 @end deffn
 
-@defvr {Vari@'avel} ibase
+@defvr {Vari@'avel de op@,{c}@~ao} ibase
 Valor padr@~ao: 10
 
 Inteiros fornecidos dentro do Maxima s@~ao interpretados
@@ -626,7 +685,7 @@ Veja tamb@'em @code{obase}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'avel} inchar
+@defvr {Vari@'avel de op@,{c}@~ao} inchar
 Valor padr@~ao: @code{%i}
 
 @code{inchar} @'e o prefixo dos r@'otulos de express@~oes fornecidas pelo usu@'ario.
@@ -717,7 +776,7 @@ Veja tamb@'em @code{display}.
 
 @end deffn
 
-@defvr {Vari@'avel} linechar
+@defvr {Vari@'avel de op@,{c}@~ao} linechar
 Valor padr@~ao: @code{%t}
 
 @code{linechar} @'e o refixo de r@'otulos de express@~oes intermedi@'arias gerados pelo Maxima.
@@ -730,7 +789,7 @@ See @code{programmode} e @code{labels}.
 
 @end defvr
 
-@defvr {Vari@'avel} linel
+@defvr {Vari@'avel de op@,{c}@~ao} linel
 Valor padr@~ao: 79
 
 @code{linel} @'e a largura assumida (em caracteres) do console
@@ -739,6 +798,33 @@ A @code{linel} pode ser atribu@'ido qualquer valor pelo usu@'ario,
 embora valores muio pequenos ou muito grandes possam ser impratic@'aveis.
 Textos impressos por fun@,{c}@~oes internas do Maxima, tais como mensagens de erro e a sa@'ida de @code{describe},
 n@~ao s@~ao afetadas por @code{linel}.
+
+@end defvr
+
+@defvr {Option variable} lispdisp
+Valor padr@~ao: @code{false}
+
+Quando @code{lispdisp} for @code{true},
+s@'imbolos Lisp s@~ao mostrados com um ponto de interroga@,{c}@~ao @code{?} na frente.
+De outra forma,
+s@'imbolos Lisp ser@~ao mostrados sem o ponto de interroga@,{c}@~o na frente.
+
+Exemplos:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
 
 @end defvr
 
@@ -785,7 +871,7 @@ O operador aspas simples n@~ao aceita avalia@,{c}@~ao.
 
 @c loadprint DOESN'T EXACTLY WORK LIKE THIS, BUT IT HARDLY SEEMS WORTH FIXING
 @c I GUESS THIS COULD BE UPDATED TO DESCRIBE THE WAY IT ACTUALLY WORKS
-@defvr {Vari@'avel} loadprint
+@defvr {Vari@'avel de op@,{c}@~ao} loadprint
 Valor padr@~ao: @code{true}
 
 @code{loadprint} diz se deve imprimir uma mensagem quando um arquivo @'e chamado.
@@ -806,7 +892,7 @@ Quando @code{loadprint} @'e @code{false}, nunca imprime uma mensagem.
 
 @end defvr
 
-@defvr {Vari@'avel} obase
+@defvr {Vari@'avel de op@,{c}@~ao} obase
 Valor padr@~ao: 10
 
 @code{obase} @'e a base para inteiros mostrados pelo Maxima.
@@ -823,7 +909,7 @@ Veja tamb@'em @code{ibase}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Vari@'avel} outchar
+@defvr {Vari@'avel de op@,{c}@~ao} outchar
 Valor padr@~ao: @code{%o}
 
 @code{outchar} @'e o prefixo dos r@'otulos de express@~oes calculadas pelo Maxima.
@@ -845,7 +931,7 @@ Veja tamb@'em @code{labels}.
 @end defvr
 
 @c STILL EXISTS, NEEDS CLARIFICATION !!!
-@defvr {Vari@'avel} packagefile
+@defvr {Vari@'avel de op@,{c}@~ao} packagefile
 Valor padr@~ao: @code{false}
 
 Projetistas de pacotes que usam @code{save}
@@ -862,7 +948,7 @@ init do Maxima.
 
 @end defvr
 
-@defvr {Vari@'avel} pfeformat
+@defvr {Vari@'avel de op@,{c}@~ao} pfeformat
 Valor padr@~ao: @code{false}
 
 Quando @code{pfeformat} @'e @code{true}, uma raz@~ao de inteiros @'e
@@ -1090,7 +1176,7 @@ Exemplo:
 
 @end deffn
 
-@defvr {Vari@'avel} rmxchar
+@defvr {Vari@'avel de op@,{c}@~ao} rmxchar
 Valor padr@~ao: @code{]}
 
 @code{rmxchar} @'e the caractere desenhado lado direito de uma matriz.
@@ -1165,7 +1251,7 @@ e vari@'aveis inteiras para seus valores inteiros, e.g., @code{m: 5$ n: 12$ save
 @end deffn
 
 @c NEEDS MORE WORK !!!
-@defvr {Vari@'avel} savedef
+@defvr {Vari@'avel de op@,{c}@~ao} savedef
 Valor padr@~ao: @code{true}
 
 Quando @code{savedef} @'e @code{true}, a ves@~ao Maxima de uma
@@ -1195,7 +1281,7 @@ Veja tamb@'em @code{ratvars}.
 
 @end deffn
 
-@defvr {Vari@'avel} stardisp
+@defvr {Vari@'avel de op@,{c}@~ao} stardisp
 Valor padr@~ao: @code{false}
 
 Quando @code{stardisp} @'e @code{true}, multiplica@,{c}@~ao @'e
@@ -1212,6 +1298,44 @@ O valor de retorno de @code{string} @'e uma string,
 e dessa forma n@~ao pode ser usada em um c@'alculo.
 
 @end deffn
+
+@c SHOULD BE WRITTEN WITH LEADING ? BUT THAT CONFUSES CL-INFO SO WORK AROUND
+@c @defvr {Lisp variable} ?stringdisp
+@defvr {Vari@'avel Lisp} stringdisp
+Valor padr@~ao: @code{false}
+
+Quando @code{?stringdisp} for @code{true},
+strings ser@~ao mostradas contidas em aspas duplas.
+De outra forma,
+aspas n@~ao s@~ao mostradas.
+
+@code{?stringdisp} @'e sempre @code{true} quando mostrando uma defini@,{c@~ao de fun@,{c}@~ao.
+
+@code{?stringdisp} @'e uma vari@'avel Lisp,
+ent@~ao deve ser escrita com um ponto de interroga@,{c}@~ao @code{?} na frente.
+
+Exemplos:
+
+@c ===beg===
+@c ?stringdisp: false$
+@c "This is an example string.";
+@c foo () := print ("This is a string in a function definition.");
+@c ?stringdisp: true$
+@c "This is an example string.";
+@c ===end===
+@example
+(%i1) ?stringdisp: false$
+(%i2) "This is an example string.";
+(%o2)              This is an example string.
+(%i3) foo () := print ("This is a string in a function definition.");
+(%o3) foo() := 
+              print("This is a string in a function definition.")
+(%i4) ?stringdisp: true$
+(%i5) "This is an example string.";
+(%o5)             "This is an example string."
+@end example
+
+@end defvr
 
 @deffn {Fun@,{c}@~ao} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 @deffnx {Fun@,{c}@~ao} stringout (@var{filename}, [@var{m}, @var{n}])
@@ -1309,7 +1433,7 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 
 @end deffn
 
-@defvr {Vari@'avel} ttyoff
+@defvr {Vari@'avel de op@,{c}@~ao} ttyoff
 Valor padr@~ao: @code{false}
 
 Quando @code{ttyoff} @'e @code{true}, express@~oes de sa@'ida n@~ao s@~ao mostradas.

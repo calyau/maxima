@@ -1,3 +1,4 @@
+@c /Matrices.texi/1.15/Fri Jun 17 00:57:34 2005/-ko/
 @menu
 * Introduction to Matrices and Linear Algebra::  
 * Definitions for Matrices and Linear Algebra::  
@@ -345,7 +346,7 @@ Exemplo:
 
 @end defvr
 
-@defvr {Vari@'avel} domxmxops
+@defvr {Vari@'avel de op@,{c}@~ao} domxmxops
 Valor padr@~ao: @code{true}
 
 Quando @code{domxmxops} @'e @code{true}, todas as opera@,{c}@~oes matriz-matriz ou
@@ -356,7 +357,7 @@ escalar-matriz); se esse comutador @'e @code{false} tais opera@,{c}@~oes n@~ao s
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} domxnctimes
+@defvr {Vari@'avel de op@,{c}@~ao} domxnctimes
 Valor padr@~ao: @code{false}
 
 Quando @code{domxnctimes} @'e @code{true}, produtos n@~ao comutativos de
@@ -366,7 +367,7 @@ matrizes s@~ao realizados.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dontfactor
+@defvr {Vari@'avel de op@,{c}@~ao} dontfactor
 Valor padr@~ao: @code{[]}
 
 @code{dontfactor} pode ser escolhido para uma lista de vari@'aveis em rela@,{c}@~ao
@@ -377,7 +378,7 @@ que essas na lista @code{dontfactor}.
 
 @end defvr
 
-@defvr {Vari@'avel} doscmxops
+@defvr {Vari@'avel de op@,{c}@~ao} doscmxops
 Valor padr@~ao: @code{false}
 
 Quando @code{doscmxops} @'e @code{true}, opera@,{c}@~oes escalar-matriz s@~ao
@@ -387,7 +388,7 @@ realizadas.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} doscmxplus
+@defvr {Vari@'avel de op@,{c}@~ao} doscmxplus
 Valor padr@~ao: @code{false}
 
 Quando @code{doscmxplus} @'e @code{true}, opera@,{c}@~oes escalar-matriz retornam
@@ -397,7 +398,7 @@ uma matriz resultado.  Esse comutador n@~ao @'e subsomado sob @code{doallmxops}.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dot0nscsimp
+@defvr {Vari@'avel de op@,{c}@~ao} dot0nscsimp
 Valor padr@~ao: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -407,7 +408,7 @@ e um termo n@~ao escalar @'e simplificado para um produto comutativo.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dot0simp
+@defvr {Vari@'avel de op@,{c}@~ao} dot0simp
 Valor padr@~ao: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -418,7 +419,7 @@ um termo escalar @'e simplificado para um produto n@~ao comutativo.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dot1simp
+@defvr {Vari@'avel de op@,{c}@~ao} dot1simp
 Valor padr@~ao: @code{true}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -429,7 +430,7 @@ outro termo @'e simplificado para um produto comutativo.
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dotassoc
+@defvr {Vari@'avel de op@,{c}@~ao} dotassoc
 Valor padr@~ao: @code{true}
 
 Quando @code{dotassoc} @'e @code{true}, uma expres@~ao @code{(A.B).C} simplifica para
@@ -439,7 +440,7 @@ Quando @code{dotassoc} @'e @code{true}, uma expres@~ao @code{(A.B).C} simplifica
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dotconstrules
+@defvr {Vari@'avel de op@,{c}@~ao} dotconstrules
 Valor padr@~ao: @code{true}
 
 Quando @code{dotconstrules} @'e @code{true}, um produto n@~ao comutativo de uma
@@ -451,7 +452,7 @@ Ativando esse sinalizador efetivamente ativamos @code{dot0simp}, @code{dot0nscsi
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dotdistrib
+@defvr {Vari@'avel de op@,{c}@~ao} dotdistrib
 Valor padr@~ao: @code{false}
 
 Quando @code{dotdistrib} @'e @code{true}, uma expres@~ao @code{A.(B + C)} simplifica para @code{A.B + A.C}.
@@ -459,7 +460,7 @@ Quando @code{dotdistrib} @'e @code{true}, uma expres@~ao @code{A.(B + C)} simpli
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dotexptsimp
+@defvr {Vari@'avel de op@,{c}@~ao} dotexptsimp
 Valor padr@~ao: @code{true}
 
 Quando @code{dotexptsimp} @'e @code{true}, uma expres@~ao @code{A.A} simplifica para @code{A^^2}.
@@ -467,7 +468,7 @@ Quando @code{dotexptsimp} @'e @code{true}, uma expres@~ao @code{A.A} simplifica 
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dotident
+@defvr {Vari@'avel de op@,{c}@~ao} dotident
 Valor padr@~ao: 1
 
 @code{dotident} @'e o valor retornado por @code{X^^0}.
@@ -476,7 +477,7 @@ Valor padr@~ao: 1
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Vari@'avel} dotscrules
+@defvr {Vari@'avel de op@,{c}@~ao} dotscrules
 Valor padr@~ao: @code{false}
 
 Quando @code{dotscrules} @'e @code{true}, uma expres@~ao @code{A.SC} ou @code{SC.A} simplifica
@@ -795,7 +796,7 @@ Veja @code{^^} (expoente n@~ao comutativo) para outro m@'etodo de inverter uma m
 @c NEED EXAMPLE HERE
 @end deffn
 
-@defvr {Vari@'avel} lmxchar
+@defvr {Vari@'avel de op@,{c}@~ao} lmxchar
 Valor padr@~ao: @code{[}
 
 @code{lmxchar} @'e o caractere mostrado como o delimitador
@@ -1022,7 +1023,7 @@ Retorna @code{true} se @var{expr} @'e uma matriz, de outra forma retorna @code{f
 
 @end deffn
 
-@defvr {Vari@'avel} matrix_element_add
+@defvr {Vari@'avel de op@,{c}@~ao} matrix_element_add
 Valor padr@~ao: @code{+}
 
 @code{matrix_element_add} @'e a opera@,{c}@~ao 
@@ -1058,7 +1059,7 @@ Exemplo:
 
 @end defvr
 
-@defvr {Vari@'avel} matrix_element_mult
+@defvr {Vari@'avel de op@,{c}@~ao} matrix_element_mult
 Valor padr@~ao: @code{*}
 
 @code{matrix_element_mult} @'e a opera@,{c}@~ao
@@ -1104,7 +1105,7 @@ Exemplo:
 
 @end defvr
 
-@defvr {Vari@'avel} matrix_element_transpose
+@defvr {Vari@'avel de op@,{c}@~ao} matrix_element_transpose
 Valor padr@~ao: @code{false}
 
 @code{matrix_element_transpose} @'e a opera@,{c}@~ao
@@ -1212,7 +1213,7 @@ O argumento @var{n} @'e a ordem; isso @'e optional se @var{M} for uma matriz.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defvr declaration nonscalar
+@defvr {Declaration} nonscalar
 Faz @'atomos ser comportarem da mesma forma que uma lista ou matriz em rela@,{c}@~ao ao
 operador do ponto.
 
@@ -1241,7 +1242,7 @@ equivalente a zero @'e realmente isso.
 
 @end deffn
 
-@defvr {Vari@'avel} ratmx
+@defvr {Vari@'avel de op@,{c}@~ao} ratmx
 Valor padr@~ao: @code{false}
 
 Quando @code{ratmx} @'e @code{false}, adi@,{c}@~ao, subtra@,{c}@~ao,
@@ -1263,7 +1264,7 @@ O valor de retorno @'e uma matriz.
 
 @end deffn
 
-@defvr {Vari@'avel} scalarmatrixp
+@defvr {Vari@'avel de op@,{c}@~ao} scalarmatrixp
 Valor padr@~ao: @code{true}
 
 Quando @code{scalarmatrixp} @'e @code{true}, ent@~ao sempre que uma matriz 1 x 1
@@ -1333,7 +1334,7 @@ estar habilitado para a forma @code{rightmatrix}.
 
 @end deffn
 
-@defvr {Vari@'avel} sparse
+@defvr {Vari@'avel de op@,{c}@~ao} sparse
 Valor padr@~ao: @code{false}
 
 Quando @code{sparse} @'e @code{true}, e se @code{ratmx} @'e @code{true}, ent@~ao @code{determinant}
@@ -1451,7 +1452,7 @@ Esses sinalizadores foram todos declarados @code{evflag}.
 
 @end deffn
 
-@defvr {Vari@'avel} vect_cross
+@defvr {Vari@'avel de op@,{c}@~ao} vect_cross
 Valor padr@~ao: @code{false}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
@@ -1465,7 +1466,8 @@ Retorna um matriz @var{m} por @var{n}, com todos os elementos sendo zero.
 
 @end deffn
 
-@defvr {special symbol} "["
+@defvr {Special symbol} "["
+@defvrx {Special symbol} "]"
 @code{[} e @code{]} marcam o ome@,{c}o e o fim, respectivamente, de uma lista.
 
 @code{[} e @code{]} tamb@'em envolvem os subscritos de
