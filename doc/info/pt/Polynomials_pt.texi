@@ -1,4 +1,4 @@
-@c /Polynomials.texi/1.16/Thu Apr 21 04:58:34 2005/-ko/
+@c /Polynomials.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introduction to Polynomials::  
@@ -58,7 +58,7 @@ s@'imbolo /T/ segue o r@'otulo de linha que cont@'em as tais express@~oes.
 @c PT = Defini@,{c}@~oes para Polin@^omios
 @section Definitions for Polynomials
 
-@defvr {Vari@'avel} algebraic
+@defvr {Vari@'avel de op@,{c}@~ao} algebraic
 Valor Padr@~ao: @code{false}
 
 @code{algebraic} deve ser escolhida para @code{true} com o objetivo de que a
@@ -66,7 +66,7 @@ simplifica@,{c}@~ao de inteiros alg@'ebricos tenha efeito.
 
 @end defvr
 
-@defvr {Vari@'avel} berlefact
+@defvr {Vari@'avel de op@,{c}@~ao} berlefact
 Valor Padr@~ao: @code{true}
 
 Quando @code{berlefact} for @code{false} ent@~ao o algor@'itmo de fatora@,{c}@~ao de
@@ -229,7 +229,7 @@ polin@^omios divididos pelo mdc.  Isso sempre usa o algor@'itmo
 
 @end deffn
 
-@defvr {Vari@'avel} facexpand
+@defvr {Vari@'avel de op@,{c}@~ao} facexpand
 Valor Padr@~ao: @code{true}
 
 @code{facexpand} controla se os fatores irredut@'iveis
@@ -402,7 +402,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} factorflag
+@defvr {Vari@'avel de op@,{c}@~ao} factorflag
 Valor Padr@~ao: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -731,7 +731,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} intfaclim
+@defvr {Vari@'avel de op@,{c}@~ao} intfaclim
 Valor Padr@~ao: 1000
 
 @c NEED A LINK TO DESCRIPTION OF "BIGNUM"
@@ -755,7 +755,7 @@ tempo gasto fatorando grandes inteiros.
 
 @end defvr
 
-@defvr {Vari@'avel} keepfloat
+@defvr {Vari@'avel de op@,{c}@~ao} keepfloat
 Valor Padr@~ao: @code{false}
 
 Quando @code{keepfloat} for @code{true}, evitamos que n@'umeros
@@ -813,7 +813,7 @@ simples pode ser dada como primeiro argumento.
 
 @end deffn
 
-@defvr {Vari@'avel} modulus
+@defvr {Vari@'avel de op@,{c}@~ao} modulus
 Valor Padr@~ao: @code{false}
 
 Quando @code{modulus} for um n@'umero positivo @var{p},
@@ -934,7 +934,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} ratalgdenom
+@defvr {Vari@'avel de op@,{c}@~ao} ratalgdenom
 Valor Padr@~ao: @code{true}
 
 Quando @code{ratalgdenom} for @code{true}, permite racionaliza@,{c}@~ao de
@@ -1004,7 +1004,7 @@ n@~ao s@~ao consideradas raz@~oes por @code{denom}.
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@defvr {Vari@'avel} ratdenomdivide
+@defvr {Vari@'avel de op@,{c}@~ao} ratdenomdivide
 Valor Padr@~ao: @code{true}
 
 Quando @code{ratdenomdivide} for @code{true},
@@ -1127,7 +1127,7 @@ Veja tamb@'em @code{totaldisrep}.
 
 @end deffn
 
-@defvr {Vari@'avel} ratepsilon
+@defvr {Vari@'avel de op@,{c}@~ao} ratepsilon
 Valor Padr@~ao: 2.0e-8
 
 @code{ratepsilon} @'e a toler@^ancia usada em convers@~oes
@@ -1136,8 +1136,8 @@ de n@'umeros em ponto flutuante para n@'umeros racionais.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Fun@,{c}@~ao} ratexpand (@var{expr})
-@defvrx {Vari@'avel} ratexpand
+@deffn {Fun@,{c}@~ao} ratexpand (@var{expr})
+@defvrx {Vari@'avel de op@,{c}@~ao} ratexpand
 Expande @var{expr} multiplicando para fora produtos de somas e
 somas exponenciadas, combinando fra@,{c}@~oes sobre um denominador comum,
 cancelando o m@'aximo divisor comum entre entre o numerador e o
@@ -1194,9 +1194,9 @@ Exemplos:
                 x  + x  - x - 1   x  + x  - x - 1
 @end example
 
-@end defvr
+@end deffn
 
-@defvr {Vari@'avel} ratfac
+@defvr {Vari@'avel de op@,{c}@~ao} ratfac
 Valor Padr@~ao: @code{false}
 
 Quando @code{ratfac} for @code{true},
@@ -1256,7 +1256,7 @@ CRE extendidas s@~ao criadas por @code{taylor} e fun@,{c}@~oes relacionadas.
 
 @end deffn
 
-@defvr {Vari@'avel} ratprint
+@defvr {Vari@'avel de op@,{c}@~ao} ratprint
 Valor Padr@~ao: @code{true}
 
 Quando @code{ratprint} for @code{true},
@@ -1324,7 +1324,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} ratsimpexpons
+@defvr {Vari@'avel de op@,{c}@~ao} ratsimpexpons
 Valor Padr@~ao: @code{false}
 
 Quando @code{ratsimpexpons} for @code{true},
@@ -1384,9 +1384,9 @@ Exemplos:
 
 @end deffn
 
-@defvr {Fun@,{c}@~ao} ratvars (@var{x_1}, ..., @var{x_n})
-@defvrx {Fun@,{c}@~ao} ratvars ()
-@defvrx {Vari@'avel} ratvars
+@deffn {Fun@,{c}@~ao} ratvars (@var{x_1}, ..., @var{x_n})
+@deffnx {Fun@,{c}@~ao} ratvars ()
+@defvrx {Vari@'avel de sistema} ratvars
 Declara vari@'aveis principais @var{x_1}, ..., @var{x_n} para express@~oes racionais.
 @var{x_n}, se presente em uma express@~ao racional, @'e considerada a vari@'avel principal.
 De outra forma, @var{x_[n-1]} @'e considerada a vari@'avel principal se presente,
@@ -1405,7 +1405,7 @@ Cada chamada para a fun@,{c}@~ao @code{ratvars} sobre-grava a lista apagando seu
 @code{ratvars ()} limpa a lista.
 
 @c NEED EXAMPLES HERE
-@end defvr
+@end deffn
 
 @deffn {Fun@,{c}@~ao} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
 @deffnx {Fun@,{c}@~ao} ratweight ()
@@ -1445,7 +1445,7 @@ Exemplos:
 
 @end deffn
 
-@defvr {Vari@'avel} ratweights
+@defvr {Vari@'avel de sistema} ratweights
 Valor Padr@~ao: @code{[]}
 
 @code{ratweights} @'e a lista de pesos atribu@'idos por @code{ratweight}.
@@ -1457,7 +1457,7 @@ cada chamada a @code{ratweight} coloca itens adicionais na lista.
 
 @end defvr
 
-@defvr {Vari@'avel} ratwtlvl
+@defvr {Vari@'avel de op@,{c}@~ao} ratwtlvl
 Valor Padr@~ao: @code{false}
 
 @code{ratwtlvl} @'e usada em combina@,{c}@~ao com a fun@,{c}@~ao 
@@ -1478,8 +1478,8 @@ de uma lista de dois elementos retornada por @code{divide}.
 @end deffn
 
 @c CAN PROBABLY BE CLARIFIED
-@defvr {Fun@,{c}@~ao} resultant (@var{p_1}, @var{p_2}, @var{x})
-@defvrx {Vari@'avel} resultant
+@deffn {Fun@,{c}@~ao} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffnx {Vari@'avel} resultant
 Calcula o resultante de dois polin@^omios @var{p_1} e @var{p_2},
 eliminando a vari@'avel @var{x}.
 O resultante @'e um determinante dos coeficientes de @var{x}
@@ -1503,9 +1503,9 @@ A fun@,{c}@~ao @code{bezout} pega os mesmos argumentos que @code{resultant} e re
 uma matriz.  O determinante do valor de retorno @'e o resultante desejado.
 
 @c NEED AN EXAMPLE HERE
-@end defvr
+@end deffn
 
-@defvr {Vari@'avel} savefactors
+@defvr {Vari@'avel de op@,{c}@~ao} savefactors
 Valor Padr@~ao: @code{false}
 
 @c "certain functions" -- WHICH ONES ??
