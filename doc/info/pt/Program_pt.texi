@@ -28,7 +28,7 @@ fun@,{c}@~oes, incluindo a fun@,{c}@~ao correntemente ativa.
 
 @c IS THIS STATMENT REALLY NEEDED ?? 
 @c (WHY WOULD ANYONE BELIEVE backtrace CANNOT BE CALLED OUTSIDE A DEBUGGING CONTEXT??)
-@code{backtrace} pode ser chamada por um script, uma fun@,{c}@~ao, ou a partir do prompt interativo
+@code{backtrace} pode ser chamada por um script, uma fun@,{c}@~ao, ou a partir da linha de comando interativa
 (n@~ao somente em um contexto de depura@,{c}@~ao).
 
 Exemplos:

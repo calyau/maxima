@@ -78,7 +78,7 @@ O pacote pode ser chamado explicitamente com @code{load ("eigen")}.
 @code{demo ("eigen")} mostra uma demonstra@,{c}@~ao das compatibilidades
 desse pacote.
 @code{batch ("eigen")} executa a mesma demonstra@,{c}@~ao,
-mas sem paradas de usu@'ario entre sucessivas computa@,{c}@~oes.
+mas sem lembretes de usu@'ario entre sucessivas computa@,{c}@~oes.
 
 As fun@,{c}@~oes no pacote @code{eigen} s@~ao
 @code{conjugate}, @code{innerproduct}, @code{unitvector}, @code{columnvector},

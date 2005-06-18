@@ -672,7 +672,7 @@ propriedades que n@~ao podem  ser mostradas de outra forma, i.e. para
 @defvr {Vari@'avel de op@,{c}@~ao} prompt
 Valor padr@~ao: @code{_}
 
-@code{prompt} @'e o s@'imbolo de prompt da fun@,{c}@~ao @code{demo},
+@code{prompt} @'e o s@'imbolo de linha de comando da fun@,{c}@~ao @code{demo},
 modo @code{playback (slow)}, e o Maxima interrompe o ciclo (como invocado por @code{break}).
 
 @end defvr
@@ -684,7 +684,7 @@ n@~ao por s@'i mesma @code{quit}.
 
 Para parar um c@'alculo muito longo,
 digite @code{control-C}.
-A a@,{c}@~ao padr@~ao @ retornar ao prompt do Maxima.
+A a@,{c}@~ao padr@~ao @'e retornar @`a linha de comando do Maxima.
 Se @code{*debugger-hook*} @'e @code{nil},
 @code{control-C} abre o depurador Lisp.
 Veja tamb@'em @code{debugging}.

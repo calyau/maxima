@@ -120,9 +120,9 @@ block (block (a^n, %%*42), %%/6)
 
 retorna @code{7*a^n}.
 
-Dentro da declara@,{c}@~ao composta, o valor de @code{%%} pode ser inspecionado em uma parada r@'apida,
+Dentro da declara@,{c}@~ao composta, o valor de @code{%%} pode ser inspecionado em uma parada de linha de comando,
 que @'e aberta pela execu@,{c}@~ao da fun@,{c}@~ao @code{break}.
-Por exemplo, na parada r@'apida aberta por
+Por exemplo, na parada de linha de comando aberta por
 
 @example
 block (a: 42, break ())$

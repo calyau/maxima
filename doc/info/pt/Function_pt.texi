@@ -733,7 +733,7 @@ Valor padr@~ao: @code{[]}
 na sess@~ao corrente.
 Um fun@,{c}@~ao definida pelo usu@'ario @'e uma fun@,{c}@~ao constru@'ida por
 @code{define} or @code{:=}.
-Uma fun@,{c}@~ao pode ser definida no prompt do Maxima
+Uma fun@,{c}@~ao pode ser definida pela linha de comando do Maxima de forma interativa com o usu@'ario
 ou em um arquivo Maxima chamado por @code{load} ou @code{batch}.
 Fun@,{c}@~oes Lisp, todavia, n@~ao s@~ao adicinadas @`a lista @code{functions}.
 
@@ -1018,7 +1018,7 @@ descritos.
 @code{mode_declare} @'e usado para declarar os modos de vari@'aveis e
 fun@,{c}@~oes para subseq@"u@^ente tradu@,{c}@~ao ou compila@,{c}@~ao das fun@,{c}@~oes.
 @code{mode_declare} @'e tipicamente colocada no in@'icio de uma defini@,{c}@~ao de
-fun@,{c}@~ao, no in@'icio de um script Maxima, ou executado no prompt interativo.
+fun@,{c}@~ao, no in@'icio de um script Maxima, ou executado atrav@'es da linha de comando de forma interativa.
 
 Os argumentos de @code{mode_declare} s@~ao pares consistindo de  uma vari@'avel e o modo que @'e
 um de @code{boolean}, @code{fixnum}, @code{number}, @code{rational}, ou @code{float}.
