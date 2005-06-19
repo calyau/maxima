@@ -1842,7 +1842,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
     (remprop opr 'opr)
     (rempropchk opr)
     (mapc #'(lambda (x) (remprop op x))
- 	  '(nud-expr nud-subr			; NUD info
+ 	  '(nud nud-expr nud-subr			; NUD info
 		     led led-expr led-subr		; LED info
 		     lbp rbp			; Binding power info
 		     lpos rpos pos		; Part-Of-Speech info
