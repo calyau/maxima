@@ -1,8 +1,0 @@
-There does exist an interface to a fourth program, called IZIC, which
-  was capable of excellent graphics.  Unfortunately, while the bindings still
-  exist in Maxima, IZIC itself has not been maintained in quite some time and
-  depends on a version of Tk so old most Linux distributions do not even have
-  the ability to emulate the calls it needs.  So until someone updates it, this
-  inteface must remain in limbo.  The old IZIC code can be obtained via ftp at
-  zenon.inria.fr, and there is a webpage at
-  http://www-sop.inria.fr/safir/SAM/Izic/ with some example pictures.  The basic ZIC code appears to compile, with some minor fixes, but the TCL/TK code will most likely need some serious effort.
