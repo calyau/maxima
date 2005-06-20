@@ -169,6 +169,9 @@
 	     (:file "zbunk"
 		    :depends-on ("zunk1" "zunk2"))
 	     (:file "zunk1"
+		    :compiler-options (:array-slicing t
+				       :float-format double-float
+				       :package "SLATEC")
 		    :depends-on ("zabs" "zs1s2" "zuchk" "zunik"))
 	     (:file "zunk2"
 		    :depends-on ("zabs" "zairy" "zs1s2" "zuchk" "zunhj"))
