@@ -85,7 +85,7 @@ de express@~oes contendo fatoriais.
 
 As fun@,{c}@~oes @code{gamma}, @code{bffac}, e @code{cbffac}
 s@~ao variedades da fun@,{c}@~ao @code{gamma}. 
-@code{makegamma} substitue @code{gamma} para fun@,{c}@~oes relacionadas a fatoriais.
+@code{makegamma} substitui @code{gamma} para fun@,{c}@~oes relacionadas a fatoriais.
 
 Veja tamb@'em @code{binomial}.
 

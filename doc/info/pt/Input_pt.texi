@@ -572,7 +572,7 @@ est@'a em @code{file_search_maxima}.
 @code{file_search (@var{filename}, @var{pathlist})} procura somente nesses diret@'orios
 especificados por @var{pathlist},
 que @'e uma lista de strings.
-O argumento @var{pathlist} substitue os diret@'orios de busca padr@~ao,
+O argumento @var{pathlist} substitui os diret@'orios de busca padr@~ao,
 ent@~ao se a lista do caminho @'e dada, @code{file_search} procura somente nesses especificados,
 e n@~ao qualquer dos diret@'orios padr@~ao de busca.
 Mesmo se existe somente um diret@'orio em @var{pathlist}, esse deve ainda ser dado como uma lista de um @'unico elemento.
@@ -601,7 +601,7 @@ file_search_maxima: ["/usr/local/foo/###.mac",
     "/usr/local/bar/###.mac"]$
 @end example
 
-substitue o valor padr@~ao de @code{file_search_maxima},
+substitui o valor padr@~ao de @code{file_search_maxima},
 enquanto
 
 @example

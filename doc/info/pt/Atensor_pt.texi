@@ -77,7 +77,7 @@ nos esfor@,{c}amos para construir a tabela de multiplica@,{c}@~ao dos quat@'erni
 @'e aquele armazenado em @code{asymbol} e o i@'indice est@'a entre 1 e @code{adim}.
 Para s@'imbolos indexado, e somente para s@'imbolos indexados, as formas bilineares
 @code{sf}, @code{af}, e @code{av} s@~ao avaliadas.  A avalia@,{c}@~ao
-substitue os valores  de @code{aform[i,j]} em lugar de @code{fun(v[i],v[j])}
+substitui os valores  de @code{aform[i,j]} em lugar de @code{fun(v[i],v[j])}
 onde @code{v} representa o valor de @code{asymbol} e @code{fun} @'e
 ainda @code{af} ou @code{sf}; ou, isso substitui @code{v[aform[i,j]]}
 em lugar de @code{av(v[i],v[j])}.
@@ -205,7 +205,7 @@ O s@'imbolo para bases vetoriais.  O padr@~ao @'e @code{v}.
 
 @'E uma fun@,{c}@~ao escalar sim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
-usando @code{abasep} e se esse for o caso, substitue o valor 
+usando @code{abasep} e se esse for o caso, substitui o valor 
 correspondente da matriz @code{aform}.
 
 @end deffn
@@ -214,7 +214,7 @@ correspondente da matriz @code{aform}.
 
 @'E uma fun@,{c}@~ao escalar antisim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
-usando @code{abasep} e se esse for o caso, substitue o
+usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
 
 @end deffn
@@ -223,7 +223,7 @@ valor correspondente da matriz @code{aform}.
 
 @'E uma fun@,{c}@~ao antisim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
-usando @code{abasep} e se esse for o caso, substitue o
+usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
 
 Por exemplo:
