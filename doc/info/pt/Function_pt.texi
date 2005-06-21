@@ -627,7 +627,7 @@ Error: foo was declared mode boolean, has value: %pi
 (%o6)                         1439
 @end example
 
-@code{baz_quux} @'e uma vari@'avel que n@~ao pode receber a atribu@'i@,{c}@~ao de um valor.
+@code{baz_quux} @'e uma vari@'avel que n@~ao pode receber a atribui@,{c}@~ao de um valor.
 O modo @code{any_check} @'e como @code{any}, 
 mas @code{any_check} habilita o mecanismo @code{value_check}, e @code{any} n@~ao habilita.
 @c GENERATED FROM:

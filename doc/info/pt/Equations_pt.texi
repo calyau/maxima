@@ -815,7 +815,7 @@ Exemplos:
 @example
 (%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
 
-SOLVE @'e using arc-trig functions to get a solu@,{c}@~ao.
+SOLVE is using arc-trig functions to get a solution.
 Some solu@,{c}@~oes will be lost.
                             %pi
 (%o1)                  [x = ---, f(x) = 1]
