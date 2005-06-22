@@ -534,7 +534,7 @@ com expoente negativo usando quocientes, e.g., @code{X^(-1)} como @code{1/X}.
 
 @c NEEDS EXAMPLES
 @deffn {Fun@,{c}@~ao} filename_merge (@var{path}, @var{filename})
-Constro@~oem um caminho modificado de @var{path} e @var{filename}.
+Constroem um caminho modificado de @var{path} e @var{filename}.
 Se o componente final de @var{path} @'e da forma @code{###.@var{algumacoisa}},
 o componente @'e substitu@'ido com @code{@var{filename}.@var{algumacoisa}}.
 De outra forma, o componente final @'e simplesmente substitu@'ido por @var{filename}.
