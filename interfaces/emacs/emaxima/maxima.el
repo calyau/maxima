@@ -2635,9 +2635,10 @@ To get apropos with the symbol under point, use:
        (eq (process-status inferior-maxima-process) 'run)))
 
 ;;; Sending the information
-(defun inferior-maxima-comint-send-input ()
+(defun inferior-maxima-comint-send-input (&optional query)
   "Take note of position, then send the input"
-  (setq inferior-maxima-input-end (point))
+  (unless query
+    (setq inferior-maxima-input-end (point)))
   (setq inferior-maxima-waiting-for-output t)
   (comint-send-input))
 
@@ -2807,7 +2808,7 @@ The variable `tab-width' controls the spacing of tab stops."
       (set-buffer (process-buffer inferior-maxima-process))
       (goto-char (point-max))
       (insert ans)
-      (inferior-maxima-comint-send-input)
+      (inferior-maxima-comint-send-input t)
       (goto-char (point-max)))))
 
 (defun maxima-get-command (&optional arg)
