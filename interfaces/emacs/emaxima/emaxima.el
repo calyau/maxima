@@ -1413,7 +1413,7 @@ Return nil if no name or error in name."
                              3 -1))
 ;                             (1+ (length maxima-inchar)) -1))
           (insert ".  ")
-          (insert (substring cell 0 end))
+          (insert (maxima-replace-in-string "\\$" "\\\\$" (substring cell 0 end)))
           (insert " \\\\")
           (unless (string= "\n" (substring cell (- end 1) end))
             (insert "\n"))
@@ -1953,6 +1953,8 @@ already) so the file will begin in emaxima-mode next time it's opened.
                 (not (emaxima-standard-cell-p))]
      ["Create session cell" emaxima-create-session-cell 
                 (not (emaxima-session-cell-p))]
+     ["Toggle starred cell" emaxima-toggle-starred-cell
+      (emaxima-cell-p)]
      ["Send cell"  emaxima-send-cell (emaxima-cell-p)]
      ["Update cell"   emaxima-update-single-cell (emaxima-cell-p)]
      ["TeX update cell"  emaxima-tex-update-single-cell (emaxima-cell-p)]
