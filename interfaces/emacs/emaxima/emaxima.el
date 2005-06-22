@@ -1857,12 +1857,12 @@ constructs.  (See the file \"EMaximaIntro.tex\" for more
 information.)
 The commands for working with cells are:
  \\[emaxima-create-standard-cell]  create a cell         
- \\[emaxima-update-all] update all the cells 
- \\[emaxima-tex-update-all] update all the cells in TeX form 
+ \\[emaxima-update-all-cells] update all the cells 
+ \\[emaxima-tex-update-all-cells] update all the cells in TeX form 
  \\[emaxima-forward-cell] go to the next cell 
  \\[emaxima-backward-cell] go to the previous cell
 
-(With a prefix, C-u \\[emaxima-update-all] and C-u \\[emaxima-tex-update-all] will update the cells 
+(With a prefix, C-u \\[emaxima-update-all-cells] and C-u \\[emaxima-tex-update-all-cells] will update the cells 
 without prompting)
 Since the Maxima output can be returned to the EMaxima buffer,
 the buffer which runs the Maxima process is not shown.
@@ -1924,8 +1924,8 @@ already) so the file will begin in emaxima-mode next time it's opened.
 (define-key emaxima-mode-map "\C-c\C-u" nil)
 (define-key emaxima-mode-map "\C-c+" 'emaxima-forward-cell)
 (define-key emaxima-mode-map "\C-c-" 'emaxima-backward-cell)
-(define-key emaxima-mode-map "\C-c\C-ua" 'emaxima-update-all)
-(define-key emaxima-mode-map "\C-c\C-uA" 'emaxima-tex-update-all)
+(define-key emaxima-mode-map "\C-c\C-ua" 'emaxima-update-all-cells)
+(define-key emaxima-mode-map "\C-c\C-uA" 'emaxima-tex-update-all-cells)
 (define-key emaxima-mode-map "\C-c\C-us" 'emaxima-update-session)
 (define-key emaxima-mode-map "\C-c\C-uS" 'emaxima-tex-update-session)
 (define-key emaxima-mode-map "\C-c\C-o" 'emaxima-create-standard-cell)
@@ -1967,11 +1967,11 @@ already) so the file will begin in emaxima-mode next time it's opened.
      ["Backwards cell"  emaxima-backward-cell])
     ("Update"
      ["Update line"   emaxima-replace-line (not (emaxima-cell-p))]
-     ["Update all cells"  emaxima-menu-update-all]
+     ["Update all cells"  emaxima-update-all-cells]
      ["Update session cells" emaxima-update-session]
      "---"
      ["TeX update line"   emaxima-replace-line-with-tex (not (emaxima-cell-p))]
-     ["TeX update all cells"  emaxima-menu-tex-update-all])
+     ["TeX update all cells"  emaxima-tex-update-all-cells])
     ("Process"
      ["Start a Maxima process"   maxima-start
       (not (processp inferior-maxima-process))]
