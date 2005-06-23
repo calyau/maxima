@@ -555,9 +555,7 @@
 {\obeyspaces\global\let =\ }
 {\catcode`\|=0 \catcode`\\=12 %
 |obeylines|gdef|dom@ximatexsessionverbatim#1.#2\\{|par|noindent|textcolor{|maximapromptcolor}{(|m@ximapercent{}i#1)}#2|par|endgroup}
-}
-%|obeylines|gdef|dom@ximasessionpreprompt#1\\{|par|parskip=|maximasessionpretexskip #1|par|endgroup|vspace{|maximapostpretexskip}}
-%}
+|obeylines|gdef|dom@ximasessionpreprompt#1\\{|par|noindent#1|par|endgroup}}
 
 \newcommand{\m@ximasetupsessiontexoutput}
 {\def\i{\begingroup\color{\maximainputcolor}
@@ -574,9 +572,8 @@
    \par\noindent
    \begingroup\maximafont\color{\maximaoutputcolor}\textcolor{\maximapromptcolor}
    {(\%t##1)}\begin{em@ximam@th} ##2 \end{em@ximam@th}\endgroup}
- \def\p##1\\{%
-   \par\noindent
-   \begingroup\maximafont\color{\maximaoutputcolor}\m@ximadeactivate ##1 \endgroup}}
+ \def\p{\begingroup\color{\maximaoutputcolor}
+   \setupm@ximasessionverbatim\dom@ximasessionpreprompt}}
 
 \newcommand{\maximasessiontexoutput}
 {\setboolean{m@ximasessiontexoutput}{true}
