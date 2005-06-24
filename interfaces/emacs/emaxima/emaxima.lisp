@@ -56,12 +56,12 @@
   (let ((s1 (tex (cadr x) nil nil 'mparen 'mparen)) ;;integrand delims / & d
 	(var (tex (caddr x) nil nil 'mparen rop))) ;; variable
     (cond((= (length x) 3)
-	  (append l `("\\int {" ,@s1 "}{\\;\\mathd\\;" ,@var "}\\big.") r))
+	  (append l `("\\int {" ,@s1 "}{\\;d" ,@var "}\\big.") r))
 	 (t ;; presumably length 5
 	  (let ((low (tex (nth 3 x) nil nil 'mparen 'mparen))
 		;; 1st item is 0
 		(hi (tex (nth 4 x) nil nil 'mparen 'mparen)))
-	    (append l `("\\int_{" ,@low "}^{" ,@hi "}{" ,@s1 "\\;\\mathd\\;" ,@var "}\\big.") r))))))
+	    (append l `("\\int_{" ,@low "}^{" ,@hi "}{" ,@s1 "\\;d" ,@var "}\\big.") r))))))
 
 (defun tex-sum(x l r)
   (let ((op (cond ((eq (caar x) '%sum) "\\sum_{")
