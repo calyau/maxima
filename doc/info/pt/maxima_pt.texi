@@ -367,7 +367,7 @@ Debugging
 
 @node Operators, Expressions, Command Line, Top
 @chapter Operators
-@include Operators.texi
+@include Operators_pt.texi
 
 @node Expressions, Simplification, Operators, Top
 @chapter Expressions
@@ -375,7 +375,7 @@ Debugging
 
 @node Simplification, Plotting, Expressions, Top
 @chapter Simplification
-@include Simplification.texi
+@include Simplification_pt.texi
 
 @node Plotting, Input and Output, Simplification, Top
 @chapter Plotting
@@ -395,11 +395,11 @@ Debugging
 
 @node Polynomials, Constants, Contexts, Top
 @chapter Polynomials
-@include Polynomials.texi
+@include Polynomials_pt.texi
 
 @node Constants, Logarithms, Polynomials, Top
 @chapter Constants
-@include Constants.texi
+@include Constants_pt.texi
 
 @node Logarithms, Trigonometric, Constants, Top
 @chapter Logarithms
@@ -407,7 +407,7 @@ Debugging
 
 @node Trigonometric, Special Functions, Logarithms, Top
 @chapter Trigonometric
-@include Trigonometric.texi
+@include Trigonometric_pt.texi
 
 @node Special Functions, Orthogonal Polynomials, Trigonometric, Top
 @chapter Special Functions
@@ -427,7 +427,7 @@ Debugging
 
 @node Differentiation, Integration, Limits, Top
 @chapter Differentiation
-@include Differentiation.texi
+@include Differentiation_pt.texi
 
 @node Integration, Equations, Differentiation, Top
 @chapter Integration
@@ -515,11 +515,11 @@ Debugging
 
 @node Function Definition, Program Flow, Sets, Top
 @chapter Function Definition
-@include Function.texi
+@include Function_pt.texi
 
 @node Program Flow, Debugging, Function Definition, Top
 @chapter Program Flow
-@include Program.texi
+@include Program_pt.texi
 
 @node Debugging, Function and Variable Index, Program Flow, Top
 @chapter Debugging
