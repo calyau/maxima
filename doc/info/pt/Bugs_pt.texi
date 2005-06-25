@@ -44,11 +44,11 @@ A informa@,{c}@~ao da vers@~ao @'e a mesma reportada por @code{build_info}.
 Quando um erro @'e informado, @'e muito @'util copiar a vers@~ao do Maxima
 e do Lisp dentro da informa@,{c}@~ao do erro.
 
-@code{bug_report} retorna uma string vazia @code{""}.
+@code{bug_report} retorna uma seq@"u@^encia de caracteres vazia @code{""}.
 @end deffn
 
 @deffn {Function} build_info ()
 Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
 
-@code{build_info} retorna uma string vazia @code{""}.
+@code{build_info} retorna uma seq@"u@^encia de caracteres vazia @code{""}.
 @end deffn

@@ -290,7 +290,7 @@ Valor padr@~ao: @code{[]}
 @code{dependencies} @'e a lista de @'atomos que possuem depend@^encias
 funcionais, atribu@'idas por @code{depends} ou @code{gradef}.
 A lista @code{dependencies} @'e cumulativa:
-cada chamada a @code{depends} ou a @code{gradef} anexa itens adicionais.
+cada chamada a @code{depends} ou a @code{gradef} anexa @'itens adicionais.
 
 Veja @code{depends} e @code{gradef}.
 

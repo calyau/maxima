@@ -248,7 +248,7 @@ referem-se a resultados anteriores do interpretador interativo,
 n@~ao a resultados dentro do arquivo.
 O arquivo n@~ao pode incluir constru@,{c}@~oes @code{:lisp}.
 
-@code{batchload} retorna o caminho de @var{filename}, como uma string.
+@code{batchload} retorna o caminho de @var{filename}, como uma seq@"u@^encia de caracteres.
 @code{batchload} avalia seu argumento.
 
 Veja tamb@'em @code{batch} e @code{load}.
@@ -278,7 +278,7 @@ diminuir os elementos de um array @code{A} fazendo
 Concatena seus argumentos.
 Os argumentos devem obrigat@'oriamente serem avaliados para atomos.
 O valor de retorno @'e um s@'imbolo se o primeiro argumento for um s@'imbolo
-e uma string Maxima em caso contr@'ario.
+e uma seq@"u@^encia de caracteres no formato do Maxima em caso contr@'ario.
 
 @code{concat} avalia seus argumentos.
 O ap@'ostrofo @code{'} evita avalia@,{c}@~ao.
@@ -311,7 +311,7 @@ O operador de atribui@,{c}@~ao @code{::} (duplo dois pontos) avalia seu lado esq
 (%o9)                         b
 @end example
 
-Note que embora @code{concat (1, 2)} seja visto como um n@'umeros, isso @'e uma string Maxima.
+Note que embora @code{concat (1, 2)} seja visto como um n@'umeros, isso @'e uma seq@"u@^encia de caracteres no formato do Maxima.
 
 @example
 (%i10) concat (1, 2) + 3;
@@ -322,10 +322,10 @@ Note que embora @code{concat (1, 2)} seja visto como um n@'umeros, isso @'e uma 
 
 @deffn {Fun@,{c}@~ao} sconcat (@var{arg_1}, @var{arg_2}, ...)
 
-Concatena seus argumentos em uma string.
+Concatena seus argumentos em uma seq@"u@^encia de caracteres.
 Ao contr@'ario de @code{concat}, os argumentos arrumados @i{n@~ao} precisam ser at@^omicos.
 
-O resultado @'e uma string Lisp.
+O resultado @'e uma seq@"u@^encia de caracteres no format do Lisp.
 @c THAT'S ODD; WHY NOT A MAXIMA STRING ??
 
 @example
@@ -547,7 +547,7 @@ De outra forma, o componente final @'e simplesmente substitu@'ido por @var{filen
 @deffnx {Fun@,{c}@~ao} file_search (@var{filename}, @var{pathlist})
 
 @code{file_search} procura pelo arquivo @var{filename} e retorna o caminho para o arquivo
-(como uma string) se ele for achado; de outra forma @code{file_search} retorna @code{false}.
+(como uma seq@"u@^encia de caracteres) se ele for achado; de outra forma @code{file_search} retorna @code{false}.
 @code{file_search (@var{filename})} procura nos diret@'orios padr@~oes de busca,
 que s@~ao especificados pelas vari@'aveis @code{file_search_maxima}, @code{file_search_lisp}, e @code{file_search_demo}.
 
@@ -571,7 +571,7 @@ est@'a em @code{file_search_maxima}.
 
 @code{file_search (@var{filename}, @var{pathlist})} procura somente nesses diret@'orios
 especificados por @var{pathlist},
-que @'e uma lista de strings.
+que @'e uma lista de seq@"u@^encias de caracteres.
 O argumento @var{pathlist} substitui os diret@'orios de busca padr@~ao,
 ent@~ao se a lista do caminho @'e dada, @code{file_search} procura somente nesses especificados,
 e n@~ao qualquer dos diret@'orios padr@~ao de busca.
@@ -615,9 +615,9 @@ de forma que o caminho de busca de arquivo @'e atribu@'ido automaticamente quand
 
 Multiplas extens@~oes de arquivo e e multiplos caminhos podem ser especificados por
 constru@,{c}@~oes ``coringa'' especiais.
-A string @code{###} expande a busca para al@'em do nome b@'asico,
+A seq@"u@^encia de caracteres @code{###} expande a busca para al@'em do nome b@'asico,
 enquanto uma lista separada por v@'irgulas e entre chaves @code{@{foo,bar,baz@}} expande
-em multiplas strings.
+em multiplas seq@"u@^encias de caracteres.
 Por exemplo, supondo que o nome b@'asico a ser procurado seja @code{neumann},
 
 @example
@@ -647,7 +647,7 @@ A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
 
-Veja tamb@'em @code{string}, que retorna uma string em lugar de imprimir sua sa@'ida.
+Veja tamb@'em @code{string}, que retorna uma seq@"u@^encia de caracteres em lugar de imprimir sua sa@'ida.
 @code{grind} tenta imprimir a express@~ao de uma maneira que a faz
 levemente mais f@'acil para ler que a sa@'ida de @code{string}.
 
@@ -691,7 +691,7 @@ Valor padr@~ao: @code{%i}
 @code{inchar} @'e o prefixo dos r@'otulos de express@~oes fornecidas pelo usu@'ario.
 Maxima automaticamente constr@'oi um r@'otulo para cada express@~ao de entrada
 por concatena@,{c}@~ao de @code{inchar} e @code{linenum}.
-A @code{inchar} pode ser atribu@'ido qualquer string ou s@'imbolo, n@~ao necessariamente um caracter simples.
+A @code{inchar} pode ser atribu@'ido qualquer seq@"u@^encia de caracteres ou s@'imbolo, n@~ao necessariamente um caracter simples.
 
 @example
 (%i1) inchar: "input";
@@ -782,7 +782,7 @@ Valor padr@~ao: @code{%t}
 @code{linechar} @'e o refixo de r@'otulos de express@~oes intermedi@'arias gerados pelo Maxima.
 Maxima constr@'oi um r@'otulo para cada express@~ao intermedi@'aria (se for mostrada)
 pela concatena@,{c}@~ao de @code{linechar} e @code{linenum}.
-A @code{linechar} pode ser atribu@'ido qualquer string ou s@'imbolo, n@~ao necess@'ariamente um caractere simples.
+A @code{linechar} pode ser atribu@'ido qualquer seq@"u@^encia de caracteres ou s@'imbolo, n@~ao necess@'ariamente um caractere simples.
 
 Express@~oes intermedi@'arias podem ou n@~ao serem mostradas.
 See @code{programmode} e @code{labels}.
@@ -863,8 +863,8 @@ a extens@~ao do arquivo e tanto quanto o caminho como necess@'ario para achar o 
 @code{loadfile} pode processar arquivos criados por @code{save}, @code{translate_file}, e @code{compile_file}.
 O usu@'ario pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
 
-@code{loadfile} avalia seu argumento, ent@~ao @code{filename} deve obrigat@'oriamente ser uma string literal,
-n@~ao uma vari@'avel string.
+@code{loadfile} avalia seu argumento, ent@~ao @code{filename} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
+n@~ao uma vari@'avel do tipo seq@"u@^encia de caracteres.
 O operador aspas simples n@~ao aceita avalia@,{c}@~ao.
 
 @end deffn
@@ -915,7 +915,7 @@ Valor padr@~ao: @code{%o}
 @code{outchar} @'e o prefixo dos r@'otulos de express@~oes calculadas pelo Maxima.
 Maxima automaticamente constr@'oi um r@'otulo para cada express@~ao calculada
 pela concatena@,{c}@~ao de @code{outchar} e @code{linenum}.
-A @code{outchar} pode ser atribu@'ido qualquer string ou s@'imbolo, n@~ao necess@'ariamente um caractere simples.
+A @code{outchar} pode ser atribu@'ido qualquer seq@"u@^encia de caracteres ou s@'imbolo, n@~ao necess@'ariamente um caractere simples.
 
 @example
 (%i1) outchar: "output";
@@ -1234,9 +1234,9 @@ tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido a
 veja @code{myoptions}.
 
 @code{save} avalia seus argumentos.  
-@var{filename} deve obrigat@'oriamente ser uma string, n@~ao uma vari@'avel string.
+@var{filename} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres, n@~ao uma vari@'avel tipo seq@"u@^encia de caracteres.
 O primeiro e o @'ultimo r@'otulos a salvar, se especificado, devem obrigat@'oriamente serem inteiros.
-O operador aspas duplas avalia uma vari@'avel string para seu valor string,
+O operador aspas duplas avalia uma vari@'avel tipo seq@"u@^encia de caracteres para seu valor seq@"u@^encia de caracteres,
 e.g., @code{s: "foo.1"$ save (''s, all)$},
 e vari@'aveis inteiras para seus valores inteiros, e.g., @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
 
@@ -1294,7 +1294,7 @@ mostrada com um asterisco @code{*} entre os operandos.
 Converte @code{expr} para a nota@,{c}@~ao linear do Maxima
 apenas como se tivesse sido digitada.
 
-O valor de retorno de @code{string} @'e uma string,
+O valor de retorno de @code{string} @'e uma seq@"u@^encia de caracteres,
 e dessa forma n@~ao pode ser usada em um c@'alculo.
 
 @end deffn
@@ -1305,7 +1305,7 @@ e dessa forma n@~ao pode ser usada em um c@'alculo.
 Valor padr@~ao: @code{false}
 
 Quando @code{?stringdisp} for @code{true},
-strings ser@~ao mostradas contidas em aspas duplas.
+seq@"u@^encias de caracteres ser@~ao mostradas contidas em aspas duplas.
 De outra forma,
 aspas n@~ao s@~ao mostradas.
 

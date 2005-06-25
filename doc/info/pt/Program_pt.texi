@@ -307,9 +307,9 @@ e ent@~ao causa um retorno de erro para o n@'ivel mais alto do Maxima
 ou para o mais pr@'oximo contendo @code{errcatch}.
 
 A vari@'avel @code{error} @'e escolhida para uma lista descrevendo o erro.
-O primeiro elemento de @code{error} @'e uma string de formato,
-que junta todas as strings entre os argumentos @var{expr_1}, ..., @var{expr_n},
-e os elementos restantes s@~ao os valores de quaisquer argumentos n@~ao string.
+O primeiro elemento de @code{error} @'e uma seq@"u@^encia de caracteres de formato,
+que junta todas as seq@"u@^encias de caracteres entre os argumentos @var{expr_1}, ..., @var{expr_n},
+e os elementos restantes s@~ao os valores de quaisquer argumentos que n@~ao s@~ao seq@"u@^encias de caracteres.
 
 @code{errormsg()} formata e imprime @code{error}.
 Isso efetivamente reimprime a mais recente mensagem de erro.
@@ -403,7 +403,7 @@ se expi n@~ao forem todas do mesmo tipo de objeto.  Se @code{maperror} for @code
 ent@~ao uma mensagem de erro ser@'a dada nas duas inst@^ancias acima.
 
 Um dos usos dessa fun@,{c}@~ao @'e para mapear (@code{map}) uma fun@,{c}@~ao (e.g. @code{partfrac})
-sobre cada termo de uma express@~ao muito larga onde isso ordin@'ariamente n@~ao poderia
+sobre cada termo de uma express@~ao muito larga onde isso comumente n@~ao poderia
 ser poss@'ivel usar a fun@,{c}@~ao sobre a express@~ao inteira devido a uma
 exaust@~ao de espa@,{c}o da lista de armazenamento no decorrer da computa@,{c}@~ao.
 

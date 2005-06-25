@@ -113,7 +113,7 @@ descartados.
 
 @c NEEDS EXAMPLES
 @deffn {Fun@,{c}@~ao} getchar (@var{a}, @var{i})
-Retorna o @var{i}'@'esimo caractere da string quotada ou
+Retorna o @var{i}'@'esimo caractere da seq@"u@^encia de caracteres quotada ou
 o nome at@^omico @var{a}.  Essa fun@,{c}@~ao @'e @'util em manipula@,{c}@~ao da 
 lista @code{labels}.
 
@@ -165,7 +165,7 @@ alterado.
 Remove arrays e fun@,{c}@~oes associadas
 a arrays e libera o espa@,{c}o ocupado.
 
-@code{remarray (all)} remove todos os itens na lista global @code{arrays}.
+@code{remarray (all)} remove todos os @'itens na lista global @code{arrays}.
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 Isso pode ser necess@'ario para usar essa fun@,{c}@~ao se isso @'e

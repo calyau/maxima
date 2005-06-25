@@ -671,7 +671,7 @@ uma vez que trabalhamos em @code{k(y)[x]}, o @code{y+1} n@~ao pode ser esperado 
 @deffn {Fun@,{c}@~ao} gcfactor (@var{n})
 Fatora o inteiro Gaussiano @var{n} sobre os inteiros Gaussianos, i.e.,
 n@'umeros da forma @code{@var{a} + @var{b} @code{%i}} onde @var{a} e @var{b} s@~ao inteiros raconais
-(i.e.,  inteiros ordin@'arios).  Fatora@,{c}@~oes s@~ao normalizadas fazendo @var{a} e @var{b}
+(i.e.,  inteiros comuns).  Fatora@,{c}@~oes s@~ao normalizadas fazendo @var{a} e @var{b}
 n@~ao negativos.
 @c NEED EXAMPLES HERE
 
@@ -996,7 +996,7 @@ se n@~ao for j@'a uma CRE.
 Essa convers@~ao pode mudar a forma de @var{expr} colocando todos os termos
 sobre um denominador comum.
 
-@code{denom} @'e similar, mas retorna uma express@~ao ordin@'aria em lugar de uma CRE.
+@code{denom} @'e similar, mas retorna uma express@~ao comum em lugar de uma CRE.
 Tamb@'em, @code{denom} n@~ao tenta colocar todos os termos sobre um denominador comum,
 e dessa forma algumas express@~oes que s@~ao consideradas raz@~oes por @code{ratdenom}
 n@~ao s@~ao consideradas raz@~oes por @code{denom}.
@@ -1233,7 +1233,7 @@ se isso n@~ao for j@'a uma CRE.
 Essa convers@~ao pode alterar a forma de @var{expr} pela coloca@,{c}@~ao de todos os termos
 sobre um denominador comum.
 
-@code{num} @'e similar, mas retorna uma express@~ao ordin@'aria em lugar de uma CRE.
+@code{num} @'e similar, mas retorna uma express@~ao comum em lugar de uma CRE.
 Tamb@'em, @code{num} n@~ao tenta colocar todos os termos sobre um denominador comum,
 e dessa forma algumas express@~oes que s@~ao consideradas raz@~oes por @code{ratnumer}
 n@~ao s@~ao consideradas raz@~oes por @code{num}.
@@ -1450,7 +1450,7 @@ Valor Padr@~ao: @code{[]}
 
 @code{ratweights} @'e a lista de pesos atribu@'idos por @code{ratweight}.
 A lista @'e cumulativa:
-cada chamada a @code{ratweight} coloca itens adicionais na lista.
+cada chamada a @code{ratweight} coloca @'itens adicionais na lista.
 
 @c DO WE REALLY NEED TO MENTION THIS ??
 @code{kill (ratweights)} e @code{save (ratweights)} ambos trabalham como esperado.

@@ -359,7 +359,7 @@ Debugging
 
 @node Help, Command Line, Bug Detection and Reporting, Top
 @chapter Help
-@include Help.texi
+@include Help_pt.texi
 
 @node Command Line, Operators, Help, Top
 @chapter Command Line

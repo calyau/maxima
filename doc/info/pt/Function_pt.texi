@@ -665,7 +665,7 @@ Cannot assign to `baz_quux'.
 @deffnx {Fun@,{c}@~ao} dispfun (all)
 Mostra a defini@,{c}@~ao de fun@,{c}@~oes definidas pelo usu@'ario @var{f_1}, ..., @var{f_n}.
 Cada argumento pode ser o nome de uma macro (definida com @code{::=}),
-uma fun@,{c}@~ao ordin@'aria (definida com @code{:=} ou @code{define}),
+uma fun@,{c}@~ao comum (definida com @code{:=} ou @code{define}),
 uma fun@,{c}@~ao array (definida com @code{:=} ou com @code{define},
 mas contendo argumentos entre colch@^etes @code{[ ]}),
 uma fun@,{c}@~ao subscrita, (definida com @code{:=} ou @code{define},
@@ -744,7 +744,7 @@ Retorna a defini@,{c}@~ao da fun@,{c}@~ao @var{f}.
 
 @c PROBABLY THIS WOULD BE CLEARER AS A BULLET LIST
 O argumento pode ser o nome de uma macro (definida com @code{::=}),
-uma fun@,{c}@~ao ordin@'aria (definida com @code{:=} ou @code{define}),
+uma fun@,{c}@~ao comum (definida com @code{:=} ou @code{define}),
 uma fun@,{c}@~ao array (definida com @code{:=} ou @code{define},
 mas contendo argumentos entre colch@^etes @code{[ ]}),
 Uma fun@,{c}@~ao subscrita, (definida com @code{:=} ou @code{define},
@@ -798,7 +798,7 @@ Maxima simplifica o valor de retorno de @code{funmake}.
 @deffn {Fun@,{c}@~ao} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
 Define e retorna uma express@~ao lambda (que @'e, uma fun@,{c}@~ao an@^onima)
 com argumentos @var{x_1}, ..., @var{x_m} e valor de retorno @var{expr_n}.
-Uma express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como uma fun@,{c}@~ao ordin@'aria.
+Uma express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como uma fun@,{c}@~ao comum.
 Uma express@~ao lambda pode aparecer em contextos nos quais uma avalia@,{c}@~ao de fun@,{c}@~ao
 (mas n@~ao um nome de fun@,{c}@~ao) @'e esperado como resposta.
 
@@ -852,7 +852,7 @@ Exemplos:
 @c i2(1/2)(%pi);
 @itemize @bullet
 @item
-A express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como uma fun@,{c}@~ao ordin@'aria.
+A express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como uma fun@,{c}@~ao comum.
 @end itemize
 @example
 (%i1) f: lambda ([x], x^2);
@@ -1453,7 +1453,7 @@ e, se a tradu@,{c}@~ao e a compila@,{c}@~ao obtiverem sucesso, chama o c@'odigo 
 @code{compile_file} retorna uma lista dos nomes de quatro arquivos:
 o arquivo original do Maxima, o nome da tradu@,{c}@~ao Lisp, uma arquivo de notas sobre a tradu@,{c}@~ao, e o nome do arquivo que cont@'em o c@'odigo compilado.
 Se a compila@,{c}@~ao falhar,
-o quarto item @'e @code{false}.
+o quarto @'item @'e @code{false}.
 
 Algumas declara@,{c}@~oes e defini@,{c}@~oes passam a ter efeito t@~ao logo
 o c@'odigo Lisp seja compilado (sem que seja necess@'ario chamar o c@'odigo compilado).

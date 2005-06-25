@@ -44,7 +44,7 @@ Veja @code{operators}.
 @section postfix
 Operadores @code{postfix} como a variedade @code{prefix} denotam fun@,{c}@~oes
 de um argumento simples, mas nesse caso  o argumento sucede
-imediatamente uma ocorr@^encia do operador na string de entrada, e.g. 3! .
+imediatamente uma ocorr@^encia do operador na seq@"u@^encia de caracteresde entrada, e.g. 3! .
 Uma fun@,{c}@~ao @code{postfix("x")} @'e uma fun@,{c}@~ao de extens@~ao
 sint@'atica que declara x como sendo um operador @code{postfix}.
 
@@ -226,8 +226,8 @@ avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
 
 @deffn {Operador} "::="
 O operador "::=" @'e usado em lugar de ":=" para indicar que o que
-segue @'e uma defini@,{c}@~ao de macro, em lugar de uma defini@,{c}@~ao fun@,{c}@~ao
-ordin@'aria.  Veja @code{macros}.
+segue @'e uma defini@,{c}@~ao de macro, em lugar de uma defini@,{c}@~ao de fun@,{c}@~ao
+comum.  Veja @code{macros}.
 
 @end deffn
 
@@ -804,7 +804,7 @@ tais como @code{"<"} ou @code{orderlessp}.
 
 @code{sort (@var{list})} ordena a @var{list} conforme a ordem interna do Maxima.
 
-@var{list} pode conter itens num@'ericos ou n@~ao num@'ericos, ou ambos.
+@var{list} pode conter @'itens num@'ericos ou n@~ao num@'ericos, ou ambos.
 
 @c NEED EXAMPLES, ESPECIALLY SORTING NONNUMERIC ITEMS
 @end deffn

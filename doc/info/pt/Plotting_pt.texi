@@ -110,7 +110,7 @@ Exemplos:
 (%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
 @end example
 
-Em qualquer lugar onde pode existir uma express@~ao ordin@'aria, pode existir uma express@~ao param@'etrica: 
+Em qualquer lugar onde pode existir uma express@~ao comum, pode existir uma express@~ao param@'etrica: 
 @var{parametric_expr} @'e uma lista da forma
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
 Aqui @var{x_expr} e @var{y_expr} s@~ao express@~oes de 1 vari@'avel @var{var} que @'e
@@ -120,7 +120,7 @@ A montagem do gr@'afico mostra o caminho descrito pelo par
 
 No exemplo seguinte, montaremos o gr@'afico de um c@'irculo, ent@~ao faremos
 a montagem do gr@'afico com somente poucos pontos usados, desse modo vamos pegar uma estrela,
-e inicialmente montaremos o gr@'afico juntamente com uma fun@,{c}@~ao ordin@'aria de X.
+e inicialmente montaremos o gr@'afico juntamente com uma fun@,{c}@~ao comum de X.
 
 Exemplos:
 @c PUT PARAMETRIC EXAMPLES HERE
@@ -139,14 +139,14 @@ Monta o gr@'afico de uma estrela: liga oito pontos sobre a circunfer@^encia de u
         [nticks, 8]])$
 @end example
 @item
-Monta o gr@'afico de um polin@^omio c@'ubico da forma ordin@'aria e de um c@'irculo da forma param@'etrica.
+Monta o gr@'afico de um polin@^omio c@'ubico da forma comum e de um c@'irculo da forma param@'etrica.
 @example
 (%i3) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],
         [nticks, 80]]], [x, -3, 3])$
 @end example
 @end itemize
 
-Express@~oes discretas podem tamb@'em serem usadas ou em lugar de express@~oes ordin@'arias ou
+Express@~oes discretas podem tamb@'em serem usadas ou em lugar de express@~oes comuns ou
 em lugar de express@~oes param@'etricas:
 @var{discrete_expr} @'e uma lista da forma
 @code{[discrete, @var{x_list}, @var{y_list}]}
@@ -267,7 +267,7 @@ De outra forma, o valor em @code{plot_options} @'e usado.
 Op@,{c}@~oes padr@~ao s@~ao atribu@'idas por @code{set_plot_option}.
 
 Cada elemento de @code{plot_options} @'e uma lista de dois ou mais @'itens.
-O primeiro item @'e o nome de uma op@,{c}@~ao, e os restantes compreendem o valor ou valores
+O primeiro @'item @'e o nome de uma op@,{c}@~ao, e os restantes compreendem o valor ou valores
 atribu@'idos @`a op@,{c}@~ao.
 Em alguns casos, o valor atribu@'ido @'e uma lista, que pode compreender muitos @'itens.
 
@@ -433,7 +433,7 @@ O padr@~ao @code{view_direction} @'e [1, 1, 1].
 
 Existem muitas op@,{c}@~oes de montagem de gr@'aficos espec@'ificas para gnuplot.
 Todas essas op@,{c}@~oes (exceto @code{gnuplot_pm3d}) s@~ao comandos gnuplot
-em estado natural, especificados como strings.  Consulte a documenta@,{c}@~ao do gnuplot para maiores detalhes.
+em estado natural, especificados como seq@"u@^encias de caracteres.  Consulte a documenta@,{c}@~ao do gnuplot para maiores detalhes.
 
 @itemize @bullet
 @item
@@ -451,7 +451,7 @@ Exemplo:
 Op@,{c}@~ao: @code{gnuplot_preamble} Insere comandos antes que o gr@'afico seja
 desenhado.  Quaisquer comandos v@'alidos para o gnuplot podem ser usados.  Multiplos comandos
 podem ser separados com um ponto e v@'irgula.  O exemplo mostrado produz uma
-escala num@'erica na montagem do gr@'afico.  O valor padr@~ao para @code{gnuplot_preamble} @'e uma string vazia @code{""}.
+escala num@'erica na montagem do gr@'afico.  O valor padr@~ao para @code{gnuplot_preamble} @'e uma seq@"u@^encia de caracteres vazia @code{""}.
 
 Exemplo:
 
@@ -463,7 +463,7 @@ Exemplo:
 Op@,{c}@~ao: @code{gnuplot_curve_titles} Controla os t@'itulos dados na chave da montagem do gr@'afico.  O
 valor padr@~ao @'e @code{default}, que automaticamente escolhe o t@'itulo de cada
 curva para a fun@,{c}@~ao cujo gr@'afico est@'a sendo montado.  Se n@~ao @code{default}, @code{gnuplot_curve_titles}
-conter@'a uma lista de strings.  (Para desabilitar a chave de montagem do gr@'afico inteiramente,
+conter@'a uma lista de seq@"u@^encias de caracteres.  (Para desabilitar a chave de montagem do gr@'afico inteiramente,
 adicione @code{"set nokey"} em @code{gnuplot_preamble}.)
 
 Exemplo:
@@ -473,7 +473,7 @@ Exemplo:
 @end example
 
 @item
-Op@,{c}@~ao: @code{gnuplot_curve_styles} Uma lista de strings controlando a apar@^encia
+Op@,{c}@~ao: @code{gnuplot_curve_styles} Uma lista de seq@"u@^encias de caracteres controlando a apar@^encia
 das curvas, i.e., cor, largura, brilho, etc., para serem enviadas para o
 comando de montagem do gr@'afico do gnuplot.  O valor padr@~ao @'e
 @code{["with lines 3", "with lines 1", "with lines 2", "with lines 5", "with lines 4", "with lines 6", "with lines 7"]}, que circula atrav@'es de diferentes cores.  Veja a
@@ -487,7 +487,7 @@ Exemplo:
 
 @item
 Op@,{c}@~ao: @code{gnuplot_default_term_command} O comando gnuplot para escolher o
-tipo de terminal para o terminal padr@~ao.  O valor padr@~ao @'e a string vazia @code{""},
+tipo de terminal para o terminal padr@~ao.  O valor padr@~ao @'e a seq@"u@^encia de caracteres vazia @code{""},
 i.e., usa os padr@~oes do gnuplot.
 
 Exemplo:
@@ -546,7 +546,7 @@ plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10], [gnuplot_preamble, "
 @itemize @bullet
 @item
 Usa um muito complicado @code{gnuplot_preamble} para produzir elegantes r@'otulos para o eixo x.
-(Note que a string @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
+(Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
 @example
 my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
@@ -560,7 +560,7 @@ Usa uma muito complicada @code{gnuplot_preamble} para produzir elegantes r@'otul
 e produzir sa@'idas
 PostScript que pegam vantagens do formato de texto avan@,{c}ado dispon@'ivel
 no gnuplot.
-(Note que a string @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
+(Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
 @example
 my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' 6.283)"$
@@ -590,7 +590,7 @@ plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50],
 @itemize @bullet
 @item
 Uma montagem de gr@'afico onde o eixo z @'e representado apenas por cores.
-(Note que a string @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
+(Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
 @example
 plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],

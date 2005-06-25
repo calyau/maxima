@@ -481,7 +481,7 @@ libera os @var{n} mais recentes r@'otulos de entrada e sa@'ida.
 
 @code{kill ([@var{m}, @var{n}])} libera r@'otulos de entrada e sa@'ida de @var{m} at@'e @var{n}.
 
-@code{kill (@var{infolist})}, onde @var{infolist} @'e um item em @code{infolists}
+@code{kill (@var{infolist})}, onde @var{infolist} @'e um @'item em @code{infolists}
 (tais como @code{values}, @code{functions}, ou @code{arrays})
 libera todos os @'itens em @code{infolist}.
 Veja tamb@'em @code{infolists}.
