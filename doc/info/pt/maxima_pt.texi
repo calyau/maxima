@@ -498,7 +498,7 @@ Debugging
 
 @node Miscellaneous Options, Rules and Patterns, Runtime Environment, Top
 @chapter Miscellaneous Options
-@include Miscellaneous.texi
+@include Miscellaneous_pt.texi
 
 @node Rules and Patterns, Lists, Miscellaneous Options, Top
 @chapter Rules and Patterns
