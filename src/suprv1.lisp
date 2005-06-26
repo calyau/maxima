@@ -1041,7 +1041,7 @@
 			 (if (null l) (return nil))
 			 (terpri savefile)
 			 (if $grind (mgrind (strmeval (car l)) savefile)
-			     #-franz (princ (maknam (mstring (strmeval (car l))))
+			     #-franz (princ (print-invert-case (maknam (mstring (strmeval (car l)))))
 					    savefile)
 			     #+franz (mapc #'(lambda (ch) (tyo ch savefile))
 					   (mstring (strmeval (car l)))))
