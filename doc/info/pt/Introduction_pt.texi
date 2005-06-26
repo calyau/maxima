@@ -1,7 +1,7 @@
 @c /Introduction.texi/1.5/Sun Apr  3 08:17:33 2005/-ko/
-Inicie o Maxima com o comando "maxima".  Maxima mostrar@' a informa@,{c}@~ao
+Inicie o Maxima com o comando "maxima".  Maxima mostrar@'a a informa@,{c}@~ao
 de vers@~ao e uma linha de comando.  Termine cada comando Maxima com um ponto e v@'irgula.
-Termine uma sess@~ao com o comando "quit();".  Aqui est@'a um eemplo de sess@~ao:
+Termine uma sess@~ao com o comando "quit();".  Aqui est@'a um exemplo de sess@~ao:
 
 @example
 [wfs@@chromium]$ maxima
@@ -65,7 +65,7 @@ Info from file /usr/local/info/maxima.info:
 (%o1)                         false
 @end example
 
-Para usar um resultado em c@'alculos posteriores, voc@^pode atribuir isso a uma vari@'avel ou
+Para usar um resultado em c@'alculos posteriores, voc@^e pode atribuir isso a uma vari@'avel ou
 referir-se a isso atrav@'es de seu r@'otulo gerado automaticamente.  Adicionalmente, @kbd{%}
 refere-se ao mais recente resultado calculado:
 
@@ -118,7 +118,7 @@ Maxima pode resolver sistemas lineares e equa@,{c}@~oes c@'ubicas:
 (%o2)       [x = - sqrt(5) %i, x = sqrt(5) %i, x = 3]
 @end example
 
-Maxima pode resolver sistemas de equa@,{c}@~oes n@~ao lineares.  Note que se voc@^ n@~ao
+Maxima pode resolver sistemas de equa@,{c}@~oes n@~ao lineares.  Note que se voc@^e n@~ao
 quer um resultado impresso, voc@^e pode encerrar seu comando com @kbd{$} em lugar de
 de @kbd{;}.
 

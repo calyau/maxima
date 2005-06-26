@@ -18,7 +18,7 @@ que @'e tipicamente invocada atrav@'es do ponto de interroga@,{c}@~ao @code{?} n
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
 @'e equivalente a @code{describe ("foo")}, onde @code{foo}
 @'e o nome ou parte do nome de uma fun@,{c}@~ao ou t@'opico;
-@code{describe} ent@~ao acha todos os @'itens documentados que possuem a string
+@code{describe} ent@~ao acha todos os @'itens documentados que possuem a seq@"u@^encia de caracteres
 @code{foo} em seus t@'itulos.
 Se existe mais que um tal @'item, Maxima solicita ao usu@'ario selecionar
 um @'item ou @'itens para mostrar.
@@ -53,9 +53,9 @@ que podem ser abreviados para @code{a} ou @code{n}, respectivamente.
 @node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
 @c PT = Lisp e Maxima
 @section Lisp and Maxima
-Maxima @'e escrito na liguagem de programa@,{c}@~cao Lisp, e @'e f@'acil acessar fun@,{c}@~oes Lisp e vari@'aveis
+Maxima @'e escrito na liguagem de programa@,{c}@~ao Lisp, e @'e f@'acil acessar fun@,{c}@~oes Lisp e vari@'aveis
 a partir do Maxima e vice-versa.
-S@'imbolos Lisp e Maxima s@~ao disting@"idos atrav@'es de uma conven@,{c}@~ao de nome.
+S@'imbolos Lisp e Maxima s@~ao disting@"uidos atrav@'es de uma conven@,{c}@~ao de nome.
 Um s@'imbolo Lisp que come@,{c}a com um sinal de d@'olar @code{$} corresponde a
 um s@'imbolo Maxima sem o sinal de d@'olar.
 @c NEED TO MENTION THIS OR IS IT JUST CLUTTERING ??
@@ -63,9 +63,9 @@ um s@'imbolo Maxima sem o sinal de d@'olar.
 @c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
 Um s@'imbolo Maxima que come@,{c}a com um ponto de interroga@,{c}@~ao @code{?} corresponde a
 um s@'imbolo Lisp sem o ponto de interroga@,{c}@~ao.
-Por exemplo, o s@'imbolo Maxima @code{foo} corresponde ao s@'imbolo Lisp @code{$foo}.
+Por exemplo, o s@'imbolo Maxima @code{foo} corresponde ao s@'imbolo Lisp @code{$foo},
 enquanto o s@'imbolo Maxima @code{?foo} corresponde ao s@'imbolo Lisp @code{foo},
-Note que @code{?foo} @'e escritp sem um espa@,{c}o entre @code{?} e @code{foo};
+Note que @code{?foo} @'e escrito sem um espa@,{c}o entre @code{?} e @code{foo};
 de outra forma pode ser uma chamada err@^onea para @code{describe ("foo")}.
 
 H@'ifem @code{-}, asterisco @code{*}, ou outro caractere especial em s@'imbolos Lisp
@@ -82,7 +82,7 @@ atrav@'es do comando especial @code{:lisp}. Por exemplo,
 
 @noindent
 chama a fun@,{c}@~ao Lisp @code{foo} com vari@'aveis Maxima @code{x} e @code{y} como argumentos.
-A constu@,{c}@~ao @code{:lisp} poe aparecer na linha de comando interativa
+A constu@,{c}@~ao @code{:lisp} pode aparecer na linha de comando interativa
 ou em um arquivo processado por @code{batch} ou @code{demo}, mas n@~ao em um arquivo processado por
 @code{load}, @code{batchload}, @code{translate_file}, ou @code{compile_file}.
 
@@ -95,9 +95,9 @@ Digitando @code{(to-maxima)} fecha a sess@~ao Lisp e retorna para o Maxima.
 
 Fun@,{c}@~oes Lisp e vari@'aveis que s@~ao para serem vis@'iveis no Maxima como
 fun@,{c}@~oes e vari@'aveis com nomes comuns (sem pontua@,{c}@~ao especial)
-evem ter nomes Lisp come@,{c}ando como sinal de d@'olar @code{$}.
+devem ter nomes Lisp come@,{c}ando como sinal de d@'olar @code{$}.
 
-Maxima @' sens@'ivel @`a caixa, distingue entre letras em caixa alta (mai@'usculas) e letras em caixa baixa (min@'usculas)
+Maxima @'e sens@'ivel @`a caixa, distingue entre letras em caixa alta (mai@'usculas) e letras em caixa baixa (min@'usculas)
 em identificadores, enquanto Lisp n@~ao @'e sens@'ivel @`a caixa.
 Existem algumas regras governando a tradu@,{c}@~ao de nomes de nomes entre o Lisp e o Maxima.
 
@@ -106,12 +106,12 @@ Existem algumas regras governando a tradu@,{c}@~ao de nomes de nomes entre o Lis
 Um identificador Lisp n@~ao contido entre barras verticais corresponde a um identificador Maxima
 em caixa baixa.
 Se o identificador Lisp estiver em caixa alta, caixa baixa, ou caixa mista, @'e ignorado.
-E.g., Lisp @code{$foo}, @code{$FOO}, and @code{$Foo} all correspond to Maxima @code{foo}.
+E.g., Lisp @code{$foo}, @code{$FOO}, e @code{$Foo} todos correspondem a Maxima @code{foo}.
 @item
 Um identificador Lisp que est@'a todo em caixa alta ou todo em caixa baixa
 e contido em barras verticais corresponde a um identificador Maxima com caixa invertida.
 Isto @'e, caixa alta @'e alterada para caixa baixa e caixa baixa para caixa alta.
-E.g., Lisp @code{|$FOO|} and @code{|$foo|}
+E.g., Lisp @code{|$FOO|} e @code{|$foo|}
 corresponde a Maxima @code{foo} e @code{FOO}, respectivamente.
 @item
 Um identificador Lisp que @'e misto de caixa alta e caixa baixa
@@ -119,7 +119,7 @@ e contido entre barras verticais corresponde a um identificador Maxima com o mes
 E.g., Lisp @code{|$Foo|} corresponde a Maxima @code{Foo}.
 @end enumerate
 
-A macro @code{#$} Lisp permite o uso de express@~oes Maxima em c@'odigo Lisp.
+A macro Lisp @code{#$} permite o uso de express@~oes Maxima em c@'odigo Lisp.
 @code{#$@var{expr}$} expande para uma express@~ao Lisp equivalente @`a express@~ao Maxima @var{expr}.
 
 @example
@@ -183,13 +183,13 @@ e @code{gcd}.
 @c PT = Descartando
 @section Garbage Collection
 Computa@,{c}@~ao simb@'olica tende a criar um bom volume
-de arquivos tempor@'arios, e oefetivo manuseio disso pode ser crucial para sucesso
+de arquivos tempor@'arios, e o efetivo manuseio disso pode ser crucial para sucesso
 completo de alguns programas.
 
 @c HOW MUCH OF THE FOLLOWING STILL HOLDS ??
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
-Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de acessso autorizado a uma regi@~ao de mem@'oria est@'a dispon@'ivel
+Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de acessso autorizado a uma regi@~ao de mem@'oria) est@'a dispon@'ivel
 (incluindo SUN OS 4.0 e algumas variantes de BSD) uma organniza@,{c}@~ao de arquivos tempor@'arios estratificada
 est@'a dispon@'ivel.   Isso limita a organiza@,{c}@~ao para p@'aginas que tenham sido recentemente
 escritas.    Veja a documenta@,{c}@~ao da GCL sob ALLOCATE e GBC.   No
@@ -236,15 +236,15 @@ e sa@'ida adicional.
 @c PT = Defini~@,{c}@~oes para Ajuda
 @section Definitions for Help
 
-@deffn {Fun@,{c}@~ao} demo (@var{filename})
-Avalia express@~oes Maxima em @var{filename} e mostra os resultados.
+@deffn {Fun@,{c}@~ao} demo (@var{nomedearquivo})
+Avalia express@~oes Maxima em @var{nomedearquivo} e mostra os resultados.
 @code{demo} faz uma pausa ap@'os avaliar cada express@~ao
 e continua ap@'os a conclus@~ao com um enter das entradas de usu@'ario.
 (Se executando em Xmaxima, @code{demo} pode precisar ver um ponto e v@'irgula @code{;}
 seguido por um enter.)
 
 @code{demo} procura na lista de diret@'orios
-@code{file_search_demo} para achar @code{filename}.
+@code{file_search_demo} para achar @code{nomedearquivo}.
 Se o arquivo tiver o sufixo @code{dem},
 o sufixo pode ser omitido.
 Veja tamb@'em @code{file_search}.
@@ -367,6 +367,7 @@ Nesse , @'itens 7 e 8 foram selecionados.
 Todos ou nenhum dos @'itens poderia ter sido selecionado atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
+@c PT = Introdu@,{c}@~ao a Ajuda
 @pxref{Introduction to Help}
 
 @end deffn
@@ -383,8 +384,8 @@ vari@'avel global @code{manual_demo}, cujo valor padr@~ao @'e @code{"manual.demo
 
 @code{example} n@~ao avalia seu argumento.
 @code{example} retorna @code{done}
-a memos que ocorra um erro ou n@~ao exista argumento, nesse caso @code{example}
-retorna uma lista de todos os t@'opicos recnhecidos.
+a menos que ocorra um erro ou n@~ao exista argumento, nesse caso @code{example}
+retorna uma lista de todos os t@'opicos reconhecidos.
 
 Exemplos:
 
