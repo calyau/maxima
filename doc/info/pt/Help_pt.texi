@@ -154,7 +154,7 @@ Por exemplo:
 ((MTIMES SIMP) A B)
 @end example
 
-Algumas fun@,{c}@~oes Lisp s@~ao shadowed no pacote do Maxima, a saber as seguintes.
+Algumas fun@,{c}@~oes Lisp possuem o mesmo nome que no pacote Maxima, a saber as seguintes.
 
 @code{complement},
 @code{continue},
