@@ -351,7 +351,7 @@ Debugging
 
 @node Introduction to Maxima, Bug Detection and Reporting, Top, Top
 @chapter Introduction to Maxima
-@include Introduction.texi
+@include Introduction_pt.texi
 
 @node Bug Detection and Reporting, Help, Introduction to Maxima, Top
 @chapter Bug Detection and Reporting
