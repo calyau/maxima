@@ -411,7 +411,7 @@ their values.  It also sets the @code{float} switch on.
 @deffn {Function} numerval (@var{x_1}, @var{expr_1}, ..., @var{var_n}, @var{expr_n})
 Declares the variables @code{x_1}, ..., @var{x_n} to have
 numeric values equal to @code{expr_1}, ..., @code{expr_n}.
-The numeric value is is evaluated and substituted for the variable
+The numeric value is evaluated and substituted for the variable
 in any expressions in which the variable occurs if the @code{numer} flag is
 @code{true}. See also @code{ev}.
 
