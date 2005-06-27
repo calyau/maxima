@@ -500,7 +500,7 @@ sejam liberados disso.
 Em particular, para liberar a mem@'oria usada pelo valor de um s@'imbolo,
 deve-se liberar o r@'otulo de sa@'ida que mosta o valor associado, bem como liberando o pr@'oprio s@'imbolo.
 
-@code{kill} n@~ao avalia esse argumento.
+@code{kill} n@~ao avalia seus argumentos.
 O operador aspas simples, @code{'@w{}'}, faz com que ocorra avalia@,{c}@~ao.
 
 @code{kill (@var{symbol})} libera todas as propriedades de @var{symbol}.
@@ -520,7 +520,7 @@ ent@~ao, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
 
 Se nenhum r@'otulo come@,{c}a com @var{symbol}, @code{labels} retorna uma lista vazia.
 
-A fun@,{c}@~ao @code{labels} n@~ao avalia esse argumento.
+A fun@,{c}@~ao @code{labels} n@~ao avalia seu argumento.
 O operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
 Por exemplo,
 @code{labels (''inchar)} retorna os r@'otulos de entrada que come@,{c}am com o caractere corrente do r@'otulo de entrada.
@@ -612,7 +612,7 @@ qualquer outra sa@'ida (tais como textos impressos por @code{print} ou @code{des
 n@~ao @'e mostrada.
 Veja tamb@'em @code{labels}.
 
-@code{playback} n@~ao avalia esse argumento.
+@code{playback} n@~ao avalia seus argumentos.
 O operador aspas simples, @code{'@w{}'}, sobrep@~oe-se @`as aspas.
 @code{playback} sempre retorna @code{done}.
 
