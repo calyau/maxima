@@ -60,13 +60,13 @@ a Maxima symbol without the dollar sign.
 @c which appear as @code{$%}, @code{$%i1}, @code{$%o1}, etc., in Lisp.
 A Maxima symbol which begins with a question mark @code{?} corresponds to
 a Lisp symbol without the question mark.
-For example, the Maxima symbol @code{foo} corresponds to the Lisp symbol @code{$foo}.
+For example, the Maxima symbol @code{foo} corresponds to the Lisp symbol @code{$foo},
 while the Maxima symbol @code{?foo} corresponds to the Lisp symbol @code{foo},
 Note that @code{?foo} is written without a space between @code{?} and @code{foo};
 otherwise it might be mistaken for @code{describe ("foo")}.
 
 Hyphen @code{-}, asterisk @code{*}, or other special characters in Lisp symbols
-must be escaped by backslash @code{\} if the are to appear in Maxima code.
+must be escaped by backslash @code{\} where they appear in Maxima code.
 For example, the Lisp identifier @code{*foo-bar*} is written @code{?\*foo\-bar\*} in Maxima.
 
 Lisp code may be executed from within a Maxima session.
