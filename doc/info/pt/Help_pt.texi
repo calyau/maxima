@@ -1,15 +1,14 @@
 @c /Help.texi/1.18/Sun Jun 12 22:29:17 2005/-ko/
 @menu
-* Introduction to Help::        
-* Lisp and Maxima::            
-* Garbage Collection::          
-* Documentation::               
-* Definitions for Help::        
+* Introdu@,{c}@~ao a Ajuda::        
+* Lisp e Maxima::            
+* Descartando::          
+* Documenta@,{c}@~ao::               
+* Defini~@,{c}@~oes para Ajuda::        
 @end menu
 
-@node Introduction to Help, Lisp and Maxima, Help, Help
-@c PT = Introdu@,{c}@~ao a Ajuda
-@section Introduction to Help
+@node Introdu@,{c}@~ao a Ajuda, Lisp e Maxima, Help, Help
+@section Introdu@,{c}@~ao a Ajuda
 
 @c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
 
@@ -50,9 +49,8 @@ Nesse exemplo, @'itens 7 e 8 foram selecionados.
 Todos ou nenhum dos @'itens poderia ter sido selecionados atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
 que podem ser abreviados para @code{a} ou @code{n}, respectivamente.
 
-@node Lisp and Maxima, Garbage Collection, Introduction to Help, Help
-@c PT = Lisp e Maxima
-@section Lisp and Maxima
+@node Lisp e Maxima, Descartando, Introdu@,{c}@~ao a Ajuda, Help
+@section Lisp e Maxima
 Maxima @'e escrito na liguagem de programa@,{c}@~ao Lisp, e @'e f@'acil acessar fun@,{c}@~oes Lisp e vari@'aveis
 a partir do Maxima e vice-versa.
 S@'imbolos Lisp e Maxima s@~ao disting@"uidos atrav@'es de uma conven@,{c}@~ao de nome.
@@ -179,9 +177,8 @@ Algumas fun@,{c}@~oes Lisp possuem o mesmo nome que no pacote Maxima, a saber as
 e @code{gcd}.
 
 
-@node Garbage Collection, Documentation, Lisp and Maxima, Help
-@c PT = Descartando
-@section Garbage Collection
+@node Descartando, Documenta@,{c}@~ao, Lisp e Maxima, Help
+@section Descartando
 Computa@,{c}@~ao simb@'olica tende a criar um bom volume
 de arquivos tempor@'arios, e o efetivo manuseio disso pode ser crucial para sucesso
 completo de alguns programas.
@@ -196,9 +193,8 @@ escritas.    Veja a documenta@,{c}@~ao da GCL sob ALLOCATE e GBC.   No
 n@'ivel do Lisp fazendo (setq si::*notify-gbc* t) ir@'a ajudar voc@^e a determinar quais
 @'areas podem precisar de mais espa@,{c}o.
 
-@node Documentation, Definitions for Help, Garbage Collection, Help
-@c PT = Documenta@,{c}@~ao
-@section Documentation
+@node Documenta@,{c}@~ao, Defini~@,{c}@~oes para Ajuda, Descartando, Help
+@section Documenta@,{c}@~ao
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
@@ -232,9 +228,8 @@ retorna
 
 e sa@'ida adicional.
 
-@node Definitions for Help,  , Documentation, Help
-@c PT = Defini~@,{c}@~oes para Ajuda
-@section Definitions for Help
+@node Defini~@,{c}@~oes para Ajuda,  , Documenta@,{c}@~ao, Help
+@section Defini~@,{c}@~oes para Ajuda
 
 @deffn {Fun@,{c}@~ao} demo (@var{nomedearquivo})
 Avalia express@~oes Maxima em @var{nomedearquivo} e mostra os resultados.
@@ -367,8 +362,7 @@ Nesse , @'itens 7 e 8 foram selecionados.
 Todos ou nenhum dos @'itens poderia ter sido selecionado atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
-@c PT = Introdu@,{c}@~ao a Ajuda
-@pxref{Introduction to Help}
+@pxref{Introdu@,{c}@~ao a Ajuda}
 
 @end deffn
 

@@ -1,17 +1,16 @@
 @c /Operators.texi/1.19/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* nary::                        
-* nofix::                       
-* operator::                    
-* postfix::                     
-* prefix::                      
-* Definitions for Operators::   
+* "N" Argumentos::                        
+* Sem Argumentos::                       
+* Operador::                    
+* Operador P@'osfixado::                     
+* Operador Pr@'efixado::                      
+* Defini@,{c}@~oes para Operadores::   
 @end menu
 
 
-@node nary, nofix, Operators, Operators
-@c PT = "N" Argumentos
-@section nary
+@node "N" Argumentos, Sem Argumentos, Operators, Operators
+@section "N" Argumentos
 Um operador @code{nary} @'e usado para denotar uma fun@,{c}@~ao com qualquer n@'umero de
 argumentos, cada um dos quais @'e separado por uma ocorr@^encia do
 operador, e.g. A+B ou A+B+C.  A fun@,{c}@~ao @code{nary("x")}  @'e uma fun@,{c}@~ao
@@ -22,9 +21,8 @@ simplificar, e.g. @code{j(j(a,b),j(c,d))} para @code{j(a, b, c, d)}.
 
 Veja tamb@'em @code{syntax}.
 
-@node nofix, operator, nary, Operators
-@c PT = Sem Argumentos
-@section nofix
+@node Sem Argumentos, Operador, "N" Argumentos, Operators
+@section Sem Argumentos
 Operadores @code{nofix} s@~ao usados para denotar fun@,{c}@~oes sem argumentos.
 A mera presen@,{c}a de tal operador em um comando far@'a com que a
 fun@,{c}@~ao correspondente seja avaliada.  Por exemplo, quando se digita
@@ -34,14 +32,12 @@ sint@'atica que declara x como sendo um operador @code{nofix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node operator, postfix, nofix, Operators
-@c PT = Operador
-@section operator
+@node Operador, Operador P@'osfixado, Sem Argumentos, Operators
+@section Operador
 Veja @code{operators}.
 
-@node postfix, prefix, operator, Operators
-@c PT = Operador P@'osfixado
-@section postfix
+@node Operador P@'osfixado, Operador Pr@'efixado, Operador, Operators
+@section Operador P@'osfixado
 Operadores @code{postfix} como a variedade @code{prefix} denotam fun@,{c}@~oes
 de um argumento simples, mas nesse caso  o argumento sucede
 imediatamente uma ocorr@^encia do operador na seq@"u@^encia de caracteresde entrada, e.g. 3! .
@@ -50,9 +46,8 @@ sint@'atica que declara x como sendo um operador @code{postfix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node prefix, Definitions for Operators, postfix, Operators
-@c PT = Operador Pr@'efixado
-@section prefix
+@node Operador Pr@'efixado, Defini@,{c}@~oes para Operadores, Operador P@'osfixado, Operators
+@section Operador Pr@'efixado
 Um operador @code{prefix} @'e um que significa uma fun@,{c}@~ao de um
 argumento, o qual argumento imediatamente segue uma ocorr@^encia do
 operador.  @code{prefix("x")} @'e uma fun@,{c}@~ao de extens@~ao
@@ -61,9 +56,8 @@ sint@'atica que declara x como sendo um operador @code{prefix}.
 Veja tamb@'em @code{syntax}.
 
 @c end concepts Operators
-@node Definitions for Operators,  , prefix, Operators
-@c PT = Defini@,{c}@~oes para Operadores
-@section Definitions for Operators
+@node Defini@,{c}@~oes para Operadores,  , Operador Pr@'efixado, Operators
+@section Defini@,{c}@~oes para Operadores
 
 @deffn {Operador} "!"
 O operador fatorial.

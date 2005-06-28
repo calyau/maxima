@@ -1,12 +1,11 @@
 @c /Command.texi/1.32/Fri Jun 17 00:57:31 2005/-ko
 @menu
-* Introduction to Command Line::  
-* Definitions for Command Line::  
+* Introdu@,{c}@~ao a Linha de Comando::  
+* Defini@,{c}@~oes para Linha de Comando::  
 @end menu
 
-@node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
-@c PT = Introdu@,{c}@~ao a Linha de Comando
-@section Introduction to Command Line
+@node Introdu@,{c}@~ao a Linha de Comando, Defini@,{c}@~oes para Linha de Comando, Command Line, Command Line
+@section Introdu@,{c}@~ao a Linha de Comando
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
@@ -141,9 +140,8 @@ significa retorne a forma verbal de @code{f} aplicada a @code{[x]}.
 
 @end deffn
 @c end concepts Command Line
-@node Definitions for Command Line,  , Introduction to Command Line, Command Line
-@c PT = Defini@,{c}@~oes para Linha de Comando
-@section Definitions for Command Line
+@node Defini@,{c}@~oes para Linha de Comando,  , Introdu@,{c}@~ao a Linha de Comando, Command Line
+@section Defini@,{c}@~oes para Linha de Comando
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Fun@,{c}@~ao} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
