@@ -447,6 +447,8 @@
     \par\noindent
     \begingroup\maximafont\color{\maximaoutputcolor}
     \begin{em@ximam@th} ##1 \end{em@ximam@th}\endgroup}
+ \def\p{\begingroup\color{\maximaoutputcolor}
+   \setupm@ximasessionverbatim\dom@ximasessionpreprompt}
  \setboolean{m@ximatexoutput}{true}
  \maximamiddle
  \m@ximaindent
@@ -557,6 +559,8 @@
 |obeylines|gdef|dom@ximatexsessionverbatim#1.#2\\{|par|noindent|textcolor{|maximapromptcolor}{(|m@ximapercent{}i#1)}#2|par|endgroup}
 |obeylines|gdef|dom@ximasessionpreprompt#1\\{|par|noindent#1|par|endgroup}}
 
+\newcommand{\maximasessionpreoutput}{}
+
 \newcommand{\m@ximasetupsessiontexoutput}
 {\def\i{\begingroup\color{\maximainputcolor}
     \setupm@ximasessionverbatim\dom@ximatexsessionverbatim}
@@ -572,6 +576,7 @@
    \par\noindent
    \begingroup\maximafont\color{\maximaoutputcolor}\textcolor{\maximapromptcolor}
    {(\%t##1)}\begin{em@ximam@th} ##2 \end{em@ximam@th}\endgroup}
+ \def\ps{maximasessionpreoutput}
  \def\p{\begingroup\color{\maximaoutputcolor}
    \setupm@ximasessionverbatim\dom@ximasessionpreprompt}}
 
