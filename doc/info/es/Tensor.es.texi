@@ -1,9 +1,10 @@
 @menu
-* Introducci@'on a Tensor::      
-* Definiciones de Tensor::      
+* Introducci@'on a Tensores::      
+* Definiciones de Tensores::      
 @end menu
 
-@node Introducci@'on a Tensor, Definiciones de Tensor, Tensor, Tensor
+@node Introducci@'on a Tensores, Definiciones de Tensores, Tensores, Tensores
+
 @section Introducci@'on a Tensor
 
  - Paquete Indicial de Manipulaci@'on de Tensor.  Puede ser cargado mediante 
@@ -23,8 +24,8 @@ DEMO("ctenso.dem1"); o DEMO("itenso.dem2"); Envie errores o
 comantarios a RP o TENSOR.
 
 @c end concepts Tensor
-@node Definiciones de Tensor,  , Introducci@'on a Tensor, Tensor
-@section Definiciones de Tensor
+@node Definiciones de Tensores,  , Introducci@'on a Tensores, Tensores
+@section Definiciones de Tensores
 @c @node CANFORM
 @c @unnumberedsec phony
 @defun CANFORM (exp)

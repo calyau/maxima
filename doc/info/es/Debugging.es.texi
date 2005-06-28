@@ -1,12 +1,11 @@
-@c end conceptos de Depuraci@'on
 @menu
-* Nivel Fuente de Depuraci@'on::
+* Nivel de Depurado::
 * Comandos Abreviados::
-* Definiciones para Depuraci@'on::
+* Definiciones para Depurado::
 @end menu
 
-@node Nivel Fuente de Depuraci@'on, Comados Abreviados, , Depuraci@'on
-@section Nivel Fuente de Depuraci@'on
+@node Nivel de Depurado, Comandos Abreviados, , Depurado
+@section Nivel de Depurado
 
 Maxima posee unas capacidades de nivel fuente. Un usuario puede programar un punto de ruptura en
 una l@'{@dotless{i}}nea en un archivo, y entonces realizar un paso l@'{@dotless{i}}nea por l@'{@dotless{i}}nea desde all@'{@dotless{i}}. La compliaci@'on
@@ -94,7 +93,7 @@ Hay disponible un comando adicional en ese archivo de ventana, tal como
 evaluando la funci@'on en maxima, mediante el tecleo de @code{Alt-Control-x}
 
 
-@node Comandos Abreviados, Definiciones para Depuraci@'on, Nivel Fuente de Depuraci@'on, Depuraci@'on
+@node Comandos Abreviados, Definiciones para Depurado, Nivel de Depurado, Depurado
 @section Comandos Abreviados
 
 Rompe comnados de salida con ':'. As@'{@dotless{i}} para evaluar una forma lisp usted
@@ -150,8 +149,8 @@ Lanza un nivel superior
 @end table 
 
 
-@node Definiciones para Depuraci@'on, , Comandos Abreviados, Depuraci@'on
-@section Definiciones para Depuraci@'on
+@node Definiciones para Depurado, , Comandos Abreviados, Depurado
+@section Definiciones para Depurado
 @c @node REFCHECK
 @c @unnumberedsec phony
 @defvar REFCHECK

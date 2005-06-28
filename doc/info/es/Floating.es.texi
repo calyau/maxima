@@ -1,161 +1,171 @@
-@c end concepts Floating Point
 @menu
-* Definiciones para Puntos Flotantes::
+* Definiciones para n@'umeros y funciones de punto flotante::
 @end menu
 
-@node Definiciones para Puntos Flotantes, Puntos Flotantes, Puntos Flotantes
-@section Definiciones para puntos flotantes
+@node Definiciones para n@'umeros y funciones de punto flotante, , N@'umeros y funciones de punto flotante, N@'umeros y funciones de punto flotante
 
-@defun BFFAC (exp,n)
+@section Definiciones para n@'umeros y funciones de punto flotante
 
-La versi@'on BFLOAT de la funci@'on factorial (shifted Gamma). El segundo argumento consiste en cu@'antos d@'{@dotless{i}}gitos conservar y retornar, es una buena idea para las solicitudes de la pareja de extras. Esta funci@'on est@'a disponible haciendo LOAD(BFFAC);.
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
+@c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!
+@c DON'T KNOW WHICH ONES ARE INTENDED FOR GENERAL USE !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED IN Number.texi: !!!
+@c burn, bzeta, bfzeta !!!
+
+@c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
+@c bfpsi, bffac, cbffac !!!
+
+@defun bffac (expr, n)
+
+La versi@'on Bigfloat de la funci@'on factorial (Gamma desplazada). El segundo argumento consiste en cu@'antos d@'{@dotless{i}}gitos conservar y retornar, es una buena idea para solicitar un par adicional. 
+
+Esta funci@'on est@'a disponible haciendo @code{load ("bffac")}. 
+
 @end defun
 
 
+@defvar algepsilon
 
-@defvar ALGEPSILON
-El valor por defecto es 10^-8. El valor de ALGEPSILON es usado por ALGSYS
+El valor por defecto es 10^-8. 
+
+El valor de @code{algepsilon} es usado por @code{algsys}
+
 @end defvar
 
-@defun BFLOAT (X)
+@defun bfloat (x)
 
-Convierte todos los n@'umeros y  funciones num@'ericas a n@'umeros flotantes grandes. Programando FPPREC[16] a un valor N, configurar@'a la  precisi@'on de los n@'umeros flotantes grandes a N d@'gitos. Si FLOAT2BF[False] es FALSO un mensaje de advertencia ser@'a impreso cuando un n@'umero de coma  flotante es convertido en un numero flotante grande (Pues a partir de esto se puede perder precisi@'on). 
+Convierte todos los n@'umeros y  funciones num@'ericas a n@'umeros de punto flotante grandes. Configurando @code{fpprec} a un valor @code{n}, configurar@'a la  precisi@'on de los n@'umeros flotantes grandes a @code{n} d@'gitos. Si @code{float2bf} es @code{false} un mensaje de advertencia ser@'a impreso cuando un n@'umero de punto flotante es convertido en un numero flotante grande (Pues a partir de esto se puede perder precisi@'on). 
+
 @end defun
 
-@c @node BFLOATP
-@c @unnumberedsec phony
-@defun BFLOATP (exp)
+@defun bfloatp (exp)
 
-Retorna VERDADERO si exp es un n@'umero flotante grande, sino devuelve  FALSO.
+Retorna @code{true} si exp es un n@'umero flotante grande, sino devuelve @code{false}.
+
 @end defun
 
-@c @node BFPSI
-@c @unnumberedsec phony
+@defun bfpsi (n, z, fpprec)
+@defunx bfpsi0 (z, fpprec)
 
-@defun BFPSI (n,z,fpprec)
+@code{bfpsi} es la funci@'on poligamma de un argumento real @var{z} y un entero de orden @code{n}. 
+@code{bfpsi0} es la funci@'on digamma. 
+@code{bfpsi0 (z, fpprec)} es equivalente a @code{bfpsi (0, z, fpprec)}. 
 
-Devuelve poligamos de argumentos reales y orden entero. 
-Para digamos, BFPSI0(z,fpprec) es m@'as directo.  Note -BFPSI0(1,fpprec)
-provee %GAMMA como un n@'umero flotante grande. Para realizar esto, haga LOAD(BFFAC);
+Estas funciones retornan valores de punto flotante grande. 
+@var{fpprec} es la presici@'on de punto flotante grande para el valor
+retornado. 
+
+@c psi0(1) = -%gamma IS AN INTERESTING PROPERTY BUT IN THE ABSENCE OF ANY OTHER
+@c DISCUSSION OF THE PROPERTIES OF THIS FUNCTION, THIS STATEMENT SEEMS OUT OF PLACE.
+@c Note @code{-bfpsi0 (1, fpprec)} provides @code{%gamma} (Euler's constant) as a bigfloat.
+
+Esta funci@'on est@'a disponible haciendo @code{load ("bffac")} 
+
 @end defun
 
-@c @node BFTORAT
-@c @unnumberedsec phony
+@defvar bftorat 
 
-@defvar BFTORAT
+Por defecto: @code{false}.
 
-Por defecto: [FALSE] controla la conversi@'on de bfloats(es decir n@'umeros flotantes grandes) a n@'umeros racionales. Si 
-@example
-BFTORAT:FALSO
-@end example
-RATEPSILON puede ser usada para
-el control de las conversiones (esto resulta relativo con n@'umeros racionales peque@~nos). Si
-@example
-BFTORAT:VERDADERO
-@end example
-, los n@'umeros racionales generados pueden  ser representados exactamente por bfloat
+@code{bftorat} controla la conversi@'on de bfloats (es decir n@'umeros de punto flotante grandes) a n@'umeros racionales. 
+Cuando @code{bftorat} es @code{false}
+@code{ratepsilon} ser@'a usada para controlar las conversiones (esto resulta relativo con n@'umeros racionales peque@~nos).
+Cuando @code{bftorat} es @code{true}, los n@'umeros racionales generados ser@'an representados exactamente por @code{bfloat}. 
+
 @end defvar
-
-@c @node BFTRUNC
-@c @unnumberedsec phony
 
 @defvar BFTRUNC
 
-Por defecto: [VERDADERO] causa un arrastre de ceros en n@'umeros flotantes grandes cuyos ceros no son mostrados. As@'{@dotless{i}}, si BFTRUNC:FALSO, BFLOAT(1);
-es mostrado como 1.000000000000000B0. si no, este es mostrado como
-1.0B
-@end defvar
+Valor por defecto: @code{true} 
 
-@c @node CBFAC
-@c @unnumberedsec phony
+@code{bftrunc} causa un arrastre de ceros en n@'umeros flotantes grandes cuyos ceros no son mostrados. As@'{@dotless{i}}, si @code{vftrunc} es @code{falso}, @code{bfloat (1)} es mostrado como @code{1.000000000000000B0}. De otra manera, este es mostrado como @code{1.0B0}.
+
+@end defvar
 
 @defun CBFAC (z,fpprec)
 
-Un factorial para bfloats complejos. Esto puede ser usado
-haciendo LOAD(BFAC); Para m@'as detalles ver share2/bfac.usg.
+Un factorial para n@'umeros complejos de punto flotante grandes. 
+
+Esta funci@'on  puede ser usada  haciendo @code{load("bffac")}. 
+
 @end defun
 
-@c @node FLOAT
-@c @unnumberedsec phony
+@defun float (exp)
 
-@defun FLOAT (exp)
+Convierte  n@'umeros enteros, racionales y flotantes grandes (bigfloats) contenidos en @code{exp} a n@'umeros de coma flotante. Es tambi@'en un @code{evflag}, @code{float} causa n@'umeros racionales y bigfloats no integrables al ser convertidos en n@'umeros de coma flotante.  
 
-Convierte  n@'umeros enteros, racionales y flotantes grandes (bigfloats) contenidos en exp a n@'umeros de coma flotante. Es tambi@'en un EVFLAG, FLOAT causa n@'umeros racionales y bigfloats no integrables a ser convertidos en n@'umeros de coma flotante.  
 @end defun
 
-@c @node FLOAT2BF
-@c @unnumberedsec phony
-
-@defvar FLOAT2BF
+@defvar float2bf
  
-Por defecto: [FALSO] Si es FALSO, un mensaje de advertencia es impreso cuando un  n@'umero de coma flotante es convertido en un n@'umero flotante grande(bigfloat)(A partir de esto puede perder precisi@'on).
+Valor por defecto: @code{false}.
+
+Cuando @code{float2bf} es @code{false}, un mensaje de advertencia es impreso cuando un  n@'umero de coma flotante es convertido en un n@'umero flotante grande(bigfloat)(A partir de esto puede perder precisi@'on).
 @end defvar
 
-@c @node FLOATDEFUNK
-@c @unnumberedsec phony
+@c Parece que es una función que fue removida. 
 
-@defun FLOATDEFUNK
+@c @defun FLOATDEFUNK
 
-Es una utilidad para realizar funciones de puntos flotantes a partir expresiones matem@'aticas. Esto puede tomar la expresi@'on de entrada y el FLOTANTE,
-entonces (OPTIMIZE) OPTIMIZARLO, y luego ingresar MODE_DECLAREations para todas las variables.
-Esta es la manera para usar ROMBERG, PLOT2, INTERPOLATE, etc. e.g.
-EXP:Alguna-expresi@'on-dif@'{@dotless{i}}cil-macsyma;
+@c Es una utilidad para realizar funciones de puntos flotantes a partir expresiones matem@'aticas. Esto puede tomar la expresi@'on de entrada y el FLOTANTE,
+@c entonces (OPTIMIZE) OPTIMIZARLO, y luego ingresar MODE_DECLAREations para todas las variables.
+@c Esta es la manera para usar ROMBERG, PLOT2, INTERPOLATE, etc. e.g.
+@c EXP:Alguna-expresi@'on-dif@'{@dotless{i}}cil-macsyma;
 
-@example
-FLOATDEFUNK('F,['X],EXP);
-@end example
-Podr@'a definir la funci@'on F(x) para usted.
-(Realice PRINTFILE(MCOMPI,DOC,MAXDOC); para m@'as detalles.)
+@c @example
+@c FLOATDEFUNK('F,['X],EXP);
+@c @end example
+@c Podr@'a definir la funci@'on F(x) para usted.
+@c (Realice PRINTFILE(MCOMPI,DOC,MAXDOC); para m@'as detalles.)
+
+@c @end defun
+
+@defun floatnump (exp)
+
+retorna @code{true} si @code{exp} es un n@'umero de punto flotante, de otra manera retorna @code{false}.
 
 @end defun
-@c @node FLOATNUMP
-@c @unnumberedsec phony
-@defun FLOATNUMP (exp)
-es VERDAD si exp es un n@'umero punto flotante sino FALSO.
 
-@end defun
-@c @node FPPREC
-@c @unnumberedsec phony
-@defvar FPPREC
- por defecto: [16] - Presici@'on punto flotante (Floating Point PRECision).  Puede ser programada en un entero representando la precisi@'on requerida..
+@defvar fpprec
+Valor por defecto: [16]
+
+@code{fpprec} es la presici@'on para n@'umeros de punto flotante en Maxima (Floating Point PRECision). @code{fpprec} puede ser programada a un entero,el cual representa la precisi@'on requerida.
 
 @end defvar
-@c @node FPPRINTPREC
-@c @unnumberedsec phony
-@defvar FPPRINTPREC
- Por defecto: [0] - El n@'umero de digitoa a imprimir cuando esta imprimiendo a un n@'umero flotante grande (bigfloat), haciendo posible computarlo con un gran n@'umero de precisi@'on de d@'{@dotless{i}}gitos, pero la respuesta es impresa con un peque@-no n@'umewro de @'{@dotless{i}}gitos.  S@'{@dotless{i}} FPPRINTPREC es 0 (por defecto), o >= FPPREC, entonces el valor de FPPREC controla el numero de d@'{@dotless{i}}gitos usado para imprimir.  Sin embargo, si FPPRINTPREC tiene un valor entre 2 y FPPREC-1, entonces controlar@'a el n@'umero de digitos usado.  (El m@'{@dotless{i}}nimo n@'umero de d@'{@dotless{i}}gitos usado es 2, uno a la izquierda del punto y otro a la derecha.  El valor 1 para FPPRINTPREC es ilegal.)
+
+@defvar fpprintprec
+Valor por defecto: 0
+
+@code{fpprintprec} es el n@'umero de digitos a imprimir cuando se esta imprimiendo un n@'umero de punto flotante grande (bigfloat), haciendo posible computarlo con un gran n@'umero de d@'{@dotless{i}}gitos de precisi@'on, pero la respuesta es impresa con un peque@~no n@'umero de @'{@dotless{i}}gitos.  S@'{@dotless{i}} @code{fpprintprec} es 0 (por defecto), o >= que @code{fpprec}, entonces el valor de @code{fpprec} controla el n@'umero de d@'{@dotless{i}}gitos usados para imprimir.  Sin embargo, si @code{fpprintprec} tiene un valor entre 2 y @code{fpprec-1}, entonces controlar@'a el n@'umero de digitos usado.  (El m@'{@dotless{i}}nimo n@'umero de d@'{@dotless{i}}gitos usado es 2, uno a la izquierda del punto y otro a la derecha.  El valor 1 para @code{fpprintprec} es ilegal.)
 @end defvar
 
-@defun ?ROUND (x,&optional-divisor)
-Redondea el punto flotante X al entero m@'as cercano.   El argumento debe ser un flotante regular, no un gran flotante (bigfloat).  El ? comenzando el nombre indica que esto es una funci@'on normal com@'un en lisp.
+@deffn {Funci@'on Lisp} ?round (x)
+@deffnx {Funci@'on Lisp} ?round (x, divisor)
 
+
+Redondea el punto flotante @code{x} al entero m@'as cercano.  El argumento debe ser n@'umero de punto flotante regular, no un n@'umero de punto flotante grande (bigfloat).  El @code{?} al comienzo del nombre indica que esto es una funci@'on Lisp.
 
 @example
-(C3) ?round(-2.8);
-(D3) 				      - 3
+(%i1) ?round (-2.8);
+(%o1)                            - 3
 @end example
-@end defun
 
-@defun ?TRUNCATE (x,&optional-divisor)
-lleva el punto flotante X hacia 0, para ser un entero.   The argument
-must be a regular system float, not a bigfloat.  El argumento debe ser un flotante regular, no un gran flotante (bigfloat).  El ? comenzando el nombre indica que esto es una funci@'on normal com@'un en lisp.
-@end defun 
+@end deffn
+
+@deffn {Lisp function} ?truncate (x)
+@deffnx {Lisp function} ?truncate (x, divisor)
+
+lleva el punto flotante @code{x} hacia 0, para ser un entero. El argumento debe ser n@'umero de punto flotante regular, no un n@'umero de punto flotante grande (bigfloat).  El @code{?} al comienzo del nombre indica que esto es una funci@'on Lisp.
+
 @example
-(C4) ?truncate(-2.8);
-(D4) 				      - 2
-(C5) ?truncate(2.4);
-(D5) 				       2
-(C6) ?truncate(2.8);
-(D6) 				       2
+(%i1) ?truncate (-2.8);
+(%o1)                            - 2
+(%i2) ?truncate (2.4);
+(%o2)                             2
+(%i3) ?truncate (2.8);
+(%o3)                             2
 @end example
 
-
-@c @node ZUNDERFLOW
-@c @unnumberedsec phony
-@c @defvar ZUNDERFLOW
-@c por defecto: [TRUE] - si es FALSE, un error ser@'a se@-nalado si ocurre ocurre un desborde punto flotante.
-@c Actualmente en NIL Macsyma, todos los desbordes punto flotante, floating-point
-@c overflow, and division-by-zero errors signal errors, and this switch
-@c is ignored.
-@c @end defvar
+@end deffn
 

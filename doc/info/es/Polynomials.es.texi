@@ -7,84 +7,78 @@
 @section Introducci@'on a los Polinomios
 
 Los polinomios se encuentran almacenados en Maxima o bien como una forma general o como una forma de Expresiones Racionales Can@'onicas (ERC). Esta @'ultima es una forma estandar,
-y es usada internamente para operaciones  tales como @code{factor},
-@code{ratsimp} y dem@'as. 
+y es usada internamente para cada operaci@'on como un factor, ratsimp, y etcetera.
 
-Las Expresiones Racionales Can@'onicas constituyen un tipo de representaci@'on
+Las Expresiones Racionales Canonicas constituyen un tipo de representaci@'on
 el cual es especialmente apropiado para expandir polinomios y funciones racionales
-(o bien para factorizar parcialmente polinomios y funciones racionales 
-mientras RATFAC (cuyo valor por defecto es @code{false}) sea
-configurada a @code{true}). 
-
-En esta forma de ERC el ordenamiento de las variables (desde la de mayor
-hasta la de menor importancia) es asumido por cada expresi@'on. 
-Los polinomios son representados recursivamente como una lista
-compuesta por la variable principal seguida por una serie de parejas de expresiones,
-una por cada t@'ermino del polinomio. 
-
-El primer miembro de cada par es el exponente de la variable principal en ese t@'ermino y el
-segundo miembro es el coeficiente de ese t@'ermino el cual puede ser un n@'umero o
+(o bien siendo para factorizar parcialmente polinomios y funciones racionales)
+mientras RATFAC[FALSO] sea programado como verdadero). En esta forma de ERC
+el ordenamiento de las variables (desde la mayotia hasta el principal) es asumido por cada
+expresi@'on. Los polinomios son representados recursivamente como una lista
+compuesta por la variable principal seguida por una serie de parejas de expresiones ,
+uno por uno los terminos del polinomio. El primer miembro
+de cada par es el exponente de la variable principal en ese termino y el
+segundo miembro es el coeficiente de ese termino el cual puede ser un n@'umero o
 un polinomio en otra variable representada nuevamente de esta forma. As@'{@dotless{i}}
 la parte principal de la forma ERC de 3*X^2-1 es (X 2 3 0 -1) y la de
-2*X*Y+X-3 es (Y 1 (X 1 2) 0 (X 1 1 0 -3)) asumiendo que Y es la
-variable principal.
-
-"La variable principal" est@'a usualmente determinada en orden alfab@'etico inverso.
+2*X*Y+X-3 es (Y 1 (X 1 2) 0 (X 1 1 0 -3)) asumiendo que Y es la variable principal.
+"Principal" es usualmente determinada en orden alfab@'etico inverso.
 Las "variables" de la expresi@'on ERC no son necesariamente at@'omicas. De hecho
-cualquier subexpresi@'on cuyo operador principal no es @code{+ - * /}
-o @code{^} con potencias enteras puede ser considerada como una
-"variable" de la expresi@'on (en forma ERC) en  el cual ocurra.  
-Por ejemplo las variables ERC de la expresi@'on
-@code{x+sin(x+1)+2*sqrt(x)+1} son @code{x}, @code{sqrt(x)}, y @code{sin(x+1)}.  
-
-Si el usuario no especifica un ordenamiento de las variables mediante
-la funci@'on @code{ratvars}, Maxima escoger@'a una de forma
-alfab@'etica. 
-En general, Las ERC representan expresiones racionales, lo cual es,
-cocientes de polinomios, donde el numerador y
+cualquier subexpresi@'on cuyo operador principal no es + - * / o ^ con poder integrando
+puede ser considerada como una "variable" de la expresi@'on (en forma ERC) en 
+el cual ocurra. Por ejemplo las variables ERC de la expresi@'on
+X+SIN(X+1)+2*SQRT(X)+1 son X, SQRT(X), y SIN(X+1).  Si el usuario no
+especifica un ordenamiento de las variables mediante la funci@'on RATVARS 
+MACSYMA escoger@'a una alfab@'eticamente. En general, la representaci@'on de expresiones
+racionales ERC, hay proposiciones de polinomios, donde el numerador y
 el denominador  no tienen factores comunes, y el denominador es
-positivo. La forma interna es esencialmente un par de polinomios (el
+positivo. La forma interna es esencialmente un par de polinomios ( el
 numerador y el denominador) precedida por la lista de ordenamiento de variables. Si
 una expresi@'on a ser mostrada esta en la forma ERC o contiene alguna
 subexpresi@'on en forma de ERC, el simbolo /R/ ser@'a seguido por la etiqueta de linea.
-Observar la funci@'on @code{rat} para convertir una expresi@'on a la forma
-ERC. 
-
-Una forma extendida de ERC es usada para la representaci@'on de las series de Taylor. La
-noci@'on de una expresi@'on racional es extendida as@'{@dotless{i}} los exponentes de las
-variables tambi@'en pueden ser n@'umeros racionales positivos o negativos mejor que s@'olo
+Observar la funci@'on RAT para convertir una expresi@'on a la forma ERC. Una
+forma extensa de ERC es usada para la representaci@'on de las series de Taylor. La
+noci@'on de una expresi@'on racional es extendida, los exponentes de las
+variables tambi@'en pueden ser n@'umeros racionales positivos o negativos mejor que solo
 integrandos positivos y los coeficientes pueden ser por si mismos expresiones
 racionales por encima de un simple polinomio. Hay
-representaciones internas para los polinomios recursivos la cual es similar
+representaciones internas para los polinomios recursivos el cual es similar
 y es una generalizaci@'on de la forma ERC, pero porta informaci@'on extra
-tal como el bloqueo de grados. Como con la forma ERC, el s@'{@dotless{i}}mbolo
+tal como el bloqueo de degrados. Como con la forma ERC, el simbolo
 /T/ sigue la etiqueta de l@'{@dotless{i}}nea de cada expresi@'on.
 
+@c end concepto de Polinomios
 @node Definiciones para Polinomios,  , Introducci@'on a los Polinomios, Polinomios
 @section Definiciones para Polinomios
-
-@defvar algebraic 
-Valor  por defecto: @code{false}.
-Debe ser programado a @code{true} con el objetivo de que
-la simplificaci@'on de los enteros algebr@'aicos tome efecto.
+@c @node ALGEBRAIC, BERLEFACT, ERC, Polinomios
+@c @unnumberedsec phony
+@defvar ALGEBRAIC
+ por defecto: [FALSO] debe ser programado como VERDADERO en orden de
+la simplificaci@'on de los integrandos algebraicos para tener efecto.
 @end defvar
 
-@defvar berlefact 
-Valor por defecto: @code{true}. 
-Si su valor es  @code{false} entonces el algoritmo
-de factorizaci@'on de Kronecker ser@'a usado en vez de  
-el algoritmo de Berlekamp, el cual es el algoritmo por defecto.
-@end defvar
 
-@defun bezout (p1, p2, var)
-una alternativa para el comando @code{resultant}. Este
-retorna una matriz. El determinante de esta matriz es el resultado
-deseado.
+@c @node BERLEFACT, BEZOUT, ALGEBRAIC, Polinomios
+@c @unnumberedsec phony
+@defvar BERLEFACT
+ por defecto: [VERDADERO] si es FALSO entonces el algoritmo
+de factorizaci@'on Kronecker podr@'a ser usado de otra manera 
+por el algoritmo Berlekamp,, el cual es el algoritmo por defecto.
+
+
+@end defvar
+@c @node BEZOUT, BOTHCOEF, BERLEFACT, Polinomios
+@c @unnumberedsec phony
+@defun BEZOUT (p1, p2, var)
+una alternativa para el comando RESULTANT. este
+retorna una matriz. DETERMINANT de esta matriz es el resultado deseado.
+
 @end defun
-
-@defun bothcoef (exp, var)
+@c @node BOTHCOEF, COEFF, BEZOUT, Polinomios
+@c @unnumberedsec phony
+@defun BOTHCOEF (exp, var)
 retorna una lista de la cual el primer miembro es el
-coeficiente de @code{var} en @code{exp} (que es encontrado por RATCOEF si exp esta en una forma ERC
+coeficiente de var en exp (que es encontrado por RATCOEF si exp esta en una forma ERC
 de otra manera por COEFF) y del cual el segundo miembro es la parte sobrante de
 exp. Esto es, [A,B] donde exp=A*var+B.
 @example
@@ -93,32 +87,40 @@ exp. Esto es, [A,B] donde exp=A*var+B.
         IS(FREEOF(VAR,C) AND C[1]#0))$
 (C2) ISLINEAR((R**2-(X-R)**2)/X,X);
 (D2)                              VERDADERO
+
+
 @end example
 @end defun
-
+@c @node COEFF, COMBINE, BOTHCOEF, Polinomios
+@c @unnumberedsec phony
 @defun COEFF (exp, v, n)
-obtiene el coeficiente de @code{v**n} en @code{exp}. @code{n} puede ser
-omitido si es 1. v puede ser un @'atomo, o una subexpresi@'on completa de @code{exp}
+obtiene el coeficiente de v**n en exp.  n puede ser
+omitido si es 1. v puede ser un @'atomo, o una subexpresi@'on completa de exp
 e.g., X, SIN(X), A[I+1], X+Y, etc. (En este @'ultimo caso la
-expresi@'on (X+Y) debe ocurrir en exp). Algunas veces puede que sea necesario
-expandir o factorizar @code{exp} para hacer a v^n expl@'{@dotless{i}}cito. Esto no es
+expresi@'on (X+Y) debe ocurrir en exp). Algunas veces puede ser necesaria
+para expandir o factorizar exp en orden para hacer a v^n expl@'{@dotless{i}}cita. Esto no es
 realizado autom@'aticamanete por COEFF.
 @example
 (C1) COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
 (D1)                         2 A + 1 = 5
 (C2) COEFF(Y+X*%E**X+1,X,0);
 (D2)                            Y + 1
+
+
 @end example
 @end defun
-
+@c @node COMBINE, CONTENT, COEFF, Polinomios
+@c @unnumberedsec phony
 @defun COMBINE (exp)
-simplifica la suma @code{exp} para combinar t@'erminos con el mismo denominador
+simplifica la suma exp para combinar t@'erminos con el mismo denominador
 dentro de un mismo t@'ermino sencillo.
 
 @end defun
+@c @node CONTENT, DENOM, COMBINE, Polinomios
+@c @unnumberedsec phony
 @defun CONTENT (p1, var1, ..., varn)
 retorna una lista cuyo primer elemento es
-el m@'aximo com@'un divisor del coeficiente de los t@'erminos del
+el divisor com@'un m@'as grande del coeficiente de los t@'erminos del
 polinomio p1 en la variable varn (este es el contenedor) y cuyo
 segundo elemento es el polinomio p1 dividido por el contenido.
 
@@ -129,12 +131,16 @@ segundo elemento es el polinomio p1 dividido por el contenido.
 
 @end example
 @end defun
-@defun denom (exp)
-retorna el denominador de la expresi@'on racional @code{exp}.
-@end defun
+@c @node DENOM, DIVIDE, CONTENT, Polinomios
+@c @unnumberedsec phony
+@defun DENOM (exp)
+retorna el denominador de la expresi@'on racional exp.
 
-@defun divide (p1, p2, var1, ..., varn)
-calcula el cociente y el residuo 
+@end defun
+@c @node DIVIDE, ELIMINATE, DENOM, Polinomios
+@c @unnumberedsec phony
+@defun DIVIDE (p1, p2, var1, ..., varn)
+calcula el cociente y el residuo
 del polinomio p1 dividido en el polinomio p2, en la variable
 principal del polinomio, varn. Las otras variables son como en la funci@'on RATVARS.
 El resultado es una lista cuyo primer elemento es el cociente
@@ -147,11 +153,15 @@ y cuya segundo elemento es el residuo.
 
 @end example
 @noindent
-(Note que Y es la variable principal en C2)
+(Bote que Y es la variable principal en C2)
 
 @end defun
+@c @node ELIMINATE, EZGCD, DIVIDE, Polinomios
+@c @unnumberedsec phony
 @defun ELIMINATE ([eq1,eq2,...,eqn],[v1,v2,...,vk])
-elimina las variables de la ecuaci@'on (o expresiones que asume iguales a cero) por medio de la toma de resultados susesivos. Este retorna una lista de n-k/esimas expresiones con la eliminaci@'on
+elimina las variables de la
+ecuaci@'on (o expresiones que asume iguales a cero) por medio de la toma de resultados 
+susesivos. Este retorna una lista de n-k/esimas expresiones con la eliminaci@'on
 de las variables v1,...,vk. Primera es eliminada c1 produciendo n-1 expresiones,
 luego lo hace v2 y as@'{@dotless{i}} susesivamente. Si k=n entonces una expresi@'on sencilla contenida en una lista
 es retornada libremente de las variables v1,...,vk. En este caso SOLVE

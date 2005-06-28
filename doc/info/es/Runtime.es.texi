@@ -1,22 +1,27 @@
 @menu
-*  Introducci@'on   al  Entorno  de  Desarrollo::   *  INTERRUPTS::  *
-Definiciones para Entorno de Desarrollo::
+* Introducci@'on al Entorno de Ejecuci@'on::   
+* INTERRUPTS::  
+* Definiciones para el Entorno de Ejecuci@'on::
 @end menu
 
+@node Introducci@'on al Entorno de Ejecuci@'on, INTERRUPTS, Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
 
-@node Introducci@'on al Entorno de Desarrollo, INTERRUPTS, Entorno de Desarrollo, Entorno de Desarrollo
-@section Introducci@'on al Entorno de Desarrollo
+@section Introducci@'on al Entorno de Ejecuci@'on
+
  -  Un archivo es  cargado autom@'aticamente  por usted  cuanto inicia
 MACSYMA para personalizarlo a su  gusto. Esto es posible para tener un
 archivo   init   escrito   como   un   archivo   BATCH   de   comandos
 macsyma.  Esperamos  que  esto  sea  f@'acil  para  que  los  usuarios
 personalicen  su entorno  de  macsyma.  Aqu@'{@dotless{i}}  est@'a  un ejemplo  de
 archivo init
+
 @example
         /*-*-macsyma-*-*/     setup_autoload("share\;bessel",j0,j1,jn);
 showtime:all; comgrind:true;
+
 @end example
-El   extra@-no   comentario  en   la   parte   superior  del   archivo
+
+El   extra@~no   comentario  en   la   parte   superior  del   archivo
 "/*-*-macsyma-*-*/"  indica que  es  un archivo  en lenguaje  macsyma.
 Tambi@'en: "SETUP_AUTOLOAD"  puede ser usado  para construir funciones
 en  archivos BATCH  autocarg@'andolas,  significa que  si usted  puede
@@ -28,7 +33,8 @@ est@'a  especificado  (el  uso  preferido) entonces  es  realizada  la
 b@'usqueda estandar del segundo  nombre de archivo de "FASL", "TRLISP"
 y ">".
 
-@node INTERRUPTS, Definiciones para Entorno de Desarrollo, Introducci@'on al Entorno de Desarrollo, Entorno de Desarrollo
+@node INTERRUPTS, Definiciones para el Entorno de Ejecuci@'on, Introducci@'on al Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
+ 
 @section INTERRUPTS
 
  - Hay muchas maneras para que el usuario pueda interrumpir un computo
@@ -39,11 +45,10 @@ al nivel de celda de  Unix, Usualmente Control-C interrumpe el computo
 poniendo una curva de corte. Tecleando:t puede darle el nivel m@'aximo
 de maxima de nuevo.
 
-@c end concepts Entorno de Desarrollo
-@node Definiciones para Entorno de Desarrollo,  , INTERRUPTS, Entorno de Desarrollo
-@section Definiciones para Entorno de Desarrollo
-@c @node ALARMCLOCK
-@c @unnumberedsec phony
+@node Definiciones para el Entorno de Ejecuci@'on,  , INTERRUPTS, Entorno de Ejecuci@'on
+
+@section Definiciones para el Entorno de Ejecuci@'on
+
 @defun ALARMCLOCK (arg1, arg2, arg3)
 ejecutar@'a funciones  sin argumentos cuyo nombre es  arg3 cuando pase
 el tiempo especificado para arg1 y arg2.  Si arg1 es el @'atomo "TIME"
@@ -54,9 +59,9 @@ en tiempo  de cpu. Si  arg2 es negativo  entonces el relog de  arg1 es
 apagado.
 
 @end defun
-@c @node ALLOC
-@c @unnumberedsec phony
+
 @defun ALLOC
+
  toma  cualquier n@'umero  de  argumentos  que son  lo  mismo que  las
 replicas  de la  pregunta  de "espacio  agotado".  Este incrementa  de
 acuerdo con las asignaciones.   E.g. si el usuario conoce inicialemnte
@@ -65,8 +70,7 @@ para asignar  la m@'axima cantidad inicialmente.  Tambi@'en observe la
 opci@'on DYNAMALLOC.
 
 @end defun
-@c @node BUG
-@c @unnumberedsec phony
+
 @defun BUG ("message")
 similar a correro, envia un  mensaje al Correo de MACSYMA.  Esto puede
 ser usado para reportar errores o posibles errores en MACSYMA.  Pueden
@@ -75,38 +79,38 @@ cita, e.g.  BUG("EStoy tratando de integrar",D3,"pero esto me pregunta
 por m@'as lista de espacio. ¿Qu@'e puedo hacer?");
 
 @end defun
-@c @node CLEARSCREEN
-@c @unnumberedsec phony
+
 @defun CLEARSCREEN ()
+
 Limipia la pantalla. Lo mismo que tecleando control-L.
 
 @end defun
-@c @node CONTINUE
-@c @unnumberedsec phony
+
 @defun CONTINUE
+
  -  Control-^ escrito  mientras este  en  MACSYMA causa  que LISP  sea
 ingresado.  El  usuario  ahora  puede escribir  LISP  S-expresiones  y
 evaluarlas. Tecelando  (CONTINUE) o  ^G (control-G) causa  que MACSYMA
 sea re-ingresado.
 
 @end defun
-@c @node DDT
-@c @unnumberedsec phony
+
 @defun DDT ()
+
 Existe desde  MACSYMA hasta el  nivel de sistema operativo.  (Lo mismo
 que control-Z sobre ITS, o contro-C sobre Tops-20.)
 
 @end defun
-@c @node DELFILE
-@c @unnumberedsec phony
+
 @defun DELFILE (file-specification)
+
 borrar@'a un archivo dado por la especificaci@'on-archivo (i.e. primer
 nombre, segundo nombre, dispositivo, usuario) del dispositivo dado.
 
 @end defun
-@c @node DISKFREE
-@c @unnumberedsec phony
+
 @defun DISKFREE ()
+
 Sin argumentos o un argumento VERDADERO, retornar@'a el n@'umero total
 de bloques libres de espacio de  disco en el sistema. Con un argumento
 en 0, 1 o 13, retornar@'a  el n@'umero de bloques libres de espacio en
@@ -116,9 +120,9 @@ espacio  de  disco  en  el  paquete de  disco  primario  o  secundario
 respectivamente.
 
 @end defun
-@c @node declaration
-@c @unnumberedsec phony
+
 @defvr declaration FEATURE
+
  - Un excelente ayudante del  sistema. STATUS(FEATURE) le da una lista
 de caracter@'{@dotless{i}}sticas  del sistema. En  la actualidad la lista  para MC
 es: MACSYMA,  NOLDMSG, MACLISP, PDP10, BIGNUM,  FASLOAD, HUNK, FUNARG,
@@ -131,9 +135,9 @@ el usuario". Tambi@'en observe DESCRIBE(caracter@'{@dotless{i}}sticas); para may
 orientaci@'on del usuario en cuanto a caracter@'{@dotless{i}}sticas.
 
 @end defvr
-@c @node FEATUREP
-@c @unnumberedsec phony
+
 @defun FEATUREP (a,f)
+
 Se esfuerza  por determinar si  el objeto tiene la  caracter@'{@dotless{i}}stica f
 sobre las  bases de  los factores en  la base  de datos actual.  Si es
 as@'{@dotless{i}}, este retorna VERDADERO, sino FALSO. Observe DESCRIBE(FEATURES);
@@ -144,18 +148,18 @@ as@'{@dotless{i}}, este retorna VERDADERO, sino FALSO. Observe DESCRIBE(FEATURES
 
 @end example
 @end defun
-@c @node ROOM
-@c @unnumberedsec phony
+
 @defun ROOM ()
+
 Produce  una descripci@'on verbosa  de el  estado de  almacenamiento y
 manejo de pila en Macsyma.  Esto simplemente utiliza la funci@'on ROOM
 de Lisp.   ROOM(FALSO) - Produce una  descripci@'on clara, conteniendo
 la mayor@'{@dotless{i}}a de la misma informaci@'on.
 
 @end defun
-@c @node STATUS
-@c @unnumberedsec phony
+
 @defun STATUS (arg)
+
 retornar@'a  una  miscelanea de  estado  de  informaci@'on acerca  del
 usuario  de  MACSYMA  dependiendo  del arreglo  dado.  Los  argumentos
 permisibles y los resultados son los siguientes:
@@ -201,9 +205,9 @@ Para  informaci@'on  acerca  de   sus  archivos,  observe  el  comando
 FILEDEFAULTS();
 
 @end defun
-@c @node TIME
-@c @unnumberedsec phony
+
 @defun TIME (Di1, Di2, ...)
+
 da una lista de los tiempos tomados en milisegundos para el computo de
 Di.  (Nota: la  Variable  SHOWTIME, por  defecto:  [FALSO,] puede  ser
 programada VERDADERA para tener impreso  el computo de tiempo con cada

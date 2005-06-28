@@ -1,9 +1,10 @@
-@c end concepts Equations
 @menu
-LAS ECUACIONES
+* Definiciones para Ecuaciones::
 @end menu
-@node Definitions for Equations,  , Equations, Equations
-@section Las definiciones para las Ecuaciones
+
+@node Definiciones para Ecuaciones,  , Ecuaciones, Ecuaciones
+
+@section Definiciones para Ecuaciones
 
 @c @node %RNUM_LIST
 @c @unnumberedsec phony
@@ -38,14 +39,14 @@ Para los polinomios reales el algoritmo usado es debido a Jenkins (Algoritmo 493
 @end defun
 @c @node BACKSUBST
 @c @unnumberedsec phony
-@defvar Inconstante: BACKSUBST
+@defvar BACKSUBST
 
 el valor predeterminado: [VERDADERO] si el juego a FALSO prevendr@'a la substituci@'on atr@'as despu@'es de las ecuaciones ha sido los triangularized. Esto puede ser necesario en los problemas muy grandes d@'onde atr@'as la substituci@'on causar@'{@dotless{i}}a la generaci@'on de expresiones sumamente grandes. (En el MAESTRO DE CEREMONIAS esto podr@'{@dotless{i}}a causar capacidad del almacenamiento ser excedido.)
 
 @end defvar
 @c @node BREAKUP
 @c @unnumberedsec phony
-@defvar Inconstante: LA DISOLUCIÓN
+@defvar LA DISOLUCIÓN
 
 el valor predeterminado: [VERDADERO] si FALSO causar@'a RESUELVA para expresar las soluciones de c@'ubico o ecuaciones del quartic como las solas expresiones en lugar de como hecho a de varios subexpressions com@'un que es el valor predeterminado. BREAKUP:TRUE s@'olo trabaja cuando PROGRAMMODE es FALSO.
 
@@ -59,7 +60,7 @@ El archivo "share1/dimen.mc" contiene las funciones para el an@'alisis dimension
 @end defun
 @c @node DISPFLAG
 @c @unnumberedsec phony
-@defvar Inconstante: DISPFLAG
+@defvar DISPFLAG
 
 el valor predeterminado: [VERDADERO] si el juego a FALSO dentro de un BLOQUE el despliegue de rendimiento generado por inhibir@'a el resuelva las funciones llamaron el BLOQUE desde dentro. La terminaci@'on del BLOQUE con un d@'olar la se@~nal, $, pone DISPFLAG a FALSO.
 
@@ -83,7 +84,7 @@ orden el polinomio lineal en (para este caso) el g(t) y g(t+1).
 @end defun
 @c @node GLOBALSOLVE
 @c @unnumberedsec phony
-@defvar Inconstante: GLOBALSOLVE
+@defvar GLOBALSOLVE
 
 el valor predeterminado: [FALSO] si el juego para ARREGLAR variables para que se Resuelven entonces se pondr@'a a la soluci@'on del juego de ecuaciones simult@'aneas.
 
@@ -99,7 +100,7 @@ Los valores de valor predeterminado para los 2 por 5 los par@'ametros son: el un
 @end defun
 @c @node IEQNPRINT
 @c @unnumberedsec phony
-@defvar Inconstante: IEQNPRINT
+@defvar IEQNPRINT
 
 el valor predeterminado: [VERDADERO] - gobierna la conducta del resultado vuelta por el orden de IEQN (qu@'e ve). Si IEQNPRINT se pone a FALSO, las listas vueltas por la funci@'on de IEQN son del formulario [la SOLUCIÓN, la TÉCNICA USÓ, NTERMS, BANDERA] donde la BANDERA est@'a ausente si la soluci@'on es exacta. Por otra parte, es la palabra el correspondiendo APROXIMADO o INCOMPLETO a una soluci@'on del formulario inexacta o non-cerrada, respectivamente. Si un m@'etodo de la serie fuera usado, NTERMS da el n@'umero de condiciones tomado (qu@'e podr@'{@dotless{i}}a estar menos del n dado a IEQN si un error previno generaci@'on de condiciones extensas).
 
@@ -131,21 +132,21 @@ LA SOLUCIÓN
 @end defun
 @c @node LINSOLVEWARN
 @c @unnumberedsec phony
-@defvar Inconstante: LINSOLVEWARN
+@defvar LINSOLVEWARN
 
 el valor predeterminado: [VERDADERO] - si FALSO causar@'a el mensaje las ecuaciones "Dependientes eliminaron" para ser suprimidas.
 
 @end defvar
 @c @node LINSOLVE_PARAMS
 @c @unnumberedsec phony
-@defvar Inconstante: LINSOLVE_PARAMS
+@defvar LINSOLVE_PARAMS
 
 el valor predeterminado: [VERDADERO] - Si VERDADERO, LINSOLVE tambi@'en genera el% los s@'{@dotless{i}}mbolos de Ri representaban par@'ametros arbitrarios descritos en el manual bajo ALGSYS. Si FALSO, LINSOLVE se comporta como antes, es decir cuando se encuentra a con un sistema bajo-determinado de ecuaciones, resuelve para algunas de las variables por lo que se refiere a otros.
 
 @end defvar
 @c @node MULTIPLICITIES
 @c @unnumberedsec phony
-@defvar Inconstante: LAS MULTIPLICIDADES
+@defvar LAS MULTIPLICIDADES
 
 el valor predeterminado: [NOT_SET_YET] - se pondr@'a a una lista de las multiplicidades de las soluciones individuales vuelta por RESUELVA o REALROOTS.
 
@@ -172,14 +173,14 @@ donde p es un polinomio con los coeficientes del entero y n es un entero positiv
 @end defun
 @c @node PROGRAMMODE
 @c @unnumberedsec phony
-@defvar Inconstante: PROGRAMMODE
+@defvar PROGRAMMODE
 
 el valor predeterminado: [VERDADERO] - cuando FALSO causar@'a RESUELVA, REALROOTS, ALLROOTS, y LINSOLVE para imprimir las E-etiquetas (las etiquetas de l@'{@dotless{i}}nea de intermedio) para etiquetar las respuestas. Cuando VERDADERO, RESUELVA, respuestas del retorno etc. como los elementos en una lista. (Excepto cuando BACKSUBST se pone a FALSO en que el caso PROGRAMMODE:FALSE tambi@'en se usa.)
 
 @end defvar
 @c @node REALONLY
 @c @unnumberedsec phony
-@defvar Inconstante: REALONLY
+@defvar REALONLY
 
 el valor predeterminado: [FALSO] - si VERDADERO causa ALGSYS para devolver s@'olo esas soluciones libre de que son% yo.
 
@@ -200,7 +201,7 @@ el lado correcto del eqn de la ecuaci@'on.
 @end defun
 @c @node ROOTSCONMODE
 @c @unnumberedsec phony
-@defvar Inconstante: ROOTSCONMODE
+@defvar ROOTSCONMODE
 
 el valor predeterminado: [VERDADERO] - Determina la conducta del orden de ROOTSCONTRACT. Haga DESCRIBE(ROOTSCONTRACT); para los detalles.
 
@@ -243,7 +244,7 @@ Cuando ROOTSCONMODE es FALSO, ROOTSCONTRACT acorta s@'olo wrt exponentes del n@'
 @end defun
 @c @node ROOTSEPSILON
 @c @unnumberedsec phony
-@defvar Inconstante: ROOTSEPSILON
+@defvar ROOTSEPSILON
 
 el valor predeterminado: [1.0E-7] - un n@'umero real establec@'{@dotless{i}}a el intervalo de confianza para las ra@'{@dotless{i}}ces encontradas por la funci@'on de REALROOTS.
 
@@ -257,49 +258,49 @@ resuelve el exp de la ecuaci@'on algebraico para los var inconstantes e ingresos
 @end defun
 @c @node SOLVEDECOMPOSES
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVEDECOMPOSES
+@defvar SOLVEDECOMPOSES
 
 el valor predeterminado: [VERDADERO] - si VERDADERO, inducir@'a RESUELVA para usar POLYDECOMP (vea POLYDECOMP) intentando resolver los polinomios.
 
 @end defvar
 @c @node SOLVEEXPLICIT
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVEEXPLICIT
+@defvar SOLVEEXPLICIT
 
 el valor predeterminado: [FALSO] - si VERDADERO, inhibe RESUELVA de devolver las soluciones impl@'{@dotless{i}}citas es decir del formulario F(x)=0.
 
 @end defvar
 @c @node SOLVEFACTORS
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVEFACTORS
+@defvar SOLVEFACTORS
 
 el valor predeterminado: [VERDADERO] - si FALSO entonces RESUELVA no intentar@'a factorizar la expresi@'on. La escena FALSA puede desearse en algunos casos d@'onde factorizan no es necesario.
 
 @end defvar
 @c @node SOLVENULLWARN
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVENULLWARN
+@defvar SOLVENULLWARN
 
 el valor predeterminado: [VERDADERO] - si VERDADERO el usuario se advertir@'a si @'el llama RESUELVA con una lista de la ecuaci@'on nula o una lista inconstante nula. Por ejemplo, RESUELVA ([], []); imprimir@'{@dotless{i}}a dos mensajes de la advertencia y retorno [].
 
 @end defvar
 @c @node SOLVERADCAN
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVERADCAN
+@defvar SOLVERADCAN
 
 el valor predeterminado: [FALSO] - si ARREGLA entonces RESUELVA usar@'a RADCAN que har@'an RESUELVEN m@'as lentamente pero permitir@'an ciertos problemas que contienen los exponenciales y le@~nos ser resuelto.
 
 @end defvar
 @c @node SOLVETRIGWARN
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVETRIGWARN
+@defvar SOLVETRIGWARN
 
 el valor predeterminado: [VERDADERO] - si el juego a FALSO inhibir@'a la impresi@'on por RESUELVE del mensaje de la advertencia que dice que est@'a usando las funciones trigonom@'etricas inversas para resolver la ecuaci@'on, y por eso las soluciones perdedoras.
 
 @end defvar
 @c @node SOLVE_INCONSISTENT_ERROR
 @c @unnumberedsec phony
-@defvar Inconstante: SOLVE_INCONSISTENT_ERROR
+@defvar SOLVE_INCONSISTENT_ERROR
 
 el valor predeterminado: [VERDADERO] - Si VERDADERO, RESUELVA y LINSOLVE dan un error si ellos se encuentran a con un juego de ecuaciones lineales incoherentes, por ejemplo SOLVE([A+B=1,A+B=2]). Si FALSO, ellos vuelven [] en este caso. (Éste es el nuevo modo, previamente s@'olo sobrevivido llamar ALGSYS.)
 

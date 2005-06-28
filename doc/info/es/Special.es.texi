@@ -20,7 +20,7 @@ Constante en ODE2
 
 @end deffn
 
-@node GAMALG, SPECINT, Introducci@'on a Funciones Especiales, Funciones Especiales
+@node GAMALG, SPECINT, Introducci@'on a las Funciones Especiales, Funciones Especiales
 
 @section GAMALG
 
@@ -32,7 +32,7 @@ Un manual preliminar est@'a contenido en el archivo SHARE;GAM USAGE y puede ser 
 usando
 PRINTFILE(GAM,USAGE,SHARE);
 
-@node SPECINT, Deficiones para Funciones Especiales, GAMALG, Funciones Especiales
+@node SPECINT, Definiciones para las Funciones Especiales, GAMALG, Funciones Especiales
 @section SPECINT
  - El paquete HYPGEO de funciones hipergeom@'etricas especiales est@'a
 aun en desarrollo. en este momento busca las transformadas de Laplace o mejor,
@@ -61,15 +61,13 @@ SLOMMEL
 %W[]()                     "       "    2nd  "
 @end example
 @noindent
-Para un mejor conocimiento acerca de estas que puede hacer, haga DEMO(HYPGEO,DEMO,SHARE1); .
+Para un mejor conocimiento acerca de estas que puede hacer, haga DEMO(HYPGEO,DEMO,SHARE1);
 
-@c end concepts Funciones Especiales
-@node Deficiones para Funciones Especiales,  , SPECINT, Funciones Especiales
-@section Deficiones para Funciones Especiales
-@c @node AIRY
-@c @unnumberedsec phony
+@node Definiciones para las Funciones Especiales,  , SPECINT, Funciones Especiales
+@section Definiciones para las Funciones Especiales
+
 @defun AIRY (X)
-retorn la funci@'on Airy Ai de argumento real X.
+retorna la funci@'on Airy Ai de argumento real X.
 El archivo SHARE1;AIRY FASL contiene rutinas para evaluar las funciones Airy
 Ai(X), Bi(X) y sus derivadas dAi(X), dBi(X). Ai y Bi satisfacen la
 ecuaci@'on diferencial AIRY(y(x),x,2)-x*y(x)=0.. Lea SHARE1;AIRY USAGE para detalles.
@@ -78,7 +76,8 @@ ecuaci@'on diferencial AIRY(y(x),x,2)-x*y(x)=0.. Lea SHARE1;AIRY USAGE para deta
 @c @node ASYMP
 @c @unnumberedsec phony
 @defun ASYMP
- - Una versi@'on preliminar de un programa para buscar comportamiento asint@'otico
+ - Una versi@'on preliminar de un programa para buscar comportamiento 
+asint@'otico
 de diagramas de Feynman que han sido instalados sobre el directorio SHARE1;
 Para mayor informaci@'on, observe el archivo SHARE1;ASYMP USAGE.
 (Para el An@'alisis Asist@'otico de funciones, observe ASYMPA.)
@@ -87,7 +86,7 @@ Para mayor informaci@'on, observe el archivo SHARE1;ASYMP USAGE.
 @c @node ASYMPA
 @c @unnumberedsec phony
 @defun ASYMPA
- - An@'alisis Asit@´tico - El archivo SHASE1;ASYMPA > contiene
+ - An@'alisis Asit@'otico - El archivo SHASE1;ASYMPA > contiene
 la simplificaci@'on de funciones para an@'alisis asint@'otico, incluyendo las funciones big-0
 y little-o que son ampliamente usadas en an@'alisis complejos y
 an@'alisis num@'ericos. Haga BATCH("asympa.mc"); .

@@ -1,17 +1,21 @@
 @menu
-*  Introducci@'on a  Opciones Miscelaneas::  * SHARE::  * Definiciones
-para Opciones Miscelaneas::
+* Introducci@'on a Opciones Miscel@'aneas::  
+* SHARE::  
+* Definiciones para Opciones Miscel@'aneas::
 @end menu
 
-@node Introducci@'on a Opciones Miscelaneas, SHARE, Opciones Miscelaneas, Opciones Miscelaneas
-@section Introducci@'on a Opciones Miscelaneas::
+@node Introducci@'on a Opciones Miscel@'aneas, SHARE, Opciones Miscel@'aneas, Opciones Miscel@'aneas
+
+@section Introducci@'on a Opciones Miscel@'aneas::
 
 En esta  secci@'on varias opciones  son discussed which have  a global
 effect on the operation of  maxima.  Tambien varias listas such as the
 list of all user defined functions, are discussed.
 
-@node SHARE, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
+@node SHARE, Definiciones para Opciones Miscel@'aneas, Introducci@'on a Opciones Miscel@'aneas, Opciones Miscel@'aneas
+
 @section SHARE
+
  -  El directorio  SHARE  en MC  o  en una  DEC20  version de  MACSYMA
 contiene  programas,  archivos de  informacion,  etc.   Los cuales  se
 consideran de  inter@'es para la  comunidad MACSYMA.  La  mayor@'{@dotless{i}}a de
@@ -23,39 +27,37 @@ PRINTFILE(SHARE,USAGE,SHARE); para mayores detalles y las convenciones
 para  contribuir al  directorio  SHARE.  para  una  anotaci@'on en  la
 "tabla de contenidos" del directorio, haga: PRINTFILE(SHARE,>,SHARE);
 
-@c end concepts Miscellaneous Options
-@node Definitions for Miscellaneous Options,  , SHARE, Miscellaneous Options
-@section Definitions for Miscellaneous Options
-@c @node ALIASES
-@c @unnumberedsec phony
+@node Definiciones para Opciones Miscel@'aneas,  , SHARE, Opciones Miscel@'aneas
+@section Definiciones para Opciones Miscel@'aneas
+
 @defvar ALIASES
+
  por  defecto:  []  atomos   que  tienen  un  usuario  definido  alias
 (programado   por  la   funciones  ALIAS,   ORDERGREAT,   ORDERLESS  o
 DECLARE(ando) el atomo a NOUN).
+
 @end defvar
 
-
-@c @node ALLSYM
-@c @unnumberedsec phony
 @defvar ALLSYM
- por defecto: [VERDADERO] - Si es VERDADERO entonces todos los objetos
+
+por defecto: [VERDADERO] - Si es VERDADERO entonces todos los objetos
 puestos  en un  indice son  asumidos simetricos  en todos  sus indices
 covariantes y contravariantes. Si es FALSO entonces las no simetr@'{@dotless{i}}as
 de  cualquier  clase  son  asumidas  en  esos  indices.   Los  indices
 derivados son siempre tomados para ser simetricos.
+
 @end defvar
 
-@c @node declaration
-@c @unnumberedsec phony
 @defvr declaration ALPHABETIC
+
 Añade al alfabeto de MACSYMA  el cual inicialmente contiene las letras
 A-Z, % y _.  As@'{@dotless{i}}, DECLARE("~",ALPHABETIC) le habilita NEW~VALUE para
 ser usado como un nombre.
 
 @end defvr
-@c @node APROPOS
-@c @unnumberedsec phony
+
 @defun APROPOS (string)
+
 toma un caracter  de tipo string como argumento  y observa en absoluto
 los  nombres de  MACSYMA para  para los  @'unicos con  ese  string que
 aparecen  en cualquier  parte dentro  de ellos.   As@'{@dotless{i}}, APROPOS(EXP);
@@ -68,11 +70,12 @@ encontrar una  lista de  muchas de las  opciones relacionando  para la
 funci@'on TRANSLATOR (la mayor@'{@dotless{i}}a de los cuales empiezan por TR_).
 
 @end defun
-@c @node ARGS
-@c @unnumberedsec phony
+
 @defun ARGS (exp)
+
 retorna  una  lista   de  los  arreglos  para  exp.    I.e.  estos  es
 esencialmente equivalente a
+
 @example
 SUBSTPART("[",exp,0)
 @end example
@@ -80,9 +83,9 @@ Ambos ARGS y  SUBSTPART dependen de la programaci@'on  de la funci@'on
 INFLAG.
 
 @end defun
-@c @node DUMMY
-@c @unnumberedsec phony
+
 @defun DUMMY (i1,i2,...)
+
 programar@'a cada indice i1,i2,... para  nombre de la forma !n donde n
 es un  entero positivo. Estas  garant@'{@dotless{i}}as para los indices  mudos los
 cuales  son  nesecitados  en  la  formaci@'on de  expresiones  que  no
@@ -92,39 +95,37 @@ generaci@'on del proximo indice mudo. El prefijo es determinado por la
 opci@'on DUMMYX[!].
 
 @end defun
-@c @node GENINDEX
-@c @unnumberedsec phony
+
 @defvar GENINDEX
- por  defecto: [I]  es el  prefijo  alfabetico usado  para generar  la
+
+por  defecto: [I]  es el  prefijo  alfabetico usado  para generar  la
 siguiente variable de suma cuando sea necesario.
 
 @end defvar
-@c @node GENSUMNUM
-@c @unnumberedsec phony
+
 @defvar GENSUMNUM
+
 [0] es el  sufijo num@'erico usado para generar  la siguiente variable
 de  suma.  Si  este  es  programado  para  FALSO  entonces  el  indice
 concistir@'a  solamente  para  la  funci@'on GENINDEX  con  sufijo  no
 num@'erico.
 
 @end defvar
-@c @node INF
-@c @unnumberedsec phony
+
 @defvar INF
  - infinito real positivo.
 
 @end defvar
-@c @node INFINITY
-@c @unnumberedsec phony
+
 @defvar INFINITY
- -  infinidad compleja,  una  magnitud infinita  de  @'angulo de  fase
+-  infinidad compleja,  una  magnitud infinita  de  @'angulo de  fase
 arbitrario.  (Observe tambi@'en INF y MINF.)
 
 @end defvar
-@c @node INFOLISTS
-@c @unnumberedsec phony
+
 @defvar INFOLISTS
- por  defecto: []  una lista  de  los nombre  de todas  las listas  de
+
+por  defecto: []  una lista  de  los nombre  de todas  las listas  de
 informaci@'on en MACSYMA. Estas son: LABELS - todos los l@'{@dotless{i}}mites C,D,
 y  las   etiquetas  E.   VALUES   -  todos  los   @'atomos  l@'{@dotless{i}}mites,
 i.e.  variables  de  usuario,  no  las opciones  u  opciones  MACSYMA,
@@ -151,14 +152,13 @@ es el nombre  del paquete de regla usado  cuando alguno programado por
 el usuario no es expl@'{@dotless{i}}cito.)
 
 @end defvar
-@c @node INTEGERP
-@c @unnumberedsec phony
+
 @defun INTEGERP (exp)
+
 es VERDADERO si exp es un entero si no es FALSO.
 
 @end defun
-@c @node M1PBRANCH
-@c @unnumberedsec phony
+
 @defvar M1PBRANCH
  por  defecto: [FALSO]  - "rama  principal de  -1 para  una potencia".
 CAntidades  como  (-1)^(1/3)   [i.e.  "impar"  exponente  racional]  e
@@ -184,8 +184,8 @@ flotante o un granflotante si no es FALSO.
 @c @node PROPERTIES
 @c @unnumberedsec phony
 @defun PROPERTIES (a)
-rendir@á  una lista  mostrando los  nombres de  todas  las propiedades
-asociadas con el @átomo a.
+rendir@'a  una lista  mostrando los  nombres de  todas  las propiedades
+asociadas con el @'atomo a.
 
 @end defun
 @c @node PROPS
@@ -233,7 +233,7 @@ funciones.  REMOVE(a1, p1,  a2, p2, ...)  remueve la  propiedad pi del
 puede ser cualquier propiedad e.g.  FUNCTION, MODE_DECLARE, etc.  Este
 tambi@'en puede ser la  funci@'on TRANSFUN implicando que la versi@'on
 traducida de LISP  de la funci@'on ser@'a quitado.   Eston es @'util s
-se desea  tener la  versi@'on de MACSYMA  de la funci@ón  ejecutada en
+se desea  tener la  versi@'on de MACSYMA  de la funci@'on  ejecutada en
 lugar de la versi@'on traducida.  Pi tambi@'en puede ser OP o OPERATOR
 para  remover una  extensi@'on de  sintaxis dada  para ai  (observe el
 apendice II).  Si  ai es "TODO" entonces la  propiedad indicada por pi

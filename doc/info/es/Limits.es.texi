@@ -1,4 +1,3 @@
-
 @menu
 * Definici@'on para L@'{@dotless{i}}mites::      
 @end menu
@@ -34,7 +33,7 @@ formas desconocidas. Esto es para evitar errores como @code{limit(f(n)/f(n+1),n,
 
 @code{limit} con un argumento es a menudo llamado para la simplificaci@'on de expresiones constantes, por ejemplo @code{limit(inf-1)}. 
 
-Pruebe @code{example{limit};} para ejemplos. 
+Pruebe @code{example(limit);} para ejemplos. 
 
 @end deffn
 

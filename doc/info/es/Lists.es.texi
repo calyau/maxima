@@ -1,5 +1,5 @@
 @menu
-* Introduccci@'on a las Listas::       
+* Introducci@'on a las Listas::       
 * Definiciones para Listas::       
 @end menu
 

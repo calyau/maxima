@@ -39,7 +39,7 @@ las @i{expresiones con coma} en @b{C}.
 @end example
 
 Incluso los bucles en Maxima son expresiones, aunque el valor que
-ellos retornan (@code{done}) no es muy @'util. 
+ellos retornan (@code{done}), no es muy @'util. 
 
 @example
 (%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
@@ -48,8 +48,9 @@ ellos retornan (@code{done}) no es muy @'util.
 @end example
 
 considerando que lo que usted realmente quiere es probablemente incluir
-un tercer t@'ermino en la @i{expresi@'on coma}, el cual actualmente
-devuelve el valor de inter@'es.  
+un tercer t@'ermino en una @i{expresi@'on coma}, el cual actualmente
+devuelve el valor de inter@'es. 
+  
 @c whereas what you really want is probably to include a third
 @c term in the @i{comma expression} which actually gives back the value.
 
@@ -61,15 +62,15 @@ devuelve el valor de inter@'es.
 
 @node ASIGNACI@'ON, EXPRESIONES COMPLEJAS, Introducci@'on a las Expresiones, Expresiones
 @section ASIGNACI@'ON
+
 Existen dos operadores de asignaci@'on en Maxima, @code{:} y @code{::}. 
-E.g., @code{a: 3} asigna a la variable @code{a} el valor de 3. @code{::} asigna el valor de la expresi@'on de su derecha a el valor de la cantidad de su izquierda, el cual debe evaluarse a una variable de tipo @'atomo o una 
-variable con subindices. 
+E.g., @code{a: 3} asigna a la variable @code{a} el valor de 3. @code{::} asigna el valor de la expresi@'on de su derecha a el valor de la cantidad de su izquierda, el cual debe evaluarse a una variable de tipo @'atomo o una variable con subindices. 
 
 @node EXPRESIONES COMPLEJAS, DESIGUALDADES, ASIGNACI@'ON, Expresiones
 @section EXPRESIONES COMPLEJAS
-Una expresi@'on compleja se espefica en Maxima a@~nadiendo la
-parte real de la expresi@'on el producto de @code{%i} por la parte
-imaginaria. As@'{@dotless{i}} las ra@'{@dotless{i}}ces de la ecuaci@'on @code{x^2 - 4*x + 13 = 0} son @code{2 + 3*%i} y @code{2 - 3*%i}, Note que la simplificaci@'on de productos de expresiones complejas puede ser efectuado expandiendo el producto. La simplificaci@'on de cocientes, ra@'{@dotless{i}}ces y otras funciones que
+
+Una expresi@'on compleja se especifica en Maxima a@~nadiendo a la parte
+real de la expresi@'on el producto de @code{%i} por la parte imaginaria. As@'{@dotless{i}} las ra@'{@dotless{i}}ces de la ecuaci@'on @code{x^2 - 4*x + 13 = 0} son @code{2 + 3*%i} y @code{2 - 3*%i}. Note que la simplificaci@'on de productos de expresiones complejas puede ser efectuado expandiendo el producto. La simplificaci@'on de cocientes, ra@'{@dotless{i}}ces y otras funciones que
 contengan expresiones complejas pueden usualmente ser logradas a trav@'es de las funciones @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}. 
 
 @node DESIGUALDADES, SINTAXIS, EXPRESIONES COMPLEJAS, Expresiones
@@ -87,10 +88,11 @@ menor o igual a:  <=
 
 @node SINTAXIS, Definiciones para Expresiones, DESIGUALDADES, Expresiones
 @section SINTAXIS
+
 Es posible agregar nuevos operadores a Maxima (de tipo infijo, prefijo,
-postfijo, unarios, o de comparaci@'on con precedencias dadas), remover
-operadores existentes o redefinir la precedencia de un operador existente.
-Mientras la sintaxis de Maxima sea adecuada para la mayor@'{@dotless{i}}a de aplicaciones ordinarias, es posible definir nuevos operadores o eliminar unos
+postfijo, unarios, o de comparaci@'on con las precedencias dadas), remover
+operadores existentes o redefinir la precedencia de un operador
+existente. Mientras la sintaxis de Maxima sea adecuada para la mayor@'{@dotless{i}}a de aplicaciones ordinarias, es posible definir nuevos operadores o eliminar unos
 predefinidos que se adapten a la forma del usuario. El mecanismo de
 extensi@'on es m@'as bien sencillo y su sencillez se muestra en los
 ejemplos siguientes.  
@@ -98,17 +100,32 @@ ejemplos siguientes.
 @c ********************************************************
 
 @example
+
 (%i1) prefix ("ddx")$
 (%i2) ddx y$        /* equivalente a "ddx"(y) */
 (%i3) infix ("<-")$
 (%i4) a <- ddx y$   /* equivalente a "<-"(a, "ddx"(y)) */
+
 @end example
 
 Para cada uno de los tipos de operador excepto @code{special}, existe
-una funci@'on de creaci@'on  correspondiente que dar@'a al lexema @footnote{N.d.T: El lexema es un componente que aporta el significado b@'asico, en este caso del operador} espec@'{@dotless{i}}fico las propiedades correspondientes para el an@'alisis sint@'actico @footnote{N.d.T: En el documento original se refieren a parsing. Se tradujo como an@'alisis sint@'actico, pero en realidad es un proceso de exploraci@'on de series para la determinaci@'on de componentes. @i{Definici@'on tomada del Diccionario T@'ecnico Inform@'atico, parte del Proyecto LuCAS @url{http://es.tldp.org}}}. As@'{@dotless{i}} @code{prefix ("ddx")} har@'a de @code{prefix} un operador prefijo s@'olo como @code{-} o @code{not}. Por supuesto, que ciertas funciones de extensi@'on requieren informaci@'on adicional tal como la clave correspondiente para un operador de 
-comparaci@'on. Adicionalmente, 
+una funci@'on de creaci@'on  correspondiente que dar@'a al lexema
+@footnote{N.d.T: El lexema es un componente que aporta el significado
+b@'asico, en este caso del operador} espec@'{@dotless{i}}fico las
+propiedades correspondientes para el an@'alisis sint@'actico
+@footnote{N.d.T: En el documento original se refieren a parsing. Se ha
+traducido como an@'alisis sint@'actico, pero en realidad es un proceso
+de exploraci@'on de series para la determinaci@'on de
+componentes. @i{Definici@'on tomada del Diccionario T@'ecnico
+Inform@'atico, parte del Proyecto LuCAS
+@url{http://es.tldp.org}}}. As@'{@dotless{i}} @code{prefix ("ddx")}
+har@'a de @code{prefix} un operador prefijo s@'olo como @code{-} o
+@code{not}. Por supuesto, que ciertas funciones de extensi@'on
+requieren informaci@'on adicional tal como la clave correspondiente
+para un operador de comparaci@'on. Adicionalmente, 
 
 @c *****************************************************
+
 
 In addition, binding powers
 and parts of speech must be specified for all keywords defined.  This
@@ -130,7 +147,9 @@ matchfix (operator, match, argpos[any], pos[any])
 @end example
 
 @c ********************************
+
 Las opciones por defecto han sido 
+ 
 The defaults have been provided so that a user who does not wish
 to concern himself with parts of speech or binding powers may simply
 omit those arguments to the extension functions.  Thus the following
@@ -145,11 +164,17 @@ prefix ("ddx", 180)$
 prefix ("ddx")$
 @end example
 
-It is also possible to remove the syntax properties of an operator
-by using the functions @code{remove} or @code{kill}.  Specifically,
-@code{remove ("ddx", op)} or @code{kill ("ddx")} will return @code{ddx} to operand
-status; but in the second case all the other properties of @code{ddx} will
-also be removed.
+Es posible remover las propiedades sint@'acticas de un operador usando
+las funciones @code{remove} o @code{kill}. Especficamente,
+@code{remove ("ddx", op)} o @code{kill ("ddx")} retornar@'a el estado
+del operador @code{ddx}; pero por segunda vez todas las propiedades de 
+@code{ddx} ser@'an removidas. 
+
+@c It is also possible to remove the syntax properties of an operator
+@c by using the functions @code{remove} or @code{kill}.  Specifically,
+@c @code{remove ("ddx", op)} or @code{kill ("ddx")} will return @code{ddx} to operand
+@c status; but in the second case all the other properties of @code{ddx} will
+@c also be removed.
 
 @example
 (%i1) prefix ("ddx", 180, any, any)$
@@ -201,13 +226,14 @@ Hace de ai una constante como es @code{%pi}.
 @defun constantp (expr)
 Retorna @code{true} si @code{expr} es una constante (i.e. compuesta de 
 n@'umeros y @code{%pi}, @code{%e}, @code{%i} o cualesquiera variables limitadas a una constante o declaradas constantes por medio de @code{declare}), en otro caso retorna @code{false}. Cualquier funci@'on cuyos argumentos 
-son constantes, tambi@'en es considerada a ser una constante.
+son constantes, tambi@'en es considerada como una constante.
  
 @end defun
 
 @defun declare (a1, f1, a2, f2, ...)
+
 Retorna el @'atomo a[i], el indicador f[i]. Los a[i] y f[i] pueden
-tambi@'en ser listas de @'atomos e indicadores respectivamente en cuyo
+tambi@'en ser listas de @'atomos e indicadores respectivamente, en cuyo
 caso cada uno de los @'atomos tienen todas las propiedades. Los posibles
 indicadores y sus significados son: 
  
@@ -229,14 +255,13 @@ respecto al operador punto.
 
 @code{bindtest} causa en a[i] una se@~nal de error si alguna vez se usa
 en un computo sin l@'{@dotless{i}}mite. @code{declare ([var1, var2, ...], bindtest)} causa que Maxima genere un mensaje de error cada vez que en cualquiera de las vari ocurra un computo infinito. 
-
-
 Actualmente Maxima reconoce y usa las siguientes caracter@'{@dotless{i}}sticas de 
 los objetos: 
 
 @c THIS LIST AND NEXT ONE COMPRISE features !!!
 @c SHOULD GIVE A REFERENCE TO features INSTEAD OF LISTING !!!
 @c NEED TO CHECK THIS LIST !!!
+
 @example
 par, impar, entero, racional, irracional, real, imaginario y
 complejo. 
@@ -245,9 +270,9 @@ complejo.
 Las caracter@'{@dotless{i}}sticas @'utiles de las funciones incluyen: 
 
 @c NEED TO CHECK THIS LIST !!!
+
 @example
-incremento, decremento, 
-oddfun (funci@'on odd), evenfun (funci@'on even),
+incremento, decremento, oddfun (funci@'on odd), evenfun (funci@'on even),
 comutativa (o sim@'etrica), antisim@'etrica, asociativa por izquierda y
 asociativa por derecha. 
 @end example
@@ -259,6 +284,9 @@ si un objeto ha sido declarado para tener "feature". V@'eases tambi@'en @code{fe
 @end defun
 
 @defun disolate (expr, var1, var2, ..., varn)
+
+Es similar a @code{isolate (expr, var)}
+
 is similar to @code{isolate (expr, var)}
 except that it enables the user to isolate
 more than one variable simultaneously.  This might be useful, for

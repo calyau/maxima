@@ -1,7 +1,7 @@
 @menu
 * Introducci@'on a la Ayuda::        
 * Lisp y Maxima::            
-* El Recolector de Basura::          
+* Recolector de Basura::          
 * Documentaci@'on::               
 * Definiciones para la Ayuda::        
 @end menu
@@ -118,14 +118,14 @@ maxima usted debe usar global:typep (o cl:typep para common lisp). de esta maner
 Para mirar cuales s@'{@dotless{i}}mbolos estan empaquetados, mire en "src/maxima-package.lisp" 
 o haga una descripci@'on del paquete al nivel lisp.
 
-@node El Recolector de Basura, Documentaci@'on, Lisp y Maxima, Ayuda
+@node Recolector de Basura, Documentaci@'on, Lisp y Maxima, Ayuda
 @section Recolector de Basura
 
 La computaci@'on simb@'olica tiende a crear una buena cantidad de basura, y un manejo efectivo de esto puede ser crucial al t@'ermino de esos programas. 
 
 Bajo GCL (GNU Common Lisp), en los sistemas UNIX donde la llamada al  sistema mprotect esta disponible (incluyendo SUN OS 4.0 y algunas variantes de BSD) un recolector de basura estratificado est@'a disponibe. Estos l@'{@dotless{i}}mitantes de colecci@'on para memoria virtual, han sido escritos recientemente. Mire la documentaci@'on de GCL bajo ALLOCATE y GBC.  En el nivel lisp haga (setq si::*notify-gbc* t) eso le ayudar@'a a determinar cuales @'areas necesitan m@'as espacio.
 
-@node Documentaci@'on, Definiciones para la Ayuda, El Recolector de Basura, Ayuda
+@node Documentaci@'on, Definiciones para la Ayuda, Recolector de Basura, Ayuda
 @section Documentaci@'on
 
 Las fuentes de la documentaci@'on est@'an en formato texinfo (.texi). De este formato nosotros podemos producir  los archivos info usados por la l@'{@dotless{i}}nea de comandos: @code{?} y por @code{describe}.  Tambi@'en se pueden crear archivos en formato html y pdf.

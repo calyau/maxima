@@ -7,10 +7,10 @@
 * Definici@'on Num@'erica::   
 @end menu
 
-@node Introducci@'on a Num@'erico, DCADRE, Num@'erico, Num@'erico
+@node Introducci@'on a Num@'erico, DCADRE, Trabajo Num@'erico, Trabajo Num@'erico
 @section Introducci@'on a Num@'erico
 
-@node DCADRE, ELLIPT, Introducci@'on a Num@'erico, Num@'erico
+@node DCADRE, ELLIPT, Introducci@'on a Num@'erico, Trabajo Num@'erico
 @section DCADRE
 El siguiente es obsoleto. Para hacer una interfaz para librer@'{@dotless{i}}as
 de fortran en el MAXIMA actual observe los ejemplos en
@@ -143,7 +143,7 @@ de Boor, Calr, ``CADRE: Un Algoritmo para Cuadratura Num@'erica,''
   Software Matem@'atico (John R. Rice, Ed.), New York, Prensa Acad@'emica,
   1971, Cap@'{@dotless{i}}tulo 7.
 
-@node ELLIPT, FOURIER, DCADRE, Num@'erico
+@node ELLIPT, FOURIER, DCADRE,Trabajo  Num@'erico
 @section ELLIPT
  - Un paqute en el directorio SHARE para rutinas Num@'ericas para
 funciones Elipticas e Integrales Elipticas Completas. (Notaci@'on de
@@ -171,7 +171,7 @@ ELLIPTE1(M1) - lo mismo pero con m@'odulo complementario.
 ELLIPTE(M):=ELLIPTE1(1-M); entonces use if M ~ 1
 @end example
 
-@node FOURIER, NDIFFQ, ELLIPT, Num@'erico
+@node FOURIER, NDIFFQ, ELLIPT, Trabajo Num@'erico
 @section FOURIER
  - Hay un paquete de Trasnformaciones R@'apidas de Fourier, haga DESCRIBE(FFT)
 para detalles. Tambi@'en existe un paquete de Series de Fourier. Este puede ser
@@ -182,7 +182,7 @@ ABS(a*x+b) por a*x+b). Haga PRINTFILE(FOURIE,USAGE,DSK,SHARE1); para
 una lista de las funciones inclu@'{@dotless{i}}das.
 
 
-@node NDIFFQ, Definici@'on Num@'erica, FOURIER, Num@'erico
+@node NDIFFQ, Definici@'on Num@'erica, FOURIER, Trabajo Num@'erico
 @section NDIFFQ
 un paquete residiendo en el direcvtorio SHARE para soluciones num@'ericas
 de ecuaciones diferenciales. LOAD("NDIFFQ"); lo cargar@'a
@@ -204,7 +204,7 @@ segundo orden.
 
 @c end Conceptos Num@'ericos 
  
-@node Definici@'on Num@'erica,  , NDIFFQ, Num@'erico
+@node Definici@'on Num@'erica,  , NDIFFQ, Trabajo Num@'erico
 @section Definici@'on Num@'erica
 @c @node FFT
 @c @unnumberedsec phony

@@ -1,10 +1,10 @@
 @c end concepts Number Theory
 @menu
-* Definitions for Number Theory::  
+* Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
 @end menu
 
-@node Definitions for Number Theory,  , Number Theory, Number Theory
-@section Definitions for Number Theory
+@node Definiciones para Teor@'{@dotless{i}}a de N@'umeros,  , Teor@'{@dotless{i}}a de N@'umeros, Teor@'{@dotless{i}}a de N@'umeros
+@section Definiciones para Teor@'{@dotless{i}}a de N@'umeros
 @c @node BERN
 @c @unnumberedsec phony
 @defun BERN (x)

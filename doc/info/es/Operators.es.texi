@@ -1,7 +1,7 @@
 @menu
 * n-arios::                        
 * no-fijos::                       
-* operadores::                    
+* operador::                    
 * postfijos::                     
 * prefijos::                      
 * Definiciones para Operadores::   
@@ -15,20 +15,20 @@ Un operador de tipo @code{nary}(n-ario, en Maxima nary) es usado para denotar un
 
 Funciones relacionadas: @code{syntax}.
 
-@node no-fijos, operadores, n-arios, operadores
+@node no-fijos, operador, n-arios, Operadores
 
 @section no-fijos
 
-Los operadores de tipo @code{nofix} (no-fijos, en Maxima nofix) son usados para denotar funciones que no reciben argumentos. La mera presencia de tal operador en un comando causar@'a que la correspondiente funci@'on sea evaluada. Por ejemplo, cuando se escribe "exit;" para salir de una interrupci@'on de Maxima, "exit" se est@'a comportando de forma similar a un operador no-fijo (@code{nofix}). La funci@'on @code{nofix{"x"}} es una extensi@'on de la funci@'on syntax la cual declara a x como un operador @code{nofix}. 
+Los operadores de tipo @code{nofix} (no-fijos, en Maxima nofix) son usados para denotar funciones que no reciben argumentos. La mera presencia de tal operador en un comando causará que la correspondiente función sea evaluada. Por ejemplo, cuando se escribe "exit;" para salir de una interrupción de Maxima, "exit" se est@'a comportando de forma similar a un operador no-fijo (@code{nofix}). La función @code{nofix("x")} es una extensión de la función syntax la cual declara a x como un operador @code{nofix}. 
 
 Funciones relacionadas @code{syntax}.
 
 
-@node operatores, postfijos, no-fijos, Operadores
+@node operador, postfijos, no-fijos, Operadores
 @section operadores
 Mirar @code{operadores}.
 
-@node postfijos, prefijos, operadores, Operadores
+@node postfijos, prefijos, operador, Operadores
 @section postfijos
 
 Un operador de tipo @code{postfix} (postfijo) en contraparte de los de tipo @code{prefix} denota funciones de un s@'olo argumento, pero en este caso el argumento precede inmediatamente la ocurrencia del operador en la cadena de entrada, e.g. 3!. La funci@'on @code{postfix("x")} es una extensi@'on de la funci@'on syntax para declarar a x como un operador @code{postfix}. 
@@ -45,7 +45,7 @@ Funciones relacionadas: @code{syntax}.
 @node Definiciones para Operadores,  , prefijos, Operadores
 @section Definiciones para Operadores
 
-@deffn operador "!"
+@deffn {Operator} "!"
 El operador factorial. 
 Para cualquier n@'umero complejo @code{x} (incluyendo enteros, racionales, y n@'umeros reales) excepto para enteros negativos, @code{x!} se define como @code{gamma(x+1)}. 
 
@@ -116,12 +116,12 @@ antecedida por el operador comilla.
 
 @end deffn
 
-@deffn operador "!!"
+@deffn {Operator} "!!"
 El operador doble factorial.
 
 Para un n@'umero entero, de punto flotante o racional @code{n},
 @code{n!!} se evaluar@'a como el producto de @code{n (n-2) (n-4) (n-6) ... (n - 2 (k-1))}
-donde @code{k} es igual a @code{entier{n/2}}, que es, el mayor entero
+donde @code{k} es igual a @code{entier(n/2)}, que es, el mayor entero
 menor o igual a @code{n/2}. 
 Note que esta definici@'on no coincide con otras definciones publicadas para argumentos, los cuales no son enteros. 
 
@@ -136,12 +136,12 @@ Para un argumento @code{n} el cual no es un n@'umero entero, punto flotante o ra
 
 @end deffn
 
-@deffn operador "#"
-El operador l@'ogico "No igual".
+@deffn {Operator} "#"
+El operador l@'ogico "Diferente de".
 
 @end deffn
 
-@deffn operador "."
+@deffn {Operator} "."
 El operador punto, para multiplicaci@'on de matrices (no-conmutativo). 
 Cuando "." es usado en esta forma, los espacios estar@'{@dotless{i}}an dejados de
 ambos lados de @'este, e.g. @code{A . B}. Esto lo distingue de la forma
@@ -162,18 +162,18 @@ y
 
 @end deffn
 
-@deffn operador ":"
+@deffn {Operator} ":"
 El operador de asignaci@'on. E.g. A:3 se asigna a la variable A el valor de 3.
 @end deffn
 
-@deffn operador "::"
+@deffn operator "::"
 Operador de asignaci@'on. :: asigna el valor de una expresi@'on
 en su derecha a el valor de la cantidad en su izquierda, la cual
 debe evaluarse a una variable de tipo at@'omica o una variable sub-escrita.
 
 @end deffn
 
-@deffn operador "::="
+@deffn {Operator} "::="
 El operador "::=" es usado en vez del ":=" para indicar que lo que
 sigue, es decir despu@'es del operador, es una definici@'on de macro, 
 m@'as que una definici@'on ordinaria de funci@'on.
@@ -182,26 +182,27 @@ Mirar tambi@'en:  @code{macros}.
 
 @end deffn
 
-@deffn operador ":="
+@deffn operator ":="
 El operador de definici@'on de funciones. E.g. @code{f(x):=sin(x)} define
 a una funci@'on @code{f}. 
 
 @end deffn
 
-@deffn operador "="
+@deffn {Operator} "="
 denota una ecuaci@'on para Maxima. El patr@'on de emparejamiento
 en Maxima denota una relaci@'on total que se sostiene entre dos
 expresiones si y s@'olo si las expresiones son sint@'acticamente identicas.
 @end deffn
 
-@defun abs (exp)
+@deffn {Function} abs (@var{exp})
 retorna el valor absoluto de exp. Si la expresi@'on es compleja, retorna
 el m@'odulo de exp.
 
-@end defun
+@end deffn
+
 @c end concepts Operators
 
-@defvr {special symbol} additive
+@defvr {Keyword} additive
 Si @code{declate(f,additive)} ha sido ejecutado, entonces: 
 
 (1) Si @code{f} es univariado, cada vez que el simplificador encuentre
@@ -211,7 +212,7 @@ Si @code{declate(f,additive)} ha sido ejecutado, entonces:
 
 @end defvr
 
-@defvr keyword allbut
+@defvr {Keyword} allbut
 trabaja con los comandos @code{part}(i.e. @code{part}, @code{inpart}, @code{substpart},
 @code{substinpart}, @code{dpart}, y @code{lpart}). Por ejemplo:
 
@@ -378,7 +379,7 @@ cualquier otro caso.
 
 @end defun
 
-@deffn operador pred
+@deffn {Operator} pred
 Causa predicados (expresiones las cuales se evaluan a @code{true} 
 o a @code{false}) para ser evaluados.
 

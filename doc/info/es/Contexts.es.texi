@@ -4,8 +4,6 @@
 
 @node Definiciones para Contextos,  , Contextos, Contextos
 @section Definiciones para Contextos
-@c @node ACTIVATE
-@c @unnumberedsec phony
 @defun ACTIVATE (cont1, cont2, ...)
 
 causa que los contextos espec@'{@dotless{i}}ficos @code{conti} sean 

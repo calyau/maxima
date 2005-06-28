@@ -156,7 +156,7 @@ prod es un producto de potencias positivas o negativas del siguiente
 tipo de t@'erminos:
 @itemize @bullet
 @item
-    (1) @´Atomos que LETSIMP buscar@'a literalmente a menos que llame
+    (1) @'Atomos que LETSIMP buscar@'a literalmente a menos que llame
 previamente LETSIMP, la funci@'on MATCHDECLARE es usada para asociar un
 predicado con el @'atomo. En este caso LETSIMP combinar@'a el @'atomo
 para cualquier t@'ermino de un producto satisfaciendo el predicado.

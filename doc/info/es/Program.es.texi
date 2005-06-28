@@ -1,16 +1,18 @@
 @menu
-* Introducci@'on a Flujo de Programa::  
-* Definici@'on para Flujo de Programa::  
+* Introducci@'on a la Programaci@'on::  
+* Definiciones para la Programaci@'on::  
 @end menu
 
-@node Introducci@'on a Flujo de Programa, Definici@'on para Flujo de Programa, Flujo de Programa, Flujo de Programa
-@section Introducci@'on a Flujo de Programa
+@node Introducci@'on a la Programaci@'on, Definiciones para la Programaci@'on, Programaci@'on, Programaci@'on
+@section Introducci@'on a la Programaci@'on
 
 MACSYMA provee un ciclo DO para iteraci@'on, as@'{@dotless{i}} bien como el constructor m@'as primitivo tal como GO.
 
 @c end concepts Flujo de Programa
-@node Definici@'on para Flujo de Programa,  , Introducci@'on a Flujo de Programa, Flujo de Programa
-@section Definici@'on para Flujo de Programa
+@node Definiciones para la Programaci@'on,  , Introducci@'on a la Programaci@'on, Programaci@'on
+
+@section Definiciones para la Programaci@'on
+
 @c @node BACKTRACE, {operador especial}, ITERATION, Flujo de Programa
 @c @unnumberedsec phony
 @defvar BACKTRACE

@@ -1,10 +1,9 @@
-@c end concepts Symmetries
 @menu
-* Definitions for Symmetries::  
+* Definiciones para Simetr@'{@dotless{i}}as::  
 @end menu
 
-@node Definitions for Symmetries,  , Symmetries, Symmetries
-@section Definitions for Symmetries
+@node Definiciones para Simetr@'{@dotless{i}}as,  , Simetr@'{@dotless{i}}as, Simetr@'{@dotless{i}}as
+@section Definiciones para Simetr@'{@dotless{i}}as
 @c @node COMP2PUI
 @c @unnumberedsec phony
 @defun COMP2PUI (n, l)

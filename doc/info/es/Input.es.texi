@@ -21,16 +21,15 @@ archivos usanso MACSYMA. Otros comandos que tratan archivos son: SAVE,
 FASSAVE,  STORE, LOAD, LOADFILE,  RESTORE, UNSTORE,  STRINGOUT, BATCH,
 BATCON, DEMO, WRITEFILE, CLOSEFILE, DELFILE, REMFILE, y APPENDFILE.
 
-@node PLAYBACK, Definici@'ones Entrada y Salida, FILES, Entrada y Salida
-@section PLAYBACK
+@node Ejecuci@'on, Definiciones para Entrada y Salida, Archivos, Entrada y Salida
+@section Ejecuci@'on
  Esto  es posible para  volver atras  las l@'{@dotless{i}}neas  de entrada  en una
 ventana  desplazada   abajo,  y   entonces  no  perder   los  trabajos
 actuales.  Esto puede  ser realizado  mediante el  tecleo  de Function
 E.  Un argumento  num@'erico dice  el n@'umero  de l@'{@dotless{i}}nea  en  el que
 inicia, de otra manera este volver@'a 40 l@'{@dotless{i}}neas
 
-@c end concepts Entrada y Salida
-@node Definiciones para Entrada y Salida,  , PLAYBACK, Entrada Y Salida
+@node Definiciones para Entrada y Salida,  , Ejecuci@'on, Entrada y Salida
 
 @section Definiciones para Entrada y Salida
 
@@ -888,8 +887,8 @@ Note: a STRINGOUT may be done while a WRITEFILE is in progress.
 @end defun
 
 @defun TEX (expr)
-@defunx TEX(expr,filename)
-@defunx TEX(label,filename)
+@defunx TEX (expr,filename)
+@defunx TEX (label,filename)
 
 In the case  of a label, a left-equation-number  will be produced.  in
 case a file-name is supplied, the salida will be appended to the file.
@@ -913,7 +912,7 @@ $$-\cos x$$ (D6) FALSE (C7) tex(d1,"/tmp/jo.tex");
 where   the   last  expression   will   be   appended   to  the   file
 @file{/tmp/jo.tex}
 @end defun
-@defun SYSTEM(commy)
+@defun SYSTEM (commy)
 Execute  COMMy as  a  subprocess.  The  commy  will be  passed to  the
 default shell for execution.  System is not supported by all operating
 systems, but generally  exists in the unix environment.   if hist is a
@@ -937,7 +936,7 @@ system("(xgraph -bar -brw .7 -nl < _hist.out; rm -f _hist.out)&")
 
 @end defvar
 
-@deffn {macro} WITH_STDOUT(file,stmt1,stmt2,...)
+@deffn {macro} WITH_STDOUT (file,stmt1,stmt2,...)
 Opens file y then evaluates stmt1, stmt2, ....  Any printing to styard
 salida goes  to the file instead  of the terminal.   It always returns
 FALSE.   Note the  binding of  display2d  to be  false, otherwise  the

@@ -1,17 +1,18 @@
 @menu
-* Introducci@'on a la Integraci@'on       
-* Definiciones para la Integraci@'on       
+* Introducci@'on a la Integraci@'on::
+* Definiciones para Integraci@'on::
 @end menu
     
-@node Introduction to Integration, Definitions for Integration, Integration, Integration
-@section introducci@'on a la Integraci@'on   
+@node Introducci@'on a la Integraci@'on, Definiciones para Integraci@'on, Integraci@'on, Integraci@'on
+
+@section Introducci@'on a la Integraci@'on   
 
 MAXIMA tiene varias rutinas por ocuparse de integraci@'on. El INTEGRE el orden hace uso de la mayor@'{@dotless{i}}a de ellos. Hay tambi@'en los ANTID empaquetan que maneja una funci@'on no especificada (y sus derivado, claro). Para los usos num@'ericos, hay los ROMBERG funcionan, y la versi@'on de IMSL de Romberg, DCADRE. Hay tambi@'en un integrator del adaptave que usa el Newton-Cotes 8 regla de cuadratura de tablero, QUANC8 llamado. Las Funciones de Hypergeometric est@'an trabaj@'andose adelante, haga DESCRIBE(SPECINT); para los detalles. Generalmente hablando, MAXIMA s@'olo se ocupa de integrales que son los integrable por lo que se refiere a las funciones" "elementales (las funciones racionales, trigonometrics, los le@~nos, el exponentials, los radicales, etc.) y unas extensiones (la funci@'on del error, dilogarithm). no se ocupa de integrales por lo que se refiere a las funciones desconocidas como el g(x) y h(x).   
     
   
 @c end concepts Integration
-@node Definitions for Integration,  , Introduction to Integration, Integration
-@section 1.1 definiciones para la Integraci@'on   
+@node Definiciones para Integraci@'on,  , Introducci@'on a la Integraci@'on, Integraci@'on
+@section Definiciones para Integraci@'on   
 
 @c @node CHANGEVAR, DBLINT, INTEGRALS, Integration
 @c @unnumberedsec phony
@@ -93,7 +94,7 @@ la funci@'on del error cuyo derivado es: 2*EXP(-X^2)/SQRT(%PI).
 @end defun
 @c @node ERFFLAG, ERRINTSCE, ERF, Integration
 @c @unnumberedsec phony
-@defvar Inconstante: ERFFLAG   
+@defvar ERFFLAG   
 
 el valor predeterminado: [VERDADERO] si FALSO le impide a RISCH introducir el ERF funciona en la respuesta si no hab@'{@dotless{i}}a ninguno en el integrand empezar con.   
   
@@ -101,7 +102,7 @@ el valor predeterminado: [VERDADERO] si FALSO le impide a RISCH introducir el ER
 @end defvar
 @c @node ERRINTSCE, ILT, ERFFLAG, Integration
 @c @unnumberedsec phony
-@defvar Inconstante: ERRINTSCE   
+@defvar ERRINTSCE   
 
 el valor predeterminado: [VERDADERO] - Si una llamada a la rutina de INTSCE no es del formulario   
   
@@ -163,8 +164,7 @@ POS;
   
 @end example
 @end defun
-@c @node INTEGRATE, INTEGRATION_CONSTANT_COUNTER, ILT, Integration
-@c @unnumberedsec phony
+
 @defun  La funci@'on: INTEGRE (el exp, var)   
 
 integra el exp con respecto a var o ingresos una expresi@'on @'{@dotless{i}}ntegra (el formulario del nombre) si no puede realizar la integraci@'on (vea nota 1 debajo). hablando tres fases Aproximadamente se usan:
@@ -223,13 +223,12 @@ donde UN, B y C son las ra@'{@dotless{i}}ces. MAXIMA integrar@'a este formulario
   
 @end example
 @end defun
-@c @node INTEGRATION_CONSTANT_COUNTER, INTSCE, INTEGRATE, Integration
-@c @unnumberedsec phony
-@defvar Inconstante: INTEGRATION_CONSTANT_COUNTER   
+
+@defvar INTEGRATION_CONSTANT_COUNTER   
 - un contador que se pone al d@'{@dotless{i}}a cada tiempo una constante de integraci@'on (llam@'o por MAXIMA, por ejemplo, "INTEGRATIONCONSTANT1") se introduce en una expresi@'on por la integraci@'on indefinida de una ecuaci@'on.   
 
 @end defvar
-@defvar Inconstante: INTEGRATE_USE_ROOTSOF   
+@defvar INTEGRATE_USE_ROOTSOF   
 el valor predeterminado: [falso] Si no falso entonces cuando el denominador de una funci@'on racional no puede factorizarse, nosotros damos el integral en un formulario que es una suma encima de las ra@'{@dotless{i}}ces del denominador:   
 @example
   (C4) el integrate(1/(1+x+x^5),x);  
@@ -275,9 +274,6 @@ Nota que puede ser que nosotros queremos aproximar las ra@'{@dotless{i}}ces en e
   
 @end defvar
 
-
-@c @node INTSCE, LDEFINT, INTEGRATION_CONSTANT_COUNTER, Integration
-@c @unnumberedsec phony
 @defun La funci@'on: INTSCE (el expr,var)   
 
 El CECEO de INTSCE contiene una rutina, escrita por Richard Bogen, por integrar productos de sines,cosines y exponentials del formulario 
@@ -420,7 +416,7 @@ Es aun m@'as corto esta manera, y las variables no necesitan ser declaradas porq
 @end defun
 @c @node ROMBERGABS, ROMBERGIT, ROMBERG, Integration
 @c @unnumberedsec phony
-@defvar  Inconstante: ROMBERGABS   
+@defvar ROMBERGABS   
 
 el valor predeterminado: [0.0] (0.0B0) Asumiendo ese estimaciones sucesivas producidas por ROMBERG son Y[0], Y[1], Y[2] etc., entonces ROMBERG volver@'a despu@'es de las iteraciones de N si (hablando aproximadamente) (ABS(Y[N]-Y[N-1]) <= ROMBERGABS OREGÓN ABS(Y[N]-Y[N-1]) / (SI Y[N]=0.0 THEN 1.0 RESTO Y[N]) <= ROMBERGTOL) es VERDAD. (La condici@'on en el n@'umero de iteraciones dado por ROMBERGMIN tambi@'en debe satisfacerse.) As@'{@dotless{i}} si ROMBERGABS tiene 0.0 a@~nos (el valor predeterminado) usted apenas consigue la prueba del error relativa. La utilidad de la variable adicional viene cuando usted quiere realizar un integral d@'onde la contribuci@'on dominante viene de una regi@'on peque@~na. Entonces usted puede hacer el integral primero encima de la regi@'on dominante peque@~na, mientras usando el cheque de exactitud relativo, seguido por el integral encima del resto de la regi@'on que usa el cheque de exactitud absoluto. El ejemplo: Suponga usted quiere computar 
 @example
@@ -449,20 +445,21 @@ As@'{@dotless{i}} si F(X) era una funci@'on que tom@'o un tiempo largo para comp
 @end defvar
 @c @node ROMBERGIT, ROMBERGMIN, ROMBERGABS, Integration
 @c @unnumberedsec phony
-@defvarInconstante: ROMBERGIT   
+@defvar ROMBERGIT   
 el valor predeterminado: [11] - la exactitud del ROMBERG integraci@'on orden se gobierna por las variables globales ROMBERGTOL[1.E-4] y ROMBERGIT[11]. ROMBERG devolver@'a un resultado si la diferencia relativa en las aproximaciones sucesivas est@'a menos de ROMBERGTOL. Probar@'a la partici@'on por mitad el stepsize que ROMBERGIT cronometra antes de que se rinda.   
   
 @end defvar
+
 @c @node ROMBERGMIN, ROMBERGTOL, ROMBERGIT, Integration
 @c @unnumberedsec phony
-@defvar Inconstante: ROMBERGMIN   
+@defvar ROMBERGMIN   
 el valor predeterminado: [0] - gobierna el n@'umero m@'{@dotless{i}}nimo de evaluaciones de la funci@'on que ROMBERG har@'a. ROMBERG evaluar@'a sus primeros arg. por lo menos 2^(ROMBERGMIN+2)+1 veces. Esto es @'util para integrar las funciones oscilatorias, cuando el normal converge la prueba a veces podr@'{@dotless{i}}a pasar mal.   
   
   
 @end defvar
 @c @node ROMBERGTOL, TLDEFINT, ROMBERGMIN, Integration
 @c @unnumberedsec phony
-@defvar Inconstante: ROMBERGTOL   
+@defvar ROMBERGTOL   
 el valor predeterminado: [1.E-4] - La exactitud del ROMBERG integraci@'on orden se gobierna por las variables globales ROMBERGTOL[1.E-4] y ROMBERGIT[11]. ROMBERG devolver@'a un resultado si la diferencia relativa en las aproximaciones sucesivas est@'a menos de ROMBERGTOL. Probar@'a la partici@'on por mitad el stepsize que ROMBERGIT cronometra antes de que se rinda.   
   
   

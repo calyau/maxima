@@ -1,6 +1,3 @@
-@c @menu
-@c @end menu
-
 Usted puede iniciar Maxima con el comando "maxima". MAXIMA desplegar@'a alguna informaci@'on importante acerca de la versi@'on que usted est@'a usando y un prompt. Cada comando que vaya a ser ejecutado por MAXIMA debe terminar con un punto y coma. Para finalizar una sesi@'on en MAXIMA se emplea el comando "quit();". A continuaci@'on se presenta un breve ejemplo de sesi@'on:
 
 @example
@@ -154,7 +151,7 @@ MAXIMA puede resolver sistemas de ecuaciones lineales y c@'ubicas:
 (D12)              [x = - SQRT(5) %I, x = SQRT(5) %I, x = 3]
 @end example
 
-MAXIMA puede resolver conjuntos de ecuaciones no lineales.Tenga en cuenta que s@'{i} usted no desea que el resultado sea impreso, puede finalizar el comando con @kbd{$} en vez de @kbd{;}.  
+MAXIMA puede resolver conjuntos de ecuaciones no lineales.Tenga en cuenta que s@'{@dotless{i}} usted no desea que el resultado sea impreso, puede finalizar el comando con @kbd{$} en vez de @kbd{;}.  
 
 @example
 (C13) eq1: x^2 + 3*x*y + y^2 = 0$
@@ -192,7 +189,7 @@ Bajo un sistema X window, (es decir que poseea interfaz gr@'afica), MAXIMA puede
 (D15)                                  0
 @end example
 
-Moviendo el cursor hacia la esquina superior izquierda de la ventana que contiene la gr@'afica, se generar@'a un men@'u que, entre otras cosas, permitir@'a exportar la gr@'afica a formato Postscript. (Por defecto el archivo es puesto en tu directorio de usuario). Tambi@'en existe la posibilidad de rotar con el puntero del rat@'on una gr@'afica en tres dimensiones. 
+Moviendo el cursor hacia la esquina superior izquierda de la ventana que contiene la gr@'afica, se generar@'a un men@'u que, entre otras cosas, permitir@'a exportar la gr@'afica a formato Postscript. (Por defecto el archivo es puesto en el directorio de usuario). Tambi@'en existe la posibilidad de rotar con el puntero del rat@'on una gr@'afica en tres dimensiones. 
 
 @c Traducido por: Juan Pablo Romero Bernal
 @c Revisado por	: Juan Pablo Romero Bernal

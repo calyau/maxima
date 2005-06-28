@@ -1,7 +1,9 @@
 @menu
 * Definiciones para Graficaci@'on::    
 @end menu
-@node Definciones para Graficaci@'on,  , Graficar, Graficar
+
+@node Definiciones para Graficaci@'on,  , Graficaci@'on, Graficaci@'on
+
 @section Definiciones para Graficaci@'on
 
 @defvar IN_NETMATH [FALSE]
@@ -45,7 +47,7 @@ plot2d(sec(x),[x,-2,2],[y,-20,20],[nticks,200]);
 @end example
 @end defun
 
-@defun xgraph_curves(list)
+@defun xgraph_curves (list)
 grafica la lista de un conjunto de puntos, dados en dicha lista usando xgraph. 
 Un conjunto de puntos puede ser de la forma:
 @example

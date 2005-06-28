@@ -1,15 +1,16 @@
 @menu
-* Introduction to Function Definition::  
+* Introducci@'on a la Definici@'on de Funciones::  
 * FUNCTION::                    
 * MACROS::                      
 * OPTIMIZATION::                
-* Definitions for Function Definition::  
+* Definiciones para la Definici@'on de Funciones::  
 @end menu
 
-@node Introduction to Function Definition, FUNCTION, Function Definition, Function Definition
-@section Introduction to Function Definition
+@node Introducci@'on a la Definici@'on de Funciones, FUNCTION, Definici@'on de Funciones, Definici@'on de Funciones
+@section Introducci@'on a la Definici@'on de Funciones
 
-@node FUNCTION, MACROS, Introduction to Function Definition, Function Definition
+@node FUNCTION, MACROS, Introducci@'on a la Definici@'on de Funciones, Definici@'on de Funciones
+
 @section FUNCTION
  - To define a function in MACSYMA you use the := operator.
 E.g.
@@ -110,11 +111,11 @@ may be computed at runtime, it is useful to use @code{define} and
 possibly @code{buildq}.  
 
 
-@node MACROS, OPTIMIZATION, FUNCTION, Function Definition
+@node MACROS, OPTIMIZATION, FUNCTION, Definici@'on de Funciones
 @section MACROS
 
 
-@defun BUILDQ([varlist],expression);
+@defun BUILDQ ([varlist],expression);
 
  EXPRESSION is any single MAXIMA expression and
  VARLIST is a list of elements of the form @code{<atom>}
@@ -282,7 +283,7 @@ Hence the @code{buildq} is useful for building the form.
 @end defun
 
 
-@node OPTIMIZATION, Definitions for Function Definition, MACROS, Function Definition
+@node OPTIMIZATION, Definiciones para la Definici@'on de Funciones, MACROS, Definici@'on de Funciones
 @section OPTIMIZATION
 
 When using TRANSLATE and generating code with MACSYMA,
@@ -295,8 +296,9 @@ correctly. (This can be done by hand, of course).  The demo will only
 run in a fresh macsyma.
 
 @c end concepts Function Definition
-@node Definitions for Function Definition,  , OPTIMIZATION, Function Definition
-@section Definitions for Function Definition
+@node Definiciones para la Definici@'on de Funciones,  , OPTIMIZATION, Definici@'on de Funciones
+@section Definiciones para la Definici@'on de Funciones
+
 @c @node APPLY, BINDTEST, OPTIMIZATION, Function Definition
 @c @unnumberedsec phony
 @defun APPLY (function, list)

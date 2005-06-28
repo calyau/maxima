@@ -3,12 +3,12 @@
 * Definiciones para Trigonometr@'{@dotless{i}}a:: 
 @end menu
 
-@node Introducci@'on a la trigonometr@'{@dotless{i}}a, Definiciones para Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a
+@node Introducci@'on a la Trigonometr@'{@dotless{i}}a, Definiciones para Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a
 @section Introducci@'on a la Trigonometr@'{@dotless{i}}a
- - MACSYMA tiene algunas funciones Trigonom@'etricas definidas.  No todas las identidades trigonom@'etricas fueron programadas, pero es posible para el usuario adicionar alguna de ellas usando el modelo que empareja capacidades del sistema. Las Funciones Trigonom@'etricas definidas en MACSYMA son: ACOS, ACOSH, ACOT, ACOTH, ACSC, ACSCH, ASEC, ASECH, ASIN, ASINH, ATAN, ATANH, COS, COSH, COT, COTH,CSC, CSCH, SEC, SECH, SIN, SINH, TAN, y TANH. Hay  un n@'umero de comandos espec@'{@dotless{i}}ficos para manejar funciones trigonom@'etricas, ver TRIGEXPAND, TRIGREDUCE, y la variable TRIGSIGN.  Dos paquetes SHARE  extienden las reglas de la simplificaci@'on construidas en MACSYMA, NTRIG y ATRIG1.  Haga DESCRIBE(cmd) para m@'as detalles.
+ - Maxima tiene algunas funciones Trigonom@'etricas definidas.  No todas las identidades trigonom@'etricas fueron programadas, pero es posible para el usuario adicionar alguna de ellas usando el modelo que empareja capacidades del sistema. Las Funciones Trigonom@'etricas definidas en MACSYMA son: ACOS, ACOSH, ACOT, ACOTH, ACSC, ACSCH, ASEC, ASECH, ASIN, ASINH, ATAN, ATANH, COS, COSH, COT, COTH,CSC, CSCH, SEC, SECH, SIN, SINH, TAN, y TANH. Hay  un n@'umero de comandos espec@'{@dotless{i}}ficos para manejar funciones trigonom@'etricas, ver TRIGEXPAND, TRIGREDUCE, y la variable TRIGSIGN.  Dos paquetes SHARE  extienden las reglas de la simplificaci@'on construidas en MACSYMA, NTRIG y ATRIG1.  Haga DESCRIBE(cmd) para m@'as detalles.
 
 @c end conceptos de Trigonometria
-@node Definiciones para Trigonometr@'{@dotless{i}}a,  , Introducci@'on a la Trigonometr@'{@dotless{i}}a, Trigonometr@{i}a
+@node Definiciones para Trigonometr@'{@dotless{i}}a,  , Introducci@'on a la Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a
 @section Definiciones para Trigonometr@'{@dotless{i}}a
 @c end concepts Trigonometric
 
