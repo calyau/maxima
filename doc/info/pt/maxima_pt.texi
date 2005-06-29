@@ -9,7 +9,8 @@
 @c (texinfo-multiple-files-update "maxima.texi" t t)
 @c
 @c texinfo-multiple-files-update will delete the detailed node listing!
-
+@c texinfo Coodinator Robert Dodier
+@c Portuguese Translator Jorge Barros de Abreu <ficmati01@solar.com.br>
 
 @c %**start of header
 @setfilename  maxima.info
@@ -45,24 +46,24 @@ END-INFO-DIR-ENTRY
 @node Top, Introduction to Maxima, (dir), (dir)
 @top
 
-Maxima is a computer algebra system, implemented in Lisp.
+Maxima @'e um sistema de @'algebra computacional, implementado em Lisp.
 
-Maxima is derived from the Macsyma system,
-developed at MIT in the years 1968 through 1982 as part of Project MAC.
-MIT turned over a copy of the Macsyma source code to the Department of Energy
-in 1982; that version is now known as DOE Macsyma.
-A copy of DOE Macsyma was maintained by Professor William F. Schelter
-of the University of Texas from 1982 until his death in 2001.
-In 1998, Schelter obtained permission from the Department of Energy
-to release the DOE Macsyma source code under the GNU Public License,
-and in 2000 he initiated the Maxima project at SourceForge to maintain
-and develop DOE Macsyma, now called Maxima.
+Maxima @'e derivado do sistema Macsyma,
+desenvolvido no MIT nos anos de 1968 a 1982 como parte do Projeto MAC.
+MIT remanejou uma c@'opia do c@'odigo fonte do Macsyma para o Departamento de Energia
+em 1982; aquela vers@~ao @'e agora conhecida como Macsyma DOE.
+Uma c@'opia do Macsyma DOE foi mantida pelo Professor William F. Schelter
+da Universidade do Texas de 1982 at@'e sua morte em 2001.
+Em 1998, Schelter obteve permiss@~ao do Departamento de Energia
+para liberar o c@'odigo fonte do Macsyma DOE sob a Licen@,{c}a P@'ublica GNU,
+e em 2000 ele iniciou o projeto Maxima no SourceForge para manter
+e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 
 @c includes
 
 @menu
-Maxima infrastructure
+Infraestrutura do Maxima
 
 * Introduction to Maxima::      Sample Maxima sessions.
 * Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
@@ -76,7 +77,7 @@ Maxima infrastructure
 * Floating Point::              Low level numerical routines.
 * Contexts::                    Sets of assumed facts.
 
-Support for specific areas of mathematics
+Suporte a @'areas espec@'ificas da matem@'atica
 
 * Polynomials::                 Standard forms for polynomials, and
                                 functions operating on them.
@@ -107,7 +108,7 @@ Support for specific areas of mathematics
 * Symmetries::                  
 * Groups::                      Abstract algebra.
 
-Advanced facilities and programming
+Facilidades avan@,{c}adas e programa@,{c}@~ao
 
 * Runtime Environment::         Customization of the Maxima environment.
 * Miscellaneous Options::       Options with a global effect on Maxima.
@@ -119,18 +120,18 @@ Advanced facilities and programming
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
 
-Index
+@'Indice
 
 * Function and Variable Index:: Index.
 
 @comment @detailmenu
- --- The Detailed Node Listing ---
+ --- Listagem de Nodos Detalhada ---
 
-Introduction
+Introdu@,{c}@~ao
 
 * Introduction to Maxima::
 
-Help
+Ajuda
 
 * Introduction to Help::        
 * Lisp and Maxima::            
@@ -138,12 +139,12 @@ Help
 * Documentation::               
 * Definitions for Help::        
 
-Command Line
+Linha de Comando
 
 * Introduction to Command Line::  
 * Definitions for Command Line::  
 
-Operators
+Operadores
 
 * nary::                        
 * nofix::                       
@@ -152,7 +153,7 @@ Operators
 * prefix::                      
 * Definitions for Operators::   
 
-Expressions
+Express@~oes
 
 * Introduction to Expressions::  
 * Assignment::                  
@@ -161,100 +162,100 @@ Expressions
 * Syntax::                      
 * Definitions for Expressions::  
 
-Simplification
+Simplifica@,{c}@~ao
 
 * Definitions for Simplification::  
 
-Plotting
+Desenhando Gr@'aficos
 
 * Definitions for Plotting::    
 
-Input and Output
+Entrada e Sa@'ida
 
 * Introduction to Input and Output::  
 * Files::                       
 * Definitions for Input and Output::  
 
-Floating Point
+Ponto Flutuante
 
 * Definitions for Floating Point::  
 
-Contexts
+Contextos
 
 * Definitions for Contexts::    
 
-Polynomials
+Polin@^omios
 
 * Introduction to Polynomials::  
 * Definitions for Polynomials::  
 
-Constants
+Constantes
 
 * Definitions for Constants::   
 
-Logarithms
+Logar@'itmos
 
 * Definitions for Logarithms::  
 
-Trigonometric
+Trigonometria
 
 * Introduction to Trigonometric::  
 * Definitions for Trigonometric::  
 
-Special Functions
+Fun@,{c}@~oes Especiais
 
 * Introduction to Special Functions::  
 * specint::                     
 * Definitions for Special Functions::  
 
-Orthogonal Polynomials
+Polin@^omios Ortogonais
 
 * Introduction to Orthogonal Polynomials::
 * Definitions for Orthogonal Polynomials::
 
-Elliptic Functions
+Fun@,{c}@~oes El@'ipticas
 
 * Introduction to Elliptic Functions and Integrals::
 * Definitions for Elliptic Functions::
 * Definitions for Elliptic Integrals::
 
-Limits
+Limites
 
 * Definitions for Limits::      
 
-Differentiation
+Diferencia@,{c}@~ao
 
 * Definitions for Differentiation::  
 
-Integration
+Integra@,{c}@~ao
 
 * Introduction to Integration::  
 * Definitions for Integration::  
 
-Equations
+Equa@,{c}@~oes
 
 * Definitions for Equations::   
 
-Differential Equations
+Equa@,{c}@~oes Diferenciais
 
 * Definitions for Differential Equations::  
 
-Numerical
+Num@'erico
 
 * Introduction to Numerical::   
 * Fourier packages::                     
 * Definitions for Numerical::   
 * Definitions for Fourier Series::
 
-Statistics
+Estat@'istica
 
 * Definitions for Statistics::  
 
-Arrays and Tables
+Arrays e Tabelas
 
 * Definitions for Arrays and Tables::  
 
-Matrices and Linear Algebra
+Matrizes e @'Algebra Linear
 
 * Introduction to Matrices and Linear Algebra::  
 * Dot::                         
@@ -262,7 +263,7 @@ Matrices and Linear Algebra
 * eigen::
 * Definitions for Matrices and Linear Algebra::  
 
-Affine
+Afim
 
 * Definitions for Affine::      
 
@@ -281,63 +282,63 @@ atensor
 * Introduction to atensor::     
 * Definitions for atensor::     
 
-Series
+S@'eries
 
 * Introduction to Series::      
 * Definitions for Series::      
 
-Number Theory
+Teoria dos N@'umeros
 
 * Definitions for Number Theory::  
 
-Symmetries
+Simetrias
 
 * Definitions for Symmetries::  
 
-Groups
+Grupos
 
 * Definitions for Groups::      
 
-Runtime Environment
+Ambiente de Execu@,{c}@~ao
 
 * Introduction for Runtime Environment::  
 * Interrupts::                  
 * Definitions for Runtime Environment::  
 
-Miscellaneous Options
+Op@,{c}@~oes Diversas
 
 * Introduction to Miscellaneous Options::  
 * Share::                       
 * Definitions for Miscellaneous Options::  
 
-Rules and Patterns
+Regras e Modelos
 
 * Introduction to Rules and Patterns::  
 * Definitions for Rules and Patterns::  
 
-Lists
+Listas
 
 * Introduction to Lists::       
 * Definitions for Lists::       
 
-Sets
+Conjuntos
 
 * Introduction to Sets::       
 * Definitions for Sets::       
 
-Function Definition
+Defini@,{c}@~ao de Fun@,{c}@~ao
 
 * Introduction to Function Definition::  
 * Function::                    
 * Macros::                      
 * Definitions for Function Definition::  
 
-Program Flow
+Fluxo de Programa
 
 * Introduction to Program Flow::  
 * Definitions for Program Flow::  
 
-Debugging
+Depurando
 
 * Definitions for Debugging::   
 
