@@ -35,7 +35,7 @@ El valor de @code{algepsilon} es usado por @code{algsys}
 
 @defun bfloat (x)
 
-Convierte todos los n@'umeros y  funciones num@'ericas a n@'umeros de punto flotante grandes. Configurando @code{fpprec} a un valor @code{n}, configurar@'a la  precisi@'on de los n@'umeros flotantes grandes a @code{n} d@'gitos. Si @code{float2bf} es @code{false} un mensaje de advertencia ser@'a impreso cuando un n@'umero de punto flotante es convertido en un numero flotante grande (Pues a partir de esto se puede perder precisi@'on). 
+Convierte todos los n@'umeros y  funciones num@'ericas a n@'umeros de punto flotante grandes. Configurando @code{fpprec} a un valor @code{n}, configurar@'a la  precisi@'on de los n@'umeros flotantes grandes a @code{n} d@'igitos. Si @code{float2bf} es @code{false} un mensaje de advertencia ser@'a impreso cuando un n@'umero de punto flotante es convertido en un numero flotante grande (Pues a partir de esto se puede perder precisi@'on). 
 
 @end defun
 
