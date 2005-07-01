@@ -14,6 +14,7 @@
 
 @c %**start of header
 @setfilename  maxima.info
+@documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Maxima Manual
 @c %**end of header
