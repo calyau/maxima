@@ -14,9 +14,8 @@
 
 @c %**start of header
 @setfilename  maxima.info
-@documentencoding ISO-8859-1
 @synindex vr fn
-@settitle Maxima Manual
+@settitle Manual do Maxima
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
@@ -40,7 +39,7 @@ END-INFO-DIR-ENTRY
 @titlepage
 @sp 10
 @comment The title is printed in a large font.
-@center @titlefont{Maxima Manual}
+@center @titlefont{Manual do Maxima}
 @end titlepage
 
 
@@ -66,60 +65,61 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 @menu
 Infraestrutura do Maxima
 
-* Introduction to Maxima::      Sample Maxima sessions.
-* Bug Detection and Reporting:: Finding and reporting bugs in Maxima.
-* Help::                        Asking for help from within a Maxima session.
-* Command Line::                Maxima command line syntax.
-* Operators::                   Operators used in Maxima expressions.
-* Expressions::                 Expressions in Maxima.
-* Simplification::              Simplifying expressions.
-* Plotting::                    2D and 3D graphical output.
-* Input and Output::            File input and output.
-* Floating Point::              Low level numerical routines.
-* Contexts::                    Sets of assumed facts.
+* Introduction to Maxima::      Exemplo de sess@~oes do Maxima.
+* Bug Detection and Reporting:: Encontrando e relatando erros no Maxima.
+* Help::                        Solicitando ajuda de dentro de uma sess@~ao do Maxima.
+* Command Line::                Sintaxe de linha de comando do Maxima.
+* Operators::                   Operadores usados em express@~oes do Maxima.
+* Expressions::                 Express@~oes no Maxima.
+* Simplification::              Simplificando express@~oes.
+* Plotting::                    Sa@'idas gr@'aficas em 2D e 3D.
+* Input and Output::            Entrada e sa@'ida de arquivos.
+* Floating Point::              Rotinas num@'ericas de baixo n@'ivel.
+* Contexts::                    Conjunto de fatos assumidos.
 
 Suporte a @'areas espec@'ificas da matem@'atica
 
-* Polynomials::                 Standard forms for polynomials, and
-                                functions operating on them.
-* Constants::                   Numerical constants.
-* Logarithms::                  Manipulation of expressions involving
-                                logarithms.
-* Trigonometric::               Manipulating expressions with trig and
-                                inverse trig functions.
-* Special Functions::           Special functions
-* Orthogonal Polynomials::      Orthogonal Polynomials and Special functions
-* Elliptic Functions::          Elliptic Functions and Integrals
-* Limits::                      Limits of expressions.
-* Differentiation::             Differential calculus.
-* Integration::                 Integral calculus.
-* Equations::                   Defining and solving equations.
-* Differential Equations::      Defining and solving differential equations.
-* Numerical::                   Numerical integration, Fourier
-                                transforms, etc.
-* Statistics::                  Statistical functions.
-* Arrays and Tables::           Creating and working with arrays.
-* Matrices and Linear Algebra:: Matrix operations.
+* Polynomials::                 Formas padr@~ao para polin@^omios, e
+                                fun@,{c}@~oes operando sobre polin@^omios.
+* Constants::                   Constantes num@'ericas.
+* Logarithms::                  Manipula@,{c}@~ao de express@~oes envolvendo
+                                logar@'itmos.
+* Trigonometric::               Manipulando express@~oes com trigonometria e
+                                fun@,{c}@~oes trigonom@'etricas inversas.
+* Special Functions::           Fun@,{c}@~oes especiais
+* Orthogonal Polynomials::      Polin@^omios Ortogonais e Fun@,{c}@~oes Especiais
+
+* Elliptic Functions::          Fun@,{c}@~oes Elipticas e Integrais
+* Limits::                      Limites de express@~oes.
+* Differentiation::             C@'alculo diferencial.
+* Integration::                 C@'alculo integral.
+* Equations::                   Definindo e resolvendo equa@,{c}@~oes.
+* Differential Equations::      Definindo e resolvendo equa@,{c}@~oes diferenciais.
+* Numerical::                   Integra,{c}@~ao num@'erica, transforma@,{c}@~oes
+                                de Fourier, etc.
+* Statistics::                  Fun@,{c}@~oes estat@'isticas.
+* Arrays and Tables::           Criando e trabalhando com arrays.
+* Matrices and Linear Algebra:: Opera@,{c}@~oes com Matrizes.
 * Affine::                      
-* itensor::                     Indicial Tensor Manipulation.
-* ctensor::                     Component Tensor Manipulation.
-* atensor::                     Algebraic Tensor Manipulation.
-* Series::                      Taylor and power series.
-* Number Theory::               Number theory.
-* Symmetries::                  
-* Groups::                      Abstract algebra.
+* itensor::                     Manipula@,{c}@~ao de @'indice de Tensores.
+* ctensor::                     Manipula@,{c}@~ao de componentes de Tensores.
+* atensor::                     Manipula@,{c}@~ao de Tensores Alg@'ebricos.
+* Series::                      Taylor e s@'eries de pot@^encia.
+* Number Theory::               Teoria dos n@'umeros.
+* Symmetries::                  Reflex@~oes, rota@,{c}@~oes, transla@,{c}@~oes, etc
+* Groups::                      @'Algebra Abstrata.
 
 Facilidades avan@,{c}adas e programa@,{c}@~ao
 
-* Runtime Environment::         Customization of the Maxima environment.
-* Miscellaneous Options::       Options with a global effect on Maxima.
-* Rules and Patterns::          User defined pattern matching and
-                                simplification rules.
-* Lists::                       Manipulation of lists.
-* Sets::                        Manipulation of sets.
-* Function Definition::         Defining functions.
-* Program Flow::                Defining Maxima programs.
-* Debugging::                   Debugging Maxima programs.
+* Runtime Environment::         Customiza@,{c}@~ao do ambiente Maxima.
+* Miscellaneous Options::       Op@,{c}@~oes com efeito global sobre o Maxima.
+* Rules and Patterns::          Coincid@^encia de express@~oes definidas pelo usu@'ario e
+                                regras de simplifica@,{c}@~ao.
+* Lists::                       Manipula@,{c}@~ao de listas.
+* Sets::                        Manipula@,{c}@~ao de conjuntos.
+* Function Definition::         Definindo fun@,{c}@~oes.
+* Program Flow::                Definindo programas do Maxima.
+* Debugging::                   Depurando programas do Maxima.
 
 @'Indice
 
