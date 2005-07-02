@@ -1,13 +1,13 @@
-@c /Help.texi/1.18/Sun Jun 12 22:29:17 2005/-ko/
+@c /Help.texi/1.19/Tue Jun 28 08:13:05 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Ajuda::        
+* {Introdu@,{c}@~ao} a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@,{c}@~ao::               
-* Defini~@,{c}@~oes para Ajuda::        
+* Defini@,{c}@~oes para Ajuda::        
 @end menu
 
-@node Introdu@,{c}@~ao a Ajuda, Lisp e Maxima, Help, Help
+@node {Introdu@,{c}@~ao} a Ajuda, Lisp e Maxima, Help, Help
 @section Introdu@,{c}@~ao a Ajuda
 
 @c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
