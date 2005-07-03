@@ -1,17 +1,17 @@
 @c /Bugs.texi/1.7/Sun May  1 17:52:16 2005/
 @menu
-* Introdu@,{c}@~ao @`a Detecc@,{c}@~ao e Relato de Erros::  
-* Defni@,{c}@~oes para Detecc@,{c}@~ao e Relato de Erros::  
+* Introdu@,{c}@~ao @`a Detec@,{c}@~ao e Relato de Erros::  
+* Defni@,{c}@~oes para Detec@,{c}@~ao e Relato de Erros::  
 @end menu
 
-@node Introdu@,{c}@~ao @`a Detecc@,{c}@~ao e Relato de Erros
-@section Introdu@,{c}@~ao @`a Detecc@,{c}@~ao e Relato de Erros
+@node Introdu@,{c}@~ao @`a Detec@,{c}@~ao e Relato de Erros
+@section Introdu@,{c}@~ao @`a Detec@,{c}@~ao e Relato de Erros
 Como todos os grandes programas, Maxima cont@'em erros conhecidos e erros desconhecidos.
 Esse cap@'itulo descreve as facilidades internas para executar o conjunto de
 testes do Maxima bem como informar novos erros.
 
-@node Defni@,{c}@~oes para Detecc@,{c}@~ao e Relato de Erros
-@section Defni@,{c}@~oes para Detecc@,{c}@~ao e Relato de Erros
+@node Defni@,{c}@~oes para Detec@,{c}@~ao e Relato de Erros
+@section Defni@,{c}@~oes para Detec@,{c}@~ao e Relato de Erros
 @deffn {Function} run_testsuite ()
 @deffnx {Function} run_testsuite (boolean)
 @deffnx {Function} run_testsuite (boolean, boolean)
