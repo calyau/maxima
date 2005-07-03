@@ -1,12 +1,12 @@
 @c /Differentiation.texi/1.19/Sun Jun 12 19:13:47 2005/-ko/
 @c end concepts Differentiation
 @menu
-* Definitions for Differentiation::  
+* Defini@,{c}@~oes para Diferencia@,{c}@~ao::  
 @end menu
 
-@node Definitions for Differentiation,  , Differentiation, Differentiation
+@node Defini@,{c}@~oes para Diferencia@,{c}@~ao,  , Diferencia@,{c}@~ao, Diferencia@,{c}@~ao
 @c PT = Defini@,{c}@~oes para Diferencia@,{c}@~ao
-@section Definitions for Differentiation
+@section Defini@,{c}@~oes para Diferencia@,{c}@~ao
 
 @deffn {Fun@,{c}@~ao} antid (@var{expr}, @var{x}, @var{u(x)}) 
 Retorna uma lista de dois elementos,

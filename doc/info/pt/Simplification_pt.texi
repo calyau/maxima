@@ -1,12 +1,12 @@
 @c Simplification.texi/1.13/Fri Jun 17 00:57:35 2005/-ko/
 @c end concepts Simplification
 @menu
-* Definitions for Simplification::  
+* Defini@,{c}@~oes para Simplifica@,{c}@~ao::  
 @end menu
 
-@node Definitions for Simplification,  , Simplification, Simplification
+@node Defini@,{c}@~oes para Simplifica@,{c}@~ao,  , Simplification, Simplification
 @c PT = Defini@,{c}@~oes para Simplifica@,{c}@~ao
-@section Definitions for Simplification
+@section Defini@,{c}@~oes para Simplifica@,{c}@~ao
 @menu
 @end menu
 

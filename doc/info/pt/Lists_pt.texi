@@ -1,12 +1,12 @@
 @c /Lists.texi/1.23/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introduction to Lists::
-* Definitions for Lists::
+* Introdu@,{c}@~ao a Listas::
+* Defini@,{c}@~oes para Listas::
 @end menu
 
-@node Introduction to Lists, Definitions for Lists, Lists, Lists
+@node Introdu@,{c}@~ao a Listas, Defini@,{c}@~oes para Listas, Listas, Listas
 @c PT = Introdu@,{c}@~ao a Listas
-@section Introduction to Lists
+@section Introdu@,{c}@~ao a Listas
 
 Listas s@~ao o bloco b@'asico de constru@,{c}@~ao para Maxima e Lisp.**Todos os outros tipos
 de dado como arrays, tabelas desordenadas, n@'umeros s@~ao representados como listas Lisp.
@@ -41,9 +41,9 @@ em si mesmo, ap@'os ter sido adicionado o simplificador a lista poder@'a transfo
 ((MLIST SIMP) 1 2 7 ((MPLUS SIMP) $X $Y))
 @end example
 
-@node Definitions for Lists,  , Introduction to Lists, Lists
+@node Defini@,{c}@~oes para Listas,  , Introdu@,{c}@~ao a Listas, Listas
 @c PT = Defini@,{c}@~oes para Listas
-@section Definitions for Lists
+@section Defini@,{c}@~oes para Listas
 
 @c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
 @c NEEDS CLARIFICATION AND EXAMPLES

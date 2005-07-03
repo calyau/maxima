@@ -1,11 +1,11 @@
 /Contexts.texi/1.6/Thu Apr 21 04:58:24 2005/-ko/
 @menu
-* Definitions for Constants::
+* Defini@,{c}@~oes para Constantes::
 @end menu
 
-@node Definitions for Constants,  , Constants, Constants
+@node Defini@,{c}@~oes para Constantes,  , Constantes, Constantes
 @c PT = Defini@,{c}@~oes para Constantes
-@section Definitions for Constants
+@section Defini@,{c}@~oes para Constantes
 
 @defvr {Constant} %e
  - A base dos logar@'itmos naturais, e, @'e representada no Maxima

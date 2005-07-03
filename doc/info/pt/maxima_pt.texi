@@ -351,184 +351,184 @@ Depurando
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introduction to Maxima, Bug Detection and Reporting, Top, Top
-@chapter Introduction to Maxima
+@node Introdu@,{c}@~ao ao Maxima, Detec@,{c}@~ao e Relato de Erros, Top, Top
+@chapter Introdu@,{c}@~ao ao Maxima
 @include Introduction_pt.texi
 
-@node Bug Detection and Reporting, Help, Introduction to Maxima, Top
-@chapter Bug Detection and Reporting
+@node Detec@,{c}@~ao e Relato de Erros, Help, Introdu@,{c}@~ao ao Maxima, Top
+@chapter Detec@,{c}@~ao e Relato de Erros
 @include Bugs_pt.texi
 
-@node Help, Command Line, Bug Detection and Reporting, Top
-@chapter Help
+@node Ajuda, Linha de Comando, Detec@,{c}@~ao e Relato de Erros, Top
+@chapter Ajuda
 @include Help_pt.texi
 
-@node Command Line, Operators, Help, Top
-@chapter Command Line
+@node Linha de Comando, Operadores, Ajuda, Top
+@chapter Linha de Comando
 @include Command_pt.texi
 
-@node Operators, Expressions, Command Line, Top
-@chapter Operators
+@node Operadores, Express@~oes, Linha de Comando, Top
+@chapter Operadores
 @include Operators_pt.texi
 
-@node Expressions, Simplification, Operators, Top
-@chapter Expressions
+@node Express@~oes, Simplifica@,{c}@~ao, Operadores, Top
+@chapter Express@~oes
 @include Expressions.texi
 
-@node Simplification, Plotting, Expressions, Top
-@chapter Simplification
+@node Simplifica@,{c}@~ao, Montando Gr@'aficos, Express@~oes, Top
+@chapter Simplifica@,{c}@~ao
 @include Simplification_pt.texi
 
-@node Plotting, Input and Output, Simplification, Top
-@chapter Plotting
+@node Montando Gr@'aficos, Entrada e Sa@'ida, Simplifica@,{c}@~ao, Top
+@chapter Montando Gr@'aficos
 @include Plotting_pt.texi
 
-@node Input and Output, Floating Point, Plotting, Top
-@chapter Input and Output
+@node Entrada e Sa@'ida, Ponto Flutuante, Montando Gr@'aficos, Top
+@chapter Entrada e Sa@'ida
 @include Input_pt.texi
 
-@node Floating Point, Contexts, Input and Output, Top
-@chapter Floating Point
+@node Ponto Flutuante, Contextos, Entrada e Sa@'ida, Top
+@chapter Ponto Flutuante
 @include Floating.texi
 
-@node Contexts, Polynomials, Floating Point, Top
-@chapter Contexts
+@node Contextos, Polin@^omios, Ponto Flutuante, Top
+@chapter Contextos
 @include Contexts.texi
 
-@node Polynomials, Constants, Contexts, Top
-@chapter Polynomials
+@node Polin@^omios, Constantes, Contextos, Top
+@chapter Polin@^omios
 @include Polynomials_pt.texi
 
-@node Constants, Logarithms, Polynomials, Top
-@chapter Constants
+@node Constantes, Logar@'itmos, Polin@^omios, Top
+@chapter Constantes
 @include Constants_pt.texi
 
-@node Logarithms, Trigonometric, Constants, Top
-@chapter Logarithms
+@node Logar@'itmos, Trigonometria, Constantes, Top
+@chapter Logar@'itmos
 @include Logarithms.texi
 
-@node Trigonometric, Special Functions, Logarithms, Top
-@chapter Trigonometric
+@node Trigonometria, Fun@,{c}@~oes Especiais, Logar@'itmos, Top
+@chapter Trigonometria
 @include Trigonometric_pt.texi
 
-@node Special Functions, Orthogonal Polynomials, Trigonometric, Top
-@chapter Special Functions
+@node Fun@,{c}@~oes Especiais, Polin@^omios Ortogonais, Trigonometria, Top
+@chapter Fun@,{c}@~oes Especiais
 @include Special.texi
 
-@node Orthogonal Polynomials, Elliptic Functions, Special Functions, Top
-@chapter Orthogonal Polynomials
+@node Polin@^omios Ortogonais, Fun@,{c}@~oes El@'ipticas, Fun@,{c}@~oes Especiais, Top
+@chapter Polin@^omios Ortogonais
 @include SpecfunII.texi
 
-@node Elliptic Functions, Limits, Orthogonal Polynomials, Top
-@chapter Elliptic Functions
+@node Fun@,{c}@~oes El@'ipticas, Limites, Polin@^omios Ortogonais, Top
+@chapter Fun@,{c}@~oes El@'ipticas
 @include Elliptic.texi
 
-@node Limits, Differentiation, Elliptic Functions, Top
-@chapter Limits
+@node Limites, Diferencia@,{c}@~ao, Fun@,{c}@~oes El@'ipticas, Top
+@chapter Limites
 @include Limits.texi
 
-@node Differentiation, Integration, Limits, Top
-@chapter Differentiation
+@node Diferencia@,{c}@~ao, Integra@,{c}@~ao, Limites, Top
+@chapter Diferencia@,{c}@~ao
 @include Differentiation_pt.texi
 
-@node Integration, Equations, Differentiation, Top
-@chapter Integration
+@node Integra@,{c}@~ao, Equa@,{c}@~oes, Diferencia@,{c}@~ao, Top
+@chapter Integra@,{c}@~ao
 @include Integration_pt.texi
 
-@node Equations, Differential Equations, Integration, Top
-@chapter Equations
+@node Equa@,{c}@~oes, Equa@,{c}@~oes Diferenciais, Integra@,{c}@~ao, Top
+@chapter Equa@,{c}@~oes
 @include Equations_pt.texi
 
-@node Differential Equations, Numerical, Equations, Top
-@chapter Differential Equations
+@node Equa@,{c}@~oes Diferenciais, Num@'erico, Equa@,{c}@~oes, Top
+@chapter Equa@,{c}@~oes Diferenciais
 @include Differential.texi
 
 @c @include NonCommutative.texi
 
-@node Numerical, Statistics, Differential Equations, Top
-@chapter Numerical
+@node Num@'erico, Estat@'istica, Equa@,{c}@~oes Diferenciais, Top
+@chapter Num@'erico
 @include Numerical.texi
 
-@node Statistics, Arrays and Tables, Numerical, Top
-@chapter Statistics
+@node Estat@'istica, Arrays e Tabelas, Num@'erico, Top
+@chapter Estat@'istica
 @include Statistics.texi
 
-@node Arrays and Tables, Matrices and Linear Algebra, Statistics, Top
-@chapter Arrays and Tables
+@node Arrays e Tabelas, Matrizes e @'Algebra Linear, Estat@'istica, Top
+@chapter Arrays e Tabelas
 @include Arrays_pt.texi
 
-@node Matrices and Linear Algebra, Affine, Arrays and Tables, Top
-@chapter Matrices and Linear Algebra
+@node Matrizes e @'Algebra Linear, Fun@,{c}@~oes Afins, Arrays e Tabelas, Top
+@chapter Matrizes e @'Algebra Linear
 @include Matrices_pt.texi
 
-@node Affine, itensor, Matrices and Linear Algebra, Top
-@chapter Affine
+@node Fun@,{c}@~oes Afins, Pacote itensor, Matrizes e @'Algebra Linear, Top
+@chapter Fun@,{c}@~oes Afins
 @include Affine_pt.texi
 
-@node itensor, ctensor, Affine, Top
-@chapter itensor
+@node Pacote itensor, Pacote ctensor, Fun@,{c}@~oes Afins, Top
+@chapter Pacote itensor
 @include Itensor.texi
 
-@node ctensor, atensor, itensor, Top
-@chapter ctensor
+@node Pacote ctensor, Pacote atensor, Pacote itensor, Top
+@chapter Pacote ctensor
 @include Ctensor.texi
 
-@node atensor, Series, ctensor, Top
-@chapter atensor
+@node Pacote atensor, S@'eries, Pacote ctensor, Top
+@chapter Pacote atensor
 @include Atensor_pt.texi
 
-@node Series, Number Theory, atensor, Top
-@chapter Series
+@node S@'eries, Teoria dos N@'umeros, Pacote atensor, Top
+@chapter S@'eries
 @include Series.texi
 
 
-@node Number Theory, Symmetries, Series, Top
-@chapter Number Theory
+@node Teoria dos N@'umeros, Simetrias, S@'eries, Top
+@chapter Teoria dos N@'umeros
 @include Number.texi
 
-@node Symmetries, Groups, Number Theory, Top
-@chapter Symmetries
+@node Simetrias, Grupos, Teoria dos N@'umeros, Top
+@chapter Simetrias
 @include Symmetries.texi
 
-@node Groups, Runtime Environment, Symmetries, Top
-@chapter Groups
+@node Grupos, Ambiente de Execu@,{c}@~ao, Simetrias, Top
+@chapter Grupos
 @include Groups.texi
 
-@node Runtime Environment, Miscellaneous Options, Groups, Top
-@chapter Runtime Environment
+@node Ambiente de Execu@,{c}@~ao, Op@,{c}@~oes Diversas, Grupos, Top
+@chapter Ambiente de Execu@,{c}@~ao
 @include Runtime.texi
 
-@node Miscellaneous Options, Rules and Patterns, Runtime Environment, Top
-@chapter Miscellaneous Options
+@node Op@,{c}@~oes Diversas, Regras e Modelos, Ambiente de Execu@,{c}@~ao, Top
+@chapter Op@,{c}@~oes Diversas
 @include Miscellaneous_pt.texi
 
-@node Rules and Patterns, Lists, Miscellaneous Options, Top
-@chapter Rules and Patterns
+@node Regras e Modelos, Listas, Op@,{c}@~oes Diversas, Top
+@chapter Regras e Modelos
 @include Rules.texi
 
 
-@node Lists, Sets, Rules and Patterns, Top
-@chapter Lists
+@node Listas, Conjuntos, Regras e Modelos, Top
+@chapter Listas
 @include Lists_pt.texi
 
-@node Sets, Function Definition, Lists, Top
-@chapter Sets
+@node Conjuntos, Defini@,{c}@~ao de Fun@,{c}@~ao, Listas, Top
+@chapter Conjuntos
 @include nset.texi
 
-@node Function Definition, Program Flow, Sets, Top
-@chapter Function Definition
+@node Defini@,{c}@~ao de Fun@,{c}@~ao, Fluxo de Programa, Conjuntos, Top
+@chapter Defini@,{c}@~ao de Fun@,{c}@~ao
 @include Function_pt.texi
 
-@node Program Flow, Debugging, Function Definition, Top
-@chapter Program Flow
+@node Fluxo de Programa, Depurando, Defini@,{c}@~ao de Fun@,{c}@~ao, Top
+@chapter Fluxo de Programa
 @include Program_pt.texi
 
-@node Debugging, Function and Variable Index, Program Flow, Top
-@chapter Debugging
+@node Depurando, @'Indice de Fun@,{c}@~oes e Vari@'aveis, Fluxo de Programa, Top
+@chapter Depurando
 @include Debugging.texi
 
-@node Function and Variable Index,  , Debugging, Top
-@chapter Indices
+@node @'Indice de Fun@,{c}@~oes e Vari@'aveis,  , Depurando, Top
+@chapter @'Indices
 @include Indices.texi
 
 @c end includes

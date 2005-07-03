@@ -1,13 +1,13 @@
 @c /Polynomials.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
-* Introduction to Polynomials::  
-* Definitions for Polynomials::  
+* Introdu@,{c}@~ao a Polin@^omios::  
+* Defini@,{c}@~oes para Polin@^omios::  
 @end menu
 
-@node Introduction to Polynomials, Definitions for Polynomials, Polynomials, Polynomials
+@node Introdu@,{c}@~ao a Polin@^omios, Defini@,{c}@~oes para Polin@^omios, Polynomials, Polynomials
 @c PT = Introdu@,{c}@~ao a Polin@^omios
-@section Introduction to Polynomials
+@section Introdu@,{c}@~ao a Polin@^omios
 
 Polin@^omios s@~ao armazenados no Maxima ou na forma geral ou na
 forma de Express@~oes Racionais Can@^onicas (CRE).  Essa @'ultima @'e uma forma
@@ -54,9 +54,9 @@ adicional tal com o grau de trunca@,{c}@~ao.  Do mesmo modo que na forma CRE, o
 s@'imbolo /T/ segue o r@'otulo de linha que cont@'em as tais express@~oes.
 
 @c end concepts Polynomials
-@node Definitions for Polynomials,  , Introduction to Polynomials, Polynomials
+@node Defini@,{c}@~oes para Polin@^omios,  , Introdu@,{c}@~ao a Polin@^omios, Polynomials
 @c PT = Defini@,{c}@~oes para Polin@^omios
-@section Definitions for Polynomials
+@section Defini@,{c}@~oes para Polin@^omios
 
 @defvr {Vari@'avel de op@,{c}@~ao} algebraic
 Valor Padr@~ao: @code{false}

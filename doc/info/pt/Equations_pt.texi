@@ -1,12 +1,12 @@
 @c /Equations.texi/1.19/Fri Jun 17 00:57:31 2005/-ko/
 @c end concepts Equations
 @menu
-* Definitions for Equations::   
+* Defini@,{c}@~oes para Equa@,{c}@~oes::   
 @end menu
 
-@node Definitions for Equations,  , Equations, Equations
-@c PT = Defini@,{c}@~oes para Equa@,{c}@~oes
-@section Definitions for Equations
+@node Defini@,{c}@~oes para Equa@,{c}@~oes,  , Equa@,{c}@~oes, Equa@,{c}@~oes
+
+@section Defini@,{c}@~oes para Equa@,{c}@~oes
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
 @defvr {Vari@'avel} %rnum_list

@@ -1,17 +1,17 @@
 @c /Input.texi/1.35/Fri Jun 17 00:57:33 2005/-ko/
 @menu
-* Introduction to Input and Output::  
-* Files::                       
-* Definitions for Input and Output::  
+* Introdu@,{c}@~ao a Entrada e Sa@'ida::  
+* Arquivos::                       
+* Defini@,{c}@~oes para Entrada e Sa@'ida::  
 @end menu
 
-@node Introduction to Input and Output, Files, Input and Output, Input and Output
+@node Introdu@,{c}@~ao a Entrada e Sa@'ida, Arquivos, Entrada e Sa@'ida, Entrada e Sa@'ida
 @c PT = Introdu@,{c}@~ao a Entrada e Sa@'ida de Dados
-@section Introduction to Input and Output
+@section Introdu@,{c}@~ao a Entrada e Sa@'ida
 
-@node Files, Definitions for Input and Output, Introduction to Input and Output, Input and Output
+@node Arquivos, Defini@,{c}@~oes para Entrada e Sa@'ida, Introdu@,{c}@~ao a Entrada e Sa@'ida, Entrada e Sa@'ida
 @c PT = Arquivos
-@section Files
+@section Arquivos
 Um arquivo @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
 Arquivos em disco s@~ao figurativamente agrupados dentro de "diret@'orios".
 Um diret@'orio @'e apenas uma lista de arquivos.
@@ -27,9 +27,9 @@ Comandos que lidam com arquivos s@~ao:
 and
 @code{appendfile}.
 
-@node Definitions for Input and Output,  , Files, Input and Output
+@node Defini@,{c}@~oes para Entrada e Sa@'ida,  , Arquivos, Entrada e Sa@'ida
 @c PT = Defini@,{c}@~oes para Entrada e Sa@'ida de Dados
-@section Definitions for Input and Output
+@section Defini@,{c}@~oes para Entrada e Sa@'ida de Dados
 
 @defvr {Vari@'avel de sistema} _
 

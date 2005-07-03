@@ -1,12 +1,12 @@
 @c /Trigonometric.texi/1.14/Fri Jun 17 00:57:35 2005/-ko/
 @menu
-* Introduction to Trigonometric::  
-* Definitions for Trigonometric::  
+* Defini@,{c}@~oes para Trigonometria::  
+* Defini@,{c}@~oes para Trigonometria::  
 @end menu
 
-@node Introduction to Trigonometric, Definitions for Trigonometric, Trigonometric, Trigonometric
+@node Defini@,{c}@~oes para Trigonometria, Defini@,{c}@~oes para Trigonometria, Trigonometria, Trigonometria
 @c PT = Introdu@,{c}@~ao ao Pacote Trigonom@'etrico
-@section Introduction to Trigonometric
+@section Defini@,{c}@~oes para Trigonometria
 
 Maxima tem muitas fun@,{c}@~oes trigonom@'etricas definidas.  N@~ao todas as identidades
 trigonometricas est@~ao programadas, mas isso @'e poss@'ivel para o usu@'ario adicionar muitas
@@ -24,9 +24,9 @@ compartilhados extendem as regras de simplifica@,{c}@~ao constru@'idas no Maxima
 @code{ntrig} e @code{atrig1}.  Fa@,{c}a @code{describe(@var{comando})}
 para detalhes.
 
-@node Definitions for Trigonometric,  , Introduction to Trigonometric, Trigonometric
-@c PT = Defini@,{c}@~oes para o Pacote Trigonom@'etrico
-@section Definitions for Trigonometric
+@node Defini@,{c}@~oes para Trigonometria,  , Defini@,{c}@~oes para Trigonometria, Trigonometria
+
+@section Defini@,{c}@~oes para Trigonometria
 
 @deffn {Fun@,{c}@~ao} acos (@var{x})
  - Arco Cosseno.

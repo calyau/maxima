@@ -1,13 +1,13 @@
-@c /Help.texi/1.19/Tue Jun 28 08:13:05 2005/-ko/
+@c /Help.texi/1.18/Sun Jun 12 22:29:17 2005/-ko/
 @menu
-* {Introdu@,{c}@~ao} a Ajuda::        
+* Introdu@,{c}@~ao a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
 * Documenta@,{c}@~ao::               
 * Defini@,{c}@~oes para Ajuda::        
 @end menu
 
-@node {Introdu@,{c}@~ao} a Ajuda, Lisp e Maxima, Help, Help
+@node Introdu@,{c}@~ao a Ajuda, Lisp e Maxima, Help, Help
 @section Introdu@,{c}@~ao a Ajuda
 
 @c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
@@ -193,7 +193,7 @@ escritas.    Veja a documenta@,{c}@~ao da GCL sob ALLOCATE e GBC.   No
 n@'ivel do Lisp fazendo (setq si::*notify-gbc* t) ir@'a ajudar voc@^e a determinar quais
 @'areas podem precisar de mais espa@,{c}o.
 
-@node Documenta@,{c}@~ao, Defini~@,{c}@~oes para Ajuda, Descartando, Help
+@node Documenta@,{c}@~ao, Defini@,{c}@~oes para Ajuda, Descartando, Help
 @section Documenta@,{c}@~ao
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
@@ -228,8 +228,8 @@ retorna
 
 e sa@'ida adicional.
 
-@node Defini~@,{c}@~oes para Ajuda,  , Documenta@,{c}@~ao, Help
-@section Defini~@,{c}@~oes para Ajuda
+@node Defini@,{c}@~oes para Ajuda,  , Documenta@,{c}@~ao, Help
+@section Defini@,{c}@~oes para Ajuda
 
 @deffn {Fun@,{c}@~ao} demo (@var{nomedearquivo})
 Avalia express@~oes Maxima em @var{nomedearquivo} e mostra os resultados.

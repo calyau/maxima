@@ -1,12 +1,12 @@
 @c /Integration.texi/1.23/Fri Jun 17 00:57:33 2005/-ko/
 @menu
-* Introduction to Integration::  
-* Definitions for Integration::  
+* Introdu@,{c}@~ao a Integra@,{c}@~ao::  
+* Defini@,{c}@~oes para Integra@,{c}@~ao::  
 @end menu
 
-@node Introduction to Integration, Definitions for Integration, Integration, Integration
+@node Introdu@,{c}@~ao a Integra@,{c}@~ao, Defini@,{c}@~oes para Integra@,{c}@~ao, Integra@,{c}@~ao, Integra@,{c}@~ao
 @c PT = Introdu@,{c}@~ao a Integra@,{c}@~ao
-@section Introduction to Integration
+@section Introdu@,{c}@~ao a Integra@,{c}@~ao
 
 Maxima tem muitas rotinas para manusear integra@,{c}@~ao.
 A fun@,{c}@~ao @code{integrate} faz uso de muitas dessas.  Exite tamb@'em o
@@ -25,9 +25,9 @@ extens@~oes (fun@,{c}@~ao de erro, dilogarithm).  Isso n@~ao manuseia
 integrais em termos de fun@,{c}@~oes desconhecidas tais como @code{g(x)} e @code{h(x)}.
 
 @c end concepts Integration
-@node Definitions for Integration,  , Introduction to Integration, Integration
+@node Defini@,{c}@~oes para Integra@,{c}@~ao,  , Introdu@,{c}@~ao a Integra@,{c}@~ao, Integra@,{c}@~ao
 @c PT = Defini@,{c}@~oes para Integra@,{c}@~ao
-@section Definitions for Integration
+@section Defini@,{c}@~oes para Integra@,{c}@~ao
 @c NEEDS WORK
 @deffn {Fun@,{c}@~ao} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 Faz a mudan@,{c}a de vari@'avel dada por

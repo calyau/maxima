@@ -1,11 +1,11 @@
 @c /Plotting.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Definitions for Plotting::    
+* Defini@,{c}@~oes para Montagem de Gr@'aficos::    
 @end menu
 
-@node Definitions for Plotting,  , Plotting, Plotting
+@node Defini@,{c}@~oes para Montagem de Gr@'aficos,  , Montando Gr@'aficos, Montando Gr@'aficos
 @c PT = Defini@,{c}@~oes para Imprimindo
-@section Definitions for Plotting
+@section Defini@,{c}@~oes para Montagem de Gr@'aficos
 
 @c INSPECTING src/plot.lisp AND TRYING SOME EXAMPLES,
 @c IT APPEARS THAT in_netmath HAS NO EFFECT ON plot2d

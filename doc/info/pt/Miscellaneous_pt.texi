@@ -1,21 +1,21 @@
 @c/Miscellaneous.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introduction to Miscellaneous Options::  
-* Share::                       
-* Definitions for Miscellaneous Options::  
+* Introdu@,{c}@~ao a Op@,{c}@~oes Diversas::  
+* Compartilhado::                       
+* Defini@,{c}@~oes para Op@,{c}@~oes Diversas::  
 @end menu
 
-@node Introduction to Miscellaneous Options, Share, Miscellaneous Options, Miscellaneous Options
+@node Introdu@,{c}@~ao a Op@,{c}@~oes Diversas, Compartilhado, Op@,{c}@~oes Diversas, Op@,{c}@~oes Diversas
 @c PT = Introdu@,{c}@~ao a Op@,{c}@~oes Diversas
-@section Introduction to Miscellaneous Options
+@section Introdu@,{c}@~ao a Op@,{c}@~oes Diversas
 
 Nessa se@,{c}@~ao v@'arias op@,{c}@~oes s@~ao tratadas pelo fato de possuirem um efeito global
 sobre a opera@,{c}@~ao do Maxima.   Tamb@'em v@'arias listas tais como a lista de todas as
 fun@,{c}@~oes definidas pelo usu@'ario, s@~ao discutidas.
 
-@node Share, Definitions for Miscellaneous Options, Introduction to Miscellaneous Options, Miscellaneous Options
+@node Compartilhado, Defini@,{c}@~oes para Op@,{c}@~oes Diversas, Introdu@,{c}@~ao a Op@,{c}@~oes Diversas, Op@,{c}@~oes Diversas
 @c PT = Compartilhado
-@section Share
+@section Compartilhado
 O diret@'orio "share" do Maxima cont@'em programas e outros arquivos 
 de interesse para os usu@'arios do Maxima, mas que n@~ao s@~ao parte da implementa@,{c}@~ao do n@'ucleo do Maxima.
 Esses programas s@~ao tipicamente chamados via @code{load} ou @code{setup_autoload}.
@@ -28,9 +28,9 @@ dentro do sistema de arquivos do usu@'ario.
 Usu@'arios podem encontrar isso de forma mais detalhada navegando no diret@'orio compartilhado usando um navegador de sistema de arquivo.
 
 
-@node Definitions for Miscellaneous Options,  , Share, Miscellaneous Options
+@node Defini@,{c}@~oes para Op@,{c}@~oes Diversas,  , Compartilhado, Op@,{c}@~oes Diversas
 @c PT = Defini@,{c}@~oes para Op@,{c}@~oes Diversas
-@section Definitions for Miscellaneous Options
+@section Defini@,{c}@~oes para Op@,{c}@~oes Diversas
 
 @defvr {Vari@'avel de sistema} aliases
 Valor padr@~ao: @code{[]}

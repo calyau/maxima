@@ -1,12 +1,12 @@
 @c /Atensor.texi/1.7/Sun May  1 20:31:14 2005/
 @menu
-* Introduction to atensor::
-* Definitions for atensor::
+* Introdu@,{c}@~ao ao Pacote atensor::
+* Defini@,{c}@~oes para o Pacote atensor::
 @end menu
 
-@node Introduction to atensor, Definitions for atensor, atensor, atensor
+@node Introdu@,{c}@~ao ao Pacote atensor, Defini@,{c}@~oes para o Pacote atensor, Pacote atensor, Pacote atensor
 @c PT = Introdu@,{c}@~ao ao pacote de tensores alg@'ebricos
-@section Introduction to atensor
+@section Introdu@,{c}@~ao ao Pacote atensor
 
 @code{atensor} @'e um pacote de manipul@,{c}@~ao de tensores alg@'ebricos.  Para usar @code{atensor},
 digite @code{load(atensor)}, seguido por uma chamada @`a fun@,{c}@~ao 
@@ -100,10 +100,10 @@ desejadas.
 
 
 @c end concepts atensor
-@node Definitions for atensor,  , Introduction to atensor, atensor
+@node Defini@,{c}@~oes para o Pacote atensor,  , Introdu@,{c}@~ao ao Pacote atensor, Pacote atensor
 
 @c PT = Deini@,{c}@~oes para o pacote de tensores alg@'ebricos
-@section Definitions for atensor
+@section Defini@,{c}@~oes para o Pacote atensor
 
 @deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
 @deffnx {Function} init_atensor (@var{alg_type})

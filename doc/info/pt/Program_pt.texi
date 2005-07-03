@@ -1,20 +1,20 @@
 @c /Program.texi/1.20/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introduction to Program Flow::  
-* Definitions for Program Flow::  
+* Introdu@,{c}@~ao a Fluxo de Programa::  
+* Defini@,{c}@~oes para Fluxo de Programa::  
 @end menu
 
-@node Introduction to Program Flow, Definitions for Program Flow, Program Flow, Program Flow
+@node Introdu@,{c}@~ao a Fluxo de Programa, Defini@,{c}@~oes para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
 @c PT = Introdu@,{c}@~ao ao Fluxo do Programa
-@section Introduction to Program Flow
+@section Introdu@,{c}@~ao a Fluxo de Programa
 
 Maxima fornece um @code{do} para ciclos iterativos, tamb@'em contru@,{c}@~oes mais
 primitivas tais como @code{go}.
 
-@c end concepts Program Flow
-@node Definitions for Program Flow,  , Introduction to Program Flow, Program Flow
+@c end concepts Fluxo de Programa
+@node Defini@,{c}@~oes para Fluxo de Programa,  , Introdu@,{c}@~ao a Fluxo de Programa, Fluxo de Programa
 @c PT = Defini@,{c}@~oes para Fluxo do Programa
-@section Definitions for Program Flow
+@section Defini@,{c}@~oes para Fluxo de Programa
 
 @deffn {Fun@,{c}@~ao} backtrace ()
 @deffnx {Fun@,{c}@~ao} backtrace (@var{n})

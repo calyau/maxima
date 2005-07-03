@@ -1,11 +1,11 @@
 @c /Arrays.texi/1.9/Sun Jun 12 19:13:46 2005/-ko/
 @menu
-* Definitions for Arrays and Tables::  
+* Defini@,{c}@~oes para Arrays e Tabelas::  
 @end menu
 
-@node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
-@c PT = Defini@,{c}@~oes para Arrays e Tabelas
-@section Definitions for Arrays and Tables
+@node Defini@,{c}@~oes para Arrays e Tabelas,  , Arrays e Tabelas, Arrays e Tabelas
+
+@section Defini@,{c}@~oes para Arrays e Tabelas
 
 @deffn {Fun@,{c}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Fun@,{c}@~ao} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})

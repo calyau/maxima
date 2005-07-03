@@ -1,12 +1,11 @@
 @c /Matrices.texi/1.15/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introduction to Matrices and Linear Algebra::  
-* Definitions for Matrices and Linear Algebra::  
+* Introdu@,{c}@~ao a Matrizes e @'Algebra Linear::  
+* Defini@,{c}@~oes para Matrizes e @'Algebra Linear::  
 @end menu
 
-@node Introduction to Matrices and Linear Algebra, Definitions for Matrices and Linear Algebra, Matrices and Linear Algebra, Matrices and Linear Algebra
-@c PT = Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
-@section Introduction to Matrices and Linear Algebra
+@node Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Defini@,{c}@~oes para Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
+@section Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
 
 @menu
 * Dot::                         
@@ -14,7 +13,7 @@
 * eigen::
 @end menu
 
-@node Dot, Vectors, Introduction to Matrices and Linear Algebra, Introduction to Matrices and Linear Algebra
+@node Dot, Vectors, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
 @subsection Dot
 O operador @code{.} representa multiplica@,{c}@~ao n@~ao comutativa e produto escalar.
 Quando os operandos s@~ao matrizes 1-coluna ou 1-linha @code{a} e @code{b},
@@ -41,7 +40,7 @@ expres@~oes envolvendo @code{.}, a saber
 @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
 e @code{dotscrules}.
 
-@node Vectors, eigen, Dot, Introduction to Matrices and Linear Algebra
+@node Vectors, eigen, Dot, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
 @subsection Vectors
 @code{vect} @'e um pacote de fun@,{c}@~oes para an@'alise vetorial.
 @code{load ("vect")} chama esse pacote, e @code{demo ("vect")} permite visualizar uma demonstra@,{c}@~ao.
@@ -66,7 +65,7 @@ O pacote @code{vect} cont@'em essas fun@,{c}@~oes:
 Aten@,{c}@~ao: o pacote @code{vect} declara o operador ponto @code{.}
 como sendo um operador comutativo.
 
-@node eigen, , Vectors, Introduction to Matrices and Linear Algebra
+@node eigen, , Vectors, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
 @subsection eigen
 
 O pacote @code{eigen} cont@'em muitas fun@,{c}@~oes devotadas para a
@@ -85,10 +84,10 @@ As fun@,{c}@~oes no pacote @code{eigen} s@~ao
 @code{gramschmidt}, @code{eigenvalues}, @code{eigenvectors}, @code{uniteigenvectors},
 e @code{similaritytransform}.
 
-@c end concepts Matrices and Linear Algebra
-@node Definitions for Matrices and Linear Algebra,  , Introduction to Matrices and Linear Algebra, Matrices and Linear Algebra
+@c end concepts Matrizes e @'Algebra Linear
+@node Defini@,{c}@~oes para Matrizes e @'Algebra Linear,  , Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
 @c PT = Defini@,{c}@~oes para Matrizes e @'Algebra Linear
-@section Definitions for Matrices and Linear Algebra
+@section Defini@,{c}@~oes para Matrizes e @'Algebra Linear
 
 @deffn {Fun@,{c}@~ao} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
 Anexa a(s) coluna(s) dadas por uma

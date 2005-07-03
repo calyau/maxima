@@ -9,7 +9,7 @@
 @end menu
 
 
-@node "N" Argumentos, Sem Argumentos, Operators, Operators
+@node "N" Argumentos, Sem Argumentos, Operadores, Operadores
 @section "N" Argumentos
 Um operador @code{nary} @'e usado para denotar uma fun@,{c}@~ao com qualquer n@'umero de
 argumentos, cada um dos quais @'e separado por uma ocorr@^encia do
@@ -32,7 +32,7 @@ sint@'atica que declara x como sendo um operador @code{nofix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Operador, Operador P@'osfixado, Sem Argumentos, Operators
+@node Operador, Operador P@'osfixado, Sem Argumentos, Operadores
 @section Operador
 Veja @code{operators}.
 
@@ -46,7 +46,7 @@ sint@'atica que declara x como sendo um operador @code{postfix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Operador Pr@'efixado, Defini@,{c}@~oes para Operadores, Operador P@'osfixado, Operators
+@node Operador Pr@'efixado, Defini@,{c}@~oes para Operadores, Operador P@'osfixado, Operadores
 @section Operador Pr@'efixado
 Um operador @code{prefix} @'e um que significa uma fun@,{c}@~ao de um
 argumento, o qual argumento imediatamente segue uma ocorr@^encia do
@@ -56,7 +56,7 @@ sint@'atica que declara x como sendo um operador @code{prefix}.
 Veja tamb@'em @code{syntax}.
 
 @c end concepts Operators
-@node Defini@,{c}@~oes para Operadores,  , Operador Pr@'efixado, Operators
+@node Defini@,{c}@~oes para Operadores,  , Operador Pr@'efixado, Operadores
 @section Defini@,{c}@~oes para Operadores
 
 @deffn {Operador} "!"
