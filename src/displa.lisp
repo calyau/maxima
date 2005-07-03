@@ -813,6 +813,7 @@
 (displa-def mand      dimension-nary   " and ")
 (displa-def mor	      dimension-nary   " or ")
 (displa-def mcond     dim-mcond)
+(displa-def %mcond    dim-mcond)
 
 (defun dim-mcond (form result)
   (prog ((w 0) (h 0) (d 0))	(declare (fixnum w h d))
@@ -823,7 +824,7 @@
 	(push-string " then " result)
 	(setq result (dimension (caddr form) result 'mcond 'mparen (f+ 6 w) 0)
 	      w (f+ 6 w width) h (max h height) d (max d depth))
-	(unless (eq '$false (fifth form))
+	(unless (or (eq '$false (fifth form)) (eq nil (fifth form)))
 	  (checkbreak result w)
 	  (push-string " else " result)
 	  (setq result (dimension (fifth form) result 'mcond rop (f+ 6 w) right)

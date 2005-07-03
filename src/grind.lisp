@@ -461,10 +461,14 @@
 (defprop mcond 25. lbp)
 (defprop mcond 25. rbp)
 
+(defprop %mcond msz-mcond grind)
+(defprop %mcond 25. lbp)
+(defprop %mcond 25. rbp)
+
 (defun msz-mcond (x l r &aux if)
   (setq if (nreconc l '(#\i #\f #\space)) if (cons (length if) if)
 	l (msize (cadr x) nil nil 'mcond 'mparen))
-  (cond ((eq '$false (fifth x))
+  (cond ((or (eq '$false (fifth x)) (eq nil (fifth x)))
 	 (setq x (msize (caddr x)
 			(reverse '(#\space #\t #\h #\e #\n #\space))
 			r 'mcond rop))
