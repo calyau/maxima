@@ -10,10 +10,10 @@
 @c PT = Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~oes
 @section Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao
 
-@node Function, Macros, Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao, Defini@,{c}@~ao de Fun@,{c}@~ao
+@node Fun@,{c}@~ao, Macros, Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao, Defini@,{c}@~ao de Fun@,{c}@~ao
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
 @c PT = Fun@,{c}@~ao
-@section Function
+@section Fun@,{c}@~ao
 Para definir uma fun@,{c}@~ao no Maxima voc@^e usa o operador :=.
 E.g.
 

@@ -49,7 +49,7 @@ em si mesmo, ap@'os ter sido adicionado o simplificador a lista poder@'a transfo
 @c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Fun@,{c}@~ao} append (@var{list_1}, ..., @var{list_n})
 Retorna uma lista simples dos elementos de @var{list_1} seguidos
-pelos elementos de @var{list_2}, ....**@code{append} tamb@'em trabalha sobre
+pelos elementos de @var{list_2}, ....  @code{append} tamb@'em trabalha sobre
 express@~oes gerais, e.g. @code{append (f(a,b), f(c,d,e));} retorna
 @code{f(a,b,c,d,e)}.
 
@@ -62,10 +62,10 @@ Fa@,{c}a @code{example(append);} para um exemplo.
 @deffnx {Fun@,{c}@~ao} assoc (@var{key}, @var{list})
 Essa fun@,{c}@~ao procura pela chave @var{key} do lado esquerdo da entrada @var{list}
 que @'e da forma @code{[x,y,z,...]} onde cada elemento de @var{list} @'e uma express@~ao de
-um operando bin@'ario e 2 elementos.**Por exemplo @code{x=1}, @code{2^3}, @code{[a,b]} etc.
-A chave @var{key} @'e verificada contra o primeiro operando.**@code{assoc} retorna o segundo
-operando se @code{key} for achada.**Se a chave @code{key} n@~ao for achada isso
-retorna o valor padr@~ao @var{default}.**@var{default} @'e opcional
+um operando bin@'ario e 2 elementos.  Por exemplo @code{x=1}, @code{2^3}, @code{[a,b]} etc.
+A chave @var{key} @'e verificada contra o primeiro operando.  @code{assoc} retorna o segundo
+operando se @code{key} for achada.  Se a chave @code{key} n@~ao for achada isso
+retorna o valor padr@~ao @var{default}.  @var{default} @'e opcional
 e o padr@~ao @'e @code{false}.
 
 @end deffn
@@ -74,7 +74,7 @@ e o padr@~ao @'e @code{false}.
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 @deffn {Fun@,{c}@~ao} atom (@var{expr})
 Retorna @code{true} se @var{expr} for atomica (i.e. um n@'umero, nome ou seq@"u@^encia de caracteres) de outra forma retorna
-@code{false}.**Desse modo @code{atom(5)} @'e @code{true} enquanto @code{atom(a[1])} e @code{atom(sin(x))} S@~ao
+@code{false}.  Desse modo @code{atom(5)} @'e @code{true} enquanto @code{atom(a[1])} e @code{atom(sin(x))} S@~ao
 @code{false} (assumindo @code{a[1]} e @code{x} n@~ao est@~ao associados).
 
 @end deffn
@@ -83,7 +83,7 @@ Retorna @code{true} se @var{expr} for atomica (i.e. um n@'umero, nome ou seq@"u@
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 @deffn {Fun@,{c}@~ao} cons (@var{expr}, @var{list})
 Retorna uma nova lista constru@'ida do elemento @var{expr} como
-seu primeiro elemento, seguido por elementos de @var{list}.**@code{cons} tamb@'em trabalha
+seu primeiro elemento, seguido por elementos de @var{list}.  @code{cons} tamb@'em trabalha
 sobre outras express@~oes, e.g. @code{cons(x, f(a,b,c));}  ->  @code{f(x,a,b,c)}.
 
 @end deffn
@@ -95,7 +95,7 @@ Retorna uma c@'opia da lista @var{list}.
 
 @deffn {Fun@,{c}@~ao} delete (@var{expr_1}, @var{expr_2})
 @deffnx {Fun@,{c}@~ao} delete (@var{expr_1}, @var{expr_2}, @var{n})
-Remove todas as ocorr@^encias de @var{expr_1} em @var{expr_2}.**@var{expr_1}
+Remove todas as ocorr@^encias de @var{expr_1} em @var{expr_2}.  @var{expr_1}
 pode ser uma parcela de @var{expr_2} (se isso for uma adi@,{c}@~ao) ou um fator de @var{expr_2}
 (se isso for um produto).
 
@@ -109,7 +109,7 @@ pode ser uma parcela de @var{expr_2} (se isso for uma adi@,{c}@~ao) ou um fator 
 @end example
 
 @code{delete(@var{expr_1}, @var{expr_2}, @var{n})} remove as primeiras @var{n} ocorr@^encias de
-@var{expr_1} em @var{expr_2}.**Se houver menos que @var{n}
+@var{expr_1} em @var{expr_2}.  Se houver menos que @var{n}
 ocorr@^encias de @var{expr_1} em @var{expr_2} ent@~ao todas as corr@^encias seram exclu@'idas.
 
 @c ===beg===
@@ -136,7 +136,7 @@ Veja @code{first} para maiores detalhes.
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 @deffn {Fun@,{c}@~ao} endcons (@var{expr}, @var{list})
 Retorna uma nova lista consistindo de elementos de
-@code{list} seguidos por @var{expr}.**@code{endcons} tamb@'em trabalha  sobre express@~oes gerais, e.g.
+@code{list} seguidos por @var{expr}.  @code{endcons} tamb@'em trabalha  sobre express@~oes gerais, e.g.
 @code{endcons(x, f(a,b,c));}  ->  @code{f(a,b,c,x)}.
 
 @end deffn
@@ -151,13 +151,13 @@ Veja @code{first} para maiores detalhes.
 @deffn {Fun@,{c}@~ao} first (@var{expr})
 Retorna a primeira parte de @var{expr} que pode resultar no primeiro
 elemento de uma lista, a primeira linha de uma matriz, a primeira parcela de uma adi@,{c}@~ao,
-etc.**Note que @code{first} e suas fun@,{c}@~oes relacionadas, @code{rest} e @code{last}, trabalham
+etc.  Note que @code{first} e suas fun@,{c}@~oes relacionadas, @code{rest} e @code{last}, trabalham
 sobre a forma de @var{expr} que @'e mostrada n@~ao da forma que @'e digitada na
-entrada.**Se a vari@'avel @code{inflag} @'e escolhida para @code{true} todavia, essa
-fun@,{c}@~oes olhar@~ao	 na forma interna de @var{expr}.**Note que o
-simplificador re-ordena express@~oes.**Desse modo @code{first(x+y)} ser@'a @code{x} se @code{inflag}
+entrada.  Se a vari@'avel @code{inflag} @'e escolhida para @code{true} todavia, essa
+fun@,{c}@~oes olhar@~ao	 na forma interna de @var{expr}.  Note que o
+simplificador re-ordena express@~oes.  Desse modo @code{first(x+y)} ser@'a @code{x} se @code{inflag}
 for @code{true} e @code{y} se @code{inflag} for @code{false} (@code{first(y+x)} fornece os mesmos
-resultados).**As fun@,{c}@~oes @code{second} .. @code{tenth} retornam da segunda at@'e a
+resultados).  As fun@,{c}@~oes @code{second} .. @code{tenth} retornam da segunda at@'e a
 d@'ecima parte do seu argumento.
 
 @end deffn
@@ -222,22 +222,22 @@ Retorna a @'ultima parte (parcela, linha, elemento, etc.) de @var{expr}.
 @c NEEDS CLARIFICATION AND EXAMPLES
 @deffn {Fun@,{c}@~ao} length (@var{expr})
 Retorna (por padr@~ao) o n@'umero de partes na forma
-externa (mostrada) de @var{expr}.**Para listas isso @'e o n@'umero de elementos,
+externa (mostrada) de @var{expr}.  Para listas isso @'e o n@'umero de elementos,
 para matrizes isso @'e o n@'umero de linhas, e para adi@,{c}@~oes isso @'e o n@'umero
 de parcelas (veja @code{dispform}).
 
 O comando @code{length} @'e afetado pelo comutador
-@code{inflag}.**Ent@~ao, e.g. @code{length(a/(b*c));} retorna 2 se
+@code{inflag}.  Ent@~ao, e.g. @code{length(a/(b*c));} retorna 2 se
 @code{inflag} for @code{false} (Assumindo @code{exptdispflag} sendo @code{true}), mas 3 se @code{inflag} for
 @code{true} (A representa@,{c}@~ao interna @'e essencialmente @code{a*b^-1*c^-1}).
 
 @end deffn
 
-@defvr {option variable de op@,{c}@~ao} listarith
+@defvr {Vari@'avel de op@,{c}@~ao} listarith
 Valor padr@~ao: @code{true} - se @code{false} faz com que quaisquer opera@,{c}@~oes aritm@'eticas
 com listas sejam suprimidas; quando @code{true}, opera@,{c}@~oes lista-matriz s@~ao
 contagiosas fazendo com que listas sejam convertidas para matrizes retornando um resultado
-que @'e sempre uma matriz.**Todavia, opera@,{c}@~oes lista-lista podem retornar
+que @'e sempre uma matriz.  Todavia, opera@,{c}@~oes lista-lista podem retornar
 listas.
 
 @end defvr
@@ -280,7 +280,7 @@ Exemplos:
 @c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
 @deffn {Fun@,{c}@~ao} member (@var{expr}, @var{list})
 Retorna @code{true} se @var{expr} ocorre como um membro de @var{list} (n@~ao
-dentro de um membro).**De outra forma @code{false} @'e retornado.**@code{member} tamb@'em trabalha sobre
+dentro de um membro).  De outra forma @code{false} @'e retornado.  @code{member} tamb@'em trabalha sobre
 express@~oes n@~ao-lista, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 
 @end deffn

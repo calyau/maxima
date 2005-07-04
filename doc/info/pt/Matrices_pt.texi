@@ -8,13 +8,13 @@
 @section Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
 
 @menu
-* Dot::                         
-* Vectors::                     
-* eigen::
+* Ponto::                         
+* Vetores::                     
+* auto::
 @end menu
 
-@node Dot, Vectors, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
-@subsection Dot
+@node Ponto, Vetores, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@subsection Ponto
 O operador @code{.} representa multiplica@,{c}@~ao n@~ao comutativa e produto escalar.
 Quando os operandos s@~ao matrizes 1-coluna ou 1-linha @code{a} e @code{b},
 a expres@~ao @code{a.b} @'e equivalente a @code{sum (a[i]*b[i], i, 1, length(a))}.
@@ -40,8 +40,8 @@ expres@~oes envolvendo @code{.}, a saber
 @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
 e @code{dotscrules}.
 
-@node Vectors, eigen, Dot, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
-@subsection Vectors
+@node Vetores, auto, Ponto, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@subsection Vetores
 @code{vect} @'e um pacote de fun@,{c}@~oes para an@'alise vetorial.
 @code{load ("vect")} chama esse pacote, e @code{demo ("vect")} permite visualizar uma demonstra@,{c}@~ao.
 @c find maxima -name \*orth\* YIELDS NOTHING; ARE THESE FUNCTIONS IN ANOTHER FILE NOW ??
@@ -65,8 +65,8 @@ O pacote @code{vect} cont@'em essas fun@,{c}@~oes:
 Aten@,{c}@~ao: o pacote @code{vect} declara o operador ponto @code{.}
 como sendo um operador comutativo.
 
-@node eigen, , Vectors, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
-@subsection eigen
+@node auto, , Vetores, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@subsection auto
 
 O pacote @code{eigen} cont@'em muitas fun@,{c}@~oes devotadas para a
 computa@,{c}@~ao simb@'olica de autovalores e autovetores.

@@ -1,4 +1,4 @@
-/Contexts.texi/1.6/Thu Apr 21 04:58:24 2005/-ko/
+@c /Contexts.texi/1.6/Thu Apr 21 04:58:24 2005/-ko/
 @menu
 * Defini@,{c}@~oes para Constantes::
 @end menu
