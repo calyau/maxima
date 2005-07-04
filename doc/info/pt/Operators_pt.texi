@@ -5,7 +5,7 @@
 * Operador::                    
 * Operador P@'osfixado::                     
 * Operador Pr@'efixado::                      
-* Defini@,{c}@~oes para Operadores::   
+* Defini@value{cedilha}@~oes para Operadores::   
 @end menu
 
 
@@ -21,7 +21,7 @@ simplificar, e.g. @code{j(j(a,b),j(c,d))} para @code{j(a, b, c, d)}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Sem Argumentos, Operador, "N" Argumentos, Operators
+@node Sem Argumentos, Operador, "N" Argumentos, Operadores
 @section Sem Argumentos
 Operadores @code{nofix} s@~ao usados para denotar fun@,{c}@~oes sem argumentos.
 A mera presen@,{c}a de tal operador em um comando far@'a com que a
@@ -36,7 +36,7 @@ Veja tamb@'em @code{syntax}.
 @section Operador
 Veja @code{operators}.
 
-@node Operador P@'osfixado, Operador Pr@'efixado, Operador, Operators
+@node Operador P@'osfixado, Operador Pr@'efixado, Operador, Operadores
 @section Operador P@'osfixado
 Operadores @code{postfix} como a variedade @code{prefix} denotam fun@,{c}@~oes
 de um argumento simples, mas nesse caso  o argumento sucede
@@ -46,7 +46,7 @@ sint@'atica que declara x como sendo um operador @code{postfix}.
 
 Veja tamb@'em @code{syntax}.
 
-@node Operador Pr@'efixado, Defini@,{c}@~oes para Operadores, Operador P@'osfixado, Operadores
+@node Operador Pr@'efixado, Defini@value{cedilha}@~oes para Operadores, Operador P@'osfixado, Operadores
 @section Operador Pr@'efixado
 Um operador @code{prefix} @'e um que significa uma fun@,{c}@~ao de um
 argumento, o qual argumento imediatamente segue uma ocorr@^encia do
@@ -55,9 +55,8 @@ sint@'atica que declara x como sendo um operador @code{prefix}.
 
 Veja tamb@'em @code{syntax}.
 
-@c end concepts Operators
-@node Defini@,{c}@~oes para Operadores,  , Operador Pr@'efixado, Operadores
-@section Defini@,{c}@~oes para Operadores
+@node Defini@value{cedilha}@~oes para Operadores,  , Operador Pr@'efixado, Operadores
+@section Defini@value{cedilha}@~oes para Operadores
 
 @deffn {Operador} "!"
 O operador fatorial.

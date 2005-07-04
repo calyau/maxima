@@ -1,11 +1,11 @@
 @c /Matrices.texi/1.15/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Matrizes e @'Algebra Linear::  
-* Defini@,{c}@~oes para Matrizes e @'Algebra Linear::  
+* Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
+* Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
 @end menu
 
-@node Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Defini@,{c}@~oes para Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
-@section Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@node Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear, Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
+@section Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear
 
 @menu
 * Ponto::                         
@@ -13,7 +13,7 @@
 * auto::
 @end menu
 
-@node Ponto, Vetores, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@node Ponto, Vetores, Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear, Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear
 @subsection Ponto
 O operador @code{.} representa multiplica@,{c}@~ao n@~ao comutativa e produto escalar.
 Quando os operandos s@~ao matrizes 1-coluna ou 1-linha @code{a} e @code{b},
@@ -40,7 +40,7 @@ expres@~oes envolvendo @code{.}, a saber
 @code{dotconstrules}, @code{dotdistrib}, @code{dotexptsimp}, @code{dotident},
 e @code{dotscrules}.
 
-@node Vetores, auto, Ponto, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@node Vetores, auto, Ponto, Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear
 @subsection Vetores
 @code{vect} @'e um pacote de fun@,{c}@~oes para an@'alise vetorial.
 @code{load ("vect")} chama esse pacote, e @code{demo ("vect")} permite visualizar uma demonstra@,{c}@~ao.
@@ -65,7 +65,7 @@ O pacote @code{vect} cont@'em essas fun@,{c}@~oes:
 Aten@,{c}@~ao: o pacote @code{vect} declara o operador ponto @code{.}
 como sendo um operador comutativo.
 
-@node auto, , Vetores, Introdu@,{c}@~ao a Matrizes e @'Algebra Linear
+@node auto, , Vetores, Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear
 @subsection auto
 
 O pacote @code{eigen} cont@'em muitas fun@,{c}@~oes devotadas para a
@@ -85,9 +85,9 @@ As fun@,{c}@~oes no pacote @code{eigen} s@~ao
 e @code{similaritytransform}.
 
 @c end concepts Matrizes e @'Algebra Linear
-@node Defini@,{c}@~oes para Matrizes e @'Algebra Linear,  , Introdu@,{c}@~ao a Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
-@c PT = Defini@,{c}@~oes para Matrizes e @'Algebra Linear
-@section Defini@,{c}@~oes para Matrizes e @'Algebra Linear
+@node Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear,  , Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
+@c PT = Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear
+@section Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear
 
 @deffn {Fun@,{c}@~ao} addcol (@var{M}, @var{list_1}, ..., @var{list_n})
 Anexa a(s) coluna(s) dadas por uma
@@ -1226,7 +1226,7 @@ Retorna @code{true} se @var{expr} @'e um n@~ao escalar, i.e., isso cont@'em
 
 @deffn {Fun@,{c}@~ao} permanent (@var{M}, @var{n})
 Calcula o permanente da matriz @var{M}.  Um permanente
-@'e como um determinante mas sem mudan@,{c}a de sinal.
+@'e como um determinante mas sem mudan@value{cedilha}a de sinal.
 
 @end deffn
 

@@ -1,19 +1,19 @@
-@c/Miscellaneous.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
+@c /Miscellaneous.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Op@,{c}@~oes Diversas::  
+* Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas::  
 * Compartilhado::                       
-* Defini@,{c}@~oes para Op@,{c}@~oes Diversas::  
+* Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas::  
 @end menu
 
-@node Introdu@,{c}@~ao a Op@,{c}@~oes Diversas, Compartilhado, Op@,{c}@~oes Diversas, Op@,{c}@~oes Diversas
-@c PT = Introdu@,{c}@~ao a Op@,{c}@~oes Diversas
-@section Introdu@,{c}@~ao a Op@,{c}@~oes Diversas
+@node Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas, Compartilhado, Op@value{cedilha}@~oes Diversas, Op@value{cedilha}@~oes Diversas
+@c PT = Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas
+@section Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas
 
 Nessa se@,{c}@~ao v@'arias op@,{c}@~oes s@~ao tratadas pelo fato de possuirem um efeito global
 sobre a opera@,{c}@~ao do Maxima.   Tamb@'em v@'arias listas tais como a lista de todas as
 fun@,{c}@~oes definidas pelo usu@'ario, s@~ao discutidas.
 
-@node Compartilhado, Defini@,{c}@~oes para Op@,{c}@~oes Diversas, Introdu@,{c}@~ao a Op@,{c}@~oes Diversas, Op@,{c}@~oes Diversas
+@node Compartilhado, Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas, Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas, Op@value{cedilha}@~oes Diversas
 @c PT = Compartilhado
 @section Compartilhado
 O diret@'orio "share" do Maxima cont@'em programas e outros arquivos 
@@ -28,9 +28,9 @@ dentro do sistema de arquivos do usu@'ario.
 Usu@'arios podem encontrar isso de forma mais detalhada navegando no diret@'orio compartilhado usando um navegador de sistema de arquivo.
 
 
-@node Defini@,{c}@~oes para Op@,{c}@~oes Diversas,  , Compartilhado, Op@,{c}@~oes Diversas
-@c PT = Defini@,{c}@~oes para Op@,{c}@~oes Diversas
-@section Defini@,{c}@~oes para Op@,{c}@~oes Diversas
+@node Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas,  , Compartilhado, Op@value{cedilha}@~oes Diversas
+@c PT = Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas
+@section Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas
 
 @defvr {Vari@'avel de sistema} aliases
 Valor padr@~ao: @code{[]}
@@ -423,11 +423,11 @@ Vari@'aveis, bmas n@~ao contendo matrizes ou listas.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} setup_autoload (@var{nomedearquivo}, @var{fun@,{c}@~ao_1}, ..., @var{fun@,{c}@~ao_n})
+@deffn {Fun@,{c}@~ao} setup_autoload (@var{nomedearquivo}, @var{fun@value{cedilha}@~ao_1}, ..., @var{fun@value{cedilha}@~ao_n})
 Especifica que
 se qualquer entre @var{fun@,{c}@~ao_1}, ..., @var{fun@,{c}@~ao_n} for referenciado e n@~ao ainda definido,
 @var{nomedeqrquivo} @'e chamado via @code{load}.
-@var{nomedearquivo} usualmente cont@'em defini@,{c}@~oes para as fun@,{c}@~oes especificadas,
+@var{nomedearquivo} usualmente cont@'em defini@value{cedilha}@~oes para as fun@value{cedilha}@~oes especificadas,
 embora isso n@~ao seja obrigat@'orio.
 
 @code{setup_autoload} n@~ao trabalha para fun@,{c}@~oes array.

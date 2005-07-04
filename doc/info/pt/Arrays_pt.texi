@@ -1,11 +1,11 @@
 @c /Arrays.texi/1.9/Sun Jun 12 19:13:46 2005/-ko/
 @menu
-* Defini@,{c}@~oes para Arrays e Tabelas::  
+* Defini@value{cedilha}@~oes para Arrays e Tabelas::  
 @end menu
 
-@node Defini@,{c}@~oes para Arrays e Tabelas,  , Arrays e Tabelas, Arrays e Tabelas
+@node Defini@value{cedilha}@~oes para Arrays e Tabelas,  , Arrays e Tabelas, Arrays e Tabelas
 
-@section Defini@,{c}@~oes para Arrays e Tabelas
+@section Defini@value{cedilha}@~oes para Arrays e Tabelas
 
 @deffn {Fun@,{c}@~ao} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Fun@,{c}@~ao} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
@@ -98,7 +98,7 @@ Preenche o array @var{A} com @var{B}, que @'e uma lista ou um array.
 
 Se @var{A} for  
 um array de ponto flutuante (inteiro) ent@~ao @var{B} poder@'a ser
-ou uma lista de n@u'meros (inteiros) em ponto flutuante ou outro
+ou uma lista de n@'umeros (inteiros) em ponto flutuante ou outro
 array em ponto flutuante (inteiro).
 
 Se as dimens@~oes do array forem 
@@ -176,7 +176,7 @@ desejado para redefinir os valores em um array desordenado.
 @end deffn
 
 @c THIS IS REALLY CONFUSING
-@defvr {Vari@'avel de p@,{c}@~ao} use_fast_arrays
+@defvr {Vari@'avel de p@value{cedilha}@~ao} use_fast_arrays
 - Se @code{true} somente dois tipos de arrays s@~ao reconhecidos.  
 
 1) O array art-q (t no Lisp Comum) que pode ter muitas dimens@~oes

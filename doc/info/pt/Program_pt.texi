@@ -1,20 +1,20 @@
 @c /Program.texi/1.20/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Fluxo de Programa::  
-* Defini@,{c}@~oes para Fluxo de Programa::  
+* Introdu@value{cedilha}@~ao a Fluxo de Programa::  
+* Defini@value{cedilha}@~oes para Fluxo de Programa::  
 @end menu
 
-@node Introdu@,{c}@~ao a Fluxo de Programa, Defini@,{c}@~oes para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
-@c PT = Introdu@,{c}@~ao ao Fluxo do Programa
-@section Introdu@,{c}@~ao a Fluxo de Programa
+@node Introdu@value{cedilha}@~ao a Fluxo de Programa, Defini@value{cedilha}@~oes para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
+@c PT = Introdu@value{cedilha}@~ao ao Fluxo do Programa
+@section Introdu@value{cedilha}@~ao a Fluxo de Programa
 
 Maxima fornece um @code{do} para ciclos iterativos, tamb@'em contru@,{c}@~oes mais
 primitivas tais como @code{go}.
 
 @c end concepts Fluxo de Programa
-@node Defini@,{c}@~oes para Fluxo de Programa,  , Introdu@,{c}@~ao a Fluxo de Programa, Fluxo de Programa
-@c PT = Defini@,{c}@~oes para Fluxo do Programa
-@section Defini@,{c}@~oes para Fluxo de Programa
+@node Defini@value{cedilha}@~oes para Fluxo de Programa,  , Introdu@value{cedilha}@~ao a Fluxo de Programa, Fluxo de Programa
+@c PT = Defini@value{cedilha}@~oes para Fluxo do Programa
+@section Defini@value{cedilha}@~oes para Fluxo de Programa
 
 @deffn {Fun@,{c}@~ao} backtrace ()
 @deffnx {Fun@,{c}@~ao} backtrace (@var{n})
@@ -331,7 +331,7 @@ facilidades de itera@,{c}@~ao do Maxima.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} go (@var{tag})
-@'e usada dentro de um @code{block} para transferir o controle para a declara@,{c}@~ao
+@'e usada dentro de um @code{block} para transferir o controle para a declara@value{cedilha}@~ao
 do bloco que for identificada com o argumento para @code{go}.  Para identificar uma
 declara@,{c}@~ao, coloque antes dessa declara@,{c}@~ao um argumento at@^omico como outra declara@,{c}@~ao no
 @code{block}.  Por exemplo:
@@ -460,7 +460,7 @@ Se @code{maperror} for @code{true} ent@~ao uma ,mensagem de erro
 @deffn {Fun@,{c}@~ao} maplist (@var{f}, @var{expr_1}, ..., @var{expr_n})
 Retorna uma lista de aplica@,{c}@~oes de @var{f}
 em todas as partes das express@~oes @var{expr_1}, ..., @var{expr_n}.
-@var{f} @'e o nome de uma fun@,{c}@~ao, ou uma express@~ao lambda.
+@var{f} @'e o nome de uma fun@value{cedilha}@~ao, ou uma express@~ao lambda.
 
 @code{maplist} difere de @code{map (@var{f}, @var{expr_1}, ..., @var{expr_n})}
 que retorna uma express@~ao com o mesmo operador principal que @var{expr_i} tem
@@ -553,7 +553,7 @@ n@~ao local.
 Aplica a fun@,{c}@~ao @var{f} para cada um dos elementos do produto externo
 @var{a_1} vezes @var{a_2} ... vezes @var{a_n}.
 
-@var{f} @'e para ser o nome de uma fun@,{c}@~ao de @math{n} argumentos
+@var{f} @'e para ser o nome de uma fun@value{cedilha}@~ao de @math{n} argumentos
 ou uma express@~ao lambda de @math{n} argumentos.
 Os argumentos @var{a_1}, ..., @var{a_n} podem ser listas ou n@~ao listas.
 Argumentos listas podem ter diferentes comprimentos.

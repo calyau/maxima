@@ -1,14 +1,14 @@
 @c /Help.texi/1.18/Sun Jun 12 22:29:17 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Ajuda::        
+* Introdu@value{cedilha}@~ao a Ajuda::        
 * Lisp e Maxima::            
 * Descartando::          
-* Documenta@,{c}@~ao::               
-* Defini@,{c}@~oes para Ajuda::        
+* Documenta@value{cedilha}@~ao::               
+* Defini@value{cedilha}@~oes para Ajuda::        
 @end menu
 
-@node Introdu@,{c}@~ao a Ajuda, Lisp e Maxima, Help, Help
-@section Introdu@,{c}@~ao a Ajuda
+@node Introdu@value{cedilha}@~ao a Ajuda, Lisp e Maxima, Ajuda, Ajuda
+@section Introdu@value{cedilha}@~ao a Ajuda
 
 @c AS IT STANDS THIS IS JUST A REPEAT OF THE STUFF FOUND UNDER @defun describe.
 
@@ -16,7 +16,7 @@ A fun@,{c}@~ao prim@'aria de ajuda on-line @'e @code{describe},
 que @'e tipicamente invocada atrav@'es do ponto de interroga@,{c}@~ao @code{?} na linha de comando interativa.  
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
 @'e equivalente a @code{describe ("foo")}, onde @code{foo}
-@'e o nome ou parte do nome de uma fun@,{c}@~ao ou t@'opico;
+@'e o nome ou parte do nome de uma fun@value{cedilha}@~ao ou t@'opico;
 @code{describe} ent@~ao acha todos os @'itens documentados que possuem a seq@"u@^encia de caracteres
 @code{foo} em seus t@'itulos.
 Se existe mais que um tal @'item, Maxima solicita ao usu@'ario selecionar
@@ -49,7 +49,7 @@ Nesse exemplo, @'itens 7 e 8 foram selecionados.
 Todos ou nenhum dos @'itens poderia ter sido selecionados atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
 que podem ser abreviados para @code{a} ou @code{n}, respectivamente.
 
-@node Lisp e Maxima, Descartando, Introdu@,{c}@~ao a Ajuda, Help
+@node Lisp e Maxima, Descartando, Introdu@value{cedilha}@~ao a Ajuda, Ajuda
 @section Lisp e Maxima
 Maxima @'e escrito na liguagem de programa@,{c}@~ao Lisp, e @'e f@'acil acessar fun@,{c}@~oes Lisp e vari@'aveis
 a partir do Maxima e vice-versa.
@@ -177,7 +177,7 @@ Algumas fun@,{c}@~oes Lisp possuem o mesmo nome que no pacote Maxima, a saber as
 e @code{gcd}.
 
 
-@node Descartando, Documenta@,{c}@~ao, Lisp e Maxima, Help
+@node Descartando, Documenta@value{cedilha}@~ao, Lisp e Maxima, Ajuda
 @section Descartando
 Computa@,{c}@~ao simb@'olica tende a criar um bom volume
 de arquivos tempor@'arios, e o efetivo manuseio disso pode ser crucial para sucesso
@@ -191,16 +191,16 @@ Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de aces
 est@'a dispon@'ivel.   Isso limita a organiza@,{c}@~ao para p@'aginas que tenham sido recentemente
 escritas.    Veja a documenta@,{c}@~ao da GCL sob ALLOCATE e GBC.   No
 n@'ivel do Lisp fazendo (setq si::*notify-gbc* t) ir@'a ajudar voc@^e a determinar quais
-@'areas podem precisar de mais espa@,{c}o.
+@'areas podem precisar de mais espa@value{cedilha}o.
 
-@node Documenta@,{c}@~ao, Defini@,{c}@~oes para Ajuda, Descartando, Help
-@section Documenta@,{c}@~ao
+@node Documenta@value{cedilha}@~ao, Defini@value{cedilha}@~oes para Ajuda, Descartando, Ajuda
+@section Documenta@value{cedilha}@~ao
 
 @c SHOULD TALK ABOUT OTHER FORMS OF DOCUMENTATION ASIDE FROM ON-LINE MANUAL.
 
 O manual on-line de usu@'ario do Maxima pode ser visto em diferentes formas.
 A partir da linha de comando interativa do Maxima, o manual de usu@'ario
-@'e visto em texto plano atrav@'es do comando @code{?} (i.e., a fun@,{c}@~ao @code{describe} ).
+@'e visto em texto plano atrav@'es do comando @code{?} (i.e., a fun@value{cedilha}@~ao @code{describe} ).
 O manual de usu@'ario @'e visto como hipertexto @code{info} atrav@'es do programa visualizador @code{info}
 e como uma web page atrav@'es de qualquer navegador web comum.
 
@@ -228,8 +228,8 @@ retorna
 
 e sa@'ida adicional.
 
-@node Defini@,{c}@~oes para Ajuda,  , Documenta@,{c}@~ao, Help
-@section Defini@,{c}@~oes para Ajuda
+@node Defini@value{cedilha}@~oes para Ajuda,  , Documenta@value{cedilha}@~ao, Ajuda
+@section Defini@value{cedilha}@~oes para Ajuda
 
 @deffn {Fun@,{c}@~ao} demo (@var{nomedearquivo})
 Avalia express@~oes Maxima em @var{nomedearquivo} e mostra os resultados.
@@ -362,7 +362,7 @@ Nesse , @'itens 7 e 8 foram selecionados.
 Todos ou nenhum dos @'itens poderia ter sido selecionado atrav@'es da inser@,{c}@~ao de @code{all} ou @code{none},
 que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
-@pxref{Introdu@,{c}@~ao a Ajuda}
+@pxref{Introdu@value{cedilha}@~ao a Ajuda}
 
 @end deffn
 

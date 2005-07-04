@@ -1,11 +1,11 @@
 @c /Command.texi/1.32/Fri Jun 17 00:57:31 2005/-ko
 @menu
-* Introdu@,{c}@~ao a Linha de Comando::  
-* Defini@,{c}@~oes para Linha de Comando::  
+* Introdu@value{cedilha}@~ao a Linha de Comando::  
+* Defini@value{cedilha}@~oes para Linha de Comando::  
 @end menu
 
-@node Introdu@,{c}@~ao a Linha de Comando, Defini@,{c}@~oes para Linha de Comando, Command Line, Command Line
-@section Introdu@,{c}@~ao a Linha de Comando
+@node Introdu@value{cedilha}@~ao a Linha de Comando, Defini@value{cedilha}@~oes para Linha de Comando, Linha de Comando, Linha de Comando
+@section Introdu@value{cedilha}@~ao a Linha de Comando
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
@@ -139,9 +139,9 @@ E.g., @code{'@w{}'%i4} ir@'a reavaliar a linha de entrada @code{%i4}.
 significa retorne a forma verbal de @code{f} aplicada a @code{[x]}.
 
 @end deffn
-@c end concepts Command Line
-@node Defini@,{c}@~oes para Linha de Comando,  , Introdu@,{c}@~ao a Linha de Comando, Command Line
-@section Defini@,{c}@~oes para Linha de Comando
+
+@node Defini@value{cedilha}@~oes para Linha de Comando,  , Introdu@value{cedilha}@~ao a Linha de Comando, Linha de Comando
+@section Defini@value{cedilha}@~oes para Linha de Comando
 
 @c NEEDS WORK, ESPECIALLY EXAMPLES
 @deffn {Fun@,{c}@~ao} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
@@ -253,7 +253,7 @@ ou uma lista de nomes de equa@,{c}@~oes (e.g., @code{[%t1, %t2]} onde @code{%t1}
 @end itemize
 
 Os argumentos de @code{ev} podem ser dados em qualquer ordem com exce@,{c}@~ao de
-substitui@,{c}@~oes de equa@,{c}@~oes que s@a~o manuseadas em seq@"u@^encia, da esquerda para a direita,
+substitui@,{c}@~oes de equa@,{c}@~oes que s@~ao manuseadas em seq@"u@^encia, da esquerda para a direita,
 e fun@,{c}@~oes de avalia@,{c}@~ao que s@~ao compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} @'e
 manuseada como @code{realpart (ratsimp (@var{expr}))}.
 

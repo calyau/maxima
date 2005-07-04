@@ -1,13 +1,13 @@
 @c /Polynomials.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
-* Introdu@,{c}@~ao a Polin@^omios::  
-* Defini@,{c}@~oes para Polin@^omios::  
+* Introdu@value{cedilha}@~ao a Polin@^omios::  
+* Defini@value{cedilha}@~oes para Polin@^omios::  
 @end menu
 
-@node Introdu@,{c}@~ao a Polin@^omios, Defini@,{c}@~oes para Polin@^omios, Polynomials, Polynomials
-@c PT = Introdu@,{c}@~ao a Polin@^omios
-@section Introdu@,{c}@~ao a Polin@^omios
+@node Introdu@value{cedilha}@~ao a Polin@^omios, Defini@value{cedilha}@~oes para Polin@^omios, Polin@^omios, Polin@^omios
+@c PT = Introdu@value{cedilha}@~ao a Polin@^omios
+@section Introdu@value{cedilha}@~ao a Polin@^omios
 
 Polin@^omios s@~ao armazenados no Maxima ou na forma geral ou na
 forma de Express@~oes Racionais Can@^onicas (CRE).  Essa @'ultima @'e uma forma
@@ -49,14 +49,13 @@ vari@'aveis podem ser n@'umeros racionais positivos ou negativos em lugar de ape
 inteiros positivos e os coeficientes podem eles mesmos serem express@~oes
 racionais como descrito acima em lugar de apenas polin@^omios.  Estes s@~ao
 representados internamente por uma forma polinomial recursiva que @'e similar
-@`a forma CRE e @'e a generaliza@,{c}@~ao dessa mesma forma CRE, mas carrega informa@,{c}@~ao
+@`a forma CRE e @'e a generaliza@value{cedilha}@~ao dessa mesma forma CRE, mas carrega informa@value{cedilha}@~ao
 adicional tal com o grau de trunca@,{c}@~ao.  Do mesmo modo que na forma CRE, o
 s@'imbolo /T/ segue o r@'otulo de linha que cont@'em as tais express@~oes.
 
-@c end concepts Polynomials
-@node Defini@,{c}@~oes para Polin@^omios,  , Introdu@,{c}@~ao a Polin@^omios, Polynomials
-@c PT = Defini@,{c}@~oes para Polin@^omios
-@section Defini@,{c}@~oes para Polin@^omios
+@node Defini@value{cedilha}@~oes para Polin@^omios,  , Introdu@value{cedilha}@~ao a Polin@^omios, Polin@^omios
+@c PT = Defini@value{cedilha}@~oes para Polin@^omios
+@section Defini@value{cedilha}@~oes para Polin@^omios
 
 @defvr {Vari@'avel de op@,{c}@~ao} algebraic
 Valor Padr@~ao: @code{false}
@@ -270,7 +269,7 @@ importantes (usando a ordena@,{c}@~ao de vari@'avel assumida pela forma CRE) com
 essas na lista @code{dontfactor}.
 
 @code{savefactors} se @code{true} faz com que os fatores de uma express@~ao que
-@'e um produto de fatores seja guardada por certas fun@,{c}@~oes com o objetivo de
+@'e um produto de fatores seja guardada por certas fun@value{cedilha}@~oes com o objetivo de
 aumentar a velocidade de futuras fatora@,{c}@~oes de express@~oes contendo alguns dos
 mesmos fatores.
 
@@ -991,7 +990,7 @@ ap@'os for@,{c}ar a convers@~ao de @var{expr} para express@~ao racional can@^oni
 O valor de retorno @'e a CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} @'e for@,{c}ada para uma CRE por @code{rat}
+@var{expr} @'e for@value{cedilha}ada para uma CRE por @code{rat}
 se n@~ao for j@'a uma CRE.
 Essa convers@~ao pode mudar a forma de @var{expr} colocando todos os termos
 sobre um denominador comum.
@@ -1137,7 +1136,7 @@ de n@'umeros em ponto flutuante para n@'umeros racionais.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} ratexpand (@var{expr})
-@defvrx {Vari@'avel de op@,{c}@~ao} ratexpand
+@deffnx {Vari@'avel de op@value{cedilha}@~ao} ratexpand
 Expande @var{expr} multiplicando para fora produtos de somas e
 somas exponenciadas, combinando fra@,{c}@~oes sobre um denominador comum,
 cancelando o m@'aximo divisor comum entre entre o numerador e o
@@ -1228,7 +1227,7 @@ ap@'os for@,{c}ar @var{expr} para uma express@~ao racional can@^onica (CRE).
 O valor de retorno @'e uma CRE.
 
 @c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
-@var{expr} @'e for@,{c}ada para uma CRE por @code{rat}
+@var{expr} @'e for@value{cedilha}ada para uma CRE por @code{rat}
 se isso n@~ao for j@'a uma CRE.
 Essa convers@~ao pode alterar a forma de @var{expr} pela coloca@,{c}@~ao de todos os termos
 sobre um denominador comum.
@@ -1336,7 +1335,7 @@ Quando @code{ratsimpexpons} for @code{true},
 @deffn {Fun@,{c}@~ao} ratsubst (@var{a}, @var{b}, @var{c})
 Substitue @var{a} por @var{b} em @var{c} e retorna a express@~ao resultante. 
 @c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
-@var{b} pode tamb@'em ser uma adi@,{c}@~ao, produto, expoente, etc.
+@var{b} pode tamb@'em ser uma adi@value{cedilha}@~ao, produto, expoente, etc.
 
 @c WHAT, EXACTLY, DOES ratsubst KNOW ??
 @code{ratsubst} sabe alguma coisa do significado de express@~oes
@@ -1386,7 +1385,7 @@ Exemplos:
 
 @deffn {Fun@,{c}@~ao} ratvars (@var{x_1}, ..., @var{x_n})
 @deffnx {Fun@,{c}@~ao} ratvars ()
-@defvrx {Vari@'avel de sistema} ratvars
+@deffnx {Vari@'avel de sistema} ratvars
 Declara vari@'aveis principais @var{x_1}, ..., @var{x_n} para express@~oes racionais.
 @var{x_n}, se presente em uma express@~ao racional, @'e considerada a vari@'avel principal.
 De outra forma, @var{x_[n-1]} @'e considerada a vari@'avel principal se presente,

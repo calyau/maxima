@@ -1,12 +1,12 @@
 @c /Equations.texi/1.19/Fri Jun 17 00:57:31 2005/-ko/
 @c end concepts Equations
 @menu
-* Defini@,{c}@~oes para Equa@,{c}@~oes::   
+* Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
 @end menu
 
-@node Defini@,{c}@~oes para Equa@,{c}@~oes,  , Equa@,{c}@~oes, Equa@,{c}@~oes
+@node Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes,  , Equa@value{cedilha}@~oes, Equa@value{cedilha}@~oes
 
-@section Defini@,{c}@~oes para Equa@,{c}@~oes
+@section Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes
 
 @c NEED A DESCRIPTION OF %rnum AS WELL
 @defvr {Vari@'avel} %rnum_list
@@ -80,7 +80,7 @@ forma de n@'umeros em ponto flutuante n@~a tenham sido introduzidas, ent@~ao @co
 chamada para achar uma solu@,{c}@~ao exata.
 
 Em alguns casos, @code{solve} n@~ao est@'a habilitada a achar uma solu@,{c}@~ao,
-ou se isso @e'e feito a solu@,{c}@~ao pode ser uma express@~ao express@~ao muito larga.
+ou se isso @'e feito a solu@,{c}@~ao pode ser uma express@~ao express@~ao muito larga.
 
 @c REMAINDER OF (3) IS PRETTY COMPLEX.  HOW CAN IT BE CLARIFIED ??
 Se a equa@,{c}@~ao @'e de uma @'unica vari@'avel e @'e ou linear, ou quadr@'atica, ou
@@ -423,7 +423,7 @@ Solution
 @code{inteqn} @'e um pacote para resolver equa@,{c}@~oes integrais.
 @code{load ("inteqn")} carrega esse pacote.
 
-@var{ie} @'e a equa@,{c}@~ao integral; @var{unk} @'e a fun@,{c}@~ao desconhecida; @var{tech} @'e a
+@var{ie} @'e a equa@value{cedilha}@~ao integral; @var{unk} @'e a fun@value{cedilha}@~ao desconhecida; @var{tech} @'e a
 t@'ecnica a ser tentada nesses dados acima (@var{tech} = @code{first} significa: tente
 a primeira t@'ecnica que achar uma solu@,{c}@~ao; @var{tech} = @code{all} significa: tente todas a
 t@'ecnicas aplic@'aveis); @var{n} @'e o n@'umero m@'aximo de termos a serem usados de
@@ -433,7 +433,7 @@ o inicial suposto para @code{neumann} ou @code{firstkindseries}.
 
 Valores padr@~ao do segundo at@'e o quinto par@^ametro s@~ao:
 
-@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} @'e a primeira fun@,{c}@~ao encontrada em um integrando
+@var{unk}: @code{@var{p}(@var{x})}, onde @var{p} @'e a primeira fun@value{cedilha}@~ao encontrada em um integrando
 que @'e desconhecida para Maxima e @var{x} @'e a vari@'avel que ocorre como um
 argumento para a primeira ocorr@^encia de @var{p} achada fora de uma integral no
 caso de equa@,{c}@~oes @code{secondkind} , ou @'e somente outra vari@'avel
@@ -747,9 +747,9 @@ intervalo de confic@^encia para as ra@'izes achadas pela fun@,{c}@~ao @code{real
 @deffnx {Fun@,{c}@~ao} solve (@var{expr})
 @deffnx {Fun@,{c}@~ao} solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])
 Resolve a equa@,{c}@~ao alg@'ebrica @var{expr} para a vari@'avel
-@var{x} e retorna uma lista de equa@,{c}@~oes solu@,{c}@~ao em @var{x}.  Se @var{expr} n@~ao @'e uma
+@var{x} e retorna uma lista de equa@value{cedilha}@~oes solu@value{cedilha}@~ao em @var{x}.  Se @var{expr} n@~ao @'e uma
 equa@,{c}@~ao, a equa@,{c}@~ao @code{@var{expr} = 0} @'e assumida em seu lugar.
-@var{x} pode ser uma fun@,{c}@~ao (e.g. @code{f(x)}), ou outra express@~ao n@~ao at@^omica
+@var{x} pode ser uma fun@value{cedilha}@~ao (e.g. @code{f(x)}), ou outra express@~ao n@~ao at@^omica
 exceto uma adi@,{c}@~ao ou um produto.  @var{x} pode ser omitido se @var{expr} cont@'em somente uma
 vari@'avel.  @var{expr} pode ser uma express@~ao racional, e pode conter
 fun@,{c}@~oes trigonom@'etricas, exponenciais, etc.

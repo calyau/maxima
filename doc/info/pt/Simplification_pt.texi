@@ -1,12 +1,12 @@
 @c Simplification.texi/1.13/Fri Jun 17 00:57:35 2005/-ko/
 @c end concepts Simplification
 @menu
-* Defini@,{c}@~oes para Simplifica@,{c}@~ao::  
+* Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao::  
 @end menu
 
-@node Defini@,{c}@~oes para Simplifica@,{c}@~ao,  , Simplification, Simplification
-@c PT = Defini@,{c}@~oes para Simplifica@,{c}@~ao
-@section Defini@,{c}@~oes para Simplifica@,{c}@~ao
+@node Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao,  , Simplifica@value{cedilha}@~ao, Simplifica@value{cedilha}@~ao
+@c PT = Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao
+@section Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao
 @menu
 @end menu
 
@@ -53,7 +53,7 @@ ou @code{zero}.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @deffn {Fun@,{c}@~ao} demoivre (@var{expr})
-@deffnx {Vari@'avel de op@,{c}@~ao} demoivre
+@deffnx {Vari@'avel de op@value{cedilha}@~ao} demoivre
 
 A fun@,{c}@~ao @code{demoivre (expr)} converte uma express@~ao
 sem escolher a vari@'avel global @code{demoivre}.
@@ -186,7 +186,7 @@ expandido.
 
 
 @deffn {Fun@,{c}@~ao} exponentialize (@var{expr})
-@deffnx {Vari@'avel de op@,{c}@~ao} exponentialize
+@deffnx {Vari@'avel de op@value{cedilha}@~ao} exponentialize
 
 A fun@,{c}@~ao @code{exponentialize (expr)} converte 
 fun@,{c}@~oes circulares e hiperb@'olicas em @var{expr} para exponenciais,
@@ -273,7 +273,7 @@ com @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Nota: Cuidado deve ser
 tomado se voc@^e eleger o uso desse recurso acima.  E.g., se voc@^e subtrair uma
 express@~ao na qual @code{x} for uma @code{mainvar} de uma na qual @code{x} n@~ao seja uma
 @code{mainvar}, resimplifica@,{c}@~ao e.g. com @code{ev (expr, simp)} pode ser
-necess@'aria se for para ocorrer um cancelamento.  Tamb@'em, se voc@^grava uma
+necess@'aria se for para ocorrer um cancelamento.  Tamb@'em, se voc@^e grava uma
 express@~ao na qual @code{x} @'e uma @code{mainvar}, voc@^e provavelmente pode tamb@'em gravar @code{x}.)
 
 @end defvr

@@ -1,12 +1,12 @@
 @c /Atensor.texi/1.7/Sun May  1 20:31:14 2005/
 @menu
-* Introdu@,{c}@~ao ao Pacote atensor::
-* Defini@,{c}@~oes para o Pacote atensor::
+* Introdu@value{cedilha}@~ao ao Pacote atensor::
+* Defini@value{cedilha}@~oes para o Pacote atensor::
 @end menu
 
-@node Introdu@,{c}@~ao ao Pacote atensor, Defini@,{c}@~oes para o Pacote atensor, Pacote atensor, Pacote atensor
-@c PT = Introdu@,{c}@~ao ao pacote de tensores alg@'ebricos
-@section Introdu@,{c}@~ao ao Pacote atensor
+@node Introdu@value{cedilha}@~ao ao Pacote atensor, Defini@value{cedilha}@~oes para o Pacote atensor, Pacote atensor, Pacote atensor
+@c PT = Introdu@value{cedilha}@~ao ao pacote de tensores alg@'ebricos
+@section Introdu@value{cedilha}@~ao ao Pacote atensor
 
 @code{atensor} @'e um pacote de manipul@,{c}@~ao de tensores alg@'ebricos.  Para usar @code{atensor},
 digite @code{load(atensor)}, seguido por uma chamada @`a fun@,{c}@~ao 
@@ -100,10 +100,10 @@ desejadas.
 
 
 @c end concepts atensor
-@node Defini@,{c}@~oes para o Pacote atensor,  , Introdu@,{c}@~ao ao Pacote atensor, Pacote atensor
+@node Defini@value{cedilha}@~oes para o Pacote atensor,  , Introdu@value{cedilha}@~ao ao Pacote atensor, Pacote atensor
 
-@c PT = Deini@,{c}@~oes para o pacote de tensores alg@'ebricos
-@section Defini@,{c}@~oes para o Pacote atensor
+@c PT = Deini@value{cedilha}@~oes para o pacote de tensores alg@'ebricos
+@section Defini@value{cedilha}@~oes para o Pacote atensor
 
 @deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
 @deffnx {Function} init_atensor (@var{alg_type})
@@ -203,7 +203,7 @@ O s@'imbolo para bases vetoriais.  O padr@~ao @'e @code{v}.
 
 @deffn {Function} sf (@var{u}, @var{v})
 
-@'E uma fun@,{c}@~ao escalar sim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
+@'E uma fun@value{cedilha}@~ao escalar sim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
 usando @code{abasep} e se esse for o caso, substitui o valor 
 correspondente da matriz @code{aform}.
@@ -212,7 +212,7 @@ correspondente da matriz @code{aform}.
 
 @deffn {Function} af (@var{u}, @var{v})
 
-@'E uma fun@,{c}@~ao escalar antisim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
+@'E uma fun@value{cedilha}@~ao escalar antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
 usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.
@@ -221,7 +221,7 @@ valor correspondente da matriz @code{aform}.
 
 @deffn {Function} av (@var{u}, @var{v})
 
-@'E uma fun@,{c}@~ao antisim@'etrica que @'e usada em rela@,{c}@~oes comutativas.
+@'E uma fun@value{cedilha}@~ao antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
 usando @code{abasep} e se esse for o caso, substitui o
 valor correspondente da matriz @code{aform}.

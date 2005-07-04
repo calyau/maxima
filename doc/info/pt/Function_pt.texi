@@ -1,19 +1,19 @@
 @c /Function.texi/1.33/Fri Jun 17 00:57:33 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao::  
-* Fun@,{c}@~ao::                    
+* Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
+* Fun@value{cedilha}@~ao::                    
 * Macros::                      
-* Defini@,{c}@~oes para Defini@,{c}@~ao de Fun@,{c}@~ao::  
+* Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 @end menu
 
-@node Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao, Fun@,{c}@~ao, Defini@,{c}@~ao de Fun@,{c}@~ao, Defini@,{c}@~ao de Fun@,{c}@~ao
-@c PT = Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~oes
-@section Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao
+@node Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
+@c PT = Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~oes
+@section Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 
-@node Fun@,{c}@~ao, Macros, Introdu@,{c}@~ao a Defini@,{c}@~ao de Fun@,{c}@~ao, Defini@,{c}@~ao de Fun@,{c}@~ao
+@node Fun@value{cedilha}@~ao, Macros, Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
-@c PT = Fun@,{c}@~ao
-@section Fun@,{c}@~ao
+@c PT = Fun@value{cedilha}@~ao
+@section Fun@value{cedilha}@~ao
 Para definir uma fun@,{c}@~ao no Maxima voc@^e usa o operador :=.
 E.g.
 
@@ -99,7 +99,7 @@ block ([a: a], expr1, ...  a: a+3, ..., exprn)
 @end example
 
 proteger@'a o valor externo de @code{a} de ser alterado, mas
-impedir@'a voc@^de acessar o valor antigo.   Dessa forma o lado direito
+impedir@'a voc@^e acessar o valor antigo.   Dessa forma o lado direito
 de atribui@,{c}@~oes, @'e avaliado no contexto inserido, antes que
 qualquer avalia@,{c}@~ao ocorra.
 Usando apenas @code{block ([x], ...} faremos com que o @code{x} ter a si mesmo
@@ -131,7 +131,7 @@ pode ser calculado em tempo de execu@,{c}@~ao, isso @'e @'uti para usar @code{de
 possivelmente @code{buildq}.  
 
 
-@node Macros, Defini@,{c}@~oes para Defini@,{c}@~ao de Fun@,{c}@~ao, Fun@,{c}@~ao, Defini@,{c}@~ao de Fun@,{c}@~ao
+@node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @c PT = Macros
 @section Macros
 
@@ -142,6 +142,8 @@ possivelmente @code{buildq}.
 @var{vari@'aveis} @'e uma lista de elementos da forma @code{<atom>}
 ou @code{<atom>: <value>}.
 
+@end deffn
+
 @subsection Sem@^antica
 
 Os elementos da lista @var{vari@'aveis} s@~ao avaliados da esquerda para a direita (a sintaxe
@@ -151,7 +153,7 @@ argumento para a forma especial @code{splice} (i.e. @code{splice (@var{atom})}) 
 @var{expr}, ent@~ao o valor associado com que @var{atom} deve ser uma lista
 Maxima, e isso @'e emmendado dentro de @var{expr} em lugar de substitu@'ido.
 
-@subsection Simplifica@,{c}@~ao
+@subsection Simplifica@value{cedilha}@~ao
 
 Os argumentos para @code{buildq} precisam ser protegidos de simplifica@,{c}@~ao at@'e
 as substitui@,{c}@~oes terem sido realizadas.  Esse c@'odigo ter@'a o mesmo efeito que
@@ -164,7 +166,6 @@ Adicionalmente abaixo discorremos construindo uma fun@,{c}@~ao recursiva, para u
 solu@,{c}@~ao de s@'eries.   Essa defini@,{c}@~ao de fun@,{c}@~oes dentro de fun@,{c}@~oes
 usualmente utiliza-se @code{define}, que avalia seus argumentos.
 Um n@'umero de exemplos est@~ao inclu@'idos sob @code{splice}.
-@end deffn
 
 @c NEEDS CLARIFICATION
 @deffn {Fun@,{c}@~ao} splice (@var{atom})
@@ -317,15 +318,15 @@ Da@'i o @code{buildq} ser @'util para construir a forma.
 @end deffn
 
 
-@c end concepts Defini@,{c}@~ao de Fun@,{c}@~ao
-@node Defini@,{c}@~oes para Defini@,{c}@~ao de Fun@,{c}@~ao,  , Macros, Defini@,{c}@~ao de Fun@,{c}@~ao
-@c PT = Defini@,{c}@~oes para Defini@,{c}@~ao de Fun@,{c}@~ao
-@section Defini@,{c}@~oes para Defini@,{c}@~ao de Fun@,{c}@~ao
+@c end concepts Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
+@node Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao,  , Macros, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
+@c PT = Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
+@section Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @c NEEDS CLARIFICATION AND EXAMPLES
 @c IMPORTANT TOPIC
 @deffn {Fun@,{c}@~ao} apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
 Retorna o resultado da aplica@,{c}@~ao da fun@,{c}@~ao @var{f} para a lista de argumentos @var{x_1}, ..., @var{x_n}.
-@var{f} @'e o nome de uma fun@,{c}@~ao ou uma express@~ao lambda.
+@var{f} @'e o nome de uma fun@value{cedilha}@~ao ou uma express@~ao lambda.
 
 Isso @'e @'util quando @'e desejado
 calcular os argumentos para uma fun@,{c}@~ao antes de aplicar aquela fun@,{c}@~ao.
@@ -455,7 +456,7 @@ Veja tamb@'em @code{translate}, @code{translate_file}, e @code{compile_file}.
 @c @end defvar
 
 @deffn {Fun@,{c}@~ao} compile (@var{f_1}, ..., @var{f_n})
-@deffnx {Fun@,{c}@~ao} compile (fun@,{c}@~oes)
+@deffnx {Fun@,{c}@~ao} compile (functions)
 @deffnx {Fun@,{c}@~ao} compile (all)
 Traduz fun@,{c}@~oes Maxima @var{f_1}, ..., @var{f_n} para Lisp, avalia a tradu@,{c}@~ao Lisp,
 e chama a fun@,{c}@~ao Lisp @code{COMPILE} sobre cada fun@,{c}@~ao traduzida.
@@ -525,7 +526,7 @@ Exemplos:
 @end deffn
 
 @c SEE NOTE BELOW ABOUT THE DOCUMENTATION STRING
-@c @deffn {Fun@,{c}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
+@c @deffn {Fun@value{cedilha}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode}, @var{documentation})
 @deffn {Fun@,{c}@~ao} define_variable (@var{name}, @var{default_value}, @var{mode})
 
 Introduz uma vari@'avel global dentro do ambiente Maxima.
@@ -1113,7 +1114,7 @@ declara@,{c}@~oes para fazer o c@'odigo traduzido mais adequado para compila@,{c
 
 @end defvr
 
-@deffn {Fun{@,{c}}@~ao} translate (@var{f_1}, ..., @var{f_n})
+@deffn {Fun@,{c}@~ao} translate (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} translate (functions)
 @deffnx {Fun@,{c}@~ao} translate (all)
 Traduz fun@,{c}@~oes definidas pelo usu@'ario
@@ -1475,7 +1476,7 @@ atribui@,{c}@~oes para sinalizadores traduzidos (@code{tr_numer}, etc.) n@~ao t@
 @c the compilation succeeded.  This @'e a bug.  
 @c REPORTED AS SOURCEFORGE BUG # 1103722.
 
-@var{filename} pode n@~ao conter declara@,{c}@~oes @code{:lisp}.
+@var{filename} pode n@~ao conter declara@value{cedilha}@~oes @code{:lisp}.
 
 @code{compile_file} avalia seus argumentos.
 

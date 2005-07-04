@@ -1,11 +1,11 @@
 @c /Plotting.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
 @menu
-* Defini@,{c}@~oes para Montagem de Gr@'aficos::    
+* Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
 
-@node Defini@,{c}@~oes para Montagem de Gr@'aficos,  , Montando Gr@'aficos, Montando Gr@'aficos
-@c PT = Defini@,{c}@~oes para Imprimindo
-@section Defini@,{c}@~oes para Montagem de Gr@'aficos
+@node Defini@value{cedilha}@~oes para Montagem de Gr@'aficos,  , Montando Gr@'aficos, Montando Gr@'aficos
+@c PT = Defini@value{cedilha}@~oes para Imprimindo
+@section Defini@value{cedilha}@~oes para Montagem de Gr@'aficos
 
 @c INSPECTING src/plot.lisp AND TRYING SOME EXAMPLES,
 @c IT APPEARS THAT in_netmath HAS NO EFFECT ON plot2d
@@ -681,7 +681,7 @@ com a op@,{c}@~ao de montagem de gr@'afico @code{transform_xy}.
 @example
 make_transform ([r, th, z], r*cos(th), r*sin(th), z)$
 @end example
-@'e uma transforma@,{c}@~ao para coordenadas polares.
+@'e uma transforma@value{cedilha}@~ao para coordenadas polares.
 @end deffn
 
 @deffn {Fun@,{c}@~ao}  plot2d_ps (@var{expr}, @var{range})
@@ -707,7 +707,7 @@ comandos de montagem de gr@'afico, posteriormente podemos querer montar um gr@'a
 muitas montagens de gr@'aficos, e ent@~ao devemos manter esse fluxo aberto.
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
+@deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@value{cedilha}@~ao})
 op@,{c}@~ao @'e do formato de um dos elementos da lista 
 @code{plot_options}.
 Dessa forma @code{set_plot_option ([grid, 30, 40])}
@@ -725,8 +725,8 @@ pode ser da forma @code{[x0, y0, x1, y1, ...]} ou da forma @code{[[x0, y0], [x1,
 A fun@,{c}@~ao @code{join} @'e @'util fazendo uma lista dos x's e uma
 lista dos y's e colocando-os juntos.
 
-@var{psdraw_curve} simplesmente invoca a mais primitiva fun@,{c}@~ao
-@var{pscurve}.   Aqui est@'a a defini@,{c}@~a:
+@var{psdraw_curve} simplesmente invoca a mais primitiva fun@value{cedilha}@~ao
+@var{pscurve}.   Aqui est@'a a defini@value{cedilha}@~a:
 
 @example
 (defun $psdraw_curve (lis)

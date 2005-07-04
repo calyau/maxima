@@ -1,15 +1,15 @@
 @c /Input.texi/1.35/Fri Jun 17 00:57:33 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Entrada e Sa@'ida::  
+* Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
-* Defini@,{c}@~oes para Entrada e Sa@'ida::  
+* Defini@value{cedilha}@~oes para Entrada e Sa@'ida::  
 @end menu
 
-@node Introdu@,{c}@~ao a Entrada e Sa@'ida, Arquivos, Entrada e Sa@'ida, Entrada e Sa@'ida
-@c PT = Introdu@,{c}@~ao a Entrada e Sa@'ida de Dados
-@section Introdu@,{c}@~ao a Entrada e Sa@'ida
+@node Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Arquivos, Entrada e Sa@'ida, Entrada e Sa@'ida
+@c PT = Introdu@value{cedilha}@~ao a Entrada e Sa@'ida de Dados
+@section Introdu@value{cedilha}@~ao a Entrada e Sa@'ida
 
-@node Arquivos, Defini@,{c}@~oes para Entrada e Sa@'ida, Introdu@,{c}@~ao a Entrada e Sa@'ida, Entrada e Sa@'ida
+@node Arquivos, Defini@value{cedilha}@~oes para Entrada e Sa@'ida, Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Entrada e Sa@'ida
 @c PT = Arquivos
 @section Arquivos
 Um arquivo @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
@@ -27,9 +27,9 @@ Comandos que lidam com arquivos s@~ao:
 and
 @code{appendfile}.
 
-@node Defini@,{c}@~oes para Entrada e Sa@'ida,  , Arquivos, Entrada e Sa@'ida
-@c PT = Defini@,{c}@~oes para Entrada e Sa@'ida de Dados
-@section Defini@,{c}@~oes para Entrada e Sa@'ida de Dados
+@node Defini@value{cedilha}@~oes para Entrada e Sa@'ida,  , Arquivos, Entrada e Sa@'ida
+@c PT = Defini@value{cedilha}@~oes para Entrada e Sa@'ida de Dados
+@section Defini@value{cedilha}@~oes para Entrada e Sa@'ida de Dados
 
 @defvr {Vari@'avel de sistema} _
 
@@ -165,7 +165,7 @@ escolhe @code{s} para a soma das @'ultimas dez express@~oes de sa@'ida.
 Como prefixo para uma fun@,{c}@~ao ou nome de vari@'avel, @code{?} significa que
 o nome @'e um nome Lisp, n@~ao um nome Maxima.
 Por exemplo, @code{?round} significa a fun@,{c}@~ao Lisp @code{ROUND}.
-Veja @ref{Lisp and Maxima} para mais sobre esse ponto.
+Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
 
 A nota@,{c}@~ao @code{? word} (um ponto de interroga@,{c}@~ao seguido de uma palavra e separado desta por um espa@,{c}o em branco)
 @'e equivalente a @code{describe ("word")}.
@@ -642,7 +642,7 @@ Se nenhum dos acima, @code{file_type} retorna @code{object}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} grind (@var{expr})
-@deffnx {Vari@'avel de op@,{c}@~ao} grind
+@deffnx {Vari@'avel de op@value{cedilha}@~ao} grind
 A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
@@ -1187,7 +1187,7 @@ Veja tamb@'em @code{lmxchar}.
 
 @c NEEDS EXAMPLES
 @deffn {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
-@deffnx {Fun@,{c}@~ao} save (@var{filename}, values, {fun@,{c}@~oes}, labels, ...)
+@deffnx {Fun@,{c}@~ao} save (@var{filename}, values, functions, labels, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, [@var{m}, @var{n}])
 @c @defunx save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
 @c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORKAROUND:
@@ -1203,7 +1203,7 @@ O efeito da execu@,{c}@~ao de @code{save} quando @var{filename} j@'a existe
 depende da implementa@,{c}@~ao Lisp subjacente;
 o arquivo pode ser substitu@'ido, ou @code{save} reclamar com uma mensagem de erro.
 
-A forma especial @code{save (@var{filename}, values, fun@,{c}@~oes, labels, ...)}
+A forma especial @code{save (@var{filename}, values, functions, labels, ...)}
 armazena os @'itens nomeados por @code{values}, @code{fun@,{c}@~oes}, @code{labels}, etc.
 Os nomes podem ser quaisquer especificados pela vari@'avel @code{infolists}.
 @code{values} compreende todas as vari@'aveis definidas pelo usu@'ario.
@@ -1309,7 +1309,7 @@ seq@"u@^encias de caracteres ser@~ao mostradas contidas em aspas duplas.
 De outra forma,
 aspas n@~ao s@~ao mostradas.
 
-@code{?stringdisp} @'e sempre @code{true} quando mostrando uma defini@,{c@~ao de fun@,{c}@~ao.
+@code{?stringdisp} @'e sempre @code{true} quando mostrando uma defini@,{c}@~ao de fun@,{c}@~ao.
 
 @code{?stringdisp} @'e uma vari@'avel Lisp,
 ent@~ao deve ser escrita com um ponto de interroga@,{c}@~ao @code{?} na frente.
@@ -1340,7 +1340,7 @@ Exemplos:
 @deffn {Fun@,{c}@~ao} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 @deffnx {Fun@,{c}@~ao} stringout (@var{filename}, [@var{m}, @var{n}])
 @deffnx {Fun@,{c}@~ao} stringout (@var{filename}, input)
-@deffnx {Fun@,{c}@~ao} stringout (@var{filename}, fun@,{c}@~oes)
+@deffnx {Fun@,{c}@~ao} stringout (@var{filename}, functions)
 @deffnx {Fun@,{c}@~ao} stringout (@var{filename}, values)
 
 @code{stringout} escreve express@~oes para um arquivo na mesma forma de
@@ -1363,8 +1363,8 @@ valores dos r@'otulos de entrada de m at@'e n, inclusive.
 A forma especial @code{stringout (@var{filename}, input)} escreve todos
 os r@'otulos de entrada para o arquivo.
 
-A forma especial @code{stringout (@var{filename}, fun@,{c}@~oes)} escreve todas
-as fun@,{c}@~oes definidas pelo usu@'ario (nomeadas pela lista global @code{fun@,{c}@~oes}) para o arquivo.
+A forma especial @code{stringout (@var{filename}, functions)} escreve todas
+as fun@,{c}@~oes definidas pelo usu@'ario (nomeadas pela lista global @code{functions}) para o arquivo.
 
 A forma especial @code{stringout (@var{filename}, values)} escreve todas as
 vari@'aveis atribu@'idas pelo usu@'ario (nomeadas pela lista global @code{values})

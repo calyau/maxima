@@ -1,12 +1,12 @@
 @c /Trigonometric.texi/1.14/Fri Jun 17 00:57:35 2005/-ko/
 @menu
-* Defini@,{c}@~oes para Trigonometria::  
-* Defini@,{c}@~oes para Trigonometria::  
+* Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico::  
+* Defini@value{cedilha}@~oes para Trigonometria::  
 @end menu
 
-@node Defini@,{c}@~oes para Trigonometria, Defini@,{c}@~oes para Trigonometria, Trigonometria, Trigonometria
-@c PT = Introdu@,{c}@~ao ao Pacote Trigonom@'etrico
-@section Defini@,{c}@~oes para Trigonometria
+@node Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico, Defini@value{cedilha}@~oes para Trigonometria, Trigonometria, Trigonometria
+@c PT = Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico
+@section Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico
 
 Maxima tem muitas fun@,{c}@~oes trigonom@'etricas definidas.  N@~ao todas as identidades
 trigonometricas est@~ao programadas, mas isso @'e poss@'ivel para o usu@'ario adicionar muitas
@@ -24,9 +24,8 @@ compartilhados extendem as regras de simplifica@,{c}@~ao constru@'idas no Maxima
 @code{ntrig} e @code{atrig1}.  Fa@,{c}a @code{describe(@var{comando})}
 para detalhes.
 
-@node Defini@,{c}@~oes para Trigonometria,  , Defini@,{c}@~oes para Trigonometria, Trigonometria
-
-@section Defini@,{c}@~oes para Trigonometria
+@node Defini@value{cedilha}@~oes para Trigonometria,  , Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico, Trigonometria
+@section Defini@value{cedilha}@~oes para Trigonometria
 
 @deffn {Fun@,{c}@~ao} acos (@var{x})
  - Arco Cosseno.

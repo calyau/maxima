@@ -1,12 +1,12 @@
 @c /Integration.texi/1.23/Fri Jun 17 00:57:33 2005/-ko/
 @menu
-* Introdu@,{c}@~ao a Integra@,{c}@~ao::  
-* Defini@,{c}@~oes para Integra@,{c}@~ao::  
+* Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao::  
+* Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao::  
 @end menu
 
-@node Introdu@,{c}@~ao a Integra@,{c}@~ao, Defini@,{c}@~oes para Integra@,{c}@~ao, Integra@,{c}@~ao, Integra@,{c}@~ao
-@c PT = Introdu@,{c}@~ao a Integra@,{c}@~ao
-@section Introdu@,{c}@~ao a Integra@,{c}@~ao
+@node Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao, Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao, Integra@value{cedilha}@~ao, Integra@value{cedilha}@~ao
+@c PT = Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao
+@section Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao
 
 Maxima tem muitas rotinas para manusear integra@,{c}@~ao.
 A fun@,{c}@~ao @code{integrate} faz uso de muitas dessas.  Exite tamb@'em o
@@ -25,9 +25,9 @@ extens@~oes (fun@,{c}@~ao de erro, dilogarithm).  Isso n@~ao manuseia
 integrais em termos de fun@,{c}@~oes desconhecidas tais como @code{g(x)} e @code{h(x)}.
 
 @c end concepts Integration
-@node Defini@,{c}@~oes para Integra@,{c}@~ao,  , Introdu@,{c}@~ao a Integra@,{c}@~ao, Integra@,{c}@~ao
-@c PT = Defini@,{c}@~oes para Integra@,{c}@~ao
-@section Defini@,{c}@~oes para Integra@,{c}@~ao
+@node Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao,  , Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao, Integra@value{cedilha}@~ao
+@c PT = Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao
+@section Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao
 @c NEEDS WORK
 @deffn {Fun@,{c}@~ao} changevar (@var{expr}, @var{f(x,y)}, @var{y}, @var{x})
 Faz a mudan@,{c}a de vari@'avel dada por
@@ -135,7 +135,7 @@ magnitude de melhoramentos de velocidade sobre o c@'odigo interpretado em muitos
 
 @code{demo (dblint)} executa uma demonstra@,{c}@~ao de @code{dblint} aplicado a um problema exemplo.
 @c demo (dblint_1) FAILS WITH Could not find `fltdfnk.mc' -- DON'T BOTHER TO MENTION IT.  !!!
-@c @code{demo (dblint_1)} executa outra demonstra@,{c}@~ao.
+@c @code{demo (dblint_1)} executa outra demonstra@value{cedilha}@~ao.
 
 @end deffn
 
@@ -407,11 +407,11 @@ e o resultado transforme-se no corpo de @code{f_2}.
 @defvr {Vari@'avel de sistema} integration_constant_counter
 Valor padr@~ao: 0
 
-@c WHEN DOES integra@,{c}@~aoconstant1 SHOW UP IN THE OUTPUT OF integrate ???
-@c integrate (a, x) YIELDS "a x", NOT "a x + integra@,{c}@~aoconstant1" !!!
+@c WHEN DOES integra@value{cedilha}@~aoconstant1 SHOW UP IN THE OUTPUT OF integrate ???
+@c integrate (a, x) YIELDS "a x", NOT "a x + integra@value{cedilha}@~aoconstant1" !!!
 @code{integra@,{c}@~ao_constant_counter} @'e um contador que @'e atualizado a cada vez que uma
 constante de integra@,{c}@~ao (nomeada pelo Maxima, e.g., @code{integrationconstant1})
-@'e introduzida em uma express@~ao pela integra@,{c}@~ao indefinida de uma equa@,{c}@~ao.
+@'e introduzida em uma express@~ao pela integra@value{cedilha}@~ao indefinida de uma equa@value{cedilha}@~ao.
 
 @end defvr
 
@@ -708,7 +708,7 @@ retornar@'a ap@'os @code{n} itera@,{c}@~oes se (grasseiramente falando)
  abs(y[n]-y[n-1])/(if y[n]=0.0 then 1.0 else y[n]) <= rombergtol)
 @end example
 
-for @code{true}.  (A condi@,{c}@~ao sobre o n@'mero de itera@,{c}@~oes dadas por
+for @code{true}.  (A condi@,{c}@~ao sobre o n@'umero de itera@,{c}@~oes dadas por
 @code{rombergmin} deve tamb@'em ser satisfeita.)
 Dessa forma se @code{rombergabs} @'e 0.0 (o padr@~ao) voc@^e apenas pega o teste
 de erro relativo.  A utilidade de uma vari@'avel adicional vem quando voc@^e
@@ -816,7 +816,7 @@ A fun@,{c}@~ao a ser integrada @'e @var{f(x)}, com vari@'avel
 dependente @var{x}, e a fun@,{c}@~ao @'e para ser integrada entre os
 limites @var{a} e @var{b}.  @var{key} @'e o integrador a ser usado
 e pode ser um inteiro entre 1 e 6, inclusive.  O valor de
-@var{key} seleciona a ordem da regra de integra@,{c}@~ao de Gauss-Kronrod.
+@var{key} seleciona a ordem da regra de integra@value{cedilha}@~ao de Gauss-Kronrod.
 
 A integra@,{c}@~ao num@'erica @'e conclu@'ida adaptativamente pela subdivis@~ao a
 regi@~ao de integra@,{c}@~ao at@'e que a precis@~ao desejada for
@@ -955,7 +955,7 @@ $$\int_\infty^\infty {f(x) dx}$$
 @end tex
 
 usando a rotina Quadpack QAGI.  A fun@,{c}@~ao a ser integrada @'e
-@var{f(x)}, com vari@'avel dependente @var{x}, e a fun@,{c}@~ao @'e para
+@var{f(x)}, com vari@'avel dependente @var{x}, e a fun@value{cedilha}@~ao @'e para
 ser integrada sobre um intervalo infinito.
 
 O par@^ametro @var{inftype} determina o intervalo de integra@,{c}@~ao como segue:
@@ -1310,7 +1310,7 @@ O argumentos opcionais s@~ao:
 
 @table @var
 @item epsabs
-Erro absoluto desejado de aproxima@{c}@~ao.  O padr@~ao @'e 1d-10.
+Erro absoluto desejado de aproxima@,{c}@~ao.  O padr@~ao @'e 1d-10.
 @item limit
 Tamanho do array interno de trabalho.  (@var{limit} - @var{limlst})/2 @'e o
 n@'umero m@'aximo de subintervalos para usar.  O padr@~ao @'e 200.

@@ -1,12 +1,12 @@
 @c /Affine.texi/1.10/Sun Jun 12 19:13:46 2005/-ko/
 @c end concepts Affine
 @menu
-* Defini@,{c}@~oes para Fun@,{c}@~oes Afins::      
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins::      
 @end menu
 
-@node Defini@,{c}@~oes para Fun@,{c}@~oes Afins,  , Fun@,{c}@~oes Afins, Fun@,{c}@~oes Afins
-@c PT = Defini@,{c}@~oes para Afim
-@section Defini@,{c}@~oes para Fun@,{c}@~oes Afins
+@node Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins,  , Fun@value{cedilha}@~oes Afins, Fun@value{cedilha}@~oes Afins
+@c PT = Defini@value{cedilha}@~oes para Afim
+@section Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins
 
 @deffn {Fun@,{c}@~ao} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resolve equa@,{c}@~oes lineares simult@^aneas @var{expr_1}, ..., @var{expr_m}

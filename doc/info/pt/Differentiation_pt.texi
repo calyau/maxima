@@ -1,12 +1,12 @@
 @c /Differentiation.texi/1.19/Sun Jun 12 19:13:47 2005/-ko/
 @c end concepts Differentiation
 @menu
-* Defini@,{c}@~oes para Diferencia@,{c}@~ao::  
+* Defini@value{cedilha}@~oes para Diferencia@value{cedilha}@~ao::  
 @end menu
 
-@node Defini@,{c}@~oes para Diferencia@,{c}@~ao,  , Diferencia@,{c}@~ao, Diferencia@,{c}@~ao
-@c PT = Defini@,{c}@~oes para Diferencia@,{c}@~ao
-@section Defini@,{c}@~oes para Diferencia@,{c}@~ao
+@node Defini@value{cedilha}@~oes para Diferencia@value{cedilha}@~ao,  , Diferencia@value{cedilha}@~ao, Diferencia@value{cedilha}@~ao
+@c PT = Defini@value{cedilha}@~oes para Diferencia@value{cedilha}@~ao
+@section Defini@value{cedilha}@~oes para Diferencia@value{cedilha}@~ao
 
 @deffn {Fun@,{c}@~ao} antid (@var{expr}, @var{x}, @var{u(x)}) 
 Retorna uma lista de dois elementos,
@@ -16,7 +16,7 @@ A express@~ao @var{expr} pode conter uma fun@,{c}@~ao desconhecida @var{u} e sua
 
 Tome @var{L}, uma lista de dois elementos, como sendo o valor de retorno de @code{antid}.
 Ent@~ao @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
-@'e uma antiderivada de @var{expr} com rela@,{c}@~ao a @var{x}.
+@'e uma antiderivada de @var{expr} com rela@value{cedilha}@~ao a @var{x}.
 
 Quando @code{antid} obt@'em sucesso inteiramente,
 o segundo elemento do valor de retorno @'e zero.
@@ -156,21 +156,21 @@ Essa propriedade @'e atribu@'ida por @code{gradef}.
 Atribui o valor @var{c} a @var{expr} no ponto @code{@var{x} = @var{a}}.
 Tipicamente valores de extremidade s@~ao estabelecidos por esse mecanismo.
 
-@var{expr} @'e a fun@,{c}@~ao de avalia@,{c}@~ao,
+@var{expr} @'e a fun@value{cedilha}@~ao de avalia@value{cedilha}@~ao,
 @code{@var{f}(@var{x_1}, ..., @var{x_m})},
 ou uma derivada,
 @code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
 @c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
 @c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
 na qual os argumentos da fun@,{c}@~ao explicitamente aparecem.
-@var{n_i} @'e a ordem de diferencia@,{c}@~ao com rela@,{c}@~ao a @var{x_i}.
+@var{n_i} @'e a ordem de diferencia@value{cedilha}@~ao com rela@value{cedilha}@~ao a @var{x_i}.
 
 O ponto no qual o @code{atvalue} @'e estabelecido @'e dado pela lista de equa@,{c}@~oes
 @code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}.
 Se existe uma vari@'avel simples @var{x_1},
 uma @'unica equa@,{c}@~ao pode ser dada sem ser contida em uma lista.
 
-@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} mostra os @code(atvalues} das
+@code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} mostra os @code{atvalues} das
 fun@,{c}@~oes @code{@var{f_1}, @var{f_2}, ...}
 como especificado por chamadas a @code{atvalue}.
 @code{printprops (@var{f}, atvalue)} mostra os @code{atvalues} de uma fun@,{c}@~ao @var{f}.
@@ -545,8 +545,8 @@ Aplica o d'Alembertiano escalar para a fun@,{c}@~ao escalar @var{f}.
 @c The result uses the noun form of any
 @c derivadas arising from expansion of the vector differential
 @c operators.  To force evaluation of these derivadas, the built-in @code{ev}
-@c fun@,{c}@~ao can be used together with the @code{diff} evflag, after using the
-@c built-in @code{depends} fun@,{c}@~ao to establish any new implicit depend@^encias.
+@c fun@value{cedilha}@~ao can be used together with the @code{diff} evflag, after using the
+@c built-in @code{depends} fun@value{cedilha}@~ao to establish any new implicit depend@^encias.
 
 Expande o substantivo do operador diferencial em express@~oes em termos de derivadas parciais.
 @code{express} reconhece os operadores @code{grad}, @code{div}, @code{curl}, @code{laplacian}.
@@ -714,7 +714,7 @@ Se algumas outras fun@,{c}@~oes estiverem presente,
 @code{laplace} pode n@~ao ser habilitada a calcular a tranformada.
 
 @c REPHRASE THIS
-@var{expr} pode tamb@'em ser uma equa@,{c}@~ao linear, diferencial de coeficiente contante no
+@var{expr} pode tamb@'em ser uma equa@value{cedilha}@~ao linear, diferencial de coeficiente contante no
 qual caso o @code{atvalue} da vari@'avel dependente @'e usado.
 @c "used" -- USED HOW ??
 O requerido @code{atvalue} pode ser fornecido ou antes ou depois da transformada ser calculada.
