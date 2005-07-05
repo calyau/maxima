@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -12,20 +12,18 @@
 (let ((zeror 0.0)
       (zeroi 0.0)
       (coner 1.0)
-      (cipr (make-array 4 :element-type 'double-float))
-      (cipi (make-array 4 :element-type 'double-float))
+      (cipr
+       (make-array 4
+                   :element-type 'double-float
+                   :initial-contents '(1.0 0.0 -1.0 0.0)))
+      (cipi
+       (make-array 4
+                   :element-type 'double-float
+                   :initial-contents '(0.0 1.0 0.0 -1.0)))
       (hpi 1.5707963267948966)
       (aic 1.2655121234846454))
   (declare (type (simple-array double-float (4)) cipi cipr)
            (type double-float aic hpi coner zeroi zeror))
-  (f2cl-lib:fset (f2cl-lib:fref cipr (1) ((1 4))) 1.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipi (1) ((1 4))) 0.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipr (2) ((1 4))) 0.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipi (2) ((1 4))) 1.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipr (3) ((1 4))) -1.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipi (3) ((1 4))) 0.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipr (4) ((1 4))) 0.0)
-  (f2cl-lib:fset (f2cl-lib:fref cipi (4) ((1 4))) -1.0)
   (defun zuni2 (zr zi fnu kode n yr yi nz nlast fnul tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
              (type f2cl-lib:integer4 nlast nz n kode)

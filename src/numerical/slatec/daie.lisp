@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -16,10 +16,137 @@
       (x3sml 0.0)
       (x32sml 0.0)
       (xbig 0.0)
-      (aifcs (make-array 13 :element-type 'double-float))
-      (aigcs (make-array 13 :element-type 'double-float))
-      (aip1cs (make-array 57 :element-type 'double-float))
-      (aip2cs (make-array 37 :element-type 'double-float))
+      (aifcs
+       (make-array 13
+                   :element-type 'double-float
+                   :initial-contents '(-0.03797135849667 0.05919188853726364
+                                       9.862928057727998e-4
+                                       6.848843819076567e-6
+                                       2.5942025962194713e-8
+                                       6.176612774081375e-11
+                                       1.0092454172466118e-13
+                                       1.2014792511179938e-16
+                                       1.0882945588716992e-19
+                                       7.751377219668488e-23
+                                       4.4548112037175636e-26
+                                       2.1092845231692343e-29
+                                       8.370173591074134e-33)))
+      (aigcs
+       (make-array 13
+                   :element-type 'double-float
+                   :initial-contents '(0.018152365581161272
+                                       0.021572563166010757
+                                       2.567835698748325e-4
+                                       1.4265214119792405e-6
+                                       4.572114920018043e-9
+                                       9.52517084356471e-12
+                                       1.3925634605771398e-14
+                                       1.5070999142762378e-17
+                                       1.2559148312567778e-20
+                                       8.306307377082133e-24
+                                       4.465753849371857e-27
+                                       1.9900855034518868e-30
+                                       7.4702885256533335e-34)))
+      (aip1cs
+       (make-array 57
+                   :element-type 'double-float
+                   :initial-contents '(-0.021469518589105386
+                                       -0.0075353825350433015
+                                       5.971527949026381e-4
+                                       -7.28325125420761e-5
+                                       1.1102971307392997e-5
+                                       -1.950386152284406e-6
+                                       3.786973885159515e-7
+                                       -7.929675297350979e-8
+                                       1.762247638674256e-8
+                                       -4.110767539667195e-9
+                                       9.984770057857892e-10
+                                       -2.5100932513871223e-10
+                                       6.500501929860696e-11
+                                       -1.7278184053936166e-11
+                                       4.6993788428245126e-12
+                                       -1.304675656297744e-12
+                                       3.6896984784626787e-13
+                                       -1.0610872066468062e-13
+                                       3.0984143848781874e-14
+                                       -9.17490807982414e-15
+                                       2.7520491403472108e-15
+                                       -8.353750115922047e-16
+                                       2.563931129357935e-16
+                                       -7.950633762598855e-17
+                                       2.48928363460307e-17
+                                       -7.864326933928736e-18
+                                       2.5056873114399757e-18
+                                       -8.047420364163909e-19
+                                       2.604097118952054e-19
+                                       -8.486954164056412e-20
+                                       2.784706882142338e-20
+                                       -9.195858953498614e-21
+                                       3.055304318374239e-21
+                                       -1.0210354554794778e-21
+                                       3.431118190743758e-22
+                                       -1.1591293417977495e-22
+                                       3.935772844200256e-23
+                                       -1.3428809802967176e-23
+                                       4.6032878835200026e-24
+                                       -1.5850439270040642e-24
+                                       5.481275667729676e-25
+                                       -1.9033493718550473e-25
+                                       6.635682302374009e-26
+                                       -2.3223116500263143e-26
+                                       8.157640113429179e-27
+                                       -2.8758242406329004e-27
+                                       1.0173294509429014e-27
+                                       -3.6108791087422165e-28
+                                       1.2857885403639934e-28
+                                       -4.5929010373785476e-29
+                                       1.6455970338207138e-29
+                                       -5.913421299843502e-30
+                                       2.131057006604993e-30
+                                       -7.701158157787598e-31
+                                       2.7905333079689304e-31
+                                       -1.013807715111284e-31
+                                       3.692580158719624e-32)))
+      (aip2cs
+       (make-array 37
+                   :element-type 'double-float
+                   :initial-contents '(-0.0017431449692937551
+                                       -0.0016789385432554166
+                                       3.5965340335216605e-5
+                                       -1.3808186027392284e-6
+                                       7.411228077315053e-8
+                                       -5.00238203900133e-9
+                                       4.0069391741718425e-10
+                                       -3.6733124279590504e-11
+                                       3.760344395923738e-12
+                                       -4.2232133271874755e-13
+                                       5.135094540336571e-14
+                                       -6.690958503904776e-15
+                                       9.266675456412906e-16
+                                       -1.3551438241607058e-16
+                                       2.0811549631283098e-17
+                                       -3.3411649915917686e-18
+                                       5.5857858458592435e-19
+                                       -9.692190401523652e-20
+                                       1.740457001288932e-20
+                                       -3.226409797311304e-21
+                                       6.160744711066252e-22
+                                       -1.2093634798249005e-22
+                                       2.436327633101381e-23
+                                       -5.029142214974575e-24
+                                       1.062241755436357e-24
+                                       -2.2928428489598924e-25
+                                       5.051817339295037e-26
+                                       -1.134981237144124e-26
+                                       2.5976556598560697e-27
+                                       -6.051246215429395e-28
+                                       1.4335977796677281e-28
+                                       -3.4514775706089996e-29
+                                       8.438751902136468e-30
+                                       -2.0939614229818816e-30
+                                       5.270088734789455e-31
+                                       -1.3445743301455338e-31
+                                       3.475709645266011e-32)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (37)) aip2cs)
@@ -27,126 +154,6 @@
            (type (simple-array double-float (13)) aigcs aifcs)
            (type double-float xbig x32sml x3sml)
            (type f2cl-lib:integer4 naip2 naip1 naig naif))
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (1) ((1 13))) -0.03797135849667)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (2) ((1 13))) 0.05919188853726364)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (3) ((1 13))) 9.862928057727998e-4)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (4) ((1 13))) 6.848843819076567e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (5) ((1 13))) 2.5942025962194713e-8)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (6) ((1 13))) 6.176612774081375e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (7) ((1 13))) 1.0092454172466118e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (8) ((1 13))) 1.2014792511179938e-16)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (9) ((1 13))) 1.0882945588716992e-19)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (10) ((1 13))) 7.751377219668488e-23)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (11) ((1 13))) 4.4548112037175636e-26)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (12) ((1 13))) 2.1092845231692343e-29)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (13) ((1 13))) 8.370173591074134e-33)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (1) ((1 13))) 0.018152365581161272)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (2) ((1 13))) 0.021572563166010757)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (3) ((1 13))) 2.567835698748325e-4)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (4) ((1 13))) 1.4265214119792405e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (5) ((1 13))) 4.572114920018043e-9)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (6) ((1 13))) 9.52517084356471e-12)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (7) ((1 13))) 1.3925634605771398e-14)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (8) ((1 13))) 1.5070999142762378e-17)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (9) ((1 13))) 1.2559148312567778e-20)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (10) ((1 13))) 8.306307377082133e-24)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (11) ((1 13))) 4.465753849371857e-27)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (12) ((1 13))) 1.9900855034518868e-30)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (13) ((1 13))) 7.4702885256533335e-34)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (1) ((1 57))) -0.021469518589105386)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (2) ((1 57))) -0.0075353825350433015)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (3) ((1 57))) 5.971527949026381e-4)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (4) ((1 57))) -7.28325125420761e-5)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (5) ((1 57))) 1.1102971307392997e-5)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (6) ((1 57))) -1.950386152284406e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (7) ((1 57))) 3.786973885159515e-7)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (8) ((1 57))) -7.929675297350979e-8)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (9) ((1 57))) 1.762247638674256e-8)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (10) ((1 57))) -4.110767539667195e-9)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (11) ((1 57))) 9.984770057857892e-10)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (12) ((1 57))) -2.5100932513871223e-10)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (13) ((1 57))) 6.500501929860696e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (14) ((1 57))) -1.7278184053936166e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (15) ((1 57))) 4.6993788428245126e-12)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (16) ((1 57))) -1.304675656297744e-12)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (17) ((1 57))) 3.6896984784626787e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (18) ((1 57))) -1.0610872066468062e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (19) ((1 57))) 3.0984143848781874e-14)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (20) ((1 57))) -9.17490807982414e-15)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (21) ((1 57))) 2.7520491403472108e-15)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (22) ((1 57))) -8.353750115922047e-16)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (23) ((1 57))) 2.563931129357935e-16)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (24) ((1 57))) -7.950633762598855e-17)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (25) ((1 57))) 2.48928363460307e-17)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (26) ((1 57))) -7.864326933928736e-18)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (27) ((1 57))) 2.5056873114399757e-18)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (28) ((1 57))) -8.047420364163909e-19)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (29) ((1 57))) 2.604097118952054e-19)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (30) ((1 57))) -8.486954164056412e-20)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (31) ((1 57))) 2.784706882142338e-20)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (32) ((1 57))) -9.195858953498614e-21)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (33) ((1 57))) 3.055304318374239e-21)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (34) ((1 57))) -1.0210354554794778e-21)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (35) ((1 57))) 3.431118190743758e-22)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (36) ((1 57))) -1.1591293417977495e-22)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (37) ((1 57))) 3.935772844200256e-23)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (38) ((1 57))) -1.3428809802967176e-23)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (39) ((1 57))) 4.6032878835200026e-24)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (40) ((1 57))) -1.5850439270040642e-24)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (41) ((1 57))) 5.481275667729676e-25)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (42) ((1 57))) -1.9033493718550473e-25)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (43) ((1 57))) 6.635682302374009e-26)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (44) ((1 57))) -2.3223116500263143e-26)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (45) ((1 57))) 8.157640113429179e-27)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (46) ((1 57))) -2.8758242406329004e-27)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (47) ((1 57))) 1.0173294509429014e-27)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (48) ((1 57))) -3.6108791087422165e-28)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (49) ((1 57))) 1.2857885403639934e-28)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (50) ((1 57))) -4.5929010373785476e-29)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (51) ((1 57))) 1.6455970338207138e-29)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (52) ((1 57))) -5.913421299843502e-30)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (53) ((1 57))) 2.131057006604993e-30)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (54) ((1 57))) -7.701158157787598e-31)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (55) ((1 57))) 2.7905333079689304e-31)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (56) ((1 57))) -1.013807715111284e-31)
-  (f2cl-lib:fset (f2cl-lib:fref aip1cs (57) ((1 57))) 3.692580158719624e-32)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (1) ((1 37))) -0.0017431449692937551)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (2) ((1 37))) -0.0016789385432554166)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (3) ((1 37))) 3.5965340335216605e-5)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (4) ((1 37))) -1.3808186027392284e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (5) ((1 37))) 7.411228077315053e-8)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (6) ((1 37))) -5.00238203900133e-9)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (7) ((1 37))) 4.0069391741718425e-10)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (8) ((1 37))) -3.6733124279590504e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (9) ((1 37))) 3.760344395923738e-12)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (10) ((1 37))) -4.2232133271874755e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (11) ((1 37))) 5.135094540336571e-14)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (12) ((1 37))) -6.690958503904776e-15)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (13) ((1 37))) 9.266675456412906e-16)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (14) ((1 37))) -1.3551438241607058e-16)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (15) ((1 37))) 2.0811549631283098e-17)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (16) ((1 37))) -3.3411649915917686e-18)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (17) ((1 37))) 5.5857858458592435e-19)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (18) ((1 37))) -9.692190401523652e-20)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (19) ((1 37))) 1.740457001288932e-20)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (20) ((1 37))) -3.226409797311304e-21)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (21) ((1 37))) 6.160744711066252e-22)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (22) ((1 37))) -1.2093634798249005e-22)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (23) ((1 37))) 2.436327633101381e-23)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (24) ((1 37))) -5.029142214974575e-24)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (25) ((1 37))) 1.062241755436357e-24)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (26) ((1 37))) -2.2928428489598924e-25)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (27) ((1 37))) 5.051817339295037e-26)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (28) ((1 37))) -1.134981237144124e-26)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (29) ((1 37))) 2.5976556598560697e-27)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (30) ((1 37))) -6.051246215429395e-28)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (31) ((1 37))) 1.4335977796677281e-28)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (32) ((1 37))) -3.4514775706089996e-29)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (33) ((1 37))) 8.438751902136468e-30)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (34) ((1 37))) -2.0939614229818816e-30)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (35) ((1 37))) 5.270088734789455e-31)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (36) ((1 37))) -1.3445743301455338e-31)
-  (f2cl-lib:fset (f2cl-lib:fref aip2cs (37) ((1 37))) 3.475709645266011e-32)
   (setq first$ f2cl-lib:%true%)
   (defun daie (x)
     (declare (type double-float x))

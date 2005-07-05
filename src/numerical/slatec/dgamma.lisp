@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -13,7 +13,49 @@
       (xmin 0.0)
       (xmax 0.0)
       (dxrel 0.0)
-      (gamcs (make-array 42 :element-type 'double-float))
+      (gamcs
+       (make-array 42
+                   :element-type 'double-float
+                   :initial-contents '(0.00857119559098933 0.004415381324841007
+                                       0.05685043681599363 -0.00421983539641856
+                                       0.0013268081812124603
+                                       -1.8930245297988805e-4
+                                       3.606925327441245e-5
+                                       -6.056761904460864e-6
+                                       1.0558295463022833e-6
+                                       -1.811967365542384e-7
+                                       3.117724964715322e-8
+                                       -5.354219639019687e-9
+                                       9.193275519859589e-10
+                                       -1.5779412802883398e-10
+                                       2.7079806229349544e-11
+                                       -4.64681865382573e-12
+                                       7.97335019200742e-13
+                                       -1.368078209830916e-13
+                                       2.3473194865638007e-14
+                                       -4.027432614949067e-15
+                                       6.910051747372101e-16
+                                       -1.185584500221993e-16
+                                       2.034148542496374e-17
+                                       -3.490054341717406e-18
+                                       5.987993856485306e-19
+                                       -1.027378057872228e-19
+                                       1.7627028160605298e-20
+                                       -3.024320653735306e-21
+                                       5.188914660218398e-22
+                                       -8.902770842456576e-23
+                                       1.5274740684933426e-23
+                                       -2.620731256187363e-24
+                                       4.496464047830539e-25
+                                       -7.714712731336878e-26
+                                       1.323635453126044e-26
+                                       -2.2709994129429287e-27
+                                       3.8964189980039913e-28
+                                       -6.685198115125953e-29
+                                       1.1469986631400244e-29
+                                       -1.9679385863451348e-30
+                                       3.376448816585338e-31
+                                       -5.793070335782136e-32)))
       (pi$ 3.141592653589793)
       (sq2pil 0.9189385332046728)
       (first$ nil))
@@ -21,48 +63,6 @@
            (type (simple-array double-float (42)) gamcs)
            (type double-float sq2pil pi$ dxrel xmax xmin)
            (type f2cl-lib:integer4 ngam))
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (1) ((1 42))) 0.00857119559098933)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (2) ((1 42))) 0.004415381324841007)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (3) ((1 42))) 0.05685043681599363)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (4) ((1 42))) -0.00421983539641856)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (5) ((1 42))) 0.0013268081812124603)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (6) ((1 42))) -1.8930245297988805e-4)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (7) ((1 42))) 3.606925327441245e-5)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (8) ((1 42))) -6.056761904460864e-6)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (9) ((1 42))) 1.0558295463022833e-6)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (10) ((1 42))) -1.811967365542384e-7)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (11) ((1 42))) 3.117724964715322e-8)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (12) ((1 42))) -5.354219639019687e-9)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (13) ((1 42))) 9.193275519859589e-10)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (14) ((1 42))) -1.5779412802883398e-10)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (15) ((1 42))) 2.7079806229349544e-11)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (16) ((1 42))) -4.64681865382573e-12)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (17) ((1 42))) 7.97335019200742e-13)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (18) ((1 42))) -1.368078209830916e-13)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (19) ((1 42))) 2.3473194865638007e-14)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (20) ((1 42))) -4.027432614949067e-15)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (21) ((1 42))) 6.910051747372101e-16)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (22) ((1 42))) -1.185584500221993e-16)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (23) ((1 42))) 2.034148542496374e-17)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (24) ((1 42))) -3.490054341717406e-18)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (25) ((1 42))) 5.987993856485306e-19)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (26) ((1 42))) -1.027378057872228e-19)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (27) ((1 42))) 1.7627028160605298e-20)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (28) ((1 42))) -3.024320653735306e-21)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (29) ((1 42))) 5.188914660218398e-22)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (30) ((1 42))) -8.902770842456576e-23)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (31) ((1 42))) 1.5274740684933426e-23)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (32) ((1 42))) -2.620731256187363e-24)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (33) ((1 42))) 4.496464047830539e-25)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (34) ((1 42))) -7.714712731336878e-26)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (35) ((1 42))) 1.323635453126044e-26)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (36) ((1 42))) -2.2709994129429287e-27)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (37) ((1 42))) 3.8964189980039913e-28)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (38) ((1 42))) -6.685198115125953e-29)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (39) ((1 42))) 1.1469986631400244e-29)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (40) ((1 42))) -1.9679385863451348e-30)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (41) ((1 42))) 3.376448816585338e-31)
-  (f2cl-lib:fset (f2cl-lib:fref gamcs (42) ((1 42))) -5.793070335782136e-32)
   (setq first$ f2cl-lib:%true%)
   (defun dgamma (x)
     (declare (type double-float x))

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -11,31 +11,31 @@
 
 (let ((ntj0 0)
       (xsml 0.0)
-      (bj0cs (make-array 19 :element-type 'double-float))
+      (bj0cs
+       (make-array 19
+                   :element-type 'double-float
+                   :initial-contents '(0.10025416196893913 -0.6652230077644051
+                                       0.2489837034982813 -0.03325272317003577
+                                       0.0023114179304694017
+                                       -9.911277419950809e-5
+                                       2.891670864399881e-6
+                                       -6.121085866303263e-8
+                                       9.838650793856784e-10
+                                       -1.2423551597301765e-11
+                                       1.2654336302559046e-13
+                                       -1.0619456495287245e-15
+                                       7.470621075802456e-18
+                                       -4.469703227441278e-20
+                                       2.302428158433744e-22
+                                       -1.0319144794166698e-24
+                                       4.060817827487332e-27
+                                       -1.4143836005240915e-29
+                                       4.391090549669888e-32)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (19)) bj0cs)
            (type double-float xsml)
            (type f2cl-lib:integer4 ntj0))
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (1) ((1 19))) 0.10025416196893913)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (2) ((1 19))) -0.6652230077644051)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (3) ((1 19))) 0.2489837034982813)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (4) ((1 19))) -0.03325272317003577)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (5) ((1 19))) 0.0023114179304694017)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (6) ((1 19))) -9.911277419950809e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (7) ((1 19))) 2.891670864399881e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (8) ((1 19))) -6.121085866303263e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (9) ((1 19))) 9.838650793856784e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (10) ((1 19))) -1.2423551597301765e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (11) ((1 19))) 1.2654336302559046e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (12) ((1 19))) -1.0619456495287245e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (13) ((1 19))) 7.470621075802456e-18)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (14) ((1 19))) -4.469703227441278e-20)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (15) ((1 19))) 2.302428158433744e-22)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (16) ((1 19))) -1.0319144794166698e-24)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (17) ((1 19))) 4.060817827487332e-27)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (18) ((1 19))) -1.4143836005240915e-29)
-  (f2cl-lib:fset (f2cl-lib:fref bj0cs (19) ((1 19))) 4.391090549669888e-32)
   (setq first$ f2cl-lib:%true%)
   (defun dbesj0 (x)
     (declare (type double-float x))

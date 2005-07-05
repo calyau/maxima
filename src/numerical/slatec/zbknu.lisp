@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -22,19 +22,19 @@
       (hpi 1.5707963267948966)
       (fpi 1.8976999933151775)
       (tth 0.6666666666666666)
-      (cc (make-array 8 :element-type 'double-float)))
+      (cc
+       (make-array 8
+                   :element-type 'double-float
+                   :initial-contents '(0.5772156649015329 -0.04200263503409524
+                                       -0.04219773455554433 0.0072189432466631
+                                       -2.1524167411495098e-4
+                                       -2.013485478078824e-5
+                                       1.133027231981696e-6
+                                       6.116095104481416e-9))))
   (declare (type (simple-array double-float (8)) cc)
            (type double-float tth fpi hpi spi rthpi dpi r1 ctwor conei coner
                               czeroi czeror)
            (type f2cl-lib:integer4 kmax))
-  (f2cl-lib:fset (f2cl-lib:fref cc (1) ((1 8))) 0.5772156649015329)
-  (f2cl-lib:fset (f2cl-lib:fref cc (2) ((1 8))) -0.04200263503409524)
-  (f2cl-lib:fset (f2cl-lib:fref cc (3) ((1 8))) -0.04219773455554433)
-  (f2cl-lib:fset (f2cl-lib:fref cc (4) ((1 8))) 0.0072189432466631)
-  (f2cl-lib:fset (f2cl-lib:fref cc (5) ((1 8))) -2.1524167411495098e-4)
-  (f2cl-lib:fset (f2cl-lib:fref cc (6) ((1 8))) -2.013485478078824e-5)
-  (f2cl-lib:fset (f2cl-lib:fref cc (7) ((1 8))) 1.133027231981696e-6)
-  (f2cl-lib:fset (f2cl-lib:fref cc (8) ((1 8))) 6.116095104481416e-9)
   (defun zbknu (zr zi fnu kode n yr yi nz tol elim alim)
     (declare (type (simple-array double-float (*)) yi yr)
              (type f2cl-lib:integer4 nz n kode)

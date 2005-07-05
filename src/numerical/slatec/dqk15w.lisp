@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -9,31 +9,27 @@
 (in-package "SLATEC")
 
 
-(let ((xgk (make-array 8 :element-type 'double-float))
-      (wgk (make-array 8 :element-type 'double-float))
-      (wg (make-array 4 :element-type 'double-float)))
+(let ((xgk
+       (make-array 8
+                   :element-type 'double-float
+                   :initial-contents '(0.9914553711208126 0.9491079123427585
+                                       0.8648644233597691 0.7415311855993943
+                                       0.5860872354676911 0.4058451513773972
+                                       0.2077849550078985 0.0)))
+      (wgk
+       (make-array 8
+                   :element-type 'double-float
+                   :initial-contents '(0.02293532201052922 0.06309209262997854
+                                       0.1047900103222502 0.1406532597155259
+                                       0.1690047266392679 0.1903505780647854
+                                       0.2044329400752989 0.2094821410847278)))
+      (wg
+       (make-array 4
+                   :element-type 'double-float
+                   :initial-contents '(0.1294849661688697 0.2797053914892767
+                                       0.3818300505051889 0.4179591836734694))))
   (declare (type (array double-float (4)) wg)
            (type (array double-float (8)) wgk xgk))
-  (f2cl-lib:fset (f2cl-lib:fref xgk (1) ((1 8))) 0.9914553711208126)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (2) ((1 8))) 0.9491079123427585)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (3) ((1 8))) 0.8648644233597691)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (4) ((1 8))) 0.7415311855993943)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (5) ((1 8))) 0.5860872354676911)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (6) ((1 8))) 0.4058451513773972)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (7) ((1 8))) 0.2077849550078985)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (8) ((1 8))) 0.0)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (1) ((1 8))) 0.02293532201052922)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (2) ((1 8))) 0.06309209262997854)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (3) ((1 8))) 0.1047900103222502)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (4) ((1 8))) 0.1406532597155259)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (5) ((1 8))) 0.1690047266392679)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (6) ((1 8))) 0.1903505780647854)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (7) ((1 8))) 0.2044329400752989)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (8) ((1 8))) 0.2094821410847278)
-  (f2cl-lib:fset (f2cl-lib:fref wg (1) ((1 4))) 0.1294849661688697)
-  (f2cl-lib:fset (f2cl-lib:fref wg (2) ((1 4))) 0.2797053914892767)
-  (f2cl-lib:fset (f2cl-lib:fref wg (3) ((1 4))) 0.3818300505051889)
-  (f2cl-lib:fset (f2cl-lib:fref wg (4) ((1 4))) 0.4179591836734694)
   (defun dqk15w (f w p1 p2 p3 p4 kp a b result abserr resabs resasc)
     (declare (type f2cl-lib:integer4 kp)
              (type double-float resasc resabs abserr result b a p4 p3 p2 p1)

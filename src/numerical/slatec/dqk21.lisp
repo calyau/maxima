@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -9,38 +9,33 @@
 (in-package "SLATEC")
 
 
-(let ((wg (make-array 5 :element-type 'double-float))
-      (xgk (make-array 11 :element-type 'double-float))
-      (wgk (make-array 11 :element-type 'double-float)))
+(let ((wg
+       (make-array 5
+                   :element-type 'double-float
+                   :initial-contents '(0.06667134430868814 0.1494513491505806
+                                       0.21908636251598204 0.26926671930999635
+                                       0.29552422471475287)))
+      (xgk
+       (make-array 11
+                   :element-type 'double-float
+                   :initial-contents '(0.9956571630258081 0.9739065285171717
+                                       0.9301574913557082 0.8650633666889845
+                                       0.7808177265864169 0.6794095682990244
+                                       0.5627571346686047 0.4333953941292472
+                                       0.2943928627014602 0.14887433898163122
+                                       0.0)))
+      (wgk
+       (make-array 11
+                   :element-type 'double-float
+                   :initial-contents '(0.011694638867371874
+                                       0.032558162307964725
+                                       0.054755896574351995 0.07503967481091996
+                                       0.0931254545836976 0.10938715880229764
+                                       0.12349197626206584 0.13470921731147334
+                                       0.14277593857706009 0.14773910490133849
+                                       0.1494455540029169))))
   (declare (type (array double-float (11)) wgk xgk)
            (type (array double-float (5)) wg))
-  (f2cl-lib:fset (f2cl-lib:fref wg (1) ((1 5))) 0.06667134430868814)
-  (f2cl-lib:fset (f2cl-lib:fref wg (2) ((1 5))) 0.1494513491505806)
-  (f2cl-lib:fset (f2cl-lib:fref wg (3) ((1 5))) 0.21908636251598204)
-  (f2cl-lib:fset (f2cl-lib:fref wg (4) ((1 5))) 0.26926671930999635)
-  (f2cl-lib:fset (f2cl-lib:fref wg (5) ((1 5))) 0.29552422471475287)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (1) ((1 11))) 0.9956571630258081)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (2) ((1 11))) 0.9739065285171717)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (3) ((1 11))) 0.9301574913557082)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (4) ((1 11))) 0.8650633666889845)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (5) ((1 11))) 0.7808177265864169)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (6) ((1 11))) 0.6794095682990244)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (7) ((1 11))) 0.5627571346686047)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (8) ((1 11))) 0.4333953941292472)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (9) ((1 11))) 0.2943928627014602)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (10) ((1 11))) 0.14887433898163122)
-  (f2cl-lib:fset (f2cl-lib:fref xgk (11) ((1 11))) 0.0)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (1) ((1 11))) 0.011694638867371874)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (2) ((1 11))) 0.032558162307964725)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (3) ((1 11))) 0.054755896574351995)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (4) ((1 11))) 0.07503967481091996)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (5) ((1 11))) 0.0931254545836976)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (6) ((1 11))) 0.10938715880229764)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (7) ((1 11))) 0.12349197626206584)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (8) ((1 11))) 0.13470921731147334)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (9) ((1 11))) 0.14277593857706009)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (10) ((1 11))) 0.14773910490133849)
-  (f2cl-lib:fset (f2cl-lib:fref wgk (11) ((1 11))) 0.1494455540029169)
   (defun dqk21 (f a b result abserr resabs resasc)
     (declare (type double-float resasc resabs abserr result b a)
              (type (function (double-float) (values double-float &rest t)) f))

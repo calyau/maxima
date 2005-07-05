@@ -1,9 +1,9 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
-;;;           (:array-slicing nil) (:declare-common nil)
+;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
 (in-package "SLATEC")
@@ -12,7 +12,7 @@
 (let ((zeror 0.0) (zeroi 0.0) (coner 1.0) (pi$ 3.141592653589793))
   (declare (type double-float pi$ coner zeroi zeror))
   (defun zunk1 (zr zi fnu kode mr n yr yi nz tol elim alim)
-    (declare (type (simple-array double-float (*)) yi yr)
+    (declare (type (array double-float (*)) yi yr)
              (type f2cl-lib:integer4 nz n mr kode)
              (type double-float alim elim tol fnu zi zr))
     (prog ((bry (make-array 3 :element-type 'double-float))
@@ -94,8 +94,8 @@
                (f2cl-lib:fref zeta2i (j) ((1 2)))
                (f2cl-lib:fref sumr (j) ((1 2)))
                (f2cl-lib:fref sumi (j) ((1 2)))
-               (f2cl-lib:fref cwrkr (1 j) ((1 16) (1 3)))
-               (f2cl-lib:fref cwrki (1 j) ((1 16) (1 3))))
+               (f2cl-lib:array-slice cwrkr double-float (1 j) ((1 16) (1 3)))
+               (f2cl-lib:array-slice cwrki double-float (1 j) ((1 16) (1 3))))
             (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15
                              var-16))
             (f2cl-lib:fset (f2cl-lib:fref init (j) ((1 2))) var-6)
@@ -208,8 +208,9 @@
             (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9 var-10
              var-11 var-12 var-13 var-14 var-15 var-16)
           (zunik zrr zri fn 2 ipard tol initd phidr phidi zet1dr zet1di zet2dr
-           zet2di sumdr sumdi (f2cl-lib:fref cwrkr (1 3) ((1 16) (1 3)))
-           (f2cl-lib:fref cwrki (1 3) ((1 16) (1 3))))
+           zet2di sumdr sumdi
+           (f2cl-lib:array-slice cwrkr double-float (1 3) ((1 16) (1 3)))
+           (f2cl-lib:array-slice cwrki double-float (1 3) ((1 16) (1 3))))
         (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15 var-16))
         (setf initd var-6)
         (setf phidr var-7)
@@ -339,8 +340,9 @@
                 (var-0 var-1 var-2 var-3 var-4 var-5 var-6 var-7 var-8 var-9
                  var-10 var-11 var-12 var-13 var-14 var-15 var-16)
               (zunik zrr zri fn 1 0 tol initd phidr phidi zet1dr zet1di zet2dr
-               zet2di sumdr sumdi (f2cl-lib:fref cwrkr (1 m) ((1 16) (1 3)))
-               (f2cl-lib:fref cwrki (1 m) ((1 16) (1 3))))
+               zet2di sumdr sumdi
+               (f2cl-lib:array-slice cwrkr double-float (1 m) ((1 16) (1 3)))
+               (f2cl-lib:array-slice cwrki double-float (1 m) ((1 16) (1 3))))
             (declare (ignore var-0 var-1 var-2 var-3 var-4 var-5 var-15
                              var-16))
             (setf initd var-6)

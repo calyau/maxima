@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -14,17 +14,15 @@
       (pi$ 3.14159265358979)
       (rthpi 0.797884560802865)
       (hpi 1.5707963267949)
-      (cc (make-array 8 :element-type 'double-float)))
+      (cc
+       (make-array 8
+                   :element-type 'double-float
+                   :initial-contents '(0.577215664901533 -0.0420026350340952
+                                       -0.0421977345555443 0.007218943246663
+                                       -2.152416741149e-4 -2.01348547807e-5
+                                       1.133027232e-6 6.116095e-9))))
   (declare (type (simple-array double-float (8)) cc)
            (type double-float hpi rthpi pi$ x2 x1))
-  (f2cl-lib:fset (f2cl-lib:fref cc (1) ((1 8))) 0.577215664901533)
-  (f2cl-lib:fset (f2cl-lib:fref cc (2) ((1 8))) -0.0420026350340952)
-  (f2cl-lib:fset (f2cl-lib:fref cc (3) ((1 8))) -0.0421977345555443)
-  (f2cl-lib:fset (f2cl-lib:fref cc (4) ((1 8))) 0.007218943246663)
-  (f2cl-lib:fset (f2cl-lib:fref cc (5) ((1 8))) -2.152416741149e-4)
-  (f2cl-lib:fset (f2cl-lib:fref cc (6) ((1 8))) -2.01348547807e-5)
-  (f2cl-lib:fset (f2cl-lib:fref cc (7) ((1 8))) 1.133027232e-6)
-  (f2cl-lib:fset (f2cl-lib:fref cc (8) ((1 8))) 6.116095e-9)
   (defun dbsynu (x fnu n y)
     (declare (type (simple-array double-float (*)) y)
              (type f2cl-lib:integer4 n)

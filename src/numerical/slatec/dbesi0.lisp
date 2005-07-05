@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -12,30 +12,30 @@
 (let ((nti0 0)
       (xsml 0.0)
       (xmax 0.0)
-      (bi0cs (make-array 18 :element-type 'double-float))
+      (bi0cs
+       (make-array 18
+                   :element-type 'double-float
+                   :initial-contents '(-0.07660547252839145 1.9273379539938083
+                                       0.22826445869203013 0.013048914667072904
+                                       4.3442709008164877e-4
+                                       9.422657686001934e-6
+                                       1.434006289510691e-7
+                                       1.613849069661749e-9
+                                       1.3966500445356697e-11
+                                       9.579451725505446e-14
+                                       5.333981859862503e-16
+                                       2.4587160884374706e-18
+                                       9.53568089024877e-21
+                                       3.154382039721427e-23
+                                       9.004564101094637e-26
+                                       2.24064736912367e-28
+                                       4.9030346032428375e-31
+                                       9.508172606122666e-34)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (18)) bi0cs)
            (type double-float xmax xsml)
            (type f2cl-lib:integer4 nti0))
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (1) ((1 18))) -0.07660547252839145)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (2) ((1 18))) 1.9273379539938083)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (3) ((1 18))) 0.22826445869203013)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (4) ((1 18))) 0.013048914667072904)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (5) ((1 18))) 4.3442709008164877e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (6) ((1 18))) 9.422657686001934e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (7) ((1 18))) 1.434006289510691e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (8) ((1 18))) 1.613849069661749e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (9) ((1 18))) 1.3966500445356697e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (10) ((1 18))) 9.579451725505446e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (11) ((1 18))) 5.333981859862503e-16)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (12) ((1 18))) 2.4587160884374706e-18)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (13) ((1 18))) 9.53568089024877e-21)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (14) ((1 18))) 3.154382039721427e-23)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (15) ((1 18))) 9.004564101094637e-26)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (16) ((1 18))) 2.24064736912367e-28)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (17) ((1 18))) 4.9030346032428375e-31)
-  (f2cl-lib:fset (f2cl-lib:fref bi0cs (18) ((1 18))) 9.508172606122666e-34)
   (setq first$ f2cl-lib:%true%)
   (defun dbesi0 (x)
     (declare (type double-float x))

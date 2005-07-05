@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -9,19 +9,16 @@
 (in-package "SLATEC")
 
 
-(let ((x (make-array 11 :element-type 'double-float)))
+(let ((x
+       (make-array 11
+                   :element-type 'double-float
+                   :initial-contents '(0.9914448613738104 0.9659258262890683
+                                       0.9238795325112868 0.8660254037844386
+                                       0.7933533402912352 0.7071067811865475
+                                       0.6087614290087205 0.5
+                                       0.3826834323650898 0.2588190451025208
+                                       0.1305261922200516))))
   (declare (type (array double-float (11)) x))
-  (f2cl-lib:fset (f2cl-lib:fref x (1) ((1 11))) 0.9914448613738104)
-  (f2cl-lib:fset (f2cl-lib:fref x (2) ((1 11))) 0.9659258262890683)
-  (f2cl-lib:fset (f2cl-lib:fref x (3) ((1 11))) 0.9238795325112868)
-  (f2cl-lib:fset (f2cl-lib:fref x (4) ((1 11))) 0.8660254037844386)
-  (f2cl-lib:fset (f2cl-lib:fref x (5) ((1 11))) 0.7933533402912352)
-  (f2cl-lib:fset (f2cl-lib:fref x (6) ((1 11))) 0.7071067811865475)
-  (f2cl-lib:fset (f2cl-lib:fref x (7) ((1 11))) 0.6087614290087205)
-  (f2cl-lib:fset (f2cl-lib:fref x (8) ((1 11))) 0.5)
-  (f2cl-lib:fset (f2cl-lib:fref x (9) ((1 11))) 0.3826834323650898)
-  (f2cl-lib:fset (f2cl-lib:fref x (10) ((1 11))) 0.2588190451025208)
-  (f2cl-lib:fset (f2cl-lib:fref x (11) ((1 11))) 0.1305261922200516)
   (defun dqc25s
          (f a b bl br alfa beta ri rj rg rh result abserr resasc integr nev)
     (declare (type f2cl-lib:integer4 nev integr)

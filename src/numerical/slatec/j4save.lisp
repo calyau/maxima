@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -9,17 +9,11 @@
 (in-package "SLATEC")
 
 
-(let ((iparam (make-array 9 :element-type 'f2cl-lib:integer4)))
+(let ((iparam
+       (make-array 9
+                   :element-type 'f2cl-lib:integer4
+                   :initial-contents '(0 2 0 10 1 0 0 0 0))))
   (declare (type (simple-array f2cl-lib:integer4 (9)) iparam))
-  (f2cl-lib:fset (f2cl-lib:fref iparam (1) ((1 9))) 0)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (2) ((1 9))) 2)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (3) ((1 9))) 0)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (4) ((1 9))) 10)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (5) ((1 9))) 1)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (6) ((1 9))) 0)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (7) ((1 9))) 0)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (8) ((1 9))) 0)
-  (f2cl-lib:fset (f2cl-lib:fref iparam (9) ((1 9))) 0)
   (defun j4save (iwhich ivalue iset)
     (declare (type f2cl-lib:logical iset)
              (type f2cl-lib:integer4 ivalue iwhich))

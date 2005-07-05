@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -9,10 +9,11 @@
 (in-package "SLATEC")
 
 
-(let ((nulim (make-array 2 :element-type 'f2cl-lib:integer4)))
+(let ((nulim
+       (make-array 2
+                   :element-type 'f2cl-lib:integer4
+                   :initial-contents '(70 100))))
   (declare (type (simple-array f2cl-lib:integer4 (2)) nulim))
-  (f2cl-lib:fset (f2cl-lib:fref nulim (1) ((1 2))) 70)
-  (f2cl-lib:fset (f2cl-lib:fref nulim (2) ((1 2))) 100)
   (defun dbesy (x fnu n y)
     (declare (type (simple-array double-float (*)) y)
              (type f2cl-lib:integer4 n)

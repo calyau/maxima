@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -13,39 +13,42 @@
       (naig 0)
       (x3sml 0.0)
       (xmax 0.0)
-      (aifcs (make-array 13 :element-type 'double-float))
-      (aigcs (make-array 13 :element-type 'double-float))
+      (aifcs
+       (make-array 13
+                   :element-type 'double-float
+                   :initial-contents '(-0.03797135849667 0.05919188853726364
+                                       9.862928057727998e-4
+                                       6.848843819076567e-6
+                                       2.5942025962194713e-8
+                                       6.176612774081375e-11
+                                       1.0092454172466118e-13
+                                       1.2014792511179938e-16
+                                       1.0882945588716992e-19
+                                       7.751377219668488e-23
+                                       4.4548112037175636e-26
+                                       2.1092845231692343e-29
+                                       8.370173591074134e-33)))
+      (aigcs
+       (make-array 13
+                   :element-type 'double-float
+                   :initial-contents '(0.018152365581161272
+                                       0.021572563166010757
+                                       2.567835698748325e-4
+                                       1.4265214119792405e-6
+                                       4.572114920018043e-9
+                                       9.52517084356471e-12
+                                       1.3925634605771398e-14
+                                       1.5070999142762378e-17
+                                       1.2559148312567778e-20
+                                       8.306307377082133e-24
+                                       4.465753849371857e-27
+                                       1.9900855034518868e-30
+                                       7.4702885256533335e-34)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (13)) aigcs aifcs)
            (type double-float xmax x3sml)
            (type f2cl-lib:integer4 naig naif))
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (1) ((1 13))) -0.03797135849667)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (2) ((1 13))) 0.05919188853726364)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (3) ((1 13))) 9.862928057727998e-4)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (4) ((1 13))) 6.848843819076567e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (5) ((1 13))) 2.5942025962194713e-8)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (6) ((1 13))) 6.176612774081375e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (7) ((1 13))) 1.0092454172466118e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (8) ((1 13))) 1.2014792511179938e-16)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (9) ((1 13))) 1.0882945588716992e-19)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (10) ((1 13))) 7.751377219668488e-23)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (11) ((1 13))) 4.4548112037175636e-26)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (12) ((1 13))) 2.1092845231692343e-29)
-  (f2cl-lib:fset (f2cl-lib:fref aifcs (13) ((1 13))) 8.370173591074134e-33)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (1) ((1 13))) 0.018152365581161272)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (2) ((1 13))) 0.021572563166010757)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (3) ((1 13))) 2.567835698748325e-4)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (4) ((1 13))) 1.4265214119792405e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (5) ((1 13))) 4.572114920018043e-9)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (6) ((1 13))) 9.52517084356471e-12)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (7) ((1 13))) 1.3925634605771398e-14)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (8) ((1 13))) 1.5070999142762378e-17)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (9) ((1 13))) 1.2559148312567778e-20)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (10) ((1 13))) 8.306307377082133e-24)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (11) ((1 13))) 4.465753849371857e-27)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (12) ((1 13))) 1.9900855034518868e-30)
-  (f2cl-lib:fset (f2cl-lib:fref aigcs (13) ((1 13))) 7.4702885256533335e-34)
   (setq first$ f2cl-lib:%true%)
   (defun dai (x)
     (declare (type double-float x))

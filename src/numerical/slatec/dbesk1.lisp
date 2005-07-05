@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -13,28 +13,29 @@
       (xmin 0.0)
       (xsml 0.0)
       (xmax 0.0)
-      (bk1cs (make-array 16 :element-type 'double-float))
+      (bk1cs
+       (make-array 16
+                   :element-type 'double-float
+                   :initial-contents '(0.02530022733894777 -0.3531559607765449
+                                       -0.12261118082265715
+                                       -0.006975723859639864
+                                       -1.730288957513052e-4
+                                       -2.4334061415659684e-6
+                                       -2.213387630734726e-8
+                                       -1.4114883926335278e-10
+                                       -6.666901694199329e-13
+                                       -2.427449850519366e-15
+                                       -7.023863479386288e-18
+                                       -1.6543275155100994e-20
+                                       -3.233834745994449e-23
+                                       -5.331275052926527e-26
+                                       -7.513040716215723e-29
+                                       -9.155085717654187e-32)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (16)) bk1cs)
            (type double-float xmax xsml xmin)
            (type f2cl-lib:integer4 ntk1))
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (1) ((1 16))) 0.02530022733894777)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (2) ((1 16))) -0.3531559607765449)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (3) ((1 16))) -0.12261118082265715)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (4) ((1 16))) -0.006975723859639864)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (5) ((1 16))) -1.730288957513052e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (6) ((1 16))) -2.4334061415659684e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (7) ((1 16))) -2.213387630734726e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (8) ((1 16))) -1.4114883926335278e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (9) ((1 16))) -6.666901694199329e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (10) ((1 16))) -2.427449850519366e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (11) ((1 16))) -7.023863479386288e-18)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (12) ((1 16))) -1.6543275155100994e-20)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (13) ((1 16))) -3.233834745994449e-23)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (14) ((1 16))) -5.331275052926527e-26)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (15) ((1 16))) -7.513040716215723e-29)
-  (f2cl-lib:fset (f2cl-lib:fref bk1cs (16) ((1 16))) -9.155085717654187e-32)
   (setq first$ f2cl-lib:%true%)
   (defun dbesk1 (x)
     (declare (type double-float x))

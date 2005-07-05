@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -13,19 +13,20 @@
       (pdf 0.785398163397448)
       (rttp 0.797884560802865)
       (pidt 1.5707963267949)
-      (pp (make-array 4 :element-type 'double-float))
+      (pp
+       (make-array 4
+                   :element-type 'double-float
+                   :initial-contents '(8.72909153935547 0.26569393226503
+                                       0.124578576865586 7.70133747430388e-4)))
       (inlim 150)
-      (fnulim (make-array 2 :element-type 'double-float)))
+      (fnulim
+       (make-array 2
+                   :element-type 'double-float
+                   :initial-contents '(100.0 60.0))))
   (declare (type (simple-array double-float (2)) fnulim)
            (type f2cl-lib:integer4 inlim)
            (type (simple-array double-float (4)) pp)
            (type double-float pidt rttp pdf rtwo))
-  (f2cl-lib:fset (f2cl-lib:fref pp (1) ((1 4))) 8.72909153935547)
-  (f2cl-lib:fset (f2cl-lib:fref pp (2) ((1 4))) 0.26569393226503)
-  (f2cl-lib:fset (f2cl-lib:fref pp (3) ((1 4))) 0.124578576865586)
-  (f2cl-lib:fset (f2cl-lib:fref pp (4) ((1 4))) 7.70133747430388e-4)
-  (f2cl-lib:fset (f2cl-lib:fref fnulim (1) ((1 2))) 100.0)
-  (f2cl-lib:fset (f2cl-lib:fref fnulim (2) ((1 2))) 60.0)
   (defun dbesj (x alpha n y nz)
     (declare (type (array double-float (*)) y)
              (type f2cl-lib:integer4 nz n)

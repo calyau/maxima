@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -28,22 +28,258 @@
       (con1 0.666666666666667)
       (con2 7.74148278841779)
       (con3 0.364766105490356)
-      (bk1 (make-array 20 :element-type 'double-float))
-      (bk2 (make-array 20 :element-type 'double-float))
-      (bk3 (make-array 20 :element-type 'double-float))
-      (bk4 (make-array 14 :element-type 'double-float))
-      (bjp (make-array 19 :element-type 'double-float))
-      (bjn (make-array 19 :element-type 'double-float))
-      (aa (make-array 14 :element-type 'double-float))
-      (bb (make-array 14 :element-type 'double-float))
-      (dbk1 (make-array 21 :element-type 'double-float))
-      (dbk2 (make-array 20 :element-type 'double-float))
-      (dbk3 (make-array 20 :element-type 'double-float))
-      (dbk4 (make-array 14 :element-type 'double-float))
-      (dbjp (make-array 19 :element-type 'double-float))
-      (dbjn (make-array 19 :element-type 'double-float))
-      (daa (make-array 14 :element-type 'double-float))
-      (dbb (make-array 14 :element-type 'double-float)))
+      (bk1
+       (make-array 20
+                   :element-type 'double-float
+                   :initial-contents '(2.43202846447449 2.57132009754685
+                                       1.02802341258616 0.341958178205872
+                                       0.0841978629889284 0.0193877282587962
+                                       0.00392687837130335 6.83302689948043e-4
+                                       1.14611403991141e-4 1.74195138337086e-5
+                                       2.41223620956355e-6 3.24525591983273e-7
+                                       4.03509798540183e-8 4.70875059642296e-9
+                                       5.35367432585889e-10
+                                       5.70606721846334e-11
+                                       5.80526363709933e-12
+                                       5.76338988616388e-13
+                                       5.42103834518071e-14
+                                       4.91857330301677e-15)))
+      (bk2
+       (make-array 20
+                   :element-type 'double-float
+                   :initial-contents '(0.574830555784088 -0.00691648648376891
+                                       0.00197460263052093 -5.24043043868823e-4
+                                       1.22965147239661e-4 -2.27059514462173e-5
+                                       2.23575555008526e-6 4.15174955023899e-7
+                                       -2.84985752198231e-7 8.50187174775435e-8
+                                       -1.70400826891326e-8 2.25479746746889e-9
+                                       -1.09524166577443e-10
+                                       -3.41063845099711e-11
+                                       1.11262893886662e-11
+                                       -1.75542944241734e-12
+                                       1.36298600401767e-13
+                                       8.76342105755664e-15
+                                       -4.64063099157041e-15
+                                       7.7877275873296e-16)))
+      (bk3
+       (make-array 20
+                   :element-type 'double-float
+                   :initial-contents '(0.566777053506912 0.00263672828349579
+                                       5.1230335147313e-5 2.10229231564492e-6
+                                       1.4221709511389e-7 1.28534295891264e-8
+                                       7.28556219407507e-10
+                                       -3.45236157301011e-10
+                                       -2.11919115912724e-10
+                                       -6.56803892922376e-11
+                                       -8.14873160315074e-12
+                                       3.03177845632183e-12
+                                       1.73447220554115e-12
+                                       1.67935548701554e-13
+                                       -1.49622868806719e-13
+                                       -5.15470458953407e-14
+                                       8.7574184185783e-15 7.9673555352572e-15
+                                       -1.29566137861742e-16
+                                       -1.1187879441752e-15)))
+      (bk4
+       (make-array 14
+                   :element-type 'double-float
+                   :initial-contents '(0.485444386705114 -0.00308525088408463
+                                       6.98748404837928e-5 -2.82757234179768e-6
+                                       1.59553313064138e-7 -1.12980692144601e-8
+                                       9.47671515498754e-10
+                                       -9.08301736026423e-11
+                                       9.70776206450724e-12
+                                       -1.13687527254574e-12
+                                       1.43982917533415e-13
+                                       -1.95211019558815e-14
+                                       2.81056379909357e-15
+                                       -4.26916444775176e-16)))
+      (bjp
+       (make-array 19
+                   :element-type 'double-float
+                   :initial-contents '(0.134918611457638 -0.319314588205813
+                                       0.0522061946276114 0.0528869112170312
+                                       -0.0085810075607735 -0.00299211002025555
+                                       4.21126741969759e-4 8.73931830369273e-5
+                                       -1.06749163477533e-5
+                                       -1.56575097259349e-6 1.68051151983999e-7
+                                       1.89901103638691e-8 -1.81374004961922e-9
+                                       -1.66339134593739e-10
+                                       1.4295633578081e-11 1.10179811626595e-12
+                                       -8.60187724192263e-14
+                                       -5.71248177285064e-15
+                                       4.08414552853803e-16)))
+      (bjn
+       (make-array 19
+                   :element-type 'double-float
+                   :initial-contents '(0.0659041673525697 -0.424905910566004
+                                       0.28720974519583 0.129787771099606
+                                       -0.0456354317590358 -0.010263017598254
+                                       0.00250704671521101 3.78127183743483e-4
+                                       -7.11287583284084e-5
+                                       -8.08651210688923e-6 1.23879531273285e-6
+                                       1.13096815867279e-7 -1.4623428317631e-8
+                                       -1.11576315688077e-9
+                                       1.24846618243897e-10
+                                       8.18334132555274e-12
+                                       -8.07174877048484e-13
+                                       -4.63778618766425e-14
+                                       4.09043399081631e-15)))
+      (aa
+       (make-array 14
+                   :element-type 'double-float
+                   :initial-contents '(-0.278593552803079 0.00352915691882584
+                                       2.31149677384994e-5 -4.7131784226356e-6
+                                       1.12415907931333e-7 2.00100301184339e-8
+                                       -2.60948075302193e-9
+                                       3.55098136101216e-11
+                                       3.50849978423875e-11
+                                       -5.83007187954202e-12
+                                       2.04644828753326e-13
+                                       1.10529179476742e-13
+                                       -2.87724778038775e-14
+                                       2.88205111009939e-15)))
+      (bb
+       (make-array 14
+                   :element-type 'double-float
+                   :initial-contents '(-0.490275424742791 -0.00157647277946204
+                                       9.66195963140306e-5 -1.35916080268815e-7
+                                       -2.98157342654859e-7 1.86824767559979e-8
+                                       1.03685737667141e-9
+                                       -3.28660818434328e-10
+                                       2.5709141063278e-11 2.32357655300677e-12
+                                       -9.57523279048255e-13
+                                       1.20340828049719e-13
+                                       2.90907716770715e-15
+                                       -4.55656454580149e-15)))
+      (dbk1
+       (make-array 21
+                   :element-type 'double-float
+                   :initial-contents '(2.95926143981893 3.86774568440103
+                                       1.80441072356289 0.578070764125328
+                                       0.163011468174708 0.0392044409961855
+                                       0.00790964210433812 0.00150640863167338
+                                       2.56651976920042e-4 3.93826605867715e-5
+                                       5.81097771463818e-6 7.86881233754659e-7
+                                       9.93272957325739e-8 1.21424205575107e-8
+                                       1.38528332697707e-9 1.50190067586758e-10
+                                       1.58271945457594e-11
+                                       1.57531847699042e-12
+                                       1.50774055398181e-13
+                                       1.40594335806564e-14
+                                       1.24942698777218e-15)))
+      (dbk2
+       (make-array 20
+                   :element-type 'double-float
+                   :initial-contents '(0.549756809432471 0.00913556983276901
+                                       -0.00253635048605507 6.60423795342054e-4
+                                       -1.55217243135416e-4 3.00090325448633e-5
+                                       -3.76454339467348e-6
+                                       -1.33291331611616e-7 2.42587371049013e-7
+                                       -8.07861075240228e-8 1.71092818861193e-8
+                                       -2.41087357570599e-9
+                                       1.53910848162371e-10 2.5646537319063e-11
+                                       -9.88581911653212e-12
+                                       1.60877986412631e-12
+                                       -1.20952524741739e-13
+                                       -1.0697827841082e-14
+                                       5.02478557067561e-15
+                                       -8.68986130935886e-16)))
+      (dbk3
+       (make-array 20
+                   :element-type 'double-float
+                   :initial-contents '(0.560598509354302 -0.00364870013248135
+                                       -5.98147152307417e-5
+                                       -2.33611595253625e-6
+                                       -1.64571516521436e-7
+                                       -2.06333012920569e-8 -4.2774543157311e-9
+                                       -1.08494137799276e-9
+                                       -2.37207188872763e-10
+                                       -2.22132920864966e-11
+                                       1.07238008032138e-11
+                                       5.71954845245808e-12
+                                       7.51102737777835e-13
+                                       -3.81912369483793e-13
+                                       -1.75870057119257e-13
+                                       6.69641694419084e-15
+                                       2.26866724792055e-14
+                                       2.69898141356743e-15
+                                       -2.67133612397359e-15
+                                       -6.54121403165269e-16)))
+      (dbk4
+       (make-array 14
+                   :element-type 'double-float
+                   :initial-contents '(0.493072999188036 0.00438335419803815
+                                       -8.37413882246205e-5 3.20268810484632e-6
+                                       -1.7566197954827e-7 1.22269906524508e-8
+                                       -1.01381314366052e-9
+                                       9.63639784237475e-11
+                                       -1.02344993379648e-11
+                                       1.19264576554355e-12
+                                       -1.50443899103287e-13
+                                       2.03299052379349e-14
+                                       -2.91890652008292e-15
+                                       4.42322081975475e-16)))
+      (dbjp
+       (make-array 19
+                   :element-type 'double-float
+                   :initial-contents '(0.113140872390745 -0.208301511416328
+                                       0.0169396341953138 0.0290895212478621
+                                       -0.00341467131311549
+                                       -0.00146455339197417 1.63313272898517e-4
+                                       3.91145328922162e-5 -3.96757190808119e-6
+                                       -6.51846913772395e-7 5.9870749526928e-8
+                                       7.44108654536549e-9
+                                       -6.21241056522632e-10
+                                       -6.18768017313526e-11
+                                       4.72323484752324e-12
+                                       3.91652459802532e-13
+                                       -2.74985937845226e-14
+                                       -1.9503649776275e-15
+                                       1.26669643809444e-16)))
+      (dbjn
+       (make-array 19
+                   :element-type 'double-float
+                   :initial-contents '(-0.018809126006885 -0.14779818082614
+                                       0.546075900433171 0.152146932663116
+                                       -0.0958260412266886 -0.016310273169613
+                                       0.00575364806680105 7.12145408252655e-4
+                                       -1.75452116846724e-4
+                                       -1.71063171685128e-5 3.2443558063168e-6
+                                       2.61190663932884e-7 -4.03026865912779e-8
+                                       -2.76435165853895e-9
+                                       3.59687929062312e-10
+                                       2.14953308456051e-11
+                                       -2.41849311903901e-12
+                                       -1.28068004920751e-13
+                                       1.26939834401773e-14)))
+      (daa
+       (make-array 14
+                   :element-type 'double-float
+                   :initial-contents '(0.277571356944231 -0.0044421283341992
+                                       8.42328522190089e-5 2.5804031841871e-6
+                                       -3.42389720217621e-7 6.24286894709776e-9
+                                       2.36377836844577e-9
+                                       -3.16991042656673e-10
+                                       4.40995691658191e-12
+                                       5.18674221093575e-12
+                                       -9.64874015137022e-13
+                                       4.9019057660871e-14 1.77253430678112e-14
+                                       -5.55950610442662e-15)))
+      (dbb
+       (make-array 14
+                   :element-type 'double-float
+                   :initial-contents '(0.491627321104601 0.00311164930427489
+                                       8.23140762854081e-5 -4.61769776172142e-6
+                                       -6.13158880534626e-8 2.8729580465652e-8
+                                       -1.81959715372117e-9
+                                       -1.44752826642035e-10
+                                       4.53724043420422e-11
+                                       -3.99655065847223e-12
+                                       -3.24089119830323e-13
+                                       1.62098952568741e-13
+                                       -2.40765247974057e-14
+                                       1.69384811284491e-16))))
   (declare (type (simple-array double-float (21)) dbk1)
            (type (simple-array double-float (19)) dbjn dbjp bjn bjp)
            (type (simple-array double-float (14)) dbb daa dbk4 bb aa bk4)
@@ -51,287 +287,6 @@
            (type double-float con3 con2 con1 spi12 fpi12)
            (type f2cl-lib:integer4 m4d m3d m2d m1d n4d n3d n2d n1d m3 m2 m1 n3
                                    n2 n1))
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (1) ((1 20))) 2.43202846447449)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (2) ((1 20))) 2.57132009754685)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (3) ((1 20))) 1.02802341258616)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (4) ((1 20))) 0.341958178205872)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (5) ((1 20))) 0.0841978629889284)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (6) ((1 20))) 0.0193877282587962)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (7) ((1 20))) 0.00392687837130335)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (8) ((1 20))) 6.83302689948043e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (9) ((1 20))) 1.14611403991141e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (10) ((1 20))) 1.74195138337086e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (11) ((1 20))) 2.41223620956355e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (12) ((1 20))) 3.24525591983273e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (13) ((1 20))) 4.03509798540183e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (14) ((1 20))) 4.70875059642296e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (15) ((1 20))) 5.35367432585889e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (16) ((1 20))) 5.70606721846334e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (17) ((1 20))) 5.80526363709933e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (18) ((1 20))) 5.76338988616388e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (19) ((1 20))) 5.42103834518071e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bk1 (20) ((1 20))) 4.91857330301677e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (1) ((1 20))) 0.574830555784088)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (2) ((1 20))) -0.00691648648376891)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (3) ((1 20))) 0.00197460263052093)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (4) ((1 20))) -5.24043043868823e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (5) ((1 20))) 1.22965147239661e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (6) ((1 20))) -2.27059514462173e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (7) ((1 20))) 2.23575555008526e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (8) ((1 20))) 4.15174955023899e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (9) ((1 20))) -2.84985752198231e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (10) ((1 20))) 8.50187174775435e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (11) ((1 20))) -1.70400826891326e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (12) ((1 20))) 2.25479746746889e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (13) ((1 20))) -1.09524166577443e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (14) ((1 20))) -3.41063845099711e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (15) ((1 20))) 1.11262893886662e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (16) ((1 20))) -1.75542944241734e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (17) ((1 20))) 1.36298600401767e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (18) ((1 20))) 8.76342105755664e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (19) ((1 20))) -4.64063099157041e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk2 (20) ((1 20))) 7.7877275873296e-16)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (1) ((1 20))) 0.566777053506912)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (2) ((1 20))) 0.00263672828349579)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (3) ((1 20))) 5.1230335147313e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (4) ((1 20))) 2.10229231564492e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (5) ((1 20))) 1.4221709511389e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (6) ((1 20))) 1.28534295891264e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (7) ((1 20))) 7.28556219407507e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (8) ((1 20))) -3.45236157301011e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (9) ((1 20))) -2.11919115912724e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (10) ((1 20))) -6.56803892922376e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (11) ((1 20))) -8.14873160315074e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (12) ((1 20))) 3.03177845632183e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (13) ((1 20))) 1.73447220554115e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (14) ((1 20))) 1.67935548701554e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (15) ((1 20))) -1.49622868806719e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (16) ((1 20))) -5.15470458953407e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (17) ((1 20))) 8.7574184185783e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (18) ((1 20))) 7.9673555352572e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (19) ((1 20))) -1.29566137861742e-16)
-  (f2cl-lib:fset (f2cl-lib:fref bk3 (20) ((1 20))) -1.1187879441752e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (1) ((1 14))) 0.485444386705114)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (2) ((1 14))) -0.00308525088408463)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (3) ((1 14))) 6.98748404837928e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (4) ((1 14))) -2.82757234179768e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (5) ((1 14))) 1.59553313064138e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (6) ((1 14))) -1.12980692144601e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (7) ((1 14))) 9.47671515498754e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (8) ((1 14))) -9.08301736026423e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (9) ((1 14))) 9.70776206450724e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (10) ((1 14))) -1.13687527254574e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (11) ((1 14))) 1.43982917533415e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (12) ((1 14))) -1.95211019558815e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (13) ((1 14))) 2.81056379909357e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bk4 (14) ((1 14))) -4.26916444775176e-16)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (1) ((1 19))) 0.134918611457638)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (2) ((1 19))) -0.319314588205813)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (3) ((1 19))) 0.0522061946276114)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (4) ((1 19))) 0.0528869112170312)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (5) ((1 19))) -0.0085810075607735)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (6) ((1 19))) -0.00299211002025555)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (7) ((1 19))) 4.21126741969759e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (8) ((1 19))) 8.73931830369273e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (9) ((1 19))) -1.06749163477533e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (10) ((1 19))) -1.56575097259349e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (11) ((1 19))) 1.68051151983999e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (12) ((1 19))) 1.89901103638691e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (13) ((1 19))) -1.81374004961922e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (14) ((1 19))) -1.66339134593739e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (15) ((1 19))) 1.4295633578081e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (16) ((1 19))) 1.10179811626595e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (17) ((1 19))) -8.60187724192263e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (18) ((1 19))) -5.71248177285064e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bjp (19) ((1 19))) 4.08414552853803e-16)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (1) ((1 19))) 0.0659041673525697)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (2) ((1 19))) -0.424905910566004)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (3) ((1 19))) 0.28720974519583)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (4) ((1 19))) 0.129787771099606)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (5) ((1 19))) -0.0456354317590358)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (6) ((1 19))) -0.010263017598254)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (7) ((1 19))) 0.00250704671521101)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (8) ((1 19))) 3.78127183743483e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (9) ((1 19))) -7.11287583284084e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (10) ((1 19))) -8.08651210688923e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (11) ((1 19))) 1.23879531273285e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (12) ((1 19))) 1.13096815867279e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (13) ((1 19))) -1.4623428317631e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (14) ((1 19))) -1.11576315688077e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (15) ((1 19))) 1.24846618243897e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (16) ((1 19))) 8.18334132555274e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (17) ((1 19))) -8.07174877048484e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (18) ((1 19))) -4.63778618766425e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bjn (19) ((1 19))) 4.09043399081631e-15)
-  (f2cl-lib:fset (f2cl-lib:fref aa (1) ((1 14))) -0.278593552803079)
-  (f2cl-lib:fset (f2cl-lib:fref aa (2) ((1 14))) 0.00352915691882584)
-  (f2cl-lib:fset (f2cl-lib:fref aa (3) ((1 14))) 2.31149677384994e-5)
-  (f2cl-lib:fset (f2cl-lib:fref aa (4) ((1 14))) -4.7131784226356e-6)
-  (f2cl-lib:fset (f2cl-lib:fref aa (5) ((1 14))) 1.12415907931333e-7)
-  (f2cl-lib:fset (f2cl-lib:fref aa (6) ((1 14))) 2.00100301184339e-8)
-  (f2cl-lib:fset (f2cl-lib:fref aa (7) ((1 14))) -2.60948075302193e-9)
-  (f2cl-lib:fset (f2cl-lib:fref aa (8) ((1 14))) 3.55098136101216e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aa (9) ((1 14))) 3.50849978423875e-11)
-  (f2cl-lib:fset (f2cl-lib:fref aa (10) ((1 14))) -5.83007187954202e-12)
-  (f2cl-lib:fset (f2cl-lib:fref aa (11) ((1 14))) 2.04644828753326e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aa (12) ((1 14))) 1.10529179476742e-13)
-  (f2cl-lib:fset (f2cl-lib:fref aa (13) ((1 14))) -2.87724778038775e-14)
-  (f2cl-lib:fset (f2cl-lib:fref aa (14) ((1 14))) 2.88205111009939e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bb (1) ((1 14))) -0.490275424742791)
-  (f2cl-lib:fset (f2cl-lib:fref bb (2) ((1 14))) -0.00157647277946204)
-  (f2cl-lib:fset (f2cl-lib:fref bb (3) ((1 14))) 9.66195963140306e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bb (4) ((1 14))) -1.35916080268815e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bb (5) ((1 14))) -2.98157342654859e-7)
-  (f2cl-lib:fset (f2cl-lib:fref bb (6) ((1 14))) 1.86824767559979e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bb (7) ((1 14))) 1.03685737667141e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bb (8) ((1 14))) -3.28660818434328e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bb (9) ((1 14))) 2.5709141063278e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bb (10) ((1 14))) 2.32357655300677e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bb (11) ((1 14))) -9.57523279048255e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bb (12) ((1 14))) 1.20340828049719e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bb (13) ((1 14))) 2.90907716770715e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bb (14) ((1 14))) -4.55656454580149e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (1) ((1 21))) 2.95926143981893)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (2) ((1 21))) 3.86774568440103)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (3) ((1 21))) 1.80441072356289)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (4) ((1 21))) 0.578070764125328)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (5) ((1 21))) 0.163011468174708)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (6) ((1 21))) 0.0392044409961855)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (7) ((1 21))) 0.00790964210433812)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (8) ((1 21))) 0.00150640863167338)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (9) ((1 21))) 2.56651976920042e-4)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (10) ((1 21))) 3.93826605867715e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (11) ((1 21))) 5.81097771463818e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (12) ((1 21))) 7.86881233754659e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (13) ((1 21))) 9.93272957325739e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (14) ((1 21))) 1.21424205575107e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (15) ((1 21))) 1.38528332697707e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (16) ((1 21))) 1.50190067586758e-10)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (17) ((1 21))) 1.58271945457594e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (18) ((1 21))) 1.57531847699042e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (19) ((1 21))) 1.50774055398181e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (20) ((1 21))) 1.40594335806564e-14)
-  (f2cl-lib:fset (f2cl-lib:fref dbk1 (21) ((1 21))) 1.24942698777218e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (1) ((1 20))) 0.549756809432471)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (2) ((1 20))) 0.00913556983276901)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (3) ((1 20))) -0.00253635048605507)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (4) ((1 20))) 6.60423795342054e-4)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (5) ((1 20))) -1.55217243135416e-4)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (6) ((1 20))) 3.00090325448633e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (7) ((1 20))) -3.76454339467348e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (8) ((1 20))) -1.33291331611616e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (9) ((1 20))) 2.42587371049013e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (10) ((1 20))) -8.07861075240228e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (11) ((1 20))) 1.71092818861193e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (12) ((1 20))) -2.41087357570599e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (13) ((1 20))) 1.53910848162371e-10)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (14) ((1 20))) 2.5646537319063e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (15) ((1 20))) -9.88581911653212e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (16) ((1 20))) 1.60877986412631e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (17) ((1 20))) -1.20952524741739e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (18) ((1 20))) -1.0697827841082e-14)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (19) ((1 20))) 5.02478557067561e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk2 (20) ((1 20))) -8.68986130935886e-16)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (1) ((1 20))) 0.560598509354302)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (2) ((1 20))) -0.00364870013248135)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (3) ((1 20))) -5.98147152307417e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (4) ((1 20))) -2.33611595253625e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (5) ((1 20))) -1.64571516521436e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (6) ((1 20))) -2.06333012920569e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (7) ((1 20))) -4.2774543157311e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (8) ((1 20))) -1.08494137799276e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (9) ((1 20))) -2.37207188872763e-10)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (10) ((1 20))) -2.22132920864966e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (11) ((1 20))) 1.07238008032138e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (12) ((1 20))) 5.71954845245808e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (13) ((1 20))) 7.51102737777835e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (14) ((1 20))) -3.81912369483793e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (15) ((1 20))) -1.75870057119257e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (16) ((1 20))) 6.69641694419084e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (17) ((1 20))) 2.26866724792055e-14)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (18) ((1 20))) 2.69898141356743e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (19) ((1 20))) -2.67133612397359e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk3 (20) ((1 20))) -6.54121403165269e-16)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (1) ((1 14))) 0.493072999188036)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (2) ((1 14))) 0.00438335419803815)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (3) ((1 14))) -8.37413882246205e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (4) ((1 14))) 3.20268810484632e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (5) ((1 14))) -1.7566197954827e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (6) ((1 14))) 1.22269906524508e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (7) ((1 14))) -1.01381314366052e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (8) ((1 14))) 9.63639784237475e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (9) ((1 14))) -1.02344993379648e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (10) ((1 14))) 1.19264576554355e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (11) ((1 14))) -1.50443899103287e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (12) ((1 14))) 2.03299052379349e-14)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (13) ((1 14))) -2.91890652008292e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbk4 (14) ((1 14))) 4.42322081975475e-16)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (1) ((1 19))) 0.113140872390745)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (2) ((1 19))) -0.208301511416328)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (3) ((1 19))) 0.0169396341953138)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (4) ((1 19))) 0.0290895212478621)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (5) ((1 19))) -0.00341467131311549)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (6) ((1 19))) -0.00146455339197417)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (7) ((1 19))) 1.63313272898517e-4)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (8) ((1 19))) 3.91145328922162e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (9) ((1 19))) -3.96757190808119e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (10) ((1 19))) -6.51846913772395e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (11) ((1 19))) 5.9870749526928e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (12) ((1 19))) 7.44108654536549e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (13) ((1 19))) -6.21241056522632e-10)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (14) ((1 19))) -6.18768017313526e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (15) ((1 19))) 4.72323484752324e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (16) ((1 19))) 3.91652459802532e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (17) ((1 19))) -2.74985937845226e-14)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (18) ((1 19))) -1.9503649776275e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbjp (19) ((1 19))) 1.26669643809444e-16)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (1) ((1 19))) -0.018809126006885)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (2) ((1 19))) -0.14779818082614)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (3) ((1 19))) 0.546075900433171)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (4) ((1 19))) 0.152146932663116)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (5) ((1 19))) -0.0958260412266886)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (6) ((1 19))) -0.016310273169613)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (7) ((1 19))) 0.00575364806680105)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (8) ((1 19))) 7.12145408252655e-4)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (9) ((1 19))) -1.75452116846724e-4)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (10) ((1 19))) -1.71063171685128e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (11) ((1 19))) 3.2443558063168e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (12) ((1 19))) 2.61190663932884e-7)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (13) ((1 19))) -4.03026865912779e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (14) ((1 19))) -2.76435165853895e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (15) ((1 19))) 3.59687929062312e-10)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (16) ((1 19))) 2.14953308456051e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (17) ((1 19))) -2.41849311903901e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (18) ((1 19))) -1.28068004920751e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbjn (19) ((1 19))) 1.26939834401773e-14)
-  (f2cl-lib:fset (f2cl-lib:fref daa (1) ((1 14))) 0.277571356944231)
-  (f2cl-lib:fset (f2cl-lib:fref daa (2) ((1 14))) -0.0044421283341992)
-  (f2cl-lib:fset (f2cl-lib:fref daa (3) ((1 14))) 8.42328522190089e-5)
-  (f2cl-lib:fset (f2cl-lib:fref daa (4) ((1 14))) 2.5804031841871e-6)
-  (f2cl-lib:fset (f2cl-lib:fref daa (5) ((1 14))) -3.42389720217621e-7)
-  (f2cl-lib:fset (f2cl-lib:fref daa (6) ((1 14))) 6.24286894709776e-9)
-  (f2cl-lib:fset (f2cl-lib:fref daa (7) ((1 14))) 2.36377836844577e-9)
-  (f2cl-lib:fset (f2cl-lib:fref daa (8) ((1 14))) -3.16991042656673e-10)
-  (f2cl-lib:fset (f2cl-lib:fref daa (9) ((1 14))) 4.40995691658191e-12)
-  (f2cl-lib:fset (f2cl-lib:fref daa (10) ((1 14))) 5.18674221093575e-12)
-  (f2cl-lib:fset (f2cl-lib:fref daa (11) ((1 14))) -9.64874015137022e-13)
-  (f2cl-lib:fset (f2cl-lib:fref daa (12) ((1 14))) 4.9019057660871e-14)
-  (f2cl-lib:fset (f2cl-lib:fref daa (13) ((1 14))) 1.77253430678112e-14)
-  (f2cl-lib:fset (f2cl-lib:fref daa (14) ((1 14))) -5.55950610442662e-15)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (1) ((1 14))) 0.491627321104601)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (2) ((1 14))) 0.00311164930427489)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (3) ((1 14))) 8.23140762854081e-5)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (4) ((1 14))) -4.61769776172142e-6)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (5) ((1 14))) -6.13158880534626e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (6) ((1 14))) 2.8729580465652e-8)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (7) ((1 14))) -1.81959715372117e-9)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (8) ((1 14))) -1.44752826642035e-10)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (9) ((1 14))) 4.53724043420422e-11)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (10) ((1 14))) -3.99655065847223e-12)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (11) ((1 14))) -3.24089119830323e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (12) ((1 14))) 1.62098952568741e-13)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (13) ((1 14))) -2.40765247974057e-14)
-  (f2cl-lib:fset (f2cl-lib:fref dbb (14) ((1 14))) 1.69384811284491e-16)
   (defun dyairy (x rx c bi dbi)
     (declare (type double-float dbi bi c rx x))
     (prog ((ax 0.0) (cv 0.0) (d1 0.0) (d2 0.0) (ex 0.0) (e1 0.0) (e2 0.0)

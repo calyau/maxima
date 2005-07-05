@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -15,72 +15,75 @@
       (nbig2 0)
       (x3sml 0.0)
       (xmax 0.0)
-      (bifcs (make-array 13 :element-type 'double-float))
-      (bigcs (make-array 13 :element-type 'double-float))
-      (bif2cs (make-array 15 :element-type 'double-float))
-      (big2cs (make-array 15 :element-type 'double-float))
+      (bifcs
+       (make-array 13
+                   :element-type 'double-float
+                   :initial-contents '(-0.01673021647198665 0.10252335834249446
+                                       0.0017083092507381517
+                                       1.1862545467744682e-5
+                                       4.4932907017792135e-8
+                                       1.0698207143387889e-10
+                                       1.7480643399771825e-13
+                                       2.081023107176171e-16
+                                       1.8849814695665417e-19
+                                       1.3425779173097804e-22
+                                       7.715959342965888e-26
+                                       3.653387961747857e-29
+                                       1.4497565927953065e-32)))
+      (bigcs
+       (make-array 13
+                   :element-type 'double-float
+                   :initial-contents '(0.022466223248574523 0.03736477545301955
+                                       4.4476218957212283e-4
+                                       2.4708075636329383e-6
+                                       7.919135339514964e-9
+                                       1.649807985182778e-11
+                                       2.4119906664835456e-14
+                                       2.6103736236091437e-17
+                                       2.1753082977160324e-20
+                                       1.4386946400390432e-23
+                                       7.734912561208347e-27
+                                       3.4469292033849e-30
+                                       1.2938919273216e-33)))
+      (bif2cs
+       (make-array 15
+                   :element-type 'double-float
+                   :initial-contents '(0.0998457269381604 0.47862497786300556
+                                       0.02515521196043301 5.820693885232646e-4
+                                       7.499765964437787e-6
+                                       6.134602870349384e-8
+                                       3.462753885148063e-10
+                                       1.4288910080270254e-12
+                                       4.496270429833464e-15
+                                       1.1142323065833012e-17
+                                       2.2304791066175003e-20
+                                       3.6815778736393144e-23
+                                       5.096086844933826e-26
+                                       6.000338692628856e-29
+                                       6.082749744657067e-32)))
+      (big2cs
+       (make-array 15
+                   :element-type 'double-float
+                   :initial-contents '(0.03330566214551434 0.16130921512319707
+                                       0.006319007309613428
+                                       1.1879045681625174e-4
+                                       1.3045345886200265e-6
+                                       9.374125995535217e-9
+                                       4.745801886747251e-11
+                                       1.783107265094814e-13
+                                       5.167591927849581e-16
+                                       1.1900450838682712e-18
+                                       2.229828806664035e-21
+                                       3.465519230276894e-24
+                                       4.539263363205045e-27
+                                       5.078849965135223e-30
+                                       4.910206746965333e-33)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (15)) big2cs bif2cs)
            (type (simple-array double-float (13)) bigcs bifcs)
            (type double-float xmax x3sml)
            (type f2cl-lib:integer4 nbig2 nbif2 nbig nbif))
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (1) ((1 13))) -0.01673021647198665)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (2) ((1 13))) 0.10252335834249446)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (3) ((1 13))) 0.0017083092507381517)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (4) ((1 13))) 1.1862545467744682e-5)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (5) ((1 13))) 4.4932907017792135e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (6) ((1 13))) 1.0698207143387889e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (7) ((1 13))) 1.7480643399771825e-13)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (8) ((1 13))) 2.081023107176171e-16)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (9) ((1 13))) 1.8849814695665417e-19)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (10) ((1 13))) 1.3425779173097804e-22)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (11) ((1 13))) 7.715959342965888e-26)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (12) ((1 13))) 3.653387961747857e-29)
-  (f2cl-lib:fset (f2cl-lib:fref bifcs (13) ((1 13))) 1.4497565927953065e-32)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (1) ((1 13))) 0.022466223248574523)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (2) ((1 13))) 0.03736477545301955)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (3) ((1 13))) 4.4476218957212283e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (4) ((1 13))) 2.4708075636329383e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (5) ((1 13))) 7.919135339514964e-9)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (6) ((1 13))) 1.649807985182778e-11)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (7) ((1 13))) 2.4119906664835456e-14)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (8) ((1 13))) 2.6103736236091437e-17)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (9) ((1 13))) 2.1753082977160324e-20)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (10) ((1 13))) 1.4386946400390432e-23)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (11) ((1 13))) 7.734912561208347e-27)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (12) ((1 13))) 3.4469292033849e-30)
-  (f2cl-lib:fset (f2cl-lib:fref bigcs (13) ((1 13))) 1.2938919273216e-33)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (1) ((1 15))) 0.0998457269381604)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (2) ((1 15))) 0.47862497786300556)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (3) ((1 15))) 0.02515521196043301)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (4) ((1 15))) 5.820693885232646e-4)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (5) ((1 15))) 7.499765964437787e-6)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (6) ((1 15))) 6.134602870349384e-8)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (7) ((1 15))) 3.462753885148063e-10)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (8) ((1 15))) 1.4288910080270254e-12)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (9) ((1 15))) 4.496270429833464e-15)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (10) ((1 15))) 1.1142323065833012e-17)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (11) ((1 15))) 2.2304791066175003e-20)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (12) ((1 15))) 3.6815778736393144e-23)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (13) ((1 15))) 5.096086844933826e-26)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (14) ((1 15))) 6.000338692628856e-29)
-  (f2cl-lib:fset (f2cl-lib:fref bif2cs (15) ((1 15))) 6.082749744657067e-32)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (1) ((1 15))) 0.03330566214551434)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (2) ((1 15))) 0.16130921512319707)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (3) ((1 15))) 0.006319007309613428)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (4) ((1 15))) 1.1879045681625174e-4)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (5) ((1 15))) 1.3045345886200265e-6)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (6) ((1 15))) 9.374125995535217e-9)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (7) ((1 15))) 4.745801886747251e-11)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (8) ((1 15))) 1.783107265094814e-13)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (9) ((1 15))) 5.167591927849581e-16)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (10) ((1 15))) 1.1900450838682712e-18)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (11) ((1 15))) 2.229828806664035e-21)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (12) ((1 15))) 3.465519230276894e-24)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (13) ((1 15))) 4.539263363205045e-27)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (14) ((1 15))) 5.078849965135223e-30)
-  (f2cl-lib:fset (f2cl-lib:fref big2cs (15) ((1 15))) 4.910206746965333e-33)
   (setq first$ f2cl-lib:%true%)
   (defun dbi (x)
     (declare (type double-float x))

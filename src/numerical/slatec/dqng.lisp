@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -9,17 +9,119 @@
 (in-package "SLATEC")
 
 
-(let ((x1 (make-array 5 :element-type 'double-float))
-      (w10 (make-array 5 :element-type 'double-float))
-      (x2 (make-array 5 :element-type 'double-float))
-      (w21a (make-array 5 :element-type 'double-float))
-      (w21b (make-array 6 :element-type 'double-float))
-      (x3 (make-array 11 :element-type 'double-float))
-      (w43a (make-array 10 :element-type 'double-float))
-      (w43b (make-array 12 :element-type 'double-float))
-      (x4 (make-array 22 :element-type 'double-float))
-      (w87a (make-array 21 :element-type 'double-float))
-      (w87b (make-array 23 :element-type 'double-float)))
+(let ((x1
+       (make-array 5
+                   :element-type 'double-float
+                   :initial-contents '(0.9739065285171717 0.8650633666889845
+                                       0.6794095682990244 0.4333953941292472
+                                       0.14887433898163122)))
+      (w10
+       (make-array 5
+                   :element-type 'double-float
+                   :initial-contents '(0.06667134430868814 0.1494513491505806
+                                       0.21908636251598204 0.26926671930999635
+                                       0.29552422471475287)))
+      (x2
+       (make-array 5
+                   :element-type 'double-float
+                   :initial-contents '(0.9956571630258081 0.9301574913557082
+                                       0.7808177265864169 0.5627571346686047
+                                       0.2943928627014602)))
+      (w21a
+       (make-array 5
+                   :element-type 'double-float
+                   :initial-contents '(0.032558162307964725 0.07503967481091996
+                                       0.10938715880229764 0.13470921731147334
+                                       0.14773910490133849)))
+      (w21b
+       (make-array 6
+                   :element-type 'double-float
+                   :initial-contents '(0.011694638867371874
+                                       0.054755896574351995 0.0931254545836976
+                                       0.12349197626206584 0.14277593857706009
+                                       0.1494455540029169)))
+      (x3
+       (make-array 11
+                   :element-type 'double-float
+                   :initial-contents '(0.999333360901932 0.9874334029080889
+                                       0.9548079348142663 0.9001486957483283
+                                       0.8251983149831141 0.732148388989305
+                                       0.6228479705377252 0.4994795740710565
+                                       0.36490166134658075 0.2222549197766013
+                                       0.07465061746138332)))
+      (w43a
+       (make-array 10
+                   :element-type 'double-float
+                   :initial-contents '(0.016296734289666565 0.0375228761208695
+                                       0.05469490205825544 0.06735541460947808
+                                       0.07387019963239395 0.005768556059769796
+                                       0.027371890593248842 0.04656082691042883
+                                       0.06174499520144257
+                                       0.07138726726869339)))
+      (w43b
+       (make-array 12
+                   :element-type 'double-float
+                   :initial-contents '(0.001844477640212414
+                                       0.010798689585891651
+                                       0.021895363867795427
+                                       0.032597463975345686 0.04216313793519181
+                                       0.050741939600184575 0.05837939554261925
+                                       0.06474640495144589 0.06956619791235648
+                                       0.07282444147183322 0.07450775101417512
+                                       0.07472214751740301)))
+      (x4
+       (make-array 22
+                   :element-type 'double-float
+                   :initial-contents '(0.9999029772627293 0.9979898959866788
+                                       0.9921754978606873 0.9813581635727128
+                                       0.9650576238583847 0.9431676131336706
+                                       0.9158064146855072 0.8832216577713164
+                                       0.8457107484624157 0.8035576580352309
+                                       0.7570057306854956 0.7062732097873218
+                                       0.6515894665011779 0.5932233740579611
+                                       0.531493605970832 0.46676362304202285
+                                       0.3994248478592188 0.3298748771061883
+                                       0.25850355920216156 0.18569539656834666
+                                       0.11184221317990747
+                                       0.03735212339461987)))
+      (w87a
+       (make-array 21
+                   :element-type 'double-float
+                   :initial-contents '(0.008148377384149173
+                                       0.018761438201562824
+                                       0.027347451050052287 0.03367770731163793
+                                       0.036935099820427905
+                                       0.0028848724302115306
+                                       0.013685946022712702 0.02328041350288831
+                                       0.03087249761171336 0.03569363363941877
+                                       9.152833452022414e-4
+                                       0.005399280219300471 0.01094767960111893
+                                       0.016298731696787336
+                                       0.021081568889203834
+                                       0.025370969769253827
+                                       0.029189697756475754 0.03237320246720279
+                                       0.034783098950365146 0.03641222073135179
+                                       0.037253875503047706)))
+      (w87b
+       (make-array 23
+                   :element-type 'double-float
+                   :initial-contents '(2.7414556376207234e-4
+                                       0.0018071241550579428
+                                       0.0040968692827591646
+                                       0.006758290051847379
+                                       0.009549957672201646
+                                       0.012329447652244854
+                                       0.015010447346388952 0.01754896798624319
+                                       0.019938037786440887
+                                       0.022194935961012286
+                                       0.024339147126000805
+                                       0.026374505414839208 0.0282869107887712
+                                       0.030052581128092695 0.03164675137143993
+                                       0.033050413419978504
+                                       0.034255099704226064 0.03526241266015668
+                                       0.0360769896228887 0.03669860449845609
+                                       0.037120549269832576 0.03733422875193504
+                                       0.037361073762679026))))
   (declare (type (array double-float (23)) w87b)
            (type (array double-float (21)) w87a)
            (type (array double-float (22)) x4)
@@ -28,131 +130,6 @@
            (type (array double-float (11)) x3)
            (type (array double-float (6)) w21b)
            (type (array double-float (5)) w21a x2 w10 x1))
-  (f2cl-lib:fset (f2cl-lib:fref x1 (1) ((1 5))) 0.9739065285171717)
-  (f2cl-lib:fset (f2cl-lib:fref x1 (2) ((1 5))) 0.8650633666889845)
-  (f2cl-lib:fset (f2cl-lib:fref x1 (3) ((1 5))) 0.6794095682990244)
-  (f2cl-lib:fset (f2cl-lib:fref x1 (4) ((1 5))) 0.4333953941292472)
-  (f2cl-lib:fset (f2cl-lib:fref x1 (5) ((1 5))) 0.14887433898163122)
-  (f2cl-lib:fset (f2cl-lib:fref w10 (1) ((1 5))) 0.06667134430868814)
-  (f2cl-lib:fset (f2cl-lib:fref w10 (2) ((1 5))) 0.1494513491505806)
-  (f2cl-lib:fset (f2cl-lib:fref w10 (3) ((1 5))) 0.21908636251598204)
-  (f2cl-lib:fset (f2cl-lib:fref w10 (4) ((1 5))) 0.26926671930999635)
-  (f2cl-lib:fset (f2cl-lib:fref w10 (5) ((1 5))) 0.29552422471475287)
-  (f2cl-lib:fset (f2cl-lib:fref x2 (1) ((1 5))) 0.9956571630258081)
-  (f2cl-lib:fset (f2cl-lib:fref x2 (2) ((1 5))) 0.9301574913557082)
-  (f2cl-lib:fset (f2cl-lib:fref x2 (3) ((1 5))) 0.7808177265864169)
-  (f2cl-lib:fset (f2cl-lib:fref x2 (4) ((1 5))) 0.5627571346686047)
-  (f2cl-lib:fset (f2cl-lib:fref x2 (5) ((1 5))) 0.2943928627014602)
-  (f2cl-lib:fset (f2cl-lib:fref w21a (1) ((1 5))) 0.032558162307964725)
-  (f2cl-lib:fset (f2cl-lib:fref w21a (2) ((1 5))) 0.07503967481091996)
-  (f2cl-lib:fset (f2cl-lib:fref w21a (3) ((1 5))) 0.10938715880229764)
-  (f2cl-lib:fset (f2cl-lib:fref w21a (4) ((1 5))) 0.13470921731147334)
-  (f2cl-lib:fset (f2cl-lib:fref w21a (5) ((1 5))) 0.14773910490133849)
-  (f2cl-lib:fset (f2cl-lib:fref w21b (1) ((1 6))) 0.011694638867371874)
-  (f2cl-lib:fset (f2cl-lib:fref w21b (2) ((1 6))) 0.054755896574351995)
-  (f2cl-lib:fset (f2cl-lib:fref w21b (3) ((1 6))) 0.0931254545836976)
-  (f2cl-lib:fset (f2cl-lib:fref w21b (4) ((1 6))) 0.12349197626206584)
-  (f2cl-lib:fset (f2cl-lib:fref w21b (5) ((1 6))) 0.14277593857706009)
-  (f2cl-lib:fset (f2cl-lib:fref w21b (6) ((1 6))) 0.1494455540029169)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (1) ((1 11))) 0.999333360901932)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (2) ((1 11))) 0.9874334029080889)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (3) ((1 11))) 0.9548079348142663)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (4) ((1 11))) 0.9001486957483283)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (5) ((1 11))) 0.8251983149831141)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (6) ((1 11))) 0.732148388989305)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (7) ((1 11))) 0.6228479705377252)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (8) ((1 11))) 0.4994795740710565)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (9) ((1 11))) 0.36490166134658075)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (10) ((1 11))) 0.2222549197766013)
-  (f2cl-lib:fset (f2cl-lib:fref x3 (11) ((1 11))) 0.07465061746138332)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (1) ((1 10))) 0.016296734289666565)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (2) ((1 10))) 0.0375228761208695)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (3) ((1 10))) 0.05469490205825544)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (4) ((1 10))) 0.06735541460947808)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (5) ((1 10))) 0.07387019963239395)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (6) ((1 10))) 0.005768556059769796)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (7) ((1 10))) 0.027371890593248842)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (8) ((1 10))) 0.04656082691042883)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (9) ((1 10))) 0.06174499520144257)
-  (f2cl-lib:fset (f2cl-lib:fref w43a (10) ((1 10))) 0.07138726726869339)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (1) ((1 12))) 0.001844477640212414)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (2) ((1 12))) 0.010798689585891651)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (3) ((1 12))) 0.021895363867795427)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (4) ((1 12))) 0.032597463975345686)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (5) ((1 12))) 0.04216313793519181)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (6) ((1 12))) 0.050741939600184575)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (7) ((1 12))) 0.05837939554261925)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (8) ((1 12))) 0.06474640495144589)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (9) ((1 12))) 0.06956619791235648)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (10) ((1 12))) 0.07282444147183322)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (11) ((1 12))) 0.07450775101417512)
-  (f2cl-lib:fset (f2cl-lib:fref w43b (12) ((1 12))) 0.07472214751740301)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (1) ((1 22))) 0.9999029772627293)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (2) ((1 22))) 0.9979898959866788)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (3) ((1 22))) 0.9921754978606873)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (4) ((1 22))) 0.9813581635727128)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (5) ((1 22))) 0.9650576238583847)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (6) ((1 22))) 0.9431676131336706)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (7) ((1 22))) 0.9158064146855072)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (8) ((1 22))) 0.8832216577713164)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (9) ((1 22))) 0.8457107484624157)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (10) ((1 22))) 0.8035576580352309)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (11) ((1 22))) 0.7570057306854956)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (12) ((1 22))) 0.7062732097873218)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (13) ((1 22))) 0.6515894665011779)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (14) ((1 22))) 0.5932233740579611)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (15) ((1 22))) 0.531493605970832)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (16) ((1 22))) 0.46676362304202285)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (17) ((1 22))) 0.3994248478592188)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (18) ((1 22))) 0.3298748771061883)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (19) ((1 22))) 0.25850355920216156)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (20) ((1 22))) 0.18569539656834666)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (21) ((1 22))) 0.11184221317990747)
-  (f2cl-lib:fset (f2cl-lib:fref x4 (22) ((1 22))) 0.03735212339461987)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (1) ((1 21))) 0.008148377384149173)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (2) ((1 21))) 0.018761438201562824)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (3) ((1 21))) 0.027347451050052287)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (4) ((1 21))) 0.03367770731163793)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (5) ((1 21))) 0.036935099820427905)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (6) ((1 21))) 0.0028848724302115306)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (7) ((1 21))) 0.013685946022712702)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (8) ((1 21))) 0.02328041350288831)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (9) ((1 21))) 0.03087249761171336)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (10) ((1 21))) 0.03569363363941877)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (11) ((1 21))) 9.152833452022414e-4)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (12) ((1 21))) 0.005399280219300471)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (13) ((1 21))) 0.01094767960111893)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (14) ((1 21))) 0.016298731696787336)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (15) ((1 21))) 0.021081568889203834)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (16) ((1 21))) 0.025370969769253827)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (17) ((1 21))) 0.029189697756475754)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (18) ((1 21))) 0.03237320246720279)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (19) ((1 21))) 0.034783098950365146)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (20) ((1 21))) 0.03641222073135179)
-  (f2cl-lib:fset (f2cl-lib:fref w87a (21) ((1 21))) 0.037253875503047706)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (1) ((1 23))) 2.7414556376207234e-4)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (2) ((1 23))) 0.0018071241550579428)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (3) ((1 23))) 0.0040968692827591646)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (4) ((1 23))) 0.006758290051847379)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (5) ((1 23))) 0.009549957672201646)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (6) ((1 23))) 0.012329447652244854)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (7) ((1 23))) 0.015010447346388952)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (8) ((1 23))) 0.01754896798624319)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (9) ((1 23))) 0.019938037786440887)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (10) ((1 23))) 0.022194935961012286)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (11) ((1 23))) 0.024339147126000805)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (12) ((1 23))) 0.026374505414839208)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (13) ((1 23))) 0.0282869107887712)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (14) ((1 23))) 0.030052581128092695)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (15) ((1 23))) 0.03164675137143993)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (16) ((1 23))) 0.033050413419978504)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (17) ((1 23))) 0.034255099704226064)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (18) ((1 23))) 0.03526241266015668)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (19) ((1 23))) 0.0360769896228887)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (20) ((1 23))) 0.03669860449845609)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (21) ((1 23))) 0.037120549269832576)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (22) ((1 23))) 0.03733422875193504)
-  (f2cl-lib:fset (f2cl-lib:fref w87b (23) ((1 23))) 0.037361073762679026)
   (defun dqng (f a b epsabs epsrel result abserr neval ier)
     (declare (type f2cl-lib:integer4 ier neval)
              (type double-float abserr result epsrel epsabs b a)

@@ -1,4 +1,4 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/01 15:29:41 
+;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
 ;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
@@ -12,27 +12,29 @@
 (let ((nalgm 0)
       (xbig 0.0)
       (xmax 0.0)
-      (algmcs (make-array 15 :element-type 'double-float))
+      (algmcs
+       (make-array 15
+                   :element-type 'double-float
+                   :initial-contents '(0.16663894804518634
+                                       -1.384948176067564e-5
+                                       9.81082564692473e-9
+                                       -1.809129475572494e-11
+                                       6.221098041892606e-14
+                                       -3.399615005417722e-16
+                                       2.683181998482699e-18
+                                       -2.868042435334643e-20
+                                       3.9628370610464347e-22
+                                       -6.831888753985767e-24
+                                       1.4292273559424982e-25
+                                       -3.5475981581010704e-27
+                                       1.025680058010471e-28
+                                       -3.401102254316749e-30
+                                       1.276642195630063e-31)))
       (first$ nil))
   (declare (type f2cl-lib:logical first$)
            (type (simple-array double-float (15)) algmcs)
            (type double-float xmax xbig)
            (type f2cl-lib:integer4 nalgm))
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (1) ((1 15))) 0.16663894804518634)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (2) ((1 15))) -1.384948176067564e-5)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (3) ((1 15))) 9.81082564692473e-9)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (4) ((1 15))) -1.809129475572494e-11)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (5) ((1 15))) 6.221098041892606e-14)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (6) ((1 15))) -3.399615005417722e-16)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (7) ((1 15))) 2.683181998482699e-18)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (8) ((1 15))) -2.868042435334643e-20)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (9) ((1 15))) 3.9628370610464347e-22)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (10) ((1 15))) -6.831888753985767e-24)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (11) ((1 15))) 1.4292273559424982e-25)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (12) ((1 15))) -3.5475981581010704e-27)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (13) ((1 15))) 1.025680058010471e-28)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (14) ((1 15))) -3.401102254316749e-30)
-  (f2cl-lib:fset (f2cl-lib:fref algmcs (15) ((1 15))) 1.276642195630063e-31)
   (setq first$ f2cl-lib:%true%)
   (defun d9lgmc (x)
     (declare (type double-float x))
