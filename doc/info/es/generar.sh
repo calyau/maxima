@@ -1,21 +1,13 @@
 #!/bin/bash
 
-echo 'A continuacion se esta generando el archivo dvi ....'
+echo 'Generando manual en formato info ....'
 
-texi2dvi -I tex_es/ maxima.es.texi 
+makeinfo --enable-encoding maxima.es.texi
 
-echo 'A continuacion se esta generando el archivo html ....'
+echo 'Generando manual en formato html ....'
 
-texi2html -I tex_es/ maxima.es.texi
+texi2html --lang=es --output=maxima.es.html maxima.es.texi
 
-echo 'A continuacion se esta generando el archivo pdf ....'
+echo 'Generando manual en formato pdf ....'
 
-rm -rf maxima.es.aux
-
-texi2pdf -I tex_es/ maxima.es.texi
-
-echo 'Hecho. Felicitaciones por usar Maxima !!!'
-
-
-
-
+texi2pdf -I tex_es/  maxima.es.texi

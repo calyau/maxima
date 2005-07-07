@@ -125,8 +125,7 @@ Funcionalidades extras y programación
 * Listas::                      Manipulación de listas tipo Lisp.
 * Definici@'on de Funciones::   
 * Programaci@'on::              
-* Depurado::                    
-* Proyecto GLUD-CLog::          
+* Depurado::                       
 * Indice de Funciones y Variables::  
 @end menu
 
@@ -292,15 +291,11 @@ Funcionalidades extras y programación
 @chapter Programaci@'on
 @include Program.es.texi
 
-@node Depurado, Proyecto GLUD-CLog, Programaci@'on, Top
+@node Depurado, Indice de Funciones y Variables, Programaci@'on, Top
 @chapter Depurado
 @include Debugging.es.texi
 
-@node Proyecto GLUD-CLog, Indice de Funciones y Variables, Depurado, Top
-@chapter Proyecto GLUD-CLog
-@include Clog.texi
-
-@node Indice de Funciones y Variables, , Proyecto GLUD-CLog, Top
+@node Indice de Funciones y Variables, , Depurado, Top
 @chapter Indice de Funciones y Variables
 @include Indices.es.texi
 
