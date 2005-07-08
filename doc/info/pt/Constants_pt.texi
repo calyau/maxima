@@ -4,7 +4,6 @@
 @end menu
 
 @node Defini@value{cedilha}@~oes para Constantes,  , Constantes, Constantes
-@c PT = Defini@value{cedilha}@~oes para Constantes
 @section Defini@value{cedilha}@~oes para Constantes
 
 @defvr {Constant} %e

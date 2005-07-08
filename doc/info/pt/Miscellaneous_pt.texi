@@ -6,7 +6,6 @@
 @end menu
 
 @node Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas, Compartilhado, Op@value{cedilha}@~oes Diversas, Op@value{cedilha}@~oes Diversas
-@c PT = Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas
 @section Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas
 
 Nessa se@,{c}@~ao v@'arias op@,{c}@~oes s@~ao tratadas pelo fato de possuirem um efeito global
@@ -14,7 +13,6 @@ sobre a opera@,{c}@~ao do Maxima.   Tamb@'em v@'arias listas tais como a lista d
 fun@,{c}@~oes definidas pelo usu@'ario, s@~ao discutidas.
 
 @node Compartilhado, Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas, Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas, Op@value{cedilha}@~oes Diversas
-@c PT = Compartilhado
 @section Compartilhado
 O diret@'orio "share" do Maxima cont@'em programas e outros arquivos 
 de interesse para os usu@'arios do Maxima, mas que n@~ao s@~ao parte da implementa@,{c}@~ao do n@'ucleo do Maxima.
@@ -29,7 +27,6 @@ Usu@'arios podem encontrar isso de forma mais detalhada navegando no diret@'orio
 
 
 @node Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas,  , Compartilhado, Op@value{cedilha}@~oes Diversas
-@c PT = Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas
 @section Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas
 
 @defvr {Vari@'avel de sistema} aliases

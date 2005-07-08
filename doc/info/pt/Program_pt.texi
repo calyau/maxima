@@ -5,7 +5,6 @@
 @end menu
 
 @node Introdu@value{cedilha}@~ao a Fluxo de Programa, Defini@value{cedilha}@~oes para Fluxo de Programa, Fluxo de Programa, Fluxo de Programa
-@c PT = Introdu@value{cedilha}@~ao ao Fluxo do Programa
 @section Introdu@value{cedilha}@~ao a Fluxo de Programa
 
 Maxima fornece um @code{do} para ciclos iterativos, tamb@'em contru@,{c}@~oes mais
@@ -13,7 +12,6 @@ primitivas tais como @code{go}.
 
 @c end concepts Fluxo de Programa
 @node Defini@value{cedilha}@~oes para Fluxo de Programa,  , Introdu@value{cedilha}@~ao a Fluxo de Programa, Fluxo de Programa
-@c PT = Defini@value{cedilha}@~oes para Fluxo do Programa
 @section Defini@value{cedilha}@~oes para Fluxo de Programa
 
 @deffn {Fun@,{c}@~ao} backtrace ()

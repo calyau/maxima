@@ -4,7 +4,6 @@
 @end menu
 
 @node Defini@value{cedilha}@~oes para Montagem de Gr@'aficos,  , Montando Gr@'aficos, Montando Gr@'aficos
-@c PT = Defini@value{cedilha}@~oes para Imprimindo
 @section Defini@value{cedilha}@~oes para Montagem de Gr@'aficos
 
 @c INSPECTING src/plot.lisp AND TRYING SOME EXAMPLES,

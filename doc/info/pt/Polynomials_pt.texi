@@ -6,7 +6,6 @@
 @end menu
 
 @node Introdu@value{cedilha}@~ao a Polin@^omios, Defini@value{cedilha}@~oes para Polin@^omios, Polin@^omios, Polin@^omios
-@c PT = Introdu@value{cedilha}@~ao a Polin@^omios
 @section Introdu@value{cedilha}@~ao a Polin@^omios
 
 Polin@^omios s@~ao armazenados no Maxima ou na forma geral ou na
@@ -54,7 +53,6 @@ adicional tal com o grau de trunca@,{c}@~ao.  Do mesmo modo que na forma CRE, o
 s@'imbolo /T/ segue o r@'otulo de linha que cont@'em as tais express@~oes.
 
 @node Defini@value{cedilha}@~oes para Polin@^omios,  , Introdu@value{cedilha}@~ao a Polin@^omios, Polin@^omios
-@c PT = Defini@value{cedilha}@~oes para Polin@^omios
 @section Defini@value{cedilha}@~oes para Polin@^omios
 
 @defvr {Vari@'avel de op@,{c}@~ao} algebraic

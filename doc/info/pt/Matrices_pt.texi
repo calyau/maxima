@@ -86,7 +86,6 @@ e @code{similaritytransform}.
 
 @c end concepts Matrizes e @'Algebra Linear
 @node Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear,  , Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear, Matrizes e @'Algebra Linear
-@c PT = Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear
 @section Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear
 
 @deffn {Fun@,{c}@~ao} addcol (@var{M}, @var{list_1}, ..., @var{list_n})

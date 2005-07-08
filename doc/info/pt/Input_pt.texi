@@ -6,11 +6,9 @@
 @end menu
 
 @node Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Arquivos, Entrada e Sa@'ida, Entrada e Sa@'ida
-@c PT = Introdu@value{cedilha}@~ao a Entrada e Sa@'ida de Dados
 @section Introdu@value{cedilha}@~ao a Entrada e Sa@'ida
 
 @node Arquivos, Defini@value{cedilha}@~oes para Entrada e Sa@'ida, Introdu@value{cedilha}@~ao a Entrada e Sa@'ida, Entrada e Sa@'ida
-@c PT = Arquivos
 @section Arquivos
 Um arquivo @'e simplesmente uma @'area sobre um dispositivo particular de armazenagem que cont@'em dados ou texto.
 Arquivos em disco s@~ao figurativamente agrupados dentro de "diret@'orios".
@@ -28,7 +26,6 @@ and
 @code{appendfile}.
 
 @node Defini@value{cedilha}@~oes para Entrada e Sa@'ida,  , Arquivos, Entrada e Sa@'ida
-@c PT = Defini@value{cedilha}@~oes para Entrada e Sa@'ida de Dados
 @section Defini@value{cedilha}@~oes para Entrada e Sa@'ida de Dados
 
 @defvr {Vari@'avel de sistema} _

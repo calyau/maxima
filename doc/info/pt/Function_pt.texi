@@ -7,12 +7,10 @@
 @end menu
 
 @node Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
-@c PT = Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~oes
 @section Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 
 @node Fun@value{cedilha}@~ao, Macros, Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
-@c PT = Fun@value{cedilha}@~ao
 @section Fun@value{cedilha}@~ao
 Para definir uma fun@,{c}@~ao no Maxima voc@^e usa o operador :=.
 E.g.
@@ -132,7 +130,6 @@ possivelmente @code{buildq}.
 
 
 @node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
-@c PT = Macros
 @section Macros
 
 @c NEEDS CLARIFICATION AND EXAMPLES
@@ -320,7 +317,6 @@ Da@'i o @code{buildq} ser @'util para construir a forma.
 
 @c end concepts Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @node Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao,  , Macros, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
-@c PT = Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @c NEEDS CLARIFICATION AND EXAMPLES
 @c IMPORTANT TOPIC

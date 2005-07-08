@@ -5,7 +5,6 @@
 @end menu
 
 @node Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico, Defini@value{cedilha}@~oes para Trigonometria, Trigonometria, Trigonometria
-@c PT = Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico
 @section Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico
 
 Maxima tem muitas fun@,{c}@~oes trigonom@'etricas definidas.  N@~ao todas as identidades
