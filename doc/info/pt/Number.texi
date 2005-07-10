@@ -1,0 +1,9 @@
+@c end concepts Number Theory
+@menu
+* Definitions for Number Theory::  
+@end menu
+
+@node Definitions for Number Theory,  , Number Theory, Number Theory
+@section Definitions for Number Theory
+
+THIS SECTION NEEDS TO BE TRANSLATED.

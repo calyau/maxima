@@ -1,0 +1,17 @@
+
+@menu
+* Introduction to Orthogonal Polynomials::  
+* Definitions for Orthogonal Polynomials::  
+@end menu
+
+
+@c SEEMS LIKE THIS INTRODUCTION COULD REORGANIZED -- IT'S A BIT HAPHAZARD
+@node Introduction to Orthogonal Polynomials, Definitions for Orthogonal Polynomials, , Orthogonal Polynomials
+@section Introduction to Orthogonal Polynomials
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Definitions for Orthogonal Polynomials, , Introduction to Orthogonal Polynomials, Orthogonal Polynomials
+@section Definitions for Orthogonal Polynomials
+
+THIS SECTION NEEDS TO BE TRANSLATED.

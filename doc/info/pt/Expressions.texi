@@ -1,0 +1,50 @@
+@menu
+* Introduction to Expressions::  
+* Assignment::                  
+* Complex::                     
+* Nouns and Verbs::
+* Identifiers::
+* Inequality::                  
+* Syntax::                      
+* Definitions for Expressions::  
+@end menu
+
+@node Introduction to Expressions, Assignment, Expressions, Expressions
+@section Introduction to Expressions
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Assignment, Complex, Introduction to Expressions, Expressions
+@section Assignment
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Complex, Nouns and Verbs, Assignment, Expressions
+@section Complex
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Nouns and Verbs, Identifiers, Complex, Expressions
+@section Nouns and Verbs
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Identifiers, Inequality, Nouns and Verbs, Expressions
+@section Identifiers
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Inequality, Syntax, Identifiers, Expressions
+@section Inequality
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Syntax, Definitions for Expressions, Inequality, Expressions
+@section Syntax
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Definitions for Expressions,  , Syntax, Expressions
+@section Definitions for Expressions
+
+THIS SECTION NEEDS TO BE TRANSLATED.

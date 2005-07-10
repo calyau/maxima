@@ -1,0 +1,10 @@
+
+@menu
+* Definitions for Differential Equations::  
+@end menu
+
+@node Definitions for Differential Equations,  , Differential Equations, Differential Equations
+@section Definitions for Differential Equations
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+

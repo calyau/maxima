@@ -1,0 +1,15 @@
+@menu
+* Introduction to ctensor::     
+* Definitions for ctensor::     
+@end menu
+
+@node Introduction to ctensor, Definitions for ctensor, ctensor, ctensor
+@section Introduction to ctensor
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Definitions for ctensor,  , Introduction to ctensor, ctensor
+
+@section Definitions for ctensor
+
+THIS SECTION NEEDS TO BE TRANSLATED.

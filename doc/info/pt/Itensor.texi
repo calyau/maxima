@@ -1,0 +1,21 @@
+@c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
+@c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
+
+@c RERUN EXAMPLES WITH ADDT'L WHITESPACE IN INPUT TO AID LEGIBILITY
+
+@menu
+* Introduction to itensor::
+* Definitions for itensor::
+@end menu
+
+@node Introduction to itensor, Definitions for itensor, itensor, itensor
+@section Introduction to itensor
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Definitions for itensor,  , Introduction to itensor, itensor
+
+@section Definitions for itensor
+@subsection Managing indexed objects
+
+THIS SECTION NEEDS TO BE TRANSLATED.

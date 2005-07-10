@@ -1,0 +1,21 @@
+@c end concepts Debugging
+@menu
+* Source Level Debugging::
+* Keyword Commands::
+* Definitions for Debugging::   
+@end menu
+
+@node Source Level Debugging, Keyword Commands, , Debugging
+@section Source Level Debugging
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Keyword Commands, Definitions for Debugging, Source Level Debugging, Debugging
+@section Keyword Commands
+
+THIS SECTION NEEDS TO BE TRANSLATED.
+
+@node Definitions for Debugging, , Keyword Commands, Debugging
+@section Definitions for Debugging
+
+THIS SECTION NEEDS TO BE TRANSLATED.

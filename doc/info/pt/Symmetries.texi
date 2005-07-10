@@ -1,0 +1,9 @@
+@c end concepts Symmetries
+@menu
+* Definitions for Symmetries::  
+@end menu
+
+@node Definitions for Symmetries,  , Symmetries, Symmetries
+@section Definitions for Symmetries
+
+THIS SECTION NEEDS TO BE TRANSLATED.

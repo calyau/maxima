@@ -1,0 +1,9 @@
+@c end concepts Statistics
+@menu
+* Definitions for Statistics::  
+@end menu
+
+@node Definitions for Statistics,  , Statistics, Statistics
+@section Definitions for Statistics
+
+THIS SECTION NEEDS TO BE TRANSLATED.
