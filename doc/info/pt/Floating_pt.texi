@@ -103,7 +103,7 @@ Fatorial complexo de grandes n@'umeros em ponto flutuante.
 @deffn {Fun@value{cedilha}@~ao} float (@var{expr})
 Converte inteiros, n@'umeros racionais e grandes n@'umeros em ponto flutuante em @var{expr}
 para n@'umeros em ponto flutuante.  Da mesma forma um @code{evflag}, @code{float} faz com que
-n@'umeros racionais n@~ao-integrais e grandes n@'umeros em ponto flutuante sejam convertidos para
+n@'umeros racionais n@~ao-inteiros e grandes n@'umeros em ponto flutuante sejam convertidos para
 ponto flutuante.
 
 @end deffn
