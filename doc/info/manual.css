@@ -61,7 +61,7 @@ div.synopsisbox
     /* font-family: fixed */
 }
 
-div.examplebox
+pre.example
 {
     border: none;
     padding-top: 1em;
