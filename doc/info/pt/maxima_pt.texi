@@ -13,8 +13,8 @@
 @c Portuguese Translator Jorge Barros de Abreu <ficmati01@solar.com.br>
 
 @c %**start of header
-@setfilename  maxima.info
-@documentencoding ISO-8859-1
+@setfilename  maxima_pt.info
+@documentencoding ISO-8859-15
 @set cedilha @,{c}
 @synindex vr fn
 @settitle Manual do Maxima
