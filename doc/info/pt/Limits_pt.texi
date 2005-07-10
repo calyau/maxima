@@ -6,7 +6,7 @@
 @node Defini@value{cedilha}@~oes para Limites,  , Limites, Limites
 @section Defini@value{cedilha}@~oes para Limites
 
-@defvr {Option variable} lhospitallim
+@defvr {Vari@'avel de Op@value{cedilha}@~ao} lhospitallim
 Valor padr@~ao: 4
 
 @code{lhospitallim} @'e o m@'aximo n@'umero de vezes que a regra
@@ -15,9 +15,9 @@ L'Hospital @'e usada em @code{limit}.  Isso evita ciclos infinitos em casos como
 
 @end defvr
 
-@deffn {Function} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} limit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} limit (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Fun@value{cedilha}@~ao} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Fun@value{cedilha}@~ao} limit (@var{expr})
 Calcula o limite de @var{expr} com a vari@'avel real
 @var{x} aproximando-se do valor @var{val} pela dire@value{cedilha}@~ao @var{dir}.  @var{dir} pode ter o
 valor @code{plus} para um limite pela direita, @code{minus} para um limite pela esquerda, ou
@@ -51,7 +51,7 @@ Manipulation", tese de Ph.D., MAC TR-92, Outubro de 1971.
 
 @end deffn
 
-@defvr {Option variable} limsubst
+@defvr {Vari@'avel de Op@value{cedilha}@~ao} limsubst
 valor padr@~ao: @code{false} - evita que @code{limit} tente substitui@value{cedilha}@~oes sobre
 formas desconhecidas.  Isso @'e para evitar erros como @code{limit (f(n)/f(n+1), n, inf)}
 dando igual a 1.  Escolhendo @code{limsubst} para @code{true} permitir@'a tais
@@ -59,14 +59,14 @@ substitui@value{cedilha}@~oes.
 
 @end defvr
 
-@deffn {Function} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
-@deffnx {Function} tlimit (@var{expr}, @var{x}, @var{val})
-@deffnx {Function} tlimit (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Fun@value{cedilha}@~ao} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Fun@value{cedilha}@~ao} tlimit (@var{expr})
 Retorna @code{limit} com @code{tlimswitch} escolhido para @code{true}.
 
 @end deffn
 
-@defvr {Option variable} tlimswitch
+@defvr {Vari@'avel de Op@value{cedilha}@~ao} tlimswitch
 Valor padr@~ao: @code{false}
 
 Quando @code{tlimswitch} for @code{true}, far@'a o pacote @code{limit} usar
