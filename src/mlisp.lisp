@@ -1243,6 +1243,7 @@ wrapper for this."
 					 (setq l (list* nil '$integrate (cdr l)))))
 				  (setq nounl (cons ($nounify fl) nounl)))
 				 ((numberp fl) (improper-arg-err (car l) '$ev))
+                 ((stringp fl) (improper-arg-err (car l) '$ev))
 				 ((eq (caar fl) 'mlist)
 				  (setq l (append fl (cdr l))))
 				 ((memq (caar fl)
