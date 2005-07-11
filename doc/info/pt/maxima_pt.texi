@@ -1,3 +1,7 @@
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Elipticas e Integrais::
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Elipticas::
+* Defini@value{cedilha}@~oes para Integrais Elipticas::
+
 \input texinfo
 @c -*-texinfo-*-
 
@@ -92,7 +96,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Special Functions::           Fun@value{cedilha}@~oes especiais
 * Orthogonal Polynomials::      Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
 
-* Elliptic Functions::          Fun@value{cedilha}@~oes Elipticas e Integrais
+* Fun@value{cedilha}@~oes Elipticas::          Fun@value{cedilha}@~oes Elipticas e Integrais
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao:: 		C@'alculo diferencial.
 * Integra@value{cedilha}@~ao::  		C@'alculo integral.
@@ -217,11 +221,11 @@ Orthogonal Polynomials
 * Introduction to Orthogonal Polynomials::
 * Definitions for Orthogonal Polynomials::
 
-Elliptic Functions
+Fun@value{cedilha}@~oes Elipticas
 
-* Introduction to Elliptic Functions and Integrals::
-* Definitions for Elliptic Functions::
-* Definitions for Elliptic Integrals::
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Elipticas e Integrais::
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Elipticas::
+* Defini@value{cedilha}@~oes para Integrais Elipticas::
 
 Limites
 
@@ -376,7 +380,7 @@ Debugging
 
 @node Expressions, Simplifica@value{cedilha}@~ao, Operadores, Top
 @chapter Expressions
-@include Expressions.texi
+@include Expressions_pt.texi
 
 @node Simplifica@value{cedilha}@~ao, Montando Gr@'aficos, Expressions, Top
 @chapter Simplifica@value{cedilha}@~ao
@@ -386,17 +390,17 @@ Debugging
 @chapter Montando Gr@'aficos
 @include Plotting_pt.texi
 
-@node Entrada e Sa@'ida, Floating Point, Montando Gr@'aficos, Top
+@node Entrada e Sa@'ida, Ponto Flutuante, Montando Gr@'aficos, Top
 @chapter Entrada e Sa@'ida
 @include Input_pt.texi
 
-@node Floating Point, Contexts, Entrada e Sa@'ida, Top
-@chapter Floating Point
+@node Ponto Flutuante, Contexts, Entrada e Sa@'ida, Top
+@chapter Ponto Flutuante
 @include Floating_pt.texi
 
-@node Contexts, Polin@^omios, Floating Point, Top
+@node Contexts, Polin@^omios, Ponto Flutuante, Top
 @chapter Contexts
-@include Contexts.texi
+@include Contexts_pt.texi
 
 @node Polin@^omios, Constantes, Contexts, Top
 @chapter Polin@^omios
@@ -408,7 +412,7 @@ Debugging
 
 @node Logarithms, Trigonometria, Constantes, Top
 @chapter Logarithms
-@include Logarithms.texi
+@include Logarithms_pt.texi
 
 @node Trigonometria, Special Functions, Logarithms, Top
 @chapter Trigonometria
@@ -416,21 +420,21 @@ Debugging
 
 @node Special Functions, Orthogonal Polynomials, Trigonometria, Top
 @chapter Special Functions
-@include Special.texi
+@include Special_pt.texi
 
-@node Orthogonal Polynomials, Elliptic Functions, Special Functions, Top
+@node Orthogonal Polynomials, Fun@value{cedilha}@~oes Elipticas, Special Functions, Top
 @chapter Orthogonal Polynomials
-@include SpecfunII.texi
+@include SpecfunII_pt.texi
 
-@node Elliptic Functions, Limits, Orthogonal Polynomials, Top
-@chapter Elliptic Functions
-@include Elliptic.texi
+@node Fun@value{cedilha}@~oes Elipticas, Limites, Orthogonal Polynomials, Top
+@chapter Fun@value{cedilha}@~oes Elipticas
+@include Elliptic_pt.texi
 
-@node Limits, Diferencia@value{cedilha}@~ao, Elliptic Functions, Top
-@chapter Limits
+@node Limites, Diferencia@value{cedilha}@~ao, Fun@value{cedilha}@~oes Elipticas, Top
+@chapter Limites
 @include Limits_pt.texi
 
-@node Diferencia@value{cedilha}@~ao, Integra@value{cedilha}@~ao, Limits, Top
+@node Diferencia@value{cedilha}@~ao, Integra@value{cedilha}@~ao, Limites, Top
 @chapter Diferencia@value{cedilha}@~ao
 @include Differentiation_pt.texi
 
@@ -438,25 +442,25 @@ Debugging
 @chapter Integra@value{cedilha}@~ao
 @include Integration_pt.texi
 
-@node Equa@value{cedilha}@~oes, Differential Equations, Integra@value{cedilha}@~ao, Top
+@node Equa@value{cedilha}@~oes, Equa@value{cedilha}@~oes Diferenciais, Integra@value{cedilha}@~ao, Top
 @chapter Equa@value{cedilha}@~oes
 @include Equations_pt.texi
 
-@node Differential Equations, Numerical, Equa@value{cedilha}@~oes, Top
-@chapter Differential Equations
+@node Equa@value{cedilha}@~oes Diferenciais, Numerical, Equa@value{cedilha}@~oes, Top
+@chapter Equa@value{cedilha}@~oes Diferenciais
 @include Differential_pt.texi
 
 @c @include NonCommutative.texi
 
-@node Numerical, Statistics, Differential Equations, Top
+@node Numerical, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
 @chapter Numerical
-@include Numerical.texi
+@include Numerical_pt.texi
 
-@node Statistics, Arrays e Tabelas, Numerical, Top
-@chapter Statistics
+@node Estat@'istica, Arrays e Tabelas, Numerical, Top
+@chapter Estat@'istica
 @include Statistics_pt.texi
 
-@node Arrays e Tabelas, Matrizes e @'Algebra Linear, Statistics, Top
+@node Arrays e Tabelas, Matrizes e @'Algebra Linear, Estat@'istica, Top
 @chapter Arrays e Tabelas
 @include Arrays_pt.texi
 
@@ -470,11 +474,11 @@ Debugging
 
 @node itensor, ctensor, Fun@value{cedilha}@~oes Afins, Top
 @chapter itensor
-@include Itensor.texi
+@include Itensor_pt.texi
 
 @node ctensor, Pacote atensor, itensor, Top
 @chapter ctensor
-@include Ctensor.texi
+@include Ctensor_pt.texi
 
 @node Pacote atensor, Series, ctensor, Top
 @chapter Pacote atensor
@@ -482,32 +486,32 @@ Debugging
 
 @node Series, Number Theory, Pacote atensor, Top
 @chapter Series
-@include Series.texi
+@include Series_pt.texi
 
 
 @node Number Theory, Symmetries, Series, Top
 @chapter Number Theory
-@include Number.texi
+@include Number_pt.texi
 
-@node Symmetries, Groups, Number Theory, Top
+@node Symmetries, Grupos, Number Theory, Top
 @chapter Symmetries
-@include Symmetries.texi
+@include Symmetries_pt.texi
 
-@node Groups, Runtime Environment, Symmetries, Top
-@chapter Groups
+@node Grupos, Tempo de Execu@value{cedilha}@~ao, Symmetries, Top
+@chapter Grupos
 @include Groups_pt.texi
 
-@node Runtime Environment, Op@value{cedilha}@~oes Diversas, Groups, Top
-@chapter Runtime Environment
+@node Tempo de Execu@value{cedilha}@~ao, Op@value{cedilha}@~oes Diversas, Grupos, Top
+@chapter Tempo de Execu@value{cedilha}@~ao
 @include Runtime_pt.texi
 
-@node Op@value{cedilha}@~oes Diversas, Rules and Patterns, Runtime Environment, Top
+@node Op@value{cedilha}@~oes Diversas, Rules and Patterns, Tempo de Execu@value{cedilha}@~ao, Top
 @chapter Op@value{cedilha}@~oes Diversas
 @include Miscellaneous_pt.texi
 
 @node Rules and Patterns, Listas, Op@value{cedilha}@~oes Diversas, Top
 @chapter Rules and Patterns
-@include Rules.texi
+@include Rules_pt.texi
 
 
 @node Listas, Sets, Rules and Patterns, Top
@@ -516,7 +520,7 @@ Debugging
 
 @node Sets, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Listas, Top
 @chapter Sets
-@include nset.texi
+@include nset_pt.texi
 
 @node Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fluxo de Programa, Sets, Top
 @chapter Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
@@ -526,12 +530,12 @@ Debugging
 @chapter Fluxo de Programa
 @include Program_pt.texi
 
-@node Debugging, Function and Variable Index, Fluxo de Programa, Top
+@node Debugging, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
 @chapter Debugging
-@include Debugging.texi
+@include Debugging_pt.texi
 
-@node Function and Variable Index,  , Debugging, Top
-@chapter Function and Variable Index
+@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Debugging, Top
+@chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
 @include Indices_pt.texi
 
 @c end includes
