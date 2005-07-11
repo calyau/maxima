@@ -436,7 +436,7 @@ em estado natural, especificados como seq@"u@^encias de caracteres.  Consulte a 
 
 @itemize @bullet
 @item
-Op@,{c}@~ao: @code{gnuplot_pm3d} Controla o uso do modo PM3D, que possue recursos
+Op@,{c}@~ao: @code{gnuplot_pm3d} Controla o uso do modo PM3D, que possui recursos
 avan@,{c}ados em 3D.  PM3D est@'a somente dispon@'ivel no gnuplot em vers@~oes ap@'os a 3.7.  O
 valor padr@~ao para @code{gnuplot_pm3d} @'e @code{false}.
 

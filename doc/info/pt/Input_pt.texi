@@ -226,7 +226,7 @@ ou para ajudar a organizar alguma coisa na solu@,{c}@~ao de problemas complexos.
 
 @code{batch} avalia seu argumento.
 @c LACK OF A RETURN VALUE IS A BUG; THE INTENT IS TO RETURN THE FILE PATH, TO JUDGE BY THE SOURCE CODE
-@code{batch} n@~ao possue valor de retorno.
+@code{batch} n@~ao possui valor de retorno.
 
 Veja tamb@'em @code{load}, @code{batchload}, e @code{demo}.
 
@@ -553,7 +553,7 @@ antes de tentar coincidir esse nome atual com o modelo ``coringa'' de busca do a
 Veja @code{file_search_maxima} concernente a modelos de busca de arquivos.
 
 O argumento @var{filename} pode ser um caminho e nome de arquivo,
-ou apenas um nome de arquivo, ou, se um diret@'orio de busca de arquivo inclue um modelo de busca de arquivo,
+ou apenas um nome de arquivo, ou, se um diret@'orio de busca de arquivo inclui um modelo de busca de arquivo,
 apenas a base do nome de arquivo (sem uma extens@~ao).
 Por exemplo,
 
@@ -1224,7 +1224,7 @@ Essa forma especial e a forma geral de @code{save} podem ser misturados.
 Por exemplo, @code{save (@var{filename}, aa, bb, cc=42, fun@,{c}@~oes, [11, 17])}.
 
 A forma especial @code{save (@var{filename}, all)} armazena o estado corrente do Maxima.
-Isso inclue todas as vari@'aveis definidas pelo usu@'ario, fun@,{c}@~oes, arrays, etc., bem como
+Isso inclui todas as vari@'aveis definidas pelo usu@'ario, fun@,{c}@~oes, arrays, etc., bem como
 alguns @'itens definidos automaticamente.
 Os @'ites salvos incluem vari@'aveis de sistema,
 tais como @code{file_search_maxima} ou @code{showtime}, se a elas tiverem sido atribu@'idos novos valores pelo usu@'ario;

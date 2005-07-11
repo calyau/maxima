@@ -267,7 +267,7 @@ propriedades especificadas na fun@,{c}@~ao  @code{declare}.
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Fun@,{c}@~ao} propvars (@var{prop})
 Retorna uma lista desses @'atomos sobre a lista @code{props} que
-possue a propriedade indicada atrav@'es de @var{prop}.  Dessa forma @code{propvars (atvalue)}
+possui a propriedade indicada atrav@'es de @var{prop}.  Dessa forma @code{propvars (atvalue)}
 retorna uma lista de @'atomos que possuem atvalues.
 
 @end deffn
@@ -376,7 +376,7 @@ remove de @var{a} as propriedades @code{operator} declaradas atrav@'es de
 @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix}, ou @code{nofix}.
 Note que o nome do operador deve ser escrito como uma seq@"u@^encia de caracteres com ap@'ostofo.
 
-@code{remove} sempre retorna @code{done} se um @'atomo possue ou n@~ao uma propriedade especificada.
+@code{remove} sempre retorna @code{done} se um @'atomo possui ou n@~ao uma propriedade especificada.
 Esse comportamento @'e diferente das fun@,{c}@~oes remove mais espec@'ificas
 @code{remvalue}, @code{remarray}, @code{remfunction}, e @code{remrule}.
 

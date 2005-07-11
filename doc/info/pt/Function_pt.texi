@@ -1454,7 +1454,7 @@ o quarto @'item @'e @code{false}.
 
 Algumas declara@,{c}@~oes e defini@,{c}@~oes passam a ter efeito t@~ao logo
 o c@'odigo Lisp seja compilado (sem que seja necess@'ario chamar o c@'odigo compilado).
-Isso inclue fun@,{c}@~oes definidas com o operador @code{:=},
+Isso inclui fun@,{c}@~oes definidas com o operador @code{:=},
 macros definidas com o operador @code{::=}, @c HEDGE -- DON'T KNOW IF THERE IS ANOTHER WAY
 @code{alias}, @code{declare},
 @code{define_variable},  @code{mode_declare},
