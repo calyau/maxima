@@ -13,12 +13,12 @@ Acha a ordem de G/H onde G @'e o m@'odulo do Grupo Livre @var{rela@value{cedilha
 H @'e o subgroupo de G gerado por @var{subgroupo}.  @var{subgroupo} @'e um argumento
 opcional, cujo valor padr@~ao @'e [].  Em fazendo isso a fun@value{cedilha}@~ao produz uma
 tabela de multiplica@value{cedilha}@~ao @`a direita de G sobre G/H, onde os
-cosets s@~ao enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
+co-conjuntos s@~ao enumerados [H,Hg2,Hg3,...].  Isso pode ser visto internamente no
 @code{$todd_coxeter_state}.
 
 As tabelas de multiplica@value{cedilha}@~ao para as vari@'aveis est@~ao em
 @code{table:todd_coxeter_state[2]}.  Ent@~ao @code{table[i]} fornece a tabela para
-a i'@'esima vari@'avel.  @code{mulcoset(coset,i) := table[varnum][coset];}
+a i'@'esima vari@'avel.  @code{multiplos_co_conjuntos(co_conjunto,i) := table[varnum][co_conjunto];}
 
 Exemplo:
 
