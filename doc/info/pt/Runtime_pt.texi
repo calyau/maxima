@@ -1,3 +1,4 @@
+@c /Runtime.texi/1.14/Thu Jun 16 17:05:36 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
