@@ -1,4 +1,4 @@
-
+@c /Groups.texi/1.11/Thu Apr 21 04:26:33 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Grupos::
 @end menu
