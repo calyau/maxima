@@ -1,322 +1,363 @@
 @menu
 * Introducci@'on a Opciones Miscel@'aneas::  
-* SHARE::  
+* Share::  
 * Definiciones para Opciones Miscel@'aneas::
 @end menu
 
-@node Introducci@'on a Opciones Miscel@'aneas, SHARE, Opciones Miscel@'aneas, Opciones Miscel@'aneas
+@node Introducci@'on a Opciones Miscel@'aneas, Share, Opciones Miscel@'aneas, Opciones Miscel@'aneas
 
 @section Introducci@'on a Opciones Miscel@'aneas::
 
-En esta  secci@'on varias opciones  son discussed which have  a global
-effect on the operation of  maxima.  Tambien varias listas such as the
-list of all user defined functions, are discussed.
+En esta secci@'on se comentan varias opciones que tienen un efecto global sobre le comportamiento de Maxima. Tambi@'en se comentan varias listas, como la de las funciones definidas por el usuario.
 
-@node SHARE, Definiciones para Opciones Miscel@'aneas, Introducci@'on a Opciones Miscel@'aneas, Opciones Miscel@'aneas
+@node Share, Definiciones para Opciones Miscel@'aneas, Introducci@'on a Opciones Miscel@'aneas, Opciones Miscel@'aneas
 
-@section SHARE
+@section Share
 
- -  El directorio  SHARE  en MC  o  en una  DEC20  version de  MACSYMA
-contiene  programas,  archivos de  informacion,  etc.   Los cuales  se
-consideran de  inter@'es para la  comunidad MACSYMA.  La  mayor@'{@dotless{i}}a de
-archivos en el directorio SHARE;  no son parte del sistema MACSYMA por
-el  y  deben  ser   cargados  individualmente  por  el  usuario,  e.g.
-LOADFILE("arreglo");. Muchos archivos en el directorio SHARE; fuer@'on
-contribuidos     por     los     usuarios    de     MACSYMA.      Haga
-PRINTFILE(SHARE,USAGE,SHARE); para mayores detalles y las convenciones
-para  contribuir al  directorio  SHARE.  para  una  anotaci@'on en  la
-"tabla de contenidos" del directorio, haga: PRINTFILE(SHARE,>,SHARE);
+El directorio "share" de Maxima contiene programas y ficheros de inter@'es para los usuarios de Maxima, pero no forman parte del n@'ucleo de Maxima. Estos programas se cargan en memoria con llamadas a las funciones @code{load} o @code{setup_autoload}.
 
-@node Definiciones para Opciones Miscel@'aneas,  , SHARE, Opciones Miscel@'aneas
+La llamada @code{:lisp *maxima-sharedir*} muestra la localizaci@'on del directorio "share" dentro del sistema de ficheros del usuario.
+
+La llamada @code{printfile ("share.usg")} muestra una lista actualizada de paquetes en "share". Los usuarios pueden encontrar m@'as informaci@'on accediendo directamente a los contenidos del directorio "share".
+
+@node Definiciones para Opciones Miscel@'aneas,  , Share, Opciones Miscel@'aneas
 @section Definiciones para Opciones Miscel@'aneas
 
-@defvar ALIASES
+@defvr {Variable del sistema} aliases
+Valor por defecto: @code{[]}
 
- por  defecto:  []  atomos   que  tienen  un  usuario  definido  alias
-(programado   por  la   funciones  ALIAS,   ORDERGREAT,   ORDERLESS  o
-DECLARE(ando) el atomo a NOUN).
+La variable @code{aliases} es la lista de @'atomos que tienen un "alias" definido por el usuario (establecido mediante las funciones  @code{alias}, @code{ordergreat} o @code{orderless} o declarando el @'atomo como un @code{noun} (nombre) con @code{declare}.
+@end defvr
 
-@end defvar
+@defvr {Declaraci@'on} alphabetic
 
-@defvar ALLSYM
+La llamada @code{declare (@var{char}, alphabetic)} a@~nade  @code{char} al alfabeto de Maxima, el cual contiene inicialmente las letras de la @code{A} a la  @code{Z}, de la @code{a} a la @code{z}, @code{%} y @code{_}. La variable
+@var{char} se especifica como una cadena alfanum@'erica de longitud 1, como @code{"~"}.
 
-por defecto: [VERDADERO] - Si es VERDADERO entonces todos los objetos
-puestos  en un  indice son  asumidos simetricos  en todos  sus indices
-covariantes y contravariantes. Si es FALSO entonces las no simetr@'{@dotless{i}}as
-de  cualquier  clase  son  asumidas  en  esos  indices.   Los  indices
-derivados son siempre tomados para ser simetricos.
-
-@end defvar
-
-@defvr declaration ALPHABETIC
-
-Añade al alfabeto de MACSYMA  el cual inicialmente contiene las letras
-A-Z, % y _.  As@'{@dotless{i}}, DECLARE("~",ALPHABETIC) le habilita NEW~VALUE para
-ser usado como un nombre.
+@example
+(%i1) declare ("~", alphabetic);
+(%o1)                         done
+(%i2) foo~bar;  
+(%o2)                        foo~bar
+(%i3) atom (foo~bar);
+(%o3)                         true
+@end example
 
 @end defvr
 
-@defun APROPOS (string)
+@deffn {Funci@'on} apropos (@var{cadena})
 
-toma un caracter  de tipo string como argumento  y observa en absoluto
-los  nombres de  MACSYMA para  para los  @'unicos con  ese  string que
-aparecen  en cualquier  parte dentro  de ellos.   As@'{@dotless{i}}, APROPOS(EXP);
-retornar@'a  una larga  lista de  todas las  banderas y  funciones las
-cuales tienen  EXP como  una parte de  sus nombres, como  EXPAND, EXP,
-EXPONENTIALIZE.   As@'{@dotless{i}} si  usted  pude recordar  solo  una parte  del
-nombre o  algo usted puede usar  este comando para  encontrar el resto
-del  nombre.  Similarmente,  usted podr@'{@dotless{i}}a  decir  APROPOS(TR_); para
-encontrar una  lista de  muchas de las  opciones relacionando  para la
-funci@'on TRANSLATOR (la mayor@'{@dotless{i}}a de los cuales empiezan por TR_).
+Busca nombres en Maxima en los cuales aparezca @var{cadena} en cualquier lugar dentro de ellos. As@'{@dotless{i}}, @code{apropos (exp)} devuelve una lista con todas las variables y funciones que tengan  @code{exp} formando parte de sus nombres, como  @code{expand}, @code{exp} y @code{exponentialize}. De esta forma, si el usuario tan solo recuerda parte del nombre de algo, puede utilizar este comando para encontrar el resto del nombre. De manera semejante, tambi@'en se puede hacer @code{apropos (tr_)} para encontrar una lista de muchas de las variables relacionadas con el traductor, buena parte de las cuales comienzan con @code{tr_}.
 
-@end defun
+@end deffn
 
-@defun ARGS (exp)
+@deffn {Funci@'on} args (@var{expr})
 
-retorna  una  lista   de  los  arreglos  para  exp.    I.e.  estos  es
-esencialmente equivalente a
+Devuelve la lista de argumentos de @code{expr}, que puede ser cualquier tipo de expresi@'on a excepci@'on de un @'atomo. Tan solo se muestran los argumentos del operador principal; subexpresiones de @code{expr} aparecen como elementos o subexpresiones de elementos de la lista de argumentos.
+
+El orden de los miembros de la lista puede depender de la variable global @code{inflag}.
+
+La llamada @code{args (@var{expr})} es equivalente a @code{substpart ("[", @var{expr}, 0)}.
+V@'ease tambi@'en @code{substpart}.
+
+V@'ease asimismo @code{op}.
+
+@end deffn
+
+@defvr {Variable optativa} genindex
+Valor por defecto: @code{i}
+
+La variable @code{genindex} es el prefijo alfab@'etico utilizado para generar la siguiente variable de sumaci@'on en caso de necesidad.
+
+@end defvr
+
+@defvr {Variable optativa} gensumnum
+Valor por defecto: 0
+
+La variable @code{gensumnum} es el sufijo num@'erico utilizado para generar la siguiente variable de sumaci@'on. Si vale  @code{false} entonces el @'{@dotless{i}}ndice consistir@'a solamente de  @code{genindex}, sin sufijo num@'erico.
+
+@end defvr
+
+@defvr {Constante} inf
+
+S@'{@dotless{i}}mbolo que identifica al infinito positivo dentro de un contexto de n@'umeros reales.
+
+@end defvr
+
+@defvr {Constante} infinity
+
+S@'{@dotless{i}}mbolo que identifica al infinito complejo, una magnitud infinita con @'angulo de fase arbitrario.  V@'eanse tambi@'en @code{inf} y @code{minf}.
+
+@end defvr
+
+@defvr {Variable del sistema} infolists
+Valor por defecto: @code{[]}
+
+La variable @code{infolists} es una lista con los nombres de todas las listas que guardan informaci@'on sobre Maxima. Estas son:
+
+@code{labels} - todas las etiqueta @code{%i}, @code{%o} y @code{%t} con valores asignados.
+
+@code{values} - todos los @'atomos que son variables de usuario, no opciones de Maxima creadas con  @code{:} o @code{::}.
+
+@code{functions} - todas las funciones de usuario creadas con @code{:=}.
+
+@code{arrays} - arreglos declarados y no declarados, creados por @code{:}, @code{::} o @code{:=}.
+
+@code{macros} - cualquier macro definida por el usuario.
+
+@code{myoptions} - todas las opciones inicializadas por el usuario, independientemente de que posteriormente hayan sido devueltas a sus valores por defecto.
+
+@code{rules} - reglas de patrones y simplificaci@'on definidas por el usuario, creadas con @code{tellsimp}, @code{tellsimpafter}, @code{defmatch} o @code{defrule}.
+
+@code{aliases} - @'atomos que tienen un "alias" definido por el usuario, creado por las funciones @code{alias}, @code{ordergreat} o @code{orderless} o por haber declarado el @'atomo como @code{noun} (nombre) con @code{declare}.
+
+@code{dependencies} - @'atomos que tienen dependencias funcionales, creados por las funciones @code{depends} o @code{gradef}.
+
+@code{gradefs} - funciones que tienen derivadas definidas por el usuario, creadas por la funci@'on @code{gradef}.
+
+@c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
+@code{props} - @'atomos que tengan cualquier propiedad que no sea de las mencionadas hasta ahora, como atvalues, matchdeclares, etc., as@'{@dotless{i}} como propiedadas especificadas en la funci@'on @code{declare}.
+
+@code{let_rule_packages} - una lista de todos los paquetes de reglas (let) junto con el paquete especial @code{default_let_rule_package}; @code{default_let_rule_package} es el nombre del paquete de reglas utilizado cuando no se use ning@'un otro especificado por el usuario.
+
+@end defvr
+
+@deffn {Funci@'on} integerp (@var{expr})
+
+Devuelve @code{true} si @var{expr} es un n@'umero entero y @code{false} en cualquier otro caso.
+
+La funci@'on @code{integerp} devuelve @code{false} si su argumento es un s@'{@dotless{i}}mbolo, incluso cuando @'este ha sido declarado como entero.
+
+Ejemplos:
 
 @example
-SUBSTPART("[",exp,0)
+(%i1) integerp (0);
+(%o1)                         true
+(%i2) integerp (1);
+(%o2)                         true
+(%i3) integerp (-17);
+(%o3)                         true
+(%i4) integerp (0.0);
+(%o4)                         false
+(%i5) integerp (1.0);
+(%o5)                         false
+(%i6) integerp (%pi);
+(%o6)                         false
+(%i7) integerp (n);
+(%o7)                         false
+(%i8) declare (n, integer);
+(%o8)                         done
+(%i9) integerp (n);
+(%o9)                         false
 @end example
-Ambos ARGS y  SUBSTPART dependen de la programaci@'on  de la funci@'on
-INFLAG.
 
-@end defun
+@end deffn
 
-@defun DUMMY (i1,i2,...)
+@defvr {Variable optativa} m1pbranch
+Valor por defecto: @code{false}
 
-programar@'a cada indice i1,i2,... para  nombre de la forma !n donde n
-es un  entero positivo. Estas  garant@'{@dotless{i}}as para los indices  mudos los
-cuales  son  nesecitados  en  la  formaci@'on de  expresiones  que  no
-estrar@'an en  conflicto con  indices que ya  est@'en en  uso. COUNTER
-[por defecto  1] determina el sufijo  num@'erico para ser  usado en la
-generaci@'on del proximo indice mudo. El prefijo es determinado por la
-opci@'on DUMMYX[!].
+La variable @code{m1pbranch} es la rama principal de @code{-1} elevado a una potencia. Cantidades como @code{(-1)^(1/3)} (esto es, un exponente racional impar) y @code{(-1)^(1/4)} (esto es, un exponente racional par) son tratados como sigue:
 
-@end defun
-
-@defvar GENINDEX
-
-por  defecto: [I]  es el  prefijo  alfabetico usado  para generar  la
-siguiente variable de suma cuando sea necesario.
-
-@end defvar
-
-@defvar GENSUMNUM
-
-[0] es el  sufijo num@'erico usado para generar  la siguiente variable
-de  suma.  Si  este  es  programado  para  FALSO  entonces  el  indice
-concistir@'a  solamente  para  la  funci@'on GENINDEX  con  sufijo  no
-num@'erico.
-
-@end defvar
-
-@defvar INF
- - infinito real positivo.
-
-@end defvar
-
-@defvar INFINITY
--  infinidad compleja,  una  magnitud infinita  de  @'angulo de  fase
-arbitrario.  (Observe tambi@'en INF y MINF.)
-
-@end defvar
-
-@defvar INFOLISTS
-
-por  defecto: []  una lista  de  los nombre  de todas  las listas  de
-informaci@'on en MACSYMA. Estas son: LABELS - todos los l@'{@dotless{i}}mites C,D,
-y  las   etiquetas  E.   VALUES   -  todos  los   @'atomos  l@'{@dotless{i}}mites,
-i.e.  variables  de  usuario,  no  las opciones  u  opciones  MACSYMA,
-(programado por : , :: ,  o enlaces funcionales) FUNCTIONS - todas las
-funciones definidas por el usuario (programado por f(x):=...).  ARRAYS
--  arreglos declarados  y no  declarados (programado  por :  , ::  , o
-:=...)  MACROS - culquier Macros definida por el usuario.  MYOPTIONS -
-todas las  opciones como  siempre reseteadas por  el usuario (si  o no
-ellos son  reestablecidas a  su valor definido).   RULES -  el usuario
-define los modelos de  emparejamiento y las reglas de simplificaci@'on
-(programados por  por TELLSIMP, TELLSIMPAFTER,  DEFMATCH, o, DEFRULE.)
-ALIASES - atomos  a los cuales el usuario  define un alias (programado
-por  las funciones  ALIAS,  ORDERGREAT, ORDERLESS  o DECLARE(ando)  el
-@'atomo  a NOUN).   DEPENDENCIES  - @'atomos  que tienen  dependencias
-funcionales (programadas por las funciones DEPENDS o GRADEF).  GRADEFS
-- funciones que tienen  derivadas definidas por el usuario (programado
-por  la funci@'on  GRADEF).   PROPS -  @'atomos  que tienen  cualquier
-propiedad  que  otros que  han  sido  mencionados anteriormente,  como
-atvalues,   matchdeclares,   etc.     as@'{@dotless{i}}   como   las   propiedades
-especificadas en la funci@'on  DECLARE.  LET_RULE_PACKAGES - una lista
-de  todos los paquetes  de reglas  definidas por  el usuario  m@'as el
-paquete  especial DEFAULT_LET_RULE_PACKAGE.  (DEFAULT_LET_RULE_PACKAGE
-es el nombre  del paquete de regla usado  cuando alguno programado por
-el usuario no es expl@'{@dotless{i}}cito.)
-
-@end defvar
-
-@defun INTEGERP (exp)
-
-es VERDADERO si exp es un entero si no es FALSO.
-
-@end defun
-
-@defvar M1PBRANCH
- por  defecto: [FALSO]  - "rama  principal de  -1 para  una potencia".
-CAntidades  como  (-1)^(1/3)   [i.e.  "impar"  exponente  racional]  e
-(-1)^(1/4) [i.e. "even" rational exponent] are now handled as indicado
-en el siguiente mapa:
+@c REDRAW THIS AS A TABLE
 @example
-             DOMAIN:REAL(por defecto)
+              dominio real
                             
-(-1)^(1/3): -1 (-1)^(1/4): (-1)^(1/4)
+(-1)^(1/3):      -1         
+(-1)^(1/4):   (-1)^(1/4)   
 
-                DOMAIN:COMPLEX       M1PBRANCH:FALSO(por      defecto)
-M1PBRANCH:VERDADERO     (-1)^(1/3)     1/2+%i*sqrt(3)/2     (-1)^(1/4)
-sqrt(2)/2+%i*sqrt(2)/2
+             dominio complejo              
+m1pbranch:false          m1pbranch:true
+(-1)^(1/3)               1/2+%i*sqrt(3)/2
+(-1)^(1/4)              sqrt(2)/2+%i*sqrt(2)/2
 @end example
-@end defvar
-@c @node NUMBERP
-@c @unnumberedsec phony
-@defun NUMBERP (exp)
-es  VERDADERO si  exp es  un entero,  un n@'umero  racional,  un punto
-flotante o un granflotante si no es FALSO.
-
-@end defun
-@c @node PROPERTIES
-@c @unnumberedsec phony
-@defun PROPERTIES (a)
-rendir@'a  una lista  mostrando los  nombres de  todas  las propiedades
-asociadas con el @'atomo a.
-
-@end defun
-@c @node PROPS
-@c @unnumberedsec phony
-@defvr {special symbol} PROPS
- - @'atomos  que toienen cualquier otra propiedad  que los mencionados
-expl@'{@dotless{i}}citamente   en   INFOLISTS,   como   atvalues,   matchdeclares,
-etc. As@'{@dotless{i}} como propiedades especificadas en la funci@'on DECLARE.
 
 @end defvr
-@c @node PROPVARS
-@c @unnumberedsec phony
-@defun PROPVARS (prop)
-rinde una  lista de los @'atomos  en la lista PROPS  los cuales tienen
-una  propiedad indicada por  prop.  As@'{@dotless{i}}  PROPVARS(ATVALUE) rendir@'a
-una lista de @'atomos que poseen atvalues.
 
-@end defun
-@c @node PUT
-@c @unnumberedsec phony
-@defun PUT (a, p, i)
-asocido con  el @'atomo a,  la propiedad p  con el indicador  i. Estos
-habilitan  al  usuario  para  dar  a un  @'atomo  cualquier  propiedad
-arbitraria.
+@deffn {Funci@'on} numberp (@var{expr})
 
-@end defun
-@c @node QPUT
-@c @unnumberedsec phony
-@defun QPUT (a, p, i)
-es similar a PUT este no tiene sus argumentos evaluados.
+Devuelve @code{true} si @var{expr} es un en@'umero entero, racional, 
+de coma flotante o "bigfloat", en caso contrario devuelve @code{false}.
 
-@end defun
-@c @node REM
-@c @unnumberedsec phony
-@defun REM (a, i)
-remueve la propíedad indicada por i del @'atomo a.
+La funci@'on @code{numberp} devuelve @code{false} si su argumento es un s@'{@dotless{i}}mbolo, incluso cuando el argumento es un n@'umero simb@'olico como @code{%pi} o @code{%i}, o aunque haya sido declarado como "even" (par), "odd" (impar), "integer" (entero), "rational" (racional), "irrational" (irracional), "real" (real), "imaginary" (imaginario) o "complex" (complejo).
 
-@end defun
-@c @node REMOVE
-@c @unnumberedsec phony
-@defun REMOVE (args)
-quitar@'a algunas  o todas las  propiedades asociadas con  variables o
-funciones.  REMOVE(a1, p1,  a2, p2, ...)  remueve la  propiedad pi del
-@'atomo ai.  Ai y pi pueden tambi@'en ser listas como con DECLARE.  Pi
-puede ser cualquier propiedad e.g.  FUNCTION, MODE_DECLARE, etc.  Este
-tambi@'en puede ser la  funci@'on TRANSFUN implicando que la versi@'on
-traducida de LISP  de la funci@'on ser@'a quitado.   Eston es @'util s
-se desea  tener la  versi@'on de MACSYMA  de la funci@'on  ejecutada en
-lugar de la versi@'on traducida.  Pi tambi@'en puede ser OP o OPERATOR
-para  remover una  extensi@'on de  sintaxis dada  para ai  (observe el
-apendice II).  Si  ai es "TODO" entonces la  propiedad indicada por pi
-es  removida de todos  los @'atomos  que la  posean. Al  contrario del
-m@'as  espec@'{@dotless{i}}fico  remueve   las  funci@'ones  (REMVALUE,  REMARRAY,
-REMFUNCTION, and  REMRULE) REMOVE no indica cuando  una propiedad dada
-es inexistente; esto siempre retorna "DONE".
+Ejemplos:
 
-@end defun
-@c @node REMVALUE
-@c @unnumberedsec phony
-@defun REMVALUE (name1, name2, ...)
-remueve los  valores de las  variables del usuario (las  cuales pueden
-ser  subindicadas) del  sistema.  Si  el nombre  es TODO  entonces los
-valores de las variables definidas  por el usuario son removidas.  Los
-valores  son esos  art@'{@dotless{i}}culos que  fueron dados  por el  usuario como
-oposici@'on a esos,  los cuales fuer@'on autom@'aticamente etiquetados
-por MACSYMA como Ci, Di, o Ei.
+@example
+(%i1) numberp (42);
+(%o1)                         true
+(%i2) numberp (-13/19);
+(%o2)                         true
+(%i3) numberp (3.14159);
+(%o3)                         true
+(%i4) numberp (-1729b-4);
+(%o4)                         true
+(%i5) map (numberp, [%e, %pi, %i, %phi, inf, minf]);
+(%o5)      [false, false, false, false, false, false]
+(%i6) declare (a, even, b, odd, c, integer, d, rational,
+     e, irrational, f, real, g, imaginary, h, complex);
+(%o6)                         done
+(%i7) map (numberp, [a, b, c, d, e, f, g, h]);
+(%o7) [false, false, false, false, false, false, false, false]
+@end example
 
-@end defun
-@c @node RENAME
-@c @unnumberedsec phony
-@defun RENAME (exp)
-returns an expression equivalent to  exp but with the dummy indices in
-each  term chosen from  the set  [!1,!2,...].  Each  dummy index  in a
-product will  be different;  for a  sum RENAME will  try to  make each
-dummy  index in  a sum  the same.   In addition,  the indices  will be
-sorted alphanumerically.
+@end deffn
 
-@end defun
-@c @node RNCOMBINE
-@c @unnumberedsec phony
-@defun RNCOMBINE (exp)
-transforms  exp by  combining all  terms  of exp  that have  identical
-denominators or denominators that  differ from each other by numerical
-factors  only.   This  is  slightly  different from  the  behavior  of
-COMBINE,  which  collects  terms  that  have  identical  denominators.
-Setting PFEFORMAT:TRUE and using  COMBINE will achieve results similar
-to those that can be  obtained with RNCOMBINE, but RNCOMBINE takes the
-additional  step of  cross-multiplying numerical  denominator factors.
-This results in  neater forms, and the possiblity  of recognizing some
-cancellations.  Bugs to ASB.
+@deffn {Funci@'on} properties (@var{a})
 
-@end defun
-@c @node SCALARP
-@c @unnumberedsec phony
-@defun SCALARP (exp)
-is TRUE if exp is a  number, constant, or variable DECLAREd SCALAR, or
-composed entirely  of numbers, constants, and such  variables, but not
-containing matrices or lists.
+Devuelve una lista con los nombres de propiedades asociadas con el @'atomo @var{a}.
 
-@end defun
-@c @node SCALEFACTORS
-@c @unnumberedsec phony
-@defun SCALEFACTORS (coordinatetransform)
-Here   coordinatetransform  evaluates   to  the   form  [[expression1,
-expression2,   ...],   indeterminate1,   indeterminat2,  ...],   where
-indeterminate1,  indeterminate2, etc.  are the  curvilinear coordinate
-variables and where a set of rectangular Cartesian components is given
-in terms of the  curvilinear coordinates by [expression1, expression2,
-...].    COORDINATES   is   set   to   the   vector   [indeterminate1,
-indeterminate2,...],  and  DIMENSION is  set  to  the  length of  this
-vector.  SF[1],  SF[2], ..., SF[DIMENSION]  are set to  the coordinate
-scale  factors,  and SFPROD  is  set to  the  product  of these  scale
-factors.  Initially,  COORDINATES is  [X, Y, Z],  DIMENSION is  3, and
-SF[1]=SF[2]=SF[3]=SFPROD=1, corresponding to 3-dimensional rectangular
-Cartesian  coordinates.    To  expand  an   expression  into  physical
-components in the current coordinate  system, there is a function with
-usage of the form
+@end deffn
 
-@end defun
-@c @node SETUP_AUTOLOAD
-@c @unnumberedsec phony
-@defun SETUP_AUTOLOAD (file,func1,...,funcN)
-which takes  two or more arguments:  a file specification,  and one or
-more function  names, "funcI", and which  indicates that if  a call to
-"funcI" is made and "funcI" is not defined, that the file specified by
-"file" is  to be automatically loaded  in via LOAD,  which file should
-contain  a definition  for "funcI".   (This  is the  process by  which
-calling e.g.  INTEGRATE in a  fresh MACSYMA causes various files to be
-loaded in.)  As with the  other file-handling commands in MACSYMA, the
-arguments   to    SETUP_AUTOLOAD   are   not    evaluated.    Example:
-SETUP_AUTOLOAD("bessel")$  J1(0.0); .   Note: SETUP_AUTOLOAD  does not
-work for array functions.
+@defvr {S@'{@dotless{i}}mbolo especial} props
 
-@end defun
+@code{props} son @'atomos que tienen cualquier propiedad diferente de las mencionadas expl@'{@dotless{i}}citamente en @code{infolists}, tales como atvalues, matchdeclares, etc., as@'{@dotless{i}} como las propiedades especificadas en la funci@'on  @code{declare}.
+
+@end defvr
+
+@deffn {Funci@'on} propvars (@var{prop})
+
+Devuelve una lista con aquellos @'atomos de la lista @code{props} que tienen la propiedad indicada por @var{prop}. 
+
+@end deffn
+
+@deffn {Funci@'on} put (@var{@'atomo}, @var{valor}, @var{indicador})
+
+Asigna el @var{valor} a la propiedad  (especificada por @var{indicador}) de @var{@'atomo}; @var{indicador} puede ser el nombre de cualquier propiedad y no solamente de aquellas definidas por el sistema.
+
+La funci@'on @code{put} eval@'ua sus argumentos y devuelve @var{valor}.
+
+Ejemplos:
+
+@example
+(%i1) put (foo, (a+b)^5, expr);
+                                   5
+(%o1)                       (b + a)
+(%i2) put (foo, "Hello", str);
+(%o2)                         Hello
+(%i3) properties (foo);
+(%o3)            [[user properties, str, expr]]
+(%i4) get (foo, expr);
+                                   5
+(%o4)                       (b + a)
+(%i5) get (foo, str);
+(%o5)                         Hello
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} qput (@var{@'atomo}, @var{valor}, @var{indicador})
+
+Asigna @var{valor} a la propiedad de @var{@'atomo} que especifique @var{indicador}. Act@'ua del mismo modeo que @code{put}, excepto que sus argumentos no son evaluados.
+
+Ejemplo:
+
+@example
+(%i1) foo: aa$ 
+(%i2) bar: bb$
+(%i3) baz: cc$
+(%i4) put (foo, bar, baz);
+(%o4)                          bb
+(%i5) properties (aa);
+(%o5)                [[user properties, cc]]
+(%i6) get (aa, cc);
+(%o6)                          bb
+(%i7) qput (foo, bar, baz);
+(%o7)                          bar
+(%i8) properties (foo);
+(%o8)            [value, [user properties, baz]]
+(%i9) get ('foo, 'baz);
+(%o9)                          bar
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} rem (@var{@'atomo}, @var{indicador})
+
+Elimina del @var{@'atomo} la propiedad indicada por @var{indicador}.
+
+@end deffn
+
+@deffn {Funci@'on} remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})
+@deffnx {Funci@'on} remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)
+@deffnx {Funci@'on} remove ("@var{a}", operator)
+@deffnx {Funci@'on} remove (@var{a}, transfun)
+@deffnx {Funci@'on} remove (all, @var{p})
+
+Elimina propiedades asociadas con @'atomos.
+
+La llamada @code{remove (@var{a_1}, @var{p_1}, ..., @var{a_n}, @var{p_n})}
+elimina la propiedad @code{p_k} del @'atomo @code{a_k}.
+
+La llamada @code{remove ([@var{a_1}, ..., @var{a_m}], [@var{p_1}, ..., @var{p_n}], ...)}
+elimina las propiedades @code{@var{p_1}, ..., @var{p_n}} de los @'atomos @var{a_1}, ..., @var{a_m}. Puede tener m@'as de un par de listas.
+
+@c VERIFY THAT THIS WORKS AS ADVERTISED
+La llamada @code{remove (all, @var{p})} elimina la propiedad @var{p} de todos los @'atomos que la tengan.
+
+@c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
+Las propiedades eliminadas pueden ser de las que define el sistema, como @code{function} o @code{mode_declare}, o de las que define el usuario.
+
+La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
+
+La llamada @code{remove} devuelve siempre @code{done} independientemente que haya alg@'un @'atomo con la propiedad especificada.
+
+@end deffn
+
+@deffn {Funci@'on} remvalue (@var{nombre_1}, ..., @var{nombre_n})
+@deffnx {Funci@'on} remvalue (all)
+
+Elimina del sistema los valores de las variable de usuario @var{nombre_1}, ..., @var{nombre_n} (incluso las que tienen sub@'{@dotless{i}}ndices).
+
+La llamada @code{remvalue (all)} elimina los valores de todas las variables en @code{values}, la lista de todas las variables a las que el usuario a dado alg@'un nombre, pero no de aqu@'ellas a las que Maxima asigna autom@'aticamente un valor.
+
+V@'ease tambi@'en @code{values}.
+
+@end deffn
+
+@deffn {Funci@'on} rncombine (@var{expr})
+
+Transforma @var{expr} combinando todos los t@'erminos de @var{expr} que tengan denominadores id@'enticos o que difieran unos de otros por factores num@'ericos. Su comportamiento es diferente al de la funci@'on @code{combine}, que combina t@'erminos con iguales denominadores.
+
+Haciendo @code{pfeformat: true} y utilizando @code{combine} se consiguen resultados similares a aqu@'ellos que se pueden obtener con  @code{rncombine}, pero @code{rncombine} realiza el paso adicional de multiplicar denominadores num@'ericos. Esto da como resultado expresiones en las que se pueden reconocer algunas cancelaciones.
+
+@end deffn
+
+@deffn {Funci@'on} scalarp (@var{expr})
+
+Devuelve @code{true} si @var{expr} is un n@'umero, constante  o variable declarada como @code{scalar} con @code{declare}, o compuesta completamente de tales n@'umeros, constantes o variables, pero que no contengan matrices ni listas.
+
+@end deffn
+
+@deffn {Funci@'on} setup_autoload (@var{nombre_fichero}, @var{funci@'on_1}, ..., @var{funci@'on_n})
+
+Especifica que si alguna de las funciones @var{function_1}, ..., @var{function_n} es referenciada pero todav@'{@dotless{i}}a no ha sido definida, se cargar@'a @var{nombre_fichero} mediante una llamada a @code{load}. El @var{nombre_fichero} normalmente contendr@'a las definiciones de las funciones especificadas, aunque esto no es imperativo.
+
+La funci@'on @code{setup_autoload} no opera con arreglos de funciones.
+
+La funci@'on @code{setup_autoload} no eval@'ua sus argumentos.
+
+Ejemplo:
+
+@example
+(%i1) legendre_p (1, %pi);
+(%o1)                  legendre_p(1, %pi)
+(%i2) setup_autoload ("specfun.mac", legendre_p, ultraspherical);
+(%o2)                         done
+(%i3) ultraspherical (2, 1/2, %pi);
+Warning - you are redefining the Macsyma function ultraspherical
+Warning - you are redefining the Macsyma function legendre_p
+                            2
+                 3 (%pi - 1)
+(%o3)            ------------ + 3 (%pi - 1) + 1
+                      2
+(%i4) legendre_p (1, %pi);
+(%o4)                          %pi
+(%i5) legendre_q (1, %pi);
+                              %pi + 1
+                      %pi log(-------)
+                              1 - %pi
+(%o5)                 ---------------- - 1
+                             2
+@end example
+
+@end deffn

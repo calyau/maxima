@@ -79,54 +79,61 @@ importancia. Dado que este manual est@'a en permanente mejora puede consultar la
 @c includes
 
 @menu
-* Introducci@'on a MAXIMA::     
-* Ayuda::                       Accediendo a la ayuda dentro de sesiones de MAXIMA
-* L@'{@dotless{i}}nea de Comandos::  
-* Operadores::                  Operadores usados en expresiones MAXIMA.
-* Expresiones::                 Expresiones en MAXIMA.
-* Simplificaci@'on::            
-* Graficaci@'on::               
-* Entrada y Salida::            Entrada y salida de archivos
-* N@'umeros y funciones de punto flotante::  
-* Contextos::                   Configuraciones asumiendo ciertos datos
+Infraestructura de Maxima
+
+* Introducci@'on a MAXIMA::            Muestra de sesiones con Maxima.
+* Ayuda::                              Solicitando ayuda desde una sesi@'on de Maxima.
+* L@'{@dotless{i}}nea de Comandos::    Sintaxis de los comandos de Maxima.
+* Operadores::                         Operadores utilizados en expresiones de Maxima.
+* Expresiones::                        Expresiones de Maxima.
+* Simplificaci@'on::                   Simplificando expresiones.
+* Graficaci@'on::                      Gr@'aficos en dos y tres dimensiones.
+* Entrada y Salida::                   Entrada y salida de archivos
+* Aritm@'etica de punto flotante::     Rutinas num@'ericas de bajo nivel.
+* Contextos::                          Imposici@'on de restricciones a variables.
 
 Soporte para campos más específicos de las matemáticas
 
-* Polinomios::                  Formas estándar para polinomios y funciones para operarlos.
-* Constantes::                  Constantes num@'ericas.
-* Logaritmos::                  Manipulación de expresiones que involucran logaritmos.
-* Trigonometr@'{@dotless{i}}a::  
-* Funciones Especiales::        Funciones especiales.
-* Polinomios Ortogonales::      Polinomios ortogonales y funciones especiales. 
-* L@'{@dotless{i}}mites::       
-* Diferenciaci@'on::            
-* Integraci@'on::               
-* Ecuaciones::                  Definiendo y resolviendo ecuaciones.
-* Ecuaciones Diferenciales::    Definiendo y resolviendo ecuaciones diferenciales.
-* Trabajo Num@'erico::          
-* Estad@'{@dotless{i}}stica::   
-* Arreglos y Tablas::           
-* Matrices y @'Algebra Lineal::  
-* Afines::                      
-* Tensores::                    Paquete para manipulación de tensores.
+* Polinomios::                         Operaciones con polinomios.
+* Constantes::                         Constantes num@'ericas.
+* Logaritmos::                         Transformaci@'on y c@'alculo de expresiones logar@'{@dotless{i}}tmicas.
+* Trigonometr@'{@dotless{i}}a::        Transformaci@'on y c@'alculo de expresiones trigonom@'etricas.
+* Funciones Especiales::               Funciones especiales.
+* Polinomios Ortogonales::             Polinomios ortogonales y funciones especiales. 
+* L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites
+* Diferenciaci@'on::                   C@'alculo diferencial.
+* Integraci@'on::                      C@'alculo integral.
+* Ecuaciones::                         Definici@'on y resoluci@'on de ecuaciones.
+* Ecuaciones Diferenciales::           Definici@'on y resoluci@'on de ecuaciones diferenciales.
+* Trabajo Num@'erico::                 Integraci@'on num@'erica, transformadas de Fourier, etc.
+* Estad@'{@dotless{i}}stica::          Funciones estad@'isticas.
+* Arreglos y Tablas::                  Creaci@'on y manipulaci@'on de arreglos.
+* Matrices y @'Algebra Lineal::        Operaciones matriciales.
+* Afines::                             
+* Tensores::                           Paquete para manipulación de tensores.
 * Ctensor::                     
-* Series::                      Series de potencias y de Taylor.
-* Teor@'{@dotless{i}}a de N@'umeros::  
+* Series::                             Series de potencias y de Taylor.
+* Teor@'{@dotless{i}}a de N@'umeros::  Teor@'ia de n@'umeros.
 * Simetr@'{@dotless{i}}as::     
-* Grupos::                      Álgebra abstracta.
+* Grupos::                             Álgebra abstracta.
 
-Funcionalidades extras y programación
+Funcionalidades avanzadas y programación
 
 @c Advanced facilities and programming
 
-* Entorno de Ejecuci@'on::      
-* Opciones Miscel@'aneas::      
-* Reglas y Patrones::           
-* Listas::                      Manipulación de listas tipo Lisp.
-* Definici@'on de Funciones::   
-* Programaci@'on::              
-* Depurado::                       
-* Indice de Funciones y Variables::  
+* Entorno de Ejecuci@'on::      Personalizaci@'on de Maxima.
+* Opciones Miscel@'aneas::      Opciones que afectan globalmente el comportamiento de Maxima.
+* Reglas y patrones::           Patrones de definidos por el usuario y
+                                reglas de simplificaci@'on.
+* Listas::                      Manipulación de listas.
+* Definici@'on de Funciones::   Programando funciones.
+* Programaci@'on::              Programaci@'on en Maxima.
+* Depurado::                    Depuraci@'on de fallos en programas Maxima.
+
+@'Indice
+        
+* Indice de Funciones y Variables::  @'Indice.
+
 @end menu
 
 @c  Put the @node lines here, rather than in the @included files,
@@ -162,15 +169,15 @@ Funcionalidades extras y programación
 @chapter Graficaci@'on
 @include Plotting.es.texi
 
-@node Entrada y Salida, N@'umeros y funciones de punto flotante, Graficaci@'on, Top
+@node Entrada y Salida, Aritm@'etica de punto flotante, Graficaci@'on, Top
 @chapter Entrada y Salida
 @include Input.es.texi
 
-@node N@'umeros y funciones de punto flotante, Contextos, Entrada y Salida, Top
-@chapter N@'umeros y funciones de punto flotante
+@node Aritm@'etica de punto flotante, Contextos, Entrada y Salida, Top
+@chapter Aritm@'etica de punto flotante
 @include Floating.es.texi
 
-@node Contextos, Polinomios, N@'umeros y funciones de punto flotante, Top
+@node Contextos, Polinomios, Aritm@'etica de punto flotante, Top
 @chapter Contextos
 @include Contexts.es.texi
 
@@ -269,17 +276,17 @@ Funcionalidades extras y programación
 @chapter Entorno de Ejecuci@'on
 @include Runtime.es.texi
 
-@node Opciones Miscel@'aneas, Reglas y Patrones, Entorno de Ejecuci@'on, Top
+@node Opciones Miscel@'aneas, Reglas y patrones, Entorno de Ejecuci@'on, Top
 @chapter Opciones Miscel@'aneas
 @include Miscellaneous.es.texi
 
-@node Reglas y Patrones, Listas, Opciones Miscel@'aneas, Top
-@chapter Reglas y Patrones
+@node Reglas y patrones, Listas, Opciones Miscel@'aneas, Top
+@chapter Reglas y patrones
 @include Rules.es.texi
 
 @c @include xrefs.texi
 
-@node Listas, Definici@'on de Funciones, Reglas y Patrones, Top
+@node Listas, Definici@'on de Funciones, Reglas y patrones, Top
 @chapter Listas
 @include Lists.es.texi
 

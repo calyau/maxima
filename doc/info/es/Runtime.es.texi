@@ -1,216 +1,110 @@
 @menu
 * Introducci@'on al Entorno de Ejecuci@'on::   
-* INTERRUPTS::  
+* Interrupciones::  
 * Definiciones para el Entorno de Ejecuci@'on::
 @end menu
 
-@node Introducci@'on al Entorno de Ejecuci@'on, INTERRUPTS, Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
-
+@node Introducci@'on al Entorno de Ejecuci@'on, Interrupciones, Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
 @section Introducci@'on al Entorno de Ejecuci@'on
 
- -  Un archivo es  cargado autom@'aticamente  por usted  cuanto inicia
-MACSYMA para personalizarlo a su  gusto. Esto es posible para tener un
-archivo   init   escrito   como   un   archivo   BATCH   de   comandos
-macsyma.  Esperamos  que  esto  sea  f@'acil  para  que  los  usuarios
-personalicen  su entorno  de  macsyma.  Aqu@'{@dotless{i}}  est@'a  un ejemplo  de
-archivo init
+El fichero @code{maxima-init.mac} se carga autom@'aticamente cada vez que se empieza a ejecutar Maxima.
+Se puede utilizar @code{maxima-init.mac} para personalizar el entorno de Maxima. Si existe, @code{maxima-init.mac} se almacena normalmente en el directorio indicado por @code{:lisp (default-userdir)}, aunque puede estar alojado en cualquier otro directorio que est@'e al alcance de la funci@'on  @code{file_search}.
+
+He aqu@'{@dotless{i}} un ejemplo de fichero @code{maxima-init.mac}:
 
 @example
-        /*-*-macsyma-*-*/     setup_autoload("share\;bessel",j0,j1,jn);
-showtime:all; comgrind:true;
-
+setup_autoload ("specfun.mac", ultraspherical, assoc_legendre_p);
+showtime:all;
 @end example
 
-El   extra@~no   comentario  en   la   parte   superior  del   archivo
-"/*-*-macsyma-*-*/"  indica que  es  un archivo  en lenguaje  macsyma.
-Tambi@'en: "SETUP_AUTOLOAD"  puede ser usado  para construir funciones
-en  archivos BATCH  autocarg@'andolas,  significa que  si usted  puede
-entonces  use  (por instancia,  aqu@'{@dotless{i}})  las  funciones  J0, J1  y  Jn
-directamente desde  el paquete BESSEL,  cuando usted usa  la funci@'on
-del paquete BESSEL ser@'a  cargada autom@'aticamente para usted. Si el
-segundo  nombre de  archivo  en el  argumento  para SETUP_AUTOLOAD  no
-est@'a  especificado  (el  uso  preferido) entonces  es  realizada  la
-b@'usqueda estandar del segundo  nombre de archivo de "FASL", "TRLISP"
-y ">".
+En este ejemplo, @code{setup_autoload} le dice a Maxima que cargue en memoria el fichero @code{specfun.mac} si cualquiera de las funciones @code{ultraspherical} o @code{assoc_legendre_p} es invocada pero todav@'{@dotless{i}}a no est@'a definida. De esta manera, no es necesario recordar cargar el fichero antes de llamar a las funciones.
 
-@node INTERRUPTS, Definiciones para el Entorno de Ejecuci@'on, Introducci@'on al Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
- 
-@section INTERRUPTS
+La sentencia  @code{showtime: all} le dice a Maxima que haga una asignaci@'on a la variable @code{showtime}.
+El fichero  @code{maxima-init.mac} puede contener cualesquiera otras asignaciones o sentencias de Maxima.
 
- - Hay muchas maneras para que el usuario pueda interrumpir un computo
-de    MACSYMA,    usualmente    con    la    tecla    control.    Haga
-DESCRIBE(CHARACTERS);  para m@'as  detalles.  MACSYMA  tambi@'en puede
-ser interrumpido si  es escrito ^Z (control-Z), como  esto lo sacar@'a
-al nivel de celda de  Unix, Usualmente Control-C interrumpe el computo
-poniendo una curva de corte. Tecleando:t puede darle el nivel m@'aximo
-de maxima de nuevo.
+@node Interrupciones, Definiciones para el Entorno de Ejecuci@'on, Introducci@'on al Entorno de Ejecuci@'on, Entorno de Ejecuci@'on
+@section Interrupciones
 
-@node Definiciones para el Entorno de Ejecuci@'on,  , INTERRUPTS, Entorno de Ejecuci@'on
+El usuario puede detener un c@'omputo que est@'e consumiendo recursos excesivos con el car@'acter ^C (control-C). La acci@'on que se sigue por defecto es la detenci@'on del c@'omputo y la impresi@'on de otro prompt. En este caso, no ser@'a posible reiniciar la tarea interrumpida.
 
+Si a la variable @code{*debugger-hook*} se le asigna @code{nil} haciendo
+
+@example
+:lisp (setq *debugger-hook* nil)
+@end example
+
+@noindent
+entonces tras recibir ^C, Maxima entra en el depurador de Lisp y el usuario podr@'a utilizar el depurador para inspeccionar el entorno Lisp. La tarea que haya sido interrumpida podr@'a reiniciarse escribiendo @code{continue} en el depurado de Lisp. La forma de volver a Maxima desde el depurador de Lisp, que no sea la de permitir la computaci@'on hasta la terminaci@'on de la tarea, depender@'a de la versi@'on de Lisp.
+
+En sistemas Unix el car@'acter ^Z (control-Z) hace que Maxima deje de ejecutarse devolviendo el control al terminal del sistema. El comando @code{fg} hace que la ejecuci@'on de Maxima se reanude en el punto que lo dej@'o.
+
+
+@node Definiciones para el Entorno de Ejecuci@'on,  , Interrupciones, Entorno de Ejecuci@'on
 @section Definiciones para el Entorno de Ejecuci@'on
 
-@defun ALARMCLOCK (arg1, arg2, arg3)
-ejecutar@'a funciones  sin argumentos cuyo nombre es  arg3 cuando pase
-el tiempo especificado para arg1 y arg2.  Si arg1 es el @'atomo "TIME"
-entonces arg3 ser@'a ejecutado despu@'es  de que pasen los segundos de
-tiempo-real  de arg2  mientras que  si  arg1 es  el @'atomo  "RUNTIME"
-entonces arg3  ser@'a ejecutado despu@'es de los  milisegundos de arg2
-en tiempo  de cpu. Si  arg2 es negativo  entonces el relog de  arg1 es
-apagado.
+@defvr {Declaraci@'on} feature
 
-@end defun
+Maxima trata con dos tipos diferentes de caracter@'{@dotless{i}}sticas, las del sistema y las correspondientes a expresiones matem@'aticas. V@'ease tambi@'en @code{status} para informaci@'on sobre caracter@'{@dotless{i}}sticas del sistema. V@'eanse asimismo @code{features} y @code{featurep} para informaci@'on sobre caracter@'{@dotless{i}}sticas matem@'aticas.
 
-@defun ALLOC
-
- toma  cualquier n@'umero  de  argumentos  que son  lo  mismo que  las
-replicas  de la  pregunta  de "espacio  agotado".  Este incrementa  de
-acuerdo con las asignaciones.   E.g. si el usuario conoce inicialemnte
-que este problema puede  requerir mucho espacio, puede hacer ALLOC(4);
-para asignar  la m@'axima cantidad inicialmente.  Tambi@'en observe la
-opci@'on DYNAMALLOC.
-
-@end defun
-
-@defun BUG ("message")
-similar a correro, envia un  mensaje al Correo de MACSYMA.  Esto puede
-ser usado para reportar errores o posibles errores en MACSYMA.  Pueden
-ser inclu@'{@dotless{i}}das expresiones para referirse  a ellos, fuera de la doble
-cita, e.g.  BUG("EStoy tratando de integrar",D3,"pero esto me pregunta
-por m@'as lista de espacio. ¿Qu@'e puedo hacer?");
-
-@end defun
-
-@defun CLEARSCREEN ()
-
-Limipia la pantalla. Lo mismo que tecleando control-L.
-
-@end defun
-
-@defun CONTINUE
-
- -  Control-^ escrito  mientras este  en  MACSYMA causa  que LISP  sea
-ingresado.  El  usuario  ahora  puede escribir  LISP  S-expresiones  y
-evaluarlas. Tecelando  (CONTINUE) o  ^G (control-G) causa  que MACSYMA
-sea re-ingresado.
-
-@end defun
-
-@defun DDT ()
-
-Existe desde  MACSYMA hasta el  nivel de sistema operativo.  (Lo mismo
-que control-Z sobre ITS, o contro-C sobre Tops-20.)
-
-@end defun
-
-@defun DELFILE (file-specification)
-
-borrar@'a un archivo dado por la especificaci@'on-archivo (i.e. primer
-nombre, segundo nombre, dispositivo, usuario) del dispositivo dado.
-
-@end defun
-
-@defun DISKFREE ()
-
-Sin argumentos o un argumento VERDADERO, retornar@'a el n@'umero total
-de bloques libres de espacio de  disco en el sistema. Con un argumento
-en 0, 1 o 13, retornar@'a  el n@'umero de bloques libres de espacio en
-disco del el respectivo paquete de disco. Con un argumento en PRIMARIO
-o  SECUNDARIO, retornar@'a  el  n@'umero total  de  bloques libres  de
-espacio  de  disco  en  el  paquete de  disco  primario  o  secundario
-respectivamente.
-
-@end defun
-
-@defvr declaration FEATURE
-
- - Un excelente ayudante del  sistema. STATUS(FEATURE) le da una lista
-de caracter@'{@dotless{i}}sticas  del sistema. En  la actualidad la lista  para MC
-es: MACSYMA,  NOLDMSG, MACLISP, PDP10, BIGNUM,  FASLOAD, HUNK, FUNARG,
-ROMAN,  NEWIO,   SFA,  PAGING,  MC,   y  ITS.   Cualquiera   de  estas
-"caracter@'{@dotless{i}}sticas"  pueden ser  dadas  como un  segundo argumento  de
-STATUS(FEATURE,...); si la  caracter@'{@dotless{i}}stica especifica existe, ser@'a
-retornado   VERDADERO,   sino   ser@'a   FALSO.  Nota:   todas   estas
-caracter@'{@dotless{i}}sticas del  sistema no est@'an  realmente "relacionadas con
-el usuario". Tambi@'en observe DESCRIBE(caracter@'{@dotless{i}}sticas); para mayor
-orientaci@'on del usuario en cuanto a caracter@'{@dotless{i}}sticas.
+@code{feature} no es el nombre de una funci@'on ni de una variable.
 
 @end defvr
 
-@defun FEATUREP (a,f)
+@deffn {Funci@'on} featurep (@var{a}, @var{f})
 
-Se esfuerza  por determinar si  el objeto tiene la  caracter@'{@dotless{i}}stica f
-sobre las  bases de  los factores en  la base  de datos actual.  Si es
-as@'{@dotless{i}}, este retorna VERDADERO, sino FALSO. Observe DESCRIBE(FEATURES);
-.
+Intenta determinar si el objeto @var{a} tiene la caracter@'{@dotless{i}}stica @var{f} en base a la informaci@'on en la base de datos actual. De ser as@'{@dotless{i}}, devuelve @code{true}, en caso contrario @code{false}. V@'ease tambi@'en @code{features}.
+
 @example
-(C1) DECLARE(J,EVEN)$ (C2) FEATUREP(J,INTEGER); (D2) TRUE
-
-
+(%i1) declare (j, even)$
+(%i2) featurep (j, integer);
+(%o2)                           true
 @end example
-@end defun
 
-@defun ROOM ()
+@end deffn
 
-Produce  una descripci@'on verbosa  de el  estado de  almacenamiento y
-manejo de pila en Macsyma.  Esto simplemente utiliza la funci@'on ROOM
-de Lisp.   ROOM(FALSO) - Produce una  descripci@'on clara, conteniendo
-la mayor@'{@dotless{i}}a de la misma informaci@'on.
+@deffn {Funci@'on} room ()
+@deffnx {Funci@'on} room (true)
+@deffnx {Funci@'on} room (false)
 
-@end defun
+Presenta una descrpci@'on del estado de almacenamiento y gesti@'on de la pila en Maxima. La llamada @code{room} invoca a la funci@'on Lisp hom@'onima.
 
-@defun STATUS (arg)
-
-retornar@'a  una  miscelanea de  estado  de  informaci@'on acerca  del
-usuario  de  MACSYMA  dependiendo  del arreglo  dado.  Los  argumentos
-permisibles y los resultados son los siguientes:
 @itemize @bullet
 @item
-TIME - el tiempo empleado hasta ahora en el computo.
+@code{room ()} prints out a moderate description.
 @item
-DAY- el d@'{@dotless{i}}a de la semana.
+@code{room (true)} prints out a verbose description.
 @item
-DATE - una lista de a@-no, mes y d@'{@dotless{i}}a.
-@item
-DAYTIME - una lista de hora, minutos y segundos.
-@item
-RUNTIME - tiempo  de cpu acumulado en el  @'atomo "MILLISECONDS" en el
-actual MACSYMA.
-@item
-REALTIME -  el tiempo real (en  segundos) pasado desde  que el usuario
-inicio su MACSYMA.
-@item
-GCTIME - el tiempo de  recolecci@'on de basura empleado hasta ahora en
-el c@'alculo actual.
-@item
-TOTALGCTIME - da el tiempo total usado por el recolector de basuras en
-MACSYMA hasta ahora.
-@item
-FREECORE -  el n@'umero  de bloques en  n@'ucleo que su  MACSYMA puede
-expandir antes de que se  quede sin espacio de direcci@'on. (Un bloque
-es 1024 palabras.)  Substrayendo  ese valor de 250*BLOCKS (lo m@'aximo
-que puede tener en MC) le informa cuantos bloques en el n@'ucleo de su
-MACSYMA  est@'an  siendo  usados.  (Un  MACSYMA sin  "fix"  inicia  en
-aproximadamente 191 bloques.)
-@item
-FEATURE - le da una  lista de caracter@'{@dotless{i}}sticas del sistema. Una lista
-actual para  MC es:MACSYMA, NOLDMSG, MACLISP,  PDP10, BIGNUM, FASLOAD,
-HUNK, FUNARG, ROMAN,  NEWIO, SFA, PAGING, MC, and  ITS.  Cualquiera de
-estas "caracter@'{@dotless{i}}sticas"  pueden ser dadas como  un segundo argumento
-de  STATUS(FEATURE,...);  si  la caracter@'{@dotless{i}}stica  especifica  existe,
-ser@'a  retornado  VERDADERO, sino  ser@'a  FALSO.  Nota: todas  estas
-caracter@'{@dotless{i}}sticas del  sistema no est@'an  realmente "relacionadas con
-el usuario".
+@code{room (false)} prints out a terse description.
 @end itemize
-Para  informaci@'on  acerca  de   sus  archivos,  observe  el  comando
-FILEDEFAULTS();
 
-@end defun
+@end deffn
 
-@defun TIME (Di1, Di2, ...)
+@deffn {Funci@'on} status (feature)
+@deffnx {Funci@'on} status (feature, @var{putative_feature})
+@deffnx {Funci@'on} status (status)
 
-da una lista de los tiempos tomados en milisegundos para el computo de
-Di.  (Nota: la  Variable  SHOWTIME, por  defecto:  [FALSO,] puede  ser
-programada VERDADERA para tener impreso  el computo de tiempo con cada
-l@'{@dotless{i}}nea D.)
+Devuelve informaci@'on sobre la presencia o ausencia de ciertas caracter@'{@dotless{i}}sticas dependientes del sistema.
 
-@end defun
+@itemize @bullet
+@item
+@code{status (feature)} devuelve una lista con caracter@'{@dotless{i}}sticas del sistema. @'Estas incluyen la versi@'on de Lisp, tipo de sistema operativo, etc. La lista puede variar de un Lisp a otro.
+@item @code{status (feature, @var{putative_feature})} devuelve @code{true} si @var{putative_feature}
+est@'a en la lista de elementos retornados por @code{status (feature)} y @code{false} en otro caso.
+La funci@'on @code{status} no eval@'ua el argumento @var{putative_feature}. El operador de dobles comillas simples, @code{'@w{}'}, permite la evaluaci@'on. Una caracter@'{@dotless{i}}stica cuyo nombre contenga un car@'acter especial debe ser suministrada como un argumento del tipo cadena alfanum@'erica. Por ejemplo,
+@code{status (feature, "ansi-cl")}.
+@item
+La llamada @code{status (status)} devuelve una lista con dos elementos @code{[feature, status]}. Los elementos @code{feature} y @code{status} son los dos argumentos que acepta la funci@'on @code{status};
+no est@'a claro si esta lista tiene alg@'un inter@'es adicional.
+@end itemize
+
+La variable @code{features} contiene una lista de caracter@'{@dotless{i}}sticas que se aplican a expresiones matem@'aticas. V@'eanse @code{features} y @code{featurep} para m@'as informaci@'on.
+
+@end deffn
+
+@deffn {Funci@'on} time (%o1, %o2, %o3, ...)
+
+Devuelve una lista de los tiempos, en segundos, que fueron necesarios para calcular los resultados de las salidas @code{%o1}, @code{%o2}, @code{%o3}, .... Los tiempos devueltos son estimaciones hechas por Maxima del tiempo interno de computaci@'on. La funci@'on @code{time} s@'olo puede utilizarse para variables correspondientes a l@'{@dotless{i}}neas de salida; para cualquier otro tipo de variables, @code{time} devuelve @code{unknown}.
+
+H@'agase @code{showtime: true} para que Maxima devuelva el tiempo de ejecuci@'on de cada l@'{@dotless{i}}nea de salida.
+
+@end deffn

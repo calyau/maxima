@@ -216,7 +216,7 @@ La funci@'on @code{block} guarda los valores actuales de las variables @var{v_1}
 
 Un @code{block} puede aparecer dentro de otro @code{block}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque. Las variables locales de un bloque se consideran globales dentro de otro anidado dentro del primero. Si una variable es no local dentro de un bloque, su valor es el que le corresponde en el bloque superior. Este criterio se conoce con el nombre de "alcance din@'amico".
 
-Si se quieren guardar y restaurar otras propiedades locales adem@'as del @code{valor} de las variables, por ejemplo @code{array} (excepto arrays completos), @code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant} y @code{nonscalar} entonces deber@'{@dotless{i}}a usarse la funci@'on @code{local} dentro del bloque, siendo sus argumentos los nombres de las variables.
+Si se quieren guardar y restaurar otras propiedades locales adem@'as del @code{valor} de las variables, por ejemplo @code{arreglo} (excepto arreglos completos), @code{function}, @code{dependencies}, @code{atvalue}, @code{matchdeclare}, @code{atomgrad}, @code{constant} y @code{nonscalar} entonces deber@'{@dotless{i}}a usarse la funci@'on @code{local} dentro del bloque, siendo sus argumentos los nombres de las variables.
 
 El valor del bloque es el de la @'ultima sentencia o el argumento de la funci@'on @code{return}, que puede utilizarse para salir del bloque. La funci@'on @code{go} puede usarse para transferir el control a la sentencia del bloque que est@'e etiquetada con el argumento de @code{go}. Para etiquetar una sentencia basta que vaya precedida de un argumento at@'omico como cualquier otra sentencia dentro del bloque. Por ejemplo, @code{block ([x], x:1, tururu, x: x+1, ..., go(tururu), ...)}.  El argumento de @code{go} debe ser el nombre de una etiqueta colocada dentro del bloque. No se puede utilzar @code{go} para trasladarse a una etiqueta de un bloque que no sea el que contenga a @code{go}.
 
@@ -346,7 +346,7 @@ Asocia @var{nombre} con una funci@'on test para asegurar que a @var{name} s@'olo
 @deffn {Funci@'on} dispfun (@var{f_1}, ..., @var{f_n})
 @deffnx {Funci@'on} dispfun (all)
 
-Muestra la deficni@'on de las funciones de usuario @var{f_1}, ..., @var{f_n}. Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on array  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
+Muestra la deficni@'on de las funciones de usuario @var{f_1}, ..., @var{f_n}. Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on arreglo  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
 
 La llamada @code{dispfun (all)} muestra todas las funciones de usuario tal como las dan las listas @code{functions}, @code{arrays} y @code{macros}, omitiendo las funciones con sub@'{@dotless{i}}ndices definidas con sub@'{@dotless{i}}ndices constantes.
 
@@ -407,7 +407,7 @@ La variable @code{functions} es una lista que contiene las funciones definidas p
 
 Devuelve la definici@'on de la funci@'on @var{f}.
 
-Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on array  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
+Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on arreglo  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
 
 La funci@'on @code{fundef} no eval@'ua sus argumentos; el operador de doble comilla simple @code{'@w{}'} permite la evaluaci@'on.
 
@@ -607,13 +607,13 @@ Los argumentos de @code{mode_declare} son pares formados por una variable y un m
 
 @c aquí me salto un párrafo que no está claro en el original (Mario).
 
-C@'odigo num@'erico que utilice arrays puede ejecutarse m@'as r@'apido declarando el tama@~no que va a ocupar el array, como en:
+C@'odigo num@'erico que utilice arreglos puede ejecutarse m@'as r@'apido declarando el tama@~no que va a ocupar el arreglo, como en:
 
 @example
 mode_declare (array (a [10, 10]), float)
 @end example
 
-para un array de n@'umeros en coma flotante de dimensiones 10 x 10.
+para un arreglo de n@'umeros en coma flotante de dimensiones 10 x 10.
 
 Se puede declarar el modo del resultado de una funci@'on poniendo @code{function (f_1, f_2, ...)} como argumento;
 aqu@'{@dotless{i}} @code{f_1}, @code{f_2}, ... son los nombres de las funciones. Por ejemplo, la expresi@'on
@@ -734,7 +734,7 @@ Si @code{transrun} vale @code{false} entonces se ejecutar@'an las versiones inte
 @defvr {Variable optativa} tr_array_as_ref
 Valor por defecto: @code{true}
 
-Si @code{translate_fast_arrays} vale @code{false}, referencias de arrays en el c@'odigo Lisp creadas por  @code{translate_file} se ven afectadas por @code{tr_array_as_ref}.
+Si @code{translate_fast_arrays} vale @code{false}, referencias de arreglos en el c@'odigo Lisp creadas por  @code{translate_file} se ven afectadas por @code{tr_array_as_ref}.
 
 El valor de la variable @code{tr_array_as_ref} no tiene ning@'un efecto cuando @code{translate_fast_arrays} vale @code{true}.
 

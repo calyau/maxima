@@ -1,10 +1,10 @@
 @menu
-* Definiciones para n@'umeros y funciones de punto flotante::
+* Definiones para aritm@'etica de punto flotante::
 @end menu
 
-@node Definiciones para n@'umeros y funciones de punto flotante, , N@'umeros y funciones de punto flotante, N@'umeros y funciones de punto flotante
+@node Definiones para aritm@'etica de punto flotante, , Aritm@'etica de punto flotante, Aritm@'etica de punto flotante
 
-@section Definiciones para n@'umeros y funciones de punto flotante
+@section Definiones para aritm@'etica de punto flotante
 
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE NOT DESCRIBED IN .texi FILES: !!!
 @c obfac, azetb, vonschtoonk, divrlst, obzeta, bfhzeta, bfpsi0 !!!

@@ -5,31 +5,18 @@
 @node Definiciones para Grupos,  , Grupos, Grupos
 @section Definiciones para Grupos
 
-@deffn {Function} todd_coxeter (relations, subgroup)
-@deffnx {Function} todd_coxeter (relations)
+@deffn {Function} todd_coxeter (@var{relations}, @var{subgroup})
+@deffnx {Function} todd_coxeter (@var{relations})
 
-Busca el orden de G/H donde G es el m@'odulo del Grupo Libre de @var{relations}, y H es el subgrupo para G generado por @code{subgroup}. @code{subgroup} es un argumento opcional, por defecto su valor es []. 
+Busca el orden de G/H donde G es el m@'odulo del Grupo Libre de @var{relations}, y H es el subgrupo de G generado por @code{subgroup}. @code{subgroup} es un argumento opcional, cuyo valor por defecto es []. 
 
 En este proceso se obtiene una tabla de multiplicaci@'on para la acci@'on correcta de G sobre G/H, donde los co-cojuntos son enumerados [H,Hg2,Hg3,...]. Esto puede ser observado internamente en el @code{$todd_coxeter_state}.
 
 Las tablas de multiplicaci@'on para las variables 
-est@'an en la @code{table:todd_coxeter_state[2]}. Entonces la @code{table[i]} retorna la tabla para la i-esima variable. @code{mulcoset(coset,i) := tabla[varnum][coset];}
+est@'an en la @code{table:todd_coxeter_state[2]}. Entonces la @code{table[i]} retorna la tabla para la i-@'esima variable. @code{mulcoset(coset,i) := tabla[varnum][coset];}
 
 Ejemplo:
 
-@c ===beg===
-@c symet(n):=create_list(
-@c         if (j - i) = 1 then (p(i,j))^^3 else
-@c             if (not i = j) then (p(i,j))^^2 else
-@c                 p(i,i) , j, 1, n-1, i, 1, j);
-@c p(i,j) := concat(x,i).concat(x,j);
-@c symet(5);
-@c todd_coxeter(%o3);
-@c todd_coxeter(%o3,[x1]);
-@c todd_coxeter(%o3,[x1,x2]);
-@c table:todd_coxeter_state[2]$
-@c table[1];
-@c ===end===
 @example
 (%i1) symet(n):=create_list(
         if (j - i) = 1 then (p(i,j))^^3 else
@@ -72,7 +59,7 @@ Rows tried 71
 
 @end example
 
-Note que s@'olo los elementos 1 hasta el 20 de este arreglo @code{%o8} son significativos. @code{table[1][4] = 7} indica coset4.var1 = coset7
+N@'otese que s@'olo los elementos 1 hasta el 20 de este arreglo @code{%o8} son significativos. @code{table[1][4] = 7} indica coset4.var1 = coset7
 
 @end deffn
 
