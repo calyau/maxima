@@ -7,7 +7,7 @@
 @section Introduction to Series
 Maxima contains functions @code{taylor} and @code{powerseries} for finding the 
 series of differentiable functions.   It also has tools such as @code{nusum}
-capable of finding the closed form of some series.   Operations such as addition and multiplication work as usual on series. This section presents the various global various variables which control the expansion.
+capable of finding the closed form of some series.   Operations such as addition and multiplication work as usual on series. This section presents the global variables which control the expansion.
 @c end concepts Series
 @node Definitions for Series,  , Introduction to Series, Series
 @section Definitions for Series
