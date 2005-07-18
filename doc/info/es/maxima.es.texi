@@ -28,7 +28,7 @@
 
 @c %**start of header
 @setfilename  maxima.es.info
-@documentencoding ISO-8859-15
+@documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual oficial de Maxima
 @c %**end of header
@@ -58,7 +58,7 @@ END-INFO-DIR-ENTRY
 @end titlepage
 
 
-@node Top, Introducci@'on a MAXIMA, (dir), (dir)
+@node Top, Introducci@'on a Maxima, (dir), (dir)
 @top
 
 MAXIMA es un completo sistema de álgebra computacional 
@@ -81,7 +81,8 @@ importancia. Dado que este manual est@'a en permanente mejora puede consultar la
 @menu
 Infraestructura de Maxima
 
-* Introducci@'on a MAXIMA::            Muestra de sesiones con Maxima.
+* Introducci@'on a Maxima::            Muestra de sesiones con Maxima.
+* Reporte y Detecci@'on de Bugs::      Buscando y reportando bugs en Maxima
 * Ayuda::                              Solicitando ayuda desde una sesi@'on de Maxima.
 * L@'{@dotless{i}}nea de Comandos::    Sintaxis de los comandos de Maxima.
 * Operadores::                         Operadores utilizados en expresiones de Maxima.
@@ -126,6 +127,7 @@ Funcionalidades avanzadas y programación
 * Reglas y patrones::           Patrones de definidos por el usuario y
                                 reglas de simplificaci@'on.
 * Listas::                      Manipulación de listas.
+* Conjuntos::                   Operaciones con conjuntos.
 * Definici@'on de Funciones::   Programando funciones.
 * Programaci@'on::              Programaci@'on en Maxima.
 * Depurado::                    Depuraci@'on de fallos en programas Maxima.
@@ -141,11 +143,15 @@ Funcionalidades avanzadas y programación
 @c  nota bene: C-c C-u C-a and texinfo-multiple-files-update will delete
 @c  the detailed node listing!
 
-@node Introducci@'on a MAXIMA, Ayuda, Top, Top
-@chapter Introducci@'on a MAXIMA
+@node Introducci@'on a Maxima, Reporte y Detecci@'on de Bugs, Top, Top
+@chapter Introducci@'on a Maxima
 @include Introduction.es.texi
 
-@node Ayuda, L@'{@dotless{i}}nea de Comandos, Introducci@'on a MAXIMA, Top
+@node Reporte y Detecci@'on de Bugs, Ayuda, Introducci@'on a Maxima, Top
+@chapter Reporte y Detecci@'on de Bugs
+@include Bugs.es.texi
+
+@node Ayuda, L@'{@dotless{i}}nea de Comandos, Reporte y Detecci@'on de Bugs, Top
 @chapter Ayuda
 @include Help.es.texi
 
@@ -286,11 +292,15 @@ Funcionalidades avanzadas y programación
 
 @c @include xrefs.texi
 
-@node Listas, Definici@'on de Funciones, Reglas y patrones, Top
+@node Listas, Conjuntos, Reglas y patrones, Top
 @chapter Listas
 @include Lists.es.texi
 
-@node Definici@'on de Funciones, Programaci@'on, Listas, Top
+@node Conjuntos, Definici@'on de Funciones, Listas, Top
+@chapter Conjuntos
+@include nset.es.texi
+
+@node Definici@'on de Funciones, Programaci@'on, Conjuntos, Top
 @chapter Definici@'on de Funciones
 @include Function.es.texi
 
@@ -303,8 +313,10 @@ Funcionalidades avanzadas y programación
 @include Debugging.es.texi
 
 @node Indice de Funciones y Variables, , Depurado, Top
-@chapter Indice de Funciones y Variables
-@include Indices.es.texi
+@c chapter Indice de Funciones y Variables
+@c include Indices.es.texi
+@unnumbered Indice de Funciones y Variables
+@printindex fn
 
 @c end includes
 
@@ -312,5 +324,3 @@ Funcionalidades avanzadas y programación
 @summarycontents
 @contents
 @bye
-
-

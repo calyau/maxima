@@ -4,447 +4,731 @@
 @end menu
 
 @node Introducci@'on a la L@'{@dotless{i}}nea de Comandos, Definiciones para la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
+
 @section Introducci@'on a la L@'{@dotless{i}}nea de Comandos
-@c @node %TH
-@c @unnumberedsec phony
-@defun %TH (i)
-es el i-@'esimo computo previo. Esto es, si la pr@'oxima expresi@'on a 
-ser computada es D(j) esto es D(j-i). Esto es @'util en
-archivos BATCH o para referise a un grupo de expresiones D(N.d.T: Es decir a expresiones referidas con etiquetas D*). Por
-ejemplo, si SUM es inicializado en 0 entonces FOR I:1 THRU 10 DO
-SUM:SUM+%TH(I) programar@'a SUM para la suma de las @'ultimas diez expresiones D.
 
-@end defun
-@c @node operator
-@c @unnumberedsec phony
-@deffn operator "'"
-  - (comilla sencilla) tiene el efecto de no permitir evaluaciones. E.g.
-'(F(X)) significa que no evalue la expresi@'on F(X). 'F(X) significa
-que retorna la forma de nombre de F aplicada a [X].
+@c NEEDS EXAMPLES
+@c THIS ITEM IS VERY IMPORTANT !!
+
+@deffn {Operator} "'"
+
+El operador comilla sencilla @code{'} evita la evaluaci@'on. 
+
+Aplicado a un s@'{@dotless{i}}mbolo, 
+la comilla sencilla evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
+
+Aplicado a la llamada de una funci@'on,
+la comilla sencilla evita la evaluaci@'on de la funci@'on llamada,
+aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
+la evaluaci@'on no se evite de otra manera). 
+El resultado es una forma de nombre de la funci@'on llamada.  
+
+Aplicado a una expresi@'on con par@'entesis, 
+la comilla simple evita la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y llamadas a funciones que hayan en la expresi@'on. 
+@c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
+E.g., @code{'(f(x))} significa que no se evalua la expresi@'on @code{f(x)}. 
+@code{'f(x)} (con la comilla simple aplicada a @code{f} en cambio de a @code{f(x)})
+significa el retorno de la forma de nombre de @code{f} aplicada a @code{[x]}. 
+
+La comilla simple no evita la simplificaci@'on. 
+
+Cuando el interruptor global @code{noundisp} es @code{true}, 
+los nombres se muestran con una comilla simple. 
+Este interruptor siempre tiene como valor @code{true} cuando 
+se muestran definiciones de funciones. 
+
+Ver tambi@'en los operadores comilla-comilla @code{''} y @code{nouns}. 
+
+Ejemplos:
+
+Aplicado a un s@'{@dotless{i}}mbolo, 
+la comilla sencilla evita la evaluaci@'on del s@'{@dotless{i}}mbolo. 
+
+@c ===beg===
+@c aa: 1024;
+@c aa^2;
+@c 'aa^2;
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) aa^2;
+(%o2)                        1048576
+(%i3) 'aa^2;
+                                 2
+(%o3)                          aa
+(%i4) ''%;
+(%o4)                        1048576
+@end example
+
+Aplicado a la llamada de una funci@'on,
+la comilla sencilla evita la evaluaci@'on de la funci@'on llamada,
+aunque los argumentos de la funci@'on son evaluados (siempre y cuando 
+la evaluaci@'on no se evite de otra manera). 
+El resultado es una forma de nombre de la funci@'on llamada.  
+
+@c ===beg===
+@c x0: 5;
+@c x1: 7;
+@c integrate (x^2, x, x0, x1);
+@c 'integrate (x^2, x, x0, x1);
+@c %, nouns;
+@c ===end===
+@example
+(%i1) x0: 5;
+(%o1)                           5
+(%i2) x1: 7;
+(%o2)                           7
+(%i3) integrate (x^2, x, x0, x1);
+                               218
+(%o3)                          ---
+                                3
+(%i4) 'integrate (x^2, x, x0, x1);
+                             7
+                            /
+                            [   2
+(%o4)                       I  x  dx
+                            ]
+                            /
+                             5
+(%i5) %, nouns;
+                               218
+(%o5)                          ---
+                                3
+@end example
+
+Aplicado a una expresi@'on con par@'entesis, 
+la comilla simple evita la evaluaci@'on de todos los s@'{@dotless{i}}mbolos y llamadas a funciones que hayan en la expresi@'on. 
+
+@c ===beg===
+@c aa: 1024;
+@c bb: 19;
+@c sqrt(aa) + bb;
+@c '(sqrt(aa) + bb);
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) bb: 19;
+(%o2)                          19
+(%i3) sqrt(aa) + bb;
+(%o3)                          51
+(%i4) '(sqrt(aa) + bb);
+(%o4)                     bb + sqrt(aa)
+(%i5) ''%;
+(%o5)                          51
+@end example
+
+La comilla sencilla no evita la simplificaci@'on. 
+
+@c ===beg===
+@c sin (17 * %pi) + cos (17 * %pi);
+@c '(sin (17 * %pi) + cos (17 * %pi));
+@c ===end===
+@example
+(%i1) sin (17 * %pi) + cos (17 * %pi);
+(%o1)                          - 1
+(%i2) '(sin (17 * %pi) + cos (17 * %pi));
+(%o2)                          - 1
+@end example
 
 @end deffn
-@c @node operator
-@c @unnumberedsec phony
-@deffn operator "''"
-  - (comillas dobles sencilllas) causa que ocurra una evaluaci@'on extra. E.g.
-''c4; re-ejecutar@'a la l@'{@dotless{i}}nea C4. ''(F(X)) significa que evalue
-la expresi@'on F(X) en tiempo extra. ''F(X) significa que evalue la
-forma verbal de F aplicada a [X].
 
-
+@deffn {Operator} "'@w{}'"
+El operador @code{'@w{}'} (doble comilla simple) causa que una evaluaci@'on extra tenga lugar. 
+E.g., @code{'@w{}'%i4} reevaluar@'a la l@'{@dotless{i}}nea de entrada @code{%i4}. 
+@code{'@w{}'(f(x))} significa evaluar la expresi@'on @code{f(x)} en tiempo extra. 
+@code{'@w{}'f(x)} (con la doble comilla simple aplicada a @code{f} en vez de a @code{f(x)})
+significa el retorno de la forma verbal de @code{f} aplicada a @code{[x]}. 
 @end deffn
-@c end concepts Linea de Comandos
+
 @node Definiciones para la L@'{@dotless{i}}nea de Comandos,  , Introducci@'on a la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
+
 @section Definiciones para la L@'{@dotless{i}}nea de Comandos
-@c @node ALIAS
-@c @unnumberedsec phony
-@defun ALIAS (newname1, oldname1, newname2, oldname2, ...)
-provee un 
-nombre alternativo para una (del usuario o del sistema) funci@'on, variable,arreglo, etc. 
-Cualquier n@'umero de argumentos puede ser usado.
 
-@end defun
-@c @node DEBUG
-@c @unnumberedsec phony
-@defun DEBUG ()
+@c NEEDS WORK, ESPECIALLY EXAMPLES
+@deffn {Funci@'on} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+provee un nombre
+alternativo para una (bien sea definida por el usuario o por el sistema) funci@'on, variable, arreglo, etc. 
+Cualquier n@'umero par de argumentos puede ser usado. 
 
-LISPDEBUGMODE(); DEBUGPRINTMODE(); y DEBUG(); pone a
-disponibilidad del usuario el depurador de caracter@'{@dotless{i}}sticas usadas por programadores de sistemas.
-Estas herramientas son poderosas, y aunque algunas convenciones son diferentes
-del nivel usual de macsyma, es decir su uso es muy intuitivo. 
-[Algunas impresiones pueden ser verbosas para terminales lentas, hay opciones
-para controlar esto.] Estos comandos fueron dise@~nados para el usuario que
-debe dupurar c@'odigo traducido de macsyma, lo cual es una bendici@'on. Observe
-MACDOC;TRDEBG USAGE para m@'as informaci@'on. Para m@'as ayuda, consulte GJC.
+@end deffn
 
+@defvr {Option variable} debugmode
+Valor por defecto: @code{false}
 
-@end defun
-@c @node DEBUGMODE
-@c @unnumberedsec phony
-@defvar DEBUGMODE
- por defecto: [FALSE] - causa que MACSYMA entre en un bucle de interrupoci@'on cada vez que un  error de MACSYMA ocurre si su valor es TRUE y este modo se termina si su valor es FALSE. Si su valor es  ALL, entonces el usuario puede examinar BACKTRACE para consultar la lista de funciones actualmente activas.
+Cuando en Maxima ocurre un error, Maxima inicializar@'a el depurador si @code{debugmode} tiene el valor @code{true}. 
+El usuario puede ingresar comandos para examinar la pila de llamadas, los puntos de interrupci@'on; en pocas palabras ir a trav@'es del c@'odigo de Maxima. Vea @code{debugging} para una lista de los comandos del depurador.  
 
-@end defvar
-@c @node DEBUGPRINTMODE
-@c @unnumberedsec phony
-@defun DEBUGPRINTMODE ()
+Habilitando @code{debugmode} no se capturar@'an los errores tipo Lisp. 
 
-LISPDEBUGMODE(); DEBUGPRINTMODE(); y DEBUG(); pone a
-disponibilidad del usuario el depurador de caracter@'{@dotless{i}}sticas usadas por programadores de sistemas.
-Estas herramientas son poderosas, y aunque algunas convenciones son diferentes
-del nivel usual de macsyma, es decir su uso es muy intuitivo. 
-[Algunas impresiones pueden ser verbosas para terminales lentas, hay opciones
-para controlar esto.] Estos comandos fueron dise@~nados para el usuario que
-debe dupurar c@'odigo traducido de macsyma, lo cual es una bendici@'on. Observe
-MACDOC;TRDEBG USAGE para m@'as informaci@'on. Para m@'as ayuda, consulte GJC.
-
-@end defun
-@c @node EV
-@c @unnumberedsec phony
-@defun EV (exp, arg1, ..., argn)
-es una de los comandos m@'as poderosos y vers@'atiles de MACSYMA. Este evalua la expresi@'on exp en el entorno
-especificado por argi.  Esto es realizado por etapas, as@'{@dotless{i}}:
-@itemize @bullet
-@item
-    (1) Primero, el entorno es programado por medio de un escaneado de argi que puede ser as@'{@dotless{i}}: 
-SIMP causa que exp sea simplificado a pesar de la programaci@'on de la
-opci@'on SIMP que inhibe la simplificaci@'on si su valor es FALSE.
-NOEVAL suprime la fase de evaluaci@'on de EV(observe el paso (4) m@'as adelante).
-Esto es @'util en conjunto con las otras opciones y en el caso de que
-exp sea resimplificada sin ser reevaluada.
-EXPAND causa la expansi@'on.
-EXPAND(m,n) causa la expansi@'on, programando los valores de MAXPOSEX y
-MAXNEGEX para m y n respectivamente.
-DETOUT causa que cualquier matriz inversa computada en exp tenga su determinante por fuera de la inversa en vez de dividirlo por cada elemento.
-DIFF causa que todas las derivaciones indicadas en exp sean ejecutadas.
-DERIVLIST(var1,...,vark) causa derivaci@'on s@'olo con respecto a las
-variables indicadas.
-FLOAT causa que n@'umeros racionales no-enteros sean convertidos a 
-n@'umeros de punto flotante.
-NUMER causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on)
-con argumentos num@'ericos sean evaluadas en punto flotante. Esto causa
-que variables en exp que han sido dadas como numervals(variables num@'ericas) sean reemplazadas por
-sus valores. Esto tambi@'en programa la opci@'on FLOAT a TRUE.
-PRED causa que predicados (expresiones que evaluan si es TRUEo FALSE)
-sean evaluadas.
-EVAL causa que ocurra una post-evaluaci@'on extra de exp. (Observe el paso (5)
-m@'as adelante.)
-E donde E es un @'atomo declarado para ser un EVFLAG causa que E sea limitado para
-TRUE durante la evaluaci@'on de exp.
-V:expresi@'on (o alternativamente V=expresi@'on) causa que V sea limitada por el
-valor de la expresi@'on durante la evaluaci@'on de exp. Note que si V es una
-opci@'on de MACSYMA, entonces es usado por su valor durante la
-evaluaci@'on de exp. Si m@'as de un argumentos de EV es de este tipo
-entonces el enlazado es hecho en paralelo. Si V es una expresi@'on no-at@'omica
-entonces se utiliza una sustituci@'on m@'as que un enlazado.
-E donde E, un nombre de funci@'on, ha sido declarada para ser una EVFUN causando que E
-sea aplicado a exp.
-Cualquier otro nombre de funci@'on (e.g.  SUM) causa la evaluaci@'on de ocurrencias
-de aquellos nombres en exp aunque ellos fueran verbos.
-En adici@'on una funci@'on ocurriendo en exp (por ejemplo  F(args)) puede ser definida localmente para el prop@'osito de esta evaluaci@'on de exp dando
-F(args):=body como un argumento para EV.
-Si un @'atomo no mencionado anteriormente o una variable o expresi@'on
-suscrita fue dada como un argumento, esto es evaluado y 
-si el resultado es una ecuaci@'on o asignaci@'on entonces el enlazado es indicado
-o la sustituci@'on es ejecutada. Si el resultado es una lista entonces los
-miembros de la lista son tratados como si fuesen argumentos adicionales
-dados para EV. Esto permite que sea dada una lista de ecuaciones (e.g. [X=1,
-Y=A**2] ) o una lista de nombres de ecuaciones que (e.g.  [E1,E2] donde E1 y
-E2 son ecuaciones) por ejemplo que sea retornada por SOLVE.
-
-El argi de EV puede ser dado en cualquier orden con la excepci@'on de
-la ecuaci@'on de sustituci@'on que es tomada en secuencia, izquierda a derecha,
-y EVFUNS que est@'a compuesta, e.g. EV(exp,RATSIMP,REALPART) es
-tomada como REALPART(RATSIMP(exp)).
-Las opciones SIMP, NUMER, FLOAT y PRED tambi@'en pueden ser programadas localmente en un
-bloque, o globalmente en el "nivel superior" en MACSYMA tal que ellas
-recordar@'an el efecto hasta que sean reseteadas.
-Si exp est@'a en la forma ERC entonces EV retornar@'a un resultado en la forma ERC
-a condici@'on que ambas opciones NUMER y FLOAT no sean TRUE.
-
-@item
-    (2) Durante el paso (1), una lista fue realizada con las variables
-no-suscritas, apareciendo al lado izquierdo de la ecuaci@'on en el argi o en 
-el valor de alg@'un argi si el valor es una ecuaci@'on. Las variables
-(ambas variables suscritas no tienen funciones arreglos y variables
-no suscritas relacionadas) en la expresi@'on exp son reemplazadas
-por sus valores globales, excepto por aquellas que aparecieron en esta
-lista. Usualmente, exp es s@'olo una etiqueta o % (como en (C2) m@'as adelante), entonces este
-paso s@'olo recobra la expresi@'on nombrada por la etiqueta, tal que EV
-pueda trabajar en esta.
-
-@item
-    (3) Si algunas sustituciones son indicadas por el argi, ellas
-son cumplidas ahora.
-
-@item
-    (4) la expresi@'on resultante es entonces re-evaluada (a menos que uno de
-los argi fuese NOEVAL) y simplificada de acuerdo a el argi. Note que
-cualquier funci@'on llamada en exp ser@'a cumplida despu@'es de que las
-variables en esta sean evaluadas y que EV(F(X)) as@'{@dotless{i}} se comporte como F(EV(X)).
-
-@item
-    (5) si uno de los argi fuese EVAL, los pasos (3) y (4) son repetidos.
-@end itemize
-
-@example
-                     Ejemplos
-
-(C1) SIN(X)+COS(Y)+(W+1)**2+'DIFF(SIN(W),W);
-                        d                 2
-(D1)  COS(Y) + SIN(X) + -- SIN(W) + (W + 1)
-                        dW
-(C2) EV(%,SIN,EXPAND,DIFF,X=2,Y=1);
-                    2
-(D2)      COS(W) + W  + 2 W + COS(1) + 1.90929742
-@end example
-
-Una sintaxis alternativa de alto nivel ha sido provista para EV, por lo cual uno
-puede s@'olo escribir en sus argumentos, sin el EV(). Esto es, uno puede
-escribir simplemente
-@example
-exp, arg1, ...,argn.
-@end example
-
-Esto no es permitido como parte de
-otra expresi@'on, i.e. en funciones, bloques, etc.
-
-@example
-(C1) X+Y,X:A+Y,Y:2;
-
-(D1) 				   Y + A + 2
-(N@'otese el proceso de enlazado paralelo)
-(C2) 2*X-3*Y=3;
-
-(D2) 				 2 X - 3 Y = 3
-(C3) -3*X+2*Y=4;
-
-(D3) 				 2 Y - 3 X = 4
-(C4) SOLVE([D2,D3]);
-SOLUCI@'ON
-				    17	      18
-(D4) 			    [[Y = - --, X = - --]]
-				    5	      5
-(C5) D3,D4;
-
-(D5) 				     4 = 4
-(C6) X+1/X > GAMMA(1/2);
-
-				   1
-(D6) 			       X + - > SQRT(%PI)
-				   X
-(C7) %,NUMER,X=1/2;
-
-(D7) 			    2.5 > 1.772453850905516
-(C8) %,PRED;
-
-(D8) 				     TRUE
-
-@end example
-
-@end defun
-@c @node EVFLAG
-@c @unnumberedsec phony
-@defvar EVFLAG
- por defecto: [] - la lista de las funciones conocidas de la funci@'on EV.  Un
-objeto puede ser limitado para TRUE a lo largo de la ejecuci@'on de EV si esto es
-mencionado en la llamada a EV, e.g. EV(%,numer);. Las evflags iniciales son:
-
-@example
-FLOAT, PRED, SIMP, NUMER, DETOUT, EXPONENTIALIZE, DEMOIVRE,
-KEEPFLOAT, LISTARITH, TRIGEXPAND, SIMPSUM, ALGEBRAIC,
-RATALGDENOM, FACTORFLAG, %EMODE, LOGARC, LOGNUMER,
-RADEXPAND, RATSIMPEXPONS, RATMX, RATFAC, INFEVAL, %ENUMER,
-PROGRAMMODE, LOGNEGINT, LOGABS, LETRAT, HALFANGLES,
-EXPTISOLATE, ISOLATE_WRT_TIMES, SUMEXPAND, CAUCHYSUM,
-NUMER_PBRANCH, M1PBRANCH, DOTSCRULES y LOGEXPAND.
-@end example
-
-@end defvar
-@c @node EVFUN
-@c @unnumberedsec phony
-@defvar EVFUN
- - la lista de funciones conocidas para la funci@'on EV que ser@'a
-aplicada si su nombre es mencionado. evfuns iniciales son: FACTOR,
-TRIGEXPAND, TRIGREDUCE, BFLOAT, RATSIMP, RATEXPAND, RADCAN,
-LOGCONTRACT, RECTFORM y POLARFORM.
-
-@end defvar
-@c @node INFEVAL
-@c @unnumberedsec phony
-@defvr {s@'{@dotless{i}}mbolo especial} INFEVAL
-constituye un modo de "evaluaci@'on infinita". EV repetidamente 
-evalua una expresi@'on hasta que deje de cambiar. Para prevenir que una 
-variable, por ejemplo X, sea evaluada en este modo, simplemente
-incluya X='X como un argumento para EV. Por supuesto, expresiones tal como
-EV(X,X=X+1,INFEVAL); generar@'an un lazo infinito.  CAVEAT
-EVALUATOR.
+@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
+@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
 @end defvr
-@c @node KILL
-@c @unnumberedsec phony
-@defun KILL (arg1, arg2, ...)
-elimina sus argumentos del sistema de  
-MACSYMA. Si argi es una variable (incluyendo un arreglo sencillo de elementos),
-funci@'on o arreglo, el objeto designado con todas sus propiedades es
-removido del n@'ucleo. Si argi=LABELS entonces todas las l@'{@dotless{i}}neas de entrada,
-intermedias y de salida (pero no otros objetos) son eliminados en el acto. Si
-argi=CLABELS entonces las l@'{@dotless{i}}neas de entrada ser@'an eliminadas; si argi=ELABELS
-entonces solo las E-l@'{@dotless{i}}neas intermedias ser@'an eliminadas; si argi=DLABELS
-solo las l@'{@dotless{i}}neas de salida ser@'an eliminadas. Si argi es el nombre de cualquiera
-de las otras listas de informaci@'on (los elementos de las variables INFOLISTS
-de MACSYMA), entonces cada objeto en esa clase (y sus propiedades) es
-eliminado y si argi=ALL entonces cada objeto sobre la lista de
-informaci@'on previamente definida como LABELS es eliminada. Si argi=un n@'umero (por ejemplo n), entonces las @'ultimas n l@'{@dotless{i}}neas (i.e. las l@'{@dotless{i}}neas con la @'ultima l@'{@dotless{i}}nea de n@'umeros n) es borrada. Si argi es de la forma [m,n] entonces incluso todas las l@'{@dotless{i}}neas
-con n@'umeros entre m y n son eliminadas. Note que 
-KILL(VALUES) o KILL(variable) no liberar@'a el almacenamiento ocupado
-a menos que las etiquetas que est@'an apuntando a la misma expresi@'on sean tambi@'en elminadas. Si una larga expresi@'on fue asignada a X en la l@'{@dotless{i}}nea C7 uno
-podr@'{@dotless{i}}a hacer KILL(D7) as@'{@dotless{i}} como KILL(X) para liberar el almacenamiento ocupado.
-KILL(ALLBUT(name1,...,namek) podr@'a hacer un KILL(ALL) excepto que esto no
-elmina los nombres especificados. (Nota: namei significa un nombre como U, V, F,
-G, no una lista de informaci@'on tal como FUNCTIONS.)
-    KILL remueve todas las propiedades del argumento dado, as@'{@dotless{i}}
-KILL(VALUEs) eliminar@'a las propiedades asociadas con cada objeto en
-la lista VALUES mientras que REMOVE, el conjunto de funciones:    
-(REMVALUE,REMFUNCTION,REMARRAY,REMRULE) remueve una propiedad espec@'{@dotless{i}}fica .
-Adem@'as se imprime una lista de  nombres o FALSE si el argumento
-espec@'{@dotless{i}}fico no existe considerando que  KILL siempre posee el valor "DONE" a@'un si el objeto nombrado no existe. Note que eliminar expresiones puede no solucionar el problema que
-ocurre en MC indicado por "NO CORE - FASLOAD" que resulta cuando
-demasiados archivos FASL han sido cargados o cuando el nivel de asignaci@'on
-que ha tomado es demasiado alto. En cualquiera de estos casos, la cantidad de
-eliminaciones no causar@'a que el tama@~no de estos espacios disminuya. Eliminar 
-expresiones s@'olo causa que algunos espacios sean vaciados pero su tama@~n no se reducir@'a.
 
-@end defun
-@c @node LABELS
-@c @unnumberedsec phony
-@defun LABELS (char)
-toma un car@'acter C, D, o E como argumento y genera una lista de todas
-las etiquetas-C, etiquetas-D, etiquetas-E, activas. Si usted ha generado varias etiquetas-E por medio de SOLVE, entonces
+@c NEEDS CLARIFICATION
+@c VERY IMPORTANT !!
+
+@deffn {Funci@'on} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+Evalua la expresi@'on @var{expr} en el entorno especificado
+por los argumentos @var{arg_1}, ..., @var{arg_n}.
+Los argumentos son interruptores (Variables Booleanas), variables de
+asignaci@'on, ecuaciones y funciones. 
+@code{ev} retorna el resultado (otra expresi@'on) de la evaluaci@'on. 
+
+La evaluaci@'on se realiza por etapas, como sigue: 
+
+@enumerate
+@item
+Primero se configura el entorno de acuerdo a los argumentos los
+cuales pueden ser algunos o todos de la siguiente lista:  
+
+@itemize @bullet
+@item
+@code{simp} causa que @var{expr} sea simplificada sin importar el valor de la variable interruptor @code{simp} la cual inhibe la simplificaci@'on cuando su valor es @code{false}. 
+@item
+@code{noeval} suprime la fase de evaluaci@'on de @code{ev} (Vea el paso (4) m@'as adelante). 
+Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @var{expr} que sea resimplificada sin ser reevaluada. 
+@item
+@code{nouns} causa que la evaluaci@'on de las formas de nombre
+(t@'{@dotless{i}}picamente funciones sin evaluar tales como @code{'integrate} or @code{'diff}) en @code{expr}. 
+@item
+@code{expand} causa expansi@'on. 
+@item
+@code{expand (m, n)} causa expansi@'on, configurando los valores de @code{maxposex} y @code{maxnegex} a los valores de m y n respectivamente. 
+@item
+@code{detout} causa que cualesquiera matrices inversas computadas en @var{expr} conserven su determinante fuera de la inversa en vez de que divida a cada elemento.  
+@item
+@code{diif} causa que todas las diferenciaciones indicadas en @var{expr} sean llevadas a cabo. 
+@item
+@code{derivlist (x, y, z, ...)} causa que s@'olo las diferenciaciones con respecto a las variables indicadas se lleven a cabo. 
+@item
+@code{float} causa que los n@'umeros racionales no-enteros sean convertidos a n@'umeros de tipo flotante. 
+@item
+@code{numer} causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on) con argumentos num@'ericos sean evaluados como punto flotante. Esto causa que las variables en @var{expr} las cuales hayan sido declaradas como variables num@'ericas sean reemplazadas por sus respectivos valores. Esto tambi@'en configura la variable interruptor @code{float} a @code{true}. 
+@item
+@code{pred} causa que los predicados (expresiones las cuales se evaluan a @code{true} o @code{false}) sean evaluados. 
+@item
+@code{eval} causa que una post-evaluaci@'on extra de @var{expr} ocurra. (Vea el paso (5) m@'as adelante). 
+@item
+@code{A}, donde @code{A} es un @'atomo declarado como una variable de tipo interruptor, (Vea @code{evflag})
+causa que @code{A} tenga como valor @code{true} durante 
+la evaluaci@'on de @var{expr}.  
+@item
+@code{V: expresion} (o alternativamente @code{V=expresion}) causa que 
+@code{V} tenga el valor de @code{expresion} durante la evaluaci@'on
+de @var{expr}. Notese que si @code{V} es una opci@'on Maxima, entonces
+@code{expresion} se usa como su valor durante la evaluaci@'on de
+@var{expr}. Si m@'as de un argumento de @code{ev} es de este 
+tipo entonces el v@'{@dotless{i}}nculo se hace en paralelo. Si @code{V} es una
+expresi@'on no at@'omica entonces se hace una sustituci@'on m@'as que 
+un v@'{@dotless{i}}nculo.
+@item
+@code{F} donde @code{F}, un nombre de funci@'on, ha sido declarado para 
+ser una funci@'on de evaluaci@'on (Vea @code{evfun}) causa que
+@code{F} sea aplicada a @var{expr}. 
+@item
+Cualquier otro nombre de funci@'on (e.g., @code{sum}) causa la evaluaci@'on de las ocurrencias de esos nombres en @code{expr} como si ellos fueran
+verbos. 
+@item
+En adici@'on de que una funci@'on ocurra en @var{expr} (digamos @code{F(x)}) puede ser definida localmente para el prop@'osito de esta evaluaci@'on 
+de @var{expr} pasando @code{F(x) := expresion} como un argumento a
+@code{ev}. 
+@item
+Si un @'atomo no mencionado anteriormente o una variable o expresi@'on 
+con sub@'{@dotless{i}}ndices fueran pasadas como un argumento, esta es evaluada y
+si el resultado es una ecuaci@'on o una asignaci@'on entonces el 
+v@'{@dotless{i}}nculo o sustituci@'on se llevar@'a a cabo. Si el resultado es una
+lista entonces los miembros de la lista tratados como si ellos fueran
+argumentos adicionales pasados a @code{ev}. Esto permite que una
+lista de argumentos sea pasada (e.g., @code{[X=1, Y=A**2]}) o una lista
+de nombres de ecuaciones (e.g., @code{[%t1, %t2]} donde @code{%t1} y
+@code{%t2} son ecuaciones) tal como lo que es retornado por 
+@code{solve}. 
+@end itemize
+
+Los argumentos de @code{ev} pueden ser pasados en cualquier orden con excepci@'on de la sustituci@'on de ecuaciones las cuales son manipuladas en 
+secuencia, de izquierda a derecha y las funciones de evaluaci@'on las 
+cuales son compuestas, e.g., @code{ev (@var{expr}, ratsimp, realpart)}
+es manipulada como @code{realpart (ratsimp (@var{expr}))}. 
+
+Los interruptores @code{simp}, @code{numer}, @code{float} y @code{pred} 
+pueden tambi@'en ser configurados localmente en una sentencia block, o
+globalmente en Maxima para que su efecto permanezca hasta que
+sean reconfiguradas.   
+
+Si @var{expr} es una Expresi@'on Racional Can@'onica (CRE, por sus siglas en ingl@'es), entonces la expresi@'on retornada por @code{ev} es tambi@'en 
+de tipo CRE, siempre que los interruptores @code{numer} y @code{float} no sean @code{true}. 
+
+@item
+Durante el paso (1), se fabrica una lista de las variables que no contienen sub@'{@dotless{i}}ndices que aparecen en el lado izquierdo de las ecuaciones en los
+argumentos o en el valor de algunos argumentos si el valor es una ecuaci@'on. Las variables (variables que contienen sub@'{@dotless{i}}ndices las cuales no tienen asociado un arreglo de funciones como tambi@'en las variables que no contienen sub@'{@dotless{i}}ndices) en la expresi@'on @var{expr} son reemplazadas por sus valores globales, excepto por aquellos que aparezcan en esa lista. 
+Usualmente, @var{expr} es s@'olo una etiqueta o un @code{%} 
+(como en @code{%i2} en el ejemplo de m@'as abajo) as@'{@dotless{i}} que 
+este paso simplemente recupera la expresi@'on a la que hace referencia 
+la etiqueta y as@'{@dotless{i}} @code{ev} puede trabajarla. 
+
+@item
+Si algunas sustituciones son indicadas por los argumentos, ellas
+ser@'an llevadas a cabo ahora. 
+
+@item
+La expresi@'on resultante es tambi@'en reevaluada (a menos que uno de 
+los argumentos fuese @code{noeval}) y simplificada de acuerdo a los 
+argumentos. Notese que cualquier llamada a una funci@'on en @var{expr} 
+ser@'a llevada a cabo despu@'es de que las variables sean evaluadas 
+en ella y que @code{ev(F(x))} pueda comportarse como @code{F(ev(x))}. 
+
+@item
+Si uno de los argumentos fuese @code{eval}, los pasos (3) y (4) se 
+repiten. 
+@end enumerate
+
+                     Ejemplos
+
 @example
-FIRST(REST(LABELS(C)))
+(%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
+                                     d                    2
+(%o1)              cos(y) + sin(x) + -- (sin(w)) + (w + 1)
+                                     dw
+(%i2) ev (%, sin, expand, diff, x=2, y=1);
+                          2
+(%o2)           cos(w) + w  + 2 w + cos(1) + 1.909297426825682
 @end example
-le recuerda cual fue la @'ultima etiqueta-C.
-LABELS tomar@'a como argumento cualquier nombre simb@'olico, as@'{@dotless{i}} si usted tiene que resetear INCHAR,
-OUTCHAR o LINECHAR, este retornar@'a la lista de las etiquetas cuyo primer car@'acter coincide con el primer
-car@'acter del argumentos que usted le dio a LABELS.
-La variable, LABELS, por defecto: [] es una lista de las l@'{@dotless{i}}neas C, D y E
-las cuales son limitadas.
 
-@end defun
-@c @node LASTTIME
-@c @unnumberedsec phony
-@defvar LASTTIME
- - el tiempo de computo de la @'ultima expresi@'on en milisegundos
-presentada como una lista de "tiempo" y "tiempogc".
+Una sintaxis alternativa de alto nivel ha sido proveida para @code{ev}, 
+por medio de la cual uno puede escribir solamente sus argumentos, sin 
+el comando @code{ev()}. Esto es, una forma sencilla de escritura:
 
-@end defvar
-@c @node LINENUM
-@c @unnumberedsec phony
-@defvar LINENUM
- - el n@'umero de l@'{@dotless{i}}nea de la @'ultima expresi@'on.
+@example
+@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@end example
 
-@end defvar
-@c @node MYOPTIONS
-@c @unnumberedsec phony
-@defvar MYOPTIONS
- por defecto: [] - todas las opciones cuyo valor ha sido modificado por el usuario (as@'{@dotless{i}} hayan sido restauradas a sus valores por defecto).
-@end defvar
-@c @node NOLABELS
-@c @unnumberedsec phony
-@defvar NOLABELS
- por defecto: [FALSE] - si su valor es TRUE entonces las etiquetas no
- ser@'an limitadas excepto por las l@'{@dotless{i}}neas E generadas por la
- soluci@'on de funciones. Esto es muy @'util en el modo "BATCH" donde este elimina la necesidad de hacer
-KILL(LABELS) con el objetivo de liberar espacio.
+Esto no es permitido como parte de otra 
+expresi@'on , e.g., en funciones, sentencias block, etc. 
 
-@end defvar
-@c @node OPTIONSET
-@c @unnumberedsec phony
-@defvar OPTIONSET
- por defecto: [FALSE] - si su valor es TRUE, MACSYMA imprimir@'a un
-mensaje a@'un cuando la opci@'on de MACSYMA sea reseteada. Esto es @'util si el usuario esta dudando de la caligraf@'{@dotless{i}}a de algunas opciones y quiere asegurarse que la variable a la que asign@'o un valor es verdaderamente una variable opci@'on.
+N@'otese el proceso de v@'{@dotless{i}}nculo en paralelo en el siguiente ejemplo:
 
-@end defvar
-@c @node PLAYBACK
-@c @unnumberedsec phony
-@defun PLAYBACK (arg)
-"re-imprime" las l@'{@dotless{i}}neas de entrada y salida. Si el argumento es n (un
-n@'umero) las @'ultimas n expresiones (Ci, Di, y Ei cuentan como 1 cada una) son "re-impresas", mientras que si el argumento es omitido, se imprimen todas las l@'{@dotless{i}}neas. Si el argumento es INPUT entonces s@'olo las l@'{@dotless{i}}neas de entrada son re-impresas. Si es argumento es [m,n] entonces todas las l@'{@dotless{i}}neas con n@'umeros entre m y n inclusive son re-impresas. Si m=n entonces [m] es suficiente para el argumento. Si el argumento es SLOW coloca a PLAYBACK en el modo-lento similar a DEMO (opuesto a el BATCH "r@'apido"). Esto es @'util en conjunto con SAVE o STRINGOUT cuando se crea un archivo secundario de almacenamiento con el objetivo de escoger expresiones @'utiles. Si el argumento es TIME entonces el tiempo de computo es mostrado tal como las expresiones. Si el argumento es GCTIMR o TOTALTIME, entonces una distribuci@'on completa del tiempo de computaci@'on ser@'a mostrada, como con SHOWTIME:ALL;. Si el argumento es STRING se generar@'a una salida tipo cadena
-(observe la funci@'on STRING) de todas las l@'{@dotless{i}}neas de entrada cuando se re-imprimen m@'as que su despliegue. Si el argumento es GRIND el modo "grind" tambi@'en puede ser activado (para procesamiento de l@'{@dotless{i}}neas de entrada)(observe GRIND). Uno puede incluir cualquier n@'umero de argumentos como en PLAYBACK([5,10],20,TIME,SLOW).
+@example
+(%i3) programmode: false;
+(%o3)                                false
+(%i4) x+y, x: a+y, y: 2;
+(%o4)                              y + a + 2
+(%i5) 2*x - 3*y = 3$
+(%i6) -3*x + 2*y = -4$
+(%i7) solve ([%o5, %o6]);
+Soluci@'on
 
-@end defun
-@c @node PRINTPROPS
-@c @unnumberedsec phony
-@defun PRINTPROPS (a, i)
-mostrar@'a la propiedad con el indicador i asociado con el @'atomo a. a tambi@'en puede ser una lista de @'atomos o el @'atomo ALL en el caso que todos los @'atomos con la propiedad dada ser@'an usados. Por ejemplo, PRINTPROPS([F,G],ATVALUE).  PRINTPROPS es para propiedades que de otra forma no pueden ser mostradas, i.e. para ATVALUE, ATOMGRAD, GRADEF y MATCHDECLARE.
+                                          1
+(%t7)                               y = - -
+                                          5
 
-@end defun
-@c @node PROMPT
-@c @unnumberedsec phony
-@defvar PROMPT
- por defecto: [_] es el s@'{@dotless{i}}mbolo r@'apido de la funci@'on DEMO,
-modo PLAYBACK(SLOW) y (MACSYMA-BREAK).
+                                         6
+(%t8)                                x = -
+                                         5
+(%o8)                            [[%t7, %t8]]
+(%i8) %o6, %o8;
+(%o8)                              - 4 = - 4
+(%i9) x + 1/x > gamma (1/2);
+                                   1
+(%o9)                          x + - > sqrt(%pi)
+                                   x
+(%i10) %, numer, x=1/2;
+(%o10)                      2.5 > 1.772453850905516
+(%i11) %, pred;
+(%o11)                               true
+@end example
 
-@end defvar
-@c @node QUIT
-@c @unnumberedsec phony
-@defun QUIT ()
-termina la sesi@'on actual de MACSYMA pero no afecta otros trabajos
-del usuario @footnote{N.del T.: Cuando se habla de trabajos se hace referencia a otros procesos o programas activos en el sistema.}; equivalente a la salida de DCL y el detenimiento de los procesos de MACSYMA. Uno puede "salir" del nivel-superior de MACSYMA tecleando Control-C Control-G; Control-C toma el promtp de interrupci@'on NIL, en el cual uno teclea o Control-G o s@'olo G. Tecleando X en el promtp de interrupci@'on causar@'a una salida en un computo iniciado dentro de un interrupci@'on de MACSYMA sin interrumpir el computo principal suspendido.
-
-@end defun
-@c @node REMFUNCTION
-@c @unnumberedsec phony
-@defun REMFUNCTION (f1, f2, ...)
-remueve de MACSYMA las funciones f1,f2,... definidas por el usuario. Si hay s@'olo un argumento como ALL entonces todas las funciones son removidas.
+@end deffn
 
 
-@end defun
-@c @node RESET
-@c @unnumberedsec phony
-@defun RESET ()
-causa que todas las opciones de MACSYMA sean programadas con sus valores por defecto. (Por favor note que esto no incluye caracter@'{@dotless{i}}sticas de terminales como LINEL que s@'olo puede ser cambiadas por cambio de asignaci@'on, pues ellas no son consideradas como caracter@'{@dotless{i}}sticas computacionales de MACSYMA.)
 
-@end defun
-@c @node RESTORE
-@c @unnumberedsec phony
-@defun RESTORE (file-specification)
-reinicializa todas las cantidades archivadas por medio del uso de funciones SAVE o STORE, en una sesi@'on previa de MACSYMA, desde el archivo dado por file-specification sin traerlos desde el n@'ucleo.
+@defvr {Property} evflag
+Algunos interruptores booleanos tienen la propiedad @code{evflag}. 
+@code{ev} trata de forma especial tales interruptores. 
+Un interruptor con la propiedad @code{evflag} ser@'a puesto a @code{true}
+durante la ejecuci@'on de @code{ev} si este es mencionado en la 
+llamada a @code{ev}. 
+Por ejemplo, @code{demoivre} y @code{ratfac} son puestos a @code{true} durante la llamada a @code{ev (%, demoivre, ratfac)}. 
 
-@end defun
-@c @node SHOWTIME
-@c @unnumberedsec phony
-@defvar SHOWTIME
- por defecto: [FALSE] - si su valor es TRUE entonces el tiempo de computo ser@'a impreso autom@'aticamente con cada expresi@'on de salida. Mediante la programaci@'on SHOWTIME:ALL, en adici@'on al tiempo de la cpu, MACSYMA ahora tambi@'en imprime (cuando no es cero) la cuenta del tiempo gastado en la recolecci@'on de basura (puede mirar la secci@'on: El Recolector de Basura (gc) en la parte de Ayuda) en el curso de un computo. Este tiempo, por supuesto, es incluido en el tiempo impreso como "tiempo=". (Esto se podr@'{@dotless{i}}a notar desde el "tiempo=", tiempo que s@'olo incluye el tiempo de computo y no alg@'un tiempo intermedio mostrado o el tiempo que esto toma para cargarlo fuera del n@'ucleo; es dif@'{@dotless{i}}cil atribuir alguna "responsabilidad" para gc, el tiempo gc impreso incluir@'a todo el tiempo gc incurrido en el curso del computo y esto en raros casos ser@'a m@'as largo que "tiempo=").
+Los interruptores que tienen la propiedad @code{evflag} son: 
 
-@end defvar
-@c @node SSTATUS
-@c @unnumberedsec phony
-@defun SSTATUS (feature,package)
-- significa SET STATUS (N.del.T.: Configurar una estado). Esto puede ser usado para SSTATUS( FEATURE, HACK_PACKAGE) as@'{@dotless{i}} que STATUS( FEATURE, HACK_PACKAGE) retornar@'a  entonces TRUE. Esto puede ser @'util para la escritura de paquetes, para tener pistas de que caracter@'{@dotless{i}}sticas han sido cargadas.
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
+@c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
+@code{algebraic},
+@code{cauchysum},
+@code{demoivre},
+@code{dotscrules},
+@code{%emode},
+@code{%enumer},
+@code{exponentialize},
+@code{exptisolate},
+@code{factorflag},
+@code{float},
+@code{halfangles},
+@code{infeval},
+@code{isolate_wrt_times},
+@code{keepfloat},
+@code{letrat},
+@code{listarith},
+@code{logabs},
+@code{logarc},
+@code{logexpand},
+@code{lognegint},
+@code{lognumer},
+@code{m1pbranch},
+@code{numer_pbranch},
+@code{programmode},
+@code{radexpand},
+@code{ratalgdenom},
+@code{ratfac},
+@code{ratmx},
+@code{ratsimpexpons},
+@code{simp},
+@code{simpsum},
+@code{sumexpand}, y
+@code{trigexpand}.
 
-@end defun
-@c @node TOBREAK
-@c @unnumberedsec phony
-@defun TOBREAK ()
-causa una interrupci@'on de MACSYMA la cual fue permitida al teclear TOPLEVEL; para el reingreso . Si a TOBREAK le es dado cualquier argumento en absoluto, entonces la interrupci@'on ser@'a abortada, que es equivalente a
-teclear TOBREAK() inmediatamente seguido por EXIT;.
+La instrucci@'on @code{:lisp (putprop '|$foo| t 'evflag)}
+da la propiedad @code{evflag} a la variable @code{foo}, 
+as@'{@dotless{i}} que @code{foo} es puesta a @code{true} durante la llamada a
+@code{ev (%, foo)}. 
+De forma equivalente, @code{ev ($, foo:true)} tiene el mismo efecto. 
+@end defvr
 
-@end defun
-@c @node TOPLEVEL
-@c @unnumberedsec phony
-@defun TOPLEVEL ()
-Durante una interrupci@'on uno puede escribir TOPLEVEL;. Esto causar@'a
-que al nivel-superior de MACSYMA se ingrese recursivamente. Las etiquetas ser@'an ahora limitadas como es usual. Todo ser@'a identico al estado del nivel-superior excepto en que el computo que fue suspendido se  guardar@'a. La funci@'on TOBREAK() causar@'a una interrupci@'on de MACSYMA la cual fue permitida al teclear TOPLEVEL; para el reingreso . Si a TOBREAK, en lo absoluto, le es dado cualquier argumento, entonces la interrupci@'on ser@'a abortada, lo cual es equivalente a teclear TOBREAK() inmediatamente seguido por EXIT;.
+@defvr {Property} evfun
+Algunas funciones tienen la propiedad @code{evfun}.
+@code{ev} trata tales funciones de forma especial. 
+Una funci@'on con la propiedad @code{evfun} ser@'a aplicada 
+durante la ejecuci@'on de @code{ev} si @'esta es mencionada 
+en la llamada a @code{ev}. 
+Por ejemplo, @code{ratsimp} y @code{radcan} ser@'an aplicadas 
+durante la llamada a @code{ev (%, ratsimp, radcan)}.
+
+Las funciones que tienen la propiedad @code{evfun} son: 
+
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
+@c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
+@code{bfloat},
+@code{factor},
+@code{fullratsimp},
+@code{logcontract},
+@code{polarform},
+@code{radcan},
+@code{ratexpand},
+@code{ratsimp},
+@code{rectform},
+@code{rootscontract},
+@code{trigexpand}, y
+@code{trigreduce}.
+
+La instrucci@'on @code{:lisp (putprop '|$foo| t 'evfun)}
+da la propiedad @code{evfun} a la funci@'on @code{foo}, 
+as@'{@dotless{i}} que @code{foo} es aplicada durante la llamada a @code{ev (%, foo)}. 
+De forma equivalente, @code{foo (ev(%))} tiene el mismo efecto.  
+@end defvr
+
+@c NEEDS WORK
+@defvr {Option variable} infeval
+Habilita el modo de "evaluaci@'on infinita". @code{ev} repetidamente 
+evalua una expresi@'on hasta que se interrumpa la acci@'on. Para prevenir
+que una variable, digamos @code{X}, sea evaluada sin parar en este modo, 
+simplemente incluya @code{X='X} como argumento de @code{ev}. 
+Esta claro que expresiones como: @code{ev (X, X=X+1, infeval)} generar@'an un bucle infinito.
+@end defvr
+
+@c REVIEW FOR ACCURACY AND COMPLETENESS
+@c THIS ITEM IS VERY IMPORTANT !!
+@c NEEDS EXAMPLES
+@deffn {Funci@'on} kill (@var{symbol_1}, ..., @var{symbol_n})
+@deffnx {Funci@'on} kill (labels)
+@deffnx {Funci@'on} kill (clabels, dlabels, elabels)
+@deffnx {Funci@'on} kill (@var{n})
+@deffnx {Funci@'on} kill ([@var{m}, @var{n}])
+@deffnx {Funci@'on} kill (values, functions, arrays, ...)
+@deffnx {Funci@'on} kill (all)
+@deffnx {Funci@'on} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+
+Remueve todos los v@'{@dotless{i}}nculos (valor, funci@'on, arreglo o regla) de los
+argumentos @var{symbol_1}, ..., @var{symbol_n}.
+Un argumento puede ser un simple arreglo de elementos o funciones con sub@'{@dotless{i}}ndices. 
+
+Varios argumentos especiales son reconocidos. 
+Diferentes clases de argumentos pueden ser combinados, 
+e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
+
+@c MAYBE WE WANT TO CHANGE THE KEYWORDS clabels, dlabels, elabels TO ilabels, olabels, tlabels ??
+
+@code{kill (labels)} elimina @footnote{N.T: En este contexto el t@'ermino elimina no hace referencia a la remoci@'on de la etiqueta sino a que el valor asociado a ella desaparece} 
+todas las etiquetas de entrada, salida y expresiones intermedias creadas
+hasta el momento. 
+
+@code{kill (clabels)} elimina s@'olo las etiquetas de entrada
+las cuales empiezan con el valor de @code{inchar} en ese momento. 
+
+Igualmente, 
+@code{kill (dlabels)} elimina s@'olo las etiquetas de salida
+las cuales empiezan con el valor de @code{outchar} de ese momento, 
+y @code{kill (elabels)} elimina s@'olo las etiquetas de expresiones 
+intermedias las cuales empiezan con el valor de @code{linchar} de ese momento. 
+
+@code{kill (@var{n})}, donde @var{n} es un entero,
+elimina las @var{n} etiquetas de entrada y salida m@'as recientes. 
+
+@code{kill ([@var{m}, @var{n}]} elimina las etiquetas de entrada y salida @var{m} hasta @var{n}. 
+
+@code{kill (@var{infolist})}, donde @var{infolist} es cualquier item de @code{infolists} (tales como @code{values}, @code{functions} o @code{arrays}), elimina todos los items en @code{infolist}. 
+V@'ease tambi@'en @code{infolists}. 
+
+@code{kill (all)} elimina todos los items de todas las listas de informaci@'on (infolists).
+@code{kill (all)} no reconfigura las variables globales a sus valores por defecto; vea @code{reset} para m@'as informaci@'on sobre este punto. 
 
 
-@end defun
-@c @node TO_LISP
-@c @unnumberedsec phony
-@defun TO_LISP ()
-entra al int@'erprete LISP bajo MACSYMA. Esto es @'util en aquellos sistemas donde no est@'a diponible el control-uparrow para esta funci@'on.
+@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
+elimina todos los items de todas las listas de informaci@'on (infolists) excepto para @var{symbol_1}, ..., @var{symbol_n}.
 
-@end defun
-@c @node TTYINTFUN
-@c @unnumberedsec phony
-@defvar TTYINTFUN
- por defecto: [FALSE] - Maneja las funciones que ser@'an ejecutadas
-cuando el car@'acter de interrupci@'on de Usuario es tecleado. Para usar esta caracter@'{@dotless{i}}stica, uno programa TTYINTFUN (por defecto FALSO significa que la caracter@'{@dotless{i}}stica no est@'a en uso) para una
-funci@'on sin argumentos. Entonces cuando (e.g.)^U (control-U) es
-tecleado, esta funci@'on se ejecuta. E.g. suponga que usted tiene una declaraci@'on FOR de un bucle que incrementa a I, y usted quiere una forma f@'acil de revisar el valor de I mientras que la declaraci@'on FOR est@'a en ejecuci@'on. Usted puede hacer: TTYINTFUN:PRINTI$ PRINTI():=PRINT(I)$, entonces cuando usted teclee (e.g.) ^U usted har@'a la revisi@'on que desea.
+@code{kill (allbut (@var{infolist}))} elimina todos los items excepto para los que aparezcan en @var{infolist}, 
+donde @var{infolist} es @code{values}, @code{functions}, @code{arrays}, etc. 
 
-@end defvar
-@c @node TTYINTNUM
-@c @unnumberedsec phony
-@defvar TTYINTNUM
-por defecto: [21] (el valor ascii de Control-U (^U), U siendo la  letra n@'umero 21 del alfabeto).  Esto controla que caract@'eres se conviertan en el car@'acter de interrupci@'on de Usuario. ^U fue escogido por su valor nemot@'ecnico. La mayor@'{@dotless{i}}a de los usuarios no restauran TTYINTFUN a menos que ya esten usando ^U para algo m@'as.
+La memoria 
 
-@end defvar
-@c @node VALUES
-@c @unnumberedsec phony
-@defvar VALUES
-por defecto:[] - todos los @'atomos limitados, i.e. variables de usuario, opciones o interruptores @footnote{N.delT.: Cuando nos referimos a interruptores, hablamos de opciones que se pueden habilitar o deshabilitar, como aquellas que tienen valores FALSE o TRUE.} que no pertencen a  MACSYMA (programadas mediante : , :: , o enlazado funcional).
-@end defvar
+The memory taken up by a bound property is not released until all symbols
+are unbound from it.
+In particular, to release the memory taken up by the value of a symbol,
+one unbinds the output label which shows the bound value, as well as unbinding the symbol itself.
 
 
+@code{kill} no evalua sus argumentos. 
+El operador de doble comilla simple, @code{'@w{}'}, rechaza  
+
+@c @code{kill} quotes its arguments.
+@c The double single quotes operator, @code{'@w{}'}, defeats the quotation.
+@code{kill (@var{symbol})} elimina todas las propiedades de @var{symbol}.
+En contraste, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{remrule} elimina a propiedad en espec@'{@dotless{i}}fico. 
+
+@code{kill} siempre retorna @code{done}, incluso si un argumento no fue eliminado. 
+
+@end deffn
+
+@deffn {Funci@'on} labels (@var{symbol})
+@deffnx {System variable} labels
+Retorna la lista de etiquetas de entrada, salida o de expresiones intermedias las cuales empiezan con @var{symbol}. 
+T@'{@dotless{i}}picamente @var{symbol} es el valor de las variables @code{inchar}, @code{outchar} o @code{linechar}. 
+El caract@'er de etiqueta puede ser pasado con o sin signo de porcentaje, 
+as@'{@dotless{i}}, por ejemplo, @code{i} y @code{%i} producen el mismo resultado.  
+
+Si ninguna etiqueta empieza con @var{symbol}, @code{labels} retorna a una
+lista vac@'{@dotless{i}}a. 
+
+La funci@'on @code{labels} no evalua su arguemento.
+@c The double single quotes operator @code{'@w{}'} defeats quotation.
+Por ejemplo, 
+@code{labels (''inchar)} retorna las etiquetas de entrada las cuales empiezan con el caract@'er de etiqueta de entrada actual. 
+
+La variable @code{labels} es una lista de las etiquetas de entrada, salida y expresiones intermedias, incluyendo todas las etiquetas anteriores en el caso de que @code{inchar}, @code{outchar} o @code{linechar} hayan sido redefinidas. 
+
+Por defecto, Maxima muestra el resultado de cada expresi@'on ingresada por el usuario, dando el resultado en una etiqueta de salida. 
+La salida (es decir el resultado) puede ser suprimida terminando la expresi@'on de entrada con un @code{$} (signo pesos) en vez de un @code{;} (punto y coma). 
+Una etiqueta de salida es generada, pero no es mostrada, 
+y la etiqueta puede ser referenciada en la misma forma como son mostradas las etiquetas de entrada. 
+
+V@'ease tambi@'en: @code{%}, @code{%%} y @code{%th}. 
+
+Las etiquetas de expresiones intermedias pueden ser generadas por algunas funciones. El interruptor @code{programmode} controla si @code{solve} y algunas otras funciones generan etiquetas de expresiones intermedias en vez de retornar una lista de expresiones. 
+Algunas otras funciones, tales como @code{ldisplay}, siempre generan etiquetas de expresiones intermedias. 
+
+@c NEED TO EXPLAIN THIS SHORTCUT ???
+
+@code{first (rest (labels (''inchar)))} retorna la etiqueta de entrada m@'as reciente. 
+
+V@'ease tambi@'en: @code{inchar}, @code{outchar}, @code{linechar}, y @code{infolists}.
+
+@end deffn
+
+@c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
+@defvr {System variable} linenum
+El n@'umero de la l@'{@dotless{i}}nea del par de expresiones de entrada y salida actuales. 
+@end defvr
+
+@c NEEDS WORK
+@defvr {System variable} myoptions
+Valor por defecto: @code{[]}
+
+@code{myoptions} es la lista de todas las opciones que nunca fueron reconfiguradas por el usuario, aunque @'estas hayan sido reconfiguradas a su valor por defecto. 
+
+@end defvr
+
+@c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
+@c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
+@c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
+@defvr {Option variable} nolabels
+Valor por defecto: @code{false}
+
+@c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
+@c When @code{nolabels} is @code{true}, then no labels will be bound
+@c except for intermediate expression lines generated by the solve functions.  This is most
+@c useful in the batch mode where it eliminates the need to do
+@c @code{kill (labels)} in order to free up storage.
+
+Cuando el valor de @code{nolabels} es @code{true}, las etiquetas de entrada y salida son generadas pero no son agregadas a @code{labels}, la lista de todas las etiquetas de entrada y salida. 
+
+@code{kill (labels)} elimina las etiquetas de la lista @code{labels}, 
+pero no elimina ninguna etiqueta generada desde que @code{nolabels} fue configurada a @code{true}. 
+Al parecer este comportamiento no est@'a muy claro a@'un. 
+
+V@'ease tambi@'en: @code{batch}, @code{batchload} y @code{labels}. 
+
+@c PUT A CROSS REFERENCE IN DESCRIPTION OF labels WHEN STRANGE BEHAVIOR OF nolabels IS CLEARED UP !!!
+
+@end defvr
+
+@defvr {Option variable} optionset
+Valor por defecto: @code{false}
+
+Cuando @code{optionset} tiene como valor @code{true}, Maxima imprime un
+mensaje cada vez que una opci@'on de Maxima es reconfigurada. Esto es 
+muy @'util si el usuario duda con frecuencia de la correctitud de alguna
+opci@'on y quiere estar seguro de la variable a la que @'el asign@'o un
+valor fue verdaramente una variable opci@'on (o interruptor). 
+
+@end defvr
+
+@deffn {Funci@'on} playback ()
+@deffnx {Funci@'on} playback (@var{n})
+@deffnx {Funci@'on} playback ([@var{m}, @var{n}])
+@deffnx {Funci@'on} playback ([@var{m}])
+@deffnx {Funci@'on} playback (input)
+@deffnx {Funci@'on} playback (slow)
+@deffnx {Funci@'on} playback (time)
+@deffnx {Funci@'on} playback (grind)
+Muestra las entradas, salidas y expresiones intermedias 
+sin recalcularlas. 
+@code{playback} s@'olo muestra las expresiones asociadas con etiquetas; 
+cualquier otra salida (tal como texto impreso por @code{print} o @code{describe}, o mensajes de error) no es mostrada. 
+V@'ease tambi@'en: @code{labels}. 
+
+@code{playback} no evalua sus argumentos. 
+@c The double single quotes operator, @code{'@w{}'}, defeats quotation.
+@code{playback} siempre retorna @code{done}. 
+
+@code{playback ()} (sin argumentos) muestra todas las entradas, salidas y expresiones intermedias generadas hasta el momento. 
+Una expresi@'on de salida es mostrada incluso si @'esta fue suprimida por el caracter de terminaci@'on @code{$}, cuando fue originalmente calculada. 
+
+@code{playback (@var{n})}  muestra las @var{n} expresiones m@'as recientes. Cada entrada, salida y expresi@'on intermedia cuenta como una. 
+
+@code{playback ([@var{m}, @var{n}])} muestra entradas, salidas y expresiones intermedias con los n@'umeros desde @var{m} hasta @var{n}, ambos inclusive. 
+
+@code{playback ([@var{m}])} es equivalente a @code{playback ([@var{m}, @var{m}])};
+esto usualmente imprime un par de expresiones de entrada y salida. 
+
+@code{playback (input)} muestra todas las expresiones de entrada generadas hasta el momento. 
+
+@code{playback (slow)} hace pausas entre expresiones y
+espera a que el usuario pulse la tecla @code{enter} para continuar. 
+Esto es un comportamiento similar a @code{demo}. 
+
+@c WHAT DOES THE FOLLOWING MEAN ???
+@c HAY QUE ESPERAR PARA ACLARAR ESTA PARTE
+@code{playback (slow)} es muy @'util en conjunci@'on con @code{save} o
+@code{stringout} cuando se crea un archivo secundario de almacenamiento con el objetivo de elegir cuidadosamente las expresiones realmente @'utiles. 
+
+@c @code{playback (slow)} is useful in conjunction with @code{save} or @code{stringout}
+@c when creating a secondary-storage file in order to pick out useful expressions.
+
+@code{playback (time)} muestra el tiempo de computo por cada expresi@'on. 
+
+@c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
+@c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
+
+@code{playback (grind)} muestra las expresiones de entrada 
+en el mismo formato como la funci@'on @code{grind}. 
+Las expresiones de salida no se ven afectadas por la opci@'on 
+@code{grind}. 
+Vea @code{grind}. 
+
+Los argumentos pueden ser combinandos, e.g., 
+@code{playback ([5, 10], grind, time, slow)}.
+@c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
+
+@end deffn
+
+@deffn {Funci@'on} printprops (@var{a}, @var{i})
+@deffnx {Funci@'on} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Funci@'on} printprops (all, @var{i})
+Muestra la propiedad con el indicador @var{i} asociado 
+con el @'atomo @var{a}. @var{a} pueder ser tambi@'en una lista de
+@'atomos o el @'atomo @code{all} en cuyo caso todos los @'atomos a los cuales se les haya dado esa propiedad ser@'an usados. 
+Por ejemplo, @code{printprops ([f, g], atvalue)}. @code{printprops} es 
+para propiedades que no pueden ser mostradas de otra manera, i.e. para
+@code{atvalue}, @code{atomgrad}, @code{gradef}, y @code{matchdeclare}.
+
+@end deffn
+
+@defvr {Option variable} prompt
+Valor por defecto: @code{_}
+
+@code{prompt} es el s@'{@dotless{i}}mbolo del prompt de la funci@'on @code{demo}, 
+del modo @code{playback (slow)} y del bucle de interrupci@'on de Maxima (el que se invoca con @code{break}). 
+
+@end defvr
+
+@deffn {Funci@'on} quit ()
+Termina una sesi@'on de Maxima. 
+N@'otese que la funci@'on debe ser invocada como @code{quit();} o @code{quit()$}, no como @code{quit}. 
+
+Para parar un c@'alculo muy demorado 
+pulse @code{Control-C}. 
+La acci@'on por defecto es retornar a prompt de Maxima. 
+Si @code{*debugger-hook*} tiene como valor @code{nil},
+pulsar @code{Control-C} abrir@'a el depurador de Lisp. 
+Vea tambi@'en: @code{debugging}. 
+
+@end deffn
+
+@deffn {Funci@'on} reset ()
+Reconfigura muchas variables y opciones globales y algunas otras variables a sus valores por defecto. 
+
+@code{reset} procesa las variables que se encuentran en la lista Lisp 
+@code{*variable-initial-values*}. 
+La macro Lisp @code{defmvar} pone las variables en @'esta lista (entre otras acciones). 
+Muchas, pero no todas, las variables y opciones globales son definidas por @code{defmvar}, y algunas variables definidas por @code{defmvar} no son ni variables ni opciones globales. 
+
+@end deffn
+
+@defvr {Option variable} showtime
+Valor por defecto: @code{false}
+
+Cuando @code{showtime} tiene como valor @code{true}, el tiempo de computo y el tiempo transcurrido es impreso en cada expresi@'on de salida. 
+
+Vea tambi@'en: @code{time}, @code{timer}, and @code{playback}.
+
+@end defvr
+
+@c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
+@c THIS REALLY SEEMS LIKE A HACK
+@deffn {Funci@'on} sstatus (@var{feature}, @var{package})
+Configura el estado de @var{feature} en @var{package}. 
+Despu@'es de que @code{sstatus (@var{feature}, @var{package})} es 
+ejecutado @code{status (@var{feature}, @var{package})} retorna
+@code{true}. 
+Esto puede ser muy @'util para escritores de paquetes, con el 
+objetivo de conservar las pistas de que caracter@'{@dotless{i}}siticas han 
+cargado estos. 
+
+@end deffn
+
+@deffn {Function} to_lisp ()
+Entra en el int@'erprete Lisp bajo Maxima. @code{(to-maxima)} retorna de nuevo a Maxima. 
+
+@end deffn
+
+@defvr {System variable} values
+Valor inicial: @code{[]}
+
+@code{values} es una lista de todas las variables que el usuario ha creado (no constituye las opciones Maxima ni los interruptores). 
+La lista comprende los s@'{@dotless{i}}mbolos @code{:} , @code{::}, o @code{:=}.
+
+@end defvr
