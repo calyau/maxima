@@ -381,7 +381,7 @@ Debugging
 
 @node Expressions, Simplifica@value{cedilha}@~ao, Operadores, Top
 @chapter Expressions
-@include Expressions_pt.texi
+@include Expressions.texi
 
 @node Simplifica@value{cedilha}@~ao, Montando Gr@'aficos, Expressions, Top
 @chapter Simplifica@value{cedilha}@~ao
@@ -401,7 +401,7 @@ Debugging
 
 @node Contexts, Polin@^omios, Ponto Flutuante, Top
 @chapter Contexts
-@include Contexts_pt.texi
+@include Contexts.texi
 
 @node Polin@^omios, Constantes, Contexts, Top
 @chapter Polin@^omios
@@ -413,7 +413,7 @@ Debugging
 
 @node Logarithms, Trigonometria, Constantes, Top
 @chapter Logarithms
-@include Logarithms_pt.texi
+@include Logarithms.texi
 
 @node Trigonometria, Special Functions, Logarithms, Top
 @chapter Trigonometria
@@ -421,11 +421,11 @@ Debugging
 
 @node Special Functions, Orthogonal Polynomials, Trigonometria, Top
 @chapter Special Functions
-@include Special_pt.texi
+@include Special.texi
 
 @node Orthogonal Polynomials, Fun@value{cedilha}@~oes El@'ipticas, Special Functions, Top
 @chapter Orthogonal Polynomials
-@include SpecfunII_pt.texi
+@include SpecfunII.texi
 
 @node Fun@value{cedilha}@~oes El@'ipticas, Limites, Orthogonal Polynomials, Top
 @chapter Fun@value{cedilha}@~oes El@'ipticas
@@ -455,7 +455,7 @@ Debugging
 
 @node Numerical, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
 @chapter Numerical
-@include Numerical_pt.texi
+@include Numerical.texi
 
 @node Estat@'istica, Arrays e Tabelas, Numerical, Top
 @chapter Estat@'istica
@@ -475,11 +475,11 @@ Debugging
 
 @node itensor, ctensor, Fun@value{cedilha}@~oes Afins, Top
 @chapter itensor
-@include Itensor_pt.texi
+@include Itensor.texi
 
 @node ctensor, Pacote atensor, itensor, Top
 @chapter ctensor
-@include Ctensor_pt.texi
+@include Ctensor.texi
 
 @node Pacote atensor, S@'eries, ctensor, Top
 @chapter Pacote atensor
@@ -492,7 +492,7 @@ Debugging
 
 @node Number Theory, Symmetries, S@'eries, Top
 @chapter Number Theory
-@include Number_pt.texi
+@include Number.texi
 
 @node Symmetries, Grupos, Number Theory, Top
 @chapter Symmetries
@@ -512,7 +512,7 @@ Debugging
 
 @node Rules and Patterns, Listas, Op@value{cedilha}@~oes Diversas, Top
 @chapter Rules and Patterns
-@include Rules_pt.texi
+@include Rules.texi
 
 
 @node Listas, Sets, Rules and Patterns, Top
@@ -521,7 +521,7 @@ Debugging
 
 @node Sets, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Listas, Top
 @chapter Sets
-@include nset_pt.texi
+@include nset.texi
 
 @node Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fluxo de Programa, Sets, Top
 @chapter Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
@@ -533,7 +533,7 @@ Debugging
 
 @node Debugging, @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel, Fluxo de Programa, Top
 @chapter Debugging
-@include Debugging_pt.texi
+@include Debugging.texi
 
 @node @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel,  , Debugging, Top
 @chapter @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel
