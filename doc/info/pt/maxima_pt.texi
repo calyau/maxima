@@ -16,7 +16,7 @@
 
 @c %**start of header
 @setfilename  maxima_pt.info
-@documentencoding ISO-8859-1
+@documentencoding ISO-8859-15
 @set cedilha @,{c}
 @set i_agu @'i
 @set I_agu @'I
