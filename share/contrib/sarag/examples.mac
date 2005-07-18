@@ -1,0 +1,42 @@
+/*
+a : expand((2*x+1)*(3*x+2)*x^2);
+b : 2*x+1;
+*/
+/*
+extThomQR : thomSort(extThomEncoding(polQ,polR,x));
+extThomRQ : thomSort(extThomEncoding(polR,polQ,x));
+*/
+/* page 276 */
+page276 : 9*x^13-18*x^11-33*x^10+102*x^8+7*x^7-36*x^6-122*x^5+49*x^4+93*x^3-42*x^2-18*x+9;
+     
+test : x^4+a*x^2+b*x+c;
+
+/* Examples from the book */
+q : expand((x^3-1)*(x^2-9));
+p1 : x;
+p2 : x+1;
+p3 : x-2;
+
+
+ex1 : x^11-x^10+1;
+
+ex2 : 9*x^13-18*x^11-33*x^10+102*x^8+7*x^7-36*x^6-122*x^5+
+      49*x^4+93*x^3-42*x^2-18*x+9;
+
+ex3 : x^4+a*x^2+b*x+c;
+
+polP : expand((x+1)*(x-2));
+polQ : expand(x*(x-1));
+polR : expand(polP*(x-1));
+
+  
+HilbFunc(i,j) := 1/(i+j-1);
+Hilbert(n) := 
+  makelist(makelist(HilbFunc(i,j),i,1,n),j,1,n);
+
+
+
+m1 : make_array('any,3,3);
+m1[0,0] : 1;m1[0,1] : 2;m1[0,2] : 3;
+m1[1,0] : 4;m1[1,1] : 5;m1[1,2] : 6;
+m1[2,0] : 7;m1[2,1] : 8;m1[2,2] : 9;

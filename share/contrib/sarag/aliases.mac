@@ -1,0 +1,129 @@
+/* --------------------------------------------------- */
+/* High level aliases */
+/* --------------------------------------------------- */
+
+/* --------------------------------------------------- */
+/* Determinant */
+det(A) := gaussDet(A); /* Bareiss is experimental */
+
+elim(A) := gaussElim(A);
+
+/* --------------------------------------------------- */
+/* Characteristic polynomial */
+
+charPol(A,var) := babyGiantCharPol(A,var);
+
+/* --------------------------------------------------- */
+/* Cauchy Index */
+
+cauchyIndexBetween(q,p,var,a,b) :=
+  sSubResCauchyIndexBetween(q,p,var,a,b);
+
+cauchyIndex(q,p,var) :=
+  sSubResCauchyIndexAllR(q,p,var);
+
+tarskiQueryBetween(q,p,var,a,b) :=
+  sSubResTarskiQueryBetween(q,p,var,a,b);
+
+tarskiQuery(q,p,var) :=
+  sSubResTarskiQueryAllR(q,p,var);
+
+numberOfRootsBetween(p,var,a,b) :=
+  sSubResNumberOfRootsBetween(p,var,a,b);
+
+sSubResNumberOfRoots(p,var) :=
+  sSubResNumberOfRootsAllR(p,var);
+
+numberOfRoots(p,var) :=
+  sSubResNumberOfRootsAllR(p,var);
+
+/* --------------------------------------------------- */
+/* Real root isolation */
+
+
+isolateRoots(pol,var) :=
+  deCasteljauIsolateRoots(pol,var);
+
+
+rootsSign(isLst,isPol,sgnPol,var) :=
+  deCasteljauRootsSign(isLst,isPol,sgnPol,var);
+
+compareRoots(p,q,var) :=
+  deCasteljauCompareRoots(p,q,var);
+
+/* --------------------------------------------------- */
+/* Sign determination */
+
+signDetermination(polList,ptSet,sqAlg,var) :=
+  smartSignDetermination(polList,ptSet,sqAlg,var);
+
+
+
+/* --------------------------------------------------- */
+/* Dummy variables                                     */
+
+
+/* Extra x */
+charPolDummy(m) :=
+  charPol(m,x);
+
+sSubResDummy(p,q) :=
+  sSubRes(p,q,x);
+
+sRemCauchyIndexDummy(q,p) :=
+  sRemCauchyIndex(q,p,x);
+
+sRemTarskiQueryDummy(q,p) :=
+  sRemTarskiQuery(q,p,x);
+
+cauchyIndexDummy(q,p) :=
+  cauchyIndex(q,p,x);
+
+tarskiQueryDummy(q,p) :=
+  tarskiQuery(q,p,x);
+
+numberOfRootsDummy(p) :=
+  numberOfRoots(p,x);
+
+posNegDiffDummy(p) :=
+  posNegDiff(p,x);
+
+sSubResNumberOfRootsDummy(p) :=
+  sSubResNumberOfRoots(p,x);
+
+isolateRootsDummy(pol) :=
+  isolateRoots(pol,x);
+
+deCasteljauCompareRootsDummy(p,q) :=
+  deCasteljauCompareRoots(p,q,x);
+
+thomEncodingDummy(p) :=
+  thomEncoding(p,x);
+
+thomCompareDummy(p,q) :=
+  thomCompare(p,q,x);
+
+cauchyRootUpperBoundDummy(p) :=
+  cauchyRootUpperBound(p,x);
+
+cauchyRootLowerBoundDummy(p) :=
+  cauchyRootLowerBound(p,x);
+
+primeCauchyRootUpperBoundDummy(p) :=
+  primeCauchyRootUpperBound(p,x);
+
+primeCauchyRootLowerBoundDummy(p) :=
+  primeCauchyRootLowerBound(p,x);
+
+
+/* Extra x and first */
+sRemDummyFirst(p,q) :=
+  first(sRem(q,p,x));
+
+sSubResDummyFirst(p,q) :=
+  first(sSubRes(p,q));
+
+/* Extra array2singleList */
+getCoeffFromNewtonList(ns) :=
+  array2singleList(getCoeffFromNewton(ns));
+

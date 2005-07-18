@@ -1,0 +1,679 @@
+/* ---------------------------------------------------------------- */
+/* SARAG - Sign Determination                                       */
+/* by Fabrizio Caruso                                               */
+
+
+/* Auxiliary floor function */
+floor(x) := 
+  fix(x);
+
+/* Auxiliary ceiling function */
+ceiling(x) :=
+  if x=float(fix(x)) then 
+     fix(x)
+  else 
+     fix(x)+1;
+
+/* Uncenter the modulo reppresentation */
+/* It works for both odd and even positive integer m */
+uncenter(x,m) :=
+  if(x >= 0) then
+     x
+  else
+     m + x;
+
+/* ----------------------------------------------------------- */
+/* Realization of sign conditions                              */
+
+ceilFract(num,den) :=
+  block([i],
+   i : 1,
+   while(i*den<num) do
+     i: i+1,
+   return(i)
+   );
+
+/* Auxiliary block matrix computation */
+/* defined for blocks of same size    */
+/* */
+/* nRows,nCols : number of rows/cols of the result */
+/* nBlockRows, nBlockCols : number of rows/cols in the blocks */
+/* inBlockRowIndex, inBlockColIndex : row/col in the block */
+blockMatrix(descr) :=
+  block([nRows,rCols,nBlockRows, nBlockRows,i,j,rowRes,res,
+         blockRow,blockCol,inBlockRows, inBlockCols,
+         inBlockRowIndex,inBlockColIndex],
+     nBlockRows : length(descr),
+     nBlockCols : length(first(descr)),
+     inBlockRows : length(first(first(descr))),
+     nRows : nBlockRows*inBlockRows,
+     inBlockCols : length(first(first(first(descr)))),
+     nCols : nBlockCols*inBlockCols,
+     res : [],
+ 
+     for i : 1 thru nRows do
+       (
+       rowRes : [],
+       for j : 1 thru nCols do
+         (
+         blockRow : ceilFract(i,inBlockRows),
+         blockCol : ceilFract(j,inBlockCols),
+
+         if inBlockRows = 1 then
+            inBlockRowIndex : 1
+         else
+            inBlockRowIndex : uncenter(mod(i-1,inBlockRows),inBlockRows)+1,
+         
+         if inBlockCols = 1 then
+            inBlockColIndex : 1
+         else
+            inBlockColIndex : uncenter(mod(j-1,inBlockCols),inBlockRows)+1,
+
+         rowRes : endcons(
+                  descr[blockRow][blockCol][inBlockRowIndex][inBlockColIndex],
+                  rowRes)
+         ),
+       res : endcons(rowRes,res)
+       ),
+     return(res)
+     );
+     
+
+     
+/* Matrix tensor product */
+/* Notation as in Notation 2.63 */
+tensorProduct(m,mPrime) :=
+  block([i,j,nBlockRows,nBlockCols,bm],
+    nBlockRows : length(mPrime),
+    nBlockCols : length(first(mPrime)),
+    bm : makeList(makeList(mPrime[i][j]*m,j,1,nBlockCols),i,1,nBlockRows),
+    return(blockMatrix(bm))
+    );
+
+
+
+/* Matrix of signs for the case Sign(P,Z) = {-1,1} */
+matrixOfSignsForOnePolyNonZero :
+  [[1,1],[1,-1]];
+
+/* Matrix of signs for the case Sign(P,Z) = {0,1}  */
+matrixOfSignsForOnePolyNonNegative :
+  [[1,1],[0,1]];
+
+/* Matrix of signs for the case Sign(P,Z) = {0,-1} */
+matrixOfSignsForOnePolyNonPositive :
+  [[1,1],[0,-1]];
+
+
+/* Matrix of signs for one polynomial */
+matrixOfSignsForOnePolyAllSigns : 
+  [[1,1,1],[0,1,-1],[0,1,1]];
+
+/* Matrix of signs of P^A */
+naiveMatrixOfSigns(nPols) :=
+  if nPols = 1 then
+    matrixOfSignsForOnePolyAllSigns
+  else
+    tensorProduct(naiveMatrixOfSigns(nPols-1),
+                  matrixOfSignsForOnePolyAllSigns);
+
+
+
+/* It produces the product coefficient terms  */
+/* i.e. the terms of the coefficients of the products */
+composeVector(lhs,rhs) :=
+  block([lhsLen,rhsLen,i,j,prodRes,listRes],
+    lhsLen : length(lhs),
+    rhsLen : length(rhs),
+    listRes : [],
+    for i : 1 thru rhsLen do
+      (
+      for j : 1 thru lhsLen do
+         (
+         prodRes : lhs[j]*rhs[i],
+         listRes : endcons(prodRes,listRes)
+         )
+      ),
+    return(listRes)
+    );
+
+
+
+/* Auxiliary function */
+tarskiQueryComposition(polList) :=
+  block([i,j,res,prodRes,card],
+   if length(polList) = 1 then
+     [1,polList[1],polList[1]^2]
+   else
+     return(composeVector([1,first(polList),first(polList)^2],
+                            tarskiQueryComposition(rest(polList)))
+                          )
+   );
+
+
+/* Tarski Query Vector */
+/* In the book: SQ(P^a,Z) */
+/* tarskiQueryAlg can be for instance : sSubResTarskiQueryAllR(Q,P,var) */
+naiveTarskiQueryVector(polList,ptSet,tarskiQueryAlg,var) :=
+  block([sQConv, res],
+ 
+    sQConv : tarskiQueryComposition(reverse(polList)),
+
+    res : map(lambda([y],tarskiQueryAlg(expand(y),expand(ptSet),var)),
+         sQConv),
+
+    return(res)
+    );
+
+
+/* Notation in the book : */
+/* SQ(P,Z) := #{x in Z | P(x)>0} - #{x in Z | P(x)<0} */
+/* SQ(Q,P) := #{x in R | P(x)=0 and Q(x) > 0 } -      */
+/*            #{x in R | P(x)=0 and Q(x) < 0 }        */
+sSubResTarskiQueryForSignDet(P,ptSet,var) :=
+  sSubResTarskiQueryAllR(P,ptSet,var);
+
+
+
+
+
+/* Naive Sign Determination */
+naiveSignDetermination(polList,ptSet,sqAlg,var) :=
+  naiveSignConv(solveSys(naiveMatrixOfSigns(length(polList)),
+                naiveTarskiQueryVector(polList,ptSet,sqAlg,var),LINEAR_SOLVER));
+
+
+
+collectSimilarAux(item,checkList,newCheckList,res) :=
+ if checkList=[] then
+   [res,newCheckList]
+ else
+   if rest(item)=rest(first(checkList)) then
+     collectSimilarAux(item,rest(checkList),
+                       rest(newCheckList),endcons(first(checkList),res))
+   else
+     collectSimilarAux(item,rest(checkList),
+                       newCheckList,res);
+
+collectSimilar(item,checkList) :=
+  collectSimilarAux(item,checkList,checkList,[]);
+
+
+extractExt(extSignDet) :=
+  block([signList,listLen,item,simRes,simList,ext2,ext3],
+   signList : extSignDet,
+   ext2 : [],
+   ext3 : [],
+   while not(signList=[]) do
+      (
+
+      listLen : length(signList),
+      item : first(signList),
+
+      signList : rest(signList),
+      simRes : collectSimilar(item,signList),
+      simList : simRes[1],
+      signList : simRes[2],
+
+      if length(simList)>=1 then
+        ext2 : endcons(rest(item),ext2),
+      if length(simList)=2 then
+        ext3 : endcons(rest(item),ext3)
+
+     ),
+   return([ext2,ext3])
+   );
+
+signs2exps(signCondList) := signCondListConv(signCondList);
+
+exps2signs(exps) := signCondListBackConv(exps);
+
+signConv(singleSign) :=
+  if singleSign = -1 then
+    2
+  else
+    singleSign;
+
+signCondConv(signList) :=
+  map(signConv,signList);
+
+signCondListConv(signCondList) :=
+  map(signCondConv,signCondList);
+
+signBackConv(singleSign) :=
+  if singleSign = 2 then 
+    -1 
+  else
+    singleSign;
+
+signCondBackConv(signList) :=
+  map(signBackConv,signList);
+
+signCondListBackConv(signCondList) :=
+  map(signCondBackConv,signCondList);
+
+genExp(base,expo) :=
+  if base=0 and expo = 0 then
+    1
+  else
+    base^expo;
+
+signAt(signCond,adaExp) :=
+  Product(genExp(signCond[i],adaExp[i]),i,1,length(signCond));
+
+
+matrixOfSigns(adaExpList,signCondList) := 
+ block([i,j,nSigns,nExp,newRow,res],
+   nSigns : length(signCondList),
+   nExp : length(adaExpList),
+   signCondList : signCondListBackConv(
+                      sort(signCondListConv(signCondList))),
+   adaExpList : sort(adaExpList),
+
+   res : [],
+   for i : 1 thru nExp do
+     (
+     
+     newRow : makeList(signAt(signCondList[j],adaExpList[i]),j,1,nSigns),
+     res : endcons(newRow,res)
+     ),
+   return(res)
+   );
+
+
+
+tarskiQueryVector(adaExpList,polList,var,sqAlg,ptSet) :=
+  block([i,j,y],
+  adaExpList : sort(adaExpList),
+  return(
+         map(lambda([y],sqAlg(expand(y),expand(ptSet),var)),
+          makelist(           
+           Product(polList[i]^adaExpList[j][i],
+           i,1,length(polList)),j,1,length(adaExpList))))
+  );
+
+extendByOneExponent(newExp,oldExpList) :=
+  if oldExpList = [] then
+    []
+  else
+    sort(makelist(cons(newExp,oldExpList[i]),i,1,length(oldExpList)));
+
+
+extendExponents(newExpList,oldExpList) :=
+  block([i,j,res],
+  res : [],
+  if length(newExpList) = 0 then
+    return(oldExpList),
+  if length(oldExpList) = 0 then
+    return(makelist([newExpList[i]],i,1,length(newExpList))),
+  for i : 1 thru length(newExpList) do
+    for j : 1 thru length(oldExpList) do
+      res : cons(cons(newExpList[i],oldExpList[j]),res),
+  return(sort(res))
+  );
+
+
+extendSigns(newSgnList,oldSgnList) :=
+  exps2signs(extendExponents(signCondConv(newSgnList),signs2exps(oldSgnList)));
+
+
+
+extendAdaptedFamily(extSignDet,ada) :=
+  block([ext2,ext3,r1,r2,r3,m2,m3,ada2,ada3,extRes,trN,i,j,indList],
+  if extSignDet=[] then
+     return(ada),
+  if length(extSignDet[1])=1 then
+     if length(extSignDet)= 1 then
+       return([[0]])
+     else
+        if length(extSignDet)=2 then
+          return([[0],[1]])
+        else
+          return([[0],[1],[2]]),
+  extRes : extractExt(extSignDet),
+  
+  ext2 : extRes[1],
+  ext3 : extRes[2],
+
+  r2 : length(ext2),
+  r3 : length(ext3),
+  m2 : matrixOfSigns(ada,ext2),
+  trM : gaussElim(m2),
+  i : 1,
+  indList : [],
+  while length(indList) < r2 do
+    (
+    if not(member(i,trM[3])) then
+      indList : endcons(i,indList),
+    i : i +1
+    ),
+  ada2 : makelist(ada[indList[j]],j,1,r2),
+ 
+  m3 : matrixOfSigns(ada,ext3),
+  trM : gaussElim(m3),
+  i : 1,
+  indList : [],
+  while length(indList) < r2 do
+    (
+    if not(member(i,trM[3])) then
+      indList : endcons(i,indList),
+    i : i +1
+    ),
+ ada3 : makelist(ada[indList[j]],j,1,r3),
+
+
+  return(sort(append(extendByOneExponent(0,ada),
+                     extendByOneExponent(1,ada2),
+                     extendByOneExponent(2,ada3))))
+  
+  );
+
+
+smartSignDetermination(polList,ptSet,sqAlg,var) :=
+  block([sqOne,sqPexp1,sqPexp2,cVect,i,j,
+         nPols,adaOnePoly,sgnsOnePoly,sgns,oldSgns,allSgns,
+         nSigns,solOne,mtx,mtxOnePoly,ada,
+         extMtx,extSysSol,sqVect,solExt],
+   sqOne : sqAlg(1,ptSet,var),
+   
+   if sqOne = 0 then
+     return([]),
+   nPols : length(polList),
+   ada : [],
+   sgns : [], oldSgns : [],
+   for i : nPols thru 1 step -1 do
+      (
+      sqPexp1 : sqAlg(polList[i],ptSet,var),
+      
+      sqPexp2 : sqAlg(expand(polList[i]^2),ptSet,var),
+      solOne : solveSys(matrixOfSignsForOnePolyAllSigns,
+               [sqOne,sqPexp1,sqPexp2],LINEAR_SOLVER),
+      if solOne[1]>0 then
+         sgnsOnePoly : [0]
+      else 
+         sgnsOnePoly : [],
+      if solOne[2]>0 then
+         sgnsOnePoly : endcons(1,sgnsOnePoly),
+      if solOne[3]>0 then
+         sgnsOnePoly : endcons(-1,sgnsOnePoly), 
+      nSigns : length(sgnsOnePoly),
+      adaOnePoly : makelist(j,j,0,nSigns-1),
+      mtxOnePoly : matrixOfSigns(makelist([adaOnePoly[j]],
+                                          j,1,length(adaOnePoly)),
+                                 makelist([sgnsOnePoly[j]],
+                                          j,1,length(sgnsOnePoly))),
+      if i < nPols then
+         (
+
+         sqVect : tarskiQueryVector(extendExponents(adaOnePoly,ada),
+                                   makelist(polList[j],j,i,nPols),
+                                   var,sqAlg,ptSet), 
+
+         extMtx : tensorProduct(mtx,mtxOnePoly), 
+
+         solExt : solveSys(extMtx,sqVect,LINEAR_SOLVER),
+
+         allSigns : extendSigns(sgnsOnePoly,sgns),
+
+         sgns : [],
+         for j : 1 thru length(allSigns) do
+           if not(solExt[j] = 0) then
+              sgns : endcons(allSigns[j],sgns),
+
+         ada : extendAdaptedFamily(sgns,ada),
+
+         mtx : matrixOfSigns(ada,sgns)  
+ 
+         )
+      else
+         (
+         sgns : makelist([sgnsOnePoly[j]],j,1,length(sgnsOnePoly)),
+         mtx : mtxOnePoly,
+         ada : makelist([adaOnePoly[j]],j,1,length(adaOnePoly))
+         )
+     
+      ),
+   return(sgns)
+   );
+
+
+log3aux(n,c) :=
+  if 3^c = n then
+    c
+  else
+    if c>n then 
+      FALSE
+    else
+      log3aux(n,c+1);
+
+log3(n) := log3aux(n,0);
+
+naiveSignConv(naiveSignList) := 
+  block([res,i,j,nPols,tsign,tpol,item,propag,copyItem],
+   nPols : log3(length(naiveSignList)),
+   res : [],
+   tpol : nPols,
+   tsign : 0,
+   item : makelist(0,i,1,nPols),
+   for i : 1 thru length(naiveSignList) do
+     (
+     if tsign = 3 then
+       ( 
+       tsign : 0, 
+       propag : FALSE,
+       prInd : nPols-1,
+       while not(propag) do
+         (
+         if item[prInd] < 2 then
+           (
+           item[prInd] : item[prInd]+1,
+           propag : TRUE
+           )
+         else
+           (
+           item[prInd] : 0,
+           prInd : prInd-1
+           )
+         )
+     ),
+     if naiveSignList[i] > 0 then
+        (
+        copyItem : copylist(item),
+
+        res : cons(copyItem,res)
+        ),
+     tsign : tsign+1,
+
+      
+     item[nPols] : tsign
+     ),
+   return(exps2signs(res))
+   );
+
+
+
+adaptedFamily(signDet) :=
+  block([partSignDet,i,partAda],
+  numPols : length(signDet[1]),
+
+  for i : numPols thru 1 step - 1 do
+    (
+    partSignDet : map(lambda([x],rest(x,i-1)),signDet),
+
+    if i = numPols then
+      partAda : makelist([i],i,0,length(partSignDet)-1)
+    else
+      partAda : extendAdaptedFamily(partSignDet,partAda)
+
+    ),
+  return(partAda)
+  );
+      
+/* -------------------------------------------------- */
+/* Thom Encoding related-functions                    */
+
+
+/* Thom Encoding sorting */
+
+thomLess(lhs,rhs) :=
+  thomLessAux(rest(lhs,-1),rest(rhs,-1),last(lhs));
+
+
+thomLessAux(lhs,rhs,lastSgn) :=
+  if lhs = [] and rhs = [] then
+     FALSE
+  else
+    if last(lhs)=last(rhs) then
+      thomLessAux(rest(lhs,-1),rest(rhs,-1),last(lhs))
+    else
+      if lastSgn=1 then
+         if last(lhs)<last(rhs) then
+            TRUE
+         else
+            FALSE
+      else
+         if last(lhs)<last(rhs) then
+            FALSE
+         else
+            TRUE;
+
+thomSort(thomList) :=
+  sort(thomList,thomLess);
+
+
+/* Thom Encoding */
+thomEncoding(pol,var) :=
+   signDetermination(rest(derSeq(pol,var)),pol,
+                                    sSubResTarskiQueryAllR,var);
+
+
+extThomEncoding(p,q,var) :=
+  signDetermination(append(derSeq(q,var),rest(derSeq(p,var))),
+                         p,sSubResTarskiQueryAllR,var);
+
+/* Merge two thom-sorted encodings and remove duplicates */
+thomMerge(lhs,rhs) :=
+  block([i,j,k,lhsLen,rhsLen,res],
+  lhsLen : length(lhs),
+  rhsLen : length(rhs),
+  i : 1,
+  j : 1,
+  res : [],
+  while (i<= lhsLen) and (j<= rhsLen) do
+    (
+
+    if thomLess(lhs[i],rhs[j]) then
+      (
+      res : endcons(lhs[i],res),
+      i : i + 1
+      )
+    else
+      if lhs[i]=rhs[j] then
+        (
+        res : endcons(lhs[i],res),
+        i : i + 1,
+        j : j + 1
+        )
+      else
+        (
+        res : endcons(rhs[j],res),
+        j : j + 1
+        )
+     ),
+  if i<= lhsLen then
+    res : append(res, makelist(lhs[k],k,i,lhsLen))
+  else 
+     if j <= rhsLen then
+        res : append(res, makeList(rhs[k],k,j,rhsLen)),
+  return(res)
+       
+ );
+
+
+extThomMerge(lhs,degLhs,rhs,degRhs) :=
+  block([i,j,k,lhsLen,rhsLen,res,lhsComm,rhsComm,
+         lhsSign,lhsSignAtRhs,rhsSign,rhsSignAtLhs,numOfSigns],
+  lhsLen : length(lhs),
+  rhsLen : length(rhs),
+  numOfSigns : degLhs + degRhs+1,
+  i : 1,
+  j : 1,
+  res : [],
+  while (i<= lhsLen) and (j<= rhsLen) do
+    (
+    lhsSign : makelist(lhs[i][k],k,degRhs+2,numOfSigns),
+    lhsComm : lhs[i][1],
+    lhsSignAtRhs : makelist(lhs[i][k],k,2,degRhs+1),
+
+    rhsSign : makelist(rhs[j][k],k,degLhs+2,numOfSigns),
+    rhsComm : rhs[j][1],
+    rhsSignAtLhs : makelist(rhs[j][k],k,2,degLhs+1),
+
+
+    if lhsComm=0 then
+       (
+        res : endcons([0,lhsSign,rhsSign],res),
+        i : i + 1,
+        j : j + 1
+        )
+    else
+       if not(lhsSign=rhsSignAtLhs) then
+         if thomLess(lhsSign,rhsSignAtLhs) then
+           (
+           res : endcons([1,lhsSign],res),
+           i : i + 1
+           )
+         else
+           (
+           res : endcons([2,rhsSign],res),
+           j : j + 1
+           )
+       else
+         if thomLess(rhsSign,lhsSignAtRhs) then
+           (
+           res : endcons([2,rhsSign],res),
+           j : j + 1
+           )
+         else
+           (
+           res : endcons([1,lhsSign],res),
+           i : i + 1
+           )
+     
+       
+     ), /* end while */
+
+  if i<= lhsLen then
+    res : append(res, makelist([1,
+                         makelist(lhs[k][j],j,degRhs+2,numOfSigns)],
+                      k,i,lhsLen))
+  else 
+     if j <= rhsLen then
+        res : append(res, makelist([2,
+                             makelist(rhs[k][j],j,degLhs+2,numOfSigns)],
+                          k,j,rhsLen)),
+return(res)       
+ );
+
+
+/* It verifies whether a root of p is a common root */
+/* with the polynomial used for the extended Thom encoding */
+thomComm(pol,var,extThomEnc) :=
+  if(extThomEnc[degree(pol,var)+1]=0) then
+    TRUE
+  else
+    FALSE;
+
+
+/* Root Comparison */
+thomCompare(p,q,var) :=
+  block([pSign,qSign],
+
+  pSign : thomSort(extThomEncoding(p,q,var)),
+  qSign : thomSort(extThomEncoding(q,p,var)),
+
+  return(extThomMerge(pSign,degree(p,var),qSign,degree(q,var)))
+
+  );
+
+

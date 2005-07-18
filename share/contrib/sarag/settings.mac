@@ -1,0 +1,14 @@
+/* Prime for modular square-freeness test */
+MOD_TEST_PRIME : 2;
+
+/* Verbosity level */
+DEFAULT_VERBOSITY : 0; /* non-verbose */
+
+/* Linear solver (used in naive sign determination) */
+LINEAR_SOLVER : linsolve;
+
+/* Assume expanded polynomial input in main functions */
+ASSUME_EXPANDED : FALSE;
+
+/* Coefficients normal form in sSubRes and similar algorithms */
+NORM_ALGORITHM : lambda([x],ratexpand(x));

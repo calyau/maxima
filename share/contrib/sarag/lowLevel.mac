@@ -1,0 +1,71 @@
+/* ------------------------------------------------------------------- */
+/* SARAG - Low Level Routines                                          */
+/* by Fabrizio Caruso                                                  */
+
+
+/* It expands a polynomial if ASSUME_EXPANDED is FALSE */
+expandIf(pol)::=
+  buildq([pol],
+  if ASSUME_EXPANDED then
+    pol
+  else
+    expand(pol));
+
+
+
+/* Degree of a polynomial (MACRO) */
+
+degree(poly,indet) ::=
+  buildq([poly,indet],if poly = 0 then -1 else hipow(poly,indet));
+
+
+/* Leading coefficient of a polynomial */
+leadCoeff(poly,indet)::=
+   buildq([poly,indet],
+          ratcoeff(poly,indet,hipow(poly,indet)));
+
+
+/* Leading term of a polynomial */
+leadTerm(poly,indet)::=
+   buildq([poly,indet],
+          indet^degree(poly,indet));
+
+/* Leading monomial of a polynomial */
+leadMono(poly,indet)::=
+   buildq([poly,indet],
+          leadCoeff(poly,indet)*leadTerm(poly,indet));
+
+/* Tail of a polynomial */
+Tail(poly,indet) ::=
+   buildq([poly,indet],
+          poly-leadMono(poly,indet));
+
+
+/* Sign function */
+
+sgn(val) ::=
+  buildq([val], if val = 0 then 0 else if val < 0 then -1 else 1); 
+
+
+/* Array-related routines */
+
+/* Number of dimensions */
+numOfDim(ar) :=
+  second(arrayinfo(ar));
+
+/* Array length */
+arrayLength(ar) :=
+  first(third(arrayinfo(ar)))+1;
+
+/* Number of rows */
+numOfRows(ar) :=
+  first(third(arrayinfo(ar)))+1;
+
+/* Number of columns */
+numOfCols(ar) :=
+  second(third(arrayinfo(ar)))+1;
+
+/* It makes a polynomial out of a list */
+list2poly(lst,var) :=
+  sum(lst[i]*var^(i-1),i,1,length(lst));
+

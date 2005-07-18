@@ -1,0 +1,27 @@
+
+/*
+dir : "./sarag_0.0.1/";
+*/
+dir : "./sarag/";
+
+modLoad(modName) :=
+  load(concat(dir,modName));
+modLoad("constants.mac");
+  
+modLoad("settings.mac");
+
+modLoad("aliases.mac");
+
+modLoad("lowLevel.mac");
+
+modLoad("linearAlgebra.mac");
+
+modLoad("rootCounting.mac");
+
+modLoad("rootIsolation.mac");
+
+modLoad("signDetermination.mac");
+
+modLoad("examples.mac");
+
+
