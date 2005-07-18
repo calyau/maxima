@@ -1,6 +1,4 @@
-* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Elipticas e Integrais::
-* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Elipticas::
-* Defini@value{cedilha}@~oes para Integrais Elipticas::
+
 
 \input texinfo
 @c -*-texinfo-*-
@@ -18,14 +16,18 @@
 
 @c %**start of header
 @setfilename  maxima_pt.info
-@documentencoding ISO-8859-15
+@documentencoding ISO-8859-1
 @set cedilha @,{c}
+@set i_agu @'i
+@set I_agu @'I
+@set a_til @~a
+@set a_agu @'a
 @synindex vr fn
 @settitle Manual do Maxima
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
-This is a Texinfo Maxima Manual
+Esse @'e um Manual do Maxima no formato Texinfo
 
 Copyright 1994,2001 William F. Schelter
 
@@ -81,7 +83,7 @@ Infraestrutura do Maxima
 * Simplifica@value{cedilha}@~ao:: 		Simplificando express@~oes.
 * Montando Gr@'aficos::         	Sa@'idas gr@'aficas em 2D e 3D.
 * Entrada e Sa@'ida::           	Entrada e sa@'ida de arquivos.
-* Ponto Flutuante::              Rotinas num@'ericas de baixo n@'ivel.
+* Ponto Flutuante::             Rotinas num@'ericas de baixo n@'ivel.
 * Contexts::                    Conjunto de fatos assumidos.
 
 Suporte a @'areas espec@'ificas da matem@'atica
@@ -96,13 +98,13 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Special Functions::           Fun@value{cedilha}@~oes especiais
 * Orthogonal Polynomials::      Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
 
-* Fun@value{cedilha}@~oes Elipticas::          Fun@value{cedilha}@~oes Elipticas e Integrais
+* Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao:: 		C@'alculo diferencial.
 * Integra@value{cedilha}@~ao::  		C@'alculo integral.
 * Equa@value{cedilha}@~oes::    		Definindo e resolvendo equa@value{cedilha}@~oes.
-* Equa@value{cedilha}@~oes Diferenciais::      Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
-* Numerical::                   Integra@,{c}@~ao num@'erica, transforma@value{cedilha}@~oes
+* Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
+* Numerical::                   Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
 * Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
 * Arrays e Tabelas::            Criando e trabalhando com arrays.
@@ -111,14 +113,14 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * itensor::                     Manipula@value{cedilha}@~ao de @'indice de Tensores.
 * ctensor::                     Manipula@value{cedilha}@~ao de componentes de Tensores.
 * Pacote atensor::              Manipula@value{cedilha}@~ao de Tensores Alg@'ebricos.
-* Series::                      Taylor e s@'eries de pot@^encia.
+* S@'eries::                      Taylor e s@'eries de pot@^encia.
 * Number Theory::               Teoria dos n@'umeros.
 * Symmetries::                  Reflex@~oes, rota@value{cedilha}@~oes, transla@value{cedilha}@~oes, etc
-* Grupos::                     @'Algebra Abstrata.
+* Grupos::                      @'Algebra Abstrata.
 
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
-* Tempo de Execu@value{cedilha}@~ao::         Customiza@value{cedilha}@~ao do ambiente Maxima.
+* Tempo de Execu@value{cedilha}@~ao::           Customiza@value{cedilha}@~ao do ambiente Maxima.
 * Op@value{cedilha}@~oes Diversas:: 		Op@value{cedilha}@~oes com efeito global sobre o Maxima.
 * Rules and Patterns::          Coincid@^encia de express@~oes definidas pelo 
 				usu@'ario e regras de simplifica@value{cedilha}@~ao.
@@ -128,10 +130,9 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 * Fluxo de Programa::           Definindo programas do Maxima.
 * Debugging::                   Depurando programas do Maxima.
 
-@'Indice
+@value{I_agu}ndice
 
-* @'Indice de Fun@value{cedilha}@~ao e Vari@'avel:: @'Indice.
-
+* @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel:: @value{I_agu}ndice. 
 @comment @detailmenu
  --- Listagem de Nodos Detalhada ---
 
@@ -221,11 +222,11 @@ Orthogonal Polynomials
 * Introduction to Orthogonal Polynomials::
 * Definitions for Orthogonal Polynomials::
 
-Fun@value{cedilha}@~oes Elipticas
+Fun@value{cedilha}@~oes El@'ipticas
 
-* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes Elipticas e Integrais::
-* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Elipticas::
-* Defini@value{cedilha}@~oes para Integrais Elipticas::
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'ipticas e Integrais::
+* Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'ipticas::
+* Defini@value{cedilha}@~oes para Integrais El@'ipticas::
 
 Limites
 
@@ -290,10 +291,10 @@ Pacote atensor
 * Introdu@value{cedilha}@~ao ao Pacote atensor::
 * Defini@value{cedilha}@~oes para o Pacote atensor::
 
-Series
+S@'eries
 
-* Introduction to Series::      
-* Definitions for Series::      
+* Introdu@value{cedilha}@~ao a S@'eries::      
+* Defini@value{cedilha}@~oes para S@'eries::      
 
 Number Theory
 
@@ -422,15 +423,15 @@ Debugging
 @chapter Special Functions
 @include Special_pt.texi
 
-@node Orthogonal Polynomials, Fun@value{cedilha}@~oes Elipticas, Special Functions, Top
+@node Orthogonal Polynomials, Fun@value{cedilha}@~oes El@'ipticas, Special Functions, Top
 @chapter Orthogonal Polynomials
 @include SpecfunII_pt.texi
 
-@node Fun@value{cedilha}@~oes Elipticas, Limites, Orthogonal Polynomials, Top
-@chapter Fun@value{cedilha}@~oes Elipticas
+@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Orthogonal Polynomials, Top
+@chapter Fun@value{cedilha}@~oes El@'ipticas
 @include Elliptic_pt.texi
 
-@node Limites, Diferencia@value{cedilha}@~ao, Fun@value{cedilha}@~oes Elipticas, Top
+@node Limites, Diferencia@value{cedilha}@~ao, Fun@value{cedilha}@~oes El@'ipticas, Top
 @chapter Limites
 @include Limits_pt.texi
 
@@ -480,16 +481,16 @@ Debugging
 @chapter ctensor
 @include Ctensor_pt.texi
 
-@node Pacote atensor, Series, ctensor, Top
+@node Pacote atensor, S@'eries, ctensor, Top
 @chapter Pacote atensor
 @include Atensor_pt.texi
 
-@node Series, Number Theory, Pacote atensor, Top
-@chapter Series
+@node S@'eries, Number Theory, Pacote atensor, Top
+@chapter S@'eries
 @include Series_pt.texi
 
 
-@node Number Theory, Symmetries, Series, Top
+@node Number Theory, Symmetries, S@'eries, Top
 @chapter Number Theory
 @include Number_pt.texi
 
@@ -530,12 +531,12 @@ Debugging
 @chapter Fluxo de Programa
 @include Program_pt.texi
 
-@node Debugging, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
+@node Debugging, @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel, Fluxo de Programa, Top
 @chapter Debugging
 @include Debugging_pt.texi
 
-@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Debugging, Top
-@chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
+@node @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel,  , Debugging, Top
+@chapter @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel
 @include Indices_pt.texi
 
 @c end includes
