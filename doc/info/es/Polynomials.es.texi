@@ -463,7 +463,7 @@ convirtiendo n@'umeros de punto flotante a n@'umeros racionales sin una
 tolerancia a la funci@'on  RATEPSILON[2.0E-8].. Las variables son ordenadas de acuerdo 
 con el v1,...,vn como en RATVARS, si estas est@'an especificacdas. RAT generalmente no
 simplifica las funciones excepto por + , - , * , , / , y
-exponenciaci@' a la potencia de un entero mientras que RATSIMP no toma esos
+exponenciaci@'on a la potencia de un entero mientras que RATSIMP no toma esos
 casos. Note que los atomos (nombres y numeros) en la forma ERC no son los
 mismos como lo son en la forma general. As@'{@dotless{i}} RAT(X)-X resulta en
 RAT(0) el cual tiene una representaci@ @'on interna diferente a 0.
