@@ -1,4 +1,4 @@
-@c /Series.texi/1.11/Thu Jun 16 17:05:36 2005/-ko/
+@c /Series.texi/1.12/Mon Jul 18 08:21:13 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a S@'eries::      
 * Defini@value{cedilha}@~oes para S@'eries::      
