@@ -496,7 +496,7 @@ Debugging
 
 @node Symmetries, Grupos, Number Theory, Top
 @chapter Symmetries
-@include Symmetries_pt.texi
+@include Symmetries.texi
 
 @node Grupos, Tempo de Execu@value{cedilha}@~ao, Symmetries, Top
 @chapter Grupos
