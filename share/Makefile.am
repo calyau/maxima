@@ -260,6 +260,7 @@ contrib/maximaMathML/mathmldisplay.lisp\
 contrib/mcclim/README\
 contrib/mcclim/formula.lisp\
 contrib/mcclim/listeneroutput.png\
+contrib/mcclim/maxima-repl-mcclim.lisp\
 contrib/mcclim/postscriptoutput.png\
 contrib/mnewton.dem\
 contrib/mnewton.mac\
@@ -348,6 +349,17 @@ contrib/rand/twovar.mac\
 contrib/rand/twovar.usg\
 contrib/rand/vandpol.mac\
 contrib/rand/vandpol.usg\
+contrib/sarag/aliases.mac\
+contrib/sarag/constants.mac\
+contrib/sarag/examples.mac\
+contrib/sarag/linearAlgebra.mac\
+contrib/sarag/loadSARAG.mac\
+contrib/sarag/lowLevel.mac\
+contrib/sarag/readme.txt\
+contrib/sarag/rootCounting.mac\
+contrib/sarag/rootIsolation.mac\
+contrib/sarag/settings.mac\
+contrib/sarag/signDetermination.mac\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
 contrib/unit/unit.texi\
