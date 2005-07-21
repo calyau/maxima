@@ -1,12 +1,14 @@
-This is Andy Hefner's McCLIM formula display code
+This is Andy Hefner's McCLIM formula display code, and an initial effort
+by Raymond Toy at getting a Maxima REPL display in an McCLIM window. 
 
-License:  Public Domain
-
-Committer's note:  This is mainly being uploaded to make
-sure I can find a copy sometime in the future.  It doesn't
+Licenses:  Public Domain for Andy Hefner's code (formula.lisp) 
+           Raymond Toy's code is GPL
+	   
+Committer's note concerning formula.lisp:  This is mainly being 
+uploaded to make sure I can find a copy sometime in the future.  It doesn't
 have any ties to Maxima right now.
 
-Below is preserved part of an IRC discussion, mainly
+Below is preserved part of an IRC discussion on formula.lisp, mainly
 so I (CY) remember what some of the issues were.
 
 <starseeker> what license, by the way?
