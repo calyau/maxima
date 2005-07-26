@@ -1508,10 +1508,6 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 (def-lpos	|$>=| $expr)
 (def-mheader	|$>=| (mgeqp))
 
-
-(def-nud (|$>| 80.) (op) ; > is a single-char object
-  '($any . |$>|))
-
 (def-led-equiv	|$<| parse-infix)
 (def-lbp	|$<| 80.)
 (def-rbp	|$<| 80.)
