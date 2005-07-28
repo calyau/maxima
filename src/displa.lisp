@@ -815,22 +815,66 @@
 (displa-def mcond     dim-mcond)
 (displa-def %mcond    dim-mcond)
 
+;; MCOND or %MCOND always has an even number of arguments.
+;; The first two arguments are the foo and bar in 'if foo then bar .
+;; Of the remaining pairs of arguments,
+;; the first is MAYBE-ELSEIF and the second is ELSE-OR-THEN in the code below.
+;; MAYBE-ELSEIF is T if the construct is 'if foo then bar else quux ,
+;; otherwise the construct is 'if foo then bar elseif baz then quux 
+;; where baz is the value of MAYBE-ELSEIF.
+;; If ELSE-OR-THEN is NIL, just omit the final "else".
+
+;; The parser appends (T NIL) to any if-then which lacks an else.
+;; DIM-MCOND renders both '((%MCOND) $A $B) and '((%MCOND) $A $B T NIL) as "if a then b".
+
+;; Examples. The "<==>" here means that the stuff on the right parses as the stuff on the left,
+;; and the stuff on the left displays as the stuff on the right.
+
+;; ((%mcond) $a $b t nil)                    <==> 'if a then b
+;; ((%mcond) $a $b t $d)                     <==> 'if a then b else d
+;; ((%mcond) $a $b $c nil t nil)             <==> 'if a then b elseif c then false
+;; ((%mcond) $a $b $c $d t nil)              <==> 'if a then b elseif c then d
+;; ((%mcond) $a $b $c $d t $f)               <==> 'if a then b elseif c then d else f
+;; ((%mcond) $a $b $c $d $e nil t nil)       <==> 'if a then b elseif c then d elseif e then false
+;; ((%mcond) $a $b $c $d $e $f t nil)        <==> 'if a then b elseif c then d elseif e then f
+;; ((%mcond) $a $b $c $d $e $f t $h)         <==> 'if a then b elseif c then d elseif e then f else h
+;; ((%mcond) $a $b $c $d $e $f $g nil t nil) <==> 'if a then b elseif c then d elseif e then f elseif g then false
+;; ((%mcond) $a $b $c $d $e $f $g $h)        <==> 'if a then b elseif c then d elseif e then f elseif g then h
+
 (defun dim-mcond (form result)
-  (prog ((w 0) (h 0) (d 0))	(declare (fixnum w h d))
-	(push-string "if " result)
-	(setq result (dimension (cadr form) result 'mcond 'mparen 3 0)
-	      w (f+ 3 width) h height d depth)
-	(checkbreak result w)
-	(push-string " then " result)
-	(setq result (dimension (caddr form) result 'mcond 'mparen (f+ 6 w) 0)
-	      w (f+ 6 w width) h (max h height) d (max d depth))
-	(unless (or (eq '$false (fifth form)) (eq nil (fifth form)))
-	  (checkbreak result w)
-	  (push-string " else " result)
-	  (setq result (dimension (fifth form) result 'mcond rop (f+ 6 w) right)
-		w (f+ 6 w width) h (max h height) d (max d depth)))
-	(setq width w height h depth d)
-	(return result)))
+  (prog ((w 0) (h 0) (d 0)) (declare (fixnum w h d))
+    (push-string "if " result)
+    (setq result (dimension (cadr form) result 'mcond 'mparen 3 0)
+          w (f+ 3 width) h height d depth) 
+    (checkbreak result w) 
+    (push-string " then " result)
+    (setq result (dimension (caddr form) result 'mcond 'mparen (f+ 6 w) 0)
+          w (f+ 6 w width) h (max h height) d (max d depth))
+
+    (let ((args (cdddr form)))
+      (loop while (>= (length args) 2) do
+        (let ((maybe-elseif (car args)) (else-or-then (cadr args)))
+          (cond
+            ((and (eq maybe-elseif t) (= (length args) 2))
+             (unless (or (eq '$false else-or-then) (eq nil else-or-then))
+               (checkbreak result w)
+               (push-string " else " result)
+               (setq result (dimension else-or-then result 'mcond rop (f+ 6 w) right)
+                     w (f+ 6 w width) h (max h height) d (max d depth))))
+
+            (t
+             (checkbreak result w)
+             (push-string " elseif " result)
+             (setq result (dimension maybe-elseif result 'mcond rop (f+ 8 w) right)
+                   w (f+ 8 w width) h (max h height) d (max d depth))
+             (checkbreak result w)
+             (push-string " then " result)
+             (setq result (dimension else-or-then result 'mcond rop (f+ 6 w) right)
+                   w (f+ 6 w width) h (max h height) d (max d depth)))))
+        (setq args (cddr args))))
+           
+    (setq width w height h depth d)
+    (return result)))
 
 
 (displa-def mdo dim-mdo)

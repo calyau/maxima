@@ -465,21 +465,63 @@
 (defprop %mcond 25. lbp)
 (defprop %mcond 25. rbp)
 
-(defun msz-mcond (x l r &aux if)
-  (setq if (nreconc l '(#\i #\f #\space)) if (cons (length if) if)
-	l (msize (cadr x) nil nil 'mcond 'mparen))
-  (cond ((or (eq '$false (fifth x)) (eq nil (fifth x)))
-	 (setq x (msize (caddr x)
-			(reverse '(#\space #\t #\h #\e #\n #\space))
-			r 'mcond rop))
-	 (list (f+ (car if) (car l) (car x)) if l x))
-	(t (setq r (msize (fifth x)
-			  (reverse '(#\space #\e #\l #\s #\e #\space))
-			  r 'mcond rop)
-		 x (msize (caddr x)
-			  (reverse '(#\space #\t #\h #\e #\n #\space))
-			  nil 'mcond 'mparen))
-	   (list (f+ (car if) (car l) (car x) (car r)) if l x r))))
+;; See comments above DIM-MCOND in displa.lisp concerning MCOND parsing and formatting.
+
+(defun msz-mcond (x l r)
+  (setq if (nreconc l '(#\i #\f #\space))
+        if (cons (length if) if)
+        l (msize (cadr x) nil nil 'mcond 'mparen))
+
+    (let
+      ((args (cdddr x))
+       (if-literal (reverse (exploden "if ")))
+       (else-literal (reverse (exploden " else ")))
+       (elseif-literal (reverse (exploden " elseif ")))
+       (then-literal (reverse (exploden " then ")))
+       (parts)
+       (part))
+
+      (let ((sgra (reverse args)))
+        (if (and (or (eq (car sgra) nil) (eq (car sgra) '$false)) (eq (cadr sgra) t))
+          (setq args (reverse (cddr sgra)))))
+
+      (setq parts (list if l))
+
+      (setq part
+            (cond
+              ((= (length args) 0)
+               `(,(msize (caddr x) (copy then-literal) r 'mcond rop)))
+              (t
+                `(,(msize (caddr x) (copy then-literal) nil 'mcond 'mparen))))
+
+            parts (append parts part))
+      
+      (loop while (>= (length args) 2) do
+        (let ((maybe-elseif (car args)) (else-or-then (cadr args)))
+          (cond
+            ((= (length args) 2)
+             (cond
+               ((eq maybe-elseif t)
+                (let ((else-arg else-or-then))
+                  (setq
+                    part `(,(msize else-arg (copy else-literal) r 'mcond rop))
+                    parts (append parts part))))
+               (t
+                 (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
+                   (setq
+                     part `(,(msize elseif-arg (copy elseif-literal) nil 'mcond 'mparen)
+                             ,(msize then-arg (copy then-literal) r 'mcond rop))
+                     parts (append parts part))))))
+            (t
+              (let ((elseif-arg maybe-elseif) (then-arg else-or-then))
+                (setq
+                  part `(,(msize elseif-arg (copy elseif-literal) nil 'mcond 'mparen)
+                          ,(msize then-arg (copy then-literal) nil 'mcond 'mparen))
+                  parts (append parts part))))))
+
+        (setq args (cddr args)))
+
+      (cons (apply '\+ (mapcar 'car parts)) parts)))
 
 (defprop text-string msize-text-string grind)
 
