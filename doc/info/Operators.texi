@@ -1008,6 +1008,10 @@ Returns @code{true} if @var{expr} is a subscripted variable, for example
 Returns @code{true} if @var{expr} is a symbol, else @code{false}.
 In effect, @code{symbolp(x)} is equivalent to the predicate @code{atom(x) and not numberp(x)}.
 
+@c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
+@c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
+See also @code{Identifiers}.
+
 @end deffn
 
 @deffn {Function} unorder ()
