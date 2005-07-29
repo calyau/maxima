@@ -1,4 +1,4 @@
-kill (allbut (props))$
+kill (all)$
 done$
 
 emptyp(set());
