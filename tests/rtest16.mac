@@ -1,3 +1,6 @@
+kill (all);
+done;
+
 /* Tests from Bug 1036900 */
 /* These bugs were fixed in limit.lisp rev 1.7, 2004/10/04 */
 limit(7^n/8^n,n,inf);
