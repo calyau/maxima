@@ -78,28 +78,28 @@ is a list of the form @code{[y, @var{min}, @var{max}]}.
 @code{plot2d (@var{expr}, @var{x_range})}
 plots @var{expr} as a function of the variable named in @var{x_range},
 over the range specified in @var{x_range}.
-If the vertical range is not otherwise specified by @code{set_plot_options},
+If the vertical range is not otherwise specified by @code{set_plot_option},
 it is chosen automatically.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_options}.
+All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
 
 @code{plot2d (@var{expr}, @var{x_range}, @var{y_range})}
 plots @var{expr} as a function of the variable named in @var{x_range},
 over the range specified in @var{x_range}.
 The vertical range is set to @var{y_range}.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_options}.
+All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
 
 @code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})}
 plots @var{expr_1}, ..., @var{expr_n} as a function of the variable named in @var{x_range},
 over the range specified in @var{x_range}.
-If the vertical range is not otherwise specified by @code{set_plot_options},
+If the vertical range is not otherwise specified by @code{set_plot_option},
 it is chosen automatically.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_options}.
+All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
 
 @code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})}
 plots @var{expr_1}, ..., @var{expr_n} as a function of the variable named in @var{x_range},
 over the range specified in @var{x_range}.
 The vertical range is set to @var{y_range}.
-All options are assumed to have default values unless otherwise specified by @code{set_plot_options}.
+All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 Examples:
@@ -707,13 +707,64 @@ several plots, and so must keep the stream open.
 @end deffn
 
 @deffn {Function} set_plot_option (@var{option})
-option is of the format of one of the elements of the @code{plot_options}
-list.
-Thus @code{set_plot_option ([grid, 30, 40])}
-would change the default grid used by @code{plot3d}.   Note that if the symbol
-@code{grid} has a value, then you should quote it here:
-@code{set_plot_option (['grid, 30, 40])}
-so that the value will not be substituted.
+Assigns one of the global variables for plotting.
+@var{option} is specified as a list of two or more elements,
+in which the first element is one of the keywords
+on the @code{plot_options} list.
+
+@code{set_plot_option} evaluates its argument.
+@code{set_plot_option} returns @code{plot_options} 
+(after modifying one of its elements).
+
+See also @code{plot_options}, @code{plot2d}, and @code{plot3d}.
+
+Examples:
+
+Modify the @code{grid} and @code{x} values.
+When a @code{plot_options} keyword has an assigned value,
+quote it to prevent evaluation.
+
+@c ===beg===
+@c set_plot_option ([grid, 30, 40]);
+@c x: 42;
+@c set_plot_option (['x, -100, 100]);
+@c ===end===
+
+@example
+(%i1) set_plot_option ([grid, 30, 40]);
+(%o1) [[x, - 1.755559702014E+305, 1.755559702014E+305], 
+[y, - 1.755559702014E+305, 1.755559702014E+305], [t, - 3, 3], 
+[grid, 30, 40], [view_direction, 1, 1, 1], [colour_z, false], 
+[transform_xy, false], [run_viewer, true], 
+[plot_format, gnuplot], [gnuplot_term, default], 
+[gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
+[gnuplot_pm3d, false], [gnuplot_preamble, ], 
+[gnuplot_curve_titles, [default]], 
+[gnuplot_curve_styles, [with lines 3, with lines 1, 
+with lines 2, with lines 5, with lines 4, with lines 6, 
+with lines 7]], [gnuplot_default_term_command, ], 
+[gnuplot_dumb_term_command, set term dumb 79 22], 
+[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
+eps enhanced color solid 24]]
+(%i2) x: 42;
+(%o2)                          42
+(%i3) set_plot_option (['x, -100, 100]);
+(%o3) [[x, - 100.0, 100.0], [y, - 1.755559702014E+305, 
+1.755559702014E+305], [t, - 3, 3], [grid, 30, 40], 
+[view_direction, 1, 1, 1], [colour_z, false], 
+[transform_xy, false], [run_viewer, true], 
+[plot_format, gnuplot], [gnuplot_term, default], 
+[gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
+[gnuplot_pm3d, false], [gnuplot_preamble, ], 
+[gnuplot_curve_titles, [default]], 
+[gnuplot_curve_styles, [with lines 3, with lines 1, 
+with lines 2, with lines 5, with lines 4, with lines 6, 
+with lines 7]], [gnuplot_default_term_command, ], 
+[gnuplot_dumb_term_command, set term dumb 79 22], 
+[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
+eps enhanced color solid 24]]
+@end example
+
 @end deffn
 
 @deffn {Function} psdraw_curve (@var{ptlist})
