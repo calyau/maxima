@@ -491,8 +491,9 @@ the drawing character is not stored with the box expression.
 
 @deffn {Function} carg (@var{z})
 Returns the complex argument of @var{z}.
-The complex argument is an angle @code{theta} in @code{[-%pi, %pi]}
+The complex argument is an angle @code{theta} in @code{(-%pi, %pi]}
 such that @code{r exp (theta %i) = @var{z}} where @code{r} is the magnitude of @var{z}.
+@c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
 
 @code{carg} is a computational function,
 not a simplifying function.
@@ -506,7 +507,36 @@ This is a bug. @c SEE SF BUG REPORT # 620246
 See also @code{abs} (complex magnitude), @code{polarform}, @code{rectform},
 @code{realpart}, and @code{imagpart}.
 
-@c NEED EXAMPLES HERE
+Examples:
+
+@c ===beg===
+@c carg (1);
+@c carg (1 + %i);
+@c carg (exp (%i));
+@c carg (exp (%pi * %i));
+@c carg (exp (3/2 * %pi * %i));
+@c carg (17 * exp (2 * %i));
+@c ===end===
+
+@example
+(%i1) carg (1);
+(%o1)                           0
+(%i2) carg (1 + %i);
+                               %pi
+(%o2)                          ---
+                                4
+(%i3) carg (exp (%i));
+(%o3)                           1
+(%i4) carg (exp (%pi * %i));
+(%o4)                          %pi
+(%i5) carg (exp (3/2 * %pi * %i));
+                                %pi
+(%o5)                         - ---
+                                 2
+(%i6) carg (17 * exp (2 * %i));
+(%o6)                           2
+@end example
+
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -529,7 +559,22 @@ symbolic constants such as @code{%pi}, @code{%e}, and @code{%i},
 variables bound to a constant or declared constant by @code{declare},
 or functions whose arguments are constant.
 
-@c NEED EXAMPLES HERE
+@code{constantp} evaluates its arguments.
+
+Examples:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+
+@example
+@end example
+
 @end deffn
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
@@ -1193,8 +1238,59 @@ sum).
 
 @c NEEDS WORK
 @deffn {Function} op (@var{expr})
-Returns the operator of the expression, and functions the same way as
-@code{part (expr, 0)}.  It observes the setting of the @code{inpart} flag.
+Returns the main operator of the expression @var{expr}.
+@code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}. 
+
+@code{op} returns a string if the main operator is
+a built-in or user-defined
+prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.
+Otherwise @code{op} returns a symbol.
+
+@code{op} observes the value of the global flag @code{inflag}.
+
+@code{op} evaluates it argument.
+
+See also @code{args}.
+
+Examples:
+
+@c ===beg===
+@c ?stringdisp: true$
+@c op (a * b * c);
+@c op (a * b + c);
+@c op ('sin (a + b));
+@c op (a!);
+@c op (-a);
+@c op ([a, b, c]);
+@c op ('(if a > b then c else d));
+@c op ('foo (a));
+@c prefix (foo);
+@c op (foo a);
+@c ===end===
+
+@example
+(%i1) ?stringdisp: true$
+(%i2) op (a * b * c);
+(%o2)                          "*"
+(%i3) op (a * b + c);
+(%o3)                          "+"
+(%i4) op ('sin (a + b));
+(%o4)                          sin
+(%i5) op (a!);
+(%o5)                          "!"
+(%i6) op (-a);
+(%o6)                          "-"
+(%i7) op ([a, b, c]);
+(%o7)                          "["
+(%i8) op ('(if a > b then c else d));
+(%o8)                         "if"
+(%i9) op ('foo (a));
+(%o9)                          foo
+(%i10) prefix (foo);
+(%o10)                        "foo"
+(%i11) op (foo a);
+(%o11)                        "foo"
+@end example
 
 @end deffn
 
