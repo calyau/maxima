@@ -1009,6 +1009,10 @@ Retorna @code{true} se @var{expr} for uma vari@'avel subscrita, por exemplo
 Retorna @code{true} se @var{expr} for um s@'imbolo, de outra forma retorna @code{false}.
 com efeito, @code{symbolp(x)} @'e equivalente ao predicado @code{atom(x) and not numberp(x)}.
 
+@c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
+@c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
+Veja tamb@'em @code{Identifiers}
+
 @end deffn
 
 @deffn {Fun@,{c}@~ao} unorder ()

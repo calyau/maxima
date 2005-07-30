@@ -1,4 +1,4 @@
-@c /Plotting.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
+@c /Plotting.texi/1.18/Sat Jul 30 08:05:54 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -78,28 +78,28 @@ onde @var{vari@'avel} @'e uma vari@'avel que aparece em @var{expr}.
 @code{plot2d (@var{expr}, @var{x_range})}
 monta o gr@'afico @var{expr} como uma fun@,{c}@~ao da vari@'avel nomeada em @var{x_range},
 sobre a amplitude especificada em @var{x_range}.
-Se a amplitude vertical n@~ao for alternativamente especificada por @code{set_plot_options},
+Se a amplitude vertical n@~ao for alternativamente especificada por @code{set_plot_option},
 essa @'e escolhida automaticamente.
-Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_options}.
+Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_option}.
 
 @code{plot2d (@var{expr}, @var{x_range}, @var{y_range})}
 monta o gr@'afico de @var{expr} como uma fun@,{c}@~ao de uma vari@'avel nomeada em @var{x_range},
 sobre a amplitude especificada em @var{x_range}.
 O alcance vertical @'e escolhido para @var{y_range}.
-Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_options}.
+Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_option}.
 
 @code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})}
 monta o gr@'afico @var{expr_1}, ..., @var{expr_n} como uma fun@,{c}@~ao da vari@'avel nomeada em @var{x_range},
 sobre a amplitude especificada em @var{x_range}.
-Se a amplitude vertical n@~ao for alternativamente especificada por @code{set_plot_options},
+Se a amplitude vertical n@~ao for alternativamente especificada por @code{set_plot_option},
 essa @'e escolhida automaticamente.
-Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_options}.
+Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_option}.
 
 @code{plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})}
 monta o gr@'afico @var{expr_1}, ..., @var{expr_n} como uma fun@,{c}@~ao de uma vari@'avel nomedada em @var{x_range},
 sobre a amplitude especificada em @var{x_range}.
 O alcance vertical @'e escolhido para @var{y_range}.
-Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_options}.
+Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_option}.
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 Exemplos:
@@ -707,13 +707,64 @@ muitas montagens de gr@'aficos, e ent@~ao devemos manter esse fluxo aberto.
 @end deffn
 
 @deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@value{cedilha}@~ao})
-op@,{c}@~ao @'e do formato de um dos elementos da lista 
-@code{plot_options}.
-Dessa forma @code{set_plot_option ([grid, 30, 40])}
-ir@'a alterar a grade padr@~ao usada por @code{plot3d}.   Note que se o s@'imbolo
-@code{grid} tem um valor, ent@~ao voc@^e dever@'a colocar o ap@'ostrofo nisso aqui:
-@code{set_plot_option (['grid, 30, 40])}
-dessa forma o valor n@~ao ser@'a substitu@'ido.
+Atribui uma das var@'aveis globais para impress@~ao.
+@var{option} @'e especificada como uma lista de dois ou mais elementos,
+na qual o primeiro elemeto @'e uma das palavras chave
+dentro da lista @code{plot_options}.
+
+@code{set_plot_option} avalia seu argumento.
+@code{set_plot_option} retorna @code{plot_options} 
+(ap@'os modificar um desses elementos).
+
+Veja tamb@'em @code{plot_options}, @code{plot2d}, e @code{plot3d}.
+
+Exemplos:
+
+Modifica a malha (@code{grid}) e valores de @code{x}.
+Quando uma palavra chave em @code{plot_options} tem um valor atribu@'ido,
+colocar um ap@'ostrofo evita avalia@,{c}@~ao.
+
+@c ===beg===
+@c set_plot_option ([grid, 30, 40]);
+@c x: 42;
+@c set_plot_option (['x, -100, 100]);
+@c ===end===
+
+@example
+(%i1) set_plot_option ([grid, 30, 40]);
+(%o1) [[x, - 1.755559702014E+305, 1.755559702014E+305], 
+[y, - 1.755559702014E+305, 1.755559702014E+305], [t, - 3, 3], 
+[grid, 30, 40], [view_direction, 1, 1, 1], [colour_z, false], 
+[transform_xy, false], [run_viewer, true], 
+[plot_format, gnuplot], [gnuplot_term, default], 
+[gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
+[gnuplot_pm3d, false], [gnuplot_preamble, ], 
+[gnuplot_curve_titles, [default]], 
+[gnuplot_curve_styles, [with lines 3, with lines 1, 
+with lines 2, with lines 5, with lines 4, with lines 6, 
+with lines 7]], [gnuplot_default_term_command, ], 
+[gnuplot_dumb_term_command, set term dumb 79 22], 
+[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
+eps enhanced color solid 24]]
+(%i2) x: 42;
+(%o2)                          42
+(%i3) set_plot_option (['x, -100, 100]);
+(%o3) [[x, - 100.0, 100.0], [y, - 1.755559702014E+305, 
+1.755559702014E+305], [t, - 3, 3], [grid, 30, 40], 
+[view_direction, 1, 1, 1], [colour_z, false], 
+[transform_xy, false], [run_viewer, true], 
+[plot_format, gnuplot], [gnuplot_term, default], 
+[gnuplot_out_file, false], [nticks, 10], [adapt_depth, 10], 
+[gnuplot_pm3d, false], [gnuplot_preamble, ], 
+[gnuplot_curve_titles, [default]], 
+[gnuplot_curve_styles, [with lines 3, with lines 1, 
+with lines 2, with lines 5, with lines 4, with lines 6, 
+with lines 7]], [gnuplot_default_term_command, ], 
+[gnuplot_dumb_term_command, set term dumb 79 22], 
+[gnuplot_ps_term_command, set size 1.5, 1.5;set term postscript #
+eps enhanced color solid 24]]
+@end example
+
 @end deffn
 
 @deffn {Fun@,{c}@~ao}  psdraw_curve (@var{ptlist})
