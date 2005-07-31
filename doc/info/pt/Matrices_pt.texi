@@ -1,4 +1,4 @@
-@c /Matrices.texi/1.15/Fri Jun 17 00:57:34 2005/-ko/
+@c /Matrices.texi/1.16/Sun Jul 31 15:20:46 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
@@ -256,9 +256,9 @@ Valor padr@~ao: @code{false}
 Quando @code{detout} @'e @code{true}, o determinante de uma
 matriz cuja inversa @'e calculada @'e fatorado fora da inversa.
 
-Para esse comutador ter efeito DOALLMXOPS e DOSCMXOPS deveram ambos serem
+Para esse comutador ter efeito @code{doallmxops} e @code{doscmxops} deveram ambos serem
 @code{false} (veja suas transcri@,{c}@~oes).  Alternativamente esses comutadores podem ser
-dados para EV o que faz com que os outros dois sejam escolhidos corretamente.
+dados para @code{ev} o que faz com que os outros dois sejam escolhidos corretamente.
 
 Exemplo:
 
