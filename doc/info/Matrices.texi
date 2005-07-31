@@ -255,9 +255,9 @@ Default value: @code{false}
 When @code{detout} is @code{true}, the determinant of a
 matrix whose inverse is computed is factored out of the inverse.
 
-For this switch to have an effect DOALLMXOPS and DOSCMXOPS should be
+For this switch to have an effect @code{doallmxops} and @code{doscmxops} should be
 @code{false} (see their descriptions).  Alternatively this switch can be
-given to EV which causes the other two to be set correctly.
+given to @code{ev} which causes the other two to be set correctly.
 
 Example:
 
