@@ -40,19 +40,19 @@
 	  (p (position (char sn 0) *circuit-elements* :key #'first )))
       (if (null p) '$unknown (cdr (aref *circuit-elements* p)))))
 
-(DEFMTRFUN ($GETELEMENTINDEX $ANY MDEFINE NIL NIL) 
+(DEFMTRFUN (|$getElementIndex| $ANY MDEFINE NIL NIL) 
            ($E) 
            (DECLARE (SPECIAL $E)) 
            (let ((p (position $E *circuit-elements* :key #'cdr)))
 		(if (null p) (error "invalid value in getelementindex") p)))
 
-(DEFMTRFUN ($GETTREEELEMENTINDEX $ANY MDEFINE NIL NIL) 
+(DEFMTRFUN (|$getTreeElementIndex| $ANY MDEFINE NIL NIL) 
            ($E) 
            (DECLARE (SPECIAL $E)) 
            (let ((p (position $E *circuit-elements-tree*)))
 		(if (null p) (error "invalid value in gettreeelementindex") p)))
 
-(DEFMTRFUN ($GETLINKELEMENTINDEX $ANY MDEFINE NIL NIL) 
+(DEFMTRFUN (|$getLinkElementIndex| $ANY MDEFINE NIL NIL) 
            ($E) 
            (DECLARE (SPECIAL $E)) 
            (let ((p (position $E *circuit-elements-link*)))
@@ -71,7 +71,7 @@
            ($FILENAME) 
            ((LAMBDA ($A) 
 (with-open-file
-    (l (substring (symbol-name $filename) 1)
+    (l (print-invert-case (stripdollar $filename))
        :direction :input :if-does-not-exist :error)
    (do ((line	(read-line l nil nil)
 		(read-line l nil nil)))
