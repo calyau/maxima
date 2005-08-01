@@ -13,7 +13,7 @@
 
 @c %**start of header
 @setfilename  maxima.es.info
-@documentencoding ISO-8859-1
+@documentencoding ISO-8859-15
 @synindex vr fn
 @settitle Manual de Maxima
 @c %**end of header
