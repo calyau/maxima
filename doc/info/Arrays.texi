@@ -131,7 +131,7 @@ Creates and returns a Lisp array.  @var{type} may
 be @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} or 
 @code{functional}.
 There are @math{n} indices,
-and the @math{i}'th index runs from from 0 to @math{@var{dim_i} - 1}.
+and the @math{i}'th index runs from 0 to @math{@var{dim_i} - 1}.
 
 The advantage of @code{make_array} over @code{array} is that the return value doesn't have a
 name, and once a pointer to it goes away, it will also go away.
