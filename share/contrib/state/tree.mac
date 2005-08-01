@@ -40,7 +40,7 @@ printarray2(a,na,n,b):=block([ipw:integer_print_width],integer_print_width:4,
 
 swap(a,i,j)::=buildq([a,i,j],block([temp:a[i]],a[i]:a[j],a[j]:temp))$
 
-properTree(filename):=block([cl, MB, MN, retvals, dbg:false],
+properTree(filename):=block([cl, MB, MN, retvals, dbg:true],
 /* MB number of branches */
 /* MN number of nodes */
 if dbg then print("entry"),
@@ -92,32 +92,32 @@ C	IC IS LINK CURRENT SOURCE NUMBER
 C	IK IS TREE BRANCH NUMBER
 C	K IS LINK BRANCH NUMBER */
     block([KV:0, KC:0, KR:0, IR:0, IL:0, IC:0, IK:0, K:0],
-	for I:1 thru MB do (
-	    IF pt_MT[I] = 0 then (
-		IF i < MB then block([continu,treebranch:false],
+	for i:1 thru MB do (
+	    if pt_MT[i] = 0 then (
+		if i < MB then block([continu,treebranch:false],
 		    for j:(i+1) thru MB while (treebranch = false) do (
 			continu:false,
-if dbg then print("52", j, pt_MT[J]),
-			IF pt_MT[J] = 0 then (
-if dbg then print("pt_MT[J]=0,i,pt_NT[I],j,pt_NT[J]", i, pt_NT[I], j, pt_NT[J]),
-			    IF pt_NT[I] = pt_NT[J] then ( /* 61 */
-				if pt_NF[I] # pt_NF[J] then (/* 5 */
-				    pt_NT[J]:pt_NF[I], /* 43 */
+if dbg then print("52", j, pt_MT[j]),
+			if pt_MT[j] = 0 then (
+if dbg then print("pt_MT[j]=0,i,pt_NT[i],j,pt_NT[j]", i, pt_NT[i], j, pt_NT[j]),
+			    if pt_NT[i] = pt_NT[j] then ( /* 61 */
+				if pt_NF[i] # pt_NF[j] then (/* 5 */
+				    pt_NT[j]:pt_NF[i], /* 43 */
 if dbg then print("1 j-mb",j-mb,52,102,102),
 				    /* IF(J-MB)52,102,102 * 220 */
 				    continu:true
 				) else (if dbg then print("should do 6"))
 			    )
 			    else (
-if dbg then print("33 I,pt_NT[I],J,pt_NF[J]",I,pt_NT[I],J,pt_NF[J]),
-				IF pt_NT[I] # pt_NF[J] then ( /* 33 */
+if dbg then print("33 i,pt_NT[i],j,pt_NF[j]",i,pt_NT[i],j,pt_NF[j]),
+				if pt_NT[i] # pt_NF[j] then ( /* 33 */
 if dbg then print("2 j-mb",j-mb,52,102,102),
 				    /* IF(J-MB)52,102,102 * 220 */
 				    continu:true
 				)
 				else (
-				    IF pt_NF[I] # pt_NT[J] then ( /* 63 */
-					pt_NF[J]:pt_NF[I], /* 83 */
+				    if pt_NF[i] # pt_NT[j] then ( /* 63 */
+					pt_NF[j]:pt_NF[i], /* 83 */
 					/* IF(J-MB)52,102,102 * 220 */
 if dbg then print("3 j-mb",j-mb,52,102,102),
 					continu:true
@@ -131,17 +131,17 @@ if dbg then print("goto 102"),
 			    else ( /* 6 branch j is a link */
 				K:K+1,
 if dbg then print("k", k, " adding a link 6"),
-				pt_MT[J]:MN + K,
-				pt_aJT[pt_MT[J]]:pt_JT[J],
-				for L:1 thru MN do pt_A[L,pt_MT[J]]:pt_D[L,J],
-				if getElementIndex(pt_JT[J]) < 4 then IR:IR+1
+				pt_MT[j]:MN + K,
+				pt_aJT[pt_MT[J]]:pt_JT[j],
+				for L:1 thru MN do pt_A[L,pt_MT[j]]:pt_D[L,j],
+				if getElementIndex(pt_JT[j]) < 4 then IR:IR+1
 				else (
-				    if getElementIndex(pt_JT[J]) > 4 then IC:IC+1
+				    if getElementIndex(pt_JT[j]) > 4 then IC:IC+1
 				    else IL:IL+1
 				),
 				/* IF(J-MB)52,102,103 */
 if dbg then print("4 j-mb",j-mb,52,102,103),
-				if J = MB then treebranch:true,
+				if j = MB then treebranch:true,
 				if j >= MB then return
 			    )
 			)
@@ -150,12 +150,12 @@ if dbg then print("102 treebranch is ", treebranch),
 		    if treebranch = true then ( /* 102 branch i is a tree branch */
 			IK:IK+1,
 if dbg then print("ik", ik,"i",i, " in 102 row swap"),
-			for M:1 thru MN do pt_A[M,IK]:pt_D[M,I],
-			pt_aJT[IK]:pt_JT[I],
-			swap(pt_name,I,IK),
-			if getElementIndex(pt_JT[I]) < 2 then KV:KV+1
+			for M:1 thru MN do pt_A[M,IK]:pt_D[M,i],
+			pt_aJT[IK]:pt_JT[i],
+			swap(pt_name,i,IK),
+			if getElementIndex(pt_JT[i]) < 2 then KV:KV+1
 			else (
-			    if getElementIndex(pt_JT[I]) > 2 then KR:KR+1
+			    if getElementIndex(pt_JT[i]) > 2 then KR:KR+1
 			    else KC:KC+1
 			)
 		    )
