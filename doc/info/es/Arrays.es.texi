@@ -5,163 +5,116 @@
 @node Definiciones para Arreglos y Tablas,  , Arreglos y Tablas, Arreglos y Tablas
 @section Definiciones para Arreglos y Tablas
 
-@defun ARRAY (name, dim1, dim2, ..., dimk)
-This sets up a k-dimensional
-array.  A maximum of five dimensions may be used.  The subscripts for
-the ith dimension are the integers running from 0 to dimi.  If the
-user assigns to a subscripted variable before declaring the
-corresponding array, an undeclared array is set up.  If the user has
-more than one array to be set up the same way, they may all be set up
-at the same time, by ARRAY([list-of-names],dim1, dim2, ..., dimk).
-Undeclared arrays, otherwise known as hashed arrays (because hash
-coding is done on the subscripts), are more general than declared
-arrays.  The user does not declare their maximum size, and they grow
-dynamically by hashing as more elements are assigned values.  The
-subscripts of undeclared arrays need not even be numbers.  However,
-unless an array is rather sparse, it is probably more efficient to
-declare it when possible than to leave it undeclared.  The ARRAY
-function can be used to transform an undeclared array into a declared
-array.
+@deffn {Funci@'on} array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Funci@'on} array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})
+@deffnx {Funci@'on} array ([@var{nombre_1}, ..., @var{nombre_m}], @var{dim_1}, ..., @var{dim_n})
 
-@end defun
-@c @node ARRAYAPPLY
-@c @unnumberedsec phony
-@defun ARRAYAPPLY (array,[sub1, ... ,subk])
-is like APPLY except the first
-argument is an array.
+Crea un arreglo de dimensi@'on @math{n}, que debe ser menor o igual que 5. Los sub@'{@dotless{i}}ndices de la @math{i}-@'esima dimensi@'on son enteros que toman valores entre 0 y @var{dim_i}.  
 
-@end defun
-@c @node ARRAYINFO
-@c @unnumberedsec phony
-@defun ARRAYINFO (a)
-returns a list of information about the array a.  For
-hashed arrays it returns a list of "HASHED", the number of subscripts,
-and the subscripts of every element which has a value.  For declared
-arrays it returns a list of "DECLARED", the number of subscripts, and
-the bounds that were given the the ARRAY function when it was called
-on a.  Do EXAMPLE(ARRAYINFO); for an example.
+La llamada @code{array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})} crea un arreglo de tipo general.
 
-@end defun
-@c @node ARRAYMAKE
-@c @unnumberedsec phony
-@defun ARRAYMAKE (name,[i1,i2,...])
-returns name[i1,i2,...].
+La llamada @code{array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})} crea un arreglo con sus elementos del tipo especificado. El tipo @var{type} puede ser @code{fixnum} para enteros de tama@~no limitado o @code{flonum} para n@'umeros decimales en coma flotante.
 
-@end defun
-@c @node ARRAYS
-@c @unnumberedsec phony
-@defvar ARRAYS
- default: [] a list of all the arrays that have been allocated,
-both declared and undeclared.  Functions which deal with arrays are:
-ARRAY, ARRAYAPPLY, ARRAYINFO, ARRAYMAKE, FILLARRAY, LISTARRAY, and
-REARRAY.
-@end defvar
+La llamada @code{array ([@var{nombre_1}, ..., @var{nombre_m}], @var{dim_1}, ..., @var{dim_n})}
+crea @math{m} arreglos,  todos ellos de igual dimensi@'on.
+@c SAME TYPE AS WELL ??
 
-@c @node BASHINDICES
-@c @unnumberedsec phony
-@defun BASHINDICES (expr)
-- transforms the expression expr by giving each
-summation and product a unique index. This gives CHANGEVAR greater
-precision when it is working with summations or products.  The form of
-the unique index is J<number>. The quantity <number> is determined by
-referring to GENSUMNUM, which can be changed by the user.  For
-example, GENSUMNUM:0$ resets it.
+@c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
+Si el usuario asigna un valor a una variable subindicada antes de declarar el arreglo correspondiente, entonces se construye un arreglo no declarado. Los arreglos no declarados, tambi@'en conocidos por el nombre de "arreglos de claves" (hashed arrays), son m@'as generales que los arreglos declarados. El usuario no necesita declarar su tama@~no m@'aximo y pueden ir creciendo de forma din@'amica. Los sub@'{@dotless{i}}ndices de los arreglos no declarados no necesitan ser necesariamente n@'umeros. Sin embargo, a menos que un arreglo tenga sus elementos dispersos, probablemente sea m@'as eficiente declararlo siempre que sea posible antes que dejarlo como no declarado. La funci@'on @code{array} puede utilizarse para transformar un arreglo no declarado a a uno declarado.
+@c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
-@end defun
-@c @node FILLARRAY
-@c @unnumberedsec phony
-@defun FILLARRAY (array,list-or-array)
-fills array from list-or-array.  If
-array is a floating-point (integer) array then list-or-array should be
-either a list of floating-point (integer) numbers or another
-floating-point (integer) array.  If the dimensions of the arrays are
-different array is filled in row-major order.  If there are not enough
-elements in list-or-array the last element is used to fill out the
-rest of array.  If there are too many the remaining ones are thrown
-away.  FILLARRAY returns its first argument.
+@end deffn
 
-@end defun
-@c @node GETCHAR
-@c @unnumberedsec phony
-@defun GETCHAR (a, i)
-returns the ith character of the quoted string or
-atomic name a.  This function is useful in manipulating the LABELS
-list.
+@deffn {Funci@'on} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
+Eval@'ua @code{@var{A} [@var{i_1}, ..., @var{i_n}]}, donde @var{A} es un arreglo y @var{i_1}, ..., @var{i_n} son enteros.
 
-@end defun
-@c @node LISTARRAY
-@c @unnumberedsec phony
-@defun LISTARRAY (array)
-returns a list of the elements of a declared or
-hashed array.  the order is row-major.  Elements which you have not
-defined yet will be represented by #####.
+Esto es como @code{apply}, excepto por el hecho de que el primer argumento es un arreglo en lugar de una funci@'on.
 
-@end defun
-@c @node MAKE_ARRAY
-@c @unnumberedsec phony
-@defun MAKE_ARRAY (type,dim1,dim2,...,dimn)
-- creates an array.  "type" may
-be 'ANY, 'FLONUM, 'FIXNUM, 'HASHED or 'FUNCTIONAL.  This is similar to
-the ARRAY command, except that the created array is a functional array
-object.  The advantage of this over ARRAY is that it doesn't have a
-name, and once a pointer to it goes away, it will also go away.  e.g.
-Y:MAKE_ARRAY(....); Y now points to an object which takes up space,
-but do Y:FALSE, and Y no longer points to that object, so the object
-will get garbage collected.  Note: the "dimi" here are different from
-the ARRAY command, since they go from 0 to i-1, i.e.  a "dimension"
-of 10 means you have elements from 0 to 9.
-Y:MAKE_ARRAY('FUNCTIONAL,'F,'HASHED,1) - The second argument to
-MAKE_ARRAY in this case is the function to call to calculate array
-elements, and the rest of the arguments are passed recursively to
-MAKE_ARRAY to generate the "memory" for the array function object.
+@end deffn
 
-@end defun
-@c @node REARRAY
-@c @unnumberedsec phony
-@defun REARRAY (array,dim1, ... ,dimk)
-can be used to change the size or
-dimensions of an array.  The new array will be filled with the
-elements of the old one in row-major order.  If the old array was too
-small, FALSE, 0.0 or 0 will be used to fill the remaining elements,
-depending on the type of the array.  The type of the array cannot be
-changed.
+@deffn {Funci@'on} arrayinfo (@var{A})
+Devuelve una lista con informaci@'on sobre el arreglo @var{A}. Para arreglos de claves (hashed arrays) devuelve una lista @code{hashed}, el n@'umero de sub@'{@dotless{i}}ndices y los sub@'{@dotless{i}}ndices de aquellos elementos que tengan valor. Para arreglos declarados devuelve una lista @code{declared}, el n@'umero de sub@'{@dotless{i}}ndices y los valores dados a la funci@'on @code{array} cuando fue invocada para crear @var{A}.  H@'agase @code{example(arrayinfo);} para ver un ejemplo.
 
-@end defun
-@c @node REMARRAY
-@c @unnumberedsec phony
-@defun REMARRAY (name1, name2, ...)
-removes arrays and array associated
-functions and frees the storage occupied.  If name is ALL then all
-arrays are removed.  It may be necessary to use this function if it is
-desired to redefine the values in a hashed array.
+@end deffn
 
-@end defun
-@c @node USE_FAST_ARRAYS
-@c @unnumberedsec phony
-@defvar USE_FAST_ARRAYS
- [TRUE on Lispm] - If TRUE then only two types
-of arrays are recognized.  
+@deffn {Funci@'on} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
+Devuelve la expresi@'on @code{@var{name} [@var{i_1}, ..., @var{i_n}]}.
 
-1) The art-q array (t in common lisp) which may have several dimensions
-indexed by integers, and may hold any lisp or macsyma object as an
-entry.  To construct such an array, enter A:MAKE_ARRAY(ANY,3,4); then A
-will have as value, an array with twelve slots, and the indexing is zero
-based.
+Esta funci@'on es similar a @code{funmake}, excepto que el valor retornado es referencia a un arreglo no evaluado, en lugar de una llamada a una funci@'on no evaluada.
 
-2) The Hash_table array which is the default type of array created if one
-does B[X+1]:Y^2 (and B is not already an array,a list, or a matrix-- if
-it were one of these an error would be caused since x+1 would not be a
-valid subscript for an art-q array,a list or a matrix ).  Its indices
-(also known as keys) may be any object.  It only takes ONE KEY at a time
-(B[X+1,U]:Y would ignore the u) Referencing is done by B[X+1]==> Y^2.  Of
-course the key may be a list, eg B[[x+1,u]]:y would be valid.  This is in-
-compatible with the old Macsyma hash arrays, but saves consing.
+@end deffn
 
-An advantage of storing the arrays as values of the symbol is that the
-usual conventions about local variables of a function apply to arrays as
-well.  The Hash_table type also uses less consing and is more efficient
-than the old type of macsyma hashar.  To obtain consistent behaviour in
-translated and compiled code set TRANSLATE_FAST_ARRAYS [TRUE] to be
-TRUE.
+@defvr {Variable del sistema} arrays
+Valor por defecto: @code{[]}
+
+La variable @code{arrays} es una lista con todos los arreglos que han sido alojados, hayan sido declarados o no.
+
+V@'eanse tambi@'en
+@code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
+@code{fillarray}, @code{listarray} y @code{rearray}.
+@c IS THIS AN EXHAUSTIVE LIST ??
+
+@end defvr
+
+@deffn {Funci@'on} bashindices (@var{expr})
+Transforma la expresi@'on @var{expr} d@'andole a cada suma y producto un @'unico @'{@dotless{i}}ndice. Esto le da a @code{changevar} mayor precisi@'on cuando opera con sumas y productos. La forma del @'unico @'{@dotless{i}}ndice es @code{j@var{number}}. La cantidad @var{number} se determina en funci@'on de @code{gensumnum}, valor que puede cambiar el usuario.  Por ejemplo, haciendo @code{gensumnum:0$}.
+
+@end deffn
+
+@deffn {Funci@'on} fillarray (@var{A}, @var{B})
+Rellena el arreglo @var{A} con los valores de @var{B}, que puede ser una lista o arreglo.
+
+Si @var{A} es un array de n@'umeros decimales en coma flotante (enteros) entonces @var{B} debe ser o bien una lista de n@'umeros decimales en coma flotante  (enteros), o bien otro arreglo de n@'umeros en coma flotante (enteros).
+
+Si las dimensiones de los areglos son diferentes, @var{A} se rellena seg@'un el orden de las filas. Si no hay suficientes elementos en @var{B} el @'ultimo elemento se utiliza para cubrir el resto de @var{A}. Si hay demasiados, los elementos sobrantes son ignorados.
+
+La funci@'on @code{fillarray} devuelve su primer argumento.
+
+@end deffn
+
+@c NEEDS EXAMPLES
+@deffn {Funci@'on} getchar (@var{a}, @var{i})
+Devuelve el  @var{i}-@'esimo car@'acter de la cadena (precedida de ap@'ostrofo) o nombre at@'omico @var{a}.  Esta funci@'on es @'util para manipular la lista @code{labels}.
+
+@end deffn
+
+@deffn {Funci@'on} listarray (@var{A})
+Devuelve una lista con los elementos del arreglo declarado o tabla de claves @var{A}, en el orden de las filas. Los elementos que todav@'{@dotless{i}}a no han sido declarados se representan mediante @code{#####}.
+
+@end deffn
+
+@deffn {Funci@'on} make_array (@var{tipo}, @var{dim_1}, ..., @var{dim_n})
+Construye y devuelve un arreglo de Lisp. El argumento @var{tipo} puede ser  @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} o @code{functional}. Hay @math{n} @'{@dotless{i}}ndices, y el @'{@dotless{i}}ndice @math{i}-@'esimo va de  0 a @math{@var{dim_i} - 1}.
+
+La ventaja de @code{make_array} sobre @code{array} estriba en que el valor retornado no tiene nombre, y una vez que un puntero deja de referenciarlo, el valor desaparece. Por ejemplo, si @code{y: make_array (...)} entonces @code{y} apunta a un objeto que ocupa cierto espacio en la memoria, pero despu@'es de @code{y: false}, @code{y} ya no apunta al objeto, por lo que @'este puede ser considerado basura y posteriormente eliminado.  
+
+@c NEEDS CLARIFICATION HERE
+En la instrucci@'on @code{y: make_array ('functional, 'f, 'hashed, 1)} el segundo argumento de @code{make_array}  es la funci@'on que se debe invocar para calcular los elementos del arreglo, pas@'andose recursivamente a @code{make_array} el resto de los argumentos para generar la "memoria" de la funci@'on arreglo.
+
+@end deffn
+
+@c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
+@deffn {Funci@'on} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
+Cambia las dimensiones de un arreglo. El nuevo arreglo ser@'a rellenado con los elementos del viejo seg@'un el orden de las filas. Si el arreglo antiguo era demasiado peque@~no, los elementos restantes se rellenan con @code{false}, @code{0.0} o @code{0}, dependiendo del tipo del arreglo. El tipo del arreglo no se puede cambiar.
+
+@end deffn
+
+@deffn {Funci@'on} remarray (@var{A_1}, ..., @var{A_n})
+@deffnx {Funci@'on} remarray (all)
+Borra los arreglos y las funciones relacionadas con ellos, liberando el espacio de memoria ocupado.
+
+La llamada @code{remarray (all)} borra todos los elementos de la lista global @code{arrays}.
+
+La funci@'on @code{remarray} devuelve la lista de los arreglos borrados.
+
+@end deffn
+
+@c THIS IS REALLY CONFUSING
+@defvr {Variable optativa} use_fast_arrays
+Valor por defecto: @code{false}
+
+Si @code{use_fast_arrays} vale @code{true} entonces tan solo se reconocen dos tipos de arreglos. 
+
+@c AQUI QUEDAN TRES PARRAFOS SIN TRADUCIR
  
-@end defvar
+@end defvr

@@ -5,319 +5,392 @@
 
 @node Definiciones para Teor@'{@dotless{i}}a de N@'umeros,  , Teor@'{@dotless{i}}a de N@'umeros, Teor@'{@dotless{i}}a de N@'umeros
 @section Definiciones para Teor@'{@dotless{i}}a de N@'umeros
-@c @node BERN
-@c @unnumberedsec phony
-@defun BERN (x)
-gives the Xth Bernoulli number for integer X.
-ZEROBERN[TRUE] if set to FALSE excludes the zero BERNOULLI numbers.
-(See also BURN).
 
-@end defun
-@c @node BERNPOLY
-@c @unnumberedsec phony
-@defun BERNPOLY (v, n)
-generates the nth Bernoulli polynomial in the
-variable v.
 
-@end defun
-@c @node BFZETA
-@c @unnumberedsec phony
-@defun BFZETA (exp,n)
-BFLOAT version of the Riemann Zeta function.  The 2nd
-argument is how many digits to retain and return, it's a good idea to
-request a couple of extra.  This function is available by doing
-LOAD(BFFAC); .
+@deffn {Funci@'on} bern (@var{n})
+Devuelve el @var{n}-@'esimo n@'umero de Bernoulli del entero @var{n}.
+@c WELL, ACTUALLY bern SIMPLIFIES, LIKE FACTORIAL -- DO WE WANT TO GET INTO THAT ???
+@c OR JUST PRETEND IT'S "RETURNED" ???
+Los n@'umeros de Bernoulli iguales a cero son suprimidos si @code{zerobern} vale @code{false}.
 
-@end defun
-@c @node BGZETA
-@c @unnumberedsec phony
-@defun BGZETA (S, FPPREC)
-BGZETA is like BZETA, but avoids arithmetic
-overflow errors on large arguments, is faster on medium size arguments
-(say S=55, FPPREC=69), and is slightly slower on small arguments.  It
-may eventually replace BZETA.  BGZETA is available by doing
-LOAD(BFAC);.
+V@'ease tambi@'en @code{burn}.
 
-@end defun
-@c @node BHZETA
-@c @unnumberedsec phony
-@defun BHZETA (S,H,FPPREC)
-gives FPPREC digits of
 @example
-SUM((K+H)^-S,K,0,INF)
+(%i1) zerobern: true$
+(%i2) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+                  1  1       1      1        1
+(%o2)       [1, - -, -, 0, - --, 0, --, 0, - --]
+                  2  6       30     42       30
+(%i3) zerobern: false$
+(%i4) map (bern, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            1  1    1   5     691   7    3617  43867
+(%o4) [1, - -, -, - --, --, - ----, -, - ----, -----]
+            2  6    30  66    2730  6    510    798
 @end example
-This is available by doing LOAD(BFFAC);.
 
-@end defun
-@c @node BINOMIAL
-@c @unnumberedsec phony
-@defun BINOMIAL (X, Y)
-the binomial coefficient X*(X-1)*...*(X-Y+1)/Y!. If X
-and Y are integers, then the numerical value of the binomial
-coefficient is computed.  If Y, or the value X-Y, is an integer, the
-binomial coefficient is expressed as a polynomial.
+@end deffn
 
-@end defun
-@c @node BURN
-@c @unnumberedsec phony
-@defun BURN (N)
-is like BERN(N), but without computing all of the uncomputed
-Bernoullis of smaller index.  So BURN works efficiently for large,
-isolated N.  (BERN(402) takes about 645 secs vs 13.5 secs for
-BURN(402).  BERN's time growth seems to be exponential, while BURN's
-is about cubic.  But if next you do BERN(404), it only takes 12 secs,
-since BERN remembers all in an array, whereas BURN(404) will take
-maybe 14 secs or maybe 25, depending on whether MACSYMA needs to
-BFLOAT a better value of %PI.)  BURN is available by doing LOAD(BFFAC);.
-BURN uses an observation of WGD that (rational) Bernoulli numbers can be
-approximated by (transcendental) zetas with tolerable efficiency.
+@deffn {Funci@'on} bernpoly (@var{x}, @var{n})
+Devuelve el @var{n}-@'esimo polinomio de Bernoulli de variable @var{x}.
 
-@end defun
-@c @node BZETA
-@c @unnumberedsec phony
-@defun BZETA
- - This function is obsolete, see BFZETA.
+@end deffn
 
-@end defun
-@c @node CF
-@c @unnumberedsec phony
-@defun CF (exp)
-converts exp into a continued fraction.  exp is an expression
-composed of arithmetic operators and lists which represent continued
-fractions.  A continued fraction a+1/(b+1/(c+...)) is represented by
-the list [a,b,c,...]. a,b,c,.. must be integers.  Exp may also involve
-SQRT(n) where n is an integer.  In this case CF will give as many
-terms of the continued fraction as the value of the variable
-CFLENGTH[1] times the period.  Thus the default is to give one period.
-(CF binds LISTARITH to FALSE so that it may carry out its function.)
+@deffn {Funci@'on} bfzeta (@var{s}, @var{n})
+Devuelve la funci@'on zeta de Riemann para el argumento @var{s}. El valor que devuelve es del tipo "big float" (bfloat) y 
+@var{n}  es su n@'umero de d@'{@dotless{i}}gitos.
 
-@end defun
-@c @node CFDISREP
-@c @unnumberedsec phony
-@defun CFDISREP (list)
-converts the continued fraction represented by list
-into general representation.
+Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
+
+@end deffn
+
+@deffn {Funci@'on} bfhzeta (@var{s}, @var{h}, @var{n})
+Devuelve la funci@'on zeta de Hurwitz para los argumentos @var{s} y @var{h}. El valor que devuelve es del tipo "big float" (bfloat) y @var{n}  es su n@'umero de d@'{@dotless{i}}gitos.
+
+La funci@'on zeta de Hurwitz se define como
+
 @example
-(C1) CF([1,2,-3]+[1,-2,1]);
-(D1)                 [1, 1, 1, 2]
-(C2) CFDISREP(%);
-                            1
-(D2)                1 + ---------
-                              1
-                        1 + -----
-                                1
-                            1 + -
-                                2
-
-
+sum ((k+h)^-s, k, 0, inf)
 @end example
-@end defun
-@c @node CFEXPAND
-@c @unnumberedsec phony
-@defun CFEXPAND (x)
-gives a matrix of the numerators and denominators of the
-next-to-last and last convergents of the continued fraction x.
+
+Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
+
+@end deffn
+
+@deffn {Funci@'on} binomial (@var{x}, @var{y})
+Es el coeficiente binomial @code{(@var{x} + @var{y})!/(@var{x}! @var{y}!)}. Si @var{x} y @var{y} son enteros, entonces se calcula el valor num@'erico del coeficiente binomial. Si @var{y} o @var{x - y} son enteros, el coeficiente binomial se expresa como un polinomio.
+
+@end deffn
+
+@deffn {Funci@'on} burn (@var{n})
+Devuelve el @var{n}-@'esimo n@'umero de Bernoulli del entero @var{n}. La funci@'on @code{burn} puede ser m@'as eficiente que @code{bern} para @var{n} grande (mayor que 105, por ejemplo), pues @code{bern} calcula todos los n@'umeros de Bernoulli hasta @var{n} antes de devolver el resultado.
+
+@c STATEMENTS ABOUT TIMING NEED VERIFICATION !!!
+@c CAN'T VERIFY NOW AS burn IS BROKEN IN 5.9.1 AND CVS BUILD AT PRESENT !!!
+@c (BERN(402) takes about 645 secs vs 13.5 secs for BURN(402).
+@c The time to compute @code{bern} is approximately exponential,
+@c while the time to compute @code{burn} is approximately cubic.
+@c But if next you do BERN(404), it only takes 12 secs,
+@c since BERN remembers all in an array, whereas BURN(404) will take
+@c maybe 14 secs or maybe 25, depending on whether Maxima needs to
+@c BFLOAT a better value of %PI.)
+
+La funci@'on @code{burn} se beneficia del hecho de que los n@'umeros racionales de Bernoulli pueden aproximarse por funciones zeta con una eficiencia aceptable.
+
+Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
+
+@end deffn
+
+
+@deffn {Funci@'on} cf (@var{expr})
+Transforma @var{expr} a fracciones continuas. La expresi@'on @var{expr} debe contener fracciones continuas y ra@'{@dotless{i}}ces cuadradas de n@'umeros enteros. Los operandos de la expresi@'on pueden combinarse con operadores aritm@'eticos. Adem@'as de fracciones continuas y ra@'{@dotless{i}}ces cuadradas, los factores de la expresi@'on deben ser enteros o n@'umeros racionales. Maxima no tiene m@'as conocimiento sobre operaciones con fracciones continuas que el que aporta la funci@'on @code{cf}.
+
+La funci@'on @code{cf} eval@'ua sus argumentos despu@'es de asignar a la variable @code{listarith} el valor @code{false}, retornando una fracci@'on continua en forma de lista.
+
+Una fracci@'on continua @code{a + 1/(b + 1/(c + ...))} se representa como la lista @code{[a, b, c, ...]}, donde los elementos @code{a}, @code{b}, @code{c}, ... se eval@'uan como enteros. La expresi@'on @var{expr} puede contener tambi@'en  @code{sqrt (n)} donde @code{n} es un entero; en tal caso, @code{cf} devolver@'a tantos t@'erminos de la fracci@'on continua como indique el valor de la variable @code{cflength} multiplicado por el per@'{@dotless{i}}odo.
+
+Una fracci@'on continua puede reducirse a un n@'umero evaluando la representaci@'on aritm@'etica que devuelve @code{cfdisrep}. V@'ease tambi@'en  @code{cfexpand}, que es otra alternativa para evaluar fracciones continuas.
+
+V@'eanse asimismo @code{cfdisrep}, @code{cfexpand} y @code{cflength}.
+
+Ejemplos:
+
+@itemize @bullet
+@item
+La expresi@'on @var{expr} contiene fracciones continuas y ra@'{@dotless{i}}ces cuadradas de enteros.
+
 @example
-(C1) CF(SQRT(3));
-(D1)                 [1, 1, 2, 1, 2, 1, 2, 1]
-(C2) CFEXPAND(%);
-                             [71  97]
-(D2)                         [      ]
-                             [41  56]
-(C3) D2[1,2]/D2[2,2],NUMER;
-(D3)                        1.7321429
-
-
+(%i1) cf ([5, 3, 1]*[11, 9, 7] + [3, 7]/[4, 3, 2]);
+(%o1)               [59, 17, 2, 1, 1, 1, 27]
+(%i2) cf ((3/17)*[1, -2, 5]/sqrt(11) + (8/13));
+(%o2)        [0, 1, 1, 1, 3, 2, 1, 4, 1, 9, 1, 9, 2]
 @end example
-@end defun
-@c @node CFLENGTH
-@c @unnumberedsec phony
-@defvar CFLENGTH
- default: [1] controls the number of terms of the continued
-fraction the function CF will give, as the value CFLENGTH[1] times the
-period.  Thus the default is to give one period.
 
-@end defvar
-@c @node CGAMMA
-@c @unnumberedsec phony
-@defun CGAMMA
- - The Gamma function in the complex plane.  Do LOAD(CGAMMA) to
-use these functions.  Functions Cgamma, Cgamma2, and LogCgamma2.
-These functions evaluate the Gamma function over the complex plane
-using the algorithm of Kuki, CACM algorithm 421.  Calculations are
-performed in single precision and the relative error is typically
-around 1.0E-7; evaluation at one point costs less than 1 msec.  The
-algorithm provides for an error estimate, but the Macsyma
-implementation currently does not use it.
-Cgamma is the general function and may be called with a symbolic or
-numeric argument.  With symbolic arguments, it returns as is; with
-real floating or rational arguments, it uses the Macsyma Gamma
-function; and for complex numeric arguments, it uses the Kuki
-algorithm.
-Cgamma2 of two arguments, real and imaginary, is for numeric arguments
-only; LogCgamma2 is the same, but the log-gamma function is
-calculated.  These two functions are somewhat more efficient.
+@item
+La variable @code{cflength} controla cuantos per@'{@dotless{i}}odos de la fracci@'on continua se calculan para n@'umeros irracionales algebraicos.
 
-@end defun
-@c @node CGAMMA2
-@c @unnumberedsec phony
-@defun CGAMMA2
- - See CGAMMA.
-
-@end defun
-@c @node DIVSUM
-@c @unnumberedsec phony
-@defun DIVSUM (n,k)
-adds up all the factors of n raised to the kth power.  If
-only one argument is given then k is assumed to be 1.
-
-@end defun
-@c @node EULER
-@c @unnumberedsec phony
-@defun EULER (X)
-gives the Xth Euler number for integer X.  For the
-Euler-Mascheroni constant, see %GAMMA.
-
-@end defun
-@c @node FACTORIAL
-@c @unnumberedsec phony
-@defun FACTORIAL (X)
-The factorial function.  FACTORIAL(X) = X! .
-See also MINFACTORIAL and FACTCOMB.  The factorial operator is !,
-and the double factorial operator is !!.
-
-@end defun
-@c @node FIB
-@c @unnumberedsec phony
-@defun FIB (X)
-the Xth Fibonacci number with FIB(0)=0, FIB(1)=1, and
-FIB(-N)=(-1)^(N+1) *FIB(N).  PREVFIB is FIB(X-1), the Fibonacci number
-preceding the last one computed.
-
-@end defun
-@c @node FIBTOPHI
-@c @unnumberedsec phony
-@defun FIBTOPHI (exp)
-converts FIB(n) to its closed form definition.
-This involves the constant %PHI (= (SQRT(5)+1)/2 = 1.618033989).
-If you want the Rational Function Package to know 
-About %PHI do TELLRAT(%PHI^2-%PHI-1)$  ALGEBRAIC:TRUE$ .
-
-@end defun
-@c @node INRT
-@c @unnumberedsec phony
-@defun INRT (X,n)
-takes two integer arguments, X and n, and returns the
-integer nth root of the absolute value of X.
-
-@end defun
-@c @node JACOBI
-@c @unnumberedsec phony
-@defun JACOBI (p,q)
-is the Jacobi symbol of p and q.
-
-@end defun
-@c @node LCM
-@c @unnumberedsec phony
-@defun LCM (exp1,exp2,...)
-returns the Least Common Multiple of its arguments.
-Do LOAD(FUNCTS); to access this function.
-
-@end defun
-@c @node MAXPRIME
-@c @unnumberedsec phony
-@defvar MAXPRIME
- default: [489318] - the largest number which may be given to
-the PRIME(n) command, which returns the nth prime.
-
-@end defvar
-@c @node MINFACTORIAL
-@c @unnumberedsec phony
-@defun MINFACTORIAL (exp)
-examines exp for occurrences of two factorials
-which differ by an integer.  It then turns one into a polynomial times
-the other.  If exp involves binomial coefficients then they will be
-converted into ratios of factorials.
 @example
-(C1) N!/(N+1)!;
-                                    N!
-(D1)                             --------
-                                 (N + 1)!
-(C2) MINFACTORIAL(%);
-                                     1
-(D2)                               -----
-                                   N + 1
-
-
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
 @end example
-@end defun
-@c @node PARTFRAC
-@c @unnumberedsec phony
-@defun PARTFRAC (exp, var)
-expands the expression exp in partial fractions
-with respect to the main variable, var.  PARTFRAC does a complete
-partial fraction decomposition.  The algorithm employed is based on
-the fact that the denominators of the partial fraction expansion (the
-factors of the original denominator) are relatively prime.  The
-numerators can be written as linear combinations of denominators, and
-the expansion falls out.  See EXAMPLE(PARTFRAC); for examples.
 
-@end defun
-@c @node PRIME
-@c @unnumberedsec phony
-@defun PRIME (n)
-gives the nth prime. MAXPRIME[489318] is the largest number
-accepted as argument.  Note:  The PRIME command does not work in
-maxima, since it required a large file of primes, which most users
-do not want.    PRIMEP does work however.
+@item
+Una fracci@'on continua puede calcularse evaluando la representaci@'on aritm@'etica que devuelve @code{cfdisrep}.
 
-@end defun
-@c @node PRIMEP
-@c @unnumberedsec phony
-@defun PRIMEP (n)
-returns TRUE if n is a prime, FALSE if not.
-
-@end defun
-@c @node QUNIT
-@c @unnumberedsec phony
-@defun QUNIT (n)
-gives the principal unit of the real quadratic number field
-SQRT(n) where n is an integer, i.e.  the element whose norm is unity.
-This amounts to solving Pell's equation A**2- n*B**2=1.
 @example
-(C1) QUNIT(17);
-(D1)              SQRT(17)+4
-(C2)  EXPAND(%*(SQRT(17)-4));
-(D2)               1
-
-
+(%i1) cflength: 3$
+(%i2) cfdisrep (cf (sqrt (3)))$
+(%i3) ev (%, numer);
+(%o3)                   1.731707317073171
 @end example
-@end defun
-@c @node TOTIENT
-@c @unnumberedsec phony
-@defun TOTIENT (n)
-is the number of integers less than or equal to n which
-are relatively prime to n.
 
-@end defun
-@c @node ZEROBERN
-@c @unnumberedsec phony
-@defvar ZEROBERN
- default: [TRUE] - if set to FALSE excludes the zero
-BERNOULLI numbers.  (See the BERN function.)
+@item
+Maxima no sabe sobre operaciones con fracciones continuas m@'as de lo que aporta la funci@'on @code{cf}.
 
-@end defvar
-@c @node ZETA
-@c @unnumberedsec phony
-@defun ZETA (X)
-gives the Riemann zeta function for certain integer values
-of X.
+@example
+(%i1) cf ([1,1,1,1,1,2] * 3);
+(%o1)                     [4, 1, 5, 2]
+(%i2) cf ([1,1,1,1,1,2]) * 3;
+(%o2)                  [3, 3, 3, 3, 3, 6]
+@end example
 
-@end defun
-@c @node ZETA%PI
-@c @unnumberedsec phony
-@defvar ZETA%PI
- default: [TRUE] - if FALSE, suppresses ZETA(n) giving
-coeff*%PI^n for n even.
+@end itemize
+@end deffn
 
-@end defvar
+
+@deffn {Funci@'on} cfdisrep (@var{lista})
+Construye y devuelve una expresi@'on aritm@'etica ordinaria de la forma  @code{a + 1/(b + 1/(c + ...))} a partir de la representaci@'on en formato lista de la fracci@'on continua  @code{[a, b, c, ...]}.
+
+@example
+(%i1) cf ([1, 2, -3] + [1, -2, 1]);
+(%o1)                     [1, 1, 1, 2]
+(%i2) cfdisrep (%);
+                                  1
+(%o2)                     1 + ---------
+                                    1
+                              1 + -----
+                                      1
+                                  1 + -
+                                      2
+@end example
+
+@end deffn
+
+
+@deffn {Funci@'on} cfexpand (@var{x})
+Devuelve la matriz con los numeradores y denominadores de la @'ultima (columna 1) y pen@'ultima (columna 2) convergentes de la fracci@'on continua @var{x}.
+
+@example
+(%i1) cf (rat (ev (%pi, numer)));
+
+`rat' replaced 3.141592653589793 by 103993//33102 = 3.141592653011902
+(%o1)                  [3, 7, 15, 1, 292]
+(%i2) cfexpand (%); 
+                         [ 103993  355 ]
+(%o2)                    [             ]
+                         [ 33102   113 ]
+(%i3) %[1,1]/%[2,1], numer;
+(%o3)                   3.141592653011902
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} cflength
+Valor por defecto: 1
+
+La variable @code{cflength} controla el n@'umero de t@'erminos de la fracci@'on continua que devuelve la funci@'on @code{cf}, que ser@'a @code{cflength} multiplicado por el per@'{@dotless{i}}odo. As@'{@dotless{i}}, el valor por defecto ser@'a el de un per@'{@dotless{i}}odo.
+
+@example
+(%i1) cflength: 1$
+(%i2) cf ((1 + sqrt(5))/2);
+(%o2)                    [1, 1, 1, 1, 2]
+(%i3) cflength: 2$
+(%i4) cf ((1 + sqrt(5))/2);
+(%o4)               [1, 1, 1, 1, 1, 1, 1, 2]
+(%i5) cflength: 3$
+(%i6) cf ((1 + sqrt(5))/2);
+(%o6)           [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
+@end example
+
+@end defvr
+
+@deffn {Funci@'on} divsum (@var{n}, @var{k})
+@deffnx {Funci@'on} divsum (@var{n})
+
+La llamada @code{divsum (@var{n}, @var{k})} devuelve la suma de los divisores de @var{n} elevados a la @var{k}-@'esima potencia.
+
+La llamada @code{divsum (@var{n})} devuelve la suma de los divisores de @var{n}.
+
+@example
+(%i1) divsum (12);
+(%o1)                          28
+(%i2) 1 + 2 + 3 + 4 + 6 + 12;
+(%o2)                          28
+(%i3) divsum (12, 2);
+(%o3)                          210
+(%i4) 1^2 + 2^2 + 3^2 + 4^2 + 6^2 + 12^2;
+(%o4)                          210
+@end example
+
+@end deffn
+
+
+@deffn {Funci@'on} euler (@var{n})
+Devuelve el @var{n}-@'esimo n@'umero de Euler del entero no negativo @var{n}.
+
+Para la constante de Euler-Mascheroni, v@'ease @code{%gamma}.
+
+@example
+(%i1) map (euler, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)    [1, 0, - 1, 0, 5, 0, - 61, 0, 1385, 0, - 50521]
+@end example
+
+@end deffn
+
+@defvr {Constante} %gamma
+Es la constante de Euler-Mascheroni, 0.5772156649015329 ....
+
+@end defvr
+
+@deffn {Funci@'on} factorial (@var{x})
+Representa la funci@'on factorial. Maxima considera @code{factorial (@var{x})} lo mismo que @code{@var{x}!}.
+V@'ease @code{!}.
+
+@end deffn
+
+@deffn {Funci@'on} fib (@var{n})
+Devuelve el @var{n}-@'esimo n@'umero de Fibonacci. La llamada @code{fib(0)} es igual a 0, @code{fib(1)} devuelve 1 y
+@code{fib (-@var{n})} es igual a @code{(-1)^(@var{n} + 1) * fib(@var{n})}.
+
+Despu@'es de llamar a @code{fib}, la variable @code{prevfib} toma el valor @code{fib (@var{x} - 1)}, que es el n@'umero de Fibonacci que precede al @'ultimo calculado.
+
+@example
+(%i1) map (fib, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+(%o1)         [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} fibtophi (@var{expr})
+Expresa los n@'umeros de Fibonacci en t@'erminos de la raz@'on @'aurea @code{%phi}, que es @code{(1 + sqrt(5))/2}, aproximadamente 1.61803399.
+
+@c SEEMS MISPLACED -- THIS WANTS TO BE UNDER %phi !!!
+Por defecto, Maxima desconoce @code{%phi}. Tras ejecutar @code{tellrat (%phi^2 - %phi - 1)} y @code{algebraic: true},
+@code{ratsimp} puede simplificar algunas expresiones que contengan @code{%phi}.
+
+@example
+(%i1) fibtophi (fib (n));
+                           n             n
+                       %phi  - (1 - %phi)
+(%o1)                  -------------------
+                           2 %phi - 1
+(%i2) fib (n-1) + fib (n) - fib (n+1);
+(%o2)          - fib(n + 1) + fib(n) + fib(n - 1)
+(%i3) ratsimp (fibtophi (%));
+(%o3)                           0
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} inrt (@var{x}, @var{n})
+Devuelve la ra@'{@dotless{i}}z entera @var{n}-@'esima del valor absoluto de  @var{x}.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], inrt (10^a, 3)), l);
+(%o2) [2, 4, 10, 21, 46, 100, 215, 464, 1000, 2154, 4641, 10000]
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} jacobi (@var{p}, @var{q})
+Devuelve el s@'{@dotless{i}}mbolo de Jacobi para @var{p} y @var{q}.
+
+@example
+(%i1) l: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]$
+(%i2) map (lambda ([a], jacobi (a, 9)), l);
+(%o2)         [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0]
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} lcm (@var{expr_1}, ..., @var{expr_n})
+Devuelve el m@'{@dotless{i}}nimo com@'un m@'ultiplo de sus argumentos. Los argumentos pueden ser tanto expresiones en general como enteros.
+
+Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
+
+@end deffn
+
+@deffn {Funci@'on} partfrac (@var{expr}, @var{var})
+Expande la expresi@'on @var{expr} en fracciones parciales respecto de la variable principal @var{var}. La funci@'on @code{partfrac} hace una descomposici@'on completa en fracciones parciales. El algoritmo que se utiliza se basa en el hecho de que los denominadores de la expansi@'on en fracciones parciales (los factores del denominador original) son primos relativos. Los numeradores se pueden escribir como combinaciones lineales de los denominadores.
+
+@example
+(%i1) 1/(1+x)^2 - 2/(1+x) + 2/(2+x);
+                      2       2        1
+(%o1)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+(%i2) ratsimp (%);
+                                 x
+(%o2)                 - -------------------
+                         3      2
+                        x  + 4 x  + 5 x + 2
+(%i3) partfrac (%, x);
+                      2       2        1
+(%o3)               ----- - ----- + --------
+                    x + 2   x + 1          2
+                                    (x + 1)
+@end example
+
+@end deffn
+
+@c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
+@deffn {Funci@'on} primep (@var{n})
+Devuelve @code{true} si @code{n} es un n@'umero primo, @code{false} en caso contrario.
+
+@end deffn
+
+@deffn {Funci@'on} qunit (@var{n})
+Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero; consiste en la resoluci@'on de la ecuaci@'on de Pell  @code{a^2 - @var{n} b^2 = 1}.
+
+@example
+(%i1) qunit (17);
+(%o1)                     sqrt(17) + 4
+(%i2) expand (% * (sqrt(17) - 4));
+(%o2)                           1
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} totient (@var{n})
+Devuelve el n@'umero de enteros menores o iguales a @var{n} que son primos relativos con @var{n}.
+
+@end deffn
+
+@defvr {Variable opcional} zerobern
+Valor por defecto: @code{true}
+
+Si @code{zerobern} vale @code{false}, @code{bern} excluye los n@'umeros de Bernoulli iguales a cero. 
+See @code{bern}.
+
+@end defvr
+
+@deffn {Funci@'on} zeta (@var{n})
+Devuelve la funci@'on zeta de Riemann para @var{x} entero negativo, 0, 1 o n@'umero par positivo. No se eval@'ua @code{zeta (@var{n})} para cualesquiera otros argumentos, incluyendo racionales no enteros, n@'umeros en coma flotante o argumentos complejos.
+
+V@'eanse tambi@'en @code{bfzeta} y @code{zeta%pi}.
+
+@example
+(%i1) map (zeta, [-4, -3, -2, -1, 0, 1, 2, 3, 4, 5]);
+                                     2              4
+           1        1     1       %pi            %pi
+(%o1) [0, ---, 0, - --, - -, inf, ----, zeta(3), ----, zeta(5)]
+          120       12    2        6              90
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} zeta%pi
+Valor por defecto: @code{true}
+
+Si @code{zeta%pi} vale @code{true}, @code{zeta} devuelve una expresi@'on proporcional a @code{%pi^n} si @code{n} es un n@'umero par positivo. En caso contrario, @code{zeta} no se eval@'ua y devuelve la forma nominal @code{zeta (n)}.
+
+@example
+(%i1) zeta%pi: true$
+(%i2) zeta (4);
+                                 4
+                              %pi
+(%o2)                         ----
+                               90
+(%i3) zeta%pi: false$
+(%i4) zeta (4);
+(%o4)                        zeta(4)
+@end example
+
+@end defvr

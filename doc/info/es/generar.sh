@@ -10,4 +10,4 @@ texi2html --lang=es --output=maxima.es.html maxima.es.texi
 
 echo 'Generando manual en formato pdf ....'
 
-texi2pdf -I tex_es/  maxima.es.texi
+texi2pdf maxima.es.texi

@@ -1,377 +1,659 @@
 @menu
-* Introducci'on a las Series::      
+* Introducci@'on a las Series::      
 * Definiciones para las Series::      
 @end menu
 
-@node Introducci'on a las Series, Definiciones para las Series, Series, Series
-@section Introducci'on a las Series
-Maxima contiene las funciones  @code{Taylor} y @code{Powerseries} para buscar la serie de funciones diferenciables .Tambi'en se dispone de herramientas tales como @code{Nusum}
-capaces de encontrar la forma cerrada de algunas series.   Operaciones tales como adici'on y multiplicaci'on trabajan como es acostrumbrado en series. Esta secci'on presenta los diversas variables globales con las que se controla la expansi'on.
+@node Introducci@'on a las Series, Definiciones para las Series, Series, Series
+@section Introducci@'on a las Series
+
+Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular las series de las funciones diferenciables. Tambi@'en tiene herramientas como @code{nusum} capaces de encontrar la expresi@'on compacta de algunas series. Operaciones como la suma y la multiplicaci@'on operan de la forma habitual en el contexto de las series. Esta secci@'on presenta las variables globales que controlan la expansi@'on.
 @c end concepts Series
-@node Definiciones para las Series,  , Introducci'on a las Series, Series
+
+@node Definiciones para las Series,  , Introducci@'on a las Series, Series
 @section Definiciones para las Series
-@c @node CAUCHYSUM
-@c @unnumberedsec phony
-@defvar CAUCHYSUM
- default: [FALSE] - Cuando se multiplican juntas sumas con INF
-como su limite superior , si SUMEXPAND es TRUE y CAUCHYSUM es fijo al
-TRUE then the Cauchy product will be used rather than the usual
-producto.  En el producto Cauchy el indice de la sumatoria interior esta en
-funci@'on del indice exterior, que varia
-independientemente.  Esto es: SUM(F(I),I,0,INF)*SUM(G(J),J,0,INF) se convierte en
-SUM(SUM(F(I)*G(J-I),I,0,J),J,0,INF)
 
-@end defvar
-@c @node DEFTAYLOR
-@c @unnumberedsec phony
-@defun DEFTAYLOR (function, exp)
-permite al usuario definir las series de Taylor 
-(about 0) de una funci@'on arbitraria, de una variable como exponente la que posiblemente
-es una polinomial, en la que esa variable o cualquiera se puede obtener implicitamente como una
-serie de potencias usando la funci@'on SUM .
-    En la orden para mostrar la informaci@'on obtenida a DEFTAYLOR uno puede usar
-POWERSERIES(F(X),X,0). (mire a continuaci@'on).
-@example
-(C1) DEFTAYLOR(F(X),X**2+SUM(X**I/(2**I*I!**2),
-        I,4,INF));
-(D1)                          [F]
-(C2) TAYLOR(%E**SQRT(F(X)),X,0,4);
-                     2         3          4
-                    X    3073 X    12817 X
-(D2)/R/     1 + X + -- + ------- + -------- +  . . .
-                    2     18432     307200
+@defvr {Variable optativa} cauchysum
+Valor por defecto: @code{false}
 
-
-@end example
-@end defun
-@c @node MAXTAYORDER
-@c @unnumberedsec phony
-@defvar MAXTAYORDER
- default: [TRUE] - si es TRUE, entonces durante la manipulaci@'on algebraica
- de series de Taylor (truncadas) , TAYLOR intentar@'a retener
-una gran cantidad de terminos que son correctos.
-
-@end defvar
-@c @node NICEINDICES
-@c @unnumberedsec phony
-@defun NICEINDICES (expr)
-Tomar@'a la expresi@'on y cambiar@'a todos los
-indices de las sumas y productos que son poco comprensibles. Esto
-hace que cada indice sea "I" , a menos que "I" este en la parte interna
-de la expresi@'on, en este caso se intentar@'a sequencialmente 
-J,K,L,M,N,I0,I1,I2,I3,I4,...  hasta que encuentre un @'{@dotless{i}}ndice legal .
-
-@end defun
-@c @node NICEINDICESPREF
-@c @unnumberedsec phony
-@defvar NICEINDICESPREF
- default: [I,J,K,L,M,N] - la lista cuyos NICEINDICES
-sea usada para encontrar @'{@dotless{i}}ndices para sumas y productos.  Esto permite al usuario
-fijar el orden de preferencia de como NICEINDICES encuentra el "nice
-indices".  E.g.  NICEINDICESPREF:[Q,R,S,T,INDEX]$.  Entonces si
-NICEINDICES busca, esos resultados no se podr@'an usar como @'{@dotless{i}}ndices en una
-sumatoria particular , esta usa el primero como una base para intentar y cambia en los
-n@'umeros.  Aqu@'{@dotless{i}}, si la lista se agota, Q0, entonces Q1, etc, Ser@'a
-intentado.
-
-@end defvar
-@c @node NUSUM
-@c @unnumberedsec phony
-@defun NUSUM (exp,var,low,high)
-realiza una sumatoria de exponentes indefinida con
-respecto a una variable usando un proceso de decisi@'on debido a R.W. Gosper.  las respuestas exponentes y
-potential deben ser expresables como productos de n potencias,
-factoriales, binomiales, y funciones racionales .  Los terminos "definida"
-y "sumatoria indefinida " son usados an@'alogicamente a "definida" e
-"integraci@'on indefinida ".  Una suma indefinida es la manera para obtener una
-forma cerrada para la suma de m@'as de un intervalo de una variable. e.g. 0 a
-inf.  De esta manera, desde all@'{@dotless{i}} no es la formula para la suma parcial general de
-la serie binomial , NUSUM No puede hacer eso.
-
-@end defun
-@c @node PADE
-@c @unnumberedsec phony
-@defun PADE (taylor-series,num-deg-bound,denom-deg-bound)
-retorna una lista de
-todas las funciones rationales las cuales tienen la expansi@'on de la serie taylor
-donde la suma de los grados del numerador y el denominador son
-menores o iguales que el nivel de truncaci@'on de la serie de potncias , i.e.
-son "mejores" aproximantes, y el cual adicionalmente satisface los grados fronterizos especificados.
-Este es el primer argumento, debe ser una serie-taylor de una sola variable;
-el segundo y el tercero son enteros positivos, que especifican los grados fronterizos en
-el numerador y denominador.
-El primer argumento de PADE puede tambien ser una serie-Laurent, los grados fronterizos
-pueden ser INF el cual causa que el grado de todas las funciones racionales
-sea menor o igual que la longitud de la serie de potencia a ser
-retornada.  Grado total es grado-numerador + grado-denom.  Longitud de una serie
-de potencias es "nivel de truncaci@'on" + 1 - minimo(0,"orden de la serie").
+@c REPHRASE
+Cuando se multiplican sumatorios infinitos, si @code{sumexpand} vale @code{true} y @code{cauchysum} vale @code{true}, entonces se utilizar@'a el producto  de Cauchy en lugar del usual. En el producto de Cauchy  el @'{@dotless{i}}ndice de la suma interna es funci@'on del @'{@dotless{i}}ndice de la exterior en lugar de variar de forma independiente. Un ejemplo aclara esta idea:
 
 @example
-(C15) ff:taylor(1+x+x^2+x^3,x,0,3);
-                                     2    3
-(D15)/T/                    1 + X + X  + X  + . . .
-(C16) pade(ff,1,1);
-                                        1
-(D16)                              [- -----]
-                                      X - 1
-(c1) ff:taylor(-(83787*X^10-45552*X^9-187296*X^8
-                  +387072*X^7+86016*X^6-1507328*X^5
-                  +1966080*X^4+4194304*X^3-25165824*X^2
-                  +67108864*X-134217728)
-       /134217728,x,0,10);
-(C25) PADE(ff,4,4);
-(D25) []
-@end example
-Esa no es una funci@'on racional de grado 4 numerador/denominador, con esta
-expansi@'on de la serie de potencias.  Usted debe en general tener el grado del numerador y
-el grado del denominador sumados y como m@'{@dotless{i}}nimo debe dar el grado de la serie de potencia,
-en un orden bastante desconocido los coeficientes a resolver.
-@example
-(C26) PADE(ff,5,5);
-(D26) [-(520256329*X^5-96719020632*X^4-489651410240*X^3
-           -1619100813312*X^2 -2176885157888*X-2386516803584)
-	/(47041365435*X^5+381702613848*X^4+1360678489152*X^3
-                +2856700692480*X^2
-	        +3370143559680*X+2386516803584)]
-
+(%i1) sumexpand: false$
+(%i2) cauchysum: false$
+(%i3) s: sum (f(i), i, 0, inf) * sum (g(j), j, 0, inf);
+                      inf         inf
+                      ====        ====
+                      \           \
+(%o3)                ( >    f(i))  >    g(j)
+                      /           /
+                      ====        ====
+                      i = 0       j = 0
+(%i4) sumexpand: true$
+(%i5) cauchysum: true$
+(%i6) ''s;
+                 inf     i1
+                 ====   ====
+                 \      \
+(%o6)             >      >     g(i1 - i2) f(i2)
+                 /      /
+                 ====   ====
+                 i1 = 0 i2 = 0
 @end example
 
-@end defun
-@c @node POWERDISP
-@c @unnumberedsec phony
-@defvar POWERDISP
- default: [FALSE] - si es TRUE mostrar@'a las sumas con sus terminos
-en un orden de reversa.  De esa manera los polinomios se mostrar@'an
-como series de potencia truncadas, i.e., con la menor potencia primero.
+@end defvr
 
-@end defvar
-@c @node POWERSERIES
-@c @unnumberedsec phony
-@defun POWERSERIES (exp, var, pt)
-genera la forma general de la expansi@'on
-de la serie de potencia para exp en la variable var respecto al punto pt (la cual
-debe ser INF para infinito).  Si POWERSERIES es incapaz de expandir exp, la
-funci@'on TAYLOR  debe obtener los primeros terminos de las series.
-VERBOSE[FALSE] - Si TRUE esta seleccionado causar@'a comentarios del progreso de
-POWERSERIES ser@'a impreso como la ejecuci@'on de este procedimiento.
+@deffn {Funci@'on} deftaylor (@var{f_1}(@var{x_1}), @var{expr_1}, ..., @var{f_n}(@var{x_n}), @var{expr_n})
+Para cada funci@'on @var{f_i} de variable @var{x_i},  @code{deftaylor} define @var{expr_i} como una serie de Taylor alrededor de cero. La expresi@'on @var{expr_i} ser@'a un polinomio en  @var{x_i} o una suma; @code{deftaylor} admite tambi@'en expresiones m@'as generales.
+
+La llamada @code{powerseries (@var{f_i}(@var{x_i}), @var{x_i}, 0)} devuelve la serie definida por  @code{deftaylor}.
+
+La funci@'on @code{deftaylor} eval@'ua sus argumentos y devuelve la lista de las funciones @var{f_1}, ..., @var{f_n}. 
+
+Ejemplo:
+
 @example
-(C1) VERBOSE:TRUE$
-(C2) POWERSERIES(LOG(SIN(X)/X),X,0);
-Can't expand 
-                                 LOG(SIN(X))
-De esta manera intentamos de nuevo despu@'es de que se aplica la regla:
+(%i1) deftaylor (f(x), x^2 + sum(x^i/(2^i*i!^2), i, 4, inf));
+(%o1)                          [f]
+(%i2) powerseries (f(x), x, 0);
+                      inf
+                      ====      i1
+                      \        x         2
+(%o2)                  >     -------- + x
+                      /       i1    2
+                      ====   2   i1!
+                      i1 = 4
+(%i3) taylor (exp (sqrt (f(x))), x, 0, 4);
+                      2         3          4
+                     x    3073 x    12817 x
+(%o3)/T/     1 + x + -- + ------- + -------- + . . .
+                     2     18432     307200
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} maxtayorder
+Valor por defecto: @code{true}
+
+Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaci@'on algebraica de series truncadas de Taylor, la funci@'on @code{taylor} trata de retener tantos t@'erminos correctos como sea posible.
+
+@end defvr
+
+@deffn {Funci@'on} niceindices (@var{expr})
+Cambia las etiquetas de los @'{@dotless{i}}ndices de sumas y productos de @var{expr}. La funci@'on @code{niceindices} trata de cambiar cada @'{@dotless{i}}ndice al valor de @code{niceindicespref[1]}, a menos que esa etiqueta aparezca ya en el sumando o factor, en cuyo caso  @code{niceindices} realiza intentos con los siguientes elementos de  @code{niceindicespref}, hasta que encuentre una variable que que no est@'e en uso. Si todas las variables de la lista han sido ya revisadas, se formar@'an nuevos @'{@dotless{i}}nices a@~nadiendo n@'umeros enteros al valor de @code{niceindicespref[1]}, como @code{i0}, @code{i1}, @code{i2}, ....
+
+La funci@'on @code{niceindices} eval@'ua sus argumentos y devuelve una expresi@'on.
+
+Ejemplo:
+
+@example
+(%i1) niceindicespref;
+(%o1)                  [i, j, k, l, m, n]
+(%i2) product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
+                 inf    inf
+                /===\   ====
+                 ! !    \
+(%o2)            ! !     >      f(bar i j + foo)
+                 ! !    /
+                bar = 1 ====
+                        foo = 1
+(%i3) niceindices (%);
+                     inf  inf
+                    /===\ ====
+                     ! !  \
+(%o3)                ! !   >    f(i j l + k)
+                     ! !  /
+                    l = 1 ====
+                          k = 1
+@end example
+
+@end deffn
+
+
+@defvr {Variable optativa} niceindicespref
+Valor por defecto: @code{[i, j, k, l, m, n]}
+
+La variable @code{niceindicespref} es la lista de la que la funci@'on @code{niceindices} va tomando nombres de etiquetas para @'{@dotless{i}}ndices de sumatorios y productos.
+
+En @code{niceindicespref} se guardan normalmente nombres de variables.
+
+Ejemplo:
+
+@example
+(%i1) niceindicespref: [p, q, r, s, t, u]$
+(%i2) product (sum (f (foo + i*j*bar), foo, 1, inf), bar, 1, inf);
+                 inf    inf
+                /===\   ====
+                 ! !    \
+(%o2)            ! !     >      f(bar i j + foo)
+                 ! !    /
+                bar = 1 ====
+                        foo = 1
+(%i3) niceindices (%);
+                     inf  inf
+                    /===\ ====
+                     ! !  \
+(%o3)                ! !   >    f(i j q + p)
+                     ! !  /
+                    q = 1 ====
+                          p = 1
+@end example
+
+@end defvr
+
+@deffn {Funci@'on} nusum (@var{expr}, @var{x}, @var{i_0}, @var{i_1})
+Calcula la suma hipergeom@'etrica indefinida de  @var{expr} con respecto a la variable  @var{x} utilizando una procedimiento de decisi@'on debido a R.W. Gosper. La expresi@'on @var{expr} y el resultado deben poder ser escritos como productos de potencias enteras, factoriales, coeficientes binomiales y funciones racionales.
+
+@c UMM, DO WE REALLY NEED TO DEFINE "DEFINITE" AND "INDEFINITE" SUMMATION HERE ??
+@c (CAN'T WE MAKE THE POINT WITHOUT DRAGGING IN SOME NONSTANDARD TERMINOLOGY ??)
+Los t@'erminos suma "definida" e "indefinida" se usan de forma an@'aloga a integraci@'on "definida" e "indefinida". La suma indefinida significa dar un resultado simb@'olico.
+
+Las funciones @code{nusum} y @code{unsum} disponen de cierta informaci@'on sobre sumas y diferencias de productos finitos. V@'ease tambi@'en @code{unsum}.
+
+Ejemplos:
+
+@example
+(%i1) nusum (n*n!, n, 0, n);
+
+Dependent equations eliminated:  (1)
+(%o1)                     (n + 1)! - 1
+(%i2) nusum (n^4*4^n/binomial(2*n,n), n, 0, n);
+                     4        3       2              n
+      2 (n + 1) (63 n  + 112 n  + 18 n  - 22 n + 3) 4      2
+(%o2) ------------------------------------------------ - ------
+                    693 binomial(2 n, n)                 3 11 7
+(%i3) unsum (%, n);
+                              4  n
+                             n  4
+(%o3)                   ----------------
+                        binomial(2 n, n)
+(%i4) unsum (prod (i^2, i, 1, n), n);
+                    n - 1
+                    /===\
+                     ! !   2
+(%o4)              ( ! !  i ) (n - 1) (n + 1)
+                     ! !
+                    i = 1
+(%i5) nusum (%, n, 1, n);
+
+Dependent equations eliminated:  (2 3)
+                            n
+                          /===\
+                           ! !   2
+(%o5)                      ! !  i  - 1
+                           ! !
+                          i = 1
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} pade (@var{taylor_series}, @var{numer_deg_bound}, @var{denom_deg_bound})
+Devuelve la lista de todas las funciones racionales que tienen el desarrollo de Taylor dado, en las que la suma de los grados del numerador y denominador es menor o igual que el nivel de truncamiento de la serie de potencias.
+
+La expresi@'on @var{taylor_series} es una serie de Taylor univariante. Los argumentos @var{numer_deg_bound} y @var{denom_deg_bound} son enteros positivos que indican las cotas para numerador y denominador.
+
+La expresi@'on @var{taylor_series} tambi@'en puede ser una serie de Laurent, y las cotas de los grados pueden ser @code{inf}. El grado total se define como @code{@var{numer_deg_bound} + @var{denom_deg_bound}}. La longitud de una serie de potencias se define como @code{"truncation level" + 1 - min(0, "order of series")}.
+
+@example
+(%i1) taylor (1 + x + x^2 + x^3, x, 0, 3);
+                              2    3
+(%o1)/T/             1 + x + x  + x  + . . .
+(%i2) pade (%, 1, 1);
+                                 1
+(%o2)                       [- -----]
+                               x - 1
+(%i3) t: taylor(-(83787*x^10 - 45552*x^9 - 187296*x^8
+                   + 387072*x^7 + 86016*x^6 - 1507328*x^5
+                   + 1966080*x^4 + 4194304*x^3 - 25165824*x^2
+                   + 67108864*x - 134217728)
+       /134217728, x, 0, 10);
+                    2    3       4       5       6        7
+             x   3 x    x    15 x    23 x    21 x    189 x
+(%o3)/T/ 1 - - + ---- - -- - ----- + ----- - ----- - ------
+             2    16    32   1024    2048    32768   65536
+
+                                  8         9          10
+                            5853 x    2847 x    83787 x
+                          + ------- + ------- - --------- + . . .
+                            4194304   8388608   134217728
+(%i4) pade (t, 4, 4);
+(%o4)                          []
+@end example
+
+No hay ninguna funci@'on racional de grado 4 en numerador y denominador con este desarrollo en serie de potencias. Es necesario dar un n@'umero de grados al numerador y denominador cuya suma sea al menos el grado del desarrollo de la serie, a fin de disponer de un n@'umero suficiente de coeficientes desconocidos para calcular.
+
+@example
+(%i5) pade (t, 5, 5);
+                     5                4                 3
+(%o5) [- (520256329 x  - 96719020632 x  - 489651410240 x
+
+                  2
+ - 1619100813312 x  - 2176885157888 x - 2386516803584)
+
+               5                 4                  3
+/(47041365435 x  + 381702613848 x  + 1360678489152 x
+
+                  2
+ + 2856700692480 x  + 3370143559680 x + 2386516803584)]
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} powerdisp
+Valor por defecto: @code{false}
+
+Si @code{powerdisp} vale @code{true}, se muestran las sumas con sus t@'erminos ordenados de menor a mayor potencia. As@'{@dotless{i}}, un polinomio se presenta como una serie de potencias truncada con el t@'ermino constante al principio y el de mayor potencia al final.
+
+Por defecto, los t@'erminos de una suma se muestran en el orden de las potencias decrecientes.
+
+@c NEED AN EXAMPLE HERE
+@end defvr
+
+
+@deffn {Funci@'on} powerseries (@var{expr}, @var{x}, @var{a})
+Devuelve la forma general del desarrollo en serie de potencias de @var{expr} para la variable @var{x} alrededor del punto @var{a} (que puede ser @code{inf}, de infinito).
+
+Si @code{powerseries} no es capaz de desarrollar @var{expr}, la funci@'on @code{taylor} puede calcular los primeros t@'erminos de la serie.
+
+Si @code{verbose} vale @code{true}, @code{powerseries} va mostrando mensajes mientras progresa el c@'alculo. 
+
+@example
+(%i1) verbose: true$
+(%i2) powerseries (log(sin(x)/x), x, 0);
+can't expand 
+                                 log(sin(x))
+so we'll try again after applying the rule:
                                         d
-                                      / -- (SIN(X))
-                                      [ dX
-                        LOG(SIN(X)) = I ----------- dX
-                                      ]   SIN(X)
+                                      / -- (sin(x))
+                                      [ dx
+                        log(sin(x)) = i ----------- dx
+                                      ]   sin(x)
                                       /
-En la primera simplificaci@'on retornaron:
+in the first simplification we have returned:
                              /
                              [
-                             I COT(X) dX - LOG(X)
+                             i cot(x) dx - log(x)
                              ]
                              /
-                    INF
-                    ====        I1  2 I1             2 I1
-                    \      (- 1)   2     BERN(2 I1) X
+                    inf
+                    ====        i1  2 i1             2 i1
+                    \      (- 1)   2     bern(2 i1) x
                      >     ------------------------------
-                    /                I1 (2 I1)!
+                    /                i1 (2 i1)!
                     ====
-                    I1 = 1
-(D2)                -------------------------------------
+                    i1 = 1
+(%o2)                -------------------------------------
                                       2
-
-
 @end example
-@end defun
-@c @node PSEXPAND
-@c @unnumberedsec phony
-@defvar PSEXPAND
- default: [FALSE] - Si TRUE causar@'a la extensi@'on de la expresi@'on de funciones racionales
-a mostrarlas completamente expandida.  (RATEXPAND tambi@'en
-causar@'a esto.)  Si FALSE, las expresiones multivariable ser@'an mostradas
-solo como en el paquete de funciones racionales .  Si PSEXPAND:MULTI, entonces
-los terminos con el mismo grado total en las variables son agrupados
-en conjunto.
 
-@end defvar
-@c @node REVERT
-@c @unnumberedsec phony
-@defun REVERT (expression,variable)
-Hace reversi@'on de la serie de Taylor.
-"Variable" es la variable original en la expansi@'on Taylor.  Haga
-LOAD(REVERT) para acceder a esa funci@'on.  Intente
+@end deffn
+
+@defvr {Variable optativa} psexpand
+Valor por defecto: @code{false}
+
+Si @code{psexpand} vale @code{true}, toda expresi'on racional se muestra completamente expandida. La variable @code{ratexpand} tiene el mismo efecto.
+
+@c WE NEED TO BE EXPLICIT HERE
+Si @code{psexpand} vale @code{false}, las expresines multivariantes se presentan tal como lo hace el paquete de funciones racionales.
+
+@c TERMS OF WHAT ??
+Si @code{psexpand} vale  @code{multi}, los t@'erminos de igual grado son agrupados.
+
+@end defvr
+
+@deffn {Funci@'on} revert (@var{expr}, @var{x})
+@deffnx {Funci@'on} revert2 (@var{expr}, @var{x}, @var{n})
+
+Estas funciones devuelven el rec@'{@dotless{i}}proco de @var{expr} en forma de desarrollo de Taylor alrededor de cero respecto de la variable @var{x}. La funci@'on @code{revert} devuelve un polinomio de grado igual a la mayor potencia en @var{expr}.
+La funci@'on @code{revert2} devuelve un polinomio de grado @var{n}, el cual puede ser mayor, igual o menor que el grado de  @var{expr}.
+
+Para utilizar estas funciones es necesario cargarlas en memoria mediante @code{load ("revert")}.
+
+Ejemplos:
 
 @example
-REVERT2(expression,variable,hipower)
+(%i1) load ("revert")$
+(%i2) t: taylor (exp(x) - 1, x, 0, 6);
+                   2    3    4    5     6
+                  x    x    x    x     x
+(%o2)/T/      x + -- + -- + -- + --- + --- + . . .
+                  2    6    24   120   720
+(%i3) revert (t, x);
+               6       5       4       3       2
+           10 x  - 12 x  + 15 x  - 20 x  + 30 x  - 60 x
+(%o3)/R/ - --------------------------------------------
+                                60
+(%i4) ratexpand (%);
+                     6    5    4    3    2
+                    x    x    x    x    x
+(%o4)             - -- + -- - -- + -- - -- + x
+                    6    5    4    3    2
+(%i5) taylor (log(x+1), x, 0, 6);
+                    2    3    4    5    6
+                   x    x    x    x    x
+(%o5)/T/       x - -- + -- - -- + -- - -- + . . .
+                   2    3    4    5    6
+(%i6) ratsimp (revert (t, x) - taylor (log(x+1), x, 0, 6));
+(%o6)                           0
+(%i7) revert2 (t, x, 4);
+                          4    3    2
+                         x    x    x
+(%o7)                  - -- + -- - -- + x
+                         4    3    2
 @end example
- also.  REVERT unicamente trabaja en expansiones
-alrededor de 0.
 
-@end defun
-@c @node SRRAT
-@c @unnumberedsec phony
-@defun SRRAT (exp)
-este comando ha sido renombrado a TAYTORAT.
+@end deffn
 
-@end defun
-@c @node TAYLOR
-@c @unnumberedsec phony
-@defun TAYLOR (exp, var, pt, pow)
-expande la expresi@'on exp en una serie de Taylor truncada
-(o serie Laurent , si se requiere) en la variable var
-alrededor del punto pt.  Los terminos directos (var-pt)**pow son generados.
-Si exp es de la forma f(var)/g(var) y g(var) no tiene terminos por encima del
-grado pow, entonces TAYLOR intentar@'a expandir g(var) al grado 2*pow.
-Si all@'{@dotless{i}} a pesar de todo no hay terminos no-cero TAYLOR cuidar@'a de doblar
-el grado de la expansi@'on de g(var) hasta que alcance pow*2**n donde n es
-el valor de la variable TAYLORDEPTH[3].  Si MAXTAYORDER[FALSE] es
-fijado en TRUE, entonces durante la manipulaci@'on algebraica de la serie de Taylor
-(truncada), TAYLOR intentar@'a retener muchos terminos que son
-correctos.  Haga EXAMPLE(TAYLOR); por examplo.
-TAYLOR(exp,[var1,pt1,ord1],[var2,pt2,ord2],...)  retorna una serie de potencias truncada
-en las variables vari alrededor el punto pti, truncada en
-ordi.
-PSEXPAND[FALSE] Si TRUE causar@'a la extensi@'on de la expresi@'on de funciones racionales
-a mostrarlas completamente expandida.  (RATEXPAND tambi@'en
-causar@'a esto.)  Si FALSE, las expresiones multivariable ser@'an mostradas
-solo como en el paquete de funciones racionales .  Si PSEXPAND:MULTI, entonces
-los terminos con el mismo grado total en las variables son agrupados
-en conjunto
-TAYLOR(exp, [var1, var2, .  . .], pt, ord) donde cada uno de los pt y ord
-quiz@'a sea reemplazado por una lista la cual corresponder@'a a la lista de
-variables.  que es, el nth items en cada una de las listas ser@'a
-asociado en conjunto.
-TAYLOR(exp, [x,pt,ord,ASYMP]) obtendr@'a una expansi@'on de exp en
-potencias negativas de (x-pt).  El orden m@'as alto en el termino ser@'a (x-pt)^(-ord).
-El ASYMP es un disposotovo sintactico y no ser@'a asignado.
-Mire tambi@'en TAYLOR_LOGEXPAND switch para controlar expansiones .
+@deffn {Funci@'on} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
+@deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
+@deffnx {Funci@'on} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
+@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
+@c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
+@c @deffnx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 
-@end defun
-@c @node TAYLORDEPTH
-@c @unnumberedsec phony
-@defvar TAYLORDEPTH
- default: [3] - Si all@'{@dotless{i}} a pesar de eso no hay t@'erminos no-cero 
-TAYLOR cuidar@'a la duplicaci@'on del grado de la expansi@'on de g(var) hasta que
-alcance pow*2**n donde n es el valor de la variable TAYLORDEPTH[3].
+La llamada @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande la expresi@'on @var{expr} en un desarrollo  de 
+ Taylor o de  Laurent respecto de la variable @var{x} alrededor del punto @var{a}, con t@'erminos hasta @code{(@var{x} - @var{a})^@var{n}}.
 
-@end defvar
-@c @node TAYLORINFO
-@c @unnumberedsec phony
-@defun TAYLORINFO (exp)
-retorna FALSE si exp no es una serie de Taylor.
-De otra manera, una lista de listas es retornada describiendo las expansiones particulares de
-la serie de Taylor.  For example,
+Si @var{expr} es de la forma @code{@var{f}(@var{x})/@var{g}(@var{x})} y @code{@var{g}(@var{x})} no tiene t@'erminos hasta de grado @var{n}, entonces @code{taylor} intenta expandir @code{@var{g}(@var{x})} hasta el grado  @code{2 @var{n}}. Si a@'un as@'{@dotless{i}} no hay t@'erminos no nulos, @code{taylor} dobla el grado de la expansi@'on de @code{@var{g}(@var{x})} hasta que el grado de la expansi@'on sea menor o igual que @code{@var{n} 2^taylordepth}.
+
+La llamada @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})} devuelve la serie en potencias truncada de grado  @var{n} en todas las variables @var{x_1}, @var{x_2}, ... alrededor del punto @code{(@var{a}, @var{a}, ...)}.
+
+La llamada @code{taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)}
+devuelve la serie en potencias truncada en las variables @var{x_1}, @var{x_2}, ... alrededor del punto @code{(@var{a_1}, @var{a_2}, ...)}; el truncamiento se realiza, respectivamente, en los grados @var{n_1}, @var{n_2}, ....
+
+La llamada @code{taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])}
+devuelve la serie en potencias truncada en las variables @var{x_1}, @var{x_2}, ... alrededor del punto @code{(@var{a_1}, @var{a_2}, ...)}, el truncamiento se realiza, respectivamente, en los grados @var{n_1}, @var{n_2}, ....
+
+La llamada @code{taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])} devuelve el desarrollo de  @var{expr} en potencias negativas de @code{@var{x} - @var{a}}. El t@'ermino de mayor orden es @code{(@var{x} - @var{a})^@var{-n}}.
+
+Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaci@'on algebraica de las series (truncadas) de Taylor, la funci@'on @code{taylor} intenta mantener tantos t@'erminos correctos como sea posible.
+
+Si @code{psexpand} vale @code{true}, una expresi@'on racional desarrollada se muestra completamente expandida. La variable  @code{ratexpand} tiene el mismo efecto. Si @code{psexpand} vale @code{false}, una expresi@'on multivariante se mostrar@'a tal como lo hace el paquete de funciones racionales. Si  @code{psexpand} vale  @code{multi}, los t@'erminos del mismo grado 
+son agrupados.
+
+V@'ease tambi@'en la variable @code{taylor_logexpand} para el control del desarrollo.
+
+Ejemplos:
+@c EXAMPLES ADAPTED FROM example (taylor)
+@c taylor (sqrt (sin(x) + a*x + 1), x, 0, 3);
+@c %^2;
+@c taylor (sqrt (x + 1), x, 0, 5);
+@c %^2;
+@c product ((1 + x^i)^2.5, i, 1, inf)/(1 + x^2);
+@c ev (taylor(%, x,  0, 3), keepfloat);
+@c taylor (1/log (x + 1), x, 0, 3);
+@c taylor (cos(x) - sec(x), x, 0, 5);
+@c taylor ((cos(x) - sec(x))^3, x, 0, 5);
+@c taylor (1/(cos(x) - sec(x))^3, x, 0, 5);
+@c taylor (sqrt (1 - k^2*sin(x)^2), x, 0, 6);
+@c taylor ((x + 1)^n, x, 0, 4);
+@c taylor (sin (y + x), x, 0, 3, y, 0, 3);
+@c taylor (sin (y + x), [x, y], 0, 3);
+@c taylor (1/sin (y + x), x, 0, 3, y, 0, 3);
+@c taylor (1/sin (y + x), [x, y], 0, 3);
+
 @example
-(C3) TAYLOR((1-Y^2)/(1-X),X,0,3,[Y,A,INF]);
-             2                        2
-(D3)/R/ 1 - A  - 2 A (Y - A) - (Y - A)
-                    2                        2
-            + (1 - A  - 2 A (Y - A) - (Y - A) ) X
+(%i1) taylor (sqrt (sin(x) + a*x + 1), x, 0, 3);
+                           2             2
+             (a + 1) x   (a  + 2 a + 1) x
+(%o1)/T/ 1 + --------- - -----------------
+                 2               8
+
+                                   3      2             3
+                               (3 a  + 9 a  + 9 a - 1) x
+                             + -------------------------- + . . .
+                                           48
+(%i2) %^2;
+                                    3
+                                   x
+(%o2)/T/           1 + (a + 1) x - -- + . . .
+                                   6
+(%i3) taylor (sqrt (x + 1), x, 0, 5);
+                       2    3      4      5
+                  x   x    x    5 x    7 x
+(%o3)/T/      1 + - - -- + -- - ---- + ---- + . . .
+                  2   8    16   128    256
+(%i4) %^2;
+(%o4)/T/                  1 + x + . . .
+(%i5) product ((1 + x^i)^2.5, i, 1, inf)/(1 + x^2);
+                         inf
+                        /===\
+                         ! !    i     2.5
+                         ! !  (x  + 1)
+                         ! !
+                        i = 1
+(%o5)                   -----------------
+                              2
+                             x  + 1
+(%i6) ev (taylor(%, x,  0, 3), keepfloat);
+                               2           3
+(%o6)/T/    1 + 2.5 x + 3.375 x  + 6.5625 x  + . . .
+(%i7) taylor (1/log (x + 1), x, 0, 3);
+                               2       3
+                 1   1   x    x    19 x
+(%o7)/T/         - + - - -- + -- - ----- + . . .
+                 x   2   12   24    720
+(%i8) taylor (cos(x) - sec(x), x, 0, 5);
+                                4
+                           2   x
+(%o8)/T/                - x  - -- + . . .
+                               6
+(%i9) taylor ((cos(x) - sec(x))^3, x, 0, 5);
+(%o9)/T/                    0 + . . .
+(%i10) taylor (1/(cos(x) - sec(x))^3, x, 0, 5);
+                                               2          4
+            1     1       11      347    6767 x    15377 x
+(%o10)/T/ - -- + ---- + ------ - ----- - ------- - --------
+             6      4        2   15120   604800    7983360
+            x    2 x    120 x
+
+                                                          + . . .
+(%i11) taylor (sqrt (1 - k^2*sin(x)^2), x, 0, 6);
+               2  2       4      2   4
+              k  x    (3 k  - 4 k ) x
+(%o11)/T/ 1 - ----- - ----------------
+                2            24
+
+                                    6       4       2   6
+                               (45 k  - 60 k  + 16 k ) x
+                             - -------------------------- + . . .
+                                          720
+(%i12) taylor ((x + 1)^n, x, 0, 4);
+                      2       2     3      2         3
+                    (n  - n) x    (n  - 3 n  + 2 n) x
+(%o12)/T/ 1 + n x + ----------- + --------------------
+                         2                 6
+
+                               4      3       2         4
+                             (n  - 6 n  + 11 n  - 6 n) x
+                           + ---------------------------- + . . .
+                                          24
+(%i13) taylor (sin (y + x), x, 0, 3, y, 0, 3);
+               3                 2
+              y                 y
+(%o13)/T/ y - -- + . . . + (1 - -- + . . .) x
+              6                 2
+
+                    3                       2
+               y   y            2      1   y            3
+          + (- - + -- + . . .) x  + (- - + -- + . . .) x  + . . .
+               2   12                  6   12
+(%i14) taylor (sin (y + x), [x, y], 0, 3);
+                     3        2      2      3
+                    x  + 3 y x  + 3 y  x + y
+(%o14)/T/   y + x - ------------------------- + . . .
+                                6
+(%i15) taylor (1/sin (y + x), x, 0, 3, y, 0, 3);
+          1   y              1    1               1            2
+(%o15)/T/ - + - + . . . + (- -- + - + . . .) x + (-- + . . .) x
+          y   6               2   6                3
+                             y                    y
+
+                                           1            3
+                                      + (- -- + . . .) x  + . . .
+                                            4
+                                           y
+(%i16) taylor (1/sin (y + x), [x, y], 0, 3);
+                             3         2       2        3
+            1     x + y   7 x  + 21 y x  + 21 y  x + 7 y
+(%o16)/T/ ----- + ----- + ------------------------------- + . . .
+          x + y     6                   360
+@end example
+
+@end deffn
+
+
+@defvr {Variable optativa} taylordepth
+Valor por defecto: 3
+
+@c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
+Si todav@'{@dotless{i}}a no hay t@'erminos no nulos, la funci@'on @code{taylor} dobla el grado del desarrollo de @code{@var{g}(@var{x})}
+tantas veces como sea necesario para que el grado del desarrollo sea menor o igual que @code{@var{n} 2^taylordepth}.
+
+@end defvr
+
+
+@deffn {Funci@'on} taylorinfo (@var{expr})
+Devuelve informaci@'on sobre el desarrollo de Taylor @var{expr}. El valor devuelto por esta funci@'on es una lista de listas. Cada lista contiene el nombre de una variable, el punto de expansi@'on y el grado del desarrollo.
+
+La funci@'on @code{taylorinfo} devuelve @code{false} si @var{expr} no es un desarrollo de Taylor.
+
+Ejemplo:
+
+@example
+(%i1) taylor ((1 - y^2)/(1 - x), x, 0, 3, [y, a, inf]);
+                  2                       2
+(%o1)/T/ - (y - a)  - 2 a (y - a) + (1 - a )
+
+         2                        2
+ + (1 - a  - 2 a (y - a) - (y - a) ) x
+
          2                        2   2
- + (1 - A  - 2 A (Y - A) - (Y - A) ) X
-                    2                        2   3
-            + (1 - A  - 2 A (Y - A) - (Y - A) ) X
-     + . . .
-(C4) TAYLORINFO(D3);
-(D4)                       [[Y, A, INF], [X, 0, 3]]
+ + (1 - a  - 2 a (y - a) - (y - a) ) x
 
-
+         2                        2   3
+ + (1 - a  - 2 a (y - a) - (y - a) ) x  + . . .
+(%i2) taylorinfo(%);
+(%o2)               [[y, a, inf], [x, 0, 3]]
 @end example
-@end defun
-@c @node TAYLORP
-@c @unnumberedsec phony
-@defun TAYLORP (exp)
-Un predicado de la funci@'on el cual retorna TRUE si y solo si
-la expresi@'on 'exp' es una representaci@'on de una serie de Taylor.
 
-@end defun
-@c @node TAYLOR_LOGEXPAND
-@c @unnumberedsec phony
-@defvar TAYLOR_LOGEXPAND
- default: [TRUE] controla las expansiones de logaritmos en las series
-TAYLOR.  Cuando TRUE todos los logar@'{@dotless{i}}tmos son expandidos completamente as@'{@dotless{i}} que
-cero-reconocimiento no involucra problemas en las identidades logar@'{@dotless{i}}tmicas
-que incomodan el proceso de expansi@'on.  sin embargo, este esquema no siempre es
-matem@'aticamente correcto de esto se ignora informaci@'on filial .  Si
-TAYLOR_LOGEXPAND se fija en falso FALSE, entonces @'unicamente la expansi@'on de los logar@'{@dotless{i}}tmos
-que ocurra es necesaria para obtener una serie de potencias formal.
+@end deffn
 
-@end defvar
-@c @node TAYLOR_ORDER_COEFFICIENTS
-@c @unnumberedsec phony
-@defvar TAYLOR_ORDER_COEFFICIENTS
- default: [TRUE] controla el ordenamiento de los
-coeficientes en la expresi@'on.  El default (TRUE) es que los
-coeficientes de la serie de taylor ser@'an organizados can@'onicamente.
 
-@end defvar
-@c @node TAYLOR_SIMPLIFIER
-@c @unnumberedsec phony
-@defun TAYLOR_SIMPLIFIER
- - Una funci@'on de un argumento, la cual usa TAYLOR para
-simplificar los coeficientes de la series de potencias .
+@deffn {Funci@'on} taylorp (@var{expr})
+Devuelve @code{true} si @var{expr} es un desarrollo de Taylor y @code{false} en caso contrario.
 
-@end defun
-@c @node TAYLOR_TRUNCATE_POLYNOMIALS
-@c @unnumberedsec phony
-@defvar TAYLOR_TRUNCATE_POLYNOMIALS
- default: [TRUE] Cuando FALSE, las polinomiales de
-entrada a TAYLOR se consideran que tienen precisi@'on infinita; de otra manera
-(el default) ellos son truncados, basados en los niveles de truncaci@'on de la
-entrada.
+@end deffn
 
-@end defvar
-@c @node TAYTORAT
-@c @unnumberedsec phony
-@defun TAYTORAT (exp)
-conviere exp de la forma TAYLOR a la forma CRE, i.e. esto es
-como RAT(RATDISREP(exp)) aunque mucho mas r@'apido.
 
-@end defun
-@c @node TRUNC
-@c @unnumberedsec phony
-@defun TRUNC (exp)
-origina exp el cual es en general una representaci@'on a ser
-mostrada como si estas sumas fuesen series de Taylor truncadas.  E.g. compare
-EXP1:X^2+X+1; con EXP2:TRUNC(X^2+X+1); .  Note que IS(EXP1=EXP2);
-obtiene TRUE.
+@defvr {Variable optativa} taylor_logexpand
+Valor por defecto: @code{true}
 
-@end defun
-@c @node UNSUM
-@c @unnumberedsec phony
-@defun UNSUM (fun,n)
-es la primera diferencia backward fun(n) - fun(n-1).
+La variable @code{taylor_logexpand} controla los desarrollos de logaritmos en la funci@'on @code{taylor}.
+
+Si @code{taylor_logexpand} vale @code{true}, todos los logaritmos se expanden completamente de manera que algunos problemas que se plantean debido a ciertas identidades logar@'{@dotless{i}}tmicas no interfieran con el proceso del c@'alculo del desarrollo de Taylor. Sin embargo, este proceder no es del todo correcto.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+
+@defvr {Variable optativa} taylor_order_coefficients
+Valor por defecto: @code{true}
+
+La variable @code{taylor_order_coefficients} controla la ordenaci@'on de los coeficientes en un desarrollo de Taylor.
+
+Si @code{taylor_order_coefficients} vale @code{true}, los coeficientes del desarrollo de Taylor se ordenan de la forma can@'onica.
+@c IS MAXIMA'S NOTION OF "CANONICALLY" DESCRIBED ELSEWHERE ??
+@c AND WHAT HAPPENS WHEN IT IS FALSE ??
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@deffn {Funci@'on} taylor_simplifier (@var{expr})
+Simplifica los coeficientes de la serie de potencias @var{expr}. Esta funci@'on es llamada desde la funci@'on @code{taylor}.
+
+@end deffn
+
+
+@defvr {Variable optativa} taylor_truncate_polynomials
+Valor por defecto: @code{true}
+
+@c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
+Si @code{taylor_truncate_polynomials} vale @code{true}, los polinomios quedan truncados en base a los niveles de truncamiento de entrada.
+
+En otro caso, aquellos polinomios que se utilicen como entrada a la funci@'on  @code{taylor} se consideran que tienen precisi@'on infinita.
+@c WHAT IS "INFINITE PRECISION" IN THIS CONTEXT ??
+
+@end defvr
+
+
+@deffn {Funci@'on} taytorat (@var{expr})
+Convierte @var{expr} del formato de @code{taylor} al formato CRE (Canonical Rational Expression). El efecto es el mismo que haciendo  @code{rat (ratdisrep (@var{expr}))}, pero m@'as r@'apido.
+
+@end deffn
+
+
+@deffn {Funci@'on} trunc (@var{expr})
+Devuelve la representaci@'on interna de la expresi@'on @var{expr} de tal forma como si sus sumas fuesen una serie truncada de Taylor. La expresi@'on @var{expr} no sufre ninguna otra modificaci@'on.
+
+Ejemplo:
+
 @example
-(C1) G(P):=P*4^N/BINOMIAL(2*N,N);
-                                            N
-                                         P 4
-(D1)                       G(P) := ----------------
-                                   BINOMIAL(2 N, N)
-(C2) G(N^4);
-                                     4  N
-                                    N  4
-(D2)                           ----------------
-                               BINOMIAL(2 N, N)
-(C3) NUSUM(D2,N,0,N);
-                         4        3       2              N
-          2 (N + 1) (63 N  + 112 N  + 18 N  - 22 N + 3) 4      2
-(D3)      ------------------------------------------------ - ------
-                        693 BINOMIAL(2 N, N)                 3 11 7
-(C4) UNSUM(%,N);
-                                     4  N
-                                    N  4
-(D4)                           ----------------
-                               BINOMIAL(2 N, N)
-
-
+(%i1) expr: x^2 + x + 1;
+                            2
+(%o1)                      x  + x + 1
+(%i2) trunc (expr);
+                                2
+(%o2)                  1 + x + x  + . . .
+(%i3) is (expr = trunc (expr));
+(%o3)                         true
 @end example
-@end defun
-@c @node VERBOSE
-@c @unnumberedsec phony
-@defvar VERBOSE
- default: [FALSE] - si TRUE causar@'a comentariosdel progreso de
- POWERSERIES ser@'a impreso como la ejecuci@'on de este procedimiento.
 
-@end defvar
+@end deffn
+
+
+@deffn {Funci@'on} unsum (@var{f}, @var{n})
+Devuelve la diferencia @code{@var{f}(@var{n}) - @var{f}(@var{n} - 1)}. En cierto sentido @code{unsum} es la inversa de @code{sum}.
+
+V@'ease tambi@'en @code{nusum}.
+
+Ejemplos:
+@c GENERATED FROM THE FOLLOWING INPUTS
+@c g(p) := p*4^n/binomial(2*n,n);
+@c g(n^4);
+@c nusum (%, n, 0, n);
+@c unsum (%, n);
+
+@example
+(%i1) g(p) := p*4^n/binomial(2*n,n);
+                                     n
+                                  p 4
+(%o1)               g(p) := ----------------
+                            binomial(2 n, n)
+(%i2) g(n^4);
+                              4  n
+                             n  4
+(%o2)                   ----------------
+                        binomial(2 n, n)
+(%i3) nusum (%, n, 0, n);
+                     4        3       2              n
+      2 (n + 1) (63 n  + 112 n  + 18 n  - 22 n + 3) 4      2
+(%o3) ------------------------------------------------ - ------
+                    693 binomial(2 n, n)                 3 11 7
+(%i4) unsum (%, n);
+                              4  n
+                             n  4
+(%o4)                   ----------------
+                        binomial(2 n, n)
+@end example
+
+@end deffn
+
+
+@defvr {Variable optativa} verbose
+Valor por defecto: @code{false}
+
+Si @code{verbose} vale @code{true}, la funci@'on @code{powerseries} va imprimiendo mensajes durante su ejecuci@'on.
+
+@end defvr

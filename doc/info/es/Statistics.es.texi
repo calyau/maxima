@@ -5,8 +5,8 @@
 
 @node Definiciones para Estad@'{@dotless{i}}stica,  , Estad@'{@dotless{i}}stica, Estad@'{@dotless{i}}stica
 @section Definiciones para Estad@'{@dotless{i}}stica
-@c @node GAUSS
-@c @unnumberedsec phony
-@defun GAUSS (mean,sd)
-retorna un n@'umero aleatorio de coma flotante de una distribuci@'on normal con media MEAN y desviaci@'on est@'andar SD. Hace parte del paquete de funciones BESSEL, hacer LOAD(BESSEL); para usar @'esta funci@'on. 
-@end defun
+
+@deffn {Funci@'on} gauss (@var{n}, @var{s})
+Devuelve un n@'umero decimal seudoaleatorio en coma flotante con distribuci@'on normal de media @var{n} y desviaci@'on t@'{@dotless{i}}pica @var{s}.
+
+@end deffn

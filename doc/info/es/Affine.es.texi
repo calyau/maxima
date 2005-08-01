@@ -6,206 +6,200 @@
 
 @section Definiciones para Afines
 
-@defun FAST_LINSOLVE (eqns,variables)
+@deffn {Funci@'on} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Resuelve las ecuaciones lineales simult@'aneas @var{expr_1}, ..., @var{expr_m}
+para las variables @var{x_1}, ..., @var{x_n}.
+Cada @var{expr_i} puede ser una ecuaci@'on o una expresi@'on general;
+en caso de tratarse de una expresi@'on general, ser@'a tratada como una ecuaci@'on de la forma @code{@var{expr_i} = 0}.
 
-Soluciona los sistemas de ecuaciones lineales
-EQNS para las variables VARIABLES y retorna un resultado adecuado
-para SUBLIS. La funci@'on es m@'as r@'apida que linsolve para sistemas de ecuaciones 
-que est@'an dispersos.
+El valor que devuelve es una lista de ecuaciones de la forma
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]}
+donde todas las @var{a_1}, ..., @var{a_n} est@'an exentas de @var{x_1}, ..., @var{x_n}.
 
-@end defun
+La funci@'on @code{fast_linsolve} es m@'as r@'apida que @code{linsolve} para sistemas de ecuaciones con coeficientes
+dispersos.
 
-@defun GROBNER_BASIS (eqns)
+@end deffn
 
-Toma como argumento un lista de ecuaciones de macsyma
-y retorna una grobner basis de ellos. La funci@'on POLYSIMP puede ahora
-ser usada para simplificar otras funciones relativas a las ecuaciones.
+@deffn {Funci@'on} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+Devuelve una base de Groebner para las ecuaciones @var{expr_1}, ..., @var{expr_m}.
+La funci@'on @code{polysimp} puede ser entonces utilizada para simplificar
+otras funciones relativas a las ecuaciones.
 
-GROBNER_BASIS([3*X^2+1,Y*X])$
+@example
+grobner_basis ([3*x^2+1, y*x])$
 
-POLYSIMP(Y^2*X+X^3*9+2)==> -3*x+2
+polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
+@end example
 
-Polysimp(f)==> 0 si y solo si f est@'a en el ideal generado por el EQNS ie.
-si y solo si f es una combinaci@'on polinomial de los elementos de EQNS.
+@code{polysimp(f)} alcanza 0 si y s@'olo si @var{f} est@'a en el ideal generado por
+@var{expr_1}, ..., @var{expr_m}, es decir, si y s@'olo si @var{f} es una
+combinaci@'on  polin@'omica de los elementos de 
+@var{expr_1}, ..., @var{expr_m}.
 
-@end defun
+@end deffn
 
-@defun SET_UP_DOT_SIMPLIFICATIONS (eqns,[check-thru-degree])
+@c NEEDS CLARIFICATION IN A SERIOUS WAY
+@deffn {Funci@'on} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Funci@'on} set_up_dot_simplifications (@var{eqns})
+Las @var{eqns} son ecuaciones polinomiales de variables no conmutativas.
+El valor de @code{current_variables} es la lista de variables utilizadas para
+el c@'alculo de los grados. Las ecuaciones deben ser homog@'eneas, al objeto de 
+completar el procedimiento.
 
-Las eqns son
-ecuciones polinomiales en variables no conmutativas.
-El valor de CURRENT_VARIABLES es la
-lista de variables usado para el computo de grados. La ecuaci@'on debe ser
-homog@'enea, en orden para el procedimiento para terminar.
+@c AQUI FALTA UN PARRAFO POR TRADUCIR (Mario)
 
-Si usted ha revisado la simplificaci@'on superpuesta en DOT_SIMPLIFICATIONS
-anteriormente los grados de f, entonces lo siguiente es verdad:
-DOTSIMP(f)==> 0 si y solo si f est@'a en el ideal generado por el EQNS ie.
-si y solo si f es una combinaci@'on polinomial de los elementos de EQNS.
+El grado es el devuelto por @code{nc_degree}. @'Este a su vez depende de los pesos 
+de las variables individuales.
 
-Los grados que son retornados por NC_DEGREE. Este en ocasiones es influenciado por
-el peso de las variables individuales.
+@end deffn
 
-@end defun
+@deffn {Funci@'on} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+Asigna los pesos @var{w_1}, ..., @var{w_n} a @var{x_1}, ..., @var{x_n}, respectivamente.
+Estos pesos son los utilizados en el c@'alculo de @code{nc_degree}.
 
-@defun DECLARE_WEIGHT (var1,wt1,var2,wt2,...)
+@end deffn
 
-Asigna a VAR1 el peso de WT1, VAR2 peso a wt2..
-Estos son los pesos usados en el computo NC_DEGREE.
+@deffn {Funci@'on} nc_degree (@var{p})
+Devuelve el grado de un polinomio no conmutativo @var{p}. V@'ease @code{declare_weights}.
 
-@end defun
+@end deffn
 
-@defun NC_DEGREE (poly)
+@c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
+@deffn {Funci@'on} dotsimp (@var{f})
+Devuelve 0 si y s@'olo si  @var{f} est@'a en el ideal generado por las ecuaciones, esto es,
+si y s@'olo si @var{f} es una combinaci@'on lineal de los elementos de las ecuaciones.
 
-Grados de un polinomio no conmutativo. Observe DECLARE_WEIGHTS.
+@end deffn
 
-@end defun
+@deffn {Funci@'on} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+Si se ha ejecutado @code{set_up_dot_simplifications} con antelaci@'on, obtiene los 
+polinomios centrales de grado @var{n} de variables @var{x_1}, ..., @var{x_n}.
 
-@defun DOTSIMP (f)
-
-==> 0 si y solo si f est@'a en el ideal generado por el EQNS ie.
-si y solo si f es una combinaci@'on polinomial de los elementos de EQNS.
-
-@end defun
-
-@defun FAST_CENTRAL_ELEMENTS (variables,degree)
-
-si SET_UP_DOT_SIMPLIFICATIONS ha sido realizada con anterioridad, busca el polinomio central 
-en las variables en el grado dado,
 Por ejemplo:
 @example
-set_up_dot_simplifications([y.x+x.y],3);
-fast_central_elements([x,y],2);
-[y.y,x.x];
+set_up_dot_simplifications ([y.x + x.y], 3);
+fast_central_elements ([x, y], 2);
+[y.y, x.x];
 @end example
-@end defun
 
-@defun CHECK_OVERLAPS (degree,add-to-simps)
+@end deffn
 
-revisa la superposici@'on a trav@'es de grados,
-asegurandose que usted tiene suficientes reglas de simplificaci@'on en cada
-grqado, para que dotsimp trabaje correctamente.Este proceso puede se acelerado
-si usted conoce antes de tomar cual es la dimensi@'on del espacio monomial.
-Si este es de dimensiones globales finitas, entonces HILBERT podr@`a se usado. Si usted
-no conoce la dimensi@`on monomial, no especifique una RANK_FUNCTIION.
-Un tercer argumento opcional es RESET, falsamente dice que no se preocupe en dudar
-acerca de resetear cosas.
+@c THIS IS NOT AT ALL CLEAR
+@deffn {Funci@'on} check_overlaps (@var{n}, @var{add_to_simps})
+Revisa la superposici@'on hasta el grado @var{n},
+asegur@'andose de que el usuario tiene suficientes reglas de simplificaci@'on en cada
+grado para que @code{dotsimp} trabaje correctamente. Este proceso puede acelerarse
+si se conoce de antemano cu@'al es la dimensi@'on del espacio de monomios.
+Si @'este es de dimensi@'on global finita, entonces deber@'{@dotless{i}}a usarse @code{hilbert}. Si
+no se conoce la dimensiones de los monomios, no se deber@'{@dotless{i}}a especificar una @code{rank_functiion}.
+Un tercer argumento opcional es @code{reset}.
 
-@end defun
+@end deffn
 
-@defun MONO (vari,n)
+@deffn {Funci@'on} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+Devuelve la lista de monomios independientes. @c FALTA COMPLETAR ESTE PARRAFO (Mario)
+@end deffn
 
-VARI es una lista de variables. Retorna la lista demonomios relativos 
-independientes para la actual dot_simplifications, en N grados
 
-@end defun
+@deffn {Funci@'on} monomial_dimensions (@var{n})
+Calcula el desarrollo de Hilbert de grado @var{n} para el algebra actual.
+@end deffn
 
-@defun MONOMIAL_DIMENSIONS (n)
+@deffn {Funci@'on} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+Hace una lista de los coeficientes de los polinomios no conmutativos @var{p_1}, ..., @var{p_n}  
+de los monomios no conmutativos @var{m_1}, ..., @var{m_n}. Los coeficientes deben escalares. H@'agase uso 
+de @code{list_nc_monomials} para construir la lista de monomios.
+@end deffn
 
-Computa las series de hilbert a trav@'es de n grados para el algebra actual.
+@deffn {Funci@'on} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Funci@'on} list_nc_monomials (@var{p})
+Devuelve  una lista de los monomios no conmutativos que aparecen en el polinomio  @var{p}
+o una lista de polinomios en @var{p_1}, ..., @var{p_n}.
+@end deffn
 
-@end defun
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun pcoeff (poly monom [variables-to-exclude-from-cof (list-variables monom)])
+@c 
+@c This function is called from Lisp level, and uses internal poly format.
+@c @example
+@c 
+@c CL-MAXIMA>>(setq me (st-rat #$x^2*u+y+1$))
+@c (#:Y 1 1 0 (#:X 2 (#:U 1 1) 0 1))
+@c 
+@c CL-MAXIMA>>(pcoeff me (st-rat #$x^2$))
+@c (#:U 1 1)
+@c @end example
+@c @noindent
+@c 
+@c Rule: if a variable appears in monom it must be to the exact power,
+@c and if it is in variables to exclude it may not appear unless it was
+@c in monom to the exact power.  (pcoeff pol 1 ..) will exclude variables
+@c like substituting them to be zero.
+@c 
+@c @end defun
 
-@defun EXTRACT_LINEAR_EQUATIONS (List_nc_polys,monoms)
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun new-disrep (poly)
+@c 
+@c From Lisp this returns the general Maxima format for an arg which is
+@c in st-rat form:
+@c 
+@c @example
+@c (displa(new-disrep (setq me (st-rat #$x^2*u+y+1$))))
+@c 
+@c        2
+@c y + u x  + 1
+@c @end example
+@c 
+@c @end defun
 
-Hace una lista de los coeficientes de los polinomios en list_nc_polys
-de los monomios. MONOMS es una lista de monomios no-conmutativos. Los
-coeficientes pueden ser escalares. Use LIST_NC_MONOMIALS para construir la lista de
-monomios.
+@deffn {Funci@'on} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+Crea una lista mediante la evaluaci@'on de @var{form} con @var{x_1} tomando cada uno de los
+valores de @var{list_1}, para cada uno de estos valores liga @var{x_2} con cada elemento de 
+@var{list_2}, .... El n@'umero de elementos en el resultado ser@'a el producto del n@'umero de elementos
+en cada lista. Cada variable @var{x_i} debe ser un s@'{@dotless{i}}mbolo y no ser@'a evaluado. La lista de argumentos ser@'a evaluada una vez al comienzo de la iteraci@'on.
 
-@end defun
-
-@defun LIST_NC_MONOMIALS (polys_or_list)
-
-retorna  una lista de monomios no-conmutativos ocurriendo en un polinomio
-o una colecci@'on de polinomios.
-
-@end defun
-
-@defun PCOEFF (poly monom [variables-to-exclude-from-cof (list-variables monom)])
-
-Este funci@'on es llamada desde el nivel lisp, y usa el formato poly interno.
+Por ejemplo:
 @example
-
-CL-MAXIMA>>(setq me (st-rat #$x^2*u+y+1$))
-(#:Y 1 1 0 (#:X 2 (#:U 1 1) 0 1))
-
-CL-MAXIMA>>(pcoeff me (st-rat #$x^2$))
-(#:U 1 1)
+(%i82) create_list1(x^i,i,[1,3,7]);
+(%o82) [x,x^3,x^7]
 @end example
+
 @noindent
-
-Regla: si una variable aparece en un monomio  esta debe ser una potencia exacta,
-y si esta est@'a en variables a excluir esta no debe aparecer a menos que esta estuviera
-en monomio de potencia exacta.  (pcoeff pol 1 ..) excluir@'a variables
-como substituyendolas por cero.
-
-@end defun
-
-@defun NEW-DISREP (poly)
-
-Desde lisp este retorna el formato general de maxima para un argumento el cual est@'a
-en la forma st-rat:
+Con una doble iteraci@'on:
 
 @example
-(displa(new-disrep (setq me (st-rat #$x^2*u+y+1$))))
-
-       2
-Y + U X  + 1
-
+(%i79) create_list([i,j],i,[a,b],j,[e,f,h]);
+(%o79) [[a,e],[a,f],[a,h],[b,e],[b,f],[b,h]]
 @end example
-@end defun
 
-@defun CREATE_LIST (form,var1,list1,var2,list2,...)
+En lugar de @var{list_i} se pueden suministrar dos argumentos cada uno de los cuales 
+deber@'{@dotless{i}}a poder evaluarse a un n@'umero, los cuales ser@'an los l@'{@dotless{i}}mites inferior
+y superior, ambos inclusive, para cada iteraci@'on.
 
-Crea una lista mediante la evaluaci@`on de FORM con el limite VAR1
-hasta cada elemento de LIST1, y para cada ribete enlazado VAR2
-para cada elemento de LIST2..
-El n@'umero de elementos en el resultado ser@'a
-longitud(lista1)*longitus(lista2)*...
-Cada VAR debe actualemtne ser un s@'{@dotless{i}}mbolo el cual no ser@'a evaluado.
-Los argumentos LIST ser@'an evaluados desde el inicio de la
-iteraci@'on.
-
+Por ejemplo:
 @example
-
-(C82) create_list1(x^i,i,[1,3,7]);
-(D82) [X,X^3,X^7]
-@end example
-@noindent
-
-Con una iteraci@'on doble:
-@example
-(C79) create_list([i,j],i,[a,b],j,[e,f,h]);
-(D79) [[A,E],[A,F],[A,H],[B,E],[B,F],[B,H]]
+(%i81) create_list([i,j],i,[1,2,3],j,1,i);
+(%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
 @end example
 
-En vez de la LIST de dos argumentos puede ser suplida cada cual debe
-evaluar un n@'umero. Estos ser@'an incluso los limites inferior y superior
-de la iteraci@'on.
+N@'otese que los l@'{@dotless{i}}mites o lista de la variable @var{j} pueden depender
+del valor actual de @var{i}.
+@end deffn
 
-@example
-(C81) create_list([i,j],i,[1,2,3],j,1,i);
-(D81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
-@end example
+@defvr {Variable} all_dotsimp_denoms
+Valor por defecto: @code{false}
 
-Note que el limite o la lista de la variable j puede
-depender del avalor actual de i.
+Cuando @code{all_dotsimp_denoms} es una lista, los denominadores encontrados
+por @code{dotsimp} son a@~nadidos a la lista. La variable @code{all_dotsimp_denoms}
+puede inicializarse como una lista vac@'{@dotless{i}}a @code{[]} antes de llamar a @code{dotsimp}.
 
+Por defecto, @code{dotsimp} no recolecta los denominadores.
 
-@end defun
-
-@defvar ALL_DOTSIMP_DENOMS
-
-Si su valor es FALSO el denominador encontrado en obtenci@'on
-dotsimp no ser@'an coleccionadas. Para coleccionar los denominadores
-@example
-ALL_DOTSIMP_DENOMS:[];
-@end example
-@noindent
-y ellos ser@'an nconc'd sobre el final de la lista.
-
-@end defvar
+@end defvr
 
 
 

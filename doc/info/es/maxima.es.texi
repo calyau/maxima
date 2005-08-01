@@ -11,74 +11,63 @@
 @c texinfo-multiple-files-update will delete the detailed node listing!
 
 
-@c Respecto a la traducción al Español: 
-@c
-@c Este archivo define toda la estructura de la documentacion de Maxima. 
-@c En particular ha sido personalizado para la traducción de la 
-@c documentacion al castellano.  
-
-@c Traducido y adaptado  por: Juan Pablo Romero Bernal
-@c Correo-e: jpromerobx@linuxmail.org
-@c Grupo Linux Universidad Distrital
-@c http://glud.udistrital.edu.co
-@c Proyecto GLUD-CLog <glud-clog@listas.udistrital.edu.co>
-@c http://glud.udistrital.edu.co/clog
-
-
-
 @c %**start of header
 @setfilename  maxima.es.info
-@documentencoding ISO-8859-15
+@documentencoding ISO-8859-1
 @synindex vr fn
-@settitle Manual oficial de Maxima
+@settitle Manual de Maxima
 @c %**end of header
 @setchapternewpage odd
 @ifinfo
-Este es el Manual de Maxima en versión Texinfo
+Este es el Manual de Maxima en versi@'on Texinfo
 
 Copyright 1994,2001 William F. Schelter
-Traducción al español por Grupo Linux Universidad Distrital
+
+Copyright 2003,2005 de la taducci@'on al espa@~nol, Grupo Linux Universidad Distrital
 Proyecto GLUD-CLog
+
+Copyright 2005 de la taducci@'on al espa@~nol, Mario Rodr@'{@dotless{i}}guez Riotorto
 
 @dircategory Math
 @format
 START-INFO-DIR-ENTRY
-* Maxima: (maxima).  Un sistema de @'Algebra Computacional
+* Maxima: (maxima).  Un sistema de c@'alculo simb@'olico
 END-INFO-DIR-ENTRY
 @end format
 @end ifinfo
 
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
 @titlepage
 @sp 10
-@comment The title is printed in a large font.
-@title Manual Oficial de Maxima
-@subtitle Versi@'on en espa@~nol de la documentaci@'on oficial de Maxima
-@author Traducido por el Grupo Linux Universidad Distrital
-@author Proyecto GLUD-CLog @url{http://glud.udistrital.edu.co/clog}
+@center @titlefont{Manual de Maxima}
 @end titlepage
 
 
 @node Top, Introducci@'on a Maxima, (dir), (dir)
 @top
 
-MAXIMA es un completo sistema de álgebra computacional 
+Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp. 
 
-El sistema Maxima es una implementaci@'on en COMMON LISP realizada por William F.Schelter y est@'a basada en la
-implementaci@'on original de Macsyma en el MIT (Instituto Tecnol@'ogico de Massachuttes, por sus siglas en ingl@'es), como una distribuci@'on para el Departamento de Energ@'{@dotless{i}}a de los EEUU. Se han logrado los permisos necesarios de parte del DOE (Departament of Energy, Departamento de Energ@'ia, por sus siglas en ingl@'es) para elaborar copias derivadas de este sistema y en particular para ser distribuidas bajo la licencia p@'ublica general de GNU (GNU public license). Para m@'as informaci@'on puede consultar el  archivo COPIYING inclu@'{@dotless{i}}do en la distribuci@'on. De ahora en adelante estos archivos pueden ser redistribu@'{@dotless{i}}dos bajo los t@'erminos de la licencia p@'ublica general de GNU. 
+Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1988 Schelter obtuvo del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
-@top Notas de la Traducci@'on al Espa@~nol
+Notas de la traducci@'on espa@~nola.
 
-El siguiente Manual es una versi@'on alfa de la traducci@'on al espa@~nol de la documentaci@'on oficial de Maxima y por lo tanto no constituye una versi@'on final del documento. Algunas de las secciones presentadas en este manual no est@'an totalmente traducidas y algunas est@'an sin traducir. Cabe aclarar que los traductores nos hemos enfocado, en primera instancia, en abarcar los temas de inter@'es general y esperamos pr@'oximamente tener traducidas las partes faltantes. El proyecto de la traducci@'on del Manual Oficial de Maxima nace a finales del a@~no 2003, debido a la falta de documentos en espa@~nol que describieran este potente motor de @'algebra computacional @footnote{El @'unico documento existente hasta ese momento, fue un art@'{@dotless{i}}culo escrito por Pablo Ruiz Muzquiz, que fue de gran ayuda. A @'el un agradecimiento especial}. El proyecto de traducci@'on lo inicia Juan Pablo Romero Bernal y Oscar D@'{@dotless{i}}az, que traducen inicialmente la parte de introducci@'on, ayuda y series. Posteriormente el proyecto de traducci@'on cambia de due@~nos y queda a cargo del proyecto GLUD-CLog (@url{http://glud.udistrital.edu.co/clog}- mirar ap@'endice para m@'as informaci@'on), de forma espec@'{@dotless{i}}fica a Jeffrey Steve Borb@'on, Juan Pablo Romero Bernal, Erika Luque y Diego Andr@'es Sanabria. En nombre del Proyecto GLUD-CLog queremos agradecer, primero que todo a los desarrolladores de Maxima por proveer un motor de @'algebra computacional tan potente y tan flexible. A GLUD (Grupo Linux Universidad Distrital - @url{http://glud.udistrital.edu.co}) por que sin el apoyo y la asesor@'{@dotless{i}}a de las personas que lo integran tal vez no hubiera sido posible este proyecto. A Offray Luna, por su invaluable ayuda en el nacimiento del proyecto y por ser una de las personas que m@'as nos ha guiado. A la profesora Isabel Amaya, docente de matem@'aticas de la Universidad Distrital(@url{http://www.udistrital.edu.co}), por ayudarnos con algunas dudas respecto a las traducciones y por ser una de las revisoras de este manual. Y en general a todas las personas que de alguna u otra manera intervinieron para que este proyecto saliera a la luz. 
-
-Esperamos que este texto sea tan @'util como lo ha sido para nosotros
-la traducci@'on. Si encuentra alg@'un error, bien sea de ortograf@'{@dotless{i}}a, redacci@'on, de car@'acter t@'ecnico o en fin cualquier tipo de error, estamos muy agradecidos si lo hace llegar a la lista del proyecto CLog, @email{glud-clog@@listas.udistrital.edu.co}, su colaboraci@'on es de vital
-importancia. Dado que este manual est@'a en permanente mejora puede consultar la @'ultima versi@'on en @url{http://glud.udistrital.edu.co/clog/maxima}. Esperamos que lo disfruten !!!.  
-
-
+El proyecto de traducci@'on del manual de Maxima fue iniciado por
+Juan Pablo Romero Bernal y colaboradores del proyecto
+GLUD-CLog (@url{http://glud.udistrital.edu.co/clog}) del Grupo Linux Universidad Distrital.
+Actualmente lo mantienen Mario Rodr@'{@dotless{i}}guez Riotorto (@url{http://www.biomates.net}) y 
+Juan Pablo Romero Bernal. Se ruega contactar con los traductores para comentarios y sugerencias a 
+trav@'es de sus respectivas p@'aginas @i{web}.
 
 @c includes
 
 @menu
+
 Infraestructura de Maxima
 
 * Introducci@'on a Maxima::            Muestra de sesiones con Maxima.
@@ -93,7 +82,7 @@ Infraestructura de Maxima
 * Aritm@'etica de punto flotante::     Rutinas num@'ericas de bajo nivel.
 * Contextos::                          Imposici@'on de restricciones a variables.
 
-Soporte para campos más específicos de las matemáticas
+Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 
 * Polinomios::                         Operaciones con polinomios.
 * Constantes::                         Constantes num@'ericas.
@@ -111,22 +100,21 @@ Soporte para campos más específicos de las matemáticas
 * Arreglos y Tablas::                  Creaci@'on y manipulaci@'on de arreglos.
 * Matrices y @'Algebra Lineal::        Operaciones matriciales.
 * Afines::                             
-* Tensores::                           Paquete para manipulación de tensores.
-* Ctensor::                     
+* itensor::                            Manipulaci@'on indexada de tensores
+* ctensor::                            Manipulaci@'on por componentes de tensores
+* atensor::                            Manipulaci@'on algebraica de tensores
 * Series::                             Series de potencias y de Taylor.
 * Teor@'{@dotless{i}}a de N@'umeros::  Teor@'ia de n@'umeros.
 * Simetr@'{@dotless{i}}as::     
 * Grupos::                             Álgebra abstracta.
 
-Funcionalidades avanzadas y programación
-
-@c Advanced facilities and programming
+Funcionalidades avanzadas y programaci@'on
 
 * Entorno de Ejecuci@'on::      Personalizaci@'on de Maxima.
 * Opciones Miscel@'aneas::      Opciones que afectan globalmente el comportamiento de Maxima.
 * Reglas y patrones::           Patrones de definidos por el usuario y
                                 reglas de simplificaci@'on.
-* Listas::                      Manipulación de listas.
+* Listas::                      Manipulaci@'on de listas.
 * Conjuntos::                   Operaciones con conjuntos.
 * Definici@'on de Funciones::   Programando funciones.
 * Programaci@'on::              Programaci@'on en Maxima.
@@ -248,19 +236,23 @@ Funcionalidades avanzadas y programación
 @chapter Matrices y @'Algebra Lineal
 @include Matrices.es.texi
 
-@node Afines, Tensores, Matrices y @'Algebra Lineal, Top
+@node Afines, itensor, Matrices y @'Algebra Lineal, Top
 @chapter Afines
 @include Affine.es.texi
 
-@node Tensores, Ctensor, Afines, Top
-@chapter Tensores
-@include Tensor.es.texi
+@node itensor, ctensor, Afines, Top
+@chapter itensor
+@include Itensor.es.texi
 
-@node Ctensor, Series, Tensores, Top
-@chapter Ctensor
+@node ctensor, atensor, itensor, Top
+@chapter ctensor
 @include Ctensor.es.texi
 
-@node Series, Teor@'{@dotless{i}}a de N@'umeros, Ctensor, Top
+@node atensor, Series, ctensor, Top
+@chapter atensor
+@include Atensor.es.texi
+
+@node Series, Teor@'{@dotless{i}}a de N@'umeros, atensor, Top
 @chapter Series
 @include Series.es.texi
 
