@@ -107,7 +107,7 @@ to subsitute their knowledge of defsystem for the following steps.
 
     Windows without Bourne shell:
 
-    windows.bat
+    maxima.bat
 
 (11) Test the build. At the Maxima prompt, enter:
 
