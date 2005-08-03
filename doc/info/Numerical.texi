@@ -276,7 +276,7 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 Finds the zero of function @var{f} as variable @var{x} varies over the range @code{[@var{a}, @var{b}]}.
 The function must have a
 different sign at each endpoint.  If this condition is not met, the
-action of the of the function is governed by @code{intpolerror}.  If
+action of the function is governed by @code{intpolerror}.  If
 @code{intpolerror} is @code{true} then an error occurs, otherwise the value of
 @code{intpolerror} is returned (thus for plotting @code{intpolerror} might be set to
 0.0).  Otherwise (given that Maxima can evaluate the first argument
