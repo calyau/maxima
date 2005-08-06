@@ -22,6 +22,7 @@
 @set I_agu @'I
 @set a_til @~a
 @set a_agu @'a
+@set mail <maxima at math.utexas.edu>
 @synindex vr fn
 @settitle Manual do Maxima
 @c %**end of header
@@ -69,7 +70,7 @@ e desenvolver o Macsyma DOE, agora chamado Maxima.
 
 O c@'odigo fonte deste documento encontra-se no formato texinfo.
 Para contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao
-para o portugu@^es sempre atualizada envie um e-mail para maxima@math.utexas.edu.
+para o portugu@^es sempre atualizada envie um e-mail para @value{mail}.
 
 @c includes
 
@@ -117,7 +118,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * ctensor::                     Manipula@value{cedilha}@~ao de componentes de Tensores.
 * Pacote atensor::              Manipula@value{cedilha}@~ao de Tensores Alg@'ebricos.
 * S@'eries::                      Taylor e s@'eries de pot@^encia.
-* Number Theory::               Teoria dos n@'umeros.
+* Teoria dos N@'umeros::          Teoria dos n@'umeros.
 * Symmetries::                  Reflex@~oes, rota@value{cedilha}@~oes, transla@value{cedilha}@~oes, etc
 * Grupos::                      @'Algebra Abstrata.
 
@@ -299,9 +300,9 @@ S@'eries
 * Introdu@value{cedilha}@~ao a S@'eries::      
 * Defini@value{cedilha}@~oes para S@'eries::      
 
-Number Theory
+Teoria dos N@'umeros
 
-* Definitions for Number Theory::  
+* Defini@value{cedilha}@~oes para Teoria dos N@'umeros::  
 
 Symmetries
 
@@ -488,16 +489,16 @@ Debugging
 @chapter Pacote atensor
 @include Atensor_pt.texi
 
-@node S@'eries, Number Theory, Pacote atensor, Top
+@node S@'eries, Teoria dos N@'umeros, Pacote atensor, Top
 @chapter S@'eries
 @include Series_pt.texi
 
 
-@node Number Theory, Symmetries, S@'eries, Top
-@chapter Number Theory
-@include Number.texi
+@node Teoria dos N@'umeros, Symmetries, S@'eries, Top
+@chapter Teoria dos N@'umeros
+@include Number_pt.texi
 
-@node Symmetries, Grupos, Number Theory, Top
+@node Symmetries, Grupos, Teoria dos N@'umeros, Top
 @chapter Symmetries
 @include Symmetries.texi
 
