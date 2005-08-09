@@ -103,7 +103,7 @@ if dbg then print("pt_MT[j]=0,i,pt_NT[i],j,pt_NT[j]", i, pt_NT[i], j, pt_NT[j]),
 			    if pt_NT[i] = pt_NT[j] then ( /* 61 */
 				if pt_NF[i] # pt_NF[j] then (/* 5 */
 				    pt_NT[j]:pt_NF[i], /* 43 */
-if dbg then print("1 j-mb",j-mb,52,102,102),
+if dbg then print("1 j-MB",j-MB,52,102,102),
 				    /* IF(J-MB)52,102,102 * 220 */
 				    continu:true
 				) else (if dbg then print("should do 6"))
@@ -111,7 +111,7 @@ if dbg then print("1 j-mb",j-mb,52,102,102),
 			    else (
 if dbg then print("33 i,pt_NT[i],j,pt_NF[j]",i,pt_NT[i],j,pt_NF[j]),
 				if pt_NT[i] # pt_NF[j] then ( /* 33 */
-if dbg then print("2 j-mb",j-mb,52,102,102),
+if dbg then print("2 j-MB",j-MB,52,102,102),
 				    /* IF(J-MB)52,102,102 * 220 */
 				    continu:true
 				)
@@ -119,7 +119,7 @@ if dbg then print("2 j-mb",j-mb,52,102,102),
 				    if pt_NF[i] # pt_NT[j] then ( /* 63 */
 					pt_NF[j]:pt_NF[i], /* 83 */
 					/* IF(J-MB)52,102,102 * 220 */
-if dbg then print("3 j-mb",j-mb,52,102,102),
+if dbg then print("3 j-MB",j-MB,52,102,102),
 					continu:true
 				    ) else (if dbg then print("should do 6"))
 				)
@@ -132,7 +132,7 @@ if dbg then print("goto 102"),
 				K:K+1,
 if dbg then print("k", k, " adding a link 6"),
 				pt_MT[j]:MN + K,
-				pt_aJT[pt_MT[J]]:pt_JT[j],
+				pt_aJT[pt_MT[j]]:pt_JT[j],
 				for L:1 thru MN do pt_A[L,pt_MT[j]]:pt_D[L,j],
 				if getElementIndex(pt_JT[j]) < 4 then IR:IR+1
 				else (
@@ -140,7 +140,7 @@ if dbg then print("k", k, " adding a link 6"),
 				    else IL:IL+1
 				),
 				/* IF(J-MB)52,102,103 */
-if dbg then print("4 j-mb",j-mb,52,102,103),
+if dbg then print("4 j-MB",j-MB,52,102,103),
 				if j = MB then treebranch:true,
 				if j >= MB then return
 			    )
@@ -164,8 +164,8 @@ if dbg then print("ik", ik,"i",i, " in 102 row swap"),
 	),
 	retvals:[KC, KR, KV, IL, IR, IC, MN, MB]
     ),
-if dbg then print("103? mb mn",mb,mn),
-if dbg then printarray2(pt_a, pt_name, mn, mb),
+if dbg then print("103? MB MN",MB,MN),
+if dbg then printarray2(pt_a, pt_name, MN, MB),
     retvals
 )
 $
