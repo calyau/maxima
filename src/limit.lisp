@@ -41,14 +41,14 @@
 (load-macsyma-macros rzmac)
 
 (defmvar infinities '($inf $minf $infinity) 
-  "The types of infinities recognized by Macsyma. 
+  "The types of infinities recognized by Maxima. 
    INFINITY is complex infinity")
 
 (defmvar real-infinities '($inf $minf)
   "The real infinities, `inf' is positive infinity, `minf' negative infinity")
 
 (defmvar infinitesimals '($zeroa $zerob)
-  "The infinitesimals recognized by Macsyma. ZEROA zero from above,
+  "The infinitesimals recognized by Maxima. ZEROA zero from above,
    ZEROB zero from below")
 
 (defmvar rd* nil

@@ -727,7 +727,7 @@
 
 (defmspec $tobreak (x)
   (if mbreak (throw 'mbreak (cdr x))
-      (merror "`tobreak' may be used only within a Macsyma break.")))
+      (merror "`tobreak' may be used only within a Maxima break.")))
 
 (defun errlfun (x)
   (when (null

@@ -133,8 +133,8 @@
 (defun firstcharn (x)
   (aref (string x) 0))
 
-(defvar *parse-stream*		()	  "input stream for Macsyma parser")
-(defvar macsyma-operators	()	  "Macsyma operators structure")
+(defvar *parse-stream*		()	  "input stream for Maxima parser")
+(defvar macsyma-operators	()	  "Maxima operators structure")
 (defvar *mread-prompt*		nil	  "prompt used by `mread'")
 (defvar *mread-eof-obj* () "Bound by `mread' for use by `mread-raw'")
 
@@ -1227,7 +1227,7 @@ entire input string to be printed out when an MAXIMA-ERROR occurs."
 
 (defun parse-bug-err (op)
   (mread-synerr
-    "Parser bug in ~A. Please report this to the Macsyma maintainers,~
+    "Parser bug in ~A. Please report this to the Maxima maintainers,~
    ~%including the characters you just typed which caused the error. Thanks."
     (mopstrip op)))
 

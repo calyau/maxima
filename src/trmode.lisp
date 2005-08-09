@@ -22,7 +22,7 @@
 (defmvar $mode_check_errorp nil "if true, modedeclare calls error.")
 
 (defmvar $macsyma_extend_warnp t "if true,
-warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
+warning given about not-built-in modes being taken for Maxima EXTEND types.")
 
 (defun mseemingly-unbound (x)
   (or (not (boundp x)) (eq (symbol-value x) x)))
@@ -135,7 +135,7 @@ warning given about not-built-in modes being taken for MACSYMA EXTEND types.")
 	(prog1 x
 	  (if $macsyma_extend_warnp
 	      (mtell
-	       "Warning: ~M is not a built-in type; assuming it is a macsyma extend type" x))))))
+	       "Warning: ~M is not a built-in type; assuming it is a Maxima extend type" x))))))
 
 (def%tr $modedeclare (form)
   (do ((l (cdr form) (cddr l))) ((null l))

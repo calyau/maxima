@@ -233,7 +233,7 @@
   (mapcar #'(lambda (x)
 	      (if (get x 'macsyma-module)
 		  x 
-		  (error  "Missing Macsyma macro file -- ~A" x)))
+		  (error  "Missing Maxima macro file -- ~A" x)))
 	  l))
 #-cl
 (defun load-macsyma-macros-at-runtime (&rest l)

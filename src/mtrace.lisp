@@ -401,7 +401,7 @@
 		  (cadr (getl (cdr (getl fun `(,type-of))) `(,type-of)))
 		  (get fun type-of)))))
    (trace-fsymeval
-    (merror "Macsyma bug: Trace property for ~:@M went away without hook."
+    (merror "Maxima bug: Trace property for ~:@M went away without hook."
 	    fun))))
 
 ;;; The handling of a traced call.

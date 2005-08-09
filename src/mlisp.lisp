@@ -402,7 +402,7 @@ is EQ to FNNAME if the latter is non-NIL."
 		       (harrfind (cons (car form) (mevalargs (cdr form)))))
 		      ((memq (car u) '(fexpr fsubr))
 		       (if fexprerrp
-			   (merror "Attempt to call ~A ~A from MACSYMA level.~
+			   (merror "Attempt to call ~A ~A from Maxima level.~
 				 ~%Send a bug note."
 				   (car u) (caar form)))
 		       (setq noevalargs nil) (apply (caar form) (cdr form)))
@@ -2050,7 +2050,7 @@ wrapper for this."
 				r)
    			       (t
 				(error "The value of ~A is not a hash-table ,an ~
-                                           array, macsyma list, or a matrix"
+                                           array, Maxima list, or a matrix"
 				       (caar l)))))
 			(t(cond ((eq tem (caar l))
 				 (meval* `((mset) ,(caar l)
@@ -2058,7 +2058,7 @@ wrapper for this."
 					     (cdr (mevalargs (cdr l))))))
 				 (arrstore l r))
 				(t
-				 (error "The value of ~A is not a hash-table , an array,a macsyma list, or a matrix" (caar l))))
+				 (error "The value of ~A is not a hash-table , an array,a Maxima list, or a matrix" (caar l))))
 			  ))))
 	       (t
 		(cond ((mget (caar l) 'hashar)
@@ -2354,7 +2354,7 @@ wrapper for this."
 			 fnname ($verbify (caar fun)))
 		   (if (and (not (mgetl fnname '(hashar array)))
 			    (get fnname 'specsimp))
-		       (mtell "Warning - you are redefining the MACSYMA ~
+		       (mtell "Warning - you are redefining the Maxima ~
 			    subscripted function ~:M.~%"
 			      fnname)))
 	    ((prog2 (setq fnname ($verbify (caar fun)))
@@ -2406,7 +2406,7 @@ wrapper for this."
 			   (get fnname 'mfexpr*s))
 		       (not (get fnname 'translated)))
 		  (mopp fnname)))
-	 (princ "Warning - you are redefining the Macsyma ")
+	 (princ "Warning - you are redefining the Maxima ")
 	 (if (getl fnname '(verb operators))
 	     (princ "command ") (princ "function "))
 	 (princ (print-invert-case (stripdollar fnname)))

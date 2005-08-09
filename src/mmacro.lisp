@@ -22,7 +22,7 @@
 
 
 (defmvar $macroexpansion ()
-  "Governs the expansion of Macsyma Macros.  The following settings are
+  "Governs the expansion of Maxima Macros.  The following settings are
 available:  FALSE means to re-expand the macro every time it gets called.
 EXPAND means to remember the expansion for each individual call do that it 
 won't have to be re-expanded every time the form is evaluated.  The form will 

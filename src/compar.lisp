@@ -274,7 +274,7 @@ relational knowledge is contained in the default context GLOBAL."
 	(t (isp (munformat patevalled)))))
 
 (defmfun pre-err (pat)
-  (merror "`macsyma' was unable to evaluate the predicate:~%~M" pat))
+  (merror "Maxima was unable to evaluate the predicate:~%~M" pat))
 
 (defun is-mnot (pred)
   (setq pred (mevalp pred))
@@ -324,12 +324,12 @@ relational knowledge is contained in the default context GLOBAL."
 		  ((eq 'mnot (caaar x))
 		   (setq nl (cons (assume (meval (pred-reverse (cadar x)))) nl)))
 		  ((eq 'mor (caaar x))
-		   (merror "`assume': Macsyma is unable to handle assertions involving `or'."))
+		   (merror "`assume': Maxima is unable to handle assertions involving `or'."))
 		  ((eq (caaar x) 'mequal)
-		   (merror "ASSUME: = means syntactic equality in Macsyma.
+		   (merror "ASSUME: = means syntactic equality in Maxima.
 Maybe you want to use EQUAL."))
 		  ((eq (caaar x) 'mnotequal)
-		   (merror "ASSUME: # means syntactic unequality in Macsyma.
+		   (merror "ASSUME: # means syntactic unequality in Maxima.
 Maybe you want to use NOT EQUAL."))
 		  (t (setq nl (cons (assume (meval (car x))) nl))))
 	    (setq x (cdr x))))
@@ -374,7 +374,7 @@ Maybe you want to use NOT EQUAL."))
 		  ((eq 'mnot (caaar x))
 		   (setq nl (cons (forget (meval (pred-reverse (cadar x)))) nl)))
 		  ((eq 'mor (caaar x))
-		   (merror "Macsyma is unable to handle assertions involving `or'."))
+		   (merror "Maxima is unable to handle assertions involving `or'."))
 		  (t (setq nl (cons (forget (meval (car x))) nl))))
 	    (setq x (cdr x))))
 

@@ -182,12 +182,12 @@
 	    ((eq 'mnot (caaar x))
 	     (setq nl (cons `(assume ,(dtranslate (pred-reverse (cadar x)))) nl)))
 	    ((eq 'mor (caaar x))
-	     (merror "`assume': Macsyma is unable to handle assertions involving 'or'."))
+	     (merror "`assume': Maxima is unable to handle assertions involving 'or'."))
 	    ((eq (caaar x) 'mequal)
-	     (merror "ASSUME: = means syntactic equality in Macsyma. ~
+	     (merror "ASSUME: = means syntactic equality in Maxima. ~
 		     Maybe you want to use EQUAL."))
 	    ((eq (caaar x) 'mnotequal)
-	     (merror "ASSUME: # means syntactic unequality in Macsyma. ~
+	     (merror "ASSUME: # means syntactic unequality in Maxima. ~
 		     Maybe you want to use NOT EQUAL."))
 	    ('else
 	     (setq nl (cons `(assume ,(dtranslate (car x))) nl))))

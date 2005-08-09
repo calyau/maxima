@@ -130,7 +130,7 @@
 (defmvar returns nil "list of `translate'd return forms in the block.")
 (defmvar return-mode nil "the highest(?) mode of all the returns.")
 (defmvar need-prog? nil)
-(defmvar assigns nil "These are very-special variables which have a macsyma
+(defmvar assigns nil "These are very-special variables which have a Maxima
 	assign property which must be called to bind and unbind the variable
 	whenever it is `lambda' bound.")
 (defmvar specials nil "variables to declare special to the complr.")

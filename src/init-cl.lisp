@@ -419,7 +419,7 @@
 	    (process-maxima-args input-stream batch-flag))
       (progn
 	(loop 
-	 (with-simple-restart (macsyma-quit "Macsyma top-level")
+	 (with-simple-restart (macsyma-quit "Maxima top-level")
 	     (macsyma-top-level input-stream batch-flag)))))))
 
 (import 'cl-user::run)

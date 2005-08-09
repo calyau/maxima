@@ -27,7 +27,7 @@
   "If `false' then no maxima-error message is printed!")
 
 (defmfun $error (&rest l)
-  "Signals a Macsyma user error."
+  "Signals a Maxima user error."
   (apply #'merror (fstringc l)))
 
 (defmvar $error_size 10.
