@@ -36,7 +36,7 @@ However, the value of @code{_} is simplified (but not evaluated) when it is disp
 
 @code{_} is recognized by @code{batch}, but not by @code{load}.
 
-See also @code{%} and @code{%%}.
+See also @code{%}.
 
 Examples:
 
@@ -88,7 +88,10 @@ Examples:
 @code{%} is the output expression (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 most recently computed by Maxima,
 whether or not it was displayed.
-See also @code{%%} and @code{%th}.
+
+@code{%} is recognized by @code{batch}, but not by @code{load}.
+
+See also @code{_}, @code{%%}, and @code{%th}.
 
 @end defvr
 
@@ -129,6 +132,10 @@ At the first statement in a compound statement,
 or outside of a compound statement,
 @code{%%} is undefined.
 
+@code{%%} is recognized by both @code{batch} and @code{load}.
+
+See also @code{%}.
+
 @end defvr
 
 @defvr {Option variable} %edispflag
@@ -153,6 +160,10 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @end example
 
 sets @code{s} to the sum of the last ten output expressions.
+
+@code{%th} is recognized by @code{batch}, but not by @code{load}.
+
+See also @code{%}.
 
 @end deffn
 
