@@ -1,59 +1,60 @@
 @menu
-* Definici@'on para L@'{@dotless{i}}mites::      
+* Definiciones para L@'{@dotless{i}}mites::      
 @end menu
 
-@node Definici@'on para L@'{@dotless{i}}mites,  ,L@'{@dotless{i}}mites,L@'{@dotless{i}}mites 
+@node Definiciones para L@'{@dotless{i}}mites,  ,L@'{@dotless{i}}mites,L@'{@dotless{i}}mites 
 
-@section Definici@'on para L@'{@dotless{i}}mites
+@section Definiciones para L@'{@dotless{i}}mites
 
-@defvr {option variable} lhospitallim
+@defvr {Variable optativa} lhospitallim
+Valor por defecto: 4
 
-por defecto:[4] - es el n@'umero m@'aximo de veces que la regla de
-L'Hopital es aplicada en la funci@'on @code{limit}. Esto previene lazos infinitos, es decir aplicaci@'on de la regla de forma infinita, en casos como
-@code{limit(cot(x)/csc(x),x,0)}.
-
-@end defvr
-
-@deffn {function} limit (exp, var, val, dir)
-@deffnx {function} limit (exp, var, val)
-@deffnx {function} limit (exp)
-
-busca el l@'{@dotless{i}}mite de @var{exp} cuando la variable real @var{var} se acerca al valor de @var{val} desde la direcci@'on @var{dir}. @var{dir}  puede tener el valor @code{plus} para l@'{@dotless{i}}mites por la derecha, @code{minus} para l@'{@dotless{i}}mites desde la izquierda, o puede ser omitido (implicando que el l@'{@dotless{i}}mite ser@'a calculado por los dos lados). Para observar el m@'etodo empleado v@'ease  Wang, P., "Evaluation of Definite Integrals by Symbolic Manipulation" - Ph.D. Thesis - MAC TR-92 October 1971. @code{limit} usa los siguientes s@'{@dotless{i}}mbolos especiales: @code{inf} (infinito positivo) y @code{minf}(infinito
-negativo). Las salidas (resultados) tambi@'en pueden usar  @code{und}(indefinido), @code{ind} (indefinido pero limitado) e @code{infinity} (infinito complejo). 
-
-
-@code{lhospitallim} es el n@'umero m@'aximo de veces que la regla de
-L'Hopital es aplicada en la funci@'on @code{limit}. Esto previene lazos infinitos, es decir aplicaci@'on de la regla de forma infinita, en casos como
-@code{limit(cot(x)/csc(x),x,0)}.
-
-@code{tlimiswicth} cuando su valor es @code{true} puede causar que el paquete limit use Series de Taylor cuando sea posible.
-
-@code{limsubst} previene que @code{limit} intente sustituciones sobre
-formas desconocidas. Esto es para evitar errores como @code{limit(f(n)/f(n+1),n,inf);} arrojen como resultado 1. Programando @code{limsubst} a @code{true} permitir@'a tales sustituciones. 
-
-@code{limit} con un argumento es a menudo llamado para la simplificaci@'on de expresiones constantes, por ejemplo @code{limit(inf-1)}. 
-
-Pruebe @code{example(limit);} para ejemplos. 
-
-@end deffn
-
-@defvr {option variable} limsubst
-
-por defecto @code{false} - previene que @code{limit} intente sustituciones sobre formas desconocidas. Esto es para evitar errores como @code{limit(f(n)/f(n+1),n,inf);} arrojen como resultado 1. Programando @code{limsubst} a @code{true} permitir@'a tales sustituciones. 
+Es el n@'umero m@'aximo de veces que la regla de L'Hopital es aplicada en la funci@'on @code{limit}, evitando bucles infinitos al iterar la regla en casos como @code{limit (cot(x)/csc(x), x, 0)}.
 
 @end defvr
 
-@deffn {function} tlimit (exp, var, val, dir)
-@deffnx {function} tlimit (exp, var, val)
-@deffnx {function} tlimit (exp)
-es s@'olo la funci@'on @code{limit} con @code{tlimswitch} configurado
-a @code{true}. 
+@deffn {Funci@'on} limit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Funci@'on} limit (@var{expr}, @var{x}, @var{val})
+@deffnx {Funci@'on} limit (@var{expr})
+Calcula el @'{@dotless{i}}mite de @var{expr} cuando la variable real @var{x} se aproxima al valor @var{val} desde la direcci@'on @var{dir}. El argumento @var{dir} puede ser el valor @code{plus} para un l@'{@dotless{i}}mite por la derecha, @code{minus} para un l@'{@dotless{i}}mite por la izquierda o simplemente se omite para indicar un l@'{@dotless{i}}mite en ambos sentidos.
+
+La funci@'on @code{limit} utiliza los s@'{@dotless{i}}mbolos especiales siguientes: @code{inf} (m@'as infinito) y @code{minf} (menos
+infinito). En el resultado tambi@'en puede hacer uso de @code{und} (indefinido), @code{ind} (indefinido pero acotado) y @code{infinity} (infinito complejo).
+
+La variable @code{lhospitallim} guarda el n@'umero m@'aximo de veces que la regla de L'Hopital es aplicada en la funci@'on @code{limit}, evitando bucles infinitos al iterar la regla en casos como @code{limit (cot(x)/csc(x), x, 0)}.
+
+Si la variable @code{tlimswitch} vale @code{true} har@'a que el paquete sobre l@'{@dotless{i}}mites utilice desarrollos de Taylor siempre que sea posible.
+
+La variable @code{limsubst} evita que la funci@'on @code{limit} realice sustituciones sobre formas desconocidas, a fin de evitar fallos tales como que @code{limit (f(n)/f(n+1), n, inf)} devuelva 1.  D@'andole a @code{limsubst} el valor @code{true} se permitir@'an tales sustituciones.
+
+La funci@'on @code{limit} con un solo argumento se utiliza frecuentemente para simplificar expresiones constantes, como por ejemplo @code{limit (inf-1)}.
+
+@c MERGE EXAMPLES INTO THIS FILE
+La instrucci@'on @code{example (limit)} muestra algunos ejemplos.
+
+Para informaci@'on sobre el m@'etodo utilizado v@'ease Wang, P., "Evaluation of Definite Integrals by Symbolic
+Manipulation", Ph.D. thesis, MAC TR-92, October 1971.
 
 @end deffn
 
-@defvr {option variable} tlimswitch
-por defecto: @code{false} - si su valor es @code{true} causar@'a que el
-paquete limit use Series de Potencias cuando sea posible. 
+@defvr {Variable optativa} limsubst
+Valor por defecto: @code{false}
+
+La variable @code{limsubst} evita que la funci@'on @code{limit} realice sustituciones sobre formas desconocidas, a fin de evitar fallos tales como que @code{limit (f(n)/f(n+1), n, inf)} devuelva 1.  D@'andole a @code{limsubst} el valor @code{true} se permitir@'an tales sustituciones.
+
+@end defvr
+
+@deffn {Funci@'on} tlimit (@var{expr}, @var{x}, @var{val}, @var{dir})
+@deffnx {Funci@'on} tlimit (@var{expr}, @var{x}, @var{val})
+@deffnx {Funci@'on} tlimit (@var{expr})
+Devuelve el l@'{@dotless{i}}mite solicitado d@'andole a @code{tlimswitch} el valor @code{true}.
+
+@end deffn
+
+@defvr {Variable optativa} tlimswitch
+Valor por defecto: @code{false}
+
+Si la variable @code{tlimswitch} vale @code{true} har@'a que el paquete sobre l@'{@dotless{i}}mites utilice desarrollos de Taylor siempre que sea posible.
 
 @end defvr
 

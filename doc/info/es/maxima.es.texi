@@ -13,7 +13,7 @@
 
 @c %**start of header
 @setfilename  maxima.es.info
-@documentencoding ISO-8859-15
+@documentencoding ISO-8859-1
 @synindex vr fn
 @settitle Manual de Maxima
 @c %**end of header
@@ -95,7 +95,7 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Integraci@'on::                      C@'alculo integral.
 * Ecuaciones::                         Definici@'on y resoluci@'on de ecuaciones.
 * Ecuaciones Diferenciales::           Definici@'on y resoluci@'on de ecuaciones diferenciales.
-* Trabajo Num@'erico::                 Integraci@'on num@'erica, transformadas de Fourier, etc.
+* M@'etodos num@'ericos::              Integraci@'on num@'erica, transformadas de Fourier, etc.
 * Estad@'{@dotless{i}}stica::          Funciones estad@'isticas.
 * Arreglos y Tablas::                  Creaci@'on y manipulaci@'on de arreglos.
 * Matrices y @'Algebra Lineal::        Operaciones matriciales.
@@ -216,15 +216,15 @@ Funcionalidades avanzadas y programaci@'on
 @chapter Ecuaciones
 @include Equations.es.texi
 
-@node Ecuaciones Diferenciales, Trabajo Num@'erico, Ecuaciones, Top
+@node Ecuaciones Diferenciales, M@'etodos num@'ericos, Ecuaciones, Top
 @chapter Ecuaciones Diferenciales
 @include Differential.es.texi
 
-@node Trabajo Num@'erico, Estad@'{@dotless{i}}stica, Ecuaciones Diferenciales, Top
-@chapter Trabajo Num@'erico
+@node M@'etodos num@'ericos, Estad@'{@dotless{i}}stica, Ecuaciones Diferenciales, Top
+@chapter M@'etodos num@'ericos
 @include Numerical.es.texi
 
-@node Estad@'{@dotless{i}}stica, Arreglos y Tablas, Trabajo Num@'erico, Top
+@node Estad@'{@dotless{i}}stica, Arreglos y Tablas, M@'etodos num@'ericos, Top
 @chapter Estad@'{@dotless{i}}stica
 @include Statistics.es.texi
 

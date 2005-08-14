@@ -6,388 +6,590 @@
 @node Definiciones para Diferenciaci@'on,  , Diferenciaci@'on, Diferenciaci@'on
 @section Definiciones para Diferenciaci@'on
 
-@c @node ANTID, ANTIDIFF, Diferenciaci@'on, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun ANTID (G,X,U(X)) 
-Una rutina para evular integrales de expresiones involucrando
-una funci@'on arbitraria no especificada y sus derivadas. Esto puede ser usado
-mediante LOAD(ANTID); , despu@'es de esto, puede ser usada la funci@'on ANTIDIFF.
-Eje ANTIDIFF(G,X,U(X)); donde G es la expresi@'on involucrando U(X)
-(U(X) arbitrario) y sus derivadas, donde es deseada su integral con 
-respecto a X. 
-Las funciones NONZEROANDFREEOF y LINEAR tambi@'en est@'an definidas como
-ANTID.  ANTID es lo mismo que ANTIDIFF  excepto que este retorna una lista de
-dos partes, la primera parte es la parte integrada de la expresi@'on y
-la segunda parte de la lista es el resto no-integrable.
+@deffn {Funci@'on} antid (@var{expr}, @var{x}, @var{u(x)}) 
+Devuelve una lista con dos elementos, de manera que se pueda calcular la antiderivada de @var{expr} respecto de  @var{x} a partir de la lista. La expresi@'on @var{expr} puede contener una funci@'on no especificada @var{u} y sus derivadas.
 
-@end defun
-@c @node ANTIDIFF, property, ANTID, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun ANTIDIFF  -
-Observe ANTID.
+Sea @var{L} la lista con dos elementos que devuelve la funci@'on @code{antid}.
+Entonces, @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}
+es una antiderivada de @var{expr} con respecto a @var{x}.
 
-@end defun
-@c @node property, ATVALUE, ANTIDIFF, Diferenciaci@'on
-@c @unnumberedsec phony
-@defvr property ATOMGRAD
- - la propiedad gradiente at@'omico de una expresi@'on.
-Puede ser programado mediante GRADEF.
+Si la ejecuci@'on de @code{antid} resulta exitosa, el segundo elemento de la lista retornada es cero. En caso contrario, el segundo elemento es distinto de cero y el primero puede ser nulo o no. Si @code{antid} no es capaz de hacer ning@'un progreso, el primer elemento es nulo y el segundo no nulo.
 
-@end defvr
-@c @node ATVALUE, CARTAN, property, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun ATVALUE (form, list, value)
-permite al usuario asignar un valor limite
-valor para formar en los puntos espec@'{@dotless{i}}ficados mediante lista.
-@example
-(C1) ATVALUE(F(X,Y),[X=0,Y=1],A**2)$
-    La forma debe ser una funci@'on f(v1,v2,...), o una derivada,
+Es necesario ejecutar @code{load ("antid")} para cargar esta funci@'on. El paquete @code{antid} define tambi@'en las funciones @code{nonzeroandfreeof} y @code{linear}.
 
-@end example
-DIFF(f(v1,v2,...),vi,ni,vj,nj,...) en la cual los argumentos funcionales
-aparecen explicitamente (ni es el orden de Diferenciaci@'on con respecto 
-a vi).
-    La lista de ecuaciones determina el "l@'{@dotless{i}}mite" en el cual es dado el
-valor; lista puede ser una lista de ecuaciones, como arriba, o una
-ecuaci@'on sencilla, vi = expr.
-    Los s@'{@dotless{i}}mbolos @@1, @@2,... pueden ser usados para representar las variables 
-funcionales v1,v2,... cuando son mostrados atvalues.
-    PRINTPROPS([f1, f2,...], ATVALUE) mostrar@'a los atvalues de
-las funciones f1,f2,... como es espc@'{@dotless{i}}ficado en usos de la funci@'on ATVALUE
-dados anteriormente. Si la lista contiene solo un elemento entonces el
-elemento puede ser dado sin ser una lista. si un primer argumento de
-ALL es dado entonces atvalues de todas las funciones que los tienen, ser@'an
-mostradas. Haga EXAMPLE(ATVALUE); para un ejemplo.
+La funci@'on @code{antid} est@'a relacionada con @code{antidiff} como se indica a continuaci@'on.
+Sea @var{L} la lista devuelta por la funci@'on @code{antid}. Entonces, el resultado de @code{antidiff} es igual a  @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}, donde @var{x} es la variable de integraci@'on.
 
-@end defun
-@c @node CARTAN, DELTA, ATVALUE, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun CARTAN  -
-El c@'alculo exterior de formas diferenciales son una herramienta b@'asica
-del desarrollo diferencial geom@'etrico por Elie Cartan y tiene aplicaciones
-importantes en la teor@'{@dotless{i}}a de ecuaciones diferenciales parciales. La
-presente implementaci@'on es realizada por F.B. Estabrook y H.D. Wahlquist.
-El programa es auto-explicativo y puede ser accedido mediante
-batch("cartan"); que dar@'a una descripci@'on con
-ejemplos.
-
-@end defun
-@c @node DELTA, DEPENDENCIES, CARTAN, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun DELTA (t)
-Esta es la funci@'on Delta de Dirac. Actualmente solo LAPLACE
-conoce acerca de la funci@'on DELTA:
-@example
-(C1) LAPLACE(DELTA(T-A)*SIN(B*T),T,S);
-Es A positivo, negativo o cero?
-POS;
-                                          - A S
-(D1)                           SIN(A B) %E
-
-
-@end example
-@end defun
-@c @node DEPENDENCIES, DEPENDS, DELTA, Diferenciaci@'on
-@c @unnumberedsec phony
-@defvar DEPENDENCIES
- por defecto: [] - la lista de @'atomos que tienen dependencias
-funcionales (programado mediante las funciones DEPENDS o GRADEF). El comando
-DEPENDENCIES ha sido reemplazado mediante el comando DEPENDS. Haga
-DESCRIBE(DEPENDS);
-
-@end defvar
-@c @node DEPENDS, DERIVABBREV, DEPENDENCIES, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun DEPENDS (funlist1,varlist1,funlist2,varlist2,...)
-declara dependencias funcionales
-para variables para ser usadas mediante DIFF.
+Ejemplos:
+@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+@c load ("antid")$
+@c expr: exp (z(x)) * diff (z(x), x) * y(x);
+@c a1: antid (expr, x, z(x));
+@c a2: antidiff (expr, x, z(x));
+@c a2 - (first (a1) + 'integrate (second (a1), x));
+@c antid (expr, x, y(x));
+@c antidiff (expr, x, y(x));
+@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
+@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
+@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
 
 @example
-DEPENDS([F,G],[X,Y],[R,S],[U,V,W],U,T)
+(%i1) load ("antid")$
+(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
+                            z(x)  d
+(%o2)                y(x) %e     (-- (z(x)))
+                                  dx
+(%i3) a1: antid (expr, x, z(x));
+                       z(x)      z(x)  d
+(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
+                                       dx
+(%i4) a2: antidiff (expr, x, z(x));
+                            /
+                     z(x)   [   z(x)  d
+(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
+                            ]         dx
+                            /
+(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
+(%o5)                           0
+(%i6) antid (expr, x, y(x));
+                             z(x)  d
+(%o6)             [0, y(x) %e     (-- (z(x)))]
+                                   dx
+(%i7) antidiff (expr, x, y(x));
+                  /
+                  [        z(x)  d
+(%o7)             I y(x) %e     (-- (z(x))) dx
+                  ]              dx
+                  /
 @end example
-informa a DIFF que F y G
-dependen de X y Y, que R y S dependen de U,V y W, y que U 
-depende de T.  Los argumentos para DEPENDS son evaluados. Las variables
-en cada funlist son declaradas para depender de todas las variables en la
-pr@'oxima varlist. Una funlist puede contener el nombre de una variable o arreglo
-at@'omico. En el @'ultimo caso, es asumido que todos los elementos del
-arreglo dependen de todas las variables en la varlist exitosa.
-Inicialmente, DIFF(F,X) es 0; ejecutando DEPENDS(F,X) se causan futuras  
-Diferenciaciones de F con respecto a X para dar dF/dX o Y (si
-DERIVABBREV:VERDADERO).
+
+@end deffn
+
+
+@deffn {Funci@'on} antidiff (@var{expr}, @var{x}, @var{u}(@var{x}))
+Devuelve la antiderivada de @var{expr} respecto de @var{x}.
+La expresi@'on @var{expr} puede contener una funci@'on no especificada @var{u} y sus derivadas.
+
+Cuando @code{antidiff} se ejecuta con @'exito, la expresi@'on resultante no tiene s@'{@dotless{i}}mbolos integrales (esto es, no tiene referencias a la funci@'on @code{integrate}). En otro caso, @code{antidiff} devuelve una expresi@'on que se encuentra total o parcialmente bajo el signo de integraci@'on. Si @code{antidiff} no puede ralizar ning@'un progreso, el valor devuelto se encuentra completamente bajo la integral.
+
+Es necesario ejecutar @code{load ("antid")} para cargar esta funci@'on. El paquete @code{antid} define tambi@'en las funciones @code{nonzeroandfreeof} y @code{linear}.
+
+La funci@'on @code{antidiff} est@'a relacionada con @code{antid} como se indica a continuaci@'on.
+Sea @var{L} la lista de dos elementos que devuelve @code{antid}. Entonces, el valor retornado por @code{antidiff} es igual a @code{@var{L}[1] + 'integrate (@var{L}[2], @var{x})}, donde @var{x} es la variable de integraci@'on.
+
+Ejemplos:
+@c FOLLOWING EXAMPLES GENERATED FROM THESE INPUTS
+@c load ("antid")$
+@c expr: exp (z(x)) * diff (z(x), x) * y(x);
+@c a1: antid (expr, x, z(x));
+@c a2: antidiff (expr, x, z(x));
+@c a2 - (first (a1) + 'integrate (second (a1), x));
+@c antid (expr, x, y(x));
+@c antidiff (expr, x, y(x));
+@c THERE IS A DEMO FILE share/integration/antid.dem, EXECUTED BY demo('antid)
+@c BUT I THINK THE FOLLOWING ILLUSTRATES THE BASIC FUNCTIONALITY MORE CLEARLY
+@c MAYBE MERGE IN THE DEMO PROBLEMS LATER
+
 @example
-(C1) DEPENDS([F,G],[X,Y],[R,S],[U,V,W],U,T);
-(D1)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
-(C2) DEPENDENCIES;
-(D2)           [F(X, Y), G(X, Y), R(U, V, W), S(U, V, W), U(T)]
-(C3) DIFF(R.S,U);
-                               dR           dS
-(D3)                           -- . S + R . --
-                               dU           dU
+(%i1) load ("antid")$
+(%i2) expr: exp (z(x)) * diff (z(x), x) * y(x);
+                            z(x)  d
+(%o2)                y(x) %e     (-- (z(x)))
+                                  dx
+(%i3) a1: antid (expr, x, z(x));
+                       z(x)      z(x)  d
+(%o3)          [y(x) %e    , - %e     (-- (y(x)))]
+                                       dx
+(%i4) a2: antidiff (expr, x, z(x));
+                            /
+                     z(x)   [   z(x)  d
+(%o4)         y(x) %e     - I %e     (-- (y(x))) dx
+                            ]         dx
+                            /
+(%i5) a2 - (first (a1) + 'integrate (second (a1), x));
+(%o5)                           0
+(%i6) antid (expr, x, y(x));
+                             z(x)  d
+(%o6)             [0, y(x) %e     (-- (z(x)))]
+                                   dx
+(%i7) antidiff (expr, x, y(x));
+                  /
+                  [        z(x)  d
+(%o7)             I y(x) %e     (-- (z(x))) dx
+                  ]              dx
+                  /
 @end example
-Desde que MACSYMA conoce la cadena regla para derivadas simb@'olicas, toma
-ventaja de las dependencias dadas as@'{@dotless{i}}:
-@example
-(C4) DIFF(R.S,T);
-                           dR dU             dS dU
-(D4)                      (-- --) . S + R . (-- --)
-                           dU dT             dU dT
-Si programamos
-(C5) DERIVABBREV:TRUE;
-(D5)
-                                 TRUE
-entonces re-ejecutamos el comando C4, obtenemos
-(C6) ''C4;
-(D6)                      (R  U ) . S + R . (S  U )
-                            U  T              U  T
-@end example
-Para eliminar una dependencia declarada previamente, puede ser usado el 
-comando REMOVE. Por ejemplo, para decir que R no extenso depende de U como
-es declarado en C1, el usuario puede escribir
-@example
-REMOVE(R,DEPENDENCY)
-@end example
-Esto eliminar@'a 
-todas las dependencias que pueden haber sido declaradas para R.
-@example
-(C7) REMOVE(R,DEPENDENCY);
-(D7)                                 DONE
-(C8) ''C4;
-(D8)                             R . (S  U )
-                                  U    T
 
-@end example
-CAVEAT: DIFF es el @'unico comando de MACSYMA que usa informaci@'on 
-de DEPENDENCIES. Los argumentos para INTEGRATE, LAPLACE, etc. deben dar
-sus dependencias expl@'{@dotless{i}}citamente en el comando, eje, INTEGRATE(F(X),X).
+@end deffn
 
-@end defun
-@c @node DERIVABBREV, DERIVDEGREE, DEPENDS, Diferenciaci@'on
-@c @unnumberedsec phony
-@defvar DERIVABBREV
- por defecto: [FALSO] si es VERDADERO mostrar@'a las derivadas como
-subscripts.
+@c I SUSPECT THERE IS MORE TO BE SAID HERE
+@defvr {Propiedad} atomgrad
 
-@end defvar
-@c @node DERIVDEGREE, DERIVLIST, DERIVABBREV, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun DERIVDEGREE (exp, dv, iv)
-busca el mayor grado en la derivada
-de variable dependiente dv con respecto a la variable independiente
-iv ocurriendo en exp.
-@example
-(C1) 'DIFF(Y,X,2)+'DIFF(Y,Z,3)*2+'DIFF(Y,X)*X**2$
-(C2) DERIVDEGREE(%,Y,X);
-(D2)                           2
+La propiedad @code{atomgrad} es asignada por @code{gradef}.
 
-
-@end example
-@end defun
-@c @node DERIVLIST, DERIVSUBST, DERIVDEGREE, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun DERIVLIST (var1,...,vark)
-causa solo las diferenciaciones con respecto a
-las variables indicadas, en el rando del comando EV.
-
-@end defun
-@c @node DERIVSUBST, {special symbol}, DERIVLIST, Diferenciaci@'on
-@c @unnumberedsec phony
-@defvar DERIVSUBST
- por defecto: [FALSE] - controla sustituciones no-sint@'acticas 
-como
-@example
-SUBST(X,'DIFF(Y,T),'DIFF(Y,T,2));
-@end example
-Si DERIVSUBST es programada
-verdadera, esta da 'DIFF(X,T).
-
-@end defvar
-@c @node DIFF
-@c @unnumberedsec phony
-@defvr {special symbol} DIFF
-[bandera] para ev causa que sean desarrolladas todas las diferenciaciones indicadas
-en exp.
+@c NEED EXAMPLE HERE
 @end defvr
 
-@c @node DIFF, DSCALAR, {special symbol}, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun DIFF (exp, v1, n1, v2, n2, ...)
-DIFF diferencia exp con respecto a
-cada vi, ni veces. Si solo la primera derivada con respecto a una
-variable es deseada, entonces la forma form DIFF(exp,v) puede ser usada. Si es
-requerida la forma noun de la funci@'on (como por ejemplo, cuando se escribe una
-ecuaci@'on diferencial), 'DIFF puede ser usada y esta mostrar@'a en
-un formato bidimensional.
+@deffn {Funci@'on} atvalue (@var{expr}, [@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}], @var{c})
+@deffnx {Funci@'on} atvalue (@var{expr}, @var{x_1} = @var{a_1}, @var{c})
+Asigna el valor @var{c} a @var{expr} en el punto @code{@var{x} = @var{a}}.
 
-DERIVABBREV[FALSO] si es VERDADERO causar@'a derivaci@'on para mostrar
-como subscripts. No es ofrecida mayor simplificaci@'on de DEL.
+La expresi@'on @var{expr} es una funci@'on del tipo 
+@code{@var{f}(@var{x_1}, ..., @var{x_m})},
+o una derivada,
+@code{diff (@var{f}(@var{x_1}, ..., @var{x_m}), @var{x_1}, @var{n_1}, ..., @var{x_n}, @var{n_m})}
+@c HMM, WHAT IS THIS NEXT PHRASE GETTING AT ??
+@c DOES IT INTEND TO IMPLY THAT IMPLICIT DEPENDENCIES ARE IGNORED ??
+en la que aparecen los argumentos de la funci@'on de forma expl@'{@dotless{i}}cita.
+Los s@'{@dotless{i}}mbolos @var{n_i} se refieren al orden de diferenciaci@'on respecto de @var{x_i}.
 
-DIFF(exp) da el "diferencial total", esto es, la suma de las
-derivadas de exp con respecto a las veces de sus variables de la funci@'on 
-DEL. 
+El punto en el que @code{atvalue} establece el valor se especifica mediante la lista de ecuaciones
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_m} = @var{a_m}]}.
+Si hay una @'unica variable @var{x_1}, la ecuaci@'on puede escribirse sin formar parte de una lista.
 
-@example
-(C1) DIFF(EXP(F(X)),X,2);
-                             2
-                      F(X)  d             F(X)  d         2
-(D1)                %E     (--- F(X)) + %E     (-- (F(X)))
-                              2                 dX
-                            dX
-(C2) DERIVABBREV:TRUE$
-(C3) 'INTEGRATE(F(X,Y),Y,G(X),H(X));
-                                H(X)
-                               /
-                               [
-(D3)                           I     F(X, Y) dY
-                               ]
-                               /
-                                G(X)
-(C4) DIFF(%,X);
-            H(X)
-           /
-           [
-(D4)       I     F(X, Y)  dY + F(X, H(X)) H(X)  - F(X, G(X)) G(X)
-           ]            X                     X                  X
-           /
-            G(X)
+La llamada @code{printprops ([@var{f_1}, @var{f_2}, ...], atvalue)} muestra los valores asignados por @code{atvalue} a las funciones @code{@var{f_1}, @var{f_2}, ...}.
+La llamada  @code{printprops (@var{f}, atvalue)} muestra los valores asignados por @code{atvalue} a la funci@'on @var{f}.
+La llamada  @code{printprops (all, atvalue)} muestra los valores asignados por @code{atvalue} a todas las funciones.
 
-@end example
-Para el paquete tensor ha sido incorporada la siguiente 
-modificaci@'on:
-1) las derivadas de cualquieras objetos indexados en exp tendr@'an las
-variables vi apendizadas como argumentos adicionales. Entonces todos los
-indices derivativos ser@'an organizados.
-2) los vi pueden ser enteros de 1 en adelante para el valor de la variable
-DIMENSION[valor por defecto: 4].  Esto causar@'a que la Diferenciaci@'on
-de wrt se cumpla con el vi-@'esimo mimbro de la lista COORDINATES el cual
-puede ser programado para una lista de nombres de la coordenadas, eje,
-[x,y,z,t]. Si COORDINATES est@'a limitado por una variable at@'omica, entonces dicha 
-variables suscrita por vi ser@'a usada por la variable de la
-Diferenciaci@'on.  Esto permite que sea usado un
-arreglo de nombres de coordenadas o nombres suscritos como X[1], X[2]. Si a COORDINATES no ha
-sido asignado un valor, entonces las variables ser@'an tratadas como en 1) anteriormente.
+Los s@'{@dotless{i}}mbolos @code{@@1}, @code{@@2}, ... representan las variables @var{x_1}, @var{x_2}, ... cuando se muestran los valores asignados por @code{atvalue}.
 
-@end defun
-@c @node DSCALAR, EXPRESS, DIFF, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun DSCALAR (function)
-aplica el escalar d'Alembertian a la funci@'on
-escalar.
-@example
-(C41) DEPENDENCIES(FIELD(R));
-(D41)                           [FIELD(R)]
-(C42) DSCALAR(FIELD);
-(D43)
-    -M
-  %E  ((FIELD  N - FIELD  M + 2 FIELD   ) R + 4 FIELD )
-             R  R       R  R         R R             R
+La funci@'on @code{atvalue} eval@'ua sus argumentos y devuelve @var{c}, el valor asignado.
 
-- -----------------------------------------------------
-                             2 R
-
-@end example
-@end defun
-@c @node EXPRESS, GENDIFF, DSCALAR, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun EXPRESS (expression)
-el resultado usa la forma noun de cualquier
-derivada planteada desde la expransi@'on del operador del
-vector diferencial. Para forzar la evaluaci@'on de estas derivadas, la funci@'on 
-constructor EV puede ser usada junto con el DIFF evflag (bandera ev), despu@'es usando la
-funci@'on constructor DEPENDS para establecer cualquier nueva dependencia impl@'{@dotless{i}}cita.
-
-@end defun
-@c @node GENDIFF, GRADEF, EXPRESS, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun GENDIFF
-Algunas veces DIFF(E,X,N) puede ser reducido constantemente aunque N
-sea simb@'olica.
-@example
-batch("gendif.mc")$
-@end example
-y puede intentar, por ejemplo,
+Ejemplos:
+@c FOLLOWING ADAPTED FROM example (atvalue)
+@c atvalue (f(x,y), [x = 0, y = 1], a^2);
+@c atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+@c printprops (all, atvalue);
+@c diff (4*f(x,y)^2 - u(x,y)^2, x);
+@c at (%, [x = 0, y = 1]);
 
 @example
-DIFF(%E^(A*X),X,Q)
+(%i1) atvalue (f(x,y), [x = 0, y = 1], a^2);
+                                2
+(%o1)                          a
+(%i2) atvalue ('diff (f(x,y), x), x = 0, 1 + y);
+(%o2)                        @@2 + 1
+(%i3) printprops (all, atvalue);
+                                !
+                  d             !
+                 --- (f(@@1, @@2))!       = @@2 + 1
+                 d@@1            !
+                                !@@1 = 0
+
+                                     2
+                          f(0, 1) = a
+
+(%o3)                         done
+(%i4) diff (4*f(x,y)^2 - u(x,y)^2, x);
+                  d                          d
+(%o4)  8 f(x, y) (-- (f(x, y))) - 2 u(x, y) (-- (u(x, y)))
+                  dx                         dx
+(%i5) at (%, [x = 0, y = 1]);
+                                         !
+              2              d           !
+(%o5)     16 a  - 2 u(0, 1) (-- (u(x, y))!            )
+                             dx          !
+                                         !x = 0, y = 1
 @end example
-mediante el uso de GENDIFF m@'as que DIFF. Objetos 
-inevaluables salen acotados. Algunos objetos son en t@'erminos de "GENFACT", el cual
-se observa.
 
-@end defun
-@c @node GRADEF, GRADEFS, GENDIFF, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun GRADEF (f(x1, ..., xn), g1, ..., gn)
-define las derivadas de la
-funci@'on f con respecto a sus n argumentos. Esto es, df/dxi = gi,
-etc.  Si son menores que n gradientes diga i, son dados, entonces ellos
-se refieren al primer argumento i. Los xi son meramente variables dummy como en
-la cabecera de definici@'on de funci@'on y son usadas para indicar el i-@'esimo 
-argumento de f. Todos los argumentos para GRADEF excepto el primero son evaluados
-as@'{@dotless{i}} que si g es una funci@'on definida entonces, este es invocado y el resultado es usado.
-Los Gradientes son necesarios cuando, por ejemplo, una funci@'on no es conocida
-expl@'{@dotless{i}}citamente pero sus primeras derivadas lo son y se desea obtener 
-dervidavas de orden mayor. GRADEF tambi@'en puede ser usada para redifinir las
-derivadas de funciones predefinidas de MACSYMA (eje,
-GRADEF(SIN(X),SQRT(1-SIN(X)**2)) ).  Esto uso no es permisible para
-GRADEF en funciones suscritas.
-GRADEFS es una lista de funciones cuyos gradientes han sido dados mediante
-el uso del comando GRADEF (i.e. GRADEF(f(x1, ..., xn), g1, ..., gn)).
-PRINTPROPS([f1,f2,...],GRADEF) puede ser usado para mostrar los gradefs de
-las funciones f1,f2,..
-GRADEF(a,v,exp) puede ser usado para el estado en que la derivada de la
-variable at@'omica a con respecto a v es exp. Esto hace autom@'aticamente un
-DEPENDS(a,v).
-PRINTPROPS([a1,a2,...],ATOMGRAD) puede ser usado para mostrar las propiedades
-del gradiente at@'omico de a1,a2,...
+@end deffn
 
-@end defun
-@c @node GRADEFS, LAPLACE, GRADEF, Diferenciaci@'on
-@c @unnumberedsec phony
-@defvar GRADEFS
- por defecto: [] - una lista de las funciones cuyos gradientes 
-han sido dados mediante el uso del comando GRADEF (i.e. GRADEF(f(x1, ..., xn), 
-g1, ..., gn)).
+@deffn {Funci@'on} cartan  -
+El c@'alculo exterior de formas diferenciales es una herramienta b@'asica de la geometr@'{@dotless{i}}a diferencial desarrollada por Elie Cartan, teniendo importantes aplicaciones en la teor@'{@dotless{i}}a de ecuaciones diferenciales en derivadas parciales.
+El paquete @code{cartan} dispone de las funciones @code{ext_diff} y @code{lie_diff}, as@'{@dotless{i}} como de los operadores @code{~} (producto exterior) y @code{|} (contracci@'on de una forma con un vector). La orden @code{demo (tensor)} permite ver una breve descripci@'on de estas instrucciones, junto con ejemplos.
 
-@end defvar
-@c @node LAPLACE, UNDIFF, GRADEFS, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun LAPLACE (exp, ovar, lvar)
-toma la transformada de Laplace de exp con
-respecto a la variable ovar y el par@'ametro de transformaci@'on lvar. Exp solo puede
-involucrar las funciones EXP, LOG, SIN, COS, SINH, COSH y ERF.
-Esta tambi@'en puede ser un lineal, ecuaci@'on diferencial con coeficiente constante en
-cuyo caso ATVALUE de la variabloe dependiente ser@'a usado. Estos pueden
-ser suplidos o antes o despu@'es de que es tomada la transformaci@'on. Las 
-condiciones iniciales deben ser especificadas en cero, si uno tiene condiciones
-de l@'{@dotless{i}}mite impuestas donde el puede imponer esto en la soluci@'on
-general y eliminar las constantes mediante la resoluci@'on de la soluci@'on general
-para ellos y sustituyendo sus valores de antes. Exp tambi@'en puede involucrar
-integrales de convoluci@'on. Relaciones funcionales deben ser representadas
-expl@'{@dotless{i}}citamente en orden para que LAPLACe tabaje correctamente. Esto es, si F
-depende de X y Y este debe estar escrito como F(X,Y) donde F ocurre como
-en LAPLACE('DIFF(F(X,Y),X),X,S).  LAPLACE no es afectada por programaciones de DEPENDENCIES
-con el comando DEPENDS.
+El paquete @code{cartan} fue escrito por F.B. Estabrook y H.D. Wahlquist.
+
+@end deffn
+
+@deffn {Funci@'on} del (@var{x})
+La expresi@'on @code{del (@var{x})} representa el diferencial de la variable @math{x}.
+
+La funci@'on @code{diff} devuelve una expresi@'on que contiene a @code{del} si no se ha especificado una variable independiente. En este caso, el valor retornado es el llamado "diferencial total".
+
+Ejemplos:
+@c GENERATED FROM THE FOLLOWING
+@c diff (log (x));
+@c diff (exp (x*y));
+@c diff (x*y*z);
+
 @example
-(C1) LAPLACE(%E**(2*T+A)*SIN(T)*T,T,S);
-                     A
-                 2 %E  (S - 2)
-(D1)            ---------------
-                        2     2
-                ((S - 2)  + 1)
-
-
+(%i1) diff (log (x));
+                             del(x)
+(%o1)                        ------
+                               x
+(%i2) diff (exp (x*y));
+                     x y              x y
+(%o2)            x %e    del(y) + y %e    del(x)
+(%i3) diff (x*y*z);
+(%o3)         x y del(z) + x z del(y) + y z del(x)
 @end example
-@end defun
-@c @node UNDIFF,  , LAPLACE, Diferenciaci@'on
-@c @unnumberedsec phony
-@defun UNDIFF (exp)
-retorna una expresi@'on equivalente para exp pero con todas
-las derivadas de objetos indexados reemplazadas por la forma noun de la
-funci@'on DIFF con argumentos cuyo producto que es objeto indexado si la
-Diferenciaci@'on se cumple.  Esto es @'util cuando se desea 
-reemplazar un objeto indexado diferenciado con algunas definiciones de
-funciones y entonces cumplen la diferenciaci@'on mendiante
-EV(...,DIFF).
 
-@end defun
+@end deffn
+
+@deffn {Funci@'on} delta (@var{t})
+Es la funci@'on delta de Dirac.
+
+En el estado actual de desarrollo de Maxima, s@'olo @code{laplace} reconoce la funci@'on @code{delta}.
+
+Ejemplo:
+
+@example
+(%i1) laplace (delta (t - a) * sin(b*t), t, s);
+Is  a  positive, negative, or zero?
+
+p;
+                                   - a s
+(%o1)                   sin(a b) %e
+@end example
+
+@end deffn
+
+@defvr {Variable del sistema} dependencies
+Valor por defecto: @code{[]}
+
+La variable @code{dependencies} es la lista de @'atomos que tienen alg@'un tipo de dependencia funcional, asignada por @code{depends} o @code{gradef}. La lista @code{dependencies} es acumulativa: cada llamada a @code{depends} o @code{gradef} a@~nade elementos adicionales.
+
+V@'eanse @code{depends} y @code{gradef}.
+
+@end defvr
+
+@deffn {Funci@'on} depends (@var{f_1}, @var{x_1}, ..., @var{f_n}, @var{x_n})
+Declara dependencias funcionales entre variables con el prop@'osito de calcular derivadas.
+En ausencia de una dependencia declarada, @code{diff (f, x)} devuelve cero.
+Si se declara @code{depends (f, x)}, @code{diff (f, x)} devuelve una derivada simb@'olica (esto es, una expresi@'on con @code{diff}).
+
+Cada argumento  @var{f_1}, @var{x_1}, etc., puede ser el nombre de una variable, de un arreglo o una lista de nombres.
+Cada elemento de @var{f_i} (quiz@'as un @'unico elemento) se declara como dependiente de cada elemento de @var{x_i} (quiz@'as tambi@'en un @'unico elemento). Si alguno de los  @var{f_i} es el nombre de un arreglo o contiene el nombre de un arreglo, todos los elemento del arregl dependen de @var{x_i}.
+
+La funci@'on @code{diff} reconoce dependencias indirectas establecidas por @code{depends} y aplica la regla de la cadena en tales casos.
+
+La instrucci@'on @code{remove (@var{f}, dependency)} borra todas las dependencias declaradas para @var{f}.
+
+La funci@'on @code{depends} devuelve una lista con las dependencias que han sido establecidas. Las dependencias se a@~naden a la variable global @code{dependencies}. La funci@'on @code{depends} eval@'ua sus argumentos.
+
+La funci@'on @code{diff} es la @'unica instrucci@'on de Maxima que reconoce las dependencias establecidas por @code{depends}. Otras funciones (@code{integrate}, @code{laplace}, etc.) solamente reconocen dependencias expl@'{@dotless{i}}citamente representadas por sus argumentos. Por ejemplo, @code{integrate} no reconoce la dependencia de @code{f} respecto de @code{x}
+a menos que se represente expl@'{@dotless{i}}citamente como @code{integrate (f(x), x)}.
+
+@c GENERATED BY THE FOLLOWING
+@c depends ([f, g], x);
+@c depends ([r, s], [u, v, w]);
+@c depends (u, t);
+@c dependencies;
+@c diff (r.s, u);
+@example
+(%i1) depends ([f, g], x);
+(%o1)                     [f(x), g(x)]
+(%i2) depends ([r, s], [u, v, w]);
+(%o2)               [r(u, v, w), s(u, v, w)]
+(%i3) depends (u, t);
+(%o3)                        [u(t)]
+(%i4) dependencies;
+(%o4)      [f(x), g(x), r(u, v, w), s(u, v, w), u(t)]
+(%i5) diff (r.s, u);
+                         dr           ds
+(%o5)                    -- . s + r . --
+                         du           du
+@end example
+
+@c GENERATED BY THE FOLLOWING
+@c diff (r.s, t);
+@example
+(%i6) diff (r.s, t);
+                      dr du           ds du
+(%o6)                 -- -- . s + r . -- --
+                      du dt           du dt
+@end example
+
+@c GENERATED BY THE FOLLOWING
+@c remove (r, dependency);
+@c diff (r.s, t);
+@example
+(%i7) remove (r, dependency);
+(%o7)                         done
+(%i8) diff (r.s, t);
+                                ds du
+(%o8)                       r . -- --
+                                du dt
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} derivabbrev
+Valor por defecto: @code{false}
+
+Si @code{derivabbrev} vale @code{true}, las derivadas simb@'olicas (esto es, expresiones con @code{diff}) se muestran como sub@'{@dotless{i}}ndices. En otro caso, las derivadas se muestran en la notaci@'on de Leibniz, @code{dy/dx}.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@deffn {Funci@'on} derivdegree (@var{expr}, @var{y}, @var{x})
+Devuelve el mayor grado de la derivada de la variable dependiente @var{y} respecto de la variable independiente @var{x} que aparece en @var{expr}.
+
+Ejemplo:
+@c GENERATED FROM THE FOLLOWING
+@c 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
+@c derivdegree (%, y, x);
+@example
+(%i1) 'diff (y, x, 2) + 'diff (y, z, 3) + 'diff (y, x) * x^2;
+                         3     2
+                        d y   d y    2 dy
+(%o1)                   --- + --- + x  --
+                          3     2      dx
+                        dz    dx
+(%i2) derivdegree (%, y, x);
+(%o2)                           2
+@end example
+
+@end deffn
+
+@c I HAVE NO IDEA WHAT THIS DOES
+@deffn {Funci@'on} derivlist (@var{var_1}, ..., @var{var_k})
+Hace que las derivadas calculadas por la instrucci@'on @code{ev} se calculen respecto de las variables indicadas.
+
+@end deffn
+
+@defvr {Variable optativa} derivsubst
+Valor por defecto: @code{false}
+
+Si @code{derivsubst} vale @code{true}, una sustituci@'on no sint@'actica del estilo 
+@code{subst (x, 'diff (y, t), 'diff (y, t, 2))} devuelve @code{'diff (x, t)}.
+
+@end defvr
+
+@deffn {Funci@'on} diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})
+@deffnx {Funci@'on} diff (@var{expr}, @var{x}, @var{n})
+@deffnx {Funci@'on} diff (@var{expr}, @var{x})
+@deffnx {Funci@'on} diff (@var{expr})
+Devuelve la derivada o diferencial de  @var{expr} respecto de alguna o de todas las variables presentes en @var{expr}.
+
+La llamada @code{diff (@var{expr}, @var{x}, @var{n})} devuelve la @var{n}-esima derivada de @var{expr} respecto de @var{x}.
+
+La llamada @code{diff (@var{expr}, @var{x_1}, @var{n_1}, ..., @var{x_m}, @var{n_m})}
+devuelve la derivada parcial de @var{expr} con respecto de @var{x_1}, ..., @var{x_m}.
+Equivale a @code{diff (... (diff (@var{expr}, @var{x_m}, @var{n_m}) ...), @var{x_1}, @var{n_1})}.
+
+La llamada @code{diff (@var{expr}, @var{x})}
+devuelve la primera derivada de @var{expr} respecto de la variable @var{x}.
+
+La llamada @code{diff (@var{expr})} devuelve el diferencial total de @var{expr}, esto es, la suma de las derivadas de @var{expr} respecto de cada una de sus variables, multiplicadas por el diferencial @code{del} de cada una de ellas.
+@c WHAT DOES THIS NEXT STATEMENT MEAN, EXACTLY ??
+@c FALTA AQUI UNA FRASE.
+
+La forma nominal de @code{diff} es necesaria en algunos contextos, como para definir ecuaciones diferenciales.
+En tales casos, @code{diff} puede ir precedida de un ap@'ostrofo (como @code{'diff}) para evitar el c@'alculo de la derivada.
+
+Si @code{derivabbrev} vale @code{true}, las derivadas se muestran como sub@'{@dotless{i}}ndices. En otro caso, se muestran en la notaci@'on de Leibniz, @code{dy/dx}.
+
+Ejemplos:
+@c GENERATED FROM THE FOLLOWING
+@c diff (exp (f(x)), x, 2);
+@c derivabbrev: true$
+@c 'integrate (f(x, y), y, g(x), h(x));
+@c diff (%, x);
+
+@example
+(%i1) diff (exp (f(x)), x, 2);
+                     2
+              f(x)  d               f(x)  d         2
+(%o1)       %e     (--- (f(x))) + %e     (-- (f(x)))
+                      2                   dx
+                    dx
+(%i2) derivabbrev: true$
+(%i3) 'integrate (f(x, y), y, g(x), h(x));
+                         h(x)
+                        /
+                        [
+(%o3)                   I     f(x, y) dy
+                        ]
+                        /
+                         g(x)
+(%i4) diff (%, x);
+       h(x)
+      /
+      [
+(%o4) I     f(x, y)  dy + f(x, h(x)) h(x)  - f(x, g(x)) g(x)
+      ]            x                     x                  x
+      /
+       g(x)
+@end example
+
+Para el paquete sobre tensores se han introducido las siguientes modificaciones:
+
+(1) Las derivadas de los objetos indexados en @var{expr} tendr@'an las variables @var{x_i} a@~nadidas como argumentos adicionales. Entonces se ordenar@'an todos los @'{@dotless{i}}ndices de derivadas.
+
+(2) Las @var{x_i} pueden ser enteros entre 1 hasta el valor de la variable @code{dimension} [valor por defecto: 4].  Esto har@'a que la diferenciaci@'on sea llevada a cabo con respecto al @var{x_i}-@'esimo n@'umero de la lista @code{coordinates}, la cual deber@'{@dotless{i}}a contener una lista con los nombres de las coordenadas, por ejemplo, @code{[x, y, z, t]}. Si @code{coordinates} es una variableis at@'omica, entonces esa variable ser@'a utilizada como variable de diferenciaci@'on. Se permite la utilizaci@'on de arreglos con los nombres de las coordenadas o nombres con sub@'{@dotless{i}}ndices, como @code{X[1]}, @code{X[2]}, ... to be used.  Si a @code{coordinates} no se le ha asignado ning@'un valor, entonces las variables ser@'an tratadas como se ha indicado en (1).
+
+@c NEED EXAMPLES FOR TENSOR STUFF
+@end deffn
+
+@defvr {S@'{@dotless{i}}mbolo especial} diff
+
+Si el nombre @code{diff} est@'a presente en una llamada a la funci@'on @code{ev} en modo @code{evflag}, entonces se calculan todas las derivadas presentes en @code{expr}.
+
+@c NEED EXAMPLE HERE
+@end defvr
+
+@c FALTA DESCRIPCION DE dscalar
+
+@deffn {Funci@'on} express (@var{expr})
+Transforma los nombres de operadores diferenciales en expresiones en t@'erminos de derivadas parciales. La funci@'on
+@code{express} reconoce los operadores @code{grad}, @code{div}, @code{curl} y @code{laplacian}, as@'{@dotless{i}} como el producto cruzado @code{~}.
+
+Las derivadas simb@'olicas (es decir, las que incluyen la forma nominal @code{diff}) que aparecen el la expresi@'on devuelta por @code{express} se pueden calcular a@~nadi@'endole a @code{ev} el t@'ermino @code{diff}.
+En este contexto, @code{diff} sct@'ua como @code{evfun}.
+
+Es necesario ejecutar @code{load ("vect")} para cargar esta funci@'on.
+
+Ejemplos:
+@c GENERATED FROM THE FOLLOWING
+@c load ("vect")$
+@c grad (x^2 + y^2 + z^2);
+@c express (%);
+@c ev (%, diff);
+@c div ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c curl ([x^2, y^2, z^2]);
+@c express (%);
+@c ev (%, diff);
+@c laplacian (x^2 * y^2 * z^2);
+@c express (%);
+@c ev (%, diff);
+@c [a, b, c] ~ [x, y, z];
+@c express (%);
+
+@example
+(%i1) load ("vect")$
+(%i2) grad (x^2 + y^2 + z^2);
+                              2    2    2
+(%o2)                  grad (z  + y  + x )
+(%i3) express (%);
+       d    2    2    2   d    2    2    2   d    2    2    2
+(%o3) [-- (z  + y  + x ), -- (z  + y  + x ), -- (z  + y  + x )]
+       dx                 dy                 dz
+(%i4) ev (%, diff);
+(%o4)                    [2 x, 2 y, 2 z]
+(%i5) div ([x^2, y^2, z^2]);
+                              2   2   2
+(%o5)                   div [x , y , z ]
+(%i6) express (%);
+                   d    2    d    2    d    2
+(%o6)              -- (z ) + -- (y ) + -- (x )
+                   dz        dy        dx
+(%i7) ev (%, diff);
+(%o7)                    2 z + 2 y + 2 x
+(%i8) curl ([x^2, y^2, z^2]);
+                               2   2   2
+(%o8)                   curl [x , y , z ]
+(%i9) express (%);
+       d    2    d    2   d    2    d    2   d    2    d    2
+(%o9) [-- (z ) - -- (y ), -- (x ) - -- (z ), -- (y ) - -- (x )]
+       dy        dz       dz        dx       dx        dy
+(%i10) ev (%, diff);
+(%o10)                      [0, 0, 0]
+(%i11) laplacian (x^2 * y^2 * z^2);
+                                  2  2  2
+(%o11)                laplacian (x  y  z )
+(%i12) express (%);
+         2                2                2
+        d     2  2  2    d     2  2  2    d     2  2  2
+(%o12)  --- (x  y  z ) + --- (x  y  z ) + --- (x  y  z )
+          2                2                2
+        dz               dy               dx
+(%i13) ev (%, diff);
+                      2  2      2  2      2  2
+(%o13)             2 y  z  + 2 x  z  + 2 x  y
+(%i14) [a, b, c] ~ [x, y, z];
+(%o14)                [a, b, c] ~ [x, y, z]
+(%i15) express (%);
+(%o15)          [b z - c y, c x - a z, a y - b x]
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})
+@deffnx {Funci@'on} gradef (@var{a}, @var{x}, @var{expr})
+Define las derivadas parciales, o componentes del gradiente, de la funci@'on @var{f} o variable @var{a}.
+
+La llamada @code{gradef (@var{f}(@var{x_1}, ..., @var{x_n}), @var{g_1}, ..., @var{g_m})}
+define @code{d@var{f}/d@var{x_i}} como @var{g_i}, 
+donde @var{g_i} es una expresi@'on; @var{g_i} puede ser una llamada a funci@'on, pero no el nombre de una funci@'on.
+El n@'umero de derivadas parciales @var{m} puede ser menor que el n@'umero de argumentos @var{n}, en cuyo caso las derivadas se definen solamente con respecto a  @var{x_1}, ...., @var{x_m}.
+
+La llamada @code{gradef (@var{a}, @var{x}, @var{expr})} define la derivada de la variable @var{a} respecto de @var{x} en @var{expr}. Con esto se establece la dependencia de @var{a} respecto de @var{x} a trav@'es de @code{depends (@var{a}, @var{x})}.
+
+El primer argumento @code{@var{f}(@var{x_1}, ..., @var{x_n})} o @var{a} no se eval@'ua, pero s@'{@dotless{i}} lo hacen el resto de argumentos @var{g_1}, ..., @var{g_m}.  La llamada a @code{gradef} devuelve la funci@'on o variable para la que se define la derivada parcial.
+
+La instrucci@'on @code{gradef} puede redefinir las derivadas de las funciones propias de Maxima.
+Por ejemplo, @code{gradef (sin(x), sqrt (1 - sin(x)^2))} redefine la derivada de @code{sin}.
+
+La instrucci@'on @code{gradef} no puede definir derivadas parciales de funciones subindicadas.
+
+La llamada @code{printprops ([@var{f_1}, ..., @var{f_n}], gradef)} muestra las derivadas parciales de las funciones @var{f_1}, ..., @var{f_n}, tal como las defini@'o @code{gradef}.
+
+La llamada @code{printprops ([@var{a_n}, ..., @var{a_n}], atomgrad)} muestra las derivadas parciales de las variables @var{a_n}, ..., @var{a_n}, tal como las defini@'o @code{gradef}.
+
+La variable @code{gradefs} contiene la lista de las funciones para las que se han definido derivadas parciales con la instrucci@'on @code{gradef}, pero no incluye las variables para las que se han definido las derivadas parciales.
+
+@c REPHRASE THIS NEXT BIT
+Los gradientes son necesarios cuando una funci@'on no se conoce expl@'{@dotless{i}}citamente pero s@'{@dotless{i}} sus primeras derivadas y es necesario calcular las derivadas de orden mayor.
+
+@c NEED EXAMPLES HERE
+@end deffn
+
+@defvr {Variable del sistema} gradefs
+Valor por defecto: @code{[]}
+
+La variable @code{gradefs} contiene la lista de las funciones para las que se han definido derivadas parciales con la instrucci@'on @code{gradef}, pero no incluye las variables para las que se han definido las derivadas parciales.
+
+@end defvr
+
+@deffn {Funci@'on} laplace (@var{expr}, @var{t}, @var{s})
+Calcula la transformada de Laplace de @var{expr} con respecto de la variable @var{t} y par@'ametro de transformaci@'on @var{s}. Si @code{laplace} no puede encontrar la soluci@'on, se devuelve la forma nominal @code{'laplace}.
+
+La funci@'on @code{laplace} reconoce en @var{expr} las funciones
+@code{delta}, @code{exp}, @code{log}, @code{sin}, @code{cos}, @code{sinh}, @code{cosh} y @code{erf},
+as@'{@dotless{i}} como @code{derivative}, @code{integrate}, @code{sum} y @code{ilt}. Bajo la presencia de otras funciones, @code{laplace} puede que no sea capaz de calcular la transformada.
+
+@c REPHRASE THIS
+@c FALTA AQUI UN PARRAFO
+
+La funci@'on @code{laplace} reconoce integrales de convoluci@'on de la forma @code{integrate (f(x) * g(t - x), x, 0, t)},
+no pudiendo reconocer otros tipos de convoluciones.
+
+Las relaciones funcionales se deben representar expl@'{@dotless{i}}citamente en @var{expr}; las relaciones impl@'{@dotless{i}}citas establecidas por @code{depends} no son reconocidas. As@'{@dotless{i}}, si @var{f} depende de @var{x} y @var{y}, @code{f (x, y)} debe aparecer en @var{expr}.
+
+V@'ease tambi@'en @code{ilt}, la transformada inversa de Laplace.
+
+Ejemplos:
+@c GENERATED FROM THE FOLLOWING:
+@c laplace (exp (2*t + a) * sin(t) * t, t, s);
+@c laplace ('diff (f (x), x), x, s);
+@c diff (diff (delta (t), t), t);
+@c laplace (%, t, s);
+
+@example
+(%i1) laplace (exp (2*t + a) * sin(t) * t, t, s);
+                            a
+                          %e  (2 s - 4)
+(%o1)                    ---------------
+                           2           2
+                         (s  - 4 s + 5)
+(%i2) laplace ('diff (f (x), x), x, s);
+(%o2)             s laplace(f(x), x, s) - f(0)
+(%i3) diff (diff (delta (t), t), t);
+                          2
+                         d
+(%o3)                    --- (delta(t))
+                           2
+                         dt
+(%i4) laplace (%, t, s);
+                            !
+               d            !         2
+(%o4)        - -- (delta(t))!      + s  - delta(0) s
+               dt           !
+                            !t = 0
+@end example
+
+@end deffn
