@@ -801,6 +801,9 @@ Equivalente a @code{ldefint} com @code{tlimswitch} escolhido para @code{true}.
 @deffn {Fun@,{c}@~ao} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Numericamente avalia a integral
 
+@ifhtml
+@math{integrate (f(x), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, a, b)}
 @end ifinfo
@@ -931,6 +934,9 @@ Note que @code{quad_qags} @'e mais preciso e eficiente que @code{quad_qag} para 
 
 Avalia numericamente uma das seguintes integrais
 
+@ifhtml
+@math{integrate (f(x), x, a, inf)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, a, inf)}
 @end ifinfo
@@ -938,6 +944,9 @@ Avalia numericamente uma das seguintes integrais
 $$\int_a^\infty {f(x) dx}$$
 @end tex
 
+@ifhtml
+@math{integrate (f(x), x, minf, a)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, minf, a)}
 @end ifinfo
@@ -945,11 +954,14 @@ $$\int_a^\infty {f(x) dx}$$
 $$\int_\infty^a {f(x) dx}$$
 @end tex
 
+@ifhtml
+@math{integrate (f(x), x, a, minf, inf)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, a, minf, inf)}
 @end ifinfo
 @tex
-$$\int_\infty^\infty {f(x) dx}$$
+$$\int_{-\infty}^\infty {f(x) dx}$$
 @end tex
 
 usando a rotina Quadpack QAGI.  A fun@,{c}@~ao a ser integrada @'e
@@ -1025,6 +1037,9 @@ Exemplos:
 
 Calcula numericamente o valor principal de Cauchy de
 
+@ifhtml
+@math{integrate (f(x)/(x - c), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)/(x - c), x, a, b)}
 @end ifinfo
@@ -1105,6 +1120,9 @@ Principal Value
 Calcula numericamente a integral tipo Fourier usando a rotina
 Quadpack QAWF.  A integral @'e
 
+@ifhtml
+@math{integrate (f(x)*w(x), x, a, inf)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)*w(x), x, a, inf)}
 @end ifinfo
@@ -1117,7 +1135,7 @@ A fun@,{c}@~ao peso @math{w} @'e selecionada por @var{trig}:
 @table @code
 @item cos
 @math{w(x) = cos (omega x)}
-@item cos
+@item sin
 @math{w(x) = sin (omega x)}
 @end table
 
@@ -1194,12 +1212,16 @@ Exemplos:
 Calcula numericamente a integral usando a rotina
 Quadpack QAWO:
 
+@ifhtml
+@math{integrate (f(x)*w(x), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)*w(x), x, a, b)}
 @end ifinfo
 @tex
 $$\int_a^b f(x) w(x) dx$$
 @end tex
+
 
 A fun@,{c}@~ao peso @math{w} @'e selecionada por @var{trig}:
 
@@ -1284,6 +1306,9 @@ Exemplos:
 Num@'ericamente calcula a integral usando a rotina 
 Quadpack QAWS:
 
+@ifhtml
+@math{integrate (f(x)*w(x), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)*w(x), x, a, b)}
 @end ifinfo

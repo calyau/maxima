@@ -802,6 +802,9 @@ Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 @deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Numerically evaluate the integral
 
+@ifhtml
+@math{integrate (f(x), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, a, b)}
 @end ifinfo
@@ -932,6 +935,9 @@ Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} f
 
 Numerically evaluate one of the following integrals
 
+@ifhtml
+@math{integrate (f(x), x, a, inf)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, a, inf)}
 @end ifinfo
@@ -939,6 +945,9 @@ Numerically evaluate one of the following integrals
 $$\int_a^\infty {f(x) dx}$$
 @end tex
 
+@ifhtml
+@math{integrate (f(x), x, minf, a)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, minf, a)}
 @end ifinfo
@@ -946,11 +955,14 @@ $$\int_a^\infty {f(x) dx}$$
 $$\int_\infty^a {f(x) dx}$$
 @end tex
 
+@ifhtml
+@math{integrate (f(x), x, a, minf, inf)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x), x, a, minf, inf)}
 @end ifinfo
 @tex
-$$\int_\infty^\infty {f(x) dx}$$
+$$\int_{-\infty}^\infty {f(x) dx}$$
 @end tex
 
 using the Quadpack QAGI routine.  The function to be integrated is
@@ -1026,6 +1038,9 @@ Examples:
 
 Numerically compute the Cauchy principal value of
 
+@ifhtml
+@math{integrate (f(x)/(x - c), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)/(x - c), x, a, b)}
 @end ifinfo
@@ -1106,6 +1121,9 @@ Principal Value
 Numerically compute the a Fourier-type integral using the Quadpack QAWF
 routine.  The integral is
 
+@ifhtml
+@math{integrate (f(x)*w(x), x, a, inf)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)*w(x), x, a, inf)}
 @end ifinfo
@@ -1118,7 +1136,7 @@ The weight function @math{w} is selected by @var{trig}:
 @table @code
 @item cos
 @math{w(x) = cos (omega x)}
-@item cos
+@item sin
 @math{w(x) = sin (omega x)}
 @end table
 
@@ -1195,6 +1213,9 @@ Examples:
 Numerically compute the integral using the Quadpack QAWO
 routine:
 
+@ifhtml
+@math{integrate (f(x)*w(x), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)*w(x), x, a, b)}
 @end ifinfo
@@ -1285,6 +1306,9 @@ Examples:
 Numerically compute the integral using the Quadpack QAWS
 routine:
 
+@ifhtml
+@math{integrate (f(x)*w(x), x, a, b)}
+@end ifhtml
 @ifinfo
 @math{integrate (f(x)*w(x), x, a, b)}
 @end ifinfo
