@@ -235,6 +235,9 @@ The inverse of the Jacobian elliptic function @math{dc(u,m)}.
 @deffn {Function} elliptic_f (@var{phi}, @var{m})
 The incomplete elliptic integral of the first kind, defined as
 
+@ifhtml
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifhtml
 @ifinfo
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
@@ -250,9 +253,17 @@ See also @ref{elliptic_e} and @ref{elliptic_kc}.
 @anchor{elliptic_e}
 @deffn {Function} elliptic_e (@var{phi}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
+
+@ifhtml
+@math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifhtml
 @ifinfo
 @math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
+@tex
+$$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
+@end tex
+
 See also @ref{elliptic_e} and @ref{elliptic_ec}.
 
 @end deffn
@@ -260,6 +271,12 @@ See also @ref{elliptic_e} and @ref{elliptic_ec}.
 @anchor{elliptic_eu}
 @deffn {Function} elliptic_eu (@var{u}, @var{m})
 The incomplete elliptic integral of the second kind, defined as
+
+@ifhtml
+@math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
+
+where @math{tau = sn(u,m)} 
+@end ifhtml
 @ifinfo
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
 
@@ -279,13 +296,17 @@ This is related to @math{elliptic_e} by
 @tex
 $$E(u,m) = E(\phi, m)$$
 
-where $\phi = \sin^{-1} {\rm sn}(u, m),m)$
+where $\phi = \sin^{-1} {\rm sn}(u, m)$
 @end tex
 See also @ref{elliptic_e}.
 @end deffn
 
 @deffn {Function} elliptic_pi (@var{n}, @var{phi}, @var{m})
 The incomplete elliptic integral of the third kind, defined as
+
+@ifhtml
+@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifhtml
 @ifinfo
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
@@ -300,6 +321,9 @@ Only the derivative with respect to @math{phi} is known by Maxima.
 @deffn {Function} elliptic_kc (@var{m})
 The complete elliptic integral of the first kind, defined as
 
+@ifhtml
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@end ifhtml
 @ifinfo
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
 @end ifinfo
@@ -315,6 +339,9 @@ terms of @math{Gamma} functions.  Use @code{makegamma} to evaluate them.
 @deffn {Function} elliptic_ec (@var{m})
 The complete elliptic integral of the second kind, defined as
 
+@ifhtml
+@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@end ifhtml
 @ifinfo
 @math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
 @end ifinfo
