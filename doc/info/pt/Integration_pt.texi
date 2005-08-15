@@ -1,4 +1,4 @@
-@c /Integration.texi/1.23/Fri Jun 17 00:57:33 2005/-ko/
+@c /Integration.texi/1.24/Mon Aug 15 07:51:33 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao::  
 * Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao::  
