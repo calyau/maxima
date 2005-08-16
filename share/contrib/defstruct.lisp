@@ -12,7 +12,7 @@
 
 (defparameter mset_extension_operators nil)
 
-(defun mset (x y)
+(defmfun mset (x y)
   (declare (object y x))
   (prog nil
     ;; first see if we are supposed to report this assignment
@@ -184,3 +184,37 @@
 (defprop %@ (#\space #\@ #\space) dissym) 
 (defprop %@ $@ noun) 
 
+;;;;;;;;;;;;;8/15/05 RJF
+;;  after reading in the redefinition of mset and mset_extension_operators
+;; (not necessarily the @ stuff)
+;; the follow code implements PARALLEL LIST assignment.
+;; it is consistent with commercial macsyma.  [a,b,c]:[x,y,z] means
+;;  about the same as a:x, b:y, c:z.  Actually it
+;; evaluates x,y,z  BEFORE any assignments to a,b,c, hence parallel.
+;; Also implemented is [a,b,c]:x  which evaluates x once and assigns
+;; to a,b,c.
+;; value returned is (evaluated x to ex)  [ex,ex,ex].
+
+
+;; quiz .  [a,b]:[b,2*a].  produces values a=b, b= 2*a.
+;; re-execute the statement 4 times. what do you get?  [4b, 8a]
+;;         
+
+(defparameter mset_extension_operators
+    (cons (cons 'mlist '$mlistassign) mset_extension_operators))
+
+(defmfun $mlistassign (tlist vlist)
+  ;;  tlist is  ((mlist..)  var[0]... var[n])  of targets
+  ;; vlist is either((mlist..)  val[0]... val[n]) of values
+  ;; or possibly just one value.
+  ;; should insert some checking code here
+  (if (and (listp vlist)
+	   (eq (caar vlist) 'mlist)
+	   (not (= (length tlist)(length vlist))))
+      (merror "Illegal list assignment: different lengths of ~M and ~M." tlist vlist))
+  (unless (and (listp vlist)
+	   (eq (caar vlist) 'mlist))
+    (setf vlist (cons (car tlist) ;; if [a,b,c]:v  then make a list [v,v,v]
+		      (make-sequence 'list (1-(length tlist)) :initial-element vlist))))
+  (map nil #'mset (cdr tlist)(cdr vlist))
+   vlist)
