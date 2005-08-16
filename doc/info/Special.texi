@@ -211,6 +211,17 @@ The Bessel function of the first kind of order @math{v} and argument @math{z}.
 @code{besselarray [i] = bessel_j [i + v - int(v)] (z)} for @code{i} from zero to @code{int(v)}.
 
 @code{bessel_j} is defined as
+@ifhtml
+@example
+                inf
+                ====       k  - v - 2 k  v + 2 k
+                \     (- 1)  2          z
+                 >    --------------------------
+                /        k! gamma(v + k + 1)
+                ====
+                k = 0
+@end example
+@end ifhtml
 @ifinfo
 @example
                 inf
@@ -240,6 +251,13 @@ The Bessel function of the second kind of order @math{v} and argument @math{z}.
 @code{besselarray [i] = bessel_y [i + v - int(v)] (z)} for @code{i} from zero to @code{int(v)}.
 
 @code{bessel_y} is defined as
+@ifhtml
+@example
+              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
+              -------------------------------------------
+                             sin(%pi v)
+@end example
+@end ifhtml
 @ifinfo
 @example
               cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
@@ -266,6 +284,17 @@ The modified Bessel function of the first kind of order @math{v} and argument @m
 @code{besselarray [i] = bessel_i [i + v - int(v)] (z)} for @code{i} from zero to @code{int(v)}.
 
 @code{bessel_i} is defined as
+@ifhtml
+@example
+                    inf
+                    ====   - v - 2 k  v + 2 k
+                    \     2          z
+                     >    -------------------
+                    /     k! gamma(v + k + 1)
+                    ====
+                    k = 0
+@end example
+@end ifhtml
 @ifinfo
 @example
                     inf
@@ -295,6 +324,13 @@ The modified Bessel function of the second kind of order @math{v} and argument @
 @code{besselarray [i] = bessel_k [i + v - int(v)] (z)} for @code{i} from zero to @code{int(v)}.
 
 @code{bessel_k} is defined as
+@ifhtml
+@example
+           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
+           -------------------------------------------------
+                                  2
+@end example
+@end ifhtml
 @ifinfo
 @example
            %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
