@@ -1,4 +1,4 @@
-@c /Elliptic.texi/1.7/Thu Apr 21 04:58:25 2005//
+@c /Elliptic.texi/1.8/Tue Aug 16 07:43:22 2005/
 @menu
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@~oes El@'ipticas e Integrais::
 * Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes El@'ipticas::
@@ -279,13 +279,17 @@ Isso @'e relacionado a @math{elliptic_e} atrav@'es de
 @tex
 $$E(u,m) = E(\phi, m)$$
 
-onde $\phi = \sin^{-1} {\rm sn}(u, m),m)$
+onde $\phi = \sin^{-1} {\rm sn}(u, m)$
 @end tex
 Veja tamb@'em @ref{elliptic_e}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} elliptic_pi (@var{n}, @var{phi}, @var{m})
 A integral el@'iptica incompleta de terceiro tipo, definida como
+
+@ifhtml
+@math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifhtml
 @ifinfo
 @math{integrate(1/(1-n*sin(x)^2)/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
@@ -300,6 +304,9 @@ Somente a derivada em rela@value{cedilha}@~ao a @math{phi} @'e conhecida pelo Ma
 @deffn {Fun@value{cedilha}@~ao} elliptic_kc (@var{m})
 A integral el@'iptica completa de primeiro tipo, definida como
 
+@ifhtml
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@end ifhtml
 @ifinfo
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
 @end ifinfo
@@ -315,6 +322,9 @@ termos de fun@value{cedilha}@~oes @math{Gamma}.  Use @code{makegamma} para avali
 @deffn {Fun@value{cedilha}@~ao} elliptic_ec (@var{m})
 A integral el@'iptica completa de sgundo tipo, definida como
 
+@ifhtml
+@math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
+@end ifhtml
 @ifinfo
 @math{integrate(sqrt(1 - m*sin(x)^2), x, 0, %pi/2)}
 @end ifinfo
