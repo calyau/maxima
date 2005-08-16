@@ -235,6 +235,9 @@ A inversa da fun@value{cedilha}@~ao el@'iptica Jacobiana @math{dc(u,m)}.
 @deffn {Fun@value{cedilha}@~ao} elliptic_f (@var{phi}, @var{m})
 A integral el@'iptica incompleta de primeiro tipo, definida como
 
+@ifhtml
+@math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifhtml
 @ifinfo
 @math{integrate(1/sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
@@ -250,9 +253,16 @@ Veja tamb@'em @ref{elliptic_e} e @ref{elliptic_kc}.
 @anchor{elliptic_e}
 @deffn {Fun@value{cedilha}@~ao} elliptic_e (@var{phi}, @var{m})
 A integral el@'iptica incompleta de segundo tipo, definida como
+
+@ifhtml
+@math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
+@end ifhtml
 @ifinfo
 @math{elliptic_e(u, m) = integrate(sqrt(1 - m*sin(x)^2), x, 0, phi)}
 @end ifinfo
+@tex
+$$\int_0^\phi \sqrt{1 - m\sin^2\theta} d\theta$$
+@end tex
 Veja tamb@'em @ref{elliptic_e} and @ref{elliptic_ec}.
 
 @end deffn
@@ -260,6 +270,11 @@ Veja tamb@'em @ref{elliptic_e} and @ref{elliptic_ec}.
 @anchor{elliptic_eu}
 @deffn {Fun@value{cedilha}@~ao} elliptic_eu (@var{u}, @var{m})
 A integral el@'iptica incompleta de segundo tipo, definida como
+@ifhtml
+@math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
+     
+onde @math{tau = sn(u,m)}
+@end ifhtml
 @ifinfo
 @math{integrate(dn(v,m)^2,v,0,u) = integrate(sqrt(1-m*t^2)/sqrt(1-t^2), t, 0, tau)}
 
