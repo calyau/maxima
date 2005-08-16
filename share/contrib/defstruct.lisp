@@ -1,15 +1,16 @@
-;; defstruct.lisp
-;; a verbatim copy of http://www.cs.berkeley.edu/~fateman/temp/msethack.lisp
-;; as retrieved on 2005/08/14 circa 23:55.
-
 ;;; from maxima-5.9.0/maxima-5.9.0/src/mlisp.lisp
 (in-package :maxima)
 
-;;; changes, 8/13/05
-;;; 1. Improved error messages
-;;; 2. Allows setting of record fields e.g.  XX@YY:45.
+;;; changes, 8/14/05
+;;; 1. Improved error messages for mset
+;;; 2. Allows setting of record fields e.g.  XX@YY:45 if mset_extension_operators set up
 
 ;;; author Richard Fateman
+
+;; If this is the last def'n in file of mset_extension_operators,
+;; it will disable the $@ defstruct features
+
+(defparameter mset_extension_operators nil)
 
 (defun mset (x y)
   (declare (object y x))
@@ -65,30 +66,46 @@
 	       (return (outermap1 'mset x y)))
 	      
 	      ;; ADDITION  8/13/05 RJF ;;;;;;;;;;;;
-	      ;; The assignment looks like (XX.YY) : 45
+	      ;; The assignment looks like (XX@YY) : 45
 	      ;; meaning something like  substpart(45, xx, index_of(YY,type_declare_of(XX)))
-	      ((eq '$@ (caar x))
+	 ;;     ((eq '$@ (caar x))
 	       ;; for now, defer the semantics to another program
-	       (return($mrecordassign x y)))
+	      ;;  (return($mrecordassign x y)))
+	      ;; change/generalization/ table-driven version
+	      ;; below suggested by Stavros Macrakis.
+	     
+	      ((assoc (caar x) mset_extension_operators :test #'eq)
+	       (return
+		 (funcall (cdr (assoc (caar x) mset_extension_operators :test #'eq))
+			  x y)))
+	      
 	      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	      
 	      (t (merror "Improper left-hand side for an assignment:~%~M" x)))))
 
+;;; starting here..
 
-;;; new programs by Richard Fateman 8/13/05
-;; infix(@); .... HOW to do this in LISP???
-;; 
+
+;;; new programs by Richard Fateman 8/14/05
 ;;  defstruct(f(x,y,z));
 ;;  myrecord: new(f);
 ;;  myrecord@y:45;
 ;;  myrecord;  ==>   f(x,45,z)
 
-;; initializers now possible
+;; initializers are possible
 ;; defstruct(f(x,y=3.14159, z));
 ;; ff:new(f)  ==>   f(x,3.14159,z)
 ;; ff@y:2.71828 ==>  ff is  f(x,2.71828,z).
 
+;; the @ syntax can also be used instead of substinpart.
 
+;; k:  h(g(aa,bb),cc);
+;; k@1@2:dd; change aa to dd.
+;; k;
+
+;;; This definition and the ones following are needed to get the @ stuff going
+(defparameter mset_extension_operators
+    '(($@ . $mrecordassign)))
 
 	
 (defmfun $mrecordassign (atted value)
@@ -103,7 +120,7 @@
     
     (if (null index) (merror "Unknown field in record:~%~M" fn))
     (if  (< 0 index (length obj)) (setf (elt obj index) value)
-      (merror "Illegal instance:~%~M" in))
+      (merror "Illegal instance:~%~M @ ~M" in fn))
     value))
 
 
@@ -113,7 +130,6 @@
 	    (if (integerp fn) fn ;;; allow foo@3, also
 	      (position fn (get (caar in) 'recordtemplate))))) ;field->integer
     (if (null index) (merror "Unknown field in record:~%~M" fn))
-   
     (if  (< 0 index (length in))
 	(elt in index) (merror "Illegal instance:~%~M @ ~M" in fn))
    )))
@@ -142,14 +158,21 @@
 				(t (merror "~% Expected record initializer, not ~M." z))))
 		       (cdr r))))
 
-(defmfun $new (recordname)
-  (copy (get recordname 'recorddefault)))
+(defmspec $new (h)
+  (let ((recordname (cadr h)))
+  (cond ((symbolp recordname)  ;; the case of, e.g.  new(f);
+	 (copy (get recordname 'recorddefault)))
+	;; assume there is some initialization here e.g. new (f(5,6,7))
+	(t (copy recordname)))))
 
+;; this is the lisp code equivalent to executing the command
+;; infix(@);
+;; 
 
 (defprop $@ %@ verb) 
 (defprop $@ &@ op) 
 (defprop &@ $@ opr) 
-(add2lnc '&@ $props) 
+;;(add2lnc '&@ $props) 
 (define-symbol '&@) 
 (defprop $@ dimension-infix dimension) 
 (defprop $@ (#\space #\@ #\space) dissym) 
@@ -160,3 +183,4 @@
 (defprop %@ dimension-infix dimension) 
 (defprop %@ (#\space #\@ #\space) dissym) 
 (defprop %@ $@ noun) 
+
