@@ -25,13 +25,6 @@ wronskian&&  wronskian(functlist,var):=block([end],
 	last(functlist)),functlist),
     apply('matrix,functlist))$
 
-adjoint&&  adjoint(m):=block([adjoint,len],
-    adjoint:diagmatrix(len:length(m),0),
-    for i thru len do
-	for j thru len do
-	    adjoint[i,j]:(-1)^(i+j)*determinant(minor(m,i,j)),
-    transpose(adjoint))$
-
 tracematrix&&  tracematrix(m):=block([sum,len],sum:0,len:length(m),
 for i:1 thru len do sum:sum+part(m,i,i),sum)$
 
