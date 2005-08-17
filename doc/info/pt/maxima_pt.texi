@@ -22,6 +22,7 @@
 @set I_agu @'I
 @set a_til @~a
 @set a_agu @'a
+@set o_til @~o
 @set mail <maxima at math.utexas.edu>
 @synindex vr fn
 @settitle Manual do Maxima
@@ -108,7 +109,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Integra@value{cedilha}@~ao::  		C@'alculo integral.
 * Equa@value{cedilha}@~oes::    		Definindo e resolvendo equa@value{cedilha}@~oes.
 * Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
-* Numerical::                   Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
+* Num@'erico::                     Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
 * Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
 * Arrays e Tabelas::            Criando e trabalhando com arrays.
@@ -134,9 +135,10 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 * Fluxo de Programa::           Definindo programas do Maxima.
 * Debugging::                   Depurando programas do Maxima.
 
-@value{I_agu}ndice
+@'Indice
 
-* @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel:: @value{I_agu}ndice. 
+* @'Indice de Fun@value{cedilha}@~ao e Vari@'avel:: @'Indice.
+
 @comment @detailmenu
  --- Listagem de Nodos Detalhada ---
 
@@ -253,12 +255,12 @@ Equa@value{cedilha}@~oes Diferenciais
 
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes Diferenciais::  
 
-Numerical
+Num@'erico
 
-* Introduction to Numerical::   
-* Fourier packages::                     
-* Definitions for Numerical::   
-* Definitions for Fourier Series::
+* Introdu@value{cedilha}@value{a_til}o a Num@'erico::   
+* Pacotes de Fourier::                     
+* Defini@value{cedilha}@value{o_til}es para Num@'erico::   
+* Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier::
 
 Estatistica
 
@@ -451,17 +453,17 @@ Debugging
 @chapter Equa@value{cedilha}@~oes
 @include Equations_pt.texi
 
-@node Equa@value{cedilha}@~oes Diferenciais, Numerical, Equa@value{cedilha}@~oes, Top
+@node Equa@value{cedilha}@~oes Diferenciais, Num@'erico, Equa@value{cedilha}@~oes, Top
 @chapter Equa@value{cedilha}@~oes Diferenciais
 @include Differential_pt.texi
 
 @c @include NonCommutative.texi
 
-@node Numerical, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
-@chapter Numerical
-@include Numerical.texi
+@node Num@'erico, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
+@chapter Num@'erico
+@include Numerical_pt.texi
 
-@node Estat@'istica, Arrays e Tabelas, Numerical, Top
+@node Estat@'istica, Arrays e Tabelas, Num@'erico, Top
 @chapter Estat@'istica
 @include Statistics_pt.texi
 
@@ -535,12 +537,12 @@ Debugging
 @chapter Fluxo de Programa
 @include Program_pt.texi
 
-@node Debugging, @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel, Fluxo de Programa, Top
+@node Debugging, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
 @chapter Debugging
 @include Debugging.texi
 
-@node @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel,  , Debugging, Top
-@chapter @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel
+@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Debugging, Top
+@chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
 @include Indices_pt.texi
 
 @c end includes
