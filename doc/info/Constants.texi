@@ -17,22 +17,22 @@ as @code{%e}.
 
 @end defvr
 
-@defvr {Constant} %inf
+@defvr {Constant} inf
  - real positive infinity.
 
 @end defvr
 
-@defvr {Constant}  %infinity
+@defvr {Constant}  infinity
  - complex infinity.
 
 @end defvr
 
-@defvr {Constant} %minf
+@defvr {Constant} minf
  - real minus infinity.
 
 @end defvr
 
-@defvr {Constant} pi
+@defvr {Constant} %pi
  - "pi" is represented in Maxima as @code{%pi}.
 
 @end defvr
