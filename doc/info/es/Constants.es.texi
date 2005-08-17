@@ -1,47 +1,41 @@
-@c end concepts Constants
 @menu
 * Definiciones para Constantes::   
 @end menu
 
 @node Definiciones para Constantes,  , Constantes, Constantes
 @section Definiciones para Constantes
-@c @node E
-@c @unnumberedsec phony
-@defvar E
- - La base de los logaritmos naturales, e, se representa en MAXIMA como %E o %e.
-@end defvar
-@c @node FALSE
-@c @unnumberedsec phony
-@defvar FALSE
- - La constante boleana, falso. (NULO en LISP)
-@end defvar
-@c @node MINF
-@c @unnumberedsec phony
-@defvar MINF
- - Menos infinito real
-@c - real minus infinity.
 
-@end defvar
-@c @node PI
-@c @unnumberedsec phony
-@defvar PI
- - "pi" se representa en MAXIMA como %PI o %pi
+@defvr {Constante} %e
+La base de los logaritmos naturales, e, se representa en Maxima como @code{%e}.
 
-@end defvar
-@c @node TRUE
-@c @unnumberedsec phony
-@defvar TRUE
- - La constante boleana, verdadero. (T en LISP)
-@c - the Boolean constant, true. (T in LISP)
+@end defvr
 
-@end defvar
+@defvr {Constante} false
+Constante l@'ogica para "falso". (NIL en Lisp)
 
+@end defvr
 
-@c Traducido por: Juan Pablo Romero Bernal
-@c Revisado por	: Juan Pablo Romero Bernal
-@c correo-e	: jpromerobx@linuxmail.org
-@c Grupo Linux Universidad Distrital
-@c http://glud.udistrital.edu.co
-@c Proyecto GLUD-CLog
-@c http://glud.udistrital.edu.co/clog
-@c Bogota - Colombia
+@defvr {Constante} inf
+M@'as infinito.
+
+@end defvr
+
+@defvr {Constante}  infinity
+Infinito complejo.
+
+@end defvr
+
+@defvr {Constante} minf
+Menos infinito.
+
+@end defvr
+
+@defvr {Constante} %pi
+El valor "pi" se representa en Maxima como @code{%pi}.
+
+@end defvr
+
+@defvr {Constante} true
+Constante l@'ogica para "verdadero". (T en Lisp)
+
+@end defvr

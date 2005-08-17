@@ -1,106 +1,112 @@
-@c end concepts Logarithms
+
 @menu
 * Definiciones para Logaritmos::  
 @end menu
 
 @node Definiciones para Logaritmos,  , Logaritmos, Logaritmos
 @section Definiciones para Logaritmos
-@c @node LOG
-@c @unnumberedsec phony
-@defun LOG (X)
-representa el logaritmo natural. 
 
-  LOGEXPAND[TRUE] - hace que LOG(A^B) sea tomado como B*LOG(A). Si se le asigna el valor ALL, LOG(A*B) ser@'a simplificado a LOG(A)+LOG(B). Si se le asigna el valor SUPER, entonces LOG(A/B) ser@'a simplificado a LOG(A)-LOG(B) para n@'umeros racionales a/b, a#1. (LOG(1/B), para B como un entero, siempre ser@'a simplificado). Si se le asigna el valor FALSE, todas las anteriores reglas de simplificaci@'on se desactivar@'an.  
+@defvr {Variable optativa} %e_to_numlog
+Valor por defecto: @code{false}
 
-  LOGSIMP[TRUE] - si es FALSE entonces no se efectuar@'a la simplificaci@'on de exponenciales con potencias logar@'{i}tmicas.
+Si @code{%e_to_numlog} vale @code{true}, @code{r} es un n@'umero racional y @code{x} una expresi@'on, @code{%e^(r*log(x))} se reduce a @code{x^r} .  T@'engase en cuenta que la instrucci@'on @code{radcan} tambi@'en hace este tipo de transformaciones, as@'{@dotless{i}} como otras m@'as complicadas. La instrucci@'on @code{logcontract} "contrae" expresiones que contienen alg@'un @code{log}.
 
+@end defvr
 
-  LOGNUMER[FALSE] - Si su valor es TRUE entonces los n@'umeros negativos de coma flotante que sirvan de argumento de la funci@'on LOG siempre ser@'an convertidos a su valor absoluto antes de ser evaluados. Si la variable NUMER es tambi@'en TRUE, entonces los n@'umeros negativos de tipo entero que sirvan de argumento a LOG ser@'an convertidos a su valor absoluto.
+@deffn {Funci@'on} log (@var{x})
+Logaritmo natural de @var{x}.
 
-  LOGNEGINT[FALSE] - Si su valor es TRUE se implementa la regla LOG(-n) -> LOG(n)+%i*%pi, siendo n un entero positivo.
+La simplificaci@'on y evaluaci@'on de logaritmos se controla cciertas variables globales:
 
-  %E_TO_NUMLOG[FALSE] - cuando tiene el valor TRUE, siendo  "r" cualquier n@'umero racional y "x" una expresi@'on, %E^(r*LOG(x)) ser@'a simplificado a x^r. Cabe aclarar que el comando RADCAN tambi@'en efect@'ua @'esta transformaci@'on y transformaciones m@'as complicadas de @'esta @'{i} 
-ndole. El comando LOGCONTRACT "contrae" expresiones que contienen logar@'{i}tmos (LOG). 
+@code{logexpand} - hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
+Si toma el valor @code{all}, @code{log(a*b)} tambi@'en se reducir@'a a  @code{log(a)+log(b)}.
+Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a a @code{log(a)-log(b)}, siendo @code{a/b} racional y @code{a#1},  (la expresi@'on @code{log(1/b)}, para @code{b} entero, se simplifica siempre).  Si toma el valor  @code{false}, se desactivar@'an todas estas simplificaciones.
 
-@end defun
-@c @node LOGABS
-@c @unnumberedsec phony
-@defvar LOGABS
+@code{logsimp} - si vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
 
- por defecto: [FALSE] - cuando se realiza integraci@'on indefinida en donde se generan logar@'{i}tmos, e.g. INTEGRATE(1/X,X), la respuesta es dad en t@'erminos de LOG(ABS(...)) si LOGABS tiene el valor TRUE, pero en t@'erminos de LOG(...) si LOGABS tiene el valor FALSE. Para integraci@'on definida, LOGABS se configura a TRUE, porque aqu@'{i} la 
-"evaluaci@'on" de las integrales indefinidas en los l@'{i}mites inferiores y superiores, a menudo es necesaria. 
+@code{lognumer} - si vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros decimales negativos en coma flotante se convertir@'an siempre a su valor absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an en su valor absoluto.
 
-@end defvar
+@code{lognegint} - si vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi} siendo @code{n} un entero positivo.
 
-@c @node LOGARC
-@c @unnumberedsec phony
-@defvar LOGARC
- 
- por defecto: [FALSE] - si su valor es TRUE, causar@'a que las funciones trigonom@'etricas inversas e hiperb@'olicas inversas sean convertidas a formas logar@'{i}tmicas. LOGARC(exp) causar@'a esta conversi@'on para una expresi@'on particular sin configurar el "interruptor" o teniendo que reevaluar la expresi@'on con EV.
- 
-@end defvar
-@c @node LOGCONCOEFFP
-@c @unnumberedsec phony
-@defvar LOGCONCOEFFP
+@code{%e_to_numlog} - si vale @code{true}, @code{r} es un n@'umero racional y @code{x} una expresi@'on, @code{%e^(r*log(x))} se reduce a @code{x^r} .  T@'engase en cuenta que la instrucci@'on @code{radcan} tambi@'en hace este tipo de transformaciones, as@'{@dotless{i}} como otras m@'as complicadas. La instrucci@'on @code{logcontract} "contrae" expresiones que contienen alg@'un @code{log}.
 
- por defecto: [FALSE] - controla cuales coeficientes son contra@'idos (o simplificados) cuando se usa LOGCONTRACT. Se puede asignar a esta variable el nombre del predicado de una funci@'on que tenga un s@'olo argumento. E.g. Si usted desea generar raices, puede hacer lo siguiente: LOGCONCOEFFP:'LOGCONFUN$ LOGCONFUN(M):=FEATUREP(M,INTEGER) OR RATNUMP(M)$ .  Entonces LOGCONTRACT(1/2*LOG(X)); generar@'a LOG(SQRT(X)).
-@end defvar
-@c @node LOGCONTRACT
-@c @unnumberedsec phony
-@defun LOGCONTRACT (exp)
+@end deffn
 
-escanea rercursivamente una expresi@'on(exp), transformando subexpresiones de la forma a1*LOG(b1) + a2*LOG(b2) + c a LOG(RATSIMP(b1^a1 * b2^a2)) + c.   
+@defvr {Variable optativa} logabs
+Valor por defecto: @code{false}
+
+Cuando se calculan integrales indefinidas en las que se generan logaritmos, como en @code{integrate(1/x,x)}, el resultado se devuelve de la forma  @code{log(abs(...))} si @code{logabs} vale @code{true}, o de la forma @code{log(...)} si
+@code{logabs} vale @code{false}. En la integraci@'on definida se hace la asignaci@'on @code{logabs:true}, ya que aqu@'{@dotless{i}} es normalmente necesario evaluar la integral indefinida en los extremos del intervalo de integraci@'on.
+
+@end defvr
+
+@defvr {Variable optativa} logarc
+Valor por defecto: @code{false}
+
+Si @code{logarc} vale @code{true} har@'a que las funciones circulares e hiperb@'olicas inversas se conviertan a la forma logar@'{@dotless{i}}tmica. La instrucci@'on @code{logarc(@var{exp})} har@'a esta conversi@'on s@'olo en la expresi@'on @var{exp} sin cambiar el valor de la variable global ni tener que volver a evaluar la expresi@'on con @code{ev}.
+
+@end defvr
+
+@defvr {Variable optativa} logconcoeffp
+Valor por defecto: @code{false}
+
+Controla qu@'e coeficientes se contraen cuando se utiliza @code{logcontract}. Se le puede asignar el nombre de una funci@'on de predicado de un argumento; por ejemplo, si se quiere introducir ra@'{@dotless{i}}ces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces 
+@code{logcontract(1/2*log(x));} devolver@'a @code{log(sqrt(x))}.
+
+@end defvr
+
+@deffn {Funci@'on} logcontract (@var{expr})
+Analiza la expresi@'on @var{expr} recursivamente, transformando subexpresiones de la forma @code{a1*log(b1) + a2*log(b2) + c} en @code{log(ratsimp(b1^a1 * b2^a2)) + c}
+
+@c ===beg===
+@c 2*(a*log(x) + 2*a*log(y))$
+@c logcontract(%);
+@c ===end===
 @example
-(C1) 2*(A*LOG(X) + 2*A*LOG(Y))$
-(C2) LOGCONTRACT(%);
-                                        2  4
-(D3)                             A LOG(X  Y )
+(%i1) 2*(a*log(x) + 2*a*log(y))$
+(%i2) logcontract(%);
+                                 2  4
+(%o2)                     a log(x  y )
 
 @end example
-Si usted hace: DECLARE(N,INTEGER); entonces LOGCONTRACT(2*A*N*LOG(X)); dar@'a como resultado A*LOG(X^(2*N)). Los coeficientes que se contraen en esta manera son, en este caso el 2 y la N, los cuales satisfacen DECLARE(coeff,INTEGER). El usuario puede controlar cuales coeficientes son contraidos por medio de la asignaci@'on a la variable LOGCONCONCOEFFP[FALSE] de el nombre del predicado de una funci@'on que tenga un s@'olo argumento. E.g. si usted desea generar raices (SQRTs), puede hacer lo siguiente: LOGCONCOEFFP:'LOGCONFUN$ LOGCONFUN(M):=FEATUREP(M,INTEGER) OR RATNUMP(M)$ .Entonces LOGCONTRACT(1/2*LOG(X)); generar@'a LOG(SQRT(X)).
 
-@end defun
-@c @node LOGEXPAND
-@c @unnumberedsec phony
-@defvar LOGEXPAND
-por defecto: [TRUE] -  hace que LOG(A^B) sea tomado como B*LOG(A). Si se le asigna el valor ALL, LOG(A*B) ser@'a simplificado a LOG(A)+LOG(B). Si se le asigna el valor SUPER, entonces LOG(A/B) ser@'a simplificado a LOG(A)-LOG(B) para n@'umeros racionales a/b, a#1. (LOG(1/B), para B como un entero, siempre ser@'a simplificado). Si se le asigna el valor FALSE, todas las anteriores reglas de simplificaci@'on se desactivar@'an.
+Si se hace @code{declare(n,integer);} entonces @code{logcontract(2*a*n*log(x));} da
+@code{a*log(x^(2*n))}.  Los coeficientes que se contraen de esta manera son aquellos que como el 2 y el @code{n} satisfacen 
+@code{featurep(coeff,integer)}. El usuario puede controlar qu@'e coeficientes se contraen asign@'andole a la variable global @code{logconcoeffp} el nombre de una funci@'on de predicado de un argumento; por ejemplo, si se quiere introducir ra@'{@dotless{i}}ces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces @code{logcontract(1/2*log(x));} devolver@'a @code{log(sqrt(x))}.
 
-@end defvar
-@c @node LOGNEGINT
-@c @unnumberedsec phony
-@defvar LOGNEGINT
-por defecto: [FALSE] - Si su valor es TRUE se implementa la regla LOG(-n) -> LOG(n)+%i*%pi, siendo n un entero positivo.
+@end deffn
 
-@end defvar
-@c @node LOGNUMER
-@c @unnumberedsec phony
-@defvar LOGNUMER
- por defecto: [FALSE] -  Si su valor es TRUE entonces los n@'umeros negativos de coma flotante que sirvan de argumento de la funci@'on LOG siempre ser@'an convertidos a su valor absoluto antes de ser evaluados. Si la variable NUMER es tambi@'en TRUE, entonces los n@'umeros negativos de tipo entero que sirvan de argumento a LOG ser@'an convertidos a su valor absoluto.
+@defvr {Variable optativa} logexpand
+Valor por defecto: @code{true}
 
-@end defvar
-@c @node LOGSIMP
-@c @unnumberedsec phony
-@defvar LOGSIMP
- por defectto: [TRUE] -  si es FALSE entonces no se efectuar@'a la simplificaci@'on de exponenciales con potencias logar@'{i}tmicas.
+Si @code{logexpand} vale @code{true} hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
+Si toma el valor @code{all}, @code{log(a*b)} tambi@'en se reducir@'a a  @code{log(a)+log(b)}.
+Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a a @code{log(a)-log(b)}, siendo @code{a/b} racional y @code{a#1},  (la expresi@'on @code{log(1/b)}, para @code{b} entero, se simplifica siempre).  Si toma el valor  @code{false}, se desactivar@'an todas estas simplificaciones.
 
-@end defvar
-@c @node PLOG
-@c @unnumberedsec phony
-@defun PLOG (X)
-El valor principal del valor complejo del logaritmo natural con -%PI < CARG(X) <= +%PI
+@end defvr
 
-@end defun
-@c @node POLARFORM
-@c @unnumberedsec phony
-@defun POLARFORM (exp)
-retorna R*%E^(%I*THETA) donde R y THETA son simplemente n@'umeros reales.
-@end defun
+@defvr {Variable optativa} lognegint
+Valor por defecto: @code{false}
 
-@c Traducido por: Juan Pablo Romero Bernal
-@c Revisado por	: Juan Pablo Romero Bernal
-@c correo-e	: jpromerobx@linuxmail.org
-@c Grupo Linux Universidad Distrital
-@c http://glud.udistrital.edu.co
-@c Proyecto GLUD-CLog
-@c http://glud.udistrital.edu.co/clog
-@c Bogota - Colombia
+Si @code{lognegint} vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi} siendo @code{n} un entero positivo.
+
+@end defvr
+
+@defvr {Variable optativa} lognumer
+Valor por defecto: @code{false}
+
+Si @code{lognumer} vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros decimales negativos en coma flotante se convertir@'an siempre a su valor absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an en su valor absoluto.
+
+@end defvr
+
+@defvr {Variable optativa} logsimp
+Valor por defecto: @code{true}
+
+Si @code{logsimp} vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
+
+@end defvr
+
+@deffn {Funci@'on} plog (@var{x})
+Representa la rama principal del logaritmo natural complejo con @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
+
+@end deffn

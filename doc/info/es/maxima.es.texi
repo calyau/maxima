@@ -89,8 +89,9 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Logaritmos::                         Transformaci@'on y c@'alculo de expresiones logar@'{@dotless{i}}tmicas.
 * Trigonometr@'{@dotless{i}}a::        Transformaci@'on y c@'alculo de expresiones trigonom@'etricas.
 * Funciones Especiales::               Funciones especiales.
-* Polinomios Ortogonales::             Polinomios ortogonales y funciones especiales. 
-* L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites
+* Polinomios Ortogonales::             Polinomios ortogonales y funciones especiales.
+* Funciones el@'{@dotless{i}}pticas::  Funciones e integrales el@'{@dotless{i}}pticas.
+* L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites.
 * Diferenciaci@'on::                   C@'alculo diferencial.
 * Integraci@'on::                      C@'alculo integral.
 * Ecuaciones::                         Definici@'on y resoluci@'on de ecuaciones.
@@ -195,12 +196,15 @@ Funcionalidades avanzadas y programaci@'on
 @chapter Funciones Especiales
 @include Special.es.texi
 
-@node Polinomios Ortogonales, L@'{@dotless{i}}mites, Funciones Especiales, Top
+@node Polinomios Ortogonales, Funciones el@'{@dotless{i}}pticas, Funciones Especiales, Top
 @chapter Polinomios Ortogonales
 @include SpecfunII.es.texi
 
+@node Funciones el@'{@dotless{i}}pticas, L@'{@dotless{i}}mites, Polinomios Ortogonales, Top
+@chapter Funciones el@'{@dotless{i}}pticas
+@include Elliptic.es.texi
 
-@node L@'{@dotless{i}}mites, Diferenciaci@'on, Polinomios Ortogonales, Top
+@node L@'{@dotless{i}}mites, Diferenciaci@'on, Funciones el@'{@dotless{i}}pticas, Top
 @chapter L@'{@dotless{i}}mites
 @include Limits.es.texi
 

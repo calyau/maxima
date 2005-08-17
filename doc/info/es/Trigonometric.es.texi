@@ -5,346 +5,346 @@
 
 @node Introducci@'on a la Trigonometr@'{@dotless{i}}a, Definiciones para Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a
 @section Introducci@'on a la Trigonometr@'{@dotless{i}}a
- - Maxima tiene algunas funciones Trigonom@'etricas definidas.  No todas las identidades trigonom@'etricas fueron programadas, pero es posible para el usuario adicionar alguna de ellas usando el modelo que empareja capacidades del sistema. Las Funciones Trigonom@'etricas definidas en MACSYMA son: ACOS, ACOSH, ACOT, ACOTH, ACSC, ACSCH, ASEC, ASECH, ASIN, ASINH, ATAN, ATANH, COS, COSH, COT, COTH,CSC, CSCH, SEC, SECH, SIN, SINH, TAN, y TANH. Hay  un n@'umero de comandos espec@'{@dotless{i}}ficos para manejar funciones trigonom@'etricas, ver TRIGEXPAND, TRIGREDUCE, y la variable TRIGSIGN.  Dos paquetes SHARE  extienden las reglas de la simplificaci@'on construidas en MACSYMA, NTRIG y ATRIG1.  Haga DESCRIBE(cmd) para m@'as detalles.
 
-@c end conceptos de Trigonometria
+Maxima reconoce muchas funciones trigonom@'etricas. No est@'an programadas todas las identidades trigonom@'etricas, pero el usuario puede a@~nadir muchas de ellas haciendo uso de las t@'ecnicas basadas en patrones.  Las funciones trigonom@'etricas definidas en Maxima son:  @code{acos},
+@code{acosh}, @code{acot}, @code{acoth}, @code{acsc},
+@code{acsch}, @code{asec}, @code{asech}, @code{asin}, 
+@code{asinh}, @code{atan}, @code{atanh}, @code{cos}, 
+@code{cosh}, @code{cot}, @code{coth}, @code{csc}, @code{csch}, 
+@code{sec}, @code{sech}, @code{sin}, @code{sinh}, @code{tan} y 
+@code{tanh}. Hay tambi@'en un determinado n@'umero de instrucciones especiales para manipular funciones trigonom@'etricas;  v@'eanse a este respecto @code{trigexpand},
+@code{trigreduce} y la variable @code{trigsign}.  Dos paquetes adicionales ampl@'{@dotless{i}}an las reglas de simplificaci@'on de Maxima, @code{ntrig} y @code{atrig1}.  Ejec@'utese @code{describe(@var{command})} para m@'as detalles.
+
 @node Definiciones para Trigonometr@'{@dotless{i}}a,  , Introducci@'on a la Trigonometr@'{@dotless{i}}a, Trigonometr@'{@dotless{i}}a
 @section Definiciones para Trigonometr@'{@dotless{i}}a
-@c end concepts Trigonometric
 
-@defun ACOS
- - Arco Coseno
+@deffn {Function} acos (@var{x})
+Arco coseno.
 
-@end defun
-@c @node ACOSH
-@c @unnumberedsec phony
-@defun ACOSH
- - Arco Coseno Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node ACOT
-@c @unnumberedsec phony
-@defun ACOT
- - Arco Cotangente
+@deffn {Funci@'on} acosh (@var{x})
+Arco coseno hiperb@'olico.
 
-@end defun
-@c @node ACOTH
-@c @unnumberedsec phony
-@defun ACOTH
- - Arco Cotangente Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node ACSC
-@c @unnumberedsec phony
-@defun ACSC
- - Arco Cosecante
+@deffn {Funci@'on} acot (@var{x})
+Arco cotangente.
 
-@end defun
-@c @node ACSCH
-@c @unnumberedsec phony
-@defun ACSCH
- - Arco Cosecante Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node ASEC
-@c @unnumberedsec phony
-@defun ASEC
- - Arco Secante
+@deffn {Funci@'on} acoth (@var{x})
+Arco cotangente hiperb@'olica.
 
-@end defun
-@c @node ASECH
-@c @unnumberedsec phony
-@defun ASECH
- - Arco Secante Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node ASIN
-@c @unnumberedsec phony
-@defun ASIN
- - Arco Seno
+@deffn {Funci@'on} acsc (@var{x})
+Arco cosecante.
 
-@end defun
-@c @node ASINH
-@c @unnumberedsec phony
-@defun ASINH
- - Arco Seno Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node ATAN
-@c @unnumberedsec phony
-@defun ATAN
- - Arco Tangente
+@deffn {Funci@'on} acsch (@var{x})
+Arco cosecante hiperb@'olica.
 
-@end defun
-@c @node ATAN2
-@c @unnumberedsec phony
-@defun ATAN2 (Y,X)
- - Retorna el valor de ATAN(Y/X) en el intervalo -%PI a %PI.
+@end deffn
 
-@end defun
-@c @node ATANH
-@c @unnumberedsec phony
-@defun ATANH
- - Arco Tangente Hiperb@'olico
+@deffn {Funci@'on} asec (@var{x})
+Arco secante.
 
-@end defun
-@c @node ATRIG1
-@c @unnumberedsec phony
-@defun ATRIG1
- - SHARE1;ATRIG1 FASL contiene varias reglas de simplificaci@'on adicionales para funciones trigonom@'etricas inversas. Junto con reglas ya conocidas en Macsyma, los siguientes @'angulos estan totalmente implementados:
-0, %PI/6, %PI/4, %PI/3, y %PI/2.  Los corrrespondientes @'angulos en los otros tres cuadrantes tambi@'en est@'an disponibles.  Haga LOAD(ATRIG1); para usar dichas reglas.
+@end deffn
 
-@end defun
-@c @node COS
-@c @unnumberedsec phony
-@defun COS
- - Coseno
+@deffn {Funci@'on} asech (@var{x})
+Arco secante hiperb@'olica.
 
-@end defun
-@c @node COSH
-@c @unnumberedsec phony
-@defun COSH
- - Coseno Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node COT
-@c @unnumberedsec phony
-@defun COT
- - Cotangente
+@deffn {Funci@'on} asin (@var{x})
+Arco seno.
 
-@end defun
-@c @node COTH
-@c @unnumberedsec phony
-@defun COTH
- - Cotangente Hiperb@'olico
+@end deffn
 
-@end defun
-@c @node CSC
-@c @unnumberedsec phony
-@defun CSC
- - Cosecante
+@deffn {Funci@'on} asinh (@var{x})
+Arco seno hiperb@'olico.
 
-@end defun
-@c @node CSCH
-@c @unnumberedsec phony
-@defun CSCH
- - Cosecante Hiperb@'olica
+@end deffn
 
-@end defun
-@c @node HALFANGLES
-@c @unnumberedsec phony
-@defvar HALFANGLES
- por defecto: [FALSE] - si su valor es TRUE causa que los @'angulos-medios sean simplificados fuera.
+@deffn {Funci@'on} atan (@var{x})
+Arco tangente.
 
-@end defvar
-@c @node SEC
-@c @unnumberedsec phony
-@defun SEC
- - Secante
+@end deffn
 
-@end defun
-@c @node SECH
-@c @unnumberedsec phony
-@defun SECH
- - Secante Hiperb@'olico
+@deffn {Funci@'on} atan2 (@var{y}, @var{x})
+Calcula el valor de @code{atan(@var{y}/@var{x})} en el intervalo de @code{-%pi} a @code{%pi}.
 
-@end defun
-@c @node SIN
-@c @unnumberedsec phony
-@defun SIN
- - Seno
+@end deffn
 
-@end defun
-@c @node SINH
-@c @unnumberedsec phony
-@defun SINH
- - Seno Hiperb@'olico
+@deffn {Funci@'on} atanh (@var{x})
+Arco tangente hiperb@'olica.
 
-@end defun
-@c @node TAN
-@c @unnumberedsec phony
-@defun TAN
- - Tangente
+@end deffn
 
-@end defun
-@c @node TANH
-@c @unnumberedsec phony
-@defun TANH
- - Tangente Hiperb@'olico
+@defvr {Paquete} atrig1
+El paquete @code{atrig1} contiene ciertas reglas de simplificaci@'on adicionales para las funciones trigonom@'etricas inversas. Junto con las reglas que ya conoce Maxima, los siguientes @'angulos est@'an completamente implementados:
+@code{0}, @code{%pi/6}, @code{%pi/4}, @code{%pi/3} y @code{%pi/2}.  
+Los @'angulos correspondientes en los otros tres cuadrantes tambi@'en est@'an disponibles.  
+Para hacer uso de estas reglas, ejec@'utese @code{load(atrig1);}.
 
-@end defun
-@c @node TRIGEXPAND
-@c @unnumberedsec phony
-@defun TRIGEXPAND (exp)
-expande funciones trigonom@'etricas e hiperb@'olicas de sumas de @'angulos y de @'angulos m@'ultiples que aparecen en la expresi@'on.  Para mejores
-resultados, la expresi@'on deber@'{@dotless{i}}a ser expandida (N.T: Es decir use antes el comando EXPAND). Para mejorar el control del usuario 
-sobre la simplificaci@'on, esta funci@'on expande solamente un nivel por vez,
-extendiendo las sumas de @'angulos o los @'angulos multiples.  Para obtener la expansi@'on completa en los senos y cosenos inmediatamente, configure la variable  TRIGEXPAND a TRUE.(TRIGEXPAND:TRUE).
-TRIGEXPAND es por defecto: [FALSE] - si es TRUE causa la expansi@'on de todas
-la expresiones que contienen SIN y COS apareciendo subsecuencialmente.
-HALFANGLES[FALSE] - si es TRUE causa que los @'angulos medios sean simplificados fuera.
-TRIGEXPANDPLUS[TRUE] - controla la regla de la "suma" para TRIGEXPAND,
-expansi@'on de sumas (por ejemplo SIN(X+Y)) tomar@'a lugar @'unicamente si
-TRIGEXPANDPLUS es TRUE.
-TRIGEXPANDTIMES[TRUE] - controla la regla del "producto" para TRIGEXPAND,
-expansi@'on de productos (por ejemplo SIN(2*X)) tomar@'a lugar @'unicamente si
-TRIGEXPANDTIMES es TRUE.
+@end defvr
+
+@deffn {Funci@'on} cos (@var{x})
+Coseno.
+
+@end deffn
+
+@deffn {Funci@'on} cosh (@var{x})
+Coseno hiperb@'olico.
+
+@end deffn
+
+@deffn {Funci@'on} cot (@var{x})
+Cotangente.
+
+@end deffn
+
+@deffn {Funci@'on} coth (@var{x})
+Cotangente hiperb@'olica.
+
+@end deffn
+
+@deffn {Funci@'on} csc (@var{x})
+Cosecante.
+
+@end deffn
+
+@deffn {Funci@'on} csch (@var{x})
+Cosecante hiperb@'olica.
+
+@end deffn
+
+@c AQUI FALTA DEFINICION DE  halfangles
+
+@defvr {Paquete} ntrig
+El paquete @code{ntrig} contiene un conjunto de reglas de simplificaci@'on que se pueden usar para simplificar funciones trigonom@'etricas cuyos argumentos son de la forma
+@code{@var{f}(@var{n} %pi/10)} donde @var{f} es cualquiera de las funciones 
+@code{sin}, @code{cos}, @code{tan}, @code{csc}, @code{sec} o @code{cot}.
+@c NEED TO LOAD THIS PACKAGE ??
+
+@end defvr
+
+@deffn {Funci@'on} sec (@var{x})
+Secante.
+
+@end deffn
+
+@deffn {Funci@'on} sech (@var{x})
+Secante hiperb@'olica.
+
+@end deffn
+
+@deffn {Funci@'on} sin (@var{x})
+Seno.
+
+@end deffn
+
+@deffn {Funci@'on} sinh (@var{x})
+Seno hiperb@'olico.
+
+@end deffn
+
+@deffn {Funci@'on} tan (@var{x})
+Tangente.
+
+@end deffn
+
+@deffn {Funci@'on} tanh (@var{x})
+Tangente hiperb@'olica.
+
+@end deffn
+
+@deffn {Funci@'on} trigexpand (@var{expr})
+Expande funciones trigonom@'etricas e hiperb@'olicas de sumas de @'angulos y de m@'ultiplos de @'angulos presentes en @var{expr}.  Para mejorar los resultados, @var{expr} deber@'{@dotless{i}}a expandirse. Para facilitar el control por parte del usuario de las simplificaciones, esta funci@'on tan solo expande un nivel de cada vez, expandiendo sumas de @'angulos o de m@'ultiplos de @'angulos. A fin de obtener una expansi@'on completa en senos y coseno, se le dar@'a a la variable @code{trigexpand} el valor @code{true}.
+
+La funci@'on @code{trigexpand} est@'a controlada por las siguientes variables:
+
+@table @code
+@item trigexpand
+Si vale @code{true}, provoca la expansi@'on de todas las expresiones que contengan senos y cosenos.
+@item trigexpandplus
+Controla la regla de la suma para @code{trigexpand}, la expansi@'on de una suma como @code{sin(x + y)} se llevar@'a a cabo s@'olo si @code{trigexpandplus} vale @code{true}.
+@item trigexpandtimes
+Controla la regla del producto para @code{trigexpand}, la expansi@'on de un producto como @code{sin(2 x)} se llevar@'a a cabo s@'olo si @code{trigexpandtimes} vale @code{true}.
+@end table
+
+Ejemplos:
+
+@c ===beg===
+@c x+sin(3*x)/sin(x),trigexpand=true,expand;
+@c trigexpand(sin(10*x+y));
+@c ===end===
 @example
-(C1) X+SIN(3*X)/SIN(X),TRIGEXPAND:TRUE,EXPAND;
-                              2           2
-(D1)                     - SIN (X) + 3 COS (X) + X
-(C2) TRIGEXPAND(SIN(10*X+Y));
-(D2)               COS(10 X) SIN(Y) + SIN(10 X) COS(Y)
-
+(%i1) x+sin(3*x)/sin(x),trigexpand=true,expand;
+                         2           2
+(%o1)               - sin (x) + 3 cos (x) + x
+(%i2) trigexpand(sin(10*x+y));
+(%o2)          cos(10 x) sin(y) + sin(10 x) cos(y)
 
 @end example
-@end defun
-@c @node TRIGEXPANDPLUS
-@c @unnumberedsec phony
-@defvar TRIGEXPANDPLUS
- por defecto: [TRUE] - controla la regla de la "suma" para
-TRIGEXPAND.  As@'{@dotless{i}}, cuando el comando TRIGEXPAND es usado o la variable 
-TRIGEXPAND toma el valor  TRUE, la expansi@'on de las sumas (por ejemplo SIN(X+Y)) 
-tomar@'a lugar @'unicamente si TRIGEXPANDPLUS es TRUE.
 
-@end defvar
-@c @node TRIGEXPANDTIMES
-@c @unnumberedsec phony
-@defvar TRIGEXPANDTIMES
- por defecto: [TRUE] - controla la regla del "producto" para
-TRIGEXPAND.  As@'{@dotless{i}}, cuando el comando TRIGEXPAND es usado o la variable TRIGEXPAND toma el valor  TRUE, la expansi@'on de los productos (por ejemplo SIN(2*X))
-tomar@'a lugar @'unicamente si TRIGEXPANDTIMES es TRUE.
+@end deffn
 
-@end defvar
-@c @node TRIGINVERSES
-@c @unnumberedsec phony
-@defvar TRIGINVERSES
- por defecto: [ALL] - controla la simplificaci@'on de la
-composici@'on de funciones trigonom@'etricas e hiperb@'olicas con sus funciones inversas: Si su valor es ALL, ambos ejemplos ATAN(TAN(X)) y TAN(ATAN(X)) se simplificar@'an a
-X.  Si su valor es TRUE, la simplificaci@'on de arcfuncion(funcion(x)) esta fuera. Si su valor es FALSE, tanto  la simplificaci@'on de arcfun(fun(x)) y fun(arcfun(x)) esta fuera.
+@defvr {Variable optativa} trigexpandplus
+Valor por defecto: @code{true}
 
-@end defvar
-@c @node TRIGREDUCE
-@c @unnumberedsec phony
-@defun TRIGREDUCE (exp, var)
-combina productos y potencias de los senos y cosenos trigonom@'etricos e hiperb@'olicos de var en aquellos multiplos de var.
-Tambi@'en intenta eliminar esas funciones cuando ocurren en los denominadores.  Si la variable es omitida entonces todas las variables de las expresion son usadas. Vea tambi@'en la funcion POISSIMP (6.6).
+La variable @code{trigexpandplus} controla la regla de la suma para @code{trigexpand}.  As@'{@dotless{i}}, si la instrucci@'on @code{trigexpand} se utiliza o si la variable @code{trigexpand} vale @code{true}, se realizar@'a la expansi@'on de sumas como @code{sin(x+y)} s@'olo si @code{trigexpandplus} vale @code{true}.
+
+@end defvr
+
+@defvr {Variable optativa} trigexpandtimes
+Valor por defecto: @code{true}
+
+La variable @code{trigexpandtimes} controla la regla del producto para @code{trigexpand}.  As@'{@dotless{i}}, si la instrucci@'on @code{trigexpand} se utiliza o si la variable @code{trigexpand} vale @code{true}, se realizar@'a la expansi@'on de productos como @code{sin(2*x)} s@'olo si @code{trigexpandtimes} vale @code{true}.
+
+@end defvr
+
+@defvr {Variable optativa} triginverses
+Valor por defecto: @code{all}
+
+La variable @code{triginverses} controla la simplificaci@'on de la composici@'on de funciones trigonom@'etricas e hiperb@'olicas con sus funciones inversas.
+
+Si vale @code{all}, tanto @code{atan(tan(@var{x}))}  como @code{tan(atan(@var{x}))} se reducen a @var{x}.  
+
+Si vale @code{true}, se desactiva la simplificaci@'on de @code{@var{arcfun}(@var{fun}(@var{x}))}.
+
+Si vale @code{false}, se desactivan las simplificaciones de 
+@code{@var{arcfun}(@var{fun}(@var{x}))} y 
+@code{@var{fun}(@var{arcfun}(@var{x}))}.
+
+@end defvr
+
+@deffn {Funci@'on} trigreduce (@var{expr}, @var{x})
+@deffnx {Funci@'on} trigreduce (@var{expr})
+Combina productos y potencias de senos y cosenos trigonom@'etricos e hiperb@'olicos de @var{x}, transform@'andolos en otros que son m@'ultiplos de @var{x}.  Tambi@'en intenta eliminar estas funciones cuando aparecen en los denominadores.  Si no se introduce el argumento @var{x}, entonces se utilizan todas las variables de @var{expr}.
+
+V@'ease tambi@'en @code{poissimp}.
+
+@c ===beg===
+@c trigreduce(-sin(x)^2+3*cos(x)^2+x);
+@c ===end===
 @example
-(C4) TRIGREDUCE(-SIN(X)^2+3*COS(X)^2+X);
-(D4)                        2 COS(2 X) + X + 1
-Las rutinas de simplificaci@'on trigonom@'etrica usar@'an declaraciones de
-informaci@'on en algunos casos simples. Las Declaraciones acerca de las variables son usadas como sigue, por ejemplo.
-(C5) DECLARE(J, INTEGER, E, EVEN, O, ODD)$
-(C6) SIN(X + (E + 1/2)*%PI)$
-(D6)                      COS(X)
-(C7) SIN(X + (O + 1/2) %PI);
-(D7)                     - COS(X)
+(%i1) trigreduce(-sin(x)^2+3*cos(x)^2+x);
+               cos(2 x)      cos(2 x)   1        1
+(%o1)          -------- + 3 (-------- + -) + x - -
+                  2             2       2        2
 
 @end example
-@end defun
-@c @node TRIGSIGN
-@c @unnumberedsec phony
-@defvar TRIGSIGN
- por defecto: [TRUE] - Si es TRUE permite la simplificaci@'on de argumentos
-negativos en las funciones trigonom@'etricas. Por ejemplo, SIN(-X) se volver@'a
--SIN(X) @'unicamente si TRIGSIGN es TRUE.
 
-@end defvar
-@c @node TRIGSIMP
-@c @unnumberedsec phony
-@defun TRIGSIMP (expr)
-emplea las identidades sin(x)^2 + cos(x)^2 = 1 y
-cosh(x)^2 - sinh(x)^2 = 1 para simplificar expresiones que contengan tan, sec,
-etc., a sin, cos, sinh, cosh para que la siguiente simplificaci@'on se pueda 
-obtener usando TRIGREDUCE en el resultado.  Algunos ejemplos pueden verse
-haciendo DEMO("trgsmp.dem");. Tambi@'en vea la funci@'on TRIGSUM.
+Las rutinas de simplificaci@'on trigonom@'etrica utilizan informaci@'on declarada en algunos casos sencillos. Las declaraciones sobre variables se utilizan como se indica a continuaci@'on:
 
-@end defun
-@c @node TRIGRAT
-@c @unnumberedsec phony
-@defun TRIGRAT (trigexp)
-genera un canon simplificado casi lineal de una expresi@'on trigonom@'etrica; trigexp es una fracci@'on racional de algunos sin,
-cos o tan, los argumentos son de forma lineal en algunas variables (o
-n@'ucleos) y %pi/n (n entero) con coeficientes enteros. El resultado es una
-fracci@'on simplificada con numerador y denominador lineal en seno y coseno.
-As@'{@dotless{i}} TRIGRAT linearizar@'a siempre y cuando esto sea posible.(Escrito por D. Lazard).
-
+@c ===beg===
+@c declare(j, integer, e, even, o, odd)$
+@c sin(x + (e + 1/2)*%pi);
+@c sin(x + (o + 1/2)*%pi);
+@c ===end===
 @example
-(c1) trigrat(sin(3*a)/sin(a+%pi/3));
+(%i1) declare(j, integer, e, even, o, odd)$
+(%i2) sin(x + (e + 1/2)*%pi);
+(%o2)                        cos(x)
+(%i3) sin(x + (o + 1/2)*%pi);
+(%o3)                       - cos(x)
 
-(d1) 		        sqrt(3) sin(2 a) + cos(2 a) - 1
 @end example
 
-Aqui hay otro ejemplo (para el cual la funci@'on fue pensada); vea
-[Davenport, Siret, Tournier, Calcul Formel, Masson (o en ingl@'es,
-Addison-Wesley), seccion 1.5.5, Morley theorem). 
+@end deffn
 
+@defvr {Variable optativa} trigsign
+Valor por defecto: @code{true}
+
+Si @code{trigsign} vale @code{true}, se permite la simplificaci@'on de argumentos negativos en funciones trigonom@'etricas, como en @code{sin(-x)}, que se transformar@'a en @code{-sin(x)} s@'olo si @code{trigsign} vale @code{true}.
+
+@end defvr
+
+@deffn {Funci@'on} trigsimp (@var{expr})
+Utiliza las identidades @math{sin(x)^2 + cos(x)^2 = 1} y
+@math{cosh(x)^2 - sinh(x)^2 = 1} para simplificar expresiones que contienen @code{tan}, @code{sec},
+etc., en expresiones con @code{sin}, @code{cos}, @code{sinh}, @code{cosh}.
+
+Las funciones @code{trigreduce}, @code{ratsimp} y @code{radcan} puden seguir siendo @'utiles para continuar el proceso de simplificaci@'on.
+
+La instrucci@'on @code{demo ("trgsmp.dem")} muestra algunos ejemplos de @code{trigsimp}.
+@c MERGE EXAMPLES INTO THIS ITEM
+
+@end deffn
+
+@deffn {Funci@'on} trigrat (@var{expr})
+Devuelve una forma can@'onica simplificada cuasi-lineal de una expresi@'on trigonom@'etrica; @var{expr} es una fracci@'on racional que contiene @code{sin}, @code{cos} o @code{tan}, cuyos argumentos son formas lineales respecto de ciertas variables (o kernels) y @code{%pi/@var{n}} (@var{n} entero) con coeficientes enteros. El resultado es una fracci@'on simplificada con el numerador y denominador lineales respecto de @code{sin} y @code{cos}.
+
+@c ===beg===
+@c trigrat(sin(3*a)/sin(a+%pi/3));
+@c ===end===
 @example
-(c4)   c:%pi/3-a-b;
+(%i1) trigrat(sin(3*a)/sin(a+%pi/3));
+(%o1)            sqrt(3) sin(2 a) + cos(2 a) - 1
 
-					   %pi
-(d4) 				 - b - a + ---
-					    3
+@end example
 
-(c5)   bc:sin(a)*sin(3*c)/sin(a+b);
+El siguiente ejemplo se ha tomado de
+Davenport, Siret y Tournier, @i{Calcul Formel}, Masson (o en ingl@'es,
+Addison-Wesley), secci@'on 1.5.5, teorema de Morley.
 
-			     sin(a) sin(3 b + 3 a)
-(d5) 			     ---------------------
-				  sin(b + a)
+@c ===beg===
+@c c: %pi/3 - a - b;
+@c bc: sin(a)*sin(3*c)/sin(a+b);
+@c ba: bc, c=a, a=c$
+@c ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+@c trigrat (ac2);
+@c ===end===
+@example
+(%i1) c: %pi/3 - a - b;
+                                    %pi
+(%o1)                     - b - a + ---
+                                     3
+(%i2) bc: sin(a)*sin(3*c)/sin(a+b);
+                      sin(a) sin(3 b + 3 a)
+(%o2)                 ---------------------
+                           sin(b + a)
+(%i3) ba: bc, c=a, a=c$
+(%i4) ac2: ba^2 + bc^2 - 2*bc*ba*cos(b);
+         2       2
+      sin (a) sin (3 b + 3 a)
+(%o4) -----------------------
+               2
+            sin (b + a)
 
-(c6)   ba:bc,c=a,a=c$
-
-(c7)   ac2:ba^2+bc^2-2*bc*ba*cos(b);
-
-	2       2
-     sin (a) sin (3 b + 3 a)
-(d7) -----------------------
-	      2
-	   sin (b + a)
-
-					%pi
+                                        %pi
    2 sin(a) sin(3 a) cos(b) sin(b + a - ---) sin(3 b + 3 a)
-					 3
+                                         3
  - --------------------------------------------------------
-			   %pi
-		   sin(a - ---) sin(b + a)
-			    3
+                           %pi
+                   sin(a - ---) sin(b + a)
+                            3
 
-      2	        2	  %pi
+      2         2         %pi
    sin (3 a) sin (b + a - ---)
-			   3
+                           3
  + ---------------------------
-	     2	   %pi
-	  sin (a - ---)
-		    3
+             2     %pi
+          sin (a - ---)
+                    3
+(%i5) trigrat (ac2);
+(%o5) - (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
 
-(c9)   trigrat(ac2);
-Totaltime= 65866 msec.  GCtime= 7716 msec.
+ - 2 sqrt(3) sin(4 b + 2 a) + 2 cos(4 b + 2 a)
 
-(d9)
-- (sqrt(3) sin(4 b + 4 a) - cos(4 b + 4 a)
+ - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
 
-- 2 sqrt(3) sin(4 b + 2 a)
+ + 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
 
-+ 2 cos(4 b + 2 a) - 2 sqrt(3) sin(2 b + 4 a) + 2 cos(2 b + 4 a)
+ + sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
 
-+ 4 sqrt(3) sin(2 b + 2 a) - 8 cos(2 b + 2 a) - 4 cos(2 b - 2 a)
+ + sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
 
-+ sqrt(3) sin(4 b) - cos(4 b) - 2 sqrt(3) sin(2 b) + 10 cos(2 b)
-
-+ sqrt(3) sin(4 a) - cos(4 a) - 2 sqrt(3) sin(2 a) + 10 cos(2 a)
-
-   - 9)/4
+ - 9)/4
 
 @end example
-@end defun
 
-@c Traducido por: Diego Andres Sanabria
-@c correo-e: diegueus9@yahoo.com
-@c Revisado por	: Juan Pablo Romero Bernal
-@c correo-e	: jpromerobx@linuxmail.org
-@c Grupo Linux Universidad Distrital
-@c http://glud.udistrital.edu.co
-@c Proyecto GLUD-CLog
-@c http://glud.udistrital.edu.co/clog
-@c Bogota - Colombia
+@end deffn

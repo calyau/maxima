@@ -1,288 +1,477 @@
 @menu
 * Introducci@'on a las Funciones Especiales::  
-* GAMALG::                      
-* SPECINT::                     
+* specint::                     
 * Definiciones para las Funciones Especiales::  
 @end menu
 
-@node Introducci@'on a las Funciones Especiales, GAMALG, Funciones Especiales, Funciones Especiales
-
+@node Introducci@'on a las Funciones Especiales, specint, Funciones Especiales, Funciones Especiales
 @section Introducci@'on a las Funciones Especiales
-@deffn %J
- [index](expr) - Funci@'on Bessel de 1ra Clase (en SPECINT)
 
-@end deffn
 
-@deffn %K 
- [index](expr) - Funci@'on Bessel de 2da Clase (en SPECINT)
+@node specint, Definiciones para las Funciones Especiales, Introducci@'on a las Funciones Especiales, Funciones Especiales
+@section specint
 
-Constante en ODE2
 
-@end deffn
+El paquete @code{hypgeo} permite calcular transformadas de Laplace de funciones especiales, mientras que @code{hyp} es otro paquete destinado al c@'alculo de funciones hipergeom@'etricas generalizadas.
 
-@node GAMALG, SPECINT, Introducci@'on a las Funciones Especiales, Funciones Especiales
+Por otro lado, @code{specint} tiene por objeto calcular la integral definida (en el intervalo que va desde cero hasta infinito) de expresiones que contengan funciones especiales. Cuando el integrando contenga el factor @code{exp (-s t)}, 
+el resultado no es otro que la transformada de Laplace.
 
-@section GAMALG
+La sintaxis es la siguiente:
 
-Un programa de algebra para matrix gamma de Dirac que toma trazos
-y hace manipulaciones sobre matrices  gamma en n dimensiones. Esto puede ser
-cargado en MACSYMA mediante
-LOADFILE("gam");
-Un manual preliminar est@'a contenido en el archivo SHARE;GAM USAGE y puede ser impreso
-usando
-PRINTFILE(GAM,USAGE,SHARE);
-
-@node SPECINT, Definiciones para las Funciones Especiales, GAMALG, Funciones Especiales
-@section SPECINT
- - El paquete HYPGEO de funciones hipergeom@'etricas especiales est@'a
-aun en desarrollo. en este momento busca las transformadas de Laplace o mejor,
-la integral de 0 hasta INF de algunas funciones especiales o combinaciones de ellas.
-El factor, EXP(-P*var) debe ser
-declarado explicitamente. La sintaxis es la siguiente:
-SPECINT(EXP(-P*var)*expr,var);
-donde var es la variables de integraci@'on y expr puede ser
-cualquier expresi@'on conteniendo funciones especiales (bajo su propio riesgo).
-La notaciq¥on de funciones especiales es la siguiente:
 @example
-%J[index](expr)         Funct Bessel  1ra Clase
-%K[index](expr)           "     "    2da Clase
-%I[     ](    )          Bessel Modificada
-%HE[     ](  )        Hermite Poly
-%P[  ]( )               Funct Legendre 
-%Q[  ]( )               Legendre de segunda clase
-HSTRUVE[ ]( )          Funci@'on  Struve H
-LSTRUVE[ ]( )           Funci@'on         "    L 
-%F[ ]([],[],expr)        Funci@'on Hipergeom@'etrica 
-GAMMA()
-GAMMAGREEK()
-GAMMAINCOMPLETE()
-SLOMMEL
-%M[]()                  Whittaker Funct 1st Kind
-%W[]()                     "       "    2nd  "
+specint (exp (-s*@var{t}) * @var{expr}, @var{t});
 @end example
-@noindent
-Para un mejor conocimiento acerca de estas que puede hacer, haga DEMO(HYPGEO,DEMO,SHARE1);
 
-@node Definiciones para las Funciones Especiales,  , SPECINT, Funciones Especiales
+donde @var{t} es la variable de integraci@'on y @var{expr} es una expresi@'on que contiene funciones especiales.
+
+Si @code{specint} no puede calcular la integral, la respuesta que se obtiene puede contener s@'{@dotless{i}}mbolos de Lisp, entre los que se incluyen 
+@code{other-defint-to-follow-negtest},
+@code{other-lt-exponential-to-follow},
+@code{product-of-y-with-nofract-indices}, etc.; este es un fallo conocido del programa. 
+
+A continuaci@'on se especifican las notaciones correspondientes a las funciones especiales:
+
+@example
+bessel_j (index, expr)    Funci@'on de Bessel de primera especie
+bessel_y (index, expr)    Funci@'on de Bessel de segunda especie
+bessel_i (index, expr)    Funci@'on de Bessel modificada de primera especie
+bessel_k (index, expr)    Funci@'on de Bessel modificada de segunda especie
+%he[n] (z)                Polinomio de Hermite (Ojo: @code{he}, no @code{h}. Ver A&S 22.5.18)
+%p[u,v] (z)               Funci@'on de Legendre de primera especie
+%q[u,v] (z)               Funci@'on de Legendre de segunda especie
+hstruve[n] (z)            Funci@'on H de Struve
+lstruve[n] (z)            Funci@'on L de Struve
+%f[p,q] ([], [], expr)    Funci@'on hipergeom@'etrica generalizada
+gamma()                   Funci@'on Gamma
+gammagreek(a,z)           Funci@'on Gamma incompleta
+gammaincomplete(a,z)      Extremo de la funci@'on Gamma incompleta
+@c IS slommel THE "LOMMEL" FUNCTION ?? NOT OTHERWISE MENTIONED IN TEXINFO FILES
+slommel
+%m[u,k] (z)               Funci@'on de Whittaker de primera especie
+%w[u,k] (z)               Funci@'on de Whittaker de segunda especie
+erfc (z)                  Complemento de la funci@'on de error, erf
+ei (z)                    Integral exponencial (?)
+kelliptic (z)             Integral el@'{@dotless{i}}ptica completa de primera especie (K)
+%d [n] (z)                Funci@'on cil@'{@dotless{i}}ndrica parab@'olica
+@end example
+
+Con la instrucci@'on @code{demo ("hypgeo")} se podr@'an ver algunos ejemplos de transformadas de Laplace calculadas por @code{specint}.
+
+Este paquete a@'un est@'a en desarrollo, por lo que algunos nombres de funciones pueden sufrir cambios.
+
+@node Definiciones para las Funciones Especiales,  , specint, Funciones Especiales
 @section Definiciones para las Funciones Especiales
 
-@defun AIRY (X)
-retorna la funci@'on Airy Ai de argumento real X.
-El archivo SHARE1;AIRY FASL contiene rutinas para evaluar las funciones Airy
-Ai(X), Bi(X) y sus derivadas dAi(X), dBi(X). Ai y Bi satisfacen la
-ecuaci@'on diferencial AIRY(y(x),x,2)-x*y(x)=0.. Lea SHARE1;AIRY USAGE para detalles.
+@c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
+@deffn {Funci@'on} airy (@var{x})
+Funci@'on Ai de Airy.
+Si el argumento @var{x} es un n@'umero, se obtiene el valor num@'erico de @code{airy (@var{x})}.
+En caso contrario, se devuelve la expresi@'on no evaluada @code{airy (@var{x})}.
+@c THE RETURN VALUE IS '(($AIRY SIMP) $X) -- NOT A NOUN, RIGHT? SINCE %AIRY WOULD BE A NOUN
 
-@end defun
-@c @node ASYMP
-@c @unnumberedsec phony
-@defun ASYMP
- - Una versi@'on preliminar de un programa para buscar comportamiento 
-asint@'otico
-de diagramas de Feynman que han sido instalados sobre el directorio SHARE1;
-Para mayor informaci@'on, observe el archivo SHARE1;ASYMP USAGE.
-(Para el An@'alisis Asist@'otico de funciones, observe ASYMPA.)
+La ecuaci@'on de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tiene dos soluciones linealmente independientes, llamadas @code{ai} y @code{bi}. Esta ecuaci@'on es muy utilizada para obtener aproximaciones a problemas complejos en muchos @'ambitos de la f@'{@dotless{i}}sica matem@'atica.
 
-@end defun
-@c @node ASYMPA
-@c @unnumberedsec phony
-@defun ASYMPA
- - An@'alisis Asit@'otico - El archivo SHASE1;ASYMPA > contiene
-la simplificaci@'on de funciones para an@'alisis asint@'otico, incluyendo las funciones big-0
-y little-o que son ampliamente usadas en an@'alisis complejos y
-an@'alisis num@'ericos. Haga BATCH("asympa.mc"); .
-(Para comportamiento asist@'otico de digramas de Feynman, observe ASYMP.)
+La instrucci@'on @code{load ("airy")} carga las funciones @code{ai}, @code{bi}, @code{dai} y @code{dbi}.
 
-@end defun
-@c @node BESSEL
-@c @unnumberedsec phony
-@defun BESSEL (Z,A)
-retorna la funci@'on Bessel J para complejos Z y reales A >
-0.0 . Tambi@'en un arreglo BASSELARRAY es programado tal que BESSELARRAY[I] =
-J[I+A- ENTIER(A)](Z).
+El paquete @code{airy} contiene algoritmos para calcular @code{ai} y @code{bi}, as@'{@dotless{i}} como sus derivadas @code{dai} y @code{dbi}. El resultado es un n@'umero decimal en coma flotante si el argumento es a su vez un n@'umero, en caso contrario ser@'a una expresi@'on no evaluada.
 
-@end defun
-@c @node BETA
-@c @unnumberedsec phony
-@defun BETA (X, Y)
-lo mismo que GAMMA(X)*GAMMA(Y)/GAMMA(X+Y).
+Se producir@'a un error si el argumento es lo suficientemente grande como para que los exponenciales causen un desbordamiento (@i{overflow}), o una p@'erdida de precisi@'on en el @code{sin} o en el @code{cos}. Con esto, el rango de validez es aproximadamente entre 
+-2800 y 10^38 para @code{ai} y @code{dai}, y entre -2800 y 25 para @code{bi} y @code{dbi}.
 
-@end defun
-@c @node GAMMA
-@c @unnumberedsec phony
-@defun GAMMA (X)
-la funci@'on gamma. GAMMA(I)=(I-1)! para I siendo un entero
-positivo. Para la constante Euler-Mascheroni, observe %GAMMA. Tambi@'en observe la
-funci@'on MAKEGAMMA. La variable GAMALIN[1000000] (la que observa)
-controla la simplificaci@'on de la funci@'on gamma.
+Maxima reconoce las siguientes derivadas:
+@itemize @bullet
+@item
+@code{diff (ai(x), x)} devuelve @code{dai(x)},
+@item
+@code{diff (dai(x), x)} devuelve @code{x ai(x)},
+@item
+@code{diff (bi(x), x)} devuelve @code{dbi(x)},
+@item
+@code{diff (dbi(x), x)} devuelve @code{x bi(x)}.
+@end itemize
 
-@end defun
-@c @node GAMMALIM
-@c @unnumberedsec phony
-@defvar GAMMALIM
- por defecto: [1000000] controla la simplificaci@'on de la funci@'on gamma
-para argumentos de integrales y n@'umeros racionales. Si el valor absoluto
-del argumento no es m@'ayor que GAMMALIN, entonces
-ocurrir@'a la simplificaci@'on. Note que la opci@'on controla
-la simplificaci@'on del resultado de GAMMA de un argumneto integral.
+Los valores de las funciones se calculan a partir del desarrollo convergente de Taylor para @code{abs(@var{x}) < 3},
+y de las expansiones asint@'oticas para @code{@var{x} < -3} o @code{@var{x} > 3}, seg@'un sea necesario.
+Con esto se consiguen discrepancias num@'ericas despreciables en @code{@var{x} = 3} y @code{@var{x} = -3}.
+Para detalles, v@'ease Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}, Secci@'on 10.4 y Tabla 10.11.
 
-@end defvar
-@c @node INTOPOIS
-@c @unnumberedsec phony
-@defun INTOPOIS (A)
-convierte A en un codificado Poisson.
+La llamada @code{ev (taylor (ai(x), x, 0, 9), infeval)} devuelve el desarrollo de Taylor con n@'umeros decimales de la funci@'on @code{ai}. Se puede escribir una expresi@'on similar para @code{bi}.
 
-@end defun
-@c @node MAKEFACT
-@c @unnumberedsec phony
-@defun MAKEFACT (exp)
-transforma ocurrencias de funciones binomiales, gamma y beta
-en exp para funci@'ones factoriales.
-transforms occurrences of binomial,gamma, and beta
-functions in exp to factorials.
+@end deffn
 
-@end defun
-@c @node MAKEGAMMA
-@c @unnumberedsec phony
-@defun MAKEGAMMA (exp)
-transforma ocurrencias de funciones binomiales, factoriales y beta
-en exp para funci@'ones gamma.
+@deffn {Funci@'on} airy_ai (@var{x})
+Funci@'on Ai de Airy, tal como la definen Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}, Secci@'on 10.4. 
 
-@end defun
-@c @node NUMFACTOR
-@c @unnumberedsec phony
-@defun NUMFACTOR (exp)
-da el factor num@'erico multiplicando la expresi@'on
-exq que puede ser un t@'ermino sencillo. Si el gcd de todos los t@'erminos en una
-suma es deseado, la funci@'on CONTENT puede ser usada.
+La ecuaci@'on de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tiene dos soluciones linealmente independientes, @code{y = Ai(x)} y @code{y = Bi(x)}. La derivada @code{diff (airy_ai(x), x)} es @code{airy_dai(x)}.
+
+Si el argumento @code{x} es un n@'umero decimal real o complejo, se devolver@'a el valor num@'erico de @code{airy_ai} siempre que sea posible.
+
+V@'eanse @code{airy_bi}, @code{airy_dai} y @code{airy_dbi}.
+@end deffn
+
+@deffn {Funci@'on} airy_dai (@var{x})
+Es la derivada de la funci@'on Ai de Airy, @code{airy_ai(x)}. 
+
+V@'ease @code{airy_ai}.
+@end deffn
+
+@deffn {Funci@'on} airy_bi (@var{x})
+Es la funci@'on Bi de Airy, tal como la definen Abramowitz y Stegun,
+@i{Handbook of Mathematical Functions}, Secci@'on 10.4. Se trata de la segunda soluci@'on de la ecuaci@'on de Airy @code{diff (y(x), x, 2) - x y(x) = 0}.
+
+Si el argumento @code{x} es un n@'umero decimal real o complejo, se devolver@'a el valor num@'erico de @code{airy_bi} siempre que sea posible. En los otros casos, se devuelve la expresi@'on sin evaluar.
+
+La derivada @code{diff (airy_bi(x), x)} es @code{airy_dbi(x)}.
+
+V@'eanse @code{airy_ai} y @code{airy_dbi}.
+@end deffn
+
+@deffn {Funci@'on} airy_dbi (@var{x})
+Es la derivada de la funci@'on Bi de Airy, @code{airy_bi(x)}.
+
+V@'eanse @code{airy_ai} y @code{airy_bi}.
+@end deffn
+
+@deffn {Funci@'on} asympa
+El paquete @code{asympa} contiene funciones de simplificaci@'on para realizar an@'alisis asint@'otico, incluyendo las funciones  ``big O'' y  ``little o'', de uso frecuente en el an@'alisis complejo y num@'erico.
+
+La instrucci@'on @code{load ("asympa")} carga este paquete.
+
+@end deffn
+
+@deffn {Funci@'on} bessel (@var{z}, @var{a}) 
+Funci@'on de Bessel de primera especie.
+
+Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (@var{z}, @var{a})} en su lugar.
+
+@end deffn
+
+@deffn {Funci@'on} bessel_j (@var{v}, @var{z})
+Funci@'on de Bessel de primera especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_j} calcula el arreglo @code{besselarray} tal que @code{besselarray [i] = bessel_j [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
+
+La funci@'on @code{bessel_j} se define como
+
+@ifhtml
 @example
-(C1) GAMMA(7/2);
-(D1)               15 SQRT(%PI)
-                   ------------
-                        8
-(C2) NUMFACTOR(%);
-                    15
-(D2)                --
-                     8
-
-
+                inf
+                ====       k  - v - 2 k  v + 2 k
+                \     (- 1)  2          z
+                 >    --------------------------
+                /        k! gamma(v + k + 1)
+                ====
+                k = 0
 @end example
-@end defun
-@c @node OUTOFPOIS
-@c @unnumberedsec phony
-@defun OUTOFPOIS (A)
-convierte A desde codificado de Poisson a una representaci@'on
-general. Si A no es de la forma Poisson, podr@'a realizar la
-conversi@'on, i.e.  se ver@'a como el resultado de
-OUTOFPOIS(INTOPOIS(A)).  Esta funci@'on es as@'{@dotless{i}}, un simplificaci@'on can@'onica
-para sumas de potencias de SIN y COS de un tipo particular.
+@end ifhtml
+@ifinfo
+@example
+                inf
+                ====       k  - v - 2 k  v + 2 k
+                \     (- 1)  2          z
+                 >    --------------------------
+                /        k! gamma(v + k + 1)
+                ====
+                k = 0
+@end example
+@end ifinfo
 
-@end defun
-@c @node POISDIFF
-@c @unnumberedsec phony
-@defun POISDIFF (A, B)
-deriva A con respecto a B. B debe ocurrir solo
-en los argumentos trigonom@'etricos o solo en los coeficientes.
+@tex
+$$\sum_{k=0}^{\infty }{{{\left(-1\right)^{k}\,\left(z\over 2\right)^{v+2\,k}
+ }\over{k!\,\Gamma\left(v+k+1\right)}}}$$
+@end tex
 
-@end defun
-@c @node POISEXPT
-@c @unnumberedsec phony
-@defun POISEXPT (A, B)
-B es un entero positivo) es funcionalmente identico a
-INTOPOIS(A**B).
+aunque la serie infinita no se utiliza en los c@'alculos.
 
-@end defun
-@c @node POISINT
-@c @unnumberedsec phony
-@defun POISINT (A, B)
-integra en un sentido similar restringido (para
-POISDIFF). T@'erminos no peri@'odicos en B son botados si B est@'a en el
-argumento trigonom@'etrico.
+@end deffn
 
-@end defun
-@c @node POISLIM
-@c @unnumberedsec phony
-@defvar POISLIM
- default: [5] - determina el dominio de los coeficientes en
-los argumentos de las funciones trigonom@'etricas. El calor inicial de 5
-corresponde a la inversa [-2^(5-1)+1,2^(5-1)], o [-15,16], pero esta
-puede ser programada para [-2^(n-1)+1, 2^(n-1)].
+@deffn {Funci@'on} bessel_y (@var{v}, @var{z})
+Funci@'on de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
 
-@end defvar
-@c @node POISMAP
-@c @unnumberedsec phony
-@defun POISMAP (series, sinfn, cosfn)
-puede mapear las funciones sinfn en los
-t@'erminos seno y cosfn en los t@'erminos coseno de la serie poisson dada.
-sinfn u cosfn son unciones de dos argumentos que son coeficientes
-y una parte trigonom@'etrica de un t@'ermino en series respectivamente.
+La funci@'on @code{bessel_y} calcula el arreglo @code{besselarray} tal que
+@code{besselarray [i] = bessel_y [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
 
-@end defun
-@c @node POISPLUS
-@c @unnumberedsec phony
-@defun POISPLUS (A, B)
-es funcionalmente identico a INTOPOIS(A+B).
+La funci@'on @code{bessel_y} se define como
 
-@end defun
-@c @node POISSIMP
-@c @unnumberedsec phony
-@defun POISSIMP (A)
-convierte a en una series de Poisson para A en una representaci@'on
-general.
+@ifhtml
+@example
+              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
+              -------------------------------------------
+                             sin(%pi v)
+@end example
+@end ifhtml
+@ifinfo
+@example
+              cos(%pi v) bessel_j(v, z) - bessel_j(-v, z)
+              -------------------------------------------
+                             sin(%pi v)
+@end example
+@end ifinfo
 
-@end defun
-@c @node POISSON
-@c @unnumberedsec phony
-@defvr {special symbol} POISSON
- - El s@'{@dotless{i}}mbolo /P/ sigue la etiqueta de l@'{@dotless{i}}nea de expresiones
-de series de Poisson.
+@tex
+$${{\cos \left(\pi\,v\right)\,J_{v}(z)-J_{-v}(z)}\over{
+ \sin \left(\pi\,v\right)}}$$
+@end tex
+
+si @math{v} no es un entero.  En caso de que  @math{v} sea un entero @math{n}, se calcula el l@'{@dotless{i}}mite cuando @math{v} se aproxima a @math{n}.
+
+@end deffn
+
+@deffn {Funci@'on} bessel_i (@var{v}, @var{z})
+Funci@'on modificada de Bessel de primera especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_i} calcula el arreglo @code{besselarray} tal que
+@code{besselarray [i] = bessel_i [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
+
+La funci@'on @code{bessel_i} se define como
+
+@ifhtml
+@example
+                    inf
+                    ====   - v - 2 k  v + 2 k
+                    \     2          z
+                     >    -------------------
+                    /     k! gamma(v + k + 1)
+                    ====
+                    k = 0
+@end example
+@end ifhtml
+@ifinfo
+@example
+                    inf
+                    ====   - v - 2 k  v + 2 k
+                    \     2          z
+                     >    -------------------
+                    /     k! gamma(v + k + 1)
+                    ====
+                    k = 0
+@end example
+@end ifinfo
+
+@tex
+$$\sum_{k=0}^{\infty } {{1\over{k!\,\Gamma
+ \left(v+k+1\right)}} {\left(z\over 2\right)^{v+2\,k}}}$$
+@end tex
+
+aunque la serie infinita no se utiliza en los c@'alculos.
+
+@end deffn
+
+@deffn {Funci@'on} bessel_k (@var{v}, @var{z})
+Funci@'on modificada de Bessel de segunda especie de orden @math{v} y argumento @math{z}.
+
+La funci@'on @code{bessel_k} calcula el arreglo @code{besselarray} tal que
+@code{besselarray [i] = bessel_k [i + v - int(v)] (z)} para @code{i} desde cero hasta @code{int(v)}.
+
+La funci@'on @code{bessel_k} se define como
+
+@ifhtml
+@example
+           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
+           -------------------------------------------------
+                                  2
+@end example
+@end ifhtml
+@ifinfo
+@example
+           %pi csc(%pi v) (bessel_i(-v, z) - bessel_i(v, z))
+           -------------------------------------------------
+                                  2
+@end example
+@end ifinfo
+
+@tex
+$${{\pi\,\csc \left(\pi\,v\right)\,\left(I_{-v}(z)-I_{v}(z)\right)}\over{2}}$$
+@end tex
+
+si @math{v} no es un entero.  Si @math{v} es igual al entero @math{n}, entonces se calcula el l@'{@dotless{i}}mite cuando @math{v} tiende a @math{n}.
+
+@end deffn
+
+@defvr {Variable optativa} besselexpand
+Valor por defecto: @code{false}
+
+Controla la expansi@'on de las funciones de Bessel cuando el orden es la mitad de un entero impar. En tal caso, las funciones de Bessel se pueden expandir en t@'erminos de otras funciones elementales.  Si @code{besselexpand} vale @code{true}, se expande la funci@'on de Bessel.
+
+@example
+(%i1) besselexpand: false$
+(%i2) bessel_j (3/2, z);
+                                    3
+(%o2)                      bessel_j(-, z)
+                                    2
+(%i3) besselexpand: true$
+(%i4) bessel_j (3/2, z);
+                          2 z   sin(z)   cos(z)
+(%o4)                sqrt(---) (------ - ------)
+                          %pi      2       z
+                                  z
+@end example
+@end defvr
+
+@deffn {Funci@'on} j0 (@var{x})
+Funci@'on de Bessel de primera especie de orden 0.
+
+Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (0, @var{x})} en su lugar.
+
+@end deffn
+
+@deffn {Funci@'on} j1 (@var{x})
+Funci@'on de Bessel de primera especie de orden 1.
+
+Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (1, @var{x})} en su lugar.
+
+@end deffn
+
+@deffn {Funci@'on} jn (@var{x}, @var{n})
+Funci@'on de Bessel de primera especie de orden @var{n}.
+
+Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_j (@var{n}, @var{x})} en su lugar.
+
+@end deffn
+
+@deffn {Funci@'on} i0 (@var{x})
+Funci@'on modificada de Bessel de primera especie de orden 0.
+
+Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_i (0, @var{x})} en su lugar.
+
+@end deffn
+
+@deffn {Funci@'on} i1 (@var{x})
+Funci@'on modificada de Bessel de primera especie de orden 1.
+
+Ya no se recomienda su uso.  Util@'{@dotless{i}}cese @code{bessel_i (1, @code{x})} en su lugar.
+
+@end deffn
+
+@deffn {Funci@'on} beta (@var{x}, @var{y})
+Funci@'on beta, definida como @code{gamma(x) gamma(y)/gamma(x + y)}.
+
+@end deffn
+
+@deffn {Funci@'on} gamma (@var{x})
+Funci@'on gamma.
+
+V@'ease tambi@'en @code{makegamma}.
+
+La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma.
+
+La constante de Euler-Mascheroni es @code{%gamma}.
+
+@end deffn
+
+@defvr {Variable optativa} gammalim
+Valor por defecto: 1000000
+
+La variable @code{gammalim} controla la simplificaci@'on de la funci@'on gamma con argumentos enteros o racionales. Si el valor absoluto del argumento no es mayor que @code{gammalim}, entonces se realizar@'a la simplificaci@'on. N@'otese que la variable @code{factlim} tambi@'en controla la simplificaci@'on del resultado de @code{gamma} con argumento entero.
 
 @end defvr
-@c @node POISSUBST
-@c @unnumberedsec phony
-@defun POISSUBST (A, B, C)
-sustituye A por B en C C es una series de Poisson.
-(1) Donde B  es una variable U, V, W, X, Y o Z entonces A debe ser una
-expresi@'on lineal en esas variables (e.g. 6*U+4*V).
-(2) Donde B es diferente a las otras variables, entonces A tambi@'en debe estar
-libre de esas variables, y adem@'as, libre de senos y cosenos.
-POISSUBST(A, B, C, D, N) es un tipo especial de sustituciones que
-operan sobre A y B como en el tipo (1) anterior, pero donde D es una series
-de Poisson, expande COS(D) y SIN(D) de orden N as@'{@dotless{i}} como provee el
-resultado de la sustituci@'on A+D para B en C. La idea es que D es una
-expansi@'on en t@'erminos de peque√±os par@'ametros. Por ejemplo,
-POISSUBST(U,V,COS(V),E,3) resulta en COS(U)*(1-E^2/2) -
-SIN(U)*(E-E^3/6).
 
-@end defun
-@c @node POISTIMES
-@c @unnumberedsec phony
-@defun POISTIMES (A, B)
-es funcionalmente identico a INTOPOIS(A*B).
+@deffn {Funci@'on} intopois (@var{a})
+Convierte @var{a} en un codificado Poisson.
 
-@end defun
-@c @node POISTRIM
-@c @unnumberedsec phony
-@defun POISTRIM ()
-es un nombre de funci@'on reservada que (si el usuario lo ha definido)
-es aplicado durante multiplicaci@'on de Poisson. Es una funci@'on predicada
-de 6 argumentos que son el coeficiente de U, V,..., Z
-en un t@'ermino. t@'erminos para los cuales POISTRIM es VERDADERO (para los coeficientes de
-ese t@'ermino) son eliminadas durante la multiplicaci@'on.
+@end deffn
 
-@end defun
-@c @node PRINTPOIS
-@c @unnumberedsec phony
-@defun PRINTPOIS (A)
-imprime series de Poisson en un formato le@'{@dotless{i}}ble. En com@'un con
-OUTOFPOIS, esta puede convertir A en una codificaci@'on de Poisson primero,
-si es necesario.
+@deffn {Funci@'on} makefact (@var{expr})
+Transforma las funciones @code{binomial}, @code{gamma} y @code{beta} que aparecen en @var{expr} en su notaci@'on factorial.
 
-@end defun
-@c @node PSI
-@c @unnumberedsec phony
-@defun PSI (X)
-derivado de LOG(GAMMA(X)). En este momento, MACSYMAno posee capacidades
-de evaluaci@'on num@'erica para PSI. Para informaci@'on sobre la
-notaci@'on PSI[N](X), observe POLYGAMMA.
+V@'ease tambi@'en @code{makegamma}.
 
-@end defun
+@end deffn
+
+@deffn {Funci@'on} makegamma (@var{expr})
+Transforma las funciones @code{binomial}, @code{factorial} y @code{beta} que aparecen en @var{expr} en funciones @code{gamma}.
+
+V@'ease tambi@'en @code{makefact}.
+
+@end deffn
+
+@deffn {Funci@'on} numfactor (@var{expr})
+Devuelve el factor num@'erico que multiplica a la expresi@'on @var{expr}, la cual debe tener un @'unico t@'ermino. 
+
+@example
+(%i1) gamma (7/2);
+                          15 sqrt(%pi)
+(%o1)                     ------------
+                               8
+(%i2) numfactor (%);
+                               15
+(%o2)                          --
+                               8
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} outofpois (@var{a})
+Convierte @var{a} desde codificado de Poisson a una representaci@'on general.  Si @var{a} no est@'a en forma de Poisson, @code{outofpois} hace la conversi@'on, siendo entonces el valor retornado @code{outofpois (intopois (@var{a}))}. Esta funci@'on es un simplificador can@'onico para sumas de potencias de senos y cosenos.
+
+@end deffn
+
+@deffn {Funci@'on} poisdiff (@var{a}, @var{b})
+Deriva @var{a} con respecto a @var{b}. El argumento @var{b} debe aparecer s@'olo en los argumentos trigonom@'etricos o s@'olo en los coeficientes.
+
+@end deffn
+
+@deffn {Funci@'on} poisexpt (@var{a}, @var{b})
+Id@'entico a @code{intopois (@var{a}^@var{b})}. El argumento @var{b} debe ser un entero positivo.
+
+@end deffn
+
+@c AQUI FALTA DEFINICION DE poisint
+
+@defvr {Variable optativa} poislim
+Valor por defecto: 5
+
+La variable @code{poislim} determina el dominio de los coeficientes en los argumentos de las funciones trigonom@'etricas.  El valor por defecto 5 corresponde al intervalo [-2^(5-1)+1,2^(5-1)], o [-15,16], pero puede reasignarse para  [-2^(n-1)+1, 2^(n-1)].
+
+@end defvr
+
+@c AQUI FALTA DEFINICION DE poismap 
+
+@deffn {Funci@'on} poisplus (@var{a}, @var{b})
+Id@'entico a @code{intopois (a + b)}.
+
+@end deffn
+
+@deffn {Funci@'on} poissimp (@var{a})
+Convierte @var{a} en una serie de Poisson para @var{a} en su representaci@'on general.
+
+@end deffn
+
+@defvr {S@'{@dotless{i}}mbolo especial} poisson
+El s@'{@dotless{i}}mbolo @code{/P/} sigue a la etiqueta de las l@'{@dotless{i}}neas que contienen expresiones que son series de Poisson.
+
+@end defvr
+
+@deffn {Funci@'on} poissubst (@var{a}, @var{b}, @var{c})
+Sustituye @var{b} por @var{a} en @var{c}, donde  @var{c} es una serie de Poisson.
+
+(1) Si @var{b} es una de las variables @var{u}, @var{v}, @var{w}, @var{x}, @var{y} o @var{z}, entonces @var{a} debe ser una expresi@'on lineal en esas variables (por ejemplo, @code{6*u + 4*v}).
+
+(2) Si @var{b} no es ninguna de esas variables, entonces @var{a} no puede contener tampoco a ninguna de ellas, ni senos, ni cosenos.
+
+@c AQUI FALTA PARRAFO
+
+@end deffn
+
+@deffn {Funci@'on} poistimes (@var{a}, @var{b})
+Id@'entico a @code{intopois (@var{a}*@var{b})}.
+
+@end deffn
+
+@c AQUI FALTA DEFINICION DE poistrim
+
+@deffn {Funci@'on} printpois (@var{a})
+Presenta una serie de Poisson en un formato legible.  Conjuntamente con @code{outofpois}, si es necesario convertir@'a @var{a} primero en una codificaci@'on de Poisson.
+
+@end deffn
+
+@deffn {Funci@'on} psi (@var{x})
+@deffnx {Funci@'on} psi [@var{n}](@var{x})
+Derivada de @code{log (gamma (x))}.
+
+Maxima no calcula el valor num@'erico de @code{psi}. Sin embargo, la funci@'on @code{bfpsi} del paquete @code{bffac} puede calcular valores num@'ericos.
+
+@end deffn
