@@ -17,22 +17,22 @@ como @code{%e}.
 
 @end defvr
 
-@defvr {Constant} %inf
+@defvr {Constant} inf
  - infinito positivo real.
 
 @end defvr
 
-@defvr {Constant}  %infinity
+@defvr {Constant}  infinity
  - infinito complexo.
 
 @end defvr
 
-@defvr {Constant} %minf
+@defvr {Constant} minf
  - menos infinito real.
 
 @end defvr
 
-@defvr {Constant} pi
+@defvr {Constant} %pi
  - "pi" @'e representado no Maxima como @code{%pi}.
 
 @end defvr
