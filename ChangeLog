@@ -1,3 +1,15 @@
+2005-03-13 12:00  robert_dodier
+
+	* src/nset.lisp, tests/rtestnset.mac:
+	  Moved the nset package from share into the core source code.
+	  Nset is a collection of functions for working with finite sets.
+
+2005-02-27 12:00  robert_dodier
+
+	* src/mt19937.lisp, tests/rtestmt19937.mac:
+	  Ported CMUCL's implementation of the Mersenne twister
+	  random number generator to Maxima.
+
 2004-09-23 19:51  amundson
 
 	* configure.in: Bump version number to 5.9.1.
