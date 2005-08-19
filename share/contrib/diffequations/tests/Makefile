@@ -10,13 +10,11 @@ TEST_FILES = \
 	rtest_sym.mac rtest_sym2.mac \
 	rtest_ode1_riccati.mac rtest_ode1_abel.mac
 
-# Note the .MAC file extension.  Some fallout from the downcasing.  **FIXME**
-#
 check: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
 	echo '(to-maxima)';\
-	echo 'file_search_maxima:append(["../###.MAC"],file_search_maxima);';\
+	echo 'file_search_maxima:append(["../###.mac"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
