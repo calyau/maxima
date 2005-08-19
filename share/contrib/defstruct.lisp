@@ -62,35 +62,31 @@
 	      ((memq 'array (cdar x))
 	       (return (arrstore x y))) ;; do the array store
 	      
-	      ((and $subscrmap (memq (caar x) '(mlist $matrix)))
-	       (return (outermap1 'mset x y)))
+	  ;;    ((and $subscrmap (memq (caar x) '(mlist $matrix)));; deprecated.
+	 ;;      (return (outermap1 'mset x y)))
 	      
-	      ;; ADDITION  8/13/05 RJF ;;;;;;;;;;;;
-	      ;; The assignment looks like (XX@YY) : 45
-	      ;; meaning something like  substpart(45, xx, index_of(YY,type_declare_of(XX)))
-	 ;;     ((eq '$@ (caar x))
-	       ;; for now, defer the semantics to another program
-	      ;;  (return($mrecordassign x y)))
-	      ;; change/generalization/ table-driven version
-	      ;; below suggested by Stavros Macrakis.
-	     
-	      ((assoc (caar x) mset_extension_operators :test #'eq)
-	       (return
-		 (funcall (cdr (assoc (caar x) mset_extension_operators :test #'eq))
+	      ;; ADDITION  8/17/05 RJF thnx to suggestions by S. Macrakis, R. Dodier,;;;;;;;;;;;;
+	      ;;check to see if the operator has an mset_extension_operator.
+	      ;; If so, this says how to do assignments. Examples, a@b:x. Put mset_extension_operator
+	      ;; of $mrecordassign on the atom $@.  To allow [a,b]:[3,4] put op on mlist.
+	      ;; arguably we could use mget, mfuncall, and $mset_extension_operator  and
+	      ;; allow this to be done at the maxima level instead of lisp.
+	      
+	      ((get (caar x) 'mset_extension_operator)
+	        (return
+		 (funcall (get (caar x) 'mset_extension_operator)
 			  x y)))
-	      
-	      ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	      
 	      (t (merror "Improper left-hand side for an assignment:~%~M" x)))))
 
 ;;; starting here..
-
+(setf (get '$@ 'mset_extension_operator) '$mrecordassign)
 
 ;;; new programs by Richard Fateman 8/14/05
 ;;  defstruct(f(x,y,z));
 ;;  myrecord: new(f);
 ;;  myrecord@y:45;
 ;;  myrecord;  ==>   f(x,45,z)
+
 
 ;; initializers are possible
 ;; defstruct(f(x,y=3.14159, z));
@@ -104,8 +100,7 @@
 ;; k;
 
 ;;; This definition and the ones following are needed to get the @ stuff going
-(defparameter mset_extension_operators
-    '(($@ . $mrecordassign)))
+;;(defparameter mset_extension_operators    '(($@ . $mrecordassign)))
 
 	
 (defmfun $mrecordassign (atted value)
@@ -199,9 +194,16 @@
 ;; quiz .  [a,b]:[b,2*a].  produces values a=b, b= 2*a.
 ;; re-execute the statement 4 times. what do you get?  [4b, 8a]
 ;;         
+;; a neat application of parallel assignment is this version of
+;; a gcd algorithm (for integers)...
+;; kgcd(a,b):=(while b#0 do [a,b]:[b,remainder(a,b)], abs(a));
+;; The extended euclidean algorithm looks even better with parallel
+;; assignment.
 
-(defparameter mset_extension_operators
-    (cons (cons 'mlist '$mlistassign) mset_extension_operators))
+;; add MLIST to possible operators on the left hand side of 
+;; an assignment statement.
+
+(setf (get 'mlist 'mset_extension_operator) '$mlistassign)
 
 (defmfun $mlistassign (tlist vlist)
   ;;  tlist is  ((mlist..)  var[0]... var[n])  of targets
@@ -218,3 +220,102 @@
 		      (make-sequence 'list (1-(length tlist)) :initial-element vlist))))
   (map nil #'mset (cdr tlist)(cdr vlist))
    vlist)
+
+
+;;; here's another..
+
+(setf (get '$diag 'mset_extension_operator) '$diagassign)
+
+(defmfun $diagassign (a b)
+  ;; diag(a):b  set diagonal of matrix a to b.
+  ;; a had better be a square matrix after this evaluation.
+  (if (and (listp b)(eq (caar b) 'mlist)) ($diagassign2 a b)
+  (setf a (meval (cadr a))); argument to diag
+  (let ((h (1-(length a)))  ;; ((mmatrix) ((mlist) ..)  ((mlist ...)))
+	(q (cdr a))
+	(r nil))
+    (dotimes (i h b) ;return the new diag element.
+      (setf r (elt q i))
+      (setf (elt r (1+ i)) b)))))
+
+(defmfun $diagassign2 (a b)
+  ;; b is a list...
+  (setf a (meval (cadr a))); argument to diag
+  (let ((h (1-(length a)))  ;; ((mmatrix) ((mlist) ..)  ((mlist ...)))
+	(q (cdr a))
+	(r nil)
+	(bb (cdr b)))
+    (dotimes (i h b) ;return the new diag element.
+      (setf r (elt q i));pick out a row
+      (setf (elt r (1+ i)) (elt bb i)))))
+
+
+(setf (get '$row 'mset_extension_operator) '$rowassign)
+
+(defmfun $rowassign (a b)
+  (if (and (listp b)(eq (caar b) 'mlist))
+      ($rowassign2 a b) ;; assign a list
+    (let* ((m (meval (cadr a)))		; matrix argument to $row
+	   (r (cdr (elt m (meval (caddr a)))))) ;2nd arg to row, the row
+      (dotimes (i (length r) b)
+	(setf (elt r i) b)))))
+
+;; if b is a list we do this.
+(defmfun $rowassign2 (a b)
+  ;;(assert (eq (caar b) 'mlist))
+  (let* ((m (meval (cadr a)))		; matrix argument to $row
+	 (r (cdr (elt m (meval (caddr a)))))
+	 (lr (length r))
+	 (bb (cdr b)))
+    (unless (= lr (length bb)) 
+      (merror "Incompatible length in row assignment ~M" b))
+    (dotimes (i lr b)
+      (setf (elt r i) (elt bb i)))))
+
+
+(setf (get '$col 'mset_extension_operator) '$colassign)
+
+(defmfun $colassign (a b)
+  (if (and (listp b)(eq (caar b) 'mlist)) ($colassign2 a b)
+    (let* ((m (meval (cadr a)))		; matrix argument to $col
+	   (colnum (meval (caddr a)))	; column number
+	   (cols (cdr m )))
+      (dotimes (i (length cols) b)
+	(let ((c (elt cols i)))
+	  (setf (elt c colnum) b))))))
+
+(defmfun $colassign2 (a b)
+    (let* ((m (meval (cadr a)))		; matrix argument to $col
+	   (colnum (meval (caddr a)))	; column number
+	   (cols (cdr m ))
+	   (lc (length cols))
+	   (bb (cdr b)))
+      (unless (= lc (length bb)) 
+      (merror "Incompatible length in column assignment ~M" b))
+      (dotimes (i (length cols) b)
+	(let ((c (elt cols i)))
+	  (setf (elt c colnum) (elt bb i))))))
+
+#| now allowed: 
+m:ident(5); /* Set up identity matrix */
+row(m,3):1;
+row(m,4):[1,2,3,4,5];
+col(m,2):[1,2,3,4,5];
+diag(m):0;
+diag(m):[1,2,3,4,5];
+
+Now not allowed, but if we added some syntax, e.g. 1..5 = [1,2,3,4,5]
+then maybe we write stuff this way...
+
+m[1..5,3]:1;  instead of row(m,3):1 ..
+m[1..3,1..4]:0;
+no equivalent to diag(m):  though.
+
+How about allowing this
+submat(m,1..3,1..4):0 ??
+it could be written as
+submat(m,[1,23],[1,2,3,4]):0  in existing syntax.
+if we wrote a submat mset_extension_operator function.
+
+
+|#
