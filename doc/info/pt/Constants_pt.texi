@@ -1,4 +1,4 @@
-@c /Contexts.texi/1.6/Thu Apr 21 04:58:24 2005/-ko/
+@c /Constants.texi/1.10/Fri Aug 19 07:38:28 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Constantes::
 @end menu
