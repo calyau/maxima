@@ -50,7 +50,7 @@
 	((specrepp x) (opformat (specdisrep x)))
 	((and $optimwarn
 	      (mspecfunp (caar x))
-	      (prog2 (mtell "OPTIMIZE has met up with a special form - ~
+	      (prog2 (mtell "`optimize' has met up with a special form - ~
 			     answer may be wrong.")
 		  (setq $optimwarn nil))))
 	((eq (caar x) 'mexpt) (opmexpt x))

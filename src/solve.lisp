@@ -158,11 +158,11 @@
        ;; make one of two possible calls to MERROR. Smaller codesize
        ;; then what was here before anyway.
        (if (> (length varl) (length eql))
-	   (merror "More unknowns than equations -SOLVE~
+	   (merror "More unknowns than equations - `solve'~
 		  ~%Unknowns given :  ~%~M~
 		  ~%Equations given:  ~%~M"
 		   u e)
-	   (merror "More equations than unknowns -SOLVE~
+	   (merror "More equations than unknowns - `solve'~
 		  ~%Unknowns given :  ~%~M~
 		  ~%Equations given:  ~%~M"
 		   u e)))))
@@ -862,7 +862,7 @@
 	      (when (and $solvetrigwarn
 			 (memq op '(%sin %cos %tan %sec
 				    %csc %cot %cosh %sech)))
-		(mtell "~&SOLVE is using arc-trig functions to get ~
+		(mtell "~&`solve' is using arc-trig functions to get ~
 			    a solution.~%Some solutions will be lost.~%")
 		(setq $solvetrigwarn nil))
 	      `((mplus) ((mminus) ,(cadr *myvar))

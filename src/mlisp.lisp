@@ -2485,7 +2485,7 @@ wrapper for this."
   (let ((fun (meval (cadr l))) (arg (meval (caddr l))))
     (if (not ($listp arg))
 	(merror "Attempt to apply ~:M to ~M~
-		 ~%Second argument to APPLY must be a list."
+		 ~%Second argument to `apply' must be a list."
 		fun arg))
     (autoldchk (setq fun (getopr fun)))
     (mapply1 fun (cdr arg) (cadr l) l)))

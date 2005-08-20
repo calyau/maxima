@@ -237,7 +237,7 @@
 	 nil)
 	((memq temp '(mmacro translated-mmacro))
 	 (mtell "~%~@:M is a macro, won't trace well, so use ~
-		     the MACROEXPAND function to debug it." fun)
+		     the `macroexpand' function to debug it." fun)
 	 nil)
 	((get temp 'shadow)
 	 (put-trace-info fun temp ilist)

@@ -1743,7 +1743,7 @@
 		       ((or (null subvals) (null subs))
 			(when (or subvals subs)
 			  (merror "~&Incorrect number of subscripts to the ~
-				        DEFTAYLORed function ~A" (caar fun))))
+				        `deftaylor'-ed function ~A" (caar fun))))
 		     (setq exp-datum (MAXIMA-SUBSTITUTE (car subvals) (car subs)
 							exp-datum))))
 		 (ts-formula exp-datum var pw))))

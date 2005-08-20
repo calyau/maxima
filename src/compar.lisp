@@ -326,11 +326,11 @@ relational knowledge is contained in the default context GLOBAL."
 		  ((eq 'mor (caaar x))
 		   (merror "`assume': Maxima is unable to handle assertions involving `or'."))
 		  ((eq (caaar x) 'mequal)
-		   (merror "ASSUME: = means syntactic equality in Maxima.
-Maybe you want to use EQUAL."))
+		   (merror "`assume': `=' means syntactic equality in Maxima.
+Maybe you want to use `equal'."))
 		  ((eq (caaar x) 'mnotequal)
-		   (merror "ASSUME: # means syntactic unequality in Maxima.
-Maybe you want to use NOT EQUAL."))
+		   (merror "`assume': `#' means syntactic nonequality in Maxima.
+Maybe you want to use `not equal'."))
 		  (t (setq nl (cons (assume (meval (car x))) nl))))
 	    (setq x (cdr x))))
 

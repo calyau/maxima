@@ -42,7 +42,7 @@
     (setq exp (meqhk (arg 1)))
     (if ($ratp exp) (setq exp ($ratdisrep exp)))
     (cond ((or (not (mnump eps)) (mnegp eps) (equal eps 0))
-	   (merror "Second argument to REALROOTS was not a~
+	   (merror "Second argument to `realroots' was not a~
 		      positive number: ~M" eps)))
     (let (($keepfloat nil)) (sturmseq exp eps))))
 

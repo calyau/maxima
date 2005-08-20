@@ -305,7 +305,7 @@ APPLY means like APPLY.")
 	      (push form *warned-un-declared-vars*)
 	      (tr-format
 	       "~%WARNING-> ~:M has not been MODEDECLAREd, ~
-		       taken as mode ANY."
+		       taken as mode `any'."
 	       form)
 	      (cond (comment
 		     (dolist (v *translation-msgs-files*) (terpri v) (princ comment v))
@@ -1038,7 +1038,7 @@ APPLY means like APPLY.")
 (def%tr mdefine (form) ;; ((MDEFINE) ((F) ...) ...)
   (tr-format
    "A definition of the function ~:@M is given inside a program.~
-   ~%This doesn't work well, try using LAMBDA expressions instead.~%"
+   ~%This doesn't work well, try using `lambda' expressions instead.~%"
    (caar (cadr form)))
   `($any . (meval ',form)))
 
