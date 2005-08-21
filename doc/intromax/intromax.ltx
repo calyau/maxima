@@ -17,7 +17,7 @@
 
 
 
-\title{Introduction to MACSYMA%
+\title{Introduction to Maxima%
 \thanks{Adapted from ``Perturbation Methods, Bifurcation Theory and Computer Algebra'' by Rand and
 Armbruster, Springer, 1987}
 }
@@ -33,7 +33,7 @@ Armbruster, Springer, 1987}
 
 \section{Introduction \label{sec:introduction}}
 
-To invoke MAXIMA in Linux, type
+To invoke Maxima in Linux, type
 \begin{verbatim}
 maxima<ret>
 \end{verbatim}
@@ -49,17 +49,17 @@ Licensed under the GNU Public License (see file COPYING)
 (C1)                                                                                                    
 \end{verbatim}
 
-The {\tt (C1)} is a ``label''.  Each input or output line is labelled and can be referred to by its
-own label for the rest of the session.  {\tt C} labels denote your commands and {\tt D} labels
-denote Displays of the machine's response.  \emph{Never use variable names like {\tt C1} or {\tt
-D5}, as these will be confused with the lines so labeled}.
+The {\tt (\%i1)} is a ``label''.  Each input or output line is labelled and can be referred to by its
+own label for the rest of the session.  {\tt i} labels denote your commands and {\tt o} labels
+denote Displays of the machine's response.  \emph{Never use variable names like {\tt \%i1} or {\tt
+\%o5}, as these will be confused with the lines so labeled}.
 
-MAXIMA is pragmatic about lower and upper case: regardless of your typing {\tt sin(x)} or {\tt
-SIN(x)},
+Maxima is pragmatic about lower and upper case: regardless of your typing {\tt sin(x)} or {\tt
+sin(x)},
 {\tt \verb+%e^x+} or {\tt \verb+%E^x+}, it will understand that you mean the sine and exponential
-functions, and will echo in standard uppercase {\tt SIN} and {\tt \verb+%E+}.
+functions, and will echo in standard uppercase {\tt sin} and {\tt \verb+%e+}.
 \emph{That doesn't apply to user variables, though: {\tt x} and {\tt X} are \emph{different}
-variables for MAXIMA ! (Try it.)}
+variables for Maxima ! (Try it.)}
 
 
 
@@ -68,7 +68,7 @@ variables for MAXIMA ! (Try it.)}
 \section{Special keys and symbols \label{sec:keys}}
 
 \begin{enumerate}
-\item To end a MAXIMA session, type {\tt quit();}.  If you type \verb+^C+, here is what happens:
+\item To end a Maxima session, type {\tt quit();}.  If you type \verb+^C+, here is what happens:
 \begin{verbatim}
 Correctable error: Console interrupt.
 Signalled by MACSYMA-TOP-LEVEL.
@@ -79,14 +79,16 @@ MAXIMA>>:q
 (C1)     
 \end{verbatim}
 Notice that typing {\tt :q} or {\tt :t} (for \emph{top level}) after the {\tt MAXIMA>>} prompt gets
-you back to the MAXIMA level.
+you back to the Maxima level.
 \verb+^Y+, on the other hand, won't have any effect but being echoed on the screen; finally 
 \verb+^Z+ will have the same effect as {\tt quit();}. (Here \verb+^+ stands for the control key, so
 that \verb+^C+ means first press the key marked control and hold it down while pressing the C key.)
 
-\item To abort a computation without leaving MAXIMA, type \verb+^C+.  It is important for you to
+\item To abort a computation without leaving Maxima, type \verb+^C+.  It is important for you to
 know how to do this in case, for example, you begin a computation which is taking too long.
-Remember to type {\tt :q} at the {\tt MAXIMA>>} prompt to return to MAXIMA. For example:
+Remember to type {\tt :q} at the {\tt MAXIMA>>} prompt to return to Maxima. For example:
+% sum (1/x^2, x, 1, 10000);
+% ^C
 \begin{verbatim}
 (C1) sum(1/x^2,x,1,1000);
  
@@ -100,30 +102,30 @@ MAXIMA>>:q
 (C2)                                                                                                    
 \end{verbatim}
 
-\item In order to tell MAXIMA that you have finished your command, use the semicolon ({\tt ;}),
+\item In order to tell Maxima that you have finished your command, use the semicolon ({\tt ;}),
 followed by a return.  Note that the return key alone does not signal that you are done with your
 input.
 
 \item An alternative input terminator to the semicolon ({\tt ;}) is the dollar sign ({\tt \$}),
-which, however, supresses the display of MAXIMA's computation.  This is useful if you are computing
+which, however, supresses the display of Maxima's computation.  This is useful if you are computing
 some long intermediate result, and you don't want to waste time having it displayed on the screen.
 
 %\item If you want to completely delete the current input line (and start this line fresh from the
 %beginning), type a double question mark ({\tt ??}).
 
-\item If you wish to repeat a command which you have already given, say on line {\tt (C5)}, you may
+\item If you wish to repeat a command which you have already given, say on line {\tt (\%i5)}, you may
 do so without typing it over again by preceding its label with two single quotes ({\tt ''}), i.e., {\tt
-''C5}. (Note that simply inputing {\tt C5} will not do the job --- try it.)
+''\%i5}. (Note that simply inputing {\tt \%i5} will not do the job --- try it.)
 
-\item If you want to refer to the immediately preceding result computed my MAXIMA, you can either
-use its {\tt D} label, or you can use the special symbol percent   ({\tt \%}).
+\item If you want to refer to the immediately preceding result computed my Maxima, you can either
+use its {\tt o} label, or you can use the special symbol percent   ({\tt \%}).
 
 \item The standard quantities $e$ (natural log base), $i$ (square root of $-1$) and $\pi$
 ($3.14159\ldots$) are respectively referred to as \verb+%e+ (or \verb+%E+), \verb+%i+ 
-(or \verb+%I+), and \verb+%pi+ (or \verb+%PI+).  Note that the use of {\tt \%} here as a prefix
+(or \verb+%i+), and \verb+%pi+ (or \verb+%pi+).  Note that the use of {\tt \%} here as a prefix
 is completely unrelated to the use of {\tt \%} to refer to the preceding result computed.
 
-\item In order to assign a value to a variable, MAXIMA uses the colon ({\tt :}), not the equal
+\item In order to assign a value to a variable, Maxima uses the colon ({\tt :}), not the equal
 sign.  The equal sign is used for representing equations.
 \end{enumerate}
 
@@ -139,7 +141,8 @@ The common arithmetic operations are
    \item [{\tt .}] matrix multiplication
    \item [{\tt sqrt(x)}] square root of {\tt x}.
 \end{description}
-MAXIMA's output is characterized by exact (rational) arithmetic.  E.g.,
+Maxima's output is characterized by exact (rational) arithmetic.  E.g.,
+% 1/100 + 1/101;
 \begin{verbatim}
 (C1) 1/100+1/101;
  
@@ -148,6 +151,8 @@ MAXIMA's output is characterized by exact (rational) arithmetic.  E.g.,
                                      10100                                                              
 \end{verbatim}
 If irrational numbers are involved in a computation, they are kept in symbolic form:
+% (1 + sqrt(2))^5;
+% expand (%);
 \begin{verbatim}
 (C2) (1+sqrt(2))^5;
  
@@ -159,27 +164,32 @@ If irrational numbers are involved in a computation, they are kept in symbolic f
 \end{verbatim}
 However, it is often useful to express a result in decimal notation.  This may be accomplished by
 following the expression you want expanded by ``{\tt ,numer}'':
+% %, numer;
 \begin{verbatim}
 (C4) %,numer;
  
 (D4)                           82.01219330881976                                                             
 \end{verbatim}
 Note the use here of \verb+%+ 
-to refer to the previous result.  In this version of MAXIMA, {\tt numer} gives 16 significant
-figures, of which the last is often unreliable.  However, MAXIMA can offer \emph{arbitrarily high
+to refer to the previous result.  In this version of Maxima, {\tt numer} gives 16 significant
+figures, of which the last is often unreliable.  However, Maxima can offer \emph{arbitrarily high
 precision} by using the {\tt bfloat} function:
+% bfloat (%o3);
 \begin{verbatim}
 (C5) bfloat(d3);
  
 (D5)                          8.201219330881976B1                                                            \end{verbatim}
-The number of significant figures displayed is controlled by the MAXIMA variable {\tt FPPREC}, which
+The number of significant figures displayed is controlled by the Maxima variable {\tt fpprec}, which
 has the default value of 16:
+% fpprec;
 \begin{verbatim}
 (C6) fpprec;
  
 (D6)                                  16                                                                     
 \end{verbatim}
-Here we reset {\tt FPPREC} to yield 100 digits:
+Here we reset {\tt fpprec} to yield 100 digits:
+% fpprec: 100;
+% ''%o5;
 \begin{verbatim}
 (C7) fpprec:100;
  
@@ -190,8 +200,9 @@ Here we reset {\tt FPPREC} to yield 100 digits:
  
 7540110412666123849550160561B1
 \end{verbatim}
-Note the use of two single quotes ({\tt ''}) in {\tt (C8)} to repeat command {\tt (C5)}.  MAXIMA can
+Note the use of two single quotes ({\tt ''}) in {\tt (\%i8)} to repeat command {\tt (\%i5)}.  Maxima can
 handle very large numbers without approximation:
+% 100!;
 \begin{verbatim}
 (C9) 100!;
  
@@ -203,8 +214,10 @@ handle very large numbers without approximation:
 
 \section{Algebra \label{sec:algebra}}
 
-MAXIMA's importance as a computer tool to facilitate analytical calculations becomes more evident
+Maxima's importance as a computer tool to facilitate analytical calculations becomes more evident
 when we see how easily it does algebra for us.  Here's an example in which a polynomial is expanded:
+% (x + 3*y + x^2*y)^3;
+% expand (%);
 \begin{verbatim}
 (C1) (x+3*y+x^2*y)^3;
  
@@ -221,6 +234,7 @@ when we see how easily it does algebra for us.  Here's an example in which a pol
 Now suppose we wanted to substitute {\tt 5/z} for {\tt x} in the above expression:
 
 \noindent\begin{minipage}{\textwidth}
+% %o2, x=5/z;
 \begin{verbatim}
 (C3) d2,x=5/z;
  
@@ -237,7 +251,8 @@ Now suppose we wanted to substitute {\tt 5/z} for {\tt x} in the above expressio
                                                                   z                                          
 \end{verbatim}
 \end{minipage}
-The MAXIMA function RATSIMP will place this over a common denominator:
+The Maxima function {\tt ratsimp} will place this over a common denominator:
+% ratsimp (%);
 \begin{verbatim}
 (C4) ratsimp(%);
  
@@ -248,6 +263,7 @@ The MAXIMA function RATSIMP will place this over a common denominator:
                              + (5625 y  + 1875 y) z  + 9375 y  z + 15625 y )/z    
 \end{verbatim}
 Expressions may also be {\tt factor}ed:
+% factor (%);
 \begin{verbatim}
 (C5) factor(%);
  
@@ -257,8 +273,12 @@ Expressions may also be {\tt factor}ed:
                                        6
                                       z                                                                      
 \end{verbatim}
-MAXIMA can obtain exact solutions to systems of nonlinear algebraic equations.  In this example we
-{\tt solve} three equations in the three unknowns {\tt A}, {\tt B}, {\tt C}:
+Maxima can obtain exact solutions to systems of nonlinear algebraic equations.  In this example we
+{\tt solve} three equations in the three unknowns {\tt a}, {\tt b}, {\tt c}:
+% a + b*c = 1;
+% b - a*c = 0;
+% a + b = 5;
+% solve ([%o6, %o7, %o8], [a, b, c]);
 \begin{verbatim}
 (C6) a + b*c=1;
  
@@ -283,8 +303,10 @@ Note that the display consists of a ``list'', i.e., some expression contained be
 {\tt [ \ldots ]}, which itself contains two lists.  Each of the latter contain a distinct solution
 to the simultaneous equations.
 
-Trigonometric identities are easy to manipulate in MAXIMA.  The function {\tt trigexpand} uses the
+Trigonometric identities are easy to manipulate in Maxima.  The function {\tt trigexpand} uses the
 sum-of-angles formulas to make the argument inside each trig function as simple as possible:
+% sin(u + v) * cos(u)^3;
+% trigexpand (%);
 \begin{verbatim}
 (C10) sin(u+v)*cos(u)^3;
  
@@ -297,6 +319,7 @@ sum-of-angles formulas to make the argument inside each trig function as simple 
 \end{verbatim}
 The function {\tt trigreduce}, on the other hand, converts an expression into a form which is a sum
 of terms, each of which contains only a single {\tt sin} or {\tt cos}:
+% trigreduce (%o10);
 \begin{verbatim}
 
 (C12) trigreduce(d10);
@@ -307,6 +330,9 @@ of terms, each of which contains only a single {\tt sin} or {\tt cos}:
 \end{verbatim}
 The functions {\tt realpart} and {\tt imagpart} will return the real and imaginary parts of a
 complex expression:
+% w: 3 + k*%i;
+% w^2 * %e^w;
+% realpart (w);
 \begin{verbatim}
 
 (C13) w:3+k*%i;
@@ -324,9 +350,10 @@ complex expression:
 
 \section{Calculus \label{sec:calculus}}
 
-MAXIMA can compute derivatives and integrals, expand in Taylor series, take limits, and obtain exact
+Maxima can compute derivatives and integrals, expand in Taylor series, take limits, and obtain exact
 solutions to ordinary differential equations.  We begin by defining the symbol {\tt f} to be the
 following function of {\tt x}:
+% f: x^3 * %e^(k*x) * sin(w*x);
 \begin{verbatim}
 (C1) f:x^3*%E^(k*x)*sin(w*x);
  
@@ -334,6 +361,7 @@ following function of {\tt x}:
 (D1)                           x  %E    SIN(w x)    
 \end{verbatim}
 We compute the derivative of {\tt f} with respect to {\tt x}:
+% diff (f, x);
 \begin{verbatim}
 (C2) diff(f,x);
  
@@ -341,6 +369,7 @@ We compute the derivative of {\tt f} with respect to {\tt x}:
 (D2)    k x  %E    SIN(w x) + 3 x  %E    SIN(w x) + w x  %E    COS(w x)             
 \end{verbatim}
 Now we find the indefinite integral of {\tt f} with respect to {\tt x}:
+% integrate (f, x);
 \begin{verbatim}
 (C3) integrate(f,x);
  
@@ -363,6 +392,8 @@ Now we find the indefinite integral of {\tt f} with respect to {\tt x}:
 /(w  + 4 k  w  + 6 k  w  + 4 k  w  + k )                                                                     
 \end{verbatim}
 A slight change in syntax gives definite integrals:
+% integrate (1/x^2, x, 1, inf);
+% integrate (1/x, x, 0, inf);
 \begin{verbatim}
 (C4) integrate(1/x^2,x,1,inf);
  
@@ -372,11 +403,13 @@ A slight change in syntax gives definite integrals:
 Integral is divergent
  -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
 \end{verbatim}
-Next we define the simbol {\tt g} in terms of {\tt f} (previously defined in {\tt C1}) and the
+Next we define the simbol {\tt g} in terms of {\tt f} (previously defined in {\tt \%i1}) and the
 hyperbolic sine function, and find its Taylor series expansion (up to, say, order 3 terms) about the
 point {\tt x = 0}:
 
 \noindent\begin{minipage}{\textwidth}
+% g: f / sinh(k*x)^4;
+% taylor (g, x, 0, 3);
 \begin{verbatim}
 (C6) g:f/sinh(k*x)^4;
  
@@ -395,6 +428,7 @@ point {\tt x = 0}:
 \end{verbatim}
 \end{minipage}
 The limit of {\tt g} as {\tt x} goes to 0 is computed as follows:
+% limit (g, x, 0);
 \begin{verbatim}
 (C8) limit(g,x,0);
  
@@ -402,7 +436,8 @@ The limit of {\tt g} as {\tt x} goes to 0 is computed as follows:
 (D8)                                  --
                                        4
                                       k                                                                      \end{verbatim}
-MAXIMA also permits derivatives to be represented in unevaluated form (note the quote):
+Maxima also permits derivatives to be represented in unevaluated form (note the quote):
+% 'diff (y, x);
 \begin{verbatim}
 (C9) 'diff(y,x);
  
@@ -410,14 +445,16 @@ MAXIMA also permits derivatives to be represented in unevaluated form (note the 
 (D9)                                  --
                                       dx                                                                     
 \end{verbatim}
-The quote operator in {\tt (C9)} means ``do not evaluate''.  Without it, MAXIMA would have obtained
+The quote operator in {\tt (\%i9)} means ``do not evaluate''.  Without it, Maxima would have obtained
 0:
+% diff (y, x);
 \begin{verbatim}
 (C10) diff(y,x);
  
 (D10)                                  0                
 \end{verbatim}
 Using the quote operator we can write differential equations:
+% 'diff (y, x, 2) + 'diff (y, x) + y;
 \begin{verbatim}
 (C11) 'diff(y,x,2) + 'diff(y,x) + y;
  
@@ -427,7 +464,8 @@ Using the quote operator we can write differential equations:
                                    2   dx
                                  dx                                                                          
 \end{verbatim}
-MAXIMA's {\tt ODE2} function can solve first and second order ODE's:
+Maxima's {\tt ode2} function can solve first and second order ODE's:
+% ode2 (%o11, y, x);
 \begin{verbatim}
 (C12) ode2(d11,y,x);
  
@@ -440,9 +478,10 @@ MAXIMA's {\tt ODE2} function can solve first and second order ODE's:
 \newpage
 \section{Matrix calculations \label{sec:matrix}}
 
-MAXIMA can compute the determinant, inverse and eigenvalues and eigenvectors of matrices which have
+Maxima can compute the determinant, inverse and eigenvalues and eigenvectors of matrices which have
 symbolic elements (i.e., elements which involve algebraic variables.) We begin by entering a matrix
 {\tt m} element by element:
+% m: entermatrix (3, 3);
 \begin{verbatim}
 (C1) m:entermatrix(3,3);
 
@@ -467,6 +506,9 @@ Matrix entered.
                                   [ 1  1  0 ]                                                           
 \end{verbatim}
 Next we find its transpose, determinant and inverse:
+% transpose (m);
+% determinant (m);
+% invert (m), detout;
 \begin{verbatim}
 (C2) transpose(m);
  
@@ -488,8 +530,11 @@ Next we find its transpose, determinant and inverse:
 (D4)                           -----------------
                                      a + 1                                                              
 \end{verbatim}
-In {\tt (C4)}, the modifier {\tt DETOUT} keeps the determinant outside the inverse.  As a check, we
+In {\tt (\%i4)}, the modifier {\tt detout} keeps the determinant outside the inverse.  As a check, we
 multiply {\tt m} by its inverse (note the use of the period to represent matrix multiplication):
+% m . %o4;
+% expand (%);
+% factor (%);
 \begin{verbatim}
 (C5) m.d4;
 
@@ -523,9 +568,10 @@ multiply {\tt m} by its inverse (note the use of the period to represent matrix 
                                   [ 0  0  1 ]                                                                
 \end{verbatim}
 In order to find the eigenvalues and eigenvectors of {\tt m}, we use the function {\tt
-EIGENVECTORS}:
+eigenvectors}:
 
 \noindent\begin{minipage}{\textwidth}
+% eigenvectors (m);
 \begin{verbatim}
 (C8) eigenvectors(m);
  
@@ -543,10 +589,11 @@ Warning - you are redefining the MACSYMA function EIGENVECTORS
 [1, -----------------, -----------------], [1, - 1, 0]]
          2 a + 2            2 a + 2                                               
 \end{verbatim}
-In {\tt D8}, the first triple gives the eigenvalues of {\tt m} and the next gives their respective
+In {\tt \%o8}, the first triple gives the eigenvalues of {\tt m} and the next gives their respective
 multiplicities (here each is unrepeated).  The next three triples give the corresponding
 eigenvectors of {\tt m}.  In order to extract from this expression one of these eigenvectors, we may
-use the {\tt PART} function:
+use the {\tt part} function:
+% part (%, 2);
 \begin{verbatim}
 (C9) part(%,2);
  
@@ -556,15 +603,15 @@ use the {\tt PART} function:
 \end{verbatim}
 \end{minipage}
 
-\section{Programming in MAXIMA \label{sec:programming}}
+\section{Programming in Maxima \label{sec:programming}}
 
-So far, we have used MAXIMA in the interactive mode, rather like a calculator.  However, for
+So far, we have used Maxima in the interactive mode, rather like a calculator.  However, for
 computations which involve a repetitive sequence of commands, it is better to execute a program.
 Here we present a short sample program to calculate the critical points of a function {\tt f} of two
 variables {\tt x} and {\tt y}.  The program cues the user to enter the function {\tt f}, then it
-computes the partial derivatives $\mathtt{f_x}$ and $\mathtt{f_y}$, and then it uses the MAXIMA
-command {\tt SOLVE} to obtain solutions to $\mathtt{f_x = f_y = 0}$.  The program is written outside
-of MAXIMA with a text editor, and then loaded into MAXIMA with the {\tt BATCH} command.  Here is the
+computes the partial derivatives $\mathtt{f_x}$ and $\mathtt{f_y}$, and then it uses the Maxima
+command {\tt solve} to obtain solutions to $\mathtt{f_x = f_y = 0}$.  The program is written outside
+of Maxima with a text editor, and then loaded into Maxima with the {\tt batch} command.  Here is the
 program listing:
 \begin{verbatim}
 /* -------------------------------------------------------------------------- 
@@ -600,9 +647,11 @@ critpts():=(
 )$
 \end{verbatim}
 The program (which is actually a function with no argument) is called {\tt critpts}. Each line is a
-valid MAXIMA command which could be executed from the keyboard, and which is separated by the next
+valid Maxima command which could be executed from the keyboard, and which is separated by the next
 command by a comma.  The partial derivatives are stored in a variable named {\tt eqs}, and the
 unknowns are stored in {\tt unk}.  Here is a sample run:
+% batch ("critpts.max");
+% critpts ();
 \begin{verbatim} 
 (C1) batch("critpts.max");
  
@@ -639,117 +688,117 @@ y = 0.4559120701117 - 0.86972626928141 %I],
 y = 0.86972626928141 %I + 0.4559120701117]]                                     
 \end{verbatim}
 
-\section{A partial list of MAXIMA functions}
+\section{A partial list of Maxima functions}
 
-See the MAXIMA Manual in the {\tt maxima-5.4/info/} directory in texinfo or html format.  From
-MAXIMA itself, you can use {\tt DESCRIBE(\textit{function name})}.
+See the Maxima reference manual {\tt doc/html/maxima_toc.html} (under the main Maxima installation directory).
+From Maxima itself, you can use {\tt describe(\textit{function name})}.
 
 \begin{description}
-   \item[{\tt ALLROOTS(A)}] Finds all the (generally complex) roots of the polynomial equation {\tt
-   A}, and lists them in {\tt NUMER}ical format (i.e. to 16 significant figures).
-   \item[{\tt APPEND(A,B)}] Appends the list {\tt B} to the list {\tt A}, resulting in a single
+   \item[{\tt allroots(a)}] Finds all the (generally complex) roots of the polynomial equation {\tt
+   A}, and lists them in {\tt numer}ical format (i.e. to 16 significant figures).
+   \item[{\tt append(a,b)}] Appends the list {\tt b} to the list {\tt a}, resulting in a single
    list.
-   \item[{\tt BATCH(A)}] Loads and runs a BATCH program with filename {\tt A}.
-   \item[{\tt COEFF(A,B,C)}] Gives the coefficient of {\tt B} raised to the power {\tt C} in
-   expression {\tt A}.
-   \item[{\tt CONCAT(A,B)}] Creates the symbol {\tt AB}.
-   \item[{\tt CONS(A,B)}] Adds {\tt A} to the list {\tt B} as its first element.
-   \item[{\tt DEMOIVRE(A)}] Transforms all complex exponentials in {\tt A} to their trigonometric
+   \item[{\tt batch(a)}] Loads and runs a program with filename {\tt a}.
+   \item[{\tt coeff(a,b,c)}] Gives the coefficient of {\tt b} raised to the power {\tt c} in
+   expression {\tt a}.
+   \item[{\tt concat(a,b)}] Creates the symbol {\tt ab}.
+   \item[{\tt cons(a,b)}] Adds {\tt a} to the list {\tt b} as its first element.
+   \item[{\tt demoivre(a)}] Transforms all complex exponentials in {\tt a} to their trigonometric
    equivalents. 
-   \item[{\tt DENOM(A)}] Gives the denominator of {\tt A}.
-   \item[{\tt DEPENDS(A,B)}] Declares {\tt A} to be a function of {\tt B}.  This is useful for
+   \item[{\tt denom(a)}] Gives the denominator of {\tt a}.
+   \item[{\tt depends(a,b)}] Declares {\tt a} to be a function of {\tt b}.  This is useful for
    writing unevaluated derivatives, as in specifying differential equations.
-   \item[{\tt DESOLVE(A,B)}] Attempts to solve a linear system {\tt A} of ODE's for unknowns {\tt B}
+   \item[{\tt desolve(a,b)}] Attempts to solve a linear system {\tt a} of ODE's for unknowns {\tt b}
    using Laplace transforms.
-   \item[{\tt DETERMINANT(A)}] Returns the determinant of the square matrix {\tt A}.
-   \item[{\tt DIFF(A,B1,C1,B2,C2,\ldots,Bn,Cn)}] Gives the mixed partial derivative of {\tt A} with
-   respect to each {\tt Bi}, {\tt Ci} times.  For brevity, {\tt DIFF(A,B,1)} may be represented by
-   {\tt DIFF(A,B)}.  {\tt 'DIFF(\ldots)} represents the unevaluated derivative, useful in specifying
+   \item[{\tt determinant(a)}] Returns the determinant of the square matrix {\tt a}.
+   \item[{\tt diff(a,b1,c1,b2,c2,\ldots,bn,cn)}] Gives the mixed partial derivative of {\tt a} with
+   respect to each {\tt bi}, {\tt ci} times.  For brevity, {\tt diff(a,b,1)} may be represented by
+   {\tt diff(a,b)}.  {\tt 'diff(\ldots)} represents the unevaluated derivative, useful in specifying
    a differential equation.
-   \item[{\tt EIGENVALUES(A)}] Returns two lists, the first being the eigenvalues of the square
-   matrix {\tt A}, and the second being their respective multiplicities.
-   \item[{\tt EIGENVECTORS(A)}] Does everything that {\tt EIGENVALUES} does, and adds a list of the
-   eigenvectors of {\tt A}.
-   \item[{\tt ENTERMATRIX(A,B)}] Cues the user to enter an $\mathtt{A} \times\, \mathtt{B}$ matrix,
+   \item[{\tt eigenvalues(a)}] Returns two lists, the first being the eigenvalues of the square
+   matrix {\tt a}, and the second being their respective multiplicities.
+   \item[{\tt eigenvectors(a)}] Does everything that {\tt eigenvalues} does, and adds a list of the
+   eigenvectors of {\tt a}.
+   \item[{\tt entermatrix(a,b)}] Cues the user to enter an $\mathtt{a} \times\, \mathtt{b}$ matrix,
    element by element.
-   \item[{\tt EV(A,B1,B2,\ldots,Bn)}] Evaluates {\tt A} subject to the conditions {\tt Bi}.  In
-   particular the {\tt Bi} may be equations, lists of equations (such as that returned by {\tt
-   SOLVE}), or assignments, in which cases {\tt EV} ``plugs'' the {\tt Bi} into {\tt A}.  The {\tt
-   Bi} may also be words such as {\tt NUMER} (in which case the result is returned in numerical
-   format), {\tt DETOUT} (in which case any matrix inverses in {\tt A} are performed with the
-   determinant factored out), or {\tt DIFF} (in which case all differentiations in {\tt A} are
-   evaluated, i.e., {\tt 'DIFF} in {\tt A} is replaced by {\tt DIFF}).  For brevity in a manual
-   command (i.e., not inside a user-defined function), the {\tt EV} may be dropped, shortening the
-   syntax to {\tt A,B1,B2,\ldots,Bn}.
-   \item[{\tt EXPAND(A)}] Algebraically expands {\tt A}.  In particular multiplication is
+   \item[{\tt ev(a,b1,b2,\ldots,bn)}] Evaluates {\tt a} subject to the conditions {\tt bi}.  In
+   particular the {\tt bi} may be equations, lists of equations (such as that returned by {\tt
+   solve}), or assignments, in which cases {\tt ev} ``plugs'' the {\tt bi} into {\tt a}.  The {\tt
+   Bi} may also be words such as {\tt numer} (in which case the result is returned in numerical
+   format), {\tt detout} (in which case any matrix inverses in {\tt a} are performed with the
+   determinant factored out), or {\tt diff} (in which case all differentiations in {\tt a} are
+   evaluated, i.e., {\tt 'diff} in {\tt a} is replaced by {\tt diff}).  For brevity in a manual
+   command (i.e., not inside a user-defined function), the {\tt ev} may be dropped, shortening the
+   syntax to {\tt a,b1,b2,\ldots,bn}.
+   \item[{\tt expand(a)}] Algebraically expands {\tt a}.  In particular multiplication is
    distributed over addition.
-   \item[{\tt EXPONENTIALIZE(A)}] Transforms all trigonometric functions in {\tt A} to their complex
+   \item[{\tt exponentialize(a)}] Transforms all trigonometric functions in {\tt a} to their complex
    exponential equivalents.
-   \item[{\tt FACTOR(A)}] Factors {\tt A}.
-   \item[{\tt FREEOF(A,B)}] Is true if the variable {\tt A} is not part of the expression {\tt B}.
-   \item[{\tt GRIND(A)}] Displays a variable or function {\tt A} in a compact format.  When used
-   with {\tt WRITEFILE} and an editor outside of MAXIMA, it offers a scheme for producing {\tt
-   BATCH} files which include MAXIMA-generated expressions.
-   \item[{\tt IDENT(A)}] Returns an $\mathtt{A} \times\, \mathtt{A}$ identity matrix.
-   \item[{\tt IMAGPART(A)}] Returns the imaginary part of {\tt A}.
-   \item[{\tt INTEGRATE(A,B)}] Attempts to find the indefinite integral of {\tt A} with respect to
-   {\tt B}.
-   \item[{\tt INTEGRATE(A,B,C,D)}] Attempts to find the indefinite integral of {\tt A} with respect to
-   {\tt B}. taken from $\mathtt{B=C}$ to $\mathtt{B=D}$.  The limits of integration {\tt C} and {\tt
-   D} may be taken is {\tt INF} (positive infinity) of {\tt MINF} (negative infinity).
-   \item[{\tt INVERT(A)}] Computes the inverse of the square matrix {\tt A}.
-   \item[{\tt KILL(A)}] Removes the variable {\tt A} with all its assignments and properties from
-   the current MAXIMA environment.
-   \item[{\tt LIMIT(A,B,C)}] Gives the limit of expression {\tt A} as variable {\tt B} approaches
-   the value {\tt C}.  The latter may be taken as {\tt INF} of {\tt MINF} as in {\tt INTEGRATE}.
-   \item[{\tt LHS(A)}] Gives the left-hand side of the equation {\tt A}.
-   \item[{\tt LOADFILE(A)}] Loads a disk file with filename {\tt A} from the current default
-   directory.  The disk file must be in the proper format (i.e. created by a {\tt SAVE} command).
-   \item[{\tt MAKELIST(A,B,C,D)}] Creates a list of {\tt A}'s (each of which presumably depends on
-   {\tt B}), concatenated from $\mathtt{B=C}$ to $\mathtt{B=D}$
-   \item[{\tt MAP(A,B)}] Maps the function {\tt A} onto the subexpressions of {\tt B}.
-   \item[{\tt MATRIX(A1,A2,\ldots,An)}] Creates a matrix consisting of the rows {\tt Ai}, where each
-   row {\tt Ai} is a list of {\tt m} elements, {\tt [B1, B2, \ldots, Bm]}.
-   \item[{\tt NUM(A)}] Gives the numerator of {\tt A}.
-   \item[{\tt ODE2(A,B,C)}] Attempts to solve the first- or second-order ordinary differential
-   equation {\tt A} for {\tt B} as a function of {\tt C}.
-   \item[{\tt PART(A,B1,B2,\ldots,Bn)}] First takes the {\tt B1}th part of {\tt A}, then the {\tt
+   \item[{\tt factor(a)}] Factors {\tt a}.
+   \item[{\tt freeof(a,b)}] Is true if the variable {\tt a} is not part of the expression {\tt b}.
+   \item[{\tt grind(a)}] Displays a variable or function {\tt a} in a compact format.  When used
+   with {\tt writefile} and an editor outside of Maxima, it offers a scheme for producing {\tt
+   batch} files which include Maxima-generated expressions.
+   \item[{\tt ident(a)}] Returns an $\mathtt{a} \times\, \mathtt{a}$ identity matrix.
+   \item[{\tt imagpart(a)}] Returns the imaginary part of {\tt a}.
+   \item[{\tt integrate(a,b)}] Attempts to find the indefinite integral of {\tt a} with respect to
+   {\tt b}.
+   \item[{\tt integrate(a,b,c,d)}] Attempts to find the indefinite integral of {\tt a} with respect to
+   {\tt b}. taken from $\mathtt{b=c}$ to $\mathtt{b=d}$.  The limits of integration {\tt c} and {\tt
+   D} may be taken is {\tt inf} (positive infinity) of {\tt minf} (negative infinity).
+   \item[{\tt invert(a)}] Computes the inverse of the square matrix {\tt a}.
+   \item[{\tt kill(a)}] Removes the variable {\tt a} with all its assignments and properties from
+   the current Maxima environment.
+   \item[{\tt limit(a,b,c)}] Gives the limit of expression {\tt a} as variable {\tt b} approaches
+   the value {\tt c}.  The latter may be taken as {\tt inf} of {\tt minf} as in {\tt integrate}.
+   \item[{\tt lhs(a)}] Gives the left-hand side of the equation {\tt a}.
+   \item[{\tt loadfile(a)}] Loads a disk file with filename {\tt a} from the current default
+   directory.  The disk file must be in the proper format (i.e. created by a {\tt save} command).
+   \item[{\tt makelist(a,b,c,d)}] Creates a list of {\tt a}'s (each of which presumably depends on
+   {\tt b}), concatenated from $\mathtt{b=c}$ to $\mathtt{b=d}$
+   \item[{\tt map(a,b)}] Maps the function {\tt a} onto the subexpressions of {\tt b}.
+   \item[{\tt matrix(a1,a2,\ldots,an)}] Creates a matrix consisting of the rows {\tt ai}, where each
+   row {\tt ai} is a list of {\tt m} elements, {\tt [b1, b2, \ldots, bm]}.
+   \item[{\tt num(a)}] Gives the numerator of {\tt a}.
+   \item[{\tt ode2(a,b,c)}] Attempts to solve the first- or second-order ordinary differential
+   equation {\tt a} for {\tt b} as a function of {\tt c}.
+   \item[{\tt part(a,b1,b2,\ldots,bn)}] First takes the {\tt b1}th part of {\tt a}, then the {\tt
    B2}th part of that, and so on.
-   \item[{\tt PLAYBACK(A)}] Displays the last {\tt A} (an integer) labels and their associated
-   expressions.  If {\tt A} is omitted, all lines are played back.  See the Manual for other
+   \item[{\tt playback(a)}] Displays the last {\tt a} (an integer) labels and their associated
+   expressions.  If {\tt a} is omitted, all lines are played back.  See the Manual for other
    options.
-   \item[{\tt RATSIMP(A)}] Simplifies {\tt A} and returns a quotient of two polynomials.
-   \item[{\tt REALPART(A)}] Returns the real part of {\tt A}.
-   \item[{\tt RHS(A)}] Gives the right-hand side of the equation {\tt A}.
-   \item[{\tt SAVE(A,B1,B2,\ldots, Bn)}] Creates a disk file with filename {\tt A} in the current
-   default directory, of variables, functions, or arrays {\tt Bi}.  The format of the file permits
-   it to be reloaded into MAXIMA using the {\tt LOADFILE} command.  Everything (including labels)
-   may be {\tt SAVE}d by taking {\tt B1} equal to {\tt ALL}.
-   \item[{\tt SOLVE(A,B)}] Attempts to solve the algebraic equation {\tt A} for the unknown {\tt B}.  A
-   list of solution equations is returned.  For brevity, if {\tt A} is an equation of the form
-   $\mathtt{C = 0}$, it may be abbreviated simply by the expression {\tt C}.
-   \item[{\tt STRING(A)}] Converts {\tt A} to MACSYMA's linear notation (similar to FORTRAN's) just as if
-   it had been typed in and puts {\tt A} into the
-    buffer for possible editing.  The STRING'ed expression should not be used in a computation. 
-   \item[{\tt STRINGOUT(A,B1,B2,\ldots,Bn)}] Creates a disk file with filename {\tt A} in the current
-   default directory, of variables (e.g. labels) {\tt Bi}.  The file is in a text format and is not
-   reloadable into MAXIMA. However the strungout expressions can be incorporated into a FORTRAN,
-   BASIC or C program with a minimum of editing.
-   \item[{\tt SUBST(A,B,C)}] Substitutes {\tt A} for {\tt B} in {\tt C}.
-   \item[{\tt TAYLOR(A,B,C,D)}] Expands {\tt A} in a Taylor series in {\tt B} about $\mathtt{B=C}$,
-   up to and including the term $\mathtt{(B-C)^D}$.  MAXIMA also supports Taylor expansions in more
+   \item[{\tt ratsimp(a)}] Simplifies {\tt a} and returns a quotient of two polynomials.
+   \item[{\tt realpart(a)}] Returns the real part of {\tt a}.
+   \item[{\tt rhs(a)}] Gives the right-hand side of the equation {\tt a}.
+   \item[{\tt save(a,b1,b2,\ldots, bn)}] Creates a disk file with filename {\tt a} in the current
+   default directory, of variables, functions, or arrays {\tt bi}.  The format of the file permits
+   it to be reloaded into Maxima using the {\tt loadfile} command.  Everything (including labels)
+   may be {\tt save}d by taking {\tt b1} equal to {\tt all}.
+   \item[{\tt solve(a,b)}] Attempts to solve the algebraic equation {\tt a} for the unknown {\tt b}.  A
+   list of solution equations is returned.  For brevity, if {\tt a} is an equation of the form
+   $\mathtt{c = 0}$, it may be abbreviated simply by the expression {\tt c}.
+   \item[{\tt string(a)}] Converts {\tt a} to Maxima's linear notation (similar to Fortran's) just as if
+   it had been typed in and puts {\tt a} into the
+    buffer for possible editing.  The {\tt string}'ed expression should not be used in a computation. 
+   \item[{\tt stringout(a,b1,b2,\ldots,bn)}] Creates a disk file with filename {\tt a} in the current
+   default directory, of variables (e.g. labels) {\tt bi}.  The file is in a text format and is not
+   reloadable into Maxima. However the strungout expressions can be incorporated into a Fortran,
+   Basic or C program with a minimum of editing.
+   \item[{\tt subst(a,b,c)}] Substitutes {\tt a} for {\tt b} in {\tt c}.
+   \item[{\tt taylor(a,b,c,d)}] Expands {\tt a} in a Taylor series in {\tt b} about $\mathtt{b=c}$,
+   up to and including the term $\mathtt{(b-c)^d}$.  Maxima also supports Taylor expansions in more
    than one independent variable; see the Manual for details.
-   \item[{\tt TRANSPOSE(A)}] Gives the transpose of the matrix {\tt A}.
-   \item[{\tt TRIGEXPAND(A)}] Is a trig simplification function which uses the sum-of-angles
-   formulas to simplify the arguments of individual {\tt SIN}'s or {\tt COS}'s.  For example, 
-   {\tt trigexpand(sin(x+y))} gives {\tt COS(x) SIN(y) + SIN(x) COS(y)}.
-   \item[{\tt TRIGREDUCE(A)}] Is a trig simplification function which uses trig identities to
-   convert products and powers of {\tt SIN} and {\tt COS} into a sum of terms, each of which
-   contains only a single {\tt SIN} or {\tt COS}.  For example, \verb+trigreduce(sin(x)^2)+ gives
-   {\tt (1 - COS(2x))/2}.
-   \item[{\tt TRIGSIMP(A)}] Is a trig simplification function which replaces {\tt TAN}, {\tt SEC},
-   etc., by their {\tt SIN} and {\tt COS} equivalents.  It also uses the identity 
-   $\mathtt{SIN()^2 +   COS()^2 = 1}$.
+   \item[{\tt transpose(a)}] Gives the transpose of the matrix {\tt a}.
+   \item[{\tt trigexpand(a)}] Is a trig simplification function which uses the sum-of-angles
+   formulas to simplify the arguments of individual {\tt sin}'s or {\tt cos}'s.  For example, 
+   {\tt trigexpand(sin(x+y))} gives {\tt cos(x) sin(y) + sin(x) cos(y)}.
+   \item[{\tt trigreduce(a)}] Is a trig simplification function which uses trig identities to
+   convert products and powers of {\tt sin} and {\tt cos} into a sum of terms, each of which
+   contains only a single {\tt sin} or {\tt cos}.  For example, \verb+trigreduce(sin(x)^2)+ gives
+   {\tt (1 - cos(2x))/2}.
+   \item[{\tt trigsimp(a)}] Is a trig simplification function which replaces {\tt tan}, {\tt sec},
+   etc., by their {\tt sin} and {\tt cos} equivalents.  It also uses the identity 
+   $\mathtt{sin()^2 +   cos()^2 = 1}$.
 \end{description}
 
 
