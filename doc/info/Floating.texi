@@ -35,9 +35,8 @@ Default value: 10^8
 @end defvr
 
 @deffn {Function} bfloat (@var{expr})
-Converts all numbers and functions of numbers to bigfloat
-numbers.  Setting @code{fpprec} to @code{n}, sets the bigfloat precision to @code{n}
-digits.  
+Converts all numbers and functions of numbers in @var{expr} to bigfloat numbers.
+The number of significant digits in the resulting bigfloats is specified by the global variable @code{fpprec}.
 
 When @code{float2bf} is @code{false} a warning message is printed when
 a floating point number is converted into a bigfloat number (since
@@ -124,10 +123,10 @@ Returns @code{true} if @var{expr} is a floating point number, otherwise @code{fa
 @defvr {Option variable} fpprec
 Default value: 16
 
-@c THIS EXPLANATION REALLY NEEDS SERIOUS CLARIFICATION. 
-@c AS IT STANDS THIS SEEMS TO IMPLY A CAPABILITY THAT MAXIMA ALMOST CERTAINLY DOESN'T HAVE
-@code{fpprec} is the Maxima floating point precision.  @code{fpprec} can be set to an
-integer representing the desired precision.
+@code{fpprec} is the number of significant digits for arithmetic on bigfloat numbers.
+@code{fpprec} does not affect computations on ordinary floating point numbers.
+
+See also @code{bfloat} and @code{fpprintprec}.
 
 @end defvr
 
