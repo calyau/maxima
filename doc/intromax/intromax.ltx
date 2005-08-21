@@ -17,13 +17,14 @@
 
 
 
-\title{Introduction to Maxima%
-\thanks{Adapted from ``Perturbation Methods, Bifurcation Theory and Computer Algebra'' by Rand and
-Armbruster, Springer, 1987}
-}
-\author{Richard H. Rand\\ Dept. of Theoretical and Applied Mechanics, Cornell University%
-\thanks{Adapted to \LaTeX\ and HTML by Nelson L. Dias (nldias@simepar.br), SIMEPAR Technological Institute and Federal University of Paraná, Brazil}}
-\date{\today}
+\title{Introduction to Maxima}
+\author{Richard H. Rand\\ Dept. of Theoretical and Applied Mechanics, Cornell University
+\thanks{Adapted from ``Perturbation Methods, Bifurcation Theory and Computer Algebra''
+by Rand and Armbruster, Springer, 1987.
+Adapted to \LaTeX\ and HTML by Nelson L. Dias (nldias@simepar.br), 
+SIMEPAR Technological Institute and Federal University of Paraná, Brazil.
+Updated by Robert Dodier, August 2005.}}
+\date{\empty}
 
 
 \begin{document}
@@ -35,7 +36,7 @@ Armbruster, Springer, 1987}
 
 To invoke Maxima in Linux, type
 \begin{verbatim}
-maxima<ret>
+maxima <enter>
 \end{verbatim}
 
 
@@ -50,41 +51,30 @@ provides bug reporting information.
 
 The {\tt (\%i1)} is a ``label''.  Each input or output line is labelled and can be referred to by its
 own label for the rest of the session.  {\tt i} labels denote your commands and {\tt o} labels
-denote Displays of the machine's response.  \emph{Never use variable names like {\tt \%i1} or {\tt
+denote displays of the machine's response.  \emph{Never use variable names like {\tt \%i1} or {\tt
 \%o5}, as these will be confused with the lines so labeled}.
 
-Maxima is pragmatic about lower and upper case: regardless of your typing {\tt sin(x)} or {\tt
-sin(x)},
-{\tt \verb+%e^x+} or {\tt \verb+%E^x+}, it will understand that you mean the sine and exponential
-functions, and will echo in standard uppercase {\tt sin} and {\tt \verb+%e+}.
-\emph{That doesn't apply to user variables, though: {\tt x} and {\tt X} are \emph{different}
-variables for Maxima ! (Try it.)}
-
-
-
+Maxima distinguishes lower and upper case.
+All built-in functions have names which are lowercase only
+({\tt sin}, {\tt cos}, {\tt save}, {\tt load}, etc).
+Built-in constants have lowercase names ({\tt \%e}, {\tt \%pi}, {\tt inf}, etc).
+If you type {\tt SIN(x)} or {\tt Sin(x)},
+Maxima assumes you mean something other than the built-in {\tt sin} function.
+User-defined functions and variables can have names which are lower or upper case or both.
+{\tt foo(XY)}, {\tt Foo(Xy)}, {\tt FOO(xy)} are all different.
 
 
 \section{Special keys and symbols \label{sec:keys}}
 
 \begin{enumerate}
-\item To end a Maxima session, type {\tt quit();}.  If you type \verb+^C+, here is what happens:
-\begin{verbatim}
-Maxima encountered a Lisp error:
+\item To end a Maxima session, type {\tt quit();}.
 
- Console interrupt.
-
-Automatically continuing.
-To reenable the Lisp debugger set *debugger-hook* to nil.
-\end{verbatim}
-Notice that typing {\tt :q} or {\tt :t} (for \emph{top level}) after the {\tt MAXIMA>>} prompt gets
-you back to the Maxima level.
-\verb+^Y+, on the other hand, won't have any effect but being echoed on the screen; finally 
-\verb+^Z+ will have the same effect as {\tt quit();}. (Here \verb+^+ stands for the control key, so
+\item To abort a computation without leaving Maxima, type \verb+^C+.
+(Here \verb+^+ stands for the control key, so
 that \verb+^C+ means first press the key marked control and hold it down while pressing the C key.)
-
-\item To abort a computation without leaving Maxima, type \verb+^C+.  It is important for you to
+It is important for you to
 know how to do this in case, for example, you begin a computation which is taking too long.
-Remember to type {\tt :q} at the {\tt MAXIMA>>} prompt to return to Maxima. For example:
+For example:
 % sum (1/x^2, x, 1, 10000);
 % ^C
 \begin{verbatim}
@@ -118,8 +108,8 @@ do so without typing it over again by preceding its label with two single quotes
 use its {\tt o} label, or you can use the special symbol percent   ({\tt \%}).
 
 \item The standard quantities $e$ (natural log base), $i$ (square root of $-1$) and $\pi$
-($3.14159\ldots$) are respectively referred to as \verb+%e+ (or \verb+%E+), \verb+%i+ 
-(or \verb+%i+), and \verb+%pi+ (or \verb+%pi+).  Note that the use of {\tt \%} here as a prefix
+($3.14159\ldots$) are respectively referred to as \verb+%e+, \verb+%i+,
+and \verb+%pi+.  Note that the use of {\tt \%} here as a prefix
 is completely unrelated to the use of {\tt \%} to refer to the preceding result computed.
 
 \item In order to assign a value to a variable, Maxima uses the colon ({\tt :}), not the equal
@@ -179,14 +169,15 @@ has the default value of 16:
 (%i6) fpprec;
 (%o6)                          16
 \end{verbatim}
-Here we reset {\tt fpprec} to yield 100 digits: % OOPS NO IT DOESN'T -- FIXME !!
+Here we reset {\tt fpprec} to yield 100 digits:
 % fpprec: 100;
-% ''%o5;
+% ''%i5;
 \begin{verbatim}
 (%i7) fpprec: 100;
 (%o7)                          100
-(%i8) ''%o5;
-(%o8)                  8.201219330881976B1
+(%i8) ''%i5;
+(%o8) 8.20121933088197564152489730020812442785204843859314941221#
+2371240173124187540110412666123849550160561B1
 \end{verbatim}
 Note the use of two single quotes ({\tt ''}) in {\tt (\%i8)} to repeat command {\tt (\%i5)}.  Maxima can
 handle very large numbers without approximation:
