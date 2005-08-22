@@ -199,10 +199,7 @@
 (defun fixnump (n)
   (typep n 'fixnum))
 
-(defun fix (n)
-  (cond ((integerp n) n)
-	((< n 0) (- (truncate n) 1))
-	(t (values (truncate n)))))
+(defun fix (n) (values (floor n)))
 
 
 ;;did result of fix have to  be fixnum in maclisp??
