@@ -1,4 +1,4 @@
-@c /Floating.texi/1.16/Thu Jun 16 17:05:34 2005/-ko/
+@c /Floating.texi/1.17/Tue Aug 23 09:18:26 2005/-ko/
 @c ITEMS IN THIS FILE ARE IN NEED OF EXPANSION, CLARIFICATION, AND EXAMPLES
 
 @menu
@@ -36,9 +36,8 @@ Valor padr@~ao: 10^8
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} bfloat (@var{expr})
-Converte todos os n@'umeros e fun@value{cedilha}@~oes de n@'umeros para grandes n@'umeros em 
-ponto flutuante (bigfloat).  Escolhendo @code{fpprec} para @code{n}, escolhemos a precis@~ao de grandes n@'umeros em ponto flutuante para @code{n}
-d@'igitos.  
+Converte todos os n@'umeros e fun@value{cedilha}@~oes de n@'umeros em @var{expr} para grandes n@'umeros em 
+ponto flutuante (bigfloat).  O n@'umero de algarismos significativos no grande n@'umero em ponto flutuante resultante @'e especificado atrav@'es da vari@'avel global @code{fpprec}.
 
 Quando @code{float2bf} for @code{false} uma mensagem de alerta @'e mostrada quando
 uma n@'umero em ponto flutuante (float) @'e convertido em um grande n@'umero em ponto flutuante (bigfloat - uma vez que
@@ -125,10 +124,10 @@ Retorna @code{true} se @var{expr} for um n@'umero em ponto flutuante, de outra f
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} fpprec
 Valor padr@~ao: 16
 
-@c THIS EXPLANATION REALLY NEEDS SERIOUS CLARIFICATION. 
-@c AS IT STANDS THIS SEEMS TO IMPLY A CAPABILITY THAT MAXIMA ALMOST CERTAINLY DOESN'T HAVE
-@code{fpprec} @'e a precis@~ao para ponto flutuante do Maxima.  @code{fpprec} pode ser escolhida para um
-inteiro representando a precis@~ao desejada.
+@code{fpprec} @'e o n@'umero de algarismos significativos para aritm@'etica sobre grandes n@'umeros em ponto flutuante
+@code{fpprec} n@~ao afeta c@'alculos sobre n@'umeros em ponto flutuante comuns.
+
+Veja tamb@'em @code{bfloat} e @code{fpprintprec}.
 
 @end defvr
 
