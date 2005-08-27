@@ -532,8 +532,18 @@
 (defprop mdo msz-mdo grind)
 (defprop mdo 30. lbp)
 (defprop mdo 30. rbp)
+
 (defprop mdoin msz-mdoin grind)
+; HMM... HOW COME NO LBP FOR MDOIN HERE ??
 (defprop mdoin 30. rbp)
+
+(defprop %mdo msz-mdo grind)
+(defprop %mdo 30. lbp)
+(defprop %mdo 30. rbp)
+
+(defprop %mdoin msz-mdoin grind)
+; HMM... HOW COME NO LBP FOR %MDOIN HERE ??
+(defprop %mdoin 30. rbp)
 
 (defun msz-mdo (x l r)
   (msznary (cons '(mdo) (strmdo x)) l r '(#\space)))

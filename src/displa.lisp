@@ -878,6 +878,7 @@
 
 
 (displa-def mdo dim-mdo)
+(displa-def %mdo dim-mdo)
 
 (defun dim-mdo (form result)
   (prog ((w 0) (h 0) (d 0) brkflag) (declare (fixnum w h d))
@@ -922,6 +923,7 @@
 
 
 (displa-def mdoin dim-mdoin)
+(displa-def %mdoin dim-mdoin)
 
 (defun dim-mdoin (form result)
   (prog ((w 0) (h 0)  ( d 0)) (declare (fixnum w h d))
