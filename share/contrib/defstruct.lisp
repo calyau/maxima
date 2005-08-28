@@ -7,6 +7,15 @@
 
 ;;; author Richard Fateman
 
+;; modifications 2005/08/28 Robert Dodier
+;; (0) cut matrix assignment code from previous rev (but kept parallel multiple assignment)
+;; (1) $NEW barfs if #arguments != 1, or argument has no defstruct, or wrong number of initializers.
+;; (2) $DEFSTRUCT allows 1 or more arguments, returns a list of defstructs.
+;; (3) use $PUT and $GET to maintain defstruct properties 
+;;     (renamed to $DEFSTRUCT_DEFAULT and $DEFSTRUCT_TEMPLATE).
+;;     This makes defstruct properties visible to user via get and propvars.
+;;     Also, this makes `kill' kill defstructs.
+
 ;; If this is the last def'n in file of mset_extension_operators,
 ;; it will disable the $@ defstruct features
 
@@ -110,7 +119,7 @@
 	 (fn (caddr atted))		;field
 	 (obj (meval in))
 	 (index (if (integerp fn) fn ;;; allow foo@3, also
-	      (position fn (get (caar obj) 'recordtemplate))))
+	      (position fn ($get (caar obj) '$defstruct_template))))
 	 ) ;field->integer
     
     (if (null index) (merror "Unknown field in record:~%~M" fn))
@@ -123,7 +132,7 @@
   (if (not (listp in))(list '(%@) in fn) ;noun form
     (let* ((index  
 	    (if (integerp fn) fn ;;; allow foo@3, also
-	      (position fn (get (caar in) 'recordtemplate))))) ;field->integer
+	      (position fn ($get (caar in) '$defstruct_template))))) ;field->integer
     (if (null index) (merror "Unknown field in record:~%~M" fn))
     (if  (< 0 index (length in))
 	(elt in index) (merror "Illegal instance:~%~M @ ~M" in fn))
@@ -132,13 +141,18 @@
 
 ;; This will not work for compiled code.
 
+;; L looks like defstruct (foo(...), bar(...), baz(...)).
+;; Process each argument and return a list of declared structures.
 
-(defmspec $defstruct(z) ;; z will look like (($defstruct) (($whatever)$a $b $c))
+(defmspec $defstruct (L)
+  `((mlist) ,@(mapcar 'defstruct1 (cdr L))))
+
+(defun defstruct1 (z) ;; z will look like (($whatever) $a $b $c)
    ;; store the template on $whatever
-  (setf (get (caaadr z)'recordtemplate)(namesonly (cadr z)))
+  ($put (caar z) (namesonly z) '$defstruct_template)
   ;; set the initialization on $whatever
-  (setf (get (caaadr z)'recorddefault)(initializersmostly(cadr z)))
-  (cadr z))
+  ($put (caar z) (initializersmostly z) '$defstruct_default)
+  z)
 
 (defun namesonly(r)			; f(a,b,c) unchanged, f(a=3,b=4,c=5) -> f(a,b,c)
   (cons (car r)(mapcar #'(lambda(z)
@@ -154,11 +168,28 @@
 		       (cdr r))))
 
 (defmspec $new (h)
+  (if (not (= (length (cdr h)) 1))
+    (merror "~% new: expected exactly one argument, not ~M." (length (cdr h))))
+
   (let ((recordname (cadr h)))
-  (cond ((symbolp recordname)  ;; the case of, e.g.  new(f);
-	 (copy (get recordname 'recorddefault)))
-	;; assume there is some initialization here e.g. new (f(5,6,7))
-	(t (copy recordname)))))
+    (cond
+      ((symbolp recordname)  ;; the case of, e.g.  new(f);
+       (if (null ($get recordname '$defstruct_default))
+         (merror "~% new: don't know anything about `~M'." recordname))
+
+       (copy ($get recordname '$defstruct_default)))
+
+      ;; assume there is some initialization here e.g. new (f(5,6,7))
+      (t
+        (let ((recordop (caar recordname)) (recordargs (cdr recordname)))
+          (if (null ($get recordop '$defstruct_default))
+            (merror "~% new: don't know anything about `~M'." recordop))
+
+          (if (not (= (length recordargs) (length (cdr ($get recordop '$defstruct_default)))))
+            (merror "~% new: wrong number of arguments in initializer; expected ~M, not ~M."
+                    (length (cdr ($get recordop '$defstruct_default))) (length recordargs)))
+
+          (copy recordname))))))
 
 ;; this is the lisp code equivalent to executing the command
 ;; infix(@);
@@ -220,102 +251,3 @@
 		      (make-sequence 'list (1-(length tlist)) :initial-element vlist))))
   (map nil #'mset (cdr tlist)(cdr vlist))
    vlist)
-
-
-;;; here's another..
-
-(setf (get '$diag 'mset_extension_operator) '$diagassign)
-
-(defmfun $diagassign (a b)
-  ;; diag(a):b  set diagonal of matrix a to b.
-  ;; a had better be a square matrix after this evaluation.
-  (if (and (listp b)(eq (caar b) 'mlist)) ($diagassign2 a b)
-  (setf a (meval (cadr a))); argument to diag
-  (let ((h (1-(length a)))  ;; ((mmatrix) ((mlist) ..)  ((mlist ...)))
-	(q (cdr a))
-	(r nil))
-    (dotimes (i h b) ;return the new diag element.
-      (setf r (elt q i))
-      (setf (elt r (1+ i)) b)))))
-
-(defmfun $diagassign2 (a b)
-  ;; b is a list...
-  (setf a (meval (cadr a))); argument to diag
-  (let ((h (1-(length a)))  ;; ((mmatrix) ((mlist) ..)  ((mlist ...)))
-	(q (cdr a))
-	(r nil)
-	(bb (cdr b)))
-    (dotimes (i h b) ;return the new diag element.
-      (setf r (elt q i));pick out a row
-      (setf (elt r (1+ i)) (elt bb i)))))
-
-
-(setf (get '$row 'mset_extension_operator) '$rowassign)
-
-(defmfun $rowassign (a b)
-  (if (and (listp b)(eq (caar b) 'mlist))
-      ($rowassign2 a b) ;; assign a list
-    (let* ((m (meval (cadr a)))		; matrix argument to $row
-	   (r (cdr (elt m (meval (caddr a)))))) ;2nd arg to row, the row
-      (dotimes (i (length r) b)
-	(setf (elt r i) b)))))
-
-;; if b is a list we do this.
-(defmfun $rowassign2 (a b)
-  ;;(assert (eq (caar b) 'mlist))
-  (let* ((m (meval (cadr a)))		; matrix argument to $row
-	 (r (cdr (elt m (meval (caddr a)))))
-	 (lr (length r))
-	 (bb (cdr b)))
-    (unless (= lr (length bb)) 
-      (merror "Incompatible length in row assignment ~M" b))
-    (dotimes (i lr b)
-      (setf (elt r i) (elt bb i)))))
-
-
-(setf (get '$col 'mset_extension_operator) '$colassign)
-
-(defmfun $colassign (a b)
-  (if (and (listp b)(eq (caar b) 'mlist)) ($colassign2 a b)
-    (let* ((m (meval (cadr a)))		; matrix argument to $col
-	   (colnum (meval (caddr a)))	; column number
-	   (cols (cdr m )))
-      (dotimes (i (length cols) b)
-	(let ((c (elt cols i)))
-	  (setf (elt c colnum) b))))))
-
-(defmfun $colassign2 (a b)
-    (let* ((m (meval (cadr a)))		; matrix argument to $col
-	   (colnum (meval (caddr a)))	; column number
-	   (cols (cdr m ))
-	   (lc (length cols))
-	   (bb (cdr b)))
-      (unless (= lc (length bb)) 
-      (merror "Incompatible length in column assignment ~M" b))
-      (dotimes (i (length cols) b)
-	(let ((c (elt cols i)))
-	  (setf (elt c colnum) (elt bb i))))))
-
-#| now allowed: 
-m:ident(5); /* Set up identity matrix */
-row(m,3):1;
-row(m,4):[1,2,3,4,5];
-col(m,2):[1,2,3,4,5];
-diag(m):0;
-diag(m):[1,2,3,4,5];
-
-Now not allowed, but if we added some syntax, e.g. 1..5 = [1,2,3,4,5]
-then maybe we write stuff this way...
-
-m[1..5,3]:1;  instead of row(m,3):1 ..
-m[1..3,1..4]:0;
-no equivalent to diag(m):  though.
-
-How about allowing this
-submat(m,1..3,1..4):0 ??
-it could be written as
-submat(m,[1,23],[1,2,3,4]):0  in existing syntax.
-if we wrote a submat mset_extension_operator function.
-
-
-|#
