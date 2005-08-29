@@ -1,0 +1,242 @@
+conjugate(-1);
+-1$
+
+conjugate(6);
+6$
+
+conjugate(-2/3);
+-2/3$
+
+conjugate(sqrt(5));
+sqrt(5)$
+
+conjugate(sqrt(3) + sqrt(7));
+sqrt(3) + sqrt(7)$
+
+conjugate(5.6);
+5.6$
+
+conjugate(-5.6);
+-5.6$
+
+conjugate(5.6 * %i);
+-%i * 5.6$
+
+conjugate(8.23b3);
+8.23b3$
+
+conjugate(1.4b0 + %i * 5.7b0);
+1.4b0 - %i * 5.7b0$
+
+conjugate(sqrt(7 + %i * 8));
+sqrt(7 - %i * 8);
+
+conjugate(log(1 - %i));
+log(1 + %i)$
+
+conjugate(%e);
+%e$
+
+conjugate(-%e);
+-%e$
+
+conjugate(%pi);
+%pi$
+
+conjugate(%phi);
+%phi$
+
+conjugate(x);
+x$
+
+conjugate(-x);
+-x$
+
+conjugate(1+x*(1+x));
+1+x*(1+x)$
+
+conjugate(sqrt(1+x^2));
+sqrt(1+x^2)$
+
+conjugate(x+abs(x));
+x+abs(x)$
+
+conjugate(cos(x));
+cos(x)$
+
+conjugate(sin(x));
+sin(x)$
+
+conjugate(tan(x));
+tan(x)$
+
+conjugate(sec(x));
+sec(x)$
+
+conjugate(cot(x));
+cot(x)$
+
+conjugate(csc(x));
+csc(x)$
+
+conjugate(cosh(x));
+cosh(x)$
+
+conjugate(sinh(x));
+sinh(x)$
+
+conjugate(tanh(x));
+tanh(x)$
+
+conjugate(sech(x));
+sech(x)$
+
+conjugate(coth(x));
+coth(x)$
+
+conjugate(csch(x));
+csch(x)$
+
+conjugate(exp(x));
+exp(x)$
+
+conjugate(sqrt(x));
+conjugate(sqrt(x))$
+
+conjugate(abs(x))$
+abs(x)$
+
+(declare(z,complex),0);
+0$
+
+conjugate(conjugate(z));
+z$
+
+conjugate(conjugate(conjugate(z)));
+conjugate(z)$
+
+conjugate(5*z);
+5 * conjugate(z);
+
+conjugate(5 + z);
+5 + conjugate(z);
+
+conjugate(5 + 7 * z);
+5 + 7 * conjugate(z);
+
+conjugate(%i * z);
+-%i * conjugate(z)$
+
+conjugate(x + z);
+x + conjugate(z)$
+
+conjugate(x * z);
+x * conjugate(z)$
+
+conjugate(cos(z));
+cos(conjugate(z))$
+
+conjugate(sin(z));
+sin(conjugate(z))$
+
+conjugate(tan(z));
+tan(conjugate(z))$
+
+conjugate(sec(z));
+sec(conjugate(z))$
+
+conjugate(cot(z));
+cot(conjugate(z))$
+
+conjugate(csc(z));
+csc(conjugate(z))$
+
+conjugate(cosh(z));
+cosh(conjugate(z))$
+
+conjugate(sinh(z));
+sinh(conjugate(z))$
+
+conjugate(tanh(z));
+tanh(conjugate(z))$
+
+conjugate(sech(z));
+sech(conjugate(z))$
+
+conjugate(coth(z));
+coth(conjugate(z))$
+
+conjugate(csch(z));
+csch(conjugate(z))$
+
+conjugate(exp(z));
+exp(conjugate(z))$
+
+conjugate(realpart(z));
+realpart(z)$
+
+conjugate(imagpart(z));
+imagpart(z)$
+
+conjugate(x+z);
+x+conjugate(z)$
+
+conjugate(x*z);
+x*conjugate(z)$
+
+conjugate(%i * z);
+-%i * conjugate(z)$
+
+conjugate(cos(x*z));
+cos(x*conjugate(z))$
+
+(assume(imagpart(z) > 0),0);
+0$
+
+conjugate(log(z));
+log(conjugate(z))$
+
+conjugate(sqrt(z));
+sqrt(conjugate(z))$
+
+conjugate(log(5 + z));
+log(5 + conjugate(z))$
+
+(declare(w,complex),0);
+0$
+
+(assume(realpart(w) > 0),0);
+0$
+
+conjugate(log(w));
+log(conjugate(w))$
+
+conjugate(sqrt(w));
+sqrt(conjugate(w))$
+
+conjugate(log(7 + w));
+log(7 + conjugate(w))$
+
+(declare(q,complex),0);
+0$
+
+conjugate(q^2);
+conjugate(q)^2$
+
+conjugate(1/q);
+1/conjugate(q)$
+
+conjugate(1 + q + q^2);
+1 + conjugate(q) + conjugate(q)^2$
+
+conjugate(q*(1+q));
+conjugate(q) * (1 + conjugate(q))$
+
+conjugate((1+q)/(1-q));
+(1 + conjugate(q))/(1 - conjugate(q))$
+
+
+
+
+
+

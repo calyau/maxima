@@ -1,0 +1,139 @@
+(kill(values),0);
+0$
+
+(lu_test(m) := block([mp],
+  mp : get_lu_factors(lu_factor(m,generalfield)),
+  zeromatrixp(m - mp[1] . mp[2] . mp[3])),0);
+0$
+     
+lu_test(matrix([1]));
+true$
+
+lu_test(matrix([0,1],[1,0]));
+true$
+
+lu_test(matrix([0,a],[b,0]));
+true$
+
+lu_test(matrix([a,b],[c,d]));
+true$
+
+lu_test(matrix([a,b],[b,d]));
+true$
+
+lu_test(matrix([1/2,b],[b,2/3]));
+true$
+
+lu_test(matrix([1/2 + %i, %i - 1],[9 - %i, 19 + %i]));
+true$
+
+lu_test(matrix([0,1,0],[0,0,1],[1,2,4]));
+true$
+
+lu_test(matrix([0,a,0],[b,0,0],[0,0,c]));
+true$
+
+lu_test(matrix([a,b,c],[d,e,f],[g,h,i]));
+true$
+
+lu_test(matrix([0,0,1],[1,0,0],[0,1,0]));
+true$
+
+lu_test(matrix([0,0,1],[1,0,0],[0,1,x]));
+true$
+
+lu_test(hilbert_matrix(3));
+true$
+
+lu_test(hilbert_matrix(4));
+true$
+
+lu_test(hilbert_matrix(5));
+true$
+
+lu_test(vandermonde_matrix([1,2,%i]));
+true$
+
+lu_test(vandermonde_matrix([1 + %i,1 - %i, 8, 32]));
+true$
+
+(lu_test(m, tol) := block([mp],
+  mp : get_lu_factors(lu_factor(m,bigfloatfield)),
+  matrixp(m - mp[1] . mp[2] . mp[3], lambda([s], is(cabs(s) < tol)))),0);
+0$
+
+(fpprec : 20,0);
+0$
+
+lu_test(vandermonde_matrix([1,1/2,1/3,1/4]), 1.0e-18);
+true$
+
+(fpprec : 40,0);
+0$
+
+lu_test(vandermonde_matrix([1,1/2,1/3,1/4]), 1.0e-38);
+true$
+
+lu_test(hilbert_matrix(13), 1.0e-38);
+true$
+
+(lu_test(m, tol) := block([mp],
+  mp : get_lu_factors(lu_factor(m,complexfloatfield)),
+  matrixp(m - mp[1] . mp[2] . mp[3], lambda([s], is(cabs(s) < tol)))),0);
+0$
+
+lu_test(hilbert_matrix(7) + %i * vandermonde_matrix([1,2,3,4,5,6,7]), 1.0e-10);
+true$
+
+(m : matrix([1,2,3],[4,5,6],[7,8,10]),0);
+0$
+
+(b : m . matrix([x],[y],[z]),0);
+0$
+
+lu_backsub(lu_factor(m,crefield), b, crefield);
+matrix([x],[y],[z])$
+
+(m : matrix([0,2,3],[0,5,6],[7,8,10]),0);
+0$
+
+(b : m . matrix([x],[y],[z]),0);
+0$
+
+lu_backsub(lu_factor(m, crefield), b, crefield);
+matrix([x],[y],[z])$
+
+(m : matrix([0,2,3],[0,5,6],[7,8,10]),0);
+0$
+
+(b : m . matrix([x],[y],[z]),0);
+0$
+
+lu_backsub(lu_factor(m, crefield), b, crefield);
+matrix([x],[y],[z])$
+
+
+(m : matrix([0,1,2],[1,0,1],[0,0,8]),0);
+0$
+
+(b : m . matrix([x],[y],[z]),0);
+0$
+
+lu_backsub(lu_factor(m, crefield), b, crefield);
+matrix([x],[y],[z])$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
