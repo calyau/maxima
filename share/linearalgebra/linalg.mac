@@ -287,7 +287,7 @@ vandermonde_matrix(vars) := block([n],
   funmake('matrix, makelist(makelist(vars[i]^j,j,0,n-1),i,1,n)));
 
 polytocompanion(p,x) := block([n],
-  if not POLYNOMIALP(p,[x], lambda([e], freeof(x,e))) then 
+  if not polynomialp(p,[x], lambda([e], freeof(x,e))) then 
      error("First argument to 'polytocompanion' must be a polynomial"),
   p : expand(p),
   n : hipow(p,x),

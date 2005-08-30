@@ -65,7 +65,7 @@ pdiff; otherwise, you'll get an error. Here is an example
 (C3) matrixfun(lambda([x], f(x)),m);
 
 Attempt to differentiate with respect to a number:
-1 -- an error.  Quitting.  To debug this try DEBUGMODE(TRUE);)
+1 -- an error.  Quitting.  To debug this try debugmode(true);
 (C4) load("pdiff")$
 (C5)  matrixfun(lambda([x], f(x)),m);
 

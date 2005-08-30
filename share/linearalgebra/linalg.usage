@@ -303,7 +303,7 @@ Short demo:
 
 (%i1) batch("linalg.demo");
 batching #pc:/maxima/linearalgebra/linalg.demo
-(%i2) LOAD(linalg)
+(%i2) load(linalg)
 (%o2) c:/maxima/linearalgebra/linalg.mac
 (%i3) m:matrix([1,2],[1,2])
 (%o3) matrix([1,2],[1,2])
@@ -311,17 +311,17 @@ batching #pc:/maxima/linearalgebra/linalg.demo
 (%o4) span(matrix([1],[-1/2]))
 (%i5) columnspace(m)
 (%o5) span(matrix([1],[1]))
-(%i6) ptriangularize(m-z*IDENT(2),z)
+(%i6) ptriangularize(m-z*ident(2),z)
 (%o6) matrix([1,2-z],[0,3*z-z^2])
-(%i7) m:matrix([1,2,3],[4,5,6],[7,8,9])-z*IDENT(3)
+(%i7) m:matrix([1,2,3],[4,5,6],[7,8,9])-z*ident(3)
 (%o7) matrix([1-z,2,3],[4,5-z,6],[7,8,9-z])
 (%i8) mm:ptriangularize(m,z)
 (%o8) matrix([4,5-z,6],[0,66/49,-z^2/7+(102*z)/49+132/49],[0,0,(49*z^3)/264-(245*z^2)/88-(147*z)/44])
-(%i9) ALGEBRAIC:true
+(%i9) algebraic:true
 (%o9) true
-(%i10) TELLRAT(mm[3,3])
+(%i10) tellrat(mm[3,3])
 (%o10) [z^3-15*z^2-18*z]
-(%i11) mm:RATSIMP(mm)
+(%i11) mm:ratsimp(mm)
 (%o11) matrix([4,5-z,6],[0,66/49,-(7*z^2-102*z-132)/49],[0,0,0])
 (%i12) nullspace(mm)
 (%o12) span(matrix([1],[(z^2-14*z-16)/8],[-(z^2-18*z-12)/12]))
@@ -329,7 +329,7 @@ batching #pc:/maxima/linearalgebra/linalg.demo
 (%o13) matrix([1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16])
 (%i14) column_space(m)
 (%o14) column_space(matrix([1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]))
-(%i15) APPLY('orthogonal_complment,ARGS(nullspace(TRANSPOSE(m))))
+(%i15) apply('orthogonal_complment,args(nullspace(transpose(m))))
 (%o15) orthogonal_complment(matrix([0],[1],[-2],[1]),matrix([1],[0],[-3],[2]))
 
 

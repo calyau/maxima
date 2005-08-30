@@ -11,7 +11,7 @@ function in linearalgebra is (I hope) somewhat smarter.
 (%o1) c:/maxima/linearalgebra/linalg.mac
 (%i2) declare(z,complex)$
 (%i3) conjugate([z,z^2,sqrt(z)]);
-(%o3) [CONJUGATE(z),CONJUGATE(z)^2,CONJUGATE(sqrt(z))]
+(%o3) [conjugate(z),conjugate(z)^2,conjugate(sqrt(z))]
 
 Off the branch cut of sqrt, conjugate and sqrt commute. Telling
 Maxima that z isn't on branch cut allows it to transform
@@ -19,7 +19,7 @@ conjugate(sqrt(z)) --> sqrt(conjugate(z)).
 
 (%i4) assume(imagpart(z) > 0)$
 (%i5) conjugate(sqrt(z));
-(%o5) sqrt(CONJUGATE(z))
+(%o5) sqrt(conjugate(z))
 
 (2) New functions for generating matrices:
 
@@ -46,7 +46,7 @@ There is code for LU factorization.  It uses partial pivoting when
 the matrix is numeric.
 
 (%i1) load("linalg");
-Warning - you are redefining the MACSYMA function RANK
+Warning - you are redefining the Maxima function RANK
 (%o1) c:/maxima/linearalgebra/linalg.mac
 (%i2) lu_factor(matrix([a,b],[c,d]));
 (%o2) [matrix([a,b],[c/a,d-(b*c)/a]),[1,2]]
