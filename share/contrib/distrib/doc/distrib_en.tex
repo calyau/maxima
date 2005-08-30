@@ -1,0 +1,1532 @@
+\documentclass[12pt,a4paper]{article}
+	\pagestyle{headings}
+	\title{\textbf{\Huge{distrib.mac}\\
+                       \large{A Maxima package for probability distributions}}}
+	\author{\Large{Mario Rodr\'{\i}guez Riotorto}\\
+	  \\
+	  www.biomates.net\\
+	  }
+	\setlength{\oddsidemargin}{1cm}
+	\setlength{\textwidth}{14cm}
+	\setlength{\topmargin}{1.2cm}
+	\setlength{\textheight}{20cm}
+	\usepackage{graphicx}
+	\usepackage{lscape}
+	\usepackage{amsfonts}
+	\usepackage{latexsym}
+	\usepackage{amsmath,amsthm}
+	\usepackage{color}\pagecolor{white}
+
+	\newcommand{\normal}{\mathcal{N}}
+	\newcommand{\N}{\mathbb{N}}
+	\newcommand{\Z}{\mathbb{Z}}
+	\newcommand{\Q}{\mathbb{Q}}
+	\newcommand{\R}{\mathbb{R}}
+
+% version: 10-06-05
+
+\begin{document}
+\maketitle
+% \newpage
+\tableofcontents
+
+\section{Introduction}
+
+The package \verb|distrib.mac| contains a set of functions for making probability calculations on discrete and continuous models. It can be downloaded, together with this document, from the web site \emph{www.biomates.net} and is GPL licenced.
+
+What follows is a short reminder of basic probabilistic related definitions.
+
+Let $f(x)$ be the \emph{density} function of an absolute continuous random variable $X$. The \emph{distribution} function is defined as
+\[
+F(x)=\int_{-\infty}^x f(u) du,
+\]
+which equals the probability $\Pr\{X \leq x\}$. The \emph{mean} value is a localization parameter and is defined as
+\[
+E[X]=\int_{-\infty}^{\infty} x f(x) dx.
+\]
+The \emph{variance} is a measure of variation,
+\[
+V[X]=\int_{-\infty}^{\infty} (x-E[X])^2 f(x) dx,
+\]
+which is a positive real number. The square root of the variance is the \emph{standard deviation}, $D[X]=\sqrt{V[X]}$, and it is another measure of variation.
+
+The \emph{skewness} coefficient is a measure of non--symmetry,
+\[
+SK[X]=\frac{\int_{-\infty}^{\infty} (x-E[X])^3 f(x) dx}{D[X]^3}.
+\] 
+And the \emph{kurtosis} coefficient measures the peakedness of the distribution,
+\[
+KU[X]=\frac{\int_{-\infty}^{\infty} (x-E[X])^4 f(x) dx}{D[X]^4}-3.
+\]
+If $X$ is gaussian, $KU[X]=0$. In fact, both skewness and kurtosis are shape parameters used to measure the non--gaussianity of a distribution.
+
+If the random variable $X$ is discrete, the density, or \emph{probability}, function $f(x)$ takes positive values within certain countable set $\{x_i\}$, and zero elsewhere. In this case, the distribution function is
+\[
+F(x)=\sum_{i \leq x} f(x_i).
+\]
+
+The mean, variance, standard deviation, skewness coefficient and kurtosis coefficient take the form
+\[
+E[X]= \sum_i x_i f(x_i),
+\]
+\[
+V[X]= \sum_i (x_i-E[X])^2 f(x_i),
+\]
+\[
+D[X]=\sqrt{V[X]},
+\]
+\[
+SK[X]=\frac{\sum_i (x_i-E[X])^3 f(x_i)}{D[X]^3},
+\]
+and
+\[
+KU[X]=\frac{\sum_i (x_i-E[X])^4 f(x_i)}{D[X]^4}-3,
+\]
+respectively.
+
+Please, consult an introductory manual on probability and statistics for more information about all this mathematical staff.
+
+There is a naming convention in package \verb|distrib.mac|. Every function name has two parts, the first one makes reference to the function or parameter we want to calculate,
+\begin{verbatim}
+Functions:
+   Density function            (den*)
+   Distribution function       (dis*)
+   Mean                        (mean*)
+   Variance                    (var*)
+   Standard deviation          (std*)
+   Skewness coefficient        (skw*)
+   Kurtosis coefficient        (kur*)
+\end{verbatim}
+
+The second part is an explicit reference to the probabilistic model,
+\begin{verbatim}
+Continuous distributions:
+   Normal              (*normal)
+   Student             (*student)
+   Chi^2               (*chi2)
+   F                   (*f)
+   Exponential         (*exp)
+   Lognormal           (*logn)
+   Gamma               (*gamma)
+   Beta                (*beta)
+   Continuous uniform  (*contu)
+   Logistic            (*log)
+   Pareto              (*pareto)
+   Weibull             (*weibull)
+   Rayleigh            (*rayleigh)
+   Laplace             (*laplace)
+   Cauchy              (*cauchy)
+   Gumbel              (*gumbel)
+
+Discrete distributions:
+   Binomial             (*binomial)
+   Poisson              (*poisson)
+   Bernoulli            (*bernoulli)
+   Geometric            (*geo)
+   Discrete uniform     (*discu)
+   Hypergeometric       (*hypergeo)
+   Negative binomial    (*negbinom)
+\end{verbatim}
+
+For example, \verb|denstudent(x,n)| is the density function of the Student distribution with $n$ degrees of freedom, \verb|stdpareto(a,b)| is the standard deviation of the Pareto distribution with parameters $a$ and $b$ and \verb|kurpoisson(m)| is the kurtosis coefficient of the Poisson distribution with mean $m$.
+
+In order to make use of package \verb|distrib.mac| you need first to load it by typing
+\begin{verbatim}
+(%i1) batchload("PATH_TO/distrib.mac")$
+\end{verbatim}
+where \verb|PATH_TO| is the path to the directory where \verb|distrib.mac| is located. To avoid typing the complete path everytime you need to work with the package, you may store it in the initialization file \verb|maxima-init.mac|; type
+\begin{verbatim}
+(%i2) describe(file_search_maxima);
+\end{verbatim}
+for more information on this. It is also possible to automatically load \verb|distrib.mac| everytime you call Maxima by writing the \verb|batchload| command in the initialization file.
+
+
+\section{Continuous distributions}
+
+\subsection{Normal}
+
+The specification of a normal or Gaussian random variable $X$ needs two parameters: $m \in \R$ and $s > 0$. We write $X \sim \normal(m,s)$.
+
+\begin{description}
+
+\item[dennormal(x,m,s)] Returns the value at $x \in \R$ of the density function of the normal random variable $X \sim \normal(m,s)$.
+
+If argument $s$ is not numeric, Maxima returns the input command back, since it doesn't know if $s$ is a positive number. If the third argument is negative, Maxima gives an error message,
+\begin{verbatim}
+(%i1) dennormal(x,m,s);
+(%o1)                dennormal(x, m, s)
+(%i2) dennormal(x,m,-2.5);
+Illegal parameter
+#0: dennormal(x=x,m=m,s=-2.5)(distrib.mac line 317)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i3) dennormal(x,m,2.5);
+                                       2
+                         - 0.08 (x - m)
+                   0.4 %e
+(%o3)              ---------------------
+                     sqrt(2) sqrt(%pi)
+\end{verbatim}
+
+If you want to see the complete expression of the density function showing $s$ instead of 2.5, you may use the \verb|assume| command,
+\begin{verbatim}
+(%i4) assume(s>0);
+(%o4)                     [s > 0]
+(%i5) dennormal(z,m,s);
+                                  2
+                           (z - m)
+                         - --------
+                                2
+                             2 s
+                       %e
+(%o5)               -------------------
+                    sqrt(2) sqrt(%pi) s
+\end{verbatim}
+
+Using \verb|numer| you can get decimal approximations.
+\begin{verbatim}
+(%i6) dennormal(5,0,1);
+                           - 25/2
+                         %e
+(%o6)                -----------------
+                     sqrt(2) sqrt(%pi)
+(%i7) %,numer;
+(%o7)              1.486719514734298E-6
+\end{verbatim}
+
+\item[disnormal(x,m,s)] Returns the value at $x \in \R$ of the distribution function of the normal random variable $X \sim \normal(m,s)$.
+
+\begin{verbatim}
+(%i8) disnormal(x,0,1);
+                             x
+                      erf(-------)
+                          sqrt(2)    1
+(%o8)                 ------------ + -
+                           2         2
+\end{verbatim}
+which is the normal distribution function of the normal random variable $X \sim \normal(0,1)$. Note that \verb|disnormal| is defined in terms of the Maxima's built-in error function \verb|erf|.
+
+\item[meannormal(m,s)] Returns the mean of the random variable $X \sim \normal(m,s)$, namely $m$.
+
+Again, if Maxima knows nothing about $s$, no result is returned,
+\begin{verbatim}
+(%i9) meannormal(3,d);
+(%o9)                meannormal(3, d)
+(%i10) meannormal(3,sqrt(5));
+(%o10)                       3
+\end{verbatim}
+
+\item[varnormal(m,s)] Returns the variance of the random variable $X \sim \normal(m,s)$, namely $s^2$.
+
+\item[stdnormal(m,s)] Returns the standard deviation of the random variable $X \sim \normal(m,s)$, that is $s$.
+
+\item[skwnormal(m,s)] Returns the skewness coefficient of the random variable $X \sim \normal(m,s)$, which is always equal to $0$.
+
+\begin{verbatim}
+(%i11) skwnormal(-2/8,1/9);
+(%o11)                       0
+\end{verbatim}
+
+\item[kurnormal(m,s)] Returns the kurtosis coefficient of the random variable $X \sim \normal(m,s)$, which is always equal to $0$.
+
+\begin{verbatim}
+(%i12) properties(s);  /* s is still assumed to be > 0 */
+(%o12)             [database info, s > 0]
+(%i13) kurnormal(mu,s);
+(%o13)                       0
+\end{verbatim}
+
+\end{description}
+
+
+\subsection{Student's $t$}
+
+The specification of a Student random variable $X$ needs only one parameter: $n > 0$, commonly called \emph{degrees of freedom}. We write $X \sim t(n)$.
+
+\begin{description}
+
+\item[denstudent(x,n)] Returns the value at $x \in \R$ of the density function of the Student random variable $X \sim t(n)$.
+
+\begin{verbatim}
+(%i1) assume(df>0);
+(%o1)                    [df > 0]
+(%i2) denstudent(x,df);
+                                     - df - 1
+                               2     --------
+                     df + 1   x         2
+               gamma(------) (-- + 1)
+                       2      df
+(%o2)          ------------------------------
+                                         df
+                sqrt(%pi) sqrt(df) gamma(--)
+                                         2
+(%i3) is(denstudent(-x,5)=denstudent(x,5));
+(%o3)                      true
+\end{verbatim}
+The last output tells us that the density function is symmetric with respect to the $y$-axis.
+
+\item[disstudent(x,n)] Returns the value at $x \in \R$ of the distribution function of the Student random variable $X \sim t(n)$.
+
+\begin{verbatim}
+(%i4) disstudent(1.2,5.6);
+(%o4)              disstudent(1.2, 5.6)
+(%i5) disstudent(1.2,5.6),numer;
+(%o5)               .8607842967776332
+\end{verbatim}
+There is no closed form for this function and it must be numerically approximated, therefore one must use \verb|numer| to get a numeric result from \verb|disstudent|, even when its two arguments are explicit numbers.
+
+\item[meanstudent(n)] Returns the mean of the random variable $X \sim t(n)$, which is always equal to 0.
+
+\item[varstudent(n)] Returns the variance of the random variable $X \sim t(n)$, which is $V[X]=\frac{n}{n-2}$, if $n>2$, otherwise it does not exist.
+
+\item[stdstudent(n)] Returns the standard deviation of the random variable $X \sim t(n)$. As this is the square root of the variance, $n$ must be greater than 2.
+
+\begin{verbatim}
+(%i6) properties(df);  /* df is still assumed to be > 0 */
+(%o6)            [database info, df > 0]
+(%i7) stdstudent(df);
+(%o7)                 stdstudent(df)
+(%i8) assume(df>2);
+(%o8)                    [df > 2]
+(%i9) stdstudent(df);
+                          sqrt(df)
+(%o9)                   ------------
+                        sqrt(df - 2)
+\end{verbatim}
+Note that we get no result in \verb|(%o7)| since Maxima doesn't know if $df>2$, though it knows that $df>0$. If the  argument is a number lesser than 2, Maxima prompts an error message:
+\begin{verbatim}
+(%i10) stdstudent(1);
+Illegal parameter
+#0: stdstudent(n=1)(distrib.mac line 391)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+\end{verbatim}
+
+\item[skwstudent(n)] Returns the skewness coefficient of the random variable $X \sim t(n)$, which is always equal to 0.
+
+\item[kurstudent(n)] Returns the kurtosis coefficient of the random variable $X \sim t(n)$. For this coefficient to exist, $n$ must be greater than 0.
+
+\begin{verbatim}
+(%i11) kurstudent(df);
+                             df
+(%o11)                     ------
+                           df - 2
+\end{verbatim}
+Remember that Maxima is assuming that $df>0$ .
+
+\end{description}
+
+
+\subsection{Pearson's $\chi^2$}
+
+The specification of a $\chi^2$ random variable $X$ needs only one parameter: $n > 0$. We write $X \sim \chi^2(n)$.
+
+\begin{description}
+
+\item[denchi2(x,n)] Returns the value at $x \in \R$ of the density function of the $\chi^2$ random variable $X \sim \chi^2(n)$.
+
+\begin{verbatim}
+(%i1) assume(x>0, n>0);
+(%o1)                  [x > 0, n > 0]
+(%i2) denchi2(x,n);
+                       n/2 - 1   - x/2
+                      x        %e
+(%o2)                 ----------------
+                        n/2       n
+                       2    gamma(-)
+                                  2
+(%i3) denchi2(15.6,32);
+(%o3)               .0037704438250734
+(%i4) forget(x>0);  /* forget assumption about x */
+(%o4)                    [x > 0]
+(%i5) assume(x<0); /* new assumption about x */
+(%o5)                    [x < 0]
+(%i6) denchi2(x,n);
+(%o6)                       0
+\end{verbatim}
+That is, the density functions equals 0, $\forall x < 0$.
+
+\item[dischi2(x,n)] Returns the value at $x \in \R$ of the distribution function of the $\chi^2$ random variable $X \sim \chi^2(n)$. 
+
+\begin{verbatim}
+(%i7) dischi2(15.6,32);
+(%o7)             disgamma(15.6, 16, 2)
+(%i8) dischi2(15.6,32),numer;
+(%o8)               .0065774478492341
+\end{verbatim}
+There is no closed form for this function and it must be numerically approximated, therefore one must use \verb|numer| to get a numeric result from \verb|dischi2|, even when its two arguments are explicit numbers. Note also that in output \verb|(%o7)| there is a call to function \verb|disgamma|, this is so because $X \sim \chi^2(n)$ is equivalent to $X \sim \Gamma(\frac{n}{2},2)$, see \ref{gamma}.
+
+\item[meanchi2(n)] Returns the mean of the random variable $X \sim \chi^2(n)$, which is $n$.
+
+\item[varchi2(n)] Returns the variance of the random variable $X \sim \chi^2(n)$, which is $2n$.
+
+\item[stdchi2(n)] Returns the standard deviation of the random variable $X \sim \chi^2(n)$, which is $\sqrt{2n}$.
+\begin{verbatim}
+(%i9) stdchi2(6);
+(%o9)                   2 sqrt(3)
+\end{verbatim}
+
+\item[skwchi2(n)] Returns the skewness coefficient of the random variable $X \sim \chi^2(n)$.
+
+\begin{verbatim}
+(%i10) properties(n); /* n is still assumed to be >0  */
+(%o10)             [database info, n > 0]
+(%i11) skwchi2(n);
+                         2 sqrt(2)
+(%o11)                   ---------
+                          sqrt(n)
+\end{verbatim}
+
+\item[kurchi2(n)] Returns the kurtosis coefficient of the random variable $X \sim \chi^2(n)$.
+
+\begin{verbatim}
+(%i12) kurchi2(n);
+                             12
+(%o12)                       --
+                             n
+\end{verbatim}
+
+\end{description}
+
+\subsection{Snedecor's $F$}
+
+The specification of a $F$ random variable $X$ needs two parameters: $m > 0$ and $n > 0$. We write $X \sim F(m,n)$.
+
+\begin{description}
+
+\item[denf(x,m,n)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim F(m,n)$.
+
+\begin{verbatim}
+(%i1) assume(x>0,m>0,n>0);
+(%o1)              [x > 0, m > 0, n > 0]
+(%i2) denf(x,m,n);
+                                            - n - m
+                                            -------
+         m/2       n + m   m/2 - 1  m x        2
+        m    gamma(-----) x        (--- + 1)
+                     2               n
+(%o2)   -------------------------------------------
+                        m   m/2       n
+                  gamma(-) n    gamma(-)
+                        2             2
+(%i3) forget(x>0); /* forget assumption about x */
+(%o3)                     [x > 0]
+(%i4) assume(x<0); /* new assumption about x */
+(%o4)                    [x < 0]
+(%i5) denf(x,m,n);
+(%o5)                       0
+\end{verbatim}
+That is, the density functions equals 0, $\forall x < 0$.
+
+\item[disf(x,m,n)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim F(m,n)$.
+
+\begin{verbatim}
+(%i6) disf(3.5,7.1,6.8);
+(%o6)              disf(3.5, 7.1, 6.8)
+(%i7) disf(3.5,7.1,6.8),numer;
+(%o7)               .9375923281340753
+\end{verbatim}
+There is no closed form for this function and it must be numerically approximated, therefore one must use \verb|numer| to get a numeric result from \verb|disf|, even when its three arguments are explicit numbers.
+
+\item[meanf(m,n)] Returns the mean of the random variable $X \sim F(m,n)$, which is only defined for $n>2$.
+
+\item[varf(m,n)] Returns the variance of the random variable $X \sim F(m,n)$, which is only defined for $n>4$.
+
+\item[stdf(m,n)] Returns the standard deviation of the random variable $X \sim F(m,n)$. As this is the square root of the variance, $n$ must be greater than 4.
+
+\begin{verbatim}
+(%i8) assume(n>4);
+(%o8)                    [n > 4]
+(%i9) stdf(m,n);
+                 sqrt(2) n sqrt(n + m - 2)
+(%o9)           ---------------------------
+                sqrt(m) sqrt(n - 4) (n - 2)
+\end{verbatim}
+
+\item[skwf(m,n)] Returns the skewness coefficient of the random variable $X \sim F(m,n)$, which is only defined for $n>6$.
+
+\begin{verbatim}
+(%i10) assume(n>6);
+(%o10)                    [n > 6]
+(%i11) skwf(m,n);
+            2 sqrt(2) sqrt(n - 4) (n + 2 m - 2)
+(%o11)      -----------------------------------
+              sqrt(m) (n - 6) sqrt(n + m - 2)
+\end{verbatim}
+
+\item[kurf(m,n)] Returns the kurtosis coefficient of the random variable $X \sim F(m,n)$, which is only defined for $n>8$.
+
+\begin{verbatim}
+(%i12) assume(n>8);
+(%o12)                    [n > 8]
+(%i13) kurf(m,n);
+                                                     2
+       12 (m (n + m - 2) (5 n - 22) + (n - 4) (n - 2) )
+(%o13) ------------------------------------------------
+                m (n - 8) (n - 6) (n + m - 2)
+(%i14) kurf(8,9);
+                            601
+(%o14)                      ---
+                             6
+(%i15) kurf(8,2);
+Illegal parameter
+#0: kurf(m=8,n=2)(distrib.mac line 497)
+ -- an error.  Quitting.  To debug this try debugmode(true);
+\end{verbatim}
+See how with $n<8$ we get an error message.
+
+\end{description}
+
+
+\subsection{Exponential}
+
+The specification of an exponential random variable $X$ needs only one parameter: $m > 0$. We write $X \sim \exp(m)$.
+
+\begin{description}
+
+\item[denexp(x,m)] Returns the value at $x \in \R$ of the density function of the exponential random variable $X \sim \exp(m)$.
+
+\begin{verbatim}
+(%i1) assume(x>0,m>0);
+(%o1)                  [x > 0, m > 0]
+(%i2) denexp(x,m);
+                             - m x
+(%o2)                    m %e
+(%i3) forget(x>0); /* let's forget the assumption about x */
+(%o3)                     [x > 0]
+(%i4) denexp(x,m);
+                                     1
+(%o4)               denweibull(x, 1, -)
+                                     m
+\end{verbatim}
+In order to get expression \verb|(%o2)|, we need to assume that $x>0$, since the exponential density equals 0 $\forall x \leq 0$; if we forget this, \verb|denexp| returns a call to the Weibull density function, this is so because $X \sim \exp(m)$ is equivalent to $X \sim Wei(1,1/m)$, see \ref{weibull}. 
+
+\item[disexp(x,m)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim \exp(m)$.
+
+\begin{verbatim}
+(%i5) disexp(9,m);
+                              - 9 m
+(%o5)                   1 - %e
+\end{verbatim}
+
+\item[meanexp(m)] Returns the mean of the random variable  $X \sim \exp(m)$.
+
+\begin{verbatim}
+(%i6) properties(m); /* m is still positive */
+(%o6)             [database info, m > 0]
+(%i6) meanexp(m);
+                             1
+(%o6)                        -
+                             m
+\end{verbatim}
+
+Suppose that the mean time between two consecutive failures of a mechanism is an exponential random variable of mean $E[T]=5$ days, that is $T \sim \exp(1/5)$, since the exponential parameter is $m=1/E[T]$. There was a failure just now, let's obtain the probability $\Pr\{T > 3\}$?
+\begin{verbatim}
+(%i7) 1-disexp(3,1/5);
+                            - 3/5
+(%o7)                     %e
+\end{verbatim}
+
+\item[varexp(m)] Returns the variance of the exponential random variable $X \sim \exp(m)$.
+
+\item[stdexp(m)] Returns the standard deviation of the exponential random variable $X \sim \exp(m)$.
+
+\item[skwexp(m)] Returns the skewness coefficient of the exponential random variable $X \sim \exp(m)$.
+
+\item[kurexp(m)] Returns the kurtosis coefficient of the exponential random variable $X \sim \exp(m)$.
+
+\end{description}
+
+\subsection{Lognormal}
+
+The specification of a lognormal random variable $X$ needs two parameters: $m$ and $s>0$. We write $X \sim lognor(m,s)$.
+
+\begin{description}
+
+\item[denlogn(x,m,s)] Returns the value at $x \in \R$ of the density function of the lognormal random variable $X \sim lognor(m,s)$.
+
+\begin{verbatim}
+(%i1) denlogn(2,0,2);
+                               2
+                            log (2)
+                          - -------
+                               8
+                        %e
+(%o1)              -------------------
+                    4 sqrt(2) sqrt(%pi)
+\end{verbatim}
+
+\item[dislogn(x,m,s)] Returns the value at $x \in \R$ of the distribution function of the lognormal random variable $X \sim lognor(m,s)$.
+
+\begin{verbatim}
+(%i2) dislogn(2,0,2);
+                          log(2)
+                     erf(---------)
+                         2 sqrt(2)    1
+(%o2)                -------------- + -
+                           2          2
+\end{verbatim}
+Note that \verb|dislogn| is defined in terms of the Maxima's built-in error function \verb|erf|.
+
+\item[meanlogn(m,s)] Returns the mean of the random variable  $X \sim lognor(m,s)$.
+
+\begin{verbatim}
+(%i3) assume(s>0);
+(%o3)                     [s > 0]
+(%i4) meanlogn(m,s);
+                             2
+                            s
+                            -- + m
+                            2
+(%o4)                     %e
+\end{verbatim}
+
+\item[varlogn(m,s)] Returns the variance of the random variable  $X \sim lognor(m,s)$.
+
+\item[stdlogn(m,s)] Returns the standard deviation of the random variable  $X \sim lognor(m,s)$.
+
+\begin{verbatim}
+(%i5) stdlogn(m,s);
+                     2
+                    s
+                    -- + m         2
+                    2             s
+(%o5)             %e       sqrt(%e   - 1)
+\end{verbatim}
+
+\item[skwlogn(m,s)] Returns the skewness coefficient of the random variable  $X \sim lognor(m,s)$.
+
+\item[kurlogn(m,s)] Returns the kurtosis coefficient of the random variable  $X \sim lognor(m,s)$.
+
+\end{description}
+
+
+\subsection{Gamma} \label{gamma}
+
+The specification of a \emph{gamma} random variable $X$ needs two parameters: $a > 0$ and $b > 0$. We write $X \sim \Gamma(a,b)$.
+
+\begin{description}
+
+\item[dengamma(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim \Gamma(a,b)$.
+
+\begin{verbatim}
+(%i1) assume(x>0,a>0,b>0);
+(%o1)              [x > 0, a > 0, b > 0]
+(%i2) dengamma(x,a,b);
+                        a - 1   - x/b
+                       x      %e
+(%o2)                  --------------
+                                  a
+                        gamma(a) b
+(%i3) dengamma(-8,a,b);
+(%o3)                       0
+(%i4) dengamma(8,1/9,4/3);
+                          1/9   - 6
+                         3    %e
+(%o4)                ------------------
+                      8/3  1/9       1
+                     2    4    gamma(-)
+                                     9
+\end{verbatim}
+In output \verb|(%o2)| we see the density function for $x>0$, in \verb|(%o3)| an example for negative $x$ and in \verb|(%o4)| a result when \verb|dengamma| is called with numeric arguments; of course we can get the floating point approximation of this last result,
+\begin{verbatim}
+(%i5) %,numer;
+(%o5)              4.436370150382082E-5
+\end{verbatim}
+
+\item[disgamma(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim \Gamma(a,b)$.
+
+\begin{verbatim}
+(%i6) disgamma(x,a,b);
+(%o6)                disgamma(x, a, b)
+(%i7) disgamma(8,1/9,4/3);
+                                 1  4
+(%o7)                disgamma(8, -, -)
+                                 9  3
+(%i8) %,numer;
+(%o8)                .9999476883104271
+\end{verbatim}
+There is no closed form for this function and it must be numerically approximated, therefore one must use \verb|numer| to get a numeric result from \verb|disgamma|, even when its three arguments are explicit numbers.
+
+\item[meangamma(a,b)] Returns the mean of the random variable  $X \sim \Gamma(a,b)$.
+
+\item[vargamma(a,b)] Returns the variance of the random variable  $X \sim \Gamma(a,b)$.
+
+\item[stdgamma(a,b)] Returns the standard deviation of the random variable  $X \sim \Gamma(a,b)$.
+
+\item[skwgamma(a,b)] Returns the skewness coefficient of the random variable  $X \sim \Gamma(a,b)$.
+
+\item[kurgamma(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim \Gamma(a,b)$.
+
+\begin{verbatim}
+(%i9) kurgamma(a,b);
+                             6
+(%o9)                        -
+                             a
+\end{verbatim}
+Note that during this session both $a$ and $b$ are assumed to be strictly positive.
+
+\end{description}
+
+\subsection{Beta}
+
+The specification of a \emph{beta} random variable $X$ needs two parameters: $a > 0$ and $b > 0$. We write $X \sim \beta(a,b)$.
+
+\begin{description}
+
+\item[denbeta(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim \beta(a,b)$.
+
+The density function of a beta random variable equals zero for $x \notin (0,1)$,
+\begin{verbatim}
+(%i1) assume(x>0,x<1,a>0,b>0);
+(%o1)          [x > 0, x < 1, a > 0, b > 0]
+(%i2) denbeta(x,a,b);
+                           b - 1  a - 1
+                    (1 - x)      x
+(%o2)               -------------------
+                        beta(a, b)
+(%i3) denbeta(-4,a,b);
+(%o3)                       0
+\end{verbatim}
+
+\item[disbeta(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim \beta(a,b)$.
+
+\begin{verbatim}
+(%i4) disbeta(4,1,9/7);
+(%o4)                       1
+(%i5) disbeta(1/4,1,9/7);
+                              1     9
+(%o5)                 disbeta(-, 1, -)
+                              4     7
+(%i6) %,numer;
+(%o6)               .3091806694776301
+\end{verbatim}
+In output \verb|(%o4)| we get \verb|1|, since the distribution function equals 1 if argument $x$ is grater than 1. Note also that there is no closed form for this function and it must be numerically approximated, therefore one must use \verb|numer| to get a numeric result from \verb|disbeta|, even when its three arguments are explicit numbers.
+
+\item[meanbeta(a,b)] Returns the mean of the random variable  $X \sim \beta(a,b)$.
+
+\item[varbeta(a,b)] Returns the variance of the random variable  $X \sim \beta(a,b)$.
+
+\item[stdbeta(a,b)] Returns the standard deviation of the random variable  $X \sim \beta(a,b)$.
+
+\item[skwbeta(a,b)] Returns the skewness coefficient of the random variable  $X \sim \beta(a,b)$.
+
+\begin{verbatim}
+(%i7) skwbeta(a,b);
+                 2 (b - a) sqrt(b + a + 1)
+(%o7)           ---------------------------
+                sqrt(a) sqrt(b) (b + a + 2)
+\end{verbatim}
+Note that during this session both $a$ and $b$ are assumed to be strictly positive.
+
+\item[kurbeta(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim \beta(a,b)$.
+
+\end{description}
+
+\subsection{Continuous uniform}
+
+The specification of a continuous uniform random variable $X$ needs two parameters, $a$ and $b$, such that $a<b$. We write $X \sim U_c(a,b)$.
+
+\begin{description}
+
+\item[dencontu(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim U_c(a,b)$.
+
+\begin{verbatim}
+(%i1) assume(a<b);
+(%o1)                     [b > a]
+(%i2) dencontu(x,a,b);
+(%o2)                dencontu(x, a, b)
+(%i3) assume(a<x,x<b);
+(%o3)                  [x > a, b > x]
+(%i4) dencontu(x,a,b);
+                             1
+(%o4)                      -----
+                           b - a
+(%i5) assume(z>b)$ dencontu(z,a,b);
+(%o5)                       0
+\end{verbatim}
+For $x$ outside the interval $(a,b)$ the density function equals zero, therefore in output \verb|(%o2)| we get again the input command, since Maxima knows nothing about $x$. Once we specify the position of $x$ with respect to $a$ and $b$, input \verb|(%i3)|, we get the expected answer in \verb|(%o4)|.
+
+\item[discontu(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim U_c(a,b)$.
+
+\begin{verbatim}
+(%i6) discontu(x,a,b);
+                           x - a
+(%o6)                      -----
+                           b - a
+(%i7) discontu(z,a,b);
+(%o7)                       1
+\end{verbatim}
+
+\item[meancontu(a,b)] Returns the mean of the random variable  $X \sim U_c(a,b)$.
+
+\item[varcontu(a,b)] Returns the variance of the random variable  $X \sim U_c(a,b)$.
+
+\begin{verbatim}
+(%i8) varcontu(a,b);
+                                 2
+                          (b - a)
+(%o8)                     --------
+                             12
+\end{verbatim}
+
+\item[stdcontu(a,b)] Returns the standard deviation of the random variable  $X \sim U_c(a,b)$.
+
+\item[skwcontu(a,b)] Returns the skewness coefficient of the random variable  $X \sim U_c(a,b)$.
+
+\item[kurcontu(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim U_c(a,b)$.
+
+\end{description}
+
+\subsection{Logistic} 
+
+The specification of a logistic random variable $X$ needs two parameters, $a \in \R$ and $b>0$. We write $X \sim logit(a,b)$.
+
+\begin{description}
+
+\item[denlog(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim logit(a,b)$.
+
+\begin{verbatim}
+(%i1) denlog(x,-5,2);
+                           - x - 5
+                           -------
+                              2
+                         %e
+(%o1)                ------------------
+                          - x - 5
+                          -------
+                             2        2
+                     2 (%e        + 1)
+\end{verbatim}
+
+\item[dislog(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim logit(a,b)$.
+
+\begin{verbatim}
+(%i2) dislog(x,-5,2);
+                             1
+(%o2)                  -------------
+                         - x - 5
+                         -------
+                            2
+                       %e        + 1
+\end{verbatim}
+
+\item[meanlog(a,b)] Returns the mean of the random variable  $X \sim logit(a,b)$.
+
+\item[varlog(a,b)] Returns the variance of the random variable  $X \sim logit(a,b)$.
+
+\item[stdlog(a,b)] Returns the standard deviation of the random variable  $X \sim logit(a,b)$.
+
+\begin{verbatim}
+(%i3) stdlog(-5,2);
+                           2 %pi
+(%o3)                     -------
+                          sqrt(3)
+\end{verbatim}
+
+\item[skwlog(a,b)] Returns the skewness coefficient of the random variable  $X \sim logit(a,b)$.
+
+\item[kurlog(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim logit(a,b)$.
+
+\end{description}
+
+\subsection{Pareto}
+
+The specification of a Pareto random variable $X$ needs two parameters, $a>0$ and $b>0$. We write $X \sim Par(a,b)$.
+
+\begin{description}
+
+\item[denpareto(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim Par(a,b)$.
+
+The support of the Pareto distribution is $[b,\infty)$, this means that its density function equals zero $\forall x<b$,
+\begin{verbatim}
+(%i1) assume(x>b,a>0,b>0);
+(%o1)             [x > b, a > 0, b > 0]
+(%i2) denpareto(x,a,b);
+                         a  - a - 1
+(%o2)                 a b  x
+\end{verbatim}
+
+\item[dispareto(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Par(a,b)$.
+
+\begin{verbatim}
+(%i3) dispareto(x,a,b);
+                                a
+                               b
+(%o3)                      1 - --
+                                a
+                               x
+\end{verbatim}
+
+\item[meanpareto(a,b)] Returns the mean of the random variable  $X \sim Par(a,b)$.
+
+\item[varpareto(a,b)] Returns the variance of the random variable  $X \sim Par(a,b)$.
+
+\begin{verbatim}
+(%i4) varpareto(a,b);
+                               2
+                            a b
+(%o4)                 ----------------
+                                     2
+                      (a - 2) (a - 1)
+\end{verbatim}
+
+\item[stdpareto(a,b)] Returns the standard deviation of the random variable  $X \sim Par(a,b)$.
+
+\item[skwpareto(a,b)] Returns the skewness coefficient of the random variable  $X \sim Par(a,b)$.
+
+\item[kurpareto(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim Par(a,b)$.
+
+\end{description}
+
+\subsection{Weibull} \label{weibull}
+
+The specification of a Weibull random variable $X$ needs two parameters, $a>0$ and $b>0$. We write $X \sim Wei(a,b)$.
+
+\begin{description}
+
+\item[denweibull(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim Wei(a,b)$.
+
+\begin{verbatim}
+(%i1) assume(x>0,a>0,b>0);
+(%o1)              [x > 0, a > 0, b > 0]
+(%i2) denweibull(x,a,b);
+                                    a
+                                   x
+                                 - --
+                                    a
+                         a - 1     b
+                      a x      %e
+(%o2)                 ---------------
+                             a
+                            b
+\end{verbatim}
+
+\item[disweibull(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Wei(a,b)$.
+
+\begin{verbatim}
+(%i3) disweibull(x,a,b);
+                                  a
+                                 x
+                               - --
+                                  a
+                                 b
+(%o3)                    1 - %e
+\end{verbatim}
+
+\item[meanweibull(a,b)] Returns the mean of the random variable  $X \sim Wei(a,b)$.
+
+\item[varweibull(a,b)] Returns the variance of the random variable  $X \sim Wei(a,b)$.
+
+\item[stdweibull(a,b)] Returns the standard deviation of the random variable  $X \sim Wei(a,b)$.
+
+\item[skwweibull(a,b)] Returns the skewness coefficient of the random variable  $X \sim Wei(a,b)$.
+
+\item[kurweibull(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim Wei(a,b)$.
+
+\begin{verbatim}
+(%i4) kurweibull(a,b);
+             4                1            3
+(%o4) (gamma(- + 1) - 4 gamma(- + 1) gamma(- + 1)
+             a                a            a
+          2 1            2               4 1
+ + 6 gamma (- + 1) gamma(- + 1) - 3 gamma (- + 1))
+            a            a                 a
+        2             2 1      2
+/(gamma(- + 1) - gamma (- + 1))  - 3
+        a               a
+(%i5) %,a:1.5,b:3.7;
+(%o5)                1.390403561595804
+\end{verbatim}
+
+\end{description}
+
+
+\subsection{Rayleigh} 
+
+The specification of a Rayleigh random variable $X$ needs only one parameter, $b>0$. We write $X \sim Ray(b)$.
+
+\begin{description}
+
+\item[denrayleigh(x,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim Ray(b)$.
+
+\begin{verbatim}
+(%i1) denrayleigh(x,b);
+                                    1
+(%o1)              denweibull(x, 2, -)
+                                    b
+(%i2) assume(x>0,b>0);
+(%o2)                 [x > 0, b > 0]
+(%i3) denrayleigh(x,b);
+                                 2  2
+                        2     - b  x
+(%o3)                2 b  x %e
+\end{verbatim}
+Note that giving Maxima no information about $x$ and $b$, Maxima returns a call to the Weibull density function, this is so because $X \sim Ray(b)$ is equivalent to $X \sim Wei(2,1/b)$, see \ref{weibull}.
+
+\item[disrayleigh(x,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Ray(b)$.
+
+\begin{verbatim}
+(%i4) disrayleigh(x,b);
+                               2  2
+                            - b  x
+(%o4)                 1 - %e
+\end{verbatim}
+
+\item[meanrayleigh(b)] Returns the mean of the random variable  $X \sim Ray(b)$.
+
+\item[varrayleigh(b)] Returns the variance of the random variable  $X \sim Ray(b)$.
+
+\item[stdrayleigh(b)] Returns the standard deviation of the random variable  $X \sim Ray(b)$.
+
+\item[skwrayleigh(b)] Returns the skewness coefficient of the random variable  $X \sim Ray(b)$.
+
+\item[kurrayleigh(b)] Returns the kurtosis coefficient of the random variable  $X \sim Ray(b)$.
+
+\end{description}
+
+
+\subsection{Laplace}
+
+The specification of a Laplace random variable $X$ needs two parameters, $a \in \R$ and $b>0$. We write $X \sim Lap(a,b)$.
+
+\begin{description}
+
+\item[denlaplace(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim Lap(a,b)$.
+
+\begin{verbatim}
+(%i1) assume(b>0);
+(%o1)                    [b > 0]
+(%i2) denlaplace(x,a,b);
+                          abs(x - a)
+                        - ----------
+                              b
+                      %e
+(%o2)                 --------------
+                           2 b
+\end{verbatim}
+
+\item[dislaplace(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Lap(a,b)$.
+
+Due to the presence of the absolute function, if we want a general expression of the distribution, we must specify if $x$ is lesser or greater than $a$; let's see both cases,
+\begin{verbatim}
+(%i3) assume(x<a);
+(%o3)                    [a > x]
+(%i4) dislaplace(x,a,b);
+                           x - a
+                           -----
+                             b
+                         %e
+(%o4)                    -------
+                            2
+(%i5) forget(x<a)$ assume(x>a);
+(%o6)                    [x > a]
+(%i7) dislaplace(x,a,b);
+                              a - x
+                              -----
+                                b
+                            %e
+(%o7)                   1 - -------
+                               2
+\end{verbatim}
+
+\item[meanlaplace(a,b)] Returns the mean of the random variable  $X \sim Lap(a,b)$.
+
+\item[varlaplace(a,b)] Returns the variance of the random variable  $X \sim Lap(a,b)$.
+
+\item[stdlaplace(a,b)] Returns the standard deviation of the random variable  $X \sim Lap(a,b)$.
+
+\item[skwlaplace(a,b)] Returns the skewness coefficient of the random variable  $X \sim Lap(a,b)$.
+
+\item[kurlaplace(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim Lap(a,b)$.
+
+\end{description}
+
+
+\subsection{Cauchy}
+
+The specification of a Cauchy random variable $X$ needs two parameters, $a \in \R$ and $b>0$. We write $X \sim Cau(a,b)$.
+
+The Cauchy distribution has no moments; therefore there are not any functions for the mean, variance and the skewness and kurtosis coefficients. See below for an example in the description of \verb|dencauchy|. 
+
+\begin{description}
+
+\item[dencauchy(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim Cau(a,b)$.
+
+\begin{verbatim}
+(%i1) assume(b>0);
+(%o1)                    [b > 0]
+(%i2) dencauchy(x,a,b);
+                             b
+(%o2)               -------------------
+                                2    2
+                    %pi ((x - a)  + b )
+\end{verbatim}
+
+Let's now try to compute the second moment of a Cauchy random variable,
+\begin{verbatim}
+(%i3) integrate(x^2*dencauchy(x,a,b),x,minf,inf);
+Is  a  positive, negative, or zero?
+
+p;
+Integral is divergent
+ -- an error.  Quitting.  To debug this try debugmode(true);
+\end{verbatim}
+
+\item[discauchy(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Cau(a,b)$.
+
+\begin{verbatim}
+(%i4) discauchy(x,a,b);
+                           x - a
+                      atan(-----)
+                             b      1
+(%o4)                 ----------- + -
+                          %pi       2
+\end{verbatim}
+
+\end{description}
+
+
+\subsection{Gumbel}
+
+The specification of a Gumbel random variable $X$ needs two parameters, $a \in \R$ and $b>0$. We write $X \sim Gum(a,b)$.
+
+\begin{description}
+
+\item[dengumbel(x,a,b)] Returns the value at $x \in \R$ of the density function of the random variable $X \sim Gum(a,b)$.
+
+\begin{verbatim}
+(%i1) assume(b>0);
+(%o1)                     [b > 0]
+(%i2) dengumbel(x,a,b);
+                                 a - x
+                                 -----
+                       a - x       b
+                       ----- - %e
+                         b
+                     %e
+(%o2)                -----------------
+                             b
+\end{verbatim}
+
+\item[disgumbel(x,a,b)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Gum(a,b)$.
+
+\begin{verbatim}
+(%i3) disgumbel(x,a,b);
+                              a - x
+                              -----
+                                b
+                          - %e
+(%o3)                   %e
+\end{verbatim}
+
+\item[meangumbel(a,b)] Returns the mean of the random variable  $X \sim Gum(a,b)$.
+
+\begin{verbatim}
+(%i4) meangumbel(a,b);
+(%o4)                   %gamma b + a
+(%i5) meangumbel(0,1);
+(%o5)                      %gamma
+(%i6) %,numer;
+(%o6)                .5772156649015329
+\end{verbatim}
+The symbol \verb|%gamma| is the Euler-Mascheroni constant, which is approximated in \verb|(%o6)|.
+
+\item[vargumbel(a,b)] Returns the variance of the random variable  $X \sim Gum(a,b)$.
+
+\item[stdgumbel(a,b)] Returns the standard deviation of the random variable  $X \sim Gum(a,b)$.
+
+\item[skwgumbel(a,b)] Returns the skewness coefficient of the random variable  $X \sim Gum(a,b)$.
+
+\begin{verbatim}
+(%i7) skwgumbel(a,b);
+                     12 sqrt(6) zeta(3)
+(%o7)               ------------------
+                               3
+                            %pi
+\end{verbatim}
+This value does not dependen on the parameters, use the variable \verb|numer| for a floating point approximation,
+\begin{verbatim}
+(%i8) numer:true$
+(%i9) skwgumbel(a,b);
+(%o9)               1.139547099404649
+\end{verbatim}
+
+\item[kurgumbel(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim Gum(a,b)$.
+
+\end{description}
+
+\section{Discrete distributions}
+
+\subsection{Binomial} \label{binomial}
+
+The specification of a binomial random variable $X$ needs two parameters, $n \in \N - \{0\}$ and $p \in (0,1)$. We write $X \sim B(n,p)$.
+
+\begin{description}
+
+\item[denbinomial(x,n,p)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim B(n,p)$.
+
+\begin{verbatim}
+(%i1) assume(0<p,p<1);
+(%o1)                [p > 0, p < 1]
+(%i2) denbinomial(8,10,p);
+                               2  8
+(%o2)                45 (1 - p)  p
+(%i3) denbinomial(8.5,10,p);
+(%o3)                      0
+\end{verbatim}
+
+\item[disbinomial(x,n,p)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim B(n,p)$.
+
+\begin{verbatim}
+(%i4) disbinomial(8,10,p),numer;
+(%o4)             disbinomial(8, 10, p)
+(%i5) disbinomial(8,10,1/2),numer;
+(%o5)                 0.9892578125
+\end{verbatim}
+The distribution function is calculated numerically, therefore the user must use the flag \verb|numer| to get a floating point result, otherwise \verb|disbinomial| gives the input command back.
+
+\item[meanbinomial(a,b)] Returns the mean of the random variable  $X \sim B(n,p)$.
+
+\item[varbinomial(a,b)] Returns the variance of the random variable  $X \sim B(n,p)$.
+
+\item[stdbinomial(a,b)] Returns the standard deviation of the random variable  $X \sim B(n,p)$.
+
+\begin{verbatim}
+(%i6) stdbinomial(13,p);
+(%o6)          sqrt(13) sqrt(1 - p) sqrt(p)
+\end{verbatim}
+
+\item[skwbinomial(a,b)] Returns the skewness coefficient of the random variable  $X \sim B(n,p)$.
+
+\item[kurbinomial(a,b)] Returns the kurtosis coefficient of the random variable  $X \sim B(n,p)$.
+
+\begin{verbatim}
+(%i7) kurbinomial(13,p);
+                      1 - 6 (1 - p) p
+(%o7)                 ---------------
+                       13 (1 - p) p
+\end{verbatim}
+
+\end{description}
+
+\subsection{Poisson}
+
+The specification of a Poisson random variable $X$ needs only one parameter,  $m > 0$. We write $X \sim Poi(m)$.
+
+\begin{description}
+
+\item[denpoisson(x,m)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim Poi(m)$.
+
+\begin{verbatim}
+(%i1) assume(m>0);
+(%o1)                     [m > 0]
+(%i2)  denpoisson(3,m);
+                           3   - m
+                          m  %e
+(%o2)                     --------
+                             6
+\end{verbatim}
+
+\item[dispoisson(x,m)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Poi(m)$.
+
+\begin{verbatim}
+(%i3) dispoisson(3,m);
+(%o3)                dispoisson(3, m)
+(%i4) dispoisson(3,8);
+(%o4)                dispoisson(3, 8)
+(%i5) dispoisson(3,8),numer;
+(%o5)               0.042380111991684
+\end{verbatim}
+The distribution function is calculated numerically, therefore the user must use the flag \verb|numer| to get a floating point result, otherwise \verb|dispoisson| gives the input command back.
+
+\item[meanpoisson(m)] Returns the mean of the random variable  $X \sim Poi(m)$.
+
+\begin{verbatim}
+(%i6) meanpoisson(m);
+(%o6)                       m
+\end{verbatim}
+That is, the mean value equals the model parameter.
+
+\item[varpoisson(m)] Returns the variance of the random variable  $X \sim Poi(m)$.
+
+\item[stdpoisson(m)] Returns the standard deviation of the random variable  $X \sim Poi(m)$.
+
+\item[skwpoisson(m)] Returns the skewness coefficient of the random variable  $X \sim Poi(m)$.
+
+\item[kurpoisson(m)] Returns the kurtosis coefficient of the random variable  $X \sim Poi(m)$.
+
+\end{description}
+
+\subsection{Bernoulli}
+
+The specification of a Bernoulli random variable $X$ needs only one parameter,  $0 <p<1$. We write $X \sim Ber(p)$.
+
+\begin{description}
+
+\item[denbernoulli(x,p)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim Ber(p)$.
+
+\begin{verbatim}
+(%i1) assume(0<p,p<1);
+(%o1)                  [p > 0, p < 1]
+(%i2) denbernoulli(1,p);
+(%o2)                        p
+(%i3) denbernoulli(0,p);
+(%o3)                      1 - p
+(%i4) denbernoulli(x,p);
+(%o4)              denbinomial(x, 1, p)
+(%i5) denbernoulli(7,p);
+(%o5)                       0
+\end{verbatim}
+Note also that in output \verb|(%o4)| there is a call to function \verb|denbinomial|, this is so because $X \sim Ber(p)$ is equivalent to $X \sim B(1,p)$, see \ref{binomial}. Also, if $x \notin \{0,1\}$, then \verb|denbernoulli| returns zero.
+
+\item[disbernoulli(x,p)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Ber(p)$.
+
+\begin{verbatim}
+(%i6) disbernoulli(0,p);
+(%o6)                      1 - p
+(%i7) disbernoulli(0.5,p);
+(%o7)                     1 - p
+(%i8) disbernoulli(1,p);
+(%o8)                       1
+\end{verbatim}
+
+\item[meanbernoulli(p)] Returns the mean of the random variable  $X \sim Ber(p)$.
+
+\begin{verbatim}
+(%i9) meanbernoulli(p);
+(%o9)                       p
+\end{verbatim}
+That is, the mean value equals the model parameter.
+
+\item[varbernoulli(p)] Returns the variance of the random variable  $X \sim Ber(p)$.
+
+\item[stdbernoulli(p)] Returns the standard deviation of the random variable  $X \sim Ber(p)$.
+
+\item[skwbernoulli(p)] Returns the skewness coefficient of the random variable  $X \sim Ber(p)$.
+
+\begin{verbatim}
+(%i10) skwbernoulli(p);
+                          1 - 2 p
+(%o10)              -------------------
+                    sqrt(1 - p) sqrt(p)
+\end{verbatim}
+
+\item[kurbernoulli(p)] Returns the kurtosis coefficient of the random variable  $X \sim Ber(p)$.
+
+\end{description}
+
+\subsection{Geometric}
+
+The specification of a geometric random variable $X$ needs only one parameter,  $0<p<1$. We write $X \sim Geo(p)$.
+
+\begin{description}
+
+\item[dengeo(x,p)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim Geo(p)$.
+
+\begin{verbatim}
+(%i1) assume(0<p,p<1);
+(%o1)                  [p > 0, p < 1]
+(%i2) dengeo(10,p);
+                               10
+(%o2)                   (1 - p)   p
+(%i3) dengeo(x,p);
+(%o3)                   dengeo(x, p)
+\end{verbatim}
+
+\item[disgeo(x,p)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Geo(p)$.
+
+\begin{verbatim}
+(%i4) disgeo(10,p);
+                                  11
+(%o4)                 1 - (1 - p)
+\end{verbatim}
+
+\item[meangeo(p)] Returns the mean of the random variable  $X \sim Geo(p)$.
+
+\item[vargeo(p)] Returns the variance of the random variable  $X \sim Geo(p)$.
+
+\item[stdgeo(p)] Returns the standard deviation of the random variable  $X \sim Geo(p)$.
+
+\item[skwgeo(p)] Returns the skewness coefficient of the random variable  $X \sim Geo(p)$.
+
+\begin{verbatim}
+(%i5) skwgeo(p);
+                           2 - p
+(%o5)                   -----------
+                        sqrt(1 - p)
+\end{verbatim}
+
+\item[kurgeo(p)] Returns the kurtosis coefficient of the random variable  $X \sim Geo(p)$.
+
+
+\end{description}
+
+\subsection{Discrete uniform}
+
+The specification of a discrete uniform random variable $X$ needs only one parameter,  $n \in \N$. We write $X \sim U_d(n)$.
+
+\begin{description}
+
+\item[dendiscu(x,n)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim U_d(n)$.
+
+\begin{verbatim}
+(%i1) dendiscu(1,2);
+                             1
+(%o1)                        -
+                             2
+(%i2) dendiscu(5,6);
+                             1
+(%o2)                        -
+                             6
+(%i3) dendiscu(17,6);
+(%o3)                        0
+\end{verbatim}
+the output \verb|(%o1)| is the probability of obtaining \emph{head} when tossing a coin, \verb|(%o2)| is the probability of 5 points when tossing a dice and \verb|(%o3)| is the probability for 17 points.
+
+\item[disdiscu(x,n)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim U_d(n)$.
+
+\begin{verbatim}
+(%i4) disdiscu(4,6);
+                             2
+(%o4)                        -
+                             3
+\end{verbatim}
+this is the probability of obtaining 4 or less points after tossing the dice.
+
+\item[meandiscu(n)] Returns the mean of the random variable  $X \sim U_d(n)$.
+
+\item[vardiscu(n)] Returns the variance of the random variable  $X \sim U_d(n)$.
+
+\item[stddiscu(n)] Returns the standard deviation of the random variable  $X \sim U_d(n)$.
+
+\item[skwdiscu(n)] Returns the skewness coefficient of the random variable  $X \sim U_d(n)$.
+
+\item[kurdiscu(n)] Returns the kurtosis coefficient of the random variable $X \sim U_d(n)$.
+
+\begin{verbatim}
+(%i5) kurdiscu(5);
+                              13
+(%o5)                       - --
+                              10
+\end{verbatim}
+
+\end{description}
+
+\subsection{Hypergeometric}
+
+The specification of the hypergeometric random variable $X$ needs three parameters,  $N_1, N_2 \in \N-\{0\}$ and $n \in \{1, \ldots, N_1+N_2\}$. We write $X \sim Hypgeo(N_1, N_2, n)$. These parameters can be interpreted as follows: $N_1$ is the number of white balls in an urn, $N_2$ is the number of black balls and $n$ is the number of balls sampled from the urn without replacement. Then, the random variable $X$ is the number of white balls in the sample.
+
+\begin{description}
+
+\item[denhypergeo(x,n1,n2,n)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim Hypgeo(N_1, N_2, n)$.
+
+\begin{verbatim}
+(%i1) denhypergeo(3, 4, 5, 3) + denhypergeo(2, 4, 5, 3)
+        + denhypergeo(1, 4, 5, 3) + denhypergeo(0, 4, 5, 3);
+(%o1)                       1
+(%i2) denhypergeo(2, 4, 5, 3);
+                            5
+(%o2)                       --
+                            14
+(%i3) denhypergeo(2.5, 4, 5, 3);
+(%o3)                       0
+\end{verbatim}
+In this example, the urn has 4 white balls and 5 black balls, the sample size is 3. Possible values for $X$ are 3, 2, 1 or 0, the sum of their probabilities must be 1. We get positive values of the density function when $x$ is an integer such that $\max(0, n-N_2) \leq x \leq \min(N_1,n)$.
+
+\item[dishypergeo(x,n1,n2,n)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim Hypgeo(N_1, N_2, n)$.
+
+\begin{verbatim}
+(%i4) dishypergeo(2, 4, 5, 3);
+                             20
+(%o4)                        --
+                             21
+(%i5) dishypergeo(2.5, 4, 5, 3);
+                             20
+(%o5)                        --
+                             21
+\end{verbatim}
+
+\item[meanhypergeo(n1,n2,n)] Returns the mean of the random variable  $X \sim Hypgeo(N_1, N_2, n)$.
+
+\item[varhypergeo(n1,n2,n)] Returns the variance of the random variable  $X \sim Hypgeo(N_1, N_2, n)$.
+
+\item[stdhypergeo(n1,n2,n)] Returns the standard deviation of the random variable  $X \sim Hypgeo(N_1, N_2, n)$.
+
+\item[skwhypergeo(n1,n2,n)] Returns the skewness coefficient of the random variable  $X \sim Hypgeo(N_1, N_2, n)$.
+
+\begin{verbatim}
+(%i6) skwhypergeo(345,456,255);
+                        3589 sqrt(2)
+(%o6)                 ----------------
+                      799 sqrt(676039)
+\end{verbatim}
+
+\item[kurhypergeo(n1,n2,n)] Returns the kurtosis coefficient of the random variable $X \sim Hypgeo(N_1, N_2, n)$.
+
+\end{description}
+
+\subsection{Negative binomial}
+
+The specification of a negative binomial random variable $X$ needs two parameters, $n \in \N-\{0\}$ and $p \in (0,1)$. We write $X \sim NB(n,p)$.
+
+\begin{description}
+
+\item[dennegbinom(x,n,p)] Returns the value at $x \in \R$ of the probability function of the random variable $X \sim NB(n,p)$.
+
+\begin{verbatim}
+(%i1) dennegbinom(10,7,1/8);
+                       282757724249
+(%o1)                 ---------------
+                      281474976710656
+\end{verbatim}
+
+\item[disnegbinom(x,n,p)] Returns the value at $x \in \R$ of the distribution function of the random variable $X \sim NB(n,p)$.
+
+\begin{verbatim}
+(%i2) disnegbinom(10,7,1/8);
+                                      1
+(%o2)              disnegbinom(10, 7, -)
+                                      8
+(%i3) disnegbinom(10,7,1/8),numer;
+(%o3)                .0029453325935691
+\end{verbatim}
+This function is calculated numerically, therefore one must use \verb|numer| to get a numeric result from \verb|disnegbinom|.
+
+\item[meannegbinom(n,p)] Returns the mean of the random variable  $X \sim NB(n,p)$.
+
+\item[varnegbinom(n,p)] Returns the variance of the random variable  $X \sim NB(n,p)$.
+
+\item[stdnegbinom(n,p)] Returns the standard deviation of the random variable  $X \sim NB(n,p)$.
+
+\item[skwnegbinom(n,p)] Returns the skewness coefficient of the random variable  $X \sim NB(n,p)$.
+
+\begin{verbatim}
+(%i4) skwnegbinom(7,1/8);
+                         15 sqrt(2)
+(%o4)                    ----------
+                             28
+\end{verbatim}
+
+\item[kurnegbinom(n,p)] Returns the kurtosis coefficient of the random variable $X \sim NB(n,p)$.
+
+\end{description}
+
+\bibliographystyle{plain}
+
+\begin{thebibliography}{10}
+
+\bibitem{john1}
+Abramowitz, M., Stegun, I. (1970) \emph{Handbook of Mathematical Functions}. Dover Publications, New York.
+
+\bibitem{john1}
+Johnson, N. L. , Kotz, S., Balakrishnan, N. (1994) \emph{Continuous Univariate Distributions}, Volume 1. Wiley, New York.
+
+\bibitem{john2}
+Johnson, N. L. , Kotz, S., Balakrishnan, N. (1995) \emph{Continuous Univariate Distributions}, Volume 2. Wiley, New York.
+
+\bibitem{john3}
+Johnson, N. L. , Kotz, S., Kemp, A. W. (1993) \emph{Univariate Discrete Distributions}. Wiley, New York.
+
+\end{thebibliography}
+
+\end{document}
+

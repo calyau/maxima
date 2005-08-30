@@ -1,0 +1,20 @@
+This is the README file for
+
+distrib.mac
+
+A Maxima GPL-package for probability distributions 
+
+Files:
+   distrib.mac: the Maxima code
+   doc/distrib_en.tex: latex documentation in English
+
+For a pdf version of the documentation and more:
+
+http://www.telefonica.net/web2/biomates/maxima/distrib/distrib.htm
+
+For comments, suggestions or bug reports, please contact me at
+
+Mario Rodriguez Riotorto
+mario AT edu DOT xunta DOT es
+www.biomates.net
+
