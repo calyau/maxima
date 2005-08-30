@@ -2,7 +2,7 @@ This is the README file for
 
 descriptive.mac
 
-A Maxima GPL-package for descriptive statistics 
+A Maxima GPL-package for descriptive statistics.
 
 Files:
    descriptive.mac: the Maxima code
