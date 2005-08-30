@@ -6,920 +6,1225 @@
 @node Introducci@'on a los Polinomios, Definiciones para Polinomios, Polinomios, Polinomios
 @section Introducci@'on a los Polinomios
 
-Los polinomios se encuentran almacenados en Maxima o bien como una forma general o como una forma de Expresiones Racionales Can@'onicas (ERC). Esta @'ultima es una forma estandar,
-y es usada internamente para cada operaci@'on como un factor, ratsimp, y etcetera.
+Los polinomios se almacenan en Maxima, bien en un formato general, bien en una forma conocida como can@'onica (Cannonical Rational Expressions, CRE). La @'ultima corresponde al formato est@'andar y se utiliza internamente para realizar operaciones como @code{factor}, @code{ratsimp} y dem@'as.
 
-Las Expresiones Racionales Canonicas constituyen un tipo de representaci@'on
-el cual es especialmente apropiado para expandir polinomios y funciones racionales
-(o bien siendo para factorizar parcialmente polinomios y funciones racionales)
-mientras RATFAC[FALSO] sea programado como verdadero). En esta forma de ERC
-el ordenamiento de las variables (desde la mayotia hasta el principal) es asumido por cada
-expresi@'on. Los polinomios son representados recursivamente como una lista
-compuesta por la variable principal seguida por una serie de parejas de expresiones ,
-uno por uno los terminos del polinomio. El primer miembro
-de cada par es el exponente de la variable principal en ese termino y el
-segundo miembro es el coeficiente de ese termino el cual puede ser un n@'umero o
-un polinomio en otra variable representada nuevamente de esta forma. As@'{@dotless{i}}
-la parte principal de la forma ERC de 3*X^2-1 es (X 2 3 0 -1) y la de
-2*X*Y+X-3 es (Y 1 (X 1 2) 0 (X 1 1 0 -3)) asumiendo que Y es la variable principal.
-"Principal" es usualmente determinada en orden alfab@'etico inverso.
-Las "variables" de la expresi@'on ERC no son necesariamente at@'omicas. De hecho
-cualquier subexpresi@'on cuyo operador principal no es + - * / o ^ con poder integrando
-puede ser considerada como una "variable" de la expresi@'on (en forma ERC) en 
-el cual ocurra. Por ejemplo las variables ERC de la expresi@'on
-X+SIN(X+1)+2*SQRT(X)+1 son X, SQRT(X), y SIN(X+1).  Si el usuario no
-especifica un ordenamiento de las variables mediante la funci@'on RATVARS 
-MACSYMA escoger@'a una alfab@'eticamente. En general, la representaci@'on de expresiones
-racionales ERC, hay proposiciones de polinomios, donde el numerador y
-el denominador  no tienen factores comunes, y el denominador es
-positivo. La forma interna es esencialmente un par de polinomios ( el
-numerador y el denominador) precedida por la lista de ordenamiento de variables. Si
-una expresi@'on a ser mostrada esta en la forma ERC o contiene alguna
-subexpresi@'on en forma de ERC, el simbolo /R/ ser@'a seguido por la etiqueta de linea.
-Observar la funci@'on RAT para convertir una expresi@'on a la forma ERC. Una
-forma extensa de ERC es usada para la representaci@'on de las series de Taylor. La
-noci@'on de una expresi@'on racional es extendida, los exponentes de las
-variables tambi@'en pueden ser n@'umeros racionales positivos o negativos mejor que solo
-integrandos positivos y los coeficientes pueden ser por si mismos expresiones
-racionales por encima de un simple polinomio. Hay
-representaciones internas para los polinomios recursivos el cual es similar
-y es una generalizaci@'on de la forma ERC, pero porta informaci@'on extra
-tal como el bloqueo de degrados. Como con la forma ERC, el simbolo
-/T/ sigue la etiqueta de l@'{@dotless{i}}nea de cada expresi@'on.
+Las Expresiones Racionales Can@'onicas (CRE) constituyen un tipo de representaci@'on
+que es especialmente apropiado para expandir polinomios y funciones racionales
+(as@'{@dotless{i}} como para polinomios parcialmente factorizados y funciones racionales cuando a la variable @code{ratfac} se le asigna el valor @code{true}). En esta forma CRE las variables se ordenan de mayor a menor. Los polinomios se representan recursivamente como una lista compuesta por la variable principal seguida por una serie de pares de expresiones,
+una por cada t@'ermino del polinomio. El primer miembro
+de cada par es el exponente de la variable principal en ese t@'ermino y el
+segundo miembro es el coeficiente de ese t@'ermino, el cual puede ser un n@'umero o
+un polinomio en otra variable representado tambi@'en de esta forma. As@'{@dotless{i}},
+la parte principal de la forma CRE de 3*X^2-1 es (X 2 3 0 -1) y la de
+2*X*Y+X-3 es (Y 1 (X 1 2) 0 (X 1 1 0 -3)) asumiendo que Y es la variable principal, y ser@'a (X 1 (Y 1 2 0 1) 0 -3) si se asume que la variable principal es X. Qu@'e variable se considera "principal" se determinada en orden alfab@'etico inverso.
+Las "variables" de la expresi@'on CRE no son necesariamente at@'omicas. De hecho
+cualquier subexpresi@'on cuyo operador principal no es + - * / ni ^ con potencia entera
+puede ser considerada como una "variable" de la expresi@'on (en forma CRE) en 
+el cual aparezca. Por ejemplo las variables CRE de la expresi@'on
+X+SIN(X+1)+2*SQRT(X)+1 son X, SQRT(X)  y SIN(X+1).  Si el usuario no
+especifica una ordenaci@'on de las variables mediante la funci@'on @code{ratvars} 
+Maxima escoger@'a una alfab@'eticamente. En general, laa CRE representan expresiones
+racionales, esto es, fracciones de polinomios, donde el numerador y
+el denominador  no tienen factores comunes, siendo el denominador es
+positivo. La forma interna es esencialmente un par de polinomios (el
+numerador y el denominador) precedida por la lista de variables ordenadas. Si
+una expresi@'on a ser mostrada est@'a en la forma CRE o contiene alguna
+subexpresi@'on en forma de CRE, el simbolo /R/ ser@'a seguido por la etiqueta de la l@'{@dotless{i}}nea de comando.
+V@'ease la funci@'on @code{rat} para convertir una expresi@'on a la forma CRE. Una
+extensi@'on de la forma CRE se utiliza para la representaci@'on de las series de Taylor. La
+noci@'on de una expresi@'on racional se extiende de manera que los exponentes de las
+variables pueden ser n@'umeros racionales positivos o negativos y no s@'olo
+enteros positivos y los coeficientes pueden ser tambi@'en expresiones
+racionales y no s@'olo polinomios. Estas expresiones se representan internamente por una forma polinomial recursiva que es similar a la forma CRE, pero que la generaliza, aportando informaci@'on adicional como el grado de truncamiento. Como con la forma CRE, el s@'{@dotless{i}}mbolo /T/ sigue la etiqueta de l@'{@dotless{i}}nea de comando en la que se encuentra dicha expresi@'on.
 
-@c end concepto de Polinomios
 @node Definiciones para Polinomios,  , Introducci@'on a los Polinomios, Polinomios
 @section Definiciones para Polinomios
-@c @node ALGEBRAIC, BERLEFACT, ERC, Polinomios
-@c @unnumberedsec phony
-@defvar ALGEBRAIC
- por defecto: [FALSO] debe ser programado como VERDADERO en orden de
-la simplificaci@'on de los integrandos algebraicos para tener efecto.
-@end defvar
 
+@defvr {Variable optativa} algebraic
+Valor por defecto: @code{false}
 
-@c @node BERLEFACT, BEZOUT, ALGEBRAIC, Polinomios
-@c @unnumberedsec phony
-@defvar BERLEFACT
- por defecto: [VERDADERO] si es FALSO entonces el algoritmo
-de factorizaci@'on Kronecker podr@'a ser usado de otra manera 
-por el algoritmo Berlekamp,, el cual es el algoritmo por defecto.
+La variable @code{algebraic} debe valer @code{true} para que se pueda hacer la simplificaci@'on de enteros algebraicos.
 
+@end defvr
 
-@end defvar
-@c @node BEZOUT, BOTHCOEF, BERLEFACT, Polinomios
-@c @unnumberedsec phony
-@defun BEZOUT (p1, p2, var)
-una alternativa para el comando RESULTANT. este
-retorna una matriz. DETERMINANT de esta matriz es el resultado deseado.
+@defvr {Variable optativa} berlefact
+Valor por defecto: @code{true}
 
-@end defun
-@c @node BOTHCOEF, COEFF, BEZOUT, Polinomios
-@c @unnumberedsec phony
-@defun BOTHCOEF (exp, var)
-retorna una lista de la cual el primer miembro es el
-coeficiente de var en exp (que es encontrado por RATCOEF si exp esta en una forma ERC
-de otra manera por COEFF) y del cual el segundo miembro es la parte sobrante de
-exp. Esto es, [A,B] donde exp=A*var+B.
-@example
-(C1) ISLINEAR(EXP,VAR):=BLOCK([C],
-        C:BOTHCOEF(RAT(EXP,VAR),VAR),
-        IS(FREEOF(VAR,C) AND C[1]#0))$
-(C2) ISLINEAR((R**2-(X-R)**2)/X,X);
-(D2)                              VERDADERO
+Si @code{berlefact} vale @code{false} entonces se utiliza el algoritmo de factorizaci@'on de Kronecker, en caso contrario se utilizar@'a el algoritmo de Berlekamp, que es el que se aplica por defecto.
 
+@end defvr
 
-@end example
-@end defun
-@c @node COEFF, COMBINE, BOTHCOEF, Polinomios
-@c @unnumberedsec phony
-@defun COEFF (exp, v, n)
-obtiene el coeficiente de v**n en exp.  n puede ser
-omitido si es 1. v puede ser un @'atomo, o una subexpresi@'on completa de exp
-e.g., X, SIN(X), A[I+1], X+Y, etc. (En este @'ultimo caso la
-expresi@'on (X+Y) debe ocurrir en exp). Algunas veces puede ser necesaria
-para expandir o factorizar exp en orden para hacer a v^n expl@'{@dotless{i}}cita. Esto no es
-realizado autom@'aticamanete por COEFF.
-@example
-(C1) COEFF(2*A*TAN(X)+TAN(X)+B=5*TAN(X)+3,TAN(X));
-(D1)                         2 A + 1 = 5
-(C2) COEFF(Y+X*%E**X+1,X,0);
-(D2)                            Y + 1
+@deffn {Funci@'on} bezout (@var{p1}, @var{p2}, @var{x})
+Es una alternativa a la funci@'on @code{resultant}.  Devuelve una matriz.
 
+@end deffn
 
-@end example
-@end defun
-@c @node COMBINE, CONTENT, COEFF, Polinomios
-@c @unnumberedsec phony
-@defun COMBINE (exp)
-simplifica la suma exp para combinar t@'erminos con el mismo denominador
-dentro de un mismo t@'ermino sencillo.
+@deffn {Funci@'on} bothcoef (@var{expr}, @var{x})
+Devuelve una lista cuyo primer miembro es el coeficiente de @var{x} en @var{expr} (que coincide con el que devuelve @code{ratcoef} si @var{expr} est@'a en formato CRE, o el que devuelve @code{coeff} si no est@'a en este formato) y cuyo segundo miembro es la parte restante de @var{expr}. Esto es, @code{[A, B]} donde @code{@var{expr} = A*@var{x} + B}.
 
-@end defun
-@c @node CONTENT, DENOM, COMBINE, Polinomios
-@c @unnumberedsec phony
-@defun CONTENT (p1, var1, ..., varn)
-retorna una lista cuyo primer elemento es
-el divisor com@'un m@'as grande del coeficiente de los t@'erminos del
-polinomio p1 en la variable varn (este es el contenedor) y cuyo
-segundo elemento es el polinomio p1 dividido por el contenido.
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c islinear (expr, x) := block ([c],
+@c         c: bothcoef (rat (expr, x), x),
+@c         is (freeof (x, c) and c[1] # 0))$
+@c islinear ((r^2 - (x - r)^2)/x, x);
 
 @example
-(C1) CONTENT(2*X*Y+4*X**2*Y**2,Y);
-(D1)            [2*X, 2*X*Y**2+Y].
-
-
+(%i1) islinear (expr, x) := block ([c],
+        c: bothcoef (rat (expr, x), x),
+        is (freeof (x, c) and c[1] # 0))$
+(%i2) islinear ((r^2 - (x - r)^2)/x, x);
+(%o2)                         true
 @end example
-@end defun
-@c @node DENOM, DIVIDE, CONTENT, Polinomios
-@c @unnumberedsec phony
-@defun DENOM (exp)
-retorna el denominador de la expresi@'on racional exp.
 
-@end defun
-@c @node DIVIDE, ELIMINATE, DENOM, Polinomios
-@c @unnumberedsec phony
-@defun DIVIDE (p1, p2, var1, ..., varn)
-calcula el cociente y el residuo
-del polinomio p1 dividido en el polinomio p2, en la variable
-principal del polinomio, varn. Las otras variables son como en la funci@'on RATVARS.
-El resultado es una lista cuyo primer elemento es el cociente
-y cuya segundo elemento es el residuo.
+@end deffn
+
+@deffn {Funci@'on} coeff (@var{expr}, @var{x}, @var{n})
+Devuelve el coeficiente de @code{@var{x}^@var{n}} en @var{expr}. El argumento @var{n} puede omitirse si es igual a la unidad. El argumento @var{x} puede ser un @'atomo  o una subexpresi@'on completa de @var{expr}, por ejemplo @code{sin(x)}, @code{a[i+1]}, @code{x + y}, etc. (En este @'ultimo caso, la expresi@'on @code{(x + y)} debe aparecer en @var{expr}).  En ocasiones puede ser necesario expandir o factorizar @var{expr} para hacer @code{@var{x}^@var{n}} expl@'{@dotless{i}}cito, lo cual no hace @code{coeff} autom@'aticamente.
+
+Ejemplos:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
+@c coeff (y + x*%e^x + 1, x, 0);
+
 @example
-(C1) DIVIDE(X+Y,X-Y,X);
-(D1)                        [1, 2 Y]
-(C2) DIVIDE(X+Y,X-Y);
-(D2)                      [ - 1, 2 X]
-
+(%i1) coeff (2*a*tan(x) + tan(x) + b = 5*tan(x) + 3, tan(x));
+(%o1)                      2 a + 1 = 5
+(%i2) coeff (y + x*%e^x + 1, x, 0);
+(%o2)                         y + 1
 @end example
+
+@end deffn
+
+@deffn {Funci@'on} combine (@var{expr})
+Simplifica la suma @var{expr} combinando t@'erminos de con igual denominador reduci@'endolos a un @'unico t@'ermino.
+
+@c NEED EXAMPLE HERE
+@end deffn
+
+@deffn {Funci@'on} content (@var{p_1}, @var{x_1}, ..., @var{x_n})
+Devuelve una lista cuyo primer miembro es el m@'aximo com@'un divisor de los coeficientes de los t@'erminos del polinomio @var{p_1} de variable @var{x_n} (este es el contenido) y cuyo segundo miembro es el polinomio @var{p_1} dividido por el contenido.
+@c APPEARS TO WORK AS ADVERTISED -- ONLY x_n HAS ANY EFFECT ON THE RESULT
+@c WHAT ARE THE OTHER VARIABLES x_1 THROUGH x_{n-1} FOR ??
+
+Ejemplos:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c content (2*x*y + 4*x^2*y^2, y);
+
+@example
+(%i1) content (2*x*y + 4*x^2*y^2, y);
+                                   2
+(%o1)                   [2 x, 2 x y  + y]
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} denom (@var{expr})
+Devuelve el denominador de la expresi@'on racional @var{expr}.
+
+@end deffn
+
+@deffn {Funci@'on} divide (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Calcula el cociente y el resto del polinomio @var{p_1} dividido por el polinomio @var{p_2}, siendo la variable principal @var{x_n}.
+@c SPELL OUT THE PURPOSE OF THE OTHER VARIABLES
+Las otras funciones son como en la funci@'on @code{ratvars}. El resultado es una lista cuyo primer miembro es el cociente y el segundo miembro el resto.
+
+Ejemplos:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c divide (x + y, x - y, x);
+@c divide (x + y, x - y);
+
+@example
+(%i1) divide (x + y, x - y, x);
+(%o1)                       [1, 2 y]
+(%i2) divide (x + y, x - y);
+(%o2)                      [- 1, 2 x]
+@end example
+
 @noindent
-(Bote que Y es la variable principal en C2)
+N@'otese que @code{y} es la variable principal en el segundo ejemplo.
 
-@end defun
-@c @node ELIMINATE, EZGCD, DIVIDE, Polinomios
-@c @unnumberedsec phony
-@defun ELIMINATE ([eq1,eq2,...,eqn],[v1,v2,...,vk])
-elimina las variables de la
-ecuaci@'on (o expresiones que asume iguales a cero) por medio de la toma de resultados 
-susesivos. Este retorna una lista de n-k/esimas expresiones con la eliminaci@'on
-de las variables v1,...,vk. Primera es eliminada c1 produciendo n-1 expresiones,
-luego lo hace v2 y as@'{@dotless{i}} susesivamente. Si k=n entonces una expresi@'on sencilla contenida en una lista
-es retornada libremente de las variables v1,...,vk. En este caso SOLVE
-es llamado para solucionar el @'ultimo resultado para la @'ultima variable.
-Example:
+@end deffn
+
+@deffn {Funci@'on} eliminate ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_k}])
+Elimina variables de ecuaciones (o de expresiones que se supone valen cero) tomando resultantes sucesivas. Devuelve una lista con @code{@var{n} - @var{k}} expresiones y @var{k} variables @var{x_1}, ..., @var{x_k} eliminadas.  Primero se elimina  @var{x_1} dando @code{@var{n} - 1} expresiones, despu@'es se elimina @code{x_2}, etc.  Si @code{@var{k} = @var{n}} entonces se devuelve una lista con una @'unica expresi@'on, libre de las variables @var{x_1}, ..., @var{x_k}. En este caso se llama a @code{solve} para resolver la @'ultima resultante para la @'ultima variable.
+
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr1: 2*x^2 + y*x + z;
+@c expr2: 3*x + 5*y - z - 1;
+@c expr3: z^2 + x - y^2 + 5;
+@c eliminate ([expr3, expr2, expr1], [y, z]);
+
 @example
-(C1) EXP1:2*X^2+Y*X+Z;
-                                    2
-(D1)                   Z + X Y + 2 X
-(C2) EXP2:3*X+5*Y-Z-1;
-(D2)                - Z + 5 Y + 3 X - 1
-(C3) EXP3:Z^2+X-Y^2+5;
-                       2    2
-(D3)                  Z  - Y  + X + 5
-(C4) ELIMINATE([EXP3,EXP2,EXP1],[Y,Z]);
-            8         7         6          5          4
-(D3) [7425 X  - 1170 X  + 1299 X  + 12076 X  + 22887 X
-                               3         2
-                       - 5154 X  - 1291 X  + 7688 X + 15376]
+(%i1) expr1: 2*x^2 + y*x + z;
+                                      2
+(%o1)                    z + x y + 2 x
+(%i2) expr2: 3*x + 5*y - z - 1;
+(%o2)                  - z + 5 y + 3 x - 1
+(%i3) expr3: z^2 + x - y^2 + 5;
+                          2    2
+(%o3)                    z  - y  + x + 5
+(%i4) eliminate ([expr3, expr2, expr1], [y, z]);
+             8         7         6          5          4
+(%o4) [7425 x  - 1170 x  + 1299 x  + 12076 x  + 22887 x
 
-
+                                    3         2
+                            - 5154 x  - 1291 x  + 7688 x + 15376]
 @end example
-@end defun
-@c @node EZGCD, FACEXPAND, ELIMINATE, Polinomios
-@c @unnumberedsec phony
-@defun EZGCD (p1, p2, ...)
-Da una lista cuyo primer elementos es el g.c.d de
-los polinomios p1, p2,... y cuyos elementos restantes son el
-polinomio dividido por el g.c.d. Este siempre utiliza el algoritmo
-EZGCD.
 
-@end defun
-@c @node FACEXPAND, FACTCOMB, EZGCD, Polinomios
-@c @unnumberedsec phony
-@defvar FACEXPAND
- por defecto: [VERDADERO] controla los factores irreducibles retornados
-por FACTOR si son en expansi@'on (por defecto) o forma recursiva (ERC normal).
+@end deffn
 
-@end defvar
-@c @node FACTCOMB, FACTOR, FACEXPAND, Polinomios
-@c @unnumberedsec phony
-@defun FACTCOMB (exp)
-intenta combinar los coeficientes de los factores en exp
-con los factores por si mismos para ser transformados, por ejemplo,
-(N+1)*N! dentro de (N+1)!.
-SUMSPLITFACT[VERDADERO] si es programado como FALSO puede causar que MINFACTORIAL sea aplicado
-despu@'es de FACTCOMB.
-@example
-(C1) (N+1)^B*N!^B;
-                                      B   B
-(D1)                           (N + 1)  N!
-(C2) FACTCOMB(%);
+@deffn {Funci@'on} ezgcd (@var{p_1}, @var{p_2}, @var{p_3}, ...)
+Devuelve una lista cuyo primer elemento es el m@'aximo com@'un divisor (mcd) de los polinomios @var{p_1}, @var{p_2}, @var{p_3}, ...  siendo los miembros restantes los mismos polinomios divididos por el mcd. Se utiliza siempre el algoritmo @code{ezgcd}.
 
-@end example
-@end defun
-@c @node FACTOR, FACTORFLAG, FACTCOMB, Polinomios
-@c @unnumberedsec phony
-@defun FACTOR (exp)
-factores de la expresi@'on exp, contienen cualquier n@'umero de
-variables o funciones, dentro de factores irreducibles fuera de los enteros. 
-los factores FACTOR(exp, p) fuera del campo de los enteros con un elemento
-adicionado cuyo m@'{@dotless{i}}nimo polinomio es p.
-Si FACTORFLAG[FALSO] es FALSO suprime la factorizaci@'on de los factores de los enteros y
-de las expresiones racionales.
-DONTFACTOR puede ser programado en la lista de variables con respecto
-a los factores que no est@'an ocurriendo. (Esta est@'a inicialmente vacia). Factorizando
-tambi@'en no tomar@'a su lugar con respecto a cualquier variable que no es tan 
-importante (usando la variable ordering asumida de la forma ERC) aquellas
-que est@'an el la lista DONTFACTOR.
+@end deffn
 
-Si FACTORFLAG[FALSO] es FALSO ocasiona que los factores de la expresi@'on que es
-un producto de los factores sea guardado por ciertas funciones en orden
-de velocidad despu@'es de la factorizaci@'on de la expresi@'on conteniendo varios de los
-mismos factores.
-Si BERLEFACT[VERDADERO] es FALSO entonces el algoritmo de factorizaci@'on Kronecker podr@'a
-ser utilizado, de otra manera el algoritmo Berlekamp, que es el algortimo por defecto, 
-podr@'a ser usado.
+@defvr {Variable optativa} facexpand
+Valor por defecto: @code{true}
 
-INTFACLIM[1000] es el divisor m@'as largo con el cual se intentar@'a cuando
-se factorize una intergral con bignum. Si se programa FALSO (En este caso
-entonces el usuario llamar@'a a la funci@'on FACTOR explicitamente), o si la entero es un fixnum (i.e.
-apropiada en una palabra para la maquina), la factorizaci@'on  de la entero podr@'a
-ser intentada. La porgramaci@'on de usuario de INTFACLIM es usada para llamadas
-internas de FACTOR. As@'{@dotless{i}}, INTFACLIM puede ser reseteada para prevenir a MACSYMA de
-la realizaci@'on de factorizaciones desordenadas y demoradas a enteros grandes.
-NEWFAC[FALSO] puede ser programada verdadera para su uso en nuevas rutinas de factorizaci@'on.
-Hacer EXAMPLE(FACTOR); por ejemplo.
+La variable @code{facexpand} controla si los factores irreducibles devueltos por @code{factor} est@'an en formato expandido (por defecto) o recursivo  (CRE normal).
 
-@end defun
-@c @node FACTORFLAG, FACTOROUT, FACTOR, Polinomios
-@c @unnumberedsec phony
-@defvar FACTORFLAG
- por defecto: [FALSO] si es FALSO reprime la factorizaci@'on de
-factores enteros de expresiones racionales.
+@end defvr
 
-@end defvar
-@c @node FACTOROUT, FACTORSUM, FACTORFLAG, Polinomios
-@c @unnumberedsec phony
-@defun FACTOROUT (exp,var1,var2,...)
-reorganiza la suma de exponente en una suma de
-t@'erminos de la forma f(var1,var2,...)*g donde g es un producto de
-expresiones no contenidas en las var y f es 
+@deffn {Funci@'on} factcomb (@var{expr})
+Trata de combinar los coeficientes de los factoriales de @var{expr} con los mismos factoriales, convirtiendo, por ejemplo, @code{(n + 1)*n!} en @code{(n + 1)!}.
 
-@end defun
-@c @node FACTORSUM, FASTTIMES, FACTOROUT, Polinomios
-@c @unnumberedsec phony
-@defun FACTORSUM (exp)
-intenta agrupar t@'erminos en factores cuyos exponentes son sumas
-en grupos de t@'erminos tales que su suma es factorizable. Este puede
-recuperar el resultado de EXPAND((X+Y)^2+(Z+W)^2) pero no puede recuperar
-EXPAND((X+1)^2+(X+Y)^2) por que los t@'erminos tienen variables en com@'un.
-@example
-(C1) (X+1)*((U+V)^2+A*(W+Z)^2),EXPAND;
-      2      2                            2      2
-(D1) A X Z  + A Z  + 2 A W X Z + 2 A W Z + A W  X + V  X
-                     2        2    2            2
-        + 2 U V X + U  X + A W  + V  + 2 U V + U
-(C2) FACTORSUM(%);
-                                   2          2
-(D2)                 (X + 1) (A (Z + W)  + (V + U) )
+Si la variable @code{sumsplitfact} vale @code{false} har@'a que @code{minfactorial} se aplique despu@'es de @code{factcomb}.
 
+@end deffn
 
-@end example
-@end defun
-@c @node FASTTIMES, FULLRATSIMP, FACTORSUM, Polinomios
-@c @unnumberedsec phony
-@defun FASTTIMES (p1, p2)
-multiplica los polinomios p1 y p2 mediante el uso
-de un algoritmo especial para la multiplicaci@'on de polinomios. Estos pueden ser
-multivarables, denso, y cercano al mismo tama@~no. La multiplicaci@'on
-Clasica es de orden N*M donde N y M est@'an en grados.
-FASTTIMES es de orden MAX(N,M)**1.585.
+@deffn {Funci@'on} factor (@var{expr})
+Factoriza la expresi@'on @var{expr}, que puede contener cualquier n@'umero de variables o funciones, en factores irreducibles respecto de los enteros. La llamada @code{factor (@var{expr}, p)} factoriza @var{expr} en el campo de los enteros con un elemento a@~nadido cuyo polinomio m@'{@dotless{i}}nimo es p.
 
-@end defun
-@c @node FULLRATSIMP, FULLRATSUBST, FASTTIMES, Polinomios
-@c @unnumberedsec phony
-@defun FULLRATSIMP (exp)
-Cuando expresiones  no-racionales est@'an involucradas, una llama
-a RATSIMP seguida como es usual por una simplificaci@'on no-racional ("general")
-que puede no ser suficiente para retornar un resultado simplificado.
-Algunas veces, m@'as de una llamada puede ser necesaria. El comando
-FULLRATSIMP hace este proceso conveniente. FULLRATSIMP repetidamente
-aplica RATSIMP seguido por una simplificaci@'on no-racional de una 
-expresi@'on hasta que no ocurran cambios significativos. Por ejemplo, considere
-para la expresi@'on EXP:   (X^(A/2)+1)^2*(X^(A/2)-1)^2/(X^A-1) .
-RATSIMP(EXP); Se obtiene (X^(2*A)-2*X^A+1)/(X^A-1) .
-FULLRATSIMP(EXP); Se obtiene   X^A-1 .  El problema puede ser observado en
-RAT(EXP); de la cual se obtiene  ((X^(A/2))^4-2*(X^(A/2))^2+1)/(X^A-1) .
-FULLRATSIMP(exp,var1,...,varn) toma uno o m@'as argumentos similares
-para RATSIMP y RAT.
+Si la variable @code{factorflag} vale @code{false} suprime la factorizaci@'on de los factores enteros en las expresiones racionales.
 
-@end defun
-@c @node FULLRATSUBST, GCD, FULLRATSIMP, Polinomios
-@c @unnumberedsec phony
-@defun FULLRATSUBST (a,b,c)
-es lo mismo que RATSUBST excepto si esta es llamada
-a si misma recursivamente sobre ese resultado hasta que el resultado deje de cambiar.
-Esta funci@'on es @'util cuando la expresi@'on a reemplazar y 
-la expresi@'on reemplazada tienen una o m@'as variables en com@'un.
-FULLRATSUBST puede igualmente aceptar esos argumentos en el formato de
-LRATSUBST.  Esto es, el primer elemento puede ser una sustituci@'on de una ecuaci@'on simple
-o una lista de estas ecuaciones, mientras el segundo elemento es la
-expresi@'on que est@'a siendo procesada.  Hay una demostraci@'on disponible
-mediante DEMO("lrats.dem"); .
+La variable @code{dontfactor} puede contener una lista de variables con respecto a las cuales no se factorizar@'a (inicialmente est@'a vac@'{@dotless{i}}a). Tampoco se factorizar@'a respecto de cualesquiera otra variables que sean menos importantes (seg@'un la ordenaci@'on que se sigue en el formato CRE) que aquellas que se encuentran en la lista @code{dontfactor}.
 
-@end defun
-@c @node GCD, GCFACTOR, FULLRATSUBST, Polinomios
-@c @unnumberedsec phony
-@defun GCD (p1, p2, var1, ...)
-calcula el m@'aximo com@'un divisor de p1 y
-p2. La bandera GCD[SPMOD] determinan cual algoritmo es empleado.
-Programando GCD para EZ, EEZ, SUBRES, RED, o SPMOD seleccione EZGCD, Nuevo
-EEZ GCD, subresultado PRS, reducido, o algoritmo modular , respectivamente.
-respectively.  Si GCD:FALSO entonces GCD(p1,p2,var) podr@'a retornar siempre 1
-para toda var.  Muchas funciones (e.g.  RATSIMP, FACTOR, etc.) causan que gcd
-sea tomada implicitamente. Para polinomios homogeneos es recomendado que
-GCD:SUBRES sea usado.  Para tomar el gcd cuando un algebraico est@'a presente, 
-e.g. GCD(X^2-2*SQRT(2)*X+2,X-SQRT(2)); , ALGEBRAIC debe ser
-VERDADERO y GCD no debe ser EZ.  SUBRES es un nuevo algoritmo, y personas
-que han estado utilizando la programaci@'on RED pueden probablemente cambiar este a
-SUBRES.
-La bandera GCD, por defecto: [SPMOD], Si es FALSO tambi@'en podr@'a impedir que
-el m@'aximo com@'un multiplo sea tomado desde un principio cuando la expresi@'on sea convertida
-a la forma ERC. Esto en algunas ocasiones podr@'a agilizar los calculos si los gcd no son requeridos.
+Si la variable @code{savefactors} vale @code{true}, los factores de una expresi@'on en forma de producto se guardar@'an por ciertas funciones a fin de acelerar posteriores factorizaciones de expresiones que contengan algunos de estos mismos factores.
 
-@end defun
-@c @node GCFACTOR, GFACTOR, GCD, Polinomios
-@c @unnumberedsec phony
-@defun GCFACTOR (n)
-Los factores de los enteros Gausianos n por encima de los Gausianos, i.e.
-n@'umeros de la forma a + b donde a y b son enteros racionales (i.e.
-enteros ordinarios). Los factores son normalizados haciendo que que a y b
-sean positivos.
+Si @code{berlefact} vale @code{false} entonces se utiliza el algoritmo de factorizaci@'on de Kronecker, en caso contrario se utilizar@'a el algoritmo de Berlekamp, que es el que se aplica por defecto.
 
-@end defun
-@c @node GFACTOR, GFACTORSUM, GCFACTOR, Polinomios
-@c @unnumberedsec phony
-@defun GFACTOR (exp)
-Factores de exponentes polinomicos por encima de los enteros Gausianos
-(i.  e.  con SQRT(-1) = %I unidos).  Esto es como
-FACTOR(exp,A**2+1) donde A es %I.
-@example
-(C1)  GFACTOR(X**4-1);
-(D1)        (X - 1) (X + 1) (X + %I) (X - %I)
+La variable @code{intfaclim} guarda el mayor divisor que se ensayar@'a al factorizar un n@'umero @code{bignum}. Si vale @code{false} (este es el caso cuando el usuario llama a @code{factor} expl@'{@dotless{i}}citamente), o si el entero ocupa dos bytes, se intentar@'a una factorizaci@'on completa del entero. El valor dado por el usuario a @code{intfaclim} se utiliza en las llamadas internas a @code{factor}. As@'{@dotless{i}}, puede ser necesario cambiar @code{intfaclim} a fin de evitar que Maxima consuma un tiempo excesivo intentando factorizar n@'umeros enteros grandes.
 
-
-@end example
-@end defun
-@c @node GFACTORSUM, HIPOW, GFACTOR, Polinomios
-@c @unnumberedsec phony
-@defun GFACTORSUM (exp)
-es similar a FACTORSUM pero aplica GFACTOR en lugar de
-FACTOR.
-
-@end defun
-@c @node HIPOW, INTFACLIM, GFACTORSUM, Polinomios
-@c @unnumberedsec phony
-@defun HIPOW (exp, v)
-El exponente explicito m@'as grande de v en exp. Algunas veces
-este puede ser necesario para expandir exp desde que no es realizado automaticamente 
-por HIPOW. As@'{@dotless{i}} HIPOW(Y**3*X**2+X*Y**4,X) es 2.
-
-@end defun
-@c @node INTFACLIM, KEEPFLOAT, HIPOW, Polinomios
-@c @unnumberedsec phony
-@defvar INTFACLIM
- por defecto: [1000] es el divisor m@'as largo el cual podr@'a ser utilizado 
-cuando se factorize un n@'umero entero.  Si es programado FALSO (Este caso cuando
-el usuario llama la funci@'on explicitamente), o si el entero es un fixnum
-(i.e. apropiada en una palabra para la maquina), la factorizaci@'on del entero
-podr@'a ser intentada.  La programaci@'on de usuario de INTFACLIM es usada para llamadas
-internas de FACTOR. As@'{@dotless{i}}, INTFACLIM puede ser reseteada para prevenir a MACSYMA de
-la realizaci@'on de factorizaciones desordenadas y demoradas a enteros grandes.
-
-
-@end defvar
-@c @node KEEPFLOAT, LRATSUBST, INTFACLIM, Polinomios
-@c @unnumberedsec phony
-@defvar KEEPFLOAT
- por defecto: [FALSO] - si es programado VERDADERO podr@'a evitar que
-los puntos flotantes de los numeros sean racionalizados cuando la expresi@'on que
-los contiene sea transformada a la forma ERC.
-
-@end defvar
-@c @node LRATSUBST, MODULUS, KEEPFLOAT, Polinomios
-@c @unnumberedsec phony
-@defun LRATSUBST (list,exp)
-es analoga a SUBST (lista_de_ecuaciones, exp)
-excepto que sea utulizada RATSUBST en vez de SUBST. El primer argumento de
-LRATSUBST debe ser una ecuaci@'on o una lista de ecuaciones identicas en 
-un formato que es aceptado por SUBST (Revisar DESCRIBE(SUBST);). La
-sustituci@'on esta hecha en el orden obtenido por la lista de ecuaciones, 
-que es, de izquierda a derecha. Una demostraci@'on esta disponible mediante
-DEMO("lrats.dem"); .
-
-@end defun
-@c @node MODULUS, NEWFAC, LRATSUBST, Polinomios
-@c @unnumberedsec phony
-@defvar MODULUS
- por defecto: [FALSO] - si es programado como p prima positiva, entonces toda
-la aritmetica en las rutinas de funci@'on racional podr@'an ser realizadas por el modulo p.
-Esto es que los enteros podr@'an ser reducidos en valor absoluto a menos de p/2 
-(si p=2 entonces todos los enteros son reducidos a 1 o 0). Esto es denominado
-sistema de moulos "balanceados", e.g. N MOD 5 = -2, -1, 0, 1, o
-2. Advertencia: Si EXP ya se encuentra en la forma ERC cuando usted programe MODULUS, 
-entonces usted podr@'a necesitar ratificar EXP, e.g. EXP:RAT(RATDISREP(EXP)), en 
-orden para corregir los resultados. (Si MODULUS es programado como un entero
-no primo positivo, esta configuraci@'on podr@'a ser aceptada, pero obtendr@'a una advertencia.
-
-@end defvar
-@c @node NEWFAC, NUM, MODULUS, Polinomios
-@c @unnumberedsec phony
-@defvar NEWFAC
- por defecto: [FALSO], si es VERDADERO entonces FACTOR podr@'a usar las
-nuevas rutinas de factorizaci@'on.
-
-@end defvar
-@c @node NUM, QUOTIENT, NEWFAC, Polinomios
-@c @unnumberedsec phony
-@defun NUM (exp)
-obtiene el numerador, exp1, de la expresi@'on racional.
-exp = exp1/exp2.
-
-@end defun
-@c @node QUOTIENT, RAT, NUM, Polinomios
-@c @unnumberedsec phony
-@defun QUOTIENT (p1, p2, var1, ...)
-calcula el cociente del polinomio
-p1 dividido por el polinomio p2.
-
-@end defun
-@c @node RAT, RATALGDENOM, QUOTIENT, Polinomios
-@c @unnumberedsec phony
-@defun RAT (exp, v1, ..., vn)
-convierte exp a la forma ERC mediante la expansi@'on y
-combinaci@'on de todos los terminos que poseen com@'un denominador y cancelando
-el m@'aximo com@'un divisor del denominador y el numerador as@`i
-convirtiendo n@'umeros de punto flotante a n@'umeros racionales sin una
-tolerancia a la funci@'on  RATEPSILON[2.0E-8].. Las variables son ordenadas de acuerdo 
-con el v1,...,vn como en RATVARS, si estas est@'an especificacdas. RAT generalmente no
-simplifica las funciones excepto por + , - , * , , / , y
-exponenciaci@'on a la potencia de un entero mientras que RATSIMP no toma esos
-casos. Note que los atomos (nombres y numeros) en la forma ERC no son los
-mismos como lo son en la forma general. As@'{@dotless{i}} RAT(X)-X resulta en
-RAT(0) el cual tiene una representaci@ @'on interna diferente a 0.
-RATFAC[FALSO] cuando es VERDADERO invocando un factorizado parcial
-de la forma ECR para expresiones racionales. Durante las operaciones racionales la expresi@'on
-es mantenida como factorizada completamente tanto como sea posible sin una llamada al
-paquete factor. Esto siempre puede ocupar espacio y debe ser guardada en varias ocasiones
-en algunos computos. El numerador y el denominador son aun creados
-como primos relativos (e.g. RAT(X^2-1)^4/(X+1)^2); 
-relatively prime (e.g.  RAT((X^2 -1)^4/(X+1)^2); produce
-(X-1)^4*(X+1)^2), pero los factores sin cada parte no pueden ser
-primos relativos.
-RATPRINT[VERDADERO] si es FALSO suprime la impresi@'on del mensaje
-informando que el uso de la conversi@'on de n@'umeros punto flotante a
-n@'umeros racionales.
-KEEPFLOAT[FALSO] if TRUE prevents floating point numbers from being
-KEEPFLOAT[FALSO] Si es FALSO evita que los n@@'umeros punto flotante sean
-convertidos a n@'umeros racionales.
-(Observar tambi@'en las funciones RATEXPAND y RATSIMP.)
-@example
-(C1) ((X-2*Y)**4/(X**2-4*Y**2)**2+1)*(Y+A)*(2*Y+X)
-        /(4*Y**2+X**2);
-                                           4
-                                  (X - 2 Y)
-              (Y + A) (2 Y + X) (------------ + 1)
-                                   2      2 2
-                                 (X  - 4 Y )
-(D1)          ------------------------------------
-                              2    2
-                           4 Y  + X
-(C2) RAT(%,Y,A,X);
-                            2 A + 2 Y
-(D2)/R/                     ---------
-                             X + 2 Y
-
-@end example
-@end defun
-@c @node RATALGDENOM, RATCOEF, RAT, Polinomios
-@c @unnumberedsec phony
-@defvar RATALGDENOM
- por defecto: [VERDADERO] - si es VERDADERO permite la racionalizaci@'on 
-de denominadores wrt.  radicles para tomar efecto.  Para esto debemos hacerlo
-en la forma ERC en el modo Algebreico.
-
-@end defvar
-@c @node RATCOEF, RATDENOM, RATALGDENOM, Polinomios
-@c @unnumberedsec phony
-@defun RATCOEF (exp, v, n)
-retorna el coeficiente, C, de la expresi@'on v**n
-en la expresi@'on exp. n puede ser omitida si es 1. C  podr@'a ser liberada
-(excepto en la posibilidad en un sentido no-racional) de las variables en v. Si
-no existen coeficientes de este tipo, ser@'a retornado cero. RATCOEF
-expande y simplifica racionalmente su primer argumento y as@'{@dotless{i}} este puede
-producir respuestas diferentes desde esos de COEF el cual es puramente
-sintactico. As@'{@dotless{i}} RATCOEF ((X+1)/Y+X,X) retorna (Y+1)/Y mientras que COEFF
-retorne 1. RATCOEF(exp,v,0), observanso exp como una suma, se obtiene una suma de
-estos terminos losw cuales no contienen v. Por lo tanto si v ocurre a alguna
-potencia negativa, RATCOEF no debe ser usada. Desde exp es simplificada
-racionalmente antes de ser examinado, los coficientes pueden no aparecer lo suficiente
-de la forma que estaba previsto.
+Ejemplos:
+@c EXAMPLES BELOW ADAPTED FROM examples (factor)
+@c factor (2^63 - 1);
+@c factor (-8*y - 4*x + z^2*(2*y + x));
+@c -1 - 2*x - x^2 + y^2 + 2*x*y^2 + x^2*y^2;
+@c block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
+@c factor (1 + %e^(3*x));
+@c factor (1 + x^4, a^2 - 2);
+@c factor (-y^2*z^2 - x*z^2 + x^2*y^2 + x^3);
+@c (2 + x)/(3 + x)/(b + x)/(c + x)^2;
+@c ratsimp (%);
+@c partfrac (%, x);
+@c map ('factor, %);
+@c ratsimp ((x^5 - 1)/(x - 1));
+@c subst (a, x, %);
+@c factor (%th(2), %);
+@c factor (1 + x^12);
+@c factor (1 + x^99);
 
 @example
-(C1) S:A*X+B*X+5$
-(C2) RATCOEF(S,A+B);
-(D2)               X
-
-
-@end example
-@end defun
-@c @node RATDENOM, RATDENOMDIVIDE, RATCOEF, Polinomios
-@c @unnumberedsec phony
-@defun RATDENOM (exp)
-obtiene el denominador de la expresi@'on racional exp.
-Si exp est@'a en la forma general entonces la funci@'on DENOM deber@'a ser usada
-en otro caso, a menos que se desee obtener un resultado ERC.
-
-@end defun
-@c @node RATDENOMDIVIDE, RATDIFF, RATDENOM, Polinomios
-@c @unnumberedsec phony
-@defvar RATDENOMDIVIDE
- por defecto:[VERDADERO] - si es FALSO podr@'an ser separados
-los terminos del numerador de la expresi@'on RATEXPAND desde 
-la forma producida.
-
-@end defvar
-@c @node RATDIFF, RATDISREP, RATDENOMDIVIDE, Polinomios
-@c @unnumberedsec phony
-@defun RATDIFF (exp, var)
-diferencia la expresi@'on racional exp (el cual
-debe ser un radio de polinomios o un polinomio en la variable var)
-con respecto a var. Para expresiones racionales esto es mucho m@'as rapida
-que DIFF. El resultado es el izquierdo en la forma ERC. De todas formas, RATDIFF puede
-no ser usada on la forma factorizada ERC; use DIFF en cada caso para cada
-expresi@'on.
-@example
-(C1) (4*X**3+10*X-11)/(X**5+5);
-                                         3
-                                      4 X  + 10 X - 11
-(D1)                                  ----------------
-                                            5
-                                           X  
-(C2) MODULUS:3$
-(C3) MOD(D1);
-                                2
-                               X  + X - 1
-(D3)                      --------------------
-                           4    3    2
-                          X  + X  + X  + X + 1
-(C4) RATDIFF(D1,X);
-                          5    4    3
-                         X  - X  - X  + X - 1
-(D4)                ------------------------------
-                     8    7    5    4    3
-                    X  - X  + X  - X  + X  - X + 1
-
-
-@end example
-@end defun
-@c @node RATDISREP, RATEPSILON, RATDIFF, Polinomios
-@c @unnumberedsec phony
-@defun RATDISREP (exp)
-cambia los argumentos de la forma ERC a la forma general.
-Esto es en algunas ocasiones conveniente si uno desea para el "contagio", o
-use la funci@'on racional en un contexto no-racional. La mayor@'{@dotless{i}}a de las funciones ERC
-podr@`a trabajar en cualquiera de las dos expresiones ERC o no ERC, pero las respuestas pueden
-toma diferentes formas. Si RATDISREP es dado en una forma no-ERC para un
-argumento, esto retorna este argumento igual. Observar tambi@'en TOTALDISREP.
-
-@end defun
-@c @node RATEPSILON, RATEXPAND, RATDISREP, Polinomios
-@c @unnumberedsec phony
-@defvar RATEPSILON
- por defecto: [2.0E-8] - la tolerancia usada en la conversi@'on
-de n@'umeros punto flotante a n@'umeros racionales.
-
-@end defvar
-@c @node RATEXPAND, RATFAC, RATEPSILON, Polinomios
-@c @unnumberedsec phony
-@defun RATEXPAND (exp)
-expande exp mediante la multiplicaci@'on de los productos sumas y
-sumas exponenciales, combinando fracciones con un com@'un denominador, 
-cancelando el m@'aximo com@'un divisor de el numerador y 
-el denominador, entonces separando el numerador (si es una suma) en sus
-respectivos terminos dividida por el denominador. Esta es realizada mediante
-la conversi@'on de exp a la forma ERC y luego devolverlo a la forma general.
-La opci@'on RATEXPAND, por defecto: [FALSO], si es VERDADERO puede causar que la 
-expresi@'on ERC sea expandida en su totalidad cuando son convertidas de nuevo
-a la forma general o es mostrada, mientras esto sea FALSO entonces ellas podr@'an ser
-puestos en una forma recursiva. (Observar RATSIMP) 
-RATDENOMDIVIDE[VERDADERO] Ð si es FALSO podr@'a ser parada la divisi@'on de los
-terminos del numerador de las expresiones RATEXPANDidas desde su ocurrencia.
-KEEPFLOAT[FALSO] si es programado como VERDADERO podr@'a prevenirque los n@'umeros punto flotante
-sean recionalizados cunado las expresiones las cuales que los contienen son
-convertidas a la forma ERC.
-
-@example
-(C1) RATEXPAND((2*X-3*Y)**3);
-                3         2       2        3
-(D1)      - 27 Y  + 54 X Y  - 36 X  Y + 8 X
-(C2) (X-1)/(X+1)**2+1/(X-1);
-                              X - 1       1
-(D2)                         -------- + -----
-                                    2   X - 1
-                             (X + 1)
-(C3) EXPAND(D2);
-                         X              1           1
-(D3)                ------------ - ------------ + -----
-                     2              2             X - 1
-                    X  + 2 X + 1   X  + 2 X + 1
-(C4) RATEXPAND(D2);
-                             2
-                          2 X                 2
-(D4)                 --------------- + ---------------
-                      3    2            3    2
-                     X  + X  - X - 1   X  + X  - X - 1
-
-
-@end example
-@end defun
-@c @node RATFAC, RATNUMER, RATEXPAND, Polinomios
-@c @unnumberedsec phony
-@defvar RATFAC
- por defecto: [FALSO] Ð cuando sea VERDADERO invoca la forma de factorizaci@'on parcial
-apara las expresiones racionales ERC. Durante las operaciones racionales la
-expresi@'on es mantenida factorizada completamente tanto como sea posible sin un
-llamado actual del paquete factor. Esta siempre podr@'a guardadr espacio y 
-debe ser guardado en algunas ocasiones en algunos computos. El numerador y
-el denominador est@'an aun fabricados relativamente primos, por ejemplo
-RAT((X^2 -1)^4/(X+1)^2);  produce (X-1)^4*(X+1)^2),
-pero los factores sin cada parte no deben ser relativamente primos.
-En el paquete CTENSR (Componentes de Manipulacion de Tensores), si RATFAC es
-VERDEDERO, puede causarque los tensores Ricci, Einstein, Riemann y Weyl y las 
-Curvaturas Escalares sean factorizadas automaticamente. **Este solo debe ser
-para casos donde los componentes de tensi@'on son conocidos para la consistencia de
-pocos t@'erminos **.
-Nota: Los esquemas RATFAC y RATWEIGHT son incompatibles y ambos no pueden
-ser utilizados al mismo tiempo.
-
-@end defvar
-@c @node RATNUMER, RATNUMP, RATFAC, Polinomios
-@c @unnumberedsec phony
-@defun RATNUMER (exp)
-obtiene el numerador de la expresi@'on racional exp.
-Si exp est@'a en la forma general entonces la funci@'on NUM podr@'a ser usada
-en su lugar,  a menos que se desee obtener un resultado ERC.
-
-@end defun
-@c @node RATNUMP, RATP, RATNUMER, Polinomios
-@c @unnumberedsec phony
-@defun RATNUMP (exp)
-es VERADADERO si exp es un n@'umero racional (incluyendo enteros)
-sino es FALSO.
-
-@end defun
-@c @node RATP, RATPRINT, RATNUMP, Polinomios
-@c @unnumberedsec phony
-@defun RATP (exp)
-es VERDADERO si exp est@'a en la forma ERC o en la forma extendida ERC sino es FALSO.
-
-@end defun
-@c @node RATPRINT, RATSIMP, RATP, Polinomios
-@c @unnumberedsec phony
-@defvar RATPRINT
- por defecto: [VERDADERO] Ð si es FALSO suprime la impresi@'on del
-mensaje informando que el uso de la conversi@'on de n@'umeros punto flotante
-a n@'umeros racionales.
-
-@end defvar
-@c @node RATSIMP, RATSIMPEXPONS, RATPRINT, Polinomios
-@c @unnumberedsec phony
-@defun RATSIMP (exp)
-racionalmente" simplifica (similar a RATEXPAND) la
-expresi@'on exp y todas sus subexpresiones incluyendo los argumentos
-para funciones no-racionales. el resultado es retornado como el cociente de
-dos polinomios en una forma recursiva, i.e. el coeficiente de la
-variable principal son polinomios en otras variables. Variables puede,
-como en la funci@'on RATEXPAND, incluir funciones no-racionales (e.g. SIN(X**2+1) )
-pero con RATSIMP, los argumentos para funciones no-racionales son
-simplificadas racionalmente. Note que RATSIMP es afectada por algunas de las variables
-que afectan RATEXPAND.
-RATSIMP(exp,v1,v2,...,vn) Ð imposibilita la simplificaci@'on racional con las
-especificaciones de las variables ordenando como en RATVARS.
-RATSIMPEXPONS[FALSO] Ð es VERDADERO podr@'a causar que los exponentes de las expresiones
-sean automaticamente RATSIMPeadas durante la simplificaci@'on.
-
-@example
-(C1) SIN(X/(X^2+X))=%E^((LOG(X)+1)**2-LOG(X)**2);
-                                           2          2
-                    X          (LOG(X) + 1)  - LOG (X)
-(D1)          SIN(------) = %E
-                   2
-                  X  + X
-(C2) RATSIMP(%);
-                                  1          2
-(D2)                        SIN(-----) = %E X
-                                X + 1
-(C3) ((X-1)**(3/2)-(X+1)*SQRT(X-1))/SQRT((X-1)*(X+1));
-                       3/2
-                (X - 1)    - SQRT(X - 1) (X + 1)
-(D3)            --------------------------------
-                    SQRT(X - 1) SQRT(X + 1)
-(C4) RATSIMP(%);
-                                 2
-(D4)                      - -----------
-                            SQRT(X + 1)
-(C5)  X**(A+1/A),RATSIMPEXPONS:TRUE;
+(%i1) factor (2^63 - 1);
                     2
-                   A  + 1
-                   ------
-                     A
-(D5)              X
+(%o1)              7  73 127 337 92737 649657
+(%i2) factor (-8*y - 4*x + z^2*(2*y + x));
+(%o2)               (2 y + x) (z - 2) (z + 2)
+(%i3) -1 - 2*x - x^2 + y^2 + 2*x*y^2 + x^2*y^2;
+                2  2        2    2    2
+(%o3)          x  y  + 2 x y  + y  - x  - 2 x - 1
+(%i4) block ([dontfactor: [x]], factor (%/36/(1 + 2*y + y^2)));
+                       2
+                     (x  + 2 x + 1) (y - 1)
+(%o4)                ----------------------
+                           36 (y + 1)
+(%i5) factor (1 + %e^(3*x));
+                      x         2 x     x
+(%o5)              (%e  + 1) (%e    - %e  + 1)
+(%i6) factor (1 + x^4, a^2 - 2);
+                    2              2
+(%o6)             (x  - a x + 1) (x  + a x + 1)
+(%i7) factor (-y^2*z^2 - x*z^2 + x^2*y^2 + x^3);
+                       2
+(%o7)              - (y  + x) (z - x) (z + x)
+(%i8) (2 + x)/(3 + x)/(b + x)/(c + x)^2;
+                             x + 2
+(%o8)               ------------------------
+                                           2
+                    (x + 3) (x + b) (x + c)
+(%i9) ratsimp (%);
+                4                  3
+(%o9) (x + 2)/(x  + (2 c + b + 3) x
 
+     2                       2             2                   2
+ + (c  + (2 b + 6) c + 3 b) x  + ((b + 3) c  + 6 b c) x + 3 b c )
+(%i10) partfrac (%, x);
+           2                   4                3
+(%o10) - (c  - 4 c - b + 6)/((c  + (- 2 b - 6) c
 
+     2              2         2                2
+ + (b  + 12 b + 9) c  + (- 6 b  - 18 b) c + 9 b ) (x + c))
+
+                 c - 2
+ - ---------------------------------
+     2                             2
+   (c  + (- b - 3) c + 3 b) (x + c)
+
+                         b - 2
+ + -------------------------------------------------
+             2             2       3      2
+   ((b - 3) c  + (6 b - 2 b ) c + b  - 3 b ) (x + b)
+
+                         1
+ - ----------------------------------------------
+             2
+   ((b - 3) c  + (18 - 6 b) c + 9 b - 27) (x + 3)
+(%i11) map ('factor, %);
+              2
+             c  - 4 c - b + 6                 c - 2
+(%o11) - ------------------------- - ------------------------
+                2        2                                  2
+         (c - 3)  (c - b)  (x + c)   (c - 3) (c - b) (x + c)
+
+                       b - 2                        1
+            + ------------------------ - ------------------------
+                             2                          2
+              (b - 3) (c - b)  (x + b)   (b - 3) (c - 3)  (x + 3)
+(%i12) ratsimp ((x^5 - 1)/(x - 1));
+                       4    3    2
+(%o12)                x  + x  + x  + x + 1
+(%i13) subst (a, x, %);
+                       4    3    2
+(%o13)                a  + a  + a  + a + 1
+(%i14) factor (%th(2), %);
+                       2        3        3    2
+(%o14)   (x - a) (x - a ) (x - a ) (x + a  + a  + a + 1)
+(%i15) factor (1 + x^12);
+                       4        8    4
+(%o15)               (x  + 1) (x  - x  + 1)
+(%i16) factor (1 + x^99);
+                 2            6    3
+(%o16) (x + 1) (x  - x + 1) (x  - x  + 1)
+
+   10    9    8    7    6    5    4    3    2
+ (x   - x  + x  - x  + x  - x  + x  - x  + x  - x + 1)
+
+   20    19    17    16    14    13    11    10    9    7    6
+ (x   + x   - x   - x   + x   + x   - x   - x   - x  + x  + x
+
+    4    3            60    57    51    48    42    39    33
+ - x  - x  + x + 1) (x   + x   - x   - x   + x   + x   - x
+
+    30    27    21    18    12    9    3
+ - x   - x   + x   + x   - x   - x  + x  + 1)
 @end example
-@end defun
-@c @node RATSIMPEXPONS, RATSUBST, RATSIMP, Polinomios
-@c @unnumberedsec phony
-@defvar RATSIMPEXPONS
- por defecto: [FALSO] Ð si es VERDADERO podr@'a causar que
-causar que los exponentes de las expresiones sean automaticamente 
-RATSIMPeadas durante la simplificaci@'on.
 
-@end defvar
-@c @node RATSUBST, RATVARS, RATSIMPEXPONS, Polinomios
-@c @unnumberedsec phony
-@defun RATSUBST (a, b, c)
-subtituye a por b en c. b puede ser una suma, un producto,
-una potencia, etc. RATSUBST conoce algunos de los significados de las expresiones
-mientras que SUBST hace una substituci@'on puramente sintactica. As@'{@dotless{i}} 
-SUBST(A,X+Y,X+Y+Z) retorna X+Y+Z mientras que RATSUBST retornar@'{@dotless{i}}a Z+A.
-RADSUBSTFLAG[FALSO] si es VERDADERO permite que la funci@'on RATCSUBST realize la susbstituci@'on
-cmo U para SQRT(X) en X.
-Haga EXAMPLE(RATSUBST); para ver ejemplos.
+@end deffn
 
-@end defun
-@c @node RATVARS, RATWEIGHT, RATSUBST, Polinomios
-@c @unnumberedsec phony
-@defun RATVARS (var1, var2, ..., varn)
-forma sus n argumentos dendtor de una lista en
-la cual la variable de derecha varnser@'ala variable principal de futuras
-expresiones racionales en las cuales esto ocurre, y  las otras variables seguiran
-en la secuencia. Si la variable esta perdida de la lista RATVARS,
-para esta ser@'a dada menor prioridad que  para la variable de izquierda var1. Los
-argumentos para RATVARS puede ser cualquiera de las dos variables o funciones no-racionales
-(e.g. SIN(X)).  La variable RATVARS es una lista de argumentos los cuales han sido
-dados para esta funci@'on.
+@defvr {Variable optativa} factorflag
+Valor por defecto: @code{false}
 
-@end defun
-@c @node RATWEIGHT, RATWEIGHTS, RATVARS, Polinomios
-@c @unnumberedsec phony
-@defun RATWEIGHT (v1, w1, ..., vn, wn)
-asigna el peso de wi a la variable
-vi. Esto causa que un t@'ermino sea reemplazado por 0 si su peso excede el
-valor de la variable RATWTLVL [por defecto  es FALSO que significa que no hay
-truncamiento].  El peso de un termino es la suma de los productos de los
-pesos de una variable en terminos de tiempo su potencia. As@'{@dotless{i}} el peso de
-3*v1**2*v2 is 2*w1+w2.  Este truncamiento ocurre solo cuando se multiplican
-o exponencian expresiones de la forma ERC.
+@c WHAT IS THIS ABOUT EXACTLY ??
+Si @code{factorflag} vale @code{false} se evita la factorizaci@'on de factores enteros de expresiones racionales.
+
+@end defvr
+
+@deffn {Funci@'on} factorout (@var{expr}, @var{x_1}, @var{x_2}, ...)
+Reorganiza la suma @var{expr} como una suma de t@'erminos de la forma @code{f (@var{x_1}, @var{x_2}, ...)*g} donde @code{g} es un producto de expresiones que no contienen ning@'un @var{x_i} y @code{f} se factoriza.
+@c NEED EXAMPLE HERE
+
+@end deffn
+
+@deffn {Funci@'on} factorsum (@var{expr})
+Intenta agrupar t@'erminos en los factores de @var{expr} que son sumas en grupos de t@'erminos tales que su suma sea factorizable. La funci@'on @code{factorsum} puede restablecer el recuperar de @code{expand ((x + y)^2 + (z + w)^2)} pero no puede recuperar @code{expand ((x + 1)^2 + (x + y)^2)} porque los t@'erminos tienen variables comunes.
+
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
+@c factorsum (%);
+
 @example
-(C5) RATWEIGHT(A,1,B,1);
-(D5)                         [[B, 1], [A, 1]]
-(C6) EXP1:RAT(A+B+1)$
-(C7) %**2;
-                      2                  2
-(D7)/R/              B  + (2 A + 2) B + A  + 2 A + 1
-(C8) RATWTLVL:1$
-(C9) EXP1**2;
-(D9)/R/                       2 B + 2 A + 1
+(%i1) expand ((x + 1)*((u + v)^2 + a*(w + z)^2));
+           2      2                            2      2
+(%o1) a x z  + a z  + 2 a w x z + 2 a w z + a w  x + v  x
 
+                                     2        2    2            2
+                        + 2 u v x + u  x + a w  + v  + 2 u v + u
+(%i2) factorsum (%);
+                                   2          2
+(%o2)            (x + 1) (a (z + w)  + (v + u) )
 @end example
-Nota: Los planes RATFAC y RATWEIGHT son incompatibles y ambos no pueden
-ser usados al mismo tiempo.
 
-@end defun
-@c @node RATWEIGHTS, RATWEYL, RATWEIGHT, Polinomios
-@c @unnumberedsec phony
-@defvar RATWEIGHTS
- - una lista de asignaci@'on de pesos (instalado por la funci@'on
- RATWEIGHT), RATWEIGHTS; o RATWEIGHT(); le mostraran la lista.
- 
- @example
-KILL(...,RATWEIGHTS)
-@end example
-y
+@end deffn
+
+@deffn {Funci@'on} fasttimes (@var{p_1}, @var{p_2})
+Calcula el producto de los polinomios @var{p_1} y @var{p_2} utilizando un algoritmo especial. Los polinomios @code{p_1} y @code{p_2} deben ser multivariantes, densos y aproximadamente del mismo tama@~no. La multiplicaci@'on cl@'asica es de orden @code{n_1 n_2} donde @code{n_1} es el grado de  @code{p_1} y  @code{n_2} el grado de @code{p_2}. La funci@'on @code{fasttimes} es de orden @code{max (n_1, n_2)^1.585}.
+
+@end deffn
+
+@deffn {Funci@'on} fullratsimp (@var{expr})
+Aplica repetidamente @code{ratsimp} a una expresi@'on, seguida de simplificaciones no racionales, hasta que no se obtienen m@'as transformaciones; entonces devuelve el resultado.
+
+En presencia de expresiones no racionales, una llamada a @code{ratsimp} seguida de una simplificaci@'on no racional ("general") puede no ser suficiente para conseguir un resultado simplificado. En ocasiones ser@'an necesarias m@'as de una llamada a @code{ratsimp}, que es lo que hace precisamente @code{fullratsimp}.
+
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
+@c ratsimp (expr);
+@c fullratsimp (expr);
+@c rat (expr);
+
 @example
-SAVE(...,RATWEIGHTS);
+(%i1) expr: (x^(a/2) + 1)^2*(x^(a/2) - 1)^2/(x^a - 1);
+                       a/2     2   a/2     2
+                     (x    - 1)  (x    + 1)
+(%o1)                -----------------------
+                              a
+                             x  - 1
+(%i2) ratsimp (expr);
+                          2 a      a
+                         x    - 2 x  + 1
+(%o2)                    ---------------
+                              a
+                             x  - 1
+(%i3) fullratsimp (expr);
+                              a
+(%o3)                        x  - 1
+(%i4) rat (expr);
+                       a/2 4       a/2 2
+                     (x   )  - 2 (x   )  + 1
+(%o4)/R/             -----------------------
+                              a
+                             x  - 1
 @end example
-ambos trabajan.
 
-@end defvar
-@c @node RATWEYL, RATWTLVL, RATWEIGHTS, Polinomios
-@c @unnumberedsec phony
-@defvar RATWEYL
- por defecto: [] - una de las opciones controla la simplificaci@'on
- de los componentes tensor conformante Weyl; si es VERDADERO,
-entonces los componentes ser@'an simplificados racionalmente; si FACRAT es VERDADERO
-entonces el resultado tambi@'en ser@'a factorizado.
+@end deffn
 
-@end defvar
-@c @node RATWTLVL, REMAINDER, RATWEYL, Polinomios
-@c @unnumberedsec phony
-@defvar RATWTLVL
- por defecto: [FALSO] - usado en combinaci@'on con la funci@'on
- RATWEIGHT para controlar el truncamiento de expresiones racionales (forma ERC)
-(para el valor por defecto FALSO, el truncamiento no ocurre).
+@deffn {Funci@'on} fullratsubst (@var{a}, @var{b}, @var{c})
+Similar a @code{ratsubst} excepto por el hecho de que se llama a @'{@dotless{i}} misma recursivamente hasta que el resultado deja de cambiar. Esta funci@'on es @'util cuando la expresi@'on a sustituir y la que la sustituye tienen variables comunes.
 
-@end defvar
-@c @node REMAINDER, RESULTANT, RATWTLVL, Polinomios
-@c @unnumberedsec phony
-@defun REMAINDER (p1, p2, var1, ...)
-computa el residuo del polinomios
-p1 divido por el polinomio p2.
+La funci@'on @code{fullratsubst} tambi@'en acepta sus argumentos en el formato de @code{lratsubst}.
 
-@end defun
-@c @node RESULTANT, SAVEFACTORS, REMAINDER, Polinomios
-@c @unnumberedsec phony
-@defun RESULTANT (p1, p2, var)
-computa el resultado de los dos polinomios
-p1 y p2, eliminando la variable var. El resultado es un
-determinante de los coeficientes de var en p1 y p2 el cual es igual a cero
-si y solo si p1 y p2 tienen un factor no-constante en com@'un. Si p1
-o p2 pueden ser factorizados, este puede desear la llamada a FACTOR antes
-de llamara RESULTANT.
-RESULTANT[SUBRES] - controla el algoritmo que podr@'a ser usado para computar
-el resultado. SUBRES para subresultante prs [por defecto], MOD para
-el algoritmo modular resultante, y RED para reducir prs. En la mayor@'{@dotless{i}}a
-de los problemas SUBRES puede ser la mejor. En algunos problemas univariables o bivariables
-de grado superior MOD puede ser mejor. Otra alternativa es el
-comando BEZOUT el cual toma los mismos argumentos que RESULTANT y retorna
-una matriz. El DETERMINANT de esta matriz es el resultado deseado.
+Es necesario ejecutar @code{load ("lrats")} para cargar @code{fullratsubst} y @code{lratsubst}.
 
-@end defun
-@c @node SAVEFACTORS, SQFR, RESULTANT, Polinomios
-@c @unnumberedsec phony
-@defvar SAVEFACTORS
- por defecto: [FALSO] - si es VERDADERO causa que el factor de una
-expresi@'on el cual es un producto de factores a ser guardados para ciertas
-funci0ones en orden para acelerar luego la factorizaci@'on de expresiones
-conteniendo algunos de los mismos factores.
+Ejemplos:
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
+@c CAN PROBABLY CUT OUT THE lratsubst STUFF (lratsubst HAS ITS OWN DESCRIPTION)
+@c load ("lrats")$
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c lratsubst (a^2 = b, a^3);
+@c ratsubst (b*a, a^2, a^3);
+@c fullratsubst (b*a, a^2, a^3);
+@c fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+@c fullratsubst (a^2 = b*a, a^3);
+@c errcatch (fullratsubst (b*a^2, a^2, a^3));
 
-@end defvar
-@c @node SQFR, TELLRAT, SAVEFACTORS, Polinomios
-@c @unnumberedsec phony
-@defun SQFR (exp)
-es similar para FACTOR excepto que los factores polinomiales son
-"cuadrado-libre." esto es, ellos tienen solo factores de un grado. Este
-algoritmo, el cual es tambi@'en usado por la primera fase de FACTOR, utiliza
-el factor que tiene en com@'un un polinomio con su n-esima derivada
-y siendo todos sus factores de grados > n. As@'{@dotless{i}} mediante la toma de gcds con el polinomio de
-las derivadas con respecto a cada variable en el polinomio, pueden encontrarse todos
-los factores de grados > 1.
 @example
-(C1) SQFR(4*X**4+4*X**3-3*X**2-4*X-1);
-                             2               2
-(D1)                       (X  - 1) (2 X + 1)
-
-
+(%i1) load ("lrats")$
 @end example
-@end defun
-@c @node TELLRAT, TOTALDISREP, SQFR, Polinomios
-@c @unnumberedsec phony
-@defun TELLRAT (poly)
-agrega al anillo de enteros algebraicos conocidos por
-MACSYMA, el elemento el cual es la soluci@'on del polinomio con
-coeficientes enteros. MACSYMA inicialmente sabe acerca %I y todas la ra@'{@dotless{i}}ces 
-de los enteros. TELLRAT(X);los medios substituyen a 0 por X en funciones racionales.
-Hay un comando UNTELLRAT el cual toma n@'ucleos y
-remueve las propiedaddes de TELLRAT. Cuando se TELLRAT(ea) un polinomio
-multivariable, e.g. TELLRAT(X^2-Y^2);,habr@'{@dotless{i}}a una ambiguidad como si
-se substituyera Y^2 por X^2 o viceversa. El sistema escoger@'a
-una petici@'on particular, pero si el usuario quiere especificar cual e.g.
-TELLRAT(Y^2=X^2); provee una sintaxis la cual dice el reemplazo Y^2 por X^2.
-TELLRAT y UNTELLRAT pueden tomar cuanlquier n@'umero de argumentos, y
-TELLRAT(); retorna una lista de la sustituci@'on actual. NOTA: Cuando
-usted aplica TELLRAT a polinomios reducibles, debe ser cuidadoso de no 
-esforzar al racionar un denominador con un divisor cero. E.g.
-TELLRAT(W^3-1)$ ALGEBRAIC:VERDADERO$ RAT(1/(W^2-W)); dar@'a "cociente por
-cero". Este error puede ser avolido mediante la programaci@'on RATALGDENOM:FALSO$.
-ALGEBRAIC[FALSO] debe ser programada VERDADERO en orden para la simplificaci@'on de
-enteros algebr@'aicos para que tome efecto.
-Haga EXAMPLE(TELLRAT); para ejemplos.
+@itemize @bullet
+@item
+@code{subst} puede hacer sustituciones m@'ultiples;
+@code{lratsubst} es an@'aloga a @code{subst}.
+@end itemize
+@example
+(%i2) subst ([a = b, c = d], a + c);
+(%o2)                         d + b
+(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o3)                (d + a c) e + a d + b c
+@end example
+@itemize @bullet
+@item
+Si s@'olo se quiere una sustituci@'on, entonces se puede dar una @'unica ecuaci@'on como primer argumento.
+@end itemize
+@example
+(%i4) lratsubst (a^2 = b, a^3);
+(%o4)                          a b
+@end example
+@itemize @bullet
+@item
+@code{fullratsubst} equivale a @code{ratsubst}, 
+excepto por el hecho de que se llama a @'{@dotless{i}} misma recursivamente hasta que el resultado deja de cambiar.
+@end itemize
+@example
+(%i5) ratsubst (b*a, a^2, a^3);
+                               2
+(%o5)                         a  b
+(%i6) fullratsubst (b*a, a^2, a^3);
+                                 2
+(%o6)                         a b
+@end example
+@itemize @bullet
+@item
+@code{fullratsubst} tambi@'en acepta una lista de ecuaciones o una s@'ola ecuaci@'on como primer argumento.
+@end itemize
+@example
+(%i7) fullratsubst ([a^2 = b, b^2 = c, c^2 = a], a^3*b*c);
+(%o7)                           b
+(%i8) fullratsubst (a^2 = b*a, a^3);
+                                 2
+(%o8)                         a b
+@end example
+@itemize @bullet
+@item
+@c REWORD THIS SENTENCE
+@code{fullratsubst} puede caer en una recursi@'on infinita.
+@end itemize
+@example
+(%i9) errcatch (fullratsubst (b*a^2, a^2, a^3));
 
-@end defun
-@c @node TOTALDISREP, UNTELLRAT, TELLRAT, Polinomios
-@c @unnumberedsec phony
-@defun TOTALDISREP (exp)
-convierte cada subexpresi@'on de exp desde ERC a
-la forma general. Si exp est@'a en la forma ERC entonces esta es igual a
-RATDISREP pero sino entonces RATDISREP retornar@'a exp sin cambios mientras
-que TOTALDISREP lo podr@'a "disrep totalmente". Esto es @'util para
-ratdisrepp(ear) expresiones e.g., ecuaciones, listas, matrices, etc. las cuales
-tienen algunas subexpresiones en la forma ERC.
+*** - Lisp stack overflow. RESET
+@end example
 
-@end defun
-@c @node UNTELLRAT,  , TOTALDISREP, Polinomios
-@c @unnumberedsec phony
-@defun UNTELLRAT (x)
-toma n@'ucleos y remueve las propiedades de TELLRAT.
-@end defun
+@end deffn
+
+@deffn {Funci@'on} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
+Devuelve el m@'aximo com@'un divisor de @var{p_1} y @var{p_2}.
+La variable @code{gcd} determiona qu@'e algoritmo se va a utilizar.
+Asign@'andole a @code{gcd} los valores @code{ez}, @code{eez}, @code{subres}, @code{red} o @code{spmod}, se seleccionan los algoritmos @code{ezgcd}, nuevo @code{eez} @code{gcd}, subresultante @code{prs}, reducido o modular, respectivamente.  Si @code{gcd} vale @code{false} entonces @code{gcd(p1,p2,var)} devolver@'a siempre 1 para cualquier @code{var}.  Muchas funciones (por ejemplo,  @code{ratsimp}, @code{factor}, etc.) hacen uso de @code{gcd} impl@'{@dotless{i}}citamente.  En caso de polinomios homog@'eneos se recomienda darle a @code{gcd} el valor @code{subres}.  Para calcular un m@'aximo com@'un divisor en presencia de ra@'{@dotless{i}}ces, como en @code{gcd(x^2-2*sqrt(2)*x+2,x-sqrt(2));} , la variable @code{algebraic} debe igualarse previamente a @code{true} y @code{gcd} no puede ser @code{ez}. Se recomienda utilizar el algoritmo @code{subres} en lugar de @code{red}, por ser aqu@'el m@'as nuevo.
+
+Cuando la variable @code{gcd}, cuyo valor por defecto es @code{subres}, vale @code{false}, no se calcular@'a el m@'aximo com@'un divisor cuando las expresiones se conviertan a su forma can@'onica (CRE), lo que redundar@'a en ocasiones en mayor rapidez de c@'alculo.
+@c NEEDS EXAMPLES HERE
+
+@end deffn
+
+@deffn {Funci@'on} gcdex (@var{f}, @var{g})
+@deffnx {Funci@'on} gcdex (@var{f}, @var{g}, @var{x})
+Devuelve una lista @code{[@var{a}, @var{b}, @var{u}]} en la que @var{u} es el m@'aximo com@'un divisor (mcd) de @var{f} y @var{g}, e igual a @code{@var{a} @var{f} + @var{b} @var{g}}.
+Los argumentos @var{f} y @var{g} deben ser polinomios univariantes, o indicarles la variable principal @var{x} en caso de ser multivariantes. 
+
+La funci@'on @code{gcdex} implementa el algoritmo de Euclides, en el que tenemos una secuencia de @code{L[i]: [a[i], b[i], r[i]]} todos ellos ortogonales a @code{[f, g, -1]} siendo el siguiente calculado a partir de @code{q = quotient(r[i]/r[i+1])} y @code{L[i+2]: L[i] - q L[i+1]}; el proceso termina en @code{L[i+1]} cuando el resto @code{r[i+2]} se anula.
+
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c gcdex (x^2 + 1, x^3 + 4);
+@c % . [x^2 + 1, x^3 + 4, -1];
+
+@example
+(%i1) gcdex (x^2 + 1, x^3 + 4);
+                       2
+                      x  + 4 x - 1  x + 4
+(%o1)/R/           [- ------------, -----, 1]
+                           17        17
+(%i2) % . [x^2 + 1, x^3 + 4, -1];
+(%o2)/R/                        0
+@end example
+
+@c AQUI FALTA PARRAFO
+
+@end deffn
+
+
+@c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
+@deffn {Funci@'on} gcfactor (@var{n})
+Factoriza el entero gaussiano @var{n} como producto, a su vez, de enteros gaussianos, (un entero gaussiano es de la forma@code{@var{a} + @var{b} @code{%i}} donde @var{a} y @var{b} son n@'umeros enteros). Los factores se normalizan de manera que tanto la parte real como imaginaria sean no negativas.
+@c NEED EXAMPLES HERE
+
+@end deffn
+
+@c CHOOSE ONE CHARACTERIZATION OF "GAUSSIAN INTEGERS" AND USE IT WHERE GAUSSIAN INTEGERS ARE REFERENCED
+@deffn {Funci@'on} gfactor (@var{expr})
+Factoriza el polinomio @var{expr} sobre los enteros gaussianos (un entero gaussiano es de la forma@code{@var{a} + @var{b} @code{%i}} donde @var{a} y @var{b} son n@'umeros enteros).
+@c "This is like" -- IS IT THE SAME OR NOT ??
+Es como @code{factor (@var{expr}, @var{a}^2+1)} donde @var{a} vale @code{%i}.
+
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c gfactor (x^4 - 1);
+
+@example
+(%i1) gfactor (x^4 - 1);
+(%o1)           (x - 1) (x + 1) (x - %i) (x + %i)
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} gfactorsum (@var{expr})
+Esta funci@'on es similar a @code{factorsum} pero aplica @code{gfactor} en lugar de @code{factor}.
+
+@end deffn
+
+@deffn {Funci@'on} hipow (@var{expr}, @var{x})
+Devuelve el mayor exponente expl@'{@dotless{i}}cito de  @var{x} en @var{expr}.
+El argumento@var{x} puede ser una variable o una expresi@'on general.
+Si @var{x} no aparece en @var{expr}, @code{hipow} devuelve @code{0}.
+
+La funci@'on @code{hipow} no tiene en cuenta expresiones equivalentes a @code{expr}.
+En particular, @code{hipow} no expande @code{expr}, de manera que @code{hipow (@var{expr}, @var{x})} y @code{hipow (expand (@var{expr}, @var{x}))} pueden dar resultados diferentes.
+
+Ejemplos:
+
+@example
+(%i1) hipow (y^3 * x^2 + x * y^4, x);
+(%o1)                           2
+(%i2) hipow ((x + y)^5, x);
+(%o2)                           1
+(%i3) hipow (expand ((x + y)^5), x);
+(%o3)                           5
+(%i4) hipow ((x + y)^5, x + y);
+(%o4)                           5
+(%i5) hipow (expand ((x + y)^5), x + y);
+(%o5)                           0
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} intfaclim
+Valor por defecto: 1000
+
+@c NEED A LINK TO DESCRIPTION OF "BIGNUM"
+La variable @code{intfaclim} guarda el mayor divisor que se ensayar@'a al factorizar un n@'umero @code{bignum}. Si vale @code{false} (este es el caso cuando el usuario llama a @code{factor} expl@'{@dotless{i}}citamente), o si el entero ocupa dos bytes, se intentar@'a una factorizaci@'on completa del entero.
+
+A la variable @code{intfaclim} se le asigna el valor @code{false} cuando los factores se calculan desde las funciones @code{divsum}, @code{totient} y @code{primep}.
+
+@c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
+Las llamadas internas a @code{factor} respetan el valor dado por el usuario a @code{intfaclim}. Asignando a @code{intfaclim} valores peque@~nos se puede reducir el tiempo de factorizaci@'on de n@'umeros enteros grandes.
+
+@end defvr
+
+
+@defvr {Variable optativa} keepfloat
+Valor por defecto: @code{false}
+
+Si @code{keepfloat} vale @code{true}, los n@'umeros decimales en coma flotante no se racionalizan cuando las expresiones que los contienen se convierten al formato can@'onico racional (CRE).
+@c NEED EXAMPLES HERE
+
+@end defvr
+
+@deffn {Funci@'on} lratsubst (@var{L}, @var{expr})
+Esta funci@'on es similar a @code{subst (@var{L}, @var{expr})}, excepto por el hecho de que utiliza @code{ratsubst} en lugar de @code{subst}.
+
+El primer argumento de @code{lratsubst} es una ecuaci@'on o lista de ecuaciones id@'enticas en formato a las aceptadas por @code{subst}.  Las sustituciones se hacen en el orden dado por la lista de ecuaciones, esto es, de izquierda a derecha.
+
+La instrucci@'on @code{load ("lrats")} carga @code{fullratsubst} y @code{lratsubst}.
+
+Ejemplos:
+@c EXPRESSIONS ADAPTED FROM demo ("lrats")
+@c THIS STUFF CAN PROBABLY STAND REVISION -- EXAMPLES DON'T SEEM VERY ENLIGHTENING
+@c load ("lrats")$
+@c subst ([a = b, c = d], a + c);
+@c lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+@c lratsubst (a^2 = b, a^3);
+
+@example
+(%i1) load ("lrats")$
+@end example
+@itemize @bullet
+@item
+@code{subst} can carry out multiple substitutions.
+@code{lratsubst} is analogous to @code{subst}.
+@end itemize
+@example
+(%i2) subst ([a = b, c = d], a + c);
+(%o2)                         d + b
+(%i3) lratsubst ([a^2 = b, c^2 = d], (a + e)*c*(a + c));
+(%o3)                (d + a c) e + a d + b c
+@end example
+@itemize @bullet
+@item
+If only one substitution is desired, then a single
+equation may be given as first argument.
+@end itemize
+@example
+(%i4) lratsubst (a^2 = b, a^3);
+(%o4)                          a b
+@end example
+
+@end deffn
+
+
+@defvr {Variable optativa} modulus
+Valor por defecto: @code{false}
+
+Si @code{modulus} es un n@'umero positivo @var{p}, las operaciones con n@'umeros racionales (como los devueltos por @code{rat} y funciones asociadas) se realizan m@'odulo @var{p}, utilizando el llamado sistema de m@'odulo balanceado, en el que @code{@var{n} m@'odulo @var{p}} se define como un entero @var{k} de @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}
+si @var{p} es impar, o de @code{[-(@var{p}/2 - 1), ..., 0, ...., @var{p}/2]} si @var{p} es par, de tal manera que @code{@var{a} @var{p} + @var{k}} es igual a @var{n} para alg@'un entero @var{a}.
+@c NEED EXAMPLES OF "BALANCED MODULUS" HERE
+
+@c FALTA PARRAFO POCO LEGIBLE
+
+Normalmente a @code{modulus} se le asigna un n@'umero primo. Se acepta que a @code{modulus} se le asigne un entero positivo no primo, pero se obtendr@'a un mensaje de aviso. Maxima permitir@'a que a @code{modulus} se le asigne cero o un entero negativo, aunque no est@'e clara su utilidad.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@deffn {Funci@'on} num (@var{expr})
+Devuelve el numerador de @var{expr} si se trata de una fracci@'on. Si @var{expr} no es una fracci@'on, se devuelve @var{expr}.
+
+La funci@'on @code{num} eval@'ua su argumento.
+
+@c NEED SOME EXAMPLES HERE
+@end deffn
+
+@deffn {Funci@'on} quotient (@var{p_1}, @var{p_2})
+@deffnx {Funci@'on} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Devuelve el polinomio @var{p_1} dividido por el polinomio @var{p_2}. Los argumentos @var{x_1}, ..., @var{x_n} se interpretan como en la funci@'on @code{ratvars}.
+
+La funci@'on @code{quotient} devuelve el primer elemento de la lista devuelta por @code{divide}.
+
+@c NEED SOME EXAMPLES HERE
+@end deffn
+
+
+@deffn {Funci@'on} rat (@var{expr})
+@deffnx {Funci@'on} rat (@var{expr}, @var{x_1}, ..., @var{x_n})
+Convierte @var{expr} al formato can@'onico racional (canonical rational expression o CRE) expandiendo y combinando todos los t@'erminos sobre un denominador com@'un y cancelando el m@'aximo com@'un divisor del numerador y denominador, as@'{@dotless{i}} como convirtiendo n@'umeros decimales en coma flotante a n@'umeros racionales dentro de la tolerancia indicada por @code{ratepsilon}. Las variables se ordenan de acuerdo a @var{x_1}, ..., @var{x_n} si se han especificado, como en la funci@'on @code{ratvars}.
+
+En general, @code{rat} no simplifica otras funciones que no sean la suma @code{+}, resta @code{-}, multiplicaci@'on @code{*}, divisi@'on @code{/} y exponenciaci@'on de exponente entero, mientras que @code{ratsimp} s@'{@dotless{i}} lo hace.
+N@'otese que los @'atomos (n@'umeros y variables) en expresiones en formato CRE no son los mismos que en el formato general.
+Por ejemplo, @code{rat(x)- x} devuelve @code{rat(0)}, que tiene una representaci@'on interna diferente de 0.
+
+@c FALTA PARRAFO QUE NECESITA CLARIFICACION EN VERSION INGLESA
+
+Si @code{ratprint} vale @code{false} no aparecer@'an mensajes informando al usuario sobre la conversi@'on de n@'umeros decimales en coma flotante a n@'umeros racionales.
+
+Si @code{keepfloat} vale @code{true} no se convertir@'an n@'umeros decimales en coma flotante a n@'umeros racionales.
+
+V@'eanse tambi@'en @code{ratexpand} y  @code{ratsimp}.
+
+Ejemplos:
+@c FOLLOW GENERATED FROM THESE EXPRESSIONS
+@c ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
+@c rat (%, y, a, x);
+
+@example
+(%i1) ((x - 2*y)^4/(x^2 - 4*y^2)^2 + 1)*(y + a)*(2*y + x) /(4*y^2 + x^2);
+                                           4
+                                  (x - 2 y)
+              (y + a) (2 y + x) (------------ + 1)
+                                   2      2 2
+                                 (x  - 4 y )
+(%o1)         ------------------------------------
+                              2    2
+                           4 y  + x
+(%i2) rat (%, y, a, x);
+                            2 a + 2 y
+(%o2)/R/                    ---------
+                             x + 2 y
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} ratalgdenom
+Valor por defecto: @code{true}
+
+Si @code{ratalgdenom} vale @code{true}, se permite la racionalizaci@'on de denominadores eliminando radicales.
+La variable @code{ratalgdenom} s@'olo tiene efecto cuando expresiones en formato can@'onico (CRE) est@'an siendo utilizadas en modo algebraico.
+
+@end defvr
+
+@deffn {Funci@'on} ratcoef (@var{expr}, @var{x}, @var{n})
+@deffnx {Funci@'on} ratcoef (@var{expr}, @var{x})
+Devuelve el coeficiente de la expresi@'on @code{@var{x}^@var{n}} dentro de la expresi@'on @var{expr}. Si se omite, @var{n} se considera igual a 1.
+
+El valor devuelto est@'a libre de las variables en @var{x}, excepto quiz@'as en un sentido no racional. Si no existe un coeficiente de este tipo se devuelve 0.
+
+La funci@'on @code{ratcoef} expande y simplifica racionalmente su primer argumento, por lo que puede dar una respuesta diferente a la dada por la funci@'on @code{coeff}, la cual tiene un car@'acter puramente sint@'actico.
+
+La llamada @code{ratcoef (@var{expr}, @var{x}, 0)}, siendo @var{expr} una suma, devuelve una suma formada por los t@'erminos que no contienen @var{x}.
+
+Puesto que @var{expr} se simplifica racionalmente antes de ser examinada, algunos coeficientes puede que no aparezcan como en la expresi@'on original.
+
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c s: a*x + b*x + 5$
+@c ratcoef (s, a + b);
+
+@example
+(%i1) s: a*x + b*x + 5$
+(%i2) ratcoef (s, a + b);
+(%o2)                           x
+@end example
+@c NEED MORE EXAMPLES HERE
+
+@end deffn
+
+@deffn {Funci@'on} ratdenom (@var{expr})
+Devuelve el denominador de @var{expr}, despu@'es de transformar @var{expr} al formato can@'onico (CRE). El valor retornado est@'a tambi@'en en formato CRE.
+
+@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+El argumento @var{expr} se transforma al formato CRE por la funci@'on @code{rat}, a menos que ya est@'e en este formato.
+Esta conversi@'on puede cambiar la forma de @var{expr} colocando todos sus t@'erminos sobre un denominador com@'un.
+
+La funci@'on @code{denom} es parecida, pero devuelve una expresi@'on general en lugar de una CRE. Tampoco @code{denom} intenta colocar todos sus t@'erminos sobre un denominador com@'un, de manera que algunas expresiones que son consideradas como divisiones por @code{ratdenom}, no son tales para @code{denom}.
+
+@c NEEDS AN EXAMPLE HERE
+@end deffn
+
+@defvr {Variable optativa} ratdenomdivide
+Valor por defecto: @code{true}
+
+Si @code{ratdenomdivide} vale @code{true}, la funci@'on @code{ratexpand} expande una fracci@'on en la que el numerador es una suma en una suma de divisiones. En otro caso, @code{ratexpand} reduce una suma de divisiones a una @'unica fracci@'on, cuyo numerador es la suma de los denominadores de cada fracci@'on.
+
+Examples:
+@example
+(%i1) expr: (x^2 + x + 1)/(y^2 + 7);
+                            2
+                           x  + x + 1
+(%o1)                      ----------
+                              2
+                             y  + 7
+(%i2) ratdenomdivide: true$
+(%i3) ratexpand (expr);
+                       2
+                      x        x        1
+(%o3)               ------ + ------ + ------
+                     2        2        2
+                    y  + 7   y  + 7   y  + 7
+(%i4) ratdenomdivide: false$
+(%i5) ratexpand (expr);
+                            2
+                           x  + x + 1
+(%o5)                      ----------
+                              2
+                             y  + 7
+(%i6) expr2: a^2/(b^2 + 3) + b/(b^2 + 3);
+                                     2
+                           b        a
+(%o6)                    ------ + ------
+                          2        2
+                         b  + 3   b  + 3
+(%i7) ratexpand (expr2);
+                                  2
+                             b + a
+(%o7)                        ------
+                              2
+                             b  + 3
+@end example
+
+@end defvr
+
+
+@deffn {Funci@'on} ratdiff (@var{expr}, @var{x})
+Deriva la expresi@'on racional @var{expr} con respecto a @var{x}.
+El argumento @var{expr} debe ser una fracci@'on algebraica o un polinomio en @var{x}.
+El argumento @var{x} puede ser una variable o una subexpresi@'on de @var{expr}.
+@c NOT CLEAR (FROM READING CODE) HOW x OTHER THAN A VARIABLE IS HANDLED --
+@c LOOKS LIKE (a+b), 10*(a+b), (a+b)^2 ARE ALL TREATED LIKE (a+b);
+@c HOW TO DESCRIBE THAT ??
+
+El resultado equivale al devuelto por @code{diff}, aunque es posible que se obtenga en una forma diferente.
+La funci@'on @code{ratdiff} puede ser m@'as r@'apida que @code{diff} en expresiones racionales.
+
+La funci@'on @code{ratdiff} devuelve una expresi@'on en formato can@'onico o CRE si @code{expr} es tambi@'en una expresi@'on CRE. En otro caso, @code{ratdiff} devuelve una expresi@'on general.
+
+La funci@'on @code{ratdiff} considera @'unicamente la dependencia de @var{expr} respecto de @var{x}, ignorando cualquier dependencia establecida por @code{depends}.
+
+Ejemplo:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+@c ratdiff (expr, x);
+@c expr: f(x)^3 - f(x)^2 + 7;
+@c ratdiff (expr, f(x));
+@c expr: (a + b)^3 + (a + b)^2;
+@c ratdiff (expr, a + b);
+
+@example
+(%i1) expr: (4*x^3 + 10*x - 11)/(x^5 + 5);
+                           3
+                        4 x  + 10 x - 11
+(%o1)                   ----------------
+                              5
+                             x  + 5
+(%i2) ratdiff (expr, x);
+                    7       5       4       2
+                 8 x  + 40 x  - 55 x  - 60 x  - 50
+(%o2)          - ---------------------------------
+                          10       5
+                         x   + 10 x  + 25
+(%i3) expr: f(x)^3 - f(x)^2 + 7;
+                         3       2
+(%o3)                   f (x) - f (x) + 7
+(%i4) ratdiff (expr, f(x));
+                           2
+(%o4)                   3 f (x) - 2 f(x)
+(%i5) expr: (a + b)^3 + (a + b)^2;
+                              3          2
+(%o5)                  (b + a)  + (b + a)
+(%i6) ratdiff (expr, a + b);
+                    2                    2
+(%o6)            3 b  + (6 a + 2) b + 3 a  + 2 a
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} ratdisrep (@var{expr})
+Devuelve su argumento como una expresi@'on general.
+Si @var{expr} es una expresi@'on general, se devuelve sin cambios.
+
+Normalmente se invoca a @code{ratdisrep} a fin de convertir una expresi@'on en formato can@'onico (CRE) al formato general, lo que puede ser utilizado si se quiere parar el contagio que produce el formato CRE, o para utilizar funciones racionales en contextos no racionales.
+
+V@'ease tambi@'en @code{totaldisrep}.
+
+@end deffn
+
+
+@defvr {Variable optativa} ratepsilon
+Valor por defecto: 2.0e-8
+
+La variable @code{ratepsilon} guarda la tolerancia utilizada en la conversi@'on de n@'umeros decimales en coma flotante a n@'umeros racionales.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@deffn {Funci@'on} ratexpand (@var{expr})
+@deffnx {Variable optativa} ratexpand
+Expande @var{expr} multiplicando productos de sumas y sumas con exponentes, combinando fracciones con com@'un denominador, cancelando el m@'aximo com@'un divisor del numerador y del denominador y luego dividiendo los sumandos del numerador por el denominador.
+
+El valor que devuelve @code{ratexpand} es una expresi@'on general, incluso cuando @var{expr} est@'a en formato can@'onico o CRE.
+
+Si la variable @code{ratexpand} vale @code{true} har@'a que las expresiones CRE se expandan completamente cuando se conviertan al formato general o se muestren en el terminal, mientras que si vale @code{false} se mostrar@'an de forma recursiva. V@'ease tambi@'en @code{ratsimp}.
+
+Si @code{ratdenomdivide} vale @code{true},
+@code{ratexpand} expande una fracci@'on en la que el numerador es una suma en una suma de fracciones, todas ellas con denominador com@'un. En otro caso, @code{ratexpand} reduce una suma de fracciones en una @'unica fracci@'on, cuyo numerador es la suma de los numeradores de cada fracci@'on.
+
+Si @code{keepfloat} vale @code{true}, los n@'umeros decimales en coma flotante no se racionalizan cuando las expresiones que los contienen se convierten al formato can@'onico racional (CRE).
+
+Ejemplos:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ratexpand ((2*x - 3*y)^3);
+@c expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+@c expand (expr);
+@c ratexpand (expr);
+
+@example
+(%i1) ratexpand ((2*x - 3*y)^3);
+                     3         2       2        3
+(%o1)          - 27 y  + 54 x y  - 36 x  y + 8 x
+(%i2) expr: (x - 1)/(x + 1)^2 + 1/(x - 1);
+                         x - 1       1
+(%o2)                   -------- + -----
+                               2   x - 1
+                        (x + 1)
+(%i3) expand (expr);
+                    x              1           1
+(%o3)          ------------ - ------------ + -----
+                2              2             x - 1
+               x  + 2 x + 1   x  + 2 x + 1
+(%i4) ratexpand (expr);
+                        2
+                     2 x                 2
+(%o4)           --------------- + ---------------
+                 3    2            3    2
+                x  + x  - x - 1   x  + x  - x - 1
+@end example
+
+@end deffn
+
+
+@defvr {Variable optativa} ratfac
+Valor por defecto: @code{false}
+
+Si @code{ratfac} vale @code{true}, las expresiones can@'onicas (CRE) se manipulan en una forma parcialmente factorizada.
+
+Durante las operaciones racionales, las expresiones se mantienen completamente factorizadas tanto como sea posible sin llamar a @code{factor}. Esto deber@'{@dotless{i}}a ahorrar espacio y tiempo en algunos c@'alculos. El numerador y denominador se hacen primos relativos, por ejemplo @code{rat ((x^2 - 1)^4/(x + 1)^2)} devuelve @code{(x - 1)^4 (x + 1)^2)}, pero los factores dentro de cada parte pueden no ser primos relativos.
+
+En el paquete @code{ctensr} sobre manipulaci@'on de tensores por componentes, los tensores de Ricci, Einstein, Riemann y Weyl y la curvatura escalar se factorizan autom@'aticamente si @code{ratfac} vale @code{true}; 
+@i{@code{ratfac} debe activarse @'unicamente en aquellos casos en los que se sabe que el n@'umero de t@'erminos de las componentes tensoriales es pequ@~no.}
+
+Nota: Los esquemas de comportamiento basados en @code{ratfac} y @code{ratweight} son incompatibles y no se debe  pretender usarlos al mismo tiempo.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@deffn {Funci@'on} ratnumer (@var{expr})
+Devuelve el numerador de @var{expr}, despu@'es de reducir @var{expr} a su forma can@'onica (CRE).
+El valor retornado est@'a tambi@'en en formato CRE.
+
+@c ACTUALLY THE CONVERSION IS CARRIED OUT BY ratf BUT THAT'S WHAT $rat CALLS
+El argumento @var{expr} se transforma al formato CRE por la funci@'on @code{rat}, a menos que ya est@'e en este formato.
+Esta conversi@'on puede cambiar la forma de @var{expr} colocando todos sus t@'erminos sobre un denominador com@'un.
+
+Es parecida a la funci@'on @code{num}, pero devuelve una expresi@'on general en lugar de una CRE.
+Adem@'as, @code{num} no intenta colocar todos los t@'erminos sobre un denominador com@'un, de manera que algunas expresiones que son consideradas fracciones por @code{ratnumer} no se consideran como tales por @code{num}.
+
+@c NEEDS AN EXAMPLE HERE
+@end deffn
+
+@deffn {Funci@'on} ratnump (@var{expr})
+Devuelve @code{true} si @var{expr} es un entero literal o una fracci@'on de enteros literales, en caso contrario devuelve @code{false}.
+
+@end deffn
+
+@deffn {Funci@'on} ratp (@var{expr})
+Devuelve @code{true} si @var{expr} es una expresi@'on can@'onica racional (canonical rational expression o CRE) o una CRE extendida, en caso contrario devuelve @code{false}.
+
+Las expresiones CRE son creadas por @code{rat} y funciones asociadas. Las CRE extendidas son creadas por @code{taylor} y funciones asociadas.
+
+@end deffn
+
+@defvr {Variable optativa} ratprint
+Valor por defecto: @code{true}
+
+Si @code{ratprint} vale @code{true}, se muestra al usuario un mensaje dando cuenta de la conversi@'on de n@'umeros decimales en coma flotante a formato racional.
+
+@end defvr
+
+@deffn {Funci@'on} ratsimp (@var{expr})
+@deffnx {Funci@'on} ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})
+Simplifica la expresi@'on @var{expr} y todas sus subexpresiones, incluyendo los argumentos de funciones no racionales. El resultado es un cociente de dos polinomios en una forma recursiva, esto es, los coeficientes de la variable principal son polinomios respecto de las otras variables. Las variables pueden incluir funciones no racionales, como @code{sin (x^2 + 1)}, y los argumentos de tales funciones son tambi@'en racionalmente simplificados.
+
+La llamada @code{ratsimp (@var{expr}, @var{x_1}, ..., @var{x_n})} permite la simplificaci@'on racional con la especificaci@'on del orden de las variables, como en @code{ratvars}.
+
+Si @code{ratsimpexpons} vale @code{true}, @code{ratsimp} se aplica a los exponentes de las expresiones durante la simplificaci@'on.
+
+V@'ease tambi@'en @code{ratexpand}. N@'otese que @code{ratsimp} se ve afectada por algunas de las variables globales que controlan a @code{ratexpand}.
+
+Ejemplos:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+@c ratsimp (%);
+@c ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+@c ratsimp (%);
+@c x^(a + 1/a), ratsimpexpons: true;
+
+@example
+(%i1) sin (x/(x^2 + x)) = exp ((log(x) + 1)^2 - log(x)^2);
+                                         2      2
+                   x         (log(x) + 1)  - log (x)
+(%o1)        sin(------) = %e
+                  2
+                 x  + x
+(%i2) ratsimp (%);
+                             1          2
+(%o2)                  sin(-----) = %e x
+                           x + 1
+(%i3) ((x - 1)^(3/2) - (x + 1)*sqrt(x - 1))/sqrt((x - 1)*(x + 1));
+                       3/2
+                (x - 1)    - sqrt(x - 1) (x + 1)
+(%o3)           --------------------------------
+                     sqrt((x - 1) (x + 1))
+(%i4) ratsimp (%);
+                           2 sqrt(x - 1)
+(%o4)                    - -------------
+                                 2
+                           sqrt(x  - 1)
+(%i5) x^(a + 1/a), ratsimpexpons: true;
+                               2
+                              a  + 1
+                              ------
+                                a
+(%o5)                        x
+@end example
+
+@end deffn
+
+
+@defvr {Variable optativa} ratsimpexpons
+Valor por defecto: @code{false}
+
+Si @code{ratsimpexpons} vale @code{true}, @code{ratsimp} se aplica a los exponentes de las expresiones durante la simplificaci@'on.
+
+@c NEED AN EXAMPLE HERE -- RECYCLE THE ratsimpexpons EXAMPLE FROM ratsimp ABOVE
+@end defvr
+
+
+@deffn {Funci@'on} ratsubst (@var{a}, @var{b}, @var{c})
+Sustituye @var{b} por @var{a} en @var{c} y devuelve la expresi@'on resultante.
+@c "ETC" SUGGESTS THE READER KNOWS WHAT ELSE GOES THERE -- NOT LIKELY THE CASE
+El argumento @var{b} puede ser una suma, un producto, una potencia, etc.
+
+@c WHAT, EXACTLY, DOES ratsubst KNOW ??
+La funci@'on @code{ratsubst} reconoce el significado de las expresiones, mientras que @code{subst} tan solo realiza sustituciones sint@'acticas. As@'{@dotless{i}} por ejemplo, @code{subst (a, x + y, x + y + z)} devuelve @code{x + y + z}
+cuando @code{ratsubst} devuelve @code{z + a}.
+
+Si @code{radsubstflag} vale @code{true},
+@code{ratsubst} sustituye radicales en expresiones que no los contienen expl@'{@dotless{i}}citamente.
+
+Ejemplos:
+@c EXAMPLES BELOW ADAPTED FROM examples (ratsubst)
+@c WITH SOME ADDITIONAL STUFF
+@c ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
+@c cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
+@c ratsubst (1 - sin(x)^2, cos(x)^2, %);
+@c ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+@c radsubstflag: false$
+@c ratsubst (u, sqrt(x), x);
+@c radsubstflag: true$
+@c ratsubst (u, sqrt(x), x);
+
+@example
+(%i1) ratsubst (a, x*y^2, x^4*y^3 + x^4*y^8);
+                              3      4
+(%o1)                      a x  y + a
+(%i2) cos(x)^4 + cos(x)^3 + cos(x)^2 + cos(x) + 1;
+               4         3         2
+(%o2)       cos (x) + cos (x) + cos (x) + cos(x) + 1
+(%i3) ratsubst (1 - sin(x)^2, cos(x)^2, %);
+            4           2                     2
+(%o3)    sin (x) - 3 sin (x) + cos(x) (2 - sin (x)) + 3
+(%i4) ratsubst (1 - cos(x)^2, sin(x)^2, sin(x)^4);
+                        4           2
+(%o4)                cos (x) - 2 cos (x) + 1
+(%i5) radsubstflag: false$
+(%i6) ratsubst (u, sqrt(x), x);
+(%o6)                           x
+(%i7) radsubstflag: true$
+(%i8) ratsubst (u, sqrt(x), x);
+                                2
+(%o8)                          u
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} ratvars (@var{x_1}, ..., @var{x_n})
+@deffnx {Funci@'on} ratvars ()
+@deffnx {Variable del sistema} ratvars
+Declara como variables principales @var{x_1}, ..., @var{x_n} en expresiones racionales. Si @var{x_n} est@'a presente en una expresi@'on racional, se considerar@'a como variable principal. Si no est@'a presente, entonces se considerar@'a principal a la variable @var{x_[n-1]} si aparece en la expresi@'on, se contin@'ua as@'{@dotless{i}} hasta @var{x_1}, que se considerar@'a como variable principal s@'olo si ninguna de las variables que le siguen est@'a presente en la expresi@'on.
+
+Si una variable de la expresi@'on racional no est@'a presente en la lista @code{ratvars}, se le dar@'a una prioridad inferior a la de @var{x_1}.
+
+Los argumentos de @code{ratvars} pueden ser tanto variables como funciones no racionales como @code{sin(x)}.
+
+La variable @code{ratvars} es una lista que contiene los argumentos pasados a la funci@'on @code{ratvars} la @'ultima vez que fue invocada. Cada llamada a la funci@'on @code{ratvars} reinicializa la lista. La llamada @code{ratvars ()} vac@'{@dotless{i}}a la lista.
+
+@c NEED EXAMPLES HERE
+@end deffn
+
+@deffn {Funci@'on} ratweight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+@deffnx {Funci@'on} ratweight ()
+Asigna un peso @var{w_i} a la variable @var{x_i}. Un t@'ermino ser@'a reemplazado por 0 si su peso excede el valor de la variable @code{ratwtlvl} (por defecto no se realiza el truncamiento). El peso de un t@'ermino es la suma de los productos de los pesos de las variables que lo forman multiplicados por sus exponentes. Por ejemplo, el peso de @code{3 x_1^2 x_2} es @code{2 w_1 + w_2}. El truncamiento basado en @code{ratwtlvl} solamente se lleva a cabo cuando se multiplican o se elevan a potencias expresiones can@'onicas (CRE).
+
+La llamada @code{ratweight ()} devuelve la lista acumulada de asignaciones de pesos.
+
+Nota: Los esquemas de comportamiento basados en @code{ratfac} y @code{ratweight} son incompatibles y no se debe  pretender usarlos al mismo tiempo.
+
+Ejemplos:
+@c FOLLOWING GENERATED FROM THESE EXPRESSIONS
+@c ratweight (a, 1, b, 1);
+@c expr1: rat(a + b + 1)$
+@c expr1^2;
+@c ratwtlvl: 1$
+@c expr1^2;
+
+@example
+(%i1) ratweight (a, 1, b, 1);
+(%o1)                     [a, 1, b, 1]
+(%i2) expr1: rat(a + b + 1)$
+(%i3) expr1^2;
+                  2                  2
+(%o3)/R/         b  + (2 a + 2) b + a  + 2 a + 1
+(%i4) ratwtlvl: 1$
+(%i5) expr1^2;
+(%o5)/R/                  2 b + 2 a + 1
+@end example
+
+@end deffn
+
+@defvr {Variable del sistema} ratweights
+Valor por defecto: @code{[]}
+
+La variable @code{ratweights} es una lista que contiene los pesos asignados por @code{ratweight}.
+Las lista es acumulativa, en el sentido de que cada llamada a @code{ratweight} a@~nade nuevos elementos a la lista.
+
+@end defvr
+
+@defvr {Variable optativa} ratwtlvl
+Valor por defecto: @code{false}
+
+La variable @code{ratwtlvl} se utiliza en combinaci@'on con la funci@'on @code{ratweight} para controlar el truncamiento de expresiones racionales can@'onicas (CRE). Con el valor por defecto, @code{false}, no se produce truncamiento alguno.
+
+@end defvr
+
+@deffn {Funci@'on} remainder (@var{p_1}, @var{p_2})
+@deffnx {Funci@'on} remainder (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
+Devuelve el resto de la divisi@'on del polinomio @var{p_1} entre @var{p_2}. Los argumentos @var{x_1}, ..., @var{x_n} se interpretan como en @code{ratvars}.
+
+La funci@'on @code{remainder} devuelve el segundo elemento de la lista retornada por @code{divide}.
+
+@c NEED SOME EXAMPLES HERE
+@end deffn
+
+@deffn {Funci@'on} resultant (@var{p_1}, @var{p_2}, @var{x})
+@deffnx {Variable} resultant
+Calcula la resultante de los dos polinomios @var{p_1} y @var{p_2}, eliminando la variable @var{x}.
+La resultante es un determinante de los coeficientes de @var{x} en @var{p_1} y @var{p_2}, que es igual a cero si s@'olo si @var{p_1} y @var{p_2} tienen un factor com@'un no constante.
+
+Si @var{p_1} o @var{p_2} pueden ser factorizados, puede ser necesario llamar a @code{factor} antes que invocar a @code{resultant}.
+
+La variable @code{resultant} controla qu@'e algoritmo ser@'a utilizado para calcular la resultante.
+@c  FALTA COMPLETAR PARRAFO
+
+La funci@'on @code{bezout} toma los mismos argumentos que @code{resultant} y devuelve una matriz. El determinante del valor retornado es la resultante buscada.
+
+@c NEED AN EXAMPLE HERE
+@end deffn
+
+@defvr {Variable optativa} savefactors
+Valor por defecto: @code{false}
+
+@c "certain functions" -- WHICH ONES ??
+Si @code{savefactors} vale @code{true}, los factores de una expresi@'on producto se almacenan por ciertas funciones a fin de acelerar posteriores factorizaciones de expresiones que contengan algunos de estos factores.
+
+@end defvr
+
+@c FALTA DEFINICION DE sqfr
+
+
+@deffn {Funci@'on} tellrat (@var{p_1}, ..., @var{p_n})
+@deffnx {Funci@'on} tellrat ()
+A@~nade al anillo de enteros algebraicos conocidos por Maxima los elementos que son soluciones de los polinomios @var{p_1}, ..., @var{p_n}. Cada argumento @var{p_i} es un polinomio de coeficientes enteros.
+
+La llamada @code{tellrat (@var{x})} hace que se sustituya 0 por @var{x} en las funciones racionales.
+
+La llamada @code{tellrat ()} devuelve una lista con las sustituciones actuales.
+
+A la variable @code{algebraic} se le debe asignar el valor @code{true} a fin de poder realizar la simplificaci@'on de enteros algebraicos.
+
+Maxima reconoce la unidad imaginaria @code{%i} y todas las ra@'{@dotless{i}}ces de los enteros.
+
+La instrucci@'on @code{untellrat} borra todas las propiedades de @code{tellrat}.
+
+Es ambiguo aplicar @code{tellrat} a un polinomio multivariante tal como @code{tellrat (x^2 - y^2)}, pues no se sabe si sustituir @code{@var{y}^2} por @code{@var{x}^2} o al rev@'es. Maxima sigue un cierto orden, pero si el usuario quiere especificar uno en concreto, puede hacerlo mediante la sintaxis @code{tellrat (y^2 = x^2)}, que indica que se ponga @code{@var{x}^2} en lugar de @code{@var{y}^2}.
+
+Ejemplos:
+@c EXAMPLE ADAPTED FROM example (tellrat)
+@c 10*(%i + 1)/(%i + 3^(1/3));
+@c ev (ratdisrep (rat(%)), algebraic);
+@c tellrat (1 + a + a^2);
+@c 1/(a*sqrt(2) - 1) + a/(sqrt(3) + sqrt(2));
+@c ev (ratdisrep (rat(%)), algebraic);
+@c tellrat (y^2 = x^2);
+
+@example
+(%i1) 10*(%i + 1)/(%i + 3^(1/3));
+                           10 (%i + 1)
+(%o1)                      -----------
+                                  1/3
+                            %i + 3
+(%i2) ev (ratdisrep (rat(%)), algebraic);
+             2/3      1/3              2/3      1/3
+(%o2)    (4 3    - 2 3    - 4) %i + 2 3    + 4 3    - 2
+(%i3) tellrat (1 + a + a^2);
+                            2
+(%o3)                     [a  + a + 1]
+(%i4) 1/(a*sqrt(2) - 1) + a/(sqrt(3) + sqrt(2));
+                      1                 a
+(%o4)           ------------- + -----------------
+                sqrt(2) a - 1   sqrt(3) + sqrt(2)
+(%i5) ev (ratdisrep (rat(%)), algebraic);
+         (7 sqrt(3) - 10 sqrt(2) + 2) a - 2 sqrt(2) - 1
+(%o5)    ----------------------------------------------
+                               7
+(%i6) tellrat (y^2 = x^2);
+                        2    2   2
+(%o6)                 [y  - x , a  + a + 1]
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} totaldisrep (@var{expr})
+Convierte cada subexpresi@'on  de @var{expr} del formato can@'onico (CRE) al general y devuelve el resultado.
+Si @var{expr} est@'a en formato CRE entonces @code{totaldisrep} es id@'entico a @code{ratdisrep}.
+
+La funci@'on @code{totaldisrep} puede ser @'util para modificar expresiones como las ecuaciones, listas, matrices, etc., que tienen algunas subexpresiones en formato CRE.
+
+@c NEED EXAMPLES HERE
+@end deffn
+
+@deffn {Funci@'on} untellrat (@var{x_1}, ..., @var{x_n})
+Elimina de @var{x_1}, ..., @var{x_n} las propiedades relacionadas con @code{tellrat}.
+
+@c NEED EXAMPLES HERE
+@end deffn
