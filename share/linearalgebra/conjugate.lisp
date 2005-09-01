@@ -15,19 +15,22 @@
 
 ;; A fix feature(x,complex) --> true for all symbols bug.
 
-(defmfun $featurep (e ind)
-  (cond ((not (symbolp ind))
-	 (merror "~M is not a symbolic atom - `featurep'." ind))
-	((eq ind '$integer) (maxima-integerp e))
-	((eq ind '$noninteger) (nonintegerp e))
-	((eq ind '$even) (mevenp e))
-	((eq ind '$odd) (moddp e))
-	((eq ind '$real)
-	 (if (atom e)
-	     (or (numberp e) (kindp e '$real) (numberp (numer e)))
-	   (free ($rectform e) '$%i)))
-	
-	((symbolp e) (kindp e ind))))
+;; I'M NOT CONVINCED THIS NEEDS FIXING, SINCE X IN R => X IN C
+;; WE WANT EVENP(X) => INTEGERP(X) DON'T WE ??
+
+;; (defmfun $featurep (e ind)
+;;   (cond ((not (symbolp ind))
+;; 	 (merror "~M is not a symbolic atom - `featurep'." ind))
+;; 	((eq ind '$integer) (maxima-integerp e))
+;; 	((eq ind '$noninteger) (nonintegerp e))
+;; 	((eq ind '$even) (mevenp e))
+;; 	((eq ind '$odd) (moddp e))
+;; 	((eq ind '$real)
+;; 	 (if (atom e)
+;; 	     (or (numberp e) (kindp e '$real) (numberp (numer e)))
+;; 	   (free ($rectform e) '$%i)))
+;; 	
+;; 	((symbolp e) (kindp e ind))))
 
 (defun op-equalp (e &rest op)
   (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
@@ -103,9 +106,19 @@
 	   (setq e (simplifya (nth 1 e) z))
 	   (cond ((complexp e) (conjugate e)) ;; never happens, but might someday.
 		 (($mapatom e) 
-		  (cond ((like e '$%i) (mult -1 '$%i))
-			(($featurep e '$complex) `(($conjugate simp) ,e))
-			(t e)))
+		  (cond
+            ((like e '$%i)                          ;; $FEATUREP doesn't know %i is imaginary ... oh well.
+             (mult -1 '$%i))
+            ((or ($atom e) (eq (caar e) 'rat))      ;; $ATOM catches bigfloats but not rats ... oh well.
+             (if ($featurep e '$real) e
+               (if ($featurep e '$imaginary) (mult -1 e)
+                 `(($conjugate simp) ,e))))
+            ;; Otherwise, E is something like (($X ARRAY) 123).
+            ;; Call it real if (CAAR E) ($X in the example) is known to be real.
+            (t
+              (if ($featurep (caar e) '$real) e
+                (if ($featurep (caar e) '$imaginary) (mult -1 e)
+                  `(($conjugate simp) ,e))))))
 
 		 ((get (mop e) 'realvaluedp) e)
 
