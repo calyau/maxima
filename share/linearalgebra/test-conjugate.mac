@@ -1,3 +1,6 @@
+declare (x, real);
+done;
+
 conjugate(-1);
 -1$
 
@@ -235,8 +238,11 @@ conjugate(q) * (1 + conjugate(q))$
 conjugate((1+q)/(1-q));
 (1 + conjugate(q))/(1 - conjugate(q))$
 
+declare (p0, even, q1, odd, pq, rational, qp, irrational, rr, real, ii, imaginary);
+done;
 
+conjugate (p0 + q1 + pq + qp + rr + ii);
+p0 + q1 + pq + qp + rr - ii;
 
-
-
-
+kill (values);
+done;
