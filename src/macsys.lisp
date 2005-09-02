@@ -443,7 +443,7 @@
     (throw 'macsyma-quit t))
 
 
-  (defmfun $writefile (x) (dribble (subseq (string x) 1)))
+  (defmfun $writefile (x) (dribble (maxima-string x)))
 
   (defvar $appendfile nil )
 
