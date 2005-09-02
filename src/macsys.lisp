@@ -452,7 +452,7 @@
   (defmfun $appendfile (name)
     (if (and (symbolp name)
 	     (member (getcharn name 1) '(#\& #\$)))
-	(setq name (subseq (symbol-name name) 1)))
+	(setq name (maxima-string name)))
     (if $appendfile (merror "already in appendfile, use closefile first"))
     (let ((stream  (open name :direction :output
 			 :if-exists :append
@@ -487,7 +487,7 @@
 	  (t (dribble))))
  
 
-  (defmfun $ed (x) (ed (subseq (string x) 1))) 
+  (defmfun $ed (x) (ed (maxima-string x))) 
  
   (defmfun $cli () (merror "Not implemented!") )
  
