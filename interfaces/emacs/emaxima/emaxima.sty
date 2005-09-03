@@ -447,6 +447,10 @@
     \par\noindent
     \begingroup\maximafont\color{\maximaoutputcolor}
     \begin{em@ximam@th} ##1 \end{em@ximam@th}\endgroup}
+ \def\t##1.##2\\{%
+   \par\noindent
+   \begingroup\maximafont\color{\maximaoutputcolor}\textcolor{\maximapromptcolor}
+   {(\%t##1)}\begin{em@ximam@th} ##2 \end{em@ximam@th}\endgroup}
  \def\p{\begingroup\color{\maximaoutputcolor}
    \setupm@ximasessionverbatim\dom@ximasessionpreprompt}
  \setboolean{m@ximatexoutput}{true}
