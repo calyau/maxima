@@ -15,8 +15,6 @@
 
 (in-package "MAXIMA")
 
-#+cl
-($bothcases t) ;; allow alpha and Alpha to be different
 ;(declare-top
 ;	 (special lop rop ccol $gcprint texport $labels $inchar
 ;		  vaxima-main-dir

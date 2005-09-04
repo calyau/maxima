@@ -52,7 +52,7 @@
   $% $%% $%edispflag $%emode $%enumer $%e_to_numlog $%iargs $%piargs
   $%rnum $%rnum_list $absboxchar $activecontexts $algebraic $algexact
   $aliases $arrays $askexp $assumescalar $backsubst $berlefact
-  $beta_args_sum_to_integer $bftorat $bftrunc $bothcases $boxchar
+  $beta_args_sum_to_integer $bftorat $bftrunc $boxchar
   $breakup $cauchysum $change_filedefaults $compgrind $context
   $contexts $current_let_rule_package $cursordisp $debugmode
   $default_let_rule_package $demoivre $dependencies $derivabbrev
@@ -115,7 +115,7 @@
   -sqrt2//2 -sqrt3//2 |1//2| adn* aexprp algfac* algnotexact
   aliaslist alpha alphabet arrays aryp assigns atp atvars baktrcl
   bfhalf bfmhalf bigfloat%e bigfloat%pi bigfloatone bigfloatzero
-  bigprimes bindlist bvars casep *mdebug*
+  bigprimes bindlist bvars *mdebug*
   declares defined_variables defintdebug derivflag derivlist
   derivsimp displayp dn* dosimp dsksetp dummy-variable-operators
   dumping envlist errorsw errrjfflag evarrp evp expandflag expandp

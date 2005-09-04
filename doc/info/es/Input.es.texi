@@ -168,49 +168,6 @@ continuar@'a  BATCH(eyo)  desde  la  expresi@'on  antes  del  @'ultimo
 BATCH(eado) realizado.
 
 @end defvar
-@c @node BOTHCASES, CHANGE_FILEDEFAULTS, BATCOUNT, Entrada y Salida
-@c @unnumberedsec phony
-@defvar BOTHCASES
- por defecto:[VERDADERO] si es  VERDADERO causar@'a que MAXIMA retenga
-textos en  min@'usculas bien como may@'usculas. Note  sin embargo, que
-los  nombres de  algunas variables  especiales o  funciones  de MAXIMA
-est@'an en may@'usculas.  Por defecto ahora es VERDADERO  desde que se
-realizo c@'odigo m@'as leible,  permitiendo a lo usuarios tener nombre
-como SeriesSolve (Soluci@'on de Series).
-
-A causa  de esto hemos realizado  el sistema de  variables y funciones
-totalmente  en may@'uscula,  y  los usuarios  pueden ingresarlas  como
-deseen  (en  may@'usculas  o  min@'usculas).   Pero  todas  las  otras
-variables y  funciones son casos susceptibles.  Cuyo  usted imprime su
-programa  uso por ejemplo  gring(fundef(f)) entonces  podr@'a observar
-que simbolos como 'IF', 'SIN',... aparecen en may@'uscula considerando
-que los sistemas de s@'{@dotless{i}}mbolos no aparecen en el caso que usted est@'a
-usando.
-
-Esto es  implementado as@'{@dotless{i}}: Si el s@'{@dotless{i}}mbolo  est@'a siendo encontrado
-por primera vez, si la  versi@'on en may@'usculas est@'a en el paquete
-y tiene  una funci@'on no  trivial olista de propiedades,  entonces el
-s@'{@dotless{i}}mbolo en may@'uscula  es usado, y esto es  grabado sobre el primer
-caso  combinado,  que las  may@'usculas  podr@'{@dotless{i}}an  ser  usadas en  el
-futuro. Si un s@'{@dotless{i}}mbolo ya est@'a en el paquete entonces este es usado
-solamente.
-
-En efecto  esto significa que  la mayor@'{@dotless{i}}a de los  programas antiguos
-podr@'{@dotless{i}}an continuar el  trabajo y que los nuevos  pueden escribir sIn,
-Sin, SIN, sin, etc y todos ser@'an interpretados como SIN. Sin embargo
-si es escrito MySin esto ser@'a  diferente a MYSIN, porque MYSIN no es
-una variable o funci@'on del sistema.
-
-
-@example
-SeriesSolve(f,x):= if (f = sin) ...
-
-y esto es le@'{@dotless{i}}do como
-
-SeriesSolve(f,x):= IF (f = SIN) ...
-@end example
-
-@end defvar
 @c @node CHANGE_FILEDEFAULTS, CLOSEFILE, BOTHCASES, Entrada y Salida
 @c @unnumberedsec phony
 @defvar CHANGE_FILEDEFAULTS

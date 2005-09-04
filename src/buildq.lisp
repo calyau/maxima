@@ -179,10 +179,6 @@
 	  ;; ((<verb> ...) ...)  ==>  ((<noun> ...) ...)
 	  (t atom))))
 
-;; give it a property so it is known as special for bothcases
-
-(setf (get '$splice '$bothcases) t)
-
 ;; this function decides whether the SPLICE is one of ours or not.
 ;; the basic philosophy is that the SPLICE is ours if it has exactly
 ;; one symbolic argument and that arg appears in the current varlist.

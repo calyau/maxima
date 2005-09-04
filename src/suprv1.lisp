@@ -120,7 +120,7 @@
 	     allbutl nil loadf nil $backtrace '$backtrace)
        (setq *in-$batchload* nil *in-translate-file* nil)
        (setq backrub nil)
-       (setq $debugmode nil $bothcases t
+       (setq $debugmode nil
 	     $pagepause nil $dskgc nil $poislim 5)
        (setq $loadprint nil ^s nil loadfiles nil)
        ;;      (SETQ $FILEID NIL $C18MAXTIME 150.0E6)
@@ -175,9 +175,6 @@
   "The default file directory for `save', `store', `fassave', and `stringout'."
   no-reset)
 
-(defmvar casep t
-  "Causes translation of characters from lower to upper case on ITS, 
-   and from upper to lower case on Multics and Franz.")
 ;;(DEFMVAR $ERREXP '$ERREXP)
 
 (defmvar user-timesofar nil)
@@ -262,17 +259,6 @@
 (defun gctimep (timep tim)
   (cond ((and (eq timep '$all) (not (zerop tim))) (princ "Totaltime= ") t)
 	(t (princ "Time= ") nil)))
-
-;; If $BOTHCASES is T, lower case letters will not be converted to upper case.
-
-(defmfun $bothcases (x) (bothcases1 nil x))
-
-(defun bothcases1 (symbol value)
-  symbol			;Always bound to $BOTHCASES.  Ignored.
-  ;; This won't work with the Lisp Machine reader.
-  ;; #+MacLisp (DO ((I 97. (f1+ I))) ((> I 122.))
-  ;;	       (SETSYNTAX I (IF VALUE 1 321.) (IF VALUE I (f- I 32.))))
-  (setq casep (not value)) value)
 
 ;;(DEFUN BACKSPACE1 (NIL X)
 ;; (COND (X (ADD2LNC 8 ALPHABET)
@@ -1319,7 +1305,7 @@
        '(noun properties))
 
 (progn (mapc #'(lambda (x) (putprop (car x) (cadr x) 'assign))
-	     '(($debugmode debugmode1) ($bothcases bothcases1)
+	     '(($debugmode debugmode1)
 	       ($pagepause pagepause1) ($dskgc dskgc1)
 	       ($ttyintfun ttyintfunsetup)
 	       ($fpprec fpprec1) ($poislim poislim1)

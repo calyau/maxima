@@ -79,8 +79,6 @@
   )
 
 
-;; make some externals for the bothcases stuff...
-;; just want the symbols 2 cased..
 '$parametric
 '(defvar $plot_options '((mlist)
 					;((mlist) $x -3 3)
