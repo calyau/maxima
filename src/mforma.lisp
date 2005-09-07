@@ -167,7 +167,7 @@
 ;;  `(zl-MEMBER ,X '(#\LINEFEED #\Return #\SPACE #\TAB #-lispm #\VT #\Page)))
 
 (defmacro white-space-p (x)
-  `(member ,x '(#\linefeed #\return #\space #\tab #\page #-gcl #\vt)
+  `(member ,x '(#\linefeed #\return #\space #\tab #\page #-(or clisp gcl) #\vt #+clisp #\code11)
     :test #'char=))
 
 
