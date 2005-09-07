@@ -30,8 +30,8 @@ eval_when([translate,batch,demo,load,loadfile],rectform(sinh(1.2-.4*%i)),
 dv(a)::=buildq([a],define_variable(a,'a,any)))$
 
 dv(lagrangian)$ dv(eigen)$ dv(modhessian)$
-dv(GRAD)$ dv(GRADSUB)$ dv(STAPTS)$ dv(mHESS)$ dv(objsub)$
-dv(mHESSSUB)$ dv(CPOLYSUB)$ dv(EIGEN)$ dv(DECSLKMULTS)$
+dv(grad)$ dv(gradsub)$ dv(stapts)$ dv(mhess)$ dv(objsub)$
+dv(mhesssub)$ dv(cpolysub)$ dv(eigen)$ dv(decslkmults)$
 dv(ndec)$ dv(neqz)$ dv(nlez)$ dv(ntot)$ dv(eigens)$
 
 gradient(decslkmults) := /* This function recursively defines

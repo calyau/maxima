@@ -26,7 +26,7 @@
 /* Changes      : |                                                           */
 /******************************************************************************/
 
-Put( 'SLVRMSGS, 1, 'Version )$
+put( 'SLVRMSGS, 1, 'Version )$
 
 SetVersion(
   /* KEY    = */ 'SLVRMSGS,
@@ -52,8 +52,8 @@ SetVersion(
 /******************************************************************************/
 
 
-Declare( ErrMsg, Special )$
-Declare( SolverMsg, Special )$
+declare( ErrMsg, special )$
+declare( SolverMsg, special )$
 
 /******************************************************************************/
 /* Definition of error messages for SLVRTBOX                                  */
