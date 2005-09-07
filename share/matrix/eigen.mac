@@ -46,7 +46,7 @@ define_variable(listeigvals,[],list)$
 define_variable(rightmatrix,[],any)$
 define_variable(leftmatrix,[],any)$
 
-conjugate(x):=sublis('[%i=-%i],x)$
+/* conjugate(x):=sublis('[%i=-%i],x)$ */
 
 innerproduct(x,y):=block([listarith],listarith:true,ratsimp(conjugate(x).y))$
 /*
