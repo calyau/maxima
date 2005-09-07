@@ -1201,7 +1201,8 @@ See also @code{lmxchar}.
 @deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
 @deffnx {Function} save (@var{filename}, all)
 Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, ..., in @var{filename}.
-The arguments must be names of variables, functions, or other objects.
+The arguments are the names of variables, functions, or other objects.
+If a name has no value or function associated with it, it is ignored.
 @code{save} returns @var{filename}.
 
 @code{save} stores data in the form of Lisp expressions.

@@ -302,12 +302,18 @@ context is killed, a new, empty @code{initial} context is created.
 currently active, either because it is a subcontext of the current
 context, or by use of the function @code{activate}.
 
+@code{killcontext} evaluates its arguments.
+@code{killcontext} returns @code{done}.
+
 @end deffn
 
 @deffn {Function} newcontext (@var{name})
 Creates a new, empty context, called @var{name}, which
 has @code{global} as its only subcontext.  The newly-created context
 becomes the currently active context.
+
+@code{newcontext} evaluates its argument.
+@code{newcontext} returns @var{name}.
 
 @end deffn
 

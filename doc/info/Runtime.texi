@@ -83,7 +83,14 @@ See also @code{features} and @code{featurep} for information about mathematical 
 @deffn {Function} featurep (@var{a}, @var{f})
 Attempts to determine whether the object @var{a} has the
 feature @var{f} on the basis of the facts in the current database.  If so,
-it returns @code{true}, else @code{false}.  See also @code{features}.
+it returns @code{true}, else @code{false}.
+
+Note that @code{featurep} returns @code{false} when neither @var{f}
+nor the negation of @var{f} can be established.
+
+@code{featurep} evaluates its argument.
+
+See also @code{declare} and @code{features}.
 
 @example
 (%i1) declare (j, even)$

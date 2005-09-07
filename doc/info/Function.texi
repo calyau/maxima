@@ -943,6 +943,9 @@ Declares the variables @var{v_1}, ..., @var{v_n} to be local with
 respect to all the properties in the statement in which this function
 is used.
 
+@code{local} quotes its arguments.
+@code{local} returns @code{done}.
+
 @code{local} may only be used in @code{block}, in the body of function
 definitions or @code{lambda} expressions, or in the @code{ev} function, and only one
 occurrence is permitted in each.

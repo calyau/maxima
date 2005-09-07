@@ -554,7 +554,7 @@ otherwise returns @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
 An expression is considered a constant expression if its arguments are
-numbers,
+numbers (including rational numbers, as displayed with @code{/R/}),
 symbolic constants such as @code{%pi}, @code{%e}, and @code{%i},
 variables bound to a constant or declared constant by @code{declare},
 or functions whose arguments are constant.
@@ -565,6 +565,7 @@ Examples:
 
 @c ===beg===
 @c constantp (7 * sin(2));
+@c constantp (rat (17/29));
 @c constantp (%pi * sin(%e));
 @c constantp (exp (x));
 @c declare (x, constant);
@@ -583,6 +584,9 @@ Examples:
 Assigns the atom @var{a_i} the flag @var{f_i}.
 The @var{a_i}'s and @var{f_i}'s may also be lists of atoms and flags respectively in which
 case each of the atoms gets all of the properties.
+
+@code{declare} quotes its arguments.
+@code{declare} always returns @code{done}.
 
 The possible flags and their meanings are:
 
