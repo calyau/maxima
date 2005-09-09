@@ -1127,7 +1127,7 @@ Sums and differences are replaced by @code{sum(@var{n})}
 where @var{n} is the number of operands of the sum.
 @item
 Products are replaced by @code{product(@var{n})}
-where @var{n} is the number of operands of the sum.
+where @var{n} is the number of operands of the product.
 @item
 Exponentials are replaced by @code{expt}. 
 @item
