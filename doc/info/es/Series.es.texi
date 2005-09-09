@@ -1,3 +1,4 @@
+@c version 1.12
 @menu
 * Introducci@'on a las Series::      
 * Definiciones para las Series::      

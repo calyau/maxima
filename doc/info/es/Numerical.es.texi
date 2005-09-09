@@ -1,3 +1,4 @@
+@c version 1.19
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     

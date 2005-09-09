@@ -1,928 +1,1197 @@
+@c version 1.38
 @menu
 * Introducci@'on a  Entrada y Salida:: 
-* Archivos::  
-* Ejecuci@'on:: 
+* Archivos::
 * Definiciones para Entrada y Salida::
 @end menu
 
 @node Introducci@'on a Entrada y Salida, Archivos, Entrada y Salida, Entrada y Salida
 @section Introducci@'on a Entrada y Salida
 
-@node Archivos, Ejecuci@'on, Introducci@'on a Entrada y Salida, Entrada y Salida
+@node Archivos, Definiciones para Entrada y Salida, Introducci@'on a Entrada y Salida, Entrada y Salida
 @section Archivos
- -  Un  archivo  es  simplemente   un  @'area  en  un  dispositivo  de
-almacenamiento particular  el cual contiene datos o  texto. Los unicos
-dispositivos de almacenamiento  que son usados en la  m@'aquina MC son
-discos y cintas. Archivos  en los discos son agrupados figurativamente
-en  "directorios".  Un directorio  es  solo  una  lista de  todos  los
-archivos  guardados   bajo  un  nombre  dado  por   el  usuario.  Haga
-DESCRIBE(FILEOP); para  detalles de como puede  usted inspeccionar sus
-archivos usanso MACSYMA. Otros comandos que tratan archivos son: SAVE,
-FASSAVE,  STORE, LOAD, LOADFILE,  RESTORE, UNSTORE,  STRINGOUT, BATCH,
-BATCON, DEMO, WRITEFILE, CLOSEFILE, DELFILE, REMFILE, y APPENDFILE.
 
-@node Ejecuci@'on, Definiciones para Entrada y Salida, Archivos, Entrada y Salida
-@section Ejecuci@'on
- Esto  es posible para  volver atras  las l@'{@dotless{i}}neas  de entrada  en una
-ventana  desplazada   abajo,  y   entonces  no  perder   los  trabajos
-actuales.  Esto puede  ser realizado  mediante el  tecleo  de Function
-E.  Un argumento  num@'erico dice  el n@'umero  de l@'{@dotless{i}}nea  en  el que
-inicia, de otra manera este volver@'a 40 l@'{@dotless{i}}neas
+Un archivo no es m@'as que una @'area en un cierto dispositivo de almacenamiento que contiene datos o texto.
+Los archivos se agrupan en los discos en "directorios", que son listas de archivos.
+Instrucciones que operan con archivos son:
+@code{save},
+@code{load},
+@code{loadfile},
+@code{stringout},
+@code{batch},
+@code{demo},
+@code{writefile},
+@code{closefile} y
+@code{appendfile}.
 
-@node Definiciones para Entrada y Salida,  , Ejecuci@'on, Entrada y Salida
-
+@node Definiciones para Entrada y Salida,  , Archivos, Entrada y Salida
 @section Definiciones para Entrada y Salida
 
-@c @node %, %%, PLAYBACK, Entrada y Salida
-@c @unnumberedsec phony
+@defvr {Variable del sistema} _
 
-@defvar %
- La @'ultima l@'{@dotless{i}}nea D computada por  MACSYMA (si es o no es impreso).
-(Observe tambi@'en %%.)
+El s@'{@dotless{i}}mbolo @code{_} representa la @'ultima expresi'on de entrada (esto es, @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
-@end defvar
-@c @node %%, %EDISPFLAG, %, Entrada Y Salida
-@c @unnumberedsec phony
-@defvar %%
+Al s@'{@dotless{i}}mbolo @code{_} se le asigna la entrada antes de que @'esta sea simplificada o evaluada.
+Sin embargo, el valor de @code{_} se simplifica (pero no se eval@'ua) cuando se muestra en el terminal.
 
- El valor del @'ultimo computo  desarrollado mientras hay est@'a en un
-(MACSYMA-BREAK).  Tambi@'en puede  ser  usado en  la composici@'on  de
-declaraciones en la n-@'esima declaraci@'on para referirse al valor de
-la             (n-1)-@'esima            declaraci@'on.            E.g.
-F(N):=(INTEGRATE(X^N,X),SUBST(3,X,%%)-SUBST(2,X,%%));  es  en  esencia
-equivalente       a       F(N):=BLOCK([%%],       %%:INTEGRATE(X^N,X),
-SUBST(3,X,%%)-SUBST(2,X,%%));   Esto   tambi@'en   funcionar@'a   para
-comunicaci@'on  entre el  (n-1)@'esimo y  el n-@'esimo  (no at@'omico)
-BLOQUE de declaraciones.
+El s@'{@dotless{i}}mbolo @code{_} es reconocido por @code{batch}, pero no por @code{load}.
 
-@end defvar
-@c @node %EDISPFLAG, %TH, %%, Entrada Y Salida
-@c @unnumberedsec phony
-@defvar %EDISPFLAG
- por defecto:[FALSO] -  Si es VERDADERO, MACSYMA mostra@'a  %E para un
-exponente negativo como un cociente, i.e. %E^-X como 1/%E^X.
+V@'ease tambi@'en @code{%}.
 
-@end defvar
-@c @node %TH, {special symbol}, %EDISPFLAG, Entrada y Salida
-@c @unnumberedsec phony
-@defun %TH (i)
-es el i-@'esimo computo previo. Esto es, si la pr@'oxima expresi@'on a
-ser computada es D(j) esta es D(j-i). Esto es @'util es archivos BATCH
-o para referirse  a un grupo de expresiones D. Por  ejemplo, si SUM es
-inicializado  en  0  entonces   FOR  I:1  THRU  10  DO  SUM:SUM+%TH(I)
-programar@'a SUM para la suma de las @'ultimas 10 expresiones D.
+Ejemplos:
 
-@end defun
-@c @node "?"
-@c @unnumberedsec phony
-@deffn {simbolo especial} "?"
-  -  Como  prefijo  para  el  nombre de  una  funci@'{@dotless{i}}on  o  variable,
-significa que la la funci@'on o  variable es un simbolo de LISP, no un
-simbolo  de MACSYMA.  Dos signos  de preguntas  tecleados  juntos, ??,
-vaciar@'an la actual l@'{@dotless{i}}nea de comandos de MACSYMA.
+@c ===beg===
+@c 13 + 29;
+@c :lisp $_
+@c _;
+@c sin (%pi/2);
+@c :lisp $_
+@c _;
+@c a: 13$
+@c b: 29$
+@c a + b;
+@c :lisp $_
+@c _;
+@c a + b;
+@c ev (_);
+@c ===end===
+@example
+(%i1) 13 + 29;
+(%o1)                          42
+(%i2) :lisp $_
+((MPLUS) 13 29)
+(%i2) _;
+(%o2)                          42
+(%i3) sin (%pi/2);
+(%o3)                           1
+(%i4) :lisp $_
+((%SIN) ((MQUOTIENT) $%PI 2))
+(%i4) _;
+(%o4)                           1
+(%i5) a: 13$
+(%i6) b: 29$
+(%i7) a + b;
+(%o7)                          42
+(%i8) :lisp $_
+((MPLUS) $A $B)
+(%i8) _;
+(%o8)                         b + a
+(%i9) a + b;
+(%o9)                          42
+(%i10) ev (_);
+(%o10)                         42
+@end example
+
+@end defvr
+
+@defvr {Variable del sistema} %
+El s@'{@dotless{i}}mbolo @code{%} representa la expresi@'on de salida (esto es, @code{%o1}, @code{%o2}, @code{%o3}, ...)
+m@'as reciente calculada por Maxima, independientemente de que la haya mostrado o no.
+
+El s@'{@dotless{i}}mbolo @code{%} es reconocido por @code{batch}, pero no por @code{load}.
+
+V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
+
+@end defvr
+
+@defvr {Variable del sistema} %%
+En una sentencia compuesta que contenga dos o m@'as sentencias, @code{%%} es el valor de la sentencia previa.
+Por ejemplo,
+
+@example
+block (integrate (x^5, x), ev (%%, x=2) - ev (%%, x=1));
+block ([prev], prev: integrate (x^5, x), ev (prev, x=2) - ev (prev, x=1));
+@end example
+
+devuelven el mismo resultado  @code{21/2}.
+
+Una sentencia compuesta puede contener otras sentencias compuestas.
+Independientemente de que una sentencia sea simple o compuesta, @code{%%} es el valor de la sentencia previa.
+Por ejemplo,
+
+@example
+block (block (a^n, %%*42), %%/6)
+@end example
+
+devuelve @code{7*a^n}.
+
+Dentro de una sentencia compuesta, el valor de @code{%%} puede inspeccionarse en un punto de interrupci@'on que se abra ejecutando la funci@'on @code{break}. Por ejemplo, en el punto de interrupci@'on abierto por
+
+@example
+block (a: 42, break ())$
+@end example
+
+introduciendo @code{%%;} se obtiene @code{42}.
+
+En la primera sentencia de una sentencia compuesta, o fuera de una sentencia compuesta, @code{%%} no est@'a definido.
+
+El s@'{@dotless{i}}mbolo @code{%%} es reconocido tanto por @code{batch} como por @code{load}.
+
+V@'ease tambi@'en @code{%}.
+
+@end defvr
+
+@defvr {Variable optativa} %edispflag
+Valor por defecto: @code{false}
+
+Si @code{%edispflag} vale @code{true}, Maxima muestra @code{%e} elevado a un exponente negativo como un cociente.
+Por ejemplo, @code{%e^-x} se muestra como @code{1/%e^x}.
+
+@end defvr
+
+@deffn {Funci@'on} %th (@var{i})
+Es el valor de la expresi@'on de salida previa @var{i}-@'esima.
+Esto es, si la siguiente expresi@'on a calcular es la salida @var{n}-@'esima,
+@code{%th (@var{m})} es la salida  (@var{n} - @var{m})-@'esima.
+
+La funci@'on @code{%th} es @'util en archivos tipo @code{batch} o para hacer referencia a un grupo de expresiones de salida.
+Por ejemplo,
+
+@example
+block (s: 0, for i:1 thru 10 do s: s + %th (i))$
+@end example
+
+asigna a @code{s} la suma de las diez @'ultimas expresiones de salida.
+
+La funci@'on @code{%th} es reconocida por @code{batch}, pero no por @code{load}.
+
+V@'ease tambi@'en @code{%}.
 
 @end deffn
-@c @node ABSBOXCHAR, APPENDFILE, {simbolo especial}, Entrada y Salida
-@c @unnumberedsec phony
-@defvar ABSBOXCHAR
- por  defecto: [!] es  el caracter  usado para  dibujar el  simbolo de
-valor absoluto  alrededor de la  expresi@'on es m@'as que  una l@'{@dotless{i}}nea
-sencilla alta.
-@end defvar
 
+@deffn {Special symbol} "?"
+Como prefijo de una funci@'on o nombre de variable, @code{?} significa que el nombre es de Lisp, no de Maxima.
+Por ejemplo, @code{?round} representa la funci@'on de Lisp @code{ROUND}.
+V@'ease @code{Lisp y Maxima} para m@'as informaci@'on.
 
-@c end concepts Entrada y Salida
-@c @node APPENDFILE, BACKUP, ABSBOXCHAR, Entrada y Salida
-@c @unnumberedsec phony
-@defun APPENDFILE (filename1, filename2, DSK, directorio)
-es como WRITEFILE(DSK,directorio) pero  a@-nade al archivo cuyo nombre
-es especificado mediante los primeros dos argumentos. Por consecuencia
-CLOSEFILE  borrar@'a el  archivo  original y  renombrar@'a el  archivo
-a@-nadido.
+La notaci@'on @code{? word} (un s@'{@dotless{i}}mbolo de interrogaci@'on seguido de una palabra y separados por un espacio)
+equivale a @code{describe ("word")}.
 
-@end defun
-@c @node BACKUP, BATCH, APPENDFILE, Entrada y Salida
-@c @unnumberedsec phony
-@defun BACKUP ()
-Para  crear "copia  de  seguridad"  y observar  que  se ha  realizado,
-observe PLAYBACK.
+@end deffn
 
-@end defun
-@c @node BATCH, BATCHKILL, BACKUP, Entrada y Salida
-@c @unnumberedsec phony
-@defun BATCH (especificaci@'on de archivo)
-lee y  evalua las l@'{@dotless{i}}neas  de comyos MACSYMA  desde un archivo  - Una
-facilidad  para l@'{@dotless{i}}neas de  comandos de  ejecuci@'on guardados  en un
-archivo en disco mejor que en el modo usual en-l@'{@dotless{i}}nea. Esta facilidad
-tiene muchos usos,  a saber para proveer un  deposito para l@'{@dotless{i}}neas de
-comandos  de trabajo, para  dar una  demostraci@'on de  error-libre, o
-ayuda en el organizado que  uno piensa en la soluci@'on de situaciones
-o problemas  complejos donde las modificaciones  pueden realizarse por
-medio de un editor de texto.  Un lote de archivos consiste en l@'{@dotless{i}}neas
-de comyos  MACSYMA programadas, cada una  con su terminaci@'on  ; o $,
-los  cuales pueden  ser  separados por  medio  de espacios,  carruaje-
-retorna, alimentar-formas, y el  gusto.  La funci@'on BATCH llama para
-lectura  en  las l@'{@dotless{i}}neas  de  comandos desde  el  archivo  uno en  un
-momento,  repiti@'endose en la  consola de  usuario, y  ejecut@'ose en
-turnos.   Control es  retornado por  la consola  de usuario  solo cuyo
-ocurren erores  serios o  cuyo es conocido  el final del  archivo. Por
-supuesto, el usuario puede salir del procesamiento de archivo mediante
-el tecleo de control-G en cualquier punto.
+@defvr {Variable optativa} absboxchar
+Valor por defecto: @code{!}
 
-archivos BATCH pueden ser creados usyo un editor de textos o por medio
-del  uso  del  comyo  STRINGOUT.  Haga  DESCRIBE(STRINGOUT)  para  ver
-detalles  DESCRIBE(FILE);   y  DESCRIBE(FILES);  poseen  informaci@'on
-adicional sobre como es  interpretado el archivo argumento, y archivos
-en general.
+La variable @code{absboxchar} es el car@'acter utilizado para representar el valor absoluto de una expresi@'on que ocupa m@'as de una l@'{@dotless{i}}nea de altura.
 
-@end defun
-@c @node BATCHKILL, BATCHLOAD, BATCH, Entrada y Salida
-@c @unnumberedsec phony
-@defvar BATCHKILL
- por defecto: [FALSO] si es  VERDADERO entonces el efecto de todos los
-previos archivos  BATCH es  anulado porque un  KILL(ALL) y  un RESET()
-ser@'an  realizados automaicamente  cuyo el  siguiente es  le@'{@dotless{i}}do. Si
-BATCHKILL es limite de alg@'un  otro @'atomo entonces un KILL al valor
-de BATCHKILL podr@'a ser realizado.
+@end defvr
 
-@end defvar
-@c @node BATCHLOAD, BATCON, BATCHKILL, Entrada y Salida
-@c @unnumberedsec phony
-@defun BATCHLOAD (especificaci@'on de archivo)
-Lotes  en  el  archivo   silenciosamente  sin  terminal  de  salida  o
-etiquetas.
+@deffn {Funci@'on} appendfile (@var{filename})
+A@~nade informaci@'on de la consola a @var{filename}, de igual manera que lo hace @code{writefile}, pero con la salvedad de que si el archivo ya existe la informaci@'on queda a@~nadida al final de su contenido.
 
-@end defun
-@c @node BATCON, BATCOUNT, BATCHLOAD, Entrada y Salida
-@c @unnumberedsec phony
-@defun BATCON (argumentos)
-continua el BATCH(eado) en un archivo que fue interrumpido.
+La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
 
-@end defun
-@c @node BATCOUNT, BOTHCASES, BATCON, Entrada y Salida
-@c @unnumberedsec phony
-@defvar BATCOUNT
- por defecto: [0] puede ser programado para el n@'umero de la @'ultima
-expresi@'on  BATCH(eada)  en   un  archivo.  As@'{@dotless{i}}  BATCON(BATCOUNT-1)
-continuar@'a  BATCH(eyo)  desde  la  expresi@'on  antes  del  @'ultimo
-BATCH(eado) realizado.
+@end deffn
 
-@end defvar
-@c @node CHANGE_FILEDEFAULTS, CLOSEFILE, BOTHCASES, Entrada y Salida
-@c @unnumberedsec phony
-@defvar CHANGE_FILEDEFAULTS
- por defecto:[VERDADERO]  sobre sistemas PDP10, y FALSO  en otro caso.
-Controla si el  usuario haciendo un LOADFILE o  BATCH tiene su archivo
-por defecto  cambiando por el  archivo LOADFILE(ado) o  BATCH(ado). La
-programaci@'on  VERDADERA  es  para  las  persona  que  les  gusta  en
-estilo-DDT  predefiniendo archivos.  La programaci@'on  FALSE  es para
-personas   que  les   gusta   las  conversiones   de  otros   sistemas
-operacionales, quien gusta del estilo-LISP para predefinir archivos, o
-quien  escribe paquetes  que  hacen  LOADFILE o  BATCH  los cuales  no
-podr@'an interferir con los archivos por defecto del usuario.
+@deffn {Funci@'on} batch (@var{filename})
+Lee expresiones de Maxima desde @var{filename} y las eval@'ua. La funci@'on
+@code{batch} busca @var{filename} en la lista @code{file_search_maxima}.
+V@'ease @code{file_search}.
 
-@end defvar
-@c @node CLOSEFILE, COLLAPSE, CHANGE_FILEDEFAULTS, Entrada y Salida
-@c @unnumberedsec phony
-@defun CLOSEFILE (filename1, filename2)
-cierra  un archivo  abierto  por WRITEFILE  y  y le  otorga el  nombre
-filename1  filename2.  (Bajo un  m@'aquina  LISP  solo necesita  decir
-CLOSEFILE();.) As@'{@dotless{i}}  para guardar un archivo consiste  en la muestras
-de todas las entradas y  salidas durante algunas partes de la sesi@'on
-con MACSYMA, el usuario emite un WRITEFILE, llevandolo a cabo MACSYMA,
-entonces  emite un  CLOSEFILE. El  usuario tambi@'en  puede  emitir la
-funci@'on PLAYBACK despu@'es de  un WRITEFILE para guardar lo mostrado
-en una  transacci@'on anterior. (Note qye  lo que es  guardado de esta
-manera es una  copia del despliegue de expresiones  no las expresiones
-mismas). Para guardar la expresi@'on  actual en forma interna debe ser
-usada  la funci@'on SAVE.  La expresi@'on  puede ser  entonces llevada
-atras  en  MACSYMA  v@'{@dotless{i}}a  la  funci@'on  LOADFILE.  Para  guardar  la
-expresi@'on  en  una  forma  lineal  la  cual  pueda  ser  BATCH(eada)
-despu@'es, la funci@'on STRINGOUT es usada.
+El contenido de @var{filename} debe ser una secuencia de expresiones de Maxima,
+cada una de las cuales termina en @code{;} o @code{$}.
+La variable especial @code{%} y la funci@'on @code{%th}
+se refieren a resultados previos dentro del archivo.
+El archivo puede incluir construcciones del tipo @code{:lisp}.
+Espacios, tabulaciones y saltos de l@'{@dotless{i}}nea en el archivo se ignoran.
+Un archivo de entrada v@'alido puede crearse con un editor de texto o con la funci@'on @code{stringout}.
 
-@end defun
-@c @node COLLAPSE, CONCAT, CLOSEFILE, Entrada y Salida
-@c @unnumberedsec phony
-@defun COLLAPSE (expression)
-colapsa"  sus  argumentos  causando  que  todas  estas  subexpresiones
-comunes (i.e igual) a partir  (i.e. usa las mismas c@'elulas), de este
-modo  guardando espacio.  (COLLAPSE  es una  subrutina  usada para  el
-comando OPTIMIZE.) As@'{@dotless{i}}, llamando  COLLAPSE puede ser @'util antes de
-usar FASSAVE  o despu@'es de cargado  en un archivo  SAVE. Usted puede
-colapsar   expresiones   numerosas   juntas   mediante   el   uso   de
-COLLAPSE([expr1,...,exprN])$.  similarmente, usted puede  colapsar los
-elementos del arreglo A haciendo COLLAPSE(LISTARRAY('A))$.
+La funci@'on @code{batch} lee las expresiones del archivo @var{filename}, muestra las entradas en la consola, realiza los c@'alculos solicitados y muestra las expresiones de los resultados.
+A las expresiones de entrada se les asignan etiquetas, as@'{@dotless{i}} como a las de salida. La funci@'on
+@code{batch} eval@'ua todas las expresiones de entrada del archivo a menos que se produzca un error.
+Si se le solicita informaci@'on al usuario (con @code{asksign} o @code{askinteger}, por ejemplo)
+@code{batch} se detiene para leer la nueva informaci@'on para luego continuar.
 
-@end defun
-@c @node CONCAT, CURSORDISP, COLLAPSE, Entrada y Salida
-@c @unnumberedsec phony
-@defun CONCAT (arg1, arg2, ...)
-evalua  sus argumentos  y retorna  la concatenaci@'on  de  sus valores
-resultando en  un nombre o  una cadena citada  la clase enpieza  a ser
-dada  por el  primer argumento.  As@'{@dotless{i}} si  X  es limite  de 1  y D  es
-ilimitado entonces CONCAT(X,2)="12" y CONCAT(D,X+1)=D2.
+Es posible detener  @code{batch} tecleando @code{control-C} desde la consola.
+El efecto de @code{control-C} depende del entorno Lisp instalado.
 
-@end defun
-@defun SCONCAT (arg1, arg2, ...)
+La funci@'on @code{batch} tiene diversas aplicaciones, tales como servir de almac@'en de l@'{@dotless{i}}neas de instrucciones, suministrar demostraciones libres de errores o ayudar a organizar el trabajo del usuario en la resoluci@'on de problemas complejos.
 
-evalua sus argumentos y los concatena dentro de una cadena. Distinto a
-CONCAT, los argumentos no necesitan  ser @'atomos. El resultado es una
-Cadena Com@'un Lisp.
-@example
-(C5)             sconcat("xx[",3,"]:",expy((x+y)^3));             (D5)
-xx[3]:Y^3+3*X*Y^2+3*X^2*Y+X^3
-@end example
-La cadena resultante puede ser usada en conjunto con imprimir.
-@end defun
-@c @node CURSORDISP, DIREC, CONCAT, Entrada y Salida
-@c @unnumberedsec phony
-@defvar CURSORDISP
- por defecto:[VERDADERO]  si es  VERDADERO, causa que  las expresiones
-sean  dibujadas en  secuencia  l@'ogica por  el  mostrador. Esto  solo
-trabaja  con  una  consola  la  cual  puede  realizar  movimientos  de
-cursor. Si es FALSO,  las expresiones son simplemente impresas l@'{@dotless{i}}nea
-a l@'{@dotless{i}}nea. CURSORDISP es FALSO cuyo WRITEFILE est@'a en efecto.
+La funci@'on @code{batch} eval@'ua su argumento.
 
-@end defvar
-@c @node DIREC, DISP, CURSORDISP, Entrada y Salida
-@c @unnumberedsec phony
-@defvar DIREC
- - El valor de esta variable es el archivo directorio por defecto para
-SAVE, STORE, FASSAVE  y STRINGOUT. Este es inicializado  por el nombre
-de identificaci@'on de usaurio, si  @'el posee un directorio en disco,
-y de  otra manera uno de  los directorios USERS.  DIREC determina para
-que archivos de directorio en disco ser@'an escritos.
+V@'eanse tambi@'en  @code{load}, @code{batchload} y @code{demo}.
 
-@end defvar
-@c @node DISP, DISPCON, DIREC, Entrada y Salida
-@c @unnumberedsec phony
-@defun DISP (expr1,expr2, ...)
-es como  DISPLARY pero solo el  valor de los  argumentos son mostrados
-m@'as que  ecuaciones. esto es @'util para  argumentos complicados los
-cuales no tienen nombre o donde  solo el valor de los argumentos es de
-interes y no lo es el nombre.
+@end deffn
 
-@end defun
-@c @node DISPCON, DISPLAY, DISP, Entrada y Salida
-@c @unnumberedsec phony
-@defun DISPCON (tensor1,tensor2,...)
-muestra  las propiedades  de contracci@'on  del tensor  i  como fueron
-dadas  para  DEFCON.  DISPCON(ALL)  muetra todas  las  propiedades  de
-contracci@'on que fueron definidas.
+@deffn {Funci@'on} batchload (@var{filename})
+Lee expresiones de Maxima desde @var{filename} y las eval@'ua sin mostrar las entradas ni las salidas y sin asignarles etiquetas. Sin embargo, las salidas producidas por  @code{print} o @code{describe} s@'{@dotless{i}} se muestran.
 
-@end defun
-@c @node DISPLAY, DISPLAY2D, DISPCON, Entrada y Salida
-@c @unnumberedsec phony
-@defun DISPLAY (expr1, expr2, ...)
-muestra ecuaciones del lado izquierdo que est@'an inevaluadas expri, y
-que del lado  derecho es el valor de la  expresi@'on centrada sobre la
-l@'{@dotless{i}}nea. Esta  funci@'on es @'util  en bloques y declaraciones  FOR en
-orden para tener mostrados  los resultados intermedios. Los argumentos
-a DISPLAY (mostrar) son  usualmente @'atomos, variables susbscritas, o
-llamados de funciones. (observe la funci@'on DISP)
+La variable especial @code{%} y la funci@'on @code{%th} se refieren a resultados previos del int@'erprete interactivo, no a los del propio archivo. El archivo no puede incluir construcciones del tipo @code{:lisp}.
+
+La funci@'on @code{batchload} devuelve la ruta de @var{filename} en formato de cadena.
+
+La funci@'on @code{batchload} eval@'ua sus argumentos.
+
+V@'eanse tambi@'en @code{batch} y @code{load}.
+@c batchload APPEARS TO HAVE THE SAME EFFECT AS load. WHY NOT GET RID OF batchload ???
+
+@end deffn
+
+@deffn {Funci@'on} closefile ()
+La funci@'on @code{closefile} cierra los archivos abiertos por @code{appendfile} o @code{writefile}.
+
+@end deffn
+
+@c FALTA DEFINICION DE collapse
+
+@deffn {Funci@'on} concat (@var{arg_1}, @var{arg_2}, ...)
+Concatena sus argumentos, que deben ser todos @'atomos.
+El valor devuelto es un s@'{@dotless{i}}mbolo si el primer argumento es a su vez un s@'{@dotless{i}}mbolo, o una cadena de Maxima en caso contrario.
+
+La funci@'on @code{concat} eval@'ua sus argumentos.
+El ap@'atrofo  @code{'} evita la evaluaci@'on.
 
 @example
-(C1) DISPLAY(B[1,2]); 2 B = X - X 1, 2 (D1) DONE
-
-
-@end example
-@end defun
-@c @node DISPLAY2D, DISPLAY_FORMAT_INTERNAL, DISPLAY, Entrada y Salida
-@c @unnumberedsec phony
-@defvar DISPLAY2D
- por  defecto:  [VERDADERO] -  si  es  programado  FALSO causar@'a  la
-mostrada estandar para ser  una forma (1-dimensional) cadena mejor que
-una forma de mostrado (2-dimensional). Esto puede ser beneficioso para
-usuarios en consolas de impresi@'on que gustan conservarlo en papel.
-
-@end defvar
-@c @node DISPLAY_FORMAT_INTERNAL, DISPTERMS, DISPLAY2D, Entrada y Salida
-@c @unnumberedsec phony
-@defvar DISPLAY_FORMAT_INTERNAL
- por  defecto: [FALSO]  -  si es  programado  VERDADERO causar@'a  que
-expresiones  a ser  mostradas  no sean  transformadas  en maneras  que
-oculten la representaci@'on matem@'atica interna. Lo mostrado entonces
-correspone a lo  que el comyo INPART retorna mejor  que el comyo PART.
-Ejemolos:
-@example
-Usuario PART  INPART a-b; A -  B A + (-  1) B A -  1 a/b; - A  B B 1/2
-sqrt(x); SQRT(X) X 4 X 4 X*4/3; --- - X 3 3
-
-@end example
-@end defvar
-@c @node DISPTERMS, DSKALL, DISPLAY_FORMAT_INTERNAL, Entrada y Salida
-@c @unnumberedsec phony
-@defun DISPTERMS (expr)
-muestra  sus argumentos  en  partes  una debajo  de  la otra.   As@'{@dotless{i}},
-primero es mostrado el operador  de 'expr', entonces cada t@'ermino en
-una suma,  o factor en un  producto, o parte de  una expresi@'on m@'as
-general es mostrado separadamente. Esto es @'util si expr es demasiado
-largo para ser mostrado de otra manera. Por ejemplo si P1, P2, ... son
-expresiones  demasiado  largas  entonces  el programa  mostrado  puede
-correr  fuera  de  del   espacio  para  almacenar  intentando  mostrar
-P1+P2+... de repente. As@'{@dotless{i}} mismo, DISPTERMS(P1+P2+...) mostrar@'a P1,
-entonces  debajo de  este, P2,  etc.  Cuyo  no usa  DISPTERMS,  si una
-expresi@'on  exponencial es  demasiado amplia  para ser  mostrada como
-A**B esta aparecer@'a como EXPT(A,B) (o como NCEXPT(A,B) en el caso de
-A^^B).
-
-@end defun
-@c @node DSKALL, ERROR_SIZE, DISPTERMS, Entrada y Salida
-@c @unnumberedsec phony
-@defvar DSKALL
- por  defecto: [] Si  es VERDADERO  causar@'a que  valores, funciones,
-arreglos y  reglas a ser  escritas periodicamente dentro del  disco en
-adici@'on  para expresiones  etiquetadas.  VERDADERO es  el valor  por
-defecto considerando que si DISKALL es FALSO entonces ser@'an escritas
-solo las expresiones etiquetadas.
-
-@end defvar
-@c @node ERROR_SIZE, ERROR_SYMS, DSKALL, Entrada y Salida
-@c @unnumberedsec phony
-@defvar ERROR_SIZE
- por defecto: [20 para mostrar una terminal, 10 para otros].  controla
-el   tama@-no   del   mensaje   de   error.   Por   ejemplo,   permita
-U:(C^D^E+B+A)/(COS(X-1)+1); . U posee  un tama@~no 24 de error. Entonces
-si ERROR_SIZE posee un valor < 24 entonces
-@example
-(C1)  ERROR("La  funci@'on",  FOO,"no  es como",  U,"como  entrada.");
-imprima como:  La funci@'on FOO no  es como ERREXP1  como entrada.  Si
-ERROR_SIZE>24 entonces como: E D C + B + A La funci@'on FOO no es como
--------------- como entrada.  COS(X - 1) + 1
-
+(%i1) y: 7$
+(%i2) z: 88$
+(%i3) concat (y, z/2);
+(%o3)                          744
+(%i4) concat ('y, z/2);
+(%o4)                          y44
 @end example
 
-Expresiones   m@'as  largas  que   ERROR_SIZE  son   reemplazadas  por
-s@'{@dotless{i}}mbolos, y los s@'{@dotless{i}}mbolos son programados para las expresiones. Los
-s@'{@dotless{i}}mbolos son tomados de la lista de usuario-programable.
+A un s@'{@dotless{i}}mbolo construido por @code{concat} se le puede asignar un valor y ser utilizado posteriormente en expresiones.
+La asignaci@'on con el operador @code{::} eval@'ua su expresi@'on izquierda.
+
 @example
-ERROR_SYMS:[ERREXP1,ERREXP2,ERREXP3]
+(%i5) a: concat ('y, z/2);
+(%o5)                          y44
+(%i6) a:: 123;
+(%o6)                          123
+(%i7) y44;
+(%o7)                          123
+(%i8) b^a;
+                               y44
+(%o8)                         b
+(%i9) %, numer;
+                               123
+(%o9)                         b
 @end example
-.  El valor por defecto  de esta opci@'on puede cambiar dependiendo de
-la experiencia  del usuario.  Si usted busca  por defecto  o demasiado
-grandes o dos peque@~nos para sus muestras, envie un correo a MACSYMA.
 
-@end defvar
-@c @node ERROR_SYMS, EXPT, ERROR_SIZE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar ERROR_SYMS
- por  defecto:  [ERREXP1,ERREXP2,ERREXP3]  -  En  mensajes  de  error,
-expresiones   m@'as  largas  que   ERROR_SIZE  son   reemplazadas  por
-s@'{@dotless{i}}mbolos, y los s@'{@dotless{i}}mbolos son programados para las expresiones. Los
-s@'{@dotless{i}}mbolos  son tomados de  la lista  ERROR_SYMS, y  son inicializados
-ERREXP1, ERREXP2,  ERREXP3, etc.  Despu@'es  es impreso un  mensaje de
-error, e.g.  "La funci@'on FOO no  es como ERREXP1  como entrada.", el
-usuario     puede     teclear     ERREXP1;    para     observar     la
-expresi@'on. ERROR_SYMS  puede ser programada por el  usuario para una
-programaci@'on de s@'{@dotless{i}}mbolos diferente, si es deseado.
-
-@end defvar
-@c @node EXPT, EXPTDISPFLAG, ERROR_SYMS, Entrada y Salida
-@c @unnumberedsec phony
-@defun EXPT (A,B)
-
-si una  expresi@'on exponencial es demasiado amplia  para ser mostrada
-como A^B  esta aparecere@'a como  EXPT(A,B) (o como NCEXPT(A,B)  en el
-caso de A^^B).
-
-@end defun
-@c @node EXPTDISPFLAG, FASSAVE, EXPT, Entrada y Salida
-@c @unnumberedsec phony
-@defvar EXPTDISPFLAG
- por  defecto:  [VERDADERO]  -  si es  VERDADERO,  MACSYMA  mostrar@'a
-expresiones  con exponentes negativos  usando cocientes  e.g., X**(-1)
-como 1/X.
-
-@end defvar
-@c @node FASSAVE, FILEDEFAULTS, EXPTDISPFLAG, Entrada y Salida
-@c @unnumberedsec phony
-@defun FASSAVE (arreglos)
-es  similar para  SAVE pero  produce  un archivo  FASL en  el cual  la
-divisi@'on de  subexpresiones las cuales son  divididas centralmente y
-son  preservado en el  archivo creado.  Ahora, expresiones  las cuales
-poseen  subexpresiones  comunes consumir@'an  menor  espacio cuyo  son
-cargadas  atras desde  un archivo  creado  por FASSAVE  mejor que  por
-SAVE. Los archivos creados con FASSAVE son recargados usando LOADFILE,
-justo como los archivos creados por SAVE. FASSAVE retorna una lista de
-la  forma [<nombre  del archivo>,<tama@~no  de archivo  en bloques>,...]
-donde ...  son las  cosas guardadas. Advertencias  son impresas  en el
-caso de archivos extensos.  FASSAVE puede ser usado mientras WRITEFILE
-est@'a en progreso.
-
-@end defun
-@c @node FILEDEFAULTS, FILENAME, FASSAVE, Entrada y Salida
-@c @unnumberedsec phony
-@defun FILEDEFAULTS ()
-retorna  el  nombre  del  archivo  actual por  defecto,  es  usado  en
-cualquier   formato   por    la   implementaci@'on   espec@'{@dotless{i}}fica   de
-Macsyma. (Observe DESCRIBE(FILE) para conocer que formato es.) Este es
-la especificaci@'on de archivo usada por LOADFILE, BATCH, y un algunos
-otros  comandos  de   acceso  a  archivos.   FILEDEFAULTS('archivo)  -
-programa el  archivo por defecto  actual para "archivo".  El argumento
-para  FILEDEFAULTS  es evaluado  cuando  este  es  anticipado, que  el
-comando  ser@'a usado  principalmente  en programas.  El "archivo"  no
-necesita ser  un archivo real, para  que se pueda  usar esta funci@'on
-e.g. si  un prop@'osito  real es programar  solo el  campo "mecanismo"
-para algo, donde no importan las programaciones de los otros campos.
-
-@end defun
-@c @node FILENAME, FILENAME_MERGE, FILEDEFAULTS, Entrada y Salida
-@c @unnumberedsec phony
-@defvar FILENAME
- por defecto:  [] - El valor de  esta variable es el  primer nombre de
-los archivos  que son generados por  el proyecto de  guardado en disco
-autom@'atico.  El valor por defecto son los primero tres caracteres de
-la  identificaci@'on de  usuario concatenada  con el  entero  sin usar
-m@'as bajo, e.g. ECR1.
-
-@end defvar
-@c @node FILENAME_MERGE, FILENUM, FILENAME, Entrada y Salida
-@c @unnumberedsec phony
-@defun FILENAME_MERGE ("filename1","filename2",...)
-;  une  los  nombres  de  archivos.  Esto  significa  que  si  retorna
-"filename1"  excepto   que  componentes  perdidos   vengan  desde  los
-componentes  correspondientes  de  "filename2",  y  si  ellos  est@'an
-perdidos all@'{@dotless{i}}, entonces desde "filename3".
-
-@end defun
-@c @node FILENUM, FILE_SEARCH, FILENAME_MERGE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar FILENUM
- por  defecto: [0] -  el segundo  nombre de  archivo por  defecto para
-archivos  generados  mediante SAVE,  STRINGOUT  o  FASSAVE  si no  son
-especificados  los nombre  de  archivos  por el  usuario.  Este es  un
-entero, y es incrementado cada vez que un nuevo archivo es escrito.
-
-@end defvar
-@c @node FILE_SEARCH, FILE_STRING_PRINT, FILENUM, Entrada y Salida
-@c @unnumberedsec phony
-@defvar FILE_SEARCH
- -  esta es  una lista  de archivos  llamando directorios  para buscar
-mediante LOAD y algunas otras  funciones. El valor por defecto de esta
-es  una   lista  de  varios  directorio  SHARE   usados  por  Macsyma.
-FILE_SEARCH("filename");  busca  en  esos directorios  y  dispositivos
-especificados por las variables FILE_SEARCH_LISP, FILE_SEARCH_MAXIMA y
-FILE_SEARCH_DEMO,  y   retorna  el  nombre  del   primer  archivo  que
-busca. Esta  funci@'on es invocada por  la funci@'on LOAD,  que es por
-que LOAD("FFT") busca y  carga share/fft.mac. Usted puede adicionar la
-ruta a  la lista apropiada. Note  que el formato de  las rutas guardan
-multiples extensiones espec@'{@dotless{i}}ficas y m@'ultiples rutas.
-@example
-"/home/wfs/###.@{o,lisp,mac,mc@}"
-"/home/@{wfs,joe@}/###.@{o,lisp,mac,mc@}"
-@end example
-El  '###' es  reemplazado  por  el actual  nombre  de archivo  pasado.
-File_SEARCH revisa primero si el nombre actual pasado existe, antes de
-substituirlo en varios modelos.
-
-@end defvar
-@c @node FILE_STRING_PRINT, FILE_TYPE, FILE_SEARCH, Entrada y Salida
-@c @unnumberedsec phony
-@defvar FILE_STRING_PRINT
- por defecto: [FALSO] sobre MC,  [VERDADERO] en cualquier parte. Si es
-VERDADERO,  los nombres  de archivo  son salidas  como cadenas;  si es
-FALSO, como listas. Por ejemplo, el mensage cuando un archivo fuera de
-centro es cargado en MACSYMA (e.g. el paquete LIMIT), aparece en MC en
-formato  de lista  como  LIMIT FASL  DSK  MACSYM siendo  cargado y  en
-formato cadena  como: DSK:MACSYM;LIMIT FASL siendo  cargado El formato
-cadena  es  como  el  nivel  superior  (DDT)  de  especificaciones  de
-archivos.
-
-@end defvar
-@c @node FILE_TYPE, GRIND, FILE_STRING_PRINT, Entrada y Salida
-@c @unnumberedsec phony
-@defun FILE_TYPE ("filename")
-; retorna FASL, LISP o MACSYMA, dependiendo de que clase de archivo es
-este. FASL  significa un archivo  compilado de Lisp,  que normalemente
-tiene una extensi@'on .VAS en NIL.
-
-@end defun
-@c @node GRIND, IBASE, FILE_TYPE, Entrada y Salida
-@c @unnumberedsec phony
-@defun GRIND (arg)
-imprime  arreglos   en  un  formato   m@'as  leible  que   el  comando
-STRING. Este retorna una l@'{@dotless{i}}nea D como valor.  La opci@'on GRIND, por
-defecto: [FALSO],  si es VERDADERO causar@'a que  los comandos STRING,
-STRINGOUT,  y  PLAYBACK  usen  el  modo "grind"  en  cambio  del  modo
-"string".  Para   PLAYBACK,  el  modo  "grind"   tambi@'en  puede  ser
-convertido (para procesamiento de  l@'{@dotless{i}}neas de entrada) mediante GRIND
-espec@'{@dotless{i}}fico como una opci@'on.
-
-@end defun
-@c @node IBASE, INCHAR, GRIND, Entrada y Salida
-@c @unnumberedsec phony
-@defvar IBASE
- por defecto: [10] - la base para n@'umeros entrantes.
-
-@end defvar
-@c @node INCHAR, LDISP, IBASE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar INCHAR
- por  defecto:  [C]  -  el  prefijo alfab@'etico  de  los  nombres  de
-expresiones ingresadas por el usuario.
-
-@end defvar
-@c @node LDISP, LDISPLAY, INCHAR, Entrada y Salida
-@c @unnumberedsec phony
-@defun LDISP (expr1,expr2,...)
-es como DISP pero tambi@'{@dotless{i}}en genera etiquetas intermedias.
-
-@end defun
-@c @node LDISPLAY, LINECHAR, LDISP, Entrada y Salida
-@c @unnumberedsec phony
-@defun LDISPLAY (expr1,expr2,...)
-es como DISPLAY pero tambi@'{@dotless{i}}en genera etiquetas intermedias.
-
-@end defun
-@c @node LINECHAR, LINEDISP, LDISPLAY, Entrada y Salida
-@c @unnumberedsec phony
-@defvar LINECHAR
- por  defecto:  [E]  -  el  prefijo alfab@'etico  de  los  nombres  de
-expresiones intermedias mostradas.
-
-@end defvar
-@c @node LINEDISP, LINEL, LINECHAR, Entrada y Salida
-@c @unnumberedsec phony
-@defvar LINEDISP
- por defecto: [VERDADERO]  - Permite el uso de  gr@'aficos lineales en
-el dibujo  de ecuaciones  en dichos sistemas  las cuales  los soportan
-(e.g.  la M@'aquina  Lisp). Esto  puede ser  desabilitado  mediante la
-programaci@'on   de  LINEDISP   como  FALSO.    Esta   es  desactivada
-autom@'aticamente duarnate WRITEFILE.
-
-@end defvar
-@c @node LINEL, LOAD, LINEDISP, Entrada y Salida
-@c @unnumberedsec phony
-@defvar LINEL
- por defecto: []  - el n@'umero de caracteres que  son impresos en una
-l@'{@dotless{i}}nea. Este es inicialmente  programado por MACSYMA para la longitud
-de l@'{@dotless{i}}nea  del tipo  de terminal que  est@'a siendo usada  (tan lejos
-como sea conocido)  pero puede ser reseteada en  cualquier momento por
-el  usuario. El  usuario  tiene que  resetearlo  en DDT  tal como  con
-:TCTYP.
-
-@end defvar
-@c @node LOAD, LOADFILE, LINEL, Entrada y Salida
-@c @unnumberedsec phony
-@defun LOAD ("filename")
-;  toma un  argumento,  un  nombre de  archivo  representado como  una
-"cadena"  (i.e. dentro  de  comillas),  o una  lista  (e.g. dentro  de
-par@'entesis cuadrados), y localiza y carga en el archivo indicado. Si
-no  es   especificado  el   directorio,  entonces  este   buscara  los
-directorios SHARE  y algunos otros directorio listados  en la variable
-FILE_SEARCH y  carga el  archivo indicado. LOAD("EIGEN")  cargar@'a el
-paquete  eigen  sin necesidad  de  que el  usuario  se  entere de  los
-detalles  de  si el  paquete  fue  compilado,  traducido, guardado,  o
-guardado  r@'apido,  i.e.  LOAD   puede  trabajar  en  ambos  archivos
-LOADFILE(lables)  y BATCH(leable). Note:  LOAD usar@'a  BATCHLOAD este
-busca si el archivo es  BATCH(able) (lo que significa que este podr@'a
-BATCH(ear)  el archivo  "silenciosamente"  sin salida  por terminal  o
-etiquetas.)  Otros  comandos de MACSYMA  para cargar en  archivos son:
-LOADFILE,  RESTORE,   BATCH  y  DEMO.   Haga  DESCRIBE(comando);  para
-detalles. LOADFILE y RESTORE trabajan para archivos escritos con SAVE;
-BATCH y DEMO  para aquellos archivos escritos con  STRINGOUT o creados
-con un  editor de  texto como  listas de comandos.   Si load  no puede
-buscar el archivo,  revisa el valor de FILE_SEARCH  para asegurarse de
-que contiene una plantilla apropiada.
+N@'otese que aunque @code{concat (1, 2)} parezca un n@'umero, se trata de una cadena de Maxima.
 
 @example
-(C4) load("eigen"); MACSYMA BUG: Archivo desconocido tipo NIL
-
-Error: error  de macsyma  Error se@~nalado por  MEVAL1.  Roto  en $LOAD.
-Tipo :H para ayuda.  MAXIMA>>:q
-
-Mediante la  examinaci@'on del archivo del sistema  encontramos que el
-archivo est@'a  actualmente en /public/maxima/share/eigen.mc. Entonces
-nosotros agregamos  la ruta  de busqueda de  archivo.  Esto  puede ser
-realizado al iniciar (observe init.lsp)  o, el resto de esto puede ser
-realizado  y entonces el  sistema guardar@'a  nuevamente una  vez este
-halla sido personalizado para  directorios locales y nombres de rutas.
-A   nivel  de   lisp  podremos   hacer  (in-package   "MAXIMA")  (setq
-$file_search  ($append  (list  '(mlist) "/tmp/foo.mac"  "/tmp/foo.mc")
-$file_search)) y a nivel de maxima:
-
-(C5) file_search:append(["/public/maxima/share/foo.mc"], file_search)$
-(C6) load("eigen");
-
-batching             /usr/public/maxima/share/eigen.mc            (D6)
-#/public/maxima/share/eigen.mc  (C7) eigenvalues(matrix([a,b],[c,d]));
-2  2  -   SQRT(D  -  2  A   D  +  4  B  C   +  A  )  +  D   +  A  (D7)
-[[---------------------------------------, 2
-
-				      2 2 SQRT(D - 2 A D + 4 B C + A )
-+ D + A -------------------------------------], [1, 1]] 2
-
-@end example
-@end defun
-@c @node LOADFILE, LOADPRINT, LOAD, Entrada y Salida
-@c @unnumberedsec phony
-@defun LOADFILE (filename)
-carga  un  archivo  como  han  sido designados  sus  argumentos.  esta
-funci@'on  puede ser  usada  para traer  atras  cantidades que  fueron
-guardadas desde una sesi@'on previa en MACSYMA mediante el uso de SAVE
-o STORE  funciones. Especifique el nombre  de ruta como  es su sistema
-operativo. Para unix esto puede ser por ejemplo "/home/wfs/foo.mc".
-
-@end defun
-@c @node LOADPRINT, NOSTRING, LOADFILE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar LOADPRINT
- por  defecto:  [VERDADERO]  -  controla la  impresi@'on  de  mensajes
-acompa@~nando el  cargado de  archivos. Las siguientes  opciones est@'an
-disponibles:   VERDADERO  siempre   significa  imprimir   el  mensaje;
-'LOADFILE significa imprimir solo cuando el comando LOADFILE es usado;
-'AUTOLOAD  significa  imprimir  solo  cuando  un  archivo  es  cargado
-autom@'aticamente  en (e.g.  el  archivo de  integraci@'on SIN  FASL);
-FALSO significa que nunca impimime el mensaje de cargado.
-
-@end defvar
-@c @node NOSTRING, OBASE, LOADPRINT, Entrada y Salida
-@c @unnumberedsec phony
-@defun NOSTRING (arg)
-muestra  todas las l@'{@dotless{i}}neas  de entrada  cuando deshaciendo  mejor que
-STRING(eando)los. Si  arg es GRIND  entonces lo mostrado ser@'a  en un
-formato m@'as leible. Uno puede incluir cualquier n@'umero de opciones
-como en PLAYBACK([5,10],20,TIME,SLOW).
-
-@end defun
-@c @node OBASE, OUTCHAR, NOSTRING, Entrada y Salida
-@c @unnumberedsec phony
-@defvar OBASE
- por defecto: [10] la base para el mostrado de n@'umeros
-
-@end defvar
-@c @node OUTCHAR, PACKAGEFILE, OBASE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar OUTCHAR
- por  defecto: [D]  -  el  pr@'efijo alfab@'etico  de  los nombres  de
-expresiones salientes.
-
-@end defvar
-@c @node PACKAGEFILE, PARSEWINDOW, OUTCHAR, Entrada y Salida
-@c @unnumberedsec phony
-@defvar PACKAGEFILE
- por  defecto:[FALSO]  -  Dise@-nadores  de paquetes  que  usan  SAVE,
-FASSAVE  o TRANSLATE para  crear paquetes  (archivos) para  otros usos
-pueden  querer programar  PACKAGEFILE:TRUE$ para  evitar informaci@'on
-agregada  desde el  inicio a  las listas  de informaci@'on  de MACSYMA
-(e.g.  VALUES,  FUNCTIONS) excepto  donde  los  archivos son  cargados
-necesariamente.  De este modo, el  contenido de los paquetes no ser@'a
-conseguido  a la  manera  del  usuario cuando  el  agrega sus  propios
-datos.  Note que  este  no podr@'a  solucionar  problemas con  posible
-conflicto de nombres. Tambi@'en note que la bandera simplemente afecta
-que es la salida del  archivo de paquete.  Programando la bandera como
-VERDADERA  esto  tambi@'en  es  @'util  para crear  archivos  init  de
-MACSYMA.
-
-@end defvar
-@c @node PARSEWINDOW, PFEFORMAT, PACKAGEFILE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar PARSEWINDOW
- por defecto:[10] -  el n@'umero m@'aximo de "fichas  de l@'exico" que
-son impresas en cada lado del punto de error cuando ocurre un error de
-sintax@'{@dotless{i}}s  (conversi@'on). Esta opci@'on  es @'util  especialmente en
-terminales lentas. Programandolo como -1 causa que las cadenas enteras
-de entrada sean impresas cuando ocurra el error.
-
-@end defvar
-@c @node PFEFORMAT, PRINT, PARSEWINDOW, Entrada y Salida
-@c @unnumberedsec phony
-@defvar PFEFORMAT
- por defecto: [FALSO] - si  es VERDADERO cuasa que n@'umero racionales
-sean mostrados  en forma lineal  y denominadores que son  enteros sean
-mostrados como multiplicandos de n@'umeros racionales.
-
-@end defvar
-@c @node PRINT, READ, PFEFORMAT, Entrada y Salida
-@c @unnumberedsec phony
-@defun PRINT (exp1, exp2, ...)
-evalua  y  muestra sus  argumentos  uno  despu@'es  del otro  "en  una
-l@'{@dotless{i}}nea" empezando con el que est@'a  m@'as a la izquierda. Si expi es
-ilimitado o est@'a  precedido por una cota sencilla  o es adjuntado en
-"s entonces este es impreso literalmente. Por ejemplo, PRINT("EL VALOR
-DE X ES ",X). El valor retornado  por PRINT es el valor de su @'ultimo
-argumento.  No son generadas l@'{@dotless{i}}neas intermedias. (Para "impresi@'on"
-de archivos, observe la funci@'on PRINTFILE.)
-
-@end defun
-
-@defun SPRINT (exp1, exp2, ...)
-evalua  y  muestra sus  argumentos  uno  despu@'es  del otro  "en  una
-l@'{@dotless{i}}nea"  empezando  con el  que  est@'a  m@'as  a la  izquierda.  Los
-n@'umeros son impresos con '-' derecho cerca al n@'umero y descuida la
-longitud de la l@'{@dotless{i}}nea.
-@end defun
-
-@defun TCL_OUTPUT (LIST INDEX &optional-skip)
-imprime una lista TLC basada  en la extracci@'on LIST de la posici@'on
-INDEX.   aqu@'{@dotless{i}} omite  por defecto  a  2, significando  que cada  otro
-elemento ser@'a  impreso si el argumento  es de la forma  una lista de
-n@'umeros, mejor que una lista de listas.  Por ejemplo:
-@example
-TCL_OUTPUT([x1,y1,x2,y2,x3,y3],1)     -->     @{x1     x2    x3     @}
-TCL_OUTPUT([x1,y1,x2,y2,x3,y3],2)     -->     @{y1     y2    y3     @}
-TCL_OUTPUT([1,2,3,4,5,6],1,3)           -->           @{1          4@}
-TCL_OUTPUT([1,2,3,4,5,6],2,3) --> @{2 5@}
-@end example
-@end defun
-
-@c @node READ, READONLY, PRINT, Entrada y Salida
-@c @unnumberedsec phony
-@defun READ (string1, ...)
-imprime sus argumentos, entonces los lee y evalua una expresi@'on. Por
-ejemplo: A:READ("INGRESE EL N@'UMERO DE VALORES").
-
-@end defun
-@c @node READONLY, REVEAL, READ, Entrada y Salida
-@c @unnumberedsec phony
-@defun READONLY (string1,...)
-imprime sus  argumentos, entonces los  lee en una expresi@'on  (que en
-contraste con READ no es evaluada).
-
-@end defun
-@c @node REVEAL, RMXCHAR, READONLY, Entrada y Salida
-@c @unnumberedsec phony
-@defun REVEAL (exp,depth)
-mostrar@'a  exp para  el  entero m@'as  profundo  espec@'{@dotless{i}}fico con  la
-longitud de cada parte indicada. Sumas ser@'an mostradas como Sum(n) y
-productos como  Product(n) donde n es  el n@'umero de  subpartes de la
-suma o del producto. Exponenciales ser@'an mostrados como Expt.
-
-@example
-(C1) INTEGRATE(1/(X^3+2),X)$ (C2) REVEAL(%,2); (D2) Termino Negativo +
-Cociente  + Cociente  (C3) REVEAL(D1,3);  ATAN LOG  (D3) -  Quotient +
----------- + ---------- Product(2) Product(2)
-
-
-@end example
-@end defun
-@c @node RMXCHAR, SAVE, REVEAL, Entrada y Salida
-@c @unnumberedsec phony
-@defvar RMXCHAR
- por  defecto: []]  - El  caracter usado  para mostrar  el delimitador
-(derecho) de una matriz (observe tambi@'en LMXCHAR).
-
-@end defvar
-@c @node SAVE, SAVEDEF, RMXCHAR, Entrada y Salida
-@c @unnumberedsec phony
-@defun SAVE (filename,arg1, arg2,...,argi)
-saves quantities  described by its arguments  on disk y  keeps them in
-core also.   The arg's are  the expressions to  be SAVEd.  ALL  is the
-simplest, but  note that saving ALL  will save the  entire contents of
-your MACSYMA, which in the case of a large computation may result in a
-large file.   VALUES, FUNCTIONS, or  any other items on  the INFOLISTS
-(do DESCRIBE(INFOLISTS); for the list)  may be SAVEd, as may functions
-y variables by name.  C y D  lines may also be saved, but it is better
-to give them explicit names, which may be done in the commy line, e.g.
-SAVE(RES1=D15);  Files  saved  with   SAVE  should  be  reloaded  with
-LOADFILE.  SAVE returns the pathname where the items were saved.
-
-
-@end defun
-@c @node SAVEDEF, SHOW, SAVE, Entrada y Salida
-@c @unnumberedsec phony
-@defvar SAVEDEF
- default: [TRUE]  - if TRUE will  cause the MACSYMA version  of a user
-function to remain when the  function is TRANSLATEd.  This permits the
-definition  to be displayed  by DISPFUN  y allows  the function  to be
-edited.  If  SAVEDEF is FALSE,  the names of translated  functions are
-removed from the FUNCTIONS list.
-
-@end defvar
-@c @node SHOW, SHOWRATVARS, SAVEDEF, Entrada y Salida
-@c @unnumberedsec phony
-@defun SHOW (exp)
-will display exp with the indexed objects in it shown having covariant
-indices  as  subscripts,contravariant  indices as  superscripts.   The
-derivative indices will be displayed as subscripts, separated from the
-covariant indices by a comma.
-
-@end defun
-@c @node SHOWRATVARS, STARDISP, SHOW, Entrada y Salida
-@c @unnumberedsec phony
-@defun SHOWRATVARS (exp)
-returns a list of the RATVARS (CRE variables) of exp.
-
-@end defun
-@c @node STARDISP, STRING, SHOWRATVARS, Entrada y Salida
-@c @unnumberedsec phony
-@defvar STARDISP
- default: [FALSE] - if TRUE  will cause multiplication to be displayed
-explicitly with an * between operys.
-
-@end defvar
-@c @node STRING, STRINGOUT, STARDISP, Entrada y Salida
-@c @unnumberedsec phony
-@defun STRING (expr)
-converts expr to MACSYMA's linear notation (similar to FORTRAN's) just
-as if it  had been typed in  y puts expr into the  buffer for possible
-editing (in  which case expr  is usually Ci) The  STRING'ed expression
-should not be used in a computation.
-
-@end defun
-@c @node STRINGOUT, TTYOFF, STRING, Entrada y Salida
-@c @unnumberedsec phony
-@defun STRINGOUT (args)
-will salida  an expression to a  file in a linear  format.  Such files
-are     then    used     by    the     BATCH    or     DEMO    commys.
-STRINGOUT(file-specification, A1, A2, ...)  salidas to a file given by
-file-specification  ([filename1,filename2,DSK, directory])  the values
-given   by   A1,A2,..    in    a   MACSYMA   readable   format.    The
-file-specification may  be omitted, in  which case the  default values
-will be used. The Ai are usually  C labels or may be INPUT meaning the
-value of all  C labels.  Another option is to  make ai FUNCTIONS which
-will  cause all  of the  user's function  definitions to  be strungout
-(i.e. all  those retrieved by  DISPFUN(ALL)).  Likewise the ai  may be
-VALUES, y all the variables to which the user has assigned values will
-be strungout.   ai may also be  a list [m,n] which  means to stringout
-all labels in  the range m through n inclusive.   This function may be
-used  to create  a file  of FORTRAN  statements by  doing  some simple
-editing on the  strungout expressions.  If the GRIND  switch is set to
-TRUE, then STRINGOUT  will use GRIND format instead  of STRING format.
-Note: a STRINGOUT may be done while a WRITEFILE is in progress.
-
-@end defun
-
-@defun TEX (expr)
-@defunx TEX (expr,filename)
-@defunx TEX (label,filename)
-
-In the case  of a label, a left-equation-number  will be produced.  in
-case a file-name is supplied, the salida will be appended to the file.
-
-@example
-(C1) integrate(1/(1+x^3),x);
-
-					 2 x - 1 2 ATAN(-------) LOG(x
-- x +  1) SQRT(3) LOG(x + 1) (D1) -  --------------- + ------------- +
----------- 6 SQRT(3) 3 (C2) tex(d1);
-
-$$-@{@{\log          \left(x^@{2@}-x+1\right)@}\over@{6@}@}+@{@{\arctan
-@{@{2\>x-1@}\over@{      \sqrt@{3@}@}@}@}\over@{\sqrt@{3@}@}@}+@{@{\log
-\left(x+1\right)@}\over@{3@}@}\leqno@{\tt  (D1)@}$$   (D2)  (D1)  (C6)
-tex(integrate(sin(x),x));
-
-$$-\cos x$$ (D6) FALSE (C7) tex(d1,"/tmp/jo.tex");
-
-(D7) (D1)
-@end example
-where   the   last  expression   will   be   appended   to  the   file
-@file{/tmp/jo.tex}
-@end defun
-@defun SYSTEM (commy)
-Execute  COMMy as  a  subprocess.  The  commy  will be  passed to  the
-default shell for execution.  System is not supported by all operating
-systems, but generally  exists in the unix environment.   if hist is a
-list  of frequencies  which you  wish  to plot  as a  bar graph  using
-xgraph.
-@example
-(C1)  (with_stdout("_hist.out",   for  i:1  thru   length(hist)  do  (
-print(i,hist[i]))), system("xgraph -bar -brw .7 -nl < _hist.out"));
-@end example
-In order to make the plot be done in the background (returning control
-to maxima) y remove the temporary file after it is done do:
-@example
-system("(xgraph -bar -brw .7 -nl < _hist.out; rm -f _hist.out)&")
-@end example
-@end defun
-
-@c @node TTYOFF, WRITEFILE, STRINGOUT, Entrada y Salida
-@c @unnumberedsec phony
-@defvar TTYOFF
- default: [FALSE] - if TRUE stops printing salida to the console.
-
-@end defvar
-
-@deffn {macro} WITH_STDOUT (file,stmt1,stmt2,...)
-Opens file y then evaluates stmt1, stmt2, ....  Any printing to styard
-salida goes  to the file instead  of the terminal.   It always returns
-FALSE.   Note the  binding of  display2d  to be  false, otherwise  the
-printing will have things like "- 3" instead of "-3".
-@example
-
-mygnuplot(f,var,range,number_ticks):=
-block([numer:true,display2d:false],     with_stdout("/tmp/gnu",    for
-x:range[1]  thru  range[2]  step  (range[2]-range[1])/number_ticks  do
-(print(x,at(f,var=x)))),  system("echo  \"set  data style  lines;  set
-title '", f,"' ;plot '/tmp/gnu' ;pause 10 \" | gnuplot"));
-
-(C8)    with_stdout("/home/wfs/joe",   n:10,    for    i:8   thru    n
-do(print("factorial(",i,") gives ",i!)));  (D8) FALSE (C9) system("cat
-/home/wfs/joe");  factorial( 8  )  gives 40320  factorial(  9 )  gives
-362880 factorial( 10 ) gives 3628800 (D9) 0
+(%i10) concat (1, 2) + 3;
+(%o10)                       12 + 3
 @end example
 
 @end deffn
 
+@deffn {Funci@'on} sconcat (@var{arg_1}, @var{arg_2}, ...)
+
+Concatena sus argumentos para producir una cadena.
+Al contrario que @code{concat}, sus argumentos @i{no} necesitan ser @'atomos.
+
+El resultado es una cadena de Lisp.
+@c THAT'S ODD; WHY NOT A MAXIMA STRING ??
+
+@example
+(%i1) sconcat ("xx[", 3, "]:", expand ((x+y)^3));
+(%o1)               xx[3]:y^3+3*x*y^2+3*x^2*y+x^3
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} disp (@var{expr_1}, @var{expr_2}, ...)
+Es como @code{display} pero s@'olo se muestran los valores de los argumentos, no las ecuaciones. Es @'util para argumentos complicados que no tienen nombre o en situaciones en las que solamente es de inter@'es el valor del argumento pero no su nombre.
+
+@end deffn
+
+@deffn {Funci@'on} dispcon (@var{tensor_1}, @var{tensor_2}, ...)
+@deffnx {Funci@'on} dispcon (all)
+Muestra las propiedades contractivas de sus argumentos tal como fueron asignadas por @code{defcon}. La llamada @code{dispcon (all)} muestra todas propiedades contractivas que fueron definidas.
+
+@end deffn
+
+@deffn {Funci@'on} display (@var{expr_1}, @var{expr_2}, ...)
+Muestra las ecuaciones cuyos miembros izquierdos son 
+@var{expr_i} sin evaluar y cuyos miembros derechos son los valores de las expresiones. Esta funci@'on es @'util en los bloques y en las sentencias @code{for} para mostrar resultados intermedios.  Los argumentos de @code{display} suelen ser @'atomos, variables subindicadas o llamadas a funciones. V@'ease tambi@'en @code{disp}.
+
+@example
+(%i1) display(B[1,2]);
+                                      2
+                         B     = X - X
+                          1, 2
+(%o1)                            done
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} display2d
+Valor por defecto: @code{true}
+
+Si @code{display2d} vale @code{false}, la salida por consola es una cadena unidimensional, en lugar de una expresi@'on bidimensional.
+
+@end defvr
+
+@defvr {Variable optativa} display_format_internal
+Valor por defecto: @code{false}
+
+Si @code{display_format_internal} vale @code{true},
+las expresiones se muestran sin ser transformadas de manera que oculten su representaci@'on matem@'atica interna. Se representa lo que la funci@'on @code{inpart} devolver@'{@dotless{i}}a, en oposici@'on a @code{part}.
+
+Ejemplos:
+
+@example
+User     part       inpart
+a-b;      A - B     A + (- 1) B
+
+           A            - 1
+a/b;       -         A B
+           B
+                       1/2
+sqrt(x);   sqrt(X)    X
+
+          4 X        4
+X*4/3;    ---        - X
+           3         3
+@end example
+
+@end defvr
+
+@deffn {Funci@'on} dispterms (@var{expr})
+Muestra @var{expr} en partes, una debajo de la otra.
+Esto es, primero se muestra el operador de @var{expr}, luego cada t@'ermino si se trata de una suma, o cada factor si es un producto, o si no se muestra separadamente la parte de una expresi@'on m@'as general. Es @'util si @var{expr} es demasiado grande para representarla de otra forma.  Por ejemplo, si @code{P1}, @code{P2}, ...  son expresiones muy grandes, entonces el programa de representaci@'on puede superar el espacio de almacenamiento tratando de mostrar @code{P1 + P2 + ...} todo junto.  Sin embargo, @code{dispterms (P1 + P2 + ...)} muestra @code{P1}, debajo  @code{P2}, etc.  Cuando una expresi@'on exponencial es demasiado ancha para ser representada como @code{A^B}, si no se utiliza @code{dispterms}, entonces aparecer@'a como @code{expt (A, B)} (o como @code{ncexpt (A, B)}, en lugar de @code{A^^B}).
+
+@end deffn
+
+@defvr {Variable optativa} error_size
+Valor por defecto: 10
+
+La variable @code{error_size} modifica los mensajes de error de acuerdo con el tama@~no de las expresiones que aparecen en @'el. Si el tama@~no de una expresi@'on (tal como lo determina la funci@'on Lisp @code{ERROR-SIZE})
+es mayor que @code{error_size}, la expresi@'on se reemplaza en el mensaje por un s@'{@dotless{i}}mbolo, asign@'andole a @'este una expresi@'on. Los s@'{@dotless{i}}mbolos se toman de la lista @code{error_syms}.
+
+En caso contrario, si la expresi@'on es menor que @code{error_size}, la expresi@'on se muestra en el propio mensaje.
+
+V@'eanse tambi@'en @code{error} y @code{error_syms}.
+
+Ejemplo:
+@c OUTPUT GENERATED BY THE FOLLOWING
+@c U: (C^D^E + B + A)/(cos(X-1) + 1)$
+@c error_size: 20$
+@c error ("Example expression is", U);
+@c errexp1;
+@c error_size: 30$
+@c error ("Example expression is", U);
+
+El tama@~no de @code{U}, tal como lo determina @code{ERROR-SIZE}, es 24.
+
+@example
+(%i1) U: (C^D^E + B + A)/(cos(X-1) + 1)$
+
+(%i2) error_size: 20$
+
+(%i3) error ("Example expression is", U);
+
+Example expression is errexp1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) errexp1;
+                            E
+                           D
+                          C   + B + A
+(%o4)                    --------------
+                         cos(X - 1) + 1
+(%i5) error_size: 30$
+
+(%i6) error ("Example expression is", U);
+
+                         E
+                        D
+                       C   + B + A
+Example expression is --------------
+                      cos(X - 1) + 1
+ -- an error.  Quitting.  To debug this try debugmode(true);
+@end example
+
+@end defvr
+
+@defvr {Variable optativa} error_syms
+Valor por defecto: @code{[errexp1, errexp2, errexp3]}
+
+En los mensajes de error, las expresiones mayores que @code{error_size} son reemplazadas por s@'{@dotless{i}}mbolos a los cuales se les asignas estas expresiones.  Los s@'{@dotless{i}}mbolos se toman de la lista @code{error_syms}. La primera expresi@'on que resulte ser demasiado larga se reemplaza por @code{error_syms[1]}, la segunda por @code{error_syms[2]} y as@'{@dotless{i}} sucesivamente.
+
+Si hay m@'as expresiones largas que elementos en @code{error_syms}, los s@'{@dotless{i}}mbolos se construyen autom@'aticamente, siendo el @var{n}-@'esimo s@'{@dotless{i}}mbolo equivalente a @code{concat ('errexp, @var{n})}.
+
+V@'eanse tambi@'en @code{error} y @code{error_size}.
+
+@end defvr
+
+@deffn {Funci@'on} expt (@var{a}, @var{b})
+Si una expresi@'on exponencial es demasiado ancha para ser mostrada como @code{@var{a}^@var{b}} aparecer@'a como @code{expt (@var{a}, @var{b})} (o como @code{ncexpt (@var{a}, @var{b})} en lugar de @code{@var{a}^^@var{b}}).
+
+@c THIS SEEMS LIKE A BUG TO ME. expt, ncexpt SHOULD BE RECOGNIZED SINCE MAXIMA
+@c ITSELF PRINTS THEM SOMETIMES. THESE SHOULD JUST SIMPLIFY TO ^ AND ^^, RESPECTIVELY.
+Las funciones @code{expt} y @code{ncexpt} no se reconocen en una entrada.
+
+@end deffn
+
+@defvr {Variable optativa} exptdispflag
+Valor por defecto: @code{true}
+
+Si @code{exptdispflag} vale @code{true}, Maxima muestra las expresiones con exponentes negativos como cocientes; por ejemplo, @code{X^(-1)} se muestra como @code{1/X}.
+
+@end defvr
+
+@deffn {Funci@'on} filename_merge (@var{path}, @var{filename})
+Construye una ruta modificada a partir de @var{path} y @var{filename}.
+Si la componente final de @var{path} es de la forma @code{###.@var{something}},
+la componente se reemplaza con @code{@var{filename}.@var{something}}.
+En otro caso, la componente final se reemplaza simplemente por @var{filename}.
+
+@c SAY SOMETHING ABOUT ARG TYPE -- LISP STRINGS WORK BETTER THAN MAXIMA STRINGS
+@c SAY SOMETHING ABOUT RETURN TYPE
+@end deffn
+
+@deffn {Funci@'on} file_search (@var{filename})
+@deffnx {Funci@'on} file_search (@var{filename}, @var{pathlist})
+
+La funci@'on @code{file_search} busca el archivo @var{filename} y devuelve su ruta como una cadena; si no lo encuentra,  @code{file_search} devuelve @code{false}. La llamada 
+@code{file_search (@var{filename})} busca en los directorios de b@'usqueda por defecto,
+que son los especificados por las variables @code{file_search_maxima}, @code{file_search_lisp} y @code{file_search_demo}.
+
+La funci@'on @code{file_search} analiza primero si el nombre del argumento existe antes de hacerlo coincidir con los comodines de los patrones de b@'usqueda de archivos.
+V@'ease @code{file_search_maxima} para m@'as informaci@'on sobre patrones de b@'usqueda de archivos.
+
+El argumento @var{filename} puede ser una ruta con nombre de archivo,
+o simplemente el nombre del archivo, o, si el directorio de b@'usqueda de archivo incluye un patr@'on de b@'usqueda, es suficiente con el nombre de archivo sin extensi@'on.
+Por ejemplo,
+
+@example
+file_search ("/home/wfs/special/zeta.mac");
+file_search ("zeta.mac");
+file_search ("zeta");
+@end example
+
+todos buscan el mismo archivo, dando por hecho que el archivo existe y que @code{/home/wfs/special/###.mac}
+est@'a en @code{file_search_maxima}.
+
+La llamada @code{file_search (@var{filename}, @var{pathlist})} busca solamente en los directorios especificados por @var{pathlist}, que es una lista de cadenas.
+El argumento @var{pathlist} ignora los directorios de b@'usqueda por defecto, de manera que si se da la lista de rutas, @code{file_search} busca solamente en ellas y no en los directorios por defecto.
+Incluso si hay un @'unico directorio en @var{pathlist}, debe ser suministrado como una lista de un @'unico elemento.
+
+El usuario puede modificar los directorios de b@'usqueda por defecto; v@'ease para ello See @code{file_search_maxima}.
+
+La funci@'on @code{file_search} es llamada por @code{load} con los directorios de b@'usqueda @code{file_search_maxima} y @code{file_search_lisp}.
+
+@end deffn
+
+@defvr {Variable optativa} file_search_maxima
+@defvrx {Variable optativa} file_search_lisp
+@defvrx {Variable optativa} file_search_demo
+Estas variables especifican listas de directorios en los que deben buscar la funciones  @code{load}, @code{demo} y algunas otras. Los valores por defecto de estas variables nombran directorios de la instalaci@'on de Maxima.
+
+El usuario puede modificar estas variables, bien reemplazando los valores por defecto, bien a@~nadiendo nuevos directorios.
+Por ejemplo,
+
+@example
+file_search_maxima: ["/usr/local/foo/###.mac",
+    "/usr/local/bar/###.mac"]$
+@end example
+
+reemplaza el valor por defecto de @code{file_search_maxima}, mintras que
+
+@example
+file_search_maxima: append (file_search_maxima,
+    ["/usr/local/foo/###.mac", "/usr/local/bar/###.mac"])$
+@end example
+
+a@~nade dos directorios m@'as. Puede ser conveniente colocar una expresi@'on como esta en el archivo @code{maxima-init.mac}, de manera que la ruta de b@'usqueda de ficheros se asigne autom@'aticamente cada vez que arranca Maxima.
+
+Se pueden especificar varias extensiones de archivos y rutas con comodines especiales.
+La cadena @code{###} representa el nombre del archivo buscado y una lista separada de comas y encerrada entre llaves,  @code{@{foo,bar,baz@}} representa m@'ultiples cadenas.
+Por ejemplo, suponiendo que se busca el nombre @code{neumann},
+
+@example
+"/home/@{wfs,gcj@}/###.@{lisp,mac@}"
+@end example
+
+se interpreta como @code{/home/wfs/neumann.lisp}, @code{/home/gcj/neumann.lisp}, @code{/home/wfs/neumann.mac} y @code{/home/gcj/neumann.mac}.
+
+@end defvr
+
+@deffn {Funci@'on} file_type (@var{filename})
+Devuelve una descripci@'on del contenido de @var{filename} basada en la extensi@'on, sin intentar abrir el archivo para inspeccionar su contenido.
+
+El valor que la funci@'on retorna puede ser cualquiera de los siguientes: @code{object}, @code{lisp} o @code{maxima}.
+Si la extensi@'on comienza por @code{m} o @code{d}, @code{file_type} devuelve @code{maxima}.
+Si la extensi@'on comienza por @code{l}, @code{file_type} devuelve @code{lisp}.
+En cualquier otro caso, @code{file_type} devuelve @code{object}.
+
+@end deffn
 
 
-@c @node WRITEFILE,  , TTYOFF, Entrada y Salida
-@c @unnumberedsec phony
-@defun WRITEFILE (DSK, directory)
-opens  up   a  file  for  writing.    On  a  Lisp   Machine  one  uses
-WRITEFILE("filename").  All interaction between  the user y MACSYMA is
-then recorded in this file, just as it is on the console.  Such a file
-is a transcript of the session,  y is not reloadable or batchable into
-MACSYMA again.  (See also CLOSEFILE.)
+@deffn {Funci@'on} grind (@var{expr})
+@deffnx {Variable optativa} grind
+La funci@'on @code{grind} imprime @var{expr}
+en la consola en un formato admisible como entrada para Maxima. La funci@'on 
+@code{grind} always returns @code{done}.
 
-@end defun
+V@'ease tambi@'en @code{string}, que devuelve una cadena en lugar de imprimir la salida. La funci@'on
+@code{grind} intenta imprimir la expresi@'on de forma que sea lago m@'as sencilla de leer que la salida de @code{string}.
+
+Cuando la variable @code{grind} vale @code{true},
+la salida de @code{string} y @code{stringout} tienen el mismo formato que la de @code{grind};
+en caso contrario no se formatea la salida de esas funciones.
+El valor por defecto de la variable @code{grind} es @code{false}.
+
+La variable @code{grind} tambi@'en se puede utilizar como  argumento en @code{playback}.
+Si @code{grind} est@'a presente,
+@code{playback} imprime las expresiones de entrada en el mismo formato que lo hace la funci@'on @code{grind};
+en caso contrario no se formatean la expresiones de entrada.
+
+@end deffn
+
+
+@defvr {Variable optativa} ibase
+Valor por defecto: 10
+
+Los enteros que se escriban en Maxima se interpretan como dados en base @code{ibase}.
+
+A la variable @code{ibase} se le puede asignar cualquier entero entre 2 y 35 (decimal), ambos inclusive.
+@c WHY NOT 36, BY THE WAY ??
+Si @code{ibase} es mayor que 10, las cifras ser@'an los n@'umeros decimales entre 0 y 9, m@'as las letras may@'usculas A, B, C, ..., sg@'un sea necesario.
+Las cifras en base 35, la mayor base que acepta Maxima, son los d@'{@dotless{i}}gitos de 0 a 9 y las letras de A a Y.
+@c HOW, EXACTLY, DOES ONE TYPE IN THE LETTERS ??
+@c ibase: 11$ 1A; YIELDS AN ERROR
+@c \1A; #1A; \#1A; DON'T WORK EITHER
+
+V@'ease tambi@'en @code{obase}.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@defvr {Variable optativa} inchar
+Valor por defecto: @code{%i}
+
+La variable @code{inchar} es el prefijo de las etiquetas de las expresiones introducidas por el usuario.
+Maxima crea autom@'aticamente una etiqueta para cada expresi@'on de entrada concatenando @code{inchar} y @code{linenum}; a
+@code{inchar} se le puede asignar cualquier s@'{@dotless{i}}mbolo o cadena, no necesariamente un carac@'acter sencillo.
+
+@example
+(%i1) inchar: "input";
+(%o1)                                input
+(input1) expand ((a+b)^3);
+                            3        2      2      3
+(%o1)                      b  + 3 a b  + 3 a  b + a
+(input2)
+@end example
+
+V@'ease tambi@'en @code{labels}.
+
+@end defvr
+
+@deffn {Funci@'on} ldisp (@var{expr_1}, ..., @var{expr_n})
+Muestra las expresiones @var{expr_1}, ..., @var{expr_n} en la consola con el formato de salida;
+@code{ldisp} asigna una etiqueta a cada argumento y devuelve la lista de etiquetas.
+
+V@'ease tambi@'en @code{disp}.
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisp (e, f);
+                                   3
+(%t3)                       (b + a)
+
+                     3        2      2      3
+(%t4)               b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                   3
+(%o4)                       (b + a)
+(%i5) %t4;
+                     3        2      2      3
+(%o5)               b  + 3 a b  + 3 a  b + a
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} ldisplay (@var{expr_1}, ..., @var{expr_n})
+Muestra las expresiones @var{expr_1}, ..., @var{expr_n} en la consola con el formato de salida.
+Cad expresi@'on se muestra como una ecuaci@'on de la forma @code{lhs = rhs}
+en la que @code{lhs} es uno de los argumentos de @code{ldisplay}
+y @code{rhs} su valor. Normalmente, cada argumento ser@'a el nombre de una variable. La funci@'on
+@code{ldisp} asigna una etiqueta a cada ecuaci@'on y devuelve la lista de etiquetas.
+
+V@'ease tambi@'en @code{display}.
+
+@example
+(%i1) e: (a+b)^3;
+                                   3
+(%o1)                       (b + a)
+(%i2) f: expand (e);
+                     3        2      2      3
+(%o2)               b  + 3 a b  + 3 a  b + a
+(%i3) ldisplay (e, f);
+                                     3
+(%t3)                     e = (b + a)
+
+                       3        2      2      3
+(%t4)             f = b  + 3 a b  + 3 a  b + a
+
+(%o4)                      [%t3, %t4]
+(%i4) %t3;
+                                     3
+(%o4)                     e = (b + a)
+(%i5) %t4;
+                       3        2      2      3
+(%o5)             f = b  + 3 a b  + 3 a  b + a
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} linechar
+Valor por defecto: @code{%t}
+
+La variable @code{linechar} es el prefijo de las etiquetas que genera Maxima para expresiones intermedias. Cuando sea necesario, Maxima crear@'a una etiqueta para cada expresi@'on intermedia concatenando @code{linechar} y @code{linenum}. A 
+@code{linechar} se le puede asignar cualquier cadena o s@'{@dotless{i}}mbolo, no necesariamente un car@'acter simple.
+
+Las expresiones intermedias pueden ser mostradas o no.
+V@'eanse tambi@'en @code{programmode} y @code{labels}.
+
+@end defvr
+
+@defvr {Variable optativa} linel
+Valor por defecto: 79
+
+La variable @code{linel} es la anchura (medida en n@'umero de caracteres) de la consola que se le da a Maxima para que muestre las expresiones. A @code{linel} se le puede asignar cualquier valor, pero si @'este es muy peque@~no o grande resultar@'a de poca utilidad. El texto que impriman las funciones internas de Maxima, como los mensajes de error y las salidas de la funci@'on @code{describe}, no se ve afectado por el valor de @code{linel}.
+
+@end defvr
+
+@defvr {Variable optativa} lispdisp
+Valor por defecto: @code{false}
+
+Si @code{lispdisp} vale @code{true}, los s@'{@dotless{i}}mbolos de Lisp se muestran precedidos del car@'acter de interrogaci@'on @code{?}. En caso contrario, los s@'{@dotless{i}}mbolos de Lisp se muestran sin esta marca.
+
+Ejemplos:
+
+@c ===beg===
+@c lispdisp: false$
+@c ?foo + ?bar;
+@c lispdisp: true$
+@c ?foo + ?bar;
+@c ===end===
+@example
+(%i1) lispdisp: false$
+(%i2) ?foo + ?bar;
+(%o2)                       foo + bar
+(%i3) lispdisp: true$
+(%i4) ?foo + ?bar;
+(%o4)                      ?foo + ?bar
+@end example
+
+@end defvr
+
+@deffn {Funci@'on} load (@var{filename})
+Eval@'ua las expresiones del archivo @var{filename}, trayendo variables, funciones y otros objetos a Maxima.
+Una asignaci@'on hecha previamente a una variable en Maxima ser@'a destruida por otra asignaci@'on que se le haga en @var{filename}. Para encontrar el fichero, @code{load} llama a @code{file_search} con @code{file_search_maxima} y @code{file_search_lisp} como directorios de b@'usqueda. Si la llamada a @code{load} funciona correctamente, devuelve el nombre del fichero; en caso contrario, @code{load} muestra un mensaje de error.
+
+La funci@'on @code{load} trabaja indistintamente con c@'odigo Lisp y Maxima.
+Los ficheros creados con @code{save}, @code{translate_file} y @code{compile_file}, que crea c@'odigo Lisp,
+y @code{stringout}, que crea c@'odigo Maxima, todos ellos pueden ser procesados por @code{load}. La funci@'on
+@code{load} llama a @code{loadfile} para cargar archivos en Lisp y a  @code{batchload} para cargar archivos en Maxima.
+
+V@'eanse tambi@'en @code{loadfile}, @code{batch}, @code{batchload} y @code{demo};
+@code{loadfile} procesa archivos en Lisp; @code{batch}, @code{batchload} y @code{demo} procesan archivos en Maxima.
+
+V@'ease @code{file_search} para m@'as detalles sobre el mecanismo de b@'usqueda de archivos.
+
+La funci@'on @code{load} eval@'ua sus argumentos.
+
+@end deffn
+
+@deffn {Funci@'on} loadfile (@var{filename})
+Eval@'ua las expresiones Lisp del archivo @var{filename}. La funci@'on
+@code{loadfile} no llama a @code{file_search}, de manera que @code{filename} debe incluir la extensi@'on del archivo y su ruta completa.
+
+La funci@'on @code{loadfile} puede procesar ficheros creados por  @code{save}, @code{translate_file} y @code{compile_file}.
+Puede ser m@'as conveniente utilizar @code{load} en lugar de @code{loadfile}.
+
+La funci@'on @code{loadfile} no eval@'ua su argumento, de manera que @code{filename} debe ser una cadena, no una variable que la contenga. La utilizaci@'on de doble comilla simple s@'{@dotless{i}} permite la evaluaci@'on.
+
+@end deffn
+
+@defvr {Variable optativa} loadprint
+Valor por defecto: @code{true}
+
+La variable @code{loadprint} indica si mostrar un mensaje cuando se carga un archivo.
+
+@itemize @bullet
+@item
+Si @code{loadprint} vale @code{true}, se muestra siempre un mensaje.
+@item
+Si @code{loadprint} vale @code{'loadfile}, muestra un mensaje s@'olo si el archivo es cargado con la funci@'on @code{loadfile}.
+@item
+Si @code{loadprint} vale @code{'autoload}, muestra un mensaje s@'olo cuandi un archivo se carga autom@'aticamente. V@'ease  @code{setup_autoload}.
+@item
+Si @code{loadprint} vale @code{false}, nunca mostrar@'a mensajes.
+@end itemize
+
+@end defvr
+
+@defvr {Variable optativa} obase
+Valor por defecto: 10
+
+La variable @code{obase} es la base de los enteros mostrados por Maxima; se le puede asignar cualquier entero entre 2 y 35 (decimal), ambos inclusive. Si @code{obase} es mayor que 10, las cifras ser@'an los n@'umeros decimales entre 0 y 9, m@'as las letras may@'usculas A, B, C, ..., sg@'un sea necesario.
+Las cifras en base 35, la mayor base que acepta Maxima, son los d@'{@dotless{i}}gitos de 0 a 9 y las letras de A a Y.
+
+V@'ease tambi@'en @code{ibase}.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+@defvr {Variable optativa} outchar
+Valor por defecto: @code{%o}
+
+La variable @code{outchar} es el prefijo de las etiquetas de las expresiones calculadas por Maxima.
+Maxima crea autom@'aticamente una etiqueta para cada expresi@'on calculada concatenando @code{outchar} y @code{linenum}; a
+@code{outchar} se le puede asignar cualquier s@'{@dotless{i}}mbolo o cadena, no necesariamente un carac@'acter sencillo.
+
+@example
+(%i1) outchar: "output";
+(output1)                           output
+(%i2) expand ((a+b)^3);
+                            3        2      2      3
+(output2)                  b  + 3 a b  + 3 a  b + a
+(%i3)
+@end example
+
+V@'ease tambi@'en @code{labels}.
+
+@end defvr
+
+@defvr {Variable optativa} packagefile
+Valor por defecto: @code{false}
+
+Los desarrolladores de paquetes que utilizan  @code{save}
+o @code{translate} para crear paquetes (ficheros) que van a ser utilizados por terceros pueden hacer @code{packagefile: true} para evitar que se a@~nada informaci@'on a la listas de informaci@'on de Maxima (por ejemplo, @code{values},
+@code{functions}) excepto all@'{@dotless{i}} donde sea necesario cuando el archivo sea cargado en memoria.
+@c FALTA COMPLETAR ESTE PARRAFO
+
+@end defvr
+
+@defvr {Variable optativa} pfeformat
+Valor por defecto: @code{false}
+
+Si @code{pfeformat} vale @code{true}, una fracci@'on de enteros ser@'a mostrada con el car@'acter de barra inclinada @code{/} entre ellos.
+
+
+@example
+(%i1) pfeformat: false$
+(%i2) 2^16/7^3;
+                              65536
+(%o2)                         -----
+                               343
+(%i3) (a+b)/8;
+                              b + a
+(%o3)                         -----
+                                8
+(%i4) pfeformat: true$ 
+(%i5) 2^16/7^3;
+(%o5)                       65536/343
+(%i6) (a+b)/8;
+(%o6)                      1/8 (b + a)
+@end example
+
+@end defvr
+
+@deffn {Funci@'on} print (@var{expr_1}, ..., @var{expr_n})
+Eval@'ua y muestra las expresiones  @var{expr_1}, ..., @var{expr_n} secuencialmente de izquierda a derecha, comenzando la impresi@'on por el borde izquierdo de la consola.
+
+El valor devuelto por @code{print} es el valor de su @'ultimo argumento. La funci@'on @code{print} no genera etiquetas para las expresiones intermedias.
+
+V@'eanse tambi@'en @code{display}, @code{disp}, @code{ldisplay} y @code{ldisp}, que muestran una expresi@'on por l@'{@dotless{i}}nea, mientras que @code{print} trata de mostrar dos o m@'as expresiones por l@'{@dotless{i}}nea.
+
+Para mostrar el contenido de un archivo v@'ease @code{printfile}.
+
+@example
+(%i1) r: print ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is", radcan (log (a^10/b)))$
+            3        2      2      3
+(a+b)^3 is b  + 3 a b  + 3 a  b + a  log (a^10/b) is 
+
+                                              10 log(a) - log(b) 
+(%i2) r;
+(%o2)                  10 log(a) - log(b)
+(%i3) disp ("(a+b)^3 is", expand ((a+b)^3), "log (a^10/b) is", radcan (log (a^10/b)))$
+                           (a+b)^3 is
+
+                     3        2      2      3
+                    b  + 3 a b  + 3 a  b + a
+
+                         log (a^10/b) is
+
+                       10 log(a) - log(b)
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} read (@var{expr_1}, ..., @var{expr_n})
+Imprime @var{expr_1}, ..., @var{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on evaluada. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
+
+V@'ease tambi@'en @code{readonly}.
+
+@example
+(%i1) foo: 42$ 
+(%i2) foo: read ("foo vale", foo, " -- nuevo valor.")$
+foo vale 42  -- nuevo valor. 
+(a+b)^3;
+(%i3) foo;
+                                     3
+(%o3)                         (b + a)
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} readonly (@var{expr_1}, ..., @var{expr_n})
+Imprime @var{expr_1}, ..., @var{expr_n} y a continuaci@'on lee una expresi@'on desde la consola y devuelve la expresi@'on sin evaluar. La expresi@'on termina con un punto y coma @code{;} o con el s@'{@dotless{i}}mbolo de d@'olar @code{$}.
+
+@example
+(%i1) aa: 7$
+(%i2) foo: readonly ("Introducir expresion:");
+Introducir expresion: 
+2^aa;
+                                  aa
+(%o2)                            2
+(%i3) foo: read ("Introducir expresion:");
+Introducir expresion: 
+2^aa;
+(%o3)                            128
+@end example
+
+V@'ease tambi@'en @code{read}.
+
+@end deffn
+
+@deffn {Funci@'on} reveal (@var{expr}, @var{nivel})
+Reemplaza partes de @var{expr} al @var{nivel} especificado y las sutituye por descripciones cortas.
+
+@itemize @bullet
+@item
+Las sumas y restas se reemplazan por @code{sum(@var{n})},
+siendo @var{n} el n@'umero de t@'erminos de la suma.
+@item
+Los productos se reemplazan por @code{product(@var{n})},
+siendo @var{n} el n@'umero de factores del producto.
+@item
+Las potencias se reemplazan por @code{expt}. 
+@item
+Los cocientes se reemplazan por @code{quotient}.
+@item
+El s@'{@dotless{i}}mbolo negativo se reemplaza por @code{negterm}.
+@end itemize
+
+Si el entero  @var{depth} es mayor o igual que la profundidad m@'axima de @var{expr},
+@code{reveal (@var{expr}, @var{depth})} devuelve @var{expr} sin modificar.
+
+La funci@'on @code{reveal} eval@'ua sus argumentos y devuelve la expresi@'on con las modificaciones solicitadas.
+
+Ejemplo:
+
+@example
+(%i1) e: expand ((a - b)^2)/expand ((exp(a) + exp(b))^2);
+                          2            2
+                         b  - 2 a b + a
+(%o1)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+(%i2) reveal (e, 1);
+(%o2)                       quotient
+(%i3) reveal (e, 2);
+                             sum(3)
+(%o3)                        ------
+                             sum(3)
+(%i4) reveal (e, 3);
+                     expt + negterm + expt
+(%o4)               ------------------------
+                    product(2) + expt + expt
+(%i5) reveal (e, 4);
+                       2                 2
+                      b  - product(3) + a
+(%o5)         ------------------------------------
+                         product(2)     product(2)
+              2 expt + %e           + %e
+(%i6) reveal (e, 5);
+                         2            2
+                        b  - 2 a b + a
+(%o6)              --------------------------
+                       sum(2)     2 b     2 a
+                   2 %e       + %e    + %e
+(%i7) reveal (e, 6);
+                          2            2
+                         b  - 2 a b + a
+(%o7)               -------------------------
+                        b + a     2 b     2 a
+                    2 %e      + %e    + %e
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} rmxchar
+Valor por defecto: @code{]}
+
+La variable @code{rmxchar} es el car@'acter que se dibuja al lado derecho de una matriz.
+
+V@'ease tambi@'en @code{lmxchar}.
+
+@end defvr
+
+@deffn {Funci@'on} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
+@deffnx {Funci@'on} save (@var{filename}, values, functions, labels, ...)
+@deffnx {Funci@'on} save (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Funci@'on} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
+@deffnx {Funci@'on} save (@var{filename}, all)
+Alamacena los valores actuales de @var{name_1}, @var{name_2}, @var{name_3}, ..., en el archivo @var{filename}.
+Los argumentos son nombres de variables, funciones u otros objetos.
+Si un nombre no tiene un valor o una funci@'on asociado a @'el, entonces se ignora.
+
+La funci@'on @code{save} devuelve @var{filename}.
+
+La funci@'on @code{save} almacena datos en forma de expresiones Lisp.
+Los datos almacenados por @code{save} pueden recuperarse con @code{load (@var{filename})}.
+El resultado de ejecutar  @code{save} cuando @var{filename} ya existe depende del soporte Lisp implementado;
+el archivo puede ser sobreescrito o que @code{save} env@'{@dotless{i}}e un mesaje de error.
+
+La llamada @code{save (@var{filename}, values, functions, labels, ...)}
+almacena los elementos cuyos nombres son @code{values}, @code{functions}, @code{labels}, etc.
+Los nombres pueden ser cualesquiera de los especificados por la variable @code{infolists};
+@code{values} incluye todas las variables definidas por el usuario.
+
+La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacenas los valores de las etiquetas de entrada y salida desde @var{m} hasta @var{n}.
+N@'otese que @var{m} y @var{n} deben ser n@'umeros o nombres de variables precedidas de doble comilla simple.
+Las etiquetas de entrada y salida tambi@'en se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
+La llamada @code{save (@var{filename}, labels)} almacena todas las etiquetas de entrada y salida.
+Cuando las etiquetas almacenadas en el archivo sean posteriormente recuperadas, se sobreescribir@'an las activas en ese momento.
+
+La llamada @code{save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)}
+almacena los valores de @var{expr_1}, @var{expr_2}, ...,
+con los nombres @var{name_1}, @var{name_2}, ....
+Es @'util hacer este tipo de llamada para con etiquetas de entrada y salida, por ejemplo, @code{save ("foo.1", aa=%o88)}.
+El miembro derecho de la igualdad puede ser cualquier expresi@'on, que ser@'a evaluada.
+Esta llamada a la funci@'on @code{save} no incorpora nuevos nombres a la sesi@'on actual de Maxima,
+simplemente los almacena en el archivo @var{filename}.
+
+Todas estas formas de llamar a la funci@'on @code{save} se pueden combinar a voluntad.
+Por ejemplo, @code{save (@var{filename}, aa, bb, cc=42, functions, [11, 17])}.
+
+La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima, lo que incluye todas las variables definidas por el usuario, funciones, arreglos, etc., as@'{@dotless{i}} como algunos objetos definidos autom@'aticamente.
+Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o @code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
+
+La funci@'on @code{save} no eval@'ua sus argumentos.  El argumento @var{filename} debe ser una cadena, no una variable que contenga una cadena. Si se especifican n@'umeros de etiquetas, @'estos deben ser enteros.
+El operador de doble comilla simple eval@'ua una variable de cadena devolviendo su valor,
+por ejemplo, @code{s: "foo.1"$ save (''s, all)$}, y de las variables enteras devuelve sus valores enteros, como en @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
+
+@c ANY USE FOR THE FOLLOWING ???
+@c The following device constructs a list of variables to save and saves them.
+@c 
+@c @example
+@c s: "foo.1"$
+@c l: ['aa, 'bb, 'cc, 'dd]$
+@c apply (save, append ([s], l))$
+@c @end example
+@end deffn
+
+@defvr {Variable optativa} savedef
+Valor por defecto: @code{true}
+
+Si @code{savedef} vale @code{true}, se mantiene la versi@'on Maxima de una funci@'on definida por el usuario cuando @'esta se traduce, lo que permite mostrar su c@'odigo con @code{dispfun} y que la funci@'on pueda ser editada.
+
+Si @code{savedef} vale @code{false}, los nombres de las funciones traducidas se eliminan de la lista @code{functions}.
+
+@end defvr
+
+@deffn {Funci@'on} show (@var{expr})
+Muestra @code{expr} con sus objetos indexados que tengan @'{@dotless{i}}ndices covariantes como sub@'{@dotless{i}}ndices y los contravariantes como super@'{@dotless{i}}ndices.  Los @'{@dotless{i}}ndices derivados se muestran como sub@'{@dotless{i}}ndices, separados por una coma de los covariantes.
+
+@end deffn
+
+@deffn {Funci@'on} showratvars (@var{expr})
+Devuelve una lista de las variables de expresiones can@'onicas racionales (CRE) en la expresi@'on @code{expr}.
+
+V@'ease tambi@'en @code{ratvars}.
+
+@end deffn
+
+@defvr {Variable optativa} stardisp
+Valor por defecto: @code{false}
+
+Si @code{stardisp} vale @code{true}, la multiplicaci@'on se muestra con un asterisco @code{*} entre los operandos.
+
+@end defvr
+
+@deffn {Funci@'on} string (@var{expr})
+Convierte @code{expr} a la notaci@'on lineal de Maxima, tal como si fuese tecleada.
+
+El valor que retorna la funci@'on @code{string} es una cadena, por lo que no puede ser utilizada en los c@'alculos.
+
+@end deffn
+
+@defvr {Variable de Lisp} stringdisp
+Valor por defecto: @code{false}
+
+Si @code{?stringdisp} vale @code{true},
+las cadenas alfanum@'ericas se muestran encerradas entre comillas dobles. En caso contrario, no se nuestran las comillas.
+
+La variable @code{?stringdisp} vale siempre @code{true} cuando se muestra la definici@'on de una funci@'on.
+
+La variable @code{?stringdisp} es una variable Lisp, por lo que debe ser escrita precedida de un signo de interrogaci@'on @code{?}.
+
+Ejemplos:
+
+@c ===beg===
+@c ?stringdisp: false$
+@c "This is an example string.";
+@c foo () := print ("This is a string in a function definition.");
+@c ?stringdisp: true$
+@c "This is an example string.";
+@c ===end===
+@example
+(%i1) ?stringdisp: false$
+(%i2) "This is an example string.";
+(%o2)              This is an example string.
+(%i3) foo () := print ("This is a string in a function definition.");
+(%o3) foo() := 
+              print("This is a string in a function definition.")
+(%i4) ?stringdisp: true$
+(%i5) "This is an example string.";
+(%o5)             "This is an example string."
+@end example
+
+@end defvr
+
+@deffn {Funci@'on} stringout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffnx {Funci@'on} stringout (@var{filename}, [@var{m}, @var{n}])
+@deffnx {Funci@'on} stringout (@var{filename}, input)
+@deffnx {Funci@'on} stringout (@var{filename}, functions)
+@deffnx {Funci@'on} stringout (@var{filename}, values)
+
+La funci@'on @code{stringout} escribe expresiones en un archivo de la misma forma en que se escribir@'{@dotless{i}}an como expresiones de entrada. El archivo puede ser utilizado entonces como entrada a las funciones @code{batch} o @code{demo}, y puede ser editado para cualquier otro prop@'osito.
+
+La forma general de @code{stringout} escribe los valores de una o m@'as expresiones en el archivo de salida. N@'otese que si una expresi@'on es una variable, solamente se escribir@'a el valor de la variable y no el nombre de @'esta. Como caso especial, y muy @'util en algunas ocasiones, las expresiones pueden ser etiquetas de entrada (@code{%i1}, @code{%i2}, @code{%i3}, ...) o de salida (@code{%o1}, @code{%o2}, @code{%o3}, ...).
+
+Si @code{grind} vale @code{true}, @code{stringout} formatea la salida utilizando @code{grind}. En caso contrario, se utilizar@'a el formato @code{string}. V@'eanse @code{grind} y @code{string}.
+
+La forma especial @code{stringout (@var{filename}, [@var{m}, @var{n}])} escribe los valores de las etiquetas de entrada desde la m hasta la n, ambas inclusive. 
+
+La forma especial @code{stringout (@var{filename}, input)} escribe todas las etiquetas de entrada en el archivo.
+
+La forma especial @code{stringout (@var{filename}, functions)} escribe todas las funciones definidas por el usuario, contenidas en la lista global @code{functions}, en el archivo.
+
+La forma especial @code{stringout (@var{filename}, values)} escribe todas las variables asignadas por el usuario, contenidas en la lista global @code{values}, en el archivo. Cada variable se escribe como una sentencia de asignaci@'on, con el nombre de la variable seguida de dos puntos y a continuaci@'on su valor. N@'otese que la forma general de @code{stringout} no escribe las variables como sentencias de asignaci@'on.
+
+@end deffn
+
+@deffn {Funci@'on} tex (@var{expr})
+@deffnx {Funci@'on} tex (@var{expr}, @var{filename})
+@deffnx {Funci@'on} tex (@var{label}, @var{filename})
+
+Devuelve la expresi@'on en c@'odigo TeX. En caso de suministrar el argumento @var{filename}, el resultado se a@~nade al archivo que lleve este nombre.
+
+@example
+(%i1) integrate (1/(1+x^3), x);
+                                    2 x - 1
+                  2            atan(-------)
+             log(x  - x + 1)        sqrt(3)    log(x + 1)
+(%o1)      - --------------- + ------------- + ----------
+                    6             sqrt(3)          3
+(%i2) tex (%o1);
+$$-@{@{\log \left(x^2-x+1\right)@}\over@{6@}@}+@{@{\arctan \left(@{@{2\,x-1
+ @}\over@{\sqrt@{3@}@}@}\right)@}\over@{\sqrt@{3@}@}@}+@{@{\log \left(x+1\right)
+ @}\over@{3@}@}\leqno@{\tt (\%o1)@}$$
+(%o2)                          (\%o1)
+(%i3) tex (integrate (sin(x), x));
+$$-\cos x$$
+(%o3)                           false
+(%i4) tex (%o1, "foo.tex");
+(%o4)                          (\%o1)
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} system (@var{command})
+Ejecuta la instrucci@'on @var{command} como un proceso independiente de Maxima.
+La instrucci@'on se le pasa a la consola del sistema para su ejecuci@'on.
+La funci@'on @code{system} no est@'a soportada por todos los sistemas operativos, pero suele estarlo en todos los entornos  Unix y similares.
+
+Suponiendo que @code{_hist.out} es una lista de frecuencias que se quieren representar en un diagrama de barras utilizando el programa @code{xgraph},
+
+@example
+(%i1) (with_stdout("_hist.out",
+           for i:1 thru length(hist) do (
+             print(i,hist[i]))),
+       system("xgraph -bar -brw .7 -nl < _hist.out"));
+@end example
+
+A fin de hacer el diagrama y eliminar el archivo temporal posteriormente, h@'agase:
+
+@example
+system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
+@end example
+
+@end deffn
+
+@defvr {Variable optativa} ttyoff
+Valor por defecto: @code{false}
+
+Si @code{ttyoff} vale @code{true}, no se muestran las expresiones resultantes, pero @'estas se calculan de todos modos y se les asignan etiquetas. V@'ease @code{labels}.
+
+El texto que escriban las funciones internas de Maxima, tales como los mensajes de error y las salidas de @code{describe},
+no se ven afectadas por @code{ttyoff}.
+
+@end defvr
+
+@deffn {Macro} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+Abre el archivo @var{filename} y a continuaci@'on eval@'ua @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
+Los valores de los argumentos no se almacenan @var{filename}, pero cualquier resultado a imprimir por @code{print}, @code{display}, @code{disp} o @code{grind}, va a parar al archivo @var{filename} en lugar de a la consola.
+
+La macro @code{with_stdout} devuelve el valor de su @'ultimo argumento.
+
+V@'ease tambi@'en @code{writefile}.
+
+@c THIS DOESN'T SEEM VERY IMPORTANT TO MENTION ...
+@c Note the binding of display2d to be
+@c false, otherwise the printing will have things like "- 3" instead
+@c of "-3".
+@c
+@example
+@c THIS EXAMPLE USES SOME UNIX-ISH CONSTRUCTS -- WILL IT WORK IN WINDOWS ???
+@c ALSO IT'S SORT OF COMPLICATED AND THE SIMPLER SECOND EXAMPLE ILLUSTRATES with_stdout BETTER !!!
+@c mygnuplot (f, var, range, number_ticks) :=
+@c  block ([numer:true, display2d:false],
+@c  with_stdout("tmp.out",
+@c    dx: (range[2]-range[1])/number_ticks,
+@c    for x: range[1] thru range[2] step dx
+@c       do print (x, at (f, var=x))),
+@c  system ("echo \"set data style lines; set title '", f,"' ;plot '/tmp/gnu'
+@c ;pause 10 \" | gnuplot"))$
+(%i1) with_stdout ("tmp.out", for i:5 thru 10 do print (i, "! yields", i!))$
+(%i2) printfile ("tmp.out")$
+5 ! yields 120 
+6 ! yields 720 
+7 ! yields 5040 
+8 ! yields 40320 
+9 ! yields 362880 
+10 ! yields 3628800
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} writefile (@var{filename})
+Comienza escribiendo una transcripci@'on de la sesi@'on de Maxima en el archivo @var{filename}.
+Cualquier interacci@'on entre Maxima y el usuario se almacena tambi@'en en este archivo, tal como aparece en la consola.
+
+Puesto que la transcripci@'on se escribe en el formato de salida a la consola, su contenido no es interpretable por Maxima.
+Para hacer un archivo que contenga expresiones que puedan ser nuevamente cargadas en Maxima, v@'eanse @code{save} y @code{stringout}; la funci@'on @code{save} almacena expresiones en formato Lisp, mientras que @code{stringout} lo hace en formato Maxima.
+
+El resultado de ejecutar @code{writefile} cuando el archivo @var{filename} ya existe depende del entorno Lisp operativo; el contenido anterior puede ser sobreescrito o ampliado con la sesi@'on actual. La funci@'on @code{appendfile} siempre a@~nade la sesi@'on al contenido actual.
+
+Puede ser @'util ejecutar @code{playback} despu@'es de @code{writefile} para guardar las interacciones previas de la sesi@'on. Puesto que  @code{playback} muestra solamente las variables de entrada y salida (@code{%i1}, @code{%o1}, etc.),
+cualquier salida generada por una sentencia de impresi@'on desde dentro de una funci@'on no es mostrada por @code{playback}.
+
+La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} o @code{appendfile}.
+
+@end deffn

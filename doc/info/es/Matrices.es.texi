@@ -1,3 +1,4 @@
+@c version 1.17
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -74,7 +75,7 @@ La instrucci@'on @code{demo ("eigen")} hace una demostraci@'on de las funciones 
 sucesivos c@'alculos.
 
 Las funciones del paquete @code{eigen} son
-@code{conjugate}, @code{innerproduct}, @code{unitvector}, @code{columnvector},
+@code{innerproduct}, @code{unitvector}, @code{columnvector},
 @code{gramschmidt}, @code{eigenvalues}, @code{eigenvectors}, @code{uniteigenvectors}
 y @code{similaritytransform}.
 
@@ -199,13 +200,34 @@ Warning - you are redefining the Macsyma function eigenvectors
 @end deffn
 
 @deffn {Funci@'on} conjugate (@var{x})
-@deffnx {Funci@'on} conj (@var{x})
-Sustituye @code{-%i} por @code{%i} en @var{x}.
-@c THIS DEFN IS JUST BROKEN. SEE SF BUG # 1045514.
+Devuelve el conjugado complejo de @var{x}.
 
-Se puede utilizar @code{conj} como sin@'onimo de @code{conjugate}.
+Es necesario cargar la funci@'on haciendo @code{load (conjugate)}.
 
-Es necesario cargar la funci@'on haciendo @code{load ("eigen")}.
+@c ===beg===
+@c declare ([aa, bb], real, cc, complex, ii, imaginary);
+@c conjugate (aa + bb*%i);
+@c conjugate (cc);
+@c conjugate (ii);
+@c conjugate (xx + yy);
+@c ===end===
+@example
+(%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
+
+(%o1)                         done
+(%i2) conjugate (aa + bb*%i);
+
+(%o2)                      aa - %i bb
+(%i3) conjugate (cc);
+
+(%o3)                     conjugate(cc)
+(%i4) conjugate (ii);
+
+(%o4)                         - ii
+(%i5) conjugate (xx + yy);
+
+(%o5)             conjugate(yy) + conjugate(xx)
+@end example
 
 @end deffn
 

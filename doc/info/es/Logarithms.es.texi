@@ -1,4 +1,4 @@
-
+@c version 1.13
 @menu
 * Definiciones para Logaritmos::  
 @end menu

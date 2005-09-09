@@ -1,4 +1,5 @@
-Usted puede iniciar Maxima con el comando "maxima". Maxima desplegar@'a alguna informaci@'on importante acerca de la versi@'on que usted est@'a usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesi@'on en Maxima se emplea el comando "quit();". A continuaci@'on se presenta un breve ejemplo de sesi@'on:
+@c version 1.5
+Se puede iniciar Maxima con el comando "maxima". Maxima desplegar@'a alguna informaci@'on importante acerca de la versi@'on que se est@'a usando y un prompt. Cada comando que vaya a ser ejecutado por Maxima debe terminar con un punto y coma. Para finalizar una sesi@'on en Maxima se emplea el comando "quit();". A continuaci@'on se presenta un breve ejemplo de sesi@'on:
 
 @example
 [wfs@@chromium]$ maxima

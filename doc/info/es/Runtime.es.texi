@@ -1,3 +1,4 @@
+@c version 1.15
 @menu
 * Introducci@'on al Entorno de Ejecuci@'on::   
 * Interrupciones::  
@@ -52,7 +53,13 @@ Maxima trata con dos tipos diferentes de caracter@'{@dotless{i}}sticas, las del 
 
 @deffn {Funci@'on} featurep (@var{a}, @var{f})
 
-Intenta determinar si el objeto @var{a} tiene la caracter@'{@dotless{i}}stica @var{f} en base a la informaci@'on en la base de datos actual. De ser as@'{@dotless{i}}, devuelve @code{true}, en caso contrario @code{false}. V@'ease tambi@'en @code{features}.
+Intenta determinar si el objeto @var{a} tiene la caracter@'{@dotless{i}}stica @var{f} en base a la informaci@'on en la base de datos actual. De ser as@'{@dotless{i}}, devuelve @code{true}, en caso contrario @code{false}. 
+
+N@'otese que @code{featurep} devuelve @code{false} cuando ni @var{f} ni la negaci@'on @var{f} puedan determinarse.
+
+La funci@'on @code{featurep} eval@'ua sus argumentos.
+ 
+V@'eanse tambi@'en @code{declare} y @code{features}.
 
 @example
 (%i1) declare (j, even)$

@@ -1,3 +1,4 @@
+@c version 1.34
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -549,6 +550,8 @@ Puesto que @code{lambda} no eval@'ua sus argumentos, la expresi@'on lambda @code
 @deffn {Funci@'on} local (@var{v_1}, ..., @var{v_n})
 
 Declara las variables  @var{v_1}, ..., @var{v_n} locales respecto de todas las propiedades en la sentencia en la que aparece esta funci@'on.
+
+La funci@'on @code{local} no eval@'ua sus argumentos y devuelve @code{done}.
 
 La funci@'on @code{local} s@'olo puede usarse dentro de un @code{block}, en el cuerpo de definici@'on de funciones o de expresiones @code{lambda} o en la funci@'on @code{ev}, si@'endole permitido aparecer una s@'ola vez en cada una de ellas.
 

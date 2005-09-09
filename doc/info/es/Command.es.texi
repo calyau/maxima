@@ -1,3 +1,4 @@
+@c version 1.32
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Definiciones para  la L@'{@dotless{i}}nea de Comandos::  
@@ -10,7 +11,7 @@
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
 
-@deffn {Operator} "'"
+@deffn {Operador} "'"
 
 El operador comilla sencilla @code{'} evita la evaluaci@'on. 
 
@@ -136,7 +137,7 @@ La comilla sencilla no evita la simplificaci@'on.
 
 @end deffn
 
-@deffn {Operator} "'@w{}'"
+@deffn {Operador} "'@w{}'"
 El operador @code{'@w{}'} (doble comilla simple) causa que una evaluaci@'on extra tenga lugar. 
 E.g., @code{'@w{}'%i4} reevaluar@'a la l@'{@dotless{i}}nea de entrada @code{%i4}. 
 @code{'@w{}'(f(x))} significa evaluar la expresi@'on @code{f(x)} en tiempo extra. 
@@ -156,7 +157,7 @@ Cualquier n@'umero par de argumentos puede ser usado.
 
 @end deffn
 
-@defvr {Option variable} debugmode
+@defvr {Variable optativa} debugmode
 Valor por defecto: @code{false}
 
 Cuando en Maxima ocurre un error, Maxima inicializar@'a el depurador si @code{debugmode} tiene el valor @code{true}. 
@@ -346,7 +347,7 @@ Soluci@'on
 
 
 
-@defvr {Property} evflag
+@defvr {Propiedad} evflag
 Algunos interruptores booleanos tienen la propiedad @code{evflag}. 
 @code{ev} trata de forma especial tales interruptores. 
 Un interruptor con la propiedad @code{evflag} ser@'a puesto a @code{true}
@@ -399,7 +400,7 @@ as@'{@dotless{i}} que @code{foo} es puesta a @code{true} durante la llamada a
 De forma equivalente, @code{ev ($, foo:true)} tiene el mismo efecto. 
 @end defvr
 
-@defvr {Property} evfun
+@defvr {Propiedad} evfun
 Algunas funciones tienen la propiedad @code{evfun}.
 @code{ev} trata tales funciones de forma especial. 
 Una funci@'on con la propiedad @code{evfun} ser@'a aplicada 
@@ -432,7 +433,7 @@ De forma equivalente, @code{foo (ev(%))} tiene el mismo efecto.
 @end defvr
 
 @c NEEDS WORK
-@defvr {Option variable} infeval
+@defvr {Variable optativa} infeval
 Habilita el modo de "evaluaci@'on infinita". @code{ev} repetidamente 
 evalua una expresi@'on hasta que se interrumpa la acci@'on. Para prevenir
 que una variable, digamos @code{X}, sea evaluada sin parar en este modo, 
@@ -462,8 +463,7 @@ e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
 
 @c MAYBE WE WANT TO CHANGE THE KEYWORDS clabels, dlabels, elabels TO ilabels, olabels, tlabels ??
 
-@code{kill (labels)} elimina @footnote{N.T: En este contexto el t@'ermino elimina no hace referencia a la remoci@'on de la etiqueta sino a que el valor asociado a ella desaparece} 
-todas las etiquetas de entrada, salida y expresiones intermedias creadas
+@code{kill (labels)} elimina todas las etiquetas de entrada, salida y expresiones intermedias creadas
 hasta el momento. 
 
 @code{kill (clabels)} elimina s@'olo las etiquetas de entrada
@@ -493,20 +493,15 @@ elimina todos los items de todas las listas de informaci@'on (infolists) excepto
 @code{kill (allbut (@var{infolist}))} elimina todos los items excepto para los que aparezcan en @var{infolist}, 
 donde @var{infolist} es @code{values}, @code{functions}, @code{arrays}, etc. 
 
-La memoria 
-
-The memory taken up by a bound property is not released until all symbols
-are unbound from it.
-In particular, to release the memory taken up by the value of a symbol,
-one unbinds the output label which shows the bound value, as well as unbinding the symbol itself.
+@c FALTA PARRAFO
 
 
 @code{kill} no evalua sus argumentos. 
 El operador de doble comilla simple, @code{'@w{}'}, rechaza  
 
-@c @code{kill} quotes its arguments.
-@c The double single quotes operator, @code{'@w{}'}, defeats the quotation.
-@code{kill (@var{symbol})} elimina todas las propiedades de @var{symbol}.
+La funci@'on @code{kill} no eval@'ua sus argumentos. El operador de dobles comillas simples, @code{'@w{}'}, hace que los argumentos se eval@'uen.
+
+La llamada @code{kill (@var{symbol})} elimina todas las propiedades de @var{symbol}.
 En contraste, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{remrule} elimina a propiedad en espec@'{@dotless{i}}fico. 
 
 @code{kill} siempre retorna @code{done}, incluso si un argumento no fue eliminado. 
@@ -514,7 +509,7 @@ En contraste, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{remru
 @end deffn
 
 @deffn {Funci@'on} labels (@var{symbol})
-@deffnx {System variable} labels
+@deffnx {Variable del sistema} labels
 Retorna la lista de etiquetas de entrada, salida o de expresiones intermedias las cuales empiezan con @var{symbol}. 
 T@'{@dotless{i}}picamente @var{symbol} es el valor de las variables @code{inchar}, @code{outchar} o @code{linechar}. 
 El caract@'er de etiqueta puede ser pasado con o sin signo de porcentaje, 
@@ -544,17 +539,17 @@ Algunas otras funciones, tales como @code{ldisplay}, siempre generan etiquetas d
 
 @code{first (rest (labels (''inchar)))} retorna la etiqueta de entrada m@'as reciente. 
 
-V@'ease tambi@'en: @code{inchar}, @code{outchar}, @code{linechar}, y @code{infolists}.
+V@'ease tambi@'en: @code{inchar}, @code{outchar}, @code{linechar} y @code{infolists}.
 
 @end deffn
 
 @c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
-@defvr {System variable} linenum
+@defvr {Variable del sistema} linenum
 El n@'umero de la l@'{@dotless{i}}nea del par de expresiones de entrada y salida actuales. 
 @end defvr
 
 @c NEEDS WORK
-@defvr {System variable} myoptions
+@defvr {Variable del sistema} myoptions
 Valor por defecto: @code{[]}
 
 @code{myoptions} es la lista de todas las opciones que nunca fueron reconfiguradas por el usuario, aunque @'estas hayan sido reconfiguradas a su valor por defecto. 
@@ -564,7 +559,7 @@ Valor por defecto: @code{[]}
 @c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
 @c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
 @c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
-@defvr {Option variable} nolabels
+@defvr {Variable optativa} nolabels
 Valor por defecto: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
@@ -585,7 +580,7 @@ V@'ease tambi@'en: @code{batch}, @code{batchload} y @code{labels}.
 
 @end defvr
 
-@defvr {Option variable} optionset
+@defvr {Variable optativa} optionset
 Valor por defecto: @code{false}
 
 Cuando @code{optionset} tiene como valor @code{true}, Maxima imprime un
@@ -667,7 +662,7 @@ para propiedades que no pueden ser mostradas de otra manera, i.e. para
 
 @end deffn
 
-@defvr {Option variable} prompt
+@defvr {Variable optativa} prompt
 Valor por defecto: @code{_}
 
 @code{prompt} es el s@'{@dotless{i}}mbolo del prompt de la funci@'on @code{demo}, 
@@ -698,7 +693,7 @@ Muchas, pero no todas, las variables y opciones globales son definidas por @code
 
 @end deffn
 
-@defvr {Option variable} showtime
+@defvr {Variable optativa} showtime
 Valor por defecto: @code{false}
 
 Cuando @code{showtime} tiene como valor @code{true}, el tiempo de computo y el tiempo transcurrido es impreso en cada expresi@'on de salida. 
@@ -725,7 +720,7 @@ Entra en el int@'erprete Lisp bajo Maxima. @code{(to-maxima)} retorna de nuevo a
 
 @end deffn
 
-@defvr {System variable} values
+@defvr {Variable del sistema} values
 Valor inicial: @code{[]}
 
 @code{values} es una lista de todas las variables que el usuario ha creado (no constituye las opciones Maxima ni los interruptores). 

@@ -1,4 +1,4 @@
-@c end concepts Diferenciaci@'on
+@c version 1.19
 @menu
 * Definiciones para Diferenciaci@'on::  
 @end menu

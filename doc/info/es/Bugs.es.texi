@@ -1,3 +1,4 @@
+@c version 1.7
 @menu
 * Introducci@'on a la detecci@'on de Bugs y su reporte::
 * Definiciones para la detecci@'on de Bugs y su reporte::

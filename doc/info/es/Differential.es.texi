@@ -1,4 +1,4 @@
-@c end conceptos de Ecuaciones Diferenciales
+@c version 1.8
 @menu
 * Definiciones para Ecuaciones Diferenciales::  
 @end menu

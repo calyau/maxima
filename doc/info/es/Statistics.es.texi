@@ -1,4 +1,4 @@
-@c end concepts Statistics
+@c version 1.4
 @menu
 * Definiciones para Estad@'{@dotless{i}}stica::  
 @end menu

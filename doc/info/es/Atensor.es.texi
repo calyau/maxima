@@ -1,3 +1,4 @@
+@c version 1.7
 @menu
 * Introducci@'on a atensor::
 * Definiciones para atensor::

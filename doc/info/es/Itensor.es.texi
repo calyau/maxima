@@ -1,5 +1,4 @@
-@c RERUN EXAMPLES WITH ADDT'L WHITESPACE IN INPUT TO AID LEGIBILITY
-
+@c version 1.33
 @menu
 * Introducci@'on a itensor::
 * Definiciones para itensor::
