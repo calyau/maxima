@@ -110,6 +110,7 @@ contrib/Zeilberger/shiftQuotient.mac\
 contrib/Zeilberger/testGosper.mac\
 contrib/Zeilberger/testZeilberger.mac\
 contrib/Zeilberger/whatsnew.txt\
+contrib/defstruct.lisp\
 contrib/descriptive/README\
 contrib/descriptive/biomed.data\
 contrib/descriptive/descriptive.mac\
@@ -166,6 +167,10 @@ contrib/diffequations/tests/rtestode_murphy_2_3.mac\
 contrib/diffequations/tests/rtestode_murphy_2_4.mac\
 contrib/diffequations/tests/rtestode_murphy_2_5.mac\
 contrib/diffequations/tests/testsuite.lisp\
+contrib/distrib/distrib.mac\
+contrib/distrib/README\
+contrib/distrib/doc/distrib_en.tex\
+contrib/eval_string.lisp\
 contrib/f90.lisp\
 contrib/f90.usg\
 contrib/format/README\
@@ -349,6 +354,7 @@ contrib/rand/twovar.mac\
 contrib/rand/twovar.usg\
 contrib/rand/vandpol.mac\
 contrib/rand/vandpol.usg\
+contrib/rtestdefstruct.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/constants.mac\
 contrib/sarag/examples.mac\
