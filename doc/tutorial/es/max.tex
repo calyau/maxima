@@ -34,7 +34,7 @@
 
 	\hyphenation{Ruf-fi-ni e-xer-ci-cios}
 
-%versi'on: 12-06-05
+%versi'on: 04-09-05
 
 \begin{document}
 \maketitle
@@ -1717,7 +1717,7 @@ h(x) = x %e    + %e   ]
 \newpage
 \section{N'umeros aleatorios}
 
-La funci'on \verb|random(n)|\index{random} genera un n'umero seudoaleatorio con distribuci'on uniforme discreta entre $0$ y $n-1$, ambos inclusive; as'i, una simulaci'on del lanzamiento de un dado ser'ia
+Si su argumento es un n'umero entero positivo, la funci'on \verb|random(n)|\index{random} genera un n'umero seudoaleatorio con distribuci'on uniforme discreta entre $0$ y $n-1$, ambos inclusive; as'i, una simulaci'on del lanzamiento de un dado ser'ia
 \begin{verbatim}
 (%i1) random(6)+1;
 (%o1)                        5
@@ -1733,14 +1733,50 @@ y una serie de 100 lanzamientos de una moneda,
 1, 1, 1]
 \end{verbatim}
 
+Cuando el argumento es un n'umero decimal positivo, la variable aleatoria que se simula es la uniforme continua, dando como resultado un n'umero real perteneciente al intervalo $[0,r)$,
+\begin{verbatim}
+(%i3) random(6.0);
+(%o3)                1.171107706786732
+\end{verbatim}
+
+El algoritmo generador de los n'umeros seudoaleatorios es determinista, de manera que partiendo de una misma semilla o valor inicial, se generar'a la misma secuencia de n'umeros. Para controlar el valor de esta semilla disponemos de las funciones \verb|make_random_state|\index{make\_random\_state} y \verb|set_random_state|\index{set\_random\_state}; por ejemplo, para definir una semilla que se genere a partir del estado actual del reloj del sistema haremos
+\begin{verbatim}
+(%i4) nueva_semilla: make_random_state(true)$
+\end{verbatim}
+Sin embargo, para que tal semilla se active en el generador, debemos indicarlos expresamente haciendo
+\begin{verbatim}
+(%i5) set_random_state(nueva_semilla)$
+\end{verbatim}
+
+El argumento de la funci'on \verb|make_random_state| puede ser tambi'en un n'umero entero, como se hace en el ejemplo de m'as abajo.
+
+Veamos un caso de aplicaci'on de todo esto. Supongamos que queremos simular diferentes series estoc'asticas, pero que todas ellas sean iguales. Si hacemos
+\begin{verbatim}
+(%i6) makelist(random(6),i,1,10);
+(%o6)          [0, 2, 2, 4, 3, 0, 3, 3, 5, 3]
+(%i7) makelist(random(6),i,1,10);
+(%o7)          [5, 4, 4, 5, 0, 1, 3, 1, 3, 4]
+(%i8) makelist(random(6),i,1,10);
+(%o8)          [4, 4, 3, 4, 5, 2, 5, 5, 2, 3]
+\end{verbatim}
+lo m'as probable es que obtengamos tres secuencias distintas, como en el ejemplo. Pero si hacemos
+\begin{verbatim}
+(%i9) semilla: make_random_state(123456789)$
+(%i10) set_random_state(semilla)$ makelist(random(6),i,1,10);
+(%o11)         [4, 4, 0, 1, 0, 3, 2, 5, 4, 4]
+(%i12) set_random_state(semilla)$ makelist(random(6),i,1,10);
+(%o13)         [4, 4, 0, 1, 0, 3, 2, 5, 4, 4]
+(%i14) set_random_state(semilla)$ makelist(random(6),i,1,10);
+(%o15)         [4, 4, 0, 1, 0, 3, 2, 5, 4, 4]
+\end{verbatim}
+se ver'a que las tres secuencias son iguales, ya que antes de generar cada muestra aleatoria reiniciamos el estado del generador.
+
 Otra variable aleatoria que suele interesar simular es la normal o gaussiana con media $\mu=m \in \R$ y desviaci'on t'ipica $\sigma=s>0$, para lo cual se dispone de la funci'on \verb|gauss(m,s)|\index{gauss},
 \begin{verbatim}
-(%i3) load(bessel)$
-(%i4) gauss(31.45,1.23);
-(%o4)                 32.2873298461951
+(%i16) gauss(31.45,1.23);
+(%o16)                 32.2873298461951
 \end{verbatim}
-como se ve en el ejemplo, antes de hacer uso de esta funci'on es necesario cargar el archivo \verb|bessel.lisp|.
-
+El generador de n'umeros aleatorios normales opera independientemente del mecanismo de semilla comentado m'as arriba.
 
 \newpage
 \section{Gr'aficos}
