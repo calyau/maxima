@@ -1,8 +1,0 @@
-@appendix Proyecto GLUD-CLog
-
-El proyecto GLUD-CLog, nace a principios del a@~no 2004, y hace
-parte del Grupo Linux Universidad Distrital (@url{http://glud.udistrital.edu.co}). La palabra CLog es un acr@'onimo que tiene por significado: El Conocimiento Libre y sin barreras.  Por qu@'e?. Las dos primeras letras C y L significan conocimiento libre y esa misma L con las letras o y g, hacen referencia a la funci@'on logaritmo, la cual ha ayudado  a los matem@'aticos y cient@'{@dotless{i}}ficos ha simplificar c@'alculos y operaciones pudiendo descubrir muchas cosas interesantes. Los objetivos del proyecto en primera instancia es proveer a la comunidad documentos (y posteriormente herramientas) que permitan el trabajo con software libre cient@'{@dotless{i}}fico, de forma sencilla y concreta. Actualmente puede encontrar algunos documentos en la p@'agina web del proyecto @url{http://glud.udistrital.edu.co/clog}. 
-La lista de correo del proyecto GLUD-CLog es @email{glud-clog@@listas.udistrital.edu.co}. Lo invitamos a unirse, a trav@'es de lista de correo, para que participe y construyamos entre todos una comunidad cient@'{@dotless{i}}fica libre. Si usted est@'a en la capacidad y cree que vale la pena, el proyecto acepta cualquier donaci@'on en dinero, equipos, patrocinio; estaremos sumamente agradecidos. 
-
-El conocimiento nos pertenece a todos y nuestra labor es compartirlo y divulgarlo.  
-
