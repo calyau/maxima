@@ -1,4 +1,4 @@
-@c /Matrices.texi/1.16/Sun Jul 31 15:20:46 2005/-ko/
+@c /Matrices.texi/1.17/Sat Sep 10 10:10:11 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
@@ -80,7 +80,7 @@ desse pacote.
 mas sem lembretes de usu@'ario entre sucessivas computa@,{c}@~oes.
 
 As fun@,{c}@~oes no pacote @code{eigen} s@~ao
-@code{conjugate}, @code{innerproduct}, @code{unitvector}, @code{columnvector},
+@code{innerproduct}, @code{unitvector}, @code{columnvector},
 @code{gramschmidt}, @code{eigenvalues}, @code{eigenvectors}, @code{uniteigenvectors},
 e @code{similaritytransform}.
 
@@ -211,14 +211,34 @@ Warning - you are redefining the Macsyma function autovetores
 @end deffn
 
 @deffn {Fun@,{c}@~ao} conjugate (@var{x})
-@deffnx {Fun@,{c}@~ao} conj (@var{x})
-Substitui @code{-%i} por @code{%i} em @var{x}.
-Dependendo do valor de @var{x}, o resultado pode ser um complexo conjugado de @var{x}.
-@c THIS DEFN IS JUST BROKEN.  SEE SF BUG # 1045514.
+Retorna o conjugado complexo de @var{x}.
 
-@code{conj} @'e um sin@^onimo para @code{conjugate}.
+@code{load (conjugate)} chama essa fun@,{c}@~ao.
 
-@code{load ("eigen")} chama essa fun@,{c}@~ao.
+@c ===beg===
+@c declare ([aa, bb], real, cc, complex, ii, imaginary);
+@c conjugate (aa + bb*%i);
+@c conjugate (cc);
+@c conjugate (ii);
+@c conjugate (xx + yy);
+@c ===end===
+@example
+(%i1) declare ([aa, bb], real, cc, complex, ii, imaginary);
+
+(%o1)                         done
+(%i2) conjugate (aa + bb*%i);
+
+(%o2)                      aa - %i bb
+(%i3) conjugate (cc);
+
+(%o3)                     conjugate(cc)
+(%i4) conjugate (ii);
+
+(%o4)                         - ii
+(%i5) conjugate (xx + yy);
+
+(%o5)             conjugate(yy) + conjugate(xx)
+@end example
 
 @end deffn
 

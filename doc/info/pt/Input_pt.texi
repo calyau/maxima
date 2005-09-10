@@ -1,4 +1,5 @@
-@c /Input.texi/1.35/Fri Jun 17 00:57:33 2005/-ko/
+@c /Input.texi/1.38/Sat Sep 10 10:10:11 2005/-ko/
+
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
@@ -37,7 +38,7 @@ Todavia, o valor de @code{_} @'e simplificado (mas n@~ao avaliado) quando for mo
 
 @code{_} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
 
-Veja tamb@'em @code{%} e @code{%%}.
+Veja tamb@'em @code{%}.
 
 Exemplos:
 
@@ -90,7 +91,9 @@ Exemplos:
 @code{%} @'e a express@~ao de sa@'ida (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 mais recentemente calculada pelo Maxima,
 pode ou n@~ao ser mostrada.
-Veja tamb@'em @code{%%} e @code{%th}.
+@code{%} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+
+Veja tamb@'em @code{_}, @code{%%}, e @code{%th}
 
 @end defvr
 
@@ -131,6 +134,10 @@ Na primeira declara@,{c}@~ao em uma declara@,{c}@~ao composta,
 ou fora de uma declara@,{c}@~ao composta,
 @code{%%} @'e indefinido.
 
+@code{%%}  reconhecido por ambos @code{batch} e @code{load}.
+
+Veja tamb@'em @code{%}.
+
 @end defvr
 
 @defvr {Vari@'avel de op@,{c}@~ao} %edispflag
@@ -155,6 +162,10 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 @end example
 
 escolhe @code{s} para a soma das @'ultimas dez express@~oes de sa@'ida.
+
+@code{%th} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+
+Veja tamb@'em @code{%}.
 
 @end deffn
 
@@ -1114,7 +1125,7 @@ com sum@'ario descritivo.
 @itemize @bullet
 @item
 Somas e diferen@,{c}as s@~ao substitu@'idas por @code{sum(@var{n})}
-onde @var{n} @'e o n@'umero de operandos da adi@,{c}@~ao.
+onde @var{n} @'e o n@'umero de operandos do produto.
 @item
 Produtos s@~ao substitu@'idos por @code{product(@var{n})}
 onde @var{n} @'e o n@'umero de operandos da multiplica@,{c}@~ao.
@@ -1190,8 +1201,9 @@ Veja tamb@'em @code{lmxchar}.
 @c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORKAROUND:
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, all)
-Armazena o valor corrente de @var{name_1}, @var{name_2}, @var{name_3}, ..., em @var{filename}.
-Os argumentos devem ser obrigat@'oriamente nomes de vari@'aveis, fun@,{c}@~oes, ou outros objetos.
+Armazena os valores correntes de @var{name_1}, @var{name_2}, @var{name_3}, ..., em @var{filename}.
+Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objetos.
+Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem nenhum valor ou fun@,{c}@~ao associado ser@'a ignorado.
 @code{save} retorna @var{filename}.
 
 @code{save} armazena dados na forma de express@~oes Lisp.

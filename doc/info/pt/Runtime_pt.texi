@@ -1,4 +1,4 @@
-@c /Runtime.texi/1.14/Thu Jun 16 17:05:36 2005/-ko/
+@c /Runtime.texi/1.15/Sat Sep 10 10:10:11 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
@@ -84,8 +84,15 @@ Veja Tamb@'em @code{features} e @code{featurep} para informa@value{cedilha}@~oes
 @deffn {Fun@value{cedilha}@~ao} featurep (@var{a}, @var{f})
 Tenta determinar se o objeto @var{a} tem o
 recurso @var{f} na base dos fatos dentro base de dados corrente.  Se possue,
-@'e retornado @code{true}, de outra forma @'e rtornado @code{false}.  Veja Tamb@'em @code{features}.
+@'e retornado @code{true}, de outra forma @'e retornado @code{false}.
 
+Note que @code{featurep} retorna @code{false} quando nem @var{f}
+nem a nega@,{c}@~ao de @var{f} puderem ser estabelecidas.
+
+@code{featurep} avalia seus argumentos.
+
+Veja tamb@'em @code{declare} e @code{features}.
+		     
 @example
 (%i1) declare (j, even)$
 (%i2) featurep (j, integer);

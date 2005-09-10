@@ -1,4 +1,5 @@
-@c /Function.texi/1.33/Fri Jun 17 00:57:33 2005/-ko/
+@c /Function.texi/1.34/Sat Sep 10 10:10:11 2005/-ko/
+
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -944,6 +945,9 @@ Tanto uma fun@,{c}@~ao pode ser definida via @code{buildq}, como na express@~ao 
 Declara as vari@'aveis @var{v_1}, ..., @var{v_n} para serem locais com
 rela@,{c}@~ao a todas as propriedades na declara@,{c}@~ao na qual essa fun@,{c}@~ao
 @'e usada.
+
+@code{local} n@~ao avalia seus argumentos.
+@code{local} retorna @code{done}.
 
 @code{local} pode somente ser usada em @code{block}, no corpo de defini@,{c}@~oes
 de fun@,{c}@~ao ou express@~oes @code{lambda}, ou na fun@,{c}@~ao @code{ev}, e somente uma
