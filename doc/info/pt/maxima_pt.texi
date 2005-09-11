@@ -17,13 +17,14 @@
 @c %**start of header
 @setfilename  maxima_pt.info
 @documentencoding ISO-8859-15
+@c @documentencoding ISO-8859-1
 @set cedilha @,{c}
 @set i_agu @'i
 @set I_agu @'I
 @set a_til @~a
 @set a_agu @'a
 @set o_til @~o
-@set mail <maxima at math.utexas.edu>
+@set mail <maxima at math dot utexas dot edu>
 @synindex vr fn
 @settitle Manual do Maxima
 @c %**end of header
@@ -99,8 +100,8 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Logarithms::                  Manipula@value{cedilha}@~ao de express@~oes envolvendo
                                 logar@'itmos.
 * Trigonometria::               Manipulando express@~oes com trigonometria e
-                                fun@value{cedilha}@~oes trigonom@'etricas inversas.
-* Special Functions::           Fun@value{cedilha}@~oes especiais
+                                Fun@value{cedilha}@~oes trigonom@'etricas inversas.
+* Fun@value{cedilha}@value{o_til}es Especiais::           Fun@value{cedilha}@~oes especiais
 * Orthogonal Polynomials::      Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
 
 * Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
@@ -109,7 +110,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Integra@value{cedilha}@~ao::  		C@'alculo integral.
 * Equa@value{cedilha}@~oes::    		Definindo e resolvendo equa@value{cedilha}@~oes.
 * Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
-* Num@'erico::                     Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
+* Num@'erico::                    Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
 * Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
 * Arrays e Tabelas::            Criando e trabalhando com arrays.
@@ -217,11 +218,11 @@ Trigonometria
 * Introdu@value{cedilha}@~ao ao Pacote Trigonom@'etrico::  
 * Defini@value{cedilha}@~oes para Trigonometria::  
 
-Special Functions
+Fun@value{cedilha}@value{o_til}es Especiais
 
-* Introduction to Special Functions::  
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::   
 * specint::                     
-* Definitions for Special Functions::  
+* Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
 
 Orthogonal Polynomials
 
@@ -421,15 +422,15 @@ Debugging
 @chapter Logarithms
 @include Logarithms.texi
 
-@node Trigonometria, Special Functions, Logarithms, Top
+@node Trigonometria, Fun@value{cedilha}@value{o_til}es Especiais, Logarithms, Top
 @chapter Trigonometria
 @include Trigonometric_pt.texi
 
-@node Special Functions, Orthogonal Polynomials, Trigonometria, Top
-@chapter Special Functions
-@include Special.texi
+@node Fun@value{cedilha}@value{o_til}es Especiais, Orthogonal Polynomials, Trigonometria, Top
+@chapter Fun@value{cedilha}@value{o_til}es Especiais
+@include Special_pt.texi
 
-@node Orthogonal Polynomials, Fun@value{cedilha}@~oes El@'ipticas, Special Functions, Top
+@node Orthogonal Polynomials, Fun@value{cedilha}@~oes El@'ipticas, Fun@value{cedilha}@value{o_til}es Especiais, Top
 @chapter Orthogonal Polynomials
 @include SpecfunII.texi
 
