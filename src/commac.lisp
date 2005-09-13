@@ -26,6 +26,10 @@
 
 (defvar *prin1* nil)		  ;a function called instead of prin1.
 
+;; Should we give this a different name?
+(defvar *fortran-print* nil
+  "Tells EXPLODEN we are printing numbers for Fortran so include the exponent marker.")
+
 (eval-when
     #+gcl (load compile eval)
     #-gcl (:compile-toplevel :load-toplevel :execute)
@@ -472,12 +476,15 @@ values")
 	   (setq string (print-invert-case symb)))
 	  ((floatp symb)
 	   (let ((a (abs symb)))
-	     (cond ((or (eql a 0.0)
-			(and (>= a .001)
-			     (<= a 10000000.0)))
-		    (setq string (format nil "~vf" (+ 1 $fpprec) symb)))
-		   (t (setq string (format nil "~ve" (+ 4 $fpprec) symb)))))
-	   (setq string (string-left-trim " " string)))
+	     ;; When printing out something for Fortran, we want to be
+	     ;; sure to print the exponent marker so that Fortran
+	     ;; knows what kind of number it is.  It turns out that
+	     ;; Fortran's exponent markers are the same as Lisp's so
+	     ;; we just need to make sure the exponent marker is
+	     ;; printed.
+	     (setq string (format nil (if *fortran-print* "~ve" "~vg")
+				  (+ 4 $fpprec) symb))
+	     (setq string (string-trim " " string))))
 	  #+(and gcl (not gmp))
 	  ((bignump symb)
 	   (let* ((big symb)

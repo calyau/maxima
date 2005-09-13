@@ -71,7 +71,11 @@
     (defprop mminus 100. lbp)
      
     (defprop msetq (#\:) strsym)  
-    (setq x (mstring x))
+    (let ((*fortran-print* t)
+	  (*read-default-float-format* 'single-float))
+      ;; The above makes sure we an exponent marker for Fortran
+      ;; numbers.
+      (setq x (mstring x)))
     ;; Make sure this gets done before exiting this frame.
     (defprop mexpt msz-mexpt grind)
     (remprop 'mminus 'lbp)
