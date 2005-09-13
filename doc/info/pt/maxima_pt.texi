@@ -102,7 +102,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Trigonometria::               Manipulando express@~oes com trigonometria e
                                 Fun@value{cedilha}@~oes trigonom@'etricas inversas.
 * Fun@value{cedilha}@value{o_til}es Especiais::           Fun@value{cedilha}@~oes especiais
-* Orthogonal Polynomials::      Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
+* Polin@^omios Ortogonais::       Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
 
 * Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
 * Limites::                     Limites de express@~oes.
@@ -224,10 +224,10 @@ Fun@value{cedilha}@value{o_til}es Especiais
 * specint::                     
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
 
-Orthogonal Polynomials
+Polin@^omios Ortogonais
 
-* Introduction to Orthogonal Polynomials::
-* Definitions for Orthogonal Polynomials::
+* Introdu@value{cedilha}@~ao a Polin@^omios Ortogonais::
+* Defini@value{cedilha}@~oes para Polin@^omios Ortogonais::
 
 Fun@value{cedilha}@~oes El@'ipticas
 
@@ -426,15 +426,15 @@ Debugging
 @chapter Trigonometria
 @include Trigonometric_pt.texi
 
-@node Fun@value{cedilha}@value{o_til}es Especiais, Orthogonal Polynomials, Trigonometria, Top
+@node Fun@value{cedilha}@value{o_til}es Especiais, Polin@^omios Ortogonais, Trigonometria, Top
 @chapter Fun@value{cedilha}@value{o_til}es Especiais
 @include Special_pt.texi
 
-@node Orthogonal Polynomials, Fun@value{cedilha}@~oes El@'ipticas, Fun@value{cedilha}@value{o_til}es Especiais, Top
-@chapter Orthogonal Polynomials
-@include SpecfunII.texi
+@node Polin@^omios Ortogonais, Fun@value{cedilha}@~oes El@'ipticas, Fun@value{cedilha}@value{o_til}es Especiais, Top
+@chapter Polin@^omios Ortogonais
+@include SpecfunII_pt.texi
 
-@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Orthogonal Polynomials, Top
+@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Polin@^omios Ortogonais, Top
 @chapter Fun@value{cedilha}@~oes El@'ipticas
 @include Elliptic_pt.texi
 
