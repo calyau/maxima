@@ -4,7 +4,7 @@ SUBDIRS = msgs
 
 verpkglibexec_SCRIPTS = omplotdata mgnuplot
 
-EXTRA_DIST = header.tcl footer.tcl
+EXTRA_DIST = header.tcl footer.tcl paths.tcl
 
 OMPLOTDATASOURCES = \
 	header.tcl \
