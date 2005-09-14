@@ -15,7 +15,7 @@
 @c Portuguese Translator Jorge Barros de Abreu <ficmati01@solar.com.br>
 
 @c %**start of header
-@setfilename  maxima_pt.info
+@setfilename  maxima.info
 @documentencoding ISO-8859-15
 @c @documentencoding ISO-8859-1
 @set cedilha @,{c}
