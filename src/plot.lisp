@@ -711,8 +711,9 @@ setrgbcolor} def
   )
 
 (defun draw2d-discrete (f)
-  (let ((x (third f))
-	(y (fourth f)))
+  (let* ((f (copy-tree f))		; Copy all of F because we destructively modify it below.
+	 (x (third f))
+	 (y (fourth f)))
     (cond 
       ((= (length f) 4)			; [discrete,x,y]
        (if (not ($listp x))
