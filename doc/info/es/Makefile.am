@@ -37,7 +37,7 @@ clean-info:
 	rm -f maxima.info*
 
 clean-html:
-	rm -f maxima*.html
+	rm -f maxima.html maxima_*.html
 
 EXTRA_DIST = maximahtml.es.mk
 
