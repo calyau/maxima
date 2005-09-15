@@ -953,35 +953,56 @@
 
   
   
-(defvar *testsuite-files* nil)
+(defmvar $testsuite_files nil)
 
 (defvar *maxima-testsdir*)
 
-(defun $run_testsuite (&optional (show-known-bugs nil) (show-all nil)) 
+(defun intersect-tests (tests)
+  ;; If TESTS is non-NIL, we assume it's a Maxima list of (maxima)
+  ;; strings naming the tests we want to run.  They must match the
+  ;; file names in $testsuite_files.  We ignore any items that aren't
+  ;; in $testsuite_files.
+  (mapcar #'(lambda (x)
+	      (if (symbolp x)
+		  (subseq (print-invert-case x) 1)
+		  x))
+	  (cond (tests
+		 (intersection (cdr $testsuite_files)
+			       (cdr tests)
+			       :key #'(lambda (x)
+					(maxima-string (if (listp x)
+							   (second x)
+							   x)))
+			       :test #'string=))
+		(t
+		 (cdr $testsuite_files)))))
+
+(defun $run_testsuite (&optional (show-known-bugs nil) (show-all nil) (tests nil)) 
   (let ((test-file)
 	(expected-failures))
     (setq *collect-errors* nil)
-    (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp"))
+    (unless $testsuite_files
+      (load (concatenate 'string *maxima-testsdir* "/" "testsuite.lisp")))
     (let ((error-break-file)
-	  (testresult))
+	  (testresult)
+	  (tests-to-run (intersect-tests tests)))
       (time 
-       (loop with errs = '() for testentry in *testsuite-files*
+       (loop with errs = '() for testentry in tests-to-run
 	      do
 	      (if (atom testentry)
 		  (progn
 		    (setf test-file testentry)
 		    (setf expected-failures nil))
 		  (progn
-		    (setf test-file (first testentry))
-		    (setf expected-failures (rest testentry))))
+		    (setf test-file (second testentry))
+		    (setf expected-failures (cddr testentry))))
   
 	      (format t "~%Running tests in ~a: " test-file)
 	      (or (errset
 		   (progn
 		     (setq testresult 
 			   (rest (test-batch
-				  (format nil "~a/~a" 
-					  *maxima-testsdir* test-file)
+				  ($file_search test-file $file_search_tests)
 				  expected-failures
 				  :show-expected show-known-bugs
 				  :show-all show-all)))

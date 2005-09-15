@@ -62,6 +62,10 @@
   "Directories to search for demos.")
 
 (defvar $file_search_usage nil)
+
+(defvar $file_search_tests nil
+  "Directories to search for maxima test suite")
+
 (defvar $chemin nil)
 
 
@@ -234,6 +238,8 @@
 		(combine-path (list *maxima-sharedir* share-subdirs
 				    usage-patterns))
 		(combine-path (list *maxima-docdir* usage-patterns))))
+    (setq $file_search_tests
+	  `((mlist) ,(combine-path (list *maxima-testsdir* maxima-patterns))))
     (setq $chemin
 	  (list '(mlist)
 		(combine-path (list *maxima-symdir* lisp-patterns))

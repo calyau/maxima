@@ -5,15 +5,16 @@
 ;;; of the test problems that are expected to fail, e.g.
 ;;; ("testfile.mac" 7 9 13).
 
-(setf *testsuite-files*
-      '("rtestnset.mac" "rtest1.mac" "rtest1a.mac" "rtest2.mac" "rtest4.mac"  "rtest5.mac"
-	"rtest6.mac" "rtest6a.mac" "rtest6b.mac" "rtest7.mac" "rtest9.mac"
-	"rtest9a.mac" "rtest10.mac" "rtest11.mac" "rtest13.mac" "rtest13s.mac"
-	("rtest14.mac" 57 63)
-	("rtest15.mac" 4)
-	("rtest16.mac" 5)
-	"rtestode.mac" "rtestode_zp.mac"
-	"rtest3.mac" "rtest8.mac" "rtest12.mac" "rexamples.mac"
-	"rtesthyp.mac"
-    "rtestmt19937.mac"
+(setf $testsuite_files
+      '((mlist simp)
+	"rtestnset" "rtest1" "rtest1a" "rtest2" "rtest4"  "rtest5"
+	"rtest6" "rtest6a" "rtest6b" "rtest7" "rtest9"
+	"rtest9a" "rtest10" "rtest11" "rtest13" "rtest13s"
+	((mlist simp) "rtest14" 57 63)
+	((mlist simp) "rtest15" 4)
+	((mlist simp) "rtest16" 5)
+	"rtestode" "rtestode_zp"
+	"rtest3" "rtest8" "rtest12" "rexamples"
+	"rtesthyp"
+	"rtestmt19937"
 	))
