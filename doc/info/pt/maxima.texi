@@ -131,7 +131,7 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 * Rules and Patterns::          Coincid@^encia de express@~oes definidas pelo 
 				usu@'ario e regras de simplifica@value{cedilha}@~ao.
 * Listas::                      Manipula@value{cedilha}@~ao de listas.
-* Sets::                        Manipula@value{cedilha}@~ao de conjuntos.
+* Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
 * Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::		Definindo fun@value{cedilha}@~oes.
 * Fluxo de Programa::           Definindo programas do Maxima.
 * Debugging::                   Depurando programas do Maxima.
@@ -337,10 +337,10 @@ Listas
 * Introdu@value{cedilha}@~ao a Listas::
 * Defini@value{cedilha}@~oes para Listas::
 
-Sets
+Conjuntos
 
-* Introduction to Sets::       
-* Definitions for Sets::       
+* Introdu@value{cedilha}@~ao a Conjuntos::       
+* Defini@value{cedilha}@~oes para Conjuntos::       
 
 Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 
@@ -522,15 +522,15 @@ Debugging
 @include Rules.texi
 
 
-@node Listas, Sets, Rules and Patterns, Top
+@node Listas, Conjuntos, Rules and Patterns, Top
 @chapter Listas
 @include Lists_pt.texi
 
-@node Sets, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Listas, Top
-@chapter Sets
-@include nset.texi
+@node Conjuntos, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Listas, Top
+@chapter Conjuntos
+@include nset_pt.texi
 
-@node Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fluxo de Programa, Sets, Top
+@node Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fluxo de Programa, Conjuntos, Top
 @chapter Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @include Function_pt.texi
 

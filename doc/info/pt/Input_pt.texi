@@ -86,7 +86,7 @@ Exemplos:
 
 @end defvr
 
-@defvr {System variable} %
+@defvr {Vari@'avel de sistema} %
 
 @code{%} @'e a express@~ao de sa@'ida (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 mais recentemente calculada pelo Maxima,

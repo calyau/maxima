@@ -267,7 +267,7 @@ Para a constante de Euler-Mascheroni, veja @code{%gamma}.
 
 @end deffn
 
-@defvr {Constant} %gamma
+@defvr {Constante} %gamma
 A constante de Euler-Mascheroni, 0.5772156649015329 ....
 @c DOUBTLESS THERE IS MORE TO SAY HERE.
 

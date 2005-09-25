@@ -103,13 +103,13 @@ de @code{genindex} com um sufixo num@'erico.
 @end defvr
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defvr {Constant} inf
+@defvr {Constante} inf
 Infinito positivo real.
 
 @end defvr
 
 @c NEEDS EXPANSION AND EXAMPLES
-@defvr {Constant} infinity
+@defvr {Constante} infinity
 Infinito complexo, uma magnitude infinita de @^angulo de fase
 arbitr@'aria.  Veja tamb@'em @code{inf} e @code{minf}.
 

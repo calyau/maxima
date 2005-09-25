@@ -12,9 +12,9 @@ testes do Maxima bem como informar novos erros.
 
 @node Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
 @section Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
-@deffn {Function} run_testsuite ()
-@deffnx {Function} run_testsuite (boolean)
-@deffnx {Function} run_testsuite (boolean, boolean)
+@deffn {Fun@value{cedilha}@~ao} run_testsuite ()
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (boolean)
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (boolean, boolean)
 Executa o conjunto de testes do Maxima.  Testes que produzem a resposta desejada s@~ao
 considerados ``passes,'' e testes que n@~ao produzem a resposta
 desejada, s@~ao marcados como erros conhecidos.
@@ -34,7 +34,7 @@ e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
 @code{run_testsuite} retorna @code{done}.
 @end deffn
 
-@deffn {Function} bug_report ()
+@deffn {Fun@value{cedilha}@~ao} bug_report ()
 Imprime os n@'umeros de vers@~ao do Maxima e do Lisp, e chama o link
 para a p@'agina web de informa@,{c}@~ao de erros do projeto Maxima.
 A informa@,{c}@~ao da vers@~ao @'e a mesma reportada por @code{build_info}.
@@ -45,7 +45,7 @@ e do Lisp dentro da informa@,{c}@~ao do erro.
 @code{bug_report} retorna uma seq@"u@^encia de caracteres vazia @code{""}.
 @end deffn
 
-@deffn {Function} build_info ()
+@deffn {Fun@value{cedilha}@~ao} build_info ()
 Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
 
 @code{build_info} retorna uma seq@"u@^encia de caracteres vazia @code{""}.

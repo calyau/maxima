@@ -18,7 +18,7 @@
 @c FOLLOWING FUNCTIONS IN bffac.mac ARE DESCRIBED HERE: !!!
 @c bfpsi, bffac, cbffac !!!
 
-@deffn {Function} bffac (@var{expr}, @var{n})
+@deffn {Fun@value{cedilha}@~ao} bffac (@var{expr}, @var{n})
 Vers@~ao para grandes n@'umeros em ponto flutuante da fun@value{cedilha}@~ao
 @code{factorial} (usa o artif@'icio gamma).  O segundo argumento informa quantos d@'igitos reter e retornar,
 isso @'e uma boa id@'eia para requisitar precis@~ao adicional.

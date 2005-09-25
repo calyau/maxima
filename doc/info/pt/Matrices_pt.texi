@@ -1484,8 +1484,8 @@ Retorna um matriz @var{m} por @var{n}, com todos os elementos sendo zero.
 
 @end deffn
 
-@defvr {Special symbol} "["
-@defvrx {Special symbol} "]"
+@defvr {S@'imbolo especial} "["
+@defvrx {S@'imbolo especial} "]"
 @code{[} e @code{]} marcam o ome@,{c}o e o fim, respectivamente, de uma lista.
 
 @code{[} e @code{]} tamb@'em envolvem os subscritos de

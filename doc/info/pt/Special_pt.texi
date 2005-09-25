@@ -558,7 +558,7 @@ geral.
 @end deffn
 
 @c MORE INFO NEEDED HERE
-@defvr {Special symbol} poisson
+@defvr {S@'imbolo especial} poisson
 O s@'imbolo @code{/P/} segue o r@'otulo de linha de uma express@~ao contendo s@'eries de
 Poisson.
 

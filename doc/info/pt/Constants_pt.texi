@@ -6,38 +6,38 @@
 @node Defini@value{cedilha}@~oes para Constantes,  , Constantes, Constantes
 @section Defini@value{cedilha}@~oes para Constantes
 
-@defvr {Constant} %e
+@defvr {Constante} %e
  - A base dos logar@'itmos naturais, e, @'e representada no Maxima
 como @code{%e}.
 
 @end defvr
 
-@defvr {Constant} false
+@defvr {Constante} false
  - a contante Booleana, falso.  (NIL em Lisp)
 
 @end defvr
 
-@defvr {Constant} inf
+@defvr {Constante} inf
  - infinito positivo real.
 
 @end defvr
 
-@defvr {Constant}  infinity
+@defvr {Constante}  infinity
  - infinito complexo.
 
 @end defvr
 
-@defvr {Constant} minf
+@defvr {Constante} minf
  - menos infinito real.
 
 @end defvr
 
-@defvr {Constant} %pi
+@defvr {Constante} %pi
  - "pi" @'e representado no Maxima como @code{%pi}.
 
 @end defvr
 
-@defvr {Constant} true
+@defvr {Constante} true
  - a constante Booleana, verdadeiro.  (T em Lisp)
 
 @end defvr

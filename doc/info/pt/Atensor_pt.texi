@@ -103,8 +103,8 @@ desejadas.
 
 @section Defini@value{cedilha}@~oes para o Pacote atensor
 
-@deffn {Function} init_atensor (@var{alg_type}, @var{opt_dims})
-@deffnx {Function} init_atensor (@var{alg_type})
+@deffn {Fun@value{cedilha}@~ao} init_atensor (@var{alg_type}, @var{opt_dims})
+@deffnx {Fun@value{cedilha}@~ao} init_atensor (@var{alg_type})
 
 Inicializa o pacote @code{atensor} com o tipo especificado de @'algebra.  @var{alg_type}
 pode ser um dos seguintes:
@@ -123,10 +123,10 @@ quaisquer valores @var{opt_dims} s@~ao fornecidos, @code{atensor} ir@'a configur
 valores de @code{adim} e @code{aform} apropriadamente.  Caso contr@'ario,
 @code{adim} ir@'a por padr@~ao para 0 e @code{aform} n@~ao ser@'a definida.
 
-@code{symmetric}: The @'algebra sim@'etrica @'e definida pela rela@,{c}@~ao de 
+@code{symmetric}: A @'algebra sim@'etrica @'e definida pela rela@,{c}@~ao de 
 comuta@,{c}@~ao @code{u.v-v.u=0}.
 
-@code{symplectic}: The @'algebra simpl@'etica @'e definida pela rela@,{c}@~ao de 
+@code{symplectic}: A @'algebra simpl@'etica @'e definida pela rela@,{c}@~ao de 
 comuta@,{c}@~ao @code{u.v-v.u=2*af(u,v)} onde @code{af} @'e uma fun@,{c}@~ao valor-escalar 
 antisim@'etrica.  Para a @'algebra simpl@'etica, @var{opt_dims} pode
 mais de dois inteiros n@~ao negativos, representando a dimens@~ao n@~ao degenerada e
@@ -161,7 +161,7 @@ Cl(3,1).  Uma chamada a @code{init_atensor(dirac)} @'e equivalente a
 @end deffn
 
 
-@deffn {Function} atensimp (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} atensimp (@var{expr})
 
 Simplifica a express@~ao alg@'ebrica de tensores @var{expr} conforme as regras
 configuradas por uma chamada a @code{init_atensor}.  Simplifica@,{c}@~oes incluem
@@ -172,7 +172,7 @@ express@~oes complexas.
 
 @end deffn
 
-@deffn {Function} alg_type
+@deffn {Fun@value{cedilha}@~ao} alg_type
 
 O tipo de @'algebra.  Valores v@'alidos s@'ao @code{universal}, @code{grassmann},
 @code{clifford}, @code{symmetric}, @code{symplectic} and @code{lie_envelop}.
@@ -199,7 +199,7 @@ O s@'imbolo para bases vetoriais.  O padr@~ao @'e @code{v}.
 
 @end defvr
 
-@deffn {Function} sf (@var{u}, @var{v})
+@deffn {Fun@value{cedilha}@~ao} sf (@var{u}, @var{v})
 
 @'E uma fun@value{cedilha}@~ao escalar sim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
@@ -208,7 +208,7 @@ correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Function} af (@var{u}, @var{v})
+@deffn {Fun@value{cedilha}@~ao} af (@var{u}, @var{v})
 
 @'E uma fun@value{cedilha}@~ao escalar antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
@@ -217,7 +217,7 @@ valor correspondente da matriz @code{aform}.
 
 @end deffn
 
-@deffn {Function} av (@var{u}, @var{v})
+@deffn {Fun@value{cedilha}@~ao} av (@var{u}, @var{v})
 
 @'E uma fun@value{cedilha}@~ao antisim@'etrica que @'e usada em rela@value{cedilha}@~oes comutativas.
 A implementa@,{c}@~ao padr@~ao verifica se ambos os argumentos s@~ao bases vetoriais
@@ -247,7 +247,7 @@ Por exemplo:
 @end deffn
 
 
-@deffn {Function} abasep (@var{v})
+@deffn {Fun@value{cedilha}@~ao} abasep (@var{v})
 
 Verifica se esse argumento @'e uma base vetorial @code{atensor} .  
 
