@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.15 2005-01-23 11:15:30 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.16 2005-09-25 08:49:15 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -228,6 +228,9 @@ proc setMaxDir {} {
     if {$tcl_platform(os) == "Windows 95"} {
 	if {![info exists env(MAXIMA_USERDIR)]} {
 	    set env(MAXIMA_USERDIR) "$maxima_priv(maxima_prefix)/user"
+	}
+	if {![info exists env(MAXIMA_TEMPDIR)]} {
+	    set env(MAXIMA_TEMPDIR) "$maxima_priv(maxima_prefix)"
 	}
     }
 
