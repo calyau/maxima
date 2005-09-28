@@ -1,4 +1,5 @@
-SUBDIRS = es pt
+# COMMENT OUT SUBDIRS UNTIL PROBLEM WITH TEXI2HTML VERSION IS RESOLVED 
+# SUBDIRS = es pt
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
@@ -37,4 +38,4 @@ clean-info:
 clean-html:
 	rm -f maxima*.html
 
-EXTRA_DIST = texi2html maximahtml.mk
+EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init

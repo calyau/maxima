@@ -1,6 +1,6 @@
 
 
-\input texinfo_pt
+\input texinfo
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,

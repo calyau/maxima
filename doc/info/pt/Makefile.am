@@ -6,8 +6,8 @@ Affine_pt.texi           Equations_pt.texi     Lists_pt.texi          Rules.texi
 Arrays_pt.texi           Expressions.texi      Logarithms.texi        Runtime_pt.texi \
 Atensor_pt.texi          Floating_pt.texi      Matrices_pt.texi       Series_pt.texi \
 Bugs_pt.texi             Function_pt.texi                             Simplification_pt.texi \
-Command_pt.texi          Groups_pt.texi        Miscellaneous_pt.texi  \
-Constants_pt.texi        Help_pt.texi          nset.texi              Special_pt.texi \
+Command_pt.texi          Groups_pt.texi        Miscellaneous_pt.texi  SpecfunII_pt.texi \
+Constants_pt.texi        Help_pt.texi          nset_pt.texi           Special_pt.texi \
 Contexts.texi            Indices_pt.texi       Number_pt.texi         Statistics_pt.texi \
 Ctensor.texi             Input_pt.texi         Numerical_pt.texi      Symmetries.texi \
 Debugging.texi           Integration_pt.texi   Operators_pt.texi      Trigonometric_pt.texi \

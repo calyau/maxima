@@ -23,7 +23,7 @@
 (defvar *rot* (make-array 9 :element-type 'double-float))
 (defvar $rot nil)
 
-(defvar $plot_options '((mlist)
+(defvar $plot_options `((mlist)
 			;; Make the default range on X large.  This
 			;; doesn't impact 2-D plotting, but is useful
 			;; for parametric plots so that the plots
@@ -51,7 +51,7 @@
 			;; Controls the number of splittings
 			;; adaptive-plotting will do.
 			((mlist) $adapt_depth 10)
-			((mlist) $gnuplot_pm3d t)
+			((mlist) $gnuplot_pm3d ,(if (string= *autoconf-win32* "true") t nil))
 			((mlist) $gnuplot_preamble "")
 			((mlist) $gnuplot_curve_titles 
 			 ((mlist) $default))
