@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Menu.tcl,v 1.16 2004-10-16 15:37:53 vvzhy Exp $
+#       $Id: Menu.tcl,v 1.17 2005-09-30 15:23:11 robert_dodier Exp $
 #
 
 proc pMAXSaveTexToFile {text} {
@@ -37,7 +37,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_openfile [M [mc "Open a file to Batch"]] "" *.mac]
 	    if {$file != ""} {
-		sendMaxima $maxima_priv(cConsoleText) "BATCH(\"$file\")\$\n"
+		sendMaxima $maxima_priv(cConsoleText) "batch(\"$file\")\$\n"
 	    }
 	}]]
     bind $text <Control-Key-b> $command
@@ -46,9 +46,9 @@ proc vMAXAddSystemMenu {fr text} {
 	-accel {Ctrl+o} \
 	-label [set label [M [mc "Batch File Silently"]]] \
 	-command [set command [cIDECreateEvent $text $label {
-	    set file [tide_openfile [M [mc "Open a file to BATCHLOAD"]] "" *.mac]
+	    set file [tide_openfile [M [mc "Open a file to Batch Silently"]] "" *.mac]
 	    if {$file != ""} {
-		sendMaxima $maxima_priv(cConsoleText) "BATCHLOAD(\"$file\")\$\n"
+		sendMaxima $maxima_priv(cConsoleText) "batchload(\"$file\")\$\n"
 	    }
 	}]]
     bind $text <Control-Key-o> $command
@@ -60,7 +60,7 @@ proc vMAXAddSystemMenu {fr text} {
 	-command [set command [cIDECreateEvent $text $label {
 	    set file [tide_savefile [M [mc "Save to a file"]] "" *.bin]
 	    if {$file != ""} {
-		sendMaxima $maxima_priv(cConsoleText) "SAVE(\"$file\",ALL)\$\n"
+		sendMaxima $maxima_priv(cConsoleText) "save(\"$file\",all)\$\n"
 	    }
 	}]]
     bind $text <Control-Key-s> $command
@@ -163,13 +163,13 @@ proc vMAXAddSystemMenu {fr text} {
     set km [menu $m.kill]
     $m add cascade -label [mc "Clear Memory"] -menu $km
     $km add command -label [mc "Kill All"] \
-	-command [list sendMaxima $text "KILL(ALL)\$\n"]
+	-command [list sendMaxima $text "kill(all)\$\n"]
     $km add separator
-    foreach elt {LABELS VALUES FUNCTIONS MACROS ARRAYS \
-		     MYOPTIONS PROPS ALIASES RULES GRADEFS \
-		     DEPENDENCIES LET_RULE_PACKAGES} {
+    foreach elt {labels values functions macros arrays \
+		     myoptions props aliases rules gradefs \
+		     dependencies let_rule_packages} {
 	$km add command -label "Kill [string totit $elt]" \
-	    -command [list sendMaxima $text "KILL($elt)\$\n"]
+	    -command [list sendMaxima $text "kill($elt)\$\n"]
     }
     $m add separator
     set dir $maxima_priv(pTestsDir)
