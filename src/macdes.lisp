@@ -47,7 +47,7 @@
 	  
 		   (setq tem (read st nil nil))
 		   (or tem (go notfound))
-		   (setq tem ($concat tem))
+		   (setq tem (makealias tem))
 		   (cond ((eql tem example)
 			  (go doit))
 			 (t (push tem all)
