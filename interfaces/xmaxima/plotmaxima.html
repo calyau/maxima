@@ -9,8 +9,8 @@
 
 
 <pre>
- - Function:<b> PLOT3D (EXPR,XRANGE,YRANGE,...,OPTIONS,..)</b>
- - Function:<b> PLOT3D ([EXPR1,EXPR2,EXPR3],XRANGE,YRANGE,...,OPTIONS,..)</b>
+ - Function:<b> plot3d (expr, xrange, yrange,..., options,...)</b>
+ - Function:<b> plot3d ([expr1,expr2,expr3], xrange, yrange,..., options,...)</b>
 </pre>
 When viewed with the netmath plotting routines, you can rotate the object
 by dragging with the right mouse button depressed.  
@@ -30,9 +30,9 @@ argument to plot3d.  An additional optional argument [grid,50,15]
 gives the grid number of rectangles in the x direction and y
 direction.
 
-<li>A <b>riemann surface</b>: Real part of z^1/3 
+<li>A <b>Riemann surface</b>: Real part of z^1/3 
 <eval program=maxima>
-Plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
+plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
      ['grid,12,80],
      ['transform_xy,polar_to_xy],['view_direction,1,1,1.4],
      ['colour_z,true]);</eval>
@@ -42,7 +42,7 @@ Plot3d(r^.33*cos(th/3),[r,0,1],[th,0,6*%pi],
      currently only used in 'ps' plot_format, since the other viewers
      allow interactive rotating of the object.
 
-<li> a <b>klein bottle</b>:
+<li> a <b>Klein bottle</b>:
 <eval program=maxima>
 plot3d([5*cos(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0) - 10.0,
         -5*sin(x)*(cos(x/2)*cos(y)+sin(x/2)*sin(2*y)+3.0),
