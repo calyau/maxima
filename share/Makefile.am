@@ -478,6 +478,7 @@ numeric/forma1.lisp\
 numeric/forma1.usg\
 numeric/format.lisp\
 numeric/format.usg\
+numeric/interpol.mac\
 numeric/kach.dem\
 numeric/kach.mac\
 numeric/newton.mac\
