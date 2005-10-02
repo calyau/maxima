@@ -134,7 +134,7 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 * Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
 * Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::		Definindo fun@value{cedilha}@~oes.
 * Fluxo de Programa::           Definindo programas do Maxima.
-* Debugging::                   Depurando programas do Maxima.
+* Depurando::                   Depurando programas do Maxima.
 
 @'Indice
 
@@ -354,9 +354,9 @@ Fluxo de Programa
 * Introdu@value{cedilha}@~ao a Fluxo de Programa::  
 * Defini@value{cedilha}@~oes para Fluxo de Programa::  
 
-Debugging
+Depurando
 
-* Definitions for Debugging::   
+* Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao::   
 
 @comment @end detailmenu
 @end menu
@@ -534,15 +534,15 @@ Debugging
 @chapter Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @include Function_pt.texi
 
-@node Fluxo de Programa, Debugging, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Top
+@node Fluxo de Programa, Depurando, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Top
 @chapter Fluxo de Programa
 @include Program_pt.texi
 
-@node Debugging, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
-@chapter Debugging
-@include Debugging.texi
+@node Depurando, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
+@chapter Depurando
+@include Debugging_pt.texi
 
-@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Debugging, Top
+@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Depurando, Top
 @chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
 @include Indices_pt.texi
 
