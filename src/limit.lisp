@@ -18,6 +18,11 @@
 ;;;	**							    **
 ;;;	**************************************************************
 
+;;; I believe a large portion of this file is described in the Paul
+;;; Wang's thesis, "Evaluation of Definite Integrals by Symbolic
+;;; Integration," MIT/LCS/TR-92, Oct. 1971.  This can be found at
+;;; http://www.lcs.mit.edu/publications/specpub.php?id=660, but some
+;;; important pages are black.
 
 ;;; TOP LEVEL FUNCTION(S): $LIMIT $LDEFINT
 
@@ -1549,7 +1554,7 @@ It appears in LIMIT and DEFINT.......")
     ((eq var exp) val)
     ((or (atom exp) (mnump exp)) exp)
     ((and (not (infinityp val))
-	  (not (amongl '(%sin %cos %atanh %cosh %sinh %tanh mfactorial)
+	  (not (amongl '(%sin %cos %atanh %cosh %sinh %tanh mfactorial %log)
 		       exp))
 	  (not (inf-typep exp))
 	  (simplimsubst val exp)))
@@ -2409,22 +2414,34 @@ It appears in LIMIT and DEFINT.......")
      (return (simplimtimes (list n1 d1)))))
 
 (defun simplimln (arg)
-  (let* ((arglim (limit arg var val 'think))
-	 (real-lim (ridofab arglim)))
-    (if (=0 real-lim)
-	(cond ((eq arglim '$zeroa)  '$minf)
-	      ((eq arglim '$zerob)  '$infinity)
-	      (t (let ((dir (behavior arg var val)))
-		   (cond ((equal dir 1) '$minf)
-			 ((equal dir -1) '$infinity)
-			 (t (throw 'limit t))))))
-	(cond ((eq arglim '$inf) '$inf)
-	      ((memq arglim '($minf $infinity)) '$infinity)
-	      ((memq arglim '($ind $und)) '$und)
-	      ((equal arglim 1)
-	       (let ((dir (behavior arg var val)))
-		 (if (equal dir 1) '$zeroa 0)))
-	      (t (simplify `((%log) ,real-lim)))))))
+  ;; We need to be careful with log because of the branch cut on the
+  ;; negative real axis.  So we look at the imagpart of the log.  If
+  ;; it's not identically zero, we compute the limit of the real and
+  ;; imaginary parts and combine them.  Otherwise, we can use the
+  ;; original method for real limits.
+  (let* ((log-form `((%log) ,arg))
+	 (rp ($realpart log-form))
+	 (ip (simplify ($imagpart log-form))))
+    (cond ((and (numberp ip) (zerop ip))
+	   (let* ((arglim (limit arg var val 'think))
+		  (real-lim (ridofab arglim)))
+	     (if (=0 real-lim)
+		 (cond ((eq arglim '$zeroa)  '$minf)
+		       ((eq arglim '$zerob)  '$infinity)
+		       (t (let ((dir (behavior arg var val)))
+			    (cond ((equal dir 1) '$minf)
+				  ((equal dir -1) '$infinity)
+				  (t (throw 'limit t))))))
+		 (cond ((eq arglim '$inf) '$inf)
+		       ((memq arglim '($minf $infinity)) '$infinity)
+		       ((memq arglim '($ind $und)) '$und)
+		       ((equal arglim 1)
+			(let ((dir (behavior arg var val)))
+			  (if (equal dir 1) '$zeroa 0)))
+		       (t (simplify `((%log) ,real-lim)))))))
+	  (t
+	   (add (limit rp var val 'think)
+		(mul '$%i (limit ip var val 'think)))))))
 
 (defun simplimfact (exp var val arg)
   (cond ((eq arg '$inf) '$inf)
