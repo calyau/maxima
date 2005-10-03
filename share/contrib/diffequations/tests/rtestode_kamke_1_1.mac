@@ -235,8 +235,8 @@ riccati;
 /* 26 */
 (pn_(26),ans:contrib_ode(eqn:'diff(y,x)-(A*y- a)*(B*y-b),y,x));
 [(log(B*y-b)-log(A*y-a))/(A*b-a*B) = x+%c];
-solve(map(exp,ans[1]*(A*b-a*B)),y);
-[y=(b-a*%e^(-a*B*x+A*b*x-%c*a*B+%c*A*b))/(B-A*%e^(-a*B*x+A*b*x-%c*a*B+%c*A*b))];
+solve(map(exp,ans[1]*(a*B-b*A)),y);
+[y=(b*%e^(a*x*B+%c*a*B-b*x*A-%c*b*A)-a)/(B*%e^(a*x*B+%c*a*B-b*x*A-%c*b*A)-A)];
 [method,ode_check(eqn,%[1])];
 [separable,0];
 
