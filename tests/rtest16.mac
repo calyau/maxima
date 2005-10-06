@@ -36,5 +36,9 @@ powerseries(1/sqrt(1+x),x,0);
 powerseries(sqrt(1+x),x,0);
 2*('sum(x^i2/beta(3/2-i2,i2+1),i2,0,inf))/3;
 
+/* Bug 1281737, fixed in limit.lisp rev 1.15 */
+limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf,plus);
+%e*%pi/2;
+
 end;
 end$
