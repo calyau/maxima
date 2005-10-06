@@ -548,8 +548,12 @@ It appears in LIMIT and DEFINT.......")
 
 (defun hyperex1 (ex) 
   (let ( ;; Can't exponentialize now because complex plane isn't handled right yet
-	;; ($EXPONENTIALIZE T)
-	($logarc t))
+	#+(or)
+	($exponentialize t)
+	;; Can't $logarc either for the same reason!
+	#+(or)
+	($logarc t)
+	)
     (ssimplifya ex)))
 
 ;;Used by tlimit also.
