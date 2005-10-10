@@ -15,6 +15,7 @@ Maxima test suite as well as reporting new bugs.
 @deffn {Function} run_testsuite ()
 @deffnx {Function} run_testsuite (boolean)
 @deffnx {Function} run_testsuite (boolean, boolean)
+@deffnx {Function} run_testsuite (boolean, boolean, list)
 Run the Maxima test suite. Tests producing the desired answer are
 considered ``passes,'' as are tests that do not produce the desired
 answer, but are marked as known bugs.
@@ -26,6 +27,10 @@ well as failures.
 
 @code{run_testsuite (true, true)} displays all tests.
 
+If the optional third argument is given, a subset of the tests is run.
+The subset of the tests to run is given as a list of the names of the
+tests.  The complete set of tests is specified by @code{testsuite_files}.
+
 @code{run_testsuite} changes the Maxima environment.
 Typically a test script executes @code{kill} to establish a known environment
 (namely one without user-defined functions and variables)
@@ -33,6 +38,25 @@ and then defines functions and variables appropriate to the test.
 
 @code{run_testsuite} returns @code{done}.
 @end deffn
+
+@defvr {Option variable} testsuite_files
+
+@code{testsuite_files} is the set of tests to be run by
+@code{run_testsuite}.  It is a list of names of the files containing
+the tests to run.  If some of the tests in a file are known to fail,
+then instead of listing the name of the file, a list containing the
+file name and the test numbers that fail is used.
+
+For example, this is a part of the default set of tests:
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+This specifies the testsuite consists of the files "rtest13s" and
+"rtest14", but "rtest14" contains two tests that are known to fail: 57
+and 63.
+@end defvr
 
 @deffn {Function} bug_report ()
 Prints out Maxima and Lisp version numbers, and gives a link
