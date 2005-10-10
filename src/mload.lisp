@@ -997,7 +997,9 @@
 		    (setf test-file (second testentry))
 		    (setf expected-failures (cddr testentry))))
   
-	      (format t "~%Running tests in ~a: " test-file)
+	    (format t "~%Running tests in ~a: " (if (symbolp test-file)
+						    (subseq (print-invert-case test-file) 1)
+						    test-file))
 	      (or (errset
 		   (progn
 		     (setq testresult 
