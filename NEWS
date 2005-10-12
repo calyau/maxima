@@ -1,3 +1,29 @@
+Release notes for Maxima 5.9.2 (2005/10/11)
+See ChangeLog-5.9.2 for a more detailed list
+
+(1) The Maxima parser is now entirely case-sensitive.
+    Built-in keywords, functions, and variables are all lowercase only
+
+(2) Revision of reference manual
+
+(3) Translation of reference manual to Spanish and Portuguese
+
+(4) Enhancements to tensor packages (Atensor, Ctensor, Itensor)
+
+(5) Enhancements and bug fixes in special functions
+    (Airy, Bessel, gamma, elliptic, and hypergeometric functions)
+
+(6) Improved TeXmacs interface with 2-d input
+
+(7) Discrete plots in plot2d
+
+(8) Several new add-on packages
+
+(9) Miscellaneous bug fixes
+
+(10) Various source code clean-ups
+
+-----------------------------------------------------------
 These are the release notes for Maxima 5.9.1. For a detailed list of
 changes in this release, see the file ChangeLog.
 

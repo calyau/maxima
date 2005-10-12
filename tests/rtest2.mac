@@ -110,3 +110,6 @@ f(9);
 done$
 a[y+2];
 0$
+
+use_fast_arrays: false;
+false;

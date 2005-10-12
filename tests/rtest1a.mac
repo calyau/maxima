@@ -45,4 +45,5 @@ bilx[0]:1;
 bilx[3];
 6;
 
-
+use_fast_arrays: false;
+false;

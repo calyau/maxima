@@ -6,8 +6,8 @@
 ***************************************************************************/
 
 
-kill(all);
-done;
+(kill(all), use_fast_arrays: true, 0);
+0;
 display(b[1,2]);
 done$
 exp1:integrate(1/(x^3+2),x);  
@@ -202,3 +202,5 @@ lfreeof([x],y+z);
 true$
 lfreeof([x,y],y+z);
 false$
+use_fast_arrays: false;
+false;

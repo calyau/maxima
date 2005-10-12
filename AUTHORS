@@ -35,6 +35,7 @@ of a team of people led by James Amundson and Richard Fateman.
 The Maxima developers are:
 
 James Amundson
+Jorge Barros de Abreu
 Jay Belanger
 David Billinghurst
 Mike Clarkson
@@ -45,6 +46,7 @@ Stavros Macrakis
 Camm Maguire
 Judah Milgram
 Paulo Ney de Souza
+Mario Rodriguez Riotorto
 Sergey Semerikov
 Dan Stanger
 Viktor Toth
@@ -56,14 +58,16 @@ Vadim V. Zhytnikov
 Maxima include contributions from:
 
 Juan Pablo Hierro Álvarez
-Tim Moore
-Valerij Pipin
 Fedor Bezrukov
+Fabrizio Caruso
 Gosei Furuya
-Barton Willis
+Andrey Grozin
+Tim Moore
+Salvador Bosch Pérez
+Valerij Pipin
 Ole Rohne
 Thomas A. Russ
-Andrey Grozin
+Jaime Villate
 
 Starting with version 5.9.0, Maxima uses mk::defsystem and (slightly
 modified) run-lisp from the Common Lisp Open Code Collection,
