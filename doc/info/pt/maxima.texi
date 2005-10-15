@@ -1,6 +1,6 @@
 
 
-\input texinfo
+\input texinfo_pt
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -108,13 +108,13 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao:: 		C@'alculo diferencial.
 * Integra@value{cedilha}@~ao::  		C@'alculo integral.
-* Equa@value{cedilha}@~oes::    		Definindo e resolvendo equa@value{cedilha}@~oes.
+* Equa@value{cedilha}@~oes::    	        Definindo e resolvendo equa@value{cedilha}@~oes.
 * Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
 * Num@'erico::                    Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
 * Estat@'istica::                 Fun@value{cedilha}@~oes estat@'isticas.
 * Arrays e Tabelas::            Criando e trabalhando com arrays.
-* Matrizes e @'Algebra Linear:: 	Opera@value{cedilha}@~oes com Matrizes.
+* Matrizes e @'Algebra Linear::   Opera@value{cedilha}@~oes com Matrizes.
 * Fun@value{cedilha}@~oes Afins::                        
 * itensor::                     Manipula@value{cedilha}@~ao de @'indice de Tensores.
 * ctensor::                     Manipula@value{cedilha}@~ao de componentes de Tensores.
@@ -220,7 +220,7 @@ Trigonometria
 
 Fun@value{cedilha}@value{o_til}es Especiais
 
-* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::   
+* Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
 * specint::                     
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
 
@@ -285,8 +285,8 @@ Fun@value{cedilha}@~oes Afins
 
 itensor
 
-* Introduction to itensor::      
-* Definitions for itensor::      
+* Introdu@value{cedilha}@~ao a itensor::      
+* Defini@value{cedilha}@~oes para itensor::      
 
 ctensor
 
@@ -482,7 +482,7 @@ Depurando
 
 @node itensor, ctensor, Fun@value{cedilha}@~oes Afins, Top
 @chapter itensor
-@include Itensor.texi
+@include Itensor_pt.texi
 
 @node ctensor, Pacote atensor, itensor, Top
 @chapter ctensor
