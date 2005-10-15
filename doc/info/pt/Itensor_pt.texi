@@ -20,7 +20,7 @@ Note bem: Por favor veja a nota sobre 'nova nota@,{c}@~ao de tensor' abaixo.
 Manipula@,{c}@~ao de componentes de tensores significa que objetos do tipo
 tensor geom@'etrico s@~ao representados como arrays ou matrizes. Opera@,{c}@~oes com tensores tais com
 contra@,{c}@~ao ou diferencia@,{c}@~ao covariante s@~ao realizadas
-sobre (dummy) @'indices com declara@,{c}@~oes @code{do}.
+sobre @'indices (que ocorrem exatamente duas vezes) repetidos com declara@,{c}@~oes @code{do}.
 Isto @'e, se executa explicitamente opera@,{c}@~oes sobre as componentes apropriadas do
 tensor armazenadas em um array ou uma matriz.
 
@@ -128,13 +128,13 @@ representa um objeto indexado chamado @code{g} o qual tem dois @'indices covaria
 
 Os @'indices de deriva@,{c}@~ao, se estiverem presente, s@~ao anexados ao final como
 argumentos adicionais para a fun@,{c}@~ao num@'erica representando o tensor.
-Eles podem ser explicitamente especificado pelo usu@'ario ou ser criado no
+Eles podem ser explicitamente especificado pelo usu@'ario ou serem criados no
 processo de diferencia@,{c}@~ao com rela@,{c}@~ao a alguma vari@'avel coordenada.
 Uma vez que diferencia@,{c}@~ao ordin@'aria @'e comutativa, os @'indices de deriva@,{c}@~ao
 s@~ao ordenados alfanumericamente, a menos que @code{iframe_flag} seja escolhida para @code{true},
 indicando que uma moldura m@'etrica est@'a sendo usada. Essa ordena@,{c}@~ao can@^onica torna
 poss@'ivel para Maxima reconhecer que, por exemplo, @code{t([a],[b],i,j)} @'e
-o mesmo que @code{t([a],[b],j,i)}.  Deferencia@,{c}@~ao de um objeto indexado com
+o mesmo que @code{t([a],[b],j,i)}.  Diferencia@,{c}@~ao de um objeto indexado com
 rela@,{c}@~ao a alguma coordenada cujos @'indices n@~ao aparecem como um argumento
 para o objeto indexado podem normalmente retornar zero. Isso @'e porque
 Maxima pode n@~ao saber que o tensor representado atrav@'es do objeto
@@ -151,7 +151,7 @@ As seguintes fun@,{c}@~oes est@~ao dispon@'iveis no pacote tensor para
 manipula@,{c}@~ao de objetos.  Atualmente, com rela@,{c}@~ao @`as
 rotinas de simplifica@,{c}@~ao, @'e assumido que objetos indexados n@~ao
 possuem por padr@~ao propriedades sim@'etricas. Isso pode ser modificado atrav@'es
-da escolha da vari@'avel @code{allsym[false]} para @code{true}, o que ir@'al
+da escolha da vari@'avel @code{allsym[false]} para @code{true}, o que ir@'a
 resultar no tratamento de todos os objetos indexados completamente sim@'etricos em suas
 listas de @'indices covariantes e sim@'etricos em suas listas de
 @'indices contravariantes.
@@ -159,11 +159,11 @@ listas de @'indices covariantes e sim@'etricos em suas listas de
 O pacote @code{itensor} geralmente trata tensores como objetos opacos. Equa@,{c}@~oes
 tensoriais s@~ao manipuladas baseadas em regras alg@'ebricas, especificamente simetria
 e regras de contra@,{c}@~ao. Adicionalmente, o pacote @code{itensor} n@~ao entende
-diferencia@,{c}@~ao covariante, curvatura, e tors@~ao. Calculos podem ser
+diferencia@,{c}@~ao covariante, curvatura, e tors@~ao. C@'alculos podem ser
 executados relativamente a um m@'etrica de molduras de movimento, dependendo da escolha para
 a vari@'avel @code{iframe_flag}.
 
-Uma sess@~ao demonstrativa abaico mostra como chamar o pacote @code{itensor},
+Uma sess@~ao demonstrativa abaixo mostra como chamar o pacote @code{itensor},
 especificando o nome da m@'etrica, e executando alguns c@'alculos simples.
 
 @example
@@ -260,7 +260,7 @@ nulas) s@~ao entradas aceit@'aveis (veja o exemplo sob @code{covdiff}).
 
 @deffn {Fun@value{cedilha}@~ao} changename (@var{antigo}, @var{novo}, @var{expr})
 
-ir@'a mudar o nome de todos os objetos indexados chamados @var{antigo} para @var{novo}
+Ir@'a mudar o nome de todos os objetos indexados chamados @var{antigo} para @var{novo}
 em @var{expr}. @var{antigo} pode ser ou um s@'imbolo ou uma lista da forma
 @code{[@var{nome}, @var{m}, @var{n}]} nesse caso somente esses objetos indexados chamados
 @var{nome} com @'indice covariante @var{m} e @'indice contravariante @var{n} ser@~ao
@@ -270,7 +270,7 @@ renomeados para @var{novo}.
 
 @deffn {Fun@value{cedilha}@~ao} listoftens
 
-Lista todos os tensosres em uma express@~ao tensorial, incluindo seus @'indices. E.g.,
+Lista todos os tensores em uma express@~ao tensorial, incluindo seus @'indices. E.g.,
 
 @example
 
@@ -289,9 +289,9 @@ Lista todos os tensosres em uma express@~ao tensorial, incluindo seus @'indices.
 
 @deffn {Fun@value{cedilha}@~ao} ishow (@var{expr})
 
-Mostra @var{expr} com os objetos indexados teno seus
+Mostra @var{expr} com os objetos indexados tendo seus
 @'indices covariantes como subscritos e @'indices contravariantes como
-sobrescritoos.  Os @'indices derivativos s@~ao mostrados como subscritos,
+sobrescritos.  Os @'indices derivativos s@~ao mostrados como subscritos,
 separados dos @'indices covariantes por uma v@'irgula (veja os exemplos
 atrav@'es desse documento).
 
@@ -301,7 +301,7 @@ atrav@'es desse documento).
 
 Retorna uma lista de dois elementos.  O primeiro @'e uma lista de @'indices
 livres em @var{expr} (aqueles que ocorrem somente uma vez). O segundo @'e uma
-lista de indices dummy em @var{expr} (aqueles que ocorrem exatamente duas vezes)
+lista de indices que ocorrem exatamente duas vezes em @var{expr} (dummy)
 como demonstra o seguinte exemplo.
 
 @example
@@ -319,7 +319,7 @@ como demonstra o seguinte exemplo.
 
 Um produto de tensores contendo o mesmo @'indice mais que duas vezes @'e sintaticamente
 ilegal. @code{indices} tenta lidar com essas express@~oes de uma
-forma raso@'avel; todavia, quando @code{indices} @'e chamada para operar sobre tal uma
+forma razo@'avel; todavia, quando @code{indices} @'e chamada para operar sobre tal uma
 express@~ao ilegal, seu comportamento pode ser considerado indefinido.
 
 
@@ -328,11 +328,11 @@ express@~ao ilegal, seu comportamento pode ser considerado indefinido.
 @deffn {Fun@value{cedilha}@~ao} rename (@var{expr})
 @deffnx {Fun@value{cedilha}@~ao} rename (@var{expr}, @var{contador})
 
-Retorna uma express@~ao equivalente para @var{expr} mas com @'indices dummy
+Retorna uma express@~ao equivalente para @var{expr} mas com @'indices que ocorrem exatamente duas vezes
 em cada termo alterado do conjunto @code{[%1, %2,...]}, se o segundo argumento
-opcional for omitido. De outra forma, os @'indices dummy s@~ao indexados
-come@,{c}ando no valor de @var{contador}.  Cada @'indice dummy em um produto
-ser@'a diferente. Para um adi@,{c}@~ao, @code{rename} ir@'a operar sobre cada termo na
+opcional for omitido. De outra forma, os @'indices que ocorrem exatamente duas vezes s@~ao indexados
+come@,{c}ando no valor de @var{contador}.  Cada @'indice que ocorre exatamente duas vezes em um produto
+ser@'a diferente. Para uma adi@,{c}@~ao, @code{rename} ir@'a operar sobre cada termo na
 a adi@,{c}@~ao zerando o contador com cada termo. Nesse caminho @code{rename} pode
 servir como um simplificador tensorial. Adicionalmente, os @'indices ser@~ao
 ordenados alfanumericamente (se @code{allsym} for @code{true}) com rela@,{c}@~ao a
@@ -395,39 +395,39 @@ renomeados conforme a ordem dos @'indices contravariantes,
 de outra forma ser@~ao ordenados conforme a ordem dos @'indices covariantes.
 A vari@'avel de op@value{cedilha}@~ao influencia @code{rename} da seguinte forma:
 Se @code{flipflag} for @code{false} ent@~ao @code{rename} forma uma lista
-de @'indices contravariantes como na ordem em que forem encontrados da esquerda para a direita
+de @'indices contravariantes na ordem em que forem encontrados da esquerda para a direita
 (se @code{true} ent@~ao de @'indices contravariantes). O primeiro @'indice
-dummy na lista @'e renomeado para @code{%1}, o seguinte para @code{%2}, etc.
-Ent@~ao a ordena@,{c}@~ao ocorre ap@'os a cocorr@^encia do @code{rename} (veja o exemplo
+que ocorre exatamente duas vezes na lista @'e renomeado para @code{%1}, o seguinte para @code{%2}, etc.
+Ent@~ao a ordena@,{c}@~ao ocorre ap@'os a ocorr@^encia do @code{rename} (veja o exemplo
 sob @code{rename}).
 
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} defcon (@var{tensor_1})
 @deffnx {Fun@value{cedilha}@~ao} defcon (@var{tensor_1}, @var{tensor_2}, @var{tensor_3})
-dado @var{tensor_1} a propriedade que a
+Dado @var{tensor_1} a propriedade que a
 contra@,{c}@~ao de um produto do @var{tensor_1} e do @var{tensor_2} resulta em @var{tensor_3}
 com os @'indices apropriados.  Se somente um argumento, @var{tensor_1}, for
 dado, ent@~ao a contra@,{c}@~ao do produto de @var{tensor_1} com qualquer objeto
-indexado tendo os @'indices apropriados (digamos @code{my_tensor}) ir@'a retornar como resultado uma
+indexado tendo os @'indices apropriados (digamos @code{my_tensor}) ir@'a retornar como resultado um
 objeto indexado com aquele nome, i.e. @code{my_tensor}, e com uma nova escolha de
 @'indices refletindo as contra@,{c}@~oes executadas.
     Por exemplo, se @code{imetric:g}, ent@~ao @code{defcon(g)} ir@'a implementar o
 incremento e decremento de @'indices atrav@'es da contra@,{c}@~ao com o tensor
 m@'etrico.
-    Mais que uma @code{defcon} pode ser dada para o mesmo objeto indexado; o
-@'ultimo  fornecido que aplica em uma contra@,{c}@~ao particular ir@'a ser
+    Mais de uma @code{defcon} pode ser dada para o mesmo objeto indexado; o
+@'ultimo  fornecido que for aplicado a uma contra@,{c}@~ao particular ir@'a ser
 usado.
-@code{contractions} @'e uma lista cujos objetos indexados que tenham fornecido
+@code{contractions} @'e uma lista de objetos indexados que tenham fornecido
 propriedades de contra@,{c}@~oes com @code{defcon}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} remcon (@var{tensor_1}, ..., @var{tensor_n})
 @deffnx {Fun@value{cedilha}@~ao} remcon (all)
-remove todas as propriedades de contra@,{c}@~ao
+Remove todas as propriedades de contra@,{c}@~ao
 de @var{tensor_1}, ..., @var{tensor_n}). @code{remcon(all)} remove todas as propriedades de
-contra@,{c}@~ao de todos os sobjetos indexados.
+contra@,{c}@~ao de todos os objetos indexados.
 
 @end deffn
 
@@ -436,10 +436,10 @@ contra@,{c}@~ao de todos os sobjetos indexados.
 Realiza contra@,{c}@~oes tensoriais em @var{expr} a qual pode ser qualquer
 combina@,{c}@~ao de adi@,{c}@~oes e produtos. Essa fun@,{c}@~ao usa a informa@,{c}@~ao
 dada para a fun@,{c}@~ao @code{defcon}. Para melhores resultados, @code{expr}
-pode ser completamente expandida. @code{ratexpand} @'e o maio mais r@'apido para expandir
-produtos e expoentes de ad@,{c}@~oes se n@~ao existirem vari@'aveis nos denominadores
+pode ser completamente expandida. @code{ratexpand} @'e o meio mais r@'apido para expandir
+produtos e expoentes de adi@,{c}@~oes se n@~ao existirem vari@'aveis nos denominadores
 dos termos. O comutador @code{gcd} pode ser @code{false} se cancelamentos de
-m@'aximo divisor comum forme desnecess@'arias.
+m@'aximo divisor comum forem desnecess@'arios.
 
 @end deffn
 
@@ -453,19 +453,19 @@ um valor interno j@'a existe como com @code{ichr1}, @code{ichr2},
 
 @deffn {Fun@value{cedilha}@~ao} components (@var{tensor}, @var{expr})
 
-permite que se atribua um valor indicial a uma express@~ao
+Permite que se atribua um valor indicial a uma express@~ao
 @var{expr} dando os valores das componentes do @var{tensor}. Esses
 s@~ao automaticamente substitu@'idos para o tensor mesmo que isso ocorra com
 todos os seus @'indices. O tensor deve ser da forma @code{t([...],[...])}
 onde qualquer lista pode ser vazia. @var{expr} pode ser qualquer express@~ao indexada
-envolvendo outros objetos com os mesmos @'indices livres como @var{tensor}. Quando
-usado para atribuir valores a um tensor m@'etrico no qual as componentes
-possuem @'indices dummy se deve ser cuidadoso para definir esses @'indices para
-evitar a gera@,{c}@~ao de @'indices dummy multiplos. a remo@,{c}@~ao dessas
+envolvendo outros objetos com os mesmos @'indices livres que @var{tensor}. Quando
+usada para atribuir valores a um tensor m@'etrico no qual as componentes
+possuem @'indices que ocorrem exatamente duas vezes se deve ser cuidadoso para definir esses @'indices de forma a
+evitar a gera@,{c}@~ao de @'indices que ocorrem exatamente duas vezes e que s@~ao multiplos. a remo@,{c}@~ao dessas
 atribui@,{c}@~oes @'e dada para a fun@,{c}@~ao @code{remcomps}.
 
-@'E importante ter em mente que @code{components} cuidam somente da
-val@^encia de um tensor, e que ignoram completamente qualquer ordena@,{c}@~ao particular de @'indices. Dessa forma
+@'E importante ter em mente que @code{components} cuida somente da
+val@^encia de um tensor, e que ignora completamente qualquer ordena@,{c}@~ao particular de @'indices. Dessa forma
 atribuindo componentes a, digamos, @code{x([i,-j],[])}, @code{x([-j,i],[])}, ou
 @code{x([i],[j])} todas essas atribui@,{c}@~oes produzem o mesmo resultado, a saber componentes sendo
 atribuidas a um tensor chamado @code{x} com val@^encia @code{(1,1)}.
@@ -504,7 +504,7 @@ dos quais envolvem o uso do comando @code{components}:
 componentes de um tensor baseado nesses @'indices. Por exemplo, os seguintes
 c@'odigos atribuem @code{kdelta} a @code{h} se @code{h} tiver o mesmo n@'umero de
 @'indices covariantes e @'indices contravariantes e nenhum @'indice derivativo, e
-atribui @code{kdelta} a @code{g} caso as condi@,{c}@~oes de atribui@,{c}@~ao para @code{h} n@~ao sejam atendidas:
+atribui @code{kdelta} a @code{g} caso as condi@,{c}@~oes anteriores n@~ao sejam atendidas:
 
 @example
 
@@ -560,7 +560,7 @@ fun@,{c}@~ao @code{components}.
 @c NEED LIST OF ARGUMENTS HERE
 @deffn {Fun@value{cedilha}@~ao} showcomps
 
-Mostra atribui@,{c}@~oes de componentes de um tensor, como feito usando o comando
+Mostra atribui@,{c}@~oes de componentes de um tensor, feitas usando o comando
 @code{components}. Essa fun@,{c}@~ao pode ser particularmente @'util quando uma matriz @'e atribu@'ida
 a um tensor indicial usando @code{components}, como demonstrado atrav@'es do
 seguinte exemplo:
@@ -609,22 +609,22 @@ categoria maior que 2.
 
 @deffn {Fun@value{cedilha}@~ao} idummy ()
 
-Incrementos @code{icounter} e retornos como seu valor um @'indice da forma
-@code{%n} onde n @'e um inteiro positivo.  Isso garante que @'indices dummy
-que s@~ao necess@'arios na forma@,{c}@~ao de express@~oes n@~ao ir@~ao conflitar com @'indices
+Incrementos @code{icounter} e retorno como seu valor um @'indice da forma
+@code{%n} onde n @'e um inteiro positivo.  Isso garante que @'indices que ocorrem exatamente duas vezes
+e que s@~ao necess@'arios na forma@,{c}@~ao de express@~oes n@~ao ir@~ao conflitar com @'indices
 que j@'a estiverem sendo usados (veja o exemplo sob @code{indices}).
 
 @end deffn
 
 @defvr {Vari@'avel} idummyx
 
-@'E o prefixo para @'indices dummy (veja o exemplo sob @'indices @code{indices}).
+@'E o prefixo para @'indices que ocorrem exatamente duas vezes (veja o exemplo sob @'indices @code{indices}).
 
 @end defvr
 
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} icounter
  valor padr@~ao: [1] determina o sufixo num@'erico para ser usado na
-gera@,{c}@~ao do pr@'oximo @'indice dummy no pacote tensor.  O prefixo @'e
+gera@,{c}@~ao do pr@'oximo @'indice que ocorre exatamente duas vezes no pacote tensor.  O prefixo @'e
 determinado atrav@'es da op@,{c}@~ao @code{idummy} (caractere padr@~ao: %).
 @end defvr
 
@@ -633,7 +633,7 @@ determinado atrav@'es da op@,{c}@~ao @code{idummy} (caractere padr@~ao: %).
 pacote @code{itensor} com @var{L1} a lista de @'indices covariantes e @var{L2}
 a lista de @'indices contravariantes.  @code{kdelta([i],[j])} retorna o delta de
 Kronecker comum.  O comando @code{ev(expr,kdelta)} faz com que a avalia@,{c}@~ao de
-uma express@~ao contendo @code{kdelta([],[])} para a dimens@~ao de
+uma express@~ao contendo @code{kdelta([],[])} se d@^e para a dimens@~ao de
 multiplica@,{c}@~ao.
 
 No que conduzir a um abuso dessa nota@,{c}@~ao, @code{itensor} tamb@'em permite
@@ -670,7 +670,7 @@ Delta de Kronecker simetrizado, usado em alguns c@'alculos. Por exemplo:
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} levi_civita (@var{L})
-@'e o tensor de permuta@,{c}@~ao (ou de Levi-Civita) que reotrna 1 se
+@'e o tensor de permuta@,{c}@~ao (ou de Levi-Civita) que retorna 1 se
 a lista @var{L} consistir de uma permuta@,{c}@~ao par de inteiros, -1 se isso
 consistir de uma permuta@,{c}@~ao @'impar, e 0 se alguns @'indices em @var{L} forem
 repetidos.
@@ -679,7 +679,7 @@ repetidos.
 
 @deffn {Fun@value{cedilha}@~ao} lc2kdt (@var{expr})
 Simplifica express@~oes contendo os s@'imbolos de Levi-Civita, convertendo esses
-para express@~oes Kronecker-delta quando poss@'ivel. A principal diferen@,{c}a entre
+para express@~oes delta de Kronecker quando poss@'ivel. A principal diferen@,{c}a entre
 essa fun@,{c}@~ao e simplesmente avaliar os simbolos de Levi-Civita @'e que a avalia@,{c}@~ao
 direta muitas vezes resulta em express@~oes Kronecker contendo @'indices
 num@'ericos. Isso @'e muitas vezes indesej@'avel como na preven@,{c}@~ao de simplifica@,{c}@~ao adicional.
@@ -791,20 +791,20 @@ Para detalhes, veja @code{lc_l}.
 
 @deffn {Fun@value{cedilha}@~ao} canten (@var{expr})
 Simplifica @var{expr} por renomea@,{c}@~ao (veja @code{rename})
-e permutando @'indices dummy. @code{rename} @'e restrito a adi@,{c}@~oes de produto
+e permutando @'indices que ocorrem exatamente duas vezes. @code{rename} @'e restrito a adi@,{c}@~oes de produto
 de tensores nos quais nenhum @'indice derivativo estiver presente. Como tal isso @'e limitado
 e pode somente ser usado se @code{canform} n@~ao for capaz de realizar a
 simplifica@,{c}@~ao requerida.
 
 A fun@,{c}@~ao @code{canten} retorna um resultado matematicamente correto somente
-se seus argumento for uma express@~ao que @'e completamente sim@'etrica em seus @'indices.
+se seu argumento for uma express@~ao que @'e completamente sim@'etrica em seus @'indices.
 Por essa raz@~ao, @code{canten} retorna um erro se @code{allsym} n@~ao for
 posicionada em @code{true}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} concan (@var{expr})
-Similar a @code{canten} mas tamb@'em escuta contra@,{c}@~ao de @'indices.
+Similar a @code{canten} mas tamb@'em executa contra@,{c}@~ao de @'indices.
 
 @end deffn
 
@@ -812,9 +812,9 @@ Similar a @code{canten} mas tamb@'em escuta contra@,{c}@~ao de @'indices.
 
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} allsym
 
-Valor padr@~ao: @code{false}. se @code{true} ent@~ao todos os objetos indexados
+Valor padr@~ao: @code{false}. Se @code{true} ent@~ao todos os objetos indexados
 s@~ao assumidos sim@'etricos em todos os seus @'indices covariantes e
-contravariantes. Se @code{false} ent@~ao nenhum sim@'etrico de qualquer tipo s@~ao assumidos
+contravariantes. Se @code{false} ent@~ao nenhum sim@'etrico de qualquer tipo @'e assumidos
 nesses @'indices. @'Indices derivativos s@~ao sempre tomados para serem sim@'etricos
 a menos que @code{iframe_flag} seja escolhida para @code{true}.
 
@@ -836,7 +836,7 @@ objeto @code{b} com 5 @'indices covariantes,
 @code{decsym(b,5,3,[sym(1,2),anti(3,4)],[cyc(all)])} declara @code{b}
 sim@'etrico no seu primeiro e no seu segundo @'indices e antisim@'etrico no seu terceiro e
 quarto @'indices covariantes, e c@'iclico em todos de seus @'indices contravariantes.
-Qualquer lista de declara@,{c}@~oes de simetria mopde ser nula.  A fun@,{c}@~ao que
+Qualquer lista de declara@,{c}@~oes de simetria pode ser nula.  A fun@,{c}@~ao que
 executa as simplifica@,{c}@~oes @'e @code{canform} como o exemplo abaixo
 ilustra.
 
@@ -881,10 +881,10 @@ Remove todas as propriedades de simetria de @var{tensor} que tem @var{m}
 
 @deffn {Fun@value{cedilha}@~ao} canform (@var{expr})
 Simplifica @var{expr} atrav@'es de mudan@,{c}a de nome de @'indices
-dummy e reordena@,{c}@~ao de todos os @'indices como ditados pelas condi@,{c}@~oes de simetria
+que ocorrem exatamente duas vezes e reordena@,{c}@~ao de todos os @'indices como ditados pelas condi@,{c}@~oes de simetria
 impostas sobre eles. Se @code{allsym} for @code{true} ent@~ao todos os @'indices s@~ao assumidos
 sim@'etricos, de outra forma a informa@,{c}@~ao de simetria fornecida pelas declara@,{c}@~oes
-@code{decsym} ir@~ao ser usadas. Os @'indices dummy s@~ao renomeados da mesma
+@code{decsym} ir@~ao ser usadas. Os @'indices que ocorrem exatamente duas vezes s@~ao renomeados da mesma
 maneira que na fun@,{c}@~ao @code{rename}. Quando @code{canform} @'e aplicada a uma express@~ao
 larga o c@'alculo pode tomar um consider@'avel montante de tempo.
 Esse tempo pode ser diminu@'ido atrav@'es do uso de @code{rename} sobre a express@~ao em primeiro lugar.
@@ -897,7 +897,7 @@ retorne sempre um resultado matem@'aticamente correto.
 
 @deffn {Fun@value{cedilha}@~ao} diff (@var{expr}, @var{v_1}, [@var{n_1}, [@var{v_2}, @var{n_2}] ...])
 
-@'e a fun@,{c}@~ao usual de diferencia@,{c}@~ao do Maxima que tem sido expandida
+@'E a fun@,{c}@~ao usual de diferencia@,{c}@~ao do Maxima que tem sido expandida
 nessas habilidades para @code{itensor}. @code{diff} toma a derivada de @var{expr} com
 rela@,{c}@~ao a @var{v_1} @var{n_1} vezes, com rela@,{c}@~ao a @var{v_2} @var{n_2}
 vezes, etc. Para o pacote @code{tensor}, a fun@,{c}@~ao tem sido modificada de
@@ -921,7 +921,7 @@ seja escolhida para @code{true}.
 @code{idiff} pode tamb@'em o determinante de um tensor
 m@'etrico. Dessa forma, se @code{imetric} tiver sido associada a @code{G} ent@~ao
 @code{idiff(determinant(g),k)} ir@'a retornar
-@code{2*determinant(g)*ichr2([%i,k],[%i])} onde o @'indice dummy @code{%i}
+@code{2*determinant(g)*ichr2([%i,k],[%i])} onde o @'indice que ocorre exatamente duas vezes @code{%i}
 @'e escolhido apropriadamente.
 
 
@@ -1991,7 +1991,7 @@ essa tarefa @'e @code{ic_convert}.
 @deffn {Fun@value{cedilha}@~ao} ic_convert (@var{eqn})
 
 Converte a equa@,{c}@~ao @var{eqn} na sintaxe @code{itensor} para uma declara@,{c}@~ao de atribui@,{c}@~ao @code{ctensor}.
-Adi@,{c}@~oes impl@'icitas sobre @'indices dummy s@~ao tornados expl@'icitas enquanto objetos
+Adi@,{c}@~oes impl@'icitas sobre @'indices que ocorrem exatamente duas vezes s@~ao tornados expl@'icitas enquanto objetos
 indexados s@~ao transformados em arrays (os arrays subscritos est@~ao na
 ordem de covariância seguidos de @'indices contravariantes dos objetos
 indexados). A deivada de um objeto indexado ir@'a ser substitu@'ida pela
