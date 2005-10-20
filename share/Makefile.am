@@ -110,6 +110,7 @@ contrib/Zeilberger/shiftQuotient.mac\
 contrib/Zeilberger/testGosper.mac\
 contrib/Zeilberger/testZeilberger.mac\
 contrib/Zeilberger/whatsnew.txt\
+contrib/augmented_lagrangian.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/README\
 contrib/descriptive/biomed.data\
@@ -130,6 +131,7 @@ contrib/descriptive/doc/histogram1.eps\
 contrib/descriptive/doc/histogram2.eps\
 contrib/descriptive/pidigits.data\
 contrib/descriptive/wind.data\
+contrib/devine.mac\
 contrib/diag.dem\
 contrib/diag.mac\
 contrib/diag.usg\
@@ -246,6 +248,7 @@ contrib/gentran/test/type.mac\
 contrib/gentran/test/type.output\
 contrib/gentran/vaxinit.lisp\
 contrib/gentran/vaxlsp.lisp\
+contrib/ggf.mac\
 contrib/impdiff.mac\
 contrib/lindstedt.mac\
 contrib/lsquares.dem\
