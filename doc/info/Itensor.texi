@@ -44,7 +44,7 @@ capacity is at hand, a complex metric with intricate functional and
 coordinate dependencies can easily lead to expressions whose size is
 excessive and whose structure is hidden. In addition, many calculations
 involve intermediate expressions which swell causing programs to
-terminate before completion. Through experience, a user can avoid avoid
+terminate before completion. Through experience, a user can avoid
 many of these difficulties.
 
 Because of the special way in which tensors and tensor operations
@@ -132,7 +132,7 @@ They can be explicitly specified by the user or be created in the
 process of differentiation with respect to some coordinate variable.
 Since ordinary differentiation is commutative, the derivative indices
 are sorted alphanumerically, unless @code{iframe_flag} is set to @code{true},
-indicating that a frame metric is being used.. This canonical ordering makes it
+indicating that a frame metric is being used. This canonical ordering makes it
 possible for Maxima to recognize that, for example, @code{t([a],[b],i,j)} is
 the same as @code{t([a],[b],j,i)}.  Differentiation of an indexed object with
 respect to some coordinate whose index does not appear as an argument
@@ -393,7 +393,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Default: @code{false}. if @code{false} then the indices will be
 renamed according to the order of the contravariant indices,
 otherwise according to the order of the covariant indices.
-The function influences @code{rename} in the following way:
+
 If @code{flipflag} is @code{false} then @code{rename} forms a list
 of the contravariant indices as they are encountered from left to right
 (if @code{true} then of the covariant indices). The first dummy
