@@ -110,14 +110,6 @@ away.
 
 @end deffn
 
-@c NEEDS EXAMPLES
-@deffn {Function} getchar (@var{a}, @var{i})
-Returns the @var{i}'th character of the quoted string or
-atomic name @var{a}.  This function is useful in manipulating the 
-@code{labels} list.
-
-@end deffn
-
 @deffn {Function} listarray (@var{A})
 Returns a list of the elements of a declared or
 hashed array @var{A}.  The order is row-major.  Elements which are not yet

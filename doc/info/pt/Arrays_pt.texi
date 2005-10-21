@@ -111,14 +111,6 @@ descartados.
 
 @end deffn
 
-@c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} getchar (@var{a}, @var{i})
-Retorna o @var{i}'@'esimo caractere da seq@"u@^encia de caracteres quotada ou
-o nome at@^omico @var{a}.  Essa fun@,{c}@~ao @'e @'util em manipula@,{c}@~ao da 
-lista @code{labels}.
-
-@end deffn
-
 @deffn {Fun@,{c}@~ao} listarray (@var{A})
 Retorna uma lista dos elementos  de um array declarado ou 
 desordenado @var{A}.  A ordem @'e da maior-linha.  Elementos que n@~ao est@~ao ainda

@@ -335,8 +335,6 @@ linear, it starts using linear interpolation.
 (%o5)                   1.895494267033981
 @end example
 
-There is also a Newton method interpolation routine. See @code{newton}.
-
 @end deffn
 
 @defvr {Option variable} intpolabs
@@ -381,32 +379,6 @@ The default values of @code{intpolabs} and
 with the single precision arithmetic we have.
 
 @end defvr
-
-@c NEEDS WORK
-@c SEARCHING THE SHARE DIRECTORY TURNS UP SOME OTHER "NEWTON" FUNCTIONS
-@c share/contrib/mnewton.mac
-@c share/numeric/newton.mac
-@c THERE MAY WELL BE OTHERS
-@deffn {Function} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
-Interpolation by Newton's method. @code{load ("newton1")} loads this function.
-
-@code{newton} can handle some expressions
-that @code{interpolate} refuses to handle, since @code{interpolate} requires
-that everything evaluate to a floating point number.
-Thus @code{newton (x^2 - a^2, x, a/2, a^2/100)}
-complains that it can't tell if @code{6.098490481853958E-4 a^2 < a^2/100}.
-After @code{assume (a>0)}, the same function call succeeds,
-yielding a symbolic result, @code{1.00030487804878 a}.
-
-On the other hand,
-@code{interpolate (x^2 - a^2, x, a/2, 2*a)} complains
-that @code{0.5 a} is not a floating point number.
-
-An adaptive integrator which uses the Newton-Cotes 8 panel quadrature
-rule is available.  See @code{qq}.
-
-@c NEEDS EXAMPLES
-@end deffn
 
 @node Definitions for Fourier Series, , Definitions for Numerical, Numerical
 @section Definitions for Fourier Series

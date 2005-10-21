@@ -336,8 +336,6 @@ linear, isso inicia usando interpola@,{c}@~ao linear.
 (%o5)                   1.895494267033981
 @end example
 
-Existe tamb@'em uma rotina do m@'etodo de interpola@,{c}@~ao de Newton. Veja @code{newton}.
-
 @end deffn
 
 @defvr {Vari@'avel de op@value{cedilha}@~ao} intpolabs
@@ -382,32 +380,6 @@ Os valores padr@~ao de @code{intpolabs} e
 com a precis@~ao aritm@'etica simples que tivermos.
 
 @end defvr
-
-@c NEEDS WORK
-@c SEARCHING THE SHARE DIRECTORY TURNS UP SOME OTHER "NEWTON" FUNCTIONS
-@c share/contrib/mnewton.mac
-@c share/numeric/newton.mac
-@c THERE MAY WELL BE OTHERS
-@deffn {Fun@value{cedilha}@~ao} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
-Interpola@,{c}@~ao pelo m@'etodo de Newton. @code{load ("newton1")} chama essa fun@value{cedilha}@~ao.
-
-@code{newton} pode manusear algumas express@~oes
-que @code{interpolate} recusa-se a manusear, uma vez que @code{interpolate} requer
-que tudo avalie para n@'umeros em ponto flutuante.
-Dessa forma @code{newton (x^2 - a^2, x, a/2, a^2/100)}
-reclama que n@~ao pode dizer se @code{6.098490481853958E-4 a^2 < a^2/100}.
-Ap@'os @code{assume (a>0)}, a mesma chamada de fun@value{cedilha}@~ao obt@'em sucesso,
-retornando um resultado simb@'olico, @code{1.00030487804878 a}.
-
-Sobre outro manuseio,
-@code{interpolate (x^2 - a^2, x, a/2, 2*a)} reclama
-que @code{0.5 a} n@~ao @'e um n@'umero em ponto flutuante.
-
-Um integrador adaptativo que usa a regra da quadratura dos currais de
-Newton est@'a dispon@'ivel.  Veja @code{qq}.
-
-@c NEEDS EXAMPLES
-@end deffn
 
 @node Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier, , Defini@value{cedilha}@value{o_til}es para Num@'erico, Num@'erico
 @section Defini@value{cedilha}@value{o_til}es para S@'eries de Fourier

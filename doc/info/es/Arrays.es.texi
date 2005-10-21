@@ -73,12 +73,6 @@ La funci@'on @code{fillarray} devuelve su primer argumento.
 
 @end deffn
 
-@c NEEDS EXAMPLES
-@deffn {Funci@'on} getchar (@var{a}, @var{i})
-Devuelve el  @var{i}-@'esimo car@'acter de la cadena (precedida de ap@'ostrofo) o nombre at@'omico @var{a}.  Esta funci@'on es @'util para manipular la lista @code{labels}.
-
-@end deffn
-
 @deffn {Funci@'on} listarray (@var{A})
 Devuelve una lista con los elementos del arreglo declarado o tabla de claves @var{A}, en el orden de las filas. Los elementos que todav@'{@dotless{i}}a no han sido declarados se representan mediante @code{#####}.
 

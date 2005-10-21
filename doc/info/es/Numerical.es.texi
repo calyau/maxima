@@ -272,8 +272,6 @@ La funci@'on utiliza una b@'usqueda binaria en el rango especificado por los dos
 (%o5)                   1.895494267033981
 @end example
 
-Hay tambi@'en una rutina para el m@'etodo de Newton. V@'ease @code{newton}.
-
 @end deffn
 
 @defvr {Variable optativa} intpolabs
@@ -299,24 +297,6 @@ La variable @code{intpolrel} es el error de la instrucci@'on @code{interpolate},
 Los valores por defecto de @code{intpolabs} y @code{intpolrel} es 0.0, de manera que @code{interpolate} obtiene una respuesta tan buena como lo permita la precisi@'on aritm@'etica de que se disponga.
 
 @end defvr
-
-@c NEEDS WORK
-@c SEARCHING THE SHARE DIRECTORY TURNS UP SOME OTHER "NEWTON" FUNCTIONS
-@c share/contrib/mnewton.mac
-@c share/numeric/newton.mac
-@c THERE MAY WELL BE OTHERS
-@deffn {Funci@'on} newton (@var{expr}, @var{x}, @var{x_0}, @var{eps})
-Interpolaci@'on por el m@'etodo de Newton. Ejecutar @code{load ("newton1")} para tener disponible esta funci@'on.
-
-La funci@'on@code{newton} puede operar con algunas expresiones con las que @code{interpolate} no puede, puesto que  @code{interpolate} requiere que sus argumentos eval@'uen en n@'umeros en coma flotante. As@'{@dotless{i}}  @code{newton (x^2 - a^2, x, a/2, a^2/100)} avisa que no puede determinar si @code{6.098490481853958E-4 a^2 < a^2/100}, pero despu@'es de hacer  @code{assume (a>0)}, la misma llamada a la funci@'on da un resultado satisfactorio, devolviendo el resultado simb@'olico @code{1.00030487804878 a}.
-
-Por otro lado,
-@code{interpolate (x^2 - a^2, x, a/2, 2*a)} avisa que @code{0.5 a} no es un n@'umero en coma flotante.
-
-V@'ease @code{qq} para informaci@'on sobre el m@'etodo adaptativo Newton-Cotes.
-
-@c NEEDS EXAMPLES
-@end deffn
 
 @node Definiciones para las series de Fourier, , Definiciones para los m@'etodos num@'ericos, M@'etodos num@'ericos
 @section Definiciones para las series de Fourier
