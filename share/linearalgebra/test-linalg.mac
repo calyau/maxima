@@ -418,10 +418,10 @@ true$
 hilbert_matrix(2);
 matrix([1,1/2],[1/2,1/3])$
 
-kronnecker_product(matrix([a]),matrix([b]));
+kronecker_product(matrix([a]),matrix([b]));
 matrix([a*b]);
 
-kronnecker_product(matrix([1,2],[3,4]),matrix([a,b],[c,d]));
+kronecker_product(matrix([1,2],[3,4]),matrix([a,b],[c,d]));
 mat_unblocker(matrix([matrix([a,b],[c,d]), 2*matrix([a,b],[c,d])],[3*matrix([a,b],[c,d]),4*matrix([a,b],[c,d])]))$
 
 listp([-1,-2,3],lambda([e], is(e < 0)));

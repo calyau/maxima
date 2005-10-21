@@ -268,9 +268,9 @@ mat_unblocker(m):=block(
      m : apply('addrow, args( map(lambda([x], apply('addcol, x)), m))))     
    else m);
 
-kronnecker_product(a,b) := (
-  require_matrix(a,"first", "kronnecker_product"),
-  require_matrix(b,"second", "kronnecker_product"),
+kronecker_product(a,b) := (
+  require_matrix(a,"first", "kronecker_product"),
+  require_matrix(b,"second", "kronecker_product"),
   mat_unblocker(outermap('matrix_element_mult, a,b)));
   
 hilbert_matrix(n) := (

@@ -66,9 +66,9 @@ hilbert_matrix(n)
   Return the n by n Hilbert matrix. When n isn't a nonnegative
   integer, signal an error.
 
-kronnecker_product(a,b)
+kronecker_product(a,b)
 
-   Return the Kronnecker product of the matrices a and b.
+   Return the Kronecker product of the matrices a and b.
 
 listp (e, {pred})
 

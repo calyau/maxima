@@ -28,9 +28,9 @@ conjugate(sqrt(z)) --> sqrt(conjugate(z)).
 (%i7) vandermonde_matrix([a,b]);
 (%o7) matrix([1,a],[1,b])
 
-(3) A matrix kronnecker_product
+(3) A matrix kronecker_product
 
-(%i9) kronnecker_product(hilbert_matrix(2), vandermonde_matrix([5,6]));
+(%i9) kronecker_product(hilbert_matrix(2), vandermonde_matrix([5,6]));
 (%o9) matrix([1,5,1/2,5/2],[1,6,1/2,3],[1/2,5/2,1/3,5/3],[1/2,3,1/3,2])
 
 (4) A function that converts block matrices to unblocked matrices
