@@ -111,6 +111,7 @@ contrib/Zeilberger/testGosper.mac\
 contrib/Zeilberger/testZeilberger.mac\
 contrib/Zeilberger/whatsnew.txt\
 contrib/augmented_lagrangian.mac\
+contrib/bode.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/README\
 contrib/descriptive/biomed.data\
