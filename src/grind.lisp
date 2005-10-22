@@ -49,7 +49,7 @@
 	    #-nocp(if (not (zerop (charpos t))) (mterpri))
 	    (cond ((or (null x) (cdr x)) (wna-err '$grind))
 		  ((symbolp (setq x (strmeval (car x))))
-		   (setq x ($verbify x))
+		   (unless (mstringp x) (setq x ($verbify x)))
 		   (cond ((setq y (mget x 'mexpr))
 			  (mgrind (list '(mdefine) (cons (list x) (cdadr y)) (caddr y)) nil))
 			 ((setq y (mget x 'mmacro))
