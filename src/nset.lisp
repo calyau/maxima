@@ -890,7 +890,10 @@ a positive integer; instead found ~:M" n))))
 
 (eval-when (compile load eval)
   ;(kind '$kron_delta '$symmetric)) <-- This doesn't work. Why?
-  (meval* '(($declare) $kron_delta $symmetric)))
+  ; Put new fact in global context; 
+  ; otherwise it goes in initial context, which is meant for the user.
+  (let (($context '$global) (context '$global))
+    (meval* '(($declare) $kron_delta $symmetric))))
 
 (defun simp-kron-delta (x y z)
   (twoargcheck x)
