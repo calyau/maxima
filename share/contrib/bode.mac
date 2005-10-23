@@ -53,7 +53,7 @@ bode_gain (H_expr, range) := block ([omega, L, s, H_expr_substd, my_preamble],
   H_expr_substd : subst (%i * omega, s, H_expr),
 
   my_preamble : concat ("set nokey; set title \"Bode gain plot for ", string (H_expr), "\""),
-  plot2d (10 * log10 (cabs (H_expr_substd) * conjugate (H_expr_substd)), range,
+  plot2d (10 * log10 (cabs (H_expr_substd * conjugate (H_expr_substd))), range,
     [logx, true], [gnuplot_preamble, my_preamble]));
 
 bode_phase (H_expr, range) := block ([omega, L, s, my_preamble],
