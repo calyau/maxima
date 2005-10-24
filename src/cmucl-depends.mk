@@ -225,6 +225,8 @@ binary-cmucl/maxima.core : macdes.lisp
 binary-cmucl/maxima.core : inmis.lisp
 binary-cmucl/maxima.core : db.lisp
 binary-cmucl/maxima.core : compar.lisp
+binary-cmucl/maxima.core : maxmin.lisp
+binary-cmucl/maxima.core : nummod.lisp
 binary-cmucl/maxima.core : askp.lisp
 binary-cmucl/maxima.core : sinint.lisp
 binary-cmucl/maxima.core : sin.lisp

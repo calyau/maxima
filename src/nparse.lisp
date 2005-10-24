@@ -456,12 +456,20 @@
     (setf (nth 3. data) (list #\D)))
   (if (not (equal (nth 3. data) '(#\B)))
       (readlist (apply #'append data))
-      ;; For bigfloats, turn them into rational numbers then convert to bigfloat
-      ($bfloat `((mtimes) ((mplus) ,(readlist (or (first data) '(#\0)))
-				   ((mtimes) ,(readlist (or (third data) '(#\0)))
-					     ((mexpt) 10. ,(f- (length (third data))))))
+      ;; For bigfloats, turn them into rational numbers then convert to bigfloat.
+      ;; Fix for the 0.25b0 # 2.5b-1 bug.  Richard J. Fateman posted this fix to the 
+      ;; Maxima list on 10 October 2005.  Without this fix, some tests in rtestrationalize
+      ;; will fail.  Used with permission.
+      ($bfloat (simplifya `((mtimes) ((mplus) ,(readlist (or (first data) '(#\0)))
+				    ((mtimes) ,(readlist (or (third data) '(#\0)))
+				     ((mexpt) 10. ,(f- (length (third data))))))
 			  ((mexpt) 10. ,(funcall (if (char= (first (fifth data)) #\-) #'- #'+)
-						 (readlist (sixth data))))))))
+						 (readlist (sixth data))))) nil))))
+
+;; Richard J. Fateman wrote the big float to rational code and the function 
+;; cl-rat-to-maxmia.  
+
+(defun cl-rat-to-maxima (x) (if (integerp x) x (list '(rat simp) (numerator x) (denominator x))))
 
 (defun scan-digits (data continuation? continuation &optional exponent-p)
   (do ((c (parse-tyipeek) (parse-tyipeek))

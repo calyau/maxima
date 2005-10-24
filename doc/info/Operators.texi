@@ -371,12 +371,153 @@ Returns the complex absolute value (the complex modulus) of
 
 @end deffn
 
+@deffn {Function} ceiling (@var{x})
+
+When @var{x} is a real number, return the least integer that 
+is greater than or equal to @var{x}.  
+
+If @var{x} is a constant expression (@code{10 * %pi}, for example), 
+@code{ceiling} evaluates @var{x} using big floating point numbers, and 
+applies @code{ceiling} to the resulting big float. Because @code{ceiling} uses
+floating point evaluation, it's possible, although unlikely, 
+that @code{ceiling} could return an erroneous value for constant
+inputs. To guard against errors, the floating point evaluation
+is done using three values for @code{fpprec}.
+
+For non-constant inputs, @code{ceiling} tries to return a simplified
+value.  Here are examples of the simplifications that @code{ceiling}
+knows about:
+
+@c ===beg===
+@c ceiling (ceiling (x));
+@c ceiling (floor (x));
+@c declare (n, integer)$
+@c [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
+@c assume (x > 0, x < 1)$
+@c ceiling (x);
+@c tex (ceiling (a));
+@c ===end===
+@example
+(%i1) ceiling(ceiling(x));
+(%o1) ceiling(x)
+(%i2) ceiling(floor(x));
+(%o2) floor(x)
+(%i3) declare(n,integer)$
+(%i4) [ceiling(n), ceiling(abs(n)), ceiling(max(n,6))];
+(%o4) [n, abs(n), max(n,6)]
+(%i5) assume(x > 0, x < 1)$
+(%i6) ceiling(x);
+(%o6) 1
+(%i7) tex(ceiling(a));
+   $$\left \lceil a \right \rceil$$
+@end example
+
+The function @code{ceiling} does not automatically map over lists or matrices.
+Finally, for all inputs that are manifestly complex, @code{ceiling} returns 
+a noun form.
+
+If the range of a function is a subset of the integers, it can be
+declared to be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions
+can use this information; for example:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare(f,integervalued)$
+(%i2) floor(f(x));
+(%o2) f(x)
+(%i3) ceiling(f(x) -1);
+(%o3) f(x)-1
+@end example
+
+@end deffn
+
+@deffn Function charfun (@var{p})
+
+Return 0 when the predicate @var{p} evaluates to @code{false}; return
+1 when the predicate evaluates to @code{true}.  When the predicate
+evaluates to something other than @code{true} or @code{false} (unknown), 
+return a noun form.
+
+Examples:
+
+@c ===beg===
+@c charfun (x < 1);
+@c subst (x = -1, %);
+@c e : charfun ('"and" (-1 < x, x < 1))$
+@c [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+@c ===end===
+@example
+(%i1) charfun(x<1);
+(%o1) charfun(x<1)
+(%i2) subst(x=-1,%);
+(%o2) 1
+(%i3) e : charfun('"and"(-1 < x, x < 1))$
+(%i4) [subst(x=-1,e), subst(x=0,e), subst(x=1,e)];
+(%o4) [0,1,0]
+@end example
+
+@end deffn
+
 @defvr {Declaration} commutative
 If @code{declare(h,commutative)} is done, this tells the
 simplifier that @code{h} is a commutative function.  E.g. @code{h(x,z,y)} will
 simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @end defvr
+
+@deffn Function compare (@var{x}, @var{y})
+
+Return a comparison operator @var{op}
+(@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, or @code{#}) such that
+@code{is (@var{x} @var{op} @var{y})} evaluates to true;
+when either @var{x} or @var{y} depends on @code{%i} and
+@code{@var{x} # @var{y}}, return @code{notcomparable};
+when there is no such operator or
+Maxima isn't able to determine the operator, return @code{unknown}.
+
+Examples:
+
+@c ===beg===
+@c compare (1, 2);
+@c compare (1, x);
+@c compare (%i, %i);
+@c compare (%i, %i + 1);
+@c compare (1/x, 0);
+@c compare (x, abs(x));
+@c ===end===
+@example
+(%i1) compare(1,2);
+(%o1) <
+(%i2) compare(1,x);
+(%o2) unknown
+(%i3) compare(%i,%i);
+(%o3) =
+(%i4) compare(%i,%i+1);
+(%o4) notcomparable
+(%i5) compare(1/x,0);
+(%o5) #
+(%i6) compare(x,abs(x));
+(%o6) <=
+@end example
+
+The function @code{compare} doesn't try to determine whether the real domains of
+its arguments are nonempty; thus
+
+@c ===beg===
+@c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+@c ===end===
+@example
+(%i1) compare(acos(x^2+1), acos(x^2+1) + 1);
+(%o1) <
+@end example
+
+The real domain of @code{acos (x^2 + 1)} is empty.
+
+@end deffn
 
 @deffn {Function} entier (@var{x})
 Returns the largest integer less than or equal to @var{x} where @var{x} is numeric.  @code{fix} (as in
@@ -414,6 +555,70 @@ Note that because of the rules for evaluation of predicate expressions
 (%o2)                        [a > 1]
 (%i3) is (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
 (%o3)                         true
+@end example
+
+@end deffn
+
+@deffn Function floor (@var{x})
+
+When @var{x} is a real number, return the largest integer that 
+is less than or equal to @var{x}.
+
+If @var{x} is a constant expression (@code{10 * %pi}, for example), 
+@code{floor} evaluates @var{x} using big floating point numbers, and 
+applies floor to the resulting big float. Because floor uses
+floating point evaluation, it's possible, although unlikely, 
+that @code{floor} could return  an erroneous value for constant 
+inputs.  To guard against errors, the floating point evaluation
+is done using three values for @code{fpprec}.
+
+For non-constant inputs, @code{floor} tries to return a simplified
+value.  Here are examples of the simplifications that @code{floor}
+knows about:
+
+@c ===beg===
+@c floor (ceiling (x));
+@c floor (floor (x));
+@c declare (n, integer)$
+@c [floor (n), floor (abs (n)), floor (min (n, 6))];
+@c assume (x > 0, x < 1)$
+@c floor (x);
+@c tex (floor (a);
+@c ===end===
+@example
+(%i1) floor(ceiling(x));
+(%o1) ceiling(x)
+(%i2) floor(floor(x));
+(%o2) floor(x)
+(%i3) declare(n,integer)$
+(%i3) [floor(n), floor(abs(n)), floor(min(n,6))];
+(%o4) [n,abs(n),min(n,6)]
+(%i4) assume(x > 0, x < 1)$
+(%i5) floor(x);
+(%o5) 0
+(%i6) tex(floor(a);
+    $$\left \lfloor a \right \rfloor$$
+@end example
+
+The function @code{floor} does not automatically map over lists or matrices.
+Finally, for all inputs that are manifestly complex, @code{floor} returns 
+a noun form.
+
+If the range of a function is a subset of the integers, it can be
+declared to be @code{integervalued}. Both the @code{ceiling} and @code{floor} functions
+can use this information; for example:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare(f,integervalued)$
+(%i2) floor(f(x));
+(%o2) f(x)
+(%i3) ceiling(f(x) -1);
+(%o3) f(x)-1
 @end example
 
 @end deffn
@@ -636,15 +841,39 @@ which is an integer.
 
 @end deffn
 
-@deffn {Function} max (@var{x_1}, @var{x_2}, ...)
-Returns the maximum of its arguments (or returns a
-simplified form if some of its arguments are non-numeric).
+@deffn Function lmax (@var{L})
+
+When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.  When @var{L} isn't a
+list or a set, signal an error.
 
 @end deffn
 
-@deffn {Function} min (@var{x_1}, @var{x_2}, ...)
-Returns the minimum of its arguments (or returns a
-simplified form if some of its arguments are non-numeric).
+@deffn Function lmin (@var{L})
+
+When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}. When @var{L} isn't a
+list or a set, signal an error.
+
+@end deffn
+
+@deffn Function max (@var{x_1}, ..., @var{x_n})
+
+Return a simplified value for the maximum of the expressions @var{x_1} through @var{x_n}.
+When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max} uses the simplification 
+@code{max (e, -e) --> |e|}.  When @code{get (trylevel, maxmin)} is 3 or greater, @var{max} tries
+to eliminate expressions that are between two other arguments; for example,
+@code{max (x, 2*x, 3*x) --> max (x, 3*x)}. To set the value of @code{trylevel} to 2, use
+@code{put (trylevel, 2, maxmin)}.
+
+@end deffn
+
+@deffn Function min (@var{x_1}, ..., @var{x_n})
+
+Return a simplified value for the minimum of the expressions @code{x_1} through @code{x_n}.
+When @code{get (trylevel, maxmin)}, is 2 or greater, @code{min} uses the simplification 
+@code{min (e, -e) --> -|e|}.  When @code{get (trylevel, maxmin)} is 3 or greater, @code{min} tries
+to eliminate expressions that are between two other arguments; for example,
+@code{min (x, 2*x, 3*x) --> min (x, 3*x)}. To set the value of @code{trylevel} to 2, use
+@code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
@@ -658,6 +887,44 @@ with respect to the current modulus which is the value of the variable
 instead of the current value of @code{modulus}.
 
 See @code{modulus}.
+
+@end deffn
+
+@deffn Function nummod (@var{x}, @var{y})
+
+If @var{x} and @var{y} are real numbers and @var{y} is nonzero,
+return @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
+Further for all real @var{x}, we have @code{nummod (@var{x}, 0) = @var{x}}. For a discussion of
+the definition @code{nummod (@var{x}, 0) = @var{x}}, see Section 3.4, of "Concrete Mathematics," 
+by Graham, Knuth, and Patashnik. The function @code{nummod (@var{x}, 1)} 
+is a sawtooth function with period 1 with @code{nummod (1, 1) = 0} and 
+@code{nummod (0, 1) = 0}.
+
+To find the principal argument (a number in the interval @code{(-%pi, %pi]}) of a 
+complex number, use the function @code{@var{x} |-> %pi - nummod (%pi - @var{x}, 2*%pi)}, where 
+@var{x} is an argument.
+
+When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for example), @code{nummod}
+uses the same big float evaluation scheme that @code{floor} and @code{ceiling} uses.
+Again, it's possible, although unlikely, that @code{nummod} could return an
+erroneous value in such cases.
+
+For nonnumerical arguments @var{x} or @var{y}, nummod knows several simplification 
+rules:
+
+@c ===beg===
+@c nummod (x, 0);
+@c nummod (a*x, a*y);
+@c nummod (0, x);
+@c ===end===
+@example
+(%i1) nummod(x,0);
+(%o1) x
+(%i2) nummod(a*x,a*y);
+(%o2) a*nummod(x,y)
+(%i3) nummod(0,x);
+(%o3) 0
+@end example
 
 @end deffn
 
@@ -766,6 +1033,79 @@ Examples:
 (%o12)                  4.394553645870825
 (%i13) random (100.0);
 (%o13)                  32.28666704056853
+@end example
+
+@end deffn
+
+@deffn Function rationalize (@var{expr})
+
+Convert all double floats and big floats in the Maxima expression
+@var{expr} to their exact rational equivalents. If you are not familiar with
+the binary representation of floating point numbers, you might
+be surprised that @code{rationalize (0.1)} does not equal 1/10.  This behavior
+isn't special to Maxima -- the number 1/10 has a repeating, not a terminating,
+binary representation.
+
+@c ===beg===
+@c rationalize (0.5);
+@c rationalize (0.1);
+@c fpprec : 5$
+@c rationalize (0.1b0);
+@c fpprec : 20$
+@c rationalize (0.1b0);
+@c rationalize (sin (0.1*x + 5.6));
+@c ===end===
+@example
+(%i1) rationalize(0.5);
+(%o1) 1/2
+(%i2) rationalize(0.1);
+(%o2) 3602879701896397/36028797018963968
+(%i3) fpprec : 5$
+(%i4) rationalize(0.1b0);
+(%o4) 209715/2097152
+(%i5) fpprec : 20$
+(%i6) rationalize(0.1b0);
+(%o6) 236118324143482260685/2361183241434822606848
+(%i7) rationalize(sin(0.1 * x + 5.6));
+(%o7) sin((3602879701896397*x)/36028797018963968+3152519739159347/562949953421312)
+@end example
+
+Example use:
+
+@c ===beg===
+@c unitfrac(r) := block([uf : [], q],
+@c     if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+@c     while r # 0 do (
+@c         uf : cons(q : 1/ceiling(1/r), uf),
+@c         r : r - q),
+@c     reverse(uf)); 
+@c unitfrac (9/10);
+@c apply ("+", %);
+@c unitfrac (-9/10);
+@c apply ("+", %);
+@c unitfrac (36/37);
+@c apply ("+", %);
+@c ===end===
+@example
+unitfrac(r) := block([uf : [], q],
+   if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+   while r # 0 do (
+        uf : cons(q : 1/ceiling(1/r), uf),
+        r : r - q),
+   reverse(uf)); 
+
+(%i2) unitfrac(9/10);
+(%o2) [1/2,1/3,1/15]
+(%i3) apply("+",%);
+(%o3) 9/10
+(%i4) unitfrac(-9/10);
+(%o4) [-1,1/10]
+(%i5) apply("+",%);
+(%o5) -9/10
+(%i6) unitfrac(36/37);
+(%o6) [1/2,1/3,1/8,1/69,1/6808]
+(%i7) apply("+",%);
+(%o7) 36/37   
 @end example
 
 @end deffn

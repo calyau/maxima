@@ -298,6 +298,7 @@ matrun.lisp \
 max_ext.lisp \
 maxima-package.lisp \
 maxmac.lisp \
+maxmin.lisp \
 mdebug.lisp \
 mdefun.lisp \
 mdot.lisp \
@@ -326,6 +327,7 @@ nregex.lisp \
 nset.lisp \
 numer.lisp \
 numerm.lisp \
+nummod.lisp \
 numth.lisp \
 nusum.lisp \
 ode2.lisp \

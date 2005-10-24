@@ -17,4 +17,5 @@
 	"rtest3" "rtest8" "rtest12" "rexamples"
 	"rtesthyp"
 	"rtestmt19937"
+    "rtest_allnummod"
 	))

@@ -125,6 +125,9 @@ binary-gcl/maxima : numerical/slatec/zbesk.lisp
 binary-gcl/maxima : numerical/slatec/d9aimp.lisp
 binary-gcl/maxima : numerical/slatec/daie.lisp
 binary-gcl/maxima : numerical/slatec/dai.lisp
+binary-gcl/maxima : numerical/slatec/dbie.lisp
+binary-gcl/maxima : numerical/slatec/dbi.lisp
+binary-gcl/maxima : numerical/slatec/zbiry.lisp
 binary-gcl/maxima : numerical/slatec/derfc.lisp
 binary-gcl/maxima : numerical/slatec/derf.lisp
 binary-gcl/maxima : numerical/slatec/de1.lisp
@@ -212,6 +215,7 @@ binary-gcl/maxima : trprop.lisp
 binary-gcl/maxima : mdefun.lisp
 binary-gcl/maxima : bessel.lisp
 binary-gcl/maxima : ellipt.lisp
+binary-gcl/maxima : airy.lisp
 binary-gcl/maxima : numer.lisp
 binary-gcl/maxima : intpol.lisp
 binary-gcl/maxima : rombrg.lisp
@@ -272,6 +276,8 @@ binary-gcl/maxima : homog.lisp
 binary-gcl/maxima : combin.lisp
 binary-gcl/maxima : nset.lisp
 binary-gcl/maxima : rand-mt19937.lisp
+binary-gcl/maxima : maxmin.lisp
+binary-gcl/maxima : nummod.lisp
 binary-gcl/maxima : mstuff.lisp
 binary-gcl/maxima : ratpoi.lisp
 binary-gcl/maxima : pois2.lisp

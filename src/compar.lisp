@@ -402,34 +402,10 @@ Maybe you want to use `not equal'."))
 ;;(defun compare macro (x) `(sign1 (sub* ,(cadr x) ,(caddr x))))
 (defmacro compare (a b) `(sign1 (sub* ,a ,b)))
 
-(defmfun $compare (x y) (compare x y) sign)
-
-(defmfun $max n (if (= n 0) (wna-err '$max) (maximin (listify n) '$max)))
-
-(defmfun $min n (if (= n 0) (wna-err '$min) (maximin (listify n) '$min)))
-
 (defmfun maximum (l) (maximin l '$max))
 
 (defmfun minimum (l) (maximin l '$min))
 
-(defmfun maximin (l sw)
-  (if (dolist (x l) (if (not (atom x)) (return t)))
-      (setq l (total-nary (cons (ncons sw) l))))
-  (do ((ll nil nil) (reject nil nil) (nl) (arg) (xarg))
-      ((null l) (if (null (cdr nl)) (car nl) (cons (ncons sw) (sort nl 'great))))
-    (dolist (x (cdr l))
-      (compare (car l) x)
-      (cond ((eq sign '$zero)
-	     (setq arg (specrepcheck (car l)) xarg (specrepcheck x))
-	     (if (and (not (alike1 arg xarg)) (great xarg arg))
-		 (setq reject t ll (cons x ll))))
-	    ((memq sign '($pos $pz))
-	     (if (eq sw '$min) (setq reject t ll (cons x ll))))
-	    ((memq sign '($neg $nz))
-	     (if (eq sw '$max) (setq reject t ll (cons x ll))))
-	    (t (setq ll (cons x ll)))))
-    (if (not reject) (setq nl (cons (car l) nl)))
-    (setq l (nreverse ll))))
 
 (defmspec mnot (form) (setq form (cdr form))
 	  (let ((x (mevalp (car form))))
@@ -1079,9 +1055,23 @@ Maybe you want to use `not equal'."))
 
 (defun dbzs-err (x) (merror "Division by zero detected in `sign':~%~M" x))
 
+;; Return true iff e is an expression with operator op1, op2,...,or opn. 
+
+(defun op-equalp (e &rest op)
+  (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
+
+;; Return true iff the operator of e is a Maxima relation operator.
+
+(defun mrelationp (a)
+  (op-equalp a 'mlessp 'mleqp 'mequal 'mgeqp 'mgreaterp))
+
+;; This version of featurep applies ratdisrep to the first argument.  This
+;; change allows things like featurep(rat(n),integer) --> true when n has
+;; been declared an integer.
+
 (defmfun $featurep (e ind)
-  (cond ((not (symbolp ind))
-	 (merror "~M is not a symbolic atom - `featurep'." ind))
+  (setq e ($ratdisrep e))
+  (cond ((not (symbolp ind)) (merror "The second argument to 'featurep' must be a symbol"))
 	((eq ind '$integer) (maxima-integerp e))
 	((eq ind '$noninteger) (nonintegerp e))
 	((eq ind '$even) (mevenp e))
@@ -1093,13 +1083,40 @@ Maybe you want to use `not equal'."))
 	((eq ind '$complex) t)
 	((symbolp e) (kindp e ind))))
 
-(defmfun maxima-integerp (e)
-  (cond ((integerp e))
-	((mnump e) nil)
-	((atom e) (kindp e '$integer))
-	((eq (caar e) 'mrat) (and (integerp (cadr e)) (equal (cddr e) 1)))
-	((memq (caar e) '(mtimes mplus)) (intp e))
-	((eq (caar e) 'mexpt) (intp-mexpt e))))
+;; Give a function the maps-integers-to-integers property when it is integer
+;; valued on the integers; give it the integer-valued property when its 
+;; range is a subset of the integers. What have I missed?
+
+(setf (get 'mplus 'maps-integers-to-integers) t)
+(setf (get 'mtimes 'maps-integers-to-integers) t)
+(setf (get 'mabs 'maps-integers-to-integers) t)
+(setf (get '$max 'maps-integers-to-integers) t)
+(setf (get '$min 'maps-integers-to-integers) t)
+
+(setf (get '$floor 'integer-valued) t)
+(setf (get '$ceiling 'integer-valued) t)
+(setf (get '%signum  'integer-valued) t)
+(setf (get '$signum 'integer-valued) t)
+(setf (get '$charfun 'integer-valued) t)
+
+(defun maxima-integerp (x)
+  (let ((x-op (if (and (consp x) (consp (car x))) (mop x) nil)) ($prederror nil))
+    (cond ((integerp x))
+	  ((mnump x) nil)
+	  ((and (symbolp x) (or (kindp x '$integer) (kindp x '$even) (kindp x '$odd))))
+	  ((and (eq x-op 'mrat) (integerp (cadr x)) (equal (cddr x) 1)))
+	  ((and x-op (or ($featurep ($verbify x-op) '$integervalued) (get x-op 'integer-valued))))
+	  ((and (get x-op 'maps-integers-to-integers) (every #'maxima-integerp (margs x))))
+	  ((and (eq x-op 'mfactorial) (not (mevalp (mlsp (first (margs x)) 0)))))
+	 
+	  ((and (eq x-op 'mtimes)
+		(mnump (first (margs x)))
+		(integerp (mul 2 (first (margs x))))
+		(every 'maxima-integerp (rest (margs x)))
+		(some #'(lambda (s) ($featurep s '$even)) (rest (margs x)))))
+
+	  ((and (eq x-op 'mexpt) (every #'maxima-integerp (margs x)) 
+		(eq nil (mevalp (mlsp (nth 2 x) 0))))))))
 
 (defmfun nonintegerp (e)
   (let (num)
@@ -1133,12 +1150,16 @@ Maybe you want to use `not equal'."))
 	((mnump e) nil)
 	(t (eq '$odd (evod e)))))
 
+;; An extended evod that recognizes that abs(even) is even and
+;; abs(odd) is odd.
+
 (defmfun evod (e)
   (cond ((integerp e) (if (oddp e) '$odd '$even))
 	((mnump e) nil)
 	((atom e) (cond ((kindp e '$odd) '$odd) ((kindp e '$even) '$even)))
 	((eq 'mtimes (caar e)) (evod-mtimes e))
 	((eq 'mplus (caar e)) (evod-mplus e))
+	((eq 'mabs (caar e)) (evod (cadr e))) ;; extra code
 	((eq 'mexpt (caar e)) (evod-mexpt e))))
 
 (defun evod-mtimes (x)

@@ -73,6 +73,7 @@ rtestmt19937.mac \
 mcond_display_elseif.mac \
 mcond_display_elseif.out \
 rtestmcond_display.mac \
+rtest_allnummod.mac \
 testsuite.lisp
 
 EXTRA_DIST = $(genericdirDATA)
