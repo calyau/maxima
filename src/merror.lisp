@@ -30,7 +30,7 @@
   "Signals a Maxima user error."
   (apply #'merror (fstringc l)))
 
-(defmvar $error_size 10.
+(defmvar $error_size 60.
   "Expressions greater in SOME size measure over this value
   are replaced by symbols {ERREXP1, ERREXP2,...} in the MAXIMA-ERROR
   display, the symbols being set to the expressions, so that one can
