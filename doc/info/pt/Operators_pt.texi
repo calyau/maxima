@@ -374,19 +374,19 @@ Retorna o valor absoluto complexo (o m@'odulo complexo) de
 
 @deffn {Function} ceiling (@var{x})
 
-Quando @var{x} for um número real, retorna o último inteiro que 
-é maior que ou igual a @var{x}.  
+Quando @var{x} for um n@'umero real, retorna o @'ultimo inteiro que 
+@'e maior que ou igual a @var{x}.  
 
-Se @var{x} for uma expressão constante (@code{10 * %pi}, por exemplo), 
-@code{ceiling} avalia @var{x} usando grandes números em ponto flutuante, e 
-aplica @code{ceiling} para o grande número em ponto flutuante resultante. Porque @code{ceiling} usa
-avaliação de ponto flutuante, é possível, embora improvável, 
-que @code{ceiling} possa retornar uma valor errôneo para entradas
-constantes. Para prevenir erros, a avaliação de ponto flutuante
-é concluída usando três valores para @code{fpprec}.
+Se @var{x} for uma express@~ao constante (@code{10 * %pi}, por exemplo), 
+@code{ceiling} avalia @var{x} usando grandes n@'umeros em ponto flutuante, e 
+aplica @code{ceiling} para o grande n@'umero em ponto flutuante resultante. Porque @code{ceiling} usa
+avalia@,{c}@~ao de ponto flutuante, @'e poss@'ivel, embora improv@'avel, 
+que @code{ceiling} possa retornar uma valor err@^oneo para entradas
+constantes. Para prevenir erros, a avalia@,{c}@~ao de ponto flutuante
+@'e conclu@'ida usando tr@^es valores para @code{fpprec}.
 
-Para entradas não constantes, @code{ceiling} tenta retornar um valor
-simplificado.  Aqui está um exemplo de simplificações que @code{ceiling}
+Para entradas n@~ao constantes, @code{ceiling} tenta retornar um valor
+simplificado.  Aqui est@'a um exemplo de simplifica@,{c}@~oes que @code{ceiling}
 conhece:
 
 @c ===beg===
@@ -413,13 +413,13 @@ conhece:
    $$\left \lceil a \right \rceil$$
 @end example
 
-A função @code{ceiling} não mapeia automaticamente sobre listas ou matrizes.
+A fun@,{c}@~ao @code{ceiling} n@~ao mapeia automaticamente sobre listas ou matrizes.
 Finalmente, para todas as entradas que forem manifestamente complexas, @code{ceiling} retorna 
 uma forma substantiva.
 
-Se o intervalo de uma função é um subconjunto dos inteiros, o intervalo pode ser
-declarado @code{integervalued}. Ambas as funções @code{ceiling} e @code{floor}
-podem usar essa informação; por exemplo:
+Se o intervalo de uma fun@,{c}@~ao @'e um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as fun@,{c}@~oes @code{ceiling} e @code{floor}
+podem usar essa informa@,{c}@~ao; por exemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -436,11 +436,11 @@ podem usar essa informação; por exemplo:
 
 @end deffn
 
-@deffn Function charfun (@var{p})
+@deffn {Fun@,{c}@~ao} charfun (@var{p})
 
 Retorna 0 quando o predicado @var{p} avaliar para @code{false}; retorna
 1 quando o predicado avaliar para @code{true}.  Quando o predicado
-avaliar para alguma coisa que não @code{true} ou @code{false} (@code{unknown}), 
+avaliar para alguma coisa que n@~ao @code{true} ou @code{false} (@code{unknown}), 
 retorna uma forma substantiva.
 
 Exemplos:
@@ -470,15 +470,15 @@ simplificar para @code{h(x, y, z)}.  Isto @'e o mesmo que @code{symmetric}.
 
 @end defvr
 
-@deffn Function compare (@var{x}, @var{y})
+@deffn {Fun@,{c}@~ao} compare (@var{x}, @var{y})
 
-Retorna um operador de comparação @var{op}
+Retorna um operador de compara@,{c}@~ao @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, ou @code{#}) tal que
 @code{is (@var{x} @var{op} @var{y})} avalia para @code{true};
 quando ou @var{x} ou @var{y} dependendo de @code{%i} e
 @code{@var{x} # @var{y}}, retorna @code{notcomparable};
-Quando não existir tal operador ou
-Maxima não estiver apto a determinar o operador, retorna @code{unknown}.
+Quando n@~ao existir tal operador ou
+Maxima n@~ao estiver apto a determinar o operador, retorna @code{unknown}.
 
 Exemplos:
 
@@ -505,8 +505,8 @@ Exemplos:
 (%o6) <=
 @end example
 
-A função @code{compare} não tenta de terminar se o domínio real de
-seus argumentos é não vazio; dessa forma
+A fun@,{c}@~ao @code{compare} n@~ao tenta de terminar se o dom@'inio real de
+seus argumentos @'e n@~ao vazio; dessa forma
 
 @c ===beg===
 @c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
@@ -516,7 +516,7 @@ seus argumentos é não vazio; dessa forma
 (%o1) <
 @end example
 
-O domínio real de @code{acos (x^2 + 1)} é vazio.
+O dom@'inio real de @code{acos (x^2 + 1)} @'e vazio.
 
 @end deffn
 
@@ -560,21 +560,21 @@ Note que devido @`as regras de avalia@,{c}@~ao de express@~oes predicadas
 
 @end deffn
 
-@deffn Function floor (@var{x})
+@deffn {Fun@,{c}@~ao} floor (@var{x})
 
-Quando @var{x} for um número real, retorna o maior inteiro que 
-é menor que ou igual a @var{x}.
+Quando @var{x} for um n@'umero real, retorna o maior inteiro que 
+@'e menor que ou igual a @var{x}.
 
-Se @var{x} for uma expressão constante (@code{10 * %pi}, for exemplo), 
-@code{floor} avalia @var{x} usando grandes números em ponto flutuante, e 
-aplica @code{floor} ao grande número em ponto flutuante resultante. Porque @code{floor} usa
-avaliação em ponto flutuante, é possível, embora improvável, 
-que @code{floor} não possa retornar um valor errôneo para entradas
-constantes.  Para prevenir erros, a avaliação de ponto flutuante
-é concluída usando três valores para @code{fpprec}.
+Se @var{x} for uma express@~ao constante (@code{10 * %pi}, for exemplo), 
+@code{floor} avalia @var{x} usando grandes n@'umeros em ponto flutuante, e 
+aplica @code{floor} ao grande n@'umero em ponto flutuante resultante. Porque @code{floor} usa
+avalia@,{c}@~ao em ponto flutuante, @'e poss@'ivel, embora improv@'avel, 
+que @code{floor} n@~ao possa retornar um valor err@^oneo para entradas
+constantes.  Para prevenir erros, a avalia@,{c}@~ao de ponto flutuante
+@'e conclu@'ida usando tr@^es valores para @code{fpprec}.
 
-Para entradas não constantes, @code{floor} tenta retornar um valor
-simplificado.  Aqui está exemplos de simplificações que @code{floor}
+Para entradas n@~ao constantes, @code{floor} tenta retornar um valor
+simplificado.  Aqui est@'a exemplos de simplifica@,{c}@~oes que @code{floor}
 conhece:
 
 @c ===beg===
@@ -601,13 +601,13 @@ conhece:
     $$\left \lfloor a \right \rfloor$$
 @end example
 
-A função @code{floor} não mapeia automaticamente sobre listas ou matrizes.
+A fun@,{c}@~ao @code{floor} n@~ao mapeia automaticamente sobre listas ou matrizes.
 Finalmente, para todas as entradas que forem manifestamente complexas, @code{floor} retorna
 uma forma substantiva.
 
-Se o intervalo de uma função for um subconjunto dos inteiros, o intervalo pode ser
-declarado @code{integervalued}. Ambas as funções @code{ceiling} e @code{floor}
-podem usar essa informação; por exemplo:
+Se o intervalo de uma fun@,{c}@~ao for um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as fun@,{c}@~oes @code{ceiling} e @code{floor}
+podem usar essa informa@,{c}@~ao; por exemplo:
 
 @c ===beg===
 @c declare (f, integervalued)$
@@ -842,37 +842,37 @@ que @'e um inteiro.
 
 @end deffn
 
-@deffn Function lmax (@var{L})
+@deffn {Fun@,{c}@~ao} lmax (@var{L})
 
-Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} não for uma
+Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} n@~ao for uma
 lista ou um conjunto, sinaliza um erro.
 
 @end deffn
 
-@deffn Function lmin (@var{L})
+@deffn {Fun@,{c}@~ao} lmin (@var{L})
 
-Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} não for uma
+Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} n@~ao for uma
 lista ou um conjunto, sinaliza um erro.
 
 @end deffn
 
-@deffn Function max (@var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~ao} max (@var{x_1}, ..., @var{x_n})
 
-Retorna um valor simplificado para o máximo entre as expressões @var{x_1} a @var{x_n}.
-Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplificação 
+Retorna um valor simplificado para o m@'aximo entre as express@~oes @var{x_1} a @var{x_n}.
+Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplifica@,{c}@~ao 
 @code{max (e, -e) --> |e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @var{max} tenta
-eliminar expressões que estiverem entre dois outros argumentos; por exemplo,
+eliminar express@~oes que estiverem entre dois outros argumentos; por exemplo,
 @code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
 @code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
-@deffn Function min (@var{x_1}, ..., @var{x_n})
+@deffn {Fun@,{c}@~ao} min (@var{x_1}, ..., @var{x_n})
 
-Retorna um valor simplificado para o mínimo entre as expressões @code{x_1} through @code{x_n}.
-Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplificação 
+Retorna um valor simplificado para o m@'inimo entre as express@~oes @code{x_1} through @code{x_n}.
+Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplifica@,{c}@~ao 
 @code{min (e, -e) --> -|e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @code{min} tenta
-eliminar expressões que estiverem entre dois outros argumentos; por exemplo,
+eliminar express@~oes que estiverem entre dois outros argumentos; por exemplo,
 @code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
 @code{put (trylevel, 2, maxmin)}.
 
@@ -891,27 +891,27 @@ Veja @code{modulus}.
 
 @end deffn
 
-@deffn Function nummod (@var{x}, @var{y})
+@deffn {Fun@,{c}@~ao} nummod (@var{x}, @var{y})
 
-Se @var{x} e @var{y} forem números reais e @var{y} for não nulo,
+Se @var{x} e @var{y} forem n@'umeros reais e @var{y} for n@~ao nulo,
 retorna @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Adicionalmente para todos os reais @var{x}, nós temos @code{nummod (@var{x}, 0) = @var{x}}. Para uma discursão sobre a
-definição @code{nummod (@var{x}, 0) = @var{x}}, veja a Seção 3.4, de "Concrete Mathematics," 
-por Graham, Knuth, e Patashnik. A função @code{nummod (@var{x}, 1)} 
-é uma função dente de serra com peródo 1 e com @code{nummod (1, 1) = 0} e 
+Adicionalmente para todos os reais @var{x}, n@'os temos @code{nummod (@var{x}, 0) = @var{x}}. Para uma discurs@~ao sobre a
+defini@,{c}@~ao @code{nummod (@var{x}, 0) = @var{x}}, veja a Se@,{c}@~ao 3.4, de "Concrete Mathematics," 
+por Graham, Knuth, e Patashnik. A fun@,{c}@~ao @code{nummod (@var{x}, 1)} 
+@'e uma fun@,{c}@~ao dente de serra com per@'odo 1 e com @code{nummod (1, 1) = 0} e 
 @code{nummod (0, 1) = 0}.
 
-Para encontrar o argumento principal (um número no intervalo @code{(-%pi, %pi]}) de um 
-número complexo, use a função @code{@var{x} |-> %pi - nummod (%pi - @var{x}, 2*%pi)}, onde 
-@var{x} é um argumento.
+Para encontrar o argumento principal (um n@'umero no intervalo @code{(-%pi, %pi]}) de um 
+n@'umero complexo, use a fun@,{c}@~ao @code{@var{x} |-> %pi - nummod (%pi - @var{x}, 2*%pi)}, onde 
+@var{x} @'e um argumento.
 
-Quando @var{x} e @var{y} forem expressões constantes (@code{10 * %pi}, por exemplo), @code{nummod}
-usa o mesmo esquema de avaliação em ponto flutuante que @code{floor} e @code{ceiling} usam.
-Novamente, é possível, embora improvável, que @code{nummod} possa retornar um
-valor errôneo nesses casos.
+Quando @var{x} e @var{y} forem express@~oes constantes (@code{10 * %pi}, por exemplo), @code{nummod}
+usa o mesmo esquema de avalia@,{c}@~ao em ponto flutuante que @code{floor} e @code{ceiling} usam.
+Novamente, @'e poss@'ivel, embora improv@'avel, que @code{nummod} possa retornar um
+valor err@^oneo nesses casos.
 
-Para argumentos não numéricos @var{x} ou @var{y}, @code{nummod }conhece muitas regras de
-simplificação:
+Para argumentos n@~ao num@'ericos @var{x} ou @var{y}, @code{nummod }conhece muitas regras de
+simplifica@,{c}@~ao:
 
 @c ===beg===
 @c nummod (x, 0);
@@ -1038,14 +1038,14 @@ Exemplos:
 
 @end deffn
 
-@deffn Function rationalize (@var{expr})
+@deffn {Fun@,{c}@~ao} rationalize (@var{expr})
 
-Converte todos os números em ponto flutuante de precisão dupla e grandes números em ponto flutuante na expressão do Maxima
-@var{expr} para seus exatos equivalentes racionais. Se você não estiver faminilarizado com
-a representação binária de números em ponto flutuante, você pode se
-surpreender que @code{rationalize (0.1)} não seja igual a 1/10.  Esse comportamento
-não é especial para o Maxima -- o número 1/10 tem uma representação binária
-repetitiva e não terminada.
+Converte todos os n@'umeros em ponto flutuante de precis@~ao dupla e grandes n@'umeros em ponto flutuante na express@~ao do Maxima
+@var{expr} para seus exatos equivalentes racionais. Se voc@^e n@~ao estiver faminilarizado com
+a representa@,{c}@~ao bin@'aria de n@'umeros em ponto flutuante, voc@^e pode se
+surpreender que @code{rationalize (0.1)} n@~ao seja igual a 1/10.  Esse comportamento
+n@~ao @'e especial para o Maxima -- o n@'umero 1/10 tem uma representa@,{c}@~ao bin@'aria
+repetitiva e n@~ao terminada.
 
 @c ===beg===
 @c rationalize (0.5);
@@ -1071,7 +1071,7 @@ repetitiva e não terminada.
 (%o7) sin((3602879701896397*x)/36028797018963968+3152519739159347/562949953421312)
 @end example
 
-Exemplo de utilização:
+Exemplo de utiliza@,{c}@~ao:
 
 @c ===beg===
 @c unitfrac(r) := block([uf : [], q],
