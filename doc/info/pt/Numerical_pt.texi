@@ -1,4 +1,4 @@
-@c /Numerical.texi/1.19/Wed Aug  3 06:23:53 2005/-ko/
+@c /Numerical.texi/1.20/Sat Oct 22 06:35:51 2005/-ko/
 @menu
 * Introdu@value{cedilha}@value{a_til}o a Num@'erico::
 * Pacotes de Fourier::

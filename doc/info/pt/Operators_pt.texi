@@ -1,4 +1,4 @@
-@c /Operators.texi/1.19/Fri Jun 17 00:57:34 2005/-ko/
+@c /Operators.texi/1.21/Tue Oct 25 07:12:07 2005/-ko/
 @menu
 * "N" Argumentos::                        
 * Sem Argumentos::                       
@@ -372,12 +372,153 @@ Retorna o valor absoluto complexo (o m@'odulo complexo) de
 
 @end deffn
 
+@deffn {Function} ceiling (@var{x})
+
+Quando @var{x} for um número real, retorna o último inteiro que 
+é maior que ou igual a @var{x}.  
+
+Se @var{x} for uma expressão constante (@code{10 * %pi}, por exemplo), 
+@code{ceiling} avalia @var{x} usando grandes números em ponto flutuante, e 
+aplica @code{ceiling} para o grande número em ponto flutuante resultante. Porque @code{ceiling} usa
+avaliação de ponto flutuante, é possível, embora improvável, 
+que @code{ceiling} possa retornar uma valor errôneo para entradas
+constantes. Para prevenir erros, a avaliação de ponto flutuante
+é concluída usando três valores para @code{fpprec}.
+
+Para entradas não constantes, @code{ceiling} tenta retornar um valor
+simplificado.  Aqui está um exemplo de simplificações que @code{ceiling}
+conhece:
+
+@c ===beg===
+@c ceiling (ceiling (x));
+@c ceiling (floor (x));
+@c declare (n, integer)$
+@c [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
+@c assume (x > 0, x < 1)$
+@c ceiling (x);
+@c tex (ceiling (a));
+@c ===end===
+@example
+(%i1) ceiling(ceiling(x));
+(%o1) ceiling(x)
+(%i2) ceiling(floor(x));
+(%o2) floor(x)
+(%i3) declare(n,integer)$
+(%i4) [ceiling(n), ceiling(abs(n)), ceiling(max(n,6))];
+(%o4) [n, abs(n), max(n,6)]
+(%i5) assume(x > 0, x < 1)$
+(%i6) ceiling(x);
+(%o6) 1
+(%i7) tex(ceiling(a));
+   $$\left \lceil a \right \rceil$$
+@end example
+
+A função @code{ceiling} não mapeia automaticamente sobre listas ou matrizes.
+Finalmente, para todas as entradas que forem manifestamente complexas, @code{ceiling} retorna 
+uma forma substantiva.
+
+Se o intervalo de uma função é um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as funções @code{ceiling} e @code{floor}
+podem usar essa informação; por exemplo:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare(f,integervalued)$
+(%i2) floor(f(x));
+(%o2) f(x)
+(%i3) ceiling(f(x) -1);
+(%o3) f(x)-1
+@end example
+
+@end deffn
+
+@deffn Function charfun (@var{p})
+
+Retorna 0 quando o predicado @var{p} avaliar para @code{false}; retorna
+1 quando o predicado avaliar para @code{true}.  Quando o predicado
+avaliar para alguma coisa que não @code{true} ou @code{false} (@code{unknown}), 
+retorna uma forma substantiva.
+
+Exemplos:
+
+@c ===beg===
+@c charfun (x < 1);
+@c subst (x = -1, %);
+@c e : charfun ('"and" (-1 < x, x < 1))$
+@c [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+@c ===end===
+@example
+(%i1) charfun(x<1);
+(%o1) charfun(x<1)
+(%i2) subst(x=-1,%);
+(%o2) 1
+(%i3) e : charfun('"and"(-1 < x, x < 1))$
+(%i4) [subst(x=-1,e), subst(x=0,e), subst(x=1,e)];
+(%o4) [0,1,0]
+@end example
+
+@end deffn
+
 @defvr {Declara@,{c}@~ao} commutative
 Se @code{declare(h,commutative)} @'e conclu@'ida, diz ao
 simplicador que @code{h} @'e uma fun@,{c}@~ao comutativa.  E.g. @code{h(x,z,y)} ir@'a
 simplificar para @code{h(x, y, z)}.  Isto @'e o mesmo que @code{symmetric}.
 
 @end defvr
+
+@deffn Function compare (@var{x}, @var{y})
+
+Retorna um operador de comparação @var{op}
+(@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, ou @code{#}) tal que
+@code{is (@var{x} @var{op} @var{y})} avalia para @code{true};
+quando ou @var{x} ou @var{y} dependendo de @code{%i} e
+@code{@var{x} # @var{y}}, retorna @code{notcomparable};
+Quando não existir tal operador ou
+Maxima não estiver apto a determinar o operador, retorna @code{unknown}.
+
+Exemplos:
+
+@c ===beg===
+@c compare (1, 2);
+@c compare (1, x);
+@c compare (%i, %i);
+@c compare (%i, %i + 1);
+@c compare (1/x, 0);
+@c compare (x, abs(x));
+@c ===end===
+@example
+(%i1) compare(1,2);
+(%o1) <
+(%i2) compare(1,x);
+(%o2) unknown
+(%i3) compare(%i,%i);
+(%o3) =
+(%i4) compare(%i,%i+1);
+(%o4) notcomparable
+(%i5) compare(1/x,0);
+(%o5) #
+(%i6) compare(x,abs(x));
+(%o6) <=
+@end example
+
+A função @code{compare} não tenta de terminar se o domínio real de
+seus argumentos é não vazio; dessa forma
+
+@c ===beg===
+@c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+@c ===end===
+@example
+(%i1) compare(acos(x^2+1), acos(x^2+1) + 1);
+(%o1) <
+@end example
+
+O domínio real de @code{acos (x^2 + 1)} é vazio.
+
+@end deffn
 
 @deffn {Fun@,{c}@~ao} entier (@var{x})
 Retorna o @'ultimo inteiro menor que ou igual a @var{x} onde @var{x} @'e numerico.  @code{fix} (como em
@@ -415,6 +556,70 @@ Note que devido @`as regras de avalia@,{c}@~ao de express@~oes predicadas
 (%o2)                        [a > 1]
 (%i3) @'e (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
 (%o3)                         true
+@end example
+
+@end deffn
+
+@deffn Function floor (@var{x})
+
+Quando @var{x} for um número real, retorna o maior inteiro que 
+é menor que ou igual a @var{x}.
+
+Se @var{x} for uma expressão constante (@code{10 * %pi}, for exemplo), 
+@code{floor} avalia @var{x} usando grandes números em ponto flutuante, e 
+aplica @code{floor} ao grande número em ponto flutuante resultante. Porque @code{floor} usa
+avaliação em ponto flutuante, é possível, embora improvável, 
+que @code{floor} não possa retornar um valor errôneo para entradas
+constantes.  Para prevenir erros, a avaliação de ponto flutuante
+é concluída usando três valores para @code{fpprec}.
+
+Para entradas não constantes, @code{floor} tenta retornar um valor
+simplificado.  Aqui está exemplos de simplificações que @code{floor}
+conhece:
+
+@c ===beg===
+@c floor (ceiling (x));
+@c floor (floor (x));
+@c declare (n, integer)$
+@c [floor (n), floor (abs (n)), floor (min (n, 6))];
+@c assume (x > 0, x < 1)$
+@c floor (x);
+@c tex (floor (a);
+@c ===end===
+@example
+(%i1) floor(ceiling(x));
+(%o1) ceiling(x)
+(%i2) floor(floor(x));
+(%o2) floor(x)
+(%i3) declare(n,integer)$
+(%i3) [floor(n), floor(abs(n)), floor(min(n,6))];
+(%o4) [n,abs(n),min(n,6)]
+(%i4) assume(x > 0, x < 1)$
+(%i5) floor(x);
+(%o5) 0
+(%i6) tex(floor(a);
+    $$\left \lfloor a \right \rfloor$$
+@end example
+
+A função @code{floor} não mapeia automaticamente sobre listas ou matrizes.
+Finalmente, para todas as entradas que forem manifestamente complexas, @code{floor} retorna
+uma forma substantiva.
+
+Se o intervalo de uma função for um subconjunto dos inteiros, o intervalo pode ser
+declarado @code{integervalued}. Ambas as funções @code{ceiling} e @code{floor}
+podem usar essa informação; por exemplo:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare(f,integervalued)$
+(%i2) floor(f(x));
+(%o2) f(x)
+(%i3) ceiling(f(x) -1);
+(%o3) f(x)-1
 @end example
 
 @end deffn
@@ -637,15 +842,39 @@ que @'e um inteiro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} max (@var{x_1}, @var{x_2}, ...)
-Retorna o maior de seus argumentos (ou retorna uma
-forma simplificada se algum de seus argumentos for n@~ao num@'erico).
+@deffn Function lmax (@var{L})
+
+Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} não for uma
+lista ou um conjunto, sinaliza um erro.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} min (@var{x_1}, @var{x_2}, ...)
-Retorna o menor de seus argumentos (ou retorna uma
-forma simplificada se algum de seus argumentos for n@~ao num@'erico).
+@deffn Function lmin (@var{L})
+
+Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} não for uma
+lista ou um conjunto, sinaliza um erro.
+
+@end deffn
+
+@deffn Function max (@var{x_1}, ..., @var{x_n})
+
+Retorna um valor simplificado para o máximo entre as expressões @var{x_1} a @var{x_n}.
+Quando @code{get (trylevel, maxmin)}, for dois ou mais, @code{max} usa a simplificação 
+@code{max (e, -e) --> |e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @var{max} tenta
+eliminar expressões que estiverem entre dois outros argumentos; por exemplo,
+@code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
+@code{put (trylevel, 2, maxmin)}.
+
+@end deffn
+
+@deffn Function min (@var{x_1}, ..., @var{x_n})
+
+Retorna um valor simplificado para o mínimo entre as expressões @code{x_1} through @code{x_n}.
+Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplificação 
+@code{min (e, -e) --> -|e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @code{min} tenta
+eliminar expressões que estiverem entre dois outros argumentos; por exemplo,
+@code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Para escolher o valor de @code{trylevel} para 2, use
+@code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
@@ -659,6 +888,44 @@ com rela@,{c}@~ao ao m@'odulo corrente que @'e o valor da vari@'avel
 em lugar do valor corrente de @code{modulus}.
 
 Veja @code{modulus}.
+
+@end deffn
+
+@deffn Function nummod (@var{x}, @var{y})
+
+Se @var{x} e @var{y} forem números reais e @var{y} for não nulo,
+retorna @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
+Adicionalmente para todos os reais @var{x}, nós temos @code{nummod (@var{x}, 0) = @var{x}}. Para uma discursão sobre a
+definição @code{nummod (@var{x}, 0) = @var{x}}, veja a Seção 3.4, de "Concrete Mathematics," 
+por Graham, Knuth, e Patashnik. A função @code{nummod (@var{x}, 1)} 
+é uma função dente de serra com peródo 1 e com @code{nummod (1, 1) = 0} e 
+@code{nummod (0, 1) = 0}.
+
+Para encontrar o argumento principal (um número no intervalo @code{(-%pi, %pi]}) de um 
+número complexo, use a função @code{@var{x} |-> %pi - nummod (%pi - @var{x}, 2*%pi)}, onde 
+@var{x} é um argumento.
+
+Quando @var{x} e @var{y} forem expressões constantes (@code{10 * %pi}, por exemplo), @code{nummod}
+usa o mesmo esquema de avaliação em ponto flutuante que @code{floor} e @code{ceiling} usam.
+Novamente, é possível, embora improvável, que @code{nummod} possa retornar um
+valor errôneo nesses casos.
+
+Para argumentos não numéricos @var{x} ou @var{y}, @code{nummod }conhece muitas regras de
+simplificação:
+
+@c ===beg===
+@c nummod (x, 0);
+@c nummod (a*x, a*y);
+@c nummod (0, x);
+@c ===end===
+@example
+(%i1) nummod(x,0);
+(%o1) x
+(%i2) nummod(a*x,a*y);
+(%o2) a*nummod(x,y)
+(%i3) nummod(0,x);
+(%o3) 0
+@end example
 
 @end deffn
 
@@ -767,6 +1034,79 @@ Exemplos:
 (%o12)                  4.394553645870825
 (%i13) random (100.0);
 (%o13)                  32.28666704056853
+@end example
+
+@end deffn
+
+@deffn Function rationalize (@var{expr})
+
+Converte todos os números em ponto flutuante de precisão dupla e grandes números em ponto flutuante na expressão do Maxima
+@var{expr} para seus exatos equivalentes racionais. Se você não estiver faminilarizado com
+a representação binária de números em ponto flutuante, você pode se
+surpreender que @code{rationalize (0.1)} não seja igual a 1/10.  Esse comportamento
+não é especial para o Maxima -- o número 1/10 tem uma representação binária
+repetitiva e não terminada.
+
+@c ===beg===
+@c rationalize (0.5);
+@c rationalize (0.1);
+@c fpprec : 5$
+@c rationalize (0.1b0);
+@c fpprec : 20$
+@c rationalize (0.1b0);
+@c rationalize (sin (0.1*x + 5.6));
+@c ===end===
+@example
+(%i1) rationalize(0.5);
+(%o1) 1/2
+(%i2) rationalize(0.1);
+(%o2) 3602879701896397/36028797018963968
+(%i3) fpprec : 5$
+(%i4) rationalize(0.1b0);
+(%o4) 209715/2097152
+(%i5) fpprec : 20$
+(%i6) rationalize(0.1b0);
+(%o6) 236118324143482260685/2361183241434822606848
+(%i7) rationalize(sin(0.1 * x + 5.6));
+(%o7) sin((3602879701896397*x)/36028797018963968+3152519739159347/562949953421312)
+@end example
+
+Exemplo de utilização:
+
+@c ===beg===
+@c unitfrac(r) := block([uf : [], q],
+@c     if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+@c     while r # 0 do (
+@c         uf : cons(q : 1/ceiling(1/r), uf),
+@c         r : r - q),
+@c     reverse(uf)); 
+@c unitfrac (9/10);
+@c apply ("+", %);
+@c unitfrac (-9/10);
+@c apply ("+", %);
+@c unitfrac (36/37);
+@c apply ("+", %);
+@c ===end===
+@example
+unitfrac(r) := block([uf : [], q],
+   if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+   while r # 0 do (
+        uf : cons(q : 1/ceiling(1/r), uf),
+        r : r - q),
+   reverse(uf)); 
+
+(%i2) unitfrac(9/10);
+(%o2) [1/2,1/3,1/15]
+(%i3) apply("+",%);
+(%o3) 9/10
+(%i4) unitfrac(-9/10);
+(%o4) [-1,1/10]
+(%i5) apply("+",%);
+(%o5) -9/10
+(%i6) unitfrac(36/37);
+(%o6) [1/2,1/3,1/8,1/69,1/6808]
+(%i7) apply("+",%);
+(%o7) 36/37   
 @end example
 
 @end deffn

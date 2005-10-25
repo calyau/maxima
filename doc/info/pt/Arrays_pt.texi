@@ -1,4 +1,4 @@
-@c /Arrays.texi/1.10/Wed Aug  3 06:23:53 2005/-ko/
+@c /Arrays.texi/1.11/Sat Oct 22 06:35:42 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Arrays e Tabelas::  
 @end menu
