@@ -509,6 +509,7 @@
                      (:file "rand-mt19937")
                      (:file "maxmin")
                      (:file "nummod")
+                     (:file "conjugate")
 				     (:file "mstuff")))
 	       (:module poisson-series :source-pathname ""
 			:components ((:file "ratpoi")

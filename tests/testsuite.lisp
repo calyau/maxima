@@ -18,4 +18,5 @@
 	"rtesthyp"
 	"rtestmt19937"
     "rtest_allnummod"
+    "rtestconjugate"
 	))

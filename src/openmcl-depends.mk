@@ -185,6 +185,7 @@ binary-openmcl/maxima.image : db.lisp
 binary-openmcl/maxima.image : compar.lisp
 binary-openmcl/maxima.image : maxmin.lisp
 binary-openmcl/maxima.image : nummod.lisp
+binary-openmcl/maxima.image : conjugate.lisp
 binary-openmcl/maxima.image : askp.lisp
 binary-openmcl/maxima.image : sinint.lisp
 binary-openmcl/maxima.image : sin.lisp

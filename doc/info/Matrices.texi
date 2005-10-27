@@ -212,8 +212,6 @@ Warning - you are redefining the Macsyma function eigenvectors
 @deffn {Function} conjugate (@var{x})
 Returns the complex conjugate of @var{x}.
 
-@code{load (conjugate)} loads this function.
-
 @c ===beg===
 @c declare ([aa, bb], real, cc, complex, ii, imaginary);
 @c conjugate (aa + bb*%i);
@@ -543,7 +541,7 @@ multiplicities of the eigenvalues in the corresponding order.
 characteristic polynomial of the matrix.
 Sometimes @code{solve} may not be able to find the roots of the polynomial;
 in that case some other functions in this
-package (except @code{conjugate}, @code{innerproduct}, @code{unitvector}, @code{columnvector} and
+package (except @code{innerproduct}, @code{unitvector}, @code{columnvector} and
 @code{gramschmidt}) will not work.
 @c WHICH ONES ARE THE FUNCTIONS WHICH DON'T WORK ??
 @c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE

@@ -223,6 +223,7 @@ binary-clisp/maxima.mem : db.lisp
 binary-clisp/maxima.mem : compar.lisp
 binary-clisp/maxima.mem : maxmin.lisp
 binary-clisp/maxima.mem : nummod.lisp
+binary-clisp/maxima.mem : conjugate.lisp
 binary-clisp/maxima.mem : askp.lisp
 binary-clisp/maxima.mem : sinint.lisp
 binary-clisp/maxima.mem : sin.lisp

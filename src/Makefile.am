@@ -247,6 +247,7 @@ command-line.lisp \
 commac.lisp \
 compar.lisp \
 compat.lisp \
+conjugate.lisp \
 cpoly.lisp \
 csimp.lisp \
 csimp2.lisp \

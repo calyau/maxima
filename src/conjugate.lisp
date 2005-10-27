@@ -7,6 +7,9 @@
 ;; This software has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+(in-package "MAXIMA")
+(macsyma-module conjugate)
+
 ($put '$conjugate 1 '$version)
 
 (defprop $conjugate tex-postfix tex)

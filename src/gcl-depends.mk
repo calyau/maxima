@@ -278,6 +278,7 @@ binary-gcl/maxima : nset.lisp
 binary-gcl/maxima : rand-mt19937.lisp
 binary-gcl/maxima : maxmin.lisp
 binary-gcl/maxima : nummod.lisp
+binary-gcl/maxima : conjugate.lisp
 binary-gcl/maxima : mstuff.lisp
 binary-gcl/maxima : ratpoi.lisp
 binary-gcl/maxima : pois2.lisp

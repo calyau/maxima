@@ -404,7 +404,6 @@ integration/delta.dem\
 integration/delta.mac\
 integration/delta.usg\
 linearalgebra/announcement.txt\
-linearalgebra/conjugate.lisp\
 linearalgebra/linalg-utilities.lisp\
 linearalgebra/linalg.demo\
 linearalgebra/linalg.mac\
@@ -413,7 +412,6 @@ linearalgebra/lu.lisp\
 linearalgebra/matrixexp.lisp\
 linearalgebra/matrixexp.usage\
 linearalgebra/polynomialp.lisp\
-linearalgebra/test-conjugate.mac\
 linearalgebra/test-linalg.mac\
 linearalgebra/test-lu.mac\
 linearalgebra/test-matrixexp.mac\
