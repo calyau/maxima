@@ -5,28 +5,28 @@
  *
  * Examples (all taken from http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html)
  *
- * H1 (s) := 100 * (1 + s) / ((s + 10) * (s + 100));
- * H2 (s) := 1 / (1 + s/omega0);
- * H3 (s) := 1 / (1 + s/omega0)^2;
- * H4 (s) := 1 + s/omega0;
- * H5 (s) := 1/s;
- * H6 (s) := 1/((s/omega0)^2 + 2 * zeta * (s/omega0) + 1);
- * H7 (s) := (s/omega0)^2 + 2 * zeta * (s/omega0) + 1;
- *
- * bode_gain (H1 (s), [w, 1/1000, 1000]);
- * bode_phase (H1 (s), [w, 1/1000, 1000]);
- * bode_gain (H2 (s), [w, 1/1000, 1000]), omega0 = 10;
- * bode_phase (H2 (s), [w, 1/1000, 1000]), omega0 = 10;
- * bode_gain (H3 (s), [w, 1/1000, 1000]), omega0 = 10;
- * bode_phase (H3 (s), [w, 1/1000, 1000]), omega0 = 10;
- * bode_gain (H4 (s), [w, 1/1000, 1000]), omega0 = 10;
- * bode_phase (H4 (s), [w, 1/1000, 1000]), omega0 = 10;
- * bode_gain (H5 (s), [w, 1/1000, 1000]);
- * bode_phase (H5 (s), [w, 1/1000, 1000]);                              <-- carg causes an asksign here (sigh)
- * bode_gain (H6 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
- * bode_phase (H6 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
- * bode_gain (H7 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
- * bode_phase (H7 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
+   H1 (s) := 100 * (1 + s) / ((s + 10) * (s + 100));
+   H2 (s) := 1 / (1 + s/omega0);
+   H3 (s) := 1 / (1 + s/omega0)^2;
+   H4 (s) := 1 + s/omega0;
+   H5 (s) := 1/s;
+   H6 (s) := 1/((s/omega0)^2 + 2 * zeta * (s/omega0) + 1);
+   H7 (s) := (s/omega0)^2 + 2 * zeta * (s/omega0) + 1;
+  
+   bode_gain (H1 (s), [w, 1/1000, 1000]);
+   bode_phase (H1 (s), [w, 1/1000, 1000]);
+   bode_gain (H2 (s), [w, 1/1000, 1000]), omega0 = 10;
+   bode_phase (H2 (s), [w, 1/1000, 1000]), omega0 = 10;
+   bode_gain (H3 (s), [w, 1/1000, 1000]), omega0 = 10;
+   bode_phase (H3 (s), [w, 1/1000, 1000]), omega0 = 10;
+   bode_gain (H4 (s), [w, 1/1000, 1000]), omega0 = 10;
+   bode_phase (H4 (s), [w, 1/1000, 1000]), omega0 = 10;
+   bode_gain (H5 (s), [w, 1/1000, 1000]);
+   bode_phase (H5 (s), [w, 1/1000, 1000]);                              <-- carg causes an asksign here (sigh)
+   bode_gain (H6 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
+   bode_phase (H6 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
+   bode_gain (H7 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
+   bode_phase (H7 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
  */
 
 /* If running 5.9.2, need to download plot.lisp from cvs main branch
@@ -34,12 +34,13 @@
   "http://cvs.sourceforge.net/viewcvs.py/*checkout*/maxima/maxima/src/plot.lisp";
 /* since 5.9.2 branch does not have the logx stuff.
  * 5.9.3 will have logx, so this is just a temporary measure.
+ * Uncomment next two lines to load plot.lisp.
  */
-load("/tmp/plot.lisp");     /* change /tmp if you put plot.lisp someplace else */
-plot_options : cons ([logx, false], plot_options);
+/* load("/tmp/plot.lisp"); */     /* change /tmp if you put plot.lisp someplace else */
+/* plot_options : cons ([logx, false], plot_options); */
 
-/* load conjugate from share/linearalgebra -- temporary measure */
-load (conjugate);
+/* If running 5.9.2, uncomment next line to load conjugate from share/linearalgebra */
+/* load (conjugate); */
 
 log10 (x) := log (x) / log (10);
 
