@@ -1,9 +1,13 @@
+/* batch (bode)$ 
+ * (load will fail with an error due to presence of a :lisp construct below) 
+ */
+
 /* bode.mac -- functions to draw Bode gain and phase plots
  *
  * copyright Robert Dodier, October 2005
  * Released under the terms of the GNU Public License
  *
- * Examples (all taken from http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html)
+ * Examples (1 through 7 from http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html, 8 from Ron Crummett)
  *
    H1 (s) := 100 * (1 + s) / ((s + 10) * (s + 100));
    H2 (s) := 1 / (1 + s/omega0);
@@ -12,6 +16,7 @@
    H5 (s) := 1/s;
    H6 (s) := 1/((s/omega0)^2 + 2 * zeta * (s/omega0) + 1);
    H7 (s) := (s/omega0)^2 + 2 * zeta * (s/omega0) + 1;
+   H8 (s) := 0.5 / (0.0001 * s^3 + 0.002 * s^2 + 0.01 * s);
   
    bode_gain (H1 (s), [w, 1/1000, 1000]);
    bode_phase (H1 (s), [w, 1/1000, 1000]);
@@ -27,6 +32,9 @@
    bode_phase (H6 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
    bode_gain (H7 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
    bode_phase (H7 (s), [w, 1/1000, 1000]), omega0 = 10, zeta = 1/10;
+   bode_gain (H8 (s), [w, 1/1000, 1000]);
+   block ([bode_phase_unwrap : false], bode_phase (H8 (s), [w, 1/1000, 1000]));
+   block ([bode_phase_unwrap : true], bode_phase (H8 (s), [w, 1/1000, 1000]));
  */
 
 /* If running 5.9.2, need to download plot.lisp from cvs main branch
@@ -42,28 +50,50 @@
 /* If running 5.9.2, uncomment next line to load conjugate from share/linearalgebra */
 /* load (conjugate); */
 
+/*:lisp (defun $charfun (p) (let* (($prederror nil) (q (mevalp p))) (cond ((eq q t) 1) ((eq q nil) 0) (t `(($charfun) ,p)))))*/
+/* If running 5.9.2, uncomment preceding :lisp to define charfun (characteristic function).
+ */
+
+bode_phase_unwrap : false;
+
+bode_grid : false;
+
 log10 (x) := log (x) / log (10);
 
-bode_gain (H_expr, range) := block ([omega, L, s, H_expr_substd, my_preamble],
+carg_unwrapped (z) := block ([a: carg (z)], charfun (a < 0) * (2*%pi + a) + (1 - charfun (a < 0)) * a);
+
+bode_gain (H, range, [plot_opts]) := block ([omega, L, s, my_preamble],
   omega : first (range),
-  L : block ([listdummyvars : false], listofvars (H_expr)),
+  L : block ([listdummyvars : false], listofvars (H)),
   if length (L) # 1
-    then throw (oops (msg = "bode_gain: failed to identify a unique variable", expr = H_expr, variables = L))
+    then throw (oops (msg = "bode_gain: failed to identify a unique variable", expr = H, variables = L))
     else s : first (L),
 
-  H_expr_substd : subst (%i * omega, s, H_expr),
+  my_preamble : concat ("set nokey; set title \"Bode gain plot for ", string (H), "\""),
+  if bode_grid then my_preamble : concat (my_preamble, "; set grid"),
 
-  my_preamble : concat ("set nokey; set title \"Bode gain plot for ", string (H_expr), "\""),
-  plot2d (10 * log10 (cabs (H_expr_substd * conjugate (H_expr_substd))), range,
-    [logx, true], [gnuplot_preamble, my_preamble]));
+  H : subst (%i * omega, s, H),
 
-bode_phase (H_expr, range) := block ([omega, L, s, my_preamble],
+  buildq ([plot_opts],
+    plot2d (10 * log10 (cabs (H * conjugate (H))), range,
+    [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts))),
+  ev (%%));
+
+bode_phase (H, range, [plot_opts]) := block ([omega, L, s, my_preamble],
   omega : first (range),
-  L : block ([listdummyvars : false], listofvars (H_expr)),
+  L : block ([listdummyvars : false], listofvars (H)),
   if length (L) # 1
-    then throw (oops (msg = "bode_phase: failed to identify a unique variable", expr = H_expr, variables = L))
+    then throw (oops (msg = "bode_phase: failed to identify a unique variable", expr = H, variables = L))
     else s : first (L),
 
-  my_preamble : concat ("set nokey; set title \"Bode phase plot for ", string (H_expr), "\""),
-  plot2d (180/%pi * carg (subst (%i * omega, s, H_expr)), range,
-    [logx, true], [gnuplot_preamble, my_preamble]));
+  my_preamble : concat ("set nokey; set title \"Bode phase plot for ", string (H), "\""),
+  if bode_grid then my_preamble : concat (my_preamble, "; set grid"),
+
+  H : subst (%i * omega, s, H),
+
+  if bode_phase_unwrap
+    then buildq ([plot_opts],
+      plot2d (180/%pi * carg_unwrapped (H), range, [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts)))
+    else buildq ([plot_opts],
+      plot2d (180/%pi * carg (H), range, [logx, true], [gnuplot_preamble, my_preamble], splice (plot_opts))),
+  ev (%%));
