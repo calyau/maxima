@@ -1,0 +1,157 @@
+@c /Logarithms.texi/1.13/Thu Jun 16 17:05:35 2005/-ko/
+@menu
+* Defini@value{cedilha}@~oes para Logar@'itmos::
+@end menu
+
+@node Defini@value{cedilha}@~oes para Logar@'itmos,  , Logar@'itmos, Logar@'itmos
+@section Defini@value{cedilha}@~oes para Logar@'itmos
+
+@defvr {Vari@'avel de op@,{c}@~ao} %e_to_numlog
+Valor padr@~ao: @code{false}
+
+Quando @code{true}, sendo @code{r} algum n@'umero racional, e
+@code{x} alguma express@~ao, @code{%e^(r*log(x))} ir@'a ser simplificado em @code{x^r} .
+Note-se que o comando @code{radcan} tamb@'em faz essa transforma@,{c}@~ao,
+e transforma@,{c}@~oes mais complicadas desse ilk tamb@'em.
+O comando @code{logcontract} "contrai" express@~oes contendo @code{log}.
+
+@end defvr
+
+@deffn {Fun@,{c}@~ao} log (@var{x})
+Representa o logar@'itmo natural de @var{x}.
+
+Simplifica@,{c}@~ao e avalia@,{c}@~ao de logar@'itmos s@~ao governadas por muitos sinalizadores globais:
+
+@code{logexpand} - faz com que @code{log(a^b)} torne-se @code{b*log(a)}.
+Se @code{logexpand} for escolhida para @code{all}, @code{log(a*b)} ir@'a tamb@'em simplificar para @code{log(a)+log(b)}.
+Se @code{logexpand} for escolhida para @code{super}, ent@~ao @code{log(a/b)} ir@'a tamb@'em simplificar para @code{log(a)-log(b)} para n@'umeros
+racionais @code{a/b}, @code{a#1}.  (@code{log(1/b)}, para @code{b} inteiro, sempre simplifica).  Se
+@code{logexpand} for escolhida para @code{false}, todas essas simplifica@,{c}@~oes ir@~ao ser desabilitadas.
+
+@code{logsimp} - se @code{false} ent@~ao nenhuma simplifica@,{c}@~ao de @code{%e} para um expoente
+contendo @code{log}'s @'e conclu@'ida.
+
+@code{lognumer} - se @code{true} ent@~ao argumentos negativos em ponto flutuante para
+@code{log} ir@'a sempre ser convertido para seu valor absoluto antes que @code{log} seja
+tomado.  Se @code{numer} for tamb@'em @code{true}, ent@~ao argumentos negativos inteiros para @code{log}
+ir@~ao tamb@'em ser convertidos para seu valor absoluto.
+
+@code{lognegint} - se @code{true} implementa a regra @code{log(-n)} ->
+@code{log(n)+%i*%pi} para @code{n} um inteiro positivo.
+
+@code{%e_to_numlog} - quando @code{true}, @code{r} sendo algum n@'umero racional, e
+@code{x} alguma express@~ao, @code{%e^(r*log(x))} ir@'a ser simplificado em
+@code{x^r} .  Note-se que o comando @code{radcan} tamb@'em
+faz essa transforma@,{c}@~ao, e transforma@,{c}@~oes mais complicadas desse ilk tamb@'em.
+O comando @code{logcontract} "contrai" express@~oes contendo @code{log}.
+
+@end deffn
+
+@defvr {Vari@'avel de op@,{c}@~ao} logabs
+Valor padr@~ao: @code{false}
+
+Quando fazendo integra@,{c}@~ao indefinida onde
+logs s@~ao gerados, e.g. @code{integrate(1/x,x)}, a resposta @'e dada em
+termos de @code{log(abs(...))} se @code{logabs} for @code{true}, mas em termos de @code{log(...)} se
+@code{logabs} for @code{false}.  Para integra@,{c}@~ao definida, a escolha @code{logabs:true} @'e
+usada, porque aqui "avalia@,{c}@~ao" de integral indefinida nos
+extremos @'e muitas vezes necess@'aria.
+
+@end defvr
+
+@defvr {Vari@'avel de op@,{c}@~ao} logarc
+Valor padr@~ao: @code{false}
+
+Se @code{true} ir@'a fazer com que as fun@,{c}@~oes circularee inversas e
+hiperb@'olicas sejam convertidas em formas logar@'itimicas.
+@code{logarc(@var{exp})} ir@'a fazer com que essa convers@~ao para uma express@~ao
+particular @var{exp} sem escolher o comutador ou tendo que
+re-avaliar a express@~ao com @code{ev}.
+
+@end defvr
+
+@defvr {Vari@'avel de op@,{c}@~ao} logconcoeffp
+Valor padr@~ao: @code{false}
+
+Controla quais coeficientes s@~ao
+contra@'idos quando usando @code{logcontract}.  Pode ser escolhida para o nome de uma
+fun@,{c}@~ao predicado de um argumento.  E.g. se voc@^e gosta de gerar
+ra@'izes quadradas, voc@^e pode fazer @code{logconcoeffp:'logconfun$
+logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  Ent@~ao
+@code{logcontract(1/2*log(x));} ir@'a fornecer @code{log(sqrt(x))}.
+
+@end defvr
+
+@deffn {Fun@,{c}@~ao} logcontract (@var{expr})
+Recursivamente examina a express@~ao @var{expr}, transformando
+subexpress@~oes da forma @code{a1*log(b1) + a2*log(b2) + c} em
+@code{log(ratsimp(b1^a1 * b2^a2)) + c}
+
+@c ===beg===
+@c 2*(a*log(x) + 2*a*log(y))$
+@c logcontract(%);
+@c ===end===
+@example
+(%i1) 2*(a*log(x) + 2*a*log(y))$
+(%i2) logcontract(%);
+                                 2  4
+(%o2)                     a log(x  y )
+
+@end example
+
+Se voc@^e faz @code{declare(n,integer);} ent@~ao @code{logcontract(2*a*n*log(x));} fornece
+@code{a*log(x^(2*n))}.  Os coeficientes que "contraem" dessa maneira s@~ao
+aqueles tais que 2 e @code{n} que satisfazem
+@code{featurep(coeff,integer)}.  O usu@'ario pode controlar quais coeficientes s@~ao
+contra@'idos escolhendo a op@,{c}@~ao @code{logconcoeffp} para o nome de uma
+fun@,{c}@~ao predicado de um argumento.  E.g. se voc@^e gosta de gerara
+ra@'izes quadradas, voc@^e pode fazer @code{logconcoeffp:'logconfun$
+logconfun(m):=featurep(m,integer) ou ratnump(m)$} .  ent@~ao
+@code{logcontract(1/2*log(x));} ir@'a fornecer @code{log(sqrt(x))}.
+
+@end deffn
+
+@defvr {Vari@'avel de op@,{c}@~ao} logexpand
+Valor padr@~ao: @code{true}
+
+Faz com que @code{log(a^b)} torne-se @code{b*log(a)}.  Se
+for escolhida para @code{all}, @code{log(a*b)} ir@'a tamb@'em simplificar para @code{log(a)+log(b)}.  Se
+for escolhida para @code{super}, ent@~ao @code{log(a/b)} ir@'a tamb@'em simplificar para @code{log(a)-log(b)} para
+n@'umeros racionais @code{a/b}, @code{a#1}.  (@code{log(1/b)}, para @code{b} inteiro, sempre
+simplifica).  Se for escolhida para @code{false}, todas essas simplifica@,{c}@~oes ir@~ao
+ser desabilitadas.
+
+@end defvr
+
+@defvr {Vari@'avel de op@,{c}@~ao} lognegint
+Valor padr@~ao: @code{false}
+
+Se @code{true} implementa a regra
+@code{log(-n)} -> @code{log(n)+%i*%pi} para @code{n} um inteiro positivo.
+
+@end defvr
+
+@defvr {Vari@'avel de op@,{c}@~ao} lognumer
+Valor padr@~ao: @code{false}
+
+Se @code{true} ent@~ao argumentos negativos em ponto
+flutuante para @code{log} ir@~ao sempre ser convertidos para seus valores absolutos
+antes que o @code{log} seja tomado.  Se @code{numer} for tamb@'em @code{true}, ent@~ao argumentos inteiros
+negativos para @code{log} ir@~ao tamb@'em ser convertidos para seus valores absolutos.
+
+@end defvr
+
+@defvr {Vari@'avel de op@,{c}@~ao} logsimp
+Valor padr@~ao: @code{true}
+
+Se @code{false} ent@~ao nenhuma simplifica@,{c}@~ao de @code{%e} para um
+expoente contendo @code{log}'s @'e conclu@'ida.
+
+@end defvr
+
+@deffn {Fun@,{c}@~ao} plog (@var{x})
+Representa o principal ramo logar@'itmos naturais avaliados para
+complexos com @code{-%pi} < @code{carg(@var{x})} <= @code{+%pi} .
+
+@end deffn
+

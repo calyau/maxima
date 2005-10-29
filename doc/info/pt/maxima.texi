@@ -82,22 +82,22 @@ Infraestrutura do Maxima
 * Introdu@value{cedilha}@~ao ao Maxima:: 	Exemplo de sess@~oes do Maxima.
 * Detec@value{cedilha}@~ao e Relato de Erros:: 	Encontrando e relatando erros no Maxima.
 * Ajuda::                       Solicitando ajuda de dentro de uma 
-    sess@~ao do Maxima.
+                                sess@~ao do Maxima.
 * Linha de Comando::            Sintaxe de linha de comando do Maxima.
 * Operadores::                  Operadores usados em express@~oes do Maxima.
 * Expressions::                 Express@~oes no Maxima.
-* Simplifica@value{cedilha}@~ao::   Simplificando express@~oes.
-* Montando Gr@'aficos::          Sa@'idas gr@'aficas em 2D e 3D.
-* Entrada e Sa@'ida::            Entrada e sa@'ida de arquivos.
+* Simplifica@value{cedilha}@~ao::               Simplificando express@~oes.
+* Montando Gr@'aficos::           Sa@'idas gr@'aficas em 2D e 3D.
+* Entrada e Sa@'ida::             Entrada e sa@'ida de arquivos.
 * Ponto Flutuante::             Rotinas num@'ericas de baixo n@'ivel.
 * Contexts::                    Conjunto de fatos assumidos.
 
 Suporte a @'areas espec@'ificas da matem@'atica
 
-* Polin@^omios::                 Formas padr@~ao para polin@^omios, e
+* Polin@^omios::                  Formas padr@~ao para polin@^omios, e
                                 fun@value{cedilha}@~oes operando sobre polin@^omios.
 * Constantes::                  Constantes num@'ericas.
-* Logarithms::                  Manipula@value{cedilha}@~ao de express@~oes envolvendo
+* Logar@'itmos::                  Manipula@value{cedilha}@~ao de express@~oes envolvendo
                                 logar@'itmos.
 * Trigonometria::               Manipulando express@~oes com trigonometria e
                                 Fun@value{cedilha}@~oes trigonom@'etricas inversas.
@@ -106,9 +106,9 @@ Suporte a @'areas espec@'ificas da matem@'atica
 
 * Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
 * Limites::                     Limites de express@~oes.
-* Diferencia@value{cedilha}@~ao::   C@'alculo diferencial.
-* Integra@value{cedilha}@~ao::    C@'alculo integral.
-* Equa@value{cedilha}@~oes::             Definindo e resolvendo equa@value{cedilha}@~oes.
+* Diferencia@value{cedilha}@~ao::               C@'alculo diferencial.
+* Integra@value{cedilha}@~ao::                  C@'alculo integral.
+* Equa@value{cedilha}@~oes::                    Definindo e resolvendo equa@value{cedilha}@~oes.
 * Equa@value{cedilha}@~oes Diferenciais::       Definindo e resolvendo equa@value{cedilha}@~oes diferenciais.
 * Num@'erico::                    Integra@value{cedilha}@~ao num@'erica, transforma@value{cedilha}@~oes
                                 de Fourier, etc.
@@ -127,12 +127,12 @@ Suporte a @'areas espec@'ificas da matem@'atica
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
 * Tempo de Execu@value{cedilha}@~ao::           Customiza@value{cedilha}@~ao do ambiente Maxima.
-* Op@value{cedilha}@~oes Diversas::   Op@value{cedilha}@~oes com efeito global sobre o Maxima.
+* Op@value{cedilha}@~oes Diversas::             Op@value{cedilha}@~oes com efeito global sobre o Maxima.
 * Rules and Patterns::          Coincid@^encia de express@~oes definidas pelo 
-    usu@'ario e regras de simplifica@value{cedilha}@~ao.
+                                usu@'ario e regras de simplifica@value{cedilha}@~ao.
 * Listas::                      Manipula@value{cedilha}@~ao de listas.
 * Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
-* Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  Definindo fun@value{cedilha}@~oes.
+* Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::         Definindo fun@value{cedilha}@~oes.
 * Fluxo de Programa::           Definindo programas do Maxima.
 * Depurando::                   Depurando programas do Maxima.
 
@@ -209,9 +209,9 @@ Constantes
 
 * Defini@value{cedilha}@~oes para Constantes::
 
-Logarithms
+Logar@'itmos
 
-* Definitions for Logarithms::  
+* Defini@value{cedilha}@~oes para Logar@'itmos::  
 
 Trigonometria
 
@@ -414,15 +414,15 @@ Depurando
 @chapter Polin@^omios
 @include Polynomials_pt.texi
 
-@node Constantes, Logarithms, Polin@^omios, Top
+@node Constantes, Logar@'itmos, Polin@^omios, Top
 @chapter Constantes
 @include Constants_pt.texi
 
-@node Logarithms, Trigonometria, Constantes, Top
-@chapter Logarithms
-@include Logarithms.texi
+@node Logar@'itmos, Trigonometria, Constantes, Top
+@chapter Logar@'itmos
+@include Logarithms_pt.texi
 
-@node Trigonometria, Fun@value{cedilha}@value{o_til}es Especiais, Logarithms, Top
+@node Trigonometria, Fun@value{cedilha}@value{o_til}es Especiais, Logar@'itmos, Top
 @chapter Trigonometria
 @include Trigonometric_pt.texi
 
