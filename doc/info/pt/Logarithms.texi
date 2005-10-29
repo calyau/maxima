@@ -1,9 +1,0 @@
-
-@menu
-* Definitions for Logarithms::
-@end menu
-
-@node Definitions for Logarithms,  , Logarithms, Logarithms
-@section Definitions for Logarithms
-
-THIS SECTION NEEDS TO BE TRANSLATED.
