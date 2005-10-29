@@ -175,6 +175,9 @@
   "The default file directory for `save', `store', `fassave', and `stringout'."
   no-reset)
 
+(defmvar $file_output_append nil
+  "Flag to tell file-writing functions whether to append or clobber the output file.")
+
 ;;(DEFMVAR $ERREXP '$ERREXP)
 
 (defmvar user-timesofar nil)
@@ -992,14 +995,21 @@
   (setq x (exploden x))
   (if (char= (car x) #\&) (mapcar #'casify (cdr x)) (cdr x)))
 
-(defmspec $stringout (x)  (setq x (cdr x))
-	  (let (file maxima-error l1 truename)
-	    (setq file ($filename_merge (car x)))
-	    (setq x (cdr x))
-	    (with-open-file (savefile file :direction :output)
+(defmspec $stringout (x)
+  (setq x (cdr x))
+  (let*
+    ((file ($filename_merge (car x)))
+     (filespec (if (or (eq $file_output_append '$true) (eq $file_output_append t))
+        `(savefile ,file :direction :output :if-exists :append :if-does-not-exist :create)
+        `(savefile ,file :direction :output :if-exists :supersede :if-does-not-exist :create))))
+    (setq x (cdr x))
+    (eval 
+      `(let (maxima-error l1 truename)
+        (declare (special $grind $strdisp))
+	    (with-open-file ,filespec
 	      (cond ((null
 		      (errset
-		       (do ((l x (cdr l)))( (null l))
+		       (do ((l ',x (cdr l)))( (null l))
 			 (cond ((memq (car l) '($all $input))
 				(setq l (nconc (getlabels* $inchar t) (cdr l))))
 			       ((eq (car l) '$values)
@@ -1038,7 +1048,8 @@
 	      (setq truename (truename savefile))
 	      (terpri savefile))
 	    (if maxima-error (let ((errset 'errbreak1)) (merror "Error in `stringout' attempt")))
-	    (cl:namestring truename)))
+	    (cl:namestring truename)))))
+
 (defmspec $labels (char)
   (setq char (fexprcheck char))
   (nonsymchk char '$labels)

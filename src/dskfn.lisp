@@ -176,11 +176,14 @@
 
 #+(or cl nil)
 (defun dsksetup (x storefl fasdumpfl fn)
-  (let (#-cl(*nopoint t) prinlength prinlevel ofile file
+  (let (#-cl(*nopoint t) prinlength prinlevel ofile file (fname (nsubstring (print-invert-case (car x)) 1))
 	    *print-gensym*
 	    list fasdeqlist fasdnoneqlist maxima-error #+pdp10 length #+pdp10 oint)
     #+cl
-    (setq savefile (open (nsubstring (print-invert-case (car x)) 1) :direction :output))
+    (setq savefile
+      (if (or (eq $file_output_append '$true) (eq $file_output_append t))
+        (open fname :direction :output :if-exists :append :if-does-not-exist :create)
+        (open fname :direction :output :if-exists :supersede :if-does-not-exist :create)))
     #+nil
     (setq savefile (open ($filename_merge (car x)) :out))
     (setq file (list (car x)))

@@ -496,15 +496,20 @@
   (defun filestrip (x) (subseq (print-invert-case (car x)) 1)) 
   )
 
-(defmspec $with_stdout ( arg) (setq arg (cdr arg))
-	  (let ((body (cdr arg)) res)
-	    (with-open-file (*standard-output* (namestring (maxima-string (car arg)))
-					       :direction :output)
-	      (dolist (v body)
-		(setq res (meval* v)))
-	      res)))
-
-
+(defmspec $with_stdout (arg)
+  (setq arg (cdr arg))
+  (let*
+    ((fname (namestring (maxima-string (car arg))))
+     (filespec
+       (if (or (eq $file_output_append '$true) (eq $file_output_append t))
+         `(*standard-output* ,fname :direction :output :if-exists :append :if-does-not-exist :create)
+         `(*standard-output* ,fname :direction :output :if-exists :supersede :if-does-not-exist :create))))
+    (eval
+      `(with-open-file ,filespec
+         (let ((body ',(cdr arg)) res)
+           (dolist (v body)
+             (setq res (meval* v)))
+           res)))))
 
 (defun $sconcat(&rest x)
   (let ((ans "") )
