@@ -12,7 +12,7 @@ Valor padr@~ao: @code{false}
 Quando @code{true}, sendo @code{r} algum n@'umero racional, e
 @code{x} alguma express@~ao, @code{%e^(r*log(x))} ir@'a ser simplificado em @code{x^r} .
 Note-se que o comando @code{radcan} tamb@'em faz essa transforma@,{c}@~ao,
-e transforma@,{c}@~oes mais complicadas desse ilk tamb@'em.
+e transforma@,{c}@~oes mais complicadas desse tipo tamb@'em.
 O comando @code{logcontract} "contrai" express@~oes contendo @code{log}.
 
 @end defvr
@@ -42,7 +42,7 @@ ir@~ao tamb@'em ser convertidos para seu valor absoluto.
 @code{%e_to_numlog} - quando @code{true}, @code{r} sendo algum n@'umero racional, e
 @code{x} alguma express@~ao, @code{%e^(r*log(x))} ir@'a ser simplificado em
 @code{x^r} .  Note-se que o comando @code{radcan} tamb@'em
-faz essa transforma@,{c}@~ao, e transforma@,{c}@~oes mais complicadas desse ilk tamb@'em.
+faz essa transforma@,{c}@~ao, e transforma@,{c}@~oes mais complicadas desse tipo tamb@'em.
 O comando @code{logcontract} "contrai" express@~oes contendo @code{log}.
 
 @end deffn
