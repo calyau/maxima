@@ -128,7 +128,7 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
 * Tempo de Execu@value{cedilha}@~ao::           Customiza@value{cedilha}@~ao do ambiente Maxima.
 * Op@value{cedilha}@~oes Diversas::             Op@value{cedilha}@~oes com efeito global sobre o Maxima.
-* Rules and Patterns::          Coincid@^encia de express@~oes definidas pelo 
+* Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo 
                                 usu@'ario e regras de simplifica@value{cedilha}@~ao.
 * Listas::                      Manipula@value{cedilha}@~ao de listas.
 * Conjuntos::                   Manipula@value{cedilha}@~ao de conjuntos.
@@ -327,10 +327,10 @@ Op@value{cedilha}@~oes Diversas
 * Compartilhado::                       
 * Defini@value{cedilha}@~oes para Op@value{cedilha}@~oes Diversas::  
 
-Rules and Patterns
+Regras e Modelos
 
-* Introduction to Rules and Patterns::  
-* Definitions for Rules and Patterns::  
+* Introdu@value{cedilha}@~ao a Regras e Modelos::  
+* Defini@value{cedilha}@~oes para Regras e Modelos::  
 
 Listas
 
@@ -513,16 +513,16 @@ Depurando
 @chapter Tempo de Execu@value{cedilha}@~ao
 @include Runtime_pt.texi
 
-@node Op@value{cedilha}@~oes Diversas, Rules and Patterns, Tempo de Execu@value{cedilha}@~ao, Top
+@node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Tempo de Execu@value{cedilha}@~ao, Top
 @chapter Op@value{cedilha}@~oes Diversas
 @include Miscellaneous_pt.texi
 
-@node Rules and Patterns, Listas, Op@value{cedilha}@~oes Diversas, Top
-@chapter Rules and Patterns
-@include Rules.texi
+@node Regras e Modelos, Listas, Op@value{cedilha}@~oes Diversas, Top
+@chapter Regras e Modelos
+@include Rules_pt.texi
 
 
-@node Listas, Conjuntos, Rules and Patterns, Top
+@node Listas, Conjuntos, Regras e Modelos, Top
 @chapter Listas
 @include Lists_pt.texi
 
