@@ -8,7 +8,7 @@
 ;;  This program has NO WARRANTY, not even the implied warranty of
 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-;;  Date: 05-10-30
+;;  Date: 05-10-31
 
 (in-package "MAXIMA")
 
@@ -164,7 +164,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  3.  strings 
 
-(defmfun strip& (obj) ;; modified stripdollar
+(defmfun strip& (obj) 
    (if (memq (getchar obj 1) '(&))
       (intern (subseq (string obj) 1))
       obj))
