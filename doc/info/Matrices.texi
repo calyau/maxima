@@ -503,25 +503,34 @@ to @code{SC*A} and @code{A.(SC*B)} simplifies to @code{SC*(A.B)}.
 @end defvr
 
 @deffn {Function} echelon (@var{M})
-Returns the echelon form of the matrix @var{M}.  The echelon form is computed from @var{M}
+Returns the echelon form of the matrix @var{M},
+as produced by Gaussian elimination.
+The echelon form is computed from @var{M}
 by elementary row operations such that the first
 non-zero element in each row in the resulting matrix is a one and the
 column elements under the first one in each row are all zero.
 
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c echelon (M);
+@c ===end===
 @example
-(%i1) m: matrix ([2, 1-a, -5*b], [a, b, c]);
-                       [ 2  1 - a  - 5 b ]
-(%o1)                  [                 ]
-                       [ a    b      c   ]
-(%i2) echelon (m);
-                  [      a - 1       5 b     ]
-                  [ 1  - -----     - ---     ]
-                  [        2          2      ]
-(%o2)/R/          [                          ]
-                  [             2 c + 5 a b  ]
-                  [ 0     1     ------------ ]
-                  [                    2     ]
-                  [             2 b + a  - a ]
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) echelon (M);
+                  [ 1  - 8  - 5      - 2     ]
+                  [                          ]
+                  [         28       11      ]
+                  [ 0   1   --       --      ]
+(%o2)             [         37       37      ]
+                  [                          ]
+                  [              37 bb - 119 ]
+                  [ 0   0    1   ----------- ]
+                  [              37 aa - 313 ]
 @end example
 
 @end deffn
@@ -1377,9 +1386,31 @@ of @code{length (m)} rows and 1 column, such that @code{N[i,1] = M[i]}.
 @end deffn
 
 @deffn {Function} triangularize (@var{M})
-Returns the upper triangular form of the matrix @code{M}.
+Returns the upper triangular form of the matrix @code{M},
+as produced by Gaussian elimination.
+The return value is the same as @code{echelon},
+except that the leading nonzero coefficient in each row is not normalized to 1.
 
-@var{M} need not be square.
+@code{lu_factor} and @code{cholesky} are other functions which yield triangularized matrices.
+
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c triangularize (M);
+@c ===end===
+@example
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) triangularize (M);
+             [ - 1   8         5            2      ]
+             [                                     ]
+(%o2)        [  0   - 74     - 56         - 22     ]
+             [                                     ]
+             [  0    0    626 - 74 aa  238 - 74 bb ]
+@end example
 
 @end deffn
 
