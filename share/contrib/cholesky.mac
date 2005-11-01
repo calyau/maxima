@@ -13,6 +13,10 @@
    B : cholesky (A2);
    B . transpose (B) - A2;
 
+ * 
+ * copyright Robert Dodier, 2005/11/01
+ * Released under the terms of the GNU Public License
+ *
  */
 cholesky (A):= block
 
