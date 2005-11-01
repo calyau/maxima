@@ -1,0 +1,39 @@
+/* Compute Cholesky decomposition of A,
+ * a lower-triangular matrix L such that L . transpose(L) = A
+ *
+ * Examples:
+
+   A : matrix ([a, b, c], [d, e, f], [g, h, i]);
+   A2 : transpose (A) . A;
+   B : cholesky (A2);
+   B . transpose (B) - A2;
+
+   A : matrix ([2, 3, 4], [-2, 2,- 3], [11, -2, 3]);
+   A2 : transpose (A) . A;
+   B : cholesky (A2);
+   B . transpose (B) - A2;
+
+ */
+cholesky (A):= block
+
+   ([n : length (A),
+    L : copymatrix (A),
+    p : makelist (0, i, 1, length (A))],
+
+    for i thru n do
+        for j : i thru n do
+           (x : L[i, j],
+            x : x - sum (L[j, k] * L[i, k], k, 1, i - 1),
+            if i = j then
+                p[i] : 1 / sqrt(x)
+            else
+                L[j, i] : x * p[i]),
+
+    for i thru n do
+        L[i, i] : 1 / p[i],
+
+    for i thru n do
+        for j : i + 1 thru n do
+            L[i, j] : 0,
+    
+    L);
