@@ -482,8 +482,22 @@ values")
 	     ;; Fortran's exponent markers are the same as Lisp's so
 	     ;; we just need to make sure the exponent marker is
 	     ;; printed.
-	     (setq string (format nil (if *fortran-print* "~ve" "~vg")
-				  (+ 4 $fpprec) symb))
+	     ;;
+	     ;; Also, for normal output, we basically want to use
+	     ;; prin1, but we can't because we want fpprec to control
+	     ;; how many digits are printed.  So we have to check for
+	     ;; the size of the number and use ~e or ~f appropriately.
+	     (if *fortran-print*
+		 (setq string (format nil "~e" symb))
+		 (multiple-value-bind (form width)
+		     (cond ((or (zerop a)
+				(<= 1 a 1d7))
+			    (values "~vf" (+ 1 $fpprec)))
+			   ((<= 0.001d0 a 1)
+			    (values "~vf" (+ $fpprec (ceiling (- (/ (log a) (log 10d0)))))))
+			   (t
+			    (values "~ve" (+ 5 $fpprec))))
+		   (setq string (format nil form width symb))))
 	     (setq string (string-trim " " string))))
 	  #+(and gcl (not gmp))
 	  ((bignump symb)
