@@ -47,10 +47,7 @@
 
 (defun $freshline (&optional (stream)) (fresh-line stream))
 
-(defun $newline (&optional (stream)) 
-   (if stream
-      (progn (tyo #\newline stream) nil)
-      $newline))
+(defun $newline (&optional (stream)) (terpri stream))
 
 
 ;;  $printf covers most features of CL-function format
@@ -65,7 +62,8 @@
            (cond ((numberp arg) arg)
                  ((mstringp arg) (l-string arg))
                  ((and (symbolp arg) (not (boundp arg)))
-                    `(quote ,(stripdollar arg))) 
+                    ;;`(quote ,(stripdollar arg)))  ;; 5.9.1
+                    `(quote ,(maybe-invert-string-case (subseq (string arg) 1)))) ;; 5.9.2
                  ((and (listp arg) (listp (car arg)) (mlistp arg))
                     (if listbrace
                        `(quote ,(cltree arg))
@@ -89,7 +87,6 @@
               (cons (let ((x (car todo)))
                       (if (and (listp x) (listp (car x)) (mlistp x)) 
                         (cltree x) 
-                        ;;(merror "printf: Only flattened lists are supported.")
                         (mhandle x)))
                     done))))
      (mhandle (obj)
@@ -98,11 +95,22 @@
           (cond ((numberp obj) obj)
                 ((mstringp obj) (maxima-string obj))
                 (t (if (and (symbolp obj) (not (boundp obj))) 
-                      (stripdollar obj) 
+                      ;;(stripdollar obj)  ;; 5.9.1
+                      (maybe-invert-string-case (subseq (string obj) 1)) ;; 5.9.2
                       ($sconcat obj)))))))  
    (clt (cdr mtree) nil)))  
 
-
+;;  function from 5.9.1, modified for 5.9.2
+(defun $sprint(&rest args )
+  (sloop for v in args do
+         (cond ((symbolp v)
+                (setq v (strip&$ (maybe-invert-string-case (symbol-name v))))) ;; modified
+               ((numberp v) v)
+               (t (setq v (implode (strgrind v)))))
+         (princ v)
+         (princ " "))
+  (car args))
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  2. characters 
 
@@ -114,7 +122,7 @@
     (if (= (length smch) 1)
       (character smch)
       (merror 
-        "stringproc1.lisp: ~:M cannot be converted into a character." 
+        "stringproc2.lisp: ~:M cannot be converted into a character." 
           mch))))
 
 ;;  converts a lisp-character into a maxima-string of length 1
@@ -164,18 +172,29 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  3.  strings 
 
-(defmfun strip& (obj) 
+#|
+(defmfun strip& (obj) ;; 5.9.1
    (if (memq (getchar obj 1) '(&))
       (intern (subseq (string obj) 1))
       obj))
+|#
+(defmfun strip&$ (str) ;; 5.9.2
+   (let ((c1 (if (not (or (equal "" str) (equal "$" str) (equal "&" str))) 
+                (string (getcharn str 1)))))
+      (if (or (equal c1 "&") (equal c1 "$"))
+         (subseq str 1)
+         str)))
+
 
 ;;  converts maxima-string into lisp-string
 (defun $lstring (mstr) (l-string mstr)) ;; for testing only (avoid lisp string in maxima)
-(defun l-string (mstr) (string (strip& mstr)))
+;;(defun l-string (mstr) (string (strip& mstr))) ;; 5.9.1
+(defun l-string (mstr) (strip&$ (maybe-invert-string-case (string mstr)))) ;; 5.9.2
 
 ;;  converts lisp-string back into maxima-string
 (defun $sunlisp (lstr) (m-string lstr))
-(defun m-string (lstr) (make-symbol (concatenate 'string "&" lstr)))
+;;(defun m-string (lstr) (make-symbol (concatenate 'string "&" lstr))) ;; 5.9.1
+(defun m-string (lstr) (make-symbol (maybe-invert-string-case (concatenate 'string "&" lstr)))) ;; 5.9.2
 
 
 ;;  tests, if object is lisp-string
@@ -202,7 +221,8 @@
       (subseq (l-string mstr) (1- index) index))) 
 
 (defun $charlist (mstr) ;; 1-indexed!
-   (let* ((str (l-string mstr))
+   ;;(let* ((str (l-string mstr)) ;; 5.9.1
+   (let* ((str (strip&$ (string mstr))) ;; 5.9.2
           (len (length str))
           lis)
       (do ((n 1 (1+ n)))
@@ -217,8 +237,8 @@
 (defun $tokens (mstr &optional (test '$constituent))
   (cons '(mlist)
         (tokens (l-string mstr)
-                (intern (string-upcase (string (stripdollar test))));; 5.9.1 
-                ;(intern (string (stripdollar test)));; 5.9.2
+                ;(intern (string-upcase (string (stripdollar test))));; 5.9.1 
+                (intern (string (stripdollar test)));; 5.9.2
                 0)))
                      
 (defun tokens (str test start) ;; Author: Paul Graham - ANSI Common Lisp, 1996, page 67
@@ -290,6 +310,7 @@
       (dolist (mstr lis)
          (setq res (concatenate 'string res ($sconcat mstr) ds)))
       (m-string (string-right-trim ds res))))      
+
 
 ;;  modified version of $sconcat, returns maxima-string
 (defun $sconc (&rest args)
@@ -471,71 +492,4 @@
 (defmvar $tab      (m-char #\tab))
 (defmvar $space    (m-char #\space))
 
-	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-            
-;; eval_string.lisp -- parse a string as an expression and evaluate it, or just parse it
-;;
-;; Copyright (C) 2005 Robert Dodier
-;;
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2 of the License, or
-;; (at your option) any later version.
-;;
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; eval_string (s)  --  parse the Maxima string s as a Maxima expression and evaluate it.
-;; s is a Maxima string. It may or may not have a terminator (dollar sign `$' or semicolon `;').
-;; Only the first expression is parsed and evaluated, if there is more than one.
-;; e.g.
-;; eval_string ("foo: 42; bar: foo^2 + baz")  =>  42
-;; eval_string ("(foo: 42, bar: foo^2 + baz)")  =>  baz + 1764
-;; Complain if s is not a Maxima string.
-
-(defun $eval_string (s)
-  (cond
-    ((mstringp s)
-     (meval (parse-string s)))
-    (t
-      (merror "eval_string: ~M is not a Maxima string." s))))
-
-;; parse_string (s)  --  parse the Maxima string s as a Maxima expression (do not evaluate it).
-;; s is a Maxima string. It may or may not have a terminator (dollar sign `$' or semicolon `;').
-;; Only the first expression is parsed, if there is more than one.
-;; e.g.
-;; parse_string ("foo: 42; bar: foo^2 + baz")  =>  foo : 42
-;; parse_string ("(foo: 42, bar: foo^2 + baz)")  =>  (foo : 42, bar : foo^2 + baz)
-;; Complain if s is not a Maxima string.
-
-(defun $parse_string (s)
-  (cond
-    ((mstringp s)
-     (parse-string s))
-    (t
-      (merror "parse_string: ~M is not a Maxima string." s))))
-
-;; (PARSE-STRING S)  --  parse the Maxima string as a Maxima expression.
-;; Assume S is a Maxima string (do not test).
-;; Do not evaluate the parsed expression.
-
-(defun parse-string (s)
-  (with-input-from-string
-    (ss (ensure-terminator (string (strip& s)))) ;; modified for Maxima 5.9.1 (vN)
-    (third (mread ss))))
-
-;; (ENSURE-TERMINATOR S)  -- if the Lisp string S does not contain dollar sign `$' or semicolon `;'
-;; then append a dollar sign to the end of S.
-
-(defun ensure-terminator (s)
-  (cond
-    ((or (search "$" s :test #'char-equal) (search ";" s :test #'char-equal))
-     s)
-    (t
-      (concatenate 'string s "$"))))
-          
-          
-  
+ 
