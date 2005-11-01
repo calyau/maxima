@@ -1,4 +1,4 @@
-@c /Matrices.texi/1.18/Tue Nov  1 06:51:54 2005/-ko/
+/Matrices.texi/1.19/Tue Nov  1 17:26:56 2005/-ko/
 
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
@@ -505,25 +505,34 @@ para @code{SC*A} e @code{A.(SC*B)} simplifica para @code{SC*(A.B)}.
 @end defvr
 
 @deffn {Fun@,{c}@~ao} echelon (@var{M})
-Retorna a forma escalonada da matriz @var{M}.  A forma escalonada @'e calculada de @var{M}
+Retorna a forma escalonada da matriz @var{M},
+como produzido atrav@'es da elimina@,{c}@~ao de Gauss.
+A forma escalonada é calculada de @var{M}
 por opera@,{c}@~oes elementares de linha tais que o primeiro
 elemento n@~ao zero em cada linha na matriz resultante @'e um n@'umero um e os
 elementos da coluna abaixo do primeiro n@'umero um em cada linha s@~ao todos zero.
 
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c echelon (M);
+@c ===end===
 @example
-(%i1) m: matrix ([2, 1-a, -5*b], [a, b, c]);
-                       [ 2  1 - a  - 5 b ]
-(%o1)                  [                 ]
-                       [ a    b      c   ]
-(%i2) echelon (m);
-                  [      a - 1       5 b     ]
-                  [ 1  - -----     - ---     ]
-                  [        2          2      ]
-(%o2)/R/          [                          ]
-                  [             2 c + 5 a b  ]
-                  [ 0     1     ------------ ]
-                  [                    2     ]
-                  [             2 b + a  - a ]
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) echelon (M);
+                  [ 1  - 8  - 5      - 2     ]
+                  [                          ]
+                  [         28       11      ]
+                  [ 0   1   --       --      ]
+(%o2)             [         37       37      ]
+                  [                          ]
+                  [              37 bb - 119 ]
+                  [ 0   0    1   ----------- ]
+                  [              37 aa - 313 ]
 @end example
 
 @end deffn
@@ -1379,9 +1388,30 @@ de @code{length (m)} linhas e 1 coluna, tal que @code{N[i,1] = M[i]}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} triangularize (@var{M})
-Retorna a maior forma triangular da matriz @code{M}.
+Retorna a maior forma triangular da matriz @code{M}, como produzido atrav@'es da elimina@,{c}@~ao de Gauss.
+O valor de retorno @'e o mesmo que @code{echelon},
+exceto que o o coeficiente lider n@~ao nulo em cada linha n@~ao @'e normalizado para 1.
 
-@var{M} precisa ser quadrada.
+@code{lu_factor} e @code{cholesky} s@~ao outras fun@,{c}@~oes que retornam matrizes triangularizadas.
+
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c triangularize (M);
+@c ===end===
+@example
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) triangularize (M);
+             [ - 1   8         5            2      ]
+             [                                     ]
+(%o2)        [  0   - 74     - 56         - 22     ]
+             [                                     ]
+             [  0    0    626 - 74 aa  238 - 74 bb ]
+@end example
 
 @end deffn
 
