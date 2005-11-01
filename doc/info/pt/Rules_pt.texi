@@ -1,4 +1,5 @@
-@c /Rules.texi/1.19/Thu Jun 16 17:05:36 2005/-ko/
+@c /Rules.texi/1.20/Tue Nov  1 06:51:54 2005/-ko/
+
 @menu
 * Introdu@value{cedilha}@~ao a Regras e Modelos::  
 * Defini@value{cedilha}@~oes para Regras e Modelos::  
@@ -610,16 +611,64 @@ Veja tamb@'em @code{remrule}, que remove uma regra definida atrav@'es de @code{t
 
 @deffn {Fun@value{cedilha}@~ao} remrule (@var{op}, @var{nomeregra})
 @deffnx {Fun@value{cedilha}@~ao} remrule (@var{op}, all)
-Remove regras definidas por @code{defrule}, @code{defmatch}, @code{tellsimp}, ou @code{tellsimpafter}.
+Remove regras definidas por @code{tellsimp}, ou @code{tellsimpafter}.
 
 @code{remrule (@var{op}, @var{nomeregra})}
 remove a regra com o nome @code{nomeregra} do operador @var{op}.
+Quando @var{op} for um operador interno ou um operador definido pelo usu@'ario
+(como definido por @code{infix}, @code{prefix}, etc.),
+@var{op} e @var{rulename} devem ser colocados entre aspas duplas.
 
 @code{remrule (@var{op}, all)} remove todas as regras para o operador @var{op}.
 
 Veja tamb@'em @code{remlet}, que remove uma regra definida atrav@'es de @code{let}.
 
-@c NEEDS EXAMPLES
+Examples:
+
+@c ===beg===
+@c tellsimp (foo (aa, bb), bb - aa);
+@c tellsimpafter (aa + bb, special_add (aa, bb));
+@c infix ("@@");
+@c tellsimp (aa @@ bb, bb/aa);
+@c tellsimpafter (quux (%pi, %e), %pi - %e);
+@c tellsimpafter (quux (%e, %pi), %pi + %e);
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c remrule (foo, foorule1);
+@c remrule ("+", "+rule1");
+@c remrule ("@@", "@@rule1");
+@c remrule (quux, all);
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c ===end===
+@example
+(%i1) tellsimp (foo (aa, bb), bb - aa);
+(%o1)                   [foorule1, false]
+(%i2) tellsimpafter (aa + bb, special_add (aa, bb));
+(%o2)                   [+rule1, simplus]
+(%i3) infix ("@@");
+(%o3)                          @@
+(%i4) tellsimp (aa @@ bb, bb/aa);
+(%o4)                   [@@rule1, false]
+(%i5) tellsimpafter (quux (%pi, %e), %pi - %e);
+(%o5)                  [quuxrule1, false]
+(%i6) tellsimpafter (quux (%e, %pi), %pi + %e);
+(%o6)             [quuxrule2, quuxrule1, false]
+(%i7) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+                                     bb
+(%o7) [bb - aa, special_add(aa, bb), --, %pi - %e, %pi + %e]
+                                     aa
+(%i8) remrule (foo, foorule1);
+(%o8)                          foo
+(%i9) remrule ("+", "+rule1");
+(%o9)                           +
+(%i10) remrule ("@@", "@@rule1");
+(%o10)                         @@
+(%i11) remrule (quux, all);
+(%o11)                        quux
+(%i12) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+(%o12) [foo(aa, bb), bb + aa, aa @@ bb, quux(%pi, %e), 
+                                                   quux(%e, %pi)]
+@end example
+
 @end deffn
 
 @c NEEDS EXPANSION OR MAYBE JUST APPROPRIATE REFS TO tellsimpafter

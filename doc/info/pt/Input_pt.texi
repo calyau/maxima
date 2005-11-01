@@ -1,4 +1,4 @@
-@c /Input.texi/1.38/Sat Sep 10 10:10:11 2005/-ko/
+@c/Input.texi/1.39/Tue Nov  1 06:51:53 2005/-ko/
 
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
@@ -188,6 +188,22 @@ absoluto em torno de express@~oes que s@~ao maiores que uma linha de altura.
 
 @end defvr
 
+@defvr {Vari@'avel de op@,{c}@~ao} file_output_append
+Valor padr@~ao: @code{false}
+
+@code{file_output_append} governa se fun@value{cedilha}@~oes de sa@'ida de arquivo
+anexam ao final ou truncam seu arquivo de sa@'ida.
+Quando @code{file_output_append} for @code{true},
+tais fun@value{cedilha}@~oes anexam ao final de seu arquivo de sa@'ida.
+De outra forma, o arquivo de sa@'ida @'e truncado.
+
+@code{save}, @code{stringout}, e @code{with_stdout} respeitam @code{file_output_append}.
+Outras fun@value{cedilha}@~oes que escrevem arquivos de sa@'ida n@~ao respeitam @code{file_output_append}.
+Em partivular, montagem de gr@'aficos e tradu@value{cedilha}@~oes de fun@value{cedilha}@~oes sempre truncam seu arquivo de sa@'ida,
+e @code{tex} e @code{appendfile} sempre anexam ao final.
+@c WHAT ABOUT WRITEFILE ??
+
+@end defvr
 
 @deffn {Fun@,{c}@~ao} appendfile (@var{filename})
 Adiciona ao final de @var{filename} uma transcri@,{c}@~ao do console.
@@ -1208,9 +1224,13 @@ Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem ne
 
 @code{save} armazena dados na forma de express@~oes Lisp.
 Os dados armazenados por @code{save} podem ser recuperados por @code{load (@var{filename})}.
-O efeito da execu@,{c}@~ao de @code{save} quando @var{filename} j@'a existe
-depende da implementa@,{c}@~ao Lisp subjacente;
-o arquivo pode ser substitu@'ido, ou @code{save} reclamar com uma mensagem de erro.
+
+O sinalizador global @code{file_output_append} governa
+se @code{save} anexa ao final ou trunca o arquivo de sa@'ida.
+Quando @code{file_output_append} for @code{true},
+@code{save} anexa ao final doarquivo de sa@'ida.
+De outra forma, @code{save} trunca o arquivo de sa@'ida.
+Nesse caso, @code{save} cria o arquivo se ele n@~ao existir ainda.
 
 A forma especial @code{save (@var{filename}, values, functions, labels, ...)}
 armazena os @'itens nomeados por @code{values}, @code{fun@,{c}@~oes}, @code{labels}, etc.
@@ -1357,6 +1377,13 @@ express@~oes que foram digitadas para entrada.  O arquivo pode ent@~ao ser usado
 como entrada para comandos @code{batch} ou @code{demo}, e isso pode ser editado para
 qualquer prop@'osito.  @code{stringout} pode ser executado enquanto @code{writefile} est@'a em progresso.
 
+O sinalizador global @code{file_output_append} governa
+se @code{stringout} anexa ao final ou trunca o arquivo de sa@'ida.
+Quando @code{file_output_append} for @code{true},
+@code{stringout} anexa ao final do arquivo de sa@'da.
+De outra forma, @code{stringout} trunca o arquivo de sa@'ida.
+Nesse caso, @code{stringout} cria o arquivo de sa@'ida se ele n@~ao existir ainda.
+
 A forma geral de @code{stringout} escreve os valores de um ou mais 
 express@~oes para o arquivo de sa@'ida.  Note que se uma express@~ao @'e uma
 vari@'avel, somente o valor da vari@'avel @'e escrito e n@~ao o nome
@@ -1453,12 +1480,19 @@ n@~ao s@~ao afetadas por @code{ttyoff}.
 
 @end defvr
 
-@deffn {Macro} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
+@deffn {Fun@value{cedilha}@~ao} with_stdout (@var{filename}, @var{expr_1}, @var{expr_2}, @var{expr_3}, ...)
 Abre @var{filename} e ent@~ao avalia @var{expr_1}, @var{expr_2}, @var{expr_3}, ....
 Os valores dos argumentos n@~ao s@~ao armazenados em @var{filename},
 mas qualquer sa@'ida impressa gerada pela avalia@,{c}@~ao dos argumentos
 (de @code{print}, @code{display}, @code{disp}, ou @code{grind}, por exemplo)
 vai para @var{filename} em lugar do console.
+
+O sinalizador global @code{file_output_append} governa
+se @code{with_stdout} anexa ao final ou trunca o arquivo de sa@'ida.
+Quando @code{file_output_append} for @code{true},
+@code{with_stdout} anexa ao final do arquivo de sa@'ida.
+De outra forma, @code{with_stdout} trunca o arquivo de sa@'ida.
+Nesse caso, @code{with_stdout} cria o arquivo se ele n@~ao existir ainda.
 
 @code{with_stdout} retorna o valor do seu argumento final.
 

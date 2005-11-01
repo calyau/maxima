@@ -1,4 +1,5 @@
-@c /Matrices.texi/1.17/Sat Sep 10 10:10:11 2005/-ko/
+@c /Matrices.texi/1.18/Tue Nov  1 06:51:54 2005/-ko/
+
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
@@ -212,8 +213,6 @@ Warning - you are redefining the Macsyma function autovetores
 
 @deffn {Fun@,{c}@~ao} conjugate (@var{x})
 Retorna o conjugado complexo de @var{x}.
-
-@code{load (conjugate)} chama essa fun@,{c}@~ao.
 
 @c ===beg===
 @c declare ([aa, bb], real, cc, complex, ii, imaginary);
@@ -544,7 +543,7 @@ multiplicidade dos autovalores na ordem correspondente.
 polin@^omio caracter@'istico da matriz.
 Algumas vezes @code{solve} pode n@~ao estar habilitado a achar as ra@'izes do polin@^omio;
 nesse caso algumas outras fun@,{c}@~oes nesse
-pacote (except @code{conjugate}, @code{innerproduct}, @code{unitvector}, @code{columnvector} e
+pacote (except @code{innerproduct}, @code{unitvector}, @code{columnvector} e
 @code{gramschmidt}) n@~ao ir@~ao trabalhar.
 @c WHICH ONES ARE THE FUNCTIONS WHICH DON'T WORK ??
 @c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE
