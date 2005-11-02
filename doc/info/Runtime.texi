@@ -158,3 +158,26 @@ Set @code{showtime: true} to make Maxima print out the computation time
 and elapsed time with each output line.
 
 @end deffn
+
+@deffn {Function} timedate ()
+Returns a string representing the current time and date.
+The string has the format @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)},
+where the fields are
+hours, minutes, seconds, day of week, month, day of month, year, and hours different from GMT.
+
+The return value is a Lisp string.
+
+Example:
+
+@c ===beg===
+@c d: timedate ();
+@c print ("timedate reports current time", d)$
+@c ===end===
+@example
+(%i1) d: timedate ();
+(%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
+(%i2) print ("timedate reports current time", d)$
+timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+@end example
+
+@end deffn
