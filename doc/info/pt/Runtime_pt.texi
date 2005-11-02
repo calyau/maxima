@@ -1,4 +1,4 @@
-@c /Runtime.texi/1.15/Sat Sep 10 10:10:11 2005/-ko/
+@c /Runtime.texi/1.16/Wed Nov  2 18:37:20 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
@@ -157,5 +157,26 @@ retorna @code{unknown} (tempo desconhecido).
 
 Escolha @code{showtime: true} para fazer com que Maxima moste o tempo de computa@value{cedilha}@~ao
 e o tempo decorrido a cada linha de sa@'ida.
+
+@deffn {Function} timedate ()
+Retorna uma seq@"u@^encia de caracteres representando a data e hora atuais.
+A seq@"u@^encia de caracteres tem o formato @code{HH:MM:SS Dia, mm/dd/aaaa (GMT-n)},
+Onde os campos s@~ao
+horas, minutos, segundos, dia da semana, m@^es, dia do m@^es, ano, e horas que diferem da hora GMT.
+
+O valor de retorno @'e uma seq@"u@^encia de caracteres Lisp.
+
+Exemplo:
+
+@c ===beg===
+@c d: timedate ();
+@c print ("timedate mostra o tempo atual", d)$
+@c ===end===
+@example
+(%i1) d: timedate ();
+(%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
+(%i2) print ("timedate mostra o tempo atual", d)$
+timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+@end example
 
 @end deffn
