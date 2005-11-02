@@ -96,7 +96,7 @@
   (with-open-file (in file-name :if-does-not-exist nil)
     (cond
       ((not (null in))
-        (let ((sep-ch (get-sep-ch sep-ch-flag file-name)))
+        (let (key L (sep-ch (get-sep-ch sep-ch-flag file-name)))
           (loop
             (setq L (read-line in nil 'eof))
             (if (eq L 'eof) (return))
@@ -210,17 +210,23 @@
     (t (merror "write_data: don't know what to do with a ~M" (type-of X))))
   '$done)
 
+; Thanks to William Bland on comp.lang.lisp for help writing this macro.
+(defmacro with-open-file-appropriately ((out fname) &body body)
+  `(with-open-file (,out ,fname :direction :output
+    :if-exists (if (or (eq $file_output_append '$true) (eq $file_output_append t)) :append :supersede)
+    :if-does-not-exist :create)
+    ,@body))
 
 (defun write-matrix (M file-name &optional sep-ch-flag)
   (setq file-name (require-string file-name))
-  (with-open-file (out file-name :direction :output :if-exists :supersede)
+  (with-open-file-appropriately (out file-name)
     (let ((sep-ch (get-sep-ch sep-ch-flag file-name)))
       (mapcar #'(lambda (x) (write-list-lowlevel (cdr x) out sep-ch)) (cdr M)))))
 
 
 (defun write-lisp-array (A file-name &optional sep-ch-flag)
   (setq file-name (require-string file-name))
-  (with-open-file (out file-name :direction :output :if-exists :supersede)
+  (with-open-file-appropriately (out file-name)
     (let ((sep-ch (get-sep-ch sep-ch-flag file-name)) (d (array-dimensions A)))
       (write-lisp-array-helper A d '() out sep-ch))))
 
@@ -243,9 +249,9 @@
 
 
 (defun write-hashed-array (A file-name &optional sep-ch-flag)
-  (let ((keys (cdddr (meval (list '($arrayinfo) A)))) (L))
   (setq file-name (require-string file-name))
-    (with-open-file (out file-name :direction :output :if-exists :supersede)
+  (let ((keys (cdddr (meval (list '($arrayinfo) A)))) (L))
+    (with-open-file-appropriately (out file-name)
       (let ((sep-ch (get-sep-ch sep-ch-flag file-name)))
         (loop
           (if (not keys) (return))
@@ -257,7 +263,7 @@
 
 (defun write-list (L file-name &optional sep-ch-flag)
   (setq file-name (require-string file-name))
-  (with-open-file (out file-name :direction :output :if-exists :supersede)
+  (with-open-file-appropriately (out file-name)
     (let ((sep-ch (get-sep-ch sep-ch-flag file-name)))
       (write-list-lowlevel (cdr L) out sep-ch))))
 
