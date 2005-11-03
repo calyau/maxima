@@ -33,13 +33,16 @@ read_lisp_array("array.data", a2)$
 read_maxima_array("array.data", b2)$
 
 prederror: false$
+ntest : nsuccess : 0$
 
+ntest : ntest + 1$
 if is_equal_array(a, a2) = true
-  then print("success: array.data loaded as a Lisp array")
+  then (nsuccess : nsuccess + 1, print("success: array.data loaded as a Lisp array"))
   else print("FAILED to load array.data as a Lisp array")$
 
+ntest : ntest + 1$
 if is_equal_array(b, b2) = true
-  then print("success: array.data loaded as a Maxima array")
+  then (nsuccess : nsuccess + 1, print("success: array.data loaded as a Maxima array"))
   else print("FAILED to load array.data as a Maxima array")$
 
 write_data(a2, "tmp-lisp-array.data")$
@@ -51,25 +54,28 @@ array(b3, 2, 3, 4)$
 read_lisp_array("tmp-maxima-array.data", a3)$
 read_maxima_array("tmp-lisp-array.data", b3)$
 
+ntest : ntest + 1$
 if is_equal_array(a2, a3) = true
-  then print("success: wrote Maxima array, read again as Lisp array")
+  then (nsuccess : nsuccess + 1, print("success: wrote Maxima array, read again as Lisp array"))
   else block
     (
       print("FAILED to write Maxima array, read again as Lisp array;"),
       l2: read_list("tmp-maxima-array.data"),
       if is(equal(l, l2)) = true
-        then print("... success: wrote Maxima array, read again as a list, however.")
+        then print("... partial success: wrote Maxima array, read again as a list, however.")
         else print("... FAILED to write Maxima array, read again as a list.")
     )$
 
+ntest : ntest + 1$
 if is_equal_array(b2, b3) = true
-  then print("success: wrote Lisp array, read again as Maxima array")
+  then (nsuccess : nsuccess + 1, print("success: wrote Lisp array, read again as Maxima array"))
   else block
     (
       print("FAILED to write Lisp array, read again as Maxima array;"),
       l2: read_list("tmp-lisp-array.data"),
       if is(equal(l, l2)) = true
-        then print("... success: wrote Lisp array, read again as a list, however.")
+        then print("... partial success: wrote Lisp array, read again as a list, however.")
         else print("... FAILED to write Lisp array, read again as a list.")
     )$
 
+print ("summary: nsuccess / ntest => ", nsuccess, "/", ntest);

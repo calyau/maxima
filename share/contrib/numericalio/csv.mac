@@ -9,6 +9,7 @@ load("numericalio.lisp")$
 load("is_equal_array.lisp")$
 
 prederror: false$
+ntest : nsuccess : 0$
 
 l_nested: [[KEY, XX, YY, ZZ, FOO, Bar, baz],
   [aa46, 7, 7, 16, FOO3, 2.71, 2.88],
@@ -30,16 +31,19 @@ m3: read_matrix("really-csv.data", 'csv)$
 
 m4: read_matrix("really-space-separated.csv", 'space)$
 
+ntest : ntest + 1$
 if is(equal(m, m2)) = true
-  then print("success: rectangular.csv loaded as a matrix")
+  then (nsuccess : nsuccess + 1, print("success: rectangular.csv loaded as a matrix"))
   else print("FAILED to load rectangular.csv as a matrix")$
 
+ntest : ntest + 1$
 if is(equal(m, m3)) = true
-  then print("success: really-csv.data loaded as a matrix")
+  then (nsuccess : nsuccess + 1, print("success: really-csv.data loaded as a matrix"))
   else print("FAILED to load really-csv.data as a matrix")$
 
+ntest : ntest + 1$
 if is(equal(m, m4)) = true
-  then print("success: really-space-separated.csv loaded as a matrix")
+  then (nsuccess : nsuccess + 1, print("success: really-space-separated.csv loaded as a matrix"))
   else print("FAILED to load really-space-separated.csv as a matrix")$
 
 write_data(m2, "tmp-matrix.csv")$
@@ -50,16 +54,19 @@ m5: read_matrix("tmp-matrix.csv")$
 m6: read_matrix("tmp-matrix.data", 'csv)$
 m7: read_matrix("tmp-matrix-2.csv", 'space)$
 
+ntest : ntest + 1$
 if is(equal(m2, m5)) = true
-  then print("success: wrote .csv file, read again as matrix")
+  then (nsuccess : nsuccess + 1, print("success: wrote .csv file, read again as matrix"))
   else print("FAILED to write .csv file, read again as matrix")$
 
+ntest : ntest + 1$
 if is(equal(m2, m6)) = true
-  then print("success: wrote .data file (using 'csv flag), read again as matrix")
+  then (nsuccess : nsuccess + 1, print("success: wrote .data file (using 'csv flag), read again as matrix"))
   else print("FAILED to write .data file (using 'csv flag), read again as matrix")$
 
+ntest : ntest + 1$
 if is(equal(m2, m7)) = true
-  then print("success: wrote .csv file (using 'space flag), read again as matrix")
+  then (nsuccess : nsuccess + 1, print("success: wrote .csv file (using 'space flag), read again as matrix"))
   else print("FAILED to write .csv file (using 'space flag), read again as matrix")$
 
 array(a, 10, 6)$
@@ -69,6 +76,9 @@ write_data(a, "tmp-array.csv")$
 array(a2, 10, 6)$
 read_maxima_array("tmp-array.csv", a2)$
 
+ntest : ntest + 1$
 if is_equal_array(a, a2) = true
-  then print("success: read space-separated, wrote csv, read csv into array")
+  then (nsuccess : nsuccess + 1, print("success: read space-separated, wrote csv, read csv into array"))
   else print("FAILED to read space-separated, write csv, read csv into array")$
+
+print ("summary: nsuccess / ntest => ", nsuccess, "/", ntest);

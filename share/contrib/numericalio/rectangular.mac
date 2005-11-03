@@ -38,25 +38,31 @@ l2_nested: read_nested_list("rectangular.data")$
 l2: read_list("rectangular.data")$
 
 prederror:false$
+ntest : nsuccess : 0$
 
+ntest : ntest + 1$
 if is(equal(l, l2)) = true
-  then print("success: rectangular.data loaded as flat list")
+  then (nsuccess : nsuccess + 1, print("success: rectangular.data loaded as flat list"))
   else print("FAILED to load rectangular.data as flat list")$
 
+ntest : ntest + 1$
 if is(equal(l_nested, l2_nested)) = true
-  then print("success: rectangular.data loaded as nested list")
+  then (nsuccess : nsuccess + 1, print("success: rectangular.data loaded as nested list"))
   else print("FAILED to load rectangular.data as nested list")$
 
+ntest : ntest + 1$
 if is(equal(arrayinfo(h), arrayinfo(h2))) = true
-  then print("success: rectangular.data keys loaded")
+  then (nsuccess : nsuccess + 1, print("success: rectangular.data keys loaded"))
   else print("FAILED to load rectangular.data keys")$
 
+ntest : ntest + 1$
 if is(equal(listarray(h), listarray(h2))) = true
-  then print("success: rectangular.data records loaded as hashed array")
+  then (nsuccess : nsuccess + 1, print("success: rectangular.data records loaded as hashed array"))
   else print("FAILED to load rectangular.data records as hashed array")$
 
+ntest : ntest + 1$
 if is(equal(m, m2)) = true
-  then print("success: rectangular.data records loaded as matrix")
+  then (nsuccess : nsuccess + 1, print("success: rectangular.data records loaded as matrix"))
   else print("FAILED to load rectangular.data records as matrix")$
 
 write_data(m2, "tmp-matrix.data")$
@@ -74,24 +80,29 @@ read_hashed_array("tmp-hashed-array.data", h3)$
 l3_nested: read_nested_list("tmp-matrix.data")$
 l3: read_list("tmp-list.data")$
 
+ntest : ntest + 1$
 if is(equal(l2, l3)) = true
-  then print("success: wrote, read again rectangular.data as flat list")
+  then (nsuccess : nsuccess + 1, print("success: wrote, read again rectangular.data as flat list"))
   else print("FAILED to write, read again rectangular.data as flat list")$
 
+ntest : ntest + 1$
 if is(equal(l2_nested, l3_nested)) = true
-  then print("success: wrote, read again rectangular.data as nested list")
+  then (nsuccess : nsuccess + 1, print("success: wrote, read again rectangular.data as nested list"))
   else print("FAILED to write, read again rectangular.data as nested list")$
 
+ntest : ntest + 1$
 if is(equal(arrayinfo(h2), arrayinfo(h3))) = true
-  then print("success: wrote, read again rectangular.data hashed array keys")
+  then (nsuccess : nsuccess + 1, print("success: wrote, read again rectangular.data hashed array keys"))
   else print("FAILED to write, read again rectangular.data hashed array keys")$
 
+ntest : ntest + 1$
 if is(equal(listarray(h2), listarray(h3))) = true
-  then print("success: wrote, read again rectangular.data hashed array values")
+  then (nsuccess : nsuccess + 1, print("success: wrote, read again rectangular.data hashed array values"))
   else print("FAILED to write, read again rectangular.data hashed array values")$
 
+ntest : ntest + 1$
 if is(equal(m2, m3)) = true
-  then print("success: wrote, read again rectangular.data as matrix")
+  then (nsuccess : nsuccess + 1, print("success: wrote, read again rectangular.data as matrix"))
   else print("FAILED to write, read again rectangular.data as matrix")$
 
 
@@ -127,8 +138,9 @@ m2_dot_m2: transpose(m2) . m2$
 s2: 0$
 for i:1 thru length(m2_dot_m2) do s2: s2 + m2_dot_m2[i, i]$
 
+ntest : ntest + 1$
 if is(equal(s, s2)) = true
-  then print("success: assigned values to variables in matrix")
+  then (nsuccess : nsuccess + 1, print("success: assigned values to variables in matrix"))
   else print("FAILED to assign values to values in matrix")$
 
-
+print ("summary: nsuccess / ntest => ", nsuccess, "/", ntest);
