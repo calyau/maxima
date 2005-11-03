@@ -1,4 +1,4 @@
-@c/Input.texi/1.39/Tue Nov  1 06:51:53 2005/-ko/
+@c /Input.texi/1.39/Tue Nov  1 06:51:53 2005/-ko/
 
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
