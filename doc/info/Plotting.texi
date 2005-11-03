@@ -460,15 +460,16 @@ Example:
 
 @item
 Option: @code{gnuplot_curve_titles} Controls the titles given in the plot key. The
-default value is @code{default}, which automatically sets the title of each
-curve to the function plotted. If not @code{default}, @code{gnuplot_curve_titles}
-should contain a list of strings. (To disable the plot key entirely,
-add @code{"set nokey"} to @code{gnuplot_preamble}.)
+default value is @code{[default]}, which automatically sets the title of each
+curve to the function plotted. If not @code{[default]}, @code{gnuplot_curve_titles}
+should contain a list of strings,
+each of which is @code{"title '@var{title_string}'"}.
+(To disable the plot key, add @code{"set nokey"} to @code{gnuplot_preamble}.)
 
 Example:
 
 @example
-[gnuplot_curve_titles, ["my first function", "my second function"]]
+[gnuplot_curve_titles, ["title 'My first function'", "title 'My second function'"]]
 @end example
 
 @item
