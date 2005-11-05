@@ -1,0 +1,112 @@
+@menu
+* Data input and output::
+@end menu
+
+@node Data input and output
+@section numericalio
+
+@code{numericalio} is a collection of functions to read and write data files.
+Data files can contain integers, floats, bigfloats, strings (in double quotes), and symbols.
+The entire file is read to construct one object;
+partial reads are not supported.
+
+@var{separator_flag} tells what to use to separate elements.
+It is an optional argument for all read and write functions.
+Three values are understood:
+@code{csv} for comma separated values,
+@code{pipe} for values separated by the vertical bar character,
+and @code{space} for values separated by space or tab characters.
+If the file name ends
+in ".csv", @code{csv} is assumed unless @var{separator_flag} is explicitly specified.
+If not ".csv" and not specified, @code{space} is assumed.
+
+@deffn {Function} read_matrix (@var{file_name})
+@deffnx {Function} read_matrix (@var{file_name}, @var{separator_flag})
+Reads the file @var{file_name} and returns its entire content as a matrix.
+If @var{separator_flag} is not specified, the file is assumed space-delimited.
+
+@code{read_matrix} infers the size of the matrix from the input data.
+Each line of the file becomes one row of the matrix.
+If some lines have different lengths, @code{read_matrix} complains.
+
+@end deffn
+
+@deffn {Function} read_lisp_array (@var{file_name}, @var{A})
+@deffnx {Function} read_lisp_array (@var{file_name}, @var{A}, @var{separator_flag})
+
+@code{read_lisp_array} requires that the array
+be declared by @code{make_array} before calling
+the read function. (This obviates the need to infer the array 
+dimensions, which could be a hassle for arrays with multiple dimensions.)
+
+@code{read_lisp_array} does not check to see that the 
+input file conforms in some way to the array dimensions; the input
+is read as a flat list, then the array is filled using @code{fillarray}.
+
+@end deffn
+
+@deffn {Function} read_maxima_array (@var{file_name}, @var{A})
+@deffnx {Function} read_maxima_array (@var{file_name}, @var{A}, @var{separator_flag})
+
+@code{read_maxima_array} requires that the array
+be declared by @code{array} before calling
+the read function. (This obviates the need to infer the array 
+dimensions, which could be a hassle for arrays with multiple dimensions.)
+
+@code{read_maxima_array} does not check to see that the 
+input file conforms in some way to the array dimensions; the input
+is read as a flat list, then the array is filled using @code{fillarray}.
+
+@end deffn
+
+@deffn {Function} read_hashed_array (@var{file_name}, @var{A})
+@deffnx {Function} read_hashed_array (@var{file_name}, @var{A}, @var{separator_flag})
+
+@code{read_hashed_array} treats the first item on a line as a
+hash key, and associates the remainder of the line (as a list) with the key.
+For example,
+the line @code{567 12 17 32 55} is equivalent to @code{A[567]: [12, 17, 32, 55]$}.
+Lines need not have the same numbers of elements.
+
+@end deffn
+
+@deffn {Function} read_nested_list (@var{file_name})
+@deffnx {Function} read_nested_list (@var{file_name}, @var{separator_flag})
+
+@code{read_nested_list} returns a list which has a sublist for each
+line of input. Lines need not have the same numbers of elements.
+Empty lines are @i{not} ignored: an empty line yields an empty sublist.
+
+@end deffn
+
+@deffn {Function} read_list (@var{file_name})
+@deffnx {Function} read_list (@var{file_name}, @var{separator_flag})
+
+@code{read_list} reads all input into a flat list.
+@code{read_list} ignores end-of-line characters.
+
+@end deffn
+
+@deffn {Function} write_data (@var{X}, @var{file_name})
+@deffnx {Function} write_data (@var{object}, @var{file_name}, @var{separator_flag})
+
+@code{write_data} writes the object @var{X} to the file @var{file_name}.
+
+@code{write_data} writes matrices in row-major form,
+with one line per row.
+
+@code{write_data} writes Lisp and Maxima declared arrays in
+row-major form, with a new line at the end of every slab.
+Higher-dimensional slabs are separated by additional new lines.
+
+@code{write_data} writes hashed arrays with a key followed by
+the associated list on each line.
+
+@code{write_data} writes a nested list with each sublist on one line.
+
+@code{write_data} writes a flat list all on one line.
+
+Whether @code{write_data} appends or truncates its output file
+is governed by the global variable @code{file_output_append}.
+
+@end deffn
