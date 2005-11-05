@@ -1,5 +1,12 @@
+;;
+;;  string processing
 
 ;;  Author: Volker van Nek, van.Nek@gmx.net
+
+;;  Written for Maxima 5.9.2 .
+
+;;  Test file: rteststringproc.mac
+;;  Doc file: stringproc.pdf
 
 ;;  This program is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -9,6 +16,8 @@
 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ;;  Date: 05-10-31
+;;        05-11-03  fixed: $ssort (case inversion), $smismatch (1-indexed) 
+;;                  new functions: invert-string-case, $sinvertcase
 
 (in-package "MAXIMA")
 
@@ -437,15 +446,26 @@
       (m-string (concatenate 'string sq1 (l-string seq) sq2))))
       
 
-
-(defun $ssort (mstr &optional (test '$clessp)) 
+#|
+(defun $ssort (mstr &optional (test '$clessp))  ;; 5.9.1
    (let ((copy (copy-seq (l-string mstr)))) 
       (m-string (sort copy test))))             
+|#
+
+(defun invert-string-case (string)  ;; 5.9.2
+   (let* ((cl1 (explode (l-string string))) 
+          (cl2 (map 'list #'l-char cl1))) ; l-char inverts case
+      (string (implode (cdr (butlast cl2))))))
+
+(defun $ssort (mstr &optional (test '$clessp))  ;; 5.9.2
+   (let ((copy (invert-string-case (copy-seq (l-string mstr))))) 
+      (m-string (invert-string-case (sort copy test)))))             
    
-(defun $smismatch (mstr1 mstr2 &optional (test '$sequal)) 
-   (mismatch (l-string mstr1) 
-             (l-string mstr2)
-             :test test)) 
+   
+(defun $smismatch (mstr1 mstr2 &optional (test '$sequal))  ;; 1-indexed! 
+   (1+ (mismatch (l-string mstr1) 
+                 (l-string mstr2)
+                 :test test))) 
 
 (defun $ssearch (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
    (let ((pos 
@@ -484,6 +504,13 @@
    (m-string 
       (string-downcase (l-string mstr) :start (1- s) :end (if e (1- e)))))
 
+(defun $sinvertcase (mstr &optional (s 1) (e)) ;; 5.9.2 only  ;; 1-indexed!
+   (let* ((str (l-string mstr))
+          (s1 (subseq str 0 (1- s)))
+          (s2 (subseq str (1- s) (if e (1- e))))
+          (s3 (if e (subseq str (1- e)) "")))
+   (m-string 
+      (concatenate 'string s1 (invert-string-case s2) s3)))) 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
