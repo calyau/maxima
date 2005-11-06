@@ -1,0 +1,53 @@
+/* Maxima script to test reading and writing with different separators.
+ * In Maxima: load (numericalio); load (separators);
+ * If test succeeds, prints several messages, all of which mention success.
+ */
+
+kill(all);
+
+l_nested:[
+[false],
+[false, false],
+[false, false, false],
+[false, false, false, false],
+[Foo],
+[Foo, false],
+[false, Foo],
+[Foo, false, false],
+[false, Foo, false],
+[false, false, Foo],
+[Foo, BAR, false],
+[Foo, false, BAR],
+[false, Foo, BAR],
+[Foo, BAR, baz, embedded\ space\ and\ \$p\*cia\!\ c\#\@rs],
+[12.34, Foo, 1234e-2, BAR, 1234b-2, baz, 1234],
+["tab	space comma, semicolon; pipe| dollar$", "quux \"blart\"", ?a\-lisp\-symbol]
+];
+
+l_nested_2: read_nested_list ("semicolon.data", 'semicolon);
+
+l_nested_3: read_nested_list ("pipe.data", 'pipe);
+
+write_data (l_nested_2, "tmp-tab.data", 'tab);
+
+l_nested_4: read_nested_list ("tmp-tab.data", 'tab);
+
+prederror:false;
+ntest : nsuccess : 0;
+
+ntest : ntest + 1;
+if is(equal(l_nested, l_nested_2)) = true
+  then (nsuccess : nsuccess + 1, print("success: semicolon.data loaded as nested list"))
+  else print("FAILED to load semicolon.data as nested list")$
+
+ntest : ntest + 1;
+if is(equal(l_nested, l_nested_3)) = true
+  then (nsuccess : nsuccess + 1, print("success: pipe.data loaded as nested list"))
+  else print("FAILED to load pipe.data as nested list")$
+
+ntest : ntest + 1;
+if is(equal(l_nested, l_nested_4)) = true
+  then (nsuccess : nsuccess + 1, print("success: read semicolon file, write tab file, read again"))
+  else print("FAILED to read semicolon file, write tab file, read again")$
+
+print ("summary: nsuccess / ntest => ", nsuccess, "/", ntest)$
