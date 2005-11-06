@@ -27,7 +27,7 @@ m: apply(matrix, l_nested)$
 
 m2: read_matrix("rectangular.csv")$
 
-m3: read_matrix("really-csv.data", 'csv)$
+m3: read_matrix("really-csv.data", 'comma)$
 
 m4: read_matrix("really-space-separated.csv", 'space)$
 
@@ -47,11 +47,11 @@ if is(equal(m, m4)) = true
   else print("FAILED to load really-space-separated.csv as a matrix")$
 
 write_data(m2, "tmp-matrix.csv")$
-write_data(m2, "tmp-matrix.data", 'csv)$
+write_data(m2, "tmp-matrix.data", 'comma)$
 write_data(m2, "tmp-matrix-2.csv", 'space)$
 
 m5: read_matrix("tmp-matrix.csv")$
-m6: read_matrix("tmp-matrix.data", 'csv)$
+m6: read_matrix("tmp-matrix.data", 'comma)$
 m7: read_matrix("tmp-matrix-2.csv", 'space)$
 
 ntest : ntest + 1$
@@ -61,8 +61,8 @@ if is(equal(m2, m5)) = true
 
 ntest : ntest + 1$
 if is(equal(m2, m6)) = true
-  then (nsuccess : nsuccess + 1, print("success: wrote .data file (using 'csv flag), read again as matrix"))
-  else print("FAILED to write .data file (using 'csv flag), read again as matrix")$
+  then (nsuccess : nsuccess + 1, print("success: wrote .data file (using 'comma flag), read again as matrix"))
+  else print("FAILED to write .data file (using 'comma flag), read again as matrix")$
 
 ntest : ntest + 1$
 if is(equal(m2, m7)) = true

@@ -231,7 +231,7 @@
   (cond
     ((eq sep-ch-flag '$space) #\space)
     ((eq sep-ch-flag '$tab) #\tab)
-    ((eq sep-ch-flag '$csv) '$\,)
+    ((or (eq sep-ch-flag '$comma) (eq sep-ch-flag '$csv)) '$\,) ; '$csv is backwards compatibility ... sigh
     ((eq sep-ch-flag '$pipe) '$\|)
     ((eq sep-ch-flag '$semicolon) '$\;)
 
