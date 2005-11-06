@@ -1,24 +1,66 @@
+@settitle numericalio
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to numericalio, (dir), (dir)
+@top
 @menu
-* Data input and output::
+* Introduction to numericalio::
+* Definitions for numericalio::
 @end menu
 
-@node Data input and output
-@section numericalio
+@node Introduction to numericalio, Definitions for numericalio, Top, (dir)
+@section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write data files.
-Data files can contain integers, floats, bigfloats, strings (in double quotes), and symbols.
 The entire file is read to construct one object;
 partial reads are not supported.
 
-@var{separator_flag} tells what to use to separate elements.
+It is assumed that each item to read or write is atomic:
+an integer, float, bigfloat, string, or symbol,
+and not a rational or complex number or any other kind of nonatomic expression.
+These functions may attempt to do something sensible faced with nonatomic expressions,
+but the results are not specified here and subject to change.
+
+Atoms in both input and output files have the same format as
+in Maxima batch files or the interactive console.
+In particular, strings are enclosed in double quotes,
+backslash @code{\} prevents any special interpretation of the next character,
+and the question mark @code{?} is recognized at the beginning of a symbol
+to mean a Lisp symbol (as opposed to a Maxima symbol).
+No continuation character (to join broken lines) is recognized.
+
+@var{separator_flag} tells which character separates elements.
 It is an optional argument for all read and write functions.
-Three values are understood:
-@code{csv} for comma separated values,
-@code{pipe} for values separated by the vertical bar character,
+
+For input, these values of @var{separator_flag} are recognized:
+@code{comma} for comma separated values,
+@code{pipe} for values separated by the vertical bar character @code{|},
+@code{semicolon} for values separated by semicolon @code{;}, 
 and @code{space} for values separated by space or tab characters.
-If the file name ends
-in ".csv", @code{csv} is assumed unless @var{separator_flag} is explicitly specified.
-If not ".csv" and not specified, @code{space} is assumed.
+If the file name ends in @code{.csv} and @var{separator_flag} is not specified,
+@code{comma} is assumed.
+If the file name ends in something other than @code{.csv} and @code{separator_flag} is not specified,
+@code{space} is assumed.
+
+For output, the same four flags are recognized as for input,
+and also @code{tab}, for values separated by the tab character.
+
+In input, multiple successive space and tab characters count as a single separator.
+However, multiple comma, pipe, or semicolon characters are significant.
+Successive comma, pipe, or semicolon characters (with or without intervening spaces or tabs)
+are considered to have @code{false} between the separators.
+For example, @code{1234,,Foo} is treated the same as @code{1234,false,Foo}.
+In output, @code{false} atoms are written as such;
+a list @code{[1234, false, Foo]} is written @code{1234,false,Foo},
+and there is no attempt to collapse the output to @code{1234,,Foo}.
+
+@node Definitions for numericalio, , Introduction to numericalio, (dir)
+@section Definitions for numericalio
 
 @deffn {Function} read_matrix (@var{file_name})
 @deffnx {Function} read_matrix (@var{file_name}, @var{separator_flag})
