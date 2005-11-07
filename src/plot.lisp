@@ -874,7 +874,7 @@ setrgbcolor} def
 		 (right (adaptive-plot f b b1 c f-b f-b1 f-c (1- depth) (* 2 eps))))
 	     (append left (cddr right)))))))
 
-(defun draw2d (f range &optional (log-x-p nil))
+(defun draw2d (f range &optional (log-x-p nil) (log-y-p nil))
   (if (and ($listp f) (equal '$parametric (cadr f)))
       (return-from draw2d (draw2d-parametric f range)))
   (if (and ($listp f) (equal '$discrete (cadr f)))
@@ -908,9 +908,12 @@ setrgbcolor} def
 	(setf x-step (/ (- xend x-start) (coerce-float nticks) 2)))
 
       (flet ((fun (x)
-	       (if log-x-p
-		   (funcall f (exp x))
-		   (funcall f x))))
+	       (let ((y (if log-x-p
+			    (funcall f (exp x))
+			    (funcall f x))))
+		 (if log-y-p
+		     (log y)
+		     y))))
 	
 	(dotimes (k (1+ (* 2 nticks)))
 	  (let ((x (+ x-start (* k x-step))))
@@ -956,6 +959,8 @@ setrgbcolor} def
 	    ((null y))
 	  (when log-x-p
 	    (setf (car x) (exp (car x))))
+	  (when log-y-p
+	    (setf (car y) (exp (car y))))
 	  (unless (and (numberp (car y))
 		       (<= ymin (car y) ymax))
 	    (setf (car x) 'moveto)
@@ -1205,7 +1210,7 @@ setrgbcolor} def
 	    ($mgnuplot
 	     (format st "~%~%# \"~a\"~%" plot-name))
 	    )
-	  (loop for (v w) on (cdr (draw2d v range log-x)) by #'cddr
+	  (loop for (v w) on (cdr (draw2d v range log-x log-y)) by #'cddr
 	     do
 	     (cond ((eq v 'moveto)
 		    (cond 
