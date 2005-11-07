@@ -34,7 +34,7 @@
 	    :compiler-options (:array-slicing nil
 			       :array-type :simple-array
 			       :float-format double-float
-			       :package "SLATEC")
+			       :package :slatec)
 	    :compile-only t
 	    :components
 	    (
@@ -56,7 +56,7 @@
 	    :compiler-options (:array-slicing nil
 			       :array-type :simple-array
 			       :float-format double-float
-			       :package "SLATEC")
+			       :package :slatec)
 	    :depends-on ("xermsg")
 	    :compile-only t
 	    :components
@@ -88,13 +88,13 @@
 		    :compiler-options (:array-slicing nil
 				       :array-type :array
 				       :float-format double-float
-				       :package "SLATEC"))
+				       :package :slatec))
 	     (:file "dbesj"
 		    :depends-on ("dasyjy" "djairy" "dlngam")
 		    :compiler-options (:array-slicing t
 				       :array-type :simple-array
 				       :float-format double-float
-				       :package "SLATEC"))
+				       :package :slatec))
 	     (:file "dbsynu"
 		    :depends-on ("dgamma"))
 
@@ -171,7 +171,7 @@
 	     (:file "zunk1"
 		    :compiler-options (:array-slicing t
 				       :float-format double-float
-				       :package "SLATEC")
+				       :package :slatec)
 		    :depends-on ("zabs" "zs1s2" "zuchk" "zunik"))
 	     (:file "zunk2"
 		    :depends-on ("zabs" "zairy" "zs1s2" "zuchk" "zunhj"))
@@ -189,13 +189,13 @@
 		    :compiler-options (:array-slicing nil
 				       :array-type :array
 				       :float-format double-float
-				       :package "SLATEC"))
+				       :package :slatec))
 	     (:file "dbesi"
 		    :depends-on ("dasyik" "dlngam")
 		    :compiler-options (:array-slicing t
 				       :array-type :array
 				       :float-format double-float
-				       :package "SLATEC"))
+				       :package :slatec))
 	     (:file "zbesi"
 		    :depends-on ("zabs" "zbinu"))
 
@@ -254,7 +254,7 @@
 	    :compiler-options (:array-slicing t
 			       :array-type :array
 			       :float-format double-float
-			       :package "SLATEC")
+			       :package :slatec)
 	    :compile-only t
 	    :depends-on ("xermsg")
 	    :components
@@ -321,7 +321,7 @@
 		      :compiler-options (:array-slicing nil
 					 :array-type :array
 					 :float-format double-float
-					 :package "SLATEC")
+					 :package :slatec)
 		      )
 	       (:file "dqawoe"
 		      :depends-on ("dqc25f"

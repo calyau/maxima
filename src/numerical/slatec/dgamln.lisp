@@ -1,12 +1,12 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
+;;; Compiled by f2cl version 2.0 beta Date: 2005/07/26 12:37:15 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-11 (19C)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
 ;;;           (:array-slicing nil) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "SLATEC")
+(in-package :slatec)
 
 
 (let ((gln
@@ -76,13 +76,13 @@
                                        0.17964437236883057 -1.3924322169059011
                                        13.402864044168393 -156.84828462600203
                                        2193.1033333333335 -36108.77125372499
-                                       691472.268851313 -1.5238221539407415e+7
-                                       3.8290075139141417e+8
-                                       -1.0882266035784391e+10
-                                       3.4732028376500226e+11
-                                       -1.2369602142269275e+13
-                                       4.887880647930793e+14
-                                       -2.1320333960919372e+16)))
+                                       691472.268851313 -1.5238221539407415e7
+                                       3.8290075139141417e8
+                                       -1.0882266035784391e10
+                                       3.4732028376500226e11
+                                       -1.2369602142269275e13
+                                       4.887880647930793e14
+                                       -2.1320333960919372e16)))
       (con 1.8378770664093456))
   (declare (type double-float con)
            (type (simple-array double-float (22)) cf)
@@ -108,7 +108,7 @@
       (go end_label)
      label10
       (setf wdtol (f2cl-lib:d1mach 4))
-      (setf wdtol (max wdtol 5.0e-19))
+      (setf wdtol (max wdtol 5.e-19))
       (setf i1m (f2cl-lib:i1mach 14))
       (setf rln (* (f2cl-lib:d1mach 5) i1m))
       (setf fln (min rln 20.0))

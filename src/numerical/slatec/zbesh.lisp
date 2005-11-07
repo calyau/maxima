@@ -1,12 +1,12 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
+;;; Compiled by f2cl version 2.0 beta Date: 2005/07/26 12:37:15 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-11 (19C)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':simple-array)
 ;;;           (:array-slicing nil) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "SLATEC")
+(in-package :slatec)
 
 
 (let ((hpi 1.5707963267948966))
@@ -36,7 +36,7 @@
       (if (< n 1) (setf ierr 1))
       (if (/= ierr 0) (go end_label))
       (setf nn n)
-      (setf tol (max (f2cl-lib:d1mach 4) 1.0e-18))
+      (setf tol (max (f2cl-lib:d1mach 4) 1.e-18))
       (setf k1 (f2cl-lib:i1mach 15))
       (setf k2 (f2cl-lib:i1mach 16))
       (setf r1m5 (f2cl-lib:d1mach 5))

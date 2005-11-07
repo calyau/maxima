@@ -1,12 +1,12 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
+;;; Compiled by f2cl version 2.0 beta Date: 2005/07/26 12:37:15 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-11 (19C)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "SLATEC")
+(in-package :slatec)
 
 
 (defun dqawse
@@ -51,7 +51,7 @@
       (setf abserr 0.0)
       (if
        (or (<= b a)
-           (and (= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.0e-29)))
+           (and (= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.e-29)))
            (<= alfa -1.0)
            (<= beta -1.0)
            (< integr 1)
@@ -208,7 +208,7 @@
              (abs
               (- (f2cl-lib:fref rlist-%data% (maxerr) ((1 *)) rlist-%offset%)
                  area12))
-             (* 1.0e-5 (abs area12)))
+             (* 1.e-5 (abs area12)))
             (>= erro12 (* 0.99 errmax)))
            (setf iroff1 (f2cl-lib:int-add iroff1 1)))
           (if (and (> last$ 10) (> erro12 errmax))

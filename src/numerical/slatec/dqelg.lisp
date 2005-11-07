@@ -1,12 +1,12 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
+;;; Compiled by f2cl version 2.0 beta Date: 2005/07/26 12:37:15 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-11 (19C)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "SLATEC")
+(in-package :slatec)
 
 
 (defun dqelg (n epstab result abserr res3la nres)
@@ -81,7 +81,7 @@
           (if (or (<= err1 tol1) (<= err2 tol2) (<= err3 tol3)) (go label20))
           (setf ss (+ (/ 1.0 delta1) (/ 1.0 delta2) (/ -1.0 delta3)))
           (setf epsinf (coerce (abs (* ss e1)) 'double-float))
-          (if (> epsinf 1.0e-4) (go label30))
+          (if (> epsinf 1.e-4) (go label30))
          label20
           (setf n (f2cl-lib:int-sub (f2cl-lib:int-add i i) 1))
           (go label50)

@@ -1,12 +1,12 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
+;;; Compiled by f2cl version 2.0 beta Date: 2005/07/26 12:37:15 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-11 (19C)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "SLATEC")
+(in-package :slatec)
 
 
 (let ((wg
@@ -65,8 +65,7 @@
   (declare (type (array double-float (31)) wgk xgk)
            (type (array double-float (15)) wg))
   (defun dqk61 (f a b result abserr resabs resasc)
-    (declare (type double-float resasc resabs abserr result b a)
-             (type (function (double-float) (values double-float &rest t)) f))
+    (declare (type double-float resasc resabs abserr result b a))
     (f2cl-lib:with-multi-array-data
         nil
       (prog ((fv1 (make-array 30 :element-type 'double-float))

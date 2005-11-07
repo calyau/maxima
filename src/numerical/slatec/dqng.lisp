@@ -1,12 +1,12 @@
-;;; Compiled by f2cl version 2.0 beta Date: 2005/06/20 01:53:39 
-;;; Using Lisp CMU Common Lisp Snapshot 2005-06 (19B)
+;;; Compiled by f2cl version 2.0 beta Date: 2005/07/26 12:37:15 
+;;; Using Lisp CMU Common Lisp Snapshot 2005-11 (19C)
 ;;; 
 ;;; Options: ((:prune-labels nil) (:auto-save t) (:relaxed-array-decls t)
 ;;;           (:coerce-assigns :as-needed) (:array-type ':array)
 ;;;           (:array-slicing t) (:declare-common nil)
 ;;;           (:float-format double-float))
 
-(in-package "SLATEC")
+(in-package :slatec)
 
 
 (let ((x1
@@ -132,8 +132,7 @@
            (type (array double-float (5)) w21a x2 w10 x1))
   (defun dqng (f a b epsabs epsrel result abserr neval ier)
     (declare (type f2cl-lib:integer4 ier neval)
-             (type double-float abserr result epsrel epsabs b a)
-             (type (function (double-float) (values double-float &rest t)) f))
+             (type double-float abserr result epsrel epsabs b a))
     (f2cl-lib:with-multi-array-data
         nil
       (prog ((fv1 (make-array 5 :element-type 'double-float))
@@ -158,7 +157,7 @@
         (setf abserr 0.0)
         (setf neval 0)
         (setf ier 6)
-        (if (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.0e-29)))
+        (if (and (<= epsabs 0.0) (< epsrel (max (* 50.0 epmach) 5.e-29)))
             (go label80))
         (setf hlgth (* 0.5 (- b a)))
         (setf dhlgth (coerce (abs hlgth) 'double-float))
