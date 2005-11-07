@@ -363,8 +363,8 @@
        (store (aref *pi-sl* i) (_f (aref *pi-sl* i) j)))
      nn)
    (log 2.0d0)
-   (float most-positive-long-float)
-   (float least-positive-long-float)
+   most-positive-double-float
+   least-positive-double-float
    double-float-epsilon
    0.0d0 0.70710677d0 0.0d0 -0.069756474d0 0.99756405d0
    0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0 0 0 nil))
@@ -686,8 +686,8 @@
 	 ((> i nn))
        (store (aref *pr-sl* i) (_f (aref *pr-sl* i) j))))
    (log 2.0)
-   (float most-positive-long-float)
-   (float least-positive-long-float)
+   most-positive-double-float
+   least-positive-double-float
    double-float-epsilon
    0.0d0 0.70710677 0.0d0 -0.069756474 0.99756405
    0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0.0d0 0 0 0 0 0 t))  
