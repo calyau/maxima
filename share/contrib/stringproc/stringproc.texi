@@ -13,6 +13,7 @@
 * Definitions for input and output::
 * Definitions for characters::
 * Definitions for strings::
+* Function and variable index::
 @end menu
 
 @node Introduction to string processing, Definitions for input and output, Top, Top
@@ -428,7 +429,7 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @end deffn
 
-@node Definitions for strings, , Definitions for characters, Top
+@node Definitions for strings, Function and variable index, Definitions for characters, Top
 @section Definitions for strings
 
 @deffn {Function} sunlisp (@var{lisp_string}) 
@@ -790,3 +791,9 @@ If test is not given, @var{constituent} is used as the default test.
 @end example
 
 @end deffn
+
+@node Function and variable index,  , Definitions for strings, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+

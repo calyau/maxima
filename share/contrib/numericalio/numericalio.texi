@@ -11,9 +11,10 @@
 @menu
 * Introduction to numericalio::
 * Definitions for numericalio::
+* Function and variable index::
 @end menu
 
-@node Introduction to numericalio, Definitions for numericalio, Top, (dir)
+@node Introduction to numericalio, Definitions for numericalio, Top, Top
 @section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write data files.
@@ -59,7 +60,7 @@ In output, @code{false} atoms are written as such;
 a list @code{[1234, false, Foo]} is written @code{1234,false,Foo},
 and there is no attempt to collapse the output to @code{1234,,Foo}.
 
-@node Definitions for numericalio, , Introduction to numericalio, (dir)
+@node Definitions for numericalio, Function and variable index, Introduction to numericalio, Top
 @section Definitions for numericalio
 
 @deffn {Function} read_matrix (@var{file_name})
@@ -152,3 +153,8 @@ Whether @code{write_data} appends or truncates its output file
 is governed by the global variable @code{file_output_append}.
 
 @end deffn
+
+@node Function and variable index,  , Definitions for numericalio, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
