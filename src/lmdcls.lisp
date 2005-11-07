@@ -25,6 +25,11 @@
   (lisp:clines "#define MAKE_UNSPECIAL(x) (check_type_symbol(&(x)),(x)->s.s_stype = stp_ordinary, Cnil)")
   (lisp:defentry make-unspecial (lisp:object) (lisp:object "MAKE_UNSPECIAL")))
 
+#+(or scl cmu)
+(defun make-unspecial (symbol)
+  (ext:clear-info variable c::kind symbol)
+  symbol)
+
 
 (defmacro declare-top (&rest decl-specs)
   `(eval-when
@@ -37,10 +42,12 @@
 	     when (eql (car v) 'unspecial)
 	     collect `(progn
 		       ,@(loop for w in (cdr v)
-				collect #-gcl  `(remprop ',w
+				collect #-(or gcl scl cmu)
+                                       `(remprop ',w
 						 #-excl 'special
 						 #+excl 'excl::.globally-special.)
-				#+gcl `(make-unspecial ',w)))
+				#+(or gcl scl cmu)
+			        `(make-unspecial ',w)))
 	     else collect `(proclaim ',v))))
 
 ;;this list should contain all specials required by runtime or more
