@@ -121,6 +121,12 @@ elif [ "$MAXIMA_LISP" = "cmucl" ]; then
     else
 	exec "@CMUCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
     fi
+elif [ "$MAXIMA_LISP" = "scl" ]; then
+    if [ "$layout_autotools" = "true" ]; then
+	exec "$MAXIMA_IMAGESDIR/binary-$MAXIMA_LISP/@SCL_RUNTIME@" -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    else
+	exec "@SCL_NAME@" -quiet -core "$maxima_image_base.core" -eval '(cl-user::run)' -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
+    fi
 elif [ "$MAXIMA_LISP" = "gcl" ]; then
     exec "$maxima_image_base" -eval '(cl-user::run)' -f -- "$arg1" "$arg2" "$arg3" "$arg4" "$arg5" "$arg6" "$arg7" "$arg8" "$arg9"
 elif [ "$MAXIMA_LISP" = "acl6" ]; then

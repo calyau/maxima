@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;; These are the helper functions for autoloading.
 ;; The actual autoloading data is in src/max_ext.lisp

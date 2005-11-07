@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1982 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module rat3e)
 
 ;;	This is the rational function package part 5.

@@ -8,10 +8,10 @@
 ;;;     (c) Copyright 1980 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module homog)
 
-(LOAD-MACSYMA-MACROS RATMAC)
+(load-macsyma-macros ratmac)
 
 (declare-top (special *hvar *hmat)
 	 (*lexpr hreduce hexpand))

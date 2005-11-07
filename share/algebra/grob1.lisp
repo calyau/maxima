@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;               COMPUTATIONS OF GROEBNER BASES
 ;written by D.Lazard (jun. 1988)

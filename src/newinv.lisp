@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1980 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module newinv)
 
 (declare-top(special *ptr* *ptc* *iar* *nonz* detl* *r0 mul* $sparse *det* *rr* ax))

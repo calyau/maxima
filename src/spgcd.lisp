@@ -11,7 +11,7 @@
 ;;;   ** (C) COPYRIGHT 1982 MASSACHUSETTS INSTITUTE OF TECHNOLOGY *****
 ;;;   ****** THIS IS A READ-ONLY FILE! (ALL WRITES RESERVED) **********
 ;;;   *****************************************************************
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (macsyma-module spgcd)
 

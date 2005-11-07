@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1980 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mmacro)
 
 ;; Exported functions are MDEFMACRO, $MACROEXPAND, $MACROEXPAND1, MMACRO-APPLY

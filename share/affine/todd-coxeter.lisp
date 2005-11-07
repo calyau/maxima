@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 (use-package "CL-SLOOP")
 
 (defvar $todd_coxeter_state nil)

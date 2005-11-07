@@ -6,7 +6,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;to do add for other cl implementations.
 ;;(defun remove-type ( l)
 ;;  (loop for v in l

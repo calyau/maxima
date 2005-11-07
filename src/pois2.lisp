@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module pois2)
 
 (declare-top (special *argc *coef poisvals poisco1 poiscom1 b* a* *a ss

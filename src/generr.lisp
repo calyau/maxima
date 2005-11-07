@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defvar errset nil)
 

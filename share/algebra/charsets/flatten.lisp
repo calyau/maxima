@@ -45,7 +45,7 @@
 ;; There are other functions other than ^ and = that we shouldn't try
 ;; to flatten -- Bessel functions, etc.  
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ($put '$charsets_flatten 1 '$version)
 
 ;; Return the operator and argument of the expression e.

@@ -13,7 +13,7 @@
 ;; Comments: TeX formatting module for itensor.lisp
 ;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;(declare-top
 ;	 (special lop rop ccol $gcprint texport $labels $inchar

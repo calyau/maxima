@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defun $lexicographique? ($a $b)
    (2lexinv_type1 (cddr $a) (cddr $b)))

@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module pois3)
 
 ;; GENERAL POISSON SERIES

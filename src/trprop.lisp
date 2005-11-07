@@ -9,7 +9,7 @@
 ;;;                 GJC 10:11pm  Tuesday, 14 July 1981                   ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module trprop)
 
 ;; Many macsyma extension commands, e.g. $INFIX, $TELLSIMP,

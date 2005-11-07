@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module nforma)
 
 (declare-top (special 1//2 -1//2 displayp aliaslist in-p))

@@ -1,5 +1,5 @@
 ;;; -*-  Mode: Lisp; Package: MAKE; Syntax: Common-Lisp; Base: 10 -*- ;;;;
-(in-package "MAKE" :use '( "LISP"))
+(in-package :make :use '(:common-lisp))
 
 (export '(make system-load system-compile))
 (provide "MAKE")

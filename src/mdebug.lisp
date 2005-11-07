@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (declaim (optimize (safety 2) (space 3)))
 

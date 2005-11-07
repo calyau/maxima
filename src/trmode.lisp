@@ -10,7 +10,7 @@
 ;;;       (c) copyright 1979 massachusetts institute of technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 
 (macsyma-module trmode)

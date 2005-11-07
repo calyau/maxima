@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 #-(and gcl ansi-cl)
 (use-package "SERROR")
 

@@ -25,7 +25,7 @@
 ;===========================================================================
 ;                        INTERFACE
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module directnew)
 
 ;; Fonctions MACSYMA

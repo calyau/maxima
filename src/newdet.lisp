@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1980 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module newdet)
 
 ;; THIS IS A VERSION OF THE GENTLEMAN-JOHNSON TREE-MINOR DETERMINANT

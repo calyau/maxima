@@ -5,7 +5,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;				) ()
 ;  (:init-keywords :the-sparse-matrix :table :array-of-tables

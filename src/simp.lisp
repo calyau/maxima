@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1982 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module simp)
 
 (declare-top (special exptrlsw rulesw $%e_to_numlog *inv* substp

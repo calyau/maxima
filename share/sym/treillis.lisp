@@ -21,7 +21,7 @@
 ;============================================================================
 ;                        INTERFACE
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module treillis)
 
 (mdefprop $treillis

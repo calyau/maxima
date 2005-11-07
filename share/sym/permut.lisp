@@ -24,7 +24,7 @@
 ;                        DECLARATIONS AU COMPILATEUR
 ;-------------------------------------------------------------------------
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module permut)
 
 (progn (defvar lvar) (defvar permut))

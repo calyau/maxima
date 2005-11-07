@@ -1,28 +1,28 @@
 
-(defpackage "SLATEC"
-  (:use "F2CL-LIB" "COMMON-LISP")
+(defpackage :slatec
+  (:use :f2cl-lib :common-lisp)
   (:export
    ;; Error functions
-   "DERF" "DERFC"
+   #:derf #:derfc
 
    ;; Bessel function: J
-   "DBESJ0" "DBESJ1" "DBESJ" "ZBESJ"
+   #:dbesj0 #:dbesj1 #:dbesj #:zbesj
 
    ;; Bessel function: Y
-   "DBESY0" "DBESY1" "DBESY" "ZBESY"
+   #:dbesy0 #:dbesy1 #:dbesy #:zbesy
 
    ;; Bessel function: I
-   "DBESI0" "DBESI1" "DBESI" "DBSI0E" "DBSI1E" "ZBESI"
+   #:dbesi0 #:dbesi1 #:dbesi #:dbsi0e #:dbsi1e #:zbesi
 
    ;; Bessel function: K
-   "DBESK0" "DBESK1" "DBESK" "ZBESK"
+   #:dbesk0 #:dbesk1 #:dbesk #:zbesk
 
    ;; Besseel function: H
-   "ZBESH"
+   #:zbesh
    
    ;; Airy functions
-   "DAI" "ZAIRY" "DJAIRY" "DBI" "ZBIRY" "DYAIRY"
+   #:dai #:zairy #:djairy #:dbi #:zbiry #:dyairy
 
    ;; Exponential integrals
-   "DE1")
+   #:de1)
   (:documentation "Package for the Fortran routines we need from SLATEC"))

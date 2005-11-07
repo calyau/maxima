@@ -22,7 +22,7 @@
   (require :maxima)
   )
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;; Replace some of maxima's display routines with own.
 
 (defvar *x-width* nil)
@@ -438,7 +438,7 @@
 	     (write-char char output))))))))
 
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (defun clim-display (form &rest args)
   (let ((displayp t)
 	(linearray (if displayp (make-array 80.) linearray))
@@ -484,7 +484,7 @@
 #+nil
 (setf maxima::*alt-display2d* #'clim-display)
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (defun boxify (form)
   "Takes a maxima internal form and adds boxes everywhere, as if dpart
   was done on all possible places"

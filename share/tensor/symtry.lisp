@@ -14,7 +14,7 @@
 ;;
 ;;; symtry 100 Feb 12, 1982
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **
 

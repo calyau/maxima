@@ -2,7 +2,7 @@
 ;;    Small changes to mactex.lisp for interfacing with TeXmacs
 ;;    Andrey Grozin, 2001-2005
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (declare-top
 	 (special lop rop $gcprint $inchar)

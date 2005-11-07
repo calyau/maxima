@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (macsyma-module nparse)
 (load-macsyma-macros defcal mopers)
@@ -374,7 +374,7 @@
   (let ((charlist (cdr (scan-token nil))))
     (if (and charlist
 	     (setq charlist (lisp-token-fixup-case charlist)))
-	(let ((*package* (find-package "KEYWORD")))
+	(let ((*package* (find-package :keyword)))
 	  (implode charlist))
 	(mread-synerr "Lisp keyword expected."))))
 

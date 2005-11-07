@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;; 
 ;;;Translated on: 7/18/85 13:12:45;;Maxima System version 2
 ;;** Variable settings were **
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;;TRANSCOMPILE:FALSE;
 ;;TR_SEMICOMPILE:FALSE;

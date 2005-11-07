@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mformt)
 (load-macsyma-macros mforma)
 
@@ -68,7 +68,7 @@
 (def-mformat-op #\M
     (push-text-temp)
   (let ((arg (pop-mformat-arg)))
-    (and @-flag (atom arg) 
+    (and |@-FLAG| (atom arg) 
 	 (setq arg (or (get arg 'op) arg)))
     (cond (|:-FLAG|
 	   (push (cons '(text-string) (mstring arg)) text))

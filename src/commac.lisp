@@ -5,7 +5,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;;(eval-when (compile)
 ;;  (proclaim '(optimize (safety 0) (speed 3) (space 0))))
@@ -153,10 +153,12 @@
 (defprop array arrayp ml-typep)
 (defprop atom  atom ml-typep)
 
-#+cmu (shadow '(cl:compiled-function-p) (find-package "MAXIMA"))
-#+cmu (defun compiled-function-p (x)
-	(and (functionp x) (not (symbolp x))
-	     (not (eval:interpreted-function-p x))))
+#+(or cmu scl)
+(shadow '(cl:compiled-function-p) (find-package :maxima))
+#+(or cmu scl)
+(defun compiled-function-p (x)
+  (and (functionp x) (not (symbolp x))
+       (not (eval:interpreted-function-p x))))
 
 (defprop compiled-function compiled-function-p ml-typep)
 (defprop extended-number extended-number-p ml-typep)

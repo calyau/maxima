@@ -23,7 +23,7 @@
 ;;;;     All rights reserved                                         
 ;;;;  (c) Copyright 1980 Massachusetts Institute of Technology    
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module f90)
 
 (defun f90-print (x

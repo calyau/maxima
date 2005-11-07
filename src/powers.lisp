@@ -8,7 +8,7 @@
 ;; The user of this code assumes all risk for its use. It has no warranty.
 ;; If you don't know the meaning of "no warranty," don't use this code. :)
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ($put '$powers 1 '$version)
 
 ;; Acknowledgement: Dan Stanger helped find and correct bugs.  He

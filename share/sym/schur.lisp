@@ -24,7 +24,7 @@
 ;----------------------------------------------------------------------------
 ;            PASSAGE DES FORMES MONOMIALES AUX FONCTIONS DE SCHUR
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module schur)
 
 (mdefprop $mon2schur

@@ -9,7 +9,7 @@
 ;;;       (c) Copyright 1981 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module evalw)
 
 ;;; Assuming that this will only be a top-level form, it will

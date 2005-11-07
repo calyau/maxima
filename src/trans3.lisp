@@ -10,7 +10,7 @@
 ;;;       Maintained by GJC                                              ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module trans3)
 
 (transl-module trans3)

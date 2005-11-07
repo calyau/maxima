@@ -69,7 +69,7 @@
 ;;; should put (require "SLOOP") and then (use-package "SLOOP") early in
 ;;; his init file.  Note use of the string to avoid interning 'sloop in
 ;;; some other package.
-(in-package "CL-SLOOP")
+(in-package :cl-sloop)
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (shadow 'loop-finish))
 
@@ -77,7 +77,7 @@
 ;;(eval-when (compile eval load)
 ;;(shadow '(LOOP-FINISH) (find-package "SLOOP"))
 ;;)
-;;(in-package "SLOOP" )
+;;(in-package :sloop )
 ;;
 ;;(eval-when (compile eval load)
 ;;(provide "SLOOP")

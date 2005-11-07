@@ -4,7 +4,7 @@
 ;;;     Copyright (c) 1984 by William Schelter,University of Texas     ;;;;;
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;;then have a compiler optimizer which does the selection.
 (defun nn+ (&rest l)

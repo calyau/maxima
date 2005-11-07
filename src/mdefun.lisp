@@ -10,7 +10,7 @@
 ;;;       (c) Copyright 1980 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mdefun macro)
 
 ;;(TRANSL-MODULE MDEFUN) IS CORRECT. But doesn't work in the MPRELU

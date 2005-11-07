@@ -23,7 +23,7 @@
 ;==========================================================================
 ;                     INTERFACE
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module pui macros)
 
 (mdefprop $pui

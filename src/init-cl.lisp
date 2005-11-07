@@ -46,11 +46,12 @@
 
 (defvar *maxima-lispname* #+clisp "clisp"
 	#+cmu "cmucl"
+	#+scl "scl"
 	#+sbcl "sbcl"
 	#+gcl "gcl"
 	#+allegro "acl6"
 	#+openmcl "openmcl"
-	#-(or clisp cmu sbcl gcl allegro openmcl) "unknownlisp")
+	#-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
 
 
 
@@ -80,7 +81,8 @@
 		 (let ((dev (pathname-device str)))
 		   (if (consp dev)
 		       (setf dev (first dev)))
-		   (if (and dev (not (string= dev "")))
+		   (if (and dev (not (eq dev :unspecific))
+			    (not (string= dev "")))
 		       (concatenate 'string
 				    (string-right-trim 
 				     ":" dev) ":")
@@ -214,13 +216,13 @@
 	(setq *maxima-tempdir* (default-tempdir))))
   
   (let* ((ext #+gcl "o"
-	      #+cmu (c::backend-fasl-file-type c::*target-backend*)
+	      #+(or cmu scl) (c::backend-fasl-file-type c::*target-backend*)
 	      #+sbcl "fasl"
 	      #+clisp "fas"
 	      #+allegro "fasl"
 	      #+(and openmcl darwinppc-target) "dfsl"
 	      #+(and openmcl linuxppc-target) "pfsl"
-	      #-(or gcl cmu sbcl clisp allegro openmcl)
+	      #-(or gcl cmu scl sbcl clisp allegro openmcl)
 	      "")
 	 (lisp-patterns (concatenate 
 			 'string "###.{"
@@ -428,7 +430,7 @@
 
 (defun cl-user::run ()
   "Run Maxima in its own package."
-  (in-package "MAXIMA")
+  (in-package :maxima)
   (setf *load-verbose* nil)
   (setf *debugger-hook* #'maxima-lisp-debugger)
   (let ((input-stream *standard-input*)
@@ -490,8 +492,8 @@
 ;;; into *builtin-symbol-props* would cause a hang. Lacking a better
 ;;; solution, we simply avoid those symbols.
 (let ((problematic-symbols '($%gamma $%phi $global $%pi $%e)))
-  (do-symbols (s (find-package 'maxima))
-    (when (and (eql (symbol-package s) (find-package 'maxima))
+  (do-symbols (s (find-package :maxima))
+    (when (and (eql (symbol-package s) (find-package :maxima))
 	       (memq (getchar s 1) '($ % &)))
       (push s *builtin-symbols*)
       (when (not (memq s problematic-symbols))

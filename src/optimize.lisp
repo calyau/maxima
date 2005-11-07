@@ -7,7 +7,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (import '(compiler::inline-unsafe compiler::inline-always compiler::boolean
 	  compiler::definline ) 'cl-maxima)

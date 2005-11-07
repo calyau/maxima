@@ -5,7 +5,7 @@
 ;; This code is in the public domain.  It has no warranty. Use this
 ;; code at your own risk. 
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;; Use the predicate canonlt to order the elements of a set.  The
 ;; default is $charsets_unorderedp.  The predicate $charsets_unorderedp always 

@@ -6,7 +6,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;; Maclisp compatibility definitions for the Lisp Machine.  This file
 ;; is for Lisp differences only.  No knowledge of Macsyma should be
 ;; contained in this file.

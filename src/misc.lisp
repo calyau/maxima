@@ -6,7 +6,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;  Maclisp compatibility package for the Lisp Machine -- run time
 
 ;;  This function should really bash the array or use an invisible pointer

@@ -23,7 +23,7 @@
 ; appelle avec elem([card,e1, e2, ...],sym(x,y,..,z),[x,y,...,z])
 ; ou multi_elem pour des polyn\^omes multisym\'etriques
 ;=============================================================================
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module elem macros)
 
 

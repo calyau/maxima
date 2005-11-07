@@ -8,7 +8,7 @@
 ;;;  (c) Copyright 1976, 1983 Massachusetts Institute of Technology      ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module numerm macro)
 
 ;;; Macros for interface of lisp numerical routines to macsyma,

@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defun $listofei (e )
    (declare (special $d2 $lg $lexp ))

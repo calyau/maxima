@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 ;; MathML-printing
 ;; Created by David Drysdale (DMD), December 2002/January 2003
 ;;

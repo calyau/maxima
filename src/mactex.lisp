@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 ;; TeX-printing
 ;; (c) copyright 1987, Richard J. Fateman
 ;; small corrections and additions: Andrey Grozin, 2001

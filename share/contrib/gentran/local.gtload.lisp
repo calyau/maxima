@@ -15,7 +15,7 @@
 ;;(cond ((not (boundp '*gentran-dir))
  ;;      (setq *gentran-dir (getenv "GENTRAN"))))
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defvar local-obj-dir)
 

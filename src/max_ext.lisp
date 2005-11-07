@@ -1,5 +1,5 @@
 ;;Autoloads for maxima
-(in-package "MAXIMA")
+(in-package :maxima)
 
 
 (auto-mexpr '$trigrat '|trigrat|)

@@ -16,7 +16,7 @@
 ; the copyright notice, author and support credits above are retained.
 ;
 ;=============================================================================
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mathml)
 
 ;; mcmPr-lib must be set as a directory name where your PrMathML 

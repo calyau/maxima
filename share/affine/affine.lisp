@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defvar *maxima-affinedir*
   (combine-path (list *maxima-sharedir* "affine")))

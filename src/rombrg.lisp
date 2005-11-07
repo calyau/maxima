@@ -10,7 +10,7 @@
 ;;; and the rest of macsyma by GJC                                       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module rombrg)
 (load-macsyma-macros transm numerm)
 

@@ -6,7 +6,7 @@
 ;*  copyright (c) 1988 kent state univ.  kent, ohio 44242                      *
 ;*                                                                             *
 ;*******************************************************************************
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (cond ((null (fboundp 'wrs)) (include "convmac.l")))
 

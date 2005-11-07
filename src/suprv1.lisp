@@ -6,7 +6,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;	** (c) Copyright 1982 Massachusetts Institute of Technology **
 
 ;;(macsyma-module suprv)
@@ -1144,7 +1144,7 @@
 	      nil 
 	      (princ *maxima-epilog*)
   #+kcl (lisp::bye) 
-	      #+cmu (ext:quit) 
+	      #+(or cmu scl) (ext:quit) 
 	      #+sbcl (sb-ext:quit) 
 	      #+clisp (ext:quit) 
 	      #+mcl (ccl::quit)

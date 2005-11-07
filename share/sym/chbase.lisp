@@ -22,7 +22,7 @@
 ;         PUI2COMP, PUI2ELE, ELE2PUI, ELE2COMP, COMP2PUI, COMP2ELE
 ;=============================================================================
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module chbase)
 
 (mdefprop $ele2pui

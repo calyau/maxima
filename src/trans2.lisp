@@ -10,7 +10,7 @@
 ;;;       (c) Copyright 1980 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;; TRANSLATION PROPERTIES FOR MACSYMA OPERATORS AND FUNCTIONS.
 
 ;;; This file is for list and array manipulation optimizations.

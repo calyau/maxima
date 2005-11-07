@@ -16,7 +16,7 @@
 ;       *              e-mail : avb@sysal.ibp.fr                      *
 ;       ***************************************************************
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module ecrivain)
 
 (mdefprop $distri_ecrit

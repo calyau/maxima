@@ -19,7 +19,7 @@
 ;; The user of this code assumes all risk for its use. It has no warranty.
 ;; If you don't know the meaning of "no warranty," don't use this code.
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ($put 'pdiff "1.3" 'version)
 
 ;; This code modifies mactex's tex-mexpt function; to keep this modification

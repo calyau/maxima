@@ -28,7 +28,7 @@
 ;;;                    ASK-PROP -> ask the user a question about a symbol.
 ;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module askp)
 
 (declare-top(special limitp integer-info)

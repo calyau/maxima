@@ -10,7 +10,7 @@
 ;;;       (c) Copyright 1982 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module trdata)
 
 ;;; N.B. This is some data. Boy, does it have subtle effect on the code

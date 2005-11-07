@@ -27,7 +27,7 @@
 ;=============================================================================
 ;                         INTERFACE
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module partpol)
 
 (mdefprop $tpartpol

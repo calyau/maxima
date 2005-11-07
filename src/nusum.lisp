@@ -1,6 +1,6 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;Translated on: 4/21/85 11:00:16
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (eval-when (compile eval load)
   (eval-when (compile eval load)

@@ -20,7 +20,7 @@
 ;; correspond with the naming conventions in commercial MACSYMA.
 ;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (macsyma-module itensor) ;; added 9/24/82 at UCB
 

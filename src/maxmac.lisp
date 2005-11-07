@@ -8,7 +8,7 @@
 ;;;  (c) Copyright 1976, 1983 Massachusetts Institute of Technology      ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module maxmac #-lispm macro)
 
 ;; This file contains miscellaneous macros used in Macsyma source files.

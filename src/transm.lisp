@@ -10,7 +10,7 @@
 ;;;       (c) Copyright 1980 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module transm macro)
 (load-macsyma-macros procs)
 (load-macsyma-macros-at-runtime 'procs)

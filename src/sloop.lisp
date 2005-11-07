@@ -1,3 +1,3 @@
-(in-package "CL-SLOOP")
+(in-package :cl-sloop)
 (defmacro sloop (&rest body) `(loop ,@body))
 

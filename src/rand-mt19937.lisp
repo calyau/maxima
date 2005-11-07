@@ -6,7 +6,7 @@
 ;;; (1) Construct floating point numbers using portable operations.
 ;;; (2) Construct large integers using all bits of each chunk.
 
-(defpackage "MT19937"
+(defpackage :mt19937
   (:use :common-lisp)
   (:shadow #:random-state
        #:random-state-p
@@ -35,7 +35,7 @@
 ;;; generator.", ACM Transactions on Modeling and Computer Simulation,
 ;;; 1997, to appear.
 
-(in-package "MT19937")
+(in-package :mt19937)
 
 (defconstant mt19937-n 624)
 (defconstant mt19937-m 397)
@@ -338,7 +338,7 @@
 
 ;;; begin Maxima-specific stuff
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defmfun $set_random_state (x)
   "Copy the argument, and assign the copy to MT19937::*RANDOM-STATE*.

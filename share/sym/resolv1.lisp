@@ -31,7 +31,7 @@
 ;        NUMERIQUES ET CELLE A COEFFICIENTS FORMELS
 ;========================================================================
 ;                        INTERFACE
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module resolvante)
 
 (mdefprop $linear_resolvante

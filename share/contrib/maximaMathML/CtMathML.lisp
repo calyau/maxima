@@ -31,7 +31,7 @@
 ;
 ;=============================================================================
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mathml)
 (declaim (special lop rop ccol *row *indent* mPrport))
 

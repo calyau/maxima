@@ -1,5 +1,5 @@
 ;;Copyright William F. Schelter 1990, All Rights Reserved
-(in-package "MAXIMA")
+(in-package :maxima)
 ;; see bottom of file for examples
 
 
@@ -380,7 +380,7 @@ setrgbcolor} def
 		    (opts *original-points*)
 		    (maxz  most-negative-double-float))
   (declare (type (cl:array double-float) pts)
-           #-(or cmu sbcl) (type (cl:array double-float) opts)
+           #-(or cmu scl sbcl) (type (cl:array double-float) opts)
 	   (type (cl:array (mod 64000)) ngons)
 	   (fixnum number_edges i s j number_edges)
 	   (double-float maxz))

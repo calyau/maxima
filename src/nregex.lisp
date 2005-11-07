@@ -25,17 +25,17 @@
 
 (eval-when #-gcl(:compile-toplevel :load-toplevel :execute) 
 	   #+gcl(load compile eval)
-	   (defpackage "MAXIMA-NREGEX"
-	     (:use "COMMON-LISP")
+	   (defpackage :maxima-nregex
+	     (:use :common-lisp)
 	     (:export
 	      ;; Vars
-	      "*REGEX-DEBUG*" "*REGEX-GROUPS*" "*REGEX-GROUPINGS*"
+	      #:*regex-debug* #:*regex-groups* #:*regex-groupings*
 	      ;; Functions
-	      "REGEX-COMPILE"
+	      #:regex-compile
 	      ))
 	   )
 
-(in-package "MAXIMA-NREGEX")
+(in-package :maxima-nregex)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defvar *regex-debug* nil)	    ; Set to nil for no debugging code

@@ -22,9 +22,9 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.1 2004-10-30 08:21:08 vvzhy Exp $
+;; $Id: plotdf.lisp,v 1.2 2005-11-07 17:37:10 rtoy Exp $
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;; default plotdf options
 (defvar $plotdf_options '((mlist)

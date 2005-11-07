@@ -1,5 +1,5 @@
 ;;; -*- Mode:Lisp; Package:CL-MAXIMA; Base:10 -*-
-(in-package "MAXIMA")
+(in-package :maxima)
 
 
 ;#+kcl

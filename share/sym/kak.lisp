@@ -24,7 +24,7 @@
 ;========================================================================
 ;                      INTERFACE
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module kak)
 
 (mdefprop $somrac

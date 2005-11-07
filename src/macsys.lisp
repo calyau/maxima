@@ -12,7 +12,7 @@
 ;;;
 ;;; *** NOTE *** this file uses common-lisp read syntax.
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module system)
 
 ;;(eval-when (:execute :compile-toplevel :load-toplevel)
@@ -69,7 +69,7 @@
 ;;  (multiple-value-bind (nil used)(si:room-get-area-length-used area)
 ;;    used))
 
-#+cmu
+#+(or cmu scl)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   (ext:get-bytes-consed))
@@ -92,7 +92,7 @@
     (declare (ignore real1 real2 run1 run2 gc1 gc2 gccount))
     (dpb space1 (byte 24 24) space2)))
 
-#-(or lispm cmu sbcl clisp)
+#-(or lispm cmu scl sbcl clisp)
 (defun used-area (&optional unused)
   (declare (ignore unused))
   0)
@@ -178,7 +178,7 @@
 	(when $showtime
 	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
 		  time-used etime-used )
-	  #+(or cmu sbcl clisp)
+	  #+(or cmu scl sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes (* 1024 1024))
 		   (format t " using ~,3F MB.~%"
@@ -400,7 +400,7 @@
 #-lispm
 (defun macsyma-top-level (&optional (input-stream *standard-input*)
 			  batch-flag)
-  (let ((*package* (find-package "MAXIMA")))
+  (let ((*package* (find-package :maxima)))
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
 	(progn
@@ -424,10 +424,10 @@
     (if ($file_search "maxima-init.mac") ($batchload ($file_search "maxima-init.mac")))
     
     (catch 'quit-to-lisp
-      (in-package "MAXIMA")
+      (in-package :maxima)
       (loop 
        do
-       (catch #+kcl si::*quit-tag* #+(or cmu sbcl) 'continue #-(or kcl cmu sbcl) nil
+       (catch #+kcl si::*quit-tag* #+(or cmu scl sbcl) 'continue #-(or kcl cmu scl sbcl) nil
 	      (catch 'macsyma-quit
 		(continue input-stream batch-flag)
 		(format t *maxima-epilog*)
@@ -528,8 +528,8 @@
 (defun $system (&rest args)
   #+gcl   (lisp:system (apply '$sconcat args))
   #+clisp (ext:run-shell-command (apply '$sconcat args))
-  #+cmu   (ext:run-program "/bin/sh"
-			   (list "-c" (apply '$sconcat args)) :output t)
+  #+(or cmu scl) (ext:run-program "/bin/sh"
+				  (list "-c" (apply '$sconcat args)) :output t)
   #+allegro (excl:run-shell-command (apply '$sconcat args) :wait t)
   #+sbcl  (sb-ext:run-program "/bin/sh"
 			      (list "-c" (apply '$sconcat args)) :output t)

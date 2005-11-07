@@ -11,7 +11,7 @@
 ;;;     of the first, second and third kinds.                          ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;(macsyma-module ellipt)
 
 (defvar 3//2 '((rat simp) 3 2))

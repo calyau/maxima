@@ -45,11 +45,11 @@
 	  #+allegro (excl:current-directory)
 	  #+clisp (#+lisp=cl ext:default-directory 
 			     #-lisp=cl lisp:default-directory)
-	  #+cmu (ext:default-directory)
+	  #+(or cmu scl) (ext:default-directory)
 	  #+cormanlisp (ccl:get-current-directory)
 	  #+lispworks (hcl:get-working-directory)
 	  #+lucid (lcl:working-directory)
-	  #-(or allegro clisp cmu cormanlisp lispworks lucid) 
+	  #-(or allegro clisp cmu scl cormanlisp lispworks lucid) 
 	  (truename ".")))))
   
 (defun get-version ()
@@ -68,11 +68,12 @@
   
 (defvar *maxima-lispname* #+clisp "clisp"
 	#+cmu "cmucl"
+	#+scl "scl"
 	#+sbcl "sbcl"
 	#+gcl "gcl"
 	#+allegro "acl6"
 	#+openmcl "openmcl"
-	#-(or clisp cmu sbcl gcl allegro openmcl) "unknownlisp")
+	#-(or clisp cmu scl sbcl gcl allegro openmcl) "unknownlisp")
 
 (defun configure (&key (interactive t) (verbose nil)
 		  is-win32 
@@ -80,6 +81,7 @@
 		  posix-shell
 		  clisp-name
 		  cmucl-name
+		  scl-name
 		  acl6-name
 		  openmcl-name
 		  sbcl-name)
@@ -90,6 +92,7 @@
 	(shell (if posix-shell posix-shell "/bin/sh"))
 	(clisp (if clisp-name clisp-name "clisp"))
 	(cmucl (if cmucl-name cmucl-name "lisp"))
+	(scl (if scl-name scl-name "lisp"))
 	(acl6 (if acl6-name acl6-name "acl"))
 	(openmcl (if openmcl-name openmcl-name "mcl"))
 	(sbcl (if sbcl-name sbcl-name "sbcl"))
@@ -109,6 +112,9 @@
 	  (setf cmucl 
 		(read-with-default "Name of the CMUCL executable (optional)"
 				   cmucl))
+	  (setf scl 
+		(read-with-default "Name of the SCL executable (optional)"
+				   scl))
 	  (setf acl6 
 		(read-with-default "Name of the Allegro executable (optional)"
 				   acl6))
@@ -130,6 +136,7 @@
 			      (cons "@DEFAULTLISP@" *maxima-lispname*)
 			      (cons "@CLISP_NAME@" clisp)
 			      (cons "@CMUCL_NAME@" cmucl)
+			      (cons "@SCL_NAME@" scl)
 			      (cons "@ACL6_NAME@" acl6)
 			      (cons "@OPENMCL_NAME@" openmcl)
 			      (cons "@SBCL_NAME@" sbcl)))

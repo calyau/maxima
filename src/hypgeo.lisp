@@ -2,7 +2,7 @@
 
 
 ;;    ** (c) Copyright 1976, 1983 Massachusetts Institute of Technology **
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;;These are the main routines for finding the Laplace Transform
 ;; of special functions   --- written by Yannis Avgoustis

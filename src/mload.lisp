@@ -9,7 +9,7 @@
 ;;;       (c) Copyright 1982 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mload)
 
 ;; I decided to move most of the file hacking utilities I used in TRANSL to
@@ -889,6 +889,7 @@
 (defun new-file-search (name template &aux lis temp)
   (cond ((probe-file name))
 	((atom template)
+	 #-scl ;???
 	 (setq template (namestring ($filename_merge template  name)))
 					;(print (list 'template template))
 	 (setq lis 

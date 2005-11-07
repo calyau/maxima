@@ -26,7 +26,7 @@
 ; plus creux que ppart1 si l'on desire etre efficace.
 ;============================================================================
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module multmon)
 
 (progn (defvar terparts))

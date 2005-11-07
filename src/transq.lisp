@@ -10,7 +10,7 @@
 ;;;       (c) Copyright 1980 Massachusetts Institute of Technology       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;; this are COMPILE-TIME macros for TRANSLATE MACSYMA code.
 ;;; these guys are either SUBR's LSUBR's or FEXPRS in the interpreter.
 ;;; (ask me about why I used FEXPRS sometime ok.) -gjc.

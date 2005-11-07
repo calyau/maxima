@@ -75,7 +75,7 @@
       (t
        (let ((*compile-print* nil)
 	     (*compile-verbose* nil)
-	     #+cmu
+	     #+(or cmu scl)
 	     (*compile-progress* nil)
 	     #+sbcl
 	     (sb-ext:*compile-progress* nil)

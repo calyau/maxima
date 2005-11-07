@@ -2,7 +2,7 @@
 ;;;Translated on: 6/08/85 17:56:35;;Maxima System version 16
 ;;** Variable settings were **
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;TRANSCOMPILE:FALSE;
 ;;TR_SEMICOMPILE:FALSE;
 ;;TRANSLATE_FAST_ARRAYS:TRUE;

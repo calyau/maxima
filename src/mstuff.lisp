@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module mstuff)
 
 (declare-top(splitfile msort) (fixnum n))
@@ -33,9 +33,9 @@
 ;; closure version.  Gcl likes either...  For the moment we will
 ;; leave a conditional here.
 (defun mfunction1 (fun)
-  #+cmu
+  #+(or cmu scl)
   (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y))))
-  #-cmu 
+  #-(or cmu scl)
   (function (lambda (x y) (mevalp `((,fun) ((mquote) ,x) ((mquote) ,y)))))
   )
 

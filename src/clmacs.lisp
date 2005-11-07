@@ -6,7 +6,7 @@
 ;;;     All rights reserved                                            ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (eval-when
     #+gcl (compile load eval)
@@ -118,13 +118,13 @@
 
 (defmacro status (option &optional item)
   (let ((it (intern (string item) (find-package 'keyword))))
-    (cond ((equal (symbol-name option) "FEATURE")
+    (cond ((equal (symbol-name option) (symbol-name '#:feature))
 	   `(member ,it *features*))
 	  ((equal option 'gctime) 0))))
 
 (defmacro sstatus (option item )
   (let ((it (intern (string item) (find-package 'keyword))))
-    (if (equal (symbol-name option) "FEATURE")
+    (if (equal (symbol-name option) (symbol-name '#:feature))
 	`(pushnew ,it *features*)
 	(error "unknown sstatus ~a" option))))
 

@@ -20,7 +20,7 @@
 ;                           OPERATIONS
 ;=========================================================================
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module operations)
 
 (progn (defvar $oper) (defvar prefixe))

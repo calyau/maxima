@@ -9,7 +9,7 @@
 ;;;                 GJC 9:29am  Saturday, 5 April 1980		 	 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module transl)
 (transl-module transl)
 

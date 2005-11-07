@@ -8,7 +8,7 @@
 ;;;     (c) copyright 1982 massachusetts institute of technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module defint)
 
 ;;;          this is the definite integration package. 

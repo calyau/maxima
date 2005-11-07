@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (setf (symbol-function 'ferror) (symbol-function 'merror))
 (setf (symbol-function 'zl-listp) (symbol-function 'listp))

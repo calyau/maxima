@@ -11,7 +11,7 @@
 
 ;; A Maxima set package
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module nset)
 
 ($put '$nset 1.203 '$version)
@@ -1118,10 +1118,10 @@ a positive integer; instead found ~:M" n))))
   `(setf (get ,fn '$nary) (list #'(lambda ,arg ,f-body) ,id)))
 
 (defun xappend (s)
-  #+cmu
+  #+(or cmu scl)
   (cons '(mlist) (apply 'append (mapcar #'(lambda (x) 
 					    (require-list x "$append")) s)))
-  #-cmu
+  #-(or cmu scl)
   (let ((acc))
     (dolist (si s (cons '(mlist) acc))
       (setq acc (append (require-list si "$append") acc)))))

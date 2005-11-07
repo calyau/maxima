@@ -25,7 +25,7 @@
 ;;   (:export "CL-OPTION" "MAKE-CL-OPTION" "LIST-CL-OPTIONS" "PROCESS-ARGS"
 ;; 	   "GET-APPLICATION-ARGS"))
 
-(in-package "COMMAND-LINE")
+(in-package :command-line)
 
 (defstruct cl-option
   (names nil)
@@ -110,6 +110,10 @@
   #+clisp (rest ext:*args*)
     
   #+cmu (let ((result lisp::lisp-command-line-list))
+	  (do ((removed-arg nil (pop result)))
+	      ((or (equal removed-arg "--") (equal nil result)) result)))
+
+  #+scl (let ((result ext:*command-line-strings*))
 	  (do ((removed-arg nil (pop result)))
 	      ((or (equal removed-arg "--") (equal nil result)) result)))
 

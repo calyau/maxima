@@ -9,7 +9,7 @@
 ;;;
 ;;; ** (c) Copyright 1980 Massachusetts Institute of Technology **
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module sublis)
 
 (defmvar $sublis_apply_lambda t 

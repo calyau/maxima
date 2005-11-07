@@ -1,6 +1,6 @@
 ;; -*- Lisp -*-
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defun mgetarray (marg) 
 "Return the lisp array which is somehow attached to MARG."

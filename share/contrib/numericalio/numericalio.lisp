@@ -7,7 +7,7 @@
 ;;  This program has NO WARRANTY, not even the implied warranty of
 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-(in-package "MAXIMA")
+(in-package :maxima)
 
 ;; Read functions:
 ;;   M: read_matrix (file_name, sep_ch_flag)$

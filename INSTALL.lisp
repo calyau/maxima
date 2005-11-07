@@ -88,6 +88,10 @@ to subsitute their knowledge of defsystem for the following steps.
 
     (extensions:save-lisp "binary-cmucl/maxima.core" :init-function 'user::run)
 
+    SCL: (SCL terminates after saving the image)
+
+    (extensions:save-lisp "binary-scl/maxima.core" :init-function 'user::run)
+
 (10) Execute the saved image.
 
     Each Lisp implementation allows one to specify the name of the

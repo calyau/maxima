@@ -11,7 +11,7 @@
 ;;;
 ;;; See KMP for details
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (declare-top (*expr mstring stripdollar)
 	     (special linear-display-break-table fortranp))
 

@@ -1,4 +1,4 @@
-(in-package "MAXIMA")
+(in-package :maxima)
 
 (defvar $todd_coxeter_state nil)
 (proclaim '(type (vector t)  $todd_coxeter_state))

@@ -17,7 +17,7 @@
 ;       ***************************************************************
 
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module lecteur)
 
 (progn (defvar d) (defvar lvar))

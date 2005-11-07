@@ -14,7 +14,7 @@
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (defun displa(exp) 
      (setq exp (caddr exp))   ;;; get rid of output label
      (print 'PRESENTATION-EXP)

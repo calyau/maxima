@@ -8,7 +8,7 @@
 ;;;     (c) Copyright 1981 Massachusetts Institute of Technology         ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module utils)
 
 ;;; General purpose Lisp utilities.  This file contains runtime functions which
@@ -22,7 +22,7 @@
 (defun maxima-getenv (envvar)
   #+gcl     (si::getenv envvar)
   #+allegro (system:getenv envvar)
-  #+cmu     (cdr (assoc envvar ext:*environment-list* :test #'string=))
+  #+(or cmu scl) (cdr (assoc envvar ext:*environment-list* :test #'string=))
   #+sbcl    (sb-ext:posix-getenv envvar)
   #+clisp   (ext:getenv envvar)
   #+mcl     (ccl::getenv envvar)
@@ -31,7 +31,7 @@
 ;; CMUCL needs because when maxima reaches EOF, it calls BYE, not $QUIT.
 
 (defun bye ()
-  #+(or cmu clisp) (ext:quit)
+  #+(or cmu scl clisp) (ext:quit)
   #+sbcl           (sb-ext:quit)
   #+allegro        (excl:exit)
   #+mcl            (ccl:quit)

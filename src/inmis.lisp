@@ -8,7 +8,7 @@
 ;;;  (c) Copyright 1976, 1983 Massachusetts Institute of Technology      ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module inmis)
 
 (declare-top (special listofvars))

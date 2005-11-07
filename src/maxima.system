@@ -23,13 +23,16 @@
                    #+cmu (make-pathname
 			  :name "binary-cmucl"
 			  :directory (pathname-directory *load-truename*))
+                   #+scl (make-pathname
+			  :name "binary-scl"
+			  :directory (pathname-directory *load-truename*))
 		   #+sbcl (make-pathname
 			   :name "binary-sbcl"
 			   :directory (pathname-directory *load-truename*))
 		   #+gcl "binary-gcl"
 		   #+allegro "binary-acl6"
 		   #+openmcl "binary-openmcl"
-		   #-(or clisp cmu sbcl gcl allegro openmcl) "binary-unknownlisp"
+		   #-(or clisp cmu scl sbcl gcl allegro openmcl) "binary-unknownlisp"
   :components (#+gcl
 	       (:module proclaim :source-pathname ""
 			:load-only t

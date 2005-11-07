@@ -7,7 +7,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; (c) Copyright 1982 Massachusetts Institute of Technology 
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;; Non-commutative product and exponentiation simplifier
 ;; Written:	July 1978 by CWH
 

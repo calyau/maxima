@@ -14,7 +14,7 @@
 ;;
 
 ;	** (c) Copyright 1979 Massachusetts Institute of Technology **
-(in-package "MAXIMA")
+(in-package :maxima)
 
 
 (declare-top (special $imetric $metricconvert indlist empty))

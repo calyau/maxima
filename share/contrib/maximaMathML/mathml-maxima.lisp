@@ -23,7 +23,7 @@
 ;;;    SCAN-NUMBER-BEFORE-DOT
 ;;;; with look-ahead disabled
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (declaim (special *tag* *special-proc* *PARSE-STREAM* *in* parse-tyipeek))
 (defvar *in* *PARSE-STREAM*  "input stream to read")
 (setq parse-tyipeek nil)   ;; look-ahead in nparse.lisp

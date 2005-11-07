@@ -27,65 +27,77 @@
 
 (in-package :common-lisp-user)
 
-(defpackage "F2CL-LIB"
-  (:use "CL")
+(defpackage :f2cl-lib
+  (:use :cl)
   (:documentation "The package holding all symbols used by the Fortran to Lisp library")
-  (:nicknames "FORTRAN-TO-LISP-LIBRARY")
+  (:nicknames :fortran-to-lisp-library)
   (:export
    ;; Constants
-   "%FALSE%" "%TRUE%"
+   #:%false% #:%true%
    ;; User-settable runtime options
-   "*CHECK-ARRAY-BOUNDS*"
+   #:*check-array-bounds*
    ;; Types
-   "INTEGER4" "INTEGER2" "INTEGER1" "REAL8" "REAL4" "COMPLEX8" "COMPLEX16"
-   "ARRAY-DOUBLE-FLOAT" "ARRAY-SINGLE-FLOAT" "ARRAY-INTEGER4" "ARRAY-STRINGS"
-   "LOGICAL"
+   #:integer4 #:integer2 #:integer1 #:real8 #:real4 #:complex8 #:complex16
+   #:array-double-float #:array-single-float #:array-integer4 #:array-strings
+   #:logical
    ;; Macros
-   "FREF" "FSET" "WITH-ARRAY-DATA"
-   "WITH-MULTI-ARRAY-DATA"
-   "F2CL-INIT-STRING" "FREF-STRING" "FSET-STRING" "F2CL-SET-STRING"
-   "F2CL-//" "FSTRING-/=" "FSTRING-=" "FSTRING->" "FSTRING->=" "FSTRING-<" "FSTRING-<="
-   "FORTRAN_COMMENT" "FDO" "F2CL/" "ARITHMETIC-IF" "COMPUTED-GOTO"
-   "ASSIGNED-GOTO"
-   "FFORMAT"
-   "DATA-IMPLIED-DO"
-   "INT-ADD" "INT-SUB" "INT-MUL"
+   #:fref #:fset #:with-array-data
+   #:with-multi-array-data
+   #:f2cl-init-string #:fref-string #:fset-string #:f2cl-set-string
+   #:f2cl-// #:fstring-/= #:fstring-= #:fstring-> #:fstring->= #:fstring-< #:fstring-<=
+   #:fortran_comment #:fdo #:f2cl/ #:arithmetic-if #:computed-goto
+   #:assigned-goto
+   #:fformat
+   #:data-implied-do
+   #:int-add #:int-sub #:int-mul
    ;; Utilities
-   "ARRAY-SLICE" "ARRAY-INITIALIZE"
+   #:array-slice #:array-initialize
    ;; Intrinsic functions
-   "ABS" "ACOS" "AIMAG" "AINT" "ALOG" "ALOG10" "AMAX0" "AMAX1"
-   "AMIN1" "AMOD" "ANINT" "ASIN" "ATAN" "ATAN2"
-   "CABS" "CEXP" "FCHAR" "CLOG" "CMPLX" "CONJG" "CCOS"
-   "CSIN" "CSQRT" "DABS" "DACOS" "DASIN"
-   "DATAN" "DATAN2" "DBLE" "DCOS" "DCOSH" "DEXP" "DIM"
-   "DINT" "DLOG" "DLOG10" "DMAX1" "DMIN1" "DMOD"
-   "DNINT" "DPROD" "DSIGN" "DSIN" "DSINH" "DSQRT" "DTAN"
-   "DTANH" "FFLOAT" "IABS" "ICHAR" "IDIM" "IDINT"
-   "IDNINT" "IFIX" "INDEX" "INT" "ISIGN" "LE" "LEN"
-   "LGE" "LGT" "FLOG" "LOG10" "LT" "MAX" "MAX0"
-   "MAX1" "MIN0" "MIN1" "NINT" "FREAL"
-   "SIGN" "SNGL" "FSQRT"
+   #:abs #:acos #:aimag #:aint #:alog #:alog10 #:amax0 #:amax1
+   #:amin1 #:amod #:anint #:asin #:atan #:atan2
+   #:cabs #:cexp #:fchar #:clog #:cmplx #:conjg #:ccos
+   #:csin #:csqrt #:dabs #:dacos #:dasin
+   #:datan #:datan2 #:dble #:dcos #:dcosh #:dexp #:dim
+   #:dint #:dlog #:dlog10 #:dmax1 #:dmin1 #:dmod
+   #:dnint #:dprod #:dsign #:dsin #:dsinh #:dsqrt #:dtan
+   #:dtanh #:ffloat #:iabs #:ichar #:idim #:idint
+   #:idnint #:ifix #:index #:int #:isign #:le #:len
+   #:lge #:lgt #:flog #:log10 #:lt #:max #:max0
+   #:max1 #:min0 #:min1 #:nint #:freal
+   #:sign #:sngl #:fsqrt
    ;; Other functions
-   "D1MACH" "R1MACH" "I1MACH"
+   #:d1mach #:r1mach #:i1mach
    ))
 
 #+nil
-(defpackage "FORTRAN-TO-LISP"
-  (:use "CL")
+(defpackage :fortran-to-lisp
+  (:use :CL)
   (:documentation "The package holding all symbols need by the Fortran to Lisp converter")
-  (:nicknames "F2CL")
+  (:nicknames :f2cl)
   (:export
    ;; Main routines
-   "F2CL"
-   "F2CL-COMPILE"
+   #:f2cl
+   #:f2cl-compile
    ))
 
 ;;;-------------------------------------------------------------------------
 ;;; end of f2cl0.l
 ;;;
-;;; $Id: f2cl-package.lisp,v 1.7 2004-10-19 12:05:00 wjenkner Exp $
+;;; $Id: f2cl-package.lisp,v 1.8 2005-11-07 17:37:12 rtoy Exp $
 ;;; $Log: f2cl-package.lisp,v $
-;;; Revision 1.7  2004-10-19 12:05:00  wjenkner
+;;; Revision 1.8  2005-11-07 17:37:12  rtoy
+;;; This large set of changes comes from Douglas Crosher adding support
+;;; for SCL:
+;;;
+;;; o Change package names to use keywords and uninterned symbols instead
+;;;   of strings, so SCL (and probably Allegro) can use lower-case mode.
+;;; o Downcase a few uppercase symbols that were inadvertently left out in
+;;;   the great downcasing.
+;;; o Add support for building Maxima with SCL
+;;;
+;;; SCL support is untested.
+;;;
+;;; Revision 1.7  2004/10/19 12:05:00  wjenkner
 ;;; Eliminate all references to LISP or USER in Maxima, replacing them by
 ;;; CL and CL-USER, respectively (except for system-dependent stuff, like
 ;;; lisp:bye, of course).  In particular, make MAXIMA inherit from CL,

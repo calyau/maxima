@@ -11,7 +11,7 @@
 ;;;       Maintained by GJC                                              ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package "MAXIMA")
+(in-package :maxima)
 ;;; This file handles System FSUBR translation properties that
 ;;; were not handled in TRANSL. 
 
