@@ -1,3 +1,9 @@
+\input texinfo
+@c makeinfo stringproc.texi         to make .info
+@c texi2html stringproc.texi        to make .html
+@c texi2pdf stringproc.texi         to make .pdf
+
+@setfilename stringproc.info
 @settitle stringproc
 
 @ifinfo 
@@ -719,7 +725,9 @@ Note that the first character in @var{string} is in position 1.
 @deffnx {Function} ssubstfirst (@var{new}, @var{old}, @var{string}, @var{test}, @var{start}, @var{end}) 
 Like @code{subst} except that only the first substring that matches @var{old} is replaced. 
 
-@deffnx {Function} strim (seq,string) 
+@end deffn
+
+@deffn {Function} strim (seq,string) 
 Returns a string like @var{string},
 but with all characters that appear in @var{seq} removed from both ends. 
 
@@ -797,3 +805,4 @@ If test is not given, @var{constituent} is used as the default test.
 @printindex fn
 @printindex vr
 
+@bye
