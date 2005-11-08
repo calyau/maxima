@@ -1,3 +1,5 @@
+\input texinfo
+@setfilename numericalio.info
 @settitle numericalio
 
 @ifinfo 
@@ -158,3 +160,5 @@ is governed by the global variable @code{file_output_append}.
 @appendix Function and variable index
 @printindex fn
 @printindex vr
+
+@bye
