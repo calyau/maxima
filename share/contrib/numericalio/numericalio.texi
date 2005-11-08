@@ -1,4 +1,8 @@
 \input texinfo
+@c makeinfo numericalio.texi         to make .info
+@c texi2html numericalio.texi        to make .html
+@c texi2pdf numericalio.texi         to make .pdf
+
 @setfilename numericalio.info
 @settitle numericalio
 
