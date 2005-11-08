@@ -15,7 +15,7 @@
 
 
 (defvar *maxima-plotdir* "")
-(defvar *maxima-tmpdir* "")
+(defvar *maxima-tempdir*)
 
 (defvar *z-range* nil)
 (defvar *original-points* nil)
@@ -851,12 +851,12 @@ setrgbcolor} def
 	 nil)))
 		    
     
-(defun adaptive-plot (f a b c f-a f-b f-c depth eps)
+(defun adaptive-plot (fcn a b c f-a f-b f-c depth eps)
   ;; Step 1:  Split the interval [a, c] into 5 points
   (let* ((a1 (/ (+ a b) 2))
 	 (b1 (/ (+ b c) 2))
-	 (f-a1 (funcall f a1))
-	 (f-b1 (funcall f b1))
+	 (f-a1 (funcall fcn a1))
+	 (f-b1 (funcall fcn b1))
 	 )
     (cond ((or (minusp depth)
 	       (and (slow-oscillation-p f-a f-a1 f-b f-b1 f-c)
@@ -870,21 +870,21 @@ setrgbcolor} def
 		 c f-c))
 	  (t
 	   ;; Need to refine.  Split the interval in half, and try to plot each half.  
-	   (let ((left (adaptive-plot f a a1 b f-a f-a1 f-b (1- depth) (* 2 eps)))
-		 (right (adaptive-plot f b b1 c f-b f-b1 f-c (1- depth) (* 2 eps))))
+	   (let ((left (adaptive-plot fcn a a1 b f-a f-a1 f-b (1- depth) (* 2 eps)))
+		 (right (adaptive-plot fcn b b1 c f-b f-b1 f-c (1- depth) (* 2 eps))))
 	     (append left (cddr right)))))))
 
-(defun draw2d (f range &optional (log-x-p nil) (log-y-p nil))
-  (if (and ($listp f) (equal '$parametric (cadr f)))
-      (return-from draw2d (draw2d-parametric f range)))
-  (if (and ($listp f) (equal '$discrete (cadr f)))
-      (return-from draw2d (draw2d-discrete f)))
+(defun draw2d (fcn range &optional (log-x-p nil) (log-y-p nil))
+  (if (and ($listp fcn) (equal '$parametric (cadr fcn)))
+      (return-from draw2d (draw2d-parametric fcn range)))
+  (if (and ($listp fcn) (equal '$discrete (cadr fcn)))
+      (return-from draw2d (draw2d-discrete fcn)))
   (let* ((nticks (nth 2 ($get_plot_option '$nticks)))
 	 (yrange ($get_plot_option '$y))
 	 (depth (nth 2 ($get_plot_option '$adapt_depth)))
 	 ($numer t))
 
-    (setq f (coerce-float-fun f `((mlist), (nth 1 range))))
+    (setq fcn (coerce-float-fun fcn `((mlist), (nth 1 range))))
 
     (let* ((x-start (coerce-float (nth 2 range)))
 	   (xend (coerce-float (nth 3 range)))
@@ -909,8 +909,8 @@ setrgbcolor} def
 
       (flet ((fun (x)
 	       (let ((y (if log-x-p
-			    (funcall f (exp x))
-			    (funcall f x))))
+			    (funcall fcn (exp x))
+			    (funcall fcn x))))
 		 (if log-y-p
 		     (log y)
 		     y))))
