@@ -1,9 +1,0 @@
-@c end concepts Contexts
-@menu
-* Definitions for Contexts::    
-@end menu
-
-@node Definitions for Contexts,  , Contexts, Contexts
-@section Definitions for Contexts
-
-THIS SECTION NEEDS TO BE TRANSLATED.
