@@ -381,21 +381,6 @@
 (defvar *maxima-started* nil)
 (defvar *maxima-prolog* "")
 (defvar *maxima-epilog* "")
-(defun meshugena-clisp-banner ()
-  (format t "  i i i i i i i       ooooo    o        ooooooo   ooooo   ooooo~%")
-  (format t "  I I I I I I I      8     8   8           8     8     o  8    8~%")
-  (format t "  I  \\ `+' /  I      8         8           8     8        8    8~%")
-  (format t "   \\  `-+-'  /       8         8           8      ooooo   8oooo~%") ;
-  (format t "    `-__|__-'        8         8           8           8  8~%")
-  (format t "        |            8     o   8           8     o     8  8~%")
-  (format t "  ------+------       ooooo    8oooooo  ooo8ooo   ooooo   8~%")
-  (format t "~%")
-  (format t "Copyright (c) Bruno Haible, Michael Stoll 1992, 1993~%")
-  (format t "Copyright (c) Bruno Haible, Marcus Daniels 1994-1997~%")
-  (format t "Copyright (c) Bruno Haible, Pierpaolo Bernardi, Sam Steingold 1998~%")
-  (format t "Copyright (c) Bruno Haible, Sam Steingold 1999-2003~%")
-  (format t 
-	  "--------------------------------------------------------------~%~%"))
 
 #-lispm
 (defun macsyma-top-level (&optional (input-stream *standard-input*)
@@ -404,7 +389,6 @@
     (if *maxima-started*
 	(format t "Maxima restarted.~%")
 	(progn
-	  #+clisp (meshugena-clisp-banner)
 	  (format t *maxima-prolog*)
 	  (format t "~&Maxima ~a http://maxima.sourceforge.net~%"
 		  *autoconf-version*)
