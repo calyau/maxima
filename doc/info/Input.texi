@@ -1410,15 +1410,37 @@ variables as assignment statements.
 
 @end deffn
 
-@c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Function} tex (@var{expr})
+@deffnx {Function} tex (@var{label})
 @deffnx {Function} tex (@var{expr}, @var{filename})
 @deffnx {Function} tex (@var{label}, @var{filename})
 
-In the case of a label,
-a left-equation-number is produced.
-in case a file-name is supplied, the output is appended to the
-file.
+Prints a representation of an expression
+suitable for the TeX document preparation system.
+The result is a fragment of a document,
+which can be copied into a larger document
+but not processed by itself.
+
+@code{tex (@var{expr})} prints a TeX representation of @var{expr} on the console.
+
+@code{tex (@var{label})} prints a TeX representation of the expression named by @var{label}
+and assigns it an equation label (to be displayed to the left of the expression).
+The TeX equation label is the same as the Maxima label.
+
+@code{tex (@var{expr}, @var{filename})} appends a TeX representation of @var{expr}
+to the file @var{filename}.
+
+@code{tex (@var{label}, @var{filename})} appends a TeX representation of the
+expression named by @var{label}, with an equation label, to the file @var{filename}.
+
+@code{tex} evaluates its argument after testing it to see if it is a label.
+Quote-quote @code{''} forces evaluation of the argument, thereby defeating the test
+and preventing the label.
+Quote mark @code{'} prevents evaluation.
+
+See also @code{texput}.
+
+Examples:
 
 @example
 (%i1) integrate (1/(1+x^3), x);
@@ -1437,6 +1459,110 @@ $$-\cos x$$
 (%o3)                           false
 (%i4) tex (%o1, "foo.tex");
 (%o4)                          (\%o1)
+@end example
+
+@end deffn
+
+@deffn {Function} texput (@var{a}, @var{s})
+@deffnx {Function} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Function} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+
+Set the TeX output for the atom @var{a},
+which can be a symbol or the name of an operator.
+
+@code{texput (@var{a}, @var{s})} causes the @code{tex} function
+to interpolate the string @var{s} into the TeX output in place of @var{a}.
+
+@code{texput (@var{a}, @var{s}, @var{operator_type})},
+where @var{operator_type} is @code{prefix}, @code{infix}, or @code{postfix}
+causes the @code{tex} function to interpolate @var{s} into the TeX output in place of @var{a},
+and to place the interpolated text in the appropriate position.
+
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
+causes the @code{tex} function to interpolate @var{s_1} and @var{s_2} into the TeX output
+on either side of the arguments of @var{a}.
+The arguments (if more than one) are separated by commas.
+
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
+causes the @code{tex} function to interpolate @var{s_1} and @var{s_2} into the TeX output
+on either side of the arguments of @var{a},
+with @var{s_3} separating the arguments.
+
+Examples:
+
+@c ===beg===
+@c texput (me,"\\mu_e");
+@c tex (me);
+@c texput (lcm, "\\mathrm{lcm}");
+@c tex (lcm (a, b));
+@c prefix ("grad");
+@c texput ("grad", " \\nabla ", prefix);
+@c tex (grad f);
+@c infix ("~");
+@c texput ("~", " \\times ", infix);
+@c tex (a ~ b);
+@c postfix ("@");
+@c texput ("@", "!!", postfix);
+@c tex (x @);
+@c matchfix ("<<", ">>");
+@c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c ===end===
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+(%i3) texput (lcm, "\\mathrm@{lcm@}");
+(%o3)                     \mathrm@{lcm@}
+(%i4) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o4)                         false
+(%i5) prefix ("grad");
+(%o5)                         grad
+(%i6) texput ("grad", " \\nabla ", prefix);
+(%o6)                          180
+(%i7) tex (grad f);
+$$ \nabla f$$
+(%o7)                         false
+(%i8) infix ("~");
+(%o8)                           ~
+(%i9) texput ("~", " \\times ", infix);
+(%o9)                          180
+(%i10) tex (a ~ b);
+$$a \times b$$
+(%o10)                        false
+(%i11) postfix ("@@");
+(%o11)                          @@
+(%i12) texput ("@@", "!!", postfix);
+(%o12)                         160
+(%i13) tex (x @@);
+$$x!!$$
+(%o13)                        false
+(%i14) matchfix ("<<", ">>");
+(%o14)                         <<
+(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o15)              \langle ( \rangle , false)
+(%i16) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o16)                        false
+(%i17) tex (<<a, b>>);
+$$ \langle a , b \rangle $$
+(%o17)                        false
+(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o18)            \langle ( \rangle ,  \, | \,)
+(%i19) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o19)                        false
+(%i20) tex (<<a, b>>);
+$$ \langle a \, | \,b \rangle $$
+(%o20)                        false
 @end example
 
 @end deffn
