@@ -306,7 +306,7 @@
 		(setq result nil w (f+ linel width)))
 	       (t (increment width)
 		  (when (and (= w width) l)
-		    (forcebreak (cons #\# result) width)
+		    (forcebreak (cons #\\ result) width)
 		    (setq result nil w (f+ linel width))
 		    (increment width))
 		  (setq result (rplacd dummy result))))))))

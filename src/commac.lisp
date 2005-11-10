@@ -690,7 +690,7 @@ values")
 
 (defvar *prompt-on-read-hang* nil)
 (defvar *read-hang-prompt* "")
-(defun tyi (&optional (stream *standard-input*) eof-option)
+(defun tyi-raw (&optional (stream *standard-input*) eof-option)
   (let ((ch (read-char-no-hang stream nil eof-option)))
     (if ch
 	ch
@@ -700,10 +700,47 @@ values")
 	    (force-output *standard-output*))
 	  (read-char stream nil eof-option)))))
 
+(defun tyi (&optional (stream *standard-input*) eof-option)
+  (let ((ch (tyi-raw stream eof-option)))
+    (if (eq ch eof-option)
+      ch
+      (backslash-check ch stream eof-option))))
+
+; The sequences of characters
+; <anything-except-backslash>
+;   (<backslash> <newline> | <backslash> <return> | <backslash> <return> <newline>)+
+;   <anything>
+; are reduced to <anything-except-backslash> <anything> .
+; Note that this has no effect on <backslash> <anything-but-newline-or-return> .
+
+(let ((previous-tyi #\a))
+  (defun backslash-check (ch stream eof-option)
+    (if (eq previous-tyi #\\ )
+      (progn (setq previous-tyi #\a) ch)
+      (setq previous-tyi
+        (if (eq ch #\\ )
+          (let ((next-char (tyipeek nil stream nil eof-option)))
+            (if (or (eq next-char #\newline) (eq next-char #\return))
+              (eat-continuations ch stream eof-option)
+              ch))
+          ch))))
+  ; We have just read <backslash> and we know the next character is <newline> or <return>.
+  ; Eat line continuations until we come to something which doesn't match, or we reach eof.
+  (defun eat-continuations (ch stream eof-option)
+    (setq ch (tyi-raw stream eof-option))
+    (do () ((not (or (eq ch #\newline) (eq ch #\return))))
+      (let ((next-char (tyipeek nil stream nil eof-option)))
+        (if (and (eq ch #\return) (eq next-char #\newline))
+          (tyi-raw stream eof-option)))
+      (setq ch (tyi-raw stream eof-option))
+      (let ((next-char (tyipeek nil stream nil eof-option)))
+        (if (and (eq ch #\\ ) (or (eq next-char #\return) (eq next-char #\newline)))
+          (setq ch (tyi-raw stream eof-option))
+          (return-from eat-continuations ch))))
+    ch))
+
 (defun tyipeek (&optional peek-type &rest read-args)
-  (if read-args
-      (peek-char peek-type (car read-args))
-      (peek-char peek-type)))
+  (eval `(peek-char ,peek-type ,@read-args)))
 
 ;;I don't think these are terribly useful so why use them.
 
