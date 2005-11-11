@@ -99,14 +99,3 @@
 			      nil nil 'mparen 'mparen))))
     (append l `("\\lim_{" ,@subfun "}{" ,@s1 "}") r)))
 
-;; If you use texput with the optional argument separator 
-;; argument, you'll need to use this hacked version of tex-matchfix.
-
-(defun tex-matchfix (x l r)
-  (setq l (append l (car (texsym (caar x))))
-	;; car of texsym of a matchfix operator is the lead op
-	r (append (list (nth 1 (texsym (caar x)))) r)
-	;; cdr is the trailing op
-	x (tex-list (cdr x) nil r (or (nth 2 (texsym (caar x))) " , ")))
-  (append l x))
-

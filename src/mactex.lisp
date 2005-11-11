@@ -347,10 +347,10 @@
 
 (defun tex-matchfix (x l r)
   (setq l (append l (car (texsym (caar x))))
-	;; car of texsym of a matchfix operator is the lead op
-	r (append (cdr (texsym (caar x))) r)
-	;; cdr is the trailing op
-	x (tex-list (cdr x) nil r ","))
+    ;; car of texsym of a matchfix operator is the lead op
+    r (append (list (nth 1 (texsym (caar x)))) r)
+    ;; cdr is the trailing op
+    x (tex-list (cdr x) nil r (or (nth 2 (texsym (caar x))) " , ")))
   (append l x))
 
 (defun texsym (x)
