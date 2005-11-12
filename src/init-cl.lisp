@@ -230,7 +230,11 @@
 	 (maxima-patterns "###.{mac,mc}")
 	 (demo-patterns "###.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "##.{usg,texi}")
-	 (share-subdirs "{affine,algebra,calculus,combinatorics,contrib,contrib/nset,contrib/pdiff,contrib/numericalio,contrib/descriptive,contrib/distrib,linearalgebra,diffequations,graphics,integequations,integration,macro,matrix,misc,numeric,physics,simplification,specfunctions,sym,tensor,trigonometry,utils,vector}"))
+	 (share-subdirs-list '("affine" "algebra" "calculus" "combinatorics" "contrib" "contrib/nset" "contrib/pdiff" "contrib/numericalio" "contrib/descriptive" "contrib/distrib" "contrib/stringproc" "linearalgebra" "diffequations" "graphics" "integequations" "integration" "macro" "matrix" "misc" "numeric" "physics" "simplification" "specfunctions" "sym" "tensor" "trigonometry" "utils" "vector"))
+     ; Smash the list of share subdirs into a string of the form "{affine,algebra,...,vector}" .
+     (L (eval `(concatenate 'list ,@(mapcar #'(lambda (x) `(list "," ,x)) (cdr share-subdirs-list)))))
+	 (share-subdirs (eval `(concatenate 'string "{" ,(car share-subdirs-list) ,@L "}"))))
+
     (setq $file_search_lisp
 	  (list '(mlist)
 		;; actually, this entry is not correct.
@@ -265,8 +269,16 @@
 	  (list '(mlist)
 		(combine-path (list *maxima-symdir* lisp-patterns))
 		(combine-path (list *maxima-symdir* maxima-patterns))))
-    (setq cl-info::*info-paths* (list (concatenate 'string
-						   *maxima-infodir* "/")))))
+    (setq cl-info::*info-paths* (list (concatenate 'string *maxima-infodir* "/")))
+    (setq L (mapcar #'(lambda (x) (concatenate 'string *maxima-sharedir* "/" x "/")) share-subdirs-list))
+    (setq cl-info::*info-paths* (append cl-info::*info-paths* L))
+
+    ; Look for "foo.info" in share directory "foo".
+    (loop for d in share-subdirs-list do
+      (let ((name (if (find #\/ d) (unix-like-basename d) d)))
+        (when (cl-info::file-search name cl-info::*info-paths* '("info") nil)
+          #+debug (format t "SET-PATHNAMES: found an info file for share directory ~S~%" name)
+          (nconc cl-info::*default-info-files* `(,(concatenate 'string name ".info"))))))))
 
 (defun get-dirs (path)
   #+(or :clisp :sbcl)

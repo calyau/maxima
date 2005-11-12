@@ -55,12 +55,12 @@
 	(compile nil
 		 (regex-compile 
 		  string2
-		  :case-sensitive t)))
+		  :case-sensitive nil)))
        (precomp-t-string3
 	(compile nil
 		 (regex-compile 
 		  string3
-		  :case-sensitive t))))
+		  :case-sensitive nil))))
   (defun compile-regex (pat &key (case-sensitive t))
     (cond
       ((and (equal case-sensitive nil)
@@ -368,30 +368,6 @@ that matches the name name with extention ext"
     (when (equal name "DIR")
       (setq name "dir"))
     (setq file (file-search name *info-paths* '("" "info") nil))
-    (cond ((and (null file)
-		(not (equal name "dir")))
-	   ;; jfa: FIXME Sat Feb  2 16:18:04 2002
-	   ;; The error message is a temporary hack.
-	   ;; The code following the error message would do something.
-	   ;; (a) It is not clear to me what it is trying to do.
-	   ;; (b) The format statmement is missing an argument.
-	   ;; (c) Even if (b) is fixed, the show-info statement
-	   ;;     creates an infinite loop.
-	   ;;
-	   ;; rlt: I think the code is trying to find the Top entry in
-	   ;; the file "dir" and looking in there for the location of
-	   ;; the maxima file.  If you don't have a dir file, we lose.
-	   (error "failed to find info directory")
-	   (format t "looking for dir~a~%")
-	   (let* ((tem (show-info "(dir)Top" nil))
-		  *case-fold-search*)
-	     (cond ((>= (string-match
-			 (string-concatenate "(([^(]*"
-					     (re-quote-string name)
-					     "(.info)?))")
-			 tem)
-			0)
-		    (setq file (get-match tem 1)))))))
     (cond (file
 	   (let* ((na (namestring (truename file))))
 	     (cond ((setq tem (assoc na *info-data* :test 'equal))
@@ -400,8 +376,10 @@ that matches the name name with extention ext"
 		    (setq *current-info-data*
 			  (list na (info-get-tags na) nil))
 		    (setq *info-data* (cons *current-info-data* *info-data*))))))
-	  (t
-	   (format t "(not found ~s)" name)))
+      ; Don't bother to complain if name is not found; 
+      ; SETUP-INFO is called over and over again.
+	  ; (t (format t "(not found ~s)" name))
+      )
     nil))
 			  
 (defun get-info-choices (pat type)
@@ -590,7 +568,7 @@ that matches the name name with extention ext"
 	      (subseq s (+ initial-offset beg) e)))))))
   )
 
-(defvar *default-info-files* '( "gcl-si.info" "gcl-tk.info" "gcl.info"))
+(defvar *default-info-files* '("maxima.info"))
 
 (defun info-aux (x dirs)
   (loop for v in dirs
@@ -684,7 +662,6 @@ the general info file.  The search goes over all files."
 	(clear-input)
 	(finish-output *debug-io*)
 	(when (consp wanted)
-	  (format t "~%Info from file ~a:" (car *current-info-data*))
 	  (loop for item in wanted
 		do (princ (show-info item)))))))
   (values))
