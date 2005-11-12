@@ -518,5 +518,3 @@
 (defmvar $newline  (m-char #\newline))
 (defmvar $tab      (m-char #\tab))
 (defmvar $space    (m-char #\space))
-
- 
