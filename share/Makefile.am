@@ -287,6 +287,7 @@ contrib/numericalio/csv.mac\
 contrib/numericalio/is_equal_array.lisp\
 contrib/numericalio/my_flatten.mac\
 contrib/numericalio/numericalio.lisp\
+contrib/numericalio/numericalio.texi\
 contrib/numericalio/ragged.data\
 contrib/numericalio/ragged.mac\
 contrib/numericalio/really-csv.data\
@@ -379,6 +380,9 @@ contrib/state/readfile.lsp\
 contrib/state/sortem.mac\
 contrib/state/state.mac\
 contrib/state/tree.mac\
+contrib/stringproc/rteststringproc.mac\
+contrib/stringproc/stringproc.lisp\
+contrib/stringproc/stringproc.texi\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
 contrib/unit/unit.texi\
@@ -408,6 +412,7 @@ linearalgebra/linalg-utilities.lisp\
 linearalgebra/linalg.demo\
 linearalgebra/linalg.mac\
 linearalgebra/linalg.usage\
+linearalgebra/linearalgebra.texi\
 linearalgebra/lu.lisp\
 linearalgebra/matrixexp.lisp\
 linearalgebra/matrixexp.usage\
