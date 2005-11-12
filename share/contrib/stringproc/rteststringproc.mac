@@ -1,6 +1,5 @@
 kill(all);
 done$
-load("stringproc");
 m : "text";
 "text"$
 [stringp(m), lstringp(m)];
