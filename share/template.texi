@@ -1,0 +1,42 @@
+\input texinfo
+
+@c NOTE: The content of this file was determined by tedious trial and error.
+@c My advice is to keep all elements of this template, from \input to @bye,
+@c otherwise you'll experience cryptic error messages, hair loss, etc.
+
+@c makeinfo MYTOPIC.texi         to make .info
+@c texi2html MYTOPIC.texi        to make .html
+@c texi2pdf MYTOPIC.texi         to make .pdf
+
+@setfilename MYTOPIC.info
+@settitle MYTOPIC
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to MYTOPIC, (dir), (dir)
+@top
+@menu
+* Introduction to MYTOPIC::
+* Definitions for MYTOPIC::
+* Function and variable index::
+@end menu
+
+@node Introduction to MYTOPIC, Definitions for MYTOPIC, Top, Top
+@section Introduction to MYTOPIC
+
+@code{MYTOPIC} is yadda yadda yadda, foo bar baz quux mumble blurf.
+
+@node Definitions for MYTOPIC, Function and variable index, Introduction to MYTOPIC, Top
+@section Definitions for MYTOPIC
+
+
+@node Function and variable index,  , Definitions for MYTOPIC, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
