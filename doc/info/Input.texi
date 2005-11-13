@@ -96,7 +96,8 @@ See also @code{_}, @code{%%}, and @code{%th}.
 @end defvr
 
 @defvr {System variable} %%
-In a compound statement comprising two or more statements,
+In compound statements,
+namely @code{block}, @code{lambda}, or @code{(@var{s_1}, ..., @var{s_n})},
 @code{%%} is the value of the previous statement.
 For example,
 
