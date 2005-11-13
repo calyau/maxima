@@ -1,12 +1,12 @@
 ;;
 ;;  string processing
 
-;;  Author: Volker van Nek, van.Nek@gmx.net
+;;  Author: Volker van Nek, Aachen, van.Nek@gmx.net
 
 ;;  Written for Maxima 5.9.2 .
 
 ;;  Test file: rteststringproc.mac
-;;  Doc file: stringproc.pdf
+;;  Info file: stringproc.texi
 
 ;;  This program is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -15,9 +15,13 @@
 ;;  This program has NO WARRANTY, not even the implied warranty of
 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+;;  If you use this software for education, please let me know. 
+
 ;;  Date: 05-10-31
 ;;        05-11-03  fixed: $ssort (case inversion), $smismatch (1-indexed) 
 ;;                  new functions: invert-string-case, $sinvertcase
+;;        05-11-09  fixed: $ssubst (test,s,e in recursive call) 
+;;        05-11-12  new file-header 
 
 (in-package "MAXIMA")
 
@@ -393,7 +397,11 @@
                   :end2 (if e (1- e)))))
       (if (null pos) 
          (m-string str)
-         ($ssubst news olds ($ssubstfirst news olds mstr test (1+ pos) (if e (1+ e)))))))
+         ($ssubst new old 
+            ($ssubstfirst new old mstr test (1+ pos) (if e (1+ e)))
+            test
+            (1+ pos)
+            (if e (1+ e)) ))))
 
 
 (defun $sremove (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
@@ -518,3 +526,5 @@
 (defmvar $newline  (m-char #\newline))
 (defmvar $tab      (m-char #\tab))
 (defmvar $space    (m-char #\space))
+
+ 

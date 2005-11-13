@@ -87,7 +87,6 @@ See definitions of charat and charlist for examples.
 In applications string-functions are often used when working with files.
 You will find some useful stream- and print-functions in stringproc.lisp.
 The following example shows some of the here introduced functions at work.
-They are marked with green color.
 
 Example: 
 

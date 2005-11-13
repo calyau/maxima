@@ -109,8 +109,8 @@ ssort("I don't like Mondays.", 'cgreaterpignore);
 "ytsoonnMlkIiedda.'   "$   
 ssubst("like", "hate", "I hate Thai food. I hate green tea.");
 "I like Thai food. I like green tea."$
-ssubst("Indian", "thai", %, 'sequalignore, 8, 12);
-"I like Indian food. I like green tea."$
+ssubst("Black", "Green", "Green light. Green tea. Greenwich.", 'sequal, 10, 20);
+"Green light. Black tea. Greenwich."
 "  /* comment */  "$
 strim(" /*", %);
 "comment"$
