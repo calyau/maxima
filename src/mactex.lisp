@@ -364,7 +364,8 @@
 
 (defprop bigfloat tex-bigfloat tex)
 
-(defun tex-bigfloat (x l r) (fpformat x))
+(defun tex-bigfloat (x l r) 
+    (append l (fpformat x) r))
 
 (defprop mprog "\\mathbf{block}\\;" texword)
 (defprop %erf "\\mathrm{erf}" texword)
