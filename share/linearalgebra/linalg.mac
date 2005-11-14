@@ -42,10 +42,6 @@ require_integer(i, pos, fn) :=
   if integerp(i) then true else 
      error("The", pos, "argument to" ,fn, "must be an integer");
 
-require_list(l, pos, fn) :=
-  if listp(l) then true else
-     error("The", pos, "argument to", fn, "must be a list");
-
 require_symbol(x, pos, fn) :=
   if symbolp(x) or subvarp(x) then true else
      error("The", pos, "argument to", fn, "must be a symbol");
@@ -53,10 +49,6 @@ require_symbol(x, pos, fn) :=
 request_rational_matrix(m, pos, fn) :=
   if every('identity, map(lambda([s], every('ratnump,s)), args(m))) then true else
     print("Some entries in the matrix are not rational numbers. The result might be wrong.");
-
-matrix_size(m) := (
-  require_matrix(m,"first", "matrix_size"),
-  [length(m), length(first(m))]);
 
 dotproduct(a,b) := block([scalarmatrixp : true],
   require_matrix(a,"first", "dotproduct"),
