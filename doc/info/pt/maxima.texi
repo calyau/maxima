@@ -79,18 +79,18 @@ para o portugu@^es sempre atualizada envie um e-mail para @value{mail}.
 @menu
 Infraestrutura do Maxima
 
-* Introdu@value{cedilha}@~ao ao Maxima:: 	Exemplo de sess@~oes do Maxima.
-* Detec@value{cedilha}@~ao e Relato de Erros:: 	Encontrando e relatando erros no Maxima.
+* Introdu@value{cedilha}@~ao ao Maxima::  Exemplo de sess@~oes do Maxima.
+* Detec@value{cedilha}@~ao e Relato de Erros::  Encontrando e relatando erros no Maxima.
 * Ajuda::                       Solicitando ajuda de dentro de uma 
                                 sess@~ao do Maxima.
 * Linha de Comando::            Sintaxe de linha de comando do Maxima.
 * Operadores::                  Operadores usados em express@~oes do Maxima.
-* Expressions::                 Express@~oes no Maxima.
+* Express@~oes::                  Express@~oes no Maxima.
 * Simplifica@value{cedilha}@~ao::               Simplificando express@~oes.
 * Montando Gr@'aficos::           Sa@'idas gr@'aficas em 2D e 3D.
 * Entrada e Sa@'ida::             Entrada e sa@'ida de arquivos.
 * Ponto Flutuante::             Rotinas num@'ericas de baixo n@'ivel.
-* Contextos::                   Conjunto de fatos assumidos.
+* Contexts::                    Conjunto de fatos assumidos.
 
 Suporte a @'areas espec@'ificas da matem@'atica
 
@@ -169,14 +169,14 @@ Operadores
 * Operador Pr@'efixado::                      
 * Defini@value{cedilha}@~oes para Operadores::   
 
-Expressions
+Express@~oes
 
-* Introduction to Expressions::  
-* Assignment::                  
-* Complex::                     
-* Inequality::                  
-* Syntax::                      
-* Definitions for Expressions::  
+* Introdu@value{cedilha}@~ao a Express@~oes::  
+* Atribui@value{cedilha}@~ao::                  
+* Complexo::                    
+* Desigualdade::      
+* Sintaxe::                     
+* Defini@value{cedilha}@~oes para Express@~oes::  
 
 Simplifica@value{cedilha}@~ao
 
@@ -196,9 +196,9 @@ Ponto Flutuante
 
 * Defini@value{cedilha}@~oes para ponto Flutuante::  
 
-Contextos
+Contexts
 
-* Defini@value{cedilha}@~oes para Contextos::    
+* Definitions for Contexts::    
 
 Polin@^omios
 
@@ -382,15 +382,15 @@ Depurando
 @chapter Linha de Comando
 @include Command_pt.texi
 
-@node Operadores, Expressions, Linha de Comando, Top
+@node Operadores, Express@~oes, Linha de Comando, Top
 @chapter Operadores
 @include Operators_pt.texi
 
-@node Expressions, Simplifica@value{cedilha}@~ao, Operadores, Top
-@chapter Expressions
-@include Expressions.texi
+@node Express@~oes, Simplifica@value{cedilha}@~ao, Operadores, Top
+@chapter Express@~oes
+@include Expressions_pt.texi
 
-@node Simplifica@value{cedilha}@~ao, Montando Gr@'aficos, Expressions, Top
+@node Simplifica@value{cedilha}@~ao, Montando Gr@'aficos, Express@~oes, Top
 @chapter Simplifica@value{cedilha}@~ao
 @include Simplification_pt.texi
 
@@ -402,15 +402,15 @@ Depurando
 @chapter Entrada e Sa@'ida
 @include Input_pt.texi
 
-@node Ponto Flutuante, Contextos, Entrada e Sa@'ida, Top
+@node Ponto Flutuante, Contexts, Entrada e Sa@'ida, Top
 @chapter Ponto Flutuante
 @include Floating_pt.texi
 
-@node Contextos, Polin@^omios, Ponto Flutuante, Top
-@chapter Contextos
-@include Contexts_pt.texi
+@node Contexts, Polin@^omios, Ponto Flutuante, Top
+@chapter Contexts
+@include Contexts.texi
 
-@node Polin@^omios, Constantes, Contextos, Top
+@node Polin@^omios, Constantes, Contexts, Top
 @chapter Polin@^omios
 @include Polynomials_pt.texi
 

@@ -1,5 +1,4 @@
-@c /Input.texi/1.39/Tue Nov  1 06:51:53 2005/-ko/
-
+@c /Input.texi/1.40/Sun Nov 13 17:31:04 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
@@ -1413,13 +1412,36 @@ vari@'aveis como declara@,{c}@~oes de atribui@,{c}@~ao.
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @deffn {Fun@,{c}@~ao} tex (@var{expr})
-@deffnx {Fun@,{c}@~ao} tex (@var{expr}, @var{filename})
-@deffnx {Fun@,{c}@~ao} tex (@var{label}, @var{filename})
+@deffnx {Fun@value{cedilha}@~ao} tex (@var{r@'otulo})
+@deffnx {Fun@,{c}@~ao} tex (@var{expr}, @var{momearquivo})
+@deffnx {Fun@,{c}@~ao} tex (@var{label}, @var{nomearquivo})
 
-No caso de um r@'otulo,
-um n@'umero-equa@,{c}@~ao-esquerdo @'e produzido.
-No caso de um nome-arquivo ser fornecido, a sa@'ida @'e anexada ao
-arquivo.
+Imprime uma representa@,{c}@~ao de uma express@~ao
+adequada para o sistema TeX  de prepara@,{c}@~ao de documento.
+O resultado @'e um fragmento de um documento,
+que pode ser copiado dentro de um documento maior.
+Esse fragmento n@~ao pode ser processado de forma direta e isolada.
+
+@code{tex (@var{expr})} imprime uma representa@,{c}@~ao TeX da @var{expr} no console.
+
+@code{tex (@var{r@'otulo})} imprime uma representa@,{c}@~ao TeX de uma express@~ao chamada @var{r@'otulo}
+e atribui a essa um r@'otulo de equa@,{c}@~ao (a ser mostrado @`a esquerda da express@~ao).
+O r@'otulo de equa@,{c}@~ao TeX @'e o mesmo que o r@'otulo da equa@,{c}@~ao no Maxima.
+
+@code{tex (@var{expr}, @var{nomearquivo})} anexa ao final uma representaa@,{c}@~ao TeX de @var{expr}
+no arquivo @var{nomearquivo}.
+
+@code{tex (@var{r@'otulo}, @var{nomearquivo})} anexa ao final uma representa@,{c}@~ao TeX da
+express@~ao chamada de @var{r@'otulo}, com um r@'otulo de equa@,{c}@~ao, ao arquivo @var{nomearquivo}.
+
+@code{tex} avalia seus argumentos ap@'os testar esse argumento para ver se @'e um r@'otulo.
+duplo ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao do argumento, desse modo frustrando o teste
+e prevenindo o r@'otulo.
+Ap@'ostrofo simples @code{'} previne avalia@,{c}@~ao.
+
+Veja tamb@'em @code{texput}.
+
+Exemplos:
 
 @example
 (%i1) integrate (1/(1+x^3), x);
@@ -1442,9 +1464,113 @@ $$-\cos x$$
 
 @end deffn
 
+@deffn {Fun@value{cedilha}@~ao} texput (@var{a}, @var{s})
+@deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Fun@value{cedilha}@~ao} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+
+Escolhe a sa@'ida TeX para o @'atomo @var{a},
+que pode ser um s@'imbolo ou o nome de um operador.
+
+@code{texput (@var{a}, @var{s})} faz com que a fun@,{c}@~ao @code{tex}
+interpole a seq@"u@^encia de caracteres @var{s} dentro da sa@'ida TeX em lugar de @var{a}.
+
+@code{texput (@var{a}, @var{s}, @var{operator_type})},
+onde @var{operator_type} @'e @code{prefix}, @code{infix}, ou @code{postfix}
+faz com que a fun@,{c}@~ao @code{tex} interpole @var{s} dentro da sa@'ida TeX em lugar de @var{a},
+e coloca o texto interpolado na posi@,{c}@~ao apropriada.
+
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)}
+faz com que a fun@,{c}@~ao @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'ida TeX
+sobre qualquer lado dos argumentos de @var{a}.
+Os argumentos (se mais de um) s@~ao separados por v@'irgulas.
+
+@code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)}
+faz com que a fun@,{c}@~ao @code{tex} interpole @var{s_1} e @var{s_2} dentro da sa@'ida TeX
+sobre qualquer lado dos argumentos de @var{a},
+com @var{s_3} separando os argumentos.
+
+Exemplos:
+
+@c ===beg===
+@c texput (me,"\\mu_e");
+@c tex (me);
+@c texput (lcm, "\\mathrm{lcm}");
+@c tex (lcm (a, b));
+@c prefix ("grad");
+@c texput ("grad", " \\nabla ", prefix);
+@c tex (grad f);
+@c infix ("~");
+@c texput ("~", " \\times ", infix);
+@c tex (a ~ b);
+@c postfix ("@");
+@c texput ("@", "!!", postfix);
+@c tex (x @);
+@c matchfix ("<<", ">>");
+@c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c ===end===
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+(%i3) texput (lcm, "\\mathrm@{lcm@}");
+(%o3)                     \mathrm@{lcm@}
+(%i4) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o4)                         false
+(%i5) prefix ("grad");
+(%o5)                         grad
+(%i6) texput ("grad", " \\nabla ", prefix);
+(%o6)                          180
+(%i7) tex (grad f);
+$$ \nabla f$$
+(%o7)                         false
+(%i8) infix ("~");
+(%o8)                           ~
+(%i9) texput ("~", " \\times ", infix);
+(%o9)                          180
+(%i10) tex (a ~ b);
+$$a \times b$$
+(%o10)                        false
+(%i11) postfix ("@@");
+(%o11)                          @@
+(%i12) texput ("@@", "!!", postfix);
+(%o12)                         160
+(%i13) tex (x @@);
+$$x!!$$
+(%o13)                        false
+(%i14) matchfix ("<<", ">>");
+(%o14)                         <<
+(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o15)              \langle ( \rangle , false)
+(%i16) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o16)                        false
+(%i17) tex (<<a, b>>);
+$$ \langle a , b \rangle $$
+(%o17)                        false
+(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o18)            \langle ( \rangle ,  \, | \,)
+(%i19) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o19)                        false
+(%i20) tex (<<a, b>>);
+$$ \langle a \, | \,b \rangle $$
+(%o20)                        false
+@end example
+
+@end deffn
+
 @c NEEDS CLARIFICATION
-@deffn {Fun@,{c}@~ao} system (@var{command})
-Executa @var{command} como um processo separado.
+@deffn {Fun@,{c}@~ao} system (@var{comando})
+Executa @var{comando} como um processo separado.
 O comando @'e passado ao shell padra@~o para execu@,{c}@~ao.
 @code{system} n@~ao @'e suportado por todos os sistemas
 operacionais, mas geralmente existe em ambientes Unix e Unix-like.

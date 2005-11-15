@@ -372,7 +372,7 @@ Retorna o valor absoluto complexo (o m@'odulo complexo) de
 
 @end deffn
 
-@deffn {Function} ceiling (@var{x})
+@deffn {Fun@value{cedilha}@~ao} ceiling (@var{x})
 
 Quando @var{x} for um n@'umero real, retorna o @'ultimo inteiro que 
 @'e maior que ou igual a @var{x}.  

@@ -494,8 +494,12 @@ ser declarados @code{matchfix},
 mas fun@,{c}@~oes operadores n@~ao podem ser definidas para operadores internos.
 
 @code{matchfix (@var{delimitador_e}, @var{delimitador_d}, @var{arg_pos}, @var{pos})} 
-declara o argumento part-of-speech @var{arg_pos} 
-e resulta part-of-speech @var{pos}, 
+declara o argumento @var{arg_pos} como sendo um entre: express@~ao l@'ogica,
+express@~ao comum do Maxima mas que n@~ao seja do tipo anterior, e qualquer outro
+tipo de express@~ao que n@~ao esteja inclu@'ida nos dois primeiros tipos.
+Essa declara@,{c}@~ao resulta em @var{pos} sendo um entre: express@~ao l@'ogica,
+express@~ao comum do Maxima mas que n@~ao seja do tipo anterior, e qualquer outro
+tipo de express@~ao que n@~ao esteja inclu@'ida nos dois primeiros tipos 
 e os delimitadores @var{delimitador_e} e @var{delimitador_d}.
 
 @c DUNNO IF WE REALLY NEED TO MENTION BINDING POWER HERE -- AS NOTED IT'S IRRELEVANT
