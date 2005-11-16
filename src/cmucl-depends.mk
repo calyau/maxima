@@ -225,9 +225,6 @@ binary-cmucl/maxima.core : macdes.lisp
 binary-cmucl/maxima.core : inmis.lisp
 binary-cmucl/maxima.core : db.lisp
 binary-cmucl/maxima.core : compar.lisp
-binary-cmucl/maxima.core : maxmin.lisp
-binary-cmucl/maxima.core : nummod.lisp
-binary-cmucl/maxima.core : conjugate.lisp
 binary-cmucl/maxima.core : askp.lisp
 binary-cmucl/maxima.core : sinint.lisp
 binary-cmucl/maxima.core : sin.lisp
@@ -273,6 +270,9 @@ binary-cmucl/maxima.core : homog.lisp
 binary-cmucl/maxima.core : combin.lisp
 binary-cmucl/maxima.core : nset.lisp
 binary-cmucl/maxima.core : rand-mt19937.lisp
+binary-cmucl/maxima.core : maxmin.lisp
+binary-cmucl/maxima.core : nummod.lisp
+binary-cmucl/maxima.core : conjugate.lisp
 binary-cmucl/maxima.core : mstuff.lisp
 binary-cmucl/maxima.core : ratpoi.lisp
 binary-cmucl/maxima.core : pois2.lisp

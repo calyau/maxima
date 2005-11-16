@@ -431,7 +431,7 @@ translated."
 	 ;;		  ";;Maxima System version ~A"
 	 ;;		  (or (si:get-system-version 'maxima)
 	 ;;		      (si:get-system-version 'cl-maxima)))
-	 (format out-stream "~%(in-package \"MAXIMA\")")
+	 (format out-stream "~%(in-package :maxima)")
 	 (format warn-stream "~%This is the unlisp file for ~A "
 		 (namestring (pathname in-stream)))
 	 (mformat out-stream
@@ -610,7 +610,7 @@ translated."
 	   ~%(includef (cond ((status feature ITS) '|DSK:LIBMAX;TPRELU >|)~
 	   ~%                ((status feature Multics) '|translate|)~
 	   ~%                ((status feature Unix) '|libmax//tprelu.l|)~
-	   ~%                (t (MAXIMA-ERROR '|Unknown system, see GJC@MIT-MC|))))~
+	   ~%                (t (maxima-error '|Unknown system, see GJC@MIT-MC|))))~
            ~%~
            ~%(eval-when (compile eval) ~
            ~%  (or (status feature lispm)~

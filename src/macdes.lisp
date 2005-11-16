@@ -150,4 +150,4 @@
 	(cl-info:info x))))
 
 (defun $apropos ( s ) 
-  (cons '(mlist) (apropos-list s "MAXIMA"))) 
+  (cons '(mlist) (apropos-list s :maxima)))

@@ -242,7 +242,7 @@
 ;;#+PDP10
 ;;(PROGN 'COMPILE
 
-;;(defun get! (a b) (or (get a b) (get! (MAXIMA-ERROR (list "undefined" b "property")
+;;(defun get! (a b) (or (get a b) (get! (maxima-error (list "undefined" b "property")
 ;;					     a 'wrng-type-arg)
 ;;				      b)))
 
@@ -294,7 +294,7 @@
 ;;	 stream)
 ;;  (print `(map1-put-if-nil ',(get module 'tr-props)
 ;;			   (or (get 'autoload-translate 'subr)
-;;			       (MAXIMA-ERROR 'autoload-translate 'subr
+;;			       (maxima-error 'autoload-translate 'subr
 ;;				      'fail-act))
 ;;			   'translate)
 ;;	 stream)

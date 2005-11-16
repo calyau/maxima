@@ -212,10 +212,10 @@
 
 (defun zfree (e x)
     (cond ((equal e x) () )
-	  ((atom e) 'T)
+	  ((atom e) 't)
 	  ((eq (caar e) 'mrat)
 	   (null (zl-member x (cdr ($listofvars e)))))
-	  ('T (do ((l (cdr e) (cdr l))) ((null l) 'T)
+	  ('t (do ((l (cdr e) (cdr l))) ((null l) 't)
 		 (or (zfree (car l) x) (return () ))))))
 
 (defun mfree (exp varl)
@@ -1544,7 +1544,7 @@
        (let ((terms (terms p)))
 	  (cond ((mono-term? terms) ; log(c x^n) = log(c) + n log(x)
 		 ;; do this always for now
-		 (if 'T ;$TAYLOR_LOGEXPAND
+		 (if 't ;$TAYLOR_LOGEXPAND
 		     ;(psplus (pslog (lc terms))
 		     ;	     (pstimes (le terms) (pslog-of-gvar (gvar p))))
 		     (pslog-monom p)
@@ -1559,7 +1559,7 @@
 			       (le terms))
 			    (lc terms)))
 		 (if (e> (rczero) (le terms)) (ps-invert-var p) p))
-		(T (prog (l inc trunc lt ans lterm $maxtayorder gvar-lim gt)
+		(t (prog (l inc trunc lt ans lterm $maxtayorder gvar-lim gt)
 		    ;; log(lt+y) = log(lt) + log(1 + y/lt) = lterm + p
 		    (setq trunc (trunc-lvl p))
 		    (if (not (memq (setq gvar-lim (gvar-lim (gvar p)))
@@ -1885,7 +1885,7 @@
 ;;; SRF is only called externally; by RATF and SIMPEXPT.
 
 (defun srf (x)
-   (let ((exact-poly t) (tlist) (*within-srf?* 'T))
+   (let ((exact-poly t) (tlist) (*within-srf?* 't))
       (setq x (taylor1 x ()) tlist (mrat-tlist x))
       ;; Set trunc levels in the local tlist to correspond to the maximum
       ;; level occuring in any series.
@@ -2826,12 +2826,12 @@
 	    (setq s (maxima-rationalize (*quo (car s) (cdr s)))))
 	;; We must ensure that the lc is non-zero since it will be inverted in
 	;; psexpt.
-	(setq tb (strip-zeroes tb 'T))
+	(setq tb (strip-zeroes tb 't))
 	(cond ((rczerop tb)
 	       (when (or ;; When 1 > s we need more terms since -le*(s-1) > 0.
 		         (e> (rcone) s)
 			 (and (e> (rczero) pw) (e> s (rcone))))
-		  (setq tb (get-lexp b () 'T)))
+		  (setq tb (get-lexp b () 't)))
 	       (setq le (ps-le* tb)))
 	      ((psp tb) (setq le (ps-le tb)))
 	      (t (return (rcexpt tb e))))
@@ -2847,7 +2847,7 @@
 	     ;; just keep the constant here
 	     (ifn (psp tb) tb
 		(let-pw (get-datum (get-key-var (gvar tb))) s
-		   (strip-zeroes (taylor2 b) 'T))))
+		   (strip-zeroes (taylor2 b) 't))))
 	  e))))
 
 ;;; The method of calculating truncation levels below is incorrect.

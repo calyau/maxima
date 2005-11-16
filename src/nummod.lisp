@@ -24,7 +24,7 @@
 ;; Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 ;; Boston, MA  02110-1301, USA.
 
-(in-package "MAXIMA")
+(in-package :maxima)
 (macsyma-module nummod)
 
 ;; Let's have version numbers 1,2,3,...

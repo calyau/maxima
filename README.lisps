@@ -1,10 +1,11 @@
 Notes on lisp implementations for Maxima:
 
-clisp, CMUCL, GCL and SBCL are fully supported by Maxima; previous
-versions of Maxima only fully supported GCL. Allegro Common Lisp and
-OpenMCL have some support, but have not been fully tested. Ports to
-other ANSI lisps should be straightforward and are welcome; please
-contact the developers if you are interested in working on a port.
+clisp, CMUCL, Scieneer Common Lisp (SCL), GCL and SBCL are fully
+supported by Maxima; previous versions of Maxima only fully supported
+GCL. Allegro Common Lisp and OpenMCL have some support, but have not
+been fully tested. Ports to other ANSI lisps should be straightforward
+and are welcome; please contact the developers if you are interested
+in working on a port.
 
 clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 -----
@@ -23,6 +24,18 @@ facilities for Maxima when compiled with CMUCL. rlwrap is available
 from <http://utopia.knoware.nl/~hlub/uck/rlwrap/> .
 
 CMUCL versions: 18e and 19a are known to work.
+
+Scieneer Common Lisp (SCL) <http://www.scieneer.com/scl/>
+--------------------------
+
+	Scieneer Common Lisp (SCL) is a fast option for Maxima for a
+range of Linux and Unix platforms.  The SCL 1.2.8 release and later
+are supported.  SCL offers a lower case, case sensitive, version which
+avoids the maxima case inversion issues with symbol names.  Tested
+front end options are: maxima emacs mode available in the
+interfaces/emacs/ directory, the emacs imaxima mode available from
+http://members3.jcom.home.ne.jp/imaxima/, and TeXmacs available from
+http://www.texmacs.org/
 
 GCL <http://savannah.gnu.org/projects/gcl>
 ---

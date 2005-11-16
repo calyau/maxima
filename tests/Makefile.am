@@ -14,6 +14,13 @@ check-cmucl:
 	$(MAXIMA) --lisp=cmucl --batch-string="run_testsuite();" < /dev/null
 endif
 
+if SCL
+check: check-scl
+check-scl:
+	echo "Running test suite with scl..."; \
+	$(MAXIMA) --lisp=scl --batch-string="run_testsuite();" < /dev/null
+endif
+
 if SBCL
 check: check-sbcl
 check-sbcl:

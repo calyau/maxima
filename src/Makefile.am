@@ -8,9 +8,9 @@ endif
 
 LOADDEFSYSTEM = (load "$(top_srcdir)/lisp-utils/defsystem.lisp")
 LOADMAKEDEPENDS = (load "$(top_srcdir)/lisp-utils/make-depends.lisp")
-DEFSYSTEMCOMPILE = (funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :compile :verbose t)
-DEFSYSTEMLOAD = (funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t)
-DEFSYSTEMTESTLOAD = (funcall (intern "OPERATE-ON-SYSTEM" :mk) "maxima" :load :verbose t :test t)
+DEFSYSTEMCOMPILE = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :compile :verbose t)
+DEFSYSTEMLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t)
+DEFSYSTEMTESTLOAD = (funcall (intern (symbol-name :operate-on-system) :mk) "maxima" :load :verbose t :test t)
 
 if CLISP
 EXECUTECLISP = $(CLISP_NAME) -norc -q -x
@@ -78,6 +78,42 @@ cmucl-depends.mk: maxima.system
 	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern "CREATE-DEPENDENCY-FILE" :mk) "binary-cmucl/maxima.core" "cmucl-depends.mk"))' | $(EXECUTECMUCL)
 
 include cmucl-depends.mk
+endif
+
+
+if SCL
+EXECUTESCL = $(SCL_NAME) -noinit -batch
+all-local: binary-scl/maxima.core
+install-exec-local: install-scl
+uninstall: uninstall-scl
+clean: clean-scl
+distclean: clean-scl
+
+scl: binary-scl/maxima.core
+
+binary-scl/maxima.core:
+	test -d binary-scl || mkdir binary-scl
+	test -d binary-scl/numerical || mkdir binary-scl/numerical
+	test -d binary-scl/numerical/slatec || mkdir binary-scl/numerical/slatec
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMCOMPILE))' | $(EXECUTESCL)) && \
+	(echo '(progn $(LOADDEFSYSTEM) $(DEFSYSTEMLOAD) (ext:save-lisp "binary-scl/maxima.core"))' | $(EXECUTESCL))
+
+install-scl:
+	$(mkinstalldirs) "$(DESTDIR)$(verpkglibdir)/binary-scl"
+	$(INSTALL_DATA) binary-scl/maxima.core "$(DESTDIR)$(verpkglibdir)/binary-scl/maxima.core"
+	$(INSTALL_PROGRAM) @SCL_RUNTIME_PATH@ "$(DESTDIR)$(verpkglibdir)/binary-scl/@SCL_RUNTIME@"
+
+uninstall-scl:
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-scl/maxima.core"
+	rm -f "$(DESTDIR)$(verpkglibdir)/binary-scl/@SCL_RUNTIME@"
+
+clean-scl:
+	rm -rf binary-scl
+scl-depends.mk: maxima.system
+	test -d binary-scl || mkdir binary-scl
+	echo '(progn $(LOADDEFSYSTEM) $(LOADMAKEDEPENDS) (funcall (intern (symbol-name :create-dependency-file) :mk) "binary-scl/maxima.core" "scl-depends.mk"))' | $(EXECUTESCL)
+
+include scl-depends.mk
 endif
 
 
@@ -534,4 +570,4 @@ numerical/slatec/zwrsk.lisp
 
 genericdirDATA = $(real_lisp_sources) autoconf-variables.lisp
 
-EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  gcl-depends.mk acl6-depends.mk openmcl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp
+EXTRA_DIST = $(real_lisp_sources) maxima.system clisp-depends.mk  cmucl-depends.mk  scl-depends.mk  gcl-depends.mk acl6-depends.mk openmcl-depends.mk sbcl-depends.mk numerical/slatec/fortran maxima-build.lisp

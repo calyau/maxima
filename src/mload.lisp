@@ -886,31 +886,32 @@
   (atomchk paths '$file_search t)
   (new-file-search (string name) (cdr paths)))
 
-(defun new-file-search (name template &aux lis temp)
+(defun new-file-search (name template)
   (cond ((probe-file name))
 	((atom template)
-	 #-scl ;???
-	 (setq template (namestring ($filename_merge template  name)))
-					;(print (list 'template template))
-	 (setq lis 
-	       (loop for w in (split-string template "{}")
-		      when (null (position #\, w))
-		      collect w
-		      else
-		      collect (split-string w ",")))
-	 (new-file-search1 "" lis))
-	(t (loop for v in template
-		  when (setq temp (new-file-search name v))
-		  do (return temp)))))
+	 (let ((lis (loop for w in (split-string template "{}")
+			  when (null (position #\, w))
+			  collect w
+			  else
+			  collect (split-string w ","))))
+	   (new-file-search1 name "" lis)))
+	(t
+	 (let ((temp nil))
+	   (loop for v in template
+		 when (setq temp (new-file-search name v))
+		 do (return temp))))))
 
-(defun new-file-search1 (begin lis )
-  (cond ((null lis) (if (probe-file begin) begin nil))
+(defun new-file-search1 (name begin lis)
+  (cond ((null lis)
+	 (let ((file (namestring ($filename_merge begin name))))
+	   (if (probe-file file) file nil)))
 	((atom (car lis))
-	 (new-file-search1 (if begin
+	 (new-file-search1 name
+			   (if begin
 			       ($sconcat begin (car lis)) (car lis))
 			   (cdr lis)))
 	(t (loop for v in (car lis) with tem
-		  when (setq tem  (new-file-search1 begin (cons v (cdr lis))))
+		  when (setq tem  (new-file-search1 name begin (cons v (cdr lis))))
 		  do (return tem)))))
 
 (defun save-linenumbers (&key (c-lines t) d-lines (from 1) (below $linenum) a-list
@@ -926,14 +927,14 @@
 		      (format nil "~a:~a:~a" (car tem) (cadr tem) (caadr tem)))
 	    )
     (loop for i in a-list
-	   when (and c-lines (boundp (setq input-symbol (intern (format nil "$C~A" i)))))
+	   when (and c-lines (boundp (setq input-symbol (intern (format nil "$~A~A" '#:c i)))))
 	   do
 	   (format st "~% C~3A;  "   i)
 	   (mgrind (symbol-value input-symbol)
 		   st)
 	   (format st ";")
 	   when (and d-lines
-		     (boundp (setq input-symbol (intern (format nil "$D~A" i)))))
+		     (boundp (setq input-symbol (intern (format nil "$~A~A" '#:d i)))))
 	   do
 	   (format st "~% D~3A:  "   i)
 	   (mgrind (symbol-value

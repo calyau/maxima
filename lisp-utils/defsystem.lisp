@@ -1024,7 +1024,7 @@
 ;;; The code below, is originally executed also for CMUCL. However I
 ;;; believe this is wrong, since CMUCL comes with its own defpackage.
 ;;; I added the extra :CMU in the 'or'.
-#+(and :cltl2 (not (or :cmu :clisp :sbcl
+#+(and :cltl2 (not (or :cmu :scl :clisp :sbcl
 		       (and :excl (or :allegro-v4.0 :allegro-v4.1))
 		       :mcl)))
 (eval-when (compile load eval)
@@ -1165,21 +1165,21 @@
 #|
 #-(or :sbcl :cmu :ccl :allegro :excl :lispworks :symbolics)
 (eval-when (compile load eval)
-  (import *exports* #-(or :cltl2 :lispworks) "USER"
-	            #+(or :cltl2 :lispworks) "COMMON-LISP-USER")
-  (import *special-exports* #-(or :cltl2 :lispworks) "USER"
-	                    #+(or :cltl2 :lispworks) "COMMON-LISP-USER"))
+  (import *exports* #-(or :cltl2 :lispworks) :user
+	            #+(or :cltl2 :lispworks) :common-lisp-user)
+  (import *special-exports* #-(or :cltl2 :lispworks) :user
+	                    #+(or :cltl2 :lispworks) :common-lisp-user))
 #+(or :sbcl :cmu :ccl :allegro :excl :lispworks :symbolics)
 (eval-when (compile load eval)
-  (import *exports* #-(or :cltl2 :lispworks) "USER"
-	            #+(or :cltl2 :lispworks) "COMMON-LISP-USER")
+  (import *exports* #-(or :cltl2 :lispworks) :user
+	            #+(or :cltl2 :lispworks) :common-lisp-user)
   (shadowing-import *special-exports*
-		    #-(or :cltl2 :lispworks) "USER"
-		    #+(or :cltl2 :lispworks) "COMMON-LISP-USER"))
+		    #-(or :cltl2 :lispworks) :user
+		    #+(or :cltl2 :lispworks) :common-lisp-user))
 |#
 
-#-(or :PCL :CLOS :scl)
-(when (find-package "PCL")
+#-(or :pcl :clos :scl)
+(when (find-package :pcl)
   (pushnew :pcl *modules*)
   (pushnew :pcl *features*))
 
@@ -1194,7 +1194,7 @@
 ;;; ********************************
 
 (defvar *dont-redefine-require*
-  #+cmu (if (find-symbol "*MODULE-PROVIDER-FUNCTIONS*" "EXT") t nil)
+  #+cmu (if (find-symbol "*MODULE-PROVIDER-FUNCTIONS*" :ext) t nil)
   #+(or clisp sbcl) t
   #+allegro t
   #-(or cmu sbcl clisp allegro) nil
@@ -1387,8 +1387,7 @@
 	 ;; PA is Precision Architecture, HP's 9000/800 RISC cpu
 	 #+(and Lucid PA)		      ("lisp" . "hbin")
          #+excl ("cl"   . ,(pathname-type (compile-file-pathname "foo.cl")))
-         #+cmu  ("lisp" . ,(or (c:backend-fasl-file-type c:*backend*) "fasl"))
-         #+scl  ("lisp" . ,(or (string-downcase (c:backend-fasl-file-type c:*backend*)) "fasl"))
+         #+(or cmu scl) ("lisp" . ,(or (c:backend-fasl-file-type c:*backend*) "fasl"))
 ;	 #+(and :CMU (not (or :sgi :sparc)))  ("lisp" . "fasl")
 ;        #+(and :CMU :sgi)                    ("lisp" . "sgif")
 ;        #+(and :CMU :sparc)                  ("lisp" . "sparcf")
@@ -1697,7 +1696,7 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
 (defun compiler-type-translation (name &optional operation)
   (if operation
       (setf (gethash (string-upcase name) *compiler-type-alist*) operation)
-    (gethash (string-upcase name) *compiler-type-alist*)))
+      (gethash (string-upcase name) *compiler-type-alist*)))
 
 (compiler-type-translation "lispworks 3.2.1"         "lispworks")
 (compiler-type-translation "lispworks 3.2.60 beta 6" "lispworks")
@@ -1728,7 +1727,10 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
 (compiler-type-translation "cmu 17f" "cmu")
 (compiler-type-translation "cmu 17e" "cmu")
 (compiler-type-translation "cmu 17d" "cmu")
+
+(compiler-type-translation "scl 1.2.7" "scl")
 (compiler-type-translation "scl 1.2.8" "scl")
+(compiler-type-translation "scl 1.2.9" "scl")
 
 ;;; ********************************
 ;;; System Names *******************
@@ -2432,7 +2434,7 @@ D
 	    (when path
 	      (gethash path *file-load-time-table*)))))))))
 
-#-(or :cmu)
+#-(or :cmu :scl)
 (defsetf component-load-time (component) (value)
   `(when ,component
     (etypecase ,component
@@ -2457,7 +2459,7 @@ D
 		    ,value)))))))
     ,value))
 
-#+(or :cmu)
+#+(or :cmu :scl)
 (defun (setf component-load-time) (value component)
   (declare
    (type (or null string pathname component) component)
@@ -3626,7 +3628,6 @@ the system definition, if provided."
 		     #-openmcl (optimize (inhibit-warnings 3)))
 	    (unless (component-operation operation)
 	      (error "Operation ~A undefined." operation))
-
 	    (operate-on-component system operation force))))
     (when dribble (dribble))))
 
@@ -4177,7 +4178,7 @@ the system definition, if provided."
 (pushnew 'sbcl-mk-defsystem-module-provider sb-ext:*module-provider-functions*)
 )
 
-#+#.(cl:if (cl:and (cl:find-package "EXT") (cl:find-symbol "*MODULE-PROVIDER-FUNCTIONS*" "EXT")) '(and) '(or))
+#+#.(cl:if (cl:and (cl:find-package :ext) (cl:find-symbol "*MODULE-PROVIDER-FUNCTIONS*" :ext)) '(and) '(or))
 (progn
   (defun cmucl-mk-defsystem-module-provider (name)
     (let ((module-name (string-downcase (string name))))
@@ -4248,7 +4249,7 @@ the system definition, if provided."
 
 (defmacro define-language (name &key compiler loader
 				source-extension binary-extension)
-  (let ((language (gensym "LANGUAGE")))
+  (let ((language (gensym (symbol-name '#:language))))
     `(let ((,language (make-language :name ,name
 				     :compiler ,compiler
 				     :loader ,loader
@@ -4404,7 +4405,7 @@ the system definition, if provided."
 			   (make-useable-stream error-file-stream
 						(if (eq error-output t)
 						    *error-output*
-						  error-output)))
+						    error-output)))
 			  (process
 			   (ext:run-program program arguments
 					    :error error-output)))

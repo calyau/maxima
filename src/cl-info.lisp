@@ -18,7 +18,7 @@
 ;;
 
 
-(in-package "CL-INFO")
+(in-package :cl-info)
 
 (defvar *match-data*)
 (defvar *case-fold-search* nil)
@@ -76,7 +76,7 @@
        (let ((*compile-print* nil)
 	     (*compile-verbose* nil)
 	     #+(or cmu scl)
-	     (*compile-progress* nil)
+	     (ext:*compile-progress* nil)
 	     #+sbcl
 	     (sb-ext:*compile-progress* nil)
 	     #+gcl
@@ -226,12 +226,12 @@
 ;; Quote the given string, protecting any special regexp characters so
 ;; that they stand for themselves.
 (defun re-quote-string (x)
+  (declare (string x))
   (let ((i 0)
 	(len (length x))
 	ch
 	(extra 0))
-    (declare (fixnum i len extra)
-	     (string x))
+    (declare (fixnum i len extra))
     (let (tem)
       (tagbody
        AGAIN

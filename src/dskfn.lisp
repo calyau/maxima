@@ -190,7 +190,7 @@
     (when (null fasdumpfl)
       (princ ";;; -*- Mode: LISP; package:maxima; syntax:common-lisp; -*- " savefile)
       (terpri savefile)
-      (princ "(in-package \"MAXIMA\")" savefile)
+      (princ "(in-package :maxima)" savefile)
       )
     (dolist (u x)
       (cond ((atom u) (if (not (symbolp u)) (improper-arg-err u fn)))
