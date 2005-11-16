@@ -813,6 +813,10 @@
 (defprop mcond tex-mcond tex)
 (defprop mcond 25. tex-lbp)
 (defprop mcond 25. tex-rbp)
+(defprop %mcond tex-mcond tex)
+(defprop %mcond 25. tex-lbp)
+(defprop %mcond 25. tex-rbp)
+
 (defprop %derivative tex-derivative tex)
 (defun tex-derivative (x l r)
   (tex (if $derivabbrev
@@ -876,6 +880,12 @@
 (defprop mdo 30. tex-rbp)
 (defprop mdoin tex-mdoin tex)
 (defprop mdoin 30. tex-rbp)
+
+(defprop %mdo tex-mdo tex)
+(defprop %mdo 30. tex-lbp)
+(defprop %mdo 30. tex-rbp)
+(defprop %mdoin tex-mdoin tex)
+(defprop %mdoin 30. tex-rbp)
 
 (defun tex-lbp(x)(cond((get x 'tex-lbp))(t(lbp x))))
 (defun tex-rbp(x)(cond((get x 'tex-rbp))(t(lbp x))))
