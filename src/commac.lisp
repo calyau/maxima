@@ -496,7 +496,12 @@ values")
 				(<= 1 a 1d7))
 			    (values "~vf" (+ 1 $fpprec)))
 			   ((<= 0.001d0 a 1)
-			    (values "~vf" (+ $fpprec (ceiling (- (/ (log a) (log 10d0)))))))
+			    (values "~vf" (+ $fpprec
+					     (cond ((< a 0.01d0)
+						    3)
+						   ((< a 0.1d0)
+						    2)
+						   (t 1)))))
 			   (t
 			    (values "~ve" (+ 5 $fpprec))))
 		   (setq string (format nil form width symb))))
