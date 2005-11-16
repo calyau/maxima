@@ -859,6 +859,85 @@ If @var{expr} is not a ratio, @var{expr} is returned.
 @c NEED SOME EXAMPLES HERE
 @end deffn
 
+@deffn {Function} polydecomp (@var{p}, @var{x})
+
+Decomposes the polynomial @var{p} in the variable @var{x}
+into the functional composition of polynomials in @var{x}.
+@code{polydecomp} returns a list @code{[@var{p_1}, ..., @var{p_n}]} such that
+
+@example
+lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x)) ...))
+@end example
+
+is equal to @var{p}.
+The degree of @var{p_i} is greater than 1 for @var{i} less than @var{n}.
+
+Such a decomposition is not unique.
+
+Examples:
+
+@c ===beg===
+@c polydecomp (x^210, x);
+@c p : expand (subst (x^3 - x - 1, x, x^2 - a));
+@c polydecomp (p, x);
+@c ===end===
+@example
+(%i1) polydecomp (x^210, x);
+                          7   5   3   2
+(%o1)                   [x , x , x , x ]
+(%i2) p : expand (subst (x^3 - x - 1, x, x^2 - a));
+                6      4      3    2
+(%o2)          x  - 2 x  - 2 x  + x  + 2 x - a + 1
+(%i3) polydecomp (p, x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+The following function composes @code{L = [e_1, ..., e_n]} as functions in @code{x};
+it is the inverse of polydecomp:
+
+@c ===beg===
+@c compose (L, x) :=
+@c   block ([r : x], for e in L do r : subst (e, x, r), r) $
+@c ===end===
+@example
+compose (L, x) :=
+  block ([r : x], for e in L do r : subst (e, x, r), r) $
+@end example
+
+Re-express above example using @code{compose}:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+@c ===end===
+@example
+(%i3) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+Note that though @code{compose (polydecomp (@var{p}, @var{x}), @var{x})}
+always returns @var{p} (unexpanded),
+@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})} does @i{not}
+necessarily return @code{[@var{p_1}, ..., @var{p_n}]}:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+@c polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+@c ===end===
+@example
+(%i4) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+                          2       2
+(%o4)                   [x  + 2, x  + 1]
+(%i5) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+                      2       2
+                     x  + 3  x  + 5
+(%o5)               [------, ------, 2 x + 1]
+                       4       2
+@end example
+
+@end deffn
+
 @deffn {Function} quotient (@var{p_1}, @var{p_2})
 @deffnx {Function} quotient (@var{p_1}, @var{p_2}, @var{x_1}, ..., @var{x_n})
 Returns the polynomial @var{p_1} divided by the polynomial @var{p_2}.
