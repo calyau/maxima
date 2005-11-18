@@ -624,13 +624,19 @@
 	  (nconc (car l) (ncons (meval (list header i j))))))
       l)))
 
+; Execute deep copy for copymatrix and copylist.
+; Resolves SF bug report [ 1224960 ] sideeffect with copylist.
+; An optimization would be to call COPY-TREE only on mutable expressions.
+
 (defmfun $copymatrix (x)
   (if (not ($matrixp x)) (merror "Argument not a matrix - `copymatrix':~%~M" x))
-  (cons (car x) (mapcar #'(lambda (x) (copy-top-level x)) (cdr x))))
+  (copy-tree x))
 
 (defmfun $copylist (x)
   (if (not ($listp x)) (merror "Argument not a list - `copylist':~%~M" x))
-  (cons (car x) (copy-top-level (cdr x))))
+  (copy-tree x))
+
+(defmfun $copy (x) (copy-tree x))
 
 ;;;; ADDROW
 
