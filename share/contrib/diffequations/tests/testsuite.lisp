@@ -5,8 +5,9 @@
 ;;; of the test problems that are expected to fail, e.g.
 ;;; ("testfile.mac" 7 9 13).
 
-(setf *testsuite-files*
-      '( "rtestode_murphy_1_1.mac"
+(setf $testsuite_files
+      '( (mlist simp)
+	 "rtestode_murphy_1_1.mac"
          "rtestode_murphy_1_2.mac"
          "rtestode_murphy_1_3.mac"
          "rtestode_murphy_1_4.mac"

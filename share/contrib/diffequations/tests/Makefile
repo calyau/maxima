@@ -13,8 +13,10 @@ TEST_FILES = \
 check: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
+	echo '(setq $$file_search_maxima ';\
+	echo '  ($$append ';\
+	echo "  (list '(mlist)" '"../###.mac") $$file_search_maxima))';\
 	echo '(to-maxima)';\
-	echo 'file_search_maxima:append(["../###.mac"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
@@ -24,8 +26,10 @@ check: $(TEST_FILES)
 check.log: $(TEST_FILES)
 	(echo 'to_lisp();';\
 	echo '(setq *maxima-testsdir* ".")';\
+	echo '(setq $$file_search_maxima ';\
+	echo '  ($$append ';\
+	echo "  (list '(mlist)" '"../###.mac") $$file_search_maxima))';\
 	echo '(to-maxima)';\
-	echo 'file_search_maxima:append(["../###.mac"],file_search_maxima);';\
 	echo "load('pdiff);";\
 	echo "use_pdiff:false;";\
 	echo "load('contrib_ode);";\
