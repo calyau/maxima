@@ -1,3 +1,5 @@
+SUBDIRS = contrib linearalgebra
+
 include $(top_srcdir)/common.mk
 genericdir =$(sharedir)
 
@@ -112,6 +114,7 @@ contrib/Zeilberger/testZeilberger.mac\
 contrib/Zeilberger/whatsnew.txt\
 contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
+contrib/cholesky.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/README\
 contrib/descriptive/biomed.data\
@@ -287,8 +290,10 @@ contrib/numericalio/array.mac\
 contrib/numericalio/csv.mac\
 contrib/numericalio/is_equal_array.lisp\
 contrib/numericalio/my_flatten.mac\
+contrib/numericalio/numericalio.info\
 contrib/numericalio/numericalio.lisp\
 contrib/numericalio/numericalio.texi\
+contrib/numericalio/pipe.data\
 contrib/numericalio/ragged.data\
 contrib/numericalio/ragged.mac\
 contrib/numericalio/really-csv.data\
@@ -296,6 +301,8 @@ contrib/numericalio/really-space-separated.csv\
 contrib/numericalio/rectangular.csv\
 contrib/numericalio/rectangular.data\
 contrib/numericalio/rectangular.mac\
+contrib/numericalio/semicolon.data\
+contrib/numericalio/separators.mac\
 contrib/pdiff/battex.sty\
 contrib/pdiff/history.txt\
 contrib/pdiff/pdiff-doc.pdf\
@@ -405,6 +412,7 @@ contrib/state/sortem.mac\
 contrib/state/state.mac\
 contrib/state/tree.mac\
 contrib/stringproc/rteststringproc.mac\
+contrib/stringproc/stringproc.info\
 contrib/stringproc/stringproc.lisp\
 contrib/stringproc/stringproc.texi\
 contrib/unit/unit-functions.lisp\
@@ -436,6 +444,7 @@ linearalgebra/linalg-utilities.lisp\
 linearalgebra/linalg.demo\
 linearalgebra/linalg.mac\
 linearalgebra/linalg.usage\
+linearalgebra/linearalgebra.info\
 linearalgebra/linearalgebra.texi\
 linearalgebra/lu.lisp\
 linearalgebra/matrixexp.lisp\
@@ -685,6 +694,7 @@ vector/vector.usg
 genericdirDATA = \
 maxima-init.lisp\
 share.usg\
+template.texi\
 $(sharefiles)
 
 EXTRA_DIST = $(genericdirDATA)
