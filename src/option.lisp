@@ -549,7 +549,7 @@
 
 (subc $minor (c))
 
-(subc $mod (c))
+(subc $polymod (c))
 
 (subc $modedeclare (c))
 

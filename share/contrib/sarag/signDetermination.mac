@@ -62,12 +62,12 @@ blockMatrix(descr) :=
          if inBlockRows = 1 then
             inBlockRowIndex : 1
          else
-            inBlockRowIndex : uncenter(mod(i-1,inBlockRows),inBlockRows)+1,
+            inBlockRowIndex : uncenter(polymod(i-1,inBlockRows),inBlockRows)+1,
          
          if inBlockCols = 1 then
             inBlockColIndex : 1
          else
-            inBlockColIndex : uncenter(mod(j-1,inBlockCols),inBlockRows)+1,
+            inBlockColIndex : uncenter(polymod(j-1,inBlockCols),inBlockRows)+1,
 
          rowRes : endcons(
                   descr[blockRow][blockCol][inBlockRowIndex][inBlockColIndex],

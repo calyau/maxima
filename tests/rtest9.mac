@@ -74,7 +74,7 @@ factor(poly_discriminant((x-a)*(x-b)*(x-c),x));
 (b-a)^2*(c-a)^2*(c-b)^2$
 exp:(4*x^3+10*x-11)/(x^5+5);
 (4*x^3+10*x-11)/(x^5+5)$
-ev(mod(%),modulus:3);
+ev(polymod(%),modulus:3);
 (x^2+x-1)/(x^4+x^3+x^2+x+1)$
 ratdiff(exp,x);
 -(8*x^7+40*x^5-55*x^4-60*x^2-50)/(x^10+10*x^5+25)$

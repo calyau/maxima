@@ -214,11 +214,11 @@
 	       (t `(($ceiling simp) ,e))))		
 	 (t e)))
 
-(defprop $nummod simp-nummod operators)
-(defprop $nummod tex-infix tex)
-(defprop $nummod (" \\rm{mod} ") texsym)
-(defprop $nummod 180. tex-rbp)
-(defprop $nummod 180. tex-rbp)
+(defprop $mod simp-nummod operators)
+(defprop $mod tex-infix tex)
+(defprop $mod (" \\rm{mod} ") texsym)
+(defprop $mod 180. tex-rbp)
+(defprop $mod 180. tex-rbp)
 
 ;; See "Concrete Mathematics," Section 3.21.
 
@@ -233,8 +233,8 @@
 		 ((and ($constantp x) ($constantp y) (not (like 0 y)))
 		  (sub* x (mul* y `(($floor) ,(div x y)))))
 		 ((not (like 1 (setq e1 ($gcd x y))))
-		  (mul* e1 `(($nummod) ,(div* x e1) ,(div* y e1))))
+		  (mul* e1 `(($mod) ,(div* x e1) ,(div* y e1))))
 	
-		 (t `(($nummod simp) ,x ,y)))))
+		 (t `(($mod simp) ,x ,y)))))
 	(t e)))
 

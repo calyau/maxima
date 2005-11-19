@@ -258,7 +258,7 @@ if Gpoly = 0 then
 if mod_test and (ZAnsatzDegree<=mod_threshold) then
   (
   MODULUS : mod_big_prime,
-  test_Gpoly : mod(subst(ev_point,n,Gpoly),mod_big_prime),
+  test_Gpoly : polymod(subst(ev_point,n,Gpoly),mod_big_prime),
 
 
 

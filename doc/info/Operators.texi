@@ -877,52 +877,52 @@ to eliminate expressions that are between two other arguments; for example,
 
 @end deffn
 
-@deffn {Function} mod (@var{p})
-@deffnx {Function} mod (@var{p}, @var{m})
+@deffn {Function} polymod (@var{p})
+@deffnx {Function} polymod (@var{p}, @var{m})
 Converts the polynomial @var{p} to a modular representation
 with respect to the current modulus which is the value of the variable
 @code{modulus}.  
 
-@code{mod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
+@code{polymod (@var{p}, @var{m})} specifies a modulus @var{m} to be used 
 instead of the current value of @code{modulus}.
 
 See @code{modulus}.
 
 @end deffn
 
-@deffn Function nummod (@var{x}, @var{y})
+@deffn Function mod (@var{x}, @var{y})
 
 If @var{x} and @var{y} are real numbers and @var{y} is nonzero,
 return @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Further for all real @var{x}, we have @code{nummod (@var{x}, 0) = @var{x}}. For a discussion of
-the definition @code{nummod (@var{x}, 0) = @var{x}}, see Section 3.4, of "Concrete Mathematics," 
-by Graham, Knuth, and Patashnik. The function @code{nummod (@var{x}, 1)} 
-is a sawtooth function with period 1 with @code{nummod (1, 1) = 0} and 
-@code{nummod (0, 1) = 0}.
+Further for all real @var{x}, we have @code{mod (@var{x}, 0) = @var{x}}. For a discussion of
+the definition @code{mod (@var{x}, 0) = @var{x}}, see Section 3.4, of "Concrete Mathematics," 
+by Graham, Knuth, and Patashnik. The function @code{mod (@var{x}, 1)} 
+is a sawtooth function with period 1 with @code{mod (1, 1) = 0} and 
+@code{mod (0, 1) = 0}.
 
 To find the principal argument (a number in the interval @code{(-%pi, %pi]}) of a 
-complex number, use the function @code{@var{x} |-> %pi - nummod (%pi - @var{x}, 2*%pi)}, where 
+complex number, use the function @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, where 
 @var{x} is an argument.
 
-When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for example), @code{nummod}
+When @var{x} and @var{y} are constant expressions (@code{10 * %pi}, for example), @code{mod}
 uses the same big float evaluation scheme that @code{floor} and @code{ceiling} uses.
-Again, it's possible, although unlikely, that @code{nummod} could return an
+Again, it's possible, although unlikely, that @code{mod} could return an
 erroneous value in such cases.
 
-For nonnumerical arguments @var{x} or @var{y}, nummod knows several simplification 
+For nonnumerical arguments @var{x} or @var{y}, @code{mod} knows several simplification 
 rules:
 
 @c ===beg===
-@c nummod (x, 0);
-@c nummod (a*x, a*y);
-@c nummod (0, x);
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
 @c ===end===
 @example
-(%i1) nummod(x,0);
+(%i1) mod(x,0);
 (%o1) x
-(%i2) nummod(a*x,a*y);
-(%o2) a*nummod(x,y)
-(%i3) nummod(0,x);
+(%i2) mod(a*x,a*y);
+(%o2) a*mod(x,y)
+(%i3) mod(0,x);
 (%o3) 0
 @end example
 

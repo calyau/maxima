@@ -358,8 +358,8 @@
 (declare-top(unspecial var))
 
 
-(defmfun $mod nargs
-  (if (not (or (f= nargs 1) (f= nargs 2))) (wna-err '$mod))
+(defmfun $polymod nargs
+  (if (not (or (f= nargs 1) (f= nargs 2))) (wna-err '$polymod))
   (let ((modulus modulus))
     (cond ((f= nargs 2)
 	   (setq modulus (arg 2))
