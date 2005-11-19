@@ -376,10 +376,7 @@ that matches the name name with extention ext"
 		    (setq *current-info-data*
 			  (list na (info-get-tags na) nil))
 		    (setq *info-data* (cons *current-info-data* *info-data*))))))
-      ; Don't bother to complain if name is not found; 
-      ; SETUP-INFO is called over and over again.
-	  ; (t (format t "(not found ~s)" name))
-      )
+          (t (format t "setup-info: ~S not found in ~S~%" name *info-paths*)))
     nil))
 			  
 (defun get-info-choices (pat type)
