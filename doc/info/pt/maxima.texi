@@ -90,7 +90,7 @@ Infraestrutura do Maxima
 * Montando Gr@'aficos::           Sa@'idas gr@'aficas em 2D e 3D.
 * Entrada e Sa@'ida::             Entrada e sa@'ida de arquivos.
 * Ponto Flutuante::             Rotinas num@'ericas de baixo n@'ivel.
-* Contexts::                    Conjunto de fatos assumidos.
+* Contextos::                   Conjunto de fatos assumidos.
 
 Suporte a @'areas espec@'ificas da matem@'atica
 
@@ -196,9 +196,9 @@ Ponto Flutuante
 
 * Defini@value{cedilha}@~oes para ponto Flutuante::  
 
-Contexts
+Contextos
 
-* Definitions for Contexts::    
+* Defini@value{cedilha}@~oes para Contextos::    
 
 Polin@^omios
 
@@ -402,15 +402,15 @@ Depurando
 @chapter Entrada e Sa@'ida
 @include Input_pt.texi
 
-@node Ponto Flutuante, Contexts, Entrada e Sa@'ida, Top
+@node Ponto Flutuante, Contextos, Entrada e Sa@'ida, Top
 @chapter Ponto Flutuante
 @include Floating_pt.texi
 
-@node Contexts, Polin@^omios, Ponto Flutuante, Top
-@chapter Contexts
-@include Contexts.texi
+@node Contextos, Polin@^omios, Ponto Flutuante, Top
+@chapter Contextos
+@include Contexts_pt.texi
 
-@node Polin@^omios, Constantes, Contexts, Top
+@node Polin@^omios, Constantes, Contextos, Top
 @chapter Polin@^omios
 @include Polynomials_pt.texi
 

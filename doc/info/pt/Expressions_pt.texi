@@ -13,8 +13,8 @@
 @node Introdu@value{cedilha}@~ao a Express@~oes, Atribui@value{cedilha}@~ao, Express@~oes, Express@~oes
 @section Introdu@value{cedilha}@~ao a Express@~oes
 
-Existem um conjunto de palavras reservadas que n@~ao podem ser usadas como
-nomes de vari@'aveis.   Seu uso pode causar um poss@'ivel erro cr@'itico de sintaxe.
+Existe um conjunto de palavras reservadas que n@~ao pode ser usado como
+nome de vari@'avel.   Seu uso pode causar um poss@'ivel erro cr@'itico de sintaxe.
 
 @example
 integrate            next           from                 diff            
@@ -28,7 +28,7 @@ step
 Muitas coisas em Maxima s@~ao express@~oes.   Uma seq@"u@^encia de express@~oes
 pode ser feita dentro de uma express@~ao maior atrav@'es da separa@,{c}@~ao dessas atrav@'es de v@'irgulas e
 colocando par@^entesis em torno dela.   Isso @'e similar ao @b{C}
-@i{express@~ao de v@'irgula}.
+@i{express@~ao com v@'irgula}.
 
 @example
 (%i1) x: 3$
@@ -40,8 +40,8 @@ colocando par@^entesis em torno dela.   Isso @'e similar ao @b{C}
 (%o4)                          20
 @end example
 
-Mesmo la@,{c}os em Maxima s@~ao express@~oes, embora o valor de retorno desses
-la@,{c}os n@~ao seja muito @'util (eles retornam sempre @code{done}).
+Mesmo ciclos em Maxima s@~ao express@~oes, embora o valor de retorno desses
+ciclos n@~ao seja muito @'util (eles retornam sempre @code{done}).
 
 @example
 (%i1) y: (x: 1, for i from 1 thru 10 do (x: x*i))$
@@ -50,7 +50,7 @@ la@,{c}os n@~ao seja muito @'util (eles retornam sempre @code{done}).
 @end example
 
 contanto que o que voc@^e realmente queira @'e provavelmente incluir um terceiro
-termo na @i{express@~ao de v@'irgula} que atualmente fornece de volta o valor.
+termo na @i{express@~ao com v@'irgula} que atualmente fornece de volta o valor.
 
 @example
 (%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
@@ -62,7 +62,7 @@ termo na @i{express@~ao de v@'irgula} que atualmente fornece de volta o valor.
 
 @node Atribui@value{cedilha}@~ao, Complexo, Introdu@value{cedilha}@~ao a Express@~oes, Express@~oes
 @section Atribui@value{cedilha}@~ao
-Existem dois operadores de atribui@,{c}@~ao no Maxima, @code{:} and @code{::}.
+Existem dois operadores de atribui@,{c}@~ao no Maxima, "@code{:}" e "@code{::}".
 E.g., @code{a: 3} escolhe a vari@'avel @code{a} para 3. @code{::} atribui o valor da
 express@~ao sobre seu lado direito para o valor da quantidade sobre seu lado esquerdo,
 que deve avaliar para uma vari@'avel at@^omica ou para uma vari@'avel subscrita.
@@ -80,26 +80,26 @@ das fun@,{c}@~oes @code{realpart}, @code{imagpart}, @code{rectform}, @code{polar
 
 @node Substantivos e Verbos, Identificadores, Complexo, Express@~oes
 @section Substantivos e Verbos
-Maxima distingue entre operadores que s@~ao "subsrtantivos" e operadores que s@~ao "verbos".
+Maxima distingue entre operadores que s@~ao "substantivos" e operadores que s@~ao "verbos".
 Um verbo @'e um operador que pode ser executado.
 Um substantivo @'e um operador que aparece como um s@'imbolo em uma express@~ao, sem ser executado.
 Por padr@~ao, nomes de fun@,{c}@~ao s@~ao verbos.
 Um verbo pode ser mudado em um substantivo atrav@'es da adi@,{c}@~ao de um ap@'ostrofo no in@'icio do nome da fun@,{c}@~ao
 ou aplicando a fun@,{c}@~ao @code{nounify}.
-Um substantivo pode ser mudado em um verbo através da aplicação da função @code{verbify}.
-O sinalizador de avaliação @code{nouns} faz com que @code{ev} avalie substantivos em uma expressão.
+Um substantivo pode ser mudado em um verbo atrav@'es da aplica@,{c}@~ao da fun@,{c}@~ao @code{verbify}.
+O sinalizador de avalia@,{c}@~ao @code{nouns} faz com que @code{ev} avalie substantivos em uma express@~ao.
 
-A forma verbal é distinguida através de
-um sinal de dólar @code{$} no início do símbolo Lisp correspondente.
+A forma verbal @'e distinguida atrav@'es de
+um sinal de d@'olar @code{$} no in@'icio do s@'imbolo Lisp correspondente.
 De forma oposta,
-a forma substantiva é distinguida através de 
-um sinal de @code{%} no início do símbolo Lisp correspondente.
-Alguns substantivos possuem propriedades especiais de exibição, tais como @code{'integrate} e @code{'derivative}
-(retornado por @code{diff}), mas muitos não.
-Por padrão, as formas substantiva e verbal de uma função são idênticas quando mostradas.
-O sinalizador global @code{noundisp} faz com que Maxima mostre substantivos com um apóstrofo no início @code{'}.
+a forma substantiva @'e distinguida atrav@'es de 
+um sinal de @code{%} no in@'icio do s@'imbolo Lisp correspondente.
+Alguns substantivos possuem propriedades especiais de exibi@,{c}@~ao, tais como @code{'integrate} e @code{'derivative}
+(retornado por @code{diff}), mas muitos n@~ao.
+Por padr@~ao, as formas substantiva e verbal de uma fun@,{c}@~ao s@~ao id@^enticas quando mostradas.
+O sinalizador global @code{noundisp} faz com que Maxima mostre substantivos com um ap@'ostrofo no in@'icio @code{'}.
 
-Veja também @code{noun}, @code{nouns}, @code{nounify}, e @code{verbify}.
+Veja tamb@'em @code{noun}, @code{nouns}, @code{nounify}, e @code{verbify}.
 
 Exemplos:
 
@@ -154,24 +154,24 @@ Exemplos:
 
 @node Identificadores, Desigualdade, Substantivos e Verbos, Express@~oes
 @section Identificadores
-Identificadores do Maxima podem compreender caracteres alfabéticos,
+Identificadores do Maxima podem compreender caracteres alfab@'eticos,
 mais os numerais de 0 a 9,
 mais qualquer caractere especial precedido por um caractere contra-barra @code{\}.
 
 Um numeral pode ser o primeiro caractere de um identificador
 se esse numeral for precedido por uma contra barra.
-Numerais que forem o segundo ou o último caractere não precisam ser precedidos por uma contra barra.
+Numerais que forem o segundo ou o @'ultimo caractere n@~ao precisam ser precedidos por uma contra barra.
 
-Um caractere especial pode ser declarado alfabético através da função @code{declare}.
-Se isso ocorrer, esse caractere não precisa ser precedido por uma contra barra em um identificador.
-Os caracteres alfabéticos são inicialmente 
-@code{A} a @code{Z}, @code{a} a @code{z}, @code{%}, e @code{_}.
+Um caractere especial pode ser declarado alfab@'etico atrav@'es da fun@,{c}@~ao @code{declare}.
+Se isso ocorrer, esse caractere n@~ao precisa ser precedido por uma contra barra em um identificador.
+Os caracteres alfab@'eticos v@~ao inicialmente 
+de @code{A} a @code{Z}, de @code{a} a @code{z}, @code{%}, e @code{_}.
 
-Maxima é sensível à caixa . Os identificadores @code{algumacoisa}, @code{ALGUMACOISA}, e @code{Algumacoisa} são distintos.
+Maxima @'e sens@'ivel @`a caixa . Os identificadores @code{algumacoisa}, @code{ALGUMACOISA}, e @code{Algumacoisa} s@~ao distintos.
 Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
 
-Um identificadro Maxima é um símbolo Lisp que começa com um sianl de dólar @code{$}.
-Qualquer outro símbolo Lisp é precedido por um ponto de interrogação @code{?} quando aparecer no Maxima.
+Um identificador Maxima @'e um s@'imbolo Lisp que come@,{c}a com um sianl de d@'olar @code{$}.
+Qualquer outro s@'imbolo Lisp @'e precedido por um ponto de interroga@,{c}@~ao @code{?} quando aparecer no Maxima.
 Veja @ref{Lisp e Maxima} para maiores detalhes sobre esse ponto.
 
 Exemplos:
@@ -224,42 +224,42 @@ Exemplos:
 @node Desigualdade, Sintaxe, Identificadores, Express@~oes
 @section Desigualdade
 Maxima tem os operadores de desigualdade @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, e @code{notequal}.
-Veja @code{if} para uma descrição de expressões condicionais.
+Veja @code{if} para uma descri@,{c}@~ao de express@~oes condicionais.
 
 @node Sintaxe, Defini@value{cedilha}@~oes para Express@~oes, Desigualdade, Express@~oes
 @section Sintaxe
-É possível definir novos operadores com precedência especificada,
-remover a definição de operadores existentes,
-ou redefinir a precedência de operadores existentes.  
-Um operador pode ser unário prefixado ou unário pósfixado, binario infixado, n-ário infixado, matchfix, ou nofix.
-"Matchfix" significa um par de símbolos que abraçam seu argumento ou seus argumentos,
-e "nofix" significa um operador que não precisa de argumentos.
+@'E poss@'ivel definir novos operadores com preced@^encia especificada,
+remover a defini@,{c}@~ao de operadores existentes,
+ou redefinir a preced@^encia de operadores existentes.  
+Um operador pode ser un@'ario prefixado ou un@'ario p@'osfixado, binario infixado, n-@'ario infixado, matchfix, ou nofix.
+"Matchfix" significa um par de s@'imbolos que abra@,{c}am seu argumento ou seus argumentos,
+e "nofix" significa um operador que n@~ao precisa de argumentos.
 Como exemplos dos diferentes tipos de operadores, existe o seguinte.
 
 @table @asis
-@item unário prefixado
-negação @code{- a}
-@item unário posfixado
+@item un@'ario prefixado
+nega@,{c}@~ao @code{- a}
+@item un@'ario posfixado
 fatorial @code{a!}
-@item binário infixado
-exponenciação @code{a^b}
-@item n-ário infixado
-addition @code{a + b}
+@item bin@'ario infixado
+exponencia@,{c}@~ao @code{a^b}
+@item n-@'ario infixado
+adi@,{c}@~ao @code{a + b}
 @item matchfix
-construção de lista @code{[a, b]}
+constru@,{c}@~ao de lista @code{[a, b]}
 @end table
 
-(Não existe operadores internos nofix;
-para um exemplo de tal um operador, veja @code{nofix}.)
+(N@~ao existe operadores internos nofix;
+para um exemplo de tal operador, veja @code{nofix}.)
 
-O mecanismo para definir um novo operador é direto.
-Somente é necessário declarar uma função como um operador;
-a função operador pode ou não estar definida previamente.
+O mecanismo para definir um novo operador @'e direto.
+Somente @'e necess@'ario declarar uma fun@,{c}@~ao como um operador;
+a fun@,{c}@~ao operador pode ou n@~ao estar definida previamente.
 
-Um exemplo de operadores definidos pelo usuário é o seguinte.
-Note que a chamada explícita de função @code{"dd" (a)} é equivalente a @code{dd a},
-da mesma forma @code{"<-" (a, b)} é equivalente a @code{a <- b}.
-Note também que as funções @code{"dd"} e @code{"<-"} são indefinidas nesse exemplo.
+Um exemplo de operadores definidos pelo usu@'ario @'e o seguinte.
+Note que a chamada expl@'icita de fun@,{c}@~ao @code{"dd" (a)} @'e equivalente a @code{dd a},
+da mesma forma @code{"<-" (a, b)} @'e equivalente a @code{a <- b}.
+Note tamb@'em que as fun@,{c}@~oes @code{"dd"} e @code{"<-"} s@~ao indefinidas nesse exemplo.
 
 @c ===beg===
 @c prefix ("dd");
@@ -284,13 +284,13 @@ Note também que as funções @code{"dd"} e @code{"<-"} são indefinidas nesse exemp
 (%o6)                      a <- dd b
 @end example
 
-As funções máxima que definem novos operadores estão sumarizadas nessa tabela,
-equilibrando expoente associado esquerdo (padrão) e o expoente associado direito ("eae" e "ead", respectivamente).
+As fun@,{c}@~oes m@'axima que definem novos operadores est@~ao sumarizadas nessa tabela,
+equilibrando expoente associado esquerdo (padr@~ao) e o expoente associado direito ("eae" e "ead", respectivamente).
 @c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
-(Associação de expoentes determina a precedência do operador. todavia, uma vez que os expoentes
-esquerdo e diretiro podem ser diferentes, associação de expoentes é até certo ponto mais complicado que precedência.)
-Alguma das funções de definição de operações tomam argumentos adicionais;
-veja as descrições de função para maiores detalhes.
+(Associa@,{c}@~ao de expoentes determina a preced@^encia do operador. todavia, uma vez que os expoentes
+esquerdo e diretiro podem ser diferentes, associa@,{c}@~ao de expoentes @'e at@'e certo ponto mais complicado que preced@^encia.)
+Alguma das fun@,{c}@~oes de defini@,{c}@~ao de opera@,{c}@~oes tomam argumentos adicionais;
+veja as descri@,{c}@~oes de fun@,{c}@~ao para maiores detalhes.
 
 @c MAKE ANCHORS FOR ALL 6 FUNCTIONS AND CHANGE @code TO @ref ACCORDINGLY
 @table @code
@@ -300,19 +300,19 @@ ead=180
 eae=180
 @item infixado
 eae=180, ead=180
-@item nário
+@item n@'ario
 eae=180, ead=180
 @item matchfix
-(associação de expoentes não é aplicável)
+(associa@,{c}@~ao de expoentes n@~ao @'e aplic@'avel)
 @item nofix
-(associação de expoentes não é aplicável)
+(associa@,{c}@~ao de expoentes n@~ao @'e aplic@'avel)
 @end table
 
-Para comparação,
-aqui está alguns operadores internos e seus expoentes associados esquerdo e direito.
+Para compara@,{c}@~ao,
+aqui est@'a alguns operadores internos e seus expoentes associados esquerdo e direito.
 
 @example
-Operator   lbp     rbp
+Operador   eae     ead
 
   :        180     20 
   ::       180     20 
@@ -340,10 +340,10 @@ Operator   lbp     rbp
   ;        -1
 @end example
 
-@code{remove} e @code{kill} removem propriedades de operador de um átomo.
+@code{remove} e @code{kill} removem propriedades de operador de um @'atomo.
 @code{remove ("@var{a}", op)} remove somente as propriedades de operador de @var{a}.
 @code{kill ("@var{a}")} remove todas as propriedades de @var{a}, incluindo as propriedades de operador.
-Note que o nome do operador dever estar abraçado por aspas duplas.
+Note que o nome do operador dever estar abra@,{c}ado por aspas duplas.
 
 @c MAYBE COPY THIS EXAMPLE TO remove AND/OR kill
 @c ===beg===
@@ -394,19 +394,19 @@ Incorrect syntax: @@ is not an infix operator
 
 @deffn {Fun@value{cedilha}@~ao} at (@var{expr}, [@var{eqn_1}, ..., @var{eqn_n}])
 @deffnx {Fun@value{cedilha}@~ao} at (@var{expr}, @var{eqn})
-Avalia a expressão @var{expr} com
-as variáveis assumindo os valores como especificado para elas na lista de
-equações @code{[@var{eqn_1}, ..., @var{eqn_n}]} ou a equação simples @var{eqn}.
+Avalia a express@~ao @var{expr} com
+as vari@'aveis assumindo os valores como especificado para elas na lista de
+equa@,{c}@~oes @code{[@var{eqn_1}, ..., @var{eqn_n}]} ou a equa@,{c}@~ao simples @var{eqn}.
 
-Se uma subexpressão depender de qualquer das variáveis para a qual um valor foi especificado
-mas não existe @code{atvalue} especificado e isso não pode ser de outra forma avaliado,
-então uma forma substantiva de @code{at} é retornada que mostra em uma forma bidimensional.
+Se uma subexpress@~ao depender de qualquer das vari@'aveis para a qual um valor foi especificado
+mas n@~ao existe @code{atvalue} especificado e isso n@~ao pode ser de outra forma avaliado,
+ent@~ao uma forma substantiva de @code{at} @'e retornada que mostra em uma forma bidimensional.
 
-@code{at} realiza múltiplas substituições em série, não em paralelo.
+@code{at} realiza m@'ultiplas substitui@,{c}@~oes em s@'erie, n@~ao em paralelo.
 
-Veja também @code{atvalue}.
-Para outras funções que realizam substituições,
-veja também @code{subst} e @code{ev}.
+Veja tamb@'em @code{atvalue}.
+Para outras fun@,{c}@~oes que realizam substitui@,{c}@~oes,
+veja tamb@'em @code{subst} e @code{ev}.
 
 Exemplos:
 @c COPIED FROM example(at)
@@ -452,18 +452,18 @@ Exemplos:
 @deffn {Fun@value{cedilha}@~ao} box (@var{expr})
 @deffnx {Fun@value{cedilha}@~ao} box (@var{expr}, @var{a})
 Retorna @var{expr} dentro de uma caixa.
-O valor de retorno é uma expressão com @code{box} como o operador e @var{expr} como o argumento.
-Uma caixa é desenhada sobre a tela quando @code{display2d} for @code{true}.
+O valor de retorno @'e uma express@~ao com @code{box} como o operador e @var{expr} como o argumento.
+Uma caixa @'e desenhada sobre a tela quando @code{display2d} for @code{true}.
 
 @code{box (@var{expr}, @var{a})}
-Empacota @var{expr} em uma caixa rotulada pelo símbolo @var{a}.
-O rótulo é truncado se for maior que a largura da caixa.
+Empacota @var{expr} em uma caixa rotulada pelo s@'imbolo @var{a}.
+O r@'otulo @'e truncado se for maior que a largura da caixa.
 
-Uma expressão dentro de uma caixa não avalia para seu conteúdo,
-então expressões dentro de caixas são efetivamente excluídas de cálculos.
+Uma express@~ao dentro de uma caixa n@~ao avalia para seu conte@'udo,
+ent@~ao express@~oes dentro de caixas s@~ao efetivamente exclu@'idas de c@'alculos.
 
-@code{boxchar} é o caractere usado para desenhar a caixa em @code{box}
-e nas funções @code{dpart} e @code{lpart}.
+@code{boxchar} @'e o caractere usado para desenhar a caixa em @code{box}
+e nas fun@,{c}@~oes @code{dpart} e @code{lpart}.
 
 Exemplos:
 
@@ -475,39 +475,60 @@ Exemplos:
 @c box (sin(x) + cos(y));
 @c ===end===
 @example
+(%i1) box (a^2 + b^2);
+             """""""""
+             " 2   2 "
+(%o1)        "b  + a "
+             """""""""
+(%i2) box (a^2 + b^2, term_1);
+             term_1"""
+             " 2   2 "
+(%o2)        "b  + a "
+             """""""""
+(%i3) 1729 - box (1729);
+                  """"""
+(%o3)      1729 - "1729"
+                  """"""
+(%i4) boxchar: "-";
+(%o4)            -
+(%i5) box (sin(x) + cos(y));
+                -----------------
+(%o5)           -COS(y) + SIN(x)-
+                -----------------
+(%i6) 
 @end example
 
 @end deffn
 
-@defvr {Variável de op@value{cedilha}@~ao} boxchar
-Valor padrão: @code{"}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} boxchar
+Valor padr@~ao: @code{"}
 
-@code{boxchar} é o caractere usado para desenhar a caixa por @code{box}
-e nas funções @code{dpart} e @code{lpart}.
+@code{boxchar} @'e o caractere usado para desenhar a caixa por @code{box}
+e nas fun@,{c}@~oes @code{dpart} e @code{lpart}.
 
-Todas as caixas em uma expressão são desenhadas com o valor atual de @code{boxchar};
-o caractere de desenhonão é armazenado com a expressão de caixa. Isso quer dizer que se você
+Todas as caixas em uma express@~ao s@~ao desenhadas com o valor atual de @code{boxchar};
+o caractere de desenho n@~ao @'e armazenado com a express@~ao de caixa. Isso quer dizer que se voc@^e
 desenhar uma caixa e em seguida mudar o caractere de desenho a caixa anteriormente
-desenhada será redesenhada com o caractere mudado caso isso seja solicitado.
+desenhada ser@'a redesenhada com o caractere mudado caso isso seja solicitado.
 
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} carg (@var{z})
 Retorna o argumento complexo de @var{z}.
-O argumento complexo é um ângulo @code{theta} no intervalo de @code{(-%pi, %pi]}
-tal que @code{r exp (theta %i) = @var{z}} onde @code{r} é o módulo de @var{z}.
+O argumento complexo @'e um ângulo @code{theta} no intervalo de @code{(-%pi, %pi]}
+tal que @code{r exp (theta %i) = @var{z}} onde @code{r} @'e o m@'odulo de @var{z}.
 @c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
 
-@code{carg} é uma função computacional,
-não uma função de simplificação.
+@code{carg} @'e uma fun@,{c}@~ao computacional,
+n@~ao uma fun@,{c}@~ao de simplifica@,{c}@~ao.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-@code{carg} ignora a declaração @code{declare (@var{x}, complex)},
-e trata @var{x} como uma variável real.
-Isso é um erro. @c SEE SF BUG REPORT # 620246
+@code{carg} ignora a declara@,{c}@~ao @code{declare (@var{x}, complex)},
+e trata @var{x} como uma vari@'avel real.
+Isso @'e um erro. @c SEE SF BUG REPORT # 620246
 
-Veja também @code{abs} (módulo de número complex), @code{polarform}, @code{rectform},
+Veja tamb@'em @code{abs} (m@'odulo de n@'umero complexo), @code{polarform}, @code{rectform},
 @code{realpart}, e @code{imagpart}.
 
 Exemplos:
@@ -552,15 +573,15 @@ Veja @code{declare}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} constantp (@var{expr})
-Retorna @code{true} se @var{expr} for uma expressão constante,
+Retorna @code{true} se @var{expr} for uma express@~ao constante,
 de outra forma retorna @code{false}.
 @c WHAT DOES MAXIMA KNOW ABOUT CONSTANT EXPRESSIONS ??
 
-Uma expressão é considerada uma expressão constante se seus argumentos forem
-números (incluindo números racionais rational, como mostrado com @code{/R/}),
-constantes simbólicas como @code{%pi}, @code{%e}, e @code{%i},
-variáveis associadas a uma constante ou constante declarada através de @code{declare},
-ou funções cujos argumentos forem constante.
+Uma express@~ao @'e considerada uma express@~ao constante se seus argumentos forem
+n@'umeros (incluindo n@'umeros racionais, como mostrado com @code{/R/}),
+constantes simb@'olicas como @code{%pi}, @code{%e}, e @code{%i},
+vari@'aveis associadas a uma constante ou constante declarada atrav@'es de @code{declare},
+ou fun@,{c}@~oes cujos argumentos forem constante.
 
 @code{constantp} avalia seus argumentos.
 
@@ -577,6 +598,21 @@ Exemplos:
 @c ===end===
 
 @example
+(%i1) constantp (7 * sin(2));
+(%o1) 				     TRUE
+(%i2) constantp (rat (17/29));
+(%o2) 				     TRUE
+(%i3) constantp (%pi * sin(%e));
+(%o3) 				     TRUE
+(%i4) constantp (exp (x));
+(%o4) 				     FALSE
+(%i5) declare (x, constant);
+(%o5) 				     DONE
+(%i6) constantp (exp (x));
+(%o6) 				     TRUE
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7) 				     FALSE
+(%i8) 
 @end example
 
 @end deffn
@@ -584,39 +620,39 @@ Exemplos:
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @deffn {Fun@value{cedilha}@~ao} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
-Atribui ao átomo @var{a_i} o sinalizador @var{f_i}.
-Os @var{a_i}'s e @var{f_i}'s podem também serem listas de átomos e sinalizadores respectivamente nesse caso
-cada um dos átomos tomam todas as propriedades.
+Atribui ao @'atomo @var{a_i} o sinalizador @var{f_i}.
+Os @var{a_i}'s e @var{f_i}'s podem tamb@'em serem listas de @'atomos e sinalizadores respectivamente nesse caso
+cada um dos @'atomos tomam todas as propriedades.
 
-@code{declare} não avalia seus argumentos.
+@code{declare} n@~ao avalia seus argumentos.
 @code{declare} sempre retorna @code{done}.
 
-Os possíveis sinalizadores e seus significados são:
+Os poss@'iveis sinalizadores e seus significados s@~ao:
 
-@code{constant} torna @var{a_i} uma constate como é @code{%pi}.
+@code{constant} torna @var{a_i} uma constate como @'e @code{%pi}.
 
-@code{mainvar} torna @var{a_i} uma @code{mainvar} (variável principal).  A escala de ordenação para átomos: numeros <
-constantes (e.g. @code{%e}, @code{%pi}) < escalares < outras variáveis < variáveis principais.
+@code{mainvar} torna @var{a_i} uma @code{mainvar} (vari@'avel principal).  A escala de ordena@,{c}@~ao para @'atomos: numeros <
+constantes (e.g. @code{%e}, @code{%pi}) < escalares < outras vari@'aveis < vari@'aveis principais.
 
 @code{scalar} torna @var{a_i} um escalar.
 
-@code{nonscalar} faz @var{a_i} comportar-se como faz uma lista ou matriz com relação ao
+@code{nonscalar} faz @var{a_i} comportar-se como como comporta-se uma lista ou matriz com rela@,{c}@~ao ao
 operador ponto.
 
-@code{noun} torna a função @var{a_i} um substantivo de forma que não possa ser avaliada
+@code{noun} torna a fun@,{c}@~ao @var{a_i} um substantivo de forma que n@~ao possa ser avaliada
 automaticamente.
 
-@code{evfun} torna @var{a_i} conhecido para a função @code{ev} de forma que isso possa vir a ser aplicada
+@code{evfun} torna @var{a_i} conhecido para a fun@,{c}@~ao @code{ev} de forma que @code{ev} possa vir a ser aplicada
 se seu nome for mencionado.  Veja @code{evfun}.
 
-@code{evflag} torna @var{a_i} conhecido para a função @code{ev} de forma que isso possa vir a ser associado a
-@code{true} durante a execução de @code{ev} se isso for mencionado.  Veja @code{evflag}.
+@code{evflag} torna @var{a_i} conhecido para a fun@,{c}@~ao @code{ev} de forma que @code{ev} possa vir a ser associado a
+@code{true} durante a execu@,{c}@~ao de @code{ev} se isso for mencionado.  Veja @code{evflag}.
 
 @code{bindtest} faz com que @var{a_i} sinalize um erro se isso mesmo for usado em um
-cálculo não associado.
+c@'alculo n@~ao associado.
 
 Maxima atualmente reconhe os seguintes recursos de
-objectos:
+objetos:
 
 @c THIS LIST AND NEXT ONE COMPRISE features !!!
 @c SHOULD GIVE A REFERENCE TO features INSTEAD OF LISTING !!!
@@ -626,14 +662,14 @@ even, odd, integer, rational, irrational, real, imaginary,
 e complex
 @end example
 
-Que pode ser traduzido para o português como:
+Que pode ser traduzido para o portugu@^es como:
 
 @example
-par, ímpar, inteiro, racional, irracional, real, imaginário,
+par, @'impar, inteiro, racional, irracional, real, imagin@'ario,
 e complexo
 @end example
 
-Os recursos úteis de funções incluem:
+Os recursos @'uteis de fun@,{c}@~oes incluem:
 
 @c NEED TO CHECK THIS LIST !! IS IT COMPREHENSIVE ??
 @example
@@ -643,47 +679,47 @@ commutative (or symmetric), antisymmetric, lassociative and
 rassociative
 @end example
 
-Que pode ser traduzido para o português como:
+Que pode ser traduzido para o portugu@^es como:
 @example
 incremento,
-decremento, oddfun (função ímpar), evenfun (função par),
-comutativa (ou simetrica), antisimetrica, lassociative (associativa à esquerda) and
-rassociative (associativa à direita).
+decremento, oddfun (fun@,{c}@~ao @'impar), evenfun (fun@,{c}@~ao par),
+comutativa (ou simetrica), antisimetrica, lassociative (associativa @`a esquerda) and
+rassociative (associativa @`a direita).
 @end example
 
 
 @c WHAT DOES THIS MEAN EXACTLY ??
-Os @var{a_i} e @var{f_i} podem também serem listas de objetos ou recursos.
+Os @var{a_i} e @var{f_i} podem tamb@'em serem listas de objetos ou recursos.
 
 @code{featurep (@var{objeto}, @var{recurso})}
 determina se @var{objeto} foi declarado para ter @var{recurso}.
 
-Veja também @code{features}.
+Veja tamb@'em @code{features}.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
-é similar a @code{isolate (@var{expr}, @var{x})}
-exceto que isso habilita ao usuário isolar
-mais que uma variável simultâneamente.  Isso pode ser útil, por
-exemplo, se se for tentado mudar variáveis em uma integração
-múltipla, e que mudança de variável envolvendo duas ou mais das
-variáveis de integração.  Essa função é chamada automaticamente de
-@file{simplification/disol.mac}.  Uma demostração está disponível através de
+@'e similar a @code{isolate (@var{expr}, @var{x})}
+exceto que isso habilita ao usu@'ario isolar
+mais que uma vari@'avel simultâneamente.  Isso pode ser @'util, por
+exemplo, se se for tentado mudar vari@'aveis em uma integra@,{c}@~ao
+m@'ultipla, e em mudan@,{c}a de vari@'avel envolvendo duas ou mais das
+vari@'aveis de integra@,{c}@~ao.  Essa fun@,{c}@~ao @'e chamada automaticamente de
+@file{simplification/disol.mac}.  Uma demostra@,{c}@~ao est@'a dispon@'ivel atrav@'es de
 @code{demo("disol")$}.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} dispform (@var{expr})
-Retorna a representação externa de @var{expr} com relação a seu
-principal operador.  Isso pode ser útil em conjunçào com @code{part} que
-também lida com a representação externa.  Suponha @var{expr} seja -A .
-Então a representação interna de @var{expr} é  "*"(-1,A), enquanto que
-a representaçào externa é "-"(A). @code{dispform (@var{expr}, all)} converte a
-expressão inteira (não apenas o nível mais alto) para o formato externo.  Por
-exemplo, se @code{expr: sin (sqrt (x))}, tentào @code{freeof (sqrt, expr)} e
+Retorna a representa@,{c}@~ao externa de @var{expr} com rela@,{c}@~ao a seu
+principal operador.  Isso pode ser @'util em conjun@,{c}@`ao com @code{part} que
+tamb@'em lida com a representa@,{c}@~ao externa.  Suponha que @var{expr} seja -A .
+Ent@~ao a representa@,{c}@~ao interna de @var{expr} @'e  "*"(-1,A), enquanto que
+a representa@,{c}@`ao externa @'e "-"(A). @code{dispform (@var{expr}, all)} converte a
+express@~ao inteira (n@~ao apenas o n@'ivel mais alto) para o formato externo.  Por
+exemplo, se @code{expr: sin (sqrt (x))}, ent@~ao @code{freeof (sqrt, expr)} e
 @code{freeof (sqrt, dispform (expr))} fornece @code{true}, enquanto
 @code{freeof (sqrt, dispform (expr, all))} fornece @code{false}.
 
@@ -691,12 +727,12 @@ exemplo, se @code{expr: sin (sqrt (x))}, tentào @code{freeof (sqrt, expr)} e
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} distrib (@var{expr})
-Distribue adições sobre produtos.  Isso difere de @code{expand}
-no que isso trabalha em somente no nível mais alto de uma expressão, i.e., isso não
-é recursivo e isso é mais rápido que @code{expand}.  Isso difere de @code{multthru} no
-que isso expande todas as adições naquele nível.
+Distribue adi@,{c}@~oes sobre produtos.  @code{distrib} difere de @code{expand}
+no fato de que @code{distrib} trabalha em somente no n@'ivel mais alto de uma express@~ao, i.e., @code{distrib} n@~ao
+@'e recursiva e @code{distrib} @'e mais r@'apida que @code{expand}.  @code{distrib} difere de @code{multthru} no
+que @code{distrib} expande todas as adi@,{c}@~oes naquele n@'ivel.
 
-Examples:
+Exemplos:
 
 @example
 (%i1) distrib ((a+b) * (c+d));
@@ -717,10 +753,10 @@ Examples:
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} dpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-Seleciona a mesma subexpressão que @code{part}, mas
-em lugar de apenas retornar aquela subexpressão como seu valor, isso retorna
-a expressão completa com a subexpressão selecionada mostrada dentro
-de uma caixa.  A caixa é atualmente parte da expressão.
+Seleciona a mesma subexpress@~ao que @code{part}, mas
+em lugar de apenas retornar aquela subexpress@~ao como seu valor, isso retorna
+a express@~ao completa com a subexpress@~ao selecionada mostrada dentro
+de uma caixa.  A caixa @'e atualmente parte da express@~ao.
 
 @example
 (%i1) dpart (x+y/z^2, 1, 2, 1);
@@ -736,71 +772,71 @@ de uma caixa.  A caixa é atualmente parte da expressão.
 
 @c PROBABLY MORE TO BE SAID HERE
 @deffn {Fun@value{cedilha}@~ao} exp (@var{x})
-Representa função exponencial.  
-Instâncias de @code{exp (@var{x})} em uma entrada são simplificadas para @code{%e^@var{x}};
-@code{exp} não aparece em expressões simplificadas.
+Representa fun@,{c}@~ao exponencial.  
+Instâncias de @code{exp (@var{x})} em uma entrada s@~ao simplificadas para @code{%e^@var{x}};
+@code{exp} n@~ao aparece em express@~oes simplificadas.
 
-@code{demoivre} se @code{true} faz com que @code{%e^(a + b %i)} para simplificar para
+@code{demoivre} se @code{true} faz com que @code{%e^(a + b %i)} simplificar para
 @code{%e^(a (cos(b) + %i sin(b)))} se @code{b} for livre de @code{%i}. veja @code{demoivre}.
 
 @code{%emode}, quando @code{true}, 
 faz com que @code{%e^(%pi %i x)} seja simplificado. Veja @code{%emode}.
 
-@code{%enumer}, quando @code{true} faz com que @code{%e} seja substituído por
+@code{%enumer}, quando @code{true} faz com que @code{%e} seja substitu@'ido por
 2.718...  quando @code{numer} for @code{true}. Veja @code{%enumer}.
 
 @c NEED EXAMPLES HERE
 @end deffn
 
-@defvr {Variável de op@value{cedilha}@~ao} %emode
-Valor padrão: @code{true}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} %emode
+Valor padr@~ao: @code{true}
 
 Quando @code{%emode} for @code{true},
-@code{%e^(%pi %i x)} é simplificado como
+@code{%e^(%pi %i x)} @'e simplificado como
 segue.
 
 @code{%e^(%pi %i x)} simplifica para @code{cos (%pi x) + %i sin (%pi x)} se @code{x} for um inteiro ou
-um multiplo de 1/2, 1/3, 1/4, ou 1/6, e então adicionalmente simplificado.
+um multiplo de 1/2, 1/3, 1/4, ou 1/6, e ent@~ao @'e adicionalmente simplificado.
 
-Para outro @code{x} numérico,
-@code{%e^(%pi %i x)} simplifica para @code{%e^(%pi %i y)} onde @code{y} é @code{x - 2 k}
+Para outro @code{x} num@'erico,
+@code{%e^(%pi %i x)} simplifica para @code{%e^(%pi %i y)} onde @code{y} @'e @code{x - 2 k}
 para algum inteiro @code{k} tal que @code{abs(y) < 1}.  
 
 Quando @code{%emode} for @code{false}, nenhuma
-simplificação adicional de @code{%e^(%pi %i x)} é realizada.
+simplifica@,{c}@~ao adicional de @code{%e^(%pi %i x)} @'e realizada.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variável de op@value{cedilha}@~ao} %enumer
-Valor padrão: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} %enumer
+Valor padr@~ao: @code{false}
 
 Quando @code{%enumer} for @code{true},
-@code{%e} é substituido por seu valor numérico
-2.718...  quando @code{numer} for @code{true}. 
+@code{%e} @'e substituido por seu valor num@'erico
+2.718...  mesmo que @code{numer} seja @code{true}. 
 
-Quando @code{%enumer} for @code{false}, essa substituição é realizada
-somente se o expoente em @code{%e^x} avaliar para um número.
+Quando @code{%enumer} for @code{false}, essa substitui@,{c}@~ao @'e realizada
+somente se o expoente em @code{%e^x} avaliar para um n@'umero.
 
-Veja também @code{ev} e @code{numer}.
+Veja tamb@'em @code{ev} e @code{numer}.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variável de op@value{cedilha}@~ao} exptisolate
-Valor padrão: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} exptisolate
+Valor padr@~ao: @code{false}
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 @code{exptisolate}, quando @code{true}, faz com que @code{isolate (expr, var)}
-examine expoentes de átomos (tais como @code{%e}) que contenham @code{var}.
+examine expoentes de @'atomos (tais como @code{%e}) que contenham @code{var}.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variável de op@value{cedilha}@~ao} exptsubst
-Valor padrão: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} exptsubst
+Valor padr@~ao: @code{false}
 
-@code{exptsubst}, quando @code{true}, permite substituições tais como @code{y}
+@code{exptsubst}, quando @code{true}, permite substitui@,{c}@~oes tais como @code{y}
 para @code{%e^x} em @code{%e^(a x)}.
 
 @c NEED EXAMPLES HERE
@@ -809,39 +845,39 @@ para @code{%e^x} em @code{%e^(a x)}.
 @deffn {Fun@value{cedilha}@~ao} freeof (@var{x_1}, ..., @var{x_n}, @var{expr})
 @code{freeof (@var{x_1}, @var{expr})}
 Retorna @code{true}
-se nenhuma subexpressão de @var{expr} for igual a @var{x_1}
-ou se @var{x_1} ocorrer somente uma variável que não tenha associação fora da expressão @var{expr},
+se nenhuma subexpress@~ao de @var{expr} for igual a @var{x_1}
+ou se @var{x_1} ocorrer somente uma vari@'avel que n@~ao tenha associa@,{c}@~ao fora da express@~ao @var{expr},
 e retorna @code{false} de outra forma.
 
 @code{freeof (@var{x_1}, ..., @var{x_n}, @var{expr})}
-é equivalente a @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
+@'e equivalente a @code{freeof (@var{x_1}, @var{expr}) and ... and freeof (@var{x_n}, @var{expr})}.
 
 Os argumentos @var{x_1}, ..., @var{x_n} 
-podem ser nomes de funções e variáveis, nomes subscritos,
-operadores (empacotados em aspas duplas), ou expressões gerais.
-@code{freeof} avalia seus documentos.
+podem ser nomes de fun@,{c}@~oes e vari@'aveis, nomes subscritos,
+operadores (empacotados em aspas duplas), ou express@~oes gerais.
+@code{freeof} avalia seus argumentos.
 
-@code{freeof} opera somente sobre @var{expr} como isso representa (após simplificação e avaliação) e
-não tenta determinar se alguma expressão equivalente pode fornecer um resultado diferente.
-Em particular, simplificação pode retornar uma expressão equivalente mas diferente que compreende
+@code{freeof} opera somente sobre @var{expr} como isso representa (ap@'os simplifica@,{c}@~ao e avalia@,{c}@~ao) e
+n@~ao tenta determinar se alguma express@~ao equivalente pode fornecer um resultado diferente.
+Em particular, simplifica@,{c}@~ao pode retornar uma express@~ao equivalente mas diferente que compreende
 alguns diferentes elementos da forma original de @var{expr}.
 
-Uma variável é uma variável dummy em uma expressão se não tiver associação fora da expressão.
-Variáveis dummy recoreconhecidas através de @code{freeof} são
-o índice de um somatório ou produtório, o limite da variável em @code{limit},
-a variável de integração na forma de integral definida de @code{integrate},
-a variável original em @code{laplace},
-variáveis formais em expressoes @code{at},
-e argumentos em expressões @code{lambda}.
-Variáveis locais em @code{block} não são reconhecidas por @code{freeof} como variáveis dummy;
-isso é um bug.
+Uma vari@'avel @'e uma vari@'avel dummy em uma express@~ao se n@~ao tiver associa@,{c}@~ao fora da express@~ao.
+Vari@'aveis dummy recoreconhecidas atrav@'es de @code{freeof} s@~ao
+o @'indice de um somat@'orio ou produt@'orio, o limite da vari@'avel em @code{limit},
+a vari@'avel de integra@,{c}@~ao na forma de integral definida de @code{integrate},
+a vari@'avel original em @code{laplace},
+vari@'aveis formais em expressoes @code{at},
+e argumentos em express@~oes @code{lambda}.
+Vari@'aveis locais em @code{block} n@~ao s@~ao reconhecidas por @code{freeof} como vari@'aveis dummy;
+isso @'e um bug.
 
-A forma indefinida de @code{integrate} é @i{not} livre de suas variáveis de integração.
+A forma indefinida de @code{integrate} @i{not} @'e livre de suas vari@'aveis de integra@,{c}@~ao.
 
 @itemize @bullet
 @item
-Argumentos são nomes de funções, variáveis, nomes subscritos, operadores, e expressões.
-@code{freeof (a, b, expr)} é equivalente a
+Argumentos s@~ao nomes de fun@,{c}@~oes, vari@'aveis, nomes subscritos, operadores, e express@~oes.
+@code{freeof (a, b, expr)} @'e equivalente a
 @code{freeof (a, expr) and freeof (b, expr)}.
 
 @example
@@ -876,8 +912,8 @@ Argumentos são nomes de funções, variáveis, nomes subscritos, operadores, e expr
 @end example
 
 @item
-@code{freeof} não considera expressões equivalentes.
-Simplificação pode retornar uma expressão equivalente mas difeente.
+@code{freeof} n@~ao considera express@~oes equivalentes.
+Simplifica@,{c}@~ao pode retornar uma express@~ao equivalente mas diferente.
 
 @example
 (%i1) expr: (a+b)^5$
@@ -895,8 +931,8 @@ Simplificação pode retornar uma expressão equivalente mas difeente.
 (%o6)                         true
 @end example
 
-@item Um somatório ou uma integral definida está livre de uma variável dummy.
-Uma integral indefinida não é livre de suas variáveis de integração.
+@item Um somat@'orio ou uma integral definida est@'a livre de uma vari@'avel dummy.
+Uma integral indefinida n@~ao @'e livre de suas vari@'aveis de integra@,{c}@~ao.
 
 @example
 (%i1) freeof (i, 'sum (f(i), i, 0, n));
@@ -914,19 +950,19 @@ Uma integral indefinida não é livre de suas variáveis de integração.
 @deffn {Fun@value{cedilha}@~ao} genfact (@var{x}, @var{y}, @var{z})
 Retorna o fatorial generalizado, definido como
 @code{x (x-z) (x - 2 z) ... (x - (y - 1) z)}.  Dessa forma, para integral @var{x},
-@code{genfact (x, x, 1) = x!} and @code{genfact (x, x/2, 2) = x!!}.
+@code{genfact (x, x, 1) = x!} e @code{genfact (x, x/2, 2) = x!!}.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} imagpart (@var{expr})
-Retorna a parte imaginária da expressão @var{expr}.
+Retorna a parte imagin@'aria da express@~ao @var{expr}.
 
-@code{imagpart} é uma função computacional,
-não uma função de simplificação.
+@code{imagpart} @'e uma fun@,{c}@~ao computacional,
+n@~ao uma fun@,{c}@~ao de simplifica@,{c}@~ao.
 @c PROBABLY NEED TO EXPLAIN IMPLICATIONS OF ABOVE STATEMENT
 @c SEE ALSO SF BUG REPORT # 902290
 
-Veja também @code{abs}, @code{carg}, @code{polarform}, @code{rectform},
+Veja tamb@'em @code{abs}, @code{carg}, @code{polarform}, @code{rectform},
 e @code{realpart}.
 
 @c NEED EXAMPLES HERE
@@ -936,52 +972,52 @@ e @code{realpart}.
 @deffnx {Fun@value{cedilha}@~ao} infix (@var{op}, @var{lbp}, @var{rbp})
 @deffnx {Fun@value{cedilha}@~ao} infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})
 Declara @var{op} para ser um operador infixo.
-Um operador infixo é uma função de dois argumentos,
-com o nome da função escrito entre os argumentos.
-Por exemplo, o operador de subtração @code{-} é um operador infixo.
+Um operador infixo @'e uma fun@,{c}@~ao de dois argumentos,
+com o nome da fun@,{c}@~ao escrito entre os argumentos.
+Por exemplo, o operador de subtra@,{c}@~ao @code{-} @'e um operador infixo.
 
 @code{infix (@var{op})} declara @var{op} para ser um operador infixo
-com expoentes associados padrão (esquerdo e direito ambos iguais a 180)
-e podendo ser qualquer entre prefixado, infixado, posfixado, nário, 
+com expoentes associados padr@~ao (esquerdo e direito ambos iguais a 180)
+e podendo ser qualquer entre prefixado, infixado, posfixado, n@'ario, 
 matchfix e nofix (esquerdo e direito ambos iguais a @code{any}).
 @c HOW IS pos DIFFERENT FROM lpos AND rpos ??
 
 @code{infix (@var{op}, @var{lbp}, @var{rbp})} declara @var{op} para ser um operador infixo
 com expoentes associados esquerdo e diretio equilibrados
-e podendo ser qualquer entre prefixado, infixado, posfixado, nário, 
+e podendo ser qualquer entre prefixado, infixado, posfixado, n@'ario, 
 matchfix e nofix (esquerdo e direito ambos iguais a @code{any}).
 
 @code{infix (@var{op}, @var{lbp}, @var{rbp}, @var{lpos}, @var{rpos}, @var{pos})}
 declara @var{op} para ser um operdor infixo
-com expoentes associados padrão e podendo ser um entre 
-prefixado, infixado, posfixado, nário, matchfix e nofix.
+com expoentes associados padr@~ao e podendo ser um entre 
+prefixado, infixado, posfixado, n@'ario, matchfix e nofix.
 
-A precedência de @var{op} com relação a outros operadores
-derivam dos espoentes associados diretiro e esquerdo dos operadores em questão.
+A preced@^encia de @var{op} com rela@,{c}@~ao a outros operadores
+derivam dos expoentes associados diretiro e esquerdo dos operadores em quest@~ao.
 Se os expoentes associados esquerdo e direito de @var{op} forem ambos maiores
 que o expoente associado esquerdo e o direito de algum outro operador,
-então @var{op} tem prededência sobre o outro operador.
-Se os expoentes associados não forem ambos maior ou menor,
-alguma relação mais complicada ocorre.
+ent@~ao @var{op} tem preded@^encia sobre o outro operador.
+Se os expoentes associados n@~ao forem ambos maior ou menor,
+alguma rela@,{c}@~ao mais complicada ocorre.
 
 A associatividade de @var{op} depende de seus expoentes associados.
 Maior expoente associado esquerdo (@var{eae}) implica uma instância de
-@var{op} é avaliadas antes de outros operadores para sua esquerda em uma expressão,
+@var{op} @'e avaliadas antes de outros operadores para sua esquerda em uma express@~ao,
 enquanto maior expoente associado direito (@var{ead}) implica uma instância de
-@var{op} é avaliada antes de outros operadores para sua direita em uma expressão.
-Dessa forma maior @var{eae} torna @var{op} associativo à direita,
-enquanto maior @var{ead} torna @var{op} associativa à esquerda.
-Se @var{lbp} for igual a @var{ead}, @var{op} é associativa à esquerda.
+@var{op} @'e avaliada antes de outros operadores para sua direita em uma express@~ao.
+Dessa forma maior @var{eae} torna @var{op} associativo @`a direita,
+enquanto maior @var{ead} torna @var{op} associativa @`a esquerda.
+Se @var{eae} for igual a @var{ead}, @var{op} @'e associativa @`a esquerda.
 
-Veja também @code{Syntax}.
+Veja tamb@'em @code{Syntax}.
 
 Exemplos:
 
 @itemize @bullet
 @item
 Se os expoentes associados esquerdo e direito de @var{op} forem ambos maiores
-que os expoentes associados à direita e à esquerda de algum outro operador,
-então @var{op} tem precedência sobre o outro operador.
+que os expoentes associados @`a direita e @`a esquerda de algum outro operador,
+ent@~ao @var{op} tem preced@^encia sobre o outro operador.
 @end itemize
 @example
 (%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
@@ -999,8 +1035,8 @@ então @var{op} tem precedência sobre o outro operador.
 
 @itemize @bullet
 @item
-grande @var{eae} torna @var{op} associativa à direita,
-enquanto grande @var{ead} torna @var{op} associativa à esquerda.
+grande @var{eae} torna @var{op} associativa @`a direita,
+enquanto grande @var{ead} torna @var{op} associativa @`a esquerda.
 @end itemize
 @example
 (%i1) "@@"(a, b) := sconcat("(", a, ",", b, ")")$
@@ -1014,42 +1050,42 @@ enquanto grande @var{ead} torna @var{op} associativa à esquerda.
 
 @end deffn
 
-@defvr {Variável de op@value{cedilha}@~ao} inflag
-Velor padrão: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} inflag
+Velor padr@~ao: @code{false}
 
-Quando @code{inflag} for @code{true}, funções para extração de
+Quando @code{inflag} for @code{true}, fun@,{c}@~oes para extra@,{c}@~ao de
 partes inspecionam a forma interna de @code{expr}.
 
-Note que o simplificador re-organiza expressões.
-Thus @code{first (x + y)} returns @code{x} if @code{inflag}
-is @code{true} and @code{y} if @code{inflag} is @code{false}.
-(@code{first (y + x)} gives the same results.)
+Note que o simplificador re-organiza express@~oes.
+Dessa forma @code{first (x + y)} retorna @code{x} se @code{inflag}
+for @code{true} e @code{y} se @code{inflag} for @code{false}.
+(@code{first (y + x)} fornece os mesmos resultados.)
 
-Also, setting @code{inflag} to @code{true} and calling @code{part} or @code{substpart} is
-the same as calling @code{inpart} or @code{substinpart}.
+Tamb@'em, escolhendo @code{inflag} para @code{true} e chamando @code{part} ou @code{substpart} @'e
+o mesmo que chamar @code{inpart} ou @code{substinpart}.
 
-Functions affected by the setting of @code{inflag} are:
+As fun@,{c}@~oes afetadas pela posi@,{c}@~ao do sinalizador @code{inflag} s@~ao:
 @code{part}, @code{substpart}, @code{first}, @code{rest}, @code{last}, @code{length},
-the @code{for} ... @code{in} construct,
-@code{map}, @code{fullmap}, @code{maplist}, @code{reveal} and @code{pickapart}.
+a estrutura @code{for} ... @code{in},
+@code{map}, @code{fullmap}, @code{maplist}, @code{reveal} e @code{pickapart}.
 
 @c NEED EXAMPLES HERE
 @end defvr
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} inpart (@var{expr}, @var{n_1}, ..., @var{n_k})
-is similar to @code{part} but works on the internal
-representation of the expression rather than the displayed form and
-thus may be faster since no formatting is done.  Care should be taken
-with respect to the order of subexpressions in sums and products
-(since the order of variables in the internal form is often different
-from that in the displayed form) and in dealing with unary minus,
-subtraction, and division (since these operators are removed from the
-expression). @code{part (x+y, 0)} or @code{inpart (x+y, 0)} yield @code{+}, though in order to
-refer to the operator it must be enclosed in "s.  For example
+@'E similar a @code{part} mas trabalha sobre a representa@,{c}@~ao
+interna da express@~ao em lugar da forma de exibi@,{c}@~ao e
+dessa forma pode ser mais r@'apida uma vez que nenhuma formata@,{c}@~ao @'e realizada.  Cuidado deve ser tomado
+com rela@,{c}@~ao @`a ordem de subexpress@~oes em adi@,{c}@~oes e produtos
+(uma vez que a ordem das vari@'aveis na forma interna @'e muitas vezes diferente
+daquela na forma mostrada) e no manuseio com menos un@'ario,
+subtra@,{c}@~ao, e divis@~ao (uma vez que esses operadores s@~ao removidos da
+express@~ao). @code{part (x+y, 0)} ou @code{inpart (x+y, 0)} retorna @code{+}, embora com o objetivo de
+referirse ao operador isso deva ser abra@,{c}ado por aspas duplas.  Por exemplo
 @code{... if inpart (%o9,0) = "+" then ...}.
 
-Examples:
+Exemplos:
 
 @example
 (%i1) x + y + w*z;
@@ -1070,31 +1106,31 @@ Examples:
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} isolate (@var{expr}, @var{x})
-Returns @var{expr} with subexpressions which are sums and
-which do not contain var replaced by intermediate expression labels
-(these being atomic symbols like @code{%t1}, @code{%t2}, ...).  This is often useful
-to avoid unnecessary expansion of subexpressions which don't contain
-the variable of interest.  Since the intermediate labels are bound to
-the subexpressions they can all be substituted back by evaluating the
-expression in which they occur.
+Retorna @var{expr} com subexpress@~oes que s@~ao adi@,{c}@~oes e
+que n@~ao possuem @var{x} substituido por r@'otulos de express@~ao intermedi@'aria
+(esses sendo s@'imbolos at@^omicos como @code{%t1}, @code{%t2}, ...).  Isso @'e muitas vezes @'util
+para evitar expans@~oes desnecess@'arias de subexpress@~oes que n@~ao possuam
+a vari@'avel de interesse.  Uma vez que os r@'otulos intermedi@'arios s@~ao associados @`as
+subexpress@~oes eles podem todos ser substitu@'idos de volta por avalia@,{c}@~ao da
+express@~ao em que ocorrerem.
 
-@code{exptisolate} (default value: @code{false}) if @code{true} will cause @code{isolate} to examine exponents of
-atoms (like @code{%e}) which contain var.
+@code{exptisolate} (valor padr@~ao: @code{false}) se @code{true} far@'a com que @code{isolate} examine expoentes de
+@'atomos (como @code{%e}) que contenham @var{x}.
 
-@code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate wrt
-products. See @code{isolate_wrt_times}.
+@code{isolate_wrt_times} se @code{true}, ent@~ao @code{isolate} ir@'a tamb@'em isolar produtos
+wrt. Veja @code{isolate_wrt_times}.
 
-Do @code{example (isolate)} for examples.
+Fa@,{c}a @code{example (isolate)} para exemplos.
 
 @end deffn
 
 @c NEEDS WORK
-@defvr {Variável de op@value{cedilha}@~ao} isolate_wrt_times
-Default value: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} isolate_wrt_times
+Valor padr@~ao: @code{false}
 
-When @code{isolate_wrt_times} is @code{true}, @code{isolate}
-will also isolate wrt products.  E.g. compare both settings of the
-switch on
+Quando @code{isolate_wrt_times} for @code{true}, @code{isolate}
+ir@'a tamb@'em isolar produtos wrt.  E.g. compare ambas as escolhas do
+comutador em
 
 @example
 (%i1) isolate_wrt_times: true$
@@ -1120,25 +1156,25 @@ switch on
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variável de op@value{cedilha}@~ao} listconstvars
-Default value: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} listconstvars
+Valor padr@~ao: @code{false}
 
-When @code{listconstvars} is @code{true}, it will cause @code{listofvars} to
-include @code{%e}, @code{%pi}, @code{%i}, and any variables declared constant in the list
-it returns if they appear in the expression @code{listofvars} is called on.
-The default is to omit these.
+Quando @code{listconstvars} for @code{true}, isso far@'a com que @code{listofvars}
+inclua @code{%e}, @code{%pi}, @code{%i}, e quaisquer vari@'aveis declaradas contantes na lista
+seja retornado se aparecer na express@~ao que chamar @code{listofvars}.
+O comportamento padr@~ao @'e omitir isso.
 
 @end defvr
 
-@defvr {Variável de op@value{cedilha}@~ao} listdummyvars
-Default value: @code{true}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} listdummyvars
+Valor padr@~ao: @code{true}
 
-When @code{listdummyvars} is @code{false}, "dummy variables" in the
-expression will not be included in the list returned by @code{listofvars}.
-(The meaning of "dummy variables" is as given in @code{freeof}.
-"Dummy variables" are mathematical things like the index of a sum or
-product, the limit variable, and the definite integration variable.)
-Example:
+Quando @code{listdummyvars} for @code{false}, "vari@'aveis dummy" na
+express@~ao n@~ao ser@~ao inclu@'idasna lista retornada por @code{listofvars}.
+(O significado de "vari@'avel dummy" @'e o mesmo que em @code{freeof}.
+"Vari@'aveis dummy" s@~ao coisas matem@'aticas como o @'indice de um somat@'orio ou
+produt@'orio, a vari@'avel limite, e a vari@'avel da integral definida.)
+Exemplo:
 
 @example
 (%i1) listdummyvars: true$
@@ -1153,11 +1189,11 @@ Example:
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} listofvars (@var{expr})
-Returns a list of the variables in @var{expr}.
+Retorna uma lista de vari@'aveis em @var{expr}.
 
-@code{listconstvars} if @code{true} causes @code{listofvars} to include @code{%e}, @code{%pi},
-@code{%i}, and any variables declared constant in the list it returns if they
-appear in @var{expr}.  The default is to omit these.
+@code{listconstvars} se @code{true} faz com que @code{listofvars} inclua @code{%e}, @code{%pi},
+@code{%i}, e quaisquer vari@'aveis declaradas constantes na lista @'e retornada se
+aparecer em @var{expr}.  O comportamento padr@~ao @'e omitir isso.
 
 @example
 (%i1) listofvars (f (x[1]+y) / g^(2+a));
@@ -1168,14 +1204,14 @@ appear in @var{expr}.  The default is to omit these.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} lfreeof (@var{list}, @var{expr})
-For each member @var{m} of list, calls @code{freeof (@var{m}, @var{expr})}.
-It returns @code{false} if any call to @code{freeof} does and @code{true} otherwise.
+@deffn {Fun@value{cedilha}@~ao} lfreeof (@var{lista}, @var{expr})
+Para cada um dos membros @var{m} de lista, chama @code{freeof (@var{m}, @var{expr})}.
+Retorna @code{false} se qualquer chamada a @code{freeof} for feita e @code{true} de outra forma.
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} lopow (@var{expr}, @var{x})
-Returns the lowest exponent of @var{x} which explicitly appears in
-@var{expr}.  Thus
+Retorna o menor expoente de @var{x} que explicitamente aparecer em
+@var{expr}.  Dessa forma
 
 @example
 (%i1) lopow ((x+y)^2 + (x+y)^a, x+y);
@@ -1185,29 +1221,29 @@ Returns the lowest exponent of @var{x} which explicitly appears in
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} lpart (@var{label}, @var{expr}, @var{n_1}, ..., @var{n_k})
-is similar to @code{dpart} but uses a
-labelled box. A labelled box is similar to the one produced by @code{dpart}
-but it has a name in the top line.
+@deffn {Fun@value{cedilha}@~ao} lpart (@var{r@'otulo}, @var{expr}, @var{n_1}, ..., @var{n_k})
+@'e similar a @code{dpart} mas usa uma
+caixa rotulada. Uma moldura rotulada @'e similar @`a que @'e produzida por @code{dpart}
+mas a produzida por @code{lpart} tem o nome na linha do topo.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} multthru (@var{expr})
 @deffnx {Fun@value{cedilha}@~ao} multthru (@var{expr_1}, @var{expr_2})
-Multiplies a factor (which should be a sum) of @var{expr} by
-the other factors of @var{expr}.  That is, @var{expr} is @code{@var{f_1} @var{f_2} ... @var{f_n}}
-where at least
-one factor, say @var{f_i}, is a sum of terms.  Each term in that sum is
-multiplied by the other factors in the product.  (Namely all the
-factors except @var{f_i}).  @code{multthru} does not expand exponentiated sums.
-This function is the fastest way to distribute products (commutative
-or noncommutative) over sums.  Since quotients are represented as
-products @code{multthru} can be used to divide sums by products as well.
+Multiplica um fator (que pode ser uma adi@,{c}@~ao) de @var{expr} pelos
+outros fatores de @var{expr}.  Isto @'e, @var{expr} @'e @code{@var{f_1} @var{f_2} ... @var{f_n}}
+onde ao menos
+um fator, digamos @var{f_i}, @'e uma soma de termos.  Cada termo naquela soma @'e
+multiplicado por outros fatores no produto.  (A saber todos os
+fatores exceto @var{f_i}).  @code{multthru} n@~ao expande somas exponenciais.
+Essa fun@,{c}@~ao @'e o caminho mais r@'apido para distribuir produtos (comutativos
+ou n@~ao) sobre adi@,{c}@~oes.  Uma vez que quocientes s@~ao representados como
+produtos @code{multthru} podem ser usados para dividir adi@,{c}@~oes por produtos tamb@'em.
 
-@code{multthru (@var{expr_1}, @var{expr_2})} multiplies each term in @var{expr_2} (which should be a
-sum or an equation) by @var{expr_1}.  If @var{expr_1} is not itself a sum then this
-form is equivalent to @code{multthru (@var{expr_1}*@var{expr_2})}.
+@code{multthru (@var{expr_1}, @var{expr_2})} multiplica cada termo em @var{expr_2} (que pode ser uma
+adi@,{c}@~ao ou uma equ@,{c}@~ao) por @var{expr_1}.  Se @var{expr_1} n@~ao for por si mesmo uma adi@,{c}@~ao ent@~ao essa
+forma @'e equivalente a @code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @example
 (%i1) x/(x-y)^2 - 1/(x-y) - f(x)/(x-y)^3;
@@ -1243,42 +1279,42 @@ form is equivalent to @code{multthru (@var{expr_1}*@var{expr_2})}.
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} nounify (@var{f})
-Returns the noun form of the function name @var{f}.  This is
-needed if one wishes to refer to the name of a verb function as if it
-were a noun.  Note that some verb functions will return their noun
-forms if they can't be evaluated for certain arguments.  This is also
-the form returned if a function call is preceded by a quote.
+Retorna a forma substantiva do nome da fun@,{c}@~ao @var{f}.  Isso @'e
+necess@'ario se se quer referir ao nome de uma fun@,{c}@~ao verbo como se esse nome
+fosse um substantivo.  Note que algumas fun@,{c}@~oes verbos ir@~ao retornar sua forma
+substantiva sen@~ao puderem ser avaliadas para certos argumentos.  A forma substantiva @'e tamb@'em
+a forma retornada se uma chamada de fun@,{c}@~ao @'e precedida por um ap@'ostrofo.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} nterms (@var{expr})
-Returns the number of terms that @var{expr} would have if it were
-fully expanded out and no cancellations or combination of terms
-occurred.
-Note that expressions like @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc.
-count as just one term regardless of how many terms @var{expr} has (if it is a
-sum).
+Retorna o n@'umero de termos que @var{expr} pode ter se for
+completamente expandida e nenhum cancelamento ou combina@,{c}@~ao de termos
+acontecer.
+Note express@~oes como @code{sin (@var{expr})}, @code{sqrt (@var{expr})}, @code{exp (@var{expr})}, etc.
+contam como apenas um termo independentemente de quantos termos @var{expr} tenha (se @var{expr} for uma
+adi@,{c}@~ao).
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} op (@var{expr})
-Returns the main operator of the expression @var{expr}.
-@code{op (@var{expr})} is equivalent to @code{part (@var{expr}, 0)}. 
+Retorna o operador principal da express@~ao @var{expr}.
+@code{op (@var{expr})} @'e equivalente a @code{part (@var{expr}, 0)}. 
 
-@code{op} returns a string if the main operator is
-a built-in or user-defined
-prefix, binary or n-ary infix, postfix, matchfix, or nofix operator.
-Otherwise @code{op} returns a symbol.
+@code{op} retorna uma seq@"u@^encia de caracteres se o operador principal for uma
+operador interno ou definido pelo usu@'ario como
+prefixado, bin@'ario ou n-@'ario infixo, posfixado, matchfix ou nofix.
+De outra forma @code{op} retorna um s@'imbolo.
 
-@code{op} observes the value of the global flag @code{inflag}.
+@code{op} observa o valor do sinalizador global @code{inflag}.
 
-@code{op} evaluates it argument.
+@code{op} avalia seus argumentos.
 
-See also @code{args}.
+Veja tamb@'em @code{args}.
 
-Examples:
+Exemplos:
 
 @c ===beg===
 @c ?stringdisp: true$
@@ -1324,118 +1360,118 @@ Examples:
 @deffn {Fun@value{cedilha}@~ao} operatorp (@var{expr}, @var{op})
 @deffnx {Fun@value{cedilha}@~ao} operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])
 
-@code{operatorp (@var{expr}, @var{op})} returns @code{true}
-if @var{op} is equal to the operator of @var{expr}.
+@code{operatorp (@var{expr}, @var{op})} retorna @code{true}
+se @var{op} for igual ao operador de @var{expr}.
 
-@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} returns @code{true}
-if some element @var{op_1}, ..., @var{op_n} is equal to the operator of @var{expr}.
+@code{operatorp (@var{expr}, [@var{op_1}, ..., @var{op_n}])} retorna @code{true}
+se algum elementos de @var{op_1}, ..., @var{op_n} for igual ao operador de @var{expr}.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} optimize (@var{expr})
-Returns an expression that produces the same value and
-side effects as @var{expr} but does so more efficiently by avoiding the
-recomputation of common subexpressions.  @code{optimize} also has the side
-effect of "collapsing" its argument so that all common subexpressions
-are shared.
-Do @code{example (optimize)} for examples.
+Retorna uma express@~ao que produz o mesmo valor e
+efeito que @var{expr} mas faz de forma mais eficientemente por evitar a
+recomputa@,{c}@~ao de subexpress@~oes comuns.  @code{optimize} tamb@'em tem o mesmo
+efeito de "colapsar" seus argumentos de forma que todas as subexpress@~oes comuns
+s@~ao compartilhadas.
+Fa@,{c}a @code{example (optimize)} para exemplos.
 
 @end deffn
 
-@defvr {Variável de op@value{cedilha}@~ao} optimprefix
-Default value: @code{%}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} optimprefix
+Valor padr@~ao: @code{%}
 
-@code{optimprefix} is the prefix used for generated symbols by
-the @code{optimize} command.
+@code{optimprefix} @'e o prefixo usado para s@'imbolos gerados pelo
+comando @code{optimize}.
 
 @end defvr
 
 @c NEEDS WORK
 @c WHAT DOES ">" MEAN IN THIS CONTEXT ??
 @deffn {Fun@value{cedilha}@~ao} ordergreat (@var{v_1}, ..., @var{v_n})
-Sets up aliases for the variables @var{v_1}, ..., @var{v_n}
-such that @var{v_1} > @var{v_2} > ...  > @var{v_n},
-and @var{v_n} > any other variable not mentioned as an
-argument.
+Escolhe aliases para as vari@'aveis @var{v_1}, ..., @var{v_n}
+tais que @var{v_1} > @var{v_2} > ...  > @var{v_n},
+e @var{v_n} > qualquer outra vari@'avel n@~ao mencionada como um
+argumento.
 
-See also @code{orderless}.
+Veja tamb@'em @code{orderless}.
 
 @end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
 @deffn {Fun@value{cedilha}@~ao} ordergreatp (@var{expr_1}, @var{expr_2})
-Returns @code{true} if @var{expr_2} precedes @var{expr_1} in the
-ordering set up with the @code{ordergreat} function.
+Retorna @code{true} se @var{expr_2} precede @var{expr_1} na
+ordena@,{c}@~ao escolhida com a fun@,{c}@~ao @code{ordergreat}.
 
 @end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "<" MEAN IN THIS CONTEXT ??
 @deffn {Fun@value{cedilha}@~ao} orderless (@var{v_1}, ..., @var{v_n})
-Sets up aliases for the variables @var{v_1}, ..., @var{v_n}
-such that @var{v_1} < @var{v_2} < ...  < @var{v_n},
-and @var{v_n} < any other variable not mentioned as an
-argument.
+Escolhe aliases para as vari@'aveis @var{v_1}, ..., @var{v_n}
+tais que @var{v_1} < @var{v_2} < ...  < @var{v_n},
+and @var{v_n} < qualquer outra vari@'avel n@~ao mencionada como um
+argumento.
 
 @c EXPRESS THIS ORDER IN A MORE COMPREHENSIBLE FASHION
-Thus the complete ordering scale is: numerical constants <
-declared constants < declared scalars < first argument to @code{orderless} <
-...  < last argument to @code{orderless} < variables which begin with A < ...
-< variables which begin with Z < last argument to @code{ordergreat} <
- ... < first argument to @code{ordergreat} < declared @code{mainvar}s.
+Dessa forma a escala de ordena@,{c}@~ao completa @'e: constantes num@'ericas <
+constantes declaradas < escalares declarados < primeiro argumento para @code{orderless} <
+...  < @'ultimo argumento para @code{orderless} < vari@'aveis que come@,{c}am com A < ...
+< vari@'aveis que come@,{c}am com Z < @'ultimo argumento para @code{ordergreat} <
+ ... < primeiro argumento para @code{ordergreat} < @code{mainvar}s - vari@'aveis principais declaradas.
 
-See also @code{ordergreat} and @code{mainvar}.
+Veja tamb@'em @code{ordergreat} e @code{mainvar}.
 
 @end deffn
 
 @c NEEDS WORK
 @c WHAT DOES "PRECEDES" MEAN IN THIS CONTEXT ??
 @deffn {Fun@value{cedilha}@~ao} orderlessp (@var{expr_1}, @var{expr_2})
-Returns @code{true} if @var{expr_1} precedes @var{expr_2} in the
-ordering set up by the @code{orderless} command.
+Retorna @code{true} se @var{expr_1} precede @var{expr_2} na
+ordena@,{c}@~ao escolhida pelo comando @code{orderless}.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} part (@var{expr}, @var{n_1}, ..., @var{n_k})
-Returns parts of the displayed form of @code{expr}. It
-obtains the part of @code{expr} as specified by the indices @var{n_1}, ..., @var{n_k}.  First
-part @var{n_1} of @code{expr} is obtained, then part @var{n_2} of that, etc.  The result is
-part @var{n_k} of ... part @var{n_2} of part @var{n_1} of @code{expr}.
+Retorna partes da forma exibida de @code{expr}. Essa fun@,{c}@~ao
+obt@'em a parte de @code{expr} como especificado pelos @'indices @var{n_1}, ..., @var{n_k}.  A primeira
+parte @var{n_1} de @code{expr} @'e obtida, ent@~ao a parte @var{n_2} daquela  @'e obtida, etc.  O resultado @'e
+parte @var{n_k} de ... parte @var{n_2} da parte @var{n_1} da @code{expr}.
 
-@code{part} can be used to obtain an element of a list, a row of a matrix, etc.
+@code{part} pode ser usada para obter um elemento de uma lista, uma linha de uma matriz, etc.
 
 @c "If the last argument to a part function" => FOLLOWING APPLIES TO OTHER FUNCTIONS ??
 @c ATTEMPT TO VERIFY; IF SO, COPY THIS COMMENTARY TO DESCRIPTIONS OF OTHER FUNCTIONS
-If the last argument to a part function is a list of indices then
-several subexpressions are picked out, each one corresponding to an
-index of the list.  Thus @code{part (x + y + z, [1, 3])} is @code{z+x}.
+Se o @'ultimo argumento para uma fun@,{c}@~ao @code{part} for uma lista de @'indices ent@~ao
+muitas subexpress@~oes ser@~ao pin@,{c}adas, cada uma correspondendo a um
+@'indice da lista.  Dessa forma @code{part (x + y + z, [1, 3])} @'e @code{z+x}.
 
-@code{piece} holds the last expression selected when using the part
-functions.  It is set during the execution of the function and thus
-may be referred to in the function itself as shown below.
+@code{piece} mant@'em a @'ultima express@~ao selecionada quando usando as fun@,{c}@~oes
+@code{part}.  Isso @'e escolhido durante a execu@,{c}@~ao da fun@,{c}@~ao e dessa forma
+pode referir-se @`a fun@,{c}@~ao em si mesma como mostrado abaixo.
 
-If @code{partswitch} is set to @code{true} then @code{end} is returned when a
-selected part of an expression doesn't exist, otherwise an error
-message is given.
+Se @code{partswitch} for escolhido para @code{true} ent@~ao @code{end} @'e retornado quando uma
+parte selecionada de uma express@~ao n@~ao existir, de outra forma uma mensagem de
+erro @'e forncecida.
 
 @c NEED "SEE ALSO" POINTING TO ALL OTHER PART FUNCTIONS
 
-Example: @code{part (z+2*y, 2, 1)} yields 2.
+Exemplo: @code{part (z+2*y, 2, 1)} retorna 2.
 
 @c MERGE IN example (part) OUTPUT HERE
-@code{example (part)} displays additional examples.
+@code{example (part)} mostra exemplos adicionais.
 
 @end deffn
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} partition (@var{expr}, @var{x})
-Returns a list of two expressions.  They are (1)
-the factors of @var{expr} (if it is a product), the terms of @var{expr} (if it is a
-sum), or the list (if it is a list) which don't contain var and, (2)
-the factors, terms, or list which do.
+Retorna uma lista de duas express@~oes.  Elas s@~ao (1)
+os fatores de @var{expr} (se essa express@~ao for um produto), os termos de @var{expr} (se isso for uma
+adi@,{c}@~ao), ou a lista (se isso for uma lsita) que n@~ao contiver @code{var} e, (2)
+os fatores, termos, ou lista que faz.
 
 @example
 (%i1) partition (2*a*x*f(x), x);
@@ -1449,25 +1485,25 @@ the factors, terms, or list which do.
 @end deffn
 
 @c NEEDS EXAMPLE
-@defvr {Variável de op@value{cedilha}@~ao} partswitch
-Default value: @code{false}
+@defvr {Vari@'avel de op@value{cedilha}@~ao} partswitch
+Valor padr@~ao: @code{false}
 
-When @code{partswitch} is @code{true}, @code{end} is returned
-when a selected part of an expression doesn't exist, otherwise an
-error message is given.
+Quando @code{partswitch} for @code{true}, @code{end} @'e retornado
+quando uma parte selecionada de uma express@~ao n@~ao existir, de outra forma uma
+mensagem de erro @'e fornecida.
 
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} pickapart (@var{expr}, @var{n})
-Assigns intermediate expression labels to subexpressions of
-@var{expr} at depth @var{n}, an integer.
-Subexpressions at greater or lesser depths are not assigned labels.
-@code{pickapart} returns an expression in terms of intermediate expressions
-equivalent to the original expression @var{expr}.
+Atribui r@'otulos de express@~ao intermedi@'aria a subexpress@~oes de
+@var{expr} de comprimento @var{n}, um inteiro.
+A subexpress@~oes maiores ou menores n@~ao s@~ao atribuidos r@'otulos.
+@code{pickapart} retorna uma express@~ao em termos de express@~oes intermedi@'arias
+equivalentes @`a express@~ao original @var{expr}.
 
-See also @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, and @code{reveal}.
+Veja tamb@'em @code{part}, @code{dpart}, @code{lpart}, @code{inpart}, e @code{reveal}.
 
-Examples:
+Exemplos:
 
 @example
 (%i1) expr: (a+b)/2 + sin (x^2)/3 - log (1 + sqrt(x+1));
@@ -1551,11 +1587,11 @@ Examples:
 
 @c NEEDS WORK
 @defvr {System variable} piece
-Holds the last expression selected when using the @code{part}
-functions.
+Mant@'em a ultima express@~ao selecionada quando usando fun@,{c}@~oes
+@code{part}.
 @c WHAT DOES THIS MEAN EXACTLY ??
-It is set during the execution of the function and thus
-may be referred to in the function itself.
+Isso @'e escolhido durante a execu@,{c}@~ao da fun@,{c}@~ao e dessa forma
+pode referir-se @`a fun@,{c}@~ao em si mesma.
 
 @c NEED "SEE ALSO" TO POINT TO LIST OF ALL RELEVANT FUNCTIONS
 
@@ -1563,17 +1599,17 @@ may be referred to in the function itself.
 
 @c NEEDS EXAMPLES
 @deffn {Fun@value{cedilha}@~ao} polarform (@var{expr})
-Returns an expression @code{r %e^(%i theta)} equivalent to @var{expr},
-such that @code{r} and @code{theta} are purely real.
+Retorna uma express@~ao @code{r %e^(%i theta)} equivalente a @var{expr},
+tal que @code{r} e @code{theta} sejam puramente reais.
 
 @end deffn
 
 @c ISN'T THERE AN EQUIVALENT FUNCTION SOMEWHERE ??
 @c NEEDS WORK (IF KEPT)
 @deffn {Fun@value{cedilha}@~ao} powers (@var{expr}, @var{x})
-Gives the powers of @var{x} occuring in @var{expr}.
+Fornece os expoentes de @var{x} que ocorrem em express@~ao @var{expr}.
 
-@code{load (powers)} loads this function.
+@code{load (powers)} chama essa fun@,{c}@~ao.
 @c HMM, THERE'S A BUNCH OF MAXIMA FUNCTIONS IN src/powers.lisp ...
 @c FOR SOME REASON src/powers.lisp IS NOT PART OF THE USUAL BUILD -- STRANGE
 
@@ -1592,18 +1628,18 @@ Gives the powers of @var{x} occuring in @var{expr}.
 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Returns the product of the values of @code{expr} as
-the index @var{i} varies from @var{i_0} to @var{i_1}.
+Retorna o produto dos velores de @code{expr} com
+o @'indice @var{i} variando de @var{i_0} a @var{i_1}.
 @c WHAT DOES THIS MEAN EXACTLY ??
-The evaluation is similar to that of @code{sum}.
+A avalia@,{c}@~ao @'e similar @`a que ocorre em @code{sum}.
 
-If @var{i_1} is one less than @var{i_0}, the product is an "empty product" and @code{product} 
-returns 1 rather than reporting an error.  See also @code{prodhack}.
+Se @var{i_1} for um menor que @var{i_0}, o produto @'e um "produto vazio" e @code{product} 
+retorna 1 em lugar de reporta um erro.  Veja tamb@'em @code{prodhack}.
 
-Maxima does not simplify products.
+Maxima n@~ao simplifica produtos.
 @c WELL, WE SHOULD CHANGE THAT.
 
-Example:
+Exemplo:
 
 @example
 (%i1) product (x + i*(i+1)/2, i, 1, 4);
@@ -1614,33 +1650,33 @@ Example:
 
 @c NEEDS EXAMPLES
 @deffn {Fun@value{cedilha}@~ao} realpart (@var{expr})
-Returns the real part of @var{expr}. @code{realpart} and @code{imagpart} will
-work on expressions involving trigonometic and hyperbolic functions,
-as well as square root, logarithm, and exponentiation.
+Retorna a parte real de @var{expr}. @code{realpart} e @code{imagpart} ir@~ao
+trabalhar sobre express@~oes envolvendo fun@,{c}@~oes trigonom@'etricas e hiperb@'olicas,
+bem como ra@'izes quadradas, logar@'itmos, e exponencia@,{c}@~ao.
 
 @end deffn
 
 @c NEEDS EXAMPLES
 @deffn {Fun@value{cedilha}@~ao} rectform (@var{expr})
-Returns an expression @code{a + b %i} equivalent to @var{expr},
-such that @var{a} and @var{b} are purely real.
+Retorna uma express@~ao @code{a + b %i} equivalente a @var{expr},
+tal que @var{a} e @var{b} sejam puramente reais.
 
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} rembox (@var{expr}, unlabelled)
-@deffnx {Fun@value{cedilha}@~ao} rembox (@var{expr}, @var{label})
+@deffnx {Fun@value{cedilha}@~ao} rembox (@var{expr}, @var{r@'otulo})
 @deffnx {Fun@value{cedilha}@~ao} rembox (@var{expr})
-Removes boxes from @var{expr}.
+Remove caixas de @var{expr}.
 
-@code{rembox (@var{expr}, unlabelled)} removes all unlabelled boxes from @var{expr}.
+@code{rembox (@var{expr}, unlabelled)} remove todas as caixas sem r@'otulos de @var{expr}.
 
-@code{rembox (@var{expr}, @var{label})} removes only boxes bearing @var{label}.
+@code{rembox (@var{expr}, @var{r@'otulo})} remove somente caixas contendo @var{r@'otulo}.
 
-@code{rembox (@var{expr})} removes all boxes, labelled and unlabelled.
+@code{rembox (@var{expr})} remove todas as caixas, rotuladas e n@~a rotuladas.
 
-Boxes are drawn by the @code{box}, @code{dpart}, and @code{lpart} functions.
+Caixas s@~ao desenhadas pelas fun@,{c}@~oes @code{box}, @code{dpart}, e @code{lpart}.
 
-Examples:
+Exemplos:
 
 @c ===beg===
 @c expr: (a*d - b*c)/h^2 + sin(%pi*x);
@@ -1710,48 +1746,48 @@ Examples:
 @c NEEDS EXAMPLES
 @c VERY IMPORTANT !!
 @deffn {Fun@value{cedilha}@~ao} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Represents a summation of the values of @var{expr} as
-the index @var{i} varies from @var{i_0} to @var{i_1}.
-Sums may be differentiated, added, subtracted, or multiplied with some
-automatic simplification being performed.
-The noun form @code{'sum} is displayed in sigma notation.
+Representa um somat@'orio dos valores de @var{expr} com
+o @'indice @var{i} variando de @var{i_0} a @var{i_1}.
+Somat@'orios podem ser diferenciados, adicionados, subtra@'idos, ou multiplicados com alguma
+simplifica@,{c}@~ao autom@'atica sendo executada.
+A forma substantiva @code{'sum} @'e mostrada em nota@,{c}@~ao de sigma.
 
-If the upper and lower limits differ by an integer,
-the summand @var{expr} is evaluated for each value of the summation index @var{i},
-and the results are added together.
+Se os limites superiores e inferiores diferirem de um n@'umero inteiro,
+o somatoriando @var{expr} @'e avaliado para cada valor do @'indice do somat@'orio @var{i},
+e os resultados s@~ao adicionados juntos.
 
-Otherwise, if the @code{simpsum} is @code{true} the summation is simplified.
-Simplification may sometimes yield a closed form.
-If the evaluation flag @code{simpsum} is @code{false} or simplification fails,
-the result is a noun form @code{'sum}.
+De outra forma, se a vari@'avel @code{simpsum} for @code{true} o somat@'orio @'e simplificado.
+Simplifica@,{c}@~oes podem algumas vezes retornar uma forma fechada.
+Se o sinalizador de avalia@,{c}@~ao @code{simpsum} for @code{false} ou a simplifica@,{c}@~ao falhar,
+o resultado @'e uma forma substantiva @code{'sum}.
 
-@code{sum} evaluates @var{i_0} and @var{i_1} and quotes @var{i}.
+@code{sum} avalia @var{i_0} e @var{i_1} e coloca um ap@'ostrofo em @var{i}.
 @c EVALUATION OF THE SUMMAND IS A MESS !!
-The summand @var{expr} is quoted under some circumstances,
-or evaluated to greater or lesser degree in others.
+O somatoriando @var{expr} recebe um ap@'ostrofo sob algumas circunstâncias,
+ou @'e avaliado para maior ou menor grau em outras.
 
-If @var{i_1} is one less than @var{i_0}, the sum is a considered an "empty sum" and @code{sum} returns 0 
-rather than reporting an error.
-See also @code{sumhack}.
+Se @var{i_1} @'e um menor que @var{i_0}, a adi@,{c}@~ao @'e considerada um "somat@'orio vazio" e @code{sum} retorna 0
+em lugar de reportar um erro.
+Veja tamb@'m @code{sumhack}.
 
-When the evaluation flag @code{cauchysum} is @code{true},
-the product of summations is expressed as a Cauchy product,
-in which the index of the inner summation is a function of the
-index of the outer one, rather than varying independently.
+Quando o sinalizador de avalia@,{c}@~ao @code{cauchysum} for @code{true},
+o produto de somat@'orios @'e expresso como um produto de Cauchy,
+no qual o @'indice do somat@'orio mais interno @'e uma fun@,{c}@~ao de
+@'indice de um n@'ivel acima, em lugar de variar independentemente.
 
-The global variable @code{genindex} is the alphabetic prefix used to generate the next index of summation,
-when an automatically generated index is needed.
+A vari@'avel global @code{genindex} @'e o prefixo alfab@'etico usado para gerar o pr@'oximo @'indice do somat@'orio,
+quando um @'indice automaticamente gerado for necess@'ario.
 
-@code{gensumnum} is the numeric suffix used to generate the next index of summation,
-when an automatically generated index is needed.
-When @code{gensumnum} is @code{false}, an automatically-generated index is only
-@code{genindex} with no numeric suffix.
+@code{gensumnum} @'e o sufixo num@'erico usando para gerar o pr@'oximo @'indice do somat@'orio,
+quando um @'indice gerado automaticamente for necess@'ario.
+Quando @code{gensumnum} for @code{false}, um @'indice gerado automaticamente @'e somente
+@code{genindex} sem sufixo num@'erico.
 
-See also @code{sumcontract}, @code{intosum},
+Veja tamb@'em @code{sumcontract}, @code{intosum},
 @code{bashindices}, @code{niceindices},
-@code{nouns}, and @code{evflag}.
+@code{nouns}, e @code{evflag}.
 
-Examples:
+Exemplos:
 
 @c ===beg===
 @c sum (i^2, i, 1, 7);
@@ -1796,12 +1832,12 @@ Examples:
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} lsum (@var{expr}, @var{x}, @var{L})
-Represents the sum of @var{expr} for each element @var{x} in @var{L}.
+Representas a adi@,{c}@~ao de @var{expr} a cada elemento @var{x} em @var{L}.
 
-A noun form @code{'lsum} is returned
-if the argument @var{L} does not evaluate to a list.
+Uma forma substantiva @code{'lsum} @'e retornada
+se o argumento @var{L} n@~ao avaliar para uma lista.
 
-Examples:
+Exemplos:
 
 @c ===beg===
 @c lsum (x^i, i, [1, 2, 7]);
@@ -1824,11 +1860,11 @@ Examples:
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} verbify (@var{f})
-Returns the verb form of the function name @var{f}.
+Retorna a forma verbal da fun@,{c}@~ao chamada @var{f}.
 
-See also @code{verb}, @code{noun}, and @code{nounify}.
+Veja tamb@'em @code{verb}, @code{noun}, e @code{nounify}.
 
-Examples:
+Exemplos:
 
 @c ===beg===
 @c verbify ('foo);

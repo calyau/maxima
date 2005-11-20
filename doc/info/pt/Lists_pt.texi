@@ -91,6 +91,44 @@ Retorna uma c@'opia da lista @var{list}.
 
 @end deffn
 
+@deffn {Fun@,{c}@~ao} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+
+Cria uma lista por avalia@,{c}@~ao de @var{form} com @var{x_1} associando a
+cada elemento @var{list_1}, e para cada tal associa@,{c}@~ao anexa @var{x_2}
+para cada elemento de @var{list_2}, ....
+O n@'umero de elementos no resultado ser@'a
+o produto do n@'umero de elementos de cada lista.
+Cada vari@'avel @var{x_i} pode atualmente ser um s@'ibolo --o qual n@~ao pode ser avaliado.
+A lista de argumentos ser@'a avaliada uma @'unica vez no in@'icio do bloco de 
+repeti@,{c}@~ao.  
+
+@example
+(%i82) create_list1(x^i,i,[1,3,7]);
+(%o82) [x,x^3,x^7]
+@end example
+
+@noindent
+Com um bloco de repeti@,{c}@~ao duplo:
+
+@example
+(%i79) create_list([i,j],i,[a,b],j,[e,f,h]);
+(%o79) [[a,e],[a,f],[a,h],[b,e],[b,f],[b,h]]
+@end example
+
+Em lugar de @var{list_i} dois argumentos podem ser fornecidos cada um dos quais ser@'a
+avaliado como um n@'umero.   Esses podem vir a ser inclusive o limite inferior e
+superior do bloco de repeti@,{c}@~ao.   
+
+@example
+(%i81) create_list([i,j],i,[1,2,3],j,1,i);
+(%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
+@end example
+
+Note que os limites ou lista para a vari@'avel @var{j} podem
+depender do valor corrente de @var{i}.
+
+@end deffn
+
 @deffn {Fun@,{c}@~ao} delete (@var{expr_1}, @var{expr_2})
 @deffnx {Fun@,{c}@~ao} delete (@var{expr_1}, @var{expr_2}, @var{n})
 Remove todas as ocorr@^encias de @var{expr_1} em @var{expr_2}. @var{expr_1}
