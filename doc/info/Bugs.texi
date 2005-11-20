@@ -1,7 +1,7 @@
 
 @menu
-* Introduction to Bug Detection and Reporting::  
-* Definitions for Bug Detection and Reporting::  
+* Introduction to Bug Detection and Reporting::
+* Definitions for Bug Detection and Reporting::
 @end menu
 
 @node Introduction to Bug Detection and Reporting
@@ -13,9 +13,9 @@ Maxima test suite as well as reporting new bugs.
 @node Definitions for Bug Detection and Reporting
 @section Definitions for Bug Detection and Reporting
 @deffn {Function} run_testsuite ()
-@deffnx {Function} run_testsuite (boolean)
-@deffnx {Function} run_testsuite (boolean, boolean)
-@deffnx {Function} run_testsuite (boolean, boolean, list)
+@deffnx {Function} run_testsuite (@var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 Run the Maxima test suite. Tests producing the desired answer are
 considered ``passes,'' as are tests that do not produce the desired
 answer, but are marked as known bugs.
