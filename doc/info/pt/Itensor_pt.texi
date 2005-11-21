@@ -1,4 +1,4 @@
-@c /Itensor.texi/1.33/Thu Jun 16 17:05:35 2005//
+@c /Itensor.texi/1.34/Fri Oct 21 04:50:42 2005//
 @c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
 @c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
 
@@ -393,7 +393,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 Valor padr@~ao: @code{false}. Se @code{false} ent@~ao os @'indices ir@~ao ser
 renomeados conforme a ordem dos @'indices contravariantes,
 de outra forma ser@~ao ordenados conforme a ordem dos @'indices covariantes.
-A vari@'avel de op@value{cedilha}@~ao influencia @code{rename} da seguinte forma:
+
 Se @code{flipflag} for @code{false} ent@~ao @code{rename} forma uma lista
 de @'indices contravariantes na ordem em que forem encontrados da esquerda para a direita
 (se @code{true} ent@~ao de @'indices contravariantes). O primeiro @'indice
@@ -412,10 +412,10 @@ dado, ent@~ao a contra@,{c}@~ao do produto de @var{tensor_1} com qualquer objeto
 indexado tendo os @'indices apropriados (digamos @code{my_tensor}) ir@'a retornar como resultado um
 objeto indexado com aquele nome, i.e. @code{my_tensor}, e com uma nova escolha de
 @'indices refletindo as contra@,{c}@~oes executadas.
-    Por exemplo, se @code{imetric:g}, ent@~ao @code{defcon(g)} ir@'a implementar o
+Por exemplo, se @code{imetric:g}, ent@~ao @code{defcon(g)} ir@'a implementar o
 incremento e decremento de @'indices atrav@'es da contra@,{c}@~ao com o tensor
 m@'etrico.
-    Mais de uma @code{defcon} pode ser dada para o mesmo objeto indexado; o
+Mais de uma @code{defcon} pode ser dada para o mesmo objeto indexado; o
 @'ultimo  fornecido que for aplicado a uma contra@,{c}@~ao particular ir@'a ser
 usado.
 @code{contractions} @'e uma lista de objetos indexados que tenham fornecido

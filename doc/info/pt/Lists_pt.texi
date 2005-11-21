@@ -1,4 +1,4 @@
-@c /Lists.texi/1.23/Fri Jun 17 00:57:34 2005/-ko/
+@c /Lists.texi/1.24/Sat Nov 19 06:51:25 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Listas::
 * Defini@value{cedilha}@~oes para Listas::

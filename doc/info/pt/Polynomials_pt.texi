@@ -1,4 +1,4 @@
-@c /Polynomials.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
+@c /Polynomials.texi/1.18/Wed Nov 16 06:43:34 2005/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introdu@value{cedilha}@~ao a Polin@^omios::  
@@ -857,6 +857,85 @@ Se @var{expr} n@~ao for uma raz@~ao, @var{expr} @'e retornado.
 @code{num} avalia seu argumento.
 
 @c NEED SOME EXAMPLES HERE
+@end deffn
+
+@deffn {Function} polydecomp (@var{p}, @var{x})
+
+Decomp@~oes o polin@^omio @var{p} na vari@'avel  @var{x}
+em uma composi@,{c}@~ao funcional de polin@^omios em @var{x}.
+@code{polydecomp} retorna uma lista @code{[@var{p_1}, ..., @var{p_n}]} tal que
+
+@example
+lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x)) ...))
+@end example
+
+seja igual a @var{p}.
+O grau de @var{p_i} @'e maior que 1 para @var{i} menor que @var{n}.
+
+Tal decomposi@,{c}@~ao n@~ao @'e @'unica.
+
+Exemplos:
+
+@c ===beg===
+@c polydecomp (x^210, x);
+@c p : expand (subst (x^3 - x - 1, x, x^2 - a));
+@c polydecomp (p, x);
+@c ===end===
+@example
+(%i1) polydecomp (x^210, x);
+                          7   5   3   2
+(%o1)                   [x , x , x , x ]
+(%i2) p : expand (subst (x^3 - x - 1, x, x^2 - a));
+                6      4      3    2
+(%o2)          x  - 2 x  - 2 x  + x  + 2 x - a + 1
+(%i3) polydecomp (p, x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+As seguintes fun@,{c}@~oes comp@~oem @code{L = [e_1, ..., e_n]} como fun@,{c}@~oes em @code{x};
+essa fun@,{c}@`ao @'e a inversa de @code{polydecomp}:
+
+@c ===beg===
+@c compose (L, x) :=
+@c   block ([r : x], for e in L do r : subst (e, x, r), r) $
+@c ===end===
+@example
+compose (L, x) :=
+  block ([r : x], for e in L do r : subst (e, x, r), r) $
+@end example
+
+Re-exprimindo o exemplo acima usando @code{compose}:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+@c ===end===
+@example
+(%i3) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+Note que apesar de @code{compose (polydecomp (@var{p}, @var{x}), @var{x})}
+sempre retornar @var{p} (n@~ao expandido),
+@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})} @i{n@~ao}
+necess@'ariamente retorna @code{[@var{p_1}, ..., @var{p_n}]}:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+@c polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+@c ===end===
+@example
+(%i4) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+                          2       2
+(%o4)                   [x  + 2, x  + 1]
+(%i5) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+                      2       2
+                     x  + 3  x  + 5
+(%o5)               [------, ------, 2 x + 1]
+                       4       2
+@end example
+
 @end deffn
 
 @deffn {Fun@,{c}@~ao} quotient (@var{p_1}, @var{p_2})

@@ -1,4 +1,4 @@
-@c Simplification.texi/1.13/Fri Jun 17 00:57:35 2005/-ko/
+@c /Simplification.texi/1.14/Mon Jun 27 14:24:05 2005/-ko/
 @c end concepts Simplification
 @menu
 * Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao::  

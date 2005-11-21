@@ -1,4 +1,4 @@
-@c /Affine.texi/1.10/Sun Jun 12 19:13:46 2005/-ko/
+@c /Affine.texi/1.12/Sat Nov 19 06:51:23 2005/-ko/
 @c end concepts Affine
 @menu
 * Defini@value{cedilha}@~oes para Fun@value{cedilha}@~oes Afins::      
@@ -43,13 +43,20 @@ se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos de
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
 @deffn {Fun@,{c}@~ao} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
 @deffnx {Fun@,{c}@~ao} set_up_dot_simplifications (@var{eqns})
-As eqns s@~ao
+As @var{eqns} s@~ao
 equa@,{c}@~oes polinomiais em vari@'aveis n@~ao comutativas.
 O valor de @code{current_variables}  @'e uma 
 lista de vari@'aveis usadas para calcular graus.  As equa@,{c}@~oes podem ser
 homog@^eneas, em ordem para o procedimento terminar.  
 
 Se voc@^e checou simplifica@,{c}@~oes de envolt@'orio em @code{dot_simplifications}
+acima do grau de @var{f}, ent@~ao o seguinte @'e verdadeiro:
+@code{dotsimp (@var{f})} retorna 0 se e somente se @var{f} est@'a no
+ideal gerado pelas equa@,{c}@~oes, i.e.,
+se e somente se @var{f} for uma combina@,{c}@~ao polinomial
+dos elementos das equa@,{c}@~oes.
+
+
 acima do grau de f, ent@~ao o seguinte @'e verdadeiro:
 @code{dotsimp (f)} retorna 0 se e somente se @var{f} est@'a no ideal gerado pelas equa@,{c}@~oes, i.e.,
 se e somente se @var{f} for uma combina@,{c}@~ao polinomial dos elementos das equa@,{c}@~oes.
