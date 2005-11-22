@@ -1,4 +1,4 @@
-@c /Help.texi/1.18/Sun Jun 12 22:29:17 2005/-ko/
+@c /Help.texi/1.19/Mon Jun 27 14:25:15 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Ajuda::        
 * Lisp e Maxima::            
@@ -67,7 +67,7 @@ Note que @code{?foo} @'e escrito sem um espa@,{c}o entre @code{?} e @code{foo};
 de outra forma pode ser uma chamada err@^onea para @code{describe ("foo")}.
 
 H@'ifem @code{-}, asterisco @code{*}, ou outro caractere especial em s@'imbolos Lisp
-deve ser precedido por uma barra invertida @code{\} se for necess@'ario que apare@,{c}a no c@'odigo Maxima.
+deve ser precedido por uma barra invertida @code{\} onde ele aparecer no c@'odigo Maxima.
 Por exemplo, o identificador Lisp @code{*foo-bar*} @'e escrito @code{?\*foo\-bar\*} no Maxima.
 
 C@'odigo Lisp pode ser executado dentro de uma sess@~ao Maxima.

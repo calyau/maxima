@@ -1,4 +1,4 @@
-@c /Plotting.texi/1.18/Sat Jul 30 08:05:54 2005/-ko/
+@c /Plotting.texi/1.19/Thu Nov  3 14:55:12 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -460,15 +460,16 @@ Exemplo:
 
 @item
 Op@,{c}@~ao: @code{gnuplot_curve_titles} Controla os t@'itulos dados na chave da montagem do gr@'afico.  O
-valor padr@~ao @'e @code{default}, que automaticamente escolhe o t@'itulo de cada
-curva para a fun@,{c}@~ao cujo gr@'afico est@'a sendo montado.  Se n@~ao @code{default}, @code{gnuplot_curve_titles}
-conter@'a uma lista de seq@"u@^encias de caracteres.  (Para desabilitar a chave de montagem do gr@'afico inteiramente,
-adicione @code{"set nokey"} em @code{gnuplot_preamble}.)
+valor padr@~ao @'e @code{[default]}, que automaticamente escolhe o t@'itulo de cada
+curva para a fun@,{c}@~ao cujo gr@'afico est@'a sendo constru@'ido. Se n@~ao contiver @code{[default]}, @code{gnuplot_curve_titles}
+pode conter uma lista de seq@"u@^encias de caracteres,
+cada uma das quais @'e @code{"title '@var{title_string}'"}.
+(Para disabilitar a chave de impress@~ao de gr@'afico, adicione @code{"set nokey"} a @code{gnuplot_preamble}.)
 
 Exemplo:
 
 @example
-[gnuplot_curve_titles, ["minha primeira fun@,{c}@~ao", "minha segunda fun@,{c}@~ao"]]
+[gnuplot_curve_titles, ["title 'Minha primeira fun@,{c}@~ao'", "title 'Minha segunda fun@,{c}@~ao'"]]
 @end example
 
 @item
