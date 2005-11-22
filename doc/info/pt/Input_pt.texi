@@ -1,4 +1,4 @@
-@c /Input.texi/1.40/Sun Nov 13 17:31:04 2005/-ko/
+@c /Input.texi/1.41/Sun Nov 13 19:08:54 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
@@ -97,7 +97,8 @@ Veja tamb@'em @code{_}, @code{%%}, e @code{%th}
 @end defvr
 
 @defvr {Vari@'avel de sistema} %%
-Uma declara@,{c}@~ao composta compreende duas ou mais declara@,{c}@~oes,
+Em declara@,{c}@~ao composta,
+a saber @code{block}, @code{lambda}, ou @code{(@var{s_1}, ..., @var{s_n})},
 @code{%%} @'e os valor da declara@,{c}@~ao anterior.
 Por exemplo,
 

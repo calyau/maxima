@@ -160,7 +160,7 @@ e o tempo decorrido a cada linha de sa@'ida.
 
 @end deffn
 
-@deffn {Function} timedate ()
+@deffn {Fun@value{cedilha}@~ao} timedate ()
 Retorna uma seq@"u@^encia de caracteres representando a data e hora atuais.
 A seq@"u@^encia de caracteres tem o formato @code{HH:MM:SS Dia, mm/dd/aaaa (GMT-n)},
 Onde os campos s@~ao

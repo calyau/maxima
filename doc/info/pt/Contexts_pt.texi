@@ -1,4 +1,4 @@
-@c /Contexts.texi/1.9/Wed Sep  7 02:58:52 2005/-ko/
+@c /Contexts.texi/1.9/Wed Sep 7 02:58:52 2005/-ko/
 @c end concepts Contexts
 @menu
 * Defini@value{cedilha}@~oes para Contextos::    
