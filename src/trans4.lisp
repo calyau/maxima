@@ -80,12 +80,10 @@
 	(t
 	 `($any . (simplify  `((mfactorial) ,,(cdr form)))))))
 
-(def%tr %sum (form)
-  ;; this is WRONG. ---FIX--THIS--YOU--LOSER----*****
-  `($any . (meval ',form)))
+;; Kill off the special code for translating sum and product.
 
-(def%tr %product (form)
-  `($any . (meval ',form)))
+(def%tr %sum $batcon)
+(def%tr %product $batcon)
 
 ;;(DEF%TR %BINOMIAL (FORM)
 ;;	(TR-NARGS-CHECK FORM '(2 .2))

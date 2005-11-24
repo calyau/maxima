@@ -88,7 +88,7 @@
   $negsumdispflag $newfac $nolabels $norepeat $noundisp $numer
   $numer_pbranch $operators $opsubst $optimprefix $optionset $outchar
   $pagepause $parsewindow $partswitch $pfeformat $piece $pointbound
-  $poislim $powerdisp $prederror $prodhack $programmode $props
+  $poislim $powerdisp $prederror $programmode $props
   $radexpand $ratalgdenom $ratdenomdivide $ratepsilon $ratexpand
   $ratfac $ratmx $ratprint $ratsimpexpons $ratvars $ratweights
   $ratwtlvl $realonly $refcheck $resultant $rmxchar $rombergabs
@@ -98,7 +98,7 @@
   $solvedecomposes $solveexplicit $solvefactors $solvenullwarn
   $solveradcan $solvetrigwarn $solve_inconsistent_error $sparse
   $special $sqrtdispflag $stardisp $storenum $sublis_apply_lambda
-  $subnumsimp $subscrmap $sumexpand $sumhack $sumsplitfact
+  $subnumsimp $subscrmap $sumexpand $sumsplitfact
   $superlogcon $suspend $taylor_logexpand
   $taylor_truncate_polynomials $timer $timer_devalue
   $to_call_lisp_compiler $trace $trace_break_arg $trace_max_indent

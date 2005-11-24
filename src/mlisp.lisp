@@ -2733,7 +2733,7 @@ wrapper for this."
   (mapc #'(lambda (x) (putprop x t 'evflag))
 	'($exponentialize $%emode $demoivre $logexpand $logarc $lognumer
 	  $radexpand $keepfloat $listarith $float $ratsimpexpons $ratmx
-	  $simp $simpsum $algebraic $ratalgdenom $factorflag $ratfac
+	  $simp $simpsum $simpproduct $algebraic $ratalgdenom $factorflag $ratfac
 	  $infeval $%enumer $programmode $lognegint $logabs $letrat
 	  $halfangles $exptisolate $isolate_wrt_times $sumexpand
 	  $cauchysum $numer_pbranch $m1pbranch $dotscrules

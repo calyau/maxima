@@ -289,105 +289,6 @@
 		 (throw 'mcatch x))
 	       ,exp))))
 
-;;; From RZ;ASUM >. He should know better.
-;;(comment 
-;; (DEFMFUN $sum fexpr (l)
-;;    (cond ((not (= (length l) 4))
-;;	   (erlist '|Wrong no. of args to SUM|))
-;;	  ((dosum (car l) (cadr l) (meval (caddr l)) (meval (cadddr l)) t)
-;;	   ))))
-
-;;; From RZ;COMBIN >
-;;(comment
-;; (DEFMFUN $product fexpr (l)
-;;    (cond ((not (= (length l) 4)) (erlist '|Wrong no. of args to product|))
-;;	  ((dosum (car l) (cadr l)   (meval (caddr l)) (meval (cadddr l)) nil)))))
-;;; "dosum" will call MEVAL and act like a special form if it can.
-;;; MEVAL will work on LISP expression, so we can translate those args.
-
-(defun start-val (sump mode)
-  (case mode
-    (($float)
-     (if sump 0.0 1.0))
-    (t
-     (if sump 0 1))))
-
-(def%tr $sum (form)
-  (destructuring-let (((|0| n) (mapcar #'translate (cdddr form)))
-	(flag (eq (caar form) '$sum))
-	(var (caddr form))
-	(sum (tr-gensym)))
-    (cond ((and (eq (car |0|) '$fixnum)
-		(eq (car n) '$fixnum))
-	   (let ((sum-exp
-		  (tr-local-exp `((,(cond (flag 'mplus)
-					  (t 'mtimes)))
-				  ,sum ,(cadr form))
-				sum '$fixnum
-				var '$fixnum))
-		 (|00| (tr-gensym))
-		 (nn (tr-gensym)))
-	     ;; here is the bummer. We need to know the
-	     ;; mode of SUM before we know the mode of the
-	     ;; SUM-EXP, but that tells us something about
-	     ;; the mode of the SUM.
-	     ;; When the mode is float we really need to know
-	     ;; because of the initialization of the SUM, which
-	     ;; must be correct if COMPLR is to win on things
-	     ;; like (*$ (DO ...) ...)
-	     (if (eq (car sum-exp) '$float)
-		 (setq sum-exp
-		       (tr-local-exp
-			`((,(cond (flag 'mplus)
-				  (t 'mtimes)))
-			  ,sum ,(cadr form))
-			sum '$float
-			var '$fixnum)))
-	     ;; hey if this changes Modes on us, forget it man,
-	     ;; geezz. lets not bother checking, and just
-	     ;; catch this bad-boy in the COMPLR.
-	     ;; What do we say to the user anyway about such
-	     ;; crazzyness?
-
-	     `(,(car sum-exp)
-	       . ((lambda (,|00| ,nn)
-		    (cond ((not (< ,nn ,|00|))
-			   (do ((,var ,|00| (f1+ ,var))
-				(,sum ,(start-val
-					flag
-					(car sum-exp))
-				      ,(cdr sum-exp)))
-			       ((< ,nn ,var) ,sum)
-			     ))
-			  ((= ,nn (f1- ,|00|))
-			   ,(start-val flag (car sum-exp)))
-			  (t
-			   (interval-error ',(caar form) ,|00| ,nn))))
-		  ,(cdr |0|)
-		  ,(cdr n)))))
-	  (t
-	   (let* ((sumarg (cdr (tr-local-exp (cadr form) (caddr form)
-					     '$any)))
-		  (var (caddr form))
-		  (free-var-info (tbound-free-vars (free-lisp-vars sumarg))))
-	     (side-effect-free-check (cadr free-var-info)
-				     (cadr form))
-	     `($any . (dosum (fungen&env-for-mevalsumarg
-			      ,(zl-delete var (car free-var-info))
-			      (,var)
-			      ,sumarg
-			      ;; the original form is here for when we
-			      ;; get mevalsumarged, otherwise we use
-			      ;; the translated SUMARG when we get
-			      ;; MEVAL'ed.
-			      ,(cadr form))
-		       ',var ,(cdr |0|) ,(cdr n) ,flag)))))))
-
-
-(def%tr-inherit $sum $product)
-
-
-
 ;;; Makelist is a very sorry FSUBR. All these FSUBRS are just to avoid
 ;;; writing LAMBDA. But lots of users use MAKELIST now. 
 ;;; MAKELIST(EXP,X,0,N) with 4 args it is an iteration, with three it
@@ -585,6 +486,10 @@ a replacement form. Translating anyway though.")))
 (def%tr $labels $batcon)
 (def%tr $setup_autoload $batcon)
 (def%tr $tobreak $batcon  )
+
+;; Kill off the special code for translating sum and product.
+(def%tr $sum $batcon)
+(def%tr $product $batcon)
 
 ;; Local Modes:
 ;; Mode: LISP

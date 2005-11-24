@@ -304,8 +304,7 @@ summation when necessary."
 
 (defmvar $zerobern t)
 (defmvar $simpsum nil)
-(defmvar $sumhack nil)
-(defmvar $prodhack nil)
+(defmvar $simpproduct nil)
 
 (defvar *infsumsimp t)
 
@@ -350,7 +349,11 @@ summation when necessary."
   (simpsum1 y (sum-index x) (simplifya (sum-lower x) z)
 	    (simplifya (sum-upper x) z)))
 
-(defun simpsum1 (exp i lo hi)
+; This function was SIMPSUM1 until the sum/product code was revised Nov 2005.
+; The revised code punts back to this function since this code knows
+; some simplifications not handled by the revised code. -- Robert Dodier
+
+(defun simpsum1-save (exp i lo hi)
   (cond ((not (symbolp i)) (merror "Improper index to `sum':~%~M" i))
 	((equal lo hi) (mbinding ((list i) (list hi)) (meval exp)))
 	((and (atom exp)
@@ -359,65 +362,295 @@ summation when necessary."
 	 (freesum exp lo hi 1))
 	((null $simpsum) (list (get '%sum 'msimpind) exp i lo hi))
 	(t (simpsum2 exp i lo hi))))
-
-(defmfun dosum (exp ind low hi sump)
+
+;; DOSUM, MEVALSUMARG, DO%SUM -- general principles
+
+;;  - evaluate the summand/productand
+;;  - substitute a gensym for the index variable and make assertions (via assume) about the gensym index
+;;  - return 0/1 for empty sum/product. sumhack/prodhack are ignored
+;;  - distribute sum/product over mbags when listarith = true
+
+(defun dosum (expr ind low hi sump)
+  (setq low (ratdisrep low) hi (ratdisrep hi))  ;; UGH, GAG WITH ME A SPOON
+
   (if (not (symbolp ind))
-      (merror "Improper index to ~:M:~%~M" (if sump '$sum '$product) ind))
-  (unwind-protect 
-       (prog (u *i lind l*i *hl)
-	  (when (if sump (not $sumhack) (not $prodhack))
-	    (assume (list '(mgeqp) ind low))
-	    (if (not (eq hi '$inf))
-		(assume (list '(mgeqp) hi ind))))
+    (merror "~:M: bad index ~M (must be a symbol)~%" (if sump '$sum '$product) ind))
+
+  (unwind-protect
+    (prog (u *i lind l*i *hl)
 	  (setq lind (cons ind nil))
-	  (cond ((not (fixnump (setq *hl (m- hi low))))
-		 (setq exp (mevalsumarg exp ind))
-		 (return (cons (if sump '(%sum) '(%product))
-			       (list exp ind low hi))))
-		((equal *hl -1) (return (if sump 0 1)))
-		((signp l *hl)
-		 (cond ((and sump $sumhack)
-			(return
-			  (m- (dosum exp ind (m+ 1 hi) (m- low 1) t))))
-		       ((and (not sump) $prodhack)
-			(return
-			  (m// (dosum exp ind (m+ 1 hi) (m- low 1) nil)))))
-		 (merror "Lower bound to ~:M: ~M~%is greater than the upper bound: ~M"
-			 (if sump '$sum '$product) low hi)))
-	  (setq *i low l*i (list *i) u (if sump 0 1))
-	  lo  (setq u (simplifya
-		       (list (if sump '(mplus) '(mtimes))
-			     (mbinding (lind l*i) (meval exp)) 
-			     u)
-		       t))
-	   (if (= *hl 0) (return u))
-	   (setq *hl (1- *hl))
+	  (cond
+        ((not (fixnump (setq *hl (m- hi low))))
+         (setq expr (mevalsumarg expr ind low hi sump))
+         (return (cons (if sump '(%sum) '(%product))
+                       (list expr ind low hi))))
 
-	  (setq *i (car (rplaca l*i (m+ *i 1))))
-	  (go lo))
-    (cond ((if sump (not $sumhack) (not $prodhack))
-	   (forget (list '(mgeqp) ind low))
-	   (if (not (eq hi '$inf)) (forget (list '(mgeqp) hi ind)))))))
+        ((signp l *hl)
+         (return (if sump 0 1))))
 
-(defmfun do%sum (l op)
+      (setq *i low l*i (list *i) u (if sump 0 1))
+
+      lo 
+
+      (setq u
+        (resimplify
+          (list (if sump '(mplus) '(mtimes))
+                (let*
+                  ((foo (mbinding (lind l*i) (meval expr)))
+                   (bar (subst-if-not-freeof *i ind foo)))
+                  bar)
+                u)))
+
+      (if (= *hl 0) (return u))
+
+      (setq *hl (1- *hl))
+      (setq *i (car (rplaca l*i (m+ *i 1))))
+      (go lo))))
+
+(defun subst-if-not-freeof (x y expr)
+  (cond
+    (($freeof y expr) expr)
+    (t
+      (cond 
+        ((atom expr) x)
+        (t
+          (let*
+            ((args (cdr expr))
+             (L (eval `(mapcar (lambda (a) (subst-if-not-freeof ',x ',y a)) ',args))))
+            ;; Throw away any flags stored in (CDAR EXPR). OK ??
+            (cons (list (caar expr)) L)))))))
+            ;; Alternatively, keep (CDAR EXPR) flags.
+            ;; (cons (car expr) L)))))))
+
+(defun mevalsumarg (expr ind low hi sump)
+  (if (let (($prederror nil)) (eq (mevalp `((mlessp) ,hi ,low)) t))
+    0)
+
+  (let ((gensym-ind (gensym)))
+
+    (if (apparently-integer low) 
+      (meval `(($declare) ,gensym-ind $integer)))
+
+    (assume (list '(mgeqp) gensym-ind low))
+
+    (if (not (eq hi '$inf))
+      (assume (list '(mgeqp) hi gensym-ind)))
+
+    (let ((msump t) (foo) (summand))
+
+      (setq summand
+            (if (and (not (atom expr)) (get (caar expr) 'mevalsumarg-macro))
+              (funcall (get (caar expr) 'mevalsumarg-macro) expr)
+              expr))
+
+      (let (($simp nil))
+        (setq summand ($substitute gensym-ind ind summand)))
+
+      (setq summand
+            (mbinding ((list ind) (list ind))
+                      (mevalatoms summand)))
+
+      (let (($simp nil))
+        (setq summand ($substitute gensym-ind ind summand)))
+
+      (setq foo
+            (mbinding ((list gensym-ind) (list gensym-ind))
+                      (resimplify (meval summand))))
+
+      (let (($simp nil)) (setq foo ($substitute ind gensym-ind foo)))
+
+      (if (not (eq hi '$inf))
+        (forget (list '(mgeqp) hi gensym-ind)))
+
+      (forget (list '(mgeqp) gensym-ind low))
+
+      (if (apparently-integer low)
+        (meval `(($remove) ,gensym-ind $integer)))
+
+      foo)))
+
+(defun apparently-integer (x)
+  (or ($integerp x) ($featurep x '$integer)))
+
+(defun do%sum (l op)
+
   (if (not (= (length l) 4)) (wna-err op))
-  (let ((ind (cadr l)))
-    (if (mquotep ind) (setq ind (cadr ind)))
-    (if (not (symbolp ind))
-	(merror "Illegal index to ~:M:~%~M" op ind))
-    (list (mevalsumarg (car l) ind)
-	  ind (meval (caddr l)) (meval (cadddr l)))))
 
-(defun mevalsumarg (exp ind)
-  (let ((msump t) (lind (list ind)))
-    (mbinding (lind lind)
-	      (resimplify (mevalatoms (if (and (not (atom exp))
-					       (get (caar exp)
-						    'mevalsumarg-macro))
-					  (funcall (get (caar exp)
-							'mevalsumarg-macro)
-						   exp)
-					  exp))))))
+  (let ((ind (cadr l)))
+
+    (if (mquotep ind) (setq ind (cadr ind)))
+
+    (if (not (symbolp ind))
+      (merror "~:M: bad index ~M (must be a symbol)~%" op ind))
+
+    (let ((sump (memq op '(%sum $sum))) (low (caddr l)) (hi (cadddr l)))
+      (list (mevalsumarg (car l) ind low hi sump)
+            ind (meval (caddr l)) (meval (cadddr l))))))
+
+(defun simpsum1 (e k lo hi)
+
+  (let ((fact1) (fact2) (acc 0) (n) (sgn) ($prederror nil) (i (gensym)) (ex))
+    
+    (setq lo ($ratdisrep lo))
+    (setq hi ($ratdisrep hi))
+   
+    (setq n ($limit (add 1 (sub hi lo))))
+    (setq sgn ($sign n))
+  
+    (setq fact1 `((mgeqp) ,i ,lo))
+    (setq fact2 `((mgeqp) ,hi ,i))
+    
+    (if (not (eq t (csign lo))) (mfuncall '$assume fact1))
+    (if (not (eq t (csign hi))) (mfuncall '$assume fact2))
+    
+    (setq ex (subst i k e))
+    (setq ex (subst i k ex))
+
+    (setq acc
+	  (cond ((and (eq n '$inf) ($freeof i ex))
+		 (setq sgn ($asksign ex))
+		 (cond ((eq sgn '$pos) '$inf)
+		       ((eq sgn '$neg) '$minf)
+		       ((eq sgn '$zero) 0)
+		       (t `((%sum simp) ,ex ,lo ,hi))))
+
+		((and (mbagp e) $listarith)
+		 (simplifya
+		  `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$sum s k lo hi)) (margs e))) t))
+		 		
+		((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz)) 0)
+		
+		((like ex 0) 0)
+			
+		(($freeof i ex) (mult n ex))
+			
+		((and (integerp n) (eq sgn '$pos))
+		 (unwind-protect 
+		     (dotimes (j n acc)
+		       (setq acc (add acc (resimplify (subst (add j lo) i ex)))))
+		   (mfuncall '$forget fact1)
+		   (mfuncall '$forget fact2)))
+		(t 
+		 (setq ex (subst '%sum '$sum ex))
+		 `((%sum simp) ,(subst k i ex) ,k ,lo ,hi))))
+	      
+    (setq acc (subst k i acc))
+    
+    ;; If expression is still a summation,
+    ;; punt to previous simplification code.
+
+    (if (and $simpsum (op-equalp acc '$sum '%sum))
+      (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
+        (setq acc (simpsum1-save e i i0 i1))))
+
+    (mfuncall '$forget fact1)
+    (mfuncall '$forget fact2)
+
+    acc))
+
+(defun simpprod1 (e k lo hi)
+  
+  (let ((fact1) (fact2) (acc 1) (n) (sgn) ($prederror nil) (i (gensym)) (ex))
+
+    (setq lo ($ratdisrep lo))
+    (setq hi ($ratdisrep hi))
+   
+    (setq n ($limit (add 1 (sub hi lo))))
+    (setq sgn ($sign n))
+    
+    (setq fact1 `((mgeqp) ,i ,lo))
+    (setq fact2 `((mgeqp) ,hi ,i))
+    
+    (if (not (eq t (csign lo))) (mfuncall '$assume fact1))
+    (if (not (eq t (csign hi))) (mfuncall '$assume fact2))
+
+    (setq ex (subst i k e))
+    (setq ex (subst i k ex))
+
+    
+    (setq acc
+          (cond
+            ((like ex 1) 1)
+
+            ((and (eq n '$inf) ($freeof i ex))
+             (setq ex-mag (mfuncall '$cabs ex))
+             (setq realp (mfuncall '$imagpart ex))
+             (setq realp (mevalp `((mequal) 0 ,realp)))
+             
+             (cond ((eq t (mevalp `((mlessp) ,ex-mag 1))) 0)
+                   ((and (eq realp t) (eq t (mevalp `((mgrp) ,ex 1)))) '$inf)
+                   ((eq t (mevalp `((mgrp) ,ex-mag 1))) '$infinity)
+                   ((eq t (mevalp `((mequal) 1 ,ex-mag))) '$und)
+                   (t `((%product) ,e ,k ,lo ,hi))))
+            
+            ((or (eq sgn '$neg) (eq sgn '$zero) (eq sgn '$nz))
+             1)
+
+            ((and (mbagp e) $listarith)
+             (simplifya
+               `((,(caar e)) ,@(mapcar #'(lambda (s) (mfuncall '$product s k lo hi)) (margs e))) t))
+            
+            (($freeof i ex) (power ex n))
+            
+            ((and (integerp n) (eq sgn '$pos))
+             (unwind-protect
+               (dotimes (j n acc)
+                 (setq acc (mult acc (resimplify (subst (add j lo) i ex)))))
+               
+               (mfuncall '$forget fact1)
+               (mfuncall '$forget fact2)))
+            
+            (t
+              (setq ex (subst '%product '$product ex))
+              `((%product) ,(subst k i ex) ,k ,lo ,hi))))
+
+    ;; Hmm, this is curious... don't call existing product simplifications
+    ;; if index range is infinite -- what's up with that??
+
+    (if (and $simpproduct (op-equalp acc '$product '%product) (not (like n '$inf)))
+      (let* ((args (cdr acc)) (e (first args)) (i (second args)) (i0 (third args)) (i1 (fourth args)))
+        (setq acc (simpprod1-save e i i0 i1))))
+
+    (setq acc (subst k i acc))
+    (setq acc (subst '%product '$product acc))
+
+    (mfuncall '$forget fact1)
+    (mfuncall '$forget fact2)
+
+    acc))
+
+; This function was SIMPPROD1 until the sum/product code was revised Nov 2005.
+; The revised code punts back to this function since this code knows
+; some simplifications not handled by the revised code. -- Robert Dodier
+
+(defun simpprod1-save (exp i lo hi)
+  (let (u)
+    (cond ((not (symbolp i)) (merror "Bad index to product:~%~M" i))
+	  ((alike1 lo hi)
+	   (let ((valist (list i)))
+	     (mbinding (valist (list hi))
+		       (meval exp))))
+	  ((eq ($sign (setq u (m- hi lo))) '$neg)
+	   (cond ((eq ($sign (add2 u 1)) '$zero) 1)
+		 (t (merror "Lower bound to product is > upper bound."))))
+	  ((atom exp)
+	   (cond ((null (eq exp i))
+		  (power* exp (list '(mplus) hi 1 (list '(mtimes) -1 lo))))
+		 ((let ((lot (asksign lo)))
+		    (cond ((equal lot '$zero) 0)
+			  ((eq lot '$positive)
+			   (m// (list '(mfactorial) hi)
+				(list '(mfactorial) (list '(mplus) lo -1))))
+			  ((m* (list '(mfactorial)
+				     (list '(mabs) lo))
+			       (cond ((memq (asksign hi) '($zero $positive))
+				      0)
+				     (t (prog2 0
+					    (m^ -1 (m+ hi lo 1))
+					  (setq hi (list '(mabs) hi)))))
+			       (list '(mfactorial) hi))))))))
+	  ((list '(%product simp) exp i lo hi)))))
+
 
 (comment multiplication of sums)
 

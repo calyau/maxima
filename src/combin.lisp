@@ -17,7 +17,7 @@
 		      a* $zerobern *a *n $cflength *a* $prevfib hi lo
 		      *infsumsimp *times *plus sum usum makef
 		      varlist genvar $sumsplitfact gensim $ratfac $simpsum
-		      $prederror $listarith $sumhack $prodhack
+		      $prederror $listarith
 		      $ratprint $zeta%pi $bftorat)
 	     ;;	 (*lexpr $ratcoef $divide)
 	     ;;	 (fixnum %n %a* %i %m)
@@ -906,8 +906,7 @@
        (setq $simpsum t lo 0)
        (setq *plus (cons (m* -1 *times (maxima-substitute 0 i exp)) *plus))
        (setq exp (m+ exp (maxima-substitute (m- i) i exp))))
-     (cond ((and (null $sumhack)
-		 (eq ($sign (setq u (m- hi lo))) '$neg))
+     (cond ((eq ($sign (setq u (m- hi lo))) '$neg)
 	    (cond ((equal u -1) (return 0))
 		  (t (merror "Lower bound to sum is > upper bound"))))
 	   ((free exp i)
@@ -1137,35 +1136,6 @@
   (simpprod1 y (caddr x)
 	     (simplifya (cadddr x) z)
 	     (simplifya (cadr (cdddr x)) z)))
-
-(defun simpprod1 (exp i lo hi)
-  (let (u)
-    (cond ((not (symbolp i)) (merror "Bad index to product:~%~M" i))
-	  ((alike1 lo hi)
-	   (let ((valist (list i)))
-	     (mbinding (valist (list hi))
-		       (meval exp))))
-	  ((and (null $prodhack)
-		(eq ($sign (setq u (m- hi lo))) '$neg))
-	   (cond ((eq ($sign (add2 u 1)) '$zero) 1)
-		 (t (merror "Lower bound to product is > upper bound."))))
-	  ((atom exp)
-	   (cond ((null (eq exp i))
-		  (power* exp (list '(mplus) hi 1 (list '(mtimes) -1 lo))))
-		 ((let ((lot (asksign lo)))
-		    (cond ((equal lot '$zero) 0)
-			  ((eq lot '$positive)
-			   (m// (list '(mfactorial) hi)
-				(list '(mfactorial) (list '(mplus) lo -1))))
-			  ((m* (list '(mfactorial)
-				     (list '(mabs) lo))
-			       (cond ((memq (asksign hi) '($zero $positive))
-				      0)
-				     (t (prog2 0
-					    (m^ -1 (m+ hi lo 1))
-					  (setq hi (list '(mabs) hi)))))
-			       (list '(mfactorial) hi))))))))
-	  ((list '(%product simp) exp i lo hi)))))
 
 ;;(declare-top (splitfile tayrat))
 

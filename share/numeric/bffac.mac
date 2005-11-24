@@ -10,9 +10,16 @@
 */
 
 
-obfac(z,fpprec):=block([prodhack:true,y:z-entier(z),x:entier(7*fpprec/3),m:0],
+prodhack_product (expr, i%, i%0, i%1) :=
+    (expr: subst ('i%, i%, expr),
+    if i%0 > i%1 then
+        subst (i%, 'i%, 1 / product (expr, i%, i%1 + 1, i%0 - 1))
+    else
+        subst (i%, 'i%, product (expr, i%, i%0, i%1)));
+
+obfac(z,fpprec):=block([y:z-entier(z),x:entier(7*fpprec/3),m:0],
       for k from entier(26*fpprec/3) step -1 thru 1 do m:x*(1/(y+k)-m/k),
-      bfloat(m)*x^y*product(z-i+1,i,1,entier(z)));
+      bfloat(m)*x^y*prodhack_product(z-i+1,i,1,entier(z)));
 
 azetb(s,fpp):=block([fpprec:15],
       if s > 0
