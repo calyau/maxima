@@ -156,7 +156,7 @@
 		 (displa `((mlable) , c-tag , $__)))))
 	(if (eq r eof) (return '$done))
 	(setq $__ (caddr r))
-	(set  c-tag $__)
+	(unless $nolabels (set  c-tag $__))
 	(cond (batch-or-demo-flag
 	       (displa `((mlable) ,c-tag , $__))))
 	(setq time-before (get-internal-run-time)
@@ -173,7 +173,8 @@
 			  (float (difference etime-after etime-before))
 			  internal-time-units-per-second))
 	(setq accumulated-time (plus accumulated-time time-used))
-	(set (setq d-tag (makelabel $outchar)) $%)
+	(setq d-tag (makelabel $outchar))
+	(unless $nolabels (set d-tag $%))
 	(setq $_ $__)
 	(when $showtime
 	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
