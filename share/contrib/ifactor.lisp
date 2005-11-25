@@ -9,21 +9,38 @@
 ;;;   - ifactors   : factorisation of integers - returns a list of         ;;;
 ;;;                  prime-power factors of argument                       ;;;
 ;;;   - primep_pr  : probabilistic primality test                          ;;;
-;;;   - next_prime : smallest prime >= n                                   ;;;
+;;;   - next_prime : smallest prime > n                                    ;;;
+;;;   - last_prime : greatest prime < n                                    ;;;
 ;;;                                                                        ;;;
 ;;;                                                                        ;;;
 ;;; Version  : 1.0 (april 2005)                                            ;;;
 ;;; Copyright: 2005 Andrej Vodopivec                                       ;;;
 ;;; Licence  : GPL                                                         ;;;
 ;;;                                                                        ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                                                                        
+;;; Revisition  : primep-prob 
+;;;               - Miller-Rabin and Lucas test in separate functions                                                                    ;;;
+;;;               - iterativ versions of power-mod and primep-lucas                                                                     ;;;
+;;;               next-prime                                                         
+;;;               - new sequence of tests                                                         
+;;;               $primep_number_of_tests                                                        
+;;;               - default 25                                                         
+;;; New         : last_prime    
+;;;                                                                        
+;;; November 2005 Volker van Nek                                                                       
+;;;                                                                        
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (in-package "MAXIMA")
 (macsyma-module ifactor)
 
 (defmvar $save_primes nil
   "Save primes found." boolean)
-(defmvar $primep_number_of_tests 10
+(defmvar $primep_number_of_tests 25
   "Number of primep-test runs" fixnum)
 
 (defmvar $pollard_rho_limit 0
@@ -227,57 +244,69 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; strong primality test:
-;;;  - run primep-test $primep_number_of_tests times
-;;;  - run one lucas test for x^2-b*x+1 where jacobi(b^2-4,n)=-1
+;;;  - run miller-rabin test $primep_number_of_tests times
+;;;  - run one lucas test 
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun primep-prob (n)
   (let ((s (1- n))
-        (r 0) (b 3))
+        (r 0))
     (let ((nroot (floor (sqrt n))))
-      (cond ((equal (* nroot nroot) n)
-             (return-from primep-prob nil))))
-    (while (evenp s)
-      (setq s (/ s 2))
-      (setq r (1+ r)))
+      (if (equal (* nroot nroot) n)
+        (return-from primep-prob nil)))
+    ;; Miller-Rabin Test:    
     (dotimes (i $primep_number_of_tests)
-       (let ((a (1+ (random (- n 4)))))
-          (cond ((not (primep-test a s r n))
-                 (return-from primep-prob nil)))))
-    (while (not (equal ($jacobi (- (* b b) 4) n) -1))
-      (setq b (+ b 1)))
-    (primep-lucas b (1+ n) n)))
-
+      (if (not (miller-rabin n)) 
+        (return-from primep-prob nil)))
+    ;; Lucas Test:    
+    (primep-lucas n)))
+    
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; primep-test
-;;;   - write n=2^r*s
+;;; miller-rabin (algorithm P from D. Knuth, TAOCP, 4.5.4)
+;;;   - write n-1=2^k*q (n,q odd, n>2)
+;;;   - x is a random number 1<x<n
 ;;;   - n passes the test if:
-;;;        o a^s=1 (mod n)
-;;;        o a^(s*2^j)=-1 (mod n) for some j=1..r
+;;;        o x^q=1 (mod n)
+;;;        o x^(q*2^j)=n-1 (mod n) for some j=1..k-1
+;;;
+;;; probability of n passing one test and beeing not a prime is less than 1/4
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun power-mod (a s n)
-  (cond ((equal s 1) (mod a n))
-        ((oddp s) (mod (* a (power-mod a (1- s) n)) n))
-        (t (let ((as (power-mod a (/ s 2) n)))
-             (mod (* as as) n)))))
+(defun miller-rabin (n)
+  (let* ((k 0) (j 0) y
+         (q (1- n))
+         (x (+ (random (1- q)) 2)))
+    (progn
+      (do () ((logbitp 0 q))
+        (progn
+          (setq q (ash q -1))
+          (setq k (1+ k))))
+      (setq y (power-mod x q n))
+      (do () ((= j k))
+        (progn
+          (if (or (and (= j 0) (= y 1)) (= y (1- n)))
+            (return t)
+            (if (and (> j 0) (= y 1)) (return)))
+          (setq j (1+ j))
+          (setq y (power-mod y 2 n)) )))))
 
-(defun primep-test (a s r n)
-  (let ((as (power-mod a s n)))
-    (if (equal as 1)
-        t
-        (let ((j 0))
-          (while (and (< j r) (not (equal as (1- n))))
-            (setq j (1+ j))
-            (setq as (mod (* as as) n)))
-          (not (equal j r))))))
+(defun power-mod (b n m)
+  (if (= 0 n) 1
+    (do ((res 1)) (())
+      (progn
+        (if (logbitp 0 n)
+          (progn
+            (setq res (mod (* res b) m))
+            (if (= 1 n) (return res)) ))
+        (setq n (ash n -1))
+        (setq b (mod (* b b) m)) ))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; primep-lucas:
+;;; primep-lucas: 
 ;;;
 ;;;  Define: x^2-a*x+b, D=a^2-4*b; x1, x2 roots of x^2+a*x+b;
 ;;;  U[k]=(x1^k-x2^k)/(x1-x2), V[k]=x1^k+x2^k.
@@ -285,87 +314,95 @@
 ;;;  Lucas theorem: If p is an odd prime, gcd(p,b)=1 and jacobi(D,p)=-1,
 ;;;                 then p divides U[p+1].
 ;;;
-;;;  We calculate U[p+1] and test if p divides U[p+1].
+;;;  We calculate U[p+1] for x^2-b*x+1 where jacobi(b^2-4,n)=-1
+;;;     and test if p divides U[p+1].
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun primep-lucas (p k n)
-  (let ((u) (v) (prmp nil))
-     (setq *lucas-sequence-u* `((0 0) (1 1)))
-     (setq *lucas-sequence-v* `((0 2) (1 ,p)))
-     (setq u (get-lucas-sequence-u k p n))
-     (setq v (get-lucas-sequence-v k p n))
-     (setq prmp (and (equal v 2) (equal u 0)))
-     (cond ((and prmp $save_primes)
-            (setq *large-primes* (cons n *large-primes*))))
-     prmp))
+(defun primep-lucas (n)
+  (let (u prmp (b 3))
+    (while (not (equal ($jacobi (- (* b b) 4) n) -1))
+      (setq b (+ b 1)))
+    (setq u (lucas-sequence (1+ n) b n))
+    (setq prmp (= u 0))
+    (cond ((and prmp $save_primes)
+           (setq *large-primes* (cons n *large-primes*))))
+    prmp))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Get lucas sequence for x^2-p*x+1.
+;;; Get element U[p+1] of lucas sequence for x^2-p*x+1.
 ;;;
-;;; Use formulas U[2*m]   = U[m]*V[m]
-;;;              U[2*m+1] = U[m+1]*V[m]-1
-;;;              V[2*m]   = V[m]^2-2
-;;;              V[2*m+1] = V[m+1]*V[m]-p
-;;;
-;;; Intermediate values are saved in *lucas-sequence-u* and
-;;; *lucas-sequence-v*
+;;; Uses algorithm from M. Joye and J.-J. Quisquater, 
+;;;                     Efficient computation of full Lucas sequences, 1996
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar *lucas-sequence-u* `())
-(defvar *lucas-sequence-v* `())
+(defun lucas-sequence (k p n)
+   (let ((uh 1) (vl 2) (vh p) (s 0) l)
 
-(defun get-lucas-sequence-u (k p n)
-  (cond ((null (assoc k *lucas-sequence-u*))
-         (let ((u (cond ((evenp k)
-                         (* (get-lucas-sequence-u (/ k 2) p n)
-                            (get-lucas-sequence-v (/ k 2) p n)))
-                            
-                        (t (let ((k1 (/ (1- k) 2)))
-                             (- (* (get-lucas-sequence-u (1+ k1) p n)
-                                   (get-lucas-sequence-v k1 p n))
-                                1))))))
-             (setq u (mod u n))
-             (setq *lucas-sequence-u* (cons `(,k ,u) *lucas-sequence-u*))
-             u))
-        (t (cadr (assoc k *lucas-sequence-u*)))))
+      (do () ((logbitp 0 k))
+        (progn
+          (setq k (ash k -1))
+          (setq s (1+ s)) ))
+      (setq l (integer-length k)) 
 
-(defun get-lucas-sequence-v (k p n)
-  (cond ((null (assoc k *lucas-sequence-v*))
-         (let ((v (cond ((evenp k)
-                         (- (* (get-lucas-sequence-v (/ k 2) p n)
-                               (get-lucas-sequence-v (/ k 2) p n))
-                             2))
-                        (t (let ((k1 (/ (1- k) 2)))
-                             (- (* (get-lucas-sequence-v (1+ k1) p n)
-                                   (get-lucas-sequence-v k1 p n))
-                                p))))))
-             (setq v (mod v n))
-             (setq *lucas-sequence-v* (cons `(,k ,v) *lucas-sequence-v*))
-             v))
-        (t (cadr (assoc k *lucas-sequence-v*)))))
-  
+      (do ((j (1- l) (1- j))) 
+          ((= 0 j))
+        (if (logbitp j k)
+          (progn
+            (setq uh (mod (* uh vh) n))
+            (setq vl (mod (- (* vh vl) p) n))
+            (setq vh (mod (- (* vh vh) 2) n)) )            
+          (progn
+            (setq uh (mod (1- (* uh vl)) n))
+            (setq vh (mod (- (* vh vl) p) n))
+            (setq vl (mod (- (* vl vl) 2) n))) ))
+            
+      (progn
+        (setq uh (mod (1- (* uh vl)) n))
+        (setq vl (mod (- (* vh vl) p) n)) )
+
+      (dotimes (j s) 
+        (progn
+          (setq uh (mod (* uh vl) n))
+          (setq vl (mod (- (* vl vl) 2) n)) ))
+
+      uh))
+        
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Get smallest prime bigger than n
+;;; Get smallest prime bigger than n.
+;;; Get greatest prime smaller than n.
+;;;
+;;; Passing one miller-rabin test is necessary for beeing prime.
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun $next_prime (n)
  (if (and (integerp n)
           (> n 0))
-     (if (equal n 1)
-         2
-         (next-prime (1+ n)))
-     (merror "Argument to next_prime must be positive integer:~%~M." n)))
+   (if (equal n 1)
+       2
+       (next-prime (1+ n) 1))
+   (merror "Argument to next_prime must be a positive integer:~%~M." n)))
 
-(defun next-prime (n)
-  (cond ((evenp n) (setq n (1+ n))))
-  (while (not ($primep_pr n))
-    (setq n (+ n 2)))
-  n)
+(defun $last_prime (n)
+ (if (and (integerp n)
+          (> n 2))
+   (if (equal n 3)
+       2
+       (next-prime n -1))
+   (merror "Argument to last_prime must be an integer greater than 2:~%~M." n)))
+
+(defun next-prime (n c)
+  (progn
+    (if (evenp n) (setq n (+ n c)))
+    (do () (())
+       (if (miller-rabin n)
+         (if ($primep_pr n)
+           (return-from next-prime n))
+         (setq n (+ (* 2 c) n))))))         
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
