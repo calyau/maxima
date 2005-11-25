@@ -21,19 +21,21 @@
        ((not ,cond))
      ,@body))
 
-;; Display sets as { .. }. The display code only effects the way sets 
-;; are displayed. Unless a user defines "{" as a matchfix operator,
-;; sets cannot be defined  by
-;;  (c1) {a,b}   <== bogus.
+;; Display sets as { .. }.
 
-;; For 1d output if you want {...} instead of set(...), include 
-;; (put '$set 'msize-matchfix 'grind) 
-
-;; (put '$set '((#\{ ) #\} ) 'dissym)      <== put doesn't work in commercial Macsyma
-;; (put '$set 'dimension-match 'dimension)
+(defprop $set msize-matchfix grind) 
 
 (setf (get '$set 'dissym) '((#\{ ) #\} ))
 (setf (get '$set  'dimension) 'dimension-match)
+
+;; Parse {a, b, c} into set(a, b, c).
+;; Don't bother with DEF-NUD etc -- matchfix + ::= works just fine.
+
+(eval-when (compile load eval)
+  ; matchfix ("{", "}")
+  (meval '(($matchfix) &{ &}))
+  ; "{" ([L]) ::= buildq ([L], set (splice (L)));
+  (meval '((mdefmacro) ((${) ((mlist) $L)) (($buildq) ((mlist) $L) (($set) (($splice) $L))))))
 
 ;; Support for TeXing sets. If your mactex doesn't TeX the empty set
 ;; correctly, get the latest mactex.lisp.

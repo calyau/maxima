@@ -1,6 +1,39 @@
 kill (all)$
 done$
 
+/* Test ability of parser to recognize curly braces notation on input.
+ */
+
+{};
+set ();
+
+{a, b, c};
+set (a, b, c);
+
+[{b, c}, {a}];
+[set (b, c), set (a)];
+
+[{a, b, c}, {}];
+[set (a, b, c), set ()];
+
+{{{{a, b, c}}}};
+set (set (set (set (a, b, c))));
+
+{a, b, 2^{c, d, e}, mogrify ({x, y, [{}]}, {[]})};
+set (a, b, 2^set (c, d, e), mogrify (set (x, y, [set ()]), set ([])));
+
+/* 1-d output should contain curly braces.
+ */
+
+string (set ());
+"{}";
+
+string (set (a, b, set (c, d, set (e))));
+"{a,b,{c,d,{e}}}";
+
+/* General tests.
+ */
+
 emptyp(set());
 true$
 
