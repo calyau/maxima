@@ -474,6 +474,27 @@ Examples:
 @c box (sin(x) + cos(y));
 @c ===end===
 @example
+(%i1) box (a^2 + b^2);
+             """""""""
+             " 2   2 "
+(%o1)        "b  + a "
+             """""""""
+(%i2) box (a^2 + b^2, term_1);
+             term_1"""
+             " 2   2 "
+(%o2)        "b  + a "
+             """""""""
+(%i3) 1729 - box (1729);
+                  """"""
+(%o3)      1729 - "1729"
+                  """"""
+(%i4) boxchar: "-";
+(%o4)            -
+(%i5) box (sin(x) + cos(y));
+                -----------------
+(%o5)           -COS(y) + SIN(x)-
+                -----------------
+(%i6) 
 @end example
 
 @end deffn
@@ -574,6 +595,21 @@ Examples:
 @c ===end===
 
 @example
+(%i1) constantp (7 * sin(2));
+(%o1) 				     TRUE
+(%i2) constantp (rat (17/29));
+(%o2) 				     TRUE
+(%i3) constantp (%pi * sin(%e));
+(%o3) 				     TRUE
+(%i4) constantp (exp (x));
+(%o4) 				     FALSE
+(%i5) declare (x, constant);
+(%o5) 				     DONE
+(%i6) constantp (exp (x));
+(%o6) 				     TRUE
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7) 				     FALSE
+(%i8) 
 @end example
 
 @end deffn
