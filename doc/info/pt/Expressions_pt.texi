@@ -1,4 +1,4 @@
-@c /Expressions.texi/1.40/Wed Sep  7 02:58:52 2005/-ko/
+@c /Expressions.texi/1.41/Sat Nov 26 12:30:02 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
