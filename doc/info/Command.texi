@@ -1,6 +1,6 @@
 @menu
-* Introduction to Command Line::  
-* Definitions for Command Line::  
+* Introduction to Command Line::
+* Definitions for Command Line::
 @end menu
 
 @node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
@@ -192,8 +192,8 @@ in @var{expr}.
 @item
 @code{expand} causes expansion.
 @item
-@code{expand (m, n)} causes expansion, setting the values of @code{maxposex} and
-@code{maxnegex} to m and n respectively.
+@code{expand (@var{m}, @var{n})} causes expansion, setting the values of @code{maxposex} and
+@code{maxnegex} to @var{m} and @var{n} respectively.
 @item
 @code{detout} causes any matrix inverses computed in @var{expr} to have their
 determinant kept outside of the inverse rather than dividing through
@@ -201,7 +201,7 @@ each element.
 @item
 @code{diff} causes all differentiations indicated in @var{expr} to be performed.
 @item
-@code{derivlist (x, y, z, ...)} causes only differentiations with respect to
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causes only differentiations with respect to
 the indicated variables.
 @item
 @code{float} causes non-integral rational numbers to be converted to floating
@@ -457,7 +457,7 @@ Removes all bindings (value, function, array, or rule) from the arguments
 @var{symbol_1}, ..., @var{symbol_n}.
 An argument may be a single array element or subscripted function.
 
-Several special arguments are recognized. 
+Several special arguments are recognized.
 Different kinds of arguments
 may be combined, e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
 
@@ -479,7 +479,7 @@ unbinds the @var{n} most recent input and output labels.
 
 @code{kill (@var{infolist})}, where @var{infolist} is any item in @code{infolists}
 (such as @code{values}, @code{functions}, or @code{arrays})
-unbinds all items in @code{infolist}.
+unbinds all items in @var{infolist}.
 See also @code{infolists}.
 
 @code{kill (all)} unbinds all items on all infolists.
@@ -528,7 +528,7 @@ By default, Maxima displays the result of each user input expression,
 giving the result an output label.
 The output display is suppressed by terminating the input with @code{$} (dollar sign)
 instead of @code{;} (semicolon).
-An output label is generated, but not displayed, 
+An output label is generated, but not displayed,
 and the label may be referenced in the same way as displayed output labels.
 See also @code{%}, @code{%%}, and @code{%th}.
 
@@ -644,7 +644,7 @@ in the same format as the @code{grind} function.
 Output expressions are not affected by the @code{grind} option.
 See @code{grind}.
 
-Arguments may be combined, e.g., 
+Arguments may be combined, e.g.,
 @code{playback ([5, 10], grind, time, slow)}.
 @c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
 
