@@ -40,19 +40,12 @@
 	    (and fl fb (> (file-write-date fl) (file-write-date fb))))
 	($compile_file fl))))
 
-;; If you place orthopoly.lisp in a directory that Maxima can't find,
-;; you'll need to append its directory to $file_search_lisp. To do this,
-;; replace the path "/home/barton/orthopoly-0.93" with the correct path
-;; for your machine.  
-
 ;; The make function recompiles orthopoly automatically on startup if 
 ;; the binary file is older than orthopoly.lisp. Unless you
 ;; anticipate making changes to orthopoly, you may comment out
 ;; ($make "orthopoly")
 
 (eval-when (load compile eval)
-  (setq $file_search_lisp ($cons "/home/barton/orthopoly-0.94/###.{x86f,lisp}"
-				 $file_search_lisp))
   ($make "orthopoly"))
 
 ;; Load file f with verbose and print bound to true. Useful for loading
@@ -286,10 +279,6 @@
 	(t (recur-apply #'makegamma1 e))))
 
 ;; Autoload the nset functions that simplify.
-
-(add2lnc '$kron_delta $props)
-(defprop $kron_delta simp-kron-delta operators)
-(autof 'simp-kron-delta '|orthopoly|)
 
 (add2lnc '$unit_step $props)
 (defprop $unit_step simp-unit-step operators)

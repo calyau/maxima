@@ -95,42 +95,6 @@
 	  ((eq s '$pos) 1)
 	  (t `(($unit_step simp) ,y)))))
 
-;; A kronecker delta function.  kron_delta(p,q) evaluates to 1 if
-;; (like p q); otherwise,  when either p or q is a float or a big float, 
-;; return kron_delta(p,q); finally, when ?csign(p-q) is not $pnz, return
-;; 0. This may seem overly complex; however, I really don't think
-;; kron_delta(0.1,1/10) or kron_delta(0.1,0.1b0) should evaluate to 1.
-
-(defprop $kron_delta simp-kron-delta operators)
-
-(eval-when (compile load eval)
-  ;;(kind '$kron_delta '$symmetric)) <== This doesn't work. Why?
-  (meval* '(($declare) $kron_delta $symmetric)))
-
-(defun simp-kron-delta (x y z)
-  (twoargcheck x)
-  (setq y (mapcar #'(lambda (s) (simpcheck s z)) (cdr x)))
-  (let ((p (nth 0 y))
-	(q (nth 1 y))
-	(s))
-    (cond ((like p q) 1)
-	  (t
-	   (setq s (csign (specrepcheck (sub p q))))
-	   (if (or (eq s t) (memq s `($pos $neg))) 0 
-	     `(($kron_delta simp) ,p ,q))))))
-
-(defprop $kron_delta tex-kron-delta tex)
-
-(defun tex-kron-delta (x l r)
-  (setq x (mapcar #'(lambda (s) (tex s nil nil nil nil)) (cdr x)))
-  (append l 
-	  `("\\delta_{")
-	  (nth 0 x)
-	  `(",")
-	  (nth 1 x)
-	  `("}")
-	  r))
-
 ;; We barely support intervals; these functions aren't for user-level use.
 ;; The function intervalp returns true iff its argument is an interval.
 

@@ -585,15 +585,6 @@ weight @emph{ (1-x)^a(1+x)^b} isn't integrable for @emph{ a <= -1} or
 @emph{ b <= -1}. ) 
 @end defun
 
-@defun kron_delta (i, j)
-The Kronecker delta function; @emph{kron_delta(i,j)} evaluates to
-1 if and only if @emph{?csign(i-j)} evaluates to @emph{zero}; 
-it evaluates to 0 if and only if @emph{?csign(i-j)} does not 
-evaluate to @emph{pnz} (positive, negative, or zero).  Additionally,
-@emph{kron_delta} is declared to be symmetric; thus, for example,
-@emph{kron_delta(i,j) - kron_delta(j,i)} evaluates to zero.
-@end defun
- 
 @defun laguerre (n, x)
 The Laguerre polynomial. Reference: A & S 22.5.16 and 22.5.54, page 780.
 @end defun
