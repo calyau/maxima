@@ -171,15 +171,15 @@ Sets up a predefined coordinate system and metric. The argument
   polarcylindrical      3  [r,theta,z]       Polar 2D with cylindrical z
   ellipticcylindrical   3  [u,v,z]           Elliptic 2D with cylindrical z
   confocalellipsoidal   3  [u,v,w]           Confocal ellipsoidal
-  bipolarcylindrical    3  [u,v,z]           Bipolar 2D with cylintrical z
+  bipolarcylindrical    3  [u,v,z]           Bipolar 2D with cylindrical z
   paraboliccylindrical  3  [u,v,z]           Parabolic 2D with cylindrical z
   paraboloidal          3  [u,v,phi]         Paraboloidal coordinates
   conical               3  [u,v,w]           Conical coordinates
-  toroidal              3  [u,v,phi]         Thoroidal coordinates
+  toroidal              3  [u,v,phi]         Toroidal coordinates
   spherical             3  [r,theta,phi]     Spherical coordinate system
   oblatespheroidal      3  [u,v,phi]         Oblate spheroidal coordinates
   oblatespheroidalsqrt  3  [u,v,phi]
-  prolatespheroidal     3  [u,v,phi]         Prolate speroidal coordinates
+  prolatespheroidal     3  [u,v,phi]         Prolate spheroidal coordinates
   prolatespheroidalsqrt 3  [u,v,phi]
   ellipsoidal           3  [r,theta,phi]     Ellipsoidal coordinates
   cartesian4d           4  [x,y,z,t]         Cartesian 4D coordinate system
