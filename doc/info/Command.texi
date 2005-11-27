@@ -446,7 +446,7 @@ include @code{X='X} as an argument to @code{ev}.  Of course expressions such as
 @c NEEDS EXAMPLES
 @deffn {Function} kill (@var{symbol_1}, ..., @var{symbol_n})
 @deffnx {Function} kill (labels)
-@deffnx {Function} kill (clabels, dlabels, elabels)
+@deffnx {Function} kill (inlabels, outlabels, linelabels)
 @deffnx {Function} kill (@var{n})
 @deffnx {Function} kill ([@var{m}, @var{n}])
 @deffnx {Function} kill (values, functions, arrays, ...)
@@ -459,17 +459,16 @@ An argument may be a single array element or subscripted function.
 
 Several special arguments are recognized.
 Different kinds of arguments
-may be combined, e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
+may be combined, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
 
-@c MAYBE WE WANT TO CHANGE THE KEYWORDS clabels, dlabels, elabels TO ilabels, olabels, tlabels ??
 @code{kill (labels)} unbinds
 all input, output, and intermediate expression labels created so far.
-@code{kill (clabels)} unbinds only input labels
+@code{kill (inlabels)} unbinds only input labels
 which begin with the current value of @code{inchar}.
 Likewise,
-@code{kill (dlabels)} unbinds only output labels
+@code{kill (outlabels)} unbinds only output labels
 which begin with the current value of @code{outchar},
-and @code{kill (elabels)} unbinds only intermediate expression labels
+and @code{kill (linelabels)} unbinds only intermediate expression labels
 which begin with the current value of @code{linechar}.
 
 @code{kill (@var{n})}, where @var{n} is an integer,
