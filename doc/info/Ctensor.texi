@@ -1,6 +1,6 @@
 @menu
-* Introduction to ctensor::     
-* Definitions for ctensor::     
+* Introduction to ctensor::
+* Definitions for ctensor::
 @end menu
 
 @node Introduction to ctensor, Definitions for ctensor, ctensor, ctensor
@@ -14,15 +14,16 @@ is 2, 3 or 4 then the list of coordinates defaults to @code{[x,y]}, @code{[x,y,z
 or @code{[x,y,z,t]} respectively.
 These names may be changed by assigning a new list of coordinates to
 the variable @code{ct_coords} (described below) and the user is queried about
-this.
-** Care must be taken to avoid the coordinate names conflicting
-with other object definitions **.
+this. Care must be taken to avoid the coordinate names conflicting
+with other object definitions.
 
 Next, the user enters the metric either directly or from a file by
-specifying its ordinal position. As an example of a file of common
-metrics, see @code{share/tensor/metrics.mac}. The metric is stored in the matrix
-LG. Finally, the metric inverse is computed and stored in the matrix
-UG. One has the option of carrying out all calculations in a power
+specifying its ordinal position.
+@c NO SUCH FILE !
+@c As an example of a file of common metrics, see @code{share/tensor/metrics.mac}.
+The metric is stored in the matrix
+@code{lg}. Finally, the metric inverse is computed and stored in the matrix
+@code{ug}. One has the option of carrying out all calculations in a power
 series.
 
 A sample protocol is begun below for the static, spherically symmetric
@@ -33,9 +34,9 @@ displayed for the standard metric as examples.
 
 @example
 (%i1) load(ctensor);
-(%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
+(%o1)      /share/tensor/ctensor.mac
 (%i2) csetup();
-Enter the dimension of the coordinate system: 
+Enter the dimension of the coordinate system:
 4;
 Do you wish to change the coordinate names?
 n;
@@ -60,9 +61,9 @@ Row 4 Column 4:
 -d;
 
 Matrix entered.
-Enter functional dependencies with the DEPENDS function or 'N' if none 
+Enter functional dependencies with the DEPENDS function or 'N' if none
 depends([a,d],x);
-Do you wish to see the metric? 
+Do you wish to see the metric?
 y;
                           [ a  0       0        0  ]
                           [                        ]
@@ -137,14 +138,14 @@ that computes the metric inverse and sets up the package for
 further calculations.
 
 If @code{cframe_flag} is false, the function computes the inverse metric
-ug from the (user-defined) matrix @code{lg}. The metric determinant is
+@code{ug} from the (user-defined) matrix @code{lg}. The metric determinant is
 also computed and stored in the variable @code{gdet}. Furthermore, the
 package determines if the metric is diagonal and sets the value
 of @code{diagmetric} accordingly. If the optional argument @var{dis}
-is present and not equal to false, the user is prompted to see
+is present and not equal to @code{false}, the user is prompted to see
 the metric inverse.
 
-If @code{cframe_flag} is true, the function expects that the values of
+If @code{cframe_flag} is @code{true}, the function expects that the values of
 @code{fri} (the inverse frame matrix) and @code{lfg} (the frame metric) are
 defined. From these, the frame matrix @code{fr} and the inverse frame
 metric @code{ufg} are computed.
@@ -162,27 +163,27 @@ Sets up a predefined coordinate system and metric. The argument
   --------------------------------------------------------------------------
   cartesian2d           2  [x,y]             Cartesian 2D coordinate system
   polar                 2  [r,phi]           Polar coordinate system
-  elliptic              2  [u,v]
-  confocalelliptic      2  [u,v]
-  bipolar               2  [u,v]
-  parabolic             2  [u,v]
+  elliptic              2  [u,v]             Elliptic coordinate system
+  confocalelliptic      2  [u,v]             Confocal elliptic coordinates
+  bipolar               2  [u,v]             Bipolar coordinate system
+  parabolic             2  [u,v]             Parabolic coordinate system
   cartesian3d           3  [x,y,z]           Cartesian 3D coordinate system
-  polarcylindrical      3  [r,theta,z]
-  ellipticcylindrical   3  [u,v,z]           Elliptic 2D with cylindrical Z
-  confocalellipsoidal   3  [u,v,w]
-  bipolarcylindrical    3  [u,v,z]           Bipolar 2D with cylintrical Z
-  paraboliccylindrical  3  [u,v,z]           Parabolic 2D with cylindrical Z
-  paraboloidal          3  [u,v,phi]
-  conical               3  [u,v,w]
-  toroidal              3  [u,v,phi]
+  polarcylindrical      3  [r,theta,z]       Polar 2D with cylindrical z
+  ellipticcylindrical   3  [u,v,z]           Elliptic 2D with cylindrical z
+  confocalellipsoidal   3  [u,v,w]           Confocal ellipsoidal
+  bipolarcylindrical    3  [u,v,z]           Bipolar 2D with cylintrical z
+  paraboliccylindrical  3  [u,v,z]           Parabolic 2D with cylindrical z
+  paraboloidal          3  [u,v,phi]         Paraboloidal coordinates
+  conical               3  [u,v,w]           Conical coordinates
+  toroidal              3  [u,v,phi]         Thoroidal coordinates
   spherical             3  [r,theta,phi]     Spherical coordinate system
-  oblatespheroidal      3  [u,v,phi]
+  oblatespheroidal      3  [u,v,phi]         Oblate spheroidal coordinates
   oblatespheroidalsqrt  3  [u,v,phi]
-  prolatespheroidal     3  [u,v,phi]
+  prolatespheroidal     3  [u,v,phi]         Prolate speroidal coordinates
   prolatespheroidalsqrt 3  [u,v,phi]
-  ellipsoidal           3  [r,theta,phi]
+  ellipsoidal           3  [r,theta,phi]     Ellipsoidal coordinates
   cartesian4d           4  [x,y,z,t]         Cartesian 4D coordinate system
-  spherical4d           4  [r,theta,eta,phi]
+  spherical4d           4  [r,theta,eta,phi] Spherical 4D coordinate system
   exteriorschwarzschild 4  [t,r,theta,phi]   Schwarzschild metric
   interiorschwarzschild 4  [t,z,u,v]         Interior Schwarzschild metric
   kerr_newman           4  [t,r,theta,phi]   Charged axially symmetric metric
@@ -279,7 +280,7 @@ When a metric base is used, @code{ctensor} can compute the following tensors:
 
  lg  -- ug
    \      \
-    lcs -- mcs -- ric -- uric 
+    lcs -- mcs -- ric -- uric
               \      \       \
                \      tracer - ein -- lein
                 \
@@ -320,6 +321,7 @@ then the unique non-zero values of @code{lcs[i,j,k]} and @code{mcs[i,j,k]} will 
 displayed.  If the argument is @code{false} then the display of the elements
 will not occur. The array elements @code{mcs[i,j,k]} are defined in such a
 manner that the final index is contravariant.
+
 @end deffn
 
 @deffn {Function} ricci (@var{dis})
@@ -327,6 +329,7 @@ A function in the @code{ctensor} (component tensor)
 package. @code{ricci} computes the covariant (symmetric)
 components @code{ric[i,j]} of the Ricci tensor.  If the argument @var{dis} is @code{true},
 then the non-zero components are displayed.
+
 @end deffn
 
 @deffn {Function} uricci (@var{dis})
@@ -334,18 +337,19 @@ This function first computes the
 covariant components @code{ric[i,j]} of the Ricci tensor.
 Then the mixed Ricci tensor is computed using the
 contravariant metric tensor.  If the value of the argument @var{dis}
-is @code{true}, then these mixed components, @code{uric[i,j]} (the index i is
-covariant and the index j is contravariant), will be displayed
+is @code{true}, then these mixed components, @code{uric[i,j]} (the
+index @code{i} is covariant and the index @code{j} is contravariant), will be displayed
 directly.  Otherwise, @code{ricci(false)} will simply compute the entries
 of the array @code{uric[i,j]} without displaying the results.
 
 @end deffn
-@deffn {Function} scurvature ()
 
-returns the scalar curvature (obtained by contracting
+@deffn {Function} scurvature ()
+Returns the scalar curvature (obtained by contracting
 the Ricci tensor) of the Riemannian manifold with the given metric.
 
 @end deffn
+
 @deffn {Function} einstein (@var{dis})
 A function in the @code{ctensor} (component tensor)
 package.  @code{einstein} computes the mixed Einstein tensor
@@ -358,6 +362,7 @@ these components. If @code{ratfac} is @code{true} then the components will
 also be factored.
 
 @end deffn
+
 @deffn {Function} leinstein (@var{dis})
 Covariant Einstein-tensor. @code{leinstein} stores the values of the covariant Einstein tensor in the array @code{lein}. The covariant Einstein-tensor is computed from the mixed Einstein tensor @code{ein} by multiplying it with the metric tensor. If the argument @var{dis} is @code{true}, then the non-zero values of the covariant Einstein tensor are displayed.
 
@@ -375,7 +380,7 @@ index conventions are used:
                 ijk     ij,k     ik,j     mk   ij    mj   ik
 @end example
 
-This notation is consistent with the notation used by the ITENSOR
+This notation is consistent with the notation used by the @code{itensor}
 package and its @code{icurvature} function.
 If the optional argument @var{dis} is @code{true},
 the non-zero components @code{riem[i,j,k,l]} will be displayed.
@@ -518,22 +523,22 @@ complex:
 (%i10) einstein(false);
 (%o10)                               done
 (%i11) ntermst(ein);
-[[1, 1], 62] 
-[[1, 2], 0] 
-[[1, 3], 0] 
-[[1, 4], 0] 
-[[2, 1], 0] 
-[[2, 2], 24] 
-[[2, 3], 0] 
-[[2, 4], 0] 
-[[3, 1], 0] 
-[[3, 2], 0] 
-[[3, 3], 46] 
-[[3, 4], 0] 
-[[4, 1], 0] 
-[[4, 2], 0] 
-[[4, 3], 0] 
-[[4, 4], 46] 
+[[1, 1], 62]
+[[1, 2], 0]
+[[1, 3], 0]
+[[1, 4], 0]
+[[2, 1], 0]
+[[2, 2], 24]
+[[2, 3], 0]
+[[2, 4], 0]
+[[3, 1], 0]
+[[3, 2], 0]
+[[3, 3], 46]
+[[3, 4], 0]
+[[4, 1], 0]
+[[4, 2], 0]
+[[4, 3], 0]
+[[4, 4], 46]
 (%o12)                               done
 
 @end example
@@ -558,22 +563,22 @@ linear in the variable @code{l}, we get much simpler expressions:
 (%i20) einstein(false);
 (%o20)                               done
 (%i21) ntermst(ein);
-[[1, 1], 6] 
-[[1, 2], 0] 
-[[1, 3], 0] 
-[[1, 4], 0] 
-[[2, 1], 0] 
-[[2, 2], 13] 
-[[2, 3], 2] 
-[[2, 4], 0] 
-[[3, 1], 0] 
-[[3, 2], 2] 
-[[3, 3], 9] 
-[[3, 4], 0] 
-[[4, 1], 0] 
-[[4, 2], 0] 
-[[4, 3], 0] 
-[[4, 4], 9] 
+[[1, 1], 6]
+[[1, 2], 0]
+[[1, 3], 0]
+[[1, 4], 0]
+[[2, 1], 0]
+[[2, 2], 13]
+[[2, 3], 2]
+[[2, 4], 0]
+[[3, 1], 0]
+[[3, 2], 2]
+[[3, 3], 9]
+[[3, 4], 0]
+[[4, 1], 0]
+[[4, 2], 0]
+[[4, 3], 0]
+[[4, 4], 9]
 (%o21)                               done
 (%i22) ratsimp(ein[1,1]);
                          2      2  4               2     2
@@ -592,7 +597,7 @@ This capability can be useful, for instance, when working in the weak
 field limit far from a gravitational source.
 
 @end deffn
-    
+
 
 @subsection Frame fields
 
@@ -685,7 +690,7 @@ of the Kerr metric:
 (%i5) weyl(false);
 (%o5)                                done
 (%i6) nptetrad(true);
-(%t6) np = 
+(%t6) np =
 
        [  sqrt(r - 2 m)           sqrt(r)                                     ]
        [ ---------------   ---------------------      0             0         ]
@@ -704,15 +709,15 @@ of the Kerr metric:
        [                                           sqrt(2)        sqrt(2)     ]
 
                              sqrt(r)          sqrt(r - 2 m)
-(%t7) npi = matrix([- ---------------------, ---------------, 0, 0], 
+(%t7) npi = matrix([- ---------------------, ---------------, 0, 0],
                       sqrt(2) sqrt(r - 2 m)  sqrt(2) sqrt(r)
 
           sqrt(r)            sqrt(r - 2 m)
-[- ---------------------, - ---------------, 0, 0], 
+[- ---------------------, - ---------------, 0, 0],
    sqrt(2) sqrt(r - 2 m)    sqrt(2) sqrt(r)
 
            1               %i
-[0, 0, ---------, --------------------], 
+[0, 0, ---------, --------------------],
        sqrt(2) r  sqrt(2) r sin(theta)
 
            1                 %i
