@@ -1,6 +1,6 @@
 @c end concepts Contexts
 @menu
-* Definitions for Contexts::    
+* Definitions for Contexts::
 @end menu
 
 @node Definitions for Contexts,  , Contexts, Contexts
@@ -76,7 +76,8 @@ or other considerations,
 This may forestall some automatically-generated @code{asksign} queries,
 such as may arise from @code{integrate} or other computations.
 
-By default, a parameter is @var{x} such that @code{symbolp (x)} or @code{subvarp (x)}.
+By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
+or @code{subvarp (@var{x})}.
 The class of expressions considered parameters can be modified to some extent
 via the variable @code{assume_pos_pred}.
 
@@ -111,7 +112,8 @@ which is either an atom, a subscripted variable, or a function call expression.
 If the @code{assume_pos_pred} function returns @code{true},
 @var{x} is considered a parameter for the purpose of @code{assume_pos}.
 
-By default, a parameter is @var{x} such that @code{symbolp (x)} or @code{subvarp (x)}.
+By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
+or @code{subvarp (@var{x})}.
 
 See also @code{assume} and @code{assume_pos}.
 
