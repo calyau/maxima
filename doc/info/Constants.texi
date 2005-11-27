@@ -7,7 +7,7 @@
 @section Definitions for Constants
 
 @defvr {Constant} %e
- - The base of natural logarithms, e, is represented in Maxima
+ - the base of natural logarithms, @math{e}, is represented in Maxima
 as @code{%e}.
 
 @end defvr
