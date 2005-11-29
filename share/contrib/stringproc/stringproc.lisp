@@ -22,6 +22,9 @@
 ;;                  new functions: invert-string-case, $sinvertcase
 ;;        05-11-09  fixed: $ssubst (test,s,e in recursive call) 
 ;;        05-11-12  new file-header 
+;;        05-11-20  fixed: $cunlisp (Variable naming error) 
+;;                  $sremove (unnecessary line deleted)
+;;        05-11-27  fixed: $ascii (src/commac.lisp/ascii doesn't work with clisp) 
 
 (in-package "MAXIMA")
 
@@ -139,7 +142,7 @@
           mch))))
 
 ;;  converts a lisp-character into a maxima-string of length 1
-(defun $cunlisp (lch) (m-char mch));; for testing only
+(defun $cunlisp (lch) (m-char lch));; for testing only
 
 (defun m-char (lch)
    (m-string 
@@ -166,7 +169,7 @@
 
 ;;  ascii-char <-> index
 (defun $cint (mch) (char-int (l-char mch)))
-(defun $ascii (int) (m-char (character (ascii int))))
+(defun $ascii (int) (m-char (character int)))
 
 ;;  comparison - test functions
 (defun $cequal (ch1 ch2)          (char= (l-char ch1) (l-char ch2)))
@@ -416,7 +419,6 @@
         (concatenate 'string sq1 sq2))))
    (let* ((str (l-string mstr))
           (sss (l-string seq))
-          (len (length sss))
           (end (if e (1- e)))
           (start (search sss str 
                     :test (if (numberp test)
