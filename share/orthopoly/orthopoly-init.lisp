@@ -278,11 +278,11 @@
 		e)))
 	(t (recur-apply #'makegamma1 e))))
 
-;; unit_step isn't a function.  If you try to autoload
-;; it, you'll throw Maxima into an infinite loop! It's okay to add
-;; it to props.
+;; Autoload the nset functions that simplify.
 
 (add2lnc '$unit_step $props)
+(defprop $unit_step simp-unit-step operators)
+(autof 'simp-unit-step '|orthopoly|)
 
 ($setup_autoload "orthopoly"
 		 '$assoc_legendre_p
