@@ -1,12 +1,28 @@
-@node Orthogonal Polynomials, Special Functions, Command Line, Top
+\input texinfo
 
-@chapter Orthogonal Polynomials
+@c makeinfo orthopoly.texi         to make .info
+@c texi2html orthopoly.texi        to make .html
+@c texi2pdf orthopoly.texi         to make .pdf
+
+@setfilename orthopoly.info
+@settitle orthopoly
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to orthogonal polynomials, (dir), (dir)
+@top
 @menu
-* Introduction to Orthogonal Polynomials::  
-* Definitions for Orthogonal Polynomials::  
+* Introduction to orthogonal polynomials::
+* Definitions for orthogonal polynomials::
+* Function and variable index::
 @end menu
 
-@section Introduction to Orthogonal Polynomials
+@node Introduction to orthogonal polynomials, Definitions for orthogonal polynomials, Top, Top
+@section Introduction to orthogonal polynomials
 
 Maxima includes support for symbolic and numerical evaluation of
 most of the orthogonal polynomials listed in Chapter 
@@ -65,7 +81,6 @@ extended version of the function @emph{makegamma}.
 To test orthopoly, load("test-orthopoly.mac"). You may need to give
 the full pathname for the file. Report errors. 
 
-@end enumerate
 
 @subsubsection Getting Started with Orthopoly
 
@@ -212,7 +227,7 @@ output on a terminal
 (D1) 			        Y (THETA, PHI)
 				 l
 (C2) tex(%);
-$$Y_{l}^{m}\left(\vartheta,\varphi\right)$$
+$$Y_@{l@}^@{m@}\left(\vartheta,\varphi\right)$$
 (D2) 				     FALSE
 
 (C3) jacobi_p(n,a,a-b,x/2);
@@ -221,7 +236,7 @@ $$Y_{l}^{m}\left(\vartheta,\varphi\right)$$
 (D3) 			        P	   (-)
 				 n	    2
 (C4) tex(%);
-$$P_{n}^{\left(a,a-b\right)}\left({{x}\over{2}}\right)$$
+$$P_@{n@}^@{\left(a,a-b\right)@}\left(@{@{x@}\over@{2@}@}\right)$$
 (D4) 				     FALSE
 @end example
 
@@ -385,9 +400,9 @@ Maxima does not support arithmetic on intervals
 A user could define arithmetic operators that do interval math. To
 define interval addition, we can define
 @example
-(C9)  infix("@+")$
-(C10) "@+"(x,y) := interval(part(x,1) + part(y,1),part(x,2) + part(y,2))$
-(C11)  legendre_p(7,0.1) @+ legendre_p(8,0.1);
+(C9)  infix("@@+")$
+(C10) "@@+"(x,y) := interval(part(x,1) + part(y,1),part(x,2) + part(y,2))$
+(C11)  legendre_p(7,0.1) @@+ legendre_p(8,0.1);
 (D11) 	    INTERVAL(- 0.019172222265624955, 4.452707732128387e-15)
 @end example
 
@@ -542,8 +557,9 @@ renamed  orthopoly, was announced in May 2003.  The third version
 adds TeX and display support, improved  numerical floating point 
 accuracy, and new user documentation.
 
-@node Definitions for Orthogonal Polynomials, , Orthogonal Polynomials, Orthogonal Polynomials
-@section Definitions for Orthogonal Polynomials
+
+@node Definitions for orthogonal polynomials, Function and variable index, Introduction to orthogonal polynomials, Top
+@section Definitions for orthogonal polynomials
 
 @defun assoc_legendre_p (n, m, x)
 The associated Legendre function of the first kind. 
@@ -572,7 +588,7 @@ The generalized Laguerre polynomial. Reference:  A & S 22.5.54, page 780.
 The Hermite polynomial. Reference:  See A&S 22.5.55, page 780.
 @end defun
 
-@defun intervalp(e)
+@defun intervalp (e)
 Return true if the input is an interval and return false if it isn't. 
 @end defun
 
@@ -710,7 +726,7 @@ is symbolic, the pochhammer function evaluates to itself
 @end example
 The default value of pochhammer_max_index is 100. Reference A & S 6.1.16, page 
 256.
-@end defun
+@end defvar
 
 @defun spherical_bessel_j (n, x)
 The spherical Bessel function of the first kind. Reference: A & S 10.1.8, page 
@@ -748,3 +764,10 @@ The ultraspherical polynomial (also known the Gegenbauer polynomial).
 Reference A & S 22.5.46, page 779.
 @end defun
 
+
+@node Function and variable index,  , Definitions for orthogonal polynomials, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
