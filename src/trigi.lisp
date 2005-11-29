@@ -456,10 +456,15 @@
 ;; The following are read-time constants.
 ;; This seems bogus.  Probably want (FSC (LSH 1 26.) 0) for the PDP10. -cwh
 
+#||
 #.(setq eps #+pdp10 (fsc 1.0 -26.)
 	#+cl			    ;(ASH 1.0 #+3600 -24. #-3600 -31.)
 	(scale-float 1.0 -24)
 	#-(or pdp10 cl) 1.4e-8)
+||#
+
+(eval-when (compile load eval)
+(defconstant +eps+ double-float-epsilon))
 
 #-cl ;;it already has a value thank you very much
 (setq pi #.(atan 0.0 -1.0))
@@ -524,7 +529,7 @@
 (defmfun asin (num)
   (let ((yflo (float num)))
     (cond ((> (abs yflo) 1.0) (logarc '%asin yflo))
-	  ((< (abs yflo) #.(sqrt eps)) yflo)
+	  ((< (abs yflo) #.(sqrt +eps+)) yflo)
 	  (t (*$ (atan (abs yflo) (sqrt (-$ 1.0 (*$ yflo yflo))))
 		 (if (< yflo 0.0) -1.0 1.0))))))
 
@@ -532,7 +537,7 @@
 (defmfun acos (num) 
   (let ((yflo (float num)))
     (cond ((> (abs yflo) 1.0) (logarc '%acos yflo))
-	  ((< (abs yflo) #.(sqrt eps)) (-$ #.piby2 yflo))
+	  ((< (abs yflo) #.(sqrt +eps+)) (-$ #.piby2 yflo))
 	  (t (atan (sqrt (-$ 1.0 (*$ yflo yflo))) yflo)))))
 
 #+maclisp
@@ -557,7 +562,7 @@
 
 (defmfun sinh (num)
   (let ((yy (float num)) (yflo 0.0))
-    (cond ((< (abs yy) #.(sqrt eps)) yy)
+    (cond ((< (abs yy) #.(sqrt +eps+)) yy)
 	  (t (setq yflo (exp (abs yy)) yflo (//$ (-$ yflo (//$ yflo)) 2.0))
 	     (if (< yy 0.0) (-$ yflo) yflo)))))
 
@@ -567,45 +572,45 @@
 
 (defmfun tanh (num)
   (let ((yy (float num)) (yflo 0.0))
-    (cond ((< (abs yy) #.(sqrt eps)) yy)
+    (cond ((< (abs yy) #.(sqrt +eps+)) yy)
 	  (t (setq yflo (exp (*$ -2.0 (abs yy))) yflo (//$ (1-$ yflo) (1+$ yflo)))
 	     (if (plusp yy) (-$ yflo) yflo)))))
 
 (defmfun coth (num)
   (let ((yy (float num)) (yflo 0.0))
-    (cond ((< (abs yy) #.(sqrt eps)) (//$ yy))
+    (cond ((< (abs yy) #.(sqrt +eps+)) (//$ yy))
 	  (t (setq yflo (exp (*$ -2.0 (abs yy))) yflo (t//$ (1+$ yflo) (1-$ yflo) 'coth))
 	     (if (plusp yy) (-$ yflo) yflo)))))
 
 (defmfun csch (num)
   (let ((yy (float num)) (yflo 0.0))
-    (cond ((< (abs yy) #.(sqrt eps)) (//$ yy))
+    (cond ((< (abs yy) #.(sqrt +eps+)) (//$ yy))
 	  (t (setq yflo (exp (-$ (abs yy)))
 		   yflo (t//$ (*$ 2.0 yflo)
-			      (1-$ (if (< yflo #.(sqrt eps)) 0.0 (*$ yflo yflo))) 'csch))
+			      (1-$ (if (< yflo #.(sqrt +eps+)) 0.0 (*$ yflo yflo))) 'csch))
 	     (if (plusp yy) (-$ yflo) yflo)))))
 
 (defmfun sech (num)
   (let ((yflo (float num))) (setq yflo (exp (-$ (abs yflo))))
-       (//$ yflo 0.5 (1+$ (if (< yflo #.(sqrt eps)) 0.0 (*$ yflo yflo))))))
+       (//$ yflo 0.5 (1+$ (if (< yflo #.(sqrt +eps+)) 0.0 (*$ yflo yflo))))))
 
 (defmfun acosh (num)
   (let ((yflo (float num)))
     (cond ((< yflo 1.0) (logarc '%acosh yflo))
-	  ((> yflo #.(sqrt (//$ eps))) (log (*$ 2.0 yflo)))
+	  ((> yflo #.(sqrt (//$ +eps+))) (log (*$ 2.0 yflo)))
 	  (t (log (+$ (sqrt (1-$ (*$ yflo yflo))) yflo))))))
 
 (defmfun asinh (num)
   (let* ((yy (float num))
 	 (yflo (abs yy)))
-    (cond ((< yflo #.(sqrt eps)) yflo)
-	  (t (setq yflo (log (cond ((> yflo #.(sqrt (//$ eps))) (*$ 2.0 yflo))
+    (cond ((< yflo #.(sqrt +eps+)) yflo)
+	  (t (setq yflo (log (cond ((> yflo #.(sqrt (//$ +eps+))) (*$ 2.0 yflo))
 				   (t (+$ (sqrt (1+$ (*$ yflo yflo))) yflo)))))
 	     (cond ((minusp yy) (-$ yflo)) (t yflo))))))
 
 (defmfun atanh (num)
   (let ((yflo (float num)))
-    (cond ((< (abs yflo) #.(sqrt eps)) yflo)
+    (cond ((< (abs yflo) #.(sqrt +eps+)) yflo)
 	  ((< (abs yflo) 1.0) (//$ (log (t//$ (1+$ yflo) (-$ 1.0 yflo) 'atanh)) 2.0))
 	  ((= 1.0 (abs yflo)) (t//$ 1.0 0.0 'atanh))
 	  (t (logarc '%atanh yflo)))))
