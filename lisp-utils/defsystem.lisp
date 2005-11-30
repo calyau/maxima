@@ -1838,11 +1838,11 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
 	 (rel-directory (directory-to-list (pathname-directory rel-dir)))
 	 (rel-keyword (when (keywordp (car rel-directory))
 			(pop rel-directory)))
-         #-(or :MCL :sbcl :clisp) (rel-file (file-namestring rel-dir))
+         #-(or :MCL :sbcl :clisp :cmu) (rel-file (file-namestring rel-dir))
 	 ;; Stig (July 2001);
 	 ;; These values seems to help clisp as well
-	 #+(or :MCL :sbcl :clisp) (rel-name (pathname-name rel-dir))
-	 #+(or :MCL :sbcl :clisp) (rel-type (pathname-type rel-dir))
+	 #+(or :MCL :sbcl :clisp :cmu) (rel-name (pathname-name rel-dir))
+	 #+(or :MCL :sbcl :clisp :cmu) (rel-type (pathname-type rel-dir))
 	 (directory nil))
 
     ;; TI Common Lisp pathnames can return garbage for file names because
@@ -1895,11 +1895,11 @@ s/^[^M]*IRIX Execution Environment 1, *[a-zA-Z]* *\\([^ ]*\\)/\\1/p\\
                     :directory
                     directory
 		    :name
-		    #-(or :sbcl :MCL :clisp) rel-file
-		    #+(or :sbcl :MCL :clisp) rel-name
+		    #-(or :sbcl :MCL :clisp :cmu) rel-file
+		    #+(or :sbcl :MCL :clisp :cmu) rel-name
 
-		    #+(or :sbcl :MCL :clisp) :type
-		    #+(or :sbcl :MCL :clisp) rel-type
+		    #+(or :sbcl :MCL :clisp :cmu) :type
+		    #+(or :sbcl :MCL :clisp :cmu) rel-type
 		    ))))
 
 #-scl
