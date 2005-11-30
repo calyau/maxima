@@ -1,4 +1,4 @@
-@c /Ctensor.texi/1.28/Thu Jun 16 17:05:28 2005/-ko/
+@c /Ctensor.texi/1.30/Wed Nov 30 10:57:39 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a ctensor::     
 * Defini@value{cedilha}@~oes para ctensor::     
@@ -15,9 +15,8 @@ for 2, 3 ou 4 ent@~ao a lista de coordenadas padr@~ao @'e @code{[x,y]}, @code{[x
 ou @code{[x,y,z,t]} respectivamente.
 Esses nomes podem ser mudados atrav@'es da atribui@,{c}@~ao de uma nova lista de coordenadas para
 a vari@'avel @code{ct_coords} (descrita abaixo) e o usu@'ario @'e perguntado sobre
-isso.
-** Cuidado deve ser tomado para evitar o conflito de nomes de coordenadas
-com outras defini@,{c}@~oes de objetos **.
+isso.Cuidado deve ser tomado para evitar o conflito de nomes de coordenadas
+com outras defini@,{c}@~oes de objetos.
 
 No pr@'oximo passo, o usu@'ario informa a m@'etrica ou diretamente ou de um arquivo
 especificando sua posi@,{c}@~ao ordinal. Como um exemplo de um arquivo de m@'etrica
