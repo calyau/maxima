@@ -1,4 +1,4 @@
-@c /Command.texi/1.32/Fri Jun 17 00:57:31 2005/-ko
+@c /Command.texi/1.34/Wed Nov 30 10:57:33 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Linha de Comando::  
 * Defini@value{cedilha}@~oes para Linha de Comando::  
@@ -194,8 +194,8 @@ em @var{expr}.
 @item
 @code{expand} causa expans@~ao.
 @item
-@code{expand (m, n)} causa expans@~ao, alterando os valores de @code{maxposex} e
-@code{maxnegex} para m e n respectivamente.
+@code{expand (@var{m}, @var{n})} causa expans@~ao, alterando os valores de @code{maxposex} e
+@code{maxnegex} para @var{m} e @var{n} respectivamente.
 @item
 @code{detout} faz com que qualquer matriz inversa calculada em @var{expr} tenha seu
 determinante mantido fora da inversa ao inv@'es de dividindo a
@@ -203,7 +203,7 @@ cada elementos.
 @item
 @code{diff} faz com que todas as diferencia@,{c}@~oes indicadas em @var{expr} sejam executadas.
 @item
-@code{derivlist (x, y, z, ...)} causa somente diferencia@,{c}@~oes referentes @`as
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferencia@,{c}@~oes referentes @`as
 vari@'aveis indicadas.
 @item
 @code{float} faz com que n@'umeros racionais n@~ao integrais sejam convertidos para ponto 
@@ -448,7 +448,7 @@ inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~oes ta
 @c NEEDS EXAMPLES
 @deffn {Fun@,{c}@~ao} kill (@var{symbol_1}, ..., @var{symbol_n})
 @deffnx {Fun@,{c}@~ao} kill (labels)
-@deffnx {Fun@,{c}@~ao} kill (clabels, dlabels, elabels)
+@deffnx {Function} kill (inlabels, outlabels, linelabels)
 @deffnx {Fun@,{c}@~ao} kill (@var{n})
 @deffnx {Fun@,{c}@~ao} kill ([@var{m}, @var{n}])
 @deffnx {Fun@,{c}@~ao} kill (values, functions, arrays, ...)
@@ -461,17 +461,15 @@ Um argumento pode ser um elemento simples de um array ou uma fun@,{c}@~ao subscr
 
 Muitos argumentos especiais s@~ao reconhecidos.  
 Diferentes fam@'ilias de argumentos 
-podem ser combinadas, e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
+podem ser combinadas, e.g., @code{kill (inlabels, functions, allbut (foo, bar))}
 
-@c MAYBE WE WANT TO CHANGE THE KEYWORDS clabels, dlabels, elabels TO ilabels, olabels, tlabels ??
-@code{kill (labels)} libera
 todos os r@'otulos de entrada, de sa@'ida, e de express@~oes intermedi@'arias criados at@'e ent@~ao.
-@code{kill (clabels)} libera somente r@'otudos de entrada 
+@code{kill (inlabels)} libera somente r@'otudos de entrada 
 que come@,{c}am com o valor corrente de @code{inchar}.
 De forma semelhante,
-@code{kill (dlabels)} libera somente r@'otulos de sa@'ida
+@code{kill (outlabels)} libera somente r@'otulos de sa@'ida
 que come@,{c}am com o valor corrente de @code{outchar},
-e @code{kill (elabels)} libera somente r@'otulos de express@~oes intermedi@'arias
+e @code{kill (linelabels)} libera somente r@'otulos de express@~oes intermedi@'arias
 que come@,{c}am com o valor corrente de @code{linechar}.
 
 @code{kill (@var{n})}, onde @var{n} @'e um inteiro,
@@ -481,7 +479,7 @@ libera os @var{n} mais recentes r@'otulos de entrada e sa@'ida.
 
 @code{kill (@var{infolist})}, onde @var{infolist} @'e um @'item em @code{infolists}
 (tais como @code{values}, @code{functions}, ou @code{arrays})
-libera todos os @'itens em @code{infolist}.
+libera todos os @'itens em @var{infolist}.
 Veja tamb@'em @code{infolists}.
 
 @code{kill (all)} liberar todos os @'itens em todas as infolists.

@@ -1,4 +1,4 @@
-@c /Contexts.texi/1.9/Wed Sep 7 02:58:52 2005/-ko/
+@c /Contexts.texi/1.10/Sun Nov 27 22:23:59 2005/-ko/
 @c end concepts Contexts
 @menu
 * Defini@value{cedilha}@~oes para Contextos::    
@@ -26,7 +26,6 @@ pelo caminho da fun@,{c}@~ao @code{activate}, em oposi@,{c}@~ao a sendo ativo po
 eles s@~ao subcontextos do contexto corrente.
 
 @end defvr
-
 
 @deffn {Fun@value{cedilha}@~ao} assume (@var{pred_1}, ..., @var{pred_n})
 Adiciona predicados @var{pred_1}, ..., @var{pred_n} para a base de dados corrente,
@@ -77,7 +76,8 @@ ou outras considera@,{c}@~oes,
 Isso pode impedir algum questionamento de @code{asksign} gerado automaticamente,
 tal como pode surgir de @code{integrate} ou de outros c@'alculos.
 
-Por padr@~ao, um parâmetro @'e @var{x} tal como @code{symbolp (x)} ou @code{subvarp (x)}.
+Por padr@~ao, um parâmetro @'e @var{x} tal como @code{symbolp (@var{x})}
+or @code{subvarp (@var{x})}.
 A classe de express@~oes consideradas parâmetros pode ser modificada para alguma abrang@^encia
 atrav@'es da vari@'avel @code{assume_pos_pred}.
 
