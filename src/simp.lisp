@@ -956,16 +956,34 @@
      (if (null (cdr fm)) (return out))
      (go loop)))
 
+;; I (rtoy) think this does some simple optimizations of x * y.
 (defun testt (x)
-  (cond ((mnump x) x)
-	((null (cddr x)) (cadr x))
-	((onep1 (cadr x))
-	 (cond ((null (cdddr x)) (caddr x)) (t (rplacd x (cddr x)))))
-	(t (testtneg x))))
+  (cond ((mnump x)
+	 x)
+	((null (cddr x))
+	 ;; We have something like ((mtimes) foo).  This is the same as foo.
+	 (cadr x))
+	((eql 1 (cadr x))
+	 ;; We have 1*foo.  Which is the same as foo.  This should not
+	 ;; be applied to 1.0 or 1b0!
+	 (cond ((null (cdddr x))
+		(caddr x))
+	       (t (rplacd x (cddr x)))))
+	(t
+	 (testtneg x))))
 
+;; This basically converts -(a+b) to -a-b.
 (defun testtneg (x)
-  (cond ((and (equal (cadr x) -1) (null (cdddr x)) (mplusp (caddr x)) $negdistrib)
-	 (addn (mapcar (function (lambda (z) (mul2 -1 z))) (cdaddr x)) t))
+  (cond ((and (equal (cadr x) -1)
+	      (null (cdddr x))
+	      (mplusp (caddr x))
+	      $negdistrib)
+	 ;; If x is exactly of the form -1*(sum), and $negdistrib is
+	 ;; true, we distribute the -1 across the sum.
+	 (addn (mapcar #'(lambda (z)
+			   (mul2 -1 z))
+		       (cdaddr x))
+	       t))
 	(t x)))
 
 (defun testp (x) (cond ((atom x) 0)
