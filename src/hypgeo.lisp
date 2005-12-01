@@ -469,7 +469,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
-;; Recognize gammagreek(w1,w2), th incomplete gamma function,
+;; Recognize gammagreek(w1,w2), the incomplete gamma function,
 ;; integrate(t^(v-1)*exp(-t),t,0,x)
 (defun onegammagreek
     (exp)
@@ -927,24 +927,38 @@
 ;; Laplace transform of c*t^v*exp(-p*t+e*f).  L contains the pattern
 ;; for c*t^v.
 (defun lt-exp (l e f)
-  (prog(c v)
-     (setq c (cdras 'c l) v (cdras 'v l))
-     (cond ((t^2 f)
-	    (setq e (inv (mul -8 e)) v (add v 1))
-	    (return (f24p146test c v e))))
-     (cond ((sqroott f)
-	    (setq e (mul* e e (inv 4)) v (add v 1))
-	    (return (f35p147test c v e))))
-     (cond ((t^-1 f)
-	    (setq e (mul -4 e) v (add v 1))
-	    (return (f29p146test v e))))
-     (return 'other-lt-exponential-to-follow)))
+  (let ((c (cdras 'c l))
+	(v (cdras 'v l)))
+    (cond ((t^2 f)
+	   (setq e (inv (mul -8 e)) v (add v 1))
+	   (f24p146test c v e))
+	  ((sqroott f)
+	   (setq e (mul* e e (inv 4)) v (add v 1))
+	   (f35p147test c v e))
+	  ((t^-1 f)
+	   (setq e (mul -4 e) v (add v 1))
+	   (f29p146test v e))
+	  ((e^-t f)
+	   (f36p147 e))
+	  ((e^t f)
+	   (f37p147 e))
+	  (t 'other-lt-exponential-to-follow))))
 
 (defun t^2(exp)(m2 exp '((mexpt)(t varp) 2) nil))
 
 (defun sqroott(exp)(m2 exp '((mexpt)(t varp)((rat) 1 2)) nil))
 
 (defun t^-1(exp)(m2 exp '((mexpt)(t varp) -1) nil))
+
+(defun e^-t (exp)
+  (m2 exp
+      '((mexpt) $%e ((mtimes) -1 (t varp)))
+      nil))
+
+(defun e^t (exp)
+  (m2 exp
+      '((mexpt) $%e (t varp))
+      nil))
 
 ;; Check if conditions for f24p146 hold
 (defun f24p146test (c v a)
@@ -1018,6 +1032,29 @@
 	(dtford (power (mul* 2 a (inv *par*))
 		       (1//2))
 		(mul -2 v))))
+
+;; Table of Integral Transforms
+;;
+;; p. 147, formula 36:
+;;
+;; exp(-a*exp(-t))
+;;   -> a^(-p)*gamma(p,a)
+(defun f36p147 (a)
+  (let ((-a (mul -1 a)))
+    (mul* (power -a (mul -1 *par*))
+	  `(($gammagreek) ,*par* ,-a))))
+
+;; Table of Integral Transforms
+;;
+;; p. 147, formula 36:
+;;
+;; exp(-a*exp(t))
+;;   -> a^(-p)*gammaincomplete(-p,a)
+(defun f37p147 (a)
+  (let ((-a (mul -1 a)))
+    (mul* (power -a *par*)
+	  `(($gammaincomplete) ,(mul -1 *par*) ,-a))))
+
 
 ;; Table of Integral Transforms
 ;;

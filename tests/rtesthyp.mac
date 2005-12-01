@@ -761,3 +761,14 @@ hgfred([s-1,s+1/2],[2*s+2],z)
 
 hgfred([s-1,s+1/2],[2*s+2],z) - hgfred([s+1/2,s-1],[2*s+2],z);
 0$
+
+(assume(p>0),true);
+true$
+/* Table of Integral Transforms */
+/* Formula 36, p 147 */
+specint(exp(-a*exp(-t))*exp(-p*t),t);
+a^(-p)*gammagreek(p,a)$
+
+/* Formula 37, p 147 */
+specint(exp(-a*exp(t))*exp(-p*t),t);
+a^p*gammaincomplete(-p,a)$
