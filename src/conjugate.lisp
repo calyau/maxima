@@ -35,6 +35,8 @@
 ;; 	
 ;; 	((symbolp e) (kindp e ind))))
 
+;; This is defined in compar.lisp, in exactly the same way so kill this one.
+#+nil
 (defun op-equalp (e &rest op)
   (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
 
