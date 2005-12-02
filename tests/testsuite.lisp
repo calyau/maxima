@@ -19,5 +19,5 @@
 	"rtestmt19937"
     "rtest_allnummod"
     "rtestconjugate"
-    ((mlist) "rtestsum" 3 4 5 12 38)
+    ((mlist) "rtestsum" 3 4 5 18 44)
 	))

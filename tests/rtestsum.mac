@@ -45,6 +45,26 @@ x;
 'sum(binomial(x,2-k)-binomial(x,1-k),k,1,2),sum;
 x;
 
+sum (f(k) + 1, k, 1, n), simpsum;
+n + 'sum (f(k), k, 1, n);
+
+/* further examples in the same vein: part of summand depends on index, part doesn't. */
+
+sum (sin(g(j)) - %pi^j + cos(h(k)) - %e^l, j, 1, m), simpsum;
+m*cos(h(k)) - m*%e^l + 'sum (sin(g(j)), j, 1, m) - (%pi^(m + 1) - %pi)/(%pi - 1);
+
+sum (sum (f(j) + g(k), j, 1, m), k, 1, n), simpsum;
+m * 'sum (g(k), k, 1, n) + n * 'sum (f(j), j, 1, m);
+
+sum (sum (f(j) + g(k) - %pi^l + 2, j, 1, m), k, 1, n), simpsum;
+m * 'sum (g(k), k, 1, n) + n * 'sum (f(j), j, 1, m) - m*n*%pi^l + 2*m*n;
+
+sum (sum (sum (%pi + %phi - 1, i, 1, n_i), j, 1, n_j), k, 1, n_k);
+n_i * n_j * n_k * (%pi + %phi - 1);
+
+sum (sum (sum (f(%pi, i) + g(%phi, j) - h(k), i, 1, n_i), j, 1, n_j), k, 1, n_k);
+'sum ('sum ('sum (f(%pi, i) + g(%phi, j) - h(k), i, 1, n_i), j, 1, n_j), k, 1, n_k);
+
 /* see SF bug report # 649428 */
 
 (factsum3 (mt, ej) := sum ((-1)^(k + 1)/(k*mt^k)*sum((1 - l)^k - l^k, l, 1, ej),k,1,inf), t% : taylor (factsum3 (mt, ej), [mt, 0, 3, asymp])); 

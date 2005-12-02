@@ -945,24 +945,8 @@
 	((and (or (mtimesp e) (mexptp e) (mplusp e))
 	      (fsgeo e y)))
 	(t
-	 nil
-	 ;;	 #-cl
-	 ;;	 (let (*a *n)
-	 ;;	     (cond ((prog2 (m2 e '((mtimes) ((coefftt) (var* (set) *a freevar))
-	 ;;					    ((coefftt) (var* (set) *n true)))
-	 ;;			       nil)
-	 ;;			   (not (equal *a 1)))
-	 ;;		    (sum *n (list '(mtimes) y *a)))
-	 ;;		   ((and (not (atom
-	 ;;			       (setq *n
-	 ;;				     ($ratdisrep
-	 ;;				      (let (genvar (varlist (cons *var* nil)))
-	 ;;					(ratrep* *n))))))
-	 ;;			 (not (equal *n e))
-	 ;;			 (not (eq (caar *n) 'mtimes)))
-	 ;;		    (sum *n (list '(mtimes) y *a)))
-	 ;;		   (t (adusum (list '(mtimes) e y)))))
-	 )))
+     (adusum e)
+	 nil)))
 
 (defun isum (e)
   (cond ((memq (setq e (catch 'isumout (isum1 e))) '($inf $undefined $minf))
