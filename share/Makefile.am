@@ -1,4 +1,4 @@
-SUBDIRS = contrib linearalgebra
+SUBDIRS = contrib linearalgebra orthopoly
 
 include $(top_srcdir)/common.mk
 genericdir =$(sharedir)
