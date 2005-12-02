@@ -415,7 +415,7 @@
 			(mathml x (list "</mrow> <mfenced separators=\"\" open=\"<\" close=\">\">")(cons "</mfenced></msup>" r) 'mparen 'mparen)
 			(if (and (numberp x) (< x 10))
 			    (mathml x (list "</mrow> ")(cons "</msup> " r) 'mparen 'mparen)
-			    (mathml x (list "</mrow> <mrow>")(cons "</mrow><mrow> " r) 'mparen 'mparen))
+			    (mathml x (list "</mrow> <mrow>")(cons "</mrow></msup> " r) 'mparen 'mparen))
 			)))))
       (append l r)))
 
