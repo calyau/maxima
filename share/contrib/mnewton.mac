@@ -50,7 +50,7 @@ NEWTONEPSILON:10.0^(-fpprec/2)$
 NEWTONMAXITER:50$
 
 mnewton(FuncList, VarList, GuessList):=
-  block([nfunc, NewtonMatrix, det, Solutions, Increments, numdet, solved:false,
+  block([nfunc, Solutions, Increments, solved:false, h,
          i, j, k, keepfloat:true, ratprint:false],
 
     /* Depuration of the function arguments */
@@ -68,26 +68,33 @@ mnewton(FuncList, VarList, GuessList):=
     ),
     apply(kill, VarList),
 
-    /* Preparation of the matrix */
-    NewtonMatrix:zeromatrix(nfunc,nfunc),
+    DF: zeromatrix (nfunc, nfunc),
+    h : makelist (h[i], i, 1, nfunc),
     for i:1 thru nfunc do
       for j:1 thru nfunc do
-        NewtonMatrix[i][j]:diff(FuncList[i], VarList[j]),  /* Jacobian matrix */
-    det:determinant(NewtonMatrix),
-    NewtonMatrix:adjoint(NewtonMatrix),
-    NewtonMatrix:NewtonMatrix . FuncList,
+        DF[i][j] : diff (FuncList[i], VarList[j]),  /* Jacobian matrix */
+
+    GuessList: float (GuessList),
+print ("DEBUG: initial GuessList:", GuessList),
 
     /* Solution of the functions system */
     for k:1 thru NEWTONMAXITER do (
       Solutions:map("=", VarList, GuessList),
-      numdet:float(sublis(Solutions, det)),
-      if abs(numdet) < NEWTONEPSILON then return(0),
-      Increments:float(rectform(expand(sublis(Solutions, NewtonMatrix / numdet)))),
-      if atom(Increments) then Increments:matrix([Increments]),
-      GuessList:GuessList-makelist(Increments[i][1],i,1,nfunc),
+
+      /* Solve 0 = F(x) + DF(x) h for h.
+       */
+      block
+        ([DFx: sublis (Solutions, DF),
+        Fx: sublis (Solutions, FuncList)],
+        Increments: linsolve (transpose (DFx . h + Fx)[1], h)),
+
+      GuessList:GuessList + map (rhs, Increments),
+      GuessList: float (GuessList),
+print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
+
       solved:true,
       for i:1 thru nfunc do
-        solved:solved and (abs(Increments[i][1]) < NEWTONEPSILON),
+        solved: solved and abs (rhs (Increments[i])) < NEWTONEPSILON,
       if solved then return(0)
     ),
 
@@ -97,5 +104,6 @@ mnewton(FuncList, VarList, GuessList):=
       return([])
     ),
     Solutions:map("=", VarList, GuessList),
+print ("DEBUG: sublis (Solutions, FuncList) =>", sublis (Solutions, FuncList)),
     return([Solutions])
   )$
