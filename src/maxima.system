@@ -426,7 +426,8 @@
 				     (:file "fcall") 
 				     (:file "evalw") 
 				     (:file "trprop") 
-				     (:file "mdefun")))
+				     (:file "mdefun"))
+			:depends-on (maxima-language-compiler-macros))
 	       (:module numerical-functions :source-pathname ""
 			:components ((:file "bessel")
 				     ;;#+gcl(:file "parse-body")
