@@ -110,7 +110,7 @@ Statistical diagrams
 References:
    Johnson, A.J., Wichern, D.W. (1998) Applied Multivariate Statistical
       Analysis. Prentice Hall.
-   Peña, D. (2002) Análisis de datos multivariantes. McGraw-Hill.
+   PeÃ±a, D. (2002) AnÃ¡lisis de datos multivariantes. McGraw-Hill.
 
 Thanks to Robert Dodier and Barton Willis for their help.
 
@@ -120,19 +120,13 @@ to contact me at
 mario AT edu DOT xunta DOT es
 www.biomates.net
 
-2005, june.
+2005, june: first release
+2005, november: definition of function 'floor' removed
 */
 
 
 
 /*            AUXILIARY FUCTIONS                   */
-
-
-/* Returns the largest integer that is not greater than x */
-floor(x):=
-   if numberp(float(x))
-      then ?floor(float(x))
-      else funmake('floor,[x])$
 
 
 /* Computes the trace of a matrix */
@@ -470,7 +464,7 @@ listvar(x,[aredata]):=block([s,p,len,aux,out:[]],
 /* cor(x,true) or cor(x)==> means that x stores sampled */
 /*                 data and the covariance matrix 'cov1'*/
 /*                 must be computed                     */
-/* Ref. Peña, p.86                                      */
+/* Ref. PeÃ±a, p.86                                      */
 cor(x,[aredata]):=block([m,s,d,len],
 	if matrixp(x)
 		then(len:length(aredata),

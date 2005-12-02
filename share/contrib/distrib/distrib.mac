@@ -91,18 +91,13 @@ www.biomates.net
 2005, july: minor corrections
 2005, august: more minor corrections; denhypergeo, which was not in previous versions;
       documentation in english (distrib_en.tex).
+2005, november: definition of floor removed.
 */
 
 
 
 /*         SOME AUXILIARY FUNCTIONS          */
 
-
-
-floor(x):=
-   if numberp(float(x))
-      then ?floor(float(x))
-      else funmake('floor,[x])$
 
 /* If a is positive, the function returns 1. If it is zero or
    negative, it returns -1. If there is not enough information, 
