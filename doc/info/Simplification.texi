@@ -470,17 +470,6 @@ to @code{a * f(g(x), x)} for @code{a} free of @code{x}.
 
 @end defvr
 
-@c NEEDS EXAMPLES
-@defvr {Option variable} prodhack
-Default value: @code{false}
-
-When @code{prodhack} is @code{true}, the identity 
-@code{product (f(i), i, a, b) = 1/product (f(i), i, b+1, a-1)} is applied 
-if @code{a} is greater than @code{b}.
-For example, @code{product (f(i), i, 3, 1)} yields @code{1/f(2)}.
-
-@end defvr
-
 @deffn {Function} radcan (@var{expr})
 Simplifies @var{expr}, which can contain logs, exponentials, and
 radicals, by converting it into a form which is canonical over a large
@@ -631,20 +620,6 @@ Examples:
 @end example
 
 @end defvr
-
-
-@defvr {Option variable} sumhack
-Default value: @code{false}
-
-When @code{sumhack} is @code{true}, 
-the identity @code{sum (f(i), i, a, b) = - sum (f(i), i, b+1, a-1)}
-@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ?? QUOTING/SIMPLIFICATION STRANGENESS OBSERVED HERE
-is applied
-if @code{a} is greater than @code{b}.
-For example, @code{(sumhack: true, sum (f(i), i, 3, 1))} yields @code{-f(2)}.
-
-@end defvr
-
 
 @defvr {Option variable} sumsplitfact
 Default value: @code{true}
