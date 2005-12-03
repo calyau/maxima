@@ -249,6 +249,33 @@ x is not numeric.
 
 @end deffn
 
+@deffn {Function} join (@var{l}, @var{m})
+Creates a new list containing the elements of lists @var{l} and @var{m}, interspersed.
+The result has elements @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
+The lists @var{l} and @var{m} may contain any type of elements.
+
+If the lists are different lengths, @code{join} ignores elements of the longer list.
+
+Maxima complains if @var{L_1} or @var{L_2} is not a list.
+
+Examples:
+
+@c ===beg===
+@c L1: [a, sin(b), c!, d - 1];
+@c join (L1, [1, 2, 3, 4]);
+@c join (L1, [aa, bb, cc, dd, ee, ff]);
+@c ===end===
+@example
+(%i1) L1: [a, sin(b), c!, d - 1];
+(%o1)                [a, sin(b), c!, d - 1]
+(%i2) join (L1, [1, 2, 3, 4]);
+(%o2)          [a, 1, sin(b), 2, c!, 3, d - 1, 4]
+(%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
+(%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
+@end example
+
+@end deffn
+
 @c NEEDS EXAMPLES
 @c HOW IS "LAST" PART DETERMINED ??
 @deffn {Function} last (@var{expr})
