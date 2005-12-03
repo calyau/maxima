@@ -62,7 +62,7 @@
   (cond
     ((not (and (numberp zr) (numberp zi)))
       nil)
-    ((or $numer (floatp zr) (floatp zr))
+    ((or $numer (floatp zr) (floatp zi))
       t)
     (t
        nil)))

@@ -965,6 +965,12 @@ true;
 closeto(AS_10_4_17(-10),1.0e-15);
 true;
 
+/* Test that complex float arguments are evaluated */
+airy_ai(%i);
+airy_ai(%i);
+floatnump(realpart(airy_ai(1.0*%i)));
+true;
+
 kill(c1,c2,AS_10_4_10,AS_10_4_14,AS_10_4_15,AS_10_4_16,AS_10_4_17);
 done;
 
