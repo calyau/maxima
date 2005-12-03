@@ -1,4 +1,4 @@
-@c /Simplification.texi/1.14/Mon Jun 27 14:24:05 2005/-ko/
+@c /Simplification.texi/1.15/Sat Dec  3 08:56:57 2005/-ko/
 @c end concepts Simplification
 @menu
 * Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao::  
@@ -471,17 +471,6 @@ para @code{a * f(g(x), x)} sendo @code{a} livre de @code{x}.
 
 @end defvr
 
-@c NEEDS EXAMPLES
-@defvr {Vari@'avel de op@,{c}@~ao} prodhack
-Valor padr@~ao: @code{false}
-
-Quando @code{prodhack} for @code{true}, a identidade 
-@code{product (f(i), i, a, b) = 1/product (f(i), i, b+1, a-1)} @'e aplicada
-se @code{a} for maior que @code{b}.
-Por Exemplo, @code{product (f(i), i, 3, 1)} retorna @code{1/f(2)}.
-
-@end defvr
-
 @deffn {Fun@,{c}@~ao} radcan (@var{expr})
 Simplifica @var{expr}, que pode conter logar@'itmos, exponenciais, e
 radicais, convertendo essa express@~ao em uma forma que @'e can@^onica sobre uma larga
@@ -632,20 +621,6 @@ Exemplos:
 @end example
 
 @end defvr
-
-
-@defvr {Vari@'avel de op@,{c}@~ao} sumhack
-Valor padr@~ao: @code{false}
-
-Quando @code{sumhack} for @code{true}, 
-a identidade @code{sum (f(i), i, a, b) = - sum (f(i), i, b+1, a-1)}
-@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ?? QUOTING/SIMPLIFICATION STRANGENESS OBSERVED HERE
-@'e aplicada
-se @code{a} for maior que @code{b}.
-Por Exemplo, @code{(sumhack: true, sum (f(i), i, 3, 1))} retorna @code{-f(2)}.
-
-@end defvr
-
 
 @defvr {Vari@'avel de op@,{c}@~ao} sumsplitfact
 Valor padr@~ao: @code{true}
