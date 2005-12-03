@@ -1769,12 +1769,56 @@
 
 (defun sendexec(r a)(distrexecinit ($expand (mul (init r) a)))) 
 
-(defun whittest
-    (r a i1 i2)
-  (cond ((whittindtest i1 i2) 'formula-for-confl-needed)
-	(t (distrexecinit ($expand (mul (init r)
-					(wtm a i1 i2)))))))
+;; Test for Whittaker W function.  Simplify this if possible, or
+;; convert to Whittaker M function.
+;;
+;; We have r * %w[i1,i2](a)
+(defun whittest (r a i1 i2)
+  (cond ((f16p217test r a i1 i2))
+	(t
+	 ;; Convert to M function and try again.
+	 (distrexecinit ($expand (mul (init r)
+				      (wtm a i1 i2)))))))
 
+;; Formula 16, p. 217
+;;
+;; t^(v-1)*%w[k,u](a*t)
+;;   -> gamma(u+v+1/2)*gamma(v-u+1/2)*a^(u+1/2)/
+;;          (gamma(v-k+1)*(p+a/2)^(u+v+1/2)
+;;        *2f1(u+v+1/2,u-k+1/2;v-k+1;(p-a/2)/(p+a/2))
+;;
+;; For Re(v +/- mu) > -1/2
+(defun f16p217test (r a i1 i2)
+  (let ((l (c*t^v r)))
+    ;; Make sure r is of the form c*t^v
+    (when l
+      (let* ((v (add (cdras 'v l) 1))
+	     (c (cdras 'c l)))
+	(when (and (eq (asksign (add (add v i2) 1//2)) '$positive)
+		   (eq (asksign (add (sub v i2) 1//2)) '$positive))
+	  ;; Ok, we satisfy the conditions.  Now extract the arg.
+	  (let ((l (m2 a
+		       '((mplus)
+			 ((coeffpt) (f hasvar) (a freevar))
+			 ((coeffpp) (c zerp)))
+		       nil)))
+	    (format t "l = ~A~%" l)
+	    (when l
+	      (let ((a (cdras 'a l)))
+		;; We're ready now to compute the transform.
+		(mul* c
+		      (power a (add i2 1//2))
+		      (gm (add (add v i2) 1//2))
+		      (gm (add (sub v i2) 1//2))
+		      (inv (mul* (gm (add (sub v i1) 1))
+				 (power (add *par* (div a 2))
+					(add (add i2 v) 1//2))))
+		      (hgfsimp-exec (list (add (add i2 v 1//2))
+					  (add (sub i2 i1) 1))
+				    (list (add (sub v i1) 1))
+				    (div (sub *par* (div a 2))
+					 (add *par* (div a 2)))))))))))))
+  
 (defun whittindtest (i1 i2)
   (or (maxima-integerp (add i2 i2))
       (neginp (sub (sub (1//2) i2) i1))
@@ -2095,7 +2139,9 @@
     (rest arg1 arg2)
   (lt-ltp 'gammagreek rest arg2 arg1))
 
-(defun lt1m(r a i1 i2)(lt-ltp 'onem r a (list i1 i2)))
+;; Laplace transform of r*%m[i1,i2](a)
+(defun lt1m (r a i1 i2)
+  (lt-ltp 'onem r a (list i1 i2)))
 
 (defun lt1p(r a i1 i2)(lt-ltp 'hyp-onep r a (list i1 i2)))
 
@@ -2206,9 +2252,8 @@
 		       (div (add* m n 3) 2))
 		 (mul* (inv -4) z z))))
 
-(defun lt-ltp
-    (flg rest arg index)
-  (prog(index1 index2 argl const l l1)
+(defun lt-ltp (flg rest arg index)
+  (prog (index1 index2 argl const l l1)
      (cond ((or (zerp index)
 		(eq flg 'onerf)
 		(eq flg 'onekelliptic)

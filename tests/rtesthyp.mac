@@ -772,3 +772,13 @@ a^(-p)*gammagreek(p,a)$
 /* Formula 37, p 147 */
 specint(exp(-a*exp(t))*exp(-p*t),t);
 a^p*gammaincomplete(-p,a)$
+
+/* Formula 16, p 217 */
+(assume(2*v+2*u+1>0),true);
+true$
+(assume(2*v-2*u+1>0),true);
+true$
+specint(t^(v-1)*%w[k,u](a*t)*exp(-p*t),t);
+a^(u+1/2)*(p+a/2)^(-v-u-1/2)*gamma(v-u+1/2)*gamma(v+u+1/2)
+			   *%f[2,1]([v+u+1/2,u-k+1],[v-k+1],(p-a/2)/(p+a/2))
+	 /gamma(v-k+1)$
