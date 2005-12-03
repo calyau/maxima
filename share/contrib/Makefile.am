@@ -1,1 +1,1 @@
-SUBDIRS = numericalio stringproc
+SUBDIRS = numericalio stringproc descriptive
