@@ -120,43 +120,47 @@ Default value: @code{[]}
 @code{infolists} is a list of the names of all of the information
 lists in Maxima. These are:
 
-@code{labels} - all bound @code{%i}, @code{%o}, and @code{%t} labels.
-
-@code{values} - all bound atoms which are user variables, not Maxima
+@table @code
+@item labels
+All bound @code{%i}, @code{%o}, and @code{%t} labels.
+@item values
+All bound atoms which are user variables, not Maxima
 options or switches, created by @code{:} or @code{::} or functional binding.
 @c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
-
-@code{functions} - all user-defined functions, created by @code{:=}.
-
-@code{arrays} - declared and undeclared arrays, created by @code{:}, @code{::}, or @code{:=}.
-
-@code{macros} - any macros defined by the user.
-
-@code{myoptions} - all options ever reset by the user (whether or not they
+@item functions
+All user-defined functions, created by @code{:=} or @code{define}.
+@item arrays
+All declared and undeclared arrays, created by @code{:}, @code{::}, or @code{:=}.
+@c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
+@item macros
+All user-defined macro functions.
+@item myoptions
+All options ever reset by the user (whether or not they
 are later reset to their default values).
-
-@code{rules} - user-defined pattern matching and simplification rules, created
+@item rules
+All user-defined pattern matching and simplification rules, created
 by @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, or @code{defrule}.
-
-@code{aliases} - atoms which have a user-defined alias, created by the @code{alias},
+@item aliases
+All atoms which have a user-defined alias, created by the @code{alias},
 @code{ordergreat}, @code{orderless} functions or by declaring the atom as a @code{noun}
 with @code{declare}.
-
-@code{dependencies} - atoms which have functional dependencies, created by the
+@item dependencies
+All atoms which have functional dependencies, created by the
 @code{depends} or @code{gradef} functions.
-
-@code{gradefs} - functions which have user-defined derivatives, created by the
+@item gradefs
+All functions which have user-defined derivatives, created by the
 @code{gradef} function.
-
 @c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
-@code{props} - atoms which have any property other than those mentioned
-above, such as atvalues, matchdeclares, etc., as well as properties
-specified in the @code{declare} function.
-
-@code{let_rule_packages} - a list of all the user-defined let rule packages
+@item props
+All atoms which have any property other than those mentioned
+above, such as properties established by @code{atvalue} or @code{matchdeclare}, etc.,
+as well as properties established in the @code{declare} function.
+@item let_rule_packages
+All user-defined @code{let} rule packages
 plus the special package @code{default_let_rule_package}.
 (@code{default_let_rule_package} is the name of the rule package used when
 one is not explicitly set by the user.)
+@end table
 
 @end defvr
 
@@ -361,7 +365,7 @@ There may be more than one pair of lists.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 The removed properties may be system-defined properties such as
-@code{function} or @code{mode_declare}, or user-defined properties.
+@code{function}, @code{macro}, or @code{mode_declare}, or user-defined properties.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
 @c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx
