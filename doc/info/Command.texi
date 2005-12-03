@@ -716,7 +716,11 @@ Default value: @code{false}
 When @code{showtime} is @code{true}, the computation time and elapsed time is
 printed with each output expression.
 
-See also @code{time}, @code{timer}, and @code{playback}.
+The computation time is always recorded,
+so @code{time} and @code{playback} can display the computation time
+even when @code{showtime} is @code{false}.
+
+See also @code{timer}.
 
 @end defvr
 
