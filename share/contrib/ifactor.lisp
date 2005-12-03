@@ -2,53 +2,62 @@
 ;;;                                                                        ;;;
 ;;;                          ~*~  IFACTOR  ~*~                             ;;;
 ;;;                                                                        ;;;
-;;;                  Maxima integer factorisation package.                 ;;;
+;;;                  Maxima integer factorization package.                 ;;;
 ;;;                                                                        ;;;
 ;;; Maxima level functions:                                                ;;;
-;;;   - ifactor    : factorisation of integers                             ;;;
-;;;   - ifactors   : factorisation of integers - returns a list of         ;;;
-;;;                  prime-power factors of argument                       ;;;
-;;;   - primep_pr  : probabilistic primality test                          ;;;
-;;;   - next_prime : smallest prime > n                                    ;;;
-;;;   - last_prime : greatest prime < n                                    ;;;
+;;;   - ifactor      : factorization of integers                           ;;;
+;;;   - ifactors     : factorization of integers - returns a list of       ;;;
+;;;                    prime-power factors of argument                     ;;;
+;;;   - primep_pr    : probabilistic primality test                        ;;;
+;;;   - next_prime   : smallest prime > n                                  ;;;
+;;;   - last_prime   : greatest prime < n                                  ;;;
 ;;;                                                                        ;;;
 ;;;                                                                        ;;;
-;;; Version  : 1.0 (april 2005)                                            ;;;
+;;; Version  : 1.1 (december 2005)                                         ;;;
 ;;; Copyright: 2005 Andrej Vodopivec                                       ;;;
 ;;; Licence  : GPL                                                         ;;;
 ;;;                                                                        ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;                                                                        
-;;; Revisition  : primep-prob 
-;;;               - Miller-Rabin and Lucas test in separate functions                                                                    ;;;
-;;;               - iterativ versions of power-mod and primep-lucas                                                                     ;;;
-;;;               next-prime                                                         
-;;;               - new sequence of tests                                                         
-;;;               $primep_number_of_tests                                                        
-;;;               - default 25                                                         
-;;; New         : last_prime    
-;;;                                                                        
-;;; November 2005 Volker van Nek                                                                       
-;;;                                                                        
+;;;
+;;; Revisition  : primep-prob
+;;;               - Miller-Rabin and Lucas test in separate functions
+;;;               - iterativ versions of power-mod and primep-lucas
+;;;               next-prime
+;;;               - new sequence of tests
+;;;               $primep_number_of_tests
+;;;               - default 25
+;;; New         : last_prime
+;;;
+;;; November 2005 Volker van Nek
+;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-(in-package "MAXIMA")
-(macsyma-module ifactor)
+(in-package :maxima)
 
 (defmvar $save_primes nil
   "Save primes found." boolean)
 (defmvar $primep_number_of_tests 25
   "Number of primep-test runs" fixnum)
 
-(defmvar $pollard_rho_limit 0
-  "Limit for pollard-rho factorisation depth" fixnum)
+(defmvar $pollard_rho_limit 10000
+  "Limit for pollard-rho factorization depth" fixnum)
+(defmvar $pollard_rho_tests 5
+  "Number of pollard-rho rounds between ecm rounds" fixnum)
 (defmvar $pollard_rho_limit_step 1000
   "Step for pollard-rho factorization limit" fixnum)
 
-(defmvar $factorization_verbose nil
+(defmvar $ecm_number_of_curves 50
+  "Number of curves tried in one round" fixnum)
+(defmvar $ecm_limit 200
+  "Starting smootheness limit for ecm method" fixnum)
+(defmvar $ecm_max_limit 51199
+  "Maximum smootheness for ecm method" fixnum)
+(defmvar $ecm_limit_delta 200
+  "Increase of smoothness limit for ecm method" fixnum)
+
+(defmvar $ifactor_verbose nil
   "Display factorization steps" boolean)
 
 (defmacro while (cond &rest body)
@@ -56,9 +65,12 @@
        ((not ,cond))
      ,@body))
 
+(defun number-of-digits (n)
+  (1+ (floor (/ (log n) (log 10)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
-;;;        ~*~  IMPLEMENTATION OF FACTORISATION METHODS   ~*~             ;;;
+;;;        ~*~  IMPLEMENTATION OF FACTORIZATION METHODS   ~*~             ;;;
 ;;;                                                                       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -72,6 +84,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun $ifactors (n)
+  (if $ifactor_verbose
+    (format t "~%Starting factorization of n = ~d" n))
   (if (and (integerp n)
            (> n 0))
       (let* ((factor-list (get-small-factors n))
@@ -109,8 +123,8 @@
           (setq n (/ n d))
           (setq deg (1+ deg)))
         (cond ((> deg 0)
-               (cond ((not (null $factorization_verbose))
-                      (format t "~&Factoring out small prime: ~A (degree: ~A)" d deg)))
+               (if $ifactor_verbose
+                 (format t "~&Factoring out small prime: ~A (degree: ~A)" d deg))
                (setq factors (cons `(,d ,deg) factors))))
         (cond ((equal n 1)
                (return-from get-small-factors `(1 ,factors))))))
@@ -124,7 +138,10 @@
 
 (defun get-large-factors (n)
   (if ($primep_pr n)
-      (list n)
+      (progn
+        (if $ifactor_verbose
+          (format t "~%========> Prime factor: ~d" n))
+        (list n))
       (get-large-factors-1 n)))
 
 (defun get-large-factors-1 (n)
@@ -132,24 +149,36 @@
     (append (get-large-factors f) (get-large-factors (/ n f)))))
 
 (defun get-one-factor (n)
-  (let ((f 1) (lim $pollard_rho_limit))
-    (while (or (equal f 1)
-               (equal f n))
-      (cond ((not (null $factorization_verbose))
-             (format t "~&Starting one round")
-             (format t "~&Starting one pollard-rho")))
-      (setq f (get-one-factor-pollard n lim))
-      (cond ((and (> f 1) (< f n))
-             (cond ((not (null $factorization_verbose))
-                    (format t "~&Pollard rho: ~A" f)))
-             (return-from get-one-factor f)))
-      (cond ((> lim 0)
-             (setq lim (+ $pollard_rho_limit_step	 lim)))))
-    f))
+  (if $ifactor_verbose
+    (format t "~%Factoring n = ~d" n))
+  (let ((f nil)
+        (lim_pollard $pollard_rho_limit)
+        ($ecm_number_of_curves $ecm_number_of_curves))
+    
+    ;; try factoring smaller factors with pollard-rho
+    (dotimes (i $pollard_rho_tests)
+      (if $ifactor_verbose
+        (format t "~%Pollard rho: round #~d of ~d (lim=~d)" i $pollard_rho_tests lim_pollard))
+      (setq f (get-one-factor-pollard n lim_pollard))
+      (if (and (> f 1) (< f n))
+        (progn
+          (if $ifactor_verbose
+            (format t "~&Pollard rho: found factor ~A (~d digits)" f (number-of-digits f)))
+          (return-from get-one-factor f)))
+      (if (> lim_pollard 0)
+        (setq lim_pollard (+ $pollard_rho_limit_step lim_pollard))))
+    
+    ;; continue with ecm
+    (do () (nil)
+      (setq f (get-one-factor-ecm n))
+      (if (not (null f))
+        (return-from get-one-factor f))
+      (setq $ecm_number_of_curves (+ $ecm_number_of_curves 50))) ))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
-;;;   ~*~  IMPLEMENTATION OF POLLARDS-RHO FACTORISATION METHOD   ~*~      ;;;
+;;;   ~*~  IMPLEMENTATION OF POLLARDS-RHO FACTORIZATION METHOD   ~*~      ;;;
 ;;;                                                                       ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -174,10 +203,203 @@
         (setq d (gcd d n))
         (setq k (+ k terms)))
       (setq r (* 2 r))
-      (cond ((and (> lim 0)
-                  (> j lim))
-             (return-from get-one-factor-pollard d))))
+      (if (and (> lim 0)
+               (> j lim))
+             (return-from get-one-factor-pollard d)))
     d))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                                                                       ;;;
+;;;  ~*~  IMPLEMENTATION OF ELLIPTIC CURVE FACTORIZATION METHOD   ~*~     ;;;
+;;;                                                                       ;;;
+;;;                                                                       ;;;
+;;;  The implementation is based on the FactorsECM implementation from    ;;;
+;;;  GAP4 FactInt package.                                                ;;;
+;;;                                                                       ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *prime-diffs* (make-hash-table))
+(defvar *prime-diffs-limit* 1)
+(defvar *prime-diffs-length* 0)
+
+(defun init-prime-diffs (n)
+  (if (> n *prime-diffs-limit*)
+    (progn
+      (if $ifactor_verbose
+        (format t "~%Initilizing prime diffs up to n=~d" (* n 2)))
+      (setq n (* 2 n))
+      (let ((sqrt_n (sqrt n)) (sieve (make-hash-table)))
+        (do ((p 3 ($next_prime p)))
+            ((> p sqrt_n))
+          (do ((d (* 2 p) (+ d p)))
+              ((> d n))
+            (setf (gethash d sieve) t)))
+        (let ((q1 3) (i 0))
+          (do ((q2 5 (+ q2 2))) ((> q2 n))
+            (if (null (gethash q2 sieve))
+              (progn
+                (setq *prime-diffs-limit* q2)
+                (setf (gethash i *prime-diffs*) (- q2 q1))
+                (setq q1 q2)
+                (setq i (1+ i))))))
+        ))
+  ))
+
+(defun mod-inv (a n)
+  (let ((v1 `(1 0 ,n)) (v2 `(0 1 ,a)))
+    (do () ((= (caddr v2) 0))
+      (let ((k (floor (/ (caddr v1) (caddr v2)))) (uu `(0 0 0)))
+        (dotimes (i 3)
+          (setf (nth i uu) (- (nth i v1) (* k (nth i v2)))))
+        (setq v1 v2)
+        (setq v2 (copy-tree uu))))
+    (if (not (= 1 (caddr v1)))
+      nil
+      (mod (cadr v1) n))))
+
+(defun ecm-product (q p1 p2 n)
+  (let ((x1 (car p1)) (x2 (car p2))
+        (z1 (cadr p1)) (z2 (cadr p2))
+        (pr1) (pr2) (sq1) (sq2) (x3) (z3))
+    (setq pr1 (mod (* (- x1 z1) (+ x2 z2)) n))
+    (setq pr2 (mod (* (+ x1 z1) (- x2 z2)) n))
+    (setq sq1 (mod (expt (+ pr1 pr2) 2) n))
+    (setq sq2 (mod (expt (- pr1 pr2) 2) n))
+    (setq x3 (mod (* (cadr q) sq1) n))
+    (setq z3 (mod (* (car q) sq2) n))
+    `(,x3 ,z3)))
+
+(defun ecm-square (p n a)
+  (let ((x1 (car p)) (z1 (cadr p))
+        (x2) (z2) (sq1) (sq2) (f1) (f2))
+    (setq sq1 (mod (* (+ x1 z1) (+ x1 z1)) n))
+    (setq sq2 (mod (* (- x1 z1) (- x1 z1)) n))
+    (setq f1 (- sq1 sq2))
+    (setq f2 (mod (* a f1) n))
+    (setq x2 (mod (* sq1 sq2) n))
+    (setq z2 (mod (* f1 (+ sq2 f2)) n))
+    `(,x2 ,z2)))
+
+(defun ecm-power (base e n a)
+  (let ((p base) (ptb (ecm-square base n a)) (l (integer-length e)))
+    (do ((i (- l 2) (1- i)))
+        ((< i 0))
+      (if (logbitp i e)
+        (progn
+          (setq p (ecm-product base p ptb n))
+          (setq ptb (ecm-square ptb n a)))
+        (progn
+          (setq ptb (ecm-product base p ptb n))
+          (setq p (ecm-square p n a)))))
+    p))
+
+(defun ecm-factor-with-curve (n x z a lim1)
+  (let ((g (gcd (- (* a a) 4) n)))
+    (if (not (= g 1)) (return-from ecm-factor-with-curve g)))
+  (setq a (mod (floor (/ (+ a 2) 4)) n))
+  ;;
+  ;; stage 1
+  ;;
+  (let ((q 1) (last_q ($last_prime lim1)) (p `(,x ,z)) (ex) (next_gcd) (gcd_interval))
+    (setq gcd_interval (floor (/ lim1 4)))
+    (setq next_gcd gcd_interval)
+    (do () ((> q lim1))
+      (setq q ($next_prime q))
+      (setq ex (floor (/ (log lim1) (log q))))
+      (cond
+        ((= q 2) (setq ex (+ ex 2)))
+        ((= q 3) (setq ex (+ ex 1))))
+      (setq p (ecm-power p (expt q ex) n a))
+      (if (>= q next_gcd)
+        (progn
+          (let ((g (gcd (cadr p) n)))
+            (if (and (< g n) (> g 1))
+              (progn
+                (if (and $ifactor_verbose (< g n))
+                  (format t "~%ECM: found factor in stage 1: ~d (~d digits)" g (number-of-digits g)))
+                (return-from ecm-factor-with-curve g)))
+          (setq next_gcd (min (+ next_gcd gcd_interval) last_q))))))
+  ;;
+  ;; stage 2
+  ;;
+    (let* ((lim2 (* lim1 100))
+           (power-after-1 p)
+           (step-size (min (/ lim1 2) (floor (sqrt (/ lim2 2)))))
+           (d-step-size (* 2 step-size))
+           (power-table (make-array (+ 2 step-size)))
+           (d-step-size-power (ecm-power power-after-1 d-step-size n a))
+           (step-power (ecm-power power-after-1 (1+ d-step-size) n a))
+           (last-step-power power-after-1)
+           (step-pos 1)
+           (q1 3)
+           (prime-diffs-pos 0)
+           (step-power-buff))
+      (init-prime-diffs lim2)
+      (setf (aref power-table 1) (ecm-square power-after-1 n a))
+      (setf (aref power-table 2) (ecm-square (aref power-table 1) n a))
+      (do ((i 3 (1+ i))) ((> i step-size))
+        (setf (aref power-table i)
+              (ecm-product (aref power-table (- i 2))
+                           (aref power-table 1)
+                           (aref power-table (- i 1))
+                           n)))
+      (do () ((> step-pos (- lim2 d-step-size)))
+        (let ((buff-prod 1)
+              (q-limit (+ step-pos d-step-size))
+              (power-table-pos (/ (- q1 step-pos) 2)))
+            (if (= 0 power-table-pos) ($error q1 step-pos))
+          (do () ((> q1 q-limit))
+            (let* ((sp1 (car step-power))
+                   (sp2 (cadr step-power))
+                   (pp1 (car (aref power-table power-table-pos)))
+                   (pp2 (cadr (aref power-table power-table-pos)))
+                   (coord-diffs (mod (- (* sp1 pp2) (* sp2 pp1)) n)))
+              (setq buff-prod (mod (* coord-diffs buff-prod) n)))
+            (setq q1 (+ q1 (gethash prime-diffs-pos *prime-diffs* 2)))
+            (setq power-table-pos (+ power-table-pos
+                                     (/ (gethash prime-diffs-pos *prime-diffs* 2) 2)))
+            (setq prime-diffs-pos (1+ prime-diffs-pos)))
+
+          (let ((g (gcd n buff-prod)))
+            (if (> g 1)
+              (progn
+                (if $ifactor_verbose
+                  (format t "~%ECM: found factor in stage 2: ~d (~d digits)" g (number-of-digits g)))
+                (return-from ecm-factor-with-curve g))))
+
+          (setq step-power-buff step-power)
+          (setq step-power (ecm-product last-step-power
+                                        d-step-size-power
+                                        step-power
+                                        n))
+          (setq last-step-power step-power-buff)
+          (setq step-pos (+ step-pos d-step-size)))))
+      nil))
+
+(defun get-one-factor-ecm (n)
+  (if ($primep_pr n) (return-from get-one-factor-ecm n))
+  (let ((sigma (+ 6 (random (ash 1 20)))) (x) (z) (u) (v) (a) (a1) (a2) (fact) (lim1 $ecm_limit)
+        (a2_inv))
+    (dotimes (i $ecm_number_of_curves)
+      (setq u (mod (- (* sigma sigma) 5) n))
+      (setq v (mod (* 4 sigma) n))
+      (setq x (mod (expt u 3) n))
+      (setq z (mod (expt v 3) n))
+      (setq a1 (mod (* (expt (- v u) 3) (+ (* 3 u) v)) n))
+      (setq a2 (mod (* 4 x v) n))
+      (setq a2_inv (mod-inv a2 n))
+      (if (null a2_inv)
+        (return-from get-one-factor-ecm (gcd a2 n)))
+      (setq a (mod (* a1 a2_inv) n))
+      (setq sigma (max 6 (mod (+ (* sigma sigma) 1) n)))
+      (if $ifactor_verbose
+        (format t "~%ECM: trying with curve #~d of ~d (lim=~d)" i $ecm_number_of_curves lim1))
+      (init-prime-diffs 640000)
+      (setq fact (ecm-factor-with-curve n x z a lim1))
+      (if (and fact (< fact n))
+        (return-from get-one-factor-ecm fact))
+      (setq lim1 (min (+ lim1 $ecm_limit_delta) $ecm_max_limit)))
+    nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -250,17 +472,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun primep-prob (n)
-  (let ((s (1- n))
-        (r 0))
-    (let ((nroot (floor (sqrt n))))
-      (if (equal (* nroot nroot) n)
-        (return-from primep-prob nil)))
-    ;; Miller-Rabin Test:    
-    (dotimes (i $primep_number_of_tests)
-      (if (not (miller-rabin n)) 
-        (return-from primep-prob nil)))
-    ;; Lucas Test:    
-    (primep-lucas n)))
+  (let ((nroot (floor (sqrt n))))
+    (if (equal (* nroot nroot) n)
+      (return-from primep-prob nil)))
+  ;; Miller-Rabin Test:    
+  (dotimes (i $primep_number_of_tests)
+    (if (not (miller-rabin n)) 
+      (return-from primep-prob nil)))
+  ;; Lucas Test:    
+  (primep-lucas n))
     
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -315,7 +535,7 @@
 ;;;                 then p divides U[p+1].
 ;;;
 ;;;  We calculate U[p+1] for x^2-b*x+1 where jacobi(b^2-4,n)=-1
-;;;     and test if p divides U[p+1].
+;;;  and test if p divides U[p+1].
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -331,7 +551,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Get element U[p+1] of lucas sequence for x^2-p*x+1.
+;;; Get element U[p+1] of Lucas sequence for x^2-p*x+1.
 ;;;
 ;;; Uses algorithm from M. Joye and J.-J. Quisquater, 
 ;;;                     Efficient computation of full Lucas sequences, 1996
