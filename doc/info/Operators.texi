@@ -218,9 +218,112 @@ evaluate to an atomic variable or subscripted variable.
 @end deffn
 
 @deffn {Operator} "::="
-The "::=" is used instead of ":=" to indicate that what
-follows is a macro definition, rather than an ordinary functional
-definition.  See @code{macros}.
+Macro definition operator.
+@code{::=} defines a function (called a "macro" for historical reasons)
+which quotes its arguments,
+and the expression which it returns is evaluated in the context from which the macro was called.
+A macro function is otherwise the same as an ordinary function.
+
+@code{macroexpand} returns the expression returned by a macro function
+(without evaluating the expression).
+@code{macroexpand (foo (x))} followed by @code{''%} is equivalent to @code{foo (x)}
+when @code{foo} is a macro function.
+
+Macro functions commonly contain @code{buildq} and @code{splice}
+expressions to construct an expression,
+which is then evaluated.
+
+Examples
+
+A macro function quotes its arguments,
+so message (1) shows @code{y - z}, not the value of @code{y - z}.
+The return value (the quoted expression @code{'(print ("(2) x is equal to", x))}
+is evaluated in the context from which the macro was called,
+printing message (2).
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printq1 (y - z);
+@c ===end===
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%o4) printq1(x) ::= block(print("(1) x is equal to", x), 
+                                '(print("(2) x is equal to", x)))
+(%i5) printq1 (y - z);
+(1) x is equal to y - z 
+(2) x is equal to %pi 
+(%o5)                          %pi
+@end example
+
+An ordinary function evaluates is arguments, so message (1) shows the value of @code{y - z}.
+The return value is not evaluated, so message (2) is not printed
+until the explicit evaluation @code{''%}.
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printe1 (y - z);
+@c ''%;
+@c ===end===
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%o4) printe1(x) := block(print("(1) x is equal to", x), 
+                                '(print("(2) x is equal to", x)))
+(%i5) printe1 (y - z);
+(1) x is equal to 1234 - 1729 w 
+(%o5)              print((2) x is equal to, x)
+(%i6) ''%;
+(2) x is equal to %pi 
+(%o6)                          %pi
+@end example
+
+@code{macroexpand} returns the expression returned by a macro function.
+@code{macroexpand (foo (x))} followed by @code{''%} is equivalent to @code{foo (x)}
+when @code{foo} is a macro function.
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c g (x) ::= buildq ([x], print ("x is equal to", x));
+@c macroexpand (g (y - z));
+@c ''%;
+@c g (y - z);
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) g (x) ::= buildq ([x], print ("x is equal to", x));
+(%o4)    g(x) ::= buildq([x], print("x is equal to", x))
+(%i5) macroexpand (g (y - z));
+(%o5)              print(x is equal to, y - z)
+(%i6) ''%;
+x is equal to 1234 - 1729 w 
+(%o6)                     1234 - 1729 w
+(%i7) g (y - z);
+x is equal to 1234 - 1729 w 
+(%o7)                     1234 - 1729 w
+@end example
 
 @end deffn
 

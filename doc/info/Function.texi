@@ -131,185 +131,160 @@ possibly @code{buildq}.
 @node Macros, Definitions for Function Definition, Function, Function Definition
 @section Macros
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Function} buildq (@var{variables}, @var{expr})
+@deffn {Function} buildq (@var{L}, @var{expr})
+Substitutes variables named by the list @var{L} into the expression @var{expr},
+in parallel,
+without evaluating @var{expr}.
+The resulting expression is simplified,
+but not evaluated,
+after @code{buildq} carries out the substitution.
 
-@var{expr} is any single Maxima expression and
-@var{variables} is a list of elements of the form @code{<atom>}
-or @code{<atom>: <value>}.
+The elements of @var{L} are symbols or assignment expressions @code{@var{symbol}: @var{value}},
+evaluated in parallel.
+That is, the binding of a variable on the right-hand side of an assignment
+is the binding of that variable in the context from which @code{buildq} was called,
+not the binding of that variable in the variable list @var{L}.
+If some variable in @var{L} is not given an explicit assignment,
+its binding in @code{buildq} is the same as in the context from which @code{buildq} was called.
 
-@subsection Semantics
+Then the variables named by @var{L} are substituted into @var{expr} in parallel.
+That is, the substitution for every variable is determined before any substitution is made,
+so the substitution for one variable has no effect on any other.
 
-The elements of the list @var{variables} are evaluated left to right (the syntax
-@var{atom} is equivalent to @code{@var{atom}: @var{atom}}).  then these values are substituted
-into <expression> in parallel.  If any @var{atom} appears as a single 
-argument to the special form @code{splice} (i.e. @code{splice (@var{atom})}) inside
-@var{expr}, then the value associated with that @var{atom} must be a Maxima
-list, and it is spliced into @var{expr} instead of substituted.
+If any variable @var{x} appears as @code{splice (@var{x})} in @var{expr},
+then @var{x} must be bound to a list,
+and the list is spliced (interpolated) into @var{expr} instead of substituted.
 
-@subsection Simplification
+Any variables in @var{expr} not appearing in @var{L} are carried into the result verbatim,
+even if they have bindings in the context from which @code{buildq} was called.
 
-The arguments to @code{buildq} need to be protected from simplification until
-the substitutions have been carried out.  This code should effect that
-by using @code{'}.
+Examples
 
-@code{buildq} can be useful for building functions on the fly.  One
-of the powerful things about @b{Maxima} is that you can have your
-functions define other functions to help solve the problem.
-Further below we discuss building a recursive function, for a
-series solution.   This defining of functions inside functions
-usually uses @code{define}, which evaluates its arguments.
-A number of examples are included under @code{splice}.
+@code{a} is explicitly bound to @code{x},
+while @code{b} has the same binding (namely 29) as in the calling context,
+and @code{c} is carried through verbatim.
+The resulting expression is not evaluated until the explicit evaluation @code{''%}.
+
+@c ===beg===
+@c (a: 17, b: 29, c: 1729)$
+@c buildq ([a: x, b], a + b + c);
+@c ''%;
+@c ===end===
+@example
+(%i1) (a: 17, b: 29, c: 1729)$
+(%i2) buildq ([a: x, b], a + b + c);
+(%o2)                      x + c + 29
+(%i3) ''%;
+(%o3)                       x + 1758
+@end example
+
+@code{e} is bound to a list, which appears as such in the arguments of @code{foo},
+and interpolated into the arguments of @code{bar}.
+
+@c ===beg===
+@c buildq ([e: [a, b, c]], foo (x, e, y));
+@c buildq ([e: [a, b, c]], bar (x, splice (e), y));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], foo (x, e, y));
+(%o1)                 foo(x, [a, b, c], y)
+(%i2) buildq ([e: [a, b, c]], bar (x, splice (e), y));
+(%o2)                  bar(x, a, b, c, y)
+@end example
+
+The result is simplified after substitution.
+If simplification were applied before substitution, these two results would be the same.
+@c ===beg===
+@c buildq ([e: [a, b, c]], splice (e) + splice (e));
+@c buildq ([e: [a, b, c]], 2 * splice (e));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
+(%o1)                    2 c + 2 b + 2 a
+(%i2) buildq ([e: [a, b, c]], 2 * splice (e));
+(%o2)                        2 a b c
+@end example
+
+The variables in @var{L} are bound in parallel; if bound sequentially,
+the first result would be @code{foo (b, b)}.
+Substitutions are carried out in parallel;
+compare the second result with the result of @code{subst},
+which carries out substitutions sequentially.
+
+@c ===beg===
+@c buildq ([a: b, b: a], foo (a, b));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c ===end===
+@example
+(%i1) buildq ([a: b, b: a], foo (a, b));
+(%o1)                       foo(b, a)
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%o2)                 bar(v, w, x, y, z, u)
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%o3)                 bar(u, u, u, u, u, u)
+@end example
+
+Construct a list of equations with some variables or expressions on the left-hand side
+and their values on the right-hand side.
+@code{macroexpand} shows the expression returned by @code{show_values}.
+
+@c ===beg===
+@c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+@c (a: 17, b: 29, c: 1729)$
+@c macroexpand (show_values (a, b, c - a - b));
+@c show_values (a, b, c - a - b);
+@c ===end===
+@example
+(%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+(%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
+(%i2) (a: 17, b: 29, c: 1729)$
+(%i3) show_values (a, b, c - a - b);
+(%o3)              [a = 17, b = 29, c = 1729]
+@end example
+
 @end deffn
 
-@c NEEDS CLARIFICATION
-@deffn {Function} splice (@var{atom})
-This is used with buildq to construct a list. This is handy
-for making argument lists, in conjunction with @code{buildq}.
+@deffn {Function} splice (@var{a})
+Splices (interpolates) the list named by the atom @var{a} into an expression,
+but only if @code{splice} appears within @code{buildq};
+otherwise, @code{splice} is treated as an undefined function.
+If appearing within @code{buildq} as @var{a} alone (without @code{splice}),
+@var{a} is substituted (not interpolated) as a list into the result.
+The argument of @code{splice} can only be an atom;
+it cannot be a literal list or an expression which yields a list.
 
+Typically @code{splice} supplies the arguments for a function or operator.
+For a function @code{f}, the expression @code{f (splice (@var{a}))} within @code{buildq}
+expands to @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
+For an operator @code{o}, the expression @code{"o" (splice (@var{a})} within @code{buildq}
+expands to @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
+where @code{o} may be any type of operator (typically one which takes multiple arguments).
+Note that the operator must be enclosed in double quotes @code{"}.
+
+Examples
+
+@c ===beg===
+@c buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+@c buildq ([x: [1, %pi]], "/" (splice (x)));
+@c matchfix ("<>", "<>");
+@c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+@c ===end===
 @example
-mprint ([x]) ::= buildq ([u : x],
-  if (debuglevel > 3) print (splice (u)));
+(%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+                       foo(1, %pi, z - y)
+(%o1)                -----------------------
+                     length([1, %pi, z - y])
+(%i2) buildq ([x: [1, %pi]], "/" (splice (x)));
+                                1
+(%o2)                          ---
+                               %pi
+(%i3) matchfix ("<>", "<>");
+(%o3)                          <>
+(%i4) buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+(%o4)                   <>1, %pi, z - y<>
 @end example
 
-Including a call like
-
-@example
-mprint ("matrix is", mat, "with length", length(mat))
-@end example
-
-is equivalent to putting in the line
-
-@example
-if (debuglevel > 3) print ("matrix is", mat, "with length", length(mat));
-@end example
-
-A more non trivial example would try to display the variable values
-and their names.  
-@example
-mshow (a, b, c) 
-@end example
-
-should become
-
-@example
-print ('a, "=", a, ",", 'b, "=", b, ", and", 'c, "=", c)
-@end example
-
-so that if it occurs as a line in a program we can print values.
-
-@example
-(%i1) foo (x,y,z) := mshow (x, y, z);
-(%i2) foo (1, 2, 3);
-x = 1 , y = 2 , and z = 3
-@end example
-
-
-The actual definition of mshow is the following.   Note how buildq
-lets you build "quoted" structure, so that the  @code{'u} lets
-you get the variable name.  Note that in macros, the result is
-a piece of code which will then be substituted for the macro and evaluated.
-
-@example
-mshow ([l]) ::= block ([ans:[], n:length(l)],
-    for i:1 thru n do
-        (ans: append (ans, buildq ([u: l[i]], ['u, "=", u])),
-        if i < n then
-            ans: append (ans, if i < n-1 then [","] else [", and"])),
-    buildq ([u:ans], print (splice(u))));
-@end example
-
-The splice also works to put arguments into algebraic operations:
-
-@example
-(%i1) buildq ([a: '[b, c, d]], +splice(a));
-(%o1)                       d + c + b
-@end example
-
-Note how the simplification only occurs @i{after} the substitution,
-The operation applying to the splice in the first case is the @code{+}
-while in the second it is the @code{*}, yet logically you
-might think @code{splice(a)+splice(a)} could be replaced by
-@code{2*splice(a)}.   No simplification takes place with the @code{buildq}.
-To understand what @code{splice} is doing with the algebra you must understand
-that for Maxima, a formula an operation like @code{a+b+c} is really
-internally similar to @code{+(a,b,c)}, and similarly for multiplication.
-Thus @code{*(2,b,c,d)} is @code{2*b*c*d}.
-
-@example
-(%i1) buildq ([a: '[b,c,d]], +splice(a));
-(%o1)                       d + c + b
-(%i2) buildq ([a: '[b,c,d]], splice(a)+splice(a));
-(%o2)                    2 d + 2 c + 2 b
-@end example
-
-but
-
-@example
-(%i3) buildq ([a: '[b,c,d]], 2*splice(a));
-(%o3)                        2 b c d
-@end example
-
-Finally @code{buildq} can be invaluable for building recursive functions.
-Suppose your program is solving a differential equation using the
-series method, and has determined that it needs to build a
-recursion relation
-
-@example
-f[n] := -((n^2 - 2*n + 1)*f[n-1] + f[n-2] + f[n-3])/(n^2-n)
-@end example
-
-and it must do this on the fly inside your function.  Now you
-would really like to add @code{expand}.
-
-@example
-f[n] := expand (-((n^2 - 2*n + 1)*f[n-1] + f[n-2] + f[n-3])/(n^2-n))
-@end example
-
-but how do you build this code.  You want the @code{expand}
-to happen each time the function runs, @i{not} before it.
-
-@example
-(%i1) val: -((n^2 - 2*n + 1)*f[n-1] + f[n-2] + f[n-3])/(n^2-n)$
-(%i2) define (f[n], buildq ([u: val], expand(u)))$
-@end example
-
-does the job.   This might be useful, since when you do
-(with @code{expand})
-
-@example
-(%i3) f[0]: aa0$
-(%i4) f[1]: aa1$
-(%i5) f[2]: aa2$
-(%i6) f[6];
-                       3 aa2   aa1   7 aa0
-(%o6)                  ----- + --- + -----
-                        10     40     90
-@end example
-
-where as without it is kept unsimplified, and even after 6 terms
-it becomes:
-
-@example
-(%i7) define (g[n], buildq ([u: val], u))$
-(%i8) g[0]: bb0$
-(%i9) g[1]: bb1$
-(%i10) g[2]: bb2$
-(%i11) g[6];
-          aa2         7 aa2   aa1   11 aa0    aa1   aa0
-          --- - 25 (- ----- - --- - ------) + --- + ---
-           4           20     40     120       8    24
-(%o11)    ---------------------------------------------
-                               30
-(%i12) expand (%);
-                       3 aa2   aa1   7 aa0
-(%o12)                 ----- + --- + -----
-                        10     40     90
-@end example
-
-The expression quickly becomes complicated if not simplified at
-each stage, so the simplification must be part of the definition.
-Hence the @code{buildq} is useful for building the form.
 @end deffn
 
 
