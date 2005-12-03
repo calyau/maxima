@@ -245,6 +245,103 @@ and their values on the right-hand side.
 
 @end deffn
 
+@deffn {Function} macroexpand (@var{expr})
+Returns the macro expansion of @var{expr} without evaluating it,
+when @code{expr} is a macro function call.
+Otherwise, @code{macroexpand} returns @var{expr}.
+
+If the expansion of @var{expr} yields another macro function call,
+that macro function call is also expanded.
+
+@code{macroexpand} quotes its argument.
+However, if the expansion of a macro function call has side effects,
+those side effects are executed.
+
+See also @code{::=}, @code{macros}, and @code{macroexpand1}.
+
+Examples
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand (h (y));
+                              y - a
+(%o4)                         -----
+                               99
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@end deffn
+
+@deffn {Function} macroexpand1 (@var{expr})
+Returns the macro expansion of @var{expr} without evaluating it,
+when @code{expr} is a macro function call.
+Otherwise, @code{macroexpand1} returns @var{expr}.
+
+@code{macroexpand1} quotes its argument.
+However, if the expansion of a macro function call has side effects,
+those side effects are executed.
+
+If the expansion of @var{expr} yields another macro function call,
+that macro function call is not expanded.
+
+See also @code{::=}, @code{macros}, and @code{macroexpand}.
+
+Examples
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand1 (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand1 (h (y));
+(%o4)                       g(y - a)
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@end deffn
+
+@defvr {Global variable} macros
+Default value: @code{[]}
+
+@code{macros} is the list of user-defined macro functions.
+The macro function definition operator @code{::=} puts a new macro function onto this list,
+and @code{kill}, @code{remove}, and @code{remfunction} remove macro functions from the list.
+
+See also @code{infolists}.
+
+@end defvr
+
 @deffn {Function} splice (@var{a})
 Splices (interpolates) the list named by the atom @var{a} into an expression,
 but only if @code{splice} appears within @code{buildq};
@@ -932,27 +1029,167 @@ occurrence is permitted in each.
 @defvr {Option variable} macroexpansion
 Default value: @code{false}
 
-@code{macroexpansion} controls advanced features which
-affect the efficiency of macros. Possible settings:
+@code{macroexpansion} controls whether the expansion (that is, the return value) of a macro function
+is substituted for the macro function call.
+A substitution may speed up subsequent expression evaluations,
+at the cost of storing the expansion.
 
-@itemize @bullet
-@item
-@code{false} -- Macros expand normally each time they are called.
-@item
-@code{expand} -- The first time a particular call is evaluated, the
-expansion is remembered internally, so that it doesn't have to be
-recomputed on subsequent calls making subsequent calls faster.  The
-macro call still calls @code{grind} and @code{display} normally. However, extra memory is
-required to remember all of the expansions.
-@item
-@code{displace} -- The first time a particular call is evaluated, the
-expansion is substituted for the call.  This requires slightly less
-storage than when @code{macroexpansion} is set to @code{expand} and is just as fast,
-but has the disadvantage that the original macro call is no longer
-remembered and hence the expansion will be seen if @code{display} or @code{grind} is
-called.  See documentation for @code{translate} and @code{macros} for more details.
-@end itemize
-@c NEED SOME EXAMPLES HERE.
+@table @code
+@item false
+The expansion of a macro function is not substituted for the macro function call.
+@item expand
+The first time a macro function call is evaluated,
+the expansion is stored.
+The expansion is not recomputed on subsequent calls;
+any side effects (such as @code{print} or assignment to global variables) happen
+only when the macro function call is first evaluated.
+Expansion in an expression does not affect other expressions
+which have the same macro function call.
+@item displace
+The first time a macro function call is evaluated,
+the expansion is substituted for the call,
+thus modifying the expression from which the macro function was called.
+The expansion is not recomputed on subsequent calls;
+any side effects happen only when the macro function call is first evaluated.
+Expansion in an expression does not affect other expressions
+which have the same macro function call.
+@end table
+
+Examples
+
+When @code{macroexpansion} is @code{false},
+a macro function is called every time the calling expression is evaluated,
+and the calling expression is not modified.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: false;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: false;
+(%o4)                         false
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+When @code{macroexpansion} is @code{expand},
+a macro function is called once,
+and the calling expression is not modified.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: expand;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: expand;
+(%o4)                        expand
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+When @code{macroexpansion} is @code{expand},
+a macro function is called once,
+and the calling expression is modified.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: displace;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: displace;
+(%o4)                       displace
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                 x - 99
+(%t6)                    f(x) := ------
+                                 x + 99
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
 
 @end defvr
 

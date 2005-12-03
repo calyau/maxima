@@ -687,9 +687,16 @@ See also @code{debugging}.
 
 @deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Function} remfunction (all)
-@c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
-Removes the user defined functions @var{f_1}, ..., @var{f_n} from Maxima.
-@code{remfunction (all)} removes all functions.
+Unbinds the function definitions of the symbols @var{f_1}, ..., @var{f_n}.
+The arguments may be the names of ordinary functions (created by @code{:=} or @code{define})
+or macro functions (created by @code{::=}).
+
+@code{remfunction (all)} unbinds all function definitions.
+
+@code{remfunction} quotes its arguments.
+
+@code{remfunction} returns a list of the symbols for which the function definition was unbound.
+@code{false} is returned in place of any symbol for which there is no function definition.
 
 @end deffn
 

@@ -218,16 +218,23 @@ evaluate to an atomic variable or subscripted variable.
 @end deffn
 
 @deffn {Operator} "::="
-Macro definition operator.
+Macro function definition operator.
 @code{::=} defines a function (called a "macro" for historical reasons)
 which quotes its arguments,
-and the expression which it returns is evaluated in the context from which the macro was called.
+and the expression which it returns (called the "macro expansion")
+is evaluated in the context from which the macro was called.
 A macro function is otherwise the same as an ordinary function.
 
-@code{macroexpand} returns the expression returned by a macro function
-(without evaluating the expression).
+@code{macroexpand} returns a macro expansion (without evaluating it).
 @code{macroexpand (foo (x))} followed by @code{''%} is equivalent to @code{foo (x)}
 when @code{foo} is a macro function.
+
+@code{::=} puts the name of the new macro function onto the global list @code{macros}.
+@code{kill}, @code{remove}, and @code{remfunction} unbind macro function definitions
+and remove names from @code{macros}.
+
+@code{fundef} or @code{dispfun} return a macro function definition
+or assign it to a label, respectively.
 
 Macro functions commonly contain @code{buildq} and @code{splice}
 expressions to construct an expression,
@@ -237,7 +244,7 @@ Examples
 
 A macro function quotes its arguments,
 so message (1) shows @code{y - z}, not the value of @code{y - z}.
-The return value (the quoted expression @code{'(print ("(2) x is equal to", x))}
+The macro expansion (the quoted expression @code{'(print ("(2) x is equal to", x))}
 is evaluated in the context from which the macro was called,
 printing message (2).
 
@@ -294,7 +301,7 @@ until the explicit evaluation @code{''%}.
 (%o6)                          %pi
 @end example
 
-@code{macroexpand} returns the expression returned by a macro function.
+@code{macroexpand} returns a macro expansion.
 @code{macroexpand (foo (x))} followed by @code{''%} is equivalent to @code{foo (x)}
 when @code{foo} is a macro function.
 
