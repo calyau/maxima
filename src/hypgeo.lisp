@@ -1802,7 +1802,6 @@
 			 ((coeffpt) (f hasvar) (a freevar))
 			 ((coeffpp) (c zerp)))
 		       nil)))
-	    (format t "l = ~A~%" l)
 	    (when l
 	      (let ((a (cdras 'a l)))
 		;; We're ready now to compute the transform.
