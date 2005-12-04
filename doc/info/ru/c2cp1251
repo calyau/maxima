@@ -1,0 +1,11 @@
+#!/bin/sh
+
+for i in $@  
+do 
+    if  grep "Encoding: KOI8-R" $i > /dev/null  ; then
+	echo "Converting KOI8-R->CP1251 $i ..."
+	iconv -f KOI8-R -t CP1251 $i | sed -e "s:KOI8-R:CP1251:" > foo
+	mv -f foo $i
+    fi
+done
+

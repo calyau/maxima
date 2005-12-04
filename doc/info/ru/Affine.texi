@@ -1,0 +1,190 @@
+@c Language: Russian, Encoding: KOI8-R
+@c English original: Affine.texi CVS 1.12
+
+@menu
+* Definitions for Affine::
+@end menu
+
+@node Definitions for Affine,  , Affine, Affine
+@section Функции пакета Affine
+
+@deffn {Function} fast_linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
+Решает систему линейных уравнений @var{expr_1}, ..., @var{expr_m}
+относительно переменных  @var{x_1}, ..., @var{x_n}.
+Каждый аргумент @var{expr_i} может быть уравнением или произвольным выражением.
+В последнем случае выражение трактуется как уравнение вида @code{@var{expr_i} = 0}.
+
+Возвращаемое значение является списком вида
+@code{[@var{x_1} = @var{a_1}, ..., @var{x_n} = @var{a_n}]},
+где @var{a_1}, ..., @var{a_n} не зависят от переменных @var{x_1}, ..., @var{x_n}.
+
+@code{fast_linsolve} более быстрый чем @code{linsolve} для разреженных систем.
+
+@end deffn
+
+@deffn {Function} grobner_basis ([@var{expr_1}, ..., @var{expr_m}])
+Возвращает базис Гребнера для уравнеий  @var{expr_1}, ..., @var{expr_m}.
+После этого функция @code{polysimp} может быть использована для
+упрощения других выражений по функций относительно данной
+системы уравнеий.
+
+@example
+grobner_basis ([3*x^2+1, y*x])$
+
+polysimp (y^2*x + x^3*9 + 2) ==> -3*x + 2
+@end example
+
+@code{polysimp(f)} возвращает 0 тогда и только тогда, когда @var{f} принадлежит
+идеалу уравнений @var{expr_1}, ..., @var{expr_m}.  Иными словаим, тогда и только тогда,
+когда @var{f} является полиномиальной комбинацией элементов
+@var{expr_1}, ..., @var{expr_m}.
+
+@end deffn
+
+@c NEEDS CLARIFICATION IN A SERIOUS WAY
+@deffn {Function} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
+@deffnx {Function} set_up_dot_simplifications (@var{eqns})
+Уравнения @var{eqns} являются полиномиальными уравнеиями относительно
+некомутативных переменных.
+Значение @code{current_variables} есть список переменных,
+используемых для вычисления степерей.  Уравнения должны быть
+однородными по степеням, для того, чтобы процедура сходилась.
+
+Если перекрывающиеся упрощения в @code{dot_simplifications} проверены
+до степерни выше степени @var{f}, тогда верно следующее:
+@code{dotsimp(@var{f})} даёт 0 тогда и только тогда, когда @var{f}
+принадлежит идеалу уравнений, т.е., тогда и только тогда, когда
+@var{f} является полиномиальной комбинацией уравнений.
+
+Здесь степень определяется с помощью @code{nc_degree} и зависит от
+весов отдельных переменных.
+
+@end deffn
+
+@deffn {Function} declare_weight (@var{x_1}, @var{w_1}, ..., @var{x_n}, @var{w_n})
+Присваивает веса @var{w_1}, ..., @var{w_n} переменным @var{x_1}, ..., @var{x_n}.
+Эти веса используются при вычислении @code{nc_degree}.
+
+@end deffn
+
+@deffn {Function} nc_degree (@var{p})
+Возвращает степень некоммутативного полинома @var{p}.
+См. также @code{declare_weights}.
+
+@end deffn
+
+@c NEEDS CLARIFICATION -- TO WHICH EQUATIONS DOES THIS DESCRIPTION REFER ??
+@deffn {Function} dotsimp (@var{f})
+Возвращает 0 тогда и только тогда, когда @var{f} принадлежит идеалу уравнеий, т.е.,
+тогда и только тогда, когда @var{f} является полиномиальной
+комбинацией элементов уравнений.
+
+@end deffn
+
+@deffn {Function} fast_central_elements ([@var{x_1}, ..., @var{x_n}], @var{n})
+Если @code{set_up_dot_simplifications} было уже выполнено, тогда
+данная функция возвращает центральные полиномы степени @var{n}
+по переменным @var{x_1}, ..., @var{x_n}.
+
+Например:
+@example
+set_up_dot_simplifications ([y.x + x.y], 3);
+fast_central_elements ([x, y], 2);
+[y.y, x.x];
+@end example
+
+@end deffn
+
+@c THIS IS NOT AT ALL CLEAR
+@deffn {Function} check_overlaps (@var{n}, @var{add_to_simps})
+Проверяет перекрытия до степени @var{n},
+чтобы убедиться, что имеется достаточно правил упрощения для каждой
+степени чтобы @code{dotsimp} работало правильно.  Этот процесс может
+быть ускорен если заранее известна размерность пространства мономов.
+Если размерность конечная и глобальная, тогда следует использовать
+@code{hilbert}.
+Если мономиальная размерность неизвестна, то не
+следут задавать @code{rank_function}.
+Необязательный третий аргумент @code{reset}, @code{false} означает --
+не следует спрашивать о переопределении объектов.
+
+@end deffn
+
+@deffn {Function} mono ([@var{x_1}, ..., @var{x_n}], @var{n})
+Возвращает список независимых мономов по отношению к текущим
+упрощениям степени @var{n} по переменным @var{x_1}, ..., @var{x_n}.
+
+@end deffn
+
+@deffn {Function} monomial_dimensions (@var{n})
+Вычисляет ряд Гильберта до степени @var{n} для текущей алгебры.
+
+@end deffn
+
+@deffn {Function} extract_linear_equations ([@var{p_1}, ..., @var{p_n}], [@var{m_1}, ..., @var{m_n}])
+Возвращает список коеффициентов некоммутативных полиномов @var{p_1}, ..., @var{p_n}
+некоммутативных мономов @var{m_1}, ..., @var{m_n}.
+Коеффициенты должны быть скалярными.  Для получения списка мономов
+используется @code{list_nc_monomials}.
+
+@end deffn
+
+@deffn {Function} list_nc_monomials ([@var{p_1}, ..., @var{p_n}])
+@deffnx {Function} list_nc_monomials (@var{p})
+Возвращает список некоммутативных мономов полинома @var{p}
+или списка полиномов @var{p_1}, ..., @var{p_n}.
+
+@end deffn
+
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun pcoeff (poly monom [variables-to-exclude-from-cof (list-variables monom)])
+@c
+@c This function is called from Lisp level, and uses internal poly format.
+@c @example
+@c
+@c CL-MAXIMA>>(setq me (st-rat #$x^2*u+y+1$))
+@c (#:Y 1 1 0 (#:X 2 (#:U 1 1) 0 1))
+@c
+@c CL-MAXIMA>>(pcoeff me (st-rat #$x^2$))
+@c (#:U 1 1)
+@c @end example
+@c @noindent
+@c
+@c Rule: if a variable appears in monom it must be to the exact power,
+@c and if it is in variables to exclude it may not appear unless it was
+@c in monom to the exact power.  (pcoeff pol 1 ..) will exclude variables
+@c like substituting them to be zero.
+@c
+@c @end defun
+
+@c THIS FUNCTION DOESN'T SEEM TO BE APPROPRIATE IN USER-LEVEL DOCUMENTATION
+@c PRESERVE THIS DESCRIPTION PENDING FURTHER DECISION
+@c @defun new-disrep (poly)
+@c
+@c From Lisp this returns the general Maxima format for an arg which is
+@c in st-rat form:
+@c
+@c @example
+@c (displa(new-disrep (setq me (st-rat #$x^2*u+y+1$))))
+@c
+@c        2
+@c y + u x  + 1
+@c @end example
+@c
+@c @end defun
+
+@defvr {Option variable} all_dotsimp_denoms
+Значение по умолчанию: @code{false}
+
+Когда @code{all_dotsimp_denoms} является списком,то
+знаменатели, встречающиеся при работе @code{dotsimp}, добавляются к этому списку.
+@code{all_dotsimp_denoms} может быть инициализировано пустым списком @code{[]}
+перед вызовом @code{dotsimp}.
+
+По умолчанию @code{dotsimp} не собирает числители.
+
+@end defvr
+
+
+
