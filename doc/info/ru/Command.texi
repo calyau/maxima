@@ -1,0 +1,807 @@
+@c Language: Russian, Encoding: CP1251
+@c English original: Command.texi CVS 1.36
+
+@menu
+* Introduction to Command Line::
+* Definitions for Command Line::
+@end menu
+
+@node Introduction to Command Line, Definitions for Command Line, Command Line, Command Line
+@section Общие сведения о коммандной строке
+
+@c NEEDS EXAMPLES
+@c THIS ITEM IS VERY IMPORTANT !!
+@deffn {Operator} "'"
+Оператор "одиночная кавычка" @code{'} предотвращает вычисление.
+
+Примененный к символу, оператор "одиночная кавычка" предотвращает
+вычисление этого символа.
+
+Примененный к вызову функции, оператор "одиночная кавычка"
+предотвращает вычисление этой функции, но не вычисление
+её аргументов (если оно не предотвращено по другим причинам).
+Результатом являеся не вычисляемая (noun) фрма вызова функции.
+
+Примененый к выражению в скобках, предотвращает вычисление
+всех функций и символов внутри скобок.
+@c DUNNO IF THESE EXAMPLES ARE STILL NEEDED -- COVERED BY ITEMS UNDER "Examples"
+Например, @code{'(f(x))} означает -- не вычислять выражение
+@code{f(x)}, тогда как @code{'f(x)} (кавычка примененная к @code{f}
+а не к @code{f(x)}) означат -- не вычисляемая форма @code{f},
+примененная к @code{[x]}.
+
+Одиночная кавычка не предотвращает упрощение.
+
+Когда глобальный флаг @code{noundisp} имеет значение @code{true},
+не вычисляемые формы функций выводятся с одиночной ковычкой.
+Этот пререключкатель всегда установлен равным @code{true} при
+печати определений функций.
+
+См. также оператор "двойная кавычка" @code{''} и @code{nouns}.
+
+Примеры:
+
+Примененный к символу, оператор "одиночная кавычка" предотвращает
+вычисление этого символа.
+
+@c ===beg===
+@c aa: 1024;
+@c aa^2;
+@c 'aa^2;
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) aa^2;
+(%o2)                        1048576
+(%i3) 'aa^2;
+                                 2
+(%o3)                          aa
+(%i4) ''%;
+(%o4)                        1048576
+@end example
+
+
+Примененный к вызову функции, оператор "одиночная кавычка"
+предотвращает вычисление этой функции.
+Результатом являеся объектная форма вызова функции.
+
+@c ===beg===
+@c x0: 5;
+@c x1: 7;
+@c integrate (x^2, x, x0, x1);
+@c 'integrate (x^2, x, x0, x1);
+@c %, nouns;
+@c ===end===
+@example
+(%i1) x0: 5;
+(%o1)                           5
+(%i2) x1: 7;
+(%o2)                           7
+(%i3) integrate (x^2, x, x0, x1);
+                               218
+(%o3)                          ---
+                                3
+(%i4) 'integrate (x^2, x, x0, x1);
+                             7
+                            /
+                            [   2
+(%o4)                       I  x  dx
+                            ]
+                            /
+                             5
+(%i5) %, nouns;
+                               218
+(%o5)                          ---
+                                3
+@end example
+
+Примененый к выражению в скобках, предотвращает вычисление
+всех функций и символов внутри скобок.
+
+@c ===beg===
+@c aa: 1024;
+@c bb: 19;
+@c sqrt(aa) + bb;
+@c '(sqrt(aa) + bb);
+@c ''%;
+@c ===end===
+@example
+(%i1) aa: 1024;
+(%o1)                         1024
+(%i2) bb: 19;
+(%o2)                          19
+(%i3) sqrt(aa) + bb;
+(%o3)                          51
+(%i4) '(sqrt(aa) + bb);
+(%o4)                     bb + sqrt(aa)
+(%i5) ''%;
+(%o5)                          51
+@end example
+
+Одиночная кавычка не предотвращает упрощение.
+
+@c ===beg===
+@c sin (17 * %pi) + cos (17 * %pi);
+@c '(sin (17 * %pi) + cos (17 * %pi));
+@c ===end===
+@example
+(%i1) sin (17 * %pi) + cos (17 * %pi);
+(%o1)                          - 1
+(%i2) '(sin (17 * %pi) + cos (17 * %pi));
+(%o2)                          - 1
+@end example
+
+@end deffn
+
+@deffn {Operator} "'@w{}'"
+Оператор @code{'@w{}'} (двойная одиночная кавычка) вызывает
+дополнительное вычисление.
+Например, @code{'@w{}'%i4} вызывает перевычисление входной строки @code{%i4}.
+@code{'@w{}'(f(x))} означает -- вычислить выражение @code{f(x)} один
+раз дополнительно.  @code{'@w{}'f(x)} (с двоной одиночной
+кавычкой, примененной к @code{f} а не к @code{f(x)}),
+означает вычисляемую (verb) форму @code{f} примененную к @code{[x]}.
+
+@end deffn
+
+
+@node Definitions for Command Line,  , Introduction to Command Line, Command Line
+@section Определения для коммандной строки
+
+@c NEEDS WORK, ESPECIALLY EXAMPLES
+@deffn {Function} alias (@var{new_name_1}, @var{old_name_1}, ..., @var{new_name_n}, @var{old_name_n})
+создаёт альтернативное имя для пользовательской или системной
+функции, переменной, массива и т.п.
+Данная функция может иметь любое число парных аргументов.
+
+@end deffn
+
+@defvr {Option variable} debugmode
+Значение по умолчанию: @code{false}
+
+Если во время работы Maxima возникла ошибка, Maxima запускает отладчик
+если значение переключателя @code{debugmode} равно @code{true}.
+В отладчике пользователь может исследовать значения стека, установить
+точки останова, просматривать код и т.д.  См.  @code{debugging}
+для списка команд отладчика.
+
+Отладчик Maxima, включаемый с помощью @code{debugmode}, не
+обрабатывает ошибки на уровне Lisp.
+@c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
+@c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
+
+@end defvr
+
+@c NEEDS CLARIFICATION
+@c VERY IMPORTANT !!
+@deffn {Function} ev (@var{expr}, @var{arg_1}, ..., @var{arg_n})
+Вычисляет выражение @var{expr} в окружении определяемом агрументами
+@var{arg_1}, ..., @var{arg_n}.  Данные аргументы могут быть
+переключателями (логические флаги), присваиваниями, уравнениями и функциями.
+@code{ev} возвращает результат вычисления (выражение).
+
+Вычисление осуществляется в несколько шагов.
+
+@enumerate
+@item
+Сначала окружение устанавливается в соответствии с аргументами,
+которые могут быть одним из следующего:
+
+@itemize @bullet
+@item
+@code{simp} вызывает упрощение выражения @var{expr} вне зависимости
+от текущего значения переключателя @code{simp} (отключает упрощение
+если равен @code{false}).
+@item
+@code{noeval} отключает вычисление для данной стадии @code{ev}
+(см. шаг (4) ниже).  Это может быть полезно в комбинации с другими
+переключателями и вызывает повторное упрощение @var{expr} без
+перевычисления.
+@item
+@code{nouns} вызывает вычисление не вычисляемых (noun) форм
+(обычно это не вычисленные функции, такие как @code{'integrate}
+или @code{'diff}) в @var{expr}.
+@item
+@code{expand} вызывает раскрытие скобок.
+@item
+@code{expand (@var{m},@var{n})} вызывает раскрытие скобок при  @code{maxposex} и
+@code{maxnegex} равным  @var{m} и @var{n} соответственно.
+@item
+@code{detout} при вычислении обратных матриц в @var{expr}, сохраняет
+опдеделитель матрицы как общий множитель вместо того чтобы делить
+на него каждый элемент матрицы в отдельности.
+@item
+@code{diff} вызывает вычислени всех производных в @var{expr}.
+@item
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} вызывет вычисление
+производных только относительно указанных переменных.
+@item
+@code{float} вызывает преобразование нецелых рациональных чисел
+в числа с плавающей точкой.
+@item
+@code{numer} вызывает численное вычисление математических
+функций (включая экспоненты), имеющих числовые агрументы.  Вызывает
+замену переменных, имеющих числовые значения (см. @code{numerval}), этими
+значениями.  Устанавливает значение переключателя @code{float}
+равным @code{true}.
+@item
+@code{pred} вызывает вычисление предикатов (выражений, значение
+которых @code{true} или @code{false}).
+@item
+@code{eval} вызывает дополнительное пост-вычисление @var{expr}
+(см. шаг (5) ниже).
+@item
+@code{A}, где @code{A} есть атом, являющийся флагом вычисления (см. @code{evflag}),
+устанавливает значение @code{A} равным @code{true} в процессе
+вычисления @var{expr}.
+@item
+@code{V: expression} (или альтернативно @code{V=expression})
+присваивает @code{V} значение  @code{expression} в процессе вычисления
+@var{expr}.  Если @code{V} является управляющей переменной (опцией)
+Maxima, тогда значение @code{expression} используется в качастве
+значения опции в процессе вычисления @var{expr}.  Если имеется более
+одного аргумента @code{ev} данного типа, то присваивание осуществляется
+параллельно.  Если @code{V} является не атомарным выражением, то
+вместо присваивания осуществляется подстановка.
+@item
+@code{F}, где @code{F} есть имя функции, являющейся функцией
+вычисления (см. @code{evfun}) вызывает применение @code{F} к @var{expr}.
+@item
+Любые другие имена функций (скажем @code{sum}) вызывают вычисление
+этих функций в @var{expr}, так как если бы они имели
+вычисляемую форму.
+@item
+Кроме того, встречающаяся в @var{expr} функция (скажем @code{F(x)})
+может быть локально определена для вычисления @var{expr}, путем
+задания аргумента в форме @code{F(x) := expression}.
+@item
+Если в качестве аргумента указан любой, не указанный выше атом, или
+переменная с индексом, или выражение с индексом, то данный аргумент
+вычисляется.  Если результатом вычисления является уравнение или
+присваивание, то выполняется соответствующее присваивание или
+подстановка.  Если результатом вычисления является список, то
+элементы этого списка трактуются как дополнительные агрументы
+@code{ev}.  Это, в частности, позволяет использовать список
+уравнений (например @code{[X=1, Y=A**2]}), или список имен
+уравнений (например @code{[%t1, %t2]}, где @code{%t1} и
+@code{%t2} являются результатом работы функции @code{solve}.
+@end itemize
+
+Аргументы @code{ev} могут быть указаны в произвольном порядке за
+исключением уравнений, которые выполняются последовательно слева
+направо, и составных вычисляющих функций (например
+@code{ev (@var{expr}, ratsimp, realpart)} выполняется как
+@code{realpart (ratsimp (@var{expr}))}).
+
+Переключатели @code{simp}, @code{numer}, @code{float} и @code{pred}
+могут быть установлены локально в блоке, или глобально.
+В последнем случае они будут действовать до переопределения.
+
+Если выражение @var{expr} является каноническим рациональным
+выражением (КРВ, canonical rational expression (CRE)), тогда
+результатом @code{ev} тоже является КРВ, если только переключатели
+@code{numer} и @code{float} оба не равны @code{true}.
+
+@item
+На шаге (1), составляется список не-индексированных
+переменных входящих в левые части агрументов, являющихся уравнениями,
+или в значения аргуметов, если эти значения являются уравнениями.
+Переменные (индексированные, которые не имеют соответствующих
+функций массивов, и не-индексированные) в выражении @var{expr}
+заменяются на свои глобальные значения, за исключением тех,
+которые входят в вышеуказанный список.   Обычно, @var{expr} это просто
+метка @code{%} (как @code{%i2} в примере ниже), так что на данном шаге
+просто получается выражение, обозначаемое данной меткой.
+
+@item
+Если среди агрументов имеются подстановки, то они выполняются.
+
+@item
+Полученное выражение снова вычисляется (если одним из аргументов не
+является @code{noeval}) и упрощается в соответствии с заданными
+аргументами.  Все вызовы функций в @var{expr} выполняются после
+вычисления переменных.  Таким образом @code{ev(F(x))} трактуется
+как @code{F(ev(x))}.
+
+@item
+Если одним из аргументов является @code{eval}, шаги (3) и (4) повторяются.
+@end enumerate
+
+Примеры:
+
+@example
+(%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
+                                     d                    2
+(%o1)              cos(y) + sin(x) + -- (sin(w)) + (w + 1)
+                                     dw
+(%i2) ev (%, sin, expand, diff, x=2, y=1);
+                          2
+(%o2)           cos(w) + w  + 2 w + cos(1) + 1.909297426825682
+@end example
+
+Имеется альтернативный синтаксис функции @code{ev}, который может
+использоваться только на верхнем уровне: аргументы @code{ev()}
+перечисляются через запятую после выражения.  Т.е. можно просто
+написать
+
+@example
+@var{expr}, @var{arg_1}, ..., @var{arg_n}
+@end example
+
+Такая конструкция не допустима как часть другого выражения,
+функции, блока и т.п.
+
+Обратите внимание на параллельное присваивание в следующих
+примерах.
+
+@example
+(%i3) programmode: false;
+(%o3)                                false
+(%i4) x+y, x: a+y, y: 2;
+(%o4)                              y + a + 2
+(%i5) 2*x - 3*y = 3$
+(%i6) -3*x + 2*y = -4$
+(%i7) solve ([%o5, %o6]);
+Solution
+
+                                          1
+(%t7)                               y = - -
+                                          5
+
+                                         6
+(%t8)                                x = -
+                                         5
+(%o8)                            [[%t7, %t8]]
+(%i8) %o6, %o8;
+(%o8)                              - 4 = - 4
+(%i9) x + 1/x > gamma (1/2);
+                                   1
+(%o9)                          x + - > sqrt(%pi)
+                                   x
+(%i10) %, numer, x=1/2;
+(%o10)                      2.5 > 1.772453850905516
+(%i11) %, pred;
+(%o11)                               true
+@end example
+
+@end deffn
+
+@defvr {Property} evflag
+Некоторые переключатели имеют свойство @code{evflag}.
+Функция @code{ev} обрабатывает данные преключатели специальным образом.
+Если такой переключатель указан в аргументах @code{ev}, то на время
+вычисления его значение устанавливается равным @code{true}.
+Например @code{demoivre} и @code{ratfac} равны @code{true}
+при вызове @code{ev (%, demoivre, ratfac)}.
+
+Следующие переключатели имеют свойство @code{evflag}:
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
+@c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
+@code{algebraic},
+@code{cauchysum},
+@code{demoivre},
+@code{dotscrules},
+@code{%emode},
+@code{%enumer},
+@code{exponentialize},
+@code{exptisolate},
+@code{factorflag},
+@code{float},
+@code{halfangles},
+@code{infeval},
+@code{isolate_wrt_times},
+@code{keepfloat},
+@code{letrat},
+@code{listarith},
+@code{logabs},
+@code{logarc},
+@code{logexpand},
+@code{lognegint},
+@code{lognumer},
+@code{m1pbranch},
+@code{numer_pbranch},
+@code{programmode},
+@code{radexpand},
+@code{ratalgdenom},
+@code{ratfac},
+@code{ratmx},
+@code{ratsimpexpons},
+@code{simp},
+@code{simpsum},
+@code{sumexpand} и
+@code{trigexpand}.
+
+Команда @code{:lisp (putprop '|$foo| t 'evflag)}
+устанавливает свойство @code{evflag} для переменной @code{foo},
+так что @code{foo} равно @code{true} при вычислении @code{ev (%, foo)}.
+Это эквивалентно @code{ev (%, foo:true)}.
+
+@end defvr
+
+@defvr {Property} evfun
+Некоторые функции имеют свойство @code{evfun}.
+Функция @code{ev} обрабатывает их специальным образом.
+Данные функции применяюся к вычисляемому выражению.
+Например, @code{ratsimp} и @code{radcan} будут применены
+при вызове @code{ev (%, ratsimp, radcan)}.
+
+Следующие функции имеют свойство @code{evfun}:
+@c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
+@c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
+@code{bfloat},
+@code{factor},
+@code{fullratsimp},
+@code{logcontract},
+@code{polarform},
+@code{radcan},
+@code{ratexpand},
+@code{ratsimp},
+@code{rectform},
+@code{rootscontract},
+@code{trigexpand} и
+@code{trigreduce}.
+
+Команда @code{:lisp (putprop '|$foo| t 'evfun)}
+устанвливает свойство @code{evfun} для функции @code{foo},
+так что @code{foo} применяется к значению @code{%} при
+вычислении @code{ev (%, foo)}.
+Это эквивалентно @code{foo (ev (%))}.
+
+@end defvr
+
+@c NEEDS WORK
+@defvr {Option variable} infeval
+Включает режим "бесконечного вычисления".  @code{ev} вычисляет
+выражение повторно до тех пор пока оно не перестаёт изменяться.
+Чтобы предотвратить вычисление оьдельной переменной, скажем @code{X},
+в данном режиме следует указать @code{X='X} в качестве
+аргумента @code{ev}.  Разумеется, выражения вроде
+@code{ev (X, X=X+1, infeval)} приводят к бесконечному циклу.
+
+@end defvr
+
+@c REVIEW FOR ACCURACY AND COMPLETENESS
+@c THIS ITEM IS VERY IMPORTANT !!
+@c NEEDS EXAMPLES
+@deffn {Function} kill (@var{symbol_1}, ..., @var{symbol_n})
+@deffnx {Function} kill (labels)
+@deffnx {Function} kill (inlabels, outlabels, linelabels)
+@deffnx {Function} kill (@var{n})
+@deffnx {Function} kill ([@var{m}, @var{n}])
+@deffnx {Function} kill (values, functions, arrays, ...)
+@deffnx {Function} kill (all)
+@deffnx {Function} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+
+Очищает аргументы @var{symbol_1}, ..., @var{symbol_n}.
+Т.е. удаляет все связи соответствующего объекта -- значение,
+функцию, массив или правило.  Аргумент может быть
+отдельным элементом массива или индексированной функции.
+
+Распознается несколько специальных форм аргументов.  При
+этом аргументы различных типов могут быть скомбинированы,
+например  @code{kill (inlabels, functions, allbut (foo, bar))}.
+
+@code{kill (labels)} очищает значение меток ввода,
+результата и меток промежуточных выражений, определенных на момент вызова.
+@code{kill (inlabels)} очищает значение меток ввода, имена которых
+начинаются с текущего значения @code{inchar}.
+Аналогично,
+@code{kill (outlabels)} очищает значение меток результата, имена которых
+начинаются с текущего значения  @code{outchar},
+и @code{kill (linelabels)} очищает значение меток промежуточных
+выражений, имена которых начинаются с текущего значения @code{linechar}.
+
+@code{kill (@var{n})}, где @var{n} является целым числом,
+очищает значение @var{n} первых меток ввода и результата.
+
+@code{kill ([@var{m}, @var{n}])} очищает метки ввода и результата
+с номерами от @var{m} до @var{n} включительно.
+
+@code{kill (@var{infolist})}, где @var{infolist} есть один из
+информационных списков @code{infolists} (например @code{values}, @code{functions}
+или @code{arrays}), очищает значение всех элеметов в
+@var{infolist}.  См. также @code{infolists}.
+
+@code{kill (all)} очищает значения всех элементов во всех
+информационных списках (infolists).
+@code{kill (all)} не восстанавливает стандартные значения глобальных
+переменных.  См. @code{reset} по поводу восстановления стандартных
+значений глобаоьных переменных.
+
+@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
+очищает все элементы во всех информационных списках кроме  @var{symbol_1}, ..., @var{symbol_n}.
+@code{kill (allbut (@var{infolist}))} очищает все элементы кроме тех,
+которые принадлежат информационному списку @var{infolist},
+где @var{infolist} есть @code{values}, @code{functions}, @code{arrays}
+и т.д.
+
+Отметим, что для освобождения памяти, занимаемой значением символа,
+необходимо очистить все объекты ссылающиеся на это значение.
+Необходимо не только очистить сам символ, но и результирующую метку
+указывающую на его значение.
+
+Функция @code{kill} не вычисляет свои аргументы.
+Для для их вычисления можно использовать оператор @code{'@w{}'}.
+
+@code{kill (@var{symbol})} очищает все свойства символа @var{symbol} в
+отличии от @code{remvalue}, @code{remfunction}, @code{remarray} и
+@code{remrule}, которые очищают только определенное свойство.
+
+@code{kill} всегда возвращает @code{done} даже если агрументы не имели
+значения.
+
+@end deffn
+
+@deffn {Function} labels (@var{symbol})
+@deffnx {System variable} labels
+Возвращает список меток ввода, результата или меток промежуточных
+выражений, имена которых начинаются с символа @var{symbol}.
+Обычно @var{symbol} это значение @code{inchar}, @code{outchar} или @code{linechar}.
+Значение @var{symbol} может быть указано с или без знака процента,
+например @code{i} и @code{%i} дадут одинаковый результат.
+
+Если ни одна из меток не начинается с @var{symbol}, то возвращается
+пустой список.
+
+Функция @code{labels} не вычисляет свои аргументы.
+Для их вычисления можно использовать оператор @code{'@w{}'}.
+Например, @code{labels (''inchar)} возвращает список меток ввода,
+имена которых начинаются с текущего значения символа ввода.
+
+Преременная @code{labels} есть список всех меток ввода, результата и
+меток промежуточных выражений, включая все предыдущие метки если
+значение @code{inchar}, @code{outchar}  или @code{linechar}
+изменялось.
+
+По умолчанию Maxima выводит результат каждого входного выражения
+присваивая ему результирующую метку.  Печать результата можно подавить
+используя для окончания выражения символ @code{$} вместо обычного
+@code{;}.  В этом случае метка результата создаётся но сам
+результат вычисления не печатается.  Тем не менее значение
+метки результата запоминается и в дальнейшем может быть
+использовано как обычно.  См. также @code{%}, @code{%%} и @code{%th}.
+
+Метки промежуточных выражений создаются некоторыми функциями.
+Переключатель @code{programmode} определяет будет ли команда
+@code{solve}, и некоторые другие функции, создавать промежуточные
+метки или возвращать список выражений.  Некоторые другие функции,
+такие как @code{ldisplay}, всегда создают метки промежуточных
+выражений.
+
+@c NEED TO EXPLAIN THIS SHORTCUT ???
+Выражение @code{first (rest (labels (''inchar)))} возвращает самую
+первую входную метку.
+
+См. также @code{inchar}, @code{outchar}, @code{linechar} и @code{infolists}.
+
+@end deffn
+
+@c EXPAND; SHOW WHAT HAPPENS WHEN linenum IS ASSIGNED A VALUE
+@defvr {System variable} linenum
+
+Текущей счетчик пары входного и результирующего выражений.
+
+@end defvr
+
+@c NEEDS WORK
+@defvr {System variable} myoptions
+Значение по умолчанию: @code{[]}
+
+@code{myoptions} есть список всех переключателей (флагов) переопределенных
+пользователем вне зависимости от того имеет ли в данный момент
+переключатель значение по умолчанию или нет.
+
+@end defvr
+
+@c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
+@c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
+@c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
+@defvr {Option variable} nolabels
+Значение по умолчанию: @code{false}
+
+@c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
+@c When @code{nolabels} is @code{true}, then no labels will be bound
+@c except for intermediate expression lines generated by the solve functions.  This is most
+@c useful in the batch mode where it eliminates the need to do
+@c @code{kill (labels)} in order to free up storage.
+
+Когда @code{nolabels} равно @code{true}, метки ввода и результата
+создаются но не добавляются к списку меток @code{labels}.
+Тогда @code{kill (labels)} очищает все метки в списке @code{labels}
+кроме тех, которые были созданы после присваивания @code{nolabels}
+значения @code{true}.
+
+См. также @code{batch}, @code{batchload} и @code{labels}.
+@c PUT A CROSS REFERENCE IN DESCRIPTION OF labels WHEN STRANGE BEHAVIOR OF nolabels IS CLEARED UP !!!
+
+@end defvr
+
+@c NEEDS WORK
+@defvr {Option variable} optionset
+Значение по умолчанию: @code{false}
+
+Если @code{optionset} равно @code{true}, Maxima печатает сообщение
+при изменении значения любого переключателя (опция, флаг) Maxima.
+Это может быть полезно, когда пользователь не уверен в написании
+названия опции и хочет быть уверен, что он переопределил
+значение правильной переменной.
+
+@end defvr
+
+@deffn {Function} playback ()
+@deffnx {Function} playback (@var{n})
+@deffnx {Function} playback ([@var{m}, @var{n}])
+@deffnx {Function} playback ([@var{m}])
+@deffnx {Function} playback (input)
+@deffnx {Function} playback (slow)
+@deffnx {Function} playback (time)
+@deffnx {Function} playback (grind)
+Вывовдит значения входных, результирующих и промежуточных
+выражений без их перевычисления.
+@code{playback} выводит только выражения связанные с метками --
+любой другой вывод (текст выведеный @code{print} или @code{describe},
+сообщения об ошибках) не отображается.
+См. также @code{labels}.
+
+Функция @code{playback} не вычисляет свои аргументы.
+Для их вычисления можно использовать оператор @code{'@w{}'}.
+@code{playback} возвращает значение @code{done}.
+
+@code{playback ()} (без аргументов) печатает все входные, результирующие и
+промежуточные выражения.  Результирующие выраженя печатаются даже в случае,
+когда во время первоначальных вычислений использовался @code{$} для
+подавления печати результата.
+
+@code{playback (@var{n})} печатает @var{n} последних выражений.
+Каждое входное, результирующее и промежуточное выражение
+считается за одно.
+
+@code{playback ([@var{m}, @var{n}])} печатает входные, результирующие
+и промежуточные выражения с номерами от @var{m} до @var{n} включительно.
+
+@code{playback ([@var{m}])} эквивалентно
+@code{playback ([@var{m}, @var{m}])} и обычно печатает
+одну пару из входного и результирующего выражений.
+
+@code{playback (input)} печатает все входные выражения.
+
+@code{playback (slow)} останавливается между выражениями и
+ожидает пока пользователь нажмет "ввод" (@code{enter}).
+Данное поведение аналогично команде @code{demo}.
+@c WHAT DOES THE FOLLOWING MEAN ???
+@code{playback (slow)} полезно в сочетании с @code{save} или
+@code{stringout} для выбора выражений, которые надо
+сохранить в файле.
+
+@code{playback (time)} показывает время вычисления для каждого выражения.
+@c DON'T BOTHER TO MENTION OBSOLETE OPTIONS !!!
+@c The arguments @code{gctime} and @code{totaltime} have the same effect as @code{time}.
+
+@code{playback (grind)} печатает входные выражения в
+формате функции @code{grind}.  На результирующие выражения
+данная опция не влияет.  См. @code{grind}.
+
+Аргументы функции @code{playback} могут быть скомбинированы,
+например @code{playback ([5, 10], grind, time, slow)}.
+@c APPEARS TO BE input INTERSECT (UNION OF ALL OTHER ARGUMENTS). CORRECT ???
+
+@end deffn
+
+@c NEEDS WORK ESPECIALLY EXAMPLES
+@c WHOLE BUSINESS WITH PROPERTIES IS PRETTY CONFUSING, TRY TO CLEAR IT UP
+@deffn {Function} printprops (@var{a}, @var{i})
+@deffnx {Function} printprops ([@var{a_1}, ..., @var{a_n}], @var{i})
+@deffnx {Function} printprops (all, @var{i})
+Печатает свойство с именем @var{i}, ассоциированное с атомом
+@var{a}.  @var{a} может быть списком атомов или @code{all}.
+В последнем случае будут использованы все атомы меющие данное свойство.
+Например, @code{printprops ([f, g], atvalue)}.  Функция
+@code{printprops} предназначена для свойств, которые не могут быть
+отображены другим способом, например для
+@code{atvalue}, @code{atomgrad}, @code{gradef} и @code{matchdeclare}.
+
+@end deffn
+
+@defvr {Option variable} prompt
+Default value: @code{_}
+
+@code{prompt} символ приглашения для функции @code{demo},
+@code{playback (slow)} и диалога прерывания Maxima (break loop)
+(см. @code{break}).
+
+@end defvr
+
+@deffn {Function} quit ()
+Завершает сессию Maxima.
+Команда должна быть введена именно как @code{quit();} или @code{quit()$},
+а не просто @code{quit}.
+
+Для прерывания длительных вычислений можно нажать @code{control-C}.
+При этом по умолчанию Maxima возвращается на верхний уровень к
+приглашению ввода следующей команды.
+Если значение Lisp-переменной @code{*debugger-hook*} равно @code{nil},
+тогда нажатие @code{control-C} запускает Lisp отладчик.
+См. также @code{debugging}.
+
+@end deffn
+
+@deffn {Function} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Function} remfunction (all)
+@c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
+Удаляет определенные пользователем фукции @var{f_1}, ..., @var{f_n}.
+Аргументы могут быть именами обычных функций, созданных при помощи
+@code{:=} или @code{define}, или макро функций, созданых при помощи
+@code{::=}.
+
+@code{remfunction (all)} -- удаляет все определенные пользователем
+функции.
+
+@code{remfunction} не вычисляет свои аргументы.
+
+@code{remfunction} возвращает список символов, для которых
+было удалено определение функции.  Для символов, у которых
+не было соответствующих определений функций, возвращается
+@code{false}.
+
+
+@end deffn
+
+@deffn {Function} reset ()
+Восстанавливает значения по умолчанию для глобальных переменных,
+опций и некоторых других переменных.
+
+@code{reset} восстанавливает значения переменных хранящихся в Lisp
+списке @code{*variable-initial-values*}.
+Lisp макрос @code{defmvar} добавляет переменные в этот список
+(вместе с выполнением других действий).  Многие, но не все,
+глобальные переменные и опции определены с помощью @code{defmvar};
+некоторые, определенные с помощью @code{defmvar} переменные, не
+являются глобальными переменными или опциями.
+
+@end deffn
+
+@defvr {Option variable} showtime
+Значение по умолчанию: @code{false}
+
+Если @code{showtime} равно @code{true} Maxima печатает время
+высисления для каждого результирующего выражения.
+
+Время вычисления всегда запоминается, так что
+@code{time} и @code{playback} могут показать
+это время даже если @code{showtime} равно @code{false}.
+
+См. также @code{playback}.
+
+@end defvr
+
+@c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
+@c THIS REALLY SEEMS LIKE A HACK
+@deffn {Function} sstatus (@var{feature}, @var{package})
+Устанавливает статус @var{feature} в @var{package}.
+После выполнения @code{sstatus (@var{feature}, @var{package})},
+@code{status (@var{feature}, @var{package})} возвращает @code{true}.
+Этот механизм может быть полезен при работе с пакетами для того, чтобы
+иметь возможность проверять какие опции пакета загружены.
+
+@end deffn
+
+@c NEEDS EXPANSION, EXAMPLES
+@deffn {Function} to_lisp ()
+Запускает интерпретатор используемой Lisp системы.
+Lisp функция @code{(to-maxima)} возвращает на уровень командной
+строки Maxima.
+
+@end deffn
+
+@defvr {System variable} values
+Начальное значение: @code{[]}
+
+@code{values} содержит список всех пользовательских переменных, которым
+присвоено значение (не Maxima опций и переключателей).
+Этот список состоит из символов, котым было присвоено значение при
+помощи операторов @code{:}, @code{::} или @code{:=}.
+
+@end defvr
+

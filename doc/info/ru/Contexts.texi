@@ -1,0 +1,342 @@
+@c Language: Russian, Encoding: CP1251
+@c English original: Contexts.texi CVS 1.11
+
+@menu
+* Definitions for Contexts::
+@end menu
+
+@node Definitions for Contexts,  , Contexts, Contexts
+@section Функции для упрвления контекстами
+
+@deffn {Function} activate (@var{context_1}, ..., @var{context_n})
+Активизирует контексты @var{context_1}, ..., @var{context_n}.
+Факты в этих контекстах становятся доступными для
+процедур дедукции.  Факты в данных контекстах
+не отображаются функцией @code{facts ()}.
+
+Переменная @code{activecontexts} содержит список активных контекстов,
+активированных с помощью @code{activate}.
+
+@end deffn
+
+@defvr {System variable} activecontexts
+Значение по умолчанию: @code{[]}
+
+@code{activecontexts} -- список активных контекстов, активизированных
+при помощи функции @code{activate}, в отличии от контекстов, которые
+являются активными как подконтексты текущего конткста.
+
+@end defvr
+
+
+@deffn {Function} assume (@var{pred_1}, ..., @var{pred_n})
+Добавляет предикаты @var{pred_1}, ..., @var{pred_n} к текущей базе
+данных, после проверки непротиворечивости и избыточности.
+Если предикаты являются противоречивыми или избыточными, то
+никаких действий не производится.
+
+@code{assume} возвращает список предикатов, добавленых к базе данных и
+атомы @code{redundant} или @code{inconsistent} для избыточных
+или противоречивых предикатов соответственно.
+
+@end deffn
+
+@defvr {Option variable} assumescalar
+Значение по умолчанию: @code{true}
+
+@code{assumescalar} определяет, что выражения @code{expr},
+для которых @code{nonscalarp (expr)} равно @code{false},
+рассматриваются как скаляры при некоторых преобразованиях.
+
+Пусть @code{expr} есть выражение отличное от списка или матрицы,
+и @code{[1, 2, 3]} есть список (или матрица).
+Тогда @code{expr . [1, 2, 3]} дает @code{[expr, 2 expr, 3 expr]}
+если @code{assumescalar} равно @code{true}, или @code{scalarp (expr)} равно
+@code{true}, или @code{constantp (expr)} равно @code{true}.
+
+Если @code{assumescalar} равно @code{true}, такие выражения
+трактуются как скаляры только для коммутативных операций, но не
+для некоммутативного умножения @code{.}.
+
+Когда @code{assumescalar} равно @code{false}, такие
+выражения трактуются как не-скалярные.
+
+Когда @code{assumescalar} равно @code{all}, такие выражения
+трактуются как скаляры для всех перечисленных выше операций,
+включая некоммутативное умножение.
+
+@end defvr
+
+
+@defvr {Option variable} assume_pos
+Значение по умолчанию: @code{false}
+
+Если @code{assume_pos} равно @code{true}
+и знак параметра @var{x} не может быть определен исходя из базы данных
+@code{assume} или другим способом, тогда
+@code{sign} и @code{asksign (@var{x})} дают @code{true}.
+Таким образом подавить некоторые автоматические запросы @code{asksign},
+возникающие при работе @code{integrate} или других вычислениях.
+
+По умолчанию параметр @var{x} таков, что @code{symbolp (@var{x})} или
+@code{subvarp (@var{x})} истинны.  Класс выражнний, которые могут
+рассматриваться в качестве параметров, может в некоторой степени
+изменяться с помощью переменной @code{assume_pos_pred}.
+
+@code{sign} и @code{asksign} пытаются определить знак выражения
+исходя из знаков операндов.  Например, если
+@code{a} и @code{b} оба положительны, тогда @code{a + b}
+тоже положительно.
+
+Однако, невозможно совсем обойтись без интерактивных запросов @code{asksign}.
+В частности, когда аргумент @code{asksign} является разницей
+@code{@var{x} - @var{y}} или логарифмом @code{log(@var{x})},
+тогда @code{asksign} всегда запросит пользователя о знаке паоаметра,
+даже если @code{assume_pos} равно @code{true} и @code{assume_pos_pred}
+есть функция, возвращающая @code{true} для всех аргументов.
+
+@c NEED EXAMPLES HERE
+@end defvr
+
+
+@defvr {Option variable} assume_pos_pred
+Значение по умолчанию: @code{false}
+
+Если @code{assume_pos_pred} присвоено значение, являющееся именем
+функции или lambda-выражение с одним аргументом @var{x},
+тогда эта функция вызывается для того чтобы определить
+является ли @var{x} параметрам для  @code{assume_pos}.
+@code{assume_pos_pred} игнорируется, когда @code{assume_pos} равно @code{false}.
+
+Функция @code{assume_pos_pred} вызывается @code{sign} и @code{asksign}
+с аргументом @var{x}, который является либо атомом, либо переменной
+с индексом, либо вызовом функции.
+Если @code{assume_pos_pred} возвращает @code{true},
+тогда @var{x} рассматривается как допустимый параметр для @code{assume_pos}.
+
+По умолчанию параметром является @var{x} ткой, что
+@code{symbolp (@var{x})} или @code{subvarp (@var{x})} истинно.
+
+См. также @code{assume} и @code{assume_pos}.
+
+Примеры:
+@c EXAMPLE OUTPUT GENERATED FROM:
+@c assume_pos: true$
+@c assume_pos_pred: symbolp$
+@c sign (a);
+@c sign (a[1]);
+@c assume_pos_pred: lambda ([x], display (x), true)$
+@c asksign (a);
+@c asksign (a[1]);
+@c asksign (foo (a));
+@c asksign (foo (a) + bar (b));
+@c asksign (log (a));
+@c asksign (a - b);
+
+@example
+(%i1) assume_pos: true$
+(%i2) assume_pos_pred: symbolp$
+(%i3) sign (a);
+(%o3)                          pos
+(%i4) sign (a[1]);
+(%o4)                          pnz
+(%i5) assume_pos_pred: lambda ([x], display (x), true)$
+(%i6) asksign (a);
+                              x = a
+
+(%o6)                          pos
+(%i7) asksign (a[1]);
+                             x = a
+                                  1
+
+(%o7)                          pos
+(%i8) asksign (foo (a));
+                           x = foo(a)
+
+(%o8)                          pos
+(%i9) asksign (foo (a) + bar (b));
+                           x = foo(a)
+
+                           x = bar(b)
+
+(%o9)                          pos
+(%i10) asksign (log (a));
+                              x = a
+
+Is  a - 1  positive, negative, or zero?
+
+p;
+(%o10)                         pos
+(%i11) asksign (a - b);
+                              x = a
+
+                              x = b
+
+                              x = a
+
+                              x = b
+
+Is  b - a  positive, negative, or zero?
+
+p;
+(%o11)                         neg
+@end example
+
+@end defvr
+
+
+@defvr {Option variable} context
+Значение по умолчанию: @code{initial}
+
+@code{context} служит для обозначения набора фактов формируемого при
+помощи @code{assume} и @code{forget}.
+@code{assume} добавляет факты к набору, обозначаемому @code{context},
+а @code{forget} удаляет факты.
+
+Присваивание @code{context} имени @var{foo} изменяет текущий контекст
+на @var{foo}.  Если контекст с таким именем @var{foo} пока ещё не
+существует, то он автоматически создается вызовом функции
+@code{newcontext}.
+@c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
+Указанный контекст автоматически активируется.
+
+См. @code{context} для общего описания механизма контекстов.
+
+@end defvr
+
+@c UMM, I'M HAVING TROUBLE GETTING THE CONTEXT-SWITCHING STUFF TO BEHAVE AS EXPECTED
+@c SOME EXAMPLES WILL HELP A LOT HERE
+@defvr {Option variable} contexts
+Значение по умолчанию: @code{[initial, global]}
+
+@code{contexts} -- список существующих на данный момент контекстов,
+включая активный.
+
+Механизм контекстов позволяет пользователю объединять
+поименованные части базы данных фактов (контексты).
+В результате можно легко активировать или деактивировать
+большие наборы фактов просто активируя или деактивируя
+соответствующие контексты.
+
+Любой символ может быть контекстом, и факты содержащиеся в этом
+контексте сохраняются до тех пор пока не будут уничтожены
+поодиночке с помощью @code{forget} или целиком с помощью @code{kill},
+уничтожающем весь контекст, которому они принадлежат.
+
+Контексты имеют иерархическую структуру.  Корьневым элементом
+всегда является контекст @code{global}, который содержит информацию о
+Maxima нужную некоторым функциям.  Когда мы находимся в определенном
+контексте, все его факты являются активными, т.е. используются
+в логических выводах.  Аналогично активными являются все факты
+в подконтекстах текущего контекста.
+
+При запуске Maxima, активным является контекст @code{initial},
+подконтекстом которого является @code{global}.
+
+См. также @code{facts}, @code{newcontext},
+@code{supcontext}, @code{killcontext}, @code{activate},
+@code{deactivate}, @code{assume} и @code{forget}.
+
+@end defvr
+
+@deffn {Function} deactivate (@var{context_1}, ..., @var{context_n})
+Деактивирует все указанные контексты @var{context_1}, ..., @var{context_n}.
+
+@end deffn
+
+@deffn {Function} facts (@var{item})
+@deffnx {Function} facts ()
+Если @var{item} является именем контекста, тогда
+@code{facts (@var{item})} возвращает список
+содержащихся в нем фактов.
+
+Если @var{item} не является именем контекста, тогда
+@code{facts (@var{item})} возвращает список фактов известных о
+@var{item} в текущем контексте.  Факты являющиеся активными, но
+принадлежащие другим контекстам не отображаются.
+
+@code{facts ()} (т.е. без аргументов) отображает все факты
+текущего конткста.
+
+@end deffn
+
+@defvr {Declaration} features
+Maxima "распознаёт" некоторые математические свойства (features)
+функций и переменных.
+
+@code{declare (@var{x}, @var{foo})} устанавливает свойство @var{foo}
+для функции или переменной @var{x}.
+
+@code{declare (@var{foo}, feature)} объявляет новое свойство @var{foo}.
+Например,
+@code{declare ([red, green, blue], feature)} объявляет три свойства
+@code{red}, @code{green}, and @code{blue}.
+
+Предикат @code{featurep (@var{x}, @var{foo})}
+возвращает @code{true} если @var{x} имеет свойство @var{foo},
+и @code{false} в противном случае.
+
+Информационный спмсок @code{features} содержит все известные свойства.
+А именно
+@code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
+@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
+@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
+@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
+@code{rassociative}, @code{symmetric} и @code{antisymmetric},
+плюс свойства определенные пользователем.
+
+@code{features} является списком математических свойств.
+Существует также список нематематических, системо-зависимых свойств.
+См. @code{status}.
+
+@end defvr
+
+@deffn {Function} forget (@var{pred_1}, ..., @var{pred_n})
+@deffnx {Function} forget (@var{L})
+Удаляет предикаты установленные @code{assume}.
+Предикаты могут быть выражениями эквивалентными (но не
+обязательно идентичными) тем, которые первоначально
+были установлены с помощью @code{assume}.
+
+@code{forget (@var{L})}, где @var{L} есть список предикатов,
+удаляет все предикаты из данного списка.
+
+@end deffn
+
+@deffn {Function} killcontext (@var{context_1}, ..., @var{context_n})
+Уничтожает контексты @var{context_1}, ..., @var{context_n}.
+
+Если один из уничтожаемых контекстов является текущим, то
+в качестве нового текущего контекста выбирается первый доступный
+не уничтожаемый подконтекст текущего.  Если первым доступным
+контекстом является @code{global}, тогда используется @code{initial}.
+Если @code{initial} тоже удаляется, то создается новый контекст @code{initial}.
+
+@code{killcontext} отказывается удалять контекст, котрый является
+активным по причине того, что является подконтекстом текущего
+контекста или был активизирован функцией @code{activate}.
+
+@code{killcontext} вычисляет свои аргументы.
+@code{killcontext} возвращает @code{done}.
+
+@end deffn
+
+@deffn {Function} newcontext (@var{name})
+Создает новый пустой контекст с именем @var{name}, имеющий контекст
+@code{global} в качестве своего подконтекста.  Новый контекст
+становится текущим активным контекстом.
+
+@code{newcontext} вычисляет свои аргумент.
+@code{newcontext} возвращает @var{name}.
+
+@end deffn
+
+@deffn {Function} supcontext (@var{name}, @var{context})
+@deffnx {Function} supcontext (@var{name})
+Создаёт новый контекст с именем @var{name}, котрый
+имеет @var{context} в качестве подконтекста.
+@var{context} должен существовать.
+
+Если @var{context} не указан, тогда подразумевается текущий контекст.
+
+@end deffn

@@ -1,0 +1,82 @@
+@c Language: Russian, Encoding: CP1251
+@c English original: Bugs.texi CVS 1.9
+
+@menu
+* Introduction to Bug Detection and Reporting::
+* Definitions for Bug Detection and Reporting::
+@end menu
+
+@node Introduction to Bug Detection and Reporting
+@section Общие понятия о работе с ошибками
+Как все сложные программы, Maxima содержит как известные,
+так и неизвестные ошибки.  Этот раздел описывает
+встроенные средства тестирования и составления отчета
+об ошибках Maxima.
+
+
+@node Definitions for Bug Detection and Reporting
+@section Функции для работы с ошибками
+@deffn {Function} run_testsuite ()
+@deffnx {Function} run_testsuite (@var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+Запускает встроенный набор тестов программы Maxima.
+Тасты, дающие ожидаемый результат, рассматриваюся как успешные.
+Сюда относятся также тесты не дающие ожидаемый
+результат но помеченные как "известные ошибки".
+
+@code{run_testsuite ()} показывает только неуспешные тесты.
+
+@code{run_testsuite (true)} показывает неуспешные тесты и тесты
+помеченные как известные ошибки.
+
+@code{run_testsuite (true, true)} показывает все тесты.
+
+Если задан необязательный третий агрумент, то выполняется
+указанное подмножество тестов, определяемое списком имен.
+Полный список тестов хранится в переменной @code{testsuite_files}.
+
+Выполнение @code{run_testsuite} изменяет окружение Maxima.
+Обычно тест сначала выполняет @code{kill}, чтобы восстановить стандартное
+окружение (окружение без определенных пользователем функций
+и переменных), и после этого определяет функции и переменные,
+необходимые для теста.
+
+@code{run_testsuite} возвращает @code{done}.
+@end deffn
+
+@defvr {Option variable} testsuite_files
+
+@code{testsuite_files} набор тестов выполняемых
+@code{run_testsuite}.  Это список имен файлов содержащих
+соответствующие тесты.  Если известно, что определенные тесты дают
+неверный результат, то вместо имени файла используется список,
+содержащий имя файла и номера заведомо ошибочных тестов.
+
+Например, это часть стандартного набора тестов
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+которая состоит из тестов находящихся в файлах "rtest13s" и
+"rtest14". При этом "rtest14" содержит два заведомо шибочных теста с
+номерами 57 и 63.
+@end defvr
+
+@deffn {Function} bug_report ()
+Печатает версию Maxima, версию использумого Lisp и ссылку
+на интернет страницу где можно заполнить сообщение об
+ошибке.  Информация о версиях программ та же, что дается
+функцией @code{build_info}. При заполнении сообщения об
+ошибке желательно указать данную информацию.
+
+@code{bug_report} возвращает пустую строку @code{""}.
+@end deffn
+
+@deffn {Function} build_info ()
+Печатает информацию о сборке Maxima.
+
+@code{build_info} возвращает пустую строку @code{""}.
+@end deffn
+
