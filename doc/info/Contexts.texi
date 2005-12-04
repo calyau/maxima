@@ -256,7 +256,8 @@ context.  Facts that are active, but in a different context, are not listed.
 Maxima recognizes certain mathematical properties of functions and variables.
 These are called "features".
 
-@code{declare (@var{x}, @var{foo})} gives the property @var{foo} to the function or variable @code{x}.
+@code{declare (@var{x}, @var{foo})} gives the property @var{foo}
+to the function or variable @var{x}.
 
 @code{declare (@var{foo}, feature)} declares a new feature @var{foo}.
 For example,
@@ -270,8 +271,9 @@ and @code{false} otherwise.
 The infolist @code{features} is a list of known features.
 These are
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
-@code{irrational}, @code{real}, @code{imaginary}, @code{complex}, @code{analytic}, @code{increasing},
-@code{decreasing}, @code{oddfun}, @code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
+@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
+@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
+@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
 @code{rassociative}, @code{symmetric}, and @code{antisymmetric},
 plus any user-defined features.
 
