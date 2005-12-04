@@ -1,5 +1,4 @@
-@c /Function.texi/1.34/Sat Sep 10 10:10:11 2005/-ko/
-
+@c /Function.texi/1.36/Sun Dec  4 08:14:20 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -133,188 +132,256 @@ possivelmente @code{buildq}.
 @node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Macros
 
-@c NEEDS CLARIFICATION AND EXAMPLES
-@deffn {Fun@,{c}@~ao} buildq (@var{vari@'aveis}, @var{expr})
+@deffn {Fun@value{cedilha}@~ao} buildq (@var{L}, @var{expr})
+Substitue vari@'aveis nomeadas pela lista @var{L} dentro da express@~ao @var{expr},
+paralelamente,
+sem avaliar @var{expr}.
+A express@~ao resultante @'e simplificada,
+mas n@~ao avaliada,
+ap@'os @code{buildq} realizar a substitui@,{c}@~ao.
 
-@var{expr} @'e qualquer express@~ao simples do Maxima e
-@var{vari@'aveis} @'e uma lista de elementos da forma @code{<atom>}
-ou @code{<atom>: <value>}.
+Os elementos de @var{L} s@~ao s@'imbolos ou express@~oes de atribui@,{c}@~ao @code{@var{s@'imbolo}: @var{valor}},
+avaliadas paralelamente.
+Isto @'e, a associa@,{c}@~ao de uma vari@'avel sobre o lado direito de uma atribui@,{c}@~ao
+@'e a associa@,{c}@~ao daquela vari@'avel no contexto do qual @code{buildq} for chamada,
+n@~ao a associa@,{c}@~ao daquela vari@'avel na lista @var{L} de vari@'aveis.
+Se alguma vari@'avel em @var{L} n@~ao dada como uma atribui@,{c}@~ao expl@'icita,
+sua associa@,{c}@~ao em @code{buildq} @'e a mesma que no contexto no qual @code{buildq} for chamada.
+
+Ent@~ao as vari@'aveis nomeadas em @var{L} s@~ao substituidas em @var{expr} paralelamente.
+Isto @'e, a substitui@,{c}@~ao para cada vari@'avel @'e determinada antes que qualquer substitui@,{c}@~ao seja feita,
+ent@~ao a substitui@,{c}@~ao para uma vari@'avel n@~ao tem efeito sobre qualquer outra.
+
+Se qualquer vari@'avel @var{x} aparecer como @code{splice (@var{x})} em @var{expr},
+ent@~ao @var{x} deve estar associada para uma lista,
+e a lista recebe uma aplica@,{c}@~ao da fun@,{c}@~ao @code{splice} (@'e interpolada) na @var{expr} em lugar de substitu@'ida.
+
+Quaisquer vari@'aveis em @var{expr} n@~ao aparecendo em @var{L} s@~ao levados no resultado tal como foram escritos,
+mesmo se elas tiverem associa@,{c}@~oes no contexto do qual @code{buildq} tiver sido chamada.
+
+Exemplos
+
+@code{a} @'e explicitamente associada a @code{x},
+enquanto @code{b} tem a mesma associa@,{c}@~ao (nomeadamente 29) como no contexto chamado,
+e @code{c} @'e levada do come@,{c}o ao fim da forma como foi escrita.
+A express@~ao resultante n@~ao @'e avaliada at@'e a avalia@,{c}@~ao expl@'icita ( com duplo ap@'ostrofo - n@~ao com aspas - @code{''%}.
+
+@c ===beg===
+@c (a: 17, b: 29, c: 1729)$
+@c buildq ([a: x, b], a + b + c);
+@c ''%;
+@c ===end===
+@example
+(%i1) (a: 17, b: 29, c: 1729)$
+(%i2) buildq ([a: x, b], a + b + c);
+(%o2)                      x + c + 29
+(%i3) ''%;
+(%o3)                       x + 1758
+@end example
+
+@code{e} est@'a associado a uma lista, a qual aparece tamb@'em como tal nos argumentos de @code{foo},
+e interpolada nos argumentos de @code{bar}.
+
+@c ===beg===
+@c buildq ([e: [a, b, c]], foo (x, e, y));
+@c buildq ([e: [a, b, c]], bar (x, splice (e), y));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], foo (x, e, y));
+(%o1)                 foo(x, [a, b, c], y)
+(%i2) buildq ([e: [a, b, c]], bar (x, splice (e), y));
+(%o2)                  bar(x, a, b, c, y)
+@end example
+
+O resultado @'e simplificado ap@'os substitui@,{c}@~ao.
+Se a simplifica@,{c}@~ao for aplicada antes da substitui@,{c}@~ao, esses dois resultados podem ser iguais.
+@c ===beg===
+@c buildq ([e: [a, b, c]], splice (e) + splice (e));
+@c buildq ([e: [a, b, c]], 2 * splice (e));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
+(%o1)                    2 c + 2 b + 2 a
+(%i2) buildq ([e: [a, b, c]], 2 * splice (e));
+(%o2)                        2 a b c
+@end example
+
+As vari@'aveis em @var{L} s@~ao associadas em paralelo; se associadas seq@"u@^encialmente,
+o primeiro resultado pode ser @code{foo (b, b)}.
+Substitui@,{c}@~oes s@~ao realizadas em paralelo;
+compare o segundo resultado com o resultado de @code{subst},
+que realiza substitui@,{c}@~oes seq@"u@^encialmente.
+
+@c ===beg===
+@c buildq ([a: b, b: a], foo (a, b));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c ===end===
+@example
+(%i1) buildq ([a: b, b: a], foo (a, b));
+(%o1)                       foo(b, a)
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%o2)                 bar(v, w, x, y, z, u)
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%o3)                 bar(u, u, u, u, u, u)
+@end example
+
+Constr@'oi uma lista de euq@,{c}@~oes com algumas vari@'aveis ou express@~oes sobre o lado esquerdo
+e seus valores sobre o lado direito.
+@code{macroexpand} mostra a express@~ao retornada por @code{show_values}.
+
+@c ===beg===
+@c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+@c (a: 17, b: 29, c: 1729)$
+@c macroexpand (show_values (a, b, c - a - b));
+@c show_values (a, b, c - a - b);
+@c ===end===
+@example
+(%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+(%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
+(%i2) (a: 17, b: 29, c: 1729)$
+(%i3) show_values (a, b, c - a - b);
+(%o3)              [a = 17, b = 29, c = 1729]
+@end example
 
 @end deffn
 
-@subsection Sem@^antica
+@deffn {Fun@value{cedilha}@~ao} macroexpand (@var{expr})
+Retorna a expans@~ao da macro de @var{expr} sem avaliar a express@~ao,
+quando @code{expr} for uma chamada de fun@,{c}@~ao de macro.
+De outra forma, @code{macroexpand} retorna @var{expr}.
 
-Os elementos da lista @var{vari@'aveis} s@~ao avaliados da esquerda para a direita (a sintaxe
-@var{atom} @'e equivalente a @code{@var{atom}: @var{atom}}).  Ent@~ao esses valores s@~ao substitu@'idos
-dentro de <express@~ao> em paralelo.  Se qualquer @var{atom} aparece como um simples
-argumento para a forma especial @code{splice} (i.e. @code{splice (@var{atom})}) dntro de
-@var{expr}, ent@~ao o valor associado com que @var{atom} deve ser uma lista
-Maxima, e isso @'e emmendado dentro de @var{expr} em lugar de substitu@'ido.
+Se a expans@~ao de @var{expr} retorna outra chamada de fun@,{c}@~ao de macro,
+aquela chamada de fun@,{c}@~ao de macro @'e tamb@'em expandida.
 
-@subsection Simplifica@value{cedilha}@~ao
+@code{macroexpand} coloca ap@'ostrofo em seus argumentos, isto @'e, n@~ao os avalia.
+Todavia, se a expans@~ao de uma chamada de fun@,{c}@~ao de macro tiver algum efeito,
+esse efeito colateral @'e executado.
 
-Os argumentos para @code{buildq} precisam ser protegidos de simplifica@,{c}@~ao at@'e
-as substitui@,{c}@~oes terem sido realizadas.  Esse c@'odigo ter@'a o mesmo efeito que
-pelo uso do ap@'ostrofo @code{'}.
+Veja tamb@'em @code{::=}, @code{macros}, e @code{macroexpand1}.
 
-@code{buildq} pode ser @'util para construir fun@,{c}@~oes r@'apidas.  Uma
-das poderosas coisas sobre @b{Maxima} @'e que voc@^e pode ter suas
-fun@,{c}@~oes definindo outras fun@,{c}@~oes para ajudar a resolver o problema.
-Adicionalmente abaixo discorremos construindo uma fun@,{c}@~ao recursiva, para uma
-solu@,{c}@~ao de s@'eries.   Essa defini@,{c}@~ao de fun@,{c}@~oes dentro de fun@,{c}@~oes
-usualmente utiliza-se @code{define}, que avalia seus argumentos.
-Um n@'umero de exemplos est@~ao inclu@'idos sob @code{splice}.
+Exemplos
 
-@c NEEDS CLARIFICATION
-@deffn {Fun@,{c}@~ao} splice (@var{atom})
-Isso @'e usado com buildq para construir uma listat.  Isso @'e acessado
-para fazer listas de argumentos, em conjun@,{c}@~ao com @code{buildq}.
-
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand (h (y));
+@c h (y);
+@c ===end===
 @example
-mprint ([x]) ::= buildq ([u : x],
-  if (debuglevel > 3) print (splice (u)));
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand (h (y));
+                              y - a
+(%o4)                         -----
+                               99
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
 @end example
 
-Incluindo uma chamada como
-
-@example
-mprint ("a matriz @'e", mat, "com dimens~oes", length(mat))
-@end example
-
-@'e equivalenta a colocar na linha
-
-@example
-if (debuglevel > 3) print ("a matriz @'e", mat, "com dimens@~oes", length(mat));
-@end example
-
-Uma exemplo n@~ao t@~ao trivial ser@~a tentar mostrar valores de  vari@'avel
-e seus nomes.  
-@example
-mshow (a, b, c) 
-@end example
-
-transformar-se-@'a
-
-@example
-print ('a, "=", a, ",", 'b, "=", b, ", and", 'c, "=", c)
-@end example
-
-dessa forma se isso ocorrer como uma linha em um programa poderemos imprimir valores.
-
-@example
-(%i1) foo (x,y,z) := mshow (x, y, z);
-(%i2) foo (1, 2, 3);
-x = 1 , y = 2 , and z = 3
-@end example
-
-
-A atual defini@,{c}@~ao de mshow @'e a seguinte.   Note como buildq
-leva voc@^e a construir estrutura "ap@'ostrofada", desse modo o  @code{'u} leva
-voc@^e a pegar o nome da vari@'avel.  Note que em macross, o resultado @'e
-uma peda@,{c}o de c@'odigo que ir@'a ent@~ao ser substitu@'ido pela macro e avaliado.
-
-@example
-mshow ([l]) ::= block ([ans:[], n:length(l)],
-    for i:1 thru n do
-        (ans: append (ans, buildq ([u: l[i]], ['u, "=", u])),
-        if i < n then
-            ans: append (ans, if i < n-1 then [","] else [", and"])),
-    buildq ([u:ans], print (splice(u))));
-@end example
-
-A emenda (splice) tamb@'em trabalha para colocar argumentos dentro de opera@,{c}@~oes alg@'ebricas:
-
-@example
-(%i1) buildq ([a: '[b, c, d]], +splice(a));
-(%o1)                       d + c + b
-@end example
-
-Note como a simplifica@,{c}@~ao somente ocorre @i{after} a substitui@,{c}@~ao.
-A opera@,{c}@~ao aplicada a emenda (splice) no primeiro caso @'e o @code{+}
-enquanto no segundo @'e o @code{*}, ainda logicamente voc@^e
-pode pensar @code{splice(a)+splice(a)} pode ser substitu@'ido por
-@code{2*splice(a)}.  Nenhuma simplifica@,{c}@~ao toma o lugar de @code{buildq}.
-Para entender que @code{splice} est@'a fazendo com a @'algebra voc@^e deve entender
-que para Maxima, uma formula @'e uma opera@,{c}@~ao como @code{a+b+c} @'e realmente
-internamente similar a @code{+(a,b,c)}, e similarmente para a multiplica@,{c}@~ao.
-Dessa forma @code{*(2,b,c,d)} @'e @code{2*b*c*d}.
-
-@example
-(%i1) buildq ([a: '[b,c,d]], +splice(a));
-(%o1)                       d + c + b
-(%i2) buildq ([a: '[b,c,d]], splice(a)+splice(a));
-(%o2)                    2 d + 2 c + 2 b
-@end example
-
-mas
-
-@example
-(%i3) buildq ([a: '[b,c,d]], 2*splice(a));
-(%o3)                        2 b c d
-@end example
-
-Finalmente @code{buildq} pode ser inavali@'avel para constru@,{c}@~ao de fun@,{c}@~oes recursivas.
-Suponha que seu programa est@'a resolvendo uma equa@,{c}@~ao diferencial usando
-o m@'etodo de s@'erie, e determinou que essa resolu@,{c}@~ao precisa construir uma
-rela@,{c}@~ao recursiva
-
-@example
-f[n] := -((n^2 - 2*n + 1)*f[n-1] + f[n-2] + f[n-3])/(n^2-n)
-@end example
-
-e isso deve ser feito rapidamente dentro da sua fun@,{c}@~ao.  Agora voc@^e
-saber@'a realmente como adicionar @code{expand}.
-
-@example
-f[n] := expand (-((n^2 - 2*n + 1)*f[n-1] + f[n-2] + f[n-3])/(n^2-n))
-@end example
-
-mas como voc@^e faz para construi esse c@'odigo.  Voc@^e quer que o @code{expand}
-aconte@,{c}a a cada vez que a fun@,{c}@~ao for executada, @i{not} antes disso.
-
-@example
-(%i1) val: -((n^2 - 2*n + 1)*f[n-1] + f[n-2] + f[n-3])/(n^2-n)$
-(%i2) define (f[n], buildq ([u: val], expand(u)))$
-@end example
-
-faz o trabalho.   Isso pode ser @'util, posteriormente quando voc@^e fizer
-(com @code{expand})
-
-@example
-(%i3) f[0]: aa0$
-(%i4) f[1]: aa1$
-(%i5) f[2]: aa2$
-(%i6) f[6];
-                       3 aa2   aa1   7 aa0
-(%o6)                  ----- + --- + -----
-                        10     40     90
-@end example
-
-onde sem o expand seria mantido de uma forma n@~ao simpliicada, e mesmo ap@'os 6 termos
-transformar-se-@'a em:
-
-@example
-(%i7) define (g[n], buildq ([u: val], u))$
-(%i8) g[0]: bb0$
-(%i9) g[1]: bb1$
-(%i10) g[2]: bb2$
-(%i11) g[6];
-          aa2         7 aa2   aa1   11 aa0    aa1   aa0
-          --- - 25 (- ----- - --- - ------) + --- + ---
-           4           20     40     120       8    24
-(%o11)    ---------------------------------------------
-                               30
-(%i12) expand (%);
-                       3 aa2   aa1   7 aa0
-(%o12)                 ----- + --- + -----
-                        10     40     90
-@end example
-
-A express@~ao rapidamente fica complicada se n@~ao simplificada em
-cada est@'agio, ent@~ao a simplifica@,{c}@~ao deve ser parte da defini@,{c}@~ao.
-Da@'i o @code{buildq} ser @'util para construir a forma.
 @end deffn
 
+@deffn {Fun@value{cedilha}@~ao} macroexpand1 (@var{expr})
+Retorna a expans@~ao de macro de @var{expr} sem avaliar a express@~ao,
+quando @code{expr} for uma chamada de fun@,{c}@~ao de macro.
+De outra forma, @code{macroexpand1} retorna @var{expr}.
+
+@code{macroexpand1} n@~ao avalia seus argumentos.
+Todavia, se a expans@~ao de uma chamada de fun@,{c}@~ao de macro tiver algum efeito,
+esse efeito colateral @'e executado.
+
+Se a expans@~ao de @var{expr} retornar outra chamada de fun@,{c}@~ao de macro,
+aquela chamada de fun@,{c}@~ao de macro n@~ao @'e expandida.
+
+Veja tamb@'em @code{::=}, @code{macros}, e @code{macroexpand}.
+
+Examples
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand1 (h (y));
+@c h (y);
+@c ===end===
+@example
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand1 (h (y));
+(%o4)                       g(y - a)
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
+@end example
+
+@end deffn
+
+@defvr {Global variable} macros
+Default value: @code{[]}
+
+@code{macros} @'e a lista de fun@,{c}@~oes de macro definidas pelo usu@'ario.
+O operador de defini@,{c}@~ao de fun@,{c}@~ao de macro @code{::=} coloca uma nova fun@,{c}@~ao de macro nessa lista,
+e @code{kill}, @code{remove}, e @code{remfunction} removem fun@,{c}@~oes de macro da lista.
+
+Veja tamb@'em @code{infolists}.
+
+@end defvr
+
+@deffn {Fun@value{cedilha}@~ao} splice (@var{a})
+Une como se fosse um elo de liga@,{c}@~ao (interpola) a lista nomeada atrav@'es do @'atomo @var{a} em uma express@~ao,
+mas somente se @code{splice} aparecer dentro de @code{buildq};
+de outra forma, @code{splice} @'e tratada como uma fun@,{c}@~ao indefinida.
+Se aparecer dentro de @code{buildq} com @var{a} sozinho (sem @code{splice}),
+@var{a} @'e substituido (n@~ao interpolado) como uma lista no resultado.
+O argumento de @code{splice} pode somente ser um @'atomo;
+n@~ao pode ser uma lista lateral ou uma express@~ao que retorna uma lista.
+
+Tipicamente @code{splice} fornece os argumentos para uma fun@,{c}@~ao ou operador.
+Para uma fun@,{c}@~ao @code{f}, a express@~ao @code{f (splice (@var{a}))} dentro de @code{buildq}
+expande para @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}.
+Para um operador @code{o}, a express@~ao @code{"o" (splice (@var{a})} dentro de @code{buildq}
+expande para @code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)},
+onde @code{o} pode ser qualquer tipo de operador (tipicamente um que toma multiplos argumentos).
+Note que o operador deve ser contido dentro de aspas duplas @code{"}.
+
+Exemplos
+
+@c ===beg===
+@c buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+@c buildq ([x: [1, %pi]], "/" (splice (x)));
+@c matchfix ("<>", "<>");
+@c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+@c ===end===
+@example
+(%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+                       foo(1, %pi, z - y)
+(%o1)                -----------------------
+                     length([1, %pi, z - y])
+(%i2) buildq ([x: [1, %pi]], "/" (splice (x)));
+                                1
+(%o2)                          ---
+                               %pi
+(%i3) matchfix ("<>", "<>");
+(%o3)                          <>
+(%i4) buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+(%o4)                   <>1, %pi, z - y<>
+@end deffn
 
 @c end concepts Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @node Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao,  , Macros, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao

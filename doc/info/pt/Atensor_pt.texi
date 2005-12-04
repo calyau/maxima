@@ -1,4 +1,4 @@
-@c /Atensor.texi/1.7/Sun May  1 20:31:14 2005/
+@c /Atensor.texi/1.8/Mon Nov 21 00:19:56 2005//
 @menu
 * Introdu@value{cedilha}@~ao ao Pacote atensor::
 * Defini@value{cedilha}@~oes para o Pacote atensor::
@@ -179,23 +179,23 @@ O tipo de @'algebra.  Valores v@'alidos s@'ao @code{universal}, @code{grassmann}
 
 @end deffn
 
-@defvr {Variable} adim
+@defvr {Vari@'avel} adim
 
 A dimensionalidade da @'algebra.  @code{atensor} usa o valor de @code{adim}
-para determinar se um objeto indexado @'e uma base vetorial v@'alida.  Por padr@~ao para 0.
+para determinar se um objeto indexado @'e uma base vetorial v@'alida. Veja @code{abasep}.
 
 @end defvr
 
-@defvr {Variable} aform
+@defvr {Vari@'avel} aform
 
 Valor padr@~ao para as formas bilineares @code{sf}, @code{af}, e
 @code{av}.  O padr@~ao @'e a matriz identidade @code{ident(3)}.
 
 @end defvr
 
-@defvr {Variable} asymbol
+@defvr {Vari@'avel} asymbol
 
-O s@'imbolo para bases vetoriais.  O padr@~ao @'e @code{v}.
+O s@'imbolo para bases vetoriais.
 
 @end defvr
 

@@ -1,4 +1,4 @@
-@c /Operators.texi/1.21/Tue Oct 25 07:12:07 2005/-ko/
+@c /Operators.texi/1.24/Sun Dec  4 08:14:38 2005/-ko/
 @menu
 * "N" Argumentos::                        
 * Sem Argumentos::                       
@@ -218,9 +218,119 @@ avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
 @end deffn
 
 @deffn {Operador} "::="
-O operador "::=" @'e usado em lugar de ":=" para indicar que o que
-segue @'e uma defini@,{c}@~ao de macro, em lugar de uma defini@,{c}@~ao de fun@,{c}@~ao
-comum.  Veja @code{macros}.
+Operador de definição de função de macro.
+@code{::=} define uma função (chamada uma "macro" por razões históricas)
+que coloca um apóstrofo em seus argumentos (evitando avaliação),
+e a expressão que é retornada (chamada a "expansão de macro")
+é avaliada no contexto a partir do qual a macro foi chamada.
+Uma função de macro é de outra forma o mesmo que uma função comum.
+
+@code{macroexpand} retorna uma expansão de macro (sem avaliar a expansão).
+@code{macroexpand (foo (x))} seguida por @code{''%} é equivalente a @code{foo (x)}
+quando @code{foo} for uma função de macro.
+
+@code{::=} coloca o nome da nova função de macro dentro da lista global @code{macros}.
+@code{kill}, @code{remove}, e @code{remfunction} desassocia definições de função de macro
+e remove nomes de @code{macros}.
+
+@code{fundef} or @code{dispfun} retorna uma definição de função de macro
+ou atribui isso a um rótulo, respectivamente.
+
+Funções de macro comumente possuem expressões @code{buildq} e
+@code{splice} para construir uma expressão,
+que é então avaliada.
+
+Exemplos
+
+Uma função de macro coloca um apóstrofo em seus argumentos evitando então a avaliação,
+então mensagem (1) mostra @code{y - z}, não o valor de @code{y - z}.
+A expansão de macro (a expressão com apóstrofo @code{'(print ("(2) x is equal to", x))}
+é avaliada no contexto a partir do qual a macro for chamada,
+mostrando a mesnagem (2).
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printq1 (y - z);
+@c ===end===
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) printq1 (x) ::= block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
+(%o4) printq1(x) ::= block(print("(1) x é igual a", x), 
+                                '(print("(2) x é igual a", x)))
+(%i5) printq1 (y - z);
+(1) x é igual a y - z 
+(2) x é igual a %pi 
+(%o5)                          %pi
+@end example
+
+Uma função comum avalia seus argumentos, então message (1) mostra o valor de @code{y - z}.
+O valor de rtorno não é avaliado, então mensagem (2) não é mostrada
+até a avaliação explícita @code{''%}.
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c printe1 (x) := block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
+@c printe1 (y - z);
+@c ''%;
+@c ===end===
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) printe1 (x) := block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
+(%o4) printe1(x) := block(print("(1) x é igual a", x), 
+                                '(print("(2) x é igual a", x)))
+(%i5) printe1 (y - z);
+(1) x é igual a 1234 - 1729 w 
+(%o5)              print((2) x é igual a, x)
+(%i6) ''%;
+(2) x é igual a %pi 
+(%o6)                          %pi
+@end example
+
+@code{macroexpand} retorna uma expansão de macro.
+@code{macroexpand (foo (x))} seguido por @code{''%} é equivalente a @code{foo (x)}
+quando @code{foo} for uma função de macro.
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c g (x) ::= buildq ([x], print ("x é igual a", x));
+@c macroexpand (g (y - z));
+@c ''%;
+@c g (y - z);
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) g (x) ::= buildq ([x], print ("x é igual a", x));
+(%o4)    g(x) ::= buildq([x], print("x é igual a", x))
+(%i5) macroexpand (g (y - z));
+(%o5)              print(x é igual a, y - z)
+(%i6) ''%;
+x é igual a 1234 - 1729 w 
+(%o6)                     1234 - 1729 w
+(%i7) g (y - z);
+x é igual a 1234 - 1729 w 
+(%o7)                     1234 - 1729 w
+@end example
 
 @end deffn
 
@@ -878,52 +988,52 @@ eliminar express@~oes que estiverem entre dois outros argumentos; por exemplo,
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} mod (@var{p})
-@deffnx {Fun@,{c}@~ao} mod (@var{p}, @var{m})
+@deffn {Fun@,{c}@~ao} polymod (@var{p})
+@deffnx {Fun@,{c}@~ao} polymod (@var{p}, @var{m})
 Converte o polin@^omio @var{p} para uma representa@,{c}@~ao modular
 com rela@,{c}@~ao ao m@'odulo corrente que @'e o valor da vari@'avel
 @code{modulus}.  
 
-@code{mod (@var{p}, @var{m})} especifica um m@'odulo @var{m} para ser usado 
+@code{polymod (@var{p}, @var{m})} especifica um m@'odulo @var{m} para ser usado 
 em lugar do valor corrente de @code{modulus}.
 
 Veja @code{modulus}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} nummod (@var{x}, @var{y})
+@deffn {Fun@,{c}@~ao} mod (@var{x}, @var{y})
 
 Se @var{x} e @var{y} forem n@'umeros reais e @var{y} for n@~ao nulo,
 retorna @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
-Adicionalmente para todos os reais @var{x}, n@'os temos @code{nummod (@var{x}, 0) = @var{x}}. Para uma discurs@~ao sobre a
-defini@,{c}@~ao @code{nummod (@var{x}, 0) = @var{x}}, veja a Se@,{c}@~ao 3.4, de "Concrete Mathematics," 
-por Graham, Knuth, e Patashnik. A fun@,{c}@~ao @code{nummod (@var{x}, 1)} 
-@'e uma fun@,{c}@~ao dente de serra com per@'odo 1 e com @code{nummod (1, 1) = 0} e 
-@code{nummod (0, 1) = 0}.
+Adicionalmente para todo real @var{x}, n@'os temos @code{mod (@var{x}, 0) = @var{x}}. Para uma discurs@~ao da
+defini@,{c}@~ao @code{mod (@var{x}, 0) = @var{x}}, veja a Se@,{c}@~ao 3.4, de "Concrete Mathematics," 
+por Graham, Knuth, e Patashnik. A fun@,{c}@~ao @code{mod (@var{x}, 1)} 
+@'e uma fun@,{c}@~ao dente de serra com per@'odo 1 e com @code{mod (1, 1) = 0} e 
+@code{mod (0, 1) = 0}.
 
 Para encontrar o argumento principal (um n@'umero no intervalo @code{(-%pi, %pi]}) de um 
-n@'umero complexo, use a fun@,{c}@~ao @code{@var{x} |-> %pi - nummod (%pi - @var{x}, 2*%pi)}, onde 
+n@'umero complexo, use a fun@,{c}@~ao @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, onde 
 @var{x} @'e um argumento.
 
-Quando @var{x} e @var{y} forem express@~oes constantes (@code{10 * %pi}, por exemplo), @code{nummod}
+Quando @var{x} e @var{y} forem express@~oes constantes (@code{10 * %pi}, por exemplo), @code{mod}
 usa o mesmo esquema de avalia@,{c}@~ao em ponto flutuante que @code{floor} e @code{ceiling} usam.
-Novamente, @'e poss@'ivel, embora improv@'avel, que @code{nummod} possa retornar um
+Novamente, @'e poss@'ivel, embora improv@'avel, que @code{mod} possa retornar um
 valor err@^oneo nesses casos.
 
-Para argumentos n@~ao num@'ericos @var{x} ou @var{y}, @code{nummod }conhece muitas regras de
+Para argumentos n@~ao num@'ericos @var{x} ou @var{y}, @code{mod }conhece muitas regras de
 simplifica@,{c}@~ao:
 
 @c ===beg===
-@c nummod (x, 0);
-@c nummod (a*x, a*y);
-@c nummod (0, x);
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
 @c ===end===
 @example
-(%i1) nummod(x,0);
+(%i1) mod(x,0);
 (%o1) x
-(%i2) nummod(a*x,a*y);
-(%o2) a*nummod(x,y)
-(%i3) nummod(0,x);
+(%i2) mod(a*x,a*y);
+(%o2) a*mod(x,y)
+(%i3) mod(0,x);
 (%o3) 0
 @end example
 

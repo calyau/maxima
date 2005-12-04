@@ -1,5 +1,4 @@
-/Matrices.texi/1.19/Tue Nov  1 17:26:56 2005/-ko/
-
+@c /Matrices.texi/1.19/Tue Nov  1 17:26:56 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  

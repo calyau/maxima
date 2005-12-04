@@ -1,4 +1,4 @@
-@c /Command.texi/1.34/Wed Nov 30 10:57:33 2005/-ko/
+@c /Command.texi/1.36/Sun Dec  4 08:14:10 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Linha de Comando::  
 * Defini@value{cedilha}@~oes para Linha de Comando::  
@@ -448,7 +448,7 @@ inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~oes ta
 @c NEEDS EXAMPLES
 @deffn {Fun@,{c}@~ao} kill (@var{symbol_1}, ..., @var{symbol_n})
 @deffnx {Fun@,{c}@~ao} kill (labels)
-@deffnx {Function} kill (inlabels, outlabels, linelabels)
+@deffnx {Fun@,{c}@~ao} kill (inlabels, outlabels, linelabels)
 @deffnx {Fun@,{c}@~ao} kill (@var{n})
 @deffnx {Fun@,{c}@~ao} kill ([@var{m}, @var{n}])
 @deffnx {Fun@,{c}@~ao} kill (values, functions, arrays, ...)
@@ -689,9 +689,16 @@ Veja tamb@'em @code{debugging}.
 
 @deffn {Fun@,{c}@~ao} remfunction (@var{f_1}, ..., @var{f_n})
 @deffnx {Fun@,{c}@~ao} remfunction (all)
-@c REPHRASE THIS TO SAY "UNBIND" OR SOMETHING OTHER THAN "REMOVE" (LATTER IS AMBIGUOUS) !!!
-Remove as fun@,{c}@~oes definidas pelo usu@'ario @var{f_1}, ..., @var{f_n} do Maxima.
-@code{remfunction (all)} remove todas as fun@,{c}@~oes.
+Desassocia as defini@,{c}@~oes de fun@,{c}@~ao dos s@'ibolos @var{f_1}, ..., @var{f_n}.
+Os argumentos podem ser os nomes de fun@,{c}@~oes comuns (criadas por meio de @code{:=} ou @code{define})
+ou fun@,{c}@~oes macro (criadas por meio de @code{::=}).
+
+@code{remfunction (all)} desassocia todas as defini@,{c}@~oes de func@,{c}@~ao.
+
+@code{remfunction} coloca um ap'ostrofo em seus argumentos (n@~ao os avalia).
+
+@code{remfunction} retorna uma lista de s@'imbolos para a qual a defini@,{c}@~ao de fun@,{c}@~ao foi desassociada.
+@code{false} @'e retornado em lugar de qualquer s@'imbolo para o qual n@~ao exista defini@,{c}@~ao de fun@,{c}@~ao.
 
 @end deffn
 
@@ -711,7 +718,11 @@ Valor padr@~ao: @code{false}
 Quando @code{showtime} @'e @code{true}, o tempo de computa@,{c}@~ao e o tempo decorrido s@~ao
 impressos na tela com cada express@~ao de sa@'ida.
 
-Veja tamb@'em @code{time}, @code{timer}, e @code{playback}.
+O tempo de c@'algulo @'e sempre gravado,
+ent@~ao @code{time} e @code{playback} podem mostrar o tempo de c@'alculo
+mesmo quando @code{showtime} for @code{false}.
+
+Veja tamb@'em @code{timer}.
 
 @end defvr
 

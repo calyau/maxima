@@ -1,4 +1,4 @@
-@c /Lists.texi/1.24/Sat Nov 19 06:51:25 2005/-ko/
+@c /Lists.texi/1.25/Sun Dec  4 08:14:22 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Listas::
 * Defini@value{cedilha}@~oes para Listas::
@@ -190,7 +190,7 @@ elemento de uma lista, a primeira linha de uma matriz, a primeira parcela de uma
 etc.  Note que @code{first} e suas fun@,{c}@~oes relacionadas, @code{rest} e @code{last}, trabalham
 sobre a forma de @var{expr} que @'e mostrada n@~ao da forma que @'e digitada na
 entrada.  Se a vari@'avel @code{inflag} @'e escolhida para @code{true} todavia, essa
-fun@,{c}@~oes olhar@~ao	 na forma interna de @var{expr}.  Note que o
+fun@,{c}@~oes olhar@~ao  na forma interna de @var{expr}.  Note que o
 simplificador re-ordena express@~oes.  Desse modo @code{first(x+y)} ser@'a @code{x} se @code{inflag}
 for @code{true} e @code{y} se @code{inflag} for @code{false} (@code{first(y+x)} fornece os mesmos
 resultados).  As fun@,{c}@~oes @code{second} .. @code{tenth} retornam da segunda at@'e a
@@ -244,6 +244,33 @@ x is not numeric.
 (%i6) typeof (2*%e + %pi);
 (%o6)     [transcendental, [algebraic, transcendental]]
 
+@end example
+
+@end deffn
+
+@deffn {Function} join (@var{l}, @var{m})
+Cria uma nova lista contendo os elementos das lista @var{l} and @var{m}, intercaladas.
+O resultado tem os elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
+As listas @var{l} e @var{m} podem conter qualquer tipo de elementos.
+
+Se as listas forem de diferentes comprimentos, @code{join} ignora elementos da lista mais longa.
+
+Maxima reclama se @var{L_1} ou @var{L_2} n@~ao for uma lista.
+
+Exemplos:
+
+@c ===beg===
+@c L1: [a, sin(b), c!, d - 1];
+@c join (L1, [1, 2, 3, 4]);
+@c join (L1, [aa, bb, cc, dd, ee, ff]);
+@c ===end===
+@example
+(%i1) L1: [a, sin(b), c!, d - 1];
+(%o1)                [a, sin(b), c!, d - 1]
+(%i2) join (L1, [1, 2, 3, 4]);
+(%o2)          [a, 1, sin(b), 2, c!, 3, d - 1, 4]
+(%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
+(%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
 @end example
 
 @end deffn

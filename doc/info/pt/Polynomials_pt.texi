@@ -859,7 +859,7 @@ Se @var{expr} n@~ao for uma raz@~ao, @var{expr} @'e retornado.
 @c NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Function} polydecomp (@var{p}, @var{x})
+@deffn {Fun@value{cedilha}@~ao} polydecomp (@var{p}, @var{x})
 
 Decomp@~oes o polin@^omio @var{p} na vari@'avel  @var{x}
 em uma composi@,{c}@~ao funcional de polin@^omios em @var{x}.

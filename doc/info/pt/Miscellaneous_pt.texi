@@ -1,4 +1,4 @@
-@c /Miscellaneous.texi/1.17/Fri Jun 17 00:57:34 2005/-ko/
+@c /Miscellaneous.texi/1.18/Sun Dec  4 08:14:31 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas::  
 * Compartilhado::                       
@@ -121,43 +121,57 @@ Valor padr@~ao: @code{[]}
 @code{infolists} @'e uma lista dos nomes de todas as listas de
 informa@,{c}@~ao no Maxima. S@~ao elas:
 
-@code{labels} - todos os r@'otulos @code{%i}, @code{%o}, e @code{%t} associados.
-
-@code{values} - todos os @'atomos associados que s@~ao vari@'aveis de usu@'ario, n@~ao op@,{c}@~oes do
+@table @code
+@item labels
+Todos associam @code{%i}, @code{%o}, e r@'otulos @code{%t}.
+@item values
+Todos associam @'atomos que s@~ao vari@'aveis de usu@'ario, n@~ao op@,{c}@~oes do
 Maxima ou comutadores, criados atrav@'es de @code{:} ou @code{::} ou associando funcionalmente.
 @c WHAT IS INTENDED BY "FUNCTIONAL BINDING" HERE ??
 
-@code{fun@,{c}@~oes} - todas as fun@,{c}@~oes definidas pelo usu@'ario, criadas atrav@'es de @code{:=}.
+@item functions
+Todas as fun@,{c}@~oes definidas pelo usu@'ario, criadas atrav@'es de @code{:=} ou @code{define}.
 
-@code{arrays} - arrays declarados e n@~ao declarados, criados atrav@'es de @code{:}, @code{::}, ou @code{:=}.
+@item arrays
+Todos os arrays declarados e n@~ao declarados, criados atrav@'es de @code{:}, @code{::}, ou @code{:=}.
+@c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
+@item macros
+Todas as macros definidas pelo usu@'ario.
 
-@code{macros} - quaisquer macros definidas pelo usu@'ario.
-
-@code{myoptions} - todas as op@,{c}@~oes alguma vez alteradas pelo usu@'ario (mesmo que tenham ou n@~ao elas
+@item myoptions
+Todas as op@,{c}@~oes alguma vez alteradas pelo usu@'ario (mesmo que tenham ou n@~ao elas
 tenham mais tarde retornadas para seus valores padr@~ao).
 
-@code{rules} - modelo definido pelo usu@'ario coincidindo e regras de simplifica@,{c}@~ao, criadas
+@item rules
+Todos os modelos definidos pelo usu@'ario que coincidirem e regras de simplifica@,{c}@~ao, criadas
 atrav@'es de @code{tellsimp}, @code{tellsimpafter}, @code{defmatch}, ou @code{defrule}.
 
-@code{aliases} - @'atomos que possuem um alias definido pelo usu@'ario, criado atrav@'es das fun@,{c}@~oes
+@item aliases
+Todos os @'atomos que possuem um alias definido pelo usu@'ario, criado atrav@'es das fun@,{c}@~oes
 @code{alias}, @code{ordergreat}, @code{orderless} ou declarando os @'atomos como um @code{noun}
 com @code{declare}.
 
-@code{dependencies} - @'atomos que possuem depend@^encias funcionais, criadas atrav@'es das
+@item dependencies
+Todos os @'atomos que possuem depend@^encias funcionais, criadas atrav@'es das
 fun@,{c}@~oes @code{depends} ou @code{gradef}.
 
-@code{gradefs} - fun@,{c}@~oes que possuem derivadas definidas pelo usu@'ario, cridas atrav@'es da
+@item gradefs
+Todas as fun@,{c}@~oes que possuem derivadas definidas pelo usu@'ario, cridas atrav@'es da
 fun@,{c}@~ao @code{gradef}.
 
 @c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
-@code{props} - @'atomos que possuem quaisquer propriedades outras como essas mencionadas
-acima, tais como atvalues, matchdeclares, etc., tamb@'em propriedades
-especificadas na fun@,{c}@~ao @code{declare}.
+@item props
+Todos os @'atomos que possuem quaisquer propriedades outras que n@~ao essas mencionadas
+acima, tais como propriedades estabelecidas por @code{atvalue} , @code{matchdeclare}, etc., tamb@'em propriedades
+estabelecidas na fun@,{c}@~ao @code{declare}.
 
-@code{let_rule_packages} - uma lista de todos os pacotes de r@'egras em uso definidos pelo usu@'ario
+@item let_rule_packages
+Todos os pacote de r@'egras em uso definidos pelo usu@'ario
 mais o pacote especial @code{default_let_rule_package}.
 (@code{default_let_rule_package} @'e o nome do pacote de r@'egras usado quando
 um n@~ao est@'a explicitamente escolhido pelo usu@'ario.)
+
+@end table
 
 @end defvr
 
@@ -362,7 +376,7 @@ Pode existir mais que um par de listas.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
 A propriedade removida pode ser definida pelo sistema tal como
-@code{function} ou @code{mode_declare}, ou propriedades definidas pelo usu@'ario.
+@code{function}, @code{macro} ou @code{mode_declare}, ou propriedades definidas pelo usu@'ario.
 
 @c VERIFY THAT THIS WORKS AS ADVERTISED
 @c IS transfun PECULIAR TO remove ?? IF SO, SHOW SPECIAL CASE AS @defunx

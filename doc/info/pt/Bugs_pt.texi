@@ -13,9 +13,9 @@ testes do Maxima bem como informar novos erros.
 @node Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
 @section Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
 @deffn {Fun@value{cedilha}@~ao} run_testsuite ()
-@deffnx {Function} run_testsuite (@var{boolean})
-@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean})
-@deffnx {Function} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean})
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 Executa o conjunto de testes do Maxima.  Testes que produzem a resposta desejada s@~ao
 considerados ``passes,'' e testes que n@~ao produzem a resposta
 desejada, s@~ao marcados como erros conhecidos.
