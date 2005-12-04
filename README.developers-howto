@@ -1,0 +1,108 @@
+  Maxima project CVS / build system HOWTO
+
+
+  1  General
+      
+      Makefile.am is the file to modify, NOT Makefile
+      (Makefile is generated automatically from Makefile.am)
+
+      "make install" catches Makefile problems
+      that are not detected by "make" alone
+
+      Adding / removing files often leads to Makefile problems
+
+
+  2  Renaming something
+
+      --  Remove the old something and add the new something.
+          CVS doesn't understand renaming
+         
+
+  3  Adding / removing a file in maxima/src
+
+      --  Copy new file / remove old file
+          and execute "cvs add" / "cvs rm"
+             
+          NOTE: Separate commit required to make "cvs add" / "cvs rm" take effect.
+
+      --  Add / remove file name from maxima/src/Makefile.am
+
+      --  Add / remove file name from maxima/src/*-depends.mk
+             
+          NOTE: There are several *-depends.mk files. These are
+          theoretically updated automatically but to the best
+          of my knowledge it is necessary to fix them by hand.
+
+      --  Add / remove file name in maxima/src/maxima.system
+
+      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+          and "run_testsuite();" all succeed
+          
+      --  Execute "cvs commit"
+
+
+  4  Adding / removing a file in maxima/share
+
+      --  Copy new file / remove old file
+          and execute "cvs add" / "cvs rm"
+
+      --  Add / remove file name in maxima/share/Makefile.am
+
+      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+          and "run_testsuite();" all succeed
+
+      --  Execute "cvs commit"
+
+
+  5  Adding a directory in maxima/share
+
+      NOTE: Removing a directory is probably more or less a reversal
+      of the steps for adding. Not sure if I've ever done that.
+
+      --  Make the new directory and put the new files in it
+
+      --  In the directory above the one you want to add,
+          "cvs add my_package"
+          
+          NOTE: no need to commit after "cvs add" when adding a directory
+
+      --  In the directory my_package, "cvs add file1 file2 file3 ..."
+
+      --  Put the my_package files on the file list of maxima/share/Makefile.am
+
+      --  Add my_package to SHARE-SUBDIRS-LIST in maxima/src/init-cl.lisp
+
+      --  OPTIONAL: If there is a texinfo document named my_package.texi:
+
+          -- my_package.texi MUST have the same form as maxima/share/template.texi
+             in order for the "describe" function to find it
+
+          -- Create my_package/Makefile.am and put just one line
+             "info_TEXINFOS = my_package.texi" in it
+
+          -- Put my_package on the SUBDIRS list of Makefile.am
+             in the directory containing my_package
+
+          -- Put my_package on the AC_OUTPUT list of maxima/configure.in
+
+          -- Put my_package.info on the file list of maxima/share/Makefile.am
+
+      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+          and "run_testsuite();" all succeed
+
+      --  Execute "cvs commit"
+
+
+  6  Adding / removing a file in maxima/tests
+
+      --  Copy new file / remove old file
+          and execute "cvs add" / "cvs rm"
+
+      --  Add / remove file name in maxima/tests/Makefile.am
+
+      --  Add / remove file name in maxima/tests/testsuite.lisp
+
+      --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
+          and "run_testsuite();" all succeed
+
+      --  Execute "cvs commit"
