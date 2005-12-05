@@ -302,16 +302,44 @@
 
 (defvar *pretty-print-translation* t)
 
+;; Define a pprinter for defmtrfun.
+
+#-gcl
+(defun pprint-defmtrfun (stream s)
+  (pprint-logical-block (stream s :prefix "(" :suffix ")")
+    (write (pprint-pop) :stream stream)
+    (write-char #\space stream)
+    (write (pprint-pop) :stream stream)
+    (pprint-indent :block 4 stream)
+    (pprint-newline :mandatory stream)
+    (write (pprint-pop) :stream stream)
+    (pprint-indent :block 2 stream)
+    (pprint-newline :mandatory stream)
+    (loop
+       (pprint-exit-if-list-exhausted)
+       (write (pprint-pop) :stream stream)
+       (write-char #\space stream)
+       (pprint-newline :linear stream))))
+
 (defun call-batch1 (in-stream out-stream &aux expr transl)
   (cleanup)
   ;; we want the thing to start with a newline..
   (newline in-stream #\n)
-  (loop while (and (setq  expr	  (mread in-stream))
-		    (consp expr))
-	 do (setq transl (translate-macexpr-toplevel (third expr)))
-	 (cond (*pretty-print-translation* (pprint transl out-stream))
-	       (t
-		(format out-stream  "~A" transl)))))
+  (let ((*readtable* (copy-readtable nil))
+	#-gcl
+	(*print-pprint-dispatch* (copy-pprint-dispatch)))
+    #-gcl
+    (progn
+      (setf (readtable-case *readtable*) :invert)
+      (set-pprint-dispatch '(cons (member maxima::defmtrfun))
+			   #'pprint-defmtrfun))
+    (loop while (and (setq expr (mread in-stream)) (consp expr))
+          do (setq transl (translate-macexpr-toplevel (third expr)))
+             (cond
+               (*pretty-print-translation*
+                (pprint transl out-stream))
+               (t
+                (format out-stream "~a" transl))))))
 
  
 (defun translate-from-stream (from-stream &key to-stream eval pretty (print-function #'prin1) &aux expr transl )
@@ -400,7 +428,7 @@ translated."
       (format stream "$ */"))
     (fresh-line stream)
     (when (or hint *untranslated-functions-called*)
-      (format t "~&See the `unlisp' file for possible optimizations."))))
+      (format t "~&See the `unlisp' file for possible optimizations.~%"))))
 
 
 (defun translate-file (in-file-name out-file-name
