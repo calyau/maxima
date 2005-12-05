@@ -246,7 +246,12 @@
 
 (def%tr $errcatch (form)
   (setq form (translate `((mprogn) ,@(cdr form))))
-  `(,(car form) . ((lambda (errcatch ret) ;;; ERRCATCH SPECIAL IN TINCLU >
+  `(,(car form) . ((lambda (errcatch ret)
+		     (declare (special errcatch))
+		     ;; Very important to declare errcatch special
+		     ;; here because merror uses it to figure out if
+		     ;; someone is catching an error so it can be
+		     ;; signaled in a way that we can catch.
 		     (cond ((null (setq ret
 					(errset ,(cdr form)
 						lisperrprint)))
