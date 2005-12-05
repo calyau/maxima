@@ -4,10 +4,6 @@
 define_variable(takegcd,true,boolean,"used in gcdivide to decide the
 gcd choice");
 
-conjugate&&  conjugate(m):=if matrixp(m) then fullmapl('conjugate,m)
-    else if freeof(%i,subst('\&i,%i,m)) then
-    subst(-%i,%i,m) else ratsubst(-%i,%i,m)$
-
 rempart&&  rempart(exp,n):=
     ?append(rest(exp,  /* combine two parts of exp
 	   first part is beginning to part to be removed
