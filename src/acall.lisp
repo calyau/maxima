@@ -377,7 +377,7 @@
 	((eq form t) t)
 	('else
 	 ;; We check for T and NIL quickly, otherwise go for the database.
-	 (mevalp_tr form t nil))))
+	 (mevalp_tr form $prederror nil))))
 
 (defmfun maybe-boole-check (form)
   (mevalp_tr form nil nil))

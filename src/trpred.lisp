@@ -162,11 +162,21 @@
 	   (wrap-an-is `(meqp ,(dconvx arg1) ,(dconvx arg2))
 		       form)))))
 
-(defun trp-mnotequal (form) (list 'not (trp-mequal form)))
+;; Logical not for predicates.  Do the expected thing, except return
+(defun trp-not (val)
+  (case val
+    ((t)
+     nil)
+    ((nil)
+     t)
+    (otherwise
+     val)))
+      
+(defun trp-mnotequal (form) (list 'trp-not (trp-mequal form)))
 
-(defun trp-mgeqp (form) (list 'not (trp-mlessp form)))
+(defun trp-mgeqp (form) (list 'trp-not (trp-mlessp form)))
 
-(defun trp-mleqp (form) (list 'not (trp-mgreaterp form)))
+(defun trp-mleqp (form) (list 'trp-not (trp-mgreaterp form)))
 
 
 ;;; sigh, i have to copy a lot of the $assume function too.
