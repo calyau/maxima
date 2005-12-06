@@ -1,4 +1,4 @@
-SUBDIRS = contrib linearalgebra orthopoly
+SUBDIRS = contrib linearalgebra orthopoly simplification
 
 include $(top_srcdir)/common.mk
 genericdir =$(sharedir)
@@ -533,40 +533,30 @@ physics/units.mac\
 physics/units.usg\
 simplification/absimp.dem\
 simplification/absimp.mac\
-simplification/absimp.usg\
 simplification/disol.dem\
 simplification/disol.mac\
-simplification/disol.usg\
 simplification/elim.mac\
-simplification/elim.usg\
 simplification/facex1.mac\
 simplification/facexp.dem\
 simplification/facexp.mac\
-simplification/facexp.usg\
 simplification/functs.dem\
 simplification/functs.mac\
-simplification/functs.usg\
 simplification/genut.mac\
 simplification/ineq.dem\
 simplification/ineq.mac\
-simplification/ineq.usg\
 simplification/lrats.dem\
 simplification/lrats.mac\
-simplification/lrats.usg\
 simplification/rducon.dem\
 simplification/rducon.lisp\
-simplification/rducon.usg\
 simplification/rncomb.dem\
 simplification/rncomb.mac\
-simplification/rncomb.usg\
 simplification/scifac.dem\
 simplification/scifac.lisp\
-simplification/scifac.usg\
+simplification/simplification.texi\
+simplification/simplification.info\
 simplification/sqdnst.mac\
-simplification/sqdnst.usg\
 simplification/stopex.dem\
 simplification/stopex.mac\
-simplification/stopex.usg\
 specfunctions/airy.lisp\
 specfunctions/ellipt.lisp\
 specfunctions/ellipt.usg\

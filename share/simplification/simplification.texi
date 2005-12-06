@@ -1,3 +1,36 @@
+\input texinfo
+
+@c makeinfo simplification.texi         to make .info
+@c texi2html simplification.texi        to make .html
+@c texi2pdf simplification.texi         to make .pdf
+
+@setfilename simplification.info
+@settitle simplification
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to simplification, (dir), (dir)
+@top
+@menu
+* Introduction to simplification::
+* Definitions for simplification::
+* Function and variable index::
+@end menu
+
+@node Introduction to simplification, Definitions for simplification, Top, Top
+@section Introduction to simplification
+
+The directory @code{maxima/share/simplification} contains several scripts
+which implement simplification rules and functions,
+and also some functions not related to simplification.
+
+@node Definitions for simplification, Function and variable index, Introduction to simplification, Top
+@section Definitions for simplification
+
 @c Adapted from absimp.usg ----------------------
 
 @defvr {Add-on package} absimp
@@ -463,3 +496,10 @@ Sometimes it helps to apply @code{sqrtdenest} more than once, on such as
 @end deffn
 
 @c stopex.usg: "expandwrt", "expandwrt_denom", and "expandwrt_factored" already in doc/info/Simplification.texi
+
+@node Function and variable index,  , Definitions for simplification, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
