@@ -1,0 +1,45 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /Constants.texi/1.11/Sun Nov 27 22:23:57 2005/-ko/
+@menu
+* Defini@value{cedilha}@~oes para Constantes::
+@end menu
+
+@node Defini@value{cedilha}@~oes para Constantes,  , Constantes, Constantes
+@section Defini@value{cedilha}@~oes para Constantes
+
+@defvr {Constante} %e
+ - A base dos logar@'itmos naturais, @math{e}, @'e representada no Maxima
+como @code{%e}.
+
+@end defvr
+
+@defvr {Constante} false
+ - a contante Booleana, falso.  (NIL em Lisp)
+
+@end defvr
+
+@defvr {Constante} inf
+ - infinito positivo real.
+
+@end defvr
+
+@defvr {Constante}  infinity
+ - infinito complexo.
+
+@end defvr
+
+@defvr {Constante} minf
+ - menos infinito real.
+
+@end defvr
+
+@defvr {Constante} %pi
+ - "pi" @'e representado no Maxima como @code{%pi}.
+
+@end defvr
+
+@defvr {Constante} true
+ - a constante Booleana, verdadeiro.  (T em Lisp)
+
+@end defvr
+

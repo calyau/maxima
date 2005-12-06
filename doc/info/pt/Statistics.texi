@@ -1,0 +1,15 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /Statistics.texi/1.4/Thu Apr 21 04:58:35 2005/-ko/
+@c end concepts Statistics
+@menu
+* Defini@value{cedilha}@~oes para Estat@'istica::  
+@end menu
+
+@node Defini@value{cedilha}@~oes para Estat@'istica,  , Estat@'istica, Estat@'istica
+@section Defini@value{cedilha}@~oes para Estat@'istica
+
+@deffn {Fun@value{cedilha}@~ao} gauss (@var{mean}, @var{sd})
+Retorna um n@'umero em ponto flutuante rand@^omico de uma distribui@value{cedilha}@~ao
+normal com usando @var{mean} e desvio padr@~ao @var{sd}.
+
+@end deffn

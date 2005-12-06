@@ -1,0 +1,77 @@
+@c Language: Portuguese, Encoding: iso-8859-1
+@c /Bugs.texi/1.9/Mon Nov 21 00:19:57 2005//
+@menu
+* Introdu@value{cedilha}@~ao @`a Detec@value{cedilha}@~ao e Relato de Erros::  
+* Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros::  
+@end menu
+
+@node Introdu@value{cedilha}@~ao @`a Detec@value{cedilha}@~ao e Relato de Erros
+@section Introdu@value{cedilha}@~ao @`a Detec@value{cedilha}@~ao e Relato de Erros
+Como todos os grandes programas, Maxima cont@'em erros conhecidos e erros desconhecidos.
+Esse cap@'itulo descreve as facilidades internas para executar o conjunto de
+testes do Maxima bem como informar novos erros.
+
+@node Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
+@section Defini@value{cedilha}@~oes para Detec@value{cedilha}@~ao e Relato de Erros
+@deffn {Fun@value{cedilha}@~ao} run_testsuite ()
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean})
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Fun@value{cedilha}@~ao} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
+Executa o conjunto de testes do Maxima.  Testes que produzem a resposta desejada s@~ao
+considerados ``passes,'' e testes que n@~ao produzem a resposta
+desejada, s@~ao marcados como erros conhecidos.
+
+@code{run_testsuite ()} mostra somente testes que n@~ao s@~ao aprovados.
+
+@code{run_testsuite (true)} mostra somente testes que s@~ao marcados como bugs conhecidos, bem
+como as falhas.
+
+@code{run_testsuite (true, true)} mostra todos os testes.
+
+Se o terceiro argumento opcional for dado, um subconjunto de testes @'e executado.
+O subconjunto de testes para executar @'e dado como uma lista de nomes dos
+testes.  O conjunto completo de testes @'e especificado por @code{testsuite_files}.
+
+@code{run_testsuite} altera a vari@'avel de ambiente Maxima.
+Tipicamente um script de teste executa @code{kill} para estabelecer uma vari@'avel de ambiente
+(uma a saber sem fun@,{c}@~oes definidas pelo usu@'ario e vari@'aveis)
+e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
+
+@code{run_testsuite} retorna @code{done}.
+@end deffn
+
+@defvr {Vari@'avel de op@value{cedilha}@~ao} testsuite_files
+     
+@code{testsuite_files} @'e o conjunto de testes a ser executado por
+@code{run_testsuite}.  Isso @'e uma lista de nomes de arquivos contendo
+os testes a executar.  Se alguns dos testes em um arquivo @'e sabido falhar,
+ent@~ao em lugar de listar o nome do arquivo, uma lista contendo o
+nome do arquivo e o n@'umero dos testes que falharam @'e usada.
+
+por exemplo, isso @'e uma parte do conjunto de testes padr@~ao:
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+Isso especifica a suite de testes que consiste dos arquivos "rtest13s" e
+"rtest14", mas "rtest14" cont@'em dois testes que s@~ao sabidos falhar: 57
+e 63.
+@end defvr
+
+@deffn {Fun@value{cedilha}@~ao} bug_report ()
+Imprime os n@'umeros de vers@~ao do Maxima e do Lisp, e chama o link
+para a p@'agina web de informa@,{c}@~ao de erros do projeto Maxima.
+A informa@,{c}@~ao da vers@~ao @'e a mesma reportada por @code{build_info}.
+
+Quando um erro @'e informado, @'e muito @'util copiar a vers@~ao do Maxima
+e do Lisp dentro da informa@,{c}@~ao do erro.
+
+@code{bug_report} retorna uma seq@"u@^encia de caracteres vazia @code{""}.
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} build_info ()
+Imprime um sum@'ario de par@^ametros da compila@,{c}@~ao do Maxima.
+
+@code{build_info} retorna uma seq@"u@^encia de caracteres vazia @code{""}.
+@end deffn
