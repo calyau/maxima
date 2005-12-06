@@ -101,6 +101,7 @@ more lists (or matrices) onto the matrix @var{M}.
 
 @deffn {Function} adjoint (@var{M})
 Returns the adjoint of the matrix @var{M}.
+The adjoint matrix is the transpose of the matrix of cofactors of @var{M}.
 
 @end deffn
 
