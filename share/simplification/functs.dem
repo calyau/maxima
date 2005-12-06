@@ -13,7 +13,7 @@ conjugate(%);  expand(adjoint(%th(2)));  tracematrix(%th(3));
 logand(15,5); logxor(5,6);  logor(4,9);
 /* uprobe([foo,bar]);  uprobe([functs,demo,share]); */
 
-kronecker(5,5);  nonzeroandfreeof(z,y+4); /* 3*z+(y+1)*z+y^2;
+nonzeroandfreeof(z,y+4); /* 3*z+(y+1)*z+y^2;
  This expression is re-formed first as linear in z, then as
 	quadratic in y  linear(%,z);  quadratic(%th(2),y); */
 gcdivide(a*x-b*x,a*x+b*x);  gcdivide(a^2-b^2,a^2-2*a*b+b^2);
