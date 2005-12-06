@@ -140,9 +140,16 @@
       ((one-of-types .type. (make-hash-table :test 'equal))
        (gethash (if (cdr inds) inds (car inds)) ar))
       ((one-of-types .type.  'a)  `((,ar array) ,@ (copy-list inds)))
-      (($listp ar) (nth (car inds) ar))
-      (($matrixp ar) (nth (second inds) (nth (first inds) ar)))
-      (t (error "not a valid array reference to ~A" ar)))))
+      ((and (= (length inds) 1)
+	    (or ($listp ar) ($matrixp ar)))
+       (nth (first inds) ar))
+      ((and ($matrixp ar) (= (length inds) 2))
+       (nth (second inds) (nth (first inds) ar)))
+      (t
+       #+nil
+       (error "not a valid array reference to ~A" ar)
+       (merror "Wrong number of indices:~%~M" (cons '(mlist) inds))))))
+
 
 
 (deftrfun tr-arraycall (form &aux all-inds)
