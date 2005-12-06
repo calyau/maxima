@@ -1664,7 +1664,9 @@ APPLY means like APPLY.")
 #+cl
 (defmacro maset ( val ar  &rest inds)
   `(progn
-    (defvar ,ar (make-equal-hash-table ,(if (cdr inds) t nil)))
+     (cond ((symbolp ,ar)
+	    (setf ,ar (make-equal-hash-table
+		       ,(if (cdr inds) t nil)))))
     (maset1 ,val  ,ar ,@  inds)))
 
 
