@@ -368,138 +368,138 @@ Depurando
 
 @node Introdu@value{cedilha}@~ao ao Maxima, Detec@value{cedilha}@~ao e Relato de Erros, Top, Top
 @chapter Introdu@value{cedilha}@~ao ao Maxima
-@include Introduction_pt.texi
+@include Introduction.texi
 
 @node Detec@value{cedilha}@~ao e Relato de Erros, Ajuda, Introdu@value{cedilha}@~ao ao Maxima, Top
 @chapter Detec@value{cedilha}@~ao e Relato de Erros
-@include Bugs_pt.texi
+@include Bugs.texi
 
 @node Ajuda, Linha de Comando, Detec@value{cedilha}@~ao e Relato de Erros, Top
 @chapter Ajuda
-@include Help_pt.texi
+@include Help.texi
 
 @node Linha de Comando, Operadores, Ajuda, Top
 @chapter Linha de Comando
-@include Command_pt.texi
+@include Command.texi
 
 @node Operadores, Express@~oes, Linha de Comando, Top
 @chapter Operadores
-@include Operators_pt.texi
+@include Operators.texi
 
 @node Express@~oes, Simplifica@value{cedilha}@~ao, Operadores, Top
 @chapter Express@~oes
-@include Expressions_pt.texi
+@include Expressions.texi
 
 @node Simplifica@value{cedilha}@~ao, Montando Gr@'aficos, Express@~oes, Top
 @chapter Simplifica@value{cedilha}@~ao
-@include Simplification_pt.texi
+@include Simplification.texi
 
 @node Montando Gr@'aficos, Entrada e Sa@'ida, Simplifica@value{cedilha}@~ao, Top
 @chapter Montando Gr@'aficos
-@include Plotting_pt.texi
+@include Plotting.texi
 
 @node Entrada e Sa@'ida, Ponto Flutuante, Montando Gr@'aficos, Top
 @chapter Entrada e Sa@'ida
-@include Input_pt.texi
+@include Input.texi
 
 @node Ponto Flutuante, Contextos, Entrada e Sa@'ida, Top
 @chapter Ponto Flutuante
-@include Floating_pt.texi
+@include Floating.texi
 
 @node Contextos, Polin@^omios, Ponto Flutuante, Top
 @chapter Contextos
-@include Contexts_pt.texi
+@include Contexts.texi
 
 @node Polin@^omios, Constantes, Contextos, Top
 @chapter Polin@^omios
-@include Polynomials_pt.texi
+@include Polynomials.texi
 
 @node Constantes, Logar@'itmos, Polin@^omios, Top
 @chapter Constantes
-@include Constants_pt.texi
+@include Constants.texi
 
 @node Logar@'itmos, Trigonometria, Constantes, Top
 @chapter Logar@'itmos
-@include Logarithms_pt.texi
+@include Logarithms.texi
 
 @node Trigonometria, Fun@value{cedilha}@value{o_til}es Especiais, Logar@'itmos, Top
 @chapter Trigonometria
-@include Trigonometric_pt.texi
+@include Trigonometric.texi
 
 @node Fun@value{cedilha}@value{o_til}es Especiais, Polin@^omios Ortogonais, Trigonometria, Top
 @chapter Fun@value{cedilha}@value{o_til}es Especiais
-@include Special_pt.texi
+@include Special.texi
 
 @node Polin@^omios Ortogonais, Fun@value{cedilha}@~oes El@'ipticas, Fun@value{cedilha}@value{o_til}es Especiais, Top
 @chapter Polin@^omios Ortogonais
-@include SpecfunII_pt.texi
+@include SpecfunII.texi
 
 @node Fun@value{cedilha}@~oes El@'ipticas, Limites, Polin@^omios Ortogonais, Top
 @chapter Fun@value{cedilha}@~oes El@'ipticas
-@include Elliptic_pt.texi
+@include Elliptic.texi
 
 @node Limites, Diferencia@value{cedilha}@~ao, Fun@value{cedilha}@~oes El@'ipticas, Top
 @chapter Limites
-@include Limits_pt.texi
+@include Limits.texi
 
 @node Diferencia@value{cedilha}@~ao, Integra@value{cedilha}@~ao, Limites, Top
 @chapter Diferencia@value{cedilha}@~ao
-@include Differentiation_pt.texi
+@include Differentiation.texi
 
 @node Integra@value{cedilha}@~ao, Equa@value{cedilha}@~oes, Diferencia@value{cedilha}@~ao, Top
 @chapter Integra@value{cedilha}@~ao
-@include Integration_pt.texi
+@include Integration.texi
 
 @node Equa@value{cedilha}@~oes, Equa@value{cedilha}@~oes Diferenciais, Integra@value{cedilha}@~ao, Top
 @chapter Equa@value{cedilha}@~oes
-@include Equations_pt.texi
+@include Equations.texi
 
 @node Equa@value{cedilha}@~oes Diferenciais, Num@'erico, Equa@value{cedilha}@~oes, Top
 @chapter Equa@value{cedilha}@~oes Diferenciais
-@include Differential_pt.texi
+@include Differential.texi
 
 @c @include NonCommutative.texi
 
 @node Num@'erico, Estat@'istica, Equa@value{cedilha}@~oes Diferenciais, Top
 @chapter Num@'erico
-@include Numerical_pt.texi
+@include Numerical.texi
 
 @node Estat@'istica, Arrays e Tabelas, Num@'erico, Top
 @chapter Estat@'istica
-@include Statistics_pt.texi
+@include Statistics.texi
 
 @node Arrays e Tabelas, Matrizes e @'Algebra Linear, Estat@'istica, Top
 @chapter Arrays e Tabelas
-@include Arrays_pt.texi
+@include Arrays.texi
 
 @node Matrizes e @'Algebra Linear, Fun@value{cedilha}@~oes Afins, Arrays e Tabelas, Top
 @chapter Matrizes e @'Algebra Linear
-@include Matrices_pt.texi
+@include Matrices.texi
 
 @node Fun@value{cedilha}@~oes Afins, itensor, Matrizes e @'Algebra Linear, Top
 @chapter Fun@value{cedilha}@~oes Afins
-@include Affine_pt.texi
+@include Affine.texi
 
 @node itensor, ctensor, Fun@value{cedilha}@~oes Afins, Top
 @chapter itensor
-@include Itensor_pt.texi
+@include Itensor.texi
 
 @node ctensor, Pacote atensor, itensor, Top
 @chapter ctensor
-@include Ctensor_pt.texi
+@include Ctensor.texi
 
 @node Pacote atensor, S@'eries, ctensor, Top
 @chapter Pacote atensor
-@include Atensor_pt.texi
+@include Atensor.texi
 
 @node S@'eries, Teoria dos N@'umeros, Pacote atensor, Top
 @chapter S@'eries
-@include Series_pt.texi
+@include Series.texi
 
 
 @node Teoria dos N@'umeros, Symmetries, S@'eries, Top
 @chapter Teoria dos N@'umeros
-@include Number_pt.texi
+@include Number.texi
 
 @node Symmetries, Grupos, Teoria dos N@'umeros, Top
 @chapter Symmetries
@@ -507,44 +507,44 @@ Depurando
 
 @node Grupos, Tempo de Execu@value{cedilha}@~ao, Symmetries, Top
 @chapter Grupos
-@include Groups_pt.texi
+@include Groups.texi
 
 @node Tempo de Execu@value{cedilha}@~ao, Op@value{cedilha}@~oes Diversas, Grupos, Top
 @chapter Tempo de Execu@value{cedilha}@~ao
-@include Runtime_pt.texi
+@include Runtime.texi
 
 @node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Tempo de Execu@value{cedilha}@~ao, Top
 @chapter Op@value{cedilha}@~oes Diversas
-@include Miscellaneous_pt.texi
+@include Miscellaneous.texi
 
 @node Regras e Modelos, Listas, Op@value{cedilha}@~oes Diversas, Top
 @chapter Regras e Modelos
-@include Rules_pt.texi
+@include Rules.texi
 
 
 @node Listas, Conjuntos, Regras e Modelos, Top
 @chapter Listas
-@include Lists_pt.texi
+@include Lists.texi
 
 @node Conjuntos, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Listas, Top
 @chapter Conjuntos
-@include nset_pt.texi
+@include nset.texi
 
 @node Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fluxo de Programa, Conjuntos, Top
 @chapter Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
-@include Function_pt.texi
+@include Function.texi
 
 @node Fluxo de Programa, Depurando, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Top
 @chapter Fluxo de Programa
-@include Program_pt.texi
+@include Program.texi
 
 @node Depurando, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
 @chapter Depurando
-@include Debugging_pt.texi
+@include Debugging.texi
 
 @node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Depurando, Top
 @chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
-@include Indices_pt.texi
+@include Indices.texi
 
 @c end includes
 

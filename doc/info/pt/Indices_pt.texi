@@ -1,9 +1,0 @@
-@c /Indices.texi/1.2/Mon May  8 18:13:06 2000/-ko/
-@appendix @value{I_agu}ndice de Fun@value{cedilha}@value{a_til}o e Vari@value{a_agu}vel
-
-@printindex fn
-
-
-
-
-
