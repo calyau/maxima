@@ -16,7 +16,7 @@ load("./specfun-110/specfun.lsp");
 */
 
 
-translate_file("specfun.mc");
+translate_file("specfun.mac");
 load("./specfun.LISP");  
 
 showtime : all;

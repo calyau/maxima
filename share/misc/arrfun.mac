@@ -15,7 +15,7 @@ EVAL_WHEN([translate,batch,demo],
              THEN LOADFILE(MACRO1,FASL,DSK,SHARE),
           IF GET('SUBMAC,'VERSION) = FALSE
              THEN LOADFILE(SUBMAC,FASL,DSK,SHARE2))$ */
-load("[sharem]defm.mc")$
+load("defm.mac")$
 
 /* commented out of DOE MACSYMA
 EVAL_WHEN(TRANSLATE,PACKAGEFILE:TRUE,SAVEDEF:FALSE,TRANSCOMPILE:TRUE)$ */

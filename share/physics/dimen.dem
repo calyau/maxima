@@ -1,5 +1,5 @@
 /* First load the necessary file: */
-LOAD("dimen.mc")$
+load("dimen.mac")$
 /* It is conjectured that for thermistors there is a physical
 relationship between the voltage drop, current, ambient temperature,
 room-temperature resistance, convective heat transfer coefficient, and
