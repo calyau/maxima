@@ -1,9 +1,0 @@
-RNCOMBINE(exp) transforms exp by combining all terms of exp that have
-  identical denominators or denominators that differ from each other by
-  numerical factors only.  This is slightly different from the behavior
-  of COMBINE, which collects terms that have identical denominators.
-  Setting PFEFORMAT:TRUE and using COMBINE will achieve results similar
-  to those that can be obtained with RNCOMBINE, but RNCOMBINE takes the
-  additional step of cross-multiplying numerical denominator factors.
-  This results in neater forms, and the possiblity of recognizing some
-  cancellations.  Bugs to ASB.
