@@ -33,13 +33,9 @@ rational&&  rational(z):=block([n,d,cd,ratfac],
 oddp&&  oddp(x):=is(logand(x,1)#0)$
 	evenp(x):=is(logand(x,1)=0)$
 
-logical&&  logand(x,y):=?boole(1,x,y)$
-	logxor(x,y):=?boole(6,x,y)$
+logical&&  logand(x,y):=?boole(6,x,y)$
 	logor(x,y):=?boole(7,x,y)$
-
-uprobe&&  uprobe(file):=?apply('?uprobe,?fullstrip(?cdr(file)))$
-
-kronecker&&  kronecker(m,n):=if m=n then 1 else 0$
+	logxor(x,y):=?boole(8,x,y)$
 
 nonzeroandfreeof&&  nonzeroandfreeof(x,e):=is(e#0 and freeof(x,e))$
 
