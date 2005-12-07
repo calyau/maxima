@@ -520,6 +520,7 @@
 				     (:file "pois2") 
 				     (:file "pois3")))
 	       (:module translated-packages :source-pathname ""
+			:depends-on ("maxima-language-compiler-macros")
 			:components
 			((:file "nusum")
 			 (:file "desoln")
