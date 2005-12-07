@@ -1661,30 +1661,6 @@ APPLY means like APPLY.")
 
 
 
-#+cl
-(defmacro maset ( val ar  &rest inds)
-  `(progn
-     (cond ((symbolp ,ar)
-	    (setf ,ar (make-equal-hash-table
-		       ,(if (cdr inds) t nil)))))
-    (maset1 ,val  ,ar ,@  inds)))
-
-
-;;#+lispm  ;;removed the apply from tr-arraycall and &rest.
-;;(defun tr-maref (ar &rest inds)
-;;    `(nil maref ,ar ,@ (copy-list inds)))
-
-
-
-(defmacro maref (ar &rest inds)
-  (cond ((or (eql ar 'mqapply)(and (consp ar) (memq 'mqapply ar)))
-         `(marrayref ,(first inds) ,@ (cdr inds)))
-	((consp ar)`(marrayref ,ar ,(first inds) ,@ (cdr inds)))
-	(t
-	 `(maref1  ,ar,@ inds))))
-
-
-
 
 ;; Local Modes:
 ;; Mode: LISP
