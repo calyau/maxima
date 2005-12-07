@@ -39,14 +39,6 @@
  *   - solve_rec_ic                                                          *
  *   - reduce_order                                                          *
  *                                                                           *
- *                                                                           *
- *  This is free software  you can redistribute it and/or                    *
- *  modify it under the terms of the GNU General Public License,             *
- *  http://www.gnu.org/copyleft/gpl.html.                                    *
- *                                                                           *
- *  This software has NO WARRANTY, not even the implied warranty of          *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                     *
- *                                                                           *
  *****************************************************************************/
 
 eval_when(batch,
@@ -61,9 +53,9 @@ eval_when(translate,
                              solve_rec_lin_cc,hyper,remove_duplicates,
                              get_linearly_independent1,solve_rec_ic1,
                              solve_rec_rat1,get_variables,solve_rec_ic,
-                             subst_all,get_lower_bound,simplify_product,NUSUM,
+                             subst_all,get_lower_bound,simplify_product,nusum,
                              solve_rec_char_gen,get_exps,solve_rec_char_part,
-                             rec_polyp1,SOLVE_REC,normalize_product,
+                             rec_polyp1,solve_rec,normalize_product,
                              hyper_poly,monic_factors,my_prod,
                              monic_factors_sol,monic_factors_fac,
                              solve_rec_poly,casoratian_determinant,
@@ -195,8 +187,11 @@ solve_rec(eq, fn, [cond]) := block(
   if ord=1 then sol : solve_rec_order_1(std_form, %f, %n, cond)
   else sol : solve_rec_gen(std_form, %f, %n, cond),
 
-  if sol=false then return(false)
-  else return(fn=sol)
+  if sol=false then false
+  else (
+    if listp(sol) then sol
+    else fn=sol
+  )
 )$
 
 solve_rec_order_1(std_form, %f, %n, cond) := block(
@@ -512,7 +507,10 @@ ricatti_type(eqn, %f, %n, cond) := block(
   p2 : coeff(eqn, funmake('shift_op, [%f, %n, 0])),
   p3 : expand(eqn - p1*funmake('shift_op, [%f, %n, 1])
                   - p2*funmake('shift_op, [%f, %n, 0])),
-  if p1*p2=p3 then return([%f[%n]=-p1, %f[%n]=-p2]),
+  if p1*p2=p3 then (
+    solve_rec_method: "Ricatty equation.",
+    return([%f[%n]=-p1, %f[%n]=-p2])
+  ),
   eq : %z[%n+2] + (p2-ratsubst(%n+1, %n, p1))*%z[%n+1] +
                          (p3 - p1*p2)*%z[%n],
   %z : solve_rec(eq, %z[%n]),
@@ -589,7 +587,7 @@ hyper_poly(coeffs, ihom, %n) := block(
     eqn : makelist(coeff(eqn, %n, i)=0, i, 0, hipow(eqn, %n)),
     if errcatch(sol : linsolve(eqn, makelist(%k[i+1], i, 0, deg)))=[] then
       return(false),
-    gen_p : expand(subst_all(gen_p, sol)), /*expand(at(gen_p, sol)),*/
+    gen_p : expand(subst_all(gen_p, sol)),
     gen_p
   )
 )$
@@ -915,8 +913,6 @@ simplify_product(prod) := block(
     p : (-1)^(hi-lo+1),
     term : part(term, 1)
   ),
-
-  if atom(term) then return(prod),
   
   if part(term, 0)="*" then
     p*apply("*", map(lambda([u], simplify_product(apply(nounify('product),
