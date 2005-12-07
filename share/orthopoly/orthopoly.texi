@@ -30,9 +30,9 @@ Laguerre, Hermite, Jacobi, Legendre, and ultraspherical (Gegenbauer)
 polynomials. Additionally, @code{orthopoly} includes support for the spherical Bessel, 
 spherical Hankel, and spherical harmonic functions.
 
-For the most part, @code{orthopoly} follows the conventions of Abramowitz and Stegun (A & S)
+For the most part, @code{orthopoly} follows the conventions of Abramowitz and Stegun
 @i{Handbook of Mathematical Functions}, Chapter 22 (10th printing, December 1972);
-additionally, we use Gradshteyn and Ryzhik (G & R), 
+additionally, we use Gradshteyn and Ryzhik, 
 @i{Table of Integrals, Series, and Products} (1980 corrected and 
 enlarged edition), and Eugen Merzbacher @i{Quantum Mechanics} (2nd edition, 1970).
 
@@ -57,7 +57,8 @@ is released under the GNU General Public License (GPL).
 @code{load (orthopoly)} loads the @code{orthopoly} package.
 
 To find the third-order Legendre polynomial,
-@c ===beg==
+
+@c ===beg===
 @c legendre_p (3, x);
 @c ===end===
 @example
@@ -67,8 +68,11 @@ To find the third-order Legendre polynomial,
 (%o1)      - ---------- + ----------- - 6 (1 - x) + 1
                  2             2
 @end example
+
 To express this as a sum of powers of @var{x}, apply @var{ratsimp} or @var{rat}
 to the result.
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c [ratsimp (%), rat (%)];
 @c ===end===
@@ -79,8 +83,10 @@ to the result.
 (%o2)/R/            [----------, ----------]
                          2           2
 @end example
+
 Alternatively, make the second argument to @code{legendre_p} (its ``main'' variable) 
 a canonical rational expression (CRE).
+
 @c ===beg===
 @c legendre_p (3, rat (x));
 @c ===end===
@@ -94,6 +100,7 @@ a canonical rational expression (CRE).
 
 For floating point evaluation, @code{orthopoly} uses a running error analysis
 to estimate an upper bound for the error. For example,
+
 @c ===beg===
 @c jacobi_p (150, 2, 3, 0.2);
 @c ===end===
@@ -101,12 +108,14 @@ to estimate an upper bound for the error. For example,
 (%i1) jacobi_p (150, 2, 3, 0.2);
 (%o1) interval(- 0.062017037936715, 1.533267919277521E-11)
 @end example
+
 Intervals have the form @code{interval (@var{c}, @var{r})}, where @var{c} is the
 center and @var{r} is the radius of the interval. Since Maxima
 does not support arithmetic on intervals, in some situations, such
 as graphics, you want to suppress the error and output only the 
 center of the interval. To do this, set the option
 variable @code{orthopoly_returns_intervals} to @code{false}.
+
 @c ===beg===
 @c orthopoly_returns_intervals : false;
 @c jacobi_p (150, 2, 3, 0.2);
@@ -117,9 +126,11 @@ variable @code{orthopoly_returns_intervals} to @code{false}.
 (%i2) jacobi_p (150, 2, 3, 0.2);
 (%o2)                  - 0.062017037936715
 @end example
+
 Refer to the section @pxref{Floating point Evaluation} for more information.
 
 Most functions in @code{orthopoly} have a @code{gradef} property; thus
+
 @c ===beg===
 @c diff (hermite (n, x), x);
 @c diff (gen_laguerre (n, a, x), x);
@@ -135,8 +146,11 @@ Most functions in @code{orthopoly} have a @code{gradef} property; thus
 (%o2)      ------------------------------------------
                                x
 @end example
+
 The unit step function in the second example prevents an error that would
 otherwise arise by evaluating with @var{n} equal to 0.
+
+@c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c ev (%, n = 0);
 @c ===end===
@@ -147,6 +161,7 @@ otherwise arise by evaluating with @var{n} equal to 0.
 
 The gradef property only applies to the ``main'' variable; derivatives with 
 respect other arguments usually result in an error message; for example
+
 @c ===beg===
 @c diff (hermite (n, x), x);
 @c diff (hermite (n, x), n);
@@ -165,6 +180,7 @@ Generally, functions in @code{orthopoly} map over lists and matrices. For
 the mapping to fully evaluate, the option variables 
 @code{doallmxops} and @code{listarith} must both be @code{true} (the defaults).
 To illustrate the mapping over matrices, consider
+
 @c ===beg===
 @c hermite (2, x);
 @c m : matrix ([0, x], [y, 0]);
@@ -185,9 +201,11 @@ To illustrate the mapping over matrices, consider
                [             2                  ]
                [ - 2 (1 - 2 y )       - 2       ]
 @end example
+
 In the second example, the @code{i, j} element of the value
 is @code{hermite (2, m[i,j])}; this is not the same as computing
 @code{-2 + 4 m . m}, as seen in the next example.
+
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c -2 * matrix ([1, 0], [0, 1]) + 4 * m . m;
@@ -201,6 +219,7 @@ is @code{hermite (2, m[i,j])}; this is not the same as computing
 
 If you evaluate a function at a point outside its domain, generally
 @code{orthopoly} returns the function unevaluated. For example,
+
 @c ===beg===
 @c legendre_p (2/3, x);
 @c ===end===
@@ -212,6 +231,7 @@ If you evaluate a function at a point outside its domain, generally
 
 @code{orthopoly} supports translation into TeX; it also does two-dimensional
 output on a terminal.
+
 @c ===beg===
 @c spherical_harmonic (l, m, theta, phi);
 @c tex (%);
@@ -243,6 +263,7 @@ vanishes, yet Maxima is unable to simplify it to zero. If you
 divide by such a quantity, you'll be in trouble. For example,
 the following expression vanishes for integers @var{n} greater than 1, yet Maxima
 is unable to simplify it to zero.
+
 @c ===beg===
 @c (2*n - 1) * legendre_p (n - 1, x) * x - n * legendre_p (n, x) + (1 - n) * legendre_p (n - 2, x);
 @c ===end===
@@ -251,7 +272,9 @@ is unable to simplify it to zero.
 (%o1)  (2 n - 1) P     (x) x - n P (x) + (1 - n) P     (x)
                   n - 1           n               n - 2
 @end example
+
 For a specific @var{n}, we can reduce the expression to zero.
+
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c ev (% ,n = 10, ratsimp);
@@ -263,6 +286,7 @@ For a specific @var{n}, we can reduce the expression to zero.
 
 Generally, the polynomial form of an orthogonal polynomial is ill-suited
 for floating point evaluation. Here's an example.
+
 @c FOLLOWING EXAMPLE YIELDS POCHHAMMER SYMBOL (NONNUMERIC). WHAT'S UP WITH THAT ??
 @c ===beg===
 @c p : jacobi_p (150, 2, 3, x)$
@@ -278,6 +302,7 @@ for floating point evaluation. Here's an example.
                              (1)
                                 150
 @end example
+
 The true value is about -0.06; this calculation suffers from extreme
 subtractive cancellation error. Expanding the polynomial and then
 evaluating, gives a better result.
@@ -309,6 +334,7 @@ Maxima's @code{float} function is somewhat indiscriminant; if you apply
 symbolic degree or order parameter, these parameters may be 
 converted into floats; after that, the expression will not evaluate 
 fully. Consider
+
 @c ===beg===
 @c assoc_legendre_p (n, 1, x);
 @c float (%);
@@ -328,10 +354,12 @@ fully. Consider
 (%o3)                       P   (0.9)
                              2
 @end example
+
 The expression in (%o3) will not evaluate to a float; orthopoly doesn't
 recognize floating point values where it requires an integer. Similarly, 
 numerical evaluation of the @code{pochhammer} function for orders that
 exceed @code{pochhammer_max_index} can be troublesome; consider
+
 @c ===beg===
 @c x :  pochhammer (1, 10), pochhammer_max_index : 5;
 @c ===end===
@@ -340,7 +368,9 @@ exceed @code{pochhammer_max_index} can be troublesome; consider
 (%o1)                         (1)
                                  10
 @end example
+
 Applying @code{float} doesn't evaluate @var{x} to a float
+
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c float (x);
@@ -350,8 +380,10 @@ Applying @code{float} doesn't evaluate @var{x} to a float
 (%o2)                       (1.0)
                                  10.0
 @end example
+
 To evaluate @var{x} to a float, you'll need to bind
 @code{pochhammer_max_index} to 11 or greater and apply @code{float} to @var{x}.
+
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c float (x), pochhammer_max_index : 11;
@@ -360,6 +392,7 @@ To evaluate @var{x} to a float, you'll need to bind
 (%i3) float (x), pochhammer_max_index : 11;
 (%o3)                       3628800.0
 @end example
+
 The default value of @code{pochhammer_max_index} is 100;
 change its value after loading @code{orthopoly}.
 
@@ -373,6 +406,7 @@ Definitions often differ by a normalization; occasionally, authors
 use ``shifted'' versions of the functions that makes the family
 orthogonal on an interval other than @math{(-1, 1)}. To define, for example,
 a Legendre polynomial that is orthogonal on @math{(0, 1)}, define
+
 @c ===beg===
 @c shifted_legendre_p (n, x) := legendre_p (n, 2*x - 1)$
 @c shifted_legendre_p (2, rat (x));
@@ -412,6 +446,7 @@ center of the interval and @var{r} is its radius. The
 center of an interval can be a complex number, and the radius is always a positive real number.
 
 Here is an an example.
+
 @c MORE POCHHAMMER SYMBOLS HERE
 @c ===beg===
 @c fpprec : 50$
@@ -428,7 +463,9 @@ Here is an an example.
                                         (3.0b0)     /(1.0b0)
                                                1.5b2        1.5b2
 @end example
+
 Let's test that the actual error is smaller than the error estimate
+
 @c CONTINUING PREVIOUS EXAMPLE HERE
 @c ===beg===
 @c is (abs (part (y0, 1) - y1) < part (y0, 2));
@@ -437,10 +474,12 @@ Let's test that the actual error is smaller than the error estimate
 (%i4) is (abs (part (y0, 1) - y1) < part (y0, 2));
 (%o4)                         true
 @end example
+
 Indeed, for this example the error estimate is an upper bound for the
 true error.
 
 Maxima does not support arithmetic on intervals.
+
 @c ===beg===
 @c legendre_p (7, 0.1) + legendre_p (8, 0.1);
 @c ===end===
@@ -449,8 +488,10 @@ Maxima does not support arithmetic on intervals.
 (%o1) interval(0.18032072148437508, 3.1477135311021797E-15)
         + interval(- 0.19949294375000004, 3.3769353084291579E-15)
 @end example
+
 A user could define arithmetic operators that do interval math. To
 define interval addition, we can define
+
 @c ===beg===
 @c infix ("@+")$
 @c "@+"(x,y) := interval (part (x, 1) + part (y, 1), part (x, 2) + part (y, 2))$
@@ -467,6 +508,7 @@ define interval addition, we can define
 
 The special floating point routines get called when the arguments
 are complex.  For example,
+
 @c ===beg===
 @c legendre_p (10, 2 + 3.0*%i);
 @c ===end===
@@ -475,7 +517,9 @@ are complex.  For example,
 (%o1) interval(- 3.876378825E+7 %i - 6.0787748E+7, 
                                            1.2089173052721777E-6)
 @end example
+
 Let's compare this to the true value.
+
 @c ===beg===
 @c float (expand (legendre_p (10, 2 + 3*%i)));
 @c ===end===
@@ -483,9 +527,11 @@ Let's compare this to the true value.
 (%i1) float (expand (legendre_p (10, 2 + 3*%i)));
 (%o1)          - 3.876378825E+7 %i - 6.0787748E+7
 @end example
+
 Additionally, when the arguments are big floats, the special floating point
 routines get called; however, the big floats are converted into double floats
 and the final result is a double.
+
 @c ===beg===
 @c ultraspherical (150, 0.5b0, 0.9b0);
 @c ===end===
@@ -508,6 +554,7 @@ If function calls aren't quoted, Maxima evaluates them to polynomials before
 plotting; consequently, the specialized floating point code doesn't get called.
 Here is an example of how to plot an expression that involves
 a Legendre polynomial.
+
 @c ===beg===
 @c plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
 @c ===end===
@@ -515,6 +562,7 @@ a Legendre polynomial.
 (%i1) plot2d ('(legendre_p (5, x)), [x, 0, 1]), orthopoly_returns_intervals : false;
 (%o1)
 @end example
+
 The @i{entire} expression @code{legendre_p (5, x)} is quoted; this is 
 different than just quoting the function name using @code{'legendre_p (5, @var{x})}.
 
@@ -527,6 +575,7 @@ gradef statements.
 
 To convert Pochhammer symbols into quotients of gamma functions,
 use @code{makegamma}.
+
 @c ===beg===
 @c makegamma (pochhammer (x, n));
 @c makegamma (pochhammer (1/2, 1/2));
@@ -541,8 +590,10 @@ use @code{makegamma}.
 (%o2)                       ---------
                             sqrt(%pi)
 @end example
+
 Derivatives of the pochhammer symbol are given in terms of the @code{psi}
 function.
+
 @c ===beg===
 @c diff (pochhammer (x, n), x);
 @c diff (pochhammer (x, n), n);
@@ -555,6 +606,7 @@ function.
 (%o2)                   (x)  psi (x + n)
                            n    0
 @end example
+
 You need to be careful with the expression in (%o1); the difference of the
 @code{psi} functions has poles when @code{@var{x} = -1, -2, .., -@var{n}}. These poles
 cancel with factors in @code{pochhammer (@var{x}, @var{n})} making the derivative a degree
@@ -562,6 +614,7 @@ cancel with factors in @code{pochhammer (@var{x}, @var{n})} making the derivativ
 
 The Pochhammer symbol is defined for negative orders through its
 representation as a quotient of gamma functions. Consider
+
 @c ===beg===
 @c q : makegamma (pochhammer (x, n));
 @c sublis ([x=11/3, n= -6], q);
@@ -576,7 +629,9 @@ representation as a quotient of gamma functions. Consider
 (%o2)                        - ----
                                2240
 @end example
+
 Alternatively, we can get this result directly.
+
 @c ===beg===
 @c pochhammer (11/3, -6);
 @c ===end===
@@ -588,6 +643,7 @@ Alternatively, we can get this result directly.
 @end example
 
 The unit step function is left-continuous; thus
+
 @c ===beg===
 @c [unit_step (-1/10), unit_step (0), unit_step (1/10)];
 @c ===end===
@@ -595,8 +651,10 @@ The unit step function is left-continuous; thus
 (%i1) [unit_step (-1/10), unit_step (0), unit_step (1/10)];
 (%o1)                       [0, 0, 1]
 @end example
+
 If you need a unit step function that is neither left or right continuous
 at zero, define your own using signum; for example,
+
 @c ===beg===
 @c xunit_step (x) := (1 + signum (x))/2$
 @c [xunit_step (-1/10), xunit_step (0), xunit_step (1/10)];
@@ -609,6 +667,7 @@ at zero, define your own using signum; for example,
 (%o2)                       [0, -, 1]
                                 2
 @end example
+
 Do not redefine @code{unit_step} itself; some code in @code{orthopoly}
 requires that the unit step function be left-continuous.
 
@@ -708,6 +767,7 @@ Reference: Abramowitz and Stegun, equations 8.5.3 and 8.1.8.
 Returns a recursion relation for the orthogonal function family
 @var{f} with arguments @var{args}. The recursion is with 
 respect to the polynomial degree.
+
 @c ===beg===
 @c orthopoly_recur (legendre_p, [n, x]);
 @c ===end===
@@ -718,9 +778,11 @@ respect to the polynomial degree.
 (%o1)   P (x) = -----------------------------------------
          n                          n
 @end example
+
 The second argument to @code{orthopoly_recur} must be a list with the 
 correct number of arguments for the function @var{f}; if it isn't, 
 Maxima signals an error.
+
 @c ===beg===
 @c orthopoly_recur (jacobi_p, [n, x]);
 @c ===end===
@@ -730,8 +792,10 @@ Maxima signals an error.
 Function jacobi_p needs 4 arguments, instead it received 2
  -- an error.  Quitting.  To debug this try debugmode(true);
 @end example
+
 Additionally, when @var{f} isn't the name of one of the 
 families of orthogonal polynomials, an error is signalled.
+
 @c ===beg===
 @c orthopoly_recur (foo, [n, x]);
 @c ===end===
@@ -759,6 +823,7 @@ the formula of the weight for the orthogonal polynomial family
 @var{f} with arguments given by the list @var{args}; the 
 second and third elements give the lower and upper endpoints
 of the interval of orthogonality. For example,
+
 @c ===beg===
 @c w : orthopoly_weight (hermite, [n, x]);
 @c integrate (w[1] * hermite (3, x) * hermite (2, x), x, w[2], w[3]);
@@ -785,6 +850,7 @@ when @code{@var{n} > 0} and
 to 1 when @code{@var{n} = 0}. For negative @var{n},
 @code{pochhammer (@var{x}, @var{n})} is defined as @code{(-1)^@var{n} / pochhammer (1 - @var{x}, -@var{n})}.
 Thus
+
 @c ===beg===
 @c pochhammer (x, 3);
 @c pochhammer (x, -3);
@@ -797,8 +863,10 @@ Thus
 (%o2)               - -----------------------
                       (1 - x) (2 - x) (3 - x)
 @end example
+
 To convert a Pochhammer symbol into a quotient of gamma functions,
 (see Abramowitz and Stegun, equation 6.1.22) use @code{makegamma}; for example 
+
 @c ===beg===
 @c makegamma (pochhammer (x, n));
 @c ===end===
@@ -808,8 +876,10 @@ To convert a Pochhammer symbol into a quotient of gamma functions,
 (%o1)                     ------------
                             gamma(x)
 @end example
+
 When @var{n} exceeds @code{pochhammer_max_index} or when @var{n} 
 is symbolic, @code{pochhammer} returns a noun form.
+
 @c ===beg===
 @c pochhammer (x, n);
 @c ===end===
@@ -827,6 +897,7 @@ Default value: 100
 @code{@var{n} <= pochhammer_max_index}.
 
 Examples:
+
 @c ===beg===
 @c pochhammer (x, 3), pochhammer_max_index : 3;
 @c pochhammer (x, 4), pochhammer_max_index : 3;
