@@ -464,6 +464,9 @@ values")
 		 ))))
   `(progn #-cl 'compile
     #+lispm (si::record-source-file-name ',function 'defmfun)
+    ;; I (rtoy) think we can consider all defmfun's as translated
+    ;; functions.
+    (defprop ,function t translated)
     (defun ,function . ,rest)))
 
 ;;sample usage
