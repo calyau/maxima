@@ -451,9 +451,27 @@ translated."
 		   (cons *standard-output* *translation-msgs-files*)))
 	 (format out-stream
 		 ";;; -*- Mode: Lisp; package:maxima; syntax:common-lisp ;Base: 10 -*- ;;;~%")
-					;#+lispm
-	 ;;	  (format out-stream ";;;Translated on: ~A"
-	 ;;		  (time:print-current-time nil))
+
+	 (flet ((timezone-iso8601-name (dst tz)
+		  ;; This function was borrowed from CMUCL.
+		  (let ((tz (- tz)))
+		    (if (and (not dst) (= tz 0))
+			"Z"
+			(multiple-value-bind (hours minutes)
+			    (truncate (if dst (1+ tz) tz))
+			  (format nil "~C~2,'0D:~2,'0D"
+				  (if (minusp tz) #\- #\+)
+				  (abs hours)
+				  (abs (truncate (* minutes 60)))))))))
+
+	   (multiple-value-bind (secs mins hours day month year dow dst tz)
+	       (decode-universal-time (get-universal-time))
+	     (declare (ignore dow))
+	     (format out-stream ";;; Translated on: ~D-~2,'0D-~2,'0D ~2,'0D:~2,'0D:~2,'0D~A~%"
+		     year month day hours mins secs (timezone-iso8601-name dst tz))))
+	 (format out-stream ";;; Maxima System version: ~A~%" *autoconf-version*)
+	 (format out-stream ";;; Lisp type:    ~A~%" (lisp-implementation-type))
+	 (format out-stream ";;; Lisp version: ~A~%" (lisp-implementation-version))
 	 ;;	  #+lispm
 	 ;;	  (format out-stream
 	 ;;		  ";;Maxima System version ~A"
@@ -465,7 +483,7 @@ translated."
 	 (mformat out-stream
 		  "~%;;** Variable settings were **~%~%")
 	 (loop for v in (cdr $tr_state_vars)
-		do (mformat out-stream   ";;~:M:~:M;~%" v (symbol-value v)))
+		do (mformat out-stream   ";; ~:M: ~:M;~%" v (symbol-value v)))
 	 (mformat *terminal-io* "~%Translation begun on ~A.~%"
 		  (pathname in-stream))
 	 (call-batch1 in-stream out-stream)
