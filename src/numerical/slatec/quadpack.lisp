@@ -8,13 +8,14 @@
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (compile nil (coerce-float-fun `((mlist) ,fun)
 			      `((mlist) ,var)))))
-    (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier z-limit z-lenw last)
+    (multiple-value-bind (junk z-a z-b z-epsabs z-epsrel z-key result abserr neval ier
+			       z-limit z-lenw last)
 	(slatec::dqag #'(lambda (x)
 			    (float (second (funcall f x)) 1d0))
 			(float a) (float b) 0d0 (float epsrel) key
 			0d0 0d0 0 0
 			limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw))
+      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-key z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
   
 (defun $quad_qags (fun var a b &optional (epsrel 1d-8) (limit 200))
@@ -29,7 +30,7 @@
 			(float a) (float b) 0d0 (float epsrel)
 			0d0 0d0 0 0
 			limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw))
+      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qagi (fun var bound inf-type  &optional (epsrel 1d-8) (limit 200))
@@ -48,13 +49,14 @@
 		     ((2 $both)
 		      ;; Interval is [-infinity, infinity]
 		      2))))
-    (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel result abserr neval ier z-limit z-lenw last)
+    (multiple-value-bind (junk z-bound z-inf z-epsabs z-epsrel result abserr neval ier
+			       z-limit z-lenw last)
 	(slatec::dqagi #'(lambda (x)
 			   (float (second (funcall f x)) 1d0))
 			(float bound) infinity 0d0 (float epsrel)
 			0d0 0d0 0 0
 			limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw))
+      (declare (ignore junk z-bound z-inf z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qawc (fun var c a b &optional (epsrel 1d-8) (limit 200))
@@ -63,14 +65,15 @@
 	 (iwork (make-array limit :element-type 'f2cl-lib:integer4))
 	 (f (compile nil (coerce-float-fun `((mlist) ,fun)
 					   `((mlist) ,var)))))
-    (multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier z-limit z-lenw last)
+    (multiple-value-bind (junk z-a z-b z-c z-epsabs z-epsrel result abserr neval ier
+			       z-limit z-lenw last)
 	(slatec::dqawc #'(lambda (x)
 			   (float (second (funcall f x)) 1d0))
 		       (float a) (float b) (float c)
 		       0d0 (float epsrel)
 		       0d0 0d0 0 0
 		       limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-epsabs z-epsrel z-limit z-lenw))
+      (declare (ignore junk z-a z-b z-c z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qawf (fun var a omega trig &optional (epsabs 1d-10) (limit 200) (maxp1 100) (limlst 10))
@@ -91,7 +94,7 @@
 		       (float epsabs)
 		       0d0 0d0 0 0
 		       limlst 0 leniw maxp1 lenw iwork work)
-      (declare (ignore junk z-a z-omega z-integr z-limlst z-lst z-leniw z-maxp1 z-lenw))
+      (declare (ignore junk z-a z-omega z-integr epsabs z-limlst z-lst z-leniw z-maxp1 z-lenw))
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qawo (fun var a b omega trig &optional (epsrel 1d-10) (limit 200) (maxp1 100) (limlst 10))
@@ -113,7 +116,7 @@
 		       0d0 (float epsrel)
 		       0d0 0d0 0 0
 		       leniw maxp1 lenw 0 iwork work)
-      (declare (ignore junk z-a z-omega z-integr z-limlst z-lst z-leniw z-maxp1 z-lenw))
+      (declare (ignore junk z-a z-b z-omega z-integr z-epsabs z-epsrel z-limlst z-lst z-leniw z-maxp1 z-lenw))
       (list '(mlist) result abserr neval ier))))
 
 (defun $quad_qaws (fun var a b alfa beta wfun &optional (epsrel 1d-10) (limit 200))
@@ -131,7 +134,7 @@
 		       0d0 (float epsrel)
 		       0d0 0d0 0 0
 		       limit lenw 0 iwork work)
-      (declare (ignore junk z-a z-b z-alfa z-beta z-int z-limit z-lenw last))
+      (declare (ignore junk z-a z-b z-alfa z-beta z-int z-epsabs z-epsrel z-limit z-lenw last))
       (list '(mlist) result abserr neval ier))))
 
 
