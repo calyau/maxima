@@ -159,7 +159,11 @@
 	   (setq definition (lisp->lisp-tr-lambda definition))
 	   (if (null definition)
 	       form
-	       `(fset ',ssymbol ,definition))))))
+	       ;; If the definition is a lambda form, just use defun
+	       ;; instead of fset.
+	       (if (eq (car definition) 'lambda)
+		   `(defun ,ssymbol ,@(cdr definition))
+		   `(fset ',ssymbol ,definition)))))))
 
 (defvar lisp->lisp-tr-lambda t)
 
