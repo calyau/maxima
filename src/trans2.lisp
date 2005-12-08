@@ -68,10 +68,16 @@
 	((symbolp ar) 'symbol)
 	(t nil)))
 
-#+cl
+#+nil
 (defun tr-maset (ar val  inds)
   `(nil maset ,val ,ar  ,@ inds))
 
+#+cl
+(defun tr-maset (ar val  inds)
+  ;; Top-level forms need to define the variable first.
+  (if *macexpr-top-level-form-p* 
+      `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
+      `(nil (maset ,val ,ar  ,@ inds))))
 
 #+cl
 (defun maset1 ( val ar  &rest inds &aux  )

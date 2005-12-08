@@ -703,6 +703,11 @@ APPLY means like APPLY.")
 	 ;; setq for Common Lisp.  
 	 (let ((*macexpr-top-level-form-p* t))
 	   (dtranslate form)))
+	((eq '$define_variable (caar form))
+	 ;; Toplevel msetq's should really be defparameter instead of
+	 ;; setq for Common Lisp.  
+	 (let ((*macexpr-top-level-form-p* t))
+	   (dtranslate form)))
 	(t		
 	 (let  ((t-form (dtranslate form)))
 	   (cond (tr-abort
@@ -942,8 +947,9 @@ APPLY means like APPLY.")
 	((setq temp #+lispm (getl-lm-fcn-prop fun '(expr subr lsubr))
 	       #-lispm (getl fun '(expr subr lsubr)))
 	 (car temp))
-	#+lispm
+	#+(or cl lispm)
 	((get fun 'once-translated))
+	((get fun 'translated))
 	(t nil)))
 
 (defun tr-infamous-noun-form (form)
