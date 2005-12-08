@@ -77,7 +77,7 @@
   ;; Top-level forms need to define the variable first.
   (if *macexpr-top-level-form-p* 
       `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
-      `(nil (maset ,val ,ar  ,@ inds))))
+      `(nil maset ,val ,ar  ,@ inds)))
 
 #+cl
 (defun maset1 ( val ar  &rest inds &aux  )
@@ -93,8 +93,12 @@
       ((one-of-types .type.  'a)
        (error "must set the hash table outside")
        )
-      (($listp ar) 		   (setf (nth (car inds) ar) val) val)
-      (($matrixp ar)  (setf (nth (second inds) (nth  (car inds) ar)) val) val)
+      ((and (= (length inds) 1)
+	    (or ($listp ar) ($matrixp ar)))
+       (setf (nth (car inds) ar) val) val)
+      ((and ($matrixp ar)
+	    (= (length inds) 2))
+       (setf (nth (second inds) (nth  (car inds) ar)) val) val)
       (t (error "not a valid array reference to ~A" ar)))))
 
 
