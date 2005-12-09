@@ -599,7 +599,8 @@ values")
 	(t (princ-to-string sym))))
 				      
 (defun implode1 (lis upcase &aux (ar *string-for-implode*) (leng 0))
-  (declare (type string ar) (fixnum leng))
+  (declare (type string ar) (fixnum leng)
+	   (ignore upcase))
   (or (> (array-total-size ar) (setq leng (length lis)))
       (adjust-array ar (+ leng 20)))
   (setf (fill-pointer ar) leng)
@@ -612,7 +613,7 @@ values")
 	 (setf (aref ar i) v))
   (intern-invert-case ar))
 
-(defun bothcase-implode (lis  &aux tem )
+(defun bothcase-implode (lis)
   (implode1 lis nil))
 
 (defun list-string (strin &aux tem)
