@@ -400,7 +400,8 @@
 		(cond ((integerp (cadr exp)) ;5*%pi
 		       (mul (abs (remainder (cadr exp) 2)) '$%pi))
 					;Neither 0 nor 1 appears as a coef
-		      ((eq 'rat (caaadr exp)) ;5/2*%pi
+		      ((and (listp (cadr exp))
+			    (eq 'rat (caaadr exp))) ;5/2*%pi
 		       (mul (list* '(rat simp)
 				   (sub1 (remainder (add1 (cadadr exp))
 						    (times 2 (caddadr exp))))
