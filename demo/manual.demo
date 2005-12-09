@@ -602,7 +602,7 @@ factor(%);&&
 ratcoeff  a*x+b*x+5$
 ratcoef(%,a+b);&&
 ratdiff  (4*x^3+10*x-11)/(x^5+5);
-mod(%),modulus:3;
+polymod(%),modulus:3;
 ratdiff(%th(2),x);&&
 ratexpand  ratexpand((2*x-3*y)^3);
 (x-1)/(x+1)^2+1/(x-1);
