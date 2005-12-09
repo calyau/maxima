@@ -33,7 +33,9 @@ and also some functions not related to simplification.
 
 @c Adapted from absimp.usg ----------------------
 
-@defvr {Add-on package} absimp
+@c @defvr {Add-on package} (WITH HYPHEN) CONFUSES DESCRIBE (CAN'T FIND END OF ITEM)
+@c SAME WITH OTHER "ADD-ON PACKAGES" HERE (FACEXP, INEQ)
+@defvr {Add on package} absimp
 
 The @code{absimp} package contains pattern-matching rules that
 extend the built-in simplification rules for the @code{abs} and @code{signum}
@@ -74,7 +76,7 @@ Examples:
 @c I HAVE NO IDEA WHAT THESE FUNCTIONS DO.
 @c ALL OF THESE ITEMS NEED TO BE HEAVILY REVISED
 @c (ASSUMING THIS PACKAGE IS SOMETHING WE WANT TO INVEST TIME IN)
-@defvr {Add-on package} facexp
+@defvr {Add on package} facexp
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 The @code{facexp} package contains several related  functions that
@@ -348,7 +350,7 @@ selected from a set of @var{n} objects.
 
 @c Adapted from ineq.usg ----------------------
 @c THIS PACKAGE IS INTERESTING BUT THIS TEXT NEEDS WORK AND EXAMPLES
-@defvr {Add-on package} ineq
+@defvr {Add on package} ineq
 The @code{ineq} package contains simplification rules
 for inequalities.
 
