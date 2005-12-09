@@ -110,6 +110,25 @@
   (cond ((atom e) e)
 	((eq (caar e) 'mfactorial)
 	 (list '(%gamma) (list '(mplus) 1 (makegamma1 (cadr e)))))
+
+    ; Begin code copied from orthopoly/orthopoly-init.lisp
+    ;; Do pochhammer(x,n) ==> gamma(x+n)/gamma(x).
+    ((eq (caar e) '$pochhammer)
+     (let ((x (makegamma1 (nth 1 e)))
+           (n (makegamma1 (nth 2 e))))
+       `((mtimes) ((%gamma) ((mplus) ,x ,n)) ((mexpt) ((%gamma) ,x) -1))))
+
+    ((eq (caar e) '%genfact)
+     (let ((x (makegamma1 (nth 1 e)))
+           (y (makegamma1 (nth 2 e)))
+           (z (makegamma1 (nth 3 e))))
+       (setq x (add (div x z) 1))
+       (setq y (simplify `(($entier) ,y)))
+       (setq z (power z y))
+       `((mtimes) ,z ((%gamma) ,x)
+         ((mexpt) ((%gamma) ((mplus) ,x ((mtimes) -1 ,y))) -1))))
+    ; End code copied from orthopoly/orthopoly-init.lisp
+
 	((eq (caar e) '%elliptic_kc)
 	 ;; Complete elliptic integral of the first kind
 	 (cond ((alike1 (cadr e) '((rat simp) 1 2))
