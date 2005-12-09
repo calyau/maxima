@@ -319,7 +319,7 @@
 (defun csc\Sec-plus (l n f1 f2 flag)
   (div* (do ((l l (cdr l)) (result)) ((null l) (cons '(mtimes) result))
 	  (setq result (cons (cons-exp f1 (car l)) (cons (cons-exp f2 (car l)) result))))
-	(sin\Cos-plus l n f1 f2 flag)))
+	(sin\Cos-plus l n f2 f1 flag)))
 
 (defun sin\Cos-times (l m n f1 f2 flag)
   ;; Assume m,n < 2^17, but Binom may become big
@@ -356,7 +356,7 @@
 (defun csc\Sec-times (l m n f1 f2 flag)
   (div* (mul (power (cons-exp f1 (cons '(mtimes) l)) (abs n))
 	     (power (cons-exp f2 (cons '(mtimes) l)) (abs n)))
-	(sin\Cos-times l m n f1 f2 flag)))
+	(sin\Cos-times l m n f2 f1 flag)))
 
 (defun mpc (dl ul result f1 f2 di ui) 
   (cond ((= 0 ui)
