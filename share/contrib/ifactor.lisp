@@ -10,7 +10,7 @@
 ;;;                    prime-power factors of argument                     ;;;
 ;;;   - primep_pr    : probabilistic primality test                        ;;;
 ;;;   - next_prime   : smallest prime > n                                  ;;;
-;;;   - last_prime   : greatest prime < n                                  ;;;
+;;;   - prev_prime   : greatest prime < n                                  ;;;
 ;;;                                                                        ;;;
 ;;;                                                                        ;;;
 ;;; Version  : 1.1 (december 2005)                                         ;;;
@@ -28,7 +28,7 @@
 ;;;               - new sequence of tests
 ;;;               $primep_number_of_tests
 ;;;               - default 25
-;;; New         : last_prime
+;;; New         : prev_prime
 ;;;
 ;;; November 2005 Volker van Nek
 ;;;
@@ -300,7 +300,7 @@
   ;;
   ;; stage 1
   ;;
-  (let ((q 1) (last_q ($last_prime lim1)) (p `(,x ,z)) (ex) (next_gcd) (gcd_interval))
+  (let ((q 1) (last_q ($prev_prime lim1)) (p `(,x ,z)) (ex) (next_gcd) (gcd_interval))
     (setq gcd_interval (floor (/ lim1 4)))
     (setq next_gcd gcd_interval)
     (do () ((> q lim1))
@@ -607,13 +607,13 @@
        (next-prime (1+ n) 1))
    (merror "Argument to next_prime must be a positive integer:~%~M." n)))
 
-(defun $last_prime (n)
+(defun $prev_prime (n)
  (if (and (integerp n)
           (> n 2))
    (if (equal n 3)
        2
        (next-prime n -1))
-   (merror "Argument to last_prime must be an integer greater than 2:~%~M." n)))
+   (merror "Argument to prev_prime must be an integer greater than 2:~%~M." n)))
 
 (defun next-prime (n c)
   (progn
