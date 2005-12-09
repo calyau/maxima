@@ -307,21 +307,21 @@
     (if stg (princ (maknam (reverse stg))))
     (setq reprint nil)))
 
-;; The PDP10 is one of the only systems which autoload.
-;; The definition for non-autoloading systems is in MAXMAC. - CWH
-;; For now we'll let a USER put autoload properties on symbols
-;; and at least let them get found on Multics. - Jim 3/24/81
-;; Franz also autoloads -- jkf
-;;
+; Following GENERIC-AUTOLOAD is copied from orthopoly/orthopoly-init.lisp.
+; Previous version didn't take Clisp, CMUCL, or SBCL into account.
 
 #+cl
 (defun generic-autoload (file &aux type)
   (setq file (pathname (cdr file)))
   (setq type (pathname-type file))
-  (cond ((member type
-		 '(nil "BIN" "O" "o" "XFASL" "QFASL" "LISP" "LSP") :test 'equalp)
-	 (load file))
-	(t ($batchload file))))
+  (let ((bin-ext #+gcl "o"
+         #+cmu (c::backend-fasl-file-type c::*target-backend*)
+         #+clisp "fas"
+         #+allegro "fasl"
+         #-(or gcl cmu clisp allegro) ""))
+    (if (member type (list bin-ext "lisp" "lsp")  :test 'equalp)
+    (load file :verbose 't) ($batchload file))))
+
 #+cl
 (defvar autoload 'generic-autoload)
 
