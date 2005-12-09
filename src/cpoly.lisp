@@ -51,16 +51,6 @@
 
 ;;; It is harder to underflow on lisp machine, but I suppose someday -BEE
 
-#+(and)
-(eval-when
-    #+gcl (compile load)
-    #-gcl (:compile-toplevel :load-toplevel)
-    (defmacro *f  (a b) `(*$ ,a ,b))
-    (defmacro //f (a b) `(//$ ,a ,b))
-    (defmacro +f  (a b) `(+$ ,a ,b)))
-
-;;(defmacro -f  (a b) `(-$ ,a ,b))
-
 ;;(defmacro float-precision (pres)
 ;;  pres ;Ignored on Lisp Machine
 ;;  #+LISPM (let ((a (float 1)))
