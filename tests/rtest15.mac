@@ -319,3 +319,22 @@ solve('diff(y,x),'diff(y,x));
 /* multiplicity bug in solve.lisp 1.3 - 13 may 2004 */
 eigenvalues(matrix([3,1,0,0],[-4,-1,0,0],[7,1,2,1],[-17,-6,-1,0]));
 [[1],[4]];
+
+/* Bug 1369669 */
+trigexpand(csc(3*x));
+csc(x)^3*sec(x)^3/(3*csc(x)^2*sec(x)-sec(x)^3);
+
+/* Bug 1369451 */
+trigexpand(sec(x+y));
+csc(x)*sec(x)*csc(y)*sec(y)/(csc(x)*csc(y)-sec(x)*sec(y));
+
+/* Bug 1309377 */
+fpred(x) := (prederror:'false, is(x <= -1));
+fpred(x):=(prederror:'false,is(x <= -1))$
+fpred(xyzzy);
+unknown$
+translate(fpred);
+[fpred]$
+fpred(xyzzy);
+unknown$
+
