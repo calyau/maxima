@@ -78,7 +78,8 @@
              in order for the "describe" function to find it
 
           -- Create my_package/Makefile.am and put just one line
-             "info_TEXINFOS = my_package.texi" in it
+             "info_TEXINFOS = my_package.texi" in it.
+             Commit my_package/Makefile.am to CVS
 
           -- Put my_package on the SUBDIRS list of Makefile.am
              in the directory containing my_package
@@ -86,6 +87,7 @@
           -- Put my_package on the AC_OUTPUT list of maxima/configure.in
 
           -- Put my_package.info on the file list of maxima/share/Makefile.am
+             Do NOT commit my_package.info to CVS, it is regenerated automatically
 
       --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
