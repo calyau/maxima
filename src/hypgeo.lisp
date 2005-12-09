@@ -113,6 +113,7 @@
 (defun gminc (a b)
   (list '($gammaincomplete) a b))
 
+;; Lommel's little s[u,v](z) function.
 (defun littleslommel
     (m n z)
   (list '(mqapply)(list '($%s array) m n) z))
@@ -503,6 +504,8 @@
 	((coeffpp)(a zerp)))
       nil))
 
+
+;; Recognize Lommel s[v1,v2](w) function.
 (defun ones
     (exp)
   (m2 exp
@@ -513,6 +516,7 @@
 	((coeffpp)(a zerp)))
       nil))
 
+;; Lommel S[v1,v2](w) function
 (defun oneslommel
     (exp)
   (m2 exp
@@ -1919,8 +1923,24 @@
 	   (parcyl (mul* (power 2 inv2) x) -1)))
    (1//2)))
 
-(defun eitgammaincomplete(x)(mul* -1 (gminc 0 (mul -1 x))))
+;; The exponential integral Ei can be written in terms of the
+;; incomplete gamma function.
+;;
+;; See Table of Integral Transforms, p. 386:
+;;
+;; -Ei(-x) = E1(x) = integrate(exp(-t)/t,t,x,inf)
+;;
+;;         = gammaincomplete(0,x)
+;;
+(defun eitgammaincomplete (x)
+  (mul* -1 (gminc 0 (mul -1 x))))
 
+;; Express Lommel S function in terms of J and Y.
+;; Luke gives
+;;
+;; S[u,v](z) = s[u,v](z) + {2^(u-1)*gamma((u-v+1)/2)*gamma((u+v+1)/2)}
+;;                 * {sin[(u-v)*%pi/2]*bessel_j(v,z)
+;;                     - cos[(u-v)*%pi/2]*bessel_y(v,z)
 (defun slommeltjandy
     (m n z)
   ((lambda(arg)
@@ -2112,9 +2132,13 @@
 	 (div (numjory v sort z 'y)
 	      (sin% (mul v '$%pi))))))
 
-;;; LT<foo> functions are various experts on Laplace transforms of the function <foo>.
+;;; LT<foo> functions are various experts on Laplace transforms of the
+;;; function <foo>.  The expression being transformed is
+;;; r*<foo>(args).  The first arg of each expert is r, The remaining
+;;; args are the arg(s) and/or parameters.
 
-;;expert on l.t. expressions containing one bessel function of the first kind
+;; Expert on Laplace transform expressions containing one bessel
+;; function of the first kind
 
 (defun lt1j (rest arg index)
   (lt-ltp 'onej rest arg index))
@@ -2122,6 +2146,8 @@
 (defun lt1y (rest arg index)
   (lt-ltp 'oney rest arg index))
 
+;; Transform of a product of Bessel J functions.  The argument of each
+;; must be the same, but the orders may be different.
 (defun lt2j (rest arg1 arg2 index1 index2)
   (cond ((not (equal arg1 arg2))
 	 'product-of-bessel-with-different-args)
@@ -2130,10 +2156,12 @@
 		   arg1
 		   (list 'list index1 index2)))))
 
+;; Transform of a square of a Bessel J function
 (defun lt1j^2
     (rest arg index)
   (lt-ltp 'twoj rest arg (list 'list index index)))
 
+;; Transform of incomplete Gamma function
 (defun lt1gammagreek
     (rest arg1 arg2)
   (lt-ltp 'gammagreek rest arg2 arg1))
@@ -2251,6 +2279,12 @@
 		       (div (add* m n 3) 2))
 		 (mul* (inv -4) z z))))
 
+;; FLG = special function we're transforming
+;; REST = other stuff
+;; ARG = arg of special function
+;; INDEX = index of special function.
+;;
+;; So we're transforming REST*FLG(INDEX, ARG).
 (defun lt-ltp (flg rest arg index)
   (prog (index1 index2 argl const l l1)
      (cond ((or (zerp index)
@@ -2322,6 +2356,10 @@
 						      flg
 						      index
 						      arg)))))))
+	    ;; Convert the special function to a hypgergeometric
+	    ;; function.  L1 is the special function converted to the
+	    ;; hypergeometric function.  d*x^m*%e^a*x looks for that
+	    ;; factor in the expanded form.
 	    (return (%$etest l l1))))
      (return 'other-ca-later)))
 
@@ -2393,6 +2431,9 @@
     (asin (asintf arg))
     (atan (atantf arg))))
 
+;; Create a hypergeometric form that we recognize.  The function is
+;; %f[n,m](p; q; arg).  We represent this as a list of the form
+;; (fpq (<length p> <length q>) <p> <q> <arg>)
 (defun ref-fpq (p q arg)
   (list 'fpq (list (length p) (length q))
 	p q arg))
@@ -2577,7 +2618,8 @@
 		 (list (add 1 n) (add 1 m) (add* 1 n m))
 		 (mul -1 (power arg 2)))))
 
-;; Match d*x^m*%e^(a*x)
+;; Match d*x^m*%e^(a*x).  If we match, Q is the e^(a*x) part, A is a,
+;; M is M, and D is d.
 (defun d*x^m*%e^a*x
     (exp)
   (m2 exp
@@ -2604,10 +2646,12 @@
      (cond ((eq (car ans) 'dionimo)
 	    (return (dionarghyp-y l index (cadr ans)))))
      (return 'fail-in-execfy)))
-;;executive  for recognizing the sort of argument
 
-(defun execargmatch
-    (arg)
+;; Executive for recognizing the sort of argument to the
+;; hypergeometric function.  We look to see if the arg is of the form
+;; a*x^m + c.  Return a list of 'dionimo (what does that mean?) and
+;; the match.
+(defun execargmatch (arg)
   (prog(l1)
      (cond ((setq l1 (a*x^m+c ($factor arg)))
 	    (return (list 'dionimo l1))))
@@ -2615,6 +2659,9 @@
 	    (return (list 'dionimo l1))))
      (return 'other-case-args-to-follow)))
 
+;; We have hypergeometric function whose arg looks like a*x^m+c.  L1
+;; matches the d*x^m... part, L2 is the hypergeometric function and
+;; arg is the match for a*x^m+c.
 (defun dionarghyp
     (l1 l2 arg)
   (prog(a m c)
@@ -2628,13 +2675,15 @@
 	    (return (f19cond a m l1 l2))))
      (return 'prop4-and-aother-cases-to-folow)))
 
- 
+
+;; Match f(x)+c
 (defun f+c
     (exp)
   (m2 exp
       '((mplus)((coeffpt)(f hasvar))((coeffpp)(c freevar)))
       nil))
 
+;; Match a*x^m+c.
 (defun a*x^m+c
     (exp)
   (m2 exp
@@ -2679,6 +2728,8 @@
 	   d (cdras 'd l1)
 	   l1 (caddr l2)
 	   l2 (cadddr l2))
+     ;; At this point, we have the function d*x^s*%f[p,q](l1, l2, (a*t)^m).
+     ;; Check to see if Formula 19, p 220 applies.
      (cond ((and (not (eq (checksigntm (sub (add* p
 						  m
 						  -1)
