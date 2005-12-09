@@ -71,6 +71,11 @@
 (defprop $floor tex-matchfix tex)
 (defprop $floor (("\\left \\lfloor " ) " \\right \\rfloor") texsym)
 
+; These defprops for $entier are copied from orthopoly/orthopoly-init.lisp.
+
+(defprop $entier tex-matchfix tex)
+(defprop $entier (("\\lfloor ") " \\rfloor") texsym)
+
 ;; When constantp(x) is true, we use bfloat evaluation to try to determine
 ;; the floor. If numerical evaluation of e is ill-conditioned, this function 
 ;; can misbehave.  I'm somewhat uncomfortable with this,  but it is no worse 
