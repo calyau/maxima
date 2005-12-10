@@ -279,7 +279,8 @@
 	ret (let ((errset 'errbreak2) (thistime -1))
 	      (errset (displa (list '(mlable) linelable $%)))))
   (if (null ret) (mtell "~%Error during display~%"))
-  (if $disptime (mtell-open "Displaytime= ~A msec.~%" (- (runtime) tim)))
+  (if $disptime (mtell-open "Displaytime= ~A sec.~%" (quotient (float (- (runtime) tim))
+								internal-time-units-per-second)))
   ret)
 
 
@@ -812,8 +813,8 @@
 			 ((or incharp
 			      (prog2 (when (and timep (setq l (get (car l1) 'time)))
 				       (setq x (gctimep timep (cdr l)))
-				       (mtell-open "~A msec." (car l))
-				       #+gc (if x (mtell-open "  GCtime= ~A msec." (cdr l)))
+				       (mtell-open "~A sec." (car l))
+				       #+gc (if x (mtell-open "  GCtime= ~A sec." (cdr l)))
 				       (mterpri))
 				  (not (or inputp (get (car l1) 'nodisp)))))
 			  (mterpri) (displa (list '(mlable) (car l1) (meval1 (car l1)))))
@@ -1115,7 +1116,7 @@
 
 (defmspec $time (l) (setq l (cdr l))
 	  #-cl
-	  (mtell-open "`time' or [total`time', GC`time'] in msecs.:~%")
+	  (mtell-open "`time' or [total`time', GC`time'] in secs.:~%")
 	  #+cl
 	  (format t "~&Time:")
 	  (cons '(mlist simp)
