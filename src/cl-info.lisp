@@ -47,20 +47,15 @@
 			(code-char 9) (code-char 10) (code-char 10)
 			(code-char 10)))
        (precomp-nil-string1
-	(compile nil
-		 (regex-compile 
-		  string1
-		  :case-sensitive nil)))
+	#-gcl (compile nil (regex-compile string1 :case-sensitive nil))
+	#+gcl (regex-compile string1 :case-sensitive nil))
        (precomp-t-string2
-	(compile nil
-		 (regex-compile 
-		  string2
-		  :case-sensitive nil)))
+	#-gcl (compile nil (regex-compile string2 :case-sensitive nil))
+	#+gcl (regex-compile string2 :case-sensitive nil))
        (precomp-t-string3
-	(compile nil
-		 (regex-compile 
-		  string3
-		  :case-sensitive nil))))
+	#-gcl (compile nil (regex-compile string3 :case-sensitive nil))
+	#+gcl (regex-compile string3 :case-sensitive nil)))
+
   (defun compile-regex (pat &key (case-sensitive t))
     (cond
       ((and (equal case-sensitive nil)
@@ -82,10 +77,8 @@
 	     #+gcl
 	     (compiler:*compile-verbose* nil)
 	     )
-	 (compile nil
-		  (regex-compile 
-		   pat 
-		   :case-sensitive case-sensitive))))))
+	 #-gcl (compile nil (regex-compile pat :case-sensitive case-sensitive))
+	 #+gcl (regex-compile pat :case-sensitive case-sensitive)))))
   )
 ;; Search the string STRING for the pattern PAT.  Only the part of the
 ;; string bounded by START and END are searched.  PAT may either be a
