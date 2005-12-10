@@ -1115,14 +1115,15 @@
   (throw 'mcatch exp))
 
 (defmspec $time (l) (setq l (cdr l))
-	  #-cl
-	  (mtell-open "`time' or [total`time', GC`time'] in secs.:~%")
-	  #+cl
-	  (format t "~&Time:")
+	  ;#-cl
+	  ;(mtell-open "`time' or [total`time', GC`time'] in secs.:~%")
+	  ;#+cl
+	  ;(format t "~&Time:")
 	  (cons '(mlist simp)
 		(mapcar
 		 #'(lambda (x)
-		     (or (and (setq x (or (get x 'time)
+		     (or (and (symbolp x)
+		    	      (setq x (or (get x 'time)
 					  (and (eq x '$%) (cons (cadr $lasttime)
 								(caddr $lasttime)))))
 			      (if (= (cdr x) 0)
