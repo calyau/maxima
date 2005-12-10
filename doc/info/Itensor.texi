@@ -122,7 +122,7 @@ contravariant and derivative indices.  The covariant indices are
 specified by a list as the first argument to the indexed object, and
 the contravariant indices by a list as the second argument. If the
 indexed object lacks either of these groups of indices then the empty
-list [] is given as the corresponding argument.  Thus, @code{g([a,b],[c])}
+list @code{[]} is given as the corresponding argument.  Thus, @code{g([a,b],[c])}
 represents an indexed object called @code{g} which has two covariant indices
 @code{(a,b)}, one contravariant index (@code{c}) and no derivative indices.
 
@@ -339,7 +339,7 @@ sorted alphanumerically (if @code{allsym} is @code{true}) with respect to
 covariant or contravariant indices depending upon the value of @code{flipflag}.
 If @code{flipflag} is @code{false} then the indices will be renamed according
 to the order of the contravariant indices. If @code{flipflag} is @code{true}
-the renaming will occur according to the to the order of the contravariant
+the renaming will occur according to the to the order of the covariant
 indices. It often happens that the combined effect of the two renamings will
 reduce an expression more than either one by itself.
 
@@ -390,7 +390,7 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @defvr {Option variable} flipflag
 
-Default: @code{false}. if @code{false} then the indices will be
+Default: @code{false}. If @code{false} then the indices will be
 renamed according to the order of the contravariant indices,
 otherwise according to the order of the covariant indices.
 
@@ -558,7 +558,7 @@ Unbinds all values from @var{tensor} which were assigned with the
 @end deffn
 
 @c NEED LIST OF ARGUMENTS HERE
-@deffn {Function} showcomps
+@deffn {Function} showcomps (@var{tensor})
 
 Shows component assignments of a tensor, as made using the @code{components}
 command. This function can be particularly useful when a matrix is assigned
@@ -616,23 +616,26 @@ already in use (see the example under @code{indices}).
 
 @end deffn
 
-@defvr {Variable} idummyx
+@defvr {Option variable} idummyx
+Default value: @code{%}
 
 Is the prefix for dummy indices (see the example under @code{indices}).
 
 @end defvr
 
 @defvr {Option variable} icounter
- default: [1] determines the numerical suffix to be used in
+Default value: @code{1}
+
+Determines the numerical suffix to be used in
 generating the next dummy index in the tensor package.  The prefix is
-determined by the option @code{idummy} (default: %).
+determined by the option @code{idummy} (default: @code{%}).
 @end defvr
 
 @deffn {Function} kdelta (@var{L1}, @var{L2})
 is the generalized Kronecker delta function defined in
 the @code{itensor} package with @var{L1} the list of covariant indices and @var{L2}
 the list of contravariant indices.  @code{kdelta([i],[j])} returns the ordinary
-Kronecker delta.  The command @code{ev(expr,kdelta)} causes the evaluation of
+Kronecker delta.  The command @code{ev(@var{expr},kdelta)} causes the evaluation of
 an expression containing @code{kdelta([],[])} to the dimension of the
 manifold.
 
@@ -971,8 +974,7 @@ in @var{expr} and then carry out the differentiation by saying
 
 @end deffn
 
-@c NEED FUNCTION ARGUMENTS HERE
-@deffn {Function} evundiff
+@deffn {Function} evundiff (@var{expr})
 
 Equivalent to the execution of @code{undiff}, followed by @code{ev} and
 @code{rediff}.
@@ -1117,7 +1119,8 @@ symbols as seen from the following:
 @end example
 @end deffn
 
-@deffn {Function} simpmetderiv (@var{expr}[, @var{stop}])
+@deffn {Function} simpmetderiv (@var{expr})
+@deffnx {Function} simpmetderiv (@var{expr}[, @var{stop}])
 
 Simplifies expressions containing products of the derivatives of the
 metric tensor. Specifically, @code{simpmetderiv} recognizes two identities:
@@ -1215,10 +1218,12 @@ exactly one derivative index.
 @subsection Tensors in curved spaces
 
 @deffn {Function} imetric (@var{g})
+@deffnx {System variable} imetric
+
 Specifies the metric by assigning the variable @code{imetric:@var{g}} in
 addition, the contraction properties of the metric @var{g} are set up by
 executing the commands @code{defcon(@var{g}),defcon(@var{g},@var{g},kdelta)}.
-The variable @code{imetric}, default: [], is bound to the metric, assigned by
+The variable @code{imetric} (unbound by default), is bound to the metric, assigned by
 the @code{imetric(@var{g})} command.
 
 @end deffn
@@ -1289,24 +1294,24 @@ Enter a list of the derivative indices: [];
 (%t3)     - a     ichr2    - a     ichr2    + a      + ichr2     a
              i %1      j s    %1 j      i s    i j,s        %1 s  i j
 (%i4) imetric:g;
-(%o4) 				       g
+(%o4)                                  g
 (%i5) ishow(ev(%th(2),ichr2))$
-	 %1 %4  k
-	g      a     (g	      - g       + g	 )
-		i %1   s %4,j	 j s,%4	   j %4,s
+         %1 %4  k
+        g      a     (g       - g       + g      )
+                i %1   s %4,j    j s,%4    j %4,s
 (%t5) - ------------------------------------------
-			    2
+                            2
     %1 %3  k
-   g	  a     (g       - g	   + g	    )
-	   %1 j	  s %3,i    i s,%3    i %3,s
+   g      a     (g       - g       + g      )
+           %1 j   s %3,i    i s,%3    i %3,s
  - ------------------------------------------
-		       2
+                       2
     k %2  %1
-   g     a    (g        - g	   + g	     )
-	  i j   s %2,%1	   %1 s,%2    %1 %2,s	  k
+   g     a    (g        - g        + g       )
+          i j   s %2,%1    %1 s,%2    %1 %2,s     k
  + ------------------------------------------- + a
-			2			  i j,s
-(%i6) 
+                        2                         i j,s
+(%i6)
 @end example
 
 @end deffn
@@ -1589,9 +1594,9 @@ to @code{kdelta}.
 @end defvr
 
 @defvr {Option variable} iframe_bracket_form
+Default value: @code{true}
 
-Specifies how the frame bracket (@code{ifb}) is computed. Default is
-@code{true}.
+Specifies how the frame bracket (@code{ifb}) is computed.
 
 @end defvr
 
@@ -1611,8 +1616,8 @@ tensor's covariant derivative will evaluate to the following when
 
 @example
 
-g     =- g  nm
- ij;k     ij  k
+g     =- g  inm
+ ij;k     ij   k
 
 @end example
 
@@ -1953,6 +1958,7 @@ Compute the Hodge-dual of @var{expr}. For instance:
 @end deffn
 
 @defvr {Option variable} igeowedge_flag
+Default value: @code{false}
 
 Controls the behavior of the wedge product and exterior derivative. When
 set to @code{false} (the default), the notion of differential forms will
@@ -2033,7 +2039,7 @@ function.
 (%t2)                       t    = f a   b    g
                              i j      ,j  i    l m
 (%i3) ic_convert(eqn);
-(%o3) for i thru dim do (for j thru dim 
+(%o3) for i thru dim do (for j thru dim
 
 do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
                        i, j, k                   m           j   i, l, k
@@ -2045,7 +2051,7 @@ do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
 (%i5) metricconvert:true;
 (%o5)                                true
 (%i6) ic_convert(eqn);
-(%o6) for i thru dim do (for j thru dim 
+(%o6) for i thru dim do (for j thru dim
 
 do (for k thru dim do t        : f sum(sum(diff(a , ct_coords ) b
                        i, j, k                   m           j   i, l, k
