@@ -1347,6 +1347,7 @@ setrgbcolor} def
 
 
 (defun $openplot_curves (lis &aux (linel 100000))
+ (let (($display2d nil))
   (declare (special linel))
   (show-open-plot
    (with-output-to-string
@@ -1389,7 +1390,7 @@ setrgbcolor} def
 	    (format st " }")
 	    )
      (format st "}~%")
-     )))
+     ))))
 
 
 
