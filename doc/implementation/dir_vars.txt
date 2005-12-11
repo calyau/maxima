@@ -55,6 +55,13 @@ area. This directory is independent of the installed layout:
           maxima-userdir
 
       13) The parent directory for temporary files:
-          maxima-temprir
+          maxima-tempdir
 	  
- 
+Maxima needs to know location of locale specific data
+(translated documentation, localized messages etc):
+
+      14) The sub-directory for locale specific data:
+          maxima-lang-subdir
+	  Usually value of this variable is automatically derived 
+	  from current user's locale. 
+

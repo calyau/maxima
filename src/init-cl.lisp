@@ -26,6 +26,7 @@
 (defvar *maxima-layout-autotools*)
 (defvar *maxima-userdir*)
 (defvar *maxima-tempdir*)
+(defvar *maxima-lang-subdir*)
 
 (defun print-directories ()
   (format t "maxima-prefix=~a~%" *maxima-prefix*)
@@ -42,6 +43,7 @@
   (format t "maxima-layout-autotools=~a~%" *maxima-layout-autotools*)
   (format t "maxima-userdir=~a~%" *maxima-userdir*)
   (format t "maxima-tempdir=~a~%" *maxima-tempdir*)
+  (format t "maxima-lang-subpdir=~a~%" *maxima-lang-subdir*)
   ($quit))
 
 (defvar *maxima-lispname* #+clisp "clisp"
@@ -188,6 +190,36 @@
 		  "c:\\user\\"
 		  "/tmp")))
     (maxima-parse-dirstring base-dir)))
+
+(defun set-locale ()
+  (let (locale language territory codeset)
+    (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
+	(setq locale (or (maxima-getenv "LC_ALL")
+                         (maxima-getenv "LC_MESSAGES")
+                         (maxima-getenv "LANG")))
+	(cond
+	    ((null locale) 
+		(setq *maxima-lang-subdir* nil))
+	    ((zl-member locale '("C" "POSIX" "c" "posix")) 		 
+		(setq *maxima-lang-subdir* nil))
+	    (t  (when (eql (position #\. locale) 5)
+		    (setq codeset (subseq locale 6)))
+		(when (eql (position #\_ locale) 2)
+		    (setq territory (string-upcase (subseq locale 3 5))))
+		(setq language (string-downcase (subseq locale 0 2)))
+		;; Set *maxima-lang-subdir* only for known languages.
+		;; Extend procedure below as soon as new translation
+		;; is available. 
+		(cond
+		    ;; English
+		    ;; no subdir (default direcrory)
+		    ((equal language "en")
+			(setq *maxima-lang-subdir* nil))
+		    ;; Latin-1 aka iso-8859-1 languages 
+		    ;; subdir = two-char language code
+		    ((zl-member language '("es" "pt"))
+		        (setq *maxima-lang-subdir* language))
+		    (t  (setq *maxima-lang-subdir* nil)))  )))))    
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
@@ -454,6 +486,7 @@
     
     (catch 'to-lisp
       (set-pathnames)
+      (set-locale)
       (setf (values input-stream batch-flag) 
 	    (process-maxima-args input-stream batch-flag))
       (progn
