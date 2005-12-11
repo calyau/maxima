@@ -12,10 +12,10 @@ Filename:  share/contrib/README
 
 Notes on specific packages:
 
-Grobner/        Marek Rychlik's implimentation of Grobner basis support
+Grobner/        Marek Rychlik's implementation of Grobner basis support
                 from http://alamos.math.arizona.edu/~rychlik/
 
-Zeilberger/     This is Fabrizio Caruso's implimentation of 
+Zeilberger/     This is Fabrizio Caruso's implementation of 
                 Zeilberger's algorithm for definite hypergeometric 
 		summation and Gosper's algorithm for indefinite 
 		hypergeometric summation.
@@ -60,7 +60,18 @@ pdiff/          This is Barton Willis's pdiff package from
 rand/           Code from books and papers by Richard H. Rand
 		(http://tam.cornell.edu/Rand.html)
 
-sarag/		Fabrizio Caruso's implimentation of Some Algorithms
+sarag/		Fabrizio Caruso's implementation of Some Algorithms
                 in Real Algebraic Geometry
 
+simplex/        Andrej Vodopivec's code for the two-phase standard simplex
+                method.
+
+solve_rec/      Andrej Vodopivec's code for solving recurrence equations
+                with polynomial coefficients. It uses Petkovsek's hyper
+                algorithm and Abramov's algorithm.
+
+state/          This is Dan Stanger's state variable code.
+
+stringproc/     A Maxima string package by Volker van Nek.
+                
 unit/		A new unit package by Cliff Yapp, still under development.
