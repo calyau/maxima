@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Itensor.texi/1.35/Sat Dec  3 08:56:54 2005/
+@c /Itensor.texi/1.36/Sun Dec 11 07:57:27 2005//
 @c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
 @c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
 
@@ -123,7 +123,7 @@ o contravariante e o @'indice de deriva@,{c}@~ao.  Os @'indices covariantes s@~a
 especificados atrav@'es de uma lista com o primeiro argumento para o objeto indexado, e
 os @'indices contravariantes atrav@'es de uma lista como segundo argumento. Se o
 objeto indexado carece de algum desses grupos de @'indices ent@~ao a lista
-vazia [] @'e fornecida como o argumento correspondente.  Dessa forma, @code{g([a,b],[c])}
+vazia @code{[]} @'e fornecida como o argumento correspondente.  Dessa forma, @code{g([a,b],[c])}
 representa um objeto indexado chamado @code{g} o qual tem dois @'indices covariantes
 @code{(a,b)}, um @'indice contravariante (@code{c}) e n@~ao possui @'indices de deriva@,{c}@~ao.
 
@@ -341,7 +341,7 @@ ordenados alfanumericamente (se @code{allsym} for @code{true}) com rela@,{c}@~ao
 Se @code{flipflag} for @code{false} ent@~ao os @'indices ser@~ao renomeados conforme
 a ordem dos @'indices contravariantes. Se @code{flipflag} for @code{true}
 a renomea@,{c}@~ao ocorrer@'a conforme a ordem dos @'indices
-contravariantes. Isso muitas vezes ajuda que o efeito combinado dos dois restantes sejam
+covariantes. Isso muitas vezes ajuda que o efeito combinado dos dois restantes sejam
 reduzidos a uma express@~ao de valor um ou mais que um por si mesma.
 
 @example
@@ -559,7 +559,7 @@ fun@,{c}@~ao @code{components}.
 @end deffn
 
 @c NEED LIST OF ARGUMENTS HERE
-@deffn {Fun@value{cedilha}@~ao} showcomps
+@deffn {Fun@value{cedilha}@~ao} showcomps (@var{tensor})
 
 Mostra atribui@,{c}@~oes de componentes de um tensor, feitas usando o comando
 @code{components}. Essa fun@,{c}@~ao pode ser particularmente @'util quando uma matriz @'e atribu@'ida
@@ -617,23 +617,26 @@ que j@'a estiverem sendo usados (veja o exemplo sob @code{indices}).
 
 @end deffn
 
-@defvr {Vari@'avel} idummyx
+@defvr {Vari@'avel de op@value{cedilha}@~ao} idummyx
+Valor padr@~ao: @code{%}
 
 @'E o prefixo para @'indices que ocorrem exatamente duas vezes (veja o exemplo sob @'indices @code{indices}).
 
 @end defvr
 
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} icounter
- valor padr@~ao: [1] determina o sufixo num@'erico para ser usado na
+Valor padr@~ao: @code{1}
+
+Determina o sufixo num@'erico a ser usado na
 gera@,{c}@~ao do pr@'oximo @'indice que ocorre exatamente duas vezes no pacote tensor.  O prefixo @'e
-determinado atrav@'es da op@,{c}@~ao @code{idummy} (caractere padr@~ao: %).
+determinado atrav@'es da op@,{c}@~ao @code{idummy} (padr@~ao: @code{%}).
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} kdelta (@var{L1}, @var{L2})
 @'e a fun@,{c}@~ao delta generalizada de Kronecker definida no
 pacote @code{itensor} com @var{L1} a lista de @'indices covariantes e @var{L2}
 a lista de @'indices contravariantes.  @code{kdelta([i],[j])} retorna o delta de
-Kronecker comum.  O comando @code{ev(expr,kdelta)} faz com que a avalia@,{c}@~ao de
+Kronecker comum.  O comando @code{ev(@var{expr},kdelta)} faz com que a avalia@,{c}@~ao de
 uma express@~ao contendo @code{kdelta([],[])} se d@^e para a dimens@~ao de
 multiplica@,{c}@~ao.
 
@@ -972,8 +975,7 @@ em @var{expr} e ent@~ao concluir a diferencia@,{c}@~ao atrav@'es de digamos
 
 @end deffn
 
-@c NEED FUNCTION ARGUMENTS HERE
-@deffn {Fun@value{cedilha}@~ao} evundiff
+@deffn {Fun@value{cedilha}@~ao} evundiff (@var{expr})
 
 Equivalente @`a execu@,{c}@~ao de @code{undiff}, seguida por @code{ev} e
 @code{rediff}.
@@ -1118,7 +1120,8 @@ Christoffel como visto adiante:
 @end example
 @end deffn
 
-@deffn {Fun@value{cedilha}@~ao} simpmetderiv (@var{expr}[, @var{stop}])
+@deffn {Fun@value{cedilha}@~ao} simpmetderiv (@var{expr})
+@deffnx {Fun@value{cedilha}@~ao} simpmetderiv (@var{expr}[, @var{stop}])
 
 Simplifica express@~oes contendo produtos de derivadas de
 tensores m@'etricos. Especificamente, @code{simpmetderiv} reconhece duas identidades:
@@ -1216,10 +1219,12 @@ exatamente um @'indice derivativo.
 @subsection Tensores em espa@,{c}os curvos
 
 @deffn {Fun@value{cedilha}@~ao} imetric (@var{g})
+@deffnx {Vari@'avel de sistema} imetric
+
 Especifica a m@'etrica atrav@'es de atribui@,{c}@~ao @`a vari@'avel @code{imetric:@var{g}}
 adicionalmente, as propriedades de contra@,{c}@~ao da m@'etrica @var{g} s@~ao escolhidas atrav@'es da
 execu@,{c}@~ao dos comandos @code{defcon(@var{g}),defcon(@var{g},@var{g},kdelta)}.
-A vari@'avel @code{imetric}, valor padr@~ao: [], est@'a associada @`a m@'etrica, atribuida pelo
+A vari@'avel @code{imetric} (desassociada por padr@~ao), @'e associada @`a m@'etrica, atribuida pelo
 comando @code{imetric(@var{g})}.
 
 @end deffn
@@ -1590,9 +1595,9 @@ para @code{kdelta}.
 @end defvr
 
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} iframe_bracket_form
+Valor padr@~ao: @code{true}
 
-Especifica como o suporte da moldura (@code{ifb}) @'e calculado. O valor padr@~ao @'e
-@code{true}.
+Especifica como o suporte da moldura (@code{ifb}) @'e calculado.
 
 @end defvr
 
@@ -1612,7 +1617,7 @@ m@'etrica derivada covariante ir@'a avaliar para o seguinte quando
 
 @example
 
-g     =- g  nm
+g     =- g  inm
  ij;k     ij  k
 
 @end example
@@ -1954,6 +1959,7 @@ Calcula o Hodge dual de @var{expr}. Por exemplo:
 @end deffn
 
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} igeowedge_flag
+Valor padr@~ao: @code{false}
 
 Controla o comportamento de produto cunha e derivada exterior. Quando
 for esconhida para @code{false} (o padr@~ao), a no@,{c}@~ao de formas diferenciais ir@'a

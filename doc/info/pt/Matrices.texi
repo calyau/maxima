@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Matrices.texi/1.19/Tue Nov  1 17:26:56 2005/-ko/
+@c /Matrices.texi/1.20/Wed Dec  7 00:19:55 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
@@ -103,6 +103,7 @@ mais listas (ou matrizes) sobre a matriz @var{M}.
 
 @deffn {Fun@,{c}@~ao} adjoint (@var{M})
 Retorna a matriz adjunta da matriz @var{M}.
+A matriz adjunta @'e a transposta da matriz dos cofatores de @var{M}.
 
 @end deffn
 
