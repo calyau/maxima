@@ -1,0 +1,277 @@
+(trig : [cos(x), sin(x), tan(x), csc(x), sec(x), cot(x)],0);
+0$
+
+(htrig : [cosh(x), sinh(x), tanh(x), csch(x), sech(x), coth(x)],0);
+0$
+
+(complexfloatp(x) := block([xr,xi],
+  x : rectform(x),
+  xr : realpart(x),
+  xi : imagpart(x),
+  (?floatp(xr) and (?floatp(xi) or integerp(xi))) or (?floatp(xi) and integerp(xr))), 0);
+0$
+  
+/*  Make sure that each trig function evaluates to a float for a float argument. */
+
+(ok : true,0);
+0$
+
+(for f in append(trig,htrig) do (
+  ok : ok and complexfloatp(subst(x = 1.2 + %i,f)),
+  ok : ok and complexfloatp(subst(x = 1 + %i/7.0,f)),
+  ok : ok and complexfloatp(subst(x = -2.3 + %i/7.0,f)),
+  ok : ok and complexfloatp(subst(x = -2.3 - %i,f))),0);
+0$
+
+ok;
+true$
+
+(complexbigfloatp(x) := block([xr,xi],
+  x : rectform(x),
+  xr : realpart(x),
+  xi : imagpart(x),
+  (bfloatp(xr) and (bfloatp(xi) or integerp(xi))) or (bfloatp(xi) and integerp(xr))), 0);
+0$
+
+/*  Make sure that each trig function evaluates to a big float for a big float argument. */
+
+(ok : true,0);
+0$
+
+(for f in append(trig,htrig) do (
+  ok : ok and complexbigfloatp(subst(x = 1.2b0,f))),0);
+0$
+
+ok;
+true$
+
+/*  Test %piargs  */
+
+(maxerror : 0.0,0);
+0$
+
+(%piargs : true,0);
+0$
+
+(for f in trig do (
+   for i : -24 thru 24 do (
+      z : errcatch(subst(x = %pi * i / 24, f)),
+      if z # [ ] then maxerror : max(maxerror, abs(float(first(z) - subst(x = %pi * i / 24.0, f)))))),0);
+0$
+
+is(maxerror < 1.0e-13);
+true$
+
+/* Test %iargs   */
+
+(%iargs : true, trigsign : true, 0);
+0$
+
+subst(-%i*x,x, subst(%i*x,x,append(trig,htrig))) - append(trig,htrig);
+makelist(0,i,1,length(append(trig,htrig)));
+
+(itrig : subst(%i*x,x,append(trig,htrig)),0);
+0$
+
+(%iargs : false, listarith : true,0);
+0$
+
+(itrig : itrig - subst(%i*x,x,append(trig,htrig)),0);
+0$
+
+ratsimp(taylor(itrig,x,0,5));
+makelist(0,i,1,length(append(trig,htrig)))$
+
+(exponentialize : false,0);
+0$
+
+taylor(exponentialize(append(trig,htrig)) - append(trig,htrig),x,0,5);
+makelist(0,i,1,length(append(trig,htrig)))$
+
+
+/*  Test reflection rules  */
+
+(trigsign : true,0);
+0$
+
+subst(-x,x, subst(-x,x, append(trig,htrig)));
+append(trig,htrig)$
+
+(mtrig : subst(x=5.6, subst(-x,x,append(trig,htrig))),0);
+0$
+
+(trigsign : false,0);
+0$
+
+mtrig - subst(x=-5.6, append(trig,htrig));
+makelist(0,i,1,length(append(trig,htrig)))$
+
+/* Test half angles */
+
+(halfangles : true, 0);
+0$
+
+(xtrig : subst(x/2,x, append(trig,htrig)),0);
+0$
+
+(halfangles : false, 0);
+0$
+
+xtrig : taylor(xtrig - subst(x/2,x, append(trig, htrig)),x,0,5);
+makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+
+/* Test trig expand */
+
+(trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
+0$
+
+(xtrig : subst(x=x+y, append(trig,htrig)),0);
+0$
+
+(trigexpand : false,0);
+0$
+
+xtrig : taylor(xtrig - subst(x=x+y, append(trig, htrig)),[x,y],0,5);
+makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+
+(trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
+0$
+
+(xtrig : subst(x=x-y, append(trig,htrig)),0);
+0$
+
+(trigexpand : false,0);
+0$
+
+xtrig : taylor(xtrig - subst(x=x-y, append(trig, htrig)),[x,y],0,5);
+makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+
+(trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
+0$
+
+(xtrig : subst(x = 2*x, append(trig,htrig)),0);
+0$
+
+(trigexpand : false,0);
+0$
+
+xtrig : taylor(xtrig - subst(x=2*x, append(trig, htrig)),[x,y],0,5);
+makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+
+(trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
+0$
+
+(xtrig : subst(x = 3*x, append(trig,htrig)),0);
+0$
+
+(trigexpand : false,0);
+0$
+
+xtrig : taylor(xtrig - subst(x=3*x, append(trig, htrig)),[x,y],0,5);
+makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+
+(trigexpand : true, trigexpandplus : true, trigexpandtimes : true, 0);
+0$
+
+(xtrig : subst(x = 7*x, append(trig,htrig)),0);
+0$
+
+(trigexpand : false,0);
+0$
+
+xtrig : taylor(xtrig - subst(x=7*x, append(trig, htrig)),[x,y],0,5);
+makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
+
+/* Test triginverses  */
+
+(invtrig : [acos(x), asin(x), atan(x), acsc(x), asec(x), acot(x)],0);
+0$
+
+(errormax : 0.0 ,0);
+0$
+
+(for f in invtrig do (
+  triginverses : true,
+  xtrig : subst(f,x,trig),
+  triginverses : false,
+  xtrig : xtrig - subst(f,x,trig),
+  for i : 1 thru 9 do (
+    errormax : max(errormax, apply('max, map('cabs, subst(i/10.0,x,xtrig)))))),0);
+0$
+
+is(errormax < 1.0e-12);
+true$
+
+(invhtrig : [acosh(x), asinh(x), atanh(x), acsch(x), asech(x), acoth(x)],0);
+0$
+
+(errormax : 0.0 ,0);
+0$
+
+(for f in invhtrig do (
+  triginverses : true,
+  xtrig : subst(f,x,htrig),
+  triginverses : false,
+  xtrig : xtrig - subst(f,x,htrig),
+  for i : 1 thru 9 do (
+    errormax : max(errormax, apply('max, map('cabs, subst(i/10.0,x,xtrig)))))),0);
+0$
+
+is(errormax < 1.0e-12);
+true$
+
+(alltrig : append(trig, htrig, invtrig, invhtrig),0);
+0$
+
+(pts : [2,2+%i, 2-%i,-2,-2+%i,-2-%i,1/2,1/2 +%i/2,1/2-%i/2,-1/2,-1/2+%i/2,-1/2-%i/2],0);
+0$
+
+(buggy : [] ,0);
+0$
+
+(for f in alltrig do (
+  for p in pts do (
+    if cabs(float(rectform(subst(x=p, f))) - subst(x=float(p),f)) > 1.0e-13 then buggy : cons([f,p],buggy))),0);
+0$
+
+buggy;
+[]$
+
+
+/*  Numerically check some identities  */
+
+(id : cos(x)^2 + sin(x)^2 - 1,0);
+0$
+
+(maxerror : 0,0)$
+0$
+
+(for p in pts do block([numer : true],
+  maxerror : max(maxerror, cabs(expand(subst(x = p, id))))),0);
+0$
+
+is(maxerror < 1.0e-15);
+true$
+
+
+(id : cot(2*x) - (cot(x)^2-1)/(2*cot(x)),0);
+0$
+
+(maxerror : 0,0)$
+0$
+
+(for p in pts do block([numer : true],
+  maxerror : max(maxerror, cabs(expand(subst(x = p, id))))),0);
+0$
+
+is(maxerror < 1.0e-15);
+true$
+
+(kill(values),0);
+0$
+
+(remfunction(complexfloatp, complexbigfloatp),0);
+0$
+
+
+
