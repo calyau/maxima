@@ -10,7 +10,7 @@ Command.texi          Groups.texi        Miscellaneous.texi  SpecfunII.texi \
 Constants.texi        Help.texi          nset.texi           Special.texi \
 Contexts.texi         Indices.texi       Number.texi         Statistics.texi \
 Ctensor.texi          Input.texi         Numerical.texi      Symmetries.texi \
-Debugging.tex         Integration.texi   Operators.texi      Trigonometric.texi \
+Debugging.texi        Integration.texi   Operators.texi      Trigonometric.texi \
 Differential.texi     Introduction.texi  Plotting.texi \
 Differentiation.texi  Itensor.texi       Polynomials.texi \
 Elliptic.texi         Limits.texi        Program.texi
