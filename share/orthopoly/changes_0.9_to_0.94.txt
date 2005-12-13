@@ -1,3 +1,17 @@
+13 December 2005
+
+1. For $bessel_y, the argument order was changed.  Corrected
+call to $bessel_y in  $spherical_bessel_y. Under GCL, all
+tests pass.
+
+2. Change to (in-package :maxima)
+
+3. Changed to version 1.0.  The version identifier is now a float.
+This allows easier testing.
+
+4. Removed the claim that this is a preliminary version--orthopoly is
+better tested and has fewer bugs than does specfun.
+ 
 29 August 2003
 
 1. Replaced kron_delta with the one from nset.
