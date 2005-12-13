@@ -62,7 +62,7 @@ them.  Thus, @code{apropos (exp)} returns a list of all the flags
 and functions which have @code{exp} as part of their names, such as @code{expand},
 @code{exp}, and @code{exponentialize}.  Thus if you can only remember part of the name
 of something you can use this command to find the rest of the name.
-Similarily, you could say @code{apropos (tr_)} to find a list of many of the
+Similarly, you could say @code{apropos (tr_)} to find a list of many of the
 switches relating to the translator, most of which begin with @code{tr_}.
 
 @end deffn
@@ -410,7 +410,7 @@ of @code{combine}, which collects terms that have identical denominators.
 Setting @code{pfeformat: true} and using @code{combine} yields results similar
 to those that can be obtained with @code{rncombine}, but @code{rncombine} takes the
 additional step of cross-multiplying numerical denominator factors.
-This results in neater forms, and the possiblity of recognizing some
+This results in neater forms, and the possibility of recognizing some
 cancellations.
 
 @end deffn
