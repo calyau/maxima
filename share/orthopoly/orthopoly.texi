@@ -287,40 +287,34 @@ For a specific @var{n}, we can reduce the expression to zero.
 Generally, the polynomial form of an orthogonal polynomial is ill-suited
 for floating point evaluation. Here's an example.
 
-@c FOLLOWING EXAMPLE YIELDS POCHHAMMER SYMBOL (NONNUMERIC). WHAT'S UP WITH THAT ??
 @c ===beg===
-@c p : jacobi_p (150, 2, 3, x)$
+@c p : jacobi_p (100, 2, 3, x)$
 @c subst (0.2, x, p);
+@c jacobi_p (100, 2, 3, 0.2);
+@c float(jacobi_p (100, 2, 3, 2/10));
 @c ===end===
 @example 
-(%i1) p : jacobi_p (150, 2, 3, x)$
-
+(%i1) p : jacobi_p (100, 2, 3, x)$
 (%i2) subst (0.2, x, p);
-                  1.4311422861417571E+57 (3)
-                                            150
-(%o2)             -----------------------------
-                             (1)
-                                150
+(%o2) 3.444276702383359*10^+35
+(%i3) jacobi_p (100, 2, 3, 0.2);
+(%o3) INTERVAL(0.1841360913516871,6.899030092581599*10^-12)
+(%i4) float(jacobi_p (100, 2, 3, 2/10));
+(%o4) 0.1841360913516856
 @end example
 
-The true value is about -0.06; this calculation suffers from extreme
+The true value is about 0.184; this calculation suffers from extreme
 subtractive cancellation error. Expanding the polynomial and then
 evaluating, gives a better result.
 @c CONTINUING PREVIOUS EXAMPLE HERE
-@c THIS ALSO YIELDS A POCHHAMMER SYMBOL
 @c ===beg===
 @c p : expand (p)$
 @c subst (0.2, x, p);
 @c ===end===
 @example
-(%i3) p : expand (p)$
-
-(%i4) subst (0.2, x, p);
-                   5.4263515125390278E-6 (3)
-                                            150
-(%o4)            - ----------------------------
-                              (1)
-                                 150
+(%i5) p : expand(p)$
+(%i6) subst (0.2, x, p);
+(%o6) 0.18413609766122982
 @end example
 
 This isn't a general rule; expanding the polynomial does not always
@@ -447,21 +441,18 @@ center of an interval can be a complex number, and the radius is always a positi
 
 Here is an an example.
 
-@c MORE POCHHAMMER SYMBOLS HERE
 @c ===beg===
 @c fpprec : 50$
-@c y0 : jacobi_p (150, 2, 3, 0.2);
-@c y1 : bfloat (jacobi_p (150, 2, 3, 1/5));
-@c ===end===
+@c y0 : jacobi_p (100, 2, 3, 0.2);
+@c y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
+@c ===end==
+=
 @example
 (%i1) fpprec : 50$
-
-(%i2) y0 : jacobi_p (150, 2, 3, 0.2);
-(%o2) interval(- 0.062017037936714516, 1.533267919277521E-11)
-(%i3) y1 : bfloat (jacobi_p (150, 2, 3, 1/5));
-(%o3) - 5.404063954053353748687334139489948534452721736308b-6
-                                        (3.0b0)     /(1.0b0)
-                                               1.5b2        1.5b2
+(%i2) y0 : jacobi_p (100, 2, 3, 0.2);
+(%o2) INTERVAL(0.1841360913516871,6.8990300925815987*10^-12)
+(%i3) y1 : bfloat (jacobi_p (100, 2, 3, 1/5));
+(%o3) 1.8413609135168563091370224958913493690868904463668B-1
 @end example
 
 Let's test that the actual error is smaller than the error estimate
