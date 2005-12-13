@@ -9,8 +9,8 @@
 ;; for its use. It has no warranty. If you don't know the meaning 
 ;; of "no warranty," don't use this code. :-)
 
-(in-package "MAXIMA")
-(mfunction-call $put '|$orthopoly| '|&0.94| '$version)
+(in-package :maxima)
+($put '$orthopoly 1.0 '$version)
 
 ;; A while loop taken from nset.lisp. Someday it should be placed
 ;; in a file with other Maxima macros and deleted from here and from nset.
@@ -1000,7 +1000,7 @@
 	   (setq n (+ 0.5L0 ($float n)))
 	   (setq d (* d (sqrt (/ pi (* 2 z)))))
 	   (setq d (lisp-float-to-maxima-float d))
-	   ($expand (mul ($rectform d) ($bessel_y x n)))))
+	   ($expand (mul ($rectform d) ($bessel_y n x)))))
 
 	((and (integerp n) (> n -1))
 	 (let ((xt (add x (div (mul n '$%pi) 2))))
