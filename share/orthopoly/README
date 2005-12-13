@@ -1,8 +1,7 @@
 Copyright (C)  2000, 2001, 2003 Barton Willis, University of Nebraska at 
 Kearney (aka UNK)
 
-orthopoly is the new name for specfun. Version 0.94 is a preliminary version.  
-You should expect it to have bugs.  To install orthopoly, follow the directions
+orthopoly is the new name for specfun. To install orthopoly, follow the directions
 in orthopoly_doc.html.
 
 This library is free software; you can redistribute it and/or modify it
