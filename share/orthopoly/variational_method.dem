@@ -12,7 +12,7 @@ order Hermite polynomials times a Gaussian function. We'll need to
 assign a value to n, load orthopoly, and assign psi.
 */
 
-n : 9;
+n : 4;
 
 if get('orthopoly,'version) = 'false then load("orthopoly")$
 
@@ -55,7 +55,7 @@ m_det : ratsimp(m_det)$
 mu = cf[ 0] + cf[1] * epsilon + ... + cf[solve_ord] epsilon^solve_ord.
 */
 
-solve_ord : 12;
+solve_ord : 5;
 pows : makelist(epsilon^i,i,0,solve_ord)$
 unks : makelist(cf[ i ],i,0,solve_ord)$
 eq : ev(m_det, mu = unks . pows)$
