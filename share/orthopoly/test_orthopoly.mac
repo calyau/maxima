@@ -3,7 +3,7 @@ We assume all orthopoly user functions autoload.*/
 
 showtime : all$
 float2bf : true$
-s
+
 /*  Rodrigue's formulae */
 
 jacobi_p_rod(n,a,b,x) := block([ an, rho, g ],
