@@ -1261,6 +1261,280 @@ One extra decimal digit in actual representation for rounding purposes.")
      (return (cond ((null r) (list '(mabs) (car l)))
 		   (t (bcons (fpabs (cdr r)))))))) 
 
+
+;;;; Bigfloat implementations of special functions.
+;;;;
+
+;;; This is still a bit messy.  Some functions here take bigfloat
+;;; numbers, represented by ((bigfloat) <mant> <exp>), but others want
+;;; just the FP number, represented by (<mant> <exp>).  Likewise, some
+;;; return a bigfloat, some return just the FP.
+;;;
+;;; This needs to be systemized somehow.  It isn't helped by the fact
+;;; that some of the routines above also do the samething.
+
+;; Compute exp(x) - 1, but do it carefully to preserve precision when
+;; |x| is small.  X is a FP number, and a FP number is returned.  That
+;; is, no bigfloat stuff.
+(defun fpexpm1 (x)
+  ;; What is the right breakpoint here?  Is 1 ok?  Perhaps 1/e is better?
+  (cond ((fpgreaterp (fpabs x) (fpone))
+	 ;; exp(x) - 1
+	 (fpdifference (fpexp x) (fpone)))
+	(t
+	 ;; Use Taylor series for exp(x) - 1
+	 (let ((ans x)
+	       (oans nil)
+	       (term x))
+	   (do ((n 2 (1+ n)))
+	       ((equal ans oans))
+	     (setf term (fpquotient (fptimes* x term) (intofp n)))
+	     (setf oans ans)
+	     (setf ans (fpplus ans term)))
+	   ans))))
+  
+;; log(1+x) for small x.  X is FP number, and a FP number is returned.
+(defun fplog1p (x)
+  ;; Use the same series as given above for fplog.  For small x we use
+  ;; the series, otherwise fplog is accurate enough.
+  (cond ((fpgreaterp (fpabs x) (fpone))
+	 (fplog (fpplus x (fpone))))
+	(t
+	 (let* ((sum (intofp 0))
+		(term (fpquotient x (fpplus x (intofp 2))))
+		(f (fptimes* term term))
+		(oldans nil))
+	   (do ((n 1 (+ n 2)))
+	       ((equal sum oldans))
+	     (setq oldans sum)
+	     (setq sum (fpplus sum
+			       (fpquotient term (intofp n))))
+	     (setq term (fptimes* term f)))
+	   (fptimes* sum (intofp 2))))))
+
+;; sinh(x) for real x.  X is a bigfloat, and a bigfloat is returned.
+(defun fpsinh (x)
+  ;; X must be a maxima bigfloat
+  
+  ;; See, for example, Hart et al., Computer Approximations, 6.2.27:
+  ;;
+  ;; sinh(x) = 1/2*(D(x) + D(x)/(1+D(x)))
+  ;;
+  ;; where D(x) = exp(x) - 1.
+  (let ((d (fpexpm1 (cdr (bigfloatp x)))))
+    (bcons
+     (fpquotient (fpplus d
+			 (fpquotient d
+				     (fpplus d (fpone))))
+		 (intofp 2)))))
+
+(defun big-float-sinh (x &optional y)
+  ;; The rectform for sinh should be numerically accurate, so return nil 
+  (unless y
+    (fpsinh x)))
+
+;; asinh(x) for real x.  X is a bigfloat, and a bigfloat is returned.
+(defun fpasinh (x)
+  ;; asinh(x) = sign(x) * log(|x| + sqrt(1+x*x))
+  ;;
+  ;; And
+  ;;
+  ;; asinh(x) = x, if 1+x*x = 1
+  ;;          = sign(x) * (log(2) + log(x)), large |x|
+  ;;          = sign(x) * log(2*|x| + 1/(|x|+sqrt(1+x*x))), if |x| > 2
+  ;;          = sign(x) * log1p(|x|+x^2/(1+sqrt(1+x*x))), otherwise.
+  ;;
+  ;; But I'm lazy right now and we only implement the last 2 cases.
+  ;; We should implement all cases.
+  (let* ((fp-x (cdr (bigfloatp x)))
+	 (absx (fpabs fp-x))
+	 (one (fpone))
+	 (two (intofp 2))
+	 (minus (minusp (car fp-x)))
+	 result)
+    ;; We only use two formulas here.  |x| <= 2 and |x| > 2.  Should
+    ;; we add one for very big x and one for very small x, as given above.
+    (cond ((fpgreaterp absx two)
+	   ;; |x| > 2
+	   ;;
+	   ;; log(2*|x| + 1/(|x|+sqrt(1+x^2)))
+	   (setf result
+		 (fplog (fpplus (fptimes* absx two)
+				(fpquotient one
+					    (fpplus absx
+						    (fproot (bcons (fpplus one
+									   (fptimes* absx absx)))
+							    2)))))))
+	  (t
+	   ;; |x| <= 2
+	   ;;
+	   ;; log1p(|x|+x^2/(1+sqrt(1+x^2)))
+	   (let ((x*x (fptimes* absx absx)))
+	     (setq result
+		   (fplog1p (fpplus absx
+				    (fpquotient x*x
+						(fpplus one
+							(fproot (bcons (fpplus one x*x))
+								2)))))))))
+    (if minus
+	(bcons (fpminus result))
+	(bcons result))))
+
+(defun complex-asinh (x y)
+  ;; asinh(z) = -%i * asin(%i*z)
+  (multiple-value-bind (u v)
+      (complex-asin (mul -1 y) x)
+    (values v (bcons (fpminus (cdr u))))))
+
+(defun big-float-asinh (x &optional y)
+  (if y
+      (multiple-value-bind (u v)
+	  (complex-asinh x y)
+	(add u
+	     (mul '$%i v)))
+      (fpasinh x)))
+
+;; asin(x) for real x.  X is a bigfloat, and a maxima number (real or
+;; complex) is returned.
+(defun fpasin (x)
+  ;; asin(x) = atan(x/(sqrt(1-x^2))
+  ;;         = sgn(x)*[%pi/2 - atan(sqrt(1-x^2)/abs(x))]
+  ;;
+  ;; Use the first for  0 <= x < 1/2 and the latter for 1/2 < x <= 1.
+  ;;
+  ;; If |x| > 1, we need to do something else.
+  ;;
+  ;; asin(x) = -%i*log(sqrt(1-x^2)+%i*x)
+  ;;         = -%i*log(%i*x + %i*sqrt(x^2-1))
+  ;;         = -%i*[log(|x + sqrt(x^2-1)|) + %i*%pi/2]
+  ;;         = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
+  
+  (let ((fp-x (cdr (bigfloatp x))))
+    (cond ((minusp (car fp-x))
+	   ;; asin(-x) = -asin(x);
+	   (fpminus (cdr (fpasin (fpminus fp-x)))))
+	  ((fplessp fp-x (cdr bfhalf))
+	   ;; 0 <= x < 1/2
+	   ;; asin(x) = atan(x/sqrt(1-x^2))
+	   (bcons
+	    (fpatan (fpquotient fp-x
+				(fproot (bcons
+					 (fptimes* (fpdifference (fpone) fp-x)
+						   (fpplus (fpone) fp-x)))
+					2)))))
+	  ((fpgreaterp fp-x (fpone))
+	   ;; x > 1
+	   ;; asin(x) = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
+	   ;;
+	   ;; Should we try to do something a little fancier with the
+	   ;; argument to log and use log1p for better accuracy?
+	   (let ((arg (fpplus fp-x
+			      (fproot (bcons (fptimes* (fpdifference fp-x (fpone))
+						       (fpplus fp-x (fpone))))
+				      2))))
+	     (add (bcons (fpquotient (fppi) (intofp 2)))
+		  (mul -1 '$%i
+		       (bcons (fplog arg))))))
+		       
+	  (t
+	   ;; 1/2 <= x <= 1
+	   ;; asin(x) = %pi/2 - atan(sqrt(1-x^2)/x)
+	   (let ((piby2 (fpquotient (fppi) (intofp 2))))
+	     (bcons
+	      (fpdifference piby2
+			    (fpatan
+			     (fpquotient (fproot
+					  (bcons (fptimes* (fpdifference (fpone)
+									 fp-x)
+							   (fpplus (fpone) fp-x)))
+					  2)
+					 fp-x)))))))))
+
+;; Square root of a complex number (xx, yy).  Both are bigfloats.  FP
+;; (non-bigfloat) numbers are returned.
+(defun complex-sqrt (xx yy)
+  (let* ((x (cdr (bigfloatp xx)))
+	 (y (cdr (bigfloatp yy)))
+	 (rho (fpplus (fptimes* x x)
+		      (fptimes* y y))))
+    (setf rho (fpplus (fpabs x) (fproot (bcons rho) 2)))
+    (setf rho (fpplus rho rho))
+    (setf rho (fpquotient (fproot (bcons rho) 2) (intofp 2)))
+
+    (let ((eta rho)
+	  (nu y))
+      (when (fpgreaterp rho (intofp 0))
+	(setf nu (fpquotient (fpquotient nu rho) (intofp 2)))
+	(when (fplessp x (intofp 0))
+	  (setf eta (fpabs nu))
+	  (setf nu (if (minusp (car y))
+		       (fpminus rho)
+		       rho))))
+      (values eta nu))))
+
+;; asin(z) for complex z = x + %i*y.  X and Y are bigfloats.  The real
+;; and imaginary parts are returned as bigfloat numbers.
+(defun complex-asin (x y)
+  (let ((x (cdr (bigfloatp x)))
+	(y (cdr (bigfloatp y))))
+    (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
+	(complex-sqrt (bcons (fpdifference (intofp 1) x))
+		      (bcons (fpminus y)))
+      (multiple-value-bind (re-sqrt-1+z im-sqrt-1+z)
+	  (complex-sqrt (bcons (fpplus (intofp 1) x))
+			(bcons y))
+	;; Realpart is atan(x/Re(sqrt(1-z)*sqrt(1+z)))
+	;; Imagpart is asinh(Im(conj(sqrt(1-z))*sqrt(1+z)))
+	(values (bcons
+		 (fpatan (fpquotient x
+				     (fpdifference (fptimes* re-sqrt-1-z
+							     re-sqrt-1+z)
+						   (fptimes* im-sqrt-1-z
+							     im-sqrt-1+z)))))
+		(fpasinh (bcons
+			  (fpdifference (fptimes* re-sqrt-1-z
+						  im-sqrt-1+z)
+					(fptimes* im-sqrt-1-z
+						  re-sqrt-1+z)))))))))
+  
+(defun big-float-asin (x &optional y)
+  (if y
+      (multiple-value-bind (u v)
+	  (complex-asin x y)
+	(add u
+	     (mul '$%i v)))
+      (fpasin x)))
+  
+  
+;; tanh(x) for real x.  X is a bigfloat, and a bigfloat is returned.
+(defun fptanh (x)
+  ;; X is Maxima bigfloat
+  ;; tanh(x) = D(2*x)/(2+D(2*x))
+  (let* ((two (intofp 2))
+	 (fp (cdr (bigfloatp x)))
+	 (d (fpexpm1 (fptimes* fp two))))
+    (bcons
+     (fpquotient d (fpplus d two)))))
+
+;; tanh(z), z = x + %i*y.  X, Y are bigfloats, and a maxima number is
+;; returned.
+(defun complex-tanh (x y)
+  (let* ((tv (cdr (tanbigfloat (list y))))
+	 (beta (fpplus (fpone) (fptimes* tv tv)))
+	 (s (cdr (fpsinh x)))
+	 (rho (fproot (bcons (fpplus (fpone) (fptimes* s s)))
+		      2))
+	 (den (fpplus (fpone) (fptimes* beta (fptimes* s s)))))
+    (add (bcons (fpquotient (fptimes* beta (fptimes* rho s))
+			    den))
+	 (mul '$%i
+	      (bcons (fpquotient tv den))))))
+
+(defun big-float-tanh (x &optional y)
+  (if y
+      (complex-tanh x y)
+      (fptanh x)))
+
 (eval-when
     #+gcl (load)
     #-gcl (:load-toplevel)

@@ -100,6 +100,11 @@
   function to evaluate the maxima function numerically with
   double-float precision.")
 
+(defvar *big-float-op* (make-hash-table)
+  "Hash table mapping a maxima function to a corresponding Lisp
+  function to evaluate the maxima function numerically with
+  big-float precision.")
+  
 ;; Fill the hash table.
 (macrolet ((frob (mfun dfun)
 	     `(setf (gethash ',mfun *double-float-op*) ,dfun)))
@@ -195,6 +200,17 @@
   (frob $atan2 #'cl:atan)
   )
 
+(macrolet ((frob (mfun dfun)
+	     `(setf (gethash ',mfun *big-float-op*) ,dfun)))
+  ;; All big-float implementation functions MUST support a required x
+  ;; arg and an optional y arg for the real and imaginary parts.  The
+  ;; imaginary part does not have to be given.
+  (frob %asin #'big-float-asin)
+  (frob %sinh #'big-float-sinh)
+  (frob %asinh #'big-float-asinh)
+  (frob %tanh #'big-float-tanh)
+  )
+
 ;; Here is a general scheme for defining and applying reflection rules. A 
 ;; reflection rule is something like f(-x) --> f(x), or  f(-x) --> %pi - f(x). 
 
@@ -281,13 +297,10 @@
 	       (and (eq (third u) '$%i))))))
 
 ;; When z is a Maxima complex float or when 'numer' is true and z is a
-;; Maxima complex number, evaluate (op z) by applying the
-;; mapping from the Maxima operator 'op' to the operator in the 
-;; hash table 'double-float-op'. When z isn't a Maxima complex number,
-;; return nil.
-
-;; Since 1.0 * %i --> %i, we have cos(1.0 * %i) --> cos(%i).  But cos(1.1 * %i) --> 1.6...
-;; Sigh. Without changing the evaluation of 1.0 * %i, I don't know how to change this.
+;; Maxima complex number, evaluate (op z) by applying the mapping from
+;; the Maxima operator 'op' to the operator in the hash table
+;; 'double-float-op'. When z isn't a Maxima complex number, return
+;; nil.
 
 (defun double-float-eval (op z)
   (let ((op (gethash op *double-float-op*)))
@@ -298,20 +311,30 @@
 	  (setq y ($float y))
 	  (complexify (funcall op (if (zerop y) x (complex x y)))))))))
 
-;; For now, big float evaluation of trig-like functions for complex big 
-;; floats uses rectform.  I suspect that for some functions (not all of them) 
-;; rectform generates expressions that are poorly suited for numerical 
-;; evaluation. For better accuracy, these functions (maybe acosh, for one) 
-;; may need to be special cased.
+;; For now, big float evaluation of trig-like functions for complex
+;; big floats uses rectform.  I suspect that for some functions (not
+;; all of them) rectform generates expressions that are poorly suited
+;; for numerical evaluation. For better accuracy, these functions
+;; (maybe acosh, for one) may need to be special cased.  If they are
+;; special-cased, the *big-float-op* hash table contains the special
+;; cases.
 
 (defun big-float-eval (op z)
-  (cond ((complex-number-p z 'bigfloat-or-number-p)
-	 (let ((x ($realpart z)) (y ($imagpart z)))
-	   (cond ((and ($bfloatp x) (like 0 y)) ($bfloat `((,op simp) ,x)))
-		 ((or ($bfloatp x) ($bfloatp y))
-		  (setq z (add ($bfloat x) (mul '$%i ($bfloat y))))
-		  (setq z ($rectform `((,op simp) ,z)))
-		  ($bfloat z)))))))
+  (when (complex-number-p z 'bigfloat-or-number-p)
+    (let ((x ($realpart z))
+	  (y ($imagpart z))
+	  (bop (gethash op *big-float-op*)))
+      ;; If bop is non-NIL, we want to try that first.  If bop
+      ;; declines (by returning NIL), we silently give up and use the
+      ;; rectform version.
+      (cond ((and ($bfloatp x) (like 0 y))
+	     (or (and bop (funcall bop x))
+		 ($bfloat `((,op simp) ,x))))
+	    ((or ($bfloatp x) ($bfloatp y))
+	     (or (and bop (funcall bop ($bfloat x) ($bfloat y)))
+		 (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
+		   (setq z ($rectform `((,op simp) ,z)))
+		   ($bfloat z))))))))
 	 
 ;; For complex big float evaluation, it's important to check the 
 ;; simp flag -- otherwise Maxima can get stuck in an infinite loop:
