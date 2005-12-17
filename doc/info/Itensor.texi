@@ -339,7 +339,7 @@ sorted alphanumerically (if @code{allsym} is @code{true}) with respect to
 covariant or contravariant indices depending upon the value of @code{flipflag}.
 If @code{flipflag} is @code{false} then the indices will be renamed according
 to the order of the contravariant indices. If @code{flipflag} is @code{true}
-the renaming will occur according to the to the order of the covariant
+the renaming will occur according to the order of the covariant
 indices. It often happens that the combined effect of the two renamings will
 reduce an expression more than either one by itself.
 
