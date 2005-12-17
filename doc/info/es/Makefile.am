@@ -11,7 +11,7 @@ Constants.es.texi        Help.es.texi          nset.es.texi           Special.es
 Contexts.es.texi         Indices.es.texi       Number.es.texi         Statistics.es.texi \
 Ctensor.es.texi          Input.es.texi         Numerical.es.texi      Symmetries.es.texi \
 Debugging.es.texi        Integration.es.texi   Operators.es.texi      Trigonometric.es.texi \
-Differential.es.texi     Introduction.es.texi  Plotting.es.texi       xrefs.es.texi \
+Differential.es.texi     Introduction.es.texi  Plotting.es.texi  \
 Differentiation.es.texi  Itensor.es.texi       Polynomials.es.texi \
 Elliptic.es.texi         Limits.es.texi        Program.es.texi
 

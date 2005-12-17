@@ -1,4 +1,4 @@
-@c version 1.28
+@c version 1.30
 @menu
 * Introducci@'on a ctensor::     
 * Definiciones para ctensor::     
@@ -9,15 +9,18 @@
 
 El paquete @code{ctensor} dispone de herramientas para manipular componentes de tensores. Para poder hacer uso de @code{ctensor} es necesario cargarlo previamente en memoria ejecutando  @code{load(ctensor)}. Para comenzar una sesi@'on interactiva con @code{ctensor}, ejecutar la funci@'on @code{csetup()}. Primero se le pregunta al usuario la dimensi@'on de la variedad. Si la dimensi@'on es 2, 3 o 4, entonces la lista de coordenadas ser@'a por defecto  @code{[x,y]}, @code{[x,y,z]}
 o @code{[x,y,z,t]}, respectivamente. Estos nombres pueden cambiarse asignando una nueva lista de coordenadas a la variable @code{ct_coords} (que se describe m@'as abajo), siendo el usuario advertido sobre este particular. 
-** Se debe tener cuidado en evitar que los nombres de las coordenadas entren en conflicto con los nombres de otros objetos en Maxima **.
+Se debe tener cuidado en evitar que los nombres de las coordenadas entren en conflicto con los nombres de otros objetos en Maxima.
 
-A continuaci@'on, el usuario introduce la m@'etrica, bien directamente, o desde un fichero especificando su posici@'on ordinal. Como ejemplo de fichero con una m@'etrica t@'{@dotless{i}}pica, v@'ease @code{share/tensor/metrics.mac}. La m@'etrica se almacena en la matriz @code{lg}. Por @'ultimo, la m@'etrica inversa se obtiene y almacena en la matriz @code{ug}. Tambi@'en se dispone de la opci@'on de efectuar todos los c@'alculos en serie de potencias.
+A continuaci@'on, el usuario introduce la m@'etrica, bien directamente, o desde un fichero especificando su posici@'on ordinal. 
+@c NO SUCH FILE !
+@c As an example of a file of common metrics, see @code{share/tensor/metrics.mac}.
+La m@'etrica se almacena en la matriz @code{lg}. Por @'ultimo, la m@'etrica inversa se obtiene y almacena en la matriz @code{ug}. Tambi@'en se dispone de la opci@'on de efectuar todos los c@'alculos en serie de potencias.
 
 Se desarrolla a continuaci@'on un ejemplo para la m@'etrica est@'atica, esf@'erica y sim@'etrica, en coordenadas est@'andar, que se aplicar@'a posteriormente al problema de derivar las ecuaciones de vac@'{@dotless{i}}o de Einstein (de las que se obtiene la soluci@'on de Schwarzschild). Muchas de las funciones de @code{ctensor} se mostrar@'an  en los ejemplos para la m@'etrica est@'andar.
 
 @example
 (%i1) load(ctensor);
-(%o1)      /usr/local/lib/maxima/share/tensor/ctensor.mac
+(%o1)      /share/tensor/ctensor.mac
 (%i2) csetup();
 Enter the dimension of the coordinate system: 
 4;
@@ -131,32 +134,32 @@ Prepara un sistema de coordenadas predefinido y una m@'etrica. El argumento @var
 
   S@'{@dotless{i}}mbolo              Dim Coordenadas       Descripci@'on/comentarios
   --------------------------------------------------------------------------------
-  cartesian2d           2  [x,y]             Sistema de coordenadas cartesianas 2D
+  cartesian2d           2  [x,y]             Sistema de coordenadas cartesianas en 2D
   polar                 2  [r,phi]           Sistema de coordenadas polares
-  elliptic              2  [u,v]
-  confocalelliptic      2  [u,v]
-  bipolar               2  [u,v]
-  parabolic             2  [u,v]
-  cartesian3d           3  [x,y,z]           Sistema de coordenadas cartesianas 3D
-  polarcylindrical      3  [r,theta,z]
-  ellipticcylindrical   3  [u,v,z]           El@'{@dotless{i}}pticas 2D con Z cil@'{@dotless{i}}ndrica
-  confocalellipsoidal   3  [u,v,w]
-  bipolarcylindrical    3  [u,v,z]           Bipolares 2D con Z cil@'{@dotless{i}}ndrica
-  paraboliccylindrical  3  [u,v,z]           Parab@'olicas 2D con Z cil@'{@dotless{i}}ndrica
-  paraboloidal          3  [u,v,phi]
-  conical               3  [u,v,w]
-  toroidal              3  [u,v,phi]
+  elliptic              2  [u,v]             Sistema de coordenadas el@'{@dotless{i}}pticas
+  confocalelliptic      2  [u,v]             Coordenadas el@'{@dotless{i}}pticas confocales
+  bipolar               2  [u,v]             Sistema de coordenas bipolares
+  parabolic             2  [u,v]             Sistema de coordenadas parab@'olicas
+  cartesian3d           3  [x,y,z]           Sistema de coordenadas cartesianas en 3D
+  polarcylindrical      3  [r,theta,z]       Polares en 2D con cil@'{@dotless{i}}ndrica z
+  ellipticcylindrical   3  [u,v,z]           El@'{@dotless{i}}pticas en 2D con cil@'{@dotless{i}}ndrica z
+  confocalellipsoidal   3  [u,v,w]           Elipsoidales confocales
+  bipolarcylindrical    3  [u,v,z]           Bipolares en 2D con cil@'{@dotless{i}}ndrica z
+  paraboliccylindrical  3  [u,v,z]           Parab@'olicas en 2D con cil@'{@dotless{i}}ndrica z
+  paraboloidal          3  [u,v,phi]         Coordenadas paraboloidales
+  conical               3  [u,v,w]           Coordenadas c@'onicas
+  toroidal              3  [u,v,phi]         Coordenadas toroidales
   spherical             3  [r,theta,phi]     Sistema de coordenadas esf@'ericas
-  oblatespheroidal      3  [u,v,phi]
+  oblatespheroidal      3  [u,v,phi]         Coordenadas esferoidales obleadas
   oblatespheroidalsqrt  3  [u,v,phi]
-  prolatespheroidal     3  [u,v,phi]
+  prolatespheroidal     3  [u,v,phi]         Coordenadas esferoidales prolatas
   prolatespheroidalsqrt 3  [u,v,phi]
-  ellipsoidal           3  [r,theta,phi]
-  cartesian4d           4  [x,y,z,t]         Sistema de coordenadas cartesianas 3D
-  spherical4d           4  [r,theta,eta,phi]
+  ellipsoidal           3  [r,theta,phi]     Coordenadas elipsoidales
+  cartesian4d           4  [x,y,z,t]         Sistema de coordenadas cartesianas en 4D
+  spherical4d           4  [r,theta,eta,phi] Sistema de coordenadas esf@'ericas en 4D
   exteriorschwarzschild 4  [t,r,theta,phi]   M@'etrica de Schwarzschild
   interiorschwarzschild 4  [t,z,u,v]         M@'etrica interior de Schwarzschild
-  kerr_newman           4  [t,r,theta,phi]   M@'etrica sim@'etrica axialmente cargada
+  kerr_newman           4  [t,r,theta,phi]   M@'etrica sim@'etrica con carga axial
 
 @end example
 
@@ -281,7 +284,7 @@ Es una funci@'on del paquete @code{ctensor}. La funci@'on @code{ricci} calcula l
 
 
 @deffn {Funci@'on} uricci (@var{dis})
-Esta funci@'on calcula en primer lugar las componentes covariantes  @code{ric[i,j]} del tensor de Ricci. Despu@'es se calcula el tensor de Ricci utilizando la m@'etrica contravariante. Si el valor del argumento @var{dis} vale @code{true}, entonces se mostrar@'an directamente las componentes @code{uric[i,j]} (el @'{@dotless{i}}ndice i es covariante y el j contravariante). En otro caso,  @code{ricci(false)} simplemente calcular@'a las entradas del arreglo @code{uric[i,j]} sin mostrar los resultados.
+Esta funci@'on calcula en primer lugar las componentes covariantes  @code{ric[i,j]} del tensor de Ricci. Despu@'es se calcula el tensor de Ricci utilizando la m@'etrica contravariante. Si el valor del argumento @var{dis} vale @code{true}, entonces se mostrar@'an directamente las componentes @code{uric[i,j]} (el @'{@dotless{i}}ndice @var{i} es covariante y el @var{j} contravariante). En otro caso,  @code{ricci(false)} simplemente calcular@'a las entradas del arreglo @code{uric[i,j]} sin mostrar los resultados.
 
 @end deffn
 
@@ -310,7 +313,7 @@ Es una funci@'on del paquete @code{ctensor}. La funci@'on @code{riemann} calcula
                 ijk     ij,k     ik,j     mk   ij    mj   ik
 @end example
 
-Esta notaci@'on es consistente con la notaci@'on utilizada por el paquete "itensor" y su funci@'on @code{icurvature}. Si el argumento opcional @var{dis} vale @code{true}, se muestran las componentes no nulas de @code{riem[i,j,k,l]}. Como en el caso del tensor de Einstein, ciertas variables permiten controlar al usuario la simplificaci@'on de las componentes del tensor de Riemann. Si  @code{ratriemann} vale @code{true}, entonces se har@'a la simplificaci@'on racional. Si @code{ratfac}
+Esta notaci@'on es consistente con la notaci@'on utilizada por el paquete @code{itensor} y su funci@'on @code{icurvature}. Si el argumento opcional @var{dis} vale @code{true}, se muestran las componentes no nulas de @code{riem[i,j,k,l]}. Como en el caso del tensor de Einstein, ciertas variables permiten controlar al usuario la simplificaci@'on de las componentes del tensor de Riemann. Si  @code{ratriemann} vale @code{true}, entonces se har@'a la simplificaci@'on racional. Si @code{ratfac}
 vale @code{true}, entonces se factorizar@'an todas las componentes.
 
 Si la variable @code{cframe_flag} vale @code{false}, el tensor de Riemann se calcula directamente a partir de los s@'{@dotless{i}}mbolos de Christoffel. Si @code{cframe_flag} vale @code{false}, el tensor covariante de Riemann se calcula a partir de los coeficientes del campo.
@@ -1048,96 +1051,96 @@ Devuelve una nueva lista consistente en @var{L} sin su @var{n}-@'esimo elemento.
 
 @subsection Variables utilizadas por @code{ctensor}
 
-@defvr {Variable optativa} dim
+@defvr {Variable opcional} dim
 Valor por defecto: 4
 
 Es la dimensi@'on de la variedad, que por defecto ser@'a 4. La instrucci@'on @code{dim: n} establecer@'a la dimensi@'on a cualquier otro valor @code{n}.
 
 @end defvr
 
-@defvr {Variable optativa} diagmetric
+@defvr {Variable opcional} diagmetric
 Valor por defecto: @code{false}
 
 Si @code{diagmetric} vale @code{true} se utilizar@'an rutinas especiales para calcular todos los objetos geom@'etricos teniendo en cuenta la diagonalidad de la m@'etrica, lo que redundar@'a en una reducci@'on del tiempo de c@'alculo. Esta opci@'on se fija autom@'aticamente por @code{csetup} si se especifica una m@'etrica diagonal.
 
 @end defvr
 
-@defvr {Variable optativa} ctrgsimp
+@defvr {Variable opcional} ctrgsimp
 
 Provoca que se realicen simplificaciones trigonom@'etricas cuando se calculan tensores. La variable @code{ctrgsimp} afecta @'unicamente a aquellos c@'alculos que utilicen un sistema de referencia m@'ovil.
 
 @end defvr
 
-@defvr {Variable optativa} cframe_flag
+@defvr {Variable opcional} cframe_flag
 
 Provoca que los c@'alculos se realicen respecto de un sistema de referencia m@'ovil. @c FALTA POR COMPLETAR EL PARRAFO
 
 @end defvr
 
-@defvr {Variable optativa} ctorsion_flag
+@defvr {Variable opcional} ctorsion_flag
 
 Obliga a que se calcule tambi@'en el tensor de contorsi@'on junto con los coeficientes de conexi@'on. El propio tensor de contorsi@'on se calcula con la funci@'on @code{contortion} a partir del tensor @code{tr} suministrado por el usuario.
 
 @end defvr
 
-@defvr {Variable optativa} cnonmet_flag
+@defvr {Variable opcional} cnonmet_flag
 
 Obliga a que se calculen tambi@'en los coeficientes de no metricidad junto con los coeficientes de conexi@'on. Los coeficientes de no metricidad se calculan con la funci@'on @code{nonmetricity} a partir del vector de no metricidad@code{nm} suministrado por el usuario.
 
 @end defvr
 
-@defvr {Variable optativa} ctayswitch
+@defvr {Variable opcional} ctayswitch
 
 Si vale @code{true}, obliga a que ciertos c@'alculos de @code{ctensor} se lleven a cabo utilizando desarrollos de series de 
 Taylor. Estos c@'alculos hacen referencia a las funciones @code{christof}, @code{ricci}, @code{uricci}, @code{einstein} y @code{weyl}.
 
 @end defvr
 
-@defvr {Variable optativa} ctayvar
+@defvr {Variable opcional} ctayvar
 
 Variable utilizada para desarrollos de Taylor cuando la variable @code{ctayswitch} vale @code{true}.
 
 @end defvr
 
-@defvr {Variable optativa} ctaypov
+@defvr {Variable opcional} ctaypov
 
 M@'aximo exponente utilizado en los desarrollos de Taylor cuando @code{ctayswitch} vale @code{true}.
 
 @end defvr
 
-@defvr {Variable optativa} ctaypt
+@defvr {Variable opcional} ctaypt
 
 Punto alrededor del cual se realiza un desarrollo de Taylor cuando @code{ctayswitch} vale @code{true}.
 
 @end defvr
 
-@defvr {Variable optativa} gdet
+@defvr {Variable opcional} gdet
 
 Es el determinante del tensor m@'etrico @code{lg}, calculado por  @code{cmetric} cuando @code{cframe_flag} vale @code{false}.
 
 @end defvr
 
-@defvr {Variable optativa} ratchristof
+@defvr {Variable opcional} ratchristof
 
 Obliga a que la funci@'on @code{christof} aplique la simplificaci@'on racional.
 
 @end defvr
 
-@defvr {Variable optativa} rateinstein
+@defvr {Variable opcional} rateinstein
 Valor por defecto: @code{true}
 
 Si vale @code{true} entonces se har@'a la simplificaci@'on racional en los componentes no nulos de los tensores de Einstein; si @code{ratfac} vale @code{true} entonces las componentes tambi@'en ser@'an factorizadas.
 
 @end defvr
 
-@defvr {Variable optativa} ratriemann
+@defvr {Variable opcional} ratriemann
 Valor por defecto: @code{true}
 
 Es una de las variables que controlan la simplificaci@'on de los tensores de Riemann; si vale @code{true}, entonces se llevar@'a a cabo la simplificaci@'on racional; si @code{ratfac} vale @code{true} entonces las componentes tambi@'en ser@'an factorizadas.
 
 @end defvr
 
-@defvr {Variable optativa} ratweyl
+@defvr {Variable opcional} ratweyl
 Valor por defecto: @code{true}
 
 Si vale @code{true}, entonces la funci@'on @code{weyl} llevar@'a a cabo la simplificaci@'on racional de los valores del tensor de Weyl. si @code{ratfac} vale @code{true} entonces las componentes tambi@'en ser@'an factorizadas.
@@ -1263,7 +1266,7 @@ Variable que indica si el paquete de tensores se ha inicializado. Utilizada por 
 
 @end defvr
 
-@defvr {Variable optativa} ct_coords
+@defvr {Variable opcional} ct_coords
 Valor por defecto: @code{[]}
 
 La variable @code{ct_coords} contiene una lista de coordenadas. Aunque se define normalmente cuando se llama a la funci@'on @code{csetup}, tambi@'en se pueden redefinir las coordenadas con la asignaci@'on @code{ct_coords: [j1, j2, ..., jn]} donde  @code{j} es el nuevo nombre de las coordenadas. V@'ease tambi@'en @code{csetup}.

@@ -1,4 +1,4 @@
-@c version 1.23
+@c version 1.25
 @menu
 * Introducci@'on a las listas::       
 * Definiciones para listas::       
@@ -74,6 +74,43 @@ Devuelve una nueva lista en la que el elemento @var{expr} ocupa la primera posic
 Devuelve una copia de la @var{lista}.
 
 @end deffn
+
+
+@deffn {Funci@'on} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
+Crea una lista mediante la evaluaci@'on de @var{form} con @var{x_1} tomando cada uno de los
+valores de @var{list_1}, para cada uno de estos valores liga @var{x_2} con cada elemento de 
+@var{list_2}, .... El n@'umero de elementos en el resultado ser@'a el producto del n@'umero de elementos
+en cada lista. Cada variable @var{x_i} debe ser un s@'{@dotless{i}}mbolo y no ser@'a evaluado. La lista de argumentos ser@'a evaluada una vez al comienzo de la iteraci@'on.
+
+Por ejemplo:
+@example
+(%i1) create_list(x^i,i,[1,3,7]);
+                 3   7
+(%o1)       [x, x , x ]
+@end example
+
+@noindent
+Con una doble iteraci@'on:
+
+@example
+(%i1) create_list([i,j],i,[a,b],j,[e,f,h]);
+(%o1) [[a, e], [a, f], [a, h], [b, e], [b, f], [b, h]]
+@end example
+
+En lugar de @var{list_i} se pueden suministrar dos argumentos cada uno de los cuales 
+deber@'{@dotless{i}}a poder evaluarse a un n@'umero, los cuales ser@'an los l@'{@dotless{i}}mites inferior
+y superior, ambos inclusive, para cada iteraci@'on.
+
+Por ejemplo:
+@example
+(%i1) create_list([i,j],i,[1,2,3],j,1,i);
+(%o1) [[1, 1], [2, 1], [2, 2], [3, 1], [3, 2], [3, 3]]
+@end example
+
+N@'otese que los l@'{@dotless{i}}mites o lista para la variable @var{j} pueden depender
+del valor actual de @var{i}.
+@end deffn
+
 
 @deffn {Funci@'on} delete (@var{expr_1}, @var{expr_2})
 @deffnx {Funci@'on} delete (@var{expr_1}, @var{expr_2}, @var{n})
@@ -154,6 +191,35 @@ x is not numeric.
 @end example
 
 @end deffn
+
+
+@deffn {Funci@'on} join (@var{l}, @var{m})
+Crea una nueva lista con los elementos de las listas @var{l} y @var{m} alternados.
+El resultado tiene como elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
+Las listas @var{l} y @var{m} pueden contener cualquier tipo de elementos.
+
+Si las listas son de diferente longitud, @code{join} ignora los elementos sobrantes de la lista m@'as larga.
+
+Maxima da error si o bien @var{l} o @var{m} no son listas.
+
+Ejemplos:
+
+@c ===beg===
+@c L1: [a, sin(b), c!, d - 1];
+@c join (L1, [1, 2, 3, 4]);
+@c join (L1, [aa, bb, cc, dd, ee, ff]);
+@c ===end===
+@example
+(%i1) L1: [a, sin(b), c!, d - 1];
+(%o1)                [a, sin(b), c!, d - 1]
+(%i2) join (L1, [1, 2, 3, 4]);
+(%o2)          [a, 1, sin(b), 2, c!, 3, d - 1, 4]
+(%i3) join (L1, [aa, bb, cc, dd, ee, ff]);
+(%o3)        [a, aa, sin(b), bb, c!, cc, d - 1, dd]
+@end example
+
+@end deffn
+
 
 @deffn {Funci@'on} last (@var{expr})
 

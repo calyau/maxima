@@ -1,4 +1,4 @@
-@c version 1.17
+@c version 1.18
 @menu
 * Introducci@'on a los Polinomios::  
 * Definiciones para Polinomios::  
@@ -41,14 +41,14 @@ racionales y no s@'olo polinomios. Estas expresiones se representan internamente
 @node Definiciones para Polinomios,  , Introducci@'on a los Polinomios, Polinomios
 @section Definiciones para Polinomios
 
-@defvr {Variable optativa} algebraic
+@defvr {Variable opcional} algebraic
 Valor por defecto: @code{false}
 
 La variable @code{algebraic} debe valer @code{true} para que se pueda hacer la simplificaci@'on de enteros algebraicos.
 
 @end defvr
 
-@defvr {Variable optativa} berlefact
+@defvr {Variable opcional} berlefact
 Valor por defecto: @code{true}
 
 Si @code{berlefact} vale @code{false} entonces se utiliza el algoritmo de factorizaci@'on de Kronecker, en caso contrario se utilizar@'a el algoritmo de Berlekamp, que es el que se aplica por defecto.
@@ -181,7 +181,7 @@ Devuelve una lista cuyo primer elemento es el m@'aximo com@'un divisor (mcd) de 
 
 @end deffn
 
-@defvr {Variable optativa} facexpand
+@defvr {Variable opcional} facexpand
 Valor por defecto: @code{true}
 
 La variable @code{facexpand} controla si los factores irreducibles devueltos por @code{factor} est@'an en formato expandido (por defecto) o recursivo  (CRE normal).
@@ -324,7 +324,7 @@ Ejemplos:
 
 @end deffn
 
-@defvr {Variable optativa} factorflag
+@defvr {Variable opcional} factorflag
 Valor por defecto: @code{false}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -572,7 +572,7 @@ Ejemplos:
 
 @end deffn
 
-@defvr {Variable optativa} intfaclim
+@defvr {Variable opcional} intfaclim
 Valor por defecto: 1000
 
 @c NEED A LINK TO DESCRIPTION OF "BIGNUM"
@@ -586,7 +586,7 @@ Las llamadas internas a @code{factor} respetan el valor dado por el usuario a @c
 @end defvr
 
 
-@defvr {Variable optativa} keepfloat
+@defvr {Variable opcional} keepfloat
 Valor por defecto: @code{false}
 
 Si @code{keepfloat} vale @code{true}, los n@'umeros decimales en coma flotante no se racionalizan cuando las expresiones que los contienen se convierten al formato can@'onico racional (CRE).
@@ -636,7 +636,7 @@ equation may be given as first argument.
 @end deffn
 
 
-@defvr {Variable optativa} modulus
+@defvr {Variable opcional} modulus
 Valor por defecto: @code{false}
 
 Si @code{modulus} es un n@'umero positivo @var{p}, las operaciones con n@'umeros racionales (como los devueltos por @code{rat} y funciones asociadas) se realizan m@'odulo @var{p}, utilizando el llamado sistema de m@'odulo balanceado, en el que @code{@var{n} m@'odulo @var{p}} se define como un entero @var{k} de @code{[-(@var{p}-1)/2, ..., 0, ..., (@var{p}-1)/2]}
@@ -656,6 +656,84 @@ Devuelve el numerador de @var{expr} si se trata de una fracci@'on. Si @var{expr}
 La funci@'on @code{num} eval@'ua su argumento.
 
 @c NEED SOME EXAMPLES HERE
+@end deffn
+
+@deffn {Funci@'on} polydecomp (@var{p}, @var{x})
+
+Descompone el polinomio @var{p} de variable @var{x} en una composici@'on funcional de polinomios en @var{x}. 
+La funci@'on @code{polydecomp} devuelve una lista @code{[@var{p_1}, ..., @var{p_n}]} tal que 
+
+@example
+lambda ([x], p_1) (lambda ([x], p_2) (... (lambda ([x], p_n) (x)) ...))
+@end example
+
+es igual a  @var{p}.
+El grado de @var{p_i} es mayor que 1 para @var{i} menor que @var{n}.
+
+Esta descomposici@'on no es @'unica.
+
+Ejemplos:
+
+@c ===beg===
+@c polydecomp (x^210, x);
+@c p : expand (subst (x^3 - x - 1, x, x^2 - a));
+@c polydecomp (p, x);
+@c ===end===
+@example
+(%i1) polydecomp (x^210, x);
+                          7   5   3   2
+(%o1)                   [x , x , x , x ]
+(%i2) p : expand (subst (x^3 - x - 1, x, x^2 - a));
+                6      4      3    2
+(%o2)          x  - 2 x  - 2 x  + x  + 2 x - a + 1
+(%i3) polydecomp (p, x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+La siguiente funci@'on compone @code{L = [e_1, ..., e_n]} como funciones de @code{x};
+se trata de la inversa de @code{polydecomp}:
+
+@c ===beg===
+@c compose (L, x) :=
+@c   block ([r : x], for e in L do r : subst (e, x, r), r) $
+@c ===end===
+@example
+compose (L, x) :=
+  block ([r : x], for e in L do r : subst (e, x, r), r) $
+@end example
+
+Se vuelve a obtener el resultado del ejemplo de m@'as arriba haciendo uso de @code{compose}:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+@c ===end===
+@example
+(%i3) polydecomp (compose ([x^2 - a, x^3 - x - 1], x), x);
+                        2       3
+(%o3)                 [x  - a, x  - x - 1]
+@end example
+
+N@'otese que aunque @code{compose (polydecomp (@var{p}, @var{x}), @var{x})}
+devuelve siempre @var{p} (sin expandir),
+@code{polydecomp (compose ([@var{p_1}, ..., @var{p_n}], @var{x}), @var{x})}  @i{no}
+devuelve necesariamente @code{[@var{p_1}, ..., @var{p_n}]}:
+
+@c ===beg===
+@c polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+@c polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+@c ===end===
+@example
+(%i4) polydecomp (compose ([x^2 + 2*x + 3, x^2], x), x);
+                          2       2
+(%o4)                   [x  + 2, x  + 1]
+(%i5) polydecomp (compose ([x^2 + x + 1, x^2 + x + 1], x), x);
+                      2       2
+                     x  + 3  x  + 5
+(%o5)               [------, ------, 2 x + 1]
+                       4       2
+@end example
+
 @end deffn
 
 @deffn {Funci@'on} quotient (@var{p_1}, @var{p_2})
@@ -707,7 +785,7 @@ Ejemplos:
 
 @end deffn
 
-@defvr {Variable optativa} ratalgdenom
+@defvr {Variable opcional} ratalgdenom
 Valor por defecto: @code{true}
 
 Si @code{ratalgdenom} vale @code{true}, se permite la racionalizaci@'on de denominadores eliminando radicales.
@@ -753,7 +831,7 @@ La funci@'on @code{denom} es parecida, pero devuelve una expresi@'on general en 
 @c NEEDS AN EXAMPLE HERE
 @end deffn
 
-@defvr {Variable optativa} ratdenomdivide
+@defvr {Variable opcional} ratdenomdivide
 Valor por defecto: @code{true}
 
 Si @code{ratdenomdivide} vale @code{true}, la funci@'on @code{ratexpand} expande una fracci@'on en la que el numerador es una suma en una suma de divisiones. En otro caso, @code{ratexpand} reduce una suma de divisiones a una @'unica fracci@'on, cuyo numerador es la suma de los denominadores de cada fracci@'on.
@@ -861,7 +939,7 @@ V@'ease tambi@'en @code{totaldisrep}.
 @end deffn
 
 
-@defvr {Variable optativa} ratepsilon
+@defvr {Variable opcional} ratepsilon
 Valor por defecto: 2.0e-8
 
 La variable @code{ratepsilon} guarda la tolerancia utilizada en la conversi@'on de n@'umeros decimales en coma flotante a n@'umeros racionales.
@@ -870,7 +948,7 @@ La variable @code{ratepsilon} guarda la tolerancia utilizada en la conversi@'on 
 @end defvr
 
 @deffn {Funci@'on} ratexpand (@var{expr})
-@deffnx {Variable optativa} ratexpand
+@deffnx {Variable opcional} ratexpand
 Expande @var{expr} multiplicando productos de sumas y sumas con exponentes, combinando fracciones con com@'un denominador, cancelando el m@'aximo com@'un divisor del numerador y del denominador y luego dividiendo los sumandos del numerador por el denominador.
 
 El valor que devuelve @code{ratexpand} es una expresi@'on general, incluso cuando @var{expr} est@'a en formato can@'onico o CRE.
@@ -914,7 +992,7 @@ Ejemplos:
 @end deffn
 
 
-@defvr {Variable optativa} ratfac
+@defvr {Variable opcional} ratfac
 Valor por defecto: @code{false}
 
 Si @code{ratfac} vale @code{true}, las expresiones can@'onicas (CRE) se manipulan en una forma parcialmente factorizada.
@@ -955,7 +1033,7 @@ Las expresiones CRE son creadas por @code{rat} y funciones asociadas. Las CRE ex
 
 @end deffn
 
-@defvr {Variable optativa} ratprint
+@defvr {Variable opcional} ratprint
 Valor por defecto: @code{true}
 
 Si @code{ratprint} vale @code{true}, se muestra al usuario un mensaje dando cuenta de la conversi@'on de n@'umeros decimales en coma flotante a formato racional.
@@ -1012,7 +1090,7 @@ Ejemplos:
 @end deffn
 
 
-@defvr {Variable optativa} ratsimpexpons
+@defvr {Variable opcional} ratsimpexpons
 Valor por defecto: @code{false}
 
 Si @code{ratsimpexpons} vale @code{true}, @code{ratsimp} se aplica a los exponentes de las expresiones durante la simplificaci@'on.
@@ -1121,7 +1199,7 @@ Las lista es acumulativa, en el sentido de que cada llamada a @code{ratweight} a
 
 @end defvr
 
-@defvr {Variable optativa} ratwtlvl
+@defvr {Variable opcional} ratwtlvl
 Valor por defecto: @code{false}
 
 La variable @code{ratwtlvl} se utiliza en combinaci@'on con la funci@'on @code{ratweight} para controlar el truncamiento de expresiones racionales can@'onicas (CRE). Con el valor por defecto, @code{false}, no se produce truncamiento alguno.
@@ -1152,7 +1230,7 @@ La funci@'on @code{bezout} toma los mismos argumentos que @code{resultant} y dev
 @c NEED AN EXAMPLE HERE
 @end deffn
 
-@defvr {Variable optativa} savefactors
+@defvr {Variable opcional} savefactors
 Valor por defecto: @code{false}
 
 @c "certain functions" -- WHICH ONES ??

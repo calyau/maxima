@@ -1,4 +1,4 @@
-@c version 1.32
+@c version 1.36
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Definiciones para  la L@'{@dotless{i}}nea de Comandos::  
@@ -157,7 +157,7 @@ Cualquier n@'umero par de argumentos puede ser usado.
 
 @end deffn
 
-@defvr {Variable optativa} debugmode
+@defvr {Variable opcional} debugmode
 Valor por defecto: @code{false}
 
 Cuando en Maxima ocurre un error, Maxima inicializar@'a el depurador si @code{debugmode} tiene el valor @code{true}. 
@@ -199,13 +199,14 @@ Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @
 @item
 @code{expand} causa expansi@'on. 
 @item
-@code{expand (m, n)} causa expansi@'on, configurando los valores de @code{maxposex} y @code{maxnegex} a los valores de m y n respectivamente. 
+@code{expand (@var{m}, @var{n})} causa expansi@'on, asignando los valores de @code{maxposex} y
+@code{maxnegex} a @var{m} y @var{n}, respectivamente.
 @item
 @code{detout} causa que cualesquiera matrices inversas computadas en @var{expr} conserven su determinante fuera de la inversa en vez de que divida a cada elemento.  
 @item
 @code{diif} causa que todas las diferenciaciones indicadas en @var{expr} sean llevadas a cabo. 
 @item
-@code{derivlist (x, y, z, ...)} causa que s@'olo las diferenciaciones con respecto a las variables indicadas se lleven a cabo. 
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa que s@'olo las diferenciaciones con respecto a las variables indicadas se lleven a cabo. 
 @item
 @code{float} causa que los n@'umeros racionales no-enteros sean convertidos a n@'umeros de tipo flotante. 
 @item
@@ -433,7 +434,7 @@ De forma equivalente, @code{foo (ev(%))} tiene el mismo efecto.
 @end defvr
 
 @c NEEDS WORK
-@defvr {Variable optativa} infeval
+@defvr {Variable opcional} infeval
 Habilita el modo de "evaluaci@'on infinita". @code{ev} repetidamente 
 evalua una expresi@'on hasta que se interrumpa la acci@'on. Para prevenir
 que una variable, digamos @code{X}, sea evaluada sin parar en este modo, 
@@ -446,7 +447,7 @@ Esta claro que expresiones como: @code{ev (X, X=X+1, infeval)} generar@'an un bu
 @c NEEDS EXAMPLES
 @deffn {Funci@'on} kill (@var{symbol_1}, ..., @var{symbol_n})
 @deffnx {Funci@'on} kill (labels)
-@deffnx {Funci@'on} kill (clabels, dlabels, elabels)
+@deffnx {Funci@'on} kill (inlabels, outlabels, linelabels)
 @deffnx {Funci@'on} kill (@var{n})
 @deffnx {Funci@'on} kill ([@var{m}, @var{n}])
 @deffnx {Funci@'on} kill (values, functions, arrays, ...)
@@ -459,20 +460,20 @@ Un argumento puede ser un simple arreglo de elementos o funciones con sub@'{@dot
 
 Varios argumentos especiales son reconocidos. 
 Diferentes clases de argumentos pueden ser combinados, 
-e.g., @code{kill (clabels, functions, allbut (foo, bar))}.
+e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
 
-@c MAYBE WE WANT TO CHANGE THE KEYWORDS clabels, dlabels, elabels TO ilabels, olabels, tlabels ??
+
 
 @code{kill (labels)} elimina todas las etiquetas de entrada, salida y expresiones intermedias creadas
 hasta el momento. 
 
-@code{kill (clabels)} elimina s@'olo las etiquetas de entrada
+@code{kill (inlabels)} elimina s@'olo las etiquetas de entrada
 las cuales empiezan con el valor de @code{inchar} en ese momento. 
 
 Igualmente, 
-@code{kill (dlabels)} elimina s@'olo las etiquetas de salida
+@code{kill (outlabels)} elimina s@'olo las etiquetas de salida
 las cuales empiezan con el valor de @code{outchar} de ese momento, 
-y @code{kill (elabels)} elimina s@'olo las etiquetas de expresiones 
+y @code{kill (linelabels)} elimina s@'olo las etiquetas de expresiones 
 intermedias las cuales empiezan con el valor de @code{linchar} de ese momento. 
 
 @code{kill (@var{n})}, donde @var{n} es un entero,
@@ -480,7 +481,7 @@ elimina las @var{n} etiquetas de entrada y salida m@'as recientes.
 
 @code{kill ([@var{m}, @var{n}]} elimina las etiquetas de entrada y salida @var{m} hasta @var{n}. 
 
-@code{kill (@var{infolist})}, donde @var{infolist} es cualquier item de @code{infolists} (tales como @code{values}, @code{functions} o @code{arrays}), elimina todos los items en @code{infolist}. 
+@code{kill (@var{infolist})}, donde @var{infolist} es cualquier item de @code{infolists} (tales como @code{values}, @code{functions} o @code{arrays}), elimina todos los items en @var{infolist}. 
 V@'ease tambi@'en @code{infolists}. 
 
 @code{kill (all)} elimina todos los items de todas las listas de informaci@'on (infolists).
@@ -559,7 +560,7 @@ Valor por defecto: @code{[]}
 @c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
 @c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
 @c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
-@defvr {Variable optativa} nolabels
+@defvr {Variable opcional} nolabels
 Valor por defecto: @code{false}
 
 @c PREVIOUS DESCRIPTION OF nolabels: THIS IS OUT OF DATE
@@ -580,7 +581,7 @@ V@'ease tambi@'en: @code{batch}, @code{batchload} y @code{labels}.
 
 @end defvr
 
-@defvr {Variable optativa} optionset
+@defvr {Variable opcional} optionset
 Valor por defecto: @code{false}
 
 Cuando @code{optionset} tiene como valor @code{true}, Maxima imprime un
@@ -662,7 +663,7 @@ para propiedades que no pueden ser mostradas de otra manera, i.e. para
 
 @end deffn
 
-@defvr {Variable optativa} prompt
+@defvr {Variable opcional} prompt
 Valor por defecto: @code{_}
 
 @code{prompt} es el s@'{@dotless{i}}mbolo del prompt de la funci@'on @code{demo}, 
@@ -683,6 +684,20 @@ Vea tambi@'en: @code{debugging}.
 
 @end deffn
 
+
+@deffn {Funci@'on} remfunction (@var{f_1}, ..., @var{f_n})
+@deffnx {Funci@'on} remfunction (all)
+Desliga las definiciones de funci@'on de sus s@'{@dotless{i}}mbolos @var{f_1}, ..., @var{f_n}.
+Los argumentos pueden ser nombres de funciones ordinarias (creadas con @code{:=} o @code{define}) o de funciones macro (creadas con @code{::=}).
+
+La instrucci@'on @code{remfunction (all)} desliga todas las definiciones de funciones.
+
+La funci@'on @code{remfunction} no eval@'ua sus argumentos.
+
+La funci@'on @code{remfunction} devuelve una lista con los s@'{@dotless{i}}mbolos para los que la definici@'on de funci@'on fue desligada. Devuelve @code{false} en el lugar de cualquier s@'{@dotless{i}}mbolo para el que no hay funci@'on definida.
+
+@end deffn
+
 @deffn {Funci@'on} reset ()
 Reconfigura muchas variables y opciones globales y algunas otras variables a sus valores por defecto. 
 
@@ -693,12 +708,14 @@ Muchas, pero no todas, las variables y opciones globales son definidas por @code
 
 @end deffn
 
-@defvr {Variable optativa} showtime
+@defvr {Variable opcional} showtime
 Valor por defecto: @code{false}
 
-Cuando @code{showtime} tiene como valor @code{true}, el tiempo de computo y el tiempo transcurrido es impreso en cada expresi@'on de salida. 
+Cuando @code{showtime} tiene como valor @code{true}, el tiempo de c@'alculo y el tiempo de retardo se imprimen junto con la salida de cada expresi@'on. 
 
-Vea tambi@'en: @code{time}, @code{timer}, and @code{playback}.
+El tiempo de c@'alculo se almacena siempre, de manera que @code{time} y @code{playback} puedan mostrar el tiempo de c@'alculo incluso cuando @code{showtime} vale @code{false}.
+
+V@'ease tambi@'en @code{timer}.
 
 @end defvr
 

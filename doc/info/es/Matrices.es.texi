@@ -1,4 +1,4 @@
-@c version 1.17
+@c version 1.20
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -95,6 +95,7 @@ A@~nade la/s fila/s dada/s por la/s lista/s (o matrices) a la matriz @var{M}.
 
 @deffn {Funci@'on} adjoint (@var{M})
 Devuelve el adjunto de la matriz @var{M}.
+La matriz adjunta es la transpuesta de la matriz de cofactores de @var{M}.
 
 @end deffn
 
@@ -201,8 +202,6 @@ Warning - you are redefining the Macsyma function eigenvectors
 
 @deffn {Funci@'on} conjugate (@var{x})
 Devuelve el conjugado complejo de @var{x}.
-
-Es necesario cargar la funci@'on haciendo @code{load (conjugate)}.
 
 @c ===beg===
 @c declare ([aa, bb], real, cc, complex, ii, imaginary);
@@ -475,26 +474,33 @@ en @code{SC*A} y @code{A.(SC*B)} en @code{SC*(A.B)}.
 @end defvr
 
 @deffn {Funci@'on} echelon (@var{M})
-Devuelve la forma escalonada de la matriz @var{M}. La forma escalonada se
-calcula a partir de @var{M} mediante operaciones elementales con sus filas,
+Devuelve la forma escalonada de la matriz @var{M}, obtenida por eliminaci@'on gaussiana.
+La forma escalonada se calcula a partir de @var{M} mediante operaciones elementales con sus filas,
 de tal manera que el primer elemento no nulo de cada fila en la matriz 
 resultado es la unidad y que cada elemento de la columna por debajo del primer uno de cada
 fila sean todos ceros.
 
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c echelon (M);
+@c ===end===
 @example
-(%i1) m: matrix ([2, 1-a, -5*b], [a, b, c]);
-                       [ 2  1 - a  - 5 b ]
-(%o1)                  [                 ]
-                       [ a    b      c   ]
-(%i2) echelon (m);
-                  [      a - 1       5 b     ]
-                  [ 1  - -----     - ---     ]
-                  [        2          2      ]
-(%o2)/R/          [                          ]
-                  [             2 c + 5 a b  ]
-                  [ 0     1     ------------ ]
-                  [                    2     ]
-                  [             2 b + a  - a ]
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) echelon (M);
+                  [ 1  - 8  - 5      - 2     ]
+                  [                          ]
+                  [         28       11      ]
+                  [ 0   1   --       --      ]
+(%o2)             [         37       37      ]
+                  [                          ]
+                  [              37 bb - 119 ]
+                  [ 0   0    1   ----------- ]
+                  [              37 aa - 313 ]
 @end example
 
 @end deffn
@@ -511,7 +517,7 @@ El nombre @code{eivals} es un sin@'onimo de @code{eigenvalues}.
 La funci@'on @code{eigenvalues} llama a la funci@'on @code{solve} para calcular las ra@'{@dotless{i}}ces
 del polinomio caracter@'{@dotless{i}}stico de la matriz. En ocasiones, @code{solve} no
 podr@'a encontrar dichas ra@'{@dotless{i}}ces, en cuyo caso otras funciones de este paquete
-no trabajar@'an correctamente, a excepci@'on de @code{conjugate}, @code{innerproduct},
+no trabajar@'an correctamente, a excepci@'on de @code{innerproduct},
 @code{unitvector}, @code{columnvector} y @code{gramschmidt}.
 @c WHICH ONES ARE THE FUNCTIONS WHICH DON'T WORK ??
 @c ACTUALLY IT'S MORE IMPORTANT TO LIST THE ONES WHICH DON'T WORK HERE
@@ -1188,9 +1194,29 @@ Si @var{M} es una lista, el valor devuelto es una matriz @var{N} de @code{length
 @end deffn
 
 @deffn {Funci@'on} triangularize (@var{M})
-Devuelve la forma triangular superior de la matriz @code{M}.
+Devuelve la forma triangular superior de la matriz @code{M}, obtenida por eliminaci@'on gaussiana.
+El resultado es el mismo que el devuelto por @code{echelon}, con la salvedad de que el primer elemento no nulo de cada fila no se normaliza a 1.
 
-La matriz @var{M} no necesita ser cuadrada.
+Las funciones @code{lu_factor} y @code{cholesky} tambi@'en triangularizan matrices.
+
+@c ===beg===
+@c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+@c triangularize (M);
+@c ===end===
+@example
+(%i1) M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
+                       [  3   7  aa  bb ]
+                       [                ]
+(%o1)                  [ - 1  8  5   2  ]
+                       [                ]
+                       [  9   2  11  4  ]
+(%i2) triangularize (M);
+             [ - 1   8         5            2      ]
+             [                                     ]
+(%o2)        [  0   - 74     - 56         - 22     ]
+             [                                     ]
+             [  0    0    626 - 74 aa  238 - 74 bb ]
+@end example
 
 @end deffn
 

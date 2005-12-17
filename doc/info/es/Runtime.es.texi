@@ -1,4 +1,4 @@
-@c version 1.15
+@c version 1.16
 @menu
 * Introducci@'on al Entorno de Ejecuci@'on::   
 * Interrupciones::  
@@ -113,5 +113,25 @@ La variable @code{features} contiene una lista de caracter@'{@dotless{i}}sticas 
 Devuelve una lista de los tiempos, en segundos, que fueron necesarios para calcular los resultados de las salidas @code{%o1}, @code{%o2}, @code{%o3}, .... Los tiempos devueltos son estimaciones hechas por Maxima del tiempo interno de computaci@'on. La funci@'on @code{time} s@'olo puede utilizarse para variables correspondientes a l@'{@dotless{i}}neas de salida; para cualquier otro tipo de variables, @code{time} devuelve @code{unknown}.
 
 H@'agase @code{showtime: true} para que Maxima devuelva el tiempo de ejecuci@'on de cada l@'{@dotless{i}}nea de salida.
+
+@end deffn
+
+@deffn {Funci@'on} timedate ()
+Devuelve una cadena alfanum@'erica con la hora y fecha actuales. La cadena tiene el formato @code{HH:MM:SS Day, mm/dd/yyyy (GMT-n)}, donde los campos son: las horas, minutos, segundos, d@'{@dotless{i}}a de de la semana, mes, d@'{@dotless{i}}a del mes, a@~no y n@'umero de horas de diferencia con respecto a la hora GMT.
+
+El valor que devuelve es una cadena Lisp.
+
+Ejemplo
+
+@c ===beg===
+@c d: timedate ();
+@c print ("timedate reports current time", d)$
+@c ===end===
+@example
+(%i1) d: timedate ();
+(%o1) 08:05:09 Wed, 11/02/2005 (GMT-7)
+(%i2) print ("timedate reports current time", d)$
+timedate reports current time 08:05:09 Wed, 11/02/2005 (GMT-7)
+@end example
 
 @end deffn

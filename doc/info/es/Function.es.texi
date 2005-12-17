@@ -1,4 +1,4 @@
-@c version 1.34
+@c version 1.36
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -101,99 +101,220 @@ Dentro de las funciones, cuando el lado derecho de la definici@'on deba ser eval
 @node Macros, Definiciones para la definici@'on de funciones, Funciones, Definici@'on de Funciones
 @section Macros
 
-@deffn {Funci@'on} buildq (@var{variables}, @var{expr})
 
-El argumento @var{expr} es una expresi@'on de Maxima y @var{variables} es una lista cuyos elementos son de la forma @code{<@'atomo>} o @code{<@'atomo>: <valor>}.
+@deffn {Funci@'on} buildq (@var{L}, @var{expr})
+Sustituye en paralelo las variables nombradas en la lista @var{L} en la expresi@'on @var{expr}, sin evaluar @'esta.
+La expresi@'on resultante se simplifica pero no se eval@'ua hasta que @code{buildq} termine de hacer las sustituciones.
 
-SEM@'ANTICA
+Los elementos de @var{L} son s@'{@dotless{i}}mbolos o expresiones de asignaci@'on del tipo @code{@var{symbol}: @var{value}},
+evaluadas en paralelo. Esto es, el valor de una variable en la parte derecha de una signaci@'on es el valor que toma dicha variable en el contexto desde el que se invoca a @code{buildq}. En caso de que a una variable de @var{L} no se le haga una signaci@'on expl@'{@dotless{i}}cita, su valor en @code{buildq} es el mismo que tiene en el contexto desde el que se llama a @code{buildq}.
 
-Los elementos de la lista @var{variables} son evaluados de izquierda a derecha (la sintaxis @code{@'atomo} es equivalente a @code{@var{@'atomo}: @var{@'atomo}}). Despu@'es estos valores son sustituidos en la expresi@'on en paralelo. Si alg@'un @var{@'atomo} aparece como un argumento simple de la forma especial @code{splice} (por ejemplo,@code{splice (@var{@'atomo})}) dentro de @var{expr}, entonces el valor asociado con ese @var{@'atomo} debe ser una lista de Maxima y ser@'a asociado a @var{expr} en lugar de ser sustitu@'{@dotless{i}}do.
+Las variables referenciadas en @var{L} se sustituyen en @var{expr} en paralelo. Esto es, la sustituci@'on para cada variable se determina antes de que se hagan las sustituciones, de forma que la sustituci@'on de una variable no tiene efecto alguno sobre las otras.
 
-SIMPLIFICACI@'ON
+Si alguna variable @var{x} aparece como @code{splice (@var{x})} en @var{expr}, entonces a @var{x} se le debe asignar una lista, la cual ser@'a interpolada en @var{expr} en lugar de hacer una simple sustituci@'on; ver ejemplo m@'as abajo.
 
-Los argumentos de @code{buildq} deben ser protegidos para evitar su simplificaci@'on hasta que las sustituciones hayan sido llevadas a cabo. Esto se lograr@'a con el uso del ap@'ostrofo @code{'}.
+Cualesquiera otras variables de @var{expr} que no aparezcan en @var{L} se traspasan al resultado tal cual, incluso cuando tienen asignados valores en el contexto desde el que se llama a @code{buildq}.
 
-La funci@'on @code{buildq} puede ser @'util para construir funciones sobre la marcha. Uno de los aspectos m@'as potentes de Maxima es que dentro de las funciones se pueden definir otras funciones. M@'as abajo se tratar@'a de la definici@'on de funciones recursivas. La t@'ecnica consistente en definir funciones dentro de funciones hace uso frecuente de @code{define}, la cual eval@'ua sus argumentos. Se presentan algunos ejemplos bajo el ep@'{@dotless{i}}grafe @code{splice}.
+Ejemplos:
+
+@code{a} queda asociada expl@'{@dotless{i}}citamente a @code{x}, mientras que @code{b} tiene la misma asociaci@'on (29) que en el contexto de llamada y @code{c} es traspasado al resultado sin ser sustituido. La expresi@'on resultante no se eval@'ua hasta que no se le obligue a ello mediante la evaluaci@'on expl@'{@dotless{i}}cita @code{''%}.
+
+@c ===beg===
+@c (a: 17, b: 29, c: 1729)$
+@c buildq ([a: x, b], a + b + c);
+@c ''%;
+@c ===end===
+@example
+(%i1) (a: 17, b: 29, c: 1729)$
+(%i2) buildq ([a: x, b], a + b + c);
+(%o2)                      x + c + 29
+(%i3) ''%;
+(%o3)                       x + 1758
+@end example
+
+En este ejemplo, @code{e} se asocia a una lista, la cual aparece como tal en los argumentos de @code{foo} e interpolada en los argumentos de @code{bar}.
+
+@c ===beg===
+@c buildq ([e: [a, b, c]], foo (x, e, y));
+@c buildq ([e: [a, b, c]], bar (x, splice (e), y));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], foo (x, e, y));
+(%o1)                 foo(x, [a, b, c], y)
+(%i2) buildq ([e: [a, b, c]], bar (x, splice (e), y));
+(%o2)                  bar(x, a, b, c, y)
+@end example
+
+Como se ve a continuaci@'on, el resultado se simplifica tras las sustituciones. Si la simplificaci@'on se realizase antes que las sustituciones, ambos resultados ser@'{@dotless{i}}an iguales.
+
+@c ===beg===
+@c buildq ([e: [a, b, c]], splice (e) + splice (e));
+@c buildq ([e: [a, b, c]], 2 * splice (e));
+@c ===end===
+@example
+(%i1) buildq ([e: [a, b, c]], splice (e) + splice (e));
+(%o1)                    2 c + 2 b + 2 a
+(%i2) buildq ([e: [a, b, c]], 2 * splice (e));
+(%o2)                        2 a b c
+@end example
+
+Las variables de @var{L} se asocian en paralelo; si se hiciese secuencialmente, el primer resultado ser@'{@dotless{i}}a @code{foo (b, b)}. Las sustituciones se llevan a cabo en paralelo. Comp@'arese el segundo resultado con el resultado de @code{subst}, que hace las sustituciones de forma secuencial.
+
+@c ===beg===
+@c buildq ([a: b, b: a], foo (a, b));
+@c buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+@c subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+@c ===end===
+@example
+(%i1) buildq ([a: b, b: a], foo (a, b));
+(%o1)                       foo(b, a)
+(%i2) buildq ([u: v, v: w, w: x, x: y, y: z, z: u], bar (u, v, w, x, y, z));
+(%o2)                 bar(v, w, x, y, z, u)
+(%i3) subst ([u=v, v=w, w=x, x=y, y=z, z=u], bar (u, v, w, x, y, z));
+(%o3)                 bar(u, u, u, u, u, u)
+@end example
+
+Se construye a continuaci@'on un sistema de ecuaciones con algunas variables o expresiones en el lado izquierdo y sus valores en el derecho; @code{macroexpand} muestra la expresi@'on devuelta por @code{show_values}.
+
+@c ===beg===
+@c show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+@c (a: 17, b: 29, c: 1729)$
+@c macroexpand (show_values (a, b, c - a - b));
+@c show_values (a, b, c - a - b);
+@c ===end===
+@example
+(%i1) show_values ([L]) ::= buildq ([L], map ("=", 'L, L));
+(%o1)   show_values([L]) ::= buildq([L], map("=", 'L, L))
+(%i2) (a: 17, b: 29, c: 1729)$
+(%i3) show_values (a, b, c - a - b);
+(%o3)              [a = 17, b = 29, c = 1729]
+@end example
 
 @end deffn
 
-@c He recortado parte de esta definición; en el propio texto original
-@c inglés se reconoce que se debe redactar con mayor claridad (Mario).
-@deffn {Funci@'on} splice (@var{@'atomo})
-Se utiliza junto con @code{buildq} para construir una lista. Se utiliza para construir listas de argumentos en conjunci@'on con @code{buildq}.
 
+@deffn {Funci@'on} macroexpand (@var{expr})
+Devuelve la macroexpansi@'on de @var{expr}, sin evaluarla,
+cuando @code{expr} es una llamada a una funci@'on macro; en caso contrario,
+@code{macroexpand} devuelve @var{expr}.
+
+Si la expansi@'on de @var{expr} devuelve otra llamada a una funci@'on macro, esta llamada tambi@'en se expande.
+
+La funci@'on @code{macroexpand} no eval@'ua su argumento.
+Sin embargo, si la expansi@'on de una llamada a funci@'on macro tiene efectos laterales, @'estos se ejecutan.
+
+V@'eanse tambi@'en @code{::=}, @code{macros} y @code{macroexpand1}.
+
+Ejemplos:
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand (h (y));
+@c h (y);
+@c ===end===
 @example
-mprint ([x]) ::= buildq ([u : x],
-  if (debuglevel > 3) print (splice (u)));
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand (h (y));
+                              y - a
+(%o4)                         -----
+                               99
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
 @end example
 
-Haciendo una llamada como
+@end deffn
 
+@deffn {Funci@'on} macroexpand1 (@var{expr})
+Devuelve la macroexpansi@'on de @var{expr}, sin evaluarla,
+cuando @code{expr} es una llamada a una funci@'on macro; en caso contrario,
+@code{macroexpand1} devuelve @var{expr}.
+
+La funci@'on @code{macroexpand1} no eval@'ua su argumento.
+Sin embargo, si la expansi@'on de una llamada a funci@'on macro tiene efectos laterales, @'estos se ejecutan.
+
+Si la expansi@'on de @var{expr} devuelve otra llamada a una funci@'on macro, esta llamada no se expande.
+
+V@'eanse tambi@'en @code{::=}, @code{macros} y @code{macroexpand}.
+
+Ejemplos:
+
+@c ===beg===
+@c g (x) ::= x / 99;
+@c h (x) ::= buildq ([x], g (x - a));
+@c a: 1234;
+@c macroexpand1 (h (y));
+@c h (y);
+@c ===end===
 @example
-mprint ("matrix is", mat, "with length", length(mat))
+(%i1) g (x) ::= x / 99;
+                                    x
+(%o1)                      g(x) ::= --
+                                    99
+(%i2) h (x) ::= buildq ([x], g (x - a));
+(%o2)            h(x) ::= buildq([x], g(x - a))
+(%i3) a: 1234;
+(%o3)                         1234
+(%i4) macroexpand1 (h (y));
+(%o4)                       g(y - a)
+(%i5) h (y);
+                            y - 1234
+(%o5)                       --------
+                               99
 @end example
 
-es equivalente a escribir la l@'{@dotless{i}}nea
+@end deffn
 
+@defvr {Variable global} macros
+Valor por defecto: @code{[]}
+
+La variable @code{macros} es la lista de las funciones macro definidas por el usuario.
+El operador de definici@'on de funciones macro @code{::=} coloca la nueva funci@'on macro en esta lista,
+mientras que  @code{kill}, @code{remove} y @code{remfunction} eliminan las funciones macro de la lista.
+
+V@'ease tambi@'en @code{infolists}.
+
+@end defvr
+
+@deffn {Funci@'on} splice (@var{a})
+
+Interpola la lista nombrada por el @'atomo  @var{a} dentro de una expresi@'on, pero s@'olo si @code{splice} aparece dentro de @code{buildq}; en otro caso, @code{splice} se considera una funci@'on no definida. Si @var{a} aparece dentro de @code{buildq} sin @code{splice}, entonces queda sustituida por una lista dentro del resultado. El argumento de @code{splice} debe ser un @'atomo, no pudiendo ser una lista literal ni una expresi@'on que devuelva una lista.
+
+Normalmente @code{splice} suministra los argumentos para una funci@'on u operador. Para una funci@'on @code{f}, la expresi@'on @code{f (splice (@var{a}))} dentro de @code{buildq} se convierte en @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}. Dado un operador @code{o}, la expresi@'on @code{"o" (splice (@var{a})} dentro de @code{buildq} se convierte en 
+@code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)}, donde @code{o} puede ser cualquier tipo de operador, normalmente uno que admita varios argumentos. N@'otese que el operador debe ir encerrado entre dobles comillas @code{"}.
+
+Ejemplos:
+
+@c ===beg===
+@c buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+@c buildq ([x: [1, %pi]], "/" (splice (x)));
+@c matchfix ("<>", "<>");
+@c buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+@c ===end===
 @example
-if (debuglevel > 3) print ("matrix is", mat, "with length", length(mat));
+(%i1) buildq ([x: [1, %pi, z - y]], foo (splice (x)) / length (x));
+                       foo(1, %pi, z - y)
+(%o1)                -----------------------
+                     length([1, %pi, z - y])
+(%i2) buildq ([x: [1, %pi]], "/" (splice (x)));
+                                1
+(%o2)                          ---
+                               %pi
+(%i3) matchfix ("<>", "<>");
+(%o3)                          <>
+(%i4) buildq ([x: [1, %pi, z - y]], "<>" (splice (x)));
+(%o4)                   <>1, %pi, z - y<>
 @end example
-
-Un ejemplo menos trivial es el de retornar los valores de las variables junto con sus nombres,
-
-@example
-mshow (a, b, c) 
-@end example
-
-resultar@'{@dotless{i}}a en
-
-@example
-print ('a, "=", a, ",", 'b, "=", b, ", and", 'c, "=", c)
-@end example
-
-de modo que si esto se escribe dentro de un programa se podr@'{@dotless{i}}an imprimir valores.
-
-@example
-(%i1) foo (x,y,z) := mshow (x, y, z);
-(%i2) foo (1, 2, 3);
-x = 1 , y = 2 , and z = 3
-@end example
-
-La definici@'on actual de @code{mshow} es como sigue. N@'otese como @code{buildq} permite construir estructuras sin evaluar, de modo que @code{'u} permite obtener el nombre de la variable. En las macros, el resultado es una pieza de c@'odigo que luego ser@'a sustituida por la macro y evaluada.
-
-@example
-mshow ([l]) ::= block ([ans:[], n:length(l)],
-    for i:1 thru n do
-        (ans: append (ans, buildq ([u: l[i]], ['u, "=", u])),
-        if i < n then
-            ans: append (ans, if i < n-1 then [","] else [", and"])),
-    buildq ([u:ans], print (splice(u))));
-@end example
-
-La funci@'on @code{splice} tambi@'en vale para colocar argumentos en operaciones algebraicas:
-
-@example
-(%i1) buildq ([a: '[b, c, d]], +splice(a));
-(%o1)                       d + c + b
-@end example
-
-N@'otese c@'omo la simplificaci@'on se lleva a cabo @'unicamente @i{despu@'es} de la sustituci@'on. La operaci@'on que se aplica a @code{splice} en primer lugar es @code{+} mientras que la que se aplica en segundo lugar es @code{*}, aunque pueda parecer que @code{splice(a)+splice(a)} es reemplazable por @code{2*splice(a)}. La no simplificaci@'on se obtiene con @code{buildq}. Para comprender lo que @code{splice} hace con las expresiones algebraicas se debe saber que para Maxima una operaci@'on como @code{a+b+c} internamente es similar a @code{+(a,b,c)}, y que otro tanto ocurre con la multiplicaci@'on. As@'{@dotless{i}}, @code{*(2,b,c,d)} es @code{2*b*c*d}.
-
-@example
-(%i1) buildq ([a: '[b,c,d]], +splice(a));
-(%o1)                       d + c + b
-(%i2) buildq ([a: '[b,c,d]], splice(a)+splice(a));
-(%o2)                    2 d + 2 c + 2 b
-@end example
-
-pero
-
-@example
-(%i3) buildq ([a: '[b,c,d]], 2*splice(a));
-(%o3)                        2 b c d
-@end example
-
-Finalmente, @code{buildq} puede ser no evaluable en la definici@'on de funciones recursivas.
 
 @end deffn
 
@@ -562,16 +683,148 @@ La funci@'on @code{local} es independiente de @code{context}.
 @defvr {Variable opcional} macroexpansion
 Valor por defecto: @code{false}
 
-La variable @code{macroexpansion} controla aspectos avanzados que afecta a la eficiencia de las macros. Posibles valores:
+La variable @code{macroexpansion} controla si la expansi@'on (esto es, el valor de retorno) de una funci@'on macro se sustituye por la llamada a la funci@'on macro. Una sustituci@'on puede acelerar futuras evaluaciones de la expresi@'on, bajo el coste que implica tener que almacenar la expansi@'on.
 
-@itemize @bullet
-@item
-@code{false} -- Las macros se expanden normalmente cada vez que son invocadas.
-@item
-@code{expand} -- La primera vez que una funci@'on es llamada, la expansi@'on se mantiene internamente en memoria, de forma que ya no tendr@'a que ser recalculada en siguientes llamadas, haciendo as@'{@dotless{i}} la ejecuci@'on m@'as r@'apida. La llamada a la macro todav@'{@dotless{i}}a sigue usando @code{grind} y @code{display} de la forma habitual. Se requiere memoria extra para recordar todas las expansiones.
-@item
-@code{displace} -- La primera vez que que una funci@'on es evaluada, la expansi@'on es sustituida por la llamada. Esto requiere menos memoria que cuando a @code{macroexpansion} se le asigna el valor @code{expand} y es igual de r@'apido, pero tiene la desventaja de que la llamada original a la macro ya no se tienen en memoria, por lo que la expansi@'on se ver@'a como si fuese una llamada a @code{display} o a @code{grind}.  V@'ease la documentaci@'on para @code{translate} y @code{macros} para m@'as detalles.
-@end itemize
+@table @code
+@item false
+La expansi@'on de una funci@'on macro no se sustituye por la llamada a la funci@'on macro.
+@item expand
+La primera vez que se eval@'ua una llamada a funci@'on macro se almacena la expansi@'on. De esta manera la expansi@'on no se recalcula en llamadas posteriores; cualesquiera efectos laterales (como @code{print} o asignaciones a variables globales)
+tan solo tienen lugar la primera vez que la funci@'on macro es evaluada. La expansi@'on en una expresi@'on no afecta a otras expresiones que llamen a la misma funci@'on macro.
+@item displace
+La primera vez que se eval@'ua una llamada a una funci@'on macro, la expansi@'on se sustituye por la llamada, modificando as@'{@dotless{i}} la expresi@'on desde la que se hizo la llamada a la funci@'on macro. La expansi@'on no se recalcula en llamadas posteriores; cualesquiera efectos laterales tan solo tienen lugar la primera vez que la funci@'on macro es evaluada. La expansi@'on en una expresi@'on no afecta a otras expresiones que llamen a la misma funci@'on macro.
+@end table
+
+Ejemplos:
+
+Si @code{macroexpansion} vale @code{false},
+una funci@'on macro es llamada cada vez que la expresi@'on de llamada es evaluada.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: false;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: false;
+(%o4)                         false
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+Si @code{macroexpansion} vale @code{expand}, una funci@'on macro tan solo es llamada una vez.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: expand;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: expand;
+(%o4)                        expand
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                  h(x)
+(%t6)                     f(x) := ----
+                                  g(x)
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
+
+Si @code{macroexpansion} vale @code{expand}, una funci@'on macro es llamada una vez y la expresi@'on de llamada se modifica.
+
+@c ===beg===
+@c f (x) := h (x) / g (x);
+@c g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+@c h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+@c macroexpansion: displace;
+@c f (a * b);
+@c dispfun (f);
+@c f (a * b);
+@c ===end===
+@example
+(%i1) f (x) := h (x) / g (x);
+                                  h(x)
+(%o1)                     f(x) := ----
+                                  g(x)
+(%i2) g (x) ::= block (print ("x + 99 is equal to", x), return (x + 99));
+(%o2) g(x) ::= block(print("x + 99 is equal to", x), 
+                                                  return(x + 99))
+(%i3) h (x) ::= block (print ("x - 99 is equal to", x), return (x - 99));
+(%o3) h(x) ::= block(print("x - 99 is equal to", x), 
+                                                  return(x - 99))
+(%i4) macroexpansion: displace;
+(%o4)                       displace
+(%i5) f (a * b);
+x - 99 is equal to x 
+x + 99 is equal to x 
+                            a b - 99
+(%o5)                       --------
+                            a b + 99
+(%i6) dispfun (f);
+                                 x - 99
+(%t6)                    f(x) := ------
+                                 x + 99
+
+(%o6)                         done
+(%i7) f (a * b);
+                            a b - 99
+(%o7)                       --------
+                            a b + 99
+@end example
 
 @end defvr
 
@@ -638,7 +891,7 @@ Es una forma especial usada con @code{mode_declare} y @code{macros} para declara
 
 @end deffn
 
-@defvr {Variable optativa} transcompile
+@defvr {Variable opcional} transcompile
 Valor por defecto: @code{true}
 
 Si @code{transcompile} vale @code{true}, @code{translate} y @code{translate_file} generan declaraciones para hacer el c@'odigo traducido m@'as apto para la compilaci@'on.
@@ -727,14 +980,14 @@ y @code{tr_windy}.
 
 @end deffn
 
-@defvr {Variable optativa} transrun
+@defvr {Variable opcional} transrun
 Valor por defecto: @code{true}
 
 Si @code{transrun} vale @code{false} entonces se ejecutar@'an las versiones interpretadas de todas las funciones, en lugar de las versiones traducidas.
 
 @end defvr
 
-@defvr {Variable optativa} tr_array_as_ref
+@defvr {Variable opcional} tr_array_as_ref
 Valor por defecto: @code{true}
 
 Si @code{translate_fast_arrays} vale @code{false}, referencias de arreglos en el c@'odigo Lisp creadas por  @code{translate_file} se ven afectadas por @code{tr_array_as_ref}.
@@ -743,7 +996,7 @@ El valor de la variable @code{tr_array_as_ref} no tiene ning@'un efecto cuando @
 
 @end defvr
 
-@defvr {Variable optativa} tr_bound_function_applyp
+@defvr {Variable opcional} tr_bound_function_applyp
 Valor por defecto: @code{true}
 
 Si @code{tr_bound_function_applyp} vale @code{true}, Maxima env@'{@dotless{i}}a un aviso si encuentra una variable con valor asignado que est@'a siendo utilizada como una funci@'on. @code{tr_bound_function_applyp} no influye en el c@'odigo generado bajo estas circunstancias.
@@ -752,42 +1005,42 @@ Por ejemplo, una expresi@'on como @code{g (f, x) := f (x+1)} provocar@'a un mens
 
 @end defvr
 
-@defvr {Variable optativa} tr_file_tty_messagesp
+@defvr {Variable opcional} tr_file_tty_messagesp
 Valor por defecto: @code{false}
 
 Si @code{tr_file_tty_messagesp} vale @code{true}, los mensajes generados por @code{translate_file} durante la traducci@'on de un fichero se muestran en la consola y se insertan en el fichero UNLISP.  Si vale @code{false}, los mensajes sobre la traducci@'on del fichero s@'olo se incorporan al fichero UNLISP.
 
 @end defvr
 
-@defvr {Variable optativa} tr_float_can_branch_complex
+@defvr {Variable opcional} tr_float_can_branch_complex
 Valor por defecto: @code{true}
 
 Le dice al traductor de Maxima a Lisp que las funciones @code{acos}, @code{asin}, @code{asec} y @code{acsc} pueden devolver valores complejos.
 
 @end defvr
 
-@defvr {Variable optativa} tr_function_call_default
+@defvr {Variable opcional} tr_function_call_default
 Valor por defecto: @code{general}
 
 El valor @code{false} significa llama a @code{meval}, @code{expr} significa que Lisp asign@'o los argumentos de la funci@'on,  @code{general}, el valor por defecto, devuelve c@'odigo apropiado para @code{mexprs} y @code{mlexprs} pero no para @code{macros}. La opci@'on @code{general} asegura que las asignaciones de las variables son correctas en el c@'odigo compilado. En modo @code{general}, cuando se traduce F(X), si F es una variable con valor, entonces se entiende que se quiere calcular @code{apply (f, [x])}, y como tal se traduce, con el apropiado aviso. No es necesario desactivar esto. Con los valores por defecto la falta de mensajes de aviso implica compatibilidad completa entre el c@'odigo traducido y compilado con el interpretado por Maxima.
 
 @end defvr
 
-@defvr {Variable optativa} tr_numer
+@defvr {Variable opcional} tr_numer
 Valor por defecto: @code{false}
 
 Si @code{tr_numer} vale @code{true} se utilizan las propiedades num@'ericas en aquellos @'atomos que las posean, como en  @code{%pi}.
 
 @end defvr
 
-@defvr {Variable optativa} tr_optimize_max_loop
+@defvr {Variable opcional} tr_optimize_max_loop
 Valor por defecto: 100
 
 El valor de @code{tr_optimize_max_loop} es el n@'umero m@'aximo de veces que el traductor repetir@'a la macro-expansi@'on y la optimizaci@'on en el tratamiento de una expresi@'on.
 
 @end defvr
 
-@defvr {Variable optativa} tr_semicompile
+@defvr {Variable opcional} tr_semicompile
 Valor por defecto: @code{false}
 
 Si @code{tr_semicompile} vale @code{true}, las salidas de @code{translate_file} y @code{compfile} ser@'an macro-expandidas pero no compiladas a c@'odigo m@'aquina por el compilador de Lisp.
@@ -813,49 +1066,49 @@ Devuelve una lista con los avisos dados por el traductor.
 
 @end deffn
 
-@defvr {Variable optativa} tr_warn_bad_function_calls
+@defvr {Variable opcional} tr_warn_bad_function_calls
 Valor por defecto: @code{true}
 
 Devuelve un aviso cuando se hacen llamadas a funciones que quiz@'as no sean correctas debido a declaraciones inapropiadas realizadas durante la traducci@'on.
 
 @end defvr
 
-@defvr {Variable optativa} tr_warn_fexpr
+@defvr {Variable opcional} tr_warn_fexpr
 Valor por defecto: @code{compfile}
 
 Devuelve un aviso si se encuentra con alguna FEXPR. Las FEXPR no deber@'{@dotless{i}}an aparecer en el c@'odigo traducido.
 
 @end defvr
 
-@defvr {Variable optativa} tr_warn_meval
+@defvr {Variable opcional} tr_warn_meval
 Valor por defecto: @code{compfile}
 
 Devuelve un aviso si la funci@'on @code{meval} es llamada.  Si @code{meval} es invocada, es se@~nal de la presencia de problemas en la traducci@'on.
 
 @end defvr
 
-@defvr {Variable optativa} tr_warn_mode
+@defvr {Variable opcional} tr_warn_mode
 Valor por defecto: @code{all}
 
 Devuelve un aviso cuando a las variables se les asignan valores incompatibles con su modo.
 
 @end defvr
 
-@defvr {Variable optativa} tr_warn_undeclared
+@defvr {Variable opcional} tr_warn_undeclared
 Valor por defecto: @code{compile}
 
 Determina cuando enviar mensajes sobre variables no declaradas.
 
 @end defvr
 
-@defvr {Variable optativa} tr_warn_undefined_variable
+@defvr {Variable opcional} tr_warn_undefined_variable
 Valor por defecto: @code{all}
 
 Devuelve un aviso cuando se detectan variables globales no definidas.
 
 @end defvr
 
-@defvr {Variable optativa} tr_windy
+@defvr {Variable opcional} tr_windy
 Valor por defecto: @code{true}
 
 Genera comentarios de ayuda y consejos sobre programaci@'on.

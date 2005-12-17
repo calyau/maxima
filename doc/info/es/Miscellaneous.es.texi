@@ -1,4 +1,4 @@
-@c version 1.17
+@c version 1.18
 @menu
 * Introducci@'on a Opciones Miscel@'aneas::  
 * Share::  
@@ -96,32 +96,36 @@ Valor por defecto: @code{[]}
 
 La variable @code{infolists} es una lista con los nombres de todas las listas que guardan informaci@'on sobre Maxima. Estas son:
 
-@code{labels} - todas las etiqueta @code{%i}, @code{%o} y @code{%t} con valores asignados.
-
-@code{values} - todos los @'atomos que son variables de usuario, no opciones de Maxima creadas con  @code{:} o @code{::}.
-
-@code{functions} - todas las funciones de usuario creadas con @code{:=}.
-
-@code{arrays} - arreglos declarados y no declarados, creados por @code{:}, @code{::} o @code{:=}.
-
-@code{macros} - cualquier macro definida por el usuario.
-
-@code{myoptions} - todas las opciones inicializadas por el usuario, independientemente de que posteriormente hayan sido devueltas a sus valores por defecto.
-
-@code{rules} - reglas de patrones y simplificaci@'on definidas por el usuario, creadas con @code{tellsimp}, @code{tellsimpafter}, @code{defmatch} o @code{defrule}.
-
-@code{aliases} - @'atomos que tienen un "alias" definido por el usuario, creado por las funciones @code{alias}, @code{ordergreat} o @code{orderless} o por haber declarado el @'atomo como @code{noun} (nombre) con @code{declare}.
-
-@code{dependencies} - @'atomos que tienen dependencias funcionales, creados por las funciones @code{depends} o @code{gradef}.
-
-@code{gradefs} - funciones que tienen derivadas definidas por el usuario, creadas por la funci@'on @code{gradef}.
-
-@c UMM, WE REALLY NEED TO BE SPECIFIC -- WHAT DOES "ETC" CONTAIN HERE ??
-@code{props} - @'atomos que tengan cualquier propiedad que no sea de las mencionadas hasta ahora, como atvalues, matchdeclares, etc., as@'{@dotless{i}} como propiedadas especificadas en la funci@'on @code{declare}.
-
-@code{let_rule_packages} - una lista de todos los paquetes de reglas (let) junto con el paquete especial @code{default_let_rule_package}; @code{default_let_rule_package} es el nombre del paquete de reglas utilizado cuando no se use ning@'un otro especificado por el usuario.
+@table @code
+@item labels
+Todas las etiquetas @code{%i}, @code{%o} y @code{%t} con valores asignados.
+@item values
+Todos los @'atomos que son variables de usuario, no opciones de Maxima creadas con  @code{:} o @code{::}.
+@item functions
+Todas las funciones de usuario creadas con @code{:=} o @code{define}.
+@item arrays
+Arreglos declarados y no declarados, creados por @code{:}, @code{::} o @code{:=}.
+@c AREN'T THERE OTHER MEANS OF CREATING ARRAYS ??
+@item macros
+Cualquier macro definida por el usuario.
+@item myoptions
+Todas las opciones inicializadas por el usuario, independientemente de que posteriormente hayan sido devueltas a sus valores por defecto.
+@item rules
+Reglas de patrones y simplificaci@'on definidas por el usuario, creadas con @code{tellsimp}, @code{tellsimpafter}, @code{defmatch} o @code{defrule}.
+@item aliases
+@'Atomos que tienen un "alias" definido por el usuario, creado por las funciones @code{alias}, @code{ordergreat} o @code{orderless} o por haber declarado el @'atomo como @code{noun} (nombre) con @code{declare}.
+@item dependencies
+@'Atomos que tienen dependencias funcionales, creados por las funciones @code{depends} o @code{gradef}.
+@item gradefs
+Funciones que tienen derivadas definidas por el usuario, creadas por la funci@'on @code{gradef}.
+@item props
+Todos los @'atomos que tengan cualquier propiedad que no sea de las mencionadas hasta ahora, como las establecidas por @code{atvalue}, @code{matchdeclare}, etc., as@'{@dotless{i}} como propiedadas especificadas en la funci@'on @code{declare}.
+@item let_rule_packages
+Todos los paquetes de reglas @code{let} definidos por el usuario, junto con el paquete especial @code{default_let_rule_package}; @code{default_let_rule_package} es el nombre del paquete de reglas utilizado cuando no se use ning@'un otro especificado por el usuario.
+@end table
 
 @end defvr
+
 
 @deffn {Funci@'on} integerp (@var{expr})
 
@@ -296,7 +300,7 @@ elimina las propiedades @code{@var{p_1}, ..., @var{p_n}} de los @'atomos @var{a_
 La llamada @code{remove (all, @var{p})} elimina la propiedad @var{p} de todos los @'atomos que la tengan.
 
 @c SHOULD REFER TO A LIST OF ALL SYSTEM-DEFINED PROPERTIES HERE.
-Las propiedades eliminadas pueden ser de las que define el sistema, como @code{function} o @code{mode_declare}, o de las que define el usuario.
+Las propiedades eliminadas pueden ser de las que define el sistema, como @code{function}, @code{macro} o @code{mode_declare}, o de las que define el usuario.
 
 La llamada @code{remove ("@var{a}", operator)} o su equivalente @code{remove ("@var{a}", op)} elimina de  @var{a} las propiedades de operador declaradas por @code{prefix}, @code{infix}, @code{nary}, @code{postfix}, @code{matchfix} o @code{nofix}. N@'otese que el nombre del operador debe escribirse como cadena precedida de ap@'ostrofo.
 

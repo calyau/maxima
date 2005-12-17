@@ -1,4 +1,4 @@
-@c version 1.19
+@c version 1.20
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     
@@ -139,7 +139,7 @@ La instrucci@'on @code{demo ("fft")} presenta una demostarci@'on del paquete @co
 
 @end deffn
 
-@defvr {Variable optativa} fortindent
+@defvr {Variable opcional} fortindent
 Valor por defecto: 0
 
 La variable @code{fortindent} controla el margen izquierdo de las expresiones que escribe la instrucci@'on @code{fortran}.  El valor 0 escribe con un margen normal de 6 espacios; valores positivos har@'an que las expresiones se escriban m@'as a la derecha.
@@ -189,7 +189,7 @@ Ejemplos:
 
 @end deffn
 
-@defvr {Variable optativa} fortspaces
+@defvr {Variable opcional} fortspaces
 Valor por defecto: @code{false}
 
 Si @code{fortspaces} vale @code{true}, @code{fortran} rellena las l@'{@dotless{i}}neas con espacios de 80 columnas.
@@ -272,9 +272,10 @@ La funci@'on utiliza una b@'usqueda binaria en el rango especificado por los dos
 (%o5)                   1.895494267033981
 @end example
 
+
 @end deffn
 
-@defvr {Variable optativa} intpolabs
+@defvr {Variable opcional} intpolabs
 Valor por defecto: 0.0
 
 La variable @code{intpolabs} es el error de la instrucci@'on @code{interpolate}, cuyo comportamiento lo controlan @code{intpolabs} y @code{intpolrel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{interpolate} parar@'a cuando su primer argumento tome un valor menor o igual que @code{intpolabs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{intpolrel * <one of the approximants>}.
@@ -282,7 +283,7 @@ Los valores por defecto de @code{intpolabs} y @code{intpolrel} es 0.0, de manera
 
 @end defvr
 
-@defvr {Variable optativa} intpolerror
+@defvr {Variable opcional} intpolerror
 Valor por defecto: @code{true}
 
 La variable @code{intpolerror} controla el comportamiento de @code{interpolate}.
@@ -290,13 +291,14 @@ Cuando se llama a la funci@'on @code{interpolate}, @'esta determina si la funci@
 
 @end defvr
 
-@defvr {Variable optativa} intpolrel
+@defvr {Variable opcional} intpolrel
 Valor por defecto: 0.0
 
 La variable @code{intpolrel} es el error de la instrucci@'on @code{interpolate}, cuyo comportamiento lo controlan @code{intpolabs} y @code{intpolrel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{interpolate} parar@'a cuando su primer argumento tome un valor menor o igual que @code{intpolabs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{intpolrel * <one of the approximants>}.
 Los valores por defecto de @code{intpolabs} y @code{intpolrel} es 0.0, de manera que @code{interpolate} obtiene una respuesta tan buena como lo permita la precisi@'on aritm@'etica de que se disponga.
 
 @end defvr
+
 
 @node Definiciones para las series de Fourier, , Definiciones para los m@'etodos num@'ericos, M@'etodos num@'ericos
 @section Definiciones para las series de Fourier
@@ -354,14 +356,14 @@ Simplifica @code{sin (n %pi)} a 0 si @code{sinnpiflag} vale @code{true} y
 @c NEEDS EXAMPLES
 @end deffn
 
-@defvr {Variable optativa} sinnpiflag
+@defvr {Variable opcional} sinnpiflag
 Valor por defecto: @code{true}
 
 V@'ease @code{foursimp}.
 
 @end defvr
 
-@defvr {Variable optativa} cosnpiflag
+@defvr {Variable opcional} cosnpiflag
 Valor por defecto: @code{true}
 
 V@'ease @code{foursimp}.

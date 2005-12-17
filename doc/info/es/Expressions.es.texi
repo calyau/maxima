@@ -1,4 +1,4 @@
-@c version 1.40
+@c version 1.41
 @menu
 * Introducci@'on a las Expresiones::  
 * Asignaci@'on::
@@ -441,10 +441,44 @@ La expresi@'on encerrada no se eval@'ua, siendo exclu@'{@dotless{i}}da de los c@
 
 La variable @code{boxchar} guarda el car@'acter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
 
+Ejemplos:
+
+@c ===beg===
+@c box (a^2 + b^2);
+@c box (a^2 + b^2, term_1);
+@c 1729 - box (1729);
+@c boxchar: "-";
+@c box (sin(x) + cos(y));
+@c ===end===
+@example
+(%i1) box (a^2 + b^2);
+             """""""""
+             " 2   2 "
+(%o1)        "b  + a "
+             """""""""
+(%i2) box (a^2 + b^2, term_1);
+             term_1"""
+             " 2   2 "
+(%o2)        "b  + a "
+             """""""""
+(%i3) 1729 - box (1729);
+                  """"""
+(%o3)      1729 - "1729"
+                  """"""
+(%i4) boxchar: "-";
+(%o4)            -
+(%i5) box (sin(x) + cos(y));
+                -----------------
+(%o5)           -COS(y) + SIN(x)-
+                -----------------
+(%i6) 
+@end example
+
 @end deffn
 
-@defvr {Option variable} boxchar
-Default value: @code{"}
+
+@defvr {Variable opcional} boxchar
+Valor por defecto: @code{"}
 
 La variable @code{boxchar} guarda el car@'acter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
 
@@ -517,6 +551,35 @@ o funciones cuyos argumentos son constantes.
 
 La funci@'on @code{constantp} eval@'ua sus argumentos.
 
+Ejemplos:
+
+@c ===beg===
+@c constantp (7 * sin(2));
+@c constantp (rat (17/29));
+@c constantp (%pi * sin(%e));
+@c constantp (exp (x));
+@c declare (x, constant);
+@c constantp (exp (x));
+@c constantp (foo (x) + bar (%e) + baz (2));
+@c ===end===
+
+@example
+(%i1) constantp (7 * sin(2));
+(%o1) 				     TRUE
+(%i2) constantp (rat (17/29));
+(%o2) 				     TRUE
+(%i3) constantp (%pi * sin(%e));
+(%o3) 				     TRUE
+(%i4) constantp (exp (x));
+(%o4) 				     FALSE
+(%i5) declare (x, constant);
+(%o5) 				     DONE
+(%i6) constantp (exp (x));
+(%o6) 				     TRUE
+(%i7) constantp (foo (x) + bar (%e) + baz (2));
+(%o7) 				     FALSE
+(%i8) 
+@end example
 @end deffn
 
 @deffn {Funci@'on} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
@@ -634,7 +697,7 @@ Si la variable @code{%enumer} vale @code{true} hace que @code{%e} se reemplace p
 
 @end deffn
 
-@defvr {Variable optativa} %emode
+@defvr {Variable opcional} %emode
 Valor por defecto: @code{true}
 
 Si @code{%emode} vale @code{true},
@@ -651,7 +714,7 @@ Si @code{%emode} vale @code{false}, no se realizan simplificaciones especiales a
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variable optativa} %enumer
+@defvr {Variable opcional} %enumer
 Valor por defecto: @code{false}
 
 Si la variable @code{%enumer} vale @code{true} hace que @code{%e} se reemplace por
@@ -668,7 +731,7 @@ V@'eanse tambi@'en @code{ev} y @code{numer}.
 @c FALTA DEFINICION DE exptisolate
 
 
-@defvr {Variable optativa} exptsubst
+@defvr {Variable opcional} exptsubst
 Valor por defecto: @code{false}
 
 Si @code{exptsubst} vale @code{true} permite la sustituci@'on @code{y} por @code{%e^x} en @code{%e^(a x)}.
@@ -862,7 +925,7 @@ mientras que mayor  @var{rbp} hace a @var{op} asociativo por la izquierda.
 
 @end deffn
 
-@defvr {Variable optativa} inflag
+@defvr {Variable opcional} inflag
 Valor por defecto: @code{false}
 
 Si @code{inflag} vale @code{true}, las funciones para la extracci@'on de partes inspeccionan la forma interna de @code{expr}.
@@ -919,7 +982,7 @@ Para ejemplos, ejec@'utese @code{example (isolate)}.
 @end deffn
 
 @c NEEDS WORK
-@defvr {Variable optativa} isolate_wrt_times
+@defvr {Variable opcional} isolate_wrt_times
 Valor por defecto: @code{false}
 
 Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de productos. Comp@'arese el comportamiento de @code{isolate} al cambiar el valor de esta variable global en el siguiente ejemplo,
@@ -948,7 +1011,7 @@ Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en 
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Variable optativa} listconstvars
+@defvr {Variable opcional} listconstvars
 Valor por defecto: @code{false}
 
 Si @code{listconstvars} vale @code{true}, har@'a que @code{listofvars} incluya @code{%e}, @code{%pi}, @code{%i} y cualquier otra variable que sea declarada constante de las que aparezcan en el argumento de @code{listofvars}.
@@ -956,7 +1019,7 @@ Estas constantes se omiten por defecto.
 
 @end defvr
 
-@defvr {Variable optativa} listdummyvars
+@defvr {Variable opcional} listdummyvars
 Valor por defecto: @code{true}
 
 Si @code{listdummyvars} vale @code{false}, las "variables mudas" de la expresi@'on no ser@'an inclu@'{@dotless{i}}das en la lista devuelta por @code{listofvars}. (La definici@'on de "variables mudas" se encuentra en la descripci@'on de @code{freeof}.
@@ -1139,7 +1202,7 @@ H@'agase @code{example (optimize)} para ver ejemplos.
 
 @end deffn
 
-@defvr {Variable optativa} optimprefix
+@defvr {Variable opcional} optimprefix
 Valor por defecto: @code{%}
 
 La variable @code{optimprefix} es el prefijo utilizado para los s@'{@dotless{i}}mbolos generados por la instrucci@'on @code{optimize}.
@@ -1228,7 +1291,7 @@ Devuelve una lista con dos expresiones, que son: (1) los factores de @var{expr} 
 @end deffn
 
 @c NEEDS EXAMPLE
-@defvr {Variable optativa} partswitch
+@defvr {Variable opcional} partswitch
 Valor por defecto: @code{false}
 
 Si @code{partswitch} vale @code{true} entonces de devuelve @code{end} cuando no exista la parte seleccionada de una expresi@'on, si vale @code{false} se mostrar@'a un mensaje de error.

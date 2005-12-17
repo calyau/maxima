@@ -1,4 +1,4 @@
-@c version 1.33
+@c version 1.36
 @menu
 * Introducci@'on a itensor::
 * Definiciones para itensor::
@@ -63,7 +63,7 @@ Devido a que este c@'odigo es nuevo, puede contener errores.
 
 El paquete @code{itensor} se carga haciendo @code{load(itensor)}. Para acceder a las demos se har@'a @code{demo(tensor)}.
 
-En el paquete @code{itensor} un tensor se representa como un objeto indexado, esto es, como una funci@'on de tres grupos de @'{@dotless{i}}ndices: los covariantes, los contravariantes y los de derivadas. Los @'{@dotless{i}}ndices covariantes se especifican mediante una lista que ser@'a el primer argumento del objeto indexado, siendo los @'{@dotless{i}}ndices contravariantes otra lista que ser@'a el segundo argumento del mismo objeto indexado. Si al objeto indexado le falta cualquiera de estos grupos de @'{@dotless{i}}ndices, entonces se le asignar@'a al argumento correspondiente la lista vac@'{@dotless{i}}a [].  As@'{@dotless{i}}, @code{g([a,b],[c])} representa un objeto indexado llamado @code{g}, el cual tiene dos @'{@dotless{i}}ndices covariantes @code{(a,b)}, un @'{@dotless{i}}ndice contravariante (@code{c}) y no tiene @'{@dotless{i}}ndices de derivadas.
+En el paquete @code{itensor} un tensor se representa como un objeto indexado, esto es, como una funci@'on de tres grupos de @'{@dotless{i}}ndices: los covariantes, los contravariantes y los de derivadas. Los @'{@dotless{i}}ndices covariantes se especifican mediante una lista que ser@'a el primer argumento del objeto indexado, siendo los @'{@dotless{i}}ndices contravariantes otra lista que ser@'a el segundo argumento del mismo objeto indexado. Si al objeto indexado le falta cualquiera de estos grupos de @'{@dotless{i}}ndices, entonces se le asignar@'a al argumento correspondiente la lista vac@'{@dotless{i}}a @code{[]}.  As@'{@dotless{i}}, @code{g([a,b],[c])} representa un objeto indexado llamado @code{g}, el cual tiene dos @'{@dotless{i}}ndices covariantes @code{(a,b)}, un @'{@dotless{i}}ndice contravariante (@code{c}) y no tiene @'{@dotless{i}}ndices de derivadas.
 
 Los @'{@dotless{i}}ndices de derivadas, si est@'an presentes, se a@~naden como argumentos adicionales a la funci@'on simb@'olica que representa al tensor. Se pueden especificar expl@'{@dotless{i}}citamente por el usuario o pueden crearse durante el proceso de diferenciaci@'on respecto de alguna coordenada. Puesto que la diferenciaci@'on ordinaria es conmutativa, los @'{@dotless{i}}ndices de derivadas se ordenan alfanum@'ericamente, a menos que la variable @code{iframe_flag} valga @code{true}, indicando que se est@'a utilizando una m@'etrica del sistema de referencia. Esta ordenaci@'on can@'onica hace posible que Maxima reconozca, por ejemplo, que @code{t([a],[b],i,j)} es lo mismo que @code{t([a],[b],j,i)}. La diferenciaci@'on de un objeto indexado con respecto de alguna coordenada cuyo @'{@dotless{i}}ndice no aparece como argumento de dicho objeto indexado, dar@'a como resultado cero. Esto se debe a que Maxima no sabe si el tensor representado por el objeto indexado depende impl@'{@dotless{i}}citamente de la coordenada correspondiente. Modificando la funci@'on @code{diff} de Maxima en @code{itensor}, se da por hecho que todos los objetos indexados dependen de cualquier variable de diferenciaci@'on, a menos que se indique lo contrario. Esto hace posible que la convenci@'on sobre la sumaci@'on se extienda a los @'{@dotless{i}}ndices de derivadas. El paquete @code{itensor} trata a los @'{@dotless{i}}ndices de derivadas como covariantes.
 
@@ -215,7 +215,8 @@ Un producto tensorial que contenga el mismo @'{@dotless{i}}ndice m@'as de dos ve
 @deffn {Funci@'on} rename (@var{expr})
 @deffnx {Funci@'on} rename (@var{expr}, @var{count})
 
-Devuelve una expresi@'on equivalente a @var{expr} pero con los @'{@dotless{i}}ndices mudos de cada t@'ermino elegidos del conjunto  @code{[%1, %2,...]} si el segundo argumento opcional se omite. En otro caso, los @'{@dotless{i}}ndices mudos son indexados empezando con el valor @var{count}. Cada @'{@dotless{i}}ndice mudo en un producto ser@'a diferente. En el caso de las sumas, la funci@'on @code{rename} operar@'a sobre cada t@'ermino de la suma reinicializando el contador con cada t@'ermino. De esta manera @code{rename} puede servir como simplificador tensorial. Adem@'as, los @'{@dotless{i}}ndices se ordenar@'an alfanum@'ericamente, si la variable @code{allsym} vale @code{true}, respecto de los @'{@dotless{i}}ndices covariantes y contravariantes dependiendo del valor de @code{flipflag}. Si  @code{flipflag} vale @code{false}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices contravariantes. Si @code{flipflag} vale @code{true}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes.
+Devuelve una expresi@'on equivalente a @var{expr} pero con los @'{@dotless{i}}ndices mudos de cada t@'ermino elegidos del conjunto  @code{[%1, %2,...]} si el segundo argumento opcional se omite. En otro caso, los @'{@dotless{i}}ndices mudos son indexados empezando con el valor @var{count}. Cada @'{@dotless{i}}ndice mudo en un producto ser@'a diferente. En el caso de las sumas, la funci@'on @code{rename} operar@'a sobre cada t@'ermino de la suma reinicializando el contador con cada t@'ermino. De esta manera @code{rename} puede servir como simplificador tensorial. Adem@'as, los @'{@dotless{i}}ndices se ordenar@'an alfanum@'ericamente, si la variable @code{allsym} vale @code{true}, respecto de los @'{@dotless{i}}ndices covariantes y contravariantes dependiendo del valor de @code{flipflag}. Si  @code{flipflag} vale @code{false}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices contravariantes. Si @code{flipflag} vale @code{true}, entonces los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes. Suele acontecer que el efecto combinado de los dos cambios de nombre reduzcan la expresi@'on m@'as de lo que que pueda reducir cualquiera de ellas por separado.
+
 
 @example
 
@@ -262,10 +263,12 @@ ichr2([%3,%5],[%1])*ichr2([%4,%6],[%3])*ichr2([%7,r],[%2]),noeval$
 
 @end deffn
 
-@defvr {Variable optativa} flipflag
+@defvr {Variable opcional} flipflag
 Valor por defecto: @code{false}
 
-Si vale @code{false} los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes, si @code{true} se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes. La variable inluye sobre @code{rename} de la siguiente manera: si @code{flipflag} vale @code{false}, entonces @code{rename} construye una lista con los @'{@dotless{i}}ndices contravariantes seg@'un van apareciendo de izquierda a derecha; si vale @code{true}, entonces va formando la lista con los covariantes. Al primer @'{@dotless{i}}ndice mudo se le da el nombre @code{%1}, al siguiente @code{%2}, etc. Finalmente se hace la ordenaci@'on. V@'ease el ejemplo en la descripci@'on de la funci@'on @code{rename}.
+Si vale @code{false} los @'{@dotless{i}}ndices se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes, si @code{true} se renombrar@'an de acuerdo con el orden de los @'{@dotless{i}}ndices covariantes.
+
+Si @code{flipflag} vale @code{false}, entonces @code{rename} construye una lista con los @'{@dotless{i}}ndices contravariantes seg@'un van apareciendo de izquierda a derecha; si vale @code{true}, entonces va formando la lista con los covariantes. Al primer @'{@dotless{i}}ndice mudo se le da el nombre @code{%1}, al siguiente @code{%2}, etc. Finalmente se hace la ordenaci@'on. V@'ease el ejemplo en la descripci@'on de la funci@'on @code{rename}.
 
 @end defvr
 
@@ -383,8 +386,8 @@ Borra todos los valores de @var{tensor} que han sido asignados con la funci@'on 
 
 @end deffn
 
-@c NEED LIST OF ARGUMENTS HERE
-@deffn {Funci@'on} showcomps
+
+@deffn {Funci@'on} showcomps (@var{tensor})
 
 Muestra las componentes de un tensor definidas con la instrucci@'on @code{components}. Por ejemplo:
 
@@ -435,21 +438,22 @@ Incrementa @code{icounter} y devuelve un @'{@dotless{i}}ndice de la forma @code{
 
 @end deffn
 
-@defvr {Variable} idummyx
+@defvr {Variable opcional} idummyx
+Valor por defecto: @code{%}
 
 Es el prefijo de los @'{@dotless{i}}ndices mudos. V@'ease @code{indices}.
 
 @end defvr
 
-@defvr {Variable optativa} icounter
-Valor por defecto: [1]
+@defvr {Variable opcional} icounter
+Valor por defecto: @code{1}
 
 Determina el sufijo num@'erico a ser utilizado en la generaci@'on del siguiente @'{@dotless{i}}ndice mudo. El prefijo se determina con la opci@'on @code{idummy} (por defecto: %).
 @end defvr
 
 @deffn {Funci@'on} kdelta (@var{L1}, @var{L2})
 
-Es la funci@'on delta generalizada de Kronecker definida en el paquete @code{itensor} siendo @var{L1} la lista de @'{@dotless{i}}ndices covariantes y @var{L2} la lista de @'{@dotless{i}}ndices contravariantes. La funci@'on  @code{kdelta([i],[j])} devuelve el valor de la delta ordinaria de Kronecker.
+Es la funci@'on delta generalizada de Kronecker definida en el paquete @code{itensor} siendo @var{L1} la lista de @'{@dotless{i}}ndices covariantes y @var{L2} la lista de @'{@dotless{i}}ndices contravariantes. La funci@'on  @code{kdelta([i],[j])} devuelve el valor de la delta ordinaria de Kronecker. La instrucci@'on @code{ev(@var{expr},kdelta)} provoca la evaluaci@'on de una expresi@'on que contenga @code{kdelta([],[])}.
 
 En un abuso de la notaci@'on, @code{itensor} tambi@'en permite a @code{kdelta} tener 2 @'{@dotless{i}}ndices covariantes y ninguno contravariante, o 2 contravariantes y ninguno covariante. Esto es una funcionalidad del paquete, loque no implica que  @code{kdelta([i,j],[])} sea un objeto tensorial de pleno derecho.
 
@@ -601,7 +605,7 @@ Similar a @code{canten} pero tambi@'en realiza la contracci@'on de los @'{@dotle
 
 @subsection Simetr@'{@dotless{i}}as de tensores
 
-@defvr {Variable optativa} allsym
+@defvr {Variable opcional} allsym
 Valor por defecto: @code{false}
 
 Si vale @code{true} entonces todos los objetos indexados se consideran sim@'etricos respecto de todos sus @'{@dotless{i}}ndices covariantes y contravariantes. Si vale @code{false} entonces no se tienen en cuenta ning@'un tipo de simetr@'{@dotless{i}}a para estos @'{@dotless{i}}ndices. Los @'{@dotless{i}}ndices de derivadas se consideran siempre sim@'etricos, a menos que la variable @code{iframe_flag} valga @code{true}.
@@ -706,8 +710,8 @@ Devuelve una expresi@'on equivalente a @var{expr} pero con todas las derivadas d
 
 @end deffn
 
-@c NEED FUNCTION ARGUMENTS HERE
-@deffn {Funci@'on} evundiff
+
+@deffn {Funci@'on} evundiff (@var{expr})
 
 Equivale a @code{undiff} seguido de  @code{ev} y @code{rediff}.
 
@@ -814,7 +818,8 @@ Simplifica expresiones que contengan derivadas ordinarias tanto de las formas co
 @end example
 @end deffn
 
-@deffn {Funci@'on} simpmetderiv (@var{expr}[, @var{stop}])
+@deffn {Funci@'on} simpmetderiv (@var{expr})
+@deffnx {Funci@'on} simpmetderiv (@var{expr}[, @var{stop}])
 
 Simplifica expresiones que contienen productos de las derivadas del tensor m@'etrico. La funci@'on @code{simpmetderiv} reconoce dos identidades:
 
@@ -901,7 +906,8 @@ Iguala a cero en @code{expr} todas las apariciones de @code{tensor} que tengan e
 @subsection Tensores en espacios curvos
 
 @deffn {Funci@'on} imetric (@var{g})
-Especifica la m@'etrica haciendo la asignaci@'on de la variable @code{imetric:@var{g}}, adem@'as las propiedades de contracci@'on de la m@'etrica @var{g} se fijan ejecutando las instrucciones @code{defcon(@var{g}), defcon(@var{g},@var{g},kdelta)}. La variable @code{imetric}, que toma por defecto el valor @code{[]}, tiene el valor de la m@'etrica que se le haya asignado con la instrucci@'on @code{imetric(@var{g})}.
+@deffnx {Variable de sistema} imetric
+Especifica la m@'etrica haciendo la asignaci@'on de la variable @code{imetric:@var{g}}, adem@'as las propiedades de contracci@'on de la m@'etrica @var{g} se fijan ejecutando las instrucciones @code{defcon(@var{g}), defcon(@var{g},@var{g},kdelta)}. La variable @code{imetric}, a la que no se le asigna ning@'un valor por defecto, tiene el valor de la m@'etrica que se le haya asignado con la instrucci@'on @code{imetric(@var{g})}.
 
 @end deffn
 
@@ -961,6 +967,24 @@ Enter a list of the derivative indices: [];
              k         %1     k         %1     k            k     %1
 (%t3)     - a     ichr2    - a     ichr2    + a      + ichr2     a
              i %1      j s    %1 j      i s    i j,s        %1 s  i j
+(%i4) imetric:g;
+(%o4) 				       g
+(%i5) ishow(ev(%th(2),ichr2))$
+	 %1 %4  k
+	g      a     (g	      - g       + g	 )
+		i %1   s %4,j	 j s,%4	   j %4,s
+(%t5) - ------------------------------------------
+			    2
+    %1 %3  k
+   g	  a     (g       - g	   + g	    )
+	   %1 j	  s %3,i    i s,%3    i %3,s
+ - ------------------------------------------
+		       2
+    k %2  %1
+   g     a    (g        - g	   + g	     )
+	  i j   s %2,%1	   %1 s,%2    %1 %2,s	  k
+ + ------------------------------------------- + a
+			2			  i j,s
 
 @end example
 
@@ -1010,7 +1034,7 @@ Maxima puede hacer c@'alculos utilizando sistemas de referencia m@'oviles, los c
 
 Para utilizar sistemas de referencia, primero se debe asignar a la variable @code{iframe_flag} el valor @code{true}. Con esto se hace que los s@'{@dotless{i}}mbolos de Christoffel, @code{ichr1} y @code{ichr2}, sean reemplazados por los coeficientes @code{icc1} y @code{icc2} en los c@'alculos, cambiando as@'{@dotless{i}} el comportamiento de @code{covdiff} y @code{icurvature}.
 
-El sistema de referencia se define con dos tensores: el campo del sistema de referencia inverso (@code{ifri}) y la m@'etrica del sistema de referencia @code{ifg}. La m@'etrica del sistema de referencia es la matriz identidad en los sistemas de referencia ortonormales, o la m@'etrica de Lorentz en sistemas de referencia ortonormales en el espacio-tiempo de Minkowski.  El campo del sistema de referencia inverso define la base del sistema de referencia con vectores unitarios. Las propiedades contractivas se definen para el campo y la m@'etrica del sistema de referencia.
+El sistema de referencia se define con dos tensores: el campo del sistema de referencia inverso (@code{ifri}, la base dual tetrad) y la m@'etrica del sistema de referencia @code{ifg}. La m@'etrica del sistema de referencia es la matriz identidad en los sistemas de referencia ortonormales, o la m@'etrica de Lorentz en sistemas de referencia ortonormales en el espacio-tiempo de Minkowski.  El campo del sistema de referencia inverso define la base del sistema de referencia con vectores unitarios. Las propiedades contractivas se definen para el campo y la m@'etrica del sistema de referencia.
 
 Si @code{iframe_flag} vale @code{true}, muchas expresiones de @code{itensor} utilizan la m@'etrica @code{ifg} en lugar de la m@'etrica definida por @code{imetric} para incrementar y reducir @'{@dotless{i}}ndices.
 
@@ -1165,7 +1189,7 @@ El campo del sistema de referencia. Se contrae con el campo inverso @code{ifri} 
 
 @defvr {Variable} ifri
 
-Campo inverso del sistema de referencia. Especifica la base del sistema de referencia.
+Campo inverso del sistema de referencia. Especifica la base del sistema de referencia (vectores de la base dual).
 
 @end defvr
 
@@ -1182,7 +1206,7 @@ La m@'etrica inversa del sistema de referencia. Se contrae con la m@'etrica @cod
 
 @end defvr
 
-@defvr {Variable optativa} iframe_bracket_form
+@defvr {Variable opcional} iframe_bracket_form
 Valor por defecto: @code{true}
 
 Especifica c@'omo se calcula @code{ifb}.
@@ -1198,10 +1222,8 @@ Maxima trabaja con conceptos como la torsi@'on y la no metricidad. Cuando la var
 Vector de no metricidad. La no metricidad conforme se define a partir de la derivada covariante del tensor m@'etrico. La derivada covariante del tensor m@'etrico, que normalmente es nula, se calcula, cuando @code{inonmet_flag} vale @code{true}, como 
 
 @example
-
-g     =- g  nm
- ij;k     ij  k
-
+g     =- g  inm
+ ij;k     ij   k
 @end example
 
 @end defvr
@@ -1504,7 +1526,7 @@ Calcula el dual de Hodge  @var{expr}. Por ejemplo:
 
 @end deffn
 
-@defvr {Variable optativa} igeowedge_flag
+@defvr {Variable opcional} igeowedge_flag
 Valor por defecto: @code{false}
 
 Controla el comportamiento del producto exterior y de la derivada exterior. Cuando vale @code{false}, la noci@'on de formas diferenciales se corresponde con el de campo tensorial covariante totalmente antisim@'etrico. Cuando vale @code{true}, las formas diferenciales se corresponden con la idea de elemento de volumen.

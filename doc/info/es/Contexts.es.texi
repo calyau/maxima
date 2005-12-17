@@ -1,4 +1,4 @@
-@c version 1.9
+@c version 1.11
 @menu
 * Definiciones para Contextos::    
 @end menu
@@ -49,7 +49,12 @@ Valor por defecto: @code{false}
 
 Si @code{assume_pos} vale @code{true} y el signo de una par@'ametro @var{x} no puede ser determinado a partir de la base de datos de @code{assume} o de otras consideraciones, @code{sign} y @code{asksign (@var{x})} devolver@'an @code{true}. Con esto se pueden evitar algunas preguntas al usuario que se generan autom@'aticamente, como las que hacen @code{integrate} y otras funciones.
 
-Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (x)} o @code{subvarp (x)} devuelven @code{true}.
+By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
+or @code{subvarp (@var{x})}.
+
+
+
+Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (@var{x})} o @code{subvarp (@var{x})} devuelven @code{true}.
 La clase de expresiones que se consideran par@'ametros se puede extender mediante la utilizaci@'on de la variable @code{assume_pos_pred}.
 
 Las funciones @code{sign} y @code{asksign} intentan deducir el signo de una expresi@'on a partir de los signos de los operandos que contiene. Por ejemplo, si @code{a} y @code{b} son ambos positivos, entonces @code{a + b} tambi@'en es positivo.
@@ -67,7 +72,7 @@ Cuando a @code{assume_pos_pred} se le asigna el nombre de una funci@'on o una ex
 
 La funci@'on @code{assume_pos_pred} es invocada por  @code{sign} y por @code{asksign} con un argumento @var{x}, el cual puede ser un @'atomo, una variable subindicada o una expresi@'on de llamada a una funci@'on. Si la funci@'on @code{assume_pos_pred} devuelve @code{true}, @var{x} ser@'a considerada como un par@'ametro por @code{assume_pos}.
 
-Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (x)} o @code{subvarp (x)} devuelven @code{true}.
+Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (@var{x})} o @code{subvarp (@var{x})} devuelven @code{true}.
 
 V@'eanse tambi@'en @code{assume} y @code{assume_pos}.
 
@@ -185,7 +190,7 @@ La lamada @code{facts ()}, sin argumentos, muestra el contexto actual.
 @defvr {Declaraci@'on} features
 Maxima reconoce ciertas propiedades matem@'aticas sobre funciones y variables.
 
-La llamada @code{declare (@var{x}, @var{foo})} asocia la propiedad @var{foo} a la funci@'on o variable @code{x}.
+La llamada @code{declare (@var{x}, @var{foo})} asocia la propiedad @var{foo} a la funci@'on o variable @var{x}.
 
 La llamada @code{declare (@var{foo}, feature)} declara una nueva propiedad @var{foo}. Por ejemplo, @code{declare ([rojo, verde, azul], feature)} declara tres nuevas propiedades, @code{rojo}, @code{verde} y @code{azul}.
 
@@ -194,9 +199,10 @@ devuelve @code{true} si @var{x} goza de la propiedad @var{foo}, y @code{false} e
 
 La lista @code{features} contiene las propiedades que reconoce Maxima; a saber, 
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
-@code{irrational}, @code{real}, @code{imaginary}, @code{complex}, @code{analytic}, @code{increasing},
-@code{decreasing}, @code{oddfun}, @code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
-@code{rassociative}, @code{symmetric} y @code{antisymmetric}, junto con las definidas por el usuario.
+@code{irrational}, @code{real}, @code{imaginary}, @code{complex},
+@code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},
+@code{evenfun}, @code{posfun}, @code{commutative}, @code{lassociative},
+@code{rassociative}, @code{symmetric}, and @code{antisymmetric}, junto con las definidas por el usuario.
 
 La lista @code{features} s@'olo contiene propiedades matem@'aticas. Hay otra lista con propiedades no matem@'aticas; V@'ease @code{status}.
 

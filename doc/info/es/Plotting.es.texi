@@ -1,4 +1,4 @@
-@c version 1.18
+@c version 1.19
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
@@ -6,7 +6,7 @@
 @node Definiciones para Gr@'aficos,  , Gr@'aficos, Gr@'aficos
 @section Definiciones para Gr@'aficos
 
-@defvr {Variable optativa} in_netmath
+@defvr {Variable opcional} in_netmath
 Valor por defecto: @code{false}
 
 Si @code{in_netmath} vale @code{true},
@@ -401,12 +401,14 @@ Ejemplo:
 @end example
 
 @item
-Opci@'on: @code{gnuplot_curve_titles} Controla los t@'{@dotless{i}}tulos dados a la clave del gr@'afico. El valor por defecto es  @code{default}, el cual establece autom@'aticamente los t@'{@dotless{i}}tulos para cada curva representada. Si no es @code{default}, @code{gnuplot_curve_titles} debe contener una lista de cadenas. (Para desactivar completamente la clave, a@~nadir @code{"set nokey"} a @code{gnuplot_preamble}.)
+Opci@'on: @code{gnuplot_curve_titles}
+
+Controla los t@'{@dotless{i}}tulos dados a la clave del gr@'afico. El valor por defecto es  @code{[default]}, el cual establece autom@'aticamente los t@'{@dotless{i}}tulos para cada curva representada. Si no es @code{[default]}, @code{gnuplot_curve_titles} debe contener una lista de cadenas, cada una de las cuales es @code{"title '@var{title_string}'"}. (Para desactivar la clave del gr@'afico, a@~n@'adase @code{"set nokey"} a @code{gnuplot_preamble}.)
 
 Ejemplo:
 
 @example
-[gnuplot_curve_titles, ["my first function", "my second function"]]
+[gnuplot_curve_titles, ["title 'My first function'", "title 'My second function'"]]
 @end example
 
 @item

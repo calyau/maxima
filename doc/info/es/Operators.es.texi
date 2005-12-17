@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.24
 @menu
 * n-arios::                        
 * no-fijos::                       
@@ -200,11 +200,104 @@ debe evaluarse a una variable de tipo at@'omica o una variable subindicada.
 @end deffn
 
 @deffn {Operador} "::="
-El operador "::=" es usado en vez del ":=" para indicar que lo que
-sigue, es decir despu@'es del operador, es una definici@'on de macro
-y no  una definici@'on ordinaria de funci@'on.
+El operador de definici@'on de macros @code{::=} define una funci@'on (llamada macro por razones hist@'oricas) que no eval@'ua sus argumentos, siendo la expresi@'on que retorna (llamada "macroexpansi@'on") evaluada dentro del contexto desde el cual se ha invocado la macro. En cualquier otro sentido, una funci@'on macro es igual que una funci@'on ordinaria.
 
-Mirar tambi@'en:  @code{macros}.
+@code{macroexpand} devuelve la expresi@'on que a su vez fue devuelta por una macro (sin evaluar la expresi@'on);
+@code{macroexpand (foo (x))} seguida de @code{''%} es equivalente a @code{foo (x)} si @code{foo} es una funci@'on macro.
+
+@code{::=} coloca el nombre de la nueva funci@'on macro en la lista global @code{macros}. Por otro lado, las funciones 
+@code{kill}, @code{remove} y @code{remfunction} borran las definiciones de las funciones macro y eliminan sus nombres de la lista @code{macros}.
+
+Las funciones @code{fundef} y @code{dispfun} devuelven la definici@'on de una funci@'on macro y le asignan una etiqueta, respectivamente.
+
+Las funciones macro normalmente contienen expresiones @code{buildq} y @code{splice} para construir una expresi@'on, que luego ser@'a evaluada.
+
+Ejemplos:
+
+Una funci@'on macro no eval@'ua sus argumentos, por lo que el mensaje (1) muestra @code{y - z}, no el valor de @code{y - z}.
+La macroexpansi@'on (es decir, la expresi@'on no evaluada @code{'(print ("(2) x is equal to", x))}) se eval@'ua en el contexto desde el cual se produjo la llamada a la macro, imprimiendo el mensaje (2).
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printq1 (y - z);
+@c ===end===
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) printq1 (x) ::= block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%o4) printq1(x) ::= block(print("(1) x is equal to", x), 
+                                '(print("(2) x is equal to", x)))
+(%i5) printq1 (y - z);
+(1) x is equal to y - z 
+(2) x is equal to %pi 
+(%o5)                          %pi
+@end example
+
+Una funci@'on ordinaria eval@'ua sus argumentos, por lo que el mensaje (1) muestra el valor de @code{y - z}.
+El valor de retorno no se eval@'ua, por lo que el mensaje (2) no se imprime hasta la evaluaci@'on expl@'{@dotless{i}}cita @code{''%}.
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+@c printe1 (y - z);
+@c ''%;
+@c ===end===
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) printe1 (x) := block (print ("(1) x is equal to", x), '(print ("(2) x is equal to", x)));
+(%o4) printe1(x) := block(print("(1) x is equal to", x), 
+                                '(print("(2) x is equal to", x)))
+(%i5) printe1 (y - z);
+(1) x is equal to 1234 - 1729 w 
+(%o5)              print((2) x is equal to, x)
+(%i6) ''%;
+(2) x is equal to %pi 
+(%o6)                          %pi
+@end example
+
+@code{macroexpand} devuelve la macroexpansi@'on;
+@code{macroexpand (foo (x))} seguida de @code{''%} es equivalente a @code{foo (x)} si @code{foo} es una funci@'on macro.
+
+@c ===beg===
+@c x: %pi;
+@c y: 1234;
+@c z: 1729 * w;
+@c g (x) ::= buildq ([x], print ("x is equal to", x));
+@c macroexpand (g (y - z));
+@c ''%;
+@c g (y - z);
+@example
+(%i1) x: %pi;
+(%o1)                          %pi
+(%i2) y: 1234;
+(%o2)                         1234
+(%i3) z: 1729 * w;
+(%o3)                        1729 w
+(%i4) g (x) ::= buildq ([x], print ("x is equal to", x));
+(%o4)    g(x) ::= buildq([x], print("x is equal to", x))
+(%i5) macroexpand (g (y - z));
+(%o5)              print(x is equal to, y - z)
+(%i6) ''%;
+x is equal to 1234 - 1729 w 
+(%o6)                     1234 - 1729 w
+(%i7) g (y - z);
+x is equal to 1234 - 1729 w 
+(%o7)                     1234 - 1729 w
+@end example
 
 @end deffn
 
@@ -324,11 +417,144 @@ Devuelve el valor absoluto complejo (m@'odulo complejo) de @var{expr}.
 
 @end deffn
 
+
+
+@deffn {Funci@'on} ceiling (@var{x})
+
+Si @var{x} es un n@'umero real, devuelve el menor entero mayor o igual que @var{x}.  
+
+Si @var{x} es una expresi@'on constante (por ejemplo, @code{10 * %pi}), 
+@code{ceiling} eval@'ua @var{x} haciendo uso de n@'umeros grandes en coma flotante (big floats), aplicando a continuaci@'on
+ @code{ceiling} al n@'umero decimal obtenido. Puesto que @code{ceiling} hace evaluaciones en coma flotante, es posible, pero improbable, que esta funci@'on devuelva un valor err@'oneo para entradas constantes. Para evitar estos errores, la evaluaci@'on en punto flotante se lleva a cabo utilizando tres valores para @code{fpprec}.
+
+Para argumentos no constantes, @code{ceiling} intenta devolver un valor simplificado. Aqu@'{@dotless{i}} se presentan algunos ejemplos sobre las simplificaciones que @code{ceiling} es capaz de hacer:
+
+@c ===beg===
+@c ceiling (ceiling (x));
+@c ceiling (floor (x));
+@c declare (n, integer)$
+@c [ceiling (n), ceiling (abs (n)), ceiling (max (n, 6))];
+@c assume (x > 0, x < 1)$
+@c ceiling (x);
+@c tex (ceiling (a));
+@c ===end===
+@example
+(%i1) ceiling(ceiling(x));
+(%o1) ceiling(x)
+(%i2) ceiling(floor(x));
+(%o2) floor(x)
+(%i3) declare(n,integer)$
+(%i4) [ceiling(n), ceiling(abs(n)), ceiling(max(n,6))];
+(%o4) [n, abs(n), max(n,6)]
+(%i5) assume(x > 0, x < 1)$
+(%i6) ceiling(x);
+(%o6) 1
+(%i7) tex(ceiling(a));
+   $$\left \lceil a \right \rceil$$
+@end example
+
+La funci@'on @code{ceiling} no se extiende autom@'aticamente a los elementos de listas y matrices.
+Por @'ultimo, para todos los argumentos que tengan una forma compleja, @code{ceiling} devuelve una forma nominal.
+
+Si el rango de una funci@'on es subconjunto de los n@'umeros enteros, entonces puede ser declarada como @code{integervalued}. Tanto @code{ceiling} como @code{floor} son funciones que hacen uso de esta informaci@'on; por ejemplo:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare(f,integervalued)$
+(%i2) floor(f(x));
+(%o2) f(x)
+(%i3) ceiling(f(x) -1);
+(%o3) f(x)-1
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} charfun (@var{p})
+
+Devuelve 0 cuando el predicado @var{p} toma el valor @code{false}, y devuelve
+1 cuando vale @code{true}.  Si el predicado toma un valor diferente de @code{true} y @code{false} (desconocido), 
+entonces devuelve una forma nominal.
+
+Ejemplos:
+
+@c ===beg===
+@c charfun (x < 1);
+@c subst (x = -1, %);
+@c e : charfun ('"and" (-1 < x, x < 1))$
+@c [subst (x = -1, e), subst (x = 0, e), subst (x = 1, e)];
+@c ===end===
+@example
+(%i1) charfun(x<1);
+(%o1) charfun(x<1)
+(%i2) subst(x=-1,%);
+(%o2) 1
+(%i3) e : charfun('"and"(-1 < x, x < 1))$
+(%i4) [subst(x=-1,e), subst(x=0,e), subst(x=1,e)];
+(%o4) [0,1,0]
+@end example
+
+@end deffn
+
+
 @defvr {Declaraci@'on} commutative
 Si @code{declare(h,commutative)} es ejecutado, le dice al simplificador
 que @code{h} es una funci@'on conmutaiva. Por ejemplo, @code{h(x,z,y)} se simplificar@'a a @code{h(x,y,z)}. Esto es lo mismo que @code{symmetric}. 
 
 @end defvr
+
+
+@deffn {Funci@'on} compare (@var{x}, @var{y})
+
+Devuelve un operador de comparaci@'on @var{op}
+(@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=} o @code{#}) de manera que
+@code{is (@var{x} @var{op} @var{y})} tome el valor @code{true};
+cuando tanto @var{x} como @var{y} dependan de @code{%i} y
+@code{@var{x} # @var{y}}, devuelve @code{notcomparable};
+cuando no exista tal operador o Maxima sea incapaz de determinarlo, devolver@'a @code{unknown}.
+
+Ejemplos:
+
+@c ===beg===
+@c compare (1, 2);
+@c compare (1, x);
+@c compare (%i, %i);
+@c compare (%i, %i + 1);
+@c compare (1/x, 0);
+@c compare (x, abs(x));
+@c ===end===
+@example
+(%i1) compare(1,2);
+(%o1) <
+(%i2) compare(1,x);
+(%o2) unknown
+(%i3) compare(%i,%i);
+(%o3) =
+(%i4) compare(%i,%i+1);
+(%o4) notcomparable
+(%i5) compare(1/x,0);
+(%o5) #
+(%i6) compare(x,abs(x));
+(%o6) <=
+@end example
+
+La funci@'on @code{compare} no intenta determinar si los dominios reales de sus argumentos son conjuntos no vac@'{@dotless{i}}os; as@'{@dotless{i}},
+
+@c ===beg===
+@c compare (acos (x^2 + 1), acos (x^2 + 1) + 1);
+@c ===end===
+@example
+(%i1) compare(acos(x^2+1), acos(x^2+1) + 1);
+(%o1) <
+@end example
+
+Aqu@'{@dotless{i}}, el dominio real de @code{acos (x^2 + 1)} es el conjunto vac@'{@dotless{i}}o.
+
+@end deffn
+
 
 @deffn {Funci@'on} entier (@var{x})
 Devuelve el mayor entero menor o igual a @var{x}, siendo @var{x} num@'erico. La funci@'on  @code{fix} (como en
@@ -361,6 +587,63 @@ La llamada @code{ev (@var{expr}, pred)} equivale a @code{is (@var{expr})}.
 (%i3) is (log (log (a+1) + 1) > 0 and a^2 + 1 > 2*a);
 (%o3)                         true
 @end example
+
+
+@deffn {Funci@'on} floor (@var{x})
+
+Si @var{x} es un n@'umero real, devuelve el mayor entero menor o igual que @var{x}.
+
+Si @var{x} es una expresi@'on constante (por ejemplo, @code{10 * %pi}), 
+@code{floor} eval@'ua @var{x} haciendo uso de n@'umeros grandes en coma flotante (big floats), aplicando a continuaci@'on
+ @code{floor} al n@'umero decimal obtenido. Puesto que @code{floor} hace evaluaciones en coma flotante, es posible, pero improbable, que esta funci@'on devuelva un valor err@'oneo para entradas constantes. Para evitar estos errores, la evaluaci@'on en punto flotante se lleva a cabo utilizando tres valores para @code{fpprec}.
+
+Para argumentos no constantes, @code{floor} intenta devolver un valor simplificado. Aqu@'{@dotless{i}} se presentan algunos ejemplos sobre las simplificaciones que @code{floor} es capaz de hacer:
+
+@c ===beg===
+@c floor (ceiling (x));
+@c floor (floor (x));
+@c declare (n, integer)$
+@c [floor (n), floor (abs (n)), floor (min (n, 6))];
+@c assume (x > 0, x < 1)$
+@c floor (x);
+@c tex (floor (a);
+@c ===end===
+@example
+(%i1) floor(ceiling(x));
+(%o1) ceiling(x)
+(%i2) floor(floor(x));
+(%o2) floor(x)
+(%i3) declare(n,integer)$
+(%i3) [floor(n), floor(abs(n)), floor(min(n,6))];
+(%o4) [n,abs(n),min(n,6)]
+(%i4) assume(x > 0, x < 1)$
+(%i5) floor(x);
+(%o5) 0
+(%i6) tex(floor(a);
+    $$\left \lfloor a \right \rfloor$$
+@end example
+
+
+La funci@'on @code{floor} no se extiende autom@'aticamente a los elementos de listas y matrices.
+Por @'ultimo, para todos los argumentos que tengan una forma compleja, @code{floor} devuelve una forma nominal.
+
+Si el rango de una funci@'on es subconjunto de los n@'umeros enteros, entonces puede ser declarada como @code{integervalued}. Tanto @code{ceiling} como @code{floor} son funciones que hacen uso de esta informaci@'on; por ejemplo:
+
+@c ===beg===
+@c declare (f, integervalued)$
+@c floor (f(x));
+@c ceiling (f(x) - 1);
+@c ===end===
+@example
+(%i1) declare(f,integervalued)$
+(%i2) floor(f(x));
+(%o2) f(x)
+(%i3) ceiling(f(x) -1);
+(%o3) f(x)-1
+@end example
+
+@end deffn
+
 
 @end deffn
 
@@ -569,24 +852,72 @@ el cual debe ser un entero.
 
 @end deffn
 
-@deffn {Funci@'on} max (@var{x_1}, @var{x_2}, ...)
-Devuelve el m@'aximo de sus argumentos (o devuelve una forma simplificada si alguno de los argumentos no es num@'erico).
+@deffn {Funci@'on} lmax (@var{L})
+
+Si @var{L} es una lista o conjunto, devuelve @code{apply ('max, args (@var{L}))}.  Si @var{L} no es una lista o conjunto, env@'{@dotless{i}}a un mensaje de error.
+@end deffn
+
+@deffn {Funci@'on} lmin (@var{L})
+
+Si @var{L} es una lista o conjunto, devuelve @code{apply ('min, args (@var{L}))}.  Si @var{L} no es una lista o conjunto, env@'{@dotless{i}}a un mensaje de error.
+@end deffn
+
+
+@deffn {Funci@'on} max (@var{x_1}, ..., @var{x_n})
+Devuelve un valor simplificado de la mayor de las expresiones desde @var{x_1} hasta @var{x_n}.
+Si @code{get (trylevel, maxmin)} es 2 o m@'as, @code{max} aplica la simplificaci@'on 
+@code{max (e, -e) --> |e|}.  Si @code{get (trylevel, maxmin)} es 3 o m@'as, @var{max} intenta
+eliminar las expresiones que est@'en entre otros dos de los argumentos dados; por ejemplo,
+@code{max (x, 2*x, 3*x) --> max (x, 3*x)}. Para asignar el valor 2 a @code{trylevel} se puede hacer
+@code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
-@deffn {Funci@'on} min (@var{x_1}, @var{x_2}, ...)
-Devuelve el m@'{@dotless{i}}nimo de sus argumentos (o devuelve una forma simplificada si alguno de los argumentos no es num@'erico).
+@deffn {Funci@'on} min (@var{x_1}, ..., @var{x_n})
+Devuelve un valor simplificado de la menor de las expresiones desde @var{x_1} hasta @var{x_n}.
+Si @code{get (trylevel, maxmin)} es 2 o m@'as, @code{min} aplica la simplificaci@'on 
+@code{min (e, -e) --> |e|}.  Si @code{get (trylevel, maxmin)} es 3 o m@'as, @var{min} intenta
+eliminar las expresiones que est@'en entre otros dos de los argumentos dados; por ejemplo,
+@code{min (x, 2*x, 3*x) --> min (x, 3*x)}. Para asignar el valor 2 a @code{trylevel} se puede hacer
+@code{put (trylevel, 2, maxmin)}.
 
 @end deffn
 
-@deffn {Funci@'on} mod (@var{p})
-@deffnx {Funci@'on} mod (@var{p}, @var{m})
+@deffn {Funci@'on} polymod (@var{p})
+@deffnx {Funci@'on} polymod (@var{p}, @var{m})
 Convierte el polinomio @var{p} a una representaci@'on modular respecto del m@'odulo actual, que es el valor almacenado en la variable @code{modulus}.  
 
-La llamada @code{mod (@var{p}, @var{m})} especifica un m@'odulo @var{m} para ser utilizado en lugar de valor almacenado en @code{modulus}.
+La llamada @code{polymod (@var{p}, @var{m})} especifica un m@'odulo @var{m} para ser utilizado en lugar de valor almacenado en @code{modulus}.
 
 V@'ease @code{modulus}.
+@end deffn
 
+@deffn {Funci@'on} mod (@var{x}, @var{y})
+
+Si @var{x} e @var{y} son n@'umeros reales e @var{y} es distinto de cero,
+devuelve @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
+Para todos los reales @var{x}, se tiene @code{mod (@var{x}, 0) = @var{x}}. Para informaci@'on sobre la definici@'on de  @code{mod (@var{x}, 0) = @var{x}}, v@'ease la secci@'on 3.4 de "Concrete Mathematics", 
+by Graham, Knuth, and Patashnik. La funci@'on @code{mod (@var{x}, 1)} es de diente de sierra con periodo unidad y con @code{mod (1, 1) = 0} y @code{mod (0, 1) = 0}.
+
+Para encontrar el argumento principal (un n@'umero del intervalo @code{(-%pi, %pi]}) de un n@'umero complejo, h@'agase uso de la funci@'on @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, donde @var{x} es un argumento.
+
+Si @var{x} e @var{y} son expresiones constantes (por ejemplo, @code{10 * %pi}), @code{mod} utiliza el mismo esquema de evaluaci@'on basado en n@'umeros grandes en coma flotante (big floats) que @code{floor} y @code{ceiling}. Tambi@'en es posible, pero improbable, que @code{mod} pueda retornar un valor err@'oneo en tales casos.
+
+Para argumentos no num@'ericos @var{x} o @var{y}, @code{mod} aplica algunas reglas de simplificaci@'on:
+
+@c ===beg===
+@c mod (x, 0);
+@c mod (a*x, a*y);
+@c mod (0, x);
+@c ===end===
+@example
+(%i1) mod(x,0);
+(%o1) x
+(%i2) mod(a*x,a*y);
+(%o2) a*mod(x,y)
+(%i3) mod(0,x);
+(%o3) 0
+@end example
 @end deffn
 
 @deffn {Funci@'on} oddp (@var{expr})
@@ -681,6 +1012,75 @@ Ejemplos:
 
 @end deffn
 
+
+@deffn {Funci@'on} rationalize (@var{expr})
+Convierte todos los n@'umeros en coma flotante de doble precisi@'on y grandes (big float) presentes en una expresi@'on @var{expr} de Maxima a a sus formas racionales exactas equivalentes. Si el usuario no est@'a familiarizado con la representaci@'on binaria de n@'umeros en coma flotante, le puede extra@~nar que @code{rationalize (0.1)} no sea igual que 1/10.  Este comportamiento no es @'unico de Maxima, ya que el n@'umero 1/10 en su forma binaria es peri@'odico y no exacto.
+
+@c ===beg===
+@c rationalize (0.5);
+@c rationalize (0.1);
+@c fpprec : 5$
+@c rationalize (0.1b0);
+@c fpprec : 20$
+@c rationalize (0.1b0);
+@c rationalize (sin (0.1*x + 5.6));
+@c ===end===
+@example
+(%i1) rationalize(0.5);
+(%o1) 1/2
+(%i2) rationalize(0.1);
+(%o2) 3602879701896397/36028797018963968
+(%i3) fpprec : 5$
+(%i4) rationalize(0.1b0);
+(%o4) 209715/2097152
+(%i5) fpprec : 20$
+(%i6) rationalize(0.1b0);
+(%o6) 236118324143482260685/2361183241434822606848
+(%i7) rationalize(sin(0.1 * x + 5.6));
+(%o7) sin((3602879701896397*x)/36028797018963968+3152519739159347/562949953421312)
+@end example
+
+Ejemplo de uso:
+
+@c ===beg===
+@c unitfrac(r) := block([uf : [], q],
+@c     if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+@c     while r # 0 do (
+@c         uf : cons(q : 1/ceiling(1/r), uf),
+@c         r : r - q),
+@c     reverse(uf)); 
+@c unitfrac (9/10);
+@c apply ("+", %);
+@c unitfrac (-9/10);
+@c apply ("+", %);
+@c unitfrac (36/37);
+@c apply ("+", %);
+@c ===end===
+@example
+unitfrac(r) := block([uf : [], q],
+   if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+   while r # 0 do (
+        uf : cons(q : 1/ceiling(1/r), uf),
+        r : r - q),
+   reverse(uf)); 
+
+(%i2) unitfrac(9/10);
+(%o2) [1/2,1/3,1/15]
+(%i3) apply("+",%);
+(%o3) 9/10
+(%i4) unitfrac(-9/10);
+(%o4) [-1,1/10]
+(%i5) apply("+",%);
+(%o5) -9/10
+(%i6) unitfrac(36/37);
+(%o6) [1/2,1/3,1/8,1/69,1/6808]
+(%i7) apply("+",%);
+(%o7) 36/37   
+@end example
+
+@end deffn
+
+
 @deffn {Funci@'on} sign (@var{expr})
 Intenta determinar el signo de @var{expr} en base a los hechos almacenados en la base de datos. Devuelve una de las siguientes respuestas: @code{pos} (positivo), @code{neg} (negativo), @code{zero} (cero), @code{pz}
 (positivo o cero), @code{nz} (negativo o cero), @code{pn} (positivo o negativo),
@@ -715,7 +1115,7 @@ Si la variable @code{radexpand} vale @code{true} har@'a que las ra@'{@dotless{i}
 
 @end deffn
 
-@defvr {Variable optativa} sqrtdispflag
+@defvr {Variable opcional} sqrtdispflag
 Valor por defecto: @code{true}
 
 Si @code{sqrtdispflag} vale @code{false}, har@'a que @code{sqrt} se muestre con el exponente 1/2.
@@ -750,7 +1150,7 @@ Ejemplo:
 
 @end deffn
 
-@defvr {Variable optativa} sublis_apply_lambda
+@defvr {Variable opcional} sublis_apply_lambda
 Valor por defecto: @code{true}
 
 Controla si los @code{lambda} sustituidos son aplicados en la simplificaci@'on despu@'es de invocar a @code{sublis}, o si se tiene que hacer un @code{ev} para hacerlo. Si @code{sublis_apply_lambda} vale @code{true}, significa que se ejecute la aplicaci@'on.

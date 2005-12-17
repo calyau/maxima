@@ -1,4 +1,4 @@
-@c version 1.10
+@c version 1.11
 @menu
 * Definiciones para Arreglos y Tablas::  
 @end menu
@@ -73,6 +73,7 @@ La funci@'on @code{fillarray} devuelve su primer argumento.
 
 @end deffn
 
+
 @deffn {Funci@'on} listarray (@var{A})
 Devuelve una lista con los elementos del arreglo declarado o tabla de claves @var{A}, en el orden de las filas. Los elementos que todav@'{@dotless{i}}a no han sido declarados se representan mediante @code{#####}.
 
@@ -105,7 +106,7 @@ La funci@'on @code{remarray} devuelve la lista de los arreglos borrados.
 @end deffn
 
 @c THIS IS REALLY CONFUSING
-@defvr {Variable optativa} use_fast_arrays
+@defvr {Variable opcional} use_fast_arrays
 Valor por defecto: @code{false}
 
 Si @code{use_fast_arrays} vale @code{true} entonces tan solo se reconocen dos tipos de arreglos. 

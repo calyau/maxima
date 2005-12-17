@@ -1,4 +1,4 @@
-@c version 1.10
+@c version 1.12
 @menu
 * Definiciones para Afines::      
 @end menu
@@ -43,7 +43,8 @@ combinaci@'on  polin@'omica de los elementos de
 @c NEEDS CLARIFICATION IN A SERIOUS WAY
 @deffn {Funci@'on} set_up_dot_simplifications (@var{eqns}, @var{check_through_degree})
 @deffnx {Funci@'on} set_up_dot_simplifications (@var{eqns})
-Las @var{eqns} son ecuaciones polinomiales de variables no conmutativas.
+
+Las @var{eqns} son ecuaciones polin@'omicas de variables no conmutativas.
 El valor de @code{current_variables} es la lista de variables utilizadas para
 el c@'alculo de los grados. Las ecuaciones deben ser homog@'eneas, al objeto de 
 completar el procedimiento.
@@ -93,7 +94,7 @@ asegur@'andose de que el usuario tiene suficientes reglas de simplificaci@'on en
 grado para que @code{dotsimp} trabaje correctamente. Este proceso puede acelerarse
 si se conoce de antemano cu@'al es la dimensi@'on del espacio de monomios.
 Si @'este es de dimensi@'on global finita, entonces deber@'{@dotless{i}}a usarse @code{hilbert}. Si
-no se conoce la dimensiones de los monomios, no se deber@'{@dotless{i}}a especificar una @code{rank_functiion}.
+no se conoce la dimensiones de los monomios, no se deber@'{@dotless{i}}a especificar una @code{rank_function}.
 Un tercer argumento opcional es @code{reset}.
 
 @end deffn
@@ -157,39 +158,6 @@ o una lista de polinomios en @var{p_1}, ..., @var{p_n}.
 @c 
 @c @end defun
 
-@deffn {Funci@'on} create_list (@var{form}, @var{x_1}, @var{list_1}, ..., @var{x_n}, @var{list_n})
-Crea una lista mediante la evaluaci@'on de @var{form} con @var{x_1} tomando cada uno de los
-valores de @var{list_1}, para cada uno de estos valores liga @var{x_2} con cada elemento de 
-@var{list_2}, .... El n@'umero de elementos en el resultado ser@'a el producto del n@'umero de elementos
-en cada lista. Cada variable @var{x_i} debe ser un s@'{@dotless{i}}mbolo y no ser@'a evaluado. La lista de argumentos ser@'a evaluada una vez al comienzo de la iteraci@'on.
-
-Por ejemplo:
-@example
-(%i82) create_list1(x^i,i,[1,3,7]);
-(%o82) [x,x^3,x^7]
-@end example
-
-@noindent
-Con una doble iteraci@'on:
-
-@example
-(%i79) create_list([i,j],i,[a,b],j,[e,f,h]);
-(%o79) [[a,e],[a,f],[a,h],[b,e],[b,f],[b,h]]
-@end example
-
-En lugar de @var{list_i} se pueden suministrar dos argumentos cada uno de los cuales 
-deber@'{@dotless{i}}a poder evaluarse a un n@'umero, los cuales ser@'an los l@'{@dotless{i}}mites inferior
-y superior, ambos inclusive, para cada iteraci@'on.
-
-Por ejemplo:
-@example
-(%i81) create_list([i,j],i,[1,2,3],j,1,i);
-(%o81) [[1,1],[2,1],[2,2],[3,1],[3,2],[3,3]]
-@end example
-
-N@'otese que los l@'{@dotless{i}}mites o lista de la variable @var{j} pueden depender
-del valor actual de @var{i}.
-@end deffn
 
 @defvr {Variable} all_dotsimp_denoms
 Valor por defecto: @code{false}

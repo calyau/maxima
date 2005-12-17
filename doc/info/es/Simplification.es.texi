@@ -1,4 +1,4 @@
-@c version 1.14
+@c version 1.15
 @menu
 * Definiciones para Simplificaci@'on::  
 @end menu
@@ -33,7 +33,7 @@ Primero intenta determinar si la expresi@'on especificada es positiva, negativa 
 @end deffn
 
 @deffn {Funci@'on} demoivre (@var{expr})
-@deffnx {Variable optativa} demoivre
+@deffnx {Variable opcional} demoivre
 
 La funci@'on @code{demoivre (expr)} convierte una expresi@'on sin modificar la variable global @code{demoivre}.
 
@@ -47,7 +47,7 @@ La funci@'on @code{exponentialize} convierte funciones trigonom@'etricas e hiper
 
 @end deffn
 
-@defvr {Variable optativa} domain
+@defvr {Variable opcional} domain
 Valor por defecto: @code{real}
 
 Si @code{domain} vale @code{complex}, @code{sqrt (x^2)} permanecer@'a como
@@ -100,7 +100,7 @@ Esta funci@'on se carga autom@'aticamente de @file{simplification/stopex.mac}.
 
 @end deffn
 
-@defvr {Variable optativa} expandwrt_denom
+@defvr {Variable opcional} expandwrt_denom
 Valor por defecto: @code{false}
 
 La variable @code{expandwrt_denom} controla el tratamiento de las expresiones racinales por parte de @code{expandwrt}. Si vale @code{true}, se expandir@'an tanto el numerador como el denominador de la expresi@'on respecto de los argumentos de @code{expandwrt}, pero si @code{expandwrt_denom} vale @code{false}, s@'olo se expandir@'a el numerador.
@@ -116,7 +116,7 @@ Esta funci@'on se carga autom@'aticamente de @file{simplification/stopex.mac}.
 
 @end deffn
 
-@defvr {Variable optativa} expon
+@defvr {Variable opcional} expon
 Valor por defecto: 0
 
 La variable @code{expon} guarda el mayor exponente negativo que ser@'a expandido autom@'aticamente, independientemente de @code{expand}. Por ejemplo, si @code{expon} vale 4 entonces @code{(x+1)^(-5)} no se expandir@'a autom@'aticamente.
@@ -124,7 +124,7 @@ La variable @code{expon} guarda el mayor exponente negativo que ser@'a expandido
 @end defvr
 
 @deffn {Funci@'on} exponentialize (@var{expr})
-@deffnx {Variable optativa} exponentialize
+@deffnx {Variable opcional} exponentialize
 
 La funci@'on @code{exponentialize (expr)} convierte las funciones trigonom@'etricas e hiperb@'olicas de @var{expr} a exponenciales, sin alterar la variable global @code{exponentialize}.
 
@@ -134,14 +134,14 @@ La funci@'on @code{demoivre} convierte funciones trigonom@'etricas e hiperb@'oli
 
 @end deffn
 
-@defvr {Variable optativa} expop
+@defvr {Variable opcional} expop
 Valor por defecto: 0
 
 La variable @code{expop} guarda el mayor exponente positivo que ser@'a expandido autom@'aticamente.  As@'{@dotless{i}}, @code{(x+1)^3} se expandir@'a autom@'aticamente s@'olo si @code{expop} es mayor o igual que 3. Si se quiere expandir @code{(x+1)^n}, siendo @code{n} mayor que @code{expop}, entonces @code{expand ((x+1)^n)} se desarrollar@'a s@'olo si @code{maxposex} no es menor que @code{n}.
 
 @end defvr
 
-@defvr {Variable optativa} factlim
+@defvr {Variable opcional} factlim
 Valor por defecto: -1
 
 La variable @code{factlim} especifica el mayor factorial que ser@'a expandido autom@'aticamente.  Si su valor es -1, entonces se expandir@'an todos los enteros.
@@ -177,28 +177,28 @@ con @code{(declare (x, mainvar), expand ((x+y)^4))}.  (Nota: Se debe tener cuida
 
 @end defvr
 
-@defvr {Variable optativa} maxapplydepth
+@defvr {Variable opcional} maxapplydepth
 Valor por defecto: 10000
 
 La variable @code{maxapplydepth} es la m@'axima profundidad a la que van a introducirse @code{apply1} y  @code{apply2}.
 
 @end defvr
 
-@defvr {Variable optativa} maxapplyheight
+@defvr {Variable opcional} maxapplyheight
 Valor por defecto: 10000
 
 La variable @code{maxapplyheight} es la m2'axima altura a la que escalar@'a @code{applyb1} antes de detenerse.
 
 @end defvr
 
-@defvr {Variable optativa} maxnegex
+@defvr {Variable opcional} maxnegex
 Valor por defecto: 1000
 
 La variable @code{maxnegex} es el mayor exponente negativo que expandir@'a la funci@'on @code{expand}. V@'ease tambi@'en @code{maxposex}.
 
 @end defvr
 
-@defvr {Variable optativa} maxposex
+@defvr {Variable opcional} maxposex
 Valor por defecto: 1000
 
 La variable @code{maxposex} es el mayor exponenteque expandir@'a la funci@'on @code{expand}. V@'ease tambi@'en @code{maxnegex}.
@@ -219,14 +219,14 @@ Esta transformaci@'on no se realiza cuando @code{f} se aplica a expresiones de l
 
 @end defvr
 
-@defvr {Variable optativa} negdistrib
+@defvr {Variable opcional} negdistrib
 Valor por defecto: @code{true}
 
 Si @code{negdistrib} vale @code{true}, -1 se distribuye sobre una expresi@'on.  Por ejemplo, @code{-(x + y)} se transforma en @code{- y - x}.  D@'andole el valor @code{false} se mostrar@'a @code{- (x + y)} tal cual. Esto puede ser @'util, pero tambi@'en peligroso; al igual que el indicador @code{simp}, no conviene asignarle el valor @code{false}.
 
 @end defvr
 
-@defvr {Variable optativa} negsumdispflag
+@defvr {Variable opcional} negsumdispflag
 Valor por defecto: @code{true}
 
 Si @code{negsumdispflag} vale @code{true}, @code{x - y} se muestra como @code{x - y}
@@ -244,7 +244,7 @@ El s@'{@dotless{i}}mbolo @code{noun} es una de las opciones de la instrucci@'on 
 
 @end defvr
 
-@defvr {Variable optativa} noundisp
+@defvr {Variable opcional} noundisp
 Valor por defecto: @code{false}
 
 Si @code{noundisp} vale @code{true}, los nombres se muestran precedidos de un ap@'ostrofo. Siempre debe valer @code{true} cuando se quiera representar la definici@'on de funciones.
@@ -277,7 +277,7 @@ La variable @code{opproperties} es la lista con las propiedades especiales de lo
 
 @end defvr
 
-@defvr {Variable optativa} opsubst
+@defvr {Variable opcional} opsubst
 Valor por defecto: @code{true}
 
 Si @code{opsubst} vale @code{false}, @code{subst} no sustituye el operdor de una expresi@'on, de manera que @code{(opsubst: false, subst (x^2, r, r+r[0]))} trabajar@'a correctamente.
@@ -304,12 +304,6 @@ La instrucci@'on @code{declare (f, posfun)} declara a @code{f} como funci@'on po
 
 @end defvr
 
-@defvr {Variable optativa} prodhack
-Valor por defecto: @code{false}
-
-Si @code{prodhack} vale @code{true}, la identidad @code{product (f(i), i, a, b) = 1/product (f(i), i, b+1, a-1)} se aplica si @code{a} es mayor que @code{b}. Por ejemplo, @code{product (f(i), i, 3, 1)} devuelve @code{1/f(2)}.
-
-@end defvr
 
 @deffn {Funci@'on} radcan (@var{expr})
 Simplifica la expresi@'on @var{expr}, que puede contener logaritmos, exponenciales y
@@ -335,7 +329,7 @@ La instrucci@'on @code{example (radcan)} muestra algunos ejemplos.
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable optativa} radexpand
+@defvr {Variable opcional} radexpand
 Valor por defecto: @code{true}
 
 La variable @code{radexpand} controla algunas simplificaciones de radicales.
@@ -362,7 +356,7 @@ N@'otese que  @code{domain} s@'olo se tiene en cuenta si @code{radexpand} vale @
 @end defvr
 
 
-@defvr {Variable optativa} radsubstflag
+@defvr {Variable opcional} radsubstflag
 Valor por defecto: @code{false}
 
 Si @code{radsubstflag} vale @code{true} se permite a @code{ratsubst} hacer la sustituci@'on @code{u} por @code{sqrt (x)} in @code{x}.
@@ -387,7 +381,7 @@ La instrucci@'on @code{example (scsimp)} muestra algunos ejemplos.
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Variable optativa} simpsum
+@defvr {Variable opcional} simpsum
 Valor por defecto: @code{false}
 
 Si @code{simpsum} vale @code{true}, se simplifica el resultado de un sumatorio @code{sum}. Esta simplificaci@'on podr@'a producir en ocasiones una expresi@'on compacta.  Si @code{simpsum} vale @code{false} o si se utiliza la forma apostrofada @code{'sum}, el valor es una forma nominal que representa la notaci@'on sigma habitual en matem@'aticas.
@@ -404,7 +398,7 @@ Puede ser necesario hacer @code{intosum (@var{expr})} antes que @code{sumcontrac
 @end deffn
 
 
-@defvr {Variable optativa} sumexpand
+@defvr {Variable opcional} sumexpand
 Valor por defecto: @code{false}
 
 Si @code{sumexpand} vale @code{true}, productos de sumatorios y de sumatorios con exponentes se reducen a sumatorios anidados.
@@ -436,19 +430,8 @@ Ejemplos:
 @end defvr
 
 
-@defvr {Variable optativa} sumhack
-Valor por defecto: @code{false}
 
-Si @code{sumhack} vale @code{true}, 
-la identidad @code{sum (f(i), i, a, b) = - sum (f(i), i, b+1, a-1)}
-@c "IS APPLIED" -- UNDER WHAT CIRCUMSTANCES EXACTLY ?? QUOTING/SIMPLIFICATION STRANGENESS OBSERVED HERE
-ser@'a utilizada si @code{a} es mayor que @code{b}.
-Por ejemplo, @code{(sumhack: true, sum (f(i), i, 3, 1))} se reduce a @code{-f(2)}.
-
-@end defvr
-
-
-@defvr {Variable optativa} sumsplitfact
+@defvr {Variable opcional} sumsplitfact
 Valor por defecto: @code{true}
 
 Si @code{sumsplitfact} vale @code{false},

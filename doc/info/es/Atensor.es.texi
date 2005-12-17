@@ -1,4 +1,4 @@
-@c version 1.7
+@c version 1.8
 @menu
 * Introducci@'on a atensor::
 * Definiciones para atensor::
@@ -127,20 +127,23 @@ Tipo de @'algebra. Valores v@'alidos son @code{universal}, @code{grassmann},
 @end deffn
 
 @defvr {Variable} adim
+Valor por defecto: 0
 
-La dimensi@'on del @'algebra. El paquete @code{atensor} utiliza el valor de @code{adim} para determinar si un objeto indexado es un vector v@'alido para la base. Su valor por defecto es 0.
+La dimensi@'on del @'algebra. El paquete @code{atensor} utiliza el valor de @code{adim} para determinar si un objeto indexado es un vector v@'alido para la base. V@'ease @code{abasep}.
 
 @end defvr
 
 @defvr {Variable} aform
+Valor por defecto: @code{ident(3)}
 
 Valores por defecto para las formas bilineales  @code{sf}, @code{af} y @code{av}. El valor por defecto es la matriz identidad @code{ident(3)}.
 
 @end defvr
 
 @defvr {Variable} asymbol
+Valor por defecto: @code{v}
 
-S@'{@dotless{i}}mbolo para los vectores base. El valor por defectoes  @code{v}.
+S@'{@dotless{i}}mbolo para los vectores base.
 
 @end defvr
 

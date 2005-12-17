@@ -1,4 +1,4 @@
-@c version 1.19
+@c version 1.20
 @menu
 * Introducci@'on a reglas y patrones::  
 * Definiciones sobre reglas y patrones::  
@@ -48,7 +48,7 @@ V@'ease tambi@'en @code{apply1}, @code{apply2} y @code{let}.
 
 @end deffn
 
-@defvr {Variable optativa} current_let_rule_package
+@defvr {Variable opcional} current_let_rule_package
 Valor por defecto: @code{default_let_rule_package}
 
 La variable @code{current_let_rule_package} es el nombre del paquete de reglas que est@'an utilizando las funciones del paquete @code{let} (@code{letsimp}, etc.), a menos que se especifique otro paquete de reglas. A esta variable se le puede asignar el nombre de cualquier paquete de reglas definido por medio de la instrucci@'on @code{let}.
@@ -57,7 +57,7 @@ Si se hace la llamada @code{letsimp (expr, rule_pkg_name)}, el paquete de reglas
 
 @end defvr
 
-@defvr {Variable optativa} default_let_rule_package
+@defvr {Variable opcional} default_let_rule_package
 @c DEFAULT BINDING OF default_let_rule_package IS default_let_rule_package (BOUND TO ITSELF)
 Valor por defecto: @code{default_let_rule_package}
 
@@ -198,7 +198,7 @@ es equivalente a @code{letsimp (@var{expr}, @var{nombre_paquete1})} seguida de @
 
 @end deffn
 
-@defvr {Variable optativa} letrat
+@defvr {Variable opcional} letrat
 Valor por defecto: @code{false}
 
 Cuando @code{letrat} vale @code{false}, @code{letsimp} simplifica separadamente el numerador y denominador de una fracci@'on sin simplificar luego el cociente.
@@ -249,7 +249,7 @@ es equivalente a @code{letsimp (@var{expr}, @var{nombre_paquete_1}}, seguida de 
 
 @end deffn
 
-@defvr {Variable optativa} let_rule_packages
+@defvr {Variable opcional} let_rule_packages
 Valor por defecto: @code{[default_let_rule_package]}
 
 La variable @code{let_rule_packages} guarda una lista con todos los paquetes de reglas definidos por el usuario, junto con el paquete por defecto @code{default_let_rule_package}.
@@ -390,13 +390,61 @@ V@'ease tambi@'en @code{remrule}, que elimina una regla definida por  @code{tell
 @deffn {Funci@'on} remrule (@var{op}, @var{nombre_regla})
 @deffnx {Funci@'on} remrule (@var{op}, all)
 
-Elimina las reglas definidas por @code{defrule}, @code{defmatch}, @code{tellsimp} o @code{tellsimpafter}.
+Elimina las reglas previamente definidas por @code{tellsimp} o @code{tellsimpafter}.
 
 La llamada @code{remrule (@var{op}, @var{nombre_regla})} elimina la regla de nombre  @code{nombre_regla} del operador @var{op}.
 
+Independientemente de que  @var{op} sea un operador propio de Maxima o haya sido definido por el usario (como los establecidos por @code{infix}, @code{prefix}, etc.), tanto @var{op} como @var{rulename} deben ir encerrados entre comillas dobles.
+
 La llamada @code{remrule (@var{function}, all)} borra todas las reglas para el operador @var{op}.
 
-V@'ease tambi@'en @code{remlet}, que elimina las reglas definidas por @code{let}.
+V@'ease tambi@'en @code{remlet}, que elimina una regla definida mediante @code{let}.
+
+Ejemplos:
+  	 
+@c ===beg===
+@c tellsimp (foo (aa, bb), bb - aa);
+@c tellsimpafter (aa + bb, special_add (aa, bb));
+@c infix ("@@");
+@c tellsimp (aa @@ bb, bb/aa);
+@c tellsimpafter (quux (%pi, %e), %pi - %e);
+@c tellsimpafter (quux (%e, %pi), %pi + %e);
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c remrule (foo, foorule1);
+@c remrule ("+", "+rule1");
+@c remrule ("@@", "@@rule1");
+@c remrule (quux, all);
+@c [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+@c ===end===
+@example
+(%i1) tellsimp (foo (aa, bb), bb - aa);
+(%o1)                   [foorule1, false]
+(%i2) tellsimpafter (aa + bb, special_add (aa, bb));
+(%o2)                   [+rule1, simplus]
+(%i3) infix ("@@");
+(%o3)                          @@
+(%i4) tellsimp (aa @@ bb, bb/aa);
+(%o4)                   [@@rule1, false]
+(%i5) tellsimpafter (quux (%pi, %e), %pi - %e);
+(%o5)                  [quuxrule1, false]
+(%i6) tellsimpafter (quux (%e, %pi), %pi + %e);
+(%o6)             [quuxrule2, quuxrule1, false]
+(%i7) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+                                     bb
+(%o7) [bb - aa, special_add(aa, bb), --, %pi - %e, %pi + %e]
+                                     aa
+(%i8) remrule (foo, foorule1);
+(%o8)                          foo
+(%i9) remrule ("+", "+rule1");
+(%o9)                           +
+(%i10) remrule ("@@", "@@rule1");
+(%o10)                         @@
+(%i11) remrule (quux, all);
+(%o11)                        quux
+(%i12) [foo (aa, bb), aa + bb, aa @@ bb, quux (%pi, %e), quux (%e, %pi)];
+(%o12) [foo(aa, bb), bb + aa, aa @@ bb, quux(%pi, %e),
+                                                   quux(%e, %pi)]
+@end example
 
 @end deffn
 

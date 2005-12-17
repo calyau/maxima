@@ -1,4 +1,4 @@
-@c version 1.38
+@c version 1.41
 @menu
 * Introducci@'on a  Entrada y Salida:: 
 * Archivos::
@@ -95,7 +95,7 @@ V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
 @end defvr
 
 @defvr {Variable del sistema} %%
-En una sentencia compuesta que contenga dos o m@'as sentencias, @code{%%} es el valor de la sentencia previa.
+En una sentencia compuesta, como @code{block}, @code{lambda} o @code{(@var{s_1}, ..., @var{s_n})}, @code{%%} es el valor de la sentencia previa.
 Por ejemplo,
 
 @example
@@ -131,7 +131,7 @@ V@'ease tambi@'en @code{%}.
 
 @end defvr
 
-@defvr {Variable optativa} %edispflag
+@defvr {Variable opcional} %edispflag
 Valor por defecto: @code{false}
 
 Si @code{%edispflag} vale @code{true}, Maxima muestra @code{%e} elevado a un exponente negativo como un cociente.
@@ -169,10 +169,20 @@ equivale a @code{describe ("word")}.
 
 @end deffn
 
-@defvr {Variable optativa} absboxchar
+@defvr {Variable opcional} absboxchar
 Valor por defecto: @code{!}
 
 La variable @code{absboxchar} es el car@'acter utilizado para representar el valor absoluto de una expresi@'on que ocupa m@'as de una l@'{@dotless{i}}nea de altura.
+
+@end defvr
+
+@defvr {Variable opcional} file_output_append
+Valor por defecto: @code{false}
+
+La variable @code{file_output_append} controla si las funciones de escritura de ficheros a@~naden informaci@'on o sustituyen el fichero de salida. Cuando @code{file_output_append} toma el valor @code{true}, estas funciones ampl@'{@dotless{i}}an el contenido de sus ficheros de salida; en otro caso, sustituyen el fichero anterior de igual nombre por otro con el nuevo contenido.
+
+Las funciones @code{save}, @code{stringout} y @code{with_stdout} se ven afectadas por el valor que tome la variable @code{file_output_append}. Otras funciones que tambi@'en escriben en ficheros de salida no tienen en cuenta este valor; en concreto, las funciones para la representaci@'on de gr@'aficos y las de traducci@'on siempre sustituyen el fichero anterior por uno nuevo de igual nombre, mientras que las funciones @code{tex} y @code{appendfile} siempre a@~naden informaci@'on al fichero de salida sin eliminar la informaci@'on anterior.
+@c WHAT ABOUT WRITEFILE ??
 
 @end defvr
 
@@ -317,14 +327,14 @@ Muestra las ecuaciones cuyos miembros izquierdos son
 
 @end deffn
 
-@defvr {Variable optativa} display2d
+@defvr {Variable opcional} display2d
 Valor por defecto: @code{true}
 
 Si @code{display2d} vale @code{false}, la salida por consola es una cadena unidimensional, en lugar de una expresi@'on bidimensional.
 
 @end defvr
 
-@defvr {Variable optativa} display_format_internal
+@defvr {Variable opcional} display_format_internal
 Valor por defecto: @code{false}
 
 Si @code{display_format_internal} vale @code{true},
@@ -355,7 +365,7 @@ Esto es, primero se muestra el operador de @var{expr}, luego cada t@'ermino si s
 
 @end deffn
 
-@defvr {Variable optativa} error_size
+@defvr {Variable opcional} error_size
 Valor por defecto: 10
 
 La variable @code{error_size} modifica los mensajes de error de acuerdo con el tama@~no de las expresiones que aparecen en @'el. Si el tama@~no de una expresi@'on (tal como lo determina la funci@'on Lisp @code{ERROR-SIZE})
@@ -405,7 +415,7 @@ Example expression is --------------
 
 @end defvr
 
-@defvr {Variable optativa} error_syms
+@defvr {Variable opcional} error_syms
 Valor por defecto: @code{[errexp1, errexp2, errexp3]}
 
 En los mensajes de error, las expresiones mayores que @code{error_size} son reemplazadas por s@'{@dotless{i}}mbolos a los cuales se les asignas estas expresiones.  Los s@'{@dotless{i}}mbolos se toman de la lista @code{error_syms}. La primera expresi@'on que resulte ser demasiado larga se reemplaza por @code{error_syms[1]}, la segunda por @code{error_syms[2]} y as@'{@dotless{i}} sucesivamente.
@@ -425,7 +435,7 @@ Las funciones @code{expt} y @code{ncexpt} no se reconocen en una entrada.
 
 @end deffn
 
-@defvr {Variable optativa} exptdispflag
+@defvr {Variable opcional} exptdispflag
 Valor por defecto: @code{true}
 
 Si @code{exptdispflag} vale @code{true}, Maxima muestra las expresiones con exponentes negativos como cocientes; por ejemplo, @code{X^(-1)} se muestra como @code{1/X}.
@@ -475,9 +485,9 @@ La funci@'on @code{file_search} es llamada por @code{load} con los directorios d
 
 @end deffn
 
-@defvr {Variable optativa} file_search_maxima
-@defvrx {Variable optativa} file_search_lisp
-@defvrx {Variable optativa} file_search_demo
+@defvr {Variable opcional} file_search_maxima
+@defvrx {Variable opcional} file_search_lisp
+@defvrx {Variable opcional} file_search_demo
 Estas variables especifican listas de directorios en los que deben buscar la funciones  @code{load}, @code{demo} y algunas otras. Los valores por defecto de estas variables nombran directorios de la instalaci@'on de Maxima.
 
 El usuario puede modificar estas variables, bien reemplazando los valores por defecto, bien a@~nadiendo nuevos directorios.
@@ -521,7 +531,7 @@ En cualquier otro caso, @code{file_type} devuelve @code{object}.
 
 
 @deffn {Funci@'on} grind (@var{expr})
-@deffnx {Variable optativa} grind
+@deffnx {Variable opcional} grind
 La funci@'on @code{grind} imprime @var{expr}
 en la consola en un formato admisible como entrada para Maxima. La funci@'on 
 @code{grind} always returns @code{done}.
@@ -542,7 +552,7 @@ en caso contrario no se formatean la expresiones de entrada.
 @end deffn
 
 
-@defvr {Variable optativa} ibase
+@defvr {Variable opcional} ibase
 Valor por defecto: 10
 
 Los enteros que se escriban en Maxima se interpretan como dados en base @code{ibase}.
@@ -560,7 +570,7 @@ V@'ease tambi@'en @code{obase}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variable optativa} inchar
+@defvr {Variable opcional} inchar
 Valor por defecto: @code{%i}
 
 La variable @code{inchar} es el prefijo de las etiquetas de las expresiones introducidas por el usuario.
@@ -645,7 +655,7 @@ V@'ease tambi@'en @code{display}.
 
 @end deffn
 
-@defvr {Variable optativa} linechar
+@defvr {Variable opcional} linechar
 Valor por defecto: @code{%t}
 
 La variable @code{linechar} es el prefijo de las etiquetas que genera Maxima para expresiones intermedias. Cuando sea necesario, Maxima crear@'a una etiqueta para cada expresi@'on intermedia concatenando @code{linechar} y @code{linenum}. A 
@@ -656,14 +666,14 @@ V@'eanse tambi@'en @code{programmode} y @code{labels}.
 
 @end defvr
 
-@defvr {Variable optativa} linel
+@defvr {Variable opcional} linel
 Valor por defecto: 79
 
 La variable @code{linel} es la anchura (medida en n@'umero de caracteres) de la consola que se le da a Maxima para que muestre las expresiones. A @code{linel} se le puede asignar cualquier valor, pero si @'este es muy peque@~no o grande resultar@'a de poca utilidad. El texto que impriman las funciones internas de Maxima, como los mensajes de error y las salidas de la funci@'on @code{describe}, no se ve afectado por el valor de @code{linel}.
 
 @end defvr
 
-@defvr {Variable optativa} lispdisp
+@defvr {Variable opcional} lispdisp
 Valor por defecto: @code{false}
 
 Si @code{lispdisp} vale @code{true}, los s@'{@dotless{i}}mbolos de Lisp se muestran precedidos del car@'acter de interrogaci@'on @code{?}. En caso contrario, los s@'{@dotless{i}}mbolos de Lisp se muestran sin esta marca.
@@ -716,7 +726,7 @@ La funci@'on @code{loadfile} no eval@'ua su argumento, de manera que @code{filen
 
 @end deffn
 
-@defvr {Variable optativa} loadprint
+@defvr {Variable opcional} loadprint
 Valor por defecto: @code{true}
 
 La variable @code{loadprint} indica si mostrar un mensaje cuando se carga un archivo.
@@ -734,7 +744,7 @@ Si @code{loadprint} vale @code{false}, nunca mostrar@'a mensajes.
 
 @end defvr
 
-@defvr {Variable optativa} obase
+@defvr {Variable opcional} obase
 Valor por defecto: 10
 
 La variable @code{obase} es la base de los enteros mostrados por Maxima; se le puede asignar cualquier entero entre 2 y 35 (decimal), ambos inclusive. Si @code{obase} es mayor que 10, las cifras ser@'an los n@'umeros decimales entre 0 y 9, m@'as las letras may@'usculas A, B, C, ..., sg@'un sea necesario.
@@ -745,7 +755,7 @@ V@'ease tambi@'en @code{ibase}.
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variable optativa} outchar
+@defvr {Variable opcional} outchar
 Valor por defecto: @code{%o}
 
 La variable @code{outchar} es el prefijo de las etiquetas de las expresiones calculadas por Maxima.
@@ -765,7 +775,7 @@ V@'ease tambi@'en @code{labels}.
 
 @end defvr
 
-@defvr {Variable optativa} packagefile
+@defvr {Variable opcional} packagefile
 Valor por defecto: @code{false}
 
 Los desarrolladores de paquetes que utilizan  @code{save}
@@ -775,7 +785,7 @@ o @code{translate} para crear paquetes (ficheros) que van a ser utilizados por t
 
 @end defvr
 
-@defvr {Variable optativa} pfeformat
+@defvr {Variable opcional} pfeformat
 Valor por defecto: @code{false}
 
 Si @code{pfeformat} vale @code{true}, una fracci@'on de enteros ser@'a mostrada con el car@'acter de barra inclinada @code{/} entre ellos.
@@ -931,7 +941,7 @@ Ejemplo:
 
 @end deffn
 
-@defvr {Variable optativa} rmxchar
+@defvr {Variable opcional} rmxchar
 Valor por defecto: @code{]}
 
 La variable @code{rmxchar} es el car@'acter que se dibuja al lado derecho de una matriz.
@@ -995,7 +1005,7 @@ por ejemplo, @code{s: "foo.1"$ save (''s, all)$}, y de las variables enteras dev
 @c @end example
 @end deffn
 
-@defvr {Variable optativa} savedef
+@defvr {Variable opcional} savedef
 Valor por defecto: @code{true}
 
 Si @code{savedef} vale @code{true}, se mantiene la versi@'on Maxima de una funci@'on definida por el usuario cuando @'esta se traduce, lo que permite mostrar su c@'odigo con @code{dispfun} y que la funci@'on pueda ser editada.
@@ -1016,7 +1026,7 @@ V@'ease tambi@'en @code{ratvars}.
 
 @end deffn
 
-@defvr {Variable optativa} stardisp
+@defvr {Variable opcional} stardisp
 Valor por defecto: @code{false}
 
 Si @code{stardisp} vale @code{true}, la multiplicaci@'on se muestra con un asterisco @code{*} entre los operandos.
@@ -1086,10 +1096,28 @@ La forma especial @code{stringout (@var{filename}, values)} escribe todas las va
 @end deffn
 
 @deffn {Funci@'on} tex (@var{expr})
+@deffnx {Funci@'on} tex (@var{label})
 @deffnx {Funci@'on} tex (@var{expr}, @var{filename})
 @deffnx {Funci@'on} tex (@var{label}, @var{filename})
 
-Devuelve la expresi@'on en c@'odigo TeX. En caso de suministrar el argumento @var{filename}, el resultado se a@~nade al archivo que lleve este nombre.
+Devuelve la expresi@'on en un formato apropiado para para ser incorporado a un documento basado en TeX.
+El resultado que se obtiene es un fragmento de c@'odigo que puede incluirse en un documento mayor, pero que
+no puede ser procesado aisladamente.
+
+La instrucci@'on @code{tex (@var{expr})} imprime en la consola la representaci@'on en TeX de @var{expr}.
+
+La instrucci@'on @code{tex (@var{label})} imprime en la consola la representaci@'on en TeX de la expresi@'on a la que hace referencia la etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la expresi@'on en TeX es la misma que la de Maxima.
+
+La instrucci@'on @code{tex (@var{expr}, @var{filename})} a@~nade la representaci@'on TeX de @var{expr} al fichero @var{filename}.
+
+La instrucci@'on @code{tex (@var{label}, @var{filename})} a@~nade la representaci@'on TeX de la expresi@'on a la que hace referencia la etiqueta  @var{label}, junto con una etiqueta, al fichero @var{filename}.
+
+La funci@'on @code{tex} eval@'ua sus argumentos tras comprobar si se trata de una etiqueta. Las dobles comillas simples @code{''} fuerzan la evaluaci@'on del argumento, anulando la comprobaci@'on sobre la etiqueta.
+La comilla simple @code{'} evita la evaluaci@'on del argumento.
+
+V@'ease tambi@'en @code{texput}.
+
+Ejemplos:
 
 @example
 (%i1) integrate (1/(1+x^3), x);
@@ -1111,6 +1139,101 @@ $$-\cos x$$
 @end example
 
 @end deffn
+
+
+@deffn {Funci@'on} texput (@var{a}, @var{s})
+@deffnx {Funci@'on} texput (@var{a}, @var{s}, @var{operator_type})
+@deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)
+@deffnx {Funci@'on} texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)
+
+Establece el formato en TeX del @'atomo @var{a}, el cual puede ser un s@'{@dotless{i}}mbolo o el nombre de un operador.
+
+La instrucci@'on @code{texput (@var{a}, @var{s})} hace que la funci@'on @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}.
+
+La instrucci@'on @code{texput (@var{a}, @var{s}, @var{operator_type})}, en la que @var{operator_type} es @code{prefix}, @code{infix} o @code{postfix}, hace que la funci@'on @code{tex} introduzca @var{s} en la salida TeX en el lugar de @var{a}, coloc@'andolo en el lugar correcto.
+
+La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}], matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la salida TeX a los lados de los argumentos de @var{a}. Si son m@'as de uno, los argumentos se separan por comas.
+
+La instrucci@'on @code{texput (@var{a}, [@var{s_1}, @var{s_2}, @var{s_3}], matchfix)} hace que la funci@'on @code{tex} introduzca @var{s_1} y @var{s_2} en la salida TeX a los lados de los argumentos de @var{a}, con @var{s_3} separando los argumentos.
+
+Ejemplos:
+
+@c ===beg===
+@c texput (me,"\\mu_e");
+@c tex (me);
+@c texput (lcm, "\\mathrm{lcm}");
+@c tex (lcm (a, b));
+@c prefix ("grad");
+@c texput ("grad", " \\nabla ", prefix);
+@c tex (grad f);
+@c infix ("~");
+@c texput ("~", " \\times ", infix);
+@c tex (a ~ b);
+@c postfix ("@");
+@c texput ("@", "!!", postfix);
+@c tex (x @);
+@c matchfix ("<<", ">>");
+@c texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+@c tex (<<a>>);
+@c tex (<<a, b>>);
+@c ===end===
+@example
+(%i1) texput (me,"\\mu_e");
+(%o1)                         \mu_e
+(%i2) tex (me);
+$$\mu_e$$
+(%o2)                         false
+(%i3) texput (lcm, "\\mathrm@{lcm@}");
+(%o3)                     \mathrm@{lcm@}
+(%i4) tex (lcm (a, b));
+$$\mathrm@{lcm@}\left(a , b\right)$$
+(%o4)                         false
+(%i5) prefix ("grad");
+(%o5)                         grad
+(%i6) texput ("grad", " \\nabla ", prefix);
+(%o6)                          180
+(%i7) tex (grad f);
+$$ \nabla f$$
+(%o7)                         false
+(%i8) infix ("~");
+(%o8)                           ~
+(%i9) texput ("~", " \\times ", infix);
+(%o9)                          180
+(%i10) tex (a ~ b);
+$$a \times b$$
+(%o10)                        false
+(%i11) postfix ("@@");
+(%o11)                          @@
+(%i12) texput ("@@", "!!", postfix);
+(%o12)                         160
+(%i13) tex (x @@);
+$$x!!$$
+(%o13)                        false
+(%i14) matchfix ("<<", ">>");
+(%o14)                         <<
+(%i15) texput ("<<", [" \\langle ", " \\rangle "], matchfix);
+(%o15)              \langle ( \rangle , false)
+(%i16) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o16)                        false
+(%i17) tex (<<a, b>>);
+$$ \langle a , b \rangle $$
+(%o17)                        false
+(%i18) texput ("<<", [" \\langle ", " \\rangle ", " \\, | \\,"], matchfix);
+(%o18)            \langle ( \rangle ,  \, | \,)
+(%i19) tex (<<a>>);
+$$ \langle a \rangle $$
+(%o19)                        false
+(%i20) tex (<<a, b>>);
+$$ \langle a \, | \,b \rangle $$
+(%o20)                        false
+@end example
+
+@end deffn
+
 
 @deffn {Funci@'on} system (@var{command})
 Ejecuta la instrucci@'on @var{command} como un proceso independiente de Maxima.
@@ -1134,7 +1257,7 @@ system("(xgraph -bar -brw .7 -nl < _hist.out;  rm -f _hist.out)&")
 
 @end deffn
 
-@defvr {Variable optativa} ttyoff
+@defvr {Variable opcional} ttyoff
 Valor por defecto: @code{false}
 
 Si @code{ttyoff} vale @code{true}, no se muestran las expresiones resultantes, pero @'estas se calculan de todos modos y se les asignan etiquetas. V@'ease @code{labels}.
@@ -1195,3 +1318,5 @@ cualquier salida generada por una sentencia de impresi@'on desde dentro de una f
 La funci@'on @code{closefile} cierra los archivos abiertos por @code{writefile} o @code{appendfile}.
 
 @end deffn
+
+

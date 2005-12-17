@@ -1,4 +1,4 @@
-@c version 1.10
+@c version 1.11
 @menu
 * Definiciones para Constantes::   
 @end menu
@@ -7,7 +7,7 @@
 @section Definiciones para Constantes
 
 @defvr {Constante} %e
-La base de los logaritmos naturales, e, se representa en Maxima como @code{%e}.
+La base de los logaritmos naturales, @math{e}, se representa en Maxima como @code{%e}.
 
 @end defvr
 

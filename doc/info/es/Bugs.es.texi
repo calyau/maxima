@@ -1,4 +1,4 @@
-@c version 1.7
+@c version 1.9
 @menu
 * Introducci@'on a la detecci@'on de Bugs y su reporte::
 * Definiciones para la detecci@'on de Bugs y su reporte::
@@ -14,8 +14,9 @@ de reportar nuevos bugs.
 @node Definiciones para la detecci@'on de Bugs y su reporte
 @section Definiciones para la detecci@'on de Bugs y su reporte::
 @deffn {Funci@'on} run_testsuite ()
-@deffnx {Funci@'on} run_testsuite (boolean)
-@deffnx {Funci@'on} run_testsuite (boolean, boolean)
+@deffnx {Funci@'on} run_testsuite (@var{boolean})
+@deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean})
+@deffnx {Funci@'on} run_testsuite (@var{boolean}, @var{boolean}, @var{list})
 
 Ejecuta la suite de evaluaci@'on de Maxima. Los tests que producen las 
 respuestas deseadas son considerados como ``pruebas superadas'', como
@@ -29,11 +30,30 @@ conocidos, adem@'as de fallos.
 
 @code{run_testsuite (true, true)} muestra todos los tests. 
 
+Si se incluye el tercer argumento opcional, se ejecutar@'a una parte de los tests.
+Los tests a ejecutar se especifican formando una lista con los nombres de los mismos. La
+lista completa de tests est@'a en @code{testsuite_files}.
+
 @code{run_testsuite} cambia el entorno de Maxima. 
 T@'{@dotless{i}}picamente un script de test ejecuta @code{kill} para establecer un entorno conocido (ll@'amese uno sin funciones ni variables definidas por el usuario) y entonces define una serie de funciones y variables apropiadas para el test. 
 
 @code{run_testsuite} retorna @code{done}.
 @end deffn
+
+
+@defvr {Variable opcional} testsuite_files
+
+@code{testsuite_files} es el conjunto de tests a ejecutar por @code{run_testsuite}. Se trata de una lista con los nombres de los ficheros que contienen los tests a ejecutar. Si se sabe que alguno de los tests de un fichero falla, entonces en lugar de listar el nombre del fichero, se utiliza una lista que contiene el nombre del fichero y los n@'umeros de los tests que fallan.
+
+Por ejemplo, esta es una parte de los tests por defecto:
+
+@example
+ ["rtest13s", ["rtest14", 57, 63]]
+@end example
+
+Con esto se especifica que el conjunto de tests est@'a formado por los ficheros "rtest13s"  y "rtest14", pero que "rtest14" contiene dos tests que se sabe que causan fallos, el 57 y el 63.
+@end defvr
+
 
 @deffn {Funci@'on} bug_report ()
 Imprime las versiones de Maxima y de Lisp y proporciona un enlace a la
