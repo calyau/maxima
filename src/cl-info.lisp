@@ -339,7 +339,8 @@
   "search for the first occurrence of a file in the directory list dirs
 that matches the name name with extention ext"
   (dolist (dir dirs)
-    (let ((base-name (make-pathname :directory (pathname-directory dir))))
+    (let ((base-name (make-pathname :device (pathname-device dir)
+                                    :directory (pathname-directory dir))))
       (dolist (type extensions)
 	(let ((pathname (make-pathname :name name
 				       :type (if (equalp type "")
