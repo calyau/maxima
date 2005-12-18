@@ -283,19 +283,6 @@
 (defun bigfloat-or-number-p (x)
   (or ($bfloatp x) (numberp x) ($ratnump x)))
 
-;; Generalization of function in ellipt.lisp. This function should
-;; be moved to elliptic.lisp.
-
-(defun complex-number-p (u &optional (ntypep 'numberp))
-  ;; Return non-NIL if U is a complex number (or number)
-  (or (funcall ntypep u)
-      (and (consp u)
-	   (funcall ntypep (second u))
-	   (or (and (consp (third u))
-		    (funcall ntypep (second (third u)))
-		    (eq (third (third u)) '$%i))
-	       (and (eq (third u) '$%i))))))
-
 ;; When z is a Maxima complex float or when 'numer' is true and z is a
 ;; Maxima complex number, evaluate (op z) by applying the mapping from
 ;; the Maxima operator 'op' to the operator in the hash table

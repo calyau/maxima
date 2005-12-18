@@ -464,15 +464,20 @@
 ;;
 ;; ((MPLUS SIMP) 1 $%I))
 ;;
-(defun complex-number-p (u)
+;; or
+;;
+;; $%I
+;;
+(defun complex-number-p (u &optional (ntypep 'numberp))
   ;; Return non-NIL if U is a complex number (or number)
-  (or (numberp u)
+  (or (funcall ntypep u)
       (and (consp u)
-	   (numberp (second u))
+	   (funcall ntypep (second u))
 	   (or (and (consp (third u))
-		    (numberp (second (third u)))
+		    (funcall ntypep (second (third u)))
 		    (eq (third (third u)) '$%i))
-	       (and (eq (third u) '$%i))))))
+	       (and (eq (third u) '$%i))))
+      (and (eq u '$%i) (funcall ntypep 1))))
 
 (defun complexify (x)
   ;; Convert a Lisp number to a maxima number
