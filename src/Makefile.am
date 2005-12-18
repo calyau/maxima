@@ -1,7 +1,7 @@
 include $(top_srcdir)/common.mk
 
 if WIN32
-bin_SCRIPTS = maxima maxima.bat
+bin_SCRIPTS = maxima maxima-command.ico maxima.bat
 else
 bin_SCRIPTS = maxima rmaxima
 endif
