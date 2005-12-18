@@ -1,6 +1,6 @@
 # -*-mode: makefile; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Makefile.am,v 1.39 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: Makefile.am,v 1.40 2005-12-18 06:58:30 vvzhy Exp $
 #
 
 include $(top_srcdir)/common.mk
@@ -9,7 +9,7 @@ SUBDIRS = msgs
 
 genericdir = $(xmaximadir)
 
-genericdirDATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif maxima-icon.ico maxima-icon.png
+genericdirDATA=demos.html examples.html intro.html plotmaxima.html maxima-new.png maxima-new.gif maxima-icon.ico maxima-icon.png maxima-icon.gif
 
 bin_SCRIPTS = xmaxima
 
