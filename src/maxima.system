@@ -429,10 +429,12 @@
 				     (:file "mdefun"))
 			:depends-on (maxima-language-compiler-macros))
 	       (:module numerical-functions :source-pathname ""
+			:depends-on (trigonometry)
 			:components ((:file "bessel")
 				     ;;#+gcl(:file "parse-body")
 				     (:file "ellipt")
-				     (:file "airy")
+				     (:file "airy"
+					    :depends-on ("ellipt"))
 				     (:file "numer") 
 				     (:file "intpol") 
 				     (:file "rombrg")))

@@ -24,12 +24,28 @@
 
 (in-package :maxima)
 
+(declaim (special *double-float-op*))
+
 ;; Airy Ai function 
 (defmfun $airy_ai (z)
   "Airy function Ai(z)"
   (simplify (list '(%airy_ai) (resimplify z))))
 (defprop %airy_ai simp-%airy_ai operators)
 (defprop %airy_ai ((z) ((%airy_dai) z)) grad)
+
+(defun airy-ai (z)
+  (cond ((floatp z) (airy-ai-real z))
+	((complexp z) (airy-ai-complex z))))
+
+(setf (gethash '%airy_ai *double-float-op*) #'airy-ai)
+
+(defmfun simp-%airy_ai (form unused x)
+  (declare (ignore unused))
+  (oneargcheck form)
+  (let ((z (simpcheck (cadr form) x)))
+    (cond ((double-float-eval (mop form) z))
+	  (t (eqtest (list '(%airy_ai) z) form)))))
+
 
 ;; Derivative dAi/dz of Airy function Ai(z)
 (defmfun $airy_dai (z)
@@ -38,12 +54,40 @@
 (defprop %airy_dai simp-%airy_dai operators)
 (defprop %airy_dai ((z) ((mtimes) z ((%airy_ai) z))) grad)
 
+(defun airy-dai (z)
+  (cond ((floatp z) (airy-dai-real z))
+	((complexp z) (airy-dai-complex z))))
+
+(setf (gethash '%airy_dai *double-float-op*) #'airy-dai)
+
+(defmfun simp-%airy_dai (form unused x)
+  (declare (ignore unused))
+  (oneargcheck form)
+  (let ((z (simpcheck (cadr form) x)))
+    (cond ((double-float-eval (mop form) z))
+	  (t (eqtest (list '(%airy_dai) z) form)))))
+
+
 ;; Airy Bi function 
 (defmfun $airy_bi (z)
   "Airy function Bi(z)"
   (simplify (list '(%airy_bi) (resimplify z))))
 (defprop %airy_bi simp-%airy_bi operators)
 (defprop %airy_bi ((z) ((%airy_dbi) z)) grad)
+
+(defun airy-bi (z)
+  (cond ((floatp z) (airy-bi-real z))
+	((complexp z) (airy-bi-complex z))))
+
+(setf (gethash '%airy_bi *double-float-op*) #'airy-bi)
+
+(defmfun simp-%airy_bi (form unused x)
+  (declare (ignore unused))
+  (oneargcheck form)
+  (let ((z (simpcheck (cadr form) x)))
+    (cond ((double-float-eval (mop form) z))
+	  (t (eqtest (list '(%airy_bi) z) form)))))
+
 
 ;; Derivative dBi/dz of Airy function Bi(z)
 (defmfun $airy_dbi (z)
@@ -52,87 +96,21 @@
 (defprop %airy_dbi simp-%airy_dbi operators)
 (defprop %airy_dbi ((z) ((mtimes) z ((%airy_bi) z))) grad)
 
-;; Simplification rules - only numerical evaluation
+(defun airy-dbi (z)
+  (cond ((floatp z) (airy-dbi-real z))
+	((complexp z) (airy-dbi-complex z))))
 
-;; True if complex Airy functions should be evaluated 
-;; numerically for z = zr + %i*zi
-;; FIXME:  There might be an existing function for this
-;; There is still a problem - float(airy_xx(%i)) isn't evaluated.
-(defun evalate-complex-airy (zr zi)
-  (cond
-    ((not (and (numberp zr) (numberp zi)))
-      nil)
-    ((or $numer (floatp zr) (floatp zi))
-      t)
-    (t
-       nil)))
-
-(defmfun simp-%airy_ai (form unused x)
-  (declare (ignore unused))
-  (oneargcheck form)
-  (let* ((z (simpcheck (cadr form) x))
-	 (zr ($realpart z))
-	 (zi ($imagpart z)))
-    (cond
-      ((and (numberp zi) (zerop zi)
-	    (or (floatp zr) (and $numer (integerp zr))))
-        (airy-ai-real (float z 1.0d0)))
-      ((evalate-complex-airy zr zi)
-        (airy-ai-complex (float zr 1.0d0) (float zi 1.0d0)))
-      (t 
-        (eqtest (list '(%airy_ai) z) form)))))
-
-(defmfun simp-%airy_dai (form unused x)
-  (declare (ignore unused))
-  (oneargcheck form)
-  (let* ((z (simpcheck (cadr form) x))
-	 (zr ($realpart z))
-	 (zi ($imagpart z)))
-    (cond
-      ((and (numberp zi) (zerop zi)
-	    (or (floatp zr) (and $numer (integerp zr))))
-        (airy-dai-real (float zr 1.0d0)))
-      ((evalate-complex-airy zr zi)
-        (airy-dai-complex (float zr 1.0d0) (float zi 1.0d0)))
-      (t 
-        (eqtest (list '(%airy_dai) z) form)))))
-
-(defmfun simp-%airy_bi (form unused x)
-  (declare (ignore unused))
-  (oneargcheck form)
-  (let* ((z (simpcheck (cadr form) x))
-	 (zr ($realpart z))
-	 (zi ($imagpart z)))
-    (cond
-      ((and (numberp zi) (zerop zi)
-	    (or (floatp zr) (and $numer (integerp zr))))
-        (airy-bi-real (float z 1.0d0)))
-      ((evalate-complex-airy zr zi)
-        (airy-bi-complex (float zr 1.0d0) (float zi 1.0d0)))
-      (t 
-        (eqtest (list '(%airy_bi) z) form)))))
+(setf (gethash '%airy_dbi *double-float-op*) #'airy-dbi)
 
 (defmfun simp-%airy_dbi (form unused x)
   (declare (ignore unused))
   (oneargcheck form)
-  (let* ((z (simpcheck (cadr form) x))
-	 (zr ($realpart z))
-	 (zi ($imagpart z)))
-    (cond
-      ((and (numberp zi) (zerop zi)
-	    (or (floatp zr) (and $numer (integerp zr))))
-        (airy-dbi-real (float z 1.0d0)))
-      ((evalate-complex-airy zr zi)
-        (airy-dbi-complex (float zr 1.0d0) (float zi 1.0d0)))
-      (t 
-        (eqtest (list '(%airy_dbi) z) form)))))
+  (let ((z (simpcheck (cadr form) x)))
+    (cond ((double-float-eval (mop form) z))
+	  (t (eqtest (list '(%airy_dbi) z) form)))))
+
 
 ;; Numerical routines using slatec functions
-
-;; FIXME:  There must be an existing function for this
-(defun m-complex (zr zi)
-  "Generate maxima complex number from real and imaginary parts"
-  (list '(mplus) zr (list '(mtimes) '$%i zi)))
 
 (defun airy-ai-real (z)
   " Airy function Ai(z) for real z"
@@ -141,24 +119,18 @@
   ;; This value is correct for IEEE double precision
   (let ((zmax 92.5747007268d0))
     (declare (type double-float zmax))
-    (if (< z zmax)	
-      (slatec:dai z)
-      0.0d0))) 
+    (if (< z zmax) (slatec:dai z) 0.0d0))) 
 
-(defun airy-ai-complex (zr zi)
-  "Airy function Ai(z) for complex z=zr+i*zi"
-  (declare (type double-float zr zi))
+(defun airy-ai-complex (z)
+  "Airy function Ai(z) for complex z"
+  (declare (type (complex double-float) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 air aii nz ierr)
-      (slatec:zairy zr zi 0 1 0d0 0d0 0 0)
+      (slatec:zairy (realpart z) (imagpart z) 0 1 0d0 0d0 0 0)
     (declare (type double-float air aii)
 	     (type f2cl-lib:integer4 nz ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check nz and ierr for errors
-    (if (and (= nz 0) (= ierr 0))
-	;; No errors.  Return solution
-	(m-complex air aii) 
-	;; zbiry shows errors or loss of precision.  Return unevaluated
-	(list '(%airy_ai simp) (m-complex zr zi)))))
+    (if (and (= nz 0) (= ierr 0)) (complex air aii) nil)))
 
 (defun airy-dai-real (z)
   "Derivative dAi/dz of Airy function Ai(z) for real z"
@@ -171,21 +143,16 @@
       (declare (ignore var-0 var-1 var-2 ai))
       dai)))
 
-(defun airy-dai-complex (zr zi)
-  "Derivative dAi/dz of Airy function Ai(z) for complex z=zr+i*zi"
-  (declare (type double-float zr zi))
+(defun airy-dai-complex (z)
+  "Derivative dAi/dz of Airy function Ai(z) for complex z"
+  (declare (type (complex double-float) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 air aii nz ierr)
-      (slatec:zairy zr zi 1 1 0d0 0d0 0 0)
+      (slatec:zairy (realpart z) (imagpart z) 1 1 0d0 0d0 0 0)
     (declare (type double-float air aii)
 	     (type f2cl-lib:integer4 nz ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check nz and ierr for errors
-    (if (and (= nz 0)
-	     (= ierr 0))
-	;; No errors.  Return solution
-	(m-complex air aii) 
-	;; zbiry shows errors or loss of precision.  Return unevaluated
-	(list '(%airy_dai simp) (m-complex zr zi)))))
+    (if (and (= nz 0) (= ierr 0)) (complex air aii) nil)))
 
 (defun airy-bi-real (z)
   "Airy function Bi(z) for real z"
@@ -194,25 +161,18 @@
   ;; This value is correct for IEEE double precision
   (let ((zmax 104.2179765192136d0))
     (declare (type double-float zmax))
-    (if (< z zmax)
-      (slatec:dbi z)
-      ;; Will overflow.  Return unevaluated.
-      (list '(%airy_bi simp) z))))
+    (if (< z zmax) (slatec:dbi z) nil)))
 
-(defun airy-bi-complex (zr zi)
-  "Airy function Bi(z) for complex z=zr+i*zi"
-  (declare (type double-float zr zi))
+(defun airy-bi-complex (z)
+  "Airy function Bi(z) for complex z"
+  (declare (type (complex double-float) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 bir bii ierr)
-      (slatec:zbiry zr zi 0 1 0d0 0d0 0)
+      (slatec:zbiry (realpart z) (imagpart z) 0 1 0d0 0d0 0)
     (declare (type double-float bir bii)
 	     (type f2cl-lib:integer4 ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check ierr for errors
-    (if (= ierr 0)
-	;; No errors.  Return solution
-	(m-complex bir bii) 
-	;; zbiry shows errors or loss of precision.  Return unevaluated
-	(list '(%airy_bi simp) (m-complex zr zi)))))
+    (if (= ierr 0) (complex bir bii) nil)))
 
 (defun airy-dbi-real (z)
   "Derivative dBi/dz of Airy function Bi(z) for real z"
@@ -231,19 +191,15 @@
 		   (ignore var-0 var-1 var-2 bi))
 	  dbi))
       ;; Will overflow.  Return unevaluated.
-      (list '(%airy_dbi simp) z))))
+      nil)))
 
-(defun airy-dbi-complex (zr zi)
-  "Derivative dBi/dz of Airy function Bi(z) for complex z=zr+i*zi"
-  (declare (type double-float zr zi))
+(defun airy-dbi-complex (z)
+  "Derivative dBi/dz of Airy function Bi(z) for complex z"
+  (declare (type (complex double-float) z))
   (multiple-value-bind (var-0 var-1 var-2 var-3 bir bii ierr)
-      (slatec:zbiry zr zi 1 1 0d0 0d0 0)
+      (slatec:zbiry (realpart z) (imagpart z) 1 1 0d0 0d0 0)
     (declare (type double-float bir bii)
 	     (type f2cl-lib:integer4 ierr)
 	     (ignore var-0 var-1 var-2 var-3))
     ;; Check ierr for errors
-    (if (= ierr 0)
-	;; No errors.  Return solution
-	(m-complex bir bii) 
-	;; zbiry shows errors or loss of precision.  Return unevaluated
-	(list '(%airy_dbi simp) (m-complex zr zi)))))
+    (if (= ierr 0) (complex bir bii) nil)))
