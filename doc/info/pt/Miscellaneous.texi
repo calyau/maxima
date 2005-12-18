@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Miscellaneous.texi/1.18/Sun Dec  4 08:14:31 2005/-ko/
+@c /Miscellaneous.texi/1.19/Sun Dec 18 09:20:28 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Op@value{cedilha}@~oes Diversas::  
 * Compartilhado::                       
