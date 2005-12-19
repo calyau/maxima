@@ -209,6 +209,7 @@
   (frob %sinh #'big-float-sinh)
   (frob %asinh #'big-float-asinh)
   (frob %tanh #'big-float-tanh)
+  (frob %atanh #'big-float-atanh)
   )
 
 ;; Here is a general scheme for defining and applying reflection rules. A 

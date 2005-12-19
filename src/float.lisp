@@ -1412,7 +1412,7 @@ One extra decimal digit in actual representation for rounding purposes.")
   (let ((fp-x (cdr (bigfloatp x))))
     (cond ((minusp (car fp-x))
 	   ;; asin(-x) = -asin(x);
-	   (fpminus (cdr (fpasin (fpminus fp-x)))))
+	   (mul -1 (fpasin (bcons (fpminus fp-x)))))
 	  ((fplessp fp-x (cdr bfhalf))
 	   ;; 0 <= x < 1/2
 	   ;; asin(x) = atan(x/sqrt(1-x^2))
@@ -1519,21 +1519,88 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;; tanh(z), z = x + %i*y.  X, Y are bigfloats, and a maxima number is
 ;; returned.
 (defun complex-tanh (x y)
-  (let* ((tv (cdr (tanbigfloat (list y))))
+  (let* ((fpx (cdr (bigfloatp x)))
+	 (fpy (cdr (bigfloatp y)))
+	 (tv (cdr (tanbigfloat (list y))))
 	 (beta (fpplus (fpone) (fptimes* tv tv)))
 	 (s (cdr (fpsinh x)))
-	 (rho (fproot (bcons (fpplus (fpone) (fptimes* s s)))
+	 (s^2 (fptimes* s s))
+	 (rho (fproot (bcons (fpplus (fpone) s^2))
 		      2))
-	 (den (fpplus (fpone) (fptimes* beta (fptimes* s s)))))
-    (add (bcons (fpquotient (fptimes* beta (fptimes* rho s))
-			    den))
-	 (mul '$%i
-	      (bcons (fpquotient tv den))))))
+	 (den (fpplus (fpone) (fptimes* beta s^2))))
+    (values (bcons (fpquotient (fptimes* beta (fptimes* rho s))
+			       den))
+	    (bcons (fpquotient tv den)))))
 
 (defun big-float-tanh (x &optional y)
   (if y
-      (complex-tanh x y)
+      (multiple-value-bind (u v)
+	  (complex-tanh x y)
+	(add u (mul '$%i v)))
       (fptanh x)))
+
+;; atanh(x) for real x, |x| <= 1.  X is a bigfloat, and a bigfloat is
+;; returned.
+(defun fpatanh (x)
+  ;; atanh(x) = -atanh(-x)
+  ;;          = 1/2*log1p(2*x/(1-x)), x >= 0.5
+  ;;          = 1/2*log1p(2*x+2*x*x/(1-x)), x <= 0.5
+
+  (let* ((fp-x (cdr (bigfloatp x))))
+    (cond ((fplessp fp-x (intofp 0))
+	   ;; atanh(x) = -atanh(-x)
+	   (mul -1 (fpatanh (bcons (fpminus fp-x)))))
+	  ((fpgreaterp fp-x (fpone))
+	   ;; x > 1, so use complex version.
+	   (multiple-value-bind (u v)
+	       (complex-atanh x (bcons (intofp 0)))
+	     (add u (mul '$%i v))))
+	  ((fpgreaterp fp-x (cdr bfhalf))
+	   ;; atanh(x) = 1/2*log1p(2*x/(1-x))
+	   (bcons
+	    (fptimes* bfhalf
+		      (fplog1p (fpquotient (fptimes* (intofp 2) fp-x)
+					   (fpdifference (fpone) fp-x))))))
+	  (t
+	   ;; atanh(x) = 1/2*log1p(2*x + 2*x*x/(1-x))
+	   (let ((2x (fptimes* (intofp 2) fp-x)))
+	     (bcons
+	      (fptimes* (cdr bfhalf)
+			(fplog1p (fpplus 2x
+					 (fpquotient (fptimes* 2x fp-x)
+						     (fpdifference (fpone) fp-x)))))))))))
+
+(defun complex-atanh (x y)
+  (let* ((fpx (cdr (bigfloatp x)))
+	 (fpy (cdr (bigfloatp y)))
+	 (beta (if (minusp (car fpx))
+		   (fpminus (fpone))
+		   (fpone)))
+	 (rho (intofp 0))
+	 (t1 (fpplus (fpabs fpy) rho))
+	 (t1^2 (fptimes* t1 t1))
+	 (1-x (fpdifference (fpone) fpx))
+	 (eta (fpquotient
+	       (fplog1p (fpquotient (fptimes* (intofp 4) fpx)
+				    (fpplus (fptimes* 1-x 1-x)
+					    t1^2)))
+	       (intofp 4)))
+	 (nu (fptimes* (cdr bfhalf)
+		       (fpatan2
+			(fptimes* (intofp 2) fpy)
+			(fpdifference (fptimes* 1-x
+						(fpplus (fpone) fpx))
+				      t1^2)))))
+    (values (bcons (fptimes* beta eta))
+	    (bcons (fpminus (fptimes* beta nu))))))
+    
+  
+(defun big-float-atanh (x &optional y)
+  (if y
+      (multiple-value-bind (u v)
+	  (complex-atanh x y)
+	(add u (mul '$%i v)))
+      (fpatanh x)))
 
 (eval-when
     #+gcl (load)

@@ -237,6 +237,22 @@ true$
 buggy;
 []$
 
+(buggy : [] ,0);
+0$
+
+/* Like above, but for big floats.  We expect to be within 3 digits of the answer.
+   
+   Note that we might fail because the rectform and the function might
+   produce answers because of the branch cut!
+ */
+(for f in alltrig do (
+  for p in pts do (
+    if cabs(bfloat(rectform(subst(x=p, f))) - subst(x=bfloat(p),f)) > 10b0^(3-fpprec) then buggy : cons([f,p],buggy))),0);
+0$
+
+buggy;
+[]$
+
 
 /*  Numerically check some identities  */
 
