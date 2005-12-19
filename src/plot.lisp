@@ -858,7 +858,7 @@ setrgbcolor} def
 	 (f-a1 (funcall fcn a1))
 	 (f-b1 (funcall fcn b1))
 	 )
-    (cond ((or (minusp depth)
+    (cond ((or (not (plusp depth))
 	       (and (slow-oscillation-p f-a f-a1 f-b f-b1 f-c)
 		    (smooth-enough-p f-a f-a1 f-b f-b1 f-c eps)))
 	   ;; Everything is nice and smooth so we're done.  Don't
