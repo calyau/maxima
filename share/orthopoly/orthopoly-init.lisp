@@ -4,7 +4,8 @@
 ;; The Maxima fixfloat function is buggy. Here is a quick fix.  At one
 ;; time, test_orthopoly needed this fix -- I think it's no longer needed.
 
-#+cl (defun fixfloat (x)
+; CHANGE #+CL TO #-CL AND SEE IF ORTHOPOLY IS STILL HAPPY
+#-cl (defun fixfloat (x)
 	(cond ((floatp x)
 	       (setq x (rationalize x))
 	       (cons (numerator x) (denominator x)))
@@ -13,7 +14,8 @@
 
 ;; fix for apply(rat(f),[x]) bug.
 
-(defun error-size (exp)
+; DISABLE THIS ONE, CALL RATDISREP IN ERROR-SIZE IN MERROR.LISP
+#-cl (defun error-size (exp)
   (setq exp (ratdisrep exp))
   (if (atom exp) 0
     (do ((l (cdr exp) (cdr l))
@@ -24,7 +26,9 @@
 ;; If file fn (with _no_ file extension) is out of date, compile it. We 
 ;; assume that the extension of the source file is "lisp". 
 
-(defun $make (fn)
+; OMIT THIS, NOT NEEDED FOR ORTHOPOLY
+
+#-cl (defun $make (fn)
   (setq fn (string-left-trim "&" (string fn)))
   (let ((fl) (fb) 
 	(bin-ext #+gcl "o"
@@ -45,24 +49,33 @@
 ;; anticipate making changes to orthopoly, you may comment out
 ;; ($make "orthopoly")
 
-(eval-when (load compile eval)
+; OMIT THIS, NOT NEEDED
+
+#-cl (eval-when (load compile eval)
   ($make "orthopoly"))
 
 ;; Load file f with verbose and print bound to true. Useful for loading
 ;; code with syntax errors.
 
-(defun $xload (f)
+; OMIT THIS, NOT NEEDED
+
+#-cl (defun $xload (f)
   (load ($file_search f) :verbose 't :print 't))
 
-(defprop $entier tex-matchfix tex)
-(defprop $entier (("\\lfloor ") " \\rfloor") texsym)
+; COPIED TO NUMMOD.LISP
+
+#-cl (defprop $entier tex-matchfix tex)
+#-cl (defprop $entier (("\\lfloor ") " \\rfloor") texsym)
 
 ;;-----------------------------------------------------------
 ;; Essential code starts here
 
 ;; This fixes a bug in $bessel_j.
 
-(defun $bessel_j (arg order)
+; $BESSEL_J IN BESSEL.LISP DOESN'T LOOK LIKE THIS ANYMORE. 
+; I HOPE THAT MEANS THE CURRENT VERSION DOES NOT HAVE THE BUG WHICH IS FIXED HERE
+
+#-cl (defun $bessel_j (arg order)
   (if (and (numberp order)
 	   (numberp ($realpart arg))
 	   (numberp ($imagpart arg)))
@@ -71,6 +84,8 @@
       (subfunmakes '$bessel_j (ncons order) (ncons arg))))
  
 ;; This version of setup_autoload uses file_search.
+
+; NOT SURE IF THIS IS STILL NEEDED. JUST LEAVE IT FOR NOW 
 
 (defun $setup_autoload (filename &rest functions)
   (let ((file ($file_search filename)))
@@ -84,7 +99,9 @@
 ;; "fas", "fasl" and "x86f" as valid extensions for compiled Lisp
 ;; code.
 
-#+cl
+; COPIED TO SUPRV1.LISP
+
+#-cl
 (defun generic-autoload (file &aux type)
   (setq file (pathname (cdr file)))
   (setq type (pathname-type file))
@@ -99,7 +116,8 @@
 ;; Extended version of makegamma1 that converts pochhammer symbols
 ;; to quotients of gamma functions.
 
-(defun makegamma1 (e)
+; COPIED NEW CODE TO ASUM.LISP
+#-cl (defun makegamma1 (e)
   (cond ((atom e) e)
 	((eq (caar e) 'mfactorial)
 	 (list '(%gamma) (list '(mplus) 1 (makegamma1 (cadr e)))))
@@ -280,9 +298,13 @@
 
 ;; Autoload the nset functions that simplify.
 
-(add2lnc '$unit_step $props)
+; CAN'T SEE ANY PURPOSE TO THIS -- THE OPERATORS PROPERTY IS NOT A USER-DEFINED PROPERTY HERE
+#-cl (add2lnc '$unit_step $props)
+
+; LEAVE THE AUTOLOAD STUFF ALONE. IF THIS FILE WERE COPIED INTO MAXIMA-INIT.LISP IT WOULD BE IMPORTANT
+
 (defprop $unit_step simp-unit-step operators)
-(autof 'simp-unit-step '|orthopoly|)
+(autof 'simp-unit-step "orthopoly")
 
 ($setup_autoload "orthopoly"
 		 '$assoc_legendre_p
