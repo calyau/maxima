@@ -358,7 +358,7 @@
 
 #+cl
 (defun $setup_autoload (filename &rest functions)
-  (let ((file  (string-trim "&$" (print-invert-case filename))))
+  (let ((file ($file_search filename)))
     (dolist (func functions)
       (nonsymchk func '$setup_autoload)
       (putprop (setq func (dollarify-name func)) file 'autoload)
