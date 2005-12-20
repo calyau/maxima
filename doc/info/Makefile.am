@@ -1,5 +1,5 @@
 # COMMENT OUT SUBDIRS UNTIL PROBLEM WITH TEXI2HTML VERSION IS RESOLVED 
-# SUBDIRS = es pt
+SUBDIRS = es pt
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
@@ -15,7 +15,7 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Bugs.texi nset.texi
 
 maximahtml.mk:
-	./texi2html -split_chapter maxima.texi
+	./texi2html -split_chapter --lang=en --output=. maxima.texi
 	rm -f maxima-html.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAHTML += \1/' > maximahtml.mk
 
@@ -23,7 +23,7 @@ MAXIMAHTML =
 include maximahtml.mk
 
 $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
-	./texi2html -split_chapter maxima.texi 
+	./texi2html -split_chapter --lang=en --output=. --css-include=./manual.css --init-file ./texi2html.init maxima.texi 
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)

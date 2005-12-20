@@ -1,5 +1,7 @@
 MAKEINFOFLAGS = --enable-encoding
 
+infodir = @prefix@/info/es
+
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = \
 Affine.es.texi           Equations.es.texi     Lists.es.texi          Rules.es.texi \
@@ -16,7 +18,7 @@ Differentiation.es.texi  Itensor.es.texi       Polynomials.es.texi \
 Elliptic.es.texi         Limits.es.texi        Program.es.texi
 
 maximahtml.es.mk:
-	texi2html -split_chapter --lang=es --output=. maxima.texi
+	../texi2html -split_chapter --lang=es --output=. maxima.texi
 	rm -f maximahtml.es.mk
 	ls -1 maxima*.html | sed 's/\(.*\)/MAXIMAESHTML += \1/' > maximahtml.es.mk
 
@@ -24,7 +26,7 @@ MAXIMAESHTML =
 include maximahtml.es.mk
 
 $(MAXIMAESHTML): maxima.texi $(maxima_TEXINFOS)
-	texi2html -split_chapter --lang=es --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
+	../texi2html -split_chapter --lang=es --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)/es
