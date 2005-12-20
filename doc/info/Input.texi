@@ -1213,10 +1213,10 @@ See also @code{lmxchar}.
 @deffn {Function} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
 @deffnx {Function} save (@var{filename}, values, functions, labels, ...)
 @deffnx {Function} save (@var{filename}, [@var{m}, @var{n}])
-@c @defunx save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
-@c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORKAROUND:
 @deffnx {Function} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
 @deffnx {Function} save (@var{filename}, all)
+@c @defunx save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
+@c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORK AROUND IT
 Stores the current values of @var{name_1}, @var{name_2}, @var{name_3}, ..., in @var{filename}.
 The arguments are the names of variables, functions, or other objects.
 If a name has no value or function associated with it, it is ignored.
@@ -1430,14 +1430,15 @@ The TeX equation label is the same as the Maxima label.
 
 @code{tex (@var{expr}, @var{filename})} appends a TeX representation of @var{expr}
 to the file @var{filename}.
+@code{tex} quotes the @var{filename} argument; quote-quote @code{''} forces evaluation of the argument.
 
 @code{tex (@var{label}, @var{filename})} appends a TeX representation of the
 expression named by @var{label}, with an equation label, to the file @var{filename}.
+@code{tex} quotes the @var{filename} argument; quote-quote @code{''} forces evaluation of the argument.
 
 @code{tex} evaluates its argument after testing it to see if it is a label.
 Quote-quote @code{''} forces evaluation of the argument, thereby defeating the test
 and preventing the label.
-Quote mark @code{'} prevents evaluation.
 
 See also @code{texput}.
 

@@ -54,9 +54,7 @@ Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @c
 
 
 @deffn {Function} plot2d (@var{expr}, @var{range}, ..., @var{options}, ...)
-@c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
 @deffnx {Function} plot2d (@var{parametric_expr})
-@c TOO LONG !!! (TICKLES CL-INFO BUG) @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
 @deffnx {Function} plot2d (@var{discrete_expr})
 @deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, @var{y_range})
 @deffnx {Function} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
@@ -66,6 +64,10 @@ Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @c
 @deffnx {Function} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
 @deffnx {Function} plot2d (@var{name}, @var{x_range}, @var{y_range})
 @deffnx {Function} plot2d (@var{name}, @var{x_range})
+@c TOO LONG !!! (TICKLES CL-INFO BUG)
+@c @defunx plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range}, ..., @var{options}, ...)
+@c TOO LONG !!! (TICKLES CL-INFO BUG)
+@c @defunx plot2d ([..., @var{expr}, ..., @var{parametric_expr}, ...], @var{x_range}, ..., @var{options})
 
 Displays a plot of one or more expressions
 as a function of one variable.

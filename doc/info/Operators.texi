@@ -1057,10 +1057,11 @@ See @code{ev}.
 @end deffn
 
 @deffn {Function} make_random_state (@var{n})
-@c @defunx make_random_state (@var{a})
 @deffnx {Function} make_random_state (@var{s})
 @deffnx {Function} make_random_state (true)
 @deffnx {Function} make_random_state (false)
+@c OMIT THIS FOR NOW. SEE COMMENT BELOW.
+@c @defunx make_random_state (@var{a})
 
 A random state object represents the state of the random number generator.
 The state comprises 627 32-bit words.
