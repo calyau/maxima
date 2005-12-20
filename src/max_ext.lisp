@@ -19,6 +19,7 @@
 ($auto_mexpr '$declare_linear_operator "misc/declin")
 
 ($auto_mexpr '$nonumfactor "simplification/genut")
+(meval '((%setup_autoload simp) &bffac $bfzeta))
 
 ;jfa
 ($auto_mexpr '$eigenvectors '|eigen|)
