@@ -1519,8 +1519,7 @@ Maybe you want to use `not equal'."))
 	  (kind %csch $oddfun)
 	  (kind %sech $posfun)
 	  (kind $li $complex)
-	  (kind %cabs $complex)
-	  (kind $zeta $posfun)))
+	  (kind %cabs $complex)))
 
   ($newcontext '$initial)     ; Create an initial context for the user
 					; which is a subcontext of $global.
