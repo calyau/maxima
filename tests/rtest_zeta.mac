@@ -1,0 +1,37 @@
+(ZETA%PI : true,0);
+0$
+
+(chk(x) := zeta(1-x) - 2 * cos(x * %pi /2) * gamma(x) * zeta(x) / (2 * %pi)^x,0);
+0$
+
+makelist(chk(k),k,2,21);
+makelist(0,k,2,21)$
+
+makelist(zeta(-k) + bern(k+1)/(k+1),k,1,21);
+makelist(0,k,1,21)$
+
+zeta(-1);
+-1/12$
+
+zeta(0);
+-1/2$
+
+zeta(1);
+'inf$
+
+zeta(2);
+%pi^2 /6$
+
+zeta(4);
+%pi^4 / 90$
+
+zeta(6);
+%pi^6 / 945$
+
+zeta(8);
+%pi^8/9450$
+
+zeta(10);
+%pi^10/93555$
+
+
