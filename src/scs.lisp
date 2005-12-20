@@ -15,8 +15,7 @@
 
 (defmfun $scsimp n 
   (do ((i n (f1- i)) (zrs)) ((= 1 i) (scs (arg 1) zrs))
-    (setq zrs (cons (ifn (eq 'mequal (caar (arg i))) (arg i)
-			 (sub (cadr (arg i)) (caddr (arg i)))) zrs))))
+    (setq zrs (cons (meqhk (arg i)) zrs))))
 
 (defun scs (x zrs)
   (do ((flag t) (sz (conssize x)) (nx) (nsz)) ((not flag) x)
