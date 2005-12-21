@@ -1,5 +1,10 @@
-# COMMENT OUT SUBDIRS UNTIL PROBLEM WITH TEXI2HTML VERSION IS RESOLVED 
-SUBDIRS = es pt
+if LANG_ES
+  ES_DIR = es
+endif
+if LANG_PT
+  PT_DIR = pt
+endif
+SUBDIRS = $(ES_DIR) $(PT_DIR)
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
