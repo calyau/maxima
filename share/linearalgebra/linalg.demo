@@ -24,5 +24,6 @@ m : matrix([1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]);
 
 column_space(m);
 
-apply('orthogonal_complment, args(nullspace(transpose(m))));
+apply('orthogonal_complement, args(nullspace(transpose(m))));
 
+untellrat(z);

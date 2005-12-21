@@ -165,6 +165,48 @@ one member, return @code{span ()}.
 
 @end deffn
 
+@deffn {Function} copy (@var{e})
+
+Return a copy of the Maxima expression @var{e}. Although @var{e} can be any
+Maxima expression, the copy function is the most useful when @var{e} is either 
+a list or a matrix; consider:
+@c ===beg===
+load (linalg);
+m : [1,[2,3]]$
+mm : m$
+mm[2][1] : x$
+m;
+mm;
+@c ===end===
+@example 
+(%i1) load("linalg")$
+(%i2) m : [1,[2,3]]$
+(%i3) mm : m$
+(%i4) mm[2][1] : x$
+(%i5) m;
+(%o5) [1,[x,3]]
+(%i6) mm;
+(%o6) [1,[x,3]]
+@end example
+Let's try the same experiment, but this time let @var{mm} be a copy of @var{m}
+@c ===beg===
+m : [1,[2,3]]$
+mm : copy(m)$
+mm[2][1] : x$
+m;
+mm;
+@c ===end===
+@example
+(%i7) m : [1,[2,3]]$
+(%i8) mm : copy(m)$
+(%i9) mm[2][1] : x$
+(%i10) m;
+(%o10) [1,[2,3]]
+(%i11) mm;
+(%o11) [1,[x,3]]
+@end example
+This time, the assignment to @var{mm} does not change the value of @var{m}.
+
 @deffn {Function} ctranspose (@var{M})
 
 Return the conjugate of the transpose of the matrix @var{M}. If @var{M} is
@@ -184,7 +226,15 @@ column vectors.
 
 When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns a list of the 
 form @code{[P, L, U]}, where @var{P} is a permutation matrix, @var{L} is lower triangular with
-ones on the digonal, and @var{U} is upper triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
+ones on the diagonal, and @var{U} is upper triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
+
+@end deffn
+
+@deffn {Function} hessian (@var{f},@var{vars})
+
+Return the hessian matrix of @var{f} with respect to the variables in the list
+@var{vars}.  The @var{i},@var{j} entry of the hessian matrix is 
+@var{diff(f vars[i],1,vars[j],1)}.
 
 @end deffn
 
@@ -192,6 +242,30 @@ ones on the digonal, and @var{U} is upper triangular, and @code{@var{A} = @var{P
 
 Return the @var{n} by @var{n} Hilbert matrix. When @var{n} isn't a positive
 integer, signal an error.
+
+@end deffn
+
+@deffn {Function} identfor (@var{M})
+@deffnx identfor (@var{M}, @var{fld})
+
+Return an identity matrix that has the same shape as the matrix
+@var{M}.  The diagonal entries of the identity matrix are the 
+multiplicative identity of the field @var{fld}; the default for
+@var{fld} is @var{generalfield}.
+
+The first argument @var{M} should be a square matrix or a 
+non-matrix. When @var{M} is a matrix, each entry of @var{M} can be a
+square matrix -- thus @var{M} can be a blocked Maxima matrix. The
+matrix can be blocked to any (finite) depth.
+
+See also @code{zerofor}
+
+@end deffn
+
+@deffn {Function} invert_by_lu (@var{M}, @var{(rng generalfield)})
+
+Invert a matrix @var{M} by using the LU factorization.  The LU factorization
+is done using the ring @var{rng}.
 
 @end deffn
 
@@ -238,61 +312,85 @@ Return the index of a minimizing entry.
 
 @end deffn
 
-@deffn {Function} lu_backsub (@var{M}, @var{b}, @var{field})
+@deffn {Function} lu_backsub (@var{M}, @var{b})
 
 When @code{@var{M} = lu_factor (@var{A}, @var{field})},
-then @code{lu_backsub (@var{M}, @var{b}, @var{field})} solves the linear
+then @code{lu_backsub (@var{M}, @var{b})} solves the linear
 system @code{@var{A} @var{x} = @var{b}}.
 
 @end deffn
 
 @deffn {Function} lu_factor (@var{M}, @var{field})
 
-Return a list of the form @code{[@var{LU}, @var{perm}]} or @code{[@var{LU}, @var{perm}, @var{cond}]} where
+Return a list of the form @code{[@var{LU}, @var{perm}, @var{fld}]}, 
+or @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, where
 
-(1) The matrix @var{LU} contains the factorization of @var{M} in a packed form. Packed
-form means three things: First, the rows of @var{LU} are permuted according to the 
-list @var{perm}.  If, for example, @var{perm} is the list @code{[3, 2, 1]}, the actual first row 
-of the @var{LU} factorization is the third row of the matrix @var{LU}. Second,
-the lower triangular factor of @var{M} is the lower triangular part of @var{LU} with the
-diagonal entries replaced by all ones. Third, the upper triangular factor of 
-@var{M} is the upper triangular part of @var{LU}.  
+  (1) The matrix @var{LU} contains the factorization of @var{M} in a packed form. Packed
+      form means three things: First, the rows of @var{LU} are permuted according to the 
+      list @var{perm}.  If, for example, @var{perm} is the list @code{[3,2,1]}, the actual first row 
+      of the @var{LU} factorization is the third row of the matrix @var{LU}. Second,
+      the lower triangular factor of m is the lower triangular part of @var{LU} with the
+      diagonal entries replaced by all ones. Third, the upper triangular factor of 
+      @var{M} is the upper triangular part of @var{LU}.  
 
-(2) When the field is either @code{floatfield} or @code{complexfloatfield}, 
-the number @var{cond} is an upper bound for the infinity norm condition number of @var{M}.
-For all other fields, the condition number isn't estimated. For these fields,
-@code{lu_factor} returns a two item list.
+  (2) When the field is either @code{floatfield} or @code{complexfloatfield},
+      the numbers @var{lower-cnd} and @var{upper-cnd} are lower and upper bounds for the 
+      infinity norm condition number of @var{M}.  For all fields, the condition number 
+      might not be estimated; for such fields, @code{lu_factor} returns a two item list.
+      Both the lower and upper bounds can differ from their true values by 
+      arbitrarily large factors. (See also @code{mat_cond}.)
+   
+  The argument @var{M} must be a square matrix.
 
-The argument @var{M} must be a square matrix.
+  The optional argument @var{fld} must be a symbol that determines a field. The pre-defined 
+  fields are:
 
-The argument @var{field} must be a symbol that determines a field. The pre-defined 
-fields are:
+    (a) @code{generalfield} -- the field of Maxima expressions,
+    (b) @code{floatfield} --  the field of floating point numbers of the type double,
+    (c) @code{complexfloatfield} --  the field of complex floating point numbers of the 
+        type double,
+    (d) @code{crefield}  -- the field of Maxima CRE expressions,
+    (e) @code{rationalfield} -- the field of rational numbers,
+    (f) @code{runningerror} -- in this field, the all floating point rounding are
+        tracked.
+    (g) @code{NC} -- the field of Maxima expressions where multiplication is the
+        non-commutative dot operator.       
 
-(a) @code{generalfield} -- the field of Maxima expressions,
-(b) @code{floatfield} --  the field of double-precision floating point numbers,
-(c) @code{complexfloatfield} --  the field of complex double-precision floating point numbers,
-(d) @code{crefield}  -- the field of Maxima CRE expressions,
-(e) @code{rationalfield} -- the field of rational numbers.
+When the field is @code{floatfield}, @code{complexfloatfield}, or
+@code{runningerror}, the algorithm uses partial pivoting; for all
+other fields, rows are switched only when needed to avoid a zero
+pivot.
 
-When the field is @code{floatfield} or @code{complexfloatfield}, the algorithm uses partial
-pivoting; when the field is @code{generalfield}, rows are swapped only to
-avoid a zero pivot.
+Floating point addition arithmetic isn't associative, so the meaning
+of 'field' differs from the mathematical definition.
 
-Floating point addition arithmetic isn't associative, so the meaning of field 
-differs from the mathematical definition.
+A member of the field @code{runningerror} is a two member Maxima list
+of the form @code{[x,n]},where @var{x} is a floating point number and
+@code{n} is an integer. The relative difference between the 'true'
+value of @code{x} and @code{x} is approximately bounded by the machine
+epsilon times @code{n}. The running error bound drops some terms that
+of the order the square of the machine epsilon.
 
-There is no user-interface for defining a new field.
-@c NEED TO EXPLAIN HERE WHAT FUNCTIONS NEED TO BE DEFINED TO MAKE A NEW FIELD
-A user that is familiar with Common Lisp should be able to define a new field. 
+There is no user-interface for defining a new field. A user that is
+familiar with Common Lisp should be able to define a new field.  To do
+this, a user must define functions for the arithmetic operations and
+functions for converting from the field representation to Maxima and
+back. Additionally, for ordered fields (where partial pivoting will be
+used), a user must define functions for the magnitude and for
+comparing field members.  After that all that remains is to define a
+Common Lisp structure @code{mring}.  The file @code{mring} has many
+examples.
+ 
+To compute the factorization, the first task is to convert each matrix
+entry to a member of the indicated field. When conversion isn't
+possible, the factorization halts with an error message. Members of
+the field needn't be Maxima expressions.  Members of the
+@code{complexfloatfield}, for example, are Common Lisp complex numbers. Thus
+after computing the factorization, the matrix entries must be
+converted to Maxima expressions.
 
-To compute the factorization, the first task is to convert each matrix entry
-to a member of the indicated field. When conversion isn't possible, the factorization
-halts with an error message. Members of the field needn't be Maxima expressions.
-Members of the @code{complexfloatfield}, for example, are Common Lisp complex numbers. Thus
-after computing the factorization, the matrix entries must be converted to Maxima
-expressions.
+See also  @code{get_lu_factors}.
 
-See also @code{get_lu_factors}.
 
 Examples:
 
@@ -352,6 +450,17 @@ Evaluation took 109.24 seconds (152.10 elapsed)
 
 @end deffn
 
+@deffn {Function} mat_cond (@var{M}, 1)
+@deffnx {Function} mat_cond (@var{M}, inf)
+
+Return the @var{p}-norm matrix condition number of the matrix
+@var{m}. The allowed values for @var{p} are 1 and @var{inf}.  This
+function uses the LU factorization to invert the matrix @var{m}. Thus
+the running time for @code{mat_cond} is proportional to the cube of
+the matrix size; @code{lu_factor} determines lower and upper bounds
+for the infinity norm condition number in time proportional to the
+square of the matrix size.
+
 @deffn {Function} mat_norm (@var{M}, 1)
 @deffnx {Function} mat_norm (@var{M}, inf)
 @deffnx {Function} mat_norm (@var{M}, frobenius)
@@ -369,6 +478,59 @@ Given an optional argument @var{p}, return @code{true} if @var{e} is
 a matrix and @var{p} evaluates to @code{true} for every matrix element.
 When @code{matrixp} is not given an optional argument, return @code{true} 
 if @code{e} is a matrix.  In all other cases, return @code{false}.
+
+@end deffn
+
+@deffn {Function} matrix_size (@var{M})
+
+Return a two member list that gives the number of rows and columns, respectively
+of the matrix @var{M}.
+
+@deffn {Function} mat_trace (@var{M})
+
+Return the trace of the matrix @var{M} If @var{M} isn't a matrix, return a
+noun form. When @var{M} is a block matrix, @code{mat_trace(M)} returns
+the same value as does @code{mat_trace(mat_unblocker(m))}.
+
+@deffn {Function} mat_unblocker (@var{M})
+
+If @var{M} is a block matrix, return its unblocked form. If @var{M} is a matrix,
+return @var{M}; otherwise, signal an error.  If you use block matrices,
+most likely you'll want to set @code{matrix_element_mult} to @code{"."} and
+@code{matrix_element_transpose} to @code{'transpose}. See also @code{mat_fullunblocker}.
+
+Example:
+
+@c ===beg===
+@c load (linalg);
+@c A : matrix ([1, 2], [3, 4]);
+@c B : matrix ([7, 8], [9, 10]);
+@c matrix ([A, B]);
+@c mat_unblocker (%);
+@c ===end===
+@example
+(%i1) load (linalg);
+Warning - you are redefining the Maxima function require_list
+Warning - you are redefining the Maxima function matrix_size
+Warning - you are redefining the Maxima function rank
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%i2) A : matrix ([1, 2], [3, 4]);
+                            [ 1  2 ]
+(%o2)                       [      ]
+                            [ 3  4 ]
+(%i3) B : matrix ([7, 8], [9, 10]);
+                            [ 7  8  ]
+(%o3)                       [       ]
+                            [ 9  10 ]
+(%i4) matrix ([A, B]);
+                     [ [ 1  2 ]  [ 7  8  ] ]
+(%o4)                [ [      ]  [       ] ]
+                     [ [ 3  4 ]  [ 9  10 ] ]
+(%i5) mat_unblocker (%);
+                         [ 1  2  7  8  ]
+(%o5)                    [             ]
+                         [ 3  4  9  10 ]
+@end example
 
 @end deffn
 
@@ -520,48 +682,6 @@ If @var{M} is a matrix, swap rows @var{i} and @var{j}. If @var{M} doesn't have a
 
 @end deffn
 
-@deffn {Function} mat_unblocker (@var{M})
-
-If @var{M} is a block matrix, return its unblocked form. If @var{M} is a matrix,
-return @var{M}; otherwise, signal an error.  If you use block matrices,
-most likely you'll want to set @code{matrix_element_mult} to @code{"."} and
-@code{matrix_element_transpose} to @code{'transpose}. 
-
-Example:
-
-@c ===beg===
-@c load (linalg);
-@c A : matrix ([1, 2], [3, 4]);
-@c B : matrix ([7, 8], [9, 10]);
-@c matrix ([A, B]);
-@c mat_unblocker (%);
-@c ===end===
-@example
-(%i1) load (linalg);
-Warning - you are redefining the Maxima function require_list
-Warning - you are redefining the Maxima function matrix_size
-Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
-(%i2) A : matrix ([1, 2], [3, 4]);
-                            [ 1  2 ]
-(%o2)                       [      ]
-                            [ 3  4 ]
-(%i3) B : matrix ([7, 8], [9, 10]);
-                            [ 7  8  ]
-(%o3)                       [       ]
-                            [ 9  10 ]
-(%i4) matrix ([A, B]);
-                     [ [ 1  2 ]  [ 7  8  ] ]
-(%o4)                [ [      ]  [       ] ]
-                     [ [ 3  4 ]  [ 9  10 ] ]
-(%i5) mat_unblocker (%);
-                         [ 1  2  7  8  ]
-(%o5)                    [             ]
-                         [ 3  4  9  10 ]
-@end example
-
-@end deffn
-
 @deffn {Function} vandermonde_matrix ([@var{x_1}, ..., @var{x_n}])
 
 Return a @var{n} by @var{n} matrix whose @var{i}-th row is 
@@ -569,6 +689,23 @@ Return a @var{n} by @var{n} matrix whose @var{i}-th row is
 
 @end deffn
 
+@deffn {Function} zerofor (@var{M})
+@deffx  zerofor (@var{M}, @var{fld})
+
+Return a zero  matrix that has the same shape as the matrix
+@var{M}.  Every entry of the zero matrix matrix is the
+additive identity of the field @var{fld}; the default for
+@var{fld} is @var{generalfield}.
+
+The first argument @var{M} should be a square matrix or a
+non-matrix. When @var{M} is a matrix, each entry of @var{M} can be a
+square matrix -- thus @var{M} can be a blocked Maxima matrix. The
+matrix can be blocked to any (finite) depth.
+
+See also @code{identfor}
+
+
+@end deffn
 @deffn {Function} zeromatrixp (@var{M})
 
 If @code{is (equal (@var{e}, 0))} is true for each element @var{e} of the matrix @var{M},

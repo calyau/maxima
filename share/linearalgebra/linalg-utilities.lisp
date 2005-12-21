@@ -7,7 +7,22 @@
 ;; This software has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-($put '$linalgutilities 1 '$version)
+($put '$linalgutilities 1.1 '$version)
+
+(defmacro while (cond &rest body)
+  `(do ()
+       ((not ,cond))
+     ,@body))
+
+;; Return true iff e is an expression with operator op1, op2,...,or opn. 
+
+(defun op-equalp (e &rest op)
+  (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
+
+;; Return true iff the operator of e is a Maxima relation operator.
+
+(defun mrelationp (a)
+  (op-equalp a 'mlessp 'mleqp 'mequal 'mgeqp 'mgreaterp))
 
 (defun $listp (e &optional (f nil))
   (and (op-equalp e 'mlist) (or (eq f nil) (every #'(lambda (s) (eq t (mfuncall f s))) (margs e)))))
@@ -40,13 +55,13 @@
       (merror "The ~:M argument of the function ~:M must be a positive integer" pos fun)))
 
 (defun $ctranspose (m)
-  ; Make a gensym here to avoid variable capture.
-  (let* ((x (gensym))
-         ($matrix_element_transpose
-           `((lambda simp)
-             ((mlist) ,x)
-             ((mcond) (($matrixp) ,x) (($ctranspose) ,x)
-                      t (($conjugate) ,x)))))
+  (let (($matrix_element_transpose 
+	 `((lambda simp) ((mlist) x)
+	   ((mcond) (($matrixp) x) (($ctranspose) x) t
+	    (($conjugate) x)))))
     (mfuncall '$transpose m)))
 
+(eval-when (eval compile load)
+  (mfuncall '$alias '$copylist '$copy '$copymatrix '$copy))
 
+(defun $copy (e) (copy-tree e))

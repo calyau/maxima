@@ -33,9 +33,9 @@ eval_when(translate,
 eval_when([batch,load,translate,compile],
  (if get('nset, 'version) = false then load("nset"),
   if get('conjugate, 'version) = false then load("conjugate"),
-  if get('polynomialp, 'version) = false then load("polynomialp"),
+  load("polynomialp"),
   if get('lu, 'version) = false then load("lu"),
-  if get('matrixexp, 'version) = false then load("matrixexp"),
+  load("matrixexp"),
   if get('linalgutilities, 'version) = false then load("linalg-utilities")));
   
 require_integer(i, pos, fn) := 
@@ -49,6 +49,10 @@ require_symbol(x, pos, fn) :=
 request_rational_matrix(m, pos, fn) :=
   if every('identity, map(lambda([s], every('ratnump,s)), args(m))) then true else
     print("Some entries in the matrix are not rational numbers. The result might be wrong.");
+
+matrix_size(m) := (
+  require_matrix(m,"first", "matrix_size"),
+  [length(m), length(first(m))]);
 
 dotproduct(a,b) := block([scalarmatrixp : true],
   require_matrix(a,"first", "dotproduct"),
@@ -254,11 +258,26 @@ mat_norm(m, p) := block([listarith : true, d],
   else if p = 'frobenius then apply("+", apply('append, args(cabs(m)^2)))
   else error("Not able to compute the ",p," norm"));
 
+mat_fullunblocker(m) := block(
+  require_matrix(m, "first", "mat_unblocker"),
+  if every('identity, apply('append, args(matrixmap('matrixp, m)))) then (
+     mat_fullunblocker(apply('addrow, args( map(lambda([x], apply('addcol, x)), m)))))     
+   else m);
+
 mat_unblocker(m):=block(
   require_matrix(m, "first", "mat_unblocker"),
   if every('identity, apply('append, args(matrixmap('matrixp, m)))) then (
      m : apply('addrow, args( map(lambda([x], apply('addcol, x)), m))))     
    else m);
+
+mat_trace(m) := block([n, acc : 0],
+  if not matrixp(m) then funmake('mat_trace, [m]) else (
+    n : matrix_size(m),
+    if first(n) # second(n) then error("The first argument to 'mat_trace' must be a square matrix"),
+    n : first(n),
+    for i from 1 thru n do (
+      acc : acc + if matrixp(m[i,i]) then mat_trace(m[i,i]) else m[i,i]),
+    acc));
 
 kronecker_product(a,b) := (
   require_matrix(a,"first", "kronecker_product"),

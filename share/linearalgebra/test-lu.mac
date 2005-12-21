@@ -1,8 +1,11 @@
 (kill(values),0);
 0$
 
+(saveratprint : ratprint, savefloat2bf : float2bf, ratprint : false, float2bf : true, 0);
+0$
+
 (lu_test(m) := block([mp],
-  mp : get_lu_factors(lu_factor(m,generalfield)),
+  mp : get_lu_factors(lu_factor(m,generalring)),
   zeromatrixp(m - mp[1] . mp[2] . mp[3])),0);
 0$
      
@@ -78,7 +81,7 @@ lu_test(hilbert_matrix(13), 1.0e-38);
 true$
 
 (lu_test(m, tol) := block([mp],
-  mp : get_lu_factors(lu_factor(m,complexfloatfield)),
+  mp : get_lu_factors(lu_factor(m,complexfield)),
   matrixp(m - mp[1] . mp[2] . mp[3], lambda([s], is(cabs(s) < tol)))),0);
 0$
 
@@ -91,7 +94,7 @@ true$
 (b : m . matrix([x],[y],[z]),0);
 0$
 
-lu_backsub(lu_factor(m,crefield), b, crefield);
+lu_backsub(lu_factor(m,crering), b);
 matrix([x],[y],[z])$
 
 (m : matrix([0,2,3],[0,5,6],[7,8,10]),0);
@@ -100,7 +103,7 @@ matrix([x],[y],[z])$
 (b : m . matrix([x],[y],[z]),0);
 0$
 
-lu_backsub(lu_factor(m, crefield), b, crefield);
+lu_backsub(lu_factor(m, crering), b);
 matrix([x],[y],[z])$
 
 (m : matrix([0,2,3],[0,5,6],[7,8,10]),0);
@@ -109,7 +112,7 @@ matrix([x],[y],[z])$
 (b : m . matrix([x],[y],[z]),0);
 0$
 
-lu_backsub(lu_factor(m, crefield), b, crefield);
+lu_backsub(lu_factor(m, crering), b);
 matrix([x],[y],[z])$
 
 
@@ -119,11 +122,17 @@ matrix([x],[y],[z])$
 (b : m . matrix([x],[y],[z]),0);
 0$
 
-lu_backsub(lu_factor(m, crefield), b, crefield);
+lu_backsub(lu_factor(m, crering), b);
 matrix([x],[y],[z])$
 
+(ratprint : saveratprint, float2bf : savefloat2bf, 0);
+0$
 
+(kill(values),0);
+0$
 
+(kill(lu_test),0);
+0$
 
 
 
