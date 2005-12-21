@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.24/Sun Dec  4 08:14:38 2005/-ko/
+@c /Operators.texi/1.25/Wed Dec 21 07:33:45 2005/-ko/
 @menu
 * "N" Argumentos::                        
 * Sem Argumentos::                       
@@ -1059,11 +1059,11 @@ Veja @code{ev}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} make_random_state (@var{n})
-@c @defunx make_random_state (@var{a})
 @deffnx {Fun@,{c}@~ao} make_random_state (@var{s})
 @deffnx {Fun@,{c}@~ao} make_random_state (true)
 @deffnx {Fun@,{c}@~ao} make_random_state (false)
-
+@c OMIT THIS FOR NOW. SEE COMMENT BELOW.
+@c @defunx make_random_state (@var{a})
 Um objeto de estado rand@^omico representa o estado do gerador de n@'umeros rand@^omicos (aleat@'orios).
 O estado compreende 627 palavras de 32 bits.
 

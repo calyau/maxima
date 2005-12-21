@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Series.texi/1.12/Mon Jul 18 08:21:13 2005/-ko/
+@c /Series.texi/1.13/Wed Dec 21 07:33:52 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a S@'eries::      
 * Defini@value{cedilha}@~oes para S@'eries::      
@@ -417,13 +417,13 @@ Exemplos:
 @c @end defun
 
 @deffn {Fun@value{cedilha}@~ao} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
-@c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
-@c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
-@c @defunx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
 @c THIS ONE IS LONG TOO, BUT APPARENTLY IT IS OK IF THE LAST @defunx IS LONG
 @deffnx {Fun@value{cedilha}@~ao} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
+@c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
+@c @defunx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
 
 @code{taylor (@var{expr}, @var{x}, @var{a}, @var{n})} expande a express@~ao @var{expr}
 em uma s@'erie truncada de Taylor ou de Laurent na vari@'avel @var{x}
