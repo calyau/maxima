@@ -141,6 +141,32 @@ Warning - you are redefining the Maxima function rank
 @node Definitions for linearalgebra, Function and variable index, Introduction to linearalgebra, Top
 @section Definitions for linearalgebra
 
+@deffn {Function} addmatrices (@var{fn}, @var(m1), @var(m2), dots)
+
+Using the function @var{fn} as the addition function, return the sum of
+the matrices m1, m2, ..... The function fn must accept any number of
+arguments (a Maxima nary function).
+
+@c ===beg===
+m1 : matrix([1,2],[3,4])$
+m2 : matrix([7,8],[9,10])$
+addmatrices('max,m1,m2);
+addmatrices('max,m1,m2,5*m1);
+@c ===end===
+@example
+(%i1) m1 : matrix([1,2],[3,4])$
+(%i2) m2 : matrix([7,8],[9,10])$
+(%i3) addmatrices('max,m1,m2);
+(%o3) matrix([7,8],[9,10])
+(%i4) addmatrices('max,m1,m2,5*m1);
+(%o4) matrix([7,10],[15,20])
+@end example
+
+@deffn {Function} blockmatrixp (@var{M})
+
+Return true if and only if @var{M} is a matrix and every entry of 
+@var{M} is a matrix.
+
 @deffn {Function} columnop (@var{M}, @var{i}, @var{j}, @var{theta})
 
 If @var{M} is a matrix, return the matrix that results from doing the  
@@ -482,6 +508,8 @@ Given an optional argument @var{p}, return @code{true} if @var{e} is
 a matrix and @var{p} evaluates to @code{true} for every matrix element.
 When @code{matrixp} is not given an optional argument, return @code{true} 
 if @code{e} is a matrix.  In all other cases, return @code{false}.
+
+See also @code{blockmatrixp}
 
 @end deffn
 

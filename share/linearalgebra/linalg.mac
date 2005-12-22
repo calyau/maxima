@@ -27,7 +27,7 @@ eval_when([translate, compile], translate_fast_arrays : false);
 eval_when(translate,
 	  declare_translated(require_matrix,matrix_size,ptriangularize_with_proviso,locate_matrix_entry,
 			     nullspace,require_integer,columnspace,rowswap,rowop,require_symbol,
-	                     mat_fullunblocker,mat_trace,mat_unblocker,
+	                     mat_fullunblocker,mat_trace,mat_unblocker,blockmatrixp,
                              column_reduce,good_pivot,hipow_gzero,mat_norm,require_list))$
 
 eval_when([batch,load,translate,compile],
@@ -247,8 +247,11 @@ zeromatrixp(m) :=
   else 
      error("Argument to 'zeromatrixp' must be a matrix");
       
+blockmatrixp(m) := matrixp(m,'matrixp);
+
 mat_norm(m, p) := block([listarith : true, d],
   require_matrix(m,"first","mat_norm"),
+  if blockmatrixp(m) then m : mat_fullunblocker(m),
   if p = 1 then mat_norm(transpose(m), 'inf)
   else if p = 'inf then (
     d : 0,

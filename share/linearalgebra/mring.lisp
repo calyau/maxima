@@ -26,8 +26,15 @@
 
 ;; Let's have version numbers 1,2,3,...
 
+
+
 (eval-when (:compile-toplevel :load-toplevel :execute)
+  ;;($load "c:/maximacvs/maxima/src/ellipt.lisp")
+  ;;($load "c:/maximacvs/maxima/src/trigi.lisp")
   ($put '$mring 1 '$version))
+
+;;(defun float-or-rational-p (x)
+;;  (or (floatp x) ($ratnump x) (like x '$%i) (like x '|$%i|)))
 
 ;; (1) In maxima-grobner.lisp, there is a structure 'ring.'  
 
@@ -104,12 +111,13 @@
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
    :fzerop #'(lambda (s) (= s 0.0))
-   :mring-to-maxima #'(lambda (s) (add (realpart s) (mul '$%i (imagpart s))))
+   :mring-to-maxima #'complexify
    :maxima-to-mring #'(lambda (s) 
-			(setq s ($rectform (meval s)))
-			(if (and (floatp ($float ($realpart s))) (floatp ($float ($imagpart s))))
-			    (complex ($float ($realpart s)) ($float ($imagpart s)))
-			  (merror "Unable to convert ~:M to a complex double float" s)))))
+			(progn 
+			  (setq s (meval s))
+			  (if (complex-number-p s 'float-or-rational-p)
+			      (complex ($float ($realpart s)) ($float ($imagpart s)))
+			    (merror "Unable to convert ~:M to a complex double float" s))))))
 
 (setf (get '$complexfield 'ring) *complexfield*)
 
@@ -251,8 +259,8 @@
 			     :key #'(lambda (a) (funcall fconvert a))
 			     :initial-value mult-id))))
 
-(defun $addmatrices(a b fn)
-  ($matrixmap fn a b))
+(defun $addmatrices(fn &rest m)
+  (mfuncall '$apply '$matrixmap `((mlist) ,fn ,@m)))
 
 (defparameter *runningerror*
   (make-mring 
@@ -298,3 +306,41 @@
 (defun op-equalp (e &rest op)
   (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
 
+(defmspec $ringeval (e)
+  (let ((fld (get (or (car (member (nth 2 e) $%mrings)) '$generalring) 'ring)))
+    (funcall (mring-mring-to-maxima fld) (ring-eval (nth 1 e) fld))))
+ 
+(defun ring-eval (e fld)
+  ;;(print `(e = ,e))
+  (let ((fadd (mring-add fld))
+	(fnegate (mring-negate fld))
+	(fmult (mring-mult fld))
+	(fdiv (mring-div fld))
+	(fabs (mring-abs fld))
+	(fconvert (mring-maxima-to-mring fld))
+	(add-id (funcall (mring-add-id fld)))
+	(mult-id (funcall (mring-mult-id fld))))
+    
+    (cond ((or ($numberp e) (symbolp e)) 
+	   (funcall fconvert (meval e)))
+	  
+	  ((op-equalp e 'mplus) 
+	   (reduce fadd (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))
+		   :from-end t
+		   :initial-value add-id))
+	  
+	  ((op-equalp e 'mminus)
+	   (funcall fnegate (first (margs e))))
+	  
+	  ((op-equalp e 'mtimes) 
+	   (reduce fmult (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))
+		   :from-end t
+		   :initial-value mult-id))
+
+	  ((op-equalp e 'mquotient)
+	   (funcall fdiv (ring-eval (first (margs e)) fld)(ring-eval (second (margs e)) fld)))
+	   
+	  ((op-equalp e 'mabs) (funcall fabs (ring-eval (first (margs e)) fld)))
+	  
+	  (t (merror "Unable to evaluate ~:M in the ring '~:M'" e (mring-name fld))))))
+  

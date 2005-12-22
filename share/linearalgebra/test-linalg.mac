@@ -471,10 +471,75 @@ true$
 is(m[2,2] = 4);
 true$
 
+/*-- mat_unblocker & friends --*/
 
+(m : matrix([0,1],[1,0]),0);
+0$
 
+(m1 : matrix([m,m],[m,m]),0);
+0$
 
+mat_unblocker(m1);
+matrix([0,1,0,1],[1,0,1,0],[0,1,0,1],[1,0,1,0])$
 
+mat_fullunblocker(m1);
+matrix([0,1,0,1],[1,0,1,0],[0,1,0,1],[1,0,1,0])$
+
+(m2 : matrix([m1,m1],[m1,m1]),0);
+0$
+
+mat_unblocker(m2);
+matrix([m,m,m,m],[m,m,m,m],[m,m,m,m],[m,m,m,m])$
+
+mat_fullunblocker(m2);
+ matrix([0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0])$
+
+mat_trace(m1);
+0$
+
+mat_trace(identfor(m1));
+4$
+
+mat_trace(m1 + identfor(m1));
+4$
+
+mat_norm(m1,1);
+2$
+
+mat_norm(m2,inf) - mat_norm(mat_fullunblocker(m2),inf);
+0$
+
+blockmatrixp(m);
+false$
+
+blockmatrixp(m1);
+true$
+
+blockmatrixp(2/3);
+false$
+
+blockmatrixp(rat(x));
+false$
+
+/*---add matrices---*/
+
+(m1 : matrix([8,2],[7,4]),0);
+0$
+
+(m2 : matrix([1,2],[3,42]),0);
+0$
+
+(m3 : matrix([96,5],[3,42]),0);
+0$
+
+addmatrices('max,m1,m2,m3);
+matrix([96,5],[7,42])$
+
+addmatrices("+", m1,m2);
+matrix([9,4],[10,46])$
+
+(remvalue(mm,m1,m2,m3,m),0);
+0$
 
 
 
