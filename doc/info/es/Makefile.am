@@ -26,7 +26,7 @@ MAXIMAESHTML =
 include maximahtml.es.mk
 
 $(MAXIMAESHTML): maxima.texi $(maxima_TEXINFOS)
-	../texi2html -split_chapter --lang=es --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
+	perl ../texi2html -split_chapter --lang=es --output=. --css-include=../manual.css --init-file ../texi2html.init maxima.texi 
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)/es
