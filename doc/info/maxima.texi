@@ -86,7 +86,6 @@ Support for specific areas of mathematics
 * Trigonometric::               Manipulating expressions with trig and
                                 inverse trig functions.
 * Special Functions::           Special functions
-* Orthogonal Polynomials::      Orthogonal Polynomials and Special functions
 * Elliptic Functions::          Elliptic Functions and Integrals
 * Limits::                      Limits of expressions.
 * Differentiation::             Differential calculus.
@@ -206,11 +205,6 @@ Special Functions
 * Introduction to Special Functions::  
 * specint::                     
 * Definitions for Special Functions::  
-
-Orthogonal Polynomials
-
-* Introduction to Orthogonal Polynomials::
-* Definitions for Orthogonal Polynomials::
 
 Elliptic Functions
 
@@ -409,15 +403,11 @@ Debugging
 @chapter Trigonometric
 @include Trigonometric.texi
 
-@node Special Functions, Orthogonal Polynomials, Trigonometric, Top
+@node Special Functions, Elliptic Functions, Trigonometric, Top
 @chapter Special Functions
 @include Special.texi
 
-@node Orthogonal Polynomials, Elliptic Functions, Special Functions, Top
-@chapter Orthogonal Polynomials
-@include SpecfunII.texi
-
-@node Elliptic Functions, Limits, Orthogonal Polynomials, Top
+@node Elliptic Functions, Limits, Special Functions, Top
 @chapter Elliptic Functions
 @include Elliptic.texi
 

@@ -10,7 +10,7 @@ info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Expressions.texi Simplification.texi Plotting.texi Input.texi \
   Floating.texi Contexts.texi Polynomials.texi Constants.texi \
-  Logarithms.texi Trigonometric.texi Special.texi SpecfunII.texi \
+  Logarithms.texi Trigonometric.texi Special.texi \
   Limits.texi Differentiation.texi Integration.texi Equations.texi \
   Differential.texi Numerical.texi \
   Statistics.texi Arrays.texi Matrices.texi Affine.texi Itensor.texi \
