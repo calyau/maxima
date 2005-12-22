@@ -18,7 +18,6 @@
     (setq fn ($file_search1 fn '((mlist) $file_search_maxima)))
     (test-batch fn nil :show-all t :show-expected t)))
 
-
 (defun list-swap (p i j)
   (let ((x (nth i p)))
     (setf (nth i p) (nth j p))
@@ -78,16 +77,6 @@
 	  (t (setq cnd 0.0)))
     (push '(mlist) perm)
     (lu-factor m perm c fld cnd)))
-
-(defun $dotidentmatrix (n)
-  (let ((acc) (row))
-    (dotimes (i n)
-      (setq row nil)
-      (dotimes (j n)
-	(if (= i j) (push $dotident row) (push $dotzero row)))
-      (push '(mlist) row)
-      (push row acc))
-    (push '($matrix) acc)))
 
 (defun $get_lu_factors (x)
   (let ((mat ($first x)) (mp) (p ($second x)) (perm) (r) (c) (id) (lower) (upper) (zero))
@@ -248,21 +237,12 @@
     (matrix-map bb r cc (mring-mring-to-maxima fld))
     bb))
 
-(defun $invert_by_lu (m  &optional (fld $generalring))
+(defun $invert_by_lu (m  &optional (fld '$generalring))
   ($require_square_matrix m "$first" "$invert_by_lu")
   ;($lu_backsub ($lu_factor m fld) ($dotidentmatrix ($first ($matrix_size m)))))
   ($lu_backsub ($lu_factor m fld) ($identfor m)))
-
-(defun $determinant (mat)
-  (cond ((not ($matrixp mat)) (list '(%determinant) mat))
-	(t (setq mat (check mat))
-	   (if (not (= (length mat) (length (cadr mat))))
-	       (merror "determinant called on a non-square matrix."))
-           (cond ((not $ratmx) (det1 (mcx (cdr mat))))
-	         (t (newvarmat1 mat) (determinant1 (mcx (cdr mat))))))))
-
-;(defun perm-parity (perm)
   
+#|
 (defun $determinant_by_lu (m &optional (fld $generalring))
   ($require_square_matrix m "$first" "$determinant_by_lu")
  
@@ -280,6 +260,7 @@
       (if ($matrixp d) (setq d ($determinant_by_lu d fld)))
       (setq acc (funcall fmult acc d)))
     acc))
+|#
 
 (defun $mat_cond (m p)
   ($require_square_matrix m "$first" "$mat_cond")
@@ -308,12 +289,9 @@
 	     mc))
 	  (t (if (= p q) mul-id add-id)))))
 
-(defun $zerofor (mat &optional (fld-name '$generalring) (p 1) (q 1))
+(defun $zerofor (mat &optional (fld-name '$generalring))
   ($require_ring fld-name "$second" "$zerofor")
-  
-  (let ((add-id (funcall (mring-add-id (get fld-name 'ring))))
-	(mul-id (funcall (mring-mult-id (get fld-name 'ring)))))
-
+  (let ((add-id (funcall (mring-add-id (get fld-name 'ring)))))
     (cond (($matrixp mat)
 	   ($require_square_matrix mat "$first" "$identfor")
 	   (let ((n ($first ($matrix_size mat))) (mc))

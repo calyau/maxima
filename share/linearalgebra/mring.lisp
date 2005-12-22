@@ -70,7 +70,7 @@
 
 (defparameter *floatfield*
   (make-mring
-   :name '$floatring
+   :name '$floatfield
    :coerce-to-lisp-float #'identity
    :abs #'abs
    :great #'>

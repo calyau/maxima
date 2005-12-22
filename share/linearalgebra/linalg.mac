@@ -24,10 +24,10 @@ put('linalg,1,'version);
 
 eval_when([translate, compile], translate_fast_arrays : false);
 
-
 eval_when(translate,
 	  declare_translated(require_matrix,matrix_size,ptriangularize_with_proviso,locate_matrix_entry,
 			     nullspace,require_integer,columnspace,rowswap,rowop,require_symbol,
+	                     mat_fullunblocker,mat_trace,mat_unblocker,
                              column_reduce,good_pivot,hipow_gzero,mat_norm,require_list))$
 
 eval_when([batch,load,translate,compile],
