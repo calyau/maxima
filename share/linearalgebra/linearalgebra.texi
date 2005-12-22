@@ -207,6 +207,8 @@ mm;
 @end example
 This time, the assignment to @var{mm} does not change the value of @var{m}.
 
+@end deffn
+
 @deffn {Function} ctranspose (@var{M})
 
 Return the conjugate of the transpose of the matrix @var{M}. If @var{M} is
@@ -246,7 +248,7 @@ integer, signal an error.
 @end deffn
 
 @deffn {Function} identfor (@var{M})
-@deffnx identfor (@var{M}, @var{fld})
+@deffnx {Function} identfor (@var{M}, @var{fld})
 
 Return an identity matrix that has the same shape as the matrix
 @var{M}.  The diagonal entries of the identity matrix are the 
@@ -461,6 +463,8 @@ the matrix size; @code{lu_factor} determines lower and upper bounds
 for the infinity norm condition number in time proportional to the
 square of the matrix size.
 
+@end deffn
+
 @deffn {Function} mat_norm (@var{M}, 1)
 @deffnx {Function} mat_norm (@var{M}, inf)
 @deffnx {Function} mat_norm (@var{M}, frobenius)
@@ -486,11 +490,15 @@ if @code{e} is a matrix.  In all other cases, return @code{false}.
 Return a two member list that gives the number of rows and columns, respectively
 of the matrix @var{M}.
 
+@end deffn
+
 @deffn {Function} mat_trace (@var{M})
 
 Return the trace of the matrix @var{M} If @var{M} isn't a matrix, return a
 noun form. When @var{M} is a block matrix, @code{mat_trace(M)} returns
 the same value as does @code{mat_trace(mat_unblocker(m))}.
+
+@end deffn
 
 @deffn {Function} mat_unblocker (@var{M})
 
@@ -690,7 +698,7 @@ Return a @var{n} by @var{n} matrix whose @var{i}-th row is
 @end deffn
 
 @deffn {Function} zerofor (@var{M})
-@deffx  zerofor (@var{M}, @var{fld})
+@deffnx {Function}  zerofor (@var{M}, @var{fld})
 
 Return a zero  matrix that has the same shape as the matrix
 @var{M}.  Every entry of the zero matrix matrix is the
@@ -704,8 +712,8 @@ matrix can be blocked to any (finite) depth.
 
 See also @code{identfor}
 
-
 @end deffn
+
 @deffn {Function} zeromatrixp (@var{M})
 
 If @code{is (equal (@var{e}, 0))} is true for each element @var{e} of the matrix @var{M},
