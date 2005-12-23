@@ -1,0 +1,20 @@
+/* See A&S 6.1.40  
+
+Replace gamma(x) with the O(1/x^(2n-1)) Stirling formula. Example usage:
+
+(%i1) stirling(gamma(%alpha+x)/gamma(x),1);
+(%o1) x^(1/2-x)*(x+%alpha)^(x+%alpha-1/2)*%e^(1/(12*(x+%alpha))-1/(12*x)-%alpha)
+(%i2) taylor(%,x,inf,1);
+(%o2) x^%alpha+(x^%alpha*%alpha^2-x^%alpha*%alpha)/(2*x)+...
+(%i3) map('factor,%);
+(%o3) x^%alpha+((%alpha-1)*%alpha*x^(%alpha-1))/2
+
+Example non-usage: (can't tell the variable gamma from the gamma function; oh well)
+
+(%i4) stirling(gamma,2);
+(%o4) LAMBDA([s],EXP(-s)*s^(s-1/2)*sqrt(2*%pi)*EXP(SUM(BERN(2*%M)/(2*%M*(2*%M-1)*s^(2*%M-1)),%M,1,n)))
+
+*/
+
+stirling(z,n) := subst(lambda([s], exp(-s)* s^(s-1/2) * sqrt(2*%pi) * 
+       exp(sum(bern(2*%m)/(2*%m *(2*%m-1)*s^(2*%m-1)),%m,1,n))), gamma, z);
