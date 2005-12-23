@@ -30,12 +30,20 @@
 
 ;; Parse {a, b, c} into set(a, b, c).
 ;; Don't bother with DEF-NUD etc -- matchfix + ::= works just fine.
+;; Well, MDEFMACRO is a little too zealous in this context, since we
+;; don't really want this macro defn to show up on the $MACROS infolist.
+;; (Maybe it would be cleanest to append built-in defns to FOO::$MACROS
+;; where FOO is something other than MAXIMA, but that awaits
+;; regularization of package use within Maxima.)
 
 (eval-when (compile load eval)
   ; matchfix ("{", "}")
   (meval '(($matchfix) &{ &}))
   ; "{" ([L]) ::= buildq ([L], set (splice (L)));
-  (meval '((mdefmacro) ((${) ((mlist) $L)) (($buildq) ((mlist) $L) (($set) (($splice) $L))))))
+  (let
+    ((new-defn (meval '((mdefmacro) ((${) ((mlist) $L)) (($buildq) ((mlist) $L) (($set) (($splice) $L)))))))
+    ; Simpler to patch up $MACROS here, than to replicate the functionality of MDEFMACRO.
+    (zl-delete (cadr new-defn) $macros)))
 
 ;; Support for TeXing sets. If your mactex doesn't TeX the empty set
 ;; correctly, get the latest mactex.lisp.
