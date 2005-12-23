@@ -12,7 +12,7 @@ order Hermite polynomials times a Gaussian function. We'll need to
 assign a value to n, load orthopoly, and assign psi.
 */
 
-n : 4;
+n : 3;
 
 if get('orthopoly,'version) = 'false then load("orthopoly")$
 
@@ -55,7 +55,7 @@ m_det : ratsimp(m_det)$
 mu = cf[ 0] + cf[1] * epsilon + ... + cf[solve_ord] epsilon^solve_ord.
 */
 
-solve_ord : 5;
+solve_ord : 3;
 pows : makelist(epsilon^i,i,0,solve_ord)$
 unks : makelist(cf[ i ],i,0,solve_ord)$
 eq : ev(m_det, mu = unks . pows)$
@@ -65,13 +65,27 @@ eq : makelist(coeff(eq,epsilon,i),i,0,solve_ord)$
 ans : algsys(eq, unks)$
 
 for i : 1 thru length(ans) do (
-       ans[ i ] : map(rhs, ans[ i ]) . pows
-)$
+       ans[ i ] : map(rhs, ans[ i ]) . pows)$
 
-/* Look at the solution graphically. Plotting might be really slow
-*/
+ans : reverse(ans);
 
-ans;
-  
-plot2d(ans, [epsilon,0,0.15],[y,0,30]);
+/* Look at the solution graphically.*/
 
+plot2d(ans, [epsilon,0,0.25]);
+
+/*  Let's solve the equations using allroots instead of the series method. */
+
+f(x,k) := part(sort(map('rhs, allroots(subst('epsilon=x,m_det)))),k);
+
+/* Compare the allroots solution to the series solution. */
+
+plot2d([ans[1], '(f(epsilon,1))], [epsilon,0.0,0.4]);
+plot2d([ans[2], '(f(epsilon,2))], [epsilon,0.0,0.4]);
+plot2d([ans[3], '(f(epsilon,3))], [epsilon,0.0,0.4]);
+plot2d([ans[4], '(f(epsilon,4))], [epsilon,0.0,0.4]);
+
+plot2d(['(f(epsilon,1)),'(f(epsilon,2)),'(f(epsilon,3)),'(f(epsilon,4))],[epsilon,0,0.4]);
+
+remfunction(ham,"<<",f);
+remvalue(n,psi,vars,min_this,eqs,m_det,solve_ord,pows,unks,eq,ans);
+assume_pos : false;
