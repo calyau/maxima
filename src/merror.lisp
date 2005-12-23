@@ -38,6 +38,12 @@
   this variable may be determined by factors of terminal speed and type.")
 
 (defun error-size (exp)
+  ; RATDISREP the argument in case it's a CRE. Ugh.
+  ; But RATDISREP simplifies its argument, which is a no-no if we got here
+  ; because some simplification code is complaining, so inhibit simplification. Double ugh.
+  (let (($simp nil))
+    (setq exp (ratdisrep exp)))
+
   (if (atom exp) 0
       (do ((l (cdr exp) (cdr l))
 	   (n 1 (f1+ (f+ n (error-size (car l))))))
