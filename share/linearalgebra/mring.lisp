@@ -26,10 +26,9 @@
 
 ;; Let's have version numbers 1,2,3,...
 
-
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
   ;;($load "c:/maximacvs/maxima/src/ellipt.lisp")
+  ;;($load "c:/maximacvs/maxima/src/float.lisp")
   ;;($load "c:/maximacvs/maxima/src/trigi.lisp")
   ($put '$mring 1 '$version))
 
@@ -241,24 +240,6 @@
   (if (= (first a) 0) (list 0.0 0)
     (list (/ (first a) (first b)) (+ 1 (second a) (second b)))))
 
-(defun $fpadd (&rest a)
-  (let ((fadd (mring-add *runningerror*))
-	(add-id (funcall (mring-add-id *runningerror*)))
-	(fconvert (mring-maxima-to-mring *runningerror*))
-	(frevert (mring-mring-to-maxima *runningerror*)))
-    (funcall frevert (reduce #'(lambda (a b) (funcall fadd a b)) a
-			     :key #'(lambda (a) (funcall fconvert a))
-			     :initial-value add-id))))
-			  
-(defun $fpmult (&rest a)
-  (let ((fmult (mring-mult *runningerror*))
-	(mult-id (funcall (mring-mult-id *runningerror*)))
-	(fconvert (mring-maxima-to-mring *runningerror*))
-	(frevert (mring-mring-to-maxima *runningerror*)))
-    (funcall frevert (reduce #'(lambda (a b) (funcall fmult a b)) a
-			     :key #'(lambda (a) (funcall fconvert a))
-			     :initial-value mult-id))))
-
 (defun $addmatrices(fn &rest m)
   (mfuncall '$apply '$matrixmap `((mlist) ,fn ,@m)))
 
@@ -281,7 +262,6 @@
    :maxima-to-mring #'(lambda (s) (if ($listp s) (cdr s) (list ($float s) 1)))))
 
 (setf (get '$runningerror 'ring) *runningerror*)
-
 
 (defparameter *noncommutingring* 
   (make-mring
@@ -311,7 +291,6 @@
     (funcall (mring-mring-to-maxima fld) (ring-eval (nth 1 e) fld))))
  
 (defun ring-eval (e fld)
-  ;;(print `(e = ,e))
   (let ((fadd (mring-add fld))
 	(fnegate (mring-negate fld))
 	(fmult (mring-mult fld))
@@ -324,23 +303,28 @@
     (cond ((or ($numberp e) (symbolp e)) 
 	   (funcall fconvert (meval e)))
 	  
+	  ;; I don't think an empty sum or product is possible here. If it is, append
+	  ;; the appropriate initial-value to reduce. Using the :inital-value isn't
+	  ;; a problem, but (fp* (a b) (1 0)) --> (a (+ b 1)).  A better value is
+	  ;; (fp* (a b) (1 0)) --> (a b).
+
 	  ((op-equalp e 'mplus) 
-	   (reduce fadd (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))
-		   :from-end t
-		   :initial-value add-id))
+	   (reduce fadd (mapcar #'(lambda (s) (ring-eval s fld)) (margs e)) :from-end t))
 	  
 	  ((op-equalp e 'mminus)
-	   (funcall fnegate (first (margs e))))
+	   (funcall fnegate (ring-eval (first (margs e)) fld)))
 	  
 	  ((op-equalp e 'mtimes) 
-	   (reduce fmult (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))
-		   :from-end t
-		   :initial-value mult-id))
-
+	   (reduce fmult (mapcar #'(lambda (s) (ring-eval s fld)) (margs e)) :from-end t))
+		 
 	  ((op-equalp e 'mquotient)
 	   (funcall fdiv (ring-eval (first (margs e)) fld)(ring-eval (second (margs e)) fld)))
 	   
 	  ((op-equalp e 'mabs) (funcall fabs (ring-eval (first (margs e)) fld)))
+	
+	  ((and (or (eq (mring-name fld) '$floatfield) (eq (mring-name fld) '$complexfield))
+		(consp e) (consp (car e)) (gethash (mop e) *double-float-op*))
+	   (apply (gethash (mop e) *double-float-op*) (mapcar #'(lambda (s) (ring-eval s fld)) (margs e))))
 	  
 	  (t (merror "Unable to evaluate ~:M in the ring '~:M'" e (mring-name fld))))))
   
