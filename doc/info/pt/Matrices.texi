@@ -1240,7 +1240,7 @@ O argumento @var{n} @'e a ordem; isso @'e optional se @var{M} for uma matriz.
 @end deffn
 
 @c NEEDS CLARIFICATION AND EXAMPLES
-@defvr {Declaration} nonscalar
+@defvr {Declara@,{c}@~ao} nonscalar
 Faz @'atomos ser comportarem da mesma forma que uma lista ou matriz em rela@,{c}@~ao ao
 operador do ponto.
 

@@ -241,7 +241,7 @@ um @code{scanmap (multthru, @var{expr})} pode ser necess@'ario antes de @code{in
 @end deffn
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Declaration} lassociative
+@defvr {Declara@,{c}@~ao} lassociative
 @code{declare (g, lassociative)} diz ao
 simplificador do Maxima que @code{g} @'e associativa @`a esquerda.  E.g., @code{g (g (a, b), g (c, d))} ir@'a
 simplificar para @code{g (g (g (a, b), c), d)}.
@@ -250,7 +250,7 @@ simplificar para @code{g (g (g (a, b), c), d)}.
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @c WHAT'S UP WITH THE QUOTE MARKS ??
-@defvr {Declaration} linear
+@defvr {Declara@,{c}@~ao} linear
 Uma das propriedades operativas do Maxima.  Para fun@,{c}@~oes de uma @'unica vari@'avel @code{f} ent@~ao
 declarada, a "expans@~ao" @code{f(x + y)} retorna @code{f(x) + f(y)},
 @code{f(a*x)} retorna @code{a*f(x)} ocorrem
@@ -265,7 +265,7 @@ Veja tamb@'em @code{opproperties}.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Declaration} mainvar
+@defvr {Declara@,{c}@~ao} mainvar
 Voc@^e pode declarar vari@'aveis para serem @code{mainvar} (vari@'avel principal).  A escala de
 ordena@,{c}@~ao para @'atomos @'e essencialmente: n@'umeros < constantes (e.g., @code{%e}, @code{%pi}) <
 escalares < outras vari@'aveis < mainvars.  E.g., compare @code{expand ((X+Y)^4)}
@@ -315,7 +315,7 @@ expandido com o comando @code{expand} (veja tamb@'em @code{maxnegex}).
 @end defvr
 
 @c NEEDS EXAMPLES
-@defvr {Declaration} multiplicative
+@defvr {Declara@,{c}@~ao} multiplicative
 @code{declare (f, multiplicative)} diz ao simplificador do Maxima que @code{f} @'e multiplicativa.
 
 @enumerate
@@ -369,7 +369,7 @@ sejam resimplificadas sem serem reavaliadas.
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
-@defvr {Declaration} noun
+@defvr {Declara@,{c}@~ao} noun
 @code{noun} @'e uma das op@,{c}@~oes do comando @code{declare}.  Isso faz um
 fun@,{c}@~ao ent@~ao declarada como "noun" (substantivo), significando que ela n@~ao deve ser avaliada
 automaticamente.

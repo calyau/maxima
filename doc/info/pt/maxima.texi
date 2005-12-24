@@ -16,8 +16,8 @@
 
 @c %**start of header
 @setfilename  maxima.info
-@documentencoding ISO-8859-15
-@c @documentencoding ISO-8859-1
+@c @documentencoding ISO-8859-15
+@documentencoding ISO-8859-1
 @set cedilha @,{c}
 @set i_agu @'i
 @set I_agu @'I
@@ -70,9 +70,21 @@ para liberar o c@'odigo fonte do Macsyma DOE sob a Licen@value{cedilha}a P@'ubli
 e em 2000 ele iniciou o projeto Maxima no SourceForge para manter
 e desenvolver o Macsyma DOE, agora chamado Maxima.
 
-O c@'odigo fonte deste documento encontra-se no formato texinfo.
+Notas de tradu@,{c}@~ao:
+
+-O c@'odigo fonte deste documento encontra-se no formato texinfo.
 Para contribuir com a equipe do Maxima na tarefa de manter a tradu@,{c}@~ao
 para o portugu@^es sempre atualizada envie um e-mail para @value{mail}.
+
+-A parte do manual intitulada "Simetrias" encontra-se atualmente em 
+franc@^es e aguardando uma vers@~ao em ingl@^es para ser traduzida.
+
+-Em caso de d@'uvida sobre algum trecho deste manual consulte o original 
+ingl@^es.
+
+-Caso sua d@'uvida persista ou tenha alguma 
+sugest@~ao/aperfei@,{c}oamento/cr@'itica
+mande por e-mail para Jorge Barros de Abreu <ficmatin01 at solar dot com dot br>
 
 @c includes
 
@@ -495,7 +507,6 @@ Depurando
 @node S@'eries, Teoria dos N@'umeros, Pacote atensor, Top
 @chapter S@'eries
 @include Series.texi
-
 
 @node Teoria dos N@'umeros, Symmetries, S@'eries, Top
 @chapter Teoria dos N@'umeros

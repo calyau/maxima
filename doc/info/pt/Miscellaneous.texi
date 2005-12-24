@@ -39,7 +39,7 @@ das fun@,{c}@~oes @code{alias}, @code{ordergreat}, @code{orderless} ou atrav@'es
 @end defvr
 
 
-@defvr {Declaration} alphabetic
+@defvr {Declara@,{c}@~ao} alphabetic
 @code{declare (@var{char}, alphabetic)} adiciona @code{char} (caracteres) ao alfabeto do Maxima,
 que inicialmente cont@'em
 as letras de @code{A} at@'e @code{Z}, de @code{a} at@'e @code{z}, @code{%} e @code{_}.  

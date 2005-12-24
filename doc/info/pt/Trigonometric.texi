@@ -135,7 +135,7 @@ Fa@,{c}a @code{load(atrig1);} para us@'a-lo.
 
 @end deffn
 
-@defvr {Option variable} halfangles
+@defvr {Vari@'avel de op@value{cedilha}@~ao} halfangles
 Default value: @code{false}
 
 Quando @code{halfangles} for @code{true},

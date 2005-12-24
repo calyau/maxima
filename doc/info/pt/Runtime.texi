@@ -68,7 +68,7 @@ retorne ao primeiro plano e continue a partir do ponto no qual foi interrompido.
 @section Defini@value{cedilha}@~oes para Tempo de Execu@value{cedilha}@~ao
 
 @c NEEDS EXPANSION AND CLARIFICATION
-@defvr {Declaration} feature
+@defvr {Declara@,{c}@~ao} feature
 Maxima compreende dois tipos distintos de recurso,
 recursos do sistema e recursos aplicados a express@~oes matem@'aticas.
 Veja Tamb@'em @code{status} para informa@value{cedilha}@~oes sobre recursos do sistema.

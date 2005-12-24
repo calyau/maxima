@@ -249,7 +249,7 @@ x is not numeric.
 
 @end deffn
 
-@deffn {Function} join (@var{l}, @var{m})
+@deffn {Fun@value{cedilha}@~ao} join (@var{l}, @var{m})
 Cria uma nova lista contendo os elementos das lista @var{l} and @var{m}, intercaladas.
 O resultado tem os elementos @code{[@var{l}[1], @var{m}[1], @var{l}[2], @var{m}[2], ...]}.
 As listas @var{l} e @var{m} podem conter qualquer tipo de elementos.

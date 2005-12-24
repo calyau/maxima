@@ -528,7 +528,7 @@ trigonom@'etricos.
 
 @end deffn
 
-@defvr {Option variable} poislim
+@defvr {Vari@'avel de op@value{cedilha}@~ao} poislim
 Valor padr@~ao: 5
 
 @code{poislim} determina o dom@'inio dos coeficientes nos

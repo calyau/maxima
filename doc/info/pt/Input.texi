@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.41/Sun Nov 13 19:08:54 2005/-ko/
+@c /Input.texi/1.42/Wed Dec 21 07:33:28 2005/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
@@ -826,7 +826,7 @@ n@~ao s@~ao afetadas por @code{linel}.
 
 @end defvr
 
-@defvr {Option variable} lispdisp
+@defvr {Vari@'avel de op@value{cedilha}@~ao} lispdisp
 Valor padr@~ao: @code{false}
 
 Quando @code{lispdisp} for @code{true},
@@ -1214,10 +1214,10 @@ Veja tamb@'em @code{lmxchar}.
 @deffn {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}, @var{name_2}, @var{name_3}, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, values, functions, labels, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, [@var{m}, @var{n}])
-@c @defunx save (@var{filename}, @var{name_1}=@var{expr_1}, @var{name_2}=@var{expr_2}, ...)
-@c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORKAROUND:
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, @var{name_1}=@var{expr_1}, ...)
 @deffnx {Fun@,{c}@~ao} save (@var{filename}, all)
+@c @defunx save (@var{filename}, @var{name_1}=@var{expr_1},@var{name_2}=@var{expr_2}, ...)
+@c PRECEDING @defunx IS LONGER THAN 1 LINE, CAUSES cl-info.lisp TO STUMBLE; WORK AROUND IT
 Armazena os valores correntes de @var{name_1}, @var{name_2}, @var{name_3}, ..., em @var{filename}.
 Os argumentos s@~ao os nomes das vari@'aveis, fun@,{c}@~oes, ou outros objetos.
 Se um nome n@~ao possui valore ou fun@,{c}@~ao associada a ele, esse nome sem nenhum valor ou fun@,{c}@~ao associado ser@'a ignorado.
@@ -1430,16 +1430,18 @@ Esse fragmento n@~ao pode ser processado de forma direta e isolada.
 e atribui a essa um r@'otulo de equa@,{c}@~ao (a ser mostrado @`a esquerda da express@~ao).
 O r@'otulo de equa@,{c}@~ao TeX @'e o mesmo que o r@'otulo da equa@,{c}@~ao no Maxima.
 
-@code{tex (@var{expr}, @var{nomearquivo})} anexa ao final uma representaa@,{c}@~ao TeX de @var{expr}
+@code{tex (@var{expr}, @var{nomearquivo})} anexa ao final uma representa@,{c}@~ao TeX de @var{expr}
 no arquivo @var{nomearquivo}.
+@code{tex} n@~ao avalia o argumento @var{nomearquivo}; ap@'ostrofo-ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao so argumento.
 
 @code{tex (@var{r@'otulo}, @var{nomearquivo})} anexa ao final uma representa@,{c}@~ao TeX da
 express@~ao chamada de @var{r@'otulo}, com um r@'otulo de equa@,{c}@~ao, ao arquivo @var{nomearquivo}.
 
+
+@code{tex} n@~ao avalia o argumento @var{nomearquivo}; ap@'ostrofo-ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao so argumento.
 @code{tex} avalia seus argumentos ap@'os testar esse argumento para ver se @'e um r@'otulo.
 duplo ap@'ostrofo @code{''} for@,{c}a a avalia@,{c}@~ao do argumento, desse modo frustrando o teste
 e prevenindo o r@'otulo.
-Ap@'ostrofo simples @code{'} previne avalia@,{c}@~ao.
 
 Veja tamb@'em @code{texput}.
 

@@ -168,7 +168,7 @@ para a forma @code{a + b %i}. Veja @code{polartorect}.
 
 @end deffn
 
-@defvr {Option variable} fortindent
+@defvr {Vari@'avel de op@value{cedilha}@~ao} fortindent
 Valor padr@~ao: 0
 
 @code{fortindent} controla a margem esquerda de indenta@,{c}@~ao de

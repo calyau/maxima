@@ -143,7 +143,7 @@ Exemplos:
 @end deffn
 
 @c I SUSPECT THERE IS MORE TO BE SAID HERE
-@defvr property atomgrad
+@defvr propriedade atomgrad
 
 @code{atomgrad} @'e a propriedade do gradiente at@^omico de uma express@~ao.
 Essa propriedade @'e atribu@'ida por @code{gradef}.

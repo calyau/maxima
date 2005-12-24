@@ -19,7 +19,7 @@ de contextos que est@~ao ativos pelo caminho da fun@,{c}@~ao @code{activate}.
 
 @end deffn
 
-@defvr {System variable} activecontexts
+@defvr {vari@'avel de sistema} activecontexts
 Valor padr@~ao: @code{[]}
 
 @code{activecontexts} @'e a lista de contextos que est@~ao ativos
@@ -39,7 +39,7 @@ e os @'atomos @code{redundant} ou @code{inconsistent} onde for aplic@'avel.
 
 @end deffn
 
-@defvr {Option variable} assumescalar
+@defvr {Vari@'avel de op@value{cedilha}@~ao} assumescalar
 Valor padr@~ao: @code{true}
 
 @code{assumescalar} ajuda a governar se express@~oes @code{expr}
@@ -67,7 +67,7 @@ acima.
 @end defvr
 
 
-@defvr {Option variable} assume_pos
+@defvr {Vari@'avel de op@value{cedilha}@~ao} assume_pos
 Valor padr@~ao: @code{false}
 
 Quando @code{assume_pos} for @code{true}
@@ -252,7 +252,7 @@ atual.  Fatos que est@~ao atuvos, mas em um diferente contexto, n@~ao s@~ao list
 
 @end deffn
 
-@defvr {Declaration} features
+@defvr {Declara@,{c}@~ao} features
 Maxima recnhece ceertas propriedades matem@'aticas de fun@,{c}@~oes e vari@'aveis.
 Essas s@~ao chamadas "recursos".
 
