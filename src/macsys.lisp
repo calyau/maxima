@@ -178,7 +178,9 @@
 	(setq $_ $__)
 	(when $showtime
 	  (format t "Evaluation took ~$ seconds (~$ elapsed)"
-		  time-used etime-used )
+		  time-used etime-used )  
+          #+gcl 
+	  (format t "~%")
 	  #+(or cmu scl sbcl clisp)
 	  (let ((total-bytes (- area-after area-before)))
 	    (cond ((> total-bytes (* 1024 1024))
