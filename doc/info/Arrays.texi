@@ -166,6 +166,46 @@ desired to redefine the values in a hashed array.
 
 @end deffn
 
+@deffn {Function} subvar (@var{x}, @var{i})
+Evaluates the subscripted expression @code{@var{x}[@var{i}]}.
+
+@code{subvar} evaluates its arguments.
+
+@code{arraymake (@var{x}, [@var{i}]} constructs the expression @code{@var{x}[@var{i}]},
+but does not evaluate it.
+
+Examples:
+
+@c ===beg===
+@c x : foo $
+@c i : 3 $
+@c subvar (x, i);
+@c foo : [aa, bb, cc, dd, ee]$
+@c subvar (x, i);
+@c arraymake (x, [i]);
+@c ''%;
+@c ===end===
+@example
+(%i1) x : foo $
+
+(%i2) i : 3 $
+
+(%i3) subvar (x, i);
+(%o3)                         foo
+                                 3
+(%i4) foo : [aa, bb, cc, dd, ee]$
+
+(%i5) subvar (x, i);
+(%o5)                          cc
+(%i6) arraymake (x, [i]);
+(%o6)                         foo
+                                 3
+(%i7) ''%;
+(%o7)                          cc
+@end example
+
+@end deffn
+
 @c THIS IS REALLY CONFUSING
 @defvr {Option variable} use_fast_arrays
 - if @code{true} then only two types of arrays are recognized.  
