@@ -1,20 +1,34 @@
 /* See A&S 6.1.40  
 
-Replace gamma(x) with the O(1/x^(2n-1)) Stirling formula. Example usage:
+Replace gamma(x) with the O(1/x^(2n-1)) Stirling formula. when 'n' isn't
+a nonnegative integer, signal an error. Example:
 
 (%i1) stirling(gamma(%alpha+x)/gamma(x),1);
 (%o1) x^(1/2-x)*(x+%alpha)^(x+%alpha-1/2)*%e^(1/(12*(x+%alpha))-1/(12*x)-%alpha)
+
 (%i2) taylor(%,x,inf,1);
 (%o2) x^%alpha+(x^%alpha*%alpha^2-x^%alpha*%alpha)/(2*x)+...
+
 (%i3) map('factor,%);
 (%o3) x^%alpha+((%alpha-1)*%alpha*x^(%alpha-1))/2
 
-Example non-usage: (can't tell the variable gamma from the gamma function; oh well)
+The function 'stirling' knows the difference between the variable 'gamma' and
+the function gamma:
 
-(%i4) stirling(gamma,2);
-(%o4) LAMBDA([s],EXP(-s)*s^(s-1/2)*sqrt(2*%pi)*EXP(SUM(BERN(2*%M)/(2*%M*(2*%M-1)*s^(2*%M-1)),%M,1,n)))
+(%i1) stirling(gamma + gamma(x),0);
+(%o1) gamma+sqrt(2)*sqrt(%pi)*x^(x-1/2)*%e^(-x)
+
+(%i2) stirling(gamma(y) + gamma(x),0);
+(%o2) sqrt(2)*sqrt(%pi)*y^(y-1/2)*%e^(-y)+sqrt(2)*sqrt(%pi)*x^(x-1/2)*%e^(-x)
+
+To use this code, the file 'opsubst.lisp' must be in your search path.
 
 */
 
-stirling(z,n) := subst(lambda([s], exp(-s)* s^(s-1/2) * sqrt(2*%pi) * 
-       exp(sum(bern(2*%m)/(2*%m *(2*%m-1)*s^(2*%m-1)),%m,1,n))), gamma, z);
+load("opsubst"); 
+
+stirling(z,n) := if integerp(n) and n > -1 then (
+                    opsubst(lambda([s], exp(-s)* s^(s-1/2) * sqrt(2*%pi) * 
+      	               exp(sum(bern(2*%m)/(2*%m *(2*%m-1)*s^(2*%m-1)),%m,1,n))), gamma, z))
+                   else error("The second argument to 'stirling' must be a nonnegative integer");
+
