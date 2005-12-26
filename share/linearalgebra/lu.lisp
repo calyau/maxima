@@ -298,7 +298,7 @@
 	     (setq mc (copy-tree mat))
 	     (loop for i from 1 to n do 
 	       (loop for j from 1 to n do 
-		 (setf (nth j (nth i mc)) ($zerofor (nth j (nth i mat)) j i))))
+		 (setf (nth j (nth i mc)) ($zerofor (nth j (nth i mat))))))
 	     mc))
 	  (t add-id))))
 
