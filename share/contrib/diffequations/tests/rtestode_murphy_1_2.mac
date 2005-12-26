@@ -590,10 +590,14 @@ solve(ans[1],y);
 [exact,0];
 
 /* 178 */
+assume(a>0);
+[a>0];
 (pn_(178),ans:contrib_ode(eqn:'diff(y,x)=a*x^2+(1/x-y)*y,y,x));
 [y = sqrt(a)*(%c*x*sinh(sqrt(a)*x^2/2)+%i*x*cosh(sqrt(a)*x^2/2))/(%i*sinh(sqrt(a)*x^2/2)+%c*cosh(sqrt(a)*x^2/2))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
+forget(a>0);
+[a>0];
 
 /* 179 */
 (pn_(179),ans:contrib_ode(eqn:x*'diff(y,x)=x^3+(1+2*x^2)*y+x*y^2,y,x));

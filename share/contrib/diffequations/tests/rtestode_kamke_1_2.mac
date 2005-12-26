@@ -16,20 +16,24 @@
 true;
 
 /* 101 */
-(pn_(100),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-y,y,x));
+(pn_(101),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-y,y,x));
 [(x^2*y-2*x)/(2*y)=%c];
 solve(ans[1],y);
 [y=2*x/(x^2-2*%c)];
 [method,ode_check(eqn,%[1])];
 [exact,0];
 
-/* 102 - Why the complex solution? */
+/* 102 - FIXME: Why the complex solution? */
+assume(a>0);
+[a>0];
 (pn_(102),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-y-a*x^3,y,x));
 [y=sqrt(a)*(%c*x*sinh(sqrt(a)*x^2/2)+%i*x*cosh(sqrt(a)*x^2/2))/(%i*sinh(sqrt(a)*x^2/2)+%c*cosh(sqrt(a)*x^2/2))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
+forget(a>0);
+[a>0];
 
-/* 103  - Why the complex solution? */
+/* 103  - FIXME: Why the complex solution? */
 (pn_(103),ans:contrib_ode(eqn:x*'diff(y,x)+x*y^2-(2*x^2+1)*y-x^3,y,x));
 [y=((sqrt(2)*%c+%i)*x*sinh(sqrt(2)*x^2/2)+(%c+sqrt(2)*%i)*x*cosh(sqrt(2)*x^2/2))/(%i*sinh(sqrt(2)*x^2/2)+%c*cosh(sqrt(2)*x^2/2))];
 [method,ode_check(eqn,ans[1])];
@@ -427,11 +431,15 @@ riccati;
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 
-/*  163  */ 
+/*  163  */
+assume(x>0);
+[x>0];
 (pn_(163),ans:contrib_ode(eqn:2*x^2*'diff(y,x,1)-2*y^2-x*y+2*a^2*x,y,x));
 [y=-(%c*a*sinh(2*a/sqrt(x))-%i*a*cosh(2*a/sqrt(x)))*sqrt(x)/(%i*sinh(2*a/sqrt(x))-%c*cosh(2*a/sqrt(x)))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
+forget(x>0);
+[x>0];
 
 /*  164  */ 
 (pn_(164),ans:contrib_ode(eqn:2*x^2*'diff(y,x,1)-2*y^2-3*x*y+2*a^2*x,y,x));

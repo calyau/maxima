@@ -274,11 +274,15 @@ solve(ans[1],y);
 forget(n>-1);
 [n>-1];
 
-/* 32 - Why the %i in the solution? */
+/* 32 - FIXME: Why the %i in the solution? */
+assume(cos(x)>0);
+[cos(x)>0];
 (pn_(32),ans:contrib_ode(eqn:'diff(y,x) + y^2*sin(x) - 2*sin(x)/cos(x)^2,y,x));
 [y = ((3*%c-%i)*sinh(3*log(cos(x))/2)+(%c-3*%i)*cosh(3*log(cos(x))/2))/(2*%i*cos(x)*sinh(3*log(cos(x))/2)-2*%c*cos(x)*cosh(3*log(cos(x))/2))];
 [method,ode_check(eqn,ans[1])];
 [riccati,0];
+forget(cos(x)>0);
+[cos(x)>0];
 
 /* 33 */
 (pn_(33),ans:contrib_ode(eqn:'diff(y,x)-y^2*'diff(f(x),x)/g(x)+'diff(g(x),x)/f(x),y,x));
