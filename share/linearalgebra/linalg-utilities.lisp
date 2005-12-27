@@ -34,9 +34,15 @@
   (if (not (and ($matrixp m) (> ($length m) 0) (> ($length ($first m)) 0)))
       (merror "The ~:M argument of the function ~:M must be a nonempty matrix" pos fun)))
 
+(defun $blockmatrixp (m) ($matrixp m '$matrixp))
+
 (defun $require_matrix (m pos fun)
   (if (not ($matrixp m))
       (merror "The ~:M argument of the function ~:M must be a matrix" pos fun)))
+
+(defun $require_unblockedmatrix (m pos fun)
+  (if (or (not ($matrixp m)) ($blockmatrixp m))
+      (merror "The ~:M argument of the function ~:M must be an unblocked matrix" pos fun)))
 
 (defun $require_square_matrix (m pos fun)
   (if (not (and ($matrixp m) (= ($length m) ($length ($first m)))))

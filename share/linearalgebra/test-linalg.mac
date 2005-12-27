@@ -1,3 +1,6 @@
+(matrix_element_add : "+", matrix_element_mult : "*",0);
+0$
+
 /*--- ctranspose -----*/
 
 (m : matrix([%i,1],[2,%i],[0,2]),0);

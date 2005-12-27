@@ -25,10 +25,10 @@ put('linalg,1,'version);
 eval_when([translate, compile], translate_fast_arrays : false);
 
 eval_when(translate,
-	  declare_translated(require_matrix,matrix_size,ptriangularize_with_proviso,locate_matrix_entry,
+	  declare_translated(require_matrix,ptriangularize_with_proviso,locate_matrix_entry,
 			     nullspace,require_integer,columnspace,rowswap,rowop,require_symbol,
-	                     mat_fullunblocker,mat_trace,mat_unblocker,blockmatrixp,
-                             column_reduce,good_pivot,hipow_gzero,mat_norm,require_list))$
+	                     mat_fullunblocker,mat_trace,mat_unblocker, column_reduce,good_pivot,
+                             hipow_gzero,mat_norm,require_list))$
 
 eval_when([batch,load,translate,compile],
  (if get('nset, 'version) = false then load("nset"),
@@ -36,7 +36,7 @@ eval_when([batch,load,translate,compile],
   load("polynomialp"),
   if get('lu, 'version) = false then load("lu"),
   load("matrixexp"),
-  if get('linalgutilities, 'version) = false then load("linalg-utilities")));
+  load("linalg-utilities")));
   
 require_integer(i, pos, fn) := 
   if integerp(i) then true else 
@@ -50,9 +50,6 @@ request_rational_matrix(m, pos, fn) :=
   if every('identity, map(lambda([s], every('ratnump,s)), args(m))) then true else
     print("Some entries in the matrix are not rational numbers. The result might be wrong.");
 
-matrix_size(m) := (
-  require_matrix(m,"first", "matrix_size"),
-  [length(m), length(first(m))]);
 
 dotproduct(a,b) := block([scalarmatrixp : true],
   require_matrix(a,"first", "dotproduct"),
@@ -69,7 +66,7 @@ nullspace(m) := block([n, x, e, vo, %r, proviso, nc, nr, pos,
                        scalarmatrixp : false,
                        domxmxops : true],
 
-  require_matrix(m, "first", "nullspace"),
+  require_unblockedmatrix(m, "first", "nullspace"),
   nc : length(first(m)),
   nr : length(m),
   if nc = 0 or nr = 0 then 
@@ -100,7 +97,7 @@ nullspace(m) := block([n, x, e, vo, %r, proviso, nc, nr, pos,
 nullity(m) := length(nullspace(m));
 
 orthogonal_complement([v]) :=  block([sz],
-  require_matrix(first(v)," ","orthogonal_complement"),
+  require_unblockedmatrix(first(v)," ","orthogonal_complement"),
   sz : matrix_size(first(v)),
   if second(sz) # 1 then error("Each argument must be a column vector"),
   for vi in v do (
@@ -110,7 +107,7 @@ orthogonal_complement([v]) :=  block([sz],
  
 locate_matrix_entry(m, r1, c1, r2, c2, fn, rel) := block([im, cm, mf, e, 
      nr, nc, ok : true, frel],
-  require_matrix(m, "first", "locate_matrix_entry"),
+  require_unblockedmatrix(m, "first", "locate_matrix_entry"),
   require_integer(r1, "second", "locate_matrix_entry"),
   require_integer(r2, "second", "locate_matrix_entry"),
   require_integer(c1, "third", "locate_matrix_entry"),
@@ -137,7 +134,7 @@ locate_matrix_entry(m, r1, c1, r2, c2, fn, rel) := block([im, cm, mf, e,
   if im > 0 and cm > 0 then [im, cm] else false);
          
 columnspace(a) := block([m, nc, nr, cs : [], pos, x, proviso : [], algebraic : true],
-  require_matrix(a, "first","columnspace"),
+  require_unblockedmatrix(a, "first","columnspace"),
   /* request_rational_matrix(a, "first", "columnspace"), */
   nc : length(first(a)),
   nr : length(a),
@@ -178,7 +175,7 @@ columnswap(m,i,j) := transpose(rowswap(transpose(m),i,j));
 
 /*  row(m,i) <-- row(m,i) - theta * row(m,i) */
 
-rowop(m,i,j,theta) := block([p : copymatrix(m)],
+rowop(m,i,j,theta) := block([p : copymatrix(m), listarith : true],
   p[i] : p[i] - theta * p[j],
   p);
 
@@ -194,7 +191,7 @@ ptriangularize(m,v) := block([p : ptriangularize_with_proviso(m,v)],
    p[1]); 
   
 ptriangularize_with_proviso(m,v) := block([nr, nc, proviso : [], mp],
-  require_matrix(m, "first", "ptriangularize"),
+  require_unblockedmatrix(m, "first", "ptriangularize"),
   require_symbol(v, "second", "ptriangularize"),
   nr : length(m),
   nc : length(first(m)),
@@ -245,10 +242,7 @@ zeromatrixp(m) :=
   if not(matrixp(m)) then is(equal(rectform(e),0))	
   else if matrixp(m) then
      every(lambda([e],zeromatrixp(e)), apply('append,args(m)));
-
       
-blockmatrixp(m) := matrixp(m,'matrixp);
-
 mat_norm(m, p) := block([listarith : true, d],
   require_matrix(m,"first","mat_norm"),
   if blockmatrixp(m) then m : mat_fullunblocker(m),
