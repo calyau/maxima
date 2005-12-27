@@ -751,9 +751,9 @@ See also @code{identfor}
 
 @deffn {Function} zeromatrixp (@var{M})
 
-If @code{is (equal (@var{e}, 0))} is true for each element @var{e} of the matrix @var{M},
-return @code{true}; otherwise,
-return @code{false}.  When @var{M} is not a matrix, signal an error.
+If @var{M} is not a block matrix, return @code{true} if @code{is (equal (@var{e}, 0))} 
+is true for each element @var{e} of the matrix @var{M}.  If @var{M} is a block matrix, return
+@code{true} if @code{zeromatrixp} evaluates to true for each element of @var{e}.
 
 @end deffn
 

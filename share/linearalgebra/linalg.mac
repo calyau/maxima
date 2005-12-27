@@ -240,12 +240,12 @@ column_reduce(m,i,x) := block([nc, nr, pos, q, proviso : []],
        pos : locate_matrix_entry(m, i, i, nr, i, lambda([e], e # 0), 'bool),
        if listp(pos) then m : rowswap(m,i, first(pos))),
     [m, proviso]);
-      
+
 zeromatrixp(m) := 
-  if matrixp(m) then
-     every(lambda([e],is(equal(rectform(e),0))), apply('append,args(m)))
-  else 
-     error("Argument to 'zeromatrixp' must be a matrix");
+  if not(matrixp(m)) then is(equal(rectform(e),0))	
+  else if matrixp(m) then
+     every(lambda([e],zeromatrixp(e)), apply('append,args(m)));
+
       
 blockmatrixp(m) := matrixp(m,'matrixp);
 
