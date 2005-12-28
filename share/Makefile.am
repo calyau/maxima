@@ -117,7 +117,6 @@ contrib/bode.mac\
 contrib/cholesky.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/biomed.data\
-contrib/descriptive/descriptive.info\
 contrib/descriptive/descriptive.mac\
 contrib/descriptive/descriptive.texi\
 contrib/descriptive/pidigits.data\
@@ -277,7 +276,6 @@ contrib/numericalio/array.mac\
 contrib/numericalio/csv.mac\
 contrib/numericalio/is_equal_array.lisp\
 contrib/numericalio/my_flatten.mac\
-contrib/numericalio/numericalio.info\
 contrib/numericalio/numericalio.lisp\
 contrib/numericalio/numericalio.texi\
 contrib/numericalio/pipe.data\
@@ -399,7 +397,6 @@ contrib/state/sortem.mac\
 contrib/state/state.mac\
 contrib/state/tree.mac\
 contrib/stringproc/rteststringproc.mac\
-contrib/stringproc/stringproc.info\
 contrib/stringproc/stringproc.lisp\
 contrib/stringproc/stringproc.texi\
 contrib/unit/unit-functions.lisp\
@@ -431,7 +428,6 @@ linearalgebra/linalg-utilities.lisp\
 linearalgebra/linalg.demo\
 linearalgebra/linalg.mac\
 linearalgebra/linalg.usage\
-linearalgebra/linearalgebra.info\
 linearalgebra/linearalgebra.texi\
 linearalgebra/lu.lisp\
 linearalgebra/matrixexp.lisp\
@@ -521,7 +517,6 @@ numeric/submac.mac\
 orthopoly/changes_0.9_to_0.94.txt\
 orthopoly/h_atom.dem\
 orthopoly/Makefile.am\
-orthopoly/orthopoly.info\
 orthopoly/orthopoly-init.lisp\
 orthopoly/orthopoly.lisp\
 orthopoly/orthopoly.texi\
@@ -563,7 +558,6 @@ simplification/rncomb.mac\
 simplification/scifac.dem\
 simplification/scifac.lisp\
 simplification/simplification.texi\
-simplification/simplification.info\
 simplification/sqdnst.mac\
 simplification/stopex.dem\
 simplification/stopex.mac\
