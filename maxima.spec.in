@@ -4,7 +4,6 @@
 # This can be changed by modifying the variables below.
 %define enable_clisp 1
 %define clisp_flags --enable-clisp
-%define clisp_version 2.33
 %define enable_cmucl 0
 %define cmucl_flags --disable-cmucl
 %define enable_sbcl 0
@@ -27,7 +26,7 @@
 Summary: Maxima Symbolic Computation Program
 Name: maxima
 Version: @VERSION@
-Release: 2
+Release: 1
 License: GPL
 Group: Development/Languages
 URL: http://maxima.sourceforge.net
