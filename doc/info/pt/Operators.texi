@@ -219,34 +219,34 @@ avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
 @end deffn
 
 @deffn {Operador} "::="
-Operador de definição de função de macro.
-@code{::=} define uma função (chamada uma "macro" por razões históricas)
-que coloca um apóstrofo em seus argumentos (evitando avaliação),
-e a expressão que é retornada (chamada a "expansão de macro")
-é avaliada no contexto a partir do qual a macro foi chamada.
-Uma função de macro é de outra forma o mesmo que uma função comum.
+Operador de defini@,{c}@~ao de fun@,{c}@~ao de macro.
+@code{::=} define uma fun@,{c}@~ao (chamada uma "macro" por raz@~oes hist@'oricas)
+que coloca um ap@'ostrofo em seus argumentos (evitando avalia@,{c}@~ao),
+e a express@~ao que @'e retornada (chamada a "expans@~ao de macro")
+@'e avaliada no contexto a partir do qual a macro foi chamada.
+Uma fun@,{c}@~ao de macro @'e de outra forma o mesmo que uma fun@,{c}@~ao comum.
 
-@code{macroexpand} retorna uma expansão de macro (sem avaliar a expansão).
-@code{macroexpand (foo (x))} seguida por @code{''%} é equivalente a @code{foo (x)}
-quando @code{foo} for uma função de macro.
+@code{macroexpand} retorna uma expans@~ao de macro (sem avaliar a expans@~ao).
+@code{macroexpand (foo (x))} seguida por @code{''%} @'e equivalente a @code{foo (x)}
+quando @code{foo} for uma fun@,{c}@~ao de macro.
 
-@code{::=} coloca o nome da nova função de macro dentro da lista global @code{macros}.
-@code{kill}, @code{remove}, e @code{remfunction} desassocia definições de função de macro
+@code{::=} coloca o nome da nova fun@,{c}@~ao de macro dentro da lista global @code{macros}.
+@code{kill}, @code{remove}, e @code{remfunction} desassocia defini@,{c}@~oes de fun@,{c}@~ao de macro
 e remove nomes de @code{macros}.
 
-@code{fundef} or @code{dispfun} retorna uma definição de função de macro
-ou atribui isso a um rótulo, respectivamente.
+@code{fundef} or @code{dispfun} retorna uma defini@,{c}@~ao de fun@,{c}@~ao de macro
+ou atribui isso a um r@'otulo, respectivamente.
 
-Funções de macro comumente possuem expressões @code{buildq} e
-@code{splice} para construir uma expressão,
-que é então avaliada.
+Fun@,{c}@~oes de macro comumente possuem express@~oes @code{buildq} e
+@code{splice} para construir uma express@~ao,
+que @'e ent@~ao avaliada.
 
 Exemplos
 
-Uma função de macro coloca um apóstrofo em seus argumentos evitando então a avaliação,
-então mensagem (1) mostra @code{y - z}, não o valor de @code{y - z}.
-A expansão de macro (a expressão com apóstrofo @code{'(print ("(2) x is equal to", x))}
-é avaliada no contexto a partir do qual a macro for chamada,
+Uma fun@,{c}@~ao de macro coloca um ap@'ostrofo em seus argumentos evitando ent@~ao a avalia@,{c}@~ao,
+ent@~ao mensagem (1) mostra @code{y - z}, n@~ao o valor de @code{y - z}.
+A expans@~ao de macro (a express@~ao com ap@'ostrofo @code{'(print ("(2) x is equal to", x))}
+@'e avaliada no contexto a partir do qual a macro for chamada,
 mostrando a mesnagem (2).
 
 @c ===beg===
@@ -263,24 +263,24 @@ mostrando a mesnagem (2).
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printq1 (x) ::= block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
-(%o4) printq1(x) ::= block(print("(1) x é igual a", x), 
-                                '(print("(2) x é igual a", x)))
+(%i4) printq1 (x) ::= block (print ("(1) x @'e igual a", x), '(print ("(2) x @'e igual a", x)));
+(%o4) printq1(x) ::= block(print("(1) x @'e igual a", x), 
+                                '(print("(2) x @'e igual a", x)))
 (%i5) printq1 (y - z);
-(1) x é igual a y - z 
-(2) x é igual a %pi 
+(1) x @'e igual a y - z 
+(2) x @'e igual a %pi 
 (%o5)                          %pi
 @end example
 
-Uma função comum avalia seus argumentos, então message (1) mostra o valor de @code{y - z}.
-O valor de rtorno não é avaliado, então mensagem (2) não é mostrada
-até a avaliação explícita @code{''%}.
+Uma fun@,{c}@~ao comum avalia seus argumentos, ent@~ao message (1) mostra o valor de @code{y - z}.
+O valor de rtorno n@~ao @'e avaliado, ent@~ao mensagem (2) n@~ao @'e mostrada
+at@'e a avalia@,{c}@~ao expl@'icita @code{''%}.
 
 @c ===beg===
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c printe1 (x) := block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
+@c printe1 (x) := block (print ("(1) x @'e igual a", x), '(print ("(2) x @'e igual a", x)));
 @c printe1 (y - z);
 @c ''%;
 @c ===end===
@@ -291,26 +291,26 @@ até a avaliação explícita @code{''%}.
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) printe1 (x) := block (print ("(1) x é igual a", x), '(print ("(2) x é igual a", x)));
-(%o4) printe1(x) := block(print("(1) x é igual a", x), 
-                                '(print("(2) x é igual a", x)))
+(%i4) printe1 (x) := block (print ("(1) x @'e igual a", x), '(print ("(2) x @'e igual a", x)));
+(%o4) printe1(x) := block(print("(1) x @'e igual a", x), 
+                                '(print("(2) x @'e igual a", x)))
 (%i5) printe1 (y - z);
-(1) x é igual a 1234 - 1729 w 
-(%o5)              print((2) x é igual a, x)
+(1) x @'e igual a 1234 - 1729 w 
+(%o5)              print((2) x @'e igual a, x)
 (%i6) ''%;
-(2) x é igual a %pi 
+(2) x @'e igual a %pi 
 (%o6)                          %pi
 @end example
 
-@code{macroexpand} retorna uma expansão de macro.
-@code{macroexpand (foo (x))} seguido por @code{''%} é equivalente a @code{foo (x)}
-quando @code{foo} for uma função de macro.
+@code{macroexpand} retorna uma expans@~ao de macro.
+@code{macroexpand (foo (x))} seguido por @code{''%} @'e equivalente a @code{foo (x)}
+quando @code{foo} for uma fun@,{c}@~ao de macro.
 
 @c ===beg===
 @c x: %pi;
 @c y: 1234;
 @c z: 1729 * w;
-@c g (x) ::= buildq ([x], print ("x é igual a", x));
+@c g (x) ::= buildq ([x], print ("x @'e igual a", x));
 @c macroexpand (g (y - z));
 @c ''%;
 @c g (y - z);
@@ -321,15 +321,15 @@ quando @code{foo} for uma função de macro.
 (%o2)                         1234
 (%i3) z: 1729 * w;
 (%o3)                        1729 w
-(%i4) g (x) ::= buildq ([x], print ("x é igual a", x));
-(%o4)    g(x) ::= buildq([x], print("x é igual a", x))
+(%i4) g (x) ::= buildq ([x], print ("x @'e igual a", x));
+(%o4)    g(x) ::= buildq([x], print("x @'e igual a", x))
 (%i5) macroexpand (g (y - z));
-(%o5)              print(x é igual a, y - z)
+(%o5)              print(x @'e igual a, y - z)
 (%i6) ''%;
-x é igual a 1234 - 1729 w 
+x @'e igual a 1234 - 1729 w 
 (%o6)                     1234 - 1729 w
 (%i7) g (y - z);
-x é igual a 1234 - 1729 w 
+x @'e igual a 1234 - 1729 w 
 (%o7)                     1234 - 1729 w
 @end example
 

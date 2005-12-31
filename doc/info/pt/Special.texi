@@ -62,7 +62,7 @@ bessel_j (index, expr)         Fun@,{c}@~ao de Bessel, primeiro tipo
 bessel_y (index, expr)         Fun@,{c}@~ao de Bessel, segundo tipo
 bessel_i (index, expr)         Fun@,{c}@~ao de Bessel modificada, primeiro tipo
 bessel_k (index, expr)         Fun@,{c}@~ao de Bessel modificada, segundo tipo
-%he[n] (z)                     Polinômio de Hermite (Note bem: @code{he}, n@~ao @code{h}. Veja A&S 22.5.18)
+%he[n] (z)                     Polin@^omio de Hermite (Note bem: @code{he}, n@~ao @code{h}. Veja A&S 22.5.18)
 %p[u,v] (z)                    Fun@,{c}@~ao de Legendre
 %q[u,v] (z)                    Fun@,{c}@~ao de Legendre, segundo tipo
 hstruve[n] (z)                 Fun@,{c}@~ao H de Struve H
@@ -498,7 +498,7 @@ Retorna o fator num@'erico multiplicando a express@~ao
 Converte @var{a} de um c@'odigo de Poisson para uma representa@,{c}@~ao
 geral.  Se @var{a} n@~ao for uma forma de Poisson, @code{outofpois} realiza a convers@~ao,
 i.e., o valor de retorno @'e @code{outofpois (intopois (@var{a}))}.
-Essa fun@,{c}@~ao @'e desse modo um simplificador canônico
+Essa fun@,{c}@~ao @'e desse modo um simplificador can@^onico
 para adi@,{c}@~oes e pot@^encias de termos de seno e cosseno de um tipo particular.
 
 @end deffn

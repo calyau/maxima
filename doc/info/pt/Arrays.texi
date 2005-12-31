@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Arrays.texi/1.11/Sat Oct 22 06:35:42 2005/-ko/
+@c /Arrays.texi/1.12/Thu Dec 29 07:02:41 2005/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Arrays e Tabelas::  
 @end menu
@@ -165,6 +165,43 @@ Isso pode ser necess@'ario para usar essa fun@,{c}@~ao se isso @'e
 desejado para redefinir os valores em um array desordenado.
 
 @code{remarray} retorna a lista dos arrays removidos.
+
+@end deffn
+@deffn {Fun@,{c}@~ao} subvar (@var{x}, @var{i})
+Avalia a express@~ao subscrita @code{@var{x}[@var{i}]}.
+
+@code{subvar} avalia seus argumentos.
+
+@code{arraymake (@var{x}, [@var{i}]} constr@'oi a express@~ao @code{@var{x}[@var{i}]},
+mas n@~ao a avalia.
+
+Exemplos:
+
+@c ===beg===
+@c x : foo $
+@c i : 3 $
+@c subvar (x, i);
+@c foo : [aa, bb, cc, dd, ee]$
+@c subvar (x, i);
+@c arraymake (x, [i]);
+@c ''%;
+@c ===end===
+@example
+(%i1) x : foo $
+
+(%i2) i : 3 $
+
+(%i3) subvar (x, i);
+(%o3) foo
+ 3
+(%i4) foo : [aa, bb, cc, dd, ee]$
+
+(%i5) subvar (x, i);
+(%o5) +(%i6) arraymake (x, [i]);
+(%o6) foo
+ 3
+(%i7) ''%;
+(%o7) +@end example
 
 @end deffn
 

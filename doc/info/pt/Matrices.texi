@@ -508,7 +508,7 @@ para @code{SC*A} e @code{A.(SC*B)} simplifica para @code{SC*(A.B)}.
 @deffn {Fun@,{c}@~ao} echelon (@var{M})
 Retorna a forma escalonada da matriz @var{M},
 como produzido atrav@'es da elimina@,{c}@~ao de Gauss.
-A forma escalonada é calculada de @var{M}
+A forma escalonada @'e calculada de @var{M}
 por opera@,{c}@~oes elementares de linha tais que o primeiro
 elemento n@~ao zero em cada linha na matriz resultante @'e um n@'umero um e os
 elementos da coluna abaixo do primeiro n@'umero um em cada linha s@~ao todos zero.
