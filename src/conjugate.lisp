@@ -69,6 +69,7 @@
 (setf (get '$matrix 'commutes-with-conjugate) t)
 (setf (get 'mlist 'commutes-with-conjugate) t)
 (setf (get 'mequal 'commutes-with-conjugate) t)
+(setf (get '%transpose 'commutes-with-conjugate) t)
 
 ;; When a function has the conjugate-function property,
 ;; use a non-generic function to conjugate it.
