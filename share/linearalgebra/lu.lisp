@@ -10,8 +10,8 @@
 ($put '$lu 1 '$version)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  ($load "mring")
-  (if (not (functionp '$rationalize)) ($load "nummod")))
+  ($load "mring"))
+;;  (if (not (functionp '$rationalize)) ($load "nummod")))
 
 (defun $mytest (fn)
   (let ((*collect-errors* nil))
@@ -293,7 +293,6 @@
   ($require_ring fld-name "$second" "$zerofor")
   (let ((add-id (funcall (mring-add-id (get fld-name 'ring)))))
     (cond (($matrixp mat)
-	   ($require_square_matrix mat "$first" "$identfor")
 	   (let ((n ($first ($matrix_size mat))) (mc))
 	     (setq mc (copy-tree mat))
 	     (loop for i from 1 to n do 
