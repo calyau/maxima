@@ -348,7 +348,7 @@ Ejemplos:
 @deffn {Funci@'on} taylor (@var{expr}, @var{x}, @var{a}, @var{n})
 @deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], @var{a}, @var{n})
 @deffnx {Funci@'on} taylor (@var{expr}, [@var{x}, @var{a}, @var{n}, 'asymp])
-@deffnx {Function} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
+@deffnx {Funci@'on} taylor (@var{expr}, [@var{x_1}, @var{x_2}, ...], [@var{a_1}, @var{a_2}, ...], [@var{n_1}, @var{n_2}, ...])
 @c THIS NEXT ARGUMENT LIST TICKLES A BUG IN CL-INFO OR SOMETHING:
 @c APPARENTLY IF SOME ARGUMENT LIST IS LONGER THAN 1 LINE, REMAINDER OF THE DESCRIPTION IS LOST
 @c @deffnx taylor (@var{expr}, [@var{x_1}, @var{a_1}, @var{n_1}], [@var{x_2}, @var{a_2}, @var{n_2}], ...)
