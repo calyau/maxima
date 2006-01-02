@@ -57,8 +57,8 @@
 			 ((setq y (mget x 'aexpr))
 			  (mgrind (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)) nil))
 			 (t (mgrind x nil)))
-		   (tyo #\$ nil))
-		  (t (mgrind x nil) (tyo #\$ nil)))
+		   (tyo #\$ nil) (tyo #\Newline nil))
+		  (t (mgrind x nil) (tyo #\$ nil) (tyo #\Newline nil)))
 	    '$done))
 
 (defun show-msize (lis)
