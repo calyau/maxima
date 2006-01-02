@@ -829,12 +829,12 @@
 	   (or (streamp *collect-errors*)
 	       (close error-log)))))
   (cond ((null all-differences)
-	 (format t "~a/~a tests passed." num-problems num-problems) '((mlist)))
+	 (format t "~a/~a tests passed.~%" num-problems num-problems) '((mlist)))
 	(t (progn
-	     (format t "~%~a/~a tests passed." 
+	     (format t "~%~a/~a tests passed.~%" 
 		     (- num-problems (length all-differences)) num-problems)
 	     (let ((s (if (> (length all-differences) 1) "s" "")))
-	       (format t "~%The following ~A problem~A failed: ~A" 
+	       (format t "~%The following ~A problem~A failed: ~A~%" 
 		       (length all-differences) s all-differences))
 	     `((mlist),filename ,@ all-differences)))))
 	   
