@@ -15,11 +15,17 @@ true$
 (m : matrix([m,m]),0);
 0$
 
+(matrix_element_transpose : 'transpose,0);
+0$
+
 zeromatrixp(ctranspose(mat_unblocker(m)) - mat_unblocker(ctranspose(m)));
 true$
 
 ctranspose(matrix([%i]));
 matrix([-%i])$
+
+(matrix_element_transpose : false,0);
+0)$
 
 /*--- matrix norm ----*/
 

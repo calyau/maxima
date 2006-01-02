@@ -244,8 +244,8 @@ This time, the assignment to @var{mm} does not change the value of @var{m}.
 
 @deffn {Function} ctranspose (@var{M})
 
-Return the conjugate of the transpose of the matrix @var{M}. If @var{M} is
-a block matrix, transpose and conjugate each block. 
+Return the complex conjugate transpose of the matrix @var{M}. The function
+@code{ctranspose} uses @code{matrix_element_transpose} to transpose each matrix element.
 
 @end deffn
 
