@@ -220,12 +220,12 @@
 (defun macsyma-trace-sub (fun handler ilist &aux temp)
   (declare (symbol temp))		; pathetic
   (cond ((not (symbolp (setq fun (getopr fun))))
-	 (mtell "~%Bad arg to `trace': ~M" fun)
+	 (mtell "~%Bad arg to `trace': ~M~%" fun)
 	 nil)
 	((trace-p fun)
 	 ;; Things which redefine should be expected to reset this
 	 ;; to NIL.
-	 (if (not trace-allp) (mtell "~%~@:M is already traced." fun))
+	 (if (not trace-allp) (mtell "~%~@:M is already traced.~%" fun))
 	 nil)
 	((memq fun hard-to-trace)
 	 (mtell
@@ -233,11 +233,11 @@
 	  fun)
 	 nil)
 	((not (setq temp (car (macsyma-fsymeval fun))))
-	 (mtell "~%~@:M has no functional properties." fun)
+	 (mtell "~%~@:M has no functional properties.~%" fun)
 	 nil)
 	((memq temp '(mmacro translated-mmacro))
 	 (mtell "~%~@:M is a macro, won't trace well, so use ~
-		     the `macroexpand' function to debug it." fun)
+		     the `macroexpand' function to debug it.~%" fun)
 	 nil)
 	((get temp 'shadow)
 	 (put-trace-info fun temp ilist)
@@ -245,7 +245,7 @@
 			(make-trace-hook fun temp handler))
 	 (list fun))
 	(t
-	 (mtell "~%~@:M has functional properties not understood by `trace'"
+	 (mtell "~%~@:M has functional properties not understood by `trace'~%"
 		fun)
 	 nil)))
 
@@ -256,10 +256,10 @@
 (defun macsyma-untrace-sub (fun handler ilist)
   (prog1
       (cond ((not (symbolp (setq fun (getopr fun))))
-	     (mtell "~%Bad arg to `untrace': ~M" fun)
+	     (mtell "~%Bad arg to `untrace': ~M~%" fun)
 	     nil)
 	    ((not (trace-p fun))
-	     (mtell "~%~:@M is not traced." fun)
+	     (mtell "~%~:@M is not traced.~%" fun)
 	     nil)
 	    (t
 	     (trace-unfshadow fun (trace-type fun))
@@ -505,7 +505,7 @@
 	  (cond ((null options) nil)
 		(($listp options) (cdr options))
 		(t
-		 (mtell "Trace options for ~:@M not a list, so ignored."
+		 (mtell "Trace options for ~:@M not a list, so ignored.~%"
 			function)
 		 nil)))
 	(cdr options))
