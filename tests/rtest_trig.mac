@@ -286,6 +286,22 @@ true$
 is(maxerror < 1.0e-15);
 true$
 
+(id : asin(x) + acos(x) - %pi/2, 0);
+0$
+
+(maxerror : 0, 0)$
+0$
+
+(for p in pts do block([numer : true],
+  maxerror : max(maxerror, cabs(expand(subst(x = bfloat(p), id))))),0);
+0$
+
+is(maxerror < 1.0e-15);
+true$
+
+(kill(values),0);
+0$
+
 (remfunction(complexfloatp, complexbigfloatp),0);
 0$
 

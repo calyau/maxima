@@ -1394,8 +1394,64 @@ One extra decimal digit in actual representation for rounding purposes.")
 	     (mul '$%i v)))
       (fpasinh x)))
 
+(defun fpasin-core (x)
+  ;; asin(x) = atan(x/(sqrt(1-x^2))
+  ;;         = sgn(x)*[%pi/2 - atan(sqrt(1-x^2)/abs(x))]
+  ;;
+  ;; Use the first for  0 <= x < 1/2 and the latter for 1/2 < x <= 1.
+  ;;
+  ;; If |x| > 1, we need to do something else.
+  ;;
+  ;; asin(x) = -%i*log(sqrt(1-x^2)+%i*x)
+  ;;         = -%i*log(%i*x + %i*sqrt(x^2-1))
+  ;;         = -%i*[log(|x + sqrt(x^2-1)|) + %i*%pi/2]
+  ;;         = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
+  
+  (let ((fp-x (cdr (bigfloatp x))))
+    (cond ((minusp (car fp-x))
+	   ;; asin(-x) = -asin(x);
+	   (mul -1 (fpasin (bcons (fpminus fp-x)))))
+	  ((fplessp fp-x (cdr bfhalf))
+	   ;; 0 <= x < 1/2
+	   ;; asin(x) = atan(x/sqrt(1-x^2))
+	   (bcons
+	    (fpatan (fpquotient fp-x
+				(fproot (bcons
+					 (fptimes* (fpdifference (fpone) fp-x)
+						   (fpplus (fpone) fp-x)))
+					2)))))
+	  ((fpgreaterp fp-x (fpone))
+	   ;; x > 1
+	   ;; asin(x) = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
+	   ;;
+	   ;; Should we try to do something a little fancier with the
+	   ;; argument to log and use log1p for better accuracy?
+	   (let ((arg (fpplus fp-x
+			      (fproot (bcons (fptimes* (fpdifference fp-x (fpone))
+						       (fpplus fp-x (fpone))))
+				      2))))
+	     (add (div '$%pi 2)
+		  (mul -1 '$%i
+		       (bcons (fplog arg))))))
+		       
+	  (t
+	   ;; 1/2 <= x <= 1
+	   ;; asin(x) = %pi/2 - atan(sqrt(1-x^2)/x)
+	   (let ((piby2 (fpquotient (fppi) (intofp 2))))
+	     (add (div '$%pi 2)
+		  (mul -1
+		       (bcons
+			(fpatan
+			 (fpquotient (fproot
+				      (bcons (fptimes* (fpdifference (fpone)
+								     fp-x)
+						       (fpplus (fpone) fp-x)))
+				      2)
+				     fp-x))))))))))
+
 ;; asin(x) for real x.  X is a bigfloat, and a maxima number (real or
 ;; complex) is returned.
+#+nil
 (defun fpasin (x)
   ;; asin(x) = atan(x/(sqrt(1-x^2))
   ;;         = sgn(x)*[%pi/2 - atan(sqrt(1-x^2)/abs(x))]
@@ -1449,6 +1505,21 @@ One extra decimal digit in actual representation for rounding purposes.")
 							   (fpplus (fpone) fp-x)))
 					  2)
 					 fp-x)))))))))
+
+(defun fpasin (x)
+  ;; asin(x) = atan(x/(sqrt(1-x^2))
+  ;;         = sgn(x)*[%pi/2 - atan(sqrt(1-x^2)/abs(x))]
+  ;;
+  ;; Use the first for  0 <= x < 1/2 and the latter for 1/2 < x <= 1.
+  ;;
+  ;; If |x| > 1, we need to do something else.
+  ;;
+  ;; asin(x) = -%i*log(sqrt(1-x^2)+%i*x)
+  ;;         = -%i*log(%i*x + %i*sqrt(x^2-1))
+  ;;         = -%i*[log(|x + sqrt(x^2-1)|) + %i*%pi/2]
+  ;;         = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
+  
+  ($bfloat (fpasin-core x)))
 
 ;; Square root of a complex number (xx, yy).  Both are bigfloats.  FP
 ;; (non-bigfloat) numbers are returned.
@@ -1601,6 +1672,38 @@ One extra decimal digit in actual representation for rounding purposes.")
 	  (complex-atanh x y)
 	(add u (mul '$%i v)))
       (fpatanh x)))
+
+;; acos(x) for real x.  X is a bigfloat, and a maxima number is returned.
+(defun fpacos (x)
+  ;; acos(x) = %pi/2 - asin(x)
+  ($bfloat (add (div '$%pi 2)
+		(mul -1 (fpasin-core x)))))
+
+(defun complex-acos (x y)
+  (let ((x (cdr (bigfloatp x)))
+	(y (cdr (bigfloatp y))))
+    (multiple-value-bind (re-sqrt-1-z im-sqrt-1-z)
+	(complex-sqrt (bcons (fpdifference (intofp 1) x))
+		      (bcons (fpminus y)))
+      (multiple-value-bind (re-sqrt-1+z im-sqrt-1+z)
+	  (complex-sqrt (bcons (fpplus (intofp 1) x))
+			(bcons y))
+	(values (bcons
+		 (fptimes* (intofp 2)
+			   (fpatan (fpquotient re-sqrt-1-z
+					       re-sqrt-1+z))))
+		(fpasinh (bcons
+			  (fpdifference
+			   (fptimes* re-sqrt-1+z im-sqrt-1-z)
+			   (fptimes* im-sqrt-1+z re-sqrt-1-z)))))))))
+				  
+
+(defun big-float-acos (x &optional y)
+  (if y
+      (multiple-value-bind (u v)
+	  (complex-acos x y)
+	(add u (mul '$%i v)))
+      (fpacos x)))
 
 (eval-when
     #+gcl (load)
