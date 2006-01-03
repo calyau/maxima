@@ -11,6 +11,10 @@ set arg7=%7
 set arg8=%8
 set arg9=%9
 
+rem Uncomment line below and set required value to MAXIMA_LANG_SUBDIR 
+rem to get localized describe in command line Maxima
+rem set MAXIMA_LANG_SUBDIR="es"
+
 set lisp=@DEFAULTLISP@
 set version=@VERSION@
 set prefix=@prefix@
@@ -108,3 +112,5 @@ goto end
 goto end
 
 :end
+
+
