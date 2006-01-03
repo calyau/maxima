@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.16 2005-09-25 08:49:15 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.17 2006-01-03 16:19:39 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -168,6 +168,31 @@ proc setMaxDir {} {
     # xmaxima messages
     ::msgcat::mcload [file join $maxima_priv(maxima_xmaximadir) msgs]
 
+    # Define maxima_lang_subdir
+    if { [info exists env(MAXIMA_LANG_SUBDIR)] } {
+	set maxima_priv(maxima_lang_subdir) $env(MAXIMA_LANG_SUBDIR)
+    } else {
+	set wlocale [ ::msgcat::mclocale ]
+	# Only languages known to Maxima
+	switch -glob $wlocale {
+	  "es*" {
+		    set maxima_priv(maxima_lang_subdir) "es"
+		}
+	  "pt*" {
+		    set maxima_priv(maxima_lang_subdir) "pt"
+		}
+	  default 
+	        {
+		    set maxima_priv(maxima_lang_subdir) ""
+		}
+	}
+	# On Windows ::msgcat::mclocale is a good way to derive user locale and pass 
+	# it to Maxima via MAXIMA_LANG_SUBDIR environment variable
+	if { $tcl_platform(platform) == "windows" && $maxima_priv(maxima_lang_subdir) != "" } {
+	    set env(MAXIMA_LANG_SUBDIR) "$maxima_priv(maxima_lang_subdir)"
+	}
+    }
+
     # Bring derived quantities up here too so we can see the
     # side effects of setting the above variables
 
@@ -178,8 +203,12 @@ proc setMaxDir {} {
 	    [file join $dir maxima_toc.html]
     } elseif {[file isdir [set dir [file join  $maxima_priv(maxima_verpkgdatadir) doc]]]} {
 	# 5.9 and up
-	set maxima_priv(pReferenceToc) \
-	    [file join $dir html maxima_toc.html]
+	if { $maxima_priv(maxima_lang_subdir) != "" && \
+	     [file exists [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html] ] } {
+	    set maxima_priv(pReferenceToc) [file join $dir html $maxima_priv(maxima_lang_subdir) maxima_toc.html]
+	} else {
+	    set maxima_priv(pReferenceToc) [file join $dir html maxima_toc.html]
+	}
     } else {
 	tide_notify [M [mc "Documentation not found in '%s'"] \
 			 [file native  $maxima_priv(maxima_verpkgdatadir)]]
