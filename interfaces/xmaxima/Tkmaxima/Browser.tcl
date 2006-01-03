@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.13 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: Browser.tcl,v 1.14 2006-01-03 12:36:25 vvzhy Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -627,7 +627,7 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 	    set name [toLocalFilename $res]
 	    set fi [open $name r]
 	    set answer [read $fi]
-	    if { [regexp {[.]html?$} $name ] || [regexp -nocase "^(\[ \n\t\r\])*<html>" $answer] } {
+	    if { [regexp -nocase {[.]html?$} $name ] || [regexp -nocase "^(\[ \n\t\r\])*<html>" $answer] } {
 		set contentType text/html
 	    } elseif {  [regexp {[.]gif([^/]*)$} $name ] } {
 		set contentType image/gif
