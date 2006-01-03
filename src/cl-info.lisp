@@ -339,14 +339,28 @@
   "search for the first occurrence of a file in the directory list dirs
 that matches the name name with extention ext"
   (dolist (dir dirs)
-    (let ((base-name (make-pathname :device (pathname-device dir)
-                                    :directory (pathname-directory dir))))
+    (let (base-name base-name-lang)
+      (setq base-name (make-pathname :device (pathname-device dir)
+                                     :directory (pathname-directory dir)))
+      (when *lang-subdir*
+        (setq base-name-lang (make-pathname :device (pathname-device dir)
+                                            :directory (append (pathname-directory dir) 
+					                       `(,*lang-subdir*)) )))
       (dolist (type extensions)
-	(let ((pathname (make-pathname :name name
+	(let (pathname)
+	  (when *lang-subdir*
+	    (setq pathname (make-pathname :name name
+				          :type (if (equalp type "")
+						    nil
+						    type)
+				          :defaults base-name-lang))
+	    (when (probe-file pathname)
+	      (return-from file-search pathname)))
+	  (setq pathname (make-pathname :name name
 				       :type (if (equalp type "")
 						 nil
 						 type)
-				       :defaults base-name)))
+				       :defaults base-name))
 	  (when (probe-file pathname)
 	    (return-from file-search pathname))))))
   ;; We couldn't find the file
@@ -560,6 +574,7 @@ that matches the name name with extention ext"
   )
 
 (defvar *default-info-files* '("maxima.info"))
+(defvar *lang-subdir*	     nil)
 
 (defun info-aux (x dirs)
   (loop for v in dirs

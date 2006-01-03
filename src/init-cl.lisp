@@ -219,7 +219,8 @@
 		    ;; subdir = two-char language code
 		    ((zl-member language '("es" "pt"))
 		        (setq *maxima-lang-subdir* language))
-		    (t  (setq *maxima-lang-subdir* nil)))  )))))    
+		    (t  (setq *maxima-lang-subdir* nil)))))
+	(setq cl-info::*lang-subdir* *maxima-lang-subdir*))))    
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))
@@ -302,8 +303,11 @@
 		(combine-path (list *maxima-symdir* lisp-patterns))
 		(combine-path (list *maxima-symdir* maxima-patterns))))
     (setq cl-info::*info-paths* (list (concatenate 'string *maxima-infodir* "/")))
-    (setq L (mapcar #'(lambda (x) (concatenate 'string *maxima-sharedir* "/" x "/")) share-subdirs-list))
-    (setq cl-info::*info-paths* (append cl-info::*info-paths* L))
+    ;; Share subdirs are not required here since all .info files are installed
+    ;; in one directory *maxima-infodir* -- there is no info files in share.
+    ;; vvzhy Jan 2, 2006
+    ;(setq L (mapcar #'(lambda (x) (concatenate 'string *maxima-sharedir* "/" x "/")) share-subdirs-list))
+    ;(setq cl-info::*info-paths* (append cl-info::*info-paths* L))
 
     ; Look for "foo.info" in share directory "foo".
     (loop for d in share-subdirs-list do
