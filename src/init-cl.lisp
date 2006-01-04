@@ -219,8 +219,8 @@
 		    ;; subdir = two-char language code
 		    ((zl-member language '("es" "pt"))
 		        (setq *maxima-lang-subdir* language))
-		    (t  (setq *maxima-lang-subdir* nil)))))
-	(setq cl-info::*lang-subdir* *maxima-lang-subdir*))))    
+		    (t  (setq *maxima-lang-subdir* nil))))))
+   (setq cl-info::*lang-subdir* *maxima-lang-subdir*)))    
 
 (defun set-pathnames ()
   (let ((maxima-prefix-env (maxima-getenv "MAXIMA_PREFIX"))

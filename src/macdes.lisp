@@ -132,7 +132,8 @@
 (defmspec $describe (x)
   (setq x ($sconcat (cadr x)))
   (let ((cl-info::*prompt-prefix* *prompt-prefix*)
-	(cl-info::*prompt-suffix* *prompt-suffix*))
+	(cl-info::*prompt-suffix* *prompt-suffix*)
+	(cl-info::*lang-subdir* *maxima-lang-subdir*))
     #-gcl
     (cl-info:info x)
     ;; Optimization: GCL's built-in info is much faster than our info
