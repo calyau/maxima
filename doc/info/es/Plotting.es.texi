@@ -1,4 +1,4 @@
-@c version 1.19
+@c english version 1.21
 @menu
 * Definiciones para Gr@'aficos::    
 @end menu
@@ -50,6 +50,10 @@ Otros s@'{@dotless{i}}mbolos de elementos importantes son  @code{xfun}, @code{co
 @deffnx {Funci@'on} plot2d ([@var{expr_1}, ..., @var{expr_n}], @var{x_range})
 @deffnx {Funci@'on} plot2d (@var{expr}, @var{x_range}, @var{y_range})
 @deffnx {Funci@'on} plot2d (@var{expr}, @var{x_range})
+@deffnx {Funci@'on} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range}, @var{y_range})
+@deffnx {Funci@'on} plot2d ([@var{name_1}, ..., @var{name_n}], @var{x_range})
+@deffnx {Funci@'on} plot2d (@var{name}, @var{x_range}, @var{y_range})
+@deffnx {Funci@'on} plot2d (@var{name}, @var{x_range})
 
 Muestra un gr@'afico de una o m@'as expresiones como funci@'on de una variable.
 
@@ -82,12 +86,40 @@ en el rango especificado por @var{x_range}.
 El rango vertical se ajusta a @var{y_range}.
 Todas las opciones toman sus valores por defecto a menos que se especifiquen de otra manera con @code{set_plot_option}.
 
+Cuando la funci@'on a representar ha sido definida en Maxima mediante  @code{:=} o @code{define}, o en Lisp por DEFUN o DEFMFUN, entonces se podr@'a especificar por su nombre. Las funciones definidas a nivel de LISP por DEFMSPEC, las funciones de simplificaci@'on, junto con muchas otras funciones, no pueden especificarse directamente por su nombre.
+@c REPORTED AS SF BUG # 1385271
+
 Ejemplos:
+
+Gr@'afico de una expresi@'on y especificaci@'on de algunos par@'ametros de uso com@'un.
 
 @example
 (%i1) plot2d (sin(x), [x, -5, 5])$
 (%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
 @end example
+
+Representando funciones por nombre.
+
+@c ===beg===
+@c F(x) := x^2 $
+@c :lisp (defun |$g| (x) (m* x x x))
+@c H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+@c plot2d (F, [u, -1, 1])$
+@c plot2d ([F, G, H], [u, -1, 1])$
+@c ===end===
+@example
+(%i1) F(x) := x^2 $
+
+(%i2) :lisp (defun |$g| (x) (m* x x x))
+
+$g
+(%i2) H(x) := if x < 0 then x^4 - 1 else 1 - x^5 $
+
+(%i3) plot2d (F, [u, -1, 1])$
+
+(%i4) plot2d ([F, G, H], [u, -1, 1])$
+@end example
+
 
 All@'a donde vaya una expresi@'on ordinaria, tambi@'en puede ir una expresi@'on param@'etrica en su lugar:
 @var{parametric_expr} es una lista de la forma
@@ -523,6 +555,10 @@ plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
 
 @deffn {Funci@'on} plot3d (@var{expr}, @var{x_range}, @var{y_range}, ..., @var{options}, ...)
 @deffnx {Funci@'on} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+@deffnx {Function} plot3d ([@var{expr_1}, @var{expr_2}, @var{expr_3}], @var{x_rge}, @var{y_rge})
+@deffnx {Function} plot3d ([@var{name_1}, @var{name_2}, @var{name_3}], @var{x_range}, @var{y_range}, ..., @var{options}, ...)
+
+Representa gr@'aficamente una o tres expresiones como funciones de dos variables.
 
 @example
 plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
@@ -530,13 +566,17 @@ plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
 dibuja @code{z = 2^(-u^2+v^2)} con @code{u} y @code{v} variando en [-5,5] y
 [-7,7] respectivamente, y con  @var{u} sobre el eje x, y con @code{v} sobre el eje y.
 
-Un ejemplo del segundo patr@'on de argumentos es
+Un ejemplo del tercer patr@'on de argumentos es
+
 @example
 plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)), y*sin(x/2)],
    [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
 @end example
 
 que dibuja una banda de Moebius, parametrizada por las tres expresiones dadas como primer argumento a @code{plot3d}. Un argumento opcional @code{['grid, 50, 15]} da el n@'umero de intervalos en las direcciones x e y, respectivamente.
+
+Cuando la funci@'on a representar ha sido definida en Maxima mediante  @code{:=} o @code{define}, o en Lisp por DEFUN o DEFMFUN, entonces se podr@'a especificar por su nombre. Las funciones definidas a nivel de LISP por DEFMSPEC, las funciones de simplificaci@'on, junto con muchas otras funciones, no pueden especificarse directamente por su nombre.
+@c REPORTED AS SF BUG # 1385271
 
 Este ejemplo muestra un gr@'afico de la parte real de @code{z^1/3}.
 
@@ -546,6 +586,7 @@ Este ejemplo muestra un gr@'afico de la parte real de @code{z^1/3}.
      ['transform_xy, polar_to_xy], ['view_direction, 1, 1, 1.4],
      ['colour_z, true]);
 @end example
+
 @noindent
 Aqu@'{@dotless{i}} la opci@'on @code{view_direction} indica la direcci@'on desde la que se hace la proyecci@'on. Se hace esto desde una posici@'on infinita pero paralela a la l@'{@dotless{i}}nea que va desde  @code{view_direction} hasta el origen.  Esto s@'olo se utiliza cuando @code{plot_format} est@'a en @code{ps}, puesto que los otros visores permiten la rotaci@'on interactiva del objeto.
 
@@ -560,6 +601,7 @@ plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi], [y, -%pi, %pi], ['grid, 40, 40
 @end example
 
 o un toro
+
 @example
 expr_1: cos(y)*(10.0+6*cos(x));
 expr_2: sin(y)*(10.0+6*cos(x));

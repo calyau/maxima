@@ -1,4 +1,4 @@
-@c version 1.11
+@c english version 1.12
 @menu
 * Definiciones para Arreglos y Tablas::  
 @end menu
@@ -104,6 +104,48 @@ La llamada @code{remarray (all)} borra todos los elementos de la lista global @c
 La funci@'on @code{remarray} devuelve la lista de los arreglos borrados.
 
 @end deffn
+
+
+@deffn {Funci@'on} subvar (@var{x}, @var{i})
+Eval@'ua la expresi@'on subindicada @code{@var{x}[@var{i}]}.
+
+La funci@'on @code{subvar} eval@'ua sus argumentos.
+
+La instrucci@'on @code{arraymake (@var{x}, [@var{i}]} construye la expresi@'on @code{@var{x}[@var{i}]},
+pero no la eval@'ua.
+
+Ejemplos:
+
+@c ===beg===
+@c x : foo $
+@c i : 3 $
+@c subvar (x, i);
+@c foo : [aa, bb, cc, dd, ee]$
+@c subvar (x, i);
+@c arraymake (x, [i]);
+@c ''%;
+@c ===end===
+@example
+(%i1) x : foo $
+
+(%i2) i : 3 $
+
+(%i3) subvar (x, i);
+(%o3)                         foo
+                                 3
+(%i4) foo : [aa, bb, cc, dd, ee]$
+
+(%i5) subvar (x, i);
+(%o5)                          cc
+(%i6) arraymake (x, [i]);
+(%o6)                         foo
+                                 3
+(%i7) ''%;
+(%o7)                          cc
+@end example
+
+@end deffn
+
 
 @c THIS IS REALLY CONFUSING
 @defvr {Variable opcional} use_fast_arrays

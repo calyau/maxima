@@ -1,4 +1,4 @@
-@c version 1.12
+@c english version 1.14
 @menu
 * Introducci@'on a las Series::      
 * Definiciones para las Series::      
@@ -13,7 +13,7 @@ Maxima dispone de las funciones @code{taylor} y @code{powerseries} para calcular
 @node Definiciones para las Series,  , Introducci@'on a las Series, Series
 @section Definiciones para las Series
 
-@defvr {Variable optativa} cauchysum
+@defvr {Variable opcional} cauchysum
 Valor por defecto: @code{false}
 
 @c REPHRASE
@@ -73,7 +73,7 @@ Ejemplo:
 
 @end deffn
 
-@defvr {Variable optativa} maxtayorder
+@defvr {Variable opcional} maxtayorder
 Valor por defecto: @code{true}
 
 Si @code{maxtayorder} vale @code{true}, entonces durante la manipulaci@'on algebraica de series truncadas de Taylor, la funci@'on @code{taylor} trata de retener tantos t@'erminos correctos como sea posible.
@@ -111,7 +111,7 @@ Ejemplo:
 @end deffn
 
 
-@defvr {Variable optativa} niceindicespref
+@defvr {Variable opcional} niceindicespref
 Valor por defecto: @code{[i, j, k, l, m, n]}
 
 La variable @code{niceindicespref} es la lista de la que la funci@'on @code{niceindices} va tomando nombres de etiquetas para @'{@dotless{i}}ndices de sumatorios y productos.
@@ -240,7 +240,7 @@ No hay ninguna funci@'on racional de grado 4 en numerador y denominador con este
 
 @end deffn
 
-@defvr {Variable optativa} powerdisp
+@defvr {Variable opcional} powerdisp
 Valor por defecto: @code{false}
 
 Si @code{powerdisp} vale @code{true}, se muestran las sumas con sus t@'erminos ordenados de menor a mayor potencia. As@'{@dotless{i}}, un polinomio se presenta como una serie de potencias truncada con el t@'ermino constante al principio y el de mayor potencia al final.
@@ -289,7 +289,7 @@ in the first simplification we have returned:
 
 @end deffn
 
-@defvr {Variable optativa} psexpand
+@defvr {Variable opcional} psexpand
 Valor por defecto: @code{false}
 
 Si @code{psexpand} vale @code{true}, toda expresi'on racional se muestra completamente expandida. La variable @code{ratexpand} tiene el mismo efecto.
@@ -505,7 +505,7 @@ Ejemplos:
 @end deffn
 
 
-@defvr {Variable optativa} taylordepth
+@defvr {Variable opcional} taylordepth
 Valor por defecto: 3
 
 @c UM, THE CONTEXT FOR THIS REMARK NEEDS TO BE ESTABLISHED
@@ -548,7 +548,7 @@ Devuelve @code{true} si @var{expr} es un desarrollo de Taylor y @code{false} en 
 @end deffn
 
 
-@defvr {Variable optativa} taylor_logexpand
+@defvr {Variable opcional} taylor_logexpand
 Valor por defecto: @code{true}
 
 La variable @code{taylor_logexpand} controla los desarrollos de logaritmos en la funci@'on @code{taylor}.
@@ -559,7 +559,7 @@ Si @code{taylor_logexpand} vale @code{true}, todos los logaritmos se expanden co
 @end defvr
 
 
-@defvr {Variable optativa} taylor_order_coefficients
+@defvr {Variable opcional} taylor_order_coefficients
 Valor por defecto: @code{true}
 
 La variable @code{taylor_order_coefficients} controla la ordenaci@'on de los coeficientes en un desarrollo de Taylor.
@@ -577,7 +577,7 @@ Simplifica los coeficientes de la serie de potencias @var{expr}. Esta funci@'on 
 @end deffn
 
 
-@defvr {Variable optativa} taylor_truncate_polynomials
+@defvr {Variable opcional} taylor_truncate_polynomials
 Valor por defecto: @code{true}
 
 @c WHAT IS THE "INPUT TRUNCATION LEVEL" ?? THE ARGUMENT n OF taylor ??
@@ -652,7 +652,7 @@ Ejemplos:
 @end deffn
 
 
-@defvr {Variable optativa} verbose
+@defvr {Variable opcional} verbose
 Valor por defecto: @code{false}
 
 Si @code{verbose} vale @code{true}, la funci@'on @code{powerseries} va imprimiendo mensajes durante su ejecuci@'on.

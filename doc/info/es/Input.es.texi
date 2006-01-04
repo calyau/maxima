@@ -1,4 +1,4 @@
-@c version 1.41
+@c english version 1.42
 @menu
 * Introducci@'on a  Entrada y Salida:: 
 * Archivos::
@@ -1108,12 +1108,11 @@ La instrucci@'on @code{tex (@var{expr})} imprime en la consola la representaci@'
 
 La instrucci@'on @code{tex (@var{label})} imprime en la consola la representaci@'on en TeX de la expresi@'on a la que hace referencia la etiqueta @var{label}, asign@'andole a su vez una etiqueta de ecuaci@'on que ser@'a mostrada al lado izquierdo de la misma. La etiqueta de la expresi@'on en TeX es la misma que la de Maxima.
 
-La instrucci@'on @code{tex (@var{expr}, @var{filename})} a@~nade la representaci@'on TeX de @var{expr} al fichero @var{filename}.
+La instrucci@'on @code{tex (@var{expr}, @var{filename})} a@~nade la representaci@'on TeX de @var{expr} al fichero @var{filename}. La funci@'on @code{tex} no eval@'ua el argumento @var{filename}, pero la doble comilla simple @code{''} fuerza su evaluaci@'on.
 
-La instrucci@'on @code{tex (@var{label}, @var{filename})} a@~nade la representaci@'on TeX de la expresi@'on a la que hace referencia la etiqueta  @var{label}, junto con una etiqueta, al fichero @var{filename}.
+La instrucci@'on @code{tex (@var{label}, @var{filename})} a@~nade la representaci@'on TeX de la expresi@'on a la que hace referencia la etiqueta  @var{label}, junto con una etiqueta, al fichero @var{filename}. La funci@'on @code{tex} no eval@'ua el argumento @var{filename}, pero la doble comilla simple @code{''} fuerza su evaluaci@'on.
 
-La funci@'on @code{tex} eval@'ua sus argumentos tras comprobar si se trata de una etiqueta. Las dobles comillas simples @code{''} fuerzan la evaluaci@'on del argumento, anulando la comprobaci@'on sobre la etiqueta.
-La comilla simple @code{'} evita la evaluaci@'on del argumento.
+La funci@'on @code{tex} eval@'ua sus argumentos tras comprobar si se trata de una etiqueta. La doble comilla simple @code{''} fuerza la evaluaci@'on del argumento, anulando la comprobaci@'on sobre la etiqueta.
 
 V@'ease tambi@'en @code{texput}.
 

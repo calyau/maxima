@@ -1,3 +1,4 @@
+@c english version 1.29
 \input texinfo
 @c -*-texinfo-*-
 
@@ -47,7 +48,7 @@ END-INFO-DIR-ENTRY
 
 @i{Maxima es un sistema de c@'alculo simb@'olico escrito en Lisp.}
 
-Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}} obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
+Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Institute of Technology) entre los a@~nos 1968 y 1982 como parte del proyecto MAC. El MIT pas@'o una copia del c@'odigo fuente al DOE (Department of Energy) en 1982, en una versi@'on conocida como DOE-Macsyma. Una de estas copias fue mantenida por el Profesor William F. Schelter de la Universidad de Texas desde el a@~no 1982 hasta su fallecimiento en 2001. En 1998 Schelter hab@'{@dotless{i}}a obtenido del Departamento de Energ@'{@dotless{i}}a permiso para distribuir el c@'odigo fuente de DOE-Macsyma bajo licencia GNU-GPL, iniciando en el a@~no 2000 el proyecto Maxima en SourceForge con el fin de mantener y seguir desarrollando DOE-Macsyma, ahora con el nombre de Maxima.
 
 @i{Notas de la traducci@'on espa@~nola.}
 
@@ -80,7 +81,6 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Logaritmos::                         Transformaci@'on y c@'alculo de expresiones logar@'{@dotless{i}}tmicas.
 * Trigonometr@'{@dotless{i}}a::        Transformaci@'on y c@'alculo de expresiones trigonom@'etricas.
 * Funciones Especiales::               Funciones especiales.
-* Polinomios Ortogonales::             Polinomios ortogonales y funciones especiales.
 * Funciones el@'{@dotless{i}}pticas::  Funciones e integrales el@'{@dotless{i}}pticas.
 * L@'{@dotless{i}}mites::              C@'alculo de l@'{@dotless{i}}mites.
 * Diferenciaci@'on::                   C@'alculo diferencial.
@@ -201,11 +201,6 @@ Funciones Especiales
 * Introducci@'on a las Funciones Especiales::  
 * specint::                     
 * Definiciones para las Funciones Especiales::  
-
-Polinomios Ortogonales
-
-* Introducci@'on a los Polinomios Ortogonales::  
-* Definiciones para los Polinomios Ortogonales::
 
 Funciones el@'{@dotless{i}}pticas
 
@@ -406,15 +401,11 @@ Depurado
 @chapter Trigonometr@'{@dotless{i}}a
 @include Trigonometric.es.texi
 
-@node Funciones Especiales, Polinomios Ortogonales, Trigonometr@'{@dotless{i}}a, Top
+@node Funciones Especiales, Funciones el@'{@dotless{i}}pticas, Trigonometr@'{@dotless{i}}a, Top
 @chapter Funciones Especiales
 @include Special.es.texi
 
-@node Polinomios Ortogonales, Funciones el@'{@dotless{i}}pticas, Funciones Especiales, Top
-@chapter Polinomios Ortogonales
-@include SpecfunII.es.texi
-
-@node Funciones el@'{@dotless{i}}pticas, L@'{@dotless{i}}mites, Polinomios Ortogonales, Top
+@node Funciones el@'{@dotless{i}}pticas, L@'{@dotless{i}}mites, Funciones Especiales, Top
 @chapter Funciones el@'{@dotless{i}}pticas
 @include Elliptic.es.texi
 

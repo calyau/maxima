@@ -1,4 +1,4 @@
-@c version 1.24
+@c english version 1.25
 @menu
 * n-arios::                        
 * no-fijos::                       

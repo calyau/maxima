@@ -1,4 +1,4 @@
-@c version 1.41
+@c english version 1.42
 @menu
 * Introducci@'on a las Expresiones::  
 * Asignaci@'on::
@@ -1423,20 +1423,72 @@ La instrucci@'on @code{load (powers)} carga esta funci@'on.
 
 @end deffn
 
-@c NEEDS WORK
+
 @deffn {Funci@'on} product (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Devuelve el producto de los valores de @code{expr} seg@'un el @'{@dotless{i}}ndice @var{i} var@'{@dotless{i}}a de @var{i_0} hasta @var{i_1}.
+Representa el producto de los valores de @code{expr} seg@'un el @'{@dotless{i}}ndice @var{i} var@'{@dotless{i}}a de @var{i_0} hasta @var{i_1}.
+La forma nominal @code{'product} se presenta en forma de letra pi may@'uscula.
 
-Si @var{i_1} es uno menos @var{i_0}, el producto queda vac@'{@dotless{i}}o y @code{product} devuelve 1 en lugar de dar error.  V@'ease tambi@'en @code{prodhack}.
+La funci@'on @code{product} eval@'ua @var{expr} y los l@'{@dotless{i}}mites inferior y superior, @var{i_0} y @var{i_1}, pero no eval@'ua el @'{@dotless{i}}ndice @var{i}.
 
-Maxima no simplifica productos.
-@c WELL, WE SHOULD CHANGE THAT.
+Si la diferencia entre los l@'{@dotless{i}}mites superior e inferior es un n@'umero entero, la expresi@'on @var{expr} se eval@'ua para cada valor del @'{@dotless{i}}ndice @var{i}, siendo el resultado un producto en forma expl@'{@dotless{i}}cita.
 
-Ejemplo:
+En caso contrario, el rango del @'{@dotless{i}}ndice no est@'a definido, aplic@'andose entonces algunas reglas que permitan simplificar el producto.
+Cuando la variable global @code{simpproduct} valga @code{true}, se aplicar@'an reglas adicionales.
+En ciertos casos, la simplificaci@'on dar@'a lugar a un resultado que ya no tenga el formato del producto; en caso contrario se devolver@'a una forma nominal @code{'product}.
+
+V@'eanse tambi@'en @code{nouns} y @code{evflag}.
+
+
+Ejemplos:
+
+@c ===beg===
+@c product (x + i*(i+1)/2, i, 1, 4);
+@c product (i^2, i, 1, 7);
+@c product (a[i], i, 1, 7);
+@c product (a(i), i, 1, 7);
+@c product (a(i), i, 1, n);
+@c product (k, k, 1, n);
+@c product (k, k, 1, n), simpproduct;
+@c product (integrate (x^k, x, 0, 1), k, 1, n);
+@c product (if k <= 5 then a^k else b^k, k, 1, 10);
+@c ===end===
 
 @example
 (%i1) product (x + i*(i+1)/2, i, 1, 4);
 (%o1)           (x + 1) (x + 3) (x + 6) (x + 10)
+(%i2) product (i^2, i, 1, 7);
+(%o2)                       25401600
+(%i3) product (a[i], i, 1, 7);
+(%o3)                 a  a  a  a  a  a  a
+                       1  2  3  4  5  6  7
+(%i4) product (a(i), i, 1, 7);
+(%o4)          a(1) a(2) a(3) a(4) a(5) a(6) a(7)
+(%i5) product (a(i), i, 1, n);
+                             n
+                           /===\
+                            ! !
+(%o5)                       ! !  a(i)
+                            ! !
+                           i = 1
+(%i6) product (k, k, 1, n);
+                               n
+                             /===\
+                              ! !
+(%o6)                         ! !  k
+                              ! !
+                             k = 1
+(%i7) product (k, k, 1, n), simpproduct;
+(%o7)                          n!
+(%i8) product (integrate (x^k, x, 0, 1), k, 1, n);
+                             n
+                           /===\
+                            ! !    1
+(%o8)                       ! !  -----
+                            ! !  k + 1
+                           k = 1
+(%i9) product (if k <= 5 then a^k else b^k, k, 1, 10);
+                              15  40
+(%o9)                        a   b
 @end example
 
 @end deffn
@@ -1532,26 +1584,21 @@ Ejemplos:
 
 @end deffn
 
-@c NEEDS WORK
-@c NEEDS EXAMPLES
-@c VERY IMPORTANT !!
+
 @deffn {Funci@'on} sum (@var{expr}, @var{i}, @var{i_0}, @var{i_1})
-Devuelve la suma de los valores de @code{expr} seg@'un el @'{@dotless{i}}ndice @var{i} var@'{@dotless{i}}a de @var{i_0} hasta @var{i_1}.
-Los sumatorios pueden derivarse, sumarse, restarse o multiplicarse durante la simplificaci@'on.
-La forma nominal @code{'sum} se muestra en el terminal con la notaci@'on sigma.
 
-Si los l@'{@dotless{i}}mites superior e inferior difieren en un entero, el sumando @var{expr} se eval@'ua para cada valor del @'{@dotless{i}}ndice del sumatorio @var{i}, siendo luego todos sumados.
+Representa la suma de los valores de @code{expr} seg@'un el @'{@dotless{i}}ndice @var{i} var@'{@dotless{i}}a de @var{i_0} hasta @var{i_1}.
+La forma nominal @code{'sum} se presenta en forma de letra sigma may@'uscula.
 
-Si la variable @code{simpsum} vale @code{true} se simplifica el sumatorio, lo que puede dar lugar en ocasiones a formas compactas. Si @code{simpsum} vale @code{false} o la simplificaci@'on falla, el resultado es la forma nominal @code{'sum}.
+La funci@'on @code{sum} eval@'ua su sumando @var{expr} y los l@'{@dotless{i}}mites inferior y superior, @var{i_0} y @var{i_1}, pero no eval@'ua el @'{@dotless{i}}ndice @var{i}.
 
-La funci@'on @code{sum} eval@'ua @var{i_0} e @var{i_1} pero no @var{i}.
-@c EVALUATION OF THE SUMMAND IS A MESS !!
-En algunos casos el sumando @var{expr} no se eval@'ua, pudi@'endolo hacer en mayor o menor grado en otros.
+Si la diferencia entre los l@'{@dotless{i}}mites superior e inferior es un n@'umero entero, el sumando @var{expr} se eval@'ua para cada valor del @'{@dotless{i}}ndice @var{i}, siendo el resultado una suma en forma expl@'{@dotless{i}}cita.
 
-Si @var{i_1} es uno menos @var{i_0}, la suma se considera vac@'{@dotless{i}}a y @code{sum} devuelve 0 en lugar de mostrar un error.
-V@'ease tambi@'en @code{sumhack}.
+En caso contrario, el rango del @'{@dotless{i}}ndice no est@'a definido, aplic@'andose entonces algunas reglas que permitan simplificar la suma.
+Cuando la variable global @code{simpsum} valga @code{true}, se aplicar@'an reglas adicionales.
+En ciertos casos, la simplificaci@'on dar@'a lugar a un resultado que ya no tenga el formato del sumatorio; en caso contrario se devolver@'a una forma nominal @code{'product}.
 
-Cuando la variable @code{cauchysum} vale @code{true}, el producto de de sumatorios se expresa como un producto de Cauchy, en cuyo caso el @'{@dotless{i}}ndice del sumatorio interior es funci@'on del @'{@dotless{i}}ndice del exterior, en lugar de variar independientemente.
+Cuando @code{cauchysum} vale @code{true}, el producto de sumatorios se expresa como un producto de Cauchy, en cuyo caso el @'{@dotless{i}}ndice del sumatorio interior es funci@'on del @'{@dotless{i}}ndice del exterior, en lugar de variar independientemente.
 
 La variable global @code{genindex} guarda el prefijo alfab@'etico a utilizar cuando sea necesario generar autom@'aticamente el siguiente @'{@dotless{i}}ndice de sumatorio.
 
@@ -1568,9 +1615,14 @@ Ejemplos:
 @c sum (a[i], i, 1, 7);
 @c sum (a(i), i, 1, 7);
 @c sum (a(i), i, 1, n);
-@c ev (sum (2^i + i^2, i, 0, n), simpsum);
-@c ev (sum (1/3^i, i, 1, inf), simpsum);
-@c ev (sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum);
+@c sum (2^i + i^2, i, 0, n);
+@c sum (2^i + i^2, i, 0, n), simpsum;
+@c sum (1/3^i, i, 1, inf);
+@c sum (1/3^i, i, 1, inf), simpsum;
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+@c sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
+@c sum (integrate (x^k, x, 0, 1), k, 1, n);
+@c sum (if k <= 5 then a^k else b^k, k, 1, 10);
 @c ===end===
 
 @example
@@ -1589,18 +1641,67 @@ Ejemplos:
                            /
                            ====
                            i = 1
-(%i5) ev (sum (2^i + i^2, i, 0, n), simpsum);
+(%i5) sum (2^i + i^2, i, 0, n);
+                          n
+                         ====
+                         \       i    2
+(%o5)                     >    (2  + i )
+                         /
+                         ====
+                         i = 0
+(%i6) sum (2^i + i^2, i, 0, n), simpsum;
                               3      2
                    n + 1   2 n  + 3 n  + n
-(%o5)             2      + --------------- - 1
+(%o6)             2      + --------------- - 1
                                   6
-(%i6) ev (sum (1/3^i, i, 1, inf), simpsum);
+(%i7) sum (1/3^i, i, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o7)                        >    --
+                            /      i
+                            ====  3
+                            i = 1
+(%i8) sum (1/3^i, i, 1, inf), simpsum;
                                 1
-(%o6)                           -
+(%o8)                           -
                                 2
-(%i7) ev (sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum);
+(%i9) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf);
+                              inf
+                              ====
+                              \     1
+(%o9)                      30  >    --
+                              /      2
+                              ====  i
+                              i = 1
+(%i10) sum (i^2, i, 1, 4) * sum (1/i^2, i, 1, inf), simpsum;
                                   2
-(%o7)                        5 %pi
+(%o10)                       5 %pi
+(%i11) sum (integrate (x^k, x, 0, 1), k, 1, n);
+                            n
+                           ====
+                           \       1
+(%o11)                      >    -----
+                           /     k + 1
+                           ====
+                           k = 1
+(%i12) sum (if k <= 5 then a^k else b^k, k, 1, 10));
+Incorrect syntax: Too many )'s
+else b^k, k, 1, 10))
+                  ^
+(%i12) linenum:11;
+(%o11)                         11
+(%i12) sum (integrate (x^k, x, 0, 1), k, 1, n);
+                            n
+                           ====
+                           \       1
+(%o12)                      >    -----
+                           /     k + 1
+                           ====
+                           k = 1
+(%i13) sum (if k <= 5 then a^k else b^k, k, 1, 10);
+          10    9    8    7    6    5    4    3    2
+(%o13)   b   + b  + b  + b  + b  + a  + a  + a  + a  + a
 @end example
 
 @end deffn
