@@ -21,9 +21,9 @@
 ;; Date: 4/99
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(in-package 'maxima)
+(in-package :maxima)
 (macsyma-module mathml)
-(proclaim '(special lop rop ccol *row *indent* mPrport))
+(declaim (special lop rop ccol *row *indent* mPrport))
 
 
 (defmfun $ctmathml (&rest margs)

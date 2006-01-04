@@ -10,7 +10,7 @@
 ;    (c) copyright 1999  Kent State University
 ;               all rights reserved.
 ;=============================================================================
-(in-package 'maxima)
+(in-package :maxima)
 (macsyma-module mathml)
 
 ;; mcmPr-lib must be set as a directory name where your PrMathML 
@@ -19,7 +19,7 @@
 (setq mcmPr-lib "/usr/local/MP/maxima/")
 
 ;; special variables used in TeXetting
-(proclaim '(special *row* *indent* ccol mPrport $mPrautolabel $mPrworksheet $lamPrworksheet
+(declaim (special *row* *indent* ccol mPrport $mPrautolabel $mPrworksheet $lamPrworksheet
              $mPrlabelleft $lamPrautolabel $mPrdisplaytype $mPrevaluate
              macmPr-lib lop rop $labels casep))
 
