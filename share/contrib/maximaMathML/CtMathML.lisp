@@ -1,3 +1,4 @@
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  Purpose:  Generate MathML Content code from MAXIMA
 ;;;  File: CtMathML.lsp
@@ -19,21 +20,10 @@
 ;; Author: Paul S. Wang
 ;; Date: 4/99
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;
-;=============================================================================
-;    (c) copyright 2002	 Kent State University
-;		all rights reserved.
-;
-; Authors:  Paul S. Wang, Kent State University
-; This work was supported by NSF/USA.
-; Permission to use this work for any purpose is granted provided that
-; the copyright notice, author and support credits above are retained.
-;
-;=============================================================================
 
-(in-package :maxima)
+(in-package 'maxima)
 (macsyma-module mathml)
-(declaim (special lop rop ccol *row *indent* mPrport))
+(proclaim '(special lop rop ccol *row *indent* mPrport))
 
 
 (defmfun $ctmathml (&rest margs)
@@ -75,7 +65,7 @@
                       (eq 'mlable (caar mexpress)))
                 (setq mexpress (cadr mexpress))
 	   )
-           (tprinc "<math>")
+           (tprinc "<math  xmlns='http://www.w3.org/1998/Math/MathML'>")
            (ctmathml (nformat mexpress))  ;;; call engine
 	   (tprinc "</math>")
            (when filename (terpri mPrport) (close mPrport))
@@ -146,11 +136,12 @@
 	          (tprinc "<cn type=\"constant\">") )
 	       (t (tprinc "<cn>") )
 	 )
-         (tprinc val) (tprinc "</ci>")
+         (tprinc val) (tprinc "</cn>")
         )
         (t (tprinc "<ci>")
          (tprinc (apply 'concat (mapcar #'handle_rsw
-                   (rm '// (explode (fullstrip1 a))))))
+		   ;; next line modified explode to exploden pwang 2/2003
+                   (rm '// (exploden (fullstrip1 a))))))
          (tprinc "</ci>"))
   )
 ))
