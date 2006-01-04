@@ -111,7 +111,7 @@ ponto flutuante.
 @defvr {Vari@'avel de Op@value{cedilha}@~ao} float2bf
 Valor padr@~ao: @code{false}
  
-Quando @code{float2bf} for @code{false}, ma mensagem de alerta @'e mostrada quando
+Quando @code{float2bf} for @code{false}, uma mensagem de alerta @'e mostrada quando
 um n@'umero em ponto flutuante @'e convertido em um grande n@'umero em ponto flutuante (uma vez que
 isso pode resultar em perda de precis@~ao).
 

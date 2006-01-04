@@ -1286,7 +1286,7 @@ O numerador e o denominador s@~ao feitos relativamente primos, por exemplo
 @code{rat ((x^2 - 1)^4/(x + 1)^2)} retorna @code{(x - 1)^4 (x + 1)^2)},
 mas o fator dentro de cada parte pode n@~ao ser relativamente primo.
 
-No pacote @code{ctensr} (Manipula@,{c}@~ao de componentes de tensores),
+No pacote @code{ctensor} (Manipula@,{c}@~ao de componentes de tensores),
 tensores de Ricci, Einstein, Riemann, e de Weyl e a curvatura escalar 
 s@~ao fatorados automaticamente quando @code{ratfac} for @code{true}.
 @i{@code{ratfac} pode somente ser
