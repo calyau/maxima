@@ -888,10 +888,14 @@
   (simplifya (list '(mtimes) (caddr w)
 		   (simplifya (list '(%log) (cadr w)) t)) t))
 
-(defmfun simpsqrt (x vestigial z)
-  vestigial				;Ignored.       
+(defmfun simpsqrt (x y z)
   (oneargcheck x)
-  (simplifya (list '(mexpt) (cadr x) '((rat simp) 1 2)) z))
+  (setq y (simpcheck (cadr x) z))
+  (cond ((double-float-eval (mop x) y))
+	((and (not (member 'simp (car x)))
+	      (big-float-eval (mop x) y)))
+	(t
+	 (simplifya (list '(mexpt) (cadr x) '((rat simp) 1 2)) z))))
 
 (defmfun simpquot (x y z)
   (twoargcheck x)

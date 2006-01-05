@@ -1740,6 +1740,16 @@ One extra decimal digit in actual representation for rounding purposes.")
 		 (mul '$%i (bcons (fppi))))
 	    (bcons (fplog fp-x))))))
 
+(defun big-float-sqrt (x &optional y)
+  (if y
+      (multiple-value-bind (u v)
+	  (complex-sqrt x y)
+	(add (bcons u) (mul '$%i (bcons v))))
+      (let ((fp-x (cdr (bigfloatp x))))
+	(if (fplessp fp-x (intofp 0))
+	    (mul '$%i (bcons (fproot (bcons (fpminus fp-x)) 2)))
+	    (bcons (fproot x 2))))))
+
 (eval-when
     #+gcl (load)
     #-gcl (:load-toplevel)

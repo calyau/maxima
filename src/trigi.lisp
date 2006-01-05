@@ -201,6 +201,7 @@
   (frob %log #'(lambda (x)
 		 (let ((y (ignore-errors (cl:log x))))
 		   (if y y (domain-error x 'log)))))
+  (frob %sqrt #'cl:sqrt)
   )
 
 (macrolet ((frob (mfun dfun)
@@ -215,6 +216,7 @@
   (frob %atanh #'big-float-atanh)
   (frob %acos 'big-float-acos)
   (frob %log 'big-float-log)
+  (frob %sqrt 'big-float-sqrt)
   )
 
 ;; Here is a general scheme for defining and applying reflection rules. A 
