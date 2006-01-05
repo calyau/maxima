@@ -1705,6 +1705,41 @@ One extra decimal digit in actual representation for rounding purposes.")
 	(add u (mul '$%i v)))
       (fpacos x)))
 
+(defun complex-log (x y)
+  (let* ((x (cdr (bigfloatp x)))
+	 (y (cdr (bigfloatp y)))
+	 (t1 (let (($float2bf t))
+	       ;; No warning message, please.
+	       (floattofp 1.2d0)))
+	 (t2 (intofp 3))
+	 (rho (fpplus (fptimes* x x)
+		      (fptimes* y y)))
+	 (abs-x (fpabs x))
+	 (abs-y (fpabs y))
+	 (beta (fpmax abs-x abs-y))
+	 (theta (fpmin abs-x abs-y)))
+    (values (if (or (fpgreaterp t1 beta)
+		    (fplessp rho t2))
+		(fpquotient (fplog1p (fpplus (fptimes* (fpdifference beta (fpone))
+						       (fpplus beta (fpone)))
+					     (fptimes* theta theta)))
+			    (intofp 2))
+		(fpquotient (fplog rho) (intofp 2)))
+	    (fpatan2 y x))))
+
+(defun big-float-log (x &optional y)
+  (if y
+      (multiple-value-bind (u v)
+	  (complex-log x y)
+	(add (bcons u) (mul '$%i (bcons v))))
+      (let ((fp-x (cdr (bigfloatp x))))
+	(if (fplessp fp-x (intofp 0))
+	    ;; ??? Do we want to return an exact %i*%pi or a float
+	    ;; approximation?
+	    (add (bcons (fplog (fpminus fp-x)))
+		 (mul '$%i (bcons (fppi))))
+	    (bcons (fplog fp-x))))))
+
 (eval-when
     #+gcl (load)
     #-gcl (:load-toplevel)

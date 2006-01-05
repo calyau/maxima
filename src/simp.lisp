@@ -869,7 +869,12 @@
 	    (cond ((null (setq y (cdr y)))
 		   (return (simplifya (cons '(mplus) b) t))))
 	    (go loop)))
+	((double-float-eval (mop x) y))
+	((and (not (member 'simp (car x)))
+	      (big-float-eval (mop x) y)))
+	#+nil
 	(($bfloatp y) ($bfloat (list '(%log) y)))
+	#+nil
 	((or (floatp y) (and $numer (integerp y)))
 	 (cond ((plusp y) (log y))
 	       ($lognumer (cond ((equal y -1) 0) (t (log (minus y)))))

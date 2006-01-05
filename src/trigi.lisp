@@ -198,6 +198,9 @@
   (frob $min #'cl:min)
   (frob %signnum #'cl:signum)
   (frob $atan2 #'cl:atan)
+  (frob %log #'(lambda (x)
+		 (let ((y (ignore-errors (cl:log x))))
+		   (if y y (domain-error x 'log)))))
   )
 
 (macrolet ((frob (mfun dfun)
@@ -211,6 +214,7 @@
   (frob %tanh #'big-float-tanh)
   (frob %atanh #'big-float-atanh)
   (frob %acos 'big-float-acos)
+  (frob %log 'big-float-log)
   )
 
 ;; Here is a general scheme for defining and applying reflection rules. A 
