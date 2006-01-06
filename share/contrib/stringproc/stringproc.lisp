@@ -210,7 +210,7 @@
 ;;  converts lisp-string back into maxima-string
 (defun $sunlisp (lstr) (m-string lstr))
 ;;(defun m-string (lstr) (make-symbol (concatenate 'string "&" lstr))) ;; 5.9.1
-(defun m-string (lstr) (make-symbol (maybe-invert-string-case (concatenate 'string "&" lstr)))) ;; 5.9.2
+(defun m-string (lstr) (intern (maybe-invert-string-case (concatenate 'string "&" lstr)))) ;; 5.9.2
 
 
 ;;  tests, if object is lisp-string
