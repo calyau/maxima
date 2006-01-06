@@ -1272,6 +1272,12 @@ One extra decimal digit in actual representation for rounding purposes.")
 ;;;
 ;;; This needs to be systemized somehow.  It isn't helped by the fact
 ;;; that some of the routines above also do the samething.
+;;;
+;;; The implementation for the special functions for a complex
+;;; argument are mostly taken from W. Kahan, "Branch Cuts for Complex
+;;; Elementary Functions or Much Ado About Nothing's Sign Bit", in
+;;; Iserles and Powell (eds.) "The State of the Art in Numerical
+;;; Analysis", pp 165-211, Clarendon Press, 1987
 
 ;; Compute exp(x) - 1, but do it carefully to preserve precision when
 ;; |x| is small.  X is a FP number, and a FP number is returned.  That
@@ -1329,7 +1335,8 @@ One extra decimal digit in actual representation for rounding purposes.")
 		 (intofp 2)))))
 
 (defun big-float-sinh (x &optional y)
-  ;; The rectform for sinh should be numerically accurate, so return nil 
+  ;; The rectform for sinh for complex args should be numerically
+  ;; accurate, so return nil in that case.
   (unless y
     (fpsinh x)))
 
@@ -1451,61 +1458,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 
 ;; asin(x) for real x.  X is a bigfloat, and a maxima number (real or
 ;; complex) is returned.
-#+nil
-(defun fpasin (x)
-  ;; asin(x) = atan(x/(sqrt(1-x^2))
-  ;;         = sgn(x)*[%pi/2 - atan(sqrt(1-x^2)/abs(x))]
-  ;;
-  ;; Use the first for  0 <= x < 1/2 and the latter for 1/2 < x <= 1.
-  ;;
-  ;; If |x| > 1, we need to do something else.
-  ;;
-  ;; asin(x) = -%i*log(sqrt(1-x^2)+%i*x)
-  ;;         = -%i*log(%i*x + %i*sqrt(x^2-1))
-  ;;         = -%i*[log(|x + sqrt(x^2-1)|) + %i*%pi/2]
-  ;;         = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
-  
-  (let ((fp-x (cdr (bigfloatp x))))
-    (cond ((minusp (car fp-x))
-	   ;; asin(-x) = -asin(x);
-	   (mul -1 (fpasin (bcons (fpminus fp-x)))))
-	  ((fplessp fp-x (cdr bfhalf))
-	   ;; 0 <= x < 1/2
-	   ;; asin(x) = atan(x/sqrt(1-x^2))
-	   (bcons
-	    (fpatan (fpquotient fp-x
-				(fproot (bcons
-					 (fptimes* (fpdifference (fpone) fp-x)
-						   (fpplus (fpone) fp-x)))
-					2)))))
-	  ((fpgreaterp fp-x (fpone))
-	   ;; x > 1
-	   ;; asin(x) = %pi/2 - %i*log(|x+sqrt(x^2-1)|)
-	   ;;
-	   ;; Should we try to do something a little fancier with the
-	   ;; argument to log and use log1p for better accuracy?
-	   (let ((arg (fpplus fp-x
-			      (fproot (bcons (fptimes* (fpdifference fp-x (fpone))
-						       (fpplus fp-x (fpone))))
-				      2))))
-	     (add (bcons (fpquotient (fppi) (intofp 2)))
-		  (mul -1 '$%i
-		       (bcons (fplog arg))))))
-		       
-	  (t
-	   ;; 1/2 <= x <= 1
-	   ;; asin(x) = %pi/2 - atan(sqrt(1-x^2)/x)
-	   (let ((piby2 (fpquotient (fppi) (intofp 2))))
-	     (bcons
-	      (fpdifference piby2
-			    (fpatan
-			     (fpquotient (fproot
-					  (bcons (fptimes* (fpdifference (fpone)
-									 fp-x)
-							   (fpplus (fpone) fp-x)))
-					  2)
-					 fp-x)))))))))
-
 (defun fpasin (x)
   ;; asin(x) = atan(x/(sqrt(1-x^2))
   ;;         = sgn(x)*[%pi/2 - atan(sqrt(1-x^2)/abs(x))]
