@@ -27,13 +27,7 @@
 ;; Let's have version numbers 1,2,3,...
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  ;;($load "c:/maximacvs/maxima/src/ellipt.lisp")
-  ;;($load "c:/maximacvs/maxima/src/float.lisp")
-  ;;($load "c:/maximacvs/maxima/src/trigi.lisp")
   ($put '$mring 1 '$version))
-
-;;(defun float-or-rational-p (x)
-;;  (or (floatp x) ($ratnump x) (like x '$%i) (like x '|$%i|)))
 
 ;; (1) In maxima-grobner.lisp, there is a structure 'ring.'  
 
@@ -54,22 +48,22 @@
   add
   div
   rdiv
+  reciprocal
   mult
   sub
   negate
+  psqrt
   add-id
   mult-id
   fzerop
+  adjoint
   maxima-to-mring
   mring-to-maxima)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (defmvar $%mrings `((mlist) $floatfield $complexfield $rationalfield $crering $generalring $bigfloatfield
 		      $runningerror $noncommutingring)))
-	
-;;(defun $require_ring (f pos fun)
-;;  (if (not (mring-p f)) (merror "The ~:M argument of the function ~:M must be a ring" pos fun)))
-	
+		
 (defun $require_ring (ringname pos fun)
   (if ($member ringname $%mrings) (get ringname 'ring)
     (merror "The ~:M argument of the function '~:M' must be the name of a ring" pos fun)))
@@ -77,19 +71,22 @@
 (defparameter *floatfield*
   (make-mring
    :name '$floatfield
-   :coerce-to-lisp-float #'identity
+   :coerce-to-lisp-float #'cl:identity
    :abs #'abs
    :great #'>
    :add #'+
    :div #'/
    :rdiv #'/
+   :reciprocal #'/
    :mult #'*
    :sub #'-
    :negate #'-
+   :psqrt #'(lambda (s) (if (>= s 0) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s) (= 0.0 s))
-   :mring-to-maxima #'identity
+   :fzerop #'(lambda (s)  (< (abs s) (* 4 double-float-epsilon))) 
+   :adjoint #'cl:identity
+   :mring-to-maxima #'cl:identity
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($float s))
 			(if (floatp s) s (merror "Unable to convert ~:M to a double float" s)))))
@@ -99,17 +96,20 @@
 (defparameter *complexfield*
   (make-mring
    :name '$complexfield
-   :coerce-to-lisp-float #'identity
+   :coerce-to-lisp-float #'cl:identity
    :abs #'abs
    :great #'>
    :add #'+
    :div #'/
+   :reciprocal #'/
    :mult #'*
    :sub #'-
    :negate #'-
+   :psqrt #'(lambda (s) (if (and (= 0 (imagpart s)) (>= (realpart s) 0)) (cl:sqrt s) 123.0))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
-   :fzerop #'(lambda (s) (= s 0.0))
+   :fzerop #'(lambda (s) (< (abs s) (* 4 double-float-epsilon)))
+   :adjoint #'cl:conjugate
    :mring-to-maxima #'complexify
    :maxima-to-mring #'(lambda (s) 
 			(progn 
@@ -128,12 +128,15 @@
    :great #'>
    :add #'+
    :div #'/
+   :reciprocal #'/
    :mult #'*
    :sub #'-
    :negate #'-
+   :psqrt #'(lambda () nil)
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (= s 0))
+   :adjoint #'cl:identity
    :mring-to-maxima #'(lambda (s) (simplify `((rat) ,(numerator s) ,(denominator s))))
    :maxima-to-mring 
    #'(lambda (s) 
@@ -152,12 +155,15 @@
    :add #'add
    :div #'div
    :rdiv #'div
+   :reciprocal #'(lambda (s) (div 1 s))
    :mult #'mult
    :sub #'sub
    :negate #'(lambda (s) (mult -1 s))
+   :psqrt #'(lambda (s) (take '(%sqrt) s))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s 0))
+   :adjoint #'(lambda (s) (take '($conjugate) s))
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) ($rat s))))
 		
@@ -172,12 +178,15 @@
    :add #'(lambda (a b) ($rectform (add a b)))
    :div #'(lambda (a b) ($rectform (div a b)))
    :rdiv #'(lambda (a b) ($rectform (div a b)))
+   :reciprocal #'(lambda (s) (div 1 s))
    :mult #'(lambda (a b) ($rectform (mult a b)))
    :sub #'(lambda (a b) ($rectform (sub a b)))
    :negate #'(lambda (a) (mult -1 a))
+   :psqrt #'(lambda (s) (take '(%sqrt) s))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s 0))
+   :adjoint #'(lambda (s) (take '($conjugate) s))
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) s)))
 
@@ -195,12 +204,15 @@
    :add #'(lambda (a b) ($rectform (add a b)))
    :div #'(lambda (a b) ($rectform (div a b)))
    :rdiv #'(lambda (a b) ($rectform (div a b)))
+   :reciprocal #'(lambda (s) (div 1 s))
    :mult #'(lambda (a b) ($rectform (mult a b)))
    :sub #'(lambda (a b) ($rectform (sub a b)))
    :negate #'(lambda (a) (mult -1 a))
+   :psqrt #'(lambda (s) (lsp s 0) nil (take '(%sqrt) s))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s bigfloatzero))
+   :adjoint #'cl:identity
    :mring-to-maxima #'(lambda (s) s)
    :maxima-to-mring #'(lambda (s) 
 			(setq s ($bfloat s))
@@ -252,12 +264,15 @@
    :add #'fp+
    :div #'fp/
    :rdiv #'fp/
+   :reciprocal #'(lambda (s) (div (list 1 0) s))
    :mult #'fp*
    :sub #'fp-
    :negate #'(lambda (s) (list (- (first s)) (second s)))
+   :psqrt #'(lambda (s) (if (>= 0 (first s)) (list (cl:sqrt (first s)) (+ 1 (second s))) nil))
    :add-id #'(lambda () (list 0 0))
    :mult-id #'(lambda () (list 1 0))
    :fzerop #'(lambda (s) (like (first s) 0))
+   :adjoint #'cl:identity
    :mring-to-maxima #'(lambda (s) `((mlist) ,@s))
    :maxima-to-mring #'(lambda (s) (if ($listp s) (cdr s) (list ($float s) 1)))))
 
@@ -272,19 +287,19 @@
    :add #'(lambda (a b) (add a b))
    :div #'(lambda (a b) (simplify `((mnctimes) ,a ((mncexpt) ,b -1))))  
    :rdiv #'(lambda (a b) (simplify `((mnctimes) ((mncexpt) ,b -1) ,a)))
+   :reciprocal #'(lambda (s) (simplify `((mncexpt) ,s -1)))
    :mult #'(lambda (a b) (simplify `((mnctimes) ,a ,b)))
    :sub #'(lambda (a b) (sub a b))
    :negate #'(lambda (a) (mult -1 a))
    :add-id #'(lambda () 0)
+   :psqrt #'(lambda (s) (take '(%sqrt) s))
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s 0))
-   :mring-to-maxima #'identity
-   :maxima-to-mring #'identity))
+   :adjoint #'(lambda (s) ($transpose (take '($conjugate) s)))
+   :mring-to-maxima #'cl:identity
+   :maxima-to-mring #'cl:identity))
 
 (setf (get '$noncommutingring 'ring) *noncommutingring*)
-
-(defun op-equalp (e &rest op)
-  (and (consp e) (consp (car e)) (some #'(lambda (s) (equal (caar e) s)) op)))
 
 (defmspec $ringeval (e)
   (let ((fld (get (or (car (member (nth 2 e) $%mrings)) '$generalring) 'ring)))
@@ -296,9 +311,7 @@
 	(fmult (mring-mult fld))
 	(fdiv (mring-div fld))
 	(fabs (mring-abs fld))
-	(fconvert (mring-maxima-to-mring fld))
-	(add-id (funcall (mring-add-id fld)))
-	(mult-id (funcall (mring-mult-id fld))))
+	(fconvert (mring-maxima-to-mring fld)))
     
     (cond ((or ($numberp e) (symbolp e)) 
 	   (funcall fconvert (meval e)))
