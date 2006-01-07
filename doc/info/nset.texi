@@ -109,7 +109,7 @@ in that case the elements @var{x} and @var{y} are considered distinct.
 (%o8)                           0
 (%i9) set (x, y, z);
                           b + a  b   a
-(%o9)                    {-----, - + -}
+(%o9)                    @{-----, - + -@}
                             c    c   c
 @end example
 
