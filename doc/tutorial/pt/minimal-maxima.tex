@@ -1,0 +1,1134 @@
+\documentclass[12pt]{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[dvipdfm,colorlinks,linkcolor=red]{hyperref}
+
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1in}
+\addtolength{\footskip}{0.5in}
+
+\setlength{\parskip}{8pt}
+\setlength{\parindent}{0pt}
+
+\title{Maxima Mínimo\\
+{\small Liberado sob os termos da Licença pública GNU, Versão 2}}
+\author{Autor - Robert Dodier Tradutor - Jorge Barros de Abreu}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{O que é Maxima?}
+
+Maxima\footnote
+{Home page: \url{http://maxima.sourceforge.net} \\
+Documentos: \url{http://maxima.sourceforge.net/docs.shtml} \\
+Manual de referência: \url{http://maxima.sourceforge.net/docs/manual/en/maxima.html}}
+é um sistema que trabalha com expressões,
+tais como $x + y$, $sin (a + b \pi)$, e $u \cdot v - v \cdot u$.\\
+
+Maxima não está muito preocupado sobre o significado de uma expressão.
+Se uma expressão é representativa ou não quem decide é o usuário.
+
+Algumas vezes você quer atribuir valores a entidades desconhecidas 
+e avaliar a expressão.
+Maxima está disponível para fazer isso.
+Mas Maxima está também disponível para adiar atribuições de valores específicos;
+você pode realizar muitas manipulações de uma expressão,
+e somente mais adiante (ou nunca) atribuir valores a entidades desconhecidas.
+
+Vamos ver alguns exemplos.
+
+\begin{enumerate}
+
+\item Quero calcular o volume de uma esfera.
+% V: 4/3 * %pi * r^3;
+\begin{verbatim}
+(%i1) V: 4/3 * %pi * r^3;
+                                   3
+                            4 %pi r
+(%o1)                       --------
+                               3
+\end{verbatim}
+
+\item O raio é 10.
+% r: 10;
+\begin{verbatim}
+(%i2) r: 10;
+(%o2)                          10
+\end{verbatim}
+
+\item $V$ é o mesmo que antes; Maxima não muda $V$ até que eu diga a ele para fazer isso.
+% V;
+\begin{verbatim}
+(%i3) V;
+                                   3
+                            4 %pi r
+(%o3)                       --------
+                               3
+\end{verbatim}
+
+\item Digo ao maxima para re-avaliar $V$.
+% ''V;
+\begin{verbatim}
+(%i4) ''V;
+                            4000 %pi
+(%o4)                       --------
+                               3
+\end{verbatim}
+
+\item Gostaria de ver um valor numérico em lugar de uma expressão.
+% ''V, numer;
+\begin{verbatim}
+(%i5) ''V, numer;
+(%o5)                   4188.79020478639
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Expressões}
+
+Tudo no Maxima é uma expressão,
+incluindo expressões matemáticas, objetos, e construções de programação.
+uma expressão é ou um átomo, ou um operador junto com seus argumentos.
+
+Um átomo é um símbolo (um nome), uma seqüência de caracteres entre apóstrofos,
+ou um número (ou inteiro ou em ponto flutuante).
+
+Todas as expressões não atômicas são representadas como $\mathit{op}(a_1, \ldots, a_n)$
+onde $\mathit{op}$ é o nome de um operador
+e $a_1, \ldots, a_n$ são seus argumentos.
+(A expressão pode ser mostrada de forma diferente,
+mas a representação interna é a mesma.)
+Os argumentos de uma expressão podem ser átomos ou expressões não atômicas.
+
+Expressões matemáticas possuem operadores matemáticos,
+tais como $+ \; - \; * \; / \; < \; = \; >$
+ou uma avaliação de função tal como $\mathbf{sin}(x), \mathbf{bessel\_j}(n, x)$.
+Em tais casos, o operador é a função.
+
+Objetos no Maxima são expressões.
+Uma lista $[a_1, \ldots, a_n]$ é uma expressão $\mathbf{list}(a_1, \ldots, a_n)$.
+Uma matriz é uma expressão
+\[
+\mathbf{matrix}(\mathbf{list}(a_{1,1}, \ldots, a_{1,n}), \ldots, \mathbf{list}(a_{m,1}, \ldots, a_{m,n}))
+\]
+
+Construções de programação são expressões.
+Um bloco de código $\mathbf{block} (a_1, \ldots, a_n)$ é uma expressão com operador $\mathbf{block}$
+e argumentos $a_1, \ldots, a_n$.
+Uma declaração condicional $\mathbf{if\ } a \mathbf{\ then\ } b \mathbf{\ elseif\ } c \mathbf{\ then\ } d$
+é uma expressão $\mathbf{if}(a, b, c, d)$.
+Um ciclo $\mathbf{for\ } a \mathbf{\ in\ } L \mathbf{\ do\ } S$ é uma expressão similar a $\mathbf{do}(a, L, S)$.
+
+A função do Maxima $\mathbf{op}$ retorna o operador de uma expressão não atômica.
+A função $\mathbf{args}$ retorna os argumentos de uma expressão não atômica.
+A função $\mathbf{atom}$ diz se uma expressão é um átomo ou não.
+
+Vamos ver alguns exemplos mais.
+
+\begin{enumerate}
+
+\item Átomos são símbolos, seqüências de caracteres, e números.
+Agrupei muitos exemplos em uma lista então podemos vê-los todos juntos.
+% [a, foo, foo_bar, "Hello, world!", 42, 17.29];
+
+\begin{verbatim}
+(%i2) [a, foo, foo_bar, "Hello, world!", 42, 17.29];
+(%o2)      [a, foo, foo_bar, Hello, world!, 42, 17.29]
+\end{verbatim}
+
+\item Mathematical expressions.
+% [a + b + c, a * b * c, foo = bar, a*b < c*d];
+
+\begin{verbatim}
+(%i1) [a + b + c, a * b * c, foo = bar, a*b < c*d];
+(%o1)       [c + b + a, a b c, foo = bar, a b < c d]
+\end{verbatim}
+
+\item Listas e matrizes.
+Os elementos de uma lista ou matriz podem ser qualquer tipo de expressão,
+mesmo outra lista ou matriz.
+% L: [a, b, c, %pi, %e, 1729, 1/(a*d - b*c)];
+% L2: [a, b, [c, %pi, [%e, 1729], 1/(a*d - b*c)]];
+% L [7];
+% L2 [3];
+% M: matrix ([%pi, 17], [29, %e]);
+% M2: matrix ([[%pi, 17], a*d - b*c], [matrix ([1, a], [b, 7]), %e]);
+% M [2][1];
+% M2 [2][1];
+
+\begin{verbatim}
+(%i1) L: [a, b, c, %pi, %e, 1729, 1/(a*d - b*c)];
+                                            1
+(%o1)          [a, b, c, %pi, %e, 1729, ---------]
+                                        a d - b c
+(%i2) L2: [a, b, [c, %pi, [%e, 1729], 1/(a*d - b*c)]];
+                                             1
+(%o2)        [a, b, [c, %pi, [%e, 1729], ---------]]
+                                         a d - b c
+(%i3) L [7];
+                                1
+(%o3)                       ---------
+                            a d - b c
+(%i4) L2 [3];
+                                          1
+(%o4)            [c, %pi, [%e, 1729], ---------]
+                                      a d - b c
+(%i5) M: matrix ([%pi, 17], [29, %e]);
+                           [ %pi  17 ]
+(%o5)                      [         ]
+                           [ 29   %e ]
+(%i6) M2: matrix ([[%pi, 17], a*d - b*c], [matrix ([1, a], [b, 7]), %e]);
+                    [ [%pi, 17]  a d - b c ]
+                    [                      ]
+(%o6)               [ [ 1  a ]             ]
+                    [ [      ]      %e     ]
+                    [ [ b  7 ]             ]
+(%i7) M [2][1];
+(%o7)                          29
+(%i8) M2 [2][1];
+                            [ 1  a ]
+(%o8)                       [      ]
+                            [ b  7 ]
+\end{verbatim}
+
+\item Construção de programação são expressões. 
+$x : y$ significa atribua $y$ a $x$; o valor da expressão de atribuição é $y$.
+$\mathbf{block}$ agrupa muitas expressões, e as avalia uma vez após outra;
+o valor do bloco é o valor da última expressão.
+% (a: 42) - (b: 17);
+% [a, b];
+% block ([a], a: 42, a^2 - 1600) + block ([b], b: 5, %pi^b);
+% (if a > 1 then %pi else %e) + (if b < 0 then 1/2 else 1/7);
+
+\begin{verbatim}
+(%i1) (a: 42) - (b: 17);
+(%o1)                          25
+(%i2) [a, b];
+(%o2)                       [42, 17]
+(%i3) block ([a], a: 42, a^2 - 1600) + block ([b], b: 5, %pi^b);
+                              5
+(%o3)                      %pi  + 164
+(%i4) (if a > 1 then %pi else %e) + (if b < 0 then 1/2 else 1/7);
+                                   1
+(%o4)                        %pi + -
+                                   7
+\end{verbatim}
+
+\item $\mathbf{op}$ retorna o operador, $\mathbf{args}$ retorna os argumentos,
+$\mathbf{atom}$ diz se uma expressão é um átomo ou não.
+% op (p + q);
+% op (p + q > p*q);
+% op (sin (p + q));
+% op (foo (p, q));
+% op (foo (p, q) := p - q);
+% args (p + q);
+% args (p + q > p*q);
+% args (sin (p + q));
+% args (foo (p, q));
+% args (foo (p, q) := p - q);
+% atom (p);
+% atom (p + q);
+% atom (sin (p + q));
+
+\begin{verbatim}
+(%i1) op (p + q);
+(%o1)                           +
+(%i2) op (p + q > p*q);
+(%o2)                           >
+(%i3) op (sin (p + q));
+(%o3)                          sin
+(%i4) op (foo (p, q));
+(%o4)                          foo
+(%i5) op (foo (p, q) := p - q);
+(%o5)                          :=
+(%i6) args (p + q);
+(%o6)                        [q, p]
+(%i7) args (p + q > p*q);
+(%o7)                     [q + p, p q]
+(%i8) args (sin (p + q));
+(%o8)                        [q + p]
+(%i9) args (foo (p, q));
+(%o9)                       [p, - q]
+(%i10) args (foo (p, q) := p - q);
+(%o10)                 [foo(p, q), p - q]
+(%i11) atom (p);
+(%o11)                        true
+(%i12) atom (p + q);
+(%o12)                        false
+(%i13) atom (sin (p + q));
+(%o13)                        false
+\end{verbatim}
+
+\item Operadores e argumentos de construções de programação.
+O apóstrofo simples diz ao Maxima para construir a expressão mas não fazer a avaliação para um momento posterior escolhido pelo usuário.
+Vamos voltar paa aquele último.
+% op ('(block ([a], a: 42, a^2 - 1600)));
+% op ('(if p > q then p else q));
+% op ('(for x in L do print (x)));
+% args ('(block ([a], a: 42, a^2 - 1600)));
+% args ('(if p > q then p else q));
+% args ('(for x in L do print (x)));
+
+\begin{verbatim}
+(%i1) op ('(block ([a], a: 42, a^2 - 1600)));
+(%o1)                         block
+(%i2) op ('(if p > q then p else q));
+(%o2)                          if
+(%i3) op ('(for x in L do print (x)));
+(%o3)                         mdoin
+(%i4) args ('(block ([a], a: 42, a^2 - 1600)));
+                                   2
+(%o4)               [[a], a : 42, a  - 1600]
+(%i5) args ('(if p > q then p else q));
+(%o5)                  [p > q, p, true, q]
+(%i6) args ('(for x in L do print (x)));
+(%o6)     [x, L, false, false, false, false, print(x)]
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Avaliação}
+
+O valor de um símbolo é uma expressão associada ao símbolo.
+Todo símbolo tem um valor;
+se não for de outra forma atribuido um valor, um símbolo avalia para si mesmo.
+(E.g., $x$ avalia para $x$ se não for de outra forma atribuido um valor.)
+
+Números e seqüências de caractere avaliam para si mesmos.
+
+Um expressão não atômica é avaliada aproximadamente como segue.
+
+\begin{enumerate}
+\item Cada argumento do operadro da expressão é avaliado.
+\item Se um operador está associado a uma função que pode ser chamada, a função é chamada,
+e o valor de retorno da função é o valor da expressão.
+\end{enumerate}
+
+Avaliação é modificada de várias maneiras.
+Algumas modificações causam menos avaliação:
+
+\begin{enumerate}
+\item Algumas funções não avaliam algumas ou todos os seus argumentos, 
+    ou de outra forma modificam a avaliação de seus argumentos.
+    % Exemplos: $\mathbf{kill}$, $\mathbf{save}$, $\mathbf{sum}$, $\mathbf{:=}$ (definição de função).
+\item Um apóstrofo simples $'$ evita avaliação.
+    \begin{enumerate}
+    \item $'a$ avalia para $a$. Qualquer outro valor de $a$ é ignorado.
+    \item $'f(a_1, \ldots, a_n)$ avaliam para $f(\mathbf{ev}(a_1), \ldots, \mathbf{ev}(a_n))$.
+        É isso, os argumetos são avaliados mas $f$ não é chamada.
+    \item $'(\ldots)$ evita avaliação de quaisquer expressões dentro de $(...)$.
+    \end{enumerate}
+\end{enumerate}
+
+Algumas modificações causam mais avaliação:
+
+\begin{enumerate}
+\item Dois apóstrofos $''a$ causam uma avaliação extra na hora em que a expressão $a$ é passada.
+\item $\mathbf{ev}(a)$ causa uma avaliação extra de $a$ toda vez que $\mathbf{ev}(a)$ for avaliado.
+\item O idioma $\mathbf{apply}(f, [a_1, \ldots, a_n])$ causa a avaliação
+    dos argumentos $a_1, \ldots, a_n$ mesmo se $f$ comumente colocar um apoóstrofo nos argumentos $a_1, \ldots, a_n$.
+\item $\mathbf{define}$ constrói uma definição de função da mesma forma que $\mathbf{:=}$,
+    nas $\mathbf{define}$ avalia o corpo da função enquanto $\mathbf{:=}$ coloca um apóstrofo nesse mesmo corpo não avaliando-o portanto.
+\end{enumerate}
+
+Vamos considerar como algumas funções são avaliadas.
+
+\begin{enumerate}
+
+\item Símbolos avaliam para simesmos se não forem de outra forma atribuidos a um valor.
+% block (a: 1, b: 2, e: 5);
+% [a, b, c, d, e];
+
+\begin{verbatim}
+(%i1) block (a: 1, b: 2, e: 5);
+(%o1)                           5
+(%i2) [a, b, c, d, e];
+(%o2)                    [1, 2, c, d, 5]
+\end{verbatim}
+
+\item Argumentos de um operador são comumente avaliados (a menos que a avaliação seja evitada de uma forma ou de outra).
+% block (x: %pi, y: %e);
+% sin (x + y);
+% x > y; 
+% x!;
+
+\begin{verbatim}
+(%i1) block (x: %pi, y: %e);
+(%o1)                          %e
+(%i2) sin (x + y);
+(%o2)                       - sin(%e)
+(%i3) x > y; 
+(%o3)                       %pi > %e
+(%i4) x!;
+(%o4)                         %pi!
+\end{verbatim}
+
+\item Se um operador corresponde a uma função que pode ser chamada,
+a função é chamada (a menos que isso seja evitado por algum meio).
+De outra forma eavaliação retorna outra expressão com o mesmo operador.
+% foo (p, q) := p - q;
+% p: %phi;
+% foo (p, q);
+% bar (p, q);
+
+\begin{verbatim}
+(%i1) foo (p, q) := p - q;
+(%o1)                  foo(p, q) := p - q
+(%i2) p: %phi;
+(%o2)                         %phi
+(%i3) foo (p, q);
+(%o3)                       %phi - q
+(%i4) bar (p, q);
+(%o4)                     bar(%phi, q)
+\end{verbatim}
+
+\item Algumas funções colocam apóstrofo em seus argumentos.
+Exemplos: $\mathbf{save}$, $\mathbf{:=}$, $\mathbf{kill}$.
+% block (a: 1, b: %pi, c: x + y);
+% [a, b, c];
+% save ("tmp.save", a, b, c);
+% f (a) := a^b;
+% f (7);
+% kill (a, b, c);
+% [a, b, c];
+
+\begin{verbatim}
+(%i1) block (a: 1, b: %pi, c: x + y);
+(%o1)                         y + x
+(%i2) [a, b, c];
+(%o2)                    [1, %pi, y + x]
+(%i3) save ("tmp.save", a, b, c);
+(%o3)                       tmp.save
+(%i4) f (a) := a^b;
+                                    b
+(%o4)                      f(a) := a
+(%i5) f (7);
+                               %pi
+(%o5)                         7
+(%i6) kill (a, b, c);
+(%o6)                         done
+(%i7) [a, b, c];
+(%o7)                       [a, b, c]
+\end{verbatim}
+
+\item Um apóstrofo simples evita avaliação mesmo se isso puder comumente acontecer.
+% foo (x, y) := y - x;
+% block (a: %e, b: 17);
+% foo (a, b);
+% foo ('a, 'b);
+% 'foo (a, b);
+% '(foo (a, b));
+
+\begin{verbatim}
+(%i1) foo (x, y) := y - x;
+(%o1)                  foo(x, y) := y - x
+(%i2) block (a: %e, b: 17);
+(%o2)                          17
+(%i3) foo (a, b);
+(%o3)                        17 - %e
+(%i4) foo ('a, 'b);
+(%o4)                         b - a
+(%i5) 'foo (a, b);
+(%o5)                      foo(%e, 17)
+(%i6) '(foo (a, b));
+(%o6)                       foo(a, b)
+\end{verbatim}
+
+\item Dois apóstrofos simples (apóstrofo-apóstrofo) fazem com que ocorra uma avaliação extra na hora em que a expressão for passada.
+% diff (sin (x), x);
+% foo (x) := diff (sin (x), x);
+% foo (x) := ''(diff (sin (x), x));
+
+\begin{verbatim}
+(%i1) diff (sin (x), x);
+(%o1)                        cos(x)
+(%i2) foo (x) := diff (sin (x), x);
+(%o2)               foo(x) := diff(sin(x), x)
+(%i3) foo (x) := ''(diff (sin (x), x));
+(%o3)                   foo(x) := cos(x)
+\end{verbatim}
+
+\item $\mathbf{ev}$ faz com que uma avaliação extra ocorra toda vez que isso for avaliado.
+Contrasta com o efeito de apóstrofo-apóstrofo.
+% block (xx: yy, yy: zz);
+% [xx, yy];
+% foo (x) := ''x;
+% foo (xx);
+% bar (x) := ev (x);
+% bar (xx);
+
+\begin{verbatim}
+(%i1) block (xx: yy, yy: zz);
+(%o1)                          zz
+(%i2) [xx, yy];
+(%o2)                       [yy, zz]
+(%i3) foo (x) := ''x;
+(%o3)                      foo(x) := x
+(%i4) foo (xx);
+(%o4)                          yy
+(%i5) bar (x) := ev (x);
+(%o5)                    bar(x) := ev(x)
+(%i6) bar (xx);
+(%o6)                          zz
+\end{verbatim}
+
+\item $\mathbf{apply}$ faz com que ocorra a avaliação do argumento mesmo mesmo se eles estiverem comumente com apóstrofo.
+% block (a: aa, b: bb, c: cc);
+% block (aa: 11, bb: 22, cc: 33);
+% [a, b, c, aa, bb, cc];
+% apply (kill, [a, b, c]);
+% [a, b, c, aa, bb, cc];
+% kill (a, b, c);
+% [a, b, c, aa, bb, cc];
+
+\begin{verbatim}
+(%i1) block (a: aa, b: bb, c: cc);
+(%o1)                          cc
+(%i2) block (aa: 11, bb: 22, cc: 33);
+(%o2)                          33
+(%i3) [a, b, c, aa, bb, cc];
+(%o3)               [aa, bb, cc, 11, 22, 33]
+(%i4) apply (kill, [a, b, c]);
+(%o4)                         done
+(%i5) [a, b, c, aa, bb, cc];
+(%o5)               [aa, bb, cc, aa, bb, cc]
+(%i6) kill (a, b, c);
+(%o6)                         done
+(%i7) [a, b, c, aa, bb, cc];
+(%o7)                 [a, b, c, aa, bb, cc]
+\end{verbatim}
+
+\item $\mathbf{define}$ avalia o corpo de uma definição de função.
+% integrate (sin (a*x), x, 0, %pi);
+% foo (x) := integrate (sin (a*x), x, 0, %pi);
+% define (foo (x), integrate (sin (a*x), x, 0, %pi));
+
+\begin{verbatim}
+(%i1) integrate (sin (a*x), x, 0, %pi);
+                         1   cos(%pi a)
+(%o1)                    - - ----------
+                         a       a
+(%i2) foo (x) := integrate (sin (a*x), x, 0, %pi);
+(%o2)       foo(x) := integrate(sin(a x), x, 0, %pi)
+(%i3) define (foo (x), integrate (sin (a*x), x, 0, %pi));
+                              1   cos(%pi a)
+(%o3)               foo(x) := - - ----------
+                              a       a
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Simplificação}
+
+Após avaliar uma expressão,
+Maxima tenta encontrar uma expressão equivalente que é ``mais simples.''
+Maxima aplica muitas regras que abrange noções convencionais de simplicidade.
+Por exemplo,
+$1 + 1$ simplifica para $2$, 
+$x + x$ simplifica para $2 x$,
+and $\mathbf{sin}(\mathbf{\%pi})$ simplifica para $0$.
+
+Todavia,
+muitas bem conhecidas identidades não são aplicadas automaticamente.
+Por exemplo,
+fórmulas de arco duplo para funções trigonométricas,
+ou rearranjos de razões tais como $a/b + c/b \rightarrow (a + c)/b$.
+Existem muitas funções que podem aplicar identidades.
+
+Simplificação é sempre aplicada a menos que explicitamente evitada.
+Simplificação é aplicada mesmo se uma expressão não for avaliada.
+
+$\mathbf{tellsimpafter}$ estabelece regras de simplificação definidas pelo usuário.
+
+Vamos ver alguns exemplos de simplificação.
+
+\begin{enumerate}
+
+\item Apóstrofo evita avaliação mas não simplificação.
+Quando o sinalizador global $\mathbf{simp}$ for $\mathbf{false}$,
+simplificação é evitada mas não a avaliação.
+
+% '[1 + 1, x + x, x * x, sin (%pi)];
+% simp: false$ 
+% block ([x: 1], x + x);
+% simp: true$
+
+\begin{verbatim}
+(%i1) '[1 + 1, x + x, x * x, sin (%pi)];
+                                   2
+(%o1)                    [2, 2 x, x , 0]
+(%i2) simp: false$ 
+(%i3) block ([x: 1], x + x);
+(%o3)                         1 + 1
+\end{verbatim}
+
+\item Algumas identidade não são aplicadas automaticamente.
+$\mathbf{expand}$, $\mathbf{ratsimp}$, $\mathbf{trigexpand}$, $\mathbf{demoivre}$
+são algumas funções que aplicam identidades.
+
+% (a + b)^2;
+% expand (%);
+% a/b + c/b;
+% ratsimp (%);
+% sin (2*x);
+% trigexpand (%);
+% a * exp (b * %i);
+% demoivre (%);
+
+\begin{verbatim}
+(%i1) (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) expand (%);
+                          2            2
+(%o2)                    b  + 2 a b + a
+(%i3) a/b + c/b;
+                              c   a
+(%o3)                         - + -
+                              b   b
+(%i4) ratsimp (%);
+                              c + a
+(%o4)                         -----
+                                b
+(%i5) sin (2*x);
+(%o5)                       sin(2 x)
+(%i6) trigexpand (%);
+(%o6)                    2 cos(x) sin(x)
+(%i7) a * exp (b * %i);
+                                %i b
+(%o7)                       a %e
+(%i8) demoivre (%);
+(%o8)                a (%i sin(b) + cos(b))
+\end{verbatim}
+
+\end{enumerate}
+
+\section{apply, map, e lambda}
+
+\begin{enumerate}
+
+\item $\mathbf{apply}$ constrói e avalia uma expressão.
+Os argumentos da expressão são sempre avaliados (mesmo se eles não puderem ser avaliados de outra forma).
+% apply (sin, [x * %pi]);
+% L: [a, b, c, x, y, z];
+% apply ("+", L);
+
+\begin{verbatim}
+(%i1) apply (sin, [x * %pi]);
+(%o1)                      sin(%pi x)
+(%i2) L: [a, b, c, x, y, z];
+(%o2)                  [a, b, c, x, y, z]
+(%i3) apply ("+", L);
+(%o3)                 z + y + x + c + b + a
+\end{verbatim}
+
+\item $\mathbf{map}$ constrói e avalia uma expressão usando ítens individuais de uma lista de argumentos.
+Os argumentos de uma expressão sào sempre avaliados (mesmo se eles não puderem ser avaliados de outra forma).
+O resultado é uma lista.
+% map (foo, [x, y, z]);
+% map ("+", [1, 2, 3], [a, b, c]);
+% map (atom, [a, b, c, a + b, a + b + c]);
+
+\begin{verbatim}
+(%i1) map (foo, [x, y, z]);
+(%o1)               [foo(x), foo(y), foo(z)]
+(%i2) map ("+", [1, 2, 3], [a, b, c]);
+(%o2)                 [a + 1, b + 2, c + 3]
+(%i3) map (atom, [a, b, c, a + b, a + b + c]);
+(%o3)           [true, true, true, false, false]
+\end{verbatim}
+
+\item $\mathbf{lambda}$ constrói uma expressão lambda (i.e., uma função sem nome).
+A expressão lambda pode ser usada em alguns contextos como uma função comum que possui nome.
+$\mathbf{lambda}$ não avalia o corpo da função.
+% f: lambda ([x, y], (x + y)*(x - y));
+% f (a, b);
+% apply (f, [p, q]);
+% map (f, [1, 2, 3], [a, b, c]);
+%% apply (lambda ([x, y], (x + y)*(x - y)), [p, q]);
+%% map (lambda ([x, y], (x + y)*(x - y)), [1, 2, 3], [a, b, c]);
+
+\begin{verbatim}
+(%i1) f: lambda ([x, y], (x + y)*(x - y));
+(%o1)            lambda([x, y], (x + y) (x - y))
+(%i2) f (a, b);
+(%o2)                    (a - b) (b + a)
+(%i3) apply (f, [p, q]);
+(%o3)                    (p - q) (q + p)
+(%i4) map (f, [1, 2, 3], [a, b, c]);
+(%o4)  [(1 - a) (a + 1), (2 - b) (b + 2), (3 - c) (c + 3)]
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Tipos de objetos internos}
+
+Um objeto é representado como uma expressão.
+Como outra expressão, um objeto compreende um operador e seus argumentos.
+
+Os mais importantes tipos de objets internos são listas, matrizes, e conjuntos.
+
+\subsection{Listas}
+
+\begin{enumerate}
+
+\item Uma lista é indicada dessa forma: $[a, b, c]$.
+
+\item If $L$ é uma lista, $L[i]$ é seu $i$'ésimo elemento. $L[1]$ é o primeiro elemento.
+
+\item $\mathbf{map}(\mathit{f}, L)$ aplica $\mathit{f}$ a cada elemento de $L$.
+
+\item $\mathbf{apply}(\mathbf{"+"}, L)$ é a soma dos elementos de $L$.
+
+\item $\mathbf{for\ } x \mathbf{\ in \ } L \mathbf{\ do \ } \mathit{expr}$
+    avalia $\mathit{expr}$ para cada elemento de $L$.
+
+\item $\mathbf{length}(L)$ é o número de elementos em $L$.
+
+\end{enumerate}
+
+\subsection{Matrizes}
+
+\begin{enumerate}
+
+\item Uma matriz é definida da seguinte forma: $\mathbf{matrix}(L_1, \ldots, L_n)$
+    onde $L_1, \ldots, L_n$ são listas que representam as linhas da matriz.
+    
+\item Se $M$ for uma matriz, $M[i, j]$ ou $M[i][j]$ é seu $(i, j)$'ésimo elemento.
+    $M[1,1]$ é o elemento no canto superior esquerdo.
+
+\item O operador $\mathbf{.}$ representa multiplicação não comutativa.
+    $M . L$, $L . M$, e $M . N$ são produtos não comutativos,
+    onde $L$ é uma lista e $M$ e $N$ são matrizes.
+
+% \item $M\mathbf{\hat{ }\hat{ }}n$ é a potenciação não comutativa, i.e., $M . M . \ldots . M$.
+
+\item $\mathbf{transpose}(M)$ é a transposta de $M$.
+
+\item $\mathbf{eigenvalues}(M)$ retorna o autovalor de $M$.
+
+\item $\mathbf{eigenvectors}(M)$ retorna o autovetor de $M$.
+
+\item $\mathbf{length}(M)$ retorna o nuúmero de linhas de $M$.
+
+\item $\mathbf{length}(\mathbf{transpose}(M))$ retorna o número de colunas de $M$.
+
+\end{enumerate}
+
+\subsection{Conjuntos}
+
+\begin{enumerate}
+
+\item Maxima entende conjuntos finitos explicitamente definidos.
+    Conjuntos não são o mesmo qque listas; uma conversão explícita é necessária para mudar de um para outro.
+    
+\item Um conjunto é especificado dessa forma:
+    $\mathbf{set}(a, b, c, \ldots)$ onde os elementos do conjunto são $a, b, c, \ldots$.
+
+\item $\mathbf{union} (A, B)$ é a união dos conjuntos $A$ e $B$.
+
+\item $\mathbf{intersection} (A, B)$ é a intersecção dos conjuntos $A$ e $B$.
+
+\item $\mathbf{cardinality} (A)$ é o número de elementos no conjunto $A$.
+
+\end{enumerate}
+
+\section{Como fazer para...}
+
+\subsection{Definir uma função}
+
+\begin{enumerate}
+
+\item O operador $\mathbf{:=}$ define uma função, colocando um apóstrofo no corpo da função.
+
+Nesse exemplo, $\mathbf{diff}$ é reavalado toda vez que a função for chamada.
+O argumento é substituído por $x$ e a expressão resultante é avaliada.
+Quando o argumento for alguma outra coisa que não um símbolo, isso causa um erro:
+para $\mathbf{foo} (1)$ Maxima tenta avaliar $\mathbf{diff} (\mathbf{sin}(1)^2, 1)$.
+% foo (x) := diff (sin(x)^2, x);
+% foo (u);
+% foo (1);
+
+\begin{verbatim}
+(%i1) foo (x) := diff (sin(x)^2, x);
+                                     2
+(%o1)              foo(x) := diff(sin (x), x)
+(%i2) foo (u);
+(%o2)                    2 cos(u) sin(u)
+(%i3) foo (1);
+Non-variable 2nd argument to diff:
+1
+#0: foo(x=1)
+ -- an error.
+\end{verbatim}
+
+\item $\mathbf{define}$ define uma função, avaliando o corpo da função.
+
+Nesse exemplo, $\mathbf{diff}$ é avaliado somente uma vez (quando a função é definida).
+$\mathbf{foo} (1)$ is OK now.
+% define (foo (x), diff (sin(x)^2, x));
+% foo (u);
+% foo (1);
+
+\begin{verbatim}
+(%i1) define (foo (x), diff (sin(x)^2, x));
+(%o1)               foo(x) := 2 cos(x) sin(x)
+(%i2) foo (u);
+(%o2)                    2 cos(u) sin(u)
+(%i3) foo (1);
+(%o3)                    2 cos(1) sin(1)
+\end{verbatim}
+
+\end{enumerate}
+
+\subsection{Resolver uma equação}
+% eq_1: a * x + b * y + z = %pi;
+% eq_2: z - 5*y + x = 0;
+% s: solve ([eq_1, eq_2], [x, z]);
+% length (s);
+% [subst (s[1], eq_1), subst (s[1], eq_2)];
+% ratsimp (%);
+
+\begin{verbatim}
+(%i1) eq_1: a * x + b * y + z = %pi;
+(%o1)                  z + b y + a x = %pi
+(%i2) eq_2: z - 5*y + x = 0;
+(%o2)                    z - 5 y + x = 0
+(%i3) s: solve ([eq_1, eq_2], [x, z]);
+                (b + 5) y - %pi      (b + 5 a) y - %pi
+(%o3)   [[x = - ---------------, z = -----------------]]
+                     a - 1                 a - 1
+(%i4) length (s);
+(%o4)                           1
+(%i5) [subst (s[1], eq_1), subst (s[1], eq_2)];
+       (b + 5 a) y - %pi   a ((b + 5) y - %pi)
+(%o5) [----------------- - ------------------- + b y = %pi, 
+             a - 1                a - 1
+                   (b + 5 a) y - %pi   (b + 5) y - %pi
+                   ----------------- - --------------- - 5 y = 0]
+                         a - 1              a - 1
+(%i6) ratsimp (%);
+(%o6)                  [%pi = %pi, 0 = 0]
+\end{verbatim}
+
+\subsection{Integrar e diferenciar}
+
+$\mathbf{integrate}$ calcular integrais definidas e indefinidas.
+% integrate (1/(1 + x), x, 0, 1);
+% integrate (exp(-u) * sin(u), u, 0, inf);
+% assume (a > 0);
+% integrate (1/(1 + x), x, 0, a);
+% integrate (exp(-a*u) * sin(a*u), u, 0, inf);
+% integrate (exp (sin (t)), t, 0, %pi);
+% 'integrate (exp(-u) * sin(u), u, 0, inf);
+
+\begin{verbatim}
+(%i1) integrate (1/(1 + x), x, 0, 1);
+(%o1)                        log(2)
+(%i2) integrate (exp(-u) * sin(u), u, 0, inf);
+                                1
+(%o2)                           -
+                                2
+(%i3) assume (a > 0);
+(%o3)                        [a > 0]
+(%i4) integrate (1/(1 + x), x, 0, a);
+(%o4)                      log(a + 1)
+(%i5) integrate (exp(-a*u) * sin(a*u), u, 0, inf);
+                                1
+(%o5)                          ---
+                               2 a
+(%i6) integrate (exp (sin (t)), t, 0, %pi);
+                         %pi
+                        /
+                        [      sin(t)
+(%o6)                   I    %e       dt
+                        ]
+                        /
+                         0
+(%i7) 'integrate (exp(-u) * sin(u), u, 0, inf);
+                       inf
+                      /
+                      [      - u
+(%o7)                 I    %e    sin(u) du
+                      ]
+                      /
+                       0
+\end{verbatim}
+
+$\mathbf{diff}$ calcular derivadas.
+% diff (sin (y*x));
+% diff (sin (y*x), x);
+% diff (sin (y*x), y);
+% diff (sin (y*x), x, 2);
+% 'diff (sin (y*x), x, 2);
+
+\begin{verbatim}
+(%i1) diff (sin (y*x));
+(%o1)         x cos(x y) del(y) + y cos(x y) del(x)
+(%i2) diff (sin (y*x), x);
+(%o2)                      y cos(x y)
+(%i3) diff (sin (y*x), y);
+(%o3)                      x cos(x y)
+(%i4) diff (sin (y*x), x, 2);
+                             2
+(%o4)                     - y  sin(x y)
+(%i5) 'diff (sin (y*x), x, 2);
+                          2
+                         d
+(%o5)                    --- (sin(x y))
+                           2
+                         dx
+\end{verbatim}
+
+\subsection{Fazer um gráfico}
+
+$\mathbf{plot2d}$ desenhar gráficos bidimensionais.
+% plot2d (exp(-u) * sin(u), [u, 0, 2*%pi]);
+% plot2d ([exp(-u), exp(-u) * sin(u)], [u, 0, 2*%pi]);
+% xx: makelist (i/2.5, i, 1, 10);
+% yy: map (lambda ([x], exp(-x) * sin(x)), xx);
+% plot2d ([discrete, xx, yy]);
+% plot2d ([discrete, xx, yy], [gnuplot_curve_styles, ["with points"]]);
+
+\begin{verbatim}
+(%i1) plot2d (exp(-u) * sin(u), [u, 0, 2*%pi]);
+(%o1) 
+(%i2) plot2d ([exp(-u), exp(-u) * sin(u)], [u, 0, 2*%pi]);
+(%o2) 
+(%i3) xx: makelist (i/2.5, i, 1, 10);
+(%o3)  [0.4, 0.8, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6, 4.0]
+(%i4) yy: map (lambda ([x], exp(-x) * sin(x)), xx);
+(%o4) [0.261034921143457, 0.322328869227062, .2807247779692679, 
+.2018104299334517, .1230600248057767, .0612766372619573, 
+.0203706503896865, - .0023794587414574, - .0120913057698414, 
+- 0.013861321214153]
+(%i5) plot2d ([discrete, xx, yy]);
+(%o5) 
+(%i6) plot2d ([discrete, xx, yy], [gnuplot_curve_styles, ["with points"]]);
+(%o6)
+\end{verbatim}
+
+Veja também $\mathbf{plot3d}$.
+
+\subsection{Gravar e chamar um arquivo}
+
+$\mathbf{save}$ escreve expressões em um arquivo.
+% a: foo - bar;
+% b: foo^2 * bar;
+% save ("my.session", a, b);
+% save ("my.session", all);
+
+\begin{verbatim}
+(%i1) a: foo - bar;
+(%o1)                       foo - bar
+(%i2) b: foo^2 * bar;
+                                   2
+(%o2)                       bar foo
+(%i3) save ("minha.sessao", a, b);
+(%o3)                      minha.sessao
+(%i4) save ("minha.sessao", all);
+(%o4)                      minha.sessao
+\end{verbatim}
+
+$\mathbf{load}$ lê expressões de um arquivo.
+% load ("minha.sessao");
+% a;
+% b;
+
+\begin{verbatim}
+(%i1) load ("minha.sessao");
+(%o4)                      minha.sessao
+(%i5) a;
+(%o5)                       foo - bar
+(%i6) b;
+                                   2
+(%o6)                       bar foo
+\end{verbatim}
+
+Veja também $\mathbf{stringout}$ e $\mathbf{batch}$.
+
+\section{Programando no Maxima}
+
+% dynamic scope
+% argument-quoting and argument-evaluating functions
+% directory organization: src, tests, share, doc
+
+Existe um ambiente, que contém todos os símbolos do Maxima.
+Não existe como criar outro ambiente.
+
+Todas as variáveis são globais a menos que pareçam em uma declaração de variáveis locais.
+Funções, expressões lambda, e blocos podem ter variáveis locais.
+
+O valor de uma variável é aquele que foi atribuído mais recentemente,
+ou por uma atribuição explícita ou por atribuição de um valor a uma variável local
+em um bloco, função, ou expressão lambda.
+Essa política é conhecida como {\it escopo dinâmico}.
+
+Se uma variável é uma variável local em uma função, expressão lambda, ou bloco,
+seu valor é local mas suas outras propriedades
+(como estabelecidas através de $\mathbf{declare}$)
+são globais.
+A função $\mathbf{local}$ faz uma variável local com relação a todas as propriedades.
+
+Por padrão uma definição de função é global,
+mesmo se isso aparecer dentro de uma função, expressão lambda, ou bloco.
+$\mathbf{local}(f), f(x) \mathbf{\ :=\ } \ldots$ cria uma definição de função local.
+
+$\mathbf{trace}(\mathit{foo})$ faz com que o Maxima mostre uma mensagem quando a função $\mathit{foo}$
+for iniciada e terminada.
+
+Vamos ver alguns exemplos de programação no Maxima.
+
+\begin{enumerate}
+
+\item Todas as variáveis são globais a menos que apareçam em uma declaração de variáveis locais.
+Funções, expressões lambda, e blocos podem ter variáveis locais.
+
+% (x: 42, y: 1729, z: foo*bar);
+% f (x, y) := x*y*z;
+% f (aa, bb);
+% lambda ([x, z], (x - z)/y);
+% apply (%, [uu, vv]);
+% block ([y, z], y: 65536, [x, y, z]);
+
+\begin{verbatim}
+(%i1) (x: 42, y: 1729, z: foo*bar);
+(%o1)                        bar foo
+(%i2) f (x, y) := x*y*z;
+(%o2)                   f(x, y) := x y z
+(%i3) f (aa, bb);
+(%o3)                     aa bar bb foo
+(%i4) lambda ([x, z], (x - z)/y);
+                                     x - z
+(%o4)                 lambda([x, z], -----)
+                                       y
+(%i5) apply (%, [uu, vv]);
+                             uu - vv
+(%o5)                        -------
+                              1729
+(%i6) block ([y, z], y: 65536, [x, y, z]);
+(%o6)                    [42, 65536, z]
+\end{verbatim}
+
+\item O valor de uma variável é aquele que foi atribuido mais recentemente,
+ou por atribuição explícita ou por atribuição de um valor a uma variável local.
+
+% foo (y) := x - y;
+% x: 1729;
+% foo (%pi);
+% bar (x) := foo (%e);
+% bar (42);
+
+\begin{verbatim}
+(%i1) foo (y) := x - y;
+(%o1)                    foo(y) := x - y
+(%i2) x: 1729;
+(%o2)                         1729
+(%i3) foo (%pi);
+(%o3)                      1729 - %pi
+(%i4) bar (x) := foo (%e);
+(%o4)                   bar(x) := foo(%e)
+(%i5) bar (42);
+(%o5)                        42 - %e
+\end{verbatim}
+
+\end{enumerate}
+
+\section{Lisp e Maxima}
+
+% symbols, $ e ?
+% defining an argument-evaluating function in lisp
+% defining an argument-quoting function in lisp
+% calling a function defined in maxima from lisp
+% useful lisp fcns: meval, simplifya, displa
+
+A construção {\bf :lisp} $\mathit{expr}$ diz ao interpretador Lisp 
+para avaliar $\mathit{expr}$.
+Essa construção é reconhecida em entradas através da linha de comando e em arquivos processados por $\mathbf{batch}$,
+mas não é reconhecida por $\mathbf{load}$.
+
+O símbolo Maxima $\mathbf{foo}$ corresponde ao símbolo Lisp \$foo,
+e o símbolo Lisp foo corresponde ao símbolo Maxima $\mathbf{?foo}$.
+
+{\bf :lisp} $\mathrm{(}\mathbf{defun\ } \mathrm{\$foo\ (a)\ (\ldots))}$
+define uma função Lisp $\mathrm{foo}$ que avalia seus argumentos.
+A partir o Maxima, a função é chamada como $\mathbf{foo}(a)$.
+
+{\bf :lisp} $\mathrm{(}\mathbf{defmspec\ } \mathrm{\$foo\ (e)\ (\ldots))}$
+define uma função Lisp $\mathbf{foo}$ que coloca uma apóstrofo em seus argumentos não avaliando-os portanto.
+A partir do Maxima, a função é chamada como $\mathbf{foo}(a)$.
+Os argumentos de $\mathrm{\$foo}$ são $(\mathbf{cdr\ } e),$
+e $(\mathbf{caar\ } e)$ é sempre $\mathrm{\$foo}$ por si mesma.
+
+A partir do Lisp, ta construção $(\mathbf{mfuncall\ '\$}\mathrm{foo\ }a_1 \ldots a_n)$ 
+chama a função $\mathbf{foo}$ definida no Maxima.
+
+Vamos extender ao Lisp a partir do Maxima e vice-versa.
+
+\begin{enumerate}
+
+\item A construção {\bf :lisp} $\mathit{expr}$ diz ao interpretador Lisp
+para avaliar $\mathit{expr}$.
+
+% (aa + bb)^2;
+% :lisp $%
+\begin{verbatim}
+(%i1) (aa + bb)^2;
+                                    2
+(%o1)                      (bb + aa)
+(%i2) :lisp $%
+((MEXPT SIMP) ((MPLUS SIMP) $AA $BB) 2)
+\end{verbatim}
+
+\item {\bf :lisp} $\mathrm{(}\mathbf{defun\ } \mathrm{\$foo\ (a)\ (\ldots))}$
+define uma função Lisp $\mathbf{foo}$ que avalia seus argumentos.
+
+% :lisp (defun $foo (a b) `((mplus) ((mtimes) ,a ,b) $%pi))
+% (p: x + y, q: x - y);
+% foo (p, q);
+\begin{verbatim}
+(%i1) :lisp (defun $foo (a b) `((mplus) ((mtimes) ,a ,b) $%pi))
+$FOO
+(%i1) (p: x + y, q: x - y);
+(%o1)                         x - y
+(%i2) foo (p, q);
+(%o2)                 (x - y) (y + x) + %pi
+\end{verbatim}
+
+\item {\bf :lisp} $\mathrm{(}\mathbf{defmspec\ } \mathrm{\$foo\ (e)\ (\ldots))}$
+define uma função Lisp $\mathbf{foo}$ que coloca um apóstrofo em seus argumentos não avaliando-os portanto.
+% :lisp (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
+% bar (p, q);
+% bar (''p, ''q);
+\begin{verbatim}
+(%i1) :lisp (defmspec $bar (e) (let ((a (cdr e))) `((mplus) ((mtimes) ,@a) $%pi)))
+#<CLOSURE LAMBDA (E) (LET ((A (CDR E))) `((MPLUS) ((MTIMES) ,@A) $%PI))>
+(%i1) bar (p, q);
+(%o1)                       p q + %pi
+(%i2) bar (''p, ''q);
+(%o2)                       p q + %pi
+\end{verbatim}
+
+\item Partinfo do Lisp, a construção $(\mathbf{mfuncall\ '\$}\mathrm{foo\ }a_1 \ldots a_n)$
+chama a função $\mathbf{foo}$ definida no Maxima.
+
+% blurf (x) := x^2;
+% :lisp (displa (mfuncall '$blurf '((mplus) $grotz $mumble)))
+\begin{verbatim}
+(%i1) blurf (x) := x^2;
+                                      2
+(%o1)                    blurf(x) := x
+(%i2) :lisp (displa (mfuncall '$blurf '((mplus) $grotz $mumble)))
+                2
+(mumble + grotz)
+NIL
+\end{verbatim}
+
+\end{enumerate}
+
+\end{document}
+
