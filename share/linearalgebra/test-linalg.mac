@@ -25,7 +25,7 @@ ctranspose(matrix([%i]));
 matrix([-%i])$
 
 (matrix_element_transpose : false,0);
-0)$
+0$
 
 /*--- matrix norm ----*/
 
