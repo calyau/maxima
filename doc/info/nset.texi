@@ -62,6 +62,57 @@ once, the simplification process eliminates the redundant member.
 (%o4)                       @{a, [b]@}
 @end example
 
+Two would-be elements @var{x} and @var{y} are redundant
+(i.e., considered the same for the purposes of set construction)
+if and only if @code{is (@var{x} = @var{y})} yields @code{true}.
+@c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+Note that @code{is (equal (@var{x}, @var{y}))} can yield @code{true}
+while @code{is (@var{x} = @var{y})} yields @code{false};
+in that case the elements @var{x} and @var{y} are considered distinct.
+
+@c ===beg===
+@c x: a/c + b/c;
+@c y: a/c + b/c;
+@c z: (a + b)/c;
+@c is (x = y);
+@c is (y = z);
+@c is (equal (y, z));
+@c y - z;
+@c ratsimp (%);
+@c set (x, y, z);
+@c ===end===
+@example
+(%i1) x: a/c + b/c;
+                              b   a
+(%o1)                         - + -
+                              c   c
+(%i2) y: a/c + b/c;
+                              b   a
+(%o2)                         - + -
+                              c   c
+(%i3) z: (a + b)/c;
+                              b + a
+(%o3)                         -----
+                                c
+(%i4) is (x = y);
+(%o4)                         true
+(%i5) is (y = z);
+(%o5)                         false
+(%i6) is (equal (y, z));
+(%o6)                         true
+(%i7) y - z;
+                           b + a   b   a
+(%o7)                    - ----- + - + -
+                             c     c   c
+(%i8) ratsimp (%);
+(%o8)                           0
+(%i9) set (x, y, z);
+                          b + a  b   a
+(%o9)                    {-----, - + -}
+                            c    c   c
+@end example
+
 Sets are always displayed as brace delimited lists; if you would like to
 be able to  @i{input} a set using braces, see @ref{Defining sets with braces}.
 
