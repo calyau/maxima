@@ -23,15 +23,15 @@
   ($require_nonempty_matrix m "$first" "$cholesky")
  
   (let* ((n ($first ($matrix_size m))) (perm) (lii) (lii-inv) (l) (acc) (x)
-	(fld ($require_ring fld-name "$second" "$cholesky"))
-	(fsub (mring-sub fld))
-	(fzerop (mring-fzerop fld))
-	(fmult (mring-mult fld))
-	(fadjoint (mring-adjoint fld))
-	(fpsqrt (mring-psqrt fld))
-	(fgreat (mring-great fld))
-	(fconvert (mring-maxima-to-mring fld))
-	(freciprocal (mring-reciprocal fld)))
+	 (fld ($require_ring fld-name "$second" "$cholesky"))
+	 (fsub (mring-sub fld))
+	 (fzerop (mring-fzerop fld))
+	 (fmult (mring-mult fld))
+	 (fadjoint (mring-adjoint fld))
+	 (fpsqrt (mring-psqrt fld))
+	 (fgreat (mring-great fld))
+	 (fconvert (mring-maxima-to-mring fld))
+	 (freciprocal (mring-reciprocal fld)))
 
     (setq l ($zerofor m))
     (loop for k from 1 to n do 
@@ -58,7 +58,7 @@
 	  (setq acc (funcall fsub acc (funcall fmult 
 					       (m-elem l perm j k) 
 					       (funcall fadjoint (m-elem l perm i k))))))
-	(setmatelem l (funcall fmult lii-inv acc) j i)))
+	(setmatelem l (funcall fmult acc lii-inv) j i)))
     (matrix-map l n n (mring-mring-to-maxima  fld))
     l))
 	
