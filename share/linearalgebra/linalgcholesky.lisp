@@ -1,4 +1,4 @@
-;;  Copyright 2005 by Barton Willis
+;;  Copyright 2005, 2006 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -34,6 +34,7 @@
 	 (freciprocal (mring-reciprocal fld)))
 
     (setq l ($zerofor m))
+    (full-matrix-map l fconvert)
     (loop for k from 1 to n do 
       (push k perm))
 
@@ -51,7 +52,6 @@
       (setmatelem l lii i i)
       (if (funcall fzerop lii) (merror "Unable to find the Cholesky factorization"))
       (setq lii-inv (funcall fadjoint (funcall freciprocal lii)))
-      
       (loop for j from (+ i 1) to n do
 	(setq acc (fn-melem m perm j i fconvert))
 	(loop for k from 1 to (- i 1) do
@@ -59,7 +59,7 @@
 					       (m-elem l perm j k) 
 					       (funcall fadjoint (m-elem l perm i k))))))
 	(setmatelem l (funcall fmult acc lii-inv) j i)))
-    (matrix-map l n n (mring-mring-to-maxima  fld))
+    (full-matrix-map l (mring-mring-to-maxima  fld))
     l))
 	
 	

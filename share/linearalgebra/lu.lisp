@@ -31,6 +31,20 @@
     (loop for j from 1 to c do
       (setmatelem m (funcall fn (nth j (nth i m))) i j))))
 
+;; Map the lisp function fn over the r by c Maxima matrix m.  This function is
+;; block matrix friendly.
+
+(defun full-matrix-map (mat fn)
+  (cond (($matrixp mat)
+	 (let ((r) (c))
+	   (setq r ($matrix_size mat))
+	   (setq c ($second r))
+	   (setq r ($first r))
+	   (loop for i from 1 to r do
+	     (loop for j from 1 to c do
+	       (setmatelem mat (full-matrix-map (nth j (nth i mat)) fn) i j)))))
+	(t (funcall fn mat))))
+
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
 ;; to the Maxima list p.
 
@@ -275,8 +289,9 @@
 
 (defun $identfor (mat &optional (fld-name '$generalring) (p 1) (q 1))
   ($require_ring fld-name "$second" "$identfor")
-  (let ((add-id (funcall (mring-add-id (get fld-name 'ring))))
-	(mul-id (funcall (mring-mult-id (get fld-name 'ring)))))
+  (let* ((fld (get fld-name 'ring))
+	 (add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld))))
+	 (mul-id (funcall (mring-mring-to-maxima fld) (funcall (mring-mult-id fld)))))
 	
     (cond (($matrixp mat)
 	   ($require_square_matrix mat "$first" "$identfor")
@@ -291,13 +306,17 @@
 
 (defun $zerofor (mat &optional (fld-name '$generalring))
   ($require_ring fld-name "$second" "$zerofor")
-  (let ((add-id (funcall (mring-add-id (get fld-name 'ring)))))
+  (let* ((fld (get fld-name 'ring))
+	 (add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld)))))
     (cond (($matrixp mat)
-	   (let ((n ($first ($matrix_size mat))) (mc))
+	   (let ((r) (c) (mc))
+	     (setq r ($matrix_size mat))
+	     (setq c ($second r))
+	     (setq r ($first r))
 	     (setq mc (copy-tree mat))
-	     (loop for i from 1 to n do 
-	       (loop for j from 1 to n do 
-		 (setf (nth j (nth i mc)) ($zerofor (nth j (nth i mat))))))
+	     (loop for i from 1 to r do 
+	       (loop for j from 1 to c do 
+		 (setf (nth j (nth i mc)) ($zerofor (nth j (nth i mat)) fld-name))))
 	     mc))
 	  (t add-id))))
 

@@ -132,7 +132,12 @@
    :mult #'*
    :sub #'-
    :negate #'-
-   :psqrt #'(lambda (s) nil)
+   :psqrt #'(lambda (s) (let ((x))
+			  (cond ((>= s 0)
+				 (setq x (isqrt (numerator s)))
+				 (setq x (/ x (isqrt (denominator s))))
+				 (if (= s (* x x)) x nil))
+				(t nil))))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (= s 0))
@@ -159,7 +164,7 @@
    :mult #'mult
    :sub #'sub
    :negate #'(lambda (s) (mult -1 s))
-   :psqrt #'(lambda (s) (if (member (csign s) `($pos $pz $zero)) (take '(%sqrt) s) nil))
+   :psqrt #'(lambda (s) (if (member (csign ($ratdisrep s)) `($pos $pz $zero)) (take '(%sqrt) s) nil))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s 0))
@@ -208,7 +213,7 @@
    :mult #'(lambda (a b) ($rectform (mult a b)))
    :sub #'(lambda (a b) ($rectform (sub a b)))
    :negate #'(lambda (a) (mult -1 a))
-   :psqrt #'(lambda (s) (mlsp s 0) nil (take '(%sqrt) s))
+   :psqrt #'(lambda (s) (if (mlsp s 0) nil (take '(%sqrt) s)))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s bigfloatzero))
@@ -264,11 +269,11 @@
    :add #'fp+
    :div #'fp/
    :rdiv #'fp/
-   :reciprocal #'(lambda (s) (div (list 1 0) s))
+   :reciprocal #'(lambda (s) (fp/ (list 1 0) s))
    :mult #'fp*
    :sub #'fp-
    :negate #'(lambda (s) (list (- (first s)) (second s)))
-   :psqrt #'(lambda (s) (if (>= 0 (first s)) (list (cl:sqrt (first s)) (+ 1 (second s))) nil))
+   :psqrt #'(lambda (s) (if (> (first s) 0) (list (cl:sqrt (first s)) (+ 1 (second s))) nil))
    :add-id #'(lambda () (list 0 0))
    :mult-id #'(lambda () (list 1 0))
    :fzerop #'(lambda (s) (like (first s) 0))

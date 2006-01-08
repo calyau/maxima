@@ -33,6 +33,7 @@ eval_when(translate,
 eval_when([batch,load,translate,compile],
   load("polynomialp"),
   load("lu"),
+  load("linalgcholesky"),
   load("matrixexp"),
   load("linalg-utilities"));
   
