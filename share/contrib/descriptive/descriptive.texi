@@ -422,7 +422,7 @@ See also function @code{var}.
 
 @deffn {Function} std (@var{list})
 @deffnx {Function} std (@var{matrix})
-This is the the square root of function @code{var}, the variance with denominator @math{n}.
+This is the square root of function @code{var}, the variance with denominator @math{n}.
 
 Example:
 @example
@@ -443,7 +443,7 @@ See also functions @code{var} and @code{std1}.
 
 @deffn {Function} std1 (@var{list})
 @deffnx {Function} std1 (@var{matrix})
-This is the the square root of function @code{var1}, the variance with denominator @math{n-1}.
+This is the square root of function @code{var1}, the variance with denominator @math{n-1}.
 
 Example:
 @example
