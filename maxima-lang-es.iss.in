@@ -1,5 +1,5 @@
 [Setup]
-AppName=Maxima Spanish Language Pack
+AppName=Maxima
 AppVerName=Maxima @VERSION@
 AppId=Maxima-@VERSION@
 UsePreviousAppDir=yes
@@ -22,6 +22,5 @@ UninstallFilesDir={app}\uninst
 [Files]
 Source: "@prefix@\info\es\*.*"; DestDir: "{app}\info\es\";  Flags: recursesubdirs
 Source: "@prefix@\share\maxima\@VERSION@\doc\html\es\*.*"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\es\";  Flags: recursesubdirs
-
 
 
