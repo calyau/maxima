@@ -666,6 +666,7 @@ genericdirDATA = \
 maxima-init.lisp\
 share.usg\
 template.texi\
+builtins-list.txt\
 $(sharefiles)
 
 EXTRA_DIST = $(genericdirDATA)
