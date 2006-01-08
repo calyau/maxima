@@ -16,7 +16,7 @@
   (if (or (not ($matrixp m)) 
 	  (not (= ($first ($matrix_size m)) ($second ($matrix_size m))))
 	  (not (mfuncall '$zeromatrixp (sub m ($ctranspose m)))))
-      (merror "The ~:M argument to the function ~:M must be a selfadjoint matrix")))
+      (merror "The ~:M argument to the function ~:M must be a selfadjoint matrix" pos fun)))
 
 (defun $cholesky (m &optional (fld-name '$generalring))
   ($require_selfadjoint_matrix m "$first" "$cholesky")

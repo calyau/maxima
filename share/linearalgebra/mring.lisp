@@ -105,7 +105,7 @@
    :mult #'*
    :sub #'-
    :negate #'-
-   :psqrt #'(lambda (s) (if (and (= 0 (imagpart s)) (>= (realpart s) 0)) (cl:sqrt s) 123.0))
+   :psqrt #'(lambda (s) (if (and (= 0 (imagpart s)) (>= (realpart s) 0)) (cl:sqrt s) nil))
    :add-id #'(lambda () 0.0)
    :mult-id #'(lambda () 1.0)
    :fzerop #'(lambda (s) (< (abs s) (* 4 double-float-epsilon)))
@@ -132,7 +132,7 @@
    :mult #'*
    :sub #'-
    :negate #'-
-   :psqrt #'(lambda () nil)
+   :psqrt #'(lambda (s) nil)
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (= s 0))
@@ -144,7 +144,7 @@
        (if ($ratnump s) (if (integerp s) s (/ ($num s) ($denom s)))
 	 (merror "Unable to convert ~:M to a rational number" s)))))
 
-(setf (get '$rationalfield 'ring) '*rationalfield*)
+(setf (get '$rationalfield 'ring) *rationalfield*)
 
 (defparameter *crering*
   (make-mring
@@ -159,7 +159,7 @@
    :mult #'mult
    :sub #'sub
    :negate #'(lambda (s) (mult -1 s))
-   :psqrt #'(lambda (s) (take '(%sqrt) s))
+   :psqrt #'(lambda (s) (if (member (csign s) `($pos $pz $zero)) (take '(%sqrt) s) nil))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s 0))
@@ -182,7 +182,7 @@
    :mult #'(lambda (a b) ($rectform (mult a b)))
    :sub #'(lambda (a b) ($rectform (sub a b)))
    :negate #'(lambda (a) (mult -1 a))
-   :psqrt #'(lambda (s) (take '(%sqrt) s))
+   :psqrt #'(lambda (s) (if (member (csign s) `($pos $pz $zero)) (take '(%sqrt) s) nil))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s 0))
@@ -208,7 +208,7 @@
    :mult #'(lambda (a b) ($rectform (mult a b)))
    :sub #'(lambda (a b) ($rectform (sub a b)))
    :negate #'(lambda (a) (mult -1 a))
-   :psqrt #'(lambda (s) (lsp s 0) nil (take '(%sqrt) s))
+   :psqrt #'(lambda (s) (mlsp s 0) nil (take '(%sqrt) s))
    :add-id #'(lambda () 0)
    :mult-id #'(lambda () 1)
    :fzerop #'(lambda (s) (like s bigfloatzero))
