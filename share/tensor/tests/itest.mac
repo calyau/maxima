@@ -56,9 +56,9 @@ kdelta([i,j,j],[1,2,3]);
 %,kdelta;
 0;
 contract(expand(lc2kdt('levi_civita([i,j,k],[])*a([],[j])*'levi_civita([],[k,l,n])*b([l],[])*c([n],[]))));
-a([],[j])*b([i],[])*c([j],[])-a([],[j])*b([j],[])*c([i],[]);
+a([],[n])*b([i],[])*c([n],[])-a([],[l])*c([i],[])*b([l],[]);
 contract(expand(lc2kdt('levi_civita([i,j,k],[])*a([],[j])*b([],[k])*'levi_civita([],[i,l,n])*c([l],[])*u([n],[]))));
-a([],[j])*b([],[k])*c([j],[])*u([k],[])-a([],[j])*b([],[k])*c([k],[])*u([j],[]);
+a([],[l])*b([],[n])*c([l],[])*u([n],[])-b([],[l])*a([],[n])*c([l],[])*u([n],[]);
 canform(contract(expand(applyb1('levi_civita([],[i,j,k])*a([j])*a([k]),lc_l,lc_u))));
 0;
 /* Frames, derivatives */

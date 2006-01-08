@@ -127,6 +127,7 @@
 (defun plusi(l)
   (cond
     ((null l) l)
+    ((and (numberp (car l)) (< (car l) 0)) (plusi (cdr l)))
     ((atom (car l))  (cons (car l) (plusi (cdr l))))
     ((and (isprod (caar l)) (eq (cadar l) -1)) (plusi (cdr l)))
     (t (cons (car l) (plusi (cdr l))))
@@ -136,6 +137,7 @@
 (defun minusi(l)
   (cond
     ((null l) l)
+    ((and (numberp (car l)) (< (car l) 0)) (cons (neg (car l)) (plusi (cdr l))))
     ((atom (car l))  (minusi (cdr l)))
     (
       (and (isprod (caar l)) (eq (cadar l) -1)) 
@@ -1650,7 +1652,7 @@
 	     ((NOT (DEPENDS E X))
 	      (COND ((FIXP X) (LIST '(%DERIVATIVE) E X))
 		    ((ATOM X) 0.)
-		    (T (LIST '(%DERIVATIVE E X)))))
+		    (T (LIST '(%DERIVATIVE) E X))))
 							  ;This line moved down
 	     ((EQ (CAAR E) 'MNCTIMES)
 	      (SIMPLUS (LIST '(MPLUS)
@@ -2007,6 +2009,19 @@
       )
       ((atom e))
       (
+        (and (eq (caar e) 'mexpt) (eq (caddr e) -1))
+        (setq x (indices (cadr e)) bottom (append bottom (car x))
+                            top (append top (cadr x)))
+      )
+      (
+        (and (memq (caar e) '(%derivative $diff))
+             (or (eq (length e) 3) (eq (cadddr e) 1)))
+        (setq x (indices (cadr e)) bottom (append bottom (cadr x))
+                            top (append top (car x)))
+        (setq x (indices (caddr e)) bottom (append bottom (car x))
+                            top (append top (cadr x)))
+      )
+      (
         (memq (caar e) '(mtimes mnctimes mncexpt))
         (dolist (v (cdr e))
           (setq x (indices v) bottom (append bottom (cadr x))
@@ -2050,11 +2065,11 @@
         (setq x (indices (cadr e)) bottom (append bottom (cadr x))
               top (append top (car x)))
       )
-      (
-        (memq (caar e) '(%derivative $diff))
-        (setq x (indices (cadr e)) bottom (append bottom (cadr x))
-              top (append top (car x)))
-      )
+;      (
+;        (memq (caar e) '(%derivative $diff))
+;        (setq x (indices (cadr e)) bottom (append bottom (cadr x))
+;              top (append top (car x)))
+;      )
     )
     (return (list top bottom))
   )
@@ -2135,7 +2150,10 @@ indexed objects")) (t (return (flush (arg 1) l nil))))))
 (DEFUN RENAME (E)                           ;Renames dummy indices consistently
        (COND
 	((ATOM E) E)
-	((OR (RPOBJ E) (EQ (CAAR E) 'MTIMES));If an indexed object or a product
+	((OR (RPOBJ E) (EQ (CAAR E) 'MTIMES););If an indexed object or a product
+        (and (memq (caar e) '(%derivative $diff)) ; or a derivative expression
+             (or (eq (length e) 3) (eq (cadddr e) 1)))
+    )
 	 ((LAMBDA  (L) 
 	(SIMPTIMES (REORDER (COND (L (SUBLIS (itensor-CLEANUP L (SETQ N INDEX)) E))(T E))) 1 T))
 	  (CDADDR ($INDICES E))                     ;Gets list of dummy indices
