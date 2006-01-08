@@ -1,6 +1,6 @@
 /*               COPYRIGHT NOTICE
 
-Copyright (C) 2005 Mario Rodriguez Riotorto
+Copyright (C) 2005-2006 Mario Rodriguez Riotorto
 
 This program is free software; you can redistribute
 it and/or modify it under the terms of the
@@ -43,11 +43,13 @@ Continuous distributions:                Discrete distributions:
 Functions:
    Density function            (den*)
    Distribution function       (dis*)
+   Quantile                    (q*)
    Mean                        (mean*)
    Variance                    (var*)
    Standard deviation          (std*)
    Skewness coefficient        (skw*)
    Kurtosis coefficient        (kur*)
+   Random variate              (r*)
 
 For example,
    denstudent(x,n) is the density function of the Student distribution
@@ -60,40 +62,32 @@ For example,
 Note: the Cauchy model has no moments, in this case only the density and
       the distribution functions, 'dencauchy' and 'discauchy', are defined.
 
-In addition, some (double precision) numerical procedures are here included:
-   lngamma(p)   = log(gamma(p))
-   igamma(x,p)  = 1/gamma(p)*integrate(%e^(-t)*t^(p-1),t,0,x)
-   ibeta(x,p,q) = 1/beta(p,q)*integrate(t^(p-1)*(1-t)^(q-1),t,0,x)
    
-Furthermore, the skewness coefficient of the Gumbel distribution (skwgumbel)
-needs the value of the Riemann zeta(3). As Maxima doesn't calculate this number,
-I use the following Ramanujan's approximation:
-   zeta3= 7*%pi^3/180-2*sum(1/(n^3*(exp(2*%pi*n)-1)),n,1,k)
-The correct value of k is 'inf', but k:6 seems to be enough for double precision.
-
-In some indeterminate (utopic?) point in the future, I'd like to continue with
-   a) quantiles
-   b) random simulations
-   c) characteristic functions
-   d) maximum likelihood estimation of parameters
-   e) entropies
-   f) ... and getting rich playing the lottery!
-
-Code tested with Maxima 5.9.1
+Code tested with Maxima 5.9.2
 
 For questions, suggestions, bugs and the like, feel free
 to contact me at
 
-mario @@ edu . xunta . es
+mario @@@ edu DOT xunta DOT es
 www.biomates.net
 
 2005, march: first release
 2005, july: minor corrections
 2005, august: more minor corrections; denhypergeo, which was not in previous versions;
       documentation in english (distrib_en.tex).
-2005, november: definition of floor removed.
+2005, september: quantile functions.
+2005, november: functions 'floor' and 'ceiling' removed.
+2006, january: numerical algorithms ported to lisp (numdistrib.lisp); added random generators;
+      bug fixing in meanpareto, varpareto, stdpareto, skwpareto, kurpareto and some others. 
+      The documentation has been rewritten in texi format (distrib.texi)
 */
 
+/* Sets the random state according to the computer clock time */
+set_random_state(make_random_state(true))$
+
+
+/* Loads numerical routines */
+load("numdistrib.lisp")$
 
 
 /*         SOME AUXILIARY FUNCTIONS          */
@@ -128,6 +122,15 @@ controlp(p):=
               then 1
               else 0 $
 
+/* If 0<=p<=1 the function returns 1. If p is outside this interval,
+   it returns -1. If there is not enough information, the output is 0 */
+controlq(p):=
+   if member(sign(p), ['nz,'neg]) or member(sign(1-p), ['nz,'neg])
+      then -1
+      else if member(sign(p), ['zero,'pos,'pz]) and member(sign(1-p), ['zero,'pos,'pz])
+              then 1
+              else 0 $
+
 /* If 0<p<1 and n is a positive integer the function returns 1. If p is
    outside this interval or n is not a positive integer, it returns -1.
    If there is not enough information, the output is 0 */
@@ -153,6 +156,17 @@ controli(n):=
               then -1
               else 0 $
 
+/* If n is a non negative integer the function returns 1. If n is
+   negative or non integer, it returns -1. If there is not enough
+   information, the output is 0*/
+controlib(n):=
+   if integerp(n) and member(sign(n),['pos,'zero])
+      then 1
+      else if member(sign(n), ['nz,'neg]) or
+              numberp(n) and not integerp(n)
+              then -1
+              else 0 $
+
 /* If n1, n2 and n are all three positive integers, it returns 1.
    It at least one of them is not a positive integer, the 
    function returns -1. If there is not enough informations, the
@@ -172,140 +186,6 @@ controliii(n1,n2,n):=block([t:n1+n2],
 
 
 
-/*         SOME NUMERICAL FUNCTIONS          */
-
-
-
-/*  Natural logarithm of the gamma function.
-    Reference:
-       Lanczos, C. 'A precision approximation of the gamma function',
-                    J. SIAM Numer. Anal., B, 1, 86-96, 1964.
-    Comments: Accurate about 14 significant digits except for small regions
-              in the vicinity of 1 and 2.
-              Translated from the Fortran version published together with
-              algorithm AS245 (Applied Statistics).
-    Conditions: p>0                                                              */
-lngamma(p):=block([a1:0.9999999999995183,  a2:676.5203681218835,
-                   a3:-1259.139216722289,  a4:771.3234287757674,
-                   a5:-176.6150291498386,  a6:12.50734324009056,
-                   a7:-0.1385710331296526, a8:0.9934937113930748e-05,
-                   a9:0.1659470187408462e-06, lnsqrt2pi:0.9189385332046727, temp],
-   if p <= 0 then error("Illegal argument"),
-   temp: a9/(p + 7) + a8/(p + 6) + a7/(p + 5) + a6/(p + 4) +
-         a5/(p + 3) + a4/(p + 2) + a3/(p + 1) + a2/p + a1,
-   log(temp) + lnsqrt2pi - p - 13/2 + (p - 1/2) * log(p + 13/2)    )$
-
-/*  Incomplete gamma.
-    Reference:
-       Shea, B.L. (1988) Algorithm AS 239. Chi-squared and Incomplete Gamma Integral.
-       Applied Statistics (JRSS C) 37, 466-473.
-    Comments: Translated from Fortran.
-    Conditions: x>=0; p>0                                                              */
-igamma(x,p):=block([plimit:1000, xbig:1.0e+8, tol:1.0e-14, elimit:-88, oflo:1.0e+37,
-                    arg, gammad, a, b, c, pn1, pn2, pn3, pn4, pn5, pn6, an, rn],
-   if p <= 0 or x < 0 then error("Illegal argument"),
-   if x <= 0 then return(0),
-   /* use a normal approximation if p > plimit */
-   if p > plimit then return(1/2+erf((3 * sqrt(p) * ((x/p)^(1/3) + 1 / (9 * p) - 1)) / sqrt(2))/2),
-   /* if x is extremely large compared to  p then return 1*/
-   if x > xbig then return(1),
-   if x <= 1 or x < p
-      then (/* Pearson's series expansion. I use lngamma(z) here, but
-               log(gamma(z)) could be used instead, since p is not large
-               enough to force overflow */
-            arg: p * log(x) - x - lngamma(p + 1),
-            c: 1,
-            gammad: 1,
-            for a: p + 1 while c > tol do(
-               c: c * x / a,
-               gammad: gammad + c ),
-            arg: arg + log(gammad),
-            gammad: 0,
-            if arg >= elimit then gammad: exp(arg) )
-      else (/* use a continued fraction expansion */
-            arg: p * log(x) - x - lngamma(p),
-            a: 1 - p,
-            b: a + x + 1,
-            c: 0,
-            pn1: 1,
-            pn2: x,
-            pn3: x + 1,
-            pn4: x * b,
-            gammad: pn3 / pn4,
-            do(a: a + 1,
-               b: b + 2,
-               c: c + 1,
-               an: a * c,
-               pn5: b * pn3 - an * pn1,
-               pn6: b * pn4 - an * pn2,
-               if abs(pn6) > 0
-                  then (rn: pn5 / pn6,
-                        if abs(gammad - rn) <= min(tol, tol * rn) then return(0),
-                        gammad: rn ),
-               pn1: pn3,
-               pn2: pn4,
-               pn3: pn5,
-               pn4: pn6,
-               if abs(pn5) >= oflo
-                  then (/* re-escale terms in continued fraction if terms are large */
-                        pn1: pn1 / oflo,
-                        pn2: pn2 / oflo,
-                        pn3: pn3 / oflo,
-                        pn4: pn4 / oflo )  ),
-            arg: arg + log(gammad),
-            gammad: 1,
-            if arg >= elimit then gammad: 1 - exp(arg) ),
-      gammad    )$
-
-/*  Incomplete beta.
-    Reference:
-       Numerical Recipes in C: The Art of Scientific Computing
-    Conditions: 0<=x<=1; a, b>0           */
-ibeta(x,a,b):=block([bt],
-   if x=0 or x=1 then return(0),
-   bt: exp(lngamma(a+b) - lngamma(a) - lngamma(b)
-           + a*log(x) + b*log(1-x)),
-   if x < (a+1) / (a+b+2)
-      then bt*betacf(x,a,b) / a
-      else 1-bt*betacf(1-x,b,a) / b   )$
-
-/*  Continued fraction approximation of the incomplete beta.
-    It's called from ibeta.
-    Reference:
-       Numerical Recipes in C: The Art of Scientific Computing
-    Conditions: 0<=x<=1; a, b>0           */
-betacf(x,a,b):=block([maxit:300, eps:1.0e-16, fpmin:1.0e-300,
-                      m, m2, aa, c, d, del, h, qab, qam, qap],
-   qab: a+b,
-   qap: a+1,
-   qam: a-1,
-   c:1,
-   d: 1-qab*x/qap,
-   if abs(d) < fpmin then d: fpmin,
-   d: 1/d,
-   h:d,
-   for m:1 thru maxit do(
-      m2: 2*m,
-      aa: m*(b-m)*x/((qam+m2)*(a+m2)),
-      d: 1+aa*d,
-      if abs(d) < fpmin then d: fpmin,
-      c: 1+aa/c,
-      if abs(c) < fpmin then c: fpmin,
-      d: 1/d,
-      h: h*d*c,
-      aa: -(a+m)*(qab+m)*x/((a+m2)*(qap+m2)),
-      d: 1+aa*d,
-      if abs(d) < fpmin then d: fpmin,
-      c: 1+aa/c,
-      if abs(c) < fpmin then c: fpmin,
-      d: 1/d,
-      del: d*c,
-      h: h*del,
-      if abs(del-1) < eps then return(0)),
-   h  )$
-
-
-
 /*         NORMAL (OR GAUSSIAN) DISTRIBUTION          */
 
 
@@ -319,6 +199,15 @@ disnormal(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('disnormal,[x,m,s])),
    1/2+erf((x-m)/(s*sqrt(2)))/2  )$
+
+qnormal(q,m,s):=block([cp:control1(s), fq:float(q), cq:controlq(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qnormal,[q,m,s])),
+   if fq=0.0 then return('minf),
+   if fq=1.0 then return('inf),
+   if numberp(q) and numberp(m) and numberp(s)
+      then return(m + s * ?ppnd16(q)),
+   m + s * funmake('qnormal,[q,0,1]))$
 
 meannormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
@@ -345,25 +234,54 @@ kurnormal(m,s):=block([cp:control1(s)],
    if cp=0 then return(funmake('kurnormal,[m,s])),
    0  )$
 
+/* Implemented algorithms: box_mueller, inverse.
+   More info in numdistrib.lisp */
+rnormal(m,s,[num]):=block([cp:control1(s),cn,no],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rnormal,append([m,s],num))),
+   m + s * ?rndnormal(no) )$
+
 
 
 /*         STUDENT DISTRIBUTION          */
 
 
 
-denstudent(x,n):=block([cp:control1(n)],
+denstudent(x,n):=block([cp:control1(n),fn,fx],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('denstudent,[x,n])),
    gamma((n+1)/2) * (1+x*x/n)^(-(n+1)/2) / (sqrt(n*%pi) * gamma(n/2)) )$
 
-disstudent(x,n):=block([cp:control1(n)],
+/* R: pt(x,n) */
+disstudent(x,n):=block([cp:control1(n),fn,fx],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('disstudent,[x,n])),
+   if sign(x)='zero then return(1/2),
    if numberp(x) and numberp(n) and numer
-      then if x>0
-              then return(1.0 - ibeta(n/(n+x*x),n/2,0.5) / 2)
-              else return(ibeta(n/(n+x*x),n/2,0.5) / 2),
+      then (fn: float(n),
+            fx: float(x),
+            if x>0
+              then return(1.0 - ?ibeta(fn/(fn+fx*fx),fn/2,0.5) / 2)
+              else return(?ibeta(fn/(fn+fx*fx),fn/2,0.5) / 2)  ),
    funmake('disstudent,[x,n]) )$
+
+/* R: qt(q,n) */
+qstudent(q,n):=block([cp:control1(n), cq:controlq(q), fq:float(q), aux, sgn],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qstudent,[q,n])),
+   if fq=0.0 then return('minf),
+   if fq=1.0 then return('inf),
+   if fq=0.5 then return(0),
+   if numberp(q) and numberp(n)
+      then(if fq<0.5
+              then (aux : 2*fq,
+                    sgn : -1)
+              else (aux : 2*(1-fq),
+                    sgn : 1),
+           sgn*sqrt(n*(1 / ?iibeta(aux,float(n/2),0.5)-1))  )
+      else funmake('qstudent,[q,n]) )$
 
 meanstudent(n):=block([cp:control1(n)],
    if cp=-1 then error("Illegal parameter"),
@@ -379,29 +297,32 @@ varstudent(n):=block([cp:control1(n)],
               then error("Illegal parameter"),
    funmake('varstudent,[n])  )$
 
-stdstudent(n):=block([cp:control1(n)],
+stdstudent(n):=block([cp:control1(n-2)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('stdstudent,[n])),
-   if sign(n-2)='pos
-      then return(sqrt(n / (n-2)))
-      else if member(sign(n-2),['nz,'neg,'zero])
-              then error("Illegal parameter"),
-   funmake('stdstudent,[n])  )$
+   sqrt(n / (n-2))  )$
 
-skwstudent(n):=block([cp:control1(n)],
+skwstudent(n):=block([cp:control1(n-3)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('skwstudent,[n])),
    0  )$
 
-kurstudent(n):=block([cp:control1(n)],
+kurstudent(n):=block([cp:control1(n-4)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('kurstudent,[n])),
-   if sign(n-2)='pos
-      then return(n/(n-2))
-      else if member(sign(n-2),['nz,'neg,'zero])
-              then error("Illegal parameter"),
-   funmake('kurstudent,[n])  )$
+   6/(n-4)  )$
 
+/* Implemented algorithms: ratio, inverse.
+   More info in numdistrib.lisp */
+rstudent(n,[num]):=block([cp:control1(n),cn,no,fn],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rstudent,append([n],num))),
+   fn: float(n),
+   if numberp(fn)
+      then return(?rndstudent(fn,no)),
+   funmake('rstudent,append([n],num)) )$
 
 
 /*         CHI-SQUARE (OR PEARSON'S)  DISTRIBUTION          */
@@ -413,6 +334,8 @@ denchi2(x,n):=dengamma(x,n/2,2)$
 
 dischi2(x,n):=disgamma(x,n/2,2)$
 
+qchi2(q,n):=qgamma(q,n/2,2)$
+
 meanchi2(n):=meangamma(n/2,2)$
 
 varchi2(n):=vargamma(n/2,2)$
@@ -422,6 +345,18 @@ stdchi2(n):=stdgamma(n/2,2)$
 skwchi2(n):=skwgamma(n/2,2)$
 
 kurchi2(n):=kurgamma(n/2,2)$
+
+/* Implemented algorithms: ahrens_cheng, inverse.
+   More info in numdistrib.lisp */
+rchi2(n,[num]):=block([cp:control1(n),cn,no,fn],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rchi2,append([n],num))),
+   fn: float(n),
+   if numberp(fn)
+      then return(?rndchi2(fn,no)),
+   funmake('rchi2,append([n],num)) )$
 
 
 
@@ -445,8 +380,18 @@ disf(x,m,n):=block([cp:control2(m,n)],
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if numberp(x) and x>0 and numberp(m) and numberp(n) and numer
-              then return(1-ibeta(n/(n+m*x),n/2,m/2)),
+              then return(1-?ibeta(n/(n+m*x),n/2,m/2)),
    funmake('disf,[x,m,n]) )$
+
+/* R: qf(q,m,n) */
+qf(q,m,n):=block([cp:control2(m,n), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qf,[q,m,n])),
+   if fq=0.0 then return(0),
+   if fq=1.0 then return('inf),
+   if numberp(q) and numberp(m) and numberp(n)
+      then n * (1 / ?iibeta(1-fq, float(n/2), float(m/2)) - 1) / m
+      else funmake('qf,[q,m,n]) )$
 
 meanf(m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
@@ -495,6 +440,20 @@ kurf(m,n):=block([cp:control2(m,n)],
    funmake('kurf,[m,n])  )$
 
 
+/* Implemented algorithms: ratio, inverse.
+   More info in numdistrib.lisp */
+rf(m,n,[num]):=block([cp:control2(m,n),cn,no,fm,fn],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rf,append([m,n],num))),
+   fm: float(m),
+   fn: float(n),
+   if numberp(fm) and numberp(fn)
+      then return(?rndf(fm,fn,no)),
+   funmake('rf,append([m,n],num)) )$
+
+
 
 /*         EXPONENTIAL DISTRIBUTION          */
 /*   exp(m) equivalent to Weibull(1,1/m)     */
@@ -505,6 +464,8 @@ denexp(x,m):=denweibull(x,1,1/m)$
 
 disexp(x,m):=disweibull(x,1,1/m)$
 
+qexp(q,m):=qweibull(q,1,1/m)$
+
 meanexp(m):=meanweibull(1,1/m)$
 
 varexp(m):=varweibull(1,1/m)$
@@ -514,6 +475,18 @@ stdexp(m):=stdweibull(1,1/m)$
 skwexp(m):=skwweibull(1,1/m)$
 
 kurexp(m):=kurweibull(1,1/m)$
+
+/* Implemented algorithms: ahrens_cheng, ahrens_dieter, inverse.
+   More info in numdistrib.lisp */
+rexp(m,[num]):=block([cp:control1(m),cn,no,fm],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rexp,append([m],num))),
+   fm: float(m),
+   if numberp(fm)
+      then return(?rndexp(fm,no)),
+   funmake('rexp,append([m],num)) )$
 
 
 
@@ -536,6 +509,16 @@ dislogn(x,m,s):=block([cp:control1(s)],
       then return(0)
       else return(1/2+erf((log(x)-m)/(s*sqrt(2)))/2),
    funmake('dislogn,[x,m,s])  )$
+
+/* R: qlnorm(p,m,s)*/
+qlogn(q,m,s):=block([cp:control1(s), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qlogn,[q,m,s])),
+   if fq=0.0 then return(0),
+   if fq=1.0 then return('inf),
+   if numberp(q) and numberp(m) and numberp(s)
+      then return(exp(m + s * ?ppnd16(float(q)))),
+   m + s * funmake('qlogn,[q,0,1]))$
 
 meanlogn(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
@@ -562,6 +545,17 @@ kurlogn(m,s):=block([cp:control1(s)],
    if cp=0 then return(funmake('kurlogn,[m,s])),
    exp(4*s^2)+2*exp(3*s^2)+3*exp(2*s^2)-3  )$
 
+/* Implemented algorithms: box_mueller, inverse.
+   To select the algorithm, use the global variable
+   'rnormal_algorithm'.
+   More info in numdistrib.lisp */
+rlogn(m,s,[num]):=block([cp:control1(s),cn,no],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rlogn,append([m,s],num))),
+   exp(m + s * ?rndnormal(no)) )$
+
 
 
 /*         GAMMA DISTRIBUTION          */
@@ -577,14 +571,25 @@ dengamma(x,a,b):=block([cp:control2(a,b)],
               then return(x^(a-1)*exp(-x/b)/(b^a*gamma(a))),
    funmake('dengamma,[x,a,b]) )$
 
+/* R: pgamma(x,a,1/b) */
 disgamma(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('disgamma,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
       else if numberp(x) and numberp(a) and numberp(b) and numer
-              then return(igamma(x/b,a)),
+              then return(?igamma(x/b,a)),
    funmake('disgamma,[x,a,b])  )$
+
+/* R: qgamma(q,a,1/b) */
+qgamma(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qgamma,[q,a,b])),
+   if fq=0.0 then return(0),
+   if fq=1.0 then return('inf),
+   if numberp(q) and numberp(a) and numberp(b)
+      then return(b * ?iigamma(fq, float(a))),
+   funmake('qgamma,[q,a,b])  )$
 
 meangamma(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
@@ -611,6 +616,19 @@ kurgamma(a,b):=block([cp:control2(a,b)],
    if cp=0 then return(funmake('kurgamma,[a,b])),
    6/a  )$
 
+/* Implemented algorithms: ahrens_cheng, inverse.
+   More info in numdistrib.lisp */
+rgamma(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rgamma,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then return(?rndgamma(fa,fb,no)),
+   funmake('rgamma,append([a,b],num)) )$
+
 
 
 /*         BETA DISTRIBUTION          */
@@ -626,6 +644,7 @@ denbeta(x,a,b):=block([cp:control2(a,b)],
               then return(x^(a-1)*(1-x)^(b-1)/beta(a,b)),
    funmake('denbeta,[x,a,b]) )$
 
+/* R: pbeta(x,a,b) */
 disbeta(x,a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('disbeta,[x,a,b])),
@@ -634,8 +653,18 @@ disbeta(x,a,b):=block([cp:control2(a,b)],
       else if member(sign(x), ['nz,'neg,'zero])
               then return(0)
               else if numberp(x) and numberp(a) and numberp(b) and numer
-                      then return(ibeta(x,a,b)),
+                      then return(?ibeta(x,a,b)),
    funmake('disbeta,[x,a,b])  )$
+
+/* R: qbeta(q,a,b) */
+qbeta(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qbeta,[q,a,b])),
+   if fq=0.0 then return(0),
+   if fq=1.0 then return(1),
+   if numberp(q) and numberp(a) and numberp(b)
+      then return(?iibeta(fq, float(a), float(b))),
+   funmake('qbeta,[q,a,b])  )$
 
 meanbeta(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
@@ -662,6 +691,19 @@ kurbeta(a,b):=block([cp:control2(a,b)],
    if cp=0 then return(funmake('kurbeta,[a,b])),
    3*(a+b+1)*(2*(a+b)^2+a*b*(a+b-6)) / (a*b*(a+b+2)*(a+b+3)) - 3  )$
 
+/* Implemented algorithms: cheng, ratio, inverse.
+   More info in numdistrib.lisp */
+rbeta(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rbeta,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then return(?rndbeta(fa,fb,no)),
+   funmake('rbeta,append([a,b],num)) )$
+
 
 
 /*         CONTINUOUS UNIFORM DISTRIBUTION          */
@@ -671,7 +713,7 @@ kurbeta(a,b):=block([cp:control2(a,b)],
 dencontu(x,a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 or sign(x-a)='pnz or sign(x-b)='pnz
-      then return(funmake('discontu,[x,a,b])),
+      then return(funmake('dencontu,[x,a,b])),
    if member(sign(x-a), ['nz,'neg,'zero]) or member(sign(x-b), ['pos,'pz,'zero])
       then return(0)
       else return(1/(b-a)),
@@ -688,6 +730,12 @@ discontu(x,a,b):=block([cp:control1(b-a)],
               else if sign(x-b)='pos
                       then return(1),
    funmake('discontu,[x,a,b])  )$
+
+qcontu(q,a,b):=block([cp:control1(b-a), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qcontu,[q,a,b])),
+   a + q * (b-a)  )$
 
 meancontu(a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
@@ -714,6 +762,19 @@ kurcontu(a,b):=block([cp:control1(b-a)],
    if cp=0 then return(funmake('kurcontu,[a,b])),
    -6/5  )$
 
+/* This is a direct application of the maxima
+   random function. Make describe(random) for details */
+rcontu(a,b,[num]):=block([cp:control1(b-a),cn,no,f,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rcontu,append([a,b],num))),
+   f: float(b-a),
+   if numberp(f)
+      then if no=0
+              then return(a + random(f))
+              else return(a + makelist(random(f),k,1,no)),
+   funmake('rcontu,append([a,b],num)) )$
 
 
 /*         LOGISTIC DISTRIBUTION          */
@@ -730,6 +791,14 @@ dislog(x,a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('dislog,[x,a,b])),
    1/(1+exp((a-x)/b))  )$
+
+qlog(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qlog,[q,a,b])),
+   if fq=0.0 then return('minf),
+   if fq=1.0 then return('inf),
+   a - b * log(1/q-1)  )$
 
 meanlog(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
@@ -756,6 +825,20 @@ kurlog(a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('kurlog,[a,b])),
    6/5  )$
 
+/* Only the inverse method is implemented; there
+   is no global variable */
+rlog(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rlog,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then if no=0
+              then return(a - b * log(1/random(1.0) - 1.0))
+              else return(a - b * map('log,1/makelist(random(1.0),k,1,no) - 1.0)),
+   funmake('rlog,append([a,b],num)) )$
 
 
 /*         PARETO DISTRIBUTION          */
@@ -780,30 +863,73 @@ dispareto(x,a,b):=block([cp:control2(a,b)],
               then return(0),
    funmake('dispareto,[x,a,b])  )$
 
+qpareto(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qpareto,[q,a,b])),
+   if fq=0.0 then return(b),
+   if fq=1.0 then return('inf),
+   b / (1-q)^(1/a)  )$
+
 meanpareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('meanpareto,[a,b])),
-   a*b/(a-1)  )$
+   if sign(a-1)='pos
+      then return(a*b/(a-1))
+      else if member(sign(a-1),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('meanpareto,[a,b]) )$
 
 varpareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('varpareto,[a,b])),
-   a*b*b/((a-2)*(a-1)^2)  )$ 
+   if sign(a-2)='pos
+      then return(a*b*b/((a-2)*(a-1)^2))
+      else if member(sign(a-2),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('varpareto,[a,b]) )$
 
 stdpareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('stdpareto,[a,b])),
-   b*sqrt(a/(a-2))/(a-1)  )$
+   if sign(a-2)='pos
+      then return(b*sqrt(a/(a-2))/(a-1))
+      else if member(sign(a-2),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('stdpareto,[a,b]) )$
 
 skwpareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('skwpareto,[a,b])),
-   2*(a+1)*sqrt(a-2)/((a-3)*sqrt(a))  )$
+   if sign(a-3)='pos
+      then return(2*(a+1)*sqrt(a-2)/((a-3)*sqrt(a)))
+      else if member(sign(a-3),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('skwpareto,[a,b]) )$
 
 kurpareto(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('kurpareto,[a,b])),
-   (6*(a^3+a^2-6*a-2)) / (a*(a^2-7*a+12)) - 3  )$
+   if sign(a-4)='pos
+      then return((6*(a^3+a^2-6*a-2)) / (a*(a^2-7*a+12)) - 3)
+      else if member(sign(a-4),['nz,'neg,'zero])
+              then error("Illegal parameter"),
+   funmake('kurpareto,[a,b]) )$
+
+/* Only the inverse method is implemented; there
+   is no global variable */
+rpareto(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rpareto,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then if no=0
+              then return(b / (1-random(1.0))^(1.0/a))
+              else return(b / (1-makelist(random(1.0),k,1,no))^(1.0/a)),
+   funmake('rpareto,append([a,b],num)) )$
 
 
 
@@ -828,6 +954,14 @@ disweibull(x,a,b):=block([cp:control2(a,b)],
       else if sign(x)='pos
               then return(1-exp(-(x/b)^a)),
    funmake('disweibull,[x,a,b]) )$
+
+/* R: qweibull(q,a,b) */
+qweibull(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0 then return(funmake('qweibull,[q,a,b])),
+   if fq=0.0 then return(0),
+   if fq=1.0 then return('inf),
+   b * (-log(1-q))^(1/a))$
 
 meanweibull(a,b):=block([cp:control2(a,b)],
    if cp=-1 then error("Illegal parameter"),
@@ -857,6 +991,21 @@ kurweibull(a,b):=block([cp:control2(a,b)],
                        6*gamma(1/a+1)^2*gamma(2/a+1)-3*gamma(1/a+1)^4) /
           (gamma(2/a+1)-gamma(1/a+1)^2)^2 - 3  )$
 
+/* Only the inverse method is implemented; there
+   is no global variable */
+rweibull(a,b,[num]):=block([cp:control2(a,b),cn,no,fa,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rweibull,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then if no=0
+              then return(b * (-log(random(1.0)))^(1.0/a))
+              else return(b * (-map('log,makelist(random(1.0),k,1,no)))^(1.0/a)),
+   funmake('rweibull,append([a,b],num)) )$
+
 
 
 /*          RAYLEIGH DISTRIBUTION              */
@@ -868,6 +1017,8 @@ denrayleigh(x,b):=denweibull(x,2,1/b)$
 
 disrayleigh(x,b):=disweibull(x,2,1/b)$
 
+qrayleigh(q,b):=qweibull(q,2,1/b)$
+
 meanrayleigh(b):=meanweibull(2,1/b)$
 
 varrayleigh(b):=varweibull(2,1/b)$
@@ -877,6 +1028,20 @@ stdrayleigh(b):=stdweibull(2,1/b)$
 skwrayleigh(b):=skwweibull(2,1/b)$
 
 kurrayleigh(b):=kurweibull(2,1/b)$
+
+/* Only the inverse method is implemented; there
+   is no global variable */
+rrayleigh(b,[num]):=block([cp:control1(b),cn,no,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rrayleigh,append([b],num))),
+   fb: float(b),
+   if numberp(fb)
+      then if no=0
+              then return(sqrt(-log(random(1.0))) / b)
+              else return(sqrt(-map('log,makelist(random(1.0),k,1,no))) / b),
+   funmake('rrayleigh,append([b],num)) )$
 
 
 
@@ -897,6 +1062,14 @@ dislaplace(x,a,b):=block([cp:control1(b)],
       else if sign(x-a)='pos
               then return(1-1/2*exp((a-x)/b)),
    funmake('dislaplace,[x,a,b]) )$
+
+qlaplace(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qlaplace,[q,a,b])),
+   if fq=0.0 then return('minf),
+   if fq=1.0 then return('inf),
+   a - b * signum(2*q-1) * log(1 - signum(2*q-1) * (2*q-1)))$
 
 meanlaplace(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
@@ -923,6 +1096,21 @@ kurlaplace(a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('kurlaplace,[a,b])),
    3  )$
 
+/* Only the inverse method is implemented; there
+   is no global variable */
+rlaplace(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rlaplace,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then if no=0
+              then return(qlaplace(random(1.0),a,b))
+              else return(makelist(qlaplace(random(1.0),a,b),k,1,no)),
+   funmake('rlaplace,append([a,b],num)) )$
+
 
 
 /*         CAUCHY (OR LORENTZ) DISTRIBUTION          */
@@ -939,7 +1127,30 @@ discauchy(x,a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('discauchy,[x,a,b])),
    1/2+atan((x-a)/b)/%pi )$
 
+qcauchy(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qcauchy,[q,a,b])),
+   if fq=0.0 then return('minf),
+   if fq=1.0 then return('inf),
+   a + b * tan(%pi * (q - 1/2)) )$
+
 /* Note: integrals for Cauchy moments are divergent */
+
+/* Only the inverse method is implemented; there
+   is no global variable */
+rcauchy(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rcauchy,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then if no=0
+              then return( tan (3.141592653589793 * (random(1.0)-0.5))*b+a)
+              else return(a + b * map('tan, 3.141592653589793 * (makelist(random(1.0),k,1,no)-0.5))),
+   funmake('rcauchy,append([a,b],num)) )$
 
 
 
@@ -957,6 +1168,14 @@ disgumbel(x,a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('disgumbel,[x,a,b])),
    exp(-exp((a-x)/b)) )$
 
+qgumbel(q,a,b):=block([cp:control1(b), cq:controlq(q), fq:float(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qgumbel,[q,a,b])),
+   if fq=0.0 then return('minf),
+   if fq=1.0 then return('inf),
+   a - b * log(-log(q)) )$
+
 meangumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('meangumbel,[a,b])),
@@ -972,20 +1191,32 @@ stdgumbel(a,b):=block([cp:control1(b)],
    if cp=0 then return(funmake('stdgumbel,[a,b])),
    b*%pi/sqrt(6)  )$
 
-skwgumbel(a,b):=block([cp:control1(b),zeta3],
+skwgumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('skwgumbel,[a,b])),
    if numer
-      then (/* Ramanujan's approximation of Riemann-zeta(3)
-               with double precission */
-            zeta3: 7*%pi^3/180-2*sum(1/(n^3*(exp(2*%pi*n)-1)),n,1,6),
-            12*sqrt(6)*zeta3/%pi^3)
+      then 1.139547099404649
       else 12*sqrt(6)*zeta(3)/%pi^3 )$
 
 kurgumbel(a,b):=block([cp:control1(b)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('kurgumbel,[a,b])),
    12/5  )$
+
+/* Only the inverse method is implemented; there
+   is no global variable */
+rgumbel(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rgumbel,append([a,b],num))),
+   fa: float(a),
+   fb: float(b),
+   if numberp(fa) and numberp(fb)
+      then if no=0
+              then return(a - b * log(-log(random(1.0))))
+              else return(a - b * map('log,-map('log,makelist(random(1.0),k,1,no)))),
+   funmake('rgumbel,append([a,b],num)) )$
 
 
 
@@ -1013,8 +1244,27 @@ disbinomial(x,n,p):=block([cp:controlip(n,p),xx],
                       then return(1)
                       else if numberp(x) and numberp(p) and numberp(n) and numer
                               then (xx: floor(x),
-                                    return(ibeta(1-p,n-xx,xx+1))),
+                                    return(?ibeta(1-p,n-xx,xx+1))),
    funmake('disbinomial,[x,n,p])  )$
+
+/* R: qbinom(q,n,p) */
+qbinomial(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
+                         a, b, m],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qbinomial,[q,n,p])),
+   if fq <= float((1-p)^n) then return(0),
+   if fq=1.0 then return(n),
+   if not numberp(q) or not numberp(n) or not numberp(p)
+      then return(funmake('qbinomial,[q,n,p])),
+   /* let's use the partition method */
+   a:0, b:n,
+   while (b-a>1) do(
+      m: 0.5*(a+b),
+      if disbinomial(m,n,p) < q
+         then a: m
+         else b: m ),
+   floor(b) )$
 
 meanbinomial(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
@@ -1041,12 +1291,25 @@ kurbinomial(n,p):=block([cp:controlip(n,p)],
    if cp=0 then return(funmake('kurbinomial,[n,p])),
    (1-6*p*(1-p))/(n*p*(1-p))  )$
 
+/* Implemented algorithms: kachit, bernoulli, inverse.
+   More info in numdistrib.lisp */
+rbinomial(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rbinomial,append([n,p],num))),
+   fp: float(p),
+   if integerp(n) and numberp(fp)
+      then return(?rndbinomial(n,fp,no)),
+   funmake('rbinomial,append([n,p],num)) )$
+
 
 
 /*         POISSON DISTRIBUTION          */
 
 
 
+/* R: dpois(x,m) */
 denpoisson(x,m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('denpoisson,[x,m])),
@@ -1057,6 +1320,7 @@ denpoisson(x,m):=block([cp:control1(m)],
                       then return(exp(-m)*m^x/x!),
    funmake('denpoisson,[x,m]) )$
 
+/* R: ppois(q,m) */
 dispoisson(x,m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('dispoisson,[x,m])),
@@ -1064,8 +1328,29 @@ dispoisson(x,m):=block([cp:control1(m)],
       then if sign(x)='neg
               then return(0)
               else if numberp(x) and numberp(m) and numer
-                      then return(1-igamma(m, floor(x)+1)),
+                      then return(1-?igamma(m, floor(x)+1)),
    funmake('dispoisson,[x,m])  )$
+
+/* R: qpois(q,m) */
+qpoisson(q,m):=block([cp:control1(m), cq:controlq(q), fq:float(q),
+                         a, b, mm],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qpoisson,[q,m])),
+   if fq <= float(exp(-m)) then return(0),
+   if fq=1.0 then return('inf),
+   if not numberp(q) or not numberp(m)
+      then return(funmake('qpoisson,[q,m])),
+   /* let's use the partition method */
+   b:1.0,
+   while (dispoisson(b,m) < q) do b : 2.0*b,
+   a: b/2.0,
+   while (b-a>1) do(
+      mm: 0.5*(a+b),
+      if dispoisson(mm,m) < q
+         then a: mm
+         else b: mm ),
+   floor(b) )$
 
 meanpoisson(m):=block([cp:control1(m)],
    if cp=-1 then error("Illegal parameter"),
@@ -1092,10 +1377,22 @@ kurpoisson(m):=block([cp:control1(m)],
    if cp=0 then return(funmake('kurpoisson,[m])),
    1/m  )$
 
+/* Implemented algorithms: ahrens_dieter, inverse.
+   More info in numdistrib.lisp */
+rpoisson(m,[num]):=block([cp:control1(m),cn,no,fm],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rpoisson,append([m],num))),
+   fm: float(m),
+   if numberp(fm)
+      then return(?rndpoisson(fm,no)),
+   funmake('rpoisson,append([m],num)) )$
+
 
 
 /*           BERNOULLI DISTRIBUTION            */
-/* Bernoulli(p) is equivalent to binomial(p,1) */
+/* Bernoulli(p) is equivalent to binomial(1,p) */
 
 
 
@@ -1112,6 +1409,14 @@ disbernoulli(x,p):=block([cp:controlip(1,p),xx],
                       then return(1-p),
    funmake('disbernoulli,[x,p])  )$
 
+qbernoulli(q,p):=block([cp:controlip(1,p), cq:controlq(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qbernoulli,[q,p])),
+   if member(sign(1-p-q),['pos,'zero])
+      then return(0)
+      else return(1) )$
+
 meanbernoulli(p):=meanbinomial(1,p)$
 
 varbernoulli(p):=varbinomial(1,p)$
@@ -1121,6 +1426,20 @@ stdbernoulli(p):=stdbinomial(1,p)$
 skwbernoulli(p):=skwbinomial(1,p)$
 
 kurbernoulli(p):=kurbinomial(1,p)$
+
+/* This is a direct application of the maxima
+   random function. Make describe(random) for details */
+rbernoulli(p,[num]):=block([cp:controlq(p),cn,no,f,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rbernoulli,append([p],num))),
+   f: float(p),
+   if numberp(f)
+      then if no=0
+              then return(if random(1.0)<=f then 1 else 0)
+              else return(makelist(if random(1.0)<=f then 1 else 0,k,1,no)),
+   funmake('rbernoulli,append([p],num)) )$
 
 
 
@@ -1148,6 +1467,13 @@ disgeo(x,p):=block([cp:controlp(p)],
                       then return(1-(1-p)^(floor(x)+1)),
    funmake('disgeo,[x,p])  )$
 
+/* R: pgeom(q,p) */
+qgeo(q,p):=block([cp:controlp(p), cq:controlq(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qgeo,[q,p])),
+   ceiling(log(1-q)/log(1-p)-1) )$
+
 meangeo(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('meangeo,[p])),
@@ -1172,6 +1498,18 @@ kurgeo(p):=block([cp:controlp(p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('kurgeo,[p])),
    (p^2+6-6*p)/(1-p)  )$
+
+/* Implemented algorithms: bernoulli, devroye, inverse.
+   More info in numdistrib.lisp */
+rgeo(p,[num]):=block([cp:controlp(p),cn,no,fp],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rgeo,append([p],num))),
+   fp: float(p),
+   if numberp(fp)
+      then return(?rndgeo(fp,no)),
+   funmake('rgeo,append([p],num)) )$
 
 
 
@@ -1202,6 +1540,12 @@ disdiscu(x,n):=block([cp:controli(n)],
                               then return(floor(x)/n),
    funmake('disdiscu,[x,n])   )$
 
+qdiscu(q,n):=block([cp:controli(n), cq:controlq(q)],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qdiscu,[q,n])),
+   max(ceiling(q*n), 1) )$
+
 meandiscu(n):=block([cp:controli(n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('meandiscu,[n])),
@@ -1227,6 +1571,17 @@ kurdiscu(n):=block([cp:controli(n)],
    if cp=0 then return(funmake('kurdiscu,[n])),
    -6/5-12/(5*(n^2-1)))$
 
+/* This is a direct application of the maxima
+   random function. Make describe(random) for details */
+rdiscu(n,[num]):=block([cp:controli(n),cn,no,listarith:true],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rdiscu,append([n],num))),
+   if no=0
+      then return(1+random(n))
+      else return(1+makelist(random(n),k,1,no)),
+   funmake('rdiscu,append([n],num)) )$
 
 
 /*         HYPERGEOMETRIC DISTRIBUTION          */
@@ -1255,6 +1610,29 @@ dishypergeo(x,n1,n2,n):=block([cp:controliii(n1,n2,n),listarith:true],
                                    makelist(binomial(n1,k)*binomial(n2,n-k) / 
                                             binomial(n1+n2,n),k,0,floor(x))))
                    else return(funmake('dishypergeo,[x,n1,n2,n])) )$
+
+/* R: qhyper(q,n1,n2,n) */
+qhypergeo(q,n1,n2,n):=block([cp:controliii(n1,n2,n), cq:controlq(q), fq:float(q),
+                         rmin, rmax, aux, a, b, m],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qhypergeo,[q,n1,n2,n])),
+   rmin: max(0, n-n2),
+   rmax: min(n1,n),
+   aux: denhypergeo(rmin,n1,n2,n),
+   if fq <= float(aux) then return(rmin),
+   if fq=1.0 then return(rmax),
+   if not numberp(q) or not numberp(n1) or not numberp(n2) or not numberp(n)
+      then return(funmake('qhypergeo,[q,n1,n2,n])),
+   /* let's use the partition method */
+   a: rmin,
+   b: rmax,
+   while (b-a > 1) do(
+      m: floor(0.5*(a+b)),
+      if dishypergeo(m,n1,n2,n) < q
+         then a: m
+         else b: m ),
+   b )$
 
 meanhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n)],
    if cp=-1 then error("Illegal parameter"),
@@ -1286,6 +1664,16 @@ kurhypergeo(n1,n2,n):=block([cp:controliii(n1,n2,n),t],
    t*t*(t-1)/((t-2)*(t-3)*n*n1*n2*(t-n)) * 
      (t*(t+1)-6*n*(t-n)+3*n1*n2*(t*t*(n-2)-t*n*n+6*n*(t-n))/t^2) - 3  )$
 
+/* Implemented algorithms: kachit, inverse.
+   More info in numdistrib.lisp */
+rhypergeo(n1,n2,n,[num]):=block([cp:controliii(n1,n2,n),cn,no],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rhypergeo,append([n1,n2,n],num))),
+   if numberp(n1) and numberp(n2) and numberp(n)
+      then return(?rndhypergeo(n1,n2,n,no)),
+   funmake('rhypergeo,append([n1,n2,n],num)) )$
 
 
 /*         NEGATIVE BINOMIAL DISTRIBUTION          */
@@ -1307,8 +1695,29 @@ disnegbinom(x,n,p):=block([cp:controlip(n,p)],
    if sign(x)='neg
       then return(0)
       else if numberp(x) and numberp(n) and numberp(p) and numer
-              then return(ibeta(p,n,floor(x)+1))
+              then return(?ibeta(p,n,floor(x)+1))
               else return(funmake('disnegbinom,[x,n,p])) )$
+
+/* R: qnbinom(q,n,p) */
+qnegbinom(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
+                         a, b, m],
+   if cp=-1 or cq=-1 then error("Illegal parameter"),
+   if cp=0 or cq=0
+      then return(funmake('qnegbinom,[q,n,p])),
+   if fq <= float(p^n) then return(0),
+   if fq=1.0 then return('inf),
+   if not numberp(q) or not numberp(n) or not numberp(p)
+      then return(funmake('qnegbinom,[q,n,p])),
+   /* let's use the partition method */
+   b: 1,
+   while (disnegbinom(b,n,p) < q) do b: b*2,
+   a: b/2,
+   while (b-a > 1) do(
+      m: floor(0.5*(a+b)),
+      if disnegbinom(m,n,p) < q
+         then a: m
+         else b: m ),
+   b )$
 
 meannegbinom(n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
@@ -1335,4 +1744,14 @@ kurnegbinom(n,p):=block([cp:controlip(n,p)],
    if cp=0 then return(funmake('kurnegbinom,[n,p])),
    (p*p+6-6*p)/(n*(1-p)) )$
 
-
+/* Implemented algorithms: devroye, bernoulli, inverse.
+   More info in numdistrib.lisp */
+rnegbinom(n,p,[num]):=block([cp:controlip(n,p),cn,no,fp],
+   if length(num) = 0 then no: 0 else no: num[1],
+   cn: controlib(no),
+   if cp=-1 or cn=-1 then error("Illegal parameter"),
+   if cp=0 or cn=0 then return(funmake('rnegbinom,append([n,p],num))),
+   fp: float(p),
+   if integerp(n) and numberp(fp)
+      then return(?rndnegbinom(n,fp,no)),
+   funmake('rnegbinom,append([n,p],num)) )$
