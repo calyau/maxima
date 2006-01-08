@@ -829,7 +829,7 @@
     ((rpobj e) (contract5 e))
     (
       (eq (caar e) 'mtimes)
-      (mysubst0 (simplifya (cons '(mtimes) (contract4 e)) t) e)
+      (mysubst0 (simplifya (cons '(mtimes) (contract4a e)) t) e)
     )
     (
       (eq (caar e) 'mplus)
@@ -838,6 +838,26 @@
     (t
       (mysubst0 (simplifya (cons (car e) (mapcar '$contract (cdr e))) nil) e)
     )
+  )
+)
+
+(defun contract4a (e)
+  (prog (l1 l2)
+    (setq l1 nil l2 nil)
+    (dolist (o (cdr e))
+      (cond
+        ((or (atom o) (atom (car o))) (setq l1 (cons o l1)))
+        (
+          (and (eq (caar o) 'mexpt) (eq (caddr o) -1))
+          (setq l2 (cons (cadr o) l2))
+        )
+        (t (setq l1 (cons o l1)))
+      )
+    )
+    (cond (l1 (setq l1 (contract4 (cons '(mtimes) l1)))))
+    (cond (l2 (setq l1 (cons (append (cons '(mexpt)
+                       (contract4 (cons '(mtimes) l2))) '(-1)) l1))))
+    (return l1)
   )
 )
 
