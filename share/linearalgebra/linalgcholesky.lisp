@@ -50,8 +50,9 @@
       (setq lii (if ($matrixp acc) ($cholesky acc fld-name) (funcall fpsqrt acc)))
       (if (null lii) (merror "Unable to find the Cholesky factorization"))
       (setmatelem l lii i i)
-      (if (funcall fzerop lii) (merror "Unable to find the Cholesky factorization"))
-      (setq lii-inv (funcall fadjoint (funcall freciprocal lii)))
+      (cond ((<= (+ i 1) n)
+	     (if (funcall fzerop lii) (merror "Unable to find the Cholesky factorization"))
+	     (setq lii-inv (funcall fadjoint (funcall freciprocal lii)))))
       (loop for j from (+ i 1) to n do
 	(setq acc (fn-melem m perm j i fconvert))
 	(loop for k from 1 to (- i 1) do

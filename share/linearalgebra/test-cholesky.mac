@@ -1,0 +1,100 @@
+(checkcholesky(m,r) := (
+  l : cholesky(m,r),
+  matrixp(m - l . ctranspose(l), lambda([x], is(cabs(x) < 1.0e-10)))),0);
+0$
+
+/*-----------*/
+(m : matrix([0]),0);
+0$
+
+(ok : true,0);
+0$
+
+(for r in [floatfield, complexfield, generalring, rationalfield, crering, noncommutingring] do (
+  ok : ok and checkcholesky(m,r)),ok);
+
+true$
+
+
+/*-----------*/
+(m : matrix([1]),0);
+0$
+
+(ok : true,0);
+0$
+
+(for r in [floatfield, complexfield, generalring, rationalfield, crering, noncommutingring] do (
+  ok : ok and checkcholesky(m,r)),ok);
+
+true$
+
+/*-----------*/
+(m : matrix([1,0],[7,-8]),0);
+0$
+
+(m : m . ctranspose(m),0);
+0$
+
+(ok : true,0);
+0$
+
+(for r in [floatfield, complexfield, generalring, crering, noncommutingring] do (
+  ok : ok and checkcholesky(m,r)),ok);
+true$
+
+/*-----------*/
+(m : matrix([1,0],[7,-%i]),0);
+0$
+
+(m : m . ctranspose(m),0);
+0$
+
+(ok : true,0);
+0$
+
+(for r in [complexfield, generalring] do (
+  ok : ok and checkcholesky(m,r)),ok);
+true$
+
+
+/*-----------*/
+(m : matrix([1,0],[%i,5]),0);
+0$
+
+(m : m . ctranspose(m),0);
+0$
+
+(ok : true,0);
+0$
+
+(for r in [complexfield, generalring, noncommutingring] do (
+  ok : ok and checkcholesky(m,r)),ok);
+true$
+
+/*-----------*/
+
+(m : matrix([7-%i,0],[1-%i,5 + %i]),0);
+0$
+
+(m : m . ctranspose(m),0);
+0$
+
+(ok : true,0);
+0$
+
+(for r in [complexfield, noncommutingring] do (
+  ok : ok and checkcholesky(m,r)),ok);
+true$
+
+/*------------*/
+
+(remfunction(checkcholesky),0);
+0$
+
+(remvalue(m,ok),0);
+0$
+
+
+
+
+

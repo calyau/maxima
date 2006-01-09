@@ -113,7 +113,7 @@
    :mring-to-maxima #'complexify
    :maxima-to-mring #'(lambda (s) 
 			(progn 
-			  (setq s (meval s))
+			  (setq s ($rectform (meval s)))
 			  (if (complex-number-p s 'float-or-rational-p)
 			      (complex ($float ($realpart s)) ($float ($imagpart s)))
 			    (merror "Unable to convert ~:M to a complex double float" s))))))
