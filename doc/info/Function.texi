@@ -751,17 +751,39 @@ In contrast, @code{fundef} returns the function definition.
 
 @code{dispfun} quotes its arguments; 
 the double-single-quote operator @code{'@w{}'} defeats quotation.
-@code{dispfun} always returns @code{done}.
+@code{dispfun} returns the list of intermediate expression labels corresponding to the displayed functions.
 
 Examples:
 
+@c ===beg===
+@c m(x, y) ::= x^(-y);
+@c f(x, y) :=  x^(-y);
+@c g[x, y] :=  x^(-y);
+@c h[x](y) :=  x^(-y);
+@c i[8](y) :=  8^(-y);
+@c dispfun (m, f, g, h, h[5], h[10], i[8]);
+@c ''%;
+@c ===end===
 @example
-(%i1) m(x, y) ::= x^(-y)$
-(%i2) f(x, y) :=  x^(-y)$
-(%i3) g[x, y] :=  x^(-y)$
-(%i4) h[x](y) :=  x^(-y)$
-(%i5) i[8](y) :=  8^(-y)$
-(%i6) dispfun (m, f, g, h, h[5], h[10], i[8])$
+(%i1) m(x, y) ::= x^(-y);
+                                     - y
+(%o1)                   m(x, y) ::= x
+(%i2) f(x, y) :=  x^(-y);
+                                     - y
+(%o2)                    f(x, y) := x
+(%i3) g[x, y] :=  x^(-y);
+                                    - y
+(%o3)                     g     := x
+                           x, y
+(%i4) h[x](y) :=  x^(-y);
+                                    - y
+(%o4)                     h (y) := x
+                           x
+(%i5) i[8](y) :=  8^(-y);
+                                    - y
+(%o5)                     i (y) := 8
+                           8
+(%i6) dispfun (m, f, g, h, h[5], h[10], i[8]);
                                      - y
 (%t6)                   m(x, y) ::= x
 
@@ -789,6 +811,16 @@ Examples:
                                     - y
 (%t12)                    i (y) := 8
                            8
+
+(%o12)       [%t6, %t7, %t8, %t9, %t10, %t11, %t12]
+(%i12) ''%;
+                     - y              - y            - y
+(%o12) [m(x, y) ::= x   , f(x, y) := x   , g     := x   , 
+                                            x, y
+                  - y           1              1             - y
+        h (y) := x   , h (y) := --, h  (y) := ---, i (y) := 8   ]
+         x              5        y   10         y   8
+                                5             10
 @end example
 
 @end deffn

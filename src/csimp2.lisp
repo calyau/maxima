@@ -561,7 +561,7 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 	     (mul2 d b1)))))
 
 (declare-top (splitfile xrtout)
-	     (special $globalsolve $backsubst $dispflag $nolabels
+	     (special $globalsolve $backsubst $dispflag
 		      $linsolve_params $%rnum_list ax linelable $linechar 
 		      $linenum sol *mosesflag) 
 	     (fixnum tim $linenum))
@@ -605,11 +605,10 @@ Is the matrix  1. Diagonal  2. Symmetric  3. Antisymmetric  4. General
 	 (setq zzz (list '(mlable)
 			 (progn (if chk (setq chk nil)
 				    (setq $linenum (f1+ $linenum)))
-				((lambda ($nolabels)(makelabel $linechar))
-				 (and $nolabels $globalsolve))
+				(let (($nolabels nil))
+                  (makelabel $linechar))
 				linelable)
-			 (cond ((not (and $nolabels $globalsolve))
-				(set linelable zzz)))))
+				(set linelable zzz)))
 	 (nconc sol (ncons linelable))
 	 (cond ($dispflag (setq tim (runtime))
 			  (mtell-open "~%~M" zzz)

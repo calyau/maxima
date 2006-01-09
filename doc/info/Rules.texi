@@ -215,13 +215,43 @@ If the match fails, the original expression is returned.
 Display rules with the names @var{rulename_1}, ..., @var{rulename_n},
 as returned by @code{defrule}, @code{tellsimp}, or @code{tellsimpafter},
 or a pattern defined by @code{defmatch}.
-
-@c STRIKE THIS AND MAKE IT AN EXAMPLE INSTEAD
-For example, the first rule modifying @code{sin} is named @code{sinrule1}.
+Each rule is displayed with an intermediate expression label (@code{%t}).
 
 @code{disprule (all)} displays all rules.
 
+@code{disprule} quotes its arguments.
+@code{disprule} returns the list of intermediate expression labels corresponding to the displayed rules.
+
 See also @code{letrules}, which displays rules defined by @code{let}.
+
+Examples:
+
+@c ===beg===
+@c tellsimpafter (foo (x, y), bar (x) + baz (y));
+@c tellsimpafter (x + y, special_add (x, y));
+@c defmatch (quux, mumble (x));
+@c disprule (foorule1, "+rule1", quux);
+@c ''%;
+@c ===end===
+@example
+(%i1) tellsimpafter (foo (x, y), bar (x) + baz (y));
+(%o1)                   [foorule1, false]
+(%i2) tellsimpafter (x + y, special_add (x, y));
+(%o2)                   [+rule1, simplus]
+(%i3) defmatch (quux, mumble (x));
+(%o3)                         quux
+(%i4) disprule (foorule1, "+rule1", quux);
+(%t4)        foorule1 : foo(x, y) -> baz(y) + bar(x)
+
+(%t5)          +rule1 : y + x -> special_add(x, y)
+
+(%t6)                quux : mumble(x) -> []
+
+(%o6)                    [%t4, %t5, %t6]
+(%i6) ''%;
+(%o6) [foorule1 : foo(x, y) -> baz(y) + bar(x), 
+     +rule1 : y + x -> special_add(x, y), quux : mumble(x) -> []]
+@end example
 
 @end deffn
 

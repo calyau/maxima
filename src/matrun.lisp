@@ -33,13 +33,12 @@
 (defmvar matchreverse nil)
 
 (defmspec $disprule (l) (setq l (cdr l))
-	  (cond ((cdr l) (disprule1 l))
-		((not (eq (car l) '$all)) (consrule (car l)))
-		(t (disprule1 (cdr $rules)))))
+    (if (and (eq (car l) '$all) (null (cdr l)))
+      (disprule1 (cdr $rules))
+      (disprule1 l)))
 
 (defun disprule1 (l)
-  (do ((l l (cdr l))) ((null l)) ($ldisp (consrule (car l))))
-  '$done)
+  `((mlist simp) ,@(loop for r in l collect (cadr ($ldisp (consrule r))))))
 
 (defun consrule (x)
   (let ((rule (mget x '$rule)))

@@ -2498,15 +2498,19 @@ wrapper for this."
 
 (defmspec $dispfun (l) (setq l (cdr l))
 	  (cond ((or (cdr l) (not (eq (car l) '$all))) (dispfun1 l nil nil))
-		(t (dispfun1 (cdr $functions) t nil)
-		   (dispfun1 (mapcan #'(lambda (x) (if (mget x 'aexpr) (ncons x)))
-				     (cdr $arrays))
-			     nil t)
-		   (dispfun1 (cdr $macros) t nil))))
+		(t
+          `((mlist simp)
+            ,@(apply #'append
+               (list (cdr (dispfun1 (cdr $functions) t nil))
+                     (cdr (dispfun1
+                            (mapcan #'(lambda (x) (if (mget x 'aexpr) (ncons x)))
+                                    (cdr $arrays)) nil t))
+                     (cdr (dispfun1 (cdr $macros) t nil))))))))
 
 (defun dispfun1 (l flag maexprp)
-  (dolist (fun l) ($ldisp (consfundef (if flag (caar fun) fun) maexprp nil)))
-  '$done)
+  `((mlist simp) 
+    ,@(loop for fun in l collect
+            (cadr ($ldisp (consfundef (if flag (caar fun) fun) maexprp nil))))))
 
 (defmspec $fundef (x) (consfundef (fexprcheck x) nil nil))
 

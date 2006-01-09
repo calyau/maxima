@@ -366,9 +366,18 @@ and obvious generalizations are missing.
 @defvr {Option variable} globalsolve
 Default value: @code{false}
 
-When @code{globalsolve} is @code{true}, solved-for variables
-are assigned the solution values found by @code{solve}.
-@c DOES ANY OTHER FUNCTION RESPECT globalsolve ??
+When @code{globalsolve} is @code{true},
+solved-for variables are assigned the solution values found by @code{linsolve},
+and by @code{solve} when solving two or more linear equations.
+
+When @code{globalsolve} is @code{false},
+solutions found by @code{linsolve} and by @code{solve} when solving two or more linear equations
+are expressed as equations,
+and the solved-for variables are not assigned.
+
+When solving anything other than two or more linear equations,
+@code{solve} ignores @code{globalsolve}.
+Other functions which solve equations (e.g., @code{algsys}) always ignore @code{globalsolve}.
 
 Examples:
 
@@ -496,8 +505,8 @@ Solves the list of
 simultaneous linear equations for the list of variables.  The expressions
 must each be polynomials in the variables and may be equations.
 
-When @code{globalsolve} is @code{true} then variables which are solved
-for will be set to the solution of the set of simultaneous equations.
+When @code{globalsolve} is @code{true},
+each solved-for variable is bound to its value in the solution of the equations.
 
 When @code{backsubst} is @code{false}, @code{linsolve}
 does not carry out back substitution after
@@ -512,12 +521,73 @@ used to represent arbitrary parameters described in the manual under
 Otherwise, @code{linsolve} solves an under-determined system of
 equations with some variables expressed in terms of others.
 
+When @code{programmode} is @code{false},
+@code{linsolve} displays the solution with intermediate expression (@code{%t}) labels,
+and returns the list of labels.
+
+@c ===beg===
+@c e1: x + z = y;
+@c e2: 2*a*x - y = 2*a^2;
+@c e3: y - 2*z = 2;
+@c [globalsolve: false, programmode: true];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c [globalsolve: false, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [globalsolve: true, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [x, y, z];
+@c [globalsolve: true, programmode: true];
+@c linsolve ([e1, e2, e3], '[x, y, z]);
+@c [x, y, z];
+@c ===end===
 @example
-(%i1) e1: x + z = y$
-(%i2) e2: 2*a*x - y = 2*a^2$
-(%i3) e3: y - 2*z = 2$
-(%i4) linsolve ([e1, e2, e3], [x, y, z]);
-(%o4)            [x = a + 1, y = 2 a, z = a - 1]
+(%i1) e1: x + z = y;
+(%o1)                       z + x = y
+(%i2) e2: 2*a*x - y = 2*a^2;
+                                       2
+(%o2)                   2 a x - y = 2 a
+(%i3) e3: y - 2*z = 2;
+(%o3)                      y - 2 z = 2
+(%i4) [globalsolve: false, programmode: true];
+(%o4)                     [false, true]
+(%i5) linsolve ([e1, e2, e3], [x, y, z]);
+(%o5)            [x = a + 1, y = 2 a, z = a - 1]
+(%i6) [globalsolve: false, programmode: false];
+(%o6)                    [false, false]
+(%i7) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t7)                       z = a - 1
+
+(%t8)                        y = 2 a
+
+(%t9)                       x = a + 1
+(%o9)                    [%t7, %t8, %t9]
+(%i9) ''%;
+(%o9)            [z = a - 1, y = 2 a, x = a + 1]
+(%i10) [globalsolve: true, programmode: false];
+(%o10)                    [true, false]
+(%i11) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t11)                      z : a - 1
+
+(%t12)                       y : 2 a
+
+(%t13)                      x : a + 1
+(%o13)                 [%t11, %t12, %t13]
+(%i13) ''%;
+(%o13)           [z : a - 1, y : 2 a, x : a + 1]
+(%i14) [x, y, z];
+(%o14)                 [a + 1, 2 a, a - 1]
+(%i15) [globalsolve: true, programmode: true];
+(%o15)                    [true, true]
+(%i16) linsolve ([e1, e2, e3], '[x, y, z]);
+(%o16)           [x : a + 1, y : 2 a, z : a - 1]
+(%i17) [x, y, z];
+(%o17)                 [a + 1, 2 a, a - 1]
 @end example
 
 @end deffn
@@ -795,8 +865,17 @@ equations are not compatible, the message @code{inconsistent} will be
 displayed (see the @code{solve_inconsistent_error} switch); if no unique
 solution exists, then @code{singular} will be displayed.
 
+When @code{programmode} is @code{false},
+@code{solve} displays solutions with intermediate expression (@code{%t}) labels,
+and returns the list of labels.
+
+When @code{globalsolve} is @code{true} and the problem is to solve two or more linear equations,
+each solved-for variable is bound to its value in the solution of the equations.
+
 Examples:
+
 @c FOLLOWING ADAPTED FROM example (solve)
+@c ===beg===
 @c solve (asin (cos (3*x))*(f(x) - 1), x);
 @c ev (solve (5^f(x) = 125, f(x)), solveradcan);
 @c [4*x^2 - y^2 = 12, x*y - x = 2];
@@ -809,7 +888,7 @@ Examples:
 @c x^2 - 1;
 @c solve (%, x);
 @c ev (%th(2), %[1]);
-
+@c ===end===
 @example
 (%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
 

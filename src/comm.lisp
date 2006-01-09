@@ -572,10 +572,17 @@
 	((mspecfunp (caar e)) e)
 	(t (cons (car e) (mapcar #'meval (cdr e))))))
 
+; Construct a new intermediate result label,
+; and bind it to the expression e. 
+; The global flag $NOLABELS is ignored; the label is always bound.
+; Otherwise (if ELABEL were to observe $NOLABELS) it would be
+; impossible to programmatically refer to intermediate result expression.
+
 (defmfun elabel (e)
   (if (not (checklabel $linechar)) (setq $linenum (f1+ $linenum)))
-  (makelabel $linechar)
-  (if (not $nolabels) (set linelable e))
+  (let (($nolabels nil)) ; <-- This is pretty ugly. MAKELABEL should take another argument.
+    (makelabel $linechar))
+  (set linelable e)
   linelable)
 
 (defmfun $dispterms (e)
