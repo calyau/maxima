@@ -33,7 +33,7 @@ modLoad("GosperEq.mac");
 
 modLoad("Gosper.mac");
 
-modLoad("Zeilberger.mac");
+modLoad("zeilberger_algorithm.mac");
 
 
 
