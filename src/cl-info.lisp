@@ -20,6 +20,8 @@
 
 (in-package :cl-info)
 
+(defvar *index-name* "index")
+
 (defvar *match-data*)
 (defvar *case-fold-search* nil)
 
@@ -111,7 +113,7 @@
 (eval-when (compile eval load)
   (defun sharp-u-reader (stream subchar arg)
     (declare (ignore subchar arg))
-    (let ((tem (make-array 10 :element-type 'base-char
+    (let ((tem (make-array 10 :element-type 'character
 			   :fill-pointer 0 :adjustable t)))
       (unless (eql (read-char stream) #\")
 	(error "sharp-u-reader reader needs a \"right after it"))
@@ -125,10 +127,11 @@
 					      (#\r . #\return))))
 			     ch))))
 	 (vector-push-extend ch tem)))
-      (coerce tem '(simple-array base-char (*)))))
+      (coerce tem '(simple-array character (*)))))
 
   (set-dispatch-macro-character #\# #\u 'sharp-u-reader)
-  )
+  ) 
+;; match unbalanced " above which confuse some editors
 
 (defvar *info-data* nil)
 (defvar *current-info-data* nil)
@@ -146,7 +149,7 @@
 	(error "illegal file start ~a" start))
       #-gcl
       (let ((tem (make-array (- len start)
-			     :element-type 'base-char)))
+			     :element-type 'character)))
 	(when (> start 0)
 	  (file-position st start))
 	(read-sequence tem st :start 0 :end (length tem))
@@ -242,7 +245,7 @@
 	       ((> extra 0)
 		(setq tem 
 		      (make-array (+ (length x) extra)
-				  :element-type 'base-char :fill-pointer 0))
+				  :element-type 'character :fill-pointer 0))
 		(setq i 0)
 		(go AGAIN))
 	       (t (setq tem x)))
@@ -276,7 +279,10 @@
       (let* (s
 	     (node-string (car (nth 1 *current-info-data*)))
 	     (node
-	      (and node-string (car (get-nodes "index" node-string)))))
+	      (and node-string (car (if (equal *index-name* "index")
+	                        	(get-nodes *index-name* node-string)
+				        (or (get-nodes *index-name* node-string)
+				            (get-nodes "index"      node-string)))))))
 	(when node
 	  (setq s (show-info node nil))
 	  (setf (third *current-info-data*) s)))))

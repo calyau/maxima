@@ -193,6 +193,7 @@
 
 (defun set-locale ()
   (let (locale language territory codeset)
+    (setq cl-info::*index-name* "index")
     (unless  (setq *maxima-lang-subdir* (maxima-getenv "MAXIMA_LANG_SUBDIR"))
 	(setq locale (or (maxima-getenv "LC_ALL")
                          (maxima-getenv "LC_MESSAGES")
@@ -219,7 +220,15 @@
 		    ;; subdir = two-char language code
 		    ((zl-member language '("es" "pt"))
 		        (setq *maxima-lang-subdir* language))
-		    (t  (setq *maxima-lang-subdir* nil))))))
+		    (t  (setq *maxima-lang-subdir* nil)))
+		;; Word "Index" for describe
+		(cond
+		    ((equal language "es")
+			(setq cl-info::*index-name* (format nil "~andice" (code-char #xCD))))
+		    ((equal language "pt")
+			(setq cl-info::*index-name* (format nil "~andice" (code-char #xCD)))) 
+		)
+	    )))
    (setq cl-info::*lang-subdir* *maxima-lang-subdir*)))    
 
 (defun set-pathnames ()
