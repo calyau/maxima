@@ -97,9 +97,9 @@ contrib/Grobner/maxima-grobner.lisp\
 contrib/README\
 contrib/Zeilberger/Gosper.mac\
 contrib/Zeilberger/GosperEq.mac\
-contrib/Zeilberger/LOADZeilberger.mac\
 contrib/Zeilberger/Zeilberger.mac\
 contrib/Zeilberger/algUtil.mac\
+contrib/Zeilberger/compare_sums.mac\
 contrib/Zeilberger/compatible.mac\
 contrib/Zeilberger/constants.mac\
 contrib/Zeilberger/linearAlgebra.mac\
@@ -112,6 +112,8 @@ contrib/Zeilberger/shiftQuotient.mac\
 contrib/Zeilberger/testGosper.mac\
 contrib/Zeilberger/testZeilberger.mac\
 contrib/Zeilberger/whatsnew.txt\
+contrib/Zeilberger/zeilberger.mac\
+contrib/Zeilberger/zeilberger.texi\
 contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
 contrib/cholesky.mac\
