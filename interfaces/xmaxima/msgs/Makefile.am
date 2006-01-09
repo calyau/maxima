@@ -2,7 +2,7 @@ include $(top_srcdir)/common.mk
 
 genericdir =$(xmaximadir)/msgs
 
-msgfiles = ru.msg
+msgfiles = ru.msg es.msg
 
 genericdirDATA = $(msgfiles)
 
