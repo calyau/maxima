@@ -1,0 +1,230 @@
+\input texinfo
+
+@c makeinfo zeilberger.texi         to make .info
+@c texi2html zeilberger.texi        to make .html
+@c texi2pdf zeilberger.texi         to make .pdf
+
+@setfilename zeilberger.info
+@settitle zeilberger
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to zeilberger, (dir), (dir)
+@top
+@menu
+* Introduction to zeilberger::
+* Definitions for zeilberger::
+* Function and variable index::
+@end menu
+
+@node Introduction to zeilberger, Definitions for zeilberger, Top, Top
+@section Introduction to zeilberger
+
+@code{zeilberger} is a implementation of Zeilberger's algorithm
+for definite hypergeometric summation, and also 
+Gosper's algorithm for indefinite hypergeometric
+summation.
+
+@code{zeilberger} makes use of the "filtering" optimization method developed by Axel Riese.
+
+@code{zeilberger} was developed by Fabrizio Caruso.
+
+@code{load (zeilberger)} loads this package.
+
+@subsubsection The indefinite summation problem
+
+@code{zeilberger} implements Gosper's algorithm
+for indefinite hypergeometric summation.
+Given a hypergeometric term @math{F_k} in @math{k} we want to find its hypergeometric
+anti-difference, that is, a hypergeometric term @math{f_k} such that @math{F_k = f_(k+1) - f_k}.
+
+@subsubsection The definite summation problem
+
+@code{zeilberger} implements Zeilberger's algorithm
+for definite hypergeometric summation.
+Given a proper hypergeometric term (in @math{n} and @math{k}) @math{F_(n,k)} and a
+positive integer @math{d} we want to find a @math{d}-th order linear
+recurrence with polynomial coefficients (in @math{n}) for @math{F_(n,k)}
+and a rational function @math{R} in @math{n} and @math{k} such that
+
+@math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_K(R(n,k) F_(n,k))}
+
+where @math{Delta_k} is the @math{k}-forward difference operator, i.e.,
+@math{Delta_k(t_k) := t_(k+1) - t_k}.
+
+@subsection Verbosity levels
+
+There are also verbose versions of the commands
+which are called by adding one of the following prefixes:
+
+@table @code
+@item Summary
+Just a summary at the end is shown
+@item Verbose
+Some information in the intermidiate steps
+@item VeryVerbose
+More information
+@item Extra
+Even more information including information on
+the linear system in Zeilberger's algorithm
+@end table
+
+For example:
+@code{GosperVerbose}, @code{parGosperVeryVerbose},
+@code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
+
+
+@node Definitions for zeilberger, Function and variable index, Introduction to zeilberger, Top
+@section Definitions for zeilberger
+
+@deffn {Function} AntiDifference (@var{F_k}, @var{k})
+
+Returns the hypergeometric anti-difference
+of @var{F_k}, if it exists.
+Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
+@end deffn
+
+@deffn {Function} Gosper (@var{F_k}, @var{k})
+Returns the rational certificate @var{R(k)} for @var{F_k}, that is,
+a rational function such that
+
+@math{F_k = R(k+1) F_(k+1) - R(k) F_k}
+ 
+if it exists.
+Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
+@end deffn
+
+@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+
+Returns the summmation of @var{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
+if @var{F_k} has a hypergeometric anti-difference.
+Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
+@end deffn
+
+@c NEEDS CLARIFICATION -- 2 ARGS BOTH NAMED K ?? IS F_N SUPPOSED TO BE F_K ?? WHAT IS (*) ??
+@deffn {Function} parGosper (@var{F_n}, @var{k}, @var{k}, @var{n}, @var{d})
+Attempts to find a a @var{d}-th order recurrence.
+The algorithm yields a sequence
+@math{[s_1, s_2, ..., s_m]} of solutions.
+Each solution has the form
+
+@math{[R(n, k), [a_0, a_1, ..., a_d]]}
+
+@code{parGosper} returns @code{[]} if it fails to find a recurrence.
+@end deffn
+
+@c NEEDS CLARIFICATION -- 2 ARGS BOTH NAMED K ?? IS F_N SUPPOSED TO BE F_K ?? WHAT IS (*) ??
+@deffn {Function} Zeilberger (@var{F_n}, @var{k}, @var{k}, @var{n})
+Attempts to compute the indefinite hypergeometric summation of @var{F_n}.
+
+@code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
+@code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
+If Zeilberger finds a solution before reaching @code{MAX_ORD}
+it stops and yields the solution in the form (*) otherwise
+it tries a higher oder.
+
+The algorithms yields a sequence
+@math{[s_1,s_2, ..., s_m]} of solutions.
+Each solution has the following form:
+
+@math{[R(n,k), [a_0, a_1, ..., a_d]]}
+
+@code{Zeilberger} returns @code{[]} if it fails to find a solution.
+
+@code{Zeilberger} invokes @code{Gosper} only if @code{gosper_in_zeilberger} is @code{true}.
+@end deffn
+
+@section General global variables
+
+@defvr {Global variable} MAX_ORD
+Default value: 5
+
+@code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
+@end defvr
+
+@defvr {Global variable} simplified_output
+Default value: @code{false}
+
+When @code{simplified_output} is @code{true},
+functions in the @code{zeilberger} package attempt
+further simplification of the solution.
+@end defvr
+
+@defvr {Global variable} linear_solver
+Default value: @code{linsolve}
+
+@code{linear_solver} names the solver which is used to solve the system
+of equations in Zeilberger's algorithm.
+@end defvr
+
+@defvr {Global variable} warnings
+Default value: @code{true}
+
+When @code{warnings} is @code{true},
+functions in the @code{zeilberger} package print
+warning messages during execution.
+@end defvr
+
+@defvr {Global variable} gosper_in_zeilberger
+Default value: @code{true}
+
+When @code{gosper_in_zeilberger} is @code{true},
+the @code{Zeilberger} function calls @code{Gosper} before calling @code{parGosper}.
+Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
+@end defvr
+
+@defvr {Global variable} trivial_solutions
+Default value: @code{true}
+
+When @code{trivial_solutions} is @code{true},
+@code{Zeilberger} returns solutions
+which have certificate equal to zero, or all coefficients equal to zero.
+@end defvr
+
+@section Variables related to the modular test
+
+@defvr {Global variable} mod_test
+Default value: @code{false}
+
+When @code{mod_test} is @code{true},
+@code{parGosper} executes a
+modular test for discarding systems with no solutions.
+@end defvr
+
+@defvr {Global variable} modular_linear_solver
+Default value: @code{linsolve}
+
+@code{modular_linear_solver} names the linear solver used by the modular test in @code{parGosper}.
+@end defvr
+
+@defvr {Global variable} ev_point
+Default value: @code{big_primes[10]}
+
+@code{ev_point} is the value at which the variable @var{n} is evaluated
+when executing the modular test in @code{parGosper}.
+@end defvr
+
+@defvr {Global variable} mod_big_prime
+Default value: @code{big_primes[1]}
+
+@code{mod_big_prime} is the modulus used by the modular test in @code{parGosper}.
+@end defvr
+
+@defvr {Global variable} mod_threshold
+Default value: 4
+
+@code{mod_threshold} is the
+greatest order for which the modular test in @code{parGosper} is attempted.
+@end defvr
+
+
+@node Function and variable index,  , Definitions for zeilberger, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye
