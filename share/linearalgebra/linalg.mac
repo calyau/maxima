@@ -237,11 +237,6 @@ column_reduce(m,i,x) := block([nc, nr, pos, q, proviso : []],
        if listp(pos) then m : rowswap(m,i, first(pos))),
     [m, proviso]);
 
-zeromatrixp(m) := 
-  if not(matrixp(m)) then is(equal(rectform(e),0))	
-  else if matrixp(m) then
-     every(lambda([e],zeromatrixp(e)), apply('append,args(m)));
-      
 mat_norm(m, p) := block([listarith : true, d],
   require_matrix(m,"first","mat_norm"),
   if blockmatrixp(m) then m : mat_fullunblocker(m),
@@ -280,6 +275,8 @@ kronecker_product(a,b) := (
   require_matrix(b,"second", "kronecker_product"),
   mat_unblocker(outermap('matrix_element_mult, a,b)));
   
+diag_matrix([d]) := genmatrix(lambda([i,j], if i = j then part(d,i) else 0),length(d),length(d));
+
 hilbert_matrix(n) := (
   require_posinteger(n,"first","hilbert_matrix"),
   funmake('matrix, makelist(makelist(1/(i + j - 1),i,1, n),j, 1, n)));

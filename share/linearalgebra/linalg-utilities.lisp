@@ -46,8 +46,22 @@
       (merror "The ~:M argument of the function ~:M must be a positive integer" pos fun)))
 
 (defun $ctranspose (m)
-  (mfuncall '$transpose (mfuncall '$matrixmap '$conjugate m)))
+  (let ((mc (copy-tree m)))
+    (full-matrix-map mc #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))
+    (mfuncall '$transpose mc)))
 
+(defun $zeromatrixp (m)
+  (let ((r) (c) (ok t))
+  (cond (($matrixp m)
+	 (setq r ($matrix_size m))
+	 (setq c ($second r))
+	 (setq r ($first r))
+	 (loop for i from 1 to r while ok do
+	   (loop for j from 1 to c while ok do
+	     (setq ok (and ok ($zeromatrixp (nth j (nth i m))))))))
+	(t (setq ok (like 0 ($rectform m)))))
+  ok))
+	
 (eval-when (eval compile load)
   (mfuncall '$alias '$copylist '$copy '$copymatrix '$copy))
 

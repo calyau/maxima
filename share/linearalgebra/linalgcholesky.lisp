@@ -13,15 +13,14 @@
   (funcall fn (m-elem mat perm i j)))
 
 (defun $require_selfadjoint_matrix (m fun pos)
-  (if (or (not ($matrixp m)) 
-	  (not (= ($first ($matrix_size m)) ($second ($matrix_size m))))
-	  (not (mfuncall '$zeromatrixp (sub m ($ctranspose m)))))
-      (merror "The ~:M argument to the function ~:M must be a selfadjoint matrix" pos fun)))
+  (if (not (mfuncall '$zeromatrixp (sub m ($ctranspose m))))
+      (merror "The ~:M argument to the function ~:M must be a selfadjoint matrix" pos fun)
+    '$done))
 
 (defun $cholesky (m &optional (fld-name '$generalring))
   ($require_selfadjoint_matrix m "$first" "$cholesky")
   ($require_nonempty_matrix m "$first" "$cholesky")
- 
+  
   (let* ((n ($first ($matrix_size m))) (perm) (lii) (lii-inv) (l) (acc) (x)
 	 (fld ($require_ring fld-name "$second" "$cholesky"))
 	 (fsub (mring-sub fld))
@@ -34,6 +33,7 @@
 	 (freciprocal (mring-reciprocal fld)))
 
     (setq l ($zerofor m))
+   
     (full-matrix-map l fconvert)
     (loop for k from 1 to n do 
       (push k perm))
