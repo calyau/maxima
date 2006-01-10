@@ -97,7 +97,7 @@ contrib/Grobner/maxima-grobner.lisp\
 contrib/README\
 contrib/Zeilberger/Gosper.mac\
 contrib/Zeilberger/GosperEq.mac\
-contrib/Zeilberger/Zeilberger.mac\
+contrib/Zeilberger/zeilberger_algorithm.mac\
 contrib/Zeilberger/algUtil.mac\
 contrib/Zeilberger/compare_sums.mac\
 contrib/Zeilberger/compatible.mac\
