@@ -1611,6 +1611,17 @@
 			(CADR $COORD))) (RETURN (SUBST X Y (CHAINRULE E Y))))
 		(T (RETURN (CHAINRULE E X))))))
 
+(defun diffexpt1 (e x)
+;; RETURN: n*v^n*rename(v'/v) where e=v^n
+  (list '(mtimes) (caddr e) e
+    ($rename
+      (list '(mtimes) (list '(mexpt) (cadr e) -1)
+             (sdiff (cadr e) x)
+      )
+    )
+  )
+)
+
 ;Redefined so that the derivative of any indexed object appends on the
 ;coordinate index in sorted order unless the indexed object was declared
 ;constant in which case 0 is returned.
@@ -1638,7 +1649,7 @@
 		     (CDR E))))
 	     ((EQ (CAAR E) 'MTIMES)
  	      (ADDN (SDIFFTIMES (CDR E) X) T))
-	     ((EQ (CAAR E) 'MEXPT) (DIFFEXPT E X))
+	     ((EQ (CAAR E) 'MEXPT) (DIFFEXPT1 E X))
 ;;	     ((RPOBJ E) (DIFFRPOBJ E X))                        ;New line added
 ;;	     ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT);New line added
 ;;		   (EQ (CADR E) $IMETRIC))
@@ -1688,6 +1699,17 @@
    (if (null l) (return out))
    (setq left (cons term left))
    (go loop)))
+
+(defun idiffexpt1 (e x)
+;; RETURN: n*v^n*rename(v'/v) where e=v^n
+  (list '(mtimes) (caddr e) e
+    ($rename
+      (list '(mtimes) (list '(mexpt) (cadr e) -1)
+             (idiff (cadr e) x)
+      )
+    )
+  )
+)
 
 (defun idiffexpt (e x)
   (if (mnump (caddr e))
@@ -1835,7 +1857,7 @@
 		     (CDR E))))
 	     ((EQ (CAAR E) 'MTIMES)
  	      (ADDN (IDIFFTIMES (CDR E) X) T))
-	     ((EQ (CAAR E) 'MEXPT) (IDIFFEXPT E X))
+	     ((EQ (CAAR E) 'MEXPT) (IDIFFEXPT1 E X))
 	((RPOBJ E) (DIFFRPOBJ E X))
     ((AND (BOUNDP '$IMETRIC) (EQ (CAAR E) '%DETERMINANT)
       (EQ (CADR E) $IMETRIC))
@@ -1864,8 +1886,8 @@
 ;;		     (ICHAINRULE E X))
 ;;           (idiff%deriv (list e x 1)))
              0)
-		    ((FREEL (CDR E) X) 0.)
-		    (T (DIFF%DERIV (LIST E X 1.)))))
+;;		    ((FREEL (CDR E) X) 0.)
+		    (T (IDIFF%DERIV (LIST E X 1.)))))
 	     ((MEMQ (CAAR E) '(%SUM %PRODUCT)) (IDIFFSUMPROD E X))
 	     (T (IDIFFGRAD E X))
   )
