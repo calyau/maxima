@@ -116,17 +116,6 @@
                       ($sconcat obj)))))))  
    (clt (cdr mtree) nil)))  
 
-;;  function from 5.9.1, modified for 5.9.2
-(defun $sprint(&rest args )
-  (sloop for v in args do
-         (cond ((symbolp v)
-                (setq v (strip&$ (maybe-invert-string-case (symbol-name v))))) ;; modified
-               ((numberp v) v)
-               (t (setq v (implode (strgrind v)))))
-         (princ v)
-         (princ " "))
-  (car args))
-  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  2. characters 
 

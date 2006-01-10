@@ -1291,17 +1291,46 @@ setrgbcolor} def
 	 (setf $show_openplot nil)
 	 )))
 
-;;(defun $sprint(&rest args )
-;;  (loop for v in args do
-;;	 (cond ((symbolp v)
-;;		(setq v (string-left-trim '(#\$ #\&) (symbol-name v))))
-;;	       ((numberp v) v)
-;;	       (t (setq v (implode (strgrind v)))))
-;;	 (princ v)
-;;	 (princ " ")
-;;  )
-;;  (car args)
-;;  )
+; Adapted from MSTRINGP (change & to $).
+(defun msymbolp (x)
+    (and (symbolp x) (char= (firstcharn x) #\$)))
+
+;; OK, here are some test cases for $SPRINT.
+;; The only strange one is sprint ([s1, s2, s3]) which is printing an expression containing
+;; Lisp strings via STRGRIND, which introduces the ? and \ , dunno if there's anything we
+;; want to do about that.
+
+;; sprint ("foo bar", "Foo Bar", "FOO BAR");
+;; sprint (["foo bar", "Foo Bar", "FOO BAR"]);
+;; :lisp (setq $s1 "foo bar")
+;; :lisp (setq $s2 "Foo Bar")
+;; :lisp (setq $s3 "FOO BAR")
+;; sprint (s1, s2, s3);
+;; sprint ([s1, s2, s3]);  =>  [?foo\ bar,?Foo\ Bar,?FOO\ BAR]  -- strange ??
+;; sprint (aa, Bb, CC);
+;; sprint ([aa, Bb, CC]);
+;; sprint (aa + Bb + CC);
+;; sprint (1234, 12.34, 12.34e300, 12.34b300);
+;; sprint ([1234, 12.34, 12.34e300, 12.34b300]);
+;; sprint (%i, %pi, %phi, %gamma);
+;; sprint ([%i, %pi, %phi, %gamma]);
+;; sprint (%i + %pi + %phi + %gamma);
+;; sprint (foo(xx,yy) + Bar(Xx,Yy) + BAZ(XX,YY));
+
+(defun $sprint (&rest args)
+  (sloop for v in args do
+         (cond
+           ((stringp v)
+            v)
+           ((or (mstringp v) (msymbolp v))
+            (setq v (maybe-invert-string-case (symbol-name (stripdollar v)))))
+           (t
+             (setq v (maybe-invert-string-case (string (implode (strgrind v)))))))
+         (princ v)
+         (princ " "))
+  (car args))
+
+;; $SHOW_FILE APPEARS TO BE ESSENTIALLY THE SAME AS $PRINTFILE
 
 ;;(defun $show_file(file)
 ;;  (princ (file-to-string ($file_search file)))
