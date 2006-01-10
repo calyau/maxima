@@ -64,6 +64,57 @@ vez, o processo de simplifica@,{c}@~ao elimina o n@'umero redundante.
 (%o4)                       @{a, [b]@}
 @end example
 
+Dois elementos @var{x} e @var{y} podem ser redundantes
+(i.e., considerados iguais para prop@'osito de constru@,{c}@~ao de conjunto)
+se e somente se @code{is (@var{x} = @var{y})} retornar @code{true}.
+@c THAT IS BECAUSE THE SET SIMPLIFICATION CODE CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+Note que @code{is (equal (@var{x}, @var{y}))} pode retornar @code{true}
+enquanto @code{is (@var{x} = @var{y})} retorna @code{false};
+se @code{is (@var{x} = @var{y})} retornar @code{true} os elementos @var{x} e @var{y} s@~ao considerados distintos.
+
+@c ===beg===
+@c x: a/c + b/c;
+@c y: a/c + b/c;
+@c z: (a + b)/c;
+@c is (x = y);
+@c is (y = z);
+@c is (equal (y, z));
+@c y - z;
+@c ratsimp (%);
+@c set (x, y, z);
+@c ===end===
+@example
+(%i1) x: a/c + b/c;
+                              b   a
+(%o1)                         - + -
+                              c   c
+(%i2) y: a/c + b/c;
+                              b   a
+(%o2)                         - + -
+                              c   c
+(%i3) z: (a + b)/c;
+                              b + a
+(%o3)                         -----
+                                c
+(%i4) is (x = y);
+(%o4)                         true
+(%i5) is (y = z);
+(%o5)                         false
+(%i6) is (equal (y, z));
+(%o6)                         true
+(%i7) y - z;
+                           b + a   b   a
+(%o7)                    - ----- + - + -
+                             c     c   c
+(%i8) ratsimp (%);
+(%o8)                           0
+(%i9) set (x, y, z);
+                          b + a  b   a
+(%o9)                    @{-----, - + -@}
+                            c    c   c
+@end example
+
 Conjuntos s@~ao sempre mostrados na @i{sa@'ida} como uma lista delimitada por chaves; Se voc@^e quiser que seja
 poss@'ivel @i{inserir} um conjunto usando chaves, veja @ref{Definindo conjuntos com chaves}.
 
