@@ -105,9 +105,9 @@ if @var{F_k} has a hypergeometric anti-difference.
 Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
 @end deffn
 
-@c NEEDS CLARIFICATION -- 2 ARGS BOTH NAMED K ?? IS F_N SUPPOSED TO BE F_K ?? WHAT IS (*) ??
-@deffn {Function} parGosper (@var{F_n}, @var{k}, @var{k}, @var{n}, @var{d})
-Attempts to find a a @var{d}-th order recurrence.
+@deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+Attempts to find a a @var{d}-th order recurrence for @var{F_@{n,k@}}.
+
 The algorithm yields a sequence
 @math{[s_1, s_2, ..., s_m]} of solutions.
 Each solution has the form
@@ -117,19 +117,17 @@ Each solution has the form
 @code{parGosper} returns @code{[]} if it fails to find a recurrence.
 @end deffn
 
-@c NEEDS CLARIFICATION -- 2 ARGS BOTH NAMED K ?? IS F_N SUPPOSED TO BE F_K ?? WHAT IS (*) ??
-@deffn {Function} Zeilberger (@var{F_n}, @var{k}, @var{k}, @var{n})
-Attempts to compute the indefinite hypergeometric summation of @var{F_n}.
+@deffn {Function} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+Attempts to compute the indefinite hypergeometric summation of @var{F_@{n,k@}}.
 
 @code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
 @code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
-If Zeilberger finds a solution before reaching @code{MAX_ORD}
-it stops and yields the solution in the form (*) otherwise
-it tries a higher oder.
+If Zeilberger finds a solution before reaching @code{MAX_ORD},
+it stops and returns the solution.
 
 The algorithms yields a sequence
-@math{[s_1,s_2, ..., s_m]} of solutions.
-Each solution has the following form:
+@math{[s_1, s_2, ..., s_m]} of solutions.
+Each solution has the form
 
 @math{[R(n,k), [a_0, a_1, ..., a_d]]}
 
