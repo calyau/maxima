@@ -82,8 +82,8 @@ nullspace(m) := block([n, x, e, vo, %r, proviso, nc, nr, pos,
  
   if not(emptyp(proviso)) then print("Proviso: ",proviso),
      
-  x : apply('matrix, makelist([?gensym()],i,1,nc)),
-  e : apply('append, args(m.x)),
+  x : funmake('matrix, makelist([?gensym()],i,1,nc)),
+  e : lreduce('append, args(m.x)),
   e : map('rat,e),
   %r : setify(%rnum_list),
   e : first(algsys(e,(listofvars(x)))),
@@ -102,7 +102,7 @@ orthogonal_complement([v]) :=  block([sz],
   for vi in v do (
     require_matrix(vi," ","orthogonal_complement"),
     if matrix_size(vi) # sz then error("Each vector must have the same dimension")),
-  nullspace(apply('matrix, map('first, map('transpose, v)))));
+  nullspace(funmake('matrix, map('first, map('transpose, v)))));
  
 locate_matrix_entry(m, r1, c1, r2, c2, fn, rel) := block([im, cm, mf, e, 
      nr, nc, ok : true, frel],
@@ -244,9 +244,9 @@ mat_norm(m, p) := block([listarith : true, d],
   else if p = 'inf then (
     d : 0,
     for ri in m do (
-      d : max(d, apply("+", map('cabs, ri)))),
+      d : max(d, tree_reduce("+", map('cabs, ri)))),
     d)
-  else if p = 'frobenius then apply("+", apply('append, args(cabs(m)^2)))
+  else if p = 'frobenius then tree_reduce("+", lreduce('append, args(cabs(m)^2)))
   else error("Not able to compute the ",p," norm"));
 
 mat_fullunblocker(m) := block(
