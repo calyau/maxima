@@ -1,6 +1,8 @@
 (checkcholesky(m,r) := (
   l : cholesky(m,r),
-  matrixp(m - l . ctranspose(l), lambda([x], is(cabs(x) < 1.0e-10)))),0);
+  l : m - l . ctranspose(l),
+  if blockmatrixp(l) then l : mat_fullunblocker(l),
+  matrixp(l, lambda([x], is(cabs(x) < 1.0e-10)))),0);
 0$
 
 /*-----------*/
@@ -88,11 +90,43 @@ true$
 
 /*------------*/
 
+(m : matrix([matrix([1,0],[%i,10]), matrix([0,0],[0,0])], [matrix([1,2],[5,%i]),matrix([1,0],[2,8])]),0);
+0$
+
+(matrix_element_transpose : 'transpose, matrix_element_mult : ".", 0);
+0$
+
+(m : m . ctranspose(m),0);
+0$
+
+checkcholesky(m, noncommutingring);
+true$
+
+(matrix_element_transpose : false, matrix_element_mult : "*", 0);
+0$
+
+/*---------------*/
+(ma[i,j] := kron_delta(i,j) + kron_delta(i,j+1)/2 + kron_delta(i,j-1)/2,0);
+0$
+
+(m : genmatrix(ma,71,71),0);
+0$
+
+checkcholesky(m,floatfield);
+true$
+
+/*----clean up----*/
+
 (remfunction(checkcholesky),0);
 0$
 
 (remvalue(m,ok),0);
 0$
+
+(remarray(ma),0);
+0$
+
+
 
 
 

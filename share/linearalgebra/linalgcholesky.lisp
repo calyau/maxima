@@ -21,14 +21,13 @@
   ($require_selfadjoint_matrix m "$first" "$cholesky")
   ($require_nonempty_matrix m "$first" "$cholesky")
   
-  (let* ((n ($first ($matrix_size m))) (perm) (lii) (lii-inv) (l) (acc) (x)
+  (let* ((n ($first ($matrix_size m))) (perm) (lii) (lii-inv) (l) (acc)
 	 (fld ($require_ring fld-name "$second" "$cholesky"))
 	 (fsub (mring-sub fld))
 	 (fzerop (mring-fzerop fld))
 	 (fmult (mring-mult fld))
 	 (fadjoint (mring-adjoint fld))
 	 (fpsqrt (mring-psqrt fld))
-	 (fgreat (mring-great fld))
 	 (fconvert (mring-maxima-to-mring fld))
 	 (freciprocal (mring-reciprocal fld)))
 

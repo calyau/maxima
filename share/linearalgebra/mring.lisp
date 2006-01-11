@@ -110,7 +110,7 @@
    :mult-id #'(lambda () 1.0)
    :fzerop #'(lambda (s) (< (abs s) (* 4 double-float-epsilon)))
    :adjoint #'cl:conjugate
-   :mring-to-maxima #'complexify
+   :mring-to-maxima #'(lambda (s) (add (realpart s) (mult '$%i (imagpart s)))) ;; was complexify
    :maxima-to-mring #'(lambda (s) 
 			(progn 
 			  (setq s ($rectform (meval s)))
