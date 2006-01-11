@@ -251,14 +251,14 @@ mat_norm(m, p) := block([listarith : true, d],
 
 mat_fullunblocker(m) := block(
   require_matrix(m, "first", "mat_unblocker"),
-  if every('identity, apply('append, args(matrixmap('matrixp, m)))) then (
-     mat_fullunblocker(apply('addrow, args( map(lambda([x], apply('addcol, x)), m)))))     
+  if blockmatrixp(m) then (
+     mat_fullunblocker(lreduce('addrow, args(map(lambda([x], lreduce('addcol, x)), m)))))
    else m);
 
 mat_unblocker(m):=block(
   require_matrix(m, "first", "mat_unblocker"),
-  if every('identity, apply('append, args(matrixmap('matrixp, m)))) then (
-     m : apply('addrow, args( map(lambda([x], apply('addcol, x)), m))))     
+  if blockmatrixp(m) then (
+     lreduce('addrow, args(map(lambda([x], lreduce('addcol, x)), m))))     
    else m);
 
 mat_trace(m) := block([n, acc : 0],
