@@ -40,5 +40,34 @@ powerseries(sqrt(1+x),x,0);
 limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf,plus);
 %e*%pi/2;
 
+/* Verify that extended functionality of rhs/lhs works as advertised */
+
+(kill (x, y, aa, bb, cc), infix("@@"), 0);
+0;
+
+map (lhs, [aa < bb, aa <= bb, aa = bb, aa # bb, equal (aa, bb), notequal (aa, bb), aa >= bb, aa > bb]);
+[aa, aa, aa, aa, aa, aa, aa, aa];
+
+map (rhs, [aa < bb, aa <= bb, aa = bb, aa # bb, equal (aa, bb), notequal (aa, bb), aa >= bb, aa > bb]);
+[bb, bb, bb, bb, bb, bb, bb, bb];
+
+map (lhs, [foo(x) := 2*x, bar(y) ::= 3*y, '(aa : bb), '(aa :: bb), ?marrow(aa, bb)]);
+['(foo(x)), '(bar(y)), aa, aa, aa];
+
+map (rhs, [foo(x) := 2*x, bar(y) ::= 3*y, '(aa : bb), '(aa :: bb), ?marrow(aa, bb)]);
+[2*x, 3*y, bb, bb, bb];
+
+[lhs (aa @@ bb), lhs (aa @@ bb @@ cc), rhs (aa @@ bb), rhs (aa @@ bb @@ cc)];
+[aa, aa @@ bb, bb, cc];
+
+map (lhs, [aa + bb, aa - bb, aa * bb, aa / bb, sin(aa), log(aa)]);
+[aa + bb, aa - bb, aa * bb, aa / bb, sin(aa), log(aa)];
+
+map (rhs, [aa + bb, aa - bb, aa * bb, aa / bb, sin(aa), log(aa)]);
+[0, 0, 0, 0, 0, 0];
+
+kill ("@@");
+done;
+
 end;
 end$

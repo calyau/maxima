@@ -173,11 +173,45 @@
 
 (defun subin (y x) (cond ((not (among var x)) x) (t (maxima-substitute y var x))))
 
-(defmfun $rhs (eq)
-  (cond ((or (atom eq) (not (eq (caar eq) 'mequal))) 0) (t (caddr eq))))
+;; Right-hand side (rhs) and left-hand side (lhs) of binary infix expressions.
+;; These are unambiguous for relational operators, some other built-in infix operators,
+;; and user-defined infix operators (declared by the infix function).
 
-(defmfun $lhs (eq)
-  (cond ((or (atom eq) (not (eq (caar eq) 'mequal))) eq) (t (cadr eq))))
+;; a - b and a / b are somewhat problematic, since subtraction and division are not
+;; ordinarily represented as such (rather a - b = a + (-1)*b and a / b = a * b^(-1)).
+;; Also, - can be unary. So let's not worry about - and / .
+
+;; Other problematic cases: The symbols $< $<= $= $# $>= $> have a LED property,
+;; but these symbols never appear in expressions returned by the Maxima parser;
+;; MLESSP, MLEQP, MEQUAL etc are substituted. So ignore those symbols here.
+(let
+  ((relational-ops
+     ;; < <= = # equal notequal >= >
+     '(mlessp mleqp mequal mnotequal $equal $notequal mgeqp mgreaterp
+       %mlessp %mleqp %mequal %mnotequal %equal %notequal %mgeqp %mgreaterp))
+
+   (other-infix-ops
+     ;; := ::= : :: ->
+     '(mdefine mdefmacro msetq mset marrow
+       %mdefine %mdefmacro %msetq %mset %marrow)))
+
+  (defmfun $rhs (rel)
+     (if (atom rel)
+       0
+       (if (or (memq (caar rel) (append relational-ops other-infix-ops))
+               ;; This test catches user-defined infix operators.
+               (eq (get (caar rel) 'led) 'parse-infix))
+         (caddr rel)
+         0)))
+
+  (defmfun $lhs (rel)
+     (if (atom rel)
+       rel
+       (if (or (memq (caar rel) (append relational-ops other-infix-ops)) 
+               ;; This test catches user-defined infix operators.
+               (eq (get (caar rel) 'led) 'parse-infix))
+         (cadr rel)
+         rel))))
 
 (defun ratgreaterp (x y)
   (cond ((and (mnump x) (mnump y))
