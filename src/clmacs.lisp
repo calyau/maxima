@@ -448,4 +448,11 @@
 ;;don't care about float contagion for now
 #+clisp (setq custom::*warn-on-floating-point-contagion* nil)
 
+;; Set custom:*floating-point-rational-contagion-ansi* so that
+;; contagion is done as per the ANSI CL standard. Has an effect 
+;; only in those few cases when the mathematical result is exact 
+;; although one of the arguments is a floating-point number, 
+;; such as (* 0 1.618), (/ 0 1.618), (atan 0 1.0), (expt 2.0 0) 
+#+clisp (setq custom::*floating-point-rational-contagion-ansi* t)
+
 (defmacro float (x &optional (y 1.0d0)) `(cl:float ,x ,y))

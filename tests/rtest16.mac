@@ -69,5 +69,9 @@ map (rhs, [aa + bb, aa - bb, aa * bb, aa / bb, sin(aa), log(aa)]);
 kill ("@@");
 done;
 
+/* Bug 1403415, fixed in clmacs.lisp rev 1.20 */
+float(0.0b0);
+0.0;
+
 end;
 end$
