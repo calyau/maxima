@@ -116,6 +116,7 @@ contrib/Zeilberger/zeilberger.mac\
 contrib/Zeilberger/zeilberger.texi\
 contrib/augmented_lagrangian.mac\
 contrib/bode.mac\
+contrib/contrib.texi\
 contrib/cholesky.mac\
 contrib/defstruct.lisp\
 contrib/descriptive/biomed.data\
@@ -124,9 +125,7 @@ contrib/descriptive/descriptive.texi\
 contrib/descriptive/pidigits.data\
 contrib/descriptive/wind.data\
 contrib/devine.mac\
-contrib/diag.dem\
 contrib/diag.mac\
-contrib/diag.usg\
 contrib/diffequations/README\
 contrib/diffequations/contrib_ode.mac\
 contrib/diffequations/contrib_ode.usg\
@@ -166,7 +165,6 @@ contrib/distrib/numdistrib.lisp\
 contrib/distrib/distrib.texi\
 contrib/eval_string.lisp\
 contrib/f90.lisp\
-contrib/f90.usg\
 contrib/format/README\
 contrib/format/autoload-m.macsyma\
 contrib/format/autoload-mp.macsyma\
@@ -244,7 +242,6 @@ contrib/ggf.mac\
 contrib/ifactor.lisp\
 contrib/impdiff.mac\
 contrib/lindstedt.mac\
-contrib/lsquares.dem\
 contrib/lsquares.mac\
 contrib/lurkmathml/README\
 contrib/lurkmathml/mathml.lisp\
@@ -263,7 +260,6 @@ contrib/mcclim/formula.lisp\
 contrib/mcclim/listeneroutput.png\
 contrib/mcclim/maxima-repl-mcclim.lisp\
 contrib/mcclim/postscriptoutput.png\
-contrib/mnewton.dem\
 contrib/mnewton.mac\
 contrib/nset/README\
 contrib/nset/announce-1.2.txt\
@@ -295,10 +291,7 @@ contrib/pdiff/history.txt\
 contrib/pdiff/pdiff-doc.pdf\
 contrib/pdiff/pdiff-doc.tex\
 contrib/pdiff/pdiff.lisp\
-contrib/plotdf.dem\
 contrib/plotdf.lisp\
-contrib/plotdf.usg\
-contrib/plsquares.dem\
 contrib/plsquares.mac\
 contrib/rand/Avg3.mac\
 contrib/rand/Demo.bk1\
