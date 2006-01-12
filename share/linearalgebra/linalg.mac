@@ -25,10 +25,10 @@ put('linalg,1,'version);
 eval_when([translate, compile], translate_fast_arrays : false);
 
 eval_when(translate,
-	  declare_translated(require_matrix,ptriangularize_with_proviso,locate_matrix_entry,
+	  declare_translated(ptriangularize_with_proviso,locate_matrix_entry,hankel,toeplitz,
 			     nullspace,require_integer,columnspace,rowswap,rowop,require_symbol,
 	                     mat_fullunblocker,mat_trace,mat_unblocker, column_reduce,good_pivot,
-                             hipow_gzero,mat_norm,require_list))$
+                             hipow_gzero,mat_norm))$
 
 eval_when([batch,load,translate,compile],
   load("polynomialp"),
@@ -48,7 +48,6 @@ require_symbol(x, pos, fn) :=
 request_rational_matrix(m, pos, fn) :=
   if every('identity, map(lambda([s], every('ratnump,s)), args(m))) then true else
     print("Some entries in the matrix are not rational numbers. The result might be wrong.");
-
 
 dotproduct(a,b) := block([scalarmatrixp : true],
   require_matrix(a,"first", "dotproduct"),
@@ -289,6 +288,28 @@ vandermonde_matrix(vars) := block([n],
   require_list(vars,"first","vandermonde_matrix"),
   n : length(vars),
   funmake('matrix, makelist(makelist(vars[i]^j,j,0,n-1),i,1,n)));
+
+hankel([q]) := block([col,row,m,n,partswitch : false],
+  if length(q) > 2 or length(q) < 1 then error("The function 'hankel' requires one or two arguments"),
+  col : inpart(q,1),
+  row : if length(q) = 2 then inpart(q,2) else map(lambda([x],0), col),
+
+  require_list(row,"first","hankel"),
+  require_list(col,"second","hankel"),  
+  m : length(row),
+  n : length(col),
+  genmatrix(lambda([i,j],if i+j-1 <= n then inpart(col,i+j-1) else inpart(row,i+j-n)),n,m));
+
+toeplitz([q]) := block([col,row,m,n,partswitch : false],
+  if length(q) > 2 or length(q) < 1 then error("The function 'toeplitz' requires one or two arguments"),
+  col : inpart(q,1),
+  row : if length(q) = 2 then inpart(q,2) else map('conjugate, col),
+
+  require_list(row,"first","toeplitz"),
+  require_list(col,"second","toeplitz"),  
+  m : length(row),
+  n : length(col),
+  genmatrix(lambda([i,j], if i -j >= 0 then inpart(col, i-j+1) else inpart(row,j-i+1)),n,m));
 
 polytocompanion(p,x) := block([n],
   if not polynomialp(p,[x], lambda([e], freeof(x,e))) then 
