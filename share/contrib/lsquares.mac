@@ -1,5 +1,4 @@
-/*
-lsquares.mac v1.1 for Maxima (tested with Maxima 5.9.0).
+   /* lsquares.mac v1.1 for Maxima (tested with Maxima 5.9.0).
 
 Multiple nonlinear equation adjustment of a data table by the
 "least squares" method.
@@ -21,7 +20,6 @@ Usage:
 Examples:
   lsquares(M, [z,x,y], (z+D)^2=A*x+B*y+C, [A,B,C,D]);
   lsquares(M, [x,y], y=a*x^b+c, [a,b,c], [3,3,3]);
-  The file "lsquares.dem" shows some usage examples.
 
 Notes:
     The equation may be fully nonlinear with respect to the independent
@@ -44,7 +42,7 @@ Dependences:
   mnewton.mac
 
 History:
-  2003-11 Salvador Bosch Pérez - version 1.0
+  2003-11 Salvador Bosch Perez - version 1.0
 
 Possible future improvements:
   - Option to read the data from a file instead of from a matrix.
@@ -52,7 +50,7 @@ Possible future improvements:
 
 --
 
-Copyright (C) 2003  Salvador Bosch Pérez
+Copyright (C) 2003  Salvador Bosch Perez
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -69,7 +67,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-load("mnewton")$
+/* load("mnewton")$ */
 
 lsquares([ArgList]):=
   block([narg, Mat, VarList, equation, ParamList, GuessList,

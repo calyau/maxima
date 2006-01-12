@@ -1,5 +1,4 @@
-/*
-mnewton.mac v1.1 for Maxima (tested with Maxima 5.9.0).
+/*  mnewton.mac v1.1 for Maxima (tested with Maxima 5.9.0).
 
 Multiple nonlinear functions solution using the Newton method.
 
@@ -9,14 +8,11 @@ Usage:
     VarList   - list of variable names.
     GuessList - list of initial approximations.
 
-Examples:
-  The file "mnewton.dem" shows some usage examples.
-
 Flags:
-  NEWTONEPSILON
+  newtonepsilon
     default: [10.0^(-FPPREC/2)] - precision to determine when the
     process has converged towards the solution. 
-  NEWTONMAXITER
+  newtonmaxiter
     default: [50] - maximum number of iterations to stop the process
     if this one does not converge or if it converges too much slowly.
 
@@ -25,11 +21,11 @@ Results:
   If the solution isn't found, [] is returned.
 
 History:
-  2003-11 Salvador Bosch Pérez - version 1.0
+  2003-11 Salvador Bosch Perez - version 1.0
 
 --
 
-Copyright (C) 2003  Salvador Bosch Pérez
+Copyright (C) 2003  Salvador Bosch Perez
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -46,8 +42,9 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-NEWTONEPSILON:10.0^(-fpprec/2)$
-NEWTONMAXITER:50$
+newtonepsilon:10.0^(-fpprec/2)$
+newtonmaxiter:50$
+newtondebug:false$
 
 mnewton(FuncList, VarList, GuessList):=
   block([nfunc, Solutions, Increments, solved:false, h,
@@ -75,10 +72,11 @@ mnewton(FuncList, VarList, GuessList):=
         DF[i][j] : diff (FuncList[i], VarList[j]),  /* Jacobian matrix */
 
     GuessList: float (GuessList),
-print ("DEBUG: initial GuessList:", GuessList),
+    if newtondebug
+       then print ("DEBUG: initial GuessList:", GuessList),
 
     /* Solution of the functions system */
-    for k:1 thru NEWTONMAXITER do (
+    for k:1 thru newtonmaxiter do (
       Solutions:map("=", VarList, GuessList),
 
       /* Solve 0 = F(x) + DF(x) h for h.
@@ -90,11 +88,12 @@ print ("DEBUG: initial GuessList:", GuessList),
 
       GuessList:GuessList + map (rhs, Increments),
       GuessList: float (GuessList),
-print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
+      if newtondebug
+         then print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
 
       solved:true,
       for i:1 thru nfunc do
-        solved: solved and abs (rhs (Increments[i])) < NEWTONEPSILON,
+        solved: solved and abs (rhs (Increments[i])) < newtonepsilon,
       if solved then return(0)
     ),
 
@@ -104,6 +103,7 @@ print ("DEBUG: Increments:", Increments, "GuessList:", GuessList),
       return([])
     ),
     Solutions:map("=", VarList, GuessList),
-print ("DEBUG: sublis (Solutions, FuncList) =>", sublis (Solutions, FuncList)),
+    if newtondebug
+       then print ("DEBUG: sublis (Solutions, FuncList) =>", sublis (Solutions, FuncList)),
     return([Solutions])
   )$
