@@ -1,4 +1,4 @@
-SUBDIRS = numericalio stringproc descriptive distrib
+SUBDIRS = numericalio stringproc descriptive distrib solve_rec simplex
 
 info_TEXINFOS = contrib.texi
 

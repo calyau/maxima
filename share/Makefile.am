@@ -359,8 +359,9 @@ contrib/sarag/rootCounting.mac\
 contrib/sarag/rootIsolation.mac\
 contrib/sarag/settings.mac\
 contrib/sarag/signDetermination.mac\
-contrib/simplex/load_simplex.mac\
-contrib/simplex/simplex.lisp\
+contrib/simplex/simplex.mac\
+contrib/simplex/simplex.texi\
+contrib/simplex/simplex_algorithm.lisp\
 contrib/simplex/minimize_sx.mac\
 contrib/simplex/Tests/sc50a_c.csv\
 contrib/simplex/Tests/sc50a_b.csv\
@@ -382,6 +383,7 @@ contrib/simplex/Tests/share2b_A.csv\
 contrib/simplex/Readme.txt\
 contrib/solve_rec/solve_rec.mac\
 contrib/solve_rec/solve_rec.dem\
+contrib/solve_rec/solve_rec.texi\
 contrib/state/matrix2.mac\
 contrib/state/a.cir\
 contrib/state/b.cir\
