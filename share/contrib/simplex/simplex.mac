@@ -19,5 +19,5 @@
  *                                                                           *
  *****************************************************************************/
 
-load("simplex/simplex")$
+load("simplex/simplex_algorithm")$
 load("simplex/minimize_sx")$
