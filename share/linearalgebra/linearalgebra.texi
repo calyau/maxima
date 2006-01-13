@@ -28,7 +28,7 @@
 Example:
 
 @c ===beg===
-@c load (linalg);
+@c load (linalg)$
 @c M : matrix ([1, 2], [1, 2]);
 @c nullspace (M);
 @c columnspace (M);
@@ -242,12 +242,50 @@ This time, the assignment to @var{mm} does not change the value of @var{m}.
 
 @end deffn
 
+@deffn {Function} cholesky (@var{M})
+@deffnx {Function} cholesky (@var{M}, @var{field})
+
+Return the Cholesky factorization of the matrix selfadjoint (or hermitian) matrix 
+@var{M}. The second argument defaults to 'generalring.' For a description of the
+possible values for @var{field}, see @code{lu_factor}.
+
+@end deffn
+
 @deffn {Function} ctranspose (@var{M})
 
 Return the complex conjugate transpose of the matrix @var{M}. The function
 @code{ctranspose} uses @code{matrix_element_transpose} to transpose each matrix element.
 
 @end deffn
+
+@deffn {Function} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
+
+Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2),...,@var{d_n}.
+When the diagonal entries are matrices, the zero entries of the returned matrix
+are zero matrices of the appropriate size; for example:
+@c ===beg===
+@c load(linalg)$
+@c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
+@c diag_matrix(p,q);
+@c ===end===
+@example
+(%i1) load(linalg)$
+
+(%i2) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
+
+			    [ [ 1  0 ]  [ 0  0 ] ]
+			    [ [      ]  [      ] ]
+			    [ [ 0  2 ]  [ 0  0 ] ]
+(%o2) 			    [ 			 ]
+			    [ [ 0  0 ]  [ 3  0 ] ]
+			    [ [      ]  [      ] ]
+			    [ [ 0  0 ]  [ 0  4 ] ]
+(%i3) diag_matrix(p,q);
+
+				   [ p  0 ]
+(%o3) 				   [ 	  ]
+				   [ 0  q ]
+@end example
 
 @deffn {Function} dotproduct (@var{u}, @var{v})
 
@@ -262,6 +300,15 @@ column vectors.
 When @code{@var{x} = lu_factor (@var{A})}, then @code{get_lu_factors} returns a list of the 
 form @code{[P, L, U]}, where @var{P} is a permutation matrix, @var{L} is lower triangular with
 ones on the diagonal, and @var{U} is upper triangular, and @code{@var{A} = @var{P} @var{L} @var{U}}.
+
+@end deffn
+
+@deffn {Function} hankel (@var{col})
+@defnx {Function} hankel (@var{col} @var(row))
+
+Return a Hankel matrix @var{H}. The first first column of @var{H} is @var{col};
+except for the first entry, the last row of @var{H} is @var{row}. The
+default for @var{row} is the zero vector with the same length as @var{col}.
 
 @end deffn
 
@@ -286,7 +333,7 @@ integer, signal an error.
 Return an identity matrix that has the same shape as the matrix
 @var{M}.  The diagonal entries of the identity matrix are the 
 multiplicative identity of the field @var{fld}; the default for
-@var{fld} is @var{generalfield}.
+@var{fld} is @var{generalring}.
 
 The first argument @var{M} should be a square matrix or a 
 non-matrix. When @var{M} is a matrix, each entry of @var{M} can be a
@@ -297,7 +344,7 @@ See also @code{zerofor}
 
 @end deffn
 
-@deffn {Function} invert_by_lu (@var{M}, @var{(rng generalfield)})
+@deffn {Function} invert_by_lu (@var{M}, @var{(rng generalring)})
 
 Invert a matrix @var{M} by using the LU factorization.  The LU factorization
 is done using the ring @var{rng}.
@@ -368,7 +415,7 @@ or @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, wh
       diagonal entries replaced by all ones. Third, the upper triangular factor of 
       @var{M} is the upper triangular part of @var{LU}.  
 
-  (2) When the field is either @code{floatfield} or @code{complexfloatfield},
+  (2) When the field is either @code{floatfield} or @code{complexfield},
       the numbers @var{lower-cnd} and @var{upper-cnd} are lower and upper bounds for the 
       infinity norm condition number of @var{M}.  For all fields, the condition number 
       might not be estimated; for such fields, @code{lu_factor} returns a two item list.
@@ -377,21 +424,20 @@ or @code{[@var{LU}, @var{perm}, @var{fld}, @var{lower-cnd} @var{upper-cnd}]}, wh
    
   The argument @var{M} must be a square matrix.
 
-  The optional argument @var{fld} must be a symbol that determines a field. The pre-defined 
-  fields are:
+  The optional argument @var{fld} must be a symbol that determines a ring or field. The pre-defined 
+  fields and rings are:
 
-    (a) @code{generalfield} -- the field of Maxima expressions,
+    (a) @code{generalring} -- the ring of Maxima expressions,
     (b) @code{floatfield} --  the field of floating point numbers of the type double,
-    (c) @code{complexfloatfield} --  the field of complex floating point numbers of the 
+    (c) @code{complexfield} --  the field of complex floating point numbers of the 
         type double,
-    (d) @code{crefield}  -- the field of Maxima CRE expressions,
+    (d) @code{crering}  -- the ring of Maxima CRE expressions,
     (e) @code{rationalfield} -- the field of rational numbers,
-    (f) @code{runningerror} -- in this field, the all floating point rounding are
-        tracked.
-    (g) @code{NC} -- the field of Maxima expressions where multiplication is the
+    (f) @code{runningerror} -- track the all floating point rounding errors,
+     (g) @code{noncommutingring} -- the ring of Maxima expressions where multiplication is the
         non-commutative dot operator.       
 
-When the field is @code{floatfield}, @code{complexfloatfield}, or
+When the field is @code{floatfield}, @code{complexfield}, or
 @code{runningerror}, the algorithm uses partial pivoting; for all
 other fields, rows are switched only when needed to avoid a zero
 pivot.
@@ -420,7 +466,7 @@ To compute the factorization, the first task is to convert each matrix
 entry to a member of the indicated field. When conversion isn't
 possible, the factorization halts with an error message. Members of
 the field needn't be Maxima expressions.  Members of the
-@code{complexfloatfield}, for example, are Common Lisp complex numbers. Thus
+@code{complexfield}, for example, are Common Lisp complex numbers. Thus
 after computing the factorization, the matrix entries must be
 converted to Maxima expressions.
 
@@ -434,11 +480,11 @@ Examples:
 @c w[i,j] := random (1.0) + %i * random (1.0);
 @c showtime : true$
 @c M : genmatrix (w, 100, 100)$
-@c lu_factor (M, complexfloatfield)$
-@c lu_factor (M, generalfield)$
+@c lu_factor (M, complexfield)$
+@c lu_factor (M, generalring)$
 @c showtime : false$
 @c M : matrix ([1 - z, 3], [3, 8 - z]); 
-@c lu_factor (M, generalfield);
+@c lu_factor (M, generalring);
 @c get_lu_factors (%);
 @c %[1] . %[2] . %[3];
 @c ===end===
@@ -455,9 +501,9 @@ Warning - you are redefining the Maxima function rank
 Evaluation took 0.00 seconds (0.00 elapsed)
 (%i4) M : genmatrix (w, 100, 100)$
 Evaluation took 7.40 seconds (8.23 elapsed)
-(%i5) lu_factor (M, complexfloatfield)$
+(%i5) lu_factor (M, complexfield)$
 Evaluation took 28.71 seconds (35.00 elapsed)
-(%i6) lu_factor (M, generalfield)$
+(%i6) lu_factor (M, generalring)$
 Evaluation took 109.24 seconds (152.10 elapsed)
 (%i7) showtime : false$
 
@@ -465,7 +511,7 @@ Evaluation took 109.24 seconds (152.10 elapsed)
                         [ 1 - z    3   ]
 (%o8)                   [              ]
                         [   3    8 - z ]
-(%i9) lu_factor (M, generalfield);
+(%i9) lu_factor (M, generalring);
                [ 1 - z         3        ]
                [                        ]
 (%o9)         [[   3            9       ], [1, 2]]
@@ -527,6 +573,13 @@ of the matrix @var{M}.
 
 @end deffn
 
+@deffn {Function} mat_fullunblocker (@var{M})
+
+If @var{M} is a block matrix, unblock the matrix to all levels. If @var{M} is a matrix,
+return @var{M}; otherwise, signal an error.  
+
+@end deffn
+
 @deffn {Function} mat_trace (@var{M})
 
 Return the trace of the matrix @var{M} If @var{M} isn't a matrix, return a
@@ -537,10 +590,15 @@ the same value as does @code{mat_trace(mat_unblocker(m))}.
 
 @deffn {Function} mat_unblocker (@var{M})
 
-If @var{M} is a block matrix, return its unblocked form. If @var{M} is a matrix,
-return @var{M}; otherwise, signal an error.  If you use block matrices,
-most likely you'll want to set @code{matrix_element_mult} to @code{"."} and
-@code{matrix_element_transpose} to @code{'transpose}. See also @code{mat_fullunblocker}.
+If @var{M} is a block matrix, unblock @var{M} one level. If @var{M} is a matrix, 
+@code{mat_unblocker (M)} returns @var{M}; otherwise, signal an error.
+
+Thus if each entry of @var{M} is matrix, @code{mat_unblocker (M)} returns an 
+unblocked matrix, but if each entry of @var{M} is a block matrix, @code{mat_unblocker (M)} 
+returns a block matrix with on less level of blocking.
+
+If you use block matrices, most likely you'll want to set @code{matrix_element_mult} to 
+@code{"."} and @code{matrix_element_transpose} to @code{'transpose}. See also @code{mat_fullunblocker}.
 
 Example:
 
@@ -718,10 +776,61 @@ row operation @code{R_i <- R_i - theta * R_j}. If @var{M} doesn't have a row
 
 @end deffn
 
+@deffn {Function} rank (@var{M})
+
+Return the rank of that matrix @var{M}. The rank is the dimension of the
+column space. Example:
+@c ===beg===
+@c load (linalg);
+@c 
+@c ===end===
+@example
+(%i1) load(linalg)$
+(%i2) rank(matrix([1,2],[2,4]));
+(%o2) 1
+(%i3) rank(matrix([1,b],[c,d]));
+Proviso:  {d-b*c # 0} 
+(%o3) 2
+@end example
+
+@end deffn
+
+
 @deffn {Function} rowswap (@var{M}, @var{i}, @var{j})
 
 If @var{M} is a matrix, swap rows @var{i} and @var{j}. If @var{M} doesn't have a row
 @var{i} or @var{j}, signal an error.
+
+@end deffn
+
+@deffn {Function} toeplitz (@var{col})
+@defnx {Function} toeplitz (@var{col} @var(row))
+
+Return a Toeplitz matrix @var{T}. The first first column of @var{T} is @var{col};
+except for the first entry, the first row of @var{T} is @var{row}. The
+default for @var{row} is complex conjugate of @var{col}. Example:
+@c ===beg===
+@c load(linalg)$
+@c toeplitz([1,2,3],[x,y,z]);
+@c toeplitz([1,1+%i]);
+@c ==end===
+@example
+(%i1) load(linalg)$
+(%i1) load(linalg)$
+
+(%i2)  toeplitz([1,2,3],[x,y,z]);
+
+				  [ 1  y  z ]
+				  [	    ]
+(%o2) 				  [ 2  1  y ]
+				  [	    ]
+				  [ 3  2  1 ]
+(%i3)  toeplitz([1,1+%i]);
+
+			      [	  1     1 - %I ]
+(%o3) 			      [ 	       ]
+			      [ %I + 1	  1    ]
+@end example
 
 @end deffn
 
@@ -738,7 +847,7 @@ Return a @var{n} by @var{n} matrix whose @var{i}-th row is
 Return a zero  matrix that has the same shape as the matrix
 @var{M}.  Every entry of the zero matrix matrix is the
 additive identity of the field @var{fld}; the default for
-@var{fld} is @var{generalfield}.
+@var{fld} is @var{generalring}.
 
 The first argument @var{M} should be a square matrix or a
 non-matrix. When @var{M} is a matrix, each entry of @var{M} can be a

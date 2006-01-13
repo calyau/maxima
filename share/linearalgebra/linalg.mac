@@ -274,7 +274,8 @@ kronecker_product(a,b) := (
   require_matrix(b,"second", "kronecker_product"),
   mat_unblocker(outermap('matrix_element_mult, a,b)));
   
-diag_matrix([d]) := genmatrix(lambda([i,j], if i = j then part(d,i) else 0),length(d),length(d));
+diag_matrix([d]) := genmatrix(lambda([i,j], if i = j then inpart(d,i) else zerofor(inpart(d,i))),
+                                      length(d),length(d));
 
 hilbert_matrix(n) := (
   require_posinteger(n,"first","hilbert_matrix"),
