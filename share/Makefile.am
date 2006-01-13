@@ -399,6 +399,8 @@ contrib/stringproc/stringproc.texi\
 contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
 contrib/unit/unit.texi\
+contrib/opsubst.lisp\
+contrib/stirling.mac\
 diffequations/abel.mac\
 diffequations/desoln.mac\
 diffequations/desoln.usg\
