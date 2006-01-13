@@ -423,6 +423,9 @@ integration/delta.dem\
 integration/delta.mac\
 integration/delta.usg\
 linearalgebra/announcement.txt\
+linearalgebra/linalgcholesky.lisp\
+linearalgebra/mring.lisp\
+linearalgebra/test-cholesky.mac\
 linearalgebra/linalg-utilities.lisp\
 linearalgebra/linalg.demo\
 linearalgebra/linalg.mac\

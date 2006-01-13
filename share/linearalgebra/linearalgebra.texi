@@ -260,7 +260,7 @@ Return the complex conjugate transpose of the matrix @var{M}. The function
 
 @deffn {Function} diag_matrix (@var{d_1}, @var{d_2},...,@var{d_n})
 
-Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2),...,@var{d_n}.
+Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2},...,@var{d_n}.
 When the diagonal entries are matrices, the zero entries of the returned matrix
 are zero matrices of the appropriate size; for example:
 @c ===beg===
@@ -286,6 +286,7 @@ are zero matrices of the appropriate size; for example:
 (%o3) 				   [ 	  ]
 				   [ 0  q ]
 @end example
+@end deffn
 
 @deffn {Function} dotproduct (@var{u}, @var{v})
 
@@ -304,7 +305,7 @@ ones on the diagonal, and @var{U} is upper triangular, and @code{@var{A} = @var{
 @end deffn
 
 @deffn {Function} hankel (@var{col})
-@defnx {Function} hankel (@var{col} @var(row))
+@deffnx {Function} hankel (@var{col}, @var{row})
 
 Return a Hankel matrix @var{H}. The first first column of @var{H} is @var{col};
 except for the first entry, the last row of @var{H} is @var{row}. The
@@ -789,7 +790,7 @@ column space. Example:
 (%i2) rank(matrix([1,2],[2,4]));
 (%o2) 1
 (%i3) rank(matrix([1,b],[c,d]));
-Proviso:  {d-b*c # 0} 
+Proviso:  @{d-b*c # 0@}
 (%o3) 2
 @end example
 
@@ -804,7 +805,7 @@ If @var{M} is a matrix, swap rows @var{i} and @var{j}. If @var{M} doesn't have a
 @end deffn
 
 @deffn {Function} toeplitz (@var{col})
-@defnx {Function} toeplitz (@var{col} @var(row))
+@deffnx {Function} toeplitz (@var{col}, @var{row})
 
 Return a Toeplitz matrix @var{T}. The first first column of @var{T} is @var{col};
 except for the first entry, the first row of @var{T} is @var{row}. The
