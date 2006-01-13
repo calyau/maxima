@@ -11,7 +11,7 @@
  * ***                      polynomial coefficients.                     *** *
  * ***                                                                   *** *
  * ***                                                                   *** *
- * ***   Version: 1.05                                                   *** *
+ * ***   Version: 1.06                                                   *** *
  * ***   Author:  Andrej Vodopivec <andrejv@users.sourceforge.net>       *** *
  * ***                                                                   *** *
  * ************************************************************************* *
@@ -53,7 +53,7 @@ eval_when(translate,
                              solve_rec_lin_cc,hyper,remove_duplicates,
                              get_linearly_independent1,solve_rec_ic1,
                              solve_rec_rat1,get_variables,solve_rec_ic,
-                             subst_all,get_lower_bound,simplify_product,nusum,
+                             subst_all,get_lower_bound,simplify_product,
                              solve_rec_char_gen,get_exps,solve_rec_char_part,
                              rec_polyp1,solve_rec,normalize_product,
                              hyper_poly,monic_factors,my_prod,
@@ -61,7 +61,9 @@ eval_when(translate,
                              solve_rec_poly,casoratian_determinant,
                              remove_duplicates1))$
 
-put('solve_rec, 1.05, 'version)$
+load("nusum.mac")$
+
+put('solve_rec, 1.06, 'version)$
 
 define_variable(simplify_products,     true,   bool)$
 define_variable(normalize_products,    true,   bool)$
@@ -251,8 +253,8 @@ solve_rec_gen(std_form, %f, %n, cond) := block(
             print("WARNING: disregarding initial conditions!")
         )
         else if length(cond)#0 then
-          sol : solve_rec_ic(sol, %f, %n, cond,
-                             makelist(var[i], i, 1, length(cond)))
+          sol : solve_rec_ic1(sol, %f, %n, cond,
+                              makelist(var[i], i, 1, length(cond)))
       )
     )
   ),
@@ -905,6 +907,8 @@ simplify_product(prod) := block(
   hi : part(prod, 4),
   term : factor(part(prod, 1)),
   
+  if term=%n then return(hi!/lo!),
+  
   if atom(term) then return(prod),
 
   if freeof(%n, term) then return(term^(hi-lo+1)),
@@ -934,12 +938,12 @@ simplify_product(prod) := block(
       if kk<0 then (
         p : p*my_prod(c[3], %n, hi+kk+1, hi),
         d : my_prod(c[2], %n, lo, lo-kk-1),
-        p:p/d
+        p : p/d
       )
       else (
         p : p*1/my_prod(c[2], %n, hi-kk+1, hi),
         d : my_prod(c[3], %n, lo, lo+kk-1),
-        p:p*d
+        p : p*d
       )
     ),
     nu : simplify_product(apply(nounify('product), [nu, %n, lo, hi])),
@@ -956,7 +960,9 @@ simplify_product(prod) := block(
     if rec_polyp(term, %n) and hp=1 then (
       if integerp(ratcoeff(term, %n, 0)) and lcoeff=1 then (
         prod : apply(nounify('product), [factor(term), %n, lo, hi]),
-        changevar(prod, term - %m, %m, %n)
+        %m : term - %n,
+        (hi+%m)!/(lo+%m)!
+        /*prod : changevar(prod, term - %m, %m, %n),*/
       )
       else if product_use_gamma=false and lcoeff=-1 then (
         apply(nounify('product), [-term, %n, lo, hi])*(-1)^(hi-lo)
