@@ -21,6 +21,7 @@
 (in-package :cl-info)
 
 (defvar *index-name* "index")
+(defvar *extra-chars* "")
 
 (defvar *match-data*)
 (defvar *case-fold-search* nil)
@@ -534,7 +535,7 @@ that matches the name name with extention ext"
 		(when (or (>= (setq subnode
 				    (string-match
 				     (string-concatenate
-				      #u"\n -+ [A-Za-z ]+: "
+				      (format nil #u"\n -+ [A-Za-z~a ]+: " *extra-chars*)
 				      position-pattern
 				      #u"[ \n]"
 				      )
@@ -562,7 +563,8 @@ that matches the name name with extention ext"
 				 (string-match doc-start s
 					       (+ beg 1 initial-offset) end)))
 			   ;;(format t "start-doc = ~A~%" start-doc)
-			   (cond ((>= (string-match pat-subnode s
+			   (cond ((>= (string-match (format nil #u"\n -+ [a-zA-Z~a]" *extra-chars*) 
+						    s
 						    (if (>= start-doc 0)
 							start-doc
 							(+ beg 1 initial-offset))
