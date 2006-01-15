@@ -73,5 +73,9 @@ done;
 float(0.0b0);
 0.0;
 
+/* Bug 1404754, fixed in float.lisp rev 1.23 */
+1.0b0*x;
+1.0b0*x;
+
 end;
 end$

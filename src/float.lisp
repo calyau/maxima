@@ -1033,7 +1033,6 @@ One extra decimal digit in actual representation for rounding purposes.")
 	   (setq fans (bcons (fptimes* (cdr r) (cdr fans))))
 	   (setq nfans (list '(mtimes) (car l) nfans))))
      (return (cond ((equal nfans 1) fans)
-		   ((equal fans tst) nfans)
 		   (t (simplify (list '(mtimes) fans nfans))))))) 
 
 (defun invertbigfloat (a) 
