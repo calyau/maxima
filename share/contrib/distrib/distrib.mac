@@ -80,6 +80,8 @@ www.biomates.net
 2006, january: numerical algorithms ported to lisp (numdistrib.lisp); added random generators;
       bug fixing in meanpareto, varpareto, stdpareto, skwpareto, kurpareto and some others. 
       The documentation has been rewritten in texi format (distrib.texi)
+2006, some code cleaning in rcauchy (compiling problems with tan(3.1415), now tan(float(%pi))),
+      denlogn, dislogn, dencontu and rdiscu.
 */
 
 /* Sets the random state according to the computer clock time */
@@ -368,11 +370,11 @@ denf(x,m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('denf,[x,m,n])),
    if member(sign(x), ['nz,'neg,'zero])
-      then return(0)
+      then 0
       else if sign(x)='pos
-              then return(gamma((m+n)/2)*(m/n)^(m/2)*x^(m/2-1)*(1+m*x/n)^(-(m+n)/2) /
-                    (gamma(m/2)*gamma(n/2))),
-   funmake('denf,[x,m,n]) )$
+              then gamma((m+n)/2)*(m/n)^(m/2)*x^(m/2-1)*(1+m*x/n)^(-(m+n)/2) /
+                    (gamma(m/2)*gamma(n/2))
+              else funmake('denf,[x,m,n]) )$
 
 disf(x,m,n):=block([cp:control2(m,n)],
    if cp=-1 then error("Illegal parameter"),
@@ -498,17 +500,19 @@ denlogn(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('denlogn,[x,m,s])),
    if member(sign(x), ['nz,'neg,'zero])
-      then return(0)
-      else return(exp(-(log(x)-m)^2/(2*s^2))/(sqrt(2*%pi)*s*x)),
-   funmake('denlogn,[x,m,s]) )$
+      then 0
+      else if sign(x)='pos
+              then exp(-(log(x)-m)^2/(2*s^2))/(sqrt(2*%pi)*s*x)
+              else funmake('denlogn,[x,m,s]) )$
 
 dislogn(x,m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('dislogn,[x,m,s])),
    if member(sign(x), ['nz,'neg,'zero])
-      then return(0)
-      else return(1/2+erf((log(x)-m)/(s*sqrt(2)))/2),
-   funmake('dislogn,[x,m,s])  )$
+      then 0
+      else if sign(x)='pos
+              then 1/2+erf((log(x)-m)/(s*sqrt(2)))/2
+              else funmake('dislogn,[x,m,s])  )$
 
 /* R: qlnorm(p,m,s)*/
 qlogn(q,m,s):=block([cp:control1(s), cq:controlq(q), fq:float(q)],
@@ -715,9 +719,10 @@ dencontu(x,a,b):=block([cp:control1(b-a)],
    if cp=0 or sign(x-a)='pnz or sign(x-b)='pnz
       then return(funmake('dencontu,[x,a,b])),
    if member(sign(x-a), ['nz,'neg,'zero]) or member(sign(x-b), ['pos,'pz,'zero])
-      then return(0)
-      else return(1/(b-a)),
-   funmake('dencontu,[x,a,b]) )$
+      then 0
+      else if sign(x-a) = 'pos and sign(x-b) = 'pos
+              then 1/(b-a)
+              else funmake('dencontu,[x,a,b]) )$
 
 discontu(x,a,b):=block([cp:control1(b-a)],
    if cp=-1 then error("Illegal parameter"),
@@ -1148,8 +1153,8 @@ rcauchy(a,b,[num]):=block([cp:control1(b),cn,no,fa,fb,listarith:true],
    fb: float(b),
    if numberp(fa) and numberp(fb)
       then if no=0
-              then return( tan (3.141592653589793 * (random(1.0)-0.5))*b+a)
-              else return(a + b * map('tan, 3.141592653589793 * (makelist(random(1.0),k,1,no)-0.5))),
+              then return( tan (float(%pi) * (random(1.0)-0.5))*fb+fa)
+              else return(fa + fb * map('tan, 3.141592653589793 * (makelist(random(1.0),k,1,no)-0.5))),
    funmake('rcauchy,append([a,b],num)) )$
 
 
@@ -1578,10 +1583,11 @@ rdiscu(n,[num]):=block([cp:controli(n),cn,no,listarith:true],
    cn: controlib(no),
    if cp=-1 or cn=-1 then error("Illegal parameter"),
    if cp=0 or cn=0 then return(funmake('rdiscu,append([n],num))),
-   if no=0
-      then return(1+random(n))
-      else return(1+makelist(random(n),k,1,no)),
-   funmake('rdiscu,append([n],num)) )$
+   if integerp(n)
+      then if no=0 
+              then 1+random(n)
+              else 1+makelist(random(n),k,1,no)
+      else funmake('rdiscu,append([n],num)) )$
 
 
 /*         HYPERGEOMETRIC DISTRIBUTION          */
