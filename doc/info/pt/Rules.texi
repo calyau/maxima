@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Rules.texi/1.20/Tue Nov  1 06:51:54 2005/-ko/
+@c /Rules.texi/1.21/Fri Jan 13 08:16:20 2006/-ko/
 
 @menu
 * Introdu@value{cedilha}@~ao a Regras e Modelos::  
@@ -219,12 +219,44 @@ Mostra regras com os nomes @var{nomeregra_1}, ..., @var{nomeregra_n},
 como retornado por @code{defrule}, @code{tellsimp}, ou @code{tellsimpafter},
 ou um modelo definido por meio de @code{defmatch}.
 
-@c STRIKE THIS AND MAKE IT AN EXAMPLE INSTEAD
-Por exemplo, a primeira regra modificando @code{sin} @'e nomeada @code{sinrule1}.
+Cada regra @'e mostrada com um r@'otulo de express@~ao intermedi@'aria (@code{%t}).
 
 @code{disprule (all)} mostra todas as regras.
 
+@code{disprule} n@~ao avalia seus argumentos.
+
+@code{disprule} retorna a lista de r@'otulos de express@~oes intermed@'airias correspondendo @`as regras mostradas.
+
 Veja tamb@'em @code{letrules}, que mostra regras definidas atrav@'es de @code{let}.
+
+Examples:
+
+@c ===beg===
+@c tellsimpafter (foo (x, y), bar (x) + baz (y));
+@c tellsimpafter (x + y, special_add (x, y));
+@c defmatch (quux, mumble (x));
+@c disprule (foorule1, "+rule1", quux);
+@c ''%;
+@c ===end===
+@example
+(%i1) tellsimpafter (foo (x, y), bar (x) + baz (y));
+(%o1)                   [foorule1, false]
+(%i2) tellsimpafter (x + y, special_add (x, y));
+(%o2)                   [+rule1, simplus]
+(%i3) defmatch (quux, mumble (x));
+(%o3)                         quux
+(%i4) disprule (foorule1, "+rule1", quux);
+(%t4)        foorule1 : foo(x, y) -> baz(y) + bar(x)
+
+(%t5)          +rule1 : y + x -> special_add(x, y)
+
+(%t6)                quux : mumble(x) -> []
+
+(%o6)                    [%t4, %t5, %t6]
+(%i6) ''%;
+(%o6) [foorule1 : foo(x, y) -> baz(y) + bar(x),
++rule1 : y + x -> special_add(x, y), quux : mumble(x) -> []]
+@end example
 
 @end deffn
 

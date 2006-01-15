@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.36/Sun Dec  4 08:14:10 2005/-ko/
+@c /Command.texi/1.37/Fri Jan 13 08:15:55 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Linha de Comando::  
 * Defini@value{cedilha}@~oes para Linha de Comando::  
@@ -529,7 +529,7 @@ Por padr@~ao, Maxima mostra o resultado de cada express@~ao de entrada do usu@'a
 dando ao resultado um r@'otulo de sa@'ida.
 A exibi@,{c}@~ao da sa@'ida @'e suprimida pelo encerramento da entrada com @code{$} (sinal de dolar)
 em lugar de @code{;} (ponto e v@'irgula).
-Um r@'otulo de sa@'ida @'e gerado, mas n@~ao @'e mostrado, 
+Um r@'otulo de sa@'ida @'e construido e associado ao resultado, mas n@~ao @'e mostrado, 
 e o r@'otulo pode ser referenciado da mesma forma que r@'otulos de sa@'ida mostrados.
 Veja tamb@'em @code{%}, @code{%%}, e @code{%th}.
 
@@ -537,9 +537,6 @@ R@'otulos de express@~oes intermedi@'arias podem ser gerados por algumas fun@,{c
 O sinalizador @code{programmode} controla se @code{solve} e algumas outras fun@,{c}@~oes
 geram r@'otulos de express@~oes intermedi@'arias em lugar de retornar uma lista de express@~oes.
 Algumas outras fun@,{c}@~oes, tais como @code{ldisplay}, sempre gera r@'otulos de express@~oes intermedi@'arias.
-
-@c NEED TO EXPLAIN THIS SHORTCUT ???
-@code{first (rest (labels (''inchar)))} retorna o r@'otulo de entrada mais recente.
 
 Veja tamb@'em @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}.
 
@@ -560,9 +557,6 @@ tenha ou n@~ao ele retornado a altera@,{c}@~ao para o seu valor padr@~ao.
 
 @end defvr
 
-@c THIS DESCRIPTION IS AT ODDS WITH OBSERVED BEHAVIOR: !!!
-@c WHEN nolabels IS TRUE, LABELS ARE CREATED AND DISPLAYED BUT NOT PUT INTO THE labels LIST !!!
-@c kill (labels) THEN KILLS THE ONES ON THE LIST BUT NOT ANY CREATED AFTER nolabels: true !!!
 @defvr {Vari@'avel de op@,{c}@~ao} nolabels
 Valor padr@~ao: @code{false}
 
@@ -572,14 +566,19 @@ Valor padr@~ao: @code{false}
 @c useful in the batch mode where it eliminates the need to do
 @c @code{kill (labels)} in order to free up storage.
 
-Quando @code{nolabels} @'e @code{true}, r@'otulos de entrada e sa@'ida s@~ao gerados
-mas n@~ao adicionados ao final de @code{labels}, a lista de todos os r@'otulos de entrada e sa@'ida.
-@code{kill (labels)} elimina os r@'otulos na lista @code{labels},
-mas n@~ao elimina qualquer r@'otulo gerado desde @code{nolabels} foi atribu@'ido @code{true}.
-Isso d@'a a entender que provavelmente esse comportamento est@'a simplesmente quebrado.
+Quando @code{nolabels} for @code{true},
+r@'otulos de entrada e sa@'ida
+(@code{%i} e @code{%o}, respectivamente)
+s@~ao mostrados,
+mas os r@'otulos n@~ao s@~ao associados aos resultados,
+e os r@'otulos n@~ao s@~ao anexados ao final da lista @code{labels}.
+Uma vez que r@'otulos n@~ao s@~ao associados aos resultados,
+a reciclagem pode recuperar a mem@'oria tomada pelos resultados.
+
+De outra forma r@'otulos de entrada e sa@'ida s@~ao associados aos resultados,
+e os r@'otulos s@~ao anexados ao final da lista @code{labels}.
 
 Veja tamb@'em @code{batch}, @code{batchload}, e @code{labels}.
-@c PUT A CROSS REFERENCE IN DESCRIPTION OF labels WHEN STRANGE BEHAVIOR OF nolabels IS CLEARED UP !!!
 
 @end defvr
 

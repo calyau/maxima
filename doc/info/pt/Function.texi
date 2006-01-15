@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.36/Sun Dec  4 08:14:20 2005/-ko/
+@c /Function.texi/1.37/Fri Jan 13 08:16:12 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -752,17 +752,41 @@ Em contraste, @code{fundef} retorna a defini@,{c}@~ao de fun@,{c}@~ao.
 
 @code{dispfun} n@~ao avalia seus argumentos; 
 O operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
-@code{dispfun} sempre retorna @code{done}.
+
+@code{dispfun} retorna a lista de r@'otulos de express@~oes intermedi@'arias correspondendo @`as fun@,{c}@~oes mostradas.
 
 Exemplos:
 
+
+@c ===beg===
+@c m(x, y) ::= x^(-y);
+@c f(x, y) :=  x^(-y);
+@c g[x, y] :=  x^(-y);
+@c h[x](y) :=  x^(-y);
+@c i[8](y) :=  8^(-y);
+@c dispfun (m, f, g, h, h[5], h[10], i[8]);
+@c ''%;
+@c ===end===
 @example
-(%i1) m(x, y) ::= x^(-y)$
-(%i2) f(x, y) :=  x^(-y)$
-(%i3) g[x, y] :=  x^(-y)$
-(%i4) h[x](y) :=  x^(-y)$
-(%i5) i[8](y) :=  8^(-y)$
-(%i6) dispfun (m, f, g, h, h[5], h[10], i[8])$
+(%i1) m(x, y) ::= x^(-y);
+                                     - y
+(%o1)                   m(x, y) ::= x
+(%i2) f(x, y) :=  x^(-y);
+                                     - y
+(%o2)                    f(x, y) := x
+(%i3) g[x, y] :=  x^(-y);
+                                    - y
+(%o3)                     g     := x
+                           x, y
+(%i4) h[x](y) :=  x^(-y);
+                                    - y
+(%o4)                     h (y) := x
+                           x
+(%i5) i[8](y) :=  8^(-y);
+                                    - y
+(%o5)                     i (y) := 8
+                           8
+(%i6) dispfun (m, f, g, h, h[5], h[10], i[8]);
                                      - y
 (%t6)                   m(x, y) ::= x
 
@@ -790,6 +814,17 @@ Exemplos:
                                     - y
 (%t12)                    i (y) := 8
                            8
+
+(%o12)       [%t6, %t7, %t8, %t9, %t10, %t11, %t12]
+(%i12) ''%;
+                     - y              - y            - y
+(%o12) [m(x, y) ::= x   , f(x, y) := x   , g     := x   , 
+                                            x, y
+                  - y           1              1             - y
+        h (y) := x   , h (y) := --, h  (y) := ---, i (y) := 8   ]
+         x              5        y   10         y   8
+                                5             10
+
 @end example
 
 @end deffn

@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Equations.texi/1.19/Fri Jun 17 00:57:31 2005/-ko/
+@c /Equations.texi/1.20/Fri Jan 13 08:16:04 2006/-ko/
 @c end concepts Equations
 @menu
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
@@ -369,10 +369,18 @@ e obviamente generaliza@,{c}@~oes est@~ao aus@^entes.
 @defvr {Vari@'avel} globalsolve
 Valor padr@~ao: @code{false}
 
-Quando @code{globalsolve} @'e @code{true}, a vari@'aveis resolvidas
-s@~ao atribu@'idos os valores da solu@,{c}@~ao achados por @code{solve}.
-@c DOES ANY OTHER FUNCTION RESPECT globalsolve ??
+When @code{globalsolve} for @code{true},
+vari@'aveis para as quais as equa@,{c}@~oes s@~ao resolvidas s@~ao atribuidas aos valores da solu@,{c}@~ao encontrados por @code{linsolve},
+e por @code{solve} quando resolvendo duas ou mais equa@,{c}@~oes lineares.
+Quando @code{globalsolve} for @code{false},
+solu@,{c}@~oes encontradas por @code{linsolve} e por @code{solve} quando resolvendo duas ou mais equa@,{c}@~oes lineares
+s@~ao espressas como equa@,{c}@~oes,
+e as vari@'aveis para as quais a equa@,{c}@~ao foi resolvida n@~ao s@~ao atribuidas.
 
+Quando resolvendo qualquer coisa outra que n@~ao duas equa@,{c}@~oes lineares ou mais,
+@code{solve} ignora @code{globalsolve}.
+Outras fun@,{c}@~oes que resolvem equa@,{c}@~oes (e.g., @code{algsys}) sempre ignoram @code{globalsolve}.
+    
 Exemplos:
 
 @example

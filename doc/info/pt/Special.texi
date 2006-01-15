@@ -92,7 +92,7 @@ Esse @'e um trabalho em andamento.  Alguns nomes de fun@,{c}@~oes podem mudar.
 
 @c airy IS IN THE bessel PACKAGE. ai, bi, ETC ARE IN THE airy PACKAGE.
 @deffn {Fun@value{cedilha}@value{a_til}o} airy (@var{x})
-A fun@,{c}@~ao A@'erea Ai.
+A fun@,{c}@~ao de Airy Ai.
 Se o argumento @var{x} for um n@'umero,
 o valor num@'erico de @code{airy (@var{x})} @'e retornado.
 de outra forma, uma express@~ao n@~ao avaliada @code{airy (@var{x})} @'e retornada.
@@ -100,7 +100,7 @@ de outra forma, uma express@~ao n@~ao avaliada @code{airy (@var{x})} @'e retorna
 
 @c REMAINDER DERIVED FROM airy.usg AND SHOULD PROBABLY BE MOVED
 @c TO A NODE DEVOTED TO THE airy PACKAGE.
-A equa@,{c}@~ao a@'erea @code{diff (y(x), x, 2) - x y(x) = 0} tem duas solu@,{c}@~oes linearmente
+A equa@,{c}@~ao de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas solu@,{c}@~oes linearmente
 independentes, chamadas @code{ai} e @code{bi}. Essa equa@,{c}@~ao @'e muito popular
 como uma aproxima@,{c}@~ao para problemas mais complicados em muitos ambientes de
 f@'isica matem@'atica.
@@ -145,10 +145,10 @@ Uma express@~ao similar pode ser constru@'ida para @code{bi}.
 
 
 @deffn {Fun@value{cedilha}@value{a_til}o} airy_ai (@var{x})
-A fun@,{c}@~ao A@'erea Ai, como definida em Abramowitz e Stegun,
+A fun@,{c}@~ao de Airy Ai, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Sess@~ao 10.4. 
 
-A equa@,{c}@~ao A@'erea @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
+A equa@,{c}@~ao de Airy @code{diff (y(x), x, 2) - x y(x) = 0} tem duas 
 solu@,{c}@~oes linearmente independentes, @code{y = Ai(x)} e @code{y = Bi(x)}.
 A derivada de @code{diff (airy_ai(x), x)} @'e @code{airy_dai(x)}.
 
@@ -161,15 +161,15 @@ Veja tamb@'em @code{airy_bi}, @code{airy_dai}, @code{airy_dbi}.
 
 
 @deffn {Fun@value{cedilha}@value{a_til}o} airy_dai (@var{x})
-A derivada da fun@,{c}@~ao A@'erea Ai @code{airy_ai(x)}. 
+A derivada da fun@,{c}@~ao de Airy Ai @code{airy_ai(x)}. 
 
 Veja @code{airy_ai}.
 @end deffn
 
 @deffn {Fun@value{cedilha}@value{a_til}o} airy_bi (@var{x})
-A fun@,{c}@~ao A@'erea Bi, como definida em Abramowitz e Stegun,
+A fun@,{c}@~ao de Airy Bi, como definida em Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Sess@~ao 10.4, 
-@'e a segunda solu@,{c}@~ao da equa@,{c}@~ao A@'erea 
+@'e a segunda solu@,{c}@~ao da equa@,{c}@~ao de Airy
 @code{diff (y(x), x, 2) - x y(x) = 0}.
 
 Se o argumento @code{x} for um n@'umero real ou um n@'umero complexo qualquer deles em ponto flutuante,
@@ -183,7 +183,7 @@ Veja @code{airy_ai}, @code{airy_dbi}.
 
 
 @deffn {Fun@value{cedilha}@value{a_til}o} airy_dbi (@var{x})
-A derivada de fun@,{c}@~ao A@'erea Bi @code{airy_bi(x)}.
+A derivada de fun@,{c}@~ao de Airy Bi @code{airy_bi(x)}.
 
 Veja @code{airy_ai} e @code{airy_bi}.
 @end deffn
