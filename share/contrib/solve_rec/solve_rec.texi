@@ -29,7 +29,7 @@ coefficients.
 Example:
 
 @example
-(%i1) load("solve_rec/solve_rec")$
+(%i1) load("solve_rec")$
 (%i2) solve_rec((n+4)*s[n+2] + s[n+1] - (n+1)*s[n], s[n]);
                                     n
                  %k  (2 n + 3) (- 1)          %k
@@ -93,14 +93,14 @@ So the general solution is
 
 @end deffn
 
-@defvar simplify_products
+@defvr {Option variable} simplify_products
 
 If @code{simplify_products} is @code{true}, @code{solve_rec} will try to
 simplify products in result. The default value is @code{true}.
 
 See also: solve_rec.
 
-@end defvar
+@end defvr
 
 @deffn {Function} solve_rec (@var{eqn}, @var{var}, [@var{init}])
 Solves for hypergeometrical solutions to linear recurrence @var{eqn} with
@@ -195,7 +195,7 @@ See also: solve_rec.
 
 @end deffn
 
-@defvar product_use_gamma
+@defvr {Option variable} product_use_gamma
 
 When simplifying products, @code{solve_rec} introduces gamma function
 into the expression if @code{produce_use_gamma} is @code{true}. The default
@@ -203,7 +203,7 @@ value is @code{true}.
 
 See also: simplify_products, solve_rec.
 
-@end defvar
+@end defvr
 
 @deffn {Function} summand_to_rec (@var{summand}, @var{k}, @var{n})
 

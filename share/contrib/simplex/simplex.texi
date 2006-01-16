@@ -28,7 +28,7 @@
 Example:
 
 @example
-(%i1) load("simplex/simplex")$
+(%i1) load("simplex")$
 (%i2) minimize_sx(x+y, [3*x+2*y>2, x+4*y>3]);
                   9        7       1
 (%o2)            [--, [y = --, x = -]]
@@ -38,14 +38,14 @@ Example:
 @node Definitions for simplex, Function and variable index, Introduction to simplex, Top
 @section Definitions for simplex
 
-@defvar epsilon_sx
+@defvr {Option variable} epsilon_sx
 
 Epsilon used for numerical computations in @code{linear_program}. The default value is
 10^-8.
 
 See also: linear_program.
 
-@end defvar
+@end defvr
 
 @deffn {Function} linear_program (@var{A}, @var{b}, @var{c})
 
@@ -128,7 +128,7 @@ See also: maximize_sx, nonegative_sx, epsilon_sx.
 
 @end deffn
 
-@defvar nonegative_sx
+@defvr {Option variable} nonegative_sx
 
 If @code{nonegative_sx} is true all decision variables to @code{minimize_sx}
 and @code{maximize_sx} are assumed to be positive. The default value is
@@ -136,7 +136,7 @@ and @code{maximize_sx} are assumed to be positive. The default value is
 
 See also: minimize_sx.
 
-@end defvar
+@end defvr
 
 @node Function and variable index,  , Definitions for simplex, Top
 @appendix Function and variable index
