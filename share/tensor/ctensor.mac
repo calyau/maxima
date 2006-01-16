@@ -705,9 +705,9 @@ ct_coordsys(coordinate_system, [extra_args]):=
   else if coordinate_system='kerr_newman then
   (
     dim:4,
-    declare([a,m],constant),
+    declare([a,m,e],constant),
     rho:sqrt(r^2+(a*cos(theta))^2),
-    delta:a^2-2*m*r+r^2,
+    delta:a^2-2*m*r+r^2+e^2,
     ct_coords:[ct,r,theta,phi],
     if cframe_flag then
     (
