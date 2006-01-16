@@ -508,8 +508,13 @@ Returns the echelon form of the matrix @var{M},
 as produced by Gaussian elimination.
 The echelon form is computed from @var{M}
 by elementary row operations such that the first
-non-zero element in each row in the resulting matrix is a one and the
+non-zero element in each row in the resulting matrix is one and the
 column elements under the first one in each row are all zero.
+
+@code{triangularize} also carries out Gaussian elimination,
+but it does not normalize the leading non-zero element in each row.
+
+@code{lu_factor} and @code{cholesky} are other functions which yield triangularized matrices.
 
 @c ===beg===
 @c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);
