@@ -351,7 +351,7 @@ get_lower_bound(expr, %n) := block(
     )
   ),
   sol : solve(nu, %n),
-  if length(sol)>0 then (
+  if sol#all and length(sol)>0 then (
     for i in sol do (
       s : rhs(i),
       if integerp(s) and s>= bound then bound : s+1
@@ -509,13 +509,13 @@ ricatti_type(eqn, %f, %n, cond) := block(
   p2 : coeff(eqn, funmake('shift_op, [%f, %n, 0])),
   p3 : expand(eqn - p1*funmake('shift_op, [%f, %n, 1])
                   - p2*funmake('shift_op, [%f, %n, 0])),
-  if p1*p2=p3 then (
+  if ratsimp(p1*p2-p3)=0 then (
     solve_rec_method: "Ricatty equation.",
-    return([%f[%n]=-p1, %f[%n]=-p2])
+    return([%f[%n]=-p1, %f[%n]=-subst(%n-1, %n, p2)])
   ),
   eq : %z[%n+2] + (p2-ratsubst(%n+1, %n, p1))*%z[%n+1] +
                          (p3 - p1*p2)*%z[%n],
-  %z : solve_rec(eq, %z[%n]),
+  %z : solve_rec(ratsimp(eq), %z[%n]),
   if %z=false then return(false),
   %z : normalize_product(subst(%n+1, %n, rhs(%z))/rhs(%z)) - p1,
   %z : subst(1, %k[2], %z),
