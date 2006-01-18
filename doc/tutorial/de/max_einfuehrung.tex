@@ -1,0 +1,1002 @@
+\documentclass[spanish,12pt,a4paper]{article}
+	\pagestyle{headings}
+	\title{\textbf{\Huge{Einf\"{u}hrung in Maxima}}}
+	\author{Robert Gl\"{o}ckner}
+	\setlength{\oddsidemargin}{1cm}
+	\setlength{\textwidth}{14cm}
+	\setlength{\topmargin}{1.2cm}
+	\setlength{\textheight}{20cm}
+	\usepackage{graphicx}
+	\usepackage{lscape}
+	\usepackage[german, activeacute]{babel}
+	\usepackage{amsfonts}
+	\usepackage{latexsym}
+	\usepackage{amsmath,amsthm}
+	\usepackage{color}\pagecolor{white}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+Copyright (C) Robert Gl"ockner
+
+email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
+
+\scriptsize
+This program-documentation is free software-documentation; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+This program-documentation is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with this program-documentation; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+To keep this document short, a link to the text of the GPL-LICENCE (http://www.fsf.org/licenses/gpl.html).
+
+Inoffizielle "ubersetzung: Diese Programm-Dokumentation ist freie Software. Sie k"onnen es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation ver"offentlicht, weitergeben und/oder modifizieren, entweder gem"aß Version 2 der Lizenz oder (nach Ihrer Option) jeder sp"ateren Version.
+Die Ver"offentlichung dieser Programm-Dokumentation erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT F"uR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.
+Sie sollten ein Exemplar der GNU General Public License zusammen mit dieser Programm-Dokumentation erhalten haben. Falls nicht, schreiben Sie an die Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA.
+
+Um das Dokument nicht aufzubl"ahen, hier ein Link auf die inoffizielle deutsche "ubersetzung der GPL (http://www.gnu.de/gpl-ger.html).
+\normalsize
+
+Ich m"ochte nur kurz betonen, dass ich selbst Maxima-Anf"anger bin und der Textnur auf die Grundlagen der Maxima-Benutzung eingehen kann. Die Beispiele haben keinen tieferen Sinn. Sie dienen lediglich der Darstellung der M"oglichkeiten von Maxima.
+F"ur weitere Anregungen bin ich immer dankbar.
+email (entferne alle Ziffern): 2R4o5b66e7r8t9.G0l5oe55ck8ne5r@6w0eb4.d3e
+
+
+Verbesserungsvorschl"age durch: Volker van Nek, Robert Figura.
+
+\section{Einf"uhrung}
+
+
+\subsection{Starten von Maxima}
+
+Maxima ist ein in Lisp geschriebenes freies Computer-Algebra System ( homepage ). Es ist auf verschiedenen Betriebssystemen lauff"ahig. Es gibt mehrere M"oglichkeiten das Programm zu verwenden:
+
+\begin{itemize}
+\item auf der Konsole (hierzu maxima, bzw. \verb|maxima.bat| starten)
+
+\item eine rudiment"are grafische Oberfl"ache bietet xmaxima (mitgeliefert)
+
+\item eine grafische Formelausgabe bietet wxmaxima
+
+\item f"ur Leute die LaTex benutzen ist texmax und emaxima interessant
+
+\item f"ur Emacs-verr"uckte gibt es einen mitgelieferten maxima und emaxima Modus (Start im Emacs mit M-x maxima oder "offnen einer .max Datei)
+\end{itemize}
+
+Startet man Maxima (auf der Konsole) so erh"alt man folgende Meldung:
+
+\scriptsize
+\begin{verbatim}
+Maxima 5.9.2 http://maxima.sourceforge.net
+Using Lisp GNU Common Lisp (GCL) GCL 2.6.7 (aka GCL)
+Distributed under the GNU Public License. See the file COPYING.
+Dedicated to the memory of William Schelter.
+This is a development version of Maxima. The function bug_report()
+provides bug reporting information.
+(%i1)
+\end{verbatim}
+\normalsize
+
+Es erscheint eine Meldung "uber die freie Lizenz, die Widmung an Prof. W. Schelter (ihm haben wir die freie Version von Maxima zu verdanken) und ein sog. Label  \verb|(%i1)|. Jede Eingabe wird mit einer Marke (Label) gekennzeichnet. Marken, welche mit einem i beginnen kennzeichnen Benutzereingaben, o-Markierungen kennzeichnen Ausgaben des Programms. Der Benutzer sollte dies bei der Namensgebung eigener Variablen oder Funktionen ber"ucksichtigen, um Verwechslungen zu vermeiden.
+
+\subsection{Kommandoeingabe}
+
+Kommandos werden entweder mit einem Semikolon  \verb|;|  oder einem  \verb|$| abgeschlossen. Es reicht nicht, Return oder Enter zu dr"ucken, Maxima wartet auf eines der beiden Zeichen, vorher beginnt Maxima nicht mit der Auswertung der Eingabe. Ist das letzte Zeichen ein Semikolon, so wird das Ergebnis der Verarbeitung angezeigt, im Fall eines Dollarzeichens wird die Anzeige unterdr"uckt. Dies kann bei sehr langen Ergebnissen sinnvoll sein, um die Wartezeit zu reduzieren und die "ubersicht zu wahren.
+
+Maxima unterscheidet Groß- und Kleinschreibung. Alle eingebauten Funktionen und Konstanten sind kleingeschrieben (\verb|simp|, \verb|solve|, \verb|ode2|, \verb|sin|, \verb|cos|, \verb|%e|, \verb|%pi|, \verb|inf|, etc). sImP oder SIMP werden von Maxima nicht den eingebauten Funktionen zugeordnet. Benutzerfunktionen und -variablen k"onnen klein und/oder groß geschrieben werden.
+
+Auf vorangegange Ergebnisse und Ausdr"ucke kann mittels \verb|%| zugegriffen werden. \verb|%| bezeichnet das letzte Ergebnis, \verb|%i13| die 13. Eingabe und \verb|%o27| das 27. Ergebnis, \verb|''%i42| wiederholt die Berechnung der 42. Eingabe, \verb|%th(2)| ist das vorletzte Ergebnis.
+
+\subsection{Kommandoeingabe}
+
+Ausdr"ucke werden mit \verb|:| einem Symbol zugewiesen. Funktionen werden mit \verb|:=| einem Symbol zugewiesen.
+
+\scriptsize
+\begin{verbatim}
+(%i1) value : 3;
+
+(%o1)                                3
+(%i2) equation : a + 2 = b;
+
+(%o2)                            a + 2 = b
+(%i3) function(x) := x + 3;
+
+(%o3)                      function(x) := x + 3
+(%i4) function(3);
+
+(%o4)                                6
+(%i5) function(b);
+
+(%o5)                              b + 3
+\end{verbatim}
+\normalsize
+Zuweisungen werden mit \verb|kill| einzeln oder auch insgesamt gel"oscht werden.
+\scriptsize
+\begin{verbatim}
+(%i6) kill(equation);
+
+(%o6)                              done
+(%i7) equation;
+
+(%o7)                            equation
+(%i8) function(3);
+
+(%o8)                                6
+(%i9) kill(all);
+
+(%o0)                                done
+(%i1) function(3);
+
+(%o1)                             function(3)
+(%i2) 
+\end{verbatim}
+\normalsize
+
+\subsection{Beenden von Maxima}
+
+
+Zum Abbrechen eines Kommandos dr"uckt man die Tastenkombination \verb|Strg-C| oder \verb|Strg-G|. Meldet sich der Debugger, so beendet man diesen durch Eingabe von \verb|Q|.
+Zum Beenden von Maxima gibt man \verb|quit()|; ein (Bemerkung: unter xmaxima das Menue benutzen).
+
+
+\subsection{Hilfefunktionen}
+
+Neben den Hilfefunktionen der Benutzerumgebung enth"alt Maxima eigene Hilfsfunktionen. Mit \verb|apropos| kann nach Befehlen bez"uglich eines Stichwortes gesucht werden, mit \verb|describe| k"onnen detaillierte Befehlsbeschreibungen angezeigt werden:
+
+\scriptsize
+\begin{verbatim}
+(%i3) apropos('plot);
+(%o3) [plot, plot2d, plot2dopen, plot2d_ps, plot3d, plotheight, plotmode, 
+                                           plotting, plot_format, plot_options]
+(%i4) describe("plot");
+\end{verbatim}
+\normalsize
+
+Manchmal fragt \verb|describe| auch nach, welcher Teilbereich beschrieben werden soll (hier nur ein kleiner Ausschnitt der angezeigten Informationen):
+\scriptsize
+\begin{verbatim}
+ 0: (maxima.info)Plotting.
+ 1: Definitions for Plotting.
+ 2: OPENPLOT_CURVES :Definitions for Plotting.
+ 3: PLOT2D :Definitions for Plotting.
+ 4: PLOT2D_PS :Definitions for Plotting.
+ 5: PLOT3D :Definitions for Plotting.
+ 6: PLOT_OPTIONS :Definitions for Plotting.
+ 7: SET_PLOT_OPTION :Definitions for Plotting.
+Enter n, all, none, or multiple choices eg 1 3 : 5
+Info from file /usr/share/info/maxima.info:PLOT3D (expr,xrange,yrange,...,options,..)
+ -- Function: PLOT3D ([expr1,expr2,expr3],xrange,yrange,...,options,..)
+          plot3d(2^(-u^2+v^2),[u,-5,5],[v,-7,7]);
+     would plot z = 2^(-u^2+v^2) with u and v varying in [-5,5] and
+     [-7,7] respectively, and with u on the x axis, and v on the y axis.
+
+     An example of the second pattern of arguments is
+          plot3d([cos(x)*(3+y*cos(x/2)),sin(x)*(3+y*cos(x/2)),y*sin(x/2)],
+             [x,-%pi,%pi],[y,-1,1],['grid,50,15])
+
+     which will plot a moebius band, parametrized by the 3 expressions
+     given as the first argument to plot3d.  An additional optional
+     argument [grid,50,15] gives the grid number of rectangles in the x
+     direction and y direction.
+....
+\end{verbatim}
+\normalsize
+
+Mit der Funktion \verb|example| k"onnen Beispiele zu einigen Funktionen von Maxima angezeigt werden (hier gek"urzt):
+\scriptsize
+\begin{verbatim}
+(%i3) example(integrate);
+
+(%i4) test(f):=block([u],u:integrate(f,x),ratsimp(f-diff(u,x)))
+(%o4) test(f) := block([u], u : integrate(f, x), ratsimp(f - diff(u, x)))
+(%i5) test(sin(x))
+(%o5)                                  0
+(%i6) test(1/(x+1))
+(%o6)                                  0
+(%i7) test(1/(x^2+1))
+(%o7)                                  0
+(%i8) integrate(sin(x)^3,x)
+                                  3
+                               cos (x)
+(%o8)                          ------- - cos(x)
+                                  3
+...
+\end{verbatim}
+\normalsize
+
+\subsection{Darstellung der Ergebnisse}
+
+
+Die Darstellung der Ergebnisse von Maxima, ist im Wesentlichen von der verwendeten Oberfl"ache abh"angig. W"ahrend die Ausgabe auf der Konsole und im einfachen Emacs-Modus auf die Darstellung von ASCII Zeichen begrenzt ist, zeigen der erweiterete Emacs-Modus, Imaxima, TexMacs und WxMaxima die Ergebnisse in grafischer Form an. D. h. es werden entsprechende Symbole f"ur Pi, Integral, Summe usw. verwendet.
+Allgemein zeichnen sich die Ausgaben von Maxima durch exakte (rationale) Arithmetik aus:
+
+\scriptsize
+\begin{verbatim}
+(%i38) 1/11 + 9/11;
+
+                                      10
+(%o38)                                --
+                                      11
+\end{verbatim}
+\normalsize
+
+
+Irrationale Zahlen werden in ihrer symbolischen Form beibehalten (mit \verb|%| wurde auf das Ergebnis der letzten Berechnung zugegriffen):
+
+\scriptsize
+\begin{verbatim}
+(%i39) (sqrt(3) - 1)^4;
+
+                                             4
+(%o39)                          (sqrt(3) - 1)
+(%i40) expand(%);
+
+(%o40)                          28 - 16 sqrt(3)
+\end{verbatim}
+\normalsize
+
+
+Mit \verb|ev(Ausdruck, numer);| oder kurz: \verb|Ausdruck, numer;| oder \verb|float(Ausdruck)| kann eine Dezimaldarstellung erzwungen werden (beachten Sie hier die Referenz auf das vorangegangene Ergebnis Nr. 40 via \verb|%o40|):
+
+\scriptsize
+\begin{verbatim}
+(%i41) %o40, numer;
+
+(%o41)                         0.28718707889796
+
+(%i5) float(%e);
+
+(%o5)                          2.718281828459045
+\end{verbatim}
+\normalsize
+
+Die Voreinstellung der Genauigkeit bei Fließkommazahlen betr"agt 16 Stellen, wobei die letzte Stelle unsicher ist. Die Genauigkeit kann beliebig eingestellt werden, wenn der Zahlentyp \verb|bfloat| verwendet wird. Die Anzahl der angezeigten Stellen wird mit \verb|fpprec| gesteuert. Man kann dazu \verb|fpprec| nur f"ur die Auswertung einer Zeile setzen, wie dies in Zeile \verb|%i46| geschieht, oder f"ur alle folgenden Berechnungen setzen, wie dies in Zeile \verb|%i48| geschieht:
+
+\scriptsize
+\begin{verbatim}
+(%i45) bfloat(%o40);
+
+(%o45)                       2.871870788979631B-1
+(%i46) bfloat(%o40), fpprec=100;
+
+(%o46) 2.871870788979633035608585359060421289151159390339099511070883287690717#
+294591994067016610118840227891B-1
+(%i47) fpprec;
+
+(%o47)                                16
+(%i48) fpprec : 20;
+
+(%o48)                                20
+(%i49) bfloat(%o40);
+
+(%o49)                     2.8718707889796330358B-1
+(%i50) bfloat(%o40), fpprec=100;
+
+(%o50) 2.871870788979633035608585359060421289151159390339099511070883287690717#
+294591994067016610118840227891B-1
+\end{verbatim}
+\normalsize
+
+
+Die Eingabe von bestimmten Konstanten (e, i, pi, ...) erfolgt mit vorangestelltem \verb|%| (\verb|%e|, \verb|%i|, \verb|%pi|...).
+Die Darstellung von bestimmten Konstanten (e, i, pi, ...), Operatoren (Summe, Integral, Ableitungen, ...) und anderen Symbolen (Klammern, Br"uche, ...) ist abh"angig von der gew"ahlten Oberfl"ache. Im Textmodus, der von der Konsole, dem einfachen Emacs-Modus und der mitgelieferten xmaxima Oberfl"ache geboten wird, werden Konstanten mit einem % vorangestellt (\verb|%e|, \verb|%i|, \verb|%pi|...), Operatoren werden in ASCII-Grafik dargestellt, Klammern werden nicht in der Gr"oße expandiert und Br"uche mit Hilfe von - dargestellt:
+
+\scriptsize
+\begin{verbatim}
+(%i51) sqrt(-3);
+
+(%o51)                            sqrt(3) %i
+(%i52) exp(5 * a);
+
+                                       5 a
+(%o52)                               %e
+
+(%i54) (%i54) integrate( f(x) , x, 0, inf);
+
+                                  inf
+                                 /
+                                 [
+(%o54)                           I    f(x) dx
+                                 ]
+                                 /
+                                  0
+\end{verbatim}
+\normalsize
+
+Die Darstellung im erweiterten Emacs-Modus, in Imaxima und in TexMax ist grafisch, d. h. f"ur \verb|%pi|, \verb|%e|, Integrale, Summen, ... werden entsprechende Symbole verwendet.
+Maxima kann nat"urlich auch Funktionen plotten. Die Funktion \verb|plot2d([Funktionsliste], [X-Var, Min, Max], [Y-Var, Min, Max]);| kann eine Gruppe von Funktionen plotten, hierzu gibt man die Liste von Funktionen in eckigen Klammern und durch Kommas getrennt als ersten Parameter an, es folgt eine Liste, welche die abh"angige Variable und den Plotbereich (x-Achse) angibt. Es gibt noch viele andere Plotm"oglichkeiten (\verb|apropos('plot)|, \verb|describe(plot)|)
+
+\scriptsize
+\begin{verbatim}
+(%i55)  plot2d([sin(x), cos(x)], [x, 0, 5]);
+
+(%i58) apropos('plot);
+
+(%o58) [plot, plot2d, plot2dopen, plot2d_ps, plot3d, plotheight, plotmode, 
+                                           plotting, plot_format, plot_options]
+(%i59) (%i59) describe(plot);
+
+ 0: (maxima.info)Plotting.
+ 1: Definitions for Plotting.
+ 2: openplot_curves :Definitions for Plotting.
+ 3: plot2d :Definitions for Plotting.
+ 4: plot2d_ps :Definitions for Plotting.
+ 5: plot3d :Definitions for Plotting.
+ 6: plot_options :Definitions for Plotting.
+ 7: set_plot_option :Definitions for Plotting.
+Enter space-separated numbers, `all' or `none': Enter space-separated numbers, `all' or `none': none
+\end{verbatim}
+\normalsize
+
+
+\section{Rechnen mit Maxima}
+
+
+\subsection{Operatoren}
+
+Die "ublichen arithmetischen Operatoren stehen zur Verf"ugung:
+
+\begin{itemize}
+\item \verb|+|  Addition,
+\item \verb|-| Subtraktion,
+\item \verb|*| skalare Multiplikation,
+\item \verb|.| Slalarmultiplikation von Vektoren und Matrix-Multiplikation,
+\item \verb|/| Division,
+\item \verb|**| oder \verb|^| Potenzfunktion,
+\item \verb|sqrt()| Wurzelfunktion,
+\item \verb|exp()| Exponentialfunktion,
+\item \verb|log()| nat"urliche Logarithmusfunktion
+\end{itemize}
+
+
+\subsection{Algebra}
+
+Niemand ist vor Leichtsinnsfehlern bei der Umformung, Transformation usw. von algebraischen Ausdrucken gefeit. Hier eignet sich Maxima hervorragend bei der Unters"utzung analytischer Berechnungen.
+Hier ein einfaches Beispiel f"ur die Behandlung von Polynomen. Zun"achst wird via expand Expandiert, anschließend eine Ersetzung vorgenommen, danach mittels \verb|ratsimp| ein gemeinsamer Nenner gesucht und anschließend via \verb|factor| Faktorisiert:
+
+\scriptsize
+\begin{verbatim}
+(%i72) (5*a + 3*a*b )^3;
+
+                                             3
+(%o72)                          (3 a b + 5 a)
+(%i73) expand(%);
+
+                       3  3        3  2        3          3
+(%o73)             27 a  b  + 135 a  b  + 225 a  b + 125 a
+(%i74) %, a=1/x;
+
+                             3        2
+                         27 b    135 b    225 b   125
+(%o74)                   ----- + ------ + ----- + ---
+                           3        3       3      3
+                          x        x       x      x
+(%i75) (%i75) ratsimp(%);
+
+                             3        2
+                         27 b  + 135 b  + 225 b + 125
+(%o75)                   ----------------------------
+                                       3
+                                      x
+(%i76) factor(%);
+
+                                           3
+                                  (3 b + 5)
+(%o76)                            ----------
+                                       3
+                                      x
+\end{verbatim}
+\normalsize
+
+
+\subsection{L"osen von Gleichungssystemen}
+
+Maxima ist in der Lage, exakte L"osungen auch von nichtlinearen algebraischen Gleichungsystemen zu berechnen. Im folgenden Beispiel werden 3 Gleichungen nach drei Unbekannten aufgel"ost:
+
+\scriptsize
+\begin{verbatim}
+(%i77) eq1: a + b + c = 6;
+
+(%o77)                           c + b + a = 6
+(%i78) eq2: a * b + c = 5;
+
+(%o78)                            c + a b = 5
+(%i79) eq3: a + b * c = 7;
+
+(%o79)                            b c + a = 7
+
+(%i93) s: solve([eq1, eq2, eq3], [a, b, c]);
+
+(%o93)          [[a = 1, b = 3, c = 2], [a = 1, b = 2, c = 3]]
+\end{verbatim}
+\normalsize
+
+Die L"osung wird in Form einer Liste einer Liste in eckigen Klammern dargestellt. Im Folgenden wird gezeigt, wie auf die Elemente einer Liste zugegriffen werden kann und wie man die L"osungen in andere Gleichungen einsetzen kann.
+
+\scriptsize
+\begin{verbatim}
+(%i94) s[1];
+
+(%o94)                       [a = 1, b = 3, c = 2]
+
+(%i95) s[2];
+
+(%o95)                       [a = 1, b = 2, c = 3]
+
+
+(%i98) eq4: a * a + 2 * b * b + c * c;
+
+                                 2      2    2
+(%o98)                          c  + 2 b  + a
+(%i99) eq4, s[1];
+
+(%o99)                                23
+(%i100) eq4, s[2];
+
+(%o100)                               18
+\end{verbatim}
+\normalsize
+
+\subsection{Trigonometrische Funktionen}
+
+Es stehen u.a. \verb|tan|, \verb|sin|, \verb|cos|, \verb|tanh|, \verb|sinh|, \verb|cosh| und deren Umkehrfunktionen zur Verf"ugung.
+
+\scriptsize
+\begin{verbatim}
+(%i102) example(trig);
+
+(%i103) tan(%pi/6)+sin(%pi/12)
+                                  %pi       1
+(%o103)                       sin(---) + -------
+                                  12     sqrt(3)
+(%i104) ev(%,numer)
+(%o104)                       0.83616931429214658
+(%i105) sin(1)
+(%o105)                             sin(1)
+(%i106) ev(sin(1),numer)
+(%o106)                       0.8414709848078965
+(%i107) beta(1/2,2/5)
+                                       1  2
+(%o107)                           beta(-, -)
+                                       2  5
+(%i108) ev(%,numer)
+(%o108)                       3.6790939804058804
+(%i109) diff(atanh(sqrt(x)),x)
+                                       1
+(%o109)                        -----------------
+                               2 (1 - x) sqrt(x)
+(%i110) fpprec:25
+(%i111) sin(5.0B-1)
+(%o111)                  4.794255386042030002732879B-1
+(%i112) cos(x)^2-sin(x)^2
+                                  2         2
+(%o112)                        cos (x) - sin (x)
+(%i113) ev(%,x:%pi/3)
+                                        1
+(%o113)                               - -
+                                        2
+(%i114) diff(%th(2),x)
+(%o114)                        - 4 cos(x) sin(x)
+(%i115) integrate(%th(3),x)
+                          sin(2 x)           sin(2 x)
+                          -------- + x   x - --------
+                             2                  2
+(%o115)                   ------------ - ------------
+                               2              2
+(%i116) expand(%)
+                                   sin(2 x)
+(%o116)                            --------
+                                      2
+\end{verbatim}
+\normalsize
+
+Trigonometrische Ausdr"ucke lassen sich in Maxima leicht manipulieren. Die Funktion \verb|trigexpand| benutzt die Summe-der-Winkel-Funktion, um Argumente innerhalb jeder trigonometrischen Funktion so stark wie m"oglich zu vereinfachen.
+
+\scriptsize
+\begin{verbatim}
+                                   sin(2 x)
+(%o116)                            --------
+                                      2
+(%i117) trigexpand(%)
+(%o117)                          cos(x) sin(x)
+\end{verbatim}
+\normalsize
+
+Die Funktion \verb|trigreduce|, konvertiert einen Ausdruck in eine Form, welche eine Summe von Einzeltermen,. bestehend aus jeweils einer sin- oder cos- Funktion.
+
+\scriptsize
+\begin{verbatim}
+(%o117)                          cos(x) sin(x)
+
+(%i118) trigreduce(%)
+                                   sin(2 x)
+(%o118)                            --------
+                                      2
+
+(%i119) sech(x)^2*tanh(x)/coth(x)^2+cosh(x)^2*sech(x)^2*tanh(x)/coth(x)^2
+                                   +sech(x)^2*sinh(x)*tanh(x)/coth(x)^2
+
+            2                          2        2                  2
+        sech (x) sinh(x) tanh(x)   cosh (x) sech (x) tanh(x)   sech (x) tanh(x)
+(%o119) ------------------------ + ------------------------- + ----------------
+                    2                          2                       2
+                coth (x)                   coth (x)                coth (x)
+\end{verbatim}
+\normalsize
+
+(\verb|sech()| ist eine hyperbolische Sekantenfunktion.) \verb|trigsimp| ist eine Vereinfachungsroutine, welche verschiedene trigonometrische Funktionen in sin und cos Equivalente umwandelt.
+
+\scriptsize
+\begin{verbatim}
+(%i120) trigsimp(%)
+
+                           5          4            3
+                       sinh (x) + sinh (x) + 2 sinh (x)
+(%o120)                --------------------------------
+                                       5
+                                   cosh (x)
+\end{verbatim}
+\normalsize
+
+\verb|exponentialize()| transformiert trigonometrische Funktionen in ihre komplexen Exponentialfunktionen.
+
+\scriptsize
+\begin{verbatim}
+(%i121) ev(sin(x),exponentialize)
+                                   %i x     - %i x
+                             %i (%e     - %e      )
+(%o121)                    - ----------------------
+                                       2
+\end{verbatim}
+\normalsize
+
+
+\verb|taylor( Funktion, Variable, Entwicklungspunkt, Grad);|, transformiert trigonometrische Funktionen in ihre komplexen Exponentialfunktionen.
+
+\scriptsize
+\begin{verbatim}
+(%i122) taylor(sin(x)/x,x,0,4)
+
+                                  2    4
+                                 x    x
+(%o122)/T/                   1 - -- + --- + . . .
+                                 6    120
+
+(%i123) ev(cos(x)^2-sin(x)^2,sin(x)^2 = 1-cos(x)^2)
+
+                                      2
+(%o123)                          2 cos (x) - 1
+
+(%o123)                              done
+\end{verbatim}
+\normalsize
+
+\subsection{Komplexe Zahlen}
+
+
+Die Funktionen \verb|realpart| und \verb|imagpart| geben den Real- bzw. Imagin"arteil eines komplexen Ausdruckes zur"uck.
+
+\scriptsize
+\begin{verbatim}
+(%i144) z: a + b * %i;
+
+(%o144)                            %i b + a
+(%i145) z^2;
+
+                                            2
+(%o145)                           (%i b + a)
+(%i146) exp(z);
+
+                                    %i b + a
+(%o146)                           %e
+\end{verbatim}
+\normalsize
+
+\verb|trigrat()| transformiert (komplexe) Exponentialfunktionen in entsprechende \verb|sin()| und \verb|cos()| Funktionen um.
+
+\scriptsize
+\begin{verbatim}
+(%i148) trigrat(exp(z));
+
+                               a            a
+(%o148)                   %i %e  sin(b) + %e  cos(b)
+\end{verbatim}
+\normalsize
+
+Komplexe Zahlen lassen sich mit \verb|imagpart()| und \verb|realpart()| in die entsprechenden Real- und Imagin"arteile aufspalten:
+
+\scriptsize
+\begin{verbatim}
+(%i149) imagpart(%);
+
+                                    a
+(%o149)                           %e  sin(b)
+(%i150) realpart(%th(2));
+\end{verbatim}
+\normalsize
+
+
+\subsection{Ableitungen, Grenzwerte, Integrale}
+
+
+Mit Maxima lassen sich u. a. Ableitungen, Integrale, Taylorentwicklungen, Grenzwerte, exakte L"osungen gew"ohnlicher Differentialgleichungen berechnen.
+Zun"achst definieren wir ein Symbol f als Funktion von x auf 2 Arten. Beachten Sie die Unterschiede bei der Auswertung der Ableitung.
+
+\scriptsize
+\begin{verbatim}
+(%i129) f : x^3;
+
+                                       3
+(%o129)                               x
+(%i130) diff(f,x);
+
+                                        2
+(%o130)                              3 x
+(%i131) kill(f);
+
+(%o131)                              done
+(%i132) f(x) := x^3;
+
+                                           3
+(%o132)                           f(x) := x
+(%i133) diff(f,x);
+
+(%o133)                                0
+(%i134) diff(f(x),x);
+
+                                        2
+(%o134)                              3 x
+\end{verbatim}
+\normalsize
+
+Ein Beispiel f"ur eine Taylorreihenentwicklung und eine Grenzwertberechnung:
+
+\scriptsize
+\begin{verbatim}
+(%i140) f(x) := sin(x) / x;
+
+                                        sin(x)
+(%o140)                         f(x) := ------
+                                          x
+(%i141) taylor(f(x),x,0,5);
+
+                                  2    4
+                                 x    x
+(%o141)/T/                   1 - -- + --- + . . .
+                                 6    120
+(%i142) limit(f(x),x,0);
+
+(%o142)                                1
+\end{verbatim}
+\normalsize
+
+Integrale lassen sich, sofern m"oglich, bestimmt und unbestimmt berechnen:
+
+\scriptsize
+\begin{verbatim}
+(%i109) integrate(%e^x/(2+%e^x),x)
+                                       x
+(%o109)                          log(%e  + 2)
+
+(%i116) integrate(x^(5/4)/(1+x)^(5/2),x,0,inf)
+
+                                       9  1
+(%o116)                           beta(-, -)
+                                       4  4
+\end{verbatim}
+\normalsize
+
+
+subsection{L"osen von Differentialgleichungen}
+
+Ableitungen, bzw. Differentiale k"onnen so eingegeben werden, dass sie ausgewertet oder nicht ausgewertet werden. Das Apostroph wirkt als Maskierung und verhindert die Auswertung durch Maxima:
+
+\scriptsize
+\begin{verbatim}
+(%i9) 'diff (y, x);
+                               dy
+(%o9)                          --
+                               dx
+(%i10) diff (y, x);
+(%o10)                          0
+\end{verbatim}
+\normalsize
+
+Zum L"osen von gew"ohnlichen Differentialgleichungen stehen folgende Funktionen zur Verf"ugung: \verb|ode2|, \verb|ic1|, \verb|ic2|, \verb|bc1|, \verb|bc2|.
+\verb|ic1|, \verb|ic2| sind auf Anfangswertaufgaben 1. bzw. 2. Ordnung spezialisiert.
+\verb|bc1|, \verb|bc2| sind auf Randwertaufgaben 1. bzw. 2. Ordnungspezialisiert.
+
+\scriptsize
+\begin{verbatim}
+(%i23) dgl1: -'diff(y,x) * sin(x) + y * cos(x) = 1;
+
+                                             dy
+(%o23)                     cos(x) y - sin(x) -- = 1
+                                             dx
+(%i24) ode2( dgl1, y, x);
+
+                                         1
+(%o24)                     y = sin(x) (------ + %c)
+                                       tan(x)
+(%i25) (%i25) trigsimp(%);
+
+(%o25)                      y = %c sin(x) + cos(x)
+\end{verbatim}
+\normalsize
+
+Anfangswertaufgabe: Harmonische Schwingungen z.B. eines Pendels werden durch folgende Differentialgleichung beschrieben und mittels \verb|ode2| und \verb|ic2| gel"ost:
+
+\scriptsize
+\begin{verbatim}
+(%i38) dgl2: 'diff(y,x,2) + y = 0;
+
+                                   2
+                                  d y
+(%o38)                            --- + y = 0
+                                    2
+                                  dx
+(%i39) ode2(dgl2, y, x);
+
+(%o39)                    y = %k1 sin(x) + %k2 cos(x)
+(%i40) ic2(%, x=0, y=y0, 'diff(y,x)=0);
+
+(%o40)                           y = cos(x) y0
+\end{verbatim}
+\normalsize
+
+Randwertaufgabe: Bei gleichm"aßiger Belastung, l"asst sich die Biegelinie eines ruhenden und auf 2 S"utzen liegenden Balkens unter bestimmten Umst"anden durch folgende Differentialgleichung beschreiben und mittels \verb|ode2| und \verb|ic2| l"osen:
+
+\scriptsize
+\begin{verbatim}
+(%i41) dgl3: 'diff(y,x,2) = x -  x^2;
+
+                                  2
+                                 d y        2
+(%o41)                           --- = x - x
+                                   2
+                                 dx
+(%i42) ode2(dgl3, y, x);
+
+                                4      3
+                               x  - 2 x
+(%o42)                   y = - --------- + %k2 x + %k1
+                                  12
+(%i43) bc2(%, x=0, y=0, x=1, y=0);
+
+                                    4      3
+                                   x  - 2 x    x
+(%o43)                       y = - --------- - --
+                                      12       12
+
+(%i45) expand(%);
+
+                                     4    3
+                                    x    x    x
+(%o45)                        y = - -- + -- - --
+                                    12   6    12
+\end{verbatim}
+\normalsize
+
+\subsection{Matrizenrechnung}
+
+Mit Maxima lassen sich allgemeine Matrizenoperationen durchf"uhren.
+
+\scriptsize
+\begin{verbatim}
+(%i79) m:matrix([a,0],[b,1])
+                                   [ a  0 ]
+(%o79)                             [      ]
+                                   [ b  1 ]
+(%i80) m^2
+                                   [  2    ]
+                                   [ a   0 ]
+(%o80)                             [       ]
+                                   [  2    ]
+                                   [ b   1 ]
+(%i81) m . m
+                                [    2       ]
+(%o81)                          [   a      0 ]
+                                [            ]
+                                [ a b + b  1 ]
+(%i82) m[1,1]*m
+                                  [  2     ]
+(%o82)                            [ a    0 ]
+                                  [        ]
+                                  [ a b  a ]
+(%i83) 1-%th(2)+%
+                                 [   1    1 ]
+(%o83)                           [          ]
+                                 [ 1 - b  a ]
+(%i84) m^^(-1)
+                                  [  1     ]
+                                  [  -   0 ]
+                                  [  a     ]
+(%o84)                            [        ]
+                                  [   b    ]
+                                  [ - -  1 ]
+                                  [   a    ]
+(%i85) [x,y] . m
+
+(%o85)                         [ b y + a x  y ]
+
+(%i86) matrix([a,b,c],[d,e,f],[g,h,i])
+
+                                  [ a  b  c ]
+                                  [         ]
+(%o86)                            [ d  e  f ]
+                                  [         ]
+                                  [ g  h  i ]
+(%i87) %^^2
+             [              2                                    ]
+             [ c g + b d + a    c h + b e + a b  c i + b f + a c ]
+             [                                                   ]
+(%o87)       [                         2                         ]
+             [ f g + d e + a d  f h + e  + b d   f i + e f + c d ]
+             [                                                   ]
+             [                                    2              ]
+             [ g i + d h + a g  h i + e h + b g  i  + f h + c g  ]
+(%o87)                               done
+\end{verbatim}
+\normalsize
+
+Außerdem lassen sich u. a. die Determinante, die Inverse, die Eigenwerte und Eigenvektoren einer Matrix berechnen. Die Matrix darf dabei auch symbolische Ausdr"ucke enthalten.
+\verb|eigenvalues(m)| ergibt als Ergebnis eine Liste, bestehend aus 2 Unterlisten. Die erste Unterliste enth"alt die Eigenwerte, die 2. Unterliste die entsprechenden Multipliktaroren.
+
+\scriptsize
+\begin{verbatim}
+(%i60) m : matrix( [1, 0, 0], [0, 2, 0], [0, 0, 3]);
+
+                                  [ 1  0  0 ]
+                                  [         ]
+(%o60)                            [ 0  2  0 ]
+                                  [         ]
+                                  [ 0  0  3 ]
+(%i61) eigenvalues(m);
+
+(%o61)                      [[1, 2, 3], [1, 1, 1]]
+\end{verbatim}
+\normalsize
+
+Die Funktion \verb|eigenvectors| berechnet Eigenwerte, deren Multiplikatoren, sowie die Eigenvektoren der gegebenen Matrix. Die Ergebnisse werden in Listen, bzw. Unterlisten zusammengefasst. Es gibt verschiedene M"oglichkeiten die Auswertung zu beeinflussen \verb|nondiagonalizable|, \verb|hermitianmatrix|, \verb|knowneigvals|, diese werden mit \verb|describe(eigenvectors);| beschrieben.
+
+\scriptsize
+\begin{verbatim}
+(%i62) eigenvectors(m);
+
+(%o62)     [[[1, 2, 3], [1, 1, 1]], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
+(%i71) part( %, 2);
+
+(%o71)                             [1, 0, 0]
+\end{verbatim}
+\normalsize
+
+Weiterhin gibt es Funktionen zur Transponierung (\verb|transpose|), Berechnung der Determinante (\verb|determinant|), Berechnung des charakteristischen Polynomes \verb|charpoly(Matrix, Variable);|, Berechnung der Inversen (\verb|invert|). Das Schl"usselwort \verb|detout| faktorisiert dabei die Determinante aus der Inversen.
+
+
+\section{Programmieren in Maxima}
+
+Bis jetzt haben Sie gesehen, wie man Maxima im interaktiven Modus wie einen Taschenrechner benutzt. F"ur Berechnungen, welche wiederholt Kommandosequenzen durchlaufen m"ussen, sind Programme geeigneter.
+Programme werden gew"ohnlich in einem Texteditor (Emacs) geschrieben und dann mittels batch in Maxima geladen.
+Ein kleines Statistik-M"unzwurfprogramm. Mit \verb|block( [Lokale_Variablen], Kommando1, Kommando2...)| wird ein Block von Kommandos definiert. Die lokalen Variablen k"onnen auch mit Startwerten versehen werden, wie im Folgenden gezeigt wird:
+
+\scriptsize
+\begin{verbatim}
+(%i13)  muenze_werfen(n) := block( [muenze, statistik:[0,0] ], /* Kommentare wie in C/C++ */
+          print("Ich werde die M"unze ", n, "mal werfen. 1 = Zahl, 2 = Kopf"),
+          for i: 1 thru n do ( /* eine for schleife, f"ur genauere informationen siehe DO */
+            muenze : random(2) + 1,   /* 1 + Zufallsgenerator von 0 bis 1  */
+          statistik[muenze] : statistik[muenze] + 1 ), /* Array-Indizes beginnen mit EINS! */
+          print("Zahl wurde ", statistik[1], "mal geworfen"),
+          print("Kopf wurde ", statistik[2], "mal geworfen"),
+        n );
+
+(%o13) muenze_werfen(n) := block([muenze, statistik : [0, 0]], 
+print("Ich werde die M"unze ", n, "mal werfen. 1 = Zahl, 2 = Kopf"), 
+for i thru n do (muenze : random(2) + 1, 
+statistik       : statistik       + 1), 
+         muenze            muenze
+
+print("Zahl wurde ", statistik , "mal geworfen"), 
+                              1
+
+print("Kopf wurde ", statistik , "mal geworfen"), n)
+                              2
+(%i14) muenze_werfen(1000);
+
+Ich werde die M"unze  1000 mal werfen. 1 = Zahl, 2 = Kopf 
+Zahl wurde  485 mal geworfen 
+Kopf wurde  515 mal geworfen 
+(%o14)                               1000
+\end{verbatim}
+\normalsize
+
+Dieselben Ausgaben in die Datei \verb|Daten.txt| umlenken:
+
+\scriptsize
+\begin{verbatim}
+muenze_werfen(n) := block( [muenze, statistik:[0,0] ], /* Kommentare wie in C/C++ */
+  with_stdout( "Daten.txt", 
+    print("Ich werde die M"unze ", n, "mal werfen. 1 = Zahl, 2 = Kopf"),
+    for i: 1 thru n do ( /* eine for schleife, f"ur genauere informationen siehe DO */
+      muenze : random(2) + 1,   /* 1 + Zufallsgenerator von 0 bis 1  */
+      statistik[muenze] : statistik[muenze] + 1 ), /* Array-Indizes beginnen mit EINS! */
+    print("Zahl wurde ", statistik[1], "mal geworfen"),
+    print("Kopf wurde ", statistik[2], "mal geworfen")
+  ),
+  n 
+);
+\end{verbatim}
+\normalsize
+
+
+\section{Maxima-Funktionen}
+
+Die Referenz befindet sich unter \verb|doc/html/maxima_toc.html| (im Installationspfad von Maxima). In Maxima k"onnen Sie Hilfe durch die Kommandos \verb|describe|, \verb|apropos| und \verb|example| erhalten. \verb|apropos(Stichwort)| gibt eine Liste von evtl. geeigneten Kommandos. \verb|describe(Befehl)| beschreibt die einzelnen Kommandos genauer (evtl. m"ussen Sie eine Auswahl treffen, welcher Aspekt genauer beschrieben werden soll) und \verb|example(Befehl)| gibt Beispiele f"ur den jeweiligen Befehl aus (soweit vorhanden).
+
+\begin{itemize}
+\item \verb|allroots(a)| Findet alle (allgemein komplexen) Wurzeln einer Polynomialgleichung.
+\item \verb|append(a,b)| F"ugt Liste b an a an.
+\item \verb|apropos(a);| Liefert zu einem Stichwort m"ogliche Befehle/Funktionen.
+\item \verb|batch(a)| L"adt und startet Programm/File a.
+\item \verb|bc1, bc2 ( DGL, x=x0, y=y0, x=x1, y=y1)| L"osung einer Randwertaufgabe einer DGL nach Behandlung mit ode2.
+\item \verb|charpoly(Matrix, Variable)| Berechnet das charakteristische Polynom einer Matrix bzgl. der gegebenen Variable.
+\item \verb|coeff(a,b,c)| Koeffizienten von b der Potenz C in Ausdruck a.
+\item \verb|concat(a,b)| Generiert ein Symbol ab.
+\item \verb|cons(a,b)| F"ugt a in Liste b als erstes Element ein.
+\item \verb|demoivre(a)| Transformiert alle komplexen Exponentialterme in trigonometrische.
+\item \verb|denom(a)| Nenner von a.
+\item \verb|depends(a,b)| Erkl"art a als Funktion von b (n"utzlich f"ur Differentialgleichungen).
+\item \verb|desolve(a,b)| Versucht ein lineares System a von gew. DGLs nach unbekannten b mittels Laplace-Transformation zu l"osen.
+\item \verb|describe(a)| Beschreibt einen Befehl oder eine Funktion n"aher. Evtl. wird nachgefragt, welcher Aspekt eines Befehls oder einer Befehlsgruppe n"aher beschrieben werden soll.
+\item \verb|determinant(a)| Determinante
+\item \verb|diff(a,b1,c1,b2,c2,...,bn,cn)| Gemischte partielle Ableitung von a nach bi der Stufe ci.
+\item \verb|eigenvalues(a)| Berechnet die Eigenwerte und ihre Multiplikatoren.
+\item \verb|eigenvectors(a)| Berechnet Eigenvektoren, Eigenwerte und Multiplikatoren.
+\item \verb|entermatrix(a,b)| Matrixeingabe
+\item \verb|ev(a,b1,b2,...,bn)| Berechnet Ausdruck a unter Annahmen bi (Gleichungen, Zuweisungen, Schl"usselw"orter (numer - Zahlenwerte, detout - Matrixinverse ohne Determinante, diff - alle Ableitungen werden ausgef"uhrt). NUR bei direkter Eingabe kann ev weggelassen werden.
+\item \verb|example(a)| Zeigt Beispiele f"ur die Verwendung eines Befehls oder einer Funktion an. Nicht f"ur jede Funktion sind Beispiele vorhanden.
+\item \verb|expand(a)| Algebraische Expansion (Distribution).
+\item \verb|exponentialize(a)| Transformiert trigonometrische Funktionen in ihre komplexen Exponentialfunktioen.
+\item \verb|factor(a)| Faktorisiert a.
+\item \verb|freeof(a,b)| Ergibt wahr, wenn b nicht a enth"alt.
+\item \verb|grind(a)| Darstellung einer Variable oder Funktion in einer kompakten Form.
+\item \verb|ic1, ic2 ( dgl, x=x0, y=y0, dy0/dx = y1)| L"osung einer Anfangswertaufgabe einer DGL (nach Behandlung mit ode2).
+\item \verb|ident(a)| Einheitsmatrix a x a.
+\item \verb|imagpart(a)| Imagin"arteil von a.
+\item \verb|integrate(a,b)| Berechnungsversuch des unbestimmten Integrals a nach b.
+\item \verb|integrate(a,b,c,d)| Berechnung des Integrals a nach b in den Grenzen b=c und b=d.
+\item \verb|invert(a)| Inverse der Matrix a.
+\item \verb|kill(a)| Vernichtet Variable/Symbol a.
+\item \verb|limit(a,b,c)| Grenzwertbestimmung des Ausdrucks a f"ur b gegen c.
+\item \verb|lhs(a)| Linke Seite eines Ausdrucks.
+\item \verb|loadfile(a)| L"adt eine Datei a und f"uhrt sie aus.
+\item \verb|makelist(a,b,c,d)| Generiert eine Liste von a(b) mit b=c bis b=d.
+\item \verb|map(a,b)| Wendet a auf b an.
+\item \verb|matrix(a1,a2,...,an)| Generiert eine Matrix aus Zeilenvektoren.
+\item \verb|num(a)| Z"ahler von a.
+\item \verb|ode2(a,b,c)| L"ost gew"ohnliche Differentialgleichungen 1. und 2. Ordnung a f"ur b als Funktion von c.
+\item \verb|part(a,b1,..,bn)| Extrahiert aus a die Teile bi.
+\item \verb|playback(a)| Zeigt die a letzten Labels an, wird a weggelassen, so werden alle Zeilen zur"uckgespielt.
+\item \verb|print( a1, a2, a3, ... )| Zeigt die Auswertung der Ausdr"ucke an.
+\item \verb|ratsimp(a)| Vereinfacht a und gibt einen Quotienten zweier Polynome zur"uck.
+\item \verb|realpart(a)| Realteil von a
+\item \verb|rhs(a)| Rechte Seite einer Gleichung a.
+\item \verb|save(a,b1,..., bn)| Generiert eine Datei a (im Standardverzeichnis), welche Variablen, Funktionen oder Arrays bi enth"alt. So generierte Dateien lassen sich mit loadfile zur"uckspielen. Wenn b1 all ist, wird alles bis auf die Labels gespeichert.
+\item \verb|solve(a,b)| Algebraischer L"osungsversuch f"ur ein Gleichungssystem oder eine Gleichung a f"ur eine Variable oder eine Liste von Variablen b. Gleichungen k"onnen =0 abk"urzen.
+\item \verb|string(a)| Konvertiert a in Maximas lineare Notation.
+\item \verb|stringout(a,b1,..bn)| Generiert eine Datei a im Standardverzeichnis, bestehend aus Symbolen bi. Die Datei ist im Textformat und nicht dazu geeignet von Maxima geladen zu werden. Die Ausdr"ucke k"onnen aber genutzt werden, um sie in Fortran, Basic oder C-Programmen zu verwenden.
+\item \verb|subst(a,b,c)| Ersetzt a f"ur b in c.
+\item \verb|taylor(a,b,c,d)| Taylorreihenentwicklung von a nach b in Punkt c bis zur Ordnung d.
+\item \verb|transpose(a)| Transponiert Matrix a.
+\item \verb|trigexpand(a)| Eine Vereinfachungsroutine, welche trigonometrische Winkelsummen nutzt, um einen Ausdruck zu vereinfachen.
+\item \verb|trigreduce(a)| Eine Vereinfachungsroutine f"ur trigonometrische Produkte und Potenzen.
+\item \verb|trigsimp(a)| Eine Vereinfachungsroutine, welche verschiedene trigonometrische Funktionen in sin und cos Equivalente umwandelt.
+\item \verb|with_stdout( Datei, Ausdr"ucke);| Leitet die Ausgabe der Ausdr"ucke in die angegebene Datei um.
+\end{itemize}
+
+
+
+
+
+\end{document}
+
