@@ -271,111 +271,113 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Function} interpolate (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {Function} interpolate (@var{f}, @var{a}, @var{b})
+@deffn {Function} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
 Finds the zero of function @var{f} as variable @var{x} varies over the range @code{[@var{a}, @var{b}]}.
 The function must have a
 different sign at each endpoint.  If this condition is not met, the
-action of the function is governed by @code{intpolerror}.  If
-@code{intpolerror} is @code{true} then an error occurs, otherwise the value of
-@code{intpolerror} is returned (thus for plotting @code{intpolerror} might be set to
+action of the function is governed by @code{find_root_error}.  If
+@code{find_root_error} is @code{true} then an error occurs, otherwise the value of
+@code{find_root_error} is returned (thus for plotting @code{find_root_error} might be set to
 0.0).  Otherwise (given that Maxima can evaluate the first argument
-in the specified range, and that it is continuous) @code{interpolate} is
+in the specified range, and that it is continuous) @code{find_root} is
 guaranteed to come up with the zero (or one of them if there is more
-than one zero).  The accuracy of @code{interpolate} is governed by
-@code{intpolabs} and @code{intpolrel} which must be non-negative floating
-point numbers.  @code{interpolate} will stop when the first arg evaluates to
-something less than or equal to @code{intpolabs} or if successive
-approximants to the root differ by no more than @code{intpolrel * <one of the approximants>}.
-The default values of @code{intpolabs} and @code{intpolrel} are
-0.0 so @code{interpolate} gets as good an answer as is possible with the
+than one zero).  The accuracy of @code{find_root} is governed by
+@code{find_root_abs} and @code{find_root_rel} which must be non-negative floating
+point numbers.  @code{find_root} will stop when the first arg evaluates to
+something less than or equal to @code{find_root_abs} or if successive
+approximants to the root differ by no more than @code{find_root_rel * <one of the approximants>}.
+The default values of @code{find_root_abs} and @code{find_root_rel} are
+0.0 so @code{find_root} gets as good an answer as is possible with the
 single precision arithmetic we have.  The first arg may be an
 equation.  The order of the last two args is irrelevant.  Thus
 
 @example
-interpolate (sin(x) = x/2, x, %pi, 0.1);
+find_root (sin(x) = x/2, x, %pi, 0.1);
 @end example
 
 is equivalent to
 
 @example
-interpolate (sin(x) = x/2, x, 0.1, %pi);
+find_root (sin(x) = x/2, x, 0.1, %pi);
 @end example
 
 The method used is a binary search in the range specified by the last
 two args.  When it thinks the function is close enough to being
 linear, it starts using linear interpolation.
 
-@c PREVIOUS EXAMPLE STUFF
+Examples:
+@c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
 @c f(x):=(mode_declare(x,float),sin(x)-x/2.0);
 @c interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
 @c interpolate(f(x),x,0.1,%pi);            time= 68 msec
 @c translate(f);
 @c interpolate(f(x),x,0.1,%pi);            time= 26 msec
 @c interpolate(f,0.1,%pi);                 time=  5 msec
-@c
-@c STUFF BELOW GENERATED FROM THE FOLLOWING
+
+@c ===beg===
 @c f(x) := sin(x) - x/2;
-@c interpolate (sin(x) - x/2, x, 0.1, %pi);
-@c interpolate (sin(x) = x/2, x, 0.1, %pi);
-@c interpolate (f(x), x, 0.1, %pi);
-@c interpolate (f, 0.1, %pi);
+@c find_root (sin(x) - x/2, x, 0.1, %pi);
+@c find_root (sin(x) = x/2, x, 0.1, %pi);
+@c find_root (f(x), x, 0.1, %pi);
+@c find_root (f, 0.1, %pi);
+@c ===end===
 @example
 (%i1) f(x) := sin(x) - x/2;
                                         x
 (%o1)                  f(x) := sin(x) - -
                                         2
-(%i2) interpolate (sin(x) - x/2, x, 0.1, %pi);
+(%i2) find_root (sin(x) - x/2, x, 0.1, %pi);
 (%o2)                   1.895494267033981
-(%i3) interpolate (sin(x) = x/2, x, 0.1, %pi);
+(%i3) find_root (sin(x) = x/2, x, 0.1, %pi);
 (%o3)                   1.895494267033981
-(%i4) interpolate (f(x), x, 0.1, %pi);
+(%i4) find_root (f(x), x, 0.1, %pi);
 (%o4)                   1.895494267033981
-(%i5) interpolate (f, 0.1, %pi);
+(%i5) find_root (f, 0.1, %pi);
 (%o5)                   1.895494267033981
 @end example
 
 @end deffn
 
-@defvr {Option variable} intpolabs
+@defvr {Option variable} find_root_abs
 Default value: 0.0
 
-@code{intpolabs} is the accuracy of the @code{interpolate} command is
-governed by @code{intpolabs} and @code{intpolrel} which must be
-non-negative floating point numbers.  @code{interpolate} will stop when the
-first arg evaluates to something less than or equal to @code{intpolabs} or if
-successive approximants to the root differ by no more than @code{intpolrel * <one of the approximants>}.
-The default values of @code{intpolabs} and
-@code{intpolrel} are 0.0 so @code{interpolate} gets as good an answer as is possible
+@code{find_root_abs} is the accuracy of the @code{find_root} command is
+governed by @code{find_root_abs} and @code{find_root_rel} which must be
+non-negative floating point numbers.  @code{find_root} will stop when the
+first arg evaluates to something less than or equal to @code{find_root_abs} or if
+successive approximants to the root differ by no more than @code{find_root_rel * <one of the approximants>}.
+The default values of @code{find_root_abs} and
+@code{find_root_rel} are 0.0 so @code{find_root} gets as good an answer as is possible
 with the single precision arithmetic we have.
 
 @end defvr
 
-@defvr {Option variable} intpolerror
+@defvr {Option variable} find_root_error
 Default value: @code{true}
 
-@code{intpolerror} governs the behavior of @code{interpolate}.
-When @code{interpolate} is called, it determines whether or not the function
-to be interpolated satisfies the condition that the values of the
+@code{find_root_error} governs the behavior of @code{find_root}.
+When @code{find_root} is called, it determines whether or not the function
+to be solved satisfies the condition that the values of the
 function at the endpoints of the interpolation interval are opposite
 in sign.  If they are of opposite sign, the interpolation proceeds.
-If they are of like sign, and @code{intpolerror} is @code{true}, then an error is
-signaled.  If they are of like sign and @code{intpolerror} is not @code{true}, the
-value of @code{intpolerror} is returned.  Thus for plotting, @code{intpolerror}
+If they are of like sign, and @code{find_root_error} is @code{true}, then an error is
+signaled.  If they are of like sign and @code{find_root_error} is not @code{true}, the
+value of @code{find_root_error} is returned.  Thus for plotting, @code{find_root_error}
 might be set to 0.0.
 
 @end defvr
 
-@defvr {Option variable} intpolrel
+@defvr {Option variable} find_root_rel
 Default value: 0.0
 
-@code{intpolrel} is the accuracy of the @code{interpolate} command is
-governed by @code{intpolabs} and @code{intpolrel} which must be
-non-negative floating point numbers.  @code{interpolate} will stop when the
-first arg evaluates to something less than or equal to @code{intpolabs} or if
-successive approximants to the root differ by no more than @code{intpolrel * <one of the approximants>}.
-The default values of @code{intpolabs} and
-@code{intpolrel} are 0.0 so @code{interpolate} gets as good an answer as is possible
+@code{find_root_rel} is the accuracy of the @code{find_root} command is
+governed by @code{find_root_abs} and @code{find_root_rel} which must be
+non-negative floating point numbers.  @code{find_root} will stop when the
+first arg evaluates to something less than or equal to @code{find_root_abs} or if
+successive approximants to the root differ by no more than @code{find_root_rel * <one of the approximants>}.
+The default values of @code{find_root_abs} and
+@code{find_root_rel} are 0.0 so @code{find_root} gets as good an answer as is possible
 with the single precision arithmetic we have.
 
 @end defvr

@@ -13,8 +13,8 @@
 (macsyma-module intpol)
 (load-macsyma-macros transm numerm)
 
-(declare-top (special $intpolrel $intpolabs $intpolerror)
-	     (flonum $intpolrel $intpolabs a b c fa fb fc)
+(declare-top (special $find_root_rel $find_root_abs $find_root_error)
+	     (flonum $find_root_rel $find_root_abs a b c fa fb fc)
 	     (fixnum lin)
 	     (notype (interpolate-check flonum flonum flonum flonum))) 
 
@@ -27,11 +27,11 @@
 				     (t (funcall y z))))
 	  )
 
-(or (boundp '$intpolabs) (setq $intpolabs 0.0)) 
-(or (boundp '$intpolrel) (setq $intpolrel 0.0))
-(or (boundp '$intpolerror) (setq $intpolerror t))
+(or (boundp '$find_root_abs) (setq $find_root_abs 0.0)) 
+(or (boundp '$find_root_rel) (setq $find_root_rel 0.0))
+(or (boundp '$find_root_error) (setq $find_root_error t))
 
-(defun $interpolate_subr (f left right)
+(defun $find_root_subr (f left right)
   (bind-tramp1$
    f f
    (prog (a b c fa fb fc (lin 0))
@@ -41,15 +41,15 @@
       (or (> b a) (setq a (prog2 nil b (setq b a))))
       (setq fa (fcall$ f a)
 	    fb (fcall$ f b))
-      (or (> (abs fa) $intpolabs) (return a))
-      (or (> (abs fb) $intpolabs) (return b))
+      (or (> (abs fa) $find_root_abs) (return a))
+      (or (> (abs fb) $find_root_abs) (return b))
       (and (> (*$ fa fb) 0.0)
-	   (cond ((eq $intpolerror t)
+	   (cond ((eq $find_root_error t)
 		  (merror "function has same sign at endpoints~%~M"
 			  `((mlist)
 			    ((mequal) ((f) ,a) ,fa)
 			    ((mequal) ((f) ,b) ,fb))))
-		 (t (return $intpolerror))))
+		 (t (return $find_root_error))))
       (and (> fa 0.0)
 	   (setq fa (prog2 nil fb (setq fb fa)) a (prog2 nil b (setq b a))))
       (setq lin 0.)
@@ -73,9 +73,9 @@
       (go falsi))))
 
 (defun interpolate-check (a c b fc)
-  (not (and (prog2 nil (> (abs fc) $intpolabs) (setq fc (max (abs a) (abs b))))
-	    (> (abs (-$ b c)) (*$ $intpolrel fc))
-	    (> (abs (-$ c a)) (*$ $intpolrel fc)))))
+  (not (and (prog2 nil (> (abs fc) $find_root_abs) (setq fc (max (abs a) (abs b))))
+	    (> (abs (-$ b c)) (*$ $find_root_rel fc))
+	    (> (abs (-$ c a)) (*$ $find_root_rel fc)))))
 
 
 
@@ -84,30 +84,30 @@
   (setq form (cdr form))
   (cond ((= (length form) 3)
 	 (cond (translp
-		`(($interpolate_subr) ,@form))
+		`(($find_root_subr) ,@form))
 	       (t
 		`((mprog) ((mlist) ((msetq) $numer t))
-		  (($interpolate_subr)  ,@form)))))
+		  (($find_root_subr)  ,@form)))))
 	((= (length form) 4)
 	 (destructuring-let (((exp var . bnds) form))
 	   (setq exp (sub ($lhs exp) ($rhs exp)))
 	   (cond (translp
-		  `(($interpolate_subr)
+		  `(($find_root_subr)
 		    ((lambda-i) ((mlist) ,var)
 		     (($modedeclare) ,var $float)
 		     ,exp)
 		    ,@bnds))
 		 (t
 		  `((mprog) ((mlist) ((msetq) $numer t))
-		    (($interpolate_subr)
+		    (($find_root_subr)
 		     ((lambda) ((mlist) ,var) ,exp)
 		     ,@bnds))))))
 	(t (merror "wrong number of args to `interpolate'"))))
 
-(defmspec $interpolate (form)
+(defmspec $find_root (form)
   (meval (interpolate-macro form nil)))
 
-(def-translate-property $interpolate (form)
+(def-translate-property $find_root (form)
   (let (($tr_numer t))
     (translate (interpolate-macro form t))))
 
