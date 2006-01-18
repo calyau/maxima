@@ -523,6 +523,18 @@ setrgbcolor} def
 				  ($float result)
 				  nil)))
 			  'function)))))
+    ((and (consp expr) (eq (caar expr) 'lambda))
+     ; FOLLOWING CODE IS IDENTICAL TO CODE FOR EXPR = SYMBOL 
+     ; (EXCEPT HERE WE HAVE EXPR INSTEAD OF MEXPR). DOUBTLESS BEST TO MERGE.
+		(let ((args (nth 1 expr)))
+		  (coerce `(lambda ,(cdr args)
+			    (declare (special ,@(cdr args)))
+			    (let* (($ratprint nil)
+				   (result ($realpart (meval* ',(nth 2 expr)))))
+			      (if ($numberp result)
+				  ($float result)
+				  nil)))
+			  'function)))
 	(t
 	 (let ((vars (or lvars ($sort ($listofvars expr))))
 					;(na (gensym "TMPF"))
