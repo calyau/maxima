@@ -476,25 +476,62 @@ given to @code{ieqn} if an error prevented generation of further terms).
 
 @end defvr
 
-@deffn {Function} lhs (@var{eqn})
-Returns the left side of the equation @var{eqn}.
+@deffn {Function} lhs (@var{expr})
+Returns the left-hand side (that is, the first argument)
+of the expression @var{expr},
+when the operator of @var{expr}
+is one of the relational operators @code{< <= = # equal notequal >= >},
+@c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
+one of the assignment operators @code{:= ::= : ::},
+or a user-defined binary infix operator, as declared by @code{infix}.
 
-If the argument is not an equation, @code{lhs} returns the argument.
+When @var{expr} is an atom or
+its operator is something other than the ones listed above,
+@code{lhs} returns @var{expr}.
 
 See also @code{rhs}.
 
-Example:
+Examples:
 
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+@c infix ("][");
+@c lhs (aa ][ bb);
+@c ===end===
 @example
-(%i1) e: x^2 + y^2 = z^2;
-                           2    2    2
-(%o1)                     y  + x  = z
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
 (%i2) lhs (e);
-                              2    2
-(%o2)                        y  + x
+(%o2)                        bb + aa
 (%i3) rhs (e);
-                                2
-(%o3)                          z
+(%o3)                          cc
+(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+(%o4)                   [aa, aa, aa, aa]
+(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+(%o5)                   [aa, aa, aa, aa]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+(%o10)               [foo(x), bar(y), x, x]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) lhs (aa ][ bb);
+(%o12)                         aa
 @end example
 
 @end deffn
@@ -688,24 +725,61 @@ Do @code{example (realroots)} for an example.
 @end deffn
 
 @deffn {Function} rhs (@var{eqn})
-Returns the right side of the equation @var{eqn}.
+Returns the right-hand side (that is, the second argument)
+of the expression @var{expr},
+when the operator of @var{expr}
+is one of the relational operators @code{< <= = # equal notequal >= >},
+@c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
+one of the assignment operators @code{:= ::= : ::},
+or a user-defined binary infix operator, as declared by @code{infix}.
 
-If the argument is not an equation, @code{rhs} returns @code{0}.
+When @var{expr} is an atom or
+its operator is something other than the ones listed above,
+@code{rhs} returns 0.
 
 See also @code{lhs}.
 
-Example:
+Examples:
 
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+@c infix ("][");
+@c rhs (aa ][ bb);
+@c ===end===
 @example
-(%i1) e: x^2 + y^2 = z^2;
-                           2    2    2
-(%o1)                     y  + x  = z
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
 (%i2) lhs (e);
-                              2    2
-(%o2)                        y  + x
+(%o2)                        bb + aa
 (%i3) rhs (e);
-                                2
-(%o3)                          z
+(%o3)                          cc
+(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+(%o4)                   [bb, bb, bb, bb]
+(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+(%o5)                   [bb, bb, bb, bb]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+(%o10)                  [2 x, 3 y, y, y]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) rhs (aa ][ bb);
+(%o12)                         bb
 @end example
 
 @end deffn
