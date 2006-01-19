@@ -17,6 +17,81 @@ The @code{logcontract} command "contracts" expressions containing @code{log}.
 
 @end defvr
 
+@deffn {Function} li [@var{s}] (@var{z})
+Represents the polylogarithm function of order @var{s} and argument @var{z},
+defined by the infinite series
+
+@example
+                                 inf
+                                 ====   k
+                                 \     z
+                        Li (z) =  >    --
+                          s      /      s
+                                 ====  k
+                                 k = 1
+@end example
+
+@code{li [1]} is @code{- log (1 - z)}.
+@code{li [2]} and @code{li [3]} are the dilogarithm and trilogarithm functions, respectively.
+
+When the order is 1, the polylogarithm simplifies to @code{- log (1 - z)},
+which in turn simplifies to a numerical value
+if @var{z} is a real or complex floating point number or the @code{numer} evaluation flag is present.
+
+When the order is 2 or 3,
+the polylogarithm simplifies to a numerical value
+if @var{z} is a real floating point number
+or the @code{numer} evaluation flag is present.
+
+Examples:
+
+@c ===beg===
+@c assume (x > 0);
+@c integrate ((log (1 - t)) / t, t, 0, x);
+@c li [2] (7);
+@c li [2] (7), numer;
+@c li [3] (7);
+@c li [2] (7), numer;
+@c L : makelist (i / 4.0, i, 0, 8);
+@c map (lambda ([x], li [2] (x)), L);
+@c map (lambda ([x], li [3] (x)), L);
+@c ===end===
+@example
+(%i1) assume (x > 0);
+(%o1)                        [x > 0]
+(%i2) integrate ((log (1 - t)) / t, t, 0, x);
+(%o2)                       - li (x)
+                                2
+(%i3) li [2] (7);
+(%o3)                        li (7)
+                               2
+(%i4) li [2] (7), numer;
+(%o4)        1.24827317833392 - 6.113257021832577 %i
+(%i5) li [3] (7);
+(%o5)                        li (7)
+                               3
+(%i6) li [2] (7), numer;
+(%o6)        1.24827317833392 - 6.113257021832577 %i
+(%i7) L : makelist (i / 4.0, i, 0, 8);
+(%o7)   [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+(%i8) map (lambda ([x], li [2] (x)), L);
+(%o8) [0, .2676526384986274, .5822405249432515, 
+.9784693966661848, 1.64493407, 2.190177004178597
+ - .7010261407036192 %i, 2.374395264042415
+ - 1.273806203464065 %i, 2.448686757245154
+ - 1.758084846201883 %i, 2.467401098097648
+ - 2.177586087815347 %i]
+(%i9) map (lambda ([x], li [3] (x)), L);
+(%o9) [0, .2584613953442624, 0.537213192678042, 
+.8444258046482203, 1.2020569, 1.642866878950322
+ - .07821473130035025 %i, 2.060877505514697
+ - .2582419849982037 %i, 2.433418896388322
+ - .4919260182322965 %i, 2.762071904015935
+ - .7546938285978846 %i]
+@end example
+
+@end deffn
+
 @deffn {Function} log (@var{x})
 Represents the natural logarithm of @var{x}.
 
