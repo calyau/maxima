@@ -460,7 +460,7 @@ Está disponível as operações básicas com números complexos,
                           2
 \end{verbatim}
 
-É possível que estes dois últimos resultados nos pareçam frustrantes e os desejemos em outro formato, resultado das operações indicadas; com esse objetivo podemos pedir a Maxima que nos devolva \verb|(%o6)| y \verb|(%o7)| em forma cartesiana,
+É possível que estes dois últimos resultados nos pareçam frustrantes e os desejemos em outro formato, resultado das operações indicadas; com esse objetivo podemos pedir a Maxima que nos devolva \verb|(%o6)| e \verb|(%o7)| em forma cartesiana,
 \index{rectform}\begin{verbatim}
 (%i8) rectform(%o6);
                         43   19 %i
@@ -493,7 +493,7 @@ Antes havíamos optado pelos resultados em formato cartesiano; mas também é possí
             2 sqrt(34) %e
 (%o12)      -----------------------------------
                          sqrt(65)
-(%i13) %,numer;   /*radio y argumento reales*/
+(%i13) %,numer;   /*raio e argumento ambos reais*/
                               2.4768181587724474 %i
 (%o13)   1.4464811413591583 %e
 \end{verbatim}
@@ -679,7 +679,7 @@ O máximo divisor comum de um conjunto de polinômios se calcula com a função \ver
                                    2          3
 (%o23)      (x - 5) (x - 3) (x - 1)  x (x + 1)
 \end{verbatim}
-Em \verb|(%i19)| e \verb|(%i20)| definimos os polinômios \verb|p1| y \verb|p2|, a seguir calculamos seu máximo divisor comum (mdc) em \verb|(%i21)| e antes de pedir o mínimo múltiplo comum em \verb|(%i23)| colocamos na memória o arquivo \verb|functs.mac| no qual se encontra definida a função \verb|lcm|. É possível que desejemos dispor do mdc fatorado, pelo que fazemos
+Em \verb|(%i19)| e \verb|(%i20)| definimos os polinômios \verb|p1| e \verb|p2|, a seguir calculamos seu máximo divisor comum (mdc) em \verb|(%i21)| e antes de pedir o mínimo múltiplo comum em \verb|(%i23)| colocamos na memória o arquivo \verb|functs.mac| no qual se encontra definida a função \verb|lcm|. É possível que desejemos dispor do mdc fatorado, pelo que fazemos
 \index{factor}\begin{verbatim}
 (%i24) factor(%o21);
                                      2
@@ -1622,7 +1622,7 @@ sendo obrigatorio o uso do apóstrofo (\verb|'|) antes de \verb|diff| com o objet
                        2              2
                     2 y            2 x
 \end{verbatim}
-de onde \verb|%C| representa uma constante, que se ajustará de acordo à condição inicial que se lhe imponha à equação. Suponha-se que se sabe que quando $x=2$, deve verificar-se que $y=-3$, o qual faremos saber ao Maxima a través da função \verb|ic1|\index{ic1},
+de onde \verb|%C| representa uma constante, que se ajustará conforme a condição inicial que se lhe imponha à equação. Suponha-se que se sabe que quando $x=2$, deve verificar-se que $y=-3$, o qual faremos saber ao Maxima a través da função \verb|ic1|\index{ic1},
 \begin{verbatim}
 (%i3) ic1(%o2,x=2,y=-3);
                               2
@@ -1744,7 +1744,7 @@ Neste último exemplo, suponhamos que queremos resolver o sistema de equações dif
    \end{array}
 \right.
 \]
-sob as condições $f(0)=-1$, $g(0)=3$ y $f(0)=1$. em primeiro lugar introduziremos estas condições com a função \verb|atvalue|\index{atvalue}, para posteriormente solicitar a resolução do sistema,
+sob as condições $f(0)=-1$, $g(0)=3$ e $f(0)=1$. em primeiro lugar introduziremos estas condições com a função \verb|atvalue|\index{atvalue}, para posteriormente solicitar a resolução do sistema,
 \begin{verbatim}
 (%i14) atvalue(f(x),x=0,-1)$
 (%i15) atvalue(g(x),x=0,3)$
@@ -1769,7 +1769,7 @@ Se seu argumento é um número inteiro positivo, a função \verb|random(n)|\index{r
 (%i1) random(6)+1;
 (%o1)                        5
 \end{verbatim}
-y uma serie de 100 lanzamientos de uma moneda,
+e uma s\'erie de 100 lan\c{c}amentos de uma moeda,
 \index{makelist}\begin{verbatim}
 (%i2) makelist(random(2),i,1,100);
 (%o2) [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1,
