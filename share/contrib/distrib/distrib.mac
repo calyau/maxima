@@ -80,8 +80,9 @@ www.biomates.net
 2006, january: numerical algorithms ported to lisp (numdistrib.lisp); added random generators;
       bug fixing in meanpareto, varpareto, stdpareto, skwpareto, kurpareto and some others. 
       The documentation has been rewritten in texi format (distrib.texi)
-2006, some code cleaning in rcauchy (compiling problems with tan(3.1415), now tan(float(%pi))),
+2006, january: some code cleaning in rcauchy (compiling problems with tan(3.1415), now tan(float(%pi))),
       denlogn, dislogn, dencontu and rdiscu.
+2006, january: some corrections so that with float arguments functions give float results
 */
 
 /* Sets the random state according to the computer clock time */
@@ -187,7 +188,6 @@ controliii(n1,n2,n):=block([t:n1+n2],
               else 0  )$
 
 
-
 /*         NORMAL (OR GAUSSIAN) DISTRIBUTION          */
 
 
@@ -207,9 +207,10 @@ qnormal(q,m,s):=block([cp:control1(s), fq:float(q), cq:controlq(q)],
    if cp=0 or cq=0 then return(funmake('qnormal,[q,m,s])),
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
-   if numberp(q) and numberp(m) and numberp(s)
-      then return(m + s * ?ppnd16(q)),
-   m + s * funmake('qnormal,[q,0,1]))$
+   if numberp(q) and numberp(m) and numberp(s) and
+      (numer or ?floatp(q) or ?floatp(m) or ?floatp(s))
+      then return(m + s * ?ppnd16(fq)),
+   funmake('qnormal,[q,m,s]))$
 
 meannormal(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
@@ -261,7 +262,8 @@ disstudent(x,n):=block([cp:control1(n),fn,fx],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('disstudent,[x,n])),
    if sign(x)='zero then return(1/2),
-   if numberp(x) and numberp(n) and numer
+   if numberp(x) and numberp(n) and 
+      (numer or ?floatp(x) or ?floatp(n))
       then (fn: float(n),
             fx: float(x),
             if x>0
@@ -276,7 +278,8 @@ qstudent(q,n):=block([cp:control1(n), cq:controlq(q), fq:float(q), aux, sgn],
    if fq=0.0 then return('minf),
    if fq=1.0 then return('inf),
    if fq=0.5 then return(0),
-   if numberp(q) and numberp(n)
+   if numberp(q) and numberp(n) and
+      (numer or ?floatp(q) or ?floatp(n))
       then(if fq<0.5
               then (aux : 2*fq,
                     sgn : -1)
@@ -381,8 +384,9 @@ disf(x,m,n):=block([cp:control2(m,n)],
    if cp=0 then return(funmake('disf,[x,m,n])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
-      else if numberp(x) and x>0 and numberp(m) and numberp(n) and numer
-              then return(1-?ibeta(n/(n+m*x),n/2,m/2)),
+      else if numberp(x) and x>0 and numberp(m) and numberp(n) and 
+              (numer or ?floatp(x) or ?floatp(m) or ?floatp(n))
+              then return(1-?ibeta(float(n/(n+m*x)),float(n/2),float(m/2))),
    funmake('disf,[x,m,n]) )$
 
 /* R: qf(q,m,n) */
@@ -391,7 +395,8 @@ qf(q,m,n):=block([cp:control2(m,n), cq:controlq(q), fq:float(q)],
    if cp=0 or cq=0 then return(funmake('qf,[q,m,n])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
-   if numberp(q) and numberp(m) and numberp(n)
+   if numberp(q) and numberp(m) and numberp(n) and
+      (numer or ?floatp(q) or ?floatp(m) or ?floatp(n))
       then n * (1 / ?iibeta(1-fq, float(n/2), float(m/2)) - 1) / m
       else funmake('qf,[q,m,n]) )$
 
@@ -520,9 +525,10 @@ qlogn(q,m,s):=block([cp:control1(s), cq:controlq(q), fq:float(q)],
    if cp=0 or cq=0 then return(funmake('qlogn,[q,m,s])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
-   if numberp(q) and numberp(m) and numberp(s)
+   if numberp(q) and numberp(m) and numberp(s) and
+      (numer or ?floatp(q) or ?floatp(m) or ?floatp(s))
       then return(exp(m + s * ?ppnd16(float(q)))),
-   m + s * funmake('qlogn,[q,0,1]))$
+   funmake('qlogn,[q,m,s]))$
 
 meanlogn(m,s):=block([cp:control1(s)],
    if cp=-1 then error("Illegal parameter"),
@@ -581,8 +587,9 @@ disgamma(x,a,b):=block([cp:control2(a,b)],
    if cp=0 then return(funmake('disgamma,[x,a,b])),
    if member(sign(x), ['nz,'neg,'zero])
       then return(0)
-      else if numberp(x) and numberp(a) and numberp(b) and numer
-              then return(?igamma(x/b,a)),
+      else if numberp(x) and numberp(a) and numberp(b) and
+              (numer or ?floatp(x) or ?floatp(a) or ?floatp(b))
+              then return(?igamma(float(x/b),float(a))),
    funmake('disgamma,[x,a,b])  )$
 
 /* R: qgamma(q,a,1/b) */
@@ -591,7 +598,8 @@ qgamma(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
    if cp=0 or cq=0 then return(funmake('qgamma,[q,a,b])),
    if fq=0.0 then return(0),
    if fq=1.0 then return('inf),
-   if numberp(q) and numberp(a) and numberp(b)
+   if numberp(q) and numberp(a) and numberp(b) and
+      (numer or ?floatp(q) or ?floatp(a) or ?floatp(b))
       then return(b * ?iigamma(fq, float(a))),
    funmake('qgamma,[q,a,b])  )$
 
@@ -656,8 +664,9 @@ disbeta(x,a,b):=block([cp:control2(a,b)],
       then return(1)
       else if member(sign(x), ['nz,'neg,'zero])
               then return(0)
-              else if numberp(x) and numberp(a) and numberp(b) and numer
-                      then return(?ibeta(x,a,b)),
+              else if numberp(x) and numberp(a) and numberp(b) and
+                      (numer or ?floatp(x) or ?floatp(a) or ?floatp(b))
+                      then return(?ibeta(float(x),float(a),float(b))),
    funmake('disbeta,[x,a,b])  )$
 
 /* R: qbeta(q,a,b) */
@@ -666,7 +675,8 @@ qbeta(q,a,b):=block([cp:control2(a,b), cq:controlq(q), fq:float(q)],
    if cp=0 or cq=0 then return(funmake('qbeta,[q,a,b])),
    if fq=0.0 then return(0),
    if fq=1.0 then return(1),
-   if numberp(q) and numberp(a) and numberp(b)
+   if numberp(q) and numberp(a) and numberp(b) and
+      (numer or ?floatp(q) or ?floatp(a) or ?floatp(b))
       then return(?iibeta(fq, float(a), float(b))),
    funmake('qbeta,[q,a,b])  )$
 
@@ -1247,9 +1257,10 @@ disbinomial(x,n,p):=block([cp:controlip(n,p),xx],
               then return(0)
               else if member(sign(x-n),['pos,'pz,'zero])
                       then return(1)
-                      else if numberp(x) and numberp(p) and numberp(n) and numer
+                      else if numberp(x) and numberp(p) and numberp(n) and 
+                              (numer or ?floatp(x) or ?floatp(p) or ?floatp(n))
                               then (xx: floor(x),
-                                    return(?ibeta(1-p,n-xx,xx+1))),
+                                    return(?ibeta(float(1-p),float(n-xx),float(xx+1)))),
    funmake('disbinomial,[x,n,p])  )$
 
 /* R: qbinom(q,n,p) */
@@ -1332,8 +1343,9 @@ dispoisson(x,m):=block([cp:control1(m)],
    if sign(m)='pos
       then if sign(x)='neg
               then return(0)
-              else if numberp(x) and numberp(m) and numer
-                      then return(1-?igamma(m, floor(x)+1)),
+              else if numberp(x) and numberp(m) and
+                      (numer or ?floatp(x) or ?floatp(m))
+                      then return(1-?igamma(float(m), float(floor(x)+1))),
    funmake('dispoisson,[x,m])  )$
 
 /* R: qpois(q,m) */
@@ -1692,17 +1704,18 @@ dennegbinom(x,n,p):=block([cp:controlip(n,p)],
    if sign(x)='neg or numberp(x) and not integerp(x)
       then return(0)
       else if numberp(x) and integerp(x)
-              then return(binomial(x+n-1,x)*p^n*(1-p)^x)
-              else return(funmake('dennegbinom,[x,n,p])) )$
+              then binomial(x+n-1,x)*p^n*(1-p)^x
+              else funmake('dennegbinom,[x,n,p]) )$
 
 disnegbinom(x,n,p):=block([cp:controlip(n,p)],
    if cp=-1 then error("Illegal parameter"),
    if cp=0 then return(funmake('disnegbinom,[x,n,p])),
    if sign(x)='neg
       then return(0)
-      else if numberp(x) and numberp(n) and numberp(p) and numer
-              then return(?ibeta(p,n,floor(x)+1))
-              else return(funmake('disnegbinom,[x,n,p])) )$
+      else if numberp(x) and numberp(n) and numberp(p) and
+              (numer or ?floatp(x) or ?floatp(n) or ?floatp(p))
+              then ?ibeta(float(p),float(n),float(floor(x)+1))
+              else funmake('disnegbinom,[x,n,p]) )$
 
 /* R: qnbinom(q,n,p) */
 qnegbinom(q,n,p):=block([cp:controlip(n,p), cq:controlq(q), fq:float(q),
