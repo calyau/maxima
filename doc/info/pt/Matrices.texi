@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Matrices.texi/1.20/Wed Dec  7 00:19:55 2005/-ko/
+@c /Matrices.texi/1.21/Wed Jan 18 07:50:12 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Matrizes e @'Algebra Linear::  
 * Defini@value{cedilha}@~oes para Matrizes e @'Algebra Linear::  
@@ -510,8 +510,13 @@ Retorna a forma escalonada da matriz @var{M},
 como produzido atrav@'es da elimina@,{c}@~ao de Gauss.
 A forma escalonada @'e calculada de @var{M}
 por opera@,{c}@~oes elementares de linha tais que o primeiro
-elemento n@~ao zero em cada linha na matriz resultante @'e um n@'umero um e os
-elementos da coluna abaixo do primeiro n@'umero um em cada linha s@~ao todos zero.
+elemento n@~ao zero em cada linha na matriz resultante seja o n@'umero um e os
+elementos da coluna abaixo do primeiro n@'umero um em cada linha sejam todos zero.
+
+@code{triangularize} tamb@'em realiza elimina@,{c}@~ao de Gaussian,
+mas n@~ao normaliza o elemento l@'ider n@~ao nulo em cada linha.
+
+@code{lu_factor} e @code{cholesky} s@~ao outras fun@,{c}@~oes que retornam matrizes triangularizadas.
 
 @c ===beg===
 @c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);

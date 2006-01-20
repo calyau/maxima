@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Equations.texi/1.20/Fri Jan 13 08:16:04 2006/-ko/
+@c /Equations.texi/1.21/Fri Jan 20 14:25:31 2006/-ko/
 @c end concepts Equations
 @menu
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
@@ -478,25 +478,62 @@ dados para @code{ieqn} se ocorrer um erro evita a gera@,{c}@~ao de termos adicio
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} lhs (@var{eqn})
-Retorna o lado esquerdo da equa@,{c}@~ao @var{eqn}.
+@deffn {Function} lhs (@var{expr})
+Retorna o lado esquerdo (isto @'e, o primeiro argumento)
+da express@~ao @var{expr},
+quando o operador de @var{expr}
+for um dos operadores relacionais @code{< <= = # equal notequal >= >},
+@c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
+um dos operadores de atribui@,{c}@~ao @code{:= ::= : ::},
+ou um operadro infixo definido pelo usu@'ario, como declarado por meio de @code{infix}.
 
-Se o argumento n@~ao for uma equa@,{c}@~ao, @code{lhs} retorna o argumento.
+Quando @var{expr} for um @'atomo ou
+seu operador for alguma coisa que n@~ao esses listados acima,
+@code{lhs} retorna @var{expr}.
 
 Veja tamb@'em @code{rhs}.
 
-Exemplo:
+Exemplos:
 
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+@c infix ("][");
+@c lhs (aa ][ bb);
+@c ===end===
 @example
-(%i1) e: x^2 + y^2 = z^2;
-                           2    2    2
-(%o1)                     y  + x  = z
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
 (%i2) lhs (e);
-                              2    2
-(%o2)                        y  + x
+(%o2)                        bb + aa
 (%i3) rhs (e);
-                                2
-(%o3)                          z
+(%o3)                          cc
+(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+(%o4)                   [aa, aa, aa, aa]
+(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+(%o5)                   [aa, aa, aa, aa]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+(%o10)               [foo(x), bar(y), x, x]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) lhs (aa ][ bb);
+(%o12)                         aa
 @end example
 
 @end deffn
@@ -629,24 +666,61 @@ Fa@,{c}a @code{example (realroots)} para um exemplo.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} rhs (@var{eqn})
-Retorna o lado direito da equa@,{c}@~ao @var{eqn}.
+Retorna o lado direito (isto @'e, o segundo argumento)
+da express@~ao @var{expr},
+quando o operador de @var{expr}
+for um dos operadores relacionais @code{< <= = # equal notequal >= >},
+@c MENTION -> (MARROW) IN THIS LIST IF/WHEN THE PARSER RECOGNIZES IT
+um dos operadores de atribui@,{c}@~ao @code{:= ::= : ::},
+ou um operador bin@'ario infixo definido pelo usu@'ario, como declarado por meio de @code{infix}.
 
-Se o argumento n@~ao @'e uma equa@,{c}@~ao, @code{rhs} retorna @code{0}.
+Quando @var{expr} for um @'etomo ou
+seu operadro for alguma coisa que n@~ao esses listados acima,
+@code{rhs} retorna 0.
 
 Veja tamb@'em @code{lhs}.
 
-Exemplo:
+Exemplos:
 
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+@c infix ("][");
+@c rhs (aa ][ bb);
+@c ===end===
 @example
-(%i1) e: x^2 + y^2 = z^2;
-                           2    2    2
-(%o1)                     y  + x  = z
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
 (%i2) lhs (e);
-                              2    2
-(%o2)                        y  + x
+(%o2)                        bb + aa
 (%i3) rhs (e);
-                                2
-(%o3)                          z
+(%o3)                          cc
+(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+(%o4)                   [bb, bb, bb, bb]
+(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+(%o5)                   [bb, bb, bb, bb]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+(%o10)                  [2 x, 3 y, y, y]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) rhs (aa ][ bb);
+(%o12)                         bb
 @end example
 
 @end deffn

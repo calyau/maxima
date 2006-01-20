@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Numerical.texi/1.20/Sat Oct 22 06:35:51 2005/-ko/
+@c /Numerical.texi/1.21/Fri Jan 20 14:25:36 2006/-ko/
 @menu
 * Introdu@value{cedilha}@value{a_til}o a Num@'erico::
 * Pacotes de Fourier::
@@ -273,111 +273,112 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 @end deffn
 
 @c NEEDS WORK
-@deffn {Fun@value{cedilha}@~ao} interpolate (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {Fun@value{cedilha}@~ao} interpolate (@var{f}, @var{a}, @var{b})
+@deffn {Function} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Function} find_root (@var{f}, @var{a}, @var{b})
 Encontra a ra@'iz da fun@value{cedilha}@~ao @var{f} com a vari@'avel @var{x} percorrendo o intervalo @code{[@var{a}, @var{b}]}.
 A fun@value{cedilha}@~ao deve ter um
 sinal diferente em cada ponto final.  Se essa condi@,{c}@~ao n@~ao for alcan@,{c}ada, a
-a@,{c}@~ao da fun@value{cedilha}@~ao @'e governada por @code{intpolerror}.  Se
-@code{intpolerror} for @code{true} ent@~ao ocorre um erro, de outra forma o valor de
-@code{intpolerror} @'e retornado (dessa forma para montagem de gr@'aficos @code{intpolerror} possivelmente pode ser escolhido para
+action of the function is governed by @code{find_root_error}.  If
+@code{find_root_error} is @code{true} then an error occurs, otherwise the value of
+@code{find_root_error} is returned (thus for plotting @code{find_root_error} might be set to
 0.0).  De outra forma (dado que Maxima pode avaliar o primeiro argumento
-no intervalo especificado, e que o intervalo @'e cont@'inuo) @code{interpolate} @'e
+no intervalo especificado, e que o intervalo @'e cont@'inuo) @code{find_root} @'e
 garantido vir para cima com a ra@'iz (ou um deles se existir mais
-que uma ra@'iz).  A precis@~ao de @code{interpolate} @'e governada por
+que uma ra@'iz).  A precis@~ao de @code{find_root} @'e governada por
 @code{intpolabs} e @code{intpolrel} os quais devem ser n@'umeros em ponto flutuante
-n@~ao negativos.  @code{interpolate} encerrar@'a quando o primeiro argumento avaliar para
+n@~ao negativos.  @code{find_root} encerrar@'a quando o primeiro argumento avaliar para
 alguma coisa menor que ou igual a @code{intpolabs} ou se sucessivas
 aproxima@,{c}@~oes da ra@'iz diferirem por n@~ao mais que @code{intpolrel * <um dos aproximandos>}.
 O valor padr@~ao de @code{intpolabs} e @code{intpolrel} s@~ao
-0.0 de forma que @code{interpolate} pega como boa uma resposta como for poss@'ivel com a
+0.0 de forma que @code{find_root} pega como boa uma resposta como for poss@'ivel com a
 precis@~ao aritm@'etica simples que tivermos.  O primeiro argumento pode ser uma
 equa@,{c}@~ao.  A ordem dos dois @'ultimos argumentos @'e irrelevante.  Dessa forma
 
 @example
-interpolate (sin(x) = x/2, x, %pi, 0.1);
+find_root (sin(x) = x/2, x, %pi, 0.1);
 @end example
 
 @'e equivalente a
 
 @example
-interpolate (sin(x) = x/2, x, 0.1, %pi);
+find_root (sin(x) = x/2, x, 0.1, %pi);
 @end example
 
 O m@'etodo usado @'e uma busca bin@'aria no intervalo especificado pelos @'ultimos
 dois argumentos.  Quando o resultado da busca for encontrado a fun@value{cedilha}@~ao @'e fechada o suficiente para ser
 linear, isso inicia usando interpola@,{c}@~ao linear.
 
-@c PREVIOUS EXAMPLE STUFF
+Examples:
+@c ===beg===
 @c f(x):=(mode_declare(x,float),sin(x)-x/2.0);
-@c interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
-@c interpolate(f(x),x,0.1,%pi);            time= 68 msec
+@c find_root(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
+@c find_root(f(x),x,0.1,%pi);            time= 68 msec
 @c translate(f);
-@c interpolate(f(x),x,0.1,%pi);            time= 26 msec
-@c interpolate(f,0.1,%pi);                 time=  5 msec
+@c find_root(f(x),x,0.1,%pi);            time= 26 msec
+@c find_root(f,0.1,%pi);                 time=  5 msec
 @c
 @c STUFF BELOW GENERATED FROM THE FOLLOWING
 @c f(x) := sin(x) - x/2;
-@c interpolate (sin(x) - x/2, x, 0.1, %pi);
-@c interpolate (sin(x) = x/2, x, 0.1, %pi);
-@c interpolate (f(x), x, 0.1, %pi);
-@c interpolate (f, 0.1, %pi);
+@c find_root (sin(x) - x/2, x, 0.1, %pi);
+@c find_root (sin(x) = x/2, x, 0.1, %pi);
+@c find_root (f(x), x, 0.1, %pi);
+@c find_root (f, 0.1, %pi);
 @example
 (%i1) f(x) := sin(x) - x/2;
                                         x
 (%o1)                  f(x) := sin(x) - -
                                         2
-(%i2) interpolate (sin(x) - x/2, x, 0.1, %pi);
+(%i2) find_root (sin(x) - x/2, x, 0.1, %pi);
 (%o2)                   1.895494267033981
-(%i3) interpolate (sin(x) = x/2, x, 0.1, %pi);
+(%i3) find_root (sin(x) = x/2, x, 0.1, %pi);
 (%o3)                   1.895494267033981
-(%i4) interpolate (f(x), x, 0.1, %pi);
+(%i4) find_root (f(x), x, 0.1, %pi);
 (%o4)                   1.895494267033981
-(%i5) interpolate (f, 0.1, %pi);
+(%i5) find_root (f, 0.1, %pi);
 (%o5)                   1.895494267033981
 @end example
 
 @end deffn
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} intpolabs
+@defvr {Vari@'avel de op@value{cedilha}@~ao} find_root_abs
 Valor padr@~ao: 0.0
 
-@code{intpolabs} @'e a precis@~ao do comando @code{interpolate} e @'e
-governada por @code{intpolabs} e @code{intpolrel} que devem ser
-n@'umeros n@~ao negatvos em ponto flutuante.  @code{interpolate} terminar@'a quando o
-primeiro argumento avaliar alguma coisa menor que ou igual a @code{intpolabs} ou se
-successivas aproxima@,{c}@~oes para a ra@'iz diferirem de n@~ao mais que @code{intpolrel * <um dos aproximandos>}.
-Os valores padr@~oes de @code{intpolabs} e de
-@code{intpolrel} @'e 0.0 de forma que @code{interpolate} toma como bom uma resposta como @'e poss@'ivel
+@code{find_root_abs} @'e a precis@~ao do comando @code{find_root}. A precis@~ao @'e
+governada por @code{find_root_abs} e @code{find_root_rel} que devem ser
+n@'umeros n@~ao negativos em ponto flutuante.  @code{find_root} terminar@'a quando o
+primeiro argumento avaliar para alguma coisa menor que ou igual a @code{find_root_abs} ou se
+sucessivos aproximandos para a ra@'iz diferirem por n@~ao mais que @code{find_root_rel * <um dos aproximandos>}.
+Os valores padr@~ao de @code{find_root_abs} e
+@code{find_root_rel} s@~ao 0.0 de forma que @code{find_root} tome como boa uma resposta que for poss@'ivel
 com a precis@~ao aritm@'etica simples que tivermos.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} intpolerror
+@defvr {Vari@'avel de op@value{cedilha}@~ao} find_root_error
 Valor padr@~ao: @code{true}
 
-@code{intpolerror} governa o comportamento de @code{interpolate}.
-Quando @code{interpolate} for chamada, ela determina se a fun@value{cedilha}@~ao
-a ser interpolada satisfaz ou n@~ao a condi@,{c}@~ao que os valores da
+@code{find_root_error} governa o comportamento de @code{find_root}.
+Quando @code{find_root} for chamada, ela determina se a fun@value{cedilha}@~ao
+a ser resolvida satisfaz ou n@~ao a condi@,{c}@~ao que os valores da
 fun@value{cedilha}@~ao nos pontos finais do intervalo de interpola@,{c}@~ao s@~ao opostos
 em sinal.  Se eles forem de sinais opostos, a interpola@,{c}@~ao prossegue.
-Se eles forem de mesmo sinal, e @code{intpolerror} for @code{true}, ent@~ao um erro @'e
-sinalizado.  Se eles forem de mesmo sinal e @code{intpolerror} n@~ao for @code{true}, o
-valor de @code{intpolerror} @'e retornado.  Dessa forma para montagem de gr@'afico, @code{intpolerror}
+Se eles forem de mesmo sinal, e @code{find_root_error} for @code{true}, ent@~ao um erro @'e
+sinalizado.  Se eles forem de mesmo sinal e @code{find_root_error} n@~ao for @code{true}, o
+valor de @code{find_root_error} @'e retornado.  Dessa forma para montagem de gr@'afico, @code{find_root_error}
 pode ser escolhida para 0.0.
 
 @end defvr
 
-@defvr {Vari@'avel de op@value{cedilha}@~ao} intpolrel
+@defvr {Vari@'avel de op@value{cedilha}@~ao} find_root_rel
 Valor padr@~ao: 0.0
 
-@code{intpolrel} @'e a precis@~ao do comando @code{interpolate} e @'e
-governada por @code{intpolabs} e @code{intpolrel} que devem ser
-n@'umeros n@~ao negativos em ponto flutuante.  @code{interpolate} terminar@'a quando o
-primeiro argumento avaliar para alguma coisa menor que ou igual a @code{intpolabs} ou se
-sucessivas aproxima@,{c}@~oes para a ra@'iz diferirem de n@~ao mais que @code{intpolrel * <um dos aproximandos>}.
-Os valores padr@~ao de @code{intpolabs} e
-@code{intpolrel} @'e 0.0 de forma que @code{interpolate} toma como bom uma resposta como @'e poss@'ivel
+@code{find_root_rel} @'e a precis@~ao do comando @code{find_root} e @'e
+governada por @code{find_root_abs} e @code{find_root_rel} que devem ser
+n@'umeros n@~ao negativos em ponto flutuante.  @code{find_root} terminar@'a quando o
+primeiro argumento avaliar para alguma coisa menor que ou igual a @code{find_root_abs} ou se
+sucessivos aproximandos para a ra@'iz diferirem de n@~ao mais que @code{find_root_rel * <um dos aproximandos>}.
+Os valores padr@~ao de @code{find_root_labs} e
+@code{find_root_rel} @'e 0.0 de forma que @code{find_root} toma como boa uma resposta que for poss@'ivel
 com a precis@~ao aritm@'etica simples que tivermos.
 
 @end defvr
