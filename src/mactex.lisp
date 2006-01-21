@@ -435,40 +435,26 @@
 
 (defprop mquote tex-prefix tex)
 (defprop mquote ("'") texsym)
-(defprop mquote 201. tex-rbp)
 
 (defprop msetq tex-infix tex)
 (defprop msetq (":") texsym)
-(defprop msetq 180. tex-rbp)
-(defprop msetq 20. tex-rbp)
 
 (defprop mset tex-infix tex)
 (defprop mset ("::") texsym)
-(defprop mset 180. tex-lbp)
-(defprop mset 20. tex-rbp)
 
 (defprop mdefine tex-infix tex)
 (defprop mdefine (":=") texsym)
-(defprop mdefine 180. tex-lbp)
-(defprop mdefine 20. tex-rbp)
 
 (defprop mdefmacro tex-infix tex)
 (defprop mdefmacro ("::=") texsym)
-(defprop mdefmacro 180. tex-lbp)
-(defprop mdefmacro 20. tex-rbp)
 
 (defprop marrow tex-infix tex)
 (defprop marrow ("\\rightarrow ") texsym)
-(defprop marrow 25 tex-lbp)
-(defprop marrow 25 tex-rbp)
 
 (defprop mfactorial tex-postfix tex)
 (defprop mfactorial ("!") texsym)
-(defprop mfactorial 160. tex-lbp)
 
 (defprop mexpt tex-mexpt tex)
-(defprop mexpt 140. tex-lbp)
-(defprop mexpt 139. tex-rbp)
 
 (defprop %sum 110. tex-rbp) ;; added by BLW, 1 Oct 2001
 (defprop %product 115. tex-rbp)	;; added by BLW, 1 Oct 2001
@@ -537,18 +523,11 @@
 
 (defprop mncexpt tex-mexpt tex)
 
-(defprop mncexpt 135. tex-lbp)
-(defprop mncexpt 134. tex-rbp)
-
 (defprop mnctimes tex-nary tex)
 (defprop mnctimes "\\cdot " texsym)
-(defprop mnctimes 110. tex-lbp)
-(defprop mnctimes 109. tex-rbp)
 
 (defprop mtimes tex-nary tex)
 (defprop mtimes "\\," texsym)
-(defprop mtimes 120. tex-lbp)
-(defprop mtimes 120. tex-rbp)
 
 (defprop %sqrt tex-sqrt tex)
 
@@ -565,8 +544,6 @@
 
 (defprop mquotient tex-mquotient tex)
 (defprop mquotient ("\\over") texsym)
-(defprop mquotient 122. tex-lbp) ;;dunno about this
-(defprop mquotient 123. tex-rbp)
 
 (defun tex-mquotient (x l r)
   (if (or (null (cddr x)) (cdddr x)) (wna-err (caar x)))
@@ -673,13 +650,9 @@
     ,@r))
 
 (defprop rat tex-rat tex)
-(defprop rat 120. tex-lbp)
-(defprop rat 121. tex-rbp)
 (defun tex-rat(x l r) (tex-mquotient x l r))
 
 (defprop mplus tex-mplus tex)
-(defprop mplus 100. tex-lbp)
-(defprop mplus 100. tex-rbp)
 
 (defun tex-mplus (x l r)
 					;(declare (fixnum w))
@@ -703,8 +676,9 @@
 
 (defprop mminus tex-prefix tex)
 (defprop mminus ("-") texsym)
-(defprop mminus 100. tex-rbp)
-(defprop mminus 100. tex-lbp)
+
+;; MIN = "Maxima in", apparently -- not to be confused with the least value of a set.
+;; MIN is not known to the parser, although it seems stuff like "x in S" could make use of MIN.
 
 (defprop min tex-infix tex)
 (defprop min ("\\in{") texsym)
@@ -713,41 +687,26 @@
 
 (defprop mequal tex-infix tex)
 (defprop mequal (=) texsym)
-(defprop mequal 80. tex-lbp)
-(defprop mequal 80. tex-rbp)
 
 (defprop mnotequal tex-infix tex)
-(defprop mnotequal 80. tex-lbp)
-(defprop mnotequal 80. tex-rbp)
 
 (defprop mgreaterp tex-infix tex)
 (defprop mgreaterp (>) texsym)
-(defprop mgreaterp 80. tex-lbp)
-(defprop mgreaterp 80. tex-rbp)
 
 (defprop mgeqp tex-infix tex)
 (defprop mgeqp ("\\geq ") texsym)
-(defprop mgeqp 80. tex-lbp)
-(defprop mgeqp 80. tex-rbp)
 
 (defprop mlessp tex-infix tex)
 (defprop mlessp (<) texsym)
-(defprop mlessp 80. tex-lbp)
-(defprop mlessp 80. tex-rbp)
 
 (defprop mleqp tex-infix tex)
 (defprop mleqp ("\\leq ") texsym)
-(defprop mleqp 80. tex-lbp)
-(defprop mleqp 80. tex-rbp)
 
 (defprop mnot tex-prefix tex)
 (defprop mnot ("\\not ") texsym)
-(defprop mnot 70. tex-rbp)
 
 (defprop mand tex-nary tex)
 (defprop mand ("\\and") texsym)
-(defprop mand 60. tex-lbp)
-(defprop mand 60. tex-rbp)
 
 (defprop mor tex-nary tex)
 (defprop mor ("\\or") texsym)
@@ -762,6 +721,7 @@
     (setf (get a 'texword) b)	;This means "sin" will always be roman
     (setf (get a 'texsym) (list b))
     (setf (get a 'tex-rbp) 130)))
+
 
 ;; JM 09/01 expand and re-order to follow table of "log-like" functions,
 ;; see table in Lamport, 2nd edition, 1994, p. 44, table 3.9.
@@ -807,15 +767,9 @@
 	)) ;; etc
 
 (defprop mor tex-nary tex)
-(defprop mor 50. tex-lbp)
-(defprop mor 50. tex-rbp)
 
 (defprop mcond tex-mcond tex)
-(defprop mcond 25. tex-lbp)
-(defprop mcond 25. tex-rbp)
 (defprop %mcond tex-mcond tex)
-(defprop %mcond 25. tex-lbp)
-(defprop %mcond 25. tex-rbp)
 
 (defprop %derivative tex-derivative tex)
 (defun tex-derivative (x l r)
@@ -876,19 +830,13 @@
 		      (tex (fifth x) '("\\;\\mathbf{else}\\;") r 'mcond rop)))))
 
 (defprop mdo tex-mdo tex)
-(defprop mdo 30. tex-lbp)
-(defprop mdo 30. tex-rbp)
 (defprop mdoin tex-mdoin tex)
-(defprop mdoin 30. tex-rbp)
 
 (defprop %mdo tex-mdo tex)
-(defprop %mdo 30. tex-lbp)
-(defprop %mdo 30. tex-rbp)
 (defprop %mdoin tex-mdoin tex)
-(defprop %mdoin 30. tex-rbp)
 
 (defun tex-lbp(x)(cond((get x 'tex-lbp))(t(lbp x))))
-(defun tex-rbp(x)(cond((get x 'tex-rbp))(t(lbp x))))
+(defun tex-rbp(x)(cond((get x 'tex-rbp))(t(rbp x))))
 
 ;; these aren't quite right
 
@@ -1028,21 +976,21 @@
 	       (t
 		(putprop e (list (list (nth 0 s)) (nth 1 s) (nth 2 s)) 'texsym))))
 
-					; The left and right binding powers may be wrong.
-
 	((eq tx '$prefix)
 	 (putprop e 'tex-prefix 'tex)
-	 (putprop e s 'texsym)
-	 (putprop e 200 'tex-lbp)
-	 (putprop e 180 'tex-rbp))
+     (when (null (get e 'grind))
+       (putprop e 180 'tex-rbp))
+	 (putprop e s 'texsym))
 		
 	((eq tx '$infix)
 	 (putprop e 'tex-infix 'tex)
-	 (putprop e  s 'texsym)
-	 (putprop e 200 'tex-lbp)
-	 (putprop e 180 'tex-rbp))
+     (when (null (get e 'grind))
+       (putprop e 180 'tex-lbp)
+       (putprop e 180 'tex-rbp))
+	 (putprop e  s 'texsym))
 
 	((eq tx '$postfix)
 	 (putprop e 'tex-postfix 'tex)
-	 (putprop e  s 'texsym)
-	 (putprop e 160 'tex-lbp))))
+     (when (null (get e 'grind))
+       (putprop e 180 'tex-lbp))
+	 (putprop e  s 'texsym))))

@@ -323,12 +323,11 @@
 
 
 (defprop mquote msize-prefix grind)
-(defprop mquote 201. rbp)
 (defprop msetq msize-infix grind)
 (defprop msetq msize-infix grind)
 
 (defprop msetq (#\:) strsym)
-(defprop msetq 180. rbp)
+(defprop msetq 180. lbp)
 (defprop msetq 20. rbp)
 
 (defprop mset msize-infix grind)
@@ -373,12 +372,12 @@
 
 
 (defprop mncexpt msize-infix grind)
-(defprop mncexpt 135. lbp)
-(defprop mncexpt 134. rbp)
+(defprop mncexpt 140. lbp)
+(defprop mncexpt 139. rbp)
 
 (defprop mnctimes msize-nary grind)
-(defprop mnctimes 110. lbp)
-(defprop mnctimes 109. rbp)
+(defprop mnctimes 130. lbp)
+(defprop mnctimes 129. rbp)
 
 (defprop mtimes msz-mtimes grind)
 (defprop mtimes 120. lbp)
@@ -389,10 +388,10 @@
 
 (defprop mquotient msize-infix grind)
 (defprop mquotient 120. lbp)
-(defprop mquotient 121. rbp) 
+(defprop mquotient 120. rbp) 
 (defprop rat msize-infix grind)
 (defprop rat 120. lbp)
-(defprop rat 121. rbp)
+(defprop rat 120. rbp)
 
 (defprop mplus msz-mplus grind)
 (defprop mplus 100. lbp)
@@ -450,20 +449,20 @@
 (defprop mnot 70. rbp)
 
 (defprop mand msize-nary grind)
-(defprop mand 60. lbp)
-(defprop mand 60. rbp)
+(defprop mand 65. lbp)
+(defprop mand 65. rbp)
 
 (defprop mor msize-nary grind)
-(defprop mor 50. lbp)
-(defprop mor 50. rbp)
+(defprop mor 60. lbp)
+(defprop mor 60. rbp)
 
 (defprop mcond msz-mcond grind)
-(defprop mcond 25. lbp)
-(defprop mcond 25. rbp)
+(defprop mcond 45. lbp)
+(defprop mcond 45. rbp)
 
 (defprop %mcond msz-mcond grind)
-(defprop %mcond 25. lbp)
-(defprop %mcond 25. rbp)
+(defprop %mcond 45. lbp)
+(defprop %mcond 45. rbp)
 
 ;; See comments above DIM-MCOND in displa.lisp concerning MCOND parsing and formatting.
 
@@ -530,19 +529,19 @@
   (cons (length (cdr x)) (cdr x)))
 
 (defprop mdo msz-mdo grind)
-(defprop mdo 30. lbp)
-(defprop mdo 30. rbp)
+(defprop mdo 25. lbp)
+(defprop mdo 25. rbp)
 
 (defprop mdoin msz-mdoin grind)
-; HMM... HOW COME NO LBP FOR MDOIN HERE ??
+(defprop mdoin 30. lbp)
 (defprop mdoin 30. rbp)
 
 (defprop %mdo msz-mdo grind)
-(defprop %mdo 30. lbp)
-(defprop %mdo 30. rbp)
+(defprop %mdo 25. lbp)
+(defprop %mdo 25. rbp)
 
 (defprop %mdoin msz-mdoin grind)
-; HMM... HOW COME NO LBP FOR %MDOIN HERE ??
+(defprop %mdoin 30. lbp)
 (defprop %mdoin 30. rbp)
 
 (defun msz-mdo (x l r)
