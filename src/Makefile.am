@@ -366,7 +366,6 @@ numer.lisp \
 numerm.lisp \
 nummod.lisp \
 numth.lisp \
-nusum.lisp \
 ode2.lisp \
 opers.lisp \
 optim.lisp \

@@ -213,6 +213,9 @@ binary-gcl/maxima : fcall.lisp
 binary-gcl/maxima : evalw.lisp
 binary-gcl/maxima : trprop.lisp
 binary-gcl/maxima : mdefun.lisp
+binary-gcl/maxima : trigi.lisp
+binary-gcl/maxima : trigo.lisp
+binary-gcl/maxima : trgred.lisp
 binary-gcl/maxima : bessel.lisp
 binary-gcl/maxima : ellipt.lisp
 binary-gcl/maxima : airy.lisp
@@ -238,9 +241,6 @@ binary-gcl/maxima : risch.lisp
 binary-gcl/maxima : hayat.lisp
 binary-gcl/maxima : defint.lisp
 binary-gcl/maxima : residu.lisp
-binary-gcl/maxima : trigi.lisp
-binary-gcl/maxima : trigo.lisp
-binary-gcl/maxima : trgred.lisp
 binary-gcl/maxima : specfn.lisp
 binary-gcl/maxima : mat.lisp
 binary-gcl/maxima : matrix.lisp
@@ -283,7 +283,6 @@ binary-gcl/maxima : mstuff.lisp
 binary-gcl/maxima : ratpoi.lisp
 binary-gcl/maxima : pois2.lisp
 binary-gcl/maxima : pois3.lisp
-binary-gcl/maxima : nusum.lisp
 binary-gcl/maxima : desoln.lisp
 binary-gcl/maxima : elim.lisp
 binary-gcl/maxima : trgsmp.lisp

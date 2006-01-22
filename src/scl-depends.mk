@@ -277,7 +277,6 @@ binary-scl/maxima.core : mstuff.lisp
 binary-scl/maxima.core : ratpoi.lisp
 binary-scl/maxima.core : pois2.lisp
 binary-scl/maxima.core : pois3.lisp
-binary-scl/maxima.core : nusum.lisp
 binary-scl/maxima.core : desoln.lisp
 binary-scl/maxima.core : elim.lisp
 binary-scl/maxima.core : trgsmp.lisp

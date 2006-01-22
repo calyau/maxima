@@ -235,7 +235,6 @@ binary-openmcl/maxima.image : mstuff.lisp
 binary-openmcl/maxima.image : ratpoi.lisp
 binary-openmcl/maxima.image : pois2.lisp
 binary-openmcl/maxima.image : pois3.lisp
-binary-openmcl/maxima.image : nusum.lisp
 binary-openmcl/maxima.image : desoln.lisp
 binary-openmcl/maxima.image : elim.lisp
 binary-openmcl/maxima.image : trgsmp.lisp

@@ -207,6 +207,9 @@ binary-sbcl/maxima.core : fcall.lisp
 binary-sbcl/maxima.core : evalw.lisp
 binary-sbcl/maxima.core : trprop.lisp
 binary-sbcl/maxima.core : mdefun.lisp
+binary-sbcl/maxima.core : trigi.lisp
+binary-sbcl/maxima.core : trigo.lisp
+binary-sbcl/maxima.core : trgred.lisp
 binary-sbcl/maxima.core : bessel.lisp
 binary-sbcl/maxima.core : ellipt.lisp
 binary-sbcl/maxima.core : airy.lisp
@@ -232,9 +235,6 @@ binary-sbcl/maxima.core : risch.lisp
 binary-sbcl/maxima.core : hayat.lisp
 binary-sbcl/maxima.core : defint.lisp
 binary-sbcl/maxima.core : residu.lisp
-binary-sbcl/maxima.core : trigi.lisp
-binary-sbcl/maxima.core : trigo.lisp
-binary-sbcl/maxima.core : trgred.lisp
 binary-sbcl/maxima.core : specfn.lisp
 binary-sbcl/maxima.core : mat.lisp
 binary-sbcl/maxima.core : matrix.lisp
@@ -277,7 +277,6 @@ binary-sbcl/maxima.core : mstuff.lisp
 binary-sbcl/maxima.core : ratpoi.lisp
 binary-sbcl/maxima.core : pois2.lisp
 binary-sbcl/maxima.core : pois3.lisp
-binary-sbcl/maxima.core : nusum.lisp
 binary-sbcl/maxima.core : desoln.lisp
 binary-sbcl/maxima.core : elim.lisp
 binary-sbcl/maxima.core : trgsmp.lisp

@@ -274,7 +274,6 @@ binary-acl6/maxima.dxl : mstuff.lisp
 binary-acl6/maxima.dxl : ratpoi.lisp
 binary-acl6/maxima.dxl : pois2.lisp
 binary-acl6/maxima.dxl : pois3.lisp
-binary-acl6/maxima.dxl : nusum.lisp
 binary-acl6/maxima.dxl : desoln.lisp
 binary-acl6/maxima.dxl : elim.lisp
 binary-acl6/maxima.dxl : trgsmp.lisp
