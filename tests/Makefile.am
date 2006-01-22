@@ -83,6 +83,9 @@ rtestmcond_display.mac \
 rtest_allnummod.mac \
 rtestconjugate.mac \
 rtestsum.mac \
+rtest_trig.mac \
+rtest_zeta.mac \
+rtest_diff_invtrig.mac \
 testsuite.lisp
 
 EXTRA_DIST = $(genericdirDATA)
