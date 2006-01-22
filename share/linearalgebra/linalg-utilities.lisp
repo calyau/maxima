@@ -7,7 +7,7 @@
 ;; This software has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-($put '$linalgutilities 1.1 '$version)
+($put '$linalgutilities 2 '$version)
 
 (defun $listp (e &optional (f nil))
   (and (op-equalp e 'mlist) (or (eq f nil) (every #'(lambda (s) (eq t (mfuncall f s))) (margs e)))))
@@ -32,6 +32,23 @@
 (defun $require_square_matrix (m pos fun)
   (if (not (and ($matrixp m) (= ($length m) ($length ($first m)))))
       (merror "The ~:M argument of the function ~:M must be a square matrix" pos fun)))
+
+(defun array-elem (m i j)
+  (nth j (nth i m)))
+
+(defun $require_symmetric_matrix (m fun pos)
+  (if (not ($matrixp m))
+      (merror "The ~:M argument to ~:M must be a matrix" pos fun))
+
+  (let ((n ($matrix_size m)))
+    (if (not (= ($first n) ($second n)))
+	(merror "The ~:M argument to ~:M must be a square matrix" pos fun))
+    (setq n ($first n))
+    (loop for i from 1 to n do
+      (loop for j from (+ i 1) to n do
+	(if (not (like (array-elem m i j) (array-elem m j i)))
+	    (merror "The ~:M argument to ~:M must be a symmetric matrix" pos fun)))))
+  '$done)
 
 (defun $matrix_size(m)
   ($require_matrix m "$first" "$matrix_size")
