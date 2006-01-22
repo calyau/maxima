@@ -1,4 +1,4 @@
-@c version 1.20
+@c english version 1.21
 @menu
 * Introducci@'on a reglas y patrones::  
 * Definiciones sobre reglas y patrones::  
@@ -144,10 +144,42 @@ Las propias reglas pueden ser tratadas como funciones que transforman una expres
 @deffnx {Funci@'on} disprule (all)
 
 Muestra las reglas de @var{nombre_regla_1}, ..., @var{nombre_regla_n}, tal como son devueltas por @code{defrule}, @code{tellsimp} o @code{tellsimpafter}, o un patr@'on definido por @code{defmatch}.
+Cada regla se muestra con una etiqueta de expresi@'on intermedia (@code{%t}).
 
 La llamada @code{disprule (all)} muestra todas las reglas.
 
+La funci@'on @code{disprule} no eval@'ua sus argumentos y devuelve la lista de etiquetas de expresiones intermedias correspondientes a las reglas mostradas.
+
 V@'ease tambi@'en @code{letrules}, que muestra las reglas definidas por @code{let}.
+
+Ejemplos:
+
+@c ===beg===
+@c tellsimpafter (foo (x, y), bar (x) + baz (y));
+@c tellsimpafter (x + y, special_add (x, y));
+@c defmatch (quux, mumble (x));
+@c disprule (foorule1, "+rule1", quux);
+@c ''%;
+@c ===end===
+@example
+(%i1) tellsimpafter (foo (x, y), bar (x) + baz (y));
+(%o1)                   [foorule1, false]
+(%i2) tellsimpafter (x + y, special_add (x, y));
+(%o2)                   [+rule1, simplus]
+(%i3) defmatch (quux, mumble (x));
+(%o3)                         quux
+(%i4) disprule (foorule1, "+rule1", quux);
+(%t4)        foorule1 : foo(x, y) -> baz(y) + bar(x)
+
+(%t5)          +rule1 : y + x -> special_add(x, y)
+
+(%t6)                quux : mumble(x) -> []
+
+(%o6)                    [%t4, %t5, %t6]
+(%i6) ''%;
+(%o6) [foorule1 : foo(x, y) -> baz(y) + bar(x), 
+     +rule1 : y + x -> special_add(x, y), quux : mumble(x) -> []]
+@end example
 
 @end deffn
 

@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.21
 @menu
 * Introducci@'on a los m@'etodos num@'ericos::   
 * Series de Fourier::                     
@@ -223,79 +223,80 @@ To reenable the Lisp debugger set *debugger-hook* to nil.
 
 
 @c NEEDS WORK
-@deffn {Funci@'on} interpolate (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
-@deffnx {Funci@'on} interpolate (@var{f}, @var{a}, @var{b})
+@deffn {Funci@'on} find_root (@var{f}(@var{x}), @var{x}, @var{a}, @var{b})
+@deffnx {Funci@'on} find_root (@var{f}, @var{a}, @var{b})
 
-Encuentra el cero de la funci@'on @var{f} cuando @var{x} var@'{@dotless{i}}a en el rango @code{[@var{a}, @var{b}]}.
-La funci@'on debe tener signos diferentes en los extremos del intervalo. Si esta condici@'on no se cumple, la acci@'on de esta funci@'on la gobierna la variable @code{intpolerror}.  Si @code{intpolerror} vale @code{true} entonces se emite un mensaje de error, en otro caso se devuelve el valor de @code{intpolerror}.  V@'eanse @code{intpolabs}, @code{intpolerror} y @code{intpolrel} @c FALTA TERMINAR ESTE PARRAFO
-
-El primer argumento puede ser una ecuaci@'on y el orden de los dos @'ultimos argumentos es irrelevante, as@'{@dotless{i}} 
+Calcula el cero de la funci@'on @var{f} cuando @var{x} var@'{@dotless{i}}a en el rango @code{[@var{a}, @var{b}]}.
+La funci@'on debe tener signos diferentes en los extremos del intervalo. Si esta condici@'on no se cumple, la acci@'on de esta funci@'on la gobierna la variable @code{find_root_error}.  Si @code{find_root_error} vale @code{true} entonces se emite un mensaje de error, en otro caso se devuelve el valor de @code{find_root_error}. En caso contrario, dado que Maxima pouede evaluar el primer argumento en el rango especificado, el cual es continuo, est@'a garantizado que @code{find_root} encontrar@'a el cero buscado (o uno de ellos en caso de haber varios). La precisi@'on de @code{find_root} est@'a gobernada por @code{find_root_abs} y @code{find_root_rel}, que deben ser n@'umeros no negativos en coma flotante. La funci@'on @code{find_root} se detendr@'a cuando el primer argumento tome un valor menor o igual que @code{find_root_abs}, o cuando sucesivas aproximaciones de la ra@'{@dotless{i}}z se diferencien en menos de @code{find_root_rel * <one of the approximants>}. El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone. El primer argumento puede ser una ecuaci@'on. La ordenaci@'on de los dos @'ultimos argumentos es irrelevante. As@'{@dotless{i}},
 
 @example
-interpolate (sin(x) = x/2, x, %pi, 0.1);
+find_root (sin(x) = x/2, x, %pi, 0.1);
 @end example
 
 equivale a
 
 @example
-interpolate (sin(x) = x/2, x, 0.1, %pi);
+find_root (sin(x) = x/2, x, 0.1, %pi);
 @end example
 
-La funci@'on utiliza una b@'usqueda binaria en el rango especificado por los dos @'ultimos argumentos. Cuando cree que la funci@'on es casi lineal, comienza la interpolaci@'on lineal.
+El m@'etodo que se aplica es una b@'usqueda binaria en el rango especificado por los dos @'ultimos argumentos. Cuando el algoritmo considera que la funci@'on est@'a lo suficientemente cerca de ser lineal, comienza a utilizar interpolaci@'on lineal.
 
-@c PREVIOUS EXAMPLE STUFF
+
+Ejemplos:
+@c PREVIOUS EXAMPLE STUFF -- MAY WANT TO BRING TRANSLATE BACK INTO THE EXAMPLE
 @c f(x):=(mode_declare(x,float),sin(x)-x/2.0);
 @c interpolate(sin(x)-x/2,x,0.1,%pi)       time= 60 msec
 @c interpolate(f(x),x,0.1,%pi);            time= 68 msec
 @c translate(f);
 @c interpolate(f(x),x,0.1,%pi);            time= 26 msec
 @c interpolate(f,0.1,%pi);                 time=  5 msec
-@c
-@c STUFF BELOW GENERATED FROM THE FOLLOWING
+
+@c ===beg===
 @c f(x) := sin(x) - x/2;
-@c interpolate (sin(x) - x/2, x, 0.1, %pi);
-@c interpolate (sin(x) = x/2, x, 0.1, %pi);
-@c interpolate (f(x), x, 0.1, %pi);
-@c interpolate (f, 0.1, %pi);
+@c find_root (sin(x) - x/2, x, 0.1, %pi);
+@c find_root (sin(x) = x/2, x, 0.1, %pi);
+@c find_root (f(x), x, 0.1, %pi);
+@c find_root (f, 0.1, %pi);
+@c ===end===
 @example
 (%i1) f(x) := sin(x) - x/2;
                                         x
 (%o1)                  f(x) := sin(x) - -
                                         2
-(%i2) interpolate (sin(x) - x/2, x, 0.1, %pi);
+(%i2) find_root (sin(x) - x/2, x, 0.1, %pi);
 (%o2)                   1.895494267033981
-(%i3) interpolate (sin(x) = x/2, x, 0.1, %pi);
+(%i3) find_root (sin(x) = x/2, x, 0.1, %pi);
 (%o3)                   1.895494267033981
-(%i4) interpolate (f(x), x, 0.1, %pi);
+(%i4) find_root (f(x), x, 0.1, %pi);
 (%o4)                   1.895494267033981
-(%i5) interpolate (f, 0.1, %pi);
+(%i5) find_root (f, 0.1, %pi);
 (%o5)                   1.895494267033981
 @end example
 
 
 @end deffn
 
-@defvr {Variable opcional} intpolabs
+@defvr {Variable opcional} find_root_abs
 Valor por defecto: 0.0
 
-La variable @code{intpolabs} es el error de la instrucci@'on @code{interpolate}, cuyo comportamiento lo controlan @code{intpolabs} y @code{intpolrel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{interpolate} parar@'a cuando su primer argumento tome un valor menor o igual que @code{intpolabs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{intpolrel * <one of the approximants>}.
-Los valores por defecto de @code{intpolabs} y @code{intpolrel} es 0.0, de manera que @code{interpolate} obtiene una respuesta tan buena como lo permita la precisi@'on aritm@'etica de que se disponga.
+La variable @code{find_root_abs} es la precisi@'on de la instrucci@'on @code{find_root}, cuyo comportamiento lo controlan @code{find_root_abs} y @code{find_root_rel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{find_root} parar@'a cuando su primer argumento tome un valor menor o igual que @code{find_root_abs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{find_root_rel * <one of the approximants>}.
+El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone.
 
 @end defvr
 
-@defvr {Variable opcional} intpolerror
+@defvr {Variable opcional} find_root_error
 Valor por defecto: @code{true}
 
-La variable @code{intpolerror} controla el comportamiento de @code{interpolate}.
-Cuando se llama a la funci@'on @code{interpolate}, @'esta determina si la funci@'on a ser interpolada satisface la condici@'on de que sus valores en los extremos de los intervalos tengan signos diferentes. Si son de signo diferente, se procede a la interpolaci@'on. Si son del mismo signo, y @code{intpolerror} vale @code{true}, entonces se presenta un mensaje de error. Si son del mismo signo y @code{intpolerror} no vale @code{true}, retornar@'a el valor de @code{intpolerror}.
+La variable @code{find_root_error} controla el comportamiento de @code{find_root}.
+Cuando se llama a la funci@'on @code{find_root}, @'esta determina si la funci@'on a ser resuelta satisface la condici@'on de que sus valores en los extremos de los intervalos tengan signos diferentes. Si son de signo opuesto, se procede a la interpolaci@'on. Si son del mismo signo, y @code{find_root_error} vale @code{true}, entonces se se@~nala un error. Si son del mismo signo y @code{find_root_error} no vale @code{true}, retornar@'a el valor de @code{find_root_error}. 
 
 @end defvr
 
-@defvr {Variable opcional} intpolrel
+@defvr {Variable opcional} find_root_rel
 Valor por defecto: 0.0
 
-La variable @code{intpolrel} es el error de la instrucci@'on @code{interpolate}, cuyo comportamiento lo controlan @code{intpolabs} y @code{intpolrel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{interpolate} parar@'a cuando su primer argumento tome un valor menor o igual que @code{intpolabs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{intpolrel * <one of the approximants>}.
-Los valores por defecto de @code{intpolabs} y @code{intpolrel} es 0.0, de manera que @code{interpolate} obtiene una respuesta tan buena como lo permita la precisi@'on aritm@'etica de que se disponga.
+La variable @code{find_root_rel} es la precisi@'on de la instrucci@'on @code{find_root}, cuyo comportamiento lo controlan @code{find_root_abs} y @code{find_root_rel}, variables que deben guardar dos n@'umeros no negativos decimales en coma flotante.  La funci@'on @code{find_root} parar@'a cuando su primer argumento tome un valor menor o igual que @code{find_root_abs} o si sucesivas aproximaciones a la ra@'{@dotless{i}}z difieren entre s@'{@dotless{i}} en no m@'as de @code{find_root_rel * <one of the approximants>}.
+El valor por defecto de @code{find_root_abs} y @code{find_root_rel} es 0.0 en ambos casos, de forma que @code{find_root} obtiene la mejor aproximaci@'on posible para la aritm@'etica de simple precisi@'on de que se dispone.
 
 @end defvr
 

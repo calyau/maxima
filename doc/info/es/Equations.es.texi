@@ -1,4 +1,4 @@
-@c version 1.19
+@c english version 1.22
 @menu
 * Definiciones para Ecuaciones::
 @end menu
@@ -16,7 +16,7 @@ Las variables @code{%r} se a@~naden a @code{%rnum_list} en su orden de creaci@'o
 @c NEED EXAMPLE HERE
 @end defvr
 
-@defvr {Variable optativa} algexact
+@defvr {Variable opcional} algexact
 Default value: @code{false}
 
 El contenido de la variable @code{algexact} afecta al comportamiento de @code{algsys} de la siguiente forma:
@@ -175,7 +175,7 @@ x = - .9659625152196369 %i - .4069597231924075, x = 1.0]
 
 @c FALTA AQUI LA DEFINICION DE backsubst
 
-@defvr {Variable optativa} breakup
+@defvr {Variable opcional} breakup
 Valor por defecto: @code{true}
 
 Si @code{breakup} vale @code{true}, @code{solve} expresa sus soluciones a las ecuaciones c@'ubicas y cu@'articas en t@'erminos de subexpresiones comunes, las cuales son asignadas a etiquetas del tipo @code{%t1}, @code{%t2}, etc.
@@ -258,7 +258,7 @@ El paquete @code{dimen} es para an@'alisis dimensional. La instrucci@'on @code{l
 
 @end deffn
 
-@defvr {Variable optativa} dispflag
+@defvr {Variable opcional} dispflag
 Valor por defecto: @code{true}
 
 @c WHAT DOES THIS MEAN ??
@@ -287,11 +287,17 @@ Aviso: esta es una implemetaci@'on rudimentaria, por lo que debe ser utilizada c
 
 @end deffn
 
-@defvr {Variable optativa} globalsolve
+@defvr {Variable opcional} globalsolve
 Valor por defecto: @code{false}
 
-Si @code{globalsolve} vale @code{true}, a las inc@'ognitas respecto de las que @code{solve} resolvi@'o alguna ecuaci@'on se les asignar@'a las soluciones encontradas.
-@c DOES ANY OTHER FUNCTION RESPECT globalsolve ??
+Si @code{globalsolve} vale @code{true},
+a las inc@'ognitas de las ecuaciones se les asignan las soluciones encontradas por @code{linsolve} y
+por @code{solve} cuando se resuelven sistemas de dos o m@'as ecuaciones lineales.
+
+Si @code{globalsolve} vale @code{false},
+las soluciones encontradas por @code{linsolve} y por @code{solve} cuando se resuelven sistemas de dos o m@'as ecuaciones lineales se expresan como ecuaciones y a las inc@'ognitas no se le asignan valores.
+
+Cuando se resuelven ecuaciones que no son sistemas de dos o m@'as ecuaciones lineales, @code{solve} ignora el valor de @code{globalsolve}. Otras funciones que resuelven ecuaciones (como @code{algsys}) ignoran siempre el valor de @code{globalsolve}.
 
 Ejemplos:
 
@@ -351,7 +357,7 @@ Valores por defecto para los argumentos segundo a quinto son:
 @end deffn
 
 
-@defvr {Variable optativa} ieqnprint
+@defvr {Variable opcional} ieqnprint
 Valor por defecto: @code{true}
 
 La variable @code{ieqnprint} controla el comportamiento del resultado retornado por la instrucci@'on @code{ieqn}. Si @code{ieqnprint} vale @code{false}, la lista devuelta por la funci@'on @code{ieqn} tiene el formato
@@ -362,25 +368,60 @@ donde @var{variable} estar@'a ausente si la soluci@'on es exacta; en otro caso, 
 
 @end defvr
 
-@deffn {Funci@'on} lhs (@var{eqn})
-Devuelve el miembro izquierdo de la ecuaci@'on @var{eqn}.
+@deffn {Funci@'on} lhs (@var{expr})
+Devuelve el miembro izquierdo (es decir, el primer argumento)
+de la expresi@'on @var{expr},
+cuando el operador de @var{expr} es uno de los operadores
+de relaci@'on @code{< <= = # equal notequal >= >},
+o un operadores de asignaci@'on @code{:= ::= : ::},
+o un operador infijo binario definido por el usuario mediante @code{infix}.
 
-Si el argumento no es una ecuaci@'on, @code{lhs} devuelve ese mismo argumento.
+Si @var{expr} es un @'atomo o si su operador es diferente de los
+citados m@'as arriba, @code{lhs} devuelve @var{expr}.
 
 V@'ease tambi@'en @code{rhs}.
 
 Ejemplo:
 
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+@c [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+@c infix ("][");
+@c lhs (aa ][ bb);
+@c ===end===
 @example
-(%i1) e: x^2 + y^2 = z^2;
-                           2    2    2
-(%o1)                     y  + x  = z
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
 (%i2) lhs (e);
-                              2    2
-(%o2)                        y  + x
+(%o2)                        bb + aa
 (%i3) rhs (e);
-                                2
-(%o3)                          z
+(%o3)                          cc
+(%i4) [lhs (aa < bb), lhs (aa <= bb), lhs (aa >= bb), lhs (aa > bb)];
+(%o4)                   [aa, aa, aa, aa]
+(%i5) [lhs (aa = bb), lhs (aa # bb), lhs (equal (aa, bb)), lhs (notequal (aa, bb))];
+(%o5)                   [aa, aa, aa, aa]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [lhs (e1), lhs (e2), lhs (e3), lhs (e4)];
+(%o10)               [foo(x), bar(y), x, x]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) lhs (aa ][ bb);
+(%o12)                         aa
 @end example
 
 @end deffn
@@ -388,30 +429,96 @@ Ejemplo:
 @deffn {Funci@'on} linsolve ([@var{expr_1}, ..., @var{expr_m}], [@var{x_1}, ..., @var{x_n}])
 Resuelve la lista de ecuaciones lineales simult@'aneas para la lista de variables. Las expresiones deben ser polinomios lineales respecto de las variables o ecuaciones.
 
-Si @code{globalsolve} vale @code{true} entonces las variables respecto de las cuales se resulve el sistema tomar@'an los valores de las soluciones logradas.
+Si @code{globalsolve} vale @code{true},
+a cada inc@'ognita se le asigna el valor de la soluci@'on encontrada.
 
-@c FALTA AQUI UN PARRAFO
+Si @code{backsubst} vale @code{false}, @code{linsolve}
+no hace la sustituci@'on tras la triangulariaci@'on de las ecuaciones. 
+Esto puede ser necesario en problemas muy grandes en los que la
+sustituci@'on puede dar lugar a la generaci@'on de expresiones
+enormes.
 
 Si @code{linsolve_params} vale @code{true}, @code{linsolve} tambi@'en genera s@'{@dotless{i}}mbolos @code{%r} para representar par@'ametros arbitrarios como los descritos para la funci@'on @code{algsys}. Si vale @code{false}, el resultado devuelto por @code{linsolve} expresar@'a, si es el sistema es indeterminado, unas variables en funci@'on de otras.
 
+Si @code{programmode} vale @code{false},
+@code{linsolve} muestra la soluci@'on con etiquetas de expresiones 
+intermedias (@code{%t}) y devuelve las lista de etiquetas.
+
+@c ===beg===
+@c e1: x + z = y;
+@c e2: 2*a*x - y = 2*a^2;
+@c e3: y - 2*z = 2;
+@c [globalsolve: false, programmode: true];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c [globalsolve: false, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [globalsolve: true, programmode: false];
+@c linsolve ([e1, e2, e3], [x, y, z]);
+@c ''%;
+@c [x, y, z];
+@c [globalsolve: true, programmode: true];
+@c linsolve ([e1, e2, e3], '[x, y, z]);
+@c [x, y, z];
+@c ===end===
 @example
-(%i1) e1: x + z = y$
-(%i2) e2: 2*a*x - y = 2*a^2$
-(%i3) e3: y - 2*z = 2$
-(%i4) linsolve ([e1, e2, e3], [x, y, z]);
-(%o4)            [x = a + 1, y = 2 a, z = a - 1]
+(%i1) e1: x + z = y;
+(%o1)                       z + x = y
+(%i2) e2: 2*a*x - y = 2*a^2;
+                                       2
+(%o2)                   2 a x - y = 2 a
+(%i3) e3: y - 2*z = 2;
+(%o3)                      y - 2 z = 2
+(%i4) [globalsolve: false, programmode: true];
+(%o4)                     [false, true]
+(%i5) linsolve ([e1, e2, e3], [x, y, z]);
+(%o5)            [x = a + 1, y = 2 a, z = a - 1]
+(%i6) [globalsolve: false, programmode: false];
+(%o6)                    [false, false]
+(%i7) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t7)                       z = a - 1
+
+(%t8)                        y = 2 a
+
+(%t9)                       x = a + 1
+(%o9)                    [%t7, %t8, %t9]
+(%i9) ''%;
+(%o9)            [z = a - 1, y = 2 a, x = a + 1]
+(%i10) [globalsolve: true, programmode: false];
+(%o10)                    [true, false]
+(%i11) linsolve ([e1, e2, e3], [x, y, z]);
+Solution
+
+(%t11)                      z : a - 1
+
+(%t12)                       y : 2 a
+
+(%t13)                      x : a + 1
+(%o13)                 [%t11, %t12, %t13]
+(%i13) ''%;
+(%o13)           [z : a - 1, y : 2 a, x : a + 1]
+(%i14) [x, y, z];
+(%o14)                 [a + 1, 2 a, a - 1]
+(%i15) [globalsolve: true, programmode: true];
+(%o15)                    [true, true]
+(%i16) linsolve ([e1, e2, e3], '[x, y, z]);
+(%o16)           [x : a + 1, y : 2 a, z : a - 1]
+(%i17) [x, y, z];
+(%o17)                 [a + 1, 2 a, a - 1]
 @end example
 
 @end deffn
 
-@defvr {Variable optativa} linsolvewarn
+@defvr {Variable opcional} linsolvewarn
 Valor por defecto: @code{true}
 
 Si @code{linsolvewarn} vale @code{true}, @code{linsolve} mostrar@'a el mensaje: "Dependent equations eliminated".
 
 @end defvr
 
-@defvr {Variable optativa} linsolve_params
+@defvr {Variable opcional} linsolve_params
 Valor por defecto: @code{true}
 
 Si @code{linsolve_params} vale @code{true}, @code{linsolve} tambi@'en genera s@'{@dotless{i}}mbolos @code{%r} para representar par@'ametros arbitrarios como los descritos para la funci@'on @code{algsys}. Si vale @code{false}, el resultado devuelto por @code{linsolve} expresar@'a, si es el sistema es indeterminado, unas variables en funci@'on de otras.
@@ -447,7 +554,7 @@ Siendo @code{p} un polinomio de coeficientes enteros y @code{n} un entero positi
 
 @end deffn
 
-@defvr {Variable optativa} programmode
+@defvr {Variable opcional} programmode
 Valor por defecto: @code{true}
 
 Si @code{programmode} vale @code{true}, @code{solve}, @code{realroots}, @code{allroots} y @code{linsolve}
@@ -476,7 +583,7 @@ Solution:
 
 @end defvr
 
-@defvr {Variable optativa} realonly
+@defvr {Variable opcional} realonly
 Valor por defecto: @code{false}
 
 Si @code{realonly} vale @code{true}, @code{algsys} s@'olo devuelve aquellas soluciones exentas de la constante @code{%i}.
@@ -488,30 +595,65 @@ Encuentra todas las ra@'{@dotless{i}}ces reales del polinomio real univariante c
 
 @end deffn
 
-@deffn {Funci@'on} rhs (@var{eqn})
-Devuelve el miembro derecho de la ecuaci@'on @var{eqn}.
+@deffn {Funci@'on} rhs (@var{expr})
+Devuelve el miembro derecho (es decir, el segundo argumento)
+de la expresi@'on @var{expr},
+cuando el operador de @var{expr} es uno de los operadores
+de relaci@'on @code{< <= = # equal notequal >= >},
+o un operadores de asignaci@'on @code{:= ::= : ::},
+o un operador infijo binario definido por el usuario mediante @code{infix}.
 
-Si el argumento no es una ecuaci@'on, @code{rhs} devuelve @code{0}.
+Si @var{expr} es un @'atomo o si su operador es diferente de los
+citados m@'as arriba, @code{rhs} devuelve @var{expr}.
 
 V@'ease tambi@'en @code{lhs}.
 
 Ejemplo:
 
+@c ===beg===
+@c e: aa + bb = cc;
+@c lhs (e);
+@c rhs (e);
+@c [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+@c [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+@c e1: '(foo(x) := 2*x);
+@c e2: '(bar(y) ::= 3*y);
+@c e3: '(x : y);
+@c e4: '(x :: y);
+@c [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+@c infix ("][");
+@c rhs (aa ][ bb);
+@c ===end===
 @example
-(%i1) e: x^2 + y^2 = z^2;
-                           2    2    2
-(%o1)                     y  + x  = z
+(%i1) e: aa + bb = cc;
+(%o1)                     bb + aa = cc
 (%i2) lhs (e);
-                              2    2
-(%o2)                        y  + x
+(%o2)                        bb + aa
 (%i3) rhs (e);
-                                2
-(%o3)                          z
+(%o3)                          cc
+(%i4) [rhs (aa < bb), rhs (aa <= bb), rhs (aa >= bb), rhs (aa > bb)];
+(%o4)                   [bb, bb, bb, bb]
+(%i5) [rhs (aa = bb), rhs (aa # bb), rhs (equal (aa, bb)), rhs (notequal (aa, bb))];
+(%o5)                   [bb, bb, bb, bb]
+(%i6) e1: '(foo(x) := 2*x);
+(%o6)                     foo(x) := 2 x
+(%i7) e2: '(bar(y) ::= 3*y);
+(%o7)                    bar(y) ::= 3 y
+(%i8) e3: '(x : y);
+(%o8)                         x : y
+(%i9) e4: '(x :: y);
+(%o9)                        x :: y
+(%i10) [rhs (e1), rhs (e2), rhs (e3), rhs (e4)];
+(%o10)                  [2 x, 3 y, y, y]
+(%i11) infix ("][");
+(%o11)                         ][
+(%i12) rhs (aa ][ bb);
+(%o12)                         bb
 @end example
 
 @end deffn
 
-@defvr {Variable optativa} rootsconmode
+@defvr {Variable opcional} rootsconmode
 Valor por defecto: @code{true}
 
 La variable @code{rootsconmode} controla el comportamiento de la instrucci@'on @code{rootscontract}.  V@'ease @code{rootscontract} para m@'as detalles.
@@ -592,7 +734,7 @@ Ejemplos:
 
 @end deffn
 
-@defvr {Variable optativa} rootsepsilon
+@defvr {Variable opcional} rootsepsilon
 Valor por defecto: 1.0e-7
 
 La variable @code{rootsepsilon} es la tolerancia que establece el intervalo de confianza para las ra@'{@dotless{i}}ces calculadas por la funci@'on @code{realroots}.
@@ -623,8 +765,16 @@ A la variable @code{multiplicities} se le asignar@'a una lista con las multiplic
 La llamada @code{solve ([@var{eqn_1}, ..., @var{eqn_n}], [@var{x_1}, ..., @var{x_n}])}
 resuelve un sistema de ecuaciones polin@'omicas simult@'aneas (lineales o no) llamando a @code{linsolve} o @code{algsys} y devuelve una lista de listas con soluciones para las inc@'ognitas. En caso de haberse llamado a @code{linsolve} esta lista contendr@'a una @'unica lista de soluciones. La llamada a @code{solve} tiene dos listas como argumentos. La primera lista tiene las ecuaciones a resolver y la segunda son las inc@'ognitas cuyos valores se quieren calcular. Si el n@'umero de variables en las ecuaciones es igual al n@'umero de inc@'ognitas, el segundo argumento puede omitirse. En caso de sistemas lineales incompatibles se mostrar@'a el mensaje @code{inconsistent} (v@'ease la variable @code{solve_inconsistent_error}); si no existe una @'unica soluci@'on, se mostrar@'a el mensaje @code{singular}.
 
+Si @code{programmode} vale @code{false},
+@code{solve} muestra la soluci@'on con etiquetas de expresiones 
+intermedias (@code{%t}) y devuelve las lista de etiquetas.
+
+
+Si @code{globalsolve} vale @code{true} y el problema consiste en resolver un sistema de dos o m@'as ecuaciones lineales, a cada inc@'ognita se le asigna el valor encontrado en la resoluci@'on del sistema.
+
 Ejemplos:
 @c FOLLOWING ADAPTED FROM example (solve)
+@c ===beg===
 @c solve (asin (cos (3*x))*(f(x) - 1), x);
 @c ev (solve (5^f(x) = 125, f(x)), solveradcan);
 @c [4*x^2 - y^2 = 12, x*y - x = 2];
@@ -637,7 +787,7 @@ Ejemplos:
 @c x^2 - 1;
 @c solve (%, x);
 @c ev (%th(2), %[1]);
-
+@c ===end===
 @example
 (%i1) solve (asin (cos (3*x))*(f(x) - 1), x);
 
@@ -731,7 +881,7 @@ y = - .1535675710019696]]
 
 @end deffn
 
-@defvr {Variable optativa} solvedecomposes
+@defvr {Variable opcional} solvedecomposes
 Valor por defecto: @code{true}
 
 Si @code{solvedecomposes} vale @code{true}, @code{solve} llama a @code{polydecomp} en caso de que se le pida resolver ecuaciones polin@'omicas.
@@ -739,7 +889,7 @@ Si @code{solvedecomposes} vale @code{true}, @code{solve} llama a @code{polydecom
 
 @end defvr
 
-@defvr {Variable optativa} solveexplicit
+@defvr {Variable opcional} solveexplicit
 Valor por defecto: @code{false}
 
 Si @code{solveexplicit} vale @code{true}, le inhibe a @code{solve} devolver soluciones impl@'{@dotless{i}}citas, esto es, soluciones de la forma @code{F(x) = 0}, donde @code{F} es cierta funci@'on.
@@ -747,7 +897,7 @@ Si @code{solveexplicit} vale @code{true}, le inhibe a @code{solve} devolver solu
 
 @end defvr
 
-@defvr {Variable optativa} solvefactors
+@defvr {Variable opcional} solvefactors
 Valor por defecto: @code{true}
 
 @c WHAT IS THIS ABOUT EXACTLY ??
@@ -756,14 +906,14 @@ Si @code{solvefactors} vale @code{false}, @code{solve} no intenta factorizar la 
 
 @end defvr
 
-@defvr {Variable optativa} solvenullwarn
+@defvr {Variable opcional} solvenullwarn
 Valor por defecto: @code{true}
 
 Si @code{solvenullwarn} vale @code{true},  @code{solve} muestra un mensaje de aviso si es llamado con una lista de ecuaciones vac@'{@dotless{i}}a o con una lista de inc@'ognitas vac@'{@dotless{i}}a. Por ejemplo, @code{solve ([], [])} imprimir@'a dos mensajes de aviso y devolver@'a @code{[]}.
 
 @end defvr
 
-@defvr {Variable optativa} solveradcan
+@defvr {Variable opcional} solveradcan
 Valor por defecto: @code{false}
 
 Si @code{solveradcan} vale @code{true}, @code{solve} llama a @code{radcan}, lo que har@'a que @code{solve} se ejecute de forma m@'as lenta, pero permitir@'a que se resuelvan ciertas ecuaciones que contengan exponenciales y logaritmos.
@@ -771,7 +921,7 @@ Si @code{solveradcan} vale @code{true}, @code{solve} llama a @code{radcan}, lo q
 
 @end defvr
 
-@defvr {Variable optativa} solvetrigwarn
+@defvr {Variable opcional} solvetrigwarn
 Valor por defecto: @code{true}
 
 @c MAYBE THIS CAN BE CLARIFIED
@@ -780,7 +930,7 @@ Si @code{solvetrigwarn} vale @code{true}, @code{solve} puede presentar un mensaj
 
 @end defvr
 
-@defvr {Variable optativa} solve_inconsistent_error
+@defvr {Variable opcional} solve_inconsistent_error
 Valor por defecto: @code{true}
 
 Si @code{solve_inconsistent_error} vale @code{true}, @code{solve} y

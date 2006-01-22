@@ -1,4 +1,4 @@
-@c english version 1.20
+@c english version 1.21
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -479,6 +479,12 @@ La forma escalonada se calcula a partir de @var{M} mediante operaciones elementa
 de tal manera que el primer elemento no nulo de cada fila en la matriz 
 resultado es la unidad y que cada elemento de la columna por debajo del primer uno de cada
 fila sean todos ceros.
+
+La funci@'on @code{triangularize} tambi@'en lleva a cabo la eliminaci@'on gaussiana, pero no 
+normaliza el primer elemento no nulo de cada fila.
+
+Otras funciones, como @code{lu_factor} y @code{cholesky}, tambi@'en dan como resultados
+matrices triangularizadas.
 
 @c ===beg===
 @c M: matrix ([3, 7, aa, bb], [-1, 8, 5, 2], [9, 2, 11, 4]);

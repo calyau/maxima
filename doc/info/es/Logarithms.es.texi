@@ -1,4 +1,4 @@
-@c version 1.13
+@c english version 1.14
 @menu
 * Definiciones para Logaritmos::  
 @end menu
@@ -6,12 +6,86 @@
 @node Definiciones para Logaritmos,  , Logaritmos, Logaritmos
 @section Definiciones para Logaritmos
 
-@defvr {Variable optativa} %e_to_numlog
+@defvr {Variable opcional} %e_to_numlog
 Valor por defecto: @code{false}
 
 Si @code{%e_to_numlog} vale @code{true}, @code{r} es un n@'umero racional y @code{x} una expresi@'on, @code{%e^(r*log(x))} se reduce a @code{x^r} .  T@'engase en cuenta que la instrucci@'on @code{radcan} tambi@'en hace este tipo de transformaciones, as@'{@dotless{i}} como otras m@'as complicadas. La instrucci@'on @code{logcontract} "contrae" expresiones que contienen alg@'un @code{log}.
 
 @end defvr
+
+@deffn {Funci@'on} li [@var{s}] (@var{z})
+Representa la funci@'on polilogar@'{@dotless{i}}tmica de orden @var{s} y argumento @var{z},
+definida por la serie infinita
+
+@example
+                                 inf
+                                 ====   k
+                                 \     z
+                        Li (z) =  >    --
+                          s      /      s
+                                 ====  k
+                                 k = 1
+@end example
+
+@code{li [1]} es @code{- log (1 - z)}.
+@code{li [2]} y @code{li [3]} son las funciones di- y trilogaritmo, respectivamente.
+
+Cuando el orden es 1, el polilogaritmo se simplifica a @code{- log (1 - z)},
+el cual a su vez se reduce a un valor num@'erico si @var{z} es un n@'umero
+real o complejo en coma flotante o si est@'a presente el t@'ermino @code{numer}.
+
+Cuando el orden es 2 @'o 3,
+el polilogaritmo se reduce a un valor num@'erico si @var{z} es
+un n@'umero real en coma flotante o si est@'a presente el t@'ermino @code{numer}.
+
+Ejemplos:
+
+@c ===beg===
+@c assume (x > 0);
+@c integrate ((log (1 - t)) / t, t, 0, x);
+@c li [2] (7);
+@c li [2] (7), numer;
+@c li [3] (7);
+@c li [2] (7), numer;
+@c L : makelist (i / 4.0, i, 0, 8);
+@c map (lambda ([x], li [2] (x)), L);
+@c map (lambda ([x], li [3] (x)), L);
+@c ===end===
+@example
+(%i1) assume (x > 0);
+(%o1)                        [x > 0]
+(%i2) integrate ((log (1 - t)) / t, t, 0, x);
+(%o2)                       - li (x)
+                                2
+(%i3) li [2] (7);
+(%o3)                        li (7)
+                               2
+(%i4) li [2] (7), numer;
+(%o4)        1.24827317833392 - 6.113257021832577 %i
+(%i5) li [3] (7);
+(%o5)                        li (7)
+                               3
+(%i6) li [2] (7), numer;
+(%o6)        1.24827317833392 - 6.113257021832577 %i
+(%i7) L : makelist (i / 4.0, i, 0, 8);
+(%o7)   [0.0, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+(%i8) map (lambda ([x], li [2] (x)), L);
+(%o8) [0, .2676526384986274, .5822405249432515, 
+.9784693966661848, 1.64493407, 2.190177004178597
+ - .7010261407036192 %i, 2.374395264042415
+ - 1.273806203464065 %i, 2.448686757245154
+ - 1.758084846201883 %i, 2.467401098097648
+ - 2.177586087815347 %i]
+(%i9) map (lambda ([x], li [3] (x)), L);
+(%o9) [0, .2584613953442624, 0.537213192678042, 
+.8444258046482203, 1.2020569, 1.642866878950322
+ - .07821473130035025 %i, 2.060877505514697
+ - .2582419849982037 %i, 2.433418896388322
+ - .4919260182322965 %i, 2.762071904015935
+ - .7546938285978846 %i]
+@end example
+
+@end deffn
 
 @deffn {Funci@'on} log (@var{x})
 Logaritmo natural de @var{x}.
@@ -32,7 +106,7 @@ Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a 
 
 @end deffn
 
-@defvr {Variable optativa} logabs
+@defvr {Variable opcional} logabs
 Valor por defecto: @code{false}
 
 Cuando se calculan integrales indefinidas en las que se generan logaritmos, como en @code{integrate(1/x,x)}, el resultado se devuelve de la forma  @code{log(abs(...))} si @code{logabs} vale @code{true}, o de la forma @code{log(...)} si
@@ -40,14 +114,14 @@ Cuando se calculan integrales indefinidas en las que se generan logaritmos, como
 
 @end defvr
 
-@defvr {Variable optativa} logarc
+@defvr {Variable opcional} logarc
 Valor por defecto: @code{false}
 
 Si @code{logarc} vale @code{true} har@'a que las funciones circulares e hiperb@'olicas inversas se conviertan a la forma logar@'{@dotless{i}}tmica. La instrucci@'on @code{logarc(@var{exp})} har@'a esta conversi@'on s@'olo en la expresi@'on @var{exp} sin cambiar el valor de la variable global ni tener que volver a evaluar la expresi@'on con @code{ev}.
 
 @end defvr
 
-@defvr {Variable optativa} logconcoeffp
+@defvr {Variable opcional} logconcoeffp
 Valor por defecto: @code{false}
 
 Controla qu@'e coeficientes se contraen cuando se utiliza @code{logcontract}. Se le puede asignar el nombre de una funci@'on de predicado de un argumento; por ejemplo, si se quiere introducir ra@'{@dotless{i}}ces cuadradas, se puede hacer @code{logconcoeffp:'logconfun$ logconfun(m):=featurep(m,integer) or ratnump(m)$} .  Entonces 
@@ -76,7 +150,7 @@ Si se hace @code{declare(n,integer);} entonces @code{logcontract(2*a*n*log(x));}
 
 @end deffn
 
-@defvr {Variable optativa} logexpand
+@defvr {Variable opcional} logexpand
 Valor por defecto: @code{true}
 
 Si @code{logexpand} vale @code{true} hace que @code{log(a^b)} se convierta en @code{b*log(a)}.
@@ -85,21 +159,21 @@ Si toma el valor @code{super}, entonces @code{log(a/b)} tambi@'en se reducir@'a 
 
 @end defvr
 
-@defvr {Variable optativa} lognegint
+@defvr {Variable opcional} lognegint
 Valor por defecto: @code{false}
 
 Si @code{lognegint} vale @code{true} se aplica la regla @code{log(-n)} -> @code{log(n)+%i*%pi} siendo @code{n} un entero positivo.
 
 @end defvr
 
-@defvr {Variable optativa} lognumer
+@defvr {Variable opcional} lognumer
 Valor por defecto: @code{false}
 
 Si @code{lognumer} vale @code{true}, entonces los argumentos de @code{log} que sean n@'umeros decimales negativos en coma flotante se convertir@'an siempre a su valor absoluto antes de aplicar @code{log}.  Si @code{numer} vale tambi@'en @code{true}, entonces los argumentos enteros negativos de @code{log} tambi@'en se convertir@'an en su valor absoluto.
 
 @end defvr
 
-@defvr {Variable optativa} logsimp
+@defvr {Variable opcional} logsimp
 Valor por defecto: @code{true}
 
 Si @code{logsimp} vale @code{false}, entonces no se transforma @code{%e} a potencias que contengan logaritmos.
