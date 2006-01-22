@@ -724,7 +724,7 @@ Do @code{example (realroots)} for an example.
 
 @end deffn
 
-@deffn {Function} rhs (@var{eqn})
+@deffn {Function} rhs (@var{expr})
 Returns the right-hand side (that is, the second argument)
 of the expression @var{expr},
 when the operator of @var{expr}
