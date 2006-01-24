@@ -36,6 +36,7 @@ eval_when([batch,load,translate,compile],
   load("linalgcholesky"),
   load("eigens-by-jacobi"),	
   load("matrixexp"),
+  load("linalg-extra"),
   load("linalg-utilities"));
   
 require_integer(i, pos, fn) := 
