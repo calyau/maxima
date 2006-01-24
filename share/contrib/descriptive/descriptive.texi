@@ -422,7 +422,7 @@ See also function @code{var}.
 
 @deffn {Function} std (@var{list})
 @deffnx {Function} std (@var{matrix})
-This is the square root of function @code{var}, the variance with denominator @math{n}.
+This is the the square root of function @code{var}, the variance with denominator @math{n}.
 
 Example:
 @example
@@ -443,7 +443,7 @@ See also functions @code{var} and @code{std1}.
 
 @deffn {Function} std1 (@var{list})
 @deffnx {Function} std1 (@var{matrix})
-This is the square root of function @code{var1}, the variance with denominator @math{n-1}.
+This is the the square root of function @code{var1}, the variance with denominator @math{n-1}.
 
 Example:
 @example
@@ -826,7 +826,8 @@ Example:
 (%i2) harmean(y), numer;
 (%o2)                3.901858027632205
 (%i3) s2:read_matrix("path_to/wind.data")$
-(%o3) [6.948015590052786, 7.391967752360356,
+(%i4) harmean(s2);
+(%o4) [6.948015590052786, 7.391967752360356,
     9.055658197151745, 13.44199028193692, 13.01439145898509]
 @end example
 
