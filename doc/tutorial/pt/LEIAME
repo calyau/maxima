@@ -1,0 +1,11 @@
+Para compilar os comandos são os seguintes:
+pdflatex mininal-maxima.tex
+pdflatex max.tex
+A saída será gerada no formato pdf:
+minimal-maxima.pdf
+max.pdf
+Para ler o conteúdo (ou imprimir) dos arquivos 
+pdf gerados use um leitor de arquivos que 
+suporte o formato pdf.
+
+Jorge Barros de Abreu
