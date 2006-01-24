@@ -76,7 +76,7 @@
 	 (loop for i from 1 to r while ok do
 	   (loop for j from 1 to c while ok do
 	     (setq ok (and ok ($zeromatrixp (nth j (nth i m))))))))
-	(t (setq ok (like 0 ($rectform m)))))
+	(t (setq ok (eq t (meqp 0 ($rectform m))))))
   ok))
 	
 (eval-when (eval compile load)
