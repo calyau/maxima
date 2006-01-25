@@ -33,7 +33,7 @@
 
     (setq l ($zerofor m))
    
-    (full-matrix-map l fconvert)
+    (setq l (full-matrix-map l fconvert))
     (loop for k from 1 to n do 
       (push k perm))
 
@@ -59,7 +59,7 @@
 					       (m-elem l perm j k) 
 					       (funcall fadjoint (m-elem l perm i k))))))
 	(setmatelem l (funcall fmult acc lii-inv) j i)))
-    (full-matrix-map l (mring-mring-to-maxima  fld))
-    l))
+    (full-matrix-map l (mring-mring-to-maxima  fld))))
+
 	
 	

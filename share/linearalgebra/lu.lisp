@@ -31,19 +31,6 @@
     (loop for j from 1 to c do
       (setmatelem m (funcall fn (nth j (nth i m))) i j))))
 
-;; Map the lisp function fn over the r by c Maxima matrix m.  This function is
-;; block matrix friendly.
-
-(defun full-matrix-map (m fn)
-  (let ((r) (c))
-    (setq r ($matrix_size m))
-    (setq c ($second r))
-    (setq r ($first r))
-    (loop for i from 1 to r do
-      (loop for j from 1 to c do
-	(if ($matrixp (nth j (nth i m))) (full-matrix-map (nth j (nth i m)) fn)
-	  (setmatelem m (funcall fn (nth j (nth i m))) i j))))))
-
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
 ;; to the Maxima list p.
 

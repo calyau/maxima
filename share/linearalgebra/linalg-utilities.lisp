@@ -62,11 +62,16 @@
   (if (not (and (integerp i) (> i 0)))
       (merror "The ~:M argument of the function ~:M must be a positive integer" pos fun)))
 
-(defun $ctranspose (m)
-  (let ((mc (copy-tree m)))
-    (full-matrix-map mc #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))
-    (mfuncall '$transpose mc)))
+;; Map the lisp function fn over the matrix m. This function is block matrix friendly.
 
+(defun full-matrix-map (m fn)
+  (if (or ($listp m) ($matrixp m))
+      (cons (car m) (mapcar #'(lambda (s) (full-matrix-map s fn)) (cdr m)))
+    (setf m (funcall fn m))))
+
+(defun $ctranspose (m)
+  (mfuncall '$transpose (full-matrix-map m #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))))
+ 
 (defun $zeromatrixp (m)
   (let ((r) (c) (ok t))
   (cond (($matrixp m)
@@ -83,3 +88,4 @@
   (mfuncall '$alias '$copylist '$copy '$copymatrix '$copy))
 
 (defun $copy (e) (copy-tree e))
+
