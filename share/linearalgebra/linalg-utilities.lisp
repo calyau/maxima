@@ -73,16 +73,8 @@
   (mfuncall '$transpose (full-matrix-map m #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))))
  
 (defun $zeromatrixp (m)
-  (let ((r) (c) (ok t))
-  (cond (($matrixp m)
-	 (setq r ($matrix_size m))
-	 (setq c ($second r))
-	 (setq r ($first r))
-	 (loop for i from 1 to r while ok do
-	   (loop for j from 1 to c while ok do
-	     (setq ok (and ok ($zeromatrixp (nth j (nth i m))))))))
-	(t (setq ok (eq t (meqp 0 ($rectform m))))))
-  ok))
+  (if (or ($matrixp m) ($listp m)) (every '$zeromatrixp (cdr m))
+    (eq t (meqp 0 ($rectform m)))))
 	
 (eval-when (eval compile load)
   (mfuncall '$alias '$copylist '$copy '$copymatrix '$copy))
