@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Equations.texi/1.21/Fri Jan 20 14:25:31 2006/-ko/
+@c /Equations.texi/1.22/Wed Jan 25 08:23:51 2006/-ko/
 @c end concepts Equations
 @menu
 * Defini@value{cedilha}@~oes para Equa@value{cedilha}@~oes::   
@@ -665,7 +665,7 @@ Fa@,{c}a @code{example (realroots)} para um exemplo.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} rhs (@var{eqn})
+@deffn {Fun@,{c}@~ao} rhs (@var{expr})
 Retorna o lado direito (isto @'e, o segundo argumento)
 da express@~ao @var{expr},
 quando o operador de @var{expr}
