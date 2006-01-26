@@ -83,6 +83,37 @@
       (cons (car mat) (mapcar #'(lambda (s) (zerofor s zero)) (cdr mat)))
     zero))
 
+;; Return an identity matrix that has the same shape as the matrix
+;; mat. The first argument 'mat' should be a square Maxima matrix or a 
+;; non-matrix. When 'mat' is a matrix, each entry of 'mat' can be a
+;; square matrix -- thus 'mat' can be a blocked Maxima matrix. The
+;; matrix can be blocked to any (finite) depth.
+
+(defun $identfor (mat &optional (fld-name '$generalring))
+  (let* ((fld ($require_ring fld-name "$second" "$zerofor"))
+	 (add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld))))
+	 (mult-id (funcall (mring-mring-to-maxima fld) (funcall (mring-mult-id fld)))))
+    (if ($matrixp mat) (identfor mat add-id mult-id) mult-id)))
+
+(defun identfor (mat zero one)
+  (let ((i) (acc) (j) (new-mat))
+    (setq mat (rest mat))
+    (setq i 0)
+    (dolist (row mat)
+      (setq row (rest row))
+      (setq acc nil)
+      (setq j 0)
+      (dolist (aij row)
+	(push (cond (($matrixp aij)
+		     (if (= i j) (identfor aij zero one) (zerofor aij zero)))
+		    ((= i j) one)
+		    (t zero)) acc)
+	(incf j))
+      (incf i)
+      (push '(mlist) acc)
+      (push acc new-mat))
+    (push '($matrix) new-mat)))
+
 (defun $ctranspose (m)
   (mfuncall '$transpose (full-matrix-map m #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))))
  

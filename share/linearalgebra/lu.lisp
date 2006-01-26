@@ -80,7 +80,6 @@
 
 (defun $get_lu_factors (x)
   (let ((mat ($first x)) (mp) (p ($second x)) (perm) (r) (c) (id) (lower) (upper) (zero))
-
     (setq r ($matrix_size mat))
     (setq c ($second r))
     (setq r ($first r))
@@ -95,7 +94,6 @@
 
     (setq lower (copy-tree mp))
     (setq upper (copy-tree mp))
-    
     (setq id ($identfor ($first ($first mat))))
     (setq zero ($zerofor ($first ($first mat))))
     (loop for i from 1 to r do
@@ -266,29 +264,6 @@
   ($require_square_matrix m "$first" "$mat_cond")
   (mul (simplify (mfunction-call |$mat_norm| m p))
        (simplify (mfunction-call |$mat_norm| ($invert_by_lu m) p))))
-
-;; Return an identity matrix that has the same shape as the matrix
-;; mat. The first argument 'mat' should be a square Maxima matrix or a 
-;; non-matrix. When 'mat' is a matrix, each entry of 'mat' can be a
-;; square matrix -- thus 'mat' can be a blocked Maxima matrix. The
-;; matrix can be blocked to any (finite) depth.
-
-(defun $identfor (mat &optional (fld-name '$generalring) (p 1) (q 1))
-  ($require_ring fld-name "$second" "$identfor")
-  (let* ((fld (get fld-name 'ring))
-	 (add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld))))
-	 (mul-id (funcall (mring-mring-to-maxima fld) (funcall (mring-mult-id fld)))))
-	
-    (cond (($matrixp mat)
-	   ($require_square_matrix mat "$first" "$identfor")
-	   (let ((n ($first ($matrix_size mat))) (mc))
-	     (setq mc (copy-tree mat))
-	     (loop for i from 1 to n do 
-	       (loop for j from 1 to n do 
-		 (setf (nth j (nth i mc)) (if (= p q) ($identfor (nth j (nth i mat)) fld-name j i)
-					    ($identfor (nth j (nth i mat)) fld-name p q)))))
-	     mc))
-	  (t (if (= p q) mul-id add-id)))))
 
 
 
