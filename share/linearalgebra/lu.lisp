@@ -290,20 +290,6 @@
 	     mc))
 	  (t (if (= p q) mul-id add-id)))))
 
-(defun $zerofor (mat &optional (fld-name '$generalring))
-  ($require_ring fld-name "$second" "$zerofor")
-  (let* ((fld (get fld-name 'ring))
-	 (add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld)))))
-    (cond (($matrixp mat)
-	   (let ((r) (c) (mc))
-	     (setq r ($matrix_size mat))
-	     (setq c ($second r))
-	     (setq r ($first r))
-	     (setq mc (copy-tree mat))
-	     (loop for i from 1 to r do 
-	       (loop for j from 1 to c do 
-		 (setf (nth j (nth i mc)) ($zerofor (nth j (nth i mat)) fld-name))))
-	     mc))
-	  (t add-id))))
+
 
     

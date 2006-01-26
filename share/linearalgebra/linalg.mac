@@ -28,7 +28,7 @@ eval_when(translate,
 	  declare_translated(ptriangularize_with_proviso,locate_matrix_entry,hankel,toeplitz,
 			     nullspace,require_integer,columnspace,rowswap,rowop,require_symbol,
 	                     mat_fullunblocker,mat_trace,mat_unblocker, column_reduce,good_pivot,
-                             hipow_gzero,mat_norm))$
+                             hipow_gzeromat_norm))$
 
 eval_when([batch,load,translate,compile],
   load("polynomialp"),

@@ -37,17 +37,21 @@
   (nth j (nth i m)))
 
 (defun $require_symmetric_matrix (m fun pos)
-  (if (not ($matrixp m))
-      (merror "The ~:M argument to ~:M must be a matrix" pos fun))
-
+  (if (not ($matrixp m)) (merror "The ~:M argument to ~:M must be a matrix" pos fun))
   (let ((n ($matrix_size m)))
     (if (not (= ($first n) ($second n)))
 	(merror "The ~:M argument to ~:M must be a square matrix" pos fun))
-    (setq n ($first n))
-    (loop for i from 1 to n do
-      (loop for j from (+ i 1) to n do
-	(if (not (like (array-elem m i j) (array-elem m j i)))
-	    (merror "The ~:M argument to ~:M must be a symmetric matrix" pos fun)))))
+    (if (not ($zeromatrixp (sub m ($transpose m))))
+	(merror "The ~:M argument to ~:M must be a symmetric matrix" pos fun)))
+  '$done)
+
+(defun $require_selfadjoint_matrix (m fun pos)
+  (if (not ($matrixp m)) (merror "The ~:M argument to ~:M must be a matrix" pos fun))
+  (let ((n ($matrix_size m)))
+    (if (not (= ($first n) ($second n)))
+	(merror "The ~:M argument to ~:M must be a square matrix" pos fun))
+    (if (not ($zeromatrixp (sub m ($ctranspose m))))
+	(merror "The ~:M argument to ~:M must be a selfadjoint (hermitian) matrix" pos fun)))
   '$done)
 
 (defun $matrix_size(m)
@@ -67,7 +71,17 @@
 (defun full-matrix-map (m fn)
   (if (or ($listp m) ($matrixp m))
       (cons (car m) (mapcar #'(lambda (s) (full-matrix-map s fn)) (cdr m)))
-    (setf m (funcall fn m))))
+    (funcall fn m)))
+
+(defun $zerofor (mat &optional (fld-name '$generalring))
+  (let* ((fld ($require_ring fld-name "$second" "$zerofor"))
+	(add-id (funcall (mring-mring-to-maxima fld) (funcall (mring-add-id fld)))))
+    (zerofor mat add-id)))
+
+(defun zerofor (mat zero)
+  (if (or ($matrixp mat) ($listp mat))
+      (cons (car mat) (mapcar #'(lambda (s) (zerofor s zero)) (cdr mat)))
+    zero))
 
 (defun $ctranspose (m)
   (mfuncall '$transpose (full-matrix-map m #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))))
