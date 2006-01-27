@@ -1554,7 +1554,26 @@
 			  (t (go retno))))
 		  (mget gr '$numer)))
 		((eq gr '$%e)
-		 (cond (($bfloatp pot) (return ($bfloat (list '(mexpt) '$%e pot))))
+		 ;; Numerically evaluate if the power is a double-float.
+		 (let ((val (double-float-eval '$exp pot)))
+		   (when val
+		     (return val)))
+		 ;; Numerically evaluate if the power is a (complex)
+		 ;; big-float.  (This is basically the guts of
+		 ;; big-float-eval, but we can't use big-float-eval.)
+		 (when (and (not (member 'simp (car x)))
+			    (complex-number-p pot 'bigfloat-or-number-p))
+		   (let ((x ($realpart pot))
+			 (y ($imagpart pot)))
+		     (cond ((and ($bfloatp x) (like 0 y))
+			    ($bfloat `((mexpt simp) $%e ,pot)))
+			   ((or ($bfloatp x) ($bfloatp y))
+			    (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
+			      (setq z ($rectform `((mexpt simp) $%e ,z)))
+			      (return ($bfloat z)))))))
+		 (cond #+nil
+		       (($bfloatp pot) (return ($bfloat (list '(mexpt) '$%e pot))))
+		       #+nil
 		       ((or (floatp pot) (and $numer (integerp pot)))
 			(return (exp pot)))
 		       ((and $logsimp (among '%log pot)) (return (%etolog pot)))
