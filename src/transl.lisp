@@ -1533,8 +1533,8 @@ APPLY means like APPLY.")
 		  (cdr form)))
     (if (memq mode '($fixnum $float $number))
 	`(,mode  ,(if (eq 'min op) 'min 'max) . ,(mapcar 'cdr arglist))
-	`($any ,(if (eq 'min op) 'minimum 'maximum)
-	  (list . ,(mapcar 'dconvx arglist))))))
+	`($any ,(if (eq 'min op) '$lmin '$lmax)
+	  (list '(mlist) . ,(mapcar 'dconvx arglist))))))
 
 
 ;;; mode acessing, binding, handling. Super over-simplified.
