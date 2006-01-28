@@ -1,0 +1,320 @@
+(kill (all), 0);
+0;
+
+/* What we're expecting to see here:
+ *
+ * In all cases, arguments are evaluated, or simplified as the case may be,
+ * from left to right, only as needed to establish whether the whole expression
+ * is true or false. Therefore arguments which potentially have side effects
+ * (print, kill, save, quit, etc) may or may not actually have those side effects.
+ *
+ * In all cases, arguments are simplified by SIMPLIFYA.
+ *
+ * In all cases, arguments are evaluated by MEVAL.
+ *
+ * Simplification of boolean expressions:
+ *
+ * and: if any argument simplifies to false, simplify whole expression to false
+ *  otherwise omit arguments which simplify to true; if only one argument remains, return it
+ *  if none remain, return true
+ *
+ * or: if any argument simplifies to true, simplify whole expression to true
+ *  otherwise omit arguments which simplify to false; if only one argument remains, return it
+ *  if none remain, return false
+ *
+ * not: if argument simplifies to true / false, return false / true
+ *  otherwise reverse sense of comparisons (if a comparison)
+ *  otherwise no change
+ *
+ * Evaluation of boolean expressions:
+ *
+ *
+ * Simplification of "is" expressions:
+ *
+ * Evaluation of "is" expressions:
+ *
+ * prederror=true vs prederror=false:
+ *
+ * Simplification of "if" expressions:
+ *
+ * Evaluation of "if" expressions:
+ *
+ * prederror=true vs prederror=false:
+ *
+ */
+
+/* Test simplification of boolean expressions.
+ * '(...) expressions are simplified but not evaluated.
+ */
+
+/* These values are supposed to be ignored in quoted expressions '(...).
+ */
+(a : true, b : false, c : true, 0);
+0;
+
+('(a and b), [op (%%), args (%%)]);
+["and", '[a, b]];
+
+('(a or b), [op (%%), args (%%)]);
+["or", '[a, b]];
+
+('(not a), [op (%%), args (%%)]);
+["not", '[a]];
+
+('(a and b or c and d), [op (%%), args (%%)]);
+["or", ['(a and b), '(c and d)]];
+
+('((a or b) and (c or d)), [op (%%), args (%%)]);
+["and", ['(a or b), '(c or d)]];
+
+'(a and true);
+'a;
+
+'(a and false);
+false;
+
+'(a or true);
+true;
+
+'(a or false);
+'a;
+
+'[true and true, true and false, true or true, true or false, false and true, false and false, false or true, false or false];
+[true, false, true, true, false, false, true, false];
+
+'((a or true) and (b or true));
+true;
+
+'(a and true or b and true);
+'(a or b);
+
+'(a or b or c or false);
+'(a or b or c);
+
+'(a and b and c and true);
+'(a and b and c);
+
+'(not (a and b));
+'((not a) or (not b));
+
+'(not a and b);
+'((not a) and b);
+
+'(not (a or b));
+'((not a) and (not b));
+
+'(not a or b);
+'((not a) or b);
+
+'(not not a);
+'a;
+
+'(not not not a);
+'(not a);
+
+'(not not not not a);
+'a;
+
+/* Side-effects shouldn't happen in simplification (since arguments are not evaluated).
+ */
+
+(kill (a, b, c), 0);
+0;
+
+('((a : true) and (b : false) and (c : foo ())), [op (%%), args (%%), a, b, c]);
+["and", '[a : true, b : false, c : foo ()], 'a, 'b, 'c];
+
+('(not (a : true)), [op (%%), args (%%), a]);
+["not", '[a : true], 'a];
+
+/* Miscellaneous tests.
+ */
+expr: '(a > b and (equal (c, d) or e = 1) and not f <= g or notequal (h, %pi));
+'(a > b and (equal (c, d) or e = 1) and f > g or notequal (h, %pi));
+
+'(a > b and b > c and true or a < b and b < c and true or false or not true);
+'((a > b and b > c) or (a < b and b < c));
+
+'(not not not not a > b);
+'(a > b);
+
+'(not not not not not a > b);
+'(a <= b);
+
+'(not not not false and not not not not true);
+true;
+
+'(not foo (a));
+funmake ("not", '[foo (a)]);
+
+/* Test evaluation of boolean expressions.
+ * Evaluate the arguments and simplify.
+ */
+
+(a and b, [op (%%), args (%%)]);
+["and", '[a, b]];
+
+(a or b, [op (%%), args (%%)]);
+["or", '[a, b]];
+
+(not a, [op (%%), args (%%)]);
+["not", '[a]];
+
+(a and b or c and d, [op (%%), args (%%)]);
+["or", ['(a and b), '(c and d)]];
+
+((a or b) and (c or d), [op (%%), args (%%)]);
+["and", ['(a or b), '(c or d)]];
+
+a and true;
+'a;
+
+a and false;
+false;
+
+a or true;
+true;
+
+a or false;
+'a;
+
+(a or true) and (b or true);
+true;
+
+a and true or b and true;
+'(a or b);
+
+a or b or c or false;
+'(a or b or c);
+
+a and b and c and true;
+'(a and b and c);
+
+not (a and b);
+'((not a) or (not b));
+
+not a and b;
+'((not a) and b);
+
+not (a or b);
+'((not a) and (not b));
+
+not a or b;
+'((not a) or b);
+
+not not a;
+'a;
+
+not not not a;
+'(not a);
+
+not not not not a;
+'a;
+
+/* Side-effects should happen in evaluation.
+ */
+
+((a : true) and (b : true) and (c : foo ()), [%%, a, b, c]);
+[foo (), true, true, foo ()];
+
+(not (a : bar ()), [%%, a]);
+['(not bar ()), bar ()];
+
+(kill (a, b, c), 0);
+0;
+
+/* Miscellaneous tests.
+ */
+expr: a > b and (equal (c, d) or e = 1) and not f <= g or notequal (h, %pi);
+'(a > b and equal (c, d) and f > g or notequal (h, %pi));
+
+''expr, e=1;
+'(a > b and equal (c, d) and f > g or notequal (h, %pi));
+
+''expr, e=1, h=%e;
+true;
+
+''expr, e=1, h=%pi;
+'(a > b and equal (c, d) and f > g);
+
+''expr, e=89, f = g + 1;
+'(a > b and equal (c, d) or notequal (h, %pi));
+
+(assume (notequal (c, d), equal (f, 100), g < 0), 0);
+0;
+
+''expr, e = 1;
+'(notequal (h, %pi));
+
+a > b and b > c and true or a < b and b < c and true or false or not true;
+'((a > b and b > c) or (a < b and b < c));
+
+not not not not a > b;
+'(a > b);
+
+not not not not not a > b;
+'(a <= b);
+
+not not not false and not not not not true;
+true;
+
+/* is-evaluation of conditionals.
+ * is (foo) => true, false, and unknown or error (depending on prederror flag).
+ */
+
+ev (is (a > b or a > c), prederror=false);
+unknown;
+
+errcatch (ev (is (a > b or a > c), prederror=true));
+[];
+
+/* Test 'if (noun).
+ */
+(expr: if a > b then if a > c then a else d else if b > c then b else c, 0);
+0;
+
+(assume (a > b), ev (expr));
+'(if a > c then a else d);
+
+(forget (a > b), assume (a > c), ev (expr));
+'(if a > b then a else if b > c then b else c);
+
+(forget (a > c), ev (expr));
+'(if a > b then if a > c then a else d else if b > c then b else c);
+
+(assume (b < c), ev (expr));
+'(if a > b then if a > c then a else d else c);
+
+(assume (a > c), ev (expr));
+a;
+
+(apply (forget, facts ()), []);
+[];
+
+(foo (x) := if numberp (x) then if oddp (x) and x > 100 then 'foop (x) else 'nofoop (x)
+  else 'if 'oddp (x) and x > 100 then 'foop (x) else 'nofoop (x), 0);
+0;
+
+foo (17);
+'nofoop (17);
+
+foo (117);
+'foop (117);
+
+foo (x + y);
+'if 'oddp (x + y) and x + y > 100 then 'foop (x + y) else 'nofoop (x + y);
+
+(assume (x < 0, y < 0), foo (x + y));
+'nofoop (x + y);
+
+/* assume fails to deduce x + y > 100 given x + y > 1000, oh well.
+ * (forget (x < 0, y < 0), assume (x + y > 1000), foo (x + y));
+ */
+(forget (x < 0, y < 0), assume (x > 200), foo (x - 50));
+'if 'oddp (x - 50) then 'foop (x - 50) else 'nofoop (x - 50);
+
+/*
+plot2d (if x > 1 then log(x) else exp(x), [x, -1, 3]);
+f(x) := if x < 0 then -x else sqrt(x);
+plot2d (f(x), [x, -2, 2]);
+ */
