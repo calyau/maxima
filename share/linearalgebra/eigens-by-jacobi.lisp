@@ -8,12 +8,7 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  ($put '$infolevel '$debug '|$linalg|)       
-  ($put '$eigensbyjacobi 1 '$version))    ;; Let's have version numbers 1,2,3,...
-
-(defun inform (level pck msg &rest arg)
-  (if (member level (member ($get '$infolevel pck) `($debug $obnoxious $chatty $silent)))
-      (apply 'mtell `(,msg ,@arg))))
+  ($put '$eigensbyjacobi 1 '$version)) ;; Let's have version numbers 1,2,3,...
 		 
 ;; One sweep zeros each member of the matrix; for a n x n matrix, this requires n(n-1)/2
 ;; Jacobi rotations. 
@@ -34,11 +29,11 @@
       (merror "The field must either be 'floatfield' or 'bigfloatfield'"))
   
   (setq mm (mfuncall '$mat_fullunblocker mm))
-  ($require_symmetric_matrix mm "$first" "$eigens_by_jacobi")
+  ($require_symmetric_matrix mm  "$first" "$eigens_by_jacobi")
      
-  (let* ((mat (copy-tree mm)) (g) (h) (sweeps 0) (rotations 0) (eps) (change)
-	 (theta) (mpq) (c) (s)  (tee) (tau) (d) (v ($identfor mat)) (x)
-	 (n ($first ($matrix_size mat))) (continue (> n 1))
+  (let* ((mat) (g) (h) (sweeps 0) (rotations 0) (eps) (change)
+	 (theta) (mpq) (c) (s)  (tee) (tau) (d) (v) (x) (row)
+	 (n ($first ($matrix_size mm))) (continue (> n 1))
 	 (fld ($require_ring fld-name "$second" "$eigens_by_jacobi"))
 	 (one (funcall (mring-mult-id fld)))
 	 (zero (funcall (mring-add-id fld))))
@@ -55,80 +50,92 @@
 	 (fgreat (a b) (funcall (mring-great fld) a b))
 	 (fmax (a b) (if (funcall (mring-great fld) a b) a b))
 	 (fconvert (a) (funcall (mring-maxima-to-mring fld) a)))
-	 
-      (matrix-map mat n n #'fconvert)
+
+      (setq mat (make-array (list n n) :initial-contents (mapcar #'rest 
+								 (margs (matrix-map #'fconvert mm)))))
+      (setq v (make-array (list n n) :initial-element zero))
+      (setq d (make-array n))
+									 
       (setq eps (if (eq fld-name '$floatfield) double-float-epsilon ($bfloat (div 1 (power 2 fpprec)))))
              
-      (loop for p from 1 to n do (push (array-elem mat p p) d))
-      (setq d (reverse d))
-      (push '(mlist) d)
-      
+      (decf n)
+      (loop for i from 0 to n do 
+	(setf (aref v i i) one)
+	(setf (aref d i) (aref mat i i)))
+
       (while continue
 	(if (> sweeps 50) (merror "Exceeded maximum allowable number of Jacobi sweeps"))
 	(incf sweeps)
-
-	(setq change zero)
-	(loop for p from 1 to n do 
+	(loop for p from 0 to n do 
 	  (loop for q from (+ p 1) to n do
-	    (setq mpq (array-elem mat p q))
+	    (setq mpq (aref mat p q))
 	    (cond ((not (fzerop mpq))
 		   (incf rotations)
-		   (setq theta (fdiv (fsub (array-elem mat q q) (array-elem mat p p))(fmult 2 mpq)))
+		   (setq theta (fdiv (fsub (aref mat q q) (aref mat p p))(fmult 2 mpq)))
 		   (setq tee (fdiv one (fadd (fabs theta) (fpsqrt (fadd one (fmult theta theta))))))
 		   (if (fgreat 0 theta) (setq tee (fnegate tee)))
 		   (setq c (fdiv one (fpsqrt (fadd one (fmult tee tee)))))
 		   (setq s (fmult tee c))
 		   (setq tau (fdiv s (fadd one c)))
-		   (setmatelem mat zero p q)
+		   (setf (aref mat p q) zero)
 		   
-		   (loop for k from 1 to (- p 1) do
-		     (setq g (array-elem mat k p))
-		     (setq h (array-elem mat k q))
-		     (setmatelem mat (fsub g (fmult s (fadd h (fmult g tau)))) k p)
-		     (setmatelem mat (fadd h (fmult s (fsub g (fmult h tau)))) k q))
+		   (loop for k from 0 to (- p 1) do
+		     (setq g (aref mat k p))
+		     (setq h (aref mat k q))
+		     (setf (aref mat k p) (fsub g (fmult s (fadd h (fmult g tau)))))
+		     (setf (aref mat k q) (fadd h (fmult s (fsub g (fmult h tau))))))
 		   
 		   (loop for k from (+ p 1) to (- q 1) do
-		     (setq g (array-elem mat p k))
-		     (setq h (array-elem mat k q))
-		     (setmatelem mat (fsub g (fmult s (fadd h (fmult g tau)))) p k)
-		     (setmatelem mat (fadd h (fmult s (fsub g (fmult h tau)))) k q))
+		     (setq g (aref mat p k))
+		     (setq h (aref mat k q))
+		     (setf (aref mat p k) (fsub g (fmult s (fadd h (fmult g tau)))))
+		     (setf (aref mat k q) (fadd h (fmult s (fsub g (fmult h tau))))))
 		   
 		   (loop for k from (+ q 1) to n do
-		     (setq g (array-elem mat p k))
-		     (setq h (array-elem mat q k))
-		     (setmatelem mat (fsub g (fmult s (fadd h (fmult g tau)))) p k)
-		     (setmatelem mat (fadd h (fmult s (fsub g (fmult h tau)))) q k))
+		     (setq g (aref mat p k))
+		     (setq h (aref mat q k))
+		     (setf (aref mat p k) (fsub g (fmult s (fadd h (fmult g tau)))))
+		     (setf (aref mat q k) (fadd h (fmult s (fsub g (fmult h tau))))))
 		   
-		   (setmatelem mat (fsub (array-elem mat p p) (fmult tee mpq)) p p)
-		   (setmatelem mat (fadd (array-elem mat q q) (fmult tee mpq)) q q)
-
-		   (loop for k from 1 to n do
-		     (setq g (array-elem v k p))
-		     (setq h (array-elem v k q))
-		     (setmatelem v (fsub g (fmult s (fadd h (fmult g tau)))) k p)
-		     (setmatelem v (fadd h (fmult s (fsub g (fmult h tau)))) k q))))))
+		   (setf (aref mat p p) (fsub (aref mat p p) (fmult tee mpq)))
+		   (setf (aref mat q q) (fadd (aref mat q q) (fmult tee mpq)))
+		   (loop for k from 0 to n do
+		     (setq g (aref v k p))
+		     (setq h (aref v k q))
+		     (setf (aref v k p) (fsub g (fmult s (fadd h (fmult g tau)))))
+		     (setf (aref v k q)(fadd h (fmult s (fsub g (fmult h tau))))))))))
 		
 	(setq change zero)
-	(loop for i from 1 to n do
-	  (setq x (array-elem mat i i))
-	  (setq change (fmax change (if (fgreat x eps) (fabs (fdiv (fsub (nth i d) x) x)) zero)))
-	  (setf (nth i d) x))
+	(loop for i from 0 to n do
+	  (setq x (aref mat i i))
+	  (setq change (fmax change (if (fgreat (fabs x) eps) (fabs (fdiv (fsub (aref d i) x) x)) zero)))
+	  (setf (aref d i) x))
 	
 	(inform '$debug '|$linalg| "The largest percent change was ~:M~%" change)
 	(setq continue (fgreat change eps)))
 	
-      (inform '$chatty '|$linalg| "number of sweeps: ~:M~%" sweeps)
-      (inform '$chatty '|$linalg| "number of rotations: ~:M~%" rotations)
-      `((mlist) ,d ,v))))
+      (inform '$verbose '|$linalg| "number of sweeps: ~:M~%" sweeps)
+      (inform '$verbose '|$linalg| "number of rotations: ~:M~%" rotations)
+      
+      (setq mm nil)
+      (loop for i from 0 to n do
+	(setq row nil)
+	(loop for j from 0 to n do
+	  (push (aref v i j) row))
+	(setq row (reverse row))
+	(push '(mlist) row)
+	(push row mm))
+      (setq mm (reverse mm))
+      (push '($matrix) mm)
+      (setq d `((mlist) ,@(coerce d 'list)))
+      `((mlist) ,d ,mm))))
 
       
 				 
 		     
 		   
 		   
-		     
-		     
-		     
+   
 		     
 		     
 		   

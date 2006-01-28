@@ -214,8 +214,8 @@
    :sub #'(lambda (a b) ($rectform (sub a b)))
    :negate #'(lambda (a) (mult -1 a))
    :psqrt #'(lambda (s) (if (mlsp s 0) nil (take '(%sqrt) s)))
-   :add-id #'(lambda () 0)
-   :mult-id #'(lambda () 1)
+   :add-id #'(lambda () bigfloatzero)
+   :mult-id #'(lambda () bigfloatone)
    :fzerop #'(lambda (s) (like s bigfloatzero))
    :adjoint #'cl:identity
    :mring-to-maxima #'(lambda (s) s)

@@ -28,27 +28,13 @@
 
 ($put '$matrixexp 1 '$version)
 
-(defun my-matrix-map (f mat)
-  (setq mat (mapcar 'cdr (cdr mat)))
-  (setq mat (mapcar #'(lambda (s) (mapcar f s)) mat))
-  (setq mat (mapcar #'(lambda (s) (cons `(mlist simp) s)) mat))
-  `(($matrix simp) ,@mat))  
-
-;; Signal an error if 'mat' is not a square matrix; otherwise, return true.
-  
-(defun require-square-matrix (mat pos fun-name)
-  (if (not ($matrixp mat))
-      (merror "The ~:M argument to ~:M must be a matrix" pos fun-name))
-  (if (not (= ($length ($args mat)) ($length ($first ($args mat)))))
-      (merror "The ~:M argument to ~:M must be a square matrix" pos fun-name)))
-
 ;; When mat is a square matrix, return exp(mat * x). The second 
 ;; argument is optional and it defaults to 1.
 
 (defun $matrixexp (mat &optional (x 1))
   (let ((sp) (d) (p) (id) (n ($length ($args mat))) (f))
     ($ratvars)
-    (require-square-matrix mat "$first" "$matrixexp")
+    ($require_square_matrix mat "$first" "$matrixexp")
     (setq mat ($spectral_rep mat))
     (setq sp ($first mat))
     (setq p ($second mat))
@@ -77,7 +63,7 @@
   (let ((z (gensym)) (expr) (var) (sp) (d) (p) (di) 
 	(n ($length ($args mat))) (f 0))
 
-    (require-square-matrix mat "$second" "$matrixexp")
+    ($require_square_matrix mat "$second" "$matrixexp")
     (setq expr (require-lambda lamexpr 1 "$first" "$matrixfun"))
     (setq var (nth 0 (nth 0 expr)))
     (setq expr (nth 1 expr))
@@ -122,7 +108,7 @@
 
 
 (defun $spectral_rep (mat)
-  (require-square-matrix mat "$first" "$spectral_rep")
+  ($require_square_matrix mat "$first" "$spectral_rep")
   (let (($gcd '$spmod) ($algebraic t) ($resultant '$subres) (ord) (zi)
 	($ratfac nil) (z (gensym)) (res) (m) (n ($length ($args mat))) 
 	(p) (p1) (p2) (sp) (proj))
@@ -158,7 +144,7 @@
     (dotimes (i m)
       (setq zi (nth i sp))
       (setq ord (nth (+ i 1) $multiplicities))
-      (push (my-matrix-map #'(lambda (e) (rational-residue e z zi p ord)) res) 
+      (push (matrix-map #'(lambda (e) (rational-residue e z zi p ord)) res) 
 	    proj))
 
     (setq proj (nreverse proj))

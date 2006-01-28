@@ -23,14 +23,6 @@
     (setf (nth i p) (nth j p))
     (setf (nth j p) x)))
 	
-;; Map the lisp function fn over the r by c Maxima matrix m.  This function isn't
-;; block matrix friendly.
-
-(defun matrix-map (m r c fn)
-  (loop for i from 1 to r do
-    (loop for j from 1 to c do
-      (setmatelem m (funcall fn (nth j (nth i m))) i j))))
-
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
 ;; to the Maxima list p.
 
@@ -63,7 +55,7 @@
   (setq fld ($require_ring fld "$second" "$lu_factor"))
 
   (let ((m (copy-tree mm)) (c ($length mm)) (perm) (cnd) (fn))
-    (matrix-map m c c (mring-maxima-to-mring fld))
+    (setq m (matrix-map (mring-maxima-to-mring fld) m))
     (loop for i from 1 to c do (push i perm))
     (setq perm (reverse perm))
     
@@ -134,10 +126,10 @@
 	   (multiple-value-setq (lb ub) (mat-cond-by-lu m perm c (mring-coerce-to-lisp-float fld)))
 	   (setq lb ($limit (mul lb cnd)))
 	   (setq ub ($limit (mul ub cnd)))
-	   (matrix-map m c c (mring-mring-to-maxima fld))
+	   (setq m (matrix-map (mring-mring-to-maxima fld) m))
 	   `((mlist) ,m ,perm ,(mring-name fld) ,lb ,ub))
 	  (t 
-	   (matrix-map m c c (mring-mring-to-maxima fld))
+	   (setq m (matrix-map (mring-mring-to-maxima fld) m))
 	   `((mlist) ,m ,perm ,(mring-name fld))))))
         
 ;; The first argument should be a matrix in packed LU form. The Maxima list perm
@@ -203,13 +195,13 @@
     (setq r ($first n))
     (setq c ($second n))
     
-    (matrix-map mat r c (mring-maxima-to-mring fld))
+    (setq mat (matrix-map (mring-maxima-to-mring fld) mat))
     ;(displa `((mequal) mat ,mat))
     (setq b (copy-tree b1))
     (setq c ($second ($matrix_size mat)))
     
     (setq cc ($second ($matrix_size b)))
-    (matrix-map b r cc (mring-maxima-to-mring fld))
+    (setq b (matrix-map (mring-maxima-to-mring fld) b))
 
     (setq bb (copy-tree b))
     (loop for i from 1 to r do
@@ -232,7 +224,7 @@
 	  (setq acc (funcall fsub acc (funcall fmult (m-elem mat perm i j) (m-elem bb id-perm j q)))))
 	(setmatelem bb (funcall fdiv acc (m-elem mat perm i i)) i q)))
     
-    (matrix-map bb r cc (mring-mring-to-maxima fld))
+    (setq bb (matrix-map (mring-mring-to-maxima fld) bb))
     bb))
 
 (defun $invert_by_lu (m  &optional (fld '$generalring))

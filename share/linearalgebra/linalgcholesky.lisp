@@ -8,8 +8,7 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ($put '$cholesky 1 '$version)
-	
-(defun $cholesky (m &optional (fld-name '$generalring))
+	(defun $cholesky (m &optional (fld-name '$generalring))
   ($require_nonempty_matrix m "$first" "$cholesky")
   ($require_selfadjoint_matrix m "$first" "$cholesky")
 
@@ -61,7 +60,7 @@
       (loop for i from 0 to n do 
 	(setq row nil)
 	(loop for j from 0 to n do
-	  (push (full-matrix-map (aref l i j) #'frevert) row))
+	  (push (full-matrix-map  #'frevert (aref l i j)) row))
 	(setq row (reverse row))
 	(push '(mlist) row)
 	(push row mat))

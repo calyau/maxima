@@ -9,6 +9,10 @@
 
 ($put '$linalgutilities 2 '$version)
 
+(defun inform (level pck msg &rest arg)
+  (if (member level (member ($get '$infolevel pck) `($debug $verbose $silent)))
+      (apply 'mtell `(,msg ,@arg))))
+
 (defun $listp (e &optional (f nil))
   (and (op-equalp e 'mlist) (or (eq f nil) (every #'(lambda (s) (eq t (mfuncall f s))) (margs e)))))
 
@@ -36,7 +40,7 @@
 (defun array-elem (m i j)
   (nth j (nth i m)))
 
-(defun $require_symmetric_matrix (m fun pos)
+(defun $require_symmetric_matrix (m pos fun)
   (if (not ($matrixp m)) (merror "The ~:M argument to ~:M must be a matrix" pos fun))
   (let ((n ($matrix_size m)))
     (if (not (= ($first n) ($second n)))
@@ -66,11 +70,17 @@
   (if (not (and (integerp i) (> i 0)))
       (merror "The ~:M argument of the function ~:M must be a positive integer" pos fun)))
 
+(defun matrix-map (f mat)
+  (setq mat (mapcar 'cdr (cdr mat)))
+  (setq mat (mapcar #'(lambda (s) (mapcar f s)) mat))
+  (setq mat (mapcar #'(lambda (s) (cons `(mlist simp) s)) mat))
+  `(($matrix simp) ,@mat))  
+
 ;; Map the lisp function fn over the matrix m. This function is block matrix friendly.
 
-(defun full-matrix-map (m fn)
+(defun full-matrix-map (fn m)
   (if (or ($listp m) ($matrixp m))
-      (cons (car m) (mapcar #'(lambda (s) (full-matrix-map s fn)) (cdr m)))
+      (cons (car m) (mapcar #'(lambda (s) (full-matrix-map fn s)) (cdr m)))
     (funcall fn m)))
 
 (defun $zerofor (mat &optional (fld-name '$generalring))
@@ -115,7 +125,7 @@
     (push '($matrix) new-mat)))
 
 (defun $ctranspose (m)
-  (mfuncall '$transpose (full-matrix-map m #'(lambda (s) (simplifya `(($conjugate) ,s) nil)))))
+  (mfuncall '$transpose (full-matrix-map #'(lambda (s) (simplifya `(($conjugate) ,s) nil)) m)))
  
 (defun $zeromatrixp (m)
   (if (or ($matrixp m) ($listp m)) (every '$zeromatrixp (cdr m))
