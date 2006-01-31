@@ -284,7 +284,10 @@
 				   (:file "de1"
 					  :depends-on ("dcsevl" "initds" "xermsg"))
 				   (:file "dei"
-					  :depends-on ("de1"))))
+					  :depends-on ("de1"))
+				   (:file "dspenc"
+					  :depends-on ("d9upak"))
+				   (:file "d9upak")))
 			 (:module quadpack
 				  :source-pathname "slatec"
 				  :components
