@@ -17,12 +17,16 @@
    ;; Bessel function: K
    #:dbesk0 #:dbesk1 #:dbesk #:zbesk
 
-   ;; Besseel function: H
+   ;; Bessel function: H
    #:zbesh
    
    ;; Airy functions
    #:dai #:zairy #:djairy #:dbi #:zbiry #:dyairy
 
    ;; Exponential integrals
-   #:de1)
+   #:de1
+
+   ;; Spence's function (related to dilogarithm)
+   #:dspenc
+   )
   (:documentation "Package for the Fortran routines we need from SLATEC"))

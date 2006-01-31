@@ -14,7 +14,7 @@
 ;;; at worst.
 ;;;
 ;;; This also means that you should get the file dependencies right so
-;;; that mk:defsys will at compile the files in the right order.
+;;; that mk:defsys will compile the files in the right order.
 
 ;;; Define a new language for defsys to use.
 (mk:define-language :f2cl
@@ -239,7 +239,12 @@
 	     (:file "de1"
 		    :depends-on ("dcsevl" "initds"))
 	     (:file "dei"
-		    :depends-on ("de1"))))
+		    :depends-on ("de1"))
+	     ;; Spence's function, related to dilogarithm
+	     (:file "dspenc"
+		    :depends-on ("d9upak"))
+	     (:file "d9upak")
+	     ))
    (:module quadpack
 	    :source-pathname "fortran"
 	    :binary-pathname "."

@@ -11,11 +11,11 @@
 (in-package :maxima)
 (macsyma-module specfn)
 
-					;*********************************************************************
-					;****************                                   ******************
-					;**************** Macsyma Special Function Routines ******************
-					;****************                                   ******************
-					;*********************************************************************
+;;*********************************************************************
+;;****************                                   ******************
+;;**************** Macsyma Special Function Routines ******************
+;;****************                                   ******************
+;;*********************************************************************
 
 (load-macsyma-macros rzmac)
 (load-macsyma-macros mhayat)
@@ -37,7 +37,7 @@
 	(a))
     (subargcheck exp 1 1 '$li)
     (setq a (simpcheck (car (subfunargs exp)) z))
-    (or (cond ((zerop1 a) 0)
+    (or (cond ((eql a 0) 0)
 	      ((not (integerp s)) ())
 	      ((= s 1) (m- `((%log) ,(m- 1 a))))
 	      ((and (integerp a) (> s 1)
@@ -90,6 +90,7 @@
 ;; Someone has done LI[2] already, and this should be updated; I haven't
 ;; seen any results for LI[3] yet.
 
+#+nil
 (defun li2numer (x)
   (cond ((= x 0.0) 0.0)
 	((= x 1.0) 1.64493407)
@@ -104,6 +105,32 @@
 	(t (m+t (-$ 3.28986813 (//$ (expt (log x) 2) 2.0)
 		    (li2numer (//$ x)))
 		(m*t (-$ (*$ 3.14159265 (log x))) '$%i)))))
+
+(defun li2numer (y)
+  ;; Spence's function can be used to compute li[2] for 0 <= x <= 1.
+  ;; To compute the rest, we need the following identities:
+  ;;
+  ;; li[2](x) = -li[2](1/x)-log(-x)^2/2+%pi^2/6
+  ;; li[2](x) = li[2](1/(1-x)) + log(1-x)*log((1-x)/x^2)/2 - %pi^2/6
+  ;;
+  ;; The first tells us how to compute li[2] for x > 1.  The result is complex.
+  ;; For x < 0, the second can be used, and the result is real.
+  ;;
+  ;; (See http://functions.wolfram.com/ZetaFunctionsandPolylogarithms/PolyLog2/17/01/01/)
+  (labels ((li2 (x)
+	     (cond ((< x 0)
+		    (+ (li2 (/ (- 1 x)))
+		       (* 0.5d0 (log (- 1 x)) (log (/ (- 1 x) (* x x))))
+		       (- (/ (cl:expt (coerce pi 'double-float) 2) 6))))
+		   ((< x 1)
+		    (slatec:dspenc x))
+		   (t
+		    ;; li[2](x) = -li[2](1/x)-log(-x)^2/2+%pi^2/6
+		    (- (+ (li2 (/ x))
+			  (/ (cl:expt (cl:log (- x)) 2) 2)
+			  (/ (cl:expt (coerce pi 'double-float) 2) 6)))))))
+    (complexify (li2 y))))
+
 
 (defun li3numer (x)
   (cond ((= x 0.0) 0.0)
