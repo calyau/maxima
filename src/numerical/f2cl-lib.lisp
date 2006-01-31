@@ -993,7 +993,7 @@ is not included")
 	(cond ((integerp lun)
 	       (setf (gethash lun *lun-hash*)
 		     (open (format nil "fort~d.dat" lun)
-			   :direction :output
+			   :direction :io
 			   :if-exists :rename)))
 	      ((stringp lun)
 	       (setf (gethash lun *lun-hash*)
@@ -1017,6 +1017,56 @@ causing all pending operations to be flushed"
 		 (format t "Closing unit ~A: ~A~%" key val)
 		 (close val)))
 	       *lun-hash*))
+
+(defun %open-file (&key unit file status access form recl blank)
+  ;; We should also check for values of access, form that we don't support.
+  (when recl
+    (error "F2CL-LIB does not support record lengths"))
+  (when blank
+    (error "F2CL-LIB does not support any BLANK mode for files"))
+  (when (and access (not (string-equal "sequential"
+				       (string-right-trim " " access))))
+    (error "F2CL-LIB does not support ACCESS mode ~S" access))
+  (let ((s (and status (string-right-trim " " status))))
+    (finish-output)
+    (cond ((or (null s) (string-equal s "unknown"))
+	   (open file :direction :io :if-exists :append
+		 :if-does-not-exist :create))
+	  ((string-equal s "old")
+	   (open file :direction :io :if-does-not-exist nil))
+	  ((string-equal s "new")
+	   (open file :direction :io :if-exists nil))
+	  (t
+	   (error "F2CL-LIB does not support this mode for OPEN: ~S~%"
+		  s)))))
+
+(defmacro open-file (&key unit iostat err file status access form recl blank)
+  (let ((result (gensym)))
+    `(prog ((,result (%open-file :unit ,unit :file ,file :status ,status
+				 :access ,access :form ,form :recl ,recl :blank ,blank)))
+	(when ,result
+	  (setf (gethash ,unit *lun-hash*) ,result))
+	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
+	,(if iostat `(setf ,iostat (if ,result 0 1))))))
+
+(defun %rewind (unit)
+  (file-position (lun->stream unit) :start))
+
+(defmacro rewind (&key unit iostat err)
+  (let ((result (gensym)))
+    `(prog ((,result (%rewind ,unit)))
+	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
+	,(if iostat `(setf ,iostat (if ,result 0 1))))))
+	  
+
+(defun %close (&key unit status)
+  (cl:close (lun->stream unit)))
+
+(defmacro close$ (&key unit iostat err status)
+  (let ((result (gensym)))
+    `(prog ((,result (%close :unit ,unit  :status ,status)))
+	,(if err `(unless ,result (go ,(f2cl-lib::make-label err))))
+	,(if iostat `(setf ,iostat (if ,result 0 1))))))
 
 #-gcl
 (declaim (ftype (function (t) stream) lun->stream))
@@ -1128,17 +1178,23 @@ causing all pending operations to be flushed"
 ;; and initialize each element with a string of the appropriate
 ;; length.  The string is initialized with #\Space because it seems
 ;; that's what Fortran initializes it to.
-(defmacro f2cl-init-string (dims len)
-  (let ((init (gensym))
-	(new-dims (if (every #'numberp dims)
-		      `',dims
-		      `(list ,@dims))))
-    `(let ((,init (make-array ,new-dims
+(defmacro f2cl-init-string (dims len &optional inits)
+  (let ((init (gensym "ARRAY-"))
+	(k (gensym "IDX-")))
+    `(let ((,init (make-array (* ,@dims)
 			      :element-type `(simple-array character (,',@len))
 			      :initial-element (make-string ,@len))))
-       (dotimes (k (array-total-size ,init))
-	 (setf (aref ,init k)
+       (dotimes (,k (array-total-size ,init))
+	 (setf (aref ,init ,k)
 	       (make-string ,@len :initial-element #\Space)))
+       ,@(when inits
+	   (let ((k 0)
+		 (forms nil))
+	     (dolist (val inits)
+	       (push `(replace (aref ,init ,k) ,(car val)) forms)
+	       (incf k))
+	     (nreverse forms)))
+		
        ,init)))
 
 ;; This macro is supposed to set LHS to the RHS assuming that the LHS
@@ -1322,13 +1378,24 @@ causing all pending operations to be flushed"
 	  (- exp 1)))
     ))
      
+(defun stop (&optional arg)
+  (when arg
+    (format cl::*error-output* "~A~%" arg))
+  (error "STOP reached"))
 
 ;;;-------------------------------------------------------------------------
 ;;; end of macros.l
 ;;;
-;;; $Id: f2cl-lib.lisp,v 1.7 2005-05-19 12:40:27 rtoy Exp $
+;;; $Id: f2cl-lib.lisp,v 1.8 2006-01-31 15:22:26 rtoy Exp $
 ;;; $Log: f2cl-lib.lisp,v $
-;;; Revision 1.7  2005-05-19 12:40:27  rtoy
+;;; Revision 1.8  2006-01-31 15:22:26  rtoy
+;;; o Regenerate all f2cl'ed code because dasyjy.f was not getting the
+;;;   alfa and beta arrays intialized from the data statements.  (This was
+;;;   caused by a bug in f2cl.)
+;;; o Update f2cl-lib.lisp to match the version of f2cl used to regenerate
+;;;   these files.
+;;;
+;;; Revision 1.7  2005/05/19 12:40:27  rtoy
 ;;; Update and merge to current version of macros.l from the f2cl
 ;;; distribution.  Most of the changes done for maxima have been merged to
 ;;; the f2cl version, and we're just picking up the changes in the f2cl
