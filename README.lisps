@@ -60,7 +60,10 @@ when built with it. GCL produces a fast Maxima exectuable.
 
 GCL versions: GCL 2.6.5 and 2.6.7 are known to work for Maxima.
 Only the ANSI-enabled version of GCL works with Maxima, i.e.,
-when GCL is built, it must be configured with the --enable-ansi flag.
+when GCL is built, it must be configured with the --enable-ansi flag,
+i.e., execute ``./configure --enable-ansi'' in the build directory
+before executing make.
+
 Whether GCL is ANSI-enabled or not can be determined by 
 inspecting the banner which is printed when GCL is executed;
 if ANSI-enabled, the banner should say "ANSI".
