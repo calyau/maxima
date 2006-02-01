@@ -16,4 +16,3 @@ FOR I:0 THRU N DO
 FOR I:0 THRU N DO
    PRINT(S[I]));
  
-

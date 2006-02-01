@@ -39,4 +39,3 @@ input():=(m:read("ENTER DEGREE OF TRUNCATION"),
 deriv(g):=diff(g,x)+diff(g,y)*f$
 evaluate(g):=ev(g,x:0,y:z)$
 output():=print("Y =",u)$
-

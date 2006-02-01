@@ -391,16 +391,16 @@
 	  do (setq v (cons '(mlist) (nthcdr size (cdr v))))
 	  finally (return (cons '(mlist) tem)))))
 
-;;The representation of eiejek as a list is done by varying the first
+;;The representation of ei^Vej^Vek as a list is done by varying the first
 ;;index fastest thus if dim V = 2 then get
-;;[e1e1e1,
-;  e2e1e1,
-;  e1e2e1,
-;  e2e2e1,
-;  e1e1e2,
-;  e2e1e2,
-;  e1e2e2,
-;  e2e2e2]
+;;[e1^Ve1^Ve1,
+;  e2^Ve1^Ve1,
+;  e1^Ve2^Ve1,
+;  e2^Ve2^Ve1,
+;  e1^Ve1^Ve2,
+;  e2^Ve1^Ve2,
+;  e1^Ve2^Ve2,
+;  e2^Ve2^Ve2]
 
 
 ;;the first two are in the above representation and the second two are for reversed 

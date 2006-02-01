@@ -43,7 +43,7 @@ a factor of 2! This is due to the bad behavior of the derivatives near
 x=10.0 which cause the adaptive routine to have trouble. If you use 
 quanc8('f,a,c)+quanc8('f,c,b) where a<c<b, you will do better in such cases.
 
-Typing a control-right-bracket () will give a printout of where the 
+Typing a control-right-bracket (^]) will give a printout of where the 
 computation is at the moment, and how much time has been used.
 
 You can do batch("qq demo"); for some comparisons with the ROMBERG numerical

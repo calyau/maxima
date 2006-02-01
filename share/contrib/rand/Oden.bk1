@@ -45,4 +45,3 @@ step2():=initial:makelist([y[i] = z[i]],i,0,n-1)$
 deriv(g):=diff(g,x)+sum(diff(g,y[i])*y[i+1],i,0,n-2)+diff(g,y[n-1])*f$
 evaluate(g):=ev(g,x:0,initial)$
 output():=print("Y =",u)$
-

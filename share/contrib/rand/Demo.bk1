@@ -44,4 +44,3 @@
       F7:READ();
       XAXIS:YAXIS:TRUE$
       PLOT(F7,X,0,10);
-

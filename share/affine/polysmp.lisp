@@ -1283,7 +1283,7 @@ substituting them to be zero."
   (caar (new-rat var)))
  
 ;;
-;;Thus  h is in ideal1  ideal2 iff h is in ideal1*zz+ideal2*(1-zz)
+;;Thus  h is in ideal1 ^R ideal2 iff h is in ideal1*zz+ideal2*(1-zz)
 ;;the ==> direction is trivial and
 ;; for <==  h(x,y)=i1zz+i2(1-zz) and h is free of zz then i1=i2 and h=i2.
 (defun $ideal_intersection (ideal1 ideal2)

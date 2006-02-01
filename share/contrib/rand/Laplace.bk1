@@ -47,4 +47,3 @@ step3():=for i thru n do
 step4():=lt:solve(makelist(transf[i],i,1,n),makelist(l[i],i,1,n))$
 step5():=(remarray(x),for i thru n do x[i]:ilt(rhs(part(lt,1,i)),s,t))$
 output():=for i thru n do (print("x[",i,"] =",x[i]),print(" "))$
-

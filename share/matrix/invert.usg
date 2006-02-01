@@ -16,4 +16,3 @@ EXPAND(INVERT(mat)),DETOUT.  If it is desirable to then divide through by
 the determinant this can be accomplished by XTHRU(%) or alternatively
 from scratch by EXPAND(ADJOINT(mat))/EXPAND(DETERMINANT(mat)).
 INVERT(mat):=ADJOINT(mat)/DETERMINANT(mat).
-

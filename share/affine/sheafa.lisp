@@ -840,8 +840,8 @@
   (let ((fns (ldata-eqns ldata))
 	(gg (ldata-inequality ldata)))
     (setq gg (nplcm open-g gg))
-    ;;note that using this gg we may produce I1 with I  I1R[gg-1] but 
-    ;;unless I1 is prime we will not have I  I1
+    ;;note that using this gg we may produce I1 with I ^P I1R[gg-1] but 
+    ;;unless I1 is prime we will not have I ^P I1
     (setq fns  (sloop for f in fns
 		     when (not (and (numberp f) (zerop f)))
 		     do (setq tem (square-free (remove-common-factors f gg)))
@@ -1328,8 +1328,8 @@
 
 
 ;;;version 4.0 of delete has check of
-;; V(I1,c1)V(I2,c2) where I1,c1 has inequality 
-;;if I2I1[c1^-1,c2^-1] and <c2,I1>[c1^-1] = <1> 
+;; V(I1,c1)^PV(I2,c2) where I1,c1 has inequality 
+;;if I2^PI1[c1^-1,c2^-1] and <c2,I1>[c1^-1] = <1> 
 ;;ie if where c1 and c2 nonzero get containment, and also insist that V(I1,c1) does
 ;;not meet the c2=0 set.
 
