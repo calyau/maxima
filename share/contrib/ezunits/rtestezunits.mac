@@ -1,0 +1,278 @@
+a`m^3;
+a`(m^3);
+
+(a`m)^3;
+(a^3)`(m^3);
+
+%pi/a`m;
+(%pi/a)`m;
+
+%pi/(a`m);
+(%pi/a)`(1/m);
+
+unit_kg: 1`kg;
+1`kg;
+
+50*unit_kg;
+50`kg;
+
+%pi*(a`m);
+%pi*a`m;
+
+a*b`m*kg;
+(a*b)`(m*kg);
+
+a/b`m/kg;
+(a/b)`(m/kg);
+
+a`m + b`m;
+(a + b)`m;
+
+a`m - b`m;
+(a - b)`m;
+
+a`m - a`m;
+0`m;
+
+a`m + b`kg;
+(a`m) + (b`kg);
+
+(a`m)*(b`m);
+(a*b)`(m^2);
+
+(a`m)/(b`kg);
+(a/b)`(m/kg);
+
+(a`m)*(b`m)*(c`m);
+(a*b*c)`(m^3);
+
+(a`m)*exp(sin(z))*(b`m);
+(exp(sin(z))*a*b)`(m^2);
+
+(a`m)/(b`s)/(c`kg);
+(a/(b*c))`(m/(s*kg));
+
+(a`m)/((b`s)*(c`kg));
+(a/(b*c))`(m/(s*kg));
+
+a`m + b`m + c`m;
+(a + b + c)`m;
+
+(a`m)*(b`m)*(c`m)*(d`m);
+a*b*c*d`m^4;
+
+/* begin addt'l stuff adapted from Cliff Yapp's email
+ * to the Maxima mailing list 2005/05/21.
+ */
+a`s + c;
+(a`s) + c;
+
+a + c`s;
+a + (c`s);
+
+a`kg/s + c;
+(a`(kg/s)) + c;
+
+a`kg/s + c`kg/s;
+(a + c)`(kg/s);
+
+a`kg/s - c`kg/s + d`kg/s;
+(a - c + d)`kg/s;
+
+a`kg*m/s^2 + c;
+(a`(kg*m/s^2)) + c;
+
+a`kg*m/s^2 + c`kg*m/s^2;
+(a + c)`(kg*m/s^2);
+
+a`kg*m/s^2 + c`kg*m/s^2 - d`kg*m/s^2;
+(a + c - d)`(kg*m/s^2);
+
+a`kg/s + c`kg/s + d`kg*m/s^2;
+(a + c)`(kg/s) + d`(kg*m/s^2);
+
+a`kg/s + c`kg*m/s^2 + d`kg*m/s^2;
+a`kg/s + (c + d)`kg*m/s^2;
+
+(N: kg*m/s^2, 0);
+0;
+
+(J: N*m, 0);
+0;
+
+a`kg/s + b`N + c`kg/s + d`N + e`kg/s;
+(a + c + e)`kg/s + (b + d)`kg*m/s^2;
+
+1/60`kg/s + a`kg/s + b`kg/s + c`kg/s^2 + d`kg/s^2;
+(1/60 + a + b)`kg/s + (c + d)`kg/s^2;
+
+a/60`kg/s + a`kg/s + b`kg/s + c`kg/s^2 + d`kg/s^2;
+(a/60 + a + b)`kg/s + (c + d)`kg/s^2;
+
+(a/60)`kg/s + a*b`kg/s;
+(a/60 + a*b)`kg/s;
+
+a`kg*m/s^2 + b`N*J + c`kg/s + d`N*J - e`kg*m/s^2;
+(a - e)`kg*m/s^2 + c`kg/s + (b + d)`kg^2*m^3/s^4;
+
+sin(1`s);
+sin(1`s);
+
+-1`1/s;
+-1`1/s;
+
+sin(1`kg/s);
+sin(1`kg/s);
+/* end stuff adapted from Cliff Yapp's email
+ */
+
+/* foo(a`s) fails nondimensional_not1 test, due to presence of a`s within.
+ * => No rule triggered here.
+ */
+(a`b)*(c`d)*foo(e`f);
+block ([simp: false], (a`b)*(c`d)*foo(e`f));
+
+(F: C*(5/9) + 32, 0);
+0;
+
+212`F;
+100`C;
+
+32`F;
+0`C;
+
+-40`F;
+-40`C;
+
+deg: rad*%pi/180;
+rad*%pi/180;
+
+90`deg;
+%pi/2`rad;
+
+a`%pi;
+a*%pi;
+
+sin(135`deg);
+sin(3*%pi/4`rad);
+
+sin(135`deg), rad=1;
+sqrt(2)/2;
+
+(declare ([C1, C2], constant), 0);
+0;
+
+numerval (%C2, 14390.0, %C1, 3.742E+8);
+[%C2, %C1];
+
+declare ("µ", alphabetic);
+done;
+
+(C1: %C1`W*µm^4/m^2, C2: %C2`µm*K, l: %l`µm, T: %T`K, 0);
+0;
+
+/* "infeval=true" is a work-around for simplification strangeness:
+ * after load("units.mac")$ kill(all)$ load("units.mac")$
+ * the simplifier doesn't try so hard to use tellsimpafter rules,
+ * but it can be coaxed by re-evaluation via ''expr or infeval=true.
+ */
+expr: C1/(l^5*(exp(C2/(l*T)) - 1)), infeval=true;
+%C1/(%l^5*(%e^(%C2/(%l*%T))-1)) ` W/(m^2*µm);
+
+/* COMMENT THIS OUT FOR THE MOMENT
+ * (IT IS OK BUT TAKES TOO LONG DUE TO FACTORING (exp(n) - 1)
+ev (expr, numer);
+3.742E+8/(%l^5*(%e^(14390.0/(%l*%T))-1)) ` W/(m^2*µm);
+ */
+
+/* Now try this (might take a while to plot) --
+ * first(%), %T=6000;
+ * plot2d (%, [%l, 0.05, 3]);
+ */
+
+declare ([a1, b1, c1], dimensional);
+done;
+
+a1 + b1 + c1;
+'qty(a1)`'units(a1) + 'qty(b1)`'units(b1) + 'qty(c1)`'units(c1);
+
+declare_units ('[a1, b1, c1], mph);
+mph;
+
+a1: 50`mph;
+50`mph;
+
+catch (b1: 50`gpf);
+oops ('b1, 50`gpf);
+
+b1: c1;
+c1;
+
+a1 + b1 + c1, infeval;
+2*c1 + 50`mph;
+
+(declare_qty ('a1, 100), declare_qty ('b1, 200), declare_qty ('c1, 300));
+300;
+
+a1 + b1 + c1, infeval;
+650`mph;
+
+c1 + 1000`mph;
+1300`mph;
+
+c1 + 1000`kg;
+300`mph + 1000`kg;
+
+(a1 + 500`mph)/(b1 - 100`mph), infeval;
+11/4;
+
+map (declare_units, [aa, bb, cc, dd, ee, ff, gg], [m, kg, s, K, feet, in, acre]);
+[m, kg, s, K, feet, in, acre];
+
+catch (aa: bb);
+oops ('aa, bb);
+
+catch (bb: aa);
+oops ('bb, aa);
+
+catch (cc: a1);
+oops ('cc, a1);
+
+catch (apply (lambda ([ff], cc^2), [gg]));
+oops ('ff, gg);
+
+units (aa*bb*cc*dd*ee*ff*gg);
+m*kg*s*K*feet*in*acre;
+
+[aa: %aa`m, bb: %bb`kg, cc: %cc`s, dd: %dd`K, ee: %ee`feet, ff: %ff`in, gg: %gg`acre];
+[%aa`m, %bb`kg, %cc`s, %dd`K, %ee`feet, %ff`in, %gg`acre];
+
+ff: ee*(12`in)/(1`feet);
+12*%ee`in;
+
+gg: ff^2*((1`yd)/(36`in))^2*(1`acre)/(55*88`yd^2);
+%ee^2/43560`acre;
+
+declare_units (foo, m/s^2);
+m/s^2;
+
+units (foo (p, q));
+m/s^2;
+
+qty (foo (p, q));
+'qty (foo (p, q));
+
+aa: foo (p, q) * cc * (100`s);
+100 * qty (foo (p, q)) * %cc ` m;
+
+declare_units (bar, kg/acre);
+kg/acre;
+
+bb: bar[n] * gg;
+qty(bar[n]) * qty(gg) ` kg;
+
+catch (cc: bar[k]);
+oops ('cc, bar[k]);
+
+cc: bar[11] * (57 ` s/kg) * (10 ` acre);
+570 * qty(bar[11]) ` s;

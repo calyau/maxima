@@ -1,0 +1,125 @@
+infix ("`", 118, 118);
+declare (dimensional, feature);
+
+declare_units (a%, u%) :=
+  block (local (a%, u%), 
+  if listp(a%)
+    then map (lambda ([a1%], local(a1%), declare1_units (a1%, u%)), a%)
+    else declare1_units (a%, u%), u%);
+
+declare1_units (a%, u%) :=
+  block (local (a%, u%),
+  apply ('define_variable, [a%, a%, any_check]),
+  put (a%, units_check (a%), value_check),
+  put (a%, u%, units),
+  if featurep (a%, dimensional) = false
+    then apply (declare, [a%, dimensional]));
+
+declare_qty (a%, q%) :=
+  block (local (a%, q%),
+  if listp(a%)
+    then map (lambda ([a1%], local(a1%), declare1_qty (a1%, q%)), a%)
+    else declare1_qty (a%, q%), q%);
+
+/* Maybe we want to work with numerval in declare1_qty
+ * (instead of the indicator qty).
+ */
+declare1_qty (a%, q%) :=
+  block (local (a%, q%),
+  if featurep (a%, dimensional) = false then apply (declare, [a%, dimensional]), put (a%, q%, qty));
+
+units_check (zz%) :=
+  block (local (zz%),
+  buildq ([zz%: zz%], lambda([yy%],
+    if units('zz%) # 1 and units(yy%) # 1 and units(yy%) # units('zz%)
+    then throw (oops ('zz%, yy%)))));
+
+qty(e%) :=
+  block (local (e%),
+  if atom(e%) then
+    if featurep (e%, dimensional) then
+      if get (e%, qty) = false then 'qty(e%) else get (e%, qty)
+    else e%
+  else if unitop_p(e%) then first(e%)
+  else if featurep (op(e%), dimensional) then 'qty(e%)
+  else apply (op(e%), map (qty, args(e%))));
+
+units(e%) :=
+  block (local (e%),
+  if atom(e%) then 
+    if featurep (e%, dimensional) then
+      if get (e%, units) = false then 'units(e%) else get (e%, units)
+    else 1
+  else if mapatom (e%) then units (op (e%))  /* mapatom but not atom => subscripted */
+  else if unitop_p(e%) then second(e%)
+  else if featurep (op(e%), dimensional) then units(op(e%))
+  else apply (op(e%), map (units, args(e%))));
+
+d(e%) := dimension (units (e%));
+
+matchdeclare (aa%, true,
+    cc%, constantp,
+    ccn0%, constantp_not0,
+    ccn1%, constantp_not1,
+    mm%, mult_expr_nontrivialconstfactorsp,
+    nd%, nondimensional,
+    uu%, unitp,
+    xx%, nonconstantp);
+
+simp: false$
+tellsimpafter (uu%^ccn1%, (qty(uu%)^ccn1%) ` (units(uu%)^ccn1%));
+tellsimpafter (nd% * uu%, multiply_with_units (nd%, uu%));
+tellsimpafter (nd% + uu%, add_with_units (nd%, uu%));
+
+tellsimpafter (aa% ` (xx% + ccn0%), (aa% - ccn0%)`xx%);
+tellsimpafter (aa% ` mm%, (constant_factors(mm%) * aa%) ` everything_else(mm%));
+tellsimpafter (aa% ` cc%, aa%*cc%);
+simp: true$
+
+unitop_p (e%) := is (nounify (op(e%)) = nounify ("`"));
+unitp (e%) :=
+  if atom(e%) then featurep (e%, dimensional)
+  else if unitop_p (e%) then true
+  else featurep (op(e%), dimensional);
+
+constantp_not1 (x%) := constantp(x%) and x% # 1;
+constantp_not0 (x%) := constantp(x%) and x% # 0;
+nonconstantp (x%) := not constantp (x%);
+mult_exprp (e%) := not atom(e%) and (nounify (op(e%)) = nounify ("*") or nounify (op(e%)) = nounify ("//"));
+mult_expr_nontrivialconstfactorsp (e%) := mult_exprp (e%) and constant_factors (e%) # 1;
+nondimensional (e%) := atom(e%) or (op(e%) # "`" and apply ("and", map (nondimensional, args(e%))));
+nondimensional_not1 (e%) := e% # 1 and nondimensional (e%);
+nondimensional_not0 (e%) := e% # 0 and nondimensional (e%);
+
+add_with_units (x%, u%) :=
+  if unitp (u%) then
+    x% + u%
+  else
+    /* identify terms with like units and add them up. */
+    block ([r%: [], a%: args(u%)],
+    while a% # [] do
+      block ([s%: qty(a%[1]), b%: []],
+      for i%:2 thru length(a%) do
+        if units (a%[i%]) = units (a%[1]) then
+          s%: s% + qty (a%[i%])
+        else
+          b%: cons (a%[i%], b%),
+      r%: cons (s%`units(a%[1]), r%),
+      a%: b%),
+    if length (r%) = 1 then
+      x% + r%[1]
+    else
+      cons (x%, apply ("+", r%)));
+      
+multiply_with_units(x%, u%) :=
+  if unitp (u%) then
+    (x%*qty(u%))`units(u%)
+  else
+    (x%*apply ("*", map (qty, args (u%)))) ` simplify_units (apply ("*", map (units, args (u%))));
+
+constant_factors (e%) := block ([L%, eqns%], L%: listofvars(e%), eqns%: map ("=", L%, L%*0+1), subst (eqns%, e%));
+
+everything_else(e%) := e%/constant_factors(e%);
+
+simplify_units (e%) := e%;
+
