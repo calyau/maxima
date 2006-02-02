@@ -563,14 +563,14 @@ Saves primes found.
 @end defvr
 
 @defvr {Option variable} primep_number_of_tests
-Default value: 10000
+Default value: 25
 
 Number of primep-test runs.
 @end defvr
 
 
 @defvr {Option variable} pollard_rho_limit
-Default value: 25
+Default value: 10000
 
 Limit for pollard-rho factorization depth.
 @end defvr
@@ -621,7 +621,7 @@ Display factorization steps.
 
 
 @deffn {Function} ifactors (@var{n})
-Returns a list of factors of integer @var{n}.
+Returns a list of prime power factors of positive integer @var{n}.
 
 @example
 (%i1) load("ifactor")$
@@ -634,7 +634,8 @@ To use this function write first @code{load("ifactor")}.
 @end deffn
 
 @deffn {Function} ifactor (@var{n})
-Factors @var{n}.
+Factors positive integer @var{n}. @code{ifactor} uses Pollard's rho and
+elliptic curve factorization methods to factor integers.
 
 @example
 (%i1) load("ifactor")$
@@ -648,7 +649,9 @@ To use this function write first @code{load("ifactor")}.
 @end deffn
 
 @deffn {Function} primep_pr (@var{n})
-Probabilistic primality test.
+Probabilistic primality test. @code{primep_pr} uses
+@code{primep_pr_number_of_tests} Miller-Rabin's pseudo-primality tests and
+one Lucas pseudo-primality test.
 
 @example
 (%i1) load("ifactor")$
