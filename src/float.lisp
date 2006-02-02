@@ -550,18 +550,30 @@ One extra decimal digit in actual representation for rounding purposes.")
 		    ans (fpplus ans (fpquotient term (intofp n)))))))
      (return ans)))
 
-(defun fpatan2 (y x)			; ATAN(Y/X) from -PI to PI
-  (cond ((equal (car x) 0)		; ATAN(INF), but what sign?
-	 (cond ((equal (car y) 0) (merror "atan(0//0) has been generated."))
+;; atan(y/x) taking into account the quadrant.  (Also equal to
+;; arg(x+%i*y).)
+(defun fpatan2 (y x)
+  (cond ((equal (car x) 0)
+	 ;; atan(y/0) = atan(inf), but what sign?
+	 (cond ((equal (car y) 0)
+		(merror "atan(0//0) has been generated."))
 	       ((minusp (car y))
+		;; We're on the negative imaginary axis, so -pi/2.
 		(fpquotient (fppi) (intofp -2)))
-	       (t (fpquotient (fppi) (intofp 2)))))
+	       (t
+		;; The positive imaginary axis, so +pi/2
+		(fpquotient (fppi) (intofp 2)))))
 	((signp g (car x))
-	 (cond ((signp g (car y)) (fpatan (fpquotient y x)))
-	       (t (fpminus (fpatan (fpquotient y x))))))
+	 ;; x > 0.  atan(y/x) is the correct value.
+	 (fpatan (fpquotient y x)))
 	((signp g (car y))
+	 ;; x < 0, and y > 0.  We're in quadrant II, so the angle we
+	 ;; want is pi+atan(y/x).
 	 (fpplus (fppi) (fpatan (fpquotient y  x))))
-	(t (fpdifference (fpatan (fpquotient y x)) (fppi))))) 
+	(t
+	 ;; x <= 0 and y <= 0.  We're in quadrant III, so the angle we
+	 ;; want is atan(y/x)-pi.
+	 (fpdifference (fpatan (fpquotient y x)) (fppi))))) 
 
 (defun tanbigfloat (a)
   (setq a (car a)) 
@@ -1592,26 +1604,49 @@ One extra decimal digit in actual representation for rounding purposes.")
 					 (fpquotient (fptimes* 2x fp-x)
 						     (fpdifference (fpone) fp-x)))))))))))
 
+;; The formulas for eta and nu below can be easily derived from
+;; rectform(atanh(x+%i*y)) =
+;;
+;; 1/4*log(((1+x)^2+y^2)/((1-x)^2+y^2)) + %i/2*(arg(1+x+%i*y)+arg(1-x*%i*y))
+;;
+;; Expand the argument of log out and divide it out and we get
+;;
+;; log(((1+x)^2+y^2)/((1-x)^2+y^2)) = log(1+4*x/((1-x)^2+y^2))
+;;
+;; Since arg(x)+arg(y) = arg(x*y) (almost), we can simplify the
+;; imaginary part to
+;;
+;; arg((1+x+%i*y)*(1-x+%i*y)) = arg((1-x)*(1+x)-y^2+2*y*%i)
+;; = atan2(2*y/((1-x)*(1+x)-y^2))
+;;
+;; These are the eta and nu forms below.
 (defun complex-atanh (x y)
   (let* ((fpx (cdr (bigfloatp x)))
 	 (fpy (cdr (bigfloatp y)))
 	 (beta (if (minusp (car fpx))
 		   (fpminus (fpone))
 		   (fpone)))
+	 (x (fptimes* beta fpx))
+	 (y (fptimes* beta (fpminus fpy)))
+	 ;; Kahan has rho = 4/most-positive-float.  What should we do
+	 ;; here about that?  Our big floats don't really have a
+	 ;; most-positive float value.
 	 (rho (intofp 0))
-	 (t1 (fpplus (fpabs fpy) rho))
+	 (t1 (fpplus (fpabs y) rho))
 	 (t1^2 (fptimes* t1 t1))
-	 (1-x (fpdifference (fpone) fpx))
+	 (1-x (fpdifference (fpone) x))
+	 ;; eta = log(1+4*x/((1-x)^2+y^2))/4
 	 (eta (fpquotient
-	       (fplog1p (fpquotient (fptimes* (intofp 4) fpx)
+	       (fplog1p (fpquotient (fptimes* (intofp 4) x)
 				    (fpplus (fptimes* 1-x 1-x)
 					    t1^2)))
 	       (intofp 4)))
+	 ;; nu = 1/2*atan2(2*y,(1-x)*(1+x)-y^2)
 	 (nu (fptimes* (cdr bfhalf)
 		       (fpatan2
-			(fptimes* (intofp 2) fpy)
+			(fptimes* (intofp 2) y)
 			(fpdifference (fptimes* 1-x
-						(fpplus (fpone) fpx))
+						(fpplus (fpone) x))
 				      t1^2)))))
     (values (bcons (fptimes* beta eta))
 	    (bcons (fpminus (fptimes* beta nu))))))

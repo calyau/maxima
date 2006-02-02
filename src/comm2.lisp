@@ -417,9 +417,7 @@
 		(or ($bfloatp x) ($bfloatp y))) ;at least one bfloat
 	   (setq x ($bfloat x)
 		 y ($bfloat y))
-	   (if (mminusp* y)
-	       (neg (*fpatan (neg y) (list x)))
-	       (*fpatan y (list x))))
+	   (*fpatan y (list x)))
 	  ((and $%piargs (free x '$%i) (free y '$%i)
 		;; Only use asksign if %piargs is on.
 		(cond ((zerop1 y) (if (atan2negp x) (simplify '$%pi) 0))
