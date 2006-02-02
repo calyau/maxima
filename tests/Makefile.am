@@ -86,6 +86,7 @@ rtestsum.mac \
 rtest_trig.mac \
 rtest_zeta.mac \
 rtest_diff_invtrig.mac \
+rtest_scalarp.mac \
 testsuite.lisp
 
 EXTRA_DIST = $(genericdirDATA)

@@ -23,4 +23,5 @@
     "rtest_trig"
     "rtest_zeta"
     "rtest_diff_invtrig"
+    "rtest_scalarp"
     ))
