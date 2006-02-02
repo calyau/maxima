@@ -155,8 +155,7 @@
 	(t (mapcar #'ratplus a b)))) 
 
 (defmfun $determinant (mat)
-  (cond (($constantp mat) mat)
-	((not (or (mbagp mat) ($matrixp mat))) (list '(%determinant) mat))
+  (cond ((not (or (mbagp mat) ($matrixp mat))) (if ($scalarp mat) mat (list '(%determinant) mat)))
 	(t (setq mat (check mat))
 	   (if (not (= (length mat) (length (cadr mat))))
 	       (merror "`determinant' called on a non-square matrix."))
