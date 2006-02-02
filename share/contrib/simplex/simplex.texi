@@ -58,6 +58,8 @@ possible among vectors for which @code{A.x = b} and @code{x >= 0}. Argument
 minimum value @code{c.x}. If the problem is not bounded, it returns "Problem not bounded!" and
 if the problem is not feasible, it returns "Problem not feasible!".
 
+To use this function first load the @code{simplex} package with @code{load(simplex);}.
+
 Example:
 
 @example
@@ -107,6 +109,8 @@ constraints).
 
 @code{minimize_sx} uses the simplex algorithm which is implemented in maxima
 @code{linear_program} function.
+
+To use this function first load the @code{simplex} package with @code{load(simplex);}.
 
 Examples:
 
