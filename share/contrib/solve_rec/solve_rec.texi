@@ -26,6 +26,8 @@
 @code{solve_rec} is a package for solving linear recurrences with polynomial
 coefficients.
 
+A demo is available with @code{demo(solve_rec);}.
+
 Example:
 
 @example
@@ -116,6 +118,9 @@ Note that the running time of the algorithm used to find hypergeometrical
 solutions is exponential in the degree of the leading and trailing
 coefficient.
 
+To use this function first load the @code{solve_rec} package with
+@code{load(solve_rec);}.
+
 Example of linear recurrence with constant coefficients:
 
 @example
@@ -175,6 +180,9 @@ See also: solve_rec_rat, simplify_products, product_use_gamma.
 Solves for rational solutions to linear recurrences. See solve_rec for
 description of arguments.
 
+To use this function first load the @code{solve_rec} package with
+@code{load(solve_rec);}.
+
 Example:
 
 @example
@@ -222,8 +230,12 @@ Returns the recurrence sattisfied by the sum
 where summand is hypergeometrical in @var{k} and @var{n}. Zeilberger package
 must be loaded before using this function.
 
+To use this function first load the @code{solve_rec} package with
+@code{load(solve_rec)} and the @code{zeilberger} package with
+@code{load(zeilberger)}.
+
 @example
-(%i17) load("Zeilberger/zeilberger")$
+(%i17) load("zeilberger")$
 (%i18) summand: binom(3*k+1,k)*binom(3*(n-k),n-k)/(3*k+1)$
 (%i19) summand_to_rec(summand, k, n);
 Dependent equations eliminated:  (3 2)

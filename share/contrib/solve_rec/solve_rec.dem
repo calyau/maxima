@@ -29,7 +29,7 @@ solve_rec((-n-5)*s[n+3]+(6*n+22)*s[n+2]+(-9*n-17)*s[n+1]+4*n*s[n],s[n]);
 solve_rec((n+3)*s[n+2]-3*(n+2)*s[n+1]+2*(n+1)*s[n],s[n]);
 solve_rec((x^6+5*x^5+5*x^4-5*x^3-6*x^2)*z[x+2]+(2*x^4+7*x^3+9*x^2+6*x)*z[x+1]+(x^2+4*x+3)*z[x], z[x]);
 solve_rec(n*(n+1)*a[n+2]-2*n*(n+k+1)*a[n+1]+(n+k)*(n+k+1)*a[n], a[n]);
-solve_rec(a[n+2]-(2*n+1)*a[n+1]+(n^2-u)*a[n], a[n]), hyper_factor_solve=true;
+solve_rec(a[n+2]-(2*n+1)*a[n+1]+(n^2-u)*a[n], a[n]), hyper_factor_solve=true, assume_pos=true;
 solve_rec((n^2-n-2)*f[n+2]+(-n^3-3*n^2+2*n+8)*f[n+1]+(2*n^3+4*n^2-2*n-4)*f[n], f[n]);
 solve_rec((n^5+8*n^4+23*n^3+29*n^2+16*n+4)*f[n+2]+(-n^6-9*n^5-32*n^4-61*n^3-65*n^2-36*n-8)*f[n+1]+(-n^6-8*n^5-21*n^4-23*n^3-9*n^2)*f[n], f[n]);
 solve_rec((5*n^3+17*n^2+16*n+4)*f[n+2]+(-15*n^3-46*n^2-43*n-12)*f[n+1]+(-20*n^3-38*n^2-14*n)*f[n], f[n]), product_use_gamma=false;

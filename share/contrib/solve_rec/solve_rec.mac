@@ -61,8 +61,6 @@ eval_when(translate,
                              solve_rec_poly,casoratian_determinant,
                              remove_duplicates1))$
 
-load("nusum.mac")$
-
 put('solve_rec, 1.06, 'version)$
 
 define_variable(simplify_products,     true,   bool)$
