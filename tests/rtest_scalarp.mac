@@ -46,8 +46,13 @@ sqrt(5)$
 determinant(7*%i + 5);
 7*%i + 5$
 
-(remove([a,b,c],scalar),0);
+(remove([a,b],scalar),0);
 0$
+
+(remvalue(sc, nsc,buggy),0);
+0$
+
+
 
 
 
