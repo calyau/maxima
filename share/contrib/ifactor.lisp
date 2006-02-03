@@ -489,6 +489,7 @@
       (cond ((equal n 1) nil)
             ((equal n 2) t)
             ((evenp n) nil)
+            ((member n `(2 3 5 7 11 13 17)) t)
             ((< n 34155071728321) (primep-small n))
             ((member n *large-primes*) t)
             (t (primep-prob n)))
