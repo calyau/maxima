@@ -35,6 +35,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (in-package :maxima)
+(macsyma-module ifactor)
 
 (defmvar $save_primes nil
   "Save primes found." boolean)
@@ -108,6 +109,36 @@
             (car factors)))
       (merror "Argument to ifactor must be positive integer:~%~M." n)))
 
+;;
+;; Uncomment cfactor before loading to make maxima factor function use ifactor package
+;;
+
+;(defun cfactor (x)
+;  (cond
+;    ((null $factorflag) (return-from cfactor (list x 1)))
+;    ((floatp x)
+;     (errrjf "`factor' given floating arg"))
+;    ((pzerop x) (return-from cfactor (list (pzero) 1)))
+;    ((eqn x -1) (return-from cfactor (list -1 1)))
+;    ((minusp x)
+;     (return-from cfactor (cons -1 (cons 1 (cfactor (minus x))))))
+;    ((lessp x 2) (return-from cfactor (list x 1)))
+;    (t
+;     (if $ifactor_verbose
+;       (format t "~%Starting factorization of n = ~d" x))
+;     (let* ((factor-list (get-small-factors x))
+;            (large-part (car factor-list))
+;            (factor-list (cadr factor-list))
+;            (factor-list (if (> large-part 1)
+;                             (append (convert-list (get-large-factors large-part))
+;                                     factor-list)
+;                             factor-list))
+;            (factor-list (sort factor-list (lambda (u v) (< (first u) (first v)))))
+;            (ans ()))
+;       (dolist (fac factor-list)
+;         (setq ans (cons (car fac) (cons (cadr fac) ans))))
+;       ans))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; factor out primes < *largest-small-prime* and primes which were already
@@ -158,7 +189,7 @@
     ;; try factoring smaller factors with pollard-rho
     (dotimes (i $pollard_rho_tests)
       (if $ifactor_verbose
-        (format t "~%Pollard rho: round #~d of ~d (lim=~d)" i $pollard_rho_tests lim_pollard))
+        (format t "~%Pollard rho: round #~d of ~d (lim=~d)" (1+ i) $pollard_rho_tests lim_pollard))
       (setq f (get-one-factor-pollard n lim_pollard))
       (if (and (> f 1) (< f n))
         (progn
@@ -393,7 +424,7 @@
       (setq a (mod (* a1 a2_inv) n))
       (setq sigma (max 6 (mod (+ (* sigma sigma) 1) n)))
       (if $ifactor_verbose
-        (format t "~%ECM: trying with curve #~d of ~d (lim=~d)" i $ecm_number_of_curves lim1))
+        (format t "~%ECM: trying with curve #~d of ~d (lim=~d)" (1+ i) $ecm_number_of_curves lim1))
       (init-prime-diffs 640000)
       (setq fact (ecm-factor-with-curve n x z a lim1))
       (if (and fact (< fact n))
@@ -408,7 +439,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun convert-list (l)
-  (let ((l1 (sort l (lambda (u v) (> u v)))))
+  (let ((l1 (sort l #'>)))
     (convert-list-sub (car l1) 1 (rest l1) nil)))
 
 (defun convert-list-sub (e n l1 l2)
@@ -458,10 +489,23 @@
       (cond ((equal n 1) nil)
             ((equal n 2) t)
             ((evenp n) nil)
-            ((< n 10000) (if (member n *small-primes*) t nil))
+            ((< n 34155071728321) (primep-small n))
             ((member n *large-primes*) t)
             (t (primep-prob n)))
       (merror "Argument to primep_pr must be positive integer:~%~M." n)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; miller-rabin test is deterministic for n<34155071728321 
+;;; if we test for small bases (values taken from yacas RabinMiller package).
+;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun primep-small (n)
+  (dolist (x `(2 3 5 7 11 13 17))
+    (if (not (miller-rabin n x))
+      (return-from primep-small nil)))
+  t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -495,10 +539,10 @@
 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun miller-rabin (n)
+(defun miller-rabin (n &optional x)
   (let* ((k 0) (j 0) y
          (q (1- n))
-         (x (+ (random (1- q)) 2)))
+         (x (if (null x) (+ (random (1- q)) 2) x)))
     (progn
       (do () ((logbitp 0 q))
         (progn
@@ -512,6 +556,13 @@
             (if (and (> j 0) (= y 1)) (return)))
           (setq j (1+ j))
           (setq y (power-mod y 2 n)) )))))
+
+(defun $power_mod (b n m)
+  (if (and (integerp b)
+           (integerp n)
+           (integerp m))
+    (power-mod b n m)
+    (merror "Non-integer arguments to power_mod")))
 
 (defun power-mod (b n m)
   (if (= 0 n) 1
