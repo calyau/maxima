@@ -28,6 +28,10 @@
 
 (in-package :maxima)
 
+; It's OK for MEVALATOMS to evaluate the arguments of MCOND.
+; %MCOND already has this property.
+(defprop mcond t evok)
+
 ; Change default value of $PREDERROR to NIL.
 ; Binding $PREDERROR to T banishes unevaluated conditionals.
 (setq $prederror nil)
@@ -109,24 +113,27 @@
 ; Otherwise, construct a new conditional expression from the evaluated arguments.
 
 (defmspec mcond (x)
-  (let ((op (car x)) (args (cdr x)) (args-evaluated))
+  (let ((op (car x)) (args (cdr x)) (conditions) (consequences))
     (loop while (> (length args) 0) do
       (let* ((b (car args)) (g (cadr args)) (v (mevalp b)))
         (cond 
           ((eq v t)
-           (setq args-evaluated (append args-evaluated (list t (meval g))))
+           (setq conditions (append conditions (list v)))
+           (setq consequences (append consequences (list g)))
            (setq args nil))
           ((eq v nil)
            nil)
           (t
-            (setq args-evaluated (append args-evaluated (list (meval b) (meval g))))))
+            (setq conditions (append conditions (list v)))
+            (setq consequences (append consequences (list g)))))
         (setq args (cddr args))))
 
     (cond
-      ((eq (car args-evaluated) t)
-       (cadr args-evaluated))
+      ((eq (car conditions) t)
+       (meval (car consequences)))
       (t
-        (cons op args-evaluated)))))
+        (setq consequences (mapcar 'mevalatoms consequences))
+        (cons op (apply 'append (mapcar #'(lambda (x y) `(,x ,y)) conditions consequences)))))))
 
 ; Simplification of conditional expressions.
 
