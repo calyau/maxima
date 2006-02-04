@@ -857,8 +857,14 @@
       )
     )
     (cond (l1 (setq l1 (contract4 (cons '(mtimes) l1)))))
-    (cond (l2 (setq l1 (cons (append (cons '(mexpt)
-                       (contract4 (cons '(mtimes) l2))) '(-1)) l1))))
+    (cond (l2 (setq l1 (cons (list '(mexpt)
+                                   (cons '(mtimes)
+                                          (contract4 (cons '(mtimes) l2))
+                                   )
+                                   '-1
+                             )
+                             l1
+                       ))))
     (return l1)
   )
 )
