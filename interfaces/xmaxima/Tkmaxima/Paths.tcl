@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.18 2006-01-10 04:47:12 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.19 2006-02-05 18:17:20 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -172,11 +172,29 @@ proc setMaxDir {} {
     if { [info exists env(MAXIMA_LANG_SUBDIR)] } {
 	set maxima_priv(maxima_lang_subdir) $env(MAXIMA_LANG_SUBDIR)
     } else {
-	set wlocale [ ::msgcat::mclocale ]
+        set wlocale ""
+	if { [info exists env(LC_ALL)] } { 
+	    set wlocale $env(LC_ALL) 
+	} elseif { [info exists env(LC_MESSAGES)] } { 
+	    set wlocale $env(LC_MESSAGES) 
+	} elseif { [info exists env(LANG)] } { 
+	    set wlocale $env(LANG) }
 	# Only languages known to Maxima
 	switch -glob $wlocale {
+	  "es*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "es.utf8"
+		}
+	  "es*UTF*" {
+		    set maxima_priv(maxima_lang_subdir) "es.utf8"
+		}
 	  "es*" {
 		    set maxima_priv(maxima_lang_subdir) "es"
+		}
+	  "pt*utf*" {
+		    set maxima_priv(maxima_lang_subdir) "pt.utf8"
+		}
+	  "pt*UTF*" {
+		    set maxima_priv(maxima_lang_subdir) "pt.utf8"
 		}
 	  "pt*" {
 		    set maxima_priv(maxima_lang_subdir) "pt"
@@ -186,6 +204,7 @@ proc setMaxDir {} {
 		    set maxima_priv(maxima_lang_subdir) ""
 		}
 	}
+	puts $maxima_priv(maxima_lang_subdir)
     }
 
     # On Windows ::msgcat::mclocale is a good way to derive locale 
