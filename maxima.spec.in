@@ -15,9 +15,15 @@
 #  Spanish 
 %define enable_lang_es 1
 %define lang_es_flags --enable-lang-es
+#  Spanish UTF-8  
+%define enable_lang_es_utf 1
+%define lang_es_flags_utf --enable-lang-es-utf8
 #  Portuguese
 %define enable_lang_pt 1
 %define lang_pt_flags --enable-lang-pt
+#  Portuguese
+%define enable_lang_pt_utf 1
+%define lang_pt_flags_utf --enable-lang-pt-utf8
 
 # Inhibit automatic compressing of info files. Compressed info
 # files break maxima's internal help.
@@ -101,6 +107,15 @@ Requires: maxima
 Maxima Spanish lagnuage support.
 %endif
 
+%if %{enable_lang_es_utf}
+%package lang-es-utf8
+Summary: Maxima Spanish UTF-8 language pack
+Group: Development/Languages
+Requires: maxima
+%description lang-es-utf8
+Maxima Spanish lagnuage support (UTF-8).
+%endif
+
 %if %{enable_lang_pt}
 %package lang-pt
 Summary: Maxima Portuguese language pack
@@ -110,10 +125,20 @@ Requires: maxima
 Maxima Portuguese lagnuage support.
 %endif
 
+%if %{enable_lang_pt_utf}
+%package lang-pt-utf8
+Summary: Maxima Portuguese UTF-8 language pack
+Group: Development/Languages
+Requires: maxima
+%description lang-pt-utf8
+Maxima Portuguese lagnuage support (UTF-8).
+%endif
+
 %prep
 %setup -q
 %configure  %{?sbcl_flags:} %{?cmucl_flags:} %{?gcl_flags:} %{?clisp_flags:} \
-	    %{?lang_es_flags:} %{?lang_pt_flags:}
+	    %{?lang_es_flags:} %{?lang_es_flags_utf:} \
+	    %{?lang_pt_flags:} %{?lang_pt_flags_utf:} 
 
 %build
 make
@@ -197,10 +222,22 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/es
 %endif
 
+%if %{enable_lang_es_utf}
+%files lang-es-utf8
+%{_datadir}/maxima/%{version}/doc/html/es.utf8
+%{_infodir}/es.utf8
+%endif
+
 %if %{enable_lang_pt}
 %files lang-pt
 %{_datadir}/maxima/%{version}/doc/html/pt
 %{_infodir}/pt
+%endif
+
+%if %{enable_lang_pt_utf}
+%files lang-pt-utf8
+%{_datadir}/maxima/%{version}/doc/html/pt.utf8
+%{_infodir}/pt.utf8
 %endif
 
 %doc

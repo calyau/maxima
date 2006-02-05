@@ -204,22 +204,22 @@
 	    ((zl-member locale '("C" "POSIX" "c" "posix")) 		 
 		(setq *maxima-lang-subdir* nil))
 	    (t  (when (eql (position #\. locale) 5)
-		    (setq codeset (subseq locale 6)))
+		    (setq codeset (string-downcase (subseq locale 6))))
 		(when (eql (position #\_ locale) 2)
-		    (setq territory (string-upcase (subseq locale 3 5))))
+		    (setq territory (string-downcase (subseq locale 3 5))))
 		(setq language (string-downcase (subseq locale 0 2)))
 		;; Set *maxima-lang-subdir* only for known languages.
 		;; Extend procedure below as soon as new translation
 		;; is available. 
 		(cond
 		    ;; English
-		    ;; no subdir (default direcrory)
 		    ((equal language "en")
 			(setq *maxima-lang-subdir* nil))
 		    ;; Latin-1 aka iso-8859-1 languages 
-		    ;; subdir = two-char language code
 		    ((zl-member language '("es" "pt"))
-		        (setq *maxima-lang-subdir* language))
+		      (if (zl-member codeset '("utf-8" "utf8"))
+		    	    (setq *maxima-lang-subdir* (concatenate 'string language ".utf8"))
+		    	    (setq *maxima-lang-subdir* language)))
 		    (t  (setq *maxima-lang-subdir* nil)))
 		;; Translation of the word "Index" to match node "Fuction and Variable Index"
 		(cond

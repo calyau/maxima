@@ -315,6 +315,16 @@ AC_ARG_ENABLE(lang-es,[  --enable-lang-es                 Spanish language suppo
 
 AM_CONDITIONAL(LANG_ES, test x$lang_es = xtrue)
 
+AC_ARG_ENABLE(lang-es-utf8,[  --enable-lang-es-utf8            Spanish language support (UTF-8)],
+     	[case "${enableval}" in
+       		yes) lang_es_utf8=true  ;;
+       		no)  lang_es_utf8=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-es-utf8) ;;
+     	esac],
+	[lang_es_utf8=false])
+
+AM_CONDITIONAL(LANG_ES_UTF8, test x$lang_es_utf8 = xtrue)
+
 AC_ARG_ENABLE(lang-pt,[  --enable-lang-pt                 Portuguese language support],
      	[case "${enableval}" in
        		yes) lang_pt=true  ;;
@@ -324,6 +334,16 @@ AC_ARG_ENABLE(lang-pt,[  --enable-lang-pt                 Portuguese language su
 	[lang_pt=false])
 
 AM_CONDITIONAL(LANG_PT, test x$lang_pt = xtrue)
+
+AC_ARG_ENABLE(lang-pt-utf8,[  --enable-lang-pt-utf8            Portuguese language support (UTF-8)],
+     	[case "${enableval}" in
+       		yes) lang_pt_utf8=true  ;;
+       		no)  lang_pt_utf8=false ;;
+		*) AC_MSG_ERROR(bad value ${enableval} for --enable-lang-pt-utf8) ;;
+     	esac],
+	[lang_pt_utf8=false])
+
+AM_CONDITIONAL(LANG_PT_UTF8, test x$lang_pt_utf8 = xtrue)
 
 if test x"${explicit_lisp}" = xfalse ; then
 dnl  	AC_CHECK_PROG(clisp_found,${clisp_default_name},true,false)
