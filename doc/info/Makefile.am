@@ -1,10 +1,20 @@
 if LANG_ES
   ES_DIR = es
 endif
+
+if LANG_ES_UTF8
+  ES_DIR_UTF8 = es.utf8
+endif
+
 if LANG_PT
   PT_DIR = pt
 endif
-SUBDIRS = $(ES_DIR) $(PT_DIR)
+
+if LANG_PT_UTF8
+  PT_DIR_UTF8 = pt.utf8
+endif
+
+SUBDIRS = $(ES_DIR) $(ES_DIR_UTF8) $(PT_DIR) $(PT_DIR_UTF8)
 
 info_TEXINFOS = maxima.texi
 maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
