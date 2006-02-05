@@ -13,6 +13,11 @@
   (if (member level (member ($get '$infolevel pck) `($debug $verbose $silent)))
       (apply 'mtell `(,msg ,@arg))))
 
+(defun $mytest (fn)
+  (let ((*collect-errors* nil))
+    (setq fn ($file_search1 fn '((mlist) $file_search_maxima)))
+    (test-batch fn nil :show-all t :show-expected t)))
+
 (defun $listp (e &optional (f nil))
   (and (op-equalp e 'mlist) (or (eq f nil) (every #'(lambda (s) (eq t (mfuncall f s))) (margs e)))))
 
@@ -136,3 +141,29 @@
 
 (defun $copy (e) (copy-tree e))
 
+(defun array-to-row-list (mat &optional (fn 'identity))
+  (let ((acc) (r (array-dimensions mat)) (row) (c))
+    (setq c (second r))
+    (setq r (first r))
+    (dotimes (i r)
+      (setq row nil)
+      (dotimes (j c)
+	(push (funcall fn (aref mat i j)) row))
+      (setq row (reverse row))
+      (push row acc))
+    (reverse acc)))
+  
+(defun array-to-maxima-matrix (mat &optional (fn 'identity))
+  (cons '($matrix) (mapcar #'(lambda (s) (cons '(mlist) s)) (array-to-row-list mat fn))))
+
+(defun array-to-maxima-list (ar &optional (fn 'identity))
+  (cons '(mlist) (mapcar fn (coerce ar 'list))))
+  
+(defun maxima-to-array (mat &optional (fn 'identity) typ)
+  (let ((r ($matrix_size mat)) (c))
+    (setq c ($second r))
+    (setq r ($first r))
+    (setq mat (mapcar #'cdr (cdr mat)))
+    (setq mat (mapcar #'(lambda (s) (mapcar #'(lambda (w) (funcall fn w)) s)) mat))
+    (if typ (make-array (list r c) :element-type typ :initial-contents mat)
+      (make-array (list r c) :initial-contents mat))))

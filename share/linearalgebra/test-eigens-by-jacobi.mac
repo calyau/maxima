@@ -41,7 +41,6 @@ eigens_by_jacobi(m,bigfloatfield);
 [[0.0b0,0.0b0], matrix([1.0b0,0.0b0],[0.0b0,1.0b0])]$
 
 
-
 /*-------*/
 (m : matrix([1,2],[2,1]),0);
 0$
@@ -82,3 +81,6 @@ true$
 
 (remfunction(matrixequalp, listequalp),0);
 0$
+
+
+

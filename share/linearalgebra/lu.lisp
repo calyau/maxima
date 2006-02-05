@@ -1,4 +1,4 @@
-;;  Copyright 2005 by Barton Willis
+;;  Copyright 2005, 2006 by Barton Willis
 
 ;;  This is free software; you can redistribute it and/or
 ;;  modify it under the terms of the GNU General Public License,
@@ -7,57 +7,49 @@
 ;; This software has NO WARRANTY, not even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-($put '$lu 1 '$version)
+($put '$lu 2 '$version)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   ($load "mring"))
-;;  (if (not (functionp '$rationalize)) ($load "nummod")))
-
-(defun $mytest (fn)
-  (let ((*collect-errors* nil))
-    (setq fn ($file_search1 fn '((mlist) $file_search_maxima)))
-    (test-batch fn nil :show-all t :show-expected t)))
-
-(defun list-swap (p i j)
-  (let ((x (nth i p)))
-    (setf (nth i p) (nth j p))
-    (setf (nth j p) x)))
 	
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
 ;; to the Maxima list p.
 
 (defun m-elem (m p i j)
-  (nth j (nth (nth i p) m)))
+  (if (arrayp m) (aref m (aref p i) j) (nth j (nth (nth i p) m))))
 
-;; Set the i j entry of the Maxima matrix m to x.
+;; Set the i j entry of the Maxima matrix or an array to x.
 
 (defun setmatelem (m x i j) 
-  (setf (nth j (nth i m)) x))
+  (if (arrayp m) (setf (aref m i j) x) (setf (nth j (nth i m)) x)))
 
-;; Return m[perm[i], k] - sum(m[perm[i],s] * m[perm[s],k],s,1,n)
+;; Return m[perm[i], k] - sum(m[perm[i],s] * m[perm[s],k],s,0,n)
 
 (defun partial-matrix-prod (m p i k n fadd fsub fmult add-id)
-  (loop for s from 1 to n do
-    (setq add-id (funcall fadd add-id (funcall fmult (m-elem m p i s) (m-elem m p s k)))))
-  (setmatelem m (funcall fsub (m-elem m p i k) add-id) (nth i p) k))
+  (let ((l (aref p i)))
+    (loop for s from 0 to n do
+      (setq add-id (funcall fadd add-id (funcall fmult (aref m l s) (aref m (aref p s) k)))))
+    (setf (aref m l k) (funcall fsub (aref m l k) add-id))))
 	 
-;; Return the infinity norm (the largest row sum) of the r by c matrix mat. The function
+;; Return the infinity norm (the largest row sum) of the r by c array mat. The function
 ;; fn coerces matrix elements into double floats. The argument 'mat' is a Maxima
 ;; style matrix; thus mat = (($matrix) ((mlist) a b c) etc).
 
-(defun mat-infinity-norm (mat fn)
-  (reduce 'max (mapcar #'(lambda (s) (reduce #'+ (mapcar #'(lambda (p) (abs (funcall fn p))) s))) 
-		      (mapcar #'cdr (cdr mat)))))
+(defun array-infinity-norm (mat fn)
+  (reduce #'max (mapcar #'(lambda (s) (reduce #'+ s)) 
+			(array-to-row-list mat #'(lambda (s) (abs (funcall fn s)))))))
 
-(defun $lu_factor (mm &optional (fld '$generalring))
-  ($require_square_matrix mm "$first" "$lu_factor")
-  ($require_nonempty_matrix mm "$first" "$lu_factor")
+(defun $lu_factor (mat &optional (fld '$generalring))
+  ($require_square_matrix mat "$first" "$lu_factor")
+  ($require_nonempty_matrix mat "$first" "$lu_factor")
   (setq fld ($require_ring fld "$second" "$lu_factor"))
-
-  (let ((m (copy-tree mm)) (c ($length mm)) (perm) (cnd) (fn))
-    (setq m (matrix-map (mring-maxima-to-mring fld) m))
-    (loop for i from 1 to c do (push i perm))
-    (setq perm (reverse perm))
+  
+  (let* ((c ($length mat)) (perm (make-array c)) (cnd) (fn))
+    ;(setq mat (full-matrix-map (mring-maxima-to-mring fld) mat))
+    (setq mat (maxima-to-array mat (mring-maxima-to-mring fld)))
+    
+    (decf c)
+    (loop for i from 0 to c do (setf (aref perm i) i))   
     
     ;; When the matrix elements can be converted to CL floats, find
     ;; the infinity norm of m. The norm is used to bound the condition
@@ -65,20 +57,20 @@
 
     (cond ((not (eq nil (mring-coerce-to-lisp-float fld)))
 	   (setq fn (mring-coerce-to-lisp-float fld))
-	   (setq cnd (mat-infinity-norm m fn)))
+	   (setq cnd (array-infinity-norm mat fn)))
 	  (t (setq cnd 0.0)))
-    (push '(mlist) perm)
-    (lu-factor m perm c fld cnd)))
+    (lu-factor mat perm c fld cnd)))
 
 (defun $get_lu_factors (x)
   (let ((mat ($first x)) (mp) (p ($second x)) (perm) (r) (c) (id) (lower) (upper) (zero))
+ 
     (setq r ($matrix_size mat))
     (setq c ($second r))
     (setq r ($first r))
     (setq id ($args ($identfor mat)))
     (loop for i from 1 to c do
-	 (push (nth (nth i p) id) perm)
-	 (push (nth (nth i p) mat) mp))
+      (push (nth (nth i p) id) perm)
+      (push (nth (nth i p) mat) mp))
     (setq perm (reverse perm))
     (setq mp (reverse mp))
     (push '($matrix) perm)
@@ -96,42 +88,46 @@
     `((mlist) ,($transpose perm) ,lower ,upper)))
         
 (defun lu-factor (m perm c fld &optional (cnd 1.0))
-  (let ((pos) (kp1) (mx) (lb) (ub)
-	(fadd (mring-add fld))
-	(fsub (mring-sub fld))
-	(fmult (mring-mult fld))
-	(fdiv (mring-div fld))
-	(fabs (mring-abs fld))
-	(fgreat (mring-great fld))
-	(fzerop (mring-fzerop fld))
-	(add-id (funcall (mring-add-id fld))))
-    
-    (loop for k from 1 to c do 
-      (loop for i from k to c  do (partial-matrix-prod m perm i k (- k 1) fadd fsub fmult add-id))
-      (setq mx (funcall fabs (m-elem m perm k k)))
-      (setq pos k)
-      (loop for s from k to c do
-	(if (funcall fgreat 
-		     (funcall fabs (m-elem m perm s k)) mx) (setq pos s mx 
-								  (funcall fabs (m-elem m perm s k)))))
-      (list-swap perm k pos)
+  (let ((pos) (kp1) (mx) (lb) (ub) (save) (add-id (funcall (mring-add-id fld))))
+    (flet
+	((fzerop (a) (funcall (mring-fzerop fld) a))
+	 (fpsqrt (a) (funcall (mring-psqrt fld) a))
+	 (fadd (a b) (funcall (mring-add fld) a b))
+	 (fsub (a b) (funcall (mring-sub fld) a b))
+	 (fabs (a) (funcall (mring-abs fld) a))
+	 (fmult (a b) (funcall (mring-mult fld) a b))
+	 (fdiv (a b) (funcall (mring-div fld) a b))
+	 (fgreat (a b) (funcall (mring-great fld) a b)))
+      
+      (loop for k from 0 to c do 
+	(loop for i from k to c  do (partial-matrix-prod m perm i k (- k 1) #'fadd #'fsub #'fmult add-id))
+	(setq mx (fabs (m-elem m perm k k)))
+	(setq pos k)
+	(loop for s from k to c do
+	  (if (fgreat (fabs (m-elem m perm s k)) mx) (setq pos s mx (fabs (m-elem m perm s k)))))
 
-      (setq kp1 (+ 1 k))
-      (loop for i from kp1 to c do
-	(if (funcall fzerop (m-elem m perm k k)) (merror "Unable to compute the LU factorization"))
-	(setmatelem m (funcall fdiv (m-elem m perm i k) (m-elem m perm k k)) (nth i perm) k)
-	(partial-matrix-prod m perm k i (- k 1) fadd fsub fmult add-id)))
-    
-    (cond ((not (eq nil (mring-coerce-to-lisp-float fld)))
-	   (multiple-value-setq (lb ub) (mat-cond-by-lu m perm c (mring-coerce-to-lisp-float fld)))
-	   (setq lb ($limit (mul lb cnd)))
-	   (setq ub ($limit (mul ub cnd)))
-	   (setq m (matrix-map (mring-mring-to-maxima fld) m))
-	   `((mlist) ,m ,perm ,(mring-name fld) ,lb ,ub))
-	  (t 
-	   (setq m (matrix-map (mring-mring-to-maxima fld) m))
-	   `((mlist) ,m ,perm ,(mring-name fld))))))
-        
+	(setq save (aref perm k))
+	(setf (aref perm k) (aref perm pos))
+	(setf (aref perm pos) save)
+
+	(setq kp1 (+ 1 k))
+	(loop for i from kp1 to c do
+	  (if (fzerop (m-elem m perm k k)) (merror "Unable to compute the LU factorization"))
+	  (setmatelem m (fdiv (m-elem m perm i k) (m-elem m perm k k)) (aref perm i) k)
+	  (partial-matrix-prod m perm k i (- k 1) #'fadd #'fsub #'fmult add-id)))
+      
+      (cond ((not (eq nil (mring-coerce-to-lisp-float fld)))
+	     (multiple-value-setq (lb ub) (mat-cond-by-lu m perm (- c 1) (mring-coerce-to-lisp-float fld)))
+	     (setq m (array-to-maxima-matrix m (mring-mring-to-maxima fld)))
+	     (setq lb ($limit (mul lb cnd)))
+	     (setq ub ($limit (mul ub cnd)))
+	     (setq perm (array-to-maxima-list perm #'(lambda (s) (+ s 1))))
+	     `((mlist) ,m ,perm ,(mring-name fld) ,lb ,ub))
+	    (t 
+	     (setq perm (array-to-maxima-list perm #'(lambda (s) (+ s 1))))
+	     (setq m (array-to-maxima-matrix m (mring-mring-to-maxima fld)))
+	     `((mlist) ,m ,perm ,(mring-name fld)))))))
+      
 ;; The first argument should be a matrix in packed LU form. The Maxima list perm
 ;; specifies the true row ordering. When r is false, reflect the matrix horizontally
 ;; and vertically.
@@ -164,7 +160,7 @@
   (let ((z) (d-max 0.0) (z-max 0.0) (s) (d))
     (setq z (make-array (+ 1 n)))
     (catch 'singular
-      (loop for i from n downto 1 do
+      (loop for i from n downto 0 do
 	(setq d (abs (funcall fn (m-elem-reflect mat perm n r i i))))
 	(if (= 0.0 d) (throw 'singular (values '$inf '$inf)) (setq d (/ 1 d)))
 	(setq d-max (max d-max d))
@@ -175,9 +171,7 @@
 	(setq z-max (max z-max (aref z i))))
       (values d-max z-max))))
       
-
 (defun $lu_backsub(m b1)
-   
   ($require_list m "$first" "$lu_backsub")
   (if (< ($length m) 3) (merror "The first argument to 'lu_backsub' must be a list with at least 3 members"))
   
@@ -196,7 +190,6 @@
     (setq c ($second n))
     
     (setq mat (matrix-map (mring-maxima-to-mring fld) mat))
-    ;(displa `((mequal) mat ,mat))
     (setq b (copy-tree b1))
     (setq c ($second ($matrix_size mat)))
     
@@ -229,10 +222,9 @@
 
 (defun $invert_by_lu (m  &optional (fld '$generalring))
   ($require_square_matrix m "$first" "$invert_by_lu")
-  ;($lu_backsub ($lu_factor m fld) ($dotidentmatrix ($first ($matrix_size m)))))
   ($lu_backsub ($lu_factor m fld) ($identfor m)))
   
-#|
+#|					;
 (defun $determinant_by_lu (m &optional (fld $generalring))
   ($require_square_matrix m "$first" "$determinant_by_lu")
  
@@ -254,9 +246,6 @@
 
 (defun $mat_cond (m p)
   ($require_square_matrix m "$first" "$mat_cond")
-  (mul (simplify (mfunction-call |$mat_norm| m p))
-       (simplify (mfunction-call |$mat_norm| ($invert_by_lu m) p))))
-
-
-
-    
+  (mul (simplify (mfunction-call $mat_norm m p))
+       (simplify (mfunction-call $mat_norm ($invert_by_lu m) p))))
+   
