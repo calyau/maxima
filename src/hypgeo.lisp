@@ -1720,7 +1720,7 @@
 			 ((eq flg 'd)
 			  (dtw i1 a1))
 			 ((eq flg 'kbateman)
-			  (kbatemantw a1))
+			  (kbatemantw i1 a1))
 			 ((eq flg 'gammaincomplete)
 			  (gammaincompletetw a1 i1))
 			 ((eq flg 'kti)
@@ -2015,13 +2015,13 @@
 ;;
 ;; See Table of Integral Transforms, p.386:
 ;;
-;; D[v](z) = 2^(v/2+1/2)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
+;; D[v](z) = 2^(v/2+1/4)*z^(-1/2)*W[v/2+1/4,1/4](z^2/2)
 ;;
 (defun dtw (i a)
-  (mul* (power 2 (add (div i 2)(inv 4)))
+  (mul* (power 2 (add (div i 2) (inv 4)))
 	(power a (inv -2))
 	(wwhit (mul* a a (1//2))
-	       (add (div i 2)(inv 4))
+	       (add (div i 2) (inv 4))
 	       (inv 4))))
 
 ;; Bateman's function as a Whittaker W function
@@ -2030,12 +2030,9 @@
 ;;
 ;; k[2*v](z) = 1/gamma(v+1)*W[v,1/2](2*z)
 ;;
-;; (But this function seems to have v = 1/2.)
-(defun kbatemantw (a)
-  ((lambda(ind)
-     (div (wwhit (add a a) ind (1//2))
-	  (gm (add ind 1))))
-   (div 1 2)))
+(defun kbatemantw (v a)
+  (div (wwhit (add a a) (div v 2) (1//2))
+       (gm (add (div v 2) 1))))
 
 ;; Bessel K in terms of Bessel I.
 ;;
