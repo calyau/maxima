@@ -25,12 +25,37 @@
 
 ;; Return m[perm[i], k] - sum(m[perm[i],s] * m[perm[s],k],s,0,n)
 
-(defun partial-matrix-prod (m p i k n fadd fsub fmult add-id)
-  (let ((l (aref p i)))
-    (loop for s from 0 to n do
-      (setq add-id (funcall fadd add-id (funcall fmult (aref m l s) (aref m (aref p s) k)))))
-    (setf (aref m l k) (funcall fsub (aref m l k) add-id))))
-	 
+(defun partial-matrix-prod (m p i k n fadd fsub fmult add-id fname)
+  (cond ((eq fname '$floatfield)
+	 (partial-matrix-prod-float m p i k n))
+	((eq fname '$complexfield)
+	 (partial-matrix-prod-complex-float m p i k n))
+	(t
+	 (let ((l (aref p i)))
+	   (loop for s from 0 to n do
+	     (setq add-id (funcall fadd add-id (funcall fmult (aref m l s) (aref m (aref p s) k)))))
+	   (setf (aref m l k) (funcall fsub (aref m l k) add-id))))))
+
+(defun partial-matrix-prod-float (m p i k n)
+  (declare (type (simple-array double-float (n n)) m))
+  (declare (type (simple-array fixnum (n)) p))
+  (let ((add-id 0.0))
+    (declare (type double-float add-id))
+    (let ((l (aref p i)))
+      (loop for s from 0 to n do
+	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
+      (setf (aref m l k) (- (aref m l k) add-id)))))
+
+(defun partial-matrix-prod-complex-float (m p i k n)
+  (declare (type (simple-array '(complex double-float) (n n)) m))
+  (declare (type (simple-array fixnum (n)) p))
+  (let ((add-id 0.0))
+    (declare (type '(complex double-float) add-id))
+    (let ((l (aref p i)))
+      (loop for s from 0 to n do
+	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
+      (setf (aref m l k) (- (aref m l k) add-id)))))
+
 ;; Return the infinity norm (the largest row sum) of the r by c array mat. The function
 ;; fn coerces matrix elements into double floats. The argument 'mat' is a Maxima
 ;; style matrix; thus mat = (($matrix) ((mlist) a b c) etc).
@@ -88,7 +113,8 @@
     `((mlist) ,($transpose perm) ,lower ,upper)))
         
 (defun lu-factor (m perm c fld &optional (cnd 1.0))
-  (let ((pos) (kp1) (mx) (lb) (ub) (save) (add-id (funcall (mring-add-id fld))))
+  (let ((pos) (kp1) (mx) (lb) (ub) (save) (fname (mring-name fld)) 
+	(add-id (funcall (mring-add-id fld))))
     (flet
 	((fzerop (a) (funcall (mring-fzerop fld) a))
 	 (fpsqrt (a) (funcall (mring-psqrt fld) a))
@@ -100,7 +126,8 @@
 	 (fgreat (a b) (funcall (mring-great fld) a b)))
       
       (loop for k from 0 to c do 
-	(loop for i from k to c  do (partial-matrix-prod m perm i k (- k 1) #'fadd #'fsub #'fmult add-id))
+	(loop for i from k to c  do (partial-matrix-prod m perm i k (- k 1) 
+							 #'fadd #'fsub #'fmult add-id fname))
 	(setq mx (fabs (m-elem m perm k k)))
 	(setq pos k)
 	(loop for s from k to c do
@@ -114,7 +141,7 @@
 	(loop for i from kp1 to c do
 	  (if (fzerop (m-elem m perm k k)) (merror "Unable to compute the LU factorization"))
 	  (setmatelem m (fdiv (m-elem m perm i k) (m-elem m perm k k)) (aref perm i) k)
-	  (partial-matrix-prod m perm k i (- k 1) #'fadd #'fsub #'fmult add-id)))
+	  (partial-matrix-prod m perm k i (- k 1) #'fadd #'fsub #'fmult add-id fname)))
       
       (cond ((not (eq nil (mring-coerce-to-lisp-float fld)))
 	     (multiple-value-setq (lb ub) (mat-cond-by-lu m perm (- c 1) (mring-coerce-to-lisp-float fld)))
