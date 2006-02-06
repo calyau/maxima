@@ -16,7 +16,7 @@
 (defun $mytest (fn)
   (let ((*collect-errors* nil))
     (setq fn ($file_search1 fn '((mlist) $file_search_maxima)))
-    (test-batch fn nil :show-all t :show-expected t)))
+    (test-batch fn nil :show-all nil :show-expected nil)))
 
 (defun $listp (e &optional (f nil))
   (and (op-equalp e 'mlist) (or (eq f nil) (every #'(lambda (s) (eq t (mfuncall f s))) (margs e)))))
