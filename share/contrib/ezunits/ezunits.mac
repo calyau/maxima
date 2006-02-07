@@ -1,4 +1,8 @@
 infix ("`", 118, 118);
+/* Hold off on this display symbol business.
+ * :lisp (put '$\` '(#\space #\space) 'dissym)
+ */
+
 declare (dimensional, feature);
 
 declare_units (a%, u%) :=
