@@ -424,7 +424,6 @@ integration/delta.usg\
 linearalgebra/announcement.txt\
 linearalgebra/linalgcholesky.lisp\
 linearalgebra/mring.lisp\
-linearalgebra/test-cholesky.mac\
 linearalgebra/linalg-utilities.lisp\
 linearalgebra/linearalgebra.demo\
 linearalgebra/linearalgebra.mac\
@@ -434,6 +433,8 @@ linearalgebra/lu.lisp\
 linearalgebra/matrixexp.lisp\
 linearalgebra/matrixexp.usage\
 linearalgebra/polynomialp.lisp\
+linearalgebra/test-cholesky.mac\
+linearalgebra/test-eigens-by-jacobi.mac\
 linearalgebra/test-linalg.mac\
 linearalgebra/test-lu.mac\
 linearalgebra/test-matrixexp.mac\
