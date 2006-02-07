@@ -2284,67 +2284,110 @@
 ;; So we're transforming REST*FLG(INDEX, ARG).
 (defun lt-ltp (flg rest arg index)
   (prog (index1 index2 argl const l l1)
-     (cond ((or (zerp index)
-		(eq flg 'onerf)
-		(eq flg 'onekelliptic)
-		(eq flg 'onee)
-		(eq flg 'onepjac)
-		(eq flg 'd)
-		(eq flg 's)
-		(eq flg 'hs)
-		(eq flg 'ls)
-		(eq flg 'onem)
-		(eq flg 'oneq)
-		(eq flg 'gammagreek)
-		(eq flg 'asin)
-		(eq flg 'atan))
-	    (go labl)))
-     (cond ((or (eq flg 'hyp-onep)(eq flg 'onelog))
+     (when (or (zerp index)
+	       (eq flg 'onerf)
+	       (eq flg 'onekelliptic)
+	       (eq flg 'onee)
+	       (eq flg 'onepjac)
+	       (eq flg 'd)
+	       (eq flg 's)
+	       (eq flg 'hs)
+	       (eq flg 'ls)
+	       (eq flg 'onem)
+	       (eq flg 'oneq)
+	       (eq flg 'gammagreek)
+	       (eq flg 'asin)
+	       (eq flg 'atan))
+	    (go labl))
+     (cond ((or (eq flg 'hyp-onep)
+		(eq flg 'onelog))
+	    ;; Go to labl1 if we've got %p or log.
 	    (go labl1)))
-     (cond ((not (consp index)) (go lab)))
-     (cond ((not (eq (car index) 'list))(go lab)))
+     ;; Skip this if we have exactly one index or if INDEX doesn't
+     ;; look like '(LIST i1 i2)
+     (cond ((not (consp index))
+	    (go lab)))
+     (cond ((not (eq (car index) 'list))
+	    (go lab)))
+     ;; If the first index is exactly 0, set INDEX1 to it and go to
+     ;; LA.
      (cond ((zerp (setq index1 (cadr index)))(go la)))
+     ;; If we're here, the index is of the form '(LIST i1 i2), which
+     ;; means this is the product of two Bessel functions.
      (cond ((eq (checksigntm (simplifya (inv (setq index1
 						   (cadr
 						    index)))
 					nil))
 		'$negative)
+	    ;; FIXME: What is this supposed to do?  We take the
+	    ;; reciprocal of the first index and see if it's negative.
+	    ;; If so, we change the sign of index1 and divide REST by
+	    ;; the index.  What is this for?
 	    (setq index1
 		  (mul -1 index1)
 		  rest
 		  (mul* (power -1 index1) rest))))
      la
-     (cond ((zerp (setq index2 (caddr index)))(go la2)))
+     ;; If the second index is zero, skip over this.
+     (cond ((zerp (setq index2 (caddr index)))
+	    (go la2)))
      (cond ((eq (checksigntm (simplifya (inv (setq index2
 						   (caddr
 						    index)))
 					nil))
 		'$negative)
+	    ;; FIXME: This does the same for index2 as for index1
+	    ;; above.  Why?
 	    (setq index2
 		  (mul -1 index2)
 		  rest
 		  (mul* (power -1 index2) rest))))
      la2
+     ;; Put the 2 indices in a list and go on.
      (setq index (list index1 index2))
      (go labl)
      lab
+     ;; We're here if we have one index, and it's not one of the
+     ;; special cases.
+     ;;
+     ;; FIXME:  Find out what functions trigger this.
      (cond ((and (eq (checksigntm (simplifya (inv index)
 					     nil))
 		     '$negative)
 		 (maxima-integerp index))
+	    ;; FIXME: Same as the 2 index thing above, but we need an
+	    ;; (numeric) integer too.  Why?
 	    (setq index (mul -1 index))
 	    (setq rest (mul (power -1 index) rest))))
      labl
+     ;; Handle index = 0 or one of the special functions erf,
+     ;; kelliptic, E, Jacobi, %d, %s, hstruve, lstruve, %m, Q,
+     ;; incomplete gamma, asin, atan.
      (setq argl (f+c arg))
-     (setq const (cdras 'c argl) arg (cdras 'f argl))
+     (setq const (cdras 'c argl)
+	   arg (cdras 'f argl))
+     ;; See if the arg is f + c, and replace arg with f.
      (cond ((null const)(go labl1)))
+     ;; This handles the case of when the const term is actually there.
      (cond ((not (eq (checksigntm (simplifya (power const
 						    2)
 					     nil))
 		     '$zero))
+	    ;; I guess prop4 handles the case when square of the
+	    ;; constant term is not zero.  Too bad I (rtoy) don't know
+	    ;; what prop4 is.
+	    ;;
+	    ;; FIXME:  Implement prop4.
+	    (format t "const = ~A~%" const)
+	    (format t "f = ~A~%" arg)
 	    (return 'prop4-to-be-applied)))
      labl1
-     (cond ((eq flg 'oney)(return (lty rest arg index))))
+     ;; No const term, if we're here.
+     (cond ((eq flg 'oney)
+	    ;; Handle bessel_y here.  We're done.
+	    (return (lty rest arg index))))
+     ;; Try to express the function in terms of hypergeometric
+     ;; functions that we can handle.
      (cond ((setq l
 		  (d*x^m*%e^a*x ($factor (mul* rest
 					       (car (setq
@@ -2358,6 +2401,7 @@
 	    ;; hypergeometric function.  d*x^m*%e^a*x looks for that
 	    ;; factor in the expanded form.
 	    (return (%$etest l l1))))
+     ;; We currently don't know how to handle this yet.
      (return 'other-ca-later)))
 
 (defun lty
