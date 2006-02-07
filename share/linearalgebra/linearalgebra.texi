@@ -28,7 +28,7 @@
 Example:
 
 @c ===beg===
-@c load (linalg)$
+@c load (linearalgebra)$
 @c M : matrix ([1, 2], [1, 2]);
 @c nullspace (M);
 @c columnspace (M);
@@ -44,11 +44,11 @@ Example:
 @c apply ('orthogonal_complement, args (nullspace (transpose (M))));
 @c ===end===
 @example
-(%i1) load (linalg);
+(%i1) load (linearalgebra);
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
 (%i2) M : matrix ([1, 2], [1, 2]);
                             [ 1  2 ]
 (%o2)                       [      ]
@@ -204,7 +204,7 @@ Return a copy of the Maxima expression @var{e}. Although @var{e} can be any
 Maxima expression, the copy function is the most useful when @var{e} is either 
 a list or a matrix; consider:
 @c ===beg===
-load (linalg);
+load (linearalgebra);
 m : [1,[2,3]]$
 mm : m$
 mm[2][1] : x$
@@ -212,7 +212,7 @@ m;
 mm;
 @c ===end===
 @example 
-(%i1) load("linalg")$
+(%i1) load("linearalgebra")$
 (%i2) m : [1,[2,3]]$
 (%i3) mm : m$
 (%i4) mm[2][1] : x$
@@ -264,12 +264,12 @@ Return a diagonal matrix with diagonal entries @var{d_1}, @var{d_2},...,@var{d_n
 When the diagonal entries are matrices, the zero entries of the returned matrix
 are zero matrices of the appropriate size; for example:
 @c ===beg===
-@c load(linalg)$
+@c load(linearalgebra)$
 @c diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 @c diag_matrix(p,q);
 @c ===end===
 @example
-(%i1) load(linalg)$
+(%i1) load(linearalgebra)$
 
 (%i2) diag_matrix(diag_matrix(1,2),diag_matrix(3,4));
 
@@ -477,7 +477,7 @@ See also  @code{get_lu_factors}.
 Examples:
 
 @c ===beg===
-@c load (linalg);
+@c load (linearalgebra);
 @c w[i,j] := random (1.0) + %i * random (1.0);
 @c showtime : true$
 @c M : genmatrix (w, 100, 100)$
@@ -490,11 +490,11 @@ Examples:
 @c %[1] . %[2] . %[3];
 @c ===end===
 @example
-(%i1) load (linalg);
+(%i1) load (linearalgebra);
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
 (%i2) w[i,j] := random (1.0) + %i * random (1.0);
 (%o2)          w     := random(1.) + %i random(1.)
                 i, j
@@ -604,18 +604,18 @@ If you use block matrices, most likely you'll want to set @code{matrix_element_m
 Example:
 
 @c ===beg===
-@c load (linalg);
+@c load (linearalgebra);
 @c A : matrix ([1, 2], [3, 4]);
 @c B : matrix ([7, 8], [9, 10]);
 @c matrix ([A, B]);
 @c mat_unblocker (%);
 @c ===end===
 @example
-(%i1) load (linalg);
+(%i1) load (linearalgebra);
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
 (%i2) A : matrix ([1, 2], [3, 4]);
                             [ 1  2 ]
 (%o2)                       [      ]
@@ -686,16 +686,16 @@ to use the default for @var{coeffp}.
 The polynomial needn't be expanded:
 
 @c ===beg===
-@c load (linalg);
+@c load (linearalgebra);
 @c polynomialp ((x + 1)*(x + 2), [x]);
 @c polynomialp ((x + 1)*(x + 2)^a, [x]);
 @c ===end===
 @example
-(%i1) load (linalg);
+(%i1) load (linearalgebra);
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
 (%i2) polynomialp ((x + 1)*(x + 2), [x]);
 (%o2)                         true
 (%i3) polynomialp ((x + 1)*(x + 2)^a, [x]);
@@ -705,16 +705,16 @@ Warning - you are redefining the Maxima function rank
 An example using non-default values for coeffp and exponp:
 
 @c ===beg===
-@c load (linalg);
+@c load (linearalgebra);
 @c polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 @c polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 @c ===end===
 @example
-(%i1) load (linalg);
+(%i1) load (linearalgebra);
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
 (%i2) polynomialp ((x + 1)*(x + 2)^(3/2), [x], numberp, numberp);
 (%o2)                         true
 (%i3) polynomialp ((x^(1/2) + 1)*(x + 2)^(3/2), [x], numberp, numberp);
@@ -724,16 +724,16 @@ Warning - you are redefining the Maxima function rank
 Polynomials with two variables:
 
 @c ===beg===
-@c load (linalg);
+@c load (linearalgebra);
 @c polynomialp (x^2 + 5*x*y + y^2, [x]);
 @c polynomialp (x^2 + 5*x*y + y^2, [x, y]);
 @c ===end===
 @example
-(%i1) load (linalg);
+(%i1) load (linearalgebra);
 Warning - you are redefining the Maxima function require_list
 Warning - you are redefining the Maxima function matrix_size
 Warning - you are redefining the Maxima function rank
-(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linalg.mac
+(%o1) /usr/local/share/maxima/5.9.2/share/linearalgebra/linearalgebra.mac
 (%i2) polynomialp (x^2 + 5*x*y + y^2, [x]);
 (%o2)                         false
 (%i3) polynomialp (x^2 + 5*x*y + y^2, [x, y]);
@@ -782,11 +782,11 @@ row operation @code{R_i <- R_i - theta * R_j}. If @var{M} doesn't have a row
 Return the rank of that matrix @var{M}. The rank is the dimension of the
 column space. Example:
 @c ===beg===
-@c load (linalg);
+@c load (linearalgebra);
 @c 
 @c ===end===
 @example
-(%i1) load(linalg)$
+(%i1) load(linearalgebra)$
 (%i2) rank(matrix([1,2],[2,4]));
 (%o2) 1
 (%i3) rank(matrix([1,b],[c,d]));
@@ -811,13 +811,12 @@ Return a Toeplitz matrix @var{T}. The first first column of @var{T} is @var{col}
 except for the first entry, the first row of @var{T} is @var{row}. The
 default for @var{row} is complex conjugate of @var{col}. Example:
 @c ===beg===
-@c load(linalg)$
+@c load(linearalgebra)$
 @c toeplitz([1,2,3],[x,y,z]);
 @c toeplitz([1,1+%i]);
 @c ==end===
 @example
-(%i1) load(linalg)$
-(%i1) load(linalg)$
+(%i1) load(linearalgebra)$
 
 (%i2)  toeplitz([1,2,3],[x,y,z]);
 

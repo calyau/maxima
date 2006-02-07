@@ -15,7 +15,7 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-put('linalg,1,'version);
+put('linearalgebra,1,'version);
 
 /* The translator generates code that doesn't work when 
    translate_fast_arrays is true. So set translate_fast_arrays
@@ -32,7 +32,7 @@ eval_when(translate,
 
 
 eval_when([batch,load,translate,compile],
-  put(infolevel, debug, linalg),    
+  put(infolevel, debug, linearalgebra),    
   load("polynomialp"),
   load("lu"),
   load("linalgcholesky"),
