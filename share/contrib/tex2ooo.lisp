@@ -418,6 +418,7 @@
 (defprop mnot (" not ") texsym)
 (defprop mand (" and ") texsym)
 (defprop mor (" or ") texsym)
+(defprop mnotequal (" neq ") texsym)
 
 (mapc #'tex-setup
       '(
