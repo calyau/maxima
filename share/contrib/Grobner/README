@@ -5,8 +5,8 @@ free computer algebra system Maxima. In order to use the package, start your
 Maxima and put it in the lisp mode (on most systems, CTRL-C will do this),
 and execute the following commands:
 
-(load "maxima-grobner.lisp")
-(compile-file "maxima-grobner.lisp" :load t)
+(load "grobner.lisp")
+(compile-file "grobner.lisp" :load t)
 
 
 The file grobner.demo is a Macsyma-style demo file for most of the operations
@@ -25,7 +25,7 @@ Maxima documentation for this package has not been written yet, but
 there is a sizable amount of documentation in the LISP source.
 
 
-The file maxima-grobner.lisp was constructed by a semi-automatic
+The file grobner.lisp was constructed by a semi-automatic
 process from the sources of a package CGBlisp, version 2 also authored by 
 me, which will eventually be released at my Web site (see below).
 An older version of CGBlisp is available at the Web site.

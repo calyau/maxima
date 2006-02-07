@@ -92,7 +92,7 @@ combinatorics/README\
 contrib/Grobner/README\
 contrib/Grobner/grobner-demo.output\
 contrib/Grobner/grobner.demo\
-contrib/Grobner/maxima-grobner.lisp\
+contrib/Grobner/grobner.lisp\
 contrib/README\
 contrib/Zeilberger/Gosper.mac\
 contrib/Zeilberger/GosperEq.mac\
@@ -101,7 +101,7 @@ contrib/Zeilberger/algUtil.mac\
 contrib/Zeilberger/compare_sums.mac\
 contrib/Zeilberger/compatible.mac\
 contrib/Zeilberger/constants.mac\
-contrib/Zeilberger/linearAlgebra.mac\
+contrib/Zeilberger/zeilberger_linear_algebra.mac\
 contrib/Zeilberger/makeGosperForm.mac\
 contrib/Zeilberger/norm.mac\
 contrib/Zeilberger/numerical.mac\
@@ -350,8 +350,8 @@ contrib/rtestdefstruct.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/constants.mac\
 contrib/sarag/examples.mac\
-contrib/sarag/linearAlgebra.mac\
-contrib/sarag/loadSARAG.mac\
+contrib/sarag/sarag_linear_algebra.mac\
+contrib/sarag/sarag.mac\
 contrib/sarag/lowLevel.mac\
 contrib/sarag/readme.txt\
 contrib/sarag/rootCounting.mac\

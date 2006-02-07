@@ -1,7 +1,7 @@
 ;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                              
-;;;  $Id: maxima-grobner.lisp,v 1.3 2005-11-07 17:37:10 rtoy Exp $		 
+;;;  $Id: grobner.lisp,v 1.1 2006-02-07 04:49:49 robert_dodier Exp $		 
 ;;;  Copyright (C) 1999, 2002 Marek Rychlik <rychlik@u.arizona.edu>		 
 ;;;  		       								 
 ;;;  This program is free software; you can redistribute it and/or modify	 
@@ -25,7 +25,7 @@
 
 (eval-when (load eval)
   (format t "~&Loading maxima-grobner ~a ~a~%"
-	  "$Revision: 1.3 $" "$Date: 2005-11-07 17:37:10 $"))
+	  "$Revision: 1.1 $" "$Date: 2006-02-07 04:49:49 $"))
 
 ;;FUNCTS is loaded because it contains the definition of LCM
 ($load "functs")

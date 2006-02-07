@@ -19,7 +19,7 @@ modLoad("settings.mac");
 
 modLoad("algUtil.mac");
 
-modLoad("linearAlgebra.mac");
+modLoad("zeilberger_linear_algebra.mac");
 
 modLoad("shiftQuotient.mac");
 

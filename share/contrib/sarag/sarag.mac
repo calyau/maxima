@@ -14,7 +14,7 @@ modLoad("aliases.mac");
 
 modLoad("lowLevel.mac");
 
-modLoad("linearAlgebra.mac");
+modLoad("sarag_linear_algebra.mac");
 
 modLoad("rootCounting.mac");
 

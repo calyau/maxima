@@ -62,7 +62,7 @@ http://maxima.sourceforge.net/
 ---------------------------------------------------------------
 LOADING THE FILES
 
-loadSARAG.mc
+sarag.mc
 ---------------------------------------------------------------
 
 The library is contained in the following files:
@@ -80,7 +80,7 @@ with the "LOAD" Maxima command
 or edit a file that takes care of loading all the files. 
 
 Together with the files you find the file
-"loadSARAG.mc" that will load the files if they are
+"sarag.mc" that will load the files if they are
 in the current directory.
 
 The file "examples.mc" contains some examples
