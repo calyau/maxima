@@ -88,8 +88,7 @@ calculus/qual.usg\
 calculus/qualsp.lisp\
 calculus/revert.mac\
 calculus/taylor1.mac\
-combinatorics/comgen.lisp\
-combinatorics/permut.lisp\
+combinatorics/README\
 contrib/Grobner/README\
 contrib/Grobner/grobner-demo.output\
 contrib/Grobner/grobner.demo\
