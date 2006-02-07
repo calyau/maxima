@@ -2314,6 +2314,12 @@
      (cond ((zerp (setq index1 (cadr index)))(go la)))
      ;; If we're here, the index is of the form '(LIST i1 i2), which
      ;; means this is the product of two Bessel functions.
+     ;;
+     ;; Ok.  I think this is wrong, in general.  I think we get here
+     ;; if we're doing the produce to two Bessel functions.  This code
+     ;; seems to be applying the property that bessel_j(-n,x) =
+     ;; (-1)^n*bessel_j(n,x).  But this only works if n is an integer.
+     #+nil
      (cond ((eq (checksigntm (simplifya (inv (setq index1
 						   (cadr
 						    index)))
@@ -2331,6 +2337,8 @@
      ;; If the second index is zero, skip over this.
      (cond ((zerp (setq index2 (caddr index)))
 	    (go la2)))
+     ;; Wrong too.  See comment above about bessel_j(-n,x).
+     #+nil
      (cond ((eq (checksigntm (simplifya (inv (setq index2
 						   (caddr
 						    index)))
@@ -2351,6 +2359,12 @@
      ;; special cases.
      ;;
      ;; FIXME:  Find out what functions trigger this.
+
+     ;; I think this is the one bessel function case with a negative
+     ;; index.  At least here we check that the index is an integer.
+     ;; We can either leave it here or take it out.  It seems
+     ;; bessel_j(-n,x) is converted by the Bessel simplifiers before
+     ;; we get here.
      (cond ((and (eq (checksigntm (simplifya (inv index)
 					     nil))
 		     '$negative)
