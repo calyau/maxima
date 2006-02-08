@@ -91,7 +91,7 @@ The @var{variance} is a measure of variation,
                  inf
                 /
                 [                    2
-         V[X] = I     f(x) (x - E[x])  dx
+         V[X] = I     f(x) (x - E[X])  dx
                 ]
                 /
                  minf
@@ -102,7 +102,7 @@ The @var{variance} is a measure of variation,
                  inf
                 /
                 [                    2
-         V[X] = I     f(x) (x - E[x])  dx
+         V[X] = I     f(x) (x - E[X])  dx
                 ]
                 /
                  minf
@@ -110,7 +110,7 @@ The @var{variance} is a measure of variation,
 @end ifinfo
 @tex
 $$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
- -E\left[x\right]\right)^2\;dx}$$
+ -E\left[X\right]\right)^2\;dx}$$
 @end tex
 which is a positive real number. The square root of the variance is the @var{standard deviation}, @math{D[X]=sqrt(V[X])}, and it is another measure of variation.
 
@@ -120,7 +120,7 @@ The @var{skewness coefficient} is a measure of non-symmetry,
                  inf
                 /
             1   [                    3
-  SK[X] = ----- I     f(x) (x - E[x])  dx
+  SK[X] = ----- I     f(x) (x - E[X])  dx
               3 ]
           D[X]  /
                  minf
@@ -131,7 +131,7 @@ The @var{skewness coefficient} is a measure of non-symmetry,
                  inf
                 /
             1   [                    3
-  SK[X] = ----- I     f(x) (x - E[x])  dx
+  SK[X] = ----- I     f(x) (x - E[X])  dx
               3 ]
           D[X]  /
                  minf
@@ -139,7 +139,7 @@ The @var{skewness coefficient} is a measure of non-symmetry,
 @end ifinfo
 @tex
 $$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
- \left(x-E\left(x\right)\right)^3\;dx}}\over{D\left[x\right]^3}}$$
+ \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 
 And the @var{kurtosis coefficient} measures the peakedness of the distribution,
@@ -148,7 +148,7 @@ And the @var{kurtosis coefficient} measures the peakedness of the distribution,
                  inf
                 /
             1   [                    4
-  KU[X] = ----- I     f(x) (x - E[x])  dx - 3
+  KU[X] = ----- I     f(x) (x - E[X])  dx - 3
               4 ]
           D[X]  /
                  minf
@@ -159,7 +159,7 @@ And the @var{kurtosis coefficient} measures the peakedness of the distribution,
                  inf
                 /
             1   [                    4
-  KU[X] = ----- I     f(x) (x - E[x])  dx - 3
+  KU[X] = ----- I     f(x) (x - E[X])  dx - 3
               4 ]
           D[X]  /
                  minf
@@ -167,7 +167,7 @@ And the @var{kurtosis coefficient} measures the peakedness of the distribution,
 @end ifinfo
 @tex
 $$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
- \left(x-E\left(x\right)\right)^4\;dx}}\over{D\left[x\right]^4}}-3$$
+ \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
 @end tex
 If @math{X} is gaussian, @math{KU[X]=0}. In fact, both skewness and kurtosis are shape parameters used to measure the non--gaussianity of a distribution.
 
@@ -289,7 +289,7 @@ $$D\left[X\right]=\sqrt{V\left[X\right]},$$
 @end ifinfo
 @tex
 $$SK\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
- \left(x-E\left(x\right)\right)^3\;dx}}\over{D\left[x\right]^3}}$$
+ \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
 @end tex
 and
 @ifhtml
@@ -316,7 +316,7 @@ and
 @end ifinfo
 @tex
 $$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
- \left(x-E\left(x\right)\right)^4\;dx}}\over{D\left[x\right]^4}}-3,$$
+ \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3,$$
 @end tex
 respectively.
 
@@ -839,7 +839,7 @@ $$F={{n X}\over{m Y}}$$
 is a F random variable with @var{m} and @var{n} degrees of freedom, @math{F(m,n)}.
 
 @item
-@code{inverse}, based on the fact that if @var{u} is an uniform random number in @math{(0,1)}, then @var{G^(-1)(u)} is a random variate with distribution @math{G}.
+@code{inverse}, based on the general inverse method.
 
 @end itemize
 
@@ -877,7 +877,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} disexp (@var{x},@var{m})
 Returns the value at @var{x} of the distribution function of an exponential random variable @math{Exp(m)}, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
 
 @example
 (%i1) disexp(x,m);
@@ -894,7 +894,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} qexp (@var{q},@var{m})
 Returns the @var{q}-quantile of an exponential random variable @math{Exp(m)}, with @math{m>0}; in other words, this is the inverse of @code{disexp}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
 
 @example
 (%i51) qexp(0.56,5);
@@ -910,7 +910,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} meanexp (@var{m})
 Returns the mean of an exponential random variable @math{Exp(m)}, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
 
 @example
 (%i1) meanexp(m);
@@ -928,7 +928,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} varexp (@var{m})
 Returns the variance of an exponential random variable @math{Exp(m)}, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
 
 @example
 (%i1) varexp(m);
@@ -947,7 +947,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} stdexp (@var{m})
 Returns the standard deviation of an exponential random variable @math{Exp(m)}, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
 
 @example
 (%i1) stdexp(m);
@@ -965,7 +965,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} skwexp (@var{m})
 Returns the skewness coefficient of an exponential random variable @math{Exp(m)}, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
 
 @example
 (%i1) skwexp(m);
@@ -981,7 +981,7 @@ The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}
 @deffn {Function} kurexp (@var{m})
 Returns the kurtosis coefficient of an exponential random variable @math{Exp(m)}, with @math{m>0}.
 
-The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull density is returned.
+The @math{Exp(m)} random variable is equivalent to the Weibull @math{Wei(1,1/m)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
 
 @example
 (%i1) kurexp(m);
@@ -1479,7 +1479,7 @@ The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, theref
 @deffn {Function} qrayleigh (@var{q},@var{b})
 Returns the @var{q}-quantile of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}; in other words, this is the inverse of @code{disrayleigh}. Argument @var{q} must be an element of @math{[0,1]}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull quantile is returned.
 
 @example
 (%i1) qrayleigh(0.99,b);
@@ -1497,7 +1497,7 @@ The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, theref
 @deffn {Function} meanrayleigh (@var{b})
 Returns the mean of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull mean is returned.
 
 @example
 (%i1) meanrayleigh(b);
@@ -1515,7 +1515,7 @@ The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, theref
 @deffn {Function} varrayleigh (@var{b})
 Returns the variance of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull variance is returned.
 
 @example
 (%i1) varrayleigh(b);
@@ -1536,7 +1536,7 @@ The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, theref
 @deffn {Function} stdrayleigh (@var{b})
 Returns the standard deviation of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull standard deviation is returned.
 
 @example
 (%i1) stdrayleigh(b);
@@ -1556,7 +1556,7 @@ The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, theref
 @deffn {Function} skwrayleigh (@var{b})
 Returns the skewness coefficient of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull skewness coefficient is returned.
 
 @example
 (%i1) skwrayleigh(b);
@@ -1579,7 +1579,7 @@ The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, theref
 @deffn {Function} kurrayleigh (@var{b})
 Returns the kurtosis coefficient of a Rayleigh random variable @math{Ray(b)}, with @math{b>0}.
 
-The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull distribution is returned.
+The @math{Ray(b)} random variable is equivalent to the @math{Wei(2,1/b)}, therefore when Maxima has not enough information to get the result, a nominal form based on the Weibull kurtosis coefficient is returned.
 
 @example
 (%i1) kurrayleigh(b);
@@ -1884,7 +1884,7 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 @defvr {Option variable} rpoisson_algorithm
 Default value: @code{kachit}
 
-This is the selected algorithm for simulating random binomial variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
+This is the selected algorithm for simulating random Poisson variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
 @itemize @bullet
 
 @item
