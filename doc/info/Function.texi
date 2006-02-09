@@ -895,11 +895,14 @@ Maxima simplifies @code{funmake}'s return value.
 @end deffn
 
 @deffn {Function} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
-Defines and returns a lambda expression (that is, an anonymous function)
-with arguments @var{x_1}, ..., @var{x_m} and return value @var{expr_n}.
+@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+Defines and returns a lambda expression (that is, an anonymous function).
+The function may have required arguments @var{x_1}, ..., @var{x_m}
+and/or optional arguments @var{L}, which appear within the function body as a list.
+The return value of the function is @var{expr_n}.
 A lambda expression can be assigned to a variable and evaluated like an ordinary function.
-A lambda expression may appear in contexts in which a function evaluation
-(but not a function name) is expected.
+A lambda expression may appear in some contexts in which a function name is expected.
 
 When the function is evaluated,
 unbound local variables @var{x_1}, ..., @var{x_m} are created.
@@ -928,31 +931,14 @@ the double-single-quote operator @code{'@w{}'} defeats quotation.
 
 Examples:
 
-@c FOLLOWING EXAMPLES GENERATED FROM THIS SCRIPT:
-@c f: lambda ([x], x^2);
-@c f(a);
-@c lambda ([x], x^2) (a);
-@c apply (lambda ([x], x^2), [a]);
-@c map (lambda ([x], x^2), [a, b, c, d, e]);
-@c a: %pi$
-@c b: %e$
-@c g: lambda ([a], a*b);
-@c b: %gamma$
-@c g(1/2);
-@c g2: lambda ([a], a*''b);
-@c b: %e$
-@c g2(1/2);
-@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
-@c h(%pi, %gamma);
-@c i: lambda ([a], lambda ([x], a*x));
-@c i(1/2);
-@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
-@c i2(1/2);
-@c i2(1/2)(%pi);
 @itemize @bullet
 @item
 A lambda expression can be assigned to a variable and evaluated like an ordinary function.
 @end itemize
+@c ===beg===
+@c f: lambda ([x], x^2);
+@c f(a);
+@c ===end===
 @example
 (%i1) f: lambda ([x], x^2);
                                       2
@@ -965,6 +951,11 @@ A lambda expression can be assigned to a variable and evaluated like an ordinary
 @item
 A lambda expression may appear in contexts in which a function evaluation is expected.
 @end itemize
+@c ===beg===
+@c lambda ([x], x^2) (a);
+@c apply (lambda ([x], x^2), [a]);
+@c map (lambda ([x], x^2), [a, b, c, d, e]);
+@c ===end===
 @example
 (%i3) lambda ([x], x^2) (a);
                                 2
@@ -983,6 +974,16 @@ Other variables appear to be global variables.
 Global variables are evaluated at the time the lambda expression is evaluated,
 unless some special evaluation is forced by some means, such as @code{'@w{}'}.
 @end itemize
+@c ===beg===
+@c a: %pi$
+@c b: %e$
+@c g: lambda ([a], a*b);
+@c b: %gamma$
+@c g(1/2);
+@c g2: lambda ([a], a*''b);
+@c b: %e$
+@c g2(1/2);
+@c ===end===
 @example
 (%i6) a: %pi$
 (%i7) b: %e$
@@ -1007,6 +1008,10 @@ Lambda expressions may be nested.
 Local variables within the outer lambda expression appear to be global to the inner expression
 unless masked by local variables of the same names.
 @end itemize
+@c ===beg===
+@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@c h(%pi, %gamma);
+@c ===end===
 @example
 (%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
                                                    1
@@ -1023,6 +1028,13 @@ Since @code{lambda} quotes its arguments, lambda expression @code{i} below
 does not define a "multiply by @code{a}" function.
 Such a function can be defined via @code{buildq}, as in lambda expression @code{i2} below.
 @end itemize
+@c ===beg===
+@c i: lambda ([a], lambda ([x], a*x));
+@c i(1/2);
+@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+@c i2(1/2);
+@c i2(1/2)(%pi);
+@c ===end===
 @example
 (%i16) i: lambda ([a], lambda ([x], a*x));
 (%o16)            lambda([a], lambda([x], a x))
@@ -1038,6 +1050,28 @@ Such a function can be defined via @code{buildq}, as in lambda expression @code{
                                %pi
 (%o20)                         ---
                                 2
+@end example
+@itemize @bullet
+@item
+A lambda expression may take a variable number of arguments,
+which are indicated by @code{[@var{L}]} as the sole or final argument.
+The arguments appear within the function body as a list.
+@end itemize
+@c ===beg===
+@c f : lambda ([aa, bb, [cc]], aa * cc + bb);
+@c f (foo, %i, 17, 29, 256);
+@c g : lambda ([[aa]], apply ("+", aa));
+@c g (17, 29, x, y, z, %e);
+@c ===end===
+@example
+(%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
+(%o1)          lambda([aa, bb, [cc]], aa cc + bb)
+(%i2) f (foo, %i, 17, 29, 256);
+(%o2)       [17 foo + %i, 29 foo + %i, 256 foo + %i]
+(%i3) g : lambda ([[aa]], apply ("+", aa));
+(%o3)             lambda([[aa]], apply(+, aa))
+(%i4) g (17, 29, x, y, z, %e);
+(%o4)                  z + y + x + %e + 46
 @end example
 @end deffn
 
