@@ -212,7 +212,7 @@ solve_rec_order_1(std_form, %f, %n, cond) := block(
 
 solve_rec_gen(std_form, %f, %n, cond) := block(
   [deg : differ_degree(std_form), coeffs : [], ihom, cc : true, coeffs1,
-   pc : true, sol : false, ord : differ_order(std_form), var, num_sol, i],
+   pc : true, sol : false, ord : differ_order(std_form), var, num_sol, i%],
   if deg#1 then return(false),
   coeffs : makelist(coeff(std_form, funmake('shift_op, [%f, %n, ord-i])), i, 0, ord),
   coeffs1 : makelist(ratsimp(coeffs[i]/coeffs[1]), i, 1, ord+1),
@@ -226,11 +226,12 @@ solve_rec_gen(std_form, %f, %n, cond) := block(
   else if pc=true then (
     if ihom=0 and use_hyper then (
       sol : hyper(reverse(coeffs), %n),
-      if sol#false then (
+      if sol#false then block(
+        [i%],
         sol : sort(remove_duplicates(sol)),
         sol : get_linearly_independent1(sol, %n, ord),
         num_sol : length(sol),
-        sol : sum(%k[i]*sol[i]/abs(numfactor(sol[i])), i, 1, length(sol)),
+        sol : sum(%k[i%]*sol[i%]/abs(numfactor(sol[i%])), i%, 1, length(sol)),
         if num_sol<ord then (
           print("WARNING: found some hypergeometrical solutions!"),
           if length(cond)>0 then
@@ -411,25 +412,25 @@ solve_rec_lin_cc(coeffs, ihom, %f, %n, cond) := block(
 );
 
 solve_rec_char_gen(coeffs, %f, %n) := block(
-  [deg : length(coeffs), %x, pol, sol, i, j:1, gen_sol : 0, %k],
-  pol : sum(coeffs[i]*%x^(deg-i), i, 1, deg),
+  [deg : length(coeffs), %x, pol, sol, i, j:1, gen_sol : 0, %k, i%],
+  pol : sum(coeffs[i%]*%x^(deg-i%), i%, 1, deg),
   sol : solve(pol, %x),
   for i:1 thru length(sol) do block(
-    [k],
+    [k%],
     gen_sol : gen_sol + rhs(sol[i])^%n*
-              sum(%k[j+k]*%n^k, k, 0, multiplicities[i]-1),
+              sum(%k[j+k%]*%n^k%, k%, 0, multiplicities[i]-1),
     j : j+multiplicities[i]
   ),
   gen_sol
 )$
 
 solve_rec_char_part(coeffs, po, ihom_pol, ihom, %n) := block(
-  [pol : expand(ihom_pol), hi, u, p, %u, eqns, i, char, k,
+  [pol : expand(ihom_pol), hi, u, p, %u, eqns, i%, char, k, i,
    %d : length(coeffs)],
   hi : hipow(pol, %n),
   if rec_polyp(pol, %n)=false and hi>0 then return(false),
-  p : sum(%u[i]*%n^i, i, 0, hi),
-  char : sum(coeffs[length(coeffs)-i]*%x^i, i, 0, length(coeffs)-1),
+  p : sum(%u[i%]*%n^i%, i%, 0, hi),
+  char : sum(coeffs[length(coeffs)-i%]*%x^i%, i%, 0, length(coeffs)-1),
   while subst(po, %x, char)=0 and char#0 do (
     p : p*%n,
     char : diff(char, %x)
@@ -559,7 +560,7 @@ solve_rec_poly(eqn, fn) := block(
 )$
 
 hyper_poly(coeffs, ihom, %n) := block(
-  [m : apply('max, map(lambda([u], hipow(u,%n)), coeffs)), s : -1,
+  [m : apply('max, map(lambda([u], hipow(u,%n)), coeffs)), s : -1, i%, j%,
    d : length(coeffs), j, deg_poly : 0, i, sol, deg, %x, gen_p, %u, eqn,
    val, solutions, linsolvewarn:false, linsolve_params:false, %k, vars],
   while true do (
@@ -567,9 +568,9 @@ hyper_poly(coeffs, ihom, %n) := block(
     j : 0,
     deg_poly : coeff(coeffs[1], %n, m-s) + 
                sum(
-                  binomial(%x, j)*
-                    sum(i^j*coeff(coeffs[i+1], %n, m-s+j), i, 1, d-1),
-                  j, 0, s
+                  binomial(%x, j%)*
+                    sum(i%^j%*coeff(coeffs[i%+1], %n, m-s+j%), i%, 1, d-1),
+                  j%, 0, s
                ),
     deg_poly : ratsimp(deg_poly),
     if deg_poly#0 then return(true)
@@ -581,8 +582,8 @@ hyper_poly(coeffs, ihom, %n) := block(
   if ihom#0 then deg : max(deg, hipow(ihom, %n) - m + s),
   if deg=-1 then return(false)
   else (
-    gen_p : sum(%k[i+1]*%n^i, i, 0, deg),
-    eqn : sum(coeffs[j]*subst(%n+j-1, %n, gen_p), j, 1, d),
+    gen_p : sum(%k[i%+1]*%n^i%, i%, 0, deg),
+    eqn : sum(coeffs[j%]*subst(%n+j%-1, %n, gen_p), j%, 1, d),
     eqn : expand(eqn+ihom),
     eqn : makelist(coeff(eqn, %n, i)=0, i, 0, hipow(eqn, %n)),
     if errcatch(sol : linsolve(eqn, makelist(%k[i+1], i, 0, deg)))=[] then
@@ -625,7 +626,7 @@ solve_rec_hyper(eqn, fn) := block(
 )$
 
 hyper(polys, %n) := block(
-  [d : length(polys), coeffs : [], Al, A, Bl,  B, j, i, m, eqn, %z,
+  [d : length(polys), coeffs : [], Al, A, Bl,  B, j, i, m, eqn, %z, i%,
    solutions : [], have_solution : false, forbidden_deg_diff : []],
   Al : expand(polys[1]/coeff(polys[1], %n, hipow(polys[1], %n))),
   Al : monic_factors(Al, %n),
@@ -641,7 +642,7 @@ hyper(polys, %n) := block(
                           my_prod(subst(%n+j-1, %n, A), j, 0, i-1)*
                           my_prod(subst(%n+j-1, %n, B), j, i, d-1)), i, 1, d),
         m : apply('max, map(lambda([u], hipow(u, %n)), coeffs)),
-        eqn : sum(%z^(i-1)*coeff(coeffs[i], %n, m), i, 1, d),
+        eqn : sum(%z^(i%-1)*coeff(coeffs[i%], %n, m), i%, 1, d),
         eqn : solve(eqn=0, [%z]),
         eqn : map('rhs, eqn),
         if (length(eqn)=1 and eqn[1]=0) or length(eqn)=0 then
@@ -767,7 +768,7 @@ solve_rec_rat(eqn, fn) := block(
 )$
 
 solve_rec_rat1(coeffs, ihom, %n) := block(
-  [A, B, ord : length(coeffs), res, %y, i, M : -1, d, u : 1, sol, eq,
+  [A, B, ord : length(coeffs), res, %y, i, M : -1, d, u : 1, sol, eq, i%,
    gc, coeffs1],
   coeffs1 : makelist(subst(%n-i+1, %n, coeffs[i]), i, 1, ord),
   gc : apply('ezgcd, coeffs1)[1],
@@ -784,7 +785,7 @@ solve_rec_rat1(coeffs, ihom, %n) := block(
     B : ratsimp(B/subst(%n-i, %n, d)),
     for j:0 thru i do u : u*subst(%n-j, %n, d)
   ),
-  eq : sum(coeffs[i]/subst(%n+i-1, %n, u)*%y[%n+i-1], i, 1, ord) + ihom,
+  eq : sum(coeffs[i%]/subst(%n+i%-1, %n, u)*%y[%n+i%-1], i%, 1, ord) + ihom,
   sol : solve_rec_poly(eq, %y[%n]),
   if sol=false then return(false),
   solve_rec_method : "RatSol algorithm",
