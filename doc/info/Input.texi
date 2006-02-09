@@ -27,16 +27,58 @@ and
 @node Definitions for Input and Output,  , Files, Input and Output
 @section Definitions for Input and Output
 
+@defvr {System variable} __
+
+@code{__} is the input expression currently being evaluated.
+That is, while an input expression @var{expr} is being evaluated, @code{__} is @var{expr}.
+
+@code{__} is assigned the input expression before the input is simplified or evaluated.
+However, the value of @code{__} is simplified (but not evaluated) when it is displayed.
+
+@code{__} is recognized by @code{batch}, but not by @code{load}.
+
+See also @code{_} and @code{%}.
+
+Examples:
+
+@c ===beg===
+@c print ("I was called as", __);
+@c foo (__);
+@c g (x) := (print ("Current input expression =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("I was called as", __);
+I was called as print(I was called as, __) 
+(%o1)              print(I was called as, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Current input expression =", __), 0);
+(%o3) g(x) := (print("Current input expression =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                            cc + bb + aa
+Current input expression = -------------- 
+                           g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@end defvr
+
 @defvr {System variable} _
 
 @code{_} is the most recent input expression (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
-@code{_} is assigned the input before the input is simplified or evaluated.
+@code{_} is assigned the input expression before the input is simplified or evaluated.
 However, the value of @code{_} is simplified (but not evaluated) when it is displayed.
 
 @code{_} is recognized by @code{batch}, but not by @code{load}.
 
-See also @code{%}.
+See also @code{__} and @code{%}.
 
 Examples:
 
@@ -671,6 +713,9 @@ The function @code{grind} prints @var{expr}
 to the console in a form suitable for input to Maxima.
 @code{grind} always returns @code{done}.
 
+When @var{expr} is the name of a function or macro,
+@code{grind} prints the function or macro definition instead of just the name.
+
 See also @code{string}, which returns a string instead of printing its output.
 @code{grind} attempts to print the expression in a manner which makes it
 slightly easier to read than the output of @code{string}.
@@ -684,6 +729,70 @@ The default value of the variable @code{grind} is @code{false}.
 When @code{grind} is present,
 @code{playback} prints input expressions in the same format as the @code{grind} function.
 Otherwise, no attempt is made to specially format input expressions.
+
+@code{grind} evaluates its argument.
+
+Examples:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c "A string containing \"nested quoted marks\".";
+@c grind (%);
+@c ?a\-lisp\-symbol;
+@c grind (%);
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) "A string containing \"nested quoted marks\".";
+(%o11)     A string containing "nested quoted marks".
+(%i12) grind (%);
+"A string containing \"nested quoted marks\"."$
+(%o12)                        done
+(%i13) ?a\-lisp\-symbol;
+(%o13)                    a-lisp-symbol
+(%i14) grind (%);
+?a\-lisp\-symbol$
+(%o14)                        done
+@end example
 
 @end deffn
 
