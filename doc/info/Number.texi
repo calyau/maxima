@@ -60,11 +60,37 @@ sum ((k+h)^-s, k, 0, inf)
 @end deffn
 
 @deffn {Function} binomial (@var{x}, @var{y})
-The binomial coefficient @code{(@var{x} + @var{y})!/(@var{x}! @var{y}!)}.
+The binomial coefficient @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
 If @var{x} and @var{y} are integers, then the numerical value of the binomial
 coefficient is computed.
 If @var{y}, or @var{x - y}, is an integer,
 the binomial coefficient is expressed as a polynomial.
+
+Examples:
+
+@c ===beg===
+@c binomial (11, 7);
+@c 11! / 7! / (11 - 7)!;
+@c binomial (x, 7);
+@c binomial (x + 7, x);
+@c binomial (11, y);
+@c ===end===
+@example
+(%i1) binomial (11, 7);
+(%o1)                          330
+(%i2) 11! / 7! / (11 - 7)!;
+(%o2)                          330
+(%i3) binomial (x, 7);
+        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
+(%o3)   -------------------------------------------------
+                              5040
+(%i4) binomial (x + 7, x);
+      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
+(%o4) -------------------------------------------------------
+                               5040
+(%i5) binomial (11, y);
+(%o5)                    binomial(11, y)
+@end example
 
 @end deffn
 
