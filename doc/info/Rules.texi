@@ -421,8 +421,8 @@ for which the predicate returns anything other than @code{false}.
 
 The predicate is the name of a function,
 a function call missing the last argument,
-or @code{true}.
-Any expression matches @code{true}.
+or @code{true} or @code{all}.
+Any expression matches @code{true} or @code{all}.
 If the predicate is specified as a function call,
 the expression to be tested is appended to the list of arguments;
 the arguments are evaluated at the time the match is evaluated.
