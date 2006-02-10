@@ -517,7 +517,7 @@ setrgbcolor} def
 		  (or mexpr (merror "Undefined function ~M" expr))
 		  (coerce `(lambda ,(cdr args)
 			    (declare (special ,@(cdr args)))
-			    (let* (($ratprint nil)
+			    (let* (($ratprint nil) ($numer t)
 				   (result ($realpart (meval* ',(nth 2 mexpr)))))
 			      (if ($numberp result)
 				  ($float result)
@@ -529,7 +529,7 @@ setrgbcolor} def
 		(let ((args (nth 1 expr)))
 		  (coerce `(lambda ,(cdr args)
 			    (declare (special ,@(cdr args)))
-			    (let* (($ratprint nil)
+			    (let* (($ratprint nil) ($numer t)
 				   (result ($realpart (meval* ',(nth 2 expr)))))
 			      (if ($numberp result)
 				  ($float result)
@@ -541,7 +541,7 @@ setrgbcolor} def
 	       )
 	   (coerce `(lambda ,(cdr vars)
 		     (declare (special ,@(cdr vars) errorsw))
-		     (let (($ratprint nil)
+		     (let (($ratprint nil) ($numer t)
 			   (errorsw t))
 		       ;; Catch any errors from evaluating the
 		       ;; function.  We're assuming that if an error
