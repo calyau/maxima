@@ -1,5 +1,5 @@
 SUBDIRS = src lisp-utils tests doc interfaces share demo plotting
-EXTRA_DIST = common.mk README.lisps maxima.iss.in README.rpms INSTALL.win32 configure.lisp INSTALL.lisp maxima-local.in xmaxima-local.in README.external ChangeLog-5.9.2
+EXTRA_DIST = common.mk README.lisps maxima.iss.in README.rpms README.i18n INSTALL.win32 configure.lisp INSTALL.lisp maxima-local.in xmaxima-local.in README.external ChangeLog-5.9.2
 
 include common.mk
 

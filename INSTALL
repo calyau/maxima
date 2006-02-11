@@ -19,7 +19,17 @@ to see them enumerated.
 The "make check" step runs the Maxima test suite. The Maxima test
 suite is also available at run time via the command run_testsuite();.
 
+If locale under which Maxima is built is not C, POSIX or 
+any English language locale then is is highly recommended
+to run "make/make install" in C locale
+	LANG=C make
+	LANG=C make install
+Otherwise problems with Maxima on-line help system (describe command)
+can be expected.
+
 Generic Autotools build instructions follow.
+
+
 
 Basic Installation
 ==================
