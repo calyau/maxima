@@ -61,45 +61,48 @@
 (defun myadd2lnc (item list) 
   (and (not (memalike item list)) (nconc list (ncons item)))) 
 
-;; Reset the settings of all Macsyma user-level switches to their initial
-;; values.
+;; Bind variables declared with DEFMVAR to their initial values.
+;; Some initial values are non-Maxima expressions, e.g., (2 3 5 7)
+;; Attempt to handle those as well as Maxima expressions.
+;; No attempt is made to handle variables declare with DEFVAR or by other means.
 
-#+its
-(defmfun $reset nil (load '((dsk macsym) reset fasl)) '$done)
+;; I WONDER IF WE SHOULD MAKE SOME ATTEMPT TO HANDLE VARIABLES DECLARED WITH DEFINE_VARIABLE ??
 
-#+multics
-(defmfun $reset () (load (executable-dir "reset")) '$done)
+(fmakunbound '$reset)
 
-#+nil
-(defmfun $reset ()
-  (load "MAX$DISK:[MAXDMP]RESET" :set-default-pathname nil))
+(defun maybe-reset (key val actually-reset reset-verbose)
+  ; MAYBE DEFMVAR VALUES SHOULD ONLY BE MAXIMA EXPRESSIONS ??
+  (when
+    ; TEST (BOUNDP KEY), OTHERWISE ATTEMPT TO COMPARE VALUES FAILS ...
+    (and (boundp key)
+      (if (and (consp val) (not (consp (car val))))
+        ; Apply EQUALP to non-Maxima expressions.
+        (not (equalp (symbol-value key) val))
+        ; Apply ALIKE1 to Maxima expressions.
+        (not (alike1 (symbol-value key) val))))
 
-;; Please do not use the following version on MC without consulting with me.
-;; I already fixed several bugs in it, but the +ITS version works fine on MC 
-;; and takes less address space. - JPG
-(declare-top(special modulus $fpprec))
-#-(or cl its multics nil) ;This version should be eventually used on Multics.
-(defmfun $reset ()
-  (setq *print-base* 10. *read-base* 10. ; *NOPOINT T
-	modulus nil
-					;ZUNDERFLOW T
-	)
-  ($debugmode nil)
-  (cond ((not (= $fpprec 16.)) ($fpprec 16.) (setq $fpprec 16.))) 
-  #+gc ($dskgc nil)
-  (load #+pdp10   '((aljabr) init reset)
-	#+lispm   "MACSYMA-OBJECT:ALJABR;INIT"
-	#+multics (executable-dir "init_reset")
-	#+franz    (concat vaxima-main-dir "//aljabr//reset"))
-  ;; *** This can be flushed when all Macsyma user-switches are defined
-  ;; *** with DEFMVAR.  This is part of an older mechanism.
-  #+pdp10 (load '((macsym) reset fasl))
-  '$done)
+    (if reset-verbose (displa `((mtext) "reset: bind " ,key " to " ,val)))
+    (nconc actually-reset (list key))
+    (setf (symbol-value key) val)))
 
-(defmfun $reset ()
-  (setq *print-base* 10.)
-  (setq *read-base* 10.)
-  (maphash #'(lambda (key val)
-	       (format t "Resetting ~S to ~S~%" key val)
-	       (setf (symbol-value key) val))
-	   *variable-initial-values*))
+(defmspec $reset_verbosely (L)
+  (reset-do-the-work (cdr L) t))
+
+(defmspec $reset (L)
+  (reset-do-the-work (cdr L) nil))
+
+(defun reset-do-the-work (L reset-verbose)
+
+  (let ((args (cdr L)) (actually-reset (copy '((mlist)))) ($lispdisp t))
+    (if args
+      (mapcar
+        #'(lambda (key)
+            (maybe-reset key (gethash key *variable-initial-values*) actually-reset reset-verbose))
+        args)
+
+      (maphash
+        #'(lambda (key val)
+            (maybe-reset key val actually-reset reset-verbose))
+        *variable-initial-values*))
+  
+    actually-reset))
