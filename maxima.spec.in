@@ -190,7 +190,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
 %{_bindir}/rmaxima
-%doc AUTHORS COPYING INSTALL INSTALL.cvs INSTALL.lisp NEWS 
+%doc AUTHORS COPYING INSTALL INSTALL.lisp NEWS 
 %doc README README.lisps README.rpms README.external README.i18n
 
 %files xmaxima
