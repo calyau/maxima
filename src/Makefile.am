@@ -446,6 +446,7 @@ numerical/slatec/d9aimp.lisp \
 numerical/slatec/d9b0mp.lisp \
 numerical/slatec/d9b1mp.lisp \
 numerical/slatec/d9lgmc.lisp \
+numerical/slatec/d9upak.lisp \
 numerical/slatec/daie.lisp \
 numerical/slatec/dai.lisp \
 numerical/slatec/dasyik.lisp \
