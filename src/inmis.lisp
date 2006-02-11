@@ -91,9 +91,9 @@
 (defmspec $reset (L)
   (reset-do-the-work (cdr L) nil))
 
-(defun reset-do-the-work (L reset-verbose)
+(defun reset-do-the-work (args reset-verbose)
 
-  (let ((args (cdr L)) (actually-reset (copy '((mlist)))) ($lispdisp t))
+  (let ((actually-reset (copy '((mlist)))) ($lispdisp t))
     (if args
       (mapcar
         #'(lambda (key)
