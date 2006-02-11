@@ -124,6 +124,8 @@
 (setq $rootsepsilon 1.0e-7 $%rnum 0
       $grindswitch nil $algepsilon 100000000. $algdelta 1.0e-5) 
 
+(defmvar $listarith t)
+
 (progn
   (setq $listarith t wflag nil $lognumer nil expandp nil $domain '$real
 	$m1pbranch nil $%e_to_numlog nil $%emode t timesinp nil
