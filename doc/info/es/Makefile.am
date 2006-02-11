@@ -43,7 +43,7 @@ clean-html:
 EXTRA_DIST = maximahtml.es.mk
 
 install-info-am: $(INFO_DEPS)
-	test -z "$(infodir)$(langsdir)" || $(mkdir_p) "$(DESTDIR)$(infodir)$(langsdir)"
+	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	list='$(INFO_DEPS)'; \
 	for file in $$list; do \

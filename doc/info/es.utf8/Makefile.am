@@ -1,10 +1,15 @@
 MAKEINFOFLAGS = --enable-encoding
 
-ICONV = iconv -f ISO-8859-1 -t UTF-8
-
 langsdir = /es.utf8
 
 info_TEXINFOS = maxima.texi
+
+if USE_RECODE
+    urecode=true
+endif
+
+fcharset = "ISO-8859-1"
+tcharset = "UTF-8"
 
 maximahtml.es.mk:
 	../texi2html -split_chapter --lang=es --output=. maxima.texi
@@ -31,8 +36,24 @@ clean-html:
 
 EXTRA_DIST = maximahtml.es.mk
 
+maxima.info: maxima.texi
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) -I $(srcdir) \
+	 -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+	for f in $@ $@-[0-9] $@-[0-9][0-9]; do \
+	    if test -f $$f; then \
+		if test x$(urecode) = xtrue ; then \
+		    recode $(fcharset)..$(tcharset) $$f ; \
+		else \
+		    rm -f foo.$$f 2>/dev/null ; \
+		    iconv -f $(fcharset) -t $(tcharset) $$f > foo.$$f ; \
+		    mv -f foo.$$f $$f ; \
+		fi; \
+	    fi; \
+	done
+
 install-info-am: $(INFO_DEPS)
-	test -z "$(infodir)$(langsdir)" || $(mkdir_p) "$(DESTDIR)$(infodir)$(langsdir)"
+	test -z "$(infodir)$(langsdir)" || mkdir -p -- "$(DESTDIR)$(infodir)$(langsdir)"
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	list='$(INFO_DEPS)'; \
 	for file in $$list; do \
@@ -46,7 +67,6 @@ install-info-am: $(INFO_DEPS)
 	    if test -f $$ifile; then \
 	      relfile=`echo "$$ifile" | sed 's|^.*/||'`; \
 	      echo " $(INSTALL_DATA) '$$ifile' '$(DESTDIR)$(infodir)$(langsdir)/$$relfile'"; \
-	      $(ICONV) "$$ifile" > foo ; rm -f "$$file" ; mv foo "$$ifile" ; \
 	      $(INSTALL_DATA) "$$ifile" "$(DESTDIR)$(infodir)$(langsdir)/$$relfile"; \
 	    else : ; fi; \
 	  done; \
