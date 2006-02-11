@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.19 2006-02-05 18:17:20 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.20 2006-02-11 15:24:23 vvzhy Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -172,13 +172,17 @@ proc setMaxDir {} {
     if { [info exists env(MAXIMA_LANG_SUBDIR)] } {
 	set maxima_priv(maxima_lang_subdir) $env(MAXIMA_LANG_SUBDIR)
     } else {
-        set wlocale ""
-	if { [info exists env(LC_ALL)] } { 
-	    set wlocale $env(LC_ALL) 
-	} elseif { [info exists env(LC_MESSAGES)] } { 
-	    set wlocale $env(LC_MESSAGES) 
-	} elseif { [info exists env(LANG)] } { 
-	    set wlocale $env(LANG) }
+	if { $tcl_platform(platform) == "windows" } {
+    	    set wlocale [ ::msgcat::mclocale ]
+	} else {
+    	    set wlocale ""
+	    if { [info exists env(LC_ALL)] } { 
+		set wlocale $env(LC_ALL) 
+	    } elseif { [info exists env(LC_MESSAGES)] } { 
+		set wlocale $env(LC_MESSAGES) 
+	    } elseif { [info exists env(LANG)] } { 
+		set wlocale $env(LANG) }
+	}	
 	# Only languages known to Maxima
 	switch -glob $wlocale {
 	  "es*utf*" {
