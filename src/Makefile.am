@@ -517,6 +517,7 @@ numerical/slatec/dqwgtc.lisp \
 numerical/slatec/dqwgtf.lisp \
 numerical/slatec/dqwgts.lisp \
 numerical/slatec/dyairy.lisp \
+numerical/slatec/dspenc.lisp \
 numerical/slatec/fdump.lisp \
 numerical/slatec/initds.lisp \
 numerical/slatec/j4save.lisp \
