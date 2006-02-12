@@ -66,24 +66,24 @@
 ;; Attempt to handle those as well as Maxima expressions.
 ;; No attempt is made to handle variables declare with DEFVAR or by other means.
 
-;; I WONDER IF WE SHOULD MAKE SOME ATTEMPT TO HANDLE VARIABLES DECLARED WITH DEFINE_VARIABLE ??
-
-(fmakunbound '$reset)
-
 (defun maybe-reset (key val actually-reset reset-verbose)
   ; MAYBE DEFMVAR VALUES SHOULD ONLY BE MAXIMA EXPRESSIONS ??
-  (when
-    ; TEST (BOUNDP KEY), OTHERWISE ATTEMPT TO COMPARE VALUES FAILS ...
-    (and (boundp key)
-      (if (and (consp val) (not (consp (car val))))
-        ; Apply EQUALP to non-Maxima expressions.
-        (not (equalp (symbol-value key) val))
-        ; Apply ALIKE1 to Maxima expressions.
-        (not (alike1 (symbol-value key) val))))
-
-    (if reset-verbose (displa `((mtext) "reset: bind " ,key " to " ,val)))
-    (nconc actually-reset (list key))
-    (setf (symbol-value key) val)))
+  (let ((non-maxima (and (consp val) (not (consp (car val))))))
+    (when
+      ; TEST (BOUNDP KEY), OTHERWISE ATTEMPT TO COMPARE VALUES FAILS ...
+      (and (boundp key)
+        (if non-maxima
+          ; Apply EQUALP to non-Maxima expressions.
+          (not (equalp (symbol-value key) val))
+          ; Apply ALIKE1 to Maxima expressions.
+          (not (alike1 (symbol-value key) val))))
+      
+      (when reset-verbose
+        ; ATTEMPT TO COPE WITH NON-MAXIMA EXPRESSIONS FOR BENEFIT OF DISPLA
+        (let ((displa-val (if non-maxima `((mprogn) ,@val) val)))
+          (displa `((mtext) "reset: bind " ,key " to " ,displa-val))))
+      (nconc actually-reset (list key))
+      (setf (symbol-value key) val))))
 
 (defmspec $reset_verbosely (L)
   (reset-do-the-work (cdr L) t))
