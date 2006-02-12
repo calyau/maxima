@@ -782,3 +782,64 @@ specint(t^(v-1)*%w[k,u](a*t)*exp(-p*t),t);
 a^(u+1/2)*(p+a/2)^(-v-u-1/2)*gamma(v-u+1/2)*gamma(v+u+1/2)
 			   *%f[2,1]([v+u+1/2,u-k+1/2],[v-k+1],(p-a/2)/(p+a/2))
 	 /gamma(v-k+1)$
+
+/*
+ * Bug 1376865 
+ * Formula 24, p. 178.
+ */
+ratsimp(specint(%ei(-t)*exp(-p*t),t));
+-log(p+1)/p;
+
+/*
+ * Formula 25, p. 178 
+ *
+ * t^(-1/2)*%ei(-t)
+ * -> -2*%pi/sqrt(p)*log(sqrt(p)+sqrt(p+1))
+ *
+ * Maxima will ask for the sign of 2*psey-1.  If you answer pos, you'll get the answer below.
+ *
+ */
+/*
+ratsimp(specint(t^(-1/2)*%ei(-t)*exp(-p*t),t));
+-sqrt(%pi)*log(-(sqrt(p)*sqrt(p+1)+p+1)/(sqrt(p)*sqrt(p+1)-p-1))
+	/sqrt(p);
+*/
+
+/*
+ * Formula 26, p. 178 
+ *
+ * sin(a*t)*%ei(-t)
+ * -> -(p^2+a^2)^(-1)*(a/2*log((p+1)^2+a^2) - p*atan(a/(p+1)))
+ */
+ratsimp(rectform(specint(sin(a*t)*%ei(-t)*exp(-p*t),t)));
+(2*p*atan(a/(p+1))-a*log(p^2+2*p+a^2+1))/(2*p^2+2*a^2);
+
+/*
+ * Formula 27, p. 178 
+ *
+ * cos(a*t)*%ei(-t)
+ * -> -(p^2+a^2)^(-1)*(p/2*log((p+1)^2+a^2) + a*atan(a/(p+1)))
+ */
+ratsimp(rectform(specint(cos(a*t)*%ei(-t)*exp(-p*t),t)));
+-(2*a*atan(a/(p+1))+p*log(p^2+2*p+a^2+1))/(2*p^2+2*a^2);
+
+/*
+ * Formula 34, p. 179
+ *
+ * exp(b*t)*gammagreek(v,a*t)
+ * -> gamma(v)*a^v*(p-b)^(-1)*(p+a-b)^(-v)
+ */
+(assume(p>b,v>-1),0);
+0;
+radcan(specint(exp(b*t)*gammagreek(v,a*t)*exp(-p*t),t));
+a^v*gamma(v+1)/((p-b)*(p-b+a)^v*v);
+
+/*
+ * Formula 1, p. 214
+ *
+ * kbateman[0](t) -> 1/(p+1)
+ *
+ */
+radcan(specint(kbateman[0](t)*exp(-p*t),t));
+1/(p+1);
+
