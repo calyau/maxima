@@ -50,6 +50,9 @@ true$
 (maxerror : 0.0,0);
 0$
 
+(save_flags_names : '[%piargs, %iargs, trigsign, listarith, exponentialize, halfangles, trigexpand, trigexpandplus, trigexpandtimes, triginverses], save_flags_values : ev (save_flags_names), 0);
+0;
+
 (%piargs : true,0);
 0$
 
@@ -299,6 +302,10 @@ true$
 (remfunction(complexfloatp, complexbigfloatp),0);
 0$
 
-(kill(values), reset_verbosely (), 0);
+/* Probably we should beef up reset slightly to handle this, but for now this is OK. */
+(map (lambda ([a, b], a :: b), save_flags_names, save_flags_values), 0);
+0;
+
+(kill(values),0);
 0$
 
