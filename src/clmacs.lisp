@@ -467,7 +467,8 @@
   ;; in those few cases when the mathematical result is exact although
   ;; one of the arguments is a floating-point number, such as (* 0
   ;; 1.618), (/ 0 1.618), (atan 0 1.0), (expt 2.0 0)
-  (setq custom:*floating-point-rational-contagion-ansi* t)
-  )
+  (let ((fprca (find-symbol "*FLOATING-POINT-RATIONAL-CONTAGION-ANSI*" :CUSTOM)))
+    (if fprca (set fprca t)))
+)
 
 (defmacro float (x &optional (y 1.0d0)) `(cl:float ,x ,y))
