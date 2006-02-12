@@ -1639,8 +1639,17 @@
 	 (denom (pdis (cddr rat-exp))))
     (cond ((not (equal (intsubs num ll ul) 0.))
 	   (intsubs exp ll ul))
+	  ;; Why do we want to return zero when the denom is not zero?
+	  ;; That doesn't seem to make sense to me (rtoy).  Checking
+	  ;; for a zero denominator makes sense, but what we should
+	  ;; return in that case?  0 seems like a bad choice.  $inf or
+	  ;; $undefined seem like better choices.  Or maybe just
+	  ;; signaling an error?
+	  #+nil  
 	  ((not (equal ($asksign denom) '$zero))
 	   0.)
+	  ((equal ($asksign denom) '$zero)
+	   '$undefined)
 	  (t (let (($%piargs ()))
 	       (intsubs exp ll ul))))))
 
