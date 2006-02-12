@@ -338,3 +338,24 @@ translate(fpred);
 fpred(xyzzy);
 unknown$
 
+/* Bug 1281737 */
+limit(atan(x)/(1/exp(1)-exp(-(1+x)^2)),x,inf,'plus);
+%e*%pi/2;
+
+/* Bug 1363411 */
+'sum(1+f(k),k,1,2),simpsum;
+f(2) + f(1) + 2;
+
+/* Bug 1403415, fixed in clmacs.lisp rev 1.20 */
+float(0.0b0);
+0.0;
+
+/* Bug 1404754, fixed in float.lisp rev 1.23 */
+1.0b0*x;
+1.0b0*x;
+
+/* Bug 1374704.  See also 1418010 because result isn't simplified. */
+(assume(cos(x)>0),0);
+0;
+integrate(sin(x)/cos(x)^2,x,0,%pi/3);
+1/cos(%pi/3)-1/cos(0);
