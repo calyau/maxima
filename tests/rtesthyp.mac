@@ -780,5 +780,5 @@ true$
 true$
 specint(t^(v-1)*%w[k,u](a*t)*exp(-p*t),t);
 a^(u+1/2)*(p+a/2)^(-v-u-1/2)*gamma(v-u+1/2)*gamma(v+u+1/2)
-			   *%f[2,1]([v+u+1/2,u-k+1],[v-k+1],(p-a/2)/(p+a/2))
+			   *%f[2,1]([v+u+1/2,u-k+1/2],[v-k+1],(p-a/2)/(p+a/2))
 	 /gamma(v-k+1)$
