@@ -1793,11 +1793,13 @@
 ;;
 ;; For Re(v +/- mu) > -1/2
 (defun f16p217test (r a i1 i2)
+  ;; We have r*%w[i1,i2](a)
   (let ((l (c*t^v r)))
     ;; Make sure r is of the form c*t^v
     (when l
       (let* ((v (add (cdras 'v l) 1))
 	     (c (cdras 'c l)))
+	;; Check that v + i2 + 1/2 > 0 and v - i2 + 1/2 > 0.
 	(when (and (eq (asksign (add (add v i2) 1//2)) '$positive)
 		   (eq (asksign (add (sub v i2) 1//2)) '$positive))
 	  ;; Ok, we satisfy the conditions.  Now extract the arg.
@@ -1817,7 +1819,7 @@
 				 (power (add *par* (div a 2))
 					(add (add i2 v) 1//2))))
 		      (hgfsimp-exec (list (add (add i2 v 1//2))
-					  (add (sub i2 i1) 1))
+					  (add (sub i2 i1) 1//2))
 				    (list (add (sub v i1) 1))
 				    (div (sub *par* (div a 2))
 					 (add *par* (div a 2)))))))))))))
