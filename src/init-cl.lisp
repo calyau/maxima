@@ -345,7 +345,7 @@
     (if (equal (subseq pathstring (- len 1) len) "/")
 	(progn (setf len (- len 1))
 	       (setf pathstring (subseq pathstring 0 len))))
-    (subseq pathstring (+ (position #\/ pathstring :from-end t) 1) len)))
+    (subseq pathstring (+ (or (position #\/ pathstring :from-end t) (position #\\ pathstring :from-end t)) 1) len)))
 
 (defun unix-like-dirname (path)
   (let* ((pathstring (namestring path))
@@ -353,7 +353,7 @@
     (if (equal (subseq pathstring (- len 1) len) "/")
 	(progn (setf len (- len 1))
 	       (setf pathstring (subseq pathstring 0 len))))
-    (subseq pathstring 0 (position #\/ pathstring :from-end t))))
+    (subseq pathstring 0 (or (position #\/ pathstring :from-end t) (position #\\ pathstring :from-end t)))))
 
 (defun list-avail-action ()
   (let* ((maxima-verpkglibdir (if (maxima-getenv "MAXIMA-VERPKGLIBDIR")
