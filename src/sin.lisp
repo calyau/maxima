@@ -11,6 +11,10 @@
 (in-package :maxima)
 (macsyma-module sin)
 
+;;; Reference:  J. Moses, Symbolic Integration, MIT-LCS-TR-047, 12-1-1967.
+;;; http://www.lcs.mit.edu/publications/pubs/pdf/MIT-LCS-TR-047.pdf.
+
+
 (declare-top (special ratform exptsum $radexpand $%e_to_numlog
 		      exptind quotind splist l ans splist arcpart coef
 		      aa dict exptflag base* powerlist a b k stack
@@ -952,12 +956,13 @@
 	 (cond ((atom x) (not (memq x '(sin* cos* sec* tan*))))
 	       (t (and (trigfree (car x)) (trigfree (cdr x))))))
 
-(defun rat1 (exp) (prog (b1 notsame) 
-			     (cond ((and (numberp exp) (zerop exp))
-				    (return nil)))
-			     (setq b1 (subst b 'b '((mexpt) b (n even))))
-			     (return (prog2 (setq yy (rats exp))
-					    (cond ((not notsame) yy))))))
+(defun rat1 (exp)
+  (prog (b1 notsame) 
+     (cond ((and (numberp exp) (zerop exp))
+	    (return nil)))
+     (setq b1 (subst b 'b '((mexpt) b (n even))))
+     (return (prog2 (setq yy (rats exp))
+		 (cond ((not notsame) yy))))))
 
 (defun rats (exp) 
   (prog (y) 
@@ -1009,141 +1014,209 @@
 				   (cdr m)))
 	       x))
 
+;; This appears to be the implementation of Method 6, pp.82 in Moses'
+;; thesis.
+
 (defun trigint (exp var) 
-  (prog (y repl y1 y2 yy z m n c yz a b ) 
-	(setq y2
-	      (subliss (subvardlg '((((%sin) x) . sin*)
-				    (((%cos) x) . cos*)
-				    (((%tan) x) . tan*)
-				    (((%cot) x) (mexpt) tan* -1)
-				    (((%sec) x) . sec*)
-				    (((%csc) x) (mexpt) sin* -1)))
-		       (simplifya exp nil)))
-	(setq y1 (setq y (simplify (subliss '((tan* (mtimes)
-						sin*
-						((mexpt) cos* -1))
-					  (sec* (mexpt) cos* -1))
-					y2))))
-	(cond ((null (setq z (m2 y
-				 '((mtimes)
-				   ((coefftt) (b trigfree))
-				   ((mexpt) sin* (m poseven))
-				   ((mexpt) cos* (n poseven)))
-				 nil)))
-	       (go l1)))
-	(setq m (cdr (sassq 'm z 'nill)))
-	(setq n (cdr (sassq 'n z 'nill)))
-	(setq a (integerp2 (times 0.5
-				 (cond ((lessp m n) 1) (t -1))
-				 (plus n (times -1 m)))))
-	(setq z (cons (cons 'a a) z))
-	(return
-	 (simplify
-	  (list
-	   '(mtimes)
-	   (cdr (sassq 'b z 'nill))
-	   '((rat simp) 1 2)
-	   (substint
-	    (list '(mtimes) 2 var)
-	    'x
-	    (integrator (simplify (cond ((lessp m n)
-				     (subliss z
-					      '((mtimes)
-						((mexpt)
-						 ((mtimes)
-						  ((rat simp) 1 2)
-						  ((%sin) x))
-						 m)
-						((mexpt)
-						 ((mplus)
-						  ((rat simp) 1 2)
-						  ((mtimes)
-						   ((rat simp) 1 2)
-						   ((%cos) x)))
-						 a))))
-				    (t (subliss z
+  (prog (y repl y1 y2 yy z m n c yz a b )
+     ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
+     ;; tan and csc to sin.
+     (setq y2
+	   (subliss (subvardlg '((((%sin) x) . sin*)
+				 (((%cos) x) . cos*)
+				 (((%tan) x) . tan*)
+				 (((%cot) x) . ((mexpt) tan* -1))
+				 (((%sec) x) . sec*)
+				 (((%csc) x) . ((mexpt) sin* -1))))
+		    (simplifya exp nil)))
+     #+nil
+     (progn
+       (format t "y2 = ~%")
+       (maxima-display y2))
+     ;; Now transform tan to sin/cos and sec to 1/cos.
+     (setq y1 (setq y (simplify (subliss '((tan* . ((mtimes) sin*
+						    ((mexpt) cos* -1)))
+					   (sec* . ((mexpt) cos* -1)))
+					 y2))))
+     #+nil
+     (progn 
+       (format t "y  =~%")
+       (maxima-display y))
+     (cond ((null (setq z (m2 y
+			      '((mtimes)
+				((coefftt) (b trigfree))
+				((mexpt) sin* (m poseven))
+				((mexpt) cos* (n poseven)))
+			      nil)))
+	    ;; Go if y is not of the form sin^m*cos^n for positive
+	    ;; even m and n.
+	    #+nil
+	    (format t "Not of form sin^m*cos^n, for m, n non-negative and even.~%")
+	    (go l1)))
+
+     ;; Case III:
+     ;;
+     ;; Handle the case of sin^m*cos^n, m, n both non-negative and
+     ;; even.
+     
+     #+nil
+     (format t "Case III~%")
+     (setq m (cdr (sassq 'm z 'nill)))
+     (setq n (cdr (sassq 'n z 'nill)))
+     (setq a (integerp2 (times 0.5
+			       (cond ((lessp m n) 1) (t -1))
+			       (plus n (times -1 m)))))
+     (setq z (cons (cons 'a a) z))
+     #+nil
+     (progn
+       (format t "m, n = ~A ~A~%" m n)
+       (format t "a = ~A~%" a)
+       (format t "z = ~A~%" z))
+     ;; integrate(sin(y)^m*cos(y)^n,y) is transformed to the following form:
+     ;;
+     ;; m < n:
+     ;;   integrate((sin(2*y)/2)^n*(1/2+1/2*cos(2*y)^((n-m)/2),y)
+     ;;
+     ;; m >= n:
+     ;;
+     ;;   integrate((sin(2*y)/2)^n*(1/2-1/2*cos(2*y)^((m-n)/2),y)
+     (return
+       (simplify
+	(list
+	 '(mtimes)
+	 (cdr (sassq 'b z 'nill))
+	 '((rat simp) 1 2)
+	 (substint
+	  (list '(mtimes) 2 var)
+	  'x
+	  (integrator (simplify (cond ((lessp m n)
+				       (subliss z
 						'((mtimes)
 						  ((mexpt)
 						   ((mtimes)
 						    ((rat simp) 1 2)
 						    ((%sin) x))
-						   n)
+						   m)
 						  ((mexpt)
 						   ((mplus)
 						    ((rat simp) 1 2)
 						    ((mtimes)
-						     ((rat simp)
-						      -1
-						      2)
+						     ((rat simp) 1 2)
 						     ((%cos) x)))
-						   a))))))
-			'x)))))
-   l1   (setq c -1)
-	(setq a 'sin*)
-	(setq b 'cos*)
-	(cond ((and (m2 y
-			'((coeffpt) (c rat1) ((mexpt) cos* (n odd1)))
-			nil)
-		    (setq repl (list '(%sin) var)))
-	       (go getout)))
-	(setq a b)
-	(setq b 'sin*)
-	(cond ((and (m2 y
-			'((coeffpt) (c rat1) ((mexpt) sin* (n odd1)))
-			nil)
-		    (setq repl (list '(%cos) var)))
-	       (go get3)))
-	(setq y
-	      (simplify (subliss '((sin* (mtimes) tan* ((mexpt) sec* -1))
-			       (cos* (mexpt) sec* -1))
-			     y2)))
-	(setq c 1)
-	(setq a 'tan*)
-	(setq b 'sec*)
-	(cond ((and (rat1 y) (setq repl (list '(%tan) var)))
-	       (go get1)))
-	(setq a b)
-	(setq b 'tan*)
-	(cond ((and (m2 y
-			'((coeffpt) (c rat1) ((mexpt) tan* (n odd1)))
-			nil)
-		    (setq repl (list '(%sec) var)))
-	       (go getout)))
- (cond((not (alike1(setq repl ($expand exp))exp))(return(integrator repl var))))
-	(setq y
-	      (simplify (subliss '((sin* (mtimes)
-				     2
-				     x
-				     ((mexpt)
-				      ((mplus) 1 ((mexpt) x 2))
-				      -1))
-			       (cos* (mtimes)
-				     ((mplus)
-				      1
-				      ((mtimes) -1 ((mexpt) x 2)))
-				     ((mexpt)
-				      ((mplus) 1 ((mexpt) x 2))
-				      -1)))
-			     y1)))
-	(setq y (list '(mtimes)
-		      y
-		      '((mtimes)
-			2
-			((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))))
-	(setq repl (subvar '((mquotient)
-			     ((%sin) x)
-			     ((mplus) 1 ((%cos) x)))))
-	(go get2)
-   get3 (setq y (list '(mtimes) -1 yy yz))
-	(go get2)
-   get1 (setq y (list '(mtimes)
-		      '((mexpt) ((mplus) 1 ((mexpt) x 2)) -1)
-		      yy))
-	(go get2)
-   getout
-	(setq y (list '(mtimes) yy yz))
-   get2 (setq y (simplify y))
-	(return (substint repl 'x (integrator y 'x)))))
+						   a))))
+				      (t (subliss z
+						  '((mtimes)
+						    ((mexpt)
+						     ((mtimes)
+						      ((rat simp) 1 2)
+						      ((%sin) x))
+						     n)
+						    ((mexpt)
+						     ((mplus)
+						      ((rat simp) 1 2)
+						      ((mtimes)
+						       ((rat simp)
+							-1
+							2)
+						       ((%cos) x)))
+						     a))))))
+		      'x)))))
+     l1
+     ;; I think this is case IV, working on the expression in terms of
+     ;; sin and cos.
+
+     ;; Elem(x) means constants, x, trig functions of x, log and
+     ;; inverse trig functions of x, and which are closed under
+     ;; addition, multiplication, exponentiation, and substitution.
+     ;;
+     ;; Elem(f(x)) is the same as Elem(x), but f(x) replaces x in the
+     ;; definition.
+
+     #+nil
+     (format t "Case IV~%")
+     (setq c -1)
+     (setq a 'sin*)
+     (setq b 'cos*)
+     (cond ((and (m2 y
+		     '((coeffpt) (c rat1) ((mexpt) cos* (n odd1)))
+		     nil)
+		 (setq repl (list '(%sin) var)))
+	    ;; The case cos^(2*n+1)*Elem(cos^2,sin).  Use the
+	    ;; substitution z = sin.
+	    #+nil
+	    (format t "Case cos^(2*n+1)*Elem(cos^2,sin)~%")
+	    (go getout)))
+     (setq a b)
+     (setq b 'sin*)
+     (cond ((and (m2 y
+		     '((coeffpt) (c rat1) ((mexpt) sin* (n odd1)))
+		     nil)
+		 (setq repl (list '(%cos) var)))
+	    ;; The case sin^(2*n+1)*Elem(sin^2,cos).  Use the
+	    ;; substitution z = cos.
+	    #+nil
+	    (format t "Case sin^(2*n+1)*Elem(sin^2,cos)~%")
+	    (go get3)))
+     ;; Case V
+     ;;
+     ;; Transform sin and cos to tan and sec to see if the integral is
+     ;; of the form Elem(tan, sec^2).  If so, use the substitution z =
+     ;; tan.
+     #+nil
+     (format t "Case V~%")
+     (setq y
+	   (simplify (subliss '((sin* (mtimes) tan* ((mexpt) sec* -1))
+				(cos* (mexpt) sec* -1))
+			      y2)))
+     (setq c 1)
+     (setq a 'tan*)
+     (setq b 'sec*)
+     (cond ((and (rat1 y) (setq repl (list '(%tan) var)))
+	    (go get1)))
+     (setq a b)
+     (setq b 'tan*)
+     (cond ((and (m2 y
+		     '((coeffpt) (c rat1) ((mexpt) tan* (n odd1)))
+		     nil)
+		 (setq repl (list '(%sec) var)))
+	    (go getout)))
+     (cond((not (alike1 (setq repl ($expand exp))
+			exp))
+	   (return(integrator repl var))))
+     (setq y
+	   (simplify (subliss '((sin* (mtimes)
+				 2
+				 x
+				 ((mexpt)
+				  ((mplus) 1 ((mexpt) x 2))
+				  -1))
+				(cos* (mtimes)
+				 ((mplus)
+				  1
+				  ((mtimes) -1 ((mexpt) x 2)))
+				 ((mexpt)
+				  ((mplus) 1 ((mexpt) x 2))
+				  -1)))
+			      y1)))
+     (setq y (list '(mtimes)
+		   y
+		   '((mtimes)
+		     2
+		     ((mexpt) ((mplus) 1 ((mexpt) x 2)) -1))))
+     (setq repl (subvar '((mquotient)
+			  ((%sin) x)
+			  ((mplus) 1 ((%cos) x)))))
+     (go get2)
+     get3 (setq y (list '(mtimes) -1 yy yz))
+     (go get2)
+     get1 (setq y (list '(mtimes)
+			'((mexpt) ((mplus) 1 ((mexpt) x 2)) -1)
+			yy))
+     (go get2)
+     getout
+     (setq y (list '(mtimes) yy yz))
+     get2 (setq y (simplify y))
+     (return (substint repl 'x (integrator y 'x)))))
 
 (defmfun sinint (exp var)
  (find-function 'ratint)  ; Make sure that RATINT is in core.
