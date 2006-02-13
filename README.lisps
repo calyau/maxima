@@ -11,17 +11,19 @@ if you are interested in working on a port.
 --------------------------------------------------------------------
 Clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 
-	Clisp includes GNU readline support, so Maxima will have
+	Clisp includes GNU readline support, so Maxima has
 advanced command-line editing facilities when built with it.
 
 Clisp versions: Clisp version 2.33.2 or later is recommended.
 Clisp 2.30 is not compatible with Maxima.
 
-Clisp is interpreted, so Maxima running on Clisp is substantially
-slower than on compiled Lisps. Clisp computes floating-point
-operations in software, so floating-point operations in Clisp
-are much slower than in Lisps which make use of hardware instructions
-for floating-point operations.
+Clisp is compiled to bytecodes, so Maxima running on Clisp is
+substantially slower than on Lisps compiled to machine instructions.
+Clisp computes floating-point operations in software,
+so floating-point operations in Clisp are much slower than in Lisps
+which make use of hardware instructions for floating-point operations.
+On the other hand, Clisp makes use of the GMP library for arbitrary-
+precision integer computations.
 
 There are Clisp implementations for many platforms
 including MS Windows and Unix-like systems.
@@ -55,7 +57,7 @@ http://www.texmacs.org/
 GCL <http://savannah.gnu.org/projects/gcl>
 
 	GCL versions starting with 2.4.3 can be built with readline
-support, so Maxima will have advanced command-line editing facilities
+support, so Maxima has advanced command-line editing facilities
 when built with it. GCL produces a fast Maxima exectuable.
 
 GCL versions: GCL 2.6.5 and 2.6.7 are known to work for Maxima.
