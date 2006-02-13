@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Logarithms.texi/1.14/Fri Jan 20 14:25:32 2006/-ko/
+@c /Logarithms.texi/1.15/Sat Feb 11 05:24:52 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Logar@'itmos::
 @end menu
@@ -94,7 +94,9 @@ Exemplos:
 @end deffn
 
 @deffn {Fun@,{c}@~ao} log (@var{x})
-Representa o logar@'itmo natural de @var{x}.
+Representa o logar@'itmo natural (base @math{e}) de @var{x}.
+
+Maxima n@~ao possui uma fun@,{c}@~ao interna para logar@'itmo de base 10 ou de outras bases. @code{log10(x) := log(x) / log(10)} @'e uma defini@,{c}@~ao @'util.
 
 Simplifica@,{c}@~ao e avalia@,{c}@~ao de logar@'itmos s@~ao governadas por muitos sinalizadores globais:
 

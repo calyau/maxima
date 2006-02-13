@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Rules.texi/1.21/Fri Jan 13 08:16:20 2006/-ko/
+@c /Rules.texi/1.22/Sat Feb 11 05:24:55 2006/-ko/
 
 @menu
 * Introdu@value{cedilha}@~ao a Regras e Modelos::  
@@ -426,8 +426,8 @@ para as quais o predicado retorne qualquer coisa que n@~ao @code{false}.
 
 O predicado @'e o nome de uma fun@,{c}@~ao,
 uma chamada de fun@,{c}@~ao omitindo o @'ultimo argumento,
-ou @code{true}.
-Qualquer express@~ao coincide com @code{true}.
+ou @code{true} ou @code{all}.
+Qualquer express@~ao coincide com @code{true} ou @code{all}.
 Se o predicado for especificado como uma chamada de fun@,{c}@~ao,
 a express@~ao a ser testada @'e anexada ao final da lista de argumentos;
 os argumentos s@~ao avaliados ao mesmo tempo que a coincid@^encia @'e avaliada.

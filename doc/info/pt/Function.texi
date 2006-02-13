@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.37/Fri Jan 13 08:16:12 2006/-ko/
+@c /Function.texi/1.38/Fri Feb 10 08:27:50 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -899,11 +899,14 @@ Maxima simplifica o valor de retorno de @code{funmake}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Fun@,{c}@~ao} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Fun@,{c}@~ao} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
 Define e retorna uma express@~ao lambda (que @'e, uma fun@,{c}@~ao an@^onima)
-com argumentos @var{x_1}, ..., @var{x_m} e valor de retorno @var{expr_n}.
+A fun@,{c}@~ao pode ter argumentos que sejam necess@'arios @var{x_1}, ..., @var{x_m}
+e/ou argumentos opcionais @var{L}, os quais aparecem dentro do corpo da fun@,{c}@~ao como uma lista.
+O valor de retorno da fun@,{c}@~ao @'e @var{expr_n}.
 Uma express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como uma fun@,{c}@~ao comum.
-Uma express@~ao lambda pode aparecer em contextos nos quais uma avalia@,{c}@~ao de fun@,{c}@~ao
-(mas n@~ao um nome de fun@,{c}@~ao) @'e esperado como resposta.
+Uma express@~ao lambda pode aparecer em alguns contextos nos quais um nome de fun@,{c}@~ao @'e esperado.
 
 Quando a fun@,{c}@~ao @'e avaliada,
 vari@'aveis locais n@~ao associadas @var{x_1}, ..., @var{x_m} s@~ao criadas.
@@ -932,31 +935,14 @@ o operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
 
 Exemplos:
 
-@c FOLLOWING EXAMPLES GENERATED FROM THIS SCRIPT:
-@c f: lambda ([x], x^2);
-@c f(a);
-@c lambda ([x], x^2) (a);
-@c apply (lambda ([x], x^2), [a]);
-@c map (lambda ([x], x^2), [a, b, c, d, e]);
-@c a: %pi$
-@c b: %e$
-@c g: lambda ([a], a*b);
-@c b: %gamma$
-@c g(1/2);
-@c g2: lambda ([a], a*''b);
-@c b: %e$
-@c g2(1/2);
-@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
-@c h(%pi, %gamma);
-@c i: lambda ([a], lambda ([x], a*x));
-@c i(1/2);
-@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
-@c i2(1/2);
-@c i2(1/2)(%pi);
 @itemize @bullet
 @item
 A express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como uma fun@,{c}@~ao comum.
 @end itemize
+@c ===beg===
+@c f: lambda ([x], x^2);
+@c f(a);
+@c ===end===
 @example
 (%i1) f: lambda ([x], x^2);
                                       2
@@ -969,6 +955,11 @@ A express@~ao lambda pode ser atribu@'ida para uma vari@'avel e avaliada como um
 @item
 Uma express@~ao lambda pode aparecer em contextos nos quais uma avalia@,{c}@~ao de fun@,{c}@~ao @'e esperada como resposta.
 @end itemize
+@c ===beg===
+@c lambda ([x], x^2) (a);
+@c apply (lambda ([x], x^2), [a]);
+@c map (lambda ([x], x^2), [a, b, c, d, e]);
+@c ===end===
 @example
 (%i3) lambda ([x], x^2) (a);
                                 2
@@ -987,6 +978,16 @@ Outras vari@'aveis aparecem para serem vari@'aveis globais.
 Vari@'aveis globais s@~ao avaliadas ao mesmo tempo em que a express@~ao lambda @'e avaliada,
 a menos que alguma avalia@,{c}@~ao especial seja for@,{c}ada por alguns meios, tais como @code{'@w{}'}.
 @end itemize
+@c ===beg===
+@c a: %pi$
+@c b: %e$
+@c g: lambda ([a], a*b);
+@c b: %gamma$
+@c g(1/2);
+@c g2: lambda ([a], a*''b);
+@c b: %e$
+@c g2(1/2);
+@c ===end===
 @example
 (%i6) a: %pi$
 (%i7) b: %e$
@@ -1011,6 +1012,10 @@ Express@~oes lambda podem ser aninhadas.
 Vari@'aveis locais dentro de outra express@~ao lambda parece ser global para a express@~ao interna
 a menos que mascarada por vari@'aveis locais de mesmos nomes.
 @end itemize
+@c ===beg===
+@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@c h(%pi, %gamma);
+@c ===end===
 @example
 (%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
                                                    1
@@ -1027,6 +1032,13 @@ Uma vez que @code{lambda} n@~ao avalia seus argumentos, a express@~ao lambda @co
 n@~ao define uma fun@,{c}@~ao "multiplica@,{c}@~ao por @code{a}".
 Tanto uma fun@,{c}@~ao pode ser definida via @code{buildq}, como na express@~ao lambda @code{i2} abaixo.
 @end itemize
+@c ===beg===
+@c i: lambda ([a], lambda ([x], a*x));
+@c i(1/2);
+@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+@c i2(1/2);
+@c i2(1/2)(%pi);
+@c ===end===
 @example
 (%i16) i: lambda ([a], lambda ([x], a*x));
 (%o16)            lambda([a], lambda([x], a x))
@@ -1042,6 +1054,28 @@ Tanto uma fun@,{c}@~ao pode ser definida via @code{buildq}, como na express@~ao 
                                %pi
 (%o20)                         ---
                                 2
+@end example
+@itemize @bullet
+@item
+Uma express@~ao lambda pode receber um n@'umero vari@'avel de argumentos,
+os quais s@~ao indicados por meio de @code{[@var{L}]} como o argumento @'unico ou argumento final.
+Os argumentos aparecem dentro do corpo da fun@,{c}@~ao como uma lista.
+@end itemize
+@c ===beg===
+@c f : lambda ([aa, bb, [cc]], aa * cc + bb);
+@c f (foo, %i, 17, 29, 256);
+@c g : lambda ([[aa]], apply ("+", aa));
+@c g (17, 29, x, y, z, %e);
+@c ===end===
+@example
+(%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
+(%o1)          lambda([aa, bb, [cc]], aa cc + bb)
+(%i2) f (foo, %i, 17, 29, 256);
+(%o2)       [17 foo + %i, 29 foo + %i, 256 foo + %i]
+(%i3) g : lambda ([[aa]], apply ("+", aa));
+(%o3)             lambda([[aa]], apply(+, aa))
+(%i4) g (17, 29, x, y, z, %e);
+(%o4)                  z + y + x + %e + 46
 @end example
 @end deffn
 

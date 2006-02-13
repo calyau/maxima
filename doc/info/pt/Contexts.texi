@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Contexts.texi/1.11/Tue Dec  6 11:19:52 2005/-ko/
+@c /Contexts.texi/1.12/Thu Feb  9 00:55:29 2006/-ko/
 @c end concepts Contexts
 @menu
 * Defini@value{cedilha}@~oes para Contextos::    
@@ -29,13 +29,73 @@ eles s@~ao subcontextos do contexto corrente.
 @end defvr
 
 @deffn {Fun@value{cedilha}@~ao} assume (@var{pred_1}, ..., @var{pred_n})
-Adiciona predicados @var{pred_1}, ..., @var{pred_n} para a base de dados corrente,
-ap@'os verificar se existe redundância e inconsist@^encia.
-Se os predicados forem inconsistentes e n@~ao redundântes, eles s@~ao adicionados @`a
-base de dados; se inconsistente ou redundânte, nenhuma a@,{c}@~ao @'e tomada.
+Adiciona predicados @var{pred_1}, ..., @var{pred_n} ao contexto corrente.
+Se um predicado for incossistente ou redundante 
+com os predicados no contexto corrente,
+esses predicados n@~ao s@~ao adicionados ao contexto.
+O contexto acumula predicados de cada chamada a @code{assume}.
 
-@code{assume} retorna uma lista cujos elementos s@~ao predicados adicionados @`a base de dados
-e os @'atomos @code{redundant} ou @code{inconsistent} onde for aplic@'avel.
+@code{assume} retorna uma lista cujos elementos s@~ao os predicados adicionados ao contexto
+ou os @'atomos @code{redundant} ou @code{inconsistent} onde for aplic@'avel.
+
+Os predicados @var{pred_1}, ..., @var{pred_n} podem somente ser express@~oes
+com os operadores relacionais @code{< <= equal notequal >=} e @code{>}.
+Predicados n@~ao podem ser express@~oes de igualdades literais @code{=} ou express@~oes de desigualdades literais @code{#},
+nem podem elas serem fun@,{c}@~oes de predicado tais como @code{integerp}.
+
+Predicados combinados da forma @code{@var{pred_1} and ... and @var{pred_n}}
+s@~ao reconhecidos,
+mas n@~ao @code{@var{pred_1} or ... or @var{pred_n}}.
+@code{not @var{pred_k}} @'e reconhecidos se @var{pred_k} for um predicado relacional.
+Express@~oes da forma @code{not (@var{pred_1} and @var{pred_2})}
+and @code{not (@var{pred_1} or @var{pred_2})}
+n@~ao s@~ao reconhecidas.
+
+O mecanismo de dedu@,{c}@~ao do Maxima n@~ao @'e muito forte;
+exitem conseq@"u@^encias muito @'obvias as quais n@~ao podem ser determinadas por meio de @code{is}.
+Isso @'e uma fraqueza conhecida.
+
+@code{assume} avalia seus argumentos.
+
+Veja tamb@'em @code{is}, @code{facts}, @code{forget}, @code{context}, e @code{declare}.
+
+Exemplos:
+
+@c ===beg===
+@c assume (xx > 0, yy < -1, zz >= 0);
+@c assume (aa < bb and bb < cc);
+@c facts ();
+@c is (xx > yy);
+@c is (yy < -yy);
+@c is (sinh (bb - aa) > 0);
+@c forget (bb > aa);
+@c prederror : false;
+@c is (sinh (bb - aa) > 0);
+@c is (bb^2 < cc^2);
+@c ===end===
+
+@example
+(%i1) assume (xx > 0, yy < -1, zz >= 0);
+(%o1)              [xx > 0, yy < - 1, zz >= 0]
+(%i2) assume (aa < bb and bb < cc);
+(%o2)                  [bb > aa, cc > bb]
+(%i3) facts ();
+(%o3)     [xx > 0, - 1 > yy, zz >= 0, bb > aa, cc > bb]
+(%i4) is (xx > yy);
+(%o4)                         true
+(%i5) is (yy < -yy);
+(%o5)                         true
+(%i6) is (sinh (bb - aa) > 0);
+(%o6)                         true
+(%i7) forget (bb > aa);
+(%o7)                       [bb > aa]
+(%i8) prederror : false;
+(%o8)                         false
+(%i9) is (sinh (bb - aa) > 0);
+(%o9)                        unknown
+(%i10) is (bb^2 < cc^2);
+(%o10)                       unknown
+@end example
 
 @end deffn
 
@@ -71,7 +131,7 @@ acima.
 Valor padr@~ao: @code{false}
 
 Quando @code{assume_pos} for @code{true}
-e o sinal de um parâmetro @var{x} n@~ao pode ser determinado a partir da base de dados do @code{assume}
+e o sinal de um parâmetro @var{x} n@~ao pode ser determinado a partir do contexto corrente
 ou outras considera@,{c}@~oes,
 @code{sign} e @code{asksign (@var{x})} retornam @code{true}.
 Isso pode impedir algum questionamento de @code{asksign} gerado automaticamente,
@@ -196,7 +256,7 @@ ele @'e criado automaticamente atrav@'es de uma chamada a @code{newcontext}.
 @c ISN'T THIS NEXT BIT EQUIVALENT TO THE FIRST ??
 O contexto especificado @'e ativado automaticamente.
 
-Veja @code{context} para uma descri@,{c}@~ao geral do mecanismo de contexto.
+Veja @code{contexts} para uma descri@,{c}@~ao geral do mecanismo de contexto.
 
 @end defvr
 
@@ -208,8 +268,8 @@ Valor padr@~ao: @code{[initial, global]}
 @code{contexts} @'e uma lista dos contextos que
 existem atualmente, incluindo o contexto ativo atualmente.
 
-O mecanismo de contexto torna poss@'ivel para um usu@'ario associar junto
-e nomear uma por@,{c}@~ao selecionada de sua base de dados, chamada um contexto.
+O mecanismo de contexto torna poss@'ivel para um usu@'ario associar
+e nomear uma por@,{c}@~ao selecionada de fatos, chamada um contexto.
 Assim que isso for conclu@'ido, o usu@'ario pode ter o Maxima assumindo ou esquecendo grande quantidade
 de fatos meramente atrav@'es da ativa@,{c}@~ao ou desativa@,{c}@~ao seu contexto.
 

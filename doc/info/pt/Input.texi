@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.42/Wed Dec 21 07:33:28 2005/-ko/
+@c /Input.texi/1.44/Sat Feb 11 05:24:47 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
@@ -28,17 +28,58 @@ and
 
 @node Defini@value{cedilha}@~oes para Entrada e Sa@'ida,  , Arquivos, Entrada e Sa@'ida
 @section Defini@value{cedilha}@~oes para Entrada e Sa@'ida de Dados
+@defvr {Vari@'avel de sistema} __
+
+@code{__} @'e a express@~ao de entrada atualmente sendo avaliada.
+Isto @'e, enquanto um express@~ao de entrada @var{expr} est@'a sendo avaliada, @code{__} @'e @var{expr}.
+
+@code{__} @'e atribu@'ida @`a express@~ao de entrada antes de a entrada ser simplificada ou avaliada.
+Todavia, o valor de @code{__} @'e simplificado (mas n@~ao avaliado) quando for mostrado.
+
+@code{__} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+
+Veja tamb@'em @code{_} e @code{%}.
+
+Exemplos:
+
+@c ===beg===
+@c print ("Eu fui chamada como", __);
+@c foo (__);
+@c g (x) := (print ("Express@~ao atual de entrada =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("Eu fui chamada como", __);
+Eu fui chamada como print(Eu fui chamada como, __) 
+(%o1)              print(Eu fui chamada como, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Express@~ao atual de entrada =", __), 0);
+(%o3) g(x) := (print("Express@~ao atual de entrada =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                               cc + bb + aa
+Express@~ao atual de entrada = -------------- 
+                              g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@end defvr
 
 @defvr {Vari@'avel de sistema} _
 
 @code{_} @'e a mais recente express@~ao de  entrada (e.g., @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
-A @code{_} @'e atribu@'ida a entrada antes dela ser simplificada ou avaliada.
+A @code{_} @'e atribu@'ida @`a express@~ao de entrada antes dela ser simplificada ou avaliada.
 Todavia, o valor de @code{_} @'e simplificado (mas n@~ao avaliado) quando for mostrado.
 
 @code{_} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
 
-Veja tamb@'em @code{%}.
+Veja tamb@'em @code{__} e @code{%}.
 
 Exemplos:
 
@@ -672,6 +713,9 @@ A fun@,{c}@~ao @code{grind} imprime @var{expr}
 para o console em uma forma adequada de entrada para Maxima.
 @code{grind} sempre retorna @code{done}.
 
+Quando @var{expr} for um nome de uma fun@,{c}@~ao ou o nome de uma macro,
+@code{grind} mostra na tela a defini@,{c}@~ao da fun@,{c}@~ao ou da macro em lugar de apenas o nome.
+
 Veja tamb@'em @code{string}, que retorna uma seq@"u@^encia de caracteres em lugar de imprimir sua sa@'ida.
 @code{grind} tenta imprimir a express@~ao de uma maneira que a faz
 levemente mais f@'acil para ler que a sa@'ida de @code{string}.
@@ -685,6 +729,104 @@ O valor padr@~ao da vari@'avel @code{grind} @'e @code{false}.
 Quando @code{grind} est@'a presente,
 @code{playback} imprime express@~oes de entrada no mesmo formato que a fun@,{c}@~ao @code{grind}.
 De outra forma, nenhuma tentativa @'e feita para formatar especialmente as express@~oes de entrada.
+@code{grind} avalia seus argumentos.
+
+Exemplos:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c expr: expand ((aa + bb)^10);
+@c grind (expr);
+@c string (expr);
+@c cholesky (A):= block ([n : length (A), L : copymatrix (A),
+@c p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
+@c (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
+@c p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
+@c for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c grind (cholesky);
+@c string (fundef (cholesky));
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) expr: expand ((aa + bb)^10);
+         10           9        2   8         3   7         4   6
+(%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
+         5   5         6   4         7   3        8   2
+ + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
+        9        10
+ + 10 aa  bb + aa
+(%i12) grind (expr);
+bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
+     +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
+     +10*aa^9*bb+aa^10$
+(%o12)                        done
+(%i13) string (expr);
+(%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
++252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
+bb+aa^10
+(%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
+p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
+(x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
+p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
+for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+(%i15) grind (cholesky);
+cholesky(A):=block(
+         [n:length(A),L:copymatrix(A),
+          p:makelist(0,i,1,length(A))],
+         for i thru n do
+             (for j from i thru n do
+                  (x:L[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),
+                   if i = j then p[i]:1/sqrt(x)
+                       else L[j,i]:x*p[i])),
+         for i thru n do L[i,i]:1/p[i],
+         for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
+(%o15)                        done
+(%i16) string (fundef (cholesky));
+(%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
+t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
+[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),if i = j then p[i]:1/sqrt(x\
+) else L[j,i]:x*p[i])),for i thru n do L[i,i]:1/p[i],for i thru \
+n do (for j from i+1 thru n do L[i,j]:0),L)
+@end example
 
 @end deffn
 
