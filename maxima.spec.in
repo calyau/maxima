@@ -180,13 +180,33 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %dir %{_datadir}/maxima
 %{_datadir}/maxima/%{version}
+%if %{enable_lang_es}
 %exclude %{_datadir}/maxima/%{version}/doc/html/es
+%endif
+%if %{enable_lang_pt}
 %exclude %{_datadir}/maxima/%{version}/doc/html/pt
+%endif
+%if %{enable_lang_es_utf}
+%exclude %{_datadir}/maxima/%{version}/doc/html/es.utf8
+%endif
+%if %{enable_lang_pt_utf}
+%exclude %{_datadir}/maxima/%{version}/doc/html/pt.utf8
+%endif
 %dir %{_libexecdir}/maxima
 %{_libexecdir}/maxima/%{version}
 %{_infodir}/*
+%if %{enable_lang_es}
 %exclude %{_infodir}/es
+%endif
+%if %{enable_lang_pt}
 %exclude %{_infodir}/pt
+%endif
+%if %{enable_lang_es_utf}
+%exclude %{_infodir}/es.utf8
+%endif
+%if %{enable_lang_pt_utf}
+%exclude %{_infodir}/pt.utf8
+%endif
 %{_mandir}/man1/maxima.1
 %{_bindir}/maxima
 %{_bindir}/rmaxima
