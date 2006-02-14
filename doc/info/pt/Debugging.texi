@@ -171,7 +171,7 @@ Imprime na tela a pilha de frame @code{n}, ou o corrente frame se nenhum for esp
 Imprime na tela a ajuda sobre um comando do depurador, ou todos os comandos se nenhum for especificado
 @c CAN'T SEEM TO GET :info TO WORK !!!
 @item :info
-Imprime na tela informa@,{c}@~oes sobre um @'item
+Imprime na tela informa@,{c}@~oes sobre um item
 @item :lisp alguma-forma
 Avalia @code{alguma-forma} como uma forma Lisp
 @item :lisp-quiet alguma-forma

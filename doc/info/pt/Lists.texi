@@ -164,7 +164,7 @@ ocorr@^encias de @var{expr_1} em @var{expr_2} ent@~ao todas as corr@^encias sera
 @end deffn
 
 @deffn {Fun@,{c}@~ao} eighth (@var{expr})
-Retorna o oitavo @'item de uma express@~ao ou lista @var{expr}.
+Retorna o oitavo item de uma express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
@@ -179,7 +179,7 @@ Retorna uma nova lista consistindo de elementos de
 @end deffn
 
 @deffn {Fun@,{c}@~ao} fifth (@var{expr})
-Retorna o quinto @'item da express@~ao ou lista @var{expr}.
+Retorna o quinto item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
@@ -200,7 +200,7 @@ d@'ecima parte do seu argumento.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} fourth (@var{expr})
-Retorna o quarto @'item da express@~o ou lista @var{expr}.
+Retorna o quarto item da express@~o ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
@@ -350,7 +350,7 @@ express@~oes n@~ao-lista, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} ninth (@var{expr})
-Retorna o nono @'item da express@~ao ou lista @var{expr}.
+Retorna o nono item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
@@ -374,31 +374,31 @@ e.g.  @code{reverse(a=b);} fornece @code{b=a}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} second (@var{expr})
-Retorna o segundo @'item da express@~ao ou lista @var{expr}.
+Retorna o segundo item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} seventh (@var{expr})
-Retorna o s@'etimo @'item da express@~ao ou lista @var{expr}.
+Retorna o s@'etimo item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} sixth (@var{expr})
-Retorna o sexto @'item da express@~ao ou lista @var{expr}.
+Retorna o sexto item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} tenth (@var{expr})
-Retorna o d@'ecimo @'item da express@~ao ou lista @var{expr}.
+Retorna o d@'ecimo item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} third (@var{expr})
-Retorna o terceiro @'item da express@~ao ou lista @var{expr}.
+Retorna o terceiro item da express@~ao ou lista @var{expr}.
 Veja @code{first} para maiores detalhes.
 
 @end deffn

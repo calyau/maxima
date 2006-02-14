@@ -1593,7 +1593,7 @@ e, se a tradu@,{c}@~ao e a compila@,{c}@~ao obtiverem sucesso, chama o c@'odigo 
 @code{compile_file} retorna uma lista dos nomes de quatro arquivos:
 o arquivo original do Maxima, o nome da tradu@,{c}@~ao Lisp, uma arquivo de notas sobre a tradu@,{c}@~ao, e o nome do arquivo que cont@'em o c@'odigo compilado.
 Se a compila@,{c}@~ao falhar,
-o quarto @'item @'e @code{false}.
+o quarto item @'e @code{false}.
 
 Algumas declara@,{c}@~oes e defini@,{c}@~oes passam a ter efeito t@~ao logo
 o c@'odigo Lisp seja compilado (sem que seja necess@'ario chamar o c@'odigo compilado).

@@ -20,8 +20,8 @@ que @'e tipicamente invocada atrav@'es do ponto de interroga@,{c}@~ao @code{?} n
 @'e o nome ou parte do nome de uma fun@value{cedilha}@~ao ou t@'opico;
 @code{describe} ent@~ao acha todos os @'itens documentados que possuem a seq@"u@^encia de caracteres
 @code{foo} em seus t@'itulos.
-Se existe mais que um tal @'item, Maxima solicita ao usu@'ario selecionar
-um @'item ou @'itens para mostrar.
+Se existe mais que um tal item, Maxima solicita ao usu@'ario selecionar
+um item ou @'itens para mostrar.
 
 @example
 (%i1) ? integ
@@ -324,8 +324,8 @@ _
 
 @deffn {Fun@,{c}@~ao} describe (@var{string})
 Encontra todos os @'itens docmentados que possuem @var{string} em seus t@'itulos.
-Se existe mais de um de tal @'item, Maxima solicita ao usu@'ario selecionar
-um @'item ou @'itens para mostrar.
+Se existe mais de um de tal item, Maxima solicita ao usu@'ario selecionar
+um item ou @'itens para mostrar.
 Na linha de comando interativa,
 @code{? foo} (com um espa@,{c}o entre @code{?} e @code{foo})
 @'e equivalente a @code{describe ("foo")}.

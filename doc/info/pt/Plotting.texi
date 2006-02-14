@@ -304,7 +304,7 @@ De outra forma, o valor em @code{plot_options} @'e usado.
 Op@,{c}@~oes padr@~ao s@~ao atribu@'idas por @code{set_plot_option}.
 
 Cada elemento de @code{plot_options} @'e uma lista de dois ou mais @'itens.
-O primeiro @'item @'e o nome de uma op@,{c}@~ao, e os restantes compreendem o valor ou valores
+O primeiro item @'e o nome de uma op@,{c}@~ao, e os restantes compreendem o valor ou valores
 atribu@'idos @`a op@,{c}@~ao.
 Em alguns casos, o valor atribu@'ido @'e uma lista, que pode compreender muitos @'itens.
 
