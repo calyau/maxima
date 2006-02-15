@@ -2068,6 +2068,25 @@
        (m (m+ n -1) (m+ m -1)))
       ((signp l m) (solvex eql cl nil nil))))
 
+;; This implements Wang's algorithm in Chapter 5.2, pp. 98-100.
+;;
+;; This is a very brief description of the algorithm.  Basically, we
+;; have integrate(R(exp(x))*p(x),x,minf,inf), where R(x) is a rational
+;; function and p(x) is a polynomial.
+;;
+;; We find a polynomial q(x) such that q(x) - q(x+2*%i*%pi) = p(x).
+;; Then consider a contour integral of R(exp(z))*q(z) over a
+;; rectangular contour.  Opposite corners of the rectangle are (-R,
+;; 2*%i*%pi) and (R, 0).
+;;
+;; Wang shows that this contour integral, in the limit, is the
+;; integral of R(exp(x))*q(x)-R(exp(x))*q(x+2*%i*%pi), which is
+;; exactly the integral we're looking for.
+;;
+;; Thus, to find the value of the contour integral, we just need the
+;; residues of R(exp(z))*q(z).  The only tricky part is that we want
+;; the log function to have an imaginary part between 0 and 2*%pi
+;; instead of -%pi to %pi.
 (defun rectzto%pi2 (p pe d)
   (prog (dp n pl a b c denom-exponential)
      (if (not (and (setq denom-exponential (catch 'pin%ex (pin%ex d)))
@@ -2079,18 +2098,33 @@
 		 pe))
      (let ((var 'z*)
 	   (leadcoef ()))
+       ;; Find the poles of the denominator.  denom-exponential is the
+       ;; denominator of R(x).
+       ;;
+       ;; It seems as if polelist returns a list of several items.
+       ;; The first element is a list consisting of the pole and (z -
+       ;; pole).  We don't care about this, so we take the rest of the
+       ;; result.  I think the second element of the list is an alist
+       ;; consisting of the pole and it's multiplicity.  I don't know
+       ;; what the rest of the list is.
        (setq pl (cdr (polelist denom-exponential #'(lambda (j) 
 						     (or (not (equal ($imagpart j) 0))
 							 (eq ($asksign ($realpart j)) '$neg)))
 			       #'(lambda (j)
 				   (not (eq ($asksign ($realpart j)) '$zero)))))))
-     (cond ((null pl)  (return nil))
+     ;; Not sure what this does.
+     (cond ((null pl)
+	    (return nil))
 	   ((or (cadr pl)
-		(caddr pl))  (setq dp (sdiff d var))))
-     (cond ((cadr pl)  (setq b (mapcar #'log-imag-0-2%pi (cadr pl)))
+		(caddr pl))
+	    (setq dp (sdiff d var))))
+     ;; Not sure what this does.
+     (cond ((cadr pl)
+	    (setq b (mapcar #'log-imag-0-2%pi (cadr pl)))
 	    (setq b (res1 n dp b))
 	    (setq b (m+l b)))
 	   (t (setq b 0.)))
+     ;; Not sure what this does either.
      (cond ((caddr pl)
 	    (let ((temp (mapcar #'log-imag-0-2%pi (caddr pl))))
 	      (setq c (append temp (mapcar #'(lambda (j) 
@@ -2100,8 +2134,15 @@
 	      (setq c (m+l c))))
 	   (t (setq c 0.)))
      (cond ((car pl)
-	    (let ((poles (mapcar #'log-imag-0-2%pi (caar pl)))
+	    ;; We have the poles of deonom-exponential, so we need to
+	    ;; convert them to the actual pole values for R(exp(x)),
+	    ;; by taking the log of the value of poles.
+	    (let ((poles (mapcar #'(lambda (p)
+				     (log-imag-0-2%pi (car p)))
+				 (car pl)))
 		  (exp (m// n (subst (m^t '$%e var) 'z* denom-exponential))))
+	      ;; Compute the residues at all of these poles and sum
+	      ;; them up.
 	      (setq a (mapcar #'(lambda (j) 
 				  ($residue exp var j))
 			      poles))

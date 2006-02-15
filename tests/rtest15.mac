@@ -408,3 +408,8 @@ foo(7)$
 
 use_fast_arrays:false;
 false;
+
+/* Bug 1405931: integrate(log(x)/(x^2+1)^2,x,0,inf)
+ */
+integrate(log(x)/(x^2+1)^2,x,0,inf);
+-%pi/4;
