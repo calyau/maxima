@@ -79,7 +79,7 @@
       `(nil progn (defvar ,ar ',ar) (maset ,val ,ar  ,@ inds))
       `(nil maset ,val ,ar  ,@ inds)))
 
-#+cl
+#+(and nil cl)
 (defun maset1 ( val ar  &rest inds &aux  )
   (cl:let
       ((.type. (#. *primitive-data-type-function*  ar)))
@@ -100,6 +100,27 @@
 	    (= (length inds) 2))
        (setf (nth (second inds) (nth  (car inds) ar)) val) val)
       (t (error "not a valid array reference to ~A" ar)))))
+
+#+cl
+(defun maset1 ( val ar  &rest inds &aux  )
+  (cond
+    ((and (typep ar 'cl:array)
+	  (= (length inds) (cl:array-rank ar)))
+     (setf (apply #'aref ar inds)  val))
+    ((typep ar 'cl:hash-table)
+     (setf (gethash (if (cdr inds) (copy-rest inds) (car inds))
+		    ar)
+	   val))
+    ((symbolp ar)
+     (error "must set the hash table outside")
+     )
+    ((and (= (length inds) 1)
+	  (or ($listp ar) ($matrixp ar)))
+     (setf (nth (car inds) ar) val) val)
+    ((and ($matrixp ar)
+	  (= (length inds) 2))
+     (setf (nth (second inds) (nth  (car inds) ar)) val) val)
+    (t (error "not a valid array reference to ~A" ar))))
 
 
 ;;apply is too expensive for a simple array reference.  The time
@@ -142,10 +163,12 @@
 (defun tr-maref (ar inds)
   `(nil maref , ar ,@ (copy-list inds)))
 
-#+cl
+#+(and nil cl)
 (defun maref1 (ar  &rest inds &aux )
   (let ((.type. (#. *primitive-data-type-function*  ar)))
     (cond
+      ((typep ar 'cl:array)
+       (apply #'aref ar inds))
       ((one-of-types .type. (make-array 3))     (apply #'aref ar inds))
       ((one-of-types .type. (make-hash-table :test 'equal))
        (gethash (if (cdr inds) inds (car inds)) ar))
@@ -159,6 +182,31 @@
        #+nil
        (error "not a valid array reference to ~A" ar)
        (merror "Wrong number of indices:~%~M" (cons '(mlist) inds))))))
+
+;; Same as above, but I think this is more likely correct for Common
+;; Lisp.  I think it's doing the same thing.
+#+cl
+(defun maref1 (ar  &rest inds &aux )
+  (cond
+    ((and (typep ar 'cl:array)
+	  (= (length inds) (cl:array-rank ar)))
+     (apply #'aref ar inds))
+    ((typep ar 'cl:hash-table)
+     (gethash (if (cdr inds) inds (car inds)) ar))
+    ((symbolp ar)
+     (cond ((mget ar 'hashar)
+	    (harrfind `((,ar array) ,@(copy-list inds))))
+	   (t
+	    `((,ar array) ,@(copy-list inds)))))
+    ((and (= (length inds) 1)
+	  (or ($listp ar) ($matrixp ar)))
+     (nth (first inds) ar))
+    ((and ($matrixp ar) (= (length inds) 2))
+     (nth (second inds) (nth (first inds) ar)))
+    (t
+     #+nil
+     (error "not a valid array reference to ~A" ar)
+     (merror "Wrong number of indices:~%~M" (cons '(mlist) inds)))))
 
 
 
