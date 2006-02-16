@@ -1,4 +1,4 @@
-@c english version 1.21
+@c english version 1.22
 @menu
 * Introducci@'on a reglas y patrones::  
 * Definiciones sobre reglas y patrones::  
@@ -292,8 +292,8 @@ La variable @code{let_rule_packages} guarda una lista con todos los paquetes de 
 
 Asocia un predicado @var{pred_k} con una variable o lista de variables  @var{a_k}, de forma que  @var{a_k} se comparar@'a con expresiones para las cuales el predicado devuelva algo que no sea @code{false}.
 
-El predicado es el nombre de una funci@'on, una llamada de funci@'on sin su @'ultimo argumento o @code{true}.
-Cualquier expresi@'on se hace coincidir con @code{true}. Si el predicado se especifica como una llamada de funci@'on, la expresi@'on a ser analizada es a@~nadida a su lista de argumentos; siendo los argumentos evaluados en el momento de ser evaluada la comparaci@'on. En cambio, si el predicado se especifica como un nombre de funci@'on, la expresi@'on a ser analizada ser@'a su @'unico argumento. No es necesario definir una funci@'on de predicado cuando se hace una llamada a @code{matchdeclare}; el predicado no se eval@'ua hasta que se ensaya  una comparaci@'on.
+El predicado es el nombre de una funci@'on, una llamada de funci@'on sin su @'ultimo argumento, @code{true} o @code{all}.
+Cualquier expresi@'on se hace coincidir con @code{true} o @code{all}. Si el predicado se especifica como una llamada de funci@'on, la expresi@'on a ser analizada es a@~nadida a su lista de argumentos; siendo los argumentos evaluados en el momento de ser evaluada la comparaci@'on. En cambio, si el predicado se especifica como un nombre de funci@'on, la expresi@'on a ser analizada ser@'a su @'unico argumento. No es necesario definir una funci@'on de predicado cuando se hace una llamada a @code{matchdeclare}; el predicado no se eval@'ua hasta que se ensaya  una comparaci@'on.
 
 Un predicado de @code{matchdeclare} debe ser necesariamente un nombre de funci@'on o una llamada a funci@'on. En particular, un predicado no puede ser funci@'on @code{lambda} o un @code{block}.
 

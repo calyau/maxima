@@ -1,4 +1,4 @@
-@c english version 1.37
+@c english version 1.38
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -22,7 +22,7 @@ f(x) := sin(x)
 @end example
 @noindent
 
-define una funci@'on @code{f}. Tambi@'en se pueden definir funciones an@'onimas utilizando @code{lambda}, por ejemplo,
+define una funci@'on @code{f}. Tambi@'en se pueden definir funciones an@'onimas utilizando @code{lambda}; por ejemplo,
 
 @example
 lambda ([i, j], ...)
@@ -68,7 +68,7 @@ block ([], expr1, ..., if (a > 10) then return(a), ..., exprn)
 
 es una expresi@'on de pleno derecho, por lo que puede ocupar el lado derecho de la definici@'on de una funci@'on. Aqu@'{@dotless{i}} puede ocurrir que el retorno se produzca antes que se alcance la @'ultima expresi@'on.
 
-Los primeros corchetes del bloque (@code{[]}) pueden contener una lista de variables junto con posibles asignaciones, tal como @code{[a: 3, b, c: []]}, lo que provocar@'a que las tres variables @code{a},@code{b} y @code{c} se consideren locales y sean independientes de otras globales con el mismo nombre; las variables locales s@'olo estar@'an activas mientras se ejecute el c@'odigo que est@'a dentro de la estructura @code{block}, o dentro de funciones que son llamadas desde dentro de @code{block}. A esto se le llama asignaci@'on din@'amica, pues las variables sobreviven desde el inicio del bloque hasta que @'este deje de estar operando. Una vez se salga del bloque los valores originales de las variables, si es que los hab@'{@dotless{i}}a, quedan restaurados. Es recomendable proteger las variables de esta forma. Se tendr@'a en cuenta que las asignaciones a las variables del bloque se hacen en paralelo, lo que significa que si como en el ejemplo anterior se hace @code{c: a} en el momento de entrar en el bloque, el valor de @code{c} ser@'a el que ten@'{@dotless{i}}a @code{a} antes de entrar en el bloque, es decir, antes de la asignaci@'on @code{a: 3}. As@'{@dotless{i}}, haciendo lo siguiente
+Los primeros corchetes del bloque (@code{[]}) pueden contener una lista de variables junto con posibles asignaciones, tal como @code{[a: 3, b, c: []]}, lo que provocar@'a que las tres variables @code{a},@code{b} y @code{c} se consideren locales y sean independientes de otras globales con el mismo nombre; las variables locales s@'olo estar@'an activas mientras se ejecute el c@'odigo que est@'a dentro de la estructura @code{block}, o dentro de funciones que son llamadas desde dentro de @code{block}. A esto se le llama asignaci@'on din@'amica, pues las variables sobreviven desde el inicio del bloque hasta que @'este deje de estar operativo. Una vez se salga del bloque los valores originales de las variables, si es que los hab@'{@dotless{i}}a, quedan restaurados. Es recomendable proteger las variables de esta forma. Se tendr@'a en cuenta que las asignaciones a las variables del bloque se hacen en paralelo, lo que significa que si como en el ejemplo anterior se hace @code{c: a} en el momento de entrar en el bloque, el valor de @code{c} ser@'a el que ten@'{@dotless{i}}a @code{a} antes de entrar en el bloque, es decir, antes de la asignaci@'on @code{a: 3}. As@'{@dotless{i}}, haciendo lo siguiente
 
 
 @example
@@ -89,7 +89,7 @@ y
 f(1);
 @end example
 
-se estar@'{@dotless{i}}a en un contexto similar para la evaluaci@'on de las expresiones como si hubiera hecho
+se estar@'{@dotless{i}}a en un contexto similar para la evaluaci@'on de las expresiones como si se hubiera hecho
 
 @example
 block ([x: 1], expr1, ..., exprn)
@@ -107,7 +107,7 @@ Sustituye en paralelo las variables nombradas en la lista @var{L} en la expresi@
 La expresi@'on resultante se simplifica pero no se eval@'ua hasta que @code{buildq} termine de hacer las sustituciones.
 
 Los elementos de @var{L} son s@'{@dotless{i}}mbolos o expresiones de asignaci@'on del tipo @code{@var{symbol}: @var{value}},
-evaluadas en paralelo. Esto es, el valor de una variable en la parte derecha de una signaci@'on es el valor que toma dicha variable en el contexto desde el que se invoca a @code{buildq}. En caso de que a una variable de @var{L} no se le haga una signaci@'on expl@'{@dotless{i}}cita, su valor en @code{buildq} es el mismo que tiene en el contexto desde el que se llama a @code{buildq}.
+evaluadas en paralelo. Esto es, el valor de una variable en la parte derecha de una asignaci@'on es el valor que toma dicha variable en el contexto desde el que se invoca a @code{buildq}. En caso de que a una variable de @var{L} no se le haga una signaci@'on expl@'{@dotless{i}}cita, su valor en @code{buildq} es el mismo que tiene en el contexto desde el que se llama a @code{buildq}.
 
 Las variables referenciadas en @var{L} se sustituyen en @var{expr} en paralelo. Esto es, la sustituci@'on para cada variable se determina antes de que se hagan las sustituciones, de forma que la sustituci@'on de una variable no tiene efecto alguno sobre las otras.
 
@@ -602,23 +602,32 @@ Maxima simplifica el valor retornado por @code{funmake}.
 @end deffn
 
 @deffn {Funci@'on} lambda ([@var{x_1}, ..., @var{x_m}], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([[@var{L}]], @var{expr_1}, ..., @var{expr_n})
+@deffnx {Function} lambda ([@var{x_1}, ..., @var{x_m}, [@var{L}]], @var{expr_1}, ..., @var{expr_n})
+Define y devuelve una expresi@'on lambda (es decir, una funci@'on an@'onima).
+La funci@'on puede tener argumentos @var{x_1}, ..., @var{x_m} y/o argumentos
+opcionales @var{L}, que aparecer@'an dentro del cuerpo de la funci@'on como una lista.
+El valor que devuelve la funci@'on es @var{expr_n}.
+Una expresi@'on lambda puede asignarse a una variable y ser evaluada como si fuese una funci@'on ordinaria. Adem@'as, puede aparecer en algunos contextos en los que sea necesario un nombre de funci@'on.
 
-Define y devuelve una expresi@'on lambda (esto es, una funci@'on an@'onima) de argumentos @var{x_1}, ..., @var{x_m} y devuelve el valor de @var{expr_n}. Una expresi@'on lambda puede ser asignada a una variable y evaluada como si fuese una funci@'on ordinaria. Una expresi@'on lambda puede aparecer en contextos en los que sea necesaria la evaluaci@'on de una funci@'on, pero no necesariamente un nombre de funci@'on.
+Cuando se eval@'ua la funci@'on, se crean las variables @var{x_1}, ..., @var{x_m} sin asignaci@'on de valores. Una funci@'on @code{lambda} puede aparecer dentro de un @code{block} o de otra @code{lambda}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque o de otra funci@'on @code{lambda}. Las variables locales se consideran globales dentro de un bloque o funci@'on @code{lambda} anidado dentro del primero. Si una variable es no local dentro de un bloque o funci@'on @code{lambda}, su valor es el que le corresponde en el bloque o funci@'on @code{lambda} superior. Este criterio se conoce con el nombre de "alcance din@'amico".
 
-Cuando la funci@'on es evaluada, se crean las variables @var{x_1}, ..., @var{x_m} sin asignaci@'on de valores. Una funci@'on @code{lambda} puede aparecer dentro de otro de un @code{block} o de otra @code{lambda}. Las variables locales se inicializan cada vez que se entra dentro de un nuevo bloque o de otra funci@'on @code{lambda}. Las variables locales se consideran globales dentro de un bloque o funci@'on @code{lambda} anidado dentro del primero. Si una variable es no local dentro de un bloque o funci@'on @code{lambda}, su valor es el que le corresponde en el bloque o funci@'on @code{lambda} superior. Este criterio se conoce con el nombre de "alcance din@'amico".
+Una vez establecidas las variables locales @var{expr_1} a @var{expr_n} son secuencialmente evaluadas. La variable especial  @code{%%} representa el valor de la expresi@'on inmediata anterior. Las sentencias @code{throw} y @code{catch} pueden aparecer tambi@'en en la lista de expresiones.
 
-Una vez establecidas las variables locales @var{expr_1} a @var{expr_n} son secuencialmente evaluadas. La variable especial  @code{%%}, que representa el valor de la expresi@'on inmediata anterior es reconodcida. Las sentencias @code{throw} y @code{catch} pueden aparecer tambi@'en en la lista de expresiones.
+La funci@'on @code{return} no puede aparecer en una expresi@'on @code{lambda} a menos que se encuentre acotada dentro de un bloque (@code{block}), en cuyo caso @code{return} establece el valor de retorno del bloque, pero no de la expresi@'on @code{lambda}, a menos que el bloque resulte ser precisamente @var{expr_n}. De igual manera, @code{go} no puede aparecer en una expresi@'on @code{lambda} si no es dentro de un @code{block}.
 
-La funci@'on @code{return} no puede aparecer en una expresi@'on @code{lambda} a menos que se encuentre acotada dentro de un bloque (@code{block}), en cuyo caso @code{return} establece el valor de retorno de del bloque, pero no de la expresi@'on @code{lambda}, a menos que el bloque resulte ser precisamente @var{expr_n}. De igual manera, @code{go} no puede aparecer en una expresi@'on @code{lambda} si no es dentro de un @code{block}.
-
-Las funciones @code{lambda} no eval@'uan sus argumentos;  el operador de doble comilla simple @code{'@w{}'} permite la evaluaci@'on.
+Las funciones @code{lambda} no eval@'uan sus argumentos;  el operador de doble comilla simple @code{'@w{}'} permite su evaluaci@'on.
 
 Ejemplo:
 
 @itemize @bullet
 @item
-Una funci@'on lambda puede asignarse a una variable y evaluada como si fuese una funci@'on ordinaria.
+Una funci@'on lambda puede asignarse a una variable y ser evaluada como si fuese una funci@'on ordinaria.
 @end itemize
+@c ===beg===
+@c f: lambda ([x], x^2);
+@c f(a);
+@c ===end===
 @example
 (%i1) f: lambda ([x], x^2);
                                       2
@@ -629,8 +638,13 @@ Una funci@'on lambda puede asignarse a una variable y evaluada como si fuese una
 @end example
 @itemize @bullet
 @item
-Una expresi@'on lambda puede aparecer en contextos en los que se espera la evaluaci@'on de una funci@'on.
+Una expresi@'on lambda puede aparecer en algunos contextos en los que sea necesario un nombre de funci@'on.
 @end itemize
+@c ===beg===
+@c lambda ([x], x^2) (a);
+@c apply (lambda ([x], x^2), [a]);
+@c map (lambda ([x], x^2), [a, b, c, d, e]);
+@c ===end===
 @example
 (%i3) lambda ([x], x^2) (a);
                                 2
@@ -646,6 +660,16 @@ Una expresi@'on lambda puede aparecer en contextos en los que se espera la evalu
 @item
 Los argumentos son variables locales. Otras variables se consideran globales. Las variables globales son evaluadas en el momento que lo es la expresi@'on, a menos que la evaluaci@'on de las mismas sea forzada, como cuando se hace uso de @code{'@w{}'}.
 @end itemize
+@c ===beg===
+@c a: %pi$
+@c b: %e$
+@c g: lambda ([a], a*b);
+@c b: %gamma$
+@c g(1/2);
+@c g2: lambda ([a], a*''b);
+@c b: %e$
+@c g2(1/2);
+@c ===end===
 @example
 (%i6) a: %pi$
 (%i7) b: %e$
@@ -668,6 +692,10 @@ Los argumentos son variables locales. Otras variables se consideran globales. La
 @item
 Las expresiones lambda pueden anidarse. Las variables locales de expresiones lambda exteriores se consideran globales en expresiones internas, a menos que se enmascaren con variables locales de igual nombre.
 @end itemize
+@c ===beg===
+@c h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
+@c h(%pi, %gamma);
+@c ===end===
 @example
 (%i14) h: lambda ([a, b], h2: lambda ([a], a*b), h2(1/2));
                                                    1
@@ -680,8 +708,15 @@ Las expresiones lambda pueden anidarse. Las variables locales de expresiones lam
 @end example
 @itemize @bullet
 @item
-Puesto que @code{lambda} no eval@'ua sus argumentos, la expresi@'on lambda @code{i} de m@'as abajo no define una funci@'on del tipo "multiplar por @code{a}". Tal tipo de funci@'on se puede definir a trav@'es de @code{buildq}, como en la expresi@'on lambda @code{i2} de m@'as abajo.
+Puesto que @code{lambda} no eval@'ua sus argumentos, la expresi@'on lambda @code{i} de m@'as abajo no define una funci@'on del tipo "multiplicar por @code{a}". Tal tipo de funci@'on se puede definir a trav@'es de @code{buildq}, como en la expresi@'on lambda @code{i2} de m@'as abajo.
 @end itemize
+@c ===beg===
+@c i: lambda ([a], lambda ([x], a*x));
+@c i(1/2);
+@c i2: lambda([a], buildq([a: a], lambda([x], a*x)));
+@c i2(1/2);
+@c i2(1/2)(%pi);
+@c ===end===
 @example
 (%i16) i: lambda ([a], lambda ([x], a*x));
 (%o16)            lambda([a], lambda([x], a x))
@@ -697,6 +732,29 @@ Puesto que @code{lambda} no eval@'ua sus argumentos, la expresi@'on lambda @code
                                %pi
 (%o20)                         ---
                                 2
+@end example
+@itemize @bullet
+@item
+Una expresi@'on lambda puede tener un n@'umero variable de argumentos,
+los cuales se indican mediante @code{[@var{L}]}, bien sea solo o como un
+@'ultimo argumento. Estos argumentos aparecer@'an dentro del cuerpo de
+la funci@'on en forma de lista.
+@end itemize
+@c ===beg===
+@c f : lambda ([aa, bb, [cc]], aa * cc + bb);
+@c f (foo, %i, 17, 29, 256);
+@c g : lambda ([[aa]], apply ("+", aa));
+@c g (17, 29, x, y, z, %e);
+@c ===end===
+@example
+(%i1) f : lambda ([aa, bb, [cc]], aa * cc + bb);
+(%o1)          lambda([aa, bb, [cc]], aa cc + bb)
+(%i2) f (foo, %i, 17, 29, 256);
+(%o2)       [17 foo + %i, 29 foo + %i, 256 foo + %i]
+(%i3) g : lambda ([[aa]], apply ("+", aa));
+(%o3)             lambda([[aa]], apply(+, aa))
+(%i4) g (17, 29, x, y, z, %e);
+(%o4)                  z + y + x + %e + 46
 @end example
 @end deffn
 

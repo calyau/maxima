@@ -1,4 +1,4 @@
-@c english version 1.10
+@c english version 1.12
 @menu
 * Introducci@'on a los conjuntos::       
 * Definiciones para los conjuntos::       
@@ -9,18 +9,24 @@
 
 Maxima dispone de funciones para realizar operaciones con conjuntos, como la intersecci@'on o la uni@'on. Los conjuntos deben ser finitos y definidos por enumeraci@'on. Maxima trata a los conjuntos y a las listas como objectos de distinta naturaleza, lo que permite trabajar con conjuntos cuyos elementos puedan ser tambi@'en conjuntos o listas.
 
-Adem@'as de funciones para operar conjuntos finitos, Maxima dispone tambi@'en de algunas funciones sobre combinatoria, como los n@'umeros de Stirling, los de Bell y otros.
+Adem@'as de funciones para operar con conjuntos finitos, Maxima dispone tambi@'en de algunas funciones sobre combinatoria, como los n@'umeros de Stirling de primera y segunda especie, n@'umeros de Bell, coeficientes multinomiales, particiones de enteros no negativos y algunos otros. Maxima tambi@'en define la funci@'on delta de Kronecker.
 
 
 @subsection Utilizaci@'on
 
-Para construir un conjunto cuyos elementos sean @code{a_1, ..., a_n}, se utiliza la instrucci@'on  @code{set(a_1, ..., a_n)}; para formar un conjunto vac@'{@dotless{i}}o, hacer simplemente @code{set()}. Si un elemento se indica m@'as de una vez, el proceso de simplificaci@'on elimina los elementos redundantes.
+Para construir un conjunto cuyos elementos sean @code{a_1, ..., a_n}, se utiliza la instrucci@'on  @code{set(a_1, ..., a_n)} o @code{@{a_1, ..., a_n@}}; para formar un conjunto vac@'{@dotless{i}}o, basta con hacer @code{set()} o @code{@{@}}. Para introducir conjuntos en Maxima, @code{set (...)} y @code{@{ ... @}} son equivalentes. Los conjuntos se muestran siempre con llave.
+
+Si un elemento se indica m@'as de una vez, el proceso de simplificaci@'on elimina los elementos redundantes.
 
 @c ===beg===
 @c set();
 @c set(a, b, a);
 @c set(a, set(b));
 @c set(a, [b]);
+@c {};
+@c {a, b, a};
+@c {a, {b}};
+@c {a, [b]};
 @c ===end===
 @example
 (%i1) set();
@@ -31,6 +37,14 @@ Para construir un conjunto cuyos elementos sean @code{a_1, ..., a_n}, se utiliza
 (%o3)                       @{a, @{b@}@}
 (%i4) set(a, [b]);
 (%o4)                       @{a, [b]@}
+(%i5) @{@};
+(%o5)                          @{@}
+(%i6) @{a, b, a@};
+(%o6)                        @{a, b@}
+(%i7) @{a, @{b@}@};
+(%o7)                       @{a, @{b@}@}
+(%i8) @{a, [b]@};
+(%o8)                       @{a, [b]@}
 @end example
 
 
@@ -84,8 +98,6 @@ considerar@'{@dotless{i}}an distintos.
                             c    c   c
 @end example
 
-
-Los conjuntos se muestran siempre como listas limitadas por llaves; si se prefiere definir un conjunto con corchetes, v@'ease @code{Definici@'on de conjuntos con llaves}.
 
 Para formar un conjunto a partir de los miembros de una lista @'usese @code{setify}.
 
@@ -225,10 +237,8 @@ c1
 Las funciones de Maxima  @code{first} y @code{rest} funcionan tambi@'en con conjuntos.  En este caso, @code{first} devuelve el primer elemento que se muestra del conjunto, el cual puede depender de la implementaci@'on del sistema. Si @code{s} es un conjunto, entonces @code{rest(s)} equivale a @code{disjoin (first(s), s)}. Hay otras funciones que trabajan correctamente con conjuntos. En pr@'oximas versiones de las funciones para operar con conjuntos es posible que @code{first} y @code{rest} trabajen de modo diferente o que ya no lo hagan en absoluto.
 
 @subsection Fallos
-@c AT THIS POINT (2005/05) I DON'T KNOW IF IT'S NECESSARY TO GO INTO DETAILS
-@c ABOUT BUGS IN MAXIMA REVISIONS 5.9.0 AND EARLIER
 
-Las funciones para operar con conjuntos utilizan la funci@'on @code{orderlessp} de Maxima para ordenar los elementos de los conjuntos, as@'{@dotless{i}} como la funci@'on @code{like} de Lisp para decidir sobre la igualdad de dichos elementos. Ambas funciones tienen fallos que son conocidos (versiones 5.9.2 y anteriores) y que pueden aflorar si se trabaja con conjuntos que tengan elementos en formato de listas o matrices y que contengan expresiones CRE. Un ejemplo es
+Las funciones para operar con conjuntos utilizan la funci@'on @code{orderlessp} de Maxima para ordenar los elementos de los conjuntos, as@'{@dotless{i}} como la funci@'on @code{like} de Lisp para decidir sobre la igualdad de dichos elementos. Ambas funciones tienen fallos que son conocidos y que pueden aflorar si se trabaja con conjuntos que tengan elementos en formato de listas o matrices y que contengan expresiones CRE. Un ejemplo es
 
 @c ===beg===
 @c set ([x], [rat (x)]);
@@ -313,8 +323,6 @@ El fallo puede causar problemas con todas las funciones para conjuntos, as@'{@do
 @c WHAT EXACTLY IS THE EFFECT OF ordergreat AND orderless ON THE SET FUNCTIONS ??
 Los mecanismos @code{orderless} y @code{ordergreat} de Maxima son incompatibles con las funciones para conjuntos. Si se necesitan utilizar @code{orderless} o @code{ordergreat}, h@'agase antes de construir los conjuntos y no se utilice la instrucci@'on @code{unorder}.
 
-Tambi@'en es posible encontrar otros dos fallos de orden menor. Las versiones de Maxima 5.5 y anteriores tienen un fallo en la funci@'on @code{tex} que hace que el conjunto vac@'{@dotless{i}}o se traduzca incorrectamente a TeX; este fallo est@'a corregido en la versi@'on 5.9.0 de Maxima. Adem@'as, la funci@'on @code{setup_autoload} en Maxima 5.9.0 no funciona, pero se puede encontrar la soluci@'on en el fichero @code{nset-init.lisp} localizado en el directorio @code{maxima/share/contrib/nset}.
-
 La funci@'on @code{sign} de Maxima tiene un fallo que puede causar que la funci@'on delta de Kronecker trabaje incorrectamente; por ejemplo:
 
 @c ===beg===
@@ -336,43 +344,6 @@ El valor correcto es 1. El fallo est@'a causado por el de la funci@'on @code{sig
 @end example
 
 Se ruega a todo usuario que crea haber encontrado un fallo en las funciones para conjuntos que lo comunique en la base de datos de Maxima. V@'ease @code{bug_report}.
-
-
-@subsection Definici@'on de conjuntos con llaves
-
-En caso de querer definir conjuntos con llaves, se debe declarar la llave izquierda como un operador "matchfix" mediante los siguientes comandos
-
-@c ===beg===
-@c matchfix("{","}")$
-@c "{" ([a]) := apply (set, a)$
-@c ===end===
-@example
-(%i1) matchfix("@{","@}")$
-(%i2) "@{" ([a]) := apply (set, a)$
-@end example
-
-Ahora se pueden definir conjuntos utilizando llaves:
-
-@c ===beg===
-@c matchfix("{","}")$
-@c "{" ([a]) := apply (set, a)$
-@c {};
-@c {a, {a, b}};
-@c ===end===
-@example
-(%i1) matchfix("@{","@}")$
-(%i2) "@{" ([a]) := apply (set, a)$
-(%i3) @{@};
-(%o3)                          @{@}
-(%i4) @{a, @{a, b@}@};
-(%o4)                      @{a, @{a, b@}@}
-@end example
-
-Para que esta forma de definir conjuntos est@'e siempre habilitada, gu@'ardense las dos instrucciones de las l@'{@dotless{i}}neas (%i1) y (%i2) en el fichero @code{maxima-init.mac}.
-
-@subsection Funciones combinatorias y otras
-
-Adem@'as de funciones para conjuntos finitos, Maxima dispone de funciones para c@'alculos combinatorios, que incluyen los n@'umeros de Stirling de primera y segunda especie, los n@'umeros de Bell, coeficientes multinomiales, particiones de enteros no negativos y algunas otras. Maxima tambi@'en dispone de la funci@'on delta de Kronecker.
 
 
 @subsection Autores
@@ -1070,7 +1041,28 @@ V@'ease tambi@'en @code{lreduce}, @code{tree_reduce} y @code{xreduce}.
 
 
 @deffn {Funci@'on}  setdifference (@var{a}, @var{b})
-Devuelve el conjunto de los elementos de @var{a} que no est@'an presentes en @var{b}. Env@'{@dotless{i}}a un mensaje de error si  @var{a} o @var{b} no son conjuntos.
+Devuelve in conjunto con los elementos del conjunto @var{a} que
+no pertenecen al conjunto @var{b}. Env@'{@dotless{i}}a un mensaje 
+de error si  @var{a} o @var{b} no son conjuntos.
+
+@end deffn
+
+
+@deffn {Funci@'on} setequalp (@var{a}, @var{b})
+Devuelve  @code{true} si los conjuntos @var{a} y @var{b} tienen
+el mismo n@'umero de elementos
+@c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+y @code{is (@var{x} = @var{y})} vale @code{true}
+para @code{x} perteneciente a @var{a}
+e @code{y} perteneciente a @var{b},
+considerados en el orden que determina la funci@'on 
+@code{listify}. En caso contrario, @code{setequalp}
+devuelve @code{false}.
+
+La funci@'on @code{setequalp} muestra un mensaje de error si cualquiera de
+las expresiones @var{a} o @var{b} no es conjunto.
+
 @end deffn
 
 
@@ -1299,7 +1291,7 @@ Maxima conoce algunos valores especiales,
 
 @deffn {Funci@'on} subset (@var{a}, @var{f})
 Devuelve el subconjunto del conjunto @var{a} que satisface el predicado @var{f}. 
-For example:
+Por ejemplo:
 
 @c ===beg===
 @c subset (set (1, 2, x, x + y, z, x + y + z), atom);

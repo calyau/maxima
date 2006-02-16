@@ -1,4 +1,4 @@
-@c version 1.14
+@c english version 1.15
 @menu
 * Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
 @end menu
@@ -57,8 +57,36 @@ Es necesario cargar en memoria esta funci@'on haciendo @code{load ("bffac")}.
 @end deffn
 
 @deffn {Funci@'on} binomial (@var{x}, @var{y})
-Es el coeficiente binomial @code{(@var{x} + @var{y})!/(@var{x}! @var{y}!)}. Si @var{x} y @var{y} son enteros, entonces se calcula el valor num@'erico del coeficiente binomial. Si @var{y} o @var{x - y} son enteros, el coeficiente binomial se expresa como un polinomio.
+Es el coeficiente binomial @code{@var{x}!/(@var{y}! (@var{x} - @var{y})!)}.
+Si @var{x} y @var{y} son enteros, entonces se calcula el valor num@'erico 
+del coeficiente binomial. Si @var{y} o @var{x - y} son enteros, 
+el coeficiente binomial se expresa como un polinomio.
 
+Ejemplos:
+
+@c ===beg===
+@c binomial (11, 7);
+@c 11! / 7! / (11 - 7)!;
+@c binomial (x, 7);
+@c binomial (x + 7, x);
+@c binomial (11, y);
+@c ===end===
+@example
+(%i1) binomial (11, 7);
+(%o1)                          330
+(%i2) 11! / 7! / (11 - 7)!;
+(%o2)                          330
+(%i3) binomial (x, 7);
+        (x - 6) (x - 5) (x - 4) (x - 3) (x - 2) (x - 1) x
+(%o3)   -------------------------------------------------
+                              5040
+(%i4) binomial (x + 7, x);
+      (x + 1) (x + 2) (x + 3) (x + 4) (x + 5) (x + 6) (x + 7)
+(%o4) -------------------------------------------------------
+                               5040
+(%i5) binomial (11, y);
+(%o5)                    binomial(11, y)
+@end example
 @end deffn
 
 @deffn {Funci@'on} burn (@var{n})
@@ -181,7 +209,7 @@ Devuelve la matriz con los numeradores y denominadores de la @'ultima (columna 1
 
 @end deffn
 
-@defvr {Variable optativa} cflength
+@defvr {Variable opcional} cflength
 Valor por defecto: 1
 
 La variable @code{cflength} controla el n@'umero de t@'erminos de la fracci@'on continua que devuelve la funci@'on @code{cf}, que ser@'a @code{cflength} multiplicado por el per@'{@dotless{i}}odo. As@'{@dotless{i}}, el valor por defecto ser@'a el de un per@'{@dotless{i}}odo.
@@ -376,7 +404,7 @@ V@'eanse tambi@'en @code{bfzeta} y @code{zeta%pi}.
 
 @end deffn
 
-@defvr {Variable optativa} zeta%pi
+@defvr {Variable opcional} zeta%pi
 Valor por defecto: @code{true}
 
 Si @code{zeta%pi} vale @code{true}, @code{zeta} devuelve una expresi@'on proporcional a @code{%pi^n} si @code{n} es un n@'umero par positivo. En caso contrario, @code{zeta} no se eval@'ua y devuelve la forma nominal @code{zeta (n)}.

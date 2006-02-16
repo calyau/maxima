@@ -1,4 +1,4 @@
-@c english version 1.14
+@c english version 1.15
 @menu
 * Definiciones para Logaritmos::  
 @end menu
@@ -88,7 +88,11 @@ Ejemplos:
 @end deffn
 
 @deffn {Funci@'on} log (@var{x})
-Logaritmo natural de @var{x}.
+Representa el logaritmo natural (en base @math{e}) de @var{x}.
+
+Maxima no tiene definida una funci@'on para el logaritmo de base 10 u
+otras bases. El usuario puede hacer uso de la definici@'on 
+@code{log10(x) := log(x) / log(10)}.
 
 La simplificaci@'on y evaluaci@'on de logaritmos se controla cciertas variables globales:
 

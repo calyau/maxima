@@ -1,4 +1,4 @@
-@c version 1.11
+@c english version 1.12
 @menu
 * Definiciones para Contextos::    
 @end menu
@@ -23,13 +23,77 @@ La variable @code{activecontexts} es la lista de contextos que se han activado p
 @end defvr
 
 @deffn {Funci@'on} assume (@var{pred_1}, ..., @var{pred_n})
-A@~nade los predicados @var{pred_1}, ..., @var{pred_n} a la base de datos actual, tras comprobar redundancias e inconsistencias. Si los predicados son consistentes y no redundantes, se a@~naden a la base de datos; si son inconsistentes o redundantes, no se hace nada.
+A@~nade los predicados @var{pred_1}, ..., @var{pred_n} al contexto actual.
+Si un predicado es inconsistente o redundante con los otros predicados
+del contexto actual, entonces no es a@~nadido al contexto. 
+El contexto va acumulando predicados con cada llamada a @code{assume}.
 
-La funci@'on @code{assume} devuelve una lista cuyos miembros son los predicados a@~nadidos a la base de datos, junto con los @'atomos @code{redundant} o @code{inconsistent} si fuere necesario.
+La funci@'on @code{assume} devuelve una lista cuyos miembros son los 
+predicados que han sido a@~nadidos al contexto, o los @'atomos 
+@code{redundant} o @code{inconsistent} si fuere necesario.
+
+Los predicados @var{pred_1}, ..., @var{pred_n} tan solo pueden ser
+expresiones formadas con los operadores relacionales @code{< <= equal notequal >=}
+y @code{>}. Los predicados no pueden estar formados por expresiones que sean del
+tipo igualdad @code{=} ni del tipo desigualdad @code{#}, ni tampoco pueden ser
+funciones de predicado como @code{integerp}.
+
+En cambio, s@'{@dotless{i}} se reconocen predicados compuestos de la forma 
+@code{@var{pred_1} and ... and @var{pred_n}}, pero no 
+@code{@var{pred_1} or ... or @var{pred_n}}.
+Tambi@'en se reconoce @code{not @var{pred_k}} si @var{pred_k} es un
+predicado relacional. Expresiones de la forma @code{not (@var{pred_1} and @var{pred_2})}
+y @code{not (@var{pred_1} or @var{pred_2})} no son reconocidas.
+
+El mecanismo deductivo de Maxima no es muy potente; existen muchas 
+consecuencias que, siendo obvias, no pueden ser obtenidas por @code{is}.
+Se trata de una debilidad reconocida.
+
+La funci@'on @code{assume} eval@'ua sus argumentos.
+
+V@'eanse tambi@'en @code{is}, @code{facts}, @code{forget}, @code{context} y @code{declare}.
+
+Ejemplos:
+
+@c ===beg===
+@c assume (xx > 0, yy < -1, zz >= 0);
+@c assume (aa < bb and bb < cc);
+@c facts ();
+@c is (xx > yy);
+@c is (yy < -yy);
+@c is (sinh (bb - aa) > 0);
+@c forget (bb > aa);
+@c prederror : false;
+@c is (sinh (bb - aa) > 0);
+@c is (bb^2 < cc^2);
+@c ===end===
+
+@example
+(%i1) assume (xx > 0, yy < -1, zz >= 0);
+(%o1)              [xx > 0, yy < - 1, zz >= 0]
+(%i2) assume (aa < bb and bb < cc);
+(%o2)                  [bb > aa, cc > bb]
+(%i3) facts ();
+(%o3)     [xx > 0, - 1 > yy, zz >= 0, bb > aa, cc > bb]
+(%i4) is (xx > yy);
+(%o4)                         true
+(%i5) is (yy < -yy);
+(%o5)                         true
+(%i6) is (sinh (bb - aa) > 0);
+(%o6)                         true
+(%i7) forget (bb > aa);
+(%o7)                       [bb > aa]
+(%i8) prederror : false;
+(%o8)                         false
+(%i9) is (sinh (bb - aa) > 0);
+(%o9)                        unknown
+(%i10) is (bb^2 < cc^2);
+(%o10)                       unknown
+@end example
 
 @end deffn
 
-@defvr {Variable optativa} assumescalar
+@defvr {Variable opcional} assumescalar
 Valor por defecto: @code{true}
 
 La variable @code{assumescalar} ayuda a controlar si una expresi@'on @code{expr} para la cual @code{nonscalarp (expr)} es @code{false} va a tener un comportamiento similar a un escalar bajo ciertas transformaciones.
@@ -44,15 +108,13 @@ Si @code{assumescalar} vale @code{all}, la expresi@'on se comportar@'a como un e
 
 @end defvr
 
-@defvr {Variable optativa} assume_pos
+@defvr {Variable opcional} assume_pos
 Valor por defecto: @code{false}
 
-Si @code{assume_pos} vale @code{true} y el signo de una par@'ametro @var{x} no puede ser determinado a partir de la base de datos de @code{assume} o de otras consideraciones, @code{sign} y @code{asksign (@var{x})} devolver@'an @code{true}. Con esto se pueden evitar algunas preguntas al usuario que se generan autom@'aticamente, como las que hacen @code{integrate} y otras funciones.
+Si @code{assume_pos} vale @code{true} y el signo de un par@'ametro @var{x} no puede ser determinado a partir del contexto actual o de otras consideraciones, @code{sign} y @code{asksign (@var{x})} devolver@'an @code{true}. Con esto se pueden evitar algunas preguntas al usuario que se generan autom@'aticamente, como las que hacen @code{integrate} y otras funciones.
 
 By default, a parameter is @var{x} such that @code{symbolp (@var{x})}
 or @code{subvarp (@var{x})}.
-
-
 
 Por defecto, un par@'ametro @var{x} es aquel para el que @code{symbolp (@var{x})} o @code{subvarp (@var{x})} devuelven @code{true}.
 La clase de expresiones que se consideran par@'ametros se puede extender mediante la utilizaci@'on de la variable @code{assume_pos_pred}.
@@ -64,7 +126,7 @@ Sin embargo, no es posible obviar todas las preguntas que hace @code{asksign}. E
 @c NEED EXAMPLES HERE
 @end defvr
 
-@defvr {Variable optativa} assume_pos_pred
+@defvr {Variable opcional} assume_pos_pred
 Valor por defecto: @code{false}
 
 Cuando a @code{assume_pos_pred} se le asigna el nombre de una funci@'on o una expresi@'on lambda de un @'unico argumento @var{x}, @'esta ser@'a invocada para determinar si @var{x} se considera un par@'ametro por @code{assume_pos}. La variable 
@@ -141,23 +203,26 @@ p;
 
 @end defvr
 
-@defvr {Variable optativa} context
+@defvr {Variable opcional} context
 Valor por defecto: @code{initial}
 
 La variable @code{context} da nombre al conjunto de hechos establecidos desde @code{assume} y @code{forget}. La funci@'on @code{assume} a@~nade nuevos hechos al conjunto nombrado por @code{context}, mientras que @code{forget} los va eliminando.
-
 Asignando a @code{context} un nuevo nombre @var{foo} cambia el contexto actual a @var{foo}. Si el contexto @var{foo} no existe todav@'{@dotless{i}}a, se crea autom@'aticamente mediante una llamada a @code{newcontext}.
 
-V@'ease @code{context} para una descripci@'on general del mecanismo que siguen los contextos.
+V@'ease @code{contexts} para una descripci@'on general del mecanismo que siguen los contextos.
 
 @end defvr
 
-@defvr {Variable optativa} contexts
+@defvr {Variable opcional} contexts
 Valor por defecto: @code{[initial, global]}
 
 La variable @code{contexts} es una lista que contiene los contextos existentes, incluyendo el actualmente activo.
 
-El mecanismo que siguen los contextos permiten al usuario asociar un nombre a una parte seleccionada de su base de datos, llamada contexto. Una vez hecho esto, el usuario puede hacer que Maxima tenga en cuenta o que olvide cualquier n@'umero de hechos sin m@'as que activar o desactivar su contexto.
+
+The context mechanism makes it possible for a user to bind together
+and name a collection of facts, called a context.
+
+El mecanismo que siguen los contextos permiten al usuario agrupar y nombrar un conjunto de hechos, que recibe el nombre de contexto. Una vez hecho esto, el usuario puede hacer que Maxima tenga en cuenta o que olvide cualquier n@'umero de hechos sin m@'as que activar o desactivar su contexto.
 
 Cualquier @'atomo simb@'olico puede ser el nombre de un contexto, y los hechos contenidos en tal contexto pueden ser almacenados hasta que se destruyan uno a uno mediante llamadas a la funci@'on @code{forget}, o que se destruyan conjuntamente invocando a @code{kill} para eliminar el contexto al que pertenecen.
 
@@ -197,7 +262,7 @@ La llamada @code{declare (@var{foo}, feature)} declara una nueva propiedad @var{
 El predicado @code{featurep (@var{x}, @var{foo})}
 devuelve @code{true} si @var{x} goza de la propiedad @var{foo}, y @code{false} en caso contrario.
 
-La lista @code{features} contiene las propiedades que reconoce Maxima; a saber, 
+La lista @code{features} contiene las propiedades que reconoce Maxima; a saber,
 @code{integer}, @code{noninteger}, @code{even}, @code{odd}, @code{rational},
 @code{irrational}, @code{real}, @code{imaginary}, @code{complex},
 @code{analytic}, @code{increasing}, @code{decreasing}, @code{oddfun},

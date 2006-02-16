@@ -1,4 +1,4 @@
-@c english version 1.42
+@c english version 1.44
 @menu
 * Introducci@'on a  Entrada y Salida:: 
 * Archivos::
@@ -11,7 +11,7 @@
 @node Archivos, Definiciones para Entrada y Salida, Introducci@'on a Entrada y Salida, Entrada y Salida
 @section Archivos
 
-Un archivo no es m@'as que una @'area en un cierto dispositivo de almacenamiento que contiene datos o texto.
+Un archivo no es m@'as que una @'area de un cierto dispositivo de almacenamiento que contiene datos o texto.
 Los archivos se agrupan en los discos en "directorios", que son listas de archivos.
 Instrucciones que operan con archivos son:
 @code{save},
@@ -27,16 +27,60 @@ Instrucciones que operan con archivos son:
 @node Definiciones para Entrada y Salida,  , Archivos, Entrada y Salida
 @section Definiciones para Entrada y Salida
 
+@defvr {Variable del sistema} __
+
+@code{__} es la expresi@'on de entrada que est@'a siendo actualmente evaluada.
+Esto es, mientras se est@'a evaluando una expresi@'on de entrada, 
+@code{__} es igual a @var{expr}.
+
+A @code{__} se le asigna la expresi@'on de entrada antes de que @'esta sea 
+simplificada o evaluada. Sin embargo, el valor de @code{__} es simplificado,
+pero no evaluado, cuando su valor es mostrado en el terminal.
+
+La variable @code{__} es reconocida por  @code{batch}, pero no por @code{load}.
+
+V@'eanse tambi@'en @code{_} y @code{%}.
+
+Ejemplos:
+
+@c ===beg===
+@c print ("I was called as", __);
+@c foo (__);
+@c g (x) := (print ("Current input expression =", __), 0);
+@c [aa : 1, bb : 2, cc : 3];
+@c (aa + bb + cc)/(dd + ee + g(x));
+@c ===end===
+@example
+(%i1) print ("I was called as", __);
+I was called as print(I was called as, __) 
+(%o1)              print(I was called as, __)
+(%i2) foo (__);
+(%o2)                     foo(foo(__))
+(%i3) g (x) := (print ("Current input expression =", __), 0);
+(%o3) g(x) := (print("Current input expression =", __), 0)
+(%i4) [aa : 1, bb : 2, cc : 3];
+(%o4)                       [1, 2, 3]
+(%i5) (aa + bb + cc)/(dd + ee + g(x));
+                            cc + bb + aa
+Current input expression = -------------- 
+                           g(x) + ee + dd
+                                6
+(%o5)                        -------
+                             ee + dd
+@end example
+
+@end defvr
+
+
 @defvr {Variable del sistema} _
 
-El s@'{@dotless{i}}mbolo @code{_} representa la @'ultima expresi'on de entrada (esto es, @code{%i1}, @code{%i2}, @code{%i3}, ...).
+El s@'{@dotless{i}}mbolo @code{_} representa la @'ultima expresi@'on de entrada (esto es, @code{%i1}, @code{%i2}, @code{%i3}, ...).
 
-Al s@'{@dotless{i}}mbolo @code{_} se le asigna la entrada antes de que @'esta sea simplificada o evaluada.
-Sin embargo, el valor de @code{_} se simplifica (pero no se eval@'ua) cuando se muestra en el terminal.
+Al s@'{@dotless{i}}mbolo @code{_} se le asigna la expresi@'on de entrada antes de que @'esta sea simplificada o evaluada. Sin embargo, el valor de @code{_} se simplifica (pero no se eval@'ua) cuando se muestra en el terminal.
 
 El s@'{@dotless{i}}mbolo @code{_} es reconocido por @code{batch}, pero no por @code{load}.
 
-V@'ease tambi@'en @code{%}.
+V@'eanse tambi@'en @code{__} y @code{%}.
 
 Ejemplos:
 
@@ -534,7 +578,11 @@ En cualquier otro caso, @code{file_type} devuelve @code{object}.
 @deffnx {Variable opcional} grind
 La funci@'on @code{grind} imprime @var{expr}
 en la consola en un formato admisible como entrada para Maxima. La funci@'on 
-@code{grind} always returns @code{done}.
+@code{grind} devuelve siempre @code{done}.
+
+Cuando @var{expr} es el nombre de una funci@'on o macro, @code{grind}
+muestra la definici@'on de la funci@'on o de la macro en lugar de s@'olo
+su nombre.
 
 V@'ease tambi@'en @code{string}, que devuelve una cadena en lugar de imprimir la salida. La funci@'on
 @code{grind} intenta imprimir la expresi@'on de forma que sea lago m@'as sencilla de leer que la salida de @code{string}.
@@ -549,6 +597,104 @@ Si @code{grind} est@'a presente,
 @code{playback} imprime las expresiones de entrada en el mismo formato que lo hace la funci@'on @code{grind};
 en caso contrario no se formatean la expresiones de entrada.
 
+La funci@'on @code{grind} eval@'ua sus argumentos.
+
+Ejemplos:
+
+@c ===beg===
+@c aa + 1729;
+@c grind (%);
+@c [aa, 1729, aa + 1729];
+@c grind (%);
+@c matrix ([aa, 17], [29, bb]);
+@c grind (%);
+@c set (aa, 17, 29, bb);
+@c grind (%);
+@c exp (aa / (bb + 17)^29);
+@c grind (%);
+@c expr: expand ((aa + bb)^10);
+@c grind (expr);
+@c string (expr);
+@c cholesky (A):= block ([n : length (A), L : copymatrix (A),
+@c p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
+@c (x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
+@c p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
+@c for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+@c grind (cholesky);
+@c string (fundef (cholesky));
+@c ===end===
+@example
+(%i1) aa + 1729;
+(%o1)                       aa + 1729
+(%i2) grind (%);
+aa+1729$
+(%o2)                         done
+(%i3) [aa, 1729, aa + 1729];
+(%o3)                 [aa, 1729, aa + 1729]
+(%i4) grind (%);
+[aa,1729,aa+1729]$
+(%o4)                         done
+(%i5) matrix ([aa, 17], [29, bb]);
+                           [ aa  17 ]
+(%o5)                      [        ]
+                           [ 29  bb ]
+(%i6) grind (%);
+matrix([aa,17],[29,bb])$
+(%o6)                         done
+(%i7) set (aa, 17, 29, bb);
+(%o7)                   @{17, 29, aa, bb@}
+(%i8) grind (%);
+@{17,29,aa,bb@}$
+(%o8)                         done
+(%i9) exp (aa / (bb + 17)^29);
+                                aa
+                            -----------
+                                     29
+                            (bb + 17)
+(%o9)                     %e
+(%i10) grind (%);
+%e^(aa/(bb+17)^29)$
+(%o10)                        done
+(%i11) expr: expand ((aa + bb)^10);
+         10           9        2   8         3   7         4   6
+(%o11) bb   + 10 aa bb  + 45 aa  bb  + 120 aa  bb  + 210 aa  bb
+         5   5         6   4         7   3        8   2
+ + 252 aa  bb  + 210 aa  bb  + 120 aa  bb  + 45 aa  bb
+        9        10
+ + 10 aa  bb + aa
+(%i12) grind (expr);
+bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6
+     +252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2
+     +10*aa^9*bb+aa^10$
+(%o12)                        done
+(%i13) string (expr);
+(%o13) bb^10+10*aa*bb^9+45*aa^2*bb^8+120*aa^3*bb^7+210*aa^4*bb^6\
++252*aa^5*bb^5+210*aa^6*bb^4+120*aa^7*bb^3+45*aa^8*bb^2+10*aa^9*\
+bb+aa^10
+(%i14) cholesky (A):= block ([n : length (A), L : copymatrix (A),
+p : makelist (0, i, 1, length (A))], for i thru n do for j : i thru n do
+(x : L[i, j], x : x - sum (L[j, k] * L[i, k], k, 1, i - 1), if i = j then
+p[i] : 1 / sqrt(x) else L[j, i] : x * p[i]), for i thru n do L[i, i] : 1 / p[i],
+for i thru n do for j : i + 1 thru n do L[i, j] : 0, L)$
+(%i15) grind (cholesky);
+cholesky(A):=block(
+         [n:length(A),L:copymatrix(A),
+          p:makelist(0,i,1,length(A))],
+         for i thru n do
+             (for j from i thru n do
+                  (x:L[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),
+                   if i = j then p[i]:1/sqrt(x)
+                       else L[j,i]:x*p[i])),
+         for i thru n do L[i,i]:1/p[i],
+         for i thru n do (for j from i+1 thru n do L[i,j]:0),L)$
+(%o15)                        done
+(%i16) string (fundef (cholesky));
+(%o16) cholesky(A):=block([n:length(A),L:copymatrix(A),p:makelis\
+t(0,i,1,length(A))],for i thru n do (for j from i thru n do (x:L\
+[i,j],x:x-sum(L[j,k]*L[i,k],k,1,i-1),if i = j then p[i]:1/sqrt(x\
+) else L[j,i]:x*p[i])),for i thru n do L[i,i]:1/p[i],for i thru \
+n do (for j from i+1 thru n do L[i,j]:0),L)
+@end example
 @end deffn
 
 
