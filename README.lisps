@@ -9,6 +9,15 @@ and are welcome; please post a message on the Maxima mailing list
 if you are interested in working on a port.
 
 --------------------------------------------------------------------
+Comparison of execution times for the run_testsuite function
+All times are in elapsed seconds
+
+Maxima      System                  GCL     SBCL    CMUCL   Clisp
+
+pre-5.9.3   P2 450 MHz, Linux        75      91              301
+
+
+--------------------------------------------------------------------
 Clisp <http://clisp.cons.org>, <http://clisp.sourceforge.net>
 
 	Clisp includes GNU readline support, so Maxima has
