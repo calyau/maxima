@@ -24,4 +24,5 @@
     "rtest_zeta"
     "rtest_diff_invtrig"
     "rtest_scalarp"
+    "rtest_everysome"
     ))

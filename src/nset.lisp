@@ -14,7 +14,7 @@
 (in-package :maxima)
 (macsyma-module nset)
 
-($put '$nset 1.203 '$version)
+($put '$nset 1.21 '$version)
 
 (defmacro while (cond &rest body)
   `(do ()
@@ -115,7 +115,7 @@
 ;; Return true iff a is an empty set or list
 
 (defun $emptyp (a)
-  (or (like a `(($set))) (like a `((mlist)))))
+  (or (like a `(($set))) (like a `((mlist))) (and ($matrixp a) (every '$emptyp (margs a)))))
 
 ;; Return true iff the operator of a is set.
 
@@ -1181,13 +1181,20 @@ a positive integer; instead found ~:M" n))))
       (setq acc nil))
     x))
 
+
+
+;; An identity function -- may see some use in things like
+;;     every(identity, [true, true, false, ..]).
+
+(defun $identity (x) x)
+
 ;; Maxima 'some' and 'every' functions.  The first argument should be
 ;; a predicate (a function that evaluates to true, false, or unknown).
 ;; The functions 'some' and 'every' locally bind $prederror to false.
 ;; Thus within 'some' or 'every,'  is(a < b) evaluates to unknown instead
 ;; of signaling an error (as it would when $prederror is true).
 ;;
-;; Two cases:
+;; Three cases:
 ;;
 ;;  (1) some(f, set(a1,...,an))  If any f(ai) evaluates to true,
 ;;  'some' returns true.  'Some' may or may not evaluate all the
@@ -1201,8 +1208,14 @@ a positive integer; instead found ~:M" n))))
 ;;  evaluate all the f(ai)'s.  Since sequences are ordered, 'some'
 ;;  evaluates in the order of increasing 'i'.
 
+;; (3) some(f, matrix([a111,...],[a121,...],[a1n1...]), matrix(...)). 
+;;  If any f(a1ij, a2ij, ...) evaluates to true, return true.  'Some' 
+;;  may or may not evaluate all the predicates. Since there is no 
+;;  natural order for the entries of a matrix, 'some' is free to 
+;;  evaluate the predicates in any order.
+
 ;;   Notes:
-;;   (a) 'some' and 'every' automatically apply 'is'; thus the following
+;;   (a) 'some' and 'every' automatically apply 'maybe'; thus the following
 ;;   work correctly
 ;;  
 ;;   (C1) some("<",[a,b,5],[1,2,8]);
@@ -1213,53 +1226,83 @@ a positive integer; instead found ~:M" n))))
 ;;  (b) Since 'some' is free to choose the order of evaluation, and
 ;;  possibly stop as soon as any one instance returns true, the
 ;;  predicate f should not normally have side-effects or signal
-;;  errors.
+;;  errors. Similarly, 'every' may halt after one instance returns false;
+;;  however, the function 'maybe' is wrapped inside 'errset' This allows 
+;;  some things to work that would otherwise signal an error:
+
+;;    (%i1) some("<",[i,1],[3,12]);
+;;    (%o1) true
+;;    (%i2) every("<",[i,1],[3,12]);
+;;    (%o2) false
+;;    (%i3) maybe(%i < 3);
+;;    `sign' called on an imaginary argument:
+
 ;;   
-;;   (c) In case (2), if $maperror is true (the default), all lists 
-;;   must have equal length -- otherwise, some or every signals an error.
-;;   When the Maxima flag $maperror is false, the list arguments are
-;;   effectively truncated each to the length of the shortest list. 
-;;   BW doesn't like this feature of every / some; neither does SM.
+;;  (c) The functions 'some' and 'every' effectively use the functions
+;;  'map' and 'matrixmap' to map the predicate over the arguments. The
+;;  option variable 'maperror' modifies the behavior of 'map' and 
+;;  'matrixmap;' similarly, the value of 'maperror' modifies the behavior
+;;  of 'some' and 'every.'
 ;; 
 ;;   (d) 'every' behaves similarly to 'some' expect that 'every' returns
 ;;   true iff every f evaluates to true for all its inputs.
 ;;
-;;   (e) some(f,[]) --> false and every(f,[]) --> true. Thus
-;;   (provided an error doesn't get signaled), we have the identities:
+;;   (e) If emptyp(e) is true, then some(f,e) --> false and every(f,e) --> true. 
+;;   Thus (provided an error doesn't get signaled), we have the identities:
 ;;
 ;;       some(f,s1) or some(f,s2) == some(f, union(s1,s2)), 
 ;;       every(f,s1) and every(f,s2) == every(f, union(s1,s2)).
 ;;   Similarly, some(f) --> false and every(f) --> true.
 
-;; An identity function -- may see some use in things like
-;;     every(identity, [true, true, false, ..]).
-
-(defun $identity (x) x)
-
-(defun $some (f &rest s)
-  (if (null s) nil (every-or-some #'some f s "$some")))
-
-(defun $every (f &rest s)
-  (if (null s) t (every-or-some #'every f s "$every")))
-
-;; If x = t or nil return x; if x = '$unknown return nil; if x # t, nil, 
-;; or $unknown, signal an error. 
- 
-(defun require-boolean (x)
-  (cond ((or (not x) (eq x t)) x)
+(defun checked-and (x)
+  (setq x (mfuncall '$maybe `((mand) ,@x)))
+  (cond ((or (eq x t) (eq x nil) (not $prederror)) x)
 	((eq x '$unknown) nil)
-	(t (merror "Function must be boolean valued; instead found ~:M" x))))
+	(t
+	 (merror "Predicate isn't true/false valued; maybe you want to set 'prederror' to false"))))
+    
+(defun checked-or (x)
+  (setq x (mfuncall '$maybe `((mor) ,@x)))
+  (cond ((or (eq x t) (eq x nil) (not $prederror)) x)
+	((eq x '$unknown) nil)
+	(t
+	 (merror "Predicate isn't true/false valued; maybe you want to set 'prederror' to false"))))
 
-(defun every-or-some (q f s f-str)
-  (let ((ff) ($prederror nil))
-    (setq f (if (symbolp f) ($verbify f) f))
-    (setq ff #'(lambda (&rest x) (require-boolean (mevalp `((,f) ,@x)))))
-    (if (= 1 (length s))
-	(setq s (mapcar #'(lambda (x) (require-list-or-set x f-str)) s))
-      (setq s (mapcar #'(lambda (x) (require-list x f-str)) s)))
-    (if (or (not $maperror) (apply #'= (mapcar #'length s)))
-	(apply q (cons ff s))
-      (merror "Each list argument to \"~:M\" must have the same length" f-str))))
+;; Apply the Maxima function f to x. If an error is signaled, return nil; otherwise
+;; return (list (mfuncall f x)).
+
+(defun ignore-errors-mfuncall (f x)
+  (let ((errcatch t))
+    (declare (special errcatch))
+    (errset (mfuncall f x) lisperrprint)))
+
+(defun $every (f &rest x)
+  (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) t)
+   
+ ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
+  (setq x (margs (simplify (apply #'map1 (cons f x)))))
+  (checked-and (mapcar #'car (mapcar #'(lambda (s) (ignore-errors-mfuncall '$maybe s)) x))))
+   
+ ((every '$matrixp x)
+  (let ((fmaplvl 2))
+    (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
+    (checked-and (mapcar #'(lambda (s) ($every '$identity s)) x))))
+ 
+ (t (merror "Improper arguments to function 'every'"))))
+
+(defun $some (f &rest x)
+  (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) nil)
+
+ ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
+  (setq x (margs (simplify (apply #'map1 (cons f x)))))
+  (checked-or (mapcar #'car (mapcar #'(lambda (s) (ignore-errors-mfuncall '$maybe s)) x))))
+
+ ((every '$matrixp x)
+  (let ((fmaplvl 2))
+    (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
+    (checked-or (mapcar #'(lambda (s) ($some '$identity s)) x))))
+
+ (t (merror "Improper arguments to function 'some'"))))
 
 (defun $makeset (f v s)
   (if (or (not ($listp v)) 
