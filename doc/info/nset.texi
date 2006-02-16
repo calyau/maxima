@@ -14,35 +14,19 @@ work with sets that have members that are either lists or sets.
 
 In addition to functions for finite sets, Maxima provides some
 functions related to combinatorics; these include the Stirling
-numbers, the Bell numbers, and several others.
-
-@c THIS DOCUMENT SHOULD MENTION nset-init.lisp AND test-nset.mac IN SOME WAY
-
-@c This will create a directory @emph{nset-x} (again x is the release identifier)
-@c that contains the source file @emph{nset.lisp}, user documentation in html 
-@c and texi formats, a sample maxima initialization file @emph{nset-init.lisp}, 
-@c a README file, and a testing  routine @emph{test-nset.mac}.
-
-@c FOLLOWING TEXT LIKELY OBSOLETE NOW THAT nset.lisp IS IN src/, PRESERVE PENDING FINAL DETERMINATION
-
-@c If you are using Maxima version 5.9.0 or higher, finish the installation
-@c by appending the contents of @emph{nset-init.lisp} to your own
-@c @emph{maxima-init.lisp} file. The Lisp file @emph{nset-init.lisp} 
-@c contains replacements for the Maxima functions @emph{setup_autoload}
-@c and @emph{generic_autoload}. Unlike Maxima's @emph{setup_autoload} function,
-@c the version in @emph{nset-init.lisp} uses @emph{file_search}. Without this
-@c change, a full pathname must be given to @emph{setup_autoload}. The
-@c autoload function in Maxima 5.9.0 and lower does not recognize some
-@c file extensions, such as .x86f and .fasl, as valid extensions for
-@c compiled code. The version of @emph{generic_autoload} in @emph{nset-init}
-@c fixes this problem. Additionally, @emph{nset-init.lisp} contains 
-@c autoload statements for all user-level functions in @emph{nset}.
+numbers of the first and second kind, the Bell numbers, multinomial
+coefficients, partitions of nonnegative integers, and a few others. 
+Maxima also defines a Kronecker delta function.
 
 @subsection Usage
 
-To construct a set with members @code{a_1, ..., a_n}, use the
-command @code{set(a_1, ..., a_n)}; to construct the empty
-set, use @code{set()}.  If a member is listed more than
+To construct a set with members @code{a_1, ..., a_n}, write
+@code{set(a_1, ..., a_n)} or @code{@{a_1, ..., a_n@}};
+to construct the empty set, write @code{set()} or @code{@{@}}.
+In input, @code{set (...)} and @code{@{ ... @}} are equivalent.
+Sets are always displayed with curly braces.
+
+If a member is listed more than
 once, the simplification process eliminates the redundant member.
 
 @c ===beg===
@@ -50,6 +34,10 @@ once, the simplification process eliminates the redundant member.
 @c set(a, b, a);
 @c set(a, set(b));
 @c set(a, [b]);
+@c {};
+@c {a, b, a};
+@c {a, {b}};
+@c {a, [b]};
 @c ===end===
 @example
 (%i1) set();
@@ -60,6 +48,14 @@ once, the simplification process eliminates the redundant member.
 (%o3)                       @{a, @{b@}@}
 (%i4) set(a, [b]);
 (%o4)                       @{a, [b]@}
+(%i5) @{@};
+(%o5)                          @{@}
+(%i6) @{a, b, a@};
+(%o6)                        @{a, b@}
+(%i7) @{a, @{b@}@};
+(%o7)                       @{a, @{b@}@}
+(%i8) @{a, [b]@};
+(%o8)                       @{a, [b]@}
 @end example
 
 Two would-be elements @var{x} and @var{y} are redundant
@@ -112,9 +108,6 @@ in that case the elements @var{x} and @var{y} are considered distinct.
 (%o9)                    @{-----, - + -@}
                             c    c   c
 @end example
-
-Sets are always displayed as brace delimited lists; if you would like to
-be able to  @i{input} a set using braces, see @ref{Defining sets with braces}.
 
 To construct a set from the elements of a list, use  @code{setify}.
 
@@ -279,13 +272,11 @@ In future versions of the set functions,
 @code{first} and @code{rest} may function differently or not at all.
 
 @subsection Bugs
-@c AT THIS POINT (2005/05) I DON'T KNOW IF IT'S NECESSARY TO GO INTO DETAILS
-@c ABOUT BUGS IN MAXIMA REVISIONS 5.9.0 AND EARLIER
 
 The set functions use the Maxima function @code{orderlessp} to 
 order set members and the (Lisp-level) function @code{like} to test for set
-member equality.  Both of these functions have known bugs (versions
-5.9.2 and earlier) that may manifest if you attempt to use
+member equality.  Both of these functions have known bugs
+that may manifest if you attempt to use
 sets with members that are lists or matrices that contain expressions
 in CRE form. An example is
 
@@ -385,13 +376,6 @@ incompatible with the set functions. If you need to use either @code{orderless}
 or @code{ordergreat}, issue these commands before constructing any sets
 and do not use the @code{unorder} command. 
 
-You may encounter two other minor bugs.
-Maxima versions 5.5 and earlier had a bug in the @code{tex} function that
-makes the empty set incorrectly translate to TeX; this bug is fixed in
-the Maxima 5.9.0. Additionally, the @code{setup_autoload} function in
-Maxima 5.9.0 is broken; a fix is in the @code{nset-init.lisp} file
-located in the directory @code{maxima/share/contrib/nset}.
-
 Maxima's sign function has a bug that may cause the Kronecker
 delta function to misbehave; for example:
 
@@ -415,51 +399,6 @@ The correct value is 1; the bug is related to the @code{sign} bug
 
 If you find something that you think might be a set function bug, please 
 report it to the Maxima bug database. See @code{bug_report}.
-
-@anchor{Defining sets with braces}
-@subsection Defining sets with braces
-
-If you'd like to be able to input sets using braces, you may do
-so by declaring the left brace to be a matchfix operator; this
-is done using the commands
-
-@c ===beg===
-@c matchfix("{","}")$
-@c "{" ([a]) := apply (set, a)$
-@c ===end===
-@example
-(%i1) matchfix("@{","@}")$
-(%i2) "@{" ([a]) := apply (set, a)$
-@end example
-
-Now we can define sets using braces; thus
-
-@c ===beg===
-@c matchfix("{","}")$
-@c "{" ([a]) := apply (set, a)$
-@c {};
-@c {a, {a, b}};
-@c ===end===
-@example
-(%i1) matchfix("@{","@}")$
-(%i2) "@{" ([a]) := apply (set, a)$
-(%i3) @{@};
-(%o3)                          @{@}
-(%i4) @{a, @{a, b@}@};
-(%o4)                      @{a, @{a, b@}@}
-@end example
-
-To always allow this form of set input, place the two commands in lines 
-(%i1) and (%i2) in your @code{maxima-init.mac} file.
-
-@subsection Combinatorial and Miscellaneous Functions
-
-In addition to functions for finite sets, Maxima provides some
-functions related to combinatorics; these include the Stirling
-numbers of the first and second kind, the Bell numbers, multinomial
-coefficients, partitions of nonnegative integers, and a few others. 
-Maxima also defines a Kronecker delta function.
-
 
 @subsection Authors
 
