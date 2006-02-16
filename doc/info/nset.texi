@@ -1297,6 +1297,21 @@ Return a set containing the elements in the set @var{a} that are
 not in the set @var{b}.  Signal an error if @var{a} or @var{b} is not a set.
 @end deffn
 
+@anchor{setequalp}
+@deffn {Function} setequalp (@var{a}, @var{b})
+Returns @code{true} if sets @var{a} and @var{b} have the same number of elements
+@c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+and @code{is (@var{x} = @var{y})} is @code{true}
+for @code{x} in the elements of @var{a}
+and @code{y} in the elements of @var{b},
+considered in the order determined by @code{listify}.
+Otherwise, @code{setequalp} returns @code{false}.
+
+@code{setequalp} complains when @var{a} or @var{b} is not a set.
+
+@end deffn
+
 @anchor{setify}
 @deffn {Function} setify (@var{a})
 Construct a set from the elements of the list @var{a}.  Duplicate
