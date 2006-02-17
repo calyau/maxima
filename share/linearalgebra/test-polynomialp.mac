@@ -1,6 +1,3 @@
-(load("polynomialp.lisp"),0);
-0$
-
 polynomialp(1,[x])$
 true$
 
@@ -45,6 +42,9 @@ true$
 
 polynomialp((1+x)^a,[x], 'constantp);
 false$
+
+
+
 
 
 

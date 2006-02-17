@@ -358,15 +358,6 @@ Return the Kronecker product of the matrices @var{A} and @var{B}.
 
 @end deffn
 
-@deffn {Function} listp (@var{e}, @var{p})
-@deffnx {Function} listp (@var{e})
-
-Given an optional argument @var{p}, return @code{true} if @var{e} is 
-a Maxima list and @var{p} evaluates to @code{true} for every list element.
-When @code{listp} is not given the optional argument, return @code{true} if @var{e} is 
-a Maxima list.  In all other cases, return @code{false}.
-
-@end deffn
 
 @deffn {Function} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
@@ -555,17 +546,6 @@ an unblocked matrix.
 
 @end deffn
 
-@deffn {Function} matrixp (@var{e}, @var{p})
-@deffnx {Function} matrixp (@var{e})
-
-Given an optional argument @var{p}, return @code{true} if @var{e} is 
-a matrix and @var{p} evaluates to @code{true} for every matrix element.
-When @code{matrixp} is not given an optional argument, return @code{true} 
-if @code{e} is a matrix.  In all other cases, return @code{false}.
-
-See also @code{blockmatrixp}
-
-@end deffn
 
 @deffn {Function} matrix_size (@var{M})
 

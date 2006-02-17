@@ -30,10 +30,10 @@ eval_when(translate,
 	                     mat_fullunblocker,mat_trace,mat_unblocker, column_reduce,good_pivot,
                              hipow_gzeromat_norm))$
 
-
 eval_when([batch,load,translate,compile],
   put(infolevel, debug, linearalgebra),    
   load("polynomialp"),
+  load("mring"),
   load("lu"),
   load("linalgcholesky"),
   load("eigens-by-jacobi"),

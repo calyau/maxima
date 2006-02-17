@@ -8,9 +8,6 @@
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 ($put '$lu 2 '$version)
-
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  ($load "mring"))
 	
 ;; Return the i,j entry of the Maxima matrix m. The rows of m have been permuted according
 ;; to the Maxima list p.

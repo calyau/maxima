@@ -1,7 +1,7 @@
-(listequalp(p,q) := block([listarith : true], listp(sort(p) - sort(q), lambda([x], is(abs(x) < 1.0d-10)))),0);
+(listequalp(p,q) := block([listarith : true], every(lambda([x], is(abs(x) < 1.0d-10)), sort(p) - sort(q))),0);
 0$
 
-(matrixequalp(p,q) := matrixp(p-q, lambda([x], is(abs(x) < 1.0d-10))),0);
+(matrixequalp(p,q) := every(lambda([x], is(abs(x) < 1.0d-10)),p-q),0);
 0$
 
 (m : matrix([1]),0);

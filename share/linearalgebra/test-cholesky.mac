@@ -2,7 +2,7 @@
   l : cholesky(m,r),
   l : m - l . ctranspose(l),
   if blockmatrixp(l) then l : mat_fullunblocker(l),
-  matrixp(l, lambda([x], is(cabs(x) < 1.0e-10)))),0);
+  every(lambda([x], is(cabs(x) < 1.0e-10)),l)),0);
 0$
 
 /*-----------*/

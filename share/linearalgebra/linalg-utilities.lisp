@@ -15,20 +15,15 @@
 
 (defun $mytest (fn)
   (let ((*collect-errors* nil))
-    (setq fn ($file_search1 fn '((mlist) $file_search_maxima)))
+    (setq fn ($file_search fn))
     (test-batch fn nil :show-all nil :show-expected nil)))
-
-(defun $listp (e &optional (f nil))
-  (and (op-equalp e 'mlist) (or (eq f nil) (every #'(lambda (s) (eq t (mfuncall f s))) (margs e)))))
-
-(defun $matrixp (e  &optional (f nil))
-  (and (op-equalp e '$matrix) (every #'(lambda (s) ($listp s f)) (margs e))))
 
 (defun $require_nonempty_matrix (m pos fun)
   (if (not (and ($matrixp m) (> ($length m) 0) (> ($length ($first m)) 0)))
       (merror "The ~:M argument of the function ~:M must be a nonempty matrix" pos fun)))
 
-(defun $blockmatrixp (m) ($matrixp m '$matrixp))
+(defun $blockmatrixp (m) 
+  (and ($matrixp m) ($every '$matrixp m)))
 
 (defun $require_matrix (m pos fun)
   (if (not ($matrixp m))

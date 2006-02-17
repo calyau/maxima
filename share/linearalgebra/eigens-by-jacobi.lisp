@@ -29,7 +29,7 @@
       (merror "The field must either be 'floatfield' or 'bigfloatfield'"))
   
   (setq mm (mfuncall '$mat_fullunblocker mm))
-  ($require_symmetric_matrix mm  "$first" "$eigens_by_jacobi")
+  ($require_symmetric_matrix mm "$first" "$eigens_by_jacobi")
      
   (let* ((mat) (g) (h) (sweeps 0) (rotations 0) (eps) (change)
 	 (theta) (mpq) (c) (s)  (tee) (tau) (d) (v) (x) (row)
