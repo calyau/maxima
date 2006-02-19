@@ -1882,7 +1882,7 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 
 
 @defvr {Option variable} rpoisson_algorithm
-Default value: @code{kachit}
+Default value: @code{ahrens_dieter}
 
 This is the selected algorithm for simulating random Poisson variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
 @itemize @bullet
