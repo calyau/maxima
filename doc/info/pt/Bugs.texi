@@ -44,18 +44,18 @@ e ent@~ao define fun@,{c}@~oes e vari@'aveis apropriadamente para o teste.
      
 @code{testsuite_files} @'e o conjunto de testes a ser executado por
 @code{run_testsuite}.  Isso @'e uma lista de nomes de arquivos contendo
-os testes a executar.  Se alguns dos testes em um arquivo @'e sabido falhar,
+os testes a executar.  Se alguns dos testes em um arquivo falha de forma conhecida,
 ent@~ao em lugar de listar o nome do arquivo, uma lista contendo o
 nome do arquivo e o n@'umero dos testes que falharam @'e usada.
 
-por exemplo, isso @'e uma parte do conjunto de testes padr@~ao:
+por exemplo, a linha adinate @'e uma parte do conjunto de testes padr@~ao:
 
 @example
  ["rtest13s", ["rtest14", 57, 63]]
 @end example
 
-Isso especifica a suite de testes que consiste dos arquivos "rtest13s" e
-"rtest14", mas "rtest14" cont@'em dois testes que s@~ao sabidos falhar: 57
+Essa linha especifica a suite de testes que consiste dos arquivos "rtest13s" e
+"rtest14", mas "rtest14" cont@'em dois testes que falham de forma conhecida: 57
 e 63.
 @end defvr
 

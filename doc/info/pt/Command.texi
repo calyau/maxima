@@ -1,5 +1,8 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Command.texi/1.37/Fri Jan 13 08:15:55 2006/-ko/
+@iftex
+@hyphenation{si-na-li-za-do-res}
+@end iftex
 @menu
 * Introdu@value{cedilha}@~ao a Linha de Comando::  
 * Defini@value{cedilha}@~oes para Linha de Comando::  
@@ -18,7 +21,7 @@ o ap@'ostrofo evita avalia@,{c}@~ao do s@'imbolo.
 
 Aplicado a uma chamada de fun@,{c}@~ao,
 o ap@'ostrofo evita avalia@,{c}@~ao da chamada de fun@,{c}@~ao,
-embora os argumentos da fun@,{c}@~ao sejam ainda avaliados (se a avalia@,{c}@~ao n@`ao for de outra forma evitada).
+embora os argumentos da fun@,{c}@~ao sejam ainda avaliados (se a avalia@,{c}@~ao n@~ao for de outra forma evitada).
 O resultado @'e a forma substantiva da chamada de fun@,{c}@~ao.
 
 Aplicada a uma espress@~ao com par@^entesis,
@@ -32,7 +35,7 @@ O ap@'ostrofo nao evita simplifica@,{c}@~ao.
 
 Quando o sinalizador global @code{noundisp} for @code{true},
 substantivos s@~ao mostrados com um ap@'ostrofo.
-Ess comutador @'e sempre @code{true} quando mostrando defini@,{c}@~oes de fun@,{c}@~oes.
+Esse comutador @'e sempre @code{true} quando mostrando defini@,{c}@~oes de fun@,{c}@~oes.
 
 Veja tamb@'em operador ap@'ostrofo-ap@'ostrofo @code{''} e @code{nouns}.
 
@@ -116,7 +119,7 @@ o ap@'ostrofo evita avalia@,{c}@~ao de todos os s@'imbolos e chamadas de fun@,{c
 (%o5)                          51
 @end example
 
-O ap@'ostrof n@~ao evita simplifica@,{c}@~ao.
+O ap@'ostrofo n@~ao evita simplifica@,{c}@~ao.
 
 @c ===beg===
 @c sin (17 * %pi) + cos (17 * %pi);
@@ -133,7 +136,7 @@ O ap@'ostrof n@~ao evita simplifica@,{c}@~ao.
 @end deffn
 
 @deffn {Operador} "'@w{}'"
-O operador @code{'@w{}'} (aspas simples) faz com que ocorra uma avalia@,{c}@~ao extra.
+O operador @code{'@w{}'} (ap@'ostrofo-ap@'ostrofo) faz com que ocorra uma avalia@,{c}@~ao extra.
 E.g., @code{'@w{}'%i4} ir@'a reavaliar a linha de entrada @code{%i4}.
 @code{'@w{}'(f(x))} significa avalie a express@~ao @code{f(x)} novamente.
 @code{'@w{}'f(x)} (com as aspas simples aplicadas a @code{f} em lugar de @code{f(x)})
@@ -155,11 +158,11 @@ Qualquer n@'umero de argumentos pode ser usado.
 @defvr {Vari@'avel de op@,{c}@~ao} debugmode
 Valor padr@~ao: @code{false}
 
-Quando um erro do Maxima ocorre, Maxima iniciar@'a o depurador se @code{debugmode} @'e @code{true}.
+Quando um erro do Maxima ocorre, Maxima iniciar@'a o depurador se @code{debugmode} for @code{true}.
 O usu@'ario pode informar comandos para examinar o hist@'orico de chamadas, marcar pontos de parada, percorrer uma linha por vez
 o c@'odigo do Maxima, e assim por diante.  Veja @code{debugging} para uma lista de op@,{c}@~oes do depurador.
 
-Habilitando @code{debugmode} n@~ao ser@~ao capturados erros do Lisp.
+Habilitando @code{debugmode} por meio da altera@value{cedilha}@~ao de seu valor para @code{true}, n@~ao ser@~ao capturados erros do Lisp.
 @c DO WE WANT TO SAY MORE ABOUT DEBUGGING LISP ERRORS ???
 @c I'M NOT CONVINCED WE WANT TO OPEN THAT CAN OF WORMS !!!
 
@@ -200,19 +203,19 @@ em @var{expr}.
 @item
 @code{detout} faz com que qualquer matriz inversa calculada em @var{expr} tenha seu
 determinante mantido fora da inversa ao inv@'es de dividindo a
-cada elementos.
+cada elemento.
 @item
 @code{diff} faz com que todas as diferencia@,{c}@~oes indicadas em @var{expr} sejam executadas.
 @item
 @code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa somente diferencia@,{c}@~oes referentes @`as
 vari@'aveis indicadas.
 @item
-@code{float} faz com que n@'umeros racionais n@~ao integrais sejam convertidos para ponto 
+@code{float} faz com que n@'umeros racionais n@~ao inteiros sejam convertidos para ponto 
 flutuante.
 @item
 @code{numer} faz com que algumas fun@,{c}@~oes matem@'aticas (incluindo a exponencia@,{c}@~ao)
 com argumentos sejam valiadas em ponto flutuante.  Isso faz com que
-vari@'avels em @var{expr} que tenham sido dados numervals sejam substitu@'idas por
+vari@'avels em @var{expr} que tenham sido dados numervals (valores num@'ericos) sejam substitu@'idas por
 seus valores.  Isso tamb@'em modifica o comutador @code{float} para ativado.
 @item
 @code{pred} faz com que predicados (express@~oes que podem ser avaliados em @code{true} ou @code{false})
@@ -229,7 +232,7 @@ faz com que @code{A} seja associado a
 valor de @code{express@~ao} durante a avalia@,{c}@~ao de @var{expr}.  Note que se @code{V} @'e uma
 op@,{c}@~ao do Maxima, ent@~ao @code{expression} @'e usada para seu valor durante a
 avalia@,{c}@~ao de @var{expr}.  Se mais que um argumento para @code{ev} @'e desse tipo
-ent@~ao a associa@~ao termina em paralelo.  Se @code{V} @'e uma express@~ao n@~ao at@^omica
+ent@~ao a associa@value{cedilha}@~ao termina em paralelo.  Se @code{V} @'e uma express@~ao n@~ao at@^omica
 ent@~ao a substitui@,{c}@~ao, ao inv@'es de uma associa@,{c}@~ao, @'e executada.
 @item
 @code{F} onde @code{F}, um nome de fun@,{c}@~ao, tenha sido declarado para ser uma fun@,{c}@~ao de avalia@,{c}@~ao (veja @code{evfun})
@@ -243,33 +246,33 @@ De forma adicional uma fun@,{c}@~ao ocorrendo em @var{expr} (digamos @code{F(x)}
 localmente para o prop@'osito dessa avalia@,{c}@~ao de @var{expr} dando
 @code{F(x) := express@~ao} como um argumento para @code{ev}.
 @item
-Se um @'atomo n@~ao mensionado adiante ou uma vari@'avel subscrita ou
+Se um @'atomo n@~ao mensionado acima ou uma vari@'avel subscrita ou
 express@~ao subscrita for dada como um argumento, isso @'e avaliado e
-se o resultado @'e uma equa@,{c}@~ao ou uma atribui@,{c}@~ao ent@~ao a associa@,{c}@~ao indicada
-ou substitui@,{c}@~ao @'e executada.  Se o resultado @'e uma lista ent@~ao os
+se o resultado for uma equa@,{c}@~ao ou uma atribui@,{c}@~ao ent@~ao a associa@,{c}@~ao indicada
+ou substitui@,{c}@~ao @'e executada.  Se o resultado for uma lista ent@~ao os
 membros da lista ser@~ao tratados  como se eles fossem argumentos adicionais
-dados para @code{ev}.  Isso permite uma lista de equa@,{c}@~oes seja dada (e.g. @code{[X=1, Y=A**2]})
-ou uma lista de nomes de equa@,{c}@~oes (e.g., @code{[%t1, %t2]} onde @code{%t1} e
-@code{%t2} s@~ao equa@,{c}@~oes) tais como aquelas retornadas por @code{solve}.
+dados para @code{ev}.  Isso permite que uma lista de equa@,{c}@~oes seja dada (e.g. @code{[X=1, Y=A**2]})
+ou que seja dado uma lista de nomes de equa@,{c}@~oes (e.g., @code{[%t1, %t2]} onde @code{%t1} e
+@code{%t2} s@~ao equa@,{c}@~oes) tais como aquelas listas retornadas por @code{solve}.
 @end itemize
 
 Os argumentos de @code{ev} podem ser dados em qualquer ordem com exce@,{c}@~ao de
 substitui@,{c}@~oes de equa@,{c}@~oes que s@~ao manuseadas em seq@"u@^encia, da esquerda para a direita,
-e fun@,{c}@~oes de avalia@,{c}@~ao que s@~ao compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} @'e
-manuseada como @code{realpart (ratsimp (@var{expr}))}.
+e fun@,{c}@~oes de avalia@,{c}@~ao que s@~ao compostas, e.g., @code{ev (@var{expr}, ratsimp, realpart)} s@~ao
+manuseadas como @code{realpart (ratsimp (@var{expr}))}.
 
 Os comutadores @code{simp}, @code{numer}, @code{float}, e @code{pred} podem tamb@'em ser alterados localmente em um
 bloco, ou globalmente no Maxima dessa forma eles ir@~a
-permanecer em efeito at@'e serem resetados.
+permanecer em efeito at@'e serem resetados ao t@'ermino da execu@value{cedilha}@~ao do bloco.
 
 Se @var{expr} for uma express@~ao racional can@^onica (CRE),
 ent@~ao a express@~ao retornada por @code{ev} @'e tamb@'em uma CRE,
-provida a comutadores @code{numer} e @code{float} n@~ao sejam ambos @code{true}.
+contanto que os comutadores @code{numer} e @code{float} n@~ao sejam ambos @code{true}.
 
 @item
-Durante o passo (1), uma lista @'e feita de vari@'aveis n@~ao subscritas
+Durante o passo (1), @'e feito uma lista  de vari@'aveis n@~ao subscritas
 aparecendo do lado esquerdo das equa@,{c}@~oes nos argumentos ou nos
-valores de alguns argumentos se o valor @'e uma equa@,{c}@~ao.  As vari@'aveis
+valores de alguns argumentos se o valor for uma equa@,{c}@~ao.  As vari@'aveis
 (vari@'aveis subscritas que n@~ao possuem fun@,{c}@~oes array
 associadas bem como vari@'aveis n@~ao subscritas) na express@~ao @var{expr} s@~ao
 substitu@'idas por seus valores globais, exceto para esse aparecendo nessa 
@@ -279,7 +282,7 @@ passo simplesmente repete a express@~ao nomeada pelo r@'otulo, de modo que @code
 possa trabalhar sobre isso.
 
 @item
-Se quaisquer substitui@,{c}@~oes s@~ao indicadas pelos argumentos, elas ser@~ao
+Se quaisquer substitui@,{c}@~oes tiveem sido indicadas pelos argumentos, elas ser@~ao
 realizadas agora.
 
 @item
@@ -353,12 +356,12 @@ Solution
 Alguns sinalizadores Booleanos possuem a propriedae @code{evflag}.
 @code{ev} trata tais sinalizadores especialmente.
 Um sinalizador com a propriedade @code{evflag} n@~ao ser@'a associado a @code{true}
-durante a execu@,{c}@~ao de @code{ev} se isso @'e
+durante a execu@,{c}@~ao de @code{ev} se isso for
 mensionado na chamada para @code{ev}.
 Por exemplo, @code{demoivre} e @code{ratfac} s@~ao associados a @code{true}
 durante a chamada @code{ev (%, demoivre, ratfac)}.
 
-Os sinalizadores qu possuem a propriedade @code{evflag} s@~ao:
+Os sinalizadores que possuem a propriedade @code{evflag} s@~ao:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
 @code{algebraic},
@@ -424,7 +427,7 @@ As fun@,{c}@~oes que possuem a propriedade @code{evfun} s@~ao:
 @code{ratsimp},
 @code{rectform},
 @code{rootscontract},
-@code{trigexpand}, and
+@code{trigexpand}, e
 @code{trigreduce}.
 
 A constru@,{c}@~ao @code{:lisp (putprop '|$foo| t 'evfun)}
@@ -447,17 +450,17 @@ inclua @code{X='X} como um argumento para @code{ev}.  Certamente express@~oes ta
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Fun@,{c}@~ao} kill (@var{symbol_1}, ..., @var{symbol_n})
+@deffn {Fun@,{c}@~ao} kill (@var{s@'imbolo_1}, ..., @var{s@'imbolo_n})
 @deffnx {Fun@,{c}@~ao} kill (labels)
 @deffnx {Fun@,{c}@~ao} kill (inlabels, outlabels, linelabels)
 @deffnx {Fun@,{c}@~ao} kill (@var{n})
 @deffnx {Fun@,{c}@~ao} kill ([@var{m}, @var{n}])
 @deffnx {Fun@,{c}@~ao} kill (values, functions, arrays, ...)
 @deffnx {Fun@,{c}@~ao} kill (all)
-@deffnx {Fun@,{c}@~ao} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+@deffnx {Fun@,{c}@~ao} kill (allbut (@var{s@'imbolo_1}, ..., @var{s@'imbolo_n}))
 
 Remove todas as associa@,{c}@~oes (valor, fun@,{c}@~oes, array, ou regra) dos argumentos
-@var{symbol_1}, ..., @var{symbol_n}.
+@var{s@'imbolo_1}, ..., @var{s@'imbolo_n}.
 Um argumento pode ser um elemento simples de um array ou uma fun@,{c}@~ao subscrita.
 
 Muitos argumentos especiais s@~ao reconhecidos.  
@@ -487,8 +490,8 @@ Veja tamb@'em @code{infolists}.
 @code{kill (all)} n@~ao retorna vari@'aveis globais para seus valores padr@~oes;
 Veja @code{reset} sobre esse ponto.
 
-@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
-libera todos os @'itens em todas as infolists exceto para @var{symbol_1}, ..., @var{symbol_n}.
+@code{kill (allbut (@var{s@'imbolo_1}, ..., @var{s@'imbolo_n}))}
+libera todos os @'itens em todas as infolists exceto para @var{s@'imbolo_1}, ..., @var{s@'imbolo_n}.
 @code{kill (allbut (@var{infolist}))} libera todos os @'itens exceto para si pr@'oprio em @var{infolist},
 onde @var{infolist} @'e @code{values}, @code{functions}, @code{arrays}, etc.
 
@@ -498,9 +501,9 @@ Em particular, para liberar a mem@'oria usada pelo valor de um s@'imbolo,
 deve-se liberar o r@'otulo de sa@'ida que mosta o valor associado, bem como liberando o pr@'oprio s@'imbolo.
 
 @code{kill} n@~ao avalia seus argumentos.
-O operador aspas simples, @code{'@w{}'}, faz com que ocorra avalia@,{c}@~ao.
+O operador ap@'ostrofo-ap@'ostrofo, @code{'@w{}'}, faz com que ocorra avalia@,{c}@~ao.
 
-@code{kill (@var{symbol})} libera todas as propriedades de @var{symbol}.
+@code{kill (@var{s@'imbolo})} libera todas as propriedades de @var{s@'imbolo}.
 Em oposi@,{c}@~ao, @code{remvalue}, @code{remfunction}, @code{remarray}, e @code{remrule}
 liberam uma propriedade espec@'ifica.
 
@@ -508,22 +511,22 @@ liberam uma propriedade espec@'ifica.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} labels (@var{symbol})
+@deffn {Fun@,{c}@~ao} labels (@var{s@'imbolo})
 @deffnx {Vari@'avel de sistema} labels
-Retorna a lista de r@'otulos de entradas, de sa@'ida, de express@~oes intermedi@'arias que come@,{c}am com @var{symbol}.
-Tipicamente @var{symbol} @'e o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
+Retorna a lista de r@'otulos de entradas, de sa@'ida, de express@~oes intermedi@'arias que come@,{c}am com @var{s@'imbolo}.
+Tipicamente @var{s@'imbolo} @'e o valor de @code{inchar}, @code{outchar}, ou @code{linechar}.
 O caracter r@'otulo pode ser dado com ou sem o sinal de porcentagem,
 ent@~ao, por exemplo, @code{i} e @code{%i} retornam o mesmo resultado.
 
-Se nenhum r@'otulo come@,{c}a com @var{symbol}, @code{labels} retorna uma lista vazia.
+Se nenhum r@'otulo come@,{c}a com @var{s@'imbolo}, @code{labels} retorna uma lista vazia.
 
 A fun@,{c}@~ao @code{labels} n@~ao avalia seu argumento.
-O operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
+O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
 Por exemplo,
 @code{labels (''inchar)} retorna os r@'otulos de entrada que come@,{c}am com o caractere corrente do r@'otulo de entrada.
 
-A vari@'avel @code{labels} @'e uma lista de r@'otulos de entrada, sa@'ida, e de express@`oes intermedi@'arias,
-incluindo todos os r@'otulos anteriores se @code{inchar}, @code{outchar}, ou @code{linechar} foram redefinidos.
+A vari@'avel @code{labels} @'e uma lista de r@'otulos de entrada, sa@'ida, e de express@~oes intermedi@'arias,
+incluindo todos os r@'otulos anteriores se @code{inchar}, @code{outchar}, ou @code{linechar} que tiverem sido redefinidos.
 
 Por padr@~ao, Maxima mostra o resultado de cada express@~ao de entrada do usu@'ario,
 dando ao resultado um r@'otulo de sa@'ida.
@@ -536,7 +539,7 @@ Veja tamb@'em @code{%}, @code{%%}, e @code{%th}.
 R@'otulos de express@~oes intermedi@'arias podem ser gerados por algumas fun@,{c}@~oes.
 O sinalizador @code{programmode} controla se @code{solve} e algumas outras fun@,{c}@~oes
 geram r@'otulos de express@~oes intermedi@'arias em lugar de retornar uma lista de express@~oes.
-Algumas outras fun@,{c}@~oes, tais como @code{ldisplay}, sempre gera r@'otulos de express@~oes intermedi@'arias.
+Algumas outras fun@,{c}@~oes, tais como @code{ldisplay}, sempre geram r@'otulos de express@~oes intermedi@'arias.
 
 Veja tamb@'em @code{inchar}, @code{outchar}, @code{linechar}, e @code{infolists}.
 

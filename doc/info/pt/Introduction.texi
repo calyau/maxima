@@ -27,7 +27,7 @@ provides bug reporting information.
 
 Maxima pode procurar as p@'aginas info.  Use o comando @kbd{describe} para mostrar
 todos os comandos e vari@'aveis contendo uma dada seq@"u@^encia de caracteres, e opcionalmente sua
-documenta@,{c}@~ao.  O ponto de interroga@,{c}@~ao @code{?} @'e uma abrevia@,{c}@~ao para @code{describe}:
+documenta@,{c}@~ao.  O ponto de interroga@,{c}@~ao @code{?} @'e uma abreviatura para @code{describe}:
 
 @example
 (%i1) ? integ
@@ -66,8 +66,8 @@ Info from file /usr/local/info/maxima.info:
 (%o1)                         false
 @end example
 
-Para usar um resultado em c@'alculos posteriores, voc@^e pode atribuir isso a uma vari@'avel ou
-referir-se a isso atrav@'es de seu r@'otulo gerado automaticamente.  Adicionalmente, @kbd{%}
+Para usar um resultado em c@'alculos posteriores, voc@^e pode atribuir esse valor a uma vari@'avel ou
+referir-se a esse mesmo valor atrav@'es de seu r@'otulo gerado automaticamente.  Adicionalmente, @kbd{%}
 refere-se ao mais recente resultado calculado:
 
 @example
@@ -121,7 +121,7 @@ Maxima pode resolver sistemas lineares e equa@,{c}@~oes c@'ubicas:
 
 Maxima pode resolver sistemas de equa@,{c}@~oes n@~ao lineares.  Note que se voc@^e n@~ao
 quer um resultado impresso, voc@^e pode encerrar seu comando com @kbd{$} em lugar de
-de @kbd{;}.
+encerrar com @kbd{;}.
 
 @example
 (%i1) eq_1: x^2 + 3*x*y + y^2 = 0$

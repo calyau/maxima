@@ -1,5 +1,8 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Help.texi/1.19/Mon Jun 27 14:25:15 2005/-ko/
+@iftex
+@hyphenation{cor-res-pon-de}
+@end iftex
 @menu
 * Introdu@value{cedilha}@~ao a Ajuda::        
 * Lisp e Maxima::            
@@ -67,7 +70,7 @@ enquanto o s@'imbolo Maxima @code{?foo} corresponde ao s@'imbolo Lisp @code{foo}
 Note que @code{?foo} @'e escrito sem um espa@,{c}o entre @code{?} e @code{foo};
 de outra forma pode ser uma chamada err@^onea para @code{describe ("foo")}.
 
-H@'ifem @code{-}, asterisco @code{*}, ou outro caractere especial em s@'imbolos Lisp
+H@'ifen @code{-}, asterisco @code{*}, ou outro caractere especial em s@'imbolos Lisp
 deve ser precedido por uma barra invertida @code{\} onde ele aparecer no c@'odigo Maxima.
 Por exemplo, o identificador Lisp @code{*foo-bar*} @'e escrito @code{?\*foo\-bar\*} no Maxima.
 
@@ -94,11 +97,11 @@ Digitando @code{(to-maxima)} fecha a sess@~ao Lisp e retorna para o Maxima.
 
 Fun@,{c}@~oes Lisp e vari@'aveis que s@~ao para serem vis@'iveis no Maxima como
 fun@,{c}@~oes e vari@'aveis com nomes comuns (sem pontua@,{c}@~ao especial)
-devem ter nomes Lisp come@,{c}ando como sinal de d@'olar @code{$}.
+devem ter nomes Lisp come@,{c}ando com o sinal de d@'olar @code{$}.
 
 Maxima @'e sens@'ivel @`a caixa, distingue entre letras em caixa alta (mai@'usculas) e letras em caixa baixa (min@'usculas)
 em identificadores, enquanto Lisp n@~ao @'e sens@'ivel @`a caixa.
-Existem algumas regras governando a tradu@,{c}@~ao de nomes de nomes entre o Lisp e o Maxima.
+Existem algumas regras governando a tradu@,{c}@~ao de nomes entre o Lisp e o Maxima.
 
 @enumerate
 @item
@@ -188,10 +191,10 @@ completo de alguns programas.
 @c WHAT ABOUT GC IN GCL ON MS WINDOWS ??
 @c SHOULD WE SAY SOMETHING ABOUT GC FOR OTHER LISPS ??
 Sob GCL, nos sistemas UNIX onde a chamada de sistema mprotect ( controle de acessso autorizado a uma regi@~ao de mem@'oria) est@'a dispon@'ivel
-(incluindo SUN OS 4.0 e algumas variantes de BSD) uma organniza@,{c}@~ao de arquivos tempor@'arios estratificada
+(incluindo SUN OS 4.0 e algumas variantes de BSD) uma organiza@,{c}@~ao de arquivos tempor@'arios estratificada
 est@'a dispon@'ivel.   Isso limita a organiza@,{c}@~ao para p@'aginas que tenham sido recentemente
 escritas.    Veja a documenta@,{c}@~ao da GCL sob ALLOCATE e GBC.   No
-n@'ivel do Lisp fazendo (setq si::*notify-gbc* t) ir@'a ajudar voc@^e a determinar quais
+ambiente Lisp fazendo (setq si::*notify-gbc* t) ir@'a ajudar voc@^e a determinar quais
 @'areas podem precisar de mais espa@value{cedilha}o.
 
 @node Documenta@value{cedilha}@~ao, Defini@value{cedilha}@~oes para Ajuda, Descartando, Ajuda
@@ -323,7 +326,7 @@ _
 @end deffn
 
 @deffn {Fun@,{c}@~ao} describe (@var{string})
-Encontra todos os @'itens docmentados que possuem @var{string} em seus t@'itulos.
+Encontra todos os @'itens documentados que possuem @var{string} em seus t@'itulos.
 Se existe mais de um de tal item, Maxima solicita ao usu@'ario selecionar
 um item ou @'itens para mostrar.
 Na linha de comando interativa,
@@ -367,9 +370,9 @@ que podem ser abreviado para @code{a} ou para @code{n}, respectivamente.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} example (@var{topic})
+@deffn {Fun@,{c}@~ao} example (@var{t@'opico})
 @deffnx {Fun@,{c}@~ao} example ()
-@code{example (@var{topic})} mostra alguns exemplos de @var{topic},
+@code{example (@var{topic})} mostra alguns exemplos de @var{t@'opico},
 que @'e um s@'imbolo (n@~ao uma seq@"u@^encia de caracteres).
 A maioria dos t@'opicos s@~ao nomes de fun@,{c}@~ao.
 @code{example ()} retorna a lista de todos os t@'opicos reconhecidos.
@@ -379,7 +382,7 @@ vari@'avel global @code{manual_demo}, cujo valor padr@~ao @'e @code{"manual.demo
 
 @code{example} n@~ao avalia seu argumento.
 @code{example} retorna @code{done}
-a menos que ocorra um erro ou n@~ao exista argumento, nesse caso @code{example}
+a menos que ocorra um erro ou n@~ao exista o argumento fornecido pelo usu@'ario, nesse caso @code{example}
 retorna uma lista de todos os t@'opicos reconhecidos.
 
 Exemplos:
