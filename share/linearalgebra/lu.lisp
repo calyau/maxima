@@ -34,8 +34,6 @@
 	   (setf (aref m l k) (funcall fsub (aref m l k) add-id))))))
 
 (defun partial-matrix-prod-float (m p i k n)
-  (declare (type (simple-array double-float (n n)) m))
-  (declare (type (simple-array fixnum (n)) p))
   (let ((add-id 0.0))
     (declare (type double-float add-id))
     (let ((l (aref p i)))
@@ -44,10 +42,7 @@
       (setf (aref m l k) (- (aref m l k) add-id)))))
 
 (defun partial-matrix-prod-complex-float (m p i k n)
-  (declare (type (simple-array '(complex double-float) (n n)) m))
-  (declare (type (simple-array fixnum (n)) p))
   (let ((add-id 0.0))
-    (declare (type '(complex double-float) add-id))
     (let ((l (aref p i)))
       (loop for s from 0 to n do
 	(setq add-id (+ add-id (* (aref m l s) (aref m (aref p s) k)))))
