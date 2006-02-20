@@ -2,6 +2,8 @@
 @c /Command.texi/1.37/Fri Jan 13 08:15:55 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
+@hyphenation{de-mo-ra-da-men-te}
+@hyphenation{va-lo-res}
 @end iftex
 @menu
 * Introdu@value{cedilha}@~ao a Linha de Comando::  
@@ -589,8 +591,8 @@ Veja tamb@'em @code{batch}, @code{batchload}, e @code{labels}.
 @defvr {Vari@'avel de op@,{c}@~ao} optionset
 Valor padr@~ao: @code{false}
 
-Quando @code{optionset} @'e @code{true}, Maxima mostra uma
-mensagem sempre que uma op@,{c}@~ao do Maxima @'e alterada.  Isso @'e @'util se o
+Quando @code{optionset} for @code{true}, Maxima mostrar@'a uma
+mensagem sempre que uma op@,{c}@~ao do Maxima for alterada.  Isso @'e @'util se o
 usu@'ario est@'a incerto sobre a ortografia de alguma op@,{c}@~ao e quer ter certeza
 que a vari@'avel por ele atribu@'ido um valor foi realmente uma vari@'avel de op@,{c}@~ao.
 
@@ -612,7 +614,7 @@ n@~ao @'e mostrada.
 Veja tamb@'em @code{labels}.
 
 @code{playback} n@~ao avalia seus argumentos.
-O operador aspas simples, @code{'@w{}'}, sobrep@~oe-se @`as aspas.
+O operador ap@'ostrofo-ap@'ostrofo, @code{'@w{}'}, sobrep@~oe-se @`as aspas.
 @code{playback} sempre retorna @code{done}.
 
 @code{playback ()} (sem argumentos) mostra todas as entradas, sa@'idas e express@~oes intermedi@'arias
@@ -628,7 +630,7 @@ conta como um.
 com os n@'umeros de @var{m} at@'e @var{n}, inclusive.
 
 @code{playback ([@var{m}])} @'e equivalente a @code{playback ([@var{m}, @var{m}])};
-isso usu@'almente imprime um par de express@~oes de entrada e sa@'ida.
+isso usualmente imprime um par de express@~oes de entrada e sa@'ida.
 
 @code{playback (input)} mostra todas as express@~oes de entrada geradas at@'e ent@~ao.
 
@@ -672,7 +674,7 @@ propriedades que n@~ao podem  ser mostradas de outra forma, i.e. para
 Valor padr@~ao: @code{_}
 
 @code{prompt} @'e o s@'imbolo de linha de comando da fun@,{c}@~ao @code{demo},
-modo @code{playback (slow)}, e o Maxima interrompe o ciclo (como invocado por @code{break}).
+modo @code{playback (slow)}, e da interrup@,{c}@~ao de ciclos do Maxima (como invocado por @code{break}).
 
 @end defvr
 
@@ -708,20 +710,20 @@ ou fun@,{c}@~oes macro (criadas por meio de @code{::=}).
 @deffn {Fun@,{c}@~ao} reset ()
 Retorna muitas vari@'aveis globais e op@,{c}@~oes, e algumas outras vari@'aveis, para seus valores padr@~oes.
 
-@code{reset} processa as vari@'aveis na lista Lisp @code{*vari@'avel-initial-values*}.
+@code{reset} processa as vari@'aveis na lista Lisp @code{*variable-initial-values*}.
 A macro Lisp @code{defmvar} coloca vari@'aveis nessa lista (entre outras a@,{c}@~oes).
 Muitas, mas n@~ao todas, vari@'aveis globais e op@,{c}@~oes s@~ao definidas por @code{defmvar},
- e algumas vari@'aveis definidas por @code{defmvar} n@~ao s@~ao vari@'aveis globais ou op@,{c}@~oes.
+ e algumas vari@'aveis definidas por @code{defmvar} n@~ao s@~ao vari@'aveis globais ou vari@'aveis de op@,{c}@~ao.
 
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} showtime
 Valor padr@~ao: @code{false}
 
-Quando @code{showtime} @'e @code{true}, o tempo de computa@,{c}@~ao e o tempo decorrido s@~ao
+Quando @code{showtime} for @code{true}, o tempo de computa@,{c}@~ao e o tempo decorrido s@~ao
 impressos na tela com cada express@~ao de sa@'ida.
 
-O tempo de c@'algulo @'e sempre gravado,
+O tempo de c@'alculo @'e sempre gravado,
 ent@~ao @code{time} e @code{playback} podem mostrar o tempo de c@'alculo
 mesmo quando @code{showtime} for @code{false}.
 
@@ -731,12 +733,12 @@ Veja tamb@'em @code{timer}.
 
 @c IS THIS ANY DIFFERENT FROM ASSIGNING A PROPERTY ??
 @c THIS REALLY SEEMS LIKE A HACK
-@deffn {Fun@,{c}@~ao} sstatus (@var{feature}, @var{package})
-Altera o status de @var{feature} em @var{package}.
-Ap@'os @code{sstatus (@var{feature}, @var{package})} @'e executado,
-@code{status (@var{feature}, @var{package})} retorna @code{true}.
+@deffn {Fun@,{c}@~ao} sstatus (@var{recurso}, @var{pacote})
+Altera o status de @var{recurso} em @var{pacote}.
+Ap@'os @code{sstatus (@var{recurso}, @var{pacote})} ser executado,
+@code{status (@var{recurso}, @var{pacote})} retorna @code{true}.
 Isso pode ser @'util para quem escreve pacotes, para
-manter um rastro de quais recursos os pacotes usam.
+manter um registro de quais recursos os pacotes usam.
 
 @end deffn
 

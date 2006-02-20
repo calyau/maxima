@@ -1,5 +1,9 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Operators.texi/1.25/Wed Dec 21 07:33:45 2005/-ko/
+@iftex
+@hyphenation{con-se-cu-ti-vos}
+@hyphenation{u-san-do}
+@end iftex
 @menu
 * "N" Argumentos::                        
 * Sem Argumentos::                       
@@ -41,7 +45,7 @@ Veja @code{operators}.
 @section Operador P@'osfixado
 Operadores @code{postfix} como a variedade @code{prefix} denotam fun@,{c}@~oes
 de um argumento simples, mas nesse caso  o argumento sucede
-imediatamente uma ocorr@^encia do operador na seq@"u@^encia de caracteresde entrada, e.g. 3! .
+imediatamente uma ocorr@^encia do operador na seq@"u@^encia de caracteres de entrada, e.g. 3! .
 Uma fun@,{c}@~ao @code{postfix("x")} @'e uma fun@,{c}@~ao de extens@~ao
 sint@'atica que declara x como sendo um operador @code{postfix}.
 
@@ -50,7 +54,7 @@ Veja tamb@'em @code{syntax}.
 @node Operador Pr@'efixado, Defini@value{cedilha}@~oes para Operadores, Operador P@'osfixado, Operadores
 @section Operador Pr@'efixado
 Um operador @code{prefix} @'e um que significa uma fun@,{c}@~ao de um
-argumento, o qual argumento imediatamente segue uma ocorr@^encia do
+argumento, o qual imediatamente segue uma ocorr@^encia do
 operador.  @code{prefix("x")} @'e uma fun@,{c}@~ao de extens@~ao
 sint@'atica que declara x como sendo um operador @code{prefix}.
 
@@ -143,8 +147,8 @@ Note que essa defini@,{c}@~ao n@~ao coincide com outras defini@,{c}@~oes publica
 para argumentos que n@~ao s@~ao inteiros.
 @c REPORTED TO BUG TRACKER AS BUG # 1093138 !!!
 
-Para um mesmo inteiro (ou @'impar) @code{n}, @code{n!!} avalia para o produto de
-todos os consecutivos mesmo inteiros (ou @'impares) de 2 (ou 1) at@'e @code{n} inclusive.
+Para um inteiro par (ou @'impar) @code{n}, @code{n!!} avalia para o produto de
+todos os inteiros consecutivos pares (ou @'impares) de 2 (ou 1) at@'e @code{n} inclusive.
 
 Para um argumento @code{n} que n@~ao @'e um n@'umero inteiro, um n@'umero em ponto flutuante, ou um n@'umero racional,
 @code{n!!} retorna uma forma substantiva @code{genfact (n, n/2, 2)}.
@@ -156,7 +160,7 @@ Para um argumento @code{n} que n@~ao @'e um n@'umero inteiro, um n@'umero em pon
 Representa a nega@,{c}@~ao da igualdade sint@'atica @code{=}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas
-(em particular pelo fato de @code{not @var{expr}} fazer com que a avalia@,{c}@~ao de @var{expr}),
+(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avalia@,{c}@~ao de @var{expr}),
 a forma @code{not @var{a} = @var{b}} n@~ao @'e equivalente @`a forma @code{@var{a} # @var{b}} em alguns casos.
 
 Exemplos:
@@ -234,8 +238,8 @@ quando @code{foo} for uma fun@,{c}@~ao de macro.
 @code{kill}, @code{remove}, e @code{remfunction} desassocia defini@,{c}@~oes de fun@,{c}@~ao de macro
 e remove nomes de @code{macros}.
 
-@code{fundef} or @code{dispfun} retorna uma defini@,{c}@~ao de fun@,{c}@~ao de macro
-ou atribui isso a um r@'otulo, respectivamente.
+@code{fundef} e @code{dispfun} retornam respectivamente uma defini@,{c}@~ao de fun@,{c}@~ao de macro
+e uma atribui@,{c}@~ao dessa defini@,{c}@~ao a um r@'otulo, respectivamente.
 
 Fun@,{c}@~oes de macro comumente possuem express@~oes @code{buildq} e
 @code{splice} para construir uma express@~ao,
@@ -247,7 +251,7 @@ Uma fun@,{c}@~ao de macro coloca um ap@'ostrofo em seus argumentos evitando ent@
 ent@~ao mensagem (1) mostra @code{y - z}, n@~ao o valor de @code{y - z}.
 A expans@~ao de macro (a express@~ao com ap@'ostrofo @code{'(print ("(2) x is equal to", x))}
 @'e avaliada no contexto a partir do qual a macro for chamada,
-mostrando a mesnagem (2).
+mostrando a mensagem (2).
 
 @c ===beg===
 @c x: %pi;
@@ -273,7 +277,7 @@ mostrando a mesnagem (2).
 @end example
 
 Uma fun@,{c}@~ao comum avalia seus argumentos, ent@~ao message (1) mostra o valor de @code{y - z}.
-O valor de rtorno n@~ao @'e avaliado, ent@~ao mensagem (2) n@~ao @'e mostrada
+O valor de retorno n@~ao @'e avaliado, ent@~ao mensagem (2) n@~ao @'e mostrada
 at@'e a avalia@,{c}@~ao expl@'icita @code{''%}.
 
 @c ===beg===
@@ -349,7 +353,7 @@ se e somente se as express@~oes s@~ao sintaticamente id@^enticas.
 A nega@,{c}@~ao de @code{=} @'e representada por @code{#}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas
-(em particular pelo fato de @code{not @var{expr}} fazer com que a avalia@,{c}@~ao de @var{expr}),
+(em particular pelo fato de @code{not @var{expr}} fazer com que ocorra a avalia@,{c}@~ao de @var{expr}),
 a forma @code{not @var{a} = @var{b}} n@~ao @'e equivalente @`a forma @code{@var{a} # @var{b}} em alguns casos.
 
 @end deffn
@@ -363,7 +367,7 @@ seus operandos s@~ao express@~oes Booleanas, e seu resultado @'e um valor Boolea
 @code{and} for@,{c}a avalia@,{c}@~ao (como @code{is}) de um ou mais operandos,
 e pode for@,{c}ar a avalia@,{c}@~ao de todos os operandos.
 
-Operandos s@~ao avaliados na ordem em que aparecem.
+Operandos s@~ao avaliados na ordem em que aparecerem.
 @code{and} avalia somente quantos de seus operandos forem necess@'arios para determinar o resultado.
 Se qualquer operando for @code{false},
 o resultado @'e @code{false} e os operandos restantes n@~ao s@~ao avaliados.
@@ -405,7 +409,7 @@ De outra forma, @code{or} retorna @code{unknown}.
 @c NEEDS EXAMPLES
 @deffn {Operador} not
 O operador l@'ogico de nega@,{c}@~ao.
-@code{not} @'e operador prefixo;
+@code{not} @'e operador prefixado;
 Seu operando @'e uma express@~ao Booleana, e seu resultado @'e um valor Booleano.
 
 @code{not} for@,{c}a a avalia@,{c}@~ao (como @code{is}) de seu operando.
@@ -632,7 +636,7 @@ O dom@'inio real de @code{acos (x^2 + 1)} @'e vazio.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} entier (@var{x})
-Retorna o @'ultimo inteiro menor que ou igual a @var{x} onde @var{x} @'e numerico.  @code{fix} (como em
+Retorna o @'ultimo inteiro menor que ou igual a @var{x} onde @var{x} @'e num@'erico.  @code{fix} (como em
 @code{fixnum}) @'e um sin@^onimo disso, ent@~ao @code{fix(@var{x})} @'e precisamente o mesmo.
 
 @end deffn
