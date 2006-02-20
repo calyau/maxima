@@ -193,6 +193,9 @@ unknown$
 some('identity,set(a,b,c));
 unknown$
 
+every('identity,set(a,b,c));
+unknown$
+
 some("<", [%i,2],[1,5]);
 true$
 
@@ -218,6 +221,9 @@ every("<",[a],[b]);
 false$
 
 some('identity,set(a,b,c));
+false$
+
+every('identity,set(a,b,c));
 false$
 
 some("<", [%i,2],[1,5]);

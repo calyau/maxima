@@ -1257,9 +1257,6 @@ false$
 every(evenp,set(1,2,4,6));
 false$
 
-every('identity,set(a,b,c));
-false$
-
 every("=",[],[]);
 true$
 
@@ -1286,9 +1283,6 @@ true$
 
 some(oddp,[1,%i]);
 true$
-
-some('identity,set(a,b,c));
-false$
 
 some("<",[a,1],[4,2]);
 true$
