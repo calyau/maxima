@@ -1,3 +1,6 @@
+(kill (all), 0);
+0;
+
 /* There are more tests for every and some in rtestnset; these tests mainly
 check these functions with matrix arguments. */
 

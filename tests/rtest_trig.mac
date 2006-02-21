@@ -1,3 +1,6 @@
+(kill (all), 0);
+0;
+
 (trig : [cos(x), sin(x), tan(x), csc(x), sec(x), cot(x)],0);
 0$
 
@@ -190,38 +193,46 @@ makelist(taylor(0,x,0,5),i,1,length(append(trig,htrig)))$
 (invtrig : [acos(x), asin(x), atan(x), acsc(x), asec(x), acot(x)],0);
 0$
 
-(errormax : 0.0 ,0);
-0$
+block ([buggy : []],
+  for f in invtrig do (
+    triginverses : true,
+    xtrig : subst(f,x,trig),
+    triginverses : false,
+    xtrig : xtrig - subst(f,x,trig),
 
-(for f in invtrig do (
-  triginverses : true,
-  xtrig : subst(f,x,trig),
-  triginverses : false,
-  xtrig : xtrig - subst(f,x,trig),
-  for i : 1 thru 9 do (
-    errormax : max(errormax, apply('max, map('cabs, subst(i/10.0,x,xtrig)))))),0);
-0$
+    /* Paste expressions into a lambda to protect them from simplification and evaluation.
+     * Evaluate the lambda (no arguments) to get the test result.
+     */
+    xtrig : buildq ([L : map (nounify (cabs), xtrig)], lambda ([], L)),
+    for i : 1 thru 9 do block ([xi : i/10.0, xtrigi],
+      xtrigi : apply (buildq, [[funmake (":", ['x, xi])], xtrig]),
+      if apply ('max, ev (xtrigi(), nouns)) >= 1.0e-12
+        then buggy : cons (xtrigi, buggy))),
 
-is(errormax < 1.0e-12);
-true$
+  buggy);
+[]$
 
 (invhtrig : [acosh(x), asinh(x), atanh(x), acsch(x), asech(x), acoth(x)],0);
 0$
 
-(errormax : 0.0 ,0);
-0$
+block ([buggy : []],
+  for f in invhtrig do (
+    triginverses : true,
+    xtrig : subst(f,x,htrig),
+    triginverses : false,
+    xtrig : xtrig - subst(f,x,htrig),
+  
+    /* Paste expressions into a lambda to protect them from simplification and evaluation.
+     * Evaluate the lambda (no arguments) to get the test result.
+     */
+    xtrig : buildq ([L : map (nounify (cabs), xtrig)], lambda ([], L)),
+    for i : 1 thru 9 do block ([xi : i/10.0, xtrigi],
+      xtrigi : apply (buildq, [[funmake (":", ['x, xi])], xtrig]),
+      if apply ('max, ev (xtrigi(), nouns)) >= 1.0e-12
+        then buggy : cons (xtrigi, buggy))),
 
-(for f in invhtrig do (
-  triginverses : true,
-  xtrig : subst(f,x,htrig),
-  triginverses : false,
-  xtrig : xtrig - subst(f,x,htrig),
-  for i : 1 thru 9 do (
-    errormax : max(errormax, apply('max, map('cabs, subst(i/10.0,x,xtrig)))))),0);
-0$
-
-is(errormax < 1.0e-12);
-true$
+  buggy);
+[]$
 
 (alltrig : append(trig, htrig, invtrig, invhtrig),0);
 0$
@@ -229,31 +240,25 @@ true$
 (pts : [2,2+%i, 2-%i,-2,-2+%i,-2-%i,1/2,1/2 +%i/2,1/2-%i/2,-1/2,-1/2+%i/2,-1/2-%i/2],0);
 0$
 
-(buggy : [] ,0);
-0$
-
-(for f in alltrig do (
-  for p in pts do (
-    if cabs(float(rectform(subst(x=p, f))) - subst(x=float(p),f)) > 1.0e-13 then buggy : cons([f,p],buggy))),0);
-0$
-
-buggy;
+block ([buggy : []],
+  for f in alltrig do
+    for p in pts do block ([e, fop : op(f)],
+      e : buildq ([p, fop], lambda ([], cabs (float (rectform (fop (p))) - fop (float (p))))),
+      if e() > 1.0e-13
+        then buggy : cons (e, buggy)), buggy);
 []$
-
-(buggy : [] ,0);
-0$
 
 /* Like above, but for big floats.  We expect to be within 3 digits of the answer.
    
    Note that we might fail because the rectform and the function might
    produce answers because of the branch cut!
  */
-(for f in alltrig do (
-  for p in pts do (
-    if cabs(bfloat(rectform(subst(x=p, f))) - subst(x=bfloat(p),f)) > 10b0^(3-fpprec) then buggy : cons([f,p],buggy))),0);
-0$
-
-buggy;
+block ([buggy : []],
+  for f in alltrig do
+    for p in pts do block ([e, fop : op(f)],
+      e : buildq ([p, fop], lambda ([], cabs (bfloat (rectform (fop (p))) - fop (bfloat (p))))),
+      if e() > 10b0^(3-fpprec)
+        then buggy : cons (e, buggy)), buggy);
 []$
 
 
@@ -305,7 +310,3 @@ true$
 /* Probably we should beef up reset slightly to handle this, but for now this is OK. */
 (map (lambda ([a, b], a :: b), save_flags_names, save_flags_values), 0);
 0;
-
-(kill(values),0);
-0$
-
