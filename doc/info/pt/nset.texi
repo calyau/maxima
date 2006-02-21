@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /nset.texi/1.8/Tue May 31 02:55:53 2005//
+@c /nset.texi/1.12/Tue Feb 21 08:03:17 2006//
 @menu
 * Introdu@value{cedilha}@~ao a Conjuntos::       
 * Defini@value{cedilha}@~oes para Conjuntos::       
@@ -16,42 +16,29 @@ trabalhar com conjuntos que possuem elementos que s@~ao ou listas ou conjuntos.
 
 Adicionalmente a fun@,{c}@~oes para conjuntos finitos, Maxima fornece algumas
 fun@,{c}@~oes relacionadas @`a combinat@'oria; essas incluem n@'umeros de
-Stirling, n@'umeros de Bell, e muitas outras.
-
-@c THIS DOCUMENT SHOULD MENTION nset-init.lisp AND test-nset.mac IN SOME WAY
-
-@c This will create a directory @emph{nset-x} (again x is the release identifier)
-@c that contains the source file @emph{nset.lisp}, user documentation in html 
-@c and texi formats, a sample maxima initialization file @emph{nset-init.lisp}, 
-@c a README file, and a testing  routine @emph{test-nset.mac}.
-
-@c FOLLOWING TEXT LIKELY OBSOLETE NOW THAT nset.lisp IS IN src/, PRESERVE PENDING FINAL DETERMINATION
-
-@c If you are using Maxima version 5.9.0 or higher, finish the installation
-@c by appending the contents of @emph{nset-init.lisp} to your own
-@c @emph{maxima-init.lisp} file. The Lisp file @emph{nset-init.lisp} 
-@c contains replacements for the Maxima functions @emph{setup_autoload}
-@c and @emph{generic_autoload}. Unlike Maxima's @emph{setup_autoload} function,
-@c the version in @emph{nset-init.lisp} uses @emph{file_search}. Without this
-@c change, a full pathname must be given to @emph{setup_autoload}. The
-@c autoload function in Maxima 5.9.0 and lower does not recognize some
-@c file extensions, such as .x86f and .fasl, as valid extensions for
-@c compiled code. The version of @emph{generic_autoload} in @emph{nset-init}
-@c fixes this problem. Additionally, @emph{nset-init.lisp} contains 
-@c autoload statements for all user-level functions in @emph{nset}.
+Stirling de primeiro e segundo tipo, os n@'umeros de Bell, coeficientes
+multinomiais, parti@,{c}@~oes de inteiros n@~ao negativos, e alguns outros.
 
 @subsection Uso
 
-Para construir um conjunto como elementos @code{a_1, ..., a_n}, use o
-comando @code{set(a_1, ..., a_n)}; para construir o conjunto
-vazio, use @code{set()}.  Se um elemento for listado mais que uma
-vez, o processo de simplifica@,{c}@~ao elimina o n@'umero redundante.
+Para construir um conjunto com elementos @code{a_1, ..., a_n}, escreva
+@code{set(a_1, ..., a_n)} ou @code{@{a_1, ..., a_n@}};
+para construir o conjunto vazio, escreva @code{set()} ou @code{@{@}}.
+No caso de infinitos elementos, as emtradas @code{set (...)} e @code{@{ ... @}} s@~ao equivalentes.
+Conjuntos s@~ao sempre mostrados entre chaves.
+
+Se um elemento for listado mais de uma
+vez, o processo de simplifica@,{c}@~ao elimina o elemento redundante.
 
 @c ===beg===
 @c set();
 @c set(a, b, a);
 @c set(a, set(b));
 @c set(a, [b]);
+@c {};
+@c {a, b, a};
+@c {a, {b}};
+@c {a, [b]};
 @c ===end===
 @example
 (%i1) set();
@@ -114,9 +101,6 @@ se @code{is (@var{x} = @var{y})} retornar @code{true} os elementos @var{x} e @va
 (%o9)                    @{-----, - + -@}
                             c    c   c
 @end example
-
-Conjuntos s@~ao sempre mostrados na @i{sa@'ida} como uma lista delimitada por chaves; Se voc@^e quiser que seja
-poss@'ivel @i{inserir} um conjunto usando chaves, veja @ref{Definindo conjuntos com chaves}.
 
 Para construir um conjunto a partir dos elementos de uma lista, use  @code{setify}.
 
@@ -281,13 +265,11 @@ Em futuras vers@~oes de fun@,{c}@~oes de conjunto,
 @code{first} e @code{rest} podem funcionar diferentemente ou n@~ao funcionar em algumas situa@,{c}@~oes.
 
 @subsection Falhas
-@c AT THIS POINT (2005/05) I DON'T KNOW IF IT'S NECESSARY TO GO INTO DETAILS
-@c ABOUT BUGS IN MAXIMA REVISIONS 5.9.0 AND EARLIER
 
 As fun@,{c}@~oes de conjunto usam a fun@,{c}@~ao Maxima @code{orderlessp} para
 ordenar membros de conjuntos e a fun@,{c}@~ao ( a n@'ivel de Lisp) @code{like} para testar a igualdade entre
-membros de conjuntos.  Ambas (@code{orderlessp} e @code{like}) possuem falhas conhecidas (vers@~oes
-5.9.2 e seguintes) que podem se manifestar se voc@^e tentar usar
+membros de conjuntos.  Ambas (@code{orderlessp} e @code{like}) possuem falhas conhecidas
+que podem se manifestar se voc@^e tentar usar
 conjuntos com membros que s@~ao listas ou matrizes que contenham express@~oes
 na forma CRE (express@~ao racional can@^onica). Um exemplo @'e
 
@@ -387,13 +369,6 @@ incompat@'iveis com fun@,{c}@~oes de conjuntos. Se voc@^e precisar usar ou @code
 ou @code{ordergreat}, descarregue esses comandos antes de construir quaisquer conjuntos
 e n@~ao use o comando @code{unorder}. 
 
-Voc@^e pode encontrar duas outras falhas menores.
-Na vers@~ao Maxima 5.5 e seguintes tinha uma falha na fun@,{c}@~ao @code{tex} que
-fazia o conjunto vazio ser incorretamente traduzido para TeX; essa falha foi corrigida no
-Maxima 5.9.0. Adicionalmente, a fun@,{c}@~ao @code{setup_autoload} no
-Maxima 5.9.0 n@~ao funciona adequadamente; uma corre@,{c}@~ao est@'a no arquivo @code{nset-init.lisp}
-localizado no diret@'orio @code{maxima/share/contrib/nset}.
-
 A fun@,{c}@~ao de sinal do Maxima tem uma falha que pode causar comportamento inadequado
 na fun@,{c}@~ao de Kronecker; por exemplo:
 
@@ -417,51 +392,6 @@ O valor correto @'e 1; a falha @'e relatada para @code{sign}
 
 Se voc@^e encontrar alguma coisa que voc@^e pense ser uma falha de fun@,{c}@~ao de conjunto, por favor 
 emita um relat@'orio para a base de dados de falhas do Maxima. Veja @code{bug_report}.
-
-@anchor{Definindo conjuntos com chaves}
-@subsection Definindo conjuntos com chaves
-
-Se voc@^e quiser entrar conjuntos usando chaves, voc@^e pode fazer
-ent@~ao atrav@'es de declara@,{c}@~ao para que a chave esquerda seja um operador @code{matchfix}; isso
-@'e feito usando os comandos
-
-@c ===beg===
-@c matchfix("{","}")$
-@c "{" ([a]) := apply (set, a)$
-@c ===end===
-@example
-(%i1) matchfix("@{","@}")$
-(%i2) "@{" ([a]) := apply (set, a)$
-@end example
-
-Agora podemos definir conjuntos usando chaves; dessa forma
-
-@c ===beg===
-@c matchfix("{","}")$
-@c "{" ([a]) := apply (set, a)$
-@c {};
-@c {a, {a, b}};
-@c ===end===
-@example
-(%i1) matchfix("@{","@}")$
-(%i2) "@{" ([a]) := apply (set, a)$
-(%i3) @{@};
-(%o3)                          @{@}
-(%i4) @{a, @{a, b@}@};
-(%o4)                      @{a, @{a, b@}@}
-@end example
-
-Para sempre permitir essa forma de entrada de conjunto, coloque os dois comandos nas linhas 
-(%i1) e (%i2) em seu arquivo @code{maxima-init.mac}.
-
-@subsection Combinat@'oria e Fun@,{c}@~oes diversas
-
-Adicionalmente para fun@,{c}@~oes de conjuntos finitos, Maxima fornece algumas
-fun@,{c}@~oes relacionada a combinat@'oria; essas incluem n@'umeros de
-Stirling de primeiro e de segundo tipo, os n@'umero de Bell, coeficientes
-multinomiais, particionamento de inteiros n@~ao negativos, e umas poucas outras. 
-Maxima tamb@'em define uma fun@,{c}@~ao delta de Kronecker.
-
 
 @subsection Autores
 
@@ -1299,6 +1229,20 @@ Retorna um conjunto contendo os elementos no conjunto @var{a} que n@~ao
 est@~ao no conjunto @var{b}.  Sinaliza um erro se @var{a} ou @var{b} n@~ao for um conjunto.
 @end deffn
 
+@anchor{setequalp}
+@deffn {Fun@value{cedilha}@~ao} setequalp (@var{a}, @var{b})
+Retorna @code{true} se os conjuntos @var{a} e @var{b} possu@'irem o mesmo n@'umero de elementos
+@c $SETEQUALP CALLS THE LISP FUNCTION LIKE,
+@c AND SO DOES THE CODE TO EVALUATE IS (X = Y).
+e @code{is (@var{x} = @var{y})} for @code{true}
+para @code{x} pertencente a @var{a}
+e @code{y} pertencente a @var{b},
+considerados na ordem determinada por @code{listify}.
+De outra forma, @code{setequalp} retorna @code{false}.
+
+@code{setequalp} reclama quando @var{a} ou @var{b} n@~ao forem, ambos ou algum deles, conjuntos.
+
+@end deffn
 @anchor{setify}
 @deffn {Fun@value{cedilha}@~ao} setify (@var{a})
 Constr@'oi um conjunto a partir dos elementos da lista @var{a}.  Elementos
