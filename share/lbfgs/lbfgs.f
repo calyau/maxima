@@ -1,3 +1,26 @@
+C     Modification of lbfgs.f as retrieved 1997/03/29 from 
+C     ftp://ftp.netlib.org/opt/lbfgs_um.shar
+C
+C     This version copyright 2006 by Robert Dodier and released
+C     under the terms of the GNU General Public License, version 2.
+C
+C     ---------------- Message from the author ----------------
+C     From: Jorge Nocedal [mailto:nocedal@dario.ece.nwu.edu]
+C     Sent: Friday, August 17, 2001 9:09 AM
+C     To: Robert Dodier
+C     Subject: Re: Commercial licensing terms for LBFGS?
+C    
+C     Robert:
+C     The code L-BFGS (for unconstrained problems) is in the public domain.
+C     It can be used in any commercial application.
+C    
+C     The code L-BFGS-B (for bound constrained problems) belongs to
+C     ACM. You need to contact them for a commercial license. It is
+C     algorithm 778.
+C    
+C     Jorge
+C     --------------------- End of message --------------------
+
 C     ----------------------------------------------------------------------
 C     This file contains the LBFGS algorithm and supporting routines
 C
@@ -5,10 +28,11 @@ C     ****************
 C     LBFGS SUBROUTINE
 C     ****************
 C
-      SUBROUTINE LBFGS(N,M,X,F,G,DIAGCO,DIAG,IPRINT,EPS,XTOL,W,IFLAG)
+      SUBROUTINE LBFGS(N,M,X,F,G,DIAGCO,DIAG,IPRINT,EPS,XTOL,W,IFLAG
+     &,SCACHE)
 C
       INTEGER N,M,IPRINT(2),IFLAG
-      DOUBLE PRECISION X(N),G(N),DIAG(N),W(N*(2*M+1)+2*M)
+      DOUBLE PRECISION X(N),G(N),DIAG(N),W(N*(2*M+1)+2*M),SCACHE(N)
       DOUBLE PRECISION F,EPS,XTOL
       LOGICAL DIAGCO
 C
@@ -391,6 +415,20 @@ C
 C
       IF(IPRINT(1).GE.0) CALL LB1(IPRINT,ITER,NFUN,
      *               GNORM,N,M,X,F,G,STP,FINISH)
+
+C     We've completed a line search. Cache the current solution vector.
+C
+C     At the end of searching, the solution cache is different from
+C     the current solution if the search is terminated in the
+C     middle of a line search. That is the case if, for example,
+C     the number of function evaluations is the criterion to stop
+C     the search instead of the number of line searches or convergence
+C     to a prescribed tolerance.
+
+      DO 177 I=1,N
+      SCACHE(I) = X(I)
+  177 CONTINUE
+
       IF (FINISH) THEN
          IFLAG=0
          RETURN
@@ -413,8 +451,8 @@ C
 C     FORMATS
 C     -------
 C
- 200  FORMAT(/' IFLAG= -1 ',/' LINE SEARCH FAILED. SEE'
-     .          ' DOCUMENTATION OF ROUTINE MCSRCH',/' ERROR RETURN'
+ 200  FORMAT(/' IFLAG= -1 ',/' LINE SEARCH FAILED. SEE',
+     .          ' DOCUMENTATION OF ROUTINE MCSRCH',/' ERROR RETURN',
      .          ' OF LINE SEARCH: INFO= ',I2,/
      .          ' POSSIBLE CAUSES: FUNCTION OR GRADIENT ARE INCORRECT',/,
      .          ' OR INCORRECT TOLERANCES')
@@ -486,12 +524,12 @@ C
  10   FORMAT('*************************************************')
  20   FORMAT('  N=',I5,'   NUMBER OF CORRECTIONS=',I2,
      .       /,  '       INITIAL VALUES')
- 30   FORMAT(' F= ',1PD10.3,'   GNORM= ',1PD10.3)
+ 30   FORMAT(' F= ',1PD22.15,'   GNORM= ',1PD22.15)
  40   FORMAT(' VECTOR X= ')
- 50   FORMAT(6(2X,1PD10.3))
+ 50   FORMAT(4(2X,1PD22.15))
  60   FORMAT(' GRADIENT VECTOR G= ')
- 70   FORMAT(/'   I   NFN',4X,'FUNC',8X,'GNORM',7X,'STEPLENGTH'/)
- 80   FORMAT(2(I4,1X),3X,3(1PD10.3,2X))
+ 70   FORMAT(/'   I  NFN',5X,'FUNC',20X,'GNORM',19X,'STEPLENGTH'/)
+ 80   FORMAT(2(I4,1X),3X,3(1PD22.15,2X))
  90   FORMAT(' FINAL POINT X= ')
  100  FORMAT(/' THE MINIMIZATION TERMINATED WITHOUT DETECTING ERRORS.',
      .       /' IFLAG = 0')
@@ -858,7 +896,7 @@ C
      *       (F .GT. FTEST1 .OR. DG .GE. DGTEST)) INFO = 4
          IF (NFEV .GE. MAXFEV) INFO = 3
          IF (BRACKT .AND. STMAX-STMIN .LE. XTOL*STMAX) INFO = 2
-         IF (F .LE. FTEST1 .AND. ABS(DG) .LE. GTOL*(-DGINIT)) INFO = 1
+         IF (F .LE. FTEST1 .AND. DABS(DG) .LE. GTOL*(-DGINIT)) INFO = 1
 C
 C        CHECK FOR TERMINATION.
 C
@@ -912,10 +950,10 @@ C        FORCE A SUFFICIENT DECREASE IN THE SIZE OF THE
 C        INTERVAL OF UNCERTAINTY.
 C
          IF (BRACKT) THEN
-            IF (ABS(STY-STX) .GE. P66*WIDTH1)
+            IF (DABS(STY-STX) .GE. P66*WIDTH1)
      *         STP = STX + P5*(STY - STX)
             WIDTH1 = WIDTH
-            WIDTH = ABS(STY-STX)
+            WIDTH = DABS(STY-STX)
             END IF
 C
 C        END OF ITERATION.
@@ -994,11 +1032,11 @@ C     CHECK THE INPUT PARAMETERS FOR ERRORS.
 C
       IF ((BRACKT .AND. (STP .LE. MIN(STX,STY) .OR.
      *    STP .GE. MAX(STX,STY))) .OR.
-     *    DX*(STP-STX) .GE. 0.0 .OR. STPMAX .LT. STPMIN) RETURN
+     *    DX*(STP-STX) .GE. 0.0D0 .OR. STPMAX .LT. STPMIN) RETURN
 C
 C     DETERMINE IF THE DERIVATIVES HAVE OPPOSITE SIGN.
 C
-      SGND = DP*(DX/ABS(DX))
+      SGND = DP*(DX/DABS(DX))
 C
 C     FIRST CASE. A HIGHER FUNCTION VALUE.
 C     THE MINIMUM IS BRACKETED. IF THE CUBIC STEP IS CLOSER
@@ -1009,15 +1047,15 @@ C
          INFO = 1
          BOUND = .TRUE.
          THETA = 3*(FX - FP)/(STP - STX) + DX + DP
-         S = MAX(ABS(THETA),ABS(DX),ABS(DP))
-         GAMMA = S*SQRT((THETA/S)**2 - (DX/S)*(DP/S))
+         S = MAX(DABS(THETA),DABS(DX),DABS(DP))
+         GAMMA = S*DSQRT((THETA/S)**2 - (DX/S)*(DP/S))
          IF (STP .LT. STX) GAMMA = -GAMMA
          P = (GAMMA - DX) + THETA
          Q = ((GAMMA - DX) + GAMMA) + DP
          R = P/Q
          STPC = STX + R*(STP - STX)
          STPQ = STX + ((DX/((FX-FP)/(STP-STX)+DX))/2)*(STP - STX)
-         IF (ABS(STPC-STX) .LT. ABS(STPQ-STX)) THEN
+         IF (DABS(STPC-STX) .LT. DABS(STPQ-STX)) THEN
             STPF = STPC
          ELSE
            STPF = STPC + (STPQ - STPC)/2
@@ -1029,19 +1067,19 @@ C     OPPOSITE SIGN. THE MINIMUM IS BRACKETED. IF THE CUBIC
 C     STEP IS CLOSER TO STX THAN THE QUADRATIC (SECANT) STEP,
 C     THE CUBIC STEP IS TAKEN, ELSE THE QUADRATIC STEP IS TAKEN.
 C
-      ELSE IF (SGND .LT. 0.0) THEN
+      ELSE IF (SGND .LT. 0.0D0) THEN
          INFO = 2
          BOUND = .FALSE.
          THETA = 3*(FX - FP)/(STP - STX) + DX + DP
-         S = MAX(ABS(THETA),ABS(DX),ABS(DP))
-         GAMMA = S*SQRT((THETA/S)**2 - (DX/S)*(DP/S))
+         S = MAX(DABS(THETA),DABS(DX),DABS(DP))
+         GAMMA = S*DSQRT((THETA/S)**2 - (DX/S)*(DP/S))
          IF (STP .GT. STX) GAMMA = -GAMMA
          P = (GAMMA - DP) + THETA
          Q = ((GAMMA - DP) + GAMMA) + DX
          R = P/Q
          STPC = STP + R*(STX - STP)
          STPQ = STP + (DP/(DP-DX))*(STX - STP)
-         IF (ABS(STPC-STP) .GT. ABS(STPQ-STP)) THEN
+         IF (DABS(STPC-STP) .GT. DABS(STPQ-STP)) THEN
             STPF = STPC
          ELSE
             STPF = STPQ
@@ -1057,21 +1095,21 @@ C     EITHER STPMIN OR STPMAX. THE QUADRATIC (SECANT) STEP IS ALSO
 C     COMPUTED AND IF THE MINIMUM IS BRACKETED THEN THE THE STEP
 C     CLOSEST TO STX IS TAKEN, ELSE THE STEP FARTHEST AWAY IS TAKEN.
 C
-      ELSE IF (ABS(DP) .LT. ABS(DX)) THEN
+      ELSE IF (DABS(DP) .LT. DABS(DX)) THEN
          INFO = 3
          BOUND = .TRUE.
          THETA = 3*(FX - FP)/(STP - STX) + DX + DP
-         S = MAX(ABS(THETA),ABS(DX),ABS(DP))
+         S = MAX(DABS(THETA),DABS(DX),DABS(DP))
 C
 C        THE CASE GAMMA = 0 ONLY ARISES IF THE CUBIC DOES NOT TEND
 C        TO INFINITY IN THE DIRECTION OF THE STEP.
 C
-         GAMMA = S*SQRT(MAX(0.0D0,(THETA/S)**2 - (DX/S)*(DP/S)))
+         GAMMA = S*DSQRT(MAX(0.0D0,(THETA/S)**2 - (DX/S)*(DP/S)))
          IF (STP .GT. STX) GAMMA = -GAMMA
          P = (GAMMA - DP) + THETA
          Q = (GAMMA + (DX - DP)) + GAMMA
          R = P/Q
-         IF (R .LT. 0.0 .AND. GAMMA .NE. 0.0) THEN
+         IF (R .LT. 0.0D0 .AND. GAMMA .NE. 0.0D0) THEN
             STPC = STP + R*(STX - STP)
          ELSE IF (STP .GT. STX) THEN
             STPC = STPMAX
@@ -1080,13 +1118,13 @@ C
             END IF
          STPQ = STP + (DP/(DP-DX))*(STX - STP)
          IF (BRACKT) THEN
-            IF (ABS(STP-STPC) .LT. ABS(STP-STPQ)) THEN
+            IF (DABS(STP-STPC) .LT. DABS(STP-STPQ)) THEN
                STPF = STPC
             ELSE
                STPF = STPQ
                END IF
          ELSE
-            IF (ABS(STP-STPC) .GT. ABS(STP-STPQ)) THEN
+            IF (DABS(STP-STPC) .GT. DABS(STP-STPQ)) THEN
                STPF = STPC
             ELSE
                STPF = STPQ
@@ -1103,8 +1141,8 @@ C
          BOUND = .FALSE.
          IF (BRACKT) THEN
             THETA = 3*(FP - FY)/(STY - STP) + DY + DP
-            S = MAX(ABS(THETA),ABS(DY),ABS(DP))
-            GAMMA = S*SQRT((THETA/S)**2 - (DY/S)*(DP/S))
+            S = MAX(DABS(THETA),DABS(DY),DABS(DP))
+            GAMMA = S*DSQRT((THETA/S)**2 - (DY/S)*(DP/S))
             IF (STP .GT. STY) GAMMA = -GAMMA
             P = (GAMMA - DP) + THETA
             Q = ((GAMMA - DP) + GAMMA) + DY
@@ -1126,7 +1164,7 @@ C
          FY = FP
          DY = DP
       ELSE
-         IF (SGND .LT. 0.0) THEN
+         IF (SGND .LT. 0.0D0) THEN
             STY = STX
             FY = FX
             DY = DX
@@ -1143,9 +1181,9 @@ C
       STP = STPF
       IF (BRACKT .AND. BOUND) THEN
          IF (STY .GT. STX) THEN
-            STP = MIN(STX+0.66*(STY-STX),STP)
+            STP = MIN(STX+0.66D0*(STY-STX),STP)
          ELSE
-            STP = MAX(STX+0.66*(STY-STX),STP)
+            STP = MAX(STX+0.66D0*(STY-STX),STP)
             END IF
          END IF
       RETURN
