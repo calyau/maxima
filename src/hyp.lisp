@@ -1437,47 +1437,69 @@
 	(inv2 (inv 2)))
     (cond ((alike1 a-b inv2)
 	   ;; a-b = 1/2
+	   (when $trace2f1
+	     (format t "Legendre a-b = 1/2~%"))
 	   (gered1 (list a b) (list c) #'legf24))
 	  ((alike1 a-b (mul -1 inv2))
 	   ;; a-b = -1/2
 	   ;;
 	   ;; For example F(a,a+1/2;c;x)
+	   (when $trace2f1
+	     (format t "Legendre a-b = -1/2~%"))
 	   (legf24 (list a b) (list c) var))
 	  ((alike1 c-a-b inv2)
 	   ;; c-a-b = 1/2
 	   ;;
 	   ;; For example F(a,b;a+b+1/2;z)
+	   (when $trace2f1
+	     (format t "Legendre c-a-b = 1/2~%"))
 	   (legf20 (list a b) (list c) var))
 	  ((alike1 c-a-b (mul -1 inv2))
 	   ;; c-a-b = -1/2
+	   (when $trace2f1
+	     (format t "Legendre c-a-b = -1/2~%"))
 	   (gered1 (list a b) (list c) #'legf20))
 	  ((alike1 1-c a-b)
 	   ;; 1-c = a-b
+	   (when $trace2f1
+	     (format t "Legendre 1-c = a-b~%"))
 	   (gered1 (list a b) (list c) #'legf16))
 	  ((alike1 1-c (mul -1 a-b))
 	   ;; 1-c = b-a
+	   (when $trace2f1
+	     (format t "Legendre 1-c = b-a~%"))
 	   (legf16 (list a b) (list c) var))
 	  ((alike1 1-c c-a-b)
 	   ;; 1-c = c-a-b
+	   (when $trace2f1
+	     (format t "Legendre 1-c = c-a-b~%"))
 	   (gered1 (list a b) (list c) #'legf14))
 	  ((alike1 1-c (mul -1 c-a-b))
 	   ;; 1-c = a+b-c
 	   ;;
 	   ;; For example F(a,1-a;c;x)
+	   (when $trace2f1
+	     (format t "Legendre 1-c = a+b-c~%"))
 	   (legf14 (list a b) (list c) var))
 	  ((alike1 a-b (mul -1 c-a-b))
 	   ;; a-b = a+b-c
 	   ;;
 	   ;; For example F(a,b;2*b;z)
+	   (when $trace2f1
+	     (format t "Legendre a-b = a+b-c~%"))
 	   (legf36 (list a b) (list c) var))
 	  ((or (alike1 1-c inv2)
 	       (alike1 1-c (mul -1 inv2)))
 	   ;; 1-c = 1/2 or 1-c = -1/2
 	   ;;
 	   ;; For example F(a,b;1/2;z) or F(a,b;3/2;z)
+	   (when $trace2f1
+	     (format t "Legendre |1-c| = 1/2~%"))
 	   (legpol a b c))
 	  ((alike1 a-b c-a-b)
 	   ;; a-b = c-a-b
+	   (when $trace2f1
+	     (format t "Legendre a-b = c-a-b~%"))
 	   'legendre-funct-to-be-discovered)
 	  (t
 	   nil))))
