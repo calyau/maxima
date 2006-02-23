@@ -3,57 +3,67 @@
  * See http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html
  * and http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf
  *
- * At present this code minimizes the augmented Lagrangian by
- * solving for a stationary point of its gradient.
- * That's pretty weak, and the code could be improved by plugging in
- * a conjugate gradient or quasi-Newton minimization algorithm.
+ * This implementation minimizes the augmented Lagrangian by
+ * applying LBFGS (a quasi-Newton algorithm).
  *
- * FOM         = figure of merit expression
- * xx          = list of variables over which to minimize
- * constraints = list of expressions to be held equal to zero
- * yy          = list of initial guesses for xx
+ * Function: augmented_lagrangian_method (FOM, xx, constraints, yy, [optional_args])
  *
- * mnewton (to solve grad L = 0) has to be loaded before calling augmented_lagrangian_method.
+ * FOM           = figure of merit expression
+ * xx            = list of variables over which to minimize
+ * constraints   = list of expressions to be held equal to zero
+ * yy            = list of initial guesses for xx
+ *
+ * optional_args = more arguments of the form symbol = value
+ *                 optional arguments recognized are:
+ *
+ *                 niter           = number of iterations of the augmented Lagrangian algorithm
+ *                 lbfgs_tolerance = tolerance supplied to LBFGS
+ *                 iprint          = IPRINT parameter supplied to LBFGS
+ *                 %lambda         = initial value of %lambda
+ *
+ * LBFGS (to solve grad L = 0) has to be loaded before calling augmented_lagrangian_method.
  *
  * Example:
  *
- * load (mnewton);
- * FOM: x^2 + 2*y^2;
- * xx: [x, y];
- * C: [x + y - 1]; 
- * yy: [1, 1];
- * augmented_lagrangian_method (FOM, xx, C, yy);
+   load (lbfgs);
+   load (augmented_lagrangian);
+   FOM: x^2 + 2*y^2;
+   xx: [x, y];
+   C: [x + y - 1]; 
+   yy: [1, 1];
+   augmented_lagrangian_method (FOM, xx, C, yy, niter = 20);
  *
- *  => [0.6478349834, 0.3239174917]
+ *  => [[x = 0.6661347183787, y = 0.33306735918935], %lambda = [- 1.331471514325457]]
  *
  * copyright Robert Dodier, October 2005
  * Released under the terms of the GNU Public License
  */
 
-niter: 10;
+with_parameters ([L]) ::= buildq ([a : subst (":", "=",  ev (L [1])), e : rest (L)], block (a, splice (e)));
 
-augmented_lagrangian_method (FOM, xx, constraints, yy) := 
+augmented_lagrangian_method (FOM, xx, constraints, yy, [optional_args]) := 
 
-  block ([n, augmented_lagrangian, augmented_lagrangian_gradient, %lambda, %nu],
+  block ([n, augmented_lagrangian, %lambda, %nu,
+          niter : 10, lbfgs_tolerance : 1e-4, iprint : [1, 1]],
 
-  nc: length (constraints),
+  nconstraints: length (constraints),
 
   augmented_lagrangian: FOM
-    + apply ("+", makelist (%lambda[i] * constraints[i], i, 1, nc))
-    + apply ("+", makelist (%nu[i] * constraints[i]^2, i, 1, nc)),
+    + apply ("+", makelist (%lambda[i] * constraints[i], i, 1, nconstraints))
+    + apply ("+", makelist (%nu[i] * constraints[i]^2, i, 1, nconstraints)),
 
-  augmented_lagrangian_gradient: map (lambda ([a], diff (augmented_lagrangian, a)), xx),
+  %lambda: makelist (1, i, 1, nconstraints),
 
-  %lambda: makelist (1, i, 1, nc),
+  %nu: makelist (1, i, 1, nconstraints),
 
-  %nu: makelist (1, i, 1, nc),
+  with_parameters (optional_args,
 
-  for i:1 thru niter do
+    for i:1 thru niter do
     
-    (soln: mnewton (ev (augmented_lagrangian_gradient), xx, yy),
+      (soln: lbfgs (augmented_lagrangian, xx, yy, lbfgs_tolerance, iprint),
     
-    yy: map (rhs, soln[1]),
+      yy: map (rhs, soln),
 
-    %lambda: %lambda + apply ("+", %nu * map (lambda ([c], subst (soln[1], c)), constraints))),
+      %lambda: %lambda + apply ("+", %nu * map (lambda ([c], subst (soln, c)), constraints))),
 
-  yy);
+    [map ("=", xx, yy), '%lambda = %lambda]));
