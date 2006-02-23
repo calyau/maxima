@@ -19,8 +19,12 @@
 		      exptind quotind splist l ans splist arcpart coef
 		      aa dict exptflag base* powerlist a b k stack
 		      ratroot rootlist square e w y expres arg var
-		      powerl c d exp chebyform ratrootform trigarg
-		      notsame yy b1 yz varlist genvar repswitch $liflag
+		      *powerl* c d exp chebyform ratrootform trigarg
+		      #+nil notsame
+		      #+nil yy
+		      #+nil b1
+		      #+nil yz
+		      varlist genvar repswitch $liflag
 		      noparts top maxparts numparts blank $opsubst)
 	     (*expr powerlist ratroot)
 	     (*lexpr $factor $expand)
@@ -152,8 +156,10 @@
    ((optrig (caar expres))
     (cond ((not (setq w (m2 (cadr expres) c nil)))
 	   (intform (cadr expres)))
-	  (t (prog2 (setq powerl t)
-		    (monstertrig exp var (cadr expres))))))
+	  (t
+	   (prog2
+	       (setq *powerl* t)
+	       (monstertrig exp var (cadr expres))))))
    ((and (eq (caar expres) '%derivative)
 	 (eq (caar exp) (caar expres))
 	 (or (atom (cadr exp)) (not (eq (caaadr exp) 'mqapply))
@@ -171,7 +177,7 @@
    ((not (rat8 (cadr expres))) (intform (cadr expres)))
    ((and (setq w (m2 (cadr expres) ratrootform nil))	;e*(a*x+b) / (c*x+d)
 	 (denomfind (caddr expres)))			;expon is ratnum
-    (cond((setq w(prog2 (setq powerl t) (ratroot exp var (cadr expres) w))) w)
+    (cond((setq w(prog2 (setq *powerl* t) (ratroot exp var (cadr expres) w))) w)
 	 (t(inte exp var))))
    ((not (integerp1 (caddr expres)))			;2*exponent not integer
     (cond ((m2 exp chebyform nil) (chebyf exp var))
@@ -211,111 +217,141 @@
 		     (arcfuncp (cadr ex))))))
 
 (defun integrator (exp var)
-  (prog (y arg powerl const b w c d e ratrootform
-	   chebyform arcpart coef integrand)
-	(if (freevar exp) (return (mul2* exp var)))
-	(setq w (partition exp var 1))
-	(setq const (car w))
-	(setq exp (cdr w))
-	(cond ((mplusp exp) (return (mul2* const (integrate1 (cdr exp)))))
-	      ((and (not (atom exp)) (eq (caar exp) '$atan2))
-	       (return (mul2* const (integrator
-				     (simplifya (list '(%atan) (div (cadr exp) (caddr exp))) t)
-				     var))))
-	      ((and (not (atom exp)) (eq (caar exp) '%sum))
-	       (return (mul2* const (intsum exp var)))))
-        (cond ((setq y (diffdiv exp var)) (return (mul2* const y))))
-	(setq y (cond ((eq (caar exp) 'mtimes) (cdr exp)) (t (list exp))))
-	(setq c '((mplus)
-		  ((coeffpt) (b freevar) (x varp))
-		  ((coeffpt) (a freevar))))
-	(setq ratrootform '((mtimes)
-			    ((coefftt) (e freevar))
-			    ((mplus)
-			     ((coeffpt) (a freevar) (var varp))
-			     ((coeffpt) (b freevar)))
-			    ((mexpt)
-			     ((mplus)
-			      ((coeffpt) (c freevar) (var varp))
-			      ((coeffpt) (d freevar)))
-			     -1)))
-	(setq chebyform '((mtimes)
-			  ((mexpt) (var varp) (r1 numberp))
-			  ((mexpt)
-			   ((mplus)
-			    ((mtimes)
-			     ((coefftt) (c2 freevar))
-			     ((mexpt) (var varp) (q free1)))
-			    ((coeffpp) (c1 freevar)))
-			   (r2 numberp))
-			  ((coefftt) (a freevar))))
-	(setq d '((mplus)
-		  ((coeffpt) (c freevar) ((mexpt) (x varp) 2))
-		  ((coeffpt) (b freevar) (x varp))
-		  ((coeffpt) (a freevar))))
-	(setq e '((mtimes)
-		  ((mplus)
-		   ((coeffpt) (a freevar) (var varp))
-		   ((coeffpt) (b freevar)))
-		  ((mplus)
-		   ((coeffpt) (c freevar) (var varp))
-		   ((coeffpt) (d freevar)))))
-   loop (cond ((rat8 (car y)) (go skip))
-	      ((setq w (intform (car y))) (return (mul2* const w)))
-	      (t (go special)))
-   skip (setq y (cdr y))
-	(cond ((null y)
-	       (return (mul2* const (cond ((setq y (powerlist exp var)) y)
-					  (t (ratint exp var)))))))
-	(go loop)
-   special
-	   (separc exp)    ;SEPARC SETQS ARCPART AND COEF SUCH THAT
-	                   ;COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
-                           ;ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
-	   (cond ((and (not (null arcpart))
-		       (do  ((stacklist stack (cdr stacklist)))
-			    ((null stacklist) t)
-			    (cond ((alike1 (car stacklist) coef)
-				   (return nil))))
-		       (not (isinop (setq w ((lambda (stack)
-					      (integrator coef var))
-					     (cons coef stack)))
-				    '%integrate))
-		       (setq integrand (mul2 w (sdiff arcpart var)))
-		       (do ((stacklist stack (cdr stacklist)))
-			   ((null stacklist) t)
-			   (cond ((alike1 (car stacklist) integrand)
-				  (return nil))))
-		       (not (isinop
-			     (setq y
-				   ((lambda (stack integ)
-					    (integrator integ var))
-				    (cons integrand stack)
-				    integrand))
-			     '%integrate)))
-		  (return (add2* (list '(mtimes) const w arcpart)
-				 (list '(mtimes) -1 const y))))
-		 (t (return
-		     (mul2 const
-			   (cond ((setq y (scep exp var))
-				  (cond ((cddr y)
-					 (integrator ($trigreduce exp) var))
-					(t (sce-int (car y) (cadr y) var))))
-				 ((not (alike1 exp (setq y ($expand exp))))
-				  (integrator y var))
-				 ((and (not powerl)
-				       (setq y (powerlist exp var)))
-				  y)
-				 ((setq y (rischint exp var)) y)
-				 (t (list '(%integrate) exp var)))))))))
+  (prog (y arg *powerl* const b w c d e ratrootform
+	 chebyform arcpart coef integrand)
+     (if (freevar exp) (return (mul2* exp var)))
+     (setq w (partition exp var 1))
+     (setq const (car w))
+     (setq exp (cdr w))
+     #+nil
+     (progn
+       (format t "w = ~A~%" w)
+       (format t "const = ~A~%" const)
+       (format t "exp = ~A~%" exp))
+     (cond ((mplusp exp)
+	    (return (mul2* const (integrate1 (cdr exp)))))
+	   ((and (not (atom exp))
+		 (eq (caar exp) '$atan2))
+	    (return (mul2* const (integrator
+				  (simplifya (list '(%atan) (div (cadr exp) (caddr exp))) t)
+				  var))))
+	   ((and (not (atom exp))
+		 (eq (caar exp) '%sum))
+	    (return (mul2* const (intsum exp var)))))
+     (cond ((setq y (diffdiv exp var))
+	    (return (mul2* const y))))
+     (setq y (cond ((eq (caar exp) 'mtimes)
+		    (cdr exp))
+		   (t
+		    (list exp))))
+     #+nil
+     (format t "y = ~S~%" y)
+     ;; Pattern to match b*x + a
+     (setq c '((mplus)
+	       ((coeffpt) (b freevar) (x varp))
+	       ((coeffpt) (a freevar))))
+     ;; Pattern to match ?
+     (setq ratrootform '((mtimes)
+			 ((coefftt) (e freevar))
+			 ((mplus)
+			  ((coeffpt) (a freevar) (var varp))
+			  ((coeffpt) (b freevar)))
+			 ((mexpt)
+			  ((mplus)
+			   ((coeffpt) (c freevar) (var varp))
+			   ((coeffpt) (d freevar)))
+			  -1)))
+     (setq chebyform '((mtimes)
+		       ((mexpt) (var varp) (r1 numberp))
+		       ((mexpt)
+			((mplus)
+			 ((mtimes)
+			  ((coefftt) (c2 freevar))
+			  ((mexpt) (var varp) (q free1)))
+			 ((coeffpp) (c1 freevar)))
+			(r2 numberp))
+		       ((coefftt) (a freevar))))
+     (setq d '((mplus)
+	       ((coeffpt) (c freevar) ((mexpt) (x varp) 2))
+	       ((coeffpt) (b freevar) (x varp))
+	       ((coeffpt) (a freevar))))
+     (setq e '((mtimes)
+	       ((mplus)
+		((coeffpt) (a freevar) (var varp))
+		((coeffpt) (b freevar)))
+	       ((mplus)
+		((coeffpt) (c freevar) (var varp))
+		((coeffpt) (d freevar)))))
+     loop
+     (cond ((rat8 (car y))
+	    (go skip))
+	   ((setq w (intform (car y)))
+	    (return (mul2* const w)))
+	   (t
+	    (go special)))
+     skip
+     (setq y (cdr y))
+     (cond ((null y)
+	    (return (mul2* const (cond ((setq y (powerlist exp var)) y)
+				       (t (ratint exp var)))))))
+     (go loop)
+     special
+     (separc exp)	      ;SEPARC SETQS ARCPART AND COEF SUCH THAT
+					;COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
+					;ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
+     #+nil
+     (progn
+       (format t "arcpart = ~A~%" arcpart)
+       (format t "coef = ~A~%" coef))
+     (cond ((and (not (null arcpart))
+		 (do  ((stacklist stack (cdr stacklist)))
+		      ((null stacklist) t)
+		   (cond ((alike1 (car stacklist) coef)
+			  (return nil))))
+		 (not (isinop (setq w ((lambda (stack)
+					 (integrator coef var))
+				       (cons coef stack)))
+			      '%integrate))
+		 (setq integrand (mul2 w (sdiff arcpart var)))
+		 (do ((stacklist stack (cdr stacklist)))
+		     ((null stacklist) t)
+		   (cond ((alike1 (car stacklist) integrand)
+			  (return nil))))
+		 (not (isinop
+		       (setq y
+			     ((lambda (stack integ)
+				(integrator integ var))
+			      (cons integrand stack)
+			      integrand))
+		       '%integrate)))
+	    (return (add2* (list '(mtimes) const w arcpart)
+			   (list '(mtimes) -1 const y))))
+	   (t (return
+		(mul2 const
+		      (cond ((setq y (scep exp var))
+			     (cond ((cddr y)
+				    (integrator ($trigreduce exp) var))
+				   (t (sce-int (car y) (cadr y) var))))
+			    ((not (alike1 exp (setq y ($expand exp))))
+			     (integrator y var))
+			    ((and (not *powerl*)
+				  (setq y (powerlist exp var)))
+			     y)
+			    ((setq y (rischint exp var)) y)
+			    (t (list '(%integrate) exp var)))))))))
  
 (defun rat8 (ex)
-  (cond ((or (alike1 ex var) (freevar ex)) t)
+  (cond ((or (alike1 ex var) (freevar ex))
+	 t)
 	((memq (caar ex) '(mplus mtimes))
-	 (do ((u (cdr ex) (cdr u))) ((null u) t)
-	     (if (not (rat8 (car u))) (return nil))))
-	((not (eq (caar ex) 'mexpt)) nil)
-	((integerp (caddr ex)) (rat8 (cadr ex)))))
+	 (do ((u (cdr ex) (cdr u)))
+	     ((null u) t)
+	   (if (not (rat8 (car u)))
+	       (return nil))))
+	((not (eq (caar ex) 'mexpt))
+	 nil)
+	((integerp (caddr ex))
+	 (rat8 (cadr ex)))))
 	 
 (defun optrig (x) (memq x '(%sin %cos %sec %tan %csc %cot)))
 	 
@@ -749,30 +785,31 @@
 
 (defun trig1 (x) (memq (car x) '(%sin %cos))) 
 
-(defun supertrig (exp) 
-		 (cond ((freevar exp) t)
-		       ((atom exp) nil)
-		       ((memq (caar exp) '(mplus mtimes))
-			(and (supertrig (cadr exp))
-			     (or (null (cddr exp))
-				 (supertrig (cons (car exp)
-						  (cddr exp))))))
-		       ((eq (caar exp) 'mexpt)
-			(and (supertrig (cadr exp))
-			     (supertrig (caddr exp))))
-		       ((eq (caar exp) '%log)
-			(supertrig (cadr exp)))
-		       ((memq (caar exp)
-			      '(%sin %cos %tan %sec %cot %csc))
-			(cond ((m2 (cadr exp) trigarg nil) t)
-			      ((m2 (cadr exp)
-				   '((mplus)
-				     ((coeffpt) (b freevar) (x varp))
-				     ((coeffpt) (a freevar)))
-				   nil)
-			       (and (setq notsame t) nil))
-			      (t (supertrig (cadr exp)))))
-		       (t (supertrig (cadr exp)))))
+(defun supertrig (exp)
+  (declare (special *notsame*))
+  (cond ((freevar exp) t)
+	((atom exp) nil)
+	((memq (caar exp) '(mplus mtimes))
+	 (and (supertrig (cadr exp))
+	      (or (null (cddr exp))
+		  (supertrig (cons (car exp)
+				   (cddr exp))))))
+	((eq (caar exp) 'mexpt)
+	 (and (supertrig (cadr exp))
+	      (supertrig (caddr exp))))
+	((eq (caar exp) '%log)
+	 (supertrig (cadr exp)))
+	((memq (caar exp)
+	       '(%sin %cos %tan %sec %cot %csc))
+	 (cond ((m2 (cadr exp) trigarg nil) t)
+	       ((m2 (cadr exp)
+		    '((mplus)
+		      ((coeffpt) (b freevar) (x varp))
+		      ((coeffpt) (a freevar)))
+		    nil)
+		(and (setq *notsame* t) nil))
+	       (t (supertrig (cadr exp)))))
+	(t (supertrig (cadr exp)))))
 	 
 (defun subst2s (ex pat)
   (cond ((null ex) nil)
@@ -782,10 +819,10 @@
 
 (defun monstertrig (exp var trigarg)
   (if (not (atom trigarg)) (return-from monstertrig (rischint exp var)))
-  (prog (notsame w a b y d) 
+  (prog (*notsame* w a b y d) 
 	(cond
 	 ((supertrig exp) (go a))
-	 ((null notsame) (return nil))
+	 ((null *notsame*) (return nil))
 	 ((not (setq y (m2 exp
 			   '((mtimes)
 			     ((coefftt) (a freevar))
@@ -957,26 +994,28 @@
 	       (t (and (trigfree (car x)) (trigfree (cdr x))))))
 
 (defun rat1 (exp)
-  (prog (b1 notsame) 
+  (prog (*b1* *notsame*) 
+     (declare (special *yy* *b1* *notsame*))
      (cond ((and (numberp exp) (zerop exp))
 	    (return nil)))
-     (setq b1 (subst b 'b '((mexpt) b (n even))))
-     (return (prog2 (setq yy (rats exp))
-		 (cond ((not notsame) yy))))))
+     (setq *b1* (subst b 'b '((mexpt) b (n even))))
+     (return (prog2 (setq *yy* (rats exp))
+		 (cond ((not *notsame*) *yy*))))))
 
-(defun rats (exp) 
+(defun rats (exp)
   (prog (y) 
-	(return
-	 (cond ((eq exp a) 'x)
-	       ((atom exp)
-		(cond ((memq exp '(sin* cos* sec* tan*))
-		       (setq notsame t))
-		      (t exp)))
-	       ((setq y (m2 exp b1 nil)) (f3 y))
-	       (t (cons (car exp)
-			(mapcar 
-			 (function (lambda (g) (rats g)))
-			 (cdr exp))))))))
+  (declare (special *notsame* *b1*))
+  (return
+    (cond ((eq exp a) 'x)
+	  ((atom exp)
+	   (cond ((memq exp '(sin* cos* sec* tan*))
+		  (setq *notsame* t))
+		 (t exp)))
+	  ((setq y (m2 exp *b1* nil)) (f3 y))
+	  (t (cons (car exp)
+		   (mapcar 
+		    (function (lambda (g) (rats g)))
+		    (cdr exp))))))))
  
 
 (defun f3 (y) 
@@ -992,11 +1031,12 @@
 				     ((mexpt) x 2)))
 				   n))))
 
-(defun odd1 (n) 
-	 (cond ((not (numberp n)) nil)
-	       ((not (equal (remainder n 2) 0))
-		(setq yz
-		      (maxima-substitute c
+(defun odd1 (n)
+  (declare (special *yz*))
+  (cond ((not (numberp n)) nil)
+	((not (equal (remainder n 2) 0))
+	 (setq *yz*
+	       (maxima-substitute c
 				  'c
 				  (list '(mexpt)
 					'((mplus)
@@ -1005,7 +1045,7 @@
 					   c
 					   ((mexpt) x 2)))
 					(quotient (sub1 n) 2)))))
-	       (t nil)))
+	(t nil)))
 
 (defun subvar (x) (maxima-substitute var 'x x)) 
 
@@ -1018,7 +1058,8 @@
 ;; thesis.
 
 (defun trigint (exp var) 
-  (prog (y repl y1 y2 yy z m n c yz a b )
+  (prog (y repl y1 y2 *yy* z m n c *yz* a b )
+     (declare (special *yy* *yz*))
      ;; Transform trig(x) into trig* (for simplicity?)  Convert cot to
      ;; tan and csc to sin.
      (setq y2
@@ -1207,14 +1248,14 @@
 			  ((%sin) x)
 			  ((mplus) 1 ((%cos) x)))))
      (go get2)
-     get3 (setq y (list '(mtimes) -1 yy yz))
+     get3 (setq y (list '(mtimes) -1 *yy* *yz*))
      (go get2)
      get1 (setq y (list '(mtimes)
 			'((mexpt) ((mplus) 1 ((mexpt) x 2)) -1)
-			yy))
+			*yy*))
      (go get2)
      getout
-     (setq y (list '(mtimes) yy yz))
+     (setq y (list '(mtimes) *yy* *yz*))
      get2 (setq y (simplify y))
      (return (substint repl 'x (integrator y 'x)))))
 
