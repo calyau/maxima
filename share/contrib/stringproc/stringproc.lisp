@@ -25,6 +25,11 @@
 ;;        05-11-20  fixed: $cunlisp (Variable naming error) 
 ;;                  $sremove (unnecessary line deleted)
 ;;        05-11-27  fixed: $ascii (src/commac.lisp/ascii doesn't work with clisp) 
+;;        06-01-06  commented out: $sprint (again in plot.lisp)
+;;        06-01-10  fixed: m-string (make-symbol replaced by intern)
+;;        06-02-22  fixed: strip&$ (problems with empty string)
+;;                  fixed: $simplode (empty string: "&")
+;;                  fixed: $ssubst (case inversion problem)
 
 (in-package "MAXIMA")
 
@@ -184,8 +189,7 @@
       obj))
 |#
 (defmfun strip&$ (str) ;; 5.9.2
-   (let ((c1 (if (not (or (equal "" str) (equal "$" str) (equal "&" str))) 
-                (string (getcharn str 1)))))
+   (let ((c1 (string (getcharn str 1))))
       (if (or (equal c1 "&") (equal c1 "$"))
          (subseq str 1)
          str)))
@@ -308,7 +312,7 @@
 
 ;;  $sconcat for lists, allows an optional user defined separator string
 ;;  returns maxima-string
-(defun $simplode (lis &optional (ds "")) 
+(defun $simplode (lis &optional (ds "&")) 
    (setq lis (cdr lis))
    (let ((res ""))
       (setq ds (l-string ds))
@@ -389,8 +393,13 @@
                   :end2 (if e (1- e)))))
       (if (null pos) 
          (m-string str)
-         ($ssubst new old 
-            ($ssubstfirst new old mstr test (1+ pos) (if e (1+ e)))
+         ($ssubst  
+            (maybe-invert-string-case new) 
+            (maybe-invert-string-case old) 
+            ($ssubstfirst  
+               (maybe-invert-string-case new) 
+               (maybe-invert-string-case old) 
+               mstr test (1+ pos) (if e (1+ e)))
             test
             (1+ pos)
             (if e (1+ e)) ))))
