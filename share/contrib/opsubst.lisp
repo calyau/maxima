@@ -68,6 +68,6 @@ However, subscripted operators are allowed:
 (defun op-subst (f g e)
   (let (($inflag t))
     (if ($mapatom e) e
-      (mfuncall '$apply (if (like g ($op e)) f ($op e))
-		(cons '(mlist) (mapcar #'(lambda (s) (op-subst f g s)) (margs ($args e))))))))
+      (mapply1 (if (like g ($op e)) f ($op e))
+	       (mapcar #'(lambda (s) (op-subst f g s)) (margs ($args e))) nil))))
 
