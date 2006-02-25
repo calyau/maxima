@@ -859,7 +859,7 @@ Quando @code{prederror} for @code{false}, @code{is} retorna @code{unknown} para
 um predicado que n@~ao pode ser provado ou refutado,
 e reporta um erro de outra forma.
 
-Veja tamb@'em @code{assume}, @code{facts}, and @code{maybe}.
+Veja tamb@'em @code{assume}, @code{facts}, e @code{maybe}.
 
 Exemplos:
 
@@ -875,7 +875,7 @@ Exemplos:
 (%o2)                         true
 @end example
 
-@code{is} tenta derivar predicados da base de dados do assume @code{assume}.
+@code{is} tenta derivar predicados da base de dados do @code{assume}.
 @c GENERATED FROM:
 @c assume (a > b);
 @c assume (b > c);
@@ -896,7 +896,7 @@ Exemplos:
 (%o5)                         false
 @end example
 
-Se @code{is} n@~ao puder nem prover nem refutar uma forma predicada a partir da base de dados de @code{assume},
+Se @code{is} n@~ao puder nem comprovar nem refutar uma forma predicada a partir da base de dados de @code{assume},
 o sinalizador global @code{prederror} governa o comportamento de @code{is}.
 @c GENERATED FROM:
 @c assume (a > b);
@@ -931,7 +931,7 @@ De outra forma, @code{maybe} retorna @code{unknown}.
 @code{maybe} @'e funcinalmente equivalente a @code{is} com @code{prederror: false},
 mas o resultado @'e computado sem atualmente atribuir um valor a @code{prederror}.
 
-Veja tamb@'em @code{assume}, @code{facts}, and @code{is}.
+Veja tamb@'em @code{assume}, @code{facts}, e @code{is}.
 
 Exemplos:
 @c GENERATED FROM:
@@ -960,14 +960,14 @@ que @'e um inteiro.
 @deffn {Fun@,{c}@~ao} lmax (@var{L})
 
 Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('max, args (@var{L}))}.  Quando @var{L} n@~ao for uma
-lista ou um conjunto, sinaliza um erro.
+lista ou tamb@'em n@~ao for um conjunto, sinaliza um erro.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} lmin (@var{L})
 
 Quando @var{L} for uma lista ou um conjunto, retorna @code{apply ('min, args (@var{L}))}. Quando @var{L} n@~ao for uma
-lista ou um conjunto, sinaliza um erro.
+lista ou ou tamb@'em n@~ao for um conjunto, sinaliza um erro.
 
 @end deffn
 
@@ -984,7 +984,7 @@ eliminar express@~oes que estiverem entre dois outros argumentos; por exemplo,
 
 @deffn {Fun@,{c}@~ao} min (@var{x_1}, ..., @var{x_n})
 
-Retorna um valor simplificado para o m@'inimo entre as express@~oes @code{x_1} through @code{x_n}.
+Retorna um valor simplificado para o m@'inimo entre as express@~oes @code{x_1} at@'e @code{x_n}.
 Quando @code{get (trylevel, maxmin)}, for 2 ou mais, @code{min} usa a simplifica@,{c}@~ao 
 @code{min (e, -e) --> -|e|}.  Quando @code{get (trylevel, maxmin)} for 3 ou mais, @code{min} tenta
 eliminar express@~oes que estiverem entre dois outros argumentos; por exemplo,
@@ -1013,10 +1013,10 @@ retorna @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
 Adicionalmente para todo real @var{x}, n@'os temos @code{mod (@var{x}, 0) = @var{x}}. Para uma discurs@~ao da
 defini@,{c}@~ao @code{mod (@var{x}, 0) = @var{x}}, veja a Se@,{c}@~ao 3.4, de "Concrete Mathematics," 
 por Graham, Knuth, e Patashnik. A fun@,{c}@~ao @code{mod (@var{x}, 1)} 
-@'e uma fun@,{c}@~ao dente de serra com per@'odo 1 e com @code{mod (1, 1) = 0} e 
+@'e uma fun@,{c}@~ao dente de serra com per@'iodo 1 e com @code{mod (1, 1) = 0} e 
 @code{mod (0, 1) = 0}.
 
-Para encontrar o argumento principal (um n@'umero no intervalo @code{(-%pi, %pi]}) de um 
+Para encontrar o argumento (um n@'umero no intervalo @code{(-%pi, %pi]}) de um 
 n@'umero complexo, use a fun@,{c}@~ao @code{@var{x} |-> %pi - mod (%pi - @var{x}, 2*%pi)}, onde 
 @var{x} @'e um argumento.
 
@@ -1190,7 +1190,7 @@ Exemplo de utiliza@,{c}@~ao:
 
 @c ===beg===
 @c unitfrac(r) := block([uf : [], q],
-@c     if not(ratnump(r)) then error("The input to 'unitfrac' must be a rational number"),
+@c     if not(ratnump(r)) then error("A entrada para 'unitfrac' deve ser um n@'umero racional"),
 @c     while r # 0 do (
 @c         uf : cons(q : 1/ceiling(1/r), uf),
 @c         r : r - q),
@@ -1245,14 +1245,14 @@ Por exemplo, @code{signum(-x)} fornece @code{-signum(x)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} sort (@var{list}, @var{p})
-@deffnx {Fun@,{c}@~ao} sort (@var{list})
-Ordena a @var{list} conforme o predicado @code{p} de dois argumentos,
+@deffn {Fun@,{c}@~ao} sort (@var{lista}, @var{p})
+@deffnx {Fun@,{c}@~ao} sort (@var{lista})
+Ordena a @var{lista} conforme o predicado @code{p} de dois argumentos,
 tais como @code{"<"} ou @code{orderlessp}.
 
-@code{sort (@var{list})} ordena a @var{list} conforme a ordem interna do Maxima.
+@code{sort (@var{lista})} ordena a @var{lista} conforme a ordem interna do Maxima.
 
-@var{list} pode conter @'itens num@'ericos ou n@~ao num@'ericos, ou ambos.
+@var{lista} pode conter @'itens num@'ericos ou n@~ao num@'ericos, ou ambos.
 
 @c NEED EXAMPLES, ESPECIALLY SORTING NONNUMERIC ITEMS
 @end deffn
@@ -1278,7 +1278,7 @@ faz com que @code{sqrt} seja mostrado como expoente 1/2.
 
 @c NEEDS EXPANSION, CLARIFICATION, MORE EXAMPLES
 @c sublis CAN ONLY SUBSTITUTE FOR ATOMS, RIGHT ?? IF SO, SAY SO
-@deffn {Fun@,{c}@~ao} sublis (@var{list}, @var{expr})
+@deffn {Fun@,{c}@~ao} sublis (@var{lista}, @var{expr})
 Faz multiplas substitui@,{c}@~oes paralelas dentro de uma express@~ao.
 
 A vari@'avel @code{sublis_apply_lambda} controla a simplifica@,{c}@~ao ap@'os
@@ -1293,8 +1293,8 @@ Exemplo:
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} sublist (@var{list}, @var{p})
-Retorna a lista de elementos da @var{list} da qual o
+@deffn {Fun@,{c}@~ao} sublist (@var{lista}, @var{p})
+Retorna a lista de elementos da @var{lista} da qual o
 predicado @code{p} retornar @code{true}.
 
 Exemplo:
@@ -1390,9 +1390,9 @@ muitas subexpress@~oes s@~ao escolhidas, cada uma correspondendo a um
 @end example
 
 @code{piece} recebe o valor da @'ultima express@~ao selecionada quando usando as
-fun@,{c}@~oes @code{part}.  @'E escolhida durante a execu@,{c}@~ao da fun@,{c}@~ao e
+fun@,{c}@~oes @code{part}.  @code{piece} @'e escolhida durante a execu@,{c}@~ao da fun@,{c}@~ao e
 dessa forma pode ser referenciada para a pr@'opria fun@,{c}@~ao como mostrado abaixo.
-Se @code{partswitch} @'e escolhido para @code{true} ent@~ao @code{end} @'e retornado quando uma
+Se @code{partswitch} for escolhida para @code{true} ent@~ao @code{end} @'e retornado quando uma
 parte selecionada de uma express@~ao n@~ao existir, de outra forma uma mensagem
 de erro @'e fornecida.
 
@@ -1455,7 +1455,7 @@ o mesmo que chamando @code{inpart} ou @code{substinpart}.
 
 @c NEEDS EXPANSION AND EXAMPLES
 @deffn {Fun@,{c}@~ao} subvarp (@var{expr})
-Retorna @code{true} se @var{expr} for uma vari@'avel subscrita, por exemplo
+Retorna @code{true} se @var{expr} for uma vari@'avel subscrita (i.e. que possui @'indice ou subscrito em sua grafia), por exemplo
 @code{a[i]}.
 
 @end deffn
