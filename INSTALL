@@ -27,6 +27,21 @@ to run "make/make install" in C locale
 Otherwise problems with Maxima on-line help system (describe command)
 can be expected.
 
+On certain systems problem with Maxima under Clisp is reported.
+When Maxima starts it gives the following error (exact content
+of the message may vary) :
+
+*** - invalid byte sequence #xED #x73 #x69 in CHARSET:UTF-8 conversion
+The following restarts are available:
+ABORT          :R1      ABORT
+Break 1 [2]>
+
+Quite likely this is Clisp installation problem.  One can check
+this by running clisp command -- it should produce the same
+error message.  Known workaround is to create empty .clisprc
+file in user's home directory. 
+
+
 Generic Autotools build instructions follow.
 
 
