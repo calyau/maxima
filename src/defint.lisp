@@ -254,14 +254,14 @@
   (cond ((or (polyinx exp var nil)
 	     (catch 'pin%ex (pin%ex exp)))
 	 (setq exp (antideriv exp))
-;;;If antideriv can't do it, returns nil
-;;;use limit to evaluate every answer returned by antideriv.
+	 ;; If antideriv can't do it, returns nil
+	 ;; use limit to evaluate every answer returned by antideriv.
 	 (cond ((null exp) nil)
 	       (t (intsubs exp ll ul))))))
 ;;;Hack the expression up for exponentials.
 
 (defun sinintp (expr var)
-;;; Is this expr a candidate for SININT ?
+  ;; Is this expr a candidate for SININT ?
   (let ((expr (factor expr))
 	(numer nil)
 	(denom nil))
@@ -271,7 +271,7 @@
 	   (cond ((and (polyinx denom var nil)
 		       (deg-lessp denom var 2))
 		  t)))
-;;;ERF type things go here.
+	  ;;ERF type things go here.
 	  ((let ((exponent (%einvolve numer)))
 	     (and (polyinx exponent var nil)
 		  (deg-lessp exponent var 2)))
@@ -547,11 +547,11 @@
 		  (intsubs anti-deriv (m+ (caar previous-pole) 'epsilon)
 			   (m+ (caar current-pole) (m- 'epsilon))))))
 			   
-;;;Hack answer to simplify "Correctly".
+  ;;Hack answer to simplify "Correctly".
   (cond ((not (freeof '%log ans)) 
 	 (setq ans ($logcontract ans))))
   (setq ans (get-limit (get-limit ans 'epsilon 0 '$plus) 'prin-inf '$inf))
-;;;Return setion.
+  ;;Return setion.
   (cond ((or (null ans)
 	     (not (free ans '$infinity)) 
 	     (not (free ans '$ind)))  ())
@@ -623,11 +623,15 @@
   (numden exp)
   (let* ((d dn*)
 	 (a (cond ((and (zerop1 ($limit d var ll '$plus))
-			(eq (limit-pole (m+ exp (m+ (m- ll) var)) var ll '$plus) '$yes))
+			(eq (limit-pole (m+ exp (m+ (m- ll) var))
+					var ll '$plus)
+			    '$yes))
 		   t)
 		  (t nil)))
 	 (b (cond ((and (zerop1 ($limit d var ul '$minus))
-			(eq (limit-pole (m+ exp (m+ ul (m- var))) var ul '$minus) '$yes))
+			(eq (limit-pole (m+ exp (m+ ul (m- var)))
+					var ul '$minus)
+			    '$yes))
 		   t)
 		  (t nil))))
     (or a b)))
@@ -683,8 +687,8 @@
   (setq global-defint-assumptions
 	(cons (assume '((mgreaterp) *z* 0.))
 	      global-defint-assumptions))
-;;; *Z* is a "zero parameter" for this package.
-;;; Its also used to transform.
+  ;; *Z* is a "zero parameter" for this package.
+  ;; Its also used to transform.
   ;;  limit(exp,var,val,dir) -- limit(exp,tvar,0,dir)
   (setq global-defint-assumptions
 	(cons (assume '((mgreaterp) epsilon 0.))
@@ -692,11 +696,12 @@
   (setq global-defint-assumptions
 	(cons (assume '((mlessp) epsilon 1.0e-8))
 	      global-defint-assumptions)) 
-;;; EPSILON is used in principal vaule code to denote the familiar
-;;; mathematical entity.
+  ;; EPSILON is used in principal vaule code to denote the familiar
+  ;; mathematical entity.
   (setq global-defint-assumptions
 	(cons (assume '((mgreaterp) prin-inf 1.0e+8))
 	      global-defint-assumptions)))
+
 ;;; PRIN-INF Is a special symbol in the principal value code used to
 ;;; denote an end-point which is proceeding to infinity.
 
@@ -729,7 +734,7 @@
 		  (setq ll ul)
 		  (setq ul '$inf)
 		  (setq exp (m- exp))))
-;;;Fix limits so that ll < ul. 
+	   ;;Fix limits so that ll < ul. 
 	   (let ((d (complm ask-or-not)))
 	     (cond ((equal d -1.)
 		    (setq exp (m- exp))
@@ -745,7 +750,8 @@
     (cond ((alike1 ul ll)  0.)
 	  ((eq (setq a (cond (askflag ($asksign ($limit (m+t ul (m- ll)))))
 			     (t ($sign ($limit (m+t ul (m- ll)))))))
-	       '$pos)  1.)
+	       '$pos)
+	   1.)
 	  ((eq a '$neg)  -1.)
 	  (t 1.))))
 
@@ -756,9 +762,10 @@
 		 (make-defint-assumptions 'ask)) ;get forceful!
 	   (let ((generate-atan2 ())  ($algebraic t)
 		 (rpart ())  (ipart ()))
-	     (desetq (rpart . ipart) (cond ((not (free e '$%i))
-					    (trisplit e))
-					   (t (cons e 0))))
+	     (desetq (rpart . ipart)
+		     (cond ((not (free e '$%i))
+			    (trisplit e))
+			   (t (cons e 0))))
 	     (cond ((not (equal (sratsimp ipart) 0))  
 		    (let ((rans (cond ((limit-subs rpart a b))
 				      (t (m-
@@ -917,9 +924,11 @@
 	        		      (cond ((equal ($imagpart x) 0)  t)
 					    (t ())))))))
 
-(defun lowerhalf (j) (eq ($asksign ($imagpart j)) '$neg)) 
+(defun lowerhalf (j)
+  (eq ($asksign ($imagpart j)) '$neg))
 
-(defun upperhalf (j) (eq ($asksign ($imagpart j)) '$pos)) 
+(defun upperhalf (j)
+  (eq ($asksign ($imagpart j)) '$pos))
 
 
 (defun csemiup (n d var)
@@ -1022,9 +1031,10 @@
 
 
 (defun evenfn (e var)
-  (let ((temp (m+ (m- e) (cond ((atom var)
-				($substitute (m- var) var e))
-			       (t ($ratsubst (m- var) var e))))))
+  (let ((temp (m+ (m- e)
+		  (cond ((atom var)
+			 ($substitute (m- var) var e))
+			(t ($ratsubst (m- var) var e))))))
     (cond ((zerop1 temp)
 	   t)
 	  ((zerop1 ($ratsimp temp))
@@ -1238,7 +1248,7 @@
 	      (eq (ask-integer (caddr exp) '$even)
 		  '$yes)
 	      (ratgreaterp 0. (car exp)))
-	 exp))) 
+	 exp)))
 
 ;;; given (b*x+a)^n+c returns  (a b n c)
 (defun linpower (exp var)
@@ -1373,8 +1383,8 @@
   (m* k `((%gamma) ,b) (m^ a (m- b)))) 
 
 (defun radic (e v) 
-;;;If rd* is t the m^ts must just be free of var.
-;;;If rd* is () the m^ts must be mnump's.
+  ;;If rd* is t the m^ts must just be free of var.
+  ;;If rd* is () the m^ts must be mnump's.
   (let ((rd* ())) 
     (radicalp e v)))
 
@@ -1407,9 +1417,11 @@
 
 (defun sinrx (e)
   (cond ((and (consp e) (eq (caar e) '%sin))
-	 (cond ((eq (cadr e) var) 1.)
-	       ((and (setq e (partition (cadr e) var 1)) (eq (cdr e) var))
-		(car e)))))) 
+	 (cond ((eq (cadr e) var)
+		1.)
+	       ((and (setq e (partition (cadr e) var 1))
+		     (eq (cdr e) var))
+		(car e))))))
 
 (declare-top(special n)) 
 
@@ -1675,9 +1687,9 @@
       (t ()))))
 
 (defun real-branch (exponent value)
-;;;Says wether (m^t value exponent) has at least one real branch.
-;;;Only works for values of 1 and -1 now.
-;;;Returns $yes $no $unknown.
+  ;; Says wether (m^t value exponent) has at least one real branch.
+  ;; Only works for values of 1 and -1 now.  Returns $yes $no
+  ;; $unknown.
   (cond ((equal value 1.)
 	 '$yes)
 	((eq (ask-integer exponent '$integer) '$yes)
@@ -2484,7 +2496,7 @@
 		   (equal (caddr (caddr e)) 2.))
 	      (among var (cadr e)))
 	 (cadr e))
-	(t (ormapc #'sqrtinvolve (cdr e))))) 
+	(t (ormapc #'sqrtinvolve (cdr e)))))
 
 (defun bydif (r s d)
   (let ((b 1)  p)
