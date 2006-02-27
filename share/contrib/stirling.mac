@@ -28,7 +28,7 @@ To use this code, the file 'opsubst.lisp' must be in your search path.
 load("opsubst"); 
 
 stirling(z, n) := if integerp(n) and n > -1 then (
-	            block([s, acc : 0],
+	            block([s, acc : 0, zerobern : true],
                        for %m from 1 thru n do (
                           acc : acc + bern(2*%m)/(2*%m *(2*%m-1)*s^(2*%m-1))),
                        acc : exp(-s)* s^(s-1/2) * sqrt(2*%pi) * exp(acc),
