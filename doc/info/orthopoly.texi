@@ -1,27 +1,9 @@
-\input texinfo
-
-@c makeinfo orthopoly.texi         to make .info
-@c texi2html orthopoly.texi        to make .html
-@c texi2pdf orthopoly.texi         to make .pdf
-
-@setfilename orthopoly.info
-@settitle orthopoly
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to orthogonal polynomials, (dir), (dir)
-@top
 @menu
 * Introduction to orthogonal polynomials::
 * Definitions for orthogonal polynomials::
-* Function and variable index::
 @end menu
 
-@node Introduction to orthogonal polynomials, Definitions for orthogonal polynomials, Top, Top
+@node Introduction to orthogonal polynomials, Definitions for orthogonal polynomials, orthopoly, orthopoly
 @section Introduction to orthogonal polynomials
 
 @code{orthopoly} is a package for symbolic and numerical evaluation of
@@ -681,7 +663,7 @@ associated Legendre functions of the second kind is numerically evaluated using
 the same algorithm as its symbolic evaluation uses.
 
 
-@node Definitions for orthogonal polynomials, Function and variable index, Introduction to orthogonal polynomials, Top
+@node Definitions for orthogonal polynomials,  , Introduction to orthogonal polynomials, orthopoly
 @section Definitions for orthogonal polynomials
 
 @deffn {Function} assoc_legendre_p (@var{n}, @var{m}, @var{x})
@@ -949,11 +931,3 @@ The ultraspherical polynomial (also known the Gegenbauer polynomial).
 
 Reference: Abramowitz and Stegun, equation 22.5.46, page 779.
 @end deffn
-
-
-@node Function and variable index,  , Definitions for orthogonal polynomials, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

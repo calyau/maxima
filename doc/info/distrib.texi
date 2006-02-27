@@ -1,28 +1,10 @@
-\input texinfo
-
-@c makeinfo distrib.texi         to make .info
-@c texi2html distrib.texi        to make .html
-@c texi2pdf distrib.texi         to make .pdf
-
-@setfilename distrib.info
-@settitle distrib
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to distrib, (dir), (dir)
-@top
 @menu
 * Introduction to distrib::
 * Definitions for continuous distributions::
 * Definitions for discrete distributions::
-* Function and variable index::
 @end menu
 
-@node Introduction to distrib, Definitions for continuous distributions, Top, Top
+@node Introduction to distrib, Definitions for continuous distributions, distrib, distrib
 @section Introduction to distrib
 
 
@@ -399,7 +381,7 @@ For comments, bugs or suggestions, please contact the author at @var{'mario AT e
 
 
 
-@node Definitions for continuous distributions, Definitions for discrete distributions, Introduction to distrib, Top
+@node Definitions for continuous distributions, Definitions for discrete distributions, Introduction to distrib, distrib
 @section Definitions for continuous distributions
 
 
@@ -1746,7 +1728,7 @@ Only the inverse method is implemented.
 @end deffn
 
 
-@node Definitions for discrete distributions, Function and variable index, Definitions for continuous distributions, Top
+@node Definitions for discrete distributions,  , Definitions for continuous distributions, distrib
 @section Definitions for discrete distributions
 
 
@@ -1882,7 +1864,7 @@ Returns the kurtosis coefficient of a Poisson random variable  @math{Poi(m)}, wi
 
 
 @defvr {Option variable} rpoisson_algorithm
-Default value: @code{ahrens_dieter}
+Default value: @code{kachit}
 
 This is the selected algorithm for simulating random Poisson variates. Implemented algorithms are @code{ahrens_dieter} and @code{inverse}:
 @itemize @bullet
@@ -2285,11 +2267,3 @@ There are three algorithms implemented for this function, the one to be used can
 
 See also @code{rnegbinom_algorithm}.
 @end deffn
-
-
-@node Function and variable index,  , Definitions for discrete distributions, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

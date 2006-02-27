@@ -1,27 +1,9 @@
-\input texinfo
-
-@c makeinfo zeilberger.texi         to make .info
-@c texi2html zeilberger.texi        to make .html
-@c texi2pdf zeilberger.texi         to make .pdf
-
-@setfilename zeilberger.info
-@settitle zeilberger
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to zeilberger, (dir), (dir)
-@top
 @menu
 * Introduction to zeilberger::
 * Definitions for zeilberger::
-* Function and variable index::
 @end menu
 
-@node Introduction to zeilberger, Definitions for zeilberger, Top, Top
+@node Introduction to zeilberger, Definitions for zeilberger, zeilberger, zeilberger
 @section Introduction to zeilberger
 
 @code{zeilberger} is a implementation of Zeilberger's algorithm
@@ -78,7 +60,7 @@ For example:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Definitions for zeilberger, Function and variable index, Introduction to zeilberger, Top
+@node Definitions for zeilberger,  , Introduction to zeilberger, zeilberger
 @section Definitions for zeilberger
 
 @deffn {Function} AntiDifference (@var{F_k}, @var{k})
@@ -271,11 +253,3 @@ Default value: 4
 @code{mod_threshold} is the
 greatest order for which the modular test in @code{parGosper} is attempted.
 @end defvr
-
-
-@node Function and variable index,  , Definitions for zeilberger, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

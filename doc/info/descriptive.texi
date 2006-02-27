@@ -1,29 +1,12 @@
-\input texinfo
-@c makeinfo descriptive.texi         to make .info
-@c texi2html descriptive.texi        to make .html
-@c texi2pdf descriptive.texi         to make .pdf
-
-@setfilename descriptive.info
-@settitle descriptive
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to descriptive, (dir), (dir)
-@top
 @menu
 * Introduction to descriptive::
 * Definitions for data manipulation::
 * Definitions for descriptive statistics::
 * Definitions for specific multivariate descriptive statistics::
 * Definitions for statistical graphs::
-* Function and variable index::
 @end menu
 
-@node Introduction to descriptive, Definitions for data manipulation, Top, Top
+@node Introduction to descriptive, Definitions for data manipulation, descriptive, descriptive
 @section Introduction to descriptive
 
 Package @code{descriptive} contains a set of functions for making descriptive statistical computations and graphing. Together with the source code there are three data sets in your Maxima tree: @code{pidigits.data}, @code{wind.data} and @code{biomed.data}. They can be also downloaded from the web site @code{www.biomates.net}.
@@ -151,7 +134,7 @@ One must take care when working with categorical data. In the next example, symb
 
 
 
-@node Definitions for data manipulation, Definitions for descriptive statistics, Introduction to descriptive, Top
+@node Definitions for data manipulation, Definitions for descriptive statistics, Introduction to descriptive, descriptive
 @section Definitions for data manipulation
 
 @deffn {Function} cfrec (@var{list})
@@ -279,7 +262,7 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @end deffn
 
 
-@node Definitions for descriptive statistics, Definitions for specific multivariate descriptive statistics, Definitions for data manipulation, Top
+@node Definitions for descriptive statistics, Definitions for specific multivariate descriptive statistics, Definitions for data manipulation, descriptive
 @section Definitions for descriptive statistics
 
 
@@ -357,7 +340,7 @@ This is the sample variance, defined as
 @end example
 @end ifinfo
 @tex
-$${{s^2=1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
+$${{1}\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}$$
 @end tex
 
 Example:
@@ -1063,7 +1046,7 @@ See also function @code{quantile}.
 
 
 
-@node Definitions for specific multivariate descriptive statistics, Definitions for statistical graphs, Definitions for descriptive statistics, Top
+@node Definitions for specific multivariate descriptive statistics, Definitions for statistical graphs, Definitions for descriptive statistics, descriptive
 @section Definitions for specific multivariate descriptive statistics
 
 
@@ -1369,7 +1352,7 @@ See also @code{cov} and @code{cov1}.
 
 
 
-@node Definitions for statistical graphs, Function and variable index, Definitions for specific multivariate descriptive statistics, Top
+@node Definitions for statistical graphs,  , Definitions for specific multivariate descriptive statistics, descriptive
 @section Definitions for statistical graphs
 
 
@@ -1440,35 +1423,10 @@ Function @code{dataplot} can be used to plot points in the plane. The next examp
 
 If points are stored in a two column matrix, @code{dataplot} can plot them directly, but if they are formatted as a list of pairs, their must be transformed to a matrix as in the following example.
 @example
-(%i7) bs:[[64,-104], [64,-99], [61,-95], [57,-95], [55,-94],
-          [55,-90], [72,-89], [80,-88], [77,-86], [80,-88], 
-          [82,-91], [80,-88], [72,-89], [55,-90], [47,-89], 
-          [39,-87], [33,-84], [32,-81], [35,-75], [36,-69], 
-          [42,-69], [45,-68], [42,-69], [36,-69], [35,-67], 
-          [35,-62], [35,-60], [39,-60], [45,-61], [51,-61], 
-          [53,-65], [56,-68], [61,-70], [67,-71], [73,-70], 
-          [78,-67], [80,-64], [81,-61], [78,-58], [75,-60], 
-          [75,-62], [78,-62], [81,-61], [81,-56], [79,-50], 
-          [75,-47], [70,-44], [62,-44], [58,-45], [53,-50], 
-          [52,-52], [49,-53], [48,-52], [48,-50], [49,-48], 
-          [51,-49], [52,-52], [51,-54], [51,-57], [51,-61], 
-          [45,-61], [39,-60], [35,-60], [32,-57], [32,-52], 
-          [32,-49], [35,-45], [39,-42], [43,-41], [48,-42], 
-          [51,-43], [55,-47], [51,-43], [48,-42], [43,-41], 
-          [44,-38], [47,-35], [54,-16], [56,-5], [60,-11], 
-          [64,-6], [67,-12], [72,-7], [74,-14], [80,-9], 
-          [80,-16], [86,-11], [87,-17], [92,-12], [93,-21], 
-          [99,-16], [100,-22], [106,-19], [107,-27], [115,-25], 
-          [110,-32], [94,-72], [91,-72], [88,-73], [87,-74], 
-          [88,-76], [91,-76], [91,-79], [89,-81], [91,-79], 
-          [91,-76], [94,-77], [94,-79], [94,-77], [91,-76], 
-          [88,-76], [87,-74], [88,-73], [91,-72], [94,-72], 
-          [97,-75], [98,-80], [97,-82], [94,-84], [91,-85], 
-          [87,-83], [84,-80], [87,-83], [91,-85], [91,-95], 
-          [92,-102], [85,-105], [69,-106], [64,-104]]$
-(%i8) dataplot(apply('matrix,bs),
+(%i7) x: [[-1,2],[5,7],[5,-3],[-6,-9],[-4,6]]$
+(%i8) dataplot(apply('matrix,x),
            'outputdev="eps",
-           'maintitle="Bart", 'joined=true,
+           'maintitle="Points", 'joined=true,
            'axisnames=["","",""],
            'picturescales=[0.5, 1.0])$
 @end example
@@ -1637,12 +1595,3 @@ Examples:
              'outputdev="eps")$
 @end example
 @end deffn
-
-
-
-@node Function and variable index,  , Definitions for statistical graphs, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

@@ -1,26 +1,9 @@
-\input texinfo
-@c makeinfo solve_rec.texi         to make .info
-@c texi2html solve_rec.texi        to make .html
-@c texi2pdf solve_rec.texi         to make .pdf
-
-@setfilename solve_rec.info
-@settitle solve_rec
-
-@ifinfo 
-@macro var {obj}
-<\obj\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to solve_rec, (dir), (dir)
-@top
 @menu
 * Introduction to solve_rec::
 * Definitions for solve_rec::
-* Function and variable index::
 @end menu
 
-@node Introduction to solve_rec, Definitions for solve_rec, Top, Top
+@node Introduction to solve_rec, Definitions for solve_rec, solve_rec, solve_rec
 @section Introduction to solve_rec
 
 @code{solve_rec} is a package for solving linear recurrences with polynomial
@@ -40,7 +23,7 @@ Example:
              n     (n + 1) (n + 2)      (n + 1) (n + 2)
 @end example
 
-@node Definitions for solve_rec, Function and variable index, Introduction to solve_rec, Top
+@node Definitions for solve_rec,  , Introduction to solve_rec, solve_rec
 
 @section Definitions for solve_rec
 
@@ -100,7 +83,7 @@ So the general solution is
 If @code{simplify_products} is @code{true}, @code{solve_rec} will try to
 simplify products in result. The default value is @code{true}.
 
-See also: solve_rec.
+See also: @code{solve_rec}.
 
 @end defvr
 
@@ -171,7 +154,7 @@ Example of Ricatti type recurrence:
 @end example
 
 
-See also: solve_rec_rat, simplify_products, product_use_gamma.
+See also: @code{solve_rec_rat}, @code{simplify_products}, and @code{product_use_gamma}.
 
 @end deffn
 
@@ -199,7 +182,7 @@ Example:
 @end example
 
 
-See also: solve_rec.
+See also: @code{solve_rec}.
 
 @end deffn
 
@@ -209,7 +192,7 @@ When simplifying products, @code{solve_rec} introduces gamma function
 into the expression if @code{produce_use_gamma} is @code{true}. The default
 value is @code{true}.
 
-See also: simplify_products, solve_rec.
+See also: @code{simplify_products}, @code{solve_rec}.
 
 @end defvr
 
@@ -268,10 +251,3 @@ Dependent equations eliminated:  (3 2)
 @end example
 
 @end deffn
-
-@node Function and variable index,  , Definitions for solve_rec, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

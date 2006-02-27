@@ -1,42 +1,21 @@
-\input texinfo
-@c makeinfo stringproc.texi         to make .info
-@c texi2html stringproc.texi        to make .html
-@c texi2pdf stringproc.texi         to make .pdf
-
-@setfilename stringproc.info
-@settitle stringproc
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to string processing, (dir), (dir)
-@top
 @menu
 * Introduction to string processing::
 * Definitions for input and output::
 * Definitions for characters::
 * Definitions for strings::
-* Function and variable index::
 @end menu
 
-@node Introduction to string processing, Definitions for input and output, Top, Top
+@node Introduction to string processing, Definitions for input and output, stringproc, stringproc
 @section Introduction to string processing
 
 stringproc.lisp enlarges Maximas capabilities of working with strings.
 If you find bugs or if you need more functions, feel free to mail.
 If you use it for education, please let me know. 
 
-For installation just copy stringproc.lisp to a folder in path file_search_lisp,
-possibly /Maxima-5.9.2/share/maxima/5.9.2/share.
 Load stringproc.lisp by typing load("stringproc");.
 
 Remark: stringproc.lisp is written for Maxima 5.9.2.
 Version 5.9.1 should use stringproc1.lisp.
-
-Introduction
 
 In Maxima a string is easily constructed by typing "text".
 Note that Maxima-strings are no Lisp-strings and vice versa.
@@ -153,7 +132,7 @@ batching #pC:/home/maxima/test.out.in
 (%o16) 				       1 
 @end example
 
-@node Definitions for input and output, Definitions for characters, Introduction to string processing, Top
+@node Definitions for input and output, Definitions for characters, Introduction to string processing, stringproc
 @section Definitions for input and output
 
 Example: 
@@ -313,7 +292,7 @@ See @code{ascii} for an example.
 
 @end deffn
 
-@node Definitions for characters, Definitions for strings, Definitions for input and output, Top
+@node Definitions for characters, Definitions for strings, Definitions for input and output, stringproc
 @section Definitions for characters
 
 @deffn {Function} alphacharp (@var{char})    
@@ -434,7 +413,7 @@ Returns @code{true} if @var{char} is an uppercase character.
 
 @end deffn
 
-@node Definitions for strings, Function and variable index, Definitions for characters, Top
+@node Definitions for strings,  , Definitions for characters, stringproc
 @section Definitions for strings
 
 @deffn {Function} sunlisp (@var{lisp_string}) 
@@ -798,10 +777,3 @@ If test is not given, @var{constituent} is used as the default test.
 @end example
 
 @end deffn
-
-@node Function and variable index,  , Definitions for strings, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

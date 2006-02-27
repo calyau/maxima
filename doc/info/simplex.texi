@@ -1,26 +1,9 @@
-\input texinfo
-@c makeinfo simplex.texi         to make .info
-@c texi2html simplex.texi        to make .html
-@c texi2pdf simplex.texi         to make .pdf
-
-@setfilename simplex.info
-@settitle simplex
-
-@ifinfo 
-@macro var {obj}
-<\obj\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to simplex, (dir), (dir)
-@top
 @menu
 * Introduction to simplex::
 * Definitions for simplex::
-* Function and variable index::
 @end menu
 
-@node Introduction to simplex, Definitions for simplex, Top, Top
+@node Introduction to simplex, Definitions for simplex, simplex, simplex
 @section Introduction to simplex
 
 @code{simplex} is a package for linear optimization using the simplex algorithm.
@@ -35,15 +18,15 @@ Example:
                   10       10      5
 @end example
 
-@node Definitions for simplex, Function and variable index, Introduction to simplex, Top
+@node Definitions for simplex,  , Introduction to simplex, simplex
 @section Definitions for simplex
 
 @defvr {Option variable} epsilon_sx
+Default value: @code{10^-8}
 
-Epsilon used for numerical computations in @code{linear_program}. The default value is
-10^-8.
+Epsilon used for numerical computations in @code{linear_program}.
 
-See also: linear_program.
+See also: @code{linear_program}.
 
 @end defvr
 
@@ -72,7 +55,7 @@ Example:
                    2      2         2
 @end example
 
-See also: minimize_sx, scale_sx, epsilon_sx.
+See also: @code{minimize_sx}, @code{scale_sx}, and @code{epsilon_sx}.
 
 @end deffn
 
@@ -83,7 +66,7 @@ Maximizes linear objective function @var{obj} subject to some linear constraints
 value.
 
 
-See also: minimize_sx.
+See also: @code{minimize_sx}.
 
 @end deffn
 
@@ -128,7 +111,7 @@ Examples:
 @end example
 
 
-See also: maximize_sx, nonegative_sx, epsilon_sx.
+See also: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
 
 @end deffn
 
@@ -138,13 +121,6 @@ If @code{nonegative_sx} is true all decision variables to @code{minimize_sx}
 and @code{maximize_sx} are assumed to be positive. The default value is
 @code{false}.
 
-See also: minimize_sx.
+See also: @code{minimize_sx}.
 
 @end defvr
-
-@node Function and variable index,  , Definitions for simplex, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

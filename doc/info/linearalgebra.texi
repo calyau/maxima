@@ -1,26 +1,9 @@
-\input texinfo
-@c makeinfo linearalgebra.texi         to make .info
-@c texi2html linearalgebra.texi        to make .html
-@c texi2pdf linearalgebra.texi         to make .pdf
-
-@setfilename linearalgebra.info
-@settitle linearalgebra
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to linearalgebra, (dir), (dir)
-@top
 @menu
 * Introduction to linearalgebra::
 * Definitions for linearalgebra::
-* Function and variable index::
 @end menu
 
-@node Introduction to linearalgebra, Definitions for linearalgebra, Top, Top
+@node Introduction to linearalgebra, Definitions for linearalgebra, linearalgebra, linearalgebra
 @section Introduction to linearalgebra
 
 @code{linearalgebra} is a collection of functions for linear algebra.
@@ -138,7 +121,7 @@ Warning - you are redefining the Maxima function rank
                            [ 3 ]  [ - 2 ]
 @end example
 
-@node Definitions for linearalgebra, Function and variable index, Introduction to linearalgebra, Top
+@node Definitions for linearalgebra,  , Introduction to linearalgebra, linearalgebra
 @section Definitions for linearalgebra
 
 @deffn {Function} addmatrices (@var{f}, @var{M_1}, ..., @var{M_n})
@@ -358,6 +341,15 @@ Return the Kronecker product of the matrices @var{A} and @var{B}.
 
 @end deffn
 
+@deffn {Function} listp (@var{e}, @var{p})
+@deffnx {Function} listp (@var{e})
+
+Given an optional argument @var{p}, return @code{true} if @var{e} is 
+a Maxima list and @var{p} evaluates to @code{true} for every list element.
+When @code{listp} is not given the optional argument, return @code{true} if @var{e} is 
+a Maxima list.  In all other cases, return @code{false}.
+
+@end deffn
 
 @deffn {Function} locate_matrix_entry (@var{M}, @var{r_1}, @var{c_1}, @var{r_2}, @var{c_2}, @var{f}, @var{rel})
 
@@ -546,6 +538,17 @@ an unblocked matrix.
 
 @end deffn
 
+@deffn {Function} matrixp (@var{e}, @var{p})
+@deffnx {Function} matrixp (@var{e})
+
+Given an optional argument @var{p}, return @code{true} if @var{e} is 
+a matrix and @var{p} evaluates to @code{true} for every matrix element.
+When @code{matrixp} is not given an optional argument, return @code{true} 
+if @code{e} is a matrix.  In all other cases, return @code{false}.
+
+See also @code{blockmatrixp}
+
+@end deffn
 
 @deffn {Function} matrix_size (@var{M})
 
@@ -845,10 +848,3 @@ is true for each element @var{e} of the matrix @var{M}.  If @var{M} is a block m
 @code{true} if @code{zeromatrixp} evaluates to true for each element of @var{e}.
 
 @end deffn
-
-@node Function and variable index,  , Definitions for linearalgebra, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye

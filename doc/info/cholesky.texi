@@ -1,0 +1,76 @@
+@menu
+* Definitions for cholesky::
+@end menu
+
+@node Definitions for cholesky,  , cholesky, cholesky
+@section Definitions for cholesky
+
+@deffn {Function} cholesky (@var{A})
+Compute Cholesky decomposition of @var{A},
+a lower-triangular matrix @var{L} such that @code{L . transpose(L) = A}.
+
+Some examples follow.
+
+Example 1:
+@example
+(%i1) load("cholesky")$
+
+(%i2) A : matrix ([a, b, c], [d, e, f], [g, h, i]);
+                        [ a  b  c ]
+                        [         ]
+(%o2)                   [ d  e  f ]
+                        [         ]
+                        [ g  h  i ]
+(%i3) A2 : transpose (A) . A;
+      [   2    2    2                                     ]
+      [  g  + d  + a     g h + d e + a b  g i + d f + a c ]
+      [                                                   ]
+(%o3) [                    2    2    2                    ]
+      [ g h + d e + a b   h  + e  + b     h i + e f + b c ]
+      [                                                   ]
+      [                                     2    2    2   ]
+      [ g i + d f + a c  h i + e f + b c   i  + f  + c    ]
+(%i4) B : cholesky (A2)$
+
+(%i5) B . transpose (B) - A2;
+                        [ 0  0  0 ]
+                        [         ]
+(%o5)                   [ 0  0  0 ]
+                        [         ]
+                        [ 0  0  0 ]
+@end example
+
+Example 2:
+@example
+(%i6) A : matrix ([2, 3, 4], [-2, 2,- 3], [11, -2, 3]);
+                    [  2    3    4  ]
+                    [               ]
+(%o6)               [ - 2   2   - 3 ]
+                    [               ]
+                    [ 11   - 2   3  ]
+(%i7) A2 : transpose (A) . A;
+                    [ 129   - 20  47 ]
+                    [                ]
+(%o7)               [ - 20   17   0  ]
+                    [                ]
+                    [  47    0    34 ]
+(%i8) B : cholesky (A2);
+       [  sqrt(129)         0             0      ]
+       [                                         ]
+       [      20        sqrt(1793)               ]
+       [ - ---------    ----------        0      ]
+(%o8)  [   sqrt(129)    sqrt(129)                ]
+       [                                         ]
+       [     47       940 sqrt(129)      153     ]
+       [  ---------   --------------  ---------- ]
+       [  sqrt(129)   129 sqrt(1793)  sqrt(1793) ]
+(%i9) B . transpose (B) - A2;
+                       [ 0  0  0 ]
+                       [         ]
+(%o9)                  [ 0  0  0 ]
+                       [         ]
+                       [ 0  0  0 ]
+@end example
+
+To use this function write first @code{load("cholesky")}.
+@end deffn

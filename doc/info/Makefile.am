@@ -27,7 +27,12 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   Ctensor.texi Atensor.texi Series.texi Number.texi Symmetries.texi \
   Groups.texi Runtime.texi Miscellaneous.texi Rules.texi Lists.texi \
   Function.texi Program.texi Debugging.texi Indices.texi Elliptic.texi \
-  Bugs.texi nset.texi
+  Bugs.texi nset.texi zeilberger.texi orthopoly.texi linearalgebra.texi \
+  solve_rec.texi stringproc.texi numericalio.texi descriptive.texi \
+  distrib.texi simplex.texi simplifications.texi unit.texi makeOrders.texi \
+  mnewton.texi lsquares.texi plotdf.texi lindstedt.texi impdiff.texi \
+  ifactor.texi ggf.texi f90.texi eval_string.texi diag.texi cholesky.texi \
+  bode.texi augmented_lagrangian.texi opsubst.texi stirling.texi interpol.texi
 
 maximahtml.mk:
 	./texi2html -split_chapter --lang=en --output=. maxima.texi

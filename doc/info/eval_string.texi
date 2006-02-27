@@ -1,0 +1,50 @@
+@menu
+* Definitions for eval_string::
+@end menu
+
+@node Definitions for eval_string,  , eval_string, eval_string
+@section Definitions for eval_string
+
+
+@deffn {Function} eval_string (@var{str})
+Parse the Maxima string @var{str} as a Maxima expression and evaluate it.
+@var{str} is a Maxima string. It may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
+Only the first expression is parsed and evaluated, if there is more than one.
+
+Complain if @var{str} is not a Maxima string.
+
+Examples:
+@example
+(%i1) load("eval_string")$
+
+(%i2) eval_string ("foo: 42; bar: foo^2 + baz");
+(%o2)                       42
+(%i3) eval_string ("(foo: 42, bar: foo^2 + baz)");
+(%o3)                   baz + 1764
+@end example
+
+To use this function write first @code{load("eval_string")}. See also @code{parse_string}.
+@end deffn
+
+
+@deffn {Function} parse_string (@var{str})
+Parse the Maxima string @var{str} as a Maxima expression (do not evaluate it).
+@var{str} is a Maxima string. It may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
+Only the first expression is parsed, if there is more than one.
+
+Complain if @var{str} is not a Maxima string.
+
+Examples:
+@example
+(%i1) load("eval_string")$
+
+(%i2) parse_string ("foo: 42; bar: foo^2 + baz");
+(%o2)                    foo : 42
+(%i3) parse_string ("(foo: 42, bar: foo^2 + baz)");
+                                   2
+(%o3)          (foo : 42, bar : foo  + baz)
+@end example
+
+To use this function write first @code{load("eval_string")}. See also @code{eval_string}.
+@end deffn
+

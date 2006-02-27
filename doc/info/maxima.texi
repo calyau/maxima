@@ -118,6 +118,38 @@ Advanced facilities and programming
 * Program Flow::                Defining Maxima programs.
 * Debugging::                   Debugging Maxima programs.
 
+Additional packages
+
+* augmented_lagrangian::        augmented_lagrangian package.
+* bode::                        Bode gain and phase plots.
+* cholesky::                    Cholesky decomposition.
+* descriptive::                 Descriptive statistics.
+* diag::                        Jordan matrices.
+* distrib::                     Probability distributions.
+* eval_string::                 Maxima expressions as strings.
+* f90::                         Maxima to fortran translator.
+* ggf::                         Generating function of sequences.
+* ifactor::                     Integer factorization.
+* impdiff::                     Implicit derivatives.
+* interpol::                    Interpolation package.
+* lindstedt::                   Lindstedt package.
+* linearalgebra::               Functions for linear algebra.
+* lsquares::                    Least squares.
+* makeOrders::                  Polynomial utility.
+* mnewton::                     Newton's method.
+* numericalio::                 Reading and writing files.
+* opsubst::                     Substitutions utility.
+* orthopoly::                   Orthogonal polynomials.
+* plotdf::                      Direction fields plots.
+* simplex::                     Linear programming.
+* simplification::              Simplification rules and functions.
+* solve_rec::                   Linear recurrences.
+* stirling::                    Stirling formula.
+* stringproc::                  String processing.
+* unit::                        Units and dimensions package.
+* zeilberger::                  Functions for hypergeometric summation.
+
+
 Index
 
 * Function and Variable Index:: Index.
@@ -335,6 +367,137 @@ Debugging
 
 * Definitions for Debugging::   
 
+
+augmented_lagrangian
+
+* Definitions for augmented_lagrangian::
+
+bode
+
+* Definitions for bode::
+
+cholesky
+
+* Definitions for cholesky::
+
+descriptive
+
+* Introduction to descriptive::
+* Definitions for data manipulation::
+* Definitions for descriptive statistics::
+* Definitions for specific multivariate descriptive statistics::
+* Definitions for statistical graphs::
+
+diag
+
+* Definitions for diag::
+
+distrib
+
+* Introduction to distrib::
+* Definitions for continuous distributions::
+* Definitions for discrete distributions::
+
+eval_string
+
+* Definitions for eval_string::
+
+f90
+
+* Definitions for f90::
+
+ggf
+
+* Definitions for ggf::
+
+ifactor
+
+* Definitions for ifactor::
+
+impdiff
+
+* Definitions for impdiff::
+
+interpol
+
+* Introduction to interpol::
+* Definitions for interpol::
+
+lindstedt
+
+* Definitions for lindstedt::
+
+linearalgebra
+
+* Introduction to linearalgebra::
+* Definitions for linearalgebra::
+
+lsquares
+
+* Definitions for lsquares::
+
+makeOrders
+
+* Definitions for makeOrders::
+
+mnewton
+
+* Definitions for mnewton::
+
+numericalio
+
+* Introduction to numericalio::
+* Definitions for numericalio::
+
+opsubst
+
+* Definitions for opsubst::
+
+orthopoly
+
+* Introduction to orthogonal polynomials::
+* Definitions for orthogonal polynomials::
+
+plotdf
+
+* Definitions for plotdf::
+
+simplex
+
+* Introduction to simplex::
+* Definitions for simplex::
+
+simplification
+
+* Introduction to simplification::
+* Definitions for simplification::
+
+solve_rec
+
+* Introduction to solve_rec::
+* Definitions for solve_rec::
+
+stirling
+
+* Definitions for stirling::
+
+stringproc
+
+* Introduction to string processing::
+* Definitions for input and output::
+* Definitions for characters::
+* Definitions for strings::
+
+unit
+
+* Introduction to Units::       
+* Definitions for Units::
+
+zeilberger
+
+* Introduction to zeilberger::
+* Definitions for zeilberger::
+
 @comment @end detailmenu
 @end menu
 
@@ -469,7 +632,6 @@ Debugging
 @chapter Series
 @include Series.texi
 
-
 @node Number Theory, Symmetries, Series, Top
 @chapter Number Theory
 @include Number.texi
@@ -494,7 +656,6 @@ Debugging
 @chapter Rules and Patterns
 @include Rules.texi
 
-
 @node Lists, Sets, Rules and Patterns, Top
 @chapter Lists
 @include Lists.texi
@@ -511,11 +672,123 @@ Debugging
 @chapter Program Flow
 @include Program.texi
 
-@node Debugging, Function and Variable Index, Program Flow, Top
+@node Debugging, augmented_lagrangian, Program Flow, Top
 @chapter Debugging
 @include Debugging.texi
 
-@node Function and Variable Index,  , Debugging, Top
+@node augmented_lagrangian, bode, Debugging, Top
+@chapter augmented_lagrangian
+@include augmented_lagrangian.texi
+
+@node bode, cholesky, augmented_lagrangian, Top
+@chapter bode
+@include bode.texi
+
+@node cholesky, descriptive, bode, Top
+@chapter cholesky
+@include cholesky.texi
+
+@node descriptive, diag, cholesky, Top
+@chapter descriptive
+@include descriptive.texi
+
+@node diag, distrib, descriptive, Top
+@chapter diag
+@include diag.texi
+
+@node distrib, eval_string, diag, Top
+@chapter distrib
+@include distrib.texi
+
+@node eval_string, f90, distrib, Top
+@chapter eval_string
+@include eval_string.texi
+
+@node f90, ggf, eval_string, Top
+@chapter f90
+@include f90.texi
+
+@node ggf, ifactor, f90, Top
+@chapter ggf
+@include ggf.texi
+
+@node ifactor, impdiff, ggf, Top
+@chapter ifactor
+@include ifactor.texi
+
+@node impdiff, interpol, ifactor, Top
+@chapter impdiff
+@include impdiff.texi
+
+@node interpol, lindstedt, impdiff, Top
+@chapter interpol
+@include interpol.texi
+
+@node lindstedt, linearalgebra, interpol, Top
+@chapter lindstedt
+@include lindstedt.texi
+
+@node linearalgebra, lsquares, lindstedt, Top
+@chapter linearalgebra
+@include linearalgebra.texi
+
+@node lsquares, makeOrders, linearalgebra, Top
+@chapter lsquares
+@include lsquares.texi
+
+@node makeOrders, mnewton, lsquares, Top
+@chapter makeOrders
+@include makeOrders.texi
+
+@node mnewton, numericalio, makeOrders, Top
+@chapter mnewton
+@include mnewton.texi
+
+@node numericalio, opsubst, mnewton, Top
+@chapter numericalio
+@include numericalio.texi
+
+@node opsubst, orthopoly, numericalio, Top
+@chapter opsubst
+@include opsubst.texi
+
+@node orthopoly, plotdf, opsubst, Top
+@chapter orthopoly
+@include orthopoly.texi
+
+@node plotdf, simplex, orthopoly, Top
+@chapter plotdf
+@include plotdf.texi
+
+@node simplex, simplification, plotdf, Top
+@chapter simplex
+@include simplex.texi
+
+@node simplification, solve_rec, simplex, Top
+@chapter simplification
+@include simplifications.texi
+
+@node solve_rec, stirling, simplification, Top
+@chapter solve_rec
+@include solve_rec.texi
+
+@node stirling, stringproc, solve_rec, Top
+@chapter stirling
+@include stirling.texi
+
+@node stringproc, unit, stirling, Top
+@chapter stringproc
+@include stringproc.texi
+
+@node unit, zeilberger, stringproc, Top
+@chapter unit
+@include unit.texi
+
+@node zeilberger, Function and Variable Index, unit, Top
+@chapter zeilberger
+@include zeilberger.texi
+
+@node Function and Variable Index,  , zeilberger, Top
 @chapter Indices
 @include Indices.texi
 

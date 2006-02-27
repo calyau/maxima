@@ -1,0 +1,61 @@
+@menu
+* Definitions for augmented_lagrangian::
+@end menu
+
+@node Definitions for augmented_lagrangian,  , augmented_lagrangian, augmented_lagrangian
+@section Definitions for augmented_lagrangian
+
+
+@defvr {Option variable} niter
+Default value: 10
+
+Number of iterations for @code{augmented_lagrangian_method}.
+@end defvr
+
+
+@deffn {Function} augmented_lagrangian_method (@var{FOM}, @var{xx}, @var{constraints}, @var{yy})
+Augmented Lagrangian method for constrained optimization.
+@var{FOM} is the figure of merit expression, 
+@var{xx} is a list of variables over which to minimize,
+@var{constraints} is a list of expressions to be held equal to zero, and
+@var{yy} is a list of initial guesses for @var{xx}.
+
+At present this code minimizes the augmented Lagrangian by
+solving for a stationary point of its gradient.
+That's pretty weak, and the code could be improved by plugging in
+a conjugate gradient or quasi-Newton minimization algorithm.
+
+For references see
+@example
+http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/nonlinearcon/auglag.html
+@end example
+and
+@example
+http://www.cs.ubc.ca/spider/ascher/542/chap10.pdf
+@end example
+
+Package @code{mnewton} (to solve grad @math{L = 0}) has to be loaded before calling @code{augmented_lagrangian_method}.
+
+Example:
+@example
+(%i1) load (mnewton)$
+
+(%i2) load("augmented_lagrangian")$
+
+(%i3) FOM: x^2 + 2*y^2;
+                           2    2
+(%o3)                   2 y  + x
+(%i4) xx: [x, y];
+(%o4)                     [x, y]
+(%i5) C: [x + y - 1];
+(%o5)                  [y + x - 1]
+(%i6) yy: [1, 1];
+(%o6)                     [1, 1]
+(%i7) augmented_lagrangian_method (FOM, xx, C, yy);
+(%o7)          [0.6478349834, 0.3239174917]
+@end example
+
+To use this function write first @code{load("mnewton")} and @code{load("augmented_lagrangian")}. 
+See also @code{niter}.
+@end deffn
+

@@ -1,26 +1,9 @@
-\input texinfo
-@c makeinfo numericalio.texi         to make .info
-@c texi2html numericalio.texi        to make .html
-@c texi2pdf numericalio.texi         to make .pdf
-
-@setfilename numericalio.info
-@settitle numericalio
-
-@ifinfo 
-@macro var {expr}
-<\expr\>
-@end macro
-@end ifinfo
-
-@node Top, Introduction to numericalio, (dir), (dir)
-@top
 @menu
 * Introduction to numericalio::
 * Definitions for numericalio::
-* Function and variable index::
 @end menu
 
-@node Introduction to numericalio, Definitions for numericalio, Top, Top
+@node Introduction to numericalio, Definitions for numericalio, numericalio, numericalio
 @section Introduction to numericalio
 
 @code{numericalio} is a collection of functions to read and write data files.
@@ -66,7 +49,7 @@ In output, @code{false} atoms are written as such;
 a list @code{[1234, false, Foo]} is written @code{1234,false,Foo},
 and there is no attempt to collapse the output to @code{1234,,Foo}.
 
-@node Definitions for numericalio, Function and variable index, Introduction to numericalio, Top
+@node Definitions for numericalio,  , Introduction to numericalio, numericalio
 @section Definitions for numericalio
 
 @deffn {Function} read_matrix (@var{file_name})
@@ -160,9 +143,3 @@ is governed by the global variable @code{file_output_append}.
 
 @end deffn
 
-@node Function and variable index,  , Definitions for numericalio, Top
-@appendix Function and variable index
-@printindex fn
-@printindex vr
-
-@bye
