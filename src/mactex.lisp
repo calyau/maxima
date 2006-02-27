@@ -122,26 +122,28 @@
 		  (setq mexp (list '(mdefine) (cons (list x 'array) (cdadr y)) (caddr y)))))))
      (cond ((and (null(atom mexp))
 		 (memq (caar mexp) '(mdefine mdefmacro)))
-	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
-	    (format texport "|~%" )	;delimit with |marks
+	    (format texport "~%\\begin{verbatim}~%")
 	    (cond (mexplabel (format texport "~a " mexplabel)))
 	    (mgrind mexp texport)	;write expression as string
-	    (format texport ";|~%"))
+	    (format texport ";~%\\end{verbatim}~%"))
 	   ((and
 	     itsalabel ;; but is it a user-command-label?
+         ;; THE FOLLOWING TESTS SEEM PRETTY STRANGE --
+         ;; WHY CHECK INITIAL SUBSTRING IF SYMBOL IS ON THE $LABELS LIST ??
+         ;; PROBABLY IT IS A HOLDOVER FROM THE DAYS WHEN LABELS WERE C AND D INSTEAD OF %I AND %O
 	     (<= (length (string $inchar)) (length (string mexplabel)))
-	     (eq (getchars $inchar 2 (1+ (length (string $inchar))))
+	     (eq (getchars (maybe-invert-string-case (string $inchar)) 2 (1+ (length (string $inchar))))
 		 (getchars mexplabel 2 (1+ (length (string $inchar)))))
 	     ;; Check to make sure it isn't an outchar in disguise
 	     (not
 	      (and
 	       (<= (length (string $outchar)) (length (string mexplabel)))
-	       (eq (getchars $outchar 2 (1+ (length (string $outchar))))
+	       (eq (getchars (maybe-invert-string-case (string $outchar)) 2 (1+ (length (string $outchar))))
 		   (getchars mexplabel 2 (1+ (length (string $outchar))))))))
 	    ;; aha, this is a C-line: do the grinding:
-	    (format texport "~%|~a " mexplabel) ;delimit with |marks
+	    (format texport "~%\\begin{verbatim}~%~a " mexplabel)
 	    (mgrind mexp texport)	;write expression as string
-	    (format texport ";|~%"))
+	    (format texport ";~%\\end{verbatim}~%"))
 	   (t 
 	    (if mexplabel (setq mexplabel (quote-% mexplabel)))
 					; display the expression for TeX now:
@@ -210,9 +212,16 @@
 	  (list (cond ((numberp x) (texnumformat x))
 		      ((and (symbolp x) (get x 'texword)))
                       ((stringp x) (tex-string x))
+                      ((mstringp x)
+                       (let ((s (maybe-invert-string-case (symbol-name (stripdollar x)))))
+                         (tex-string (tex-sanitize (if stringdisp (concatenate 'string "``" s "''") s)))))
                       ((characterp x) (tex-char x))
 		      (t (tex-stripdollar x))))
 	  r))
+
+;; THIS FUNCTION SHOULD LOOK FOR CHARACTERS SPECIAL TO TEX AND ESCAPE THEM WITH BACKSLASH
+;; LAZINESS HAS GOTTEN THE BEST OF ME, SORRY
+(defun tex-sanitize (s) s)
 
 (defun tex-string (x)
   (cond ((equal x "") "")
@@ -232,8 +241,12 @@
     (loop while (not (eq (setq tem (mread-raw st eof)) eof))
 	   do (tex1 (third tem) f2))))
 
-(defun tex-stripdollar(sym &aux )
-  (or (symbolp sym) (return-from tex-stripdollar sym))
+(defun tex-stripdollar (x)
+  (let ((s (maybe-invert-string-case (symbol-name (tex-stripdollar0 x)))))
+    (concatenate 'string "{\\it " s "}")))
+
+(defun tex-stripdollar0 (sym &aux )
+  (or (symbolp sym) (return-from tex-stripdollar0  sym))
   (let* ((pname (quote-% sym))
 	 (l (length pname))
 	 (begin-sub
@@ -407,7 +420,7 @@
 (defprop $eta "\\eta" texword)
 (defprop $theta "\\vartheta" texword)
 (defprop $iota "\\iota" texword)
-(defprop $kappa "\\varkappa" texword)
+(defprop $kappa "\\kappa" texword)
 ;;(defprop $lambda "\\lambda" texword)
 (defprop $mu "\\mu" texword)
 (defprop $nu "\\nu" texword)
@@ -434,7 +447,7 @@
 (defprop |$Omega| "\\Omega" texword)
 
 (defprop mquote tex-prefix tex)
-(defprop mquote ("'") texsym)
+(defprop mquote ("\\mbox{{}'{}}") texsym)
 
 (defprop msetq tex-infix tex)
 (defprop msetq (":") texsym)
@@ -689,6 +702,7 @@
 (defprop mequal (=) texsym)
 
 (defprop mnotequal tex-infix tex)
+(defprop mnotequal ("\\neq ") texsym)
 
 (defprop mgreaterp tex-infix tex)
 (defprop mgreaterp (>) texsym)
@@ -703,13 +717,13 @@
 (defprop mleqp ("\\leq ") texsym)
 
 (defprop mnot tex-prefix tex)
-(defprop mnot ("\\not ") texsym)
+(defprop mnot ("\\neg ") texsym)
 
 (defprop mand tex-nary tex)
-(defprop mand ("\\and") texsym)
+(defprop mand "\\land " texsym)
 
 (defprop mor tex-nary tex)
-(defprop mor ("\\or") texsym)
+(defprop mor "\\lor " texsym)
 
 ;; make sin(x) display as sin x , but sin(x+y) as sin(x+y)
 ;; etc
@@ -723,6 +737,9 @@
     (setf (get a 'tex-rbp) 130)))
 
 
+;; I WONDER IF ALL BUILT-IN FUNCTIONS SHOULD BE SET IN ROMAN TYPE
+(defprop $atan2 "{\\rm atan2}" texword)
+
 ;; JM 09/01 expand and re-order to follow table of "log-like" functions,
 ;; see table in Lamport, 2nd edition, 1994, p. 44, table 3.9.
 ;; I don't know if these are Latex-specific so you may have to define
@@ -733,6 +750,7 @@
 	(%acos "\\arccos ")
 	(%asin "\\arcsin ")
 	(%atan "\\arctan ")
+
 					; Latex's arg(x) is ... ?
 	(%cos "\\cos ")
 	(%cosh "\\cosh ")
@@ -764,6 +782,24 @@
 	(%tanh "\\tanh ")
 	;; (%erf "{\\rm erf}") this would tend to set erf(x) as erf x. Unusual
 					;(%laplace "{\\cal L}")
+
+    ; Maxima built-in functions which do not have corresponding TeX symbols.
+
+    (%asec "{\\rm arcsec}\\; ")
+    (%acsc "{\\rm arccsc}\\; ")
+    (%acot "{\\rm arccot}\\; ")
+
+    (%sech "{\\rm sech}\\; ")
+    (%csch "{\\rm csch}\\; ")
+    
+    (%asinh "{\\rm asinh}\\; ")
+    (%acosh "{\\rm acosh}\\; ")
+    (%atanh "{\\rm atanh}\\; ")
+
+    (%asech "{\\rm asech}\\; ")
+    (%acsch "{\\rm acsch}\\; ")
+    (%acoth "{\\rm acoth}\\; ")
+
 	)) ;; etc
 
 (defprop mor tex-nary tex)
