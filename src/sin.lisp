@@ -203,10 +203,17 @@
     (prog2 (setq exp (maxima-substitute w (cadr expres) exp))
 	   (intform (simplify (list '(mexpt) w (caddr expres))))))
    ((setq w (rationalizer (cadr expres)))
-    (prog2 (setq exp (let (($radexpand '$all))
-			  (maxima-substitute w (cadr expres) exp)))
-	   (intform (let (($radexpand '$all))
-			 (simplify (list '(mexpt) w (caddr expres)))))))))
+    ;; The forms below used to have $radexpand set to $all.  But I
+    ;; don't think we really want to do that here because that makes
+    ;; sqrt(x^2) become x, which might be totally wrong.  This is one
+    ;; reason why we returned -4/3 for the
+    ;; integrate(sqrt(x+1/x-2),x,0,1).  We were replacing
+    ;; sqrt((x-1)^2) with x - 1, which is totally wrong since 0 <= x
+    ;; <= 1.
+    (setq exp (let (($radexpand '$true))
+		(maxima-substitute w (cadr expres) exp)))
+    (intform (let (($radexpand '$all))
+	       (simplify (list '(mexpt) w (caddr expres))))))))
  
 (defun separc (ex)
   (cond ((arcfuncp ex) (setq arcpart ex coef 1))
