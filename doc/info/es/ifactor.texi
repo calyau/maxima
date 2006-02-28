@@ -1,0 +1,140 @@
+@menu
+* Definiciones para ifactor::
+@end menu
+
+@node Definiciones para ifactor,  , ifactor, ifactor
+@section Definiciones para ifactor
+
+@defvr {Option variable} save_primes
+Default value: @code{nil}
+
+Saves primes found.
+@end defvr
+
+@defvr {Option variable} primep_number_of_tests
+Default value: 25
+
+Number of primep-test runs.
+@end defvr
+
+
+@defvr {Option variable} pollard_rho_limit
+Default value: 10000
+
+Limit for pollard-rho factorization depth.
+@end defvr
+
+@defvr {Option variable} pollard_rho_tests
+Default value: 5
+
+Number of pollard-rho rounds between ecm rounds.
+@end defvr
+
+
+@defvr {Option variable} pollard_rho_limit_step
+Default value: 1000
+
+Step for pollard-rho factorization limit.
+@end defvr
+
+@defvr {Option variable} ecm_number_of_curves
+Default value: 50
+
+Number of curves tried in one round.
+@end defvr
+
+@defvr {Option variable} ecm_limit
+Default value: 200
+
+Starting smootheness limit for ecm method.
+@end defvr
+
+@defvr {Option variable} ecm_max_limit
+Default value: 51199
+
+Maximum smootheness for ecm method.
+@end defvr
+
+
+@defvr {Option variable} ecm_limit_delta
+Default value: 200
+
+Increase of smoothness limit for ecm method.
+@end defvr
+
+@defvr {Option variable} ifactor_verbose
+Default value: nil
+
+Display factorization steps.
+@end defvr
+
+
+@deffn {Function} ifactors (@var{n})
+Returns a list of prime power factors of positive integer @var{n}.
+
+@example
+(%i1) load("ifactor")$
+
+(%i2) ifactors(23456345);
+(%o2)               [5, 11, 17, 25087]
+@end example
+
+To use this function write first @code{load("ifactor")}.
+@end deffn
+
+@deffn {Function} ifactor (@var{n})
+Factors positive integer @var{n}. @code{ifactor} uses Pollard's rho and
+elliptic curve factorization methods to factor integers.
+
+@example
+(%i1) load("ifactor")$
+
+(%i2) ifactor(23456345200);
+                     4  2
+(%o2)               2  5  43 313 4357
+@end example
+
+To use this function write first @code{load("ifactor")}.
+@end deffn
+
+@deffn {Function} primep_pr (@var{n})
+Probabilistic primality test. @code{primep_pr} uses
+@code{primep_pr_number_of_tests} Miller-Rabin's pseudo-primality tests and
+one Lucas pseudo-primality test.
+
+@example
+(%i1) load("ifactor")$
+
+(%i2) primep_pr(23456345);
+(%o2)                     false
+@end example
+
+To use this function write first @code{load("ifactor")}.
+@end deffn
+
+@deffn {Function} next_prime (@var{n})
+Get smallest prime bigger than @var{n}.
+
+@example
+(%i1) load("ifactor")$
+
+(%i2) next_prime(27);
+(%o2)                       29
+@end example
+
+To use this function write first @code{load("ifactor")}.
+@end deffn
+
+@deffn {Function} prev_prime (@var{n})
+Get greatest prime smaller than @var{n}.
+
+@example
+(%i1) load("ifactor")$
+
+(%i2) prev_prime(27);
+(%o2)                       23
+@end example
+
+To use this function write first @code{load("ifactor")}.
+@end deffn
+

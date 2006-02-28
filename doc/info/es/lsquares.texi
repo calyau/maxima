@@ -1,0 +1,175 @@
+@menu
+* Definiciones para lsquares::
+@end menu
+
+@node Definiciones para lsquares,  , lsquares, lsquares
+@section Definiciones para lsquares
+
+
+@defvr {Global variable} DETCOEF
+
+This variable is used by functions @code{lsquares} and @code{plsquares} to store the Coefficient of Determination which measures the goodness of fit. It ranges from 0 (no correlation) to 1 (exact correlation). 
+
+When @code{plsquares} is called with a list of dependent variables, @var{DETCOEF} is set to a list of Coefficients of Determination. See @code{plsquares} for details.
+
+See also @code{lsquares}.
+@end defvr
+
+
+@deffn {Function} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList})
+@deffnx {Function} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList},@var{GuessList})
+Multiple nonlinear equation adjustment of a data table by the
+"least squares" method. @var{Mat} is a matrix containing the data,
+@var{VarList} is a list of variable names (one for each @var{Mat} column),
+@var{equation} is the equation to adjust (it must be in the form:
+@code{depvar=f(indepvari,..., paramj,...)}, @code{g(depvar)=f(indepvari,..., paramj,...)} 
+or @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} is the 
+list of the parameters to obtain, and @var{GuessList} is an optional list of initial 
+approximations to the parameters; when this last argument is present, @code{mnewton} is used
+instead of @code{solve} in order to get the parameters.
+
+The equation may be fully nonlinear with respect to the independent
+variables and to the dependent variable.
+In order to use @code{solve()}, the equations must be linear or polynomial with
+respect to the parameters. Equations like @code{y=a*b^x+c} may be adjusted for
+@code{[a,b,c]} with @code{solve} if the @code{x} values are little positive integers and
+there are few data (see the example in lsquares.dem).
+@code{mnewton} allows to adjust a nonlinear equation with respect to the
+parameters, but a good set of initial approximations must be provided.
+
+If possible, the adjusted equation is returned. If there exists more
+than one solution, a list of equations is returned.
+The Coefficient of Determination is displayed in order to inform about
+the goodness of fit, from 0 (no correlation) to 1 (exact correlation).
+This value is also stored in the global variable @var{DETCOEF}.
+
+Examples using @code{solve}:
+@example
+(%i1) load("lsquares")$
+
+(%i2) lsquares(matrix([1,2,0],[3,5,4],[4,7,9],[5,8,10]),
+               [x,y,z], z=a*x*y+b*x+c*y+d, [a,b,c,d]);
+      Determination Coefficient = 1.0
+                    x y + 23 y - 29 x - 19
+(%o2)           z = ----------------------
+                              6
+(%i3) lsquares(matrix([0,0],[1,0],[2,0],[3,8],[4,44]),
+               [n,p], p=a4*n^4+a3*n^3+a2*n^2+a1*n+a0,
+         [a0,a1,a2,a3,a4]);
+      Determination Coefficient = 1.0
+                     4       3      2
+                  3 n  - 10 n  + 9 n  - 2 n
+(%o3)         p = -------------------------
+                              6
+(%i4) lsquares(matrix([1,7],[2,13],[3,25]), 
+               [x,y], (y+c)^2=a*x+b, [a,b,c]);
+      Determination Coefficient = 1.0
+(%o4) [y = 28 - sqrt(657 - 216 x),
+                                y = sqrt(657 - 216 x) + 28]
+(%i5) lsquares(matrix([1,7],[2,13],[3,25],[4,49]),
+               [x,y], y=a*b^x+c, [a,b,c]);
+      Determination Coefficient = 1.0
+                              x
+(%o5)                  y = 3 2  + 1
+@end example
+
+
+Examples using @code{mnewton}:
+@example
+(%i6) load("lsquares")$
+
+(%i7) lsquares(matrix([1.1,7.1],[2.1,13.1],[3.1,25.1],[4.1,49.1]),
+               [x,y], y=a*b^x+c, [a,b,c], [5,5,5]);
+                                             x
+(%o7) y = 2.799098974610482 1.999999999999991
+                                        + 1.099999999999874
+(%i8) lsquares(matrix([1.1,4.1],[4.1,7.1],[9.1,10.1],[16.1,13.1]),
+               [x,y], y=a*x^b+c, [a,b,c], [4,1,2]);
+                             .4878659755898127
+(%o8) y = 3.177315891123101 x
+                                        + .7723843491402264
+(%i9) lsquares(matrix([0,2,4],[3,3,5],[8,6,6]),
+              [m,n,y], y=(A*m+B*n)^(1/3)+C, [A,B,C], [3,3,3]);
+                                                     1/3
+(%o9) y = (3.999999999999862 n + 4.999999999999359 m)
+                                         + 2.00000000000012
+@end example
+
+To use this function write first @code{load("lsquares")}. See also @code{DETCOEF} and @code{mnewton}.
+@end deffn
+
+
+@deffn {Function} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+Multivariable polynomial adjustment of a data table by the "least squares"
+method. @var{Mat} is a matrix containing the data, @var{VarList} is a list of variable names (one for each Mat column, but use "-" instead of varnames to ignore Mat columns), @var{depvars} is the name of a dependent variable or a list with one or more names of dependent variables (which names should be in @var{VarList}), @var{maxexpon} is the optional maximum exponent for each independent variable (1 by default), and @var{maxdegree} is the optional maximum polynomial degree (@var{maxexpon} by default); note that the sum of exponents of each term must be equal or smaller than @var{maxdegree}, and if @code{maxdgree = 0} then no limit is applied.
+
+If @var{depvars} is the name of a dependent variable (not in a list), @code{plsquares} returns the adjusted polynomial. If @var{depvars} is a list of one or more dependent variables, @code{plsquares} returns a list with the adjusted polynomial(s). The Coefficients of Determination  are displayed in order to inform about the goodness of fit, which ranges from 0 (no correlation) to 1 (exact correlation). These values are also stored in the global variable @var{DETCOEF} (a list if @var{depvars} is a list).
+
+
+A simple example of multivariable linear adjustment:
+@example
+(%i1) load("plsquares")$
+
+(%i2) plsquares(matrix([1,2,0],[3,5,4],[4,7,9],[5,8,10]),
+                [x,y,z],z);
+     Determination Coefficient for z = .9897039897039897
+                       11 y - 9 x - 14
+(%o2)              z = ---------------
+                              3
+@end example
+
+The same example without degree restrictions:
+@example
+(%i3) plsquares(matrix([1,2,0],[3,5,4],[4,7,9],[5,8,10]),
+                [x,y,z],z,1,0);
+     Determination Coefficient for z = 1.0
+                    x y + 23 y - 29 x - 19
+(%o3)           z = ----------------------
+                              6
+@end example
+
+How many diagonals does a N-sides polygon have? What polynomial degree should be used?
+@example
+(%i4) plsquares(matrix([3,0],[4,2],[5,5],[6,9],[7,14],[8,20]),
+                [N,diagonals],diagonals,5);
+     Determination Coefficient for diagonals = 1.0
+                                2
+                               N  - 3 N
+(%o4)              diagonals = --------
+                                  2
+(%i5) ev(%, N=9);   /* Testing for a 9 sides polygon */
+(%o5)                 diagonals = 27
+@end example
+
+How many ways do we have to put two queens without they are threatened into a n x n chessboard?
+@example
+(%i6) plsquares(matrix([0,0],[1,0],[2,0],[3,8],[4,44]),
+                [n,positions],[positions],4);
+     Determination Coefficient for [positions] = [1.0]
+                         4       3      2
+                      3 n  - 10 n  + 9 n  - 2 n
+(%o6)    [positions = -------------------------]
+                                  6
+(%i7) ev(%[1], n=8); /* Testing for a (8 x 8) chessboard */
+(%o7)                positions = 1288
+@end example
+
+An example with six dependent variables:
+@example
+(%i8) mtrx:matrix([0,0,0,0,0,1,1,1],[0,1,0,1,1,1,0,0],
+                  [1,0,0,1,1,1,0,0],[1,1,1,1,0,0,0,1])$
+(%i8) plsquares(mtrx,[a,b,_And,_Or,_Xor,_Nand,_Nor,_Nxor],
+                     [_And,_Or,_Xor,_Nand,_Nor,_Nxor],1,0);
+      Determination Coefficient for
+[_And, _Or, _Xor, _Nand, _Nor, _Nxor] =
+[1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+(%o2) [_And = a b, _Or = - a b + b + a,
+_Xor = - 2 a b + b + a, _Nand = 1 - a b,
+_Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
+@end example
+
+To use this function write first @code{load("lsquares")}.
+@end deffn
+

@@ -1,0 +1,2271 @@
+@menu
+* Introducci@'on a distrib::
+* Definiciones para distribuciones continuas::
+* Definiciones para distribuciones discretas::
+@end menu
+
+@node Introducci@'on a distrib, Definiciones para distribuciones continuas, distrib, distrib
+@section Introducci@'on a distrib
+
+
+El paquete @code{distrib} contiene un conjunto de funciones para la realizaci@'on de c@'alculos probabil@'{@dotless{i}}sticos con modelos univariantes, tanto discretos como continuos. 
+
+A continuaci@'on un breve recordatorio de las deficiones b@'asicas sobre distribuciones de probabilidad.
+
+Sea @math{f(x)} la @var{funci@'on de densidad} de una variable aleatoria @math{X} absolutamente continua. La @var{funci@'on de distribuci@'on} se define como
+@ifhtml
+@example
+                       x
+                      /
+                      [
+               F(x) = I     f(u) du
+                      ]
+                      /
+                       minf
+@end example
+@end ifhtml
+@ifinfo
+@example
+                       x
+                      /
+                      [
+               F(x) = I     f(u) du
+                      ]
+                      /
+                       minf
+@end example
+@end ifinfo
+@tex
+$$F\left(x\right)=\int_{ -\infty }^{x}{f\left(u\right)\;du}$$
+@end tex
+que es igual a la probabilidad @var{Pr(X <= x)}.
+
+La @var{media} es un par@'ametro de localizaci@'on y se define como
+@ifhtml
+@example
+                     inf
+                    /
+                    [
+           E[X]  =  I   x f(x) dx
+                    ]
+                    /
+                     minf
+@end example
+@end ifhtml
+@ifinfo
+@example
+                     inf
+                    /
+                    [
+           E[X]  =  I   x f(x) dx
+                    ]
+                    /
+                     minf
+@end example
+@end ifinfo
+@tex
+$$E\left[X\right]=\int_{ -\infty }^{\infty }{x\,f\left(x\right)\;dx}$$
+@end tex
+
+La  @var{varianza} es una medida de dispersi@'on,
+@ifhtml
+@example
+                 inf
+                /
+                [                    2
+         V[X] = I     f(x) (x - E[X])  dx
+                ]
+                /
+                 minf
+@end example
+@end ifhtml
+@ifinfo
+@example
+                 inf
+                /
+                [                    2
+         V[X] = I     f(x) (x - E[X])  dx
+                ]
+                /
+                 minf
+@end example
+@end ifinfo
+@tex
+$$V\left[X\right]=\int_{ -\infty }^{\infty }{f\left(x\right)\,\left(x
+ -E\left[X\right]\right)^2\;dx}$$
+@end tex
+que es un n@'umero real positivo. La ra@'{@dotless{i}}z cuadrada de la varianza es la @var{desviaci@'on t@'{@dotless{i}}pica}, @math{D[X]=sqrt(V[X])}, siendo otra medida de dispersi@'on.
+
+El @var{coeficiente de asimetr@'{@dotless{i}}a} es una medida de forma,
+@ifhtml
+@example
+                 inf
+                /
+            1   [                    3
+  SK[X] = ----- I     f(x) (x - E[X])  dx
+              3 ]
+          D[X]  /
+                 minf
+@end example
+@end ifhtml
+@ifinfo
+@example
+                 inf
+                /
+            1   [                    3
+  SK[X] = ----- I     f(x) (x - E[X])  dx
+              3 ]
+          D[X]  /
+                 minf
+@end example
+@end ifinfo
+@tex
+$$SK\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
+@end tex
+
+Y el @var{coeficiente de curtosis} mide el apuntamiento de la densidad,
+@ifhtml
+@example
+                 inf
+                /
+            1   [                    4
+  KU[X] = ----- I     f(x) (x - E[X])  dx - 3
+              4 ]
+          D[X]  /
+                 minf
+@end example
+@end ifhtml
+@ifinfo
+@example
+                 inf
+                /
+            1   [                    4
+  KU[X] = ----- I     f(x) (x - E[X])  dx - 3
+              4 ]
+          D[X]  /
+                 minf
+@end example
+@end ifinfo
+@tex
+$$KU\left[X\right]={{\int_{ -\infty }^{\infty }{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3$$
+@end tex
+Si @math{X} es normal, @math{KU[X]=0}. De hecho, tanto la asimetr@'{@dotless{i}}a como la curtosis son par@'ametros de forma para medir la no normalidad de una distribuci@'on.
+
+Si la variable aleatoria @math{X} es discreta, su funci@'on de densidad, o de @var{probabiliad},  @math{f(x)} toma valores positivos dentro de un conjunto numerable de valores @math{x_i}, y cero en cualquier otro lugar. En este caso, la funci@'on de distribuci@'on es
+@ifhtml
+@example
+                       ====
+                       \
+                F(x) =  >    f(x )
+                       /        i
+                       ====
+                      x <= x
+                       i
+@end example
+@end ifhtml
+@ifinfo
+@example
+                       ====
+                       \
+                F(x) =  >    f(x )
+                       /        i
+                       ====
+                      x <= x
+                       i
+@end example
+@end ifinfo
+@tex
+$$F\left(x\right)=\sum_{x_{i}\leq x}{f\left(x_{i}\right)}$$
+@end tex
+
+La media, varianza, desviaci@'on t@'{@dotless{i}}pica y los coeficientes de asimetr@'{@dotless{i}}a y curtosis adquieren las formas
+@ifhtml
+@example
+                       ====
+                       \
+                E[X] =  >  x  f(x ) ,
+                       /    i    i
+                       ====
+                        x 
+                         i
+@end example
+@end ifhtml
+@ifinfo
+@example
+                       ====
+                       \
+                E[X] =  >  x  f(x ) ,
+                       /    i    i
+                       ====
+                        x 
+                         i
+@end example
+@end ifinfo
+@tex
+$$E\left[X\right]=\sum_{x_{i}}{x_{i}f\left(x_{i}\right)},$$
+@end tex
+
+@ifhtml
+@example
+                ====
+                \                     2
+        V[X] =   >    f(x ) (x - E[X])  ,
+                /        i    i
+                ====
+                 x
+                  i
+@end example
+@end ifhtml
+@ifinfo
+@example
+                ====
+                \                     2
+        V[X] =   >    f(x ) (x - E[X])  ,
+                /        i    i
+                ====
+                 x
+                  i
+@end example
+@end ifinfo
+@tex
+$$V\left[X\right]=\sum_{x_{i}}{f\left(x_{i}\right)\left(x_{i}-E\left[X\right]\right)^2},$$
+@end tex
+
+@ifhtml
+@example
+               D[X] = sqrt(V[X]),
+@end example
+@end ifhtml
+@ifinfo
+@example
+               D[X] = sqrt(V[X]),
+@end example
+@end ifinfo
+@tex
+$$D\left[X\right]=\sqrt{V\left[X\right]},$$
+@end tex
+
+@ifhtml
+@example
+                     ====
+              1      \                     3
+  SK[X] =  -------    >    f(x ) (x - E[X])  
+           D[X]^3    /        i    i
+                     ====
+                      x
+                       i
+@end example
+@end ifhtml
+@ifinfo
+@example
+                     ====
+              1      \                     3
+  SK[X] =  -------    >    f(x ) (x - E[X])  
+           D[X]^3    /        i    i
+                     ====
+                      x
+                       i
+@end example
+@end ifinfo
+@tex
+$$SK\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^3\;dx}}\over{D\left[X\right]^3}}$$
+@end tex
+y
+@ifhtml
+@example
+                     ====
+              1      \                     4
+  KU[X] =  -------    >    f(x ) (x - E[X])   - 3 ,
+           D[X]^4    /        i    i
+                     ====
+                      x
+                       i
+@end example
+@end ifhtml
+@ifinfo
+@example
+                     ====
+              1      \                     4
+  KU[X] =  -------    >    f(x ) (x - E[X])   - 3 ,
+           D[X]^4    /        i    i
+                     ====
+                      x
+                       i
+@end example
+@end ifinfo
+@tex
+$$KU\left[X\right]={{\sum_{x_{i}}{f\left(x\right)\,
+ \left(x-E\left[X\right]\right)^4\;dx}}\over{D\left[X\right]^4}}-3,$$
+@end tex
+respectivamente.
+
+El paquete @code{distrib} incluye funciones para la simulaci@'on de variables aleatorias. Algunas de estas funciones hacen uso de variables opcionales que indican el algoritmo a ejecutar. El m@'etodo general de inversi@'on (basado en el hecho de que si @var{u} es un n@'umero aleatorio generado uniformemente en @math{(0,1)}, entonces @var{F^(-1)(u)} es una variable aleatoria con distribuci@'on @math{F}) est@'a implementado en la mayor@'{@dotless{i}}a de los casos, aunque se trate de una t@'ecnica sub@'optima en t@'erminos de tiempo, pero @'util para compararla con otros algoritmos. En el siguiente ejemplo se compara mediante histogramas el comportamiento de los algoritmos @code{ahrens_cheng} y @code{inverse} para la simulaci@'on de variables chi-cuadrada:
+
+@example
+(%i1) load(descriptive)$
+(%i2) showtime:true$
+Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
+(%i3) rchi2_algorithm: 'ahrens_cheng$ histogram(rchi2(10,500))$
+Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
+Evaluation took 0.70 seconds (0.77 elapsed) using 5.517 MB.
+(%i5) rchi2_algorithm: 'inverse$ histogram(rchi2(10,500))$
+Evaluation took 0.00 seconds (0.00 elapsed) using 80 bytes.
+Evaluation took 10.37 seconds (10.45 elapsed) using 321.278 MB.
+@end example
+
+A fin de hacer comparaciones visuales entre algoritmos para variables discretas, se deber@'{@dotless{i}}a utilizar la funci@'on @code{barsplot} del paquete @code{descriptive}.
+
+N@'otese que a@'un queda trabajo por hacer, puesto que estas funciones de simulaci@'on todav@'{@dotless{i}}a no se han puesto a prueba con tests de bondad de ajuste m@'as rigurosos.
+
+Por favor, cons@'ultese cualquier manual introductorio de probabilidad y estad@'{@dotless{i}}stica para m@'as informaci@'on sobre toda esta parafernalia matem@'atica.
+
+Se sigue cierta convenci@'on a la hora de nombrar las funciones del paquete @code{distrib}. Cada nombre tiene dos partes, el primero hace referencia a la funci@'on o par@'ametro que se quiere calcular,
+@example
+Funciones:
+   Funci@'on de densidad        (den*)
+   Funci@'on de distribuci@'on    (dis*)
+   Cuantil                    (q*)
+   Media                      (mean*)
+   Varianza                   (var*)
+   Desviaci@'on t@'{@dotless{i}}pica          (std*)
+   Coeficiente de asimetr@'{@dotless{i}}a   (skw*)
+   Coeficiente de curtosis    (kur*)
+   Valor aleatorio            (r*)
+@end example
+
+La segunda parte hace referencia expl@'{@dotless{i}}cita al modelo probabil@'{@dotless{i}}stico,
+@example
+Distribuciones continuas:
+   Normal              (*normal)
+   Student             (*student)
+   Chi^2               (*chi2)
+   F                   (*f)
+   Exponencial         (*exp)
+   Lognormal           (*logn)
+   Gamma               (*gamma)
+   Beta                (*beta)
+   Continua uniforme   (*contu)
+   Log@'{@dotless{i}}stica           (*log)
+   Pareto              (*pareto)
+   Weibull             (*weibull)
+   Rayleigh            (*rayleigh)
+   Laplace             (*laplace)
+   Cauchy              (*cauchy)
+   Gumbel              (*gumbel)
+
+Distribuciones discretas:
+   Binomial             (*binomial)
+   Poisson              (*poisson)
+   Bernoulli            (*bernoulli)
+   Geom@'etrica           (*geo)
+   Uniforme discreta    (*discu)
+   Hipergeom@'etrica      (*hypergeo)
+   Binomial negativa    (*negbinom)
+@end example
+
+Por ejemplo, @code{denstudent(x,n)} es la funci@'on de densidad de la distribuci@'on de Student con @var{n} grados de libertad, @code{stdpareto(a,b)} es la desviaci@'on t@'{@dotless{i}}pica de la distribuci@'on de Pareto de par@'ametros @var{a} y @var{b}, y @code{kurpoisson(m)} es el coeficiente de curtosis de la distribuci@'on de Poisson de media @var{m}.
+
+
+Para poder hacer uso del paquete @code{distrib} es necesario cargarlo primero tecleando
+@example
+(%i1) load(distrib)$
+@end example
+
+Para comentarios, errores o sugerencias, por favor contactar conmigo en @var{'mario AT edu DOT xunta DOT es'}.
+
+@node Definiciones para distribuciones continuas, Definiciones para distribuciones discretas, Introducci@'on a distrib, distrib
+@section Definiciones para distribuciones continuas
+
+
+@deffn {Funci@'on} dennormal (@var{x},@var{m},@var{s})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de la variable aleatoria normal @math{N(m,s)}, con @math{s>0}.
+@end deffn
+
+
+@deffn {Funci@'on} disnormal (@var{x},@var{m},@var{s})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de la variable aleatoria normal @math{N(m,s)}, con @math{s>0}. Esta funci@'on se define en t@'erminos de la funci@'on de error,  @code{erf}, de Maxima.
+
+@example
+(%i1) assume(s>0)$ disnormal(x,m,s);
+                         x - m
+                   erf(---------)
+                       sqrt(2) s    1
+(%o2)              -------------- + -
+                         2          2
+@end example
+
+V@'ease tambi@'en @code{erf}.
+@end deffn
+
+
+@deffn {Funci@'on} qnormal (@var{q},@var{m},@var{s})
+Devuelve el @var{q}-cuantil de una variable aleatoria normal @math{N(m,s)}, con @math{s>0}; en otras palabras, es la inversa de  @code{disnormal}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meannormal (@var{m},@var{s})
+Devuelve la media de  una variable aleatoria normal @math{N(m,s)}, con @math{s>0}, es decir @var{m}.
+@end deffn
+
+
+@deffn {Funci@'on} varnormal (@var{m},@var{s})
+Devuelve la varianza de  una variable aleatoria normal @math{N(m,s)}, con @math{s>0}, es decir @var{s^2}.
+@end deffn
+
+@deffn {Funci@'on} stdnormal (@var{m},@var{s})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria normal @math{N(m,s)}, con @math{s>0}, es decir @var{s}.
+@end deffn
+
+
+@deffn {Funci@'on} skwnormal (@var{m},@var{s})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria normal @math{N(m,s)}, con @math{s>0}, que es siempre igual a 0.
+@end deffn
+
+
+@deffn {Funci@'on} kurnormal (@var{m},@var{s})
+Devuelve el coeficiente de curtosis de una variable aleatoria normal @math{N(m,s)}, con @math{s>0}, que es siempre igual a 0.
+@end deffn
+
+
+@defvr {Variable opcional} rnormal_algorithm
+Valor por defecto: @code{box_mueller}
+
+Este es el algoritmo seleccionado para simular variables aleatorias normales. Los algoritmos implementados son @code{box_mueller} y @code{inverse}:
+@itemize @bullet
+@item
+@code{box_mueller}, basado en el algoritmo descrito en Knuth, D.E. (1981) @var{Seminumerical Algorithms. The Art of Computer Programming.}. Addison-Wesley.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+@end itemize
+
+V@'ease tambi@'en @code{rnormal}.
+@end defvr
+
+
+@deffn {Funci@'on} rnormal (@var{m},@var{s})
+@deffnx {Funci@'on} rnormal (@var{m},@var{s},@var{n})
+Devuelve un valor aleatorio  @math{N(m,s)}, con @math{s>0}. Llamando a @code{rnormal} con un tercer argumento @var{n}, se simula una muestra aleatoria de tama@~no @var{n}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rnormal_algorithm}, cuyo valor por defecto es @code{box_mueller}.
+
+Tambi@'en existe una funci@'on en Maxima  para simular variables normales, la cual utiliza el llamado m@'etodo Ziggurat de  Marsaglia.
+
+V@'eanse tambi@'en @code{rnormal_algorithm} y @code{gauss}.
+@end deffn
+
+
+@deffn {Funci@'on} denstudent (@var{x},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Student @math{t(n)}, con @math{n>0}.
+@end deffn
+
+
+@deffn {Funci@'on} disstudent (@var{x},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Student @math{t(n)}, con @math{n>0}. Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
+
+@example
+(%i1) disstudent(1/2, 7/3);
+                                 1  7
+(%o1)                 disstudent(-, -)
+                                 2  3
+(%i2) %,numer;
+(%o2)                .6698450596140417
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qstudent (@var{q},@var{n})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Student @math{t(n)}, con @math{n>0}; en otras palabras, se trata de la inversa de  @code{disstudent}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanstudent (@var{n})
+Devuelve la media de una variable aleatoria de Student @math{t(n)}, con @math{n>0}, que vale siempre 0.
+@end deffn
+
+
+@deffn {Funci@'on} varstudent (@var{n})
+Devuelve la varianza de una variable aleatoria de Student @math{t(n)}, con @math{n>2}.
+
+@example
+(%i1) assume(n>2)$  varstudent(n);
+                            n
+(%o2)                     -----
+                          n - 2
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} stdstudent (@var{n})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Student @math{t(n)}, con @math{n>2}.
+@end deffn
+
+
+@deffn {Funci@'on} skwstudent (@var{n})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Student @math{t(n)}, con @math{n>3}, que vale siempre 0.
+@end deffn
+
+
+@deffn {Funci@'on} kurstudent (@var{n})
+Devuelve el coeficiente de curtosis una variable aleatoria de Student @math{t(n)}, con @math{n>4}.
+@end deffn
+
+
+@defvr {Variable opcional} rstudent_algorithm
+Valor por defecto: @code{ratio}
+
+Es el algoritmo seleccionado para simular variables aleatorias de Student. Los m@'etodos implementados son @code{inverse} y @code{ratio}:
+@itemize @bullet
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+
+@item
+@code{ratio}, basado en el hecho de que si @var{Z} es una variable aleatoria normal @math{N(0,1)} y @math{S^2} es una variable aleatoria chi cuadrada con @var{n} grados de libertad, @math{Chi^2(n)}, entonces
+@ifhtml
+@example
+                           Z
+                 X = -------------
+                     /   2  \ 1/2
+                     |  S   |
+                     | ---  |
+                     \  n   /
+@end example
+@end ifhtml
+@ifinfo
+@example
+                           Z
+                 X = -------------
+                     /   2  \ 1/2
+                     |  S   |
+                     | ---  |
+                     \  n   /
+@end example
+@end ifinfo
+@tex
+$$X={{Z}\over{\sqrt{{S^2}\over{n}}}}$$
+@end tex
+es una variable aleatoria de Student con @var{n} grados de libertad, @math{t(n)}.
+@end itemize
+
+V@'ease tambi@'en @code{rstudent}.
+@end defvr
+
+
+@deffn {Funci@'on} rstudent (@var{n})
+@deffnx {Funci@'on} rstudent (@var{n},@var{m})
+Devuelve un valor aleatorio @math{t(n)}, con @math{n>0}. Llamando a @code{rstudent} con un segundo argumento @var{m}, se obtiene una muestra aleatoria simulada de tama@~no @var{m}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rstudent_algorithm}, cuyo valor por defecto es @code{ratio}.
+
+V@'ease tambi@'en @code{rstudent_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denchi2 (@var{x},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria chi-cuadrado @math{Chi^2(n)}, con @math{n>0}.
+
+La variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}, por lo que cuando Maxima no tiene suficiente informaci@'on para obtener el resultado, devuelve una forma nominal basada en la funci@'on de densidad de la gamma.
+
+@example
+(%i1) denchi2(x,n);
+                                 n
+(%o1)                dengamma(x, -, 2)
+                                 2
+(%i2) assume(x>0, n>0)$  denchi2(x,n);
+                       n/2 - 1   - x/2
+                      x        %e
+(%o2)                 ----------------
+                        n/2       n
+                       2    gamma(-)
+                                  2
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} dischi2 (@var{x},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria chi-cuadrado @math{Chi^2(n)}, con @math{n>0}.
+
+Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal basada en la distribuci@'on gamma, puesto que la variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}.
+
+@example
+(%i1) dischi2(3,4);
+(%o1)               disgamma(3, 2, 2)
+(%i2) dischi2(3,4),numer;
+(%o2)               .4421745996289249
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qchi2 (@var{q},@var{n})
+Devuelve el @var{q}-cuantil de una variable aleatoria @math{Chi^2(n)}, con @math{n>0}; en otras palabras, se trata de la inversa de  @code{dischi2}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+
+Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal basada en la funci@'on cuantil de la gamma, puesto que la variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}.
+
+@example
+(%i1) qchi2(0.99,9);
+(%o1)               21.66599433346194
+(%i2) qchi2(0.99,n);
+                                 n
+(%o2)               qgamma(0.99, -, 2)
+                                 2
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} meanchi2 (@var{n})
+Devuelve la media de  una variable aleatoria  @math{Chi^2(n)}, con @math{n>0}.
+
+La variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}, por lo que cuando Maxima no tiene suficiente informaci@'on para obtener el resultado, devuelve una forma nominal basada en la media de la gamma.
+
+@example
+(%i1) meanchi2(n);
+                                 n
+(%o1)                  meangamma(-, 2)
+                                 2
+(%i2) assume(n>0)$ meanchi2(n);
+(%o3)                        n
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} varchi2 (@var{n})
+Devuelve la varianza de  una variable aleatoria  @math{Chi^2(n)}, con @math{n>0}.
+
+La variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}, por lo que cuando Maxima no tiene suficiente informaci@'on para obtener el resultado, devuelve una forma nominal basada en la varianza de la gamma.
+
+@example
+(%i1) varchi2(n);
+                               n
+(%o1)                 vargamma(-, 2)
+                               2
+(%i2) assume(n>0)$ varchi2(n);
+(%o3)                      2 n
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} stdchi2 (@var{n})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria  @math{Chi^2(n)}, con @math{n>0}.
+
+La variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}, por lo que cuando Maxima no tiene suficiente informaci@'on para obtener el resultado, devuelve una forma nominal basada en la desviaci@'on t@'{@dotless{i}}pica de la gamma.
+
+@example
+(%i1) stdchi2(n);
+                               n
+(%o1)                 stdgamma(-, 2)
+                               2
+(%i2) assume(n>0)$ stdchi2(n);
+(%o3)                sqrt(2) sqrt(n)
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} skwchi2 (@var{n})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria  @math{Chi^2(n)}, con @math{n>0}.
+
+La variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}, por lo que cuando Maxima no tiene suficiente informaci@'on para obtener el resultado, devuelve una forma nominal basada en el coeficiente de asimetr@'{@dotless{i}}a de la gamma.
+
+@example
+(%i1) skwchi2(n);
+                               n
+(%o1)                 skwgamma(-, 2)
+                               2
+(%i2) assume(n>0)$ skwchi2(n);
+                        2 sqrt(2)
+(%o3)                   ---------
+                         sqrt(n)
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} kurchi2 (@var{n})
+Devuelve el coeficiente de curtosis una variable aleatoria  @math{Chi^2(n)}, con @math{n>0}.
+
+La variable aleatoria @math{Chi^2(n)} equivale a una @math{Gamma(n/2,2)}, por lo que cuando Maxima no tiene suficiente informaci@'on para obtener el resultado, devuelve una forma nominal basada en el coeficiente de curtosis de la gamma.
+
+@example
+(%i1) kurchi2(n);
+                               n
+(%o1)                 kurgamma(-, 2)
+                               2
+(%i2) assume(n>0)$ kurchi2(n);
+                            12
+(%o3)                       --
+                            n
+@end example
+@end deffn
+
+
+@defvr {Variable opcional} rchi2_algorithm
+Valor por defecto: @code{ahrens_cheng}
+
+Es el algoritmo seleccionado para simular variables aleatorias chi-cuadrado. Los m@'etodos implementados son @code{ahrens_cheng} y @code{inverse}:
+
+@itemize @bullet
+
+@item
+@code{ahrens_cheng}, basado en la simulaci@'on aleatoria de variables gamma. V@'ease @code{rgamma_algorithm} para m@'as detalles.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rchi2}.
+@end defvr
+
+
+@deffn {Funci@'on} rchi2 (@var{n})
+@deffnx {Funci@'on} rchi2 (@var{n},@var{m})
+Devuelve un valor aleatorio  @math{Chi^2(n)}, con @math{n>0}. Llamando a @code{rchi2} con un segundo argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no @var{m}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rchi2_algorithm}, cuyo valor por defecto es @code{ahrens_cheng}.
+
+V@'ease tambi@'en @code{rchi2_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denf (@var{x},@var{m},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria  @math{F(m,n)}, con @math{m,n>0}.
+@end deffn
+
+
+@deffn {Funci@'on} disf (@var{x},@var{m},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria  @math{F(m,n)}, con @math{m,n>0}.
+
+Esta funci@'on no tiene expresi@'on compacta, por lo que es evaluada num@'ericamente si la variable global @code{numer} vale @code{true}, en caso contrario devuelve una forma nominal.
+
+@example
+(%i1) disf(2,3,9/4);
+                                 9
+(%o1)                 disf(2, 3, -)
+                                 4
+(%i2) %,numer;
+(%o2)                0.66756728179008
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qf (@var{q},@var{m},@var{n})
+Devuelve el @var{q}-cuantil de una variable aleatoria  @math{F(m,n)}, con @math{m,n>0}; en otras palabras, se trata de la inversa de  @code{disf}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+
+Esta funci@'on no tiene expresi@'on compacta, por lo que es evaluada num@'ericamente si la variable global @code{numer} vale @code{true}, en caso contrario devuelve una forma nominal.
+
+@example
+(%i1) qf(2/5,sqrt(3),5);
+                       2
+(%o1)               qf(-, sqrt(3), 5)
+                       5
+(%i2) %,numer;
+(%o2)               0.518947838573693
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} meanf (@var{m},@var{n})
+Devuelve la media de  una variable aleatoria  @math{F(m,n)}, con @math{m>0, n>2}.
+@end deffn
+
+
+@deffn {Funci@'on} varf (@var{m},@var{n})
+Devuelve la varianza de  una variable aleatoria  @math{F(m,n)}, con @math{m>0, n>4}.
+@end deffn
+
+
+@deffn {Funci@'on} stdf (@var{m},@var{n})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria  @math{F(m,n)}, con @math{m>0, n>4}.
+@end deffn
+
+
+@deffn {Funci@'on} skwf (@var{m},@var{n})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria  @math{F(m,n)}, con @math{m>0, n>6}.
+@end deffn
+
+
+@deffn {Funci@'on} kurf (@var{m},@var{n})
+Devuelve el coeficiente de curtosis una variable aleatoria  @math{F(m,n)}, con @math{m>0, n>8}.
+@end deffn
+
+
+@defvr {Variable opcional} rf_algorithm
+Valor por defecto: @code{inverse}
+
+Es el algoritmo seleccionado para simular variables aleatorias @math{F}. Los algoritmos programados son @code{ratio} y @code{inverse}:
+@itemize @bullet
+
+@item
+@code{ratio}, basado en el hecho de que si @var{X} es una variable aleatoria @math{Chi^2(m)} y @math{Y} es una @math{Chi^2(n)}, entonces
+@ifhtml
+@example
+                        n X
+                    F = ---
+                        m Y
+@end example
+@end ifhtml
+@ifinfo
+@example
+                        n X
+                    F = ---
+                        m Y
+@end example
+@end ifinfo
+@tex
+$$F={{n X}\over{m Y}}$$
+@end tex
+es una variable aleatoria @math{F} con @var{m} y @var{n} grados de libertad, @math{F(m,n)}.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rf}.
+@end defvr
+
+
+@deffn {Funci@'on} rf (@var{m},@var{n})
+@deffnx {Funci@'on} rf (@var{m},@var{n},@var{k})
+Devuelve un valor aleatorio  @math{F(m,n)}, con @math{m,n>0}. Llamando a  @code{rf} con un tercer argumento @var{k}, se simular@'a una muestra aleatoria de tama@~no @var{k}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rf_algorithm}, cuyo valor por defecto es @code{inverse}.
+
+V@'ease tambi@'en @code{rf_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denexp (@var{x},@var{m})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la densidad de Weibull.
+
+@example
+(%i1) denexp(x,m);
+                                    1
+(%o1)              denweibull(x, 1, -)
+                                    m
+(%i2) assume(x>0,m>0)$  denexp(x,m);
+                            - m x
+(%o3)                   m %e
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} disexp (@var{x},@var{m})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la distribuci@'on de Weibull.
+
+@example
+(%i1) disexp(x,m);
+                                    1
+(%o1)              disweibull(x, 1, -)
+                                    m
+(%i2) assume(x>0,m>0)$  disexp(x,m);
+                             - m x
+(%o3)                  1 - %e
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qexp (@var{q},@var{m})
+Devuelve el @var{q}-cuantil de una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}; en otras palabras, se trata de la inversa de  @code{disexp}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el cuantil de la Weibull.
+
+@example
+(%i51) qexp(0.56,5);
+(%o1)               .1641961104139661
+(%i2) qexp(0.56,m);
+                                     1
+(%o2)              qweibull(0.56, 1, -)
+                                     m
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} meanexp (@var{m})
+Devuelve la media de  una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la media de la Weibull.
+
+@example
+(%i1) meanexp(m);
+                                   1
+(%o1)               meanweibull(1, -)
+                                   m
+(%i2) assume(m>0)$  meanexp(m);
+                            1
+(%o3)                       -
+                            m
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} varexp (@var{m})
+Devuelve la varianza de  una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la varianza de la Weibull.
+
+
+@example
+(%i1) varexp(m);
+                                   1
+(%o2)                varweibull(1, -)
+                                   m
+(%i3) assume(m>0)$  varexp(m);
+                            1
+(%o4)                       --
+                             2
+                            m
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} stdexp (@var{m})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la desviaci@'on t@'{@dotless{i}}pica de la Weibull.
+
+@example
+(%i1) stdexp(m);
+                                   1
+(%o1)                stdweibull(1, -)
+                                   m
+(%i2) assume(m>0)$  stdexp(m);
+                            1
+(%o3)                       -
+                            m
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} skwexp (@var{m})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el coeficiente de asimetr@'{@dotless{i}}a de la Weibull.
+
+@example
+(%i1) skwexp(m);
+                                   1
+(%o1)                skwweibull(1, -)
+                                   m
+(%i2) assume(m>0)$  skwexp(m);
+(%o3)                       2
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} kurexp (@var{m})
+Devuelve el coeficiente de curtosis una variable aleatoria exponencial @math{Exp(m)}, con @math{m>0}.
+
+La variable aleatoria @math{Exp(m)} equivale a una Weibull @math{Wei(1,1/m)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el coeficiente de curtosis de la Weibull.
+
+@example
+(%i1) kurexp(m);
+                                   1
+(%o1)                kurweibull(1, -)
+                                   m
+(%i2) assume(m>0)$  kurexp(m);
+(%o3)                       6
+@end example
+@end deffn
+
+
+@defvr {Variable opcional} rexp_algorithm
+Valor por defecto: @code{inverse}
+
+Es el algoritmo seleccionado para simular variables aleatoria exponenciales. Los algoritmos programados son @code{inverse}, @code{ahrens_cheng} y @code{ahrens_dieter}
+@itemize @bullet
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@item
+@code{ahrens_cheng}, basado en el hecho de que la variable aleatoria @math{Exp(m)} equivale a una @math{Gamma(1,1/m)}. V@'ease @code{rgamma_algorithm} para m@'as detalles.
+
+@item
+@code{ahrens_dieter}, basada en el algoritmo descrito en Ahrens, J.H. y Dieter, U. (1972) @var{Computer methods for sampling from the exponential and normal distributions.}. Comm, ACM, 15, Oct.,  873-882.
+
+@end itemize
+
+V@'ease tambi@'en @code{rexp}.
+@end defvr
+
+
+@deffn {Funci@'on} rexp (@var{m})
+@deffnx {Funci@'on} rexp (@var{m},@var{k})
+Devuelve un valor aleatorio  @math{Exp(m)}, con @math{m>0}. Llamando a @code{rexp2} con un segundo argumento @var{k}, se simular@'a una muestra aleatoria de tama@~no @var{k}.
+
+Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rexp_algorithm}, cuyo valor por defecto es @code{inverse}.
+
+V@'ease tambi@'en @code{rexp_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denlogn (@var{x},@var{m},@var{s})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.
+@end deffn
+
+
+@deffn {Funci@'on} dislogn (@var{x},@var{m},@var{s})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.   Esta funci@'on se define en t@'erminos de la funci@'on de error,  @code{erf}, de Maxima.
+
+@example
+(%i1) assume(s>0)$  dislogn(x,m,s);
+                        log(x) - m
+                    erf(----------)
+                        sqrt(2) s     1
+(%o2)               --------------- + -
+                           2          2
+@end example
+
+V@'ease tambi@'en @code{erf}.
+@end deffn
+
+
+@deffn {Funci@'on} qlogn (@var{q},@var{m},@var{s})
+Devuelve el @var{q}-cuantil de una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}; en otras palabras, se trata de la inversa de  @code{dislogn}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanlogn (@var{m},@var{s})
+Devuelve la media de  una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varlogn (@var{m},@var{s})
+Devuelve la varianza de  una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.
+@end deffn
+
+@deffn {Funci@'on} stdlogn (@var{m},@var{s})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwlogn (@var{m},@var{s})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurlogn (@var{m},@var{s})
+Devuelve el coeficiente de curtosis una variable aleatoria lognormal @math{log-N(m,s)}, con @math{s>0}.
+@end deffn
+
+
+@deffn {Funci@'on} rlogn (@var{m},@var{s})
+@deffnx {Funci@'on} rlogn (@var{m},@var{s},@var{n})
+Devuelve un valor aleatorio  @math{log-N(m,s)}, con @math{s>0}. Llamando a @code{rlogn} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no @var{n}.
+
+Las variables lognormales se simulan mediante variables normales. Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rnormal_algorithm}, cuyo valor por defecto es @code{box_mueller}.
+
+V@'ease tambi@'en @code{rnormal_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} dengamma (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} disgamma (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}. 
+
+
+Esta funci@'on no tiene expresi@'on compacta, por lo que es evaluada num@'ericamente si la variable global @code{numer} vale @code{true}, en caso contrario devuelve una forma nominal.
+
+@example
+(%i1) disgamma(3,5,21);
+(%o1)                disgamma(3, 5, 21)
+(%i2) %,numer;
+(%o2)               4.402663157135039E-7
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qgamma (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}; en otras palabras, se trata de la inversa de  @code{disgamma}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meangamma (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} vargamma (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}.
+@end deffn
+
+@deffn {Funci@'on} stdgamma (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwgamma (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurgamma (@var{a},@var{b})
+Devuelve el coeficiente de curtosis una variable aleatoria @math{Gamma(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@defvr {Variable opcional} rgamma_algorithm
+Valor por defecto: @code{ahrens_cheng}
+
+Es el algoritmo seleccionado para simular random gamma variates. Algoritmos programados son @code{ahrens_cheng} y @code{inverse}
+@itemize @bullet
+
+@item
+@code{ahrens_cheng}, se trata de una combinaci@'on de dos procedimientos, seg@'un sea el valor del par@'ametro @var{a}:
+
+Para @math{a>=1}, Cheng, R.C.H. y Feast, G.M. (1979). @var{Some simple gamma variate generators}. Appl. Stat., 28, 3, 290-295.
+
+Para @math{0<a<1}, Ahrens, J.H. y Dieter, U. (1974). @var{Computer methods for sampling from gamma, beta, poisson and binomial distributions}. Computing, 12, 223-246.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rgamma}.
+@end defvr
+
+
+@deffn {Funci@'on} rgamma (@var{a},@var{b})
+@deffnx {Funci@'on} rgamma (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Gamma(a,b)}, con @math{a,b>0}. Llamando a @code{rgamma} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no @var{n}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rgamma_algorithm}, cuyo valor por defecto es @code{ahrens_cheng}.
+
+V@'ease tambi@'en @code{rgamma_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denbeta (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+
+@deffn {Funci@'on} disbeta (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}. 
+
+Esta funci@'on no tiene expresi@'on compacta, por lo que es evaluada num@'ericamente si la variable global @code{numer} vale @code{true}, en caso contrario devuelve una forma nominal.
+
+@example
+(%i1) disgamma(1/3,15,2);
+                             1
+(%o1)               disgamma(-, 15, 2)
+                             3
+(%i2) %,numer;
+(%o2)             1.391214268475648E-24
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qbeta (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}; en otras palabras, se trata de la inversa de  @code{disbeta}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanbeta (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varbeta (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}.
+@end deffn
+
+@deffn {Funci@'on} stdbeta (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwbeta (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurbeta (@var{a},@var{b})
+Devuelve el coeficiente de curtosis de una variable aleatoria @math{Beta(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@defvr {Variable opcional} rbeta_algorithm
+Valor por defecto: @code{cheng}
+
+Es el algoritmo seleccionado para simular random beta variates. Algoritmos programados son @code{cheng}, @code{inverse} y @code{ratio}
+@itemize @bullet
+
+@item
+@code{cheng}, es el algoritmo definido en Cheng, R.C.H.  (1978). @var{Generating Beta Variates with Nonintegral Shape Parameters}. Communications of the ACM, 21:317-322
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@item
+@code{ratio}, basado en el hecho de que si @var{X} es una variable aleatoria @math{Gamma(a,1)} y @var{Y} es una @math{Gamma(b,1)}, entonces el cociente @math{X/(X+Y)} se distribuye como una @math{Beta(a,b)}.
+
+@end itemize
+
+V@'ease tambi@'en @code{rbeta}.
+@end defvr
+
+
+@deffn {Funci@'on} rbeta (@var{a},@var{b})
+@deffnx {Funci@'on} rbeta (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio @math{Beta(a,b)}, con @math{a,b>0}. Llamando a @code{rbeta} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rbeta_algorithm}, cuyo valor por defecto es @code{cheng}.
+
+V@'ease tambi@'en @code{rbeta_algorithm}.
+@end deffn
+
+@deffn {Funci@'on} dencontu (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+
+@deffn {Funci@'on} discontu (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+
+@deffn {Funci@'on} qcontu (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}; en otras palabras, se trata de la inversa de  @code{discontu}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meancontu (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+
+@deffn {Funci@'on} varcontu (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+@deffn {Funci@'on} stdcontu (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+
+@deffn {Funci@'on} skwcontu (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+
+@deffn {Funci@'on} kurcontu (@var{a},@var{b})
+Devuelve el coeficiente de curtosis una variable aleatoria uniforme continua @math{cUnif(a,b)}, con @math{a<b}.
+@end deffn
+
+
+@deffn {Funci@'on} rcontu (@var{a},@var{b})
+@deffnx {Funci@'on} rcontu (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{cUnif(a,b)}, con @math{a<b}. Llamando a @code{rcontu} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+Esta funci@'on es una aplicaci@'on directa de la funci@'on  @code{random} de Maxima.
+
+V@'ease tambi@'en @code{random}.
+@end deffn
+
+
+@deffn {Funci@'on} denlog (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} dislog (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} qlog (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}; en otras palabras, se trata de la inversa de  @code{dislog}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanlog (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varlog (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} stdlog (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwlog (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurlog (@var{a},@var{b})
+Devuelve el coeficiente de curtosis una variable aleatoria log@'{@dotless{i}}stica @math{log(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} rlog (@var{a},@var{b})
+@deffnx {Funci@'on} rlog (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{log(a,b)}, con @math{b>0}. Llamando a  @code{rlog} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+@deffn {Funci@'on} denpareto (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} dispareto (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} qpareto (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a,b>0}; en otras palabras, se trata de la inversa de  @code{dispareto}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanpareto (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a>1,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varpareto (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a>2,b>0}.
+@end deffn
+
+@deffn {Funci@'on} stdpareto (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a>2,b>0}.
+@end deffn
+
+
+
+@deffn {Funci@'on} skwpareto (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a>3,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurpareto (@var{a},@var{b})
+Devuelve el coeficiente de curtosis de una variable aleatoria de Pareto  @math{Par(a,b)}, con @math{a>4,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} rpareto (@var{a},@var{b})
+@deffnx {Funci@'on} rpareto (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Par(a,b)}, con @math{a>0,b>0}. Llamando a  @code{rpareto} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+@deffn {Funci@'on} denweibull (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} disweibull (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} qweibull (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}; en otras palabras, se trata de la inversa de  @code{disweibull}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanweibull (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varweibull (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+@deffn {Funci@'on} stdweibull (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+
+@deffn {Funci@'on} skwweibull (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurweibull (@var{a},@var{b})
+Devuelve el coeficiente de curtosis una variable aleatoria de Weibull  @math{Wei(a,b)}, con @math{a,b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} rweibull (@var{a},@var{b})
+@deffnx {Funci@'on} rweibull (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Wei(a,b)}, con @math{a,b>0}. Llamando a  @code{rweibull} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+
+@deffn {Funci@'on} denrayleigh (@var{x},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la densidad de la Weibull.
+
+@example
+(%i1) denrayleigh(x,b);
+                                    1
+(%o1)              denweibull(x, 2, -)
+                                    b
+(%i2) assume(x>0,b>0)$ denrayleigh(x,b);
+                                 2  2
+                        2     - b  x
+(%o3)                2 b  x %e
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} disrayleigh (@var{x},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la distribuci@'on de la Weibull.
+
+@example
+(%i1) disrayleigh(x,b);
+                                    1
+(%o1)              disweibull(x, 2, -)
+                                    b
+(%i2) assume(x>0,b>0)$ disrayleigh(x,b);
+                               2  2
+                            - b  x
+(%o3)                 1 - %e
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qrayleigh (@var{q},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}; en otras palabras, se trata de la inversa de  @code{disrayleigh}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en los cuantiles de la Weibull.
+
+@example
+(%i1) qrayleigh(0.99,b);
+                                     1
+(%o1)              qweibull(0.99, 2, -)
+                                     b
+(%i2) assume(x>0,b>0)$ qrayleigh(0.99,b);
+                    2.145966026289347
+(%o3)               -----------------
+                            b
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} meanrayleigh (@var{b})
+Devuelve la media de  una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la media de la Weibull.
+
+@example
+(%i1) meanrayleigh(b);
+                                   1
+(%o1)               meanweibull(2, -)
+                                   b
+(%i2) assume(b>0)$ meanrayleigh(b);
+                        sqrt(%pi)
+(%o3)                   ---------
+                           2 b
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} varrayleigh (@var{b})
+Devuelve la varianza de  una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la varianza de la Weibull.
+
+@example
+(%i1) varrayleigh(b);
+                                  1
+(%o1)               varweibull(2, -)
+                                  b
+(%i2) assume(b>0)$ varrayleigh(b);
+                             %pi
+                         1 - ---
+                              4
+(%o3)                    -------
+                            2
+                           b
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} stdrayleigh (@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la desviaci@'on t@'{@dotless{i}}pica de la Weibull.
+
+@example
+(%i1) stdrayleigh(b);
+                                  1
+(%o1)               stdweibull(2, -)
+                                  b
+(%i2) assume(b>0)$ stdrayleigh(b);
+                               %pi
+                      sqrt(1 - ---)
+                                4
+(%o3)                 -------------
+                            b
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} skwrayleigh (@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el coeficiente de asimetr@'{@dotless{i}}a de la Weibull.
+
+@example
+(%i1) skwrayleigh(b);
+                                  1
+(%o1)               skwweibull(2, -)
+                                  b
+(%i2) assume(b>0)$ skwrayleigh(b);
+                      3/2
+                   %pi      3 sqrt(%pi)
+                   ------ - -----------
+                     4           4
+(%o3)              --------------------
+                            %pi 3/2
+                       (1 - ---)
+                             4
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} kurrayleigh (@var{b})
+Devuelve el coeficiente de curtosis una variable aleatoria de Rayleigh  @math{Ray(b)}, con @math{b>0}.
+
+La variable aleatoria @math{Ray(b)} equivale a una Weibull @math{Wei(2,1/b)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el coeficiente de curtosis de la Weibull.
+
+@example
+(%i1) kurrayleigh(b);
+                                  1
+(%o1)               kurweibull(2, -)
+                                  b
+(%i2) assume(b>0)$ kurrayleigh(b);
+                               2
+                          3 %pi
+                      2 - ------
+                            16
+(%o3)                 ---------- - 3
+                           %pi 2
+                      (1 - ---)
+                            4
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} rrayleigh (@var{b})
+@deffnx {Funci@'on} rrayleigh (@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Ray(b)}, con @math{b>0}. Llamando a  @code{rrayleigh} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+
+@deffn {Funci@'on} denlaplace (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} dislaplace (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} qlaplace (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Laplace @math{Lap(a,b)}, con @math{b>0}; en otras palabras, se trata de la inversa de  @code{dislaplace}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanlaplace (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varlaplace (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} stdlaplace (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwlaplace (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurlaplace (@var{a},@var{b})
+Devuelve el coeficiente de curtosis una variable aleatoria de Laplace  @math{Lap(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} rlaplace (@var{a},@var{b})
+@deffnx {Funci@'on} rlaplace (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Lap(a,b)}, con @math{b>0}. Llamando a  @code{rlaplace} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+
+@deffn {Funci@'on} dencauchy (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Cauchy  @math{Cau(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} discauchy (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Cauchy  @math{Cau(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} qcauchy (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Cauchy  @math{Cau(a,b)}, con @math{b>0}; en otras palabras, se trata de la inversa de  @code{discauchy}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} rcauchy (@var{a},@var{b})
+@deffnx {Funci@'on} rcauchy (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Cau(a,b)}, con @math{b>0}. Llamando a  @code{rcauchy} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+
+@deffn {Funci@'on} dengumbel (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de densidad de una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} disgumbel (@var{x},@var{a},@var{b})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} qgumbel (@var{q},@var{a},@var{b})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}; en otras palabras, se trata de la inversa de  @code{disgumbel}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meangumbel (@var{a},@var{b})
+Devuelve la media de  una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+
+@example
+(%i1) assume(b>0)$  meangumbel(a,b);
+(%o2)                  %gamma b + a
+@end example
+donde el s@'{@dotless{i}}mbolo @code{%gamma} representa la constante de Euler-Mascheroni. V@'ease tambi@'en @code{%gamma}.
+@end deffn
+
+
+@deffn {Funci@'on} vargumbel (@var{a},@var{b})
+Devuelve la varianza de  una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} stdgumbel (@var{a},@var{b})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwgumbel (@var{a},@var{b})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+
+@example
+(%i1) assume(b>0)$  skwgumbel(a,b);
+                    12 sqrt(6) zeta(3)
+(%o2)               ------------------
+                              3
+                           %pi
+(%i3) numer:true$ skwgumbel(a,b);
+(%o4)               1.139547099404649
+@end example
+donde @code{zeta} representa la funci@'on zeta de Riemann.
+@end deffn
+
+
+@deffn {Funci@'on} kurgumbel (@var{a},@var{b})
+Devuelve el coeficiente de curtosis de una variable aleatoria de Gumbel  @math{Gum(a,b)}, con @math{b>0}.
+@end deffn
+
+
+@deffn {Funci@'on} rgumbel (@var{a},@var{b})
+@deffnx {Funci@'on} rgumbel (@var{a},@var{b},@var{n})
+Devuelve un valor aleatorio  @math{Gum(a,b)}, con @math{b>0}. Llamando a  @code{rgumbel} con un tercer argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+S@'olo se ha programado el m@'etodo inverso.
+@end deffn
+
+
+@node Definiciones para distribuciones discretas,  , Definiciones para distribuciones continuas, distrib
+@section Definiciones para distribuciones discretas
+
+
+@deffn {Funci@'on} denbinomial (@var{x},@var{n},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} disbinomial (@var{x},@var{n},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+
+Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
+
+@example
+(%i1) disbinomial(5,7,1/6);
+                                     1
+(%o1)              disbinomial(5, 7, -)
+                                     6
+(%i2) disbinomial(5,7,1/6),numer;
+(%o2)               .9998713991769548
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qbinomial (@var{q},@var{n},@var{p})
+Devuelve el @var{q}-cuantil de una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo; en otras palabras, se trata de la inversa de  @code{disbinomial}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanbinomial (@var{n},@var{p})
+Devuelve la media de  una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} varbinomial (@var{n},@var{p})
+Devuelve la varianza de  una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} stdbinomial (@var{n},@var{p})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} skwbinomial (@var{n},@var{p})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria binomial @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} kurbinomial (@var{n},@var{p})
+Devuelve el coeficiente de curtosis de una variable aleatoria binomial  @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@defvr {Variable opcional} rbinomial_algorithm
+Valor por defecto: @code{kachit}
+
+Es el algoritmo seleccionado para simular variables binomiales. Los algoritmos programados son @code{kachit}, @code{bernoulli} y @code{inverse}:
+@itemize @bullet
+
+@item
+@code{kachit}, basado en el algoritmo descrito en Kachitvichyanukul, V. y Schmeiser, B.W. (1988) @var{Binomial Random Variate Generation}. Communications of the ACM, 31, Feb., 216.
+
+@item
+@code{bernoulli}, basado en la simulaci@'on de ensayos de Bernoulli.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rbinomial}.
+@end defvr
+
+
+@deffn {Funci@'on} rbinomial (@var{n},@var{p})
+@deffnx {Funci@'on} rbinomial (@var{n},@var{p},@var{m})
+Devuelve un valor aleatorio  @math{B(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Llamando a  @code{rbinomial} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
+
+Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rbinomial_algorithm}, cuyo valor por defecto es @code{kachit}.
+
+V@'ease tambi@'en @code{rbinomial_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denpoisson (@var{x},@var{m})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria de Poisson @math{Poi(m)}, con @math{m>0}.
+@end deffn
+
+
+@deffn {Funci@'on} dispoisson (@var{x},@var{m})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Poisson @math{Poi(m)}, con @math{m>0}.
+
+Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
+
+@example
+(%i1) dispoisson(3,5);
+(%o1)                dispoisson(3, 5)
+(%i2) dispoisson(3,5),numer;
+(%o2)               .2650259152973617
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qpoisson (@var{q},@var{m})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Poisson @math{Poi(m)}, con @math{m>0}; en otras palabras, se trata de la inversa de  @code{dispoisson}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanpoisson (@var{m})
+Devuelve la media de una variable aleatoria de Poisson @math{Poi(m)}, con  @math{m>0}.
+@end deffn
+
+
+@deffn {Funci@'on} varpoisson (@var{m})
+Devuelve la varianza de  una variable aleatoria de Poisson @math{Poi(m)}, con  @math{m>0}.
+@end deffn
+
+
+@deffn {Funci@'on} stdpoisson (@var{m})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Poisson @math{Poi(m)}, con @math{m>0}.
+@end deffn
+
+
+@deffn {Funci@'on} skwpoisson (@var{m})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Poisson @math{Poi(m)}, con @math{m>0}.
+@end deffn
+
+
+@deffn {Funci@'on} kurpoisson (@var{m})
+Devuelve el coeficiente de curtosis de una variable aleatoria de Poisson  @math{Poi(m)}, con @math{m>0}.
+@end deffn
+
+
+@defvr {Variable opcional} rpoisson_algorithm
+Valor por defecto: @code{kachit}
+
+Es el algoritmo seleccionado para simular variables de Poisson. Los algoritmos programados son @code{ahrens_dieter} y @code{inverse}:
+@itemize @bullet
+
+@item
+@code{ahrens_dieter}, basado en el algoritmo descrito en Ahrens, J.H. and Dieter, U. (1982) @var{Computer Generation of Poisson Deviates From Modified Normal Distributions}. ACM Trans. Math. Software, 8, 2, June,163-179.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rpoisson}.
+@end defvr
+
+
+@deffn {Funci@'on} rpoisson (@var{m})
+@deffnx {Funci@'on} rpoisson (@var{m},@var{n})
+Devuelve un valor aleatorio  @math{Poi(m)}, con @math{m>0}. Llamando a  @code{rpoisson} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rpoisson_algorithm}, cuyo valor por defecto es @code{ahrens_dieter}.
+
+V@'ease tambi@'en @code{rpoisson_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} denbernoulli (@var{x},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}.
+
+La variable aleatoria @math{Ber(p)} equivale a una binomial @math{B(1,p)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la funci@'on de probabilidad de la binomial.
+
+@example
+(%i1) denbernoulli(1,p);
+(%o1)              denbinomial(1, 1, p)
+(%i2) assume(0<p,p<1)$ denbernoulli(1,p);
+(%o3)                       p
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} disbernoulli (@var{x},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} qbernoulli (@var{q},@var{p})
+Devuelve el @var{q}-cuantil de una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}; en otras palabras, se trata de la inversa de  @code{disbernoulli}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanbernoulli (@var{p})
+Devuelve la media de  una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}.
+
+La variable aleatoria @math{Ber(p)} equivale a una binomial @math{B(1,p)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la media de la binomial.
+
+@example
+(%i1) meanbernoulli(p);
+(%o1)               meanbinomial(1, p)
+(%i2) assume(0<p,p<1)$ meanbernoulli(p);
+(%o3)                       p
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} varbernoulli (@var{p})
+Devuelve la varianza de  una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}.
+
+La variable aleatoria @math{Ber(p)} equivale a una binomial @math{B(1,p)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la varianza de la binomial.
+
+@example
+(%i1) varbernoulli(p);
+(%o1)               varbinomial(1, p)
+(%i2) assume(0<p,p<1)$ varbernoulli(p);
+(%o3)                   (1 - p) p
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} stdbernoulli (@var{p})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}.
+
+La variable aleatoria @math{Ber(p)} equivale a una binomial @math{B(1,p)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en la desviaci@'on t@'{@dotless{i}}pica de la binomial.
+
+@example
+(%i1) stdbernoulli(p);
+(%o1)              stdbinomial(1, p)
+(%i2) assume(0<p,p<1)$ stdbernoulli(p);
+(%o3)             sqrt(1 - p) sqrt(p)
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} skwbernoulli (@var{p})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria de Bernoulli @math{Ber(p)}, con @math{0<p<1}.
+
+La variable aleatoria @math{Ber(p)} equivale a una binomial @math{B(1,p)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el coeficiente de asimetr@'{@dotless{i}}a de la binomial.
+
+@example
+(%i1) skwbernoulli(p);
+(%o1)              skwbinomial(1, p)
+(%i2) assume(0<p,p<1)$ skwbernoulli(p);
+                        1 - 2 p
+(%o3)             -------------------
+                  sqrt(1 - p) sqrt(p)
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} kurbernoulli (@var{p})
+Devuelve el coeficiente de curtosis una variable aleatoria de Bernoulli  @math{Ber(p)}, con @math{0<p<1}.
+
+La variable aleatoria @math{Ber(p)} equivale a una binomial @math{B(1,p)}, por lo que si Maxima no tiene suficiente informaci@'on para calcular el resultado, devolver@'a una forma nominal basada en el coeficiente de curtosis de la binomial.
+
+@example
+(%i1) kurbernoulli(p);
+(%o1)              kurbinomial(1, p)
+(%i2) assume(0<p,p<1)$ kurbernoulli(p);
+                    1 - 6 (1 - p) p
+(%o3)               ---------------
+                       (1 - p) p
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} rbernoulli (@var{p})
+@deffnx {Funci@'on} rbernoulli (@var{p},@var{n})
+Devuelve un valor aleatorio  @math{Ber(p)}, con @math{0<p<1}. Llamando a  @code{rbernoulli} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+Es aplicaci@'on directa de la funci@'on @code{random} de Maxima.
+
+V@'ease tambi@'en @code{random}.
+@end deffn
+
+
+@deffn {Funci@'on} dengeo (@var{x},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} disgeo (@var{x},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} qgeo (@var{q},@var{p})
+Devuelve el @var{q}-cuantil de una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}; en otras palabras, se trata de la inversa de  @code{disgeo}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meangeo (@var{p})
+Devuelve la media de  una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} vargeo (@var{p})
+Devuelve la varianza de  una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} stdgeo (@var{p})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} skwgeo (@var{p})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria geom@'etrica @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@deffn {Funci@'on} kurgeo (@var{p})
+Devuelve el coeficiente de curtosis de una variable aleatoria geom@'etrica  @math{Geo(p)}, con @math{0<p<1}.
+@end deffn
+
+
+@defvr {Variable opcional} rgeo_algorithm
+Valor por defecto: @code{bernoulli}
+
+Es el algoritmo seleccionado para simular variables geom@'etricas. Los algoritmos programados son @code{bernoulli}, @code{devroye} y @code{inverse}:
+@itemize @bullet
+
+@item
+@code{bernoulli}, basado en la simulaci@'on de ensayos de Bernoulli.
+
+@item
+@code{devroye}, basado en el algoritmo descrito en Devroye, L. (1986) @var{Non-Uniform Random Variate Generation.} Springer Verlag, p. 480.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rgeo}.
+@end defvr
+
+
+@deffn {Funci@'on} rgeo (@var{p})
+@deffnx {Funci@'on} rgeo (@var{p},@var{n})
+Devuelve un valor aleatorio  @math{Geo(p)}, con @math{0<p<1}. Llamando a  @code{rgeo} con un segundo argumento @var{n}, se simular@'a una muestra aleatoria de tama@~no  @var{n}.
+
+Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rgeo_algorithm}, cuyo valor por defecto es @code{bernoulli}.
+
+V@'ease tambi@'en @code{rgeo_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} dendiscu (@var{x},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} disdiscu (@var{x},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} qdiscu (@var{q},@var{n})
+Devuelve el @var{q}-cuantil de una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo; en otras palabras, se trata de la inversa de  @code{disdiscu}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meandiscu (@var{n})
+Devuelve la media de  una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} vardiscu (@var{n})
+Devuelve la varianza de  una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} stddiscu (@var{n})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} skwdiscu (@var{n})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} kurdiscu (@var{n})
+Devuelve el coeficiente de curtosis de una variable aleatoria uniforme discreta @math{dUnif(n)}, con @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} rdiscu (@var{n})
+@deffnx {Funci@'on} rdiscu (@var{n},@var{m})
+Devuelve un valor aleatorio  @math{dUnif(n)}, con @math{n} entero positivo. Llamando a  @code{rdiscu} con un segundo argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
+
+Se trata de una aplicaci@'on directa de la funci@'on @code{random} de Maxima.
+
+V@'ease tambi@'en @code{random}.
+@end deffn
+
+
+@deffn {Funci@'on} denhypergeo (@var{x},@var{n1},@var{n2},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+
+@deffn {Funci@'on} dishypergeo (@var{x},@var{n1},@var{n2},@var{n})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on of una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+
+@deffn {Funci@'on} qhypergeo (@var{q},@var{n1},@var{n2},@var{n})
+Devuelve el @var{q}-cuantil de una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}; en otras palabras, se trata de la inversa de  @code{dishypergeo}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meanhypergeo (@var{n1},@var{n2},@var{n})
+Devuelve la media de  una variable aleatoria uniforme discreta @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+
+@deffn {Funci@'on} varhypergeo (@var{n1},@var{n2},@var{n})
+Devuelve la varianza de  una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+
+@deffn {Funci@'on} stdhypergeo (@var{n1},@var{n2},@var{n})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+
+@deffn {Funci@'on} skwhypergeo (@var{n1},@var{n2},@var{n})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+
+@deffn {Funci@'on} kurhypergeo (@var{n1},@var{n2},@var{n})
+Devuelve el coeficiente de curtosis de una variable aleatoria hipergeom@'etrica @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}.
+@end deffn
+
+@defvr {Variable opcional} rhypergeo_algorithm
+Valor por defecto: @code{kachit}
+
+Es el algoritmo seleccionado para simular variables hipergeom@'etricas. Los algoritmos programados son @code{kachit} and @code{inverse}:
+@itemize @bullet
+
+@item
+@code{kachit}, basado en el algoritmo descrito en Kachitvichyanukul, V., Schmeiser, B.W. (1985) @var{Computer generation of hypergeometric random variates.} Journal of Statistical Computation and Simulation 22, 127-145.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rhypergeo}.
+@end defvr
+
+
+@deffn {Funci@'on} rhypergeo (@var{n1},@var{n2},@var{n})
+@deffnx {Funci@'on} rhypergeo (@var{n1},@var{n2},@var{n},@var{m})
+Devuelve un valor aleatorio  @math{Hyp(n1,n2,n)}, con @var{n1}, @var{n2} y @var{n} enteros positivos y @math{n<=n1+n2}. Llamando a  @code{rhypergeo} con un cuarto argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
+
+Hay dos algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rhypergeo_algorithm}, cuyo valor por defecto es @code{kachit}.
+
+V@'ease tambi@'en @code{rhypergeo_algorithm}.
+@end deffn
+
+
+@deffn {Funci@'on} dennegbinom (@var{x},@var{n},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de probabilidad de una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} disnegbinom (@var{x},@var{n},@var{p})
+Devuelve el valor correspondiente a @var{x} de la funci@'on de distribuci@'on de una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} y @math{n} entero positivo.
+
+Esta funci@'on no tiene expresi@'on compacta y se calcula num@'ericamente si la variable global @code{numer} vale @code{true}, en otro caso devuelve una expresi@'on nominal.
+
+@example
+(%i1) disnegbinom(3,4,1/8);
+                                     1
+(%o1)              disnegbinom(3, 4, -)
+                                     8
+(%i2) disnegbinom(3,4,1/8),numer;
+(%o2)              .006238937377929698
+@end example
+@end deffn
+
+
+@deffn {Funci@'on} qnegbinom (@var{q},@var{n},@var{p})
+Devuelve el @var{q}-cuantil de una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} y @math{n} entero positivo; en otras palabras, se trata de la inversa de  @code{disnegbinom}. El argumento @var{q} debe ser un n@'umero de @math{[0,1]}.
+@end deffn
+
+
+@deffn {Funci@'on} meannegbinom (@var{n},@var{p})
+Devuelve la media de  una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} and @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} varnegbinom (@var{n},@var{p})
+Devuelve la varianza de  una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} and @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} stdnegbinom (@var{n},@var{p})
+Devuelve la desviaci@'on t@'{@dotless{i}}pica de  una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} and @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} skwnegbinom (@var{n},@var{p})
+Devuelve el coeficiente de asimetr@'{@dotless{i}}a de una variable aleatoria binomial negativa @math{NB(n,p)}, con @math{0<p<1} and @math{n} entero positivo.
+@end deffn
+
+
+@deffn {Funci@'on} kurnegbinom (@var{n},@var{p})
+Devuelve el coeficiente de curtosis una variable aleatoria binomial negativa  @math{NB(n,p)}, con @math{0<p<1} and @math{n} entero positivo.
+@end deffn
+
+
+@defvr {Variable opcional} rnegbinom_algorithm
+Valor por defecto: @code{bernoulli}
+
+Es el algoritmo seleccionado para simular variable binomiales negativas. Los algoritmos programados son @code{devroye}, @code{bernoulli} y @code{inverse}:
+@itemize @bullet
+
+@item
+@code{devroye}, basado en el algoritmo descrito en Devroye, L. (1986) @var{Non-Uniform Random Variate Generation}. Springer Verlag, p. 480.
+
+@item
+@code{bernoulli}, basado en la simulaci@'on de ensayos de Bernoulli.
+
+@item
+@code{inverse}, basado en el m@'etodo inverso.
+
+@end itemize
+
+V@'ease tambi@'en @code{rnegbinom}.
+@end defvr
+
+
+@deffn {Funci@'on} rnegbinoml (@var{n},@var{p})
+@deffnx {Funci@'on} rnegbinom (@var{n},@var{p},@var{m})
+Devuelve un valor aleatorio  @math{NB(n,p)}, con @math{0<p<1} y @math{n} entero positivo. Llamando a  @code{rnegbinoml} con un tercer argumento @var{m}, se simular@'a una muestra aleatoria de tama@~no  @var{m}.
+
+
+Hay tres algoritmos programados para esta funci@'on, el que se vaya a utilizar tendr@'a que ser seleccionado d@'andole un valor a la variable global @code{rnegbinom_algorithm}, cuyo valor por defecto es @code{bernoulli}.
+
+V@'ease tambi@'en @code{rnegbinom_algorithm}.
+@end deffn
+
