@@ -19,7 +19,10 @@
 		      exptind quotind splist l ans splist arcpart coef
 		      aa dict exptflag base* powerlist a b k stack
 		      ratroot rootlist square e w y expres arg var
-		      *powerl* c d exp chebyform ratrootform trigarg
+		      *powerl* c d exp
+		      #+nil chebyform
+		      #+nil ratrootform
+		      #+nil trigarg
 		      #+nil notsame
 		      #+nil yy
 		      #+nil b1
@@ -109,7 +112,8 @@
   (let ((ex (simplify ($factor x))))
     (if (not (alike1 ex x)) ex)))
 
-(defun intform (expres) 
+(defun intform (expres)
+  (declare (special *chebyform* *ratrootform*))
   (cond
    ((freevar expres) nil)
    ((atom expres) nil)
@@ -184,19 +188,25 @@
 			 (t (intform (setq exp nexp))))))))
    ((not (rat8 (cadr expres)))
     (intform (cadr expres)))
-   ((and (setq w (m2 (cadr expres) ratrootform nil))	;e*(a*x+b) / (c*x+d)
+   ((and (setq w (m2 (cadr expres) *ratrootform* nil))	;e*(a*x+b) / (c*x+d)
 	 (denomfind (caddr expres)))			;expon is ratnum
     (cond ((setq w (prog2
 		       (setq *powerl* t)
 		       (ratroot exp var (cadr expres) w))) w)
 	  (t (inte exp var))))
    ((not (integerp1 (caddr expres)))	;2*exponent not integer
-    (cond ((m2 exp chebyform nil)
+    (cond ((m2 exp *chebyform* nil)
 	   (chebyf exp var))
 	  (t (intform (cadr expres)))))
    ((setq w (m2 (cadr expres) d nil))			;sqrt(c*x^2+b*x+a)
+    #+nil
+    (format t "expres = sqrt(c*x^2+b*x+a)~%")
+    ;; I think this is method 5, arctrigonometric substitutions.
+    ;; (Moses, pg 80.)  The integrand is of the form
+    ;; R(x,sqrt(c*x^2+b*x+a)).  This method first eliminates the b
+    ;; term of the quadratic, and then uses an arctrig substitution.
     (inte exp var))
-   ((m2 exp chebyform nil)
+   ((m2 exp *chebyform* nil)
     (chebyf exp var))
    ((not (m2 (setq w ($expand (cadr expres)))
 	     (cadr expres) nil))
@@ -238,8 +248,9 @@
 		(arcfuncp (cadr ex))))))
 
 (defun integrator (exp var)
-  (prog (y arg *powerl* const b w c d e ratrootform
-	 chebyform arcpart coef integrand)
+  (prog (y arg *powerl* const b w c d e *ratrootform*
+	 *chebyform* arcpart coef integrand)
+     (declare (special *ratrootform* *chebyform*))
      (if (freevar exp) (return (mul2* exp var)))
      (setq w (partition exp var 1))
      (setq const (car w))
@@ -261,41 +272,49 @@
 	    (return (mul2* const (intsum exp var)))))
      (cond ((setq y (diffdiv exp var))
 	    (return (mul2* const y))))
+     ;; At this point, we have EXP as a product of terms.  Make Y a
+     ;; list of the terms of the product.
      (setq y (cond ((eq (caar exp) 'mtimes)
 		    (cdr exp))
 		   (t
 		    (list exp))))
+
      #+nil
      (format t "y = ~S~%" y)
      ;; Pattern to match b*x + a
      (setq c '((mplus)
 	       ((coeffpt) (b freevar) (x varp))
 	       ((coeffpt) (a freevar))))
-     ;; Pattern to match ?
-     (setq ratrootform '((mtimes)
-			 ((coefftt) (e freevar))
-			 ((mplus)
-			  ((coeffpt) (a freevar) (var varp))
-			  ((coeffpt) (b freevar)))
+     ;; I think this is matching the pattern e*(a*x+b)/(c*x+d), where
+     ;; a, b, c, d, and e are free of x, and x is the variable of
+     ;; integration.
+     (setq *ratrootform* '((mtimes)
+			   ((coefftt) (e freevar))
+			   ((mplus)
+			    ((coeffpt) (a freevar) (var varp))
+			    ((coeffpt) (b freevar)))
+			   ((mexpt)
+			    ((mplus)
+			     ((coeffpt) (c freevar) (var varp))
+			     ((coeffpt) (d freevar)))
+			    -1)))
+     ;; This is for matching the pattern a*x^r1*(c1+c2*x^q)^r2.
+     (setq *chebyform* '((mtimes)
+			 ((mexpt) (var varp) (r1 numberp))
 			 ((mexpt)
 			  ((mplus)
-			   ((coeffpt) (c freevar) (var varp))
-			   ((coeffpt) (d freevar)))
-			  -1)))
-     (setq chebyform '((mtimes)
-		       ((mexpt) (var varp) (r1 numberp))
-		       ((mexpt)
-			((mplus)
-			 ((mtimes)
-			  ((coefftt) (c2 freevar))
-			  ((mexpt) (var varp) (q free1)))
-			 ((coeffpp) (c1 freevar)))
-			(r2 numberp))
-		       ((coefftt) (a freevar))))
+			   ((mtimes)
+			    ((coefftt) (c2 freevar))
+			    ((mexpt) (var varp) (q free1)))
+			   ((coeffpp) (c1 freevar)))
+			  (r2 numberp))
+			 ((coefftt) (a freevar))))
+     ;; This is the pattern c*x^2 + b * x + a.
      (setq d '((mplus)
 	       ((coeffpt) (c freevar) ((mexpt) (x varp) 2))
 	       ((coeffpt) (b freevar) (x varp))
 	       ((coeffpt) (a freevar))))
+     ;; This is the pattern (a*x+b)*(c*x+d)
      (setq e '((mtimes)
 	       ((mplus)
 		((coeffpt) (a freevar) (var varp))
@@ -303,12 +322,21 @@
 	       ((mplus)
 		((coeffpt) (c freevar) (var varp))
 		((coeffpt) (d freevar)))))
+     ;; Not sure what this loop is meant to do, but we're looking at
+     ;; each term of the product and doing something with it if we
+     ;; can.
      loop
      (cond ((rat8 (car y))
+	    #+nil
+	    (format t "In loop, go skip~%")
 	    (go skip))
 	   ((setq w (intform (car y)))
+	    #+nil
+	    (format t "In loop, case intform~%")
 	    (return (mul2* const w)))
 	   (t
+	    #+nil
+	    (format t "In loop, go special~%")
 	    (go special)))
      skip
      (setq y (cdr y))
@@ -320,6 +348,7 @@
      (separc exp)	      ;SEPARC SETQS ARCPART AND COEF SUCH THAT
 					;COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
 					;ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
+
      #+nil
      (progn
        (format t "arcpart = ~A~%" arcpart)
@@ -561,7 +590,7 @@
   (if (rat8 ex)
       (ratint ex var)
       (integrator ex var)))
-	 
+
 (defun integerp2 (x)
   (let (u)
     (cond ((not (numberp x)) nil)
@@ -826,7 +855,7 @@
   (memq (car x) '(%sin %cos)))
 
 (defun supertrig (exp)
-  (declare (special *notsame*))
+  (declare (special *notsame* *trigarg*))
   (cond ((freevar exp) t)
 	((atom exp) nil)
 	((memq (caar exp) '(mplus mtimes))
@@ -841,7 +870,7 @@
 	 (supertrig (cadr exp)))
 	((memq (caar exp)
 	       '(%sin %cos %tan %sec %cot %csc))
-	 (cond ((m2 (cadr exp) trigarg nil) t)
+	 (cond ((m2 (cadr exp) *trigarg* nil) t)
 	       ((m2 (cadr exp)
 		    '((mplus)
 		      ((coeffpt) (b freevar) (x varp))
@@ -858,8 +887,9 @@
 	(t (cons (subst2s (car ex) pat)
 		 (subst2s (cdr ex) pat)))))
 
-(defun monstertrig (exp var trigarg)
-  (if (not (atom trigarg))
+(defun monstertrig (exp var *trigarg*)
+  (declare (special *trigarg*))
+  (if (not (atom *trigarg*))
       (return-from monstertrig (rischint exp var)))
   (prog (*notsame* w a b y d) 
 	(cond
@@ -954,7 +984,7 @@
 				       ((mtimes)
 					2
 					((mplus) m n))))))))))
-   b    (cond ((not (setq y (prog2 (setq trigarg var)
+   b    (cond ((not (setq y (prog2 (setq *trigarg* var)
 				   (m2 exp
 				       '((mtimes)
 					 ((coefftt) (a freevar))
@@ -979,15 +1009,15 @@
 				      'x
 				      (supersinx (sch-replace y 'n)))))))
 	  var))
-   a    (setq w (subst2s exp trigarg))
+   a    (setq w (subst2s exp *trigarg*))
 	(setq b (cdr (sassq 'b
-			    (m2 trigarg
+			    (m2 *trigarg*
 				'((mplus)
 				  ((coeffpt) (b freevar) (x varp))
 				  ((coeffpt) (a freevar)))
 				nil)
 			    'nill)))
-	(setq a (substint trigarg
+	(setq a (substint *trigarg*
 			    var
 			    (trigint (div* w b) var)))
    (cond((m2 a '((mtimes)((coefftt)(d freevar))
