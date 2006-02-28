@@ -123,6 +123,23 @@
    (cdras 'p assoclist)
    (cdras 'e0 assoclist)))
 
+;; Integrating the form (e*x^2+f*x+g)^m*r0(x)^e0.
+#+nil
+(defun intir3-ref (assoclist x e f g r0)
+  ((lambda (signdisc d p e0)
+     (cond ((eq signdisc '$positive)
+	    (pns-intir3 x e f g d p r0 e0))
+	   ((eq signdisc '$negative)
+	    ;; This means e*x^2+f*x+g has no real roots.  What should
+	    ;; we do?  Previously we treated it the same as if we had
+	    ;; real roots, but I don't think this is right.
+	    nil)
+	   (t (zs-intir3 x e f d p r0 e0))))
+   (signdiscr e f g)
+   (cdras 'd assoclist)
+   (cdras 'p assoclist)
+   (cdras 'e0 assoclist)))
+
 (defun root+anything (exp var)
   (m2 exp '((mplus) ((coeffpt) (c nonzerp) ((mexpt) (u hasvar) (v integerpfr)))
 	    ((coeffpp)(c true))) nil))
@@ -158,14 +175,14 @@
 
 (defun pns-intir3 (x e f g d p r0 e0)
   ((lambda (discr)
-     ((lambda (p*r0^e0 2*e*x+f 2*e*d*invdisc)
-	(mul  2*e*d*invdisc
-	      (sub (intir2 (mul (inv (sub 2*e*x+f discr))
-				p*r0^e0)
-			   x)
-		   (intir2 (mul(inv (add 2*e*x+f discr))
+     ((lambda (p*r0^e0 2*e*x+f 2*e^2*d*invdisc)
+	(mul 2*e^2*d*invdisc
+	     (sub (intir2 (mul (inv (sub 2*e*x+f discr))
 			       p*r0^e0)
-			   x))))
+			  x)
+		  (intir2 (mul (inv (add 2*e*x+f discr))
+			       p*r0^e0)
+			  x))))
       (mul p (power r0 e0))
       (add (mul 2 e x) f)
       (mul 2 e e d (inv discr))))
@@ -205,7 +222,7 @@
 	   funct (mul -1 (div (meval (mul denom funct))
 			      (add (mul f x) e))))
      jump
-     ;; Apply a linear substitution y = f*x+e.  That is x = (y-e)/f.
+     ;; Apply the linear substitution y = f*x+e.  That is x = (y-e)/f.
      ;; Then use INTIRA to integrate this.  The integrand becomes
      ;; something like p(y)*y^m and other terms.
      (setq expr
@@ -288,6 +305,7 @@
 		 (t (list expr))))))
 
 ;; Integrate a function of the form d*p(y)*y^m*(a*y^2+b*x+c)^n.
+;; n is half of an integer.
 (defun intira (funct x)
   (prog (a b c ec-1 d m n assoclist pluspowfo1 pluspowfo2 minuspowfo
 	 polfact signn poszpowlist negpowlist r12)
@@ -305,16 +323,25 @@
      (if (equal c 0) (return nil))
      (setq m (cdras 'm assoclist)
 	   polfact (cdras 'p assoclist)
+	   ;; We know that n is of the form s/2, so just make n = s,
+	   ;; and remember that the actual exponent needs to be
+	   ;; divided by 2.
 	   n (cadr n)
 	   signn (checksigntm n)
 	   ec-1 (power c -1)
 	   b (cdras 'b assoclist)
 	   a (cdras 'c assoclist)
+	   ;; pluspowfo1 = 1/2*(n-1)
 	   pluspowfo1 (mul r12 (plus n -1))
+	   ;; minupowfo = 1/2*(n+1)
 	   minuspowfo (mul r12 (plus n 1))
-	   pluspowfo2 (times -1 minuspowfo)
-	   poszpowlist (car (powercoeflist polfact m x))
-	   negpowlist (cadr (powercoeflist polfact m x)))
+	   ;; pluspowfo2 = -1/2*(n+1)
+	   pluspowfo2 (times -1 minuspowfo))
+     (destructuring-bind (pos &optional neg)
+	 (powercoeflist polfact m x)
+       (setf poszpowlist pos)
+       (setf negpowlist neg))
+
      ;; I (rtoy) think powercoeflist computes p(x)/x^m as a Laurent
      ;; series.  POSZPOWLIST is a list of coefficients of the positive
      ;; powers and NEGPOWLIST is a list of the negative coefficients.
@@ -356,8 +383,8 @@
 						 pluspowfo2 c b a x)))))))))
 
 ;; Match d*p(x)*(f*x+e)^m*(a*x^2+b*x+c)^n.  p(x) is a polynomial, m is
-;; an integer, n is a number(?).  a, b, c, e, and f are expressions
-;; independent of x (var).
+;; an integer, n is half of an integer.  a, b, c, e, and f are
+;; expressions independent of x (var).
 (defun jmaug (exp var)
   (m2 exp '((mtimes)
 	    ((coefftt) (d freevar))
@@ -365,8 +392,9 @@
 	    ((mexpt) ((mplus) ((coeffpt) (f freevar) (x varp))
 		      ((coeffpp)(e freevar)))
 	     (m maxima-integerp))
-	    ((mexpt) ((mplus) ((coeffpt) (a freevar) ((mexpt) (x varp) 2))
-		      ((coeffpt) (b freevar)(x varp))
+	    ((mexpt) ((mplus)
+		      ((coeffpt) (a freevar) ((mexpt) (x varp) 2))
+		      ((coeffpt) (b freevar) (x varp))
 		      ((coeffpp) (c freevar)))
 	     (n integerp1)))
       nil))
@@ -396,11 +424,23 @@
 	     (e0 integerpfr)))
       nil))
 
+;; From the set of coefficients, generate the polynomial c*x^2+b*x+a.
 (defun polfoo (c b a x)
   (add (mul c x x)
        (mul b x)
        a))
 
+;; I think this is computing the list of coefficients of fun(x)/x^m,
+;; where fun(x) is a polynomial and m is a non-negative integer.  The
+;; result is a list of two lists.  The first list contains the
+;; polynomial part of fun(x)/x^m.  The second is the principal part
+;; containing negative powers.
+;;
+;; Each of the lists is itself a list of power and coefficient itself.
+;;
+;; Thus (x+3)^2/x^2 = 1 + 6/x + 9/x^2 returns
+;;
+;; '(((0 1)) ((1 6) (2 9)))
 (defun powercoeflist (fun m var) 
   (prog (expanfun maxpowfun powfun coef poszpowlist negpowlist) 
      (setq expanfun (unquote ($expand (mul (prevconstexpan fun var)
@@ -522,14 +562,34 @@
   (cond ((eq sign '$positive) '$negative)
 	(t '$positive)))
 
+;; Integrate 1/sqrt(c*x^2+b*x+a).
+;;
+;; G&R 2.261 gives the following, where R = c*x^2+b*x+a and D =
+;; 4*a*b-b^2:
+;;
+;; c > 0:
+;;   1/sqrt(c)*log(2*sqrt(c*R)+2*c*x+b)
+;;
+;; c > 0, D > 0:
+;;   1/sqrt(c)*asinh((2*c*x+b)/sqrt(D))
+;;
+;; c < 0, D < 0:
+;;   -1/sqrt(-c)*asin((2*c*x+b)/sqrt(-D))
+;;
+;; c > 0, D = 0:
+;;   1/sqrt(c)*log(2*c*x+b)
+;;
 (defun den1 (c b a x)
   ((lambda (expo expr)
+     ;; expo = -1/2
+     ;; expr = 2*c*x+b
      (prog (signdiscrim signc signb)
 	(setq signc (checksigntm (power c -1)))
 	(setq signb (checksigntm (power b 2)))
 	(setq signdiscrim (signdis2 c b a signc signb))
 	(cond ((and (eq signc '$positive)
 		    (eq signdiscrim '$negative))
+	       ;; c > 0, D > 0
 	       (return (augmult (mul* (power  c expo)
 				      (list '(%asinh)
 					    (mul expr
@@ -538,10 +598,12 @@
 							expo))))))))
 	(cond ((and (eq signc '$positive)
 		    (eq signdiscrim '$zero))
+	       ;; c > 0, D = 0
 	       (return (augmult (mul* (power -1 expr)
 				      (power c expo)
 				      (list '(%log) expr))))))
 	(cond ((eq signc '$positive)
+	       ;; c > 0
 	       (return (augmult (mul* (power c expo)
 				      (list '(%log)
 					    (add (mul 2
@@ -553,6 +615,7 @@
 						 expr)))))))
 	(cond ((and (eq signc '$negative)
 		    (eq signdiscrim '$positive))
+	       ;; c < 0, D > 0
 	       (return (augmult (mul* -1
 				      (power (mul -1 c) expo)
 				      (list '(%asin)
@@ -561,13 +624,18 @@
 							     (mul -4 c a))
 							expo))))))))
 	(cond ((eq signc '$negative)
+	       ;; c < 0.  We try again, but flip the sign of the
+	       ;; polynomial, and multiply by -%i.
 	       (return (augmult (mul (power -1 expo)
 				     (den1 (mul -1 c)
 					   (mul -1 b)
 					   (mul -1 a)
 					   x))))))))
-   (list '(rat) -1 2) (add (mul 2 c x) b))) 
+   (list '(rat) -1 2)
+   (add (mul 2 c x) b)))
 
+;; Compute sign of discriminant of the quadratic c*x^2+b*x+a.  That
+;; is, the sign of b^2-4*c*a.
 (defun signdiscr (c b a) 
   (checksigntm (simplifya (add (power b 2)
 			       (mul -4 c a))
@@ -578,10 +646,16 @@
 
 (defun signdis1 (c b a)
   (cond ((equal (mul b a) 0)
-	 (cond ((and (equal b 0)(equal a 0)) '$zero)
+	 (cond ((and (equal b 0)
+		     (equal a 0))
+		'$zero)
 	       (t '$nonzero)))
-	(t (checksigntm (power (add (mul b b) (mul -4 c a)) 2)))))
+	(t
+	 ;; Why are we checking the sign of (b^2-4*a*c)^2?
+	 (checksigntm (power (add (mul b b) (mul -4 c a)) 2)))))
 
+;; Check sign of discriminant of c*x^2+b*x+a, but also taking into
+;; account the sign of c and b.
 (defun signdis2 (c b a signc signb)
   (cond ((equal signb '$zero)
 	 (cond ((equal a 0) '$zero)
@@ -733,19 +807,27 @@
 	(go jump3)))
    (power (polfoo c b a x) (add r12 (times -1 p)))))
 
+;; Integral of (a*x^2+b*x+c)^(n/2).  P = -(n+1)/2.
 (defun denn (p c b a x)
   ((lambda (signdisc exp1 exp2 exp3)
-     (cond ((and (eq signdisc '$zero)(zerop p))
+     ;; exp1 = b + 2*c*x;
+     ;; exp2 = 1/(4*a*c-b^2)
+     ;; exp3 = 1/(2*p-1) = -1/(n+2) (Why?)
+     (cond ((and (eq signdisc '$zero)
+		 (zerop p))
 	    (augmult (mul* ec-1
-			   (list '(%log) (add x (mul b r12  ec-1 ))))))
-	   ((and (eq signdisc '$zero)(greaterp p 0))
+			   (list '(%log) (add x (mul b r12  ec-1))))))
+	   ((and (eq signdisc '$zero)
+		 (greaterp p 0))
 	    (augmult (mul* (list '(rat) -1 (plus p p))
 			   (power c (mul (list '(rat) -1 2)
 					 (plus p p 1)))
 			   (power (add x (mul b r12  ec-1 ))
 				  (times -2 p)))))
-	   ((zerop p) (den1 c b a x))
+	   ((zerop p)
+	    (den1 c b a x))
 	   ((equal p 1)
+	    ;; p = 1 means n = -2.  Integrating 1/(a*x^2+b*x+c)^2
 	    (augmult (mul 2 exp1 exp2 (power (polfoo c b a x)
 					     (list '(rat) -1 2)))))
 	   (t (add (augmult (mul 2 exp1 exp3 exp2
@@ -753,8 +835,11 @@
 					(add r12 (times -1 p)))))
 		   (augmult (mul 8 c (plus p -1) exp3 exp2
 				 (denn (plus p -1) c b a x)))))))
-   (signdis1 c b a) (add b (mul 2 c x))
-   (power (add (mul 4 a c)(mul b b -1)) -1) (inv (plus p p -1))))
+   (signdis1 c b a)
+   (add b (mul 2 c x))
+   (power (add (mul 4 a c)
+	       (mul b b -1)) -1)
+   (inv (plus p p -1))))
 
 (defun den1denn (p c b a x)
   ((lambda (signa ea-1)
@@ -867,14 +952,22 @@
 					(mul -1 (caar negpowlist))))))
 		(trivial1 (cdr negpowlist) p c x)))))
 
-;; I (rtoy) think this is integrating pl(x)/(a*x^2+b*x+c)^n where
+;; I (rtoy) think this is integrating pl(x)/(a*x^2+b*x+c)^(n/2) where
 ;; pl(x) is a polynomial.  The polynomial is given in POSZPOWLIST.  P
 ;; is -1/2*(1+n).
 (defun nummdenn (poszpowlist p c b a x)
   ((lambda (exp1 exp2 exp3 exp4 exp5 exp6 exp7)
+     ;; exp1 = 1/(2*p-1) = -1/(n+2).  (Why?)
+     ;; exp2 = (a*x^2+b*x+c)^(n/2+1)
+     ;; exp3 = 1/(4*a*c-b^2) (reciprocal of the negative of the discriminant?)
+     ;; exp4 = 1/2*b*(ec-1).  (What is ec-1?)
+     ;; exp5 = 1/c^2
+     ;; exp6 = n+2.
      (prog (result controlpow coef count res1 res2 m partres signdiscrim)
-	(setq result 0 controlpow (caar poszpowlist))
-	(setq coef (cadar poszpowlist) signdiscrim (signdis1 c b a))
+	(setq result 0
+	      controlpow (caar poszpowlist))
+	(setq coef (cadar poszpowlist)
+	      signdiscrim (signdis1 c b a))
 	(cond ((zerop controlpow)
 	       (setq result (augmult (mul coef  (denn p c b a x)))
 		     count 1)
@@ -981,7 +1074,7 @@
 	(go jump3)))
    (inv (plus p p -1))
    (power (polfoo c b a x) (add r12 (times -1 p)))
-   (power (add (mul 4 a c)(mul -1 b b)) -1)
+   (power (add (mul 4 a c) (mul -1 b b)) -1)
    (add x (mul b r12 ec-1))
    (power c -2)
    (plus 2 (times -2 p))
