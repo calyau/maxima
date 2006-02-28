@@ -112,6 +112,8 @@
 	      (power rofmax (add emax (mul -1 emin)))
 	      (power ($expand (mul rofmax rofmin)) emin)) x))
 
+;; Integrating the form (e*x^2+f*x+g)^m*r0(x)^e0.
+#+nil
 (defun intir3-ref (assoclist x e f g r0)
   ((lambda (signdisc d p e0)
      (cond ((or (eq signdisc '$positive)
@@ -123,17 +125,12 @@
    (cdras 'p assoclist)
    (cdras 'e0 assoclist)))
 
-;; Integrating the form (e*x^2+f*x+g)^m*r0(x)^e0.
-#+nil
 (defun intir3-ref (assoclist x e f g r0)
   ((lambda (signdisc d p e0)
      (cond ((eq signdisc '$positive)
 	    (pns-intir3 x e f g d p r0 e0))
 	   ((eq signdisc '$negative)
-	    ;; This means e*x^2+f*x+g has no real roots.  What should
-	    ;; we do?  Previously we treated it the same as if we had
-	    ;; real roots, but I don't think this is right.
-	    nil)
+	    (ns-intir3 x e f g d p r0 e0))
 	   (t (zs-intir3 x e f d p r0 e0))))
    (signdiscr e f g)
    (cdras 'd assoclist)
@@ -156,23 +153,6 @@
 ;; (2*d*e^2/D/(2*e*x+f-D) - 2*d*e^2/D/(2*e*x+f+D))*p(x)*r0(x)^e0.
 ;;
 ;; So we have separated this into two "simpler" integrals.
-#+nil
-(defun pns-intir3 (x e f g d p r0 e0)
-  ((lambda (discr)
-     ((lambda (p*r0^e0 2*e*x+f 2*e*d*invdisc)
-	(mul (sub (intir2 (mul 2*e*d*invdisc
-			       (inv (sub 2*e*x+f discr))
-			       p*r0^e0)
-			  x)
-		  (intir2 (mul 2*e*d*invdisc
-			       (inv (add 2*e*x+f discr))
-			       p*r0^e0)
-			  x))))
-      (mul p (power r0 e0))
-      (add (mul 2 e x) f)
-      (mul 2 e d (inv discr))))
-   (power (sub (mul f f) (mul 4 e g)) (inv 2))))
-
 (defun pns-intir3 (x e f g d p r0 e0)
   ((lambda (discr)
      ((lambda (p*r0^e0 2*e*x+f 2*e^2*d*invdisc)
@@ -189,10 +169,31 @@
    ;; Compute discriminant of quadratic:  sqrt(f^2-4*e*g)
    (power (sub (mul f f) (mul 4 e g)) (inv 2))))
 
+;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
+;; repeated roots.
+;;
 (defun zs-intir3 (x e f d p r0 e0)
-  (intir2 (mul d p e
-	       (power (add x (div f (add e e))) -2) (power r0 e0))
+  ;; Since e*x^2+f*x+g has repeated roots, it can be written as e*(x+r)^2.
+  ;; We easily see that r = f/(2*e), so rewrite the integrand as
+  ;;
+  ;; d*p(x)/e/(x-r)^2*r0(x)^e0.
+  (intir2 (mul d p (inv e)
+	       (power (add x (div f (add e e))) -2)
+	       (power r0 e0))
 	  x))
+
+;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
+;; no real roots.
+;;
+;; G&R 2.252 shows how we can handle these integrals, but I'm too lazy
+;; to implement them right now, so return NIL to indicate we don't
+;; know what to do.  But whatever it is we do, it's definitely not
+;; calling intir or intir2 like zs-intir3 or pns-intir3 do because
+;; they eventually call inti which only handles linear forms (e = 0.)
+;; We'll need to write custom versions.
+(defun ns-intir3 (x e f g d p r0 e0)
+  (declare (ignore x e f g d p r0 e0))
+  nil)
 
 (defun cdras (a b)
   (cdr (zl-assoc a b)))
@@ -212,10 +213,17 @@
 	    (return nil)))
      (setq f (cdras 'f assoclist)
 	   e (cdras 'e assoclist))
+     ;; If e is 0 (or not given, we don't have to do the
+     ;; transformation.  Just integrate it and return.
      (cond ((or (equal e 0) (null e))
 	    (return (intira funct x))))
      (cond ((not (numberp f)) (go jump)))
      (cond ((plusp f)(go jump)))
+     ;; I (rtoy) think this is the case where f is a negative number.
+     ;; I think this is trying to convert f*x+e to -f*x-e to make the
+     ;; coefficient of x positive.  And if I'm right, the code below
+     ;; isn't doing it correctly, except when m = 1 or m = -1.
+     #+nil
      (setq denom (add (mul f x) e)
 	   f (mul -1 f)
 	   e (mul -1 e)
