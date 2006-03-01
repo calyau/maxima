@@ -39,14 +39,21 @@
 (defun intir1 (fun x)
   (prog (assoclist e0 r0 e1 e2 r1 r2 d p)
      (setq assoclist (factpow (specrepcheck fun) x))
-     (setq e1 (cdras 'e1 assoclist) e2 (cdras 'e2 assoclist))
+     (setq e1 (cdras 'e1 assoclist)
+	   e2 (cdras 'e2 assoclist))
      (cond ((null assoclist)(return nil)))
-     (setq d (cdras 'd assoclist) p (cdras 'p assoclist)
-	   e0 (cdras 'e0 assoclist) r0 (cdras 'r0 assoclist)
-	   r1 (cdras 'r1 assoclist) r2 (cdras 'r2 assoclist))
-     (cond ((floatp e0)(setq e0 (rdis (ration1 e0)))))
-     (cond ((floatp e1)(setq e1 (rdis (ration1 e1)))))
-     (cond ((floatp e2)(setq e2 (rdis (ration1 e2)))))
+     (setq d (cdras 'd assoclist)
+	   p (cdras 'p assoclist)
+	   e0 (cdras 'e0 assoclist)
+	   r0 (cdras 'r0 assoclist)
+	   r1 (cdras 'r1 assoclist)
+	   r2 (cdras 'r2 assoclist))
+     (cond ((floatp e0)
+	    (setq e0 (rdis (ration1 e0)))))
+     (cond ((floatp e1)
+	    (setq e1 (rdis (ration1 e1)))))
+     (cond ((floatp e2)
+	    (setq e2 (rdis (ration1 e2)))))
      (return (intir1-ref d p r0 e0 r1 e1 r2 e2 x))))
 
 (defun intir2 (funct x)
@@ -67,15 +74,32 @@
   (cond ((root+anything r0 x) nil)
 	(t (intir3-ref assoclist x e f g r0))))
 
+;; Handle integrals of the form d*p(x)*r1(x)^e1*r2(x)^e2*r0(x)^e0,
+;; where p(x) is a polynomial, e1 and e2 are both half an odd integer,
+;; and e3 is an integer.
 (defun intir1-ref (d p r0 e0 r1 e1 r2 e2 x)
   ((lambda (nume1 nume2)
-     (cond ((and (plusp nume1)(plusp nume2))
+     ;; nume1 = 2*e1
+     ;; nume2 = 2*e2
+
+
+     ;; I think what this does is try to rationalize r1(x)^e1 or
+     ;; r2(x)^e2 so we end up with a new integrand of the form
+     ;; d*p'(x)*r0'(x)^e0*ra(x)^ea, where p'(x) is a new polynomial
+     ;; obtained from rationaling one term and r0'(x) is a more
+     ;; complicated term.
+     (cond ((and (plusp nume1)
+		 (plusp nume2))
 	    (pp-intir1 d p r0 e0 r1 e1 r2 e2 x))
-	   ((and (minusp nume1)(minusp nume2))
+	   ((and (minusp nume1)
+		 (minusp nume2))
 	    (mm-intir1 d p r0 e0 r1 e1 r2 e2 x))
-	   ((plusp nume1)(pm-intir1 d p r0 e0 r1 e1 r2 e2 x))
-	   (t (pm-intir1 d p r0 e0 r2 e2 r1 e1 x))))
-   (cadr e1) (cadr e2)))
+	   ((plusp nume1)
+	    (pm-intir1 d p r0 e0 r1 e1 r2 e2 x))
+	   (t
+	    (pm-intir1 d p r0 e0 r2 e2 r1 e1 x))))
+   (cadr e1)
+   (cadr e2)))
 
 (defun pp-intir1 (d p r0 e0 r1 e1 r2 e2 x)
   ((lambda (nume1 nume2)
@@ -83,18 +107,30 @@
 	   (t (pp-intir1-exec d p r0 e0 r2 e2 r1 e1 x))))
    (cadr e1) (cadr e2)))
 
+
+;; Handle integrals of the form d*p(x)*r0(x)^e0*r1(x)^e1*r2(x)^e2
+;; where p(x) is a polynomial, e1 < 0, and e2 < 0 and are both half an
+;; odd integer, and e3 is an integer.
 (defun mm-intir1 (d p r0 e0 r1 e1 r2 e2 x)
   ((lambda (nume1 nume2)
-     (cond ((greaterp nume1 nume2)(mm-intir1-exec d p r0 e0 r1 e1 r2 e2 x))
+     (cond ((greaterp nume1 nume2)
+	    (mm-intir1-exec d p r0 e0 r1 e1 r2 e2 x))
 	   (t (mm-intir1-exec d p r0 e0 r2 e2 r1 e1 x))))
    (cadr e1) (cadr e2)))
 
+;; Handle integrals of the form d*p(x)*r0(x)^e0*r1(x)^e1*r2(x)^e2
+;; where p(x) is a polynomial, e1 > 0, and e2 < 0 and are both half an
+;; odd integer, and e3 is an integer.
+;;
 (defun pm-intir1 (d p r0 e0 rofpos epos rofneg eneg x)
   ((lambda (numepos numul-1eneg)
+     ;; numepos = 2*epos = 2*e1
+     ;; numul-1eneg = -2*eneg = -2*e2
      (cond ((greaterp numepos numul-1eneg)
 	    (mm-intir1 d (mul p (power rofpos (sub epos eneg)))
 		       r0 e0 rofpos eneg rofneg eneg x))
-	   ((or (equal e0 0) (plusp e0))
+	   ((or (equal e0 0)
+		(plusp e0))
 	    (pp-intir1 d (mul p (power rofneg (sub eneg epos)))
 		       r0 e0 rofpos epos rofneg epos x))
 	   (t (mm-intir1 d (mul p (power rofpos (sub epos eneg)))
@@ -107,8 +143,13 @@
 	      (power rofmax (add emax (mul -1 emin)))
 	      (power ($expand (mul rofmax rofmin)) emin)) x))
 
+;; Handle integrals of the form d*p(x)*r0(x)^e0*r1(x)^e1*r2(x)^e2
+;; where p(x) is a polynomial, e1 < 0, and e2 < 0 and are both half an
+;; odd integer, and e3 is an integer.  And e2 > e1.
 (defun mm-intir1-exec (d p r0 e0 rofmin emin rofmax emax x)
-  (intir (mul d p (cond ((equal e0 0) 1) (t (power r0 e0)))
+  (intir (mul d p
+	      (cond ((equal e0 0) 1)
+		    (t (power r0 e0)))
 	      (power rofmax (add emax (mul -1 emin)))
 	      (power ($expand (mul rofmax rofmin)) emin)) x))
 
@@ -138,8 +179,9 @@
    (cdras 'e0 assoclist)))
 
 (defun root+anything (exp var)
-  (m2 exp '((mplus) ((coeffpt) (c nonzerp) ((mexpt) (u hasvar) (v integerpfr)))
-	    ((coeffpp)(c true))) nil))
+  (m2 exp '((mplus)
+	    ((coeffpt) (c nonzerp) ((mexpt) (u hasvar) (v integerpfr)))
+	    ((coeffpp) (c true))) nil))
 
 ;; Handle d*p(x)/(e*x^2+f*x+g)*r0(x)^e0.  We know that e*x^2+f*x+g has
 ;; no repeated roots.  Let D be the discriminant of this quadratic,
@@ -320,6 +362,7 @@
      (setq assoclist (jmaug (specrepcheck funct) x))
      (setq n (cdras 'n assoclist)
 	   r12 1//2)
+     ;; (format t "n = ~A~%" n)
      (cond ((or (null assoclist)
 		(maxima-integerp n))
 	    (return nil)))
@@ -339,22 +382,31 @@
 	   ec-1 (power c -1)
 	   b (cdras 'b assoclist)
 	   a (cdras 'c assoclist)
-	   ;; pluspowfo1 = 1/2*(n-1)
+	   ;; pluspowfo1 = 1/2*(n-1), That is, the original exponent - 1/2.
 	   pluspowfo1 (mul r12 (plus n -1))
-	   ;; minupowfo = 1/2*(n+1)
+	   ;; minupowfo = 1/2*(n+1), that is, the original exponent + 1/2.
 	   minuspowfo (mul r12 (plus n 1))
-	   ;; pluspowfo2 = -1/2*(n+1)
+	   ;; pluspowfo2 = -1/2*(n+1), that is, the negative of 1/2
+	   ;; plus the original exponent.
 	   pluspowfo2 (times -1 minuspowfo))
      (destructuring-bind (pos &optional neg)
 	 (powercoeflist polfact m x)
        (setf poszpowlist pos)
        (setf negpowlist neg))
 
+     #+nil
+     (progn
+       (format t "n = ~A~%" n)
+       (format t "pluspowfo1 = ~A~%" pluspowfo1)
+       (format t "minuspowfo = ~A~%" minuspowfo)
+       (format t "pluspowfo2 = ~A~%" pluspowfo2))
+     
      ;; I (rtoy) think powercoeflist computes p(x)/x^m as a Laurent
      ;; series.  POSZPOWLIST is a list of coefficients of the positive
      ;; powers and NEGPOWLIST is a list of the negative coefficients.
      (cond ((and (null negpowlist)
 		 (not (null poszpowlist)))
+	    ;; Only polynomial parts.
 	    (cond ((eq signn '$positive)
 		   (return (augmult (mul d
 					 (nummnumn poszpowlist
@@ -365,6 +417,7 @@
 					    pluspowfo2 c b a x))))))
      (cond ((and (null poszpowlist)
 		 (not (null negpowlist)))
+	    ;; No polynomial parts
 	    (cond ((eq signn '$positive)
 		   (return (augmult (mul d
 					 (denmnumn negpowlist
@@ -407,6 +460,9 @@
 	     (n integerp1)))
       nil))
 
+;; Match d*p(x)*r1(x)^e1*r2(x)^e2*r0(x)^e0, where p(x) is a
+;; polynomial, e1 and e2 are both half an odd integer, and e3 is an
+;; integer.
 (defun factpow (exp var)
   (m2 exp '((mtimes) ((coefftt) (d freevar))
 	    ((coefftt) (p polyp))
@@ -815,54 +871,116 @@
 	(go jump3)))
    (power (polfoo c b a x) (add r12 (times -1 p)))))
 
-;; Integral of (a*x^2+b*x+c)^(n/2).  P = -(n+1)/2.
+;; Integral of 1/(c*x^2+b*x+a)^(n), n > 0.  p = n - 1/2.
+;;
+;; See G&R 2.263 formula 3.
+;;
+;; Let R = c*x^2+b*x+a.
 (defun denn (p c b a x)
-  ((lambda (signdisc exp1 exp2 exp3)
+  ((lambda (signdisc exp1 exp2 exp3 ec-1)
      ;; exp1 = b + 2*c*x;
-     ;; exp2 = 1/(4*a*c-b^2)
+     ;; exp2 = (4*a*c-b^2)
      ;; exp3 = 1/(2*p-1) = -1/(n+2) (Why?)
+     (format t "signdisc = ~A~%" signdisc)
+     (format t "p = ~A~%" p)
      (cond ((and (eq signdisc '$zero)
 		 (zerop p))
+	    ;; 1/sqrt(R), and R has duplicate roots.  That is, we have
+	    ;; 1/sqrt(c*(x+b/(2c))^2) = 1/c/sqrt((x+b/2/c)^2).
+	    ;;
+	    ;; We return 1/c*log(x+b/2/c).  Shouldn't we return
+	    ;; 1/c*log(|x+b/2/c|)?
 	    (augmult (mul* ec-1
-			   (list '(%log) (add x (mul b r12  ec-1))))))
+			   (list '(%log) (add x (mul b 1//2  ec-1))))))
 	   ((and (eq signdisc '$zero)
 		 (greaterp p 0))
+	    ;; 1/sqrt(R^(2*p+1)), with duplicate roots.
+	    ;;
+	    ;; That is, 1/sqrt((c*(x+b/2/c)^(2)^(2*p+1))), or
+	    ;; 1/c^(p+1/2)/(x+b/2/c)^(2*p+1).  So the result is 
+	    ;;
+	    ;; -1/2/p*c^(-p-1/2)/(x+b/2/c)^(2*p)
+	    ;;
+	    ;; FIXME:  This doesn't look right.
 	    (augmult (mul* (list '(rat) -1 (plus p p))
 			   (power c (mul (list '(rat) -1 2)
 					 (plus p p 1)))
-			   (power (add x (mul b r12  ec-1 ))
+			   (power (add x (mul b 1//2  ec-1 ))
 				  (times -2 p)))))
 	   ((zerop p)
+	    ;; 1/sqrt(R)
 	    (den1 c b a x))
 	   ((equal p 1)
-	    ;; p = 1 means n = -2.  Integrating 1/(a*x^2+b*x+c)^2
-	    (augmult (mul 2 exp1 exp2 (power (polfoo c b a x)
-					     (list '(rat) -1 2)))))
-	   (t (add (augmult (mul 2 exp1 exp3 exp2
-				 (power (polfoo c b a x)
-					(add r12 (times -1 p)))))
-		   (augmult (mul 8 c (plus p -1) exp3 exp2
-				 (denn (plus p -1) c b a x)))))))
+	    ;; 1/sqrt(R^3).
+	    ;;
+	    ;; G&R 2.264 eq. 5 says
+	    ;;
+	    ;; 2*(2*c*x+b)/del/sqrt(R).
+	    (augmult (mul 2 exp1 (inv exp2)
+			  (power (polfoo c b a x)
+				 (list '(rat) -1 2)))))
+	   (t
+	    ;; The general case.  G&R 2.263 eq. 3.
+	    ;;
+	    ;; integrate(1/sqrt(R^(2*p+1)),x) =
+	    ;;    2*(2*c*x+b)/(2*p-1)/c/sqrt(R^(2*p-1))
+	    ;;    + 8*(p-1)*c/(2*p-1)/del*integrate(1/sqrt(R^(2*p-1)),x)
+	    ;;
+	    ;; where del = 4*a*c-b^2.
+	    (add (augmult (mul 2 exp1
+			       exp3 (inv exp2)
+			       (power (polfoo c b a x)
+				      (add 1//2 (times -1 p)))))
+		 (augmult (mul 8 c (plus p -1)
+			       exp3 (inv exp2)
+			       (denn (plus p -1) c b a x)))))))
    (signdis1 c b a)
    (add b (mul 2 c x))
-   (power (add (mul 4 a c)
-	       (mul b b -1)) -1)
-   (inv (plus p p -1))))
+   (add (mul 4 a c)
+	(mul b b -1))
+   (inv (plus p p -1))
+   (inv c)))
 
+;; Integral of 1/x/(c*x^2+b*x+a)^(n/2), n > 0.
 (defun den1denn (p c b a x)
   ((lambda (signa ea-1)
-     (cond ((eq signa '$zero)(noconstquad 1 p c b x))
-	   ((zerop p) (den1den1 c b a x))
-	   (t (add (augmult (mul (inv (plus p p -1)) ea-1
-				 (power (polfoo c b a x)
-					(add r12 (times -1 p)))))
-		   (augmult (mul ea-1 (den1denn (plus p -1) c b a x)))
-		   (augmult (mul -1 r12 ea-1 b (denn p c b a x)))))))
+     ;; signa = sign of a^2
+     ;; ea-1 = 1/a.
+     (cond ((eq signa '$zero)
+	    (noconstquad 1 p c b x))
+	   ((zerop p)
+	    ;; 1/x/sqrt(c*x^2+b*x+a)
+	    (den1den1 c b a x))
+	   (t
+	    ;; The general case.  See G&R 2.268:
+	    ;;
+	    ;; R=(c*x^2+b*x+a)
+	    ;;
+	    ;; integrate(1/x/sqrt(R^(2*n+1)),x) =
+	    ;;
+	    ;;   1/(2*n-1)/a/sqrt(R^(2*n-1))
+	    ;;     - b/2/a*integrate(1/sqrt(R^(2*n+1)),x)
+	    ;;     + 1/a*integrate(1/x/sqrt(R^(2*n-1)),x)
+	    (add (augmult (mul (inv (plus p p -1))
+			       ea-1
+			       (power (polfoo c b a x)
+				      (add r12 (times -1 p)))))
+		 (augmult (mul ea-1 (den1denn (plus p -1) c b a x)))
+		 (augmult (mul -1 r12 ea-1 b (denn p c b a x)))))))
    (checksigntm (power a 2))
    (power a -1)))
 
+;; Integral of 1/x/sqrt(c*x^2+b*x+a).
+;;
+;; G&R 2.266 gives the following results, where del is the
+;; discriminant 4*a*c-b^2.  (I think this is the opposite of what we
+;; compute below for the discriminant.)
+;;
 (defun den1den1 (c b a x)
   ((lambda (exp2 exp3 exp4)
+     ;; exp2 = b*x+2*a
+     ;; exp3 = 1/abs(x)
+     ;; exp4 = -1/2
      (prog (signdiscrim condition signa exp1)
 	(setq signa (checksigntm (simplifya a nil)))
 	(setq condition  (add (mul b x) a a))
@@ -870,8 +988,15 @@
 	       (return (noconstquad '((1 1)) 0 c b x))))
 	(setq signdiscrim (signdis3 c b a signa)
 	      exp1 (power a (inv -2)))
+	#+nil
+	(progn
+	  (format t "signa = ~A~%" signa)
+	  (format t "signdiscrim = ~A~%" signdiscrim))
 	(cond ((and (eq signa '$positive)
 		    (eq signdiscrim '$negative))
+	       ;; G&R case a > 0, del > 0
+	       ;;
+	       ;; -1/sqrt(a)*asinh((2*a+b*x)/x/sqrt(del)
 	       (return (mul* -1 exp1
 			     (list '(%asinh)
 				   (augmult (mul exp2 exp3
@@ -880,10 +1005,19 @@
 							exp4))))))))
 	(cond ((and (eq signdiscrim '$zero)
 		    (eq signa '$positive))
-	       (return (mul* (power -1 condition) -1 exp1
+	       ;; G&R case del = 0, a > 0
+	       ;;
+	       ;; 1/sqrt(a)*log(x/(2*a+b*x))
+	       (return (mul* (power -1 condition)
+			     -1 exp1
 			     (list '(%log)
 				   (augmult (mul exp3 exp2)))))))
 	(cond ((eq signa '$positive)
+	       ;; G&R case a > 0
+	       ;;
+	       ;; -1/sqrt(a)*log((2*a+b*x+2*sqrt(a*R))/x)
+	       ;;
+	       ;; R = c*x^2+b*x+a.
 	       (return (mul* -1 exp1
 			     (list '(%log)
 				   (add b (mul 2 a exp3)
@@ -893,24 +1027,46 @@
 						    r12))))))))
 	(cond ((and (eq signa '$negative)
 		    (eq signdiscrim '$positive))
+	       ;; G&R case a < 0, del < 0
+	       ;;
+	       ;; 1/sqrt(-a)*asin((2*a+b*x)/x/sqrt(b^2-4*a*c))
 	       (return (mul* (power (mul -1 a) exp4)
 			     (list '(%asin)
 				   (augmult (mul exp2 exp3
 						 (power (add (mul b b)
 							     (mul -4 a c))
 							exp4))))))))
-	(return (mul -1 (power -1 r12)
+	;; I think this is the case of a < 0.  We flip the sign of
+	;; coefficients of the quadratic to make a positive, and
+	;; multiply the result by 1/%i.
+	;;
+	;; Why can't we use the case a < 0 in G&R 2.266:
+	;;
+	;; 1/sqrt(-a)*atan((2*a+b*x)/2/sqrt(-a)/sqrt(R)
+	;;
+	;; FIXME:  Why the multiplication by -1?
+	(return (mul #+nil -1
+		     (power -1 r12)
 		     (den1den1 (mul -1 c) (mul -1 b) (mul -1 a) x)))))
-   (add (mul b x) a a) (power (list '(mabs) x) -1) (list '(rat) -1 2)))
- 
+   (add (mul b x) a a)
+   (power (list '(mabs) x) -1)
+   (list '(rat) -1 2)))
+
+;; Integral of d/x^m/(c*x^2+b*x)^(n/2), n > 0.  The values of m and d
+;; are in NEGPOWLIST.
 (defun noconstquad (negpowlist p c b x)
   ((lambda (exp1 exp2 exp3)
+     ;; exp1 = 1/(2*p+1)
+     ;; exp2 = 1/x
+     ;; exp3 = -p
      (prog (result controlpow coef count res1 signb m partres eb-1)
 	(setq signb (checksigntm (power b 2)))
 	(cond ((eq signb '$zero)
 	       (return (trivial1 negpowlist p c x))))
-	(setq result 0 controlpow (caar negpowlist)
-	      coef (cadar negpowlist) eb-1 (inv b))
+	(setq result 0
+	      controlpow (caar negpowlist)
+	      coef (cadar negpowlist)
+	      eb-1 (inv b))
 	(cond ((zerop controlpow)
 	       (setq result (augmult (mul coef (denn p c b 0 x)))
 		     count 1)
@@ -944,7 +1100,9 @@
 	(cond ((equal count 3) (go jump3)))
 	(cond ((equal count 1) (go jump1)))
 	(go jump2)))
-   (inv (plus p p 1)) (power x -1) (times -1 p)))
+   (inv (plus p p 1))
+   (power x -1)
+   (times -1 p)))
 
 (defun trivial1 (negpowlist p c x)
   (cond ((null negpowlist) 0)
