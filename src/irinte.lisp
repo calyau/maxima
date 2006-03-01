@@ -881,8 +881,10 @@
      ;; exp1 = b + 2*c*x;
      ;; exp2 = (4*a*c-b^2)
      ;; exp3 = 1/(2*p-1) = -1/(n+2) (Why?)
-     (format t "signdisc = ~A~%" signdisc)
-     (format t "p = ~A~%" p)
+     #+nil
+     (progn
+       (format t "signdisc = ~A~%" signdisc)
+       (format t "p = ~A~%" p))
      (cond ((and (eq signdisc '$zero)
 		 (zerop p))
 	    ;; 1/sqrt(R), and R has duplicate roots.  That is, we have
