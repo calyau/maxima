@@ -751,61 +751,102 @@
 	(t (signdiscr c b a))))
 
 ;; Integrate things like x^m*R^(p-1/2), p > 0, m > 0.
+;;
+;; I think pluspowfo1 = p - 1.
 (defun nummnumn (poszpowlist pluspowfo1 p c b a x) 
   (declare (special *ec-1*))
   ((lambda (expr expo ex)
+     ;; expr = R^(p+1/2)
+     ;; expo = 1/c
+     ;; ex = 1/c^2
      (prog (result controlpow coef count res1 res2 m partres)
-	(setq result 0 controlpow (caar poszpowlist)
+	(setq result 0
+	      controlpow (caar poszpowlist)
 	      coef (cadar poszpowlist))
+	(format t "p = ~A~%" p)
+	(format t "pluspowfo1 = ~A~%" pluspowfo1)
 	(cond ((zerop controlpow)
+	       ;; Integrate R^(p-1/2)
 	       (setq result (augmult (mul coef (numn pluspowfo1 c b a x)))
 		     count 1)
 	       (go loop)))
-	jump1 (setq res1 (add (augmult (mul expr expo
-					    (power (plus p p 1) -1)))
-			      (augmult (mul -1 b 1//2 expo
-					    (numn pluspowfo1 c b a x)))))
+	jump1
+	;; Handle x*R^(p-1/2)
+	;;
+	;; G&R 2.260, m = 1
+	;;
+	;; integrate(x*R^(2*p-1),x) =
+	;;   R^(p+1/2)/(2*p+1)/c
+	;;     - b/2/c*integrate(sqrt(R^(2*p-1)),x)
+	(setq res1 (add (augmult (mul expr expo
+				      (power (plus p p 1) -1)))
+			(augmult (mul -1 b 1//2 expo
+				      (numn pluspowfo1 c b a x)))))
 	(cond ((equal controlpow 1)
 	       (setq result (add result (augmult (mul coef res1)))
 		     count 2)
 	       (go loop)))
-	jump2 (setq res2 (add (augmult (mul* x expr expo
-					     (inv (plus p p 2))))
-			      (augmult (mul* b (plus p p 3)
-					     (list '(rat) -1 4)
-					     ex
-					     (inv (plus p p p 1
-							(times p p)
-							(times p p)))
-					     expr))
-			      (augmult (mul (inv (plus p 1))
-					    ex
-					    (list '(rat) 1 8.)
-					    (add (mul (power b 2)
-						      (plus p p 3))
-						 (mul -4 a c))
-					    (numn pluspowfo1 c b a x)))))
+	jump2
+	;; Handle x^2*R^(p-1/2)
+	;;
+	;; G&R 2.260, m = 2
+	;;
+	;; integrate(x^2*R^(2*p-1),x) =
+	;;   x*R^(p+1/2)/(2*p+2)/c
+	;;     - (2*p+3)*b/2/(2*p+2)/c*integrate(x*sqrt(R^(2*p-1)),x)
+	;;     - a/(2*p+2)/c*integrate(sqrt(R^(2*p-1)),x)
+	(setq res2 (add (augmult (mul* x expr expo
+				       (inv (plus p p 2))))
+			(augmult (mul* b (plus p p 3)
+				       (list '(rat) -1 4)
+				       ex
+				       (inv (plus p p p 1
+						  (times p p)
+						  (times p p)))
+				       expr))
+			(augmult (mul (inv (plus p 1))
+				      ex
+				      (list '(rat) 1 8.)
+				      (add (mul (power b 2)
+						(plus p p 3))
+					   (mul -4 a c))
+				      (numn pluspowfo1 c b a x)))))
 	(cond ((equal controlpow 2)
 	       (setq result (add result (augmult (mul coef res2)))
 		     count 3)
 	       (go loop)))
-	jump3 (setq count 4 m 3)
-	jump  (setq partres
-		    ((lambda (pro)
-		       (add (augmult (mul (power x (plus m -1))
-					  expr expo pro))
-			    (augmult (mul -1 b (plus p p m m -1)
-					  1//2 expo pro res2))
-			    (augmult (mul -1 a (plus m -1)
-					  expo pro res1))))
-		     (power (plus m p p) -1)))
+	jump3
+	(setq count 4
+	      m 3)
+	jump
+	;; The general case:  x^m*R^(p-1/2)
+	(setq partres
+	      ((lambda (pro)
+		 ;; pro = 1/(m+2*p)
+		 ;;
+		 ;; G&R 2.260, m = 2
+		 ;;
+		 ;; integrate(x^m*R^(2*p-1),x) =
+		 ;;   x^(m-1)*R^(p+1/2)/(m+2*p)/c
+		 ;;     - (2*m+2*p-1)*b/2/(m+2*p)/c*integrate(x^(m-1)*sqrt(R^(2*p-1)),x)
+		 ;;     - (m-1)*a/(m+2*p)/c*integrate(x^(m-2)*sqrt(R^(2*p-1)),x)
+		 (add (augmult (mul (power x (plus m -1))
+				    expr expo pro))
+		      (augmult (mul -1 b (plus p p m m -1)
+				    1//2 expo pro res2))
+		      (augmult (mul -1 a (plus m -1)
+				    expo pro res1))))
+	       (power (plus m p p) -1)))
 	(setq m (plus  m 1))
 	(cond ((greaterp m controlpow)
 	       (setq result (add result (augmult (mul coef partres))))
 	       (go loop)))
-	jump4 (setq res1 res2 res2 partres)
+	jump4
+	(setq res1 res2
+	      res2 partres)
 	(go jump)
-	loop  (setq poszpowlist (cdr poszpowlist))
+	loop
+	(setq poszpowlist (cdr poszpowlist))
 	(cond ((null poszpowlist) (return result)))
 	(setq coef (cadar poszpowlist))
 	(setq controlpow (caar poszpowlist))
@@ -813,7 +854,9 @@
 	(cond ((equal count 1) (go jump1)))
 	(cond ((equal count 2) (go jump2)))
 	(go jump3)))
-   (power (polfoo c b a x) (add p 1//2)) *ec-1* (power c -2)))
+   (power (polfoo c b a x) (add p 1//2))
+   *ec-1*
+   (power c -2)))
 
 ;; Integrate R^(p+1/2)
 (defun numn (p c b a x)
@@ -868,40 +911,68 @@
 ;; Integrate things like 1/x^m/R^(p+1/2), p > 0.
 (defun denmdenn (negpowlist p c b a x)
   ((lambda (exp1)
+     ;; exp1 = 1/R^(p-1/2)
      (prog (result controlpow coef count res1 res2 m partres signa ea-1)
 	(setq signa (checksigntm (simplifya a nil)))
 	(cond ((eq signa '$zero)
 	       (return (noconstquad negpowlist p c b x))))
-	(setq result 0 controlpow (caar negpowlist) ea-1 (power a -1))
+	(setq result 0
+	      controlpow (caar negpowlist)
+	      ea-1 (power a -1))
 	(setq coef (cadar negpowlist))
 	(cond ((zerop controlpow)
+	       ;; I'm not sure we ever get here because m = 0 is
+	       ;; usually handled elsewhere.
 	       (setq result (augmult  (mul coef (denn p c b a x)))
 		     count 1)
 	       (go loop)))
-	jump1 (setq res1 (den1denn p c b a x))
+	jump1
+	;; Handle 1/x/R^(p+1/2)
+	(setq res1 (den1denn p c b a x))
 	(cond ((equal controlpow 1)
 	       (setq result (add result (augmult (mul coef res1)))
 		     count 2)
 	       (go loop)))
-	jump2 (setq res2 (add (augmult (mul -1 ea-1 (power x -1) exp1))
-			      (augmult (mul -1 b (plus 1 p p) 1//2
-					    ea-1 (den1denn p c b a x)))
-			      (augmult (mul -2 p c ea-1 (denn p c b a x)))))
+	jump2
+	;; Handle 1/x^2/R^(p+1/2)
+	;;
+	;; G&R 2.268, m = 2
+	;;
+	;; integrate(1/x^2/R^(p+1/2),x) =
+	;;   -1/a/x/sqrt(R^(2*p-1))
+	;;     -(2*p+1)*b/2/a*integrate(1/x/sqrt(R^(2*p+1)),x)
+	;;     -2*p*c/a*integrate(1/sqrt(R^(2*p+1)),x)
+	(setq res2 (add (augmult (mul -1 ea-1 (power x -1) exp1))
+			(augmult (mul -1 b (plus 1 p p) 1//2
+				      ea-1 (den1denn p c b a x)))
+			(augmult (mul -2 p c ea-1 (denn p c b a x)))))
 	(cond ((equal controlpow 2)
 	       (setq result (add result (augmult (mul coef res2)))
 		     count 3)
 	       (go loop)))
-	jump3 (setq count 4 m 3)
-	jump  (setq partres
-		    ((lambda (exp2)
-		       (add (augmult (mul exp2 ea-1
-					  (power x (plus 1 (times -1 m)))
-					  exp1))
-			    (augmult (mul b (plus p p m m -3) 1//2
-					  ea-1 exp2 res2))
-			    (augmult (mul c ea-1 exp2
-					  (plus p p m -2) res1))))
-		     (simplifya (list '(rat) -1 (plus m -1)) nil)))
+	jump3
+	(setq count 4
+	      m 3)
+	jump
+	;; General case 1/x^m/R^(p+1/2)
+	;;
+	;; G&R 2.268
+	;;
+	;; integrate(1/x^2/R^(p+1/2),x) =
+	;;   -1/(m-1)/a/x^(m-1)/sqrt(R^(2*p-1))
+	;;     -(2*p+2*m-3)*b/2/(m-1)/a*integrate(1/x^(m-1)/sqrt(R^(2*p+1)),x)
+	;;     -(2*n+m-2)*c/(m-1)/a*integrate(1/x^(m-2)/sqrt(R^(2*p+1)),x)
+	(setq partres
+	      ((lambda (exp2)
+		 ;; exp2 = -1/(m-1)
+		 (add (augmult (mul exp2 ea-1
+				    (power x (plus 1 (times -1 m)))
+				    exp1))
+		      (augmult (mul b (plus p p m m -3) 1//2
+				    ea-1 exp2 res2))
+		      (augmult (mul c ea-1 exp2
+				    (plus p p m -2) res1))))
+	       (simplifya (list '(rat) -1 (plus m -1)) nil)))
 	(setq m (plus m 1))
 	(cond ((greaterp m controlpow)
 	       (setq result (add result (augmult (mul coef partres))))
@@ -1122,32 +1193,55 @@
 	      coef (cadar negpowlist)
 	      eb-1 (inv b))
 	(cond ((zerop controlpow)
+	       ;: Not sure if we ever actually get here.  The case of
+	       ;m=0 is usually handled at a higher level.
 	       (setq result (augmult (mul coef (denn p c b 0 x)))
 		     count 1)
 	       (go loop)))
-	jump1 (setq res1 (add (augmult (mul -2 exp1 eb-1 exp2
-					    (power (polfoo c b 0 x)
-						   (add 1//2 exp3))))
-			      (augmult (mul -4 p c exp1 eb-1 (denn p c b 0 x)))))
+	jump1
+	;; Handle 1/x/R^(p+1/2)
+	;;
+	;; G&R 2.268, a = 0, m = 1
+	;;
+	;; integrate(1/x^m/sqrt(R^(2*p+1)),x) =
+	;;   -2/(2*p+1)/b/x/sqrt(R^(2*p-1))
+	;;     -4*p*c/(2*p+1)/b*integrate(1/sqrt(R^(2*p+1)),x)
+	(setq res1 (add (augmult (mul -2 exp1 eb-1 exp2
+				      (power (polfoo c b 0 x)
+					     (add 1//2 exp3))))
+			(augmult (mul -4 p c exp1 eb-1 (denn p c b 0 x)))))
 	(cond ((equal controlpow 1)
 	       (setq result (add result (augmult (mul coef res1)))
 		     count 2)
 	       (go loop)))
 	jump2 (setq count 3 m 2)
-	jump  (setq partres (add (augmult (mul -2 (inv (plus p p m m -1))
-					       eb-1
-					       (power x	(mul -1 m))
-					       (power (polfoo c b 0 x)
-						      (add 1//2 exp3))))
-				 (augmult (mul -2 c (plus p p m -1)
-					       eb-1 (inv (plus p p m m -1)) res1))))
+	jump
+	;; Handle general case 1/x^m/R^(p+1/2)
+	;;
+	;; G&R 2.268, a = 0
+	;;
+	;; integrate(1/x^m/sqrt(R^(2*p+1)),x) =
+	;;   -2/(2*p+2*m-1)/b/x^m/sqrt(R^(2*p+1))
+	;;     -(4*p+2*m-2)*c/(2*p+2*m-1)/b*integrate(1/x^(m-1)/sqrt(R^(2*p+1)),x)
+	(setq partres
+	      (add (augmult (mul -2 (inv (plus p p m m -1))
+				 eb-1
+				 (power x (mul -1 m))
+				 (power (polfoo c b 0 x)
+					(add 1//2 exp3))))
+		   (augmult (mul -2 c (plus p p m -1)
+				 eb-1
+				 (inv (plus p p m m -1))
+				 res1))))
 	(setq m (plus m 1))
 	(cond ((greaterp m controlpow)
 	       (setq result (add result (augmult (mul coef partres))))
 	       (go loop)))
-	jump3 (setq res1 partres)
+	jump3
+	(setq res1 partres)
 	(go jump)
-	loop  (setq negpowlist (cdr negpowlist))
+	loop
+	(setq negpowlist (cdr negpowlist))
 	(cond ((null negpowlist) (return result)))
 	(setq coef (cadar negpowlist)
 	      controlpow (caar negpowlist))
