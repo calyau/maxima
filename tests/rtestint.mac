@@ -1,0 +1,171 @@
+/*
+ * This is a set of test integrals for testing various parts of the 
+ * integration routines. 
+ */
+
+/*
+ * We're testing irinte now, which handles things like x^m*sqrt(R^(2*p+1))
+ * for integral values of m and p. 
+ */
+R:c*x^2+b*x+a;
+c*x^2+b*x+a;
+
+/*
+ * Tests of den1den1, 1/x/sqrt(R)
+ */
+
+/* G&R a < 0, del < 0 */
+integrate(1/x/sqrt(x^2-1),x);
+-asin(1/abs(x));
+
+/* G&R a > 0, del > 0 */
+integrate(1/x/sqrt(x^2+1),x);
+-asinh(1/abs(x));
+
+/* G&R a > 0, del = 0 */
+/*integrate(1/x/sqrt(x^2-2*x+1),x);*/
+
+/* G&R a < 0, del < 0 */
+integrate(1/x/sqrt(-6+5*x-x^2),x);
+asin(5*x/abs(x)-12/abs(x))/sqrt(6);
+
+/* Last case */
+integrate(1/x/sqrt(-x^2+x-1),x);
+%i*asinh(x/(sqrt(3)*abs(x))-2/(sqrt(3)*abs(x)));
+
+
+/*
+ * Test of denn, 1/sqrt(R^(2*p+1))
+ */
+
+(assume(4*a*c-b^2>0), assume(c > 0), assume(a > 0), assume(b > 0), 0);
+0;
+
+/* 1/sqrt(R), repeated roots */
+integrate(1/sqrt(c*x^2+b*x+b^2/4/c),x);
+log(x+b/(2*c))/sqrt(c);
+
+/* 1/sqrt(R^(2*p+1), p > 0, repeated roots */
+integrate(1/sqrt(c*x^2+b*x+b^2/4/c)^3,x);
+-1/(2*c^(3/2)*(x+b/(2*c))^2);
+
+
+/*
+ * 1/sqrt(R), distinct roots, 
+ * G&R 2.261 case c > 0, del > 0
+ */
+integrate(1/sqrt(R),x);
+1/sqrt(c)*asinh((2*c*x+b)/sqrt(4*a*c-b^2));
+
+/*
+ * 1/sqrt(R^3), distinct roots,
+ * G&R 2.264 eq. 5 
+ */
+factor(integrate(1/R^(3/2),x));
+2*(2*c*x+b)/((4*a*c-b^2)*sqrt(c*x^2+b*x+a));
+
+/* 
+ * General case.
+ * 1/sqrt(R^(2*p+1),
+ * G&R 2.263 eq. 3, for reduction; eq 4 for explicit solution.
+ */
+factor(integrate(1/R^(5/2),x));
+2*(2*c*x+b)*(8*c^2*x^2+8*b*c*x+12*a*c-b^2)
+	 /(3*(4*a*c-b^2)^2*(c*x^2+b*x+a)^(3/2));
+/*
+ * Tests of den1denn, 1/x/sqrt(R^(2*p+1))
+ */
+
+/*
+ * G&R 2.268 gives the general solution for this:
+ *
+ * integrate(1/x/sqrt(R^(2*n+1)),x) =
+ *   1/(2*n-1)/a/sqrt(R^(2*n-1))
+ *   - b/2/a*integrate(1/sqrt(R^(2*n+1)),x)
+ *   + 1/a*integrate(1/x/sqrt(R^(2*n-1)),x)
+ *
+ * For this example, n = 1
+ *
+ * integrate(1/x/sqrt(R^3),x) =
+ *   1/a/sqrt(R)
+ *   - b/2/a*integrate(1/sqrt(R^3),x)
+ *   + 1/a*integrate(1/x/sqrt(R),x)
+ *
+ * and we already know the answers to the other two integrals.
+ */
+integrate(1/x/sqrt(R^3),x);
+-asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	/a^(3/2)
+	-2*b*c*x/(a*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	-b^2/(a*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))+1/(a*sqrt(c*x^2+b*x+a));
+
+/*
+ * Tests of nummdenn x^m/sqrt(R^(2*p+1))
+ */
+
+/*
+ * See G&R 2.264, eq 2:
+ *
+ * integrate(x/sqrt(R),x) =
+ *   sqrt(R)/c - b/(2*c)*integrate(1/sqrt(R),x)
+ */
+integrate(x/sqrt(R),x);
+sqrt(R)/c-b*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(2*c^(3/2));
+
+/*
+ * See G&R 2.264, eq 3:
+ *
+ * integrate(x^2/sqrt(R),x) =
+ *   (x/(2*c)-3*b/(4*c^2))*sqrt(R) 
+ *     + (3*b^2/(8*c^2) - a/(2*c))*integrate(1/sqrt(R),x)
+ */
+integrate(x^2/sqrt(R),x);
+-a*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(2*c^(3/2))
+	+3*b^2*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(8*c^(5/2))
+	+x*sqrt(c*x^2+b*x+a)/(2*c)-3*b*sqrt(c*x^2+b*x+a)/(4*c^2);
+
+ 
+/*
+ * Test of repeated roots
+ */
+integrate(x^2/sqrt(c*x^2+b*x+b^2/4/c),x);
+b^2*log(x+b/(2*c))/(4*c^(5/2))+x^2/(2*sqrt(c))-b*x/(2*c^(3/2));
+
+integrate(x^2/sqrt(c*x^2+b*x+b^2/4/c)^3,x);
+log(x+b/(2*c))/c^(3/2)+b*x/(c^(5/2)*(x+b/(2*c))^2)
+			      +3*b^2/(8*c^(7/2)*(x+b/(2*c))^2);
+
+integrate(x^2/sqrt(c*x^2+b*x+b^2/4/c)^5,x);
+-1/(2*c^(5/2)*(x+b/(2*c))^2)+b/(3*c^(7/2)*(x+b/(2*c))^3)
+				    -b^2/(16*c^(9/2)*(x+b/(2*c))^4);
+
+/*
+ * Test denmnumn sqrt(R^(2*p+1))/x^m.
+ */
+
+integrate(sqrt(R)/x,x);
+-sqrt(a)*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))
+			+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 +b*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(2*sqrt(c))+sqrt(c*x^2+b*x+a);
+
+integrate(sqrt(R^3)/x,x);
+-a^(3/2)*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))
+			+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 +3*a*b*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(4*sqrt(c))
+	 -b^3*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(16*c^(3/2))
+	 +(c*x^2+b*x+a)^(3/2)/3+b*x*sqrt(c*x^2+b*x+a)/4
+	 +b^2*sqrt(c*x^2+b*x+a)/(8*c)+a*sqrt(c*x^2+b*x+a);
+
+integrate(sqrt(R)/x^2,x);
+-b*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 /(2*sqrt(a))
+	 +sqrt(c)*asinh((2*c*x+b)/sqrt(4*a*c-b^2))-sqrt(c*x^2+b*x+a)/x;
+
+integrate(sqrt(R^3)/x^2,x);
+-3*sqrt(a)*b
+	  *asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 /2
+	 +3*a*sqrt(c)*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/2
+	 +3*b^2*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(8*sqrt(c))
+	 -(c*x^2+b*x+a)^(3/2)/x+3*c*x*sqrt(c*x^2+b*x+a)/2
+	 +9*b*sqrt(c*x^2+b*x+a)/4;
