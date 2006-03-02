@@ -1146,11 +1146,37 @@
      ;; exp1 = 1/(2*p-1)
      ;; exp2 = (a*x^2+b*x+c)^(p-1/2)
      ;; exp3 = (4*a*c-b^2) (negative of the discriminant)
-     ;; exp4 = b/2/c
+     ;; exp4 = x+b/2/c
      ;; exp5 = 1/c^2
      ;; exp6 = -2*p+2
      ;; exp7 = -2*p+1
      (prog (result controlpow coef count res1 res2 m partres signdiscrim)
+	;; Let S=R^(p+1/2).
+	;;
+	;; We are trying to integrate pl(x)/S
+        ;; = (p0 + p1*x + p2*x^3 + ...)/S
+	;;
+	;; So the general term is pm*x^m/S.  This integral is given by
+	;; G&R 2.263, eq.1:
+	;;
+	;; integrate(x^m/sqrt(R^(2*p+1)),x) =
+	;;
+	;;    x^(m-1)/(m-2*n)/sqrt(R^(2*p-1))
+	;;    - (2*m-2*n-1)*b/2/(m-2*n)/c*integrate(x^(m-1)/sqrt(R^(2*p+1)),x)
+	;;    - (m-1)*a/(m-2*n)/c*integrate(x^(m-2)/sqrt(R^(2*p+1)),x)
+	;;
+	;; Thus the integration of x^m/S involves x^(m-1)/S and x^(m-2)/S.
+	;;
+	;; I think what this loop does is integrate x^(m-1)/S and
+	;; x^(m-2)/S, and remember them so that we can integrate x^m/S
+	;; without having to do all the integrals again.  Thus we
+	;; start with the constant term and work our way up to the
+	;; highest term.
+	;;
+	;; I think this would be much simpler if we used memoization 
+	;; and start with the highest power.  Then all the
+	;; intermediate forms will have been computed, and we can just
+	;; simply integrate all the lower terms by looking them up.
 	(setq result 0
 	      controlpow (caar poszpowlist))
 	(setq coef (cadar poszpowlist)
@@ -1162,6 +1188,7 @@
 	       (setq result (augmult (mul coef (denn p c b a x)))
 		     count 1)
 	       (go loop)))
+
 	jump1
 	;;
 	;; This handles the case coef*x/R^(p+1/2)
@@ -1169,13 +1196,14 @@
 	;; res1 = -1/c/(2*p-1)*R^(p-1/2)
 	;;         -b/2/c*integrate(R^(p+1/2),x)
 	;;
-	;; Why do we compute this?
 	(setq res1
 	      (add (augmult (mul -1  *ec-1* exp1 exp2))
 		   (augmult (mul b (list '(rat) -1 2)
 				 *ec-1* (denn p c b a x)))))
 	(cond ((equal controlpow 1)
 	       ;; Integrate coef*x/R^(p+1/2).
+	       ;;
+	       ;; x/R^(p+1/2) is in res1.
 	       (setq result (add result (augmult (mul coef res1)))
 		     count 2)
 	       (go loop)))
@@ -1198,6 +1226,15 @@
 	(cond ((and (equal p 0)
 		    (not (eq signdiscrim '$zero)))
 	       ;; x^2/sqrt(R), no repeated roots.
+	       ;;
+	       ;; G&R 2.264, eq. 3
+	       ;;
+	       ;; integrate(x^2/sqrt(R),x) =
+	       ;;   (x/2/c-3*b/4/c^2)*sqrt(R)
+	       ;;   + (3*b^2/8/c^2-a/2/c)*integrate(1/sqrt(R),x)
+	       ;;
+	       ;;  = (2*c*x-3*b)/4/c^2*sqrt(R)
+	       ;;      + (3*b^2-4*a*c)/8/c^2*integrate(1/sqrt(R),x)
 	       (setq res2
 		     (add (augmult (mul (list '(rat) 1 4)
 					exp5
@@ -1213,28 +1250,82 @@
 	(cond ((and (equal p 0)
 		    (eq signdiscrim '$zero))
 	       ;; x^2/sqrt(R), repeated roots
+	       ;;
+	       ;; With repeated roots, R is really of the form
+	       ;; c*x^2+b*x+b^2/4/c = c*(x+b/2/c)^2.  So we have
+	       ;;
+	       ;; x^2/sqrt(c)/(x+b/2/c)
+	       ;;
+	       ;; And the integral of this is
+	       ;;
+	       ;; b^2*log(x+b/2/c)/4/c^(5/2) + x^2/2/sqrt(c) - b*x/2/c^(3/2).
+	       ;;
 	       (setq res2
+		     #+nil
 		     (add (augmult (mul* b b (list '(rat) 1 4)
 					 (power c -3)
 					 (list '(%log) exp4)))
 			  (augmult (mul *ec-1* 1//2 (power exp4 2)))
-			  (augmult (mul -1 b x exp5))))))
+			  (augmult (mul -1 b x exp5)))
+		     (add (augmult (mul* b b (list '(rat) 1 4)
+					 (power c (div -5 2))
+					 (list '(%log) exp4)))
+			  (augmult (mul (power c -1//2) 1//2 (power x 2)))
+			  (augmult (mul -1//2 b x (power c (div -3 2))))))))
 	
 	(cond ((and (equal p 1)
 		    (eq signdiscrim '$zero))
 	       ;; x^2/sqrt(R^3), repeated roots
+	       ;;
+	       ;; As above, we have c*(x+b/2/c)^2, so
+	       ;;
+	       ;; x^2/sqrt(R^3) = x^2/sqrt(c^3)/(x+b/2/c)^3
+	       ;;
+	       ;; And the integral is
+	       ;;
+	       ;; log(x+b/2/c)/c^(3/2) + z*(3*z+4*x)/2/c^(3/2)/(z+x)^2
+	       ;;
+	       ;; where z = b/2/c.
 	       (setq res2
+		     #+nil
 		     (add (augmult (mul* *ec-1* (list '(%log) exp4)))
 			  (augmult (mul b exp5 (power exp4 -1)))
 			  (augmult (mul (list '(rat) -1 8)
 					(power c -3)
+					b b (power exp4 -2))))
+		     (add (augmult (mul* (power c (div -3 2)) (list '(%log) exp4)))
+			  (augmult (mul b x (power c (div -5 2)) (power exp4 -2)))
+			  (augmult (mul (div 3 8)
+					(power c (div -7 2))
 					b b (power exp4 -2)))))))
 	
 	(cond ((and (eq signdiscrim '$zero)
 		    (greaterp p 1))
 	       ;; x^2/R^(p+1/2), repeated roots, p > 1
+	       ;;
+	       ;; As above, we have R=c*(x+b/2/c)^2, so the integral is
+	       ;;
+	       ;; x^2/(x+b/2/c)^(2*p+1)/c^(p+1/2).
+	       ;;
+	       ;; Let d = b/2/c.  Then write x^2 =
+	       ;; (x+d)^2-2*d*(x+d)+d^2.  The integrand becomes
+	       ;;
+	       ;; 1/(x+d)^(2*p-1) - 2*d/(x+d)^(2*p) + d^2/(x+d)^(2*p+1)
+	       ;;
+	       ;; whose integral is
+	       ;;
+	       ;; 1/(2*p-2)/(x+d)^(2*p-2) - 2*d/(2*p-1)/(x+d)^(2*p-1)
+	       ;;   + d^2/(2*p)/(x+d)^(2*p)
+	       ;;
+	       ;; And don't forget the factor c^(-p-1/2).  Finally,
+	       ;;
+	       ;; 1/c^(p+1/2)/(2*p-2)/(x+d)^(2*p-2)
+	       ;;  - b/c^(p+3/2)/(2*p-1)/(x+d)^(2*p-1)
+	       ;;  + b^2/8/c^(p+5/2)/p/(x+d)^(2*p)
 	       (setq res2
-		     (add (augmult (mul *ec-1* (power exp4 exp6)
+		     #+nil
+		     (add (augmult (mul *ec-1*
+					(power exp4 exp6)
 					(inv exp6)))
 			  (augmult (mul -1 b exp5 (inv exp7)
 					(power exp4 exp7)))
@@ -1242,9 +1333,24 @@
 					(power c -3)
 					(inv p)
 					(power exp4
+					       (times -2 p)))))
+		     (add (augmult (mul (inv (power c (add p 1//2)))
+					(power exp4 exp6)
+					(inv exp6)))
+			  (augmult (mul -1 b
+					(inv (power c (add p (div 3 2))))
+					(inv exp7)
+					(power exp4 exp7)))
+			  (augmult (mul b b (list '(rat) -1 8)
+					(inv (power c (add p (div 5 2))))
+					(inv p)
+					(power exp4
 					       (times -2 p))))))))
 	(cond ((equal controlpow 2)
 	       ;; x^2/R^(p+1/2)
+	       ;;
+	       ;; We computed this result above, so just multiply by
+	       ;; the coefficient and add it to the result.
 	       (setq result (add result (augmult (mul coef res2)))
 		     count 3)
 	       (go loop)))
@@ -1258,9 +1364,15 @@
 		 ;; denom = 2*p-m
 		 ;; pm-1 = m - 1
 
-		 ;; x^(m-1)/c/denom*R^(-p+1/2)
-		 ;;   - b*(2*p+1-2*m)/2/c/denom*res2
-		 ;;   + a*(m-1)/c/denom*res1
+		 ;; G&R 2.263, eq 1:
+		 ;;
+		 ;; integrate(x^m/sqrt(R^(2*p+1)),x) =
+		 ;;   x^(m-1)/c/(m-2*p)/sqrt(R^(2*p-1))
+		 ;;     - b*(2*m-2*p-1)/2/(m-2*p)*integrate(x^(m-1)/sqrt(R^(2*p+1)),x)
+		 ;;     + (m-1)*a/(m-2*p)/c*integrate(x^(m-2)/sqrt(R^(2*p+1)),x)
+		 ;;
+		 ;; The two integrals here were computed above in res2
+		 ;; and res1, respectively.
 		 (add (augmult (mul* (power x pm-1)
 				     *ec-1* (list '(rat) -1 denom)
 				     (power (polfoo c b a x)
