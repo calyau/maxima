@@ -750,6 +750,7 @@
 	       (t '$positive)))
 	(t (signdiscr c b a))))
 
+;; Integrate things like x^m*R^(p-1/2), p > 0, m > 0.
 (defun nummnumn (poszpowlist pluspowfo1 p c b a x) 
   (declare (special *ec-1*))
   ((lambda (expr expo ex)
@@ -814,23 +815,57 @@
 	(go jump3)))
    (power (polfoo c b a x) (add p 1//2)) *ec-1* (power c -2)))
 
+;; Integrate R^(p+1/2)
 (defun numn (p c b a x)
   (declare (special *ec-1*))
-  ((lambda (exp1 exp2 exp3 exp4 exp5) 
-     (cond ((zerop p) (add (augmult (mul (list '(rat) 1 4) exp1
-					 exp2 (power (polfoo c b a x) exp3)))
-			   (augmult (mul (list '(rat) 1 8) exp1 exp4 
-					 (den1 c b a x)))))
-	   (t (add (augmult (mul (list '(rat) 1 4) exp1 exp5 exp2
-				 (power (polfoo c b a x) (add p exp3))))
-		   (augmult (mul (list '(rat) 1 8) exp1 exp5 (plus p p 1)
-				 exp4 (numn (plus p -1) c b a x)))))))
-   *ec-1* (add b (mul 2 c x)) 1//2
-   (add (mul 4 a c) (mul -1 b b)) (list '(rat) 1 (plus p 1))))
+  ((lambda (exp1 exp2 exp3 exp4 exp5)
+     ;; exp1 = 1/c
+     ;; exp2 = b+2*c*x
+     ;; exp3 = 1/2
+     ;; exp4 = 4*a*c-b^2
+     ;; exp5 = 1/(p+1)
+     (cond ((zerop p)
+	    ;; integrate(sqrt(R),x)
+	    ;;
+	    ;; G&R 2.262 says
+	    ;;
+	    ;; integrate(sqrt(R),x) =
+	    ;;   (2*c*x+b)*sqrt(R)/4/c + del/8/c*integrate(1/sqrt(R),x)
+	    ;;
+	    ;; del = 4*a*c-b^2
+	    (add (augmult (mul (list '(rat) 1 4)
+			       exp1
+			       exp2
+			       (power (polfoo c b a x) exp3)))
+		 (augmult (mul (list '(rat) 1 8)
+			       exp1
+			       exp4 
+			       (den1 c b a x)))))
+	   (t
+	    ;; The general case
+	    ;;
+	    ;; G&R 2.260, eq. 2:
+	    ;;
+	    ;; integrate(sqrt(R^(2*p+1)),x) =
+	    ;;   (2*c*x+b)/4/(p+1)/c*R^(p+1/2)
+	    ;;     + (2*p+1)*del/8/(p+1)/c*integrate(sqrt(R^(2*p-1)),x)
+	    (add (augmult (mul (list '(rat) 1 4)
+			       exp1 exp5 exp2
+			       (power (polfoo c b a x) (add p exp3))))
+		 (augmult (mul (list '(rat) 1 8)
+			       exp1 exp5 (plus p p 1)
+			       exp4
+			       (numn (plus p -1) c b a x)))))))
+   *ec-1*
+   (add b (mul 2 c x))
+   1//2
+   (add (mul 4 a c) (mul -1 b b))
+   (list '(rat) 1 (plus p 1))))
 
 (defun augmult (x)
   ($multthru (simplifya x nil))) 
- 
+
+;; Integrate things like 1/x^m/R^(p+1/2), p > 0.
 (defun denmdenn (negpowlist p c b a x)
   ((lambda (exp1)
      (prog (result controlpow coef count res1 res2 m partres signa ea-1)
@@ -1420,8 +1455,12 @@
    (plus 2 (times -2 p))
    (plus 1 (times -2 p))))
 
+;; Integrate functions of the form coef*R^(pow+1/2)/x^m.  NEGPOWLIST
+;; contains the list of coef's and m's.
 (defun denmnumn (negpowlist pow c b a x)
   ((lambda (exp1 exp2)
+     ;; exp1 = 1/x
+     ;; exp2 = 2*pow-1
      (prog (result controlpow p coef count res1 res2 m
 	    partres signa ea-1)
 	(setq p (plus pow pow -1))
@@ -1432,30 +1471,48 @@
 	(cond ((eq signa '$zero)
 	       (return (nonconstquadenum negpowlist p c b x))))
 	(setq ea-1 (inv a))
-	there (setq result 0 controlpow (caar negpowlist)
-		    coef (cadar negpowlist))
+	there
+	(setq result 0
+	      controlpow (caar negpowlist)
+	      coef (cadar negpowlist))
+	(format t "p = ~A~%" p)
 	(cond ((zerop controlpow)
+	       ;; integrate(sqrt(R)).
+	       ;; I don't think we can normally get here.
 	       (setq result (augmult (mul coef
 					  (numn (add (mul p 1//2) 1//2)
 						c b a x)))
 		     count 1)
 	       (go loop)))
-	jump1 (setq res1 (den1numn pow c b a x))
+	jump1
+	;; Handle integrate(sqrt(R^(2*p-1))/x),x
+	(setq res1 (den1numn pow c b a x))
 	(cond ((equal controlpow 1)
 	       (setq result (add result (augmult (mul coef res1)))
 		     count 2)
 	       (go loop)))
-	jump2 (cond ((not (equal p 1))
-		     (setq res2 (add (augmult (mul -1 exp1
-						   (power (polfoo c b a x)
-							  (add pow
-							       (list '(rat) -1 2)))))
-				     (augmult (mul b (list '(rat) exp2 2)
-						   (den1numn (plus pow -1)
-							     c b a x)))
-				     (augmult (mul c exp2 (numn (plus pow -2)
-								c b a x)))))))
+	jump2
+	;; Handle integrate(sqrt(R^(2*p-1))/x^2,x)
+	(cond ((not (equal p 1))
+	       (setq res2 (add (augmult (mul -1 exp1
+					     (power (polfoo c b a x)
+						    (add pow
+							 (list '(rat) -1 2)))))
+			       (augmult (mul b (list '(rat) exp2 2)
+					     (den1numn (plus pow -1)
+						       c b a x)))
+			       (augmult (mul c exp2 (numn (plus pow -2)
+							  c b a x)))))))
 	(cond ((equal p 1)
+	       ;; integrate(sqrt(R)/x^2,x)
+	       ;;
+	       ;; G&R 2.267, eq. 2
+	       ;;
+	       ;; integrate(sqrt(R)/x^2,x) =
+	       ;;   -sqrt(R)/x
+	       ;;     + b/2*integrate(1/x/sqrt(R),x)
+	       ;;     + c*integrate(1/sqrt(R),x)
+	       ;;
 	       (setq res2 (add (augmult (mul -1 (power (polfoo c b a x)
 						       1//2)
 					     exp1))
@@ -1465,21 +1522,42 @@
 	       (setq result (add result (augmult (mul coef res2)))
 		     count 3)
 	       (go loop)))
-	jump3 (setq count 4 m 3)
-	jump  (setq partres
-		    ((lambda (exp3 exp4)
-		       (add (augmult (mul* (list '(rat) -1 exp3)
-					   ea-1 (power x (plus 1 exp4))
-					   (power (polfoo c b a x)
-						  (add (list '(rat) p 2)
-						       1))))
-			    (augmult (mul (inv (plus m m -2))
-					  ea-1 b (plus p 4 (times -2 m))
-					  res2))
-			    (augmult (mul c ea-1 (plus p 3 exp4)
-					  (inv exp3) res1))))
-		     (plus m -1) (times -1 m))
-		    m (plus m 1))
+	jump3
+	(setq count 4
+	      m 3)
+	jump
+	;; The general case sqrt(R^(2*p-1))/x^m
+	(setq partres
+	      ((lambda (exp3 exp4)
+		 ;; exp3 = m-1
+		 ;; exp4 = -m
+		 ;;
+		 ;; G&R 2.265
+		 ;;
+		 ;; integrate(sqrt(R^(2*p-1))/x^m,x) =
+		 ;;   -sqrt(R^(2*p+1))/(m-1)/a/x^(m-1)
+		 ;;     + (2*p-2-2*m+5)*b/2/(m-1)/a*integrate(sqrt(R^(2*p-1))/x^(m-1),x)
+		 ;;     + (2*p-2-m+4)*c/(m-1)/a*integrate(sqrt(R^(2*p-1))/x^(m-2),x)
+		 ;;
+		 ;; This doesn't seem to be the same as the above
+		 ;; formula, but it appears to produce the correct
+		 ;; result.
+		 (add (augmult (mul* (list '(rat) -1 exp3)
+				     ea-1
+				     (power x (plus 1 exp4))
+				     (power (polfoo c b a x)
+					    (add (list '(rat) p 2)
+						 1))))
+		      (augmult (mul (inv (plus m m -2))
+				    ea-1 b
+				    (plus p 4 (times -2 m))
+				    res2))
+		      (augmult (mul c ea-1
+				    (plus p 3 exp4)
+				    (inv exp3) res1))))
+	       (plus m -1)
+	       (times -1 m))
+	      m (plus m 1))
 	(cond ((greaterp m controlpow)
 	       (setq result (add result (augmult (mul coef partres))))
 	       (go loop)))
@@ -1492,18 +1570,24 @@
 	(cond ((equal count 1) (go jump1)))
 	(cond ((equal count 2) (go jump2)))
 	(go jump3)))
-   (power x -1) (plus pow pow -1)))
+   (power x -1)
+   (plus pow pow -1)))
 
+;; Like denmnumn, but a = 0.
 (defun nonconstquadenum (negpowlist p c b x)
   (prog (result coef m)
-     (cond ((equal p 1)(return (case1 negpowlist c b x))))
+     (cond ((equal p 1)
+	    (return (case1 negpowlist c b x))))
      (setq result 0)
-     loop (setq m (caar negpowlist) coef (cadar negpowlist))
+     loop
+     (setq m (caar negpowlist)
+	   coef (cadar negpowlist))
      (setq result (add result (augmult (mul coef (casegen m p c b x))))
 	   negpowlist (cdr negpowlist))
      (cond ((null negpowlist) (return result)))
      (go loop)))
 
+;; Integrate (c*x^2+b*x)^(p-1/2)/x^m
 (defun casegen (m p c b x)
   ((lambda (exp1 exp2 exp3 exp4 exp5)
      (cond ((equal p 1) (case1 (list (list m 1)) c b x))
@@ -1523,6 +1607,7 @@
    (plus p -2)
    (plus m -1 (times -1 p))))
 
+;; Integrate things like sqrt(c*x^2+b*x))/x^m.
 (defun case1 (negpowlist c b x)
   (declare (special *ec-1*))
   ((lambda (exp1 eb-1)
@@ -1658,16 +1743,34 @@
    (list '(rat) 1 4) (add b (mul 2 c x)) (power c (list '(rat) -3 2))
    (add (mul 2 c x)(mul -1 b)) (power b -1)))
 
+;; Integrate R^(p-1/2)/x, p >= 1.
 (defun den1numn (p c b a x)
   (cond ((equal p 1)
-	 (add (power (polfoo c b a x) 1//2 )
+	 ;; integrate(sqrt(R)/x,x)
+	 ;;
+	 ;; G&R 2.267 eq. 1
+	 ;;
+	 ;; integrate(sqrt(R)/x,x) =
+	 ;;  sqrt(R)
+	 ;;    + a*integrate(1/x/sqrt(R),x)
+	 ;;    + b/2*integrate(1/sqrt(R),x)
+	 (add (power (polfoo c b a x) 1//2)
 	      (augmult (mul a (den1den1 c b a x)))
 	      (augmult (mul b 1//2 (den1 c b a x)))))
-	(t (add (augmult (mul (power (polfoo c b a x)
-				     (add p (list '(rat) -1 2)))
-			      (inv (plus p p -1))))
-		(augmult (mul a (den1numn (plus p -1) c b a x)))
-		(augmult (mul b 1//2 (numn (plus p -2) c b a x)))))))
+	(t
+	 ;; General case
+	 ;;
+	 ;; G&R 2.265
+	 ;;
+	 ;; integrate(sqrt(R^(2*p-1)/x,x) =
+	 ;;   R^(p-1/2)/(2*p-1)
+	 ;;     + b/2*integrate(sqrt(R^(2*p-3)),x)
+	 ;;     + a*integrate(sqrt(2^(2*p-3))/x,x)
+	 (add (augmult (mul (power (polfoo c b a x)
+				   (add p (list '(rat) -1 2)))
+			    (inv (plus p p -1))))
+	      (augmult (mul a (den1numn (plus p -1) c b a x)))
+	      (augmult (mul b 1//2 (numn (plus p -2) c b a x)))))))
 
 (defun distrint (expr x)
   (cond ((null expr) 0)
