@@ -880,7 +880,7 @@
   ((lambda (signdisc exp1 exp2 exp3 ec-1)
      ;; exp1 = b + 2*c*x;
      ;; exp2 = (4*a*c-b^2)
-     ;; exp3 = 1/(2*p-1) = -1/(n+2) (Why?)
+     ;; exp3 = 1/(2*p-1)
      #+nil
      (progn
        (format t "signdisc = ~A~%" signdisc)
@@ -888,12 +888,12 @@
      (cond ((and (eq signdisc '$zero)
 		 (zerop p))
 	    ;; 1/sqrt(R), and R has duplicate roots.  That is, we have
-	    ;; 1/sqrt(c*(x+b/(2c))^2) = 1/c/sqrt((x+b/2/c)^2).
+	    ;; 1/sqrt(c*(x+b/(2c))^2) = 1/sqrt(c)/sqrt((x+b/2/c)^2).
 	    ;;
-	    ;; We return 1/c*log(x+b/2/c).  Shouldn't we return
+	    ;; We return 1/sqrt(c)*log(x+b/2/c).  Shouldn't we return
 	    ;; 1/c*log(|x+b/2/c|)?
-	    (augmult (mul* ec-1
-			   (list '(%log) (add x (mul b 1//2  ec-1))))))
+	    (augmult (mul* (power ec-1 1//2)
+			   (list '(%log) (add x (mul b 1//2 ec-1))))))
 	   ((and (eq signdisc '$zero)
 		 (greaterp p 0))
 	    ;; 1/sqrt(R^(2*p+1)), with duplicate roots.
@@ -907,7 +907,7 @@
 	    (augmult (mul* (list '(rat) -1 (plus p p))
 			   (power c (mul (list '(rat) -1 2)
 					 (plus p p 1)))
-			   (power (add x (mul b 1//2  ec-1 ))
+			   (power (add x (mul b 1//2  ec-1))
 				  (times -2 p)))))
 	   ((zerop p)
 	    ;; 1/sqrt(R)
@@ -943,12 +943,16 @@
    (inv (plus p p -1))
    (inv c)))
 
-;; Integral of 1/x/(c*x^2+b*x+a)^(n/2), n > 0.
+;; Integral of 1/x/(c*x^2+b*x+a)^(p+1/2), p > 0.
 (defun den1denn (p c b a x)
   ((lambda (signa ea-1)
      ;; signa = sign of a^2
      ;; ea-1 = 1/a.
      (cond ((eq signa '$zero)
+	    ;; This is wrong because noconstquad expects a
+	    ;; powercoeflist for th first arg.  But I don't think
+	    ;; there's any way to get here from anywhere.  I'm pretty
+	    ;; sure den1denn is never called with a equal to 0.
 	    (noconstquad 1 p c b x))
 	   ((zerop p)
 	    ;; 1/x/sqrt(c*x^2+b*x+a)
@@ -958,11 +962,11 @@
 	    ;;
 	    ;; R=(c*x^2+b*x+a)
 	    ;;
-	    ;; integrate(1/x/sqrt(R^(2*n+1)),x) =
+	    ;; integrate(1/x/sqrt(R^(2*p+1)),x) =
 	    ;;
-	    ;;   1/(2*n-1)/a/sqrt(R^(2*n-1))
-	    ;;     - b/2/a*integrate(1/sqrt(R^(2*n+1)),x)
-	    ;;     + 1/a*integrate(1/x/sqrt(R^(2*n-1)),x)
+	    ;;   1/(2*p-1)/a/sqrt(R^(2*p-1))
+	    ;;     - b/2/a*integrate(1/sqrt(R^(2*p+1)),x)
+	    ;;     + 1/a*integrate(1/x/sqrt(R^(2*p-1)),x)
 	    (add (augmult (mul (inv (plus p p -1))
 			       ea-1
 			       (power (polfoo c b a x)
@@ -1054,8 +1058,8 @@
    (power (list '(mabs) x) -1)
    (list '(rat) -1 2)))
 
-;; Integral of d/x^m/(c*x^2+b*x)^(n/2), n > 0.  The values of m and d
-;; are in NEGPOWLIST.
+;; Integral of d/x^m/(c*x^2+b*x)^(p+1/2), p > 0.  The values of m and
+;; d are in NEGPOWLIST.
 (defun noconstquad (negpowlist p c b x)
   ((lambda (exp1 exp2 exp3)
      ;; exp1 = 1/(2*p+1)
@@ -1127,7 +1131,7 @@
   ((lambda (exp1 exp2 exp3 exp4 exp5 exp6 exp7)
      ;; exp1 = 1/(2*p-1) = -1/(n+2).  (Why?)
      ;; exp2 = (a*x^2+b*x+c)^(n/2+1)
-     ;; exp3 = 1/(4*a*c-b^2) (reciprocal of the negative of the discriminant?)
+     ;; exp3 = (4*a*c-b^2) (negative of the discriminant?)
      ;; exp4 = 1/2*b*(ec-1).  (What is ec-1?)
      ;; exp5 = 1/c^2
      ;; exp6 = n+2.
@@ -1151,11 +1155,11 @@
 	jump2 (cond ((and (greaterp p 0)
 			  (not (eq signdiscrim '$zero)))
 		     (setq res2
-			   (add (augmult (mul ec-1 exp1 exp3 exp2
+			   (add (augmult (mul ec-1 exp1 (inv exp3) exp2
 					      (add (mul 2 a b)
 						   (mul 2 b b x)
 						   (mul -4 a c x))))
-				(augmult (mul ec-1 exp3 exp1
+				(augmult (mul ec-1 (inv exp3) exp1
 					      (add (mul 4 a c)
 						   (mul 2 b b p)
 						   (mul -3 b b))
@@ -1242,7 +1246,7 @@
 	(go jump3)))
    (inv (plus p p -1))
    (power (polfoo c b a x) (add r12 (times -1 p)))
-   (power (add (mul 4 a c) (mul -1 b b)) -1)
+   (add (mul 4 a c) (mul -1 b b))
    (add x (mul b r12 ec-1))
    (power c -2)
    (plus 2 (times -2 p))
