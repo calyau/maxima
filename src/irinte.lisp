@@ -1257,17 +1257,22 @@
 ;; The trivial case of d/x^m/(c*x^2+b*x+a)^(p+1/2), p > 0, and a=b=0.
 (defun trivial1 (negpowlist p c x)
   (cond ((null negpowlist) 0)
-	(t (add (augmult (mul (power x
-				     (add (times -2 p)
-					  (mul -1
-					       (caar negpowlist))))
-			      (cadar negpowlist)
-			      (power c
-				     (add (times -1 p)
-					  (list '(rat) -1 2)))
-			      (inv (add (times -2 p)
-					(mul -1 (caar negpowlist))))))
-		(trivial1 (cdr negpowlist) p c x)))))
+	(t
+	 ;; d/x^m/c^(p+1/2)/x^(2*p+1) = d/c^(p+1/2)/x^(m+2*p+1)
+	 ;; The integral is obviously
+	 ;;
+	 ;; -d/c^(p+1/2)/x^(m+2*p)/(m+2*p)
+	 (add (augmult (mul (power x
+				   (add (times -2 p)
+					(mul -1
+					     (caar negpowlist))))
+			    (cadar negpowlist)
+			    (power c
+				   (add (times -1 p)
+					-1//2))
+			    (inv (add (times -2 p)
+				      (mul -1 (caar negpowlist))))))
+	      (trivial1 (cdr negpowlist) p c x)))))
 
 ;; Integrate pl(x)/(c*x^2+b*x+a)^(p+1/2) where pl(x) is a polynomial
 ;; and p > 0.  The polynomial is given in POSZPOWLIST.
@@ -1551,7 +1556,7 @@
    (plus 2 (times -2 p))
    (plus 1 (times -2 p))))
 
-;; Integrate functions of the form coef*R^(pow+1/2)/x^m.  NEGPOWLIST
+;; Integrate functions of the form coef*R^(pow-1/2)/x^m.  NEGPOWLIST
 ;; contains the list of coef's and m's.
 (defun denmnumn (negpowlist pow c b a x)
   ((lambda (exp1 exp2)
@@ -1559,7 +1564,11 @@
      ;; exp2 = 2*pow-1
      (prog (result controlpow p coef count res1 res2 m
 	    partres signa ea-1)
+	;; p = 2*pow-1.  NOTE: p is not the same here as in other
+	;; routines!
 	(setq p (plus pow pow -1))
+	;; Why is there is this special case for negpowlist?  CASE1
+	;; calls this in this way.
 	(cond ((eq (car negpowlist) 't)
 	       (setq negpowlist (cdr negpowlist))
 	       (go there)))
@@ -1571,7 +1580,6 @@
 	(setq result 0
 	      controlpow (caar negpowlist)
 	      coef (cadar negpowlist))
-	;;(format t "p = ~A~%" p)
 	(cond ((zerop controlpow)
 	       ;; integrate(sqrt(R)).
 	       ;; I don't think we can normally get here.
@@ -1581,24 +1589,34 @@
 		     count 1)
 	       (go loop)))
 	jump1
-	;; Handle integrate(sqrt(R^(2*p-1))/x),x
+	;; Handle integrate(sqrt(R^(2*pow-1))/x),x
 	(setq res1 (den1numn pow c b a x))
 	(cond ((equal controlpow 1)
 	       (setq result (add result (augmult (mul coef res1)))
 		     count 2)
 	       (go loop)))
 	jump2
-	;; Handle integrate(sqrt(R^(2*p-1))/x^2,x)
+	;; Handle integrate(sqrt(R^(2*pow-1))/x^2,x)
 	(cond ((not (equal p 1))
-	       (setq res2 (add (augmult (mul -1 exp1
-					     (power (polfoo c b a x)
-						    (add pow
-							 (list '(rat) -1 2)))))
-			       (augmult (mul b (list '(rat) exp2 2)
-					     (den1numn (plus pow -1)
-						       c b a x)))
-			       (augmult (mul c exp2 (numn (plus pow -2)
-							  c b a x)))))))
+	       ;; integrate(sqrt(R^(2*pow-1))/x^2,x)
+	       ;;
+	       ;; We can use integration by parts to get
+	       ;;
+	       ;; integrate(sqrt(R^(2*pow-1))/x^2,x) =
+	       ;;   -R^(pow-1/2)/x
+	       ;;     + (2*pow-1)*b/2*integrate(sqrt(R^(2*pow-3))/x,x)
+	       ;;     + (2*pow-1)*c*integrate(sqrt(R^(2*pow-3)),x)
+	       (setq res2
+		     (add (augmult (mul -1 exp1
+					(power (polfoo c b a x)
+					       (add pow
+						    (list '(rat) -1 2)))))
+			  (augmult (mul b (list '(rat) exp2 2)
+					(den1numn (plus pow -1)
+						  c b a x)))
+			  (augmult (mul c exp2 (numn (plus pow -2)
+						     c b a x))))
+		     )))
 	(cond ((equal p 1)
 	       ;; integrate(sqrt(R)/x^2,x)
 	       ;;
@@ -1632,16 +1650,11 @@
 		 ;;
 		 ;; integrate(sqrt(R^(2*p-1))/x^m,x) =
 		 ;;   -sqrt(R^(2*p+1))/(m-1)/a/x^(m-1)
-		 ;;     + (2*p-2-2*m+5)*b/2/(m-1)/a*integrate(sqrt(R^(2*p-1))/x^(m-1),x)
-		 ;;     + (2*p-2-m+4)*c/(m-1)/a*integrate(sqrt(R^(2*p-1))/x^(m-2),x)
+		 ;;     + (2*p-2*m+3)*b/2/(m-1)/a*integrate(sqrt(R^(2*p-3))/x^(m-1),x)
+		 ;;     + (2*p-m+2)*c/(m-1)/a*integrate(sqrt(R^(2*n-3))/x^(m-2),x)
 		 ;;
-		 ;; This doesn't seem to be the same as the above
-		 ;; formula, but it appears to produce the correct
-		 ;; result.
-		 ;;
-		 ;; -1/(m-1)/a/x^(m-1)/R^(p/2+1)
-		 ;; + b/(2*m-2)/a/(p-2*m+4)*integrate()
-		 ;; + c/a*(p+3-m)/(m-1)*integrate();
+		 ;; NOTE: The p here is 2*pow-1.  And we're
+		 ;; integrating R^(pow-1/2).
 		 (add (augmult (mul* (list '(rat) -1 exp3)
 				     ea-1
 				     (power x (plus 1 exp4))
@@ -1656,8 +1669,8 @@
 				    (plus p 3 exp4)
 				    (inv exp3) res1))))
 	       (plus m -1)
-	       (times -1 m))
-	      m (plus m 1))
+	       (times -1 m)))
+	(setq m (plus m 1))
 	(cond ((greaterp m controlpow)
 	       (setq result (add result (augmult (mul coef partres))))
 	       (go loop)))
@@ -1670,9 +1683,12 @@
 	(cond ((null negpowlist) (return result)))
 	(setq coef (cadar negpowlist)
 	      controlpow (caar negpowlist))
-	(cond ((equal count 4) (go jump4)))
-	(cond ((equal count 1) (go jump1)))
-	(cond ((equal count 2) (go jump2)))
+	(cond ((equal count 4)
+	       (go jump4)))
+	(cond ((equal count 1)
+	       (go jump1)))
+	(cond ((equal count 2)
+	       (go jump2)))
 	(go jump3)))
    (power x -1)
    (plus pow pow -1)))
@@ -1718,8 +1734,8 @@
 	   (t
 	    ;; (c*x^2+b*x)^(p-1/2)/x^m
 	    (add (augmult (mul -1 exp1 (inv exp5) exp3))
-		   (augmult (mul -1 p b 1//2 (inv exp5)
-				 (casegen exp2 exp4 c b x)))))))
+		 (augmult (mul -1 p b 1//2 (inv exp5)
+			       (casegen exp2 exp4 c b x)))))))
    (power (polfoo c b 0 x) (list '(rat) p 2))
    (plus m -1)
    (power x (plus 1 (times -1 m)))
@@ -1843,6 +1859,7 @@
 (defun ext-1m (x m)
   (power x (times -1 m))) 
 
+;; Integrate (c*x^2+b*x)^(p-1/2)
 (defun case0 (power c b x)
   ((lambda (exp1 exp2 exp3 exp4 eb-1)
      ;; exp1 = 1/4
@@ -1852,7 +1869,11 @@
      ;; eb-1 = 1/b
      (declare (special *ec-1*))
      (prog (signc p result)
-	(setq signc (checksigntm *ec-1*) p 1)
+	(setq signc (checksigntm *ec-1*)
+	      p 1)
+	;; sqrt(c*x^2+b*x)
+	;;
+	;; This could be handled by numn.  Why don't we?
 	(cond ((eq signc '$positive)
 	       (setq result
 		     (add (augmult (mul exp1 *ec-1* exp2
@@ -1881,6 +1902,12 @@
 	(cond ((equal power p) (return result)))
 	(setq p (plus p 2)
 	      result ((lambda (exp5)
+			;; exp5 = 1/(p+1)
+			;;
+			;; integrate(sqrt(R^(2*n+1)),x) =
+			;;   (2*c*x+b)/4/(n+1)/c*sqrt(R^(2*n+1))
+			;;     + (2*n+1)*del/8/(n+1)/c*integrate(sqrt(R^(2*n-1)),x)
+			;;
 			(add (augmult (mul 1//2 *ec-1* exp5 exp2
 					   (power (polfoo c b 0 x)
 						  (list '(rat) p 2))))
