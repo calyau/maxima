@@ -169,3 +169,78 @@ integrate(sqrt(R^3)/x^2,x);
 	 +3*b^2*asinh((2*c*x+b)/sqrt(4*a*c-b^2))/(8*sqrt(c))
 	 -(c*x^2+b*x+a)^(3/2)/x+3*c*x*sqrt(c*x^2+b*x+a)/2
 	 +9*b*sqrt(c*x^2+b*x+a)/4;
+
+/* Same as above, but test a = 0 (nonconstquadenum) */
+integrate(sqrt(R-a)/x,x);
+b*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/(2*sqrt(c))+sqrt(c*x^2+b*x);
+
+integrate(sqrt((R-a)^3)/x,x);
+-b^3*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/(16*c^(3/2))
+	 +(c*x^2+b*x)^(3/2)/3+b*x*sqrt(c*x^2+b*x)/4+b^2*sqrt(c*x^2+b*x)/(8*c);
+
+integrate(sqrt(R-a)/x^2,x);
+sqrt(c)*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)-2*sqrt(c*x^2+b*x)/x;
+
+integrate(sqrt((R-a)^3)/x^2,x);
+3*b^2*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/(8*sqrt(c))
+	 +(c*x^2+b*x)^(3/2)/(2*x)+3*b*sqrt(c*x^2+b*x)/4;
+
+integrate(sqrt((R-a)^3)/x^3,x);
+3*b*sqrt(c)*log(2*sqrt(c)*sqrt(c*x^2+b*x)+2*c*x+b)/2
+	 +(c*x^2+b*x)^(3/2)/x^2-3*b*sqrt(c*x^2+b*x)/x;
+
+/*
+ * Test denmdenn 1/sqrt(R^(2*p+1))/x^m
+ */
+integrate(1/sqrt(R)/x^2,x);
+b*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 /(2*a^(3/2))
+	 -sqrt(c*x^2+b*x+a)/(a*x);
+
+integrate(1/sqrt(R)/x^3,x);
+c*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 /(2*a^(3/2))
+	 -3*b^2
+	   *asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	  /(8*a^(5/2))+3*b*sqrt(c*x^2+b*x+a)/(4*a^2*x)
+	 -sqrt(c*x^2+b*x+a)/(2*a*x^2);
+
+integrate(1/sqrt(R^3)/x^2,x);
+3*b*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 /(2*a^(5/2))
+	 -8*c^2*x/(a*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 +3*b^2*c*x/(a^2*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 -1/(a*x*sqrt(c*x^2+b*x+a))-4*b*c/(a*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 +3*b^3/(2*a^2*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 -3*b/(2*a^2*sqrt(c*x^2+b*x+a));
+
+integrate(1/sqrt(R^3)/x^3,x);
+3*c*asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	 /(2*a^(5/2))
+	 -15*b^2
+	    *asinh(b*x/(sqrt(4*a*c-b^2)*abs(x))+2*a/(sqrt(4*a*c-b^2)*abs(x)))
+	  /(8*a^(7/2))+13*b*c^2*x/(a^2*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 -15*b^3*c*x/(4*a^3*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 +5*b/(4*a^2*x*sqrt(c*x^2+b*x+a))-1/(2*a*x^2*sqrt(c*x^2+b*x+a))
+	 +13*b^2*c/(2*a^2*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 -15*b^4/(8*a^3*(4*a*c-b^2)*sqrt(c*x^2+b*x+a))
+	 -3*c/(2*a^2*sqrt(c*x^2+b*x+a))+15*b^2/(8*a^3*sqrt(c*x^2+b*x+a));
+
+/* Same as above, but test the case of a = 0 (test noconstquad) */
+integrate(1/sqrt(R-a)/x^2,x);
+4*c*sqrt(c*x^2+b*x)/(3*b^2*x)-2*sqrt(c*x^2+b*x)/(3*b*x^2);
+
+integrate(1/sqrt(R-a)/x^3,x);
+-16*c^2*sqrt(c*x^2+b*x)/(15*b^3*x)+8*c*sqrt(c*x^2+b*x)/(15*b^2*x^2)
+					  -2*sqrt(c*x^2+b*x)/(5*b*x^3);
+
+integrate(1/sqrt((R-a)^3)/x^2,x);
+-32*c^3*x/(5*b^4*sqrt(c*x^2+b*x))+4*c/(5*b^2*x*sqrt(c*x^2+b*x))
+					 -2/(5*b*x^2*sqrt(c*x^2+b*x))
+					 -16*c^2/(5*b^3*sqrt(c*x^2+b*x));
+
+integrate(1/sqrt((R-a)^3)/x^3,x);
+256*c^4*x/(35*b^5*sqrt(c*x^2+b*x))-32*c^2/(35*b^3*x*sqrt(c*x^2+b*x))
+					  +16*c/(35*b^2*x^2*sqrt(c*x^2+b*x))
+					  -2/(7*b*x^3*sqrt(c*x^2+b*x))
+					  +128*c^3/(35*b^4*sqrt(c*x^2+b*x));
