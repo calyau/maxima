@@ -763,8 +763,10 @@
 	(setq result 0
 	      controlpow (caar poszpowlist)
 	      coef (cadar poszpowlist))
-	(format t "p = ~A~%" p)
-	(format t "pluspowfo1 = ~A~%" pluspowfo1)
+	#+nil
+	(progn
+	  (format t "p = ~A~%" p)
+	  (format t "pluspowfo1 = ~A~%" pluspowfo1))
 	(cond ((zerop controlpow)
 	       ;; Integrate R^(p-1/2)
 	       (setq result (augmult (mul coef (numn pluspowfo1 c b a x)))
@@ -1569,7 +1571,7 @@
 	(setq result 0
 	      controlpow (caar negpowlist)
 	      coef (cadar negpowlist))
-	(format t "p = ~A~%" p)
+	;;(format t "p = ~A~%" p)
 	(cond ((zerop controlpow)
 	       ;; integrate(sqrt(R)).
 	       ;; I don't think we can normally get here.
@@ -1636,6 +1638,10 @@
 		 ;; This doesn't seem to be the same as the above
 		 ;; formula, but it appears to produce the correct
 		 ;; result.
+		 ;;
+		 ;; -1/(m-1)/a/x^(m-1)/R^(p/2+1)
+		 ;; + b/(2*m-2)/a/(p-2*m+4)*integrate()
+		 ;; + c/a*(p+3-m)/(m-1)*integrate();
 		 (add (augmult (mul* (list '(rat) -1 exp3)
 				     ea-1
 				     (power x (plus 1 exp4))
@@ -1655,11 +1661,15 @@
 	(cond ((greaterp m controlpow)
 	       (setq result (add result (augmult (mul coef partres))))
 	       (go loop)))
-	jump4 (setq res1 res2 res2 partres)
+	jump4
+	(setq res1 res2
+	      res2 partres)
 	(go jump)
-	loop  (setq negpowlist (cdr negpowlist))
+	loop
+	(setq negpowlist (cdr negpowlist))
 	(cond ((null negpowlist) (return result)))
-	(setq coef (cadar negpowlist) controlpow (caar negpowlist))
+	(setq coef (cadar negpowlist)
+	      controlpow (caar negpowlist))
 	(cond ((equal count 4) (go jump4)))
 	(cond ((equal count 1) (go jump1)))
 	(cond ((equal count 2) (go jump2)))
@@ -1684,18 +1694,33 @@
 ;; Integrate (c*x^2+b*x)^(p-1/2)/x^m
 (defun casegen (m p c b x)
   ((lambda (exp1 exp2 exp3 exp4 exp5)
-     (cond ((equal p 1) (case1 (list (list m 1)) c b x))
-	   ((zerop m) (case0 p c b x))
+     ;; exp1 = R^(p/2)
+     ;; exp2 = m - 1
+     ;; exp3 = 1/x^(m-1)
+     ;; exp4 = p - 2
+     ;; exp5 = m - 1 - p
+     (cond ((equal p 1)
+	    ;; sqrt(c*x^2+b*x)/x^m
+	    (case1 (list (list m 1)) c b x))
+	   ((zerop m)
+	    ;; (c*x^2+b*x)^(p-1/2)
+	    (case0 p c b x))
 	   ((equal m (plus p 1))
+	    ;; (c*x^2+b*x)^(p-1/2)/x^(p+1)
 	    (add (augmult (mul -1 exp1 (inv exp2) exp3))
 		 (augmult (mul b 1//2 (casegen exp2 exp4 c b x)))
 		 (augmult (mul c (casegen (plus m -2) exp4 c b x)))))
-	   ((equal m 1) (add (augmult (mul (inv p) exp1))
-			     (augmult (mul b 1//2 (case0 exp4 c b x)))))
-	   (t (add (augmult (mul -1 exp1 (inv exp5) exp3))
+	   ((equal m 1)
+	    ;; (c*x^2+b*x)^(p-1/2)/x
+	    ;;
+	    (add (augmult (mul (inv p) exp1))
+		 (augmult (mul b 1//2 (case0 exp4 c b x)))))
+	   (t
+	    ;; (c*x^2+b*x)^(p-1/2)/x^m
+	    (add (augmult (mul -1 exp1 (inv exp5) exp3))
 		   (augmult (mul -1 p b 1//2 (inv exp5)
 				 (casegen exp2 exp4 c b x)))))))
-   (power (polfoo c b 0 x)(list '(rat) p 2))
+   (power (polfoo c b 0 x) (list '(rat) p 2))
    (plus m -1)
    (power x (plus 1 (times -1 m)))
    (plus p -2)
@@ -1705,31 +1730,44 @@
 (defun case1 (negpowlist c b x)
   (declare (special *ec-1*))
   ((lambda (exp1 eb-1)
+     ;; exp1 = 1/sqrt(c)
+     ;; eb-1 = 1/b
      (prog (result controlpow m1 coef count res1 res2 m signc
 	    signb partres res)
-	(setq result 0 controlpow (caar negpowlist)
-	      coef (cadar negpowlist) m1 (plus controlpow -2))
+	(setq result 0
+	      controlpow (caar negpowlist)
+	      coef (cadar negpowlist)
+	      m1 (plus controlpow -2))
 	(cond ((zerop controlpow)
 	       (setq result (augmult (mul coef (case0 1 c b x)))
 		     count 1)
 	       (go loop)))
-	jump1 (cond ((equal controlpow 1)
-		     (setq result
-			   (add result
-				(augmult (mul coef (den1numn 1 c b 0 x))))
-			   count 2)
-		     (go loop)))
-	jump2 (cond ((equal controlpow 2)
-		     (setq result
-			   (add result
-				(augmult (mul coef
-					      (denmnumn '(t (2 1))
-							1 c b 0 x))))
-			   count 3)
-		     (go loop)))
-	jump3 (setq signb (checksigntm (power b 2)))
-	(cond ((eq signb '$zero)(setq count 5)(go jump5)))
-	(setq count 4 m 0 signc (checksigntm *ec-1*))
+	jump1
+	;; sqrt(R)/x
+	(cond ((equal controlpow 1)
+	       (setq result
+		     (add result
+			  (augmult (mul coef (den1numn 1 c b 0 x))))
+		     count 2)
+	       (go loop)))
+	jump2
+	;; sqrt(R)/x^2
+	(cond ((equal controlpow 2)
+	       (setq result
+		     (add result
+			  (augmult (mul coef
+					(denmnumn '(t (2 1))
+						  1 c b 0 x))))
+		     count 3)
+	       (go loop)))
+	jump3
+	(setq signb (checksigntm (power b 2)))
+	(cond ((eq signb '$zero)
+	       (setq count 5)
+	       (go jump5)))
+	(setq count 4
+	      m 0
+	      signc (checksigntm *ec-1*))
 	(cond ((eq signc '$positive)
 	       (setq res
 		     (augmult (mul* 2 exp1
@@ -1748,16 +1786,20 @@
 							   (mul -1 c x))
 						      -1))
 					  1//2)))))
-	jump4 (setq m (plus m 1)
-		    res (add (augmult (mul -2 (power (polfoo c b 0 x) 1//2)
-					   eb-1 (inv (pmm-1 m))
-					   (ext-1m x m)))
-			     (augmult (mul* (list '(rat) -2 (pmm-1 m))
-					    c (sub1 m)
-					    eb-1 res))))
-	(cond ((equal m m1) (setq res2 res) (go jump4)))
+	jump4
+	(setq m (plus m 1)
+	      res (add (augmult (mul -2 (power (polfoo c b 0 x) 1//2)
+				     eb-1 (inv (pmm-1 m))
+				     (ext-1m x m)))
+		       (augmult (mul* (list '(rat) -2 (pmm-1 m))
+				      c (sub1 m)
+				      eb-1 res))))
+	(cond ((equal m m1)
+	       (setq res2 res)
+	       (go jump4)))
 	(cond ((equal (sub1 m) m1)
-	       (if (null res2) (return nil))
+	       (if (null res2)
+		   (return nil))
 	       (setq res1 res
 		     partres (add (augmult (mul -1
 						(power (polfoo c b 0 x)
@@ -1768,23 +1810,29 @@
 				  (augmult (mul c (r1m m) res2))))
 	       (go on)))
 	(go jump4)
-	jump5 (setq m controlpow)
+	jump5
+	(setq m controlpow)
 	(cond ((zerop m)
 	       (setq partres (mul* exp1 (list '(%log) x)))
 	       (go on)))
 	(setq partres (mul -1 exp1 (ext-1m x m) (r1m m)))
-	on    (setq result (add result  (augmult (mul coef partres))))
-	loop  (setq negpowlist (cdr negpowlist))
+	on
+	(setq result (add result (augmult (mul coef partres))))
+	loop
+	(setq negpowlist (cdr negpowlist))
 	(cond ((null negpowlist) (return result)))
-	(setq coef (cadar negpowlist) controlpow (caar negpowlist))
+	(setq coef (cadar negpowlist)
+	      controlpow (caar negpowlist))
 	(cond ((equal count 5) (go jump5)))
 	(cond ((equal count 1) (go jump1)))
 	(cond ((equal count 2) (go jump2)))
 	(cond ((equal count 3) (go jump3)))
 	(setq m1 (plus controlpow -2))
-	(cond ((equal m1 m) (setq res2 res1)))
+	(cond ((equal m1 m)
+	       (setq res2 res1)))
 	(go jump4)))
-   (power c (list '(rat) -1 2)) (power b -1)))
+   (power c (list '(rat) -1 2))
+   (power b -1)))
 
 (defun pmm-1 (m)
   (plus m m -1))
@@ -1797,6 +1845,11 @@
 
 (defun case0 (power c b x)
   ((lambda (exp1 exp2 exp3 exp4 eb-1)
+     ;; exp1 = 1/4
+     ;; exp2 = b+2*c*x
+     ;; exp3 = 1/c^(3/2)
+     ;; exp4 = 2*c*x-b
+     ;; eb-1 = 1/b
      (declare (special *ec-1*))
      (prog (signc p result)
 	(setq signc (checksigntm *ec-1*) p 1)
@@ -1824,7 +1877,8 @@
 					 exp3
 					 (list '(%asin)
 					       (mul eb-1 exp4))))))))
-	loop  (cond ((equal power p) (return result)))
+	loop
+	(cond ((equal power p) (return result)))
 	(setq p (plus p 2)
 	      result ((lambda (exp5)
 			(add (augmult (mul 1//2 *ec-1* exp5 exp2
@@ -1834,8 +1888,11 @@
 					   *ec-1* exp5 result))))
 		      (inv (plus p 1))))
 	(go loop)))
-   (list '(rat) 1 4) (add b (mul 2 c x)) (power c (list '(rat) -3 2))
-   (add (mul 2 c x)(mul -1 b)) (power b -1)))
+   (list '(rat) 1 4)
+   (add b (mul 2 c x))
+   (power c (list '(rat) -3 2))
+   (add (mul 2 c x)(mul -1 b))
+   (power b -1)))
 
 ;; Integrate R^(p-1/2)/x, p >= 1.
 (defun den1numn (p c b a x)
@@ -1866,6 +1923,8 @@
 	      (augmult (mul a (den1numn (plus p -1) c b a x)))
 	      (augmult (mul b 1//2 (numn (plus p -2) c b a x)))))))
 
+;; EXPR is a list of expressions that INTIRA should be applied to.
+;; Sum up the results of applying INTIRA to each.
 (defun distrint (expr x)
   (cond ((null expr) 0)
 	(t (add (intira (car expr) x)
