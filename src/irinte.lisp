@@ -991,7 +991,7 @@
 	(go jump3)))
    (power (polfoo c b a x) (add 1//2 (times -1 p)))))
 
-;; Integral of 1/(c*x^2+b*x+a)^(n), n > 0.  p = n - 1/2.
+;; Integral of 1/(c*x^2+b*x+a)^(n), n > 0.  p = n + 1/2.
 ;;
 ;; See G&R 2.263 formula 3.
 ;;
@@ -1023,8 +1023,6 @@
 	    ;; 1/c^(p+1/2)/(x+b/2/c)^(2*p+1).  So the result is 
 	    ;;
 	    ;; -1/2/p*c^(-p-1/2)/(x+b/2/c)^(2*p)
-	    ;;
-	    ;; FIXME:  This doesn't look right.
 	    (augmult (mul* (list '(rat) -1 (plus p p))
 			   (power c (mul (list '(rat) -1 2)
 					 (plus p p 1)))
