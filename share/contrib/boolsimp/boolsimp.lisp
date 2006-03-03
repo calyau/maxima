@@ -26,6 +26,81 @@
 ;                   =>   error       [1.0, 1.1107651257113993E-14, 63, 0]
 
 
+; In and, or, and if, arguments are evaluated, or simplified as the case may be,
+; from left to right, only as needed to establish whether the whole expression
+; is true or false. Therefore arguments which potentially have side effects
+; (print, kill, save, quit, etc) may or may not actually have those side effects.
+;
+; Simplification of boolean expressions:
+;
+; and: if any argument simplifies to false, return false
+;  otherwise omit arguments which simplify to true and simplify others
+;  if only one argument remains, return it
+;  if none remain, return true
+;
+; or: if any argument simplifies to true, return true
+;  otherwise omit arguments which simplify to false and simplify others
+;  if only one argument remains, return it
+;  if none remain, return false
+;
+; not: if argument simplifies to true / false, return false / true
+;  otherwise reverse sense of comparisons (if argument is a comparison)
+;  otherwise return not <simplified argument>
+;
+; Evaluation (MEVAL) of boolean expressions:
+; same as simplification except evaluating arguments instead of simplifying
+; (WHAT IS EFFECT OF PREDERROR HERE ??)
+;
+; Evaluation (MEVALP) of boolean expressions:
+; same as evaluation (MEVAL)
+; (WHAT IS EFFECT OF PREDERROR HERE ??)
+;
+; Simplification of "is" expressions:
+; if argument simplifies to true/false, return true/false
+; otherwise return is (<simplified argument>)
+;
+; Evaluation of "is" expressions:
+; if argument evaluates to true/false, return true/false
+; otherwise return unknown if prederror = false, else trigger an error
+;
+; Simplification of "maybe" expressions:
+; if argument simplifies to true/false, return true/false
+; otherwise return maybe (<simplified expression>)
+;
+; Evaluation of "maybe" expressions:
+; if argument evaluates to true/false, return true/false
+; otherwise return unknown
+;
+; Simplification of "if" expressions:
+;
+; Let the expression be if P[1] then E[1] elseif P[2] then E[2] ... elseif P[n] then E[n]
+; ("if P[1] then E[1] else E[2]" parses to the above with P[2] = true,
+; and "if P[1] then E[1]" parses to the above with P[2] = true and E[2] = false.)
+;
+; (1) If any P[k] simplifies to false, do not simplify E[k], and omit P[k] and E[k] from the result.
+; (2) If any P[k] simplifies to true, simplify E[k], but do not simplify any P[k + 1], E[k + 1], ...,
+;     and omit them from the result.
+; (3) Otherwise, simplify E[k].
+;
+; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
+; If there are no P and E remaining, return false.
+; If P*[1] = true, return E*[1].
+; Otherwise return "if P*[1] then E*[1] elseif P*[2] then E*[2] ..."
+; with "if" being a noun iff the original "if" was a noun.
+;
+; Evaluation of "if" expressions:
+;
+; (1) If any P[k] evaluates to false, do not evaluate E[k], and omit P[k] and E[k] from the result.
+; (2) If any P[k] evaluates to true, evaluate E[k], but do not evaluate any P[k + 1], E[k + 1], ...,
+;     and omit them from the result.
+; (3) Otherwise, evaluate atoms (not function calls) in E[k].
+;
+; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
+; If there are no P and E remaining, return false.
+; If P*[1] = true, return E*[1].
+; Otherwise return "if P*[1] then E*[1] elseif P*[2] then E*[2] ..."
+; with "if" being a noun iff the original "if" was a noun.
+;
 (in-package :maxima)
 
 ; It's OK for MEVALATOMS to evaluate the arguments of MCOND.
@@ -37,6 +112,21 @@
 (setq $prederror nil)
 
 (remprop '$is 'mfexpr*)
+(remprop '$maybe 'mfexpr*)
+
+(defprop $is simp-$is operators)
+(defprop %is simp-$is operators)
+(defprop $maybe simp-$is operators)
+(defprop %maybe simp-$is operators)
+
+; I'VE ASSUMED Z = T => DO NOT SIMPLIFIY ARGUMENTS HERE
+
+(defun simp-$is (x y z)
+  (declare (ignore y))
+  (let ((a (if z (cadr x) (simplifya (cadr x) z))))
+    (if (or (eq a t) (eq a nil))
+      a
+      `((,(caar x) simp) ,a))))
 
 (defmfun $is (pat)
   (let (patevalled ans)
@@ -45,6 +135,13 @@
       ((memq ans '(t nil)) ans)
       ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
       ($prederror (pre-err patevalled))
+      (t '$unknown))))
+
+(defmfun $maybe (pat)
+  (let (patevalled ans)
+    (setq ans (mevalp1 pat))
+    (cond
+      ((memq ans '(t nil)) ans)
       (t '$unknown))))
 
 (defmfun mevalp (pat)
@@ -137,9 +234,6 @@
 
 ; Simplification of conditional expressions.
 
-(defun simp-mcond (x y z)
-  (simp-mcond-shorten x z))
-
 ; If any B simplifies to T or $TRUE,
 ; then append B and G to the list of simplified arguments, and ignore any remaining arguments.
 ; If any B simplifies to NIL or $FALSE, 
@@ -150,17 +244,19 @@
 ; If the first element of the list of simplified arguments is T or $TRUE, return the second element.
 ; Otherwise, construct a new conditional expression from the simplified arguments.
 
+; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
+
 (defun simp-mcond-shorten (x z)
   (let ((op (car x)) (args (cdr x)) (args-simplified))
     (loop while (> (length args) 0) do
-      (let ((b (simplifya (car args) z)) (g (simplifya (cadr args) z)))
+      (let ((b (simplifya (car args) z)) (g (cadr args)))
         (cond
           ((or (eq b nil) (eq b '$false)) nil)
           ((or (eq b t) (eq b '$true))
-           (setq args-simplified (append args-simplified (list b g))
+           (setq args-simplified (append args-simplified (list b (simplifya g z)))
                  args nil))
           (t
-            (setq args-simplified (append args-simplified (list b g))))))
+            (setq args-simplified (append args-simplified (list b (simplifya g z)))))))
       (setq args (cddr args)))
     
     (cond
@@ -169,6 +265,12 @@
        (cadr args-simplified))
       (t
         (cons op args-simplified)))))
+
+; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
+
+(defun simp-mcond (x y z)
+  (declare (ignore y))
+  (simp-mcond-shorten x z))
 
 ; flatten_conditional is an interesting idea,
 ; but it doesn't have much to do with unevaluated conditionals.
@@ -202,8 +304,14 @@
 ; OR DOES IT MEAN "SIMPLIFY THE ARGUMENTS OF X AND PASS NIL TO SIMPLFYA" ??
 ; I'LL ASSUME FOR SIMP-MAND AND SIMP-MOR THAT IT IS THE FORMER INTERPRETATION.
 
+; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
+
 (defun simp-mand (x y z)
+  (declare (ignore y))
   (let ((args (cdr x)))
+    ; MAYBE SHOULD AVOID SIMPLIFYING ARGUMENTS IF WE CAN
+    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE,
+    ; SO MAYBE THAT'S NOT SUCH A GOOD IDEA AFTER ALL
     (setq args (if (not (memq 'simp (cdar x))) (mapcar #'(lambda (a) (simplifya a z)) args) args))
     (if (some #'(lambda (a) (or (eq a nil) (eq a '$false))) args)
       nil
@@ -217,8 +325,14 @@
 
 ; Simplify the arguments of MOR, and then see if any simplified to $TRUE or T or $FALSE or NIL.
 
+; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
+
 (defun simp-mor (x y z)
+  (declare (ignore y))
   (let ((args (cdr x)))
+    ; MAYBE SHOULD AVOID SIMPLIFYING ARGUMENTS IF WE CAN
+    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE,
+    ; SO MAYBE THAT'S NOT SUCH A GOOD IDEA AFTER ALL
     (setq args (if (not (memq 'simp (cdar x))) (mapcar #'(lambda (a) (simplifya a z)) args) args))
     (if (some #'(lambda (a) (or (eq a t) (eq a '$true))) args)
       t
@@ -234,7 +348,10 @@
 
 ; LOOKS LIKE I ASSUMED SIMPLIFY ARGUMENT ONLY IF Z != NIL HERE
 
+; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
+
 (defun simp-mnot (x y z)
+  (declare (ignore y))
   (let ((arg (cadr x)))
     (if (atom arg)
       (cond
