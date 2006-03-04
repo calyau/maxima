@@ -1,3 +1,5 @@
+/* SOMETHING ELSE TO TEST. ARE BOOLEAN EXPRESSIONS ACTUALLY EQUIVALENT TO NOMINALLY-EQUIVALENT IF-THEN-ELSE ??
+ */
 (kill (all), 0);
 0;
 
@@ -365,3 +367,10 @@ pp: if x > 0 then qq1: 1 else qq2: 2;
 
 [qq1, qq2];
 ['qq1, 2];
+
+block ([aa : 2, bb : 3, cc], if cc > 1 then if aa > 0 then 10*aa else -10*aa else if bb > 0 then bb^2 else -bb^2);
+'(if cc > 1 then (if 2 > 0 then 20 else -20) else (if 3 > 0 then 9 else -9));
+
+block ([aa : 2, bb : 3, cc], if cc > 1 and aa > 0 then 10*aa elseif cc > 1 and not aa > 0 then -10*aa elseif  not cc > 1 and  bb > 0 then bb^2 elseif not cc > 1 and not bb > 0 then -bb^2);
+'(if cc > 1 then 20 elseif cc <= 1 then 9);
+

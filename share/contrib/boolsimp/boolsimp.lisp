@@ -10,6 +10,11 @@
 ; by allowing undecided predicates in simplified and evaluated
 ; expressions, instead of complaining or returning 'unknown.
 
+; Ideas that haven't gone anywhere yet:
+;  - given "if foo then bar else baz", simplify bar assuming foo, and baz assuming not foo
+;  - flatten conditionals -- nested if --> if -- elseif -- elseif -- elseif -- else
+;  - arithmetic on conditionals -- distribute arithmetic ops over if
+
 ; Examples:
 ;
 ; assume (a > 1);
@@ -119,11 +124,18 @@
 (defprop $maybe simp-$is operators)
 (defprop %maybe simp-$is operators)
 
-; I'VE ASSUMED Z = T => DO NOT SIMPLIFIY ARGUMENTS HERE
+; I'VE ASSUMED (NULL Z) => SIMPLIFIY ARGUMENTS
+; SAME WITH SIMPCHECK (SRC/SIMP.LISP)
+; SAME WITH TELLSIMP-GENERATED SIMPLIFICATION FUNCTIONS
+; SAME WITH SIMPLIFICATION OF %SIN
+; PRETTY SURE I'VE SEEN OTHER EXAMPLES AS WELL
+; Z SEEMS TO SIGNIFY "ARE THE ARGUMENTS SIMPLIFIED YET"
+
+(defun maybe-simplifya (x z) (if z x (simplifya x z)))
 
 (defun simp-$is (x y z)
   (declare (ignore y))
-  (let ((a (if z (cadr x) (simplifya (cadr x) z))))
+  (let ((a (maybe-simplifya (cadr x) z)))
     (if (or (eq a t) (eq a nil))
       a
       `((,(caar x) simp) ,a))))
@@ -160,6 +172,7 @@
     (cond
       ((= (length unevaluated) 0) t)
       ((= (length unevaluated) 1) (car unevaluated))
+      ; DO WE WANT TO SIMPLIFY THE RETURN VALUE ?
       (t (cons '(mand) (reverse unevaluated)))))
   (setq x (mevalp (car l)))
   (cond
@@ -175,6 +188,7 @@
     (cond
       ((= (length unevaluated) 0) nil)
       ((= (length unevaluated) 1) (car unevaluated))
+      ; DO WE WANT TO SIMPLIFY THE RETURN VALUE ?
       (t (cons '(mor) (reverse unevaluated)))))
   (setq x (mevalp (car l)))
   (cond
@@ -244,19 +258,17 @@
 ; If the first element of the list of simplified arguments is T or $TRUE, return the second element.
 ; Otherwise, construct a new conditional expression from the simplified arguments.
 
-; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
-
 (defun simp-mcond-shorten (x z)
   (let ((op (car x)) (args (cdr x)) (args-simplified))
     (loop while (> (length args) 0) do
-      (let ((b (simplifya (car args) z)) (g (cadr args)))
+      (let ((b (maybe-simplifya (car args) z)) (g (cadr args)))
         (cond
           ((or (eq b nil) (eq b '$false)) nil)
           ((or (eq b t) (eq b '$true))
-           (setq args-simplified (append args-simplified (list b (simplifya g z)))
+           (setq args-simplified (append args-simplified (list b (maybe-simplifya g z)))
                  args nil))
           (t
-            (setq args-simplified (append args-simplified (list b (simplifya g z)))))))
+            (setq args-simplified (append args-simplified (list b (maybe-simplifya g z)))))))
       (setq args (cddr args)))
     
     (cond
@@ -266,25 +278,9 @@
       (t
         (cons op args-simplified)))))
 
-; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
-
 (defun simp-mcond (x y z)
   (declare (ignore y))
   (simp-mcond-shorten x z))
-
-; flatten_conditional is an interesting idea,
-; but it doesn't have much to do with unevaluated conditionals.
-#|
-(defun $flatten_conditional (x)
-  (cond
-    ((atom x) x)
-    ((or (eq (caar x) 'mcond) (eq (caar x) '%mcond))
-     (flatten-conditional1 x))
-    (t x)))
-
-;; HEY !! FINISH THIS !! IT'S INTERESTING AND USEFUL !!
-(defun flatten-conditional1 (x) x)
-|#
 
 (putprop 'mcond 'simp-mcond 'operators)
 (putprop '%mcond 'simp-mcond 'operators)
@@ -300,19 +296,13 @@
 (putprop 'mor 'simp-mor 'operators)
 
 ; Simplify the arguments of MAND, and then see if any simplified to $TRUE or T or $FALSE or NIL.
-; HEY, IF Z = NIL, DOES THAT MEAN "DO NOT SIMPLIFY THE ARGUMENTS OF X"
-; OR DOES IT MEAN "SIMPLIFY THE ARGUMENTS OF X AND PASS NIL TO SIMPLFYA" ??
-; I'LL ASSUME FOR SIMP-MAND AND SIMP-MOR THAT IT IS THE FORMER INTERPRETATION.
-
-; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
 
 (defun simp-mand (x y z)
   (declare (ignore y))
   (let ((args (cdr x)))
     ; MAYBE SHOULD AVOID SIMPLIFYING ARGUMENTS IF WE CAN
-    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE,
-    ; SO MAYBE THAT'S NOT SUCH A GOOD IDEA AFTER ALL
-    (setq args (if (not (memq 'simp (cdar x))) (mapcar #'(lambda (a) (simplifya a z)) args) args))
+    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE IN THE PRESENCE OF SIDE EFFECTS
+    (setq args (mapcar #'(lambda (a) (maybe-simplifya a z)) args))
     (if (some #'(lambda (a) (or (eq a nil) (eq a '$false))) args)
       nil
       (progn
@@ -325,15 +315,12 @@
 
 ; Simplify the arguments of MOR, and then see if any simplified to $TRUE or T or $FALSE or NIL.
 
-; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
-
 (defun simp-mor (x y z)
   (declare (ignore y))
   (let ((args (cdr x)))
     ; MAYBE SHOULD AVOID SIMPLIFYING ARGUMENTS IF WE CAN
-    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE,
-    ; SO MAYBE THAT'S NOT SUCH A GOOD IDEA AFTER ALL
-    (setq args (if (not (memq 'simp (cdar x))) (mapcar #'(lambda (a) (simplifya a z)) args) args))
+    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE IN THE PRESENCE OF SIDE EFFECTS
+    (setq args (mapcar #'(lambda (a) (maybe-simplifya a z)) args))
     (if (some #'(lambda (a) (or (eq a t) (eq a '$true))) args)
       t
       (progn
@@ -346,10 +333,6 @@
 
 ; CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
 
-; LOOKS LIKE I ASSUMED SIMPLIFY ARGUMENT ONLY IF Z != NIL HERE
-
-; IT APPEARS Z = T => DO NOT SIMPLIFIY ARGUMENTS. NOT SURE HOW THAT CHANGES THIS CODE. NEED TO REVIEW
-
 (defun simp-mnot (x y z)
   (declare (ignore y))
   (let ((arg (cadr x)))
@@ -361,8 +344,7 @@
          t)
         (t x))
       (let ((arg-op (caar arg)) (arg-arg (cdr arg)))
-        (if (not (memq 'simp (cdar x)))
-          (setq arg-arg (mapcar #'(lambda (a) (simplifya a z)) arg-arg)))
+        (setq arg-arg (mapcar #'(lambda (a) (maybe-simplifya a z)) arg-arg))
         (cond
           ((eq arg-op 'mlessp)
            `((mgeqp) ,@arg-arg))
