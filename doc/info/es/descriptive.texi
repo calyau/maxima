@@ -139,9 +139,9 @@ Debe tenerse cuidado cuando se trabaje con datos categ@'oricos. En el siguiente 
 @section Definiciones para el tratamiento de datos
 
 
-@deffn {Function} cfrec (@var{list})
-@deffnx {Function} cfrec (@var{list}, @var{m})
-The argument of @code{cfrec} must be a list of numbers, which will be then grouped in intervals and counted how many of them belong to each group. Optionally, function @code{cfrec} admits a second argument indicating the number of classes, 10 is default,
+@deffn {Funci@'on} cfrec (@var{list})
+@deffnx {Funci@'on} cfrec (@var{list}, @var{m})
+El argumento de @code{cfrec} debe ser una lista de n@'umeros, los cuales ser@'an luego agrupados en intervalos y hecho el recuento de cu@'antos hay en cada grupo. Opcionalmente, la funci@'on @code{cfrec} admite un segundo argumento para indicar el n@'umero de clases a considerar, siendo 10 su valor por defecto.
 
 @example
 (%i1) load("numericalio.lisp")$
@@ -150,13 +150,13 @@ The argument of @code{cfrec} must be a list of numbers, which will be then group
 (%o3) [[0, 1.8, 3.6, 5.4, 7.2, 9.0], [16, 24, 18, 17, 25]]
 @end example
 
-The first list contains the interval limits and the second the corresponding counts: there are 16 digits inside the interval @code{[0, 1.8]}, that is 0's and 1's, 24 digits in @code{(1.8, 3.6]}, that is 2's and 3's, and so on.
+La primera lista contiene los extremos de los intervalos y la segunda los resultados de los recuentos: hay 16 d@'{@dotless{i}}gitos dentro del intervalo  @code{[0, 1.8]}, esto es ceros y unos, 24 d@'{@dotless{i}}gitos en @code{(1.8, 3.6]}, es decir doses y treses, y as@'{@dotless{i}} sucesivamente.
 @end deffn
 
 
 
-@deffn {Function} dfrec (@var{list})
-Counts absolute frequencies in discrete samples, both numeric and categorical. Its unique argument is a list,
+@deffn {Funci@'on} dfrec (@var{list})
+Calcula las frecuencias absolutas en muestras discretas, tanto num@'ericas como categ@'oricas. Su @'unico argumento debe ser una lista.
 
 @example
 (%i1) load("numericalio.lisp")$
@@ -168,14 +168,15 @@ Counts absolute frequencies in discrete samples, both numeric and categorical. I
 (%o4)               [[A, B], [35, 65]]
 @end example
 
-The first list gives the sample values and the second their absolute frequencies. Commands @code{? col} and @code{? transpose} should help you to understand the last input.
+La primera lista son los valores de la muestra y la segunda sus frecuencias absolutas. Las instrucciones @code{? col} y 
+@code{? transpose} pueden ayudar a comprender la @'ultima entrada.
 @end deffn
 
 
 
-@deffn {Function} subsample (@var{data_matrix}, @var{logical_expression})
-@deffnx {Function} subsample (@var{data_matrix}, @var{logical_expression}, @var{col_num}, @var{col_num}, ...)
-This is a sort of variation of the Maxima @code{submatrix} function. The first argument is the name of the data matrix, the second is a quoted logical expression and optional additional arguments are the numbers of the columns to be taken. Its behaviour is better understood with examples,
+@deffn {Funci@'on} subsample (@var{data_matrix}, @var{logical_expression})
+@deffnx {Funci@'on} subsample (@var{data_matrix}, @var{logical_expression}, @var{col_num}, @var{col_num}, ...)
+Esta es una variante de la funci@'on @code{submatrix} de Maxima. El primer argumento es una matriz de datos, el segundo es una expresi@'on l@'ogica no evaluada y el resto de argumentos opcionales son los n@'umeros de las columnas a tomar en consideraci@'on,
 @example
 (%i1) load("numericalio.lisp")$
 (%i2) s2:read_matrix("path_to/wind.data")$
@@ -188,7 +189,7 @@ This is a sort of variation of the Maxima @code{submatrix} function. The first a
            [                                   ]
            [ 18.79  18.96  14.46  26.38  21.84 ]
 @end example
-These are multivariate records in which the wind speeds in the first meteorological station were greater than 18. See that in the quoted logical expression the @var{i}-th component is refered to as @code{%c[i]}. Symbol @code{%c[i]} is used inside function @code{subsample}, therefore when used as a categorical variable, Maxima gets confused. In the following example, we request only the first, second and fifth components of those records with wind speeds greater or equal than 16 in station number 1 and lesser than 25 knots in station number 4,
+Estos son los registros multivariantes en los que la velocidad del viento en la primera estaci@'on meteorol@'ogica fue menor que 18. V@'ease c@'omo en la expresi@'on l@'ogica no evaluada a la @var{i}-@'esima componente se la referencia como @code{%c[i]}. El s@'{@dotless{i}}mbolo @code{%c[i]} es utilizado dentro de la funci@'on @code{subsample}, por lo que si se utiliza tambi@'en como variable categ@'orica, Maxima puede dar resultados imprevistos. En el siguiente ejemplo, se solicitan @'unicamente la primera, segunda y quinta componentes de aquellos registros con velocidades del viento mayores o iguales que 16 nudos en la estaci@'on n@'umero 1 y menores que 25 nudos en la estaci@'on n@'umero 4,
 @example
 (%i4) subsample(s2,'(%c[1]>=16 and %c[4]<25),1,2,5);
                   [ 19.38  15.37  25.25 ]
@@ -200,7 +201,7 @@ These are multivariate records in which the wind speeds in the first meteorologi
                   [ 17.25  18.46  23.87 ]
 @end example
 
-Here is an example with the categorical variables of @code{biomed.data}. We want the records corresponding to those patients in group @code{B} who are older than 38 years,
+He aqu@'{@dotless{i}} un ejemplo con las variables categ@'oricas de @code{biomed.data}. Se piden los registros correspondientes a aquellos pacientes del grupo @code{B} mayores de 38 an@~nos,
 @example
 (%i5) subsample(s3,'(%c[1]=B and %c[2]>38));
              [ B  39  28.0  102.3  17.1  146 ]
@@ -220,8 +221,7 @@ Here is an example with the categorical variables of @code{biomed.data}. We want
              [ B  39  39.0  88.5   7.6   168 ]
 @end example
 
-
-Probably, the statistical analysis will involve only the blood measures,
+Es probable que el an@'alisis estad@'{@dotless{i}}stico requiera @'unicamente de las medidas sangu@'{@dotless{i}}neas,
 @example
 (%i6) subsample(s3,'(%c[1]=B and %c[2]>38),3,4,5,6);
                  [ 28.0  102.3  17.1  146 ]
@@ -241,8 +241,7 @@ Probably, the statistical analysis will involve only the blood measures,
                  [ 39.0  88.5   7.6   168 ]
 @end example
 
-
-This is the multivariate mean of @code{s3},
+Esta es la media multivariante de @code{s3},
 @example
 (%i7) s3:read_matrix("path_to/biomed.data")$
 (%i8) mean(s3);
@@ -253,7 +252,7 @@ This is the multivariate mean of @code{s3},
                                               ------------]
                                                   100
 @end example
-Here, the first component is meaningless, since @code{A} and @code{B} are categorical, the second component is the mean age of individuals in rational form, and the fourth and last values exhibit some strange behaviour. This is because symbol @code{NA} is used here to indicate @var{non available} data, and the two means are of course nonsense. A possible solution would be to take out from the matrix those rows with @code{NA} symbols, although this deserves some loss of information,
+Aqu@'{@dotless{i}} la primera componente carece de significado, ya que tanto @code{A} como @code{B} son categ@'oricas, la segunda componente es la edad media de los individuos en forma racional, al tiempo que los valores cuarto y quinto muestran cierto comportamiento extra@~no; lo cual se debe a que el s@'{@dotless{i}}mbolo @code{NA} se utiliza para indicar datos @i{no disponibles}, por lo que ambas medias no tienen sentido. Una posible soluci@'on puede ser extraer de la matriz aquellas filas con s@'{@dotless{i}}mbolos @code{NA}, lo que acarrear@'{@dotless{i}}a cierta p@'erdida de informaci@'on,
 @example
 (%i9) mean(subsample(s3,'(%c[4]#NA and %c[6]#NA),3,4,5,6));
 (%o9) [79.4923076923077, 86.2032967032967,
@@ -268,9 +267,9 @@ Here, the first component is meaningless, since @code{A} and @code{B} are catego
 @section Definiciones de valores descriptivos
 
 
-@deffn {Function} mean (@var{list})
-@deffnx {Function} mean (@var{matrix})
-This is the sample mean, defined as
+@deffn {Funci@'on} mean (@var{list})
+@deffnx {Funci@'on} mean (@var{matrix})
+Es la media muestral, definida como
 @ifhtml
 @example
                        n
@@ -297,7 +296,7 @@ This is the sample mean, defined as
 $${\bar{x}={1\over{n}}{\sum_{i=1}^{n}{x_{i}}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i1) s1:read_list("path_to/pidigits.data")$
@@ -315,9 +314,9 @@ Example:
 
 
 
-@deffn {Function} var (@var{list})
-@deffnx {Function} var (@var{matrix})
-This is the sample variance, defined as
+@deffn {Funci@'on} var (@var{list})
+@deffnx {Funci@'on} var (@var{matrix})
+Es la varianza muestral, definida como
 @ifhtml
 @example
                      n
@@ -344,7 +343,7 @@ This is the sample variance, defined as
 $${{s^2=1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -353,14 +352,14 @@ Example:
 
 @end example
 
-See also function @code{var1}.
+V@'ease tambi@'en @code{var1}.
 @end deffn
 
 
 
-@deffn {Function} var1 (@var{list})
-@deffnx {Function} var1 (@var{matrix})
-This is the sample variance, defined as
+@deffn {Funci@'on} var1 (@var{list})
+@deffnx {Funci@'on} var1 (@var{matrix})
+Es la cuasivarianza muestral, definida como
 @ifhtml
 @example
                      n
@@ -387,7 +386,7 @@ This is the sample variance, defined as
 $${{1\over{n-1}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^2}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -399,16 +398,16 @@ Example:
                     32.17651044000001, 24.42307619000001]
 @end example
 
-See also function @code{var}.
+V@'ease tambi@'en @code{var}.
 @end deffn
 
 
 
-@deffn {Function} std (@var{list})
-@deffnx {Function} std (@var{matrix})
-This is the the square root of function @code{var}, the variance with denominator @math{n}.
+@deffn {Funci@'on} std (@var{list})
+@deffnx {Funci@'on} std (@var{matrix})
+Es la desviaci@'on t@'{@dotless{i}}pica muestral, ra@'{@dotless{i}}z cuadrada de @code{var}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -420,16 +419,16 @@ Example:
     3.933920277534866, 5.672434260526957, 4.941970881136392]
 @end example
 
-See also functions @code{var} and @code{std1}.
+V@'eanse tambi@'en @code{var} y @code{std1}.
 @end deffn
 
 
 
-@deffn {Function} std1 (@var{list})
-@deffnx {Function} std1 (@var{matrix})
-This is the the square root of function @code{var1}, the variance with denominator @math{n-1}.
+@deffn {Funci@'on} std1 (@var{list})
+@deffnx {Funci@'on} std1 (@var{matrix})
+Es la cuasidesviaci@'on t@'{@dotless{i}}pica muestral, ra@'{@dotless{i}}z cuadrada de @code{var1}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -441,14 +440,14 @@ Example:
     3.953738641137555, 5.701010936401517, 4.966867617451963]
 @end example
 
-See also functions @code{var1} and @code{std}.
+V@'eanse tambi@'en @code{var1} y @code{std}.
 @end deffn
 
 
 
-@deffn {Function} ncmoment (@var{list}, @var{k})
-@deffnx {Function} ncmoment (@var{matrix}, @var{k})
-The non central moment of order @math{k}, defined as
+@deffn {Funci@'on} ncmoment (@var{list}, @var{k})
+@deffnx {Funci@'on} ncmoment (@var{matrix}, @var{k})
+Es el momento no central de orden @math{k}, definido como
 @ifhtml
 @example
                        n
@@ -475,7 +474,7 @@ The non central moment of order @math{k}, defined as
 $${{1\over{n}}{\sum_{i=1}^{n}{x_{i}^k}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -487,14 +486,14 @@ Example:
     391249.5621381556, 2502278.205988911, 1691881.797742255]
 @end example
 
-See also function @code{cmoment}.
+V@'ease tambi@'en @code{cmoment}.
 @end deffn
 
 
 
-@deffn {Function} cmoment (@var{list}, @var{k})
-@deffnx {Function} cmoment (@var{matrix}, @var{k})
-The central moment of order @math{k}, defined as
+@deffn {Funci@'on} cmoment (@var{list}, @var{k})
+@deffnx {Funci@'on} cmoment (@var{matrix}, @var{k})
+Es el momento central de orden @math{k}, definido como
 @ifhtml
 @example
                     n
@@ -521,7 +520,7 @@ The central moment of order @math{k}, defined as
 $${{1\over{n}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^k}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -533,14 +532,13 @@ Example:
      5.626661952750102, 37.5986572057918, 25.85981904394192]
 @end example
 
-See also functions @code{cmoment} and @code{mean}.
+V@'eanse tambi@'en @code{cmoment} y @code{mean}.
 @end deffn
 
 
-
-@deffn {Function} vc (@var{list})
-@deffnx {Function} vc (@var{matrix})
-The variation coefficient is the quotient between the sample standard deviation (@code{std}) and the @code{mean},
+@deffn {Funci@'on} vc (@var{list})
+@deffnx {Funci@'on} vc (@var{matrix})
+Es el coeficiente de variaci@'on, o cociente entre la desviaci@'on t@'{@dotless{i}}pica muestral (@code{std}) y la media (@code{mean}),
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -552,14 +550,14 @@ The variation coefficient is the quotient between the sample standard deviation 
     0.363779605385983, .3627381836021478, .3346021393989506]
 @end example
 
-See also functions @code{std} and @code{mean}.
+V@'eanse tambi@'en @code{std} y @code{mean}.
 @end deffn
 
 
 
-@deffn {Function} mini (@var{list})
-@deffnx {Function} mini (@var{matrix})
-This is the minimum value of the sample @var{list},
+@deffn {Funci@'on} mini (@var{list})
+@deffnx {Funci@'on} mini (@var{matrix})
+Es el valor m@'{@dotless{i}}nimo de la muestra @var{list},
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -570,14 +568,14 @@ This is the minimum value of the sample @var{list},
 (%o5)         [0.58, 0.5, 2.67, 5.25, 5.17]
 @end example
 
-See also function @code{maxi}.
+V@'ease tambi@'en @code{maxi}.
 @end deffn
 
 
 
-@deffn {Function} maxi (@var{list})
-@deffnx {Function} maxi (@var{matrix})
-This is the maximum value of the sample @var{list},
+@deffn {Funci@'on} maxi (@var{list})
+@deffnx {Funci@'on} maxi (@var{matrix})
+Es el valor m@'aximo de la muestra @var{list},
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -588,16 +586,16 @@ This is the maximum value of the sample @var{list},
 (%o5)      [20.25, 21.46, 20.04, 29.63, 27.63]
 @end example
 
-See also function @code{mini}.
+V@'ease tambi@'en @code{mini}.
 @end deffn
 
 
 
-@deffn {Function} range (@var{list})
-@deffnx {Function} range (@var{matrix})
-The range is the difference between the extreme values.
+@deffn {Funci@'on} range (@var{list})
+@deffnx {Funci@'on} range (@var{matrix})
+Es la diferencia entre los valores extremos.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -611,12 +609,12 @@ Example:
 
 
 
-@deffn {Function} quantile (@var{list}, @var{p})
-@deffnx {Function} quantile (@var{matrix}, @var{p})
-This is the @var{p}-@code{quantile}, with @var{p} a number in @math{[0, 1]}, of the sample @var{list}.
-Although there are several definitions for the sample quantile (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), the one based on linear interpolation is implemented in package @code{descriptive}.
+@deffn {Funci@'on} quantile (@var{list}, @var{p})
+@deffnx {Funci@'on} quantile (@var{matrix}, @var{p})
+Es el @var{p}-cuantil, siendo @var{p} un n@'umero del intervalo @math{[0, 1]}, de la muestra @var{list}.
+Aunque existen varias definiciones para el cuantil muestral (Hyndman, R. J., Fan, Y. (1996) @var{Sample quantiles in statistical packages}. American Statistician, 50, 361-365), la programada en el paquete  @code{descriptive} es la basada en la interpolaci@'on lineal.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -631,11 +629,11 @@ Example:
 
 
 
-@deffn {Function} median (@var{list})
-@deffnx {Function} median (@var{matrix})
-Once the sample is ordered, if the sample size is odd the median is the central value, otherwise it is the mean of the two central values.
+@deffn {Funci@'on} median (@var{list})
+@deffnx {Funci@'on} median (@var{matrix})
+Una vez ordenada una muestra, si el tama@~no muestral es impar la mediana es el valor central, en caso contrario ser@'a la media de los dos valores centrales.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -648,16 +646,16 @@ Example:
 (%o5)      [10.06, 9.855, 10.73, 15.48, 14.105]
 @end example
 
-The median is the 1/2-@code{quantile}.
+La mediana es el cuantil 1/2.
 
-See also function @code{quantile}.
+V@'ease tambi@'en @code{quantile}.
 @end deffn
 
 
 
-@deffn {Function} qrange (@var{list})
-@deffnx {Function} qrange (@var{list})
-The interquartilic range is the difference between the third and first quartiles, @code{quantile(list,3/4) - quantile(list,1/4)},
+@deffn {Funci@'on} qrange (@var{list})
+@deffnx {Funci@'on} qrange (@var{list})
+El rango intercuart@'{@dotless{i}}lico es la diferencia entre el tercer y primer cuartil, @code{quantile(list,3/4) - quantile(list,1/4)},
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -671,14 +669,14 @@ The interquartilic range is the difference between the third and first quartiles
                      8.729999999999999, 6.650000000000002]
 @end example
 
-See also function @code{quantile}.
+V@'ease tambi@'en @code{quantile}.
 @end deffn
 
 
 
-@deffn {Function} meandev (@var{list})
-@deffnx {Function} meandev (@var{list})
-The mean deviation, defined as
+@deffn {Funci@'on} meandev (@var{list})
+@deffnx {Funci@'on} meandev (@var{list})
+Es la desviaci@'on media, definida como
 @ifhtml
 @example
                      n
@@ -705,7 +703,7 @@ The mean deviation, defined as
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-\bar{x}|}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -718,14 +716,14 @@ Example:
                      4.715664000000001, 4.028546000000002]
 @end example
 
-See also function @code{mean}.
+V@'ease tambi@'en @code{mean}.
 @end deffn
 
 
 
-@deffn {Function} mediandev (@var{list})
-@deffnx {Function} mediandev (@var{matrix})
-The median deviation, defined as
+@deffn {Funci@'on} mediandev (@var{list})
+@deffnx {Funci@'on} mediandev (@var{matrix})
+Es la desviaci@'on mediana, definida como
 @ifhtml
 @example
                  n
@@ -751,9 +749,9 @@ The median deviation, defined as
 @tex
 $${{1\over{n}}{\sum_{i=1}^{n}{|x_{i}-med|}}}$$
 @end tex
-where @code{med} is the median of @var{list}.
+siendo @code{med} la mediana de @var{list}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -766,14 +764,14 @@ Example:
 (%o5)        [2.75, 2.755, 3.08, 4.315, 3.31]
 @end example
 
-See also function @code{mean}.
+V@'ease tambi@'en @code{mean}.
 @end deffn
 
 
 
-@deffn {Function} harmean (@var{list})
-@deffnx {Function} harmean (@var{list})
-The harmonic mean, defined as
+@deffn {Funci@'on} harmean (@var{list})
+@deffnx {Funci@'on} harmean (@var{list})
+Es la media arm@'onica, definida como
 @ifhtml
 @example
                   n
@@ -804,7 +802,7 @@ The harmonic mean, defined as
 $${{n}\over{\sum_{i=1}^{n}{{{1}\over{x_{i}}}}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) y:[5,7,2,5,9,5,6,4,9,2,4,2,5]$
 (%i2) harmean(y), numer;
@@ -815,14 +813,14 @@ Example:
     9.055658197151745, 13.44199028193692, 13.01439145898509]
 @end example
 
-See also functions @code{mean} and @code{geomean}.
+V@'eanse tambi@'en @code{mean} y @code{geomean}.
 @end deffn
 
 
 
-@deffn {Function} geomean (@var{list})
-@deffnx {Function} geomean (@var{matrix})
-The geometric mean, defined as
+@deffn {Funci@'on} geomean (@var{list})
+@deffnx {Funci@'on} geomean (@var{matrix})
+Es la media geom@'etrica, definida como
 @ifhtml
 @example
                  /  n      \ 1/n
@@ -849,7 +847,7 @@ The geometric mean, defined as
 $$\left(\prod_{i=1}^{n}{x_{i}}\right)^{{{1}\over{n}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) y:[5,7,2,5,9,5,6,4,9,2,4,2,5]$
 (%i2) geomean(y), numer;
@@ -860,14 +858,14 @@ Example:
     10.0442675714889, 14.61274126349021, 13.96184163444275]
 @end example
 
-See also functions @code{mean} and @code{harmean}.
+V@'eanse tambi@'en @code{mean} y @code{harmean}.
 @end deffn
 
 
 
-@deffn {Function} kurtosis (@var{list})
-@deffnx {Function} kurtosis (@var{matrix})
-The kurtosis coefficient, defined as
+@deffn {Funci@'on} kurtosis (@var{list})
+@deffnx {Funci@'on} kurtosis (@var{matrix})
+Es el coeficiente de curtosis, definido como
 @ifhtml
 @example
                     n
@@ -894,7 +892,7 @@ The kurtosis coefficient, defined as
 $${{1\over{n s^4}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^4}}-3}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -907,14 +905,14 @@ Example:
 - .4952382132352935]
 @end example
 
-See also functions @code{mean}, @code{var} and @code{skewness}.
+V@'eanse tambi@'en @code{mean}, @code{var} y @code{skewness}.
 @end deffn
 
 
 
-@deffn {Function} skewness (@var{list})
-@deffnx {Function} skewness (@var{matrix})
-The skewness coefficient, defined as
+@deffn {Funci@'on} skewness (@var{list})
+@deffnx {Funci@'on} skewness (@var{matrix})
+Es el coeficiente de asimetr@'{@dotless{i}}a, definido como
 @ifhtml
 @example
                     n
@@ -941,7 +939,7 @@ The skewness coefficient, defined as
 $${{1\over{n s^3}}{\sum_{i=1}^{n}{(x_{i}-\bar{x})^3}}}$$
 @end tex
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -953,14 +951,14 @@ Example:
     .0924217441610772, .2059984348148687, .2142520248890832]
 @end example
 
-See also functions @code{mean}, @code{var} and @code{kurtosis}.
+V@'eanse tambi@'en @code{mean}, @code{var} y @code{kurtosis}.
 @end deffn
 
 
 
-@deffn {Function} pearskewness (@var{list})
-@deffnx {Function} pearskewness (@var{matrix})
-Pearson's skewness coefficient, defined as 
+@deffn {Funci@'on} pearskewness (@var{list})
+@deffnx {Funci@'on} pearskewness (@var{matrix})
+Es el coeficiente de asimetr@'{@dotless{i}}a de Pearson, definido como
 @ifhtml
 @example
                 _
@@ -980,9 +978,9 @@ Pearson's skewness coefficient, defined as
 @tex
 $${{3\,\left(\bar{x}-med\right)}\over{s}}$$
 @end tex
-where @var{med} is the median of @var{list}.
+siendo @var{med} la mediana de @var{list}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -996,14 +994,14 @@ Example:
     .1050904062491204, .1245042340592368, .4464181795804519]
 @end example
 
-See also functions @code{mean}, @code{var} and @code{median}.
+V@'eanse tambi@'en @code{mean}, @code{var} y @code{median}.
 @end deffn
 
 
 
-@deffn {Function} quarskewness (@var{list})
-@deffnx {Function} quarskewness (@var{matrix})
-The quartile skewness coefficient, defined as 
+@deffn {Funci@'on} quarskewness (@var{list})
+@deffnx {Funci@'on} quarskewness (@var{matrix})
+Es el coeficiente de asimetr@'{@dotless{i}}a cuart@'{@dotless{i}}lico, definido como
 @ifhtml
 @example
                c    - 2 c    + c
@@ -1026,9 +1024,9 @@ The quartile skewness coefficient, defined as
 $${{c_{{{3}\over{4}}}-2\,c_{{{1}\over{2}}}+c_{{{1}\over{4}}}}\over{c
  _{{{3}\over{4}}}-c_{{{1}\over{4}}}}}$$
 @end tex
-where @math{c_p} is the @var{p}-quantile of sample @var{list}.
+siendo @math{c_p} el @var{p}-cuantil de la muestra @var{list}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -1042,7 +1040,7 @@ Example:
     .0336239103362392, 0.037800687285223, 0.210526315789474]
 @end example
 
-See also function @code{quantile}.
+V@'ease tambi@'en @code{quantile}.
 @end deffn
 
 
@@ -1050,8 +1048,8 @@ See also function @code{quantile}.
 @section Definiciones de valores descriptivos multivariantes
 
 
-@deffn {Function} cov (@var{matrix})
-The covariance matrix of the multivariate sample, defined as
+@deffn {Funci@'on} cov (@var{matrix})
+Es la matriz de covarianzas de una muestra multivariante, definida como
 @ifhtml
 @example
               n
@@ -1077,9 +1075,9 @@ The covariance matrix of the multivariate sample, defined as
 @tex
 $${S={1\over{n}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
-where @math{X_j} is the @math{j}-th row of the sample matrix.
+siendo @math{X_j} la @math{j}-@'esima fila de la matriz muestral.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s2:read_matrix("path_to/wind.data")$
@@ -1096,13 +1094,13 @@ Example:
       [ 15.42162  14.9711   16.18171  20.44685  24.42308 ]
 @end example
 
-See also function @code{cov1}.
+V@'ease tambi@'en @code{cov1}.
 @end deffn
 
 
 
-@deffn {Function} cov1 (@var{matrix})
-The covariance matrix of the multivariate sample, defined as
+@deffn {Funci@'on} cov1 (@var{matrix})
+Es la matriz de cuasivarianzas de una muestra multivariante, definida como
 @ifhtml
 @example
               n
@@ -1128,9 +1126,9 @@ The covariance matrix of the multivariate sample, defined as
 @tex
 $${{1\over{n-1}}{\sum_{j=1}^{n}{\left(X_{j}-\bar{X}\right)\,\left(X_{j}-\bar{X}\right)'}}}$$
 @end tex
-where @math{X_j} is the @math{j}-th row of the sample matrix.
+siendo @math{X_j} la @math{j}-@'esima fila de la matriz muestral.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s2:read_matrix("path_to/wind.data")$
@@ -1147,32 +1145,32 @@ Example:
       [ 15.5774   15.12232  16.34516  20.65338  24.66977 ]
 @end example
 
-See also function @code{cov}.
+V@'ease tambi@'en @code{cov}.
 @end deffn
 
 
 
-@deffn {Function} listvar (@var{matrix})
-@deffnx {Function} listvar (@var{matrix}, @var{logical_value})
-Function @code{listvar} returns a list of global variance measures:
+@deffn {Funci@'on} listvar (@var{matrix})
+@deffnx {Funci@'on} listvar (@var{matrix}, @var{logical_value})
+La funci@'on @code{listvar} devuelve una lista de medidas globales de variabilidad:
 
 @itemize @bullet
 @item
-@var{total variance}: @code{trace(S_1)},
+@var{varianza total}: @code{trace(S_1)},
 @item
-@var{mean variance}: @code{trace(S_1)/p},
+@var{varianza media}: @code{trace(S_1)/p},
 @item
-@var{generalized variance}: @code{determinant(S_1)},
+@var{varianza generalizada}: @code{determinant(S_1)},
 @item
-@var{generalized standard deviation}: @code{sqrt(determinant(S_1))},
+@var{desviaci@'on t@'{@dotless{i}}pica generalizada}: @code{sqrt(determinant(S_1))},
 @item
-@var{efective variance} @code{determinant(S_1)^(1/p)}, (defined in: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
+@var{varianza efectiva} @code{determinant(S_1)^(1/p)}, (definida en: Pe@~na, D. (2002) @var{An@'alisis de datos multivariantes}; McGraw-Hill, Madrid.)
 @item
-@var{efective standard deviation}: @code{determinant(S_1)^(1/(2*p))}.
+@var{desviaci@'on t@'{@dotless{i}}pica efectiva}: @code{determinant(S_1)^(1/(2*p))}.
 @end itemize
-where @var{p} is the dimension of the multivariate random variable and @math{S_1} the covariance matrix returned by @code{cov1}.
+donde @var{p} es la dimensi@'on de la variable aleatoria multivariante y @math{S_1} la matriz de covarianzas devuelta por la funci@'on @code{cov1}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s2:read_matrix("path_to/wind.data")$
@@ -1181,7 +1179,7 @@ Example:
                                                    2.576158]
 @end example
 
-Function @code{listvar} has an optional logical argument: @code{listvar(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{listvar(x)}. On the other hand, @code{listvar(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+La funci@'on @code{listvar} tiene un argumento l@'ogico opcional: @code{listvar(x,true)} indica a Maxima que @code{x} es la matriz de datos, calculando entonces lo mismo que @code{listvar(x)}. Por otro lado, @code{listvar(x,false)} significa que  @code{x} no es la matriz de datos, sino la de covarianzas, evitando as@'{@dotless{i}} recalcularla,
 
 @example
 (%i4) s:cov1(s2)$
@@ -1190,16 +1188,16 @@ Function @code{listvar} has an optional logical argument: @code{listvar(x,true)}
                                                    2.576158]
 @end example
 
-See also @code{cov} and @code{cov1}.
+V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @end deffn
 
 
 
-@deffn {Function} cor (@var{matrix})
-@deffnx {Function} cor (@var{matrix}, @var{logical_value})
-The correlation matrix of the multivariate sample.
+@deffn {Funci@'on} cor (@var{matrix})
+@deffnx {Funci@'on} cor (@var{matrix}, @var{logical_value})
+Es la matriz de correlaciones de la muestra multivariante.
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s2:read_matrix("path_to/wind.data")$
@@ -1215,7 +1213,7 @@ Example:
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
-Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{cor(x)}. On the other hand, @code{cor(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation,
+La funci@'on @code{cor} tiene un argumento l@'ogico opcional: @code{cor(x,true)} indica a Maxima que @code{x} es la matriz de datos, calculando entonces lo mismo que @code{cor(x)}. Por otro lado, @code{cor(x,false)} significa que  @code{x} no es la matriz de datos, sino la de covarianzas, evitando as@'{@dotless{i}} recalcularla,
 @example
 (%i4) s:cov1(s2)$
 (%i5) cor(s,false); /* this is faster */
@@ -1230,19 +1228,19 @@ Function @code{cor} has an optional logical argument: @code{cor(x,true)} tells M
       [ .7519506  0.782502  .8323358  .7293848    1.0    ]
 @end example
 
-See also @code{cov} and @code{cov1}.
+V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @end deffn
 
 
 
-@deffn {Function} listdep (@var{matrix})
-@deffnx {Function} listdep (@var{matrix}, @var{logical_value})
-Function @code{listdep} returns a list of correlation measures:
+@deffn {Funci@'on} listdep (@var{matrix})
+@deffnx {Funci@'on} listdep (@var{matrix}, @var{logical_value})
+La funci@'on @code{listdep} devuelve una lista con medidas de correlaci@'on:
 
 @itemize @bullet
 
 @item
-@var{precision matrix}: the inverse of the covariance matrix @math{S_1},
+@var{matriz de precisi@'on}: es la inversa de la matriz de covarianzas @math{S_1},
 @ifhtml
 @example
        -1     ij
@@ -1262,7 +1260,7 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @end tex
 
 @item
-@var{multiple correlation vector}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, with 
+@var{vector de correlaci@'on m@'ultiple}:  @math{(R_1^2, R_2^2, ..., R_p^2)}, donde 
 @ifhtml
 @example
        2          1
@@ -1284,10 +1282,10 @@ $${S_{1}^{-1}}={\left(s^{ij}\right)_{i,j=1,2,\ldots, p}}$$
 @tex
 $${R_{i}^{2}}={1-{{1}\over{s^{ii}s_{ii}}}}$$
 @end tex
-being an indicatior of the goodness of fit of the linear multivariate regression model on @math{X_i} when the rest of variables are used as regressors.
+es un indicador de la bondad de ajuste del modelo de regresi@'on lineal multivariante de @math{X_i} cuando el resto de variables se utilizan como regresores.
 
 @item
-@var{partial correlation matrix}: with element @math{(i, j)} being
+@var{matriz de correlaciones parciales}: en la que el elemento @math{(i, j)} es
 @ifhtml
 @example
                          ij
@@ -1314,7 +1312,7 @@ $${r_{ij.rest}}={-{{s^{ij}}\over \sqrt{s^{ii}s^{jj}}}}$$
 
 @end itemize
 
-Example:
+Ejemplo:
 @example
 (%i1) load(numericalio)$
 (%i2) s2:read_matrix("path_to/wind.data")$
@@ -1344,9 +1342,9 @@ Example:
       [ - .13049   .23492   .37956   .26719    - 1.0   ]
 @end example
 
-Function @code{listdep} also has an optional logical argument: @code{listdep(x,true)} tells Maxima that @code{x} is the data matrix, making the same as @code{listdep(x)}. On the other hand, @code{listdep(x,false)} means that @code{x} is not the data matrix, but the covariance matrix, avoiding its recalculation.
+La funci@'on @code{listdep} tiene un argumento l@'ogico opcional: @code{listdep(x,true)} indica a Maxima que @code{x} es la matriz de datos, calculando entonces lo mismo que @code{listdep(x)}. Por otro lado, @code{listdep(x,false)} significa que  @code{x} no es la matriz de datos, sino la de covarianzas, evitando as@'{@dotless{i}} recalcularla.
 
-See also @code{cov} and @code{cov1}.
+V@'eanse tambi@'en @code{cov} y @code{cov1}.
 @end deffn
 
 
@@ -1354,45 +1352,44 @@ See also @code{cov} and @code{cov1}.
 @section Definiciones para gr@'aficos estad@'{@dotless{i}}sticos
 
 
-
-@deffn {Function} dataplot (@var{list})
-@deffnx {Function} dataplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Function} dataplot (@var{matrix})
-@deffnx {Function} dataplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
-Funtion @code{dataplot} permits direct visualization of sample data, both univariate (@var{list}) and multivariate (@var{matrix}). Giving values to the following @var{options} some aspects of the plot can be controlled:
+@deffn {Funci@'on} dataplot (@var{list})
+@deffnx {Funci@'on} dataplot (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} dataplot (@var{matrix})
+@deffnx {Funci@'on} dataplot (@var{matrix}, @var{option_1}, @var{option_2}, ...)
+La funci@'on @code{dataplot} permite la visualizaci@'on directa de datos muestrales, tanto univariantes (@var{list}) como multivariantes (@var{matrix}). Asignando valores a las siguientes opciones (@var{options}) se pueden controlar ciertos aspectos del gr@'afico:
 
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
 
 @item
-@code{'axisnames}, default @code{["x","y","z"]}, is a list with the names of axis @code{x}, @code{y} and @code{z}.
+@code{'axisnames}, @code{["x","y","z"]} por defecto, es una lista con nombres para los ejes @code{x}, @code{y} y @code{z}.
 
 @item
-@code{'joined}, default @code{false}, a logical value to select points in 2D to be joined or isolated.
+@code{'joined}, @code{false} por defecto, un valor l@'ogico que indica si los puntos en 2D deben unirse por segmentos o no.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
 
 @item
-@code{'threedim}, default @code{true}, tells Maxima whether to plot a three column matrix with a 3D diagram or a multivariate scatterplot. See examples bellow.
+@code{'threedim}, @code{true} por defecto, indica a Maxima si debe dibujar una matriz de tres columnas como un diagrama tridimensional o como un diagrama de dispersi@'on multivariante. V@'eanse ejemplos m@'as abajo.
 
 @item
-@code{'axisrot}, default @code{[60, 30]}, changes the point of view when @code{'threedim} is set to @code{true} and  data are stored in a three column matrix. The first number is the rotation angle of the @var{x}-axis, and the second number is the rotation angle of the @var{z}-axis, both measured in degrees.
+@code{'axisrot}, @code{[60, 30]} por defecto, cambia el punto de vista cuando @code{'threedim} toma el valor @code{true} y los datos se suministran en una matriz de tres columnas. El primer n@'umero es el @'angulo de rotaci@'on del eje @var{x}, siendo el segundo el @'angulo de rotaci@'on del eje @var{z}, ambos medidos en grados sexagesimales.
 
 @item
-@code{'nclasses}, default @code{10}, is the number of classes for the histograms in the diagonal of multivariate scatterplots.
+@code{'nclasses}, @code{10} por defecto, es el n@'umero de clases a considerar en los histogramas de la diagonal de los diagramas de dispersi@'on multivariantes.
 
 @item
-@code{'pointstyle}, default @code{0}, is an integer to indicate how to display sample points.
+@code{'pointstyle}, @code{0} por defecto, es un entero que indica c@'omo dibujar los puntos muestrales.
 
 @end itemize
 
-For example, with the following input a simple plot of the first twenty digits of @code{%pi} is requested and the output stored in an eps file.
+Por ejemplo, con el siguiente c@'odigo se realiza un gr@'afico con los veinte primeros d@'{@dotless{i}}gitos del n@'umero @code{%pi} y el resultado se guarda en un fichero en formato eps.
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -1400,7 +1397,7 @@ For example, with the following input a simple plot of the first twenty digits o
                'outputdev="eps",'pointstyle=3)$
 @end example
 
-Note that one dimensional data are plotted as a time series. In the next case, same more data with different settings,
+N@'otese que las muestras univariantes se representan como series temporales. En el siguiente ejemplo se utilizan m@'as datos y con diferentes opciones,
 @example
 (%i4) dataplot(makelist(s1[k],k,1,50),
              'maintitle="First pi digits",
@@ -1410,7 +1407,7 @@ Note that one dimensional data are plotted as a time series. In the next case, s
              'outputdev="eps")$
 @end example
 
-Function @code{dataplot} can be used to plot points in the plane. The next example is a scatterplot of the pairs of wind speeds corresponding to the first and fifth meteorological stations,
+La funci@'on @code{dataplot} puede utilizarse para representar puntos del plano. El siguiente ejemplo es un diagrama de dispersi@'on de los pares formados con las velocidades del viento correspondientes a las estaciones meteorol@'ogicas uno y cinco,
 @example
 (%i5) s2:read_matrix("path_to/wind.data")$
 (%i6) dataplot(submatrix(s2,2,3,4),
@@ -1419,42 +1416,17 @@ Function @code{dataplot} can be used to plot points in the plane. The next examp
          'axisnames=["Wind speed in A","Wind speed in E"])$
 @end example
 
-If points are stored in a two column matrix, @code{dataplot} can plot them directly, but if they are formatted as a list of pairs, their must be transformed to a matrix as in the following example.
+Si los puntos est@'an almacenados en una matriz de dos columnas, @code{dataplot} los puede dibujar directamente, pero si est@'an guardados como una lista de pares deben transformarse previamente a una matriz, tal como se hace en el siguiente ejemplo.
 @example
-(%i7) bs:[[64,-104], [64,-99], [61,-95], [57,-95], [55,-94],
-          [55,-90], [72,-89], [80,-88], [77,-86], [80,-88], 
-          [82,-91], [80,-88], [72,-89], [55,-90], [47,-89], 
-          [39,-87], [33,-84], [32,-81], [35,-75], [36,-69], 
-          [42,-69], [45,-68], [42,-69], [36,-69], [35,-67], 
-          [35,-62], [35,-60], [39,-60], [45,-61], [51,-61], 
-          [53,-65], [56,-68], [61,-70], [67,-71], [73,-70], 
-          [78,-67], [80,-64], [81,-61], [78,-58], [75,-60], 
-          [75,-62], [78,-62], [81,-61], [81,-56], [79,-50], 
-          [75,-47], [70,-44], [62,-44], [58,-45], [53,-50], 
-          [52,-52], [49,-53], [48,-52], [48,-50], [49,-48], 
-          [51,-49], [52,-52], [51,-54], [51,-57], [51,-61], 
-          [45,-61], [39,-60], [35,-60], [32,-57], [32,-52], 
-          [32,-49], [35,-45], [39,-42], [43,-41], [48,-42], 
-          [51,-43], [55,-47], [51,-43], [48,-42], [43,-41], 
-          [44,-38], [47,-35], [54,-16], [56,-5], [60,-11], 
-          [64,-6], [67,-12], [72,-7], [74,-14], [80,-9], 
-          [80,-16], [86,-11], [87,-17], [92,-12], [93,-21], 
-          [99,-16], [100,-22], [106,-19], [107,-27], [115,-25], 
-          [110,-32], [94,-72], [91,-72], [88,-73], [87,-74], 
-          [88,-76], [91,-76], [91,-79], [89,-81], [91,-79], 
-          [91,-76], [94,-77], [94,-79], [94,-77], [91,-76], 
-          [88,-76], [87,-74], [88,-73], [91,-72], [94,-72], 
-          [97,-75], [98,-80], [97,-82], [94,-84], [91,-85], 
-          [87,-83], [84,-80], [87,-83], [91,-85], [91,-95], 
-          [92,-102], [85,-105], [69,-106], [64,-104]]$
-(%i8) dataplot(apply('matrix,bs),
+(%i7) x: [[-1,2],[5,7],[5,-3],[-6,-9],[-4,6]]$
+(%i8) dataplot(apply('matrix,x),
            'outputdev="eps",
-           'maintitle="Bart", 'joined=true,
+           'maintitle="Points", 'joined=true,
            'axisnames=["","",""],
            'picturescales=[0.5, 1.0])$
 @end example
 
-Points in three dimensional space can be seen as a projection on the plane. In this example, plots of wind speeds corresponding to  three meteorological stations are requested, first in a 3D plot and then in a multivariate scatterplot.
+Puntos del espacio tridimensional pueden verse como proyecciones sobre un plano. Es este ejemplo se piden gr@'aficos de las velocidades del viento correspondientes a tres estaciones meteorol@'ogicas, primero una representaci@'on tridimensional y luego como diagrama de dispersi@'on multivariante.
 @example
 (%i9) /* 3D plot */
        dataplot(submatrix(s2,4,5), 'pointstyle=2,
@@ -1465,9 +1437,9 @@ Points in three dimensional space can be seen as a projection on the plane. In t
        dataplot(submatrix(s2,4,5),
          'outputdev="eps", 'nclasses=6, 'threedim=false)$
 @end example
-Note that in the last example, the number of classes in the histograms of the diagonal is set to 6, and that option @code{'threedim} is set to @code{false}.
+N@'otese que en este @'ultimo ejemplo, el n@'umero de clases de los histogramas de la diagonal se ajusta a 6, y que a la opci@'on @code{'threedim} se le da el valor @code{false}.
 
-For more than three dimensions only multivariate scatterplots are possible, as in
+Para m@'as de tres dimensiones s@'olo son posibles los diagramas de dispersi@'on multivariantes, como en
 @example
 (%i11) dataplot(s2,'outputdev="eps")$
 @end example
@@ -1475,41 +1447,41 @@ For more than three dimensions only multivariate scatterplots are possible, as i
 
 
 
-@deffn {Function} histogram (@var{list})
-@deffnx {Function} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Function} histogram (@var{one_column_matrix})
-@deffnx {Function} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-This function plots an histogram. Sample data must be stored in a list of numbers or a one column matrix. Giving values to the following @var{options} some aspects of the plot can be controlled:
+@deffn {Funci@'on} histogram (@var{list})
+@deffnx {Funci@'on} histogram (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} histogram (@var{one_column_matrix})
+@deffnx {Funci@'on} histogram (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
+Dibuja un histograma. Los datos muestrales deben suministrarse como una lista de n@'umeros o como una matriz columna. Asignando valores a las siguientes opciones (@var{options}) se pueden controlar ciertos aspectos del gr@'afico:
 
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
 
 @item
-@code{'axisnames}, default @code{["x", "Fr."]}, is a list with the names of axis @code{x} and @code{y}.
+@code{'axisnames}, @code{["x", "Fr."]} por defecto, es una lista con nombres para los ejes @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
 
 @item
-@code{'nclasses}, default @code{10}, is the number of classes or bars.
+@code{'nclasses}, @code{10} por defecto, es el n@'umero de intervalos de clase.
 
 @item
-@code{'relbarwidth}, default @code{0.9}, a decimal number between 0 and 1 to control bars width.
+@code{'relbarwidth}, @code{0.9} por defecto, es un n@'umero decimal entre 0 y 1 para controlar el ancho de las barras.
 
 @item
-@code{'barcolor}, default @code{1}, an integer to indicate bars color.
+@code{'barcolor}, @code{1} por defecto, es un entero que indica el color de las barras.
 
 @item
-@code{'colorintensity}, default @code{1}, a decimal number between 0 and 1 to fix color intensity.
+@code{'colorintensity}, @code{1} por defecto, es un n@'umero decimal entre 0 y 1 para establecer la intensidad del color.
 
 @end itemize
 
-In the next two examples, histograms are requested for the first 100 digits of number $\pi$ and for the wind speeds in the third meteorological station.
+En los siguientes dos ejemplos se solicitan sendos histogramas para los 100 primeros d@'{@dotless{i}}gitos del n@'umero @math{pi} y para las velocidades del viento en la estaci@'on meteorol@'ogica n@'umero 3.
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -1521,45 +1493,45 @@ In the next two examples, histograms are requested for the first 100 digits of n
 (%i5) histogram(col(s2,3),
                  'outputdev="eps",'colorintensity=0.3)$
 @end example
-Note that in the first case, @code{s1} is a list and in the second example, @code{col(s2,3)} is a matrix.
+N@'otese que en el primer caso, @code{s1} es una lista y que en el segundo @code{col(s2,3)} es una matriz.
 
-See also function @code{barsplot}.
+V@'ease tambi@'en @code{barsplot}.
 @end deffn
 
 
 
-@deffn {Function} barsplot (@var{list})
-@deffnx {Function} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
-@deffnx {Function} barsplot (@var{one_column_matrix})
-@deffnx {Function} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
-Similar to @code{histogram} but for discrete, numeric or categorical, statistical variables. These are the options,
+@deffn {Funci@'on} barsplot (@var{list})
+@deffnx {Funci@'on} barsplot (@var{list}, @var{option_1}, @var{option_2}, ...)
+@deffnx {Funci@'on} barsplot (@var{one_column_matrix})
+@deffnx {Funci@'on} barsplot (@var{one_column_matrix}, @var{option_1}, @var{option_2}, ...)
+Similar a @code{histogram} pero para muestras discretas, num@'ericas o categ@'oricas. Estas son las variables,
 
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
 
 @item
-@code{'axisnames}, default @code{["x", "Fr."]}, is a list with the names of axis @code{x} and @code{y}.
+@code{'axisnames}, @code{["x", "Fr."]} por defecto, es una lista con nombres para los ejes @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
 
 @item
-@code{'relbarwidth}, default @code{0.9}, a decimal number between 0 and 1 to control bars width.
+@code{'relbarwidth}, @code{0.9} por defecto, es un n@'umero decimal entre 0 y 1 para controlar el ancho de las barras.
 
 @item
-@code{'barcolor}, default @code{1}, an integer to indicate bars color.
+@code{'barcolor}, @code{1} por defecto, es un entero que indica el color de las barras.
 
 @item
-@code{'colorintensity}, default @code{1}, a decimal number between 0 and 1 to fix color intensity.
+@code{'colorintensity}, @code{1} por defecto, es un n@'umero decimal entre 0 y 1 para establecer la intensidad del color.
 
 @end itemize
 
-This example plots the barchart for groups @code{A} and @code{B} of patients in sample @code{s3},
+En este ejemplo se representa el gr@'afico de barras correspondiente a los grupos @code{A} y @code{B} de los pacientes de la muestra @code{s3},
 @example
 (%i1) load(numericalio)$
 (%i2) s3:read_matrix("biomed.data")$
@@ -1569,7 +1541,7 @@ This example plots the barchart for groups @code{A} and @code{B} of patients in 
          'axisnames=["Group","# of individuals"],
          'colorintensity=0.2)$
 @end example
-The first column in sample @code{s3} stores the categorical values @code{A} and @code{B}, also known sometimes as factors. On the other hand, the positive integer numbers in the second column are ages, in years, which is a discrete variable, so we can plot the absolute frequencies for these values,
+La primera columna de la muestra @code{s3} almacena los valores categ@'oricos @code{A} y @code{B}, llamados tambi@'en factores. Por otro lado, los n@'umeros enteros positivos en la segunda columna son las edades en a@~nos, que es una variable discreta, por lo que podemos representar las frecuencias absolutas de estos valores,
 @example
 (%i4) barsplot(col(s3,2),
          'outputdev="eps",
@@ -1580,32 +1552,33 @@ The first column in sample @code{s3} stores the categorical values @code{A} and 
 @end example
 
 
-See also function @code{histogram}.
+V@'ease tambi@'en @code{histogram}.
 @end deffn
 
 
 
-@deffn {Function} boxplot (@var{data})
-@deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
-This function plots box diagrams. Argument @var{data} can be a list, which is not of great interest, since these diagrams are mainly used for comparing different samples, or a matrix, so it is possible to compare two or more components of a multivariate statistical variable. But it is also allowed @var{data} to be a list of samples with possible different sample sizes, in fact this is the only function in package @code{descriptive.mac} that admits this type of data structure. See example bellow.  These are the options,
+@deffn {Funci@'on} boxplot (@var{data})
+@deffnx {Funci@'on} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
+Dibuja diagramas de cajas. El argumento @var{data} puede ser una lista, lo cual no es de gram inter@'es puesto que estos gr@'aficos se utilizan fundamentalmente para comparar varias muestras, o una matriz, de manera que es posible comparar dos o m@'as componentes de una variable estad@'{@dotless{i}}stica multivariante. Tambi@'en se permite que @var{data} sea una lista de muestras con tama@~nos muestrales diferentes; de hecho esta es la @'unica funci@'on del paquete
+@code{descriptive} que admite este tipo de estructura. V@'ease ejemplo m@'as abajo. Estas son las opciones v@'alidas:
 
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
-@code{'maintitle}, default @code{""}, is the main title between double quotes.
+@code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
 
 @item
-@code{'axisnames}, default @code{["sample", "y"]}, is a list with the names of axis @code{x} and @code{y}.
+@code{'axisnames}, @code{["sample", "y"]} por defecto, es una lista con nombres para los ejes @code{x} e @code{y}.
 
 @item
-@code{'picturescales}, default @code{[1.0, 1.0]}, scaling factors for the size of the plot.
+@code{'picturescales}, @code{[1.0, 1.0]} por defecto, factores de escala para el tama@~no del gr@'afico.
 
 @end itemize
 
-Examples:
+Ejemplos:
 @example
 (%i1) load(numericalio)$
 (%i2) s2:read_matrix("path_to/wind.data")$
