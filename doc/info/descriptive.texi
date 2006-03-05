@@ -1486,7 +1486,7 @@ This function plots an histogram. Sample data must be stored in a list of number
 
 @end itemize
 
-In the next two examples, histograms are requested for the first 100 digits of number $\pi$ and for the wind speeds in the third meteorological station.
+In the next two examples, histograms are requested for the first 100 digits of number @code{%pi} and for the wind speeds in the third meteorological station.
 @example
 (%i1) load(numericalio)$
 (%i2) s1:read_list("path_to/pidigits.data")$
@@ -1564,7 +1564,7 @@ See also function @code{histogram}.
 
 @deffn {Function} boxplot (@var{data})
 @deffnx {Function} boxplot (@var{data}, @var{option_1}, @var{option_2}, ...)
-This function plots box diagrams. Argument @var{data} can be a list, which is not of great interest, since these diagrams are mainly used for comparing different samples, or a matrix, so it is possible to compare two or more components of a multivariate statistical variable. But it is also allowed @var{data} to be a list of samples with possible different sample sizes, in fact this is the only function in package @code{descriptive.mac} that admits this type of data structure. See example bellow.  These are the options,
+This function plots box diagrams. Argument @var{data} can be a list, which is not of great interest, since these diagrams are mainly used for comparing different samples, or a matrix, so it is possible to compare two or more components of a multivariate statistical variable. But it is also allowed @var{data} to be a list of samples with possible different sample sizes, in fact this is the only function in package @code{descriptive} that admits this type of data structure. See example bellow.  These are the options,
 
 @itemize @bullet
 
