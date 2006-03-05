@@ -261,5 +261,5 @@ block([lsize : length(l),
                                                    apply (verbify (product), [expr, j, 1, concat('i, k-i)-1])),
                                             tempres)),
                 res : append(res, tempres), 
-                if onep then return())),
+                if onep then return(res))),
       res);
