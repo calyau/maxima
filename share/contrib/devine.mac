@@ -57,7 +57,7 @@ guess([1,2,6,24,120]);
                             ! !
                            i1 = 1
 
-guess(makelist(product(product(GAMMA(i)*i^2,i,1,j),j,1,k),k,1,8));
+guess(makelist(product(product(gamma(i)*i^2,i,1,j),j,1,k),k,1,8));
 
                       i0 - 1   i1 - 1    i2 - 1
                       /===\    /===\     /===\          2
@@ -126,7 +126,7 @@ SYNOPSIS:,
   solution it finds.
 
 - guess(l,"nogamma") does the same thing as guess(l) but it returns
-  expressions without GAMMA functions. In fact, there is not much difference
+  expressions without gamma functions. In fact, there is not much difference
   just at the moment, because Maxima doesn't simplify products yet...  
 */
 
@@ -184,13 +184,13 @@ block([tempvec : makelist(1, i, 1, m+k+1), /* contains the new row of mat */
                         append(rest(rowlist, -(max(m, k) - m) ), 
                                -1 * makelist(rowlist[i] * ylist, 
                                              i, 1, k + 1)))),
-  mat : ev(mat . varlist, SCALARMATRIXP : false), 
+  mat : ev(mat . varlist, scalarmatrixp : false), 
 
 /* not sure whether it is save to modify xlist... */
   xlist : linsolve(makelist(mat[i, 1], i, 1, (m+k)+1), varlist), 
   if length(xlist) = 0 
 /* something went wrong */
-  then NULL
+  then 'null
 /* use the solution to define the interpolating rational function */ 
   else factor(subst(xlist, sum('x[i+1]*x^i, i, 0, m)
                            /sum('x[(i+m)+2]*x^i, i, 0, k))));
@@ -204,7 +204,7 @@ block([lsize : length(l), res : [], x, ri],
   for i : 0 thru lsize-2 do 
      (ri : rationalinterpolation(makelist(k, k, 1, lsize-1), rest(l,-1),
                                  x, (lsize-2)-i, i),
-      if ri # NULL
+      if ri # 'null
       then if (subst(x=lsize, denom(ri)) # 0)
               and
               (subst(x=lsize, ri)-last(l) = 0)
@@ -237,7 +237,7 @@ block([lsize : length(l),
       then error("Wrong number of optional arguments: ", optargs)
       else maxlevel : mode_identity(fixnum, apply(min, cons(lsize-1, maxlevellist)) - 1), 
        
-      g : make_array('ANY, maxlevel + 1), 
+      g : make_array('any, maxlevel + 1), 
 
       for k : 0 thru maxlevel do
          (g[k] : l, 
@@ -249,18 +249,16 @@ block([lsize : length(l),
                 then for i : 1 thru k do
                          if unevp
                          then tempres : 
-                                  subst('j = concat('i, (k-i)+1),
+                                  block ([j : concat('i, (k-i)+1)],
                                         map(lambda([expr], 
                                                    g[k-i][1] *
-                                                   'product(expr, j, 1, 
-                                                            concat('i, k-i)-1)),
+                                                   apply (nounify (product), [expr, j, 1, concat('i, k-i)-1])),
                                             tempres))
                          else tempres : 
-                                  subst('j = concat('i, (k-i)+1),
+                                  block ([j : concat('i, (k-i)+1)],
                                         map(lambda([expr],
                                                    g[k-i][1] *
-                                                   product(expr, j, 1, 
-                                                           concat('i, k-i)-1)),
+                                                   apply (verbify (product), [expr, j, 1, concat('i, k-i)-1])),
                                             tempres)),
                 res : append(res, tempres), 
                 if onep then return())),
