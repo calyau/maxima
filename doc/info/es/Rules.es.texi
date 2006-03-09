@@ -667,3 +667,4 @@ foorule2, foorule3, +rule1, *rule1, ^rule1]
 Ejecuta @code{kill (rules)} y despu@'es inicializa el siguiente n@'umero de regla a 1 para la adici@'on @code{+}, multiplicaci@'on @code{*} y exponenciaci@'on @code{^}.
 
 @end deffn
+

@@ -1241,7 +1241,7 @@ La forma especial @code{stringout (@var{filename}, values)} escribe todas las va
 
 @end deffn
 
-@deffn {Funci@'on} tex (@var{expr})
+@deffn {Funci@'on} tex (@var{expr}
 @deffnx {Funci@'on} tex (@var{label})
 @deffnx {Funci@'on} tex (@var{expr}, @var{filename})
 @deffnx {Funci@'on} tex (@var{label}, @var{filename})
