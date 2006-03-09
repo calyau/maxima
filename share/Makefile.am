@@ -234,6 +234,7 @@ contrib/gentran/vaxlsp.lisp\
 contrib/ggf.mac\
 contrib/ifactor.lisp\
 contrib/impdiff.mac\
+contrib/implicit_plot.lisp\
 contrib/lindstedt.mac\
 contrib/lsquares.mac\
 contrib/lurkmathml/README\
