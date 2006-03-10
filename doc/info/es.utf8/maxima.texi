@@ -1,5 +1,5 @@
-@c english version 1.29
 \input texinfo
+@c english version 1.29
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
