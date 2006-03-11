@@ -14,6 +14,7 @@
  * log10 (<integer divisible by 10>) => <power of 10 in integer> + log10 (<remainder>)
  * log10 (10) => 1
  * log10 (1) => 0
+ * d/dx log10(x) => 1/log(10) 1/x
  *
  * log10 is an increasing function (Maxima can't do much with that, but anyway ...)
  *
@@ -24,28 +25,30 @@
  *
  * Examples:
 
-    log10 (1);
-    log10 (10);
-    log10 (12/13);
-    log10 (12/13), numer;
-    log10 (2.3 * 234/2423);
-    log10 (2.3 * 234/2423 + 1b0);
-    log10 (1230000);
-    log10 (9293923000000000 * w^23);
-    log10 (w * (3 + b)^-8);
-    log10 (123 * qwwqwe/235 * q^e);
-    plot2d (log10 (x), [x, 1/100, 10]);
-    quad_qags (log10 (x), x, 1, 10);
-    integrate (log10 (x), x, 1, 10);
-    expand_log10 (%);
-    ''%, nouns;
-    %, numer;
-    assume (x > y);
-    is (log10 (x) > log10 (y));
+log10 (1);
+log10 (10);
+log10 (12/13);
+log10 (12/13), numer;
+log10 (2.3 * 234/2423);
+log10 (2.3 * 234/2423 + 1b0);
+log10 (1230000);
+log10 (9293923000000000 * w^23);
+log10 (w * (3 + b)^-8);
+log10 (123 * qwwqwe/235 * q^e);
+plot2d (log10 (x), [x, 1/100, 10]);
+quad_qags (log10 (x), x, 1, 10);
+integrate (log10 (x), x, 1, 10);
+expand_log10 (%);
+''%, nouns;
+%, numer;
+assume (x > y);
+is (log10 (x) > log10 (y));
+diff (log10 (x), x);
 
  * which yield these outputs:
 
-(%i1) load(log10);
+(%i1) load("/home/robert/tmp/maxima-mostly-clean-head/maxima/share/contrib/log10
+.mac");
 (%o1) /home/robert/tmp/maxima-mostly-clean-head/maxima/share/con\
 trib/log10.mac
 (%i2) log10 (1);
@@ -55,9 +58,9 @@ trib/log10.mac
 (%i4) log10 (12/13);
 (%o4)                 log10(12) - log10(13)
 (%i5) log10 (12/13), numer;
-(%o5)                  - 0.034762106259212
+(%o5)                 - .03476210625921192
 (%i6) log10 (2.3 * 234/2423);
-(%o6)                  - 0.65340972070977
+(%o6)                  - .6534097207097704
 (%i7) log10 (2.3 * 234/2423 + 1b0);
 Warning:  Float to bigfloat conversion of 0.22212133718530744
 (%o7)                 8.711432657265806b-2
@@ -72,7 +75,7 @@ Warning:  Float to bigfloat conversion of 0.22212133718530744
 (%i12) plot2d (log10 (x), [x, 1/100, 10]);
 (%o12) 
 (%i13) quad_qags (log10 (x), x, 1, 10);
-(%o13) [6.091349662870734, 1.9858777053514928E-10, 63, 0]
+(%o13)  [6.091349662870734, 1.985877489938315E-10, 63, 0]
 (%i14) integrate (log10 (x), x, 1, 10);
                           10
                          /
@@ -92,13 +95,17 @@ Warning:  Float to bigfloat conversion of 0.22212133718530744
 (%o15)                    -------------
                              log(10)
 (%i16) ''%, nouns;
-(%o16)          0.43429448190325 (10 log(10) - 9)
+(%o16)         .4342944819032518 (10 log(10) - 9)
 (%i17) %, numer;
 (%o17)                  6.091349662870734
 (%i18) assume (x > y);
 (%o18)                       [x > y]
 (%i19) is (log10 (x) > log10 (y));
 (%o19)                        true
+(%i20) diff (log10 (x), x);
+                                1
+(%o20)                      ---------
+                            log(10) x
 
  */
 
@@ -123,6 +130,8 @@ block ([simp : false],
     tellsimp (log10(ee), block ([p : power_of (10, ee)], p + log10 (ee / 10^p))),
     tellsimp (log10(10), 1),
     tellsimp (log10(1), 0),
+
+    gradef (log10(x), (1/log(10))*(1/x)),
 
     declare (log10, increasing),
 
