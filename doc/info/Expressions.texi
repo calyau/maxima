@@ -1095,7 +1095,7 @@ expression in which they occur.
 @code{exptisolate} (default value: @code{false}) if @code{true} will cause @code{isolate} to examine exponents of
 atoms (like @code{%e}) which contain var.
 
-@code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate wrt
+@code{isolate_wrt_times} if @code{true}, then @code{isolate} will also isolate with respect to
 products. See @code{isolate_wrt_times}.
 
 Do @code{example (isolate)} for examples.
@@ -1107,7 +1107,7 @@ Do @code{example (isolate)} for examples.
 Default value: @code{false}
 
 When @code{isolate_wrt_times} is @code{true}, @code{isolate}
-will also isolate wrt products.  E.g. compare both settings of the
+will also isolate with respect to products.  E.g. compare both settings of the
 switch on
 
 @example
