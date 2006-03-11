@@ -22,7 +22,6 @@ otherwise @code{in_netmath} (even if @code{true}) has no effect.
 @end defvr
 
 @c THIS DESCRIPTION IS IN NEED OF HEAVY REVISION (BUT ONLY IF OPENPLOT IS STILL SUPPORTED)
-@c EXAMPLE DOESN'T WORK -- YIELDS ERROR MESSAGE, NOTHING HAPPENS
 @deffn {Function} openplot_curves (@var{list}, @var{rest_options})
 Takes a list of curves such as
 @example
@@ -40,8 +39,7 @@ The following plots two curves, using big points, labeling the first one
 @code{jim} and the second one @code{jane}.   
 @example
 openplot_curves ([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
-      @{text @{xaxislabel @{joe is nice@}@}@}"],
-      [1, 2, 3, 4, 5, 6, 7, 8],
+      @{xaxislabel @{joe is nice@}@}"], [1, 2, 3, 4, 5, 6, 7, 8],
       ["@{label jane@} @{color pink @}"], [3, 1, 4, 2, 5, 7]]);
 @end example
 
