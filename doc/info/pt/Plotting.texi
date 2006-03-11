@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.21/Wed Dec 21 07:33:49 2005/-ko/
+@c /Plotting.texi/1.22/Sat Mar 11 23:39:39 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -24,7 +24,6 @@ caso contr@'ario @code{in_netmath} (mesmo se @code{true}) n@~ao tem efeito.
 @end defvr
 
 @c THIS DESCRIPTION IS IN NEED OF HEAVY REVISION (BUT ONLY IF OPENPLOT IS STILL SUPPORTED)
-@c EXAMPLE DOESN'T WORK -- YIELDS ERROR MESSAGE, NOTHING HAPPENS
 @deffn {Fun@,{c}@~ao} openplot_curves (@var{list}, @var{rest_options})
 Pega uma lista de curvas tais como
 @example
@@ -42,8 +41,7 @@ O exemplo adiante monta o gr@'afico de duas curvas, usando pontos grandes, rotul
 @code{jim} e o segundo rotulando-se @code{jane}.   
 @example
 openplot_curves ([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
-      @{text @{xaxislabel @{joe is nice@}@}@}"],
-      [1, 2, 3, 4, 5, 6, 7, 8],
+      @{xaxislabel @{joe is nice@}@}"], [1, 2, 3, 4, 5, 6, 7, 8],
       ["@{label jane@} @{color pink @}"], [3, 1, 4, 2, 5, 7]]);
 @end example
 
