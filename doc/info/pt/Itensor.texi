@@ -1155,7 +1155,7 @@ e
 
 que seguem de simetrias de s@'imbolos de Christoffel.
 
-A fun@,{c}@~ao @code{simpmetderiv} toma um parâmetro opcional que, quando
+A fun@,{c}@~ao @code{simpmetderiv} toma um par@^ametro opcional que, quando
 presente, faz com que a fun@,{c}@~ao pare ap@'os a primeira substitui@,{c}@~ao feita com
 sucesso em uma express@~ao produto. A fun@,{c}@~ao @code{simpmetderiv}
 tamb@'em faz uso da vari@'avel global @var{flipflag} que determina
@@ -2019,7 +2019,7 @@ essa tarefa @'e @code{ic_convert}.
 Converte a equa@,{c}@~ao @var{eqn} na sintaxe @code{itensor} para uma declara@,{c}@~ao de atribui@,{c}@~ao @code{ctensor}.
 Adi@,{c}@~oes impl@'icitas sobre @'indices que ocorrem exatamente duas vezes s@~ao tornadas expl@'icitas enquanto objetos
 indexados s@~ao transformados em arrays (os arrays subscritos est@~ao na
-ordem de covariância seguidos de @'indices contravariantes dos objetos
+ordem de covari@^ancia seguidos de @'indices contravariantes dos objetos
 indexados). A derivada de um objeto indexado ir@'a ser substitu@'ida pela
 forma substantiva de @code{diff} tomada com rela@,{c}@~ao a @code{ct_coords} subscrita
 pelo @'indice de deriva@,{c}@~ao. Os s@'imbolos de Christoffel @code{ichr1} e @code{ichr2}

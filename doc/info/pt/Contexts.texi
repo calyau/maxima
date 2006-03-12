@@ -131,15 +131,15 @@ acima.
 Valor padr@~ao: @code{false}
 
 Quando @code{assume_pos} for @code{true}
-e o sinal de um parâmetro @var{x} n@~ao pode ser determinado a partir do contexto corrente
+e o sinal de um par@^ametro @var{x} n@~ao pode ser determinado a partir do contexto corrente
 ou outras considera@,{c}@~oes,
 @code{sign} e @code{asksign (@var{x})} retornam @code{true}.
 Isso pode impedir algum questionamento de @code{asksign} gerado automaticamente,
 tal como pode surgir de @code{integrate} ou de outros c@'alculos.
 
-Por padr@~ao, um parâmetro @'e @var{x} tal como @code{symbolp (@var{x})}
+Por padr@~ao, um par@^ametro @'e @var{x} tal como @code{symbolp (@var{x})}
 or @code{subvarp (@var{x})}.
-A classe de express@~oes consideradas parâmetros pode ser modificada para alguma abrang@^encia
+A classe de express@~oes consideradas par@^ametros pode ser modificada para alguma abrang@^encia
 atrav@'es da vari@'avel @code{assume_pos_pred}.
 
 @code{sign} e @code{asksign} tentam deduzir o sinal de express@~oes
@@ -164,16 +164,16 @@ Valor padr@~ao: @code{false}
 Quando @code{assume_pos_pred} for atribu@'ido o nome de uma fun@,{c}@~ao
 ou uma express@~ao lambda de um argumento @var{x},
 aquela fun@,{c}@~ao @'e chamada para determinar
-se @var{x} @'e considerado um parâmetro para o prop@'osito de @code{assume_pos}.
+se @var{x} @'e considerado um par@^ametro para o prop@'osito de @code{assume_pos}.
 @code{assume_pos_pred} @'e ignorado quando @code{assume_pos} for @code{false}.
 
 A fun@,{c}@~ao @code{assume_pos_pred} @'e chamada atrav@'es de @code{sign} e de @code{asksign}
 com um argumento @var{x}
 que @'e ou um @'atomo, uma vari@'avel subscrita, ou uma express@~ao de chamada de fun@,{c}@~ao.
 Se a fun@,{c}@~ao @code{assume_pos_pred} retorna @code{true},
-@var{x} @'e considerado um parâmetro para o prop@'osito de @code{assume_pos}.
+@var{x} @'e considerado um par@^ametro para o prop@'osito de @code{assume_pos}.
 
-Por padr@~ao, um parâmetro @'e @var{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
+Por padr@~ao, um par@^ametro @'e @var{x} tal que @code{symbolp (x)} ou @code{subvarp (x)}.
 
 Veja tamb@'em @code{assume} e @code{assume_pos}.
 

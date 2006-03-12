@@ -151,7 +151,7 @@ Para reduzir esses conjuntos a um @'unico conjunto, aplique @code{rat} a cada me
 (%o2)/R/                    @{x  - 1@}
 @end example
 
-Para remover redundâncias de outros conjuntos, voc@^e pode precisar usar outras
+Para remover redund@^ancias de outros conjuntos, voc@^e pode precisar usar outras
 fun@,{c}@~oes de simplifica@,{c}@~ao.  Aqui est@'a um exemplo que usa @code{trigsimp}:
 
 @c ===beg===
@@ -1085,7 +1085,7 @@ por exemplo:
 Quando @var{n} for um inteiro n@~ao negativo, retorna o n@'umero de 
 parti@,{c}@~oes inteiras distintas de @var{n}.
 
-Se o parâmetro opcional @var{a} tiver o valor @code{list}, retorna uma 
+Se o par@^ametro opcional @var{a} tiver o valor @code{list}, retorna uma 
 lista do n@'umero de parti@,{c}@~oes distintas de 1,2,3, ... , n. 
 Se @var{n} n@~ao for um inteiro n@~ao negativo, retorna uma forma substantiva.
 
@@ -1098,7 +1098,7 @@ at@'e @math{k_m} s@~ao distintos inteiros positivos, chamamos
 @deffn {Fun@value{cedilha}@~ao} num_partitions (@var{n})
 @deffnx {Fun@value{cedilha}@~ao} num_partitions (@var{n}, @var{a})
 Quando @var{n} for um intero n@~ao negativo, retorna o n@'umero de parti@,{c}@~oes 
-de @var{n}. Se o parâmetro opcional @var{a} tem o valor @code{list}, 
+de @var{n}. Se o par@^ametro opcional @var{a} tem o valor @code{list}, 
 retorna uma lista do n@'umero de parti@,{c}@~oes de 1,2,3, ... , n.  Se @var{n} 
 n@~ao for um inteiro n@~ao negativo, retorna uma forma substantiva.
 

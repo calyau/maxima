@@ -516,7 +516,7 @@ desenhada ser@'a redesenhada com o caractere mudado caso isso seja solicitado.
 
 @deffn {Fun@value{cedilha}@~ao} carg (@var{z})
 Retorna o argumento complexo de @var{z}.
-O argumento complexo @'e um ângulo @code{theta} no intervalo de @code{(-%pi, %pi]}
+O argumento complexo @'e um @^angulo @code{theta} no intervalo de @code{(-%pi, %pi]}
 tal que @code{r exp (theta %i) = @var{z}} onde @code{r} @'e o m@'odulo de @var{z}.
 @c ACTUALLY carg DOESN'T ALWAYS RETURN A VALUE IN (-%pi, %pi]; SEE SF BUG REPORT # 816166
 
@@ -703,7 +703,7 @@ Veja tamb@'em @code{features}.
 @deffn {Fun@value{cedilha}@~ao} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 @'e similar a @code{isolate (@var{expr}, @var{x})}
 exceto que isso habilita ao usu@'ario isolar
-mais que uma vari@'avel simultâneamente.  Isso pode ser @'util, por
+mais que uma vari@'avel simult@^aneamente.  Isso pode ser @'util, por
 exemplo, se se for tentado mudar vari@'aveis em uma integra@,{c}@~ao
 m@'ultipla, e em mudan@,{c}a de vari@'avel envolvendo duas ou mais das
 vari@'aveis de integra@,{c}@~ao.  Essa fun@,{c}@~ao @'e chamada automaticamente de
@@ -774,7 +774,7 @@ de uma caixa.  A caixa @'e atualmente parte da express@~ao.
 @c PROBABLY MORE TO BE SAID HERE
 @deffn {Fun@value{cedilha}@~ao} exp (@var{x})
 Representa fun@,{c}@~ao exponencial.  
-Instâncias de @code{exp (@var{x})} em uma entrada s@~ao simplificadas para @code{%e^@var{x}};
+Inst@^ancias de @code{exp (@var{x})} em uma entrada s@~ao simplificadas para @code{%e^@var{x}};
 @code{exp} n@~ao aparece em express@~oes simplificadas.
 
 @code{demoivre} se @code{true} faz com que @code{%e^(a + b %i)} simplificar para
@@ -1002,9 +1002,9 @@ Se os expoentes associados n@~ao forem ambos maior ou menor,
 alguma rela@,{c}@~ao mais complicada ocorre.
 
 A associatividade de @var{op} depende de seus expoentes associados.
-Maior expoente associado esquerdo (@var{eae}) implica uma instância de
+Maior expoente associado esquerdo (@var{eae}) implica uma inst@^ancia de
 @var{op} @'e avaliadas antes de outros operadores para sua esquerda em uma express@~ao,
-enquanto maior expoente associado direito (@var{ead}) implica uma instância de
+enquanto maior expoente associado direito (@var{ead}) implica uma inst@^ancia de
 @var{op} @'e avaliada antes de outros operadores para sua direita em uma express@~ao.
 Dessa forma maior @var{eae} torna @var{op} associativo @`a direita,
 enquanto maior @var{ead} torna @var{op} associativa @`a esquerda.

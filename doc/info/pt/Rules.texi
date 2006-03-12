@@ -112,9 +112,9 @@ que testa @var{expr} para ver se essa express@~ao coincide com @var{modelo}.
 
 @var{modelo} @'e uma expres@~ao
 contendo as vari@'aveis de modelo @var{x_1}, ..., @var{x_n}
-e parâmetros de modelo, se quaisquer.
+e par@^ametros de modelo, se quaisquer.
 As vari@'aveis de modelo s@~ao dadas
-explicitamente como argumentos para @code{defmatch} enquanto os parâmetros de modelo
+explicitamente como argumentos para @code{defmatch} enquanto os par@^ametros de modelo
 s@~ao declarados atrav@'es da fun@,{c}@~ao @code{matchdeclare}.
 @c DOES matchdeclare HAVE TO GO BEFORE defmatch ?? OR CAN IT GO AFTER ??
 
@@ -127,15 +127,15 @@ no modelo.
 
 Se a tentativa de coincid@^encia obtiver sucesso, @var{progname} retorna
 uma lista de equa@,{c}@~oes cujos lados esquerdos s@~ao as
-vari@'aveis de modelo e os parâmetros de modelo, e cujos lados direitos s@~ao express@~oes
+vari@'aveis de modelo e os par@^ametros de modelo, e cujos lados direitos s@~ao express@~oes
 cujas vari@'aveis de modelo e modelos coincidir@~ao.
-Os parâmetros de modelo, mas n@~ao as vari@'aveis de modelo, s@~ao atribu@'idos @`as subexpress@~oes que elas coincidem.
+Os par@^ametros de modelo, mas n@~ao as vari@'aveis de modelo, s@~ao atribu@'idos @`as subexpress@~oes que elas coincidem.
 Se a coincid@^encia falhar, @var{prognome} retorna @code{false}.  
 
-Quaisquer vari@'aveis n@~ao declaradas como parâmetros de modelo em @code{matchdeclare} ou como
+Quaisquer vari@'aveis n@~ao declaradas como par@^ametros de modelo em @code{matchdeclare} ou como
 vari@'aveis em @code{defmatch} coincidem somente consigo mesmas.
 
-Um modelo que n@~ao contiver nenhuma vari@'avel de modelo ou parâmetros
+Um modelo que n@~ao contiver nenhuma vari@'avel de modelo ou par@^ametros
 retorna @code{true} se a coincid@^encia ocorre.
 
 Veja tamb@'em @code{matchdeclare}, @code{defrule}, @code{tellsimp}, e @code{tellsimpafter}.
@@ -777,7 +777,7 @@ Exemplos:
 Define a uma regra de simplifica@,{c}@~ao que o simplificador do Maxima
 aplica ap@'os as regras de simplifica@,{c}@~ao internas.
 @var{modelo} @'e uma express@~ao, compreendendo vari@'aveis de modelo (declaradas atrav@'es de @code{matchdeclare})
-e outros @'atomos e opera@,{c}òes, considerados literais para o prop@'osito de coincid@^encia de modelos.
+e outros @'atomos e opera@,{c}@~oes, considerados literais para o prop@'osito de coincid@^encia de modelos.
 @var{substitui@,{c}@~ao} @'e substitu@'ida para uma express@~ao atual que coincide com @var{modelo};
 vari@'aveis de modelo em @var{substitui@,{c}@~ao} s@~ao atribuidas a valores coincidentes na express@~ao atual.
 

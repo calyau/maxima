@@ -166,9 +166,15 @@ em rela@,{c}@~ao @`a vari@'avel @var{x}.  Que @'e,
 
 @deffn {Fun@,{c}@~ao} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Retorna a matriz dos coeficientes para as
-vari@'aveis @var{eqn_1}, ..., @var{eqn_m} do sistema de equa@,{c}@~oes lineares
-@var{x_1}, ..., @var{x_n}.
-@c AN EXAMPLE WOULD BE REALLY NICE HERE
+vari@'aveis @var{x_1}, ..., @var{x_n} do sistema de equa@,{c}@~oes lineares
+@var{eqn_1}, ..., @var{eqn_m}.
+
+@example
+(%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
+                                 [ 2  1 - a ]
+(%o1)                            [          ]
+                                 [ a    b   ]
+@end example
 
 @end deffn
 

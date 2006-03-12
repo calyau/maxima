@@ -218,7 +218,7 @@ is greater than the upper bound: - 1
 @end example
 
 Muitas fun@,{c}@~oes em @code{specfun} possuem uma propriedade @code{gradef}; 
-derivadas com rela@,{c}@~ao a ordem ou outros parâmetros de fun@,{c}@~oes 
+derivadas com rela@,{c}@~ao a ordem ou outros par@^ametros de fun@,{c}@~oes 
 s@~ao indefinidas, e uma tentativa de calcular tal uma derivada retorna como resiltado uma mensagem de erro.
 
 O pacote @code{specfun} e sua documenta@,{c}@~ao foram escritos por

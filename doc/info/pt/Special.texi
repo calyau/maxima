@@ -133,7 +133,7 @@ Essas regras de deriva@,{c}@~ao s@~ao conhecidas para Maxima:
 
 Valores de fun@,{c}@~ao s@~ao calculados a partir das s@'eries de Taylor convergentes para @code{abs(@var{x}) < 3},
 e a partir de expans@~oes assint@'oticas para @code{@var{x} < -3} ou @code{@var{x} > 3} como necess@'ario.
-Esses resultados somente apresentam discrepâncias num@'ericas muito pequenas em @code{@var{x} = 3} e @code{@var{x} = -3}.
+Esses resultados somente apresentam discrep@^ancias num@'ericas muito pequenas em @code{@var{x} = 3} e @code{@var{x} = -3}.
 Para detalhes, veja Abramowitz e Stegun,
 @i{Handbook of Mathematical Functions}, Sess@~ao 10.4 e Tabela 10.11.
 
@@ -455,7 +455,7 @@ Converte @var{a} em um c@'odigo de Poisson.
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
 @deffn {Fun@value{cedilha}@value{a_til}o} makefact (@var{expr})
-Transforma instâncias de fun@,{c}@~oes binomiais, gama,
+Transforma inst@^ancias de fun@,{c}@~oes binomiais, gama,
 e beta em @var{expr} para fatoriais.
 
 Veja tamb@'em @code{makegamma}.
@@ -465,7 +465,7 @@ Veja tamb@'em @code{makegamma}.
 @c NEED CROSS REFS HERE
 @c NEED EXAMPLES HERE
 @deffn {Fun@value{cedilha}@value{a_til}o} makegamma (@var{expr})
-Transforma instâncias de fun@,{c}@~oes binomiais, fatorial,
+Transforma inst@^ancias de fun@,{c}@~oes binomiais, fatorial,
 e beta em @var{expr} para fun@,{c}@~oes gama.
 
 Veja tamb@'em @code{makefact}.
@@ -580,7 +580,7 @@ livre dessas vari@'aveis, e al@'e disso, livre de senos ou cossenos.
 opera sobre @var{a} e @var{b} como no tipo (1) acima, mas onde @var{d} @'e uma s@'erie de
 Poisson, expande @code{cos(@var{d})} e @code{sin(@var{d})} para a ordem @var{n} como provendo o
 resultado da substitui@,{c}@~ao @code{@var{a} + @var{d}} por @var{b} em @var{c}.  A id@'eia @'e que @var{d} @'e uma
-expans@~ao em termos de um pequeno parâmetro.  Por exemplo,
+expans@~ao em termos de um pequeno par@^ametro.  Por exemplo,
 @code{poissubst (u, v, cos(v), %e, 3)} retorna @code{cos(u)*(1 - %e^2/2) - sin(u)*(%e - %e^3/6)}.
 
 @end deffn

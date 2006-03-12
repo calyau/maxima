@@ -116,7 +116,7 @@ que inclui muitas fun@,{c}@~oes internas.
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 Exemplos:
 
-Montando um gr@'afico de uma express@~ao, e escolhendo alguns parâmetros comumente usados.
+Montando um gr@'afico de uma express@~ao, e escolhendo alguns par@^ametros comumente usados.
 
 @example
 (%i1) plot2d (sin(x), [x, -5, 5])$
