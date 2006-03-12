@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.42/Sat Dec 24 08:37:47 2005/-ko/
+@c /Expressions.texi/1.43/Sun Mar 12 10:36:14 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
@@ -1118,8 +1118,8 @@ express@~ao em que ocorrerem.
 @code{exptisolate} (valor padr@~ao: @code{false}) se @code{true} far@'a com que @code{isolate} examine expoentes de
 @'atomos (como @code{%e}) que contenham @var{x}.
 
-@code{isolate_wrt_times} se @code{true}, ent@~ao @code{isolate} ir@'a tamb@'em isolar produtos
-wrt. Veja @code{isolate_wrt_times}.
+@code{isolate_wrt_times} se @code{true}, ent@~ao @code{isolate} ir@'a tamb@'em isolar com rela@,{c}@~ao a 
+produtos. Veja @code{isolate_wrt_times}.
 
 Fa@,{c}a @code{example (isolate)} para exemplos.
 
@@ -1130,7 +1130,7 @@ Fa@,{c}a @code{example (isolate)} para exemplos.
 Valor padr@~ao: @code{false}
 
 Quando @code{isolate_wrt_times} for @code{true}, @code{isolate}
-ir@'a tamb@'em isolar produtos wrt.  E.g. compare ambas as escolhas do
+ir@'a tamb@'em isolar com rela@,{c}@~ao a produtos.  E.g. compare ambas as escolhas do
 comutador em
 
 @example
