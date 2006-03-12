@@ -11,7 +11,8 @@
 ; expressions, instead of complaining or returning 'unknown.
 
 ; Ideas that haven't gone anywhere yet:
-;  - given "if foo then bar else baz", simplify bar assuming foo, and baz assuming not foo
+;  - given "if foo then bar else baz", simplify bar assuming foo,
+;    and simplify baz assuming not foo
 ;  - flatten conditionals -- nested if --> if -- elseif -- elseif -- elseif -- else
 ;  - arithmetic on conditionals -- distribute arithmetic ops over if
 
@@ -82,30 +83,32 @@
 ; ("if P[1] then E[1] else E[2]" parses to the above with P[2] = true,
 ; and "if P[1] then E[1]" parses to the above with P[2] = true and E[2] = false.)
 ;
-; (1) If any P[k] simplifies to false, do not simplify E[k], and omit P[k] and E[k] from the result.
-; (2) If any P[k] simplifies to true, simplify E[k], but do not simplify any P[k + 1], E[k + 1], ...,
-;     and omit them from the result.
+; (1) If any P[k] simplifies to false, do not simplify E[k],
+;     and omit P[k] and E[k] from the result.
+; (2) If any P[k] simplifies to true, simplify E[k],
+;     but do not simplify any P[k + 1], E[k + 1], ..., and omit them from the result.
 ; (3) Otherwise, simplify E[k].
 ;
-; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
 ; If there are no P and E remaining, return false.
+; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
 ; If P*[1] = true, return E*[1].
 ; Otherwise return "if P*[1] then E*[1] elseif P*[2] then E*[2] ..."
 ; with "if" being a noun iff the original "if" was a noun.
 ;
 ; Evaluation of "if" expressions:
 ;
-; (1) If any P[k] evaluates to false, do not evaluate E[k], and omit P[k] and E[k] from the result.
-; (2) If any P[k] evaluates to true, evaluate E[k], but do not evaluate any P[k + 1], E[k + 1], ...,
-;     and omit them from the result.
+; (1) If any P[k] evaluates to false, do not evaluate E[k],
+;     and omit P[k] and E[k] from the result.
+; (2) If any P[k] evaluates to true, evaluate E[k],
+;     but do not evaluate any P[k + 1], E[k + 1], ..., and omit them from the result.
 ; (3) Otherwise, evaluate atoms (not function calls) in E[k].
 ;
-; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
 ; If there are no P and E remaining, return false.
+; Let P*[1], E*[1], ... be any P and E remaining after applying (1), (2), and (3).
 ; If P*[1] = true, return E*[1].
 ; Otherwise return "if P*[1] then E*[1] elseif P*[2] then E*[2] ..."
 ; with "if" being a noun iff the original "if" was a noun.
-;
+
 (in-package :maxima)
 
 ; It's OK for MEVALATOMS to evaluate the arguments of MCOND.
@@ -132,6 +135,11 @@
 ; Z SEEMS TO SIGNIFY "ARE THE ARGUMENTS SIMPLIFIED YET"
 
 (defun maybe-simplifya (x z) (if z x (simplifya x z)))
+
+(defun maybe-simplifya-protected (x z)
+  (let ((errcatch t) ($errormsg nil))
+    (declare (special errcatch $errormsg))
+    (ignore-errors (maybe-simplifya x z) x)))
 
 (defun simp-$is (x y z)
   (declare (ignore y))
@@ -163,48 +171,38 @@
        ans)
       ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
       ($prederror (pre-err patevalled))
+      ; HERE WE ARE EVALUATING PAT AGAIN. THIS IS PROBLEMATIC IF PAT HAS SIDE EFFECTS !!
       (t (meval1 pat)))))
 
 (defmspec mand (form) (setq form (cdr form))
-  ; (format t "hey, mand: form ~S~%" form)
   (do ((l form (cdr l)) (x) (unevaluated))
     ((null l)
     (cond
       ((= (length unevaluated) 0) t)
       ((= (length unevaluated) 1) (car unevaluated))
-      ; DO WE WANT TO SIMPLIFY THE RETURN VALUE ?
       (t (cons '(mand) (reverse unevaluated)))))
   (setq x (mevalp (car l)))
   (cond
     ((null x) (return nil))
-    ; DUNNO IF TEST FOR $UNKNOWN IS NEEDED, IF OTHER PATCHES ARE APPLIED ...
-    ((eq x '$unknown) (return x))
     ((not (memq x '(t nil))) (push x unevaluated)))))
 
 (defmspec mor (form) (setq form (cdr form))
-  ; (format t "hey, mor: form ~S~%" form)
   (do ((l form (cdr l)) (x) (unevaluated))
   ((null l)
     (cond
       ((= (length unevaluated) 0) nil)
       ((= (length unevaluated) 1) (car unevaluated))
-      ; DO WE WANT TO SIMPLIFY THE RETURN VALUE ?
       (t (cons '(mor) (reverse unevaluated)))))
   (setq x (mevalp (car l)))
   (cond
     ((eq x t) (return t))
-    ; DUNNO IF TEST FOR $UNKNOWN IS NEEDED, IF OTHER PATCHES ARE APPLIED ...
-    ((eq x '$unknown) (return x))
     ((not (memq x '(t nil))) (push x unevaluated)))))
 
 (defmspec mnot (form) (setq form (cdr form))
-  ; (format t "hey, mnot: form ~S~%" form)
   (let ((x (mevalp (car form))))
-    ; (format t "hey, mnot: x ~S~%" x)
     (cond
       ((memq x '(t nil)) (not x))
-      ((eq x '$unknown) x)
-      (t (simplifya `((mnot) ,x) t)))))
+      (t `((mnot) ,x)))))
 
 ; X is an expression of the form ((OP) B1 G1 B2 G2 B3 G3 ...)
 ; where OP is MCOND or %MCOND,
@@ -244,7 +242,9 @@
        (meval (car consequences)))
       (t
         (setq consequences (mapcar 'mevalatoms consequences))
-        (cons op (apply 'append (mapcar #'(lambda (x y) `(,x ,y)) conditions consequences)))))))
+        ; Burn off SIMP flag, if any, when constructing the new CAAR
+        (cons `(,(car op))
+              (apply 'append (mapcar #'(lambda (x y) `(,x ,y)) conditions consequences)))))))
 
 ; Simplification of conditional expressions.
 
@@ -276,7 +276,8 @@
       ((or (eq (car args-simplified) t) (eq (car args-simplified) '$true))
        (cadr args-simplified))
       (t
-        (cons op args-simplified)))))
+        ; Indicate that the return value has been simplified.
+        (cons `(,(car op) simp) args-simplified)))))
 
 (defun simp-mcond (x y z)
   (declare (ignore y))
@@ -295,82 +296,72 @@
 (putprop 'mand 'simp-mand 'operators)
 (putprop 'mor 'simp-mor 'operators)
 
-; Simplify the arguments of MAND, and then see if any simplified to $TRUE or T or $FALSE or NIL.
-
 (defun simp-mand (x y z)
   (declare (ignore y))
-  (let ((args (cdr x)))
-    ; MAYBE SHOULD AVOID SIMPLIFYING ARGUMENTS IF WE CAN
-    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE IN THE PRESENCE OF SIDE EFFECTS
-    (setq args (mapcar #'(lambda (a) (maybe-simplifya a z)) args))
-    (if (some #'(lambda (a) (or (eq a nil) (eq a '$false))) args)
-      nil
-      (progn
-        (setq args (remove-if #'(lambda (a) (or (eq a t) (eq a '$true))) args))
-        (if (null args)
-          t
-          (if (eq (length args) 1)
-            (car args)
-            `((mand simp) ,@args)))))))
-
-; Simplify the arguments of MOR, and then see if any simplified to $TRUE or T or $FALSE or NIL.
+  (do ((l (cdr x) (cdr l)) (a) (simplified))
+    ((null l)
+    (cond
+      ((= (length simplified) 0) t)
+      ((= (length simplified) 1) (car simplified))
+      (t (cons '(mand simp) (reverse simplified)))))
+  (setq a (maybe-simplifya (car l) z))
+  (cond
+    ((null a) (return nil))
+    ((not (memq a '(t nil))) (push a simplified)))))
 
 (defun simp-mor (x y z)
   (declare (ignore y))
-  (let ((args (cdr x)))
-    ; MAYBE SHOULD AVOID SIMPLIFYING ARGUMENTS IF WE CAN
-    ; ALTHOUGH AVOIDING SIMPLIFICATION MAKES THE OPERATOR NONCOMMUTATIVE IN THE PRESENCE OF SIDE EFFECTS
-    (setq args (mapcar #'(lambda (a) (maybe-simplifya a z)) args))
-    (if (some #'(lambda (a) (or (eq a t) (eq a '$true))) args)
-      t
-      (progn
-        (setq args (remove-if #'(lambda (a) (or (eq a nil) (eq a '$false))) args))
-        (if (null args)
-          nil
-          (if (eq (length args) 1)
-            (car args)
-            `((mor simp) ,@args)))))))
+  (do ((l (cdr x) (cdr l)) (a) (simplified))
+    ((null l)
+    (cond
+      ((= (length simplified) 0) nil)
+      ((= (length simplified) 1) (car simplified))
+      (t (cons '(mor simp) (reverse simplified)))))
+  (setq a (maybe-simplifya (car l) z))
+  (cond
+    ((eq a t) (return t))
+    ((not (memq a '(t nil))) (push a simplified)))))
 
-; CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
+; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
 
 (defun simp-mnot (x y z)
   (declare (ignore y))
-  (let ((arg (cadr x)))
+  (let ((arg (maybe-simplifya (cadr x) z)))
     (if (atom arg)
       (cond
         ((or (eq arg t) (eq arg '$true))
          nil)
         ((or (eq arg nil) (eq arg '$false))
          t)
-        (t x))
+        (t `((mnot simp) ,arg)))
       (let ((arg-op (caar arg)) (arg-arg (cdr arg)))
         (setq arg-arg (mapcar #'(lambda (a) (maybe-simplifya a z)) arg-arg))
         (cond
           ((eq arg-op 'mlessp)
-           `((mgeqp) ,@arg-arg))
+           `((mgeqp simp) ,@arg-arg))
           ((eq arg-op 'mleqp)
-           `((mgreaterp) ,@arg-arg))
+           `((mgreaterp simp) ,@arg-arg))
           ((eq arg-op 'mequal)
-           `((mnotequal) ,@arg-arg))
+           `((mnotequal simp) ,@arg-arg))
           ((eq arg-op '$equal)
-           `(($notequal) ,@arg-arg))
+           `(($notequal simp) ,@arg-arg))
           ((eq arg-op 'mnotequal)
-           `((mequal) ,@arg-arg))
+           `((mequal simp) ,@arg-arg))
           ((eq arg-op '$notequal)
-           `(($equal) ,@arg-arg))
+           `(($equal simp) ,@arg-arg))
           ((eq arg-op 'mgeqp)
-           `((mlessp) ,@arg-arg))
+           `((mlessp simp) ,@arg-arg))
           ((eq arg-op 'mgreaterp)
-           `((mleqp) ,@arg-arg))
+           `((mleqp simp) ,@arg-arg))
           ((eq arg-op 'mnot)
            (car arg-arg))
           ; Distribute negation over conjunction and disjunction;
           ; analogous to '(- (a + b)) --> - a - b.
           ((eq arg-op 'mand)
-           `((mor) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))))
+           (simplifya `((mor) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))) nil))
           ((eq arg-op 'mor)
-           `((mand) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))))
-          (t x))))))
+           (simplifya `((mand) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))) nil))
+          (t `((mnot simp) ,arg)))))))
 
 (let ((save-intext (symbol-function 'intext)))
   (defun intext (rel body)
