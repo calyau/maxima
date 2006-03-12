@@ -1,5 +1,3 @@
-
-
 \input texinfo
 @c -*-texinfo-*-
 
@@ -15,7 +13,7 @@
 @c Portuguese Translator Jorge Barros de Abreu <ficmati01@solar.com.br>
 
 @c %**start of header
-@setfilename  maxima.info
+[B@setfilename  maxima.info
 @c @documentencoding ISO-8859-15
 @documentencoding ISO-8859-1
 @set cedilha @,{c}
@@ -87,6 +85,15 @@ Notas de tradu@,{c}@~ao:
 	to/cr@'itica mande por e-mail para Jorge Barros de Abreu 
 	<ficmatin01 at solar dot com dot br>
 	
+Mantenedores:
+@itemize @bullet
+@item
+Jaime E. Villate
+@item
+Mario Rodriguez
+@item
+Jorge Barros de Abreu
+@end itemize
 @c includes
 
 @menu
@@ -115,8 +122,6 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Trigonometria::               Manipulando express@~oes com trigonometria e
                                 Fun@value{cedilha}@~oes trigonom@'etricas inversas.
 * Fun@value{cedilha}@value{o_til}es Especiais::           Fun@value{cedilha}@~oes especiais
-* Polin@^omios Ortogonais::       Polin@^omios Ortogonais e Fun@value{cedilha}@~oes Especiais
-
 * Fun@value{cedilha}@~oes El@'ipticas::           Fun@value{cedilha}@~oes El@'ipticas e Integrais
 * Limites::                     Limites de express@~oes.
 * Diferencia@value{cedilha}@~ao::               C@'alculo diferencial.
@@ -148,6 +153,38 @@ Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 * Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::         Definindo fun@value{cedilha}@~oes.
 * Fluxo de Programa::           Definindo programas do Maxima.
 * Depurando::                   Depurando programas do Maxima.
+
+Additional packages
+
+* augmented_lagrangian::        augmented_lagrangian package.
+* bode::                        Bode gain and phase plots.
+* cholesky::                    Cholesky decomposition.
+* descriptive::                 Descriptive statistics.
+* diag::                        Jordan matrices.
+* distrib::                     Probability distributions.
+* eval_string::                 Maxima expressions as strings.
+* f90::                         Maxima to fortran translator.
+* ggf::                         Generating function of sequences.
+* ifactor::                     Integer factorization.
+* impdiff::                     Implicit derivatives.
+* interpol::                    Interpolation package.
+* lindstedt::                   Lindstedt package.
+* linearalgebra::               Functions for linear algebra.
+* lsquares::                    Least squares.
+* makeOrders::                  Polynomial utility.
+* mnewton::                     Newton's method.
+* numericalio::                 Reading and writing files.
+* opsubst::                     Substitutions utility.
+* orthopoly::                   Orthogonal polynomials.
+* plotdf::                      Direction fields plots.
+* simplex::                     Linear programming.
+* simplification::              Simplification rules and functions.
+* solve_rec::                   Linear recurrences.
+* stirling::                    Stirling formula.
+* stringproc::                  String processing.
+* unit::                        Units and dimensions package.
+* zeilberger::                  Functions for hypergeometric summation.
+
 
 @'Indice
 
@@ -236,11 +273,6 @@ Fun@value{cedilha}@value{o_til}es Especiais
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
 * specint::                     
 * Defini@value{cedilha}@value{o_til}es para Fun@value{cedilha}@value{o_til}es Especiais::  
-
-Polin@^omios Ortogonais
-
-* Introdu@value{cedilha}@~ao a Polin@^omios Ortogonais::
-* Defini@value{cedilha}@~oes para Polin@^omios Ortogonais::
 
 Fun@value{cedilha}@~oes El@'ipticas
 
@@ -332,7 +364,7 @@ Tempo de Execu@value{cedilha}@~ao
 
 * Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
-* Defini@value{cedilha}@~oes para Tempo de Execu@value{cedilha}@~ao::  
+* Defini@value{cedilha}@~oes para Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 
 Op@value{cedilha}@~oes Diversas
 
@@ -370,6 +402,136 @@ Fluxo de Programa
 Depurando
 
 * Defini@value{cedilha}@~oes para Depura@value{cedilha}@~ao::   
+
+augmented_lagrangian
+
+* Definitions for augmented_lagrangian::
+
+bode
+
+* Definitions for bode::
+
+cholesky
+
+* Definitions for cholesky::
+
+descriptive
+
+* Introduction to descriptive::
+* Definitions for data manipulation::
+* Definitions for descriptive statistics::
+* Definitions for specific multivariate descriptive statistics::
+* Definitions for statistical graphs::
+
+diag
+
+* Definitions for diag::
+
+distrib
+
+* Introduction to distrib::
+* Definitions for continuous distributions::
+* Definitions for discrete distributions::
+
+eval_string
+
+* Definitions for eval_string::
+
+f90
+
+* Definitions for f90::
+
+ggf
+
+* Definitions for ggf::
+
+ifactor
+
+* Definitions for ifactor::
+
+impdiff
+
+* Definitions for impdiff::
+
+interpol
+
+* Introduction to interpol::
+* Definitions for interpol::
+
+lindstedt
+
+* Definitions for lindstedt::
+
+linearalgebra
+
+* Introduction to linearalgebra::
+* Definitions for linearalgebra::
+
+lsquares
+
+* Definitions for lsquares::
+
+makeOrders
+
+* Definitions for makeOrders::
+
+mnewton
+
+* Definitions for mnewton::
+
+numericalio
+
+* Introduction to numericalio::
+* Definitions for numericalio::
+
+opsubst
+
+* Definitions for opsubst::
+
+orthopoly
+
+* Introduction to orthogonal polynomials::
+* Definitions for orthogonal polynomials::
+
+plotdf
+
+* Definitions for plotdf::
+
+simplex
+
+* Introduction to simplex::
+* Definitions for simplex::
+
+simplification
+
+* Introduction to simplification::
+* Definitions for simplification::
+
+solve_rec
+
+* Introduction to solve_rec::
+* Definitions for solve_rec::
+
+stirling
+
+* Definitions for stirling::
+
+stringproc
+
+* Introduction to string processing::
+* Definitions for input and output::
+* Definitions for characters::
+* Definitions for strings::
+
+unit
+
+* Introduction to Units::       
+* Definitions for Units::
+
+zeilberger
+
+* Introduction to zeilberger::
+* Definitions for zeilberger::
 
 @comment @end detailmenu
 @end menu
@@ -439,15 +601,11 @@ Depurando
 @chapter Trigonometria
 @include Trigonometric.texi
 
-@node Fun@value{cedilha}@value{o_til}es Especiais, Polin@^omios Ortogonais, Trigonometria, Top
+@node Fun@value{cedilha}@value{o_til}es Especiais, Fun@value{cedilha}@~oes El@'ipticas, Trigonometria, Top
 @chapter Fun@value{cedilha}@value{o_til}es Especiais
 @include Special.texi
 
-@node Polin@^omios Ortogonais, Fun@value{cedilha}@~oes El@'ipticas, Fun@value{cedilha}@value{o_til}es Especiais, Top
-@chapter Polin@^omios Ortogonais
-@include SpecfunII.texi
-
-@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Polin@^omios Ortogonais, Top
+@node Fun@value{cedilha}@~oes El@'ipticas, Limites, Fun@value{cedilha}@value{o_til}es Especiais, Top
 @chapter Fun@value{cedilha}@~oes El@'ipticas
 @include Elliptic.texi
 
@@ -521,8 +679,8 @@ Depurando
 @chapter Grupos
 @include Groups.texi
 
-@node Tempo de Execu@value{cedilha}@~ao, Op@value{cedilha}@~oes Diversas, Grupos, Top
-@chapter Tempo de Execu@value{cedilha}@~ao
+@node Ambiente em Tempo de Execu@value{cedilha}@~ao, Op@value{cedilha}@~oes Diversas, Grupos, Top
+@chapter Ambiente em Tempo de Execu@value{cedilha}@~ao
 @include Runtime.texi
 
 @node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Tempo de Execu@value{cedilha}@~ao, Top
@@ -532,7 +690,6 @@ Depurando
 @node Regras e Modelos, Listas, Op@value{cedilha}@~oes Diversas, Top
 @chapter Regras e Modelos
 @include Rules.texi
-
 
 @node Listas, Conjuntos, Regras e Modelos, Top
 @chapter Listas
@@ -553,6 +710,118 @@ Depurando
 @node Depurando, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
 @chapter Depurando
 @include Debugging.texi
+
+@node augmented_lagrangian, bode, Debugging, Top
+@chapter augmented_lagrangian
+@include augmented_lagrangian.texi
+
+@node bode, cholesky, augmented_lagrangian, Top
+@chapter bode
+@include bode.texi
+
+@node cholesky, descriptive, bode, Top
+@chapter cholesky
+@include cholesky.texi
+
+@node descriptive, diag, cholesky, Top
+@chapter descriptive
+@include descriptive.texi
+
+@node diag, distrib, descriptive, Top
+@chapter diag
+@include diag.texi
+
+@node distrib, eval_string, diag, Top
+@chapter distrib
+@include distrib.texi
+
+@node eval_string, f90, distrib, Top
+@chapter eval_string
+@include eval_string.texi
+
+@node f90, ggf, eval_string, Top
+@chapter f90
+@include f90.texi
+
+@node ggf, ifactor, f90, Top
+@chapter ggf
+@include ggf.texi
+
+@node ifactor, impdiff, ggf, Top
+@chapter ifactor
+@include ifactor.texi
+
+@node impdiff, interpol, ifactor, Top
+@chapter impdiff
+@include impdiff.texi
+
+@node interpol, lindstedt, impdiff, Top
+@chapter interpol
+@include interpol.texi
+
+@node lindstedt, linearalgebra, interpol, Top
+@chapter lindstedt
+@include lindstedt.texi
+
+@node linearalgebra, lsquares, lindstedt, Top
+@chapter linearalgebra
+@include linearalgebra.texi
+
+@node lsquares, makeOrders, linearalgebra, Top
+@chapter lsquares
+@include lsquares.texi
+
+@node makeOrders, mnewton, lsquares, Top
+@chapter makeOrders
+@include makeOrders.texi
+
+@node mnewton, numericalio, makeOrders, Top
+@chapter mnewton
+@include mnewton.texi
+
+@node numericalio, opsubst, mnewton, Top
+@chapter numericalio
+@include numericalio.texi
+
+@node opsubst, orthopoly, numericalio, Top
+@chapter opsubst
+@include opsubst.texi
+
+@node orthopoly, plotdf, opsubst, Top
+@chapter orthopoly
+@include orthopoly.texi
+
+@node plotdf, simplex, orthopoly, Top
+@chapter plotdf
+@include plotdf.texi
+
+@node simplex, simplification, plotdf, Top
+@chapter simplex
+@include simplex.texi
+
+@node simplification, solve_rec, simplex, Top
+@chapter simplification
+@include simplifications.texi
+
+@node solve_rec, stirling, simplification, Top
+@chapter solve_rec
+@include solve_rec.texi
+
+@node stirling, stringproc, solve_rec, Top
+@chapter stirling
+@include stirling.texi
+
+@node stringproc, unit, stirling, Top
+@chapter stringproc
+@include stringproc.texi
+
+@node unit, zeilberger, stringproc, Top
+@chapter unit
+@include unit.texi
+
+@node zeilberger, Function and Variable Index, unit, Top
+@chapter zeilberger
+@include zeilberger.texi
 
 @node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Depurando, Top
 @chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
