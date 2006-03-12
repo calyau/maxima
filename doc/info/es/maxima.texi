@@ -98,7 +98,7 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Series::                             Series de potencias y de Taylor.
 * Teor@'{@dotless{i}}a de N@'umeros::  Teor@'ia de n@'umeros.
 * Simetr@'{@dotless{i}}as::     
-* Grupos::                             Álgebra abstracta.
+* Grupos::                             @'Algebra abstracta.
 
 Funcionalidades avanzadas y programaci@'on
 

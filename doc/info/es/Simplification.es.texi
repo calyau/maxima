@@ -157,7 +157,7 @@ En algunos caos puede ser necesario hacer @code{scanmap (multthru, @var{expr})} 
 @end deffn
 
 @defvr {Declaraci@'on} lassociative
-La instrucci@'on @code{declare (g, lassociative)} le indica al simplificador de Maxima que @code{g} es asociativo por lña izquierda.  Por ejemplo, @code{g (g (a, b), g (c, d))}se reduce a @code{g (g (g (a, b), c), d)}.
+La instrucci@'on @code{declare (g, lassociative)} le indica al simplificador de Maxima que @code{g} es asociativo por la izquierda.  Por ejemplo, @code{g (g (a, b), g (c, d))}se reduce a @code{g (g (g (a, b), c), d)}.
 
 @end defvr
 
