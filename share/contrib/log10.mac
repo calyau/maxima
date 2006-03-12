@@ -44,13 +44,13 @@ expand_log10 (%);
 assume (x > y);
 is (log10 (x) > log10 (y));
 diff (log10 (x), x);
+expand_log10 (sin (log10 (x) + log10 (y)) / log10 (z));
+contract_log10 (%);
 
  * which yield these outputs:
 
-(%i1) load("/home/robert/tmp/maxima-mostly-clean-head/maxima/share/contrib/log10
-.mac");
-(%o1) /home/robert/tmp/maxima-mostly-clean-head/maxima/share/con\
-trib/log10.mac
+(%i1) load ("./log10.mac");
+(%o1)                      ./log10.mac
 (%i2) log10 (1);
 (%o2)                           0
 (%i3) log10 (10);
@@ -106,6 +106,16 @@ Warning:  Float to bigfloat conversion of 0.22212133718530744
                                 1
 (%o20)                      ---------
                             log(10) x
+(%i21) expand_log10 (sin (log10 (x) + log10 (y)) / log10 (z));
+                             log(y)    log(x)
+                 log(10) sin(------- + -------)
+                             log(10)   log(10)
+(%o21)           ------------------------------
+                             log(z)
+(%i22) contract_log10 (%);
+                    sin(log10(y) + log10(x))
+(%o22)              ------------------------
+                            log10(z)
 
  */
 
@@ -117,11 +127,13 @@ exponp (e) := not atom(e) and op(e) = "^";
 
 divisible_by10 (e) := integerp(e) and e # 0 and mod (e, 10) = 0;
 
+not10 (e) := e # 10;
+
 power_of (m, n) := if n = 0 then 0 else block ([p : 0], while mod (n, m) = 0 do (p : p + 1, n : n/m), p);
 
 block ([simp : false],
-    local (aa, bb, cc, dd, ee, ff, gg),
-    matchdeclare (aa, multp, bb, exponp, cc, floatnump, dd, bfloatp, ee, divisible_by10, ff, all, gg, divp),
+    local (aa, bb, cc, dd, ee, ff, gg, hh),
+    matchdeclare (aa, multp, bb, exponp, cc, floatnump, dd, bfloatp, ee, divisible_by10, ff, all, gg, divp, hh, not10),
     tellsimp (log10(cc), log(cc)/log(10.0)),
     tellsimp (log10(dd), log(dd)/log(10b0)),
     tellsimp (log10(gg), log10 (first (args (gg))) - log10 (second (args (gg)))),
@@ -136,6 +148,9 @@ block ([simp : false],
     declare (log10, increasing),
 
     defrule (expand_log10_rule, log10 (ff), log(ff)/log(10)),
-    expand_log10 (expr) := apply1 (expr, expand_log10_rule));
+    expand_log10 (expr) := apply1 (expr, expand_log10_rule),
+
+    defrule (contract_log10_rule, log (hh), log10(hh) * log(10)),
+    contract_log10 (expr) := apply1 (expr, contract_log10_rule));
 
 
