@@ -294,8 +294,10 @@ factor(integrate((x^2+a1*x+b1)/(x^4+10*x^2+9),x,minf,inf));
 %pi*(b1+3)/12;
 
 /* p. 62 */
-/* FIXME: This might be wrong.
-  Evaluating the indefinite integral gives different results */
+/*
+ * Evaluating the indefinite integral and taking appropriate limits 
+ * gives the equivalent answer
+ */
 factor(integrate((x^2+a1*x+b1)/(x^4+10*x^2+9),x,0,inf));
 (%pi*b1+3*log(3)*a1+3*%pi)/24;
 
@@ -310,6 +312,10 @@ integrate(1/(x^2+x+1),x,0,inf);
 2*sqrt(3)*atan(sqrt(3))/3;
 
 /* p. 64 */
+/*
+ * Using contour integration, we see this has poles at %i and 2*%i.  The
+ * residues are 0 and -%i/3, respectively, so the integral is 2*%pi/3.
+ */
 integrate((x-%i)/((x-2*%i)*(x^2+1)),x,minf,inf);
 2*%pi/3;
 
@@ -353,33 +359,51 @@ integrate(x^k/(x+3),0,inf);
 integrate(1/(x^2*sqrt(x^2-a^2)),x,a,inf);
 1/a^2;
 
+/* p. 76 */
+/* Wang gives 1024/6567561 */
+integrate(x^6/(x^2+x+1)^(15/2),x,0,inf);
+2048/6567561;
 
 /* p. 79 */
+/* 
+ * The single pole in the upper half plane is %i, and the residue of
+ * exp(%i*x)/(x^2+1) is -%i/2*exp(-1), so the integral is as given.
+ */
 integrate(cos(x)/(x^2+1),x,minf,inf);
 %e^(-1)*%pi;
 
 /* p. 79 */
+/* 
+ * The single pole in the upper half plane is %i, and the residue of
+ * x*exp(%i*x)/(x^2+1) is exp(-1)/2, so the integral is as given.
+ */
 integrate(x*sin(x)/(x^2+1),x,minf,inf);
 %e^(-1)*%pi;
 
 /* p. 79 */
+/* This follows from the above example.  Besides the function is odd. */
 integrate(x*cos(x)/(x^2+1),x,minf,inf);
 0;
 
 /* p. 79 */
 /*
- * Wang gives ((-1/sqrt(3)-%i)*%e^((sqrt(3)-%i)/2) + (%i-1/sqrt(3))*%e^((-sqrt(3)-%i)/2
+ * Wang gives 
+ * %pi/2*((-1/sqrt(3)-%i)*%e^((sqrt(3)-%i)/2) + (%i-1/sqrt(3))*%e^((-sqrt(3)-%i)/2))
+ *
+ * That can't be right because the result has real and imaginary parts.
+ *
+ * Maxima calculates this correctly.
  */
 /*
 integrate(x*cos(x)/(x^2+x+1),x,minf,inf);
 %e^-(sqrt(3)/2)*(3*%pi*sin(1/2)-sqrt(3)*%pi*cos(1/2))/3;
 */
 
-/* p. 79 */
+/* p. 80 */
 integrate(1/(%e^(%i*x)*(x^2+1)),x,minf,inf);
 %e^(-1)*%pi;
 
-/* p. 79 */
+/* p. 80 */
 /* 
  * Wang gives %pi/%e
  */
@@ -388,7 +412,7 @@ integrate(sin(x)/(%e^(%i*x)*(x^2+1)),x,minf,inf);
 -%e^(-2)*(%e^2-1)*%i*%pi/2
 */
 
-/* p. 79 */
+/* p. 80 */
 /*
  * Wang gives %pi/%e^2
  */
@@ -400,20 +424,22 @@ integrate(sin(x)/(%e^(2*%i*x)*(x^2+1)),x,minf,inf);
 /* p. 83 */
 /*
  * Wang gives 3*gamma(3/7)*cos(3*%pi/14)/(7*9^(3/7))
+ *
+ * I've verified the derivation and the value, so I think this is right.
  */
-/*
 integrate(cos(9*x^(7/3)),x,0,inf);
-'integrate(cos(9*x^(7/3)),x,0,inf);
-*/
+3*gamma(3/7)*cos(3*%pi/14)/(7*9^(3/7));
+
 
 /* p. 83 */
 /*
  * Wang gives 3*gamma(3/7)*sin(3*%pi/14)/(7*9^(3/7))
+ *
+ * Verified.
  */
-/*
 integrate(sin(9*x^(7/3)),x,0,inf);
-'integrate(sin(9*x^(7/3)),x,0,inf);
-*/
+3*gamma(3/7)*sin(3*%pi/14)/(7*9^(3/7));
+
 
 /* p. 85 */
 /*
@@ -479,11 +505,14 @@ integrate(exp(x/4)/(9*exp(x/2)+4),x,minf,inf);
 %pi/3;
 
 /* p. 99 */
-/* Wang says %pi */
-/*
+/* Wang says %pi 
+ *
+ * Maxima says residue(x/(sinh(x)-%i),x,%i*%pi/2) = -2*%i so the integral 
+ * should be 4*%pi.
+ */
 integrate(x/(sinh(x)-%i),x,minf,inf);
 %pi;
-*/
+
 
 /* p. 101 */
 integrate(exp(-x^2),x,0,inf);
