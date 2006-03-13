@@ -18,8 +18,9 @@
 ;;
 ;;	i(grand,var,a,b) will be used for integrate(grand,var,a,b)
 
-;;references are to evaluation of definite integrals by symbolic
-;;manipulation by paul s. wang.
+;; References are to "Evaluation of Definite Integrals by Symbolic
+;; Manipulation", by Paul S. Wang,
+;; (http://www.lcs.mit.edu/publications/pubs/pdf/MIT-LCS-TR-092.pdf)
 ;;
 ;;	nointegrate is a macsyma level flag which inhibits indefinite
 ;;integration.
@@ -1879,6 +1880,7 @@
 
 (declare-top(unspecial l c k)) 
 
+;; Compute exp(d)*gamma((c+1)/d)/b/a^((c+1)/d)
 (defun gamma1 (c a b d)
   (m* (m^t '$%e d)
       (m^ (m* b (m^ a (setq c (m// (m+t c 1.) b))))
@@ -1913,6 +1915,39 @@
 	     (t (intcv arg nil nil)))))))
 
 
+;; Wang 81-83.  Unfortunately, the pdf version has page 82 as all
+;; black, so here is, as best as I can tell, what Wang is doing.
+;; Fortunately, p. 81 has the necessary hints.
+;;
+;; First consider integrate(exp(%i*k*x^n),x) around the closed contour
+;; consisting of the real axis from 0 to R, the arc from the angle 0
+;; to %pi/(2*n) and the ray from the arc back to the origin.
+;;
+;; There are no poles in this region, so the integral must be zero.
+;; But consider the integral on the three parts.  The real axis is the
+;; integral we want.  The return ray is
+;;
+;;   exp(%i*%pi/2/n) * integrate(exp(%i*k*(t*exp(%i*%pi/2/n))^n),t,R,0)
+;;     = exp(%i*%pi/2/n) * integrate(exp(%i*k*t^n*exp(%i*%pi/2)),t,R,0)
+;;     = -exp(%i*%pi/2/n) * integrate(exp(-k*t^n),t,0,R)
+;;
+;; As R -> infinity, this last integral is gamma(1/n)/k^(1/n)/n.
+;;
+;; We assume the integral on the circular arc approaches 0 as R ->
+;; infinity.  (Need to prove this.)
+;;
+;; Thus, we have 
+;;
+;;   integrate(exp(%i*k*t^n),t,0,inf) 
+;;     = exp(%i*%pi/2/n) * gamma(1/n)/k^(1/n)/n.
+;;
+;; Equating real and imaginary parts gives us the desired results:
+;;
+;; integrate(cos(k*t^n),t,0,inf) = G * cos(%pi/2/n)
+;; integrate(sin(k*t^n),t,0,inf) = G * sin(%pi/2/n)
+;;
+;; where G = gamma(1/n)/k^(1/n)/n.
+;;
 (defun scaxn (e)
   (let (ind s g) 
     (cond ((atom e)  nil)
@@ -1920,21 +1955,29 @@
 		    (eq (caar e) '%cos))
 		(setq ind (caar e))
 		(setq e (bx**n (cadr e))))
-	   (cond ((equal (car e) 1.)  '$ind)
+	   ;; Ok, we have cos(b*x^n) or sin(b*x^n), and we set e = (a
+	   ;; b n) where the arg of the trig function is b*x^n+a.
+	   (cond ((equal (car e) 1.)
+		  ;; a = 1.  Give up.
+		  '$ind)
 		 ((zerop (setq s (let ((sign ($asksign (cadr e))))
 				   (cond ((eq sign '$pos) 1)
 					 ((eq sign '$neg) -1)
 					 ((eq sign '$zero) 0)))))
+		  ;; s is the sign of b.  Give up if it's zero.
 		  nil)
 		 ((not (eq ($asksign (m+ -1 (car e)))  '$pos))
+		  ;; Give up if a-1 <= 0
 		  nil)
-		 (t (setq g (gamma1 0. (m* s (cadr e)) (car e) 0.))
-		    (setq e (m* g `((,ind) ,(m// half%pi (car e))))) 
-		    (m* (cond ((and (eq ind '%sin)
-				    (equal s -1.))
-			       -1.)
-			      (t 1.))
-			e)))))))
+		 (t
+		  ;; We can apply our formula now.  g = gamma(1/n)/n/b^(1/n)
+		  (setq g (gamma1 0. (m* s (cadr e)) (car e) 0.))
+		  (setq e (m* g `((,ind) ,(m// half%pi (car e))))) 
+		  (m* (cond ((and (eq ind '%sin)
+				  (equal s -1.))
+			     -1.)
+			    (t 1.))
+		      e)))))))
 		      
 
 (comment this is the second part of the definite integral package) 
@@ -2577,6 +2620,7 @@
 	    
 ;;; Temporary fix for a lacking in taylor, which loses with %i in denom.
 ;;; Besides doesn't seem like a bad thing to do in general.
+#+nil
 (defun %i-out-of-denom (exp)
   (let ((denom ($denom exp))
 	(den-conj nil))
@@ -2584,6 +2628,22 @@
 	   (setq den-conj (maxima-substitute (m- '$%i) '$%i denom))
 	   (setq exp (m* den-conj ($ratsimp (m// exp den-conj))))
 	   (setq exp (simplify ($multthru  (sratsimp exp)))))
+	  (t exp))))
+
+(defun %i-out-of-denom (exp)
+  (let ((denom ($denom exp)))
+    (cond ((among '$%i denom)
+	   ;; Multiply the denominator by it's conjugate to get rid of
+	   ;; %i.
+	   (let* ((den-conj (maxima-substitute (m- '$%i) '$%i denom))
+		  (num ($num exp))
+		  (new-denom ($ratsimp (m* denom den-conj))))
+	     ;; If the new denominator still contains %i, just give
+	     ;; up.  Otherwise, multiply the numerator by the
+	     ;; conjugate and divide by the new denominator.
+	     (if (among '$%i new-denom)
+		 exp
+		 (setq exp (m// (m* num den-conj) new-denom)))))
 	  (t exp))))
 
 ;;; LL and UL must be real otherwise this routine return $UNKNOWN.
@@ -2642,6 +2702,7 @@
 		   (t '$no))))
     (cond ((eq ans '$no)   '$no)
 	  ((null ans)   nil)
+	  ((eq ans '$und) '$no)
 	  ((equal ans 0.)   '$no)
 	  (t '$yes))))
 
