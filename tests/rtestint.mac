@@ -686,7 +686,7 @@ integrate(r/sqrt(2*e*r^2-a^2-eps^2-2*k*r^4),r);
  *            + 1/(2*h*e*sqrt(-2*e))*asin((2*e*r+k)/sqrt(k^2-2*e-a^2)
  * E < 0
  */
-(assume(e<0,k^2+2*e*a^2>0),0);
+(assume(e<0,k^2+2*e*a^2>0,k>0),0);
 0;
 integrate(r/sqrt(2*e*r^2-a^2-2*k*r),r);
 sqrt(2*e*r^2-2*k*r-a^2)/(2*e)-k*asin((4*e*r-2*k)/sqrt(4*k^2+8*a^2*e))
