@@ -413,3 +413,17 @@ false;
  */
 integrate(log(x)/(x^2+1)^2,x,0,inf);
 -%pi/4;
+
+/*
+ * Bug 941457: integrate(1/x^5,x,1,2^(1/78))
+ * Fixed 2006/03/13.  Solution needs work, though.
+ */
+multthru(factor(integrate(1/x^5,x,1,2^(1/78))));
+1/4-2^(37/39)/8;
+
+/*
+ * Bug 938235: integrate((1/2)*u^2-1/u^5,u,1,sqrt(2))
+ * Fixed 2006/03/13.  Solution needs work, though.
+ */
+integrate((1/2)*u^2-1/u^5,u,1,sqrt(2));
+sqrt(2)/3-17/48;
