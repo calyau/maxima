@@ -362,7 +362,22 @@ integrate(1/(x^2*sqrt(x^2-a^2)),x,a,inf);
 1/a^2;
 
 /* p. 76 */
-/* Wang gives 1024/6567561 */
+/*
+ * Wang gives 1024/6567561 
+ *
+ * This particular integral matches form III with M = 6, N = 6, A = B
+ * = C = 1.
+ *
+ * Based on his procedure, the case N>=M holds, and the integral is 
+ *
+ * H*diff(U(1,1+z2,1+z3),z2,6)
+ *
+ * evaluated at z2=z3=0, where U(a,b,c) = 1/(sqrt(c)*(b/2+sqrt(a*c)))
+ * and H = (-1)^N*sqrt(%pi)/2/gamma(3/2+N).  If we substitute the
+ * values in, we find the answer is 2048/6567561.
+ *
+ * Thus, Wang's answer is wrong.
+ */
 integrate(x^6/(x^2+x+1)^(15/2),x,0,inf);
 2048/6567561;
 
@@ -585,10 +600,10 @@ sqrt(3)*log(sqrt(3)+2)/3;
  * Maxima asks if k is an integer, but it doesn't matter,
  * and I don't know how to tell maxima that k isn't an integer.
  */
-/*
-integrate(log(x)^k,x,0,1);
-(-1)^k*gamma(k+1);
-*/
+(assume(k1>0),declare(k1,integer),0);
+0;
+integrate(log(x)^k1,x,0,1);
+(-1)^k1*gamma(k1+1);
 
 /* p. 120 */
 integrate(sqrt(log(x))/x^2,x,1,inf);
