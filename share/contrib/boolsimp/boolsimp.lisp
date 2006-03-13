@@ -149,8 +149,7 @@
       `((,(caar x) simp) ,a))))
 
 (defmfun $is (pat)
-  (let (patevalled ans)
-    (setq ans (mevalp1 pat))
+  (multiple-value-bind (ans patevalled) (mevalp1 pat)
     (cond
       ((memq ans '(t nil)) ans)
       ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
@@ -158,21 +157,52 @@
       (t '$unknown))))
 
 (defmfun $maybe (pat)
-  (let (patevalled ans)
-    (setq ans (mevalp1 pat))
+  (multiple-value-bind (ans patevalled) (mevalp1 pat)
     (cond
       ((memq ans '(t nil)) ans)
       (t '$unknown))))
 
-(defmfun mevalp (pat)
+(defun mevalp1 (pat)
   (let (patevalled ans)
-    (setq ans (mevalp1 pat))
+    (setq ans 
+      (cond ((and (not (atom pat)) (memq (caar pat) '(mnot mand mor)))
+	   (cond ((eq 'mnot (caar pat)) (is-mnot (cadr pat)))
+	         ((eq 'mand (caar pat)) (is-mand (cdr pat)))
+	         (t (is-mor (cdr pat)))))
+	  ((atom (setq patevalled (meval pat))) patevalled)
+	  ((memq (caar patevalled) '(mnot mand mor)) (mevalp1 patevalled))
+	  (t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
+    (values ans patevalled)))
+
+(defmfun mevalp2 (patevalled pred arg1 arg2)
+  (cond ((eq 'mequal pred) (like arg1 arg2))
+	((eq '$equal pred) (meqp arg1 arg2))
+	((eq 'mnotequal pred) (not (like arg1 arg2)))
+	((eq '$notequal pred) (mnqp arg1 arg2))
+	((eq 'mgreaterp pred) (mgrp arg1 arg2))
+	((eq 'mlessp pred) (mgrp arg2 arg1))
+	((eq 'mgeqp pred) (mgqp arg1 arg2))
+	((eq 'mleqp pred) (mgqp arg2 arg1))
+	(t (isp (munformat patevalled)))))
+
+(defmfun mevalp (pat)
+  (multiple-value-bind (ans patevalled) (mevalp1 pat)
     (cond ((memq ans '(#.(not ()) ()))
        ans)
       ; I'D RATHER HAVE ($PREDERROR ($THROW `(($PREDERROR) ,PATEVALLED))) HERE
       ($prederror (pre-err patevalled))
-      ; HERE WE ARE EVALUATING PAT AGAIN. THIS IS PROBLEMATIC IF PAT HAS SIDE EFFECTS !!
-      (t (meval1 pat)))))
+      (t (or patevalled ans)))))
+
+(defmfun assume (pat)
+  (if (and (not (atom pat))
+	   (eq (caar pat) 'mnot)
+	   (eq (caaadr pat) '$equal))
+      (setq pat `(($notequal) ,@(cdadr pat))))
+  (let ((dummy (let ($assume_pos) (mevalp1 pat))))
+    (cond ((eq dummy t) '$redundant)
+	  ((null dummy) '$inconsistent)
+	  ((atom dummy) '$meaningless)
+	  (t (learn pat t)))))
 
 (defmspec mand (form) (setq form (cdr form))
   (do ((l form (cdr l)) (x) (unevaluated))
@@ -363,7 +393,10 @@
            (simplifya `((mand) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))) nil))
           (t `((mnot simp) ,arg)))))))
 
+; WTF IS THIS ??
 (let ((save-intext (symbol-function 'intext)))
   (defun intext (rel body)
     (let ((result (funcall save-intext rel body)))
       (if result result `((,rel) ,@body)))))
+
+; DON'T FORGET TO KILL OFF (DEFVAR PATEVALLED), IS-MNOT, IS-MAND, IS-MOR, AND TRANSLATION STUFF !!

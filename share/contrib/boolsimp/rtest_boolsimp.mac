@@ -378,9 +378,34 @@ block ([aa : 2, bb : 3, cc], if cc > 1 then if aa > 0 then 10*aa else -10*aa els
 block ([aa : 2, bb : 3, cc], if cc > 1 and aa > 0 then 10*aa elseif cc > 1 and not aa > 0 then -10*aa elseif  not cc > 1 and  bb > 0 then bb^2 elseif not cc > 1 and not bb > 0 then -bb^2);
 '(if cc > 1 then 20 elseif cc <= 1 then 9);
 
-/* Are boolean expressions actually equivalent to nominally-equivalent if-then-else ??
- * Should find that aa or bb or cc ... is equivalent to
+print(FOO) or print(BAR); /* should print "FOO" and "BAR" on successive lines */
+FOO or BAR;
+
+print(true) or print(false); /* should print "true" */
+true;
+
+(push (a, L) ::= buildq ([a, L], L : cons (a, L)), 0);
+0;
+
+(L : [], push (FOO, L) or push (BAR, L));
+[FOO] or [BAR, FOO];
+
+L;
+[BAR, FOO];
+
+(L : [], '(push (FOO, L) or push (BAR, L)), [op(%%), op(first(%%)), args(first(%%)), op(second(%%)), args(second(%%))]);
+["or", push, '[FOO, L], push, '[BAR, L]];
+
+L;
+[];
+
+/* Should find that aa or bb or cc ... is equivalent to
  * (is(aa), if %% then %% else (is(bb), if %% then %% else (is(cc), if %% then %% else ...)))
  * when all aa, bb, cc, ... evaluate to true or false.
  */
 
+(L : [], first (push (false, L)) or first (push (true, L)) or first (push (true, L)), [%%, L]);
+[true, [true, false]];
+
+(L : [], (is(first (push (false, L))), if %% then %% else (is(first (push (true, L))), if %% then %% else (is(first (push (true, L))), if %% then %%))), [%%, L]);
+[true, [true, false]];
