@@ -349,10 +349,12 @@ integrate(1/((1+x)*sqrt(x)),x,0,inf);
  * First, we need assume(k < 0, k+1>0).  Then we also need to tell
  * maxima k is not an integer.  Then maxima can evaluate this integral. 
  */
-/*
-integrate(x^k/(x+3),0,inf);
-3^k*beta(k+1,k);
-*/
+(assume(kj<0,kj+1>0),0);
+0;
+(declare(kj,noninteger),0);
+0;
+integrate(x^kj/(x+3),x,0,inf);
+3^kj*beta(kj+1,-kj);
 
 /* p. 74 */
 /* I think Wang meant the integral from a to inf, not 0 to inf. */
@@ -394,10 +396,8 @@ integrate(x*cos(x)/(x^2+1),x,minf,inf);
  *
  * Maxima calculates this correctly.
  */
-/*
 integrate(x*cos(x)/(x^2+x+1),x,minf,inf);
 %e^-(sqrt(3)/2)*(3*%pi*sin(1/2)-sqrt(3)*%pi*cos(1/2))/3;
-*/
 
 /* p. 80 */
 integrate(1/(%e^(%i*x)*(x^2+1)),x,minf,inf);
@@ -445,11 +445,11 @@ integrate(sin(9*x^(7/3)),x,0,inf);
 /*
  * Wang gives gamma((2*%i+4)/3)/3/(%i/2)^((2*%i+4)/3)
  *
- * Maxima gives an error in computing some limit.
+ * Not sure what is right.
  */
-/*
 integrate(x^(2*%i+3)/exp(%i*x^3/2),x,0,inf);
-*/
+(-sqrt(3)*%i/2-1/2)*2^((2*%i+4)/3)*gamma((2*%i+4)/3)/3;
+
 
 /* p. 87 */
 (assume(r>0),0);
@@ -507,8 +507,8 @@ integrate(exp(x/4)/(9*exp(x/2)+4),x,minf,inf);
 /* p. 99 */
 /* Wang says %pi 
  *
- * Maxima says residue(x/(sinh(x)-%i),x,%i*%pi/2) = -2*%i so the integral 
- * should be 4*%pi.
+ * Not sure if this is right or not.  Maxima is using rectzto%pi2 to
+ * evaluate this integral.
  */
 integrate(x/(sinh(x)-%i),x,minf,inf);
 %pi;
