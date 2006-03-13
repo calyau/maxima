@@ -1,4 +1,4 @@
-;;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
+;; -*-  Mode: Lisp; Package: Maxima; Syntax: Common-Lisp; Base: 10 -*- ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     The data in this file contains enhancments.                    ;;;;;
 ;;;                                                                    ;;;;;
@@ -578,11 +578,36 @@
 	     (setq pole-list (append (list (cons ll 'ignored)) pole-list)))))
   pole-list)
 
+;; Assumes EXP is a rational expression with no polynomial part and
+;; converts the finite integration to integration over a half-infinite
+;; interval.  The substitution y = (x-a)/(b-x) is used.  Equivalently,
+;; x = (b*y+a)/(y+1).
+;;
+;; (I'm guessing CV means Change Variable here.)
+#+nil
 (defun cv (exp)
   (if (not (or (real-infinityp ll) (real-infinityp ul)))
       (method-by-limits (intcv3 (m// (m+t ll (m*t ul var))
 				     (m+t 1. var)) nil 'yx)
 			var 0. '$inf)
+      ()))
+
+(defun cv (exp)
+  (if (not (or (real-infinityp ll) (real-infinityp ul)))
+      ;; FIXME!  This is a hack.  We apply the transformation with
+      ;; symbolic limits and then substitute the actual limits later.
+      ;; That way method-by-limits (usually?) sees a simpler
+      ;; integrand.
+      ;;
+      ;; See Bugs 938235 and 941457.  These fail because $FACTOR is
+      ;; unable to factor the transformed result.  This needs more
+      ;; work (in other places).
+      (let ((trans (intcv3 (m// (m+t 'll (m*t 'ul var))
+				(m+t 1. var))
+			   nil 'yx)))
+	(setf trans (subst ll 'll trans))
+	(setf trans (subst ul 'ul trans))
+	(method-by-limits trans var 0. '$inf))
       ()))
 
 (defun ratfnt (exp)
