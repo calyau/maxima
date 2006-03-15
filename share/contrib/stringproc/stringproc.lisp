@@ -30,6 +30,21 @@
 ;;        06-02-22  fixed: strip&$ (problems with empty string)
 ;;                  fixed: $simplode (empty string: "&")
 ;;                  fixed: $ssubst (case inversion problem)
+;;        06-03-11  fixed: $charlist (call to $charat removed)
+;;                  fixed: invert-string-case (call to implode removed;
+;;                            src/commac.lisp/implode doesn't work with clisp's sort)
+;;                            (str is already at Lisp-level, call to l-string removed)
+;;                            (helper: invert-char)
+;;                  fixed: $ssort (call to invert-string-case removed) 
+;;                  fixed: $ssubst (call to $ssubst and $ssubstfirst with mstrings) 
+;;                  new: character test functions at Lisp level
+;;                  new: string test functions at Lisp level
+;;                  modified: $printf, $ssort, $ssubst, $ssubstfirst, $sremovefirst,
+;;                            $sremove, $smismatch, $ssearch
+;;                         (call to test functions at Lisp level) 
+;;                  renaming: strip&$ -> strip&
+;;                  cleaned out: formerly uncommented 5.9.1 code
+;;	06-03-12    fixed: $split (returns Maxima strings now)
 
 (in-package "MAXIMA")
 
@@ -73,8 +88,8 @@
 
 ;;  $printf covers most features of CL-function format
 (defmacro $printf (stream mstring &rest args)
-  (let ((string (l-string ($ssubst "~a" "~s" (meval mstring) '$sequalignore)))
-        (listbrace ($ssearch "~{" (meval mstring)))
+  (let ((string (l-string ($ssubst "~a" "~s" (meval mstring) 'sequalignore)))
+        (listparanthesis ($ssearch "~{" (meval mstring)))
         body)
     (dolist (arg args)
        (progn
@@ -83,10 +98,9 @@
            (cond ((numberp arg) arg)
                  ((mstringp arg) (l-string arg))
                  ((and (symbolp arg) (not (boundp arg)))
-                    ;;`(quote ,(stripdollar arg)))  ;; 5.9.1
-                    `(quote ,(maybe-invert-string-case (subseq (string arg) 1)))) ;; 5.9.2
+                    `(quote ,(maybe-invert-string-case (subseq (string arg) 1)))) 
                  ((and (listp arg) (listp (car arg)) (mlistp arg))
-                    (if listbrace
+                    (if listparanthesis
                        `(quote ,(cltree arg))
                        (merror 
                           "printf: For printing lists use ~M in the control string." 
@@ -116,11 +130,11 @@
           (cond ((numberp obj) obj)
                 ((mstringp obj) (maxima-string obj))
                 (t (if (and (symbolp obj) (not (boundp obj))) 
-                      ;;(stripdollar obj)  ;; 5.9.1
-                      (maybe-invert-string-case (subseq (string obj) 1)) ;; 5.9.2
+                      (maybe-invert-string-case (subseq (string obj) 1)) 
                       ($sconcat obj)))))))  
    (clt (cdr mtree) nil)))  
 
+  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  2. characters 
 
@@ -165,7 +179,7 @@
 (defun $cint (mch) (char-int (l-char mch)))
 (defun $ascii (int) (m-char (character int)))
 
-;;  comparison - test functions
+;;  comparison - test functions - at Maxima level
 (defun $cequal (ch1 ch2)          (char= (l-char ch1) (l-char ch2)))
 (defun $cequalignore (ch1 ch2)    (char-equal (l-char ch1) (l-char ch2)))
 (defun $clessp (ch1 ch2)          (char< (l-char ch1) (l-char ch2)))
@@ -173,37 +187,36 @@
 (defun $cgreaterp (ch1 ch2)       (char> (l-char ch1) (l-char ch2)))
 (defun $cgreaterpignore (ch1 ch2) (char-greaterp (l-char ch1) (l-char ch2)))
 
+;;  comparison - test functions - at Lisp level
+(defun cequal (ch1 ch2)          (char= ch1 ch2))
+(defun cequalignore (ch1 ch2)    (char-equal ch1 ch2))
+(defun clessp (ch1 ch2)          (char< ch1 ch2))
+(defun clesspignore (ch1 ch2)    (char-lessp ch1 ch2))              
+(defun cgreaterp (ch1 ch2)       (char> ch1 ch2))
+(defun cgreaterpignore (ch1 ch2) (char-greaterp ch1 ch2))
+
 #|
  $newline    (definitions placed beneath string functions)
  $tab      
  $space    
 |#
-	   
+           
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  3.  strings 
 
-#|
-(defmfun strip& (obj) ;; 5.9.1
-   (if (memq (getchar obj 1) '(&))
-      (intern (subseq (string obj) 1))
-      obj))
-|#
-(defmfun strip&$ (str) ;; 5.9.2
+(defmfun strip& (str) 
    (let ((c1 (string (getcharn str 1))))
-      (if (or (equal c1 "&") (equal c1 "$"))
+      (if (equal c1 "&")
          (subseq str 1)
          str)))
 
-
 ;;  converts maxima-string into lisp-string
 (defun $lstring (mstr) (l-string mstr)) ;; for testing only (avoid lisp string in maxima)
-;;(defun l-string (mstr) (string (strip& mstr))) ;; 5.9.1
-(defun l-string (mstr) (strip&$ (maybe-invert-string-case (string mstr)))) ;; 5.9.2
+(defun l-string (mstr) (strip& (maybe-invert-string-case (string mstr)))) 
 
 ;;  converts lisp-string back into maxima-string
 (defun $sunlisp (lstr) (m-string lstr))
-;;(defun m-string (lstr) (make-symbol (concatenate 'string "&" lstr))) ;; 5.9.1
-(defun m-string (lstr) (intern (maybe-invert-string-case (concatenate 'string "&" lstr)))) ;; 5.9.2
+(defun m-string (lstr) (intern (maybe-invert-string-case (concatenate 'string "&" lstr)))) 
 
 
 ;;  tests, if object is lisp-string
@@ -230,13 +243,14 @@
       (subseq (l-string mstr) (1- index) index))) 
 
 (defun $charlist (mstr) ;; 1-indexed!
-   ;;(let* ((str (l-string mstr)) ;; 5.9.1
-   (let* ((str (strip&$ (string mstr))) ;; 5.9.2
+   (let* ((str (l-string mstr))
           (len (length str))
           lis)
       (do ((n 1 (1+ n)))
           ((> n len) lis)
-          (setq lis (cons ($charat str n) lis)))
+          (setq lis (cons (m-string                  
+                                (subseq str (1- n) n))
+                          lis)))
       (cons '(mlist) (reverse lis))))
 
 (putprop '$sexplode '$charlist 'alias)
@@ -246,8 +260,7 @@
 (defun $tokens (mstr &optional (test '$constituent))
   (cons '(mlist)
         (tokens (l-string mstr)
-                ;(intern (string-upcase (string (stripdollar test))));; 5.9.1 
-                (intern (string (stripdollar test)));; 5.9.2
+                (intern (string (stripdollar test)))
                 0)))
                      
 (defun tokens (str test start) ;; Author: Paul Graham - ANSI Common Lisp, 1996, page 67
@@ -293,7 +306,7 @@
                    (ss (subseq str (1+ p1) p2)))
                (if (and m (string= ss ""))
                  (if p2 (splitrest str dc m p2) nil)
-                 (cons ss (if p2 (splitrest str dc m p2) nil))))
+                 (cons (m-string ss) (if p2 (splitrest str dc m p2) nil))))
             nil))))
    (let ((p1 (position dc str)))
      (if p1
@@ -303,7 +316,7 @@
               (cons (m-string ss) (splitrest str dc m p1))))
         (list str)))))
 
-;;  parser for numbers 	
+;;  parser for numbers  
 (defun $parsetoken (mstr)  
    (let ((res (with-input-from-string (lstr (l-string mstr)) 
                  (read lstr))))
@@ -327,10 +340,10 @@
     (dolist (elt args)
        (setq ans 
           (concatenate 'string ans
-  	     (cond ((and (symbolp elt) (eql (getcharn elt 1) #\&))
-		      (l-string elt))
-		   ((stringp elt) elt)
-		   (t (coerce (mstring elt) 'string))))))
+             (cond ((and (symbolp elt) (eql (getcharn elt 1) #\&))
+                      (l-string elt))
+                   ((stringp elt) elt)
+                   (t (coerce (mstring elt) 'string))))))
     (m-string ans))) 
 
 
@@ -351,25 +364,32 @@
       (subseq (l-string mstr) (1- start) (if end (1- end)))))
 
 
-;;  comparison - test functions   
+;;  comparison - test functions - at Maxima level
 (defun $sequalignore (mstr1 mstr2) 
    (string-equal (l-string mstr1) (l-string mstr2)))   
    
 (defun $sequal (mstr1 mstr2) 
    (string= (l-string mstr1) (l-string mstr2)))  
 
+;;  comparison - test functions - at Lisp level
+(defun sequalignore (str1 str2) 
+   (string-equal str1 str2))   
+   
+(defun sequal (str1 str2) 
+   (string= str1 str2))  
+
 
 ;;  functions for string manipulation
 (defun $ssubstfirst (news olds mstr &optional (test '$sequal) (s 1) (e)) ;; 1-indexed!
    (let* ((str (l-string mstr))
-          (new (l-string news))
+          (new (l-string news)) 
           (old (l-string olds))
           (len (length old))
           (pos (search old str 
                   :test (if (numberp test)
                            (merror
                              "ssubstfirst: Order of optional arguments: test, start, end")
-                           test)
+                           (stripdollar test))
                   :start2 (1- s)
                   :end2 (if e (1- e)))))
       (m-string 
@@ -379,7 +399,7 @@
                (subseq str 0 pos)
                new
                (subseq str (+ pos len)))))))
-       
+
 (defun $ssubst (news olds mstr &optional (test '$sequal) (s 1) (e)) ;; 1-indexed!
    (let* ((str (l-string mstr))
           (new (l-string news))
@@ -388,19 +408,17 @@
                   :test (if (numberp test)
                            (merror
                              "ssubst: Order of optional arguments: test, start, end")
-                           test)
+                           (stripdollar test))
                   :start2 (1- s)
                   :end2 (if e (1- e)))))
       (if (null pos) 
          (m-string str)
          ($ssubst  
-            (maybe-invert-string-case new) 
-            (maybe-invert-string-case old) 
-            ($ssubstfirst  
-               (maybe-invert-string-case new) 
-               (maybe-invert-string-case old) 
-               mstr test (1+ pos) (if e (1+ e)))
-            test
+            (m-string new) 
+            (m-string old) 
+            ($ssubstfirst (m-string new) (m-string old)
+                          mstr (stripdollar test) (1+ pos) (if e (1+ e)))
+            (stripdollar test)
             (1+ pos)
             (if e (1+ e)) ))))
 
@@ -409,7 +427,7 @@
   (labels ((sremovefirst (seq str &optional (test '$sequal) (s 0) (e)) 
      (let* ((len (length seq))
             (pos (search seq str 
-                    :test test 
+                    :test (stripdollar test)
                     :start2 s 
                     :end2 e))
             (sq1 (subseq str 0 pos))
@@ -422,14 +440,14 @@
                     :test (if (numberp test)
                              (merror
                                "sremove: Order of optional arguments: test, start, end")
-                             test)
+                             (stripdollar test))
                     :start2 (1- s) 
                     :end2 end)))
       (do ()
           ((null start) (m-string str))
           (progn
-             (setq str (sremovefirst sss str test start end))
-             (setq start (search sss str :test test :start2 start :end2 end)))))))
+             (setq str (sremovefirst sss str (stripdollar test) start end))
+             (setq start (search sss str :test (stripdollar test) :start2 start :end2 end)))))))
              
 (defun $sremovefirst (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
    (let* ((str (l-string mstr))
@@ -439,7 +457,7 @@
                   :test (if (numberp test)
                            (merror
                              "sremovefirst: Order of optional arguments: test, start, end")
-                           test)
+                           (stripdollar test))
                   :start2 (1- s) 
                   :end2 (if e (1- e))))
           (sq1 (subseq str 0 pos))
@@ -454,26 +472,15 @@
       (m-string (concatenate 'string sq1 (l-string seq) sq2))))
       
 
-#|
-(defun $ssort (mstr &optional (test '$clessp))  ;; 5.9.1
-   (let ((copy (copy-seq (l-string mstr)))) 
-      (m-string (sort copy test))))             
-|#
-
-(defun invert-string-case (string)  ;; 5.9.2
-   (let* ((cl1 (explode (l-string string))) 
-          (cl2 (map 'list #'l-char cl1))) ; l-char inverts case
-      (string (implode (cdr (butlast cl2))))))
-
-(defun $ssort (mstr &optional (test '$clessp))  ;; 5.9.2
-   (let ((copy (invert-string-case (copy-seq (l-string mstr))))) 
-      (m-string (invert-string-case (sort copy test)))))             
+(defun $ssort (mstr &optional (test '$clessp))  
+   (let ((copy (copy-seq (l-string mstr))))
+      (m-string (sort copy (stripdollar test)))))           
    
    
 (defun $smismatch (mstr1 mstr2 &optional (test '$sequal))  ;; 1-indexed! 
    (1+ (mismatch (l-string mstr1) 
                  (l-string mstr2)
-                 :test test))) 
+                 :test (stripdollar test)))) 
 
 (defun $ssearch (seq mstr &optional (test '$sequal) (s 1) (e))  ;; 1-indexed!
    (let ((pos 
@@ -483,7 +490,7 @@
              :test (if (numberp test)
                      (merror 
                        "ssearch: Order of optional arguments: test, start, end")
-                     test)
+                     (stripdollar test))
              :start2 (1- s)
              :end2 (if e (1- e)))))
      (if pos (1+ pos))))
@@ -512,7 +519,18 @@
    (m-string 
       (string-downcase (l-string mstr) :start (1- s) :end (if e (1- e)))))
 
-(defun $sinvertcase (mstr &optional (s 1) (e)) ;; 5.9.2 only  ;; 1-indexed!
+
+(defun invert-char (ch) (setf ch (character ch))
+   (if (upper-case-p ch) 
+      (char-downcase ch) 
+      (char-upcase ch)))
+
+(defun invert-string-case (str)  
+   (let* ((cl1 (explode str)) 
+          (cl2 (cdr (butlast cl1)))) 
+      (concatenate 'string (map 'list #'invert-char cl2))))
+
+(defun $sinvertcase (mstr &optional (s 1) (e))  ;; 1-indexed!
    (let* ((str (l-string mstr))
           (s1 (subseq str 0 (1- s)))
           (s2 (subseq str (1- s) (if e (1- e))))
@@ -527,4 +545,3 @@
 (defmvar $tab      (m-char #\tab))
 (defmvar $space    (m-char #\space))
 
- 

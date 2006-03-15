@@ -1,11 +1,9 @@
-kill(all);
-done$
 m : "text";
 "text"$
 [stringp(m), lstringp(m)];
 [true, false]$
 l : sconcat("text");
-"text"$
+lstring("text")$
 [stringp(l), lstringp(l)];
 [false, true]$
 stringp(sunlisp(l));
@@ -18,38 +16,34 @@ c: supcase(c);
 "E"$
 charp(c);
 true$
-control : 
-   "~2tAn atom: ~20t~a~%~2tand a list: ~20t~{~r ~}~%~2tand an integer: ~20t~d~%"$
-printf(true, control, 'true, [1, 2, 3], 42)$
-" 
-  An atom:          true 
+control : "~2tAn atom: ~20t~a~%~2tand a list: ~20t~{~r ~}~%~2tand an integer: ~20t~d~%";
+"~2tAn atom: ~20t~a~%~2tand a list: ~20t~{~r ~}~%~2tand an integer: ~20t~d~%"$
+printf(false, control, 'true, [1, 2, 3], 42)$
+"  An atom:          true
   and a list:       one two three 
-  and an integer:   42"$
+  and an integer:   42
+"$
 printf(false, "~s ~a ~4f ~a ~@r", "String", sym, bound, sqrt(8), 144), bound = 1.234;
 "String sym 1.23 2*sqrt(2) CXLIV"$
 printf(false, "~{~a ~}", ["one", 2, "THREE"]);
 "one 2 THREE "$
-printf(true, "~{~{~9,1f ~}~%~}", mat), mat = args(matrix([1.1, 2, 3.33], [4, 5, 6], [7, 8.88, 9]))$
-" 
-      1.1       2.0       3.3 
+printf(false, "~{~{~9,1f ~}~%~}", mat), mat = args(matrix([1.1, 2, 3.33], [4, 5, 6], [7, 8.88, 9]))$
+"      1.1       2.0       3.3 
       4.0       5.0       6.0 
-      7.0       8.9       9.0"$
-control : "~:(~r~) bird~p ~[is~;are~] singing."$
+      7.0       8.9       9.0 
+"$
+control : "~:(~r~) bird~p ~[is~;are~] singing.";
+"~:(~r~) bird~p ~[is~;are~] singing."$
 printf(false, control, n, n, if n = 1 then 0 else 1), n = 2;
 "Two birds are singing."$
-for n from 0 thru 16 do sprint(fib(n))$
-"
-0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987"$
-for n from 0 thru 255 do (tmp : ascii(n), if alphacharp(tmp) then sprint(tmp)), newline()$
-" 
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z"$
-for n from 0 thru 255 do (tmp : ascii(n), if constituent(tmp) then sprint(tmp)), newline()$
-" 
-! \" # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~"$
+block([res:[],tmp],for n from 0 thru 255 do (tmp : ascii(n), if alphacharp(tmp) then res:cons(tmp,res)), reverse(res));
+["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]$
+block([res:[],tmp],for n from 0 thru 255 do (tmp : ascii(n), if constituent(tmp) then res:cons(tmp,res)), reverse(res));
+["!","\"","#","$","%","&","'","(",")","*","+",",","-",".","/","0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?","@","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","[","\\","]","^","_","`","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","{","|","}","~"]$
 charat("Lisp", 1);
 "L"$
 l: charlist("Lisp");
-"[L, i, s, p]"$
+["L","i","s","p"]$
 l[1];
 "L"$
 cint("$");
@@ -63,7 +57,7 @@ cint("$");
 [lowercasep("e"),lowercasep("E")];
 [true, false]$
 2*parsetoken("1.234 5.678");
-"2.468"$
+2.468$
 s: sconc("xx[", 3, "]:", expand((y + x)^3));
 "xx[3]:y^3+3*x*y^2+3*x^2*y+x^3"$
 scopy("Original");
@@ -78,7 +72,8 @@ simplode(charlist("stars"), " * ");
 "s * t * a * r * s"$
 simplode(["One", "more", "coffee."], " ");
 "One more coffee."$
-s: "A submarine."$
+s: "A submarine.";
+"A submarine."$
 sconc(substring(s, 1, 3), "yellow ", substring(s, 3));
 "A yellow submarine."$
 sinsert("hollow ", s, 3);
@@ -90,9 +85,9 @@ smake(3, "w");
 smismatch("seven","seventh");
 6$
 split("1.2   2.3   3.4   4.5");
-"[1.2, 2.3, 3.4, 4.5]"$
+["1.2","2.3","3.4","4.5"]$
 split("first;;third;fourth", ";", false);
-"[first, , third, fourth]"$
+["first","","third","fourth"]$
 sposition("e","seventh");
 2$
 sremove("n't", "I don't like coffee.");
@@ -111,6 +106,7 @@ ssubst("like", "hate", "I hate Thai food. I hate green tea.");
 "I like Thai food. I like green tea."$
 ssubst("Black", "Green", "Green light. Green tea. Greenwich.", 'sequal, 10, 20);
 "Green light. Black tea. Greenwich."$
+"  /* comment */  ";
 "  /* comment */  "$
 strim(" /*", %);
 "comment"$
@@ -123,8 +119,8 @@ substring(%, 4, 6);
 supcase("english", 1, 2);
 "English"$
 tokens("24 October 2005");
-"[24, October, 2005]"$
+["24","October","2005"]$
 tokens("05-10-24", 'digitcharp);
-["05", "10", "24"]$
+["05","10","24"]$
 map(parsetoken, %);
-"[5, 10, 24]"$
+[5,10,24]$
