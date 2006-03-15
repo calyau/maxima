@@ -151,7 +151,8 @@
 	    (special *def2* pcprntd mtoinf* rsn* semirat*
 		     sn* sd* leadcoef checkfactors 
 		     *nodiverg rd* exp1
-		     ul1 ll1 *dflag bptu bptd plm* zn zd
+		     ul1 ll1 *dflag bptu bptd plm* zn
+		     #+nil zd
 		     *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		     loopstop* var nn* nd* dn* p*
 		     ind* factors rlm*
@@ -1880,7 +1881,8 @@
 
 (declare-top(unspecial l c k)) 
 
-;; Compute exp(d)*gamma((c+1)/d)/b/a^((c+1)/d)
+;; Compute exp(d)*gamma((c+1)/b)/b/a^((c+1)/b).  In essence, this is
+;; the value of integrate(x^c*exp(d-a*x^b),x,0,inf).
 (defun gamma1 (c a b d)
   (m* (m^t '$%e d)
       (m^ (m* b (m^ a (setq c (m// (m+t c 1.) b))))
@@ -2367,32 +2369,64 @@
 	      (return ans))))))
 
 (defun derivat (var n e pt) (subin pt (apply '$diff (list e var n)))) 
+
+;;; GGR and friends
 
-;;;MAYBPC RETURNS (COEF EXPO CONST)
+;; MAYBPC returns (COEF EXPO CONST)
+;;
+;; This basically picks off b*x^n+a and returns the list
+;; (abs(imagpart(b)) n a).  It may also set the global *zd*.
 (defun maybpc (e var)
+  (declare (special *zd*))
   (cond (mtoinf* (throw 'ggrm (linpower0 e var)))
 	((and (not mtoinf*)
-	      (null (setq e (bx**n+a e)))) ;bx**n+a --> (a b n) or nil.
+	      (null (setq e (bx**n+a e)))) ;bx**n+a --> (a n b) or nil.
 	 nil)				;with var being x.
 	((and (among '$%i (caddr e))
 	      (zerop1 ($realpart (caddr e)))
 	      (setq zn ($imagpart (caddr e)))
 	      (eq ($asksign (cadr e)) '$pos))
+	 ;; If we're here, b is complex, and n > 0.  zn = imagpart(b).
+	 ;;
+	 ;; Set var to the same sign as zn.
 	 (cond ((eq ($asksign zn) '$neg)
 		(setq var -1.)
 		(setq zn (m- zn)))
 	       (t (setq var 1.)))
-	 (setq zd (m^t '$%e (m// (mul* var '$%i '$%pi (m+t 1. nd*))
-				 (m*t 2. (cadr e)))))
+	 ;; zd = exp(var*%i*%pi*(1+nd)/(2*n). (ZD is special!)
+	 (setq *zd* (m^t '$%e (m// (mul* var '$%i '$%pi (m+t 1. nd*))
+				   (m*t 2. (cadr e)))))
+	 ;; Return zn, n, a.
 	 `(,zn ,(cadr e) ,(car e)))
 	((and (or (eq (setq var ($asksign ($realpart (caddr e)))) '$neg)
 		  (equal var '$zero))
 	      (equal ($imagpart (cadr e)) 0)
 	      (ratgreaterp (cadr e) 0.))
+	 ;; We're here if realpart(b) <= 0, and n >= 0.  Then return -b, n, a.
 	 `(,(m- (caddr e)) ,(cadr e) ,(car e)))))
 
+;; Integrate x^m*exp(b*x^n+a), with realpart(m) > -1.
+;;
+;; See Wang, pp. 84-85.
+;;
+;; I believe the formula Wang gives is incorrect.  The derivation is
+;; correct except for the last step.
+;;
+;; Let J = integrate(x^m*exp(%i*k*x^n),x,0,inf), with k < 0.
+;;
+;; Then J = exp(-%pi*%i*(m+1)/(2*n))*integrate(R^m*exp(k*R^n),R,0,inf)
+;;
+;; Wang seems to say this last integral is gamma(s/n/(-k)^s) where s =
+;; (m+1)/n.  But that seems wrong.  If we use the substitution x =
+;; (y/k)^(1/n), we end up with the result:
+;;
+;;   integrate(y^((m+1)/n-1)*exp(-y),y,0,inf)/k^((m+1)/n)/n.
+;;
+;; or gamma((m+1)/n)/k^((m+1)/n)/n.
+;;
 (defun ggr (e ind)
-  (prog (c zd zn nn* dn* nd* dosimp $%emode) 
+  (prog (c *zd* zn nn* dn* nd* dosimp $%emode)
+     (declare (special *zd*))
      (setq nd* 0.)
      (cond (ind (setq e ($expand e))
 		(cond ((and (mplusp e)
@@ -2408,21 +2442,46 @@
      (setq c (car e))
      (setq e (cdr e))
      (cond ((setq e (ggr1 e var))
-	    (setq e (apply 'gamma1 e))
-	    (cond (zd (setq $%emode t)
-		      (setq dosimp t)
-		      (setq e (m* zd e))))))
+	    ;; e = (m b n a).  I think we want to compute
+	    ;; gamma((m+1)/n)/k^((m+1)/n)/n.
+	    ;;
+	    ;; FIXME: If n > m + 1, the integral converges.  We need
+	    ;; to check for this.
+	    (progn
+	      (format t "e = ~A~%" e)
+	      (format t "asksign ~A = ~A~%"
+		      (sub (third e) (add ($realpart (first e)) 1))
+		      ($asksign (sub (third e) (add ($realpart (first e)) 1)))))
+	    
+	    (setq e (apply #'gamma1 e))
+	    ;; NOTE: *zd* (Ick!) is special and might be set by maybpc.
+	    (when *zd*
+	      ;; FIXME: Why do we set %emode here?  Shouldn't we just
+	      ;; bind it?  And why do we want it bound to T anyway?
+	      ;; Shouldn't the user control that?  The same goes for
+	      ;; dosimp.
+	      ;;(setq $%emode t)
+	      (setq dosimp t)
+	      (setq e (m* *zd* e)))))
      (cond (e (return (m* c e))))))
 
 
-
+;; Match x^m*exp(b*x^n+a).  If it does, return (list m b n a).
 (defun ggr1 (e var) 
   (cond ((atom e) nil)
 	((and (mexptp e)
 	      (eq (cadr e) '$%e))
+	 ;; We're looking at something like exp(f(var)).  See if it's
+	 ;; of the form b*x^n+a, and return (list 0 b n a).  (The 0 is
+	 ;; so we can graft something onto it if needed.)
 	 (cond ((setq e (maybpc (caddr e) var)) (cons 0. e))))
 	((and (mtimesp e)
+	      ;; E should be the product of exactly 2 terms
 	      (null (cdddr e))
+	      ;; Check to see if one of the terms is of the form
+	      ;; var^p.  If so, make sure the realpart of p > -1.  If
+	      ;; so, check the other term has the right form via
+	      ;; another call to ggr1.
 	      (or (and (setq dn* (xtorterm (cadr e) var))
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
@@ -2431,11 +2490,16 @@
 		       (ratgreaterp (setq nd* ($realpart dn*))
 				    -1.)
 		       (setq nn* (ggr1 (cadr e) var)))))
+	 ;; Both terms have the right form and nn* contains the arg of
+	 ;; the exponential term.  Put dn* as the car of nn*.  The
+	 ;; result is something like (m b n a) when we have the
+	 ;; expression x^m*exp(b*x^n+a).
 	 (rplaca nn* dn*))))
 
 
+;; Match b*x^n+a.  If a match is found, return the list (a n b).
+;; Otherwise, return NIL
 (defun bx**n+a (e)
-;;; returns list of (a b n) or nil.
   (cond ((eq e var) 
 	 (list 0. 1. 1.))
 	((or (atom e) 
@@ -2447,8 +2511,8 @@
 			     (cons a e))
 			    (t ()))))))))
 
+;; Match b*x^n.  Return the list (n b) if found or NIL if not.
 (defun bx**n (e)
-;;;returns a list (n e) or nil.
   (let ((n ()))
     (and (setq n (xexponget e var))
 	 (not (among var
@@ -2456,7 +2520,7 @@
 				   ($maxnegex 1))
 			       ($expand (m// e (m^t var n)))))))
 	 (list n e))))
-
+
 (defun xexponget (e nn*)
   (cond ((atom e) (cond ((eq e var) 1.)))
 	((mnump e) nil)

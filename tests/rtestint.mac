@@ -460,11 +460,18 @@ integrate(sin(9*x^(7/3)),x,0,inf);
 /*
  * Wang gives gamma((2*%i+4)/3)/3/(%i/2)^((2*%i+4)/3)
  *
- * Not sure what is right.
+ * I think this is right.  The final formula he gives is wrong, but
+ * the derivation leading up to it is correct, except that he has the
+ * wrong value for integrate(x^m*exp(k*x^n),x,0,inf).
+ *
+ * However, Wang also says these integrals only converge if
+ * n-realpart(m)>1, and we have n=3 and realpart(m)=2, so we don't
+ * satisfy the convergence criterion.
  */
-integrate(x^(2*%i+3)/exp(%i*x^3/2),x,0,inf);
+/*
+integrate(x^(3/2*%i+3)/exp(%i*x^3/2),x,0,inf);
 (-sqrt(3)*%i/2-1/2)*2^((2*%i+4)/3)*gamma((2*%i+4)/3)/3;
-
+*/
 
 /* p. 87 */
 (assume(r>0),0);
