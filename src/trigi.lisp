@@ -521,7 +521,27 @@
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs
-	      (cond ((zerop1 y) 0) ((equal 1 y) %pi//4) ((equal -1 y) (neg %pi//4)))))
+	      ;; Recognize some special values
+	      (cond ((zerop1 y)
+		     0)
+		    ((equal 1 y)
+		     %pi//4)
+		    ((equal -1 y)
+		     (neg %pi//4))
+		    ;; sqrt(3)
+		    ((alike1 y (power* 3 1//2))
+		     (div '$%pi 3))
+		    ;; -sqrt(3)
+		    ((alike1 y (mul -1 (power* 3 1//2)))
+		     (div '$%pi -3))
+		    ;; 1/sqrt(3) = sqrt(3)/3
+		    ((or (alike1 y (power* 3 -1//2))
+			 (alike1 y (div (power* 3 1//2) 3)))
+		     (div '$%pi 6))
+		    ;; -1/sqrt(3) = -sqrt(3)/3
+		    ((or (alike1 y (mul -1 (power* 3 -1//2)))
+			 (alike1 y (div (power* 3 1//2) -3)))
+		     (div '$%pi -6)))))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%atanh (coeff y '$%i 1))))
 	((and (eq $triginverses '$all) (not (atom y))
 	      (if (eq (caar y) '%tan) (cadr y))))

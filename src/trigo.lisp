@@ -129,9 +129,24 @@
   (cond ((double-float-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
-	((and $%piargs 
-	      (cond ((zerop1 y) 0) ((equal 1 y) %pi//2) ((equal -1 y) (neg %pi//2))
-		    ((alike1 y 1//2) (mul '((rat simp) 1 6) '$%pi)))))
+	((and $%piargs
+	      ;; Recognize some special values
+	      (cond ((zerop1 y)
+		     0)
+		    ((equal 1 y)
+		     %pi//2)
+		    ((equal -1 y)
+		     (neg %pi//2))
+		    ((alike1 y 1//2)
+		     (mul '((rat simp) 1 6) '$%pi))
+		    ((alike1 y -1//2)
+		     (div '$%pi -6))
+		    ;; sqrt(3)/2
+		    ((alike1 y (div (power* 3 1//2) 2))
+		     (div '$%pi 3))
+		    ;; -sqrt(3)/2
+		    ((alike1 y (div (power* 3 1//2) -2))
+		     (div '$%pi -3)))))
 	((and $%iargs (multiplep y '$%i)) (mul '$%i (cons-exp '%asinh (coeff y '$%i 1))))
 	((and (eq $triginverses '$all) (not (atom y)) (if (eq '%sin (caar y)) (cadr y))))
 	($logarc (logarc '%asin y))
@@ -146,8 +161,23 @@
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
 	((and $%piargs 
-	      (cond ((zerop1 y) %pi//2) ((equal 1 y) 0) ((equal -1 y) '$%pi)
-		    ((alike1 y 1//2) (mul '((rat simp) 1 3) '$%pi)))))
+	      ;; Recognize some special values
+	      (cond ((zerop1 y)
+		     %pi//2)
+		    ((equal 1 y)
+		     0)
+		    ((equal -1 y)
+		     '$%pi)
+		    ((alike1 y 1//2)
+		     (mul '((rat simp) 1 3) '$%pi))
+		    ((alike1 y -1//2)
+		     (div '$%pi -3))
+		    ;; sqrt(3)/2
+		    ((alike1 y (div (power* 3 1//2) 2))
+		     (div '$%pi 6))
+		    ;; -sqrt(3)/2
+		    ((alike1 y (div (power* 3 1//2) -2))
+		     (mul '$%pi (div 5 6))))))
 	((and (eq $triginverses '$all) (not (atom y))
 	      (if (eq '%cos (caar y)) (cadr y))))
 	($logarc (logarc '%acos y))
