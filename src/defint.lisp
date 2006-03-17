@@ -331,6 +331,7 @@
     (setq ans (catch 'errorsw (apply '$limit argvec)))
     (if (eq ans t) nil ans)))
 
+#+nil
 (defun intcv (nv ind flag)
   (let ((d (bx**n+a nv))
 	(*roots ())  (*failures ())  ($breakup ()))
@@ -338,10 +339,44 @@
 		(equal ll 0)
 		(equal (cadr d) 1)) ())
 	  (t (solve (m+t 'yx (m*t -1. nv)) var 1.)
-	     (cond (*roots (setq d (subst var 'yx (caddar *roots)))
-			   (cond (flag (intcv2 d ind nv))
-				 (t (intcv1 d ind nv))))
+	     (format t "*roots = ~A~%" *roots)
+	     (format t "subst ~A~%" (caddar *roots))
+	     (cond (*roots
+		    (setq d (subst var 'yx (caddar *roots)))
+		    (format t "d = ~A~%" d)
+		    (cond (flag (intcv2 d ind nv))
+			  (t (intcv1 d ind nv))))
 		   (t ()))))))
+
+(defun intcv (nv ind flag)
+  (let ((d (bx**n+a nv))
+	(*roots ())  (*failures ())  ($breakup ()))
+    (cond ((and (eq ul '$inf)
+		(equal ll 0)
+		(equal (cadr d) 1)) ())
+	  (t
+	   ;; This is a hack!  If nv is of the form b*x^n+a, we can
+	   ;; solve the equation manually instead of using solve.
+	   ;; Why?  Because solve asks us for the sign of yx and
+	   ;; that's bogus.
+	   (cond (d
+		  ;; Solve yx = b*x^n+a, for x.  Any root will do.  So we
+		  ;; have x = ((yx-a)/b)^(1/n).
+		  (destructuring-bind (a n b)
+		      d
+		    (let ((root (power* (div (sub 'yx a) b) (inv n))))
+		      (cond (t
+			     (setq d (subst var 'yx root))
+			     (cond (flag (intcv2 d ind nv))
+				   (t (intcv1 d ind nv))))
+			    ))))
+		 (t
+		  (solve (m+t 'yx (m*t -1. nv)) var 1.)
+		  (cond (*roots
+			 (setq d (subst var 'yx (caddar *roots)))
+			 (cond (flag (intcv2 d ind nv))
+			       (t (intcv1 d ind nv))))
+			(t ()))))))))
 
 (defun intcv1 (d ind nv) 
   (cond ((and (intcv2 d ind nv)

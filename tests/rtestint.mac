@@ -510,11 +510,34 @@ integrate(x^k*log(x)/(x+3),x,0,inf);
 /*
  * Wang gives %pi/sin(5*%pi/7)
  *
- * Maxima first asks if ?yx is pos, neg, or zero.  Answering pos causes an error.
+ * Based on his thesis, integration by parts for
+ * integrate(log(1+x^(7/2))/x^2,0,inf) gives
+ *
+ *                  |inf
+ * -log(1+x^(7/2))/x|    - integrate(-1/x*7/2*x^(5/2)/(1+x^(7/2)),x,0,inf)
+ *                  |0
+ *
+ * = 7/2*integrate(x^(3/2)/(x^(7/2)+1),x,0,inf)
+ *
+ * Use the substitution (maxima doesn't do this) x = y^2 to get
+ *
+ * = 7*integrate(y^4/(y^7+1),y,0,inf)
+ *
+ * = %pi/sin(5*%pi/7)
+ *
+ * The default gcd gives a "quotient is not exact" error, so use
+ * spmod.  We need intanalysis false to give the routine a chance.
+ * (If true, we return the integral unevaluated.  I think this is
+ * because solve fails to find the roots of x^(7/2)+1=0 correctly.)
  */
-/*
+(gcd:spmod, intanalysis:false, 0);
+0;
+
 integrate(log(x^(7/2)+1)/x^2,x,0,inf);
-*/
+%pi/sin(5*%pi/7);
+
+(gcd:subres, intanalysis:true, 0);
+0;
 
 /* p. 97 */
 /* Verified via indefinite integral */
