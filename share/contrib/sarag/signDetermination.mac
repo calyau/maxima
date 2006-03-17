@@ -3,25 +3,6 @@
 /* by Fabrizio Caruso                                               */
 
 
-/* Auxiliary floor function */
-floor(x) := 
-  fix(x);
-
-/* Auxiliary ceiling function */
-ceiling(x) :=
-  if x=float(fix(x)) then 
-     fix(x)
-  else 
-     fix(x)+1;
-
-/* Uncenter the modulo reppresentation */
-/* It works for both odd and even positive integer m */
-uncenter(x,m) :=
-  if(x >= 0) then
-     x
-  else
-     m + x;
-
 /* ----------------------------------------------------------- */
 /* Realization of sign conditions                              */
 
@@ -62,12 +43,18 @@ blockMatrix(descr) :=
          if inBlockRows = 1 then
             inBlockRowIndex : 1
          else
-            inBlockRowIndex : uncenter(polymod(i-1,inBlockRows),inBlockRows)+1,
+            /* previous code:
+             * inBlockRowIndex : uncenter(mod(i-1,inBlockRows),inBlockRows)+1,
+             */
+            inBlockRowIndex : mod(i-1,inBlockRows)+1,
          
          if inBlockCols = 1 then
             inBlockColIndex : 1
          else
-            inBlockColIndex : uncenter(polymod(j-1,inBlockCols),inBlockRows)+1,
+            /* previous code:
+             * inBlockColIndex : uncenter(mod(j-1,inBlockCols),inBlockRows)+1,
+             */
+            inBlockColIndex : mod(j-1,inBlockCols)+1,
 
          rowRes : endcons(
                   descr[blockRow][blockCol][inBlockRowIndex][inBlockColIndex],
@@ -86,7 +73,7 @@ tensorProduct(m,mPrime) :=
   block([i,j,nBlockRows,nBlockCols,bm],
     nBlockRows : length(mPrime),
     nBlockCols : length(first(mPrime)),
-    bm : makeList(makeList(mPrime[i][j]*m,j,1,nBlockCols),i,1,nBlockRows),
+    bm : makelist(makelist(mPrime[i][j]*m,j,1,nBlockCols),i,1,nBlockRows),
     return(blockMatrix(bm))
     );
 
@@ -153,7 +140,7 @@ tarskiQueryComposition(polList) :=
 
 /* Tarski Query Vector */
 /* In the book: SQ(P^a,Z) */
-/* tarskiQueryAlg can be for instance : sSubResTarskiQueryAllR(Q,P,var) */
+/* tarskiQueryAlg can be for instance : sSubResTarskiQuery(Q,P,var) */
 naiveTarskiQueryVector(polList,ptSet,tarskiQueryAlg,var) :=
   block([sQConv, res],
  
@@ -166,19 +153,13 @@ naiveTarskiQueryVector(polList,ptSet,tarskiQueryAlg,var) :=
     );
 
 
-/* Notation in the book : */
-/* SQ(P,Z) := #{x in Z | P(x)>0} - #{x in Z | P(x)<0} */
-/* SQ(Q,P) := #{x in R | P(x)=0 and Q(x) > 0 } -      */
-/*            #{x in R | P(x)=0 and Q(x) < 0 }        */
-sSubResTarskiQueryForSignDet(P,ptSet,var) :=
-  sSubResTarskiQueryAllR(P,ptSet,var);
-
-
-
-
 
 /* Naive Sign Determination */
 naiveSignDetermination(polList,ptSet,sqAlg,var) :=
+  naiveSignDeterminationVerbose(polList,ptSet,sqAlg,var,DEFAULT_VERBOSITY);
+
+
+naiveSignDeterminationVerbose(polList,ptSet,sqAlg,var,verbosity) :=
   naiveSignConv(solveSys(naiveMatrixOfSigns(length(polList)),
                 naiveTarskiQueryVector(polList,ptSet,sqAlg,var),LINEAR_SOLVER));
 
@@ -259,10 +240,12 @@ genExp(base,expo) :=
     base^expo;
 
 signAt(signCond,adaExp) :=
-  Product(genExp(signCond[i],adaExp[i]),i,1,length(signCond));
-
+  product(genExp(signCond[i],adaExp[i]),i,1,length(signCond));
 
 matrixOfSigns(adaExpList,signCondList) := 
+   matrixOfSignsVerbose(adaExpList,signCondList,DEFAULT_VERBOSITY);
+
+matrixOfSignsVerbose(adaExpList,signCondList,verbosity) := 
  block([i,j,nSigns,nExp,newRow,res],
    nSigns : length(signCondList),
    nExp : length(adaExpList),
@@ -272,23 +255,25 @@ matrixOfSigns(adaExpList,signCondList) :=
 
    res : [],
    for i : 1 thru nExp do
-     (
-     
-     newRow : makeList(signAt(signCondList[j],adaExpList[i]),j,1,nSigns),
+     (     
+     newRow : makelist(signAt(signCondList[j],adaExpList[i]),j,1,nSigns),
+     if verbosity>=NORMAL then
+       print("matrixOfSign) new row : ", newRow),
      res : endcons(newRow,res)
      ),
    return(res)
    );
 
-
-
 tarskiQueryVector(adaExpList,polList,var,sqAlg,ptSet) :=
+  tarskiQueryVectorVerbose(adaExpList,polList,var,sqAlg,ptSet,DEFAULT_VERBOSITY);
+
+tarskiQueryVectorVerbose(adaExpList,polList,var,sqAlg,ptSet,verbosity) :=
   block([i,j,y],
   adaExpList : sort(adaExpList),
   return(
-         map(lambda([y],sqAlg(expand(y),expand(ptSet),var)),
-          makelist(           
-           Product(polList[i]^adaExpList[j][i],
+           map(lambda([y],sqAlg(expand(y),expand(ptSet),var)),
+           makelist(           
+           product(polList[i]^adaExpList[j][i],
            i,1,length(polList)),j,1,length(adaExpList))))
   );
 
@@ -370,6 +355,9 @@ extendAdaptedFamily(extSignDet,ada) :=
 
 
 smartSignDetermination(polList,ptSet,sqAlg,var) :=
+  smartSignDeterminationVerbose(polList,ptSet,sqAlg,var,DEFAULT_VERBOSITY);
+
+smartSignDeterminationVerbose(polList,ptSet,sqAlg,var,verbosity) :=
   block([sqOne,sqPexp1,sqPexp2,cVect,i,j,
          nPols,adaOnePoly,sgnsOnePoly,sgns,oldSgns,allSgns,
          nSigns,solOne,mtx,mtxOnePoly,ada,
@@ -442,7 +430,7 @@ log3aux(n,c) :=
     c
   else
     if c>n then 
-      FALSE
+      false
     else
       log3aux(n,c+1);
 
@@ -460,14 +448,14 @@ naiveSignConv(naiveSignList) :=
      if tsign = 3 then
        ( 
        tsign : 0, 
-       propag : FALSE,
+       propag : false,
        prInd : nPols-1,
        while not(propag) do
          (
          if item[prInd] < 2 then
            (
            item[prInd] : item[prInd]+1,
-           propag : TRUE
+           propag : true
            )
          else
            (
@@ -521,21 +509,21 @@ thomLess(lhs,rhs) :=
 
 thomLessAux(lhs,rhs,lastSgn) :=
   if lhs = [] and rhs = [] then
-     FALSE
+     false
   else
     if last(lhs)=last(rhs) then
       thomLessAux(rest(lhs,-1),rest(rhs,-1),last(lhs))
     else
       if lastSgn=1 then
          if last(lhs)<last(rhs) then
-            TRUE
+            true
          else
-            FALSE
+            false
       else
          if last(lhs)<last(rhs) then
-            FALSE
+            false
          else
-            TRUE;
+            true;
 
 thomSort(thomList) :=
   sort(thomList,thomLess);
@@ -544,12 +532,12 @@ thomSort(thomList) :=
 /* Thom Encoding */
 thomEncoding(pol,var) :=
    signDetermination(rest(derSeq(pol,var)),pol,
-                                    sSubResTarskiQueryAllR,var);
+                                    sSubResTarskiQuery,var);
 
 
 extThomEncoding(p,q,var) :=
   signDetermination(append(derSeq(q,var),rest(derSeq(p,var))),
-                         p,sSubResTarskiQueryAllR,var);
+                         p,sSubResTarskiQuery,var);
 
 /* Merge two thom-sorted encodings and remove duplicates */
 thomMerge(lhs,rhs) :=
@@ -584,7 +572,7 @@ thomMerge(lhs,rhs) :=
     res : append(res, makelist(lhs[k],k,i,lhsLen))
   else 
      if j <= rhsLen then
-        res : append(res, makeList(rhs[k],k,j,rhsLen)),
+        res : append(res, makelist(rhs[k],k,j,rhsLen)),
   return(res)
        
  );
@@ -660,9 +648,9 @@ return(res)
 /* with the polynomial used for the extended Thom encoding */
 thomComm(pol,var,extThomEnc) :=
   if(extThomEnc[degree(pol,var)+1]=0) then
-    TRUE
+    true
   else
-    FALSE;
+    false;
 
 
 /* Root Comparison */
@@ -677,3 +665,16 @@ thomCompare(p,q,var) :=
   );
 
 
+thomSignsAtRoots(p,q,var) :=
+  block([signDetRes],
+    print("debug : ",  append(rest(derSeq(p,var)),[q])),
+    signDetRes : signDetermination(append(rest(derSeq(p,var)),[q]),p,
+                                   sSubResTarskiQuery,
+                                   var),
+
+    print("signDetRes : ", signDetRes),
+    
+    return(map(lambda([x],[rest(x,-1),last(x)]),
+              signDetRes))
+            
+    );

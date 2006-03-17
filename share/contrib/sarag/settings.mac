@@ -1,3 +1,5 @@
+/* Code by Fabrizio Caruso */
+
 /* Prime for modular square-freeness test */
 MOD_TEST_PRIME : 2;
 
@@ -8,7 +10,19 @@ DEFAULT_VERBOSITY : 0; /* non-verbose */
 LINEAR_SOLVER : linsolve;
 
 /* Assume expanded polynomial input in main functions */
-ASSUME_EXPANDED : FALSE;
+ASSUME_EXPANDED : false;
 
 /* Coefficients normal form in sSubRes and similar algorithms */
 NORM_ALGORITHM : lambda([x],ratexpand(x));
+/*
+NORM_ALGORITHM : lambda([x],rat(x));
+*/
+
+/* Assume generic position for curves when studing the topology */
+ASSUME_GENERIC_POSITION : false;
+
+/* Warnings */
+WARNINGS : true;
+
+/* Plot style */
+PLOT_STYLE : "unset xtics; unset ytics;";

@@ -1,3 +1,6 @@
+/* Code by Fabrizio Caruso */
+
+
 /* --------------------------------------------------- */
 /* High level aliases */
 /* --------------------------------------------------- */
@@ -20,30 +23,44 @@ cauchyIndexBetween(q,p,var,a,b) :=
   sSubResCauchyIndexBetween(q,p,var,a,b);
 
 cauchyIndex(q,p,var) :=
-  sSubResCauchyIndexAllR(q,p,var);
+  sSubResCauchyIndex(q,p,var);
 
 tarskiQueryBetween(q,p,var,a,b) :=
   sSubResTarskiQueryBetween(q,p,var,a,b);
 
 tarskiQuery(q,p,var) :=
-  sSubResTarskiQueryAllR(q,p,var);
+  sSubResTarskiQuery(q,p,var);
 
 numberOfRootsBetween(p,var,a,b) :=
   sSubResNumberOfRootsBetween(p,var,a,b);
 
 sSubResNumberOfRoots(p,var) :=
-  sSubResNumberOfRootsAllR(p,var);
+  sSubResNumberOfRoots(p,var);
 
 numberOfRoots(p,var) :=
-  sSubResNumberOfRootsAllR(p,var);
+  sSubResNumberOfRoots(p,var);
 
 /* --------------------------------------------------- */
 /* Real root isolation */
 
+findRoots(pol,var,threshold) :=
+  deCasteljauFindRoots(pol,var,threshold);
+
+findRootsVerbose(pol,var,threshold,verbosity) :=
+  deCasteljauFindRootsVerbose(pol,var,threshold,verbosity);
 
 isolateRoots(pol,var) :=
   deCasteljauIsolateRoots(pol,var);
 
+
+isolateRootsVerbose(pol,var,verbosity) :=
+  deCasteljauIsolateRootsVerbose(pol,var,verbosity);
+
+signsAtRoots(isolListForP,p,q,var) :=
+  deCasteljauSignsAtRoots(isolListForP,p,q,var);
+
+signsAtRootsVerbose(isolListForP,p,q,var,verbosity) :=
+  deCasteljauSignsAtRootsVerbose(isolListForP,p,q,var,verbosity);
 
 rootsSign(isLst,isPol,sgnPol,var) :=
   deCasteljauRootsSign(isLst,isPol,sgnPol,var);
@@ -126,4 +143,11 @@ sSubResDummyFirst(p,q) :=
 /* Extra array2singleList */
 getCoeffFromNewtonList(ns) :=
   array2singleList(getCoeffFromNewton(ns));
+
+/* Maybe Temporary definitions */
+topology(pol,x,y) :=
+  archimedianTopology(pol,deCasteljauIsolateRoots,x,y);
+
+topologyVerbose(pol,x,y,verbosity) :=
+  archimedianTopologyVerbose(pol,deCasteljauIsolateRoots,x,y,verbosity);
 

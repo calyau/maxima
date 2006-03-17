@@ -3,14 +3,13 @@
 /* by Fabrizio Caruso                                                  */
 
 
-/* It expands a polynomial if ASSUME_EXPANDED is FALSE */
+/* It expands a polynomial if ASSUME_EXPANDED is false */
 expandIf(pol)::=
   buildq([pol],
   if ASSUME_EXPANDED then
     pol
   else
-    expand(pol));
-
+    ratexpand(pol));
 
 
 /* Degree of a polynomial (MACRO) */
@@ -53,6 +52,10 @@ sgn(val) ::=
 numOfDim(ar) :=
   second(arrayinfo(ar));
 
+/* Array degree */
+arrayDegree(ar) :=
+  first(third(arrayinfo(ar)));
+
 /* Array length */
 arrayLength(ar) :=
   first(third(arrayinfo(ar)))+1;
@@ -69,3 +72,61 @@ numOfCols(ar) :=
 list2poly(lst,var) :=
   sum(lst[i]*var^(i-1),i,1,length(lst));
 
+poly2list(pol,var) :=
+    makelist(coeff(pol,var,i),i,0,degree(pol,var));
+
+matrix2list(mtx) :=
+    makelist(mtx[i],i,1,length(mtx));
+    
+
+/* list of lists -> bidimensional array */
+list2array(lst) :=
+  block([nRows,nCols,i,j,res],
+   nRows : length(lst),
+   nCols : length(lst[1]),
+   res : make_array( 'any,nRows,nCols ),
+   for i : 1 thru nRows do 
+     for j : 1 thru nCols do
+       res[i-1,j-1] : lst[i][j],
+   return(res)
+   ); 
+
+
+
+/* bidimensional array -> list of lists */
+array2list(arr) :=
+  block([nRows,nCols,i,j,newRow,res],
+   nRows : first(third(arrayinfo(arr)))+1,
+   nCols : second(third(arrayinfo(arr)))+1,
+   res : [],
+
+   for i : 1 thru nRows do
+     (
+     newRow : [],
+     for j : 1 thru nCols do
+       newRow : endcons(arr[i-1,j-1],newRow),
+
+     res : endcons(newRow,res)
+     ),
+   return(res)
+   );
+
+
+array2singleList(arr) :=
+  makelist(arr[j],j,0,first(third(arrayinfo(arr))));
+
+
+singleList2array(lst) := 
+  block([res,i],
+  res:make_array('any,length(lst)),
+  for i : 1 thru length(lst) do
+     res[i-1] : lst[i],
+  return(res)
+  );
+
+
+poly2array(pol,var) :=
+  singleList2array(poly2list(pol,var));
+
+array2poly(arr,var) :=
+  list2poly(array2singleList(arr),var);
