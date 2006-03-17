@@ -281,7 +281,39 @@
 	 (maxima-patterns "###.{mac,mc}")
 	 (demo-patterns "###.{dem,dm1,dm2,dm3,dmt}")
 	 (usage-patterns "##.{usg,texi}")
-	 (share-subdirs-list '("affine" "algebra" "calculus" "combinatorics" "contrib" "contrib/nset" "contrib/pdiff" "contrib/numericalio" "contrib/descriptive" "contrib/distrib" "contrib/diffequations" "contrib/simplex" "contrib/solve_rec" "contrib/stringproc" "contrib/Zeilberger" "linearalgebra" "diffequations" "graphics" "integequations" "integration" "macro" "matrix" "misc" "numeric" "orthopoly" "physics" "simplification" "sym" "tensor" "trigonometry" "utils" "vector"))
+	 (share-subdirs-list
+       '("affine"
+         "algebra"
+         "calculus"
+         "combinatorics"
+         "contrib"
+         "contrib/nset"
+         "contrib/pdiff"
+         "contrib/numericalio"
+         "contrib/descriptive"
+         "contrib/distrib"
+         "contrib/diffequations"
+         "contrib/simplex"
+         "contrib/solve_rec"
+         "contrib/stringproc"
+         "contrib/Zeilberger"
+         "linearalgebra"
+         "diffequations"
+         "graphics"
+         "integequations"
+         "integration"
+         "macro"
+         "matrix"
+         "misc"
+         "numeric"
+         "orthopoly"
+         "physics"
+         "simplification"
+         "sym"
+         "tensor"
+         "trigonometry"
+         "utils"
+         "vector"))
      ; Smash the list of share subdirs into a string of the form "{affine,algebra,...,vector}" .
 	 (share-subdirs (format nil "{~{~A~^,~}}" share-subdirs-list)))
 
