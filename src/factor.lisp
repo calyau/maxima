@@ -61,6 +61,7 @@
 (defun csqfrp ($factorflag)
   (null (zl-delete 1 (oddelm (cdr (cfactor $factorflag))))))
 
+#+nil
 (defun primcyclo (n &aux *g* (nl (cfactorw n)))
   (setq nl (loop for (c e) on nl by #'cddr
 		  nconc (*make-list e c)))
@@ -68,6 +69,16 @@
     (cond ((consp res) (p-terms res))
 	  ((eql 0 res) nil)
 	  (t (list 0 res)))))
+
+(defun primcyclo (n)
+  (let ((*g* (gensym "PRIMCYCLO-"))
+	(nl (loop for (c e) on (cfactorw n) by #'cddr
+	       nconc (*make-list e c))))
+    (setf (symbol-value *g*) 0)
+    (let ((res (cyclotomic (list n nl))))
+      (cond ((consp res) (p-terms res))
+	    ((eql 0 res) nil)
+	    (t (list 0 res))))))
 
 (defun factxn+-1 (p) 
   (let ((*g* (car p))

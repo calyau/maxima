@@ -58,8 +58,27 @@
 (defmacro valput (item val)
   `(setf (valget ,item) ,val))
 
+;; A historical note from Richard Fateman, on the maxima list,
+;; 2006/03/17:
+;;
+;; "The name pointerp comes from the original hack when we wanted a
+;; bunch of atoms that could be ordered fast, we just generated, say,
+;; 10 gensyms.  Then we sorted them by the addresses of the symbols in
+;; memory.  Then we associated them with x,y,z,....  This meant that
+;; pointergp was one or two instructions on a PDP-10, in assembler."
+;; 
+;; "That version of pointergp turned out to be more trouble than it was
+;; worth because we sometimes had to interpolate between two gensym
+;; "addresses" and to do that we had to kind of renumber too much of
+;; the universe.  Or maybe we just weren't clever enough to do it
+;; without introducing bugs."
+;;
+;; Richard Fateman also says pointergp needs to be fast because it's
+;; called a lot.  So if you get an error from pointergp, it's probably
+;; because someone forgot to initialize things correctly.
 (proclaim '(inline pointergp))
-(defun pointergp (a b) (f> (valget a) (valget b)))
+(defun pointergp (a b)
+  (f> (valget a) (valget b)))
 
 ;;(macro ALGV (L) `(AND $ALGEBRAIC (GET ,(CADR L) 'TELLRAT)))
 (defmacro algv (v)
