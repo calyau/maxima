@@ -171,7 +171,7 @@
 		    ((alike1 y 1//2)
 		     (mul '((rat simp) 1 3) '$%pi))
 		    ((alike1 y -1//2)
-		     (div '$%pi -3))
+		     (mul '$%pi (div 2 3)))
 		    ;; sqrt(3)/2
 		    ((alike1 y (div (power* 3 1//2) 2))
 		     (div '$%pi 6))
