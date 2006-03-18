@@ -131,4 +131,6 @@
       
 
   ;; FIXME: openmcl version missing
+  #+openmcl
+  (rest (ccl::command-line-arguments))
   )
