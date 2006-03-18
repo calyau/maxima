@@ -236,6 +236,7 @@ contrib/ifactor.lisp\
 contrib/impdiff.mac\
 contrib/implicit_plot.lisp\
 contrib/lindstedt.mac\
+contrib/log10.mac\
 contrib/lsquares.mac\
 contrib/lurkmathml/README\
 contrib/lurkmathml/mathml.lisp\
@@ -342,14 +343,17 @@ contrib/rtestdefstruct.mac\
 contrib/sarag/aliases.mac\
 contrib/sarag/constants.mac\
 contrib/sarag/examples.mac\
-contrib/sarag/sarag_linear_algebra.mac\
-contrib/sarag/sarag.mac\
+contrib/sarag/intervalArithmetic.mac\
 contrib/sarag/lowLevel.mac\
 contrib/sarag/readme.txt\
 contrib/sarag/rootCounting.mac\
 contrib/sarag/rootIsolation.mac\
+contrib/sarag/sarag_linear_algebra.mac\
+contrib/sarag/sarag.mac\
 contrib/sarag/settings.mac\
 contrib/sarag/signDetermination.mac\
+contrib/sarag/topology_examples.mac\
+contrib/sarag/topology.mac\
 contrib/simplex/simplex.mac\
 contrib/simplex/simplex_algorithm.lisp\
 contrib/simplex/minimize_sx.mac\
@@ -409,6 +413,9 @@ integration/bypart.mac\
 integration/delta.dem\
 integration/delta.mac\
 integration/delta.usg\
+lbfgs/lbfgs.lisp\
+lbfgs/maxima-lbfgs.lisp\
+lbfgs/lbfgs.mac\
 linearalgebra/announcement.txt\
 linearalgebra/linalgcholesky.lisp\
 linearalgebra/mring.lisp\
