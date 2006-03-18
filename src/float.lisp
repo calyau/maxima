@@ -1604,20 +1604,28 @@ One extra decimal digit in actual representation for rounding purposes.")
 					 (fpquotient (fptimes* 2x fp-x)
 						     (fpdifference (fpone) fp-x)))))))))))
 
+;; Stuff which follows is derived from atanh z = (log(1 + z) - log(1 - z))/2
+;; which apparently originates with Kahan's "Much ado" paper.
+
 ;; The formulas for eta and nu below can be easily derived from
 ;; rectform(atanh(x+%i*y)) =
 ;;
-;; 1/4*log(((1+x)^2+y^2)/((1-x)^2+y^2)) + %i/2*(arg(1+x+%i*y)+arg(1-x*%i*y))
+;; 1/4*log(((1+x)^2+y^2)/((1-x)^2+y^2)) + %i/2*(arg(1+x+%i*y)-arg(1-x+%i*(-y)))
 ;;
 ;; Expand the argument of log out and divide it out and we get
 ;;
 ;; log(((1+x)^2+y^2)/((1-x)^2+y^2)) = log(1+4*x/((1-x)^2+y^2))
 ;;
+;; When y = 0, Im atanh z = 1/2 (arg(1 + x) - arg(1 - x))
+;;                        = if x < -1 then %pi/2 else if x > 1 then -%pi/2 else <whatever>
+;;
+;; Otherwise, arg(1 - x + %i*(-y)) = - arg(1 - x + %i*y),
+;; and Im atanh z = 1/2 (arg(1 + x + %i*y) + arg(1 - x + %i*y)).
 ;; Since arg(x)+arg(y) = arg(x*y) (almost), we can simplify the
 ;; imaginary part to
 ;;
 ;; arg((1+x+%i*y)*(1-x+%i*y)) = arg((1-x)*(1+x)-y^2+2*y*%i)
-;; = atan2(2*y/((1-x)*(1+x)-y^2))
+;; = atan2(2*y,((1-x)*(1+x)-y^2))
 ;;
 ;; These are the eta and nu forms below.
 (defun complex-atanh (x y)
@@ -1626,6 +1634,9 @@ One extra decimal digit in actual representation for rounding purposes.")
 	 (beta (if (minusp (car fpx))
 		   (fpminus (fpone))
 		   (fpone)))
+     (x-lt-minus-1 (mevalp `((mlessp) ,x -1)))
+     (x-gt-plus-1 (mevalp `((mgreaterp) ,x 1)))
+     (y-equals-0 (like y '((bigfloat) 0 0)))
 	 (x (fptimes* beta fpx))
 	 (y (fptimes* beta (fpminus fpy)))
 	 ;; Kahan has rho = 4/most-positive-float.  What should we do
@@ -1641,14 +1652,19 @@ One extra decimal digit in actual representation for rounding purposes.")
 				    (fpplus (fptimes* 1-x 1-x)
 					    t1^2)))
 	       (intofp 4)))
-	 ;; nu = 1/2*atan2(2*y,(1-x)*(1+x)-y^2)
-	 (nu (fptimes* (cdr bfhalf)
+     ;; If y = 0, then Im atanh z = %pi/2 or -%pi/2.
+	 ;; Otherwise nu = 1/2*atan2(2*y,(1-x)*(1+x)-y^2)
+	 (nu (if y-equals-0
+           ;; EXTRA FPMINUS HERE TO COUNTERACT FPMINUS IN RETURN VALUE
+           (fpminus (if x-lt-minus-1 (cdr ($bfloat '((mquotient) $%pi 2))) (if x-gt-plus-1 (cdr ($bfloat '((mminus) ((mquotient) $%pi 2)))) (merror "COMPLEX-ATANH: HOW DID I GET HERE?"))))
+           (fptimes* (cdr bfhalf)
 		       (fpatan2
 			(fptimes* (intofp 2) y)
 			(fpdifference (fptimes* 1-x
 						(fpplus (fpone) x))
-				      t1^2)))))
+				      t1^2))))))
     (values (bcons (fptimes* beta eta))
+        ;; WTF IS FPMINUS DOING HERE ??
 	    (bcons (fpminus (fptimes* beta nu))))))
     
   

@@ -22,7 +22,6 @@ binary-openmcl/maxima.image : displm.lisp
 binary-openmcl/maxima.image : ratmac.lisp
 binary-openmcl/maxima.image : mhayat.lisp
 binary-openmcl/maxima.image : numerm.lisp
-binary-openmcl/maxima.image : SYS-DECLAIM.lisp
 binary-openmcl/maxima.image : opers.lisp
 binary-openmcl/maxima.image : utils.lisp
 binary-openmcl/maxima.image : sumcon.lisp

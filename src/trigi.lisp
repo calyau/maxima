@@ -105,6 +105,36 @@
   function to evaluate the maxima function numerically with
   big-float precision.")
   
+;; Some Lisp implementations goof up branch cuts for ASIN, ACOS, and/or ATANH.
+;; Here are definitions which have the right branch cuts
+;; (assuming LOG, PHASE, and SQRT have the right branch cuts).
+;; Don't bother trying to sort out which implementations get it right or wrong;
+;; we'll make all implementations use these functions.
+
+;; Apply formula from CLHS if X falls on a branch cut.
+;; Otherwise punt to CL:ASIN.
+(defun maxima-branch-asin (x)
+  ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
+  (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
+    (* #C(0d0 -1d0) (cl:log (+ (* #C(0d0 1d0) x) (cl:sqrt (- #C(1d0 0d0) (* x x))))))
+    (cl:asin x)))
+
+;; Apply formula from CLHS if X falls on a branch cut.
+;; Otherwise punt to CL:ACOS.
+(defun maxima-branch-acos (x)
+  ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
+  (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
+    (- (/ pi #C(2d0 0d0)) (maxima-branch-asin x))
+    (cl:acos x)))
+
+;; Apply formula from CLHS if X falls on a branch cut.
+;; Otherwise punt to CL:ATANH.
+(defun maxima-branch-atanh (x)
+  ; Test for (IMAGPART X) is EQUAL because signed zero is EQUAL to zero.
+  (if (and (> (abs (realpart x)) 1d0) (equal (imagpart x) 0d0))
+    (/ (- (cl:log (+ #C(1d0 0d0) x)) (cl:log (- #C(1d0 0d0) x))) #C(2d0 0d0))
+    (cl:atanh x)))
+
 ;; Fill the hash table.
 (macrolet ((frob (mfun dfun)
 	     `(setf (gethash ',mfun *double-float-op*) ,dfun)))
@@ -129,16 +159,17 @@
 		 (let ((y (ignore-errors (/ 1 (cl:tan x)))))
 		   (if y y (domain-error x 'cot)))))
 
-  (frob %acos #'cl:acos)
-  (frob %asin #'cl:asin)
+  (frob %acos #'maxima-branch-acos)
+  (frob %asin #'maxima-branch-asin)
+
   (frob %atan #'cl:atan)
 
   (frob %asec #'(lambda (x)
-		  (let ((y (ignore-errors (cl:acos (/ 1 x))))) 
+		  (let ((y (ignore-errors (maxima-branch-acos (/ 1 x))))) 
 		    (if y y (domain-error x 'asec)))))
 
   (frob %acsc #'(lambda (x)
-		  (let ((y (ignore-errors (cl:asin (/ 1 x)))))
+		  (let ((y (ignore-errors (maxima-branch-asin (/ 1 x)))))
 		    (if y y (domain-error x 'acsc)))))
 
   (frob %acot #'(lambda (x)
@@ -163,7 +194,8 @@
 
   (frob %acosh #'cl:acosh)
   (frob %asinh #'cl:asinh)
-  (frob %atanh #'cl:atanh)
+  
+  (frob %atanh #'maxima-branch-atanh)
 
   (frob %asech #'(lambda (x)
 		   (let ((y (ignore-errors (cl:acosh (/ 1 x)))))
@@ -174,7 +206,7 @@
 		     (if y y (domain-error x 'acsch)))))
 
   (frob %acoth #'(lambda (x)
-		   (let ((y (ignore-errors (cl:atanh (/ 1 x))))) 
+		   (let ((y (ignore-errors (maxima-branch-atanh (/ 1 x))))) 
 		     (if y y (domain-error x 'acoth)))))
 
   (frob %mabs #'cl:abs)

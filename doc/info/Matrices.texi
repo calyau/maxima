@@ -164,9 +164,15 @@ with respect to variable @var{x}.  That is,
 
 @deffn {Function} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
 Returns the coefficient matrix for the
-variables @var{eqn_1}, ..., @var{eqn_m} of the system of linear equations 
-@var{x_1}, ..., @var{x_n}.
-@c AN EXAMPLE WOULD BE REALLY NICE HERE
+variables @var{x_1}, ..., @var{x_n} of the system of linear equations 
+@var{eqn_1}, ..., @var{eqn_m}.
+
+@example
+(%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
+                                 [ 2  1 - a ]
+(%o1)                            [          ]
+                                 [ a    b   ]
+@end example
 
 @end deffn
 

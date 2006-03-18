@@ -1,4 +1,4 @@
-@c english version 1.21
+@c english version 1.22
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -157,9 +157,15 @@ respecto de la variable @var{x}. Esto es,
 @end deffn
 
 @deffn {Funci@'on} coefmatrix ([@var{eqn_1}, ..., @var{eqn_m}], [@var{x_1}, ..., @var{x_n}])
-Devuelve la matriz de coeficientes para las variables @var{eqn_1}, ..., @var{eqn_m}
-del sistema de ecuaciones lineales @var{x_1}, ..., @var{x_n}.
-@c AN EXAMPLE WOULD BE REALLY NICE HERE
+Devuelve la matriz de coeficientes para las variables @var{x_1}, ..., @var{x_n}
+del sistema de ecuaciones lineales @var{eqn_1}, ..., @var{eqn_m}.
+
+@example
+(%i1) coefmatrix([2*x-(a-1)*y+5*b = 0, b*y+a*x = 3], [x,y]);
+                                 [ 2  1 - a ]
+(%o1)                            [          ]
+                                 [ a    b   ]
+@end example
 
 @end deffn
 
