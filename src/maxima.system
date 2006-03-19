@@ -46,7 +46,7 @@
 	       (:module package :source-pathname ""
 			:load-only t
 			:components (#-gcl(:file "maxima-package")
-				     (:file "autoconf-variables")))
+					  (:file "autoconf-variables")))
 	       (:module info :source-pathname ""
 			:components ((:file "nregex")
 				     (:file "cl-info")))
@@ -400,6 +400,8 @@
                                      (:file "nalgfa") 
                                      (:file "ufact") 
                                      (:file "result")))
+	       (:module ifactor :source-pathname ""
+			:components ((:file "ifactor")))
 	       (:module rational-functions :source-pathname ""
 			:components ((:file "rat3a") 
 				     (:file "rat3b") 
@@ -514,11 +516,11 @@
 				     (:file "pade") 
 				     (:file "homog") 
 				     (:file "combin") 
-                     (:file "nset")
-                     (:file "rand-mt19937")
-                     (:file "maxmin")
-                     (:file "nummod")
-                     (:file "conjugate")
+				     (:file "nset")
+				     (:file "rand-mt19937")
+				     (:file "maxmin")
+				     (:file "nummod")
+				     (:file "conjugate")
 				     (:file "mstuff")))
 	       (:module poisson-series :source-pathname ""
 			:components ((:file "ratpoi")
