@@ -436,12 +436,16 @@
   (do ((pp (if (oddp p) (f- p 2) (f- p 1)) (f- pp 2))) ((f< pp 0))
     (if (primep pp) (return pp))))
 
-(defun primep (p)
-  (and (or (lessp p 14.)
-	   (let ((modulus p))
-	     (and (equal 1 (cexpt 13. (sub1 p))) (equal 1 (cexpt 3 (sub1 p))))))
-       (null (cddr (setq p (cfactorw p))))
-       (= 1 (cadr p))))
+;;;;;;
+;;
+;;  Commenting out funtion primep - new implementation in ifactor.lisp
+;;
+;;(defun primep (p)
+;;  (and (or (lessp p 14.)
+;;	   (let ((modulus p))
+;;	     (and (equal 1 (cexpt 13. (sub1 p))) (equal 1 (cexpt 3 (sub1 p))))))
+;;       (null (cddr (setq p (cfactorw p))))
+;;       (= 1 (cadr p))))
 
 ;; #O <form> reads <form> in octal (base 8)
 
@@ -512,11 +516,15 @@
 ;;	    ((= I 20.)))
 
 
-
-(defmfun $primep (p)
-  (if (not (integerp p))
-      (merror "Argument to `primep' must be an integer:~%~M" p))
-  (let ($intfaclim) (primep (abs p))))
+;;;;;;
+;;
+;;  Commenting out function $primep - new implementation in ifactor.lisp
+;;
+;;
+;;(defmfun $primep (p)
+;;  (if (not (integerp p))
+;;      (merror "Argument to `primep' must be an integer:~%~M" p))
+;;  (let ($intfaclim) (primep (abs p))))
 
 
 (defun leadcoefficient (p) (if (pcoefp p) p (leadcoefficient (caddr p))))
