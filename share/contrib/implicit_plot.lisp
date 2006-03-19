@@ -54,7 +54,7 @@
 	(let ((fun-val (funcall expr x-val y-val)))
 	  (if (or (eq fun-val t) (>= fun-val $ip_epsilon))
 	      (setf (aref sample i j) 1)
-	      (setf (aref sample i j) -1))))))))
+	      (setf (aref sample i j) -1)))))))
 
 (defun print-mid (file point xmin xdelta ymin ydelta)
   (let ((x (+ xmin (/ (* xdelta (+ (car point) (caddr point))) 2)))
