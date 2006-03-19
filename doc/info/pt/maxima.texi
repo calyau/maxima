@@ -144,7 +144,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
-* Tempo de Execu@value{cedilha}@~ao::           Customiza@value{cedilha}@~ao do ambiente Maxima.
+* Ambiente em Tempo de Execu@value{cedilha}@~ao::  Customiza@value{cedilha}@~ao do ambiente Maxima.
 * Op@value{cedilha}@~oes Diversas::             Op@value{cedilha}@~oes com efeito global sobre o Maxima.
 * Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo 
                                 usu@'ario e regras de simplifica@value{cedilha}@~ao.
@@ -360,9 +360,9 @@ Grupos
 
 * Defini@value{cedilha}@~oes para Grupos::      
 
-Tempo de Execu@value{cedilha}@~ao
+Ambiente em Tempo de Execu@value{cedilha}@~ao
 
-* Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao::  
+* Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
 * Defini@value{cedilha}@~oes para Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 
@@ -675,7 +675,7 @@ zeilberger
 @chapter Symmetries
 @include Symmetries.texi
 
-@node Grupos, Tempo de Execu@value{cedilha}@~ao, Symmetries, Top
+@node Grupos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Symmetries, Top
 @chapter Grupos
 @include Groups.texi
 
@@ -683,7 +683,7 @@ zeilberger
 @chapter Ambiente em Tempo de Execu@value{cedilha}@~ao
 @include Runtime.texi
 
-@node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Tempo de Execu@value{cedilha}@~ao, Top
+@node Op@value{cedilha}@~oes Diversas, Regras e Modelos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Top
 @chapter Op@value{cedilha}@~oes Diversas
 @include Miscellaneous.texi
 
@@ -711,7 +711,7 @@ zeilberger
 @chapter Depurando
 @include Debugging.texi
 
-@node augmented_lagrangian, bode, Debugging, Top
+@node augmented_lagrangian, bode, Depurando, Top
 @chapter augmented_lagrangian
 @include augmented_lagrangian.texi
 
@@ -819,7 +819,7 @@ zeilberger
 @chapter unit
 @include unit.texi
 
-@node zeilberger, Function and Variable Index, unit, Top
+@node zeilberger, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, unit, Top
 @chapter zeilberger
 @include zeilberger.texi
 

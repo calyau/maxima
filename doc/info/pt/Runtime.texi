@@ -1,14 +1,14 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Runtime.texi/1.16/Wed Nov  2 18:37:20 2005/-ko/
 @menu
-* Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao::  
+* Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
-* Defini@value{cedilha}@~oes para Tempo de Execu@value{cedilha}@~ao::  
+* Defini@value{cedilha}@~oes para Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 @end menu
 
 
-@node Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao, Interrup@value{cedilha}@~oes, Tempo de Execu@value{cedilha}@~ao, Tempo de Execu@value{cedilha}@~ao
-@section Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao
+@node Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao, Interrup@value{cedilha}@~oes, Ambiente em Tempo de Execu@value{cedilha}@~ao, Ambiente em Tempo de Execu@value{cedilha}@~ao
+@section Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao
 @c THIS DISCUSSION OF maxima-init.mac REPLACES AN EARLIER WRITE-UP. !!!
 @c HOWEVER IT SEEMS THAT THIS TEXT REALLY WANTS TO BE UNDER A DIFFERENT HEADING. !!!
 @code{maxima-init.mac} @'e um arquivo que @'e chamado automaticamente quando o Maxima inicia.
@@ -34,7 +34,7 @@ A declara@value{cedilha}@~ao @code{showtime: all} diz ao Maxima escolher a vari@
 O arquivo @code{maxima-init.mac} pode conter qualquer outras atribui@value{cedilha}@~oes ou
 outras declara@value{cedilha}@~oes do Maxima.
 
-@node Interrup@value{cedilha}@~oes, Defini@value{cedilha}@~oes para Tempo de Execu@value{cedilha}@~ao, Introdu@value{cedilha}@~ao a Tempo de Execu@value{cedilha}@~ao, Tempo de Execu@value{cedilha}@~ao
+@node Interrup@value{cedilha}@~oes, Defini@value{cedilha}@~oes para Ambiente em Tempo de Execu@value{cedilha}@~ao, Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao, Ambiente em Tempo de Execu@value{cedilha}@~ao
 @section Interrup@value{cedilha}@~oes
 
 O usu@'ario pode parar uma computa@value{cedilha}@~ao que consome muito tempo com o
@@ -63,9 +63,9 @@ pare tudo e aguarde em segundo plano, e o controle @'e retornado para a linha de
 O comando @code{fg} faz com que o Maxima
 retorne ao primeiro plano e continue a partir do ponto no qual foi interrompido.
 
-@c end concepts Tempo de Execu@value{cedilha}@~ao
-@node Defini@value{cedilha}@~oes para Tempo de Execu@value{cedilha}@~ao,  , Interrup@value{cedilha}@~oes, Tempo de Execu@value{cedilha}@~ao
-@section Defini@value{cedilha}@~oes para Tempo de Execu@value{cedilha}@~ao
+@c end concepts Ambiente em Tempo de Execu@value{cedilha}@~ao
+@node Defini@value{cedilha}@~oes para Ambiente em Tempo de Execu@value{cedilha}@~ao,  , Interrup@value{cedilha}@~oes, Ambiente em Tempo de Execu@value{cedilha}@~ao
+@section Defini@value{cedilha}@~oes para Ambiente em Tempo de Execu@value{cedilha}@~ao
 
 @c NEEDS EXPANSION AND CLARIFICATION
 @defvr {Declara@,{c}@~ao} feature
