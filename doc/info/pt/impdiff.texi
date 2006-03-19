@@ -1,0 +1,15 @@
+@menu
+* Defini@value{cedilha}@~oes para impdiff::
+@end menu
+
+@node Defini@value{cedilha}@~oes para impdiff,  , impdiff, impdiff
+@section Defini@value{cedilha}@~oes para impdiff
+
+@deffn {Fun@,{c}@~ao} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+Essa subrotina calcula derivadas impl@'icitas de fun@,{c}@~oes de v@'arias vari@'aveis.
+@var{f} @'e uma fun@,{c}@~ao do tipo array, os @'indices s@~ao o grau da derivada na ordem @var{indvarlist};
+@var{indvarlist} @'e a lista de vari@'aveis independentes; @var{orderlist} @'e a ordem desejada; e 
+@var{depvar} @'e a vari@'avel dependente.
+
+Para usar essa fun@,{c}@~ao escreva primeiro @code{load("impdiff")}.
+@end deffn

@@ -144,7 +144,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
 
-* Ambiente em Tempo de Execu@value{cedilha}@~ao::  Customiza@value{cedilha}@~ao do ambiente Maxima.
+* Ambiente em Tempo de Execu@value{cedilha}@~ao::	Customiza@value{cedilha}@~ao do ambiente Maxima.
 * Op@value{cedilha}@~oes Diversas::             Op@value{cedilha}@~oes com efeito global sobre o Maxima.
 * Regras e Modelos::            Coincid@^encia de express@~oes definidas pelo 
                                 usu@'ario e regras de simplifica@value{cedilha}@~ao.
@@ -166,12 +166,12 @@ Additional packages
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
 * ifactor::                     Integer factorization.
-* impdiff::                     Implicit derivatives.
+* impdiff::                     Derivadas impl@'icitas.
 * interpol::                    Interpolation package.
-* lindstedt::                   Lindstedt package.
+* lindstedt::                   Pacote Lindstedt.
 * linearalgebra::               Functions for linear algebra.
 * lsquares::                    Least squares.
-* makeOrders::                  Polynomial utility.
+* makeOrders::                  Expoentes de polin@^omios.
 * mnewton::                     Newton's method.
 * numericalio::                 Reading and writing files.
 * opsubst::                     Substitutions utility.
@@ -451,7 +451,7 @@ ifactor
 
 impdiff
 
-* Definitions for impdiff::
+* Defini@value{cedilha}@~oes para impdiff::
 
 interpol
 
@@ -460,7 +460,7 @@ interpol
 
 lindstedt
 
-* Definitions for lindstedt::
+* Defini@value{cedilha}@~oes para lindstedt::
 
 linearalgebra
 
@@ -473,7 +473,7 @@ lsquares
 
 makeOrders
 
-* Definitions for makeOrders::
+* Defini@value{cedilha}@~oes para makeOrders::
 
 mnewton
 
@@ -707,7 +707,7 @@ zeilberger
 @chapter Fluxo de Programa
 @include Program.texi
 
-@node Depurando, @'Indice de Fun@value{cedilha}@~ao e Vari@'avel, Fluxo de Programa, Top
+@node Depurando, augmented_lagrangian, Fluxo de Programa, Top
 @chapter Depurando
 @include Debugging.texi
 
@@ -823,7 +823,7 @@ zeilberger
 @chapter zeilberger
 @include zeilberger.texi
 
-@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , Depurando, Top
+@node @'Indice de Fun@value{cedilha}@~ao e Vari@'avel,  , zeilberger, Top
 @chapter @'Indice de Fun@value{cedilha}@~ao e Vari@'avel
 @include Indices.texi
 
