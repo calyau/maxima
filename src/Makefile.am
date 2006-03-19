@@ -310,6 +310,7 @@ hayat.lisp \
 homog.lisp \
 hyp.lisp \
 hypgeo.lisp \
+ifactor.lisp \
 init-cl.lisp \
 inmis.lisp \
 intpol.lisp \
