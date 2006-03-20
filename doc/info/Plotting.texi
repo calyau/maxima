@@ -38,10 +38,15 @@ Addtional symbol arguments may be given such as
 The following plots two curves, using big points, labeling the first one
 @code{jim} and the second one @code{jane}.   
 @example
-openplot_curves ([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
-      @{xaxislabel @{joe is nice@}@}"], [1, 2, 3, 4, 5, 6, 7, 8],
-      ["@{label jane@} @{color pink @}"], [3, 1, 4, 2, 5, 7]]);
+(%i1) openplot_curves ([["@{plotpoints 1@} @{pointsize 6@}
+      @{label jim@} @{xaxislabel @{joe is nice@}@}"],
+      [1, 2, 3, 4, 5, 6, 7, 8], ["@{label jane@} @{color pink @}"],
+      [3, -1, 4, 2, 5, 7]]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting1,8cm}
+@end ifnotinfo
 
 Some other special keywords are @code{xfun}, @code{color}, @code{plotpoints}, @code{linecolors},
 @code{pointsize}, @code{nolines}, @code{bargraph}, @code{labelposition}, @code{xaxislabel}, and
@@ -114,7 +119,7 @@ that includes many built-in functions.
 @c REPORTED AS SF BUG # 1385271
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
-Examples:
+@b{Examples:}
 
 Plotting an expression, and setting some commonly-used parameters.
 
@@ -123,7 +128,11 @@ Plotting an expression, and setting some commonly-used parameters.
 (%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
 @end example
 
-Plotting functions by name.
+@ifnotinfo
+@image{figures/plotting2,8cm}@image{figures/plotting3,8cm}
+@end ifnotinfo
+
+@b{Plotting functions by name.}
 
 @c ===beg===
 @c F(x) := x^2 $
@@ -145,6 +154,10 @@ $g
 (%i4) plot2d ([F, G, H], [u, -1, 1])$
 @end example
 
+@ifnotinfo
+@image{figures/plotting4,8cm}@image{figures/plotting5,8cm}
+@end ifnotinfo
+
 Anywhere there may be an ordinary expression, there may be a parametric expression: 
 @var{parametric_expr} is a list of the form
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
@@ -157,7 +170,7 @@ In the following example, we plot a circle, then we do
 the plot with only a few points used, so that we get a star,
 and finally we plot this together with an ordinary function of X.
 
-Examples:
+@b{Parametric plot examples:}
 @c PUT PARAMETRIC EXAMPLES HERE
 
 @itemize @bullet
@@ -167,18 +180,34 @@ Plot a circle with a parametric plot.
 (%i1) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
         [nticks, 80]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting6,8cm}
+@end ifnotinfo
+
 @item 
 Plot a star: join eight points on the circumference of a circle.
 @example
 (%i2) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
         [nticks, 8]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting7,8cm}
+@end ifnotinfo
+
 @item
-Plot a cubic polynomial with an ordinary plot and a circle with a parametric plot.
+Plot a cubic polynomial with an ordinary plot and a circle with a parametric
+plot.
 @example
-(%i3) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],
+(%i3) plot2d ([x^3+2, [parametric, cos(t), sin(t), [t, -5, 5],
         [nticks, 80]]], [x, -3, 3])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting8,8cm}
+@end ifnotinfo
+
 @end itemize
 
 Discrete expressions may also be used instead or ordinary or
@@ -189,7 +218,7 @@ or
 @code{[discrete, @var{xy_list}]},
 where @var{xy_list} is a list of @code{[@var{x},@var{y}]} pairs.
 
-Examples:
+@b{Discrete plot examples:}
 @c PUT DISCRETE EXAMPLES HERE
 
 @itemize @bullet
@@ -207,24 +236,44 @@ Plot with line segments.
 (%i4) plot2d([discrete,xx,yy])$
 @end example
 
+@ifnotinfo
+@image{figures/plotting9,8cm}
+@end ifnotinfo
+
 @item
 Plot with line segments, using a list of pairs.
 @example
 (%i5) plot2d([discrete,xy])$
 @end example
 
+@ifnotinfo
+@image{figures/plotting10,8cm}
+@end ifnotinfo
+
 @item
 Plot with points.
 @example
-(%i6) plot2d([discrete,xx,yy],[gnuplot_curve_styles,["with points"]])$
+(%i6) plot2d([discrete,xx,yy],[gnuplot_curve_styles,
+      ["with points"]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting11,8cm}
+@end ifnotinfo
 
 @item
 Plot the curve @code{cos(@var{x})} using lines and (@var{xx},@var{yy})
 using points.
 @example
-plot2d([cos(x),[discrete,xx,yy]],[x,0,10],[gnuplot_curve_styles,["with lines","with points pointsize 3"]])$
+(%i7) plot2d([cos(x),[discrete,xx,yy]],[x,0,10],
+     [gnuplot_curve_styles,
+     ["with lines","with points pointsize 3"]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting12,8cm}
+@end ifnotinfo
+
 @end itemize
 
 See also @code{plot_options}, which describes plotting options and has more examples.
@@ -232,7 +281,8 @@ See also @code{plot_options}, which describes plotting options and has more exam
 @end deffn
 
 @deffn {Function} xgraph_curves (@var{list})
-graphs the list of `point sets' given in list by using xgraph.
+graphs the list of `point sets' given in list by using xgraph. If the program
+xgraph is not installed, this command will fail.
 
 A point set may be of the form
 
@@ -253,7 +303,8 @@ xgraph_curves ([pt_set1, pt_set2, pt_set3]);
 graph the three point sets as three curves.
 
 @example
-pt_set: append (["NoLines: True", "LargePixels: true"], [x0, y0, x1, y1, ...]);
+pt_set: append (["NoLines: True", "LargePixels: true"],
+                          [x0, y0, x1, y1, ...]);
 @end example
 
 @noindent
@@ -281,11 +332,16 @@ of "Maxima Plot".
 To make a bar graph with bars which are 0.2 units wide, and
 to plot two possibly different such bar graphs:
 @example
-xgraph_curves ([append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
-    create_list ([i - .2, i^2], i, 1, 3)),
-    append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
-    create_list ([i + .2, .7*i^2], i, 1, 3))]);
+(%i1) xgraph_curves ([append (["BarGraph: true", "NoLines: true",
+      "BarWidth: .2"], create_list ([i - .2, i^2], i, 1, 3)),
+      append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
+      create_list ([i + .2, .7*i^2], i, 1, 3))]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting13,8cm}
+@end ifnotinfo
+
 @noindent
 
 A temporary file @file{xgraph-out} is used.
@@ -441,7 +497,7 @@ Allows transformations to be applied to three-dimensional plots.
 The default @code{transform_xy} is @code{false}. If it is not @code{false}, it should be
 the output of
 @example
-make_transform ([x, y, z], f1(x, y, z), f2(x, y, z), f3(x, y, z))$
+make_transform([x,y,z], f1(x,y,z), f2(x,y,z), f3(x,y,z))$
 @end example
 The @code{polar_xy} transformation is built in. It gives the same
 transformation as
@@ -505,7 +561,8 @@ each of which is @code{"title '@var{title_string}'"}.
 Example:
 
 @example
-[gnuplot_curve_titles, ["title 'My first function'", "title 'My second function'"]]
+[gnuplot_curve_titles,
+["title 'My first function'", "title 'My second function'"]]
 @end example
 
 @item
@@ -555,19 +612,21 @@ other things. See the gnuplot documentation for @code{set term postscript} for m
 Example:
 
 @example
-[gnuplot_ps_term_command, "set term postscript eps enhanced color solid 18"]
+[gnuplot_ps_term_command,
+"set term postscript eps enhanced color solid 18"]
 @end example
 
 @end itemize
 
-Examples:
+@b{Examples:}
 
 @itemize @bullet
 @item
 Saves a plot of @code{sin(x)} to the file @code{sin.eps}.
 @end itemize
 @example
-plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps], [gnuplot_out_file, "sin.eps"])$
+(%i1) plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps],
+                        [gnuplot_out_file, "sin.eps"])$
 @end example
 
 @itemize @bullet
@@ -576,8 +635,13 @@ Uses the y option to chop off singularities and the gnuplot_preamble
 option to put the key at the bottom of the plot instead of the top.
 @end itemize
 @example
-plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10], [gnuplot_preamble, "set key bottom"])$
+(%i2) plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10],
+                     [gnuplot_preamble, "set key bottom"])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting14,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -585,10 +649,18 @@ Uses a very complicated @code{gnuplot_preamble} to produce fancy x-axis labels.
 (Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
 @end itemize
 @example
-my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
-plot2d ([cos(x), sin(x), tan(x), cot(x)], [x, -2*%pi, 2*%pi],
-    [y, -2, 2], [gnuplot_preamble, my_preamble]);
+(%i3) my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, \
+'-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0, \
+'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
+
+(%i4) plot2d([cos(x), sin(x), tan(x), cot(x)],
+       [x, -2*%pi, 2.1*%pi], [y, -2, 2],
+       [gnuplot_preamble, my_preamble]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting15,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -599,9 +671,15 @@ in gnuplot.
 (Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
 @end itemize
 @example
-my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' 6.283)"$
-plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi], [y, -2, 2],
-    [gnuplot_preamble, my_preamble], [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
+(%i5) my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' \
+-6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, \
+'-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, \
+'@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' \
+6.283)"$
+
+(%i6) plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
+    [y, -2, 2], [gnuplot_preamble, my_preamble],
+    [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
 @end example
 
 @itemize @bullet
@@ -609,8 +687,13 @@ plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi], [y, -2, 2],
 A three-dimensional plot using the gnuplot pm3d terminal.
 @end itemize
 @example
-plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50], [gnuplot_pm3d, true])$
+(%i7) plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+        [grid, 50, 50], [gnuplot_pm3d, true])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting16,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -618,10 +701,16 @@ A three-dimensional plot without a mesh and with contours
 projected on the bottom plane.
 @end itemize
 @example
-my_preamble: "set pm3d at s;unset surface;set contour;set cntrparam levels 20;unset key"$
-plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50],
-    [gnuplot_pm3d, true], [gnuplot_preamble, my_preamble])$
+(%i8) my_preamble: "set pm3d at s;unset surface;set contour;\
+set cntrparam levels 20;unset key"$
+(%i9) plot3d(atan(-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [grid, 50, 50], [gnuplot_pm3d, true],
+    [gnuplot_preamble, my_preamble])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting17,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -629,9 +718,14 @@ A plot where the z-axis is represented by color only.
 (Note that the @code{gnuplot_preamble} string must be entered without any line breaks.)
 @end itemize
 @example
-plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [gnuplot_preamble, "set view map; unset surface"], [gnuplot_pm3d, true], [grid, 150, 150])$
+(%i10) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [gnuplot_preamble, "set view map; unset surface"],
+    [gnuplot_pm3d, true], [grid, 150, 150])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting18,8cm}
+@end ifnotinfo
 
 @end defvr
 
@@ -645,8 +739,12 @@ plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
 Displays a plot of one or three expressions as functions of two variables.
 
 @example
-plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
+(%i1) plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting19,8cm}
+@end ifnotinfo
 
 plots @code{z = 2^(-u^2+v^2)} with @code{u} and @code{v} varying in [-5,5] and
 [-7,7] respectively, and with @var{u} on the x axis, and @code{v} on the y axis.
@@ -654,9 +752,13 @@ plots @code{z = 2^(-u^2+v^2)} with @code{u} and @code{v} varying in [-5,5] and
 An example of the third pattern of arguments is
 
 @example
-plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)), y*sin(x/2)],
-   [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
+(%i2) plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)),
+   y*sin(x/2)], [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting20,8cm}
+@end ifnotinfo
 
 which plots a Moebius band, parametrized by the three expressions given
 as the first argument to @code{plot3d}.  An additional optional argument
@@ -674,11 +776,14 @@ that includes many built-in functions.
 This example shows a plot of the real part of @code{z^1/3}.
 
 @example
- plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-     ['grid, 12, 80], ['plot_format, ps],
-     ['transform_xy, polar_to_xy], ['view_direction, 1, 1, 1.4],
-     ['colour_z, true]);
+(%i3) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
+      ['grid, 12, 80], ['transform_xy, polar_to_xy],
+      ['view_direction, 1, 1, 1.4], ['colour_z, true]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting21,8cm}
+@end ifnotinfo
 
 @noindent
 Here the @code{view_direction} option indicates the direction from which we
@@ -690,39 +795,56 @@ allow interactive rotating of the object.
 Another example is a Klein bottle:
 
 @example
-expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0;
-expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0);
-expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y));
+(%i4) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
+      + 3.0) - 10.0$
+(%i5) expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
+      + 3.0)$
+(%i6) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
 
-plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi], [y, -%pi, %pi], ['grid, 40, 40]);
+(%i7) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+      [y, -%pi, %pi], ['grid, 40, 40]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting22,8cm}
+@end ifnotinfo
 
 or a torus
 
 @example
-expr_1: cos(y)*(10.0+6*cos(x));
-expr_2: sin(y)*(10.0+6*cos(x));
-expr_3: -6*sin(x);
-
-plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi], [y, 0, 2*%pi], ['grid, 40, 40]);
+(%i8) expr_1: cos(y)*(10.0+6*cos(x))$
+(%i9) expr_2: sin(y)*(10.0+6*cos(x))$
+(%i10) expr_3: -6*sin(x)$
+(%i11) plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi],
+       [y, 0, 2*%pi], ['grid, 40, 40]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting23,8cm}
+@end ifnotinfo
 
 We can output to gnuplot too:
 
 @example
-plot3d (2^(x^2 - y^2), [x, -1, 1], [y, -2, 2], [plot_format, gnuplot]);
+(%i12) plot3d (2^(x^2 - y^2), [x, -1, 1], [y, -2, 2],
+       [plot_format, gnuplot]);
 @end example
 
-Sometimes you may need to define a function to plot the expression.  All
+Sometimes it is necessary to define a function to plot the expression. All
 the arguments to plot3d are evaluated before being passed to plot3d, and
-so trying to make an expression which does just what you want may be
+so trying to make an expression which does just what is needed may be
 difficult, and it is just easier to make a function.   
 
 @example
-M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
-f(x, y) := float (M [?round(x), ?round(y)])$
-plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
+(%i13) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
+       [1, 2, 3, 3])$
+(%i14) f(x, y) := float (M [?round(x), ?round(y)])$
+(%i15) plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting24,8cm}
+@end ifnotinfo
 
 See @code{plot_options} for more examples.
 
