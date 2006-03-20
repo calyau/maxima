@@ -1783,7 +1783,6 @@
   (cond ((null e) nil)
 	((funcall p e) e))) 
 
-(declare-top(special l c k)) 
 
 (comment (the following func is not complete)) 
 
@@ -1807,19 +1806,21 @@
 
 
 ;; Check e for an expression of the form x^kk*(b*x^n+a)^l.  If it
-;; matches, set the special (!) var k to kk and set the special var c
-;; to the list (l a n b).
+;; matches, Return the two values kk and (list l a n b).
 (defun bata0 (e)
-  (cond ((atom e) nil)
-	((and (mtimesp e)
-	      (null (cdddr e))
-	      (or (and (setq k (findp (cadr e)))
-		       (setq c (bxm (caddr e) (polyinx (caddr e) var nil))))
-		  (and (setq k (findp (caddr e)))
-		       (setq c (bxm (cadr e) (polyinx (cadr e) var nil))))))
-	 t)
-	((setq c (bxm e (polyinx e var nil)))
-	 (setq k 0.)))) 
+  (let (k c)
+    (cond ((atom e) nil)
+	  ((and (mtimesp e)
+		(null (cdddr e))
+		(or (and (setq k (findp (cadr e)))
+			 (setq c (bxm (caddr e) (polyinx (caddr e) var nil))))
+		    (and (setq k (findp (caddr e)))
+			 (setq c (bxm (cadr e) (polyinx (cadr e) var nil))))))
+	   (values k c))
+	  ((setq c (bxm e (polyinx e var nil)))
+	   (setq k 0.)
+	   (values k c)))))
+
 
 ;;(DEFUN BATAP (E) 
 ;;  (PROG (K C L) 
@@ -1915,14 +1916,16 @@
 ;;; of course would give wrong results.
 
 (defun batap-new (e) 
-  (let (k c) 
-    (declare (special k c))
-    ;; Parse e
-    (when (bata0 e)
-      (multiple-value-bind
-	    ;; e=x^k*(a+b*x^n)^l
-	    (l a n b)  (values-list c)
-	(when (and (freeof var k) (freeof var n) (freeof var l)
+  ;; Parse e
+  (multiple-value-bind (k c)
+      (bata0 e)
+    (when k
+      ;; e=x^k*(a+b*x^n)^l
+      (destructuring-bind (l a n b)
+	  c
+	(when (and (freeof var k)
+		   (freeof var n)
+		   (freeof var l)
 		   (alike1 a (m-t (m*t b (m^t ul n))))
 		   (eq ($asksign b) '$neg)
 		   (eq ($asksign (setq k (m1+t k))) '$pos)
@@ -1942,11 +1945,9 @@
 ;; also checks that all the conditions hold.  If not, NIL is returned.
 ;;
 (defun batap-inf (e)
-  (let (k c)
-    (declare (special k c))
-    (when (bata0 e)
-      ;; bata0 checks for x^k*(cc+d*x^r)^l.  It binds k to the
-      ;; exponent of x^k, and returns a list of l, cc, r, d
+  (multiple-value-bind (k c)
+      (bata0 e)
+    (when k
       (destructuring-bind (l d r cc)
 	  c
 	(let* ((s (mul -1 l))
@@ -1965,25 +1966,30 @@
 	    (values k s d r cc)))))))
   
 
+;; Handles beta integrals.
 (defun batapp (e)
-  (prog (k c d l al) 
-     (cond ((not (or (equal ll 0) (eq ll '$minf)))
-	    (setq e (subin (m+ ll var) e))))
-     (cond ((not (bata0 e)) (return nil))
-	   ((and (ratgreaterp (setq al (caddr c)) 0.)
-		 (eq ($asksign (setq k (m// (m+ 1. k)
-					    al)))
-		     '$pos)
-		 (ratgreaterp (setq l (m* -1. (car c)))
-			      k)
-		 (eq ($asksign (m* (setq d (cadr c))
-				   (setq c (cadddr c))))
-		     '$pos))
-	    (setq l (m+ l (m*t -1. k)))
-	    (return (m// `(($beta) ,k ,l)
-			 (mul* al (m^ c k) (m^ d l)))))))) 
+  (cond ((not (or (equal ll 0)
+		  (eq ll '$minf)))
+	 (setq e (subin (m+ ll var) e))))
+  (multiple-value-bind (k c)
+      (bata0 e)
+    (cond ((null k)
+	   nil)
+	  (t
+	   (destructuring-bind (l d al c)
+	       c
+	     ;; e = x^k*(d+c*x^al)^l.
+	     (let ((new-k (m// (m+ 1 k) al)))
+	       (when (and (ratgreaterp al 0.)
+			  (eq ($asksign new-k) '$pos)
+			  (ratgreaterp (setq l (m* -1. l))
+				       new-k)
+			  (eq ($asksign (m* d c))
+			      '$pos))
+		 (setq l (m+ l (m*t -1. new-k)))
+		 (m// `(($beta) ,new-k ,l)
+		      (mul* al (m^ c new-k) (m^ d l))))))))))
 
-(declare-top(unspecial l c k)) 
 
 ;; Compute exp(d)*gamma((c+1)/b)/b/a^((c+1)/b).  In essence, this is
 ;; the value of integrate(x^c*exp(d-a*x^b),x,0,inf).
