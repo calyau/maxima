@@ -498,13 +498,17 @@ integrate(log(x)^2/(x^2+1),x,0,inf);
  *
  * where the first derivative is evaluated at r=1+k and the second at r=-k.
  *
+ * Actually, we can have maxima compute it for us, because we want the
+ * derivative of x^k*beta(k+1,-k) which is
+ *
+ * log(3)*3^k*beta(k+1,-k)+3^k*(psi[0](k+1)-psi[0](-k))*beta(k+1,-k)
+ *
+ * Some simple numerical evaluations for k=-1/2 and k=-1/3 indicates
+ * that this result is probably correct.
  */
-/*
-integrate(x^k*log(x)/(x+3),x,0,inf);
--((%i*log(3)^2+%i*%pi^2)*%e^(log(3)*k)*sin(%pi*k)
-	 +(log(3)^2+%pi^2)*%e^(log(3)*k)*cos(%pi*k))
-	 /2
-*/
+integrate(x^kj*log(x)/(x+3),x,0,inf);
+3^kj*(psi[0](kj+1)-psi[0](-kj))*beta(kj+1,-kj)+log(3)*3^kj*beta(kj+1,-kj);
+
 
 /* p. 95 */
 /*
@@ -554,6 +558,15 @@ integrate(exp(x/4)/(9*exp(x/2)+4),x,minf,inf);
  *
  * Not sure if this is right or not.  Maxima is using rectzto%pi2 to
  * evaluate this integral.
+ *
+ * If we follow Wang's derivation, we need to find q(z) such that
+ * q(z)-q(z+2*%i*%pi) = z.  We find that q(z) = %i/(4*%pi)*z^2+z/2.
+ *
+ * R(z) = 1/((z-1/z)/2-%i.  We need to find the poles of R(z) such
+ * that 0 <= Im(z) < 2*%pi.  In this case, the (only) pole is z = %i.
+ * We need to then find the residue of q(z)/(sinh(z)-%i) at z =
+ * glog(%i) = %i*%pi/2.  Maxima says the residue is -%i/2.  Hence the
+ * value of the integral is 2*%i*%pi*(-%i/2) = %pi.
  */
 integrate(x/(sinh(x)-%i),x,minf,inf);
 %pi;
@@ -634,9 +647,9 @@ sqrt(3)*log(sqrt(3)+2)/3;
 (assume(k1>0),declare(k1,noninteger),0);
 0;
 /*
- * This is not such a good integral to use.  log(x) is negative over the integration
- * limits, so integrand is complex.  Let's change the integrand to be
- * (-log(x))^k1 instead, which is real-valued.
+ * This is not such a good integral to use.  log(x) is negative over
+ * the integration limits, so integrand is complex.  Let's change the
+ * integrand to be (-log(x))^k1, instead, which is real-valued.
  *
  * In this case, it's easy to see that the substitution y=-log(x)
  * gives as a gamma function.

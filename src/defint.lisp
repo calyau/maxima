@@ -1806,6 +1806,9 @@
 
 
 
+;; Check e for an expression of the form x^kk*(b*x^n+a)^l.  If it
+;; matches, set the special (!) var k to kk and set the special var c
+;; to the list (l a n b).
 (defun bata0 (e)
   (cond ((atom e) nil)
 	((and (mtimesp e)
@@ -1836,42 +1839,71 @@
 ;;			C))))))
 
 
-;;; Integrals of the form i(log(x)^m*x^k*(a+b*x^n)^l,x,0,ul) with
-;;; ul>0, b<0, a=-b*ul^n, k>-1, l>-1, n>0, m a nonnegative integer. 
-;;; These integrals are essentially partial derivatives of the 
-;;; Beta function (i.e. the Eulerian integral of the first kind).
-;;; Note that, currently, with the default setting intanalysis:true,
-;;; this function might not even be called for some of these integrals.
-;;; However, this can be palliated by setting intanalysis:false. 
+;; Integrals of the form i(log(x)^m*x^k*(a+b*x^n)^l,x,0,ul).  There
+;; are two cases to consider: One case has ul>0, b<0, a=-b*ul^n, k>-1,
+;; l>-1, n>0, m a nonnegative integer.  The second case has ul=inf, l < 0.
+;;
+;; These integrals are essentially partial derivatives of the Beta
+;; function (i.e. the Eulerian integral of the first kind).  Note
+;; that, currently, with the default setting intanalysis:true, this
+;; function might not even be called for some of these integrals.
+;; However, this can be palliated by setting intanalysis:false.
 
 (defun zto1 (e)				
   (when (or (mtimesp e) (mexptp e))
-    (let ((m 0) (log (list '(%log) var)))
-      (flet ((set-m (p) (setq m p)))
-	(find-if #'(lambda (fac) (powerofx fac log #'set-m var)) (cdr e)))
+    (let ((m 0)
+	  (log (list '(%log) var)))
+      (flet ((set-m (p)
+	       (setq m p)))
+	(find-if #'(lambda (fac)
+		     (powerofx fac log #'set-m var))
+		 (cdr e)))
       (when (and (freeof var m) 
 		 (eq (ask-integer m '$integer) '$yes)
 		 (not (eq ($asksign m) '$neg))) 
 	(setq e (m//t e (list '(mexpt) log m)))
-	(multiple-value-bind
-	      (k/n l n b) (batap-new e)
-	  (when k/n
-	    (let ((beta (simplify (list '($beta) k/n l)))
-		  (m (if (eq ($asksign m) '$zero) 0 m)))
-	      ;; The result looks like B(k/n,l) ( ... ).
-	      ;; Perhaps, we should just $factor, instead of
-	      ;; pulling out beta like this.
-	      (m*t
-	       beta
-	       ($fullratsimp
-		(m//t
+	(cond
+	  ((eq ul '$inf)
+	   (multiple-value-bind (kk s d r cc)
+	       (batap-inf e)
+	     ;; We have i(x^kk/(d+cc*x^r)^s,x,0,inf) =
+	     ;; beta(aa,bb)/(cc^aa*d^bb*r).  Compute this, and then
+	     ;; differentiate it m times to get the log term
+	     ;; incorporated.
+	     (when kk
+	       (let* ((aa (div (add 1 var) r))
+		      (bb (sub s aa))
+		      (m (if (eq ($asksign m) '$zero)
+			     0
+			     m)))
+	       (let ((res (div `(($beta) ,aa ,bb)
+			       (mul (m^t cc aa)
+				    (m^t d bb)
+				    r))))
+		 ($at ($diff res var m)
+		      (list '(mequal) var kk)))))))
+	  (t
+	   (multiple-value-bind
+		 (k/n l n b) (batap-new e)
+	     (when k/n
+	       (let ((beta (simplify (list '($beta) k/n l)))
+		     (m (if (eq ($asksign m) '$zero) 0 m)))
+		 ;; The result looks like B(k/n,l) ( ... ).
+		 ;; Perhaps, we should just $factor, instead of
+		 ;; pulling out beta like this.
 		 (m*t
-		  (m^t (m-t b) (m1-t l))
-		  (m^t ul (m*t n (m1-t l)))
-		  (m^t n (m-t (m1+t m)))
-		  ($at ($diff (m*t (m^t ul (m*t n var)) (list '($beta) var l))
-			      var m) (list '(mequal) var k/n))) 
-		 beta))))))))))
+		  beta
+		  ($fullratsimp
+		   (m//t
+		    (m*t
+		     (m^t (m-t b) (m1-t l))
+		     (m^t ul (m*t n (m1-t l)))
+		     (m^t n (m-t (m1+t m)))
+		     ($at ($diff (m*t (m^t ul (m*t n var))
+				      (list '($beta) var l))
+				 var m)
+			  (list '(mequal) var k/n)))
+		    beta))))))))))))
 
 
 ;;; If e is of the form given below, make the obvious change
@@ -1899,6 +1931,39 @@
 	  (values (m//t k n) l n b))))))
 
 
+;; Wang p. 71 gives the following formula for a beta function:
+;;
+;; integrate(x^(k-1)/(c*x^r+d)^s,x,0,inf)
+;;   = beta(a,b)/(c^a*d^b*r)
+;;
+;; where a = k/r > 0, b = s - a > 0, s > k > 0, r > 0, c*d > 0.
+;;
+;; This function matches this and returns k-1, d, r, c, a, b.  And
+;; also checks that all the conditions hold.  If not, NIL is returned.
+;;
+(defun batap-inf (e)
+  (let (k c)
+    (declare (special k c))
+    (when (bata0 e)
+      ;; bata0 checks for x^k*(cc+d*x^r)^l.  It binds k to the
+      ;; exponent of x^k, and returns a list of l, cc, r, d
+      (destructuring-bind (l d r cc)
+	  c
+	(let* ((s (mul -1 l))
+	       (kk (add k 1))
+	       (a (div kk r))
+	       (b (sub s a)))
+	  (when (and (freeof var k)
+		     (freeof var r)
+		     (freeof var l)
+		     (eq ($asksign kk) '$pos)
+		     (eq ($asksign a) '$pos)
+		     (eq ($asksign b) '$pos)
+		     (eq ($asksign (sub s k)) '$pos)
+		     (eq ($asksign r) '$pos)
+		     (eq ($asksign (mul cc d)) '$pos))
+	    (values k s d r cc)))))))
+  
 
 (defun batapp (e)
   (prog (k c d l al) 
