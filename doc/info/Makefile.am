@@ -34,6 +34,38 @@ maxima_TEXINFOS = Introduction.texi Help.texi Command.texi Operators.texi \
   ifactor.texi ggf.texi f90.texi eval_string.texi diag.texi cholesky.texi \
   bode.texi augmented_lagrangian.texi opsubst.texi stirling.texi interpol.texi
 
+figurefiles = \
+figures/plotdf1.gif\
+figures/plotdf2.gif\
+figures/plotdf3.gif\
+figures/plotdf4.gif\
+figures/plotdf5.gif\
+figures/plotdf6.gif\
+figures/plotting1.gif\
+figures/plotting2.gif\
+figures/plotting3.gif\
+figures/plotting4.gif\
+figures/plotting5.gif\
+figures/plotting6.gif\
+figures/plotting7.gif\
+figures/plotting8.gif\
+figures/plotting9.gif\
+figures/plotting10.gif\
+figures/plotting11.gif\
+figures/plotting12.gif\
+figures/plotting13.gif\
+figures/plotting14.gif\
+figures/plotting15.gif\
+figures/plotting16.gif\
+figures/plotting17.gif\
+figures/plotting18.gif\
+figures/plotting19.gif\
+figures/plotting20.gif\
+figures/plotting21.gif\
+figures/plotting22.gif\
+figures/plotting23.gif\
+figures/plotting24.gif
+
 maximahtml.mk:
 	./texi2html -split_chapter --lang=en --output=. maxima.texi
 	rm -f maxima-html.mk
@@ -47,7 +79,9 @@ $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
-genericdirDATA = $(MAXIMAHTML)
+genericdirDATA = \
+$(MAXIMAHTML)\
+$(figurefiles)
 
 clean-local: clean-info
 clean-local: clean-html
@@ -58,4 +92,4 @@ clean-info:
 clean-html:
 	rm -f maxima*.html
 
-EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init
+EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA)
