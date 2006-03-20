@@ -421,20 +421,39 @@ integrate(1/(%e^(%i*x)*(x^2+1)),x,minf,inf);
 /* p. 80 */
 /* 
  * Wang gives %pi/%e
+ *
+ * I think Wang's answer is wrong.
+ *
+ * If we exponentialize the integrand, we get 
+ *
+ * %i*exp(-2*%i*x)/2/(x^2+1) - %i/2/(x^2+1).
+ *
+ * The integral of the second term is obviously %i*%pi/2.  The
+ * integral of the first term can be down via residues, using the
+ * residue at x = -%i, which is -exp(-2)/4.  Thus, the integral should
+ * be %i*%pi*exp(-2)/2-%i*%pi/2.  (We need to change the sign of the
+ * residue because we traverse the real axis in the opposite
+ * direction.)
  */
-/*
 integrate(sin(x)/(%e^(%i*x)*(x^2+1)),x,minf,inf);
--%e^(-2)*(%e^2-1)*%i*%pi/2
-*/
+-%e^(-2)*(%e^2-1)*%i*%pi/2;
 
 /* p. 80 */
 /*
  * Wang gives %pi/%e^2
+ *
+ * I think Wang's answer is wrong.
+ *
+ * Using the same derivation as above, we get
+ *
+ * %i/2/(x^2+1)*(exp(-3*%i*x)-exp(-%i*x).
+ *
+ * We use the lower half plane and compute the residue at x = -%i,
+ * which is exp(-3)*(exp(2)-1)/4.  Thus, the integral is
+ * -%i*%pi*exp(-3)*(exp(2)-1)/2.
  */
-/*
 integrate(sin(x)/(%e^(2*%i*x)*(x^2+1)),x,minf,inf);
--%e^(-3)*(%e^2-1)*%i*%pi/2
-*/
+-%e^(-3)*(%e^2-1)*%i*%pi/2;
 
 /* p. 83 */
 /*
@@ -487,6 +506,14 @@ integrate(sin(q*x)^2/x^2,x,0,inf);
 %pi*q/2;
 
 /* p. 92 */
+/*
+ * We can verify this integral by using
+ * integrate(x^k*log(x)^2/(x^2+1),x,0,inf), and the evaluate the
+ * result at k = 0.  The integral is a bit messy in terms of a beta
+ * function, the digamma, and trigamma functions.  But maxima can
+ * evaluate these at k = 0 and the result is %pi^3/8.
+ *
+*/
 integrate(log(x)^2/(x^2+1),x,0,inf);
 %pi^3/8;
 
@@ -619,7 +646,7 @@ integrate(cos(x)^3*sin(x)^2,x,3*%pi/2,3*%pi);
  *
  * The rectform is -atan(sqrt(7)/3)/3, which is -acos(3/4)/3, 
  * which is -1/3*(%pi/2-asin(3/4))=-%pi/6+asin(3/4)/3.  
- * Maxima gives an asnwer with the opposite sign.
+ * Maxima gives an answer with the opposite sign.
  *
  * But we can evaluate the indefinite integral to be
  *
