@@ -28,5 +28,8 @@
 
    ;; Spence's function (related to dilogarithm)
    #:dspenc
+
+   ;; Quadpack routines
+   #:dqag #:dqags #:dqagi #:dqawc #:dqawf #:dqawo #:dqaws
    )
   (:documentation "Package for the Fortran routines we need from SLATEC"))
