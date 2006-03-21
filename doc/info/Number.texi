@@ -1,3 +1,4 @@
+
 @c end concepts Number Theory
 @menu
 * Definitions for Number Theory::  
@@ -344,6 +345,23 @@ After executing @code{tellrat (%phi^2 - %phi - 1)} and @code{algebraic: true},
 
 @end deffn
 
+@deffn {Function} ifactors (@var{n})
+For a positive integer @var{n} returns the factorization of @var{n}. If
+@code{n=p1^e1..pk^nk} is the decomposition of @var{n} into prime
+factors, ifactors returns @code{[[p1, e1], ... , [pk, ek]]}.
+
+Factorization methods used are trial divisions by primes up to 9973,
+Pollard's rho method and elliptic curve method.
+
+@example
+(%i1) ifactors(51575319651600);
+(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
+(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
+(%o2)                        51575319651600
+@end example
+
+@end deffn
+
 @deffn {Function} inrt (@var{x}, @var{n})
 Returns the integer @var{n}'th root of the absolute value of @var{x}.
 
@@ -398,6 +416,29 @@ which differ by an integer.
 
 @end deffn
 
+@deffn {Function} power_mod (@var{a}, @var{n}, @var{m})
+Computes @code{a^n mod m} where @var{a} is an integer and @var{n}
+and @var{m} are positive integers.
+
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                                  2
+(%i2) ratsimp(3^15), modulus=5;
+(%o2)                                  2
+@end example
+
+@end deffn
+
+@deffn {Function} next_prime (@var{n})
+Returns the smallest prime bigger than @var{n}.
+
+@example
+(%i1) next_prime(27);
+(%o1)                       29
+@end example
+
+@end deffn
+
 @deffn {Function} partfrac (@var{expr}, @var{var})
 Expands the expression @var{expr} in partial fractions
 with respect to the main variable @var{var}.  @code{partfrac} does a complete
@@ -424,13 +465,40 @@ the expansion falls out.
                     x + 2   x + 1          2
                                     (x + 1)
 @end example
-
 @end deffn
 
 @c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
 @deffn {Function} primep (@var{n})
-Returns @code{true} if @code{n} is a prime, @code{false} if not.
+Primality test. If @code{primep (n)} returns @code{false}, @var{n} is a
+composite number and if it returns @code{true}, @var{n} is a prime number
+with very high probability.
 
+For @var{n} less than 34155071728321 a deterministic version of Miller-Rabin's
+test is used. If @code{primep (n)} returns @code{true}, then @var{n} is a
+prime number.
+
+For @var{n} bigger than 34155071728321 @code{primep} uses
+@code{primep_number_of_tests} Miller-Rabin's pseudo-primality tests
+and one Lucas pseudo-primality test. The probability that @var{n} will
+pass one Miller-Rabin test is less than 1/4. Using the default value 25 for
+@code{primep_number_of_tests}, the probability of @var{n} beeing
+composite is much smaller that 10^-15.
+
+@end deffn
+
+@defvr {Option variable} primep_number_of_tests
+Default value: 25
+
+Number of Miller-Rabin's tests used in @code{primep}.
+@end defvr
+
+@deffn {Function} prev_prime (@var{n})
+Returns the greatest prime smaller than @var{n}.
+
+@example
+(%i1) prev_prime(27);
+(%o1)                       23
+@end example
 @end deffn
 
 @deffn {Function} qunit (@var{n})

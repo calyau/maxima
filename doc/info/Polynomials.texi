@@ -257,6 +257,8 @@ variables or functions, into factors irreducible over the integers.
 @code{factor (@var{expr}, p)} factors @var{expr} over the field of integers with an element
 adjoined whose minimum polynomial is p.
 
+@code{factor} uses @code{ifactors} function for factoring integers.
+
 @code{factorflag} if @code{false} suppresses the factoring of integer factors
 of rational expressions.
 
@@ -275,13 +277,13 @@ same factors.
 be used otherwise the Berlekamp algorithm, which is the default, will
 be used.
 
-@code{intfaclim} is the largest divisor which will be tried when
-factoring a bignum integer.  If set to @code{false} (this is the case when
-the user calls @code{factor} explicitly), or if the integer is a fixnum (i.e.
-fits in one machine word), complete factorization of the integer will
-be attempted.  The user's setting of @code{intfaclim} is used for internal
-calls to @code{factor}. Thus, @code{intfaclim} may be reset to prevent Maxima from
-taking an inordinately long time factoring large integers.
+@code{intfaclim} if @code{false} maxima will give up factorization of
+integers if no factor is found after trial divisions and Pollard's rho
+method.  If set to @code{false} (this is the case when the user calls
+@code{factor} explicitly), complete factorization of the integer will be
+attempted.  The user's setting of @code{intfaclim} is used for internal
+calls to @code{factor}. Thus, @code{intfaclim} may be reset to prevent
+Maxima from taking an inordinately long time factoring large integers.
 
 Examples:
 @c EXAMPLES BELOW ADAPTED FROM examples (factor)
@@ -729,25 +731,22 @@ Examples:
 @end deffn
 
 @defvr {Option variable} intfaclim
-Default value: 1000
+Default value: true
 
-@c NEED A LINK TO DESCRIPTION OF "BIGNUM"
-@code{intfaclim} is the largest divisor which will be tried
-when factoring a bignum integer.
+If @code{true}, maxima will give up factorization of
+integers if no factor is found after trial divisions and Pollard's rho
+method and factorization will not be complete.
 
-When @code{intfaclim} is @code{false} (this is the case
-@c MAYBE WE WANT TO LINK TO A DESCRIPTION OF "FIXNUM" HERE
-when the user calls @code{factor} explicitly), or if the integer is a fixnum
-(i.e., fits in one machine word),
-factors of any size are considered.
-@code{intfaclim} is set to @code{false} when factors are computed in
-@code{divsum}, @code{totient}, and @code{primep}.
+When @code{intfaclim} is @code{false} (this is the case when the user
+calls @code{factor} explicitly), complete factorization will be
+attempted.  @code{intfaclim} is set to @code{false} when factors are
+computed in @code{divisors}, @code{divsum} and @code{totient}.
 @c ANY OTHERS ??
 
 @c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
-Internal calls to @code{factor} respect the user-specified value of @code{intfaclim}.
-Setting @code{intfaclim} to a smaller value may reduce the
-time spent factoring large integers.
+Internal calls to @code{factor} respect the user-specified value of
+@code{intfaclim}.  Setting @code{intfaclim} to @code{false} may reduce
+the time spent factoring large integers.
 @c NEED EXAMPLES HERE
 
 @end defvr
