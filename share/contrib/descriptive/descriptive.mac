@@ -122,6 +122,7 @@ www.biomates.net
 
 2005, june: first release
 2005, november: definition of function 'floor' removed
+2006, march: joining 3d points 
 */
 
 
@@ -158,8 +159,7 @@ listoflistsp(y):=listp(y) and every('identity,map('listofnumbersp,y))$
 callgnuplot():=
       if ?length(?\*autoconf\-win32\*) = 4
          then system("wgnuplot -persist maxout.gnuplot")
-         else system("(gnuplot -persist maxout.gnuplot; rm -f maxout.gnuplot)&")$
-
+         else system("(gnuplot -persist maxout.gnuplot)&")$
 
 /*               DATA MANIPULATION                 */
 
@@ -598,7 +598,9 @@ dataplot(m,[select]):=
               then (print("set xlabel \'",defaults[3][1],"\'"),
                     print("set ylabel \'",defaults[3][2],"\'"),
                     print("set zlabel \'",defaults[3][3],"\'")),
-            print("splot '-' with points pointtype",defaults[9]),
+            if defaults[4]
+               then print("splot '-' with lines 1")
+               else print("splot '-' with points pointtype",defaults[9]),
             aux: length(m),
             for i thru aux do print(m[i,1], m[i,2], m[i,3]) ),
           callgnuplot())
