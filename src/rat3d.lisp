@@ -34,75 +34,9 @@
 (defmvar algfac* nil)
 (defmvar low* nil)
 
-;; Changing ifaclim to true - numerical value has no meaning after introduction
-;; of ifactor package!
-;;(defmvar $intfaclim 1000.)
 (defmvar $intfaclim t)
 (defmvar $berlefact t)
 
-
-;; Do not remove the following function -- it is needed for non-PDP10 Macsymas
-;; On PDP10s, the function is hand coded in RAT;RATLAP >.
-
-;;;;;;
-;;
-;; Commenting out function cfactor - new implementation in ifactor.lisp.
-;;
-;;(defmfun cfactor (x)
-;;  (prog (divisor tt ans k)
-;;     (cond ((null $factorflag) (return (list x 1)))
-;;	   ((floatp x)
-;;	    (errrjf "`factor' given floating arg"))
-;;	   ((pzerop x) (return (list (pzero) 1)))
-;;	   ((eqn x -1) (return (list -1 1)))
-;;	   ((minusp x)
-;;	    (return (cons -1 (cons 1 (cfactor (minus x))))))
-;;	   ((lessp x 2) (return (list x 1))))
-;;   (cond ((fixnump x) (return (fixnum-cfactor x))))
-;;     (setq k 2 divisor 2)
-;;     sett (setq tt 0)
-;;     loop (cond ((zerop (remainder x divisor))
-;;		 (setq tt (add1 tt))
-;;		 (setq x (quotient x divisor))
-;;		 (go loop)))
-;;   (cond ((greaterp tt 0)
-;;	    (setq ans (cons divisor (cons tt ans)))))
-;;     (cond ((equal divisor 2) (setq divisor 3))
-;;	   ((equal divisor 3) (setq divisor 5))
-;;	   (t (setq divisor (plus divisor k))
-;;	      (cond ((eql k 2) (setq k 4)) (t (setq k 2)))))
-;;     (cond ((or (and $intfaclim (greaterp divisor $intfaclim))
-;;		(greaterp (times divisor divisor) x))
-;;	    (return (cond ((greaterp x 1)
-;;			   (cons x (cons 1 ans)))
-;;			  (t ans)))))
-;;     (go sett)))
-;;
-;;(defmfun fixnum-cfactor (x)
-;;  (declare (fixnum x))
-;;  (prog ((divisor 2)  (tt 0)  (k 2) ans)
-;;     (declare (fixnum divisor tt  k))
-;;     sett (setq tt 0)
-;;     loop (cond ((f= 0 (fixnum-remainder x divisor))
-;;		 (setq tt (f+ 1 tt))
-;;		 (setq x (the fixnum (quot  x divisor)))
-;;		 (go loop)))
-;;     (cond ((> tt 0)
-;;	    (setq ans (cons divisor (cons tt ans)))))
-;;     (cond ((f= divisor 2) (setq divisor 3))
-;;	   ((f= divisor 3) (setq divisor 5))
-;;	   (t (setq divisor (f+ divisor k))
-;;	      (cond ((f= k 2) (setq k 4)) (t (setq k 2)))))
-;;     (cond ((or (and $intfaclim (f> divisor $intfaclim))
-;;		(f> (f* divisor divisor) x))
-;;	    (return (cond ((f> x 1)
-;;			   (cons x (cons 1 ans)))
-;;			  (t ans)))))
-;;     (go sett)))
-;;
-;;;;;;;;;;;
-
-;;;****** END OF FUNCTION WHICH IS ONLY COMMENTED OUT IF THERE IS A LAP ******
 
 
 (defmfun listovars (q)
