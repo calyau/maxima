@@ -147,7 +147,6 @@ Additional packages
 * eval_string::                 Maxima expressions as strings.
 * f90::                         Maxima to fortran translator.
 * ggf::                         Generating function of sequences.
-* ifactor::                     Integer factorization.
 * impdiff::                     Implicit derivatives.
 * interpol::                    Interpolation package.
 * lindstedt::                   Lindstedt package.
@@ -427,10 +426,6 @@ f90
 ggf
 
 * Definitions for ggf::
-
-ifactor
-
-* Definitions for ifactor::
 
 impdiff
 
@@ -726,15 +721,11 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, ifactor, f90, Top
+@node ggf, impdiff, f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node ifactor, impdiff, ggf, Top
-@chapter ifactor
-@include ifactor.texi
-
-@node impdiff, interpol, ifactor, Top
+@node impdiff, interpol, ggf, Top
 @chapter impdiff
 @include impdiff.texi
 
