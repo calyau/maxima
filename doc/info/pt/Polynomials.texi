@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Polynomials.texi/1.18/Wed Nov 16 06:43:34 2005/-ko/
+@c /Polynomials.texi/1.19/Wed Mar 22 08:03:08 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introdu@value{cedilha}@~ao a Polin@^omios::  
@@ -258,6 +258,8 @@ vari@'aveis ou fun@,{c}@~oes, em fatores irredut@'iveis sobre os inteiros.
 @code{factor (@var{expr}, p)} fatora @var{expr} sobre o campo dos inteiros com um elemento
 adjunto cujo menor polin@^omio @'e p.
 
+@code{factor} usa a fun@,{c}@~ao @code{ifactors} para fatorar inteiros.
+
 @code{factorflag} se @code{false} suprime a fatora@,{c}@~ao de fatores inteiros
 de express@~oes racionais.
 
@@ -276,13 +278,13 @@ mesmos fatores.
 usado de outra forma o algor@'itmo de Berlekamp, que @'e o padr@~ao, ser@'a
 usado.
 
-@code{intfaclim} @'e o maior divisor que ser@'a tentado quando
-fatorando um grande n@'umero inteiro.  Se escolhida para @code{false} (esse @'e o caso quando
-o usu@'ario chama explicitamente @code{factor}), ou se o inteiro for um @code{fixnum} (i.e.
-ajustado @`a paravra da m@'aquina), a fatora@,{c}@~ao completa do inteiro ser@'a
+@code{intfaclim} se @code{false} maxima ir@'a interromper a fatora@,{c}@~ao de
+inteiros se nenhum fator for encontrado ap@'os tentar divis@~oes e o m@'etodo rho de
+Pollard.  Se escolhida para @code{false} (esse @'e o caso quando o usu@'ario chama
+@code{factor} explicitamente), a fatora@,{c}@~ao completa do inteiro ser@'a
 tentada.  A escolha do usu@'ario para @code{intfaclim} @'e usada para chamadas
-internas para @code{factor}. Dessa forma, @code{intfaclim} pode ser colocado em zero para prevenir Maxima de
-gastar um tempo excessivamente fatorando grandes inteiros.
+internas a @code{factor}. Dessa forma, @code{intfaclim} pode ser resetada para evitar que o
+Maxima gaste um tempo muito longo fatorando inteiros grandes.
 
 Exemplos:
 @c EXAMPLES BELOW ADAPTED FROM examples (factor)
@@ -730,25 +732,22 @@ Exemplos:
 @end deffn
 
 @defvr {Vari@'avel de op@,{c}@~ao} intfaclim
-Valor Padr@~ao: 1000
+Valor padr@~ao: true
 
-@c NEED A LINK TO DESCRIPTION OF "BIGNUM"
-@code{intfaclim} @'e o maior divisor que ser@'a tentado
-quando fatorando um grande n@'umero inteiro.
+Se @code{true}, maxima ir@'a interromper a fatora@,{c}@~ao de
+inteiros se nenhum fator for encontrado ap@'os tentar divis@~oes e o m@'etodo rho de
+Pollard e a fatora@,{c}@~ao n@~ao ir@'a ser completada.
 
-Quando @code{intfaclim} for @code{false} (esse @'e o caso
-@c MAYBE WE WANT TO LINK TO A DESCRIPTION OF "FIXNUM" HERE
-quando o usu@'aro chama @code{factor} explicitamente), ou se o inteiro @'e um @code{fixnum}
-(i.e., ajustado em uma palavra de m@'aquina),
-fatores de qualquer tamanho s@~ao considerados.
-@code{intfaclim} @'e escolhida para @code{false} fatores s@~ao calculados em
-@code{divsum}, @code{totient}, e @code{primep}.
+Quando @code{intfaclim} for @code{false} (esse @'e o caso quando o usu@'ario
+chama @code{factor} explicitamente), a fatora@,{c}@~ao completa ir@'a ser
+tentada.  @code{intfaclim} @'e escolhida para @code{false} quando fatores s@~ao
+calculados em @code{divisors}, @code{divsum} e @code{totient}.
 @c ANY OTHERS ??
 
 @c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
-Chamadas internas a @code{factor} respeitam o valor especificado pelo usu@'ario para @code{intfaclim}.
-Escolhendo @code{intfaclim} para um pequeno valor podemos reduzir o
-tempo gasto fatorando grandes inteiros.
+Chamadas internas a @code{factor} respeitam o valor especificado pelo usu@'ario para
+@code{intfaclim}.  Escolhendo @code{intfaclim} para um pequeno valor podemos reduzir
+o tempo gasto fatorando grandes inteiros.
 @c NEED EXAMPLES HERE
 
 @end defvr

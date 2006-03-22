@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Number.texi/1.15/Sat Feb 11 05:24:53 2006/-ko/
+@c /Number.texi/1.16/Wed Mar 22 08:02:47 2006/-ko/
 @c end concepts Number Theory
 @menu
 * Defini@value{cedilha}@~oes para Teoria dos N@'umeros::  
@@ -346,6 +346,23 @@ Ap@'os executar @code{tellrat (%phi^2 - %phi - 1)} e @code{algebraic: true},
 
 @end deffn
 
+@deffn {Fun@value{cedilha}@~ao} ifactors (@var{n})
+Para um inteiro positivo @var{n} retorna a fatora@,{c}@~ao de @var{n}. Se
+@code{n=p1^e1..pk^nk} for a decomposi@,{c}@~ao de @var{n} em fatores
+primos, @code{ifactors} retorna @code{[[p1, e1], ... , [pk, ek]]}.
+
+Os m@'etodos de fatora@,{c}@~ao usados s@~ao divis@~oes triviais por primos at@'e 9973,
+o m@'etodo rho de Pollard e o m@'etodo da curva el@'iptica.
+
+@example
+(%i1) ifactors(51575319651600);
+(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
+(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
+(%o2)                        51575319651600
+@end example
+
+@end deffn
+
 @deffn {Fun@value{cedilha}@~ao} inrt (@var{x}, @var{n})
 Retorna a parte inteira da @var{n}'@'esima ra@'iz do valor absoluto de @var{x}.
 
@@ -400,6 +417,30 @@ que diferem por um inteiro.
 
 @end deffn
 
+
+@deffn {Fun@value{cedilha}@~ao} power_mod (@var{a}, @var{n}, @var{m})
+Calcula @code{a^n mod m} onde @var{a} @'e um inteiro e @var{n}
+e @var{m} s@~ao inteiros positivos.
+
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                                  2
+(%i2) ratsimp(3^15), modulus=5;
+(%o2)                                  2
+@end example
+
+@end deffn
+
+@deffn {Fun@value{cedilha}@~ao} next_prime (@var{n})
+Retorna o menor primo maior que @var{n}.
+
+@example
+(%i1) next_prime(27);
+(%o1)                       29
+@end example
+
+@end deffn
+
 @deffn {Fun@value{cedilha}@~ao} partfrac (@var{expr}, @var{var})
 Expande a express@~ao @var{expr} em fra@,{c}@~oes parciais
 com rela@,{c}@~ao @`a vari@'avel principal @var{var}.  @code{partfrac} faz uma decomposi@,{c}@~ao
@@ -431,8 +472,36 @@ a expans@~ao acontece.
 
 @c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
 @deffn {Fun@value{cedilha}@~ao} primep (@var{n})
-Retorna @code{true} se @code{n} for um primo, @code{false} se n@~ao.
+Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} @'e um
+n@'umero compostro e se esse teste retornar @code{true}, @var{n} @'e um n@'umero primo
+com grande probabilidade.
 
+Para @var{n} menor que 34155071728321 uma vers@~ao deterministra do teste de 
+Miller-Rabin @'e usada. Se @code{primep (n)} retornar @code{true}, ent@~ao @var{n} @'e um
+n@'umero primo.
+
+Para @var{n} maior que 34155071728321 @code{primep} usa
+@code{primep_number_of_tests} que @'e os testes de pseudo-primalidade de Miller-Rabin
+e um teste de pseudo-primalidade de Lucas. A probabilidade que @var{n} ir@'a
+passar por um teste de Miller-Rabin @'e menor que 1/4. Usando o valor padr@~ao 25 para
+@code{primep_number_of_tests}, a probabilidade de @var{n} passar no teste sendo
+composto @'e muito menor que 10^-15.
+
+@end deffn
+
+@defvr {Vari@'avel de op@value{cedilha}@~ao} primep_number_of_tests
+Valor padr@~ao: 25
+
+N@'umero de testes de Miller-Rabin usados em @code{primep}.
+@end defvr
+
+@deffn {Fun@value{cedilha}@~ao} prev_prime (@var{n})
+Retorna o maior primo menor que @var{n}.
+
+@example
+(%i1) prev_prime(27);
+(%o1)                       23
+@end example
 @end deffn
 
 @deffn {Fun@value{cedilha}@~ao} qunit (@var{n})
