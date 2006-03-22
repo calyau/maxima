@@ -153,6 +153,5 @@
 	(format file "e~%") ))
     
     ;; call gnuplot
-    ($system (format nil "~a ~a" $gnuplot_command
-		     (format nil $gnuplot_view_args "maxout.gnuplot")))
+    (gnuplot-process "maxout.gnuplot")
     ))
