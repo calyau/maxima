@@ -889,6 +889,8 @@
 (defun new-file-search (name template)
   (cond ((probe-file name))
 	((atom template)
+     (if (mstringp template)
+       (setq template (subseq (maybe-invert-string-case (string template)) 1)))
 	 (let ((lis (loop for w in (split-string template "{}")
 			  when (null (position #\, w))
 			  collect w
