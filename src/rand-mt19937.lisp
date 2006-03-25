@@ -6,23 +6,6 @@
 ;;; (1) Construct floating point numbers using portable operations.
 ;;; (2) Construct large integers using all bits of each chunk.
 
-(defpackage :mt19937
-  (:use :common-lisp)
-  (:shadow #:random-state
-       #:random-state-p
-       #:random
-       #:*random-state*
-       #:make-random-state)
-  (:export #:random-state
-       #:random-state-p
-       #:random
-       #:*random-state*
-       #:make-random-state
-       #:%random-single-float
-       #:%random-double-float
-       #:random-chunk
-       #:init-random-state))
-
 ;;; Begin MT19937 implementation.
 ;;; **********************************************************************
 ;;;
