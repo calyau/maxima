@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src/macsys.lisp)
 
-AM_INIT_AUTOMAKE(maxima,5.9.2.19cvs)
+AM_INIT_AUTOMAKE(maxima,5.9.3.1cvs)
 AC_CANONICAL_HOST
 case "$host" in
         *mingw*)
