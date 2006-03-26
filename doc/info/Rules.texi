@@ -205,7 +205,7 @@ replacement which is then simplified.
 The rules themselves can be
 treated as functions which transform an expression by one
 operation of the pattern match and replacement.
-If the match fails, the original expression is returned.
+If the match fails, the rule function returns @code{false}.
 
 @end deffn
 
@@ -998,6 +998,37 @@ foorule2, foorule3, +rule1, *rule1, ^rule1]
 (%o12)                         foo
 (%i13) remrule ("^", "^rule1");
 (%o13)                          ^
+@end example
+
+A worked example: anticommutative multiplication.
+
+@c ===beg===
+@c gt (i, j) := integerp(j) and i < j;
+@c matchdeclare (i, integerp, j, gt(i));
+@c tellsimpafter (s[i]^^2, 1);
+@c tellsimpafter (s[i] . s[j], -s[j] . s[i]);
+@c s[1] . (s[1] + s[2]);
+@c expand (%);
+@c factor (expand (sum (s[i], i, 0, 9)^^5));
+@c ===end===
+@example
+(%i1) gt (i, j) := integerp(j) and i < j;
+(%o1)           gt(i, j) := integerp(j) and i < j
+(%i2) matchdeclare (i, integerp, j, gt(i));
+(%o2)                         done
+(%i3) tellsimpafter (s[i]^^2, 1);
+(%o3)                 [^^rule1, simpncexpt]
+(%i4) tellsimpafter (s[i] . s[j], -s[j] . s[i]);
+(%o4)                   [.rule1, simpnct]
+(%i5) s[1] . (s[1] + s[2]);
+(%o5)                    s  . (s  + s )
+                          1     2    1
+(%i6) expand (%);
+(%o6)                      1 - s  . s
+                                2    1
+(%i7) factor (expand (sum (s[i], i, 0, 9)^^5));
+(%o7) 100 (s  + s  + s  + s  + s  + s  + s  + s  + s  + s )
+            9    8    7    6    5    4    3    2    1    0
 @end example
 
 @end deffn
