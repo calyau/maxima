@@ -45,12 +45,15 @@ Wolfgang Jenkner
 Stavros Macrakis
 Camm Maguire
 Judah Milgram
+Volker van Nek
 Paulo Ney de Souza
 Mario Rodriguez Riotorto
 Sergey Semerikov
 Dan Stanger
 Viktor Toth
 Raymond Toy
+Jaime Villate
+Andrej Vodopivec
 Barton Willis
 Cliff Yapp
 Vadim V. Zhytnikov
@@ -67,9 +70,10 @@ Salvador Bosch Pérez
 Valerij Pipin
 Ole Rohne
 Thomas A. Russ
-Jaime Villate
+Marek Rychlik
 
 Starting with version 5.9.0, Maxima uses mk::defsystem and (slightly
 modified) run-lisp from the Common Lisp Open Code Collection,
-<http://clocc.sourceforge.net>. The nregex code was written by
-Lawrence E. Freil.
+<http://clocc.sourceforge.net>.
+
+The nregex code was written by Lawrence E. Freil.
