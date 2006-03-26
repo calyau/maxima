@@ -103,7 +103,9 @@
 (putprop '$transbind #'obsolete-variable 'assign)
 
 (defvar *untranslated-functions-called* nil)
-(declaim (special *declared-translated-functions*))
+
+(defmvar *declared-translated-functions* nil
+         "List of functions which are believed to be translated.")
 
 (defmvar $tr_semicompile nil
   "If TRUE TRANSLATE_FILE and COMPFILE output forms which will~
