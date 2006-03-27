@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.22/Sat Mar 11 23:39:39 2006/-ko/
+@c /Plotting.texi/1.23/Wed Mar 22 08:02:51 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -40,10 +40,15 @@ Argumentos adicionais de s@'imbolos podem ser dados tais como
 O exemplo adiante monta o gr@'afico de duas curvas, usando pontos grandes, rotulando-se o primeiro
 @code{jim} e o segundo rotulando-se @code{jane}.   
 @example
-openplot_curves ([["@{plotpoints 1@} @{pointsize 6@} @{label jim@}
-      @{xaxislabel @{joe is nice@}@}"], [1, 2, 3, 4, 5, 6, 7, 8],
-      ["@{label jane@} @{color pink @}"], [3, 1, 4, 2, 5, 7]]);
+(%i1) openplot_curves ([["@{plotpoints 1@} @{pointsize 6@}
+      @{label jim@} @{xaxislabel @{joe is nice@}@}"],
+      [1, 2, 3, 4, 5, 6, 7, 8], ["@{label jane@} @{color pink @}"],
+      [3, -1, 4, 2, 5, 7]]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting1,8cm}
+@end ifnotinfo
 
 Algumas outras palavras chave especiais s@~ao @code{xfun}, @code{color}, @code{plotpoints}, @code{linecolors},
 @code{pointsize}, @code{nolines}, @code{bargraph}, @code{labelposition}, @code{xaxislabel}, e
@@ -114,7 +119,7 @@ que inclui muitas fun@,{c}@~oes internas.
 @c REPORTED AS SF BUG # 1385271
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
-Exemplos:
+@b{Examples:}
 
 Montando um gr@'afico de uma express@~ao, e escolhendo alguns par@^ametros comumente usados.
 
@@ -123,7 +128,11 @@ Montando um gr@'afico de uma express@~ao, e escolhendo alguns par@^ametros comum
 (%i2) plot2d (sec(x), [x, -2, 2], [y, -20, 20], [nticks, 200])$
 @end example
 
-Montando gr@'afico de fun@,{c}@~oes pelo nome.
+@ifnotinfo
+@image{figures/plotting2,8cm}@image{figures/plotting3,8cm}
+@end ifnotinfo
+
+@b{Montando gr@'afico de fun@,{c}@~oes pelo nome.}
 
 @c ===beg===
 @c F(x) := x^2 $
@@ -145,6 +154,10 @@ $g
 (%i4) plot2d ([F, G, H], [u, -1, 1])$
 @end example
 
+@ifnotinfo
+@image{figures/plotting4,8cm}@image{figures/plotting5,8cm}
+@end ifnotinfo
+
 Em qualquer lugar onde pode existir uma express@~ao comum, pode existir uma express@~ao param@'etrica: 
 @var{parametric_expr} @'e uma lista da forma
 @code{[parametric, @var{x_expr}, @var{y_expr}, @var{t_range}, @var{options}]}.
@@ -157,7 +170,7 @@ No exemplo seguinte, montaremos o gr@'afico de um c@'irculo, ent@~ao faremos
 a montagem do gr@'afico com somente poucos pontos usados, desse modo vamos pegar uma estrela,
 e inicialmente montaremos o gr@'afico juntamente com uma fun@,{c}@~ao comum de X.
 
-Exemplos:
+@b{Exemplos de gr@'aficos param@'etricos:}
 @c PUT PARAMETRIC EXAMPLES HERE
 
 @itemize @bullet
@@ -167,18 +180,33 @@ Montar o gr@'afico de um c@'irculo de forma param@'etrica.
 (%i1) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
         [nticks, 80]])$
 @end example
-@item 
+
+@ifnotinfo
+@image{figures/plotting6,8cm}
+@end ifnotinfo
+
+@item
 Monta o gr@'afico de uma estrela: liga oito pontos sobre a circunfer@^encia de um c@'irculo.
 @example
 (%i2) plot2d ([parametric, cos(t), sin(t), [t, -%pi*2, %pi*2],
         [nticks, 8]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting7,8cm}
+@end ifnotinfo
+
 @item
 Monta o gr@'afico de um polin@^omio c@'ubico da forma comum e de um c@'irculo da forma param@'etrica.
 @example
 (%i3) plot2d ([x^3 + 2, [parametric, cos(t), sin(t), [t, -5, 5],
         [nticks, 80]]], [x, -3, 3])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting8,8cm}
+@end ifnotinfo
+
 @end itemize
 
 Express@~oes discretas podem tamb@'em serem usadas ou em lugar de express@~oes comuns ou
@@ -189,7 +217,7 @@ ou da forma
 @code{[discrete, @var{xy_list}]},
 onde @var{xy_list} @'e uma lista de pares @code{[@var{x},@var{y}]}.
 
-Exemplos:
+@b{Exemplos de gr@'aficos discretos:}
 @c PUT DISCRETE EXAMPLES HERE
 
 @itemize @bullet
@@ -207,24 +235,44 @@ Monta um gr@'afico com segmentos de reta.
 (%i4) plot2d([discrete,xx,yy])$
 @end example
 
+@ifnotinfo
+@image{figures/plotting9,8cm}
+@end ifnotinfo
+
 @item
 Monta um gr@'afico com segmentos de reta, usando uma lista de pares.
 @example
 (%i5) plot2d([discrete,xy])$
 @end example
 
+@ifnotinfo
+@image{figures/plotting10,8cm}
+@end ifnotinfo
+
 @item
 Monta um gr@'afico com pontos.
 @example
-(%i6) plot2d([discrete,xx,yy],[gnuplot_curve_styles,["with points"]])$
+(%i6) plot2d([discrete,xx,yy],[gnuplot_curve_styles,
+       ["with points"]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting11,8cm}
+@end ifnotinfo
 
 @item
 Monta o gr@'afico da curva @code{cos(@var{x})} usando linhas e (@var{xx},@var{yy})
 usando pontos.
 @example
-plot2d([cos(x),[discrete,xx,yy]],[x,0,10],[gnuplot_curve_styles,["with lines","with points pointsize 3"]])$
+(%i7) plot2d([cos(x),[discrete,xx,yy]],[x,0,10],
+     [gnuplot_curve_styles,
+     ["with lines","with points pointsize 3"]])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting12,8cm}
+@end ifnotinfo
+
 @end itemize
 
 Veja tamb@'em @code{plot_options}, que descreve op@,{c}@~oes de montagem de gr@'afico e tem mais exemplos.
@@ -232,7 +280,8 @@ Veja tamb@'em @code{plot_options}, que descreve op@,{c}@~oes de montagem de gr@'
 @end deffn
 
 @deffn {Fun@,{c}@~ao}  xgraph_curves (@var{list})
-transforma em gr@'afico a lista de `grupos de pontos' dados em lista usando xgraph.
+transforma em gr@'afico a lista de `grupos de pontos' dados em lista usando xgraph.  Se o programa
+xgraph n@~ao estiver instalado, esse comando ir@'a falhar.
 
 Uma lista de grupos de pontos pode ser da forma
 
@@ -253,7 +302,8 @@ xgraph_curves ([pt_set1, pt_set2, pt_set3]);
 transforma em gr@'afico os tr@^es grupos de pontos com tr@^es curvas.
 
 @example
-pt_set: append (["NoLines: True", "LargePixels: true"], [x0, y0, x1, y1, ...]);
+pt_set: append (["NoLines: True", "LargePixels: true"],
+                          [x0, y0, x1, y1, ...]);
 @end example
 
 @noindent
@@ -281,11 +331,16 @@ de "Maxima Plot".
 Para fazer um gr@'afico em barras com largura de 0.2 unidades, e
 para montar o gr@'afico com duas possibilidades diferentes dos tais gr@'aficos em barras:
 @example
-xgraph_curves ([append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
-    create_list ([i - .2, i^2], i, 1, 3)),
-    append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
-    create_list ([i + .2, .7*i^2], i, 1, 3))]);
+(%i1) xgraph_curves ([append (["BarGraph: true", "NoLines: true",
+      "BarWidth: .2"], create_list ([i - .2, i^2], i, 1, 3)),
+      append (["BarGraph: true", "NoLines: true", "BarWidth: .2"],
+      create_list ([i + .2, .7*i^2], i, 1, 3))]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting13,8cm}
+@end ifnotinfo
+
 @noindent
 
 Um arquivo tempor@'ario @file{xgraph-out} @'e usado.
@@ -505,7 +560,8 @@ cada uma das quais @'e @code{"title '@var{title_string}'"}.
 Exemplo:
 
 @example
-[gnuplot_curve_titles, ["title 'Minha primeira fun@,{c}@~ao'", "title 'Minha segunda fun@,{c}@~ao'"]]
+[gnuplot_curve_titles,
+["title 'Minha primeira fun@,{c}@~ao'", "title 'Minha segunda fun@,{c}@~ao'"]]
 @end example
 
 @item
@@ -555,19 +611,21 @@ outras coisas.  Veja a documenta@,{c}@~ao do gnuplot de @code{set term postscrip
 Exemplo:
 
 @example
-[gnuplot_ps_term_command, "set term postscript eps enhanced color solid 18"]
+[gnuplot_ps_term_command,
+"set term postscript eps enhanced color solid 18"]
 @end example
 
 @end itemize
 
-Exemplos:
+@b{Exemplos:}
 
 @itemize @bullet
 @item
 Grava um gr@'afico de @code{sin(x)} para o arquivo @code{sin.eps}.
 @end itemize
 @example
-plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps], [gnuplot_out_file, "sin.eps"])$
+(%i1) plot2d (sin(x), [x, 0, 2*%pi], [gnuplot_term, ps],
+                        [gnuplot_out_file, "sin.eps"])$
 @end example
 
 @itemize @bullet
@@ -576,8 +634,13 @@ Usa a op@,{c}@~ao do y para arrancar singularidades e a op@,{c}@~ao
 gnuplot_preamble para colocar a chave na parte inferior do gr@'afico em lugar de no topo.
 @end itemize
 @example
-plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10], [gnuplot_preamble, "set key bottom"])$
+(%i2) plot2d ([gamma(x), 1/gamma(x)], [x, -4.5, 5], [y, -10, 10],
+                     [gnuplot_preamble, "set key bottom"])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting14,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -585,10 +648,18 @@ Usa um muito complicado @code{gnuplot_preamble} para produzir elegantes r@'otulo
 (Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
 @example
-my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, '-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0,'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
-plot2d ([cos(x), sin(x), tan(x), cot(x)], [x, -2*%pi, 2*%pi],
-    [y, -2, 2], [gnuplot_preamble, my_preamble]);
+(%i3) my_preamble: "set xzeroaxis; set xtics ('-2pi' -6.283, \
+'-3pi/2' -4.712, '-pi' -3.1415, '-pi/2' -1.5708, '0' 0, \
+'pi/2' 1.5708, 'pi' 3.1415,'3pi/2' 4.712, '2pi' 6.283)"$
+
+(%i4) plot2d([cos(x), sin(x), tan(x), cot(x)],
+       [x, -2*%pi, 2.1*%pi], [y, -2, 2],
+       [gnuplot_preamble, my_preamble]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting15,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -599,9 +670,15 @@ no gnuplot.
 (Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
 @example
-my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' -6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, '-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, '@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' 6.283)"$
-plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi], [y, -2, 2],
-    [gnuplot_preamble, my_preamble], [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
+(%i5) my_preamble: "set xzeroaxis; set xtics ('-2@{/Symbol p@}' \
+-6.283, '-3@{/Symbol p@}/2' -4.712, '-@{/Symbol p@}' -3.1415, \
+'-@{/Symbol p@}/2' -1.5708, '0' 0,'@{/Symbol p@}/2' 1.5708, \
+'@{/Symbol p@}' 3.1415,'3@{/Symbol p@}/2' 4.712, '2@{/Symbol p@}' \
+6.283)"$
+
+(%i6) plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi],
+    [y, -2, 2], [gnuplot_preamble, my_preamble],
+    [gnuplot_term, ps], [gnuplot_out_file, "trig.eps"]);
 @end example
 
 @itemize @bullet
@@ -609,8 +686,13 @@ plot2d ([cos(x), sin(x), tan(x)], [x, -2*%pi, 2*%pi], [y, -2, 2],
 Uma montagem de gr@'afico tridimensional usando o terminal gnuplot pm3d.
 @end itemize
 @example
-plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50], [gnuplot_pm3d, true])$
+(%i7) plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+        [grid, 50, 50], [gnuplot_pm3d, true])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting16,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -618,10 +700,16 @@ Uma montagem de gr@'afico tridimensional sem a malha e com contornos
 projetados no plano inferior.
 @end itemize
 @example
-my_preamble: "set pm3d at s;unset surface;set contour;set cntrparam levels 20;unset key"$
-plot3d (atan (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4], [grid, 50, 50],
-    [gnuplot_pm3d, true], [gnuplot_preamble, my_preamble])$
+(%i8) my_preamble: "set pm3d at s;unset surface;set contour;\
+set cntrparam levels 20;unset key"$
+(%i9) plot3d(atan(-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [grid, 50, 50], [gnuplot_pm3d, true],
+    [gnuplot_preamble, my_preamble])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting17,8cm}
+@end ifnotinfo
 
 @itemize @bullet
 @item
@@ -629,9 +717,14 @@ Uma montagem de gr@'afico onde o eixo z @'e representado apenas por cores.
 (Note que a seq@"u@^encia de caracteres @code{gnuplot_preamble} deve ser fornecida inteiramente sem qualquer quebra de linha.)
 @end itemize
 @example
-plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
-    [gnuplot_preamble, "set view map; unset surface"], [gnuplot_pm3d, true], [grid, 150, 150])$
+(%i10) plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
+    [gnuplot_preamble, "set view map; unset surface"],
+    [gnuplot_pm3d, true], [grid, 150, 150])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting18,8cm}
+@end ifnotinfo
 
 @end defvr
 
@@ -645,8 +738,12 @@ plot3d (cos (-x^2 + y^3/4), [x, -4, 4], [y, -4, 4],
 Mostra um gr@'afico de uma ou tr@^es express@~oes como fun@,{c}@~oes de duas vari@'aveis.
 
 @example
-plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
+(%i1) plot3d (2^(-u^2 + v^2), [u, -5, 5], [v, -7, 7]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting19,8cm}
+@end ifnotinfo
 
 monta o gr@'afico @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v} variando em [-5,5] e
 [-7,7] respectivamente, e com @var{u} sobre o eixo x, e @code{v} sobre o eixo y.
@@ -654,9 +751,13 @@ monta o gr@'afico @code{z = 2^(-u^2+v^2)} com @code{u} e @code{v} variando em [-
 Um terceiro exemplo de modelo de argumento @'e
 
 @example
-plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)), y*sin(x/2)],
-   [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
+(%i2) plot3d ([cos(x)*(3 + y*cos(x/2)), sin(x)*(3 + y*cos(x/2)),
+   y*sin(x/2)], [x, -%pi, %pi], [y, -1, 1], ['grid, 50, 15]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting20,8cm}
+@end ifnotinfo
 
 que monta o gr@'afico da banda de Moebius, parametrizada por tr@^es express@~oes fornecidas
 como o primeiro argumento para @code{plot3d}.  Um adicional e opcional argumento
@@ -674,11 +775,14 @@ que inclui muitas fun@,{c}@~oes internas.
 Esse exemplo mostra uma montagem de gr@'afico da parte real de @code{z^1/3}.
 
 @example
- plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
-     ['grid, 12, 80], ['plot_format, ps],
-     ['transform_xy, polar_to_xy], ['view_direction, 1, 1, 1.4],
-     ['colour_z, true]);
+(%i3) plot3d (r^.33*cos(th/3), [r, 0, 1], [th, 0, 6*%pi],
+      ['grid, 12, 80], ['transform_xy, polar_to_xy],
+      ['view_direction, 1, 1, 1.4], ['colour_z, true]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting21,8cm}
+@end ifnotinfo
 
 @noindent
 Aqui a op@,{c}@~ao @code{view_direction} indica a dire@,{c}@~ao da qual n@'os
@@ -690,39 +794,56 @@ permitem rota@,{c}@~ao interativa do objeto.
 Outro exemplo @'e uma superf@'icie de Klein:
 
 @example
-expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0) - 10.0;
-expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y) + 3.0);
-expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y));
+(%i4) expr_1: 5*cos(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
+      + 3.0) - 10.0$
+(%i5) expr_2: -5*sin(x)*(cos(x/2)*cos(y) + sin(x/2)*sin(2*y)
+      + 3.0)$
+(%i6) expr_3: 5*(-sin(x/2)*cos(y) + cos(x/2)*sin(2*y))$
 
-plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi], [y, -%pi, %pi], ['grid, 40, 40]);
+(%i7) plot3d ([expr_1, expr_2, expr_3], [x, -%pi, %pi],
+      [y, -%pi, %pi], ['grid, 40, 40]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting22,8cm}
+@end ifnotinfo
 
 ou um toro
 
 @example
-expr_1: cos(y)*(10.0+6*cos(x));
-expr_2: sin(y)*(10.0+6*cos(x));
-expr_3: -6*sin(x);
-
-plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi], [y, 0, 2*%pi], ['grid, 40, 40]);
+(%i8) expr_1: cos(y)*(10.0+6*cos(x))$
+(%i9) expr_2: sin(y)*(10.0+6*cos(x))$
+(%i10) expr_3: -6*sin(x)$
+(%i11) plot3d ([expr_1, expr_2, expr_3], [x, 0, 2*%pi],
+       [y, 0, 2*%pi], ['grid, 40, 40]);
 @end example
+
+@ifnotinfo
+@image{figures/plotting23,8cm}
+@end ifnotinfo
 
 Podemos tamb@'em enviar sa@'idas para o gnuplot:
 
 @example
-plot3d (2^(x^2 - y^2), [x, -1, 1], [y, -2, 2], [plot_format, gnuplot]);
+(%i12) plot3d (2^(x^2 - y^2), [x, -1, 1], [y, -2, 2],
+       [plot_format, gnuplot]);
 @end example
 
-Algumas vezes voc@^e precisa definir uma fun@,{c}@~ao para mortar o gr@'afico de uma express@~ao.  Todos
+Algumas vezes isso @'e necess@'ario para definir uma fun@,{c}@~ao para montar o graico da express@~ao. Todos
 os argumentos para plot3d s@~ao avaliados antes de serem passados para plot3d, e
-ent@~ao tentando fazer um express@~ao que faz apenas o que voc@^e que pode ser 
+ent@~ao tentando fazer um express@~ao que faz apenas o que @'e preciso pode ser 
 dif@'icil, e @'e apenas mais f@'acil fazer uma fun@,{c}@~ao.   
 
 @example
-M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4], [1, 2, 3, 3])$
-f(x, y) := float (M [?round(x), ?round(y)])$
-plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
+(%i13) M: matrix([1, 2, 3, 4], [1, 2, 3, 2], [1, 2, 3, 4],
+       [1, 2, 3, 3])$
+(%i14) f(x, y) := float (M [?round(x), ?round(y)])$
+(%i15) plot3d (f, [x, 1, 4], [y, 1, 4], ['grid, 4, 4])$
 @end example
+
+@ifnotinfo
+@image{figures/plotting24,8cm}
+@end ifnotinfo
 
 Veja @code{plot_options} para mais exemplos.
 
