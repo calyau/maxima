@@ -1,5 +1,5 @@
 \input texinfo
-@c english version 1.29
+@c english version 1.32
 @c -*-texinfo-*-
 
 @c 2000-04-17 Jim Van Zandt <jrv@vanzandt.mv.com> Added header,
@@ -52,9 +52,16 @@ Maxima desciende del sistema Macsyma, desarrollado en el MIT (Massachusetts Inst
 
 @i{Notas de la traducci@'on espa@~nola.}
 
-La primera traducci@'on al espa@~nol del manual de Maxima se debi@'o a Juan Pablo Romero Bernal y colaboradores del proyecto GLUD-CLog (@url{http://glud.udistrital.edu.co/clog}) del Grupo Linux Universidad Distrital (Colombia). Parte de la versi@'on actual se debe a ellos. Actualmente este documento lo mantiene Mario Rodr@'{@dotless{i}}guez Riotorto (@url{http://www.biomates.net}); para comentarios, sugerencias y colaboraciones, contactar en la direcci@'on de correo electr@'onico:
+La versi@'on espa@~nola del manual de Maxima la mantienen Mario
+Rodr@'{@dotless{i}}guez y Jaime Villate; para comentarios, sugerencias y
+colaboraciones, cont@'actese mediante cualquiera de las siguientes
+direcciones de correo electr@'onico:
 
-mario ARROBA edu PUNTO xunta PUNTO es
+@itemize @bullet
+@item mario ARROBA edu PUNTO xunta PUNTO es
+
+@item villate ARROBA fe PUNTO up PUNTO pt
+@end itemize
 
 @c includes
 
@@ -123,7 +130,6 @@ Paquetes adicionales
 * eval_string::                 Expresiones de Maxima en formato de cadena.
 * f90::                         Traductor de Maxima fortran.
 * ggf::                         Expresi@'on general de sucesiones.
-* ifactor::                     Factorizaci@'on entera.
 * impdiff::                     Derivadas impl@'{@dotless{i}}citas.
 * interpol::                    Interpolaci@'on.
 * lindstedt::                   Paquete Lindstedt.
@@ -406,10 +412,6 @@ f90
 ggf
 
 * Definiciones para ggf::
-
-ifactor
-
-* Definiciones para ifactor::
 
 impdiff
 
@@ -703,15 +705,11 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, ifactor, f90, Top
+@node ggf, impdiff, f90, Top
 @chapter ggf
 @include ggf.texi
 
-@node ifactor, impdiff, ggf, Top
-@chapter ifactor
-@include ifactor.texi
-
-@node impdiff, interpol, ifactor, Top
+@node impdiff, interpol, ggf, Top
 @chapter impdiff
 @include impdiff.texi
 

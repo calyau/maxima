@@ -1,4 +1,4 @@
-@c english version 1.15
+@c english version 1.16
 @menu
 * Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
 @end menu
@@ -306,6 +306,25 @@ Por defecto, Maxima desconoce @code{%phi}. Tras ejecutar @code{tellrat (%phi^2 -
 
 @end deffn
 
+@deffn {Funci@'on} ifactors (@var{n})
+Devuelve la factorizaci@'on del argumento @var{n}, siendo @'este un 
+n@'umero entero positivo. Si @code{n=p1^e1..pk^nk} es la descomposici@'on 
+de @var{n} en n@'umeros primos, @code{ifactors} devuelve @code{[[p1, e1], ... , [pk, ek]]}.
+
+Los m@'etodos de factorizaci@'on son las divisones tentativas hasta el 9973,
+as@'{@dotless{i}} como los  m@'etodos rho de Pollard y el de la curva 
+el@'{@dotless{i}}ptica.
+
+@example
+(%i1) ifactors(51575319651600);
+(%o1)     [[2, 4], [3, 2], [5, 2], [1583, 1], [9050207, 1]]
+(%i2) apply("*", map(lambda([u], u[1]^u[2]), %));
+(%o2)                        51575319651600
+@end example
+
+@end deffn
+
+
 @deffn {Funci@'on} inrt (@var{x}, @var{n})
 Devuelve la ra@'{@dotless{i}}z entera @var{n}-@'esima del valor absoluto de  @var{x}.
 
@@ -335,6 +354,31 @@ Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
 
 @end deffn
 
+
+@deffn {Funci@'on} power_mod (@var{a}, @var{n}, @var{m})
+Calcula @code{a^n mod m}, siendo @var{a} un entero cualquiera y @var{n}
+y @var{m} enteros positivos.
+
+@example
+(%i1) power_mod(3, 15, 5);
+(%o1)                                  2
+(%i2) ratsimp(3^15), modulus=5;
+(%o2)                                  2
+@end example
+
+@end deffn
+
+@deffn {Funci@'on} next_prime (@var{n})
+Devuelve el menor de los primos mayores que @var{n}.
+
+@example
+(%i1) next_prime(27);
+(%o1)                       29
+@end example
+
+@end deffn
+
+
 @deffn {Funci@'on} partfrac (@var{expr}, @var{var})
 Expande la expresi@'on @var{expr} en fracciones parciales respecto de la variable principal @var{var}. La funci@'on @code{partfrac} hace una descomposici@'on completa en fracciones parciales. El algoritmo que se utiliza se basa en el hecho de que los denominadores de la expansi@'on en fracciones parciales (los factores del denominador original) son primos relativos. Los numeradores se pueden escribir como combinaciones lineales de los denominadores.
 
@@ -360,9 +404,40 @@ Expande la expresi@'on @var{expr} en fracciones parciales respecto de la variabl
 
 @c IS IT POSSIBLE TO MAKE A DECLARATION SUCH THAT primep RETURNS true ??
 @deffn {Funci@'on} primep (@var{n})
-Devuelve @code{true} si @code{n} es un n@'umero primo, @code{false} en caso contrario.
+Comprueba si el n@'umero entero @var{n} es o no primo, devolviendo @code{true}
+o @code{false} seg@'un el caso.
+
+Cuando el resultado de @code{primep (n)} es @code{false}, @var{n} es un
+n@'umero compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
+
+Si @var{n} es menor que 34155071728321, se utiliza una versi@'on 
+determin@'{@dotless{i}}stica de la prueba de Miller-Rabin. En tal caso,
+si @code{primep (n)} devuelve @code{true}, entonces @var{n} es un n@'umero primo.
+
+Para @var{n} mayor que 34155071728321 @code{primep} realiza un n@'umero de pruebas
+de seudo-primalidad de Miller-Rabin igual a @code{primep_number_of_tests} y una 
+prueba de seudo-primalidad de Lucas. La probabilidad de que @var{n} pase una
+prueba de Miller-Rabin es menor que 1/4. Con el valor por defecto de 
+@code{primep_number_of_tests}, que es 25, la probabilidad de que @var{n}
+sea compuesto es menor que 10^-15.
 
 @end deffn
+
+@defvr {Variable opcional} primep_number_of_tests
+Valor por defecto: 25
+
+N@'umero de pruebas de Miller-Rabin a realizar por @code{primep}.
+@end defvr
+
+@deffn {Funci@'on} prev_prime (@var{n})
+Devuelve el mayor de los primos menores que @var{n}.
+
+@example
+(%i1) prev_prime(27);
+(%o1)                       23
+@end example
+@end deffn
+
 
 @deffn {Funci@'on} qunit (@var{n})
 Devuelve la unidad principal de @code{sqrt (@var{n})}, siendo @var{n} un entero; consiste en la resoluci@'on de la ecuaci@'on de Pell  @code{a^2 - @var{n} b^2 = 1}.

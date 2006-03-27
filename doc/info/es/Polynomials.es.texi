@@ -1,4 +1,4 @@
-@c version 1.18
+@c version 1.20
 @menu
 * Introducci@'on a los Polinomios::  
 * Definiciones para Polinomios::  
@@ -198,6 +198,8 @@ Si la variable @code{sumsplitfact} vale @code{false} har@'a que @code{minfactori
 @deffn {Funci@'on} factor (@var{expr})
 Factoriza la expresi@'on @var{expr}, que puede contener cualquier n@'umero de variables o funciones, en factores irreducibles respecto de los enteros. La llamada @code{factor (@var{expr}, p)} factoriza @var{expr} en el campo de los enteros con un elemento a@~nadido cuyo polinomio m@'{@dotless{i}}nimo es p.
 
+La funci@'on @code{factor} utiliza a @code{ifactors} para factorizar enteros.
+
 Si la variable @code{factorflag} vale @code{false} suprime la factorizaci@'on de los factores enteros en las expresiones racionales.
 
 La variable @code{dontfactor} puede contener una lista de variables con respecto a las cuales no se factorizar@'a (inicialmente est@'a vac@'{@dotless{i}}a). Tampoco se factorizar@'a respecto de cualesquiera otra variables que sean menos importantes (seg@'un la ordenaci@'on que se sigue en el formato CRE) que aquellas que se encuentran en la lista @code{dontfactor}.
@@ -206,7 +208,14 @@ Si la variable @code{savefactors} vale @code{true}, los factores de una expresi@
 
 Si @code{berlefact} vale @code{false} entonces se utiliza el algoritmo de factorizaci@'on de Kronecker, en caso contrario se utilizar@'a el algoritmo de Berlekamp, que es el que se aplica por defecto.
 
-La variable @code{intfaclim} guarda el mayor divisor que se ensayar@'a al factorizar un n@'umero @code{bignum}. Si vale @code{false} (este es el caso cuando el usuario llama a @code{factor} expl@'{@dotless{i}}citamente), o si el entero ocupa dos bytes, se intentar@'a una factorizaci@'on completa del entero. El valor dado por el usuario a @code{intfaclim} se utiliza en las llamadas internas a @code{factor}. As@'{@dotless{i}}, puede ser necesario cambiar @code{intfaclim} a fin de evitar que Maxima consuma un tiempo excesivo intentando factorizar n@'umeros enteros grandes.
+Si la variable @code{intfaclim} vale @code{true}, Maxima desistir@'a de
+factorizar enteros si no encuentra ning@'un factor despu@'es de las
+divisiones tentativas y de aplicar el m@'etodo rho de Pollard. Si vale
+@code{false} (este es el caso cuando el usuario invoca expl@'{@dotless{i}}citamente
+a @code{factor}), se intentar@'a la factorizaci@'on completa del entero. El valor
+asignado a @code{intfaclim} se utiliza en llamadas internas a @code{factor}. As@'{@dotless{i}},
+se puede cambiar el valor de @code{intfaclim} para evitar que Maxima dedique
+un tiempo prohibitivo a factorizar n@'umeros enteros grandes.
 
 Ejemplos:
 @c EXAMPLES BELOW ADAPTED FROM examples (factor)
@@ -573,15 +582,25 @@ Ejemplos:
 @end deffn
 
 @defvr {Variable opcional} intfaclim
-Valor por defecto: 1000
+Valor por defecto: @code{true}
 
-@c NEED A LINK TO DESCRIPTION OF "BIGNUM"
-La variable @code{intfaclim} guarda el mayor divisor que se ensayar@'a al factorizar un n@'umero @code{bignum}. Si vale @code{false} (este es el caso cuando el usuario llama a @code{factor} expl@'{@dotless{i}}citamente), o si el entero ocupa dos bytes, se intentar@'a una factorizaci@'on completa del entero.
+Si vale @code{true}, Maxima  desistir@'a de
+factorizar enteros si no encuentra ning@'un factor despu@'es de las
+divisiones tentativas y de aplicar el m@'etodo rho de Pollard, por lo que 
+la factorizaci@'on puede quedar incompleta.
 
-A la variable @code{intfaclim} se le asigna el valor @code{false} cuando los factores se calculan desde las funciones @code{divsum}, @code{totient} y @code{primep}.
+Si vale @code{false} (este es el caso cuando el usuario invoca expl@'{@dotless{i}}citamente
+a @code{factor}), se intentar@'a la factorizaci@'on completa del entero. El valor
+asignado a @code{intfaclim} se utiliza en llamadas internas a @code{factor}. A la variable
+@code{intfaclim} se le asigna el valor @code{false} cuando se calculan factores desde las
+funciones @code{divisors}, @code{divsum} y @code{totient}.
+@c ANY OTHERS ??
 
 @c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
-Las llamadas internas a @code{factor} respetan el valor dado por el usuario a @code{intfaclim}. Asignando a @code{intfaclim} valores peque@~nos se puede reducir el tiempo de factorizaci@'on de n@'umeros enteros grandes.
+Las llamadas internas a @code{factor} respetan el valor dado por el usuario a @code{intfaclim}.
+Asignando a @code{intfaclim} el valor @code{true} se puede reducir  el tiempo que Maxima dedica a
+factorizar enteros grandes.
+@c NEED EXAMPLES HERE
 
 @end defvr
 
