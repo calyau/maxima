@@ -26,4 +26,5 @@
     "rtest_scalarp"
     "rtest_everysome"
     "rtestint"
+    "rtestifactor"
     ))
