@@ -1295,11 +1295,15 @@
 		 (setq ans (catch 'pin%ex (pin%ex d))))
 	    (cond ((null p*)
 		   (return (dintexp grand var)))
-		  ((and (zerop1 (get-limit grand var '$inf))
-			(zerop1 (get-limit grand var '$minf))
-			(setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d)))
+		  ((not (and (zerop1 (get-limit grand var '$inf))
+			     (zerop1 (get-limit grand var '$minf))))
+		   ;; These limits must exist for the integral to converge.
+		   (diverg))
+		  ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d))
 		   (return (m* (m// nc dc) ans)))
-		  (t (diverg)))))
+		  (t
+		   ;; Give up.  We don't know how to handle this.
+		   (return nil)))))
      en
      (cond ((setq ans (ggrm grand)) 
 	    (return ans))
@@ -2358,6 +2362,7 @@
 
 (declare-top(special *failflag *lhflag lhv *indicator cnt *disconflag)) 
 
+#+nil
 (defun %e-integer-coeff (exp)
   (cond ((mapatom exp) t)
 	((and (mexptp exp)
@@ -2366,38 +2371,65 @@
 		  '$yes))  t)
 	(t (andmapc '%e-integer-coeff (cdr exp)))))
 
+;; Check to see if each term in exp that is of the form exp(k*x) has
+;; an integer value for k.
+(defun %e-integer-coeff (exp)
+  (cond ((mapatom exp) t)
+	((and (mexptp exp)
+	      (eq (cadr exp) '$%e))
+	 (eq (ask-integer ($coeff (caddr exp) var) '$integer)
+	     '$yes))
+	(t (andmapc '%e-integer-coeff (cdr exp)))))
+
 (defun wlinearpoly (e var)
   (cond ((and (setq e (polyinx e var t))
 	      (equal (deg e) 1.))
 	 (subin 1. e)))) 
 
-(declare-top(special e $exponentialize))
+;;(declare-top (special e))
 
+;; Test to see if exp is of the form f(exp(x)), and if so, replace
+;; exp(x) with 'z*.
 (defun pin%ex (exp)
-  (pin%ex0 (cond ((notinvolve exp '(%sinh %cosh %tanh)) exp)
-		 (t (setq exp (let (($exponentialize t))
-				($expand exp)))))))
+  (declare (special $exponentialize))
+  (pin%ex0 (cond ((notinvolve exp '(%sinh %cosh %tanh))
+		  exp)
+		 (t
+		  (let (($exponentialize t))
+		    (setq exp ($expand exp)))))))
 
 (defun pin%ex0 (e)
-  (cond ((not (among var e))  e)
-	((atom e)  (throw 'pin%ex nil))
+  (declare (special e))			; Why does e need to be special?
+  (cond ((not (among var e))
+	 e)
+	((atom e)
+	 (throw 'pin%ex nil))
 	((and (mexptp e)
 	      (eq (cadr e)  '$%e))
-	 (cond ((eq (caddr e) var)  'z*)
+	 (cond ((eq (caddr e) var)
+		'z*)
 	       ((let ((linterm (wlinearpoly (caddr e) var)))
 		  (and linterm
 		       (m* (subin 0 e) (m^t 'z* linterm)))))
-	       (t (throw 'pin%ex nil))))
-	((mtimesp e)  (m*l (mapcar #'pin%ex0 (cdr e))))
-	((mplusp e)  (m+l (mapcar #'pin%ex0 (cdr e))))
-	(t (throw 'pin%ex nil))))
+	       (t
+		(throw 'pin%ex nil))))
+	((mtimesp e)
+	 (m*l (mapcar #'pin%ex0 (cdr e))))
+	((mplusp e)
+	 (m+l (mapcar #'pin%ex0 (cdr e))))
+	(t
+	 (throw 'pin%ex nil))))
 
-(declare-top (unspecial e)) 
+;;(declare-top (unspecial e)) 
 
+;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set p* to
+;; be p(x) and set pe* to f(exp(x)).
 (defun p*pin%ex (nd*)
   (setq nd* ($factor nd*))
-  (cond ((polyinx nd* var nil) (setq p* (cons nd* p*)) t)
-	((catch 'pin%ex (pin%ex nd*)) (setq pe* (cons nd* pe*)) t)
+  (cond ((polyinx nd* var nil)
+	 (setq p* (cons nd* p*)) t)
+	((catch 'pin%ex (pin%ex nd*))
+	 (setq pe* (cons nd* pe*)) t)
 	((mtimesp nd*)
 	 (andmapcar #'p*pin%ex (cdr nd*)))))
 
