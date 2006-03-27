@@ -56,9 +56,9 @@
 
 ;;; List of primes up to *largest-small-prime*
 
-(defconstant *largest-small-prime* 9973)
+(defvar *largest-small-prime* 9973)
 
-(defconstant *small-primes*
+(defvar *small-primes*
   '(
     2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97
     101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181
@@ -373,9 +373,9 @@
 ;;; modular inverse of a (modulus n)
 
 (defun mod-inv (a n)
-  (let ((v1 `(1 0 ,n)) (v2 `(0 1 ,a)))
+  (let ((v1 (list 1 0 n)) (v2 (list 0 1 a)))
     (do () ((= (caddr v2) 0))
-      (let ((k (floor (/ (caddr v1) (caddr v2)))) (uu `(0 0 0)))
+      (let ((k (floor (/ (caddr v1) (caddr v2)))) (uu (list 0 0 0)))
         (dotimes (i 3)
           (setf (nth i uu) (- (nth i v1) (* k (nth i v2)))))
         (setq v1 v2)
@@ -745,7 +745,7 @@
 	   (> n 2))
       (if (equal n 3)
 	  2
-	  (next-prime n -1))
+	  (next-prime (1- n) -1))
       (merror
        "Argument to prev_prime must be an integer greater than 2:~%~M." n)))
 
