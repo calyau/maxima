@@ -277,7 +277,7 @@ same factors.
 be used otherwise the Berlekamp algorithm, which is the default, will
 be used.
 
-@code{intfaclim} if @code{false} maxima will give up factorization of
+@code{intfaclim} if @code{true} maxima will give up factorization of
 integers if no factor is found after trial divisions and Pollard's rho
 method.  If set to @code{false} (this is the case when the user calls
 @code{factor} explicitly), complete factorization of the integer will be
@@ -745,7 +745,7 @@ computed in @code{divisors}, @code{divsum} and @code{totient}.
 
 @c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
 Internal calls to @code{factor} respect the user-specified value of
-@code{intfaclim}.  Setting @code{intfaclim} to @code{false} may reduce
+@code{intfaclim}.  Setting @code{intfaclim} to @code{true} may reduce
 the time spent factoring large integers.
 @c NEED EXAMPLES HERE
 
