@@ -1293,13 +1293,25 @@
 		     (involve grand '(%sinh %cosh %tanh)))
 		 (p*pin%ex n)	      ;setq's P* and PE*...Barf again.
 		 (setq ans (catch 'pin%ex (pin%ex d))))
+	    ;; We have an integral of the form p(x)*F(exp(x)), where
+	    ;; p(x) is a polynomial.
 	    (cond ((null p*)
+		   ;; No polynomial
 		   (return (dintexp grand var)))
 		  ((not (and (zerop1 (get-limit grand var '$inf))
 			     (zerop1 (get-limit grand var '$minf))))
 		   ;; These limits must exist for the integral to converge.
 		   (diverg))
 		  ((setq ans (rectzto%pi2 (m*l p*) (m*l pe*) d))
+		   ;; This only handles the case when the F(z) is a
+		   ;; rational function.
+		   (return (m* (m// nc dc) ans)))
+		  ((setq ans (log-transform (m*l p*) (m*l pe*) d))
+		   ;; If we get here, F(z) is not a rational function.
+		   ;; We transform it using the substitution x=log(y)
+		   ;; which gives us an integral of the form
+		   ;; p(log(y))*F(y)/y, which maxima should be able to
+		   ;; handle.
 		   (return (m* (m// nc dc) ans)))
 		  (t
 		   ;; Give up.  We don't know how to handle this.
@@ -2264,6 +2276,16 @@
        (m (m+ n -1) (m+ m -1)))
       ((signp l m) (solvex eql cl nil nil))))
 
+;; Integrate(p(x)*f(exp(x))/g(exp(x)),x,minf,inf) by applying the
+;; transformation y = exp(x) to get
+;; integrate(p(log(y))*f(y)/g(y)/y,y,0,inf).  This should be handled
+;; by dintlog.
+(defun log-transform (p pe d)
+  (let ((new-p (subst (list '(%log) var) var p))
+	(new-pe (subst var 'z* (catch 'pin%ex (pin%ex pe))))
+	(new-d (subst var 'z* (catch 'pin%ex (pin%ex d)))))
+    (defint (div (div (mul new-p new-pe) new-d) var) var 0 ul)))
+  
 ;; This implements Wang's algorithm in Chapter 5.2, pp. 98-100.
 ;;
 ;; This is a very brief description of the algorithm.  Basically, we
@@ -2389,7 +2411,7 @@
 ;;(declare-top (special e))
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
-;; exp(x) with 'z*.
+;; exp(x) with 'z*.  That is, basically return f(z*).
 (defun pin%ex (exp)
   (declare (special $exponentialize))
   (pin%ex0 (cond ((notinvolve exp '(%sinh %cosh %tanh))
@@ -2399,7 +2421,10 @@
 		    (setq exp ($expand exp)))))))
 
 (defun pin%ex0 (e)
-  (declare (special e))			; Why does e need to be special?
+  ;; Does e really need to be special here?  Seems to be ok without
+  ;; it; testsuite works.
+  #+nil
+  (declare (special e))
   (cond ((not (among var e))
 	 e)
 	((atom e)
