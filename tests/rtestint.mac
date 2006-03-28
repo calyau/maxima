@@ -540,8 +540,21 @@ integrate(x^kj*log(x)/(x+3),x,0,inf);
  * This is the same integral as above, using the substitution 
  * y=log(x).  See also Bug 1451351.
  */
-integrate(x*exp((kj+1)*x)/(exp(3)+3),x,minf,inf);
+integrate(x*exp((kj+1)*x)/(exp(x)+3),x,minf,inf);
 3^kj*(psi[0](kj+1)-psi[0](-kj))*beta(kj+1,-kj)+log(3)*3^kj*beta(kj+1,-kj);
+
+/* p. 94
+ *
+ * The default gcd gets a "quotient is not exact" error.  spmod works better.
+ */
+gcd:spmod;
+spmod;
+
+integrate((atan(x^(1/3)) + atan(x^(-1/3)))*log(x)/(x^2+1),x,0,inf);
+0;
+
+gcd:subres;
+subres;
 
 /* p. 95 */
 /*
@@ -608,6 +621,31 @@ integrate(x/(sinh(x)-%i),x,minf,inf);
 /* p. 101 */
 integrate(exp(-x^2),x,0,inf);
 sqrt(%pi)/2;
+
+/* p. 102 */
+(assume(s > 0), 0);
+0;
+integrate(1/sqrt(t)/exp(s*t),t,0,inf);
+sqrt(%pi)/sqrt(s);
+
+integrate(sin(s*x)/exp(x),x,0,inf);
+s/(s^2+1);
+
+/* p. 103 */
+/*
+ * There's a typo in Wang's thesis.  He has the integrand as
+ * exp(-s*t)*x^(1/3)*log(x).  I changed the x's to t's.
+ *
+ * Also, Wang says the answer is
+ *
+ * -gamma(1/3)*(log(s)-psi(4/3))/(6*s^(4/3))
+ *
+ * Assuming psi(4/3) is maxima's digamma function, psi[0](4/3), this
+ * result is 1/2 of the result maxima produces.
+ */
+integrate(exp(-s*t)*t^(1/3)*log(t),t,0,inf);
+gamma(1/3)*(-3*log(3)/2-%pi/(2*sqrt(3))-%gamma+3)/(3*s^(4/3))
+	-gamma(1/3)*log(s)/(3*s^(4/3));
 
 /* p. 106 */
 /* Verified via indefinite integral */
