@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Polynomials.texi/1.19/Wed Mar 22 08:03:08 2006/-ko/
+@c /Polynomials.texi/1.20/Tue Mar 28 09:28:08 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introdu@value{cedilha}@~ao a Polin@^omios::  
@@ -278,7 +278,7 @@ mesmos fatores.
 usado de outra forma o algor@'itmo de Berlekamp, que @'e o padr@~ao, ser@'a
 usado.
 
-@code{intfaclim} se @code{false} maxima ir@'a interromper a fatora@,{c}@~ao de
+@code{intfaclim} se @code{true} maxima ir@'a interromper a fatora@,{c}@~ao de
 inteiros se nenhum fator for encontrado ap@'os tentar divis@~oes e o m@'etodo rho de
 Pollard.  Se escolhida para @code{false} (esse @'e o caso quando o usu@'ario chama
 @code{factor} explicitamente), a fatora@,{c}@~ao completa do inteiro ser@'a
@@ -746,7 +746,8 @@ calculados em @code{divisors}, @code{divsum} e @code{totient}.
 
 @c WHAT ARE THESE MYSTERIOUS INTERNAL CALLS ?? (LET'S JUST LIST THE FUNCTIONS INVOLVED)
 Chamadas internas a @code{factor} respeitam o valor especificado pelo usu@'ario para
-@code{intfaclim}.  Escolhendo @code{intfaclim} para um pequeno valor podemos reduzir
+@code{intfaclim}.  Setting @code{intfaclim} to @code{true} may reduce
+@code{intfaclim}.  Escolhendo @code{intfaclim} para @code{true} podemos reduzir
 o tempo gasto fatorando grandes inteiros.
 @c NEED EXAMPLES HERE
 
