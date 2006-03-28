@@ -506,15 +506,32 @@ setrgbcolor} def
 		     (setf (aref pts (f+ 2 i)) (funcall fz x1 x2 x3)))))
     ))
 
+; Return value is a Lisp function which evaluates EXPR to a float.
+; Following cases are recognized:
+; EXPR is a symbol
+;   name of a Lisp function
+;   name of a Maxima function
+;   name of a DEFMSPEC function
+;   name of a Maxima macro
+;   a string which is the name of a Maxima operator (e.g., "!")
+;   name of a simplifying function
+; EXPR is a Maxima lambda expression
+; EXPR is a general Maxima expression
+
 (defun coerce-float-fun (expr &optional lvars)
   (cond ((and (consp expr) (functionp expr))
 	 expr)
 	((and (symbolp expr) (not (member expr lvars)))
-	 (cond ((fboundp expr) expr)
-	       (t
+	 (cond
+       ; expr is name of an Lisp function defined by defun or defmfun
+       ; Return #'$FOO only if Lisp is not GCL since
+       ; GCL (as of 2.6.7) barfs on (COMPILE NIL #'$FOO).
+       #-gcl ((fboundp expr)
+        (symbol-function expr))
+       ; expr is name of a Maxima function defined by := or define
+       ((mget expr 'mexpr)
 		(let* ((mexpr (mget expr 'mexpr))
 		       (args (nth 1 mexpr)))
-		  (or mexpr (merror "Undefined function ~M" expr))
 		  (coerce `(lambda ,(cdr args)
 			    (declare (special ,@(cdr args)))
 			    (let* (($ratprint nil) ($numer t)
@@ -522,7 +539,29 @@ setrgbcolor} def
 			      (if ($numberp result)
 				  ($float result)
 				  nil)))
-			  'function)))))
+			  'function)))
+       ((or
+          ; expr is name of an Lisp function defined by defun or defmfun
+          ; For GCL, handle this like other symbolic names (via $APPLY).
+          #+gcl (fboundp expr)
+          ; expr is the name of a function defined by defmspec
+          (get expr 'mfexpr*)
+          ; expr is the name of a Maxima macro defined by ::=
+          (mget expr 'mmacro)
+          ; expr is a string which names an operator
+          ; (e.g. "!" "+" or a user-defined operator)
+          (get expr 'opr)
+          ; expr is the name of a simplifying function,
+          ; and the simplification property is associated with the noun form
+          (get ($nounify expr) 'operators)
+          ; expr is the name of a simplifying function,
+          ; and the simplification property is associated with the verb form
+          (get ($verbify expr) 'operators))
+        (let ((a (if lvars lvars `((mlist) ,(gensym)))))
+          (coerce-float-fun `(($apply) ,expr ,a) a)))
+       (t
+         (merror "Undefined function ~M" expr))))
+
     ((and (consp expr) (eq (caar expr) 'lambda))
      ; FOLLOWING CODE IS IDENTICAL TO CODE FOR EXPR = SYMBOL 
      ; (EXCEPT HERE WE HAVE EXPR INSTEAD OF MEXPR). DOUBTLESS BEST TO MERGE.
