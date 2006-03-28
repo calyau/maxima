@@ -148,19 +148,19 @@
 		   no-err-sub oscip %einvolve sin-sq-cos-sq-sub)
 		      
 ;;;rsn* is in comdenom. does a ratsimp of numerator.
-	    (special *def2* pcprntd mtoinf* rsn* semirat*
+	    (special *def2* pcprntd *mtoinf* rsn* semirat*
 		     sn* sd* leadcoef checkfactors 
 		     *nodiverg rd* exp1
-		     ul1 ll1 *dflag bptu bptd plm* zn
+		     *ul1* *ll1* *dflag bptu bptd plm* zn
 		     #+nil zd
 		     *updn ul ll exp pe* pl* rl* pl*1 rl*1
 		     loopstop* var nn* nd* dn* p*
 		     ind* factors rlm*
-		     plogabs *zexptsimp? scflag
-		     sin-cos-recur rad-poly-recur dintlog-recur
-		     dintexp-recur defintdebug defint-assumptions
-		     current-assumptions
-		     global-defint-assumptions)
+		     plogabs *zexptsimp? *scflag*
+		     *sin-cos-recur* *rad-poly-recur* *dintlog-recur*
+		     *dintexp-recur* defintdebug *defint-assumptions*
+		     *current-assumptions*
+		     *global-defint-assumptions*)
 	 
 	    (array* (notype *i* 1 *j* 1))
 	    (genprefix def)
@@ -201,12 +201,12 @@
   "A non-integer-list for non-atoms found out to be `noninteger's")
 
 (defun $defint (exp var ll ul)
-  (let ((global-defint-assumptions ())
+  (let ((*global-defint-assumptions* ())
 	(integer-info ()) (integerl integerl) (nonintegerl nonintegerl))
     (with-new-context (context)
       (unwind-protect
-	   (let ((defint-assumptions ())  (*def2* ())  (rad-poly-recur ())
-		 (sin-cos-recur ())  (dintexp-recur ())  (dintlog-recur 0.)
+	   (let ((*defint-assumptions* ())  (*def2* ())  (*rad-poly-recur* ())
+		 (*sin-cos-recur* ())  (*dintexp-recur* ())  (*dintlog-recur* 0.)
 		 (ans nil)  (orig-exp exp)  (orig-var var)
 		 (orig-ll ll)  (orig-ul ul) 
 		 (pcprntd nil)  (*nodiverg nil)  ($logabs t)  (limitp t)
@@ -214,7 +214,7 @@
 		 ($domain '$real) ($m1pbranch ())) ;Try this out.
 
 	     (find-function '$limit)
-	     (make-global-assumptions) ;sets global-defint-assumptions
+	     (make-global-assumptions) ;sets *global-defint-assumptions*
 	     (find-function '$residue)
 	     (setq exp (ratdisrep exp))
 	     (setq var (ratdisrep var))
@@ -380,18 +380,18 @@
 
 (defun intcv1 (d ind nv) 
   (cond ((and (intcv2 d ind nv)
-	      (not (alike1 ll1 ul1)))
+	      (not (alike1 *ll1* *ul1*)))
 	 (let ((*def2* t))
-	   (defint exp1 var ll1 ul1)))))
+	   (defint exp1 var *ll1* *ul1*)))))
 
 (defun intcv2 (d ind nv)
   (intcv3 d ind nv)
   (and (cond ((and (zerop1 (m+ ll ul))
 		   (evenfn nv var))
 	      (setq exp1 (m* 2 exp1)
-		    ll1 (limcp nv var 0 '$plus)))
-	     (t (setq ll1 (limcp nv var ll '$plus))))
-       (setq ul1 (limcp nv var ul '$minus))))
+		    *ll1* (limcp nv var 0 '$plus)))
+	     (t (setq *ll1* (limcp nv var ll '$plus))))
+       (setq *ul1* (limcp nv var ul '$minus))))
 
 (defun limcp (a b c d) 
   (let ((ans ($limit a b c d)))
@@ -409,10 +409,10 @@
   (setq exp1 (sratsimp (subst var 'yx exp1))))
 
 (defun defint (exp var ll ul)
-  (let ((old-assumptions defint-assumptions)  (current-assumptions ()))
+  (let ((old-assumptions *defint-assumptions*)  (*current-assumptions* ()))
     (unwind-protect
 	 (prog ()
-	    (setq current-assumptions (make-defint-assumptions 'noask))
+	    (setq *current-assumptions* (make-defint-assumptions 'noask))
 	    (let ((exp (resimplify exp))            
 		  (var (resimplify var))
 		  ($exptsubst t)
@@ -451,7 +451,7 @@
 		(cond ((setq  ans (initial-analysis exp var ll ul))
 		       (return (m* c ans))))
 		(return nil))))
-      (restore-defint-assumptions old-assumptions current-assumptions))))
+      (restore-defint-assumptions old-assumptions *current-assumptions*))))
 
 (defun defint-list (exp var ll ul)
   (cond ((and (not (atom exp)) 
@@ -497,8 +497,8 @@
 
 
 (defun method-by-limits (exp var ll ul)
-  (let ((old-assumptions defint-assumptions))
-    (setq current-assumptions (make-defint-assumptions 'noask))
+  (let ((old-assumptions *defint-assumptions*))
+    (setq *current-assumptions* (make-defint-assumptions 'noask))
     ;;Should be a PROG inside of unwind-protect, but Multics has a compiler
     ;;bug wrt. and I want to test this code now.
     (unwind-protect
@@ -519,25 +519,25 @@
 	       ;;	     ((and (and (equal ul 1.)
 	       ;;			(equal ll 0.))  (zto1 exp)))
 	       (t (dintegrate exp var ll ul)))
-      (restore-defint-assumptions old-assumptions defint-assumptions))))
+      (restore-defint-assumptions old-assumptions *defint-assumptions*))))
        
 
 (defun dintegrate (exp var ll ul)
-  (let ((ans nil) (arg nil) (scflag nil) 
+  (let ((ans nil) (arg nil) (*scflag* nil) 
 	(*dflag nil) ($%emode t))
 ;;;NOT COMPLETE for sin's and cos's.
-    (cond ((and (not sin-cos-recur)
+    (cond ((and (not *sin-cos-recur*)
 		(oscip exp)
-		(setq scflag t)
+		(setq *scflag* t)
 		(intsc1 ll ul exp)))
-	  ((and (not rad-poly-recur)
+	  ((and (not *rad-poly-recur*)
 		(notinvolve exp '(%log))
 		(not (%einvolve exp))
 		(method-radical-poly exp var ll ul)))
-	  ((and (not (equal dintlog-recur 2.))
+	  ((and (not (equal *dintlog-recur* 2.))
 		(setq arg (involve exp '(%log)))
 		(dintlog exp arg)))
-	  ((and (not dintexp-recur)
+	  ((and (not *dintexp-recur*)
 		(setq arg (%einvolve exp))
 		(dintexp exp var)))
 	  ((and (not (ratp exp var)) 
@@ -550,7 +550,7 @@
 
 (defun method-radical-poly (exp var ll ul)
 ;;;Recursion stopper
-  (let ((rad-poly-recur t)		;recursion stopper
+  (let ((*rad-poly-recur* t)		;recursion stopper
 	(result ()))
     (cond ((and (sinintp exp var) 
 		(setq result (antideriv exp))
@@ -559,7 +559,7 @@
 		(setq result (ratfnt exp))))
 	  ((and (setq result (antideriv exp))
 		(intsubs result ll ul)))
-	  ((and (not scflag)
+	  ((and (not *scflag*)
 		(not (eq ul '$inf))
 		(radic exp var)
 		(kindp34)
@@ -708,8 +708,8 @@
 
 (defun make-defint-assumptions (ask-or-not)
   (cond ((null (order-limits ask-or-not))  ())
-	(t (mapc 'forget defint-assumptions)
-	   (setq defint-assumptions ())
+	(t (mapc 'forget *defint-assumptions*)
+	   (setq *defint-assumptions* ())
 	   (let ((sign-ll (cond ((eq ll '$inf)  '$pos)
 				((eq ll '$minf) '$neg)
 				(t ($sign ($limit ll)))))
@@ -722,24 +722,24 @@
 					 (not (eq ll '$minf)))  '$neg)
 				   (t ($sign ($limit (m+ ul (m- ll))))))))
 	     (cond ((eq sign-ul-ll '$pos)
-		    (setq defint-assumptions
+		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,var ,ll))
 			    ,(assume `((mgreaterp) ,ul ,var)))))
 		   ((eq sign-ul-ll '$neg)
-		    (setq defint-assumptions
+		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,var ,ul))
 			    ,(assume `((mgreaterp) ,ll ,var))))))
 	     (cond ((and (eq sign-ll '$pos)
 			 (eq sign-ul '$pos))
-		    (setq defint-assumptions
+		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) ,var 0))
-			    ,@defint-assumptions)))
+			    ,@*defint-assumptions*)))
 		   ((and (eq sign-ll '$neg)
 			 (eq sign-ul '$neg))
-		    (setq defint-assumptions
+		    (setq *defint-assumptions*
 			  `(,(assume `((mgreaterp) 0 ,var))
-			    ,@defint-assumptions)))
-		   (t defint-assumptions))))))
+			    ,@*defint-assumptions*)))
+		   (t *defint-assumptions*))))))
 
 (defun restore-defint-assumptions (old-assumptions assumptions)
   (do ((llist assumptions (cdr llist)))
@@ -750,29 +750,29 @@
     (assume (car llist))))
 
 (defun make-global-assumptions ()
-  (setq global-defint-assumptions
+  (setq *global-defint-assumptions*
 	(cons (assume '((mgreaterp) *z* 0.))
-	      global-defint-assumptions))
+	      *global-defint-assumptions*))
   ;; *Z* is a "zero parameter" for this package.
   ;; Its also used to transform.
   ;;  limit(exp,var,val,dir) -- limit(exp,tvar,0,dir)
-  (setq global-defint-assumptions
+  (setq *global-defint-assumptions*
 	(cons (assume '((mgreaterp) epsilon 0.))
-	      global-defint-assumptions))	   
-  (setq global-defint-assumptions
+	      *global-defint-assumptions*))	   
+  (setq *global-defint-assumptions*
 	(cons (assume '((mlessp) epsilon 1.0e-8))
-	      global-defint-assumptions)) 
+	      *global-defint-assumptions*)) 
   ;; EPSILON is used in principal vaule code to denote the familiar
   ;; mathematical entity.
-  (setq global-defint-assumptions
+  (setq *global-defint-assumptions*
 	(cons (assume '((mgreaterp) prin-inf 1.0e+8))
-	      global-defint-assumptions)))
+	      *global-defint-assumptions*)))
 
 ;;; PRIN-INF Is a special symbol in the principal value code used to
 ;;; denote an end-point which is proceeding to infinity.
 
 (defun forget-global-assumptions ()
-  (do ((llist global-defint-assumptions (cdr llist)))
+  (do ((llist *global-defint-assumptions* (cdr llist)))
       ((null llist) t)
     (forget (car llist)))
   (cond ((not (null integer-info))
@@ -824,7 +824,7 @@
 
 (defun intsubs (e a b)
   (cond ((easy-subs e a b))
-	(t (setq current-assumptions
+	(t (setq *current-assumptions*
 		 (make-defint-assumptions 'ask)) ;get forceful!
 	   (let ((generate-atan2 ())  ($algebraic t)
 		 (rpart ())  (ipart ()))
@@ -1176,7 +1176,7 @@
 	    (return temp))
 	   (t nil))
      on
-     (cond ((let ((mtoinf* nil))
+     (cond ((let ((*mtoinf* nil))
 	      (setq temp (ggr grand t)))
 	    (return temp))
 	   ((mplusp grand)
@@ -1430,13 +1430,13 @@
       (setq n2 (cadadr nl) n (caadr nl) nl nil))))
 
 (defun ggrm (e)
-  (prog (poly expo mtoinf* mb  varlist  genvar l c gvar) 
+  (prog (poly expo *mtoinf* mb  varlist  genvar l c gvar) 
      (setq varlist (list var))
-     (setq mtoinf* t)
+     (setq *mtoinf* t)
      (cond ((and (setq expo (%einvolve e))
 		 (polyp (setq poly ($ratsimp (m// e (m^t '$%e expo)))))
 		 (setq l (catch 'ggrm (ggr (m^t '$%e expo) nil))))
-	    (setq mtoinf* nil)
+	    (setq *mtoinf* nil)
 	    (setq mb (m- (subin 0. (cadr l))))
 	    (setq poly (m+ (subin (m+t mb var) poly)
 			   (subin (m+t mb (m*t -1. var)) poly))))
@@ -1505,11 +1505,12 @@
 		     (eq (cdr e) var))
 		(car e))))))
 
-(declare-top(special n)) 
+;;(declare-top(special n)) 
 
 
 (defun ssp (exp)
-  (prog (u n c) 
+  (prog (u n c)
+     (declare (special n))
      (setq exp ($substitute (m^t `((%sin) ,var) 2.)
 			    (m+t 1. (m- (m^t `((%cos) ,var) 2.)))
 			    exp))
@@ -1524,7 +1525,7 @@
 		   (return (m+l (mapcar #'(lambda (j) (scmp j n))
 					c)))))))))
 
-(declare-top(unspecial n)) 
+;;(declare-top(unspecial n)) 
 
 (defun scmp (c n)
   (m* (car c) (m^ (cadr c) (m+ n -1)) `((%signum) ,(cadr c))
@@ -1633,7 +1634,7 @@
   (let ((limit-diff (m+ b (m* -1 a)))
 	($%emode t)
 	($trigsign t)
-	(sin-cos-recur t))		;recursion stopper
+	(*sin-cos-recur* t))		;recursion stopper
     (prog (ans d nzp2 l) 
        (cond ((or (not (mnump (m// limit-diff '$%pi)))
 		  (not (period %pi2 e var)))
@@ -2193,6 +2194,8 @@
 #-cl	      ;in case other lisps don't understand internal declares.
 (declare-top(special *i* *j*))
 
+;; Handle integral(n(x)/d(x)*log(x)^m,x,0,inf).  n and d are
+;; polynomials.
 (defun log*rat (n d m)
   (prog (leadcoef factors c plm* pl* rl* pl*1 rl*1 rlm*)
      (declare (special *i* *j*))
@@ -2382,7 +2385,7 @@
     (setq ans (cons (m* c (m^t var i)) ans))
     (setq cl (cons c cl))))
 
-(declare-top(special *failflag *lhflag lhv *indicator cnt *disconflag)) 
+;;(declare-top(special *failflag *lhflag lhv *indicator cnt *disconflag)) 
 
 #+nil
 (defun %e-integer-coeff (exp)
@@ -2407,8 +2410,6 @@
   (cond ((and (setq e (polyinx e var t))
 	      (equal (deg e) 1.))
 	 (subin 1. e)))) 
-
-;;(declare-top (special e))
 
 ;; Test to see if exp is of the form f(exp(x)), and if so, replace
 ;; exp(x) with 'z*.  That is, basically return f(z*).
@@ -2444,8 +2445,6 @@
 	 (m+l (mapcar #'pin%ex0 (cdr e))))
 	(t
 	 (throw 'pin%ex nil))))
-
-;;(declare-top (unspecial e)) 
 
 ;; Test to see if exp is of the form p(x)*f(exp(x)).  If so, set p* to
 ;; be p(x) and set pe* to f(exp(x)).
@@ -2502,7 +2501,7 @@
 				  (t nil)))))))))))
 
 (defun dintexp (exp arg &aux ans)
-  (let ((dintexp-recur t))		;recursion stopper
+  (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp var)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))
 		(setq ans (intsubs ans ll ul))))
@@ -2515,7 +2514,7 @@
 	   (intcv ans t nil)))))
 
 (defun dintlog (exp arg)
-  (let ((dintlog-recur (f1+ dintlog-recur))) ;recursion stopper
+  (let ((*dintlog-recur* (f1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d) 
        (cond ((and (eq ul '$inf)
 		   (equal ll 0.)
@@ -2549,8 +2548,8 @@
 ;; (b n a).  It may also set the global *zd*.
 (defun maybpc (e var)
   (declare (special *zd*))
-  (cond (mtoinf* (throw 'ggrm (linpower0 e var)))
-	((and (not mtoinf*)
+  (cond (*mtoinf* (throw 'ggrm (linpower0 e var)))
+	((and (not *mtoinf*)
 	      (null (setq e (bx**n+a e)))) ;bx**n+a --> (a n b) or nil.
 	 nil)				;with var being x.
 	;; At this point, e is of the form (a n b)
