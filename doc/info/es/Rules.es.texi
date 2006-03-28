@@ -1,4 +1,4 @@
-@c english version 1.22
+@c english version 1.23
 @menu
 * Introducci@'on a reglas y patrones::  
 * Definiciones sobre reglas y patrones::  
