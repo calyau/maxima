@@ -546,6 +546,9 @@ integrate(x*exp((kj+1)*x)/(exp(x)+3),x,minf,inf);
 /* p. 94
  *
  * The default gcd gets a "quotient is not exact" error.  spmod works better.
+ *
+ * The substitution y=1/x produces the same integral with a negative
+ * sign, so the answer must be zero.
  */
 gcd:spmod;
 spmod;
@@ -623,10 +626,19 @@ integrate(exp(-x^2),x,0,inf);
 sqrt(%pi)/2;
 
 /* p. 102 */
+/*
+ * The substitution y=s*t produces 1/sqrt(s)*integrate(y^(-1/2)*exp(-y),y,0,inf), 
+ * which is gamma(1/2)/sqrt(s).
+ */
 (assume(s > 0), 0);
 0;
 integrate(1/sqrt(t)/exp(s*t),t,0,inf);
 sqrt(%pi)/sqrt(s);
+
+/*
+ * Write this as imagpart(integrate(exp(%i*s*x)/exp(x),x)).  Evaluate
+ * the result at x=inf and at x=0.  We get the expected answer.
+ */
 
 integrate(sin(s*x)/exp(x),x,0,inf);
 s/(s^2+1);
@@ -642,6 +654,27 @@ s/(s^2+1);
  *
  * Assuming psi(4/3) is maxima's digamma function, psi[0](4/3), this
  * result is 1/2 of the result maxima produces.
+ *
+ * Consider integrate(t^(z+1/3)*exp(-s*t),t,0,inf).  Differentiating
+ * this wrt to z gives us the integral we're looking for, when we
+ * evaluate the result at z = 0.
+ *
+ * But this integral is equal to
+ * 1/s^(z+4/3)*integrate(y^(z+1/3)*exp(-y),y,0,inf), which is a Gamma
+ * function.  Thus, we have
+ *
+ * gamma(z+4/3)/s^(z+4/3)
+ *
+ * Differentiate wrt to z:
+ *
+ * s^(-z-4/3)*(psi[0](z+4/3)-log(s))*gamma(z+4/3)
+ *
+ * Evaluate at z = 0:
+ *
+ * gamma(1/3)*(psi[0](4/3)-log(s))/(3*s^(4/3))
+ *
+ * This is the answer we get below, once we evaluate psi[0](4/3).
+ * Wang's thesis is off by a factor of 2.
  */
 integrate(exp(-s*t)*t^(1/3)*log(t),t,0,inf);
 gamma(1/3)*(-3*log(3)/2-%pi/(2*sqrt(3))-%gamma+3)/(3*s^(4/3))
