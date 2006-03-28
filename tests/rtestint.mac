@@ -536,6 +536,12 @@ integrate(log(x)^2/(x^2+1),x,0,inf);
 integrate(x^kj*log(x)/(x+3),x,0,inf);
 3^kj*(psi[0](kj+1)-psi[0](-kj))*beta(kj+1,-kj)+log(3)*3^kj*beta(kj+1,-kj);
 
+/*
+ * This is the same integral as above, using the substitution 
+ * y=log(x).  See also Bug 1451351.
+ */
+integrate(x*exp((kj+1)*x)/(exp(3)+3),x,minf,inf);
+3^kj*(psi[0](kj+1)-psi[0](-kj))*beta(kj+1,-kj)+log(3)*3^kj*beta(kj+1,-kj);
 
 /* p. 95 */
 /*
