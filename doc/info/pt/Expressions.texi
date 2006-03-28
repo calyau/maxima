@@ -50,8 +50,8 @@ ciclos n@~ao seja muito @'util (eles retornam sempre @code{done}).
 (%o2)                         done
 @end example
 
-contanto que o que voc@^e realmente queira @'e provavelmente incluir um terceiro
-termo na @i{express@~ao com v@'irgula} que atualmente fornece de volta o valor.
+contanto que o que voc@^e realmente queira seja provavelmente incluir um terceiro
+termo na @i{express@~ao com v@'irgula} que fornece de volta o valor atualizado.
 
 @example
 (%i3) y: (x: 1, for i from 1 thru 10 do (x: x*i), x)$
@@ -66,7 +66,7 @@ termo na @i{express@~ao com v@'irgula} que atualmente fornece de volta o valor.
 Existem dois operadores de atribui@,{c}@~ao no Maxima, "@code{:}" e "@code{::}".
 E.g., @code{a: 3} escolhe a vari@'avel @code{a} para 3. @code{::} atribui o valor da
 express@~ao sobre seu lado direito para o valor da quantidade sobre seu lado esquerdo,
-que deve avaliar para uma vari@'avel at@^omica ou para uma vari@'avel subscrita.
+que deve avaliar para uma vari@'avel at@^omica ou para uma vari@'avel com subscrito.
 
 @c THIS REALLY NEEDS EXPANSION
 @node Complexo, Substantivos e Verbos, Atribui@value{cedilha}@~ao, Express@~oes
@@ -74,7 +74,7 @@ que deve avaliar para uma vari@'avel at@^omica ou para uma vari@'avel subscrita.
 Uma express@~ao complexa @'e especificada no Maxima atrav@'es da adi@,{c}@~ao da
 parte real da express@~ao a @code{%i} vezes a parte imagin@'aria.  Dessa forma as
 ra@'izes da equa@,{c}@~ao @code{x^2 - 4*x + 13 = 0} s@~ao @code{2 + 3*%i} e @code{2 - 3*%i}.  Note que
-produtos de simplifica@,{c}@~ao de express@~oes complexas podem ter efeito atrav@'es da
+produtos de simplifica@,{c}@~ao de express@~oes complexas podem ser efetuadas atrav@'es da
 expans@~ao do produto.  Simplifica@,{c}@~ao de quocientes, ra@'izes, e outras
 fun@,{c}@~oes de express@~oes complexas podem usualmente serem realizadas atrav@'es do uso
 das fun@,{c}@~oes @code{realpart}, @code{imagpart}, @code{rectform}, @code{polarform}, @code{abs}, @code{carg}.
@@ -160,7 +160,7 @@ mais os numerais de 0 a 9,
 mais qualquer caractere especial precedido por um caractere contra-barra @code{\}.
 
 Um numeral pode ser o primeiro caractere de um identificador
-se esse numeral for precedido por uma contra barra.
+se esse numeral for precedido por uma contra-barra.
 Numerais que forem o segundo ou o @'ultimo caractere n@~ao precisam ser precedidos por uma contra barra.
 
 Um caractere especial pode ser declarado alfab@'etico atrav@'es da fun@,{c}@~ao @code{declare}.
@@ -171,7 +171,7 @@ de @code{A} a @code{Z}, de @code{a} a @code{z}, @code{%}, e @code{_}.
 Maxima @'e sens@'ivel @`a caixa . Os identificadores @code{algumacoisa}, @code{ALGUMACOISA}, e @code{Algumacoisa} s@~ao distintos.
 Veja @ref{Lisp e Maxima} para mais sobre esse ponto.
 
-Um identificador Maxima @'e um s@'imbolo Lisp que come@,{c}a com um sianl de d@'olar @code{$}.
+Um identificador Maxima @'e um s@'imbolo Lisp que come@,{c}a com um sinal de d@'olar @code{$}.
 Qualquer outro s@'imbolo Lisp @'e precedido por um ponto de interroga@,{c}@~ao @code{?} quando aparecer no Maxima.
 Veja @ref{Lisp e Maxima} para maiores detalhes sobre esse ponto.
 
@@ -289,7 +289,7 @@ As fun@,{c}@~oes m@'axima que definem novos operadores est@~ao sumarizadas nessa
 equilibrando expoente associado esquerdo (padr@~ao) e o expoente associado direito ("eae" e "ead", respectivamente).
 @c REWORK FOLLOWING COMMENT. IT'S NOT CLEAR ENOUGH, GIVEN THAT IT'S FAIRLY IMPORTANT
 (Associa@,{c}@~ao de expoentes determina a preced@^encia do operador. todavia, uma vez que os expoentes
-esquerdo e diretiro podem ser diferentes, associa@,{c}@~ao de expoentes @'e at@'e certo ponto mais complicado que preced@^encia.)
+esquerdo e direito podem ser diferentes, associa@,{c}@~ao de expoentes @'e at@'e certo ponto mais complicado que preced@^encia.)
 Alguma das fun@,{c}@~oes de defini@,{c}@~ao de opera@,{c}@~oes tomam argumentos adicionais;
 veja as descri@,{c}@~oes de fun@,{c}@~ao para maiores detalhes.
 
@@ -400,7 +400,7 @@ as vari@'aveis assumindo os valores como especificado para elas na lista de
 equa@,{c}@~oes @code{[@var{eqn_1}, ..., @var{eqn_n}]} ou a equa@,{c}@~ao simples @var{eqn}.
 
 Se uma subexpress@~ao depender de qualquer das vari@'aveis para a qual um valor foi especificado
-mas n@~ao existe @code{atvalue} especificado e isso n@~ao pode ser de outra forma avaliado,
+mas n@~ao existe @code{atvalue} especificado e essa subexpress@~ao n@~ao pode ser avaliada de outra forma,
 ent@~ao uma forma substantiva de @code{at} @'e retornada que mostra em uma forma bidimensional.
 
 @code{at} realiza m@'ultiplas substitui@,{c}@~oes em s@'erie, n@~ao em paralelo.
@@ -582,7 +582,7 @@ Uma express@~ao @'e considerada uma express@~ao constante se seus argumentos for
 n@'umeros (incluindo n@'umeros racionais, como mostrado com @code{/R/}),
 constantes simb@'olicas como @code{%pi}, @code{%e}, e @code{%i},
 vari@'aveis associadas a uma constante ou constante declarada atrav@'es de @code{declare},
-ou fun@,{c}@~oes cujos argumentos forem constante.
+ou fun@,{c}@~oes cujos argumentos forem constantes.
 
 @code{constantp} avalia seus argumentos.
 
@@ -637,8 +637,8 @@ constantes (e.g. @code{%e}, @code{%pi}) < escalares < outras vari@'aveis < vari@
 
 @code{scalar} torna @var{a_i} um escalar.
 
-@code{nonscalar} faz @var{a_i} comportar-se como como comporta-se uma lista ou matriz com rela@,{c}@~ao ao
-operador ponto.
+@code{nonscalar} faz @var{a_i} comportar-se como comporta-se uma lista ou matriz com rela@,{c}@~ao ao
+operador ponto (multiplica@,{c}@~ao n@~ao comutativa de matrizes).
 
 @code{noun} torna a fun@,{c}@~ao @var{a_i} um substantivo de forma que n@~ao possa ser avaliada
 automaticamente.
@@ -663,7 +663,7 @@ even, odd, integer, rational, irrational, real, imaginary,
 e complex
 @end example
 
-Que pode ser traduzido para o portugu@^es como:
+Nota de tradu@,{c}@~ao:
 
 @example
 par, @'impar, inteiro, racional, irracional, real, imagin@'ario,
@@ -680,14 +680,13 @@ commutative (or symmetric), antisymmetric, lassociative and
 rassociative
 @end example
 
-Que pode ser traduzido para o portugu@^es como:
+Nota de tradu@,{c}@~ao:
 @example
 incremento,
 decremento, oddfun (fun@,{c}@~ao @'impar), evenfun (fun@,{c}@~ao par),
-comutativa (ou simetrica), antisimetrica, lassociative (associativa @`a esquerda) and
+comutativa (ou sim@'etrica), antisim@'etrica, lassociative (associativa @`a esquerda) and
 rassociative (associativa @`a direita).
 @end example
-
 
 @c WHAT DOES THIS MEAN EXACTLY ??
 Os @var{a_i} e @var{f_i} podem tamb@'em serem listas de objetos ou recursos.
@@ -702,9 +701,9 @@ Veja tamb@'em @code{features}.
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} disolate (@var{expr}, @var{x_1}, ..., @var{x_n})
 @'e similar a @code{isolate (@var{expr}, @var{x})}
-exceto que isso habilita ao usu@'ario isolar
+exceto que essa fun@,{c}@~ao habilita ao usu@'ario isolar
 mais que uma vari@'avel simult@^aneamente.  Isso pode ser @'util, por
-exemplo, se se for tentado mudar vari@'aveis em uma integra@,{c}@~ao
+exemplo, se se tiver tentado mudar vari@'aveis em uma integra@,{c}@~ao
 m@'ultipla, e em mudan@,{c}a de vari@'avel envolvendo duas ou mais das
 vari@'aveis de integra@,{c}@~ao.  Essa fun@,{c}@~ao @'e chamada automaticamente de
 @file{simplification/disol.mac}.  Uma demostra@,{c}@~ao est@'a dispon@'ivel atrav@'es de
@@ -715,10 +714,10 @@ vari@'aveis de integra@,{c}@~ao.  Essa fun@,{c}@~ao @'e chamada automaticamente 
 @c NEEDS WORK
 @deffn {Fun@value{cedilha}@~ao} dispform (@var{expr})
 Retorna a representa@,{c}@~ao externa de @var{expr} com rela@,{c}@~ao a seu
-principal operador.  Isso pode ser @'util em conjun@,{c}@`ao com @code{part} que
+principal operador.  Isso pode ser @'util em conjun@,{c}@~ao com @code{part} que
 tamb@'em lida com a representa@,{c}@~ao externa.  Suponha que @var{expr} seja -A .
 Ent@~ao a representa@,{c}@~ao interna de @var{expr} @'e  "*"(-1,A), enquanto que
-a representa@,{c}@`ao externa @'e "-"(A). @code{dispform (@var{expr}, all)} converte a
+a representa@,{c}@~ao externa @'e "-"(A). @code{dispform (@var{expr}, all)} converte a
 express@~ao inteira (n@~ao apenas o n@'ivel mais alto) para o formato externo.  Por
 exemplo, se @code{expr: sin (sqrt (x))}, ent@~ao @code{freeof (sqrt, expr)} e
 @code{freeof (sqrt, dispform (expr))} fornece @code{true}, enquanto
