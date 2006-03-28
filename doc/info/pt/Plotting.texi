@@ -129,7 +129,7 @@ Montando um gr@'afico de uma express@~ao, e escolhendo alguns par@^ametros comum
 @end example
 
 @ifnotinfo
-@image{../figures/plotting2,8cm}@image{figures/plotting3,8cm}
+@image{../figures/plotting2,8cm}@image{../figures/plotting3,8cm}
 @end ifnotinfo
 
 @b{Montando gr@'afico de fun@,{c}@~oes pelo nome.}
@@ -155,7 +155,7 @@ $g
 @end example
 
 @ifnotinfo
-@image{../figures/plotting4,8cm}@image{figures/plotting5,8cm}
+@image{../figures/plotting4,8cm}@image{../figures/plotting5,8cm}
 @end ifnotinfo
 
 Em qualquer lugar onde pode existir uma express@~ao comum, pode existir uma express@~ao param@'etrica: 
