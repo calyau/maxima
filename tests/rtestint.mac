@@ -479,9 +479,9 @@ integrate(sin(9*x^(7/3)),x,0,inf);
 /*
  * Wang gives gamma((2*%i+4)/3)/3/(%i/2)^((2*%i+4)/3)
  *
- * I think this is right.  The final formula he gives is wrong, but
- * the derivation leading up to it is correct, except that he has the
- * wrong value for integrate(x^m*exp(k*x^n),x,0,inf).
+ * I think this is right, in a sense.  The final formula he gives is
+ * wrong, but the derivation leading up to it is correct, except that
+ * he has the wrong value for integrate(x^m*exp(k*x^n),x,0,inf).
  *
  * However, Wang also says these integrals only converge if
  * n-realpart(m)>1, and we have n=3 and realpart(m)=2, so we don't
@@ -491,6 +491,18 @@ integrate(sin(9*x^(7/3)),x,0,inf);
 integrate(x^(3/2*%i+3)/exp(%i*x^3/2),x,0,inf);
 (-sqrt(3)*%i/2-1/2)*2^((2*%i+4)/3)*gamma((2*%i+4)/3)/3;
 */
+
+/* p. 86 */
+/*
+ * We can verify this by integrate(exp(%i*s*x)/sqrt(x),x,0,inf) and
+ * taking the imaginary part.  This satisfies the convergence
+ * criteria, and maxima returns the value
+ * sqrt(%pi)/sqrt(s)*exp(%i*%pi/4).  Thus, we get the answer below.
+ */
+(assume(s > 0), 0);
+0;
+ratsimp(integrate(sin(s*x)/sqrt(x),x,0,inf));
+sqrt(%pi)/(sqrt(2)*sqrt(s));
 
 /* p. 87 */
 (assume(r>0),0);
@@ -630,8 +642,6 @@ sqrt(%pi)/2;
  * The substitution y=s*t produces 1/sqrt(s)*integrate(y^(-1/2)*exp(-y),y,0,inf), 
  * which is gamma(1/2)/sqrt(s).
  */
-(assume(s > 0), 0);
-0;
 integrate(1/sqrt(t)/exp(s*t),t,0,inf);
 sqrt(%pi)/sqrt(s);
 
