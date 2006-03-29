@@ -110,13 +110,11 @@ over the range specified in @var{x_range}.
 The vertical range is set to @var{y_range}.
 All options are assumed to have default values unless otherwise specified by @code{set_plot_option}.
 
-When the function to be plotted is a function defined in Maxima by @code{:=} or @code{define},
-or in Lisp by DEFUN or DEFMFUN,
-the function can be specified by name.
-Functions defined in Lisp by DEFMSPEC, and simplifying functions,
-cannot be specified by name;
-that includes many built-in functions.
-@c REPORTED AS SF BUG # 1385271
+A function to be plotted
+may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
+If specified as a name or a lambda expression,
+the function must be a function of one argument.
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 @b{Examples:}
@@ -765,13 +763,15 @@ as the first argument to @code{plot3d}.  An additional optional argument
 @code{['grid, 50, 15]} gives the grid number of rectangles in the x direction and
 y direction.
 
-When the function to be plotted is a function defined in Maxima by @code{:=} or @code{define},
-or in Lisp by DEFUN or DEFMFUN,
-the function can be specified by name.
-Functions defined in Lisp by DEFMSPEC, and simplifying functions,
-cannot be specified by name;
-that includes many built-in functions.
-@c REPORTED AS SF BUG # 1385271
+The function to be plotted
+may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
+In the form @code{plot3d (@var{f}, ...)} where @var{f} is the
+name of a function or a lambda expression,
+the function must be a function of two arguments.
+In the form @code{plot3d ([@var{f_1}, @var{f_2}, @var{f_3}], ...)}
+where @var{f_1}, @var{f_2}, and @var{f_3} are names of functions or lambda expressions,
+each function must be a function of three arguments.
 
 This example shows a plot of the real part of @code{z^1/3}.
 

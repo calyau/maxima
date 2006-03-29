@@ -800,6 +800,7 @@ Equivalent to @code{ldefint} with @code{tlimswitch} set to @code{true}.
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@deffnx {Function} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Numerically evaluate the integral
 
 @ifhtml
@@ -819,6 +820,9 @@ variable @var{x}, and the function is to be integrated between the
 limits @var{a} and @var{b}.  @var{key} is the integrator to be used
 and should be an integer between 1 and 6, inclusive.  The value of
 @var{key} selects the order of the Gauss-Kronrod integration rule.
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The numerical integration is done adaptively by subdividing the
 integration region into sub-intervals until the desired accuracy is
@@ -874,11 +878,15 @@ Examples:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffnx {Function} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically integrate the given function using adaptive quadrature with
 extrapolation.  The function to be integrated is @var{f(x)}, with
 dependent variable @var{x}, and the function is to be integrated
 between the limits @var{a} and @var{b}.
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The optional arguments @var{epsrel} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
@@ -932,6 +940,7 @@ Note that @code{quad_qags} is more accurate and efficient than @code{quad_qag} f
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffnx {Function} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
 
 Numerically evaluate one of the following integrals
 
@@ -968,6 +977,9 @@ $$\int_{-\infty}^\infty {f(x) dx}$$
 using the Quadpack QAGI routine.  The function to be integrated is
 @var{f(x)}, with dependent variable @var{x}, and the function is to
 be integrated over an infinite range.
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The parameter @var{inftype} determines the integration interval as follows:
 
@@ -1035,6 +1047,7 @@ Examples:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffnx {Function} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Numerically compute the Cauchy principal value of
 
@@ -1051,6 +1064,9 @@ $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 using the Quadpack QAWC routine.  The function to be integrated is
 @code{@var{f(x)}/(@var{x} - @var{c})}, with dependent variable @var{x}, and the function
 is to be integrated over the interval @var{a} to @var{b}.
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The optional arguments @var{epsrel} and @var{limit} are the desired
 relative error and the maximum number of subintervals, respectively.
@@ -1117,6 +1133,7 @@ Principal Value
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffnx {Function} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the a Fourier-type integral using the Quadpack QAWF
 routine.  The integral is
@@ -1139,6 +1156,9 @@ The weight function @math{w} is selected by @var{trig}:
 @item sin
 @math{w(x) = sin (omega x)}
 @end table
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The optional arguments are:
 
@@ -1209,6 +1229,7 @@ Examples:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffnx {Function} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Numerically compute the integral using the Quadpack QAWO
 routine:
@@ -1231,6 +1252,9 @@ The weight function @math{w} is selected by @var{trig}:
 @item sin
 @math{w(x) = sin (omega x)}
 @end table
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The optional arguments are:
 
@@ -1302,6 +1326,7 @@ Examples:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Function} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffnx {Function} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
 
 Numerically compute the integral using the Quadpack QAWS
 routine:
@@ -1328,6 +1353,9 @@ The weight function @math{w} is selected by @var{wfun}:
 @item 2
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a) log(b - x)}
 @end table
+
+The integrand may be specified as the name of a Maxima or Lisp function or operator,
+a Maxima lambda expression, or a general Maxima expression.
 
 The optional arguments are:
 
