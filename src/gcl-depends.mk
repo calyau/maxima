@@ -132,6 +132,8 @@ binary-gcl/maxima : numerical/slatec/derfc.lisp
 binary-gcl/maxima : numerical/slatec/derf.lisp
 binary-gcl/maxima : numerical/slatec/de1.lisp
 binary-gcl/maxima : numerical/slatec/dei.lisp
+binary-gcl/maxima : numerical/slatec/d9upak.lisp
+binary-gcl/maxima : numerical/slatec/dspenc.lisp
 binary-gcl/maxima : numerical/slatec/dqwgtf.lisp
 binary-gcl/maxima : numerical/slatec/dqcheb.lisp
 binary-gcl/maxima : numerical/slatec/dqk15w.lisp
