@@ -119,7 +119,7 @@ que inclui muitas fun@,{c}@~oes internas.
 @c REPORTED AS SF BUG # 1385271
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
-@b{Examples:}
+@b{Exemplos:}
 
 Montando um gr@'afico de uma express@~ao, e escolhendo alguns par@^ametros comumente usados.
 
