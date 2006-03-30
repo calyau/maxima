@@ -482,15 +482,12 @@ setrgbcolor} def
 	 (setf (aref pts i) (* r (cos th)))
 	 (setf (aref pts (f+ i 1)) (* r (sin th)))))
 
-(defun coerce-function-body (f lvars)
-  (setq f (coerce-float-fun f lvars))
-  (if (symbolp f) (symbol-function f) f))
-
 ;; return a function suitable for the transform function in plot3d.
+;; FX, FY, and FZ are functions of three arguments.
 (defun $make_transform (lvars fx fy fz  &aux ( $numer t))
-  (setq fx (coerce-function-body fx lvars))
-  (setq fy (coerce-function-body fy lvars))
-  (setq fz (coerce-function-body fz lvars))
+  (setq fx (coerce-float-fun fx lvars))
+  (setq fy (coerce-float-fun fy lvars))
+  (setq fz (coerce-float-fun fz lvars))
   (let ((sym (gensym "transform")))
     (setf (symbol-function sym)
 	  #'(lambda (pts &aux  (x1 0.0)(x2 0.0)(x3 0.0))
@@ -507,6 +504,9 @@ setrgbcolor} def
     ))
 
 ; Return value is a Lisp function which evaluates EXPR to a float.
+; COERCE-FLOAT-FUN always returns a function and never returns a symbol,
+; even if EXPR is a symbol.
+;
 ; Following cases are recognized:
 ; EXPR is a symbol
 ;   name of a Lisp function
