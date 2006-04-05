@@ -271,7 +271,8 @@
       ((eq (car conditions) t)
        (meval (car consequences)))
       (t
-        (setq consequences (mapcar 'mevalatoms consequences))
+        ; RESIMPLIFY since MEVALATOMS might yield expressions which can be simplified
+        (setq consequences (mapcar 'resimplify (mapcar 'mevalatoms consequences)))
         ; Burn off SIMP flag, if any, when constructing the new CAAR
         (cons `(,(car op))
               (apply 'append (mapcar #'(lambda (x y) `(,x ,y)) conditions consequences)))))))
