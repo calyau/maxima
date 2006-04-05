@@ -598,11 +598,11 @@ Returns the greatest common divisor of @var{p_1} and @var{p_2}.
 The flag @code{gcd} determines which algorithm is employed.
 Setting @code{gcd} to @code{ez}, @code{eez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd}, New
 @code{eez} @code{gcd}, subresultant @code{prs}, reduced, or modular algorithm,
-respectively.  If @code{gcd} @code{false} then GCD(p1,p2,var) will always return 1
-for all var.  Many functions (e.g.  @code{ratsimp}, @code{factor}, etc.) cause gcd's
+respectively.  If @code{gcd} @code{false} then @code{gcd (@var{p_1}, @var{p_2}, @var{x})} always returns 1
+for all @var{x}.  Many functions (e.g.  @code{ratsimp}, @code{factor}, etc.) cause gcd's
 to be taken implicitly.  For homogeneous polynomials it is recommended
 that @code{gcd} equal to @code{subres} be used.  To take the gcd when an algebraic is
-present, e.g. GCD(X^2-2*SQRT(2)*X+2,X-SQRT(2)); , @code{algebraic} must be
+present, e.g., @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} must be
 @code{true} and @code{gcd} must not be @code{ez}.  @code{subres} is a new algorithm, and people
 who have been using the @code{red} setting should probably change it to
 @code{subres}.
@@ -1034,7 +1034,7 @@ expands and rationally simplifies its first argument and thus it may
 produce answers different from those of @code{coeff} which is purely
 syntactic.
 @c MOVE THIS TO EXAMPLES SECTION
-Thus RATCOEF((X+1)/Y+X,X) returns (Y+1)/Y whereas @code{coeff} returns 1.
+Thus @code{ratcoef ((x + 1)/y + x, x)} returns @code{(y + 1)/y} whereas @code{coeff} returns 1.
 
 @code{ratcoef (@var{expr}, @var{x}, 0)}, viewing @var{expr} as a sum,
 returns a sum of those terms which do not contain @var{x}.

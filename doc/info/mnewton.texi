@@ -6,7 +6,7 @@
 @node Definitions for mnewton,  , mnewton, mnewton
 @section Definitions for mnewton
 
-@defvr {Option variable} NEWTONEPSILON
+@defvr {Option variable} newtonepsilon
 Default value: @code{10.0^(-fpprec/2)}
 
 Precision to determine when the @code{mnewton} function has converged towards the solution.
@@ -15,7 +15,7 @@ See also @code{mnewton}.
 @end defvr
 
 
-@defvr {Option variable} NEWTONMAXITER
+@defvr {Option variable} newtonmaxiter
 Default value: @code{50}
 
 Maximum number of iterations to stop the @code{mnewton} function
@@ -34,7 +34,7 @@ Multiple nonlinear functions solution using the Newton method.
 The solution is returned in the same format that @code{solve()} returns.
 If the solution isn't found, @code{[]} is returned.
 
-This function is controlled by global variables @code{NEWTONEPSILON} and @code{NEWTONMAXITER}.
+This function is controlled by global variables @code{newtonepsilon} and @code{newtonmaxiter}.
 
 @example
 (%i1) load("mnewton")$
@@ -48,6 +48,6 @@ This function is controlled by global variables @code{NEWTONEPSILON} and @code{N
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-To use this function write first @code{load("mnewton")}. See also @code{NEWTONEPSILON} and @code{NEWTONMAXITER}.
+To use this function write first @code{load("mnewton")}. See also @code{newtonepsilon} and @code{newtonmaxiter}.
 @end deffn
 

@@ -156,8 +156,8 @@ Each solution has the form
 Attempts to compute the indefinite hypergeometric summation of @var{F_@{n,k@}}.
 
 @code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
-@code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
-If Zeilberger finds a solution before reaching @code{MAX_ORD},
+@code{parGosper} with order 1, 2, 3, ..., up to @code{max_ord}.
+If Zeilberger finds a solution before reaching @code{max_ord},
 it stops and returns the solution.
 
 The algorithms yields a sequence
@@ -173,10 +173,10 @@ Each solution has the form
 
 @section General global variables
 
-@defvr {Global variable} MAX_ORD
+@defvr {Global variable} max_ord
 Default value: 5
 
-@code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
+@code{max_ord} is the maximum recurrence order attempted by @code{Zeilberger}.
 @end defvr
 
 @defvr {Global variable} simplified_output
