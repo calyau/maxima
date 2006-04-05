@@ -139,7 +139,7 @@ Suporte a @'areas espec@'ificas da matem@'atica
 * Pacote atensor::              Manipula@value{cedilha}@~ao de Tensores Alg@'ebricos.
 * S@'eries::                      Taylor e s@'eries de pot@^encia.
 * Teoria dos N@'umeros::          Teoria dos n@'umeros.
-* Symmetries::                  Reflex@~oes, rota@value{cedilha}@~oes, transla@value{cedilha}@~oes, etc
+* Simetrias::                   Reflex@~oes, rota@value{cedilha}@~oes, transla@value{cedilha}@~oes, etc
 * Grupos::                      @'Algebra Abstrata.
 
 Facilidades avan@value{cedilha}adas e programa@value{cedilha}@~ao
@@ -188,7 +188,8 @@ Additional packages
 
 @'Indice
 
-* @'Indice de Fun@value{cedilha}@~ao e Vari@'avel:: @'Indice.
+@c * @'Indice de Fun@value{cedilha}@~ao e Vari@'avel:: @'Indice.
+* @'Indice de Fun@value{cedilha}@~ao e Vari@'avel::
 
 @comment @detailmenu
  --- Listagem de Nodos Detalhada ---
@@ -352,9 +353,9 @@ Teoria dos N@'umeros
 
 * Defini@value{cedilha}@~oes para Teoria dos N@'umeros::  
 
-Symmetries
+Simetrias
 
-* Definitions for Symmetries::  
+* Defini@value{cedilha}@~oes para Simetrias::  
 
 Grupos
 
@@ -667,15 +668,15 @@ zeilberger
 @chapter S@'eries
 @include Series.texi
 
-@node Teoria dos N@'umeros, Symmetries, S@'eries, Top
+@node Teoria dos N@'umeros, Simetrias, S@'eries, Top
 @chapter Teoria dos N@'umeros
 @include Number.texi
 
-@node Symmetries, Grupos, Teoria dos N@'umeros, Top
-@chapter Symmetries
+@node Simetrias, Grupos, Teoria dos N@'umeros, Top
+@chapter Simetrias
 @include Symmetries.texi
 
-@node Grupos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Symmetries, Top
+@node Grupos, Ambiente em Tempo de Execu@value{cedilha}@~ao, Simetrias, Top
 @chapter Grupos
 @include Groups.texi
 
