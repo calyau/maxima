@@ -10,7 +10,7 @@ Usage:
 
 Flags:
   newtonepsilon
-    default: [10.0^(-FPPREC/2)] - precision to determine when the
+    default: [10.0^(-fpprec/2)] - precision to determine when the
     process has converged towards the solution. 
   newtonmaxiter
     default: [50] - maximum number of iterations to stop the process
