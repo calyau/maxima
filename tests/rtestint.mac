@@ -290,6 +290,7 @@ integrate(x^3*sqrt(R),x);
 
 /* p. 59 */
 /* Verified by doing the indefinite integral and taking limits */
+/* Tests mtoinf and zmtorat */
 factor(integrate((x^2+a1*x+b1)/(x^4+10*x^2+9),x,minf,inf));
 %pi*(b1+3)/12;
 
@@ -298,6 +299,7 @@ factor(integrate((x^2+a1*x+b1)/(x^4+10*x^2+9),x,minf,inf));
  * Evaluating the indefinite integral and taking appropriate limits 
  * gives the equivalent answer
  */
+/* Tests ztoinf and zmtorat */
 factor(integrate((x^2+a1*x+b1)/(x^4+10*x^2+9),x,0,inf));
 (%pi*b1+3*log(3)*a1+3*%pi)/24;
 
@@ -308,6 +310,7 @@ factor(integrate((x^2+a1*x+b1)/(x^4+10*x^2+9),x,0,inf));
  * know that atan(sqrt(3)) is %pi/3?
  */
 /* Verified by doing evaluating indefinite integral */
+/* Tests ztoinf and zmtorat */
 integrate(1/(x^2+x+1),x,0,inf);
 2*sqrt(3)*atan(sqrt(3))/3;
 
@@ -316,10 +319,12 @@ integrate(1/(x^2+x+1),x,0,inf);
  * Using contour integration, we see this has poles at %i and 2*%i.  The
  * residues are 0 and -%i/3, respectively, so the integral is 2*%pi/3.
  */
+/* Tests ztoinf and zmtorat */
 integrate((x-%i)/((x-2*%i)*(x^2+1)),x,minf,inf);
 2*%pi/3;
 
 /* p. 64 */
+/* Tests ztoinf and zmtorat */
 integrate((x-%i)/((x-2*%i)*(x^2+1)),x,0,inf);
 (%i*log(2)+%pi)/3;
 
@@ -333,6 +338,7 @@ gcd:spmod;
 spmod;
 
 /* Verified via indefinite integral */
+/* Tests ztoinf and zmtorat */
 multthru(integrate(1/(x^2+x+1)^3,x,0,inf));
 4*sqrt(3)*atan(sqrt(3))/9-1/2;
 
@@ -341,6 +347,7 @@ subres;
 
 /* p. 70 */
 /* Verified via indefinite integral */
+/* Tests ztoinf and batapp */
 integrate(1/((1+x)*sqrt(x)),x,0,inf);
 %pi;
 
@@ -349,6 +356,7 @@ integrate(1/((1+x)*sqrt(x)),x,0,inf);
  * First, we need assume(k < 0, k+1>0).  Then we also need to tell
  * maxima k is not an integer.  Then maxima can evaluate this integral. 
  */
+/* Tests ztoinf and batapp */
 (assume(kj<0,kj+1>0),0);
 0;
 (declare(kj,noninteger),0);
@@ -358,6 +366,10 @@ integrate(x^kj/(x+3),x,0,inf);
 
 /* p. 74 */
 /* I think Wang meant the integral from a to inf, not 0 to inf. */
+/* 
+ * Tests parse-integrand, method-by-limits, dintegrate,
+ * method-radical-poly, intsubs.
+ */
 integrate(1/(x^2*sqrt(x^2-a^2)),x,a,inf);
 1/a^2;
 
@@ -378,6 +390,9 @@ integrate(1/(x^2*sqrt(x^2-a^2)),x,a,inf);
  *
  * Thus, Wang's answer is wrong.
  */
+/* 
+ * Tests method-by-limits, dintegrate, method-radical-poly, intsubs.
+ */
 integrate(x^6/(x^2+x+1)^(15/2),x,0,inf);
 2048/6567561;
 
@@ -386,6 +401,7 @@ integrate(x^6/(x^2+x+1)^(15/2),x,0,inf);
  * The single pole in the upper half plane is %i, and the residue of
  * exp(%i*x)/(x^2+1) is -%i/2*exp(-1), so the integral is as given.
  */
+/* Tests mtoinf, mtosc */
 integrate(cos(x)/(x^2+1),x,minf,inf);
 %e^(-1)*%pi;
 
@@ -394,6 +410,7 @@ integrate(cos(x)/(x^2+1),x,minf,inf);
  * The single pole in the upper half plane is %i, and the residue of
  * x*exp(%i*x)/(x^2+1) is exp(-1)/2, so the integral is as given.
  */
+/* Tests mtoinf, mtosc */
 integrate(x*sin(x)/(x^2+1),x,minf,inf);
 %e^(-1)*%pi;
 
@@ -411,10 +428,12 @@ integrate(x*cos(x)/(x^2+1),x,minf,inf);
  *
  * Maxima calculates this correctly.
  */
+/* Tests mtoinf, mtosc */
 integrate(x*cos(x)/(x^2+x+1),x,minf,inf);
 %e^-(sqrt(3)/2)*(3*%pi*sin(1/2)-sqrt(3)*%pi*cos(1/2))/3;
 
 /* p. 80 */
+/* Tests mtoinf, mtosc */
 integrate(1/(%e^(%i*x)*(x^2+1)),x,minf,inf);
 %e^(-1)*%pi;
 
@@ -435,6 +454,7 @@ integrate(1/(%e^(%i*x)*(x^2+1)),x,minf,inf);
  * residue because we traverse the real axis in the opposite
  * direction.)
  */
+/* Tests mtoinf, mtosc */
 integrate(sin(x)/(%e^(%i*x)*(x^2+1)),x,minf,inf);
 -%e^(-2)*(%e^2-1)*%i*%pi/2;
 
@@ -452,6 +472,7 @@ integrate(sin(x)/(%e^(%i*x)*(x^2+1)),x,minf,inf);
  * which is exp(-3)*(exp(2)-1)/4.  Thus, the integral is
  * -%i*%pi*exp(-3)*(exp(2)-1)/2.
  */
+/* Tests mtoinf, mtosc */
 integrate(sin(x)/(%e^(2*%i*x)*(x^2+1)),x,minf,inf);
 -%e^(-3)*(%e^2-1)*%i*%pi/2;
 
@@ -461,6 +482,7 @@ integrate(sin(x)/(%e^(2*%i*x)*(x^2+1)),x,minf,inf);
  *
  * I've verified the derivation and the value, so I think this is right.
  */
+/* Tests ztoinf, scaxn */
 integrate(cos(9*x^(7/3)),x,0,inf);
 3*gamma(3/7)*cos(3*%pi/14)/(7*9^(3/7));
 
@@ -471,6 +493,7 @@ integrate(cos(9*x^(7/3)),x,0,inf);
  *
  * Verified.
  */
+/* Tests ztoinf, scaxn */
 integrate(sin(9*x^(7/3)),x,0,inf);
 3*gamma(3/7)*sin(3*%pi/14)/(7*9^(3/7));
 
@@ -499,12 +522,14 @@ integrate(x^(3/2*%i+3)/exp(%i*x^3/2),x,0,inf);
  * criteria, and maxima returns the value
  * sqrt(%pi)/sqrt(s)*exp(%i*%pi/4).  Thus, we get the answer below.
  */
+/* Tests ztoinf, sconvert, ggr */
 (assume(s > 0), 0);
 0;
 ratsimp(integrate(sin(s*x)/sqrt(x),x,0,inf));
 sqrt(%pi)/(sqrt(2)*sqrt(s));
 
 /* p. 87 */
+/* Tests ztoinf, ssp */
 (assume(r>0),0);
 0;
 
@@ -512,6 +537,7 @@ integrate(sin(r*x)/x,x,0,inf);
 %pi/2;
 
 /* p. 87 */
+/* Tests ztoinf, ssp */
 (assume(q>0),0);
 0;
 integrate(sin(q*x)^2/x^2,x,0,inf);
@@ -525,7 +551,8 @@ integrate(sin(q*x)^2/x^2,x,0,inf);
  * function, the digamma, and trigamma functions.  But maxima can
  * evaluate these at k = 0 and the result is %pi^3/8.
  *
-*/
+ */
+/* Tests method-by-limits, zto1, batap-inf */
 integrate(log(x)^2/(x^2+1),x,0,inf);
 %pi^3/8;
 
@@ -545,6 +572,7 @@ integrate(log(x)^2/(x^2+1),x,0,inf);
  * Some simple numerical evaluations for k=-1/2 and k=-1/3 indicates
  * that this result is probably correct.
  */
+/* Tests method-by-limits, zto1, batap-inf */
 integrate(x^kj*log(x)/(x+3),x,0,inf);
 3^kj*(psi[0](kj+1)-psi[0](-kj))*beta(kj+1,-kj)+log(3)*3^kj*beta(kj+1,-kj);
 
@@ -552,6 +580,7 @@ integrate(x^kj*log(x)/(x+3),x,0,inf);
  * This is the same integral as above, using the substitution 
  * y=log(x).  See also Bug 1451351.
  */
+/* Tests method-by-limits, zto1, batap-inf */
 integrate(x*exp((kj+1)*x)/(exp(x)+3),x,minf,inf);
 3^kj*(psi[0](kj+1)-psi[0](-kj))*beta(kj+1,-kj)+log(3)*3^kj*beta(kj+1,-kj);
 
@@ -562,6 +591,7 @@ integrate(x*exp((kj+1)*x)/(exp(x)+3),x,minf,inf);
  * The substitution y=1/x produces the same integral with a negative
  * sign, so the answer must be zero.
  */
+/* Tests method-by-limits, dintlog */
 gcd:spmod;
 spmod;
 
@@ -595,6 +625,7 @@ subres;
  * (If true, we return the integral unevaluated.  I think this is
  * because solve fails to find the roots of x^(7/2)+1=0 correctly.)
  */
+/* Tests method-by-limits, dintlog, dintbypart, ztoinf, batapp */
 (gcd:spmod, intanalysis:false, 0);
 0;
 
@@ -606,6 +637,7 @@ integrate(log(x^(7/2)+1)/x^2,x,0,inf);
 
 /* p. 97 */
 /* Verified via indefinite integral */
+/* Tests dintegrate, method-by-limits, method-radical-poly */
 factor(integrate(1/(exp(x/3)*(5/exp(x/3)+7)),x,0,inf));
 3*(log(12)-log(7))/5;
 
@@ -629,11 +661,13 @@ integrate(exp(x/4)/(9*exp(x/2)+4),x,minf,inf);
  * glog(%i) = %i*%pi/2.  Maxima says the residue is -%i/2.  Hence the
  * value of the integral is 2*%i*%pi*(-%i/2) = %pi.
  */
+/* Tests mtoinf, rectzto%pi2 */
 integrate(x/(sinh(x)-%i),x,minf,inf);
 %pi;
 
 
 /* p. 101 */
+/* Tests ztoinf, ggr */
 integrate(exp(-x^2),x,0,inf);
 sqrt(%pi)/2;
 
@@ -642,6 +676,7 @@ sqrt(%pi)/2;
  * The substitution y=s*t produces 1/sqrt(s)*integrate(y^(-1/2)*exp(-y),y,0,inf), 
  * which is gamma(1/2)/sqrt(s).
  */
+/* Tests ztoinf, ggr */
 integrate(1/sqrt(t)/exp(s*t),t,0,inf);
 sqrt(%pi)/sqrt(s);
 
