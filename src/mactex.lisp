@@ -243,7 +243,9 @@
 
 (defun tex-stripdollar (x)
   (let ((s (maybe-invert-string-case (symbol-name (tex-stripdollar0 x)))))
-    (concatenate 'string "{\\it " s "}")))
+    (if (> (length s) 1)
+      (concatenate 'string "{\\it " s "}")
+      s)))
 
 (defun tex-stripdollar0 (sym &aux )
   (or (symbolp sym) (return-from tex-stripdollar0  sym))
