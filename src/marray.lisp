@@ -73,10 +73,13 @@
 
 (defun getvalue (sym)
   (and (symbolp sym) (boundp sym) (symbol-value sym)))
-(defmspec $rearray (l) (setq l (cdr l))
-	  (let ((ar (car l)) (dims (cdr l)))
-	    (cond ($use_fast_arrays (set ar (rearray-aux ar (getvalue ar) dims )))
-		  (t (rearray-aux ar (getvalue ar) dims)))))
+(defmspec $rearray (l)
+  (setq l (cdr l))
+  (let ((ar (car l)) (dims (cdr l)))
+    (cond ($use_fast_arrays
+	   (set ar (rearray-aux ar (getvalue ar) dims )))
+	  (t
+	   (rearray-aux ar (getvalue ar) dims)))))
 
 #+cl
 (defun rearray-aux (ar val dims &aux marray-sym)
@@ -86,7 +89,11 @@
 	 (setf (symbol-array ar)
 	       (apply 'lispm-rearray (symbol-array ar ) dims)))
 	((setq marray-sym (mget ar 'array))
-	 (apply 'rearray-aux  marray-sym nil dims ) ar)
+	 ;; Why apply?  Why not directly call ourselves?
+	 #+nil
+	 (apply 'rearray-aux  marray-sym nil (list dims))
+	 (rearray-aux marray-sym nil dims)
+	 ar)
 	(t (error "unknown array ~A " ar))))
 
 #-cl
