@@ -493,7 +493,7 @@
   (cond ((double-float-eval (mop form) y))
 	((and (not (member 'simp (car form))) (big-float-eval (mop form) y)))
 	((taylorize (mop form) (second form)))
-	((and $%piargs (cond ((zerop1 y) (domain-errror y 'csc))
+	((and $%piargs (cond ((zerop1 y) (domain-error y 'csc))
 			     ((linearp y '$%pi) (%piargs-csc/sec y)))))
 	((and $%iargs (multiplep y '$%i)) (mul -1 '$%i (cons-exp '%csch (coeff y '$%i 1))))
 	((and $triginverses (not (atom y))
