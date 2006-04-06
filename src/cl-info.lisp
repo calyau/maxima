@@ -522,6 +522,41 @@ that matches the name name with extention ext"
 	    (when position-pattern
 	      (setq position-pattern (re-quote-string position-pattern))
 
+	      #+nil
+	      (format t "position-pattern = ~S~%" position-pattern)
+	      ;; The position pattern might look like "psi <n>", where
+	      ;; n is some number.  If so, we need to remove the <n>
+	      ;; part because it doesn't actually show up in the info
+	      ;; file.
+	      (when (>= (string-match "(.*) +<[0-9]+>" position-pattern) 0)
+		(setq position-pattern
+		      (subseq position-pattern
+			      0
+			      (match-end 1)))
+		#+nil
+		(progn
+		  (format t "beginning, end = ~A ~A~%" (match-beginning 1) (match-end 1))
+		  (format t "position-pattern = ~S~%" position-pattern))
+		)
+
+	      #+nil
+	      (progn
+		(format t "subnode pattern = ~A~%"
+			(string-concatenate
+			 (format nil #u"\n -+ [A-Za-z~a ]+: " *extra-chars*)
+			 position-pattern
+			 #u"[ \n]"
+			 ))
+		(format t "pattern at ~A~%"
+			(string-match
+			 (string-concatenate
+			  (format nil #u"\n -+ [A-Za-z~a ]+: " *extra-chars*)
+			  position-pattern
+			  #u"[ \n]"
+			  )
+			 s beg end))
+		(format t "~S~%" (subseq s beg end)))
+	      
 	      ;; This looks for the desired pattern.  A typical entry
 	      ;; looks like
 	      ;;
@@ -545,6 +580,11 @@ that matches the name name with extention ext"
 			      0))
 		  (setq initial-offset
 			(- (match-beginning 0) beg)))))
+	    #+nil
+	    (progn
+	      (format t "initial-offset = ~A~%" initial-offset)
+	      (format t "subnode = ~A~%" subnode)
+	      (format t "end = ~A~%" end))
 	  
 	    ;; We now need to find the end of the documentation.
 	    ;; Usually, the end is where the next node begins. However,
