@@ -607,11 +607,66 @@ necessary.
 @end deffn
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
-@deffn {Function} psi (@var{x})
-@deffnx {Function} psi [@var{n}](@var{x})
-The derivative of @code{log (gamma (x))}.
+@c I (rtoy) don't think there is a plain psi(x) function anymore.
+@c @deffn {Function} psi (@var{x})
+@c @deffnx {Function} psi [@var{n}](@var{x})
+@deffn {Function} psi [@var{n}](@var{x})
 
-Maxima does not know how to compute a numerical value of @code{psi}.
-However, the function @code{bfpsi} in the @code{bffac} package can compute numerical values.
+The derivative of @code{log (gamma (@var{x}))} of order @code{@var{n}+1}.
+Thus, @code{psi[0](@var{x})} is the first derivative,
+@code{psi[1](@var{x})} is the second derivative, etc.
+
+Maxima does not know how, in general, to compute a numerical value of
+@code{psi}, but it can compute some exact values for rational args.
+Several variables control what range of rational args @code{psi} will
+return an exact value, if possible.  See @code{maxpsiposint},
+@code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracnum}.
+That is, @var{x} must lie between @code{maxpsinegint} and
+@code{maxpsiposint}.  If the absolute value of the fractional part of
+@var{x} is rational and has a numerator less and @code{maxpsifracnum}
+and has a denominator less than @code{maxpsifracdenom}, @code{psi}
+will return an exact value.
+
+The function @code{bfpsi} in the @code{bffac} package can compute
+numerical values.
 
 @end deffn
+
+@defvr {Option variable} maxpsiposint
+Default value: 20
+
+@code{maxpsiposint} is the largest positive value for which
+@code{psi[n](x)} will try to compute an exact value.
+
+@end defvr
+
+@defvr {Option variable} maxpsinegint
+Default value: -10
+
+@code{maxpsinegint} is the most negative value for which
+@code{psi[n](x)} will try to compute an exact value.  That is if
+@var{x} is less than @code{maxnegint}, @code{psi[n](@var{x})} will not
+return simplified answer, even if it could.
+
+@end defvr
+
+@defvr {Option variable} maxpsifracnum
+Default value: 4
+
+Let @var{x} be a rational number less than one of the form @code{p/q}.
+If @code{p} is greater than @code{maxpsifracnum}, then
+@code{psi[@var{n}](@var{x})} will not try to return a simplified
+value.
+
+@end defvr
+
+@defvr {Option variable} maxpsifracdenom
+Default value: 4
+
+Let @var{x} be a rational number less than one of the form @code{p/q}.
+If @code{q} is greater than @code{maxpsifracdeonm}, then
+@code{psi[@var{n}](@var{x})} will not try to return a simplified
+value.
+
+
+@end defvr
