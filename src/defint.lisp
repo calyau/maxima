@@ -59,7 +59,9 @@
 ;;		 tries an integration by parts.  (only routine to
 ;;		 try integration by parts) [wang, pp 93-95]
 ;;
-;;	dintexp- i(f(exp(x)),x,a,b) = i(f(x+1),x,a',b')
+;;	dintexp- i(f(exp(k*x)),x,a,inf) = i(f(x+1)/(x+1),x,0,inf)
+;;               or i(f(x)/x,x,0,inf)/k. First case hold for a=0;
+;;               the second for a=minf. [wang 96-97]
 ;;
 ;;dintegrate also tries indefinite integration based on certain 
 ;;predicates (such as abconv) and tries breaking up the integrand
@@ -2531,6 +2533,9 @@
 	((setq p (bx**n+a p))
 	 (m* (caddr p) (m^t var (cadr p)))))) 
 
+;; I think this is looking at f(exp(x)) and tries to find some
+;; rational function R and some number k such that f(exp(x)) =
+;; R(exp(k*x)).
 (defun funclogor%e (e)
   (prog (ans arg nvar r) 
      (cond ((or (ratp e var)
@@ -2547,6 +2552,13 @@
 		 (setq arg (findsub arg)))
 	    (go ag)))))
 
+;; Integration by parts.
+;;
+;; integrate(u(x)*diff(v(x),x),x,a,b)
+;;              |b
+;;   = u(x)*v(x)| - integrate(v(x)*diff(u(x),x))
+;;              |a
+;;
 (defun dintbypart (u v a b)
 ;;;SINCE ONLY CALLED FROM DINTLOG TO get RID OF LOGS - IF LOG REMAINS, QUIT
   (let ((ad (antideriv v)))
@@ -2567,19 +2579,39 @@
 					    (m- p2)))
 				  (t nil)))))))))))
 
+;; integrate(f(exp(k*x)),x,a,b), where f(z) is rational.
+;;
+;; See Wang p. 96-97.
+;;
+;; If the limits are minf to inf, we use the substitution y=exp(k*x)
+;; to get integrate(f(y)/y,y,0,inf)/k.  If the limits are 0 to inf,
+;; use the substitution s+1=exp(k*x) to get
+;; integrate(f(s+1)/(s+1),s,0,inf).
 (defun dintexp (exp arg &aux ans)
   (let ((*dintexp-recur* t))		;recursion stopper
     (cond ((and (sinintp exp var)     ;To be moved higher in the code.
 		(setq ans (antideriv exp))
-		(setq ans (intsubs ans ll ul))))
+		(setq ans (intsubs ans ll ul)))
+	   ;; If we can integrate it directly, do so and take the
+	   ;; appropriate limits.
+	   )
 	  ((setq ans (funclogor%e exp))
-	   (cond ((and (equal ll 0.) (eq ul '$inf))
+	   ;; ans is the list (f(x) exp(k*x)).
+	   (cond ((and (equal ll 0.)
+		       (eq ul '$inf))
+		  ;; Use the substitution s + 1 = exp(k*x).  The
+		  ;; integral becomes integrate(f(s+1)/(s+1),s,0,inf)
 		  (setq exp (subin (m+t 1. arg) (car ans)))
 		  (setq ans (m+t -1. (cadr ans))))
-		 (t (setq exp (car ans))
-		    (setq ans (cadr ans))))
+		 (t
+		  ;; Use the substitution y=exp(k*x) because the
+		  ;; limits are minf to inf.
+		  (setq exp (car ans))
+		  (setq ans (cadr ans))))
+	   ;; Apply the substitution and integrate it.
 	   (intcv ans t nil)))))
 
+;; integrate(log(g(x))*f(x),x,0,inf)
 (defun dintlog (exp arg)
   (let ((*dintlog-recur* (f1+ *dintlog-recur*))) ;recursion stopper
     (prog (ans d) 
@@ -2589,23 +2621,44 @@
 		   (equal 1. ($ratsimp (m// exp (m* (m- (subin (m^t var -1.)
 							       exp))
 						    (m^t var -2.))))))
+	      ;; Make the substitution y=1/x.  If the integrand has
+	      ;; exactly the same form, the answer has to be 0.
 	      (return 0.))
 	     ((setq ans (antideriv exp))
+	      ;; It's easy if we have the antiderivative.
 	      (return (intsubs ans ll ul)))
 	     ((setq ans (logx1 exp ll ul))
 	      (return ans)))
+       ;; Ok, the easy cases didn't work.  We now try integration by
+       ;; parts.  Set ANS to f(x).
        (setq ans (m// exp `((%log) ,arg)))
-       (cond ((involve ans '(%log)) (return nil))
+       (cond ((involve ans '(%log))
+	      ;; Bad. f(x) contains a log term, so we give up.
+	      (return nil))
 	     ((and (eq arg var)
 		   (equal 0. (no-err-sub 0. ans))
 		   (setq d (let ((*def2* t))
 			     (defint (m* ans (m^t var '*z*))
 				 var ll ul))))
+	      ;; The arg of the log function is the same as the
+	      ;; integration variable.  We can do something a little
+	      ;; simpler than integration by parts.  We have something
+	      ;; like f(x)*log(x).  Consider f(x)*x^z.  If we
+	      ;; differentiate this wrt to z, the integrand becomes
+	      ;; f(x)*log(x)*x^z.  When we evaluate this at z = 0, we
+	      ;; get the desired integrand.
+	      ;;
+	      ;; So we need f(0) to be 0 at 0.  If we can integrate
+	      ;; f(x)*x^z, then we differentiate the result and
+	      ;; evaluate it at z = 0.
 	      (return (derivat '*z* 1. d 0.)))
 	     ((setq ans (dintbypart `((%log) ,arg) ans ll ul))
+	      ;; Try integration by parts.
 	      (return ans))))))
 
-(defun derivat (var n e pt) (subin pt (apply '$diff (list e var n)))) 
+;; Compute diff(e,var,n) at the point pt.
+(defun derivat (var n e pt)
+  (subin pt (apply '$diff (list e var n)))) 
 
 ;;; GGR and friends
 
