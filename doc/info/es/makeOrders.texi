@@ -6,8 +6,8 @@
 @node Definiciones para makeOrders,  , makeOrders, makeOrders
 @section Definiciones para makeOrders
 
-@deffn {Function} makeOrders (@var{indvarlist},@var{orderlist})
-Returns a list of all powers for a polynomial up to and including the arguments. 
+@deffn {Funci@'on} makeOrders (@var{indvarlist},@var{orderlist})
+Devuelve una lista con las potencias de las variables de un polinomio t@'ermino a t@'ermino.
 
 @example
 (%i1) load("makeOrders")$
@@ -21,8 +21,8 @@ Returns a list of all powers for a polynomial up to and including the arguments.
                                                   2
                                            + b + a  + a + 1
 @end example
-where @code{[0, 1]} is associated with the term @math{b} and @code{[2, 3]} with @math{a^2 b^3}.
+donde @code{[0, 1]} se asocia al t@'ermino @math{b} y @code{[2, 3]} a @math{a^2 b^3}.
 
-To use this function write first @code{load("makeOrders")}.
+Antes de hacer uso de esta funci@'on ejec@'utese @code{load("makeOrders")}.
 @end deffn
 

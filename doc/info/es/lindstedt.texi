@@ -6,20 +6,13 @@
 @section Definiciones para lindstedt
 
 
-@deffn {Function} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
-This is a first pass at a Lindstedt code.  It can solve problems
-with initial conditions entered, which can be arbitrary constants,
-(just not @var{%k1} and @var{%k2}) where the initial conditions on the perturbation
-equations are @math{z[i]=0, z'[i]=0} for @math{i>0}. @var{ic} is the list of 
-initial conditions.
+@deffn {Funci@'on} Lindstedt (@var{eq},@var{pvar},@var{torder},@var{ic})
+Este es el primer paso hacia un programa para resolver ecuaciones de Lindstedt.
+Puede resolver problemas con condiciones iniciales, las cuales pueden ser
+constantes arbitrarias (no pueden usarse @var{%k1} ni @var{%k2}) donde las condiciones iniciales sobre las ecuaciones de perturbaci@'on son @math{z[i]=0, z'[i]=0} para @math{i>0}.
+El argumento @var{ic} es la lista de condiciones iniciales.
 
-Problems occur when initial conditions are not given, as the constants
-in the perturbation equations are the same as the zero order equation
-solution.  Also, problems occur when the initial conditions for the
-perturbation equations are not @math{z[i]=0, z'[i]=0} for @math{i>0}, such as the
-Van der Pol equation.
-
-Example:
+Ejemplo:
 @example
 (%i1) load("makeOrders")$
 
@@ -39,5 +32,5 @@ T = (- ---- - -- + 1) t]]
        3072   16
 @end example
 
-To use this function write first @code{load("makeOrders")} and @code{load("lindstedt")}.
+Antes de hacer uso de esta funci@'on ejec@'utense  @code{load("makeOrders")} y @code{load("lindstedt")}.
 @end deffn

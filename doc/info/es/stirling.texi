@@ -5,13 +5,14 @@
 @node Definiciones para stirling,  , stirling, stirling
 @section Definiciones para stirling
 
-@deffn {Function} stirling (@var{z},@var{n})
-Replace @code{gamma(x)} with the @math{O(1/x^(2n-1))} Stirling formula. when @var{n} isn't
-a nonnegative integer, signal an error.
 
-Reference: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
+@deffn {Funci@'on} stirling (@var{z},@var{n})
+Sustituye @code{gamma(x)} por la f@'ormula de Stirling @math{O(1/x^(2n-1))}.
+Si @var{n} no es un entero no negativo, emite un mensaje de error.
 
-Examples:
+Referencia: Abramowitz & Stegun, " Handbook of mathematical functions", 6.1.40.
+
+Ejemplos:
 @example
 (%i1) load (stirling)$
 
@@ -34,8 +35,8 @@ Examples:
                                   2
 @end example
 
-The function @code{stirling} knows the difference between the variable 'gamma' and
-the function gamma:
+La funci@'on @code{stirling} conoce la diferencia existente entre
+la variable 'gamma' y la funci@'on gamma:
 
 @example
 (%i5) stirling(gamma + gamma(x),0);
@@ -48,5 +49,6 @@ the function gamma:
                          + sqrt(2) sqrt(%pi) x        %e
 @end example
 
-To use this function write first @code{load("stirling")}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("stirling")}.
 @end deffn
+

@@ -5,12 +5,10 @@
 @node Definiciones para impdiff,  , impdiff, impdiff
 @section Definiciones para impdiff
 
-@deffn {Function} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
-This subroutine computes implicit derivatives of multivariable functions.
-@var{f} is an array function, the indexes are the derivative degree in the @var{indvarlist} order;
-@var{indvarlist} is the independent variable list; @var{orderlist} is the order desired; and 
-@var{depvar} is the dependent variable.
 
-To use this function write first @code{load("impdiff")}.
+@deffn {Funci@'on} implicit_derivative (@var{f},@var{indvarlist},@var{orderlist},@var{depvar})
+Calcula las derivadas impl@'{@dotless{i}}citas de funciones multivariantes. @var{f} es una funci@'on array, los @'{@dotless{i}}ndices son los grados de las derivadas en el orden establecido en @var{indvarlist}, @var{indvarlist} es la lista de variables independientes, @var{orderlist} es el orden deseado y @var{depvar} es la variable dependiente.
+
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("impdiff")}.
+
 @end deffn
-

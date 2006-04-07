@@ -6,35 +6,35 @@
 @node Definiciones para mnewton,  , mnewton, mnewton
 @section Definiciones para mnewton
 
-@defvr {Option variable} NEWTONEPSILON
-Default value: @code{10.0^(-fpprec/2)}
 
-Precision to determine when the @code{mnewton} function has converged towards the solution.
+@defvr {Variable opcional} NEWTONEPSILON
+Valor por defecto:  @code{10.0^(-fpprec/2)}
 
-See also @code{mnewton}.
+Precisi@'on que determina cuando la funci@'on @code{mnewton} ha conseguido una convergencia aceptable.
+
+V@'ease tambi@'en @code{mnewton}.
 @end defvr
 
 
-@defvr {Option variable} NEWTONMAXITER
-Default value: @code{50}
+@defvr {Variable opcional} NEWTONMAXITER
+Valor por defecto:  @code{50}
 
-Maximum number of iterations to stop the @code{mnewton} function
-if it does not converge or if it converges too slowly.
+N@'umero m@'aximo de iteraciones para la funci@'on @code{mnewton} en caso de que no se produzca convergencia, o de que @'esta se haga muy lenta.
 
-See also @code{mnewton}.
+V@'ease tambi@'en @code{mnewton}.
 @end defvr
 
 
-@deffn {Function} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
-Multiple nonlinear functions solution using the Newton method.
-@var{FuncList} is the list of functions to solve,
-@var{VarList} is the list of variable names, and
-@var{GuessList} is the list of initial approximations.
+@deffn {Funci@'on} mnewton (@var{FuncList},@var{VarList},@var{GuessList})
+Resoluci@'on de sistemas de ecuaciones no lineales por el m@'etodo de Newton.
+@var{FuncList} es la lista de ecuaciones a resolver,
+@var{VarList} es la lista con los nombres de las inc@'ognitas y
+@var{GuessList} es la lista de aproximaciones iniciales.
 
-The solution is returned in the same format that @code{solve()} returns.
-If the solution isn't found, @code{[]} is returned.
+La soluci@'on se devuelve en el mismo formato que lo hace la funci@'on @code{solve()}.
+Si no se le encuentra soluci@'on al sistema, se obtiene @code{[]} como respuesta.
 
-This function is controlled by global variables @code{NEWTONEPSILON} and @code{NEWTONMAXITER}.
+Esta funci@'on se controla con las variables globales @code{NEWTONEPSILON} y @code{NEWTONMAXITER}.
 
 @example
 (%i1) load("mnewton")$
@@ -48,6 +48,7 @@ This function is controlled by global variables @code{NEWTONEPSILON} and @code{N
 (%o4) [[u = 1.066618389595407, v = 1.552564766841786]]
 @end example
 
-To use this function write first @code{load("mnewton")}. See also @code{NEWTONEPSILON} and @code{NEWTONMAXITER}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("mnewton")}. V@'eanse tambi@'en @code{NEWTONEPSILON} y @code{NEWTONMAXITER}.
 @end deffn
+
 

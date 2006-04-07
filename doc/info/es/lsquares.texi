@@ -6,44 +6,26 @@
 @section Definiciones para lsquares
 
 
-@defvr {Global variable} DETCOEF
+@defvr {Variable global} DETCOEF
 
-This variable is used by functions @code{lsquares} and @code{plsquares} to store the Coefficient of Determination which measures the goodness of fit. It ranges from 0 (no correlation) to 1 (exact correlation). 
+Esta variable es utilizada por las funciones @code{lsquares} y @code{plsquares} para almacenar el @i{coeficiente de determinaci@'on} que mide la bondad del ajuste, el cual var@'{@dotless{i}}a entre 0 (ausencia de correlaci@'on) y 1 (dependencia exacta).
 
-When @code{plsquares} is called with a list of dependent variables, @var{DETCOEF} is set to a list of Coefficients of Determination. See @code{plsquares} for details.
+Cuando se llama a @code{plsquares} con una lista de variables dependientes, @var{DETCOEF} almacena una lista de coeficientes de determinaci@'on. V@'ease @code{plsquares} para m@'as detalles.
 
-See also @code{lsquares}.
+V@'ease tambi@'en @code{lsquares}.
 @end defvr
 
 
-@deffn {Function} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList})
-@deffnx {Function} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList},@var{GuessList})
-Multiple nonlinear equation adjustment of a data table by the
-"least squares" method. @var{Mat} is a matrix containing the data,
-@var{VarList} is a list of variable names (one for each @var{Mat} column),
-@var{equation} is the equation to adjust (it must be in the form:
-@code{depvar=f(indepvari,..., paramj,...)}, @code{g(depvar)=f(indepvari,..., paramj,...)} 
-or @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} is the 
-list of the parameters to obtain, and @var{GuessList} is an optional list of initial 
-approximations to the parameters; when this last argument is present, @code{mnewton} is used
-instead of @code{solve} in order to get the parameters.
+@deffn {Funci@'on} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList})
+@deffnx {Funci@'on} lsquares (@var{Mat},@var{VarList},@var{equation},@var{ParamList},@var{GuessList})
+Ajuste de una funci@'on multivariante a una tabla de datos por el m@'etodo de los @i{m@'{@dotless{i}}nimos cuadrados}.  @var{Mat} es la matriz con los datos emp@'{@dotless{i}}ricos, @var{VarList} es la lista con los nombres de las variables (una por cada columna de @var{Mat}), @var{equation} es la funci@'on a ajustar, la cual debe estar expresada en cualquiera de las formas @code{depvar=f(indepvari,..., paramj,...)}, @code{g(depvar)=f(indepvari,..., paramj,...)} o @code{g(depvar, paramk,...)=f(indepvari,..., paramj,...)}), @var{ParamList} es la lista de los par@'ametros a estimar y @var{GuessList} es una lista opcional de aproximaciones iniciales de los par@'ametros; cuando este @'ultimo argumento est@'a presente, se utiliza @code{mnewton} en lugar de @code{solve} a fin de obtener los par@'ametros.
 
-The equation may be fully nonlinear with respect to the independent
-variables and to the dependent variable.
-In order to use @code{solve()}, the equations must be linear or polynomial with
-respect to the parameters. Equations like @code{y=a*b^x+c} may be adjusted for
-@code{[a,b,c]} with @code{solve} if the @code{x} values are little positive integers and
-there are few data (see the example in lsquares.dem).
-@code{mnewton} allows to adjust a nonlinear equation with respect to the
-parameters, but a good set of initial approximations must be provided.
+La funci@'on puede ser no lineal con respecto a las variables, tanto independientes como dependiente. Al objeto de utilizar @code{solve()} las funciones deben ser lineales o polin@'omicas respecto de los par@'ametros. Funciones como @code{y=a*b^x+c} pueden ajustarse para @code{[a,b,c]} con @code{solve} si los valores @code{x} son enteros positivos peque@~nos y hay pocos datos (v@'ease el ejemplo en @code{lsquares.dem}). La funci@'on @code{mnewton} permite ajustar una funci@'on no lineal respecto de los par@'ametros, pero deber@'a suministr@'arsele un conjunto de buenas aproximaciones iniciales.
 
-If possible, the adjusted equation is returned. If there exists more
-than one solution, a list of equations is returned.
-The Coefficient of Determination is displayed in order to inform about
-the goodness of fit, from 0 (no correlation) to 1 (exact correlation).
-This value is also stored in the global variable @var{DETCOEF}.
+Si es posible se retornar@'a la funci@'on ajustada. En caso de existir m@'as de una soluci@'on, se devolver@'a una lista de funciones. El @i{coeficiente de determinaci@'on} se mostrar@'a tambi@'en a fin de aportar informaci@'on sobre la bondad del ajuste, el cual var@'{@dotless{i}}a entre 0 (ausencia de correlaci@'on) y 1 (ajuste exacto); este valor se almacena tambi@'en en la variable global @var{DETCOEF}.
 
-Examples using @code{solve}:
+
+Ejemplos utilizando @code{solve}:
 @example
 (%i1) load("lsquares")$
 
@@ -74,7 +56,7 @@ Examples using @code{solve}:
 @end example
 
 
-Examples using @code{mnewton}:
+Ejemplos utilizando @code{mnewton}:
 @example
 (%i6) load("lsquares")$
 
@@ -95,20 +77,18 @@ Examples using @code{mnewton}:
                                          + 2.00000000000012
 @end example
 
-To use this function write first @code{load("lsquares")}. See also @code{DETCOEF} and @code{mnewton}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("lsquares")}. V@'eanse tambi@'en @code{DETCOEF} y @code{mnewton}.
 @end deffn
 
 
-@deffn {Function} plsquares (@var{Mat},@var{VarList},@var{depvars})
-@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
-@deffnx {Function} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
-Multivariable polynomial adjustment of a data table by the "least squares"
-method. @var{Mat} is a matrix containing the data, @var{VarList} is a list of variable names (one for each Mat column, but use "-" instead of varnames to ignore Mat columns), @var{depvars} is the name of a dependent variable or a list with one or more names of dependent variables (which names should be in @var{VarList}), @var{maxexpon} is the optional maximum exponent for each independent variable (1 by default), and @var{maxdegree} is the optional maximum polynomial degree (@var{maxexpon} by default); note that the sum of exponents of each term must be equal or smaller than @var{maxdegree}, and if @code{maxdgree = 0} then no limit is applied.
+@deffn {Funci@'on} plsquares (@var{Mat},@var{VarList},@var{depvars})
+@deffnx {Funci@'on} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon})
+@deffnx {Funci@'on} plsquares (@var{Mat},@var{VarList},@var{depvars},@var{maxexpon},@var{maxdegree})
+Ajuste de una funci@'on polin@'omica multivariante a una tabla de datos por el m@'etodo de los @i{m@'{@dotless{i}}nimos cuadrados}. @var{Mat} es la matriz con los datos emp@'{@dotless{i}}ricos, @var{VarList} es la lista con los nombres de las variables (una por cada columna de @var{Mat}, pero @'usese @code{-} en lugar de los nombres de variables para ignorar las columnas de @var{Mat}), @var{depvars} es el nombre de la variable dependiente o una lista con uno o m@'as nombres de variables dependientes (cuyos nombres deben estar tambi@'en en @var{VarList}), @var{maxexpon} es un argumento opcional para indicar el m@'aximo exponente para cada una de las variables independientes (1 por defecto) y  @var{maxdegree} es otro argumento opcional para el grado del polinomio (@var{maxexpon} por defecto); n@'otese que la suma de exponentes de cada t@'ermino debe ser igual o menor que @var{maxdegree}. Si @code{maxdgree = 0} entonces no se aplicar@'a ning@'un l@'{@dotless{i}}mite.
 
-If @var{depvars} is the name of a dependent variable (not in a list), @code{plsquares} returns the adjusted polynomial. If @var{depvars} is a list of one or more dependent variables, @code{plsquares} returns a list with the adjusted polynomial(s). The Coefficients of Determination  are displayed in order to inform about the goodness of fit, which ranges from 0 (no correlation) to 1 (exact correlation). These values are also stored in the global variable @var{DETCOEF} (a list if @var{depvars} is a list).
+Si @var{depvars} es el nombre de una variable dependiente (no en una lista), @code{plsquares} devuelve el polinomio ajustado. Si @var{depvars} es una lista de una o m@'as variables dependientes, @code{plsquares} devuelve una lista con los polinomios ajustados. Los coeficientes de determinaci@'on se muestran en su orden correspondiente para informar sobre la bondad del ajuste. Estos valores se almacenan tambi@'en en la variable global @var{DETCOEF}; en un formato de lista si @var{depvars} es a su vez una lista.
 
-
-A simple example of multivariable linear adjustment:
+Un ejemplo sencillo de ajuste lineal multivariante:
 @example
 (%i1) load("plsquares")$
 
@@ -120,7 +100,7 @@ A simple example of multivariable linear adjustment:
                               3
 @end example
 
-The same example without degree restrictions:
+El mismo ejemplo sin restricciones en el grado:
 @example
 (%i3) plsquares(matrix([1,2,0],[3,5,4],[4,7,9],[5,8,10]),
                 [x,y,z],z,1,0);
@@ -130,7 +110,7 @@ The same example without degree restrictions:
                               6
 @end example
 
-How many diagonals does a N-sides polygon have? What polynomial degree should be used?
+C@'alculo del n@'umero de diagonales de un pol@'{@dotless{i}}gono de @math{N} lados
 @example
 (%i4) plsquares(matrix([3,0],[4,2],[5,5],[6,9],[7,14],[8,20]),
                 [N,diagonals],diagonals,5);
@@ -143,7 +123,8 @@ How many diagonals does a N-sides polygon have? What polynomial degree should be
 (%o5)                 diagonals = 27
 @end example
 
-How many ways do we have to put two queens without they are threatened into a n x n chessboard?
+C@'alculo del n@'umero de formas de colocar dos reinas en un tablero 
+n x n de manera que no se amenacen.
 @example
 (%i6) plsquares(matrix([0,0],[1,0],[2,0],[3,8],[4,44]),
                 [n,positions],[positions],4);
@@ -156,7 +137,7 @@ How many ways do we have to put two queens without they are threatened into a n 
 (%o7)                positions = 1288
 @end example
 
-An example with six dependent variables:
+Un ejemplo con seis variables dependientes:
 @example
 (%i8) mtrx:matrix([0,0,0,0,0,1,1,1],[0,1,0,1,1,1,0,0],
                   [1,0,0,1,1,1,0,0],[1,1,1,1,0,0,0,1])$
@@ -170,6 +151,5 @@ _Xor = - 2 a b + b + a, _Nand = 1 - a b,
 _Nor = a b - b - a + 1, _Nxor = 2 a b - b - a + 1]
 @end example
 
-To use this function write first @code{load("lsquares")}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("plsquares")}.
 @end deffn
-

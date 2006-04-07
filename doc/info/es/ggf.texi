@@ -5,50 +5,54 @@
 @node Definiciones para ggf,  , ggf, ggf
 @section Definiciones para ggf
 
-@defvr {Option variable} GGFINFINITY
-Default variable: 3
 
-This is an option variable for function @code{ggf}.
+@defvr {Variable opcional} GGFINFINITY
+Valor por defecto: 3
 
-When computing the continued fraction of the
-generating function, a partial quotient having a degree
-(strictly) greater than @var{GGFINFINITY} will be discarded and
-the current convergent will be considered as the exact value
-of the generating function; most often the degree of all
-partial quotients will be 0 or 1; if you use a greater value,
-then you should give enough terms in order to make the
-computation accurate enough.
+Variable opcional para la funci@'on @code{ggf}.
 
+Cuando se calcula la fracci@'on continua de la funci@'on
+generatriz, si un cociente parcial tiene grado estrictamente
+mayor que @var{GGFINFINITY} ser@'a descartado y la convergencia
+alcanzada hasta ese momento ser@'a considerada como exacta para
+la funci@'on generatriz. Lo m@'as frecuente es que el grado de
+todos los cocientes parciales sea 0 @'o 1, de modo que si se
+utiliza un valor mayor se deber@'an dar m@'as t@'erminos para
+conseguir un c@'alculo m@'as exacto.
 
-See also @code{ggf}.
+V@'ease tambi@'en @code{ggf}.
 @end defvr
 
 
-@defvr {Option variable} GGFCFMAX
-Default variable: 3
+@defvr {Variable opcional} GGFCFMAX
+Valor por defeco: 3
 
-This is an option variable for function @code{ggf}.
+Variable opcional para la funci@'on @code{ggf}.
 
-When computing the continued fraction of the
-generating function, if no good result has been found (see
-the @var{GGFINFINITY} flag) after having computed @var{GGFCFMAX} partial
-quotients, the generating function will be considered as
-not being a fraction of two polynomials and the function will
-exit. Put freely a greater value for more complicated
-generating functions.
+Cuando se calcula la fracci@'on continua de la funci@'on
+generatriz, si no se ha encontrado un resultado aceptable
+(v@'ease la variable @var{GGFINFINITY}) despu@'es de haber 
+calculado @var{GGFCFMAX} cocientes parciales, la funci@'on
+generatriz ser@'a considerada no equivalente a una fracci@'on
+racional y la funci@'on @code{ggf} se detendr@'a. Puede
+asign@'arsele a @var{GGFCFMAX} un valor mayor para funciones
+generatrices m@'as complicadas.
 
-See also @code{ggf}.
+V@'ease tambi@'en @code{ggf}.
 @end defvr
 
-@deffn {Function} ggf (@var{l})
-Compute the generating function (if it is a fraction of two
-polynomials) of a sequence, its first terms being given. @var{l}
-is a list of numbers.
+@deffn {Funci@'on} ggf (@var{l})
+Calcula la funci@'on generatriz de una sucesi@'on de la que
+se suministran tan solo los primeros valores y cuyo t@'ermino
+general es una fracci@'on algebraica (cociente de dos
+polinomios).
 
-The solution is returned as a fraction of two polynomials.
-If no solution has been found, it returns with @code{done}.
+La soluci@'on se devuelve como una fracci@'on de polinomios. 
+En caso de no poder encontrar una soluci@'on, se devuelve
+@code{done}.
 
-This function is controlled by global variables @var{GGFINFINITY} and @var{GGFCFMAX}. See also @var{GGFINFINITY} and @var{GGFCFMAX}.
+Esta funci@'on est@'a controlada por las variables globales 
+@var{GGFINFINITY} y @var{GGFCFMAX}. V@'eanse tambi@'en @var{GGFINFINITY} y @var{GGFCFMAX}.
 
-To use this function write first @code{load("ggf")}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("ggf")}.
 @end deffn

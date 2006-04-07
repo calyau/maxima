@@ -6,14 +6,17 @@
 @section Definiciones para eval_string
 
 
-@deffn {Function} eval_string (@var{str})
-Parse the Maxima string @var{str} as a Maxima expression and evaluate it.
-@var{str} is a Maxima string. It may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
-Only the first expression is parsed and evaluated, if there is more than one.
+@deffn {Funci@'on} eval_string (@var{str})
+Analiza sint@'acticamente la cadena @var{str} interpret@'andola
+como una expresi@'on de Maxima y evalu@'andola a continuaci@'on.
+El valor dado a  @var{str} debe ser una cadena de Maxima (no de Lisp).
+La expresi@'on puede terminar con un car@'acter de terminaci@'on de
+sentencia (@code{$} o @code{;}) o carecer de @'el. Tan solo se
+analiza y eval@'ua la primera expresi@'on si hay m@'as de una.
 
-Complain if @var{str} is not a Maxima string.
+Si @var{str} no es una cadena de Maxima se emite un mensaje de error.
 
-Examples:
+Ejemplos:
 @example
 (%i1) load("eval_string")$
 
@@ -23,18 +26,21 @@ Examples:
 (%o3)                   baz + 1764
 @end example
 
-To use this function write first @code{load("eval_string")}. See also @code{parse_string}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("eval_string")}. V@'ease tambi@'en @code{parse_string}.
 @end deffn
 
 
-@deffn {Function} parse_string (@var{str})
-Parse the Maxima string @var{str} as a Maxima expression (do not evaluate it).
-@var{str} is a Maxima string. It may or may not have a terminator (dollar sign @code{$} or semicolon @code{;}).
-Only the first expression is parsed, if there is more than one.
+@deffn {Funci@'on} parse_string (@var{str})
+Analiza sint@'acticamente la cadena @var{str} interpret@'andola
+como una expresi@'on de Maxima sin evaluarla.
+El valor dado a  @var{str} debe ser una cadena de Maxima (no de Lisp).
+La expresi@'on puede terminar con un car@'acter de terminaci@'on de
+sentencia (@code{$} o @code{;}) o carecer de @'el. Tan solo se
+analiza y eval@'ua la primera expresi@'on si hay m@'as de una.
 
-Complain if @var{str} is not a Maxima string.
+Si @var{str} no es una cadena de Maxima se emite un mensaje de error.
 
-Examples:
+Ejemplos:
 @example
 (%i1) load("eval_string")$
 
@@ -45,6 +51,5 @@ Examples:
 (%o3)          (foo : 42, bar : foo  + baz)
 @end example
 
-To use this function write first @code{load("eval_string")}. See also @code{eval_string}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("eval_string")}. V@'ease tambi@'en @code{eval_string}.
 @end deffn
-

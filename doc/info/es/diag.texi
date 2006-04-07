@@ -6,10 +6,12 @@
 @section Definiciones para diag
 
 
-@deffn {Function} diag (@var{lm})
-Constructs a square matrix with the matrices of @var{lm} in the diagonal. @var{lm} is a list of matrices or scalars.
+@deffn {Funci@'on} diag (@var{lm})
+Genera una matriz cuadrada con las matrices de @var{lm}
+en la diagonal, siendo @var{lm} una lista de matrices o de
+escalares.
 
-Example:
+Ejemplo:
 @example
 (%i1) load("diag")$
 
@@ -31,14 +33,15 @@ Example:
                    [ 0  0  0  0  1  0 ]
 @end example
 
-To use this function write first @code{load("diag")}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
 @end deffn
 
 
-@deffn {Function} JF (@var{lambda},@var{n})
-Returns the Jordan cell of order @var{n} with eigenvalue @var{lambda}.
+@deffn {Funci@'on} JF (@var{lambda},@var{n})
+Devuelve la c@'elula de Jordan de orden  @var{n} con
+valor propio @var{lambda}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load("diag")$
 
@@ -58,16 +61,17 @@ Example:
                          [ 0  3 ]
 @end example
 
-To use this function write first @code{load("diag")}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
 @end deffn
 
 
-@deffn {Function} jordan (@var{mat})
-Returns the Jordan form of matrix @var{mat}, but codified in a Maxima list.
-To get the corresponding matrix, call function @code{dispJordan} using as argument
-the output of @code{JF}.
+@deffn {Funci@'on} jordan (@var{mat})
+Devuelve la forma de Jordan de la matriz @var{mat}, pero
+en formato de lista de Maxima. Para obtener la matriz
+correspondiente, ll@'amese a la funci@'on @code{dispJordan}
+utilizando como argumento la salida de @code{JF}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load("diag")$
 
@@ -100,14 +104,17 @@ Example:
                 [ 0  0  0  0  0  0  0  3 ]
 @end example
 
-To use this function write first @code{load("diag")}. See also @code{dispJordan} and @code{minimalPoly}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
+V@'eanse tambi@'en @code{dispJordan} y @code{minimalPoly}.
 @end deffn
 
 
-@deffn {Function} dispJordan (@var{l})
-Returns the Jordan matrix associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+@deffn {Funci@'on} dispJordan (@var{l})
+Devuelve la matriz de Jordan asociada a la codificaci@'on
+dada por la lista @var{l}, que habitualmente ser@'a la salida
+de la funci@'on @code{jordan}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load("diag")$
 
@@ -131,14 +138,17 @@ Example:
                     [ 0  0  0  0  0 ]
 @end example
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{minimalPoly}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
+V@'eanse tambi@'en @code{jordan} y @code{minimalPoly}.
 @end deffn
 
 
-@deffn {Function} minimalPoly (@var{l})
-Returns the minimal polynomial associated to the codification given by the Maxima list @var{l}, which is the output given by function @code{jordan}.
+@deffn {Funci@'on} minimalPoly (@var{l})
+Devuelve el polinomio m@'{@dotless{i}}nimo asociado a la
+codificaci@'on dada por la lista @var{l}, que habitualmente
+ser@'a la salida de la funci@'on @code{jordan}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load("diag")$
 
@@ -154,13 +164,17 @@ Example:
 (%o4)                (x - 1)  (x + 1)
 @end example
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
+V@'eanse tambi@'en @code{jordan} y @code{dispJordan}.
 @end deffn
 
-@deffn {Function} ModeMatrix (@var{A},@var{l})
-Returns the matrix @var{M} such that @math{(M^^-1).A.M=J}, where @var{J} is the Jordan form of @var{A}. The Maxima list @var{l} is the codified form of the Jordan form as returned by function @code{jordan}.
+@deffn {Funci@'on} ModeMatrix (@var{A},@var{l})
+Devuelve la matriz @var{M} tal que @math{(M^^-1).A.M=J}, 
+donde @var{J} es la forma de Jordan de @var{A}. La lista @var{l} 
+es la forma codificada de la forma de Jordan tal como la
+devuelve la funci@'on @code{jordan}.
 
-Example:
+Ejemplo:
 @example
 (%i1) load("diag")$
 
@@ -188,32 +202,33 @@ Example:
 (%i5) is(  (M^^-1).a.M = dispJordan(%o3)  );
 (%o5)                      true
 @end example
-Note that @code{dispJordan(%o3)} is the Jordan form of matrix @code{a}.
+N@'otese que @code{dispJordan(%o3)} es la forma de Jordan de la matriz @code{a}.
 
-To use this function write first @code{load("diag")}. See also @code{jordan} and @code{dispJordan}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
+V@'eanse tambi@'en @code{jordan} y @code{dispJordan}.
 @end deffn
 
 
-@deffn {Function} mat_function (@var{f},@var{mat})
-Returns @math{f(mat)}, where @var{f} is an analytic function and @var{mat}
-a matrix. This computation is based on Cauchy's integral formula, which states that
-if @code{f(x)} is analytic and
-
+@deffn {Funci@'on} mat_function (@var{f},@var{mat})
+Devuelve  @math{f(mat)}, siendo @var{f} una funci@'on anal@'{@dotless{i}}tica
+y @var{mat} una matriz. Este c@'alculo se basa en la f@'ormula integral
+de Cauchy, que establece que si @code{f(x)} es anal@'{@dotless{i}}tica y
 @example
 mat=diag([JF(m1,n1),...,JF(mk,nk)]),
 @end example
 
-then
+entonces
 
 @example
 f(mat)=ModeMatrix*diag([f(JF(m1,n1)),...,f(JF(mk,nk))])*ModeMatrix^^(-1)
 @end example
 
-Note that there are about 6 or 8 other methods for this calculation.
+N@'otese que hay otros m@'etodos alternativos para
+realizar este c@'alculo.
 
-Some examples follow.
+Se presentan algunos ejemplos.
 
-Example 1:
+Ejemplo 1:
 @example
 (%i1) load("diag")$
 
@@ -292,7 +307,7 @@ t  (----- - -----) - t (%e    - -----)])
 @end example
 
 
-Example 2:
+Ejemplo 2:
 @example
 (%i5) b1:matrix([0,0,1,1,1],
                 [0,0,0,1,1],
@@ -357,7 +372,7 @@ Example 2:
               [ 0  0   0     0        1     ]
 @end example
 
-Example 3:
+Ejemplo 3:
 @example
 (%i11) a1:matrix([2,1,0,0,0,0],
                  [-1,4,0,0,0,0],
@@ -416,7 +431,6 @@ Example 3:
          [ 3  - 2  ]         [ 2  ]
 @end example
 
-To use this function write first @code{load("diag")}.
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("diag")}.
 @end deffn
-
 

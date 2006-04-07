@@ -6,14 +6,15 @@
 @section Definiciones para bode
 
 
-@deffn {Function} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
-Function to draw Bode gain plots.
 
-Examples (1 through 7 from 
+@deffn {Funci@'on} bode_gain (@var{H}, @var{range}, ...@var{plot_opts}...)
+Funci@'on para dibujar el gr@'afico de ganancia de Bode.
+
+Ejemplos (1 a 7 de 
 @example
 http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
 @end example
-8 from Ron Crummett):
+8 de Ron Crummett):
 @example
 (%i1) load("bode")$
 
@@ -52,18 +53,19 @@ http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
 (%i17) bode_gain (H8 (s), [w, 1/1000, 1000])$
 @end example
 
-To use this function write first @code{load("bode")}. See also @code{bode_phase}
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("bode")}.
+V@'ease tambi@'en @code{bode_phase}.
 @end deffn
 
 
-@deffn {Function} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
-Function to draw Bode phase plots.
+@deffn {Funci@'on} bode_phase (@var{H}, @var{range}, ...@var{plot_opts}...)
+Funci@'on para dibujar el gr@'afico de fase de Bode.
 
-Examples (1 through 7 from 
+Ejemplos (1 a 7 de 
 @example
 http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
 @end example
-8 from Ron Crummett):
+8 de Ron Crummett):
 @example
 (%i1) load("bode")$
 
@@ -108,6 +110,7 @@ http://www.swarthmore.edu/NatSci/echeeve1/Ref/Bode/BodeHow.html,
               bode_phase (H8 (s), [w, 1/1000, 1000]));
 @end example
 
-To use this function write first @code{load("bode")}. See also @code{bode_gain}
+Antes de hacer uso de esta funci@'on ejec@'utese  @code{load("bode")}.
+V@'ease tambi@'en @code{bode_gain}.
 @end deffn
 
