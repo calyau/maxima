@@ -589,13 +589,16 @@
 	((equal n 2) t)
 	((evenp n) nil)
 	((member n `(2 3 5 7 11 13 17)) t)
-	((< n 34155071728321) (primep-small n))
+	((< n 341550071728321) (primep-small n))
 	((member n *large-primes*) t)
 	(t (primep-prob n))))
 
 
-;;; miller-rabin test is deterministic for n<34155071728321 
-;;; if we test for small bases (values taken from yacas RabinMiller package).
+;;; miller-rabin test is deterministic for n<341550071728321 
+;;; if we test for small bases
+;;; Reference:
+;;;  G. Jaeschke, On Strong Pseudoprimes to Several Bases,
+;;;       Math. Comp., 61 (1993) 915-926.
 
 (defun primep-small (n)
   (dolist (x `(2 3 5 7 11 13 17))
