@@ -473,7 +473,7 @@ Primality test. If @code{primep (n)} returns @code{false}, @var{n} is a
 composite number and if it returns @code{true}, @var{n} is a prime number
 with very high probability.
 
-For @var{n} less than 34155071728321 a deterministic version of Miller-Rabin's
+For @var{n} less than 341550071728321 a deterministic version of Miller-Rabin's
 test is used. If @code{primep (n)} returns @code{true}, then @var{n} is a
 prime number.
 
