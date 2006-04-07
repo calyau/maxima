@@ -70,7 +70,7 @@
 ;;
 ;;	   scaxn  - sc(b*x^n) (sc stands for sin or cos) [wang, pp 81-83]
 ;;
-;;	   ssp    - a*sc^n(r*x)/x^m  [wang, pp 83,84]
+;;	   ssp    - a*sc^n(r*x)/x^m  [wang, pp 86,87]
 ;;
 ;;	   zmtorat- rational function. done by multiplication by plog(-x)
 ;;		    and finding the residues over the keyhole contour
@@ -1485,18 +1485,24 @@
 				(cond ((cadr n) (cadr n))
 				      (t 0.))))))))
 
+;; Look at an expression e of the form sin(r*x)^k, where k is an
+;; integer.  Return the list (1 r k).  (Not sure if the first element
+;; of the list is always 1 because I'm not sure what partition is
+;; trying to do here.)
 (defun skr (e)
   (prog (m r k) 
      (cond ((atom e) (return nil)))
      (setq e (partition e var 1))
      (setq m (car e))
      (setq e (cdr e))
-     (cond ((setq r (sinrx e)) (return (list m r 1)))
+     (cond ((setq r (sinrx e))
+	    (return (list m r 1)))
 	   ((and (mexptp e)
 		 (eq (ask-integer (setq k (caddr e)) '$integer) '$yes)
 		 (setq r (sinrx (cadr e))))
 	    (return (list m r k)))))) 
 
+;; Look at an expression e of the form sin(r*x) and return r.
 (defun sinrx (e)
   (cond ((and (consp e) (eq (caar e) '%sin))
 	 (cond ((eq (cadr e) var)
@@ -1505,12 +1511,15 @@
 		     (eq (cdr e) var))
 		(car e))))))
 
-;;(declare-top(special n)) 
 
 
+;; integrate(a*sc(r*x)^k/x^n,x,0,inf).
 (defun ssp (exp)
   (prog (u n c)
+     ;; I don't think this needs to be special.
+     #+nil
      (declare (special n))
+     ;; Replace (1-cos(x)^2) with sin(x)^2.
      (setq exp ($substitute (m^t `((%sin) ,var) 2.)
 			    (m+t 1. (m- (m^t `((%cos) ,var) 2.)))
 			    exp))
@@ -1518,46 +1527,103 @@
      (setq u nn*)
      (cond ((and (setq n (findp dn*))
 		 (eq (ask-integer n '$integer) '$yes))
-	    (cond ((setq c (skr u)) 
+	    ;; n is the power of the denominator.
+	    (cond ((setq c (skr u))
+		   ;; The simple case.
 		   (return (scmp c n)))
 		  ((and (mplusp u)
 			(setq c (andmapcar #'skr (cdr u))))
+		   ;; Do this for a sum of such terms.
 		   (return (m+l (mapcar #'(lambda (j) (scmp j n))
 					c)))))))))
 
-;;(declare-top(unspecial n)) 
-
+;; We have an integral of the form sin(r*x)^k/x^n.  C is the list (1 r k).
+;;
+;; The substitution y=r*x converts this integral to
+;;
+;;   r^(n-1)*integral(sin(y)^k/y^n,y,0,inf)
+;;
+;; (If r is negative, we need to negate the result.)
+;;
+;; The recursion Wang gives on p. 87 has a typo.  The second term
+;; should be subtracted from the first.  This formula is given in G&R,
+;; 3.82, formula 12.
+;;
+;; integrate(sin(x)^r/x^s,x) =
+;;    r*(r-1)/(s-1)/(s-2)*integrate(sin(x)^(r-2)/x^(s-2),x)
+;;    - r^2/(s-1)/(s-2)*integrate(sin(x)^r/x^(s-2),x)
+;;
+;; (Limits are assumed to be 0 to inf.)
+;;
+;; This recursion ends up with integrals with s = 1 or 2 and
+;;
+;; integrate(sin(x)^p/x,x,0,inf) = integrate(sin(x)^(p-1),x,0,%pi/2)
+;;
+;; with p > 0 and odd.  This latter integral is known to maxima, and
+;; it's value is beta(p/2,1/2)/2.
+;;
+;; integrate(sin(x)^2/x^2,x,0,inf) = %pi/2*binomial(q-3/2,q-1)
+;;
+;; where q >= 2.
+;; 
 (defun scmp (c n)
-  (m* (car c) (m^ (cadr c) (m+ n -1)) `((%signum) ,(cadr c))
+  ;; Compute sign(r)*r^(n-1)*integrate(sin(y)^k/y^n,y,0,inf)
+  (m* (car c)
+      (m^ (cadr c) (m+ n -1))
+      `((%signum) ,(cadr c))
       (sinsp (caddr c) n)))
 
+;; integrate(sin(x)^n/x^2,x,0,inf) = pi/2*binomial(n-3/2,n-1).
+;; Express in terms of Gamma functions, though.
 (defun sevn (n)
   (m* half%pi ($makegamma `((%binomial) ,(m+t (m+ n -1) '((rat) -1. 2.))
 			    ,(m+ n -1)))))
 
 
+;; integrate(sin(x)^n/x,x,0,inf) = beta((n+1)/2,1/2)/2, for n odd and
+;; n > 0.
 (defun sforx (n)
   (cond ((equal n 1.) 
 	 half%pi) 
 	(t (bygamma (m+ n -1) 0.)))) 
 
+;; This implements the recursion for computing
+;; integrate(sin(y)^l/y^k,y,0,inf).  (Note the change in notation from
+;; the above!)
 (defun sinsp (l k)
   (let ((i ())
 	(j ()))
     (cond ((eq ($sign (m+ l (m- (m+ k -1))))
 	       '$neg)
+	   ;; Integral diverges if l-(k-1) < 0.
 	   (diverg))
 	  ((not (even1 (m+ l k)))
+	   ;; If l + k is not even, return NIL.  (Is this the right
+	   ;; thing to do?)
 	   nil)
 	  ((equal k 2.)
+	   ;; We have integrate(sin(y)^l/y^2).  Use sevn to evaluate.
 	   (sevn (m// l 2.)))
-	  ((equal k 1.) 
+	  ((equal k 1.)
+	   ;; We have integrate(sin(y)^l/y,y)
 	   (sforx l))
 	  ((eq ($sign  (m+ k -2.))
 	       '$pos)
-	   (setq i (m* (m+ k -1) (setq j (m+ k -2.))))
-	   (m+ (m* l (m+ l -1) (m^t i -1.) (sinsp (m+ l -2.) j))
-	       (m* (m- (m^ l 2)) (m^t i -1.)
+	   (setq i (m* (m+ k -1)
+		       (setq j (m+ k -2.))))
+	   ;; j = k-2, i = (k-1)*(k-2)
+	   ;;
+	   ;; 
+	   ;; The main recursion:
+	   ;;
+	   ;; i(sin(y)^l/y^k)
+	   ;;    = l*(l-1)/(k-1)/(k-2)*i(sin(y)^(l-2)/y^k)
+	   ;;      - l^2/(k-1)/(k-1)*i(sin(y)^l/y^(k-2))
+	   (m+ (m* l (m+ l -1)
+		   (m^t i -1.)
+		   (sinsp (m+ l -2.) j))
+	       (m* (m- (m^ l 2))
+		   (m^t i -1.)
 		   (sinsp l j)))))))
 
 (defun fpart (a)
@@ -1783,6 +1849,7 @@
 	       (t '$no)))
 	(t '$unknown)))
 
+;; Compute beta((m+1)/2,(n+1)/2)/2.
 (defun bygamma (m n)
   (let ((one-half (m//t 1. 2.)))
     (m* one-half `(($beta) ,(m* one-half (m+t 1. m))
