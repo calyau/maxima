@@ -23,7 +23,8 @@
       --  Copy new file / remove old file
           and execute "cvs add" / "cvs rm"
              
-          NOTE: Separate commit required to make "cvs add" / "cvs rm" take effect.
+          Then execute "cvs commit"
+          (Otherwise add / rm has no effect!)
 
       --  Add / remove file name from maxima/src/Makefile.am
 
@@ -54,7 +55,38 @@
       --  Execute "cvs commit"
 
 
-  5  Adding a directory in maxima/share
+  5.1  Creating a new share package
+
+       E.g., new package name = my_package
+
+      -- Naming conventions:
+         
+         write_long_names_like_this, and NotLikeThisPlease, norlikethiseitherthanks
+
+         spell_out_names, dnt_try_sv_typng_w_abbrvs_tnx
+
+      -- Create a new directory my_package
+
+      -- Put Lisp and/or Maxima files in the directory
+
+         At least one file must be named my_package.lisp or my_package.mac
+         Otherwise load(my_package) fails
+
+      -- Create texinfo documentation file my_package.texi
+         (PLEASE CREATE DOCUMENTATION, THANK YOU)
+
+         my_package.texi MUST have the same form as maxima/share/template.texi
+
+      -- Create test file rtest_my_package.mac
+         (PLEASE CREATE A TEST FILE, THANK YOU)
+
+         Test file contains pairs of expressions: input expression, then expected result
+
+         batch ("my_package/rtest_my_package.mac", test);
+         executes the test
+
+
+  5.2  Adding a directory in maxima/share
 
       NOTE: Removing a directory is probably more or less a reversal
       of the steps for adding. Not sure if I've ever done that.
@@ -72,22 +104,12 @@
 
       --  Add my_package to SHARE-SUBDIRS-LIST in maxima/src/init-cl.lisp
 
-      --  OPTIONAL: If there is a texinfo document named my_package.texi:
+      --  Move my_package.texi to doc/info
+      
+          Put my_package.texi on the list of files in doc/info/Makefile.am
 
-          -- my_package.texi MUST have the same form as maxima/share/template.texi
-             in order for the "describe" function to find it
-
-          -- Create my_package/Makefile.am and put just one line
-             "info_TEXINFOS = my_package.texi" in it.
-             Commit my_package/Makefile.am to CVS
-
-          -- Put my_package on the SUBDIRS list of Makefile.am
-             in the directory containing my_package
-
-          -- Put my_package on the AC_OUTPUT list of maxima/configure.in
-
-          -- Put my_package.info on the file list of maxima/share/Makefile.am
-             Do NOT commit my_package.info to CVS, it is regenerated automatically
+          Put my_package on the list of topics in doc/info/maxima.texi
+          Probably best way to do that is to copy an existing item, e.g., mnewton
 
       --  Verify that "sh bootstrap; ./configure --enable-foolisp; make; make install"
           and "run_testsuite();" all succeed
