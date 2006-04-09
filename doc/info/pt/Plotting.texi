@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Plotting.texi/1.23/Wed Mar 22 08:02:51 2006/-ko/
+@c /Plotting.texi/1.24/Sat Apr  1 08:13:16 2006/-ko/
 @menu
 * Defini@value{cedilha}@~oes para Montagem de Gr@'aficos::    
 @end menu
@@ -110,13 +110,11 @@ sobre a amplitude especificada em @var{x_range}.
 O alcance vertical @'e escolhido para @var{y_range}.
 Todas as op@,{c}@~oes s@~ao assumidas terem valores padr@~ao a menos que sejam alternativamente especificadas por @code{set_plot_option}.
 
-Quando a fun@,{c}@~ao a ser montado o gr@'afico @'e uma fun@,{c}@~ao definida no Maxima atrav@'es de @code{:=} ou @code{define},
-ou no Lisp atrav@'es de DEFUN ou DEFMFUN,
-a fun@,{c}@~ao pode ser especificada pelo nome.
-Fun@,{c}@~oes definidas em Lisp atrav@'es de DEFMSPEC, e fun@,{c}@~oes de simplifica@,{c}@~ao,
-n@~ao podem ser especificadas pelo nome;
-que inclui muitas fun@,{c}@~oes internas.
-@c REPORTED AS SF BUG # 1385271
+Uma fun@,{c}@~ao a ter seu gr@'afico montado
+pode ser especificada como o nome de uma fun@,{c}@~ao Maxima ou como o nome de uma fun@,{c}@~ao Lisp ou como um operador,
+como uma express@~ao lambda do Maxima, ou como uma express@~ao geral do Maxima.
+Se especificada como um nome ou como express@~ao lambda,
+a fun@,{c}@~ao deve ser uma fun@,{c}@~ao de um argumento.
 
 @c PUT EXAMPLES FOR PRECEDING SIMPLE FORMS OF plot2d HERE
 @b{Exemplos:}
@@ -764,13 +762,11 @@ como o primeiro argumento para @code{plot3d}.  Um adicional e opcional argumento
 @code{['grid, 50, 15]} fornece o n@'umero de ret@^agulos da grade na dire@,{c}@~ao x e
 na dire@,{c}@~ao y.
 
-Quando a fun@,{c}@~ao a ser montado o gr@'afico for uma fun@,{c}@~ao definida no Maxima por meio de @code{:=} ou @code{define},
-ou em Lisp por meio de DEFUN ou DEFMFUN,
-a fun@,{c}@~ao pode ser especificada atrav@'es do nome.
-Fun@,{c}@~oes definidas em Lisp por meio de DEFMSPEC, e fun@,{c}@~oes de simplifica@,{c}@~ao,
-n@~ao podem ser especificadas atrav@'es do nome;
-que inclui muitas fun@,{c}@~oes internas.
-@c REPORTED AS SF BUG # 1385271
+Uma fun@,{c}@~ao a ter seu gr@'afico montado
+pode ser especificada como o nome de uma fun@,{c}@~ao Maxima ou como o nome de uma fun@,{c}@~ao Lisp ou como um operador,
+como uma express@~ao lambda do Maxima, ou como uma express@~ao geral do Maxima.
+Se especificada como um nome ou como express@~ao lambda,
+a fun@,{c}@~ao deve ser uma fun@,{c}@~ao de um argumento.
 
 Esse exemplo mostra uma montagem de gr@'afico da parte real de @code{z^1/3}.
 
@@ -882,7 +878,7 @@ comandos de montagem de gr@'afico, posteriormente podemos querer montar um gr@'a
 muitas montagens de gr@'aficos, e ent@~ao devemos manter esse fluxo aberto.
 @end deffn
 
-@deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@value{cedilha}@~ao})
+@deffn {Fun@,{c}@~ao}  set_plot_option (@var{op@,{c}@~ao})
 Atribui uma das var@'aveis globais para impress@~ao.
 @var{option} @'e especificada como uma lista de dois ou mais elementos,
 na qual o primeiro elemeto @'e uma das palavras chave

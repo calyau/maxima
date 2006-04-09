@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Integration.texi/1.24/Mon Aug 15 07:51:33 2005/-ko/
+@c /Integration.texi/1.25/Sat Apr  1 08:13:12 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao::  
 * Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao::  
@@ -799,8 +799,9 @@ Equivalente a @code{ldefint} com @code{tlimswitch} escolhido para @code{true}.
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@,{c}@~ao} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
-Numericamente avalia a integral
+@deffn {Fun@,{c}@~ao} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
+@deffnx {Fun@,{c}@~ao} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{chave}, @var{epsrel}, @var{limite})
+Avalia numericamente a integral
 
 @ifhtml
 @math{integrate (f(x), x, a, b)}
@@ -816,17 +817,20 @@ usando um integrador adaptativo simples.
 
 A fun@,{c}@~ao a ser integrada @'e @var{f(x)}, com vari@'avel
 dependente @var{x}, e a fun@,{c}@~ao @'e para ser integrada entre os
-limites @var{a} e @var{b}.  @var{key} @'e o integrador a ser usado
+limites @var{a} e @var{b}.  @var{chave} @'e o integrador a ser usado
 e pode ser um inteiro entre 1 e 6, inclusive.  O valor de
-@var{key} seleciona a ordem da regra de integra@value{cedilha}@~ao de Gauss-Kronrod.
+@var{chave} seleciona a ordem da regra de integra@value{cedilha}@~ao de Gauss-Kronrod.
+
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
 
 A integra@,{c}@~ao num@'erica @'e conclu@'ida adaptativamente pela subdivis@~ao a
 regi@~ao de integra@,{c}@~ao at@'e que a precis@~ao desejada for
 completada.
 
-Os argumentos opcionais @var{epsrel} e @var{limit} s@~ao o erro relativo
+Os argumentos opcionais @var{epsrel} e @var{limite} s@~ao o erro relativo
 desejado e o n@'umero m@'aximo de subintervalos respectivamente.
-@var{epsrel} padr@~ao em 1e-8 e @var{limit} @'e 200.
+@var{epsrel} padr@~ao em 1e-8 e @var{limite} @'e 200.
 
 @code{quad_qag} retorna uma lista de quatro elementos:
 
@@ -873,16 +877,19 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@,{c}@~ao} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Fun@,{c}@~ao} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
 
 Integra numericamente a fun@,{c}@~ao dada usando quadratura adaptativa com
-extrapola@,{c}@~ao.  A fun@,{c}@~ao a ser integrated @'e @var{f(x)}, com
+extrapola@,{c}@~ao.  A fun@,{c}@~ao a ser integrada @'e @var{f(x)}, com
 vari@'avel dependente @var{x}, e a fun@,{c}@~ao @'e para ser integrada
 entre os limites @var{a} e @var{b}.
 
-Os argumentos opcionais @var{epsrel} e @var{limit} s@~ao o erro relativo
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
+
+Os argumentos opcionais @var{epsrel} e @var{limite} s@~ao o erro relativo
 desejado e o n@'umero m@'aximo de subintervalos, respectivamente.
-@var{epsrel} padr@~ao em 1e-8 e @var{limit} @'e 200.
+@var{epsrel} padr@~ao em 1e-8 e @var{limite} @'e 200.
 
 @code{quad_qags} retorna uma lista de quatro elementos:
 
@@ -931,7 +938,8 @@ Note que @code{quad_qags} @'e mais preciso e eficiente que @code{quad_qag} para 
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@,{c}@~ao} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffn {Fun@,{c}@~ao} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
+@deffnx {Fun@,{c}@~ao} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limite})
 
 Avalia numericamente uma das seguintes integrais
 
@@ -969,6 +977,9 @@ usando a rotina Quadpack QAGI.  A fun@,{c}@~ao a ser integrada @'e
 @var{f(x)}, com vari@'avel dependente @var{x}, e a fun@value{cedilha}@~ao @'e para
 ser integrada sobre um intervalo infinito.
 
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
+
 O par@^ametro @var{inftype} determina o intervalo de integra@,{c}@~ao como segue:
 
 @table @code
@@ -980,9 +991,9 @@ O intervalo vai do infinito negativo at@'e @var{a}.
 O intervalo corresponde a toda reta real.
 @end table
 
-Os argumentos opcionais @var{epsrel} e @var{limit} s@~ao o erro relativo
+Os argumentos opcionais @var{epsrel} e @var{limite} s@~ao o erro relativo
 desejado e o n@'umero maximo de subintervalos, respectivamente.
-@var{epsrel} padr@~ao para 1e-8 e @var{limit} @'e 200.
+@var{epsrel} padr@~ao para 1e-8 e @var{limite} @'e 200.
 
 @code{quad_qagi} retorna uma lista de quatro elementos:
 
@@ -1034,7 +1045,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@,{c}@~ao} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffn {Fun@,{c}@~ao} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
+@deffnx {Fun@,{c}@~ao} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limite})
 
 Calcula numericamente o valor principal de Cauchy de
 
@@ -1052,9 +1064,12 @@ usando a rotina Quadpack QAWC.  A fun@,{c}@~ao a ser integrada @'e
 @code{@var{f(x)}/(@var{x} - @var{c})}, com vari@'avel dependente @var{x}, e a fun@,{c}@~ao
 @'e para ser integrada sobre o intervalo que vai de @var{a} at@'e @var{b}.
 
-Os argumentos opcionais @var{epsrel} e @var{limit} s@~ao o erro relativo
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
+
+Os argumentos opcionais @var{epsrel} e @var{limite} s@~ao o erro relativo
 desejado e o m@'aximo n@'umero de subintervalos, respectivamente.
-@var{epsrel} padr@~ao para 1e-8 e @var{limit} @'e 200.
+@var{epsrel} padr@~ao para 1e-8 e @var{limite} @'e 200.
 
 @code{quad_qawc} retorna uma lista de quatro elementos:
 
@@ -1117,6 +1132,7 @@ Principal Value
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Fun@,{c}@~ao} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffnx {Fun@,{c}@~ao} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Calcula numericamente a integral tipo Fourier usando a rotina
 Quadpack QAWF.  A integral @'e
@@ -1139,6 +1155,9 @@ A fun@,{c}@~ao peso @math{w} @'e selecionada por @var{trig}:
 @item sin
 @math{w(x) = sin (omega x)}
 @end table
+
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
 
 Os argumentos opcionais s@~ao:
 
@@ -1208,7 +1227,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@,{c}@~ao} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffn {Fun@,{c}@~ao} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
+@deffnx {Fun@,{c}@~ao} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limite}, @var{maxp1}, @var{limlst})
 
 Calcula numericamente a integral usando a rotina
 Quadpack QAWO:
@@ -1233,13 +1253,16 @@ A fun@,{c}@~ao peso @math{w} @'e selecionada por @var{trig}:
 @math{w(x) = sin (omega x)}
 @end table
 
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
+
 Os argumentos opcionais s@~ao:
 
 @table @var
 @item epsabs
 Erro absoluto desejado de aproxima@,{c}@~ao.  O Padr@~ao @'e 1d-10.
-@item limit
-Tamanho do array interno de trabalho.  (@var{limit} - @var{limlst})/2 @'e o
+@item limite
+Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 @'e o
 n@'umero m@'aximo de subintervalos a serem usados.  Default @'e 200.
 @item maxp1
 N@'umero m@'aximo dos momentos de Chebyshev.  Deve ser maior que 0.  O padr@~ao
@@ -1250,9 +1273,9 @@ Limite superior sobre o n@'umero de ciclos.  Deve ser maior que ou igual a
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
-@var{epsabs} e @var{limit} s@~ao o erro relativo
+@var{epsabs} e @var{limite} s@~ao o erro relativo
 desejado e o n@'umero m@'aximo de subintervalos, respectivamente.
-@var{epsrel} o padr@~ao @'e 1e-8 e @var{limit} @'e 200.
+@var{epsrel} o padr@~ao @'e 1e-8 e @var{limite} @'e 200.
 
 @code{quad_qawo} retorna uma lista de quatro elementos:
 
@@ -1302,7 +1325,8 @@ Exemplos:
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
-@deffn {Fun@,{c}@~ao} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffn {Fun@,{c}@~ao} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
+@deffnx {Fun@,{c}@~ao} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limite})
 
 Num@'ericamente calcula a integral usando a rotina 
 Quadpack QAWS:
@@ -1330,20 +1354,23 @@ A fun@,{c}@~ao peso @math{w} @'e selecionada por @var{wfun}:
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a) log(b - x)}
 @end table
 
+O integrando pode ser especidficado como o nome de uma fun@,{c}@~ao Maxima ou uma fun@,{c}@~ao Lisp ou um operador,
+uma express@~ao lambda do Maxima, ou uma express@~ao geral do Maxima.
+
 O argumentos opcionais s@~ao:
 
 @table @var
 @item epsabs
 Erro absoluto desejado de aproxima@,{c}@~ao.  O padr@~ao @'e 1d-10.
-@item limit
-Tamanho do array interno de trabalho.  (@var{limit} - @var{limlst})/2 @'e o
+@item limite
+Tamanho do array interno de trabalho.  (@var{limite} - @var{limlst})/2 @'e o
 n@'umero m@'aximo de subintervalos para usar.  O padr@~ao @'e 200.
 @end table
 
 @c MERGE THESE LINES INTO PRECEDING TABLE
 @var{epsabs} e @var{limit} s@~ao o erro relativo
 desejado e o n@'umero m@'aximo de subintervalos, respectivamente.
-@var{epsrel} o padr@~ao @'e 1e-8 e @var{limit} @'e 200.
+@var{epsrel} o padr@~ao @'e 1e-8 e @var{limite} @'e 200.
 
 @code{quad_qaws} retorna uma lista de quatro elementos:
 
