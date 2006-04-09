@@ -147,7 +147,7 @@
 ;; Several functions (derivdegree for example) use the maximin function.  Here is 
 ;; a replacement that uses simp-min or simp-max.
 
-(defun maximin (l op) `((,op) ,@l))
+(defun maximin (l op) (simplify `((,op) ,@l)))
  
 (defun $lmax (e)
   (simp-max `(($max) ,@(require-list-or-set e "$lmax")) nil nil))
