@@ -1,6 +1,6 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Symmetries.texi/1.9/Thu Apr 21 04:58:35 2005/-ko/
-@c este arquivo foi gentilmente traduzido por Helciclever Barros da Silva
+@c arquivo gentilmente traduzido por Helciclever Barros da Silva
 @c end concepts Symmetries
 @menu
 * Defini@value{cedilha}@~oes para Simetrias::  
@@ -244,9 +244,9 @@ polin@^omio por completo) (@code{elem} deve valer 2). A utiliza@,{c}@~ao
 da fun@,{c}@~ao @code{pui} se realiza sobre o mesmo modelo.
 
 Sob um alfabeto de cardinal 3 com @var{e1}, a primeira fun@,{c}@~ao sim@'etrica
-elementar, valendo 7, o polin@^omio sim@'etrico em 3 variáveis cuja
-forma contraída (aqui, só depende de duas de suas variáveis)
-é x^4-2*x*y decompõe-se em fun@,{c}@~oes sim@'etricas 
+elementar, valendo 7, o polin@^omio sim@'etrico em 3 vari@'aveis cuja
+forma contra@'ida (aqui, s@'o depende de duas de suas vari@'aveis)
+@'e x^4-2*x*y decomp@~oe-se em fun@,{c}@~oes sim@'etricas 
 elementares :
 
 @c GENERATED FROM THE FOLLOWING
@@ -273,8 +273,8 @@ Outras fun@,{c}@~oes de mudan@,{c}as de base :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} explose (@var{pc}, @var{lvar})
-toma o polin@^omio sim@'etrico associado à forma 
-contraída @var{pc}. A lista @var{lvar} contém variáveis.
+toma o polin@^omio sim@'etrico associado @`a forma 
+contra@'ida @var{pc}. A lista @var{lvar} cont@'em vari@'aveis.
 
 @c GENERATED FROM THE FOLLOWING
 @c explose (a*x + 1, [x, y, z]);
@@ -291,8 +291,8 @@ Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} kostka (@var{part_1}, @var{part_2})
-escrita por P. ESPERET, calcula o número de
-Kostka associado às partições @var{part_1} e @var{part_2}.
+escrita por P. ESPERET, calcula o n@'umero de
+Kostka associado @`as parti@,{c}@~oes @var{part_1} e @var{part_2}.
 
 @c GENERATED FROM THE FOLLOWING
 @c kostka ([3, 3, 3], [2, 2, 2, 1, 1, 1]);
@@ -304,7 +304,7 @@ Kostka associado às partições @var{part_1} e @var{part_2}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} lgtreillis (@var{n}, @var{m})
-torna a lista de partições de peso @var{n} e de largura @var{m}.
+torna a lista de parti@,{c}@~oes de peso @var{n} e de largura @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
 @c lgtreillis (4, 2);
@@ -313,13 +313,13 @@ torna a lista de partições de peso @var{n} e de largura @var{m}.
 (%o1)                   [[3, 1], [2, 2]]
 @end example
 
-Veja também : @code{ltreillis}, @code{treillis} e @code{treinat}.
+Veja tamb@'em : @code{ltreillis}, @code{treillis} e @code{treinat}.
 
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} ltreillis (@var{n}, @var{m})
-torna a lista de partições de peso @var{n} e largura 
+torna a lista de parti@,{c}@~oes de peso @var{n} e largura 
 menor ou igual a @var{m}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -330,7 +330,7 @@ menor ou igual a @var{m}.
 @end example
 
 @noindent
-Veja também : @code{lgtreillis}, @code{treillis} e @code{treinat}.
+Veja tamb@'em : @code{lgtreillis}, @code{treillis} e @code{treinat}.
 
 @end deffn
 
@@ -340,14 +340,14 @@ A lista @var{l} representa a fun@,{c}@~ao de Schur S_@var{l}:
 @c On a = sendo
 Temos @var{l} = [@var{i_1}, @var{i_2}, ..., @var{i_q}]
 com @var{i_1} <= @var{i_2} <= ... <= @var{i_q}.
-A fun@,{c}@~ao de Schur é S_[@var{i_1}, @var{i_2}, ..., @var{i_q}]
-é a menor da mariz infinita (h_@{i-j@}) @var{i} >= 1, @var{j} >= 1 composta
+A fun@,{c}@~ao de Schur @'e S_[@var{i_1}, @var{i_2}, ..., @var{i_q}]
+@'e a menor da mariz infinita (h_@{i-j@}) @var{i} >= 1, @var{j} >= 1 composta
 das @var{q} primeiras linhas e de colunas @var{i_1} + 1, @var{i_2} + 2, ..., @var{i_q} + @var{q}.
 
 Escreve-se essa fun@,{c}@~ao de Schur em fun@,{c}@~ao das
 formas monomiais utilizando as fun@,{c}@~oes @code{treinat} e @code{kostka}. A forma
-retornada é um polin@^omio sim@'etrico em uma de suas representações
-contraídas com as variáveis @var{x_1}, @var{x_2}, ....
+retornada @'e um polin@^omio sim@'etrico em uma de suas representa@,{c}@~oes
+contra@'idas com as vari@'aveis @var{x_1}, @var{x_2}, ....
  
 @c GENERATED FROM THE FOLLOWING
 @c mon2schur ([1, 1, 1]);
@@ -365,7 +365,7 @@ contraídas com as variáveis @var{x_1}, @var{x_2}, ....
 @end example
 
 @noindent
-queremos dizer que para 3 variáveis tem-se :
+queremos dizer que para 3 vari@'aveis tem-se :
 
 @c UM, FROM WHAT ARGUMENTS WAS THE FOLLOWING GENERATED ??
 @example
@@ -382,9 +382,9 @@ Outras fun@,{c}@~oes de mudan@,{c}as de base :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} multi_elem (@var{l_elem}, @var{multi_pc}, @var{l_var})
-decompõe um polin@^omio 
-multi-sim@'etrico sob a forma multi-contraída @var{multi_pc} nos grupos
-de variáveis contidas na lista de listas @var{l_var} sobre os
+decomp@~oe um polin@^omio 
+multi-sim@'etrico sob a forma multi-contra@'ida @var{multi_pc} nos grupos
+de vari@'aveis contidas na lista de listas @var{l_var} sobre os
 groupos de fun@,{c}@~oes sim@'etricas elementares contidas em @var{l_elem}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -408,10 +408,10 @@ Outras fun@,{c}@~oes de mudan@,{c}as de base :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} multi_orbit (@var{P}, [@var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}])
-@var{P} é um polin@^omio no conjunto
-das variáveis contidas nas listas @var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. 
-Essa fun@,{c}@~ao leva novamente na órbita do polin@^omio @var{P} sob a ação do do produto 
-dos grupos sim@'etricos dos conjuntos de variáveis representados por 
+@var{P} @'e um polin@^omio no conjunto
+das vari@'aveis contidas nas listas @var{lvar_1}, @var{lvar_2}, ..., @var{lvar_p}. 
+Essa fun@,{c}@~ao leva novamente na @'orbita do polin@^omio @var{P} sob a a@,{c}@~ao do do produto 
+dos grupos sim@'etricos dos conjuntos de vari@'aveis representados por 
 essas @var{p} listas.
 
 @c GENERATED FROM THE FOLLOWING
@@ -425,13 +425,13 @@ essas @var{p} listas.
 @end example
 
 @noindent
-Veja também : @code{orbit} pela ação de um só grupo sim@'etrico.
+Veja tamb@'em : @code{orbit} pela a@,{c}@~ao de um s@'o grupo sim@'etrico.
 
 @end deffn
 
 @c WHAT ARE THE ARGUMENTS FOR THIS FUNCTION ??
 @deffn {Fun@,{c}@~ao} multi_pui
-está para a fun@,{c}@~ao @code{pui} da mesma forma que a fun@,{c}@~ao @code{multi_elem} está
+est@'a para a fun@,{c}@~ao @code{pui} da mesma forma que a fun@,{c}@~ao @code{multi_elem} est@'a
 para a fun@,{c}@~ao @code{elem}.
 
 @c GENERATED FROM THE FOLLOWING
@@ -447,22 +447,22 @@ para a fun@,{c}@~ao @code{elem}.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} multinomial (@var{r}, @var{part})
-onde @var{r} é o peso da partição @var{part}. Essa
+onde @var{r} @'e o peso da parti@,{c}@~ao @var{part}. Essa
 fun@,{c}@~ao reporta ao coeficiente multinomial associado : se as
-partes das partições @var{part} forem @var{i_1}, @var{i_2}, ..., @var{i_k}, o resultado de
-@code{multinomial} é @code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
+partes das parti@,{c}@~oes @var{part} forem @var{i_1}, @var{i_2}, ..., @var{i_k}, o resultado de
+@code{multinomial} @'e @code{@var{r}!/(@var{i_1}! @var{i_2}! ... @var{i_k}!)}.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} multsym (@var{ppart_1}, @var{ppart_2}, @var{n})
-realisa o produto de dois polin@^omios
-sim@'etricos de @var{n} variáveis só trabalhando o módulo da ação do
-grupo sim@'etrico de ordem @var{n}. Os polin@^omios estão em sua representação
+realiza o produto de dois polin@^omios
+sim@'etricos de @var{n} vari@'aveis s@'o trabalhando o m@'odulo da a@,{c}@~ao do
+grupo sim@'etrico de ordem @var{n}. Os polin@^omios est@~ao em sua representa@,{c}@~ao
 particionada. 
 
 Sejam os 2 polin@^omios sim@'etricos em @code{x}, @code{y}: @code{3*(x + y) + 2*x*y} e @code{5*(x^2 + y^2)}
-cujas formas particionada são respectivamente @code{[[3, 1], [2, 1, 1]]} e @code{[[5, 2]]},
-então seu produto será dado por :
+cujas formas particionada s@~ao respectivamente @code{[[3, 1], [2, 1, 1]]} e @code{[[5, 2]]},
+ent@~ao seu produto ser@'a dado por :
 
 @c GENERATED FROM THE FOLLOWING
 @c multsym ([[3, 1], [2, 1, 1]], [[5, 2]], 2);
@@ -474,7 +474,7 @@ então seu produto será dado por :
 @noindent
 seja @code{10*(x^3*y + y^3*x) + 15*(x^2*y + y^2*x) + 15*(x^3 + y^3)}.
 
-Funções de mudança de representação de um polin@^omio sim@'etrico :
+Fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao de um polin@^omio sim@'etrico :
 
 @code{contract}, @code{cont2part}, @code{explose}, @code{part2cont},
 @code{partpol}, @code{tcontract}, @code{tpartpol}.
@@ -482,8 +482,8 @@ Funções de mudança de representação de um polin@^omio sim@'etrico :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} orbit (@var{P}, @var{lvar})
-calcula a órbita de um polin@^omio @var{P} nas variáveis da lista
-@var{lvar} soba a ação do grupo sim@'etrico do conjunto das variáveis contidas
+calcula a @'orbita de um polin@^omio @var{P} nas vari@'aveis da lista
+@var{lvar} soba a a@,{c}@~ao do grupo sim@'etrico do conjunto das vari@'aveis contidas
 na lista @var{lvar}.
  
 @c GENERATED FROM THE FOLLOWING
@@ -498,16 +498,16 @@ na lista @var{lvar}.
 @end example
 
 @noindent
-Veja também : @code{multi_orbit} para a ação de um produto de grupos 
+Veja tamb@'em : @code{multi_orbit} para a a@,{c}@~ao de um produto de grupos 
 sim@'etricos sobre um polin@^omio.
 
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} part2cont (@var{ppart}, @var{lvar})
-passe de la forme partitionne'e a` la forme contracte'e
-d'un polin@^omio sim@'etrico. La forme contracte'e est rendue avec les variáveis
-contenues dans @var{lvar}.
+passa da form particionada @`a forma contra@'ida
+d um polin@^omio sim@'etrico. A forma contra@'ida @'e conseguida com as vari@'aveis
+contidas em  @var{lvar}.
 
 @c GENERATED FROM THE FOLLOWING
 @c part2cont ([[2*a^3*b, 4, 1]], [x, y]);
@@ -526,8 +526,8 @@ Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} partpol (@var{psym}, @var{lvar})
-@var{psym} est un polin@^omio sim@'etrico en les variáveis 
-de @var{lvar}. Cette fun@,{c}@~ao rame`ne sa repre'sentation partitionne'e.
+@var{psym} @'e um polin@^omio sim@'etrico nas vari@'aveis 
+de @var{lvar}. Esta fun@,{c}@~ao retoma sua representa@,{c}@~ao particionada.
 
 @c GENERATED FROM THE FOLLOWING
 @c partpol (-a*(x + y) + 3*x*y, [x, y]);
@@ -544,15 +544,15 @@ Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} permut (@var{l})
-rame`ne la liste des permutations de la liste @var{l}.
+retoma a lista de permuta@,{c}@~oes da lista @var{l}.
 
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} polynome2ele (@var{P}, @var{x})
-fornece la liste @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]} ou` @var{n} est le degre'
-du polin@^omio @var{P} en la variable @var{x} et @var{e_i} la @var{i}-ieme fun@,{c}@~ao sim@'etrico 
-elementar des racines de @var{P}.
+fornece a lista @code{@var{l} = [@var{n}, @var{e_1}, ..., @var{e_n}]} onde @var{n} @'e o grau
+do polin@^omio @var{P} na vari@'avel @var{x} e @var{e_i} @'e a @var{i}-@'ezima fun@,{c}@~ao sim@'etrica
+elementar das ra@'izes de @var{P}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^7 - 14*x^5 + 56*x^3 - 56*x + 22, x);
@@ -566,29 +566,29 @@ elementar des racines de @var{P}.
 @end example
 
 @noindent
-La re'ciproque : @code{ele2polynome (@var{l}, @var{x})}
+A rec@'iproca : @code{ele2polynome (@var{l}, @var{x})}
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} prodrac (@var{l}, @var{k})
-@var{l} est une liste contenant les fun@,{c}@~oes sim@'etricos 
-elementares sur un ensemble @var{A}. @code{prodrac} rend le polin@^omio dont
-les racines sont les produits @var{k} a` @var{k} des elementos de @var{A}.
+@var{l} @'e uma lista que cont@'em as fun@,{c}@~oes sim@'etricas 
+elementares sob um conjunto @var{A}. @code{prodrac} produz o polin@^omio cujas
+ra@'izes s@~ao os produtos @var{k} a @var{k} dos elementos de @var{A}.
 
 @end deffn
 
 @c HMM, pui IS A VARIABLE AS WELL
 @deffn {Fun@,{c}@~ao} pui (@var{l}, @var{sym}, @var{lvar})
-de'compose le polin@^omio sim@'etrico @var{sym}, en les variáveis
-contenues de la liste @var{lvar}, par les fun@,{c}@~oes puissances
-contenues dans la liste @var{l}. Si le premier elemento de @var{l} est fornece'
-ce sera le cardinal de l'alphabet sinon on prendra le degre' du polin@^omio
-@var{sym}. Si il manque des valeurs a` la liste @var{l}, des valeurs formelles
-du type "pi" sont rajoute'es. Le polin@^omio sym peut etre fornece'
-sous 3 formes diffe'rentes : contracte'e (@code{pui} doit alors valoir 1 sa valeur
-par de'faut), partitionne'e (@code{pui} doit alors valoir 3) ou e'tendue (i.e. le
-polin@^omio en entier) (@code{pui} doit alors valoir 2). La fun@,{c}@~ao @code{elem}
-s'utilise de la me^me manie`re.
+decomp@~oe o polin@^omio sim@'etrico @var{sym}, nas vari@'aveis
+contidas a lista @var{lvar}, nas fun@,{c}@~oes exponenciais
+contidas na lista @var{l}. Se o primeiro elemento de @var{l} for dado
+ele ser@'a o cardinal do alfabeto se n@~ao for dado toma-se o grau do polin@^omio
+@var{sym} para ser o cardinal do alfabeto. Se faltarem valores na lista @var{l}, valores formais
+do typo "pi" ser@~ao colocados na lista. O polin@^omio @code{sym} pode ser dado
+sob 3 formas diferentes : contra@'ida (@code{pui} deve valer 1 - seu valor
+padr@~ao), particionada (@code{pui} deve valer 3) ou estendida (i.e. o
+polin@^omio por completo) (@code{pui} deve valer 2). A fun@,{c}@~ao @code{elem}
+se utiliza da mesma maneira.
 
 @c GENERATED FROM THE FOLLOWING
 @c pui;
@@ -619,10 +619,10 @@ Outras fun@,{c}@~oes de mudan@,{c}as de base :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} pui2comp (@var{n}, @var{lpui})
-rend la liste des @var{n} premie`res fun@,{c}@~oes comple`tes
-(avec en te^te le cardinal) en fun@,{c}@~ao des fun@,{c}@~oes puissance fornece'es dans
-la liste @var{lpui}. Si la liste @var{lpui} est vide le cardinal est N sinon 
-c'est son premier elemento similaire a` @code{comp2ele} et @code{comp2pui}.
+produz a lista das @var{n} primeiras fun@,{c}@~oes completas
+(com o cardinal em primeiro lugar) em fun@,{c}@~ao das fun@,{c}@~oes exponenciais dadas
+na lista @var{lpui}. Se a lista @var{lpui} estiver vazia o cardianl ser@'a N, se n@~ao estiver vazia,
+ser@'a o primeiro elemento de forma an@'aloga a @code{comp2ele} e a @code{comp2pui}.
 
 @c GENERATED FROM THE FOLLOWING
 @c pui2comp (2, []);
@@ -658,11 +658,11 @@ Outras fun@,{c}@~oes de mudan@,{c}as de base :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} pui2ele (@var{n}, @var{lpui})
-re'alise le passage des fun@,{c}@~oes puissances aux
+realiza a transforma@,{c}@~ao das fun@,{c}@~oes exponenciais em
 fun@,{c}@~oes sim@'etricos elementares.
-Si le drapeau @code{pui2ele} est @code{girard}, on re'cupe`re la liste des fun@,{c}@~oes 
-sim@'etricos elementares de 1 a` @var{n}, et s'il est e'gal a` @code{close}, 
-la @var{n}-ie`me fun@,{c}@~ao sim@'etrico elementar.
+Se o sinalizador @code{pui2ele} for @code{girard}, recupera-se a lista de fun@,{c}@~oes 
+sim@'etricos elementares de 1 a @var{n}, e se for igual a @code{close}, 
+recupera-se a @var{n}-@'ezima fun@,{c}@~ao sim@'etrica elementar.
 
 Outras fun@,{c}@~oes de mudan@,{c}as de base :
 
@@ -673,8 +673,8 @@ Outras fun@,{c}@~oes de mudan@,{c}as de base :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} pui2polynome (@var{x}, @var{lpui})
-calcul le polin@^omio en @var{x} dont les fun@,{c}@~oes puissances
-des racines sont fornece'es dans la liste @var{lpui}.
+calcula o polin@^omio em @var{x} cujas fun@,{c}@~oes exponenciais
+das ra@'izes s@~ao dadas na lista @var{lpui}.
 
 @c GENERATED FROM THE FOLLOWING
 @c polynome2ele (x^3 - 4*x^2 + 5*x - 1, x);
@@ -702,21 +702,21 @@ Autres fun@,{c}@~oes a` voir :
 
 @deffn {Fun@,{c}@~ao} pui_direct (@var{orbite}, [@var{lvar_1}, ..., @var{lvar_n}], [@var{d_1}, @var{d_2}, ..., @var{d_n}])
 
-Soit @var{f} un polynome en @var{n} blocs de variáveis @var{lvar_1}, ..., @var{lvar_n}.
-Soit @var{c_i} le nombre de variáveis dans @var{lvar_i} . Et @var{SC} le produit des @var{n}
-groupes sim@'etricos de degre' @var{c_1}, ..., @var{c_n}. Ce groupe agit
-naturellement sur @var{f}.
-La liste @var{orbite} est l'orbite, note'e @code{@var{SC}(@var{f})}, de la fun@,{c}@~ao @var{f} sous 
-l'action de @var{SC}. (Cette liste peut e^tre obtenue avec la fun@,{c}@~ao : 
+Seja @var{f} um polin@^omio em @var{n} blocos de vari@'aveis @var{lvar_1}, ..., @var{lvar_n}.
+Seja @var{c_i} o n@'umero de vari@'aveis em @var{lvar_i} . E @var{SC} o produto dos @var{n}
+grupos sim@'etricos de grau @var{c_1}, ..., @var{c_n}. Esse grupo age
+naturalmente sobre @var{f}.
+A Lista @var{orbite} @'e a @'orbita, anotada de @code{@var{SC}(@var{f})}, da fun@,{c}@~ao @var{f} sob 
+a a@,{c}@~ao de @var{SC}. (Essa lista pode ser obtida com a fun@,{c}@~ao : 
 @code{multi_orbit}).
-Les di sont des entiers tels que @var{c_1} <= @var{d_1}, @var{c_2} <= @var{d_2}, ..., @var{c_n} <= @var{d_n}.
-Soit @var{SD} le produit des groupes sim@'etricos @var{S_d1} x @var{S_d2} x ... x @var{S_dn}.
+Os @code{d_i} s@~ao inteiros tais que @var{c_1} <= @var{d_1}, @var{c_2} <= @var{d_2}, ..., @var{c_n} <= @var{d_n}.
+Seja @var{SD} o produto dos grupos sim@'etricos @var{S_d1} x @var{S_d2} x ... x @var{S_dn}.
 
-La fun@,{c}@~ao @code{pui_direct} rame`ne les @var{n} premie`res fun@,{c}@~oes puissances de @code{@var{SD}(@var{f})}
-de'duites des fun@,{c}@~oes puissances de @code{@var{SC}(@var{f})} ou` @var{n} est le cardinal de @code{@var{SD}(@var{f})}.
+A fun@,{c}@~ao @code{pui_direct} retorna as @var{n} premeiras fun@,{c}@~oes exponenciais de @code{@var{SD}(@var{f})}
+dedzidas das fun@,{c}@~oes exponenciais de @code{@var{SC}(@var{f})} onde @var{n} @'e o cardinal de @code{@var{SD}(@var{f})}.
 
-Le re'sultat est rendue sous forme multi-contracte'e par rapport a @var{SD}.
-i.e. on ne conserve qu'un elemento par orbite sous l'action de @var{SD}).
+O resultado @'e produzido sob a forma multi-contra@'ida em rela@,{c}@~ao a @var{SD}.
+i.e. apenas se conserva um elemento por @'orbita sob a a@,{c}@~ao de @var{SD}).
 
 @c GENERATED FROM THE FOLLOWING
 @c l: [[x, y], [a, b]];
@@ -755,9 +755,9 @@ i.e. on ne conserve qu'un elemento par orbite sous l'action de @var{SD}).
 @end deffn
 
 @deffn {Fun@,{c}@~ao} puireduc (@var{n}, @var{lpui})
-@var{lpui} est une liste dont le premier elemento est un entier
-@var{m}. @code{puireduc} fornece les @var{n} premie`res fun@,{c}@~oes puissances en fun@,{c}@~ao 
-des @var{m} premie`res.
+@var{lpui} @'e uma lista cujo primeiro elemento @'e um inteiro
+@var{m}. @code{puireduc} fornece as @var{n} primeiras fun@,{c}@~oes exponenciais em fun@,{c}@~ao 
+das @var{m} primeira.
 
 @c GENERATED FROM THE FOLLOWING
 @c puireduc (3, [2]);
@@ -777,32 +777,32 @@ des @var{m} premie`res.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} resolvante (@var{P}, @var{x}, @var{f}, [@var{x_1}, ..., @var{x_d}])
-calcule la re'solvante du polin@^omio @var{P}
-de la variable @var{x} et de degre' @var{n} >= @var{d} par la fun@,{c}@~ao @var{f} exprime'e en
-les variáveis @var{x_1}, ..., @var{x_d}. Il est important pour l'efficacite' des
-calculs de ne pas mettre dans la liste @code{[@var{x_1}, ..., @var{x_d}]} les variáveis
-n'intervenant pas dans la fun@,{c}@~ao de transformation @var{f}.
+calcula a resolvente do polin@^omio @var{P}
+em rela@,{c}@~ao @`a vari@'avel @var{x} e de grau @var{n} >= @var{d} pela fun@,{c}@~ao @var{f} expressa nas
+vari@'aveis @var{x_1}, ..., @var{x_d}. @'E importante para a efic@'acia dos
+c@'alculos n@~ao colocar na lista @code{[@var{x_1}, ..., @var{x_d}]} as vari@'aveis
+n@~ao interferindo na fun@,{c}@~ao de transforma@,{c}@~ao @var{f}.
 
-Afin de rendre plus efficaces les calculs on peut mettre des drapeaux
-a` la variable @code{resolvante} afin que des algorithmes ade'quates soient
-utilise's :
+Afim de tornar mais eficazes os c@'alculos pode-se colocar sinalizadores
+na vari@'avel @code{resolvante} para que os algor@'itmos adequados sejam
+utilizados :
 
-Si la fun@,{c}@~ao @var{f} est unitaire :
+Se a fun@,{c}@~ao @var{f} for unit@'aria :
 @itemize @bullet
 @item
-un polin@^omio d'une variable,
+um polin@^omio de uma vari@'avel,
 @item
-  line'aire ,
+  linear ,
 @item
-  alterne'e,
+  alternado,
 @item
-  une somme de variáveis,
+  uma soma de vari@'aveis,
 @item
-  sim@'etrico en les variáveis qui apparaissent dans son expression,
+  sim@'etrico nas vari@'aveis que aparecem em sua express@~ao,
 @item
-  un produit de variáveis,
+  um produto de vari@'aveis,
 @item
-la fun@,{c}@~ao de la re'solvante de Cayley (utilisable qu'en degre' 5)
+a fun@,{c}@~ao da resolvente de Cayley (utilis@'avel no grau 5)
 
 @c WHAT IS THIS ILLUSTRATING EXACTLY ??
 @example
@@ -810,9 +810,9 @@ la fun@,{c}@~ao de la re'solvante de Cayley (utilisable qu'en degre' 5)
      (x1*x3 + x3*x5 + x5*x2 + x2*x4 + x4*x1))^2
 @end example
 
-  generale,
+  geral,
 @end itemize
-le drapeau de @code{resolvante} pourra e^tre respectivement :
+o sinalizador da @code{resolvante} poder@'a ser respectivamente :
 @itemize @bullet
 @item
   unitaire,
@@ -977,17 +977,17 @@ x   - 7 x   + 21 x   - 35 x   + 35 x  - 21 x  + 7 x  - 1]
 (%i20) resolvante: cayley$
 (%i21) resolvante (x^5 - 4*x^2 + x + 1, x, a, []);
 
-" resolvante de Cayley "
+" resolvente de Cayley "
         6       5         4          3            2
 (%o21) x  - 40 x  + 4080 x  - 92928 x  + 3772160 x  + 37880832 x
 
                                                        + 93392896
 @end example
 
-Pour la re'solvante de Cayley, les 2 derniers arguments sont neutres
-et le polin@^omio fornece' en entre'e doit ne'cessairement e^tre de degre' 5.
+Pela resolvente de Cayley, os 2 @'ultimos arguments s@~ao neutros
+e o polin@^omio fornecido na entrada deve ser necess@'ariamente de grau 5.
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_bipartite}, @code{resolvante_produit_sym},
 @code{resolvante_unitaire}, @code{resolvante_alternee1}, @code{resolvante_klein}, 
@@ -996,11 +996,11 @@ Veja também :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} resolvante_alternee1 (@var{P}, @var{x})
-calcule la transformation de 
+calcula a transforma@,{c}@~ao de 
 @c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code
-@code{@var{P}(@var{x})} de degre @var{n} par la fun@,{c}@~ao $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
+@code{@var{P}(@var{x})} de grau @var{n} pela fun@,{c}@~ao $\prod_@{1\leq i<j\leq n-1@} (x_i-x_j)$.
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1014,7 +1014,7 @@ calcule la transformation de
 @c UMM, I THINK THE TEX STUFF SHOULD BE REPLACED BY @code
 $x_1x_2\ldots x_@{n/2@}+x_@{n/2+1@}\ldotsx_n$
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante} , @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1028,7 +1028,7 @@ Veja também :
 (%o1)        y   - 972 y  + 314928 y  - 34012224 y
 @end example
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1054,7 +1054,7 @@ calcule la transformation de
  - 697
 @end example
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1066,7 +1066,7 @@ Veja também :
 calcule la transformation de
 @code{@var{P}(@var{x})} par la fun@,{c}@~ao @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante}, @code{resolvante_klein3},
@@ -1078,7 +1078,7 @@ Veja também :
 calcule la transformation de
 @code{@var{P}(@var{x})} par la fun@,{c}@~ao @code{@var{x_1} @var{x_2} @var{x_4} + @var{x_4}}.
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante},
@@ -1087,8 +1087,8 @@ Veja também :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} resolvante_produit_sym (@var{P}, @var{x})
-calcule la liste toutes les 
-r\'esolvantes produit du polyn\^ome @code{@var{P}(@var{x})}.
+calcula a lista de todas as 
+resolventes produto do polin@^omio @code{@var{P}(@var{x})}.
 
 @c GENERATED FROM THE FOLLOWING
 @c resolvante_produit_sym (x^5 + 3*x^4 + 2*x - 1, x);
@@ -1107,7 +1107,7 @@ r\'esolvantes produit du polyn\^ome @code{@var{P}(@var{x})}.
 (%i2) resolvante: produit$
 (%i3) resolvante (x^5 + 3*x^4 + 2*x - 1, x, a*b*c, [a, b, c]);
 
-" resolvante produit "
+" resolvente produto "
        10      8       7    6        5       4       3     2
 (%o3) y   + 3 y  + 14 y  - y  - 14 y  - 31 y  - 21 y  - 2 y  + 1
 @end example
@@ -1115,7 +1115,7 @@ r\'esolvantes produit du polyn\^ome @code{@var{P}(@var{x})}.
 @c " resolvante produit " IS PRINTED FROM SOMEWHERE IN THE BOWELS OF resolvante
 @c AND IT GOOFS UP THE DISPLAY OF THE EXPONENTS OF %o3 -- I THREW IN A LINE BREAK TO ADJUST
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1124,10 +1124,10 @@ Veja também :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} resolvante_unitaire (@var{P}, @var{Q}, @var{x})
-calcule la r\'esolvante du 
-polyn\^ome @code{@var{P}(@var{x})} par le polyn\^ome @code{@var{Q}(@var{x})}.
+calcul a resolvente do
+polin@^omio @code{@var{P}(@var{x})} pelo polin@^omio @code{@var{Q}(@var{x})}.
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1136,10 +1136,10 @@ Veja também :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} resolvante_vierer (@var{P}, @var{x})
-calcule la transformation de
-@code{@var{P}(@var{x})} par la fun@,{c}@~ao @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
+calcula a transforma@,{c}@~ao de
+@code{@var{P}(@var{x})} pela fun@,{c}@~ao @code{@var{x_1} @var{x_2} - @var{x_3} @var{x_4}}.
 
-Veja também :
+Veja tamb@'em :
 
 @code{resolvante_produit_sym}, @code{resolvante_unitaire},
 @code{resolvante_alternee1}, @code{resolvante_klein}, @code{resolvante_klein3},
@@ -1148,11 +1148,11 @@ Veja também :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} schur2comp (@var{P}, @var{l_var})
-@var{P} est un polin@^omios en les variáveis contenues dans 
-la liste @var{l_var}. Chacune des variáveis de @var{l_var} repre'sente une fun@,{c}@~ao
-sim@'etrico comple`te. On repre'sente dans @var{l_var} la ie`me fun@,{c}@~ao sim@'etrico
-comple`te comme la concate'nation de la lettre @code{h} avec l'entier @var{i} : @code{h@var{i}}.
-Cette fun@,{c}@~ao fornece l'expression de @var{P} en fun@,{c}@~ao des fun@,{c}@~oes
+@var{P} @'e um polin@^omio nas vari@'aveis contidas na 
+lista @var{l_var}. Cada uma das vari@'aveis de @var{l_var} representa uma fun@,{c}@~ao
+sim@'etrica completa. Representa-se em @var{l_var} a en@'esia fun@,{c}@~ao sim@'etrica
+completa como a concatena@,{c}@~ao da letra @code{h} com o inteiro @var{i} : @code{h@var{i}}.
+Essa fun@,{c}@~ao fornece a express@~ao de @var{P} em fun@,{c}@~ao das fun@,{c}@~oes
 de Schur.
 
 @c GENERATED FROM THE FOLLOWING
@@ -1170,18 +1170,18 @@ de Schur.
 @end deffn
 
 @deffn {Fun@,{c}@~ao} somrac (@var{l}, @var{k})
-la liste @var{l} contient les fun@,{c}@~oes sim@'etricos elementares
-d'un polin@^omio @var{P} . On calcul le polin@^omios dont les racines sont les sommes 
-@var{K} a` @var{K} distinctes des racines de @var{P}. 
+a lista @var{l} cont@'em as fun@,{c}@~oes sim@'etricas elementares
+de um polin@^omio @var{P} . Calcula-se o polin@^omo cujas re@'izes s@~ao as somas
+@var{K} a @var{K} distintos das ra@'izes de @var{P}. 
 
-Veja também @code{prodrac}.
+Veja tamb@'em @code{prodrac}.
 
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} tcontract (@var{pol}, @var{lvar})
 teste si le polin@^omio pol est sim@'etrico en les
-variáveis contenues dans la liste @var{lvar}. Si oui il rend une forme contracte'e
+vari@'aveis contenues dans la liste @var{lvar}. Si oui il rend une forme contracte'e
 comme la fun@,{c}@~ao @code{contract}.
 
 Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
@@ -1192,9 +1192,9 @@ Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} tpartpol (@var{pol}, @var{lvar})
-teste si le polin@^omio pol est sim@'etrico en les
-variáveis contenues dans la liste @var{lvar}. Si oui il rend sa forme partionne'e
-comme la fun@,{c}@~ao @code{partpol}.
+testa se o polin@^omio @var{pol} @'e sim@'etrico nas
+vari@'aveis contidas na lista @var{lvar}. Se for sim@'etrico @code{tpartpol} produz a forma particionada
+como a fun@,{c}@~ao @code{partpol}.
 
 Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
 
@@ -1204,7 +1204,7 @@ Outras fun@,{c}@~oes de mudan@,{c}a de representa@,{c}@~ao :
 @end deffn
 
 @deffn {Fun@,{c}@~ao} treillis (@var{n})
-rame`ne toutes les partitions de poids @var{n}.
+retorna todas as parti@,{c}@~oes de peso @var{n}.
 
 @c GENERATED FROM THE FOLLOWING
 @c treillis (4);
@@ -1213,13 +1213,13 @@ rame`ne toutes les partitions de poids @var{n}.
 (%o1)    [[4], [3, 1], [2, 2], [2, 1, 1], [1, 1, 1, 1]]
 @end example
 
-Veja também : @code{lgtreillis}, @code{ltreillis} et @code{treinat}.
+Veja tamb@'em : @code{lgtreillis}, @code{ltreillis} e @code{treinat}.
 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} treinat (@var{part})
-rame`ne la liste des partitions infe'rieures a` la partition
-@var{part} pour l'ordre naturel.
+retorna a lista das parti@,{c}@~oes inferiores @`a parti@,{c}@~ao
+@var{part} pela ordem natural.
 
 @c GENERATED FROM THE FOLLOWING
 @c treinat ([5]);
@@ -1236,6 +1236,7 @@ rame`ne la liste des partitions infe'rieures a` la partition
 (%o3)                 [[5], [4, 1], [3, 2]]
 @end example
 
-Veja também : @code{lgtreillis}, @code{ltreillis} et @code{treillis}.
+Veja tamb@'em : @code{lgtreillis}, @code{ltreillis} e @code{treillis}.
 
 @end deffn
+
