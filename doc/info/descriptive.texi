@@ -1366,7 +1366,7 @@ Funtion @code{dataplot} permits direct visualization of sample data, both univar
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
 
 @item
 @code{'maintitle}, default @code{""}, is the main title between double quotes.
@@ -1461,7 +1461,7 @@ This function plots an histogram. Sample data must be stored in a list of number
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
 
 @item
 @code{'maintitle}, default @code{""}, is the main title between double quotes.
@@ -1514,7 +1514,7 @@ Similar to @code{histogram} but for discrete, numeric or categorical, statistica
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
 
 @item
 @code{'maintitle}, default @code{""}, is the main title between double quotes.
@@ -1569,7 +1569,7 @@ This function plots box diagrams. Argument @var{data} can be a list, which is no
 @itemize @bullet
 
 @item
-@code{'outpudev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
+@code{'outputdev}, default @code{"x"}, indicates the output device; correct values are @code{"x"}, @code{"eps"} and @code{"png"}, for the screen, postscript and png format files, respectively.
 
 @item
 @code{'maintitle}, default @code{""}, is the main title between double quotes.

@@ -1,4 +1,4 @@
-@c english version: 1.1
+@c english version: 1.2
 @menu
 * Introducci@'on a descriptive::
 * Definiciones para el tratamiento de datos::
@@ -1361,7 +1361,7 @@ La funci@'on @code{dataplot} permite la visualizaci@'on directa de datos muestra
 @itemize @bullet
 
 @item
-@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
+@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
 @code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
@@ -1456,7 +1456,7 @@ Dibuja un histograma. Los datos muestrales deben suministrarse como una lista de
 @itemize @bullet
 
 @item
-@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
+@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
 @code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
@@ -1509,7 +1509,7 @@ Similar a @code{histogram} pero para muestras discretas, num@'ericas o categ@'or
 @itemize @bullet
 
 @item
-@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
+@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
 @code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
@@ -1565,7 +1565,7 @@ Dibuja diagramas de cajas. El argumento @var{data} puede ser una lista, lo cual 
 @itemize @bullet
 
 @item
-@code{'outpudev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
+@code{'outputdev}, @code{"x"} por defecto, indica el dispositivo de salida; valores aceptados son @code{"x"}, @code{"eps"} y @code{"png"}, para la pantalla, y los formatos de ficheros postscript y png, respectivamente.
 
 @item
 @code{'maintitle}, @code{""} por defecto, es el t@'{@dotless{i}}tulo principal entre comillas dobles.
