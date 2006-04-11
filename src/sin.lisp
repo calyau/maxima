@@ -326,6 +326,10 @@
      ;; each term of the product and doing something with it if we
      ;; can.
      loop
+     #+nil
+     (progn
+       (format t "car y =~%")
+       (maxima-display (car y)))
      (cond ((rat8 (car y))
 	    #+nil
 	    (format t "In loop, go skip~%")
@@ -352,7 +356,8 @@
      #+nil
      (progn
        (format t "arcpart = ~A~%" arcpart)
-       (format t "coef = ~A~%" coef))
+       (format t "coef =~%")
+       (maxima-display coef))
      (cond ((and (not (null arcpart))
 		 (do  ((stacklist stack (cdr stacklist)))
 		      ((null stacklist) t)
@@ -376,13 +381,26 @@
 		       '%integrate)))
 	    (return (add2* (list '(mtimes) const w arcpart)
 			   (list '(mtimes) -1 const y))))
-	   (t (return
+	   (t
+	    ;;(format t "t part~%")
+	    (return
 		(mul2 const
 		      (cond ((setq y (scep exp var))
 			     (cond ((cddr y)
+				    #+nil
+				    (progn
+				      (format t "cddr y =~%")
+				      (maxima-display (cddr y)))
 				    (integrator ($trigreduce exp) var))
 				   (t (sce-int (car y) (cadr y) var))))
 			    ((not (alike1 exp (setq y ($expand exp))))
+			     #+nil
+			     (progn
+			       (format t "exp = ~A~%" exp)
+			       (maxima-display exp)
+			       (format t "y   = ~A~%" y)
+			       (maxima-display y)
+			       (break))
 			     (integrator y var))
 			    ((and (not *powerl*)
 				  (setq y (powerlist exp var)))
