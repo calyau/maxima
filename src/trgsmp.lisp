@@ -78,7 +78,6 @@ nil
 	 (return (mul* (power (simplify (list '(%cos) $a))
 			      -1)
 		       (simplify (list '(%sin) $a)))))))
-  (add2lnc '$trigrule0 $rules)
   (mdefprop $trigrule0
 	    ((mequal) ((%tan simp) $a)
 	     ((mtimes simp) ((mexpt simp) ((%cos simp) $a) -1)
@@ -102,7 +101,6 @@ nil
 	 (return (mul* (power (simplify (list '(%cos) $a))
 			      -1)
 		       (simplify (list '(%sin) $a)))))))
-  (add2lnc '$trigrule1 $rules)
   (mdefprop $trigrule1
 	    ((mequal) ((%tan simp) $a)
 	     ((mtimes simp) ((mexpt simp) ((%cos simp) $a) -1)
@@ -124,7 +122,6 @@ nil
 	 (cond ((nthkdr |tr-gensym~7| 1)
 		(matcherr)))
 	 (return (power (simplify (list '(%cos) $a)) -1)))))
-  (add2lnc '$trigrule2 $rules)
   (mdefprop $trigrule2
 	    ((mequal) ((%sec simp) $a) ((mexpt simp) ((%cos simp) $a) -1))
 	    $rule)
@@ -146,7 +143,6 @@ nil
 	 (cond ((nthkdr |tr-gensym~10| 1)
 		(matcherr)))
 	 (return (power (simplify (list '(%sin) $a)) -1)))))
-  (add2lnc '$trigrule3 $rules)
   (mdefprop $trigrule3
 	    ((mequal) ((%csc simp) $a) ((mexpt simp) ((%sin simp) $a) -1))
 	    $rule)
@@ -171,7 +167,6 @@ nil
 		       (power (simplify (list '(%sin)
 					      $a))
 			      -1))))))
-  (add2lnc '$trigrule4 $rules)
   (mdefprop $trigrule4
 	    ((mequal) ((%cot simp) $a)
 	     ((mtimes simp) ((%cos simp) $a)
@@ -198,7 +193,6 @@ nil
 					      $a))
 			      -1)
 		       (simplify (list '(%sinh) $a)))))))
-  (add2lnc '$htrigrule1 $rules)
   (mdefprop $htrigrule1
 	    ((mequal) ((%tanh simp) $a)
 	     ((mtimes simp) ((mexpt simp) ((%cosh simp) $a) -1)
@@ -222,7 +216,6 @@ nil
 	 (cond ((nthkdr |tr-gensym~19| 1)
 		(matcherr)))
 	 (return (power (simplify (list '(%cosh) $a)) -1)))))
-  (add2lnc '$htrigrule2 $rules)
   (mdefprop $htrigrule2
 	    ((mequal) ((%sech simp) $a)
 	     ((mexpt simp) ((%cosh simp) $a) -1))
@@ -245,7 +238,6 @@ nil
 	 (cond ((nthkdr |tr-gensym~22| 1)
 		(matcherr)))
 	 (return (power (simplify (list '(%sinh) $a)) -1)))))
-  (add2lnc '$htrigrule3 $rules)
   (mdefprop $htrigrule3
 	    ((mequal) ((%csch simp) $a)
 	     ((mexpt simp) ((%sinh simp) $a) -1))
@@ -271,7 +263,6 @@ nil
 		       (power (simplify (list '(%sinh)
 					      $a))
 			      -1))))))
-  (add2lnc '$htrigrule4 $rules)
   (mdefprop $htrigrule4
 	    ((mequal) ((%coth simp) $a)
 	     ((mtimes simp) ((%cosh simp) $a)
