@@ -391,7 +391,7 @@
 		(list 'lambda '(x a2 a3)
 		      `(declare (special x a2 a3))
 		      (list 'prog
-			    (list 'ans *a*)
+			    (list 'ans *a* 'rule-hit)
 			    `(declare (special ans ,*a*))
 			    (list 'setq
 				  'x
@@ -403,8 +403,8 @@
 						(t (mapcar #'(lambda (h) (simplifya h a3))
 						    (cdr x)))))))
 			    (list
-			     'setq
-			     'ans
+			     'multiple-value-setq
+			     '(ans rule-hit)
 			     (list 'catch ''match
 				   (nconc (list 'prog)
 					  (list (setq tem (nconc boundlist
@@ -413,11 +413,11 @@
 					  `((declare (special ,@ tem)))
 					  program
 					  (list (list 'return
-						      (memqargs rhs))))))
+						      (list 'values (memqargs rhs) t))))))
 			    (cond ((not (memq name '(mtimes mplus)))
 				   (list 'return
 					 (list 'cond
-					       '(ans) '((and (not dosimp) (memq 'simp (cdar x)))x)
+					       '(rule-hit ans) '((and (not dosimp) (memq 'simp (cdar x)))x)
 					       (list t
 						     (cond (oldstuff (cons oldstuff
 									   '(x a2 t)))
@@ -425,8 +425,8 @@
 				  ((eq name 'mtimes)
 				   (list 'return
 					 (list 'cond
-					       '((and (equal 1. a2) ans))
-					       '(ans (meval '((mexpt) ans a2)))
+					       (list '(and (equal 1. a2) rule-hit) 'ans)
+					       '(rule-hit (meval '((mexpt) ans a2)))
 					       (list t
 						     (cond (oldstuff (cons oldstuff
 									   '(x a2 a3)))
@@ -434,8 +434,8 @@
 				  ((eq name 'mplus)
 				   (list 'return
 					 (list 'cond
-					       '((and (equal 1. a2) ans))
-					       '(ans (meval '((mtimes) ans a2)))
+					       (list '(and (equal 1. a2) rule-hit) 'ans)
+					       '(rule-hit (meval '((mtimes) ans a2)))
 					       (list t
 						     (cond (oldstuff (cons oldstuff
 									   '(x a2 a3)))
@@ -492,7 +492,7 @@
 	'(*afterflag x)
 	(list 't
 	      (nconc (list 'prog)
-		     (list (cons *a* '(*afterflag)))
+		     (list (cons *a* '(*afterflag rule-hit)))
 		     `((declare (special ,*a* *afterflag)))
 		     (list '(setq *afterflag t))
 		     (cond (oldstuff (subst (list 'quote name)
@@ -502,8 +502,8 @@
 		     (list (list 'setq
 				 *a*
 				 (cond (plustimes 'x) (t '(cdr x)))))
-		     (list (list 'setq
-				 'ans
+		     (list (list 'multiple-value-setq
+				 '(ans rule-hit)
 				 (list 'catch ''match
 				       (nconc (list 'prog)
 					      (list (setq tem(nconc boundlist
@@ -513,10 +513,10 @@
 					      program
                           (cond
                             ($announce_rules_firing
-                              (list (list 'return (list 'announce-rule-firing `',pgname 'x (memqargs rhs)))))
+                              (list (list 'return (list 'values (list 'announce-rule-firing `',pgname 'x (memqargs rhs)) t))))
                             (t
-                              (list (list 'return (memqargs rhs)))))))))
-		     (list '(return (or ans (eqtest x x)))))))))
+                              (list (list 'return (list 'values (memqargs rhs) t)))))))))
+		     (list '(return (if rule-hit ans (eqtest x x)))))))))
      (meta-mputprop pgname (list '(mequal) pt rhs) '$rule)
      (cond ((null (mget name 'oldrules))
 	    (meta-mputprop name (list (get name 'operators)) 'oldrules)))
@@ -559,29 +559,92 @@
 					    `((declare (special ,@ tem)))
 					    program
 					    (list (list 'return
-							(memqargs rhs)))))))
+							(list 'values (memqargs rhs) t)))))))
 	      (meta-add2lnc name '$rules)
 	      (meta-mputprop name (setq l (list '(mequal) lhs* rhs*)) '$rule)
 	      (meta-mputprop name '$defrule '$ruletype)
 	      (return (list '(msetq) name (cons '(marrow) (cdr l))))))))
 
-(defun getdec (p e) 
-  (let (x z) 
-    (cond ((setq x (mget p 'matchdeclare))
-	   (cond ((not (atom (car x))) (setq x (car x))))
-	   (setq z (nconc (mapcar 'memqargs (cdr x)) (ncons e)))
-	   (setq x (car x))
-	   (cond ((not (atom x)) (setq x (car x))))
-	   (setq z
-		 (cond ((or (memq x '($true t $all))
-			    (and (fboundp x) (not (get x 'translated))))
-			(cons x z))
-		       (t	   ;(push (second z) *match-specials*)
-			(list 'is (list 'quote (cons (ncons x) z))))))
-	   (cond ((memq (car z) '($true t $all)) (list 'msetq p e))
-		 (t (list 'cond
-			  (list z (list 'msetq p e))
-			  '((matcherr)))))))))
+; GETDEC constructs an expression of the form ``if <match> then <assign value> else <match failed>''.
+
+; matchdeclare (aa, true);
+;  :lisp (symbol-plist '$aa) => (MPROPS (NIL MATCHDECLARE (T)))
+; tellsimpafter (fa(aa), ga(aa));
+;  getdec => (MSETQ $AA TR-GENSYM~1)
+
+; matchdeclare (bb, integerp);
+;  :lisp (symbol-plist '$bb) => (MPROPS (NIL MATCHDECLARE ($INTEGERP)))
+; tellsimpafter (fb(bb), gb(bb));
+;  getdec => (COND ((IS '(($INTEGERP) TR-GENSYM~3)) (MSETQ $BB TR-GENSYM~3)) ((MATCHERR)))
+
+; my_p(x) := integerp(x) and x>100;
+; matchdeclare (cc, my_p);
+;  :lisp (symbol-plist '$cc) => (MPROPS (NIL MATCHDECLARE ($MY_P)))
+; tellsimpafter (fc(cc), gc(cc));
+;  getdec => (COND ((IS '(($MY_P) TR-GENSYM~5)) (MSETQ $CC TR-GENSYM~5)) ((MATCHERR)))
+
+; :lisp (defun $my_p2 (y x) (is `((mgeqp) ,x ,y)))
+; matchdeclare (dd, my_p2 (200));
+;  :lisp (symbol-plist '$dd) => (MPROPS (NIL MATCHDECLARE ((($MY_P2) 200))))
+; tellsimpafter (fd(dd), gd(dd));
+;  getdec => (COND ((IS '(($MY_P2) 200 TR-GENSYM~7)) (MSETQ $DD TR-GENSYM~7)) ((MATCHERR)))
+
+; my_p3 (y, x) := is (x > y);
+; matchdeclare (ee, my_p3 (300));
+;  :lisp (symbol-plist '$ee) => (MPROPS (NIL MATCHDECLARE ((($MY_P3) 300))))
+; tellsimpafter (fe(ee), ge(ee));
+;  getdec => (COND ((IS '(($MY_P3) 300 TR-GENSYM~9)) (MSETQ $EE TR-GENSYM~9)) ((MATCHERR)))
+
+; matchdeclare (ff, lambda ([x], x > 400));
+;  :lisp (symbol-plist '$ff) => (MPROPS (NIL MATCHDECLARE (((LAMBDA) ((MLIST) $X) ((MGREATERP) $X 400)))))
+; tellsimpafter (fff(ff), ggg(ff));
+;  getdec => (COND ((IS (MAPPLY1 '((LAMBDA) ((MLIST) $X) ((MGREATERP) $X 400)) (LIST TR-GENSYM~11) T NIL)) (MSETQ $FF TR-GENSYM~11)) ((MATCHERR))) 
+
+; matchdeclare (gg, lambda ([y, x], x > y) (500));
+;  :lisp (symbol-plist '$gg) => (MPROPS (NIL MATCHDECLARE (((MQAPPLY) ((LAMBDA) ((MLIST) $Y $X) ((MGREATERP) $X $Y)) 500))))
+; tellsimpafter (fg(gg), gg(gg));
+;  getdec => (COND ((IS (MEVAL '((MQAPPLY) ((LAMBDA) ((MLIST) $Y $X) ((MGREATERP) $X $Y)) 500 TR-GENSYM~13))) (MSETQ $GG TR-GENSYM~13)) ((MATCHERR)))
+
+; pattern-variable is the pattern variable (as declared by matchdeclare)
+; match-against is the expression to match against
+
+; CALL $MAYBE INSTEAD OF IS IN THIS STUFF -- IS BINDS $PREDERROR TO T, WE REALLY DON'T WANT THAT
+(defun getdec (pattern-variable match-against)
+  (let (p)
+    (if (setq p (mget pattern-variable 'matchdeclare))
+      ; P is (<foo>) where <foo> is the matchdeclare predicate
+      ; If <foo> is an atom, it is T or the name of a Lisp or Maxima function
+      ; Otherwise, <foo> is ((<op>) <args>)
+
+      ; If <foo> is $TRUE, T, or $ALL, generated code always assigns gensym value to pattern variable
+      (if (and (atom (car p)) (memq (car p) '($true t $all)))
+        `(msetq ,pattern-variable ,match-against)
+
+        ; Otherwise, we have some work to do.
+
+        (let ((p-op (car p)) (p-args) (test-expr))
+          (setq test-expr
+                (if (atom p-op)
+                  ; P-OP is the name of a function. Try to generate a Lisp function call.
+                  (if (and (fboundp p-op) (not (get p-op 'translated)))   ; WHY THE TEST FOR TRANSLATED PROPERTY ??
+                    `(,p-op ,@(ncons match-against))
+                    `(is '((,p-op) ,@(ncons match-against))))
+
+                  ; Otherwise P-OP is something like ((<op>) <args>).
+                  (progn
+                    (setq p-args (cdr p-op))
+                    (cond
+                      ((eq (caar p-op) 'lambda)
+                       `(is (mapply1 ',p-op (list ,match-against) t nil)))
+                      ((eq (caar p-op) 'mqapply)
+                       `(is (meval ',(append p-op (ncons match-against)))))
+                      ; Otherwise P-OP must be a function call with the last arg missing.
+                      (t
+                        `(is (list ',(car p-op) ,@(append (mapcar 'memqargs p-args) (ncons match-against)))))))))
+
+          `(cond
+             (,test-expr (msetq ,pattern-variable ,match-against))
+             ((matcherr))))))))
 
 (defun compilematch (e p) 
   (prog (reflist) 

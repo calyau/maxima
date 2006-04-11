@@ -245,7 +245,7 @@
      (*rulechk *rule)
      (setq max 0)
      b    (cond
-	    ((atom expr) (return (cons (or (mcall *rule expr) expr) 0)))
+	    ((atom expr) (return (cons (multiple-value-bind (ans rule-hit) (mcall *rule expr) (if rule-hit ans expr)) 0)))
 	    ((specrepp expr) (setq expr (specdisrep expr)) (go b)))
      (setq pairs (mapcar #'(lambda (z) (apply1hack z *rule))
 			 (cdr expr)))
@@ -263,9 +263,9 @@
       (merror "~:M not found" *rule)))
 
 (defun rule-apply (*rule expr)
-  (prog (ans)
-   loop (setq ans (mcall *rule expr))
-   (cond ((and ans (not (alike1 ans expr)))
+  (prog (ans rule-hit)
+   loop (multiple-value-setq (ans rule-hit) (mcall *rule expr))
+   (cond ((and rule-hit (not (alike1 ans expr)))
 	  (setq expr ans) (go loop)))
    (return expr)))
 
@@ -276,7 +276,7 @@
   (cond
     ((> depth $maxapplydepth) expr)
     (t
-     (prog (ans ruleptr) 
+     (prog (ans ruleptr rule-hit) 
       a    (setq ruleptr *rulelist)
       b    (cond
 	     ((null ruleptr)
@@ -292,7 +292,7 @@
 		     (mapcar #'(lambda (z) (apply2 z (f1+ depth)))
 			     (cdr expr)))
 		    t))))))
-      (cond ((setq ans (mcall (car ruleptr) expr))
+      (cond ((progn (multiple-value-setq (ans rule-hit) (mcall (car ruleptr) expr)) rule-hit)
 	     (setq expr ans)
 	     (go a))
 	    (t (setq ruleptr (cdr ruleptr)) (go b)))))))
