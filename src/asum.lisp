@@ -84,6 +84,7 @@
 ;; people like to do big factorials so do them a bit faster.
 ;; by breaking into chunks.
 
+#+nil
 (defun factorial (n &aux (ans 1)  )
   (let* ((vec (make-array (if (< n 100) 1 20) :initial-element 1))
 	 (m (length vec))
@@ -94,6 +95,27 @@
     (loop for v across vec
 	   do (setq ans (* ans v)))
     ans))
+
+;; From Richard Fateman's paper, "Comments on Factorial Programs",
+;; http://www.cs.berkeley.edu/~fateman/papers/factorial.pdf
+;;
+;; k(n,m) = n*(n-m)*(n-2*m)*...
+;;
+;; (k n 1) is n!
+;;
+;; This is much faster (3-4 times) than the original factorial
+;; function.
+(defun k (n m) 
+  (if (<= n m)
+      n
+      (* (k n (* 2 m))
+	 (k (- n m) (* 2 m)))))
+
+
+(defun factorial (n)
+  (if (zerop n)
+      1
+      (k n 1)))
 
 (defmfun simpfact (x y z)
   (oneargcheck x)
