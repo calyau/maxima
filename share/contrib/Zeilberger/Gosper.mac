@@ -79,8 +79,6 @@ printGosperSummary(fRat,GosperForm,AnsatzDegree,Gpoly,GosperSol,mode) :=
        print("(5) Gosper solution : ", GosperSol)
      );
 
-
-
 /* GOSPER'S ALGORITHM - Main routine - verbose */
 GosperVerboseOpt(f,k,mode) :=
   block(
@@ -99,6 +97,9 @@ GosperVerboseOpt(f,k,mode) :=
 
   /* Computation of the shift quotient */
   fRat : shiftQuo(f,k),
+
+  /* Check if shift quotient is rational */
+  if not ?ratp(fRat, k) then return(NO_HYP_SOL),
 
   if mode>=verbose then
      print("Shift quotient computed! : " , fRat),
