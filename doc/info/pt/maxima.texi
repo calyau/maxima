@@ -163,7 +163,7 @@ Pacotes Adicionais
 * diag::                        Jordan matrices.
 * distrib::                     Probability distributions.
 * eval_string::                 Maxima expressions as strings.
-* f90::                         Maxima to fortran translator.
+* f90::                         Tradutor do Maxima para o fortran.
 * ggf::                         Generating function of sequences.
 * ifactor::                     Integer factorization.
 * impdiff::                     Derivadas impl@'icitas.
@@ -440,7 +440,7 @@ eval_string
 
 f90
 
-* Definitions for f90::
+* Defini@value{cedilha}@~oes para f90::
 
 ggf
 
@@ -834,6 +834,5 @@ zeilberger
 @summarycontents
 @contents
 @bye
-
 
 
