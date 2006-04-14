@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.43/Sun Mar 12 10:36:14 2006/-ko/
+@c /Expressions.texi/1.44/Fri Apr 14 11:12:26 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
@@ -600,19 +600,19 @@ Exemplos:
 
 @example
 (%i1) constantp (7 * sin(2));
-(%o1) 				     TRUE
+(%o1)          true
 (%i2) constantp (rat (17/29));
-(%o2) 				     TRUE
+(%o2)          true
 (%i3) constantp (%pi * sin(%e));
-(%o3) 				     TRUE
+(%o3)          true
 (%i4) constantp (exp (x));
-(%o4) 				     FALSE
+(%o4)          false
 (%i5) declare (x, constant);
-(%o5) 				     DONE
+(%o5)          done
 (%i6) constantp (exp (x));
-(%o6) 				     TRUE
+(%o6)          true
 (%i7) constantp (foo (x) + bar (%e) + baz (2));
-(%o7) 				     FALSE
+(%o7)          FALSE
 (%i8) 
 @end example
 
@@ -620,6 +620,8 @@ Exemplos:
 
 @c NEEDS EXPANSION, CLARIFICATION, AND EXAMPLES
 @c THIS ITEM IS EXTREMELY IMPORTANT
+@c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
+@c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
 @deffn {Fun@value{cedilha}@~ao} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
 Atribui ao @'atomo @var{a_i} o sinalizador @var{f_i}.
 Os @var{a_i}'s e @var{f_i}'s podem tamb@'em serem listas de @'atomos e sinalizadores respectivamente nesse caso

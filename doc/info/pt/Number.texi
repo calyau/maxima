@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Number.texi/1.16/Wed Mar 22 08:02:47 2006/-ko/
+@c /Number.texi/1.17/Fri Apr 14 11:12:31 2006/-ko/
 @c end concepts Number Theory
 @menu
 * Defini@value{cedilha}@~oes para Teoria dos N@'umeros::  
@@ -476,7 +476,7 @@ Teste de primalidade. Se @code{primep (n)} retornar @code{false}, @var{n} @'e um
 n@'umero compostro e se esse teste retornar @code{true}, @var{n} @'e um n@'umero primo
 com grande probabilidade.
 
-Para @var{n} menor que 34155071728321 uma vers@~ao deterministra do teste de 
+Para @var{n} menor que 341550071728321 uma vers@~ao deterministra do teste de 
 Miller-Rabin @'e usada. Se @code{primep (n)} retornar @code{true}, ent@~ao @var{n} @'e um
 n@'umero primo.
 

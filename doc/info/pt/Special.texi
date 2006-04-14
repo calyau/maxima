@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Special.texi/1.22/Tue Aug 16 21:36:38 2005/-ko/
+@c /Special.texi/1.23/Fri Apr 14 11:12:58 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
 * specint::                     
@@ -609,11 +609,68 @@ necess@'ario.
 @end deffn
 
 @c NEED INFO HERE ABOUT THE SUBSCRIPTED FORM psi[n](x)
-@deffn {Fun@value{cedilha}@value{a_til}o} psi (@var{x})
-@deffnx {Fun@value{cedilha}@value{a_til}o} psi [@var{n}](@var{x})
-A derivada de @code{log (gamma (x))}.
+@c I (rtoy) don't think there is a plain psi(x) function anymore.
+@c @deffn {Function} psi (@var{x})
+@c @deffnx {Function} psi [@var{n}](@var{x})
+@deffn {Fun@value{cedilha}@value{a_til}o} psi [@var{n}](@var{x})
 
-Maxima n@~ao sabe como calcular um valor num@'erico de @code{psi}.
-Todavia, a fun@,{c}@~ao @code{bfpsi} no pacote @code{bffac} pode calcular valores num@'ericos.
+A derivada de @code{log (gamma (@var{x}))} de ordem @code{@var{n}+1}.
+Dessa forma, @code{psi[0](@var{x})} @'e a primeira derivada,
+@code{psi[1](@var{x})} @'e a segunda derivada, etc.
+
+Maxima n@~ao sabe como, em geral, calcular um valor num@'erico de
+@code{psi}, mas Maxima pode calcular alguns valores exatos para argumentos racionais.
+Muitas vari@'aveis controlam qual intervalo de argumentos racionais @code{psi} ir@'a
+retornar um valor exato, se poss@'ivel.  Veja @code{maxpsiposint},
+@code{maxpsinegint}, @code{maxpsifracnum}, e @code{maxpsifracnum}.
+Isto @'e, @var{x} deve localizar-se entre @code{maxpsinegint} e
+@code{maxpsiposint}.  Se o valor absoluto da parte facion@'aria de
+@var{x} for racional e tiver um numerador menor que @code{maxpsifracnum}
+e tiver um denominador menor que @code{maxpsifracdenom}, @code{psi}
+ir@'a retornar um valor exato.
+
+A fun@,{c}@~ao @code{bfpsi} no pacote @code{bffac} pode calcular
+valores num@'ericos.
+ 
+ @end deffn
+
+@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsiposint
+Valor padr@~ao: 20
+
+@code{maxpsiposint} @'e o maior valor positivo para o qual
+@code{psi[n](x)} ir@'a tentar calcular um valor exato.
+
+@end defvr
+
+@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsinegint
+Valor padr@~ao: -10
+
+@code{maxpsinegint} @'e o valor mais negativo para o qual
+@code{psi[n](x)} ir@'a tentar calcular um valor exato.  Isto @'e, se
+@var{x} for menor que @code{maxnegint}, @code{psi[n](@var{x})} n@~ao ir@'a
+retornar resposta simplificada, mesmo se isso for poss@'ivel.
+
+@end defvr
+
+@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsifracnum
+Valor padr@~ao: 4
+
+Tomemos @var{x} como sendo um n@'umero racional menor que a unidade e da forma @code{p/q}.
+Se @code{p} for menor que @code{maxpsifracnum}, ent@~ao
+@code{psi[@var{n}](@var{x})} n@~ao ir@'a tentar retornar um valor
+simplificado.
+
+@end defvr
+
+@defvr {Vari@'avel de op@value{cedilha}@~ao} maxpsifracdenom
+Valor padr@~ao: 4
+
+Tomemos @var{x} como sendo um n@'umero racional menor que a unidade e da forma @code{p/q}.
+Se @code{q} for maior que @code{maxpsifracdeonm}, ent@~ao
+@code{psi[@var{n}](@var{x})} n@~ao ir@'a tentar retornar um valor
+simplificado.
+
+
+@end defvr
 
 @end deffn
