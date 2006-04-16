@@ -1,6 +1,9 @@
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Simplification.texi/1.15/Sat Dec  3 08:56:57 2005/-ko/
 @c end concepts Simplification
+@iftex
+@hyphenation{di-fe-ren-te-men-te}
+@end iftex
 @menu
 * Defini@value{cedilha}@~oes para Simplifica@value{cedilha}@~ao::  
 @end menu
@@ -18,7 +21,7 @@
 Quando @code{asksign} @'e chamada,
 @code{askexp} @'e a express@~ao que @code{asksign} est@'a testando.
 
-Antigamente, isso era poss@'ivel para um usu@'ario inspecionar @code{askexp}
+Antigamente, era poss@'ivel para um usu@'ario inspecionar @code{askexp}
 entrando em uma parada do Maxima com control-A.
 @end defvr
 
@@ -30,7 +33,7 @@ entrando em uma parada do Maxima com control-A.
 
 @code{askinteger (@var{expr}, integer)} tenta determinar a partir da base de dados do @code{assume}
 se @var{expr} @'e um inteiro.
-@code{askinteger} pergunta ao usu@'ario pela linha de comando se isso n@~ao pode ser dito de outra forma,
+@code{askinteger} pergunta ao usu@'ario pela linha de comando se isso n@~ao puder ser feito de outra forma,
 @c UMM, askinteger AND asksign DO NOT APPEAR TO HAVE ANY EFFECT ON THE assume DATABASE !!!
 e tenta instalar a informa@,{c}@~ao na base de dados do @code{assume} se for poss@'ivel.
 @code{askinteger (@var{expr})} @'e equivalente a @code{askinteger (@var{expr}, integer)}.
@@ -44,7 +47,7 @@ da mesma forma tentam determinar se @var{expr} @'e um inteiro par ou inteiro @'i
 @deffn {Fun@,{c}@~ao} asksign (@var{expr})
 Primeiro tenta determinar se a express@~ao
 especificada @'e positiva, negativa, ou zero.  Se isso n@~ao for poss@'ivel, @code{asksign} pergunta ao
-usu@'ario com as quest@~oes necess@'arias para completar a sua dedu@,{c}@~ao.  As respostas
+usu@'ario pelas quest@~oes necess@'arias para completar a sua dedu@,{c}@~ao.  As respostas
 do usu@'ario s@~ao guardadas na base de dados pelo tempo que durar a computa@,{c}@~ao
 corrente. O valor de retorno de @code{asksign} @'e um entre @code{pos}, @code{neg},
 ou @code{zero}.
@@ -76,7 +79,7 @@ ambas serem @code{true} ao mesmo tempo.
 @defvr {Vari@'avel de op@,{c}@~ao} domain
 Valor padr@~ao: @code{real}
 
-Quando @code{domain} @'e escolhida para @code{complex}, @code{sqrt (x^2)} permanecer@'a
+Quando @code{domain} for escolhida para @code{complex}, @code{sqrt (x^2)} permanecer@'a
 @code{sqrt (x^2)} em lugar de retornar @code{abs(x)}.
 
 @c PRESERVE EDITORIAL COMMENT -- MAY HAVE SOME SIGNIFICANCE NOT YET UNDERSTOOD !!!
@@ -95,7 +98,7 @@ quebradas em suas respectivas parcelas, e multiplica@,{c}@~ao (comutativa
 e n@~ao comutativa) @'e distribu@'ida sobre a adi@,{c}@~ao em todos os n@'iveis de
 @var{expr}.
 
-Para polin@^omios se pode ter usulmente @code{ratexpand} que usa um
+Para polin@^omios se pode usar freq@"u@^entemente @code{ratexpand} que possui um
 algor@'itmo mais eficiente.
 
 @code{maxnegex} e @code{maxposex} controlam o m@'aximo expoente negativo e
@@ -103,11 +106,11 @@ o m@'aximo expoente positivo, respectivamente, que ir@~ao expandir.
 
 @code{expand (@var{expr}, @var{p}, @var{n})} expande @var{expr}, 
 usando @var{p} para @code{maxposex} e @var{n} para @code{maxnegex}.
-Isso @'e @'util com o objetivo de expandir partes mas n@~ao tudo de uma express@~ao.
+Isso @'e @'util com o objetivo de expandir partes mas n@~ao tudo em uma express@~ao.
 
 @code{expon} - o expoente da maior pot@^encia negativa que @'e
 automaticamente expandida (independente de chamadas a @code{expand}).  Por Exemplo
-se @code{expon} for 4 ent@~ao @code{(x+1)^(-5)} n@~ao ser@~a automaticamente expandido.
+se @code{expon} for 4 ent@~ao @code{(x+1)^(-5)} n@~ao ser@'a automaticamente expandido.
 
 @code{expop} - o maior expoente positivo que @'e automaticamente
 expandido.  Dessa forma @code{(x+1)^3}, quando digitado, ser@'a automaticamente expandido
@@ -134,7 +137,7 @@ Um arquivo demonstrativo est@'a dispon@'ivel fazendo @code{demo("facexp")}.
 
 @c NEEDS EXAMPLES
 @deffn {Fun@,{c}@~ao} expandwrt (@var{expr}, @var{x_1}, ..., @var{x_n})
-Expande express@~ao @code{expr} com rela@,{c}@~ao @`as 
+Expande a express@~ao @code{expr} com rela@,{c}@~ao @`as 
 vari@'aveis @var{x_1}, ..., @var{x_n}.
 Todos os produtos envolvendo as vari@'aveis aparecem explicitamente.  A forma retornada
 ser@'a livre de produtos de somas de express@~oes que n@~ao est@~ao livres das
@@ -231,7 +234,7 @@ Move fatores multiplicativos fora de um somat@'orio para dentro.
 Se o @'indice for usado na
 express@~ao de fora, ent@~ao a fun@,{c}@~ao tentar@'a achar um @'indice
 razo@'avel, o mesmo que @'e feito para @code{sumcontract}.  Isso @'e essencialmente a
-id@'eia reversa da propriedade @code{outative} de somat@'orios, mas note que isso
+id@'eia inversa da propriedade @code{outative} de somat@'orios, mas note que isso
 n@~ao remove essa propriedade, somente pula sua verifica@,{c}@~ao.
 
 @c WHAT ARE THESE CASES ??
@@ -253,7 +256,7 @@ simplificar para @code{g (g (g (a, b), c), d)}.
 @defvr {Declara@,{c}@~ao} linear
 Uma das propriedades operativas do Maxima.  Para fun@,{c}@~oes de uma @'unica vari@'avel @code{f} ent@~ao
 declarada, a "expans@~ao" @code{f(x + y)} retorna @code{f(x) + f(y)},
-@code{f(a*x)} retorna @code{a*f(x)} ocorrem
+a "expans@~ao" @code{f(a*x)} retorna @code{a*f(x)} e ocorre
 onde @code{a} @'e uma "constante".  Para fun@,{c}@~oes de dois ou mais argumentos,
 "linearidade" @'e definida para ser como no caso de @code{sum} ou @code{integrate},
 i.e., @code{f (a*x + b, x)} retorna @code{a*f(x,x) + b*f(1,x)}
@@ -321,7 +324,7 @@ expandido com o comando @code{expand} (veja tamb@'em @code{maxnegex}).
 @enumerate
 @item
 Se @code{f} for uma fun@,{c}@~ao de uma @'unica vari@'avel, sempre que o simplificador encontrar @code{f} aplicada
-a um produto, @code{f} distribue sobre aquele procuto.  E.g., @code{f(x*y)}
+a um produto, @code{f} distribue sobre aquele produto.  E.g., @code{f(x*y)}
 simplifica para @code{f(x)*f(y)}.
 @item
 Se @code{f} @'e uma fun@,{c}@~ao de 2 ou mais argumentos, multiplicatividade @'e
@@ -339,10 +342,10 @@ forma @code{product (x[i], i, m, n)}.
 Valor padr@~ao: @code{true}
 
 Quando @code{negdistrib} for @code{true}, -1 distribue
-sobre uma express@~ao.  E.g., @code{-(x + y)} transforma-se em @code{- y - x}.  Setting it to @code{false}
-Permitir@'a @code{- (x + y)} seja mostrado como foi escrito.  Isso algumas vezes @'e @'util
-mas seja muito cuidadoso: como o sinalizador @code{simp}, isso @ um sinalizador que voc@^e n@~ao
-que escolher para @code{false} como algo natural ou necess@'ario com excess@~ao
+sobre uma express@~ao.  E.g., @code{-(x + y)} transforma-se em @code{- y - x}.  Mudando o valor de @code{negdistrib} para @code{false}
+permitir@'a que @code{- (x + y)} seja mostrado como foi escrito.  Isso algumas vezes @'e @'util
+mas seja muito cuidadoso: como o sinalizador @code{simp}, isso @'e um sinalizador que voc@^e pode n@~ao
+querer escolher para @code{false} como algo natural ou necess@'ario com excess@~ao
 de usar localmente no seu Maxima.
 
 @end defvr
@@ -363,15 +366,15 @@ mesmo caminho.
 @c NEED TO MENTION THIS IS AN evflag
 @defvr {S@'imbolo especial} noeval
 @code{noeval} suprime a fase de avalia@,{c}@~ao de @code{ev}.  Isso @'e @'util em
-conjun@,{c}@~ao com outros comutadores e em fazer com que express@~oes      
+conjun@,{c}@~ao com outros comutadores e para fazer com que express@~oes      
 sejam resimplificadas sem serem reavaliadas.
 
 @end defvr
 
 @c NEEDS CLARIFICATION, EXAMPLES
 @defvr {Declara@,{c}@~ao} noun
-@code{noun} @'e uma das op@,{c}@~oes do comando @code{declare}.  Isso faz um
-fun@,{c}@~ao ent@~ao declarada como "noun" (substantivo), significando que ela n@~ao deve ser avaliada
+@code{noun} @'e uma das op@,{c}@~oes do comando @code{declare}.  Essa op@,{c}@~ao faz com que um
+fun@,{c}@~ao seja declarada como "noun" (substantivo), significando que ela n@~ao deve ser avaliada
 automaticamente.
 
 @end defvr
@@ -403,7 +406,7 @@ avalia essas express@~oes.  Veja tamb@'em @code{noun}, @code{nounify}, @code{ver
 @code{numer} faz com que algumas fun@,{c}@~oes matem@'aticas (incluindo exponencia@,{c}@~ao)
 com argumentos num@'ericos sejam avaliados em ponto flutuante. Isso faz com que
 vari@'aveis em @code{expr} que tenham sido dados valores num@'ericos a elas (@code{numerval}) sejam substitu@'idas pelos
-seus valores.  Isso tamb@'em escolhe o sinalizador @code{float} para @code{on}.
+seus valores.  @code{numer} tamb@'em escolhe o sinalizador @code{float} para @code{on}.
 
 @end defvr
 
@@ -426,7 +429,7 @@ n@~ao necessariamente num@'ericas.
 
 @code{opproperties} @'e a lista de propriedades de operadores especiais reconhecidas pelo
 simplificador do Maxima:
-@code{linear}, @code{additive}, @code{multiplicative}, @code{outative}, @code{evenfun},
+@code{linear}, @code{additive}, @code{multiplicative}, @code{outative} (veja logo abaixo), @code{evenfun},
 @code{oddfun}, @code{commutative}, @code{symmetric}, @code{antisymmetric}, @code{nary}, 
 @code{lassociative}, @code{rassociative}.
 
@@ -474,10 +477,10 @@ para @code{a * f(g(x), x)} sendo @code{a} livre de @code{x}.
 
 @deffn {Fun@,{c}@~ao} radcan (@var{expr})
 Simplifica @var{expr}, que pode conter logar@'itmos, exponenciais, e
-radicais, convertendo essa express@~ao em uma forma que @'e can@^onica sobre uma larga
+radicais, convertendo essa express@~ao em uma forma que @'e can@^onica sobre uma ampla
 classe de express@~oes e uma dada ordena@,{c}@~ao de vari@'aveis; isto @'e, todas
 formas funcionalmente equivalentes s@~ao mapeadas em uma @'unica forma.  Para uma
-classe um tanto quanto larga de express@~oes, @code{radcan} produz uma forma regular.
+classe um tanto quanto ampla de express@~oes, @code{radcan} produz uma forma regular.
 Duas express@~oes equivalentes nessa classe n@~ao possuem necess@'ariamente a
 mesma apar@^encia, mas suas diferen@,{c}as podem ser simplificadas por @code{radcan} para
 zero.
@@ -509,7 +512,7 @@ Valor padr@~ao: @code{true}
 
 @code{radexpand} controla algumas simplifica@,{c}@~oes de radicais.
 
-Quando @code{radexpand} for @code{all}, faz com que n@'esimas ra@'izes de
+Quando @code{radexpand} for @code{all}, faz com que n-@'esimas ra@'izes de
 fatores de um produto que s@~ao pot@^encias de n sejam puxados para fora do
 radical.  E.g. Se @code{radexpand} for @code{all}, @code{sqrt (16*x^2)} simplifica para @code{4*x}.
 
@@ -555,7 +558,7 @@ Simplifica@,{c}@~ao Seq@"u@^encial Comparativa (m@'etodo devido a Stoute).
 @code{scsimp} tenta simplificar @var{expr}
 conforme as regras @var{rule_1}, ..., @var{rule_n}.
 Se uma express@~ao pequena for obtida, o processo
-repete-se.  De outra forma ap@'os todas as simplifica@,{c}@~oes serem tentadas, isso retorna
+repete-se.  De outra forma ap@'os todas as simplifica@,{c}@~oes serem tentadas, @cod{scsimp} retorna
 a resposta original.
 
 @c MERGE EXAMPLES INTO THIS FILE
