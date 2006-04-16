@@ -92,6 +92,51 @@ done;
 [pa (foo + bar), pi (17290.0), ps (foobar), pf (1729), pb (foo (bar))];
 [false, false, false, false, false];
  
+/* Match variables are OK as main operator names in defrule and defmatch,
+ * but not in tellsimp and tellsimpafter. Operators other than the main
+ * operator can be match variables in tellsimp and tellsimpafter.
+ * DROP A NOTE TO THIS EFFECT IN RULES.TEXI !!
+ */
+
+(matchdeclare
+  ([a, b], atom,
+    f, lambda ([e], featurep (e, increasing)),
+   [x, y], all), 0);
+0;
+
+(defrule (r1, a(b), b(a)),
+ defrule (r2, f(x) < f(y), x < y),
+ defmatch (p1, a(b)),
+ defmatch (p2, f(x) < f(y)),
+ 0);
+0;
+
+[r1 (foo (bar)), r2 (log (u + v) < log (u - v))];
+[bar (foo), u + v < u - v];
+
+[p1 (foo (bar)), p2 (log (u + v) < log (u - v))];
+[[b = bar, a = foo], [y = u - v, x = u + v, f = log]]; 
+
+for e in values do apply (remvalue, [e]);
+done;
+
+[r1 (foo (bar + baz)), r2 (cosh (x) < cosh (y))];
+[false, false];
+
+[p1 (foo (bar + baz)), p2 (cosh (x) < cosh (y))];
+[false, false];
+
+(tellsimp (f(x) < f(y), x < y),
+ tellsimpafter (f(x) > f(y), x > y),
+ 0);
+0;
+
+[log (u + v) < log (u - v), cosh (u + v) < cosh (u - v)];
+[u + v < u - v, cosh (u + v) < cosh (u - v)];
+
+[sinh (u + v) > sinh (u * v), sin (u + v) > sin (u - v)];
+[u + v > u * v, sin (u + v) > sin (u - v)];
+
 /* Various forms of matchdeclare predicates.
  * These should different ways to say the same thing.
  */
