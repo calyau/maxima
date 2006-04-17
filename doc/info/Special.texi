@@ -623,7 +623,7 @@ return an exact value, if possible.  See @code{maxpsiposint},
 @code{maxpsinegint}, @code{maxpsifracnum}, and @code{maxpsifracnum}.
 That is, @var{x} must lie between @code{maxpsinegint} and
 @code{maxpsiposint}.  If the absolute value of the fractional part of
-@var{x} is rational and has a numerator less and @code{maxpsifracnum}
+@var{x} is rational and has a numerator less than @code{maxpsifracnum}
 and has a denominator less than @code{maxpsifracdenom}, @code{psi}
 will return an exact value.
 
