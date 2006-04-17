@@ -558,7 +558,7 @@ Simplifica@,{c}@~ao Seq@"u@^encial Comparativa (m@'etodo devido a Stoute).
 @code{scsimp} tenta simplificar @var{expr}
 conforme as regras @var{rule_1}, ..., @var{rule_n}.
 Se uma express@~ao pequena for obtida, o processo
-repete-se.  De outra forma ap@'os todas as simplifica@,{c}@~oes serem tentadas, @cod{scsimp} retorna
+repete-se.  De outra forma ap@'os todas as simplifica@,{c}@~oes serem tentadas, @code{scsimp} retorna
 a resposta original.
 
 @c MERGE EXAMPLES INTO THIS FILE
