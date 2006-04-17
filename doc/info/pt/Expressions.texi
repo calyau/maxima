@@ -1172,9 +1172,9 @@ O comportamento padr@~ao @'e omitir isso.
 Valor padr@~ao: @code{true}
 
 Quando @code{listdummyvars} for @code{false}, "vari@'aveis dummy" na
-express@~ao n@~ao ser@~ao inclu@'idasna lista retornada por @code{listofvars}.
+express@~ao n@~ao ser@~ao inclu@'idas na lista retornada por @code{listofvars}.
 (O significado de "vari@'avel dummy" @'e o mesmo que em @code{freeof}.
-"Vari@'aveis dummy" s@~ao coisas matem@'aticas como o @'indice de um somat@'orio ou
+"Vari@'aveis dummy" s@~ao conceitos matem@'aticos como o @'indice de um somat@'orio ou
 produt@'orio, a vari@'avel limite, e a vari@'avel da integral definida.)
 Exemplo:
 
@@ -1265,7 +1265,7 @@ forma @'e equivalente a @code{multthru (@var{expr_1}*@var{expr_2})}.
 (%o4)            ------------------------------
                                   2
                              a b s
-(%i5) multthru (%);  /* note that this does not expand (b+a)^10 */
+(%i5) multthru (%);  /* note que isso n@~ao expande (b+a)^10 */
                                         10
                        2   a b   (b + a)
 (%o5)                  - + --- + ---------
