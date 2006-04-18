@@ -1697,8 +1697,9 @@
 	 (n (mul -1 b))
 	 (z (div (add 1 var)
 		 (sub 1 var))))
-    (format t "a, c = ~A ~A~%" a c)
-    (format t "b = ~A~%" b)
+    (when $trace2f1
+      (format t "a, c = ~A ~A~%" a c)
+      (format t "b = ~A~%" b))
     ;; A&S 15.4.14, 15.4.15
     (cond ((eq (asksign var) '$negative)
 	   ;; A&S 15.4.15
@@ -3147,7 +3148,7 @@
 (defun step4-int (a b c)
   (if (> a b)
       (step4-int b a c)
-      (let* ((s (gensym "STEP4-VAR-"))
+      (let* ((s (gensym "STEP4_VAR_"))
 	     (m (1- a))
 	     (n (1- b))
 	     (ell (sub c 3//2))
@@ -3173,13 +3174,13 @@
 	;; Start with res = F(1,1;3/2;z).  Compute F(m,1;3/2;z)
 	(setf res (as-15.2.3 1 1 3//2 m s res))
 	;; We now have res = C*F(m,1;3/2;z).  Compute F(m,n;3/2;z)
-	(setf res (as-15.2.3 1 m 3//2 n s res))
+	(setf res (as-15.2.3 1 a 3//2 n s res))
 	;; We now have res = C*F(m,n;3/2;z).  Now compute F(m,n;3/2+ell;z):
 	(subst var s
 	       (cond ((minusp ell)
-		      (as-15.2.4 m n 3//2 (- ell) s res))
+		      (as-15.2.4 a b 3//2 (- ell) s res))
 		     (t
-		      (as-15.2.6 m n 3//2 ell s res)))))))
+		      (as-15.2.6 a b 3//2 ell s res)))))))
 
 ;;Pattern match for s(ymbolic) + c(onstant) in parameter
 (defun s+c (exp)
