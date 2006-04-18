@@ -28,6 +28,8 @@
 ($auto_mexpr '$eigenvectors '|eigen|)
 ($auto_mexpr '$eigenvalues '|eigen|)
 
+($auto_mexpr '$trigsimp "trgsmp.mac")
+
 (dolist (v       
 	  '($arite
 	    $card_orbit

@@ -429,7 +429,6 @@ transq.lisp \
 transs.lisp \
 trdata.lisp \
 trgred.lisp \
-trgsmp.lisp \
 trigi.lisp \
 trigo.lisp \
 trmode.lisp \
