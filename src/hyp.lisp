@@ -1040,8 +1040,10 @@
 	   (r1 (sub q p1))
 	   (p2 (add (sub b a) (inv 2)))
 	   (r2 (sub q p2)))
-      ;;(format t "q, p1, r1 = ~A ~A ~A~%" q p1 r1)
-      ;;(format t "   p2, r2 = ~A ~A~%" p2 r2)
+      (when $trace2f1
+	(format t "step 7:~%")
+	(format t "  q, p1, r1 = ~A ~A ~A~%" q p1 r1)
+	(format t "     p2, r2 = ~A ~A~%" p2 r2))
       (cond ((<= (+ (abs p1) (abs r1))
 		 (+ (abs p2) (abs r2)))
 	     (step7-core a b c))
@@ -1054,16 +1056,19 @@
 		 c))
 	 (r (sub q p))
 	 (a-prime (sub a p))
-	 (c-prime (add c r)))
+	 (c-prime (add 1 (mul 2 a-prime))))
     ;; Ok, p and q are integers.  We can compute something.  There are
     ;; four cases to handle depending on the sign of p and r.
 
-    (let ((fun (mul (power 2 (mul 2 a-prime))
-		    (power (add 1
-				(power (sub 1 var)
-				       (inv 2)))
-			   (mul -2 a-prime)))))
+    (let ((fun (hyp-cos a-prime (add a-prime 1//2) c-prime)))
       ;; fun is F(a',a'+1/2;2*a'+1;z)
+      (when $trace2f1
+	(format t "step7-core~%")
+	(format t " a,b,c = ~A ~A ~A~%" a b c)
+	(format t " p,q,r = ~A ~A ~A~%" p q r)
+	(format t " a', c' = ~A ~A~%" a-prime c-prime)
+	(format t " F(a',a'+1/2; 1+2*a';z) =~%")
+	(maxima-display fun))
       (cond ((>= p 0)
 	     (cond ((>= r 0)
 		    (step-7-pp a-prime b c-prime p r var fun))
@@ -1098,7 +1103,7 @@
 ;; F(a'+p,b;c'-r;z) = F(a'-p',b;c'-r;z)
 (defun step-7-mp (a b c p r var fun)
   ;; Apply A&S 15.2.4 and 15.2.5
-  (let ((res (as-15.2.6 a b c r var fun)))
+  (let ((res (as-15.2.4 a b c r var fun)))
     (as-15.2.5 a b (sub c r) (- p) var res)))
 
 ;; p < 0 r < 0
@@ -1842,7 +1847,8 @@
 (defun legpol (a b c)
   (prog (l v)
      (cond ((not (hyp-negp-in-l (list a)))
-	    (return 'fail-1-in-c-1-case)))
+	    (print 'fail-1-in-c-1-case)
+	    (return nil)))
      (setq l (vfvp (div (add b a) 2)))
      (setq v (cdr (zl-assoc 'v l)))
      ;; v is (a+b)/2
@@ -2861,7 +2867,7 @@
 ;;
 ;; so
 ;; 
-;; z^(-a-1)/poch(a,n)*diff(z^(a+n-1),z,n-k)
+;; z^(-a+1)/poch(a,n)*diff(z^(a+n-1),z,n-k)
 ;;    = poch(a+n-1-n+k+1,n-k)/poch(a,n)*z^(a+n-1-n+k)*z^(-a+1)
 ;;    = poch(a+k,n-k)/poch(a,n)*z^k
 ;;    = z^k/poch(a,k)
@@ -2902,6 +2908,13 @@
 	   (arg-l2 (zl-delete b1 arg-l2 1)))
       (loop for count from 0 upto k
 	 do
+	   (when $trace2f1
+	     (format t "splitpfg term:~%")
+	     (maxima-display (mul (combin k count)
+				  (div prodnum proden)
+				  (inv prod-b)
+				  (power var count)))
+	     (format t "F(~A, ~A)~%" arg-l1 arg-l2))
 	 (setq result (add result
 			   (mul (combin k count)
 				(div prodnum proden)
@@ -3094,6 +3107,8 @@
 ;; as F(-d+u,d+u;c;z) where u = (n+m)/2.  In this case, we could use
 ;; step4-a to compute the result.
 
+
+;; Transform F(a,b;c;z) to F(a+n,b;c;z), given F(a,b;c;z)
 (defun as-15.2.3 (a b c n arg fun)
   (declare (ignore b c))
   (assert (>= n 0))
@@ -3105,6 +3120,7 @@
 		   fun)
 	      arg n)))
 
+;; Transform F(a,b;c;z) to F(a,b;c-n;z), given F(a,b;c;z)
 (defun as-15.2.4 (a b c n arg fun)
   (declare (ignore a b))
   (assert (>= n 0))
@@ -3115,6 +3131,8 @@
        ($diff (mul (power arg (sub c 1))
 		   fun)
 	      arg n)))
+
+;; Transform F(a,b;c;z) to F(a-n,b;c;z), given F(a,b;c;z)
 (defun as-15.2.5 (a b c n arg fun)
   ;; A&S 15.2.5
   ;; F(a-n,b;c;z) = 1/poch(c-a,n)*z^(1+a-c)*(1-z)^(c+n-a-b)
@@ -3131,6 +3149,7 @@
 		   fun)
 	      arg n)))
 
+;; Transform F(a,b;c;z) to F(a,b;c+n;z), given F(a,b;c;z)
 (defun as-15.2.6 (a b c n arg fun)
   ;; A&S 15.2.6
   ;; F(a,b;c+n;z) = poch(c,n)/poch(c-a,n)/poch(c-b,n)*(1-z)^(c+n-a-b)
