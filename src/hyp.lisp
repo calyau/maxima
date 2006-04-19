@@ -1255,37 +1255,61 @@
     ;; a1 = (a+b-1/2)/2
     ;; z1 = 1-var
     (cond ((alike1 (sub (add a b)
-		       (div 1 2))
-		  c)
+			(div 1 2))
+		   c)
 	   ;; a+b-1/2 = c
 	   ;;
 	   ;; A&S 15.1.14
 	   ;;
 	   ;; F(a,a+1/2;2*a;z)
 	   ;;    = 2^(2*a-1)*(1-z)^(-1/2)*(1+sqrt(1-z))^(1-2*a)
+	   ;;
+	   ;; But if 1-2*a is a negative integer, let's rationalize the answer to give
+	   ;;
+	   ;; F(a,a+1/2;2*a;z)
+	   ;;   = 2^(2*a-1)*(1-z)^(-1/2)*(1-sqrt(1-z))^(2*a-1)/z^(2*a-1)
 	   (when $trace2f1
 	     (format t "   Case a+b-1/2=c~%"))
-	   (mul (power 2 (sub (mul a1 2) 1))
-		(inv (power  z1 (div 1 2)))
-		(power (add 1
-			    (power z1
-				   (div 1
-					2)))
-		       (sub 1 (mul 2 a1)))))
+	   (let ((2a-1 (sub (mul a1 2) 1)))
+	     (cond ((and (integerp 2a-1) (plusp 2a-1))
+		    ;; 2^(2*a-1)*(1-z)^(-1/2)*(1-sqrt(1-z))^(2*a-1)/z^(2*a-1)
+		    (mul (power 2 2a-1)
+			 (inv (power z1 1//2))
+			 (power (sub 1 (power z1 1//2)) 2a-1)
+			 (inv (power var 2a-1))))
+		   (t
+		    ;; 2^(2*a-1)*(1-z)^(-1/2)*(1+sqrt(1-z))^(1-2*a)
+		    (mul (power 2 (sub (mul a1 2) 1))
+			 (inv (power  z1 (div 1 2)))
+			 (power (add 1
+				     (power z1
+					    (div 1
+						 2)))
+				(sub 1 (mul 2 a1))))))))
 	  ((alike1 (add 1 (mul 2 a1)) c)
 	   ;; c = 1+2*a1 = a+b+1/2
 	   ;;
 	   ;; A&S 15.1.13:
 	   ;;
 	   ;; F(a,1/2+a;1+2*a;z) = 2^(2*a)*(1+sqrt(1-z))^(-2*a)
+	   ;;
+	   ;; But if 2*a is a positive integer, let's rationalize the answer to give
+	   ;;
+	   ;; F(a,1/2+a;1+2*a;z) = 2^(2*a)*(1-sqrt(1-z))^(2*a)/z^(2*a)
 	   (when $trace2f1
 	     (format t "   Case c=1+2*a=a+b+1/2~%"))
-	   (mul (power 2 (sub c 1))
-		(power (add 1
-			    (power z1
-				   (div 1
-					2)))
-		       (mul -1 (sub c 1))))))))
+	   (let ((2a (sub c 1)))
+	     (cond ((and (integerp 2a) (plusp 2a))
+		    ;; 2^(2*a)*(1-sqrt(1-z))^(2*a)/z^(2*a)
+		    (mul (power 2 2a)
+			 (power (sub 1 (power z1 1//2))
+				2a)
+			 (power var (mul -1 2a))))
+		   (t
+		    ;; 2^(2*a)*(1+sqrt(1-z))^(-2*a)
+		    (mul (power 2 2a)
+			 (power (add 1 (power z1 1//2))
+				(mul -1 2a))))))))))
 
 ;; Is A a non-negative integer?
 (defun nni (a)
