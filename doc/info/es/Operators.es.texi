@@ -1111,7 +1111,7 @@ El argumento @var{list} puede contener elementos num@'ericos o no num@'ericos o 
 @deffn {Funci@'on} sqrt (@var{x})
 Ra@'{@dotless{i}}z cuadrada de @var{x}. Se representa internamente por @code{@var{x}^(1/2)}.  V@'ease tambi@'en @code{rootscontract}.
 
-Si la variable @code{radexpand} vale @code{true} har@'a que las ra@'{@dotless{i}}ces @code{n}-@'esimas de los factores de un producto que sean potencias de @code{n} se extra@'{@dotless{i}}das del radical; por ejemplo, @code{sqrt(16*x^2)} se convertir@'a en @code{4*x} s@'olo si @code{radexpand} vale @code{true}.
+Si la variable @code{radexpand} vale @code{true} har@'a que las ra@'{@dotless{i}}ces @code{n}-@'esimas de los factores de un producto que sean potencias de @code{n} sean extra@'{@dotless{i}}das del radical; por ejemplo, @code{sqrt(16*x^2)} se convertir@'a en @code{4*x} s@'olo si @code{radexpand} vale @code{true}.
 
 @end deffn
 
