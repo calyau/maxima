@@ -1869,85 +1869,87 @@
 
 
 (defun legpol (a b c)
-  (prog (l v)
-     (cond ((not (hyp-negp-in-l (list a)))
-	    (print 'fail-1-in-c-1-case)
-	    (return nil)))
-     (setq l (vfvp (div (add b a) 2)))
-     (setq v (cdr (zl-assoc 'v l)))
-     ;; v is (a+b)/2
-     (cond ((and (alike1 v '((rat simp) 1 2))
-		 (alike1 c 1))
-	    ;; A&S 22.5.49:
-	    ;; P(n,x) = F(-n,n+1;1;(1-x)/2)
-	    (return (legenpol (mul -1 a)
-			      (sub 1 (mul 2 var))))))
+  ;; Why do we insist that a be a negative (numerical) integer?
+  (when (not (hyp-negp-in-l (list a)))
+    (print 'fail-1-in-c-1-case)
+    (return-from legpol nil))
+  (let* ((l (vfvp (div (add b a) 2)))
+	 (v (cdr (zl-assoc 'v l))))
+    ;; v is (a+b)/2
+    (cond
+      ((and (alike1 v '((rat simp) 1 2))
+	    (alike1 c 1))
+       ;; A&S 22.5.49:
+       ;; P(n,x) = F(-n,n+1;1;(1-x)/2)
+       (legenpol (mul -1 a)
+		 (sub 1 (mul 2 var))))
 
-     (cond ((and (alike1 c '((rat simp) 1 2))
-		 (alike1 (add b a) '((rat simp) 1 2)))
-	    ;; A&S 22.5.52
-	    ;; P(2*n,x) = (-1)^n*(2*n)!/2^(2*n)/(n!)^2*F(-n,n+1/2;1/2;x^2)
-	    ;;
-	    ;; F(-n,n+1/2;1/2;x^2) = P(2*n,x)*(-1)^n*(n!)^2/(2*n)!*2^(2*n)
-	    ;;
-	    (let ((n (mul -1 a)))
-	      (return (mul (power -1 n)
-			   (power (factorial n) 2)
-			   (inv (factorial (mul 2 n)))
-			   (power 2 (mul 2 n))
-			   (legenpol (mul 2 n)
-				     (power var (div 1 2))))))))
+      ((and (alike1 c '((rat simp) 1 2))
+	    (alike1 (add b a) '((rat simp) 1 2)))
+       ;; A&S 22.5.52
+       ;; P(2*n,x) = (-1)^n*(2*n)!/2^(2*n)/(n!)^2*F(-n,n+1/2;1/2;x^2)
+       ;;
+       ;; F(-n,n+1/2;1/2;x^2) = P(2*n,x)*(-1)^n*(n!)^2/(2*n)!*2^(2*n)
+       ;;
+       (let ((n (mul -1 a)))
+	 (mul (power -1 n)
+	      (power (factorial n) 2)
+	      (inv (factorial (mul 2 n)))
+	      (power 2 (mul 2 n))
+	      (legenpol (mul 2 n)
+			(power var (div 1 2))))))
 
-     (cond ((and (alike1 c '((rat simp) 3 2))
-		 (alike1 (add b a) '((rat simp) 3 2)))
-	    ;; A&S 22.5.53
-	    ;; P(2*n+1,x) = (-1)^n*(2*n+1)!/2^(2*n)/(n!)^2*F(-n,n+3/2;3/2;x^2)*x
-	    ;;
-	    ;; F(-n,n+3/2;3/2;x^2) = P(2*n+1,x)*(-1)^n*(n!)^2/(2*n+1)!*2^(2*n)/x
-	    ;;
-	    (let ((n (mul -1 a)))
-	      (return (mul (power -1 n)
-			   (power (factorial n) 2)
-			   (inv (factorial (add 1 (mul 2 n))))
-			   (power 2 (mul 2 n))
-			   (legenpol (add 1 (mul 2 n))
-				     (power var (div 1 2)))
-			   (inv (power var (div 1 2))))))))
+      ((and (alike1 c '((rat simp) 3 2))
+	    (alike1 (add b a) '((rat simp) 3 2)))
+       ;; A&S 22.5.53
+       ;; P(2*n+1,x) = (-1)^n*(2*n+1)!/2^(2*n)/(n!)^2*F(-n,n+3/2;3/2;x^2)*x
+       ;;
+       ;; F(-n,n+3/2;3/2;x^2) = P(2*n+1,x)*(-1)^n*(n!)^2/(2*n+1)!*2^(2*n)/x
+       ;;
+       (let ((n (mul -1 a)))
+	 (mul (power -1 n)
+	      (power (factorial n) 2)
+	      (inv (factorial (add 1 (mul 2 n))))
+	      (power 2 (mul 2 n))
+	      (legenpol (add 1 (mul 2 n))
+			(power var (div 1 2)))
+	      (inv (power var (div 1 2))))))
      
-     (cond ((and (zerp (sub b a))
-		 (zerp (sub c (add a b))))
-	    ;; A&S 22.5.50
-	    ;; P(n,x) = binomial(2*n,n)*((x-1)/2)^n*F(-n,-n;-2*n;2/(1-x))
-	    ;;
-	    ;; F(-n,-n;-2*n;x) = P(n,1-2/x)/binomial(2*n,n)(-1/x)^(-n)
-	    (return (mul (power (factorial (mul -1 a)) 2)
-			 (inv (factorial (mul -2 a)))
-			 (power (mul -1 var) (mul -1 a))
-			 (legenpol (mul -1 a)
-				   (add 1 (div -2 var)))))))
-     (cond ((and (alike1 (sub a b) '((rat simp) 1 2))
-		 (alike1 (sub c (mul 2 b)) '((rat simp) 1 2)))
-	    ;; A&S 22.5.51
-	    ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
-	    ;;
-	    ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
-	    (return (mul (power (factorial (mul -2 b)) 2)
-			 (inv (factorial (mul -4 b)))
-			 (power (mul 2 (power var (div 1 2))) (mul -2 b))
-			 (legenpol (mul -2 b)
-				   (power var (div -1 2)))))))
-     (cond ((and (alike1 (sub b a) '((rat simp) 1 2))
-		 (alike1 (sub c (mul 2 a)) '((rat simp) 1 2)))
-	    ;; A&S 22.5.51
-	    ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
-	    ;;
-	    ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
-	    (return (mul (power (factorial (mul -2 a)) 2)
-			 (inv (factorial (mul -4 a)))
-			 (power (mul 2 (power var (div 1 2))) (mul -2 a))
-			 (legenpol (mul -2 a)
-				   (power var (div -1 2)))))))
-     (return nil)))
+      ((and (zerp (sub b a))
+	    (zerp (sub c (add a b))))
+       ;; A&S 22.5.50
+       ;; P(n,x) = binomial(2*n,n)*((x-1)/2)^n*F(-n,-n;-2*n;2/(1-x))
+       ;;
+       ;; F(-n,-n;-2*n;x) = P(n,1-2/x)/binomial(2*n,n)(-1/x)^(-n)
+       (mul (power (factorial (mul -1 a)) 2)
+	    (inv (factorial (mul -2 a)))
+	    (power (mul -1 var) (mul -1 a))
+	    (legenpol (mul -1 a)
+		      (add 1 (div -2 var)))))
+      ((and (alike1 (sub a b) '((rat simp) 1 2))
+	    (alike1 (sub c (mul 2 b)) '((rat simp) 1 2)))
+       ;; A&S 22.5.51
+       ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
+       ;;
+       ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
+       (mul (power (factorial (mul -2 b)) 2)
+	    (inv (factorial (mul -4 b)))
+	    (power (mul 2 (power var (div 1 2))) (mul -2 b))
+	    (legenpol (mul -2 b)
+		      (power var (div -1 2)))))
+      ((and (alike1 (sub b a) '((rat simp) 1 2))
+	    (alike1 (sub c (mul 2 a)) '((rat simp) 1 2)))
+       ;; A&S 22.5.51
+       ;; P(n,x) = binomial(2*n,n)*(x/2)^n*F(-n/2,(1-n)/2;1/2-n;1/x^2)
+       ;;
+       ;; F(-n/2,(1-n)/2;1/2-n,1/x^2) = P(n,x)/binomial(2*n,n)*(x/2)^(-n)
+       (mul (power (factorial (mul -2 a)) 2)
+	    (inv (factorial (mul -4 a)))
+	    (power (mul 2 (power var (div 1 2))) (mul -2 a))
+	    (legenpol (mul -2 a)
+		      (power var (div -1 2)))))
+      (t 
+       nil))))
 
 
 
