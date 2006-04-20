@@ -282,7 +282,6 @@ binary-cmucl/maxima.core : pois2.lisp
 binary-cmucl/maxima.core : pois3.lisp
 binary-cmucl/maxima.core : desoln.lisp
 binary-cmucl/maxima.core : elim.lisp
-binary-cmucl/maxima.core : trgsmp.lisp
 binary-cmucl/maxima.core : ode2.lisp
 binary-cmucl/maxima.core : invert.lisp
 binary-cmucl/maxima.core : hypgeo.lisp
