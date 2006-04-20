@@ -386,6 +386,23 @@
 	((eq (caar e) '%at) (diff-%at e x))
 	((memq (caar e) '(%realpart %imagpart))
 	 (list (cons (caar e) nil) (sdiff (cadr e) x)))
+	((and (eq (caar e) 'mqapply)
+	      (eq (caaadr e) '$%f))
+	 ;; Handle %f, hypergeometric function
+	 ;;
+	 ;; The derivative of %f[p,q]([a1,...,ap],[b1,...,bq],z) is
+	 ;;
+	 ;; a1*a2*...*ap/(b1*b2*...*bq)
+	 ;;   *%f[p,q]([a1+1,a2+1,...,ap+1],[b1+1,b2+1,...,bq+1],z)
+	 (let* ((arg1 (cdr (third e)))
+		(arg2 (cdr (fourth e)))
+		(v (fifth e)))
+	   (mul (sdiff v x)
+		(div (mull arg1) (mull arg2))
+		`((mqapply) (($%f array) ,(length arg1) ,(length arg2))
+		  ((mlist) ,@(incr1 arg1))
+		  ((mlist) ,@(incr1 arg2))
+		  ,v))))
 	(t (sdiffgrad e x))))
 
 (defun sdiffgrad (e x)
