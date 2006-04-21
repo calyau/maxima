@@ -20,7 +20,7 @@
 /* Author(s)    : Eckhard Hennig, Ralf Sommer                                 */
 /* Project start: 17.01.1995                                                  */
 /* Completed    : 17.01.1995                                                  */
-/* Last change  : 17.08.1995                                                  */
+/* last change  : 17.08.1995                                                  */
 /* Time         : 15:38                                                       */
 /******************************************************************************/
 /* Changes      : ||||| |                                                     */
@@ -31,42 +31,42 @@ put( 'SLVRTBOX, 1, 'Version )$
 /* Version information: see below function definition of SetVersion */
 
 /******************************************************************************/
-/* Last change: 17.08.1995                                                    */
+/* last change: 17.08.1995                                                    */
 /* Time       : 15:38                                                         */
 /* By         : Eckhard Hennig                                                */
 /* Description: Function Position now accepts non list arguments              */
 /******************************************************************************/
-/* Last change: 28.06.1995                                                    */
+/* last change: 28.06.1995                                                    */
 /* Time       : 13:53                                                         */
 /* By         : Eckhard Hennig                                                */
 /* Description: Function SortSolveOrder added.                                */
 /******************************************************************************/
-/* Last change: 28.05.1995                                                    */
+/* last change: 28.05.1995                                                    */
 /* Time       : 12:06                                                         */
 /* By         : Eckhard Hennig                                                */
 /* Description: Default function for Solver_Break_Test added.                 */
 /******************************************************************************/
-/* Last change: 13.02.1995                                                    */
+/* last change: 13.02.1995                                                    */
 /* Time       : 09.19                                                         */
 /* By         : Eckhard Hennig                                                */
 /* Description: Initial value of MsgLvl set to 0.                             */
 /******************************************************************************/
-/* Last change: 31.01.1995                                                    */
+/* last change: 31.01.1995                                                    */
 /* Time       : 10.06                                                         */
 /* By         : Eckhard Hennig                                                */
-/* Description: Problem with Solver_Verbose:FALSE fixed.                      */
+/* Description: Problem with Solver_Verbose:false fixed.                      */
 /******************************************************************************/
-/* Last change: 24.01.1995                                                    */
+/* last change: 24.01.1995                                                    */
 /* Time       : 16.40                                                         */
 /* By         : Eckhard Hennig                                                */
 /* Description: Version property added.                                       */
 /******************************************************************************/
-/* Last change: 17.01.1995                                                    */
+/* last change: 17.01.1995                                                    */
 /* Time       : 18.20                                                         */
 /* By         : Eckhard Hennig, Ralf Sommer                                   */
 /* Description: Most functions moved from AI's TOOLBOX.MAC into SLVRTBOX.MAC  */
 /*              Variable Solver_Verbose added (linked to MsgLevel via         */
-/*              VALUE_CHECK property)                                         */
+/*              value_check property)                                         */
 /******************************************************************************/
 
 /******************************************************************************/
@@ -87,7 +87,7 @@ SetProp( Atom, Indicator, Property ) := put( Atom, Property, Indicator )$
 SetVersion( [ InfoList ] ) := (
 
   mode_declare(
-    InfoList, LIST
+    InfoList, list
   ),
 
   SetProp(
@@ -123,7 +123,7 @@ SetVersion(
 /* Global variables                                                           */
 /******************************************************************************/
 
-define_variable( MsgLvl, 0, FIXNUM )$
+define_variable( MsgLvl, 0, fixnum )$
 
 /******************************************************************************/
 /* MsgLevel controls the amount of output AI generates. If MsgLevel is        */
@@ -134,33 +134,33 @@ define_variable( MsgLvl, 0, FIXNUM )$
 /* PrintMsg( <'OFF | 'FALSE  |'SHORT | 'DETAIL | 'ALWAYS>, <stuff> ).         */
 /******************************************************************************/
 
-define_variable( MsgLevel, 'FALSE, ANY_CHECK )$
+define_variable( MsgLevel, 'FALSE, any_check )$
 
 put(
   'MsgLevel,
   lambda(
     [ x ],
-    IF member( x, [ 'OFF, 'FALSE, 'SHORT, 'DETAIL ] )
-      OR ( debugmode AND ( x = 'DEBUG ) )
-    THEN
+    if member( x, [ 'OFF, 'FALSE, 'SHORT, 'DETAIL ] )
+      or ( debugmode and ( x = 'DEBUG ) )
+    then
       MsgLvl : mode_identity(
-        FIXNUM,
+        fixnum,
         assoc(
           x,
           [
-            'OFF = 0, 'FALSE = 0, FALSE = 0,
+            'OFF = 0, 'FALSE = 0, false = 0,
             'SHORT = 1, 'DETAIL = 2, 'DEBUG = 10
           ]
         )
       )
-    ELSE
+    else
       ErrorHandler( "InvMsgLvl", x, 'Fatal )
   ),
-  'VALUE_CHECK
+  'value_check
 )$
 
 
-define_variable( Solver_Verbose, FALSE, ANY_CHECK )$
+define_variable( Solver_Verbose, false, any_check )$
 
 put(
   'Solver_Verbose,
@@ -175,7 +175,7 @@ put(
       [ OTHERWISE, ErrorHandler( "InvVerbMode", VerboseMode, 'Fatal ) ]
     )
   ),
-  'VALUE_CHECK
+  'value_check
 )$
 
 
@@ -197,7 +197,7 @@ GetUserProperties( Symbol ) := (
       User_Props, list
     ),
 
-    /* Get all properties of Symbol and extract the sublist which begins      */
+    /* get all properties of Symbol and extract the sublist which begins      */
     /* with the keyword "User Properties".                                    */
 
     UserProps : sublist(
@@ -290,7 +290,7 @@ Fatal( Arg ) := error( ErrMsg["FatalErr"] )$
 /******************************************************************************/
 
 AssocP( Object ) :=
-  listp( Object ) and not member( 'FALSE, map( 'EquationP, Object ) )$
+  listp( Object ) and not member( 'false, map( 'EquationP, Object ) )$
 
 
 /******************************************************************************/
@@ -465,7 +465,7 @@ Flatten( Lst ) := (
 /******************************************************************************/
 
 ListMatrix( Mat ) :=
-  if MatrixP( Mat ) then
+  if matrixp( Mat ) then
     substpart( "[", copymatrix(Mat), 0 )
   else
     false$
@@ -511,7 +511,7 @@ Position( Element, Lst ) := (
 
 /******************************************************************************/
 /* SolverJustDoIt is the default Solver_Break_Test function. It simply returns*/
-/* FALSE, hence the Solver never stops.                                       */
+/* false, hence the Solver never stops.                                       */
 /******************************************************************************/
 
 SolverJustDoIt( Eq, Var, Val ) := false$
@@ -526,4 +526,3 @@ SortSolveOrder( SlvOrd ) :=
     SlvOrd,
     lambda( [a, b], third( a ) < third( b ) )
   )$
-

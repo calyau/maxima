@@ -19,18 +19,57 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 Dan Stanger dan.stanger@ieee.org
 please contact me for updates to this code
 */
+
 /******************************************************************************/
 /* Powers creates a list of low powers in a variable                          */
 /******************************************************************************/
-Powers(e,v):=maplist(
-   lambda([p],lopow(p,v)), e)$
+
+Powers(e,v) :=
+  if atom(e) then [lopow(e,v)]
+  else if part(e,0)="+" or part(e, 0)="-" then
+    maplist(lambda([p],lopow(p,v)), e)
+  else
+    [lopow(e,v)]$
+
 /******************************************************************************/
 /* pop pops the first element off a list and returns it                       */
 /******************************************************************************/
-Pop( l) ::= buildq([l],block([t:first(l)],l:rest(l),t))$
+
+Pop(l) ::= buildq([l],block([t:first(l)],l:rest(l),t))$
+
 /******************************************************************************/
 /* Set_Element modifies lists or matrixes and returns the list or matrix      */
 /******************************************************************************/
-Set_Element(o,i,j, [l]):=if matrixp(o) then block(
-   if l # [] then (o[i,j]:first(l),o) else (o[i]:j,o))
-else (o[i]:j,o)$
+
+Set_Element(o,i,j, [l]):=
+  if matrixp(o) then (
+    if l # [] then (
+      o[i,j]:first(l),
+      o
+    )
+    else (
+      o[i]:j,
+      o
+    )
+  )
+  else (
+    o[i]:j,
+    o
+  )$
+
+EquationP(eq) := part(eq,0)="="$
+
+/******************************************************************************/
+/* Solver does not know maxima sets - workarounds for set functions.          */
+/******************************************************************************/
+
+Setify(lst) := listify(setify(lst))$
+
+DisjointP(l1, l2) := disjointp(setify(l1), setify(l2))$
+
+Intersection(l1, l2) := listify(intersection(setify(l1), setify(l2)))$
+
+SetDifference(l1, l2) := listify(setdifference(setify(l1), setify(l2)))$
+
+Union([l]) := listify(lreduce(union, map(setify, l)))$
+
