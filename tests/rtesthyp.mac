@@ -938,8 +938,8 @@ ratsimp(hgfred([a,a+1/2],[3/2],z)
 hgfred([a,-a],[1/2],zp);
 cos(2*a*asin(sqrt(zp)));
 
-hgfred([a,1-a],[1/2],z);
-cos((2*a-1)*asin(sqrt(z)))/sqrt(1-z);
+hgfred([a,1-a],[1/2],zp);
+cos((2*a-1)*asin(sqrt(zp)))/sqrt(1-zp);
 
 hgfred([a,1-a],[1],x1);
 legendre_p(a-1,1-2*x1);
@@ -958,41 +958,37 @@ sin((2-2*a)*asin(sqrt(z)))/((2-2*a)*sqrt(1-z)*sqrt(z));
  * http://functions.wolfram.com/HypergeometricFunctions/Hypergeometric3F2/03/08/05/
  */
 
-/* Maxima gets this wrong */
-factor(hgfred([-1/2,1/2,2],[1,3/2],z));
-(3*sqrt(1-z)*sqrt(z)+asin(sqrt(z)))/(4*sqrt(z));
+factor(hgfred([-1/2,1/2,2],[1,3/2],zp));
+(3*sqrt(1-zp)*sqrt(zp)+asin(sqrt(zp)))/(4*sqrt(zp));
 
-ratsimp(factor(hgfred([-1/2,1/2,2],[1,5/2],z))-
-3*(sqrt(1-z)*sqrt(z)*(6*z-1)+(4*z+1)*asin(sqrt(z)))/(32*z^(3/2)));
+ratsimp(factor(hgfred([-1/2,1/2,2],[1,5/2],zp))-
+3*(sqrt(1-zp)*sqrt(zp)*(6*zp-1)+(4*zp+1)*asin(sqrt(zp)))/(32*zp^(3/2)));
 0;
 
 /*
  * http://functions.wolfram.com/HypergeometricFunctions/Hypergeometric3F2/03/08/06/
  */
 
-factor(hgfred([-1/2,1/2,5/2],[3/2,3/2],z));
-(2*sqrt(1-z)*sqrt(z)+asin(sqrt(z)))/(3*sqrt(z));
+factor(hgfred([-1/2,1/2,5/2],[3/2,3/2],zp));
+(2*sqrt(1-zp)*sqrt(zp)+asin(sqrt(zp)))/(3*sqrt(zp));
 
 /*
  * http://functions.wolfram.com/HypergeometricFunctions/Hypergeometric3F2/03/08/07/
  */
 
-ratsimp(factor(hgfred([-1/2,1/2,3],[1,3/2],z))
--(sqrt(z)*(13-15*z)+3*sqrt(1-z)*asin(sqrt(z)))/(16*sqrt(z)*sqrt(1-z)));
+ratsimp(factor(hgfred([-1/2,1/2,3],[1,3/2],zp))
+-(sqrt(zp)*(13-15*zp)+3*sqrt(1-zp)*asin(sqrt(zp)))/(16*sqrt(zp)*sqrt(1-zp)));
 0;
 
-/* Maxima gets this wrong */
-/*
-ratsimp(factor(hgfred([-1/2,1/2,3],[1,5/2],z))
--3*(sqrt(1-z)*sqrt(z)*(30*z-1)+3*(12*z+1)*asin(sqrt(z)))/(128*z^(3/2)));
+ratsimp(factor(hgfred([-1/2,1/2,3],[1,5/2],zp))
+-(3*sqrt(1-zp)*sqrt(zp)*(30*zp-1)+3*(12*zp+1)*asin(sqrt(zp)))/(128*zp^(3/2)));
 0;
-*/
 
-factor(hgfred([-1/2,1/2,3],[3/2,2],z));
-(5*sqrt(1-z)*sqrt(z)+3*asin(sqrt(z)))/(8*sqrt(z));
+factor(hgfred([-1/2,1/2,3],[3/2,2],zp));
+(5*sqrt(1-zp)*sqrt(zp)+3*asin(sqrt(zp)))/(8*sqrt(zp));
 
-ratsimp(factor(hgfred([-1/2,1/2,3],[5/2,2],z))
--3*(sqrt(1-z)*sqrt(z)*(10*z+1)+(12*z-1)*asin(sqrt(z)))/(64*z^(3/2)));
+ratsimp(factor(hgfred([-1/2,1/2,3],[5/2,2],zp))
+-3*(sqrt(1-zp)*sqrt(zp)*(10*zp+1)+(12*zp-1)*asin(sqrt(zp)))/(64*zp^(3/2)));
 0;
 
 /*
@@ -1035,8 +1031,8 @@ ratsimp(factor(hgfred([-1/2,3/2,3/2],[1/2,1/2],z))
 -(4*z^2-6*z+1)/(1-z)^(3/2));
 0;
 
-ratsimp(factor(hgfred([-1/2,3/2,3/2],[1/2,5/2],z))
--3*(sqrt(z)*(-2*z^2+z+1)-sqrt(1-z)*asin(sqrt(z)))/(4*sqrt(1-z)*z^(3/2)));
+ratsimp(factor(hgfred([-1/2,3/2,3/2],[1/2,5/2],zp))
+-3*(sqrt(zp)*(-2*zp^2+zp+1)-sqrt(1-zp)*asin(sqrt(zp)))/(4*sqrt(1-zp)*zp^(3/2)));
 0;
 
 /*
@@ -1050,8 +1046,8 @@ ratsimp(factor(hgfred([-1/2,3/2,2],[1/2,3],z))
 -4*((2*z^2+z+2)*sqrt(1-z)-2)/(5*z^2));
 0;
 
-ratsimp(factor(hgfred([-1/2,3/2,2],[1,5/2],z))
--3*(sqrt(z)*sqrt(1-z)*(6*z+1)-asin(sqrt(z)))/(16*z^(3/2)));
+ratsimp(factor(hgfred([-1/2,3/2,2],[1,5/2],zp))
+-3*(sqrt(zp)*sqrt(1-zp)*(6*zp+1)-asin(sqrt(zp)))/(16*zp^(3/2)));
 0;
 
 /*
