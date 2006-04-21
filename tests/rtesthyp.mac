@@ -924,18 +924,19 @@ ratsimp(hgfred([a,a/2+1],[a/2],z)
 hgfred([a,a+1/2],[2*a],z);
 2^(2*a-1)*(sqrt(1-z)+1)^(1-2*a)/sqrt(1-z);
 
+
 hgfred([a,a+1/2],[2*a+1],z);
 2^(2*a)*(sqrt(1-z)+1)^(-2*a);
 
-hgfred([a,a+1/2],[1/2],z);
-((1+sqrt(z))^(-2*a)+(1-sqrt(z))^(-2*a))/2;
+hgfred([a,a+1/2],[1/2],zp);
+((1+sqrt(zp))^(-2*a)+(1-sqrt(zp))^(-2*a))/2;
 
 ratsimp(hgfred([a,a+1/2],[3/2],z)
               -((1-sqrt(z))^(1-2*a)-(sqrt(z)+1)^(1-2*a))/(2*(2*a-1)*sqrt(z)));  
 0;
 
-hgfred([a,-a],[1/2],z);
-cos(2*a*asin(sqrt(z)));
+hgfred([a,-a],[1/2],zp);
+cos(2*a*asin(sqrt(zp)));
 
 hgfred([a,1-a],[1/2],z);
 cos((2*a-1)*asin(sqrt(z)))/sqrt(1-z);
