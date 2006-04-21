@@ -374,6 +374,8 @@ contrib/simplex/Tests/share2b_c.csv\
 contrib/simplex/Tests/share2b_b.csv\
 contrib/simplex/Tests/share2b_A.csv\
 contrib/simplex/Readme.txt\
+contrib/solve_rec/closed_form.mac\
+contrib/solve_rec/closed_form_test.mac\
 contrib/solve_rec/solve_rec.mac\
 contrib/solve_rec/solve_rec.dem\
 contrib/state/matrix2.mac\
