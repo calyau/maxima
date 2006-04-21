@@ -71,9 +71,21 @@
 			 "set size 1.5, 1.5;set term postscript eps enhanced color solid 24")
 			((mlist) $logx nil)
 			((mlist) $logy nil)
+			((mlist) $plot_realpart nil)
 			))
 
 (defvar $viewps_command  "(ghostview \"~a\")")
+
+;; $plot_realpart option is false by default but *plot-realpart* is true because coerce-float-fun
+;; is used outside of plot package too.
+(defvar *plot-realpart* t)
+
+(defun maybe-realpart (x)
+  (if *plot-realpart*
+      ($realpart x)
+      (if (eq 0 ($imagpart x))
+	  x
+	  nil)))
 
 ;;(defvar $viewps_command  "(gs -I. -Q  ~a)")
 
@@ -86,7 +98,6 @@
 ;;(defvar $viewps_command   "echo '/showpage { .copypage readmouseclick /ke exch def ke 1 eq { erasepage initgraphics} {ke 5 ne {quit} if} ifelse} def  {(~a) run } loop' | gs  -title 'Maxima  (click left to exit,middle to redraw)' > /dev/null 2>/dev/null &")
 
 ;; allow this to be set in a system init file (sys-init.lsp)
-
 
 (defun $get_plot_option (name &optional n)
   (loop for v in (cdr $plot_options)
@@ -153,6 +164,7 @@
 	  ($adapt_depth (check-list-items name (cddr value) 'fixnum 1))
 	  ($logx value)
 	  ($logy value)
+	  ($plot_realpart value)
 	  (t
 	   (merror "Unknown plot option specified:  ~M" name))))
   (loop for v on (cdr $plot_options)
@@ -535,7 +547,7 @@ setrgbcolor} def
 		  (coerce `(lambda ,(cdr args)
 			    (declare (special ,@(cdr args)))
 			    (let* (($ratprint nil) ($numer t)
-				   (result ($realpart (meval* ',(nth 2 mexpr)))))
+				   (result (maybe-realpart (meval* ',(nth 2 mexpr)))))
 			      (if ($numberp result)
 				  ($float result)
 				  nil)))
@@ -569,7 +581,7 @@ setrgbcolor} def
 		  (coerce `(lambda ,(cdr args)
 			    (declare (special ,@(cdr args)))
 			    (let* (($ratprint nil) ($numer t)
-				   (result ($realpart (meval* ',(nth 2 expr)))))
+				   (result (maybe-realpart (meval* ',(nth 2 mexpr)))))
 			      (if ($numberp result)
 				  ($float result)
 				  nil)))
@@ -594,12 +606,12 @@ setrgbcolor} def
 			      #-gcl
 			       (handler-case 
 				   (catch 'errorsw
-				     ($float ($realpart (meval* ',expr))))
+				     ($float (maybe-realpart (meval* ',expr))))
 				 (arithmetic-error () t))
 			       #+gcl
 			       (handler-case 
 				   (catch 'errorsw
-				     ($float ($realpart (meval* ',expr))))
+				     ($float (maybe-realpart (meval* ',expr))))
 				 (cl::error () t))
 			       ))
 			 result)))
@@ -919,6 +931,16 @@ setrgbcolor} def
 		 b f-b
 		 b1 f-b1
 		 c f-c))
+	  ;; We are not plotting the real part of the function and the
+	  ;; function is undefined at all points - assume it has complex value
+	  ;; on [a,b]. Maybe we should refine it a couple of times just to make sure?
+	  ((and (null *plot-realpart*)
+		(null f-a) (null f-a1) (null f-b) (null f-b1) (null f-c))
+	   (list a f-a
+		 a1 f-a1
+		 b f-b
+		 b1 f-b1
+		 c f-c))
 	  (t
 	   ;; Need to refine.  Split the interval in half, and try to plot each half.  
 	   (let ((left (adaptive-plot fcn a a1 b f-a f-a1 f-b (1- depth) (* 2 eps)))
@@ -1168,12 +1190,14 @@ setrgbcolor} def
 (defun $plot2d (fun &optional range &rest options)
   (let (($numer t)
 	($display2d nil)
+	(*plot-realpart* *plot-realpart*)
 	(i 0)
 	($plot_options $plot_options)
 	plot-format gnuplot-term gnuplot-out-file file plot-name)
     (dolist (v options)
       ($set_plot_option v))
   
+    (setq *plot-realpart* ($get_plot_option '$plot_realpart 2))
     (when (and (consp fun) (eq (cadr fun) '$parametric))
       (or range (setq range (nth 4 fun)))
       (setf fun `((mlist) ,fun)))
