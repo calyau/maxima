@@ -56,7 +56,7 @@
 		   ((memq p boundlist)
 		    (emit (list 'cond
 				(list (list 'not (list 'equal e p))
-				      '((matcherr))))))
+				      '(matcherr)))))
 		   (t (setq boundlist (cons p boundlist)) (emit d))))))
 
 (defun emit (x) (setq program (nconc program (list x))))
@@ -194,7 +194,7 @@
 	       (setq boundlist (cons (caaar p) boundlist))
 	       (emit (list 'msetq
 			   (caaar p)
-			   (list 'kar (list 'kar (genref)))))
+			   (list 'kaar (genref))))
 	       (go functionmatch))
 	      (t (go functionmatch)))
    (go a)
@@ -291,7 +291,7 @@
 	       (setq boundlist (cons (caaar p) boundlist))
 	       (emit (list 'msetq
 			   (caaar p)
-			   (list 'kar (list 'kar (genref)))))
+			   (list 'kaar (genref))))
 	       (go functionmatch))
 	      (t (go functionmatch)))
    (go a)
@@ -609,6 +609,10 @@
 ; match-against is the expression to match against
 
 ; CALL $MAYBE INSTEAD OF IS IN THIS STUFF -- IS BINDS $PREDERROR TO T, WE REALLY DON'T WANT THAT
+; ACTUALLY ON SECOND THOUGHT WE DON'T WANT $MAYBE EITHER SINCE IT CAN
+; RETURN A NON-NIL VALUE WHICH IS NOT T (NAMELY $UNKNOWN).
+; HOW ABOUT CALLING DEFINITELY-SO WHERE
+; (DEFUN DEFINITELY-SO (E) (EQ ($MAYBE E) T))
 (defun getdec (pattern-variable match-against)
   (let (p)
     (if (setq p (mget pattern-variable 'matchdeclare))
@@ -689,8 +693,7 @@
 			(cadr reflist)
 			(list 'kdr (cadr reflist))))
 	    (compilematch (cadr reflist) (caddr p)))
-	   (t (compileatom (list 'kar
-				 (list 'kar e))
+	   (t (compileatom (list 'kaar e)
 			   (caar p))
 	      (emit (list 'setq
 			  (genref)

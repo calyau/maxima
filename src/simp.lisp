@@ -2349,6 +2349,8 @@
 
 (defmfun kar (x) (if (atom x) (matcherr) (car x)))
 
+(defmfun kaar (x) (kar (kar x)))
+
 (defmfun kdr (x) (if (atom x) (matcherr) (cdr x)))
 
 (defmfun simpargs1 (a vestigial c)
