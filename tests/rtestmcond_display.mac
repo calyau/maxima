@@ -159,7 +159,7 @@ string (eta(mu,nu):=if mu = nu then mu
      else (if mu > nu then mu-nu else nu+mu)" ; 
 
 string ('(if not 5 >= 2 and 6 <= 5 or 5 > 3 then a else b)); 
-"if not 5 >= 2 and 6 <= 5 or 5 > 3 then a else b" ; 
+"if 5 < 2 and 6 <= 5 or 5 > 3 then a else b" ; 
 
 string ('(for i thru 10 do
       (guess:subst(guess,x,0.5*(x+10/x)),
@@ -181,9 +181,9 @@ string (newton(f,guess):=block([numer,y],local(f,df,x,guess),numer:true,
 	   guess:guess-f(guess)/y,
 	   if abs(f(guess)) < 5.0E-6 then return(guess)))" ; 
 
-string ('(extremal_subset(set(2*sqrt(7),1.4B0,a,b+a),
+string ('(extremal_subset(set(2*sqrt(7),1.4b0,a,b+a),
 		  lambda([x],if atom(x) then 0 else 1),max))); 
-"extremal_subset(set(2*sqrt(7),1.4B0,a,b+a),
+"extremal_subset({2*sqrt(7),1.4b0,a,b+a},
 		lambda([x],if atom(x) then 0 else 1),max)" ; 
 
 string (rprimep(i,j):=block([],
@@ -195,14 +195,14 @@ string (rprimep(i,j):=block([],
 	    then (if gcd(i,j) > 1 then 0 else 1)
 	    else funmake(rprimep,[i,j]))" ; 
 
-string ('(extremal_subset(set(2*sqrt(7),1.4B0,a,b+a),
+string ('(extremal_subset(set(2*sqrt(7),1.4b0,a,b+a),
 		  lambda([x],
 			 if foo(x)
 			     then (if atom(x) then 0
 				       else 1)! abc! xyz!
 			     else (if bar(x) then glob
 				       else blurf)),max))); 
-"extremal_subset(set(2*sqrt(7),1.4B0,a,b+a),
+"extremal_subset({2*sqrt(7),1.4b0,a,b+a},
 		lambda([x],
 		       if foo(x)
 			   then (if atom(x) then 0
