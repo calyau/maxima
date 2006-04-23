@@ -157,7 +157,7 @@
       (t '$unknown))))
 
 (defmfun $maybe (pat)
-  (multiple-value-bind (ans patevalled) (mevalp1 pat)
+  (multiple-value-bind (ans patevalled) (let (($prederror nil)) (mevalp1 pat))
     (cond
       ((memq ans '(t nil)) ans)
       (t '$unknown))))
@@ -338,6 +338,7 @@
   (setq a (maybe-simplifya (car l) z))
   (cond
     ((null a) (return nil))
+    ((eq a '$unknown) (if (not (memq '$unknown simplified)) (push a simplified)))
     ((not (memq a '(t nil))) (push a simplified)))))
 
 (defun simp-mor (x y z)
@@ -351,6 +352,7 @@
   (setq a (maybe-simplifya (car l) z))
   (cond
     ((eq a t) (return t))
+    ((eq a '$unknown) (if (not (memq '$unknown simplified)) (push a simplified)))
     ((not (memq a '(t nil))) (push a simplified)))))
 
 ; ALSO CUT STUFF ABOUT NOT EQUAL => NOTEQUAL AT TOP OF ASSUME
@@ -364,6 +366,8 @@
          nil)
         ((or (eq arg nil) (eq arg '$false))
          t)
+        ((eq arg '$unknown)
+         '$unknown)
         (t `((mnot simp) ,arg)))
       (let ((arg-op (caar arg)) (arg-arg (cdr arg)))
         (setq arg-arg (mapcar #'(lambda (a) (maybe-simplifya a z)) arg-arg))
@@ -400,4 +404,129 @@
     (let ((result (funcall save-intext rel body)))
       (if result result `((,rel) ,@body)))))
 
+
+; $SOME / $EVERY REDEFINED FROM SRC/NSET.LISP
+
+#|
+(defun $every (f &rest x)
+  (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) t)
+   
+ ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
+  (setq x (margs (simplify (apply #'map1 (cons f x)))))
+  ; ACTUALLY WE REALLY REALLY WANT TO POSTPONE EVALUATING THE PREDICATE HERE
+  (setq x (mapcar #'car (mapcar #'(lambda (s) (ignore-errors-mfuncall '$maybe s)) x)))
+  ; IF MAND RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $EVERY
+  (let ((a (simplifya `((mand) ,@x) t)))
+    ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $EVERY NOW)
+    (if (or (eq a t) (eq a '$unknown)) a nil)))
+   
+ ((every '$matrixp x)
+  (let ((fmaplvl 2))
+    (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
+    (setq x (mapcar #'(lambda (s) ($every '$identity s)) x))
+    ; IF MAND RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $EVERY
+    (let ((a (simplifya `((mand) ,@x) t)))
+      ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $EVERY NOW)
+      (if (or (eq a t) (eq a '$unknown)) a nil))))
+ 
+ (t (merror "Improper arguments to function 'every'"))))
+
+(defun $some (f &rest x)
+  (cond ((or (null x) (and (null (cdr x)) ($emptyp (first x)))) nil)
+
+ ((or ($listp (first x)) (and ($setp (first x)) (null (cdr x))))
+  (setq x (margs (simplify (apply #'map1 (cons f x)))))
+  ; ACTUALLY WE REALLY REALLY WANT TO POSTPONE EVALUATING THE PREDICATE HERE
+  (setq x (mapcar #'car (mapcar #'(lambda (s) (ignore-errors-mfuncall '$maybe s)) x)))
+  ; IF MOR RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $SOME
+  (let ((a (simplifya `((mor) ,@x) t)))
+    ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $SOME NOW)
+    (if (or (eq a t) (eq a '$unknown)) a nil)))
+
+ ((every '$matrixp x)
+  (let ((fmaplvl 2))
+    (setq x (margs (simplify (apply #'fmapl1 (cons f x)))))
+    (setq x (mapcar #'(lambda (s) ($some '$identity s)) x))
+    ; IF MOR RETURNS AN UNEVALUATED EXPRESSION HERE, RETURN AN UNEVALUATED EXPR WITH OP = $SOME
+    (let ((a (simplifya `((mor) ,@x) t)))
+      ; FOR NOW ASSUME NIL IF ANYTHING BUT T OR $UNKNOWN (DON'T CHANGE $SOME NOW)
+      (if (or (eq a t) (eq a '$unknown)) a nil))))
+
+
+ (t (merror "Improper arguments to function 'some'"))))
+|#
+
 ; DON'T FORGET TO KILL OFF (DEFVAR PATEVALLED), IS-MNOT, IS-MAND, IS-MOR, AND TRANSLATION STUFF !!
+
+; HEY SPEAKING OF WHICH HERE IS THE TRANSLATION STUFF FROM ACALL.LISP
+
+; LOOKS LIKE SOME OF THIS STUFF NEED NOT BE REVISED
+; JUST COMMENT OUT IN CASE I CHANGE MY MIND
+
+#|
+(defmfun is-boole-check (form)
+  (cond ((null form) nil)
+	((eq form t) t)
+	('else
+	 ;; We check for T and NIL quickly, otherwise go for the database.
+	 (mevalp_tr form $prederror nil))))
+
+(defmfun maybe-boole-check (form)
+  (mevalp_tr form nil nil))
+
+;; The following entry point is for querying the database without
+;; the dubious side effects of using PREDERROR:FALSE.
+
+(defmspec $maybe (form) (mevalp_tr (fexprcheck form) nil t))
+
+(declare-top(special patevalled))
+|#
+
+(defun mevalp_tr (pat error? meval?)
+  (let (patevalled ans)
+    (setq ans (mevalp1_tr pat error? meval?))
+    (cond ((memq ans '(t nil)) ans)
+	  (error?
+	   (pre-err patevalled))
+	  ('else '$unknown))))
+
+(defun mevalp1_tr (pat error? meval?)
+  (cond ((and (not (atom pat)) (memq (caar pat) '(mnot mand mor)))
+	 (cond ((eq 'mnot (caar pat)) (is-mnot_tr (cadr pat) error? meval?))
+	       ((eq 'mand (caar pat)) (is-mand_tr (cdr pat) error? meval?))
+	       (t (is-mor_tr (cdr pat) error? meval?))))
+	((atom (setq patevalled (if meval? (meval pat) pat))) patevalled)
+	((memq (caar patevalled) '(mnot mand mor)) (mevalp1_tr patevalled
+							       error?
+							       meval?))
+	(t (mevalp2 patevalled (caar patevalled) (cadr patevalled) (caddr patevalled)))))
+
+(defun is-mnot_tr (pred error? meval?)
+  (setq pred (mevalp_tr pred error? meval?))
+  (cond ((eq t pred) nil)
+	((not pred))
+	(t (pred-reverse pred))))
+
+(defun is-mand_tr (pl error? meval?)
+  (do ((dummy) (npl))
+      ((null pl) (cond ((null npl))
+		       ((null (cdr npl)) (car npl))
+		       (t (cons '(mand) (nreverse npl)))))
+    (setq dummy (mevalp_tr (car pl) error? meval?)
+	  pl (cdr pl))
+    (cond ((eq t dummy))
+	  ((null dummy) (return nil))
+	  (t (setq npl (cons dummy npl))))))
+
+(defun is-mor_tr (pl error? meval?)
+  (do ((dummy) (npl))
+      ((null pl) (cond ((null npl) nil)
+		       ((null (cdr npl)) (car npl))
+		       (t (cons '(mor) (nreverse npl)))))
+    (setq dummy (mevalp_tr (car pl) error? meval?)
+	  pl (cdr pl))
+    (cond ((eq t dummy) (return t))
+	  ((null dummy))
+	  (t (setq npl (cons dummy npl))))))
+
+
