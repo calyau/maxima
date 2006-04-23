@@ -869,6 +869,30 @@
 		     (when $trace2f1
 		       (format t " Yes: step7~%"))
 		     (return lgf))))))
+     #+nil
+     (when (and (hyp-integerp (add c 1//2))
+		(or (and (hyp-integerp (add a 1//2))
+			 (hyp-integerp b))
+		    (and (hyp-integerp (add b 1//2))
+			 (hyp-integerp a))))
+       (when $trace2f1
+	 (format t " Test for atanh:  a+1/2, b, and c+1/2 are integers~%"))
+       (return (hyp-atanh a b c)))
+
+     (when (hyp-integerp (add c 1//2))
+       (when $trace2f1
+	 (format t " Test for atanh:  c+1/2 is an integer~%"))
+       (cond ((and (hyp-integerp (add a 1//2))
+		   (hyp-integerp b))
+	      (when $trace2f1
+		(format t "  atanh with integers a+1/2 and b ~%"))
+	      (return (hyp-atanh a b c)))
+	     ((and (hyp-integerp (add b 1//2))
+		   (hyp-integerp a))
+	      (when $trace2f1
+		(format t "  atanh with integers a and b+1/2 ~%"))
+	      (return (hyp-atanh b a c)))))
+     
      (when $trace2f1
        (format t " Test for Legendre function...~%"))
      (cond ((setq lgf (legfun a b c))
@@ -884,6 +908,8 @@
 	      (when $trace2f1
 		(format t " Yes: case 2~%"))
 	      (return lgf))))
+     
+     
      (print 'simp2f1-will-continue-in)
      (terpri)
      (return  (fpqform arg-l1 arg-l2 var))))
@@ -2127,6 +2153,10 @@
 	   ;; F(1/2,1;3/2,z^2) =
 	   ;;
 	   ;; log((1+z)/(1-z))/z/2
+	   ;;
+	   ;; This is the same as atanh(z)/z.  Should we return that
+	   ;; instead?  This would make this match what hyp-atanh
+	   ;; returns.
 	   (let ((z (power var (div 1 2))))
 	     (mul (power z -1)
 		  (inv 2)
@@ -3486,7 +3516,61 @@
 			  'ell (- m n)))
 	      'ell n)))
 
-
+;; F(-1/2+n, 1+m; 1/2+l; z)
+(defun hyp-atanh (a b c)
+  ;; We start with F(-1/2,1;1/2;z) = 1-sqrt(z)*atanh(sqrt(z)).  We can
+  ;; derive the remaining forms by differentiating this enough times.
+  ;;
+  ;; FIXME:  Do we need to assume z > 0?  We do that anyway, here.
+  (let* ((s (gensym "HYP_ATANH_"))
+	 (n (add a 1//2))
+	 (m (sub b 1))
+	 (ell (sub c 1//2))
+	 (res (sub 1 (mul (power s 1//2)
+			  `((%atanh) ,(power s 1//2)))))
+	 (new-a -1//2)
+	 (new-b 1)
+	 (new-c 1//2))
+    ;; The total number of derivates we compute is n + m + ell.  We
+    ;; should do something to reduce the number of derivatives.
+    #+nil
+    (progn
+      (format t "a ,b ,c   = ~a ~a ~a~%" a b c)
+      (format t "n, m, ell = ~a ~a ~a~%" n m ell)
+      (format t "init a b c = ~a ~a ~a~%" new-a new-b new-c))
+    (cond ((plusp ell)
+	   (setf res (as-15.2.6 new-a new-b new-c ell s res))
+	   (setf new-c (add new-c ell)))
+	  (t
+	   (setf res (as-15.2.4 new-a new-b new-c (- ell) s res))
+	   (setf new-c (add new-c ell))))
+    #+nil
+    (progn 
+      (maxima-display res)
+      (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c))
+    (cond ((plusp n)
+	   ;; A&S 15.2.3
+	   (setf res (as-15.2.3 new-a new-b new-c n s res))
+	   (setf new-a (add new-a n)))
+	  (t
+	   (setf res (as-15.2.5 new-a new-b new-c (- n) s res))
+	   (setf new-a (add new-a n))))
+    #+nil
+    (progn
+      (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c)
+      (maxima-display res))
+    (cond ((plusp m)
+	   (setf res (as-15.2.3 new-b new-a new-c m s res))
+	   (setf new-b (add new-b m)))
+	  (t
+	   (setf res (as-15.2.5 new-b new-a new-c (- m) s res))
+	   (setf new-b (add new-b m))))
+    #+nil
+    (progn
+      (format t "new a b c = ~a ~a ~a~%" new-a new-b new-c)
+      (maxima-display res))
+    (subst var s res)))
+  
 (eval-when
     #+gcl (compile)
     #-gcl (:compile-toplevel)
