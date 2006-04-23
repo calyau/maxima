@@ -588,7 +588,7 @@
 
 (defmfun ruleof (rule)
   (or (mget rule 'ruleof)
-      (let ((op (caaadr (mget rule '$rule))) l)
+      (let* ((pattern (cadr (mget rule '$rule))) (op (if (atom pattern) nil (caar pattern))) l)
 	(and (setq l (get op 'rules)) (memq rule l) op))))
 
 (defmfun $debugmode (x) (debugmode1 nil x))
