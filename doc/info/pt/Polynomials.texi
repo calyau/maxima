@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Polynomials.texi/1.20/Tue Mar 28 09:28:08 2006/-ko/
+@c /Polynomials.texi/1.21/Sun Apr 23 18:21:32 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introdu@value{cedilha}@~ao a Polin@^omios::  
@@ -599,12 +599,12 @@ Retorna o m@'aximo divisor comum entre @var{p_1} e @var{p_2}.
 O sinalizador @code{gcd} determina qual algor@'itmo @'e empregado.
 Escolhendo @code{gcd} para @code{ez}, @code{eez}, @code{subres}, @code{red}, ou @code{spmod} seleciona o algor@'itmo @code{ezgcd}, Novo
 @code{eez} @code{gcd}, @code{prs} subresultante, reduzido, ou modular,
-respectivamente.  Se @code{gcd} for @code{false} ent@~ao GCD(p1,p2,var) ir@'a sempre retornar 1
-para todas as @code{var}i@'aveis.  Muitas fun@,{c}@~oes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
+respectivamente.  Se @code{gcd} for @code{false} ent@~ao @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
+para todo @var{x}.  Muitas fun@,{c}@~oes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
 sejam feitos implicitamente.  Para polin@^omios homog@^eneos @'e recomendado
 que @code{gcd} igual a @code{subres} seja usado.  Para pegar o mdc quando uma express@~ao alg@'ebrica est@'a
-presente, e.g. GCD(X^2-2*SQRT(2)*X+2,X-SQRT(2)); , @code{algebraic} deve ser
-@code{true} e @code{gcd} deve n@~ao ser @code{ez}.  @code{subres} @'e um novo algor@'itmo, e pessoas
+presente, e.g. @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, @code{algebraic} deve ser
+@code{true} e @code{gcd} n@~ao deve ser @code{ez}.  @code{subres} @'e um novo algor@'itmo, e pessoas
 que tenham estado usando a op@,{c}@~ao @code{red} podem provavelmente alterar isso para
 @code{subres}.
 
@@ -1036,7 +1036,7 @@ expande e simplifica racionalmente seu primeiro argumento e dessa forma pode
 produzir respostas diferentes das de @code{coeff} que @'e puramente
 sint@'atica.
 @c MOVE THIS TO EXAMPLES SECTION
-Dessa forma RATCOEF((X+1)/Y+X,X) retorna (Y+1)/Y ao passo que @code{coeff} retorna 1.
+Dessa forma @code{ratcoef ((x + 1)/y + x, x)} retorna @code{(y + 1)/y} ao passo que @code{coeff} retorna 1.
 
 @code{ratcoef (@var{expr}, @var{x}, 0)}, visualiza @var{expr} como uma adi@,{c}@~ao,
 retornando uma soma desses termos que n@~ao possuem @var{x}.

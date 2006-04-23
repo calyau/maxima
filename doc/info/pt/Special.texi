@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Special.texi/1.23/Fri Apr 14 11:12:58 2006/-ko/
+@c /Special.texi/1.24/Sun Apr 23 18:21:37 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Fun@value{cedilha}@value{o_til}es Especiais::  
 * specint::                     
