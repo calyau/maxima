@@ -10,6 +10,10 @@
 
 Example:
 
+@c ===beg===
+@c load("simplex")$
+@c minimize_sx(x+y, [3*x+2*y>2, x+4*y>3]);
+@c ===end===
 @example
 (%i1) load("simplex")$
 (%i2) minimize_sx(x+y, [3*x+2*y>2, x+4*y>3]);
@@ -45,6 +49,12 @@ To use this function first load the @code{simplex} package with @code{load(simpl
 
 Example:
 
+@c ===beg===
+@c A: matrix([1,1,-1,0], [2,-3,0,-1], [4,-5,0,0])$
+@c b: [1,1,6]$
+@c c: [1,-2,0,0]$
+@c linear_program(A, b, c);
+@c ===end===
 @example
 (%i2) A: matrix([1,1,-1,0], [2,-3,0,-1], [4,-5,0,0])$
 (%i3) b: [1,1,6]$
@@ -97,6 +107,12 @@ To use this function first load the @code{simplex} package with @code{load(simpl
 
 Examples:
 
+@c ===beg===
+@c minimize_sx(x+y, [3*x+y=0, x+2*y>2]);
+@c minimize_sx(x+y, [3*x+y>0, x+2*y>2]), nonegative_sx=true;
+@c minimize_sx(x+y, [3*x+y=0, x+2*y>2]), nonegative_sx=true;
+@c minimize_sx(x+y, [3*x+y>0]);
+@c ===end===
 @example
 (%i1) minimize_sx(x+y, [3*x+y=0, x+2*y>2]);
                       4       6        2
@@ -116,10 +132,10 @@ See also: @code{maximize_sx}, @code{nonegative_sx}, @code{epsilon_sx}.
 @end deffn
 
 @defvr {Option variable} nonegative_sx
+Default value: @code{false}
 
 If @code{nonegative_sx} is true all decision variables to @code{minimize_sx}
-and @code{maximize_sx} are assumed to be positive. The default value is
-@code{false}.
+and @code{maximize_sx} are assumed to be positive.
 
 See also: @code{minimize_sx}.
 
