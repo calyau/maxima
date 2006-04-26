@@ -111,14 +111,15 @@
 		       '(t t t t))
 	       t))
 	(cons new-sum extracted))
-      ($max l1 l2) ($min h1 h2) (cond ((eq i1 i2) i1)
-				      ((free e1 i2) i2)
-				      ((free e2 i1) i1)
-				      (t (get-free-index (list nil
-							       i1 i2
-							       e1 e2
-							       l1 l2
-							       h1 h2))))
+      (simplify `(($max) ,l1 ,l2)) (simplify `(($min) ,h1 ,h2))
+      (cond ((eq i1 i2) i1)
+	    ((free e1 i2) i2)
+	    ((free e2 i1) i1)
+	    (t (get-free-index (list nil
+				     i1 i2
+				     e1 e2
+				     l1 l2
+				     h1 h2))))
       nil nil))
    (car sum1) (car sum2)
    (cadr sum1) (cadr sum2)
