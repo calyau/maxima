@@ -9,7 +9,7 @@
  * ***             uses Zeilberger and solve_rec packages.               *** *
  * ***                                                                   *** *
  * ***   Author:  Andrej Vodopivec <andrejv@users.sourceforge.net>       *** *
- * ***   Licente: GPL2                                                   *** *
+ * ***   Licence: GPL2                                                   *** *
  * ***                                                                   *** *
  * ************************************************************************* *
  *                                                                           *
@@ -28,7 +28,7 @@
  * (%i9) closed_form(sum(binom(n,k)/(k+1),k,0,n));                           *
  * (%o9) (2*2^n-1)/(n+1)                                                     *
  *                                                                           *
- * More examplex with load("closed_form_test");                              *
+ * More examples with load("closed_form_test");                              *
  *                                                                           *
  *****************************************************************************/
 
