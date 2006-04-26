@@ -732,3 +732,10 @@ nusum ((2*m)!/(m!*(m + 1)!), m, 0, n);
 'sum ((2*m)!/(m!*(m + 1)!), m, 0, n);
 
 
+/*--- A test for sumcontract ---*/
+
+sumcontract(sum(k,k,1,n) + sum(k^2, k, 1, n));
+sum(k^2+k,k,1,n);
+
+sumcontract(sum(k, k, 1, n) + sum(k, k, 1, n+1));
+n+sum(2*k,k,1,n)+1;
