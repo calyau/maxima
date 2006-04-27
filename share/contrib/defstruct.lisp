@@ -67,24 +67,33 @@
 	       
 	       (return (set x y))) ;; actually put a value in lisp value cell!
 	      
-	      ;; x is not an atom, but something like (($M array simp) 12)
-	      ((memq 'array (cdar x))
-	       (return (arrstore x y))) ;; do the array store
-	      
-	  ;;    ((and $subscrmap (memq (caar x) '(mlist $matrix)));; deprecated.
-	 ;;      (return (outermap1 'mset x y)))
-	      
 	      ;; ADDITION  8/17/05 RJF thnx to suggestions by S. Macrakis, R. Dodier,;;;;;;;;;;;;
 	      ;;check to see if the operator has an mset_extension_operator.
 	      ;; If so, this says how to do assignments. Examples, a@b:x. Put mset_extension_operator
 	      ;; of $mrecordassign on the atom $@.  To allow [a,b]:[3,4] put op on mlist.
 	      ;; arguably we could use mget, mfuncall, and $mset_extension_operator  and
 	      ;; allow this to be done at the maxima level instead of lisp.
+
+          ;; X is could be something like (($FOO ARRAY) 42), in which case it is meaningful
+          ;; to look for an assignment operator associated either with $FOO itself or with
+          ;; $FOO's object type, with "object type" = (CAAR (SYMBOL-VALUE '$FOO)).
+
+          ((let*
+            ((x-value (if (boundp (caar x)) (symbol-value (caar x))))
+             (mset-extension-op
+                (cond
+                  ((get (caar x) 'mset_extension_operator))
+                  ((and (not (atom x-value)) (get (caar x-value) 'mset_extension_operator))))))
+            (if mset-extension-op
+              (return-from mset (funcall mset-extension-op x y)))))
+
+	      ;; x is not an atom, but something like (($M array simp) 12)
+	      ((memq 'array (cdar x))
+	       (return (arrstore x y))) ;; do the array store
 	      
-	      ((get (caar x) 'mset_extension_operator)
-	        (return
-		 (funcall (get (caar x) 'mset_extension_operator)
-			  x y)))
+	  ;;    ((and $subscrmap (memq (caar x) '(mlist $matrix)));; deprecated.
+	 ;;      (return (outermap1 'mset x y)))
+
 	      (t (merror "Improper left-hand side for an assignment:~%~M" x)))))
 
 ;;; starting here..
