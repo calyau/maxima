@@ -1165,7 +1165,26 @@
 		  (t tem))
 	    )
 	   ((mnump factor)
-	    (rplaca (cdr product) (timesk (cadr product) (expta factor power)))
+	    ;; We need to do something better here.  Look through
+	    ;; product to see if there are any terms of the form
+	    ;; factor^k, and adjust the exponent.
+	    
+	    ;;(format t "tms product = ~A~%" product)
+	    (let ((expo nil))
+	      (do ((p (cdr product) (cdr p)))
+		  ((or (null p) expo))
+		;;(format t "p = ~A~%" p)
+		(when (and (mexptp (car p))
+			   (integerp (second (car p)))
+			   (setf expo (exponent-of factor (second (car p)))))
+		  (let ((temp (list '(mexpt) (second (car p))
+				    (add expo (third (car p))))))
+		    ;;(format t "temp = ~A~%" temp)
+		    (rplaca p temp)
+		    ;;(format t "mod p = ~A~%" p)
+		    )))
+	      (unless expo
+		(rplaca (cdr product) (timesk (cadr product) (expta factor power)))))
 	    product)
 	   ((mtimesp factor)
 	    (cond ((mnump (cadr factor))
@@ -1612,84 +1631,239 @@
 	       (t (go up)))
      (go cont)))
 
+(defun exponent-of (m base)
+  ;; Basically computes log of m base b.  Except if m is not a power
+  ;; of b, we return nil.
+
+  ;; Give up on the cases we can't handle.
+  (unless (and (mnump m)
+	       (ratgreaterp m 0)
+	       (integerp base)
+	       (not (eql base 1)))
+    (return-from exponent-of nil))
+  (cond ((ratgreaterp 1 m)
+	 ;; m < 1, so change the problem to finding the exponent for
+	 ;; 1/m.
+	 (let ((expo (exponent-of (inv m) base)))
+	   (when expo
+	     (- expo))))
+	((ratnump m)
+	 ;; exponent-of doesn't know how to handle maxima rationals,
+	 ;; so make it a Lisp rational.
+	 (exponent-of (/ (second m) (third m)) base))
+	(t
+	 ;; Main case.  Just compute base^k until base^k >= m.  Then
+	 ;; check if they're equal.  If so, we have the exponent.
+	 ;; Otherwise, give up.
+	 (let ((expo 0)
+	       (power 1))
+	   (loop while (< power m)
+	      do
+	      (setf power (* power base))
+	      (incf expo))
+	   (if (= power m)
+	       expo
+	       nil)))))
+
 (defun timesin (x y w)			; Multiply X^W into Y
-  (prog (fm temp z check u)
+  (prog (fm temp z check u expo)
      (if (mexptp x) (setq check x))
-     top  (cond ((equal w 1) (setq temp x))
-		(t (setq temp (cons '(mexpt) (if check (list (cadr x) (mult (caddr x) w))
-						 (list x w))))
-		   (if (and (not timesinp) (not (eq x '$%i)))
-		       (let ((timesinp t)) (setq temp (simplifya temp t))))))
-     (setq x (if (mexptp temp) (cdr temp) (list temp 1)))
-     (setq w (cadr x) fm y)
-     start(cond ((null (cdr fm)) (go less))
-		((mexptp (cadr fm))
-		 (cond ((alike1 (car x) (cadadr fm))
-			(cond ((zerop1 (setq w (plsk (caddr (cadr fm)) w))) (go del))
-			      ((and (mnump w) (or (mnump (car x)) (eq (car x) '$%i)))
-			       (rplacd fm (cddr fm))
-			       (cond ((mnump (setq x (if (mnump (car x))
-							 (exptrl (car x) w)
-							 (power (car x) w))))
-				      (return (rplaca y (timesk (car y) x))))
-				     ((mtimesp x) (go times))
-				     (t (setq temp x x (if (mexptp x) (cdr x) (list x 1)))
-					(setq w (cadr x) fm y) (go start))))
-			      ((maxima-constantp (car x)) (go const))
-			      ((onep1 w) (return (rplaca (cdr fm) (car x))))
-			      (t (go spcheck))))
-		       ((or (maxima-constantp (car x)) (maxima-constantp (cadadr fm)))
-			(if (great temp (cadr fm)) (go gr)))
-		       ((great (car x) (cadadr fm)) (go gr)))
-		 (go less))
-		((alike1 (car x) (cadr fm)) (go equ))
-		((maxima-constantp (car x)) (if (great temp (cadr fm)) (go gr)))
-		((great (car x) (cadr fm)) (go gr)))
-     less (cond ((and (eq (car x) '$%i) (fixnump w)) (go %i))
-		((and (eq (car x) '$%e) $numer (integerp w))
-		 (return (rplaca y (timesk (car y) (exp w)))))
-		((and (onep1 w) (not (constant (car x)))) (go less1))
-		((and (maxima-constantp (car x))
-		      (do ((l (cdr fm) (cdr l))) ((null (cdr l)))
-			(when (and (mexptp (cadr l)) (alike1 (car x) (cadadr l)))
-			  (setq fm l) (return t))))
-		 (go start))
-		((or (and (mnump (car x)) (mnump w))
-		     (and (eq (car x) '$%e) $%emode (setq u (%especial w))))
-		 (setq x (cond (u)
-			       ((alike (cdr check) x) check)
-			       (t (exptrl (car x) w))))
-		 (cond ((mnump x) (return (rplaca y (timesk (car y) x))))
-		       ((mtimesp x) (go times))
-		       ((mexptp x) (return (cdr (rplacd fm (cons x (cdr fm))))))
-		       (t (setq temp x x (list x 1) w 1 fm y) (go start))))
-		((onep1 w) (go less1))
-		(t (setq temp (list '(mexpt) (car x) w))
-		   (setq temp (eqtest temp (or check '((foo)))))
-		   (return (cdr (rplacd fm (cons temp (cdr fm)))))))
-     less1 (return (cdr (rplacd fm (cons (car x) (cdr fm)))))
-     gr	(setq fm (cdr fm)) (go start)
-     equ   (cond ((and (eq (car x) '$%i) (equal w 1))
-		  (rplacd fm (cddr fm)) (return (rplaca y (timesk -1 (car y)))))
-		 ((zerop1 (setq w (plsk 1 w))) (go del))
-		 ((and (mnump (car x)) (mnump w))
-		  (return (rplaca (cdr fm) (exptrl (car x) w))))
-		 ((maxima-constantp (car x)) (go const)))
-     spcheck(setq z (list '(mexpt) (car x) w))
-     (cond ((alike1 (setq x (simplifya z t)) z) (return (rplaca (cdr fm) x)))
-	   (t (rplacd fm (cddr fm)) (setq rulesw t) (return (muln (cons x y) t))))
-     const (rplacd fm (cddr fm))
+    top
+     (cond ((equal w 1)
+	    (setq temp x))
+	   (t
+	    (setq temp (cons '(mexpt) (if check (list (cadr x) (mult (caddr x) w))
+					  (list x w))))
+	    (if (and (not timesinp) (not (eq x '$%i)))
+		(let ((timesinp t))
+		  (setq temp (simplifya temp t))))))
+     (setq x (if (mexptp temp)
+		 (cdr temp)
+		 (list temp 1)))
+     (setq w (cadr x)
+	   fm y)
+     ;; At this point, x = '(base power)
+     ;; w = power, and fm = (y)
+     #+nil
+     (progn
+       (format t "x = ~A~%" x)
+       (format t "w = ~A~%" w)
+       (format t "fm = ~A~%" fm))
+    start
+     (cond ((null (cdr fm))
+	    ;;(format t "start:  null (cdr fm).  Go to less~%")
+	    (go less))
+	   ((mexptp (cadr fm))
+	    (cond ((alike1 (car x) (cadadr fm))
+		   (cond ((zerop1 (setq w (plsk (caddr (cadr fm)) w)))
+			  (go del))
+			 ((and (mnump w)
+			       (or (mnump (car x))
+				   (eq (car x) '$%i)))
+			  (rplacd fm (cddr fm))
+			  (cond ((mnump (setq x (if (mnump (car x))
+						    (exptrl (car x) w)
+						    (power (car x) w))))
+				 (return (rplaca y (timesk (car y) x))))
+				((mtimesp x)
+				 (go times))
+				(t
+				 (setq temp x
+				       x (if (mexptp x) (cdr x) (list x 1)))
+				 (setq w (cadr x)
+				       fm y)
+				 (go start))))
+			 ((maxima-constantp (car x))
+			  (go const))
+			 ((onep1 w)
+			  (return (rplaca (cdr fm) (car x))))
+			 (t
+			  (go spcheck))))
+		  ((or (maxima-constantp (car x))
+		       (maxima-constantp (cadadr fm)))
+		   (if (great temp (cadr fm))
+		       (go gr)))
+		  ((great (car x) (cadadr fm))
+		   (go gr)))
+	    (go less))
+	   ((alike1 (car x) (cadr fm))
+	    (go equ))
+	   ((maxima-constantp (car x))
+	    (if (great temp (cadr fm)) (go gr)))
+	   ((great (car x) (cadr fm))
+	    (go gr)))
+    less
+     (cond ((and (eq (car x) '$%i)
+		 (fixnump w)) 
+	    (go %i))
+	   ((and (eq (car x) '$%e)
+		 $numer
+		 (integerp w))
+	    (return (rplaca y (timesk (car y) (exp w)))))
+	   ((and (onep1 w)
+		 (not (constant (car x))))
+	    (go less1))
+	   ((and (maxima-constantp (car x))
+		 (do ((l (cdr fm) (cdr l)))
+		     ((null (cdr l)))
+		   (when (and (mexptp (cadr l))
+			      (alike1 (car x) (cadadr l)))
+		     (setq fm l)
+		     (return t))))
+	    (go start))
+	   ((or (and (mnump (car x))
+		     (mnump w))
+		(and (eq (car x) '$%e)
+		     $%emode
+		     (setq u (%especial w))))
+	    (setq x (cond (u)
+			  ((alike (cdr check) x)
+			   check)
+			  (t
+			   (exptrl (car x) w))))
+	    (cond ((mnump x)
+		   (return (rplaca y (timesk (car y) x))))
+		  ((mtimesp x)
+		   (go times))
+		  ((mexptp x)
+		   (return (cdr (rplacd fm (cons x (cdr fm))))))
+		  (t
+		   (setq temp x
+			 x (list x 1)
+			 w 1
+			 fm y)
+		   (go start))))
+	   ((onep1 w)
+	    (go less1))
+	   ((ratnump (car fm))
+	    ;; Multiplying a^k * rational.
+	    (let ((numerator (second (car fm)))
+		  (denom (third (car fm))))
+	      (setf expo (exponent-of numerator (car x)))
+	      (when expo
+		;; We have a^m*a^k.
+		(setq temp (list '(mexpt) (car x) (add w expo)))
+		;; Set fm to have 1/denom term.
+		(setf fm (rplaca fm (inv denom)))
+		;; Add in the a^(m+k) term.
+		(rplacd fm (cons temp (cdr fm)))
+		(return (cdr fm)))
+	      (setf expo (exponent-of (inv denom) (car x)))
+	      (when expo
+		;; We have a^(-m)*a^k.
+		(setq temp (list '(mexpt) (car x) (add w expo)))
+		;; Set fm to have the numerator term.
+		(setf fm (rplaca fm numerator))
+		;; Add in the a^(k-m) term.
+		(rplacd fm (cons temp (cdr fm)))
+		(return (cdr fm)))
+	      ;; The rational doesn't contain any (simple) powers of
+	      ;; the exponential term.  We're done.  (This is
+	      ;; basically the T case below.)
+	      (setq temp (list '(mexpt) (car x) w))
+	      (setq temp (eqtest temp (or check '((foo)))))
+	      (return (cdr (rplacd fm (cons temp (cdr fm)))))
+	      ))
+	   ((setf expo (exponent-of (car fm) (car x)))
+	    ;; Got something like a*a^k, where a is a number.
+	    ;;(format t "go a*a^k~%")
+	    (setq temp (list '(mexpt) (car x) (add w expo)))
+	    (setf fm (rplaca fm 1))
+	    (return (cdr (rplacd fm (cons temp (cdr fm))))))
+	   (t
+	    ;;(format t "default less cond~%")
+	    (setq temp (list '(mexpt) (car x) w))
+	    (setq temp (eqtest temp (or check '((foo)))))
+	    ;;(format t "temp = ~A~%" temp)
+	    ;;(format t "fm = ~A~%" fm)
+	    (return (cdr (rplacd fm (cons temp (cdr fm)))))))
+    less1
+     (return (cdr (rplacd fm (cons (car x) (cdr fm)))))
+    gr
+     (setq fm (cdr fm))
+     (go start)
+    equ
+     (cond ((and (eq (car x) '$%i) (equal w 1))
+	    (rplacd fm (cddr fm))
+	    (return (rplaca y (timesk -1 (car y)))))
+	   ((zerop1 (setq w (plsk 1 w)))
+	    (go del))
+	   ((and (mnump (car x)) (mnump w))
+	    (return (rplaca (cdr fm) (exptrl (car x) w))))
+	   ((maxima-constantp (car x))
+	    (go const)))
+    spcheck
+     (setq z (list '(mexpt) (car x) w))
+     (cond ((alike1 (setq x (simplifya z t)) z)
+	    (return (rplaca (cdr fm) x)))
+	   (t
+	    (rplacd fm (cddr fm))
+	    (setq rulesw t)
+	    (return (muln (cons x y) t))))
+    const
+     (rplacd fm (cddr fm))
      (setq x (car x) check nil)
      (go top)
-     times (setq z (tms x 1 (setq temp (cons '(mtimes) y))))
-     (return (cond ((eq z temp) (cdr z)) (t (setq rulesw t) z)))
-     del	(return (rplacd fm (cddr fm)))
-     %i    (if (minusp (setq w (remainder w 4))) (setq w (f+ 4 w)))
-     (return (cond ((zerop w) fm) 
-		   ((= w 2) (rplaca y (timesk -1 (car y))))
-		   ((= w 3) (rplaca y (timesk -1 (car y))) 
+    times
+     (setq z (tms x 1 (setq temp (cons '(mtimes) y))))
+     (return (cond ((eq z temp)
+		    (cdr z))
+		   (t
+		    (setq rulesw t) z)))
+    del
+     (return (rplacd fm (cddr fm)))
+    %i
+     (if (minusp (setq w (remainder w 4)))
+	 (setq w (f+ 4 w)))
+     (return (cond ((zerop w)
+		    fm) 
+		   ((= w 2)
+		    (rplaca y (timesk -1 (car y))))
+		   ((= w 3)
+		    (rplaca y (timesk -1 (car y))) 
 		    (rplacd fm (cons '$%i (cdr fm))))
-		   (t (rplacd fm (cons '$%i (cdr fm))))))))
+		   (t
+		    (rplacd fm (cons '$%i (cdr fm))))))))
 
 (defmfun simpmatrix (x vestigial z)
   vestigial				;Ignored.
