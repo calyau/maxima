@@ -59,13 +59,14 @@
 		(if (null p) (error "invalid value in getlinkelementindex") p)))
 
 (defun process-line (l)
-   (let* ((st (make-string-input-stream l)) (ty (read st)))
+   (let* ((st (make-string-input-stream l)) (ty (read st))
+          (from (read st)) (to (read st)) (ex (read-line st nil nil)))
    (list (quote (mlist))
-      ty
+      (intern-invert-case (concatenate 'string "$" (string ty)))
       (process-type ty)
-      (read st)
-      (read st)
-      (read-line st nil nil))))
+      from
+      to
+      (when ex ($eval_string (intern-invert-case (concatenate 'string "&" (string ex))))))))
 
 (DEFMTRFUN ($readfile $ANY MDEFINE NIL NIL) 
            ($FILENAME) 
