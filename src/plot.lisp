@@ -581,7 +581,7 @@ setrgbcolor} def
 		  (coerce `(lambda ,(cdr args)
 			    (declare (special ,@(cdr args)))
 			    (let* (($ratprint nil) ($numer t)
-				   (result (maybe-realpart (meval* ',(nth 2 mexpr)))))
+				   (result (maybe-realpart (meval* ',(nth 2 expr)))))
 			      (if ($numberp result)
 				  ($float result)
 				  nil)))
