@@ -1,5 +1,5 @@
-kill(all);
-done;
+/* kill(all); */
+/* done; */
 
 /* PRIMALITY TESTS */
 
@@ -42,6 +42,10 @@ prev_prime(100002100042);
 ifactors(226800);
 [[2,4],[3,4],[5,2],[7,1]];
 
+/* limiting to factors */
+ev( ifactors(226800), factors_only:true );
+[2,3,5,7];
+
 /* this should be found by Pollard rho */
 ifactors(5178997768267);
 [[183823,1],[28173829,1]];
@@ -56,3 +60,32 @@ ifactors(5178997768267);
 
 (pollard_rho_tests : save_prt, 0);
 0;
+
+/* MODULAR POWERS AND INVERSE */
+
+power_mod(2^64,2,2^64-2^34+1);
+240518168561;
+
+inv_mod(42,2^64-2^34+1);
+18007535864707547137;
+
+/* negative exponents */
+power_mod(3,-1,41);
+14;
+
+inv_mod(3,41);
+14;
+
+power_mod(2^64,-2,2^64-2^34+1);
+18446743816011514066;
+
+inv_mod(2^128,2^64-2^34+1);
+18446743816011514066;
+
+/* zero divisors */
+inv_mod(3,42);
+false;
+
+power_mod(3,-1,42);
+false;
+
