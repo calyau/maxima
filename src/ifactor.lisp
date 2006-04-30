@@ -3,8 +3,8 @@
 ;;;;
 ;;;;  Maxima integer factorization package.
 ;;;;
-;;;;  Version  : 1.2 (march 2006)
-;;;;  Copyright: 2005-2006 Andrej Vodopivec
+;;;;  Version  : 1.3 (april 2006)
+;;;;  Copyright: 2005-2006 Andrej Vodopivec, Volker van Nek
 ;;;;  Licence  : GPL2
 ;;;;
 ;;;;   - ifactors     : factorization of integers
@@ -12,17 +12,8 @@
 ;;;;   - next_prime   : smallest prime > n
 ;;;;   - prev_prime   : greatest prime < n
 ;;;;   - power_mod    : fast modular powers
+;;;;   - inv_mod      : modular inverse
 
-;;;; Revisition  : primep-prob
-;;;;               - Miller-Rabin and Lucas test in separate functions
-;;;;               - iterativ versions of power-mod and primep-lucas
-;;;;               next-prime
-;;;;               - new sequence of tests
-;;;;               $primep_number_of_tests
-;;;;               - default 25
-;;;; New         : prev_prime
-;;;;
-;;;; November 2005 Volker van Nek
 
 (in-package :maxima)
 (macsyma-module ifactor)
@@ -50,6 +41,8 @@
 
 (defmvar $ifactor_verbose nil
   "Display factorization steps." boolean)
+(defmvar $factors_only nil
+  "Return a list of factors only." boolean)
 
 (defun number-of-digits (n)
   (length (format nil "~d" n)))
@@ -178,12 +171,12 @@
            (> n 0))
       (let* (($intfaclim)
              (factor-list (get-factor-list n))
-             (factor-list (mapcar (lambda (u)
-				    `((mlist simp) ,(car u) ,(cadr u)))
-				  factor-list)))
-	($sort `((mlist simp) ,@factor-list)))
+             (factor-list (if $factors_only                     
+			      (mapcar #'car factor-list)
+			      (mapcar #'(lambda (u) `((mlist simp) ,(car u) ,(cadr u)))
+				      factor-list))))
+        ($sort `((mlist simp) ,@factor-list)))
       (merror "Argument to `ifactors' must be positive integer:~%~M." n)))
-
 
 ;; cfactor is the function used by maxima to factor integers
 ;; (used form outside ifactor package)
@@ -370,19 +363,24 @@
 	  ))
       ))
 
-;;; modular inverse of a (modulus n)
 
-(defun mod-inv (a n)
-  (let ((v1 (list 1 0 n)) (v2 (list 0 1 a)))
-    (do () ((= (caddr v2) 0))
-      (let ((k (floor (/ (caddr v1) (caddr v2)))) (uu (list 0 0 0)))
-        (dotimes (i 3)
-          (setf (nth i uu) (- (nth i v1) (* k (nth i v2)))))
-        (setq v1 v2)
-        (setq v2 (copy-list uu))))
-    (if (not (= 1 (caddr v1)))
-	nil
-	(mod (cadr v1) n))))
+;;; modular inverse of a (modulus m)
+;;;
+;;; this implementation of the modular inverse is different to `invmod' in src/rat3a.lisp
+;;; inv-mod returns a positive modulo or `nil' in case of a zero divisor
+
+(defun inv-mod (a m)
+  (if (< a 0) (setq a (mod a m)))
+  (let ((u1 1)(u2 a)(v1 0)(v2 m) q)
+    (do () ((= 0 v2) (if (= 1 u2) (mod u1 m) nil)) 
+      (setq q (// u2 v2))
+      (psetq u1 v1 v1 (- u1 (* q v1)))
+      (psetq u2 v2 v2 (- u2 (* q v2))) )))
+
+(defun $inv_mod (a m)
+  (if (and (integerp a) (integerp m))
+      (inv-mod a m)
+      (merror "Non-integer arguments to `inv_mod': ~%~M ~M" a m)))
 
 ;;; computations on the elliptic curve:
 ;;; we use the elliptic curve in projective coordinates (x,y,z), but only
@@ -527,7 +525,7 @@
       (setq z (mod (expt v 3) n))
       (setq a1 (mod (* (expt (- v u) 3) (+ (* 3 u) v)) n))
       (setq a2 (mod (* 4 x v) n))
-      (setq a2_inv (mod-inv a2 n))
+      (setq a2_inv (inv-mod a2 n))
       (if (null a2_inv)
 	  (return-from get-one-factor-ecm (gcd a2 n)))
       (setq a (mod (* a1 a2_inv) n))
@@ -558,21 +556,6 @@
       (convert-list-sub (car l1) 1 (rest l1) nil))))
 
 
-;;; convert ((3 3) (5 2) (7 1)) to (3^3, 5^2, 7)
-
-(defun convert-to-powers (l)
-  (labels
-      ((convert-to-powers-sub (l1 l2)
-	 (cond ((null l1) l2)
-	       (t (if (equal (cadar l1) 1)
-		      (convert-to-powers-sub (cdr l1)
-					     (cons (caar l1) l2))
-		      (convert-to-powers-sub (cdr l1)
-					     (cons `((mexpt simp) ,(caar l1)
-						     ,(cadar l1)) l2)))))))
-    (let ((l1 (sort l (lambda (u v) (> (car u) (car v))))))
-      (convert-to-powers-sub l1 nil))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                                                                       ;;;
 ;;;           ~*~  IMPLEMENTATION OF PRIMALITY TESTS  ~*~                 ;;;
@@ -598,7 +581,7 @@
 ;;; if we test for small bases
 ;;; Reference:
 ;;;  G. Jaeschke, On Strong Pseudoprimes to Several Bases,
-;;;       Math. Comp., 61 (1993) 915-926.
+;;;       Math. Comp., 61 (1993), 915-926.
 
 (defun primep-small (n)
   (dolist (x `(2 3 5 7 11 13 17))
@@ -651,11 +634,13 @@
           (setq y (power-mod y 2 n)) )))))
 
 (defun $power_mod (b n m)
-  (if (and (integerp b)
-           (integerp n) (> n 0)
-           (integerp m) (> m 0))
+  (if (and (integerp b) (integerp n) (integerp m))
+    (if (>= n 0) 
       (power-mod b n m)
-      (merror "Non-integer arguments to `power_mod'.")))
+      (let ((inv (inv-mod b m)))
+        (if inv 
+          (power-mod inv (neg n) m) )))
+    (merror "Non-integer arguments to `power_mod': ~%~M ~M ~M" b n m) ))
 
 (defun power-mod (b n m)
   (if (= 0 n) 1
