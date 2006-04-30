@@ -2604,6 +2604,55 @@
 			  (gammareds a (sub c 1) z)))
 		(inv (sub (add 1 a) c)))))))
 
+;; Incomplete gamma function
+;;
+;; gammagreek(a,x) = integrate(t^(a-1)*exp(-t),t,0,x)
+(defun gammagreek (a z)
+  (cond ((and (integerp a) (eql a 1))
+	 ;; gammagreek(0, x) = 1-exp(x)
+	 (sub 1 (mexpt (neg z))))
+	((and (integerp a) (plusp a))
+	 ;; gammagreek(a,z) can be simplified if a is a positive
+	 ;; integer.
+	 ;;
+	 ;; A&S 6.5.22:
+	 ;;
+	 ;; gammagreek(a+1,x) = a*gammagreek(a,x) - x^a*exp(-x)
+	 ;;
+	 ;; or
+	 ;;
+	 ;; gammagreek(a,x) = (a-1)*gammagreek(a-1,x)-x^(a-1)*exp(-x)
+	 (let ((a-1 (sub a 1)))
+	   (sub (mul a-1 (gammagreek a-1 z))
+		(mul (m^t z a-1)
+		     (mexpt (neg z))))))
+	((=1//2 a)
+	 ;; A&S 6.5.12:
+	 ;;
+	 ;; gammagreak(1/2,x^2) = sqrt(%pi)*erf(x)
+	 ;;
+	 ;; gammagreek(1/2,z) = sqrt(%pi)*erf(sqrt(x))
+	 ;;
+	 (mul (msqrt '$%pi)
+	      `((%erf) ,(msqrt z))))
+	((and (integerp (add a 1//2)))
+	 ;; gammagreek(n+1/2,z) can be simplified using A&S 6.5.22 to
+	 ;; reduce the problem to gammagreek(1/2,x), which we know,
+	 ;; above.
+	 (if (ratgreaterp a 0)
+	     (let ((a-1 (sub a 1)))
+	       (sub (mul a-1 (gammagreek a-1 z))
+		    (mul (m^t z a-1)
+			 (mexpt (neg z)))))
+	     (let ((a+1 (add a 1)))
+	       (div (add (gammagreek a+1 z)
+			 (mul (power z a)
+			      (mexpt (neg z))))
+		    a))))
+	(t
+	 ;; Give up
+	 `(($%gammagreek) ,a ,z))))
+
 ;; A&S 6.5.12: 
 ;; %gammagreek(a,x) = x^a/a*M(a,1+a,-x)
 ;;                  = x^a/a*exp(-x)*M(1,1+a,x)
@@ -2623,7 +2672,7 @@
 (defun hypredincgm (a z)
   (let ((-z (mul -1 z)))
     (mul a (power -z (mul -1 a))
-	 `(($%gammagreek) ,a ,-z))))
+	 (gammagreek a -z))))
 
 ;; M(a,c,z), when a and c are numbers, and a-c is a negative integer
 (defun erfgamnumred (a c z)
