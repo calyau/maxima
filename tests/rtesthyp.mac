@@ -1307,6 +1307,158 @@ ratsimp(factor(hgfred([1/2,3],[7/2],zp))-
 );
 0;
 
+/*
+ * Tests for 2F2
+ */
+hgfred([a,b],[a,c],z);
+hgfred([b],[c],z)$
+
+/* test with exponentials */ 
+
+/* Part 1: exponential times polynomial */ 
+
+ratsimp(factor(hgfred([3/2,3/2],[1/2,1/2],x))-
+	exp(x)*(4*x^2+8*x+1));
+0;
+
+ratsimp(factor(hgfred([3/2,2],[1/2,1],x))-
+	exp(x)*(2*x^2+5*x+1));
+0;
+
+ratsimp(factor(hgfred([3/2,3],[1/2,2],x))-
+	exp(x)*(2*x^2+7*x+2)/2);
+0;
+
+ratsimp(factor(hgfred([2,2],[1,1],x))-
+	exp(x)*(x^2+3*x+1));
+0;
+
+ratsimp(factor(hgfred([3,3],[2,2],x))-
+	exp(x)*(x^2+5*x+4)/4);
+0;
+
+ratsimp(factor(hgfred([3,3],[1,2],x))-
+	exp(x)*(x^3+8*x^2+14*x+4)/4);
+0;
+
+/* Part 2: exponential times rational fraction */ 
+
+ratsimp(factor(exponentialize(expand(hgfred([1,3/2],[1/2,2],x))))-
+	(exp(x)*(2*x-1)+1)/x);
+0;
+
+ratsimp(factor(exponentialize(expand(hgfred([1,5/2],[3/2,2],x))))-
+	(exp(x)*(2*x+1)-1)/(3*x));
+0;
+
+ratsimp(factor(exponentialize(expand(hgfred([1,3],[2,2],x))))-
+	(exp(x)*(x+1)-1)/(2*x));
+0;
+
+
+/* test with incomplete gamma */ 
+/*
+hgfred([1/2,b],[3/2,b+1],x);
+b*(sqrt(%pi/x)*erfi(sqrt(x))-(-x)^(-b)*(gamma(b)-gammaincomplete(b,-z)))/(2*b-1)$
+*/
+
+/* Note: I am unsure about Maxima notation for the incomplte gamma
+function */ 
+
+/* Tests with erfi */
+(erfi(x) := -%i*erf(%i*x),0);
+0;
+
+ratsimp(factor(hgfred([-1/2,3/2],[1/2,1/2],x))-
+	(exp(x)-2*sqrt(%pi)*sqrt(x)*erfi(sqrt(x))));
+0;
+
+
+ratsimp(factor(hgfred([-1/2,2],[1/2,1],x))-
+	(exp(x)-3/2*sqrt(%pi)*sqrt(x)*erfi(sqrt(x))));
+0;
+
+
+ratsimp(factor(hgfred([-1/2,5/2],[1/2,3/2],x))-
+	(exp(x)-4/3*sqrt(%pi)*sqrt(x)*erfi(sqrt(x))));
+0;
+
+ratsimp(factor(hgfred([-1/2,3],[1/2,2],x))-
+	(exp(x)-5/4*sqrt(%pi)*sqrt(x)*erfi(sqrt(x))));
+0;
+ 
+
+/*
+ratsimp(factor(hgfred([(-1)/2,1],[1/2,2],x))-
+	(1/(3*x)*(exp(x)*(2*x+1)-2*sqrt(%pi)*erfi(sqrt(x))*x^(3/2)-1)));
+0;
+*/
+
+/*
+hgfred([(-1)/2,1],[1/2,3],x);
+1/(15*x^2)*(exp(x)*(8*x^2+4*x+2)-8*sqrt(%pi)*erfi(sqrt(x))*x^(5/2)-2*(5*x+3))$
+*/
+
+/*
+hgfred([(-1)/2,1],[3/2,2],x);
+1/(6*x)*(2*exp(x)*(x-1)+sqrt(%pi)*sqrt(x)*erfi(sqrt(x))*(3-2*x)+2)$
+*/
+
+/*
+hgfred([(-1)/2,1],[3/2,3],x);
+2/(15*x^2)*(exp(x)*(2*x^2-4*x-1)+sqrt(%pi)*x^(3/2)*erfi(sqrt(x))*(5-2*x)+5*z+1)$ 
+*/
+
+/* Tests with erf */ 
+ratsimp(factor(hgfred([1,3],[1/2,2],x))-
+	(2*x+4+sqrt(%pi)*sqrt(x)*(2*x+5)*exp(x)*erf(sqrt(x)))/4);
+0;
+
+
+
+
+/* Tests with modified bessel  functions I_0 and I_1 */
+
+/*
+hgfred([1,3/2],[2,2],x);
+2*(exp(x/2)*bessel_i(0,x/2)-1)/x$
+*/
+
+/*
+hgfred([1/2,5/2],[3/2,2],x);
+exp(x/2)*(3*bessel_i(0,x/2)-bessel_i(1,x/2))/3$
+*/
+
+/*
+hgfred([1/2,3],[2,2],x);
+exp(x/2)*(2*bessel_i(0,x/2)-bessel_i(1,x/2))/2$
+*/
+
+/*
+hgfred([-1/2,3/2],[1/2,1],x);
+exp(x/2)*((1-2*x)*bessel_i(0,x/2)+*x*bessel_i(1,x/2))$
+*/
+
+/*
+hgfred([(-1)/2,1],[2,2],x);
+1/(9*x)*(4*exp(x/2)*x*(x-2)*bessel_i(1,x/2)-2*exp(x/2)*(2*x^2-6*x+3)*bessel_i(0,x/2)+6)$
+*/
+
+/*
+hgfred([(-1)/2,1],[2,3],x);
+4/(45*x)*(exp(x/2)*(4*x^2-14*x+3)*bessel_i(1,x/2)-exp(x/2)*(4*x^2-18*x+15)*bessel_i(0,x/2)+15)$
+*/
+
+
+/* Test with exponential integral */ 
+
+/*
+hgfred([1,1],[2,2],x);
+(2*%ei(x)+log(1/x)-log(x)-2%gamma)/(2*x)$ 
+*/
+/* The above formula may be simplificated by noting
+log(1/x)=-log(x) for x>0; the expression might be in terms of E1 instead
+of Ei */ 
 
 
 /*
@@ -1436,6 +1588,7 @@ ratsimp(factor(hgfred([-1/2,3/2,3],[1/2,2],z))
 
 ratsimp(factor(hgfred([-1/2,2,2],[1,1],z))
 -(9*z^2-14*z+4)/(4*(1-z)^(3/2)));
+0;
 
 ratsimp(factor(hgfred([-1/2,2,2],[1,3],z))
 -2*((9*z^2+2*z+4)*sqrt(1-z)-4)/(15*z^2));
@@ -1479,6 +1632,7 @@ ratsimp(factor(hgfred([-1/2,5/2,5/2],[1/2,1/2],z))
 
 ratsimp(factor(hgfred([-1/2,5/2,5/2],[1/2,3/2],z))
 -(-32*z^3+80*z^2-60*z+9)/9/(1-z)^(5/2));
+0;
 
 ratsimp(factor(hgfred([-1/2,5/2,5/2],[3/2,3/2],z))
 -(16*z^2-26*z+9)/9/(1-z)^(3/2));
