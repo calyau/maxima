@@ -1192,7 +1192,7 @@ utilizar@'a rutinas especiales para calcular determinantes dispersos.
 @deffn {Funci@'on} submatrix (@var{i_1}, ..., @var{i_m}, @var{M}, @var{j_1}, ..., @var{j_n})
 @deffnx {Funci@'on} submatrix (@var{i_1}, ..., @var{i_m}, @var{M})
 @deffnx {Funci@'on} submatrix (@var{M}, @var{j_1}, ..., @var{j_n})
-Devuelve una nueva matriz formada a partir de la matriz @var{M} pero cuyas filas @var{i_1}, ..., @var{i_m} y comunas  @var{j_1}, ..., @var{j_n} han sido eliminadas.
+Devuelve una nueva matriz formada a partir de la matriz @var{M} pero cuyas filas @var{i_1}, ..., @var{i_m} y columnas  @var{j_1}, ..., @var{j_n} han sido eliminadas.
 
 @end deffn
 
