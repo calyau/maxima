@@ -17,7 +17,7 @@ and also some functions not related to simplification.
 
 @c @defvr {Add-on package} (WITH HYPHEN) CONFUSES DESCRIBE (CAN'T FIND END OF ITEM)
 @c SAME WITH OTHER "ADD-ON PACKAGES" HERE (FACEXP, INEQ)
-@defvr {Add on package} absimp
+@subsection Package absimp
 
 The @code{absimp} package contains pattern-matching rules that
 extend the built-in simplification rules for the @code{abs} and @code{signum}
@@ -34,20 +34,24 @@ in terms of @code{abs} and @code{signum}.
 
 Examples:
 
+@c ===beg===
+@c load (absimp)$
+@c (abs (x))^2;
+@c diff (abs (x), x);
+@c cosh (abs (x));
+@c ===end===
 @example
-(%i1) load (absimp);
-(%o1) /usr/share/maxima/5.9.2/share/simplification/absimp.mac
+(%i1) load (absimp)$
 (%i2) (abs (x))^2;
-                                2
-(%o2)                          x
+                                       2
+(%o2)                                 x
 (%i3) diff (abs (x), x);
-                               x
-(%o3)                        ------
-                             abs(x)
+                                      x
+(%o3)                               ------
+                                    abs(x)
 (%i4) cosh (abs (x));
-(%o4)                        cosh(x)
+(%o4)                               cosh(x)
 @end example
-@end defvr
 
 @c disol.usg: "disolate" already in doc/info/Expressions.texi
 
@@ -58,7 +62,7 @@ Examples:
 @c I HAVE NO IDEA WHAT THESE FUNCTIONS DO.
 @c ALL OF THESE ITEMS NEED TO BE HEAVILY REVISED
 @c (ASSUMING THIS PACKAGE IS SOMETHING WE WANT TO INVEST TIME IN)
-@defvr {Add on package} facexp
+@subsection Package facexp
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 The @code{facexp} package contains several related  functions that
@@ -89,7 +93,6 @@ useful when the expressions are very large.
 
 @code{load (facexp)} loads this package.
 @code{demo (facexp)} shows a demonstration of this package.
-@end defvr
 
 @c THIS IS VERY VAGUE. JUST WHAT DOES THIS DO?
 @c SOME EXAMPLES WOULD HELP HERE
@@ -186,12 +189,15 @@ especially useful when the expressions to be summed are very large.
 @c Adapted from functs.usg ----------------------
 
 @c conjugate already described in doc/info/Matrices.texi
+@subsection Package functs
 
 @deffn {Function} rempart (@var{expr}, @var{n})
 Removes part @var{n} from the expression @var{expr}.
 
 If @var{n} is a list of the form @code{[@var{l}, @var{m}]}
 then parts @var{l} thru @var{m} are removed.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} wronskian ([@var{f_1}, ..., @var{f_n}], @var{x})
@@ -202,30 +208,42 @@ or expressions in the variable @var{x}.
 
 The determinant of the Wronskian matrix is the Wronskian determinant of the set of functions.
 The functions are linearly dependent if this determinant is zero.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @c adjoint already described in doc/info/Matrices.texi
 
 @deffn {Function} tracematrix (@var{M})
 Returns the trace (sum of the diagonal elements) of matrix @var{M}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
-@deffn {Function} rational (z)
+@deffn {Function} rational (@code{z})
 Multiplies numerator and denominator of @var{z} by the complex conjugate of denominator,
 thus rationalizing the denominator.
 Returns canonical rational expression (CRE) form if given one, else returns general form.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
-@deffn {Function} logand (x,y)
+@deffn {Function} logand (@code{x},@code{y})
 Returns logical (bit-wise) "and" of arguments x and y.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
-@deffn {Function} logor (x,y)
+@deffn {Function} logor (@code{x},@code{y})
 Returns logical (bit-wise) "or" of arguments x and y.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
-@deffn {Function} logxor (x,y)
+@deffn {Function} logxor (@code{x},@code{y})
 Returns logical (bit-wise) exclusive-or of arguments x and y.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @c uprobe calls ?uprobe and assumes file is a list => obsolete, not common lisp
@@ -235,6 +253,8 @@ Returns logical (bit-wise) exclusive-or of arguments x and y.
 @deffn {Function} nonzeroandfreeof (@var{x}, @var{expr})
 Returns @code{true} if @var{expr} is nonzero and @code{freeof (@var{x}, @var{expr})} returns @code{true}.
 Returns @code{false} otherwise.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} linear (@var{expr}, @var{x})
@@ -242,6 +262,8 @@ When @var{expr} is an expression linear in variable @var{x},
 @code{linear} returns @code{@var{a}*@var{x} + @var{b}} where @var{a} is nonzero,
 and @var{a} and @var{b} are free of @var{x}.
 Otherwise, @code{linear} returns @var{expr}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} quadratic (@var{expr}, @var{x})
@@ -249,6 +271,8 @@ When @var{expr} is an expression quadratic in variable @var{x},
 @code{quadratic} returns @code{@var{a}*@var{x}^2 + @var{b}*x + @var{c}} where @var{a} is nonzero,
 and @var{a}, @var{b}, and @var{c} are free of @var{x}.
 Otherwise, @code{quadratic} returns @var{expr}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} gcdivide (@var{p}, @var{q})
@@ -258,6 +282,8 @@ and returns the ratio of the results.
 
 When @code{takegcd} is @code{false},
 @code{gcdivide} returns the ratio @code{@var{p}/@var{q}}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @c lcm already described in doc/info/Number.texi
@@ -265,76 +291,173 @@ When @code{takegcd} is @code{false},
 @deffn {Function} arithmetic (@var{a}, @var{d}, @var{n})
 Returns the @var{n}-th term of the arithmetic series
 @code{@var{a}, @var{a} + @var{d}, @var{a} + 2*@var{d}, ..., @var{a} + (@var{n} - 1)*@var{d}}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} geometric (@var{a}, @var{r}, @var{n})
 Returns the @var{n}-th term of the geometric series
 @code{@var{a}, @var{a}*@var{r}, @var{a}*@var{r}^2, ..., @var{a}*@var{r}^(@var{n} - 1)}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} harmonic (@var{a}, @var{b}, @var{c}, @var{n})
 Returns the @var{n}-th term of the harmonic series
 @code{@var{a}/@var{b}, @var{a}/(@var{b} + @var{c}), @var{a}/(@var{b} + 2*@var{c}), ..., @var{a}/(@var{b} + (@var{n} - 1)*@var{c})}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} arithsum (@var{a}, @var{d}, @var{n})
 Returns the sum of the arithmetic series from 1 to @var{n}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} geosum (@var{a}, @var{r}, @var{n})
 Returns the sum of the geometric series from 1 to @var{n}.  If @var{n} is
-infinity (@code{inf}) then a sum is finite only if the value
-of @var{r} is not equal to 1.
+infinity (@code{inf}) then a sum is finite only if the absolute value
+of @var{r} is less than 1.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} gaussprob (@var{x})
 Returns the Gaussian probability function
 @code{%e^(-@var{x}^2/2) / sqrt(2*%pi)}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} gd (@var{x})
 Returns the Gudermannian function
 @code{2 * atan(%e^@var{x} - %pi/2)}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} agd (@var{x})
 Returns the inverse Gudermannian function
 @code{log (tan (%pi/4 + x/2)))}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} vers (@var{x})
 Returns the versed sine @code{1 - cos (x)}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} covers (@var{x})
 Returns the coversed sine @code{1 - sin (@var{x})}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} exsec (@var{x})
 Returns the exsecant @code{sec (@var{x}) - 1}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @deffn {Function} hav (@var{x})
 Returns the haversine @code{(1 - cos(x))/2}.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH BINOMIAL COEFFICIENT; CUT IT ??
 @deffn {Function} combination (@var{n}, @var{r})
 Returns the number of combinations of @var{n} objects
 taken @var{r} at a time.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @c REDUNDANT WITH PERMUTATIONS FUNCTION IN NSET; CUT IT ??
 @deffn {Function} permutation (@var{n}, @var{r})
 Returns the number of permutations of @var{r} objects
 selected from a set of @var{n} objects.
+
+To use this function write first @code{load(functs)}.
 @end deffn
 
 @c Adapted from ineq.usg ----------------------
 @c THIS PACKAGE IS INTERESTING BUT THIS TEXT NEEDS WORK AND EXAMPLES
-@defvr {Add on package} ineq
+@subsection Package ineq
+
 The @code{ineq} package contains simplification rules
 for inequalities.
+
+Example session:
+
+@c ===beg===
+@c load(ineq)$
+@c a>=4;  /* a sample inequality */
+@c (b>c)+%; /* add a second, strict inequality */
+@c 7*(x<y); /* multiply by a positive number */
+@c -2*(x>=3*z); /* multiply by a negative number */
+@c (1+a^2)*(1/(1+a^2)<=1); /* Maxima knows that 1+a^2 > 0 */
+@c assume(x>0)$ x*(2<3); /* assuming x>0 */
+@c a>=b; /* another inequality */
+@c 3+%; /* add something */
+@c %-3; /* subtract it out */
+@c a>=c-b; /* yet another inequality */
+@c b+%; /* add b to both sides */
+@c %-c; /* subtract c from both sides */
+@c -%;  /* multiply by -1 */
+@c (z-1)^2>-2*z; /* determining truth of assertion */
+@c expand(%)+2*z; /* expand this and add 2*z to both sides */
+@c %,pred;
+@c ===end===
+@example
+(%i1) load(ineq)$
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+Warning: Putting rules on '+' or '*' is inefficient, and may not work.
+(%i2) a>=4;  /* a sample inequality */
+(%o2)                               a >= 4
+(%i3) (b>c)+%; /* add a second, strict inequality */
+(%o3)                            b + a > c + 4
+(%i4) 7*(x<y); /* multiply by a positive number */
+(%o4)                              7 x < 7 y
+(%i5) -2*(x>=3*z); /* multiply by a negative number */
+(%o5)                           - 2 x <= - 6 z
+(%i6) (1+a^2)*(1/(1+a^2)<=1); /* Maxima knows that 1+a^2 > 0 */
+                                        2
+(%o6)                             1 <= a  + 1
+(%i7) assume(x>0)$ x*(2<3); /* assuming x>0 */
+(%o7)                              2 x < 3 x
+(%i8) a>=b; /* another inequality */
+(%o8)                               a >= b
+(%i9) 3+%; /* add something */
+(%o9)                           a + 3 >= b + 3
+(%i10) %-3; /* subtract it out */
+(%o10)                              a >= b
+(%i11) a>=c-b; /* yet another inequality */
+(%o11)                            a >= c - b
+(%i12) b+%; /* add b to both sides */
+(%o12)                            b + a >= c
+(%i13) %-c; /* subtract c from both sides */
+(%o13)                         - c + b + a >= 0
+(%i14) -%;  /* multiply by -1 */
+(%o14)                          c - b - a <= 0
+(%i15) (z-1)^2>-2*z; /* determining truth of assertion */
+                                      2
+(%o15)                         (z - 1)  > - 2 z
+(%i16) expand(%)+2*z; /* expand this and add 2*z to both sides */
+                                   2
+(%o16)                            z  + 1 > 0
+(%i17) %,pred;
+(%o17)                               true
+@end example
 
 Be careful about using parentheses
 around the inequalities: when the user types in @code{(A > B) + (C = 5)} the
@@ -378,12 +501,13 @@ rules in this package are:
 and you must enclose the rulename in quotes to refer to it, as
 in @code{remrule ("+", "+rule1")} to specifically remove the first rule on @code{"+"}
 or @code{disprule ("*rule2")} to display the definition of the second multiplicative rule.
-@end defvr
 
 @c lrats.usg: "lratsubst" and "fullratsubst" already in doc/info/Polynomials.texi
 
 @c Adapted from rducon.usg ----------------------
 @c THIS IS AN INTERESTING FUNCTION BUT THIS TEXT NEEDS WORK AND EXAMPLES
+@subsection Package rducon
+
 @deffn {Function} reduce_consts (@var{expr})
 Replaces constant subexpressions of @var{expr} with
 constructed constant atoms, saving the definition of all these
@@ -422,6 +546,8 @@ symbols to represent each constant subexpression found by @code{reduce_consts}.
 @c rncomb.usg: "rncombine" already in doc/info/Miscellaneous.texi
 
 @c Adapted from scifac.usg ----------------------
+@subsection Package scifac
+
 @deffn {Function} gcfac (@var{expr})
 @code{gcfac} is a factoring function that attempts to apply the same heuristics which
 scientists apply in trying to make expressions simpler.  @code{gcfac} is limited
@@ -451,26 +577,31 @@ compact pair-factored result.
 
 @c Adapted from sqdnst.usg ----------------------
 @c THIS FUNCTION IS INTERESTING BUT THIS TEXT NEEDS WORK. HOW DEEPLY CAN SQRT BE NESTED ??
+@subsection Package sqdnst
+
 @deffn {Function} sqrtdenest (@var{expr})
 Denests @code{sqrt} of simple, numerical, binomial surds, where possible.  E.g.
 
+@c ===beg===
+@c load (sqdnst)$
+@c sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
+@c sqrtdenest(%);
+@c ===end===
 @example
-(c1) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
-
-              sqrt(3)
-         sqrt(------- + 1)
-                 2
-(d1)   --------------------- 
-       sqrt(11 sqrt(2) - 12)
-
-(c2) sqrtdenest(%);
-
-          sqrt(3)   1
-          ------- + -
-             2      2
-(d2)     -------------
-            1/4    3/4
-         3 2    - 2
+(%i1) load (sqdnst)$
+(%i2) sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12);
+                                    sqrt(3)
+                               sqrt(------- + 1)
+                                       2
+(%o2)                        ---------------------
+                             sqrt(11 sqrt(2) - 12)
+(%i3) sqrtdenest(%);
+                                  sqrt(3)   1
+                                  ------- + -
+                                     2      2
+(%o3)                            -------------
+                                    1/4    3/4
+                                 3 2    - 2
 @end example
 
 Sometimes it helps to apply @code{sqrtdenest} more than once, on such as
