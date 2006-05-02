@@ -23,10 +23,10 @@ define_variable(sings,'sings,any)$
 
 define_variable(ode_routinelist,[],list)$
 
-EVAL_WHEN([BATCH,LOADFILE,translate],block(
+eval_when([batch,loadfile,translate],block(
 /* for DOE MACSYMA, the autoload properties are in max$disk:[ode]ode.lsp */
 if not status(feature,nil) or status(feature,cl)  then (
- ODE_ROUTINELIST:'[[[abel,lisp,dsk,ode],nonlin,nonlin1],
+ ode_routinelist:'[[[abel,lisp,dsk,ode],nonlin,nonlin1],
                    [[ricsol,lisp,dsk,ode],ricsol],
 		   [[diffac,lisp,dsk,ode],solfac],
 		   [[lapl,lisp,dsk,ode],diffsol],
@@ -44,14 +44,14 @@ if not status(feature,nil) or status(feature,cl)  then (
 		   [[hyp,fasl,dsk,ode],hgfred],
 		   [[remote,lisp,dsk,ell],run_remote],
 		   [[kamke,lisp,dsk,ode],kamke]],
- FOR I IN ODE_ROUTINELIST DO APPLY('setup_AUTOLOAD,I)),
+ for i in ode_routinelist do apply('setup_autoload,i)),
  sstatus(feature,"ode")))$
 
 
-EVAL_WHEN([BATCH,LOADFILE,translate],block([],
+eval_when([batch,loadfile,translate],block([],
 /*  for DOE MACSYMA, the autoload properties are in max$disk:[ode]ode.lsp */
 if   status(feature,cl)  then (
- ODE_ROUTINELIST:'[["maxima-source:maxima;abel",nonlin,nonlin1],
+ ode_routinelist:'[["maxima-source:maxima;abel",nonlin,nonlin1],
                    ["maxima-source:maxima;ricsol",ricsol],
 		   ["maxima-source:maxima;diffac",solfac],
 		   ["maxima-source:maxima;lapl",diffsol],
@@ -69,7 +69,7 @@ if   status(feature,cl)  then (
 		   ["maxima-source:maxima;hyp",hgfred],
 		   ["maxima-source:maxima;remote",run_remote],
 		   ["maxima-source:maxima;kamke",kamke]],
- FOR I IN ODE_ROUTINELIST DO APPLY('setup_AUTOLOAD,I)),
+ for i in ode_routinelist do apply('setup_autoload,i)),
  sstatus(feature,"ode")))$
  
 /* This intitializes the environment for TRANSLATION,
@@ -80,11 +80,11 @@ WE ARE TRANSLATING AWAY!
 ",?TYO))$ */
 
 
-ODEaux(eq,oldy,oldx,option):=block([dd,ans,solutionlist,x,y],
+odeaux(eq,oldy,oldx,option):=block([dd,ans,solutionlist,x,y],
         eq:subsf(eq,oldy,oldx),
     return(subst(oldy,y,subst(oldx,x,solveode(eq,y,x,option)))))$
     
-SOLVEODE(eq,y,x,option):=block([dd,ans,solutionlist],
+solveode(eq,y,x,option):=block([dd,ans,solutionlist],
     eq:eqsimp(eq),
     dd:derivdegree(eq,y,x),
 
@@ -174,19 +174,19 @@ if(hipow(de,y)#1) then return(false),
 
 /*Simplifies an ODE removes factors common to all terms*/
 
-EQSIMP(de):=block([inflag:true],
+eqsimp(de):=block([inflag:true],
     de:factor(lhs(de)-rhs(de)),
     if(atom(de) or not(inpart(de,0)="*")) then return(de=0),
     de:map(lambda([v],if freeof(nounify('diff),v) then 1 else v),de),
     return(de=0))$
-SUBSF(eq,oldy,oldx):=block([%%newy,y,x],
+subsf(eq,oldy,oldx):=block([%%newy,y,x],
     depends(y,x),
     eq:subst(%%newy,oldy,eq),
     eq:subst(x,oldx,eq),
     eq:subst(y,%%newy,eq),
     return(eq))$
 
-RICCATI_TEST(de,y,x):=block([q],de:expand(de),
+riccati_test(de,y,x):=block([q],de:expand(de),
     if hipow(de,'diff(y,x))#1 then return(false),
     if ((q:lopow(de,'diff(y,x)))#1 and  q#0) then return(false),
     if hipow(de,y)=2 then return(true) else return(false))$

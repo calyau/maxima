@@ -63,7 +63,7 @@ degenc(w1,w2,w3):=block([wc1,wc2,dwc1,dwc2],
 ldf6(i):=block([],if ldsw[6,1]#y then (ldsw[6,i]:y,
    if i=1 then load(pdvt60)))$
 
-LODEsave([pdvtr,fasl],dvtexp,dvtmxp,degenc,dvtrns,eqpt6,ldf6);
+lodesave([pdvtr,fasl],dvtexp,dvtmxp,degenc,dvtrns,eqpt6,ldf6);
 
 dvt60(dum):=block([],if tp=11 then vtr:y=u/cos(x), 
    if tp=12 then vtr:y=u/sin(x), if tp=13 then vtr:y=sqrt(cos(x))*u,
@@ -74,7 +74,7 @@ dvt60(dum):=block([],if tp=11 then vtr:y=u/cos(x),
       if freeof(log(x),w1*q1+w2*q2+w3) or w2=0 then 
       (vtr:y=log(x)*u,neq:dux2+w1*dux1+w2*u=w3, return(neq))))$
  
-LODEsave([pdvt60,fasl],dvt60);
+lodesave([pdvt60,fasl],dvt60);
 
 gptm(wb,wc):=block([],rptm:f,
    if gpt078(wb,wc)#f then go(ll),
@@ -97,5 +97,5 @@ gpt442(wb,wc):=block([], if wc=0 then return(f),
    w1:integrate(wf,x), w3:%e^(-w1), w4:integrate(w3,x), 
    y1:w2,y2:y1*w4, ys:k1*y1+k2*y2)$
 
-LODEsave([pgptm,fasl],gptm,gpt078,gpt128,gpt442);
+lodesave([pgptm,fasl],gptm,gpt078,gpt128,gpt442);
 

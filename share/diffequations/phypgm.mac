@@ -52,7 +52,7 @@ ldf3(i):=block([], if ldsw[3,i]#y then (ldsw[3,i]:y,
    if i=4 then load(phyp25) else
    if i=5 then load(psolh) ))$
 
-LODESave([phypgm,fasl],svhypr,infosum,excrow,ssolve,pfuncthg,
+lodesave([phypgm,fasl],svhypr,infosum,excrow,ssolve,pfuncthg,
         oddintp,exc1c,seekodd,replcompform,ldf3);
 
 /* the sum has no parameter */
@@ -97,7 +97,7 @@ elmrephg2(m):=block([w1,w2,w3,w4,w5],
    (w6:k1+k2*'integrate(w3,x), w7:w1* diff(w2*w6,x,m-1), ys:expand(w7),
     y1:coeff(ys,k1,1), y2:coeff(ys,k2,1)), return(ys)  )$
 
-LODESave([pnopm,fasl],nopmt,minabssum,excroots,elmrephg1,elmrephg2);
+lodesave([pnopm,fasl],nopmt,minabssum,excroots,elmrephg1,elmrephg2);
   
 /* the sum has parameters */
 haspmts(dum):=block([], y0:1, plist:listofpars(eq),
@@ -191,7 +191,7 @@ clsort(dum):=block([], for i:1 thru 3 do la[i,4]:3,
  
 nmod(n,k):=block([],if n>k then return(n-k) else return(n))$
 
-LODESave([phghp,fasl],haspmts,pfdivide,listofpars,contratn,
+lodesave([phghp,fasl],haspmts,pfdivide,listofpars,contratn,
    checkcontratn,mklntr,psdmint,sortratn,exccolumns,
    exc2c,exchla,wlength,hgstdd,make01p,clsort,nmod);
 
@@ -222,7 +222,7 @@ svlgdre(v):=block([],
        vtr:t=lfrtr, ys:y0*y[L](v,t), 
        print("y=",ys,"where t=",lfrtr),return(ys)))$
 
-LODESave([psleg,fasl],svlgdre,gsvlgdre);
+lodesave([psleg,fasl],svlgdre,gsvlgdre);
 
 caseof22(dum):=block([], ans:no,
   mcdla:ratsimp(-dal[1]+1/2), 
@@ -234,7 +234,7 @@ caseof22(dum):=block([], ans:no,
     ys:y0*'diff(k1*wy1+k2*wy2,x,mcdla),print("y=",ys),return(ys))
   else return(f))$
 
-LODESave([phyp25,fasl],caseof22);
+lodesave([phyp25,fasl],caseof22);
 
 gsvhg(dum):=block([E,K], ys:f, remvalue(E,K),
   if la[1,0]=0 and la[2,0]=1 and la[1,1]=0 and la[2,1]=0 then 
@@ -245,4 +245,4 @@ gsvhg(dum):=block([E,K], ys:f, remvalue(E,K),
     print("where E and K are elliptic functions of 1st and 2nd kind."))
     else print("y=",ys), return(ys)))$
 
-LODESave([psolh,fasl],gsvhg);
+lodesave([psolh,fasl],gsvhg);

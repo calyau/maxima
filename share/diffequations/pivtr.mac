@@ -45,7 +45,7 @@ ldf5(i):=block([],if ldsw[5,i]#y then (ldsw[5,i]:y,
   if i=11 then load(ptrpow) else
   if i=12 then load(ptrsym) ))$
 
-LODESave([pivtr,fasl],ivtrns,dptarg,listofargs,farg,ldf5);
+lodesave([pivtr,fasl],ivtrns,dptarg,listofargs,farg,ldf5);
 
 ivexctrig(wb,wc,wr):=block([wexp,wb1,wc1],
    if tp=15 or tp=16 then (ldf5(1),tivasin(wc,wr)) else
@@ -60,7 +60,7 @@ ivexctrig(wb,wc,wr):=block([wexp,wb1,wc1],
    if tp= 91 or tp=92 then (ldf5(9),tivln(wb,wc,wr,axb)),
    return(neq))$
 
-LODESave([pivtr2,fasl],ivexctrig);
+lodesave([pivtr2,fasl],ivexctrig);
 
 trtrig(wb,wc,wr):=block([],fp1:wb-sin(x)/cos(x),fp2:wb-cos(x)/sin(x),
    if not freeof(tan,cot,wb*q1+wc) or freeof(sin,cos,fp1) 
@@ -91,7 +91,7 @@ tivsc(i,wb,wc):=block([wb1,wc1,wt],wt:1-t^2, if i=1 then
    cnd[i]:wb1*q+wc1,if freeof(sin,cos,x,cnd[i]) then
    return(calca(wb1,wc1,t)) else return(t^99))$
 
-LODESave([ptrtrg,fasl],trtrig,prptrg,slctrg,tivsc);
+lodesave([ptrtrg,fasl],trtrig,prptrg,slctrg,tivsc);
 
 eqpt7(wb,wc,wr):=block([], 
   if freeof(sin,cos,fp1) then (fq:-1/2-sin(x)^2/(4*cos(x)^2)
@@ -105,7 +105,7 @@ eqpt7(wb,wc,wr):=block([],
       (fp:wb+2*ws*tc,if (dc=1 and coeff(wc,tc,1)=-fp*ws) or dc=0 then
                      (tp:10+i,fq:coeff(wc,tc,0)+1),return(t))))$
 
-LODESave([peqp7,fasl],eqpt7);
+lodesave([peqp7,fasl],eqpt7);
 
 trhpb(wb,wc,wr):=block([],
    wb1:prphpb(wb),wc1:prphpb(wc),wt[1]:t^2+1,wt[2]:t^2-1,
@@ -132,7 +132,7 @@ tivhpb(i,wb,wc):=block([wb1,wc1], if i=1 then
    cnd[i]:wb1*q+wc1,if freeof(sinh,cosh,x,cnd[i]) then
    return(calca(wb1,wc1,t)) else return(t^99))$
 
-LODESave([ptrhpb,fasl],trhpb,prphpb,slchpb,tivhpb);
+lodesave([ptrhpb,fasl],trhpb,prphpb,slchpb,tivhpb);
 
 tivexp(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt],exptsubst:true,
    wb1:subst(t,%e^x,wb),wc1:subst(t,%e^x,wc),wr1:subst(t,%e^x,wr),
@@ -140,7 +140,7 @@ tivexp(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt],exptsubst:true,
    exptsubst:false,neq:dyt2+bt*dyt1+ct*y=rt, 
    if freeof(%e,x,neq) then (vtr:t=%e^x,return(t)) else neq:f)$
 
-LODESave([ptrexp,fasl],tivexp);
+lodesave([ptrexp,fasl],tivexp);
 
 tivlog(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt],
    wb1:subst(%e^t,x,x*wb),
@@ -156,7 +156,7 @@ tivlog(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt],
    if freeof(x,neq) then (vtr:t=x*log(x)-x,return(t))
                           else return(f) )$
 
-LODESave([prtlog,fasl],tivlog);
+lodesave([prtlog,fasl],tivlog);
 
 tivasin(wc,wr):=block([],
    if tp=15 then neq:trasinh(wc,wr) else
@@ -167,7 +167,7 @@ trasinh(wc,wr):=block([],alpha:sqrt(wa2),
 
 trasin(wc,wr):=block([],vtr:x=sin(x),neq:dyt2-zc*y=0)$
 
-LODESave([ptrasin,fasl],tivasin,trasinh,trasin);
+lodesave([ptrasin,fasl],tivasin,trasinh,trasin);
 
 tivinv(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt],
    if invsw=y then return(f),
@@ -175,14 +175,14 @@ tivinv(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt],
    bt:ratsimp((2*t-wb1)/t^2),ct:ratsimp(wc1/t^4),rt:ratsimp(wr1/t^4),
    neq:dyt2+bt*dyt1+ct*y=rt, vtr:t=1/x, invsw:y)$
 
-LODESave([ptrinv,fasl],tivinv);
+lodesave([ptrinv,fasl],tivinv);
 
 tivsqrt(wb,wc,wr):=block([wb1,wc1,wr1,bt,ct,rt], vtr:t=sqrt(x),
    wb1:subst(t^2,x,wb),wc1:subst(t^2,x,wc),wr1:subst(t^2,x,wr),
    bt:ratsimp(2*t*wb1-1/t),ct:ratsimp(wc1*4*t^2),rt:ratsimp(wr1*4*t^2),
    neq:dyt2+bt*dyt1+ct*y=rt, neq:subst(t,abs(t),neq))$
 
-LODESave([ptrsqr,fasl],tivsqrt);
+lodesave([ptrsqr,fasl],tivsqrt);
 
 /* tivln do t=pa*(x-alpha) */
 tivln(wb,wc,wr,x1):=block([wb1,wc1,wr1,bt,ct,rt,x2,ws],
@@ -193,16 +193,16 @@ tivln(wb,wc,wr,x1):=block([wb1,wc1,wr1,bt,ct,rt,x2,ws],
    neq:dyt2+bt*dyt1+ct*y=rt, 
    if tp=92 then neq:ratsubst(ob,oa,neq))$
 
-LODESave([ptrln,fasl],tivln);
+lodesave([ptrln,fasl],tivln);
 
 trpow(r):=block([b1,c1],vtr:t=x^r,b1:ratsimp((bt+r-1)/(r*t)),
    c1:ratsimp(ct/(r^2*t^2)),d1:ratsimp(rt/(r^2*t^2)),
    neq:dyt2+b1*dyt1+c1*y=d1)$
 
-LODESave([ptrpow,fasl],trpow);
+lodesave([ptrpow,fasl],trpow);
 
 trsymx(pt,qt,i):=block([], if i=1 then
    (vtr:(x+1/x)/2,neq:(t^2-1)*dyt2+t*dyt1+qt*y=0) else
    (vtr:t=log(x),qt:subst(cosh(2*t),t,qt),neq:dyt2+qt*y=0))$
 
-LODESave([ptrsym,fasl],trsymx);
+lodesave([ptrsym,fasl],trsymx);
