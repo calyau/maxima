@@ -1168,7 +1168,8 @@
 	    ;; We need to do something better here.  Look through
 	    ;; product to see if there are any terms of the form
 	    ;; factor^k, and adjust the exponent.
-	    
+
+	    ;;(format t "tms mnump factor = ~A~%" factor)
 	    ;;(format t "tms product = ~A~%" product)
 	    (let ((expo nil))
 	      (do ((p (cdr product) (cdr p)))
@@ -1176,11 +1177,20 @@
 		;;(format t "p = ~A~%" p)
 		(when (and (mexptp (car p))
 			   (integerp (second (car p)))
+			   ;;(integerp factor)
 			   (setf expo (exponent-of factor (second (car p)))))
-		  (let ((temp (list '(mexpt) (second (car p))
-				    (add expo (third (car p))))))
+		  (let* ((q (div factor (power (second (car p)) expo)))
+			 (temp (mul q (list '(mexpt)
+					    (second (car p))
+					    (add expo (third (car p)))))))
 		    ;;(format t "temp = ~A~%" temp)
-		    (rplaca p temp)
+		    ;;(format t "p = ~A~%" p)
+		    ;;(format t "cdr p = ~A~%" (cdr p))
+		    (setf temp (append (list temp) (cdr p)))
+		    ;;(format t "new temp = ~A~%" temp)
+		    ;;(rplaca p temp)
+		    (rplacd p (cdr temp))
+		    (rplaca p (car temp))
 		    ;;(format t "mod p = ~A~%" p)
 		    )))
 	      (unless expo
@@ -1639,7 +1649,7 @@
   (unless (and (mnump m)
 	       (ratgreaterp m 0)
 	       (integerp base)
-	       (not (eql base 1)))
+	       (not (eql (abs base) 1)))
     (return-from exponent-of nil))
   (cond ((ratgreaterp 1 m)
 	 ;; m < 1, so change the problem to finding the exponent for
@@ -1655,15 +1665,19 @@
 	 ;; Main case.  Just compute base^k until base^k >= m.  Then
 	 ;; check if they're equal.  If so, we have the exponent.
 	 ;; Otherwise, give up.
-	 (let ((expo 0)
-	       (power 1))
-	   (loop while (< power m)
-	      do
-	      (setf power (* power base))
-	      (incf expo))
-	   (if (= power m)
-	       expo
-	       nil)))))
+	 (let ((expo 0))
+	   (when (integerp m)
+	     (loop
+		(multiple-value-bind (q r)
+		    (floor m base)
+		  (cond ((zerop r)
+			 (setf m q)
+			 (incf expo))
+			(t
+			 (return nil))))))
+	   (if (zerop expo)
+	       nil
+	       expo)))))
 
 (defun timesin (x y w)			; Multiply X^W into Y
   (prog (fm temp z check u expo)
@@ -1694,6 +1708,7 @@
 	    ;;(format t "start:  null (cdr fm).  Go to less~%")
 	    (go less))
 	   ((mexptp (cadr fm))
+	    ;;(format t "start: mexptp fm  = T~%")
 	    (cond ((alike1 (car x) (cadadr fm))
 		   (cond ((zerop1 (setq w (plsk (caddr (cadr fm)) w)))
 			  (go del))
@@ -1727,12 +1742,24 @@
 		   (go gr)))
 	    (go less))
 	   ((alike1 (car x) (cadr fm))
+	    ;;(format t "start: alike1 go equ~%")
 	    (go equ))
 	   ((maxima-constantp (car x))
-	    (if (great temp (cadr fm)) (go gr)))
+	    #+nil
+	    (progn
+	      (format t "start: maxima-constantp~%")
+	      (format t "       temp = ~A~%" temp))
+	    (when (great temp (cadr fm))
+	      ;;(format t "  go gr~%")
+	      (go gr)))
 	   ((great (car x) (cadr fm))
+	    ;;(format t "greater, go gr~%")
 	    (go gr)))
     less
+     #+nil
+     (progn
+       (format t "LESS: x = ~A~%" x)
+       (format t "     fm = ~A~%" fm))
      (cond ((and (eq (car x) '$%i)
 		 (fixnump w)) 
 	    (go %i))
@@ -1777,14 +1804,17 @@
 	    (go less1))
 	   ((ratnump (car fm))
 	    ;; Multiplying a^k * rational.
+	    ;;(format t "timesin a^k * rat~%")
 	    (let ((numerator (second (car fm)))
 		  (denom (third (car fm))))
+	      ;; (format t "numerator = ~A~%" numerator)
 	      (setf expo (exponent-of numerator (car x)))
 	      (when expo
 		;; We have a^m*a^k.
 		(setq temp (list '(mexpt) (car x) (add w expo)))
 		;; Set fm to have 1/denom term.
-		(setf fm (rplaca fm (inv denom)))
+		(setf fm (rplaca fm (mul (div numerator (power (car x) expo))
+					 denom)))
 		;; Add in the a^(m+k) term.
 		(rplacd fm (cons temp (cdr fm)))
 		(return (cdr fm)))
@@ -1793,7 +1823,9 @@
 		;; We have a^(-m)*a^k.
 		(setq temp (list '(mexpt) (car x) (add w expo)))
 		;; Set fm to have the numerator term.
-		(setf fm (rplaca fm numerator))
+		(setf fm (rplaca fm (div numerator
+					 (div denom
+					      (power (car x) (- expo))))))
 		;; Add in the a^(k-m) term.
 		(rplacd fm (cons temp (cdr fm)))
 		(return (cdr fm)))
@@ -1808,7 +1840,7 @@
 	    ;; Got something like a*a^k, where a is a number.
 	    ;;(format t "go a*a^k~%")
 	    (setq temp (list '(mexpt) (car x) (add w expo)))
-	    (setf fm (rplaca fm 1))
+	    (setf fm (rplaca fm (div (car fm) (power (car x) expo))))
 	    (return (cdr (rplacd fm (cons temp (cdr fm))))))
 	   (t
 	    ;;(format t "default less cond~%")
