@@ -282,7 +282,8 @@
 	 (displa msg) 
 	 (princ *prompt-suffix*)
 	 (mterpri)))
-  (mread-noprompt *query-io* nil))
+  (let ((res (mread-noprompt *query-io* nil)))
+       (princ *general-display-prefix*) res))
 
 
 (defmfun $read (&rest l)
