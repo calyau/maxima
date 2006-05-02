@@ -618,66 +618,388 @@ Examples:
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-@deffn {Function} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
-Assigns the atom @var{a_i} the flag @var{f_i}.
-The @var{a_i}'s and @var{f_i}'s may also be lists of atoms and flags respectively in which
-case each of the atoms gets all of the properties.
+@deffn {Function} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+Assigns the atom or list of atoms @var{a_i} the property or list of properties @var{p_i}.
+When @var{a_i} and/or @var{p_i} are lists,
+each of the atoms gets all of the properties.
 
 @code{declare} quotes its arguments.
 @code{declare} always returns @code{done}.
 
-The possible flags and their meanings are:
+@code{declare} recognizes the following properties:
 
-@code{constant} makes @var{a_i} a constant as is @code{%pi}.
+@table @asis
+@item
+@code{evfun}
+Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
+is applied when @var{a_i} appears as a flag argument of @code{ev}.
+See @code{evfun}.
 
-@code{mainvar} makes @var{a_i} a @code{mainvar}.  The ordering scale for atoms: numbers <
-constants (e.g. @code{%e}, @code{%pi}) < scalars < other variables < mainvars.
+@item
+@code{evflag}
+Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to @code{true}
+during the execution of @code{ev} when @var{a_i} appears as a flag argument of @code{ev}.
+See @code{evflag}.
 
-@code{scalar} makes @var{a_i} a scalar.
+@c OBSOLETE @code{special}
 
-@code{nonscalar} makes @var{a_i} behave as does a list or matrix with respect to
-the dot operator.
+@c OBSOLETE @code{nonarray}
 
-@code{noun} makes the function @var{a_i} a noun so that it won't be evaluated
-automatically.
+@item
+@code{bindtest}
+Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
 
-@code{evfun} makes @var{a_i} known to the @code{ev} function so that it will get applied
-if its name is mentioned.  See @code{evfun}.
+@item
+@code{noun}
+Tells Maxima to parse @var{a_i} as a noun. 
+The effect of this is to replace instances of @var{a_i} with @code{'@var{a_i}}
+or @code{nounify (@var{a_i})}, depending on the context.
 
-@code{evflag} makes @var{a_i} known to the @code{ev} function so that it will be bound to
-@code{true} during the execution of @code{ev} if it is mentioned.  See @code{evflag}.
+@item
+@code{constant}
+Tells Maxima to consider @var{a_i} a symbolic constant.
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
-@code{bindtest} causes @var{a_i} to signal an error if it ever is used in a
-computation unbound.
+@item
+@code{scalar}
+Tells Maxima to consider @var{a_i} a scalar variable.
 
-Maxima currently recognizes and uses the following features of
-objects:
+@item
+@code{nonscalar}
+Tells Maxima to consider @var{a_i} a nonscalar variable.
+The usual application is to declare a variable as a symbolic vector or matrix.
 
-@c THIS LIST AND NEXT ONE COMPRISE features !!!
-@c SHOULD GIVE A REFERENCE TO features INSTEAD OF LISTING !!!
-@c NEED TO CHECK THIS LIST !!!
+@item
+@code{mainvar}
+Tells Maxima to consider @var{a_i} a "main variable" (@code{mainvar}).
+@code{ordergreatp} determines the ordering of atoms as follows:
+
+(main variables) > (other variables) > (scalar variables) > (constants) > (numbers)
+
+@item
+@code{alphabetic}
+Tells Maxima to recognize @var{a_i} as an alphabetic character.
+
+@item
+@code{feature}
+Tells Maxima to recognize @var{a_i} as the name of a feature.
+Other atoms may then be declared to have the @var{a_i} property.
+
+@item
+@code{rassociative}, @code{lassociative}
+
+@item
+@code{nary}
+
+@item
+@code{antisymmetric}, @code{symmetric}, @code{commutative}
+
+@item
+@code{oddfun}, @code{evenfun},
+
+@item
+@code{outative}
+
+@item
+@code{multiplicative}
+
+@item
+@code{additive}
+
+@item
+@code{linear}
+
+@end table
+
+Maxima recognizes the following features of objects:
+
+@c THIS LIST AND THE NEXT COMPRISE $FEATURES
 @example
-even, odd, integer, rational, irrational, real, imaginary,
-and complex
+integer, noninteger, even, odd, rational, irrational, real,
+imaginary, complex
 @end example
 
-The useful features of functions include:
+Maxima recognizes the following features of functions:
 
-@c NEED TO CHECK THIS LIST !! IS IT COMPREHENSIVE ??
 @example
-increasing,
-decreasing, oddfun (odd function), evenfun (even function),
-commutative (or symmetric), antisymmetric, lassociative and
-rassociative
+analytic, increasing, decreasing, oddfun, evenfun, posfun,
+commutative, lassociative, rassociative, symmetric,
+antisymmetric, integervalued
 @end example
-
-@c WHAT DOES THIS MEAN EXACTLY ??
-The @var{a_i} and @var{f_i} may also be lists of objects or features.
 
 @code{featurep (@var{object}, @var{feature})}
-determines if @var{object} has been declared to have @var{feature}.
+returns @code{true} if @var{object} has been declared to have @var{feature}.
 
 See also @code{features}.
+
+Examples:
+
+@code{evfun} and @code{evflag} declarations.
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+@code{bindtest} declaration.
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+@code{noun} declaration.
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+@code{constant}, @code{scalar}, @code{nonscalar}, and @code{mainvar} declarations.
+@c ===beg===
+@c declare (bb, constant);
+@c declare (cc, scalar);
+@c declare (dd, nonscalar);
+@c declare (ee, mainvar);
+@c ===end===
+@example
+@end example
+
+@code{alphabetic} declaration.
+@c ===beg===
+@c xx\~yy : 1729;
+@c declare ("~", alphabetic);
+@c xx~yy + yy~xx + ~xx~~yy~;
+@c ===end===
+@example
+(%i1) xx\~yy : 1729;
+(%o1)                         1729
+(%i2) declare ("~", alphabetic);
+(%o2)                         done
+(%i3) xx~yy + yy~xx + ~xx~~yy~;
+(%o3)                ~xx~~yy~ + yy~xx + 1729
+@end example
+
+@code{feature} declaration.
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+@code{rassociative} and @code{lassociative} declarations.
+@c ===beg===
+@c declare (F, rassociative);
+@c declare (G, lassociative);
+@c ===end===
+@example
+@end example
+
+@code{nary} declaration.
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+@code{symmetric} and @code{antisymmetric} declarations.
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+@code{oddfun} and @code{evenfun} declarations.
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+@code{outative} declaration.
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+@code{multiplicative} declaration.
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+@code{additive} declaration.
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+@code{linear} declaration.
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end example
 
 @end deffn
 
