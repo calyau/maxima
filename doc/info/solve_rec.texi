@@ -79,9 +79,10 @@ So the general solution is
 @end deffn
 
 @defvr {Option variable} simplify_products
+Default value: @code{true}
 
 If @code{simplify_products} is @code{true}, @code{solve_rec} will try to
-simplify products in result. The default value is @code{true}.
+simplify products in result.
 
 See also: @code{solve_rec}.
 
@@ -187,10 +188,10 @@ See also: @code{solve_rec}.
 @end deffn
 
 @defvr {Option variable} product_use_gamma
+Default value: code{true}
 
 When simplifying products, @code{solve_rec} introduces gamma function
-into the expression if @code{produce_use_gamma} is @code{true}. The default
-value is @code{true}.
+into the expression if @code{produce_use_gamma} is @code{true}.
 
 See also: @code{simplify_products}, @code{solve_rec}.
 
