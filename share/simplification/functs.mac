@@ -30,9 +30,6 @@ rational&&  rational(z):=block([n,d,cd,ratfac],
     d:rat(n/ratdisrep(d*cd)),
     if ratp(z) then d else ratdisrep(d))$
 
-oddp&&  oddp(x):=is(logand(x,1)#0)$
-	evenp(x):=is(logand(x,1)=0)$
-
 logical&&  logand(x,y):=?boole(6,x,y)$
 	logor(x,y):=?boole(7,x,y)$
 	logxor(x,y):=?boole(8,x,y)$
