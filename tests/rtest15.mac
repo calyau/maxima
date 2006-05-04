@@ -11,7 +11,8 @@ apropos('tr_optimize_max_loop);
 integrate(3^log(x),x);
 3^((1/log(3)+1)*log(x))/((1/log(3)+1)*log(3))$
 
-/* wester[1995] problem 84 - known failure - 7 april 2002 */
+/* wester[1995] problem 84 
+   Bug 541030 fixed 2006-02-27, rev 1.14 of src/sin.lisp */
 integrate(sqrt(x+1/x-2),x,0,1);
 4/3$
 
