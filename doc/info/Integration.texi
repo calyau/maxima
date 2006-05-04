@@ -965,10 +965,10 @@ $$\int_\infty^a {f(x) dx}$$
 @end tex
 
 @ifhtml
-@math{integrate (f(x), x, a, minf, inf)}
+@math{integrate (f(x), x, minf, inf)}
 @end ifhtml
 @ifinfo
-@math{integrate (f(x), x, a, minf, inf)}
+@math{integrate (f(x), x, minf, inf)}
 @end ifinfo
 @tex
 $$\int_{-\infty}^\infty {f(x) dx}$$
