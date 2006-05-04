@@ -188,7 +188,7 @@ See also: @code{solve_rec}.
 @end deffn
 
 @defvr {Option variable} product_use_gamma
-Default value: code{true}
+Default value: @code{true}
 
 When simplifying products, @code{solve_rec} introduces gamma function
 into the expression if @code{produce_use_gamma} is @code{true}.
