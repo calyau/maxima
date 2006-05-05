@@ -118,11 +118,12 @@ It appears in LIMIT and DEFINT.......")
 	       (logcombed ()) (lhp? ()) ($logexpand t)
 	       (varlist ()) (ans ()) (genvar ()) (loginprod? ()) 
 	       (limit-answers ()) (limitp t) (simplimplus-problems ()))
-	   (declare (special lhcount behaviour-count-now exp var val *indicator taylored origval logcombed lhp?
+	   (declare (special lhcount behaviour-count-now exp var val *indicator
+			     taylored origval logcombed lhp?
 			     $logexpand varlist genvar loginprod? limitp ))
 	   (prog ()
 	      (if (not (or (= nargs 3) (= nargs 4) (= nargs 1))) (wna-err '$limit))
-;;;Is it a LIST of Things?
+	      ;; Is it a LIST of Things?
 	      (if (setq ans (apply #'limit-list (listify nargs))) (return ans))
 	      (setq exp1 (specrepcheck (arg 1)))
 	      (cond ((= nargs 1) (setq var 'foo val 0))
@@ -140,7 +141,7 @@ It appears in LIMIT and DEFINT.......")
 		     (setq dr (arg 4))))
 	      (cond ((and (atom var) (not (among var val)))
 		     (setq exp exp1))
-;;;Var is funny so make it a gensym.
+		    ;; Var is funny so make it a gensym.
 		    (t (let ((realvar var))
 			 (setq var (gensym))
 			 (setq exp (maxima-substitute var realvar exp1))
@@ -149,11 +150,12 @@ It appears in LIMIT and DEFINT.......")
 		  (if (limunknown exp)
 		      (return `((%limit) ,@(cons exp1 (cdr (listify nargs)))))))
 	      (setq varlist (ncons var) genvar nil origval val)
-;;;Limit is going to want to make its own assumptions about the variable
-;;;based on what the calling program knows. Old assumptions are saved
-;;;for restoration upon exit.
+	      ;; Limit is going to want to make its own assumptions
+	      ;; about the variable based on what the calling program
+	      ;; knows. Old assumptions are saved for restoration upon
+	      ;; exit.
 	      (if (not (= nargs 1)) (limit-context (arg 2) origval dr))
-;;;Transform the limit value.	     
+	      ;; Transform the limit value.	     
 	      (cond ((not (infinityp val))
 		     (if (not (zerop2 val))
 			 (setq exp (subin (m+ var val) exp)))
@@ -161,6 +163,8 @@ It appears in LIMIT and DEFINT.......")
 				     ((eq dr '$minus) '$zerob)
 				     (t 0)))
 		     (setq origval 0)))
+	      ;; Transform limits to minf to limits to inf by
+	      ;; replacing var with -var everywhere.
 	      (if (eq val '$minf) (setq val '$inf 
 					origval '$inf
 					exp (subin (m* -1 var) exp)))
@@ -168,7 +172,7 @@ It appears in LIMIT and DEFINT.......")
 			 (factosimp (tansc (lfibtophi
 					    (limitsimp ($expand (hide exp) 1 0)
 						       var))))))
-;;;Resimplify in light of new assumptions.
+	      ;; Resimplify in light of new assumptions.
 	      (setq d (catch 'mabs (mabs-subst exp var val)))
 	      (cond ((eq d 'both) (or (setq ans (both-side exp var val))
 				      (nounlimit exp var val)))
@@ -1774,6 +1778,7 @@ It appears in LIMIT and DEFINT.......")
 	   ((infinityp y)  (return y))
 	   (t (return (m+ sum y))))))
 
+;; Limit n/d, using heuristics on the order of growth.
 (defun sheur0 (n d) 
   (let ((orig-n n))
     (cond ((/#alike n d) 1)
@@ -1943,6 +1948,10 @@ It appears in LIMIT and DEFINT.......")
 	 (zerop2 (limit (cadar l) var val 'think))
 	 (return t))))
 
+;; Compare order of growth for R1 and R2.  The result is 0, -1, +1
+;; depending on the relative order of growth.  0 is returned if R1 and
+;; R2 have the same growth; -1 if R1 grows much more slowly than R2;
+;; +1 if R1 grows much more quickly than R2.
 (defun cpa (r1 r2 flag) 
   (let ((t1 r1)
 	(t2 r2))
@@ -1956,20 +1965,26 @@ It appears in LIMIT and DEFINT.......")
 	   (let ((lim-ans (limit1 t1 var val)))
 	     (cond ((not (memq lim-ans '($inf $minf $und $ind)))  0.)
 		   (t  1.))))
-	  (t (cond ((mtimesp t1)  (setq t1 (cdr t1)))
-		   (t (setq t1 (list t1))))
+	  (t
+	   ;; Make T1 and T2 be a list of terms that are multipled
+	   ;; together.
+	   (cond ((mtimesp t1)  (setq t1 (cdr t1)))
+		 (t (setq t1 (list t1))))
 	     (cond ((mtimesp t2)  (setq t2 (cdr t2)))
 		   (t (setq t2 (list t2))))
+	     ;; Find the strengths of each term of T1 and T2
 	     (setq t1 (mapcar (function istrength) t1))
 	     (setq t2 (mapcar (function istrength) t2))
+	     ;; Compute the max of the strengths of the terms.
 	     (let ((ans (ismax t1))
 		   (d (ismax t2)))
 	       (cond ((or (null ans) (null d)
 			  (eq (car ans) 'gen) (eq (car d) 'gen))  0.))
 	       (if (eq (car ans) 'var)  (setq ans (add-up-deg t1)))
 	       (if (eq (car d) 'var)  (setq d (add-up-deg t2)))
-					;Cant just just compare dominating terms if there are indeterm-
-					;inates present; e.g. X-X^2*LOG(1+1/X). So check for this.
+	       ;; Cant just just compare dominating terms if there are
+	       ;; indeterm-inates present; e.g. X-X^2*LOG(1+1/X). So
+	       ;; check for this.
 	       (cond ((or (zero-lim t1) 
 			  (zero-lim t2))  
 		      (cpa-indeterm ans d t1 t2 flag))
