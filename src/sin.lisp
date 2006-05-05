@@ -910,6 +910,7 @@
   (if (not (atom *trigarg*))
       (return-from monstertrig (rischint exp var)))
   (prog (*notsame* w a b y d) 
+     (declare (special *notsame*))
 	(cond
 	 ((supertrig exp) (go a))
 	 ((null *notsame*) (return nil))

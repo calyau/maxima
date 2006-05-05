@@ -428,3 +428,13 @@ multthru(factor(integrate(1/x^5,x,1,2^(1/78))));
  */
 integrate((1/2)*u^2-1/u^5,u,1,sqrt(2));
 sqrt(2)/3-17/48;
+
+/*
+ * These next two cases are regression tests.  Rev 1.11 of sin.lisp
+ * caused different (much messier) results to be returned.
+ */
+integrate(sin(2*x)/sec(x),x);
+-2*cos(x)^3/3;
+
+integrate(-a*sin(2*x)/(a*sin(x)^2+b),x);
+-log(a*sin(x)^2+b);
