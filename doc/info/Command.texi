@@ -217,6 +217,8 @@ to be evaluated.
 @item
 @code{eval} causes an extra post-evaluation of @var{expr} to occur. (See step (5)
 below.)
+@code{eval} may occur multiple times.
+For each instance of @code{eval}, the expression is evaluated again.
 @item
 @code{A} where @code{A} is an atom declared to be an evaluation flag (see @code{evflag})
 causes @code{A} to be bound to
@@ -286,7 +288,7 @@ any function calls in @var{expr} will be carried out after the variables in
 it are evaluated and that @code{ev(F(x))} thus may behave like @code{F(ev(x))}.
 
 @item
-If one of the arguments was @code{eval}, steps (3) and (4) are repeated.
+For each instance of @code{eval} in the arguments, steps (3) and (4) are repeated.
 @end enumerate
 
                      Examples
