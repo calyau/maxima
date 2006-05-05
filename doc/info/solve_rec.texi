@@ -220,7 +220,7 @@ See also: @code{solve_rec}.
 Default value: @code{true}
 
 When simplifying products, @code{solve_rec} introduces gamma function
-into the expression if @code{produce_use_gamma} is @code{true}.
+into the expression if @code{product_use_gamma} is @code{true}.
 
 See also: @code{simplify_products}, @code{solve_rec}.
 
