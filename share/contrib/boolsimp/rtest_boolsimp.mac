@@ -70,6 +70,18 @@ true;
 '(not (a or b));
 '((not a) and (not b));
 
+'(not (a or b or c or d or e));
+'((not a) and (not b) and (not c) and (not d) and (not e));
+
+'(not (a and b and c and d and e));
+'((not a) or (not b) or (not c) or (not d) or (not e));
+
+'(not (a or b and c or d and e));
+'((not a) and ((not b) or (not c)) and ((not d) or (not e)));
+
+'(not (a and not b or c and not d and not e));
+'(((not a) or b) and ((not c) or d or e));
+
 '(not a or b);
 '((not a) or b);
 
@@ -180,6 +192,18 @@ not a and b;
 
 not (a or b);
 '((not a) and (not b));
+
+not (a or b or c or d or e);
+'((not a) and (not b) and (not c) and (not d) and (not e));
+
+not (a and b and c and d and e);
+'((not a) or (not b) or (not c) or (not d) or (not e));
+
+not (a or b and c or d and e);
+'((not a) and ((not b) or (not c)) and ((not d) or (not e)));
+
+not (a and not b or c and not d and not e);
+'(((not a) or b) and ((not c) or d or e));
 
 not a or b;
 '((not a) or b);

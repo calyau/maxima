@@ -54,12 +54,14 @@
 ;  otherwise return not <simplified argument>
 ;
 ; Evaluation (MEVAL) of boolean expressions:
-; same as simplification except evaluating arguments instead of simplifying
-; (WHAT IS EFFECT OF PREDERROR HERE ??)
+; same as simplification except evaluating (MEVALP) arguments instead of simplifying
+; When prederror = true, complain if expression evaluates to something other than T / NIL
+; (otherwise return unevaluated boolean expression)
 ;
 ; Evaluation (MEVALP) of boolean expressions:
-; same as evaluation (MEVAL)
-; (WHAT IS EFFECT OF PREDERROR HERE ??)
+; same as simplification except evaluating (MEVALP) arguments instead of simplifying
+; When prederror = true, complain if expression evaluates to something other than T / NIL
+; (otherwise return unevaluated boolean expression)
 ;
 ; Simplification of "is" expressions:
 ; if argument simplifies to true/false, return true/false
@@ -390,12 +392,18 @@
            `((mleqp simp) ,@arg-arg))
           ((eq arg-op 'mnot)
            (car arg-arg))
+
           ; Distribute negation over conjunction and disjunction;
           ; analogous to '(- (a + b)) --> - a - b.
+
           ((eq arg-op 'mand)
-           (simplifya `((mor) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))) nil))
+           (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
+             (simplifya `((mor) ,@L) nil)))
+
           ((eq arg-op 'mor)
-           (simplifya `((mand) ((mnot) ,(car arg-arg)) ((mnot) ,(cadr arg-arg))) nil))
+           (let ((L (mapcar #'(lambda (e) `((mnot) ,e)) arg-arg)))
+             (simplifya `((mand) ,@L) nil)))
+
           (t `((mnot simp) ,arg)))))))
 
 ; WTF IS THIS ??
