@@ -173,7 +173,18 @@ It appears in LIMIT and DEFINT.......")
 	      (cond ((eq d 'both) (or (setq ans (both-side exp var val))
 				      (nounlimit exp var val)))
 		    ((eq d '$und) (return '$und))
-		    ((eq d 'retn) (return (nounlimit exp var val)))
+		    ((eq d 'retn)
+		     ;; mabs-subst returned.  Let's try to compute the
+		     ;; limit from both sides.  If they're the same,
+		     ;; we're done.  We don't want to preserve
+		     ;; direction info in the result.
+		     ;;
+		     ;; This case handles limit(abs(sin(x)/x),x,0),
+		     ;; among others.
+		     (setq ans (both-side exp var val nil))
+		     (if ans
+			 (return (clean-limit-exp ans))
+			 (return (nounlimit exp var val))))
 		    (t (setq exp d)))
 	      (setq ans (limit-catch exp var val))
 	      (cond ((null ans)
@@ -282,8 +293,10 @@ It appears in LIMIT and DEFINT.......")
       ((null assumption-list) t)
     (assume (car assumption-list))))
 
-(defun both-side (exp var val)
-  (let ((preserve-direction t))
+;; The optional arg allows the caller to decide on the value of
+;; preserve-direction.  Default is T, like it used to be.
+(defun both-side (exp var val &optional (preserve t))
+  (let ((preserve-direction preserve))
     (let ((la ($limit exp var val '$plus))
 	  (lb ($limit exp var val '$minus)))
       (cond ((alike1 (ridofab la) (ridofab lb))  (ridofab la))

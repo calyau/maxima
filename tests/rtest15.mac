@@ -438,3 +438,10 @@ integrate(sin(2*x)/sec(x),x);
 
 integrate(-a*sin(2*x)/(a*sin(x)^2+b),x);
 -log(a*sin(x)^2+b);
+
+/*
+ * Bug 1471861: limit(abs(sin(x)/x),x,0);
+ * Fixed 2006/05/05, limit.lisp, rev 1.20.
+ */
+limit(abs(sin(x)/x),x,0);
+1;
