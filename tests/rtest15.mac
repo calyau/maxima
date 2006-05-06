@@ -445,3 +445,11 @@ integrate(-a*sin(2*x)/(a*sin(x)^2+b),x);
  */
 limit(abs(sin(x)/x),x,0);
 1;
+
+/* 
+ * Bug 1482843: subscripted variable causes trouble in integrate
+ *
+ * Fixed 
+ */
+integrate(exp(-(x-mu[1])^2),x,0,inf);
+sqrt(%pi)*erf(mu[1])/2+sqrt(%pi)/2;
