@@ -449,7 +449,7 @@ limit(abs(sin(x)/x),x,0);
 /* 
  * Bug 1482843: subscripted variable causes trouble in integrate
  *
- * Fixed 
+ * Fixed in defint.lisp, rev 1.25, 2006/05/06.
  */
 integrate(exp(-(x-mu[1])^2),x,0,inf);
 sqrt(%pi)*erf(mu[1])/2+sqrt(%pi)/2;
