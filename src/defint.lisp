@@ -296,7 +296,16 @@
 		   (and (numberp (caddr expr))
 			(not (eq (asksign (m+ power (m- (caddr expr))))
 				 '$negative))))
-	       (deg-lessp (cadr expr) var power)))))
+	       (deg-lessp (cadr expr) var power)))
+	 ((and (consp expr)
+	       (member 'array (car expr))
+	       (not (eq var (caar expr))))
+	  ;; We have some subscripted variable that's not our variable
+	  ;; (I think), so it's deg-lessp.
+	  ;;
+	  ;; FIXME: Is this the best way to handle this?  Are there
+	  ;; other cases we're mising here?
+	  t)))
 
 (defun antideriv (a)
   (let ((limitp ())
