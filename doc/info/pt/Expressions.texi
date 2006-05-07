@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.44/Fri Apr 14 11:12:26 2006/-ko/
+@c /Expressions.texi/1.46/Sun May  7 12:31:31 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
@@ -622,81 +622,437 @@ Exemplos:
 @c THIS ITEM IS EXTREMELY IMPORTANT
 @c ENSURE THAT ALL KEYWORDS RECOGNIZED BY declare HAVE THEIR OWN DOCUMENTATION ITEMS !!
 @c ALSO: HOW TO FIND THE LIST OF ALL SYMBOLS WHICH HAVE A GIVEN PROPERTY ??
-@deffn {Fun@value{cedilha}@~ao} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
-Atribui ao @'atomo @var{a_i} o sinalizador @var{f_i}.
-Os @var{a_i}'s e @var{f_i}'s podem tamb@'em serem listas de @'atomos e sinalizadores respectivamente nesse caso
-cada um dos @'atomos tomam todas as propriedades.
+@deffn {Fun@value{cedilha}@~ao} declare (@var{a_1}, @var{p_1}, @var{a_2}, @var{p_2}, ...)
+Atribui aos @'atomos ou lista de @'atomos @var{a_i} a propriedade ou lista de propriedades @var{p_i}.
+Quando @var{a_i} e/ou @var{p_i} forem listas,
+cada um dos @'atomos recebe todas as propriedades.
 
 @code{declare} n@~ao avalia seus argumentos.
 @code{declare} sempre retorna @code{done}.
 
-Os poss@'iveis sinalizadores e seus significados s@~ao:
-
-@code{constant} torna @var{a_i} uma constate como @'e @code{%pi}.
-
-@code{mainvar} torna @var{a_i} uma @code{mainvar} (vari@'avel principal).  A escala de ordena@,{c}@~ao para @'atomos: numeros <
-constantes (e.g. @code{%e}, @code{%pi}) < escalares < outras vari@'aveis < vari@'aveis principais.
-
-@code{scalar} torna @var{a_i} um escalar.
-
-@code{nonscalar} faz @var{a_i} comportar-se como comporta-se uma lista ou matriz com rela@,{c}@~ao ao
-operador ponto (multiplica@,{c}@~ao n@~ao comutativa de matrizes).
-
-@code{noun} torna a fun@,{c}@~ao @var{a_i} um substantivo de forma que n@~ao possa ser avaliada
-automaticamente.
-
-@code{evfun} torna @var{a_i} conhecido para a fun@,{c}@~ao @code{ev} de forma que @code{ev} possa vir a ser aplicada
-se seu nome for mencionado.  Veja @code{evfun}.
-
-@code{evflag} torna @var{a_i} conhecido para a fun@,{c}@~ao @code{ev} de forma que @code{ev} possa vir a ser associado a
-@code{true} durante a execu@,{c}@~ao de @code{ev} se isso for mencionado.  Veja @code{evflag}.
-
-@code{bindtest} faz com que @var{a_i} sinalize um erro se isso mesmo for usado em um
-c@'alculo n@~ao associado.
-
-Maxima atualmente reconhe os seguintes recursos de
-objetos:
-
-@c THIS LIST AND NEXT ONE COMPRISE features !!!
-@c SHOULD GIVE A REFERENCE TO features INSTEAD OF LISTING !!!
-@c NEED TO CHECK THIS LIST !!!
-@example
-even, odd, integer, rational, irrational, real, imaginary,
-e complex
-@end example
-
-Nota de tradu@,{c}@~ao:
-
-@example
-par, @'impar, inteiro, racional, irracional, real, imagin@'ario,
-e complexo
-@end example
-
-Os recursos @'uteis de fun@,{c}@~oes incluem:
-
-@c NEED TO CHECK THIS LIST !! IS IT COMPREHENSIVE ??
-@example
-increasing,
-decreasing, oddfun (odd function), evenfun (even function),
-commutative (or symmetric), antisymmetric, lassociative and
-rassociative
-@end example
-
-Nota de tradu@,{c}@~ao:
-@example
-incremento,
-decremento, oddfun (fun@,{c}@~ao @'impar), evenfun (fun@,{c}@~ao par),
-comutativa (ou sim@'etrica), antisim@'etrica, lassociative (associativa @`a esquerda) and
-rassociative (associativa @`a direita).
-@end example
-
-@c WHAT DOES THIS MEAN EXACTLY ??
-Os @var{a_i} e @var{f_i} podem tamb@'em serem listas de objetos ou recursos.
-
 @code{featurep (@var{objeto}, @var{recurso})}
-determina se @var{objeto} foi declarado para ter @var{recurso}.
+retorna @code{true} se @var{objeto} tiver sido declarado para ter @var{recurso}.
 
 Veja tamb@'em @code{features}.
+
+@code{declare} reconhece as seguintes propriedades:
+
+@table @asis
+@item
+@code{evfun}
+Torna @var{a_i} conhecido para @code{ev} de forma que a fun@,{c}@~ao nomeada por @var{a_i}
+@'e aplicada quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
+Veja @code{evfun}.
+
+@item
+@code{evflag}
+Torna @var{a_i} conhecido para a fun@,{c}@~ao @code{ev} de forma que @var{a_i} @'e associado a @code{true}
+durante a execu@,{c}@~ao de @code{ev} quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
+Veja @code{evflag}.
+
+@c OBSOLETE @code{special} (RECONHECIDA POR DECLARE MAS NUNCA USADA EM LUGAR ALGUM)
+ 
+@c OBSOLETE @code{nonarray} (RECONHECIDA POR DECLARE MAS NUNCA USADA EM LUGAR ALGUM)
+
+@item
+@code{bindtest}
+Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como sendo livre de associa@,{c}@~ao.
+
+@item
+@code{noun}
+Diz ao Maxima para passar @var{a_i} como um substantivo. 
+O efeito disso @'e substituir intâncias de @var{a_i} com @code{'@var{a_i}}
+ou @code{nounify (@var{a_i})}, ependendo do contexto.
+
+@item
+@code{constant}
+Diz ao Maxima para considerar @var{a_i} uma constante simb@'olica.
+@c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
+@c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
+@c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
+
+@item
+@code{scalar}
+Diz ao Maxima para considerar @var{a_i} uma vari@'avel escalar.
+
+@item
+@code{nonscalar}
+Diz ao Maxima para considerar @var{a_i} uma vari@'avel n@~ao escalar.
+The usual application is to declare a variable as a symbolic vector or matrix.
+
+@item
+@code{mainvar}
+Diz ao Maxima para considerar @var{a_i} uma "vari@'avel principal" (@code{mainvar}).
+@code{ordergreatp} determina a ordena@,{c}@~ao de @'atomos como segue:
+
+(vari@'aveis principais) > (outras vari@'aveis) > (vari@'aveis escalares) > (constantes) > (n@'umeros)
+
+@item
+@code{alphabetic}
+Diz ao Maxima para reconhecer @var{a_i} como um caractere alfab@'etico.
+
+@item
+@code{feature}
+Diz ao Maxima para reconhecer @var{a_i} como nome de um recurso.
+Other atoms may then be declared to have the @var{a_i} property.
+
+@item
+@code{rassociative}, @code{lassociative}
+Diz ao Maxima para reconhecer @var{a_i} como uma func@~ao associativa a direita ou associativa a esquerda.
+
+@item
+@code{nary}
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao n-@'aria.
+
+Essa declara@,{c}@~ao n@~ao tem o mesmo objetivo que uma chamada @`a fun@,{c}@~ao @code{nary}.
+O @'unico efeito de @code{declare(foo, nary)} @'e para instruir o simplificador do Maxima
+a melhorar as pr@'oximas express@~oes,
+por exemplo, para simplificar @code{foo(x, foo(y, z))} para @code{foo(x, y, z)}.
+
+@item
+@code{symmetric}, @code{antisymmetric}, @code{commutative}
+Dis ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao sim@'etrica ou antisim@'etrica.
+@code{commutative} @'e o mesmo que @code{symmetric}.
+
+@item
+@code{oddfun}, @code{evenfun}
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao par ou uma fun@,{c}@~ao @'impar.
+ 
+@item
+@code{outative}
+Diz ao Maxima para simplificar express@~oes @var{a_i}
+colocando fatores constantes em evid@^encia no primeiro argumento.
+
+Quando @var{a_i} tiver um argumento,
+um fator @'e onsiderado constante se for um literal ou se for declarado como sendo constante.
+
+Quando @var{a_i} tiver dois ou mais argumentos,
+um fator @'e considerado constante
+se o segundo argumento for um s@'imbolo
+e o fator estiver livre do segundo argumento.
+
+@item
+@code{multiplicative}
+Diz ao Maxima para simplificar express@~oes do tipo @var{a_i}
+atrav@'es da substitui@,{c}@~ao @code{@var{a_i}(x * y * z * ...)} @code{-->}
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+A substitui@,{c}@~ao @'e realizada no primeiro argumento somente.
+
+@item
+@code{additive}
+Diz ao Maxima para simplificar express@~oes do tipo @var{a_i}
+atrav@'es da substitui@,{c}@~ao @code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+A substitui@,{c}@~ao @'e realizada no primeiro argumento somente.
+
+@item
+@code{linear}
+Equivalente a declarar @var{a_i} ao mesmo tempo @code{outative} e @code{additive}.
+
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+ 
+@item
+@code{integer}, @code{noninteger}
+Diz ao Maxima para reconhecer @var{a_i} como como uma vari@'avel inteira ou como uma vari@'avel n@~ao inteira.
+ 
+Maxima reconhece os seguintes recursos de objetos:
+
+@c THIS LIST AND THE NEXT COMPRISE $FEATURES
+@item
+@code{even}, @code{odd}
+Diz ao Maxima para reconhecer @var{a_i} como uma vari@'avel inteira par ou como uma vari@'avel inteira @'impar.
+
+@item
+@code{rational}, @code{irrational}
+Diz ao Maxima para reconhecer @var{a_i} como uma vari@'avel real e racional ou como uma vari@'avel real e irracional.
+
+@item
+@code{real}, @code{imaginary}, @code{complex}
+Dia ao Maxima para reconhecer @var{a_i} como uma vari@'avel real, imagin@'aria pura ou complexa.
+ 
+@item
+@code{increasing}, @code{decreasing}
+Dia ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao de incremento ou decremento.
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
+
+@item
+@code{posfun}
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao positiva.
+
+@item
+@code{integervalued}
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao de valores inteiros.
+
+@end table
+
+Exemplos:
+
+Declara@,{c}@~oes @code{evfun} e @code{evflag}.
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+Declara@,{c}@~ao @code{bindtest}.
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+Declara@,{c}@~ao @code{noun}.
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+Declara@,{c}@~oes @code{constant}, @code{scalar}, @code{nonscalar}, e @code{mainvar}.
+@c ===beg===
+@c declare (bb, constant);
+@c declare (cc, scalar);
+@c declare (dd, nonscalar);
+@c declare (ee, mainvar);
+@c ===end===
+@example
+@end example
+
+Declara@,{c}@~ao @code{alphabetic}.
+@c ===beg===
+@c xx\~yy : 1729;
+@c declare ("~", alphabetic);
+@c xx~yy + yy~xx + ~xx~~yy~;
+@c ===end===
+@example
+(%i1) xx\~yy : 1729;
+(%o1)                         1729
+(%i2) declare ("~", alphabetic);
+(%o2)                         done
+(%i3) xx~yy + yy~xx + ~xx~~yy~;
+(%o3)                ~xx~~yy~ + yy~xx + 1729
+@end example
+
+Declara@,{c}@~ao @code{feature}.
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+Declara@,{c}@~oes @code{rassociative} and @code{lassociative}.
+@c ===beg===
+@c declare (F, rassociative);
+@c declare (G, lassociative);
+@c ===end===
+@example
+@end example
+
+Declara@,{c}@~ao @code{nary}.
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+Declara@,{c}@~oes @code{symmetric} e @code{antisymmetric}.
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+Declara@,{c}@~oes @code{oddfun} e @code{evenfun}.
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+Declara@,{c}@~ao @code{outative}.
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+Declara@,{c}@~ao @code{multiplicative}.
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+Declara@,{c}@~ao @code{additive}.
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+Declara@,{c}@~ao @code{linear}.
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end example
 
 @end deffn
 

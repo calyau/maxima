@@ -1,3 +1,4 @@
+/Integration.texi/1.26/Sat May  6 08:35:26 2006/-ko/
 @c Language: Portuguese, Encoding: iso-8859-1
 @c /Integration.texi/1.25/Sat Apr  1 08:13:12 2006/-ko/
 @menu
@@ -944,10 +945,10 @@ Note que @code{quad_qags} @'e mais preciso e eficiente que @code{quad_qag} para 
 Avalia numericamente uma das seguintes integrais
 
 @ifhtml
-@math{integrate (f(x), x, a, inf)}
+@math{integrate (f(x), x, minf, inf)}
 @end ifhtml
 @ifinfo
-@math{integrate (f(x), x, a, inf)}
+@math{integrate (f(x), x, minf, inf)}
 @end ifinfo
 @tex
 $$\int_a^\infty {f(x) dx}$$

@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.37/Fri Jan 13 08:15:55 2006/-ko/
+@c /Command.texi/1.38/Sat May  6 08:34:51 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -225,6 +225,8 @@ sejam avaliadas.
 @item
 @code{eval} faz com que uma avalia@,{c}@~ao posterior de @var{expr} ocorra.  (Veja passo (5)
 adiante.)
+@code{eval} pode ocorrer multiplas vezes.
+Para cada instância de @code{eval}, a express@~ao @'e avaliada novamente.
 @item
 @code{A} onde @code{A} @'e um @'atomo declarado seja um sinalizador de avalia@,{c}@~ao (veja @code{evflag})
 faz com que @code{A} seja associado a
@@ -294,7 +296,7 @@ qualquer chamada de fun@,{c}@~ao em @var{expr} ser@'a completada depois das vari
 nela serem avalidas e que @code{ev(F(x))} dessa forma possa comportar-se como @code{F(ev(x))}.
 
 @item
-Se um dos argumentos for @code{eval}, passos (3) e (4) ser@~ao repetidos.
+Para cada instância de @code{eval} nos argumentos, os passos (3) e (4) s@~ao repetidos.
 @end enumerate
 
                      Exemplos
