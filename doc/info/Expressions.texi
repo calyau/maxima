@@ -626,6 +626,11 @@ each of the atoms gets all of the properties.
 @code{declare} quotes its arguments.
 @code{declare} always returns @code{done}.
 
+@code{featurep (@var{object}, @var{feature})}
+returns @code{true} if @var{object} has been declared to have @var{feature}.
+
+See also @code{features}.
+
 @code{declare} recognizes the following properties:
 
 @table @asis
@@ -641,9 +646,9 @@ Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to @c
 during the execution of @code{ev} when @var{a_i} appears as a flag argument of @code{ev}.
 See @code{evflag}.
 
-@c OBSOLETE @code{special}
+@c OBSOLETE @code{special} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
-@c OBSOLETE @code{nonarray}
+@c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
 @item
 @code{bindtest}
@@ -689,50 +694,91 @@ Other atoms may then be declared to have the @var{a_i} property.
 
 @item
 @code{rassociative}, @code{lassociative}
+Tells Maxima to recognize @var{a_i} as a right-associative or left-associative function.
 
 @item
 @code{nary}
+Tells Maxima to recognize @var{a_i} as an n-ary function.
+
+This declaration is not the same as calling the @code{nary} function.
+The sole effect of @code{declare(foo, nary)} is to instruct the Maxima simplifier
+to flatten nested expressions,
+for example, to simplify @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
 
 @item
-@code{antisymmetric}, @code{symmetric}, @code{commutative}
+@code{symmetric}, @code{antisymmetric}, @code{commutative}
+Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
+@code{commutative} is the same as @code{symmetric}.
 
 @item
-@code{oddfun}, @code{evenfun},
+@code{oddfun}, @code{evenfun}
+Tells Maxima to recognize @var{a_i} as an odd or even function.
 
 @item
 @code{outative}
+Tells Maxima to simplify @var{a_i} expressions
+by pulling constant factors out of the first argument.
+
+When @var{a_i} has one argument,
+a factor is considered constant if it is a literal or declared constant.
+
+When @var{a_i} has two or more arguments,
+a factor is considered constant
+if the second argument is a symbol
+and the factor is free of the second argument.
 
 @item
 @code{multiplicative}
+Tells Maxima to simplify @var{a_i} expressions
+by the substitution @code{@var{a_i}(x * y * z * ...)} @code{-->}
+@code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+The substitution is carried out on the first argument only.
 
 @item
 @code{additive}
+Tells Maxima to simplify @var{a_i} expressions
+by the substitution @code{@var{a_i}(x + y + z + ...)} @code{-->}
+@code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+The substitution is carried out on the first argument only.
 
 @item
 @code{linear}
+Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
+
+@c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
+
+@item
+@code{integer}, @code{noninteger}
+Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
+
+@item
+@code{even}, @code{odd}
+Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
+
+@item
+@code{rational}, @code{irrational}
+Tells Maxima to recognize @var{a_i} as a rational or irrational real variable.
+
+@item
+@code{real}, @code{imaginary}, @code{complex}
+Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex variable.
+
+@item
+@code{increasing}, @code{decreasing}
+Tells Maxima to recognize @var{a_i} as an increasing or decreasing function.
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
+
+@item
+@code{posfun}
+Tells Maxima to recognize @var{a_i} as a positive function.
+
+@item
+@code{integervalued}
+Tells Maxima to recognize @var{a_i} as an integer-valued function.
 
 @end table
-
-Maxima recognizes the following features of objects:
-
-@c THIS LIST AND THE NEXT COMPRISE $FEATURES
-@example
-integer, noninteger, even, odd, rational, irrational, real,
-imaginary, complex
-@end example
-
-Maxima recognizes the following features of functions:
-
-@example
-analytic, increasing, decreasing, oddfun, evenfun, posfun,
-commutative, lassociative, rassociative, symmetric,
-antisymmetric, integervalued
-@end example
-
-@code{featurep (@var{object}, @var{feature})}
-returns @code{true} if @var{object} has been declared to have @var{feature}.
-
-See also @code{features}.
 
 Examples:
 
