@@ -257,7 +257,7 @@
 	(t (car (iroot (abs x) n)))))
 
 (defun iroot (a n)   ; computes a^(1/n)  see Fitch, SIGSAM Bull Nov 74
-  (cond ((f< (haulong a) n) (list 1 (sub1 a)))
+  (cond ((< (haulong a) n) (list 1 (sub1 a)))
 	(t				;assumes integer a>0 n>=2
 	 (do ((x (expt 2 (f1+ (quotient (haulong a) n)))
 		 (difference x (quotient (plus n1 bk) n)))

@@ -700,7 +700,7 @@
 (defun pcetimes1 (y e c)		;C*V^E*Y
   (loop for (exp coef) on y by #'pt-red
 	 unless (pzerop (setq coef (ptimes c coef)))
-	 nconc (list (f+ e exp) coef)))
+	 nconc (list (+ e exp) coef)))
 
 (defun pctimes (c p)
   (if (pcoefp p) (ctimes c p)
@@ -721,7 +721,7 @@
 
 (defun palgsimp (var p tell)		;TELL=(N X) -> X^(1/N)
   (psimp var (cond ((or (null tell) (null p)
-			(f< (car p) (car tell))) p)
+			(< (car p) (car tell))) p)
 		   ((null (cddr tell)) (pasimp1 p (car tell) (cadr tell)))
 		   (t (pgcd1 p tell)) )))
 
@@ -731,7 +731,7 @@
       ((or (null a) (< (pt-le a) deg))
        (rplacd (cdr b) nil)
        (pplus1 (pctimes1 kernel p) a))
-    (rplaca a (f- (pt-le a) deg))))
+    (rplaca a (- (pt-le a) deg))))
 
 (defmfun monize (p) 
   (cond ((pcoefp p) (if (pzerop p) p 1))
