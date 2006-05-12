@@ -41,12 +41,16 @@ method;
 lagrange;
 
 /* 105 */
+/* This used to work, but now fails due to bug # 1487703
+   integrate((sqrt(x^4-6*x^2+1)-x^2+1)/(2*x),x) fails 
+
 (pn_(105),ans:contrib_ode(eqn:x*'diff(y,x)^2+(1-x^2)*'diff(y,x)+x=0,y,x));
 [-(4*y+2*'integrate(%e^(log(x^2+2*x-1)/2+log(x^2-2*x-1)/2)/x,x)+2*log(x)-x^2)/4=%c];
 solve(ans[1],y);
 [y=-(2*'integrate(%e^(log(x^2+2*x-1)/2+log(x^2-2*x-1)/2)/x,x)+2*log(x)-x^2+4*%c)/4];
 [method,expand(ode_check(eqn,%))];
 [lie,0];
+*/
 
 /* 106 FIXME: check solution */
 (pn_(106),ans:contrib_ode(eqn:x*'diff(y,x)^2+y*'diff(y,x)+a=0,y,x));
