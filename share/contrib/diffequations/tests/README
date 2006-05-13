@@ -6,16 +6,29 @@ local maxima.
 
 README
 Makefile 
-testsuite.lisp         - Driver adapted from tests/testsuite.lisp
-rtest_sym.mac          - unit tests for ode1_lie.mac functions
-rtest_sym2.mac         - unit tests for ode1_lie.mac functions
-rtest_ode1_riccati.mac - unit tests for ode1_riccati.mac functions
-rtest_ode1_abel.mac    - unit tests for ode1_abel.mac functions
-rtestode_murphy1.mac   - ODEs from Murphy Appendix A.1
-rtestode_murphy2.mac   - ODEs from Murphy Appendix A.2
-rtestode_kamke_1_1.mac - ODEs from Kamke  1.1   - 1.100
-rtestode_kamke_1_2.mac - ODEs from Kamke  1.101 - 1.200
-rtestode_kamke_1_3.mac - ODEs from Kamke  1.201 - 1.300
+testsuite.lisp            - Driver adapted from tests/testsuite.lisp
+rtest_sym.mac             - unit tests for ode1_lie.mac functions
+rtest_sym2.mac            - unit tests for ode1_lie.mac functions
+rtest_ode1_riccati.mac    - unit tests for ode1_riccati.mac functions
+rtest_ode1_abel.mac       - unit tests for ode1_abel.mac functions
+rtestode_murphy_1_1.mac   - ODEs   1 - 100 from Murphy Appendix A.1
+rtestode_murphy_1_2.mac   - ODEs 101 - 200 from Murphy Appendix A.1
+rtestode_murphy_1_3.mac   - ODEs 201 - 300 from Murphy Appendix A.1
+rtestode_murphy_1_4.mac   - ODEs 301 - 400 from Murphy Appendix A.1
+rtestode_murphy_1_5.mac   - ODEs 401 - 500 from Murphy Appendix A.1
+rtestode_murphy_1_6.mac   - ODEs 501 - 600 from Murphy Appendix A.1
+rtestode_murphy_2_1.mac   - ODEs   1 - 100 from Murphy Appendix A.2
+rtestode_murphy_2_2.mac   - ODEs 101 - 200 from Murphy Appendix A.2
+rtestode_murphy_2_3.mac   - ODEs 201 - 300 from Murphy Appendix A.2
+rtestode_murphy_2_4.mac   - ODEs 301 - 400 from Murphy Appendix A.2
+rtestode_murphy_2_5.mac   - ODEs 401 - 500 from Murphy Appendix A.2
+rtestode_murphy_2_6.mac   - ODEs 501 - 600 from Murphy Appendix A.2
+rtestode_kamke_1_1.mac    - ODEs from Kamke  1.1   - 1.100
+rtestode_kamke_1_2.mac    - ODEs from Kamke  1.101 - 1.200
+rtestode_kamke_1_3.mac    - ODEs from Kamke  1.201 - 1.300
+rtestode_kamke_1_4.mac    - ODEs from Kamke  1.301 - 1.400
+rtestode_kamke_1_5.mac    - ODEs from Kamke  1.401 - 1.500
+rtestode_kamke_1_6.mac    - ODEs from Kamke  1.501 - 1.576
 
 
   References:
