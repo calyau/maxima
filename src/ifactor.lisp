@@ -235,7 +235,8 @@
   (let ((f (get-one-factor n)))
     (if (= f n)
 	(progn
-	  (format t "WARNING: could not find factors of composite:~%~A~%" n)
+	  (if $ifactor_verbose
+	      (format t "WARNING: could not find factors of composite:~%~A~%" n))
 	  (list n))
 	(append (get-large-factors f) (get-large-factors (/ n f))))))
 
@@ -245,6 +246,13 @@
   (let ((f nil)
         (lim_pollard $pollard_rho_limit)
         ($ecm_number_of_curves $ecm_number_of_curves))
+
+    ;; If $intfaclim is not false then we don't want to spend too much
+    ;; time factoring integers so we return n and leave it
+    ;; unfactored. The default value for $intfaclim is true, but most
+    ;; functions which use integer factorization set it to false.
+    (if (not (null $intfaclim))
+	(return-from get-one-factor n))
     
     ;; try factoring smaller factors with pollard-rho
     (dotimes (i $pollard_rho_tests)
@@ -261,14 +269,6 @@
       (if (> lim_pollard 0)
 	  (setq lim_pollard (+ $pollard_rho_limit_step lim_pollard))))
     
-
-    ;; If $intfaclim is not false then we don't want to spend too much
-    ;; time factoring integers so we return n and leave it
-    ;; unfactored. The default value for $intfaclim is true, but most
-    ;; functions which use integer factorization set it to false.
-    (if (not (null $intfaclim))
-	(return-from get-one-factor n))
-
     ;; continue with ecm
     (do () (nil)
       (setq f (get-one-factor-ecm n))
