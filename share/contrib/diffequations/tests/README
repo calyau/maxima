@@ -1,6 +1,4 @@
--*- mode: Text;  -*-
-
-The files in this directory are a testsuite for and demonstartion of
+The files in this directory are a testsuite for and demonstration of
 the contrib_ode routines.  The command "make check" will test the 
 local maxima.
 
@@ -38,3 +36,7 @@ rtestode_kamke_1_6.mac    - ODEs from Kamke  1.501 - 1.576
 
     E Kamke, Differentialgleichungen Losungsmethoden und Losungen, 
     Vol 1, Geest & Portig, Leipzig, 1961
+
+Local Variables: ***
+mode: Text ***
+End: ***
