@@ -561,12 +561,19 @@ forget(a>0);
 false;
 
 /* 185 */
+/* This used to work, but now fails due to bug # 1487703
+   integrate((sqrt(x^4-6*x^2+1)-x^2+1)/(2*x),x) fails 
+
+   The problem is due to integrals of 1/d, x/d, x^2/d where 
+   d:sqrt(x^3-b*x^2-a*x^2+a*b*x)
+
 (pn_(185),ans:contrib_ode(eqn:4*x*(a-x)*(b-x)*'diff(y,x)^2=(a*b-2*x*(a+b)+3*x^2)^2,y,x));
 [-(2*y+'integrate((3*x^2+(-2*b-2*a)*x+a*b)/sqrt(x^3+(-b-a)*x^2+a*b*x),x))/2=%c];
 solve(ans[1],y);
 [y=-('integrate(3*x^2/sqrt(x^3-b*x^2-a*x^2+a*b*x)-2*b*x/sqrt(x^3-b*x^2-a*x^2+a*b*x)-2*a*x/sqrt(x^3-b*x^2-a*x^2+a*b*x)+a*b/sqrt(x^3-b*x^2-a*x^2+a*b*x),x)+2*%c)/2];
 [method,ode_check(eqn,%[1])];
 [lie,0];
+*/
 
 /* 186 ode1_lie finds symmetry but ... */
 (pn_(186),ans:contrib_ode(eqn:x^4*'diff(y,x)^2-x*'diff(y,x)-y=0,y,x));
