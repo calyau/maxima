@@ -545,7 +545,7 @@ can use this information; for example:
 
 @end deffn
 
-@deffn Function charfun (@var{p})
+@deffn {Function} charfun (@var{p})
 
 Return 0 when the predicate @var{p} evaluates to @code{false}; return
 1 when the predicate evaluates to @code{true}.  When the predicate
@@ -579,7 +579,7 @@ simplify to @code{h(x, y, z)}.  This is the same as @code{symmetric}.
 
 @end defvr
 
-@deffn Function compare (@var{x}, @var{y})
+@deffn {Function} compare (@var{x}, @var{y})
 
 Return a comparison operator @var{op}
 (@code{<}, @code{<=}, @code{>}, @code{>=}, @code{=}, or @code{#}) such that
@@ -669,7 +669,7 @@ Note that because of the rules for evaluation of predicate expressions
 
 @end deffn
 
-@deffn Function floor (@var{x})
+@deffn {Function} floor (@var{x})
 
 When @var{x} is a real number, return the largest integer that 
 is less than or equal to @var{x}.
@@ -951,21 +951,21 @@ which is an integer.
 
 @end deffn
 
-@deffn Function lmax (@var{L})
+@deffn {Function} lmax (@var{L})
 
 When @var{L} is a list or a set, return @code{apply ('max, args (@var{L}))}.  When @var{L} isn't a
 list or a set, signal an error.
 
 @end deffn
 
-@deffn Function lmin (@var{L})
+@deffn {Function} lmin (@var{L})
 
 When @var{L} is a list or a set, return @code{apply ('min, args (@var{L}))}. When @var{L} isn't a
 list or a set, signal an error.
 
 @end deffn
 
-@deffn Function max (@var{x_1}, ..., @var{x_n})
+@deffn {Function} max (@var{x_1}, ..., @var{x_n})
 
 Return a simplified value for the maximum of the expressions @var{x_1} through @var{x_n}.
 When @code{get (trylevel, maxmin)}, is 2 or greater, @code{max} uses the simplification 
@@ -976,7 +976,7 @@ to eliminate expressions that are between two other arguments; for example,
 
 @end deffn
 
-@deffn Function min (@var{x_1}, ..., @var{x_n})
+@deffn {Function} min (@var{x_1}, ..., @var{x_n})
 
 Return a simplified value for the minimum of the expressions @code{x_1} through @code{x_n}.
 When @code{get (trylevel, maxmin)}, is 2 or greater, @code{min} uses the simplification 
@@ -1000,7 +1000,7 @@ See @code{modulus}.
 
 @end deffn
 
-@deffn Function mod (@var{x}, @var{y})
+@deffn {Function} mod (@var{x}, @var{y})
 
 If @var{x} and @var{y} are real numbers and @var{y} is nonzero,
 return @code{@var{x} - @var{y} * floor(@var{x} / @var{y})}.
@@ -1148,7 +1148,7 @@ Examples:
 
 @end deffn
 
-@deffn Function rationalize (@var{expr})
+@deffn {Function} rationalize (@var{expr})
 
 Convert all double floats and big floats in the Maxima expression
 @var{expr} to their exact rational equivalents. If you are not familiar with
