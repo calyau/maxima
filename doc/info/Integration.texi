@@ -381,7 +381,7 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 Defining a function in terms of an integral.
 The body of a function is not evaluated when the function is defined.
 Thus the body of @code{f_1} in this example contains the noun form of @code{integrate}.
-The double-single-quotes operator @code{'@w{}'} causes the integral to be evaluated,
+The quote-quote operator @code{'@w{}'} causes the integral to be evaluated,
 and the result becomes the body of @code{f_2}.
 
 @example
@@ -1350,7 +1350,7 @@ The weight function @math{w} is selected by @var{wfun}:
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a)}
 @item 3
 @math{w(x) = (x - a)^alfa (b - x)^beta log(b - x)}
-@item 2
+@item 4
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a) log(b - x)}
 @end table
 

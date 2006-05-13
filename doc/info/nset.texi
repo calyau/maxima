@@ -1009,7 +1009,7 @@ sum of the elements of a list.
 (%o2)                          120
 @end example
 
-See also @xref{rreduce}, @xref{xreduce}, and @xref{tree_reduce}.
+See also @ref{rreduce}, @ref{xreduce}, and @ref{tree_reduce}.
 @end deffn
 
 @anchor{makeset}
@@ -1227,7 +1227,7 @@ sum of the elements of a list.
 (%o2)                          120
 @end example
 
-See also @xref{lreduce}, @xref{tree_reduce}, and @xref{xreduce}.
+See also @ref{lreduce}, @ref{tree_reduce}, and @ref{xreduce}.
 @end deffn
 
 @anchor{setdifference}

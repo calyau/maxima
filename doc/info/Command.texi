@@ -8,7 +8,7 @@
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
-@deffn {Operator} "'"
+@deffn {Operator} '
 The single quote operator @code{'} prevents evaluation.
 
 Applied to a symbol,
@@ -129,14 +129,195 @@ The single quote does not prevent simplification.
 
 @end deffn
 
-@deffn {Operator} "'@w{}'"
-The @code{'@w{}'} (double single quotes) operator causes an extra evaluation to occur.
-E.g., @code{'@w{}'%i4} will re-evaluate input line @code{%i4}.
-@code{'@w{}'(f(x))} means evaluate the expression @code{f(x)} an extra time.
-@code{'@w{}'f(x)} (with the double single quotes applied to @code{f} instead of @code{f(x)})
-means return the verb form of @code{f} applied to @code{[x]}.
+@deffn {Operator} ''
+The quote-quote operator @code{'@w{}'} (two single quote marks) modifies evaluation in input expressions.
+
+Applied to a general expression @var{expr}, quote-quote causes the value of @var{expr}
+to be substituted for @var{expr} in the input expression.
+
+Applied to the operator of an expression,
+quote-quote changes the operator from a noun to a verb (if it is not already a verb).
+
+The quote-quote operator is applied by the input parser;
+it is not stored as part of a parsed input expression.
+The quote-quote operator is always applied as soon as it is parsed,
+and cannot be quoted.
+Thus quote-quote causes evaluation when evaluation is otherwise suppressed,
+such as in function definitions, lambda expressions, and expressions quoted by single quote @code{'}.
+
+Quote-quote is recognized by @code{batch} and @code{load}.
+
+See also the single-quote operator @code{'} and @code{nouns}.
+
+Examples:
+
+Applied to a general expression @var{expr}, quote-quote causes the value of @var{expr}
+to be substituted for @var{expr} in the input expression.
+
+@c ===beg===
+@c expand ((a + b)^3);
+@c [_, ''_];
+@c [%i1, ''%i1];
+@c [aa : cc, bb : dd, cc : 17, dd : 29];
+@c foo_1 (x) := aa - bb * x;
+@c foo_1 (10);
+@c ''%;
+@c ''(foo_1 (10));
+@c foo_2 (x) := ''aa - ''bb * x;
+@c foo_2 (10);
+@c [x0 : x1, x1 : x2, x2 : x3];
+@c x0;
+@c ''x0;
+@c '' ''x0;
+@c ===end===
+@example
+(%i1) expand ((a + b)^3);
+                     3        2      2      3
+(%o1)               b  + 3 a b  + 3 a  b + a
+(%i2) [_, ''_];
+                         3    3        2      2      3
+(%o2)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i3) [%i1, ''%i1];
+                         3    3        2      2      3
+(%o3)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i4) [aa : cc, bb : dd, cc : 17, dd : 29];
+(%o4)                   [cc, dd, 17, 29]
+(%i5) foo_1 (x) := aa - bb * x;
+(%o5)                 foo_1(x) := aa - bb x
+(%i6) foo_1 (10);
+(%o6)                      cc - 10 dd
+(%i7) ''%;
+(%o7)                         - 273
+(%i8) ''(foo_1 (10));
+(%o8)                         - 273
+(%i9) foo_2 (x) := ''aa - ''bb * x;
+(%o9)                 foo_2(x) := cc - dd x
+(%i10) foo_2 (10);
+(%o10)                        - 273
+(%i11) [x0 : x1, x1 : x2, x2 : x3];
+(%o11)                    [x1, x2, x3]
+(%i12) x0;
+(%o12)                         x1
+(%i13) ''x0;
+(%o13)                         x2
+(%i14) '' ''x0;
+(%o14)                         x3
+@end example
+
+Applied to the operator of an expression,
+quote-quote changes the operator from a noun to a verb (if it is not already a verb).
+
+@c ===beg==
+@c sin (1);
+@c ''sin (1);
+@c declare (foo, noun);
+@c foo (x) := x - 1729;
+@c foo (100);
+@c ''foo (100);
+@c ===end==
+@example
+(%i1) sin (1);
+(%o1)                        sin(1)
+(%i2) ''sin (1);
+(%o2)                    0.8414709848079
+(%i3) declare (foo, noun);
+(%o3)                         done
+(%i4) foo (x) := x - 1729;
+(%o4)                 ''foo(x) := x - 1729
+(%i5) foo (100);
+(%o5)                       foo(100)
+(%i6) ''foo (100);
+(%o6)                        - 1629
+@end example
+
+The quote-quote operator is applied by the input parser;
+it is not stored as part of a parsed input expression.
+
+@c ===beg===
+@c [aa : bb, cc : dd, bb : 1234, dd : 5678];
+@c aa + cc;
+@c display (_, op (_), args (_));
+@c ''(aa + cc);
+@c display (_, op (_), args (_));
+@c ===end===
+@example
+(%i1) [aa : bb, cc : dd, bb : 1234, dd : 5678];
+(%o1)                 [bb, dd, 1234, 5678]
+(%i2) aa + cc;
+(%o2)                        dd + bb
+(%i3) display (_, op (_), args (_));
+                           _ = cc + aa
+
+                         op(cc + aa) = +
+
+                    args(cc + aa) = [cc, aa]
+
+(%o3)                         done
+(%i4) ''(aa + cc);
+(%o4)                         6912
+(%i5) display (_, op (_), args (_));
+                           _ = dd + bb
+
+                         op(dd + bb) = +
+
+                    args(dd + bb) = [dd, bb]
+
+(%o5)                         done
+@end example
+
+Quote-quote causes evaluation when evaluation is otherwise suppressed,
+such as in function definitions, lambda expressions, and expressions quoted by single quote @code{'}.
+
+@c ===beg===
+@c foo_1a (x) := ''(integrate (log (x), x));
+@c foo_1b (x) := integrate (log (x), x);
+@c dispfun (foo_1a, foo_1b);
+@c integrate (log (x), x);
+@c foo_2a (x) := ''%;
+@c foo_2b (x) := %;
+@c dispfun (foo_2a, foo_2b);
+@c F : lambda ([u], diff (sin (u), u));
+@c G : lambda ([u], ''(diff (sin (u), u)));
+@c '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+@c '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+@c ===end===
+@example
+(%i1) foo_1a (x) := ''(integrate (log (x), x));
+(%o1)               foo_1a(x) := x log(x) - x
+(%i2) foo_1b (x) := integrate (log (x), x);
+(%o2)           foo_1b(x) := integrate(log(x), x)
+(%i3) dispfun (foo_1a, foo_1b);
+(%t3)               foo_1a(x) := x log(x) - x
+
+(%t4)           foo_1b(x) := integrate(log(x), x)
+
+(%o4)                      [%t3, %t4]
+(%i4) integrate (log (x), x);
+(%o4)                     x log(x) - x
+(%i5) foo_2a (x) := ''%;
+(%o5)               foo_2a(x) := x log(x) - x
+(%i6) foo_2b (x) := %;
+(%o6)                    foo_2b(x) := %
+(%i7) dispfun (foo_2a, foo_2b);
+(%t7)               foo_2a(x) := x log(x) - x
+
+(%t8)                    foo_2b(x) := %
+
+(%o8)                      [%t7, %t8]
+(%i8) F : lambda ([u], diff (sin (u), u));
+(%o8)             lambda([u], diff(sin(u), u))
+(%i9) G : lambda ([u], ''(diff (sin (u), u)));
+(%o9)                  lambda([u], cos(u))
+(%i10) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+(%o10)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
+                    k                  k
+(%i11) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+(%o11)             b  + a  + b  + a  + b  + a
+                    3    3    2    2    1    1
+@end example
 
 @end deffn
+
 @c end concepts Command Line
 @node Definitions for Command Line,  , Introduction to Command Line, Command Line
 @section Definitions for Command Line
@@ -498,7 +679,7 @@ In particular, to release the memory taken up by the value of a symbol,
 one unbinds the output label which shows the bound value, as well as unbinding the symbol itself.
 
 @code{kill} quotes its arguments.
-The double single quotes operator, @code{'@w{}'}, defeats the quotation.
+The quote-quote operator @code{'@w{}'} defeats quotation.
 
 @code{kill (@var{symbol})} unbinds all properties of @var{symbol}.
 In contrast, @code{remvalue}, @code{remfunction}, @code{remarray}, and @code{remrule}
@@ -518,7 +699,7 @@ so, for example, @code{i} and @code{%i} yield the same result.
 If no labels begin with @var{symbol}, @code{labels} returns an empty list.
 
 The function @code{labels} quotes its argument.
-The double single quotes operator @code{'@w{}'} defeats quotation.
+The quote-quote operator @code{'@w{}'} defeats quotation.
 For example,
 @code{labels (''inchar)} returns the input labels which begin with the current input label character.
 
@@ -607,7 +788,7 @@ is not displayed.
 See also @code{labels}.
 
 @code{playback} quotes its arguments.
-The double single quotes operator, @code{'@w{}'}, defeats quotation.
+The quote-quote operator @code{'@w{}'} defeats quotation.
 @code{playback} always returns @code{done}.
 
 @code{playback ()} (with no arguments) displays all input, output, and intermediate expressions

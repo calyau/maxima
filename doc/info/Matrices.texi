@@ -1524,8 +1524,8 @@ Returns an @var{m} by @var{n} matrix, all elements of which are zero.
 
 @end deffn
 
-@defvr {Special symbol} "["
-@defvrx {Special symbol} "]"
+@defvr {Special symbol} [
+@defvrx {Special symbol} ]
 @code{[} and @code{]} mark the beginning and end, respectively, of a list.
 
 @code{[} and @code{]} also enclose the subscripts of

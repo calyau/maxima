@@ -531,7 +531,7 @@ and calls the Lisp function @code{COMPILE} on each translated function.
 @code{compile (all)} or @code{compile (functions)} compiles all user-defined functions.
 
 @code{compile} quotes its arguments; 
-the double-single-quotes operator @code{'@w{}'} defeats quotation.
+the quote-quote operator @code{'@w{}'} defeats quotation.
 
 @end deffn
 
@@ -750,7 +750,7 @@ for each displayed function, and assigns the function definition to the label.
 In contrast, @code{fundef} returns the function definition.
 
 @code{dispfun} quotes its arguments; 
-the double-single-quote operator @code{'@w{}'} defeats quotation.
+the quote-quote operator @code{'@w{}'} defeats quotation.
 @code{dispfun} returns the list of intermediate expression labels corresponding to the displayed functions.
 
 Examples:
@@ -852,7 +852,7 @@ one of a family of subscripted functions selected by a particular subscript valu
 or a subscripted function defined with a constant subscript.
 
 @code{fundef} quotes its argument;
-the double-single-quote operator @code{'@w{}'} defeats quotation.
+the quote-quote operator @code{'@w{}'} defeats quotation.
 
 @code{fundef (@var{f})} returns the definition of @var{f}.
 In contrast, @code{dispfun (@var{f})} creates an intermediate expression label
@@ -927,7 +927,7 @@ unless the block happens to be @var{expr_n}.
 Likewise, @code{go} cannot appear in a lambda expression unless enclosed by @code{block}.
 
 @code{lambda} quotes its arguments; 
-the double-single-quote operator @code{'@w{}'} defeats quotation.
+the quote-quote operator @code{'@w{}'} defeats quotation.
 
 Examples:
 
@@ -1714,7 +1714,7 @@ undefined global variables are seen.
 @defvr {Option variable} tr_windy
 Default value: @code{true}
 
-- Generate "helpfull" comments and
+- Generate helpful comments and
 programming hints.
 
 @end defvr

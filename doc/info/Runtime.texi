@@ -132,7 +132,7 @@ The list may vary from one Lisp type to another.
 @item @code{status (feature, @var{putative_feature})} returns @code{true} if @var{putative_feature}
 is on the list of items returned by @code{status (feature)} and @code{false} otherwise.
 @code{status} quotes the argument @var{putative_feature}.
-The double single quotes operator, @code{'@w{}'}, defeats the quotation.
+The quote-quote operator @code{'@w{}'} defeats quotation.
 A feature whose name contains a special character, such as a hyphen,
 must be given as a string argument. For example,
 @code{status (feature, "ansi-cl")}.
