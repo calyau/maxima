@@ -72,10 +72,14 @@ true;
 /* (pn_( 513 ),ans:contrib_ode(eqn: sin(y)*('diff(y,x,1))^2+2*x*cos(y)^3*'diff(y,x,1)-cos(y)^4*sin(y) ,y,x)); */ 
 
 /*  514  */ 
+/* Used to pass but now fails due to integration problems.
+   Almost certainly related to bug # 1487703
+
 (pn_(514),ans:contrib_ode(eqn:(a*cos(y)+b)*('diff(y,x,1))^2-c*cos(y)+d,y,x));
 [[x=(-2*a*d-2*b*c)*'integrate(1/(sqrt(c^2-2*%t^2*a*c+%t^4*a^2)*sqrt(-d^2+%t^2*(-2*b*d-2*a*c)+c^2+%t^4*(a^2-b^2))),%t)+%c,y=%pi-acos(d/(%t^2*a-c)+%t^2*b/(%t^2*a-c))]];
 method;
 lagrange;
+*/
 
 /*  515  */ 
 /* This equation presents a problem - runs forever */ 
