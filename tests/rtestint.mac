@@ -874,21 +874,25 @@ integrate(1/sqrt(2*h*r^2-a^2-eps^2),r);
  * Answer = 1/2/a*asin((h*r^2-a^2)/r^2/sqrt(h^2-2*k*a^2))
  * h^2 > 2*a^2*k
  *
- * Maxima seems to get stuck.
  */
-/*
-integrate(1/r/sqrt(2*h*r^2-a^2-2*k*r^4),r);
-*/
+(assume(h^2>2*a^2*k),0);
+0;
+factor(integrate(1/r/sqrt(2*h*r^2-a^2-2*k*r^4),r));
+1/2/a*asin((h*r^2-a^2)/r^2/sqrt(h^2-2*k*a^2));
 
 /* Problem 4 */
 /*
  * Answer = 1/2/sqrt(a^2+eps^2)*asin((h*r^2-(a^2+eps^2))/r^2/sqrt(h^2-2*k*(a^2+eps^2)))
  * h^2 > 2*(a^2+eps^2)*k
  *
- * Maxima seems to get stuck.
+ * Maxima doens't get stuck anymore, but I can't figure out the magic
+ * assume expression so that integrate doesn't ask questions anymore.
  */
 /*
+(assume(2*eps^2*k+2*a^2*k-h^2 < 0),0);
+0;
 integrate(1/r/sqrt(2*h*r^2-a^2-eps^2-2*k*r^4),r);
+1/2/sqrt(a^2+eps^2)*asin((h*r^2-(a^2+eps^2))/r^2/sqrt(h^2-2*k*(a^2+eps^2)));
 */
 
 /* Problem 5 */
@@ -929,31 +933,37 @@ sqrt(2*e*x^2-eps^2-a^2)/(2*e);
  * Answer is 1/2/sqrt(2*k)*asin((2*k*r^2-e)/sqrt(e^2-2*k*a^2))
  * e^2>2*k*a^2
  *
- * Maxima gets stuck
  */
-/*
-integrate(r/sqrt(2*e*r^2-a^2-2*k*r^4),r);
-*/
+(assume(e^2>2*k*a^2,k>0,e>0),0);
+0;
+factor(integrate(r/sqrt(2*e*r^2-a^2-2*k*r^4),r));
+1/2/sqrt(2*k)*asin((2*k*r^2-e)/sqrt(e^2-2*k*a^2));
 
 /* Problem 10 */
 /*
  * Answer is 1/2/sqrt(2*k)*asin((2*k*r^2-e)/sqrt(e^2-2*k*(a^2+eps^2)))
  * e^2>2*k*a^2
  *
- * Maxima gets stuck
+ * For some reason, maxima returns
+ * -%i*asinh((2*k*r^2-e)/sqrt((2*eps^2+2*a^2)*k-e^2))/(2*sqrt(2)*sqrt(k))
+ *
+ * Using the fact that asin(%i*x) = %i*asinh(x), we see that the
+ * answer is identical.
  */
-/*
-integrate(r/sqrt(2*e*r^2-a^2-eps^2-2*k*r^4),r);
-*/
+(assume(2*eps^2*k+2*a^2*k-e^2>0),0);
+0;
+factor(integrate(r/sqrt(2*e*r^2-a^2-eps^2-2*k*r^4),r));
+-%i*asinh((2*k*r^2-e)/sqrt((2*eps^2+2*a^2)*k-e^2))/(2*sqrt(2)*sqrt(k));
+
 
 /* Problem 11 */
 /*
- * Answer is sqrt(2*e*r^2-a^2-2*k*r)/2*e
- *            + 1/(2*h*e*sqrt(-2*e))*asin((2*e*r+k)/sqrt(k^2-2*e-a^2)
+ * Answer is sqrt(2*E*r^2-a^2-2*k*r)/2*E
+ *            + 1/(2*h*E*sqrt(-2*E))*asin((2*E*r+k)/sqrt(k^2-2*E-a^2)
  * E < 0
  */
-(assume(e<0,k^2+2*e*a^2>0,k>0),0);
+(assume(E<0,k^2+2*E*a^2>0,k>0),0);
 0;
-integrate(r/sqrt(2*e*r^2-a^2-2*k*r),r);
-sqrt(2*e*r^2-2*k*r-a^2)/(2*e)-k*asin((4*e*r-2*k)/sqrt(4*k^2+8*a^2*e))
-				      /(2*sqrt(2)*sqrt(-e)*e);
+integrate(r/sqrt(2*E*r^2-a^2-2*k*r),r);
+sqrt(2*E*r^2-2*k*r-a^2)/(2*E)-k*asin((4*E*r-2*k)/sqrt(4*k^2+8*a^2*E))
+				      /(2*sqrt(2)*sqrt(-E)*E);
