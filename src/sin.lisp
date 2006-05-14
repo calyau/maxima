@@ -220,7 +220,7 @@
     ;; integrate(sqrt(x+1/x-2),x,0,1).  We were replacing
     ;; sqrt((x-1)^2) with x - 1, which is totally wrong since 0 <= x
     ;; <= 1.
-    (setq exp (let (($radexpand '$true))
+    (setq exp (let (($radexpand $radexpand))
 		(maxima-substitute w (cadr expres) exp)))
     (intform (let (($radexpand '$all))
 	       (simplify (list '(mexpt) w (caddr expres))))))))
@@ -250,7 +250,9 @@
 (defun integrator (exp var)
   (prog (y arg *powerl* const b w c d e *ratrootform*
 	 *chebyform* arcpart coef integrand)
-     (declare (special *ratrootform* *chebyform*))
+     (declare (special *ratrootform* *chebyform* *integrator-level*))
+     ;; Increment recursion counter
+     (incf *integrator-level*)
      (if (freevar exp) (return (mul2* exp var)))
      (setq w (partition exp var 1))
      (setq const (car w))
@@ -349,9 +351,11 @@
 				       (t (ratint exp var)))))))
      (go loop)
      special
-     (separc exp)	      ;SEPARC SETQS ARCPART AND COEF SUCH THAT
-					;COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
-					;ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
+
+     ;; SEPARC SETQS ARCPART AND COEF SUCH THAT
+     ;; COEF*ARCEXP=EXP WHERE ARCEXP IS OF THE FORM
+     ;; ARCFUNC^N AND COEF IS ITS ALGEBRAIC COEFFICIENT
+     (separc exp)
 
      #+nil
      (progn
@@ -393,7 +397,16 @@
 				      (maxima-display (cddr y)))
 				    (integrator ($trigreduce exp) var))
 				   (t (sce-int (car y) (cadr y) var))))
-			    ((not (alike1 exp (setq y ($expand exp))))
+			    ;; I don't understand why we do this. This
+			    ;; causes the stack overflow in Bug
+			    ;; 1487703, because we keep expanding exp
+			    ;; into a form that matches the original
+			    ;; and therefore we loop forever.  To
+			    ;; break this we keep track how how many
+			    ;; times we've tried this and give up
+			    ;; after 4 (arbitrarily selected) times.
+			    ((and (< *integrator-level* 4)
+				  (not (alike1 exp (setq y ($expand exp)))))
 			     #+nil
 			     (progn
 			       (format t "exp = ~A~%" exp)
@@ -1364,27 +1377,32 @@
 
 (defmfun sinint (exp var)
   (find-function 'ratint)	   ; Make sure that RATINT is in core.
-  (cond ((mnump var) (merror "Attempt to integrate wrt a number: ~:M" var))
-	(($ratp var) (sinint exp (ratdisrep var)))
-	(($ratp exp) (sinint (ratdisrep exp) var))
-	((mxorlistp exp)
-	 (cons (car exp)
-	       (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
-	((mequalp exp)
-	 (list (car exp) (sinint (cadr exp) var)
-	       (add2 (sinint (caddr exp) var)
-		     (concat '$integrationconstant
-			     (setq $integration_constant_counter 
-				   (f1+ $integration_constant_counter))))))
-	((and (atom var)
-	      (isinop exp var))
-	 (list '(%integrate) exp var))
-	((let ((ans (simplify
-		     (let ($opsubst varlist genvar stack)
-		       (integrator exp var)))))
-	   (if (sum-of-intsp ans)
-	       (list '(%integrate) exp var)
-	       ans)))))
+
+  ;; *integrator-level* is a recursion counter for INTEGRATOR.  See
+  ;; INTEGRATOR for more details.  Initialize it here.
+  (let ((*integrator-level* 0))
+    (declare (special *integrator-level*))
+    (cond ((mnump var) (merror "Attempt to integrate wrt a number: ~:M" var))
+	  (($ratp var) (sinint exp (ratdisrep var)))
+	  (($ratp exp) (sinint (ratdisrep exp) var))
+	  ((mxorlistp exp)
+	   (cons (car exp)
+		 (mapcar #'(lambda (y) (sinint y var)) (cdr exp))))
+	  ((mequalp exp)
+	   (list (car exp) (sinint (cadr exp) var)
+		 (add2 (sinint (caddr exp) var)
+		       (concat '$integrationconstant
+			       (setq $integration_constant_counter 
+				     (f1+ $integration_constant_counter))))))
+	  ((and (atom var)
+		(isinop exp var))
+	   (list '(%integrate) exp var))
+	  ((let ((ans (simplify
+		       (let ($opsubst varlist genvar stack)
+			 (integrator exp var)))))
+	     (if (sum-of-intsp ans)
+		 (list '(%integrate) exp var)
+		 ans))))))
 
 (defun sum-of-intsp (ans)
   (cond ((atom ans) (not (eq ans var)))
