@@ -88,6 +88,14 @@ subscripted:
 
 |#
 
+;; Applies op to args and simplifies the result. The function my-take isn't supposed
+;; to evaluate args. I think the maxima 'take' macro doesn't handle subscripted 
+;; operators correctly--this function my-take should be OK with subscripted operators.
+;; (Also the take macro special-cases a few operators for the simplification function. Yeech.)
+
+(defun my-take (op args)
+  (simplify (if (and (consp op) (member 'array (car op))) `((mqapply) ,op ,@args) `((,op) ,@args))))
+
 (defun $opsubst (&rest q)
   (let ((e))
     (cond ((= 3 (length q)) (apply 'op-subst q))
@@ -99,25 +107,46 @@ subscripted:
 	       (merror "Expected an expression of the form `a = b'; instead found ~:M" qi))))
 	  (t (wna-err '$opsubst)))))
 
+;; If op is a mstring, verbify it; otherwise, return op. Without this transformation,
+;; things like opsubst("[",f, f(a,b,c)) would fail. Notice that subst(f[1] = "[", f[1](1,2,3))
+;; doesn't work correctly.
+
+(defun verbify-mstring (op)
+  (if (mstringp op) ($verbify op) op))
+
+;; If op is a symbol, verbify it; otherwise, return op.
+
+(defun safe-verbify (op)
+  (if (symbolp op) ($verbify op) op))
+
 (defun op-subst (f g e)
+  (setq f (verbify-mstring f))
+  (setq g (verbify-mstring g))
+
   (let (($inflag t))
     (if ($mapatom e) e
-      (mapply1 (if (like ($verbify g) ($verbify ($op e))) f ($op e))
-	       (mapcar #'(lambda (s) (op-subst f g s)) (margs ($args e))) nil))))
+      (my-take (if (like (safe-verbify g) (safe-verbify (mop e))) f (mop e)) 
+	       (mapcar #'(lambda (s) (op-subst f g s)) (margs ($args e)))))))
 
 ;; If prd(e) evaluates to true, do the substitution opsubst(id, e). The
-;; first argument should be an equation of the form symbol = symbol or lambda form.
+;; first argument should be an equation of the form symbol = symbol | lambda form
+;; or a list of such equations.
 
 (defun $opsubstif (id prd e)
-  (if (op-equalp id 'mequal) (op-subst-if ($rhs id) ($lhs id) prd e)))
-  
+  (setq id (if ($listp id) (margs id) (list id)))
+  (dolist (qi id)
+    (if (op-equalp qi 'mequal) (setq e (op-subst-if (verbify-mstring ($rhs qi))
+						    (verbify-mstring ($lhs qi)) prd e))
+      (merror "Expected an expression of the form `a = b'; instead found ~:M" qi)))
+  e)
+        	  
 (defun op-subst-if (fn fo prd e)
-  (let (($inflag t) ($prederror nil) (q))
+  (let (($inflag t) ($prederror nil))
     (cond (($mapatom e) e)
 	  (t
-	   (mapply1 (if (and (like ($verbify fo) ($verbify ($op e)))
-			     (eq t (mevalp (mfuncall '$apply prd ($args e))))) fn ($op e))
-		    (mapcar #'(lambda (s) (op-subst-if fn fo prd s)) (margs ($args e))) nil)))))
+	   (my-take (if (and (like (safe-verbify fo) (safe-verbify (mop e)))
+			     (eq t (mevalp (mfuncall prd ($args e))))) fn (mop e))
+		    (mapcar #'(lambda (s) (op-subst-if fn fo prd s)) (margs ($args e))))))))
 	  	   	  
 ;; Return a list of all the arguments to the operator 'op.' Each argument is
 ;; a list (what 'args' would return).  Examples:
@@ -135,11 +164,11 @@ subscripted:
 
 	   
 (defun $gatherargs (e op)
-  `((mlist) ,@(gatherargs e ($verbify op))))
+  `((mlist) ,@(gatherargs e op)))
 
 (defun gatherargs (e op)
   (if ($mapatom e) nil
-    (append (if (op-equalp e op) `(((mlist) ,@(margs e))))
+    (append (if (op-equalp e op ($nounify op) ($verbify op)) `(((mlist) ,@(margs e))))
 	    (mapcan #'(lambda (s) (gatherargs s op)) (margs e)))))
 	 	  
 (defun $gatherops (e)
