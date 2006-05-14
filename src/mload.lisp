@@ -835,7 +835,7 @@
 		     (- num-problems (length all-differences)) num-problems)
 	     (let ((s (if (> (length all-differences) 1) "s" "")))
 	       (format t "~%The following ~A problem~A failed: ~A~%" 
-		       (length all-differences) s all-differences))
+		       (length all-differences) s (reverse all-differences)))
 	     `((mlist),filename ,@ all-differences)))))
 	   
 (defun batch-equal-check (next-result result 
