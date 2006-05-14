@@ -27,6 +27,11 @@
          "rtestode_kamke_1_4.mac" 
          (mlist "rtestode_kamke_1_5.mac" 53 84)
          "rtestode_kamke_1_6.mac" 
+         "rtestode_kamke_2_1.mac"
+         "rtestode_kamke_2_2.mac"
+         "rtestode_kamke_2_3.mac"
+         "rtestode_kamke_2_4.mac"
+         "rtestode_kamke_2_5.mac"
 	 "rtest_sym.mac" 
 	 "rtest_sym2.mac"
 	 "rtest_ode1_riccati.mac"
