@@ -53,20 +53,26 @@ method;
 lagrange;
 
 /*  408  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 408 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2-2*y+x ,y,x)); */ 
+(pn_( 408 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2-2*y+x ,y,x));
+[[x=%c*%e^-(2*(log(%t-1)-1/(%t-1))),y=(%t^2+1)*x/2]];
+method;
+lagrange;
 
 /*  409  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 409 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2-2*'diff(y,x,1)-y ,y,x)); */ 
+(pn_( 409 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2-2*'diff(y,x,1)-y ,y,x));
+[[x=(2*(%t-log(%t))+%c)/(%t-1)^2,y = %t^2*x-2*%t]];
+method;
+lagrange;
 
 /*  410  */ 
 /* This equation presents a problem - runs forever */ 
 /* (pn_( 410 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2+4*'diff(y,x,1)-2*y ,y,x)); */ 
 
 /*  411  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 411 ),ans:contrib_ode(eqn: x*('diff(y,x,1))^2+x*'diff(y,x,1)-y ,y,x)); */ 
+(pn_(411),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+x*'diff(y,x,1)-y ,y,x));
+[[x=%c*%e^(1/%t)/%t^2,y=(%t^2+%t)*x]];
+method;
+lagrange;
 
 /*  412  */ 
 (pn_(412),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)+a,y,x));
@@ -81,14 +87,10 @@ method;
 lie;
 
 /*  414  */
-/* Used to pass but now fails due to integration problems.
-   Almost certainly related to bug # 1487703
-
 (pn_(414),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)+x^3,y,x));
 [-(5*'integrate((sqrt(y^2-4*x^4)*'integrate(((52*x^3*y^2-8*x^7)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+20*x^3*y^3-80*x^7*y)/((65*y^5-270*x^4*y^3+40*x^8*y)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+97*y^6-464*x^4*y^4+306*x^8*y^2-8*x^12),x)+5*y*'integrate(((52*x^3*y^2-8*x^7)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+20*x^3*y^3-80*x^7*y)/((65*y^5-270*x^4*y^3+40*x^8*y)*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+97*y^6-464*x^4*y^4+306*x^8*y^2-8*x^12),x)-2)/(sqrt(y^2-4*x^4)+5*y),y)+5*'integrate((24*y^2+4*x^4)/(25*x*y*%e^(log(y+2*x^2)/2+log(y-2*x^2)/2)+65*x*y^2-10*x^5),x)-3*log(x))/5=%c];
 method;
 lie;
-*/
 
 /*  415  */ 
 (pn_(415),ans:contrib_ode(eqn:x*('diff(y,x,1))^2+y*'diff(y,x,1)-y^4,y,x));
@@ -158,24 +160,35 @@ method;
 lagrange;
 
 /*  425  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 425 ),ans:contrib_ode(eqn: (x+1)*('diff(y,x,1))^2-(y+x)*'diff(y,x,1)+y ,y,x)); */ 
+(pn_(425),ans:contrib_ode(eqn: (x+1)*('diff(y,x,1))^2-(y+x)*'diff(y,x,1)+y ,y,x));
+[y=((%c^2-%c)*x+%c^2)/(%c-1),y=-2*sqrt(x+1)+x+2,y=2*sqrt(x+1)+x+2];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
+[clairault,0,0,0];
 
 /*  426  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 426 ),ans:contrib_ode(eqn: (3*x+1)*('diff(y,x,1))^2-3*(y+2)*'diff(y,x,1)+9 ,y,x)); */ 
+(pn_(426),ans:contrib_ode(eqn:(3*x+1)*('diff(y,x,1))^2-3*(y+2)*'diff(y,x,1)+9 ,y,x));
+[y=(3*%c^2*x+%c^2-6*%c+9)/(3*%c),y=-2*sqrt(3*x+1)-2,y=2*sqrt(3*x+1)-2];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
+[clairault,0,0,0];
 
-/*  427  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 427 ),ans:contrib_ode(eqn: (3*x+5)*('diff(y,x,1))^2-(3*y+x)*'diff(y,x,1)+y ,y,x)); */ 
+/*  427  */  
+(pn_(427),ans:contrib_ode(eqn: (3*x+5)*('diff(y,x,1))^2-(3*y+x)*'diff(y,x,1)+y ,y,x));
+[y=((3*%c^2-%c)*x+5*%c^2)/(3*%c-1),y=-(2*sqrt(5)*sqrt(3*x+5)-3*x-10)/9,y=(2*sqrt(5)*sqrt(3*x+5)+3*x+10)/9];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
+[clairault,0,0,0];
 
 /*  428  */ 
 /* This equation presents a problem - runs forever */ 
-/* (pn_( 428 ),ans:contrib_ode(eqn: a*x*('diff(y,x,1))^2+(-a*y+b*x+c)*'diff(y,x,1)-b*y ,y,x)); */ 
+(pn_(428),ans:contrib_ode(eqn:a*x*('diff(y,x,1))^2+(-a*y+b*x+c)*'diff(y,x,1)-b*y ,y,x));
+[y=((%c*b+%c^2*a)*x+%c*c)/(b+%c*a),y=-(2*sqrt(-b*c*x)+b*x-c)/a,y=(2*sqrt(-b*c*x)-b*x+c)/a];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
+[clairault,0,0,0];
 
 /*  429  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 429 ),ans:contrib_ode(eqn: a*x*('diff(y,x,1))^2-(a*y+b*x-b-a)*'diff(y,x,1)+b*y ,y,x)); */ 
+(pn_(429),ans:contrib_ode(eqn: a*x*('diff(y,x,1))^2-(a*y+b*x-b-a)*'diff(y,x,1)+b*y ,y,x));
+[y=((%c*b-%c^2*a)*x-%c*b-%c*a)/(b-%c*a),y=-(2*sqrt((b^2+a*b)*x)-b*x-b-a)/a,y=(2*sqrt((b^2+a*b)*x)+b*x+b+a)/a];
+[method,ode_check(eqn,ans[1]),ode_check(eqn,ans[2]),ode_check(eqn,ans[3])];
+[clairault,0,0,0];
 
 /*  430  */ 
 /* This equation presents a problem - runs forever */ 
@@ -326,12 +339,24 @@ forget(a>1,y>0);
 [a>1,y>0];
 
 /*  455  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 455 ),ans:contrib_ode(eqn: x^3*('diff(y,x,1))^2+x^2*y*'diff(y,x,1)+a ,y,x)); */ 
+assume(a>0);
+[a>0];
+(pn_(455),ans:contrib_ode(eqn: x^3*('diff(y,x,1))^2+x^2*y*'diff(y,x,1)+a ,y,x));
+ [(abs(y)*'integrate((2*x*abs(y)^3-2*x*y^2*abs(y))/(sqrt(x^2*y^2-4*a*x)*abs(y)^3+x*y^4-2*a*y^2),y)+y*log(2*sqrt(x^2*y^2-4*a*x)*abs(y)+2*x*y^2-4*a)+log(x)*abs(y))/abs(y)=%c];
+method;
+lie;
+forget(a>0);
+[a>0];
 
 /*  456  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 456 ),ans:contrib_ode(eqn: x*(x^2-1)*('diff(y,x,1))^2+2*(1-x^2)*y*'diff(y,x,1)+x*y^2-x ,y,x)); */ 
+assume(x>1);
+[x>1];
+(pn_(456),ans:contrib_ode(eqn: x*(x^2-1)*('diff(y,x,1))^2+2*(1-x^2)*y*'diff(y,x,1)+x*y^2-x ,y,x));
+[(sqrt(x-1)*sqrt(x+1)*('integrate((sqrt(x^2-y^2)-sqrt(x^2-1)*y)/(sqrt(x-1)*x*sqrt(x+1)*sqrt(x^2-y^2)),x)-'integrate('integrate(sqrt(x-1)*x*sqrt(x+1)*sqrt(x^2-1)/(sqrt(x^2-y^2)*((x^2-1)*y^2-x^4+x^2)),x),y))+sqrt(x^2-1)*asin(y/x))/(sqrt(x-1)*sqrt(x+1))=%c];
+method;
+lie;
+forget(x>1);
+[x>1];
 
 /*  457  */ 
 (pn_(457),ans:contrib_ode(eqn:x^4*('diff(y,x,1))^2-x*'diff(y,x,1)-y,y,x));
@@ -339,11 +364,15 @@ forget(a>1,y>0);
 method;
 lie;
 
-/*  458  This one kills the testsuite */ 
-/* (pn_(458),ans:contrib_ode(eqn:x^2*(x^2-a^2)*('diff(y,x,1))^2-1,y,x));
-[-(abs(a)*y-asin(a^2/(abs(a)*abs(x))))/abs(a)=%c];
+/*  458 */
+assume(a>0);
+[a>0]; 
+(pn_(458),ans:contrib_ode(eqn:x^2*(x^2-a^2)*('diff(y,x,1))^2-1,y,x));
+[-(a*y-asin(a/x))/a=%c];
 [method,ode_check(eqn,ans[1])];
-[lie,0]; */
+[lie,0];
+forget(a>0);
+[a>0];
 
 /*  459  */ 
 assume(x>0);
@@ -373,31 +402,43 @@ false;
 
 /*  463  */ 
 /* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 463 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2-%e^(2*x) ,y,x)); */ 
+/* (pn_( 463 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2-%e^(2*x),y,x)); */ 
 
 /*  464  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 464 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y ,y,x)); */ 
+(pn_(464),ans:contrib_ode(eqn: y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y,y,x));
+[[x=%c*%e^(2*(log(%t+1)/2-log(%t)+log(%t-1)/2)),y=-2*%t*x/(%t^2-1)]];
+method;
+lagrange;
 
 /*  465  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 465 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-9*y ,y,x)); */ 
+(pn_(465),ans:contrib_ode(eqn:y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-9*y,y,x)); 
+[[x=%c*(%t-3)*(%t+3)*%e^(2*log(%t)/7-8*log(%t^2-7)/7),y=-2*%t*x/(%t^2-9)]];
+method;
+lagrange;
 
 /*  466  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 466 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2-2*x*'diff(y,x,1)+y ,y,x)); */ 
+(pn_(466),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-2*x*'diff(y,x,1)+y,y,x));
+[[x=%c*%e^-(2*(log(%t)-log(%t^2+1)/2)),y=2*%t*x/(%t^2+1)]];
+method;
+lagrange;
 
 /*  467  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 467 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2-4*x*'diff(y,x,1)+y ,y,x)); */ 
+(pn_(467),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-4*x*'diff(y,x,1)+y,y,x));
+[[x=%c*(%t^2+1)*%e^(-log(%t^2-3)/3-4*log(%t)/3),y=4*%t*x/(%t^2+1)]];
+method;
+lagrange;
 
 /*  468  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 468 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2-4*a^2*x*'diff(y,x,1)+a^2*y ,y,x)); */ 
+(pn_(468),ans:contrib_ode(eqn:y*('diff(y,x,1))^2-4*a^2*x*'diff(y,x,1)+a^2*y,y,x));
+[[x=%c*(a^2+%t^2)*%e^(-log(%t^2-3*a^2)/3-4*log(%t)/3),y=4*%t*a^2*x/(a^2+%t^2)]];
+method;
+lagrange;
 
 /*  469  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 469 ),ans:contrib_ode(eqn: y*('diff(y,x,1))^2+a*x*'diff(y,x,1)+b*y ,y,x)); */ 
+(pn_(469),ans:contrib_ode(eqn:y*('diff(y,x,1))^2+a*x*'diff(y,x,1)+b*y,y,x));
+[[x=%c*(b+%t^2)*%e^(-(2*b+a)*log(b+a+%t^2)/(2*b+2*a)-log(%t)*a/(b+a)),y=-%t*a*x/(b+%t^2)]];
+method;
+lagrange;
 
 /*  470  */ 
 (pn_(470),ans:contrib_ode(eqn:y*('diff(y,x,1))^2+x^3*'diff(y,x,1)-x^2*y,y,x));
@@ -412,8 +453,10 @@ lie;
 [factor,0,0];
 
 /*  472  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 472 ),ans:contrib_ode(eqn: (y+x)*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y ,y,x)); */ 
+(pn_(472),ans:contrib_ode(eqn:(y+x)*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y,y,x));
+[[x=%c*%e^(2*(log(%t+1)/2-log(%t)+log(%t-1)/2)),y=-(%t^2+2*%t)*x/(%t^2-1)]];
+method;
+lagrange;
 
 /*  473  */ 
 /* This equation presents a problem - runs forever */ 
@@ -424,8 +467,10 @@ lie;
 /* (pn_( 474 ),ans:contrib_ode(eqn: 2*y*('diff(y,x,1))^2-(4*x-5)*'diff(y,x,1)+2*y ,y,x)); */ 
 
 /*  475  */ 
-/* This equation presents a problem - runs forever */ 
-/* (pn_( 475 ),ans:contrib_ode(eqn: 4*y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y ,y,x)); */ 
+(pn_(475),ans:contrib_ode(eqn: 4*y*('diff(y,x,1))^2+2*x*'diff(y,x,1)-y ,y,x));
+[[x=%c*%e^(2*(log(2*%t+1)/2+log(2*%t-1)/2-log(%t))),y=-2*%t*x/(4*%t^2-1)]];
+method;
+lagrange;
 
 /*  476  */ 
 (pn_(476),ans:contrib_ode(eqn:9*y*('diff(y,x,1))^2+4*x^3*'diff(y,x,1)-4*x^2*y,y,x));
@@ -438,8 +483,10 @@ lie;
 /* (pn_( 477 ),ans:contrib_ode(eqn: a*y*('diff(y,x,1))^2+(2*x-b)*'diff(y,x,1)-y ,y,x)); */ 
 
 /*  478  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 478 ),ans:contrib_ode(eqn: (a*y+b)*(('diff(y,x,1))^2+1)-c ,y,x)); */ 
+(pn_(478),ans:contrib_ode(eqn:(a*y+b)*(('diff(y,x,1))^2+1)-c,y,x));
+[[x=%c-2*(%t/(2*%t^2*a+2*a)+atan(%t)/(2*a))*c,y=-(-c+%t^2*b+b)/(%t^2*a+a)]];
+method;
+lagrange;
 
 /*  479  */ 
 /* This equation presents a problem - runs forever */ 
@@ -472,18 +519,16 @@ false;
 /* (pn_( 485 ),ans:contrib_ode(eqn: a*x*y*('diff(y,x,1))^2-(a*y^2+b*x^2+c)*'diff(y,x,1)+b*x*y ,y,x)); */ 
 
 /*  486  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 486 ),ans:contrib_ode(eqn: y^2*('diff(y,x,1))^2+y^2-a^2 ,y,x)); */ 
+(pn_(486),ans:contrib_ode(eqn: y^2*('diff(y,x,1))^2+y^2-a^2 ,y,x));
+[[x=%t*a/sqrt(%t^2+1)+%c,y = -a/sqrt(%t^2+1)],[x=%c-%t*a/sqrt(%t^2+1),y = a/sqrt(%t^2+1)]];
+method;
+lagrange;
 
 /*  487  */ 
-/* Used to pass but now fails due to integration problems.
-   Almost certainly related to bug # 1487703
-
 (pn_(487),ans:contrib_ode(eqn:y^2*('diff(y,x,1))^2-6*x^3*'diff(y,x,1)+4*x^2*y,y,x));
 [-(4*'integrate((sqrt(9*x^4-4*y^3)*(27*%i*x^4*y^2*%e^(log(4*y^3-9*x^4)/2)+36*x^2*y^5-81*x^6*y^2)+(81*%i*x^6*y^2-36*%i*x^2*y^5)*%e^(log(4*y^3-9*x^4)/2)+108*x^4*y^5-243*x^8*y^2)/(sqrt(9*x^4-4*y^3)*((72*%i*x^4*y^3-162*%i*x^8)*%e^(log(4*y^3-9*x^4)/2)+48*x^2*y^6-324*x^6*y^3+486*x^10)+(96*%i*x^2*y^6-432*%i*x^6*y^3+486*%i*x^10)*%e^(log(4*y^3-9*x^4)/2)+64*y^9-576*x^4*y^6+1620*x^8*y^3-1458*x^12),y)-log((3*x^2*%e^(log(4*y^3-9*x^4)/2)-2*%i*y^3+9*%i*x^4)/(3*x^2))-2*log(x))/4=%c];
 method;
 lie;
-*/
 
 /*  488  */ 
 /* This equation presents a problem - runs forever */ 
@@ -502,8 +547,10 @@ lie;
 /* (pn_( 491 ),ans:contrib_ode(eqn: y^2*('diff(y,x,1))^2+2*a*x*y*'diff(y,x,1)+(1-a)*y^2+a*x^2+(a-1)*b ,y,x)); */ 
 
 /*  492  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 492 ),ans:contrib_ode(eqn: (y^2-a^2)*('diff(y,x,1))^2+y^2 ,y,x)); */ 
+(pn_( 492 ),ans:contrib_ode(eqn: (y^2-a^2)*('diff(y,x,1))^2+y^2 ,y,x));
+[[x=%c-('integrate(1/(sqrt(%t^2+1)*(%t^3+%t)),%t))*a,y=-%t*a/sqrt(%t^2+1)],[x=('integrate(1/(sqrt(%t^2+1)*(%t^3+%t)),%t))*a+%c,y = %t*a/sqrt(%t^2+1)]];
+method;
+lagrange;
 
 /*  493  */ 
 /* This equation presents a problem - runs forever */ 
@@ -526,8 +573,10 @@ lie;
 /* (pn_( 497 ),ans:contrib_ode(eqn: 3*y^2*('diff(y,x,1))^2-2*x*y*'diff(y,x,1)+4*y^2-x^2 ,y,x)); */ 
 
 /*  498  */ 
-/* This equation presents a problem - crashes ode_contrib */ 
-/* (pn_( 498 ),ans:contrib_ode(eqn: (3*y-2)*('diff(y,x,1))^2+4*(y-1) ,y,x)); */ 
+(pn_(498),ans:contrib_ode(eqn:(3*y-2)*('diff(y,x,1))^2+4*(y-1),y,x));
+[[x=%c-8*(atan(3*%t/(2*sqrt(3)))/(16*sqrt(3))+%t/(24*%t^2+32)),y=(2*%t^2+4)/(3*%t^2+4)]];
+method;
+lagrange;
 
 /*  499  */ 
 /* This equation presents a problem - runs forever */ 
