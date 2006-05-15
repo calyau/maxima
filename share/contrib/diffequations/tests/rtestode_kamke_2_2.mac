@@ -336,12 +336,24 @@ forget(a>0);
 false;
 
 /* Kamke 2. 162  */ 
-/* This equation presents a problem - asks question */ 
-/*(pn_(162),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-v^2)*y,y,x));*/
+declare(v,integer);
+done;
+(pn_(162),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-v^2)*y,y,x));
+[y = %k2*%y[v](x)+%k1*%j[v](x)];
+method;
+bessel;
+remove(v,integer);
+done;
 
 /* Kamke 2. 163  */ 
-/* This equation presents a problem - asks question */ 
-/*(pn_(163),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-v^2)*y-f(x),y,x));*/
+declare(v,integer);
+done;
+(pn_(163),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(x^2-v^2)*y-f(x),y,x));
+[y=-%j[v](x)*'integrate(f(x)*%y[v](x)/(x^2*%j[v](x)*'diff(%y[v](x),x,1)+(v*x*%j[v](x)-x^2*%j[v-1](x))*%y[v](x)),x)+%y[v](x)*'integrate(f(x)*%j[v](x)/(x^2*%j[v](x)*'diff(%y[v](x),x,1)+(v*x*%j[v](x)-x^2*%j[v-1](x))*%y[v](x)),x)+%k2*%y[v](x)+%k1*%j[v](x)];
+method;
+variationofparameters;
+remove(v,integer);
+done;
 
 /* Kamke 2. 164  */ 
 (pn_(164),ans:contrib_ode(eqn:x^2*'diff(y,x,2)+x*'diff(y,x,1)+(l*x^2-v^2)*y,y,x));
