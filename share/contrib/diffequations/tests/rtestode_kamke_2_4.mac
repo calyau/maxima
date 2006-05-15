@@ -81,11 +81,9 @@ false;
 (pn_(314),ans:contrib_ode(eqn:x*(x^2+1)*'diff(y,x,2)-(2*(n-1)*x^2+2*n-1)*'diff(y,x,1)+(-v+n-1)*(v+n)*x*y,y,x));
 false;
 
-/* Kamke 2. 315  CHECKME */ 
+/* Kamke 2. 315   CHECKME */ 
 (pn_(315),ans:contrib_ode(eqn:x*(x^2-1)*'diff(y,x,2)+'diff(y,x,1)+a*x^3*y,y,x));
 [y=%k1*sin(sqrt(a)*log(2*sqrt(x^2-1)+2*x))+%k2*cos(sqrt(a)*log(2*sqrt(x^2-1)+2*x))];
-ode_check(eqn,ans[1]);
-(sqrt(x^2-1)*(sqrt(a)*((8*%k2*x^4-8*%k2*x^2+%k2)*sin(sqrt(a)*log(2*sqrt(x^2-1)+2*x))+(-8*%k1*x^4+8*%k1*x^2-%k1)*cos(sqrt(a)*log(2*sqrt(x^2-1)+2*x)))+(8*%k1*a*x^6-12*%k1*a*x^4+4*%k1*a*x^2)*sin(sqrt(a)*log(2*sqrt(x^2-1)+2*x))+(8*%k2*a*x^6-12*%k2*a*x^4+4*%k2*a*x^2)*cos(sqrt(a)*log(2*sqrt(x^2-1)+2*x)))+sqrt(a)*((8*%k2*x^5-12*%k2*x^3+4*%k2*x)*sin(sqrt(a)*log(2*sqrt(x^2-1)+2*x))+(-8*%k1*x^5+12*%k1*x^3-4*%k1*x)*cos(sqrt(a)*log(2*sqrt(x^2-1)+2*x)))+(8*%k1*a*x^7-16*%k1*a*x^5+9*%k1*a*x^3-%k1*a*x)*sin(sqrt(a)*log(2*sqrt(x^2-1)+2*x))+(8*%k2*a*x^7-16*%k2*a*x^5+9*%k2*a*x^3-%k2*a*x)*cos(sqrt(a)*log(2*sqrt(x^2-1)+2*x)))/(8*x^4+sqrt(x^2-1)*(8*x^3-4*x)-8*x^2+1);
 method;
 xformtoconstcoeff;
 
@@ -374,6 +372,8 @@ ode_check(eqn,ans[1]);
 0;
 method;
 xformtoconstcoeff;
+forget(a>0);
+[a>0];
 
 /* Kamke 2. 377  */ 
 (pn_(377),ans:contrib_ode(eqn:'diff(y,x,2)=-b^2*y/(x^2+a^2)^2,y,x));
