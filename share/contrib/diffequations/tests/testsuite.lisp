@@ -17,15 +17,15 @@
          "rtestode_murphy_1_5.mac"
          "rtestode_murphy_1_6.mac"
          (mlist "rtestode_murphy_2_1.mac" 122 123 124 125)
-         "rtestode_murphy_2_2.mac"
+         (mlist "rtestode_murphy_2_2.mac" 162)
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
          (mlist "rtestode_kamke_1_1.mac" 85)
-         (mlist "rtestode_kamke_1_2.mac" 182 216 220 221)
+         (mlist "rtestode_kamke_1_2.mac" 218)
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
-         (mlist "rtestode_kamke_1_5.mac" 53 84)
+         (mlist "rtestode_kamke_1_5.mac" 53 81 84)
          "rtestode_kamke_1_6.mac" 
          "rtestode_kamke_2_1.mac"
          "rtestode_kamke_2_2.mac"
