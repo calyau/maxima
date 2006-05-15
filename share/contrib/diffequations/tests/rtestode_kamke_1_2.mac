@@ -136,14 +136,10 @@ method;
 lie;
 
 /* 116 */
-/* Used to pass but now fails due to integration problems.
-   Almost certainly related to bug # 1487703
-
 (pn_(116),ans:contrib_ode(eqn:x*'diff(y,x)-x*sqrt((y^2-x^2)*(y^2-4*x^2))-y,y,x)); 
 [(2*'integrate((sqrt(y^4-5*x^2*y^2+4*x^4)*(y*'integrate((2*y^3-5*x^2*y)*%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2)/(y^4-5*x^2*y^2+4*x^4),x)-'integrate(%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2),x))-x)/sqrt(y^4-5*x^2*y^2+4*x^4),y)+2*y*'integrate(%e^(-log(y+2*x)/2-log(y+x)/2-log(y-x)/2-log(y-2*x)/2),x)+x^2)/2=%c];
 method;
 lie;
-*/
 
 /* 117 */
 (pn_(117),ans:contrib_ode(eqn:x*'diff(y,x)-x*exp(y/x)-y-x,y,x));
