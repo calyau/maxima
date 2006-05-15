@@ -454,8 +454,16 @@ false;
 false;
 
 /* Kamke 2. 290  */ 
-/* This equation presents a problem - asks question */ 
-/*(pn_(290),ans:contrib_ode(eqn:(27*x^2+4)*'diff(y,x,2)+27*x*'diff(y,x,1)-3*y,y,x));*/
+assume(x>0);
+[x>0];
+(pn_(290),ans:contrib_ode(eqn:(27*x^2+4)*'diff(y,x,2)+27*x*'diff(y,x,1)-3*y,y,x));
+[y=%i*%k1*sinh(asinh(27*x/(2*3^(3/2)))/3)+%k2*cosh(asinh(27*x/(2*3^(3/2)))/3)];
+ode_check(eqn,ans[1]);
+0;
+method;
+xformtoconstcoeff;
+forget(x>0);
+[x>0];
 
 /* Kamke 2. 291  */ 
 (pn_(291),ans:contrib_ode(eqn:48*(x-1)*x*'diff(y,x,2)+(152*x-40)*'diff(y,x,1)+53*y,y,x));
