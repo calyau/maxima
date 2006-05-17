@@ -411,11 +411,8 @@ forget(a>0,b<0);
 
 /* 61 Riccati */
 
-/* 62 Riccati */
-(pn_(62),ans:contrib_ode(eqn:'diff(y,x)=1+a*(x-y)*y,y,x));
-[y = (sqrt(2)*sqrt(%pi)*a*x*%e^(a*x^2/2)*erf(sqrt(a)*x/sqrt(2))+sqrt(a)*(2*%c*a*x*%e^(a*x^2/2)+2))/(sqrt(2)*sqrt(%pi)*a*%e^(a*x^2/2)*erf(sqrt(a)*x/sqrt(2))+2*%c*a^(3/2)*%e^(a*x^2/2))];
-[method,ode_check(eqn,ans[1])];
-[riccati,0];
+/* 62 Riccati - See Kamke 1.27 */
+/* (pn_(62),ans:contrib_ode(eqn:'diff(y,x)=1+a*(x-y)*y,y,x)); */
 
 /* 63 Riccati */
 

@@ -10,7 +10,7 @@
 ;; for the time being 
 (setf $testsuite_files
       '( (mlist simp)
-	 (mlist "rtestode_murphy_1_1.mac" 135)
+	 "rtestode_murphy_1_1.mac"
          "rtestode_murphy_1_2.mac" 
          "rtestode_murphy_1_3.mac"
          "rtestode_murphy_1_4.mac"
@@ -21,7 +21,7 @@
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
          "rtestode_murphy_2_5.mac"
-         (mlist "rtestode_kamke_1_1.mac" 85)
+         "rtestode_kamke_1_1.mac"
          (mlist "rtestode_kamke_1_2.mac" 218)
          "rtestode_kamke_1_3.mac"
          "rtestode_kamke_1_4.mac" 
