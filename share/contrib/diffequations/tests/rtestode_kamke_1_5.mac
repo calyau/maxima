@@ -368,7 +368,7 @@ lie;
 assume(a>0);
 [a>0]; 
 (pn_(458),ans:contrib_ode(eqn:x^2*(x^2-a^2)*('diff(y,x,1))^2-1,y,x));
-[-(a*y-asin(a/x))/a=%c];
+[-(a*y-asin(a/abs(x)))/a=%c];
 [method,ode_check(eqn,ans[1])];
 [lie,0];
 forget(a>0);

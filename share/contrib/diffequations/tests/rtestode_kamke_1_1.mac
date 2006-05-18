@@ -423,6 +423,14 @@ forget((8*b+a^2)>0,x>0);
 /* 59 */
 (pn_(59),ans:contrib_ode(eqn:'diff(y,x)-a*sqrt(y^2+1)-b,y,x));
 ['integrate(1/(a*sqrt(y^2+1)+b),y) = x+%c];
+assume(y>0);
+[y>0];
+ans[1],abs,integrate;
+2*sqrt(y)=x+%c;
+[method,ode_check(eqn,%)];
+[separable,0];
+forget(y>0);
+[y>0];
 
 /* 60 */
 (pn_(60),ans:contrib_ode(eqn:'diff(y,x)-sqrt(y^2-1)/sqrt(x^2-1),y,x));
