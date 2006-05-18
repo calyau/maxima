@@ -1,37 +1,38 @@
 /* ode1_lie.mac
 
  Solution of first order ODEs using Lie symmetry methods
-   
 
-  References: 
 
-  [1] E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order 
-      ODE Patterns, Computer Physics Communications 113 (1998), p 239. 
+  References:
+
+  [1] E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
+      ODE Patterns, Computer Physics Communications 113 (1998), p 239.
       (http://lie.uwaterloo.ca/papers/ode_vii.pdf)
-  
-  [2] E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
-      Symmetries and Linear Transformations, European Journal of 
-      Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003). 
+
+  [2] E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
+      Symmetries and Linear Transformations, European Journal of
+      Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
+      (http://arxiv.org/abs/math-ph/0404014)
       (http://lie.uwaterloo.ca/papers/ode_iv.pdf)
 
   [3] G W Bluman, S C Anco, Symmetry and Integration Methods for
       Differential Equations, Springer, (2002)
 
 
-  Copyright (C) 2004 David Billinghurst		 
-  		       								 
-  This program is free software; you can redistribute it and/or modify	 
-  it under the terms of the GNU General Public License as published by	 
-  the Free Software Foundation; either version 2 of the License, or		 
-  (at your option) any later version.					 
- 		       								 
-  This program is distributed in the hope that it will be useful,		 
-  but WITHOUT ANY WARRANTY; without even the implied warranty of		 
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		 
-  GNU General Public License for more details.				 
- 		       								 
+  Copyright (C) 2004 David Billinghurst		
+  		       								
+  This program is free software; you can redistribute it and/or modify	
+  it under the terms of the GNU General Public License as published by	
+  the Free Software Foundation; either version 2 of the License, or		
+  (at your option) any later version.					
+ 		       								
+  This program is distributed in the hope that it will be useful,		
+  but WITHOUT ANY WARRANTY; without even the implied warranty of		
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the		
+  GNU General Public License for more details.				
+ 		       								
   You should have received a copy of the GNU General Public License	
-  along with this program; if not, write to the Free Software 		 
+  along with this program; if not, write to the Free Software 		
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
@@ -58,7 +59,7 @@ ode1_lie(phi,y,x) := block(
   xi:sym[1], eta:sym[2],
   ode_disp2("In ode1_lie: xi = ",xi),
   ode_disp2("In ode1_lie: eta = ",eta),
-  
+
   /* Check symmetry generators */
   r:symtest(phi,xi,eta,y,x),
   ode_disp2("In ode1_lie: symtest = ",r),
@@ -94,14 +95,14 @@ ode1_a(phi,y,x) := block(
   [ %A, %Ay, %Ayy, %Ayyy, %phi_yy, %phi_yyy ],
   ode_disp("In ode1_a ..."),
   ode_disp2("     phi = ",phi),
-/*   
+/*
   Using [2], eq (13),(14)
-*/ 
+*/
   /* Confirm that diff(phi,y,3)#0 */
   %phi_yy: ratsimp(diff(phi,y,2)),
   %phi_yyy: ratsimp(diff(%phi_yy,y)),
-  if is(%phi_yyy=0) then 
-  (  
+  if is(%phi_yyy=0) then
+  (
     /* %phi_yyy=0 - Not covered in [2] */
     ode_disp("     %phi_yyy = 0"),
     return(lie_FxHx(phi,y,x))
@@ -111,7 +112,7 @@ ode1_a(phi,y,x) := block(
   %Ax: ratsimp(diff(%A,x)),
 
   if is(%Ay=0) then
-    /* Case 1: diff(A,y)=0 
+    /* Case 1: diff(A,y)=0
        Change variables using y=A*u (15) */
     block(
       [u],
@@ -121,7 +122,7 @@ ode1_a(phi,y,x) := block(
       /* Here neweq is RHS only */
       neweq: ratsimp((subst(%A*u,y,phi)-%Ax*u)/%A),
       ode_disp2("       transformed equation is ",neweq),
-      
+
       /* Symmetry generators of u equation */
       ode_disp("       Finding symmetries of transformed equation"),
       gen:radcan(lie_FxHx(neweq,u,x)),
@@ -129,14 +130,14 @@ ode1_a(phi,y,x) := block(
 
       if (gen=false) then
         false
-      else block(      
+      else block(
         /* transform [F,H] to [xi,eta] */
         [_F:gen[1],_H:gen[2],dydt:%Ax*y/%A,dudt:%A],
         [_F, ratsimp(_F*dydt+_H*dudt)]
       )
     )
   else if is((%Ayy:ratsimp(diff(%Ay,y)))=0) then
-    /* Case 2: diff(A,y,2)=0 and diff(A,y)#0 
+    /* Case 2: diff(A,y,2)=0 and diff(A,y)#0
        Change variables using u=ln(A) (17) */
     block(
       [neweq,sub,u],
@@ -158,7 +159,7 @@ ode1_a(phi,y,x) := block(
         /* transform [F,H] to [xi,eta] */
         [_F:gen[1],_H:gen[2],dydt,dudt,_xi,_eta],
         _xi:_F,
-        dydt:diff(rhs(sub),x), 
+        dydt:diff(rhs(sub),x),
         dudt:diff(rhs(sub),u),
         _eta: _F*dydt+_H*dudt,
         /* Now eliminate u from eta */
@@ -167,19 +168,19 @@ ode1_a(phi,y,x) := block(
         [ _xi, _eta ]
       )
     )
-  else 
+  else
     block(
       [%Axy,%eye,%Iy,%p,%px],
       %Axy: ratsimp(diff(%Ay,x)),
       %eye: ratsimp(%Axy/%Ayy),
-      if linear2(y,%eye) then 
-        /* Case 3: diff(A,y,2)#0 and I=Axx/Ayy linear in y 
+      if linear2(y,%eye) then
+        /* Case 3: diff(A,y,2)#0 and I=Axx/Ayy linear in y
            p=exp(integrate(Iy,x))
            Substitute y = u/p */
         block(
           [ _F, _H, _xi, _eta, u ],
           ode_disp(" ..... Case 3 true"),
-          if get('contrib_ode,'verbose) then 
+          if get('contrib_ode,'verbose) then
             print("       A is ",%A),
           %Iy: diff(%eye,y),
           %Iy:ratsimp(%Iy),
@@ -199,17 +200,17 @@ ode1_a(phi,y,x) := block(
           ode_disp("       Finding symmetries of transformed equation"),
           gen:lie_FxHx(neweq,u,x),
           ode_disp2("       [xi,eta] = ",gen),
-          
+
           if (gen=false) then
             false
           else (
-          /* Now we need to transform xi and eta back to original 
-             equation.  Have 
+          /* Now we need to transform xi and eta back to original
+             equation.  Have
                   F(x).(d/dx) + H(x).(d/du)
                   y = u/%p                    */
-            _F:radcan(gen[1]), 
+            _F:radcan(gen[1]),
             _H:radcan(gen[2]),
-            _xi:_F, 
+            _xi:_F,
             ode_disp2("  _xi = ",_xi),
             _eta: ratsimp(( _H - _F*%px*y )/%p),
             ode_disp2("  _eta = ",_eta),
@@ -226,8 +227,8 @@ ode1_a(phi,y,x) := block(
 /* Determine if ODE  y' = Phi(x,y)
    has linear symmetry of form  xi = F(x), eta = H(x)
 
-   This uses the notation from [1] E. S. Cheb-Terrab, A. D. Roche,  
-   Symmetries and First Order ODE Patterns 
+   This uses the notation from [1] E. S. Cheb-Terrab, A. D. Roche,
+   Symmetries and First Order ODE Patterns
 */
 lie_FxHx(Phi,y,x) := block(
   [Phi_y, Phi_yy, Q, Q_y,_a,_b,_c,gen],
@@ -276,7 +277,7 @@ lie_FxHx(Phi,y,x) := block(
     block(
       [_a,_b,_c,_f,_h],
       /* In this case Q is constant and Phi must have the form
-             y' = Phi(x,y) = A(x) + B(x)*exp(y/Q) 
+             y' = Phi(x,y) = A(x) + B(x)*exp(y/Q)
          and F(x), H(x) are simple functions of A and B */
       _c: bothcoef(expand(Phi),exp(y/Q)),
       _a: second(_c),
@@ -294,16 +295,16 @@ lie_FxHx(Phi,y,x) := block(
    of first order ode y'=phi(x,y)
 
    Returns 0 when the symmetry generators are OK.  If the result is
-   non-zero, then further simplification may reduce it to 0. 
+   non-zero, then further simplification may reduce it to 0.
 */
-symtest(phi,xi,eta,y,x) := 
+symtest(phi,xi,eta,y,x) :=
   ratsimp( diff(eta,x) + (diff(eta,y)-diff(xi,x))*phi
       - diff(xi,y)*phi^2 - xi*diff(phi,x) - eta*diff(phi,y) )$
 
-/* Determine integrating factor of first order ode y'=phi(x,y) 
+/* Determine integrating factor of first order ode y'=phi(x,y)
    given symmetry generators [ xi(x,y), eta(x,y) ]
 */
-lie_integrating_factor(phi,xi,eta) := 
+lie_integrating_factor(phi,xi,eta) :=
   1/ratsimp(eta-xi*phi)$
 
 /* Solve DE given integrating factor */
@@ -317,7 +318,7 @@ lie_exact(phi,mu,y,x) := block(
 
 
 
-/* from ode2.mac 
+/* from ode2.mac
    EXACT(M,N):=BLOCK([A,ynew,%c],
    INTFACTOR: SUBST(YOLD,YNEW,%q%),
    A: INTEGRATE(RATSIMP(M),X),
@@ -326,14 +327,14 @@ lie_exact(phi,mu,y,x) := block(
 */
 
 /* Find  symmetry generators [ xi, eta ] of separable
-   first order ode 'diff(y,x) = phi(x,y) = f(x)*g(y) 
+   first order ode 'diff(y,x) = phi(x,y) = f(x)*g(y)
 
    Can find generator [ xi(x), 0 ] = [ 1/f, 0 ]
   */
 lie_symgen_separable(f,g,y,x) := block(return([1/f,0]))$
 
-/* Find symmetry generators [ xi, eta ] of linear 
-   first order ode 'diff(y,x) = phi(x,y) = f(x)*y + g(x) 
+/* Find symmetry generators [ xi, eta ] of linear
+   first order ode 'diff(y,x) = phi(x,y) = f(x)*y + g(x)
 
    Can find generator [ xi(x), eta(x) ]
  */

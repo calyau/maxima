@@ -8,18 +8,18 @@ integrated into MAXIMA at some stage.
 The calling convention for contrib_ode is identical to ODE2.  It takes
 three arguments: an ODE (only the left hand side need be given if the
 right hand side is 0), the dependent variable, and the independent
-variable.  When successful, it returns a list of solutions.  
+variable.  When successful, it returns a list of solutions.
 
 A solution can have a number of forms:
- o  an explicit solution for the dependent variable, 
- o  an implicit solution for the dependent variable, 
- o  a parametric solution in terms of variable %t, or 
+ o  an explicit solution for the dependent variable,
+ o  an implicit solution for the dependent variable,
+ o  a parametric solution in terms of variable %t, or
  o  a tranformation into another ODE in variable %u.
- 
-%c is used to represent the constant in the case of first order equations, 
-and %k1 and %k2 the constants for second order equations.  If contrib_ode 
-cannot obtain a solution for whatever reason, it returns false, after 
-perhaps printing out an error message.  
+
+%c is used to represent the constant in the case of first order equations,
+and %k1 and %k2 the constants for second order equations.  If contrib_ode
+cannot obtain a solution for whatever reason, it returns false, after
+perhaps printing out an error message.
 
 (C1) eqn:x*'diff(y,x)^2-(1+x*y)*'diff(y,x)+y=0;
 
@@ -77,7 +77,7 @@ to give explicit solutions.
 (D9)                              lagrange
 
 The following Riccati equation is transformed into a linear
-second order ODE in the variable %u.  maxima is unable to 
+second order ODE in the variable %u.  maxima is unable to
 solve the new ODE.
 
 (%i7) eqn:'diff(y,x)+1-x=(x+y)*y;
@@ -102,9 +102,9 @@ solve the new ODE.
 
 For first order ODEs contrib_ode calls ode2.  It then tries the
 following methods: factorization, Clairault, Lagrange, Riccati,
-Abel and Lie symmetry methods.  The Lie method is not attempted 
-on Abel equations if the Abel method fails, but it is tried 
-if the Riccati method returns an unsolved second order ODE. 
+Abel and Lie symmetry methods.  The Lie method is not attempted
+on Abel equations if the Abel method fails, but it is tried
+if the Riccati method returns an unsolved second order ODE.
 
 For second order ODEs contrib_ode calls ode2.  No other methods are
 implemented yet.
@@ -172,16 +172,17 @@ References
 [4] F Schwarz, Symmetry Analysis of Abel's Equation, Studies in
     Applied Mathematics, 100:269-294 (1998)
 
-[5] F Schwarz, Algorithmic Solution of Abel's Equation, 
+[5] F Schwarz, Algorithmic Solution of Abel's Equation,
     Computing 61, 39-49 (1998)
 
-[6] E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order 
-    ODE Patterns, Computer Physics Communications 113 (1998), p 239. 
+[6] E. S. Cheb-Terrab, A. D. Roche, Symmetries and First Order
+    ODE Patterns, Computer Physics Communications 113 (1998), p 239.
     (http://lie.uwaterloo.ca/papers/ode_vii.pdf)
-  
-[7] E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs, 
-    Symmetries and Linear Transformations, European Journal of 
+
+[7] E. S. Cheb-Terrab, T. Koloknikov,  First Order ODEs,
+    Symmetries and Linear Transformations, European Journal of
     Applied Mathematics, Vol. 14, No. 2, pp. 231-246 (2003).
+    (http://arxiv.org/abs/math-ph/0007023)
     (http://lie.uwaterloo.ca/papers/ode_iv.pdf)
 
 [8] G W Bluman, S C Anco, Symmetry and Integration Methods for
