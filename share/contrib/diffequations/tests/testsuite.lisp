@@ -16,7 +16,7 @@
          "rtestode_murphy_1_4.mac"
          "rtestode_murphy_1_5.mac"
          "rtestode_murphy_1_6.mac"
-         (mlist "rtestode_murphy_2_1.mac" 122 123 124 125)
+         "rtestode_murphy_2_1.mac"
          (mlist "rtestode_murphy_2_2.mac" 162)
          "rtestode_murphy_2_3.mac"
          "rtestode_murphy_2_4.mac"
