@@ -447,14 +447,10 @@ separable;
 /* 62 "infinite" run time */
 
 /* 63 */
-use_pdiff:true;
-true;
 (pn_(63),ans:contrib_ode(eqn:'diff(y,x)-(1+ y^2)/(abs(y+sqrt(1+y))*sqrt(1+x)^3),y,x));
 ['integrate(abs(sqrt(y+1)+y)/(y^2+1),y)= %c-2/sqrt(x+1)];
 method;
 separable;
-use_pdiff:false;
-false;
 
 /* 64 */
 /* Used to pass but now fails due to integration problems.
@@ -625,8 +621,22 @@ assume(a>0,b>0,c>0);
 forget(a>0,b>0,c>0);
 [a>0,b>0,c>0];
 
-/* 99  Crash */
-/*(pn_(99),ans:contrib_ode(eqn:x*'diff(y,x)+a*y^2-b*y-c*x^beta,y,x));*/
+/* 99  Requires specific values of beta and b */
+(beta:4,b:3,assume(a>0,c>0),done);
+done;
+(pn_(99),ans:contrib_ode(eqn:x*'diff(y,x)+a*y^2-b*y-c*x^beta,y,x));
+[y = -(bessel_k(1/4,sqrt(a)*sqrt(c)*x^2/2)*%c
+      -bessel_i(-1/4,sqrt(a)*sqrt(c)*x^2/2))*sqrt(c)*x^2
+    /((bessel_k(3/4,sqrt(a)*sqrt(c)*x^2/2)*%c
+      +bessel_i(3/4,sqrt(a)*sqrt(c)*x^2/2))*sqrt(a))];
+ode_check(eqn,ans[1]);
+expand(ev(%,besiident(3/4,sqrt(a)*sqrt(c)*x^2/2),
+            beskident(3/4,sqrt(a)*sqrt(c)*x^2/2)));
+0;
+method;
+riccati;
+(kill(beta,b),forget(a>0,c>0),done);
+done;
 
 /* 100 */
 assume(a>0);
