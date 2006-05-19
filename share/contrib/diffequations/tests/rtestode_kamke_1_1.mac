@@ -630,6 +630,11 @@ done;
     /((bessel_k(3/4,sqrt(a)*sqrt(c)*x^2/2)*%c
       +bessel_i(3/4,sqrt(a)*sqrt(c)*x^2/2))*sqrt(a))];
 ode_check(eqn,ans[1]);
+((bessel_i(-5/4,sqrt(a)*sqrt(c)*x^2/2)
+ -bessel_i(3/4,sqrt(a)*sqrt(c)*x^2/2))*a*c*x^4
+ +bessel_i(-1/4,sqrt(a)*sqrt(c)*x^2/2)*sqrt(a)*sqrt(c)*x^2)
+ /((bessel_k(3/4,sqrt(a)*sqrt(c)*x^2/2)*%c
+   +bessel_i(3/4,sqrt(a)*sqrt(c)*x^2/2))*a);
 expand(ev(%,besiident(3/4,sqrt(a)*sqrt(c)*x^2/2),
             beskident(3/4,sqrt(a)*sqrt(c)*x^2/2)));
 0;
