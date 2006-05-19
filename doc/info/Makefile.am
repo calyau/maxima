@@ -76,12 +76,14 @@ include maximahtml.mk
 
 $(MAXIMAHTML): maxima.texi $(maxima_TEXINFOS)
 	perl ./texi2html -split_chapter --lang=en --output=. --css-include=./manual.css --init-file ./texi2html.init maxima.texi 
+	perl ./create_index
 
 include $(top_srcdir)/common.mk
 genericdir = $(dochtmldir)
 genericdirDATA = \
 $(MAXIMAHTML)\
-$(figurefiles)
+$(figurefiles)\
+contents.hhc index.hhk
 
 clean-local: clean-info
 clean-local: clean-html
@@ -91,5 +93,7 @@ clean-info:
 
 clean-html:
 	rm -f maxima*.html
+	rm -f contents.hhc
+	rm -f index.hhk
 
 EXTRA_DIST = texi2html maximahtml.mk manual.css texi2html.init $(genericdirDATA)
