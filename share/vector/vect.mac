@@ -195,7 +195,7 @@ define_variable(expandflags, '[
    expandprod ],list) $
 
 
-apply('declare, ['expandflags, 'evflag]) $
+apply('declare, [expandflags, 'evflag]) $
 
 vectorsimp(expn) := block(
    [dotdistrib, dotscrules, inflag, firstcrossscalar],
