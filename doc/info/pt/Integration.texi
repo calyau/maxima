@@ -1,6 +1,6 @@
-/Integration.texi/1.26/Sat May  6 08:35:26 2006/-ko/
+/Integration.texi/1.27/Mon May 15 07:53:07 2006/-ko/
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Integration.texi/1.25/Sat Apr  1 08:13:12 2006/-ko/
+@c /Integration.texi/1.26/Sat May  6 08:35:26 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Integra@value{cedilha}@~ao::  
 * Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao::  
@@ -382,7 +382,7 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 Definindo uma fun@,{c}@~ao em termos de uma integral.
 O corpo de uma fun@,{c}@~ao n@~ao @'e avaliado quando a fun@,{c}@~ao @'e definida.
 Dessa forma o corpo de @code{f_1} nesse exemplo cont@'em a forma substantiva de @code{integrate}.
-O operador aspas simples @code{'@w{}'} faz com que a integral seja avaliada,
+O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que a integral seja avaliada,
 e o resultado transforme-se no corpo de @code{f_2}.
 
 @example
@@ -1351,7 +1351,7 @@ A fun@,{c}@~ao peso @math{w} @'e selecionada por @var{wfun}:
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a)}
 @item 3
 @math{w(x) = (x - a)^alfa (b - x)^beta log(b - x)}
-@item 2
+@item 4
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a) log(b - x)}
 @end table
 
@@ -1422,4 +1422,5 @@ pos;
 @end example
 
 @end deffn
+
 

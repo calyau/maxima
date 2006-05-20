@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Itensor.texi/1.37/Sun Dec 18 09:20:27 2005//
+@c /Itensor.texi/1.38/Mon May 15 07:53:34 2006//
 @c RECOMMEND REVISE TEXT THROUGHOUT TO LOSE NOTION OF TIME RELATIVE TO PRESENT
 @c LOOK FOR "NOW", "OLD", "NEW", "RECENT", "EARLIER", DATES
 
@@ -1810,7 +1810,7 @@ implementado que controla o comportamento do produto cunha: se
 "tensorial" @'e usada, de outra forma a segunda, defini@,{c}@~ao "geom@'etrica" ir@'a
 ser aplicada.
 
-@defvr {Operator} "~"
+@defvr {Operator} ~
 
 O operador do produto cunha @'e definido como sendo o acento til @code{~}. O til @'e
 um operador bin@'ario. Seus argumentos podem ser express@~oes envolvendo escalares,
@@ -1847,7 +1847,7 @@ sinalizador @code{igeowedge_flag}, como no seguinte exemplo:
 
 @end defvr
 
-@defvr {Operator} "|"
+@defvr {Operator} |
 
 A barra vertical @code{|} denota a opera@,{c}@~ao bin@'aria
 "contra@,{c}@~ao com um vetor". Quando um tensor covariante totalmente antisim@'etrico @'e contra@'ido
@@ -2084,4 +2084,5 @@ n@~ao podem ser redefinidas:
   _lcprod
   _extlc
 @end example
+
 

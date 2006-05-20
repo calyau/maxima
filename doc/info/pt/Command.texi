@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.38/Sat May  6 08:34:51 2006/-ko/
+@c /Command.texi/1.39/Mon May 15 07:51:57 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -15,7 +15,7 @@
 
 @c NEEDS EXAMPLES
 @c THIS ITEM IS VERY IMPORTANT !!
-@deffn operador "'"
+@deffn {Operador} '
 O operador ap@'ostrofo @code{'} evita avalia@,{c}@~ao.
 
 Aplicado a um s@'imbolo,
@@ -134,15 +134,193 @@ O ap@'ostrofo n@~ao evita simplifica@,{c}@~ao.
 (%o2)                          - 1
 @end example
 
-
 @end deffn
 
-@deffn {Operador} "'@w{}'"
-O operador @code{'@w{}'} (ap@'ostrofo-ap@'ostrofo) faz com que ocorra uma avalia@,{c}@~ao extra.
-E.g., @code{'@w{}'%i4} ir@'a reavaliar a linha de entrada @code{%i4}.
-@code{'@w{}'(f(x))} significa avalie a express@~ao @code{f(x)} novamente.
-@code{'@w{}'f(x)} (com as aspas simples aplicadas a @code{f} em lugar de @code{f(x)})
-significa retorne a forma verbal de @code{f} aplicada a @code{[x]}.
+@deffn {Operator} ''
+O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} (dois ap@'ostrofost) modifica avalia@,{c}@~ao em express@~oes de entrada.
+
+Aplicado a uma express@~ao geral @var{expr}, ap@'ostrofo-ap@'ostrofo faz com que o valor de @var{expr}
+seja substitu@'ido por @var{expr} na express@~ao de entrada.
+
+Aplicado ao operadro de uma express@~ao,
+ap@'ostrofo-ap@'ostrofo modifica o operadro de um susbstantivo para um verbo (se esse operador n@~ao for j@'a um verbo).
+
+O operador ap@'ostrofo-ap@'ostrofo @'e aplicado atrav@'es do passador de entrada;
+o ap@'ostrofo-ap@'ostrofo n@~ao @'e armazenado como parte de uma express@~ao de entrada passada.
+O operador ap@'ostrofo-ap@'ostrofo @'e sempre aplicado t@~ao rapidamente quanto for passado,
+e n@~ao pode receber um terceiro ap@'ostrofo.
+Dessa forma faz com que ocorra avalia@,{c}@~ao quando essa avalia@,{c}@~ao for de outra forma suprimida,
+da mesma forma que em defini@,{c}@~oes de fun@,{c}@~ao, defini@,{c}@~oes de express@~aoes lambda, e express@~oes que recebem um ap@'ostrofo simples @code{'}.
+
+Ap@'ostrofo-ap@'ostrofo @'e reconhecido por @code{batch} e @code{load}.
+
+Veja tamb@'em o operador ap@'ostrofo @code{'} e @code{nouns}.
+
+Exemplos:
+Aplicado a uma express@~ao geral @var{expr}, ap@'ostrofo-ap@'ostrofo fazem com que o valor de @var{expr}
+seja substituido por @var{expr} na express@~ao de entrada.
+
+@c ===beg===
+@c expand ((a + b)^3);
+@c [_, ''_];
+@c [%i1, ''%i1];
+@c [aa : cc, bb : dd, cc : 17, dd : 29];
+@c foo_1 (x) := aa - bb * x;
+@c foo_1 (10);
+@c ''%;
+@c ''(foo_1 (10));
+@c foo_2 (x) := ''aa - ''bb * x;
+@c foo_2 (10);
+@c [x0 : x1, x1 : x2, x2 : x3];
+@c x0;
+@c ''x0;
+@c '' ''x0;
+@c ===end===
+@example
+(%i1) expand ((a + b)^3);
+                     3        2      2      3
+(%o1)               b  + 3 a b  + 3 a  b + a
+(%i2) [_, ''_];
+                         3    3        2      2      3
+(%o2)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i3) [%i1, ''%i1];
+                         3    3        2      2      3
+(%o3)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i4) [aa : cc, bb : dd, cc : 17, dd : 29];
+(%o4)                   [cc, dd, 17, 29]
+(%i5) foo_1 (x) := aa - bb * x;
+(%o5)                 foo_1(x) := aa - bb x
+(%i6) foo_1 (10);
+(%o6)                      cc - 10 dd
+(%i7) ''%;
+(%o7)                         - 273
+(%i8) ''(foo_1 (10));
+(%o8)                         - 273
+(%i9) foo_2 (x) := ''aa - ''bb * x;
+(%o9)                 foo_2(x) := cc - dd x
+(%i10) foo_2 (10);
+(%o10)                        - 273
+(%i11) [x0 : x1, x1 : x2, x2 : x3];
+(%o11)                    [x1, x2, x3]
+(%i12) x0;
+(%o12)                         x1
+(%i13) ''x0;
+(%o13)                         x2
+(%i14) '' ''x0;
+(%o14)                         x3
+@end example
+
+Aplicado ao operador de uma express@~ao,
+ap@'ostrofo-ap@'ostrofo muda o operadro de um substantivo para um verbo (se esse operadro n@~ao for j@'a um verbo).
+
+@c ===beg==
+@c sin (1);
+@c ''sin (1);
+@c declare (foo, noun);
+@c foo (x) := x - 1729;
+@c foo (100);
+@c ''foo (100);
+@c ===end==
+@example
+(%i1) sin (1);
+(%o1)                        sin(1)
+(%i2) ''sin (1);
+(%o2)                    0.8414709848079
+(%i3) declare (foo, noun);
+(%o3)                         done
+(%i4) foo (x) := x - 1729;
+(%o4)                 ''foo(x) := x - 1729
+(%i5) foo (100);
+(%o5)                       foo(100)
+(%i6) ''foo (100);
+(%o6)                        - 1629
+@end example
+
+O operador ap@'ostrofo-ap@'ostrofo @'e aplicado por meio de um passador de entrada;
+operador-ap@'ostrofo n@~ao @'e armazenado como parte da express@~ao de entrada.
+
+@c ===beg===
+@c [aa : bb, cc : dd, bb : 1234, dd : 5678];
+@c aa + cc;
+@c display (_, op (_), args (_));
+@c ''(aa + cc);
+@c display (_, op (_), args (_));
+@c ===end===
+@example
+(%i1) [aa : bb, cc : dd, bb : 1234, dd : 5678];
+(%o1)                 [bb, dd, 1234, 5678]
+(%i2) aa + cc;
+(%o2)                        dd + bb
+(%i3) display (_, op (_), args (_));
+                           _ = cc + aa
+
+                         op(cc + aa) = +
+
+                    args(cc + aa) = [cc, aa]
+
+(%o3)                         done
+(%i4) ''(aa + cc);
+(%o4)                         6912
+(%i5) display (_, op (_), args (_));
+                           _ = dd + bb
+
+                         op(dd + bb) = +
+
+                    args(dd + bb) = [dd, bb]
+
+(%o5)                         done
+@end example
+
+Ap@'ostrofo ap@'ostrofo faz com que ocorra avalia@,{c}@~ao quando a avalia@,{c}@~ao tiver sido de outra forma suprimida,
+da mesma forma que em defini@,{c}@~oes de fun@,{c}@~ao, da mesma forma que em defini@,{c}@~oes de fun@,{c}@~ao lambda expressions, E express@~oes que recebem o ap@'ostrofo simples @code{'}.
+
+@c ===beg===
+@c foo_1a (x) := ''(integrate (log (x), x));
+@c foo_1b (x) := integrate (log (x), x);
+@c dispfun (foo_1a, foo_1b);
+@c integrate (log (x), x);
+@c foo_2a (x) := ''%;
+@c foo_2b (x) := %;
+@c dispfun (foo_2a, foo_2b);
+@c F : lambda ([u], diff (sin (u), u));
+@c G : lambda ([u], ''(diff (sin (u), u)));
+@c '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+@c '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+@c ===end===
+@example
+(%i1) foo_1a (x) := ''(integrate (log (x), x));
+(%o1)               foo_1a(x) := x log(x) - x
+(%i2) foo_1b (x) := integrate (log (x), x);
+(%o2)           foo_1b(x) := integrate(log(x), x)
+(%i3) dispfun (foo_1a, foo_1b);
+(%t3)               foo_1a(x) := x log(x) - x
+
+(%t4)           foo_1b(x) := integrate(log(x), x)
+
+(%o4)                      [%t3, %t4]
+(%i4) integrate (log (x), x);
+(%o4)                     x log(x) - x
+(%i5) foo_2a (x) := ''%;
+(%o5)               foo_2a(x) := x log(x) - x
+(%i6) foo_2b (x) := %;
+(%o6)                    foo_2b(x) := %
+(%i7) dispfun (foo_2a, foo_2b);
+(%t7)               foo_2a(x) := x log(x) - x
+
+(%t8)                    foo_2b(x) := %
+
+(%o8)                      [%t7, %t8]
+(%i8) F : lambda ([u], diff (sin (u), u));
+(%o8)             lambda([u], diff(sin(u), u))
+(%i9) G : lambda ([u], ''(diff (sin (u), u)));
+(%o9)                  lambda([u], cos(u))
+(%i10) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+(%o10)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
+                    k                  k
+(%i11) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+(%o11)             b  + a  + b  + a  + b  + a
+                    3    3    2    2    1    1
+@end example
 
 @end deffn
 
@@ -504,7 +682,7 @@ sejam liberados disso.
 Em particular, para liberar a mem@'oria usada pelo valor de um s@'imbolo,
 deve-se liberar o r@'otulo de sa@'ida que mosta o valor associado, bem como liberando o pr@'oprio s@'imbolo.
 
-@code{kill} n@~ao avalia seus argumentos.
+@code{kill} coloca um ap@'ostro em seus argumentos (n@~ao os avalia).
 O operador ap@'ostrofo-ap@'ostrofo, @code{'@w{}'}, faz com que ocorra avalia@,{c}@~ao.
 
 @code{kill (@var{s@'imbolo})} libera todas as propriedades de @var{s@'imbolo}.
@@ -757,3 +935,4 @@ Valor inicial: @code{[]}
 A lista compreende s@'imbolos associados por @code{:} , @code{::}, ou @code{:=}.
 
 @end defvr
+

@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Operators.texi/1.25/Wed Dec 21 07:33:45 2005/-ko/
+@c /Operators.texi/1.27/Mon May 15 07:54:03 2006/-ko/
 @iftex
 @hyphenation{con-se-cu-ti-vos}
 @hyphenation{u-san-do}
@@ -63,7 +63,7 @@ Veja tamb@'em @code{syntax}.
 @node Defini@value{cedilha}@~oes para Operadores,  , Operador Pr@'efixado, Operadores
 @section Defini@value{cedilha}@~oes para Operadores
 
-@deffn {Operador} "!"
+@deffn {Operador} !
 O operador fatorial.
 Para qualquer n@'umero complexo @code{x} (inclu@'indo n@'umeros inteiros, racionais, e reais) exceto para
 inteiros negativos, @code{x!} @'e definido como @code{gamma(x+1)}.
@@ -136,7 +136,7 @@ Dessa forma @code{x!} pode ser substitu@'ido mesmo em uma express@~ao com ap@'os
 
 @end deffn
 
-@deffn {Operador} "!!"
+@deffn {Operador} !!
 O operador de duplo fatorial.
 
 Para um n@'umero inteiro, n@'umero em ponto flutuante, ou n@'umero racional @code{n},
@@ -156,7 +156,7 @@ Para um argumento @code{n} que n@~ao @'e um n@'umero inteiro, um n@'umero em pon
 
 @end deffn
 
-@deffn {Operador} "#"
+@deffn {Operador} #
 Representa a nega@,{c}@~ao da igualdade sint@'atica @code{=}.
 
 Note que pelo fato de as regras de avalia@,{c}@~ao de express@~oes predicadas
@@ -189,7 +189,7 @@ Exemplos:
 
 @end deffn
 
-@deffn {Operador} "."
+@deffn {Operador} .
 O operador ponto, para multiplica@,{c}@~ao (n@~ao comutativa) de matrizes.
 Quando "." @'e usado com essa finalidade, espa@,{c}os devem ser colocados em ambos os lados desse
 operador, e.g. A . B.  Isso disting@"ue o operador ponto plenamente de um ponto decimal em
@@ -210,19 +210,19 @@ e
 
 @end deffn
 
-@deffn {Operador} ":"
+@deffn {Operador} :
 O operador de atribui@,{c}@~ao.  E.g. A:3 escolhe a vari@'avel A para 3.
 
 @end deffn
 
-@deffn {Operador} "::"
+@deffn {Operador} ::
 Operador de atribui@,{c}@~ao.  :: atribui o valor da express@~ao
 em seu lado direito para o valor da quantidade na sua esquerda, que pode
 avaliar para uma vari@'avel at@^omica ou vari@'avel subscrita.
 
 @end deffn
 
-@deffn {Operador} "::="
+@deffn {Operador} ::=
 Operador de defini@,{c}@~ao de fun@,{c}@~ao de macro.
 @code{::=} define uma fun@,{c}@~ao (chamada uma "macro" por raz@~oes hist@'oricas)
 que coloca um ap@'ostrofo em seus argumentos (evitando avalia@,{c}@~ao),
@@ -339,13 +339,13 @@ x @'e igual a 1234 - 1729 w
 
 @end deffn
 
-@deffn {Operador} ":="
+@deffn {Operador} :=
 O operador de defini@,{c}@~ao de fun@,{c}@~ao.  E.g. @code{f(x):=sin(x)} define
 uma fun@,{c}@~ao @code{f}.
 
 @end deffn
 
-@deffn {Operador} "="
+@deffn {Operador} =
 denota uma equa@,{c}@~ao para o Maxima.  Para o verificador de modelos no
 Maxima isso denota uma rela@,{c}@~ao total que prende duas express@~oes
 se e somente se as express@~oes s@~ao sintaticamente id@^enticas.
@@ -1245,16 +1245,67 @@ Por exemplo, @code{signum(-x)} fornece @code{-signum(x)}.
 
 @end deffn
 
-@deffn {Fun@,{c}@~ao} sort (@var{lista}, @var{p})
-@deffnx {Fun@,{c}@~ao} sort (@var{lista})
-Ordena a @var{lista} conforme o predicado @code{p} de dois argumentos,
-tais como @code{"<"} ou @code{orderlessp}.
+@deffn {Fun@,{c}@~ao} sort (@var{L}, @var{P})
+@deffnx {Fun@,{c}@~ao} sort (@var{L})
+Organiza uma lista @var{L} coforme o predicado @code{P} de dois argumentos,
+de forma que @code{@var{P} (@var{L}[k], @var{L}[k + 1])} seja @code{true}
+para qualquer dois elementos sucessivos.
+O predicado pode ser especificado como o nome de uma fun@,{c}@~ao ou operador bin@'ario infixo,
+ou como uma express@~ao @code{lambda}.
+Se especificado como o nome de um operador,
+o nome deve ser contido entre "aspas duplas".
 
-@code{sort (@var{lista})} ordena a @var{lista} conforme a ordem interna do Maxima.
+A lista ordenada @'e retornada como novo objeto;
+o argumento @var{L} n@~ao @'e modificado.
+Para construir o valor de retorno,
+@code{sort} faz uma c@'opia superficial dos elementos de @var{L}.
+@c DUNNO IF WE NEED TO GO INTO THE IMPLICATIONS OF SHALLOW COPY HERE ...
+@c MIGHT CONSIDER A REF FOR TOTAL ORDER HERE
+Se o predicado @var{P} n@~ao for uma ordem total sobre os elementos de @var{L},
+ent@~ao @code{sort} possivelvente pode executar para concluir sem error,
+mas os resultados s@~ao indefinidos.
+@code{sort} reclama se o predicado avaliar para alguma outra coisa
+que n@~ao seja @code{true} ou @code{false}.
 
-@var{lista} pode conter @'itens num@'ericos ou n@~ao num@'ericos, ou ambos.
-
-@c NEED EXAMPLES, ESPECIALLY SORTING NONNUMERIC ITEMS
+@code{sort (@var{L})} @'e equivalente a @code{sort (@var{L}, orderlessp)}.
+Isto @'e, a ordem padr@~ao de organiza@,{c}@~ao @'e ascendente,
+como determinado por @code{orderlessp}.
+Todos os @'atomos do Maxima e express@~oes s@~ao compar@'aveis sob @code{orderlessp},
+embora exista exemplos isolados de express@~oes para as quais @code{orderlessp} n@~ao @'e transitiva;
+isso @'e uma falha.
+ 
+Exemplos:
+ 
+@c ===beg===
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
+@c sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], ordergreatp);
+@c sort ([%pi, 3, 4, %e, %gamma]);
+@c sort ([%pi, 3, 4, %e, %gamma], "<");
+@c my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+@c sort (my_list);
+@c sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
+@c ===end===
+@example
+(%i1) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x]);
+               5
+(%o1) [- 17, - -, 3, 7.55, 11, 2.9b1, b + a, 9 c, 19 - 3 x]
+               2
+(%i2) sort ([11, -17, 29b0, 7.55, 3, -5/2, b + a, 9 * c, 19 - 3 * x], ordergreatp);
+                                                   5
+(%o2) [19 - 3 x, 9 c, b + a, 2.9b1, 11, 7.55, 3, - -, - 17]
+                                                   2
+(%i3) sort ([%pi, 3, 4, %e, %gamma]);
+(%o3)                [3, 4, %e, %gamma, %pi]
+(%i4) sort ([%pi, 3, 4, %e, %gamma], "<");
+(%o4)                [%gamma, %e, 3, %pi, 4]
+(%i5) my_list : [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]];
+(%o5) [[aa, hh, uu], [ee, cc], [zz, xx, mm, cc], [%pi, %e]]
+(%i6) sort (my_list);
+(%o6) [[%pi, %e], [aa, hh, uu], [ee, cc], [zz, xx, mm, cc]]
+(%i7) sort (my_list, lambda ([a, b], orderlessp (reverse (a), reverse (b))));
+(%o7) [[%pi, %e], [ee, cc], [zz, xx, mm, cc], [aa, hh, uu]]
+@end example
+ 
 @end deffn
 
 @deffn {Fun@,{c}@~ao} sqrt (@var{x})
@@ -1466,7 +1517,7 @@ com efeito, @code{symbolp(x)} @'e equivalente ao predicado @code{atom(x) and not
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
-Veja tamb@'em @code{Identifiers}
+Veja tamb@'em @ref{Identifiers}
 
 @end deffn
 
@@ -1571,3 +1622,4 @@ Por outro lado @code{zeroequiv (log(a*b) - log(a) - log(b), a)} retorna @code{do
 presen@,{c}a de um par@^ametro extra @code{b}.
 
 @end deffn
+

@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Input.texi/1.44/Sat Feb 11 05:24:47 2006/-ko/
+@c /Input.texi/1.45/Mon May 15 07:52:54 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Entrada e Sa@'ida::  
 * Arquivos::                       
@@ -36,7 +36,16 @@ Isto @'e, enquanto um express@~ao de entrada @var{expr} est@'a sendo avaliada, @
 @code{__} @'e atribu@'ida @`a express@~ao de entrada antes de a entrada ser simplificada ou avaliada.
 Todavia, o valor de @code{__} @'e simplificado (mas n@~ao avaliado) quando for mostrado.
 
-@code{__} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+@code{__} @'e reconhecido por @code{batch} e @code{load}.
+Em um arquivo processado por @code{batch},
+@code{__} tem o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por @code{load},
+@code{__} est@'a associado @`a express@~ao de entrada mais recentemente informada no prompt interativo
+ou em um arquivo de lote (batch);
+@code{__} n@~ao @'e associado @`a express@~oes de entrada no arquivo que est@'a sendo processado.
+Em particular, quando @code{load (@var{nomedearquivo})} for chamado a partir da linha de comando interativa,
+@code{__} @'e associado a @code{load (@var{filename})}
+enquanto o arquivo est@'a sendo processado.
 
 Veja tamb@'em @code{_} e @code{%}.
 
@@ -77,7 +86,13 @@ Express@~ao atual de entrada = --------------
 A @code{_} @'e atribu@'ida @`a express@~ao de entrada antes dela ser simplificada ou avaliada.
 Todavia, o valor de @code{_} @'e simplificado (mas n@~ao avaliado) quando for mostrado.
 
-@code{_} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+@code{_} @'e reconhecido por @code{batch} e @code{load}.
+Em um arquivo processado por @code{batch},
+@code{_} tem o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por load @code{load},
+@code{_} est@'a associado @`a express@~ao de entrada mais recentemente avaliada na linha de comando interativa
+ou em um arquivo de lote;
+@code{_} n@~ao est@'a associada a express@~oes de entrada no arquivo que est@'a sendo processado.
 
 Veja tamb@'em @code{__} e @code{%}.
 
@@ -132,7 +147,14 @@ Exemplos:
 @code{%} @'e a express@~ao de sa@'ida (e.g., @code{%o1}, @code{%o2}, @code{%o3}, ...)
 mais recentemente calculada pelo Maxima,
 pode ou n@~ao ser mostrada.
-@code{%} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+
+@code{%} @'e reconhecida por @code{batch} e @code{load}.
+Em um arquivo processado por @code{batch},
+@code{%} tem o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por @code{load},
+@code{%} @'e associado @`a express@~ao de entrada mais recentemente calculada na linha de comando interativa 
+ou em um arquivo de lote;
+@code{%} n@~ao est@'a associada a express@~oes de sa@'ida no arquivo que est@'a sendo processado.
 
 Veja tamb@'em @code{_}, @code{%%}, e @code{%th}
 
@@ -176,7 +198,8 @@ Na primeira declara@,{c}@~ao em uma declara@,{c}@~ao composta,
 ou fora de uma declara@,{c}@~ao composta,
 @code{%%} @'e indefinido.
 
-@code{%%}  reconhecido por ambos @code{batch} e @code{load}.
+@code{%%}  reconhecido por @code{batch} e @code{load},
+e possem o mesmo significao que na linha de comando interativa.
 
 Veja tamb@'em @code{%}.
 
@@ -205,13 +228,19 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 escolhe @code{s} para a soma das @'ultimas dez express@~oes de sa@'ida.
 
-@code{%th} @'e reconhecido por @code{batch}, mas n@~ao por @code{load}.
+@code{%th} @'e reconhecido por @code{batch} e @code{load}.
+Em um arquivo processado por @code{batch},
+@code{%th} possue o mesmo significado que na linha de comando interativa.
+Em um arquivo processado por @code{load},
+@code{%th} refere-se a express@~oes de sa@'ida mais recentemente calculadas na linha de comando interativa
+ou em um arquivo de lote;
+@code{%th} n@~ao se refere a express@~oes de sa@'ida no arquivo que est@'a sendo processado.
 
 Veja tamb@'em @code{%}.
 
 @end deffn
 
-@deffn {S@'imbolo especial} "?"
+@deffn {S@'imbolo especial} ?
 Como prefixo para uma fun@,{c}@~ao ou nome de vari@'avel, @code{?} significa que
 o nome @'e um nome Lisp, n@~ao um nome Maxima.
 Por exemplo, @code{?round} significa a fun@,{c}@~ao Lisp @code{ROUND}.
@@ -995,10 +1024,10 @@ Exemplos:
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} load (@var{filename})
-Avalia express@~oes em @var{filename}, 
+@deffn {Fun@,{c}@~ao} load (@var{nomedearquivo})
+Avalia express@~oes em @var{nomedearquivo}, 
 dessa forma conduzindo vari@'aveis, fun@,{c}@~oes, e outros objetos dentro do Maxima.
-A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{filename}.  
+A associa@,{c}@~ao de qualquer objeto existente @'e substitu@'ida pela associa@,{c}@~ao recuperada de @var{nomedearquivo}.  
 Para achar o arquivo,
 @code{load} chama @code{file_search} com @code{file_search_maxima} e @code{file_search_lisp}
 como diret@'orios de busca.
@@ -1011,6 +1040,11 @@ e @code{stringout}, que criam c@'odigos Maxima,
 podem ser processadas por @code{load}.
 @code{load} chama @code{loadfile} para carregar arquivos Lisp e @code{batchload} para carregar arquivos Maxima.
 
+@code{load} n@~ao reconhece constru@,{c}@~oes @code{:lisp} em arquivos do Maxima,
+e quando processando @var{nomedearquivo},
+as vari@'aveis globais @code{_}, @code{__}, @code{%}, e @code{%th} possuem as mesmas associa@,{c}@~oes
+que possuiam quando @code{load} foi chamada.
+
 Veja tamb@'em @code{loadfile}, @code{batch}, @code{batchload}, e @code{demo}.
 @code{loadfile} processa arquivos Lisp;
 @code{batch}, @code{batchload}, e @code{demo} processam arquivos Maxima.
@@ -1022,17 +1056,17 @@ Veja @code{file_search} para mais detalhes sobre o mecanismo de busca de arquivo
 @end deffn
 
 @c RECOMMEND CUTTING THIS ITEM, AS THE load SUBSUMES FUNCTIONALITY OF loadfile
-@deffn {Fun@,{c}@~ao} loadfile (@var{filename})
-Avalia express@~oes Lisp em @var{filename}.
-@code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{filename} deve obrigat@'oriamente incluir
+@deffn {Fun@,{c}@~ao} loadfile (@var{nomedearquivo})
+Avalia express@~oes Lisp em @var{nomedearquivo}.
+@code{loadfile} n@~ao invoca @code{file_search}, ent@~ao @code{nomedearquivo} deve obrigat@'oriamente incluir
 a extens@~ao do arquivo e tanto quanto o caminho como necess@'ario para achar o arquivo.
 
 @code{loadfile} pode processar arquivos criados por @code{save}, @code{translate_file}, e @code{compile_file}.
 O usu@'ario pode achar isso mais conveniente para usar @code{load} em lugar de @code{loadfile}.
 
-@code{loadfile} avalia seu argumento, ent@~ao @code{filename} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
+@code{loadfile} avalia seu argumento, ent@~ao @code{nomedearquivo} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres literal,
 n@~ao uma vari@'avel do tipo seq@"u@^encia de caracteres.
-O operador aspas simples n@~ao aceita avalia@,{c}@~ao.
+O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} n@~ao aceita avalia@,{c}@~ao.
 
 @end deffn
 
@@ -1382,7 +1416,7 @@ Os nomes podem ser quaisquer especificados pela vari@'avel @code{infolists}.
 
 A forma especial @code{save (@var{filename}, [@var{m}, @var{n}])} armazena os valores de
 r@'otulos de entrada e sa@'ida de @var{m} at@'e @var{n}.
-Note que @var{m} e @var{n} devem obrigat@'oriamente ser inteiros literais ou s@'imbolos envolvidos por aspas duplas.
+Note que @var{m} e @var{n} devem obrigat@'oriamente ser inteiros literais.
 R@'otulos de entrada e sa@'ida podem tamb@'em ser armazenados um a um, e.g., @code{save ("foo.1", %i42, %o42)}.
 @code{save (@var{filename}, labels)} armazena todos os r@'otulos de entrada e sa@'ida.
 Quando r@'otulos armazenados s@~ao recuperados, eles substituem r@'otulos existentes.
@@ -1408,7 +1442,7 @@ veja @code{myoptions}.
 @code{save} avalia seus argumentos.  
 @var{filename} deve obrigat@'oriamente ser uma seq@"u@^encia de caracteres, n@~ao uma vari@'avel tipo seq@"u@^encia de caracteres.
 O primeiro e o @'ultimo r@'otulos a salvar, se especificado, devem obrigat@'oriamente serem inteiros.
-O operador aspas duplas avalia uma vari@'avel tipo seq@"u@^encia de caracteres para seu valor seq@"u@^encia de caracteres,
+O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} avalia uma vari@'avel tipo seq@"u@^encia de caracteres para seu valor seq@"u@^encia de caracteres,
 e.g., @code{s: "foo.1"$ save (''s, all)$},
 e vari@'aveis inteiras para seus valores inteiros, e.g., @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
 
@@ -1824,3 +1858,4 @@ qualquer sa@'ida gerada por uma declara@,{c}@~ao de impress@~ao em uma fun@,{c}@
 @code{closefile} fecha o arquivo transcrito aberto por @code{writefile} ou @code{appendfile}.
 
 @end deffn
+

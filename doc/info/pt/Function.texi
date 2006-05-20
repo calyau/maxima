@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.38/Fri Feb 10 08:27:50 2006/-ko/
+@c /Function.texi/1.39/Mon May 15 07:52:36 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -532,7 +532,7 @@ e chama a fun@,{c}@~ao Lisp @code{COMPILE} sobre cada fun@,{c}@~ao traduzida.
 @code{compile (all)} ou @code{compile (functions)} compila todas as fun@,{c}@~oes definidas pelo usu@'ario.
 
 @code{compile} n@~ao avalia seus argumentos; 
-o operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
+o operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao sobrepondo-se ao ap@'ostrofo.
 
 @end deffn
 
@@ -751,7 +751,7 @@ para cada fun@,{c}@~ao mostrada, e atribui a defini@,{c}@~ao de fun@,{c}@~ao par
 Em contraste, @code{fundef} retorna a defini@,{c}@~ao de fun@,{c}@~ao.
 
 @code{dispfun} n@~ao avalia seus argumentos; 
-O operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
+O operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
 
 @code{dispfun} retorna a lista de r@'otulos de express@~oes intermedi@'arias correspondendo @`as fun@,{c}@~oes mostradas.
 
@@ -856,7 +856,7 @@ uma da fam@'ilia de fun@,{c}@~oes subscritas selecionada por um valor particular
 ou uma fun@,{c}@~ao subscrita definida com uma constante subscrita.
 
 @code{fundef} n@~ao avalia seu argumento;
-o operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
+o operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
 
 @code{fundef (@var{f})} retorna a defini@,{c}@~ao de @var{f}.
 Em contraste, @code{dispfun (@var{f})} cria um r@'otulo de express@~ao intermedi@'aria
@@ -931,7 +931,7 @@ a menos que o bloco seja @var{expr_n}.
 Da mesma forma, @code{go} n@~ao pode aparecer em uma express@~ao lambda a menos que contendo @code{block}.
 
 @code{lambda} n@~ao avalia seus argumentos; 
-o operador aspas simples @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
+o operador ap@'ostrofo-ap@'ostrofo @code{'@w{}'} faz com que ocorra avalia@,{c}@~ao.
 
 Exemplos:
 
@@ -1633,4 +1633,5 @@ tempo de chamada.  @code{(MFUNCTION-CALL fn arg1 arg2 ...)} @'e gerado quando
 o tradutor n~ao sabe que @code{fn} est@'a sendo compilada para ser uma fun@,{c}@~ao Lisp.
 
 @end deffn
+
 
