@@ -596,8 +596,8 @@ equation as first argument.
 @deffn {Function} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
 Returns the greatest common divisor of @var{p_1} and @var{p_2}.
 The flag @code{gcd} determines which algorithm is employed.
-Setting @code{gcd} to @code{ez}, @code{eez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd}, New
-@code{eez} @code{gcd}, subresultant @code{prs}, reduced, or modular algorithm,
+Setting @code{gcd} to @code{ez}, @code{subres}, @code{red}, or @code{spmod} selects the @code{ezgcd},
+subresultant @code{prs}, reduced, or modular algorithm,
 respectively.  If @code{gcd} @code{false} then @code{gcd (@var{p_1}, @var{p_2}, @var{x})} always returns 1
 for all @var{x}.  Many functions (e.g.  @code{ratsimp}, @code{factor}, etc.) cause gcd's
 to be taken implicitly.  For homogeneous polynomials it is recommended

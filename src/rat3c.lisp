@@ -23,7 +23,7 @@
 
 
 ;; List of GCD algorithms.  Default one is first.
-(defmvar *gcdl* '($subres $ez $red $spmod $mod $sphen $eez $algebraic))
+(defmvar *gcdl* '($subres $ez $red $spmod $mod $algebraic))
 
 (defmvar $gcd (car *gcdl*))		;Sparse Modular
 
@@ -120,8 +120,6 @@
 	((eq $gcd '$ez) (ezgcd2 x y))
 	((eq $gcd '$red) (list (oldgcd x y)))
 	((eq $gcd '$mod) (newgcd x y modulus))
-	((eq $gcd '$sphen) (merror "sphgcd not implemented")) ; (SPHGCD X Y))
-	((eq $gcd '$eez) (merror "eezgcd not implemented")) ; (EEZGCD X Y))
 	((not (memq $gcd *gcdl*))
 	 (merror "`gcd' set incorrectly:~%~M" $gcd))
 	(t (list 1 x y))))
