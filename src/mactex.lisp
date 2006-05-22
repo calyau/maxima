@@ -379,8 +379,26 @@
 
 (defprop bigfloat tex-bigfloat tex)
 
+; For 1.2345b678, generate TeX output 1.2345_B \times 10^{678} .
+; If the exponent is 0, then ... \times 10^{0} is generated
+; (no attempt to strip off zero exponent).
+
 (defun tex-bigfloat (x l r) 
-    (append l (fpformat x) r))
+  (let ((formatted (fpformat x)))
+    ; There should always be a '|b| or '|B| in the FPFORMAT output.
+    ; Play it safe -- check anyway.
+    (if (or (find '|b| formatted) (find '|B| formatted))
+      (let*
+        ((expt-symbols '(|_| |b| | | |\\| |T| |I| |M| |E| |S| | | |1| |0| |^| |{|))
+         (spell-out-expt
+           (append
+             (apply #'append
+                    (mapcar
+                      #'(lambda (e) (if (or (eq e '|b|) (eq e '|B|)) expt-symbols (list e)))
+                      formatted))
+             '(|}|))))
+        (append l spell-out-expt r))
+      (append l formatted r))))
 
 (defprop mprog "\\mathbf{block}\\;" texword)
 (defprop %erf "\\mathrm{erf}" texword)
@@ -536,9 +554,10 @@
 			 (setq r (tex (car bascdr) nil r f 'mparen))
 			 (setq r (tex (cons '(mprogn) bascdr) nil r 'mparen 'mparen))))
 		    (t nil)))))		; won't doit. fall through
-      (t (setq l (cond ((and (numberp (cadr x))
-			     (numneedsparen (cadr x)))
-			(tex (cadr x) (cons "\\left(" l) '("\\right)") lop
+      (t (setq l (cond ((or ($bfloatp (cadr x)) (and (numberp (cadr x))
+			     (numneedsparen (cadr x))))
+            ; ACTUALLY THIS TREATMENT IS NEEDED WHENEVER (CAAR X) HAS GREATER BINDING POWER THAN MTIMES ...
+			(tex (cadr x) (append l '("\\left(")) '("\\right)") lop
 			     (caar x)))
 		       (t (tex (cadr x) l nil lop (caar x))))
 	       r (if (mmminusp (setq x (nformat (caddr x))))
