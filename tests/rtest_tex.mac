@@ -1,0 +1,157 @@
+latex0 (s) :=
+    (print ("\\documentclass{article}"),
+    print (sconcat ("\\title{", s, "}")),
+    print ("\\author{by Maxim A.}"),
+    print ("\\begin{document}"),
+    print ("\\maketitle"));
+
+latex1 () := print ("\\end{document}");
+
+tex_text (s) := block ([linel: 2^16], print (s));
+
+/* These declarations must precede the first expression in which they occur.
+ * Maxima doesn't know how to parse "a foo b" in with_stdout (... infix("foo"), a foo b, ...).
+ */
+(infix ("implies"), infix ("iff"));
+
+'((aa or bb) and not (cc or dd));
+
+with_stdout ("tmp.tex",
+    (latex0 ("Maxima \\TeX\\ test page"),
+
+    tex_text ("\\subsection*{Symbols and subscripts}"),
+    tex (riffraff),
+    tex (riff_raff),
+    tex ([inf, minf, true, false, done]),
+    tex (%pi + %e + %i + %gamma),
+    tex ('gamma(x)),
+    tex ([alpha, beta, verbify (gamma), delta, epsilon, zeta, eta, theta, iota, kappa, lambda, mu]),
+    tex ([nu, xi, omicron, pi, rho, sigma, tau, upsilon, phi, chi, psi, omega]),
+    tex ([Alpha, Beta, Gamma, Delta, Epsilon, Zeta, Eta, Theta, Iota, Kappa, Lambda, Mu]),
+    tex ([Nu, Xi, Omicron, Pi, Rho, Sigma, Tau, Upsilon, Phi, Chi, Psi, Omega]),
+    tex (A1 + B2 + C3 + A_1 + B_2 + C_3),
+    tex (A1a + B2b + C3c + A1_a + B2_b + C3_c),
+    tex (Foo[1] + BAR[2] + baz[3]),
+    tex (Mumble[i,j] + blurf[a][b]),
+    tex (\2F1 + ?lisp_symbol),
+
+    /* tex doesn't escape special characters in symbol names,
+     * so don't bother with these unless tex is revised.
+     * tex (int\+float + int\*float + int\@float),
+     * tex (?\*lisp\-symbol\-2\*),
+     */
+
+    tex_text ("\\subsection*{Strings}"),
+    tex ("riff"),
+    tex ("Riff Raff"),
+    tex (sconcat ("Riff Raff (Lisp string)")),    /* sconcat returns a Lisp string for some reason */
+    ?stringdisp: true,
+    tex ("Riff Raff (enclosed in `quote marks')"),
+    ?stringdisp: false,
+    tex ("String containing
+a newline."),
+    tex ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands."),
+    tex ("Some characters \\{ \\ \\^ \\% \\$ \\# \\~ \\& \\} which might be special to \\TeX\\ and \\LaTeX."),
+    tex_text ("String containing \\ldots \\\"Oyster sh\\'ell \\ldots some \\TeX\\ commands. Some characters \\{ \\ \\^ \\% \\$ \\# \\~ \\& \\} which might be special to \\TeX\\ and \\LaTeX. (Same as the preceding example, but output {\\it via} {\\bf print} instead of {\\bf tex}; should make a paragraph instead of an equation.)"),
+
+    tex_text ("\\subsection*{Different kinds of numbers}"),
+    ev (tex (1 + 1/1 + 1.0 + 1e0 + 1b0), simp=false),
+    ev (tex (12345678901234567890 + 1/12345678901234567890), simp=false),
+    ev (tex (12345678901234567890e200 + 12345678901234567890b-200), simp=false, fpprec=20),
+    tex (123b456/a + 123d42/b + (123/456)/c),
+    tex (123 + 456*x + 789.0*x^2 + 987e50*x^3 + 654b-50*x^4 + 1729b+42*x^5),
+    tex (123b-456^a + 123d-45^b + sqrt (123b-456) + sqrt (123d-45)),
+    /* Next few are specifically to test for a bug in TEX-MEXPT
+     */
+    tex (1.234^m + 5.678^n - 1.234b0^m + 5.678b0^n),
+    tex (1.234^m * 5.678^n . 1.234b0^m * 5.678b0^n),
+    tex ((1.234^m) ^ (5.678^n) ^^ (1.234b0^m) ^ (5.678b0^n)),
+
+    tex_text ("\\subsection*{Various operators}"),
+    tex (a + b),
+    tex (a - b),
+    tex (a*b),
+    tex (a.b),
+    tex (a.b * c.d + (a*b).(c*d)),
+    tex (a/b),
+    ev (tex ((a/b)/(c/d)), simp=false),
+    tex (a^b),
+    tex (a!),
+    tex (-a),
+    tex ('(a : b)),
+    tex ('(a :: b)),
+
+    tex (sin(a) + cos(a) + tan(a) + sec(a) + csc(a) + cot(a)),
+    tex (asin(a) + acos(a) + atan(a) + atan2(b,a) + asec(a) + acsc(a) + acot(a)),
+    tex (sinh(a) + cosh(a) + tanh(a) + sech(a) + csch(a) + coth(a)),
+    tex (asinh(a) + acosh(a) + atanh(a) + asech(a) + acsch(a) + acoth(a)),
+    tex (exp(x) + log(a) + erf(a)),
+
+    tex (sin(%pi*a/n) + cos(%pi*a/n) + tan(%pi*a/n) + sec(%pi*a/n) + csc(%pi*a/n) + cot(%pi*a/n)),
+    tex (asin(%pi*a/n) + acos(%pi*a/n) + atan(%pi*a/n) + atan2(%pi*a/n,%pi*b/n) + asec(%pi*a/n) + acsc(%pi*a/n) + acot(%pi*a/n)),
+    tex (sinh(%pi*a/n) + cosh(%pi*a/n) + tanh(%pi*a/n) + sech(%pi*a/n) + csch(%pi*a/n) + coth(%pi*a/n)),
+    tex (asinh(%pi*a/n) + acosh(%pi*a/n) + atanh(%pi*a/n) + asech(%pi*a/n) + acsch(%pi*a/n) + acoth(%pi*a/n)),
+
+    tex (exp(1 + x + x^2 + x^3) + exp (exp (-x))),
+    tex (log(b + a) + log((b + a)/(b - a))),
+
+    tex ('integrate (exp(-a*x^2), x, minf, inf)),
+    tex ('sum (1/k^2, k, 1, inf)),
+    tex ('lsum (1/k^2, k, Z)),
+    tex ('diff (F, x)),
+    tex ('diff (exp (-a*x), x)),
+    tex ('diff (a(x) * 'diff (F, x), x) + a(x) * 'diff (F, x, 2)),
+    tex ('limit (exp (-a*x), x, inf)),
+
+    tex ('(a and b)),
+    tex ('(a or b)),
+    tex ('(not a)),
+    tex ('((riff or raff) and not (roff or ruff))),
+    tex ('(not foo ((a + b)^2/(a - b)^2) or bar (x and baz (sqrt(y^n)) or z))),
+
+    tex_text ("\\subsection*{Lists, matrices, and sets}"),
+    tex ([a, b, c, d, e]),
+    tex ([a + b, a*b, a/b, a^b, a^b^c]),
+    tex (matrix ([a, b], [c, d])),
+    tex (matrix ([a + b, a*b], [a^b, a^b^c])),
+    tex ({a, b, c, d, e}),
+    tex ({a + b, a*b, a/b, a^b, a^b^c}),
+
+    tex_text ("\\subsection*{User-defined \\TeX\\ properties}"),
+
+    /* User-defined operator declarations have to be outside with_stdout.
+     * See note near top of file.
+     */
+
+    texput ("implies", "\\Rightarrow", infix),
+    tex ('((foo or bar) implies (baz or quux))),
+
+    texput ("iff", "\\Leftrightarrow", infix),
+    tex ('((foo or bar) iff (baz or quux))),
+
+    tex_text ("\\subsection*{Miscellany}"),
+
+    tex_text ("Next few should all be the same."),
+    tex ('((aa or bb) and not (cc or dd))),
+    '((aa or bb) and not (cc or dd)),
+    tex (%%),
+    tex (_),    /* refers to the input expression immediately preceding "with_stdout" */
+
+    tex_text ("I forget what this one is for."),
+    '((aa or bb) and not (cc or dd)),
+    (tex (''(second (labels (%i)))), tex (''(first (labels (%o))))),
+    tex ('((tex (''(second (labels (%i)))), tex (''(first (labels (%o))))))),
+
+    tex_text ("A function and its output."),
+    foo () :=
+        (tex ('integrate (x^n, x, 0, inf)),
+        tex ('sum (x^n, n, 1, inf)),
+        tex ('limit (x^n, x, inf)),
+        tex ('diff (x^n, x))),
+    tex (foo),
+    foo (),
+    
+    /* tex_text ("This one should be the whole with\\_stdout thing."),
+     * tex (''(first (labels (%i)))),
+     */
+    latex1 ()));
