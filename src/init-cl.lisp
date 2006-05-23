@@ -296,6 +296,7 @@
          "contrib/simplex"
          "contrib/solve_rec"
          "contrib/stringproc"
+         "contrib/unit"
          "contrib/Zeilberger"
          "diffequations"
          "lbfgs"

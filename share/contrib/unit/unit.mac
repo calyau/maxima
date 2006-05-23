@@ -29,7 +29,7 @@
 
        0.50  -  convert now works on derived units, added usersetunits
                 option to allow user to change default behavior.  New 
-		command forget will respect usersetunits.  Other misc
+		command uforget will respect usersetunits.  Other misc
 		changes.  Still in flux, but it's coming together.
        0.40  -  Display of units has been fixed, with optional settings
                 to allow grouping over the plus operator as well.  A
@@ -652,9 +652,9 @@ dontusedimension(input1):= block([letrat:true,unittype,unitlistname,
 
 /* This function will reset a particular dimension to its default state, but
 not place it on the dontuse list */   
-forget(input1) := block([letrat:true,unittype,unitlistname,
+uforget(input1) := block([letrat:true,unittype,unitlistname,
                          unitrules,currentunitlist, temp, i, j, derivedunits],
-   if listp(input1) then (map('forget,input1)) else (
+   if listp(input1) then (map('uforget,input1)) else (
    if ?equal(input1,letsimp(input1,todimension)) then (
       unitrules : concat(input1,'rules),
       killruleset(unitrules),
@@ -888,7 +888,7 @@ rather verbose and normally not needed. */
 unitverbose : off;
 
 /* This routine will create a default user environment according to pre-set
-user requests.  Forget will also revert to this state. */
+user requests.  uforget will also revert to this state. */
 if listp(usersetunits) then (
   print("User defaults found..."),
   setunits(usersetunits),

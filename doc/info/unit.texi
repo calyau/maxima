@@ -30,13 +30,11 @@ otherwise.)  If  the user needs this information for units, they can set
 @emph{unitverbose:on} to reactivate the printing of warnings from the unit 
 conversion process.
 
-@subsubsection Loading @emph{unit}
-
 @emph{unit} is included in Maxima in the share/contrib/unit directory. It obeys
 normal Maxima package loading conventions:
 
 @example
-(%i1) load("share/contrib/unit.mac");
+(%i1) load("unit")$
 ******************************************************************* 
 *                       Units version 0.50                        * 
 *          Definitions based on the NIST Reference on             * 
@@ -46,16 +44,15 @@ normal Maxima package loading conventions:
 ******************************************************************* 
  
 Redefining necessary functions... 
-STYLE-WARNING: redefining TOPLEVEL-MACSYMA-EVAL in DEFUN
-STYLE-WARNING: redefining MSETCHK in DEFUN
-STYLE-WARNING: redefining KILL1 in DEFUN
-STYLE-WARNING: redefining NFORMAT in DEFUN
+WARNING: DEFUN/DEFMACRO: redefining function TOPLEVEL-MACSYMA-EVAL ...
+WARNING: DEFUN/DEFMACRO: redefining function MSETCHK ...
+WARNING: DEFUN/DEFMACRO: redefining function KILL1 ...
+WARNING: DEFUN/DEFMACRO: redefining function NFORMAT ...
 Initializing unit arrays... 
-Done. 
-(%o1)   /usr/local/share/maxima/5.9.1.1cvs/share/contrib/unit/unit.mac
+Done.
 @end example
 
-The STYLE-WARNING messages are expected and not a cause for concern - they indicate
+The WARNING messages are expected and not a cause for concern - they indicate
 the @emph{unit} package is redefining functions already defined in Maxima proper.  
 This is necessary in order to properly handle units.  The user
 should be aware that if other changes have been made to these functions by other
@@ -64,8 +61,22 @@ packages those changes will be overwritten by this loading process.
 The @emph{unit.mac} file also loads a lisp file @emph{unit-functions.lisp} which
 contains the lisp functions needed for the package.
 
-@subsubsection Basic Usage
+Clifford Yapp is the primary author.  He has received valuable assistance from
+Barton Willis of the University of Nebraska at Kearney (UNK), Robert Dodier, and
+other intrepid folk of the Maxima mailing list.
 
+There are probably lots of bugs.  Let me know.  @code{float} and @code{numer}
+don't do what is expected.
+
+TODO : dimension functionality, handling of temperature, 
+showabbr and friends.  Show examples with addition of quantities containing
+units.
+
+
+@node Definitions for Units,  , Introduction to Units, unit
+@section Definitions for Units
+
+@deffn {Function} setunits (@var{list})
 By default, the @emph{unit} package does not use any derived dimensions, but will
 convert all units to the seven fundamental dimensions using MKS units.
 @example
@@ -89,6 +100,7 @@ convert all units to the seven fundamental dimensions using MKS units.
                              1800000000000     2
                                               s
 @end example
+
 In some cases this is the desired behavior.  If the user wishes to use other
 units, this is achieved with the @code{setunits} command:
 @example
@@ -112,6 +124,7 @@ units, this is achieved with the @code{setunits} command:
                                         2
                                     %min
 @end example
+
 The setting of units is quite flexible.  For example, if we want to
 get back to kilograms, meters, and seconds as defaults for those
 dimensions we can do:
@@ -124,25 +137,8 @@ dimensions we can do:
                              1800000000000     2
                                               s
 @end example
-Or, alternately, if one wishes to restore the default behavior for
-a particular dimension:
-@example
-(%i13) setunits([centigram,inch,minute]);
-(%o13)                               done
-(%i14) centigram*inch/minutes^2;
-                                    %in cg
-(%o14)                              ------
-                                        2
-                                    %min
-(%i15) forget([cg,%in,%min]);
-(%o15)                        [done, done, done]
-(%i16) centigram*inch/minutes^2;
-                                  127        kg m
-(%o16)                      (-------------) (----)
-                             1800000000000     2
-                                              s
-@end example
-Derived units are also handled by these commands:
+
+Derived units are also handled by this command:
 @example
 (%i17) setunits(N);
 (%o17)                               done
@@ -159,6 +155,7 @@ Derived units are also handled by these commands:
 (%o21)                        (-------------) (N)
                                1800000000000
 @end example
+
 Notice that the @emph{unit} package recognized the non MKS combination
 of mass, length, and inverse time squared as a force, and converted it
 to Newtons.  This is how Maxima works in general.  If, for example, we
@@ -173,10 +170,11 @@ prefer dyne to Newtons, we simply do the following:
 (%o24)                         (--------) (dyn)
                                 18000000
 @end example
-To discontinue simplifying to any force, we use the forget command:
+
+To discontinue simplifying to any force, we use the uforget command:
 @example
-(%i26) forget(dyn);
-(%o26)                               done
+(%i26) uforget(dyn);
+(%o26)                               false
 (%i27) kg*m/s^2;
                                      kg m
 (%o27)                               ----
@@ -188,13 +186,43 @@ To discontinue simplifying to any force, we use the forget command:
                              1800000000000     2
                                               s
 @end example
-This would have worked equally well with @code{forget(N)} or 
-@code{forget(%force)}.  @code{forget} operates on dimensions,
+This would have worked equally well with @code{uforget(N)} or 
+@code{uforget(%force)}.
+
+See also @code{uforget}. To use this function write first @code{load("unit")}.
+@end deffn
+
+@deffn {Function} uforget (@var{list})
+By default, the @emph{unit} package converts all units to the 
+seven fundamental dimensions using MKS units. This behavior can
+be changed with the @code{setunits} command. After that, the
+user can restore the default behavior for a particular dimension
+by means of the @code{uforget} command:
+@example
+(%i13) setunits([centigram,inch,minute]);
+(%o13)                               done
+(%i14) centigram*inch/minutes^2;
+                                    %in cg
+(%o14)                              ------
+                                        2
+                                    %min
+(%i15) uforget([cg,%in,%min]);
+(%o15)                      [false, false, false]
+(%i16) centigram*inch/minutes^2;
+                                  127        kg m
+(%o16)                      (-------------) (----)
+                             1800000000000     2
+                                              s
+@end example
+
+@code{uforget} operates on dimensions,
 not units, so any unit of a particular dimension will work.  The
 dimension itself is also a legal argument.
 
-@subsubsection @code{convert}
+See also @code{setunits}. To use this function write first @code{load("unit")}.
+@end deffn
 
+@deffn {Function} convert (@var{expr}, @var{list})
 When resetting the global environment is overkill, there is the @code{convert}
 command, which allows one time conversions.  It can accept either a single
 argument or a list of units to use in conversion.  When a convert operation is
@@ -221,7 +249,7 @@ simplify to a Derived Dimension.
 
 `rat' replaced 39.37007874015748 by 5000//127 = 39.37007874015748
                               18000000000   %in g
-(%o4)                       (-----------) (-----)
+(%o4)                        (-----------) (-----)
                                   127           2
                                             %min
 (%i5) convert(kg*m/s^2,[N]);
@@ -246,7 +274,7 @@ simplify to a Derived Dimension.
 (%o12)                               done
 (%i13) kg*m/s^2;
 (%o13)                                 N
-(%i14) forget(N);
+(%i14) uforget(N);
 (%o14)                               false
 (%i15) kg*m/s^2;
                                 5000000   %in g
@@ -262,17 +290,18 @@ simplify to a Derived Dimension.
                                            s
 @end example
 
-TODO : dimension functionality, handling of temperature, 
-showabbr and friends.  Show examples with addition of quantities containing
-units.
+See also @code{setunits} and @code{uforget}. To use this function write first @code{load("unit")}.
+@end deffn
 
-@subsubsection User defaults and resetting @emph{unit} behavior
+
+@defvr {Optional variable} usersetunits
+Default value: none
 
 If a user wishes to have a default unit behavior other than that described,
 they can make use of @emph{maxima-init.mac} and the @emph{usersetunits} 
 variable.  The @emph{unit} package will check on startup to see if this variable 
 has been assigned a list.  If it has, it will use setunits on that list and take 
-the units from that list to be defaults.  @code{forget} will revert to the behavior
+the units from that list to be defaults.  @code{uforget} will revert to the behavior
 defined by usersetunits over its own defaults.  For example, if we have a
 @emph{maxima-init.mac} file containing:
 @example
@@ -280,7 +309,7 @@ usersetunits : [N,J];
 @end example
 we would see the following behavior:
 @example
-(%i1) load("./unit.mac");
+(%i1) load("unit")$
 ******************************************************************* 
 *                       Units version 0.50                        * 
 *          Definitions based on the NIST Reference on             * 
@@ -290,15 +319,14 @@ we would see the following behavior:
 ******************************************************************* 
  
 Redefining necessary functions... 
-STYLE-WARNING: redefining TOPLEVEL-MACSYMA-EVAL in DEFUN
-STYLE-WARNING: redefining MSETCHK in DEFUN
-STYLE-WARNING: redefining KILL1 in DEFUN
-STYLE-WARNING: redefining NFORMAT in DEFUN
+WARNING: DEFUN/DEFMACRO: redefining function TOPLEVEL-MACSYMA-EVAL ...
+WARNING: DEFUN/DEFMACRO: redefining function MSETCHK ...
+WARNING: DEFUN/DEFMACRO: redefining function KILL1 ...
+WARNING: DEFUN/DEFMACRO: redefining function NFORMAT ...
 Initializing unit arrays... 
 Done. 
 User defaults found... 
-User defaults initialized. 
-(%o1)                             ./unit.mac
+User defaults initialized.
 (%i2) kg*m/s^2;
 (%o2)                                  N
 (%i3) kg*m^2/s^2;
@@ -317,8 +345,8 @@ User defaults initialized.
 (%o9)                    (6241509596477042688) (eV m)
 (%i10) kg*m*km/s^2;
 (%o10)                   (6241509596477042688000) (eV)
-(%i11) forget([dyn,eV]);  
-(%o11)                           [done, done]
+(%i11) uforget([dyn,eV]);  
+(%o11)                           [false, false]
 (%i12) kg*m/s^2;
 (%o12)                                 N
 (%i13) kg*m^2/s^2;
@@ -329,11 +357,11 @@ User defaults initialized.
 (%o15)                            (1000) (J)
 @end example
 Without @code{usersetunits}, the initial inputs would have been converted
-to MKS, and forget would have resulted in a return to MKS rules.  Instead,
+to MKS, and uforget would have resulted in a return to MKS rules.  Instead,
 the user preferences are respected in both cases.  Notice these can still
 be overridden if desired.  To completely eliminate this simplification - i.e.
 to have the user defaults reset to factory defaults - the @code{dontusedimension}
-command can be used.  @code{forget} can restore user settings again, but
+command can be used.  @code{uforget} can restore user settings again, but
 only if @code{usedimension} frees it for use.  Alternately,
 @code{kill(usersetunits)} will completely remove all knowledge of the user defaults
 from the session.  Here are some examples of how these various options work.
@@ -348,8 +376,8 @@ from the session.  Here are some examples of how these various options work.
 (%o5)                           (100000) (dyn)
 (%i6) kg*m^2/s^2;
 (%o6)                     (6241509596477042688) (eV)
-(%i7) forget([dyn,eV]);
-(%o7)                            [done, done]
+(%i7) uforget([dyn,eV]);
+(%o7)                          [false, false]
 (%i8) kg*m/s^2;
 (%o8)                                  N
 (%i9) kg*m^2/s^2;
@@ -382,8 +410,8 @@ from the session.  Here are some examples of how these various options work.
 (%o16)                               -----
                                        2
                                       s
-(%i17) forget([dyn,eV]);
-(%o17)                           [done, done]
+(%i17) uforget([dyn,eV]);
+(%o17)                         [false, false]
 (%i18) kg*m/s^2;
                                      kg m
 (%o18)                               ----
@@ -420,15 +448,15 @@ to select a unit.
 (%o25)                          (100000) (dyn)
 (%i26) kg*m^2/s^2;
 (%o26)                    (6241509596477042688) (eV)
-(%i27) forget([dyn,eV]);
-(%o27)                           [done, done]
+(%i27) uforget([dyn,eV]);
+(%o27)                           [false, false]
 (%i28) kg*m/s^2;
 (%o28)                                 N
 (%i29) kg*m^2/s^2;
 (%o29)                                 J
 (%i30) kill(usersetunits);
 (%o30)                               done
-(%i31) forget([dyn,eV]);
+(%i31) uforget([dyn,eV]);
 (%o31)                          [false, false]
 (%i32) kg*m/s^2;
                                      kg m
@@ -446,26 +474,14 @@ Unfortunately this wide variety of options is a little confusing at first,
 but once the user grows used to them they should find they have very full
 control over their working environment.
 
-One other significant customization option available is the @code{setunitprefix}
-command.  Normally, abbreviations used in this package are as close to those
-used in standard texts as possible.  Some people, however, prefer to use those
-symbols for normal work and have units labeled in some other fasion. 
-@code{setunitprefix} is provided for this case.  Here is an example of its use:
+@c One other significant customization option available is the @code{setunitprefix}
+@c command.  Normally, abbreviations used in this package are as close to those
+@c used in standard texts as possible.  Some people, however, prefer to use those
+@c symbols for normal work and have units labeled in some other fasion. 
+@c @code{setunitprefix} is provided for this case.  Here is an example of its use:
 
+@end defvr
 
-@subsubsection Bugs
-
-Undoubtedly.  Probably lots of them.  Let me know.  float and numer don't do
-what is expected.
-
-@subsubsection Authors
-
-Clifford Yapp is the primary author.  He has recieved valuable assistance from
-Barton Willis of the University of Nebraska at Kearney (UNK), Robert Dodier, and
-other intrepid folk of the Maxima mailing list.
-
-@node Definitions for Units,  , Introduction to Units, unit
-@section Definitions for Units
 
 @deffn {Function} metricexpandall (@var{x})
 Rebuilds global unit lists automatically creating all desired metric units.
@@ -475,9 +491,10 @@ higher number defining all lower numbers' units:
 @example
            0 - none. Only base units
            1 - kilo, centi, milli
-(default)  2 - giga, mega, kilo, hecto, deka, deci, centi, milli, micro, nano
-           3 - peta, tera, giga, mega, kilo, hecto, deka, deci, centi, milli, 
-               micro, nano, pico, femto
+(default)  2 - giga, mega, kilo, hecto, deka, deci, centi, milli,
+               micro, nano
+           3 - peta, tera, giga, mega, kilo, hecto, deka, deci,
+               centi, milli, micro, nano, pico, femto
            4 - all
 @end example
 Normally, Maxima will not define the full expansion since this results in a
@@ -496,10 +513,10 @@ of @emph{unit}.
 @end defvr
 
 
-@deffn {Function} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
-@end deffn
+@c @deffn {Function} functionname (@var{arg1}, @var{arg2}, ..., @var{argn})
+@c @end deffn
 
-@defvr {Variable} variablename
-Default value: @code{true}
-@end defvr
+@c @defvr {Optional variable} variablename
+@c Default value: @code{true}
+@c @end defvr
 
