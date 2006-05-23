@@ -15,6 +15,8 @@
 ;    and simplify baz assuming not foo
 ;  - flatten conditionals -- nested if --> if -- elseif -- elseif -- elseif -- else
 ;  - arithmetic on conditionals -- distribute arithmetic ops over if
+;  - make up rules via tellsimp & friends for integrate / sum / diff applied to conditionals
+;  - knock out redundant clauses in simplification (i.e. if x => y then knock out y)
 
 ; Examples:
 ;
