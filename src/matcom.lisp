@@ -644,7 +644,7 @@
                        `(is (meval ',(append p-op (ncons match-against)))))
                       ; Otherwise P-OP must be a function call with the last arg missing.
                       (t
-                        `(is (list ',(car p-op) ,@(append (mapcar 'memqargs p-args) (ncons match-against)))))))))
+                        `(is (cons ',(car p-op) ',(append (mapcar 'memqargs p-args) (ncons match-against)))))))))
 
           `(cond
              (,test-expr (msetq ,pattern-variable ,match-against))
