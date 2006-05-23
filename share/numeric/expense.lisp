@@ -66,7 +66,7 @@
          "A MACSYMA list of currently known CRAY-1 vector merge operations."
          modified-commands '($block_optimize $expense))
 
-(declare (fixnum ($expense notype) (multiplies-in-nth-power notype)))
+; (declare (fixnum ($expense notype) (multiplies-in-nth-power notype)))
 
 (defun multiplies-in-nth-power (nth)
    (cond ((< nth 2) 0)

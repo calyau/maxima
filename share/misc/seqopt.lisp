@@ -8,8 +8,10 @@
 
 (macsyma-module seqopt)
 
+#|
 (eval-when (load eval) (or (get 'expens 'version)
 			   (load "expense")))
+|#
 
 (defmvar $sequence_optim_prefix '$opt
          "String used to prefix all optimized temporaries arising from a
@@ -61,9 +63,11 @@
   "MACSYMA list of generated names for common subexpressions(Not used if
    a list equations is passed to SEQUENCE_OPTIMIZE).")
 
+#|
 (declare (special setqs)
          (array* (notype (subexp 1)))
          (fixnum n (alike1-hash)))
+|#
 
 (array subexp t 64.)
 
