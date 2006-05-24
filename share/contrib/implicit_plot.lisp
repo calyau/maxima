@@ -96,7 +96,8 @@
 	 (sample (make-array `(,(1+ ($first $ip_grid))
 			       ,(1+ ($second $ip_grid)))))
 	 (ssample (make-array `(,(1+ ($first $ip_grid_in))
-				,(1+ ($second $ip_grid_in))))))
+				,(1+ ($second $ip_grid_in)))))
+	 file-name gnuplot-out-file gnuplot-term)
     
     (dolist (v options) ($set_plot_option v))
     (setq xrange (check-range xrange))
@@ -104,10 +105,20 @@
     
     (if (not ($listp expr))
 	(setq expr `((mlist simp) ,expr)))
+
+    (setf gnuplot-term ($get_plot_option '$gnuplot_term 2))
+    
+    (if ($get_plot_option '$gnuplot_out_file 2)
+	(setf gnuplot-out-file (get-plot-option-string '$gnuplot_out_file)))
+    
+    (if (and (eq gnuplot-term '$default) 
+	     gnuplot-out-file)
+	(setf file-name gnuplot-out-file)
+	(setf file-name (plot-temp-file "maxout.gnuplot")))
     
     ;; output data
     (with-open-file
-	(file "maxout.gnuplot" :direction :output :if-exists :supersede)
+	(file file-name :direction :output :if-exists :supersede)
       (gnuplot-print-header file)
       (format file "set xrange [~d:~d]~%" (caddr xrange) (cadddr xrange))
       (format file "set yrange [~d:~d]~%" (caddr yrange) (cadddr yrange))
@@ -153,5 +164,4 @@
 	(format file "e~%") ))
     
     ;; call gnuplot
-    (gnuplot-process "maxout.gnuplot")
-    ))
+    (gnuplot-process file-name) ))
