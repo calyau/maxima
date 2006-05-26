@@ -47,7 +47,7 @@ defrule(grassmann2,nonsc1.nonsc2,
         if ordergreatp(nonsc1,nonsc2) then -nonsc2.nonsc1 else nonsc1.nonsc2);
 defrule(clifford1,nonsc1.nonsc1,sf(nonsc1,nonsc1));
 defrule(clifford2,nonsc1.nonsc2,
-        if ordergreatp(nonsc1,nonsc2) then -nonsc2.nonsc1+2*sf(nonsc2,nonsc1));
+        if ordergreatp(nonsc1,nonsc2) then -nonsc2.nonsc1+2*sf(nonsc2,nonsc1) else nonsc1.nonsc2);
 defrule(symmetric,nonsc1.nonsc2,
         if ordergreatp(nonsc1,nonsc2) then nonsc2.nonsc1 else nonsc1.nonsc2);
 defrule(symplectic,nonsc1.nonsc2,

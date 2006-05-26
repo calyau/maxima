@@ -831,7 +831,7 @@
     ((rpobj e) (contract5 e))
     (
       (eq (caar e) 'mtimes)
-      (mysubst0 (simplifya (cons '(mtimes) (contract4a e)) t) e)
+      (mysubst0 (simplifya (cons '(mtimes) (contract4a e)) nil) e)
     )
     (
       (eq (caar e) 'mplus)
