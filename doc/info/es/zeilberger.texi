@@ -6,56 +6,61 @@
 @node Introducci@'on a zeilberger, Definiciones para zeilberger, zeilberger, zeilberger
 @section Introducci@'on a zeilberger
 
-@code{zeilberger} is a implementation of Zeilberger's algorithm
-for definite hypergeometric summation, and also 
-Gosper's algorithm for indefinite hypergeometric
-summation.
+El paquete @code{zeilberger} implementa el algoritmo de Zeilberger
+para la suma hipergeom@'etrica definida y el algoritmo de Gosper
+para la suma hipergeom@'etrica indefinida. Adem@'as, hace uso del 
+m@'etodo de optimizaci@'on por filtrado desarrollado por Axel Riese.
 
-@code{zeilberger} makes use of the "filtering" optimization method developed by Axel Riese.
+El autor de este paquete es Fabrizio Caruso.
 
-@code{zeilberger} was developed by Fabrizio Caruso.
+Antes de hacer uso de las funciones aqu@'{@dotless{i}} definidas,
+ejec@'utese la sentencia @code{load (zeilberger)}.
 
-@code{load (zeilberger)} loads this package.
 
-@subsubsection The indefinite summation problem
+@subsubsection El problema de la suma indefinida
 
-@code{zeilberger} implements Gosper's algorithm
-for indefinite hypergeometric summation.
-Given a hypergeometric term @math{F_k} in @math{k} we want to find its hypergeometric
-anti-difference, that is, a hypergeometric term @math{f_k} such that @math{F_k = f_(k+1) - f_k}.
+El paquete @code{zeilberger} implementa el algoritmo de Gosper
+para la suma hipergeom@'etrica indefinida.
+Dado el t@'ermino general hipergeom@'etrico @math{F_k} de
+@'{@dotless{i}}ndice @math{k}, se plantea el problema de encontrar su
+antidiferencia hipergeom@'etrica, esto es, el t@'ermino
+hipergeom@'etrico tal que @math{F_k = f_(k+1) - f_k}.
 
-@subsubsection The definite summation problem
 
-@code{zeilberger} implements Zeilberger's algorithm
-for definite hypergeometric summation.
-Given a proper hypergeometric term (in @math{n} and @math{k}) @math{F_(n,k)} and a
-positive integer @math{d} we want to find a @math{d}-th order linear
-recurrence with polynomial coefficients (in @math{n}) for @math{F_(n,k)}
-and a rational function @math{R} in @math{n} and @math{k} such that
+@subsubsection El problema de la suma definida
+
+El paquete @code{zeilberger} implementa el algoritmo de Zeilberger
+para la suma hipergeom@'etrica definida.
+Dados el t@'ermino hipergeom@'etrico propio @math{F_(n,k)}, de 
+@'{@dotless{i}}ndices @math{n} y @math{k}, y el entero positivo
+@math{d}, se plantea el problema de encontrar una expresi@'on recurrente
+lineal de orden @math{d} con coeficientes polinomiales en @math{n}
+y una funci@'on racional @math{R} en @math{n} y @math{k} tales que
 
 @math{a_0 F_(n,k) + ... + a_d F_(n+d),k = Delta_K(R(n,k) F_(n,k))}
 
-where @math{Delta_k} is the @math{k}-forward difference operator, i.e.,
+donde @math{Delta_k} es el @math{k}-@'esimo operador diferencia hacia
+adelante, esto es,
 @math{Delta_k(t_k) := t_(k+1) - t_k}.
 
-@subsection Verbosity levels
+@subsection Niveles de informaci@'on
 
-There are also verbose versions of the commands
-which are called by adding one of the following prefixes:
+Hay versiones extendidas de los nombres de las instrucciones,
+que se construyen a@~nadiendo uno de los siguientes prefijos:
 
 @table @code
 @item Summary
-Just a summary at the end is shown
+Tan solo muestra un sumario al final
 @item Verbose
-Some information in the intermidiate steps
+Alguna informaci@'on en los niveles intermedios
 @item VeryVerbose
-More information
+M@'as informaci@'on
 @item Extra
-Even more information including information on
-the linear system in Zeilberger's algorithm
+A@'un m@'as informaci@'on, incluida alguna sobre
+el sistema lineal en el algoritmo de Zeilberger.
 @end table
 
-For example:
+Por ejemplo:
 @code{GosperVerbose}, @code{parGosperVeryVerbose},
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
@@ -63,30 +68,29 @@ For example:
 @node Definiciones para zeilberger,  , Introducci@'on a zeilberger, zeilberger
 @section Definiciones para zeilberger
 
-@deffn {Function} AntiDifference (@var{F_k}, @var{k})
+@deffn {Funci@'on} AntiDifference (@var{F_k}, @var{k})
 
 Returns the hypergeometric anti-difference
 of @var{F_k}, if it exists.
 Otherwise @code{AntiDifference} returns @code{no_hyp_antidifference}.
 @end deffn
 
-@deffn {Function} Gosper (@var{F_k}, @var{k})
-Returns the rational certificate @var{R(k)} for @var{F_k}, that is,
-a rational function such that
+@deffn {Funci@'on} Gosper (@var{F_k}, @var{k})
+Devuelve, si existe, el elemento racional asociado a @var{F_k}, esto es,
+la funci@'on racional que verifica
 
-@math{F_k = R(k+1) F_(k+1) - R(k) F_k}
- 
-if it exists.
-Otherwise, @code{Gosper} returns @code{no_hyp_sol}.
+@math{F_k = R(k+1) F_(k+1) - R(k) F_k}.
+
+En caso de no existir este elemento, @code{Gosper} devuelve @code{no_hyp_sol}.
 @end deffn
 
-@deffn {Function} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+@deffn {Funci@'on} GosperSum (@var{F_k}, @var{k}, @var{a}, @var{b}) 
+Devuelve la suma de los t@'erminos @var{F_k} desde @math{@var{k} = @var{a}} hasta
+@math{@var{k} = @var{b}} si @var{F_k} tiene una antidiferencia
+hipergeom@'etrica. En caso contrario, @code{GosperSum} devuelve
+@code{nongosper_summable}.
 
-Returns the summmation of @var{F_k} from @math{@var{k} = @var{a}} to @math{@var{k} = @var{b}}
-if @var{F_k} has a hypergeometric anti-difference.
-Otherwise, @code{GosperSum} returns @code{nongosper_summable}.
-
-Examples:
+Ejemplos:
 
 @c ===beg===
 @c load (zeilberger);
@@ -140,116 +144,118 @@ Dependent equations eliminated:  (1)
 @end example
 @end deffn
 
-@deffn {Function} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
-Attempts to find a a @var{d}-th order recurrence for @var{F_@{n,k@}}.
+@deffn {Funci@'on} parGosper (@var{F_@{n,k@}}, @var{k}, @var{n}, @var{d})
+Intenta calcular una recurrecia de orden @var{d} para @var{F_@{n,k@}}.
 
-The algorithm yields a sequence
-@math{[s_1, s_2, ..., s_m]} of solutions.
-Each solution has the form
+El algoritmo devuelve una secuencia @math{[s_1, s_2, ..., s_m]} de
+soluciones, cada una de las cuales tiene la forma 
 
-@math{[R(n, k), [a_0, a_1, ..., a_d]]}
+@math{[R(n, k), [a_0, a_1, ..., a_d]]}.
 
-@code{parGosper} returns @code{[]} if it fails to find a recurrence.
+La funci@'on @code{parGosper} devuelve @code{[]} si no encuentra
+ninguna recurrencia.
 @end deffn
 
-@deffn {Function} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
-Attempts to compute the indefinite hypergeometric summation of @var{F_@{n,k@}}.
+@deffn {Funci@'on} Zeilberger (@var{F_@{n,k@}}, @var{k}, @var{n})
+Intenta calcular la suma hipergeom@'etrica indefinida de @var{F_@{n,k@}}.
 
-@code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
-@code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
-If Zeilberger finds a solution before reaching @code{MAX_ORD},
-it stops and returns the solution.
+La funci@'on @code{Zeilberger} invoca en primer lugar a @code{Gosper},
+y en caso de no encontrar una soluci@'on, llama despu@'es a @code{parGosper}
+con los @'ordenes 1, 2, 3, ..., hasta @code{MAX_ORD}. Si @code{Zeilberger}
+encuentra una soluci@'on antes de alcanzar @code{MAX_ORD}, se detiene su
+ejecuci@'on y devuelve el resultado.
 
-The algorithms yields a sequence
-@math{[s_1, s_2, ..., s_m]} of solutions.
-Each solution has the form
+El algoritmo devuelve una secuencia @math{[s_1, s_2, ..., s_m]} de
+soluciones, cada una de las cuales tiene la forma 
 
-@math{[R(n,k), [a_0, a_1, ..., a_d]]}
+@math{[R(n, k), [a_0, a_1, ..., a_d]]}.
 
-@code{Zeilberger} returns @code{[]} if it fails to find a solution.
+La funci@'on @code{Zeilberger} devuelve @code{[]} si no encuentra
+ninguna soluci@'on.
 
-@code{Zeilberger} invokes @code{Gosper} only if @code{gosper_in_zeilberger} is @code{true}.
+La funci@'on @code{Zeilberger} llama a @code{Gosper} s@'olo si 
+@code{gosper_in_zeilberger} tiene el valor @code{true}.
 @end deffn
 
-@section General global variables
+@defvr {Variable opcional} MAX_ORD
+Valor por defecto: 5
 
-@defvr {Global variable} MAX_ORD
-Default value: 5
-
-@code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
+@code{MAX_ORD} es el m@'aximo orden de recurrencia que ensayar@'a la funci@'on @code{Zeilberger}.
 @end defvr
 
-@defvr {Global variable} simplified_output
-Default value: @code{false}
+@defvr {Variable opcional} simplified_output
+Valor por defecto: @code{false}
 
-When @code{simplified_output} is @code{true},
-functions in the @code{zeilberger} package attempt
-further simplification of the solution.
+Si @code{simplified_output} vale @code{true},
+las funciones del paquete @code{zeilberger} tratan de
+presentar las soluciones simplificadas.
 @end defvr
 
-@defvr {Global variable} linear_solver
-Default value: @code{linsolve}
+@defvr {Variable opcional} linear_solver
+Valor por defecto: @code{linsolve}
 
-@code{linear_solver} names the solver which is used to solve the system
-of equations in Zeilberger's algorithm.
+La variable @code{linear_solver} guarda el nombre de la funci@'on que
+se utilizar@'a para resolver el sistema de ecuaciones del algoritmo de
+Zeilberger.
 @end defvr
 
-@defvr {Global variable} warnings
-Default value: @code{true}
+@defvr {Variable opcional} warnings
+Valor por defecto: @code{true}
 
-When @code{warnings} is @code{true},
-functions in the @code{zeilberger} package print
-warning messages during execution.
+Si @code{warnings} vale @code{true},
+las funciones del paquete @code{zeilberger} emiten
+mensajes de aviso durante su ejecuci@'on.
 @end defvr
 
-@defvr {Global variable} gosper_in_zeilberger
-Default value: @code{true}
+@defvr {Variable opcional} gosper_in_zeilberger
+Valor por defecto: @code{true}
 
-When @code{gosper_in_zeilberger} is @code{true},
-the @code{Zeilberger} function calls @code{Gosper} before calling @code{parGosper}.
-Otherwise, @code{Zeilberger} goes immediately to @code{parGosper}.
+Si @code{gosper_in_zeilberger} vale @code{true},
+la funci@'on @code{Zeilberger} llama a la funci@'on @code{Gosper}
+antes de llamar a @code{parGosper}.
+En caso contrario, @code{Zeilberger} invoca inmediatamente a @code{parGosper}.
 @end defvr
 
-@defvr {Global variable} trivial_solutions
-Default value: @code{true}
+@defvr {Variable opcional} trivial_solutions
+Valor por defecto: @code{true}
 
-When @code{trivial_solutions} is @code{true},
-@code{Zeilberger} returns solutions
-which have certificate equal to zero, or all coefficients equal to zero.
+Si @code{trivial_solutions} vale @code{true},
+la funci@'on @code{Zeilberger} devuelve soluciones triviales.
 @end defvr
 
-@section Variables related to the modular test
+@defvr {Variable opcional} mod_test
+Valor por defecto: @code{false}
 
-@defvr {Global variable} mod_test
-Default value: @code{false}
-
-When @code{mod_test} is @code{true},
-@code{parGosper} executes a
-modular test for discarding systems with no solutions.
+Si @code{mod_test} vale @code{true},
+la funci@'on @code{parGosper} ejecuta una prueba modular 
+para descartar sistemas sin soluciones.
 @end defvr
 
-@defvr {Global variable} modular_linear_solver
-Default value: @code{linsolve}
+@defvr {Variable opcional} modular_linear_solver
+Valor por defecto: @code{linsolve}
 
-@code{modular_linear_solver} names the linear solver used by the modular test in @code{parGosper}.
+La variable @code{modular_linear_solver} guarda el nombre de la funci@'on
+que deber@'a ser llamada por la prueba modular de @code{parGosper} para
+resolver sistemas lineales.
 @end defvr
 
-@defvr {Global variable} ev_point
-Default value: @code{big_primes[10]}
+@defvr {Variable opcional} ev_point
+Valor por defecto: @code{big_primes[10]}
 
-@code{ev_point} is the value at which the variable @var{n} is evaluated
-when executing the modular test in @code{parGosper}.
+La variable @code{ev_point} guarda el valor para el que debe evaluarse @var{n}
+durante la ejecuci@'on de la prueba modular de @code{parGosper}.
 @end defvr
 
-@defvr {Global variable} mod_big_prime
-Default value: @code{big_primes[1]}
+@defvr {Variable opcional} mod_big_prime
+Valor por defecto: @code{big_primes[1]}
 
-@code{mod_big_prime} is the modulus used by the modular test in @code{parGosper}.
+La variable @code{mod_big_prime} guarda el m@'odulo utilizado por la prueba
+modular de @code{parGosper}.
 @end defvr
 
-@defvr {Global variable} mod_threshold
-Default value: 4
+@defvr {Variable opcional} mod_threshold
+Valor por defecto: 4
 
-@code{mod_threshold} is the
-greatest order for which the modular test in @code{parGosper} is attempted.
+La variable @code{mod_threshold} es el m@'aximo orden que ensaya la prueba modular
+de @code{parGosper}.
 @end defvr
