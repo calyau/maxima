@@ -393,6 +393,7 @@ contrib/unit/unit-functions.lisp\
 contrib/unit/unit.mac\
 contrib/opsubst.lisp\
 contrib/stirling.mac\
+contrib/multiadditive.lisp\
 diffequations/abel.mac\
 diffequations/desoln.mac\
 diffequations/desoln.usg\
