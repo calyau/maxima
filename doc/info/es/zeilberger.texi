@@ -1,3 +1,4 @@
+@c english version 1.2
 @menu
 * Introducci@'on a zeilberger::
 * Definiciones para zeilberger::
@@ -161,8 +162,8 @@ Intenta calcular la suma hipergeom@'etrica indefinida de @var{F_@{n,k@}}.
 
 La funci@'on @code{Zeilberger} invoca en primer lugar a @code{Gosper},
 y en caso de no encontrar una soluci@'on, llama despu@'es a @code{parGosper}
-con los @'ordenes 1, 2, 3, ..., hasta @code{MAX_ORD}. Si @code{Zeilberger}
-encuentra una soluci@'on antes de alcanzar @code{MAX_ORD}, se detiene su
+con los @'ordenes 1, 2, 3, ..., hasta @code{max_ord}. Si @code{Zeilberger}
+encuentra una soluci@'on antes de alcanzar @code{max_ord}, se detiene su
 ejecuci@'on y devuelve el resultado.
 
 El algoritmo devuelve una secuencia @math{[s_1, s_2, ..., s_m]} de
@@ -177,10 +178,10 @@ La funci@'on @code{Zeilberger} llama a @code{Gosper} s@'olo si
 @code{gosper_in_zeilberger} tiene el valor @code{true}.
 @end deffn
 
-@defvr {Variable opcional} MAX_ORD
+@defvr {Variable opcional} max_ord
 Valor por defecto: 5
 
-@code{MAX_ORD} es el m@'aximo orden de recurrencia que ensayar@'a la funci@'on @code{Zeilberger}.
+@code{max_ord} es el m@'aximo orden de recurrencia que ensayar@'a la funci@'on @code{Zeilberger}.
 @end defvr
 
 @defvr {Variable opcional} simplified_output
