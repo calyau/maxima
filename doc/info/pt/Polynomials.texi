@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Polynomials.texi/1.21/Sun Apr 23 18:21:32 2006/-ko/
+@c /Polynomials.texi/1.22/Sun May 21 07:18:29 2006/-ko/
 @c FOR THE FUNCTIONS WHICH RETURN A CRE, BE SURE TO MENTION THAT
 @menu
 * Introdu@value{cedilha}@~ao a Polin@^omios::  
@@ -597,8 +597,8 @@ simples como primeiro argumento.
 @deffn {Fun@,{c}@~ao} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
 Retorna o m@'aximo divisor comum entre @var{p_1} e @var{p_2}.
 O sinalizador @code{gcd} determina qual algor@'itmo @'e empregado.
-Escolhendo @code{gcd} para @code{ez}, @code{eez}, @code{subres}, @code{red}, ou @code{spmod} seleciona o algor@'itmo @code{ezgcd}, Novo
-@code{eez} @code{gcd}, @code{prs} subresultante, reduzido, ou modular,
+Escolhendo @code{gcd} para @code{ez}, @code{subres}, @code{red}, ou @code{spmod} seleciona o algor@'itmo @code{ezgcd},
+subresultante @code{prs}, reduzido, ou modular,
 respectivamente.  Se @code{gcd} for @code{false} ent@~ao @code{gcd (@var{p_1}, @var{p_2}, @var{x})} sempre retorna 1
 para todo @var{x}.  Muitas fun@,{c}@~oes (e.g.  @code{ratsimp}, @code{factor}, etc.) fazem com que mdc's
 sejam feitos implicitamente.  Para polin@^omios homog@^eneos @'e recomendado

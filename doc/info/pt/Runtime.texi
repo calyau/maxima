@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Runtime.texi/1.16/Wed Nov  2 18:37:20 2005/-ko/
+@c /Runtime.texi/1.17/Mon May 15 07:54:22 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Ambiente em Tempo de Execu@value{cedilha}@~ao::  
 * Interrup@value{cedilha}@~oes::                  
@@ -93,7 +93,7 @@ nem a nega@,{c}@~ao de @var{f} puderem ser estabelecidas.
 @code{featurep} avalia seus argumentos.
 
 Veja tamb@'em @code{declare} e @code{features}.
-		     
+       
 @example
 (%i1) declare (j, even)$
 (%i2) featurep (j, integer);
@@ -134,7 +134,7 @@ A lista pode variar de um tipo de Lisp para outro.
 @item @code{status (feature, @var{recurso_ativo})} retorna @code{true} se @var{recurso_ativo}
 est@'a na lista de @'itens retornada atrav@'es de @code{status (feature)} e @code{false} de outra forma.
 @code{status} n@~ao avalia o argumento @var{recurso_ativo}.
-O operador aspas simples, @code{'@w{}'}, evita a avalia@value{cedilha}@~ao.
+O operador ap@'ostrofo-ap@'ostrofo, @code{'@w{}'}, evita a avalia@value{cedilha}@~ao.
 Um recurso cujo nome cont@'em um caractere especial, tal como um h@'ifem,
 deve ser fornecido como um argumento em forma de seq@"u@^encia de caracteres. Por Exemplo,
 @code{status (feature, "ansi-cl")}.
