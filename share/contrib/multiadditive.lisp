@@ -29,6 +29,8 @@ makes it additive in just its first argument.  Examples:
 (setq opers (cons '$multiadditive opers)
       *opers-list (cons '($multiadditive . multiadditive) *opers-list))
 
+(setq $opproperties ($cons '$multiadditive $opproperties))
+
 (defun multiadditive (e z)
   (cond ((some #'(lambda (s) (op-equalp s 'mplus)) (margs e))
 	 (let ((op (mop e)) (args (margs e)))
@@ -38,5 +40,3 @@ makes it additive in just its first argument.  Examples:
 	(t e)))
 
 
-	   
-    
