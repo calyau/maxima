@@ -36,7 +36,5 @@ makes it additive in just its first argument.  Examples:
 	 (let ((op (mop e)) (args (margs e)))
 	   (setq args (mapcar #'(lambda (s) (if (op-equalp s 'mplus) ($args s) `((mlist) ,s))) args))
 	   (setq args (mfuncall '$apply '$outermap ($cons op (cons '(mlist) args))))
-	   (reduce 'add (margs ($flatten args)))))
-	(t e)))
-
-
+	   (reduce 'add (mapcar #'(lambda (s) (oper-apply s z)) (margs ($flatten args))))))
+	(t (oper-apply e z))))
