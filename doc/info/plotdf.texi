@@ -253,13 +253,18 @@ The default value is 500.
 
 @b{Examples:}
 
+NOTE: Due to a bug in @code{openmath}, all commands that use it, in particular
+@code{plotdf}, must end with a semicolon and not with a dollar sign. The
+dollar sign might work in some of the graphical interfaces to Maxima, but
+to avoid problems we will use a semicolon in all the examples below.
+  
 @itemize @bullet
 @item
 To show the direction field of the differential equation @math{y' = exp(-x) + y} and the solution that goes through @math{(2, -0.1)}:
 @example
 (%i1) load("plotdf")$
 
-(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1])$
+(%i2) plotdf(exp(-x)+y,[trajectory_at,2,-0.1]);
 @end example
 
 @ifnotinfo
@@ -271,7 +276,7 @@ To obtain the direction field for the equation @math{diff(y,x) = x - y^2} and th
 @example
 (%i3) plotdf(x-y^2,[xfun,"sqrt(x);-sqrt(x)"],
           [trajectory_at,-1,3], [direction,forward],
-          [yradius,5],[xcenter,6])$
+          [yradius,5],[xcenter,6]);
 @end example
 The graph also shows the function @math{y = sqrt(x)}. 
 
@@ -287,7 +292,7 @@ will allow you to change the value of @math{m} interactively (@math{k} is
 fixed at 2):
 @example
 (%i4) plotdf([y,-k*x/m],[parameters,"m=2,k=2"],
-            [sliders,"m=1:5"], [trajectory_at,6,0])$
+            [sliders,"m=1:5"], [trajectory_at,6,0]);
 @end example
 
 @ifnotinfo
@@ -299,7 +304,7 @@ To plot the direction field of the Duffing equation, @math{m*x''+c*x'+k*x+b*x^3 
 @example
 (%i5) plotdf([y,-(k*x + c*y + b*x^3)/m],
               [parameters,"k=-1,m=1.0,c=0,b=1"],
-              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1])$
+              [sliders,"k=-2:2,m=-1:1"],[tstep,0.1]);
 @end example
 
 @ifnotinfo
@@ -318,7 +323,7 @@ the two state variables as a function of time:
          [trajectory_at,1.05,-9],[tstep,0.01],
          [xradius,6],[yradius,14],
          [xcenter,-4],[direction,forward],[nsteps,300],
-         [sliders,"m=0.1:1"], [versus_t,1])$
+         [sliders,"m=0.1:1"], [versus_t,1]);
 @end example
 
 @ifnotinfo
