@@ -461,3 +461,9 @@ sqrt(%pi)*erf(mu[1])/2+sqrt(%pi)/2;
  */
 integrate((sqrt(x^4-6*x^2+1)-x^2+1)/(2*x),x);
 ('integrate(%e^(log(x^2+2*x-1)/2+log(x^2-2*x-1)/2)/x,x)+log(x)-x^2/2)/2;
+
+/*
+ * Bug mentioned in mailing-list, 2006-05-31, "problem with bigfloats"
+ */
+exp(1.0b-1);
+1.105170918075648b0;

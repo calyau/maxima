@@ -1597,7 +1597,7 @@
 		   (let ((x ($realpart pot))
 			 (y ($imagpart pot)))
 		     (cond ((and ($bfloatp x) (like 0 y))
-			    ($bfloat `((mexpt simp) $%e ,pot)))
+			    (return ($bfloat `((mexpt simp) $%e ,pot))))
 			   ((or ($bfloatp x) ($bfloatp y))
 			    (let ((z (add ($bfloat x) (mul '$%i ($bfloat y)))))
 			      (setq z ($rectform `((mexpt simp) $%e ,z)))
