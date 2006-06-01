@@ -582,7 +582,7 @@ dataplot(m,[select]):=
       else if matrixp(m) and length(m[1])=3 and defaults[6] then
          (with_stdout("maxout.gnuplot",
             if defaults[1] = "eps"
-              then (print("set terminal postscri'pointstyle=0, pt eps"),
+              then (print("set terminal postscript eps"),
                     print("set out 'dataplot.eps'"))
               else if defaults[1] = "png"
                       then (print("set terminal png"),
