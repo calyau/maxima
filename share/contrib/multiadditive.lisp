@@ -32,6 +32,19 @@ makes it additive in just its first argument.  Examples:
 
 (defun protected-oper-apply (e z)
   (if ($mapatom e) e (oper-apply e z)))
+	
+;; Code adapated from nset. Used by permission of the author ;)
+     
+(defun cartesian-product (&rest b)
+  (cond ((null b)
+	 nil)
+	(t
+	 (let ((a) (acc (mapcar #'list (car b))))
+	   (setq b (cdr b))
+	   (dolist (bi b acc)
+	     (setq a nil)
+	     (dolist (bij bi (setq acc a))
+	       (setq a (append a (mapcar #'(lambda (x) `(,@x ,bij)) acc)))))))))
 
 (setq opers (cons '$multiadditive opers)
       *opers-list (cons '($multiadditive . multiadditive) *opers-list))
@@ -41,9 +54,10 @@ makes it additive in just its first argument.  Examples:
 (defun multiadditive (e z)
   (cond ((some #'(lambda (s) (op-equalp s 'mplus)) (margs e))
 	 (let ((op (mop e)) (args (margs e)))
-	   (setq args (mapcar #'(lambda (s) (if (op-equalp s 'mplus) ($args s) `((mlist) ,s))) args))
-	   (setq args (mfuncall '$apply '$outermap ($cons op (cons '(mlist) args))))
-	   (reduce 'add (mapcar #'(lambda (s) (protected-oper-apply s z)) (margs ($flatten args))))))
+	   (setq args (mapcar #'(lambda (s) (if (op-equalp s 'mplus) (margs s) (list s))) args))
+	   (setq args (apply 'cartesian-product args))
+	   (setq args (mapcar #'(lambda (s) (simplify `((,op) ,@s))) args))
+	   (reduce 'add (mapcar #'(lambda (s) (protected-oper-apply s z)) args))))
 	(t (protected-oper-apply e z))))
 
 (setq opers (cons '$threadable opers)
