@@ -11,7 +11,7 @@
 Examples:
 
 Declaring a function to be multiadditive makes it additive 
-in all of its arguments; declaring a funtion to be additive
+in all of its arguments; declaring a function to be additive
 makes it additive in just its first argument.  Examples:
 
 (%i1) load("multiadditive")$
@@ -26,6 +26,11 @@ makes it additive in just its first argument.  Examples:
 (%o6) g(y,b+a)+g(x,b+a)
 |#
 
+;; As of 2 June 2006, simplifya doesn't check for a subscripted function
+;; before sending it to oper-apply. I don't think this is what we want:
+;; declare(f,multiadditive), f[x+y] --> f[x] + f[y]. And f[x+y](a+b) --> error.
+;; For now, these functions check for subscripted arguments.
+
 ;; When e is a mapatom, the function call (oper-apply e z) gives an
 ;; error. I think oper-apply should be changed so that its first
 ;; argument can be a mapatom. Till then:
@@ -33,7 +38,7 @@ makes it additive in just its first argument.  Examples:
 (defun protected-oper-apply (e z)
   (if ($mapatom e) e (oper-apply e z)))
 	
-;; Code adapated from nset. Used by permission of the author ;)
+;; Code adapted from nset. Used by permission of the author ;)
      
 (defun cartesian-product (&rest b)
   (cond ((null b)
@@ -52,7 +57,7 @@ makes it additive in just its first argument.  Examples:
 (setq $opproperties ($cons '$multiadditive $opproperties))
 
 (defun multiadditive (e z)
-  (cond ((some #'(lambda (s) (op-equalp s 'mplus)) (margs e))
+  (cond ((and (not ($subvarp e)) (some #'(lambda (s) (op-equalp s 'mplus)) (margs e)))
 	 (let ((op (mop e)) (args (margs e)))
 	   (setq args (mapcar #'(lambda (s) (if (op-equalp s 'mplus) (margs s) (list s))) args))
 	   (setq args (apply 'cartesian-product args))
@@ -69,7 +74,8 @@ makes it additive in just its first argument.  Examples:
 
 (defun threadable (e z)
   (let ((arg (margs e)) (fop) (bop)) ;; fop = function operator and bop = bag operator.
-    (cond ((and (= 1 (length arg)) (or (mbagp (first arg)) (op-equalp (first arg) '$set)))
+    (cond ((and (= 1 (length arg)) (not ($subvarp e))
+		(or (mbagp (first arg)) (op-equalp (first arg) '$set)))
 	   (setq arg (first arg))
 	   (setq fop (mop e))
 	   (setq bop (mop arg))
@@ -82,20 +88,24 @@ makes it additive in just its first argument.  Examples:
 
 (setq $opproperties ($cons '$idempotent $opproperties))
 
-;; ((op) ((op) x)) --> ((op) x)
+;; ((op) ((op) x)) --> ((op) x).
+;; Good test: declare(f,idempotent), f[5](x).
 
 (defun idempotent (e z)
-  (protected-oper-apply (if (and (= 1 (length (margs e))) (eq (mop e) (mop (first (margs e)))))
-		  (first (margs e)) e) z))
+  (protected-oper-apply (if (and (not ($subvarp e)) (= 1 (length (margs e))) 
+				 (eq (mop e) (mop (first (margs e)))))
+			    (first (margs e)) e) z))
 
 (setq opers (cons '$involution opers)
       *opers-list (cons '($involution . involution) *opers-list))
 
 (setq $opproperties ($cons '$involution $opproperties))
 
-;; ((op) ((op) x)) --> x.
+;; ((op) ((op) x)) --> x. 
+;; Good test: declare(f,involution), f[5](x).
 
 (defun involution (e z)
-  (protected-oper-apply (if (and (= 1 (length (margs e))) (eq (mop e) (mop (first (margs e))))
-		       (= 1 (length (margs (first (margs e))))))
-		  (first (margs (first (margs e)))) e) z))
+  (protected-oper-apply (if (and (not ($subvarp e)) (= 1 (length (margs e)))
+				 (eq (mop e) (mop (first (margs e))))
+				 (= 1 (length (margs (first (margs e))))))
+			    (first (margs (first (margs e)))) e) z))
