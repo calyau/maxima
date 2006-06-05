@@ -549,17 +549,24 @@ mechanism.
 Applies the function @var{f} to each one of the elements of the outer product
 @var{a_1} cross @var{a_2} ... cross @var{a_n}.
 
-@var{f} is be the name of a function of @math{n} arguments
+@var{f} is the name of a function of @math{n} arguments
 or a lambda expression of @math{n} arguments.
-The arguments @var{a_1}, ..., @var{a_n} may be lists or nonlists.
-List arguments may have different lengths.
-Arguments other than lists are treated as lists of length 1 for the purpose of constructing
-the outer product.
+Each argument @var{a_k} may be a list or nested list, or a matrix, or any other kind of expression.
 
-The result of applying @var{f} to the outer product is organized as a nested list.
-The depth of nesting is equal to the number of list arguments
-(arguments other than lists do not contribute a nesting level).
-A list at nesting depth @math{k} has the same length as the @math{k}'th list argument.
+The @code{outermap} return value is a nested structure.
+Let @var{x} be the return value.
+Then @var{x} has the same structure as the first list, nested list, or matrix argument,
+@code{@var{x}[i_1]...[i_m]} has the same structure as the second list, nested list, or matrix argument,
+@code{@var{x}[i_1]...[i_m][j_1]...[j_n]} has the same structure as the third list, nested list, or matrix argument,
+and so on,
+where @var{m}, @var{n}, ... are the numbers of indices required to access the
+elements of each argument (one for a list, two for a matrix, one or more for a nested list).
+Arguments which are not lists or matrices have no effect on the structure of the return value.
+
+Note that the effect of @code{outermap} is different from that of applying @var{f}
+to each one of the elements of the outer product returned by @code{cartesian_product}.
+@code{outermap} preserves the structure of the arguments in the return value,
+while @code{cartesian_product} does not.
 
 @code{outermap} evaluates its arguments.
 
@@ -567,30 +574,125 @@ See also @code{map}, @code{maplist}, and @code{apply}.
 @c CROSS REF OTHER FUNCTIONS HERE ??
 
 Examples:
-@c GENERATED FROM:
-@c f (x, y) := x - y$
-@c outermap (f, [2, 3, 5], [a, b, c, d]);
-@c outermap (lambda ([x, y], y/x), [55, 99], [Z, W]);
-@c g: lambda ([x, y, z], x + y*z)$
-@c outermap (g, [a, b, c], %pi, [11, 17]);
-@c flatten (%);
 
+Elementary examples of @code{outermap}.
+To show the argument combinations more clearly, @code{F} is left undefined.
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+@c outermap ("+", [a, b, c], [1, 2, 3]);
+@c ===end===
 @example
-(%i1) f (x, y) := x - y$
-(%i2) outermap (f, [2, 3, 5], [a, b, c, d]);
-(%o2) [[2 - a, 2 - b, 2 - c, 2 - d], 
-      [3 - a, 3 - b, 3 - c, 3 - d], [5 - a, 5 - b, 5 - c, 5 - d]]
-(%i3) outermap (lambda ([x, y], y/x), [55, 99], [Z, W]);
-                        Z   W     Z   W
-(%o3)                 [[--, --], [--, --]]
-                        55  55    99  99
-(%i4) g: lambda ([x, y, z], x + y*z)$
-(%i5) outermap (g, [a, b, c], %pi, [11, 17]);
-(%o5) [[a + 11 %pi, a + 17 %pi], [b + 11 %pi, b + 17 %pi], 
-                                        [c + 11 %pi, c + 17 %pi]]
-(%i6) flatten (%);
-(%o6) [a + 11 %pi, a + 17 %pi, b + 11 %pi, b + 17 %pi, 
-                                          c + 11 %pi, c + 17 %pi]
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+         [ [ F(a, 1)  F(a, 2) ]  [ F(b, 1)  F(b, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(a, 3)  F(a, 4) ]  [ F(b, 3)  F(b, 4) ] ]
+(%o2)    [                                            ]
+         [ [ F(c, 1)  F(c, 2) ]  [ F(d, 1)  F(d, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(c, 3)  F(c, 4) ]  [ F(d, 3)  F(d, 4) ] ]
+(%i3) outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+       [ F(a, x, 1)  F(a, x, 2) ]  [ F(b, x, 1)  F(b, x, 2) ]
+(%o3) [[                        ], [                        ]]
+       [ F(a, x, 3)  F(a, x, 4) ]  [ F(b, x, 3)  F(b, x, 4) ]
+(%i4) outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+       [ [ F(a, 1, x) ]  [ F(a, 2, x) ] ]
+(%o4) [[ [            ]  [            ] ], 
+       [ [ F(a, 1, y) ]  [ F(a, 2, y) ] ]
+                              [ [ F(b, 1, x) ]  [ F(b, 2, x) ] ]
+                              [ [            ]  [            ] ]]
+                              [ [ F(b, 1, y) ]  [ F(b, 2, y) ] ]
+(%i5) outermap ("+", [a, b, c], [1, 2, 3]);
+(%o5) [[a + 1, a + 2, a + 3], [b + 1, b + 2, b + 3], 
+                                           [c + 1, c + 2, c + 3]]
+@end example
+
+A closer examination of the @code{outermap} return value.
+The first, second, and third arguments are a matrix, a list, and a matrix, respectively.
+The return value is a matrix.
+Each element of that matrix is a list,
+and each element of each list is a matrix.
+
+@c ===beg===
+@c arg_1 :  matrix ([a, b], [c, d]);
+@c arg_2 : [11, 22];
+@c arg_3 : matrix ([xx, yy]);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+@c xx_1 : xx_0 [1][1];
+@c xx_2 : xx_0 [1][1] [1];
+@c xx_3 : xx_0 [1][1] [1] [1][1];
+@c [op (arg_1), op (arg_2), op (arg_3)];
+@c [op (xx_0), op (xx_1), op (xx_2)];
+@c ===end===
+@example
+(%i1) arg_1 :  matrix ([a, b], [c, d]);
+                            [ a  b ]
+(%o1)                       [      ]
+                            [ c  d ]
+(%i2) arg_2 : [11, 22];
+(%o2)                       [11, 22]
+(%i3) arg_3 : matrix ([xx, yy]);
+(%o3)                      [ xx  yy ]
+(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+               [  [      a        a  ]  [      a        a  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+(%o4)  Col 1 = [                                              ]
+               [  [      c        c  ]  [      c        c  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+                 [  [      b        b  ]  [      b        b  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+         Col 2 = [                                              ]
+                 [  [      d        d  ]  [      d        d  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+(%i5) xx_1 : xx_0 [1][1];
+           [      a        a  ]  [      a        a  ]
+(%o5)     [[ xx + --  yy + -- ], [ xx + --  yy + -- ]]
+           [      11       11 ]  [      22       22 ]
+(%i6) xx_2 : xx_0 [1][1] [1];
+                      [      a        a  ]
+(%o6)                 [ xx + --  yy + -- ]
+                      [      11       11 ]
+(%i7) xx_3 : xx_0 [1][1] [1] [1][1];
+                                  a
+(%o7)                        xx + --
+                                  11
+(%i8) [op (arg_1), op (arg_2), op (arg_3)];
+(%o8)                  [matrix, [, matrix]
+(%i9) [op (xx_0), op (xx_1), op (xx_2)];
+(%o9)                  [matrix, [, matrix]
+@end example
+
+@code{outermap} preserves the structure of the arguments in the return value,
+while @code{cartesian_product} does not.
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c setify (flatten (%));
+@c map (lambda ([L], apply (F, L)), cartesian_product ({a, b, c}, {1, 2, 3}));
+@c is (equal (%, %th (2)));
+@c ===end===
+@example
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) setify (flatten (%));
+(%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i3) map (lambda ([L], apply (F, L)), cartesian_product (@{a, b, c@}, @{1, 2, 3@}));
+(%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i4) is (equal (%, %th (2)));
+(%o4)                         true
 @end example
 
 @end deffn
