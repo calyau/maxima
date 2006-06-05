@@ -1,4 +1,4 @@
-@c english version 1.37
+@c english version 1.39
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Definiciones para  la L@'{@dotless{i}}nea de Comandos::  
@@ -137,12 +137,197 @@ La comilla sencilla no evita la simplificaci@'on.
 
 @end deffn
 
-@deffn {Operador} "'@w{}'"
-El operador @code{'@w{}'} (doble comilla simple) causa que una evaluaci@'on extra tenga lugar. 
-E.g., @code{'@w{}'%i4} reevaluar@'a la l@'{@dotless{i}}nea de entrada @code{%i4}. 
-@code{'@w{}'(f(x))} significa evaluar la expresi@'on @code{f(x)} en tiempo extra. 
-@code{'@w{}'f(x)} (con la doble comilla simple aplicada a @code{f} en vez de a @code{f(x)})
-significa el retorno de la forma verbal de @code{f} aplicada a @code{[x]}. 
+@deffn {Operador} "
+El operador comilla-comilla @code{'@w{}'} (dos comillas simples) modifica la evaluaci@'on
+en las expresiones de entrada.
+
+Aplicado a cualquier expresi@'on general @var{expr}, las dos comillas simples hacen que
+el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrada.
+
+Aplicado al operador de una expresi@'on, el operador comilla-comilla hace que el operador
+pase de ser un nombre a ser un verbo, a menos que ya sea un verbo.
+
+El operador comilla-comilla es aplicado por el analizador sint@'actico de entrada;
+no se almacena como una parte de la expresi@'on de entrada analizada.
+Este operador se aplica siempre tan pronto como es detectado y no puede ser comentado con
+una comilla simple. De esta manera, el operador comilla-comilla provoca la evaluaci@'on de
+una expresi@'on cuando @'esta no estaba previsto que fuese evaluada, como en la
+definici@'on de funciones, expresiones lambda y expresiones comentadas con una comilla simple
+@code{'}.
+
+El operador comilla-comilla es reconocido tanto por @code{batch} como por @code{load}.
+
+V@'eanse tambi@'en el operador comilla simple @code{'} y @code{nouns}.
+
+Ejemplos:
+
+Aplicado a cualquier expresi@'on general @var{expr}, las dos comillas simples hacen que
+el valor de @var{expr} sea sustituido por @var{expr} en la expresi@'on de entrada.
+
+@c ===beg===
+@c expand ((a + b)^3);
+@c [_, ''_];
+@c [%i1, ''%i1];
+@c [aa : cc, bb : dd, cc : 17, dd : 29];
+@c foo_1 (x) := aa - bb * x;
+@c foo_1 (10);
+@c ''%;
+@c ''(foo_1 (10));
+@c foo_2 (x) := ''aa - ''bb * x;
+@c foo_2 (10);
+@c [x0 : x1, x1 : x2, x2 : x3];
+@c x0;
+@c ''x0;
+@c '' ''x0;
+@c ===end===
+@example
+(%i1) expand ((a + b)^3);
+                     3        2      2      3
+(%o1)               b  + 3 a b  + 3 a  b + a
+(%i2) [_, ''_];
+                         3    3        2      2      3
+(%o2)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i3) [%i1, ''%i1];
+                         3    3        2      2      3
+(%o3)     [expand((b + a) ), b  + 3 a b  + 3 a  b + a ]
+(%i4) [aa : cc, bb : dd, cc : 17, dd : 29];
+(%o4)                   [cc, dd, 17, 29]
+(%i5) foo_1 (x) := aa - bb * x;
+(%o5)                 foo_1(x) := aa - bb x
+(%i6) foo_1 (10);
+(%o6)                      cc - 10 dd
+(%i7) ''%;
+(%o7)                         - 273
+(%i8) ''(foo_1 (10));
+(%o8)                         - 273
+(%i9) foo_2 (x) := ''aa - ''bb * x;
+(%o9)                 foo_2(x) := cc - dd x
+(%i10) foo_2 (10);
+(%o10)                        - 273
+(%i11) [x0 : x1, x1 : x2, x2 : x3];
+(%o11)                    [x1, x2, x3]
+(%i12) x0;
+(%o12)                         x1
+(%i13) ''x0;
+(%o13)                         x2
+(%i14) '' ''x0;
+(%o14)                         x3
+@end example
+
+Aplicado al operador de una expresi@'on, el operador comilla-comilla hace que el operador
+pase de ser un nombre a ser un verbo, a menos que ya sea un verbo.
+
+@c ===beg==
+@c sin (1);
+@c ''sin (1);
+@c declare (foo, noun);
+@c foo (x) := x - 1729;
+@c foo (100);
+@c ''foo (100);
+@c ===end==
+@example
+(%i1) sin (1);
+(%o1)                        sin(1)
+(%i2) ''sin (1);
+(%o2)                    0.8414709848079
+(%i3) declare (foo, noun);
+(%o3)                         done
+(%i4) foo (x) := x - 1729;
+(%o4)                 ''foo(x) := x - 1729
+(%i5) foo (100);
+(%o5)                       foo(100)
+(%i6) ''foo (100);
+(%o6)                        - 1629
+@end example
+
+El operador comilla-comilla es aplicado por el analizador sint@'actico de entrada;
+no se almacena como una parte de la expresi@'on de entrada analizada.
+
+@c ===beg===
+@c [aa : bb, cc : dd, bb : 1234, dd : 5678];
+@c aa + cc;
+@c display (_, op (_), args (_));
+@c ''(aa + cc);
+@c display (_, op (_), args (_));
+@c ===end===
+@example
+(%i1) [aa : bb, cc : dd, bb : 1234, dd : 5678];
+(%o1)                 [bb, dd, 1234, 5678]
+(%i2) aa + cc;
+(%o2)                        dd + bb
+(%i3) display (_, op (_), args (_));
+                           _ = cc + aa
+
+                         op(cc + aa) = +
+
+                    args(cc + aa) = [cc, aa]
+
+(%o3)                         done
+(%i4) ''(aa + cc);
+(%o4)                         6912
+(%i5) display (_, op (_), args (_));
+                           _ = dd + bb
+
+                         op(dd + bb) = +
+
+                    args(dd + bb) = [dd, bb]
+
+(%o5)                         done
+@end example
+
+El operador comilla-comilla provoca la evaluaci@'on de
+una expresi@'on cuando @'esta no estaba previsto que fuese evaluada, como en la
+definici@'on de funciones, expresiones lambda y expresiones comentadas con una comilla simple
+@code{'}.
+
+@c ===beg===
+@c foo_1a (x) := ''(integrate (log (x), x));
+@c foo_1b (x) := integrate (log (x), x);
+@c dispfun (foo_1a, foo_1b);
+@c integrate (log (x), x);
+@c foo_2a (x) := ''%;
+@c foo_2b (x) := %;
+@c dispfun (foo_2a, foo_2b);
+@c F : lambda ([u], diff (sin (u), u));
+@c G : lambda ([u], ''(diff (sin (u), u)));
+@c '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+@c '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+@c ===end===
+@example
+(%i1) foo_1a (x) := ''(integrate (log (x), x));
+(%o1)               foo_1a(x) := x log(x) - x
+(%i2) foo_1b (x) := integrate (log (x), x);
+(%o2)           foo_1b(x) := integrate(log(x), x)
+(%i3) dispfun (foo_1a, foo_1b);
+(%t3)               foo_1a(x) := x log(x) - x
+
+(%t4)           foo_1b(x) := integrate(log(x), x)
+
+(%o4)                      [%t3, %t4]
+(%i4) integrate (log (x), x);
+(%o4)                     x log(x) - x
+(%i5) foo_2a (x) := ''%;
+(%o5)               foo_2a(x) := x log(x) - x
+(%i6) foo_2b (x) := %;
+(%o6)                    foo_2b(x) := %
+(%i7) dispfun (foo_2a, foo_2b);
+(%t7)               foo_2a(x) := x log(x) - x
+
+(%t8)                    foo_2b(x) := %
+
+(%o8)                      [%t7, %t8]
+(%i8) F : lambda ([u], diff (sin (u), u));
+(%o8)             lambda([u], diff(sin(u), u))
+(%i9) G : lambda ([u], ''(diff (sin (u), u)));
+(%o9)                  lambda([u], cos(u))
+(%i10) '(sum (a[k], k, 1, 3) + sum (b[k], k, 1, 3));
+(%o10)         sum(b , k, 1, 3) + sum(a , k, 1, 3)
+                    k                  k
+(%i11) '(''(sum (a[k], k, 1, 3)) + ''(sum (b[k], k, 1, 3)));
+(%o11)             b  + a  + b  + a  + b  + a
+                    3    3    2    2    1    1
+@end example
+
 @end deffn
 
 @node Definiciones para la L@'{@dotless{i}}nea de Comandos,  , Introducci@'on a la L@'{@dotless{i}}nea de Comandos, L@'{@dotless{i}}nea de Comandos
@@ -202,19 +387,20 @@ Esto es muy @'util en conjunci@'on con otras variables interruptor y causan en @
 @code{expand (@var{m}, @var{n})} causa expansi@'on, asignando los valores de @code{maxposex} y
 @code{maxnegex} a @var{m} y @var{n}, respectivamente.
 @item
-@code{detout} causa que cualesquiera matrices inversas computadas en @var{expr} conserven su determinante fuera de la inversa en vez de que divida a cada elemento.  
+@code{detout} hace que cualesquiera matrices inversas calculadas en @var{expr} conserven su determinante fuera de la inversa, en vez de que divida a cada elemento.  
 @item
-@code{diif} causa que todas las diferenciaciones indicadas en @var{expr} sean llevadas a cabo. 
+@code{diif} realiza todas las diferenciaciones indicadas en @var{expr}. 
 @item
-@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} causa que s@'olo las diferenciaciones con respecto a las variables indicadas se lleven a cabo. 
+@code{derivlist (@var{x}, @var{y}, @var{z}, ...)} realiza s@'olo las diferenciaciones con respecto a las variables indicadas. 
 @item
-@code{float} causa que los n@'umeros racionales no-enteros sean convertidos a n@'umeros de tipo flotante. 
+@code{float} provoca la conversi@'on de los n@'umeros racionales no-enteros a n@'umeros decimales de coma flotante. 
 @item
 @code{numer} causa que algunas funciones matem@'aticas (incluyendo potenciaci@'on) con argumentos num@'ericos sean evaluados como punto flotante. Esto causa que las variables en @var{expr} las cuales hayan sido declaradas como variables num@'ericas sean reemplazadas por sus respectivos valores. Esto tambi@'en configura la variable interruptor @code{float} a @code{true}. 
 @item
-@code{pred} causa que los predicados (expresiones las cuales se evaluan a @code{true} o @code{false}) sean evaluados. 
+@code{pred} provoca la evaluaci@'on de los predicados (expresiones las cuales se evaluan a @code{true} o @code{false}). 
 @item
-@code{eval} causa que una post-evaluaci@'on extra de @var{expr} ocurra. (Vea el paso (5) m@'as adelante). 
+@code{eval} provoca una post-evaluaci@'on extra de @var{expr} (v@'ease el paso (5) m@'as adelante), pudiendo aparecer
+@code{eval} varias veces; por cada aparici@'on de @code{eval}, la expresi@'on es reevaluada.
 @item
 @code{A}, donde @code{A} es un @'atomo declarado como una variable de tipo interruptor, (Vea @code{evflag})
 causa que @code{A} tenga como valor @code{true} durante 
@@ -285,11 +471,10 @@ ser@'a llevada a cabo despu@'es de que las variables sean evaluadas
 en ella y que @code{ev(F(x))} pueda comportarse como @code{F(ev(x))}. 
 
 @item
-Si uno de los argumentos fuese @code{eval}, los pasos (3) y (4) se 
-repiten. 
+Por cada aparici@'on de @code{eval} en los argumentos, se repetir@'an los pasos (3) y (4).
 @end enumerate
 
-                     Ejemplos
+Ejemplos
 
 @example
 (%i1) sin(x) + cos(y) + (w+1)^2 + 'diff (sin(w), w);
@@ -496,9 +681,8 @@ donde @var{infolist} es @code{values}, @code{functions}, @code{arrays}, etc.
 
 @c FALTA PARRAFO
 
-
 @code{kill} no evalua sus argumentos. 
-El operador de doble comilla simple, @code{'@w{}'}, rechaza  
+El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@'on.  
 
 La funci@'on @code{kill} no eval@'ua sus argumentos. El operador de dobles comillas simples, @code{'@w{}'}, hace que los argumentos se eval@'uen.
 
@@ -519,10 +703,10 @@ as@'{@dotless{i}}, por ejemplo, @code{i} y @code{%i} producen el mismo resultado
 Si ninguna etiqueta empieza con @var{symbol}, @code{labels} retorna a una
 lista vac@'{@dotless{i}}a. 
 
-La funci@'on @code{labels} no evalua su arguemento.
-@c The double single quotes operator @code{'@w{}'} defeats quotation.
+La funci@'on @code{labels} no evalua su argumento.
+El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@'on.
 Por ejemplo, 
-@code{labels (''inchar)} retorna las etiquetas de entrada las cuales empiezan con el caract@'er de etiqueta de entrada actual. 
+@code{labels (''inchar)} devuelve las etiquetas de entrada que empiezan con el caract@'er de etiqueta de entrada actual. 
 
 La variable @code{labels} es una lista de las etiquetas de entrada, salida y expresiones intermedias, incluyendo todas las etiquetas anteriores en el caso de que @code{inchar}, @code{outchar} o @code{linechar} hayan sido redefinidas. 
 
@@ -601,8 +785,8 @@ cualquier otra salida (tal como texto impreso por @code{print} o @code{describe}
 V@'ease tambi@'en: @code{labels}. 
 
 @code{playback} no evalua sus argumentos. 
-@c The double single quotes operator, @code{'@w{}'}, defeats quotation.
-@code{playback} siempre retorna @code{done}. 
+El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@'on.
+@code{playback} siempre devuelve @code{done}. 
 
 @code{playback ()} (sin argumentos) muestra todas las entradas, salidas y expresiones intermedias generadas hasta el momento. 
 Una expresi@'on de salida es mostrada incluso si @'esta fue suprimida por el caracter de terminaci@'on @code{$}, cuando fue originalmente calculada. 

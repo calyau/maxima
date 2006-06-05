@@ -1,4 +1,4 @@
-@c english version 1.38
+@c english version 1.39
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -291,7 +291,7 @@ V@'ease tambi@'en @code{infolists}.
 Interpola la lista nombrada por el @'atomo  @var{a} dentro de una expresi@'on, pero s@'olo si @code{splice} aparece dentro de @code{buildq}; en otro caso, @code{splice} se considera una funci@'on no definida. Si @var{a} aparece dentro de @code{buildq} sin @code{splice}, entonces queda sustituida por una lista dentro del resultado. El argumento de @code{splice} debe ser un @'atomo, no pudiendo ser una lista literal ni una expresi@'on que devuelva una lista.
 
 Normalmente @code{splice} suministra los argumentos para una funci@'on u operador. Para una funci@'on @code{f}, la expresi@'on @code{f (splice (@var{a}))} dentro de @code{buildq} se convierte en @code{f (@var{a}[1], @var{a}[2], @var{a}[3], ...)}. Dado un operador @code{o}, la expresi@'on @code{"o" (splice (@var{a})} dentro de @code{buildq} se convierte en 
-@code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)}, donde @code{o} puede ser cualquier tipo de operador, normalmente uno que admita varios argumentos. N@'otese que el operador debe ir encerrado entre dobles comillas @code{"}.
+@code{"o" (@var{a}[1], @var{a}[2], @var{a}[3], ...)}, donde @code{o} puede ser cualquier tipo de operador, normalmente uno que admita varios argumentos. N@'otese que el operador debe ir encerrado entre comillas dobles @code{"}.
 
 Ejemplos:
 
@@ -392,7 +392,7 @@ Traduce las funciones de Maxima @var{f_1}, ..., @var{f_n} a Lisp, evaluando el c
 
 Las llamadas @code{compile (all)} o @code{compile (functions)} compilan todas las funciones definidas por el usuario.
 
-La funci@'on @code{compile} no eval@'ua sus argumentos, pero con la colocaci@'on de dos comillas simple (@code{'@w{}'}) s@'{@dotless{i}} lo hace.
+La funci@'on @code{compile} no eval@'ua sus argumentos, pero con el operador comilla-comilla (@code{'@w{}'}) s@'{@dotless{i}} lo hace.
 
 @end deffn
 
@@ -474,7 +474,7 @@ La llamada @code{dispfun (all)} muestra todas las funciones de usuario tal como 
 
 La funci@'on @code{dispfun} crea una etiqueta (@code{%t1}, @code{%t2}, etc.) para cada funci@'on mostrada, y asigna la definici@'on de la funci@'on a la etiqueta. En contraste, @code{fundef} devuelve las definiciones de las funciones.
 
-La funci@'on @code{dispfun} no eval@'ua sus argumentos; el operador de doble comilla simple @code{'@w{}'} permite la evaluaci@'on.
+La funci@'on @code{dispfun} no eval@'ua sus argumentos; el operador de comilla-comilla @code{'@w{}'} permite la evaluaci@'on.
 
 La funci@'on @code{dispfun} devuelve la lista de etiquetas de expresiones intermedias correspondientes a las funciones mostradas.
 
@@ -563,7 +563,7 @@ Devuelve la definici@'on de la funci@'on @var{f}.
 
 Cada argumento puede ser el nombre de una macro (definida mediante @code{::=}), una funci@'on ordinaria (definida mediante @code{:=} o @code{define}), una funci@'on arreglo  (definida mediante @code{:=} o @code{define}, pero encerrando los argumentos dentro de corchetes @code{[ ]}), una funci@'on de sub@'{@dotless{i}}ndice (definida mediante @code{:=} o @code{define}, pero encerrando algunos argumentos entre corchetes y otros entre par@'entesis  @code{( )}), una funci@'on de sub@'{@dotless{i}}ndice seleccionada por un sub@'{@dotless{i}}ndice variable, o una funci@'on de sub@'{@dotless{i}}ndice definida con un sub@'{@dotless{i}}ndice constante.
 
-La funci@'on @code{fundef} no eval@'ua sus argumentos; el operador de doble comilla simple @code{'@w{}'} permite la evaluaci@'on.
+La funci@'on @code{fundef} no eval@'ua sus argumentos; el operador comilla-comilla @code{'@w{}'} permite la evaluaci@'on.
 
 La llamada de funci@'on @code{fundef (@var{f})} devuelve la definici@'on de @var{f}. Por el contrario, @code{dispfun (@var{f})} crea una etiqueta intermedia y le asigna la definici@'on a la etiqueta.
 
@@ -616,7 +616,7 @@ Una vez establecidas las variables locales @var{expr_1} a @var{expr_n} son secue
 
 La funci@'on @code{return} no puede aparecer en una expresi@'on @code{lambda} a menos que se encuentre acotada dentro de un bloque (@code{block}), en cuyo caso @code{return} establece el valor de retorno del bloque, pero no de la expresi@'on @code{lambda}, a menos que el bloque resulte ser precisamente @var{expr_n}. De igual manera, @code{go} no puede aparecer en una expresi@'on @code{lambda} si no es dentro de un @code{block}.
 
-Las funciones @code{lambda} no eval@'uan sus argumentos;  el operador de doble comilla simple @code{'@w{}'} permite su evaluaci@'on.
+Las funciones @code{lambda} no eval@'uan sus argumentos;  el operador comilla-comilla @code{'@w{}'} permite su evaluaci@'on.
 
 Ejemplo:
 
