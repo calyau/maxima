@@ -458,7 +458,8 @@ A box is drawn on the display when @code{display2d} is @code{true}.
 encloses @var{expr} in a box labelled by the symbol @var{a}.
 The label is truncated if it is longer than the width of the box.
 
-A boxed expression does not evaluate to its content,
+@code{box} evaluates its argument.
+However, a boxed expression does not evaluate to its content,
 so boxed expressions are effectively excluded from computations.
 
 @code{boxchar} is the character used to draw the box in @code{box}
@@ -468,6 +469,9 @@ Examples:
 
 @c ===beg===
 @c box (a^2 + b^2);
+@c a : 1234;
+@c b : c - d;
+@c box (a^2 + b^2);
 @c box (a^2 + b^2, term_1);
 @c 1729 - box (1729);
 @c boxchar: "-";
@@ -475,26 +479,34 @@ Examples:
 @c ===end===
 @example
 (%i1) box (a^2 + b^2);
-             """""""""
-             " 2   2 "
-(%o1)        "b  + a "
-             """""""""
-(%i2) box (a^2 + b^2, term_1);
-             term_1"""
-             " 2   2 "
-(%o2)        "b  + a "
-             """""""""
-(%i3) 1729 - box (1729);
-                  """"""
-(%o3)      1729 - "1729"
-                  """"""
-(%i4) boxchar: "-";
-(%o4)            -
-(%i5) box (sin(x) + cos(y));
-                -----------------
-(%o5)           -COS(y) + SIN(x)-
-                -----------------
-(%i6) 
+                            """""""""
+                            " 2    2"
+(%o1)                       "b  + a "
+                            """""""""
+(%i2) a : 1234;
+(%o2)                         1234
+(%i3) b : c - d;
+(%o3)                         c - d
+(%i4) box (a^2 + b^2);
+                      """"""""""""""""""""
+                      "       2          "
+(%o4)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i5) box (a^2 + b^2, term_1);
+                      term_1""""""""""""""
+                      "       2          "
+(%o5)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i6) 1729 - box (1729);
+                                 """"""
+(%o6)                     1729 - "1729"
+                                 """"""
+(%i7) boxchar: "-";
+(%o7)                           -
+(%i8) box (sin(x) + cos(y));
+                        -----------------
+(%o8)                   -cos(y) + sin(x)-
+                        -----------------
 @end example
 
 @end deffn
@@ -626,22 +638,24 @@ each of the atoms gets all of the properties.
 @code{declare} quotes its arguments.
 @code{declare} always returns @code{done}.
 
-@code{featurep (@var{object}, @var{feature})}
+
+As noted in the description for each declaration flag,
+for some flags
+@code{featurep(@var{object}, @var{feature})}
 returns @code{true} if @var{object} has been declared to have @var{feature}.
+However, @code{featurep} does not recognize some flags; this is a bug.
 
 See also @code{features}.
 
 @code{declare} recognizes the following properties:
 
 @table @asis
-@item
-@code{evfun}
+@item @code{evfun}
 Makes @var{a_i} known to @code{ev} so that the function named by @var{a_i}
 is applied when @var{a_i} appears as a flag argument of @code{ev}.
 See @code{evfun}.
 
-@item
-@code{evflag}
+@item @code{evflag}
 Makes @var{a_i} known to the @code{ev} function so that @var{a_i} is bound to @code{true}
 during the execution of @code{ev} when @var{a_i} appears as a flag argument of @code{ev}.
 See @code{evflag}.
@@ -650,72 +664,59 @@ See @code{evflag}.
 
 @c OBSOLETE @code{nonarray} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
-@item
-@code{bindtest}
+@item @code{bindtest}
 Tells Maxima to trigger an error when @var{a_i} is evaluated unbound.
 
-@item
-@code{noun}
+@item @code{noun}
 Tells Maxima to parse @var{a_i} as a noun. 
 The effect of this is to replace instances of @var{a_i} with @code{'@var{a_i}}
-or @code{nounify (@var{a_i})}, depending on the context.
+or @code{nounify(@var{a_i})}, depending on the context.
 
-@item
-@code{constant}
+@item @code{constant}
 Tells Maxima to consider @var{a_i} a symbolic constant.
 @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
 @c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
 @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
-@item
-@code{scalar}
+@item @code{scalar}
 Tells Maxima to consider @var{a_i} a scalar variable.
 
-@item
-@code{nonscalar}
+@item @code{nonscalar}
 Tells Maxima to consider @var{a_i} a nonscalar variable.
 The usual application is to declare a variable as a symbolic vector or matrix.
 
-@item
-@code{mainvar}
+@item @code{mainvar}
 Tells Maxima to consider @var{a_i} a "main variable" (@code{mainvar}).
 @code{ordergreatp} determines the ordering of atoms as follows:
 
 (main variables) > (other variables) > (scalar variables) > (constants) > (numbers)
 
-@item
-@code{alphabetic}
+@item @code{alphabetic}
 Tells Maxima to recognize @var{a_i} as an alphabetic character.
 
-@item
-@code{feature}
+@item @code{feature}
 Tells Maxima to recognize @var{a_i} as the name of a feature.
 Other atoms may then be declared to have the @var{a_i} property.
 
-@item
-@code{rassociative}, @code{lassociative}
+@item @code{rassociative}, @code{lassociative}
 Tells Maxima to recognize @var{a_i} as a right-associative or left-associative function.
 
-@item
-@code{nary}
+@item @code{nary}
 Tells Maxima to recognize @var{a_i} as an n-ary function.
 
-This declaration is not the same as calling the @code{nary} function.
+The @code{nary} declaration is not the same as calling the @code{nary} function.
 The sole effect of @code{declare(foo, nary)} is to instruct the Maxima simplifier
 to flatten nested expressions,
 for example, to simplify @code{foo(x, foo(y, z))} to @code{foo(x, y, z)}.
 
-@item
-@code{symmetric}, @code{antisymmetric}, @code{commutative}
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
 Tells Maxima to recognize @var{a_i} as a symmetric or antisymmetric function.
 @code{commutative} is the same as @code{symmetric}.
 
-@item
-@code{oddfun}, @code{evenfun}
+@item @code{oddfun}, @code{evenfun}
 Tells Maxima to recognize @var{a_i} as an odd or even function.
 
-@item
-@code{outative}
+@item @code{outative}
 Tells Maxima to simplify @var{a_i} expressions
 by pulling constant factors out of the first argument.
 
@@ -727,55 +728,45 @@ a factor is considered constant
 if the second argument is a symbol
 and the factor is free of the second argument.
 
-@item
-@code{multiplicative}
+@item @code{multiplicative}
 Tells Maxima to simplify @var{a_i} expressions
 by the substitution @code{@var{a_i}(x * y * z * ...)} @code{-->}
 @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
 The substitution is carried out on the first argument only.
 
-@item
-@code{additive}
+@item @code{additive}
 Tells Maxima to simplify @var{a_i} expressions
 by the substitution @code{@var{a_i}(x + y + z + ...)} @code{-->}
 @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
 The substitution is carried out on the first argument only.
 
-@item
-@code{linear}
+@item @code{linear}
 Equivalent to declaring @var{a_i} both @code{outative} and @code{additive}.
 
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
 
-@item
-@code{integer}, @code{noninteger}
+@item @code{integer}, @code{noninteger}
 Tells Maxima to recognize @var{a_i} as an integer or noninteger variable.
 
-@item
-@code{even}, @code{odd}
+@item @code{even}, @code{odd}
 Tells Maxima to recognize @var{a_i} as an even or odd integer variable.
 
-@item
-@code{rational}, @code{irrational}
+@item @code{rational}, @code{irrational}
 Tells Maxima to recognize @var{a_i} as a rational or irrational real variable.
 
-@item
-@code{real}, @code{imaginary}, @code{complex}
+@item @code{real}, @code{imaginary}, @code{complex}
 Tells Maxima to recognize @var{a_i} as a real, pure imaginary, or complex variable.
 
-@item
-@code{increasing}, @code{decreasing}
+@item @code{increasing}, @code{decreasing}
 Tells Maxima to recognize @var{a_i} as an increasing or decreasing function.
 @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
 @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
 @c REPORTED AS SF BUG # 1483194
 
-@item
-@code{posfun}
+@item @code{posfun}
 Tells Maxima to recognize @var{a_i} as a positive function.
 
-@item
-@code{integervalued}
+@item @code{integervalued}
 Tells Maxima to recognize @var{a_i} as an integer-valued function.
 
 @end table
