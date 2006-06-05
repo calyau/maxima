@@ -1,4 +1,4 @@
-@c english version 1.2
+@c english version 1.5
 @menu
 * Introducci@'on a solve_rec::
 * Definiciones para solve_rec::
@@ -28,6 +28,37 @@ Ejemplo:
 @node Definiciones para solve_rec,  , Introducci@'on a solve_rec, solve_rec
 
 @section Definiciones para solve_rec
+
+
+@deffn {Funci@'on} closed_form (@var{expr})
+
+Intenta reducir todas las sumas que aparecen en @var{expr} a una forma
+cerrada. La funci@'on @code{closed_form} utiliza los algoritmos de Gosper
+y Zeilberger para reducir las sumas.
+
+Para utilizar esta funci@'on c@'arguese previamente el paquete @code{closed_form}
+ejecutando la instrucci@'on @code{load(closed_form)}.
+
+Ejemplo:
+
+@example
+(%i1) load("closed_form")$
+(%i2) sum(binom(n+k,k)/2^k, k, 0, n) + sum(binom(2*n, 2*k), k, 0, n);
+         n                            n
+        ====                         ====
+        \      binomial(n + k, k)    \
+(%o2)    >     ------------------ +   >    binomial(2 n, 2 k)
+        /               k            /
+        ====           2             ====
+        k = 0                        k = 0
+(%i3) closed_form(%);
+                               n
+                              4     n
+(%o3)                         -- + 2
+                              2
+@end example
+
+@end deffn
 
 @deffn {Funci@'on} reduce_order (@var{rec}, @var{sol}, @var{var})
 
@@ -194,7 +225,7 @@ V@'ease tambi@'en @code{solve_rec}.
 @defvr {Variable opcional} product_use_gamma
 Valor por defecto:@code{true} 
 
-Si @code{produce_use_gamma} vale @code{true},  @code{solve_rec}
+Si @code{product_use_gamma} vale @code{true},  @code{solve_rec}
 introduce la funci@'on gamma en la expresi@'on del resultado
 cuando se simplifican productos.
 
