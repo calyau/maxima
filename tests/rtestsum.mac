@@ -739,3 +739,38 @@ sum(k^2+k,k,1,n);
 
 sumcontract(sum(k, k, 1, n) + sum(k, k, 1, n+1));
 n+sum(2*k,k,1,n)+1;
+
+/* Tests for bug report [ 1497706 ] sum(1/k^2,k,2,inf), simpsum; */
+
+/* sum (1/k^2, ...) not simplified unless specifically requested */
+(sum (1/k^2, k, 1, inf), [op (%%), args (%%)]);
+[nounify (sum), [1/k^2, k, 1, inf]];
+
+sum (1/k^2, k, 1, inf), simpsum;
+%pi^2/6;
+
+/* this is the case cited in the bug report */
+sum (1/k^2, k, 2, inf), simpsum;
+%pi^2/6 - 1;
+
+sum (1/k^2, k, 1, 9);
+9778141/6350400;
+
+sum (1/k^2, k, 10, inf), simpsum;
+%pi^2/6 - 9778141/6350400;
+
+sum (1/k^4, k, 1, 5);
+14001361/12960000;
+
+sum (1/k^4, k, 6, inf), simpsum;
+%pi^4/90 - 14001361/12960000;
+
+sum (1/k^7, k, 1, inf), simpsum;
+zeta (7);
+
+sum (1/k^7, k, 1, 3);
+282251/279936;
+
+sum (1/k^7, k, 4, inf), simpsum;
+zeta (7) - 282251/279936;
+
