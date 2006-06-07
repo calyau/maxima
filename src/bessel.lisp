@@ -1084,7 +1084,7 @@
   (let ((order (simpcheck (cadr exp) z))
 	(rat-order nil))
     (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (= (signum1 order) 1) (bessel-numerical-eval-p order arg))
+      (cond ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
 	     ;; We have numeric order and arg and $numer is true, or
 	     ;; we have either the order or arg being floating-point,
 	     ;; so let's evaluate it numerically.
@@ -1147,7 +1147,7 @@
   (let ((order (simpcheck (cadr exp) z))
 	(rat-order nil))
     (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (= (signum1 order) 1) (bessel-numerical-eval-p order arg))
+      (cond ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
 	     (bessel-i (float order) (complex ($realpart arg) ($imagpart arg))))
 	    ((and (integerp order) (minusp order))
 	     ;; Some special cases when the order is an integer
@@ -1204,7 +1204,7 @@
   (let ((order (simpcheck (cadr exp) z))
 	(rat-order nil))
     (let* ((arg (simpcheck (caddr exp) z)))
-      (cond ((and (= (signum1 order) 1) (bessel-numerical-eval-p order arg))
+      (cond ((and (>= (signum1 order) 0) (bessel-numerical-eval-p order arg))
 	     ;; A&S 9.6.6
 	     ;; K[-v](x) = K[v](x)
 	     (bessel-k (abs (float order)) (complex ($realpart arg) ($imagpart arg))))

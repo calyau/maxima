@@ -994,5 +994,20 @@ true;
 closeto(gamma(2+3*%i)-(-0.08239527266561+0.09177428743526*%i),1e-14);
 true;
 
+/* Test numerical evaluation of Bessel functions
+ * When the order is 0, and the arg is a float, we should produce a number.
+ */
+closeto(bessel_j(0,1.0) - .7651976865579666, 1e-14);
+true;
+
+closeto(bessel_y(0,1.0) - .08825696421567691, 1e-14);
+true;
+
+closeto(bessel_i(0,1.0) - 1.266065877752009, 1e-14);
+true;
+
+closeto(bessel_k(0,1.0) - .4210244382407085, 1e-14);
+true;
+
 kill(closeto);
 done;
