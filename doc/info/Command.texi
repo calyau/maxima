@@ -530,15 +530,15 @@ Solution
 @end deffn
 
 @defvr {Property} evflag
-Some Boolean flags have the @code{evflag} property.
-@code{ev} treats such flags specially.
-A flag with the @code{evflag} property will be bound to @code{true}
-during the execution of @code{ev} if it is
-mentioned in the call to @code{ev}.
-For example, @code{demoivre} and @code{ratfac} are bound to @code{true}
-during the call @code{ev (%, demoivre, ratfac)}.
+When a symbol @var{x} has the @code{evflag} property,
+the expressions @code{ev(@var{expr}, @var{x})} and @code{@var{expr}, @var{x}}
+(at the interactive prompt) are equivalent to @code{ev(@var{expr}, @var{x} = true)}.
+That is, @var{x} is bound to @code{true} while @var{expr} is evaluated.
 
-The flags which have the @code{evflag} property are:
+The expression @code{declare(@var{x}, evflag)}
+gives the @code{evflag} property to the variable @var{x}.
+
+The flags which have the @code{evflag} property by default are the following:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
 @code{algebraic},
@@ -575,23 +575,75 @@ The flags which have the @code{evflag} property are:
 @code{sumexpand}, and
 @code{trigexpand}.
 
-The construct @code{:lisp (putprop '|$foo| t 'evflag)}
-gives the @code{evflag} property to the variable @code{foo},
-so @code{foo} is bound to @code{true} during the call @code{ev (%, foo)}.
-Equivalently, @code{ev (%, foo:true)} has the same effect.
+Examples:
+
+@c ===beg===
+@c sin (1/2);
+@c sin (1/2), float;
+@c sin (1/2), float=true;
+@c simp : false;
+@c 1 + 1;
+@c 1 + 1, simp;
+@c simp : true;
+@c sum (1/k^2, k, 1, inf);
+@c sum (1/k^2, k, 1, inf), simpsum;
+@c declare (aa, evflag);
+@c if aa = true then YES else NO;
+@c if aa = true then YES else NO, aa;
+@c ===end===
+@example
+(%i1) sin (1/2);
+                                 1
+(%o1)                        sin(-)
+                                 2
+(%i2) sin (1/2), float;
+(%o2)                   0.479425538604203
+(%i3) sin (1/2), float=true;
+(%o3)                   0.479425538604203
+(%i4) simp : false;
+(%o4)                         false
+(%i5) 1 + 1;
+(%o5)                         1 + 1
+(%i6) 1 + 1, simp;
+(%o6)                           2
+(%i7) simp : true;
+(%o7)                         true
+(%i8) sum (1/k^2, k, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o8)                        >    --
+                            /      2
+                            ====  k
+                            k = 1
+(%i9) sum (1/k^2, k, 1, inf), simpsum;
+                                 2
+                              %pi
+(%o9)                         ----
+                               6
+(%i10) declare (aa, evflag);
+(%o10)                        done
+(%i11) if aa = true then YES else NO;
+(%o11)                         NO
+(%i12) if aa = true then YES else NO, aa;
+(%o12)                         YES
+@end example
 
 @end defvr
 
 @defvr {Property} evfun
-Some functions have the @code{evfun} property.
-@code{ev} treats such functions specially.
-A function with the @code{evfun} property will be applied
-during the execution of @code{ev} if it is
-mentioned in the call to @code{ev}.
-For example, @code{ratsimp} and @code{radcan} will be applied
-during the call @code{ev (%, ratsimp, radcan)}.
+When a function @var{F} has the @code{evfun} property,
+the expressions @code{ev(@var{expr}, @var{F})} and @code{@var{expr}, @var{F}}
+(at the interactive prompt)
+are equivalent to @code{@var{F}(ev(@var{expr}))}.
 
-The functions which have the @code{evfun} property are:
+If two or more @code{evfun} functions @var{F}, @var{G}, etc., are specified,
+the functions are applied in the order that they are specified.
+
+The expression @code{declare(@var{F}, evfun)}
+gives the @code{evfun} property to the function @var{F}.
+
+The functions which have the @code{evfun} property by default are the following:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
 @code{bfloat},
@@ -607,13 +659,77 @@ The functions which have the @code{evfun} property are:
 @code{trigexpand}, and
 @code{trigreduce}.
 
-The construct @code{:lisp (putprop '|$foo| t 'evfun)}
-gives the @code{evfun} property to the function @code{foo},
-so that @code{foo} is applied during the call @code{ev (%, foo)}.
-Equivalently, @code{foo (ev (%))} has the same effect.
+Examples:
+
+@c ===beg===
+@c x^3 - 1;
+@c x^3 - 1, factor;
+@c factor (x^3 - 1);
+@c cos(4 * x) / sin(x)^4;
+@c cos(4 * x) / sin(x)^4, trigexpand;
+@c cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+@c ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+@c declare ([F, G], evfun);
+@c (aa : bb, bb : cc, cc : dd);
+@c aa;
+@c aa, F;
+@c F (aa);
+@c F (ev (aa));
+@c aa, F, G;
+@c G (F (ev (aa)));
+@c ===end===
+@example
+(%i1) x^3 - 1;
+                              3
+(%o1)                        x  - 1
+(%i2) x^3 - 1, factor;
+                                2
+(%o2)                 (x - 1) (x  + x + 1)
+(%i3) factor (x^3 - 1);
+                                2
+(%o3)                 (x - 1) (x  + x + 1)
+(%i4) cos(4 * x) / sin(x)^4;
+                            cos(4 x)
+(%o4)                       --------
+                               4
+                            sin (x)
+(%i5) cos(4 * x) / sin(x)^4, trigexpand;
+                 4           2       2         4
+              sin (x) - 6 cos (x) sin (x) + cos (x)
+(%o5)         -------------------------------------
+                                4
+                             sin (x)
+(%i6) cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+                           2         4
+                      6 cos (x)   cos (x)
+(%o6)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i7) ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+                           2         4
+                      6 cos (x)   cos (x)
+(%o7)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i8) declare ([F, G], evfun);
+(%o8)                         done
+(%i9) (aa : bb, bb : cc, cc : dd);
+(%o9)                          dd
+(%i10) aa;
+(%o10)                         bb
+(%i11) aa, F;
+(%o11)                        F(cc)
+(%i12) F (aa);
+(%o12)                        F(bb)
+(%i13) F (ev (aa));
+(%o13)                        F(cc)
+(%i14) aa, F, G;
+(%o14)                      G(F(cc))
+(%i15) G (F (ev (aa)));
+(%o15)                      G(F(cc))
+@end example
 
 @end defvr
-
 @c NEEDS WORK
 @defvr {Option variable} infeval
 Enables "infinite evaluation" mode.  @code{ev} repeatedly
