@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.2 2005-11-07 17:37:10 rtoy Exp $
+;; $Id: plotdf.lisp,v 1.3 2006-06-08 09:38:51 villate Exp $
 
 (in-package :maxima)
 
@@ -83,7 +83,7 @@
 				when (eq (second v) name)
 				do (setq vv (mapcar #'stripdollar (rest v)))
 				(format st "-~(~a~) " (first vv))
-				(format st "'~{~(~a~)~^ ~}'" (rest vv)))))
+				(format st "\"~{~(~a~)~^ ~}\"" (rest vv)))))
 
 ;; changes the value of a plotdf option
 (defun $set_plotdf_option ( value)
@@ -133,17 +133,17 @@
       (if (= (length ode) 3)
 	  (cond 
 	   ($show_openplot (setq cmd
-				 (concatenate 'string " -dxdt '"
+				 (concatenate 'string " -dxdt \""
 					      (expr_to_str (second ode))
-					      "' -dydt '"
-					      (expr_to_str (third ode)) "'")))
+					      "\" -dydt \""
+					      (expr_to_str (third ode)) "\"")))
 	   (t (setq cmd (concatenate 'string " -dxdt "
 				     (expr_to_str (second ode)) " -dydt "
 				     (expr_to_str (third ode))))))
 	(merror "Argument must be either dydx or [dxdt, dydt]"))
     (cond ($show_openplot (setq cmd
-				(concatenate 'string " -dydx '"
-					     (expr_to_str ode) "'")))
+				(concatenate 'string " -dydx \""
+					     (expr_to_str ode) "\"")))
 	  (t (setq cmd (concatenate 'string " -dydx " (expr_to_str ode))))))
 
   ;; parse options and copy them to string opts
