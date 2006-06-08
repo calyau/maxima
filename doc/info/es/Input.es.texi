@@ -1,4 +1,4 @@
-@c english version 1.44
+@c english version 1.45
 @menu
 * Introducci@'on a  Entrada y Salida:: 
 * Archivos::
@@ -37,7 +37,16 @@ A @code{__} se le asigna la expresi@'on de entrada antes de que @'esta sea
 simplificada o evaluada. Sin embargo, el valor de @code{__} es simplificado,
 pero no evaluado, cuando su valor es mostrado en el terminal.
 
-La variable @code{__} es reconocida por  @code{batch}, pero no por @code{load}.
+La variable @code{__} es reconocida por  @code{batch} y por @code{load}.
+Cuando un fichero es procesado por @code{batch}, la variable @code{__}
+tiene el mismo significado que en el modo interactivo.
+Cuando un fichero es procesado por @code{load}, a la variable @code{__}
+se le asigna la @'ultima expresi@'on introducida, bien desde el modo
+interactivo, bien en un fichero por lotes; en ning@'un caso se le asigna 
+a @code{__} una expresi@'on de entrada del fichero que est@'a siendo procesado.
+En particular, si @code{load (@var{filename})} es ejecutado desde el modo
+interactivo, entonces @code{__} almacena la expresi@'on @code{load (@var{filename})}
+mientras el fichero est@'a siendo procesado.
 
 V@'eanse tambi@'en @code{_} y @code{%}.
 
@@ -78,7 +87,13 @@ El s@'{@dotless{i}}mbolo @code{_} representa la @'ultima expresi@'on de entrada 
 
 Al s@'{@dotless{i}}mbolo @code{_} se le asigna la expresi@'on de entrada antes de que @'esta sea simplificada o evaluada. Sin embargo, el valor de @code{_} se simplifica (pero no se eval@'ua) cuando se muestra en el terminal.
 
-El s@'{@dotless{i}}mbolo @code{_} es reconocido por @code{batch}, pero no por @code{load}.
+La variable @code{_} es reconocida por  @code{batch} y por @code{load}.
+Cuando un fichero es procesado por @code{batch}, la variable @code{_}
+tiene el mismo significado que en el modo interactivo.
+Cuando un fichero es procesado por @code{load}, a la variable @code{_}
+se le asigna la @'ultima expresi@'on introducida, bien desde el modo
+interactivo, bien en un fichero por lotes; en ning@'un caso se le asigna 
+a @code{_} una expresi@'on de entrada del fichero que est@'a siendo procesado.
 
 V@'eanse tambi@'en @code{__} y @code{%}.
 
@@ -132,7 +147,13 @@ Ejemplos:
 El s@'{@dotless{i}}mbolo @code{%} representa la expresi@'on de salida (esto es, @code{%o1}, @code{%o2}, @code{%o3}, ...)
 m@'as reciente calculada por Maxima, independientemente de que la haya mostrado o no.
 
-El s@'{@dotless{i}}mbolo @code{%} es reconocido por @code{batch}, pero no por @code{load}.
+La variable @code{%} es reconocida por  @code{batch} y por @code{load}.
+Cuando un fichero es procesado por @code{batch}, la variable @code{%}
+tiene el mismo significado que en el modo interactivo.
+Cuando un fichero es procesado por @code{load}, a la variable @code{%}
+se le asigna la @'ultima expresi@'on introducida, bien desde el modo
+interactivo, bien en un fichero por lotes; en ning@'un caso se le asigna 
+a @code{%} una expresi@'on de entrada del fichero que est@'a siendo procesado.
 
 V@'eanse tambi@'en @code{_}, @code{%%} y @code{%th}.
 
@@ -169,7 +190,9 @@ introduciendo @code{%%;} se obtiene @code{42}.
 
 En la primera sentencia de una sentencia compuesta, o fuera de una sentencia compuesta, @code{%%} no est@'a definido.
 
-El s@'{@dotless{i}}mbolo @code{%%} es reconocido tanto por @code{batch} como por @code{load}.
+La variable @code{%%} es reconocida por  @code{batch} y por @code{load}.
+Cuando un fichero es procesado por @code{batch}, la variable @code{%%}
+tiene el mismo significado que en el modo interactivo.
 
 V@'ease tambi@'en @code{%}.
 
@@ -197,13 +220,19 @@ block (s: 0, for i:1 thru 10 do s: s + %th (i))$
 
 asigna a @code{s} la suma de las diez @'ultimas expresiones de salida.
 
-La funci@'on @code{%th} es reconocida por @code{batch}, pero no por @code{load}.
+La variable @code{%th} es reconocida por  @code{batch} y por @code{load}.
+Cuando un fichero es procesado por @code{batch}, la variable @code{%th}
+tiene el mismo significado que en el modo interactivo.
+Cuando un fichero es procesado por @code{load}, a la variable @code{%th}
+se le asigna la @'ultima expresi@'on introducida, bien desde el modo
+interactivo, bien en un fichero por lotes; en ning@'un caso se le asigna 
+a @code{%th} una expresi@'on de entrada del fichero que est@'a siendo procesado.
 
 V@'ease tambi@'en @code{%}.
 
 @end deffn
 
-@deffn {Special symbol} "?"
+@deffn {Special symbol} ?
 Como prefijo de una funci@'on o nombre de variable, @code{?} significa que el nombre es de Lisp, no de Maxima.
 Por ejemplo, @code{?round} representa la funci@'on de Lisp @code{ROUND}.
 V@'ease @code{Lisp y Maxima} para m@'as informaci@'on.
@@ -852,6 +881,11 @@ Los ficheros creados con @code{save}, @code{translate_file} y @code{compile_file
 y @code{stringout}, que crea c@'odigo Maxima, todos ellos pueden ser procesados por @code{load}. La funci@'on
 @code{load} llama a @code{loadfile} para cargar archivos en Lisp y a  @code{batchload} para cargar archivos en Maxima.
 
+La funci@'on @code{load} no reconoce las construcciones de tipo @code{:lisp} en
+ficheros de Maxima. Adem@'as, mientras se est@'a procesando @var{filename},
+las variables globales @code{_}, @code{__}, @code{%} y @code{%th} mantienen los
+valores que ten@'{@dotless{i}}an cuando se realiz@'o la llamada a @code{load}.
+
 V@'eanse tambi@'en @code{loadfile}, @code{batch}, @code{batchload} y @code{demo};
 @code{loadfile} procesa archivos en Lisp; @code{batch}, @code{batchload} y @code{demo} procesan archivos en Maxima.
 
@@ -868,7 +902,7 @@ Eval@'ua las expresiones Lisp del archivo @var{filename}. La funci@'on
 La funci@'on @code{loadfile} puede procesar ficheros creados por  @code{save}, @code{translate_file} y @code{compile_file}.
 Puede ser m@'as conveniente utilizar @code{load} en lugar de @code{loadfile}.
 
-La funci@'on @code{loadfile} no eval@'ua su argumento, de manera que @code{filename} debe ser una cadena, no una variable que la contenga. La utilizaci@'on de doble comilla simple s@'{@dotless{i}} permite la evaluaci@'on.
+La funci@'on @code{loadfile} no eval@'ua su argumento, de manera que @code{filename} debe ser una cadena, no una variable que la contenga. La utilizaci@'on del operador comilla-comilla s@'{@dotless{i}} permite la evaluaci@'on.
 
 @end deffn
 
@@ -1117,8 +1151,8 @@ almacena los elementos cuyos nombres son @code{values}, @code{functions}, @code{
 Los nombres pueden ser cualesquiera de los especificados por la variable @code{infolists};
 @code{values} incluye todas las variables definidas por el usuario.
 
-La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacenas los valores de las etiquetas de entrada y salida desde @var{m} hasta @var{n}.
-N@'otese que @var{m} y @var{n} deben ser n@'umeros o nombres de variables precedidas de doble comilla simple.
+La llamada @code{save (@var{filename}, [@var{m}, @var{n}])} almacena los valores de las etiquetas de entrada y salida desde @var{m} hasta @var{n}.
+N@'otese que @var{m} y @var{n} deben ser n@'umeros.
 Las etiquetas de entrada y salida tambi@'en se pueden almacenar una a una, por ejemplo, @code{save ("foo.1", %i42, %o42)}.
 La llamada @code{save (@var{filename}, labels)} almacena todas las etiquetas de entrada y salida.
 Cuando las etiquetas almacenadas en el archivo sean posteriormente recuperadas, se sobreescribir@'an las activas en ese momento.
@@ -1138,7 +1172,7 @@ La llamada @code{save (@var{filename}, all)} almacena el estado actual de Maxima
 Los elementos almacenados incluyen variables del sistema, como @code{file_search_maxima} o @code{showtime}, si han sido modificadas por el usuario. V@'ease @code{myoptions}.
 
 La funci@'on @code{save} no eval@'ua sus argumentos.  El argumento @var{filename} debe ser una cadena, no una variable que contenga una cadena. Si se especifican n@'umeros de etiquetas, @'estos deben ser enteros.
-El operador de doble comilla simple eval@'ua una variable de cadena devolviendo su valor,
+El operador comilla-comilla @code{'@w{}'}  eval@'ua una variable de cadena devolviendo su valor;
 por ejemplo, @code{s: "foo.1"$ save (''s, all)$}, y de las variables enteras devuelve sus valores enteros, como en @code{m: 5$ n: 12$ save ("foo.1", [''m, ''n])$}.
 
 @c ANY USE FOR THE FOLLOWING ???
