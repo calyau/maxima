@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.6 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Printops.tcl,v 1.7 2006-06-09 13:02:31 villate Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -213,7 +213,6 @@ proc mkPrintDialog { name args } {
     catch { set printOption(psfilename) \
 	    [file nativename $printOption(psfilename)]}
     button $wb.ok -text "ok" -font $buttonFont  -command "destroy $name ; $canv delete printoptions"
-    radiobutton $wb.b0 -text [mc "Save via ftp"] -variable printOption(tofile) -relief flat -value 2 -command {set writefile "Save"} -font $buttonFont  -highlightthickness 0
     radiobutton $wb.b1 -text [mc "Save as Postscript File"] -variable printOption(tofile) -relief flat -value 1 -command {set writefile "Save"} -font $buttonFont  -highlightthickness 0
     radiobutton $wb.b2 -text [mc "Print To Printer"] -variable printOption(tofile) -relief flat -value 0 -command {set writefile "Print"} -font $buttonFont -highlightthickness 0
     checkbutton $wb.b3 -text [mc "Center on Page"] -variable printOption(centeronpage) -relief flat -font $buttonFont -highlightthickness 0
@@ -228,7 +227,7 @@ proc mkPrintDialog { name args } {
     mkentryPr  $wb.gsview printOption(gsview) [mc "Postscript viewer, used for printing under Windows"] $buttonFont
     mkentryPr  $wb.xticks printOption(xticks) [mc "Rough number of x-ticks"] $buttonFont
     mkentryPr  $wb.yticks printOption(yticks) [mc "Rough number of y-ticks"] $buttonFont
-    eval pack $wb.ok $wb.b0 $wb.b1 $wb.b2 $wb.b3 $wb.b4
+    eval pack $wb.ok $wb.b1 $wb.b2 $wb.b3 $wb.b4
     eval pack $topack -expand 1
 
     foreach v  $paperSizes {
@@ -300,7 +299,7 @@ proc unbindAdjustWidth { canv tag title } {
 	$canv delete marginticks
     }
 
-    $canv create text [expr {($a1 + $a2)/2.0}] [expr {$y2 + .01*$h  }] -anchor nw -text "For [getEnv USER] [clock format [clock seconds]]" -font [font create -family Courier -size 10 -weight normal] -tag $tag
+    $canv create text [expr {($a1 + $a2)/2.0}] [expr {$y2 + .01*$h  }] -anchor nw -tag $tag
     # puts h=$h
 
 }
