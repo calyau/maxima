@@ -177,7 +177,7 @@ Pacotes Adicionais
 * orthopoly::                   Orthogonal polynomials.
 * plotdf::                      Direction fields plots.
 * simplex::                     Linear programming.
-* simplifications::             Simplification rules and functions.
+* simplification::              Simplification rules and functions.
 * solve_rec::                   Linear recurrences.
 * stirling::                    Stirling formula.
 * stringproc::                  String processing.
@@ -444,10 +444,6 @@ f90
 ggf
 
 * Definitions for ggf::
-
-ifactor
-
-* Definitions for ifactor::
 
 impdiff
 
@@ -791,15 +787,15 @@ zeilberger
 @chapter plotdf
 @include plotdf.texi
 
-@node simplex, simplifications, plotdf, Top
+@node simplex, simplification, plotdf, Top
 @chapter simplex
 @include simplex.texi
 
-@node simplifications, solve_rec, simplex, Top
-@chapter simplifications
+@node simplification, solve_rec, simplex, Top
+@chapter simplification
 @include simplifications.texi
 
-@node solve_rec, stirling, simplifications, Top
+@node solve_rec, stirling, simplification, Top
 @chapter solve_rec
 @include solve_rec.texi
 
