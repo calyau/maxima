@@ -55,15 +55,18 @@ constFactCorr(sol,constFact,var) :=
      den : second(constFact),
      res : [],
 
+
+/* Remark: length(sol)-1 = ZAnsatzDegree */
+
      for i : 1 thru length(sol) do
         (
         numCorr : 1,
         for j : 1 thru i-1 do
            numCorr : numCorr * subst(var+j-1,var,num),
+
         denCorr : 1,
         for j : 1 thru length(sol)-i do
-           denCorr : denCorr * subst(var+j-1,var,den),
-        
+           denCorr : denCorr * subst(var+length(sol)-1-j,var,den),
 
         res : endcons(factor(sol[i]/numCorr/denCorr),res)
 
@@ -127,7 +130,8 @@ printParGosperSummary(p,sysSol,mode) :=
       print("(3) solution : ", sysSol)
    );
 
-/* Parametrized Gosper's algorithm */
+
+/* Zeilberger's algorithm ("Parametrized" Gosper's algorithm) */
 parGosperVerboseOpt(f,k,n,ZAnsatzDegree,mode) :=
    block(
    [
@@ -175,12 +179,19 @@ if ZAnsatzDegree = 0 then
   if GosperSol=NO_HYP_SOL then
     return([])
   else
-    return([[GosperSol,[1]]])
+    if GosperSol = NON_HYPERGEOMETRIC then
+      return([NON_PROPER_HYPERGEOMETRIC])
+    else
+      return([[GosperSol,[1]]])
   ),
 
 nFTrivial : niceForm(f,n,"_z",ZAnsatzDegree,k),
 
-
+if nFTrivial = [] then
+  (
+  print(f, " is not hypergeometric in ", n),
+  return([NON_PROPER_HYPERGEOMETRIC])
+  ),
 
 nF : nFTrivial[1],
 
@@ -194,16 +205,19 @@ if mode >= verbose then
 numNF : num(nF),
 denNF : factor(denom(nF)),
 
-
 if mode >= very_verbose then
   print("denNF : ", factor(denNF)),
-
-
 
 if mode >= very_verbose then
    print("Considering now : ", factor(f/denNF)),
 
-parFRat : shiftQuo(f/denNF,k), /* We temporarily forget about the factor numNF */
+parFRat : shiftQuoOnlyHyp(factor(f/denNF),k), /* We temporarily forget about the factor numNF */
+
+if parFRat = [] then
+ (
+ print(f, " is not hypergeometric in ", k),
+ return([NON_PROPER_HYPERGEOMETRIC])
+ ),
 
 
 if mode >= verbose then
@@ -212,7 +226,6 @@ if mode >= verbose then
 
 /* Computation of the Gosper form */
 
-
    GosperForm: makeGosperFormVerboseOpt(parFRat,k,mode-1),
 
 
@@ -220,7 +233,6 @@ gfP: takeP(GosperForm),
 
 if mode >= very_verbose then
   print("gfP :", factor(gfP)), 
-
 
 
 p: gfP * numNF, /* Now we remember that we "forgot" the factor numNF and compute the real p */
@@ -254,7 +266,10 @@ if mode >= very_verbose then
 if Gpoly = 0 then
   return([]),
 
-/* Numerical test */
+
+
+/* --------------------------------------------------------------------- */
+/* Numerical test                                                        */
 if mod_test and (ZAnsatzDegree<=mod_threshold) then
   (
   MODULUS : mod_big_prime,
@@ -287,6 +302,8 @@ if mod_test and (ZAnsatzDegree<=mod_threshold) then
        print("sysSol : ", sysSol)
        )
   ),
+/* End of numerical test                                                 */
+/* --------------------------------------------------------------------- */
 
 
 sysSol : SolveZSysVerboseOpt(Gpoly,"_g",GAnsatzDegree+1,"_z",ZAnsatzDegree+1,k,
@@ -336,12 +353,13 @@ for i: 1 thru length(sysSol) do
 
   ZAnsatzCoeff : constFactCorr(ZAnsatzCoeff,[nFTrivial[2],nFTrivial[3]],n),
 
-  if mode>=very_verbose then
-    print("correction : ",[nFTrivial[2],nFTrivial[3]]),
+if mode>=very_verbose then
+  print("correction : ",[nFTrivial[2],nFTrivial[3]]),
 
-  constDenNF : nFTrivial[3],
-  for i:1 thru ZAnsatzDegree-1 do
-    constDenNF : constDenNF * subst(n+1,n,constDenNF),
+
+
+  constDenNF : product(subst(n+i-1,n,nFTrivial[3]),i,1,ZAnsatzDegree),
+
 
   if mode>=very_verbose then
     (
@@ -578,34 +596,6 @@ Zeilberger(f,k,n) ::=
        ZeilbergerVerboseOpt(f,k,n,nonverbose)
         );
 
-/* Non-verbose front-end of the Zeilberger's algorithm */
-/*
-Zeilberger(f,k,n) :=
-   block(
-   [ord,parGRes],
- 
-   ord : 1 ,
-
-   parGRes : [],
-
-
-   for ord : 1 step 1 while (parGRes = []) and ( ord <= max_ord ) do 
-      ( 
-      
-      if mode = "very" then
-         parGRes : parGosperVerbose(f,k,n,ord)
-      else
-         if mode = "veryvery" or mode = "debugging" then
-            parGRes : parGosperVeryVerbose(f,k,n,ord) 
-         else
-            parGRes : parGosper(f,k,n,ord)
-      ),
-   
-   parGRes 
-   
-
-     ) ; 
-*/
 
 /* Short name macro for verbose parGosper */
 parGosperVerbose(f,k,n,degree)::=

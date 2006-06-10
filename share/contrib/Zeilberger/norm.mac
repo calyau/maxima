@@ -68,13 +68,51 @@ powerNorm(expr,k) :=
   );    
 
  
-/* It outputs the integer linear factor and non-integer linear factor of a given expression */                                                 
+/* It outputs the integer linear factor and non-integer linear factor of a given expression */
+intLinCreate(expr,k) :=
+  block(
+  [nonIntLinList,intLinList,length],
+
+  nonIntLinList:[],
+  intLinList:[],
+  if atom(expr) or not(operatorp(expr,"*")) then
+     if(integerLinear(expr,k)) then
+       if (expr=1) then
+           return([])
+       else
+        return([expr])
+     else
+        return([expr])
+  else
+     (
+     length:length(expr),
+
+     for i:1 thru length-1 do
+       (
+       /*
+       if integerLinear(first(expr),k) then 
+         intLinList:cons(first(expr),intLinList)
+       else
+         nonIntLinList:cons(first(expr),nonIntLinList),
+       */
+       intLinList : cons(first(expr),intLinList),
+       expr:expr/first(expr)
+       ),
+     
+     intLinList:cons(expr,intLinList),
+
+     return(intLinList)
+     )
+  );
+
+/* It outputs the integer linear factor and non-integer linear factor of a given expression */
 intLinSep(expr,k) :=
   block(
   [nonIntLinList,intLinList,length],
 
   nonIntLinList:[],
   intLinList:[],
+  
   if atom(expr) or not(operatorp(expr,"*")) then
      if(integerLinear(expr,k)) then
        if (expr=1) then
@@ -103,6 +141,7 @@ intLinSep(expr,k) :=
      return([nonIntLinList,intLinList])
      )
   );
+
 
 
 /* It creates a list of irreducible factors out of a factorized polynomial */

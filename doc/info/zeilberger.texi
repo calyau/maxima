@@ -1,9 +1,27 @@
+\input texinfo
+
+@c makeinfo zeilberger.texi         to make .info
+@c texi2html zeilberger.texi        to make .html
+@c texi2pdf zeilberger.texi         to make .pdf
+
+@setfilename zeilberger.info
+@settitle zeilberger
+
+@ifinfo 
+@macro var {expr}
+<\expr\>
+@end macro
+@end ifinfo
+
+@node Top, Introduction to zeilberger, (dir), (dir)
+@top
 @menu
 * Introduction to zeilberger::
 * Definitions for zeilberger::
+* Function and variable index::
 @end menu
 
-@node Introduction to zeilberger, Definitions for zeilberger, zeilberger, zeilberger
+@node Introduction to zeilberger, Definitions for zeilberger, Top, Top
 @section Introduction to zeilberger
 
 @code{zeilberger} is a implementation of Zeilberger's algorithm
@@ -60,7 +78,7 @@ For example:
 @code{ZeilbergerExtra}, @code{AntiDifferenceSummary}.
 
 
-@node Definitions for zeilberger,  , Introduction to zeilberger, zeilberger
+@node Definitions for zeilberger, Function and variable index, Introduction to zeilberger, Top
 @section Definitions for zeilberger
 
 @deffn {Function} AntiDifference (@var{F_k}, @var{k})
@@ -156,8 +174,8 @@ Each solution has the form
 Attempts to compute the indefinite hypergeometric summation of @var{F_@{n,k@}}.
 
 @code{Zeilberger} first invokes @code{Gosper}, and if that fails to find a solution, then invokes
-@code{parGosper} with order 1, 2, 3, ..., up to @code{max_ord}.
-If Zeilberger finds a solution before reaching @code{max_ord},
+@code{parGosper} with order 1, 2, 3, ..., up to @code{MAX_ORD}.
+If Zeilberger finds a solution before reaching @code{MAX_ORD},
 it stops and returns the solution.
 
 The algorithms yields a sequence
@@ -173,10 +191,10 @@ Each solution has the form
 
 @section General global variables
 
-@defvr {Global variable} max_ord
+@defvr {Global variable} MAX_ORD
 Default value: 5
 
-@code{max_ord} is the maximum recurrence order attempted by @code{Zeilberger}.
+@code{MAX_ORD} is the maximum recurrence order attempted by @code{Zeilberger}.
 @end defvr
 
 @defvr {Global variable} simplified_output
@@ -253,3 +271,11 @@ Default value: 4
 @code{mod_threshold} is the
 greatest order for which the modular test in @code{parGosper} is attempted.
 @end defvr
+
+
+@node Function and variable index,  , Definitions for zeilberger, Top
+@appendix Function and variable index
+@printindex fn
+@printindex vr
+
+@bye

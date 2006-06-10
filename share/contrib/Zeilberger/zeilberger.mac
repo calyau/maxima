@@ -1,15 +1,9 @@
 /* dir : <directory where all package files are> */
 
-/* Some examples */
-/*
-modLoad("testGosper.mac");
-modLoad("testZeilberger.mac");
-*/
-
 dir : '"Zeilberger/";
 
-modLoad(modName) := load(concat(dir,modName));
 
+modLoad(modName) := load(concat(dir,modName));
 
 modLoad("constants.mac");
 
@@ -35,6 +29,7 @@ modLoad("Gosper.mac");
 
 modLoad("zeilberger_algorithm.mac");
 
+modLoad("zb_prover.mac");
 
-
+modLoad("testZeilberger.mac");
 
