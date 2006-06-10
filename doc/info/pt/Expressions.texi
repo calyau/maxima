@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.46/Sun May  7 12:31:31 2006/-ko/
+@c /Expressions.texi/1.47/Wed Jun  7 08:45:15 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
@@ -460,7 +460,8 @@ Uma caixa @'e desenhada sobre a tela quando @code{display2d} for @code{true}.
 Empacota @var{expr} em uma caixa rotulada pelo s@'imbolo @var{a}.
 O r@'otulo @'e truncado se for maior que a largura da caixa.
 
-Uma express@~ao dentro de uma caixa n@~ao avalia para seu conte@'udo,
+@code{box} avalia seu argumento.
+Todavia, uma express@~ao dentro de uma caixa n@~ao avalia para seu conte@'udo,
 ent@~ao express@~oes dentro de caixas s@~ao efetivamente exclu@'idas de c@'alculos.
 
 @code{boxchar} @'e o caractere usado para desenhar a caixa em @code{box}
@@ -470,6 +471,9 @@ Exemplos:
 
 @c ===beg===
 @c box (a^2 + b^2);
+@c a : 1234;
+@c b : c - d;
+@c box (a^2 + b^2);
 @c box (a^2 + b^2, term_1);
 @c 1729 - box (1729);
 @c boxchar: "-";
@@ -477,26 +481,34 @@ Exemplos:
 @c ===end===
 @example
 (%i1) box (a^2 + b^2);
-             """""""""
-             " 2   2 "
-(%o1)        "b  + a "
-             """""""""
-(%i2) box (a^2 + b^2, term_1);
-             term_1"""
-             " 2   2 "
-(%o2)        "b  + a "
-             """""""""
-(%i3) 1729 - box (1729);
-                  """"""
-(%o3)      1729 - "1729"
-                  """"""
-(%i4) boxchar: "-";
-(%o4)            -
-(%i5) box (sin(x) + cos(y));
-                -----------------
-(%o5)           -COS(y) + SIN(x)-
-                -----------------
-(%i6) 
+                            """""""""
+                            " 2    2"
+(%o1)                       "b  + a "
+                            """""""""
+(%i2) a : 1234;
+(%o2)                         1234
+(%i3) b : c - d;
+(%o3)                         c - d
+(%i4) box (a^2 + b^2);
+                      """"""""""""""""""""
+                      "       2          "
+(%o4)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i5) box (a^2 + b^2, term_1);
+                      term_1""""""""""""""
+                      "       2          "
+(%o5)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i6) 1729 - box (1729);
+                                 """"""
+(%o6)                     1729 - "1729"
+                                 """"""
+(%i7) boxchar: "-";
+(%o7)                           -
+(%i8) box (sin(x) + cos(y));
+                        -----------------
+(%o8)                   -cos(y) + sin(x)-
+                        -----------------
 @end example
 
 @end deffn
@@ -630,22 +642,23 @@ cada um dos @'atomos recebe todas as propriedades.
 @code{declare} n@~ao avalia seus argumentos.
 @code{declare} sempre retorna @code{done}.
 
-@code{featurep (@var{objeto}, @var{recurso})}
+Como colocado na descri@,{c}@~ao para cada sinalizador de declara@,{c}@~ao,
+para alguns sinalizadores
+@code{featurep(@var{objeto}, @var{recurso})}
 retorna @code{true} se @var{objeto} tiver sido declarado para ter @var{recurso}.
+Todavia, @code{featurep} n@~ao reconhece alguns sinalizadores; isso @'e um erro.
 
 Veja tamb@'em @code{features}.
 
 @code{declare} reconhece as seguintes propriedades:
 
 @table @asis
-@item
-@code{evfun}
+@item @code{evfun}
 Torna @var{a_i} conhecido para @code{ev} de forma que a fun@,{c}@~ao nomeada por @var{a_i}
 @'e aplicada quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
 Veja @code{evfun}.
 
-@item
-@code{evflag}
+@item @code{evflag}
 Torna @var{a_i} conhecido para a fun@,{c}@~ao @code{ev} de forma que @var{a_i} @'e associado a @code{true}
 durante a execu@,{c}@~ao de @code{ev} quando @var{a_i} aparece como um sinalizador argumento de @code{ev}.
 Veja @code{evflag}.
@@ -654,72 +667,60 @@ Veja @code{evflag}.
  
 @c OBSOLETE @code{nonarray} (RECONHECIDA POR DECLARE MAS NUNCA USADA EM LUGAR ALGUM)
 
-@item
-@code{bindtest}
+@item @code{bindtest}
 Diz ao Maxima para disparar um erro quando @var{a_i} for avaliado como sendo livre de associa@,{c}@~ao.
 
-@item
-@code{noun}
+@item @code{noun}
 Diz ao Maxima para passar @var{a_i} como um substantivo. 
 O efeito disso @'e substituir intâncias de @var{a_i} com @code{'@var{a_i}}
-ou @code{nounify (@var{a_i})}, ependendo do contexto.
+ou @code{nounify(@var{a_i})}, ependendo do contexto.
 
-@item
-@code{constant}
+@item @code{constant}
 Diz ao Maxima para considerar @var{a_i} uma constante simb@'olica.
 @c WHAT MAXIMA KNOWS ABOUT SYMBOLIC CONSTANTS IS PRETTY LIMITED
 @c DUNNO IF WE WANT TO GET INTO DETAILS HERE. 
 @c MAYBE IN THE DOCUMENTATION FOR CONSTANT (IF THERE IS SUCH)
 
-@item
-@code{scalar}
+@item @code{scalar}
 Diz ao Maxima para considerar @var{a_i} uma vari@'avel escalar.
 
-@item
-@code{nonscalar}
+@item @code{nonscalar}
 Diz ao Maxima para considerar @var{a_i} uma vari@'avel n@~ao escalar.
 The usual application is to declare a variable as a symbolic vector or matrix.
 
-@item
-@code{mainvar}
+@item @code{mainvar}
 Diz ao Maxima para considerar @var{a_i} uma "vari@'avel principal" (@code{mainvar}).
 @code{ordergreatp} determina a ordena@,{c}@~ao de @'atomos como segue:
 
 (vari@'aveis principais) > (outras vari@'aveis) > (vari@'aveis escalares) > (constantes) > (n@'umeros)
 
-@item
-@code{alphabetic}
+@item @code{alphabetic}
 Diz ao Maxima para reconhecer @var{a_i} como um caractere alfab@'etico.
 
-@item
-@code{feature}
+@item @code{feature}
 Diz ao Maxima para reconhecer @var{a_i} como nome de um recurso.
 Other atoms may then be declared to have the @var{a_i} property.
 
-@item
-@code{rassociative}, @code{lassociative}
+@item @code{rassociative}, @code{lassociative}
 Diz ao Maxima para reconhecer @var{a_i} como uma func@~ao associativa a direita ou associativa a esquerda.
 
-@item
-@code{nary}
-Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao n-@'aria.
+@item @code{nary}
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao n-@'aria (com muitos argumentos).
 
-Essa declara@,{c}@~ao n@~ao tem o mesmo objetivo que uma chamada @`a fun@,{c}@~ao @code{nary}.
+A declara@,{c}@~ao @code{nary} n@~ao tem o mesmo objetivo que uma chamada @`a fun@,{c}@~ao @code{nary}.
 O @'unico efeito de @code{declare(foo, nary)} @'e para instruir o simplificador do Maxima
 a melhorar as pr@'oximas express@~oes,
 por exemplo, para simplificar @code{foo(x, foo(y, z))} para @code{foo(x, y, z)}.
 
-@item
-@code{symmetric}, @code{antisymmetric}, @code{commutative}
-Dis ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao sim@'etrica ou antisim@'etrica.
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao sim@'etrica ou antisim@'etrica.
 @code{commutative} @'e o mesmo que @code{symmetric}.
 
 @item
 @code{oddfun}, @code{evenfun}
 Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao par ou uma fun@,{c}@~ao @'impar.
  
-@item
-@code{outative}
+@item @code{outative}
 Diz ao Maxima para simplificar express@~oes @var{a_i}
 colocando fatores constantes em evid@^encia no primeiro argumento.
 
@@ -731,58 +732,47 @@ um fator @'e considerado constante
 se o segundo argumento for um s@'imbolo
 e o fator estiver livre do segundo argumento.
 
-@item
-@code{multiplicative}
+@item @code{multiplicative}
 Diz ao Maxima para simplificar express@~oes do tipo @var{a_i}
 atrav@'es da substitui@,{c}@~ao @code{@var{a_i}(x * y * z * ...)} @code{-->}
 @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
 A substitui@,{c}@~ao @'e realizada no primeiro argumento somente.
 
-@item
-@code{additive}
+@item @code{additive}
 Diz ao Maxima para simplificar express@~oes do tipo @var{a_i}
 atrav@'es da substitui@,{c}@~ao @code{@var{a_i}(x + y + z + ...)} @code{-->}
 @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
 A substitui@,{c}@~ao @'e realizada no primeiro argumento somente.
 
-@item
-@code{linear}
+@item @code{linear}
 Equivalente a declarar @var{a_i} ao mesmo tempo @code{outative} e @code{additive}.
 
 @c OBSOLETE @code{analytic} (RECOGNIZED BY DECLARE BUT NEVER USED ANYWHERE)
  
-@item
-@code{integer}, @code{noninteger}
+@item @code{integer}, @code{noninteger}
 Diz ao Maxima para reconhecer @var{a_i} como como uma vari@'avel inteira ou como uma vari@'avel n@~ao inteira.
  
 Maxima reconhece os seguintes recursos de objetos:
 
-@c THIS LIST AND THE NEXT COMPRISE $FEATURES
-@item
-@code{even}, @code{odd}
+@item @code{even}, @code{odd}
 Diz ao Maxima para reconhecer @var{a_i} como uma vari@'avel inteira par ou como uma vari@'avel inteira @'impar.
 
-@item
-@code{rational}, @code{irrational}
+@item @code{rational}, @code{irrational}
 Diz ao Maxima para reconhecer @var{a_i} como uma vari@'avel real e racional ou como uma vari@'avel real e irracional.
 
-@item
-@code{real}, @code{imaginary}, @code{complex}
+@item @code{real}, @code{imaginary}, @code{complex}
 Dia ao Maxima para reconhecer @var{a_i} como uma vari@'avel real, imagin@'aria pura ou complexa.
  
-@item
-@code{increasing}, @code{decreasing}
+@item @code{increasing}, @code{decreasing}
 Dia ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao de incremento ou decremento.
 @c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
 @c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
 @c REPORTED AS SF BUG # 1483194
 
-@item
-@code{posfun}
+@item @code{posfun}
 Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao positiva.
 
-@item
-@code{integervalued}
+@item @code{integervalued}
 Diz ao Maxima para reconhecer @var{a_i} como uma fun@,{c}@~ao de valores inteiros.
 
 @end table

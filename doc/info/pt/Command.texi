@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Command.texi/1.39/Mon May 15 07:51:57 2006/-ko/
+@c /Command.texi/1.40/Fri Jun  9 07:49:22 2006/-ko/
 @iftex
 @hyphenation{si-na-li-za-do-res}
 @hyphenation{de-mo-ra-da-men-te}
@@ -535,15 +535,15 @@ Solution
 @end deffn
 
 @defvr {Propriedade} evflag
-Alguns sinalizadores Booleanos possuem a propriedae @code{evflag}.
-@code{ev} trata tais sinalizadores especialmente.
-Um sinalizador com a propriedade @code{evflag} n@~ao ser@'a associado a @code{true}
-durante a execu@,{c}@~ao de @code{ev} se isso for
-mensionado na chamada para @code{ev}.
-Por exemplo, @code{demoivre} e @code{ratfac} s@~ao associados a @code{true}
-durante a chamada @code{ev (%, demoivre, ratfac)}.
+Quando um s@'imbolo @var{x} tem a propriedade @code{evflag},
+as express@~oes @code{ev(@var{expr}, @var{x})} e @code{@var{expr}, @var{x}}
+(na linha de comando interativa) s@~ao equivalentes a @code{ev(@var{expr}, @var{x} = true)}.
+Isto @'e, @var{x} est@'a associada a @code{true} enquanto @var{expr} for avaliada.
 
-Os sinalizadores que possuem a propriedade @code{evflag} s@~ao:
+A express@~ao @code{declare(@var{x}, evflag)}
+fornece a propriedade @code{evflag} para a vari@'avel @var{x}.
+
+Os sinalizadores que possuem a propriedade @code{evflag} por padr@~ao s@~ao os seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evflag properties) ...)
 @c NEAR LINE 2649 OF mlisp.lisp AT PRESENT (2004/11).
 @code{algebraic},
@@ -577,26 +577,78 @@ Os sinalizadores que possuem a propriedade @code{evflag} s@~ao:
 @code{ratsimpexpons},
 @code{simp},
 @code{simpsum},
-@code{sumexpand}, and
+@code{sumexpand}, e
 @code{trigexpand}.
 
-A constru@,{c}@~ao @code{:lisp (putprop '|$foo| t 'evflag)}
-fornece a propriedade @code{evflag} para a vari@'avel @code{foo},
-ent@~ao @code{foo} @'associada a @code{true} durante a chamada @code{ev (%, foo)}.
-Equivalentemente, @code{ev (%, foo:true)} tem o mesmo efeito.
+Exemplos:
+
+@c ===beg===
+@c sin (1/2);
+@c sin (1/2), float;
+@c sin (1/2), float=true;
+@c simp : false;
+@c 1 + 1;
+@c 1 + 1, simp;
+@c simp : true;
+@c sum (1/k^2, k, 1, inf);
+@c sum (1/k^2, k, 1, inf), simpsum;
+@c declare (aa, evflag);
+@c if aa = true then YES else NO;
+@c if aa = true then YES else NO, aa;
+@c ===end===
+@example
+(%i1) sin (1/2);
+                                 1
+(%o1)                        sin(-)
+                                 2
+(%i2) sin (1/2), float;
+(%o2)                   0.479425538604203
+(%i3) sin (1/2), float=true;
+(%o3)                   0.479425538604203
+(%i4) simp : false;
+(%o4)                         false
+(%i5) 1 + 1;
+(%o5)                         1 + 1
+(%i6) 1 + 1, simp;
+(%o6)                           2
+(%i7) simp : true;
+(%o7)                         true
+(%i8) sum (1/k^2, k, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o8)                        >    --
+                            /      2
+                            ====  k
+                            k = 1
+(%i9) sum (1/k^2, k, 1, inf), simpsum;
+                                 2
+                              %pi
+(%o9)                         ----
+                               6
+(%i10) declare (aa, evflag);
+(%o10)                        done
+(%i11) if aa = true then SIM else N@~AO;
+(%o11)                         N@~AO
+(%i12) if aa = true then SIM else N@~AO, aa;
+(%o12)                         SIM
+@end example
 
 @end defvr
 
 @defvr {Propriedade}  evfun
-Agumas fun@,{c}@~oes possuem a proriedade @code{evfun}.
-@code{ev} trata cada fun@,{c}@~ao especialmente.
-Uma fun@,{c}@~ao com a propriedade @code{evfun} ser@'a aplicada
-durante a execu@,{c}@~ao de @code{ev} se isso for
-mecionado na chamada a @code{ev}.
-Por exemplo, @code{ratsimp} e @code{radcan} ser@'a aplicada
-durante a chamada @code{ev (%, ratsimp, radcan)}.
+Quando uma fun@,{c}@~ao @var{F} tem a propriedade @code{evfun},
+as express@~oes @code{ev(@var{expr}, @var{F})} e @code{@var{expr}, @var{F}}
+(na linha de comando interativa)
+s@~ao equivalentes a @code{@var{F}(ev(@var{expr}))}.
 
-As fun@,{c}@~oes que possuem a propriedade @code{evfun} s@~ao:
+Se duas ou mais fun@,{c}@~oes @var{F}, @var{G}, etc., que possuem a propriedade @code{evfun} forem especificadas,
+as fun@,{c}@~oes ser@~ao aplicadas na ordem em que forem especificadas.
+
+A express@~ao @code{declare(@var{F}, evfun)}
+fornece a propriedade @code{evfun} para a fun@,{c}@~ao @var{F}.
+
+As fun@,{c}@~oes que possuem a propriedade @code{evfun} por padr@~ao s@~ao as seguintes:
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
 @code{bfloat},
@@ -612,10 +664,75 @@ As fun@,{c}@~oes que possuem a propriedade @code{evfun} s@~ao:
 @code{trigexpand}, e
 @code{trigreduce}.
 
-A constru@,{c}@~ao @code{:lisp (putprop '|$foo| t 'evfun)}
-fornece a propriedade @code{evfun} para a fun@,{c}@~ao @code{foo},
-de modo que @code{foo} @'e aplicada durante a chamada @code{ev (%, foo)}.
-Equivalentemente, @code{foo (ev (%))} tem o mesmo efeito.
+Exemplos:
+ 
+@c ===beg===
+@c x^3 - 1;
+@c x^3 - 1, factor;
+@c factor (x^3 - 1);
+@c cos(4 * x) / sin(x)^4;
+@c cos(4 * x) / sin(x)^4, trigexpand;
+@c cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+@c ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+@c declare ([F, G], evfun);
+@c (aa : bb, bb : cc, cc : dd);
+@c aa;
+@c aa, F;
+@c F (aa);
+@c F (ev (aa));
+@c aa, F, G;
+@c G (F (ev (aa)));
+@c ===end===
+@example
+(%i1) x^3 - 1;
+                              3
+(%o1)                        x  - 1
+(%i2) x^3 - 1, factor;
+                                2
+(%o2)                 (x - 1) (x  + x + 1)
+(%i3) factor (x^3 - 1);
+                                2
+(%o3)                 (x - 1) (x  + x + 1)
+(%i4) cos(4 * x) / sin(x)^4;
+                            cos(4 x)
+(%o4)                       --------
+                               4
+                            sin (x)
+(%i5) cos(4 * x) / sin(x)^4, trigexpand;
+                 4           2       2         4
+              sin (x) - 6 cos (x) sin (x) + cos (x)
+(%o5)         -------------------------------------
+                                4
+                             sin (x)
+(%i6) cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+                           2         4
+                      6 cos (x)   cos (x)
+(%o6)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i7) ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+                           2         4
+                      6 cos (x)   cos (x)
+(%o7)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i8) declare ([F, G], evfun);
+(%o8)                         done
+(%i9) (aa : bb, bb : cc, cc : dd);
+(%o9)                          dd
+(%i10) aa;
+(%o10)                         bb
+(%i11) aa, F;
+(%o11)                        F(cc)
+(%i12) F (aa);
+(%o12)                        F(bb)
+(%i13) F (ev (aa));
+(%o13)                        F(cc)
+(%i14) aa, F, G;
+(%o14)                      G(F(cc))
+(%i15) G (F (ev (aa)));
+(%o15)                      G(F(cc))
+@end example
 
 @end defvr
 
@@ -935,4 +1052,3 @@ Valor inicial: @code{[]}
 A lista compreende s@'imbolos associados por @code{:} , @code{::}, ou @code{:=}.
 
 @end defvr
-
