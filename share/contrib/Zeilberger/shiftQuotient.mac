@@ -195,7 +195,7 @@ shiftQuoHypCheck(expr,k) :=
     xthru_expr : xthru(removeBinomial(expr)),
     sq_res : shiftQuoHypCheckAux(xthru_expr,k,HYP),
     
-    if rationalp(sq_res[1],k) then
+    if ?ratp(sq_res[1],k) then
       return(sq_res)
     else
       return([sq_res[1],NO_HYP])
