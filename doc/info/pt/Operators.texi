@@ -1517,7 +1517,7 @@ com efeito, @code{symbolp(x)} @'e equivalente ao predicado @code{atom(x) and not
 
 @c FOLLOWING REALLY WANTS TO BE @xref{Identiifers} BUT THAT
 @c LEAVES THE UNPLEASANT RESIDUE *Note ...:: IN THE OUTPUT OF describe
-Veja tamb@'em @ref{Identifiers}
+Veja tamb@'em @ref{Identificadores}
 
 @end deffn
 
@@ -1622,4 +1622,3 @@ Por outro lado @code{zeroequiv (log(a*b) - log(a) - log(b), a)} retorna @code{do
 presen@,{c}a de um par@^ametro extra @code{b}.
 
 @end deffn
-
