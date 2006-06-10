@@ -743,7 +743,7 @@ zeilberger
 @chapter f90
 @include f90.texi
 
-@node ggf, impdif, f90, Top
+@node ggf, impdiff, f90, Top
 @chapter ggf
 @include ggf.texi
 
@@ -791,15 +791,15 @@ zeilberger
 @chapter plotdf
 @include plotdf.texi
 
-@node simplex, simplification, plotdf, Top
+@node simplex, simplifications, plotdf, Top
 @chapter simplex
 @include simplex.texi
 
-@node simplification, solve_rec, simplex, Top
-@chapter simplification
+@node simplifications, solve_rec, simplex, Top
+@chapter simplifications
 @include simplifications.texi
 
-@node solve_rec, stirling, simplification, Top
+@node solve_rec, stirling, simplifications, Top
 @chapter solve_rec
 @include solve_rec.texi
 
