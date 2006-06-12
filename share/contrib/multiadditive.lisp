@@ -24,6 +24,13 @@ makes it additive in just its first argument.  Examples:
 (%i5) declare(g,additive)$
 (%i6) g(x+y,a+b);
 (%o6) g(y,b+a)+g(x,b+a)
+
+The order of *opers-list matters. For example, if f is threadable and
+an involution, then f(f([1,2])) would simplify to f([f(1),f(2)]) if
+the threadable rule was used first, or it would simplify to [1,2] if
+the the involution rule was used first. A user doesn't have any control
+over the order the rules are applied. There is a user-level list $opproperties, 
+but re-ordering $opproperties doesn't change the order the rules are applied.
 |#
 
 ;; As of 2 June 2006, simplifya doesn't check for a subscripted function
@@ -92,7 +99,9 @@ makes it additive in just its first argument.  Examples:
 ;; Good test: declare(f,idempotent), f[5](x).
 
 (defun idempotent (e z)
-  (protected-oper-apply (if (and (not ($subvarp e)) (= 1 (length (margs e))) 
+  (protected-oper-apply (if (and (not ($subvarp e)) 
+				 (= 1 (length (margs e))) 
+				 (not ($mapatom (first (margs e))))
 				 (eq (mop e) (mop (first (margs e)))))
 			    (first (margs e)) e) z))
 
@@ -105,7 +114,11 @@ makes it additive in just its first argument.  Examples:
 ;; Good test: declare(f,involution), f[5](x).
 
 (defun involution (e z)
-  (protected-oper-apply (if (and (not ($subvarp e)) (= 1 (length (margs e)))
+  (protected-oper-apply (if (and (not ($subvarp e)) 
+				 (= 1 (length (margs e)))
+				 (not ($mapatom (first (margs e))))
 				 (eq (mop e) (mop (first (margs e))))
 				 (= 1 (length (margs (first (margs e))))))
 			    (first (margs (first (margs e)))) e) z))
+
+
