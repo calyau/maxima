@@ -7,9 +7,9 @@
 # - tclwinkill.dll
 prefix=@prefix@
 TCLKITSH = tclkitsh.exe
-TCLKITDIR = /c/star
+TCLKITDIR = ../../../../programs/star
 SDXDIR = $(TCLKITDIR)
-GNUPLOTDIR = /c/programs/gnuplot
+GNUPLOTDIR = ../../../../programs/gnuplot
 
 GCCPREFIX=/mingw
 GCCVER=3.3.1
