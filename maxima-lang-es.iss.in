@@ -23,4 +23,21 @@ UninstallFilesDir={app}\uninst
 Source: "@prefix@\info\es\*.*"; DestDir: "{app}\info\es\";  Flags: recursesubdirs
 Source: "@prefix@\share\maxima\@VERSION@\doc\html\es\*.*"; DestDir: "{app}\share\maxima\@VERSION@\doc\html\es\";  Flags: recursesubdirs
 
+[Messages]
+SetupWindowTitle=Setup - Maxima Spanish language pack
+SetupLdrStartupMessage=This will install Maxima Spanish language pack. Do you wish to continue?
+WelcomeLabel1=Welcome to the Maxima Spanish language pack Setup Wizard
+WelcomeLabel2=This will install Maxima @VERSION@ Spanish language pack on your computer.%n%nIt is recommended that you close all other applications before continuing.
+SelectDirDesc=Where should Maxima Spanish language pack be installed?
+SelectDirLabel3=Setup will install Maxima Spanish language pack into the following folder.
+SelectTasksLabel2=Select the additional tasks you would like Setup to perform while installing Maxima Spanish language pack, then click Next.
+ReadyLabel1=Setup is now ready to begin installing Maxima Spanish language pack on your computer.
+PreparingDesc=Setup is preparing to install Maxima Spanish language pack on your computer.
+PreviousInstallNotCompleted=The installation/removal of a previous program was not completed. You will need to restart your computer to complete that installation.%n%nAfter restarting your computer, run Setup again to complete the installation of Maxima Spanish language pack.
+InstallingLabel=Please wait while Setup installs Maxima Spanish language pack on your computer.
+FinishedHeadingLabel=Completing the Maxima Spanish language pack Setup Wizard
+FinishedLabelNoIcons=Setup has finished installing Maxima Spanish language pack on your computer.
+FinishedLabel=Setup has finished installing Maxima Spanish language pack on your computer. The application may be launched by selecting the installed icons.
+FinishedRestartLabel=To complete the installation of Maxima Spanish language pack, Setup must restart your computer. Would you like to restart now?
+FinishedRestartMessage=To complete the installation of Maxima Spanish language pack, Setup must restart your computer.%n%nWould you like to restart now?
 
