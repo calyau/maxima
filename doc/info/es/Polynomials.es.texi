@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.22
 @menu
 * Introducci@'on a los Polinomios::  
 * Definiciones para Polinomios::  
@@ -494,7 +494,9 @@ excepto por el hecho de que se llama a @'{@dotless{i}} misma recursivamente hast
 @deffn {Funci@'on} gcd (@var{p_1}, @var{p_2}, @var{x_1}, ...)
 Devuelve el m@'aximo com@'un divisor de @var{p_1} y @var{p_2}.
 La variable @code{gcd} determiona qu@'e algoritmo se va a utilizar.
-Asign@'andole a @code{gcd} los valores @code{ez}, @code{eez}, @code{subres}, @code{red} o @code{spmod}, se seleccionan los algoritmos @code{ezgcd}, nuevo @code{eez} @code{gcd}, subresultante @code{prs}, reducido o modular, respectivamente.  Si @code{gcd} vale @code{false} entonces @code{gcd(p1,p2,var)} devolver@'a siempre 1 para cualquier @code{var}.  Muchas funciones (por ejemplo,  @code{ratsimp}, @code{factor}, etc.) hacen uso de @code{gcd} impl@'{@dotless{i}}citamente.  En caso de polinomios homog@'eneos se recomienda darle a @code{gcd} el valor @code{subres}.  Para calcular un m@'aximo com@'un divisor en presencia de ra@'{@dotless{i}}ces, como en @code{gcd(x^2-2*sqrt(2)*x+2,x-sqrt(2));} , la variable @code{algebraic} debe igualarse previamente a @code{true} y @code{gcd} no puede ser @code{ez}. Se recomienda utilizar el algoritmo @code{subres} en lugar de @code{red}, por ser aqu@'el m@'as nuevo.
+Asign@'andole a @code{gcd} los valores @code{ez}, @code{subres}, @code{red} o @code{spmod}, se seleccionan los algoritmos @code{ezgcd}, subresultante @code{prs}, reducido o modular, respectivamente.
+Si @code{gcd} vale @code{false} entonces @code{gcd(@var{p_1}, @var{p_2}, @var{x})} devolver@'a siempre 1 para cualquier @var{x}.  Muchas funciones (por ejemplo,  @code{ratsimp}, @code{factor}, etc.) hacen uso de @code{gcd} impl@'{@dotless{i}}citamente.  
+En caso de polinomios homog@'eneos se recomienda darle a @code{gcd} el valor @code{subres}.  Para calcular un m@'aximo com@'un divisor en presencia de ra@'{@dotless{i}}ces, como en @code{gcd (@var{x}^2 - 2*sqrt(2)*@var{x} + 2, @var{x} - sqrt(2))}, la variable @code{algebraic} debe igualarse previamente a @code{true} y @code{gcd} no puede ser @code{ez}. Se recomienda utilizar el algoritmo @code{subres} en lugar de @code{red}, por ser aqu@'el m@'as nuevo.
 
 Cuando la variable @code{gcd}, cuyo valor por defecto es @code{subres}, vale @code{false}, no se calcular@'a el m@'aximo com@'un divisor cuando las expresiones se conviertan a su forma can@'onica (CRE), lo que redundar@'a en ocasiones en mayor rapidez de c@'alculo.
 @c NEEDS EXAMPLES HERE
@@ -819,6 +821,8 @@ Devuelve el coeficiente de la expresi@'on @code{@var{x}^@var{n}} dentro de la ex
 El valor devuelto est@'a libre de las variables en @var{x}, excepto quiz@'as en un sentido no racional. Si no existe un coeficiente de este tipo se devuelve 0.
 
 La funci@'on @code{ratcoef} expande y simplifica racionalmente su primer argumento, por lo que puede dar una respuesta diferente a la dada por la funci@'on @code{coeff}, la cual tiene un car@'acter puramente sint@'actico.
+As@'{@dotless{i}}, @code{ratcoef ((x + 1)/y + x, x)} devuelve @code{(y + 1)/y}, 
+mientras que @code{coeff} devuelve 1.
 
 La llamada @code{ratcoef (@var{expr}, @var{x}, 0)}, siendo @var{expr} una suma, devuelve una suma formada por los t@'erminos que no contienen @var{x}.
 

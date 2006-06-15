@@ -1,4 +1,4 @@
-@c english version 1.22
+@c english version 1.23
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -1308,7 +1308,8 @@ Devuelve una matriz rectangular @var{m} por @var{n} con todos sus elementos igua
 
 @end deffn
 
-@defvr {S@'{@dotless{i}}mbolo especial} "["
+@defvr {S@'{@dotless{i}}mbolo especial} [
+@defvrx {S@'{@dotless{i}}mbolo especial} [
 Los s@'{@dotless{i}}mbolos @code{[} y @code{]} marcan el comienzo y final, respectivamente, de una lista.
 
 Los s@'{@dotless{i}}mbolos @code{[} y @code{]} tambi@'en se utilizan para indicar los sub@'{@dotless{i}}ndices de los elementos de una lista, arreglo o funci@'on arreglo.

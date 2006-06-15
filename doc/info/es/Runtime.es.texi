@@ -1,4 +1,4 @@
-@c version 1.16
+@c version 1.17
 @menu
 * Introducci@'on al Entorno de Ejecuci@'on::   
 * Interrupciones::  
@@ -97,7 +97,7 @@ Devuelve informaci@'on sobre la presencia o ausencia de ciertas caracter@'{@dotl
 @code{status (feature)} devuelve una lista con caracter@'{@dotless{i}}sticas del sistema. @'Estas incluyen la versi@'on de Lisp, tipo de sistema operativo, etc. La lista puede variar de un Lisp a otro.
 @item @code{status (feature, @var{putative_feature})} devuelve @code{true} si @var{putative_feature}
 est@'a en la lista de elementos retornados por @code{status (feature)} y @code{false} en otro caso.
-La funci@'on @code{status} no eval@'ua el argumento @var{putative_feature}. El operador de dobles comillas simples, @code{'@w{}'}, permite la evaluaci@'on. Una caracter@'{@dotless{i}}stica cuyo nombre contenga un car@'acter especial debe ser suministrada como un argumento del tipo cadena alfanum@'erica. Por ejemplo,
+La funci@'on @code{status} no eval@'ua el argumento @var{putative_feature}. El operador comilla-comilla, @code{'@w{}'}, permite la evaluaci@'on. Una caracter@'{@dotless{i}}stica cuyo nombre contenga un car@'acter especial debe ser suministrada como un argumento del tipo cadena alfanum@'erica. Por ejemplo,
 @code{status (feature, "ansi-cl")}.
 @item
 La llamada @code{status (status)} devuelve una lista con dos elementos @code{[feature, status]}. Los elementos @code{feature} y @code{status} son los dos argumentos que acepta la funci@'on @code{status};

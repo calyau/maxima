@@ -1,4 +1,4 @@
-@c version 1.24
+@c version 1.27
 @menu
 * Introducci@'on a la Integraci@'on::
 * Definiciones para Integraci@'on::
@@ -282,7 +282,7 @@ log(x-4)/73-('integrate((x^2+4*x+18)/(x^3+2*x+1),x))/73$
 Definici@'on de una funci@'on mediante una integral.
 El cuerpo de una funci@'on no se eval@'ua cuando @'esta se define, de manera que el cuerpo de 
 @code{f_1} en este ejemplo contiene la forma nominal de @code{integrate}.
-El operador consistente en dos comillas simples @code{'@w{}'} hace que se eval@'ue la integral y su resultado ser@'a el que defina a la funci@'on @code{f_2}.
+El operador comilla-comilla @code{'@w{}'} hace que se eval@'ue la integral y su resultado ser@'a el que defina a la funci@'on @code{f_2}.
 
 @example
 (%i1) f_1 (a) := integrate (x^3, x, 1, a);
@@ -545,6 +545,7 @@ Equivale a @code{ldefint} cuando @code{tlimswitch} vale @code{true}.
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
+@deffnx {Funci@'on} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 Calcula num@'ericamente la integral
 
 @ifhtml
@@ -560,6 +561,9 @@ $$\int_a^b {f(x) dx}$$
 utilizando un integrador adaptativo simple.
 
 La funci@'on a integrar es @var{f(x)}, con variable independiente @var{x}, siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}. El argumento @var{key} indica el integrador a utilizar y debe ser un n@'umero entero entre 1 y 6, ambos inclusive.  El valor de @var{key} selecciona el orden de la regla de integraci@'on de Gauss-Kronrod.
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
 La integraci@'on num@'erica se hace de forma adaptativa particionando la regi@'on de integraci@'on en subintervalos hasta conseguir la precisi@'on requerida.
 
@@ -610,8 +614,12 @@ Ejemplos:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffnx {Funci@'on} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Integra num@'ericamente la funci@'on dada utilizando una cuadratura adaptativa con extrapolaci@'on. La funci@'on a integrar es @var{f(x)}, con variable independiente @var{x}, siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}.
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
 Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
 
@@ -663,6 +671,7 @@ N@'otese que @code{quad_qags} es m@'as precisa y eficiente que @code{quad_qag} p
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+@deffnx {Funci@'on} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
 
 Calcula num@'ericamente cualquiera las siguientes integrales:
 
@@ -687,16 +696,19 @@ $$\int_\infty^a {f(x) dx}$$
 @end tex
 
 @ifhtml
-@math{integrate (f(x), x, a, minf, inf)}
+@math{integrate (f(x), x, minf, inf)}
 @end ifhtml
 @ifinfo
-@math{integrate (f(x), x, a, minf, inf)}
+@math{integrate (f(x), x, minf, inf)}
 @end ifinfo
 @tex
 $$\int_{-\infty}^\infty {f(x) dx}$$
 @end tex
 
 utilizando la rutina QAGI de Quadpack QAGI. La funci@'on a integrar es @var{f(x)}, con variable independiente @var{x}, siendo el intervalo de integraci@'on de rango infinito.
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
 El argumento @var{inftype} determina el intervalo de integraci@'on como sigue:
 
@@ -761,6 +773,7 @@ Ejemplos:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+@deffnx {Funci@'on} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 
 Calcula num@'ericamente el valor principal de Cauchy de
 
@@ -776,6 +789,9 @@ $$\int_{a}^{b}{{{f\left(x\right)}\over{x-c}}\>dx}$$
 
 utilizando la rutina QAWC de Quadpack.  La funci@'on a integrar es
 @code{@var{f(x)}/(@var{x} - @var{c})}, con variable independiente @var{x}, siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}.
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
 
 Los argumentos opcionales @var{epsrel} y @var{limit} son el error relativo y el n@'umero m@'aximo  de subintervalos, respectivamente. La variable @var{epsrel} tiene por defecto el valor 1e-8 y @var{limit} el de 200.
 
@@ -839,6 +855,7 @@ Principal Value
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffnx {Funci@'on} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Calcula num@'ericamente integrales de tipo Fourier utilizando la rutina QAWF de Quadpack.  La integral es
 
@@ -860,6 +877,10 @@ La funci@'on peso @math{w} se selecciona mediante @var{trig}:
 @item sin
 @math{w(x) = sin (omega x)}
 @end table
+
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 
 Los argumentos opcionales son:
 
@@ -925,6 +946,7 @@ Ejemplos:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+@deffnx {Funci@'on} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 
 Realiza la integraci@'on num@'erica utizando la rutina QAWO de Quadpack:
 
@@ -946,6 +968,9 @@ La funci@'on peso @math{w} se selecciona mediante @var{trig}:
 @item sin
 @math{w(x) = sin (omega x)}
 @end table
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 
 Los argumentos opcionales son:
 
@@ -1011,6 +1036,7 @@ Ejemplos:
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+@deffnx {Funci@'on} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
 
 Realiza la integraci@'on num@'erica utizando la rutina QAWS de Quadpack:
 
@@ -1033,9 +1059,12 @@ La funci@'on peso @math{w} se selecciona mediante @var{wfun}:
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a)}
 @item 3
 @math{w(x) = (x - a)^alfa (b - x)^beta log(b - x)}
-@item 2
+@item 4
 @math{w(x) = (x - a)^alfa (b - x)^beta log(x - a) log(b - x)}
 @end table
+
+El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
+o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima
 
 Los argumentos opcionales son:
 

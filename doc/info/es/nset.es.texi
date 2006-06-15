@@ -1,4 +1,4 @@
-@c english version 1.12
+@c english version 1.13
 @menu
 * Introducci@'on a los conjuntos::       
 * Definiciones para los conjuntos::       
@@ -862,7 +862,7 @@ La funci@'on @code{lreduce} facilita calcular el producto o suma de los miembros
 (%o2)                          120
 @end example
 
-V@'ease tambi@'en @code{rreduce}, @code{xreduce} y @code{tree_reduce}.
+V@'eanse tambi@'en @code{rreduce}, @code{xreduce} y @code{tree_reduce}.
 @end deffn
 
 
@@ -1036,7 +1036,7 @@ La funci@'on @code{rreduce} permite calcular f@'acilmente el producto o suma de 
 (%o2)                          120
 @end example
 
-V@'ease tambi@'en @code{lreduce}, @code{tree_reduce} y @code{xreduce}.
+V@'eanse tambi@'en @code{lreduce}, @code{tree_reduce} y @code{xreduce}.
 @end deffn
 
 
