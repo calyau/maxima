@@ -1,2 +1,7 @@
-Windows 9x users should read the section of the readme file on 
-environment space.
+1. Windows 9x users should read the section 
+   of the readme file on environment space.
+
+2. If Maxima GUI doesn't work read the secton 
+   of the readme on firewall.
+
+
