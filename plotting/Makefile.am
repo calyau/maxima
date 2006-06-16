@@ -2,7 +2,14 @@ include $(top_srcdir)/common.mk
 
 SUBDIRS = msgs
 
-verpkglibexec_SCRIPTS = omplotdata mgnuplot
+if WIN32
+TCLKITSH = tclkitsh.exe
+TCLKITDIR = ../../programs/star
+SDXDIR = $(TCLKITDIR)
+WIN32_EXE = omplotdata.exe
+endif
+
+verpkglibexec_SCRIPTS = omplotdata mgnuplot $(WIN32_EXE)
 
 EXTRA_DIST = header.tcl footer.tcl paths.tcl
 
@@ -33,3 +40,15 @@ omplotdata: $(OMPLOTDATASOURCES)
 	rm -f omplotdata && \
 		cat $(OMPLOTDATASOURCES) > omplotdata && \
 		chmod +x omplotdata
+
+omplotdata.tcl: omplotdata
+	cp omplotdata omplotdata.tcl
+
+omplotdata.exe: omplotdata.tcl
+	rm -rf omplotdata.vfs
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit qwrap omplotdata.tcl && \
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit unwrap omplotdata.kit && \
+	$(TCLKITDIR)/$(TCLKITSH) $(SDXDIR)/sdx.kit wrap omplotdata.exe \
+		-runtime $(TCLKITDIR)/tclkit.exe omplotdata.kit
+
+
