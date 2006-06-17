@@ -28,6 +28,25 @@
 (defvar *maxima-tempdir*)
 (defvar *maxima-lang-subdir*)
 
+(defmvar $maxima_tempdir)
+(putprop '$maxima_tempdir 'shadow-string-assignment 'assign)
+(putprop '$maxima_tempdir '*maxima-tempdir* 'lisp-shadow)
+
+(defmvar $maxima_userdir)
+(putprop '$maxima_userdir 'shadow-string-assignment 'assign)
+(putprop '$maxima_userdir '*maxima-userdir* 'lisp-shadow)
+
+(defun shadow-string-assignment (var value)
+  (cond
+    ((mstringp value)
+     (set (get var 'lisp-shadow) (maybe-invert-string-case (symbol-name (stripdollar value))))
+     value)
+    ((stringp value)
+     (set (get var 'lisp-shadow) value)
+     value)
+    (t
+      (merror "Attempt to assign a non-string to ~:M" var))))
+
 (defun print-directories ()
   (format t "maxima-prefix=~a~%" *maxima-prefix*)
   (format t "maxima-imagesdir=~a~%" *maxima-imagesdir*)
@@ -264,7 +283,13 @@
 	(setq *maxima-userdir* (default-userdir)))
     (if maxima-tempdir-env
 	(setq *maxima-tempdir* (maxima-parse-dirstring maxima-tempdir-env))
-	(setq *maxima-tempdir* (default-tempdir))))
+	(setq *maxima-tempdir* (default-tempdir)))
+
+    ; Assign initial values for Maxima shadow variables
+    (setq $maxima_userdir *maxima-userdir*)
+    (setf (gethash '$maxima_userdir *variable-initial-values*) *maxima-userdir*)
+    (setq $maxima_tempdir *maxima-tempdir*)
+    (setf (gethash '$maxima_tempdir *variable-initial-values*) *maxima-tempdir*))
   
   (let* ((ext #+gcl "o"
 	      #+(or cmu scl) (c::backend-fasl-file-type c::*target-backend*)
