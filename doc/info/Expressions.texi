@@ -4,6 +4,7 @@
 * Complex::                     
 * Nouns and Verbs::
 * Identifiers::
+* Strings::
 * Inequality::                  
 * Syntax::                      
 * Definitions for Expressions::  
@@ -151,7 +152,7 @@ Examples:
 (%o11)                       log(42)
 @end example
 
-@node Identifiers, Inequality, Nouns and Verbs, Expressions
+@node Identifiers, Strings, Nouns and Verbs, Expressions
 @section Identifiers
 Maxima identifiers may comprise alphabetic characters,
 plus the numerals 0 through 9,
@@ -220,7 +221,81 @@ Examples:
 (%o12)                         foo
 @end example
 
-@node Inequality, Syntax, Identifiers, Expressions
+@node Strings, Inequality, Identifiers, Expressions
+@section Strings
+
+Strings (quoted character sequences) are enclosed in double quote marks @code{"} for input,
+and displayed with or without the quote marks, 
+depending on the global variable @code{?stringdisp}.
+
+Strings may contain any characters,
+including embedded tab, newline, and carriage return characters.
+The sequence @code{\"} is recognized as a literal double quote,
+and @code{\\} as a literal backslash.
+When backslash appears at the end of a line,
+the backslash and the line termination
+(either newline or carriage return and newline)
+are ignored,
+so that the string continues with the next line.
+No other special combinations of backslash with another character are recognized;
+when backslash appears before any character other than @code{"}, @code{\},
+or a line termination, the backslash is ignored.
+There is no way to represent a special character
+(such as tab, newline, or carriage return)
+except by embedding the literal character in the string.
+
+There is no character type in Maxima;
+a single character is represented as a one-character string.
+
+Maxima strings are implemented as Lisp symbols, not Lisp strings;
+that may change in a future version of Maxima.
+Maxima can display Lisp strings and Lisp characters,
+although some other operations (for example, equality tests) may fail.
+@c DISCOMFORT WITH LISP STRINGS AND CHARACTERS IS A BUG.
+
+The @code{stringproc} add-on package contains many functions for working with strings.
+
+Examples:
+
+@c ===beg===
+@c s_1 : "This is a Maxima string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c ?stringdisp : false;
+@c s_1;
+@c ?stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a Maxima string.";
+(%o1)               This is a Maxima string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) ?stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)               This is a Maxima string.
+(%i7) ?stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)              "This is a Maxima string."
+@end example
+
+@node Inequality, Syntax, Strings, Expressions
 @section Inequality
 Maxima has the inequality operators @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, and @code{notequal}.
 See @code{if} for a description of conditional expressions.
