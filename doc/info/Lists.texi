@@ -340,12 +340,53 @@ Examples:
 
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Function} member (@var{expr}, @var{list})
-Returns @code{true} if @var{expr} occurs as a member of @var{list} (not
-within a member).  Otherwise @code{false} is returned.  @code{member} also works on
-non-list expressions, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
+@deffn {Function} member (@var{expr_1}, @var{expr_2})
+
+Returns @code{true} if @code{is(@var{expr_1} = @var{a})}
+for some element @var{a} in @code{args(@var{expr_2})},
+otherwise returns @code{false}.
+
+@code{expr_2} is typically a list,
+in which case @code{args(@var{expr_2}) = @var{expr_2}}
+and @code{is(@var{expr} = @var{a})} for some element @var{a} in @code{expr_2} is the test.
+
+@code{member} does not inspect parts of the arguments of @var{expr_2},
+so it may return @code{false} even if @var{expr_1} is a part of some argument of @var{expr_2}.
+
+See also @code{elementp}.
+
+Examples:
+
+@c ===beg===
+@c member (8, [8, 8.0, 8b0]);
+@c member (8, [8.0, 8b0]);
+@c member (b, [a, b, c]);
+@c member (b, [[a, b], [b, c]]);
+@c member ([b, c], [[a, b], [b, c]]);
+@c F (1, 1/2, 1/4, 1/8);
+@c member (1/8, %);
+@c member ("ab", ["aa", "ab", sin(1), a + b]);
+@c ===end===
+@example
+(%i1) member (8, [8, 8.0, 8b0]);
+(%o1)                         true
+(%i2) member (8, [8.0, 8b0]);
+(%o2)                         false
+(%i3) member (b, [a, b, c]);
+(%o3)                         true
+(%i4) member (b, [[a, b], [b, c]]);
+(%o4)                         false
+(%i5) member ([b, c], [[a, b], [b, c]]);
+(%o5)                         true
+(%i6) F (1, 1/2, 1/4, 1/8);
+                               1  1  1
+(%o6)                     F(1, -, -, -)
+                               2  4  8
+(%i7) member (1/8, %);
+(%o7)                         true
+(%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
+(%o8)                         true
+@end example
 
 @end deffn
 
