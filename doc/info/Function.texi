@@ -10,7 +10,10 @@
 
 @node Function, Macros, Introduction to Function Definition, Function Definition
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
+@c MENTION DYNAMIC SCOPE (VS LEXICAL SCOPE)
 @section Function
+@subsection Ordinary functions
+
 To define a function in Maxima you use the := operator.
 E.g.
 
@@ -127,6 +130,43 @@ Inside functions, when the right hand side of a definition,
 may be computed at runtime, it is useful to use @code{define} and
 possibly @code{buildq}.  
 
+@subsection Array functions
+
+An array function stores the function value the first time it is called with a given argument,
+and returns the stored value, without recomputing it, when that same argument is given.
+Such a function is often called a @i{memoizing function}.
+
+@c MENTION IN DESCRIPTION OF GLOBAL LIST ARRAYS
+@c MENTION IN DESCRIPTION OF GLOBAL LIST FUNCTIONS THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
+Array function names are appended to the global list @code{arrays}
+(not the global list @code{functions}).
+@c MENTION IN ARRAYINFO AND LISTARRAY THAT THEY APPLY TO ARRAY FUNCTIONS
+@code{arrayinfo} returns the list of arguments for which there are stored values,
+and @code{listarray} returns the stored values. 
+@code{dispfun} and @code{fundef} return the array function definition.
+
+@c MENTION IN FUNMAKE, APPLY THAT THEY DON'T APPLY TO ARRAY FUNCTIONS ??
+@code{arraymake} constructs an array function call,
+analogous to @code{funmake} for ordinary functions.
+@code{arrayapply} applies an array function to its arguments,
+analogous to @code{apply} for ordinary functions.
+There is nothing exactly analogous to @code{map} for array functions,
+although @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} or
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, where @var{L} is a list,
+are not too far off the mark.
+
+@c MENTION IN REMFUNCTION THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
+@code{remarray} removes an array function definition (including any stored function values),
+analogous to @code{remfunction} for ordinary functions.
+
+@c MENTION IN KILL THAT KILL(A[X]) KILLS ONE VALUE OF HASH ARRAY
+@code{kill(@var{a}[@var{x}])} removes the value of the array function @var{a}
+stored for the argument @var{x};
+the next time @var{a} is called with argument @var{x},
+the function value is recomputed.
+However, there is no way to remove all of the stored values at once,
+except for @code{kill(@var{a})} or @code{remarray(@var{a})},
+which also remove the function definition.
 
 @node Macros, Definitions for Function Definition, Function, Function Definition
 @section Macros
@@ -553,6 +593,10 @@ time of definition of the function which contains it.
 All function definitions appear in the same namespace;
 defining a function @code{f} within another function @code{g}
 does not limit the scope of @code{f} to @code{g}.
+
+@c MAKE THIS SAME POINT IN :=
+@code{define} defines array functions (called with arguments in square brackets @code{[ ]})
+as well as ordinary functions.
 
 Examples:
 
