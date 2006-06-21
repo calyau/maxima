@@ -419,22 +419,22 @@ with a variable or list of variables @var{a_k}
 so that @var{a_k} matches expressions
 for which the predicate returns anything other than @code{false}.
 
-The predicate is the name of a function,
-a function call missing the last argument,
+A predicate is the name of a function,
+or a lambda expression,
+or a function call or lambda call missing the last argument,
 or @code{true} or @code{all}.
 Any expression matches @code{true} or @code{all}.
-If the predicate is specified as a function call,
+If the predicate is specified as a function call or lambda call,
 the expression to be tested is appended to the list of arguments;
 the arguments are evaluated at the time the match is evaluated.
-Otherwise, the predicate is specified as a function name,
+Otherwise, the predicate is specified as a function name or lambda expression,
 and the expression to be tested is the sole argument.
 A predicate function need not be defined when @code{matchdeclare} is called;
 the predicate is not evaluated until a match is attempted.
 
-A @code{matchdeclare} predicate cannot be any kind of expression other than a function name or function call.
-In particular, a predicate cannot be a @code{lambda} or @code{block}.
-@c defrule, defmatch, tellsimp/tellsimpafter, let ALL BARF ON LAMBDAS AND OTHER EXPRESSIONS
-@c BUT NOT ENFORCED BY matchdeclare -- THIS IS A BUG
+A predicate may return a Boolean expression as well as @code{true} or @code{false}.
+Boolean expressions are evaluated by @code{is} within the constructed rule function,
+so it is not necessary to call @code{is} within the predicate.
 
 If an expression satisfies a match predicate,
 the match variable is assigned the expression,
@@ -487,12 +487,133 @@ construct rules which test expressions against patterns.
 
 Examples:
 
-@itemize @bullet
-@item
-@code{q} matches an expression not containing @code{x} or @code{%e}.
-@end itemize
+A predicate is the name of a function,
+or a lambda expression,
+or a function call or lambda call missing the last argument,
+or @code{true} or @code{all}.
+
+@c ===beg===
+@c matchdeclare (aa, integerp);
+@c matchdeclare (bb, lambda ([x], x > 0));
+@c matchdeclare (cc, freeof (%e, %pi, %i));
+@c matchdeclare (dd, lambda ([x, y], gcd (x, y) = 1) (1728));
+@c matchdeclare (ee, true);
+@c matchdeclare (ff, all);
+@c ===end===
 @example
-(%i1) matchdeclare (q, freeof (x, %e))$
+(%i1) matchdeclare (aa, integerp);
+(%o1)                         done
+(%i2) matchdeclare (bb, lambda ([x], x > 0));
+(%o2)                         done
+(%i3) matchdeclare (cc, freeof (%e, %pi, %i));
+(%o3)                         done
+(%i4) matchdeclare (dd, lambda ([x, y], gcd (x, y) = 1) (1728));
+(%o4)                         done
+(%i5) matchdeclare (ee, true);
+(%o5)                         done
+(%i6) matchdeclare (ff, all);
+(%o6)                         done
+@end example
+
+If an expression satisfies a match predicate,
+the match variable is assigned the expression.
+
+@c ===beg===
+@c matchdeclare (aa, integerp, bb, atom);
+@c defrule (r1, bb^aa, ["integer" = aa, "atom" = bb]);
+@c r1 (%pi^8);
+@c ===end===
+@example
+(%i1) matchdeclare (aa, integerp, bb, atom);
+(%o1)                         done
+(%i2) defrule (r1, bb^aa, ["integer" = aa, "atom" = bb]);
+                    aa
+(%o2)        r1 : bb   -> [integer = aa, atom = bb]
+(%i3) r1 (%pi^8);
+(%o3)               [integer = 8, atom = %pi]
+@end example
+
+In the case of addition and multiplication,
+the match variable may be assigned a single expression which satisfies the match predicate,
+or a sum or product (respectively) of such expressions.
+
+@c ===beg===
+@c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r1 (8 + a*b + sin(x));
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r2 (8 * (a + b) * sin(x));
+@c ===end===
+@example
+(%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+(%o1)                         done
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb + aa partitions `sum'
+(%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
+(%i3) r1 (8 + a*b + sin(x));
+(%o3)     [all atoms = 8, all nonatoms = sin(x) + a b]
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb aa partitions `product'
+(%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
+(%i5) r2 (8 * (a + b) * sin(x));
+(%o5)    [all atoms = 8, all nonatoms = (b + a) sin(x)]
+@end example
+
+When matching arguments of @code{+} and @code{*},
+if all match predicates are mutually exclusive,
+the match result is insensitive to ordering,
+as one match predicate cannot accept terms matched by another.
+
+@c ===beg===
+@c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r1 (8 + a*b + %pi + sin(x) - c + 2^n);
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r2 (8 * (a + b) * %pi * sin(x) / c * 2^n);
+@c ===end===
+@example
+(%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+(%o1)                         done
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb + aa partitions `sum'
+(%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
+(%i3) r1 (8 + a*b + %pi + sin(x) - c + 2^n);
+                                                     n
+(%o3) [all atoms = %pi + 8, all nonatoms = sin(x) + 2  - c + a b]
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb aa partitions `product'
+(%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
+(%i5) r2 (8 * (a + b) * %pi * sin(x) / c * 2^n);
+                                                  n
+                                         (b + a) 2  sin(x)
+(%o5) [all atoms = 8 %pi, all nonatoms = -----------------]
+                                                 c
+@end example
+
+The functions @code{propvars} and @code{printprops} return information about match variables.
+
+@c ===beg===
+@c matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
+@c matchdeclare (ff, floatnump, gg, lambda ([x], x > 100));
+@c propvars (matchdeclare);
+@c printprops (ee, matchdeclare);
+@c printprops (gg, matchdeclare);
+@c printprops (all, matchdeclare);
+@c ===end===
+@example
+(%i1) matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
+(%o1)                         done
+(%i2) matchdeclare (ff, floatnump, gg, lambda ([x], x > 100));
+(%o2)                         done
+(%i3) propvars (matchdeclare);
+(%o3)             [aa, bb, cc, dd, ee, ff, gg]
+(%i4) printprops (ee, matchdeclare);
+(%o4)                    [integerp(ee)]
+(%i5) printprops (gg, matchdeclare);
+(%o5)              [lambda([x], x > 100, gg)]
+(%i6) printprops (all, matchdeclare);
+(%o6) [lambda([x], x > 100, gg), floatnump(ff), integerp(ee), 
+                      integerp(dd), atom(cc), atom(bb), atom(aa)]
 @end example
 
 @end deffn
