@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.7 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Plot2d.tcl,v 1.8 2006-06-21 09:03:57 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -16,8 +16,8 @@ global plot2dOptions
 set plot2dOptions {
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
-    {width 500 "Width of canvas in pixels"}
-    {height 500 "Height of canvas in pixels" }
+    {width 560 "Width of canvas in pixels"}
+    {height 560 "Height of canvas in pixels" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {xfun "" {function of x to plot eg: sin(x) or "sin(x);x^2+3" }}
     {parameters "" "List of parameters and values eg k=3,l=7+k"}
@@ -34,7 +34,7 @@ set plot2dOptions {
     {plotpoints 0 "if not 0 plot the points at pointsize" }
     {pointsize 2 "radius in pixels of points" }
     {linecolors {blue green red brown gray black} "colors to use for lines in data plots"}
-    {labelposition "10 35" "Position for the curve labels nw corner"}
+    {labelposition "10 15" "Position for the curve labels nw corner"}
     {xaxislabel "" "Label for the x axis"}
     {yaxislabel "" "Label for the y axis"}
     {autoscale "y" "Set {x,y}center and {x,y}range depending on data and function. Value of y means autoscale in y direction, value of {x y} means scale in both.  Supplying data will automatically turn this on."}
@@ -89,8 +89,8 @@ proc  makeFrame2d  { win } {
     set top $w
     catch { set top [winfo parent $w]}
     catch {
-	wm title $top [mc "Schelter's 2d Plot Window"]
-	wm iconname $top "2d plot"
+	wm title $top [mc "Openmath: Plot2d"]
+	wm iconname $top "plot2d"
 	# wm geometry $top 750x700-0+20
     }
     pack $w
@@ -346,7 +346,7 @@ proc replot2d {win } {
 	}
     }
     linkLocal $win parameters
-    makeLocal $win xfun nsteps c linecolors xaxislabel yaxislabel  autoscale sliders
+    makeLocal $win xfun nsteps c linecolors xaxislabel yaxislabel autoscale sliders
     if { "$sliders" != "" && ![winfo exists $c.sliders] } {
 	addSliders $win
     }
@@ -373,12 +373,22 @@ proc replot2d {win } {
 	}
     }
 
-    setUpTransforms $win 1.0
+    setUpTransforms $win 0.8
     set rtosx rtosx$win ; set rtosy rtosy$win
+    makeLocal $win xmin ymin xmax ymax
+    set x1 [rtosx$win $xmin]
+    set x2 [rtosx$win $xmax]
+    set y2 [rtosy$win $ymin]
+    set y1 [rtosy$win $ymax]
+
+    # Draw the two axes
     $c del axes
-    $c create line [$rtosx 0 ] [$rtosy -1000] [$rtosx 0] [$rtosy 1000] -fill $axisGray -tags axes
-    $c create line [$rtosx -1000] [$rtosy 0] [$rtosx 1000] [$rtosy 0] -fill $axisGray -tags axes
-    axisTicks $win $c
+    if { $xmin*$xmax < 0 } {
+	$c create line [$rtosx 0] $y1 [$rtosx 0] $y2 -fill $axisGray -tags axes
+    }
+    if { $ymin*$ymax < 0 } {
+	$c create line $x1 [$rtosy 0] $x2 [$rtosy 0] -fill $axisGray -tags axes
+    }
 
     if { "$xfun" != "" } {
 	oset $win maintitle [concat list "Plot of y = \[oget $win xfun\]" ]
@@ -387,6 +397,15 @@ proc replot2d {win } {
     $c del label
     oset  $win curveNumber -1
     redraw2dData $win -tags path
+
+    # Draw the plot box
+    if { "[$c find withtag printrectangle]" == "" } {
+	$c create rectangle $x1 $y1 $x2 $y2 -tags printrectangle -width 2
+	marginTicks $c [storx$win $x1] [story$win $y2] [storx$win $x2] \
+	    [story$win $y1] "printrectangle marginticks"
+
+    }
+
     $c create text    [expr {[$rtosx 0] + 10}] [expr {[$rtosy [oget $win ymax]] +20}] -text [oget $win yaxislabel] -anchor nw
     $c create text     [expr {[$rtosx [oget $win xmax]] -20}] [expr {[$rtosy 0] - 10}] -text [oget $win xaxislabel] -anchor se
 
@@ -493,10 +512,9 @@ proc plot2dRangesToRadius  { rangex rangey extra } {
 		set max [expr {$max + .5}]
 	    }
 	    #puts "$u has $min,$max"
-	    # use 1.7 to get a bit bigger radius than really necessary.
 	    if { "$max" != "" } {
 		
-		lappend extra -[set u]radius [expr {($max-$min)/1.7}] \
+		lappend extra -[set u]radius [expr {($max-$min)/2.0}] \
 		    -[set u]center [expr {($max+$min)/2.0}]
 	    }
 	}
@@ -599,9 +617,10 @@ proc redraw2dData { win  args } {
 	    default {
 
 		# puts "$type,[lindex $d 1]"
-		if { [lsearch { xfun color plotpoints linecolors pointsize nolines bargraph errorbar maintitle linewidth
-		    labelposition
-		    xaxislabel yaxislabel } $type] >= 0 } {
+		if { [lsearch { xfun color plotpoints linecolors pointsize \
+				    nolines bargraph errorbar maintitle \
+				    linewidth labelposition xaxislabel \
+				    yaxislabel } $type] >= 0 } {
 		    # puts "setting oset $win $type [lindex $d 1]"
 		    oset $win $type [lindex $d 1]
 		} elseif { "$type" == "text" } {
@@ -617,11 +636,13 @@ proc redraw2dData { win  args } {
 }
 
 proc plot2dDrawLabel { win label color } {
-    makeLocal $win c labelposition
+    makeLocal $win c labelposition xmin ymax
     #puts "$win $label $color"
     if { "$label" == ""} {return }
     set bb [$c bbox label]
     desetq "a0 b0" $labelposition
+    set a0 [expr $a0 + [rtosx$win $xmin]]
+    set b0 [expr $b0 + [rtosy$win $ymax]]
     if { "$bb" == "" } { set bb "$a0 $b0 $a0 $b0" }
     desetq "x0 y0 x1 y1" $bb
     set leng  15

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.7 2004-10-30 08:21:07 vvzhy Exp $
+#       $Id: Plotdf.tcl,v 1.8 2006-06-21 09:03:57 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -17,8 +17,8 @@ set plotdfOptions {
 
     {xradius 10 "Width in x direction of the x values" }
     {yradius 10 "Height in y direction of the y values"}
-    {width 500 "Width of canvas in pixels"}
-    {height 500 "Height of canvas in pixels" }
+    {width 560 "Width of canvas in pixels"}
+    {height 560 "Height of canvas in pixels" }
     {scrollregion {} "Area to show if canvas is larger" }
     {xcenter 0.0 {(xcenter,ycenter) is the origin of the window}}
     {ycenter 0.0 "see xcenter"}
@@ -43,7 +43,7 @@ set plotdfOptions {
     {zoomfactor "1.6 1.6" "Factor to zoom the x and y axis when zooming.  Zoom out will be reciprocal" }
     {errorbar 0 "If not 0 width in pixels of errorbar.  Two y values supplied for each x: {y1low y1high y2low y2high  .. }"}
     {data "" "List of data sets to be plotted.  Has form { {xversusy {x1 x2 ... xn} {y1 .. yn ... ym}} .. {againstIndex {y1 y2 .. yn}}  .. }"}
-    {labelposition "10 35" "Position for the curve labels nw corner"}
+    {labelposition "10 15" "Position for the curve labels nw corner"}
 }
 
 if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
@@ -56,8 +56,8 @@ proc makeFrameDf { win } {
     catch { set top [winfo parent $win]}
     catch {
 
-	wm title $top [mc "Direction Fields"]
-	wm iconname $top "DF plot"
+	wm title $top [mc "Openmath: Plotdf"]
+	wm iconname $top "plotdf"
 	#    wm geometry $top 750x700-0+20
     }
     set wb $w.plotmenu
@@ -138,7 +138,7 @@ proc doHelpdf { win } {
 
 proc setForIntegrate { win} {
     makeLocal $win c
-    $c delete printrectangle
+#    $c delete printrectangle
     bind $c  <1> "doIntegrateScreen $win %x %y "
 }
 
@@ -350,17 +350,21 @@ proc drawDF { win tinitial } {
     set xfactor [lindex $transform 0]
     set yfactor [lindex $transform 3]
     set extra $stepsize
-    set uptox [expr {[$rtosx $xmax] + $extra}]
-    set uptoy [expr {[$rtosy $ymin] + $extra}]
+    set uptox [$rtosx $xmax]
+    set uptoy [$rtosy $ymin]
+#    set uptox [expr {[$rtosx $xmax] + $extra}]
+#    set uptoy [expr {[$rtosy $ymin] + $extra}]
+#    set uptox [expr {[$rtosx $xmax] + $extra}]
+#    set uptoy [expr {[$rtosy $ymin] + $extra}]
     # draw the axes:
     #puts "draw [$rtosx $xmin] to $uptox"
-    for { set x [expr {[$rtosx $xmin] - $extra}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
-	for { set y [expr {[$rtosy $ymax] - $extra}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
+    for { set x [expr {[$rtosx $xmin] + $extra}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
+	for { set y [expr {[$rtosy $ymax] + $extra}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
 	    set args "$t0 [$storx $x] [$story $y]"
 	    set dfx [expr {$xfactor * [eval xff $args]}]
 	    # screen y is negative of other y
 	    set dfy [expr  {$yfactor * [eval yff $args]}]
-	    #     puts "$dfx $dfy"
+	    # puts "$dfx $dfy"
 	    set len  [vectorlength $dfx $dfy]
 	    append all " $len $dfx $dfy "
 	    if { $min > $len } { set min $len }
@@ -381,10 +385,9 @@ proc drawDF { win tinitial } {
     # puts "now to draw,s1=$s1 s2=$s2,max=$max,min=$min"
     # puts "xfactor=$xfactor,yfactor=$yfactor"
 
-
     set i -1
-    for { set x [expr {[$rtosx $xmin] - $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
-	for { set y [expr {[$rtosy $ymax] - $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
+    for { set x [expr {[$rtosx $xmin] + $stepsize}] } { $x < $uptox } { set x [expr {$x +$stepsize}] } {
+	for { set y [expr {[$rtosy $ymax] + $stepsize}] } { $y < $uptoy } { set y [expr {$y + $stepsize}] } {
 	
 	
 	    set len [lindex $all [incr i]]
@@ -398,11 +401,26 @@ proc drawDF { win tinitial } {
         }
     }
 
-    $c create line [$rtosx 0 ] [$rtosy -1000] [$rtosx 0] [$rtosy 1000] \
-	-fill $axisGray
-    $c create line [$rtosx -1000] [$rtosy 0] [$rtosx 1000] [$rtosy 0] \
-	-fill $axisGray
-    axisTicks $win $c
+    # Draw the two axes
+    if { $xmin*$xmax < 0 } {
+	$c create line [$rtosx 0 ] [$rtosy $ymax] [$rtosx 0] [$rtosy $ymin] \
+                       -fill $axisGray
+    }
+    if { $ymin*$ymax < 0 } {
+	$c create line [$rtosx $xmin] [$rtosy 0] [$rtosx $xmax] [$rtosy 0] \
+                       -fill $axisGray
+    }
+    # Draw the plot box
+    if { "[$c find withtag printrectangle]" == "" } {
+	set x1 [rtosx$win $xmin]
+	set y1 [rtosy$win $ymax]
+	set x2 [rtosx$win $xmax]
+	set y2 [rtosy$win $ymin]
+	$c create rectangle $x1 $y1 $x2 $y2 -tags printrectangle -width 2
+	marginTicks $c [storx$win $x1] [story$win $y2] [storx$win $x2] \
+	    [story$win $y1] "printrectangle marginticks"
+
+    }
 }
 
 proc parseOdeArg {  s } {
@@ -448,7 +466,6 @@ proc plotdf { args } {
     oset $win sliderCommand sliderCommandDf
     oset $win trajectoryStarts ""
 
-
     oset $win maintitle [concat "makeLocal $win  dxdt dydt dydx ;"  \
 			     {if { "$dydx" == "" } { concat "dx/dt = $dxdt , dy/dt = $dydt"}  else {
 				 concat "dy/dx = $dydt" } } ]
@@ -463,8 +480,7 @@ proc replotdf { win } {
 	
     }
     makeLocal $win c dxdt dydt tinitial nsteps xfun     trajectory_at parameters
-
-    setUpTransforms $win 1.0
+    setUpTransforms $win 0.8
     setXffYff $dxdt $dydt $parameters
     $c delete all
     setForIntegrate $win
@@ -483,6 +499,18 @@ proc replotdf { win } {
     }
     redraw2dData $win -tags path
 
+    # Draw the plot box
+    if { "[$c find withtag printrectangle]" == "" } {
+	makeLocal $win xmin ymin xmax ymax
+	set x1 [rtosx$win $xmin]
+	set y1 [rtosy$win $ymax]
+	set x2 [rtosx$win $xmax]
+	set y2 [rtosy$win $ymin]
+	$c create rectangle $x1 $y1 $x2 $y2 -tags printrectangle -width 2
+	marginTicks $c [storx$win $x1] [story$win $y2] [storx$win $x2] \
+	    [story$win $y1] "printrectangle marginticks"
+
+    }
 }
 
 proc setXffYff { dxdt dydt parameters } {

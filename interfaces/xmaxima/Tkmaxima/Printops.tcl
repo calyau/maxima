@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Printops.tcl,v 1.7 2006-06-09 13:02:31 villate Exp $
+#       $Id: Printops.tcl,v 1.8 2006-06-21 09:03:57 villate Exp $
 #
 ###### Printops.tcl ######
 ############################################################
@@ -13,7 +13,7 @@ global paperSizes printOptions
 set paperSizes {{letter 8.5 11} { A4 8.5 11} {legal 8.5 13}}
 
 set printOptions {
-    { landscape  1 "Non zero means use landscape mode in printing"}
+    { landscape 0 "Non zero means use landscape mode in printing"}
     { tofile 1 "Non zero means print to file"}
     { pagewidth "" "Figure width"}
     { pageheight "" "Figure height"}

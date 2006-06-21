@@ -1,11 +1,11 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.17 2004-10-28 18:26:29 vvzhy Exp $
+#       $Id: Constants.tcl,v 1.18 2006-06-21 09:03:57 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
     global maxima_default
-    set maxima_default(plotwindow) embedded
+    set maxima_default(plotwindow) multiple
 
     # from Send-some.tcl
     set maxima_default(sMathServerHost) genie1.ma.utexas.edu

@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.10 2004-10-30 08:21:07 vvzhy Exp $
+#       $Id: Plotconf.tcl,v 1.11 2006-06-21 09:03:57 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -66,7 +66,7 @@ proc makeFrame { w type } {
     ##setBalloonhelp $win $wb.help {Give more help about this plot window}
     $w.plotmenu.m add command -label [mc "Save"] -command "writePostscript $w" -font $buttonFont
     ##setBalloonhelp $win $wb.postscript {Prints or Saves the plot in postscript format.  The region to be printed is marked using Mark.   Other print options can be obtained by using "Print Options" in the Config menu }
-    $w.plotmenu.m add command -label [mc "Mark"] -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
+#    $w.plotmenu.m add command -label [mc "Mark"] -command "markToPrint $c printrectangle \[eval \[oget $win maintitle\]\]" -font $buttonFont
     ##setBalloonhelp $win $wb.markrect {Mark the region to be printed.  Causes the left mouse button to allow marking of a rectangle by clicking at the upper left corner, and dragging the mouse to the lower right corner.  The title can be set under "Print Options" under Config}
     $w.plotmenu.m add command -label [mc "Replot"] -command "replot$type $win" -font $buttonFont
     ##setBalloonhelp $win $wb.replot {Use the current settings and recompute the plot.  The settings may be altered in Config}
@@ -267,7 +267,7 @@ proc doZoomXY { win x y facx facy } {
     oset $win transform $ntransform
     getXtransYtrans $ntransform rtosx$win rtosy$win
     getXtransYtrans [inverseTransform $ntransform] storx$win story$win
-    axisTicks $win $c
+    # axisTicks $win $c
 }
 
 
@@ -326,13 +326,7 @@ proc writePostscript { win } {
     makeLocal $win c transform transform0 xmin ymin xmax ymax
     set rtosx rtosx$win ; set rtosy rtosy$win
     drawPointsForPrint $c
-    if { "[$c find withtag printrectangle]" == "" } {
-	# $c create rectangle [$rtosx $xmin] [$rtosy $ymin] [$rtosx $xmax] [$rtosy $ymax] -tags printrectangle -width .5
-	$c create rectangle [$c canvasx 0] [$c canvasy 0] [$c canvasx [$c cget -width ]] [$c canvasy [$c cget -height ]]   -tags printrectangle -width .5	
-	unbindAdjustWidth $c printrectangle [eval [oget $win maintitle]]
-    }
     $c delete balloon
-
 
     set bbox [eval $c bbox [$c find withtag printrectangle]]
     desetq "x1 y1 x2 y2" $bbox
@@ -379,10 +373,6 @@ proc writePostscript { win } {
 	    set fi [open $printOption(psfilename) w]
 	    puts $fi $output
 	    close $fi
-	} 2 {
-	    global ftpInfo
-	    set ftpInfo(data) $output
-	    ftpDialog $win
 	}
     }
     #    if { $printOption(tofile) } {
@@ -676,7 +666,7 @@ proc setUpTransforms { win fac } {
 
     oset $win xmin $xmin
     oset $win xmax $xmax
-    oset  $win ymin $ymin
+    oset $win ymin $ymin
     oset $win ymax $ymax
 
     oset $win transform [makeTransform "$xmin $ymin $x1 $y2" "$xmin $ymax $x1 $y1 " "$xmax $ymin $x2 $y2"]
@@ -832,14 +822,19 @@ proc getTicks { a b n } {
 	set val($v)  [expr {ceil(log10($len/(double($n)*$v)))}]
 	set use [expr {$v*pow(10,$val($v))}]
 	set fac [expr {1/$use}]
-	set aa [expr {$a * $fac + .03}]
-	set bb [expr {$b * $fac -.03}]
+	set aa [expr {$a * $fac}]
+	set bb [expr {$b * $fac}]
 	set j [expr {round(ceil($aa)) }]
 	set upto [expr {floor($bb) }]
+	if { $upto-$j > 14} {
+	    set step 5
+	} else {
+	    set step 2
+	}
 	set ticks ""
 	while { $j <= $upto } {
 	    set tt [expr {$j / $fac}]
-	    if { $j%5 == 0 } {
+	    if { $j%$step == 0 } {
 		append ticks " { $tt $tt }"
 	    } else  {
 		append ticks " $tt"
@@ -927,8 +922,8 @@ proc marginTicks { c x1 y1 x2 y2 tag }  {
     foreach v $ticks {
 	set x [lindex $v 0]
 	set text [lindex $v 1]
-	drawTick $c $x $y1 0 0 0 $neps  $text $tag
-	drawTick $c $x $y2 0 0 0 $eps  $text $tag
+	drawTick $c $x $y1 0 0 0 $eps $text $tag
+	drawTick $c $x $y2 0 0 0 $neps {} $tag
 	
     }
     #puts "y=$y2,$y1"
@@ -939,8 +934,8 @@ proc marginTicks { c x1 y1 x2 y2 tag }  {
     foreach v $ticks {
 	set y [lindex $v 0]
 	set text [lindex $v 1]
-	drawTick $c $x1 $y 0 0 $eps 0  $text $tag
-	drawTick $c $x2 $y 0 0 $neps 0  $text $tag
+	drawTick $c $x1 $y 0 0 $neps 0 $text $tag
+	drawTick $c $x2 $y 0 0 $eps 0 {} $tag
     }
 }
 
@@ -1147,19 +1142,12 @@ proc resizePlotWindow  { w width height } {
 
     }
 
-
-    #puts "width arg=$width,width $w=[winfo width $w],wid of $par=$wid,height=$height,hei=$hei,\[winfo width \$w.c\]=[winfo width $w.c]"
     #     if { $width > $wid -20 || $wid > $width -20 }
     if { (abs($width-$wid) > $dif ||  abs($height-$hei) > $dif)
 	 &&  [winfo width $w.c] > 1 } {
 	set eps [expr {2 * [$w.c cget -insertborderwidth] + [$w.c cget -borderwidth] }]
 	set epsx $eps
 	set epsy $eps
-	#puts "reconfiguring: w=$w,par=$par,dif=$dif,widths=$wid, \
-	    $width,[winfo width $par],[winfo width $w],[winfo width $w.c]\
-	    heights=$hei,$height,[winfo height $par],[winfo height $w],\
-	    [winfo height $w.c]"
-
 	set extrawidth [expr {([winfo width $w] - [winfo width  $w.c]) +$epsx}]
 	set extraheight [expr {([winfo height $w] - [winfo height  $w.c]) +$epsy}]
 	set nwidth [expr {$wid - ($extrawidth > 0  ? $extrawidth : 0)}]
