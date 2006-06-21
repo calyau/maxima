@@ -32,6 +32,11 @@ if { [catch { set buttonfont} ] } {
 package require msgcat
 namespace import msgcat::*
 
+proc M {str args} {
+    if {$args == ""} {return $str}
+    return [eval [list format $str] $args]
+}
+
 ###
 
 
