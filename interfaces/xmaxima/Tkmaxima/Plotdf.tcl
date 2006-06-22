@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotdf.tcl,v 1.8 2006-06-21 09:03:57 villate Exp $
+#       $Id: Plotdf.tcl,v 1.9 2006-06-22 10:24:43 villate Exp $
 #
 ###### Plotdf.tcl ######
 #######################################################################
@@ -46,7 +46,6 @@ set plotdfOptions {
     {labelposition "10 15" "Position for the curve labels nw corner"}
 }
 
-if { "[info proc makeFrame]" == "" } { source "plotconf.tcl" }
 proc makeFrameDf { win } {
     set w [makeFrame $win df]
     makeLocal $win c dydx
@@ -479,7 +478,7 @@ proc replotdf { win } {
 	set data ""
 	
     }
-    makeLocal $win c dxdt dydt tinitial nsteps xfun     trajectory_at parameters
+    makeLocal $win c dxdt dydt tinitial nsteps xfun trajectory_at parameters
     setUpTransforms $win 0.8
     setXffYff $dxdt $dydt $parameters
     $c delete all
@@ -498,19 +497,6 @@ proc replotdf { win } {
 		 0 xversusy]
     }
     redraw2dData $win -tags path
-
-    # Draw the plot box
-    if { "[$c find withtag printrectangle]" == "" } {
-	makeLocal $win xmin ymin xmax ymax
-	set x1 [rtosx$win $xmin]
-	set y1 [rtosy$win $ymax]
-	set x2 [rtosx$win $xmax]
-	set y2 [rtosy$win $ymin]
-	$c create rectangle $x1 $y1 $x2 $y2 -tags printrectangle -width 2
-	marginTicks $c [storx$win $x1] [story$win $y2] [storx$win $x2] \
-	    [story$win $y1] "printrectangle marginticks"
-
-    }
 }
 
 proc setXffYff { dxdt dydt parameters } {
