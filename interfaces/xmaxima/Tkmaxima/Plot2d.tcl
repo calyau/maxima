@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plot2d.tcl,v 1.8 2006-06-21 09:03:57 villate Exp $
+#       $Id: Plot2d.tcl,v 1.9 2006-06-22 10:16:45 villate Exp $
 #
 ###### Plot2d.tcl ######
 ############################################################
@@ -405,11 +405,11 @@ proc replot2d {win } {
 	    [story$win $y1] "printrectangle marginticks"
 
     }
-
-    $c create text    [expr {[$rtosx 0] + 10}] [expr {[$rtosy [oget $win ymax]] +20}] -text [oget $win yaxislabel] -anchor nw
-    $c create text     [expr {[$rtosx [oget $win xmax]] -20}] [expr {[$rtosy 0] - 10}] -text [oget $win xaxislabel] -anchor se
-
-
+    # Write down the axes labels
+    $c create text [expr {$x1 - 50}] [expr {$y1 + 20}] -anchor ne \
+	           -text [oget $win yaxislabel] -font {helvetica 20 normal}
+    $c create text [expr {$x2 - 20}] [expr {$y2 + 30}] -anchor ne \
+                   -text [oget $win xaxislabel] -font {helvetica 20 normal}
 }
 
 
@@ -574,8 +574,6 @@ proc redraw2dData { win  args } {
 				    $c create line [expr {$xx - $errorbar}] $y1 [expr {$xx +$errorbar}] $y1 $xx $y1 $xx $y2 [expr {$xx -$errorbar}] $y2 [expr {$xx + $errorbar}] $y2  -tags [list [concat $tags line[oget $win curveNumber]]]  -fill $color
 				}
 			    }
-			
-			
 			    set yvalues [lrange $yvalues [llength $xvalues] end]
 			} else {
 
@@ -587,10 +585,8 @@ proc redraw2dData { win  args } {
 			    drawPlot $win [list $ans] -tags [list [concat $tags line[oget $win curveNumber]]]  -fill $color -label $label
 			}
 			set label _default
-
 			set yvalues [lrange $yvalues [llength $xvalues] end]
 		    }
-
 		}
 	    }
 	    againstIndex {
@@ -607,9 +603,9 @@ proc redraw2dData { win  args } {
 		    -fill $color -width $linewidth -label $label
 		set label _default
 
-		#	       eval $c create line $ans -tags \
-		    #		        [list [concat $tags line[oget $win curveNumber]]] \
-		    #		       -fill $color -width .2
+		# eval $c create line $ans -tags \
+		#  [list [concat $tags line[oget $win curveNumber]]] \
+		#  -fill $color -width .2
 	    }
 	    label {
 		set label [lindex $d 1]
@@ -620,19 +616,17 @@ proc redraw2dData { win  args } {
 		if { [lsearch { xfun color plotpoints linecolors pointsize \
 				    nolines bargraph errorbar maintitle \
 				    linewidth labelposition xaxislabel \
-				    yaxislabel } $type] >= 0 } {
+				    yaxislabel dydx } $type] >= 0 } {
 		    # puts "setting oset $win $type [lindex $d 1]"
 		    oset $win $type [lindex $d 1]
 		} elseif { "$type" == "text" } {
 		    desetq "x y text" [lrange $d 1 end]
-		    $c create text [$rtosx $x] [$rtosy $y] -anchor nw -text $text -tags "text all" -font times-roman
+		    $c create text [$rtosx $x] [$rtosy $y] -anchor nw \
+			-text $text -tags "text all" -font {times 16 normal}
 		}
-
 	    }
-
 	}
     }
-
 }
 
 proc plot2dDrawLabel { win label color } {
