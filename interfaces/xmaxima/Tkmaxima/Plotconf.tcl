@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.11 2006-06-21 09:03:57 villate Exp $
+#       $Id: Plotconf.tcl,v 1.12 2006-06-22 10:13:36 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -650,14 +650,12 @@ proc setUpTransforms { win fac } {
 
     set delx [$c cget -width]
     set dely [$c cget -height]
-    set f1 [expr {(1 - $fac)/2.0}]
+    set f1 [expr {(1 - $fac)/3.0}]
 
-    set x1 [expr {$f1 *$delx}]
+    set x1 [expr {2* $f1 *$delx}]
     set y1 [expr {$f1 *$dely}]
     set x2 [expr {$x1 + $fac*$delx}]
-    set y2 [expr {$x1 + $fac*$dely}]
-
-
+    set y2 [expr {$y1 + $fac*$dely}]
 
     set xmin [expr {$xcenter - $xradius}]
     set xmax [expr {$xcenter + $xradius}]
