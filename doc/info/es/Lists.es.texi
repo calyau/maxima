@@ -1,4 +1,4 @@
-@c version 1.25
+@c version 1.26
 @menu
 * Introducci@'on a las listas::       
 * Definiciones para listas::       
@@ -270,9 +270,54 @@ Ejemplos:
 
 @end deffn
 
-@deffn {Funci@'on} member (@var{expr}, @var{lista})
+@deffn {Funci@'on} member (@var{expr_1}, @var{expr_2})
 
-Devuelve el valor @code{true} si @var{expr} resulta ser un miembro de la @var{lista} (no que forme parte de uno de sus miembros). En caso contrario se devuelve @code{false}. La funci@'on  @code{member} tambi@'en opera sobre expresiones que no son necesariamente listas, como por ejemplo @code{member(b,f(a,b,c));}  ->  @code{true}.
+Devuelve @code{true} si @code{is(@var{expr_1} = @var{a})}
+para alg@'un elemento @var{a} de @code{args(@var{expr_2})},
+en caso contrario devuelve @code{false}.
+
+Normalmente, @code{expr_2} ser@'a una lista,
+en cuyo caso @code{args(@var{expr_2}) = @var{expr_2}},
+y la comprobaci@'on ser@'a si @code{is(@var{expr_1} = @var{a})} para 
+alg@'un elemento @var{a} de @code{expr_2}.
+
+La funci@'on @code{member} no inspecciona las partes de los argumentos de @code{expr_2},
+por lo que puede devolver @code{false} si @code{expr_1} es parte de alguno de los argumentos de @code{expr_2}.
+
+V@'ease tambi@'en @code{elementp}.
+
+Ejemplos:
+
+@c ===beg===
+@c member (8, [8, 8.0, 8b0]);
+@c member (8, [8.0, 8b0]);
+@c member (b, [a, b, c]);
+@c member (b, [[a, b], [b, c]]);
+@c member ([b, c], [[a, b], [b, c]]);
+@c F (1, 1/2, 1/4, 1/8);
+@c member (1/8, %);
+@c member ("ab", ["aa", "ab", sin(1), a + b]);
+@c ===end===
+@example
+(%i1) member (8, [8, 8.0, 8b0]);
+(%o1)                         true
+(%i2) member (8, [8.0, 8b0]);
+(%o2)                         false
+(%i3) member (b, [a, b, c]);
+(%o3)                         true
+(%i4) member (b, [[a, b], [b, c]]);
+(%o4)                         false
+(%i5) member ([b, c], [[a, b], [b, c]]);
+(%o5)                         true
+(%i6) F (1, 1/2, 1/4, 1/8);
+                               1  1  1
+(%o6)                     F(1, -, -, -)
+                               2  4  8
+(%i7) member (1/8, %);
+(%o7)                         true
+(%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
+(%o8)                         true
+@end example
 
 @end deffn
 

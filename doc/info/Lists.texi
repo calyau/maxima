@@ -348,10 +348,10 @@ otherwise returns @code{false}.
 
 @code{expr_2} is typically a list,
 in which case @code{args(@var{expr_2}) = @var{expr_2}}
-and @code{is(@var{expr} = @var{a})} for some element @var{a} in @code{expr_2} is the test.
+and @code{is(@var{expr_1} = @var{a})} for some element @var{a} in @code{expr_2} is the test.
 
-@code{member} does not inspect parts of the arguments of @var{expr_2},
-so it may return @code{false} even if @var{expr_1} is a part of some argument of @var{expr_2}.
+@code{member} does not inspect parts of the arguments of @code{expr_2},
+so it may return @code{false} even if @code{expr_1} is a part of some argument of @code{expr_2}.
 
 See also @code{elementp}.
 
