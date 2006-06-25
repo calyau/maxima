@@ -1,10 +1,11 @@
-@c english version 1.42
+@c english version 1.48
 @menu
 * Introducci@'on a las Expresiones::  
 * Asignaci@'on::
 * Expresiones complejas::
 * Nombres y verbos::
 * Identificadores::
+* Cadenas de caracteres::
 * Desigualdades::
 * Sintaxis::
 * Definiciones para Expresiones::
@@ -142,7 +143,7 @@ Ejemplos:
 (%o11)                       log(42)
 @end example
 
-@node Identificadores, Desigualdades, Nombres y verbos, Expresiones
+@node Identificadores, Cadenas de caracteres, Nombres y verbos, Expresiones
 @section Identificadores
 
 En Maxima, los identificadores pueden contener caracteres alfab@'eticos, n@'umeros del 0 al 9 y cualquier otro car@'acter precedido de la barra invertida @code{\}.
@@ -208,7 +209,82 @@ Ejemplos:
 (%o12)                         foo
 @end example
 
-@node Desigualdades, Sintaxis, Identificadores, Expresiones
+
+@node Cadenas de caracteres, Desigualdades, Identificadores, Expresiones
+@section Cadenas de caracteres
+
+Las cadenas de caracteres deben ir acotadas por comillas dobles (@code{"})
+al ser introducidas en Maxima, siendo luego mostradas con o sin ellas, 
+dependiendo del valor de la variable global @code{?stringdisp}.
+
+Las cadenas pueden contener todo tipo de caracteres, incluyendo tabulaciones,
+caracteres de nueva l@'{@dotless{i}}nea y de retorno.
+La secuencia @code{\"} se reconoce literalmente como una comilla doble, al
+tiempo que @code{\\} se interpreta como una barra invertida. Cuando la barra
+invertida aparece al final de una l@'{@dotless{i}}nea, tanto la barra como el
+final de l@'{@dotless{i}}nea (representado @'este bien por el car@'acter de nueva 
+l@'{@dotless{i}}nea o el de retorno) son ignorados, de forma que la cadena
+contin@'ua en el siguiente rengl@'on. No se reconocen m@'as combinaciones especiales
+de la barra invertida con otros caracteres aparte de las comentadas; de modo
+que si la barra invertida aparece antes de cualquier otro car@'acter distinto de
+@code{"}, @code{\}, o de un final de l@'{@dotless{i}}nea, dicha barra ser@'a
+ignorada.
+No hay manera de representar los caracteres especiales
+(tabulaci@'on, nueva l@'{@dotless{i}}nea o retorno) de otra
+forma que no sea incluy@'endolos literalmente en la cadena.
+
+No existe en Maxima el tipo de variable car@'acter, debi@'endose
+representar un car@'acter simple como una cadena de un solo car@'acter.
+
+En Maxima, las cadenas de caracteres se implementan como s@'{@dotless{i}}mbolos
+de Lisp, no como cadenas de Lisp, lo cual puede cambiar en versiones futuras de Maxima.
+Maxima puede representar cadenas y caracteres de Lisp, aunque algunas operaciones,
+como las pruebas de igualdad, pueden no funcionar correctamente.
+
+El paquete adicional @code{stringproc} contiene muchas funciones que
+permiten trabajar con cadenas.
+
+Ejemplos:
+
+@c ===beg===
+@c s_1 : "This is a Maxima string.";
+@c s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+@c s_3 : "Embedded line termination
+@c in this string.";
+@c s_4 : "Ignore the \
+@c line termination \
+@c characters in \
+@c this string.";
+@c ?stringdisp : false;
+@c s_1;
+@c ?stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "This is a Maxima string.";
+(%o1)               This is a Maxima string.
+(%i2) s_2 : "Embedded \"double quotes\" and backslash \\ characters.";
+(%o2) Embedded "double quotes" and backslash \ characters.
+(%i3) s_3 : "Embedded line termination
+in this string.";
+(%o3) Embedded line termination
+in this string.
+(%i4) s_4 : "Ignore the \
+line termination \
+characters in \
+this string.";
+(%o4) Ignore the line termination characters in this string.
+(%i5) ?stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)               This is a Maxima string.
+(%i7) ?stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)              "This is a Maxima string."
+@end example
+
+@node Desigualdades, Sintaxis, Cadenas de caracteres, Expresiones
 @section Desigualdades
 
 Maxima dispone de los operadores de desigualdad @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#} y @code{notequal}.
@@ -437,13 +513,17 @@ La llamada @code{box (@var{expr}, @var{a})}
 encierra @var{expr} en una caja etiquetada con el s@'{@dotless{i}}mbolo @var{a}.
 La etiqueta se recorta si es m@'as larga que el ancho de la caja.
 
-La expresi@'on encerrada no se eval@'ua, siendo exclu@'{@dotless{i}}da de los c@'alculos.
+La funci@'on @code{box} eval@'ua su argumento. Sin embargo, la expresi@'on 
+encerrada no se eval@'ua, siendo exclu@'{@dotless{i}}da de los c@'alculos.
 
 La variable @code{boxchar} guarda el car@'acter a utilizar para dibujar la caja en las funciones @code{box}, @code{dpart} y @code{lpart}.
 
 Ejemplos:
 
 @c ===beg===
+@c box (a^2 + b^2);
+@c a : 1234;
+@c b : c - d;
 @c box (a^2 + b^2);
 @c box (a^2 + b^2, term_1);
 @c 1729 - box (1729);
@@ -452,26 +532,34 @@ Ejemplos:
 @c ===end===
 @example
 (%i1) box (a^2 + b^2);
-             """""""""
-             " 2   2 "
-(%o1)        "b  + a "
-             """""""""
-(%i2) box (a^2 + b^2, term_1);
-             term_1"""
-             " 2   2 "
-(%o2)        "b  + a "
-             """""""""
-(%i3) 1729 - box (1729);
-                  """"""
-(%o3)      1729 - "1729"
-                  """"""
-(%i4) boxchar: "-";
-(%o4)            -
-(%i5) box (sin(x) + cos(y));
-                -----------------
-(%o5)           -COS(y) + SIN(x)-
-                -----------------
-(%i6) 
+                            """""""""
+                            " 2    2"
+(%o1)                       "b  + a "
+                            """""""""
+(%i2) a : 1234;
+(%o2)                         1234
+(%i3) b : c - d;
+(%o3)                         c - d
+(%i4) box (a^2 + b^2);
+                      """"""""""""""""""""
+                      "       2          "
+(%o4)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i5) box (a^2 + b^2, term_1);
+                      term_1""""""""""""""
+                      "       2          "
+(%o5)                 "(c - d)  + 1522756"
+                      """"""""""""""""""""
+(%i6) 1729 - box (1729);
+                                 """"""
+(%o6)                     1729 - "1729"
+                                 """"""
+(%i7) boxchar: "-";
+(%o7)                           -
+(%i8) box (sin(x) + cos(y));
+                        -----------------
+(%o8)                   -cos(y) + sin(x)-
+                        -----------------
 @end example
 
 @end deffn
@@ -565,68 +653,428 @@ Ejemplos:
 
 @example
 (%i1) constantp (7 * sin(2));
-(%o1) 				     TRUE
+(%o1) 				     true
 (%i2) constantp (rat (17/29));
-(%o2) 				     TRUE
+(%o2) 				     true
 (%i3) constantp (%pi * sin(%e));
-(%o3) 				     TRUE
+(%o3) 				     true
 (%i4) constantp (exp (x));
-(%o4) 				     FALSE
+(%o4) 				     false
 (%i5) declare (x, constant);
-(%o5) 				     DONE
+(%o5) 				     done
 (%i6) constantp (exp (x));
-(%o6) 				     TRUE
+(%o6) 				     true
 (%i7) constantp (foo (x) + bar (%e) + baz (2));
-(%o7) 				     FALSE
+(%o7) 				     false
 (%i8) 
 @end example
 @end deffn
 
 @deffn {Funci@'on} declare (@var{a_1}, @var{f_1}, @var{a_2}, @var{f_2}, ...)
-Asigna al @'atomo @var{a_i} la caracter@'{@dotless{i}}stica @var{f_i}.
-Las @var{a_i} y las @var{f_i} tambi@'en pueden ser listas de @'atomos y caracter@'{@dotless{i}}sticas, respectivamente, en cuyo caso cada @'atomo toma todas las caracter@'{@dotless{i}}sticas.
+Asigna al @'atomo o lista de @'atomos @var{a_i} la propiedad o lista de 
+propiedades@var{p_i}. Si @var{a_i} y/o @var{p_i} son listas, cada uno de
+los @'atomos adquiere todas las propiedades.
 
-La funci@'on @code{declare} no eval@'ua sus argumentos y devuelve siempre @code{done}.
+La funci@'on @code{declare} no eval@'ua sus argumentos y siempre devuelve la
+expresi@'on @code{done}.
 
-Las posibles caracter@'{@dotless{i}}sticas y sus significados son:
-
-@code{constant} convierte a @var{a_i} en una constante, como @code{%pi}.
-
-@code{mainvar} convierte a @var{a_i} en @code{mainvar}.  Ordenaci@'on de los @'atomos: n@'umeros <
-constantes (como @code{%e}, @code{%pi}) < escalares < otras variables < mainvars.
-
-@code{scalar} convierte a @var{a_i} en escalar.
-
-@code{nonscalar} hace que @var{a_i} se comporte como una lista o matriz ante el operador punto.
-
-@code{noun} convierte la funci@'on @var{a_i} en un nombre, de manera que no se eval@'ue autom@'aticamente.
-
-@code{evfun} hace que @var{a_i} sea reconocida por la funci@'on @code{ev} de manera que se aplique cuando se mencione su nombre.  V@'ease @code{evfun}.
-
-@code{evflag} hace que @var{a_i} sea reconocida por la funci@'on @code{ev} de manera que tome el valor @code{true} durante la ejecuci@'on de @code{ev} si es mencionada.  V@'ease @code{evflag}.
-
-@code{bindtest} hace que @var{a_i} env@'{@dotless{i}}e un error si en alg@'un momento es utilizada en un c@'alculo sin hab@'ersele asignado un valor.
-
-Maxima reconoce y utiliza las siguientes propiedades de objetos:
-
-@example
-even, odd, integer, rational, irrational, real, imaginary,
-and complex
-@end example
-
-Propiedades @'utiles para funciones son:
-
-@example
-increasing,
-decreasing, oddfun (odd function), evenfun (even function),
-commutative (or symmetric), antisymmetric, lassociative and
-rassociative
-@end example
-
-La llamada @code{featurep (@var{object}, @var{feature})}
-determina si @var{object} ha sido declarado con la propiedad @var{feature}.
+La llamada @code{featurep (@var{object}, @var{feature})} devuelve @code{true}
+si @var{object} ha sido previamente declarado como poseedor de la propiedad
+@var{feature}. No obstante, @code{featurep} no reconoce algunas propiedades, 
+lo cual es un fallo conocido de Maxima.
 
 V@'ease tambi@'en @code{features}.
+
+La funci@'on @code{declare} reconoce las siguientes propiedades:
+
+@table @asis
+@item
+@code{evfun}
+Hace que @var{a_i} sea reconocida por @code{ev}, de manera que la funci@'on
+nombrada por @var{a_i} se aplique cuando @var{a_i} aparezca como argumento
+de control de @code{ev}.
+V@'ease @code{evfun}.
+
+
+@item @code{evflag}
+Hace que @var{a_i} sea reconocida por @code{ev}, de manera que a @var{a_i} se le
+asigne el valor @code{true} durante la ejecuci@'on de @code{ev} cuando @var{a_i} 
+aparezca como argumento de control de @code{ev}.
+
+@item @code{bindtest}
+Hace que Maxima env@'{@dotless{i}}e un error si @var{a_i} es evaluado sin hab@'ersele
+asignado un valor.
+
+@item @code{noun}
+Hace que Maxima considere a @var{a_i} como un nombre. El efecto
+que se obtiene es que se reemplazan todas las expresiones @var{a_i}
+por @code{'@var{a_i}} o @code{nounify (@var{a_i})},
+dependiendo del contexto.
+
+@item @code{constant}
+Hace que Maxima considere a @var{a_i} como una constante
+simb@'olica.
+
+@item @code{scalar}
+Hace que Maxima considere a @var{a_i} como una variable escalar.
+
+@item @code{nonscalar}
+Hace que Maxima considere a @var{a_i} como una variable no escalar.
+Se aplica com@'unmente para declarar una variable como un vector simb@'olico
+o una matriz simb@'olica.
+
+@item @code{mainvar}
+Hace que Maxima considere a @var{a_i} como una "variable principal" (@code{mainvar});
+@code{ordergreatp} determina la ordenaci@'on de los @'atomos como sigue:
+
+(variables principales) > (otras variables) > (variables escalares) > (constantes) > (n@'umeros)
+
+@item @code{alphabetic}
+Hace que Maxima considere a @var{a_i} como un car@'acter alfab@'etico.
+
+@item @code{feature}
+Hace que Maxima considere a @var{a_i} como el nombre de una propiedad.
+Otros @'atomos podr@'an ser declarados entonces como poseedores de
+la propiedad @var{a_i}.
+
+@item @code{rassociative}, @code{lassociative}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on asociativa por la derecha o
+por la izquierda.
+
+@item @code{nary}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on n-aria.
+
+La declaraci@'on @code{nary} no es equivalente a la funci@'on @code{nary}.
+El @'unico efecto de @code{declare(foo, nary)} consiste en hacer que
+el simplificador de Maxima reduzca expresiones anidadas; por ejemplo, 
+para transformar @code{foo(x, foo(y, z))} a @code{foo(x, y, z)}.
+
+@item @code{symmetric}, @code{antisymmetric}, @code{commutative}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on sim@'etrica o
+antisim@'etrica. La propiedad @code{commutative} equivale a @code{symmetric}.
+
+@item @code{evenfun}, @code{oddfun}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on par o impar.
+
+@item @code{outative}
+Hace que Maxima simplifique las expresiones @var{a_i}
+extrayendo los factores constantes del primer argumento.
+
+Cuando @var{a_i} tenga un @'unico argumento, un factor se considerar@'a constante
+si es una constante literal o declarada.
+
+Cuando @var{a_i} tenga dos o m@'as argumentos, un factor se considerar@'a constante
+si el segundo argumento es un s@'{@dotless{i}}mbolo y el factor no contiene al
+segundo argumento.
+
+@item @code{multiplicative}
+Hace que Maxima simplifique las expresiones @var{a_i}
+haciendo uso de la sustituci@'on 
+@code{@var{a_i}(x * y * z * ...)} @code{-->} @code{@var{a_i}(x) * @var{a_i}(y) * @var{a_i}(z) * ...}.
+Tal sustituci@'on se aplica @'unicamente al primer argumento.
+
+@item @code{additive}
+Hace que Maxima simplifique las expresiones @var{a_i}
+haciendo uso de la sustituci@'on 
+@code{@var{a_i}(x + y + z + ...)} @code{-->} @code{@var{a_i}(x) + @var{a_i}(y) + @var{a_i}(z) + ...}.
+Tal sustituci@'on se aplica @'unicamente al primer argumento.
+
+@item @code{linear}
+Equivale a declarar @var{a_i} conjuntamente como @code{outative} y @code{additive}.
+
+@item @code{integer}, @code{noninteger}
+Hace que Maxima reconozca a @var{a_i} como una variable entera o no entera.
+
+@item @code{even}, @code{odd}
+Hace que Maxima reconozca a @var{a_i} como una variable entera par o impar.
+
+@item @code{rational}, @code{irrational}
+Hace que Maxima reconozca a @var{a_i} como una variable real racional o irracional.
+
+@item @code{real}, @code{imaginary}, @code{complex}
+Hace que Maxima reconozca a @var{a_i} como una variable real, imaginaria o compleja.
+
+@item
+@code{increasing}, @code{decreasing}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on creciente o decreciente.
+@c MAXIMA FAILS TO DEDUCE F(2) > F(1) FOR INCREASING FUNCTION F
+@c AND FAILS TO DEDUCE ANYTHING AT ALL ABOUT DECREASING FUNCTIONS
+@c REPORTED AS SF BUG # 1483194
+
+@item @code{posfun}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on positiva.
+
+@item @code{integervalued}
+Hace que Maxima reconozca a @var{a_i} como una funci@'on de valor entero.
+
+@end table
+
+Ejemplos:
+
+Declaraciones en base a @code{evfun} y @code{evflag}.
+@c ===beg===
+@c declare (expand, evfun);
+@c (a + b)^3;
+@c (a + b)^3, expand;
+@c declare (demoivre, evflag);
+@c exp (a + b*%i);
+@c exp (a + b*%i), demoivre;
+@c ===end===
+@example
+(%i1) declare (expand, evfun);
+(%o1)                         done
+(%i2) (a + b)^3;
+                                   3
+(%o2)                       (b + a)
+(%i3) (a + b)^3, expand;
+                     3        2      2      3
+(%o3)               b  + 3 a b  + 3 a  b + a
+(%i4) declare (demoivre, evflag);
+(%o4)                         done
+(%i5) exp (a + b*%i);
+                             %i b + a
+(%o5)                      %e
+(%i6) exp (a + b*%i), demoivre;
+                      a
+(%o6)               %e  (%i sin(b) + cos(b))
+@end example
+
+Declaraci@'on en base a  @code{bindtest}.
+@c ===beg===
+@c aa + bb;
+@c declare (aa, bindtest);
+@c aa + bb;
+@c aa : 1234;
+@c aa + bb;
+@c ===end===
+@example
+(%i1) aa + bb;
+(%o1)                        bb + aa
+(%i2) declare (aa, bindtest);
+(%o2)                         done
+(%i3) aa + bb;
+aa unbound variable
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) aa : 1234;
+(%o4)                         1234
+(%i5) aa + bb;
+(%o5)                       bb + 1234
+@end example
+
+Declaraci@'on en base a  @code{noun}.
+@c ===beg===
+@c factor (12345678);
+@c declare (factor, noun);
+@c factor (12345678);
+@c ''%, nouns;
+@c ===end===
+@example
+(%i1) factor (12345678);
+                             2
+(%o1)                     2 3  47 14593
+(%i2) declare (factor, noun);
+(%o2)                         done
+(%i3) factor (12345678);
+(%o3)                   factor(12345678)
+(%i4) ''%, nouns;
+                             2
+(%o4)                     2 3  47 14593
+@end example
+
+Declaraciones en base a @code{constant}, @code{scalar}, @code{nonscalar} y @code{mainvar}.
+@c ===beg===
+@c declare (bb, constant);
+@c declare (cc, scalar);
+@c declare (dd, nonscalar);
+@c declare (ee, mainvar);
+@c ===end===
+@example
+@end example
+
+Declaraci@'on en base a @code{alphabetic}.
+@c ===beg===
+@c xx\~yy : 1729;
+@c declare ("~", alphabetic);
+@c xx~yy + yy~xx + ~xx~~yy~;
+@c ===end===
+@example
+(%i1) xx\~yy : 1729;
+(%o1)                         1729
+(%i2) declare ("~", alphabetic);
+(%o2)                         done
+(%i3) xx~yy + yy~xx + ~xx~~yy~;
+(%o3)                ~xx~~yy~ + yy~xx + 1729
+@end example
+
+Declaraci@'on en base a @code{feature}.
+@c ===beg===
+@c declare (FOO, feature);
+@c declare (x, FOO);
+@c featurep (x, FOO);
+@c ===end===
+@example
+(%i1) declare (FOO, feature);
+(%o1)                         done
+(%i2) declare (x, FOO);
+(%o2)                         done
+(%i3) featurep (x, FOO);
+(%o3)                         true
+@end example
+
+Declaraciones en base a @code{rassociative} y @code{lassociative}.
+@c ===beg===
+@c declare (F, rassociative);
+@c declare (G, lassociative);
+@c ===end===
+@example
+@end example
+
+Declaraci@'on en base a @code{nary}.
+@c ===beg===
+@c H (H (a, b), H (c, H (d, e)));
+@c declare (H, nary);
+@c H (H (a, b), H (c, H (d, e)));
+@c ===end===
+@example
+(%i1) H (H (a, b), H (c, H (d, e)));
+(%o1)               H(H(a, b), H(c, H(d, e)))
+(%i2) declare (H, nary);
+(%o2)                         done
+(%i3) H (H (a, b), H (c, H (d, e)));
+(%o3)                   H(a, b, c, d, e)
+@end example
+
+Declaraciones en base a @code{symmetric} y @code{antisymmetric}.
+@c ===beg===
+@c S (b, a);
+@c declare (S, symmetric);
+@c S (b, a);
+@c S (a, c, e, d, b);
+@c T (b, a);
+@c declare (T, antisymmetric);
+@c T (b, a);
+@c T (a, c, e, d, b);
+@c ===end===
+@example
+(%i1) S (b, a);
+(%o1)                        S(b, a)
+(%i2) declare (S, symmetric);
+(%o2)                         done
+(%i3) S (b, a);
+(%o3)                        S(a, b)
+(%i4) S (a, c, e, d, b);
+(%o4)                   S(a, b, c, d, e)
+(%i5) T (b, a);
+(%o5)                        T(b, a)
+(%i6) declare (T, antisymmetric);
+(%o6)                         done
+(%i7) T (b, a);
+(%o7)                       - T(a, b)
+(%i8) T (a, c, e, d, b);
+(%o8)                   T(a, b, c, d, e)
+@end example
+
+Declaraciones en base a @code{oddfun} y @code{evenfun}.
+@c ===beg===
+@c o (- u) + o (u);
+@c declare (o, oddfun);
+@c o (- u) + o (u);
+@c e (- u) - e (u);
+@c declare (e, evenfun);
+@c e (- u) - e (u);
+@c ===end===
+@example
+(%i1) o (- u) + o (u);
+(%o1)                     o(u) + o(- u)
+(%i2) declare (o, oddfun);
+(%o2)                         done
+(%i3) o (- u) + o (u);
+(%o3)                           0
+(%i4) e (- u) - e (u);
+(%o4)                     e(- u) - e(u)
+(%i5) declare (e, evenfun);
+(%o5)                         done
+(%i6) e (- u) - e (u);
+(%o6)                           0
+@end example
+
+Declaraci@'on en base a @code{outative}.
+@c ===beg===
+@c F1 (100 * x);
+@c declare (F1, outative);
+@c F1 (100 * x);
+@c declare (zz, constant);
+@c F1 (zz * y);
+@c ===end===
+@example
+(%i1) F1 (100 * x);
+(%o1)                       F1(100 x)
+(%i2) declare (F1, outative);
+(%o2)                         done
+(%i3) F1 (100 * x);
+(%o3)                       100 F1(x)
+(%i4) declare (zz, constant);
+(%o4)                         done
+(%i5) F1 (zz * y);
+(%o5)                       zz F1(y)
+@end example
+
+Declaraci@'on en base a @code{multiplicative}.
+@c ===beg===
+@c F2 (a * b * c);
+@c declare (F2, multiplicative);
+@c F2 (a * b * c);
+@c ===end===
+@example
+(%i1) F2 (a * b * c);
+(%o1)                       F2(a b c)
+(%i2) declare (F2, multiplicative);
+(%o2)                         done
+(%i3) F2 (a * b * c);
+(%o3)                   F2(a) F2(b) F2(c)
+@end example
+
+Declaraci@'on en base a @code{additive}.
+@c ===beg===
+@c F3 (a + b + c);
+@c declare (F3, additive);
+@c F3 (a + b + c);
+@c ===end===
+@example
+(%i1) F3 (a + b + c);
+(%o1)                     F3(c + b + a)
+(%i2) declare (F3, additive);
+(%o2)                         done
+(%i3) F3 (a + b + c);
+(%o3)                 F3(c) + F3(b) + F3(a)
+@end example
+
+Declaraci@'on en base a @code{linear}.
+@c ===beg===
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c declare (nounify (sum), linear);
+@c 'sum (F(k) + G(k), k, 1, inf);
+@c ===end===
+@example
+(%i1) 'sum (F(k) + G(k), k, 1, inf);
+                       inf
+                       ====
+                       \
+(%o1)                   >    (G(k) + F(k))
+                       /
+                       ====
+                       k = 1
+(%i2) declare (nounify (sum), linear);
+(%o2)                         done
+(%i3) 'sum (F(k) + G(k), k, 1, inf);
+                     inf          inf
+                     ====         ====
+                     \            \
+(%o3)                 >    G(k) +  >    F(k)
+                     /            /
+                     ====         ====
+                     k = 1        k = 1
+@end example
 
 @end deffn
 
@@ -975,7 +1423,7 @@ Devuelve @var{expr} con subexpresiones que son sumas y que no contienen variable
 
 Si la variable @code{exptisolate}, cuyo valor por defecto es @code{false}, vale @code{true} har@'a que @code{isolate} busque exponentes de @'atomos (como @code{%e}) que contengan la variable.
 
-Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de productos. V@'ease @code{isolate_wrt_times}.
+Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de los productos. V@'ease @code{isolate_wrt_times}.
 
 Para ejemplos, ejec@'utese @code{example (isolate)}.
 
@@ -985,7 +1433,7 @@ Para ejemplos, ejec@'utese @code{example (isolate)}.
 @defvr {Variable opcional} isolate_wrt_times
 Valor por defecto: @code{false}
 
-Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de productos. Comp@'arese el comportamiento de @code{isolate} al cambiar el valor de esta variable global en el siguiente ejemplo,
+Si @code{isolate_wrt_times} vale @code{true}, entonces @code{isolate} tambi@'en aislar@'a respecto de los productos. Comp@'arese el comportamiento de @code{isolate} al cambiar el valor de esta variable global en el siguiente ejemplo,
 
 @example
 (%i1) isolate_wrt_times: true$

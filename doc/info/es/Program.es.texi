@@ -1,4 +1,4 @@
-@c version 1.20
+@c version 1.21
 @menu
 * Introducci@'on a la Programaci@'on::  
 * Definiciones para la Programaci@'on::  
@@ -296,7 +296,7 @@ Devuelve @code{true} si y s@'olo @var{expr} es tratado por las rutinas de mapeo 
 
 @end deffn
 
-@defvr {Variable optativa} maperror
+@defvr {Variable opcional} maperror
 Valor por defecto: @code{true}
 
 Cuando @code{maperror} toma el valor @code{false}, hace que todas las funciones de mapeo, como por ejemplo
@@ -318,7 +318,7 @@ La funci@'on @code{maplist} difiere de @code{map (@var{f}, @var{expr_1}, ..., @v
 
 @end deffn
 
-@defvr {Variable optativa} prederror
+@defvr {Variable opcional} prederror
 Valor por defecto: @code{true}
 
 Cuando @code{prederror} toma el valor @code{true}, se emite un mensaje de error siempre que el predicado de una sentencia  @code{if} o de una funci@'on @code{is} no se pueda evaluar ni a verdadero (@code{true}) ni  a falso (@code{false}).
@@ -384,11 +384,27 @@ Eval@'ua @var{expr} y devuelve el valor del @code{catch} m@'as reciente. La func
 @deffn {Funci@'on} outermap (@var{f}, @var{a_1}, ..., @var{a_n})
 Aplica la funci@'on @var{f} a cada uno de los elementos del producto vectorial @var{a_1} por @var{a_2} ... por @var{a_n}.
 
-La funci@'on @var{f} tiene @math{n} argumentos o tambi@'en puede tratarse de una funci@'on lambda de @math{n} argumentos.
-Los argumentos @var{a_1}, ..., @var{a_n} pueden ser listas o no. Argumentos en forma de listas pueden tener longitudes diferentes. Argumentos que no son listas son tratados como listas de longitud 1 con el prop@'osito de poder realizar el producto vectorial.
+El argumento @var{f} debe ser el nombre de una funci@'on de @math{n} argumentos,
+o una expresi@'on lambda de @math{n} argumentos.
+Cada uno de los argumentos @var{a_k} puede ser una lista, una lista anidada, 
+una matriz o cualquier otro tipo de expresi@'on.
 
-El resultado de aplicar @var{f} al producto vectorial se organiza como una lista anidada. La profundidad del anidamiento es igual al n@'umero de argumentos en forma de lista (los argumentos que no son listas no contribuyen a sumar niveles).
-Una lista con nivel de anidamiento @math{k} tiene la misma longitud que el @math{k}-@'esimo argumento con forma de lista.
+El valor devuelto por @code{outermap} es una estructura anidada. Si @var{x} es la
+respuesta dada por @code{outermap}, entonces tiene la misma estructura que la primera lista,
+lista anidada o matriz, @code{@var{x}[i_1]...[i_m]} tiene la misma estructura que la
+segunda lista, lista anidada o matriz, @code{@var{x}[i_1]...[i_m][j_1]...[j_n]} tiene 
+la misma estructura que la tercera lista, lista anidada o matriz, y as@'{@dotless{i}}
+sucesivamente, siendo @var{m}, @var{n}, ... los n@'umeros @'{@dotless{i}}ndice
+necesarios para acceder a los elementos de cada argumento: uno para las listas,
+dos para las matrices y uno o m@'as para las listas anidadas. 
+Aquellos argumentos que no sean listas ni matrices no tienen efecto alguno sobre
+la estructura del valor retornado.
+
+N@'otese que el efecto producido por @code{outermap} es diferente del que
+se obtiene al aplicar @var{f} a cada uno de los elementos del producto
+devuelto por @code{cartesian_product}. La funci@'on @code{outermap}
+mantiene la estructura de los argumentos en la respuesta, miemtras que
+@code{cartesian_product} no lo hace.
 
 La funci@'on @code{outermap} eval@'ua sus argumentos.
 
@@ -396,22 +412,126 @@ V@'eanse tambi@'en @code{map}, @code{maplist} y @code{apply}.
 
 Ejemplos:
 
+Ejemplos elementales de uso de @code{outermap}.
+Con el fin de mostrar con mayor claridad las combinaciones del argumento,
+se mantiene sin definir @code{F}.
+
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+@c outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+@c outermap ("+", [a, b, c], [1, 2, 3]);
+@c ===end===
 @example
-(%i1) f (x, y) := x - y$
-(%i2) outermap (f, [2, 3, 5], [a, b, c, d]);
-(%o2) [[2 - a, 2 - b, 2 - c, 2 - d], 
-      [3 - a, 3 - b, 3 - c, 3 - d], [5 - a, 5 - b, 5 - c, 5 - d]]
-(%i3) outermap (lambda ([x, y], y/x), [55, 99], [Z, W]);
-                        Z   W     Z   W
-(%o3)                 [[--, --], [--, --]]
-                        55  55    99  99
-(%i4) g: lambda ([x, y, z], x + y*z)$
-(%i5) outermap (g, [a, b, c], %pi, [11, 17]);
-(%o5) [[a + 11 %pi, a + 17 %pi], [b + 11 %pi, b + 17 %pi], 
-                                        [c + 11 %pi, c + 17 %pi]]
-(%i6) flatten (%);
-(%o6) [a + 11 %pi, a + 17 %pi, b + 11 %pi, b + 17 %pi, 
-                                          c + 11 %pi, c + 17 %pi]
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) outermap (F, matrix ([a, b], [c, d]), matrix ([1, 2], [3, 4]));
+         [ [ F(a, 1)  F(a, 2) ]  [ F(b, 1)  F(b, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(a, 3)  F(a, 4) ]  [ F(b, 3)  F(b, 4) ] ]
+(%o2)    [                                            ]
+         [ [ F(c, 1)  F(c, 2) ]  [ F(d, 1)  F(d, 2) ] ]
+         [ [                  ]  [                  ] ]
+         [ [ F(c, 3)  F(c, 4) ]  [ F(d, 3)  F(d, 4) ] ]
+(%i3) outermap (F, [a, b], x, matrix ([1, 2], [3, 4]));
+       [ F(a, x, 1)  F(a, x, 2) ]  [ F(b, x, 1)  F(b, x, 2) ]
+(%o3) [[                        ], [                        ]]
+       [ F(a, x, 3)  F(a, x, 4) ]  [ F(b, x, 3)  F(b, x, 4) ]
+(%i4) outermap (F, [a, b], matrix ([1, 2]), matrix ([x], [y]));
+       [ [ F(a, 1, x) ]  [ F(a, 2, x) ] ]
+(%o4) [[ [            ]  [            ] ], 
+       [ [ F(a, 1, y) ]  [ F(a, 2, y) ] ]
+                              [ [ F(b, 1, x) ]  [ F(b, 2, x) ] ]
+                              [ [            ]  [            ] ]]
+                              [ [ F(b, 1, y) ]  [ F(b, 2, y) ] ]
+(%i5) outermap ("+", [a, b, c], [1, 2, 3]);
+(%o5) [[a + 1, a + 2, a + 3], [b + 1, b + 2, b + 3], 
+                                           [c + 1, c + 2, c + 3]]
+@end example
+
+El siguiente ejemplo permite hacer un an@'alisis m@'as profundo del valor
+retornado por @code{outermap}.
+Los tres primeros argumentos son una matriz, una lista y otra matriz, en este
+orden. El valor devuelto es una matriz, cuyos elementos son listas y
+cada elemento de cada una de estas listas es a su vez una matriz.
+
+@c ===beg===
+@c arg_1 :  matrix ([a, b], [c, d]);
+@c arg_2 : [11, 22];
+@c arg_3 : matrix ([xx, yy]);
+@c xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+@c xx_1 : xx_0 [1][1];
+@c xx_2 : xx_0 [1][1] [1];
+@c xx_3 : xx_0 [1][1] [1] [1][1];
+@c [op (arg_1), op (arg_2), op (arg_3)];
+@c [op (xx_0), op (xx_1), op (xx_2)];
+@c ===end===
+@example
+(%i1) arg_1 :  matrix ([a, b], [c, d]);
+                            [ a  b ]
+(%o1)                       [      ]
+                            [ c  d ]
+(%i2) arg_2 : [11, 22];
+(%o2)                       [11, 22]
+(%i3) arg_3 : matrix ([xx, yy]);
+(%o3)                      [ xx  yy ]
+(%i4) xx_0 : outermap (lambda ([x, y, z], x / y + z), arg_1, arg_2, arg_3);
+               [  [      a        a  ]  [      a        a  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+(%o4)  Col 1 = [                                              ]
+               [  [      c        c  ]  [      c        c  ]  ]
+               [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+               [  [      11       11 ]  [      22       22 ]  ]
+                 [  [      b        b  ]  [      b        b  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+         Col 2 = [                                              ]
+                 [  [      d        d  ]  [      d        d  ]  ]
+                 [ [[ xx + --  yy + -- ], [ xx + --  yy + -- ]] ]
+                 [  [      11       11 ]  [      22       22 ]  ]
+(%i5) xx_1 : xx_0 [1][1];
+           [      a        a  ]  [      a        a  ]
+(%o5)     [[ xx + --  yy + -- ], [ xx + --  yy + -- ]]
+           [      11       11 ]  [      22       22 ]
+(%i6) xx_2 : xx_0 [1][1] [1];
+                      [      a        a  ]
+(%o6)                 [ xx + --  yy + -- ]
+                      [      11       11 ]
+(%i7) xx_3 : xx_0 [1][1] [1] [1][1];
+                                  a
+(%o7)                        xx + --
+                                  11
+(%i8) [op (arg_1), op (arg_2), op (arg_3)];
+(%o8)                  [matrix, [, matrix]
+(%i9) [op (xx_0), op (xx_1), op (xx_2)];
+(%o9)                  [matrix, [, matrix]
+@end example
+
+La funci@'on @code{outermap} mantiene la estructura de los argumentos en su respuesta,
+mientras que @code{cartesian_product} no lo hace.
+
+@c ===beg===
+@c outermap (F, [a, b, c], [1, 2, 3]);
+@c setify (flatten (%));
+@c map (lambda ([L], apply (F, L)), cartesian_product ({a, b, c}, {1, 2, 3}));
+@c is (equal (%, %th (2)));
+@c ===end===
+@example
+(%i1) outermap (F, [a, b, c], [1, 2, 3]);
+(%o1) [[F(a, 1), F(a, 2), F(a, 3)], [F(b, 1), F(b, 2), F(b, 3)], 
+                                     [F(c, 1), F(c, 2), F(c, 3)]]
+(%i2) setify (flatten (%));
+(%o2) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i3) map (lambda ([L], apply (F, L)), cartesian_product (@{a, b, c@}, @{1, 2, 3@}));
+(%o3) @{F(a, 1), F(a, 2), F(a, 3), F(b, 1), F(b, 2), F(b, 3), 
+                                       F(c, 1), F(c, 2), F(c, 3)@}
+(%i4) is (equal (%, %th (2)));
+(%o4)                         true
 @end example
 
 @end deffn
