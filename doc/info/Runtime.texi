@@ -12,7 +12,7 @@
 @code{maxima-init.mac} is a file which is loaded automatically when Maxima starts.
 You can use @code{maxima-init.mac} to customize your Maxima environment.
 @code{maxima-init.mac}, if it exists, is typically placed in the
-directory named by @code{:lisp (default-userdir)},
+directory named by @code{maxima_userdir},
 although it can be in any directory searched by the function @code{file_search}.
 
 Here is an example @code{maxima-init.mac} file:
@@ -99,6 +99,34 @@ See also @code{declare} and @code{features}.
 @end example
 
 @end deffn
+
+@defvr {System variable} maxima_tempdir
+
+@code{maxima_tempdir} names the directory in which Maxima creates some temporary files.
+In particular, temporary files for plotting are created in @code{maxima_tempdir}.
+
+The initial value of @code{maxima_tempdir} is the user's home directory,
+if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+
+@code{maxima_tempdir} may be assigned a string which names a directory.
+
+@end defvr
+
+@defvr {System variable} maxima_userdir
+
+@code{maxima_userdir} names a directory which Maxima searches to find Maxima and Lisp files.
+(Maxima searches some other directories as well;
+@code{file_search_maxima} and @code{file_search_lisp} are the complete lists.)
+
+The initial value of @code{maxima_userdir} is a subdirectory of the user's home directory,
+if Maxima can locate it; otherwise Maxima makes a guess about a suitable directory.
+
+@code{maxima_userdir} may be assigned a string which names a directory.
+However, assigning to @code{maxima_userdir} does not automatically change
+@code{file_search_maxima} and @code{file_search_lisp};
+those variables must be changed separately.
+
+@end defvr
 
 @deffn {Function} room ()
 @deffnx {Function} room (true)
