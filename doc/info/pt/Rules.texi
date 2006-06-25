@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Rules.texi/1.23/Mon Mar 27 08:14:14 2006/-ko/
+@c /Rules.texi/1.24/Sat Jun 24 06:46:04 2006/-ko/
 
 @menu
 * Introdu@value{cedilha}@~ao a Regras e Modelos::  
@@ -424,22 +424,22 @@ com uma vari@'avel ou lista de vari@'aveis @var{a_k}
 de forma que @var{a_k} coincida com express@~oes
 para as quais o predicado retorne qualquer coisa que n@~ao @code{false}.
 
-O predicado @'e o nome de uma fun@,{c}@~ao,
-uma chamada de fun@,{c}@~ao omitindo o @'ultimo argumento,
+Umpredicado @'e o nome de uma fun@,{c}@~ao,
+ou de uma express@~ao lambda,
+ou uma chamada de fun@,{c}@~ao ou chamada de fun@,{c}@~ao lambda iomitindo o @'ulltimo argumento,
 ou @code{true} ou @code{all}.
 Qualquer express@~ao coincide com @code{true} ou @code{all}.
-Se o predicado for especificado como uma chamada de fun@,{c}@~ao,
+Se o predicado for especificado como uma chamada de fun@,{c}@~ao ou chamada de fun@,{c}@~ao lambda,
 a express@~ao a ser testada @'e anexada ao final da lista de argumentos;
 os argumentos s@~ao avaliados ao mesmo tempo que a coincid@^encia @'e avaliada.
-De outra forma, o predicado @'e especificado como um nome de fun@,{c}@~ao,
+De outra forma, o predicado @'e especificado como um nome de fun@,{c}@~ao ou express@~ao lambda,
 e a express@~ao a ser testada @'e o argumento sozinho.
 Uma fun@,{c}@~ao predicado n@~ao precisa ser definida quando @code{matchdeclare} for chamada;
 o predicado n@~ao @'e avaliado at@'e que uma coincid@^encia seja tentada.
 
-Um predicado @code{matchdeclare} n@~ao pode ser qualquer tipo de express@~ao outra que n@~ao um nome de fun@,{c}@~ao ou chamada de fun@,{c}@~ao.
-Em particular, um predicado n@~ao pode ser um @code{lambda} ou @code{block}.
-@c defrule, defmatch, tellsimp/tellsimpafter, let ALL BARF ON LAMBDAS AND OTHER EXPRESSIONS
-@c BUT NOT ENFORCED BY matchdeclare -- THIS IS A BUG
+Um predicado pode retornar uma express@~ao Booleana al@'em de @code{true} ou @code{false}.
+Express@~oes Booleanas s@~ao avaliadas por @code{is} dentro da fun@,{c}@~ao da regra constru@'ida,
+de forma que n@~ao @'e necess@'ario chamar @code{is} dentro do predicado.
 
 Se uma express@~ao satisfaz uma coincid@^encia de predicado,
 a vari@'avel de coincid@^encia @'e atribu@'ida @`a express@~ao,
@@ -492,12 +492,133 @@ constroem regras que testam express@~oes contra modelos.
 
 Exemplos:
 
-@itemize @bullet
-@item
-@code{q} coincide com uma express@~ao que n@~ao cont@'em @code{x} ou @code{%e}.
-@end itemize
+Um predicado @'e o nome de uma fun@,{c}@~ao,
+ou uma express@~ao lambda,
+ou uma chamada de fun@,{c}@~ao ou chamada a fun@,{c}@~ao lambda omitindo o @'ultimo argumento,
+or @code{true} or @code{all}.
+
+@c ===beg===
+@c matchdeclare (aa, integerp);
+@c matchdeclare (bb, lambda ([x], x > 0));
+@c matchdeclare (cc, freeof (%e, %pi, %i));
+@c matchdeclare (dd, lambda ([x, y], gcd (x, y) = 1) (1728));
+@c matchdeclare (ee, true);
+@c matchdeclare (ff, all);
+@c ===end===
 @example
-(%i1) matchdeclare (q, freeof (x, %e))$
+(%i1) matchdeclare (aa, integerp);
+(%o1)                         done
+(%i2) matchdeclare (bb, lambda ([x], x > 0));
+(%o2)                         done
+(%i3) matchdeclare (cc, freeof (%e, %pi, %i));
+(%o3)                         done
+(%i4) matchdeclare (dd, lambda ([x, y], gcd (x, y) = 1) (1728));
+(%o4)                         done
+(%i5) matchdeclare (ee, true);
+(%o5)                         done
+(%i6) matchdeclare (ff, all);
+(%o6)                         done
+@end example
+
+Se uma express@~ao satisfaz um predicado de coincid@^encia,
+a vari@'avel de coincid@^encia @'e atribu@'ida @`a express@~ao.
+
+@c ===beg===
+@c matchdeclare (aa, integerp, bb, atom);
+@c defrule (r1, bb^aa, ["integer" = aa, "atom" = bb]);
+@c r1 (%pi^8);
+@c ===end===
+@example
+(%i1) matchdeclare (aa, integerp, bb, atom);
+(%o1)                         done
+(%i2) defrule (r1, bb^aa, ["integer" = aa, "atom" = bb]);
+                    aa
+(%o2)        r1 : bb   -> [integer = aa, atom = bb]
+(%i3) r1 (%pi^8);
+(%o3)               [integer = 8, atom = %pi]
+@end example
+
+No caso de adi@,{c}@~ao e multiplica@,{c}@~ao,
+@`a vari@'avel de coincid@^encia pode ser atribu@'ida uma express@~ao simples que satisfaz o predicado de coincid@^encia,
+ou um somat@'orio ou produt@'orio (respectivamente) de tais express@~oes.
+
+@c ===beg===
+@c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r1 (8 + a*b + sin(x));
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r2 (8 * (a + b) * sin(x));
+@c ===end===
+@example
+(%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+(%o1)                         done
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb + aa partitions `sum'
+(%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
+(%i3) r1 (8 + a*b + sin(x));
+(%o3)     [all atoms = 8, all nonatoms = sin(x) + a b]
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb aa partitions `product'
+(%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
+(%i5) r2 (8 * (a + b) * sin(x));
+(%o5)    [all atoms = 8, all nonatoms = (b + a) sin(x)]
+@end example
+
+Quando coincidindo argumentos de @code{+} e @code{*},
+se todos os predicados de coincid@^encia forem mutuamente exclusivos,
+o resultado da coincid@^encia @'e insens@'ive @`a ordena@,{c}@~ao,
+como um predicado de coincid@^encia n@~ao pode aceitar termos que coincidiram com outro.
+
+@c ===beg===
+@c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r1 (8 + a*b + %pi + sin(x) - c + 2^n);
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r2 (8 * (a + b) * %pi * sin(x) / c * 2^n);
+@c ===end===
+@example
+(%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+(%o1)                         done
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb + aa partitions `sum'
+(%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
+(%i3) r1 (8 + a*b + %pi + sin(x) - c + 2^n);
+                                                     n
+(%o3) [all atoms = %pi + 8, all nonatoms = sin(x) + 2  - c + a b]
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb aa partitions `product'
+(%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
+(%i5) r2 (8 * (a + b) * %pi * sin(x) / c * 2^n);
+                                                  n
+                                         (b + a) 2  sin(x)
+(%o5) [all atoms = 8 %pi, all nonatoms = -----------------]
+                                                 c
+@end example
+
+As fun@,{c}@~oes @code{propvars} e @code{printprops} retornam informa@,{c}@~oes sobre vari@'avels de coincid@^encia.
+
+@c ===beg===
+@c matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
+@c matchdeclare (ff, floatnump, gg, lambda ([x], x > 100));
+@c propvars (matchdeclare);
+@c printprops (ee, matchdeclare);
+@c printprops (gg, matchdeclare);
+@c printprops (all, matchdeclare);
+@c ===end===
+@example
+(%i1) matchdeclare ([aa, bb, cc], atom, [dd, ee], integerp);
+(%o1)                         done
+(%i2) matchdeclare (ff, floatnump, gg, lambda ([x], x > 100));
+(%o2)                         done
+(%i3) propvars (matchdeclare);
+(%o3)             [aa, bb, cc, dd, ee, ff, gg]
+(%i4) printprops (ee, matchdeclare);
+(%o4)                    [integerp(ee)]
+(%i5) printprops (gg, matchdeclare);
+(%o5)              [lambda([x], x > 100, gg)]
+(%i6) printprops (all, matchdeclare);
+(%o6) [lambda([x], x > 100, gg), floatnump(ff), integerp(ee), 
+                      integerp(dd), atom(cc), atom(bb), atom(aa)]
 @end example
 
 @end deffn

@@ -1,11 +1,12 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Expressions.texi/1.47/Wed Jun  7 08:45:15 2006/-ko/
+@c /Expressions.texi/1.48/Sat Jun 24 06:44:58 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Express@~oes::  
 * Atribui@value{cedilha}@~ao::                  
 * Complexo::                     
 * Substantivos e Verbos::
 * Identificadores::
+* Seq@"u@^encias de caracteres::
 * Desigualdade::                  
 * Sintaxe::                      
 * Defini@value{cedilha}@~oes para Express@~oes::  
@@ -153,7 +154,7 @@ Exemplos:
 (%o11)                       log(42)
 @end example
 
-@node Identificadores, Desigualdade, Substantivos e Verbos, Express@~oes
+@node Identificadores, Seq@"u@^encias de caracteres, Substantivos e Verbos, Express@~oes
 @section Identificadores
 Identificadores do Maxima podem compreender caracteres alfab@'eticos,
 mais os numerais de 0 a 9,
@@ -222,7 +223,81 @@ Exemplos:
 (%o12)                         foo
 @end example
 
-@node Desigualdade, Sintaxe, Identificadores, Express@~oes
+@node Seq@"u@^encias de caracteres, Desigualdade, Sintaxe, Identificadores, Express@~oes
+@section Seq@"u@^encias de caracteres
+
+Strings (seq@"u@^encias de caracteres) s@~ao contidas entre aspas duplas @code{"} em entradas de dados usados pelo Maxima,
+e mostradas com ou sem as aspas duplas, 
+dependendo do valor escolhido para a vari@'avel global @code{?stringdisp}.
+
+Seq@"u@^encias de caracteres podem conter quaisquer caracteres,
+incluindo tabula@,{c}@~oes (tab), nova linha (ou fim de linha), e caracteres de retorno da cabe@,{c}a de impress@~ao (carriage return).
+A seq@"u@^encia @code{\"} @'e reconhecida com uma aspa dupla literal,
+e @code{\\} como uma contrabarra literal.
+Quando a contrabarra aparecer no final de uma linha,
+a contrabarra e a termina@,{c}@~ao de linha
+(ou nova linha ou retorno de carro e nova linha)
+s@~ao ignorados,
+de forma que a seq@"u@^encia de caracteres continue na pr@'oxima linha.
+Nenhuma outra combina@,{c}@~ao especial de contrabarra com outro caractere @'e reconhecida;
+quando a contrabarra aparecer antes de qualquer outro caractere que n@~ao seja @code{"}, @code{\},
+ou um fim de linha, a contrabarra @'e ignorada.
+N@~ao exite caminho para representar um caractere especial
+(tal como uma tabula@,{c}@~ao, nova linha, ou retorno da cabe@,{c}a de impress@~ao)
+exceto atrav@'es de encaixar o caractere literal na seq@"u@^encia de caracteres.
+
+N@~ao existe tipo de caractere no Maxima;
+um caractere simples @'e representado como uma seq@"u@^encia de caracteres de um @'unico caractere.
+
+Seq@"u@^encias de caracteres no Maxima s@~ao implementadas como s@'imbolos do Lisp, n@~ao como seq@"uencias de caracteres do not Lisp;
+o que pode mudar em futuras vers@~oes do Maxima.
+Maxima pode mostrar seq@"u@^encias de caracteres do Lisp e caracteres do Lisp,
+embora algumas outras opera@,{c}@~oes (por exemplo, testes de igualdade) possam falhar.
+@c DISCOMFORT WITH LISP STRINGS AND CHARACTERS IS A BUG.
+
+O pacote adicional @code{stringproc} cont@'em muitas fun@,{c}@~oes que trabalham com seq@"u@^encias de caracteres.
+
+Exemplos:
+
+@c ===beg===
+@c s_1 : "Isso @'e uma seq@"u@^encia de caracteres  do Maxima.";
+@c s_2 : "Caracteres \"aspas duplas\" e contrabarras \\ encaixados em uma seq@"u@^encia de caracteres.";
+@c s_3 : "Caractere de fim de linha encaixado
+@c nessa seq@"u@^encia de caracteres.";
+@c s_4 : "Ignore o \
+@c caractere de \
+@c fim de linha nessa \
+@c seq@"u@^encia de caracteres.";
+@c ?stringdisp : false;
+@c s_1;
+@c ?stringdisp : true;
+@c s_1;
+@c ===end===
+@example
+(%i1) s_1 : "Isso @'e uma seq@"u@^encia de caracteres  do Maxima.";
+(%o1)               Isso @'e uma seq@"u@^encia de caracteres  do Maxima.
+(%i2) s_2 : "Caracteres \"aspas duplas\" e contrabarras \\ encaixados em uma seq@"u@^encia de caracteres.";
+(%o2) Caracteres "aspas duplas" e contrabarra \ encaixados em uma seq@"u@^encia de caracteres.
+(%i3) s_3 : "Caractere de fim de linha encaixado
+nessa seq@"u@^encia de caracteres.";
+(%o3) Caractere de fim de linha encaixado
+nessa seq@"u@^encia de caracteres.
+(%i4) s_4 : "Ignore o \
+caractere de \
+fim de linha nessa \
+seq@"u@^encia de caracteres.";
+(%o4) Ignore o caractere de fim de linha nessa seq@"u@^encia de caracteres.
+(%i5) ?stringdisp : false;
+(%o5)                         false
+(%i6) s_1;
+(%o6)               Isso @'e uma seq@"u@^encia de caracteres  do Maxima.
+(%i7) ?stringdisp : true;
+(%o7)                         true
+(%i8) s_1;
+(%o8)              "Isso @'e uma seq@"u@^encia de caracteres  do Maxima."
+@end example
+
+@node Inequality, Syntax, Strings, Expressions
 @section Desigualdade
 Maxima tem os operadores de desigualdade @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, e @code{notequal}.
 Veja @code{if} para uma descri@,{c}@~ao de express@~oes condicionais.

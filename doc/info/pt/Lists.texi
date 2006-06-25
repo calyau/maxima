@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Lists.texi/1.25/Sun Dec  4 08:14:22 2005/-ko/
+@c /Lists.texi/1.26/Sat Jun 24 06:45:39 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Listas::
 * Defini@value{cedilha}@~oes para Listas::
@@ -306,7 +306,7 @@ listas.
 
 @end defvr
 
-@deffn {Fun@,{c}@~ao} listp (@var{expr})
+@deffn {Fun@value{cedilha}@~ao} listp (@var{expr})
 Retorna @code{true} se @var{expr} for uma lista de outra forma retorna @code{false}.
 
 @end deffn
@@ -340,12 +340,53 @@ Exemplos:
 
 @end deffn
 
-@c NEED ANOTHER deffn FOR GENERAL EXPRESSIONS ARGUMENTS
-@c SPLIT OFF EXAMPLES INTO EXAMPLE SECTION
-@deffn {Fun@,{c}@~ao} member (@var{expr}, @var{list})
-Retorna @code{true} se @var{expr} ocorre como um membro de @var{list} (n@~ao
-dentro de um membro).  De outra forma @code{false} @'e retornado.  @code{member} tamb@'em trabalha sobre
-express@~oes n@~ao-lista, e.g. @code{member(b,f(a,b,c));}  ->  @code{true}.
+@deffn {Fun@value{cedilha}@~ao} member (@var{expr_1}, @var{expr_2})
+
+Retorna @code{true} se @code{is(@var{expr_1} = @var{a})}
+para algum elemento @var{a} em @code{args(@var{expr_2})},
+de outra forma retorna @code{false}.
+
+@code{expr_2} @'e tipicamente uma lista,
+nesse caso @code{args(@var{expr_2}) = @var{expr_2}}
+e @code{is(@var{expr} = @var{a})} para algum elemento @var{a} em @code{expr_2} @'e o teste a ser feito.
+
+@code{member} n@~ao inspeciona partes dos argumentos de @var{expr_2},
+ent@~ao @code{member} pode retornar @code{false} mesmo se @var{expr_1} for parte de algum argumento de @var{expr_2}.
+
+Veja tamb@'em @code{elementp}.
+
+Exemplos:
+
+@c ===beg===
+@c member (8, [8, 8.0, 8b0]);
+@c member (8, [8.0, 8b0]);
+@c member (b, [a, b, c]);
+@c member (b, [[a, b], [b, c]]);
+@c member ([b, c], [[a, b], [b, c]]);
+@c F (1, 1/2, 1/4, 1/8);
+@c member (1/8, %);
+@c member ("ab", ["aa", "ab", sin(1), a + b]);
+@c ===end===
+@example
+(%i1) member (8, [8, 8.0, 8b0]);
+(%o1)                         true
+(%i2) member (8, [8.0, 8b0]);
+(%o2)                         false
+(%i3) member (b, [a, b, c]);
+(%o3)                         true
+(%i4) member (b, [[a, b], [b, c]]);
+(%o4)                         false
+(%i5) member ([b, c], [[a, b], [b, c]]);
+(%o5)                         true
+(%i6) F (1, 1/2, 1/4, 1/8);
+                               1  1  1
+(%o6)                     F(1, -, -, -)
+                               2  4  8
+(%i7) member (1/8, %);
+(%o7)                         true
+(%i8) member ("ab", ["aa", "ab", sin(1), a + b]);
+(%o8)                         true
+@end example
 
 @end deffn
 

@@ -1,5 +1,5 @@
 @c Language: Portuguese, Encoding: iso-8859-1
-@c /Function.texi/1.39/Mon May 15 07:52:36 2006/-ko/
+@c /Function.texi/1.40/Sat Jun 24 06:45:17 2006/-ko/
 @menu
 * Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao::  
 * Fun@value{cedilha}@~ao::                    
@@ -12,7 +12,10 @@
 
 @node Fun@value{cedilha}@~ao, Macros, Introdu@value{cedilha}@~ao a Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @c NEEDS WORK, THIS TOPIC IS IMPORTANT
+@c MENTION DYNAMIC SCOPE (VS LEXICAL SCOPE)
 @section Fun@value{cedilha}@~ao
+@subsection Ordinary functions
+
 Para definir uma fun@,{c}@~ao no Maxima voc@^e usa o operador :=.
 E.g.
 
@@ -129,6 +132,43 @@ Dentro de fun@,{c}@~oes, quando o lado direito de uma defini@,{c}@~ao,
 pode ser calculado em tempo de execu@,{c}@~ao, isso @'e @'uti para usar @code{define} e
 possivelmente @code{buildq}.  
 
+@subsection Fun@value{cedilha}@~ao de Array
+
+Uma fun@,{c}@~ao de Array armazena o valor da fun@,{c}@~ao na primeira vez que ela for chamada com um argumento dado,
+e retorna o valor armazenado, sem recalcular esse valor, quando o mesmo argumento for fornecido.
+De modo que uma fun@,{c}@~ao @'e muitas vezes chamada uma @i{fun@,{c}@~ao de memoriza@,{c}@~ao}.
+
+@c MENTION IN DESCRIPTION OF GLOBAL LIST ARRAYS
+@c MENTION IN DESCRIPTION OF GLOBAL LIST FUNCTIONS THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
+Nomes de fun@,{c}@~oes de Array s@~ao anexados ao final da lista global @code{arrays}
+(n@~ao na lista global @code{functions}).
+@c MENTION IN ARRAYINFO AND LISTARRAY THAT THEY APPLY TO ARRAY FUNCTIONS
+O comando @code{arrayinfo} retorna a lista de argumentos para os quais exite valores armazenados,
+e @code{listarray} retorna os valores armazenados. 
+Os comandos @code{dispfun} e @code{fundef} retornam a defini@,{c}@~ao da fun@,{c}@~ao de array.
+
+@c MENTION IN FUNMAKE, APPLY THAT THEY DON'T APPLY TO ARRAY FUNCTIONS ??
+O comando @code{arraymake} contr@'oi uma chamada de fun@,{c}@~ao de array,
+an@'alogamente a @code{funmake} para fun@,{c}@~oes comuns.
+O comando @code{arrayapply} aplica uma fun@,{c}@~ao de array a seus argmentos,
+an@'alogamente a @code{apply} para fun@,{c}@~oes comuns.
+N@~ao existe nada exatamente an@'alogo a @code{map} para fun@,{c}@~oes de array,
+embora @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} ou
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, onde @var{L} @'e uma lista,
+n@~ao estejam t@~ao longe disso.
+
+@c MENTION IN REMFUNCTION THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
+O comando @code{remarray} remove uma defini@,{c}@~ao de fun@,{c}@~ao de array (incluindo qualquer valor armazenado pela fun@,{c}@~ao removida),
+an@'alogo a @code{remfunction} para fun@,{c}@~oes comuns.
+
+@c MENTION IN KILL THAT KILL(A[X]) KILLS ONE VALUE OF HASH ARRAY
+o comando @code{kill(@var{a}[@var{x}])} remove o valor da fun@,{c}@~ao de array @var{a}
+armazenado para o argumento @var{x};
+a pr@'oxima vez que @var{a} foor chamada com o argumento @var{x},
+o valor da fun@,{c}@~ao @'e recomputado.
+Todavia, n@~ao exite caminho para remover todos os valores armazenados de uma vez,
+exceto para @code{kill(@var{a})} ou @code{remarray(@var{a})},
+o qual remove tamb@'em remove a defini@,{c}@~ao da fun@,{c}@~ao de array.
 
 @node Macros, Defini@value{cedilha}@~oes para Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao, Fun@value{cedilha}@~ao, Defini@value{cedilha}@~ao de Fun@value{cedilha}@~ao
 @section Macros
@@ -554,6 +594,10 @@ tempo de defini@,{c}@~ao da fun@,{c}@~ao que a cont@'em.
 Todas as defini@,{c}@~oes de fun@,{c}@~ao aparecem no mesmo n@'ivel de escopo e visibilidade;
 definindo uma fun@,{c}@~ao @code{f} dentro de outra fun@,{c}@~ao @code{g}
 n@~ao limita o escopo de @code{f} a @code{g}.
+
+@c MAKE THIS SAME POINT IN :=
+o comando @code{define} cria fun@,{c}@~oes de array (chamadas com argumentsos entre colch@^etes @code{[ ]})
+da mesma forma que fun@,{c}@~oes comuns.
 
 Exemplos:
 
@@ -1633,5 +1677,4 @@ tempo de chamada.  @code{(MFUNCTION-CALL fn arg1 arg2 ...)} @'e gerado quando
 o tradutor n~ao sabe que @code{fn} est@'a sendo compilada para ser uma fun@,{c}@~ao Lisp.
 
 @end deffn
-
 
