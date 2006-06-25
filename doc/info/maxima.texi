@@ -113,7 +113,7 @@ Support for specific areas of mathematics
 * Numerical::                   Numerical integration, Fourier
                                 transforms, etc.
 * Statistics::                  Statistical functions.
-* Arrays and Tables::           Creating and working with arrays.
+* Arrays::                      Creating and working with arrays.
 * Matrices and Linear Algebra:: Matrix operations.
 * Affine::                      
 * itensor::                     Indicial Tensor Manipulation.
@@ -293,9 +293,9 @@ Statistics
 
 * Definitions for Statistics::  
 
-Arrays and Tables
+Arrays
 
-* Definitions for Arrays and Tables::  
+* Definitions for Arrays::  
 
 Matrices and Linear Algebra
 
@@ -613,15 +613,15 @@ zeilberger
 @chapter Numerical
 @include Numerical.texi
 
-@node Statistics, Arrays and Tables, Numerical, Top
+@node Statistics, Arrays, Numerical, Top
 @chapter Statistics
 @include Statistics.texi
 
-@node Arrays and Tables, Matrices and Linear Algebra, Statistics, Top
-@chapter Arrays and Tables
+@node Arrays, Matrices and Linear Algebra, Statistics, Top
+@chapter Arrays
 @include Arrays.texi
 
-@node Matrices and Linear Algebra, Affine, Arrays and Tables, Top
+@node Matrices and Linear Algebra, Affine, Arrays, Top
 @chapter Matrices and Linear Algebra
 @include Matrices.texi
 

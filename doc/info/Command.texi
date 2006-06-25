@@ -743,18 +743,20 @@ include @code{X='X} as an argument to @code{ev}.  Of course expressions such as
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Function} kill (@var{symbol_1}, ..., @var{symbol_n})
+@deffn {Function} kill (@var{a_1}, ..., @var{a_n})
 @deffnx {Function} kill (labels)
 @deffnx {Function} kill (inlabels, outlabels, linelabels)
 @deffnx {Function} kill (@var{n})
 @deffnx {Function} kill ([@var{m}, @var{n}])
 @deffnx {Function} kill (values, functions, arrays, ...)
 @deffnx {Function} kill (all)
-@deffnx {Function} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+@deffnx {Function} kill (allbut (@var{a_1}, ..., @var{a_n}))
 
 Removes all bindings (value, function, array, or rule) from the arguments
-@var{symbol_1}, ..., @var{symbol_n}.
-An argument may be a single array element or subscripted function.
+@var{a_1}, ..., @var{a_n}.
+An argument @var{a_k} may be a symbol or a single array element.
+When @var{a_k} is a single array element, @code{kill} unbinds that element
+without affecting any other elements of the array.
 
 Several special arguments are recognized.
 Different kinds of arguments
@@ -784,8 +786,8 @@ See also @code{infolists}.
 @code{kill (all)} does not reset global variables to their default values;
 see @code{reset} on this point.
 
-@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
-unbinds all items on all infolists except for @var{symbol_1}, ..., @var{symbol_n}.
+@code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
+unbinds all items on all infolists except for @var{a_1}, ..., @var{a_n}.
 @code{kill (allbut (@var{infolist}))} unbinds all items except for the ones on @var{infolist},
 where @var{infolist} is @code{values}, @code{functions}, @code{arrays}, etc.
 

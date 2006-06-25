@@ -136,16 +136,12 @@ An array function stores the function value the first time it is called with a g
 and returns the stored value, without recomputing it, when that same argument is given.
 Such a function is often called a @i{memoizing function}.
 
-@c MENTION IN DESCRIPTION OF GLOBAL LIST ARRAYS
-@c MENTION IN DESCRIPTION OF GLOBAL LIST FUNCTIONS THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
 Array function names are appended to the global list @code{arrays}
 (not the global list @code{functions}).
-@c MENTION IN ARRAYINFO AND LISTARRAY THAT THEY APPLY TO ARRAY FUNCTIONS
 @code{arrayinfo} returns the list of arguments for which there are stored values,
 and @code{listarray} returns the stored values. 
 @code{dispfun} and @code{fundef} return the array function definition.
 
-@c MENTION IN FUNMAKE, APPLY THAT THEY DON'T APPLY TO ARRAY FUNCTIONS ??
 @code{arraymake} constructs an array function call,
 analogous to @code{funmake} for ordinary functions.
 @code{arrayapply} applies an array function to its arguments,
@@ -155,11 +151,9 @@ although @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} or
 @code{makelist(@var{a}[@var{x}], @var{x}, @var{L})}, where @var{L} is a list,
 are not too far off the mark.
 
-@c MENTION IN REMFUNCTION THAT IT DOESN'T APPLY TO ARRAY FUNCTIONS ??
 @code{remarray} removes an array function definition (including any stored function values),
 analogous to @code{remfunction} for ordinary functions.
 
-@c MENTION IN KILL THAT KILL(A[X]) KILLS ONE VALUE OF HASH ARRAY
 @code{kill(@var{a}[@var{x}])} removes the value of the array function @var{a}
 stored for the argument @var{x};
 the next time @var{a} is called with argument @var{x},
@@ -428,24 +422,87 @@ Examples
 @c end concepts Function Definition
 @node Definitions for Function Definition,  , Macros, Function Definition
 @section Definitions for Function Definition
-@c NEEDS CLARIFICATION AND EXAMPLES
-@c IMPORTANT TOPIC
-@deffn {Function} apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
-Returns the result of applying the function @var{f} to the list of arguments @var{x_1}, ..., @var{x_n}.
-@var{f} is the name of a function or a lambda expression.
 
-This is useful when it is desired to
-compute the arguments to a function before applying that function.
-For example, if @code{l} is the list @code{[1, 5, -10.2, 4, 3]}, then @code{apply (min, l)}
-gives -10.2.  @code{apply} is also useful when calling functions which do not
-have their arguments evaluated if it is desired to cause evaluation of
-them.  For example, if @code{filespec} is a variable bound to the list @code{[test,
-case]} then @code{apply (closefile, filespec)} is equivalent to
-@code{closefile (test, case)}.  In general the first argument to @code{apply} should
-be preceded by a ' to make it evaluate to itself.  Since some atomic
-variables have the same name as certain functions the values of the
-variable would be used rather than the function because @code{apply} has its
-first argument evaluated as well as its second.
+@deffn {Function} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+Constructs and evaluates an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+
+@code{apply} does not attempt to distinguish array functions from ordinary functions;
+when @var{F} is the name of an array function,
+@code{apply} evaluates @code{@var{F}(...)}
+(that is, a function call with parentheses instead of square brackets).
+@code{arrayapply} evaluates a function call with square brackets in this case.
+
+Examples:
+
+@code{apply} evaluates its arguments.
+In this example, @code{min} is applied to the value of @code{L}.
+
+@c ===beg===
+@c L : [1, 5, -10.2, 4, 3];
+@c apply (min, L);
+@c ===end===
+@example
+(%i1) L : [1, 5, -10.2, 4, 3];
+(%o1)                 [1, 5, - 10.2, 4, 3]
+(%i2) apply (min, L);
+(%o2)                        - 10.2
+@end example
+
+@code{apply} evaluates arguments, even if the function @var{F} quotes them.
+
+@c ===beg===
+@c F (x) := x / 1729;
+@c fname : F;
+@c dispfun (F);
+@c dispfun (fname);
+@c apply (dispfun, [fname]);
+@c ===end===
+@example
+(%i1) F (x) := x / 1729;
+                                   x
+(%o1)                     F(x) := ----
+                                  1729
+(%i2) fname : F;
+(%o2)                           F
+(%i3) dispfun (F);
+                                   x
+(%t3)                     F(x) := ----
+                                  1729
+
+(%o3)                         [%t3]
+(%i4) dispfun (fname);
+fname is not the name of a user function.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) apply (dispfun, [fname]);
+                                   x
+(%t5)                     F(x) := ----
+                                  1729
+
+(%o5)                         [%t5]
+@end example
+
+@code{apply} evaluates the function name @var{F}.
+Single quote @code{'} defeats evaluation.
+@code{demoivre} is the name of a global variable and also a function.
+
+@c ===beg===
+@c demoivre;
+@c demoivre (exp (%i * x));
+@c apply (demoivre, [exp (%i * x)]);
+@c apply ('demoivre, [exp (%i * x)]);
+@c ===end===
+@example
+(%i1) demoivre;
+(%o1)                         false
+(%i2) demoivre (exp (%i * x));
+(%o2)                  %i sin(x) + cos(x)
+(%i3) apply (demoivre, [exp (%i * x)]);
+demoivre evaluates to false
+Improper name or value in functional position.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) apply ('demoivre, [exp (%i * x)]);
+(%o4)                  %i sin(x) + cos(x)
+@end example
 
 @end deffn
 
@@ -872,13 +929,60 @@ Examples:
 @defvr {System variable} functions
 Default value: @code{[]}
 
-@code{functions} is the list of user-defined Maxima functions
+@code{functions} is the list of ordinary Maxima functions
 in the current session.
-A user-defined function is a function constructed by
-@code{define} or @code{:=}.
+An ordinary function is a function constructed by
+@code{define} or @code{:=} and called with parentheses @code{()}.
 A function may be defined at the Maxima prompt
 or in a Maxima file loaded by @code{load} or @code{batch}.
-Lisp functions, however, are not added to @code{functions}.
+
+Array functions (called with square brackets, e.g., @code{F[x]})
+and subscripted functions (called with square brackets and parentheses, e.g., @code{F[x](y)})
+are listed by the global variable @code{arrays}, and not by @code{functions}.
+
+Lisp functions are not kept on any list.
+
+Examples:
+
+@c ===beg===
+@c F_1 (x) := x - 100;
+@c F_2 (x, y) := x / y;
+@c define (F_3 (x), sqrt (x));
+@c G_1 [x] := x - 100;
+@c G_2 [x, y] := x / y;
+@c define (G_3 [x], sqrt (x));
+@c H_1 [x] (y) := x^y;
+@c functions;
+@c arrays;
+@c ===end===
+@example
+(%i1) F_1 (x) := x - 100;
+(%o1)                   F_1(x) := x - 100
+(%i2) F_2 (x, y) := x / y;
+                                      x
+(%o2)                    F_2(x, y) := -
+                                      y
+(%i3) define (F_3 (x), sqrt (x));
+(%o3)                   F_3(x) := sqrt(x)
+(%i4) G_1 [x] := x - 100;
+(%o4)                    G_1  := x - 100
+                            x
+(%i5) G_2 [x, y] := x / y;
+                                     x
+(%o5)                     G_2     := -
+                             x, y    y
+(%i6) define (G_3 [x], sqrt (x));
+(%o6)                    G_3  := sqrt(x)
+                            x
+(%i7) H_1 [x] (y) := x^y;
+                                      y
+(%o7)                     H_1 (y) := x
+                             x
+(%i8) functions;
+(%o8)              [F_1(x), F_2(x, y), F_3(x)]
+(%i9) arrays;
+(%o9)                 [G_1, G_2, G_3, H_1]
+@end example
 
 @end defvr
 
@@ -905,36 +1009,132 @@ and assigns the definition to the label.
 @c PROBABLY NEED SOME EXAMPLES HERE
 @end deffn
 
-@deffn {Function} funmake (@var{name}, [@var{arg_1}, ..., @var{arg_n}])
-Returns an expression @code{@var{name} (@var{arg_1}, ..., @var{arg_n})}.
+@deffn {Function} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
+Returns an expression @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 The return value is simplified, but not evaluated,
-so the function is not called.
+so the function @var{F} is not called, even if it exists.
+
+@code{funmake} does not attempt to distinguish array functions from ordinary functions;
+when @var{F} is the name of an array function,
+@code{funmake} returns @code{@var{F}(...)}
+(that is, a function call with parentheses instead of square brackets).
+@code{arraymake} returns a function call with square brackets in this case.
 
 @code{funmake} evaluates its arguments.
 
 Examples:
 
-@itemize @bullet
-@item
-@code{funmake} evaluates its arguments, but not the return value.
+@code{funmake} applied to an ordinary Maxima function.
+
+@c ===beg===
+@c F (x, y) := y^2 - x^2;
+@c funmake (F, [a + 1, b + 1]);
+@c ''%;
+@c ===end===
 @example
-(%i1) det(a,b,c) := b^2 -4*a*c$
-(%i2) x: 8$
-(%i3) y: 10$
-(%i4) z: 12$
-(%i5) f: det$
-(%i6) funmake (f, [x, y, z]);
-(%o6)                    det(8, 10, 12)
-(%i7) ''%;
-(%o7)                         - 284
+(%i1) F (x, y) := y^2 - x^2;
+                                   2    2
+(%o1)                  F(x, y) := y  - x
+(%i2) funmake (F, [a + 1, b + 1]);
+(%o2)                    F(a + 1, b + 1)
+(%i3) ''%;
+                              2          2
+(%o3)                  (b + 1)  - (a + 1)
 @end example
-@item
-Maxima simplifies @code{funmake}'s return value.
+
+@code{funmake} applied to a macro.
+
+@c ===beg===
+@c G (x) ::= (x - 1)/2;
+@c funmake (G, [u]);
+@c ''%;
+@c ===end===
 @example
-(%i1) funmake (sin, [%pi/2]);
+(%i1) G (x) ::= (x - 1)/2;
+                                  x - 1
+(%o1)                    G(x) ::= -----
+                                    2
+(%i2) funmake (G, [u]);
+(%o2)                         G(u)
+(%i3) ''%;
+                              u - 1
+(%o3)                         -----
+                                2
+@end example
+
+@code{funmake} applied to a subscripted function.
+
+@c ===beg===
+@c H [a] (x) := (x - 1)^a;
+@c funmake (H [n], [%e]);
+@c ''%;
+@c funmake ('(H [n]), [%e]);
+@c ''%;
+@c ===end===
+@example
+(%i1) H [a] (x) := (x - 1)^a;
+                                        a
+(%o1)                   H (x) := (x - 1)
+                         a
+(%i2) funmake (H [n], [%e]);
+                                       n
+(%o2)               lambda([x], (x - 1) )(%e)
+(%i3) ''%;
+                                    n
+(%o3)                       (%e - 1)
+(%i4) funmake ('(H [n]), [%e]);
+(%o4)                        H (%e)
+                              n
+(%i5) ''%;
+                                    n
+(%o5)                       (%e - 1)
+@end example
+
+@code{funmake} applied to a symbol which is not a defined function of any kind.
+
+@c ===beg===
+@c funmake (A, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) funmake (A, [u]);
+(%o1)                         A(u)
+(%i2) ''%;
+(%o2)                         A(u)
+@end example
+
+@code{funmake} evaluates its arguments, but not the return value.
+
+@c ===beg===
+@c det(a,b,c) := b^2 -4*a*c;
+@c (x : 8, y : 10, z : 12);
+@c f : det;
+@c funmake (f, [x, y, z]);
+@c ''%;
+@c ===end===
+@example
+(%i1) det(a,b,c) := b^2 -4*a*c;
+                                    2
+(%o1)              det(a, b, c) := b  - 4 a c
+(%i2) (x : 8, y : 10, z : 12);
+(%o2)                          12
+(%i3) f : det;
+(%o3)                          det
+(%i4) funmake (f, [x, y, z]);
+(%o4)                    det(8, 10, 12)
+(%i5) ''%;
+(%o5)                         - 284
+@end example
+
+Maxima simplifies @code{funmake}'s return value.
+
+@c ===beg===
+@c funmake (sin, [%pi / 2]);
+@c ===end===
+@example
+(%i1) funmake (sin, [%pi / 2]);
 (%o1)                           1
 @end example
-@end itemize
 
 @end deffn
 

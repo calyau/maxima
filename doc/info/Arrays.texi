@@ -1,10 +1,10 @@
 
 @menu
-* Definitions for Arrays and Tables::  
+* Definitions for Arrays::  
 @end menu
 
-@node Definitions for Arrays and Tables,  , Arrays and Tables, Arrays and Tables
-@section Definitions for Arrays and Tables
+@node Definitions for Arrays,  , Arrays, Arrays
+@section Definitions for Arrays
 
 @deffn {Function} array (@var{name}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Function} array (@var{name}, @var{type}, @var{dim_1}, ..., @var{dim_n})
@@ -51,12 +51,132 @@ This is reminiscent of @code{apply}, except the first argument is an array inste
 @end deffn
 
 @deffn {Function} arrayinfo (@var{A})
-Returns a list of information about the array @var{A}.  For
-hashed arrays it returns a list of @code{hashed}, the number of subscripts,
-and the subscripts of every element which has a value.  For declared
-arrays it returns a list of @code{declared}, the number of subscripts, and
-the bounds that were given the the @code{array} function when it was called
-on @var{A}.  Do @code{example(arrayinfo);} for an example.
+Returns information about the array @var{A}.
+The argument @var{A} may be a declared array, an undeclared (hashed) array,
+an array function, or a subscripted function.
+
+For declared arrays, @code{arrayinfo} returns a list
+comprising the atom @code{declared}, the number of dimensions, and the size of each dimension.
+The elements of the array, both bound and unbound, are returned by @code{listarray}.
+
+For undeclared arrays (hashed arrays),
+@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
+and the subscripts of every element which has a value.
+The values are returned by @code{listarray}.
+
+For array functions,
+@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
+and any subscript values for which there are stored function values.
+The stored function values are returned by @code{listarray}.
+
+For subscripted functions,
+@code{arrayinfo} returns a list comprising the atom @code{hashed}, the number of subscripts,
+and any subscript values for which there are lambda expressions.
+The lambda expressions are returned by @code{listarray}.
+
+Examples:
+
+@code{arrayinfo} and @code{listarray} applied to a declared array.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c arrayinfo (aa);
+@c listarray (aa);
+@c ===end===
+@example
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+(%i4) arrayinfo (aa);
+(%o4)                 [declared, 2, [2, 3]]
+(%i5) listarray (aa);
+(%o5) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end example
+
+@code{arrayinfo} and @code{listarray} applied to an undeclared (hashed) array.
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c arrayinfo (bb);
+@c listarray (bb);
+@c ===end===
+@example
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+(%i3) arrayinfo (bb);
+(%o3)               [hashed, 1, [BAR], [FOO]]
+(%i4) listarray (bb);
+                              3         2
+(%o4)                 [(c - d) , (b + a) ]
+@end example
+
+@code{arrayinfo} and @code{listarray} applied to an array function.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c arrayinfo (cc);
+@c listarray (cc);
+@c ===end===
+@example
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+(%i4) arrayinfo (cc);
+(%o4)              [hashed, 2, [4, z], [u, v]]
+(%i5) listarray (cc);
+                              z  v
+(%o5)                        [-, -]
+                              4  u
+@end example
+
+@code{arrayinfo} and @code{listarray} applied to a subscripted function.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c arrayinfo (dd);
+@c listarray (dd);
+@c ===end===
+@example
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+(%i4) arrayinfo (dd);
+(%o4)             [hashed, 1, [b + a], [v - u]]
+(%i5) listarray (dd);
+                         b + a                v - u
+(%o5)      [lambda([y], y     ), lambda([y], y     )]
+@end example
 
 @end deffn
 
@@ -72,13 +192,41 @@ instead of an unevaluated function call.
 @defvr {System variable} arrays
 Default value: @code{[]}
 
-@code{arrays} is a list of all the arrays that have been allocated,
-both declared and undeclared.
+@code{arrays} is a list of arrays that have been allocated.
+These comprise arrays declared by @code{array},
+hashed arrays constructed by implicit definition (assigning something to an array element),
+and array functions defined by @code{:=} and @code{define}.
+Arrays defined by @code{make_array} are not included.
 
 See also
 @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
 @code{fillarray}, @code{listarray}, and @code{rearray}.
 @c IS THIS AN EXHAUSTIVE LIST ??
+
+Examples:
+
+@c ===beg===
+@c array (aa, 5, 7);
+@c bb [FOO] : (a + b)^2;
+@c cc [x] := x/100;
+@c dd : make_array ('any, 7);
+@c arrays;
+@c ===end===
+@example
+(%i1) array (aa, 5, 7);
+(%o1)                          aa
+(%i2) bb [FOO] : (a + b)^2;
+                                   2
+(%o2)                       (b + a)
+(%i3) cc [x] := x/100;
+                                   x
+(%o3)                      cc  := ---
+                             x    100
+(%i4) dd : make_array ('any, 7);
+(%o4)       @{Array:  #(NIL NIL NIL NIL NIL NIL NIL)@}
+(%i5) arrays;
+(%o5)                     [aa, bb, cc]
+@end example
 
 @end defvr
 
@@ -111,9 +259,127 @@ away.
 @end deffn
 
 @deffn {Function} listarray (@var{A})
-Returns a list of the elements of a declared or
-hashed array @var{A}.  The order is row-major.  Elements which are not yet
-defined are represented by @code{#####}.
+Returns a list of the elements of the array @var{A}.
+The argument @var{A} may be a declared array, an undeclared (hashed) array,
+an array function, or a subscripted function.
+
+Elements are listed in row-major order.
+That is, elements are sorted according to the first index, then according to the second index, and so on.
+The sorting order of index values is the same as the order established by @code{orderless}.
+
+For undeclared arrays, array functions, and subscripted functions,
+the elements correspond to the index values returned by @code{arrayinfo}.
+
+Unbound elements of declared general arrays (that is, not @code{fixnum} and not @code{flonum})
+are returned as @code{#####}.
+Unbound elements of declared @code{fixnum} or @code{flonum} arrays
+are returned as 0 or 0.0, respectively.
+Unbound elements of undeclared arrays, array functions,
+and subscripted functions are not returned.
+
+Examples:
+
+@code{listarray} and @code{arrayinfo} applied to a declared array.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c listarray (aa);
+@c arrayinfo (aa);
+@c ===end===
+@example
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+(%i4) listarray (aa);
+(%o4) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+(%i5) arrayinfo (aa);
+(%o5)                 [declared, 2, [2, 3]]
+@end example
+
+@code{listarray} and @code{arrayinfo} applied to an undeclared (hashed) array.
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c listarray (bb);
+@c arrayinfo (bb);
+@c ===end===
+@example
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+(%i3) listarray (bb);
+                              3         2
+(%o3)                 [(c - d) , (b + a) ]
+(%i4) arrayinfo (bb);
+(%o4)               [hashed, 1, [BAR], [FOO]]
+@end example
+
+@code{listarray} and @code{arrayinfo} applied to an array function.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c listarray (cc);
+@c arrayinfo (cc);
+@c ===end===
+@example
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+(%i4) listarray (cc);
+                              z  v
+(%o4)                        [-, -]
+                              4  u
+(%i5) arrayinfo (cc);
+(%o5)              [hashed, 2, [4, z], [u, v]]
+@end example
+
+@code{listarray} and @code{arrayinfo} applied to a subscripted function.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c listarray (dd);
+@c arrayinfo (dd);
+@c ===end===
+@example
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+(%i4) listarray (dd);
+                         b + a                v - u
+(%o4)      [lambda([y], y     ), lambda([y], y     )]
+(%i5) arrayinfo (dd);
+(%o5)             [hashed, 1, [b + a], [v - u]]
+@end example
 
 @end deffn
 
@@ -131,11 +397,14 @@ For example, if @code{y: make_array (...)} then @code{y} points to an object
 which takes up space, but after @code{y: false}, @code{y} no longer
 points to that object, so the object can be garbage collected.  
 
-@c NEEDS CLARIFICATION HERE
-@code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
-@code{make_array} in this case is the function to call to calculate array
-elements, and the rest of the arguments are passed recursively to
-@code{make_array} to generate the "memory" for the array function object.
+@c 'FUNCTIONAL ARGUMENT IN MAKE_ARRAY APPEARS TO BE BROKEN
+@c EVEN AFTER READING THE CODE (SRC/AR.LISP) I CAN'T TELL HOW THIS IS SUPPOSED TO WORK
+@c COMMENTING OUT THIS STUFF TO PREVENT CONFUSION AND HEARTBREAK
+@c RESTORE IT WHEN MAKE_ARRAY ('FUNCTIONAL, ...) IS FIXED
+@c @code{y: make_array ('functional, 'f, 'hashed, 1)} - the second argument to
+@c @code{make_array} in this case is the function to call to calculate array
+@c elements, and the rest of the arguments are passed recursively to
+@c @code{make_array} to generate the "memory" for the array function object.
 
 @end deffn
 
@@ -155,6 +424,7 @@ changed.
 @deffnx {Function} remarray (all)
 Removes arrays and array associated
 functions and frees the storage occupied.
+The arguments may be declared arrays, undeclared (hashed) arrays, array functions, and subscripted functions.
 
 @code{remarray (all)} removes all items in the global list @code{arrays}.
 
