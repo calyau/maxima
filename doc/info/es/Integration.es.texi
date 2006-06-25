@@ -1,18 +1,20 @@
-@c version 1.27
+@c version 1.28
 @menu
 * Introducci@'on a la Integraci@'on::
 * Definiciones para Integraci@'on::
+* Introducci@'on a QUADPACK::
+* Definiciones para QUADPACK::
 @end menu
     
 @node Introducci@'on a la Integraci@'on, Definiciones para Integraci@'on, Integraci@'on, Integraci@'on
 
 @section Introducci@'on a la Integraci@'on   
 
-Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la funci@'on @code{romberg}, un integrador adaptativo que utiliza la regla de cuadratura de Newton-Cotes, llamada @code{quanc8} y una bater@'{@dotless{i}}a de integradores adaptativos de Quadpack, como @code{quad_qag}, @code{quad_qags}, etc.
+Maxima tiene varias rutinas para calcular integrales. La funci@'on @code{integrate} hace uso de la mayor parte de ellas.  Tambi@'en est@'a el paquete @code{antid}, que opera con funciones no especificadas y sus derivadas. Para usos num@'ericos se dispone de la funci@'on @code{romberg}, un integrador adaptativo que utiliza la regla de cuadratura de Newton-Cotes, llamada @code{quanc8} y una bater@'{@dotless{i}}a de integradores adaptativos de Quadpack, como @code{quad_qag}, @code{quad_qags}, etc., que se describen en la secci@'on @code{QUADPACK}.
 Tambi@'en se trabajan funciones hipergeom@'etricas, v@'ease @code{specint} para m@'as detalles. En t@'erminos generales, Maxima s@'olo opera con funciones que son integrables en t@'erminos de funciones elementales, como las racionales, trigonom@'etricas, logar@'{@dotless{i}}tmicas, exponenciales, radicales, etc., y unas pocas extensiones de @'estas, como la funci@'on de error o los dilogaritmos. No opera con integrales en t@'erminos de funciones desconocidas, como  @code{g(x)} o @code{h(x)}.
 
 @c end concepts Integration
-@node Definiciones para Integraci@'on,  , Introducci@'on a la Integraci@'on, Integraci@'on
+@node Definiciones para Integraci@'on, Introducci@'on a QUADPACK, Introducci@'on a la Integraci@'on, Integraci@'on
 @section Definiciones para Integraci@'on 
 
 @c NEEDS WORK
@@ -542,11 +544,109 @@ Equivale a @code{ldefint} cuando @code{tlimswitch} vale @code{true}.
 
 @end deffn
 
+@footnotestyle end
+
+@node Introducci@'on a QUADPACK, Definiciones para QUADPACK, Definiciones para Integraci@'on, Integraci@'on
+@section Introducci@'on a QUADPACK
+
+@c FOLLOWING TEXT ADAPTED WITH HEAVY MODIFICATION FROM http://www.netlib.org/slatec/src/qpdoc.f
+
+QUADPACK es un conjunto de funciones para el c@'alculo num@'erico de
+integrales definidas de una variable. Se cre@'o a partir de un trabajo conjunto de
+R. Piessens @footnote{Applied Mathematics and Programming Division, K.U. Leuven},
+E. de Doncker @footnote{Applied Mathematics and Programming Division, K.U. Leuven},
+C. Ueberhuber @footnote{Institut f@"ur Mathematik, T.U. Wien},
+and D. Kahaner @footnote{National Bureau of Standards, Washington, D.C., U.S.A}.
+
+La librer@'{@dotless{i}}a QUADPACK incluida en Maxima es una traducci@'on autom@'atica
+(mediante el programa @code{f2cl}) del c@'odigo fuente Fortran de QUADPACK tal como
+se encuentra en la SLATEC Common Mathematical Library,Versi@'on 4.1 @footnote{http://www.netlib.org/slatec}.
+La librer@'{@dotless{i}}a SLATEC est@'a fechada en julio de 1993,
+pero las funciones QUADPACK fueron escritas algunos a@~nos antes.
+Hay otra versi@'on de QUADPACK en Netlib @footnote{http://www.netlib.org/quadpack},
+pero no est@'a claro hasta qu@'e punto difiere de la que forma parte de la
+librer@'{@dotless{i}}a SLATEC.
+
+Las funciones QUADPACK incluidas en Maxima son todas autom@'aticas,
+en el sentido de que estas funciones intentan calcular sus resultados
+con una exactitud especificada, requiriendo un n@'umero indeterminado 
+de evaluaciones de funciones.
+La traducci@'on a Lisp que Maxima hace de QUADPACK incluye tambi@'en
+algunas funciones que no son autom@'aticas, pero que no son accesibles 
+desde el nivel de Maxima.
+
+Se puede encontrar m@'as informaci@'on sobre QUADPACK  en el libro
+@footnote{R. Piessens, E. de Doncker-Kapenga, C.W. Uberhuber, and D.K. Kahaner.
+@i{QUADPACK: A Subroutine Package for Automatic Integration.}
+Berlin: Springer-Verlag, 1983, ISBN 0387125531.}.
+
+@subsection Perspectiva general
+
+@table @code
+@item quad_qag
+Integraci@'on de una funci@'on general en un intervalo finito.
+La funci@'on @code{quad_qag} implementa un integrador global 
+adaptativo simple utilizando una estrategia de Aind (Piessens, 1973).
+Se puede escoger entre seis pares de f@'ormulas de cuadratura de
+Gauss-Kronrod para la regla de evaluaci@'on.
+Las reglas de rango superior son @'utiles en los casos en los que
+los integrandos tienen un alto grado de oscilaci@'on.
+
+@item quad_qags
+Integraci@'on de una funci@'on general en un intervalo finito.
+La funci@'on @code{quad_qags} implementa la subdivisi@'on de intervalos 
+global adaptativa con extrapolaci@'on (de Doncker, 1978) mediante
+el algoritmo Epsilon  (Wynn, 1956).
+
+@item quad_qagi
+Integraci@'on de una funci@'on general en un intervalo infinito o semi-infinito.
+El intervalo se proyecta sobre un intervalo finito y luego se aplica la
+misma estrategia que en @code{quad_qags}.
+
+@item quad_qawo
+Integraci@'on de @math{cos(omega x) f(x)} o @math{sin(omega x) f(x)} en un
+intervalo finito, siendo @math{omega} una constante. La regla de 
+evaluaci@'on se basa en la t@'ecnica modificada de Clenshaw-Curtis.
+La funci@'on @code{quad_qawo} aplica la subdivisi@'on adaptativa con extrapolaci@'on, 
+de forma similar a @code{quad_qags}.
+
+@item quad_qawf
+Calcula la transformada seno o coseno de Fourier en un intervalo semi-infinito.
+Se aplica el mismo m@'etodo que en @code{quad_qawo} a sucesivos intervalos
+finitos, acelerando la convergencia mediante el algoritmo Epsilon (Wynn, 1956).
+
+@item quad_qaws
+Integraci@'on de @math{w(x) f(x)} en un intervalo finito @math{[a, b]},
+siendo @math{w} una funci@'on de la forma @math{(x - a)^alpha (b - x)^beta v(x)},
+con  @math{v(x)} igual a 1, a @math{log(x - a)}, a @math{log(b - x)} o a
+@math{log(x - a) log(b - x)} y con @math{alpha > -1}, y @math{beta > -1}.
+Se aplica una estrategia de subdivisi@'on adaptativa global,
+con integraci@'on de Clenshaw-Curtis modificada en los subintervalos que
+contienen a @math{a} y a @math{b}.
+
+@item quad_qawc
+Calcula el valor principal de Cauchy de @math{f(x)/(x - c)} en un
+intervalo finito @math{(a, b)} para una @math{c} dada.
+La estrategia es global adaptativa, utilizando la integraci@'on de 
+Clenshaw-Curtis modificada en los subintervalos que contienen a @math{x = c}.
+@end table
+
+@node Definiciones para QUADPACK, , Introducci@'on a QUADPACK, Integraci@'on
+@section Definiciones para QUADPACK
+
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qag (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
 @deffnx {Funci@'on} quad_qag (@var{f}, @var{x}, @var{a}, @var{b}, @var{key}, @var{epsrel}, @var{limit})
-Calcula num@'ericamente la integral
+Integraci@'on de una funci@'on general en un intervalo finito.
+La funci@'on @code{quad_qag} implementa un integrador global 
+adaptativo simple utilizando una estrategia de Aind (Piessens, 1973).
+Se puede escoger entre seis pares de f@'ormulas de cuadratura de
+Gauss-Kronrod para la regla de evaluaci@'on.
+Las reglas de rango superior son @'utiles en los casos en los que
+los integrandos tienen un alto grado de oscilaci@'on.
+
+La funci@'on @code{quad_qag} calcula num@'ericamente la integral
 
 @ifhtml
 @math{integrate (f(x), x, a, b)}
@@ -560,7 +660,13 @@ $$\int_a^b {f(x) dx}$$
 
 utilizando un integrador adaptativo simple.
 
-La funci@'on a integrar es @var{f(x)}, con variable independiente @var{x}, siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}. El argumento @var{key} indica el integrador a utilizar y debe ser un n@'umero entero entre 1 y 6, ambos inclusive.  El valor de @var{key} selecciona el orden de la regla de integraci@'on de Gauss-Kronrod.
+La funci@'on a integrar es @var{f(x)}, con variable independiente @var{x},
+siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}.
+El argumento @var{key} indica el integrador a utilizar y debe ser un n@'umero
+entero entre 1 y 6, ambos inclusive.  El valor de @var{key} selecciona el
+orden de la regla de integraci@'on de Gauss-Kronrod.
+Las reglas de rango superior son @'utiles en los casos en los que
+los integrandos tienen un alto grado de oscilaci@'on.
 
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
@@ -615,8 +721,25 @@ Ejemplos:
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qags (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 @deffnx {Funci@'on} quad_qags (@var{f}, @var{x}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+Integraci@'on de una funci@'on general en un intervalo finito.
+La funci@'on @code{quad_qags} implementa la subdivisi@'on de intervalos 
+global adaptativa con extrapolaci@'on (de Doncker, 1978) mediante
+el algoritmo Epsilon  (Wynn, 1956).
 
-Integra num@'ericamente la funci@'on dada utilizando una cuadratura adaptativa con extrapolaci@'on. La funci@'on a integrar es @var{f(x)}, con variable independiente @var{x}, siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}.
+La funci@'on @code{quad_qags} calcula la integral
+
+@ifhtml
+@math{integrate (f(x), x, a, b)}
+@end ifhtml
+@ifinfo
+@math{integrate (f(x), x, a, b)}
+@end ifinfo
+@tex
+$$\int_a^b {f(x) dx}$$
+@end tex
+
+La funci@'on a integrar es @var{f(x)}, de variable independiente @var{x}, 
+siendo el intervalo de integraci@'on el comprendido entre @var{a} y @var{b}.
 
 El integrando se puede especificar con el nombre de una funci@'on u operador de Maxima 
 o de Lisp, como una expresi@'on lambda o como una expresi@'on general de Maxima.
@@ -672,8 +795,11 @@ N@'otese que @code{quad_qags} es m@'as precisa y eficiente que @code{quad_qag} p
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qagi (@var{f(x)}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
 @deffnx {Funci@'on} quad_qagi (@var{f}, @var{x}, @var{a}, @var{inftype}, @var{epsrel}, @var{limit})
+Integraci@'on de una funci@'on general en un intervalo infinito o semi-infinito.
+El intervalo se proyecta sobre un intervalo finito y luego se aplica la
+misma estrategia que en @code{quad_qags}.
 
-Calcula num@'ericamente cualquiera las siguientes integrales:
+La funci@'on @code{quad_qagi} calcula cualquiera las siguientes integrales:
 
 @ifhtml
 @math{integrate (f(x), x, a, inf)}
@@ -774,8 +900,12 @@ Ejemplos:
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qawc (@var{f(x)}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
 @deffnx {Funci@'on} quad_qawc (@var{f}, @var{x}, @var{c}, @var{a}, @var{b}, @var{epsrel}, @var{limit})
+Calcula el valor principal de Cauchy de @math{f(x)/(x - c)} en un
+intervalo finito @math{(a, b)} para una @math{c} dada.
+La estrategia es global adaptativa, utilizando la integraci@'on de 
+Clenshaw-Curtis modificada en los subintervalos que contienen a @math{x = c}.
 
-Calcula num@'ericamente el valor principal de Cauchy de
+La funci@'on @code{quad_qawc} calcula el valor principal de Cauchy de
 
 @ifhtml
 @math{integrate (f(x)/(x - c), x, a, b)}
@@ -856,8 +986,11 @@ Principal Value
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qawf (@var{f(x)}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 @deffnx {Funci@'on} quad_qawf (@var{f}, @var{x}, @var{a}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+Calcula la transformada seno o coseno de Fourier en un intervalo semi-infinito.
+Se aplica el mismo m@'etodo que en @code{quad_qawo} a sucesivos intervalos
+finitos, acelerando la convergencia mediante el algoritmo Epsilon (Wynn, 1956).
 
-Calcula num@'ericamente integrales de tipo Fourier utilizando la rutina QAWF de Quadpack.  La integral es
+La funci@'on @code{quad_qawf} calcula la integral
 
 @ifhtml
 @math{integrate (f(x)*w(x), x, a, inf)}
@@ -947,8 +1080,13 @@ Ejemplos:
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qawo (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
 @deffnx {Funci@'on} quad_qawo (@var{f}, @var{x}, @var{a}, @var{b}, @var{omega}, @var{trig}, @var{epsabs}, @var{limit}, @var{maxp1}, @var{limlst})
+Integraci@'on de @math{cos(omega x) f(x)} o @math{sin(omega x) f(x)} en un
+intervalo finito, siendo @math{omega} una constante. La regla de 
+evaluaci@'on se basa en la t@'ecnica modificada de Clenshaw-Curtis.
+La funci@'on @code{quad_qawo} aplica la subdivisi@'on adaptativa con extrapolaci@'on, 
+de forma similar a @code{quad_qags}.
 
-Realiza la integraci@'on num@'erica utizando la rutina QAWO de Quadpack:
+La funci@'on @code{quad_qawo} realiza la integraci@'on utilizando la rutina QAWO de Quadpack:
 
 @ifhtml
 @math{integrate (f(x)*w(x), x, a, b)}
@@ -1037,8 +1175,15 @@ Ejemplos:
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS
 @deffn {Funci@'on} quad_qaws (@var{f(x)}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
 @deffnx {Funci@'on} quad_qaws (@var{f}, @var{x}, @var{a}, @var{b}, @var{alfa}, @var{beta}, @var{wfun}, @var{epsabs}, @var{limit})
+Integraci@'on de @math{w(x) f(x)} en un intervalo finito @math{[a, b]},
+siendo @math{w} una funci@'on de la forma @math{(x - a)^alpha (b - x)^beta v(x)},
+con  @math{v(x)} igual a 1, a @math{log(x - a)}, a @math{log(b - x)} o a
+@math{log(x - a) log(b - x)} y con @math{alpha > -1}, y @math{beta > -1}.
+Se aplica una estrategia de subdivisi@'on adaptativa global,
+con integraci@'on de Clenshaw-Curtis modificada en los subintervalos que
+contienen a @math{a} y a @math{b}.
 
-Realiza la integraci@'on num@'erica utizando la rutina QAWS de Quadpack:
+La funci@'on @code{quad_qaws} realiza la integraci@'on utizando la rutina QAWS de Quadpack:
 
 @ifhtml
 @math{integrate (f(x)*w(x), x, a, b)}
