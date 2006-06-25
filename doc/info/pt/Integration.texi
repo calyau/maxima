@@ -801,7 +801,7 @@ Equivalente a @code{ldefint} com @code{tlimswitch} escolhido para @code{true}.
 
 @footnotestyle end
 
-@node Introdu@value{cedilha}@~ao a QUADPACK, Defini@value{cedilha}@~oes para QUADPACK, Defini@value{cedilha}@~oes para Integration, Integra@value{cedilha}@~ao
+@node Introdu@value{cedilha}@~ao a QUADPACK, Defini@value{cedilha}@~oes para QUADPACK, Defini@value{cedilha}@~oes para Integra@value{cedilha}@~ao, Integra@value{cedilha}@~ao
 @section Introdu@value{cedilha}@~ao a QUADPACK
 
 
@@ -883,7 +883,7 @@ que possu@'irem o ponto @math{x = c}.
 @end table
 
 @node Defini@value{cedilha}@~oes para QUADPACK, , Introdu@value{cedilha}@~ao a QUADPACK, Integra@value{cedilha}@~ao
-@section Defini@value{cedilha}@~ para QUADPACK
+@section Defini@value{cedilha}@~oes para QUADPACK
 
 @c THERE ARE OPTIONAL ARGUMENTS WHICH MAKES LISTING THE VARIANTS A LITTLE TEDIOUS
 @c NEED A MORE CONVENIENT (AND NONAMBIGUOUS) NOTATION FOR OPTIONAL ARGUMENTS

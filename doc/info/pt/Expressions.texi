@@ -223,7 +223,7 @@ Exemplos:
 (%o12)                         foo
 @end example
 
-@node Seq@"u@^encias de caracteres, Desigualdade, Sintaxe, Identificadores, Express@~oes
+@node Seq@"u@^encias de caracteres, Desigualdade, Identificadores, Express@~oes
 @section Seq@"u@^encias de caracteres
 
 Strings (seq@"u@^encias de caracteres) s@~ao contidas entre aspas duplas @code{"} em entradas de dados usados pelo Maxima,
@@ -297,7 +297,7 @@ seq@"u@^encia de caracteres.";
 (%o8)              "Isso @'e uma seq@"u@^encia de caracteres  do Maxima."
 @end example
 
-@node Inequality, Syntax, Strings, Expressions
+@node Desigualdade, Sintaxe, Seq@"u@^encias de caracteres, Express@~oes
 @section Desigualdade
 Maxima tem os operadores de desigualdade @code{<}, @code{<=}, @code{>=}, @code{>}, @code{#}, e @code{notequal}.
 Veja @code{if} para uma descri@,{c}@~ao de express@~oes condicionais.
