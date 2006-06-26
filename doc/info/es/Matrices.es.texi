@@ -1,4 +1,4 @@
-@c english version 1.23
+@c english version 1.24
 @menu
 * Introducci@'on a las Matrices y al @'Algebra Lineal::
 * Definiciones para las Matrices y el @'Algebra Lineal::
@@ -643,14 +643,32 @@ Matrix entered.
 @deffn {Funci@'on} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1}, @var{j_1})
 @deffnx {Funci@'on} genmatrix (@var{a}, @var{i_2}, @var{j_2}, @var{i_1})
 @deffnx {Funci@'on} genmatrix (@var{a}, @var{i_2}, @var{j_2})
-Devuelve una matriz generada a partir de @var{a}, siendo @code{@var{a}[@var{i_1},@var{j_1}]} el elemento superior izquierdo y @code{@var{a}[@var{i_2},@var{j_2}]} el inferior derecho de la matriz. Aqu@'{@dotless{i}} @var{a} es un arreglo (creado por @code{array}, no por @code{make_array}) o una funci@'on arreglo (una funci@'on arreglo se crea como cualquier otra funci@'on con @code{:=} o @code{define}, pero sus argumentos encerrados entre corchetes en lugar de par@'entesis).
+Devuelve una matriz generada a partir de @var{a}, siendo @code{@var{a}[@var{i_1},@var{j_1}]} el elemento superior izquierdo y @code{@var{a}[@var{i_2},@var{j_2}]} el inferior derecho de la matriz. 
+Aqu@'{@dotless{i}} @var{a} se declara como una arreglo (creado por @code{array},
+pero no por @code{make_array}), o un array no declarado, o una funci@'on array, o una
+expresi@'on lambda de dos argumentos.
+(An array function is created like other functions with @code{:=} or @code{define},
+but arguments are enclosed in square brackets instead of parentheses.)
 
-Si se omite @var{j_1}, entonces se le asigna el valor @var{i_1}. Si tanto @var{j_1} como @var{i_1} se omiten, a las dos variables se le asigna el valor .
+Si se omite @var{j_1}, entonces se le asigna el valor @var{i_1}. Si tanto @var{j_1} como @var{i_1} se omiten, a las dos variables se le asigna el valor 1.
 
 Si un elemento @code{i,j} del arreglo no est@'a definido, se le asignar@'a el elemento simb@'olico @code{@var{a}[i,j]}.
 
+@c ===beg===
+@c h [i, j] := 1 / (i + j - 1);
+@c genmatrix (h, 3, 3);
+@c array (a, fixnum, 2, 2);
+@c a [1, 1] : %e;
+@c a [2, 2] : %pi;
+@c genmatrix (a, 2, 2);
+@c genmatrix (lambda ([i, j], j - i), 3, 3);
+@c genmatrix (B, 2, 2);
+@c ===end===
 @example
-(%i1) h[i,j] := 1/(i+j-1)$
+(%i1) h [i, j] := 1 / (i + j - 1);
+                                    1
+(%o1)                  h     := ---------
+                        i, j    i + j - 1
 (%i2) genmatrix (h, 3, 3);
                            [    1  1 ]
                            [ 1  -  - ]
@@ -663,16 +681,28 @@ Si un elemento @code{i,j} del arreglo no est@'a definido, se le asignar@'a el el
                            [ 1  1  1 ]
                            [ -  -  - ]
                            [ 3  4  5 ]
-(%i3) array (a, fixnum, 2, 2)$
-(%i4) a[1,1]: %e$
-(%i5) a[2,2]: %pi$
-(%i6) kill (a[1,2], a[2,1])$
-(%i7) genmatrix (a, 2, 2);
-                        [  %e    a     ]
-                        [         1, 2 ]
-(%o7)                   [              ]
-                        [ a       %pi  ]
-                        [  2, 1        ]
+(%i3) array (a, fixnum, 2, 2);
+(%o3)                           a
+(%i4) a [1, 1] : %e;
+(%o4)                          %e
+(%i5) a [2, 2] : %pi;
+(%o5)                          %pi
+(%i6) genmatrix (a, 2, 2);
+                           [ %e   0  ]
+(%o6)                      [         ]
+                           [ 0   %pi ]
+(%i7) genmatrix (lambda ([i, j], j - i), 3, 3);
+                         [  0    1   2 ]
+                         [             ]
+(%o7)                    [ - 1   0   1 ]
+                         [             ]
+                         [ - 2  - 1  0 ]
+(%i8) genmatrix (B, 2, 2);
+                        [ B      B     ]
+                        [  1, 1   1, 2 ]
+(%o8)                   [              ]
+                        [ B      B     ]
+                        [  2, 1   2, 2 ]
 @end example
 
 @end deffn

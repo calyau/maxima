@@ -1,4 +1,4 @@
-@c english version 1.39
+@c english version 1.41
 @menu
 * Introducci@'on a la definici@'on de funciones::  
 * Funciones::                    
@@ -12,6 +12,7 @@
 @node Funciones, Macros, Introducci@'on a la definici@'on de funciones, Definici@'on de Funciones
 
 @section Funciones
+@subsection Funciones ordinarias
 
 Para definir una funci@'on en Maxima es necesario utilizar el operador ':='.
 
@@ -97,6 +98,42 @@ block ([x: 1], expr1, ..., exprn)
 
 Dentro de las funciones, cuando el lado derecho de la definici@'on deba ser evaluado ser@'a @'util hacer uso de @code{define} y posiblemente de @code{buildq}. 
 
+@subsection Funciones array
+
+Una funci@'on array almacena el valor de la funci@'on la primera
+vez que es invocada con un argumento dado, devolviendo el valor
+almacenado sin recalcularlo cuando es llamada con ese mismo argumento.
+Estas funciones reciben tambi@'en el nombre de @i{funciones memorizadoras}.
+
+Los nombres de las funciones array son a@~nadidos a la lista global 
+@code{arrays}, no a la lista global @code{functions}.
+La funci@'on @code{arrayinfo} devuelve la lista de argumentos para
+los que hay valores almacenados y @code{listarray} devuelve precisamente
+estos valores almacenados.
+Las funciones @code{dispfun} y @code{fundef} devuelven la definici@'on
+de la funci@'on array.
+
+La funci@'on @code{arraymake} construye una llamada a una funci@'on array,
+de forma similar a como lo hace @code{funmake} para las funciones 
+ordinarias. Por otro lado, @code{arrayapply} aplica una funci@'on array
+a sus argumentos, tal como lo hace @code{apply} con las funciones
+ordinarias. No existe para las funciones array nada similar a @code{map},
+aunque @code{map(lambda([@var{x}], @var{a}[@var{x}]), @var{L})} o
+@code{makelist(@var{a}[@var{x}], @var{x}, @var{L})},
+siendo @var{L} una lista, podr@'{@dotless{i}}an suplantar esta
+carencia.
+
+La funci@'on @code{remarray} borra la definici@'on de una funci@'on array,
+as@'{@dotless{i}} como cualesquiera valores almacenados que tenga asociados,
+tal como @code{remfunction} lo hace con las funciones ordinarias.
+
+La llamada @code{kill(@var{a}[@var{x}])} borra el valor de la funci@'on array
+@var{a} almacenado para el argumento @var{x};
+la pr@'oxima vez que se llame a @var{a} con el argumento @var{x},
+se recalcular@'a el valor correspondiente.
+Sin embargo, no hay forma de borrar todos los valores almacenados de
+una sola vez, excepto mediante @code{kill(@var{a})} o @code{remarray(@var{a})},
+con lo que se borra tambi@'en la definici@'on de la propia funci@'on.
 
 @node Macros, Definiciones para la definici@'on de funciones, Funciones, Definici@'on de Funciones
 @section Macros
@@ -321,10 +358,88 @@ Ejemplos:
 @node Definiciones para la definici@'on de funciones, , Macros, Definici@'on de Funciones
 @section Definiciones para la definici@'on de funciones
 
-@deffn {Funci@'on} apply (@var{f}, [@var{x_1}, ..., @var{x_n}])
-Devuelve el resultado de aplicar la funci@'on @var{f} a la lista de argumentos  @var{x_1}, ..., @var{x_n}. El s@'{@dotless{i}}mbolo  @var{f} debe ser el nombre de una funci@'on o de una expresi@'on lambda.
+@deffn {Funci@'on} apply (@var{F}, [@var{x_1}, ..., @var{x_n}])
+Construye y eval@'ua la expresi@'on @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
 
-Es @'util en aquellos casos en los que se desea calcular los argumentos de una funci@'on antes de aplic@'arselos a @'esta. Por ejemplo, si @code{l} es la lista @code{[1, 5, -10.2, 4, 3]}, entonces @code{apply (min, l)} devuelve -10.2. La funci@'on @code{apply} es @'util tambi@'en cuando se llama a funciones que a@'un no tienen sus argumentos evaluados y se requiere que s@'{@dotless{i}} lo est@'en. Por ejemplo, si @code{filespec} es una variable cuyo valor es la lista @code{[test, case]} entonces @code{apply (closefile, filespec)}  es equivalente a @code{closefile (test, case)}. En general, el primer argumento de @code{apply} deber@'{@dotless{i}}a ir precedido de un ap@'ostrofo (@code{'}) para que se eval@'ue a s@'{@dotless{i}} mismo. Puesto que algunas variables at@'omicas tienen el mismo nombre que que ciertas funciones, el valor de la variable seer@'{@dotless{i}}a el utilizado antes que el de la funci@'on porque  @code{apply} tiene su dos argumentos evaluados.
+La funci@'on @code{apply} no hace distinciones entre funciones array y 
+funciones ordinarias; cuando @var{F} es el nombre de una funci@'on array,
+@code{apply} eval@'ua @code{@var{F}(...)}, esto es, hace una llamada con
+par@'entesis en lugar de corchetes. La funci@'on @code{arrayapply}
+eval@'ua una llamada a funci@'on con corchetes para estos casos.
+
+Ejemplos:
+
+La funci@'on @code{apply} eval@'ua sus argumentos.
+En este ejemplo, @code{min} se aplica al valor de @code{L}.
+
+@c ===beg===
+@c L : [1, 5, -10.2, 4, 3];
+@c apply (min, L);
+@c ===end===
+@example
+(%i1) L : [1, 5, -10.2, 4, 3];
+(%o1)                 [1, 5, - 10.2, 4, 3]
+(%i2) apply (min, L);
+(%o2)                        - 10.2
+@end example
+
+La funci@'on @code{apply} eval@'ua sus argumentos,
+incluso cuando la funci@'on @var{F} no lo hace.
+
+@c ===beg===
+@c F (x) := x / 1729;
+@c fname : F;
+@c dispfun (F);
+@c dispfun (fname);
+@c apply (dispfun, [fname]);
+@c ===end===
+@example
+(%i1) F (x) := x / 1729;
+                                   x
+(%o1)                     F(x) := ----
+                                  1729
+(%i2) fname : F;
+(%o2)                           F
+(%i3) dispfun (F);
+                                   x
+(%t3)                     F(x) := ----
+                                  1729
+
+(%o3)                         [%t3]
+(%i4) dispfun (fname);
+fname is not the name of a user function.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i5) apply (dispfun, [fname]);
+                                   x
+(%t5)                     F(x) := ----
+                                  1729
+
+(%o5)                         [%t5]
+@end example
+
+La funci@'on @code{apply} eval@'ua el nombre de funci@'on @var{F}.
+La comilla simple @code{'} evita la evaluaci@'on.
+El nombre @code{demoivre} corresponde a una variable global y
+tambi@'en a una funci@'on.
+
+@c ===beg===
+@c demoivre;
+@c demoivre (exp (%i * x));
+@c apply (demoivre, [exp (%i * x)]);
+@c apply ('demoivre, [exp (%i * x)]);
+@c ===end===
+@example
+(%i1) demoivre;
+(%o1)                         false
+(%i2) demoivre (exp (%i * x));
+(%o2)                  %i sin(x) + cos(x)
+(%i3) apply (demoivre, [exp (%i * x)]);
+demoivre evaluates to false
+Improper name or value in functional position.
+ -- an error.  Quitting.  To debug this try debugmode(true);
+(%i4) apply ('demoivre, [exp (%i * x)]);
+(%o4)                  %i sin(x) + cos(x)
+@end example
 
 @end deffn
 
@@ -403,6 +518,10 @@ Define una funci@'on de nombre @var{f} con argumentos @var{x_1}, ..., @var{x_n} 
 @code{define} no eval@'ua su primer argumento en la mayor parte de los casos y eval@'ua su segundo argumento, a menos que vaya precedido de ap@'ostrofo (@code{'}). Sin embargo, si el primer argumento es una expresi@'on de la forma @code{ev (@var{expr})}, @code{funmake (@var{expr})}  o @code{arraymake (@var{expr})}, el primer argumento es evaluado, lo que permite calcular el nombre de la funci@'on junto con su cuerpo.
 
 @code{define} es similar al operador de definici@'on de funciones @code{:=}, pero cuando @code{define} aparece dentro de una funci@'on, la definici@'on se crea usando el valor de @code{expr} en el momento de su ejecuci@'on, en lugar de la que ten@'{@dotless{i}}a en el momento de la definici@'on de la funci@'on que la contiene.
+
+La funci@'on @code{define} define tanto funciones array 
+(las llamadas con argumentos entre corchetes @code{[ ]}) como
+funciones ordinarias.
 
 Ejemplos:
 
@@ -553,7 +672,56 @@ Ejemplos:
 @defvr {Variable del sistema} functions
 Valor por defecto: @code{[]}
 
-La variable @code{functions} es una lista que contiene las funciones definidas por el usuario en la sesi@'on actual. Una funci@'on definida por el usuario es aquella que ha sido construida mediante cualquiera de los m@'etodos @code{define} o @code{:=}. Una funci@'on puede definirse durante una sesi@'on de Maxima o en un fichero que posteriormente ser@'a cargado en memoria por @code{load} o @code{batch}. T@'engase en cuenta que las funciones Lisp no se a@~naden a la lista @code{functions}.
+La variable @code{functions} es una lista que contiene los nombres de las funciones ordinarias de Maxima. Una funci@'on ordinaria es aquella que ha sido construida mediante cualquiera de los m@'etodos @code{define} o @code{:=} y que es invocada utilizando par@'entesis. Una funci@'on puede definirse durante una sesi@'on de Maxima o en un fichero que posteriormente ser@'a cargado en memoria por @code{load} o @code{batch}.
+
+Las funciones array, que son invocadas con corchetes (@code{F[x]}),
+y las funciones subindicadas, que son las invocadas con corchetes y
+par@'entesis (@code{F[x](y)}) se registran en la variable global @code{arrays},
+no en @code{functions}.
+
+Las funciones Lisp no se registran en ninguna lista.
+
+Ejemplos:
+
+@c ===beg===
+@c F_1 (x) := x - 100;
+@c F_2 (x, y) := x / y;
+@c define (F_3 (x), sqrt (x));
+@c G_1 [x] := x - 100;
+@c G_2 [x, y] := x / y;
+@c define (G_3 [x], sqrt (x));
+@c H_1 [x] (y) := x^y;
+@c functions;
+@c arrays;
+@c ===end===
+@example
+(%i1) F_1 (x) := x - 100;
+(%o1)                   F_1(x) := x - 100
+(%i2) F_2 (x, y) := x / y;
+                                      x
+(%o2)                    F_2(x, y) := -
+                                      y
+(%i3) define (F_3 (x), sqrt (x));
+(%o3)                   F_3(x) := sqrt(x)
+(%i4) G_1 [x] := x - 100;
+(%o4)                    G_1  := x - 100
+                            x
+(%i5) G_2 [x, y] := x / y;
+                                     x
+(%o5)                     G_2     := -
+                             x, y    y
+(%i6) define (G_3 [x], sqrt (x));
+(%o6)                    G_3  := sqrt(x)
+                            x
+(%i7) H_1 [x] (y) := x^y;
+                                      y
+(%o7)                     H_1 (y) := x
+                             x
+(%i8) functions;
+(%o8)              [F_1(x), F_2(x, y), F_3(x)]
+(%i9) arrays;
+(%o9)                 [G_1, G_2, G_3, H_1]
+@end example
 
 @end defvr
 
@@ -569,35 +737,136 @@ La llamada de funci@'on @code{fundef (@var{f})} devuelve la definici@'on de @var
 
 @end deffn
 
-@deffn {Funci@'on} funmake (@var{nombre}, [@var{arg_1}, ..., @var{arg_n}])
+@deffn {Funci@'on} funmake (@var{F}, [@var{arg_1}, ..., @var{arg_n}])
 
-Devuelve una expresi@'on @code{@var{name} (@var{arg_1}, ..., @var{arg_n})}. El valor as@'{@dotless{i}} retornado es simplificado pero no evaluado, de forma que la funci@'on no es invocada.
+Devuelve una expresi@'on @code{@var{F}(@var{arg_1}, ..., @var{arg_n})}.
+El valor as@'{@dotless{i}} retornado es simplificado pero no evaluado,
+de forma que la funci@'on @var{F} no es invocada, incluso cuando exista.
+
+La funci@'on @code{funmake} no hace distinciones entre funciones array
+y funciones ordinarias; cuando @var{F} es el nombre de una funci@'on array,
+@code{funmake} devuelve @code{@var{F}(...)},
+esto es, una llamada a funci@'on con par@'entesis en lugar de corchetes.
+La funci@'on @code{arraymake} devuelve una llamada a funci@'on con
+corchetes para estos casos.
 
 La funci@'on @code{funmake} eval@'ua sus argumentos.
 
 Ejemplos:
 
-@itemize @bullet
-@item
-@code{funmake} eval@'ua sus argumentos, pero no el valor retornado.
+La funci@'on @code{funmake} aplicada a una funci@'on ordinaria de Maxima.
+
+@c ===beg===
+@c F (x, y) := y^2 - x^2;
+@c funmake (F, [a + 1, b + 1]);
+@c ''%;
+@c ===end===
 @example
-(%i1) det(a,b,c) := b^2 -4*a*c$
-(%i2) x: 8$
-(%i3) y: 10$
-(%i4) z: 12$
-(%i5) f: det$
-(%i6) funmake (f, [x, y, z]);
-(%o6)                    det(8, 10, 12)
-(%i7) ''%;
-(%o7)                         - 284
+(%i1) F (x, y) := y^2 - x^2;
+                                   2    2
+(%o1)                  F(x, y) := y  - x
+(%i2) funmake (F, [a + 1, b + 1]);
+(%o2)                    F(a + 1, b + 1)
+(%i3) ''%;
+                              2          2
+(%o3)                  (b + 1)  - (a + 1)
 @end example
-@item
-Maxima simplifica el valor retornado por @code{funmake}.
+
+La funci@'on @code{funmake} aplicada a una macro.
+
+@c ===beg===
+@c G (x) ::= (x - 1)/2;
+@c funmake (G, [u]);
+@c ''%;
+@c ===end===
 @example
-(%i1) funmake (sin, [%pi/2]);
+(%i1) G (x) ::= (x - 1)/2;
+                                  x - 1
+(%o1)                    G(x) ::= -----
+                                    2
+(%i2) funmake (G, [u]);
+(%o2)                         G(u)
+(%i3) ''%;
+                              u - 1
+(%o3)                         -----
+                                2
+@end example
+
+La funci@'on @code{funmake} aplicada a una funci@'on subindicada.
+
+@c ===beg===
+@c H [a] (x) := (x - 1)^a;
+@c funmake (H [n], [%e]);
+@c ''%;
+@c funmake ('(H [n]), [%e]);
+@c ''%;
+@c ===end===
+@example
+(%i1) H [a] (x) := (x - 1)^a;
+                                        a
+(%o1)                   H (x) := (x - 1)
+                         a
+(%i2) funmake (H [n], [%e]);
+                                       n
+(%o2)               lambda([x], (x - 1) )(%e)
+(%i3) ''%;
+                                    n
+(%o3)                       (%e - 1)
+(%i4) funmake ('(H [n]), [%e]);
+(%o4)                        H (%e)
+                              n
+(%i5) ''%;
+                                    n
+(%o5)                       (%e - 1)
+@end example
+
+La funci@'on @code{funmake} aplicada a un s@'{@dotless{i}}mbolo
+que no est@'a asociado a funci@'on alguna.
+
+@c ===beg===
+@c funmake (A, [u]);
+@c ''%;
+@c ===end===
+@example
+(%i1) funmake (A, [u]);
+(%o1)                         A(u)
+(%i2) ''%;
+(%o2)                         A(u)
+@end example
+
+La funci@'on @code{funmake} eval@'ua sus argumentos,
+pero no el valor retornado.
+
+@c ===beg===
+@c det(a,b,c) := b^2 -4*a*c;
+@c (x : 8, y : 10, z : 12);
+@c f : det;
+@c funmake (f, [x, y, z]);
+@c ''%;
+@c ===end===
+@example
+(%i1) det(a,b,c) := b^2 -4*a*c;
+                                    2
+(%o1)              det(a, b, c) := b  - 4 a c
+(%i2) (x : 8, y : 10, z : 12);
+(%o2)                          12
+(%i3) f : det;
+(%o3)                          det
+(%i4) funmake (f, [x, y, z]);
+(%o4)                    det(8, 10, 12)
+(%i5) ''%;
+(%o5)                         - 284
+@end example
+
+Maxima simplifica el valor retornado de @code{funmake}.
+
+@c ===beg===
+@c funmake (sin, [%pi / 2]);
+@c ===end===
+@example
+(%i1) funmake (sin, [%pi / 2]);
 (%o1)                           1
 @end example
-@end itemize
 
 @end deffn
 

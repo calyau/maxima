@@ -1,4 +1,4 @@
-@c english version 1.23
+@c english version 1.24
 @menu
 * Introducci@'on a reglas y patrones::  
 * Definiciones sobre reglas y patrones::  
@@ -290,13 +290,26 @@ La variable @code{let_rule_packages} guarda una lista con todos los paquetes de 
 @end defvr
 
 @deffn {Funci@'on} matchdeclare (@var{a_1}, @var{pred_1}, ..., @var{a_n}, @var{pred_n})
-
 Asocia un predicado @var{pred_k} con una variable o lista de variables  @var{a_k}, de forma que  @var{a_k} se comparar@'a con expresiones para las cuales el predicado devuelva algo que no sea @code{false}.
 
-El predicado es el nombre de una funci@'on, una llamada de funci@'on sin su @'ultimo argumento, @code{true} o @code{all}.
-Cualquier expresi@'on se hace coincidir con @code{true} o @code{all}. Si el predicado se especifica como una llamada de funci@'on, la expresi@'on a ser analizada es a@~nadida a su lista de argumentos; siendo los argumentos evaluados en el momento de ser evaluada la comparaci@'on. En cambio, si el predicado se especifica como un nombre de funci@'on, la expresi@'on a ser analizada ser@'a su @'unico argumento. No es necesario definir una funci@'on de predicado cuando se hace una llamada a @code{matchdeclare}; el predicado no se eval@'ua hasta que se ensaya  una comparaci@'on.
+Un predicado puede ser el nombre de una funci@'on, una expresi@'on lambda, una
+llamada a funci@'on, una llamada a una expresi@'on lambda sin
+el @'ultimo argumento, @code{true} o @code{all}.
+Cualquier expresi@'on se hace coincidir con @code{true} o @code{all}. 
 
-Un predicado de @code{matchdeclare} debe ser necesariamente un nombre de funci@'on o una llamada a funci@'on. En particular, un predicado no puede ser funci@'on @code{lambda} o un @code{block}.
+Si el predicado se especifica como una llamada a funci@'on o a
+una expresi@'on lambda, la expresi@'on a ser analizada es a@~nadida 
+a la lista de argumentos, siendo los argumentos evaluados en el 
+momento de ser evaluada la comparaci@'on. 
+En cambio, si el predicado se especifica como un nombre de funci@'on
+o como una expresi@'on lambda, la expresi@'on a ser analizada ser@'a 
+su @'unico argumento. No es necesario definir una funci@'on de predicado cuando se hace una llamada a @code{matchdeclare}; el predicado no se eval@'ua hasta que se ensaya  una comparaci@'on.
+
+Un predicado puede devolver tanto una expresi@'on booleana,
+como @code{true} o @code{false}.
+Las expresiones booleanas se eval@'uan con @code{is} dentro
+de la regla, por lo que no es necesario llamar a @code{is}
+desde dentro del predicado.
 
 Si una expresi@'on satisface un predicado, se asigna a la variable de comparaci@'on la expresi@'on, excepto cuando las variables de comparaci@'on son operandos de sumas @code{+} o multiplicaciones @code{*}. Solamente las sumas y multiplicaciones son tratadas de forma especial; los dem@'as operadores n-arios (tanto los del sistema como los definidos por el usuario) son tratados como funciones ordinarias.
 
@@ -315,12 +328,72 @@ Las funciones @code{defmatch}, @code{defrule}, @code{tellsimp}, @code{tellsimpaf
 
 Ejemplos:
 
-@itemize @bullet
-@item
-@code{q} compara una expresi@'on que no contiene @code{x} ni @code{%e}.
-@end itemize
+Un predicado puede ser el nombre de una funci@'on, una expresi@'on lambda, una
+llamada a funci@'on, una llamada a una expresi@'on lambda sin
+el @'ultimo argumento, @code{true} o @code{all}.
+
+@c ===beg===
+@c matchdeclare (aa, integerp);
+@c matchdeclare (bb, lambda ([x], x > 0));
+@c matchdeclare (cc, freeof (%e, %pi, %i));
+@c matchdeclare (dd, lambda ([x, y], gcd (x, y) = 1) (1728));
+@c matchdeclare (ee, true);
+@c matchdeclare (ff, all);
+@c ===end===
 @example
-(%i1) matchdeclare (q, freeof (x, %e))$
+(%i1) matchdeclare (aa, integerp);
+(%o1)                         done
+(%i2) matchdeclare (bb, lambda ([x], x > 0));
+(%o2)                         done
+(%i3) matchdeclare (cc, freeof (%e, %pi, %i));
+(%o3)                         done
+(%i4) matchdeclare (dd, lambda ([x, y], gcd (x, y) = 1) (1728));
+(%o4)                         done
+(%i5) matchdeclare (ee, true);
+(%o5)                         done
+(%i6) matchdeclare (ff, all);
+(%o6)                         done
+@end example
+
+Si una expresi@'on satisface un predicado, se asigna a la variable de comparaci@'on la expresi@'on.
+
+@c ===beg===
+@c matchdeclare (aa, integerp, bb, atom);
+@c defrule (r1, bb^aa, ["integer" = aa, "atom" = bb]);
+@c r1 (%pi^8);
+@c ===end===
+@example
+(%i1) matchdeclare (aa, integerp, bb, atom);
+(%o1)                         done
+(%i2) defrule (r1, bb^aa, ["integer" = aa, "atom" = bb]);
+                    aa
+(%o2)        r1 : bb   -> [integer = aa, atom = bb]
+(%i3) r1 (%pi^8);
+(%o3)               [integer = 8, atom = %pi]
+@end example
+
+En el caso de sumas y multiplicaciones, a la variable de comparaci@'on se le puede asignar una expresi@'on simple que satisfaga el predicado de comparaci@'on, o una suma o producto, respectivamente, de tales expresiones. 
+
+@c ===beg===
+@c matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+@c defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r1 (8 + a*b + sin(x));
+@c defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+@c r2 (8 * (a + b) * sin(x));
+@c ===end===
+@example
+(%i1) matchdeclare (aa, atom, bb, lambda ([x], not atom(x)));
+(%o1)                         done
+(%i2) defrule (r1, aa + bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb + aa partitions `sum'
+(%o2)  r1 : bb + aa -> [all atoms = aa, all nonatoms = bb]
+(%i3) r1 (8 + a*b + sin(x));
+(%o3)     [all atoms = 8, all nonatoms = sin(x) + a b]
+(%i4) defrule (r2, aa * bb, ["all atoms" = aa, "all nonatoms" = bb]);
+bb aa partitions `product'
+(%o4)   r2 : aa bb -> [all atoms = aa, all nonatoms = bb]
+(%i5) r2 (8 * (a + b) * sin(x));
+(%o5)    [all atoms = 8, all nonatoms = (b + a) sin(x)]
 @end example
 
 @end deffn

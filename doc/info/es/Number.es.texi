@@ -1,4 +1,4 @@
-@c english version 1.16
+@c english version 1.18
 @menu
 * Definiciones para Teor@'{@dotless{i}}a de N@'umeros::  
 @end menu
@@ -336,6 +336,22 @@ Devuelve la ra@'{@dotless{i}}z entera @var{n}-@'esima del valor absoluto de  @va
 
 @end deffn
 
+@deffn {Funci@'on} inv_mod (@var{n}, @var{m})
+Calcula el inverso de @var{n} m@'odulo @var{m}. 
+La llamada @code{inv_mod (n,m)} devuelve @code{false}
+si @var{n} es un divisor nulo m@'odulo @var{m}.
+
+@example
+(%i1) inv_mod(3, 41);
+(%o1)                           14
+(%i2) ratsimp(3^-1), modulus=41;
+(%o2)                           14
+(%i3) inv_mod(3, 42);
+(%o3)                          false
+@end example
+
+@end deffn
+
 @deffn {Funci@'on} jacobi (@var{p}, @var{q})
 Devuelve el s@'{@dotless{i}}mbolo de Jacobi para @var{p} y @var{q}.
 
@@ -356,14 +372,20 @@ Es necesario cargar en memoria esta funci@'on haciendo @code{load ("functs")}.
 
 
 @deffn {Funci@'on} power_mod (@var{a}, @var{n}, @var{m})
-Calcula @code{a^n mod m}, siendo @var{a} un entero cualquiera y @var{n}
-y @var{m} enteros positivos.
+Utiliza un algoritmo modular para calcular @code{a^n mod m},
+siendo @var{a} y @var{n} enteros cualesquiera y @var{m} un entero positivo.
+Si @var{n} es negativo, se utilizar@'a @code{inv_mod} para encontrar el
+inverso modular.
 
 @example
 (%i1) power_mod(3, 15, 5);
-(%o1)                                  2
-(%i2) ratsimp(3^15), modulus=5;
-(%o2)                                  2
+(%o1)                          2
+(%i2) mod(3^15,5);
+(%o2)                          2
+(%i3) power_mod(2, -1, 5);
+(%o3)                          3
+(%i4) inv_mod(2,5);
+(%o4)                          3
 @end example
 
 @end deffn
@@ -410,7 +432,7 @@ o @code{false} seg@'un el caso.
 Cuando el resultado de @code{primep (n)} es @code{false}, @var{n} es un
 n@'umero compuesto, y si es @code{true}, @var{n} es primo con alta probabilidad.
 
-Si @var{n} es menor que 34155071728321, se utiliza una versi@'on 
+Si @var{n} es menor que 341550071728321, se utiliza una versi@'on 
 determin@'{@dotless{i}}stica de la prueba de Miller-Rabin. En tal caso,
 si @code{primep (n)} devuelve @code{true}, entonces @var{n} es un n@'umero primo.
 

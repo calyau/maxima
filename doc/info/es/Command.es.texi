@@ -1,4 +1,4 @@
-@c english version 1.39
+@c english version 1.41
 @menu
 * Introducci@'on a la L@'{@dotless{i}}nea de Comandos::  
 * Definiciones para  la L@'{@dotless{i}}nea de Comandos::  
@@ -534,12 +534,13 @@ Soluci@'on
 
 
 @defvr {Propiedad} evflag
-Algunos interruptores booleanos tienen la propiedad @code{evflag}. 
-@code{ev} trata de forma especial tales interruptores. 
-Un interruptor con la propiedad @code{evflag} ser@'a puesto a @code{true}
-durante la ejecuci@'on de @code{ev} si este es mencionado en la 
-llamada a @code{ev}. 
-Por ejemplo, @code{demoivre} y @code{ratfac} son puestos a @code{true} durante la llamada a @code{ev (%, demoivre, ratfac)}. 
+Cuando un s@'{@dotless{i}}mbolo @var{x} goza de la propiedad @code{evflag},
+las expresiones @code{ev(@var{expr}, @var{x})} y @code{@var{expr}, @var{x}}
+(en modo interactivo) equivalen a @code{ev(@var{expr}, @var{x} = true)}.
+Esto es, a @var{x} se le asigna @code{true} al tiempo que se eval@'ua @var{expr}.
+
+La expresi@'on @code{declare(@var{x}, evflag)} dota a la variable @var{x}
+de la propiedad @code{evflag}.
 
 Los interruptores que tienen la propiedad @code{evflag} son: 
 
@@ -579,23 +580,75 @@ Los interruptores que tienen la propiedad @code{evflag} son:
 @code{sumexpand}, y
 @code{trigexpand}.
 
-La instrucci@'on @code{:lisp (putprop '|$foo| t 'evflag)}
-da la propiedad @code{evflag} a la variable @code{foo}, 
-as@'{@dotless{i}} que @code{foo} es puesta a @code{true} durante la llamada a
-@code{ev (%, foo)}. 
-De forma equivalente, @code{ev ($, foo:true)} tiene el mismo efecto. 
+Ejemplos:
+
+@c ===beg===
+@c sin (1/2);
+@c sin (1/2), float;
+@c sin (1/2), float=true;
+@c simp : false;
+@c 1 + 1;
+@c 1 + 1, simp;
+@c simp : true;
+@c sum (1/k^2, k, 1, inf);
+@c sum (1/k^2, k, 1, inf), simpsum;
+@c declare (aa, evflag);
+@c if aa = true then YES else NO;
+@c if aa = true then YES else NO, aa;
+@c ===end===
+@example
+(%i1) sin (1/2);
+                                 1
+(%o1)                        sin(-)
+                                 2
+(%i2) sin (1/2), float;
+(%o2)                   0.479425538604203
+(%i3) sin (1/2), float=true;
+(%o3)                   0.479425538604203
+(%i4) simp : false;
+(%o4)                         false
+(%i5) 1 + 1;
+(%o5)                         1 + 1
+(%i6) 1 + 1, simp;
+(%o6)                           2
+(%i7) simp : true;
+(%o7)                         true
+(%i8) sum (1/k^2, k, 1, inf);
+                            inf
+                            ====
+                            \     1
+(%o8)                        >    --
+                            /      2
+                            ====  k
+                            k = 1
+(%i9) sum (1/k^2, k, 1, inf), simpsum;
+                                 2
+                              %pi
+(%o9)                         ----
+                               6
+(%i10) declare (aa, evflag);
+(%o10)                        done
+(%i11) if aa = true then YES else NO;
+(%o11)                         NO
+(%i12) if aa = true then YES else NO, aa;
+(%o12)                         YES
+@end example
+ 
 @end defvr
 
 @defvr {Propiedad} evfun
-Algunas funciones tienen la propiedad @code{evfun}.
-@code{ev} trata tales funciones de forma especial. 
-Una funci@'on con la propiedad @code{evfun} ser@'a aplicada 
-durante la ejecuci@'on de @code{ev} si @'esta es mencionada 
-en la llamada a @code{ev}. 
-Por ejemplo, @code{ratsimp} y @code{radcan} ser@'an aplicadas 
-durante la llamada a @code{ev (%, ratsimp, radcan)}.
+Cuando la funci@'on @var{F} goza de la propiedad @code{evfun},
+las expresiones @code{ev(@var{expr}, @var{F})} y @code{@var{expr}, @var{F}}
+(en modo interactivo) equivalen a @code{@var{F}(ev(@var{expr}))}.
 
-Las funciones que tienen la propiedad @code{evfun} son: 
+Si se especifican dos o m@'as funciones, @var{F}, @var{G}, etc., como poseedoras 
+de la propiedad @code{evfun}, @'estas se aplican en el mismo orden en el que han sido 
+especificadas como tales.
+
+La expresi@'on @code{declare(@var{F}, evfun)} dota a la funci@'on  @var{F}
+de la propiedad @code{evfun}.
+
+Las funciones que tienen la propiedad @code{evfun} por defecto son: 
 
 @c FOLLOWING LIST CONSTRUCTED FROM LIST UNDER (prog1 '(evfun properties) ...)
 @c NEAR LINE 2643 IN mlisp.lisp AT PRESENT (2004/11).
@@ -612,10 +665,76 @@ Las funciones que tienen la propiedad @code{evfun} son:
 @code{trigexpand}, y
 @code{trigreduce}.
 
-La instrucci@'on @code{:lisp (putprop '|$foo| t 'evfun)}
-da la propiedad @code{evfun} a la funci@'on @code{foo}, 
-as@'{@dotless{i}} que @code{foo} es aplicada durante la llamada a @code{ev (%, foo)}. 
-De forma equivalente, @code{foo (ev(%))} tiene el mismo efecto.  
+Ejemplos:
+
+@c ===beg===
+@c x^3 - 1;
+@c x^3 - 1, factor;
+@c factor (x^3 - 1);
+@c cos(4 * x) / sin(x)^4;
+@c cos(4 * x) / sin(x)^4, trigexpand;
+@c cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+@c ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+@c declare ([F, G], evfun);
+@c (aa : bb, bb : cc, cc : dd);
+@c aa;
+@c aa, F;
+@c F (aa);
+@c F (ev (aa));
+@c aa, F, G;
+@c G (F (ev (aa)));
+@c ===end===
+@example
+(%i1) x^3 - 1;
+                              3
+(%o1)                        x  - 1
+(%i2) x^3 - 1, factor;
+                                2
+(%o2)                 (x - 1) (x  + x + 1)
+(%i3) factor (x^3 - 1);
+                                2
+(%o3)                 (x - 1) (x  + x + 1)
+(%i4) cos(4 * x) / sin(x)^4;
+                            cos(4 x)
+(%o4)                       --------
+                               4
+                            sin (x)
+(%i5) cos(4 * x) / sin(x)^4, trigexpand;
+                 4           2       2         4
+              sin (x) - 6 cos (x) sin (x) + cos (x)
+(%o5)         -------------------------------------
+                                4
+                             sin (x)
+(%i6) cos(4 * x) / sin(x)^4, trigexpand, ratexpand;
+                           2         4
+                      6 cos (x)   cos (x)
+(%o6)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i7) ratexpand (trigexpand (cos(4 * x) / sin(x)^4));
+                           2         4
+                      6 cos (x)   cos (x)
+(%o7)               - --------- + ------- + 1
+                          2          4
+                       sin (x)    sin (x)
+(%i8) declare ([F, G], evfun);
+(%o8)                         done
+(%i9) (aa : bb, bb : cc, cc : dd);
+(%o9)                          dd
+(%i10) aa;
+(%o10)                         bb
+(%i11) aa, F;
+(%o11)                        F(cc)
+(%i12) F (aa);
+(%o12)                        F(bb)
+(%i13) F (ev (aa));
+(%o13)                        F(cc)
+(%i14) aa, F, G;
+(%o14)                      G(F(cc))
+(%i15) G (F (ev (aa)));
+(%o15)                      G(F(cc))
+@end example
+ 
 @end defvr
 
 @c NEEDS WORK
@@ -630,66 +749,74 @@ Esta claro que expresiones como: @code{ev (X, X=X+1, infeval)} generar@'an un bu
 @c REVIEW FOR ACCURACY AND COMPLETENESS
 @c THIS ITEM IS VERY IMPORTANT !!
 @c NEEDS EXAMPLES
-@deffn {Funci@'on} kill (@var{symbol_1}, ..., @var{symbol_n})
+@deffn {Funci@'on} kill (@var{a_1}, ..., @var{a_n})
 @deffnx {Funci@'on} kill (labels)
 @deffnx {Funci@'on} kill (inlabels, outlabels, linelabels)
 @deffnx {Funci@'on} kill (@var{n})
 @deffnx {Funci@'on} kill ([@var{m}, @var{n}])
 @deffnx {Funci@'on} kill (values, functions, arrays, ...)
 @deffnx {Funci@'on} kill (all)
-@deffnx {Funci@'on} kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))
+@deffnx {Funci@'on} kill (allbut (@var{a_1}, ..., @var{a_n}))
+Elimina todas las asignaciones (valor, funci@'on, arreglo o regla) hechas a los
+argumentos @var{a_1}, ..., @var{a_n}.
+Un argumento @var{a_k} puede ser un s@'{@dotless{i}}mbolo o el elemento
+de un array. Si @var{a_k} es elemento de un array, @code{kill} elimina la
+asignaci@'on hecha a este elemento sin afectar al resto del array.
 
-Remueve todos los v@'{@dotless{i}}nculos (valor, funci@'on, arreglo o regla) de los
-argumentos @var{symbol_1}, ..., @var{symbol_n}.
-Un argumento puede ser un simple arreglo de elementos o funciones con sub@'{@dotless{i}}ndices. 
+Se reconocen varios argumentos especiales. 
+Se pueden combinar diferentes clases de argumentos, 
+como por ejemplo, @code{kill (inlabels, functions, allbut (foo, bar))}.
 
-Varios argumentos especiales son reconocidos. 
-Diferentes clases de argumentos pueden ser combinados, 
-e.g., @code{kill (inlabels, functions, allbut (foo, bar))}.
+La instrucci@'on @code{kill (labels)} borra todas las asignaciones asociadas
+a las etiquetas de entrada, de salida e intermedias creadas hasta el
+momento. La instrucci@'on @code{kill (inlabels)} elimina @'unicamente
+las asignaciones de las etiquetas de entrada que comienzan con el
+valor actual de @code{inchar}. Del mismo modo, @code{kill (outlabels)}
+elimina @'unicamente las asignaciones de las etiquetas de salida
+que comienzan con el valor actual de @code{outchar}. Finalmente,
+@code{kill (linelabels)} elimina @'unicamente las asignaciones
+las asignaciones de las etiquetas de las expresiones intermedias
+que comienzan con el valor actual de @code{linechar}.
 
+La instrucci@'on @code{kill (@var{n})}, siendo @var{n} un entero,
+elimina las asignaciones de las @'ultimas @var{n} etiquetas, tanto
+de entrada como de salida.
 
+La instrucci@'on @code{kill ([@var{m}, @var{n}])} elimina las asignaciones
+hechas a las etiquetas de entrada y salida desde la @var{m} hasta la@var{n}.
 
-@code{kill (labels)} elimina todas las etiquetas de entrada, salida y expresiones intermedias creadas
-hasta el momento. 
+La instrucci@'on @code{kill (@var{infolist})}, siendo @var{infolist} 
+cualquier elemento de @code{infolists} (como @code{values}, @code{functions} 
+o @code{arrays}), elimina todas las asignaciones hechas a los elementos de
+@var{infolist}. V@'ease tambi@'en @code{infolists}.
 
-@code{kill (inlabels)} elimina s@'olo las etiquetas de entrada
-las cuales empiezan con el valor de @code{inchar} en ese momento. 
+La instrucci@'on @code{kill (all)} elimina todas las asignaciones de
+todas las variables, pero no reinicia las variables globales a sus
+valores por defecto. V@'ease tambi@'en @code{reset}.
 
-Igualmente, 
-@code{kill (outlabels)} elimina s@'olo las etiquetas de salida
-las cuales empiezan con el valor de @code{outchar} de ese momento, 
-y @code{kill (linelabels)} elimina s@'olo las etiquetas de expresiones 
-intermedias las cuales empiezan con el valor de @code{linchar} de ese momento. 
+La instrucci@'on @code{kill (allbut (@var{a_1}, ..., @var{a_n}))}
+elimina las asignaciones hechas a todas las variables,
+excepto a @var{a_1}, ..., @var{a_n}; la instrucci@'on
+@code{kill (allbut (@var{infolist}))} elimina todas las asignaciones,
+excepto las de los elementos de @var{infolist}, pudiendo ser @var{infolist}
+igual a @code{values}, @code{functions}, @code{arrays}, etc.
 
-@code{kill (@var{n})}, donde @var{n} es un entero,
-elimina las @var{n} etiquetas de entrada y salida m@'as recientes. 
+La memoria reservada para una asignaci@'on no se libera hasta que
+no se vac@'{@dotless{i}}en todos los s@'{@dotless{i}}mbolos
+asociados con esta asignaci@'on; por ejemplo, para liberar la memoria
+del valor de un s@'{@dotless{i}}mbolo es necesario eliminar tanto
+la asignaci@'on de la etiqueta de salida que muestra el resultado,
+como la del propio s@'{@dotless{i}}mbolo.
 
-@code{kill ([@var{m}, @var{n}]} elimina las etiquetas de entrada y salida @var{m} hasta @var{n}. 
-
-@code{kill (@var{infolist})}, donde @var{infolist} es cualquier item de @code{infolists} (tales como @code{values}, @code{functions} o @code{arrays}), elimina todos los items en @var{infolist}. 
-V@'ease tambi@'en @code{infolists}. 
-
-@code{kill (all)} elimina todos los items de todas las listas de informaci@'on (infolists).
-@code{kill (all)} no reconfigura las variables globales a sus valores por defecto; vea @code{reset} para m@'as informaci@'on sobre este punto. 
-
-
-@code{kill (allbut (@var{symbol_1}, ..., @var{symbol_n}))}
-elimina todos los items de todas las listas de informaci@'on (infolists) excepto para @var{symbol_1}, ..., @var{symbol_n}.
-
-@code{kill (allbut (@var{infolist}))} elimina todos los items excepto para los que aparezcan en @var{infolist}, 
-donde @var{infolist} es @code{values}, @code{functions}, @code{arrays}, etc. 
-
-@c FALTA PARRAFO
-
-@code{kill} no evalua sus argumentos. 
-El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@'on.  
-
-La funci@'on @code{kill} no eval@'ua sus argumentos. El operador de dobles comillas simples, @code{'@w{}'}, hace que los argumentos se eval@'uen.
+La funci@'on @code{kill} no evalua sus argumentos. 
+El operador comilla-comilla, @code{'@w{}'}, obliga a que se realice la evaluaci@'on.
 
 La llamada @code{kill (@var{symbol})} elimina todas las propiedades de @var{symbol}.
-En contraste, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{remrule} elimina a propiedad en espec@'{@dotless{i}}fico. 
+Por el contrario, @code{remvalue}, @code{remfunction}, @code{remarray} y @code{remrule}
+eliminan propiedades espec@'{@dotless{i}}ficas. 
 
-@code{kill} siempre retorna @code{done}, incluso si un argumento no fue eliminado. 
+@code{kill} siempre devuelve @code{done}, incluso cuando alguno de sus 
+argumento carec@'{@dotless{i}}a de asignaci@'on previa. 
 
 @end deffn
 
