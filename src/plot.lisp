@@ -16,6 +16,7 @@
 
 (defvar *maxima-plotdir* "")
 (defvar *maxima-tempdir*)
+(defvar *maxima-prefix*)
 
 (defvar *z-range* nil)
 (defvar *original-points* nil)
@@ -1125,7 +1126,7 @@ setrgbcolor} def
 (defvar $mgnuplot_command "mgnuplot")
 (defvar $geomview_command "geomview")
 
-(defvar $openmath_plot_command "omplotdata")
+(defvar $openmath_plot_command "xmaxima")
 
 (defun plot-temp-file (file)
   (if *maxima-tempdir* 
@@ -1325,17 +1326,18 @@ setrgbcolor} def
   (or ($listp fun ) (setf fun `((mlist) ,fun)))
   (show-open-plot
    (with-output-to-string
-       (st )
-     (format st "~%{plot2d ~%")
+     (st )
+     (cond ($show_openplot (format st "plot2d -data {~%"))
+	   (t (format st "{plot2d ~%")))
      (loop for f in (cdr fun)
 	    do
 	    (incf i)
-	    (format st " {label \"~a\"}~% "
+	    (format st " {label \"~a\"}~%"
 		    (let ((string (coerce (mstring f) 'string)))
 		      (cond ((< (length string) 9) string)
 			    (t (format nil "Fun~a" i))))
 		    )
-	    (format st "{xversusy ~%")
+	    (format st " {xversusy~%")
 	    (let ((lis (cdr (draw2d f range ))))
 
 	      (loop while lis
@@ -1356,8 +1358,8 @@ setrgbcolor} def
 			    )
 		     (setq lis (cddr lis))
 		     ))
-	    (format st "~%}"))
-     (format st "~%} ~%"))))
+	    (format st "}"))
+     (format st "} "))))
 
 
 (eval-when (load)
@@ -1455,8 +1457,10 @@ setrgbcolor} def
   (declare (special linel))
   (show-open-plot
    (with-output-to-string
-       (st )
-     (format st "{plot2d ~%")
+     (st )
+     (cond
+      ($show_openplot (format st "plot2d -data {~%"))
+      (t (format st "{plot2d ~%")))
      (or (and ($listp lis) ($listp (nth 1 lis)))
 	 (merror "Need a list of curves, [[x1,y1,x2,y2,...],[u1,v1,u2,v2,...]] or [[[x1,y1],[x2,y2],...]"))
     
@@ -1907,7 +1911,7 @@ setrgbcolor} def
   (cond ($show_openplot
 	 (with-open-file (st1 (plot-temp-file "maxout.openmath") :direction :output :if-exists :supersede)
 	   (princ  ans st1))
-	 ($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command)
+	 ($system (concatenate 'string *maxima-prefix* "/bin/" $openmath_plot_command)
 	          (format nil " \"~a\"" (plot-temp-file "maxout.openmath"))))
 	(t (princ ans) "")))
 
@@ -2008,7 +2012,10 @@ setrgbcolor} def
 	      (output-points pl (nth 2 grid)))
 	     ($openmath
 	      (progn
-		(format $pstream "{plot3d {matrix_mesh ~%")
+		(cond 
+		 ($show_openplot
+		  (format $pstream "plot3d -data {{matrix_mesh ~%"))
+		 (t (format $pstream "{plot3d {matrix_mesh ~%")))
 		;; we do the x y z  separately:
 		(loop for off from 0 to 2
 		       with ar = (polygon-pts pl)
@@ -2029,7 +2036,10 @@ setrgbcolor} def
 	      #+old
 	      (progn			; orig
 		(print (list 'grid grid))
-		(format $pstream "{plot3d {variable_grid ~%")
+		(cond
+		 ($show_openplot
+		  (format $pstream "plot3d -data {{variable_grid ~%"))
+		 (t (format $pstream "{plot3d {{variable_grid ~%")))
 		(let* ((ar (polygon-pts pl))
 		       (x-coords
 			(loop for i to (nth 2 grid)
@@ -2083,7 +2093,7 @@ setrgbcolor} def
 		   ($zic ($view_zic))
 		   ($ps ($viewps))
 		   ($openmath
-		     ($system (concatenate 'string *maxima-plotdir* "/" $openmath_plot_command) 
+		     ($system (concatenate 'string *maxima-prefix* "/bin/" $openmath_plot_command) 
 		              (format nil " \"~a\"" file)))
 		   ($geomview 
 		     ($system $geomview_command
