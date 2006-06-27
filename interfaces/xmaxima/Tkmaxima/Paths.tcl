@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Paths.tcl,v 1.20 2006-02-11 15:24:23 vvzhy Exp $
+#       $Id: Paths.tcl,v 1.21 2006-06-27 14:02:57 villate Exp $
 #
 # Attach this near the bottom of the xmaxima code to find the paths needed
 # to start up the interface.
@@ -305,7 +305,6 @@ proc setMaxDir {} {
 proc vMAXSetMaximaCommand {} {
     global maxima_priv tcl_platform env
 
-    set maxima_opts [lMaxInitSetOpts]
     set maxima_priv(localMaximaServer) ""
 
     if {[info exists maxima_priv(xmaxima_maxima)] && \
@@ -364,7 +363,7 @@ proc vMAXSetMaximaCommand {} {
 
     set command {}
     lappend command $exe
-    eval lappend command  $maxima_opts
+    eval lappend command $maxima_priv(opts)
 
     # FIXME: This is gcl specific so -lisp option is bogus
     if {$tcl_platform(os) == "Windows 95"} {

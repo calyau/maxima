@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Tkmaxima.tcl,v 1.3 2004-10-13 12:08:58 vvzhy Exp $
+#       $Id: Tkmaxima.tcl,v 1.4 2006-06-27 14:02:57 villate Exp $
 #
 
 #mike The following files are prepended, and could be sourced instead.
@@ -51,142 +51,58 @@
 # Source Tkmaxima/Prefs.tcl 		;# can be autoloaded
 # Source Tkmaxima/RunMaxima.tcl		;# can be autoloaded
 
-## source preamble.tcl
+# Source Tkmaxima/Menu.tcl
+# Source Tkmaxima/Paths.tcl
+# Source Tkmaxima/Gui.tcl
+# Source Tkmaxima/Tkmaxima.tcl
 
-## source Readdata.tcl
+proc vMaxUsage {script {error {}}} {
+    set msg [mc "$error\n\nUsage: $script \[options\] \[filenames\]
 
-## source Getdata1.tcl
-
-## source Macros.tcl
-
-## source Proxy.tcl
-
-## source Send-some.tcl
-
-## source Plotting.tcl
-
-## source Fonts.tcl
-
-## source Private.tcl
-
-## source Getopt.tcl
-
-## source Parse.tcl
-
-## source Textinsert.tcl
-
-## source Printops.tcl
-
-## source Push.tcl
-
-## source Plotconf.tcl
-
-## source Rk.tcl
-
-## source Adams.tcl
-
-## source Plotdf.tcl
-
-## source Plot2d.tcl
-
-## source Plot3d.tcl
-
-## source NPlot3d.tcl
-
-# obsolete patchold.tcl
-
-## source EOctave.tcl
-
-## source EOpenplot.tcl
-
-## source EMaxima.tcl
-
-## source EHref.tcl
-
-## source Browser.tcl
-
-## source Wmenu.tcl
-
-## source Tryftp2.tcl
-
-## source Myhtml.tcl
-
-## source Myhtml1.tcl
-
-## source Base64.tcl
-
-## source Bitmaps.tcl
-
-## source Tryembed.tcl
-
-## source OpenMath.tcl
-
-## source NConsole.tcl
-
-## source String.tcl
-
-## source CMMenu.tcl
-
-## source Prefs.tcl
-
-## source RunMaxima.tcl
-
-proc vMaxUsage {} {
-
-    set usage {}
-    
-    lappend usage \
-        [mc "Usage: xmaxima \[options\] \[url\]"] \
-	[mc "           If given, \[url\] will be opened in the help browser instead"] \
-	[mc "           of the default starting page."] \
-	[mc "options:"] \
-	[mc "    --help: Display this usage message."] \
-	[mc "    -l <lisp>, --lisp=<lisp>: Use lisp implementation <lisp>."] \
-	[mc "    --use-version=<version>: Launch maxima version <version>."]
-
-    tide_notify [join $usage "\n"]
+Known options:
+   -help, -h: Display this message
+   -url site: Start browser at site 
+   -use-version ver, -u ver: Launch maxima version ver
+   -lisp flavor, -l flavor: Use lisp implementation flavor
+"]
+    tk_messageBox -type ok -icon info -title "Usage" -message $msg -parent .
+    exit
 }
 
 proc lMaxInitSetOpts {} {
-    global maxima_priv argv argv0 env
-
-    set maxima_opts {}
-    if { [lsearch $argv "--help"] > -1 } {
-	vMaxUsage
-	exit 0
+    global maxima_priv argv argv0
+    set maxima_priv(opts) {}
+    set maxima_priv(plotfile) {}
+    set state key
+    foreach arg $argv {
+	switch -- $state {
+	    key {
+		switch -regexp -- $arg {
+		    {^-h(elp)?$}       {vMaxUsage $argv0}
+		    {^-url$}           {set state url}
+		    {^-u(se-version)?$} {set state version}
+		    {^-l(isp)?$}       {set state lisp}
+		    {^--$}             {set state noopts}
+		    {^-.*}             {vMaxUsage $argv0 "Unknown option $arg"}
+		    default {
+			lappend maxima_priv(plotfile) $arg
+			set state file
+		    }
+		}
+	    }
+	    file {
+		switch -glob -- $arg {
+		    -* {vMaxUsage $argv0 "Misplaced option $arg"}
+		    default {lappend plotfile $arg}
+		}
+	    }
+	    url     {set maxima_priv(firstUrl) $arg; set state key}
+	    version {lappend maxima_priv(opts) -u $arg; set state key}
+	    lisp    {lappend maxima_priv(opts) -l $arg; set state key}
+	    noopts  {lappend file $arg}
+	}
     }
-    set lisp_pos [lsearch -exact $argv "--lisp=*"]
-    if { $lisp_pos > -1 } {
-	set arg [lindex $argv $lisp_pos]
-	set prefix_end [expr [string length "--lisp="] - 1]
-	set lisp [string replace $arg 0 $prefix_end]
-	lappend maxima_opts -l $lisp
-	set argv [lreplace $argv $lisp_pos $lisp_pos]
-    }
-    set lisp_pos [lsearch -exact $argv "-l"]
-    if { $lisp_pos > -1 } {
-	set lisp [lindex $argv [expr $lisp_pos + 1]]
-	lappend maxima_opts -l $lisp
-	set argv [lreplace $argv $lisp_pos [expr $lisp_pos + 1]]
-    }
-    set version_pos [lsearch -exact $argv "--use-version=*"]
-    if { $version_pos > -1 } {
-	set arg [lindex $argv $version_pos]
-	set prefix_end [expr [string length "--use-version="] - 1]
-	set version [string replace $arg 0 $prefix_end]
-	lappend maxima_opts -u $version
-	set argv [lreplace $argv $lisp_pos $version_pos]
-    }
-    if { [llength $argv] == 1 } {
-	set maxima_priv(firstUrl) [lindex $argv 0]
-    } elseif { [llength $argv] > 1 } {
-	tide_failure [M [mc "Error: arguments %s not understood."] "$argv"]
-	exit 1
-    }
-
-    return $maxima_opts
 }
-
 
 object_class MAXTkmaxima {
 
@@ -216,19 +132,6 @@ object_class MAXTkmaxima {
 
 	wm withdraw .
 	wm title . xmaxima
-
-	setMaxDir
-
-	cMAXINITBeforeIni
-	if {[file isfile ~/xmaxima.ini]} {
-	    if {[catch {uplevel "#0" [list source ~/xmaxima.ini] } err]} {
-		tide_failure [M [mc "Error sourcing %s\n%s"] \
-				  [file native ~/xmaxima.ini] \
-				  $err]
-	    }
-
-	}
-	cMAXINITAfterIni
 
 	set fr .maxima
 	MAXGui gui
@@ -275,7 +178,4 @@ object_class MAXTkmaxima {
 
 
 }
-
-
-
 
