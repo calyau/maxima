@@ -1,47 +1,31 @@
 % -*-mode: latex; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 %
-%	$Id: Xmaxima.tex,v 1.1 2002-09-24 00:32:47 mikeclarkson Exp $
+%	$Id: Xmaxima.tex,v 1.2 2006-06-27 16:53:52 villate Exp $
 %
 
-\documentclass[12pt,makeidx,maxima]{report}
+\documentclass[12pt,makeidx,maxima]{book}
 
-\newif\ifpdf\pdffalse
-\ifx\pdfoutput\undefined\else\ifcase\pdfoutput
-\else
-  \pdftrue
-  \input{pdfcolor}
-  \pdfcompresslevel=9
-  \pdfpagewidth=\paperwidth    % page width of PDF output
-  \pdfpageheight=\paperheight  % page height of PDF output
-  %
-  % Pad the number with '0' to 3 digits wide so no page name is a prefix
-  % of any other.
-  %
-\fi\fi
-\ifpdf
-\usepackage[pdftex]{graphicx}
-\usepackage[pdftex]{epsfig}
-\usepackage[pdftex]{color}
+\usepackage{graphicx}
+\usepackage{color}
 \usepackage[pdftex,colorlinks,pdfauthor={http://maxima.sourceforge.net/},pdftitle={Xmaxima User's Guide},urlcolor=blue,linkcolor=red,hyperindex]{hyperref}
 \usepackage{nameref}
-\fi
 
-\usepackage{times}
-\usepackage[T1]{fontenc}
+\usepackage{pslatex}
 
+\usepackage{makeidx}
 \makeindex
 
-
 \begin{document}
+\frontmatter
 \title{Xmaxima User's Guide\\
-	Version 5.9.0}
+	Version 5.9.3.1cvs}
 
-\author{Maxima Group,\\
+\author{Maxima team,\\
         \ \\
 	{\tt http://maxima.sourceforge.net}
         }
 
-\date{Sept 2002}
+\date{June 2006}
 
 \maketitle
 
@@ -52,71 +36,198 @@ Printed \today.
 \clearpage
 
 \pagestyle{headings}
-\pagenumbering{roman}
+%\pagenumbering{roman}
 \tableofcontents
 \clearpage
 
-\clearpage
-\chapter*{Preface}
-\index{Preface}
+\chapter{Preface}
+Xmaxima is a \index{Tcl/Tk} Tcl/Tk program distributed with \index{Maxima}
+Maxima. It can be used as a graphical interface for Maxima, and as an
+independent external plotting program that can also be called by Maxima,
+when the \index{Openmath} \textbf{openmath} \texttt{plot\_format} option is
+selected.
+
+Xmaxima used to be two separate programs, \textbf{xmaxima} and
+\textbf{omplotdata} \index{omplotdata}. Most of omplotdata's code was
+already included into xmaxima, so the two packages were merged after
+version 5.9.3 of Maxima.
+
+The development of those two programs was not very active during the last
+years, which gave rise to other alternative programs. In fact, openmath
+stopped being the default plot program since version 5.9.1, when
+\index{Gnuplot} \emph{Gnuplot} was adopted as default. Recent changes to
+the plotting functions of Maxima have been implemented just for Gnuplot
+leaving Openmath outdated. On the other hand, there are additional Maxima
+modules that will only work with Openmath; for instance, \emph{plotdf}
+\index{plotdf}.
+
+We are now working actively on the development of Xmaxima to catch up with
+the recent changes and to solve the bugs that made developers move into
+Gnuplot as an alternative. Openmath has some nice features that are already
+incorporated into Maxima: for instance, the interactivity given by slider
+buttons, selection of points on a plot, interactive rotation of 3d plots.
+From the point of view of the graphical interface, even though there are
+now several other platforms with a nicer interface, Xmaxima already has an
+Html browser that accepts pieces of Maxima code to be evaluated. It also
+has the advantage of being a fairly simple program; it can be run/inspected
+interactively from a \emph{Wish} \index{wish} console, and it is
+surprisingly fast considering that it was written in a scripting language.
 
 
-\section*{Notational Conventions of this Manual}
-\index{Notational Conventions of this Manual}
+%\section*{Notational Conventions of this Manual}
+%\index{Notational Conventions of this Manual}
 
-\pagenumbering{arabic}
+\mainmatter
+%\pagenumbering{arabic}
 
 \chapter{Installing Xmaxima}
-\index{Installing Xmaxima}
+
+The source code for Xmaxima consists of a set of several Tcl/Tk files. In a
+computer system with Tcl/Tk, the installation is fairly simple. It consists
+on setting up values for a few system variables, appending together the
+files to make a single file that will be run by the command \emph{wish},
+and moving it into some place where it would be accessible. Those steps are
+done by running the configure script in maxima's source main directory, and
+then running \texttt{make} and ``\texttt{make config}'' in the
+\texttt{interfaces/xmaxima/} subdirectory \index{make}.
+
+The files \index{autoconf} \texttt{autoconf-variables.tcl.in} and
+\texttt{Makefile.in}, in the subdirectory \texttt{interfaces/xmaxima/},
+give a good idea of the environment variables that need to be set and the
+order in which the files must be appended.
+ 
+\index{Xmaxima!installation}
 
 \clearpage
 \section{Installing Xmaxima under Windows}
-\index{Installing Xmaxima under Windows}
+
+The binary distributions of maxima include an installer file for Xmaxima
+that when run will install an executable file of a type called
+\index{Starpack} \textbf{Starpack}, namely, a file that includes the
+complete Tcl/Tk \index{Tcl/Tk} script plus a copy of the Tcl/Tk
+interpreter. That will make the \texttt{xmaxima.exe} program autonomous in
+Windows and it should run in every Windows version \index{Windows}.
+
+However, the \texttt{xmaxima} program will only be useful if you have
+already installed Maxima too, which comes in an independent module. The
+communication between the two programs is done using TCP/IP \index{TCP/IP}
+port number 4008.  That might make your anti-virus block xmaxima as a virus
+\index{anti-virus}; the communication may also be blocked if you have a
+firewall \index{firewall}. In both cases you will have to configure your
+software to prevent xmaxima from being blocked. The anti-virus program
+usually gives you a message telling you that the program is going to be
+blocked and giving you a chance to prevent it. The firewall configuration
+is a bit more complex and depends on the software you use.  If you have
+problems you can ask for help in Maxima's users list \index{Maxima!user's
+ list}.
 
 \clearpage
 \section{Installing Xmaxima under Unix}
-\index{Installing Xmaxima under Unix}
+
+Installing a prebuilt Xmaxima package in Unix is a simple matter. The
+program just has to be moved into a place where it can be executed.
+However, to make it work you need to have Tcl/Tk \index{Tcl/Tk} installed,
+as well a a version of Maxima compatible with the version of Xmaxima being
+used \index{Unix}.
+
+You may run into problems if the paths defined in xmaxima are not compatible
+with your system. Since the xmaxima program is a Tcl/Tk script, it is a
+plain text file that can be edited manually. You can check the paths defined
+near the top of the file.
 
 \clearpage
-\section{Environment Variables}
-\index{Environment Variables}
+\chapter{Command-line options}
 
-\clearpage
-\chapter{XMaxima User Interface}
-\index{XMaxima User Interface}
+The usage of xmaxima is as follows:
 
-\clearpage
-\section{Menus}
+\begin{verbatim}
+  xmaxima [options] file
+\end{verbatim}
 
-\subsection{File Menu}
+If a file is given, it is expected to have the syntax of the
+\texttt{maxout.openmath} files created by Maxima, namely, a set of plot
+commands for openmath. A plot window will be opened and the commands will be
+parsed to show the resulting plot. That is the way in which xmaxima is
+called from maxima, when run from a console, to create a plot using the
+Openmath plot format.
 
-\subsection{Edit Menu}
+If no filenames are given, xmaxima will open the graphical interface for
+Maxima, which includes a Web browser.
 
-\subsection{Options Menu}
+The \index{Xmaxima!options} options may be any of the following:
 
-\subsection{Maxima Menu}
+\begin{description}
+\item[\texttt{-help}] Displays a summary of the usage. It can be shortened
+  as \texttt{-h}
+\item[\texttt{-use-version vers\_number}] Will open the version of Maxima
+  identified with the label vers\_number, for instance 5.9.3. That option is
+  useful only when you have several different versions of Maxima
+  installed. It can be abbreviated as \texttt{-u vers\_number}.
+\item[\texttt{-lisp flavor}] Run the version of Maxima compiled with the
+   Lisp implementation identified by \emph{flavor}. For instance, \texttt{-lisp
+    clisp}. That option will be useful if you have more than one maxima
+  program, compiled with different variants of Lisp. It can be abbreviated
+  as \texttt{-l flavor}\index{Lisp}
+\item[\texttt{-url web\_page}] The URL of a page that will substitute the
+  default starting page in the Web browser. If you have an Internet
+  connection, web\_page can be an external URL, such as
+  \texttt{http://maxima.sourceforge.net}. It can also be used to read pages
+  locally, using the syntax for local URL's: file://some/where.html
+  \index{URL}\index{Web browser}
 
-\subsection{Help Menu}
+  If no \texttt{-url} option or file names are given, xmaxima will open the
+  web browser in a default Html page that is distributed with Xmaxima. That
+  page has links to a local copy of Maxima User's Manual
+  \index{Maxima!users manual} and to the home page for the Maxima
+  project. It also includes an extension to the Html syntax that allows the
+  user to execute Maxima commands in a Web page, by clicking twice over it.
+  The Maxima code included might also allow the user to edit it before
+  evaluation.
 
-\clearpage
-\section{Console}
+\end{description}
+% \clearpage
+% \section{Environment Variables}
+% \index{Environment Variables}
 
-\clearpage
-\section{Browser}
+% \clearpage
+% \chapter{XMaxima User Interface}
+% \index{XMaxima User Interface}
 
-\clearpage
-\chapter{Open Math}
+% \clearpage
+% \section{Menus}
 
-\appendix
-\clearpage
-\chapter{Building Xmaxima for Windows}
+% \subsection{File Menu}
 
-\section{Installing MSYS}
+% \subsection{Edit Menu}
 
-\section{Wrapping the Tcl Code}
+% \subsection{Options Menu}
 
-\section{Packaging with Inno}
+% \subsection{Maxima Menu}
 
+% \subsection{Help Menu}
+
+% \clearpage
+% \section{Console}
+
+% \clearpage
+% \section{Browser}
+
+% \clearpage
+% \chapter{Open Math}
+
+% \appendix
+% \clearpage
+% \chapter{Building Xmaxima for Windows}
+
+% \section{Installing MSYS}
+
+% \section{Wrapping the Tcl Code}
+
+% \section{Packaging with Inno}
+
+\addcontentsline{toc}{chapter}{Index}
+\backmatter
+\printindex
 
 \end{document}
 
