@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Plotconf.tcl,v 1.12 2006-06-22 10:13:36 villate Exp $
+#       $Id: Plotconf.tcl,v 1.13 2006-06-27 13:41:41 villate Exp $
 #
 ###### plotconf.tcl ######
 ############################################################
@@ -116,18 +116,16 @@ proc makeFrame { w type } {
     pack $w
     place $w.plotmenu -in $w -x 2 -y 2 -anchor nw
     
-    if { ![info exists maxima_priv(showedplothelp)] ||
-	 [llength $maxima_priv(showedplothelp)] < 2 } {
-	lappend maxima_priv(showedplothelp) 1
+#     if { ![info exists maxima_priv(showedplothelp)] ||
+# 	 [llength $maxima_priv(showedplothelp)] < 2 } {
+# 	lappend maxima_priv(showedplothelp) 1
 	
-	after 200 balloonhelp $w $w.plotmenu [list \
-	    [mc "Clicking the left mouse button on the plot menu \
-		(top left corner), will bring up a menu.  Holding down \
-		right mouse button and dragging will translate the plot."]]
-	after 6000 $w.c delete balloon
-	
-
-    }
+# 	after 200 balloonhelp $w $w.plotmenu [list \
+# 	    [mc "Clicking the left mouse button on the plot menu \
+# 		(top left corner), will bring up a menu.  Holding down \
+# 		right mouse button and dragging will translate the plot."]]
+# 	after 6000 $w.c delete balloon
+#     }
 
     raise $w.plotmenu
 
@@ -326,15 +324,14 @@ proc writePostscript { win } {
     makeLocal $win c transform transform0 xmin ymin xmax ymax
     set rtosx rtosx$win ; set rtosy rtosy$win
     drawPointsForPrint $c
-    $c delete balloon
+    # $c delete balloon
 
     set bbox [eval $c bbox [$c find withtag printrectangle]]
     desetq "x1 y1 x2 y2" $bbox
-    #     set title "unknown plot"
-    #     catch { set title [eval $printOption(maintitle)] }
-
-    #     $c create text [expr {($x1 + $x2)/2}]  [expr {$y1 + .04 * ($y2 - $y1)}] \
-	# 	    -anchor center -text $title -tag title
+    # set title "unknown plot"
+    # catch { set title [eval $printOption(maintitle)] }
+    # $c create text [expr {($x1 + $x2)/2}]  [expr {$y1 + .04 * ($y2 - $y1)}] \
+    # 	    -anchor center -text $title -tag title
 
     update
     set diag [vectorlength [expr {$y1-$x1}] [expr {$y2-$x2}]]
