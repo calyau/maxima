@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Myhtml.tcl,v 1.11 2004-10-13 12:08:57 vvzhy Exp $
+#       $Id: Myhtml.tcl,v 1.12 2006-06-27 13:43:23 villate Exp $
 #
 ###### Myhtml.tcl ######
 ############################################################
@@ -1083,7 +1083,7 @@ proc xHMsetDefaultPreferences {} {
 }
 
 xHMsetDefaultPreferences
-catch { source ~/netmath.ini }
+catch { source ~/xmaxima.ini }
 
 proc dputs {x}  { puts $x ; flush stdout}
 proc xHMinit_state { win args } {
