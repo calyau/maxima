@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Constants.tcl,v 1.18 2006-06-21 09:03:57 villate Exp $
+#       $Id: Constants.tcl,v 1.19 2006-06-27 13:50:59 villate Exp $
 #
 
 proc cMAXINITBeforeIni {} {
@@ -44,10 +44,19 @@ proc cMAXINITBeforeIni {} {
     # maxima_default(lProxyHttp)
 }
 
-proc cMAXINITAfterIni {} {
-    global maxima_default maxima_priv
+proc cMAXINITReadIni {} {
+    if {[file isfile ~/xmaxima.ini]} {
+	if {[catch {uplevel "#0" [list source ~/xmaxima.ini] } err]} {
+	    tide_failure [M [mc "Error sourcing %s\n%s"] \
+			      [file native ~/xmaxima.ini] \
+			      $err]
+	}
+    }
+}
 
-    global MathServer
+proc cMAXINITAfterIni {} {
+    global maxima_default maxima_priv MathServer
+    lMaxInitSetOpts
     set MathServer [list $maxima_default(sMathServerHost) \
 			$maxima_default(iMathServerPort) ]
 
