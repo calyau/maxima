@@ -1,59 +1,215 @@
-@c english version 1.12
+@c english version 1.13
 @menu
-* Definiciones para Arreglos y Tablas::  
+* Definiciones para Arrays::  
 @end menu
 
-@node Definiciones para Arreglos y Tablas,  , Arreglos y Tablas, Arreglos y Tablas
-@section Definiciones para Arreglos y Tablas
+@node Definiciones para Arrays,  , Arrays, Arrays
+@section Definiciones para Arrays
 
 @deffn {Funci@'on} array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Funci@'on} array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})
 @deffnx {Funci@'on} array ([@var{nombre_1}, ..., @var{nombre_m}], @var{dim_1}, ..., @var{dim_n})
 
-Crea un arreglo de dimensi@'on @math{n}, que debe ser menor o igual que 5. Los sub@'{@dotless{i}}ndices de la @math{i}-@'esima dimensi@'on son enteros que toman valores entre 0 y @var{dim_i}.  
+Crea un array de dimensi@'on @math{n}, que debe ser menor o igual que 5. Los sub@'{@dotless{i}}ndices de la @math{i}-@'esima dimensi@'on son enteros que toman valores entre 0 y @var{dim_i}.  
 
-La llamada @code{array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})} crea un arreglo de tipo general.
+La llamada @code{array (@var{nombre}, @var{dim_1}, ..., @var{dim_n})} crea un array de tipo general.
 
-La llamada @code{array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})} crea un arreglo con sus elementos del tipo especificado. El tipo @var{type} puede ser @code{fixnum} para enteros de tama@~no limitado o @code{flonum} para n@'umeros decimales en coma flotante.
+La llamada @code{array (@var{nombre}, @var{type}, @var{dim_1}, ..., @var{dim_n})} crea un array con sus elementos del tipo especificado. El tipo @var{type} puede ser @code{fixnum} para enteros de tama@~no limitado o @code{flonum} para n@'umeros decimales en coma flotante.
 
 La llamada @code{array ([@var{nombre_1}, ..., @var{nombre_m}], @var{dim_1}, ..., @var{dim_n})}
-crea @math{m} arreglos,  todos ellos de igual dimensi@'on.
+crea @math{m} arrays,  todos ellos de igual dimensi@'on.
 @c SAME TYPE AS WELL ??
 
 @c THIS DISCUSSION OF UNDECLARED ARRAYS REALLY WANTS TO BE SOMEWHERE ELSE
-Si el usuario asigna un valor a una variable subindicada antes de declarar el arreglo correspondiente, entonces se construye un arreglo no declarado. Los arreglos no declarados, tambi@'en conocidos por el nombre de "arreglos de claves" (hashed arrays), son m@'as generales que los arreglos declarados. El usuario no necesita declarar su tama@~no m@'aximo y pueden ir creciendo de forma din@'amica. Los sub@'{@dotless{i}}ndices de los arreglos no declarados no necesitan ser necesariamente n@'umeros. Sin embargo, a menos que un arreglo tenga sus elementos dispersos, probablemente sea m@'as eficiente declararlo siempre que sea posible antes que dejarlo como no declarado. La funci@'on @code{array} puede utilizarse para transformar un arreglo no declarado a a uno declarado.
+Si el usuario asigna un valor a una variable subindicada antes de declarar el array correspondiente, entonces se construye un array no declarado. Los arrays no declarados, tambi@'en conocidos por el nombre de "arrays de claves" (hashed arrays), son m@'as generales que los arrays declarados. El usuario no necesita declarar su tama@~no m@'aximo y pueden ir creciendo de forma din@'amica. Los sub@'{@dotless{i}}ndices de los arrays no declarados no necesitan ser necesariamente n@'umeros. Sin embargo, a menos que un array tenga sus elementos dispersos, probablemente sea m@'as eficiente declararlo siempre que sea posible antes que dejarlo como no declarado. La funci@'on @code{array} puede utilizarse para transformar un array no declarado a a uno declarado.
 @c HOW DOES ONE CHANGE AN UNDECLARED ARRAY INTO A DECLARED ARRAY EXACTLY ??
 
 @end deffn
 
 @deffn {Funci@'on} arrayapply (@var{A}, [@var{i_1}, ..., @var{i_n}])
-Eval@'ua @code{@var{A} [@var{i_1}, ..., @var{i_n}]}, donde @var{A} es un arreglo y @var{i_1}, ..., @var{i_n} son enteros.
+Eval@'ua @code{@var{A} [@var{i_1}, ..., @var{i_n}]}, donde @var{A} es un array y @var{i_1}, ..., @var{i_n} son enteros.
 
-Esto es como @code{apply}, excepto por el hecho de que el primer argumento es un arreglo en lugar de una funci@'on.
+Esto es como @code{apply}, excepto por el hecho de que el primer argumento es un array en lugar de una funci@'on.
 
 @end deffn
 
 @deffn {Funci@'on} arrayinfo (@var{A})
-Devuelve una lista con informaci@'on sobre el arreglo @var{A}. Para arreglos de claves (hashed arrays) devuelve una lista @code{hashed}, el n@'umero de sub@'{@dotless{i}}ndices y los sub@'{@dotless{i}}ndices de aquellos elementos que tengan valor. Para arreglos declarados devuelve una lista @code{declared}, el n@'umero de sub@'{@dotless{i}}ndices y los valores dados a la funci@'on @code{array} cuando fue invocada para crear @var{A}.  H@'agase @code{example(arrayinfo);} para ver un ejemplo.
+Devuelve informaci@'on sobre el array@var{A}.
+El argumento @var{A} puede ser un array declarado o no declarado,
+una funci@'on array o una funci@'on subindicada.
+
+En el caso de arrays declarados, @code{arrayinfo} devuelve una
+lista que contiene el @'atomo @code{declared}, el n@'umero de
+dimensiones y el tama@~no de cada dimensi@'on.
+Los elementos del array, tanto los que tienen valores
+asignados como los que no, son devueltos por @code{listarray}.
+
+En el caso de arrays no declarados (@i{hashed arrays}), @code{arrayinfo}
+devuelve una lista que contiene el @'atomo @code{hashed}, el n@'umero
+de sub@'{@dotless{i}}ndices y los sub@'{@dotless{i}}ndices de aquellos
+elementos que guarden un valor. Los valores son devueltos por @code{listarray}.
+
+En el caso de funciones array, @code{arrayinfo} devuelve una lista que 
+contiene el @'atomo @code{hashed}, el n@'umero de sub@'{@dotless{i}}ndices
+y los sub@'{@dotless{i}}ndices para los que la funci@'on tiene valores almacenados.
+Los valores almacenados de la funci@'on array son devueltos por @code{listarray}.
+
+En el caso de funciones subindicadas, @code{arrayinfo} devuelve una lista que
+contiene el @'atomo @code{hashed}, el n@'umero de sub@'{@dotless{i}}ndices y
+los sub@'{@dotless{i}}ndices para los que hay expresiones lambda.
+Las expresiones lambda son devueltas por @code{listarray}.
+
+Ejemplos:
+
+@code{arrayinfo} y @code{listarray} aplicadas a una array declarado.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c arrayinfo (aa);
+@c listarray (aa);
+@c ===end===
+@example
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+(%i4) arrayinfo (aa);
+(%o4)                 [declared, 2, [2, 3]]
+(%i5) listarray (aa);
+(%o5) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+@end example
+
+@code{arrayinfo} y @code{listarray} aplicadas a una array no declarado (@i{hashed arrays}).
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c arrayinfo (bb);
+@c listarray (bb);
+@c ===end===
+@example
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+(%i3) arrayinfo (bb);
+(%o3)               [hashed, 1, [BAR], [FOO]]
+(%i4) listarray (bb);
+                              3         2
+(%o4)                 [(c - d) , (b + a) ]
+@end example
+
+@code{arrayinfo} y @code{listarray} aplicadas a una funci@'on array.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c arrayinfo (cc);
+@c listarray (cc);
+@c ===end===
+@example
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+(%i4) arrayinfo (cc);
+(%o4)              [hashed, 2, [4, z], [u, v]]
+(%i5) listarray (cc);
+                              z  v
+(%o5)                        [-, -]
+                              4  u
+@end example
+
+@code{arrayinfo} y @code{listarray} aplicadas a una funci@'on subindicada.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c arrayinfo (dd);
+@c listarray (dd);
+@c ===end===
+@example
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+(%i4) arrayinfo (dd);
+(%o4)             [hashed, 1, [b + a], [v - u]]
+(%i5) listarray (dd);
+                         b + a                v - u
+(%o5)      [lambda([y], y     ), lambda([y], y     )]
+@end example
 
 @end deffn
 
 @deffn {Funci@'on} arraymake (@var{name}, [@var{i_1}, ..., @var{i_n}])
 Devuelve la expresi@'on @code{@var{name} [@var{i_1}, ..., @var{i_n}]}.
 
-Esta funci@'on es similar a @code{funmake}, excepto que el valor retornado es referencia a un arreglo no evaluado, en lugar de una llamada a una funci@'on no evaluada.
+Esta funci@'on es similar a @code{funmake}, excepto que el valor retornado es referencia a un array no evaluado, en lugar de una llamada a una funci@'on no evaluada.
 
 @end deffn
 
 @defvr {Variable del sistema} arrays
 Valor por defecto: @code{[]}
-
-La variable @code{arrays} es una lista con todos los arreglos que han sido alojados, hayan sido declarados o no.
+La variable @code{arrays} es una lista con todos los arrays que han sido alojados,
+lo que comprende a los arrays declarados por @code{array}, a los
+no declarados (@i{hashed arrays}) construidos impl@'{@dotless{i}}citamente
+(asignando algo al elemento de un array) y a las funciones array definidas
+mediante @code{:=} y @code{define}.
+Los arrays definidos mediante @code{make_array} no se incluyen en
+este grupo.
 
 V@'eanse tambi@'en
 @code{array}, @code{arrayapply}, @code{arrayinfo}, @code{arraymake}, 
 @code{fillarray}, @code{listarray} y @code{rearray}.
-@c IS THIS AN EXHAUSTIVE LIST ??
+
+Ejemplos:
+
+@c ===beg===
+@c array (aa, 5, 7);
+@c bb [FOO] : (a + b)^2;
+@c cc [x] := x/100;
+@c dd : make_array ('any, 7);
+@c arrays;
+@c ===end===
+@example
+(%i1) array (aa, 5, 7);
+(%o1)                          aa
+(%i2) bb [FOO] : (a + b)^2;
+                                   2
+(%o2)                       (b + a)
+(%i3) cc [x] := x/100;
+                                   x
+(%o3)                      cc  := ---
+                             x    100
+(%i4) dd : make_array ('any, 7);
+(%o4)       @{Array:  #(NIL NIL NIL NIL NIL NIL NIL)@}
+(%i5) arrays;
+(%o5)                     [aa, bb, cc]
+@end example
 
 @end defvr
 
@@ -63,9 +219,9 @@ Transforma la expresi@'on @var{expr} d@'andole a cada suma y producto un @'unico
 @end deffn
 
 @deffn {Funci@'on} fillarray (@var{A}, @var{B})
-Rellena el arreglo @var{A} con los valores de @var{B}, que puede ser una lista o arreglo.
+Rellena el array @var{A} con los valores de @var{B}, que puede ser una lista o array.
 
-Si @var{A} es un array de n@'umeros decimales en coma flotante (enteros) entonces @var{B} debe ser o bien una lista de n@'umeros decimales en coma flotante  (enteros), o bien otro arreglo de n@'umeros en coma flotante (enteros).
+Si @var{A} es un array de n@'umeros decimales en coma flotante (enteros) entonces @var{B} debe ser o bien una lista de n@'umeros decimales en coma flotante  (enteros), o bien otro array de n@'umeros en coma flotante (enteros).
 
 Si las dimensiones de los areglos son diferentes, @var{A} se rellena seg@'un el orden de las filas. Si no hay suficientes elementos en @var{B} el @'ultimo elemento se utiliza para cubrir el resto de @var{A}. Si hay demasiados, los elementos sobrantes son ignorados.
 
@@ -75,33 +231,155 @@ La funci@'on @code{fillarray} devuelve su primer argumento.
 
 
 @deffn {Funci@'on} listarray (@var{A})
-Devuelve una lista con los elementos del arreglo declarado o tabla de claves @var{A}, en el orden de las filas. Los elementos que todav@'{@dotless{i}}a no han sido declarados se representan mediante @code{#####}.
+Devuelve una lista con los elementos del array @var{A}.
+El argumento @var{A} puede ser un array declarado o no declarado,
+una funci@'on array o una funci@'on subindicada.
+
+Los elementos se ordenan en primera instancia respecto del primer 
+@'{@dotless{i}}ndice, despu@'es respecto del segundo @'{@dotless{i}}ndice
+y as@'{@dotless{i}} sucesivamente.
+La ordenaci@'on de los @'{@dotless{i}}ndices es la misma que la 
+establecida por @code{orderless}.
+
+En el caso de arrays no declarados, funciones array y funciones
+subindicadas, los elementos corresponden a los @'{@dotless{i}}ndices
+devueltos por @code{arrayinfo}.
+
+Los elementos de los arrays declarados que no tienen valores asignados
+(excepto @code{fixnum} y @code{flonum}) se devuelven como @code{#####}.
+Los elementos sin valores asignados de los arrays @code{fixnum} y @code{flonum}
+son devueltos como 0 y 0.0, respectivamente.
+Los elementos sin valor asignado de los arrays no declarados, 
+funciones array y funciones subindicadas no son devueltos.
+
+Ejemplos:
+
+@code{listarray} y @code{arrayinfo} aplicadas a un array declarado.
+
+@c ===beg===
+@c array (aa, 2, 3);
+@c aa [2, 3] : %pi;
+@c aa [1, 2] : %e;
+@c listarray (aa);
+@c arrayinfo (aa);
+@c ===end===
+@example
+(%i1) array (aa, 2, 3);
+(%o1)                          aa
+(%i2) aa [2, 3] : %pi;
+(%o2)                          %pi
+(%i3) aa [1, 2] : %e;
+(%o3)                          %e
+(%i4) listarray (aa);
+(%o4) [#####, #####, #####, #####, #####, #####, %e, #####, 
+                                        #####, #####, #####, %pi]
+(%i5) arrayinfo (aa);
+(%o5)                 [declared, 2, [2, 3]]
+@end example
+
+@code{listarray} y @code{arrayinfo} aplicadas a un array no declarado (@i{hashed array}).
+
+@c ===beg===
+@c bb [FOO] : (a + b)^2;
+@c bb [BAR] : (c - d)^3;
+@c listarray (bb);
+@c arrayinfo (bb);
+@c ===end===
+@example
+(%i1) bb [FOO] : (a + b)^2;
+                                   2
+(%o1)                       (b + a)
+(%i2) bb [BAR] : (c - d)^3;
+                                   3
+(%o2)                       (c - d)
+(%i3) listarray (bb);
+                              3         2
+(%o3)                 [(c - d) , (b + a) ]
+(%i4) arrayinfo (bb);
+(%o4)               [hashed, 1, [BAR], [FOO]]
+@end example
+
+@code{listarray} y @code{arrayinfo} aplicadas a una funci@'on array.
+
+@c ===beg===
+@c cc [x, y] := y / x;
+@c cc [u, v];
+@c cc [4, z];
+@c listarray (cc);
+@c arrayinfo (cc);
+@c ===end===
+@example
+(%i1) cc [x, y] := y / x;
+                                     y
+(%o1)                      cc     := -
+                             x, y    x
+(%i2) cc [u, v];
+                                v
+(%o2)                           -
+                                u
+(%i3) cc [4, z];
+                                z
+(%o3)                           -
+                                4
+(%i4) listarray (cc);
+                              z  v
+(%o4)                        [-, -]
+                              4  u
+(%i5) arrayinfo (cc);
+(%o5)              [hashed, 2, [4, z], [u, v]]
+@end example
+
+@code{listarray} y @code{arrayinfo} aplicadas a una funci@'on subindicada.
+
+@c ===beg===
+@c dd [x] (y) := y ^ x;
+@c dd [a + b];
+@c dd [v - u];
+@c listarray (dd);
+@c arrayinfo (dd);
+@c ===end===
+@example
+(%i1) dd [x] (y) := y ^ x;
+                                     x
+(%o1)                     dd (y) := y
+                            x
+(%i2) dd [a + b];
+                                    b + a
+(%o2)                  lambda([y], y     )
+(%i3) dd [v - u];
+                                    v - u
+(%o3)                  lambda([y], y     )
+(%i4) listarray (dd);
+                         b + a                v - u
+(%o4)      [lambda([y], y     ), lambda([y], y     )]
+(%i5) arrayinfo (dd);
+(%o5)             [hashed, 1, [b + a], [v - u]]
+@end example
 
 @end deffn
 
 @deffn {Funci@'on} make_array (@var{tipo}, @var{dim_1}, ..., @var{dim_n})
-Construye y devuelve un arreglo de Lisp. El argumento @var{tipo} puede ser  @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} o @code{functional}. Hay @math{n} @'{@dotless{i}}ndices, y el @'{@dotless{i}}ndice @math{i}-@'esimo va de  0 a @math{@var{dim_i} - 1}.
+Construye y devuelve un array de Lisp. El argumento @var{tipo} puede ser  @code{any}, @code{flonum}, @code{fixnum}, @code{hashed} o @code{functional}. Hay @math{n} @'{@dotless{i}}ndices, y el @'{@dotless{i}}ndice @math{i}-@'esimo va de  0 a @math{@var{dim_i} - 1}.
 
 La ventaja de @code{make_array} sobre @code{array} estriba en que el valor retornado no tiene nombre, y una vez que un puntero deja de referenciarlo, el valor desaparece. Por ejemplo, si @code{y: make_array (...)} entonces @code{y} apunta a un objeto que ocupa cierto espacio en la memoria, pero despu@'es de @code{y: false}, @code{y} ya no apunta al objeto, por lo que @'este puede ser considerado basura y posteriormente eliminado.  
-
-@c NEEDS CLARIFICATION HERE
-En la instrucci@'on @code{y: make_array ('functional, 'f, 'hashed, 1)} el segundo argumento de @code{make_array}  es la funci@'on que se debe invocar para calcular los elementos del arreglo, pas@'andose recursivamente a @code{make_array} el resto de los argumentos para generar la "memoria" de la funci@'on arreglo.
 
 @end deffn
 
 @c DOES THIS MODIFY A OR DOES IT CREATE A NEW ARRAY ??
 @deffn {Funci@'on} rearray (@var{A}, @var{dim_1}, ..., @var{dim_n})
-Cambia las dimensiones de un arreglo. El nuevo arreglo ser@'a rellenado con los elementos del viejo seg@'un el orden de las filas. Si el arreglo antiguo era demasiado peque@~no, los elementos restantes se rellenan con @code{false}, @code{0.0} o @code{0}, dependiendo del tipo del arreglo. El tipo del arreglo no se puede cambiar.
+Cambia las dimensiones de un array. El nuevo array ser@'a rellenado con los elementos del viejo seg@'un el orden de las filas. Si el array antiguo era demasiado peque@~no, los elementos restantes se rellenan con @code{false}, @code{0.0} o @code{0}, dependiendo del tipo del array. El tipo del array no se puede cambiar.
 
 @end deffn
 
 @deffn {Funci@'on} remarray (@var{A_1}, ..., @var{A_n})
 @deffnx {Funci@'on} remarray (all)
-Borra los arreglos y las funciones relacionadas con ellos, liberando el espacio de memoria ocupado.
+Borra los arrays y las funciones relacionadas con ellos, liberando el espacio de memoria ocupado.
+Los argumentos pueden ser arrays declarados, arrays no declarados (@i{hashed arrays}), 
+funciones array y funciones subindicadas.
 
 La llamada @code{remarray (all)} borra todos los elementos de la lista global @code{arrays}.
 
-La funci@'on @code{remarray} devuelve la lista de los arreglos borrados.
+La funci@'on @code{remarray} devuelve la lista de los arrays borrados.
 
 @end deffn
 
@@ -151,7 +429,7 @@ Ejemplos:
 @defvr {Variable opcional} use_fast_arrays
 Valor por defecto: @code{false}
 
-Si @code{use_fast_arrays} vale @code{true} entonces tan solo se reconocen dos tipos de arreglos. 
+Si @code{use_fast_arrays} vale @code{true} entonces tan solo se reconocen dos tipos de arrays. 
 
 @c AQUI QUEDAN TRES PARRAFOS SIN TRADUCIR
  

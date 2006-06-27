@@ -96,7 +96,7 @@ Soporte para campos m@'as espec@'{@dotless{i}}ficos de las matem@'aticas
 * Ecuaciones Diferenciales::           Definici@'on y resoluci@'on de ecuaciones diferenciales.
 * M@'etodos num@'ericos::              Integraci@'on num@'erica, transformadas de Fourier, etc.
 * Estad@'{@dotless{i}}stica::          Funciones estad@'isticas.
-* Arreglos y Tablas::                  Creaci@'on y manipulaci@'on de arreglos.
+* Arrays::                             Creaci@'on y manipulaci@'on de arrays.
 * Matrices y @'Algebra Lineal::        Operaciones matriciales.
 * Afines::                             
 * itensor::                            Manipulaci@'on indexada de tensores
@@ -278,9 +278,9 @@ Estad@'{@dotless{i}}stica
 
 * Definiciones para Estad@'{@dotless{i}}stica::  
 
-Arreglos y Tablas
+Arrays
 
-* Definiciones para Arreglos y Tablas::  
+* Definiciones para Arrays::  
 
 Matrices y @'Algebra Lineal
 
@@ -597,15 +597,15 @@ zeilberger
 @chapter M@'etodos num@'ericos
 @include Numerical.es.texi
 
-@node Estad@'{@dotless{i}}stica, Arreglos y Tablas, M@'etodos num@'ericos, Top
+@node Estad@'{@dotless{i}}stica, Arrays, M@'etodos num@'ericos, Top
 @chapter Estad@'{@dotless{i}}stica
 @include Statistics.es.texi
 
-@node Arreglos y Tablas, Matrices y @'Algebra Lineal, Estad@'{@dotless{i}}stica, Top
-@chapter Tablas y Arreglos
+@node Arrays, Matrices y @'Algebra Lineal, Estad@'{@dotless{i}}stica, Top
+@chapter Arrays
 @include Arrays.es.texi
 
-@node Matrices y @'Algebra Lineal, Afines, Arreglos y Tablas, Top
+@node Matrices y @'Algebra Lineal, Afines, Arrays, Top
 @chapter Matrices y @'Algebra Lineal
 @include Matrices.es.texi
 

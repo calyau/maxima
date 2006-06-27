@@ -1,4 +1,4 @@
-@c version 1.17
+@c version 1.18
 @menu
 * Introducci@'on al Entorno de Ejecuci@'on::   
 * Interrupciones::  
@@ -9,7 +9,7 @@
 @section Introducci@'on al Entorno de Ejecuci@'on
 
 El fichero @code{maxima-init.mac} se carga autom@'aticamente cada vez que se empieza a ejecutar Maxima.
-Se puede utilizar @code{maxima-init.mac} para personalizar el entorno de Maxima. Si existe, @code{maxima-init.mac} se almacena normalmente en el directorio indicado por @code{:lisp (default-userdir)}, aunque puede estar alojado en cualquier otro directorio que est@'e al alcance de la funci@'on  @code{file_search}.
+Se puede utilizar @code{maxima-init.mac} para personalizar el entorno de Maxima. Si existe, @code{maxima-init.mac} se almacena normalmente en el directorio indicado por @code{maxima_userdir}, aunque puede estar alojado en cualquier otro directorio que est@'e al alcance de la funci@'on  @code{file_search}.
 
 He aqu@'{@dotless{i}} un ejemplo de fichero @code{maxima-init.mac}:
 
@@ -68,6 +68,42 @@ V@'eanse tambi@'en @code{declare} y @code{features}.
 @end example
 
 @end deffn
+
+@defvr {Variable del sistema} maxima_tempdir
+
+La variable @code{maxima_tempdir} almacena la ruta del directorio
+en el que Maxima crea ciertos ficheros temporales.
+En particular, los ficheros temporales para la realizaci@'on de
+gr@'aficos se guardan en @code{maxima_tempdir}.
+
+El valor que inicialmente toma esta variable es el directorio
+de inicio del usuario, si Maxima es capaz de localizarlo; en
+caso contrario, Maxima intenta encontrar un directorio que
+sea aceptable.
+
+A la variable @code{maxima_tempdir} se le puede asignar una
+cadena de caracteres con la ruta del directorio.
+@end defvr
+
+@defvr {Variable del sistema} maxima_userdir
+
+La variable @code{maxima_userdir} almacena la ruta del 
+directorio en el que Maxima buscar@'a ficheros Lisp y de
+Maxima. Maxima tambi@'en busca en otros directorios, guardando las variables
+@code{file_search_maxima} y @code{file_search_lisp} la lista
+completa de b@'usqueda.
+
+El valor que inicialmente toma esta variable es el de un subdirectorio
+del directorio de inicio del usuario, si Maxima es capaz de localizarlo;
+en caso contrario, Maxima intenta encontrar un directorio que
+sea aceptable.
+
+A la variable @code{maxima_userdir} se le puede asignar una
+cadena de caracteres con la ruta del directorio.
+Sin embargo, cambiando el valor de la variable @code{maxima_userdir}
+no se alteran @code{file_search_maxima} ni @code{file_search_lisp},
+cuyos contenidos se modifican mediante otro sistema.
+@end defvr
 
 @deffn {Funci@'on} room ()
 @deffnx {Funci@'on} room (true)
