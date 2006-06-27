@@ -22,7 +22,7 @@
 ;; See plotdf.usg (which should come together with this program) for
 ;; a usage summary
 ;;
-;; $Id: plotdf.lisp,v 1.3 2006-06-08 09:38:51 villate Exp $
+;; $Id: plotdf.lisp,v 1.4 2006-06-27 14:16:44 villate Exp $
 
 (in-package :maxima)
 
@@ -76,15 +76,6 @@
 				(format st "-~(~a~) " (first vv))
 				(format st "{~{~(~a~)~^ ~}}" (rest vv)))))
 
-;; parses a plotdf option into a command-line option for shell scripts
-(defun shell-get-plotdf-option (name)
-  (with-output-to-string (st)
-			 (sloop for v in (rest $plotdf_options)
-				when (eq (second v) name)
-				do (setq vv (mapcar #'stripdollar (rest v)))
-				(format st "-~(~a~) " (first vv))
-				(format st "\"~{~(~a~)~^ ~}\"" (rest vv)))))
-
 ;; changes the value of a plotdf option
 (defun $set_plotdf_option ( value)
   (setq $plodft_options ($copylist $plotdf_options))
@@ -131,38 +122,20 @@
   ;; parse argument ode and prepare string cmd with the equation(s)
   (if ($listp ode)
       (if (= (length ode) 3)
-	  (cond 
-	   ($show_openplot (setq cmd
-				 (concatenate 'string " -dxdt \""
-					      (expr_to_str (second ode))
-					      "\" -dydt \""
-					      (expr_to_str (third ode)) "\"")))
-	   (t (setq cmd (concatenate 'string " -dxdt "
-				     (expr_to_str (second ode)) " -dydt "
-				     (expr_to_str (third ode))))))
+	   (setq cmd (concatenate 'string " -dxdt \""
+				  (expr_to_str (second ode)) "\" -dydt \""
+				  (expr_to_str (third ode)) "\""))
 	(merror "Argument must be either dydx or [dxdt, dydt]"))
-    (cond ($show_openplot (setq cmd
-				(concatenate 'string " -dydx \""
-					     (expr_to_str ode) "\"")))
-	  (t (setq cmd (concatenate 'string " -dydx " (expr_to_str ode))))))
+    (setq cmd (concatenate 'string " -dydx \"" (expr_to_str ode) "\"")))
 
   ;; parse options and copy them to string opts
   (setq opts " ")
   (cond (options
 	 (dolist (v options) 
 	   ($set_plotdf_option v)
-	   (cond
-	    ($show_openplot
-	     (setq opts
-		   (concatenate 'string opts " "
-				(shell-get-plotdf-option (second v)))))
-	    (t
-	     (setq opts (concatenate 'string opts " "
-				     (tcl-get-plotdf-option (second v)))))))))
-
-  ;; now call tcl's plotdf
-  (cond ($show_openplot
-	 ($system (concatenate 'string *maxima-plotdir* "/"
-			       $openmath_plot_command) " plotdf" cmd opts))
-	(t (princ (concatenate 'string "{plotdf" cmd opts "}" )) "")))
-
+	   (setq opts (concatenate 'string opts " "
+				   (tcl-get-plotdf-option (second v)))))))
+  (show-open-plot
+   (with-output-to-string (st)
+     (cond ($show_openplot (format st "plotdf ~a ~a~%" cmd opts))
+	   (t (format st "{plotdf ~a ~a}" cmd opts))))))
