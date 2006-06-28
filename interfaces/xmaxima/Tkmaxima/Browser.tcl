@@ -1,6 +1,6 @@
 # -*-mode: tcl; fill-column: 75; tab-width: 8; coding: iso-latin-1-unix -*-
 #
-#       $Id: Browser.tcl,v 1.15 2006-06-27 13:36:23 villate Exp $
+#       $Id: Browser.tcl,v 1.16 2006-06-28 12:15:27 villate Exp $
 #
 ###### Browser.tcl ######
 ############################################################
@@ -631,6 +631,10 @@ proc getURL { resolved type {mimeheader ""} {post ""} } {
 		set contentType text/html
 	    } elseif {  [regexp {[.]gif([^/]*)$} $name ] } {
 		set contentType image/gif
+	    } elseif {  [regexp {[.]png([^/]*)$} $name ] } {
+		set contentType image/png
+	    } elseif {  [regexp {[.]jpe?g([^/]*)$} $name ] } {
+		set contentType image/jpeg
 	    } else {
 		set contentType text/plain
 	    }
@@ -700,12 +704,13 @@ proc backgroundGetImage1  { image res width height }   {
 	    fconfigure $s -blocking 0
 	    ##DO NOT DELETE THE FOLLOWING !!!!!puts!!!!!!!!
 	    puts $s [getURLrequest [encodeURL $res] \
-			 $server $port {image/gif image/x-bitmap}]
+			 $server $port {image/gif image/png image/jpeg image/x-bitmap}]
 	    flush $s
 
-	    if { [regexp -nocase {[.]gif([^/]*)$} [assoc filename $res] ] } {
+
+	    if { [regexp -nocase $maxima_priv(imgregexp) [assoc filename $res] mm extension] } {
 		fconfigure $s -translation binary
-		set tmp xxtmp[incr maxima_priv(imagecounter)].gif
+		set tmp xxtmp[incr maxima_priv(imagecounter)].$extension
 
 		if { [info exists maxima_priv(inbrowser)] ||  [catch {set out [open $tmp w] } ] } {
 		    # if have binary..
@@ -715,7 +720,7 @@ proc backgroundGetImage1  { image res width height }   {
 		    if {  [readAllData $s -tovar \
 			       maxima_priv($s,url_result) -mimeheader \
 			       maxima_priv($s,mimeheader)
-			  ] > 0  && [string match *gif [assoc content-type $maxima_priv($s,mimeheader)]] } {
+			  ] > 0  && [string match *$extension [assoc content-type $maxima_priv($s,mimeheader)]] } {
 			set ans $image
 			$image configure -data [tobase64 $maxima_priv($s,url_result)]
 
