@@ -627,6 +627,7 @@ tensor/mail-archive.txt\
 tensor/maxwell.dem\
 tensor/petrov.dem\
 tensor/plasma.dem\
+tensor/rainich.dem\
 tensor/reissner.dem\
 tensor/schwarz.dem\
 tensor/spinor.dem\
